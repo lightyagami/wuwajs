@@ -11,28 +11,28 @@ class RouletteViewPanelHandle extends SpecialPanelHandleBase_1.SpecialPanelHandl
     super(...arguments);
     this.aBo = undefined;
   }
-  OnGetSuitableNavigationListenerList(e) {
-    if (e) {
-      return this.DefaultNavigationListener;
-    } else {
-      e = this.GetNavigationGroup("Group2");
-      if (UiNavigationLogic_1.UiNavigationLogic.HasActiveListenerInGroup(e)) {
+  OnGetSuitableNavigationListenerList(i) {
+    if (!i && (i = this.GetNavigationGroup("GroupTab2"), UiNavigationLogic_1.UiNavigationLogic.HasActiveListenerInGroup(i))) {
+      i = this.GetNavigationGroup("Group2");
+      if (UiNavigationLogic_1.UiNavigationLogic.HasActiveListenerInGroup(i)) {
         if (!this.aBo) {
           this.aBo = [...this.DefaultNavigationListener];
           if (this.aBo.length >= 2) {
-            e = this.aBo[0];
+            i = this.aBo[0];
             this.aBo[0] = this.aBo[1];
-            this.aBo[1] = e;
+            this.aBo[1] = i;
           }
         }
         return this.aBo;
       } else {
-        if ((e = this.DefaultNavigationListener[0]).GetNavigationGroup().LastSelectListener) {
-          e = e.GetNavigationGroup().LastSelectListener;
-          this.DefaultNavigationListener[0] = e;
+        if ((i = this.DefaultNavigationListener[0]).GetNavigationGroup().LastSelectListener) {
+          i = i.GetNavigationGroup().LastSelectListener;
+          this.DefaultNavigationListener[0] = i;
         }
         return this.DefaultNavigationListener;
       }
+    } else {
+      return this.DefaultNavigationListener;
     }
   }
 }

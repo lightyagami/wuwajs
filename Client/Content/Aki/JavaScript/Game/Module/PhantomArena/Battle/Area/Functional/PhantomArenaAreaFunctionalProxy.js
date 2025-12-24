@@ -5,8 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.PhantomArenaAreaFunctionalProxy = undefined;
 const Log_1 = require("../../../../../../Core/Common/Log");
-const Protocol_1 = require("../../../../../../Core/Define/Net/Protocol");
-const ConfigManager_1 = require("../../../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../../Manager/ModelManager");
 const PhantomArenaDefine_1 = require("../../PhantomArenaDefine");
@@ -59,7 +57,7 @@ class PhantomArenaAreaFunctionalProxy extends PhantomArenaAreaProxyBase_1.Phanto
   }
   async OnHandleCardSetting(t) {
     this.SetCardResetPosition(t);
-    return !!(await ControllerHolder_1.ControllerHolder.PhantomArenaBattleController.RequestPhantomBattleCardTargetInfo(t.Data.CardId, t.Data.Index)) && (await this.SetCard(t), (await this.OnHandleAreaBySetCard()) ? (this.ParentArea.ParentArea.ViewProxy.GuideManager.FinishCurrentGuide(), true) : (this.ResetCardProxy(), false));
+    return !!(await ControllerHolder_1.ControllerHolder.PhantomArenaBattleController.RequestPhantomBattleCardTargetInfo(t.Data.CardId, t.Data.ActiveSkillId, t.Data.Index !== PhantomArenaDefine_1.HAND_PHANTOMARENA_INDEX, false)) && (await this.SetCard(t), (await this.OnHandleAreaBySetCard()) ? (this.ParentArea.ParentArea.ViewProxy.GuideManager.FinishCurrentGuide(), true) : (this.ResetCardProxy(), false));
   }
   CheckGuideCondition(t) {
     var e;
@@ -71,28 +69,9 @@ class PhantomArenaAreaFunctionalProxy extends PhantomArenaAreaProxyBase_1.Phanto
     }
   }
   CheckSettingCardCondition(t) {
-    if (this.Card) {
-      return false;
-    }
-    if (t.Data.Index === PhantomArenaDefine_1.HAND_PHANTOMARENA_INDEX) {
-      var e = ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.GetBattleStatusValue(Protocol_1.Aki.Protocol.qC1.Proto_PhantomBattleCostPoint);
-      var r = t.Data.HasActiveSkill;
-      if (r) {
-        if (e - ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleSkillConfig(t.Data.ActiveSkillId).CostConsume < 0) {
-          return !(this.SettingFailReason = "PhantomBattle_1051");
-        }
-      }
-    }
-    if (t.Data.CanUse) {
-      if (t.Data.HasActiveSkill) {
-        return !(this.SettingFailReason = "");
-      } else {
-        return !(this.SettingFailReason = "PhantomBattle_1064");
-      }
-    } else {
-      this.SettingFailReason = "";
-      return false;
-    }
+    var [t, e] = t.CardLogic.CheckFunctionalSettingCondition(this.Card);
+    this.SettingFailReason = e;
+    return t;
   }
   GetCardRootItem() {
     return this.AreaItem.GetCardRootItem();
@@ -119,11 +98,11 @@ class PhantomArenaAreaFunctionalProxy extends PhantomArenaAreaProxyBase_1.Phanto
   async StartSkillInteract() {
     await this.AreaItem.SetIncreaseActive(true);
   }
-  CancelSkillInteract(t) {
+  CancelSkillInteract() {
     this.AreaItem.SetIncreaseActive(false);
     if (this.Card) {
-      if (t !== PhantomArenaDefine_1.HAND_PHANTOMARENA_INDEX) {
-        this.ParentArea.ParentArea.FunctionalArea.ResetFunctionalToMonster(this.Card, t, this.Index);
+      if (this.Card.Data.Index !== PhantomArenaDefine_1.HAND_PHANTOMARENA_INDEX) {
+        this.ParentArea.ParentArea.FunctionalArea.ResetFunctionalToMonster(this.Card, this.Card.Data.Index, this.Index);
       } else {
         this.ParentArea.ParentArea.ResetFunctionalToHand(this.Card, this.Index);
       }

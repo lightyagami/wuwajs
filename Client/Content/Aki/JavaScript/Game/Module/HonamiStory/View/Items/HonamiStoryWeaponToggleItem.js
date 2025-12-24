@@ -19,10 +19,10 @@ class HonamiStoryWeaponToggleItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.jRh = 0;
-    this.Brm = 0;
-    this.vYd = undefined;
-    this.$im = [];
-    this.dYd = undefined;
+    this.Yam = 0;
+    this.zYd = undefined;
+    this.aam = [];
+    this.$Yd = undefined;
     this.ScrollViewDelegate = undefined;
     this.GridIndex = 0;
     this.DisplayIndex = 0;
@@ -30,7 +30,7 @@ class HonamiStoryWeaponToggleItem extends UiPanelBase_1.UiPanelBase {
       var e = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.HonamiStoryWeaponUnlockSet) ?? new Set();
       e.delete(this.jRh);
       LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.HonamiStoryWeaponUnlockSet, e);
-      this.vYd?.(this);
+      this.zYd?.(this);
       this.SetNewItemShow();
     };
   }
@@ -40,10 +40,10 @@ class HonamiStoryWeaponToggleItem extends UiPanelBase_1.UiPanelBase {
   }
   async OnBeforeStartAsync() {
     var t = [];
-    this.$im = [];
+    this.aam = [];
     for (let e = 0; e < SUIT_ITEM_COUNT; e++) {
       var i = new HonamiStoryWeaponSuitActiveItem_1.HonamiStoryWeaponSuitActiveItem();
-      this.$im.push(i);
+      this.aam.push(i);
       t.push(i.CreateThenShowByActorAsync(this.GetItem(1 + e).GetOwner()));
     }
     await Promise.all(t);
@@ -51,9 +51,9 @@ class HonamiStoryWeaponToggleItem extends UiPanelBase_1.UiPanelBase {
   }
   Refresh(e, t, i) {
     this.jRh = e.WeaponId;
-    this.Brm = e.UseWay;
+    this.Yam = e.UseWay;
     if (e.EquipData) {
-      this.dYd = e.EquipData;
+      this.$Yd = e.EquipData;
     }
     this.RefreshItem();
   }
@@ -78,9 +78,9 @@ class HonamiStoryWeaponToggleItem extends UiPanelBase_1.UiPanelBase {
       if (t) {
         var i;
         var t = e.SuitId;
-        this.Wim(t);
-        if (this.Brm === 1) {
-          let e = this.dYd;
+        this.ham(t);
+        if (this.Yam === 1) {
+          let e = this.$Yd;
           if (e = e || ModelManager_1.ModelManager.HonamiStoryModel.GetWeaponEquipState(this.jRh)) {
             ((t = e.GetRoleId()) > 0 ? (i = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(t), this.SetRoleIcon(i.RoleHeadIcon, this.GetTexture(10), t), this.GetItem(9)) : (i = e.GetPosition(), this.GetText(12).SetText((i + 1).toString()), this.GetItem(11)))?.SetUIActive(true);
           }
@@ -95,38 +95,38 @@ class HonamiStoryWeaponToggleItem extends UiPanelBase_1.UiPanelBase {
   RefreshCurSelectLightSprite(t) {
     this.GetSprite(14).SetUIActive(false);
     this.GetSprite(15).SetUIActive(false);
-    if (this.Brm === 1) {
-      let e = this.dYd;
+    if (this.Yam === 1) {
+      let e = this.$Yd;
       if ((e = e || ModelManager_1.ModelManager.HonamiStoryModel.GetWeaponEquipState(this.jRh)) && e.GetPosition() === t.GetPosition()) {
         this.GetSprite(14).SetUIActive(true);
         this.GetSprite(15).SetUIActive(true);
       }
     }
   }
-  Wim(t) {
-    let i = this.dYd;
+  ham(t) {
+    let i = this.$Yd;
     i = i || ModelManager_1.ModelManager.HonamiStoryModel.GetWeaponEquipState(this.jRh);
     var s = Math.min(t.length, SUIT_ITEM_COUNT);
     for (let e = 0; e < s; e++) {
       var a = t[e];
-      this.$im[e].Refresh({
+      this.aam[e].Refresh({
         SuitId: a,
         EquipData: i
       });
-      this.$im[e].SetUiActive(true);
+      this.aam[e].SetUiActive(true);
     }
     for (let e = s; e < SUIT_ITEM_COUNT; e++) {
-      this.$im[e].SetUiActive(false);
+      this.aam[e].SetUiActive(false);
     }
   }
   get WeaponId() {
     return this.jRh;
   }
   GetEquipData() {
-    return this.dYd;
+    return this.$Yd;
   }
   BindWeaponToggleClick(e) {
-    this.vYd = e;
+    this.zYd = e;
   }
   OnSelected() {
     this.GetExtendToggle(5).SetToggleStateForce(1);
@@ -145,7 +145,7 @@ class HonamiStoryWeaponToggleItem extends UiPanelBase_1.UiPanelBase {
   SetNewItemShow(e = true) {
     var t;
     var i = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.HonamiStoryWeaponUnlockSet) ?? new Set();
-    if (this.Brm === 0) {
+    if (this.Yam === 0) {
       t = i.size > 0;
       this.GetItem(4)?.SetUIActive(t);
     } else {

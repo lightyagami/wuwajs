@@ -36,8 +36,8 @@ let CharacterGaitComponent = class CharacterGaitComponent extends EntityComponen
   }
   OnStart() {
     this.Hte = this.Entity.GetComponent(3);
-    this.Gce = this.Entity.GetComponent(182);
-    this.HBr = this.Entity.GetComponent(179);
+    this.Gce = this.Entity.GetComponent(187);
+    this.HBr = this.Entity.GetComponent(184);
     return !!this.Hte && !!this.Gce && !!this.HBr;
   }
   OnTick(e) {
@@ -85,5 +85,5 @@ let CharacterGaitComponent = class CharacterGaitComponent extends EntityComponen
     }
   }
 };
-CharacterGaitComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(58)], CharacterGaitComponent);
+CharacterGaitComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(61)], CharacterGaitComponent);
 exports.CharacterGaitComponent = CharacterGaitComponent; //# sourceMappingURL=CharacterGaitComponent.js.map

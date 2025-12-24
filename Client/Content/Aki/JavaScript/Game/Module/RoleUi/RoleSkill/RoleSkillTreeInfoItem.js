@@ -32,7 +32,7 @@ const RoleSkillTreeInfoItemData_1 = require("./RoleSkillTreeInfoItemData");
 class RoleSkillTreeInfoItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.BWd = new RoleSkillTreeInfoItemData_1.RoleSkillTreeInfoItemData();
+    this.GWd = new RoleSkillTreeInfoItemData_1.RoleSkillTreeInfoItemData();
     this.Bmo = undefined;
     this.bmo = undefined;
     this.wmo = 0;
@@ -54,29 +54,31 @@ class RoleSkillTreeInfoItem extends UiPanelBase_1.UiPanelBase {
     this.SPe = undefined;
     this.OnBackBtnCallBack = undefined;
     this.Dcl = 0;
-    this.owm = undefined;
+    this.pef = undefined;
+    this.NFf = false;
+    this.T4f = false;
     this.OnCommonItemCountAnyChange = () => {
       this.Refresh();
     };
     this.pFe = () => {
       this.OnBackBtnCallBack?.();
     };
-    this.Wmo = t => {
-      if (this.Omo = t) {
+    this.Wmo = i => {
+      if (this.Omo = i) {
         this.kmo = 2;
         this.ShowLeftPanelByTabType(this.kmo);
       } else {
-        this.Kmo(this.kmo, t);
+        this.Kmo(this.kmo, i);
       }
-      this.Qmo(t);
+      this.Qmo(i);
     };
-    this.Pcl = t => {
+    this.Pcl = i => {
       if (this.Dcl === 1) {
-        ModelManager_1.ModelManager.RoleModel.IsShowMultiSkillDesc = t;
+        ModelManager_1.ModelManager.RoleModel.IsShowMultiSkillDesc = i;
       } else {
-        ModelManager_1.ModelManager.RoleModel.IsShowSkillResume = t;
+        ModelManager_1.ModelManager.RoleModel.IsShowSkillResume = i;
       }
-      this.Update(this.BWd);
+      this.Update(this.GWd);
     };
     this.Xmo = () => {
       this.Omo = false;
@@ -99,75 +101,79 @@ class RoleSkillTreeInfoItem extends UiPanelBase_1.UiPanelBase {
       this.ShowLeftPanelByTabType(this.kmo);
     };
     this.edo = () => {
-      var t = this.Bmo.GetSkillNodeLevel(this.bmo);
-      var t = ConfigManager_1.ConfigManager.RoleSkillConfig.GetRoleSkillTreeConsume(this.BWd.SkillNodeId, t + 1);
-      if (t) {
-        for (var [i, e] of t) {
-          if (ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(i) < e) {
-            i = {
-              SelectedItemList: this.cum(),
+      var i = this.Bmo.GetSkillNodeLevel(this.bmo);
+      var i = ConfigManager_1.ConfigManager.RoleSkillConfig.GetRoleSkillTreeConsume(this.GWd.SkillNodeId, i + 1);
+      if (i) {
+        for (var [t, e] of i) {
+          if (ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(t) < e) {
+            t = {
+              SelectedItemList: this.Rgm(),
               ClickConfirm: () => {
-                this.fum();
+                this.Pgm();
               },
               BelongView: "RoleSkillTreeInfoView"
             };
-            UiManager_1.UiManager.OpenView("SynthesisTipsInfoView", i, (t, i) => {
-              if (t) {
-                UiManager_1.UiManager.GetViewByName("RoleSkillTreeInfoView")?.AddChildViewById(i);
+            UiManager_1.UiManager.OpenView("SynthesisTipsInfoView", t, (i, t) => {
+              if (i) {
+                UiManager_1.UiManager.GetViewByName("RoleSkillTreeInfoView")?.AddChildViewById(t);
               }
             });
             return;
           }
         }
       }
-      this.fum();
+      this.Pgm();
     };
     this.tdo = () => {
-      var t = new ConfirmBoxDefine_1.ConfirmBoxDataNew(172);
-      const i = this.BWd.RoleId;
-      t.FunctionMap.set(2, () => {
+      var i = new ConfirmBoxDefine_1.ConfirmBoxDataNew(172);
+      const t = this.GWd.RoleId;
+      i.FunctionMap.set(2, () => {
         UiManager_1.UiManager.CloseView("RoleSkillTreeInfoView");
         UiManager_1.UiManager.NormalResetToView("RoleRootView");
-        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SelectRoleTabOutside, "RoleAttributeTabView", i);
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SelectRoleTabOutside, "RoleAttributeTabView", t);
       });
-      t.IsEscViewTriggerCallBack = false;
-      ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(t);
+      i.IsEscViewTriggerCallBack = false;
+      ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(i);
     };
     this.ido = () => {
-      var t = new CostMediumItemGrid_1.CostMediumItemGrid();
-      t.BindOnExtendToggleClicked(t => {
-        t = t.Data;
-        ControllerHolder_1.ControllerHolder.ItemController.OpenItemTipsByItemId(t.ItemId);
-        ModelManager_1.ModelManager.ComposeModel.ComposeSelectItem = t;
+      var i = new CostMediumItemGrid_1.CostMediumItemGrid();
+      i.BindOnExtendToggleClicked(i => {
+        i = i.Data;
+        ControllerHolder_1.ControllerHolder.ItemController.OpenItemTipsByItemId(i.ItemId);
+        ModelManager_1.ModelManager.ComposeModel.ComposeSelectItem = i;
         ModelManager_1.ModelManager.ComposeModel.ComposeSkipSourceView = "RoleSkillTreeInfoView";
-        ModelManager_1.ModelManager.InventoryModel.SetItemNeedCount(t.Count - t.SelectedCount);
+        ModelManager_1.ModelManager.InventoryModel.SetItemNeedCount(i.Count - i.SelectedCount);
       });
-      t.BindOnCanExecuteChange(() => false);
-      return t;
+      i.BindOnCanExecuteChange(() => false);
+      return i;
     };
-    this.OWe = (t, i, e) => {
-      var i = new RoleSkillTreeAttributeItem_1.RoleSkillTreeAttributeItem(i);
+    this.OWe = (i, t, e) => {
+      var t = new RoleSkillTreeAttributeItem_1.RoleSkillTreeAttributeItem(t);
       var s = this.Fmo[e];
       var h = e < this.Vmo.length ? this.Vmo[e] : undefined;
-      i.Refresh(s, h);
-      i.SetNextLevelItem(this.Omo);
+      t.Refresh(s, h);
+      t.SetNextLevelItem(this.Omo);
       return {
         Key: e,
-        Value: i
+        Value: t
       };
+    };
+    this.OnRoleSkillBranchChanged = () => {
+      this.VFf();
+      this.Refresh();
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UISprite], [1, UE.UITexture], [9, UE.UIText], [3, UE.UIText], [4, UE.UIExtendToggle], [5, UE.UIExtendToggle], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIScrollViewWithScrollbarComponent], [2, UE.UIText], [10, UE.UIText], [11, UE.UIHorizontalLayout], [12, UE.UITexture], [13, UE.UIText], [14, UE.UIItem], [15, UE.UIItem], [16, UE.UIText], [17, UE.UIItem], [18, UE.UIText], [19, UE.UIExtendToggle], [20, UE.UIItem], [21, UE.UIItem], [22, UE.UIItem], [23, UE.UIItem], [24, UE.UIButtonComponent], [25, UE.UIButtonComponent], [26, UE.UIButtonComponent], [27, UE.UIItem], [28, UE.UIItem], [29, UE.UIButtonComponent], [30, UE.UIExtendToggle], [31, UE.UIItem], [32, UE.UIText], [33, UE.UIText], [34, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UISprite], [1, UE.UITexture], [9, UE.UIText], [3, UE.UIText], [4, UE.UIExtendToggle], [5, UE.UIExtendToggle], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIScrollViewWithScrollbarComponent], [2, UE.UIText], [10, UE.UIText], [11, UE.UIHorizontalLayout], [12, UE.UITexture], [13, UE.UIText], [14, UE.UIItem], [15, UE.UIItem], [16, UE.UIText], [17, UE.UIItem], [18, UE.UIText], [19, UE.UIExtendToggle], [20, UE.UIItem], [21, UE.UIItem], [22, UE.UIItem], [23, UE.UIItem], [24, UE.UIButtonComponent], [25, UE.UIButtonComponent], [26, UE.UIButtonComponent], [27, UE.UIItem], [28, UE.UIItem], [29, UE.UIButtonComponent], [30, UE.UIExtendToggle], [31, UE.UIItem], [32, UE.UIText], [33, UE.UIText], [34, UE.UIItem], [35, UE.UIItem], [36, UE.UIText]];
     this.BtnBindInfo = [[4, this.zmo], [5, this.Zmo], [19, this.Wmo], [24, this.pFe], [25, this.Xmo], [26, this.tdo], [29, this.Ymo], [30, this.Pcl]];
   }
   async OnBeforeStartAsync() {
     this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetRootItem());
     this.Nmo = new RoleSkillInputPanel_1.RoleSkillInputPanel();
-    var t = this.GetItem(28).GetOwner();
+    var i = this.GetItem(28).GetOwner();
     this.RoleBackgroundMusicSwitchItem = new RoleBackgroundMusicSwitchItem_1.RoleBackgroundMusicSwitchItem();
-    var i = this.GetItem(34).GetOwner();
-    await Promise.all([this.Nmo.CreateThenShowByActorAsync(t), this.RoleBackgroundMusicSwitchItem.CreateThenShowByActorAsync(i)]);
+    var t = this.GetItem(34).GetOwner();
+    await Promise.all([this.Nmo.CreateThenShowByActorAsync(i), this.RoleBackgroundMusicSwitchItem.CreateThenShowByActorAsync(t)]);
   }
   OnStart() {
     this.qmo = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(11), this.ido);
@@ -180,8 +186,8 @@ class RoleSkillTreeInfoItem extends UiPanelBase_1.UiPanelBase {
     this.GetItem(20).SetUIActive(false);
     this.SetItemIcon(this.GetTexture(12), ItemDefines_1.EItemId.Gold);
     this.xcl();
-    var t = this.OpenParam;
-    this.BWd = t;
+    var i = this.OpenParam;
+    this.GWd = i;
     this.kmo = 1;
     ControllerHolder_1.ControllerHolder.TermExplanationController.RegisterTextHyperlink(this.GetText(10), 1, 4, 2);
   }
@@ -189,48 +195,49 @@ class RoleSkillTreeInfoItem extends UiPanelBase_1.UiPanelBase {
     ControllerHolder_1.ControllerHolder.TermExplanationController.UnRegisterTextHyperlink(this.GetText(10));
   }
   xcl() {
-    var t;
+    var i;
     this.Dcl = ModelManager_1.ModelManager.RoleModel.GetRoleSkillDescType();
     if (this.Dcl === 1) {
-      t = ModelManager_1.ModelManager.RoleModel.IsShowMultiSkillDesc ? 1 : 0;
-      this.GetExtendToggle(30).SetToggleState(t);
+      i = ModelManager_1.ModelManager.RoleModel.IsShowMultiSkillDesc ? 1 : 0;
+      this.GetExtendToggle(30).SetToggleState(i);
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(33), "MultiplayerSkillDescription_text");
     } else {
-      t = ModelManager_1.ModelManager.RoleModel.IsShowSkillResume ? 1 : 0;
-      this.GetExtendToggle(30).SetToggleState(t);
+      i = ModelManager_1.ModelManager.RoleModel.IsShowSkillResume ? 1 : 0;
+      this.GetExtendToggle(30).SetToggleState(i);
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(33), "SkillBriefDescription_text");
     }
   }
-  fum() {
-    var t = this.bmo.NodeType;
-    if (t === 1 || t === 2) {
-      RoleController_1.RoleController.SendPbUpLevelSkillRequest(this.BWd.RoleId, this.BWd.SkillNodeId);
+  Pgm() {
+    var i = this.bmo.NodeType;
+    if (i === 1 || i === 2) {
+      RoleController_1.RoleController.SendPbUpLevelSkillRequest(this.GWd.RoleId, this.GWd.SkillNodeId);
     } else {
-      RoleController_1.RoleController.SendRoleActivateSkillRequest(this.BWd.RoleId, this.BWd.SkillNodeId);
+      RoleController_1.RoleController.SendRoleActivateSkillRequest(this.GWd.RoleId, this.GWd.SkillNodeId);
     }
   }
-  cum() {
-    return this.owm ?? [];
+  Rgm() {
+    return this.pef ?? [];
   }
-  Update(t) {
-    this.BWd = t;
-    this.bmo = ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillTreeNode(this.BWd.SkillNodeId);
+  Update(i) {
+    this.GWd = i;
+    this.bmo = ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillTreeNode(this.GWd.SkillNodeId);
     this.wmo = this.bmo.SkillId;
-    this.B9l = ModelManager_1.ModelManager.RoleModel.GetUpgradeSkillIdIfUpgraded(this.wmo, this.BWd.RoleId);
+    this.B9l = ModelManager_1.ModelManager.RoleModel.GetUpgradeSkillIdIfUpgraded(this.wmo, this.GWd.RoleId);
     this.G9l = this.B9l > 0 ? this.B9l : this.wmo;
     this.ESo = this.wmo > 0 ? ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillConfigById(this.wmo) : undefined;
     this.O9l = this.G9l > 0 ? ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillConfigById(this.G9l) : undefined;
-    let i = ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(this.BWd.RoleId);
-    i = i || ModelManager_1.ModelManager.RoleModel.GetRoleDataById(this.BWd.RoleId);
-    this.Bmo = i.GetSkillData();
-    this.Nmo?.Refresh(i.GetRoleId(), i.IsTrialRole(), true);
+    let t = ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(this.GWd.RoleId);
+    t = t || ModelManager_1.ModelManager.RoleModel.GetRoleDataById(this.GWd.RoleId);
+    this.Bmo = t.GetSkillData();
+    this.Nmo?.Refresh(t.GetRoleId(), t.IsTrialRole(), true);
     this.Refresh();
-    if (i.IsTrialRole()) {
+    if (t.IsTrialRole()) {
       this.rdo();
     }
+    this.VFf();
   }
   Refresh() {
-    switch (ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillTreeNode(this.BWd.SkillNodeId).NodeType) {
+    switch (ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillTreeNode(this.GWd.SkillNodeId).NodeType) {
       case 4:
         this.ndo();
         break;
@@ -242,6 +249,9 @@ class RoleSkillTreeInfoItem extends UiPanelBase_1.UiPanelBase {
         break;
       case 1:
         this.hdo();
+        break;
+      case 5:
+        this.i9m();
     }
     this.RefreshRoleBackgroundMusicSwitchItem();
   }
@@ -260,10 +270,20 @@ class RoleSkillTreeInfoItem extends UiPanelBase_1.UiPanelBase {
     this.GetItem(6).SetUIActive(false);
     this.GetExtendToggle(19).RootUIComp.SetUIActive(false);
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), "SkillType_AttributeNode_TypeName");
-    var t = ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillTreeNode(this.BWd.SkillNodeId);
-    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(9), t.PropertyNodeTitle);
-    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(10), t.PropertyNodeDescribe, ...t.PropertyNodeParam);
+    var i = ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillTreeNode(this.GWd.SkillNodeId);
+    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(9), i.PropertyNodeTitle);
+    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(10), i.PropertyNodeDescribe, ...i.PropertyNodeParam);
     this.GetText(10).bBestFit = false;
+    this.ldo();
+    this._do();
+  }
+  i9m() {
+    this.vmo = false;
+    this.kmo = 1;
+    this.GetText(3).SetUIActive(false);
+    this.GetItem(6).SetUIActive(false);
+    this.GetExtendToggle(19).RootUIComp.SetUIActive(false);
+    this.Jlo();
     this.ldo();
     this._do();
   }
@@ -290,10 +310,10 @@ class RoleSkillTreeInfoItem extends UiPanelBase_1.UiPanelBase {
   udo() {
     this.GetText(3).SetUIActive(true);
     this.GetItem(6).SetUIActive(true);
-    var t = ModelManager_1.ModelManager.RoleModel.GetRoleSkillTreeNodeLevel(this.BWd.RoleId, this.BWd.SkillNodeId);
-    var i = this.ESo.MaxSkillLevel;
-    LguiUtil_1.LguiUtil.SetLocalText(this.GetText(3), "RoleResonanceLevel", t);
-    if (t === i) {
+    var i = ModelManager_1.ModelManager.RoleModel.GetRoleSkillTreeNodeLevel(this.GWd.RoleId, this.GWd.SkillNodeId);
+    var t = this.ESo.MaxSkillLevel;
+    LguiUtil_1.LguiUtil.SetLocalText(this.GetText(3), "RoleResonanceLevel", i);
+    if (i === t) {
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(32), "PrefabTextItem_3463157315_Text");
     } else {
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(32), "PrefabTextItem_SkillNext_Text");
@@ -302,57 +322,57 @@ class RoleSkillTreeInfoItem extends UiPanelBase_1.UiPanelBase {
     this.cdo();
   }
   Jlo() {
-    var t;
     var i;
+    var t;
     if (this.O9l) {
-      t = this.O9l;
-      if (i = ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillTypeNameLocalText(t.SkillType)) {
-        this.GetText(2).SetText(i);
+      i = this.O9l;
+      if (t = ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillTypeNameLocalText(i.SkillType)) {
+        this.GetText(2).SetText(t);
       }
-      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(9), t.SkillName);
-      i = this.GetText(10);
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(9), i.SkillName);
+      t = this.GetText(10);
       if (this.Dcl === 1) {
         if (ModelManager_1.ModelManager.RoleModel.IsShowMultiSkillDesc) {
-          LguiUtil_1.LguiUtil.SetLocalTextNew(i, t.MultiSkillDescribe, ...t.MultiSkillDetailNum);
+          LguiUtil_1.LguiUtil.SetLocalTextNew(t, i.MultiSkillDescribe, ...i.MultiSkillDetailNum);
         } else {
-          LguiUtil_1.LguiUtil.SetLocalTextNew(i, t.SkillDescribe, ...t.SkillDetailNum);
+          LguiUtil_1.LguiUtil.SetLocalTextNew(t, i.SkillDescribe, ...i.SkillDetailNum);
         }
       } else if (ModelManager_1.ModelManager.RoleModel.IsShowSkillResume) {
-        LguiUtil_1.LguiUtil.SetLocalTextNew(i, t.SkillResume, ...t.SkillResumeNum);
+        LguiUtil_1.LguiUtil.SetLocalTextNew(t, i.SkillResume, ...i.SkillResumeNum);
       } else {
-        LguiUtil_1.LguiUtil.SetLocalTextNew(i, t.SkillDescribe, ...t.SkillDetailNum);
+        LguiUtil_1.LguiUtil.SetLocalTextNew(t, i.SkillDescribe, ...i.SkillDetailNum);
       }
-      i.bBestFit = false;
+      t.bBestFit = false;
     }
   }
   _do() {
-    let t = undefined;
-    t = this.O9l ? this.O9l.Icon : this.bmo.PropertyNodeIcon;
-    var i = this.GetTexture(1);
+    let i = undefined;
+    i = this.O9l ? this.O9l.Icon : this.bmo.PropertyNodeIcon;
+    var t = this.GetTexture(1);
     var e = this.GetSprite(0);
     if (this.vmo) {
-      i.SetUIActive(true);
+      t.SetUIActive(true);
       e.SetUIActive(false);
-      this.SetTextureByPath(t, i);
+      this.SetTextureByPath(i, t);
     } else {
-      i.SetUIActive(false);
+      t.SetUIActive(false);
       e.SetUIActive(true);
-      this.SetSpriteByPath(t, e, false);
+      this.SetSpriteByPath(i, e, false);
     }
   }
-  Pke(i = 1) {
-    i = ConfigManager_1.ConfigManager.RoleSkillConfig.GetRoleSkillTreeConsume(this.BWd.SkillNodeId, i);
-    if (i && i.size !== 0) {
+  Pke(t = 1) {
+    t = ConfigManager_1.ConfigManager.RoleSkillConfig.GetRoleSkillTreeConsume(this.GWd.SkillNodeId, t);
+    if (t && t.size !== 0) {
       this.GetItem(22).SetUIActive(true);
       this.GetItem(23).SetUIActive(true);
       var e;
       var s;
       var h;
       var r = [];
-      let t = 0;
-      for ([e, s] of i) {
+      let i = 0;
+      for ([e, s] of t) {
         if (e === ItemDefines_1.EItemId.Gold) {
-          t = s;
+          i = s;
         } else {
           h = {
             ItemId: e,
@@ -363,34 +383,34 @@ class RoleSkillTreeInfoItem extends UiPanelBase_1.UiPanelBase {
           r.push(h);
         }
       }
-      this.owm = r.map(t => ({
-        ...t
+      this.pef = r.map(i => ({
+        ...i
       }));
-      if (t > 0) {
-        this.owm.push({
+      if (i > 0) {
+        this.pef.push({
           ItemId: ItemDefines_1.EItemId.Gold,
           IncId: 0,
-          Count: t,
+          Count: i,
           SelectedCount: ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(ItemDefines_1.EItemId.Gold)
         });
       }
-      var i = this.GetText(13);
-      i.SetText(t.toString());
-      var o = ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(ItemDefines_1.EItemId.Gold);
-      i.SetChangeColor(o < t, i.changeColor);
+      var t = this.GetText(13);
+      t.SetText(i.toString());
+      var a = ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(ItemDefines_1.EItemId.Gold);
+      t.SetChangeColor(a < i, t.changeColor);
       this.qmo.RefreshByData(r);
     } else {
       this.GetItem(22).SetUIActive(false);
       this.GetItem(23).SetUIActive(false);
     }
   }
-  dum(t) {
-    var i = this.Bmo.GetSkillNodeLevel(this.bmo);
-    var i = ConfigManager_1.ConfigManager.RoleSkillConfig.GetRoleSkillTreeConsume(this.BWd.SkillNodeId, i + 1);
-    if (i) {
-      for (var [e, s] of i) {
+  wgm(i) {
+    var t = this.Bmo.GetSkillNodeLevel(this.bmo);
+    var t = ConfigManager_1.ConfigManager.RoleSkillConfig.GetRoleSkillTreeConsume(this.GWd.SkillNodeId, t + 1);
+    if (t) {
+      for (var [e, s] of t) {
         if (ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(e) < s) {
-          if (e = ModelManager_1.ModelManager.ComposePopupModel.CheckOpenResult(this.cum())) {
+          if (e = ModelManager_1.ModelManager.ComposePopupModel.CheckOpenResult(this.Rgm())) {
             this.p9t?.SetShowText("AutoSynthesis_MaterialReplenishBtn_Text");
           } else {
             this.p9t?.SetShowText("AutoSynthesis_MaterialMissingBtn_Text");
@@ -400,90 +420,91 @@ class RoleSkillTreeInfoItem extends UiPanelBase_1.UiPanelBase {
         }
       }
     }
-    this.p9t?.SetLocalText(t);
+    this.p9t?.SetLocalText(i);
     this.p9t?.SetEnableClick(true);
   }
   ldo() {
-    var t = this.Bmo.GetSkillTreeNodeState(this.bmo, this.BWd.RoleId);
-    this.p9t.SetActive(t === 2);
-    this.GetItem(22).SetUIActive(t === 2);
-    this.GetItem(23).SetUIActive(t === 2);
-    this.GetItem(17).SetUIActive(t === 1);
-    this.GetItem(15).SetUIActive(t === 3);
-    if (t === 3) {
+    var i = this.Bmo.GetSkillTreeNodeState(this.bmo, this.GWd.RoleId);
+    this.p9t.SetActive(i === 2);
+    this.GetItem(22).SetUIActive(i === 2);
+    this.GetItem(23).SetUIActive(i === 2);
+    this.GetItem(17).SetUIActive(i === 1);
+    this.GetItem(15).SetUIActive(i === 3);
+    if (i === 3) {
       LguiUtil_1.LguiUtil.SetLocalText(this.GetText(16), "Actived");
     } else {
       this.Pke();
-      if (t === 2) {
-        this.dum("RoleResonActive");
-      } else if (t === 1) {
-        t = this.Bmo.GetUnlockConditionTextId(this.bmo);
-        LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(18), t);
-      }
-      t = this.Bmo.GetSkillTreeUnsatisfiedCondition(this.bmo);
-      this.GetButton(26).RootUIComp.SetUIActive(t?.ConditionType !== 2);
-    }
-  }
-  cdo() {
-    var t;
-    var i = this.Bmo.GetSkillTreeNodeState(this.bmo, this.BWd.RoleId);
-    this.p9t.SetActive(i === 2);
-    this.GetItem(22).SetUIActive(i !== 3);
-    this.GetItem(23).SetUIActive(i !== 3);
-    this.GetItem(17).SetUIActive(i === 1);
-    this.GetItem(15).SetUIActive(i === 3);
-    this.GetExtendToggle(19).RootUIComp.SetUIActive(true);
-    this.mdo();
-    if (i === 3) {
-      LguiUtil_1.LguiUtil.SetLocalText(this.GetText(16), "RoleAlreadyMax");
-    } else {
-      t = this.Bmo.GetSkillNodeLevel(this.bmo);
-      this.Pke(t + 1);
       if (i === 2) {
-        this.dum("RoleLevelUp");
+        this.wgm("RoleResonActive");
       } else if (i === 1) {
-        t = this.Bmo.GetUnlockConditionTextId(this.bmo);
-        LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(18), t);
+        i = this.Bmo.GetUnlockConditionTextId(this.bmo);
+        LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(18), i);
       }
       i = this.Bmo.GetSkillTreeUnsatisfiedCondition(this.bmo);
       this.GetButton(26).RootUIComp.SetUIActive(i?.ConditionType !== 2);
     }
   }
-  ddo(t) {
-    var i = new CommonAttributeData_1.CommonAttributeData();
-    var e = ModelManager_1.ModelManager.RoleModel.GetSkillAttributeNameByOneSkillEffect(t);
-    i.AttrNameText = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(e) ?? "";
-    i.AttrBaseValue = ModelManager_1.ModelManager.RoleModel.GetSkillAttributeDescriptionByOneSkillEffect(t);
-    return i;
+  cdo() {
+    var i;
+    var t = this.Bmo.GetSkillTreeNodeState(this.bmo, this.GWd.RoleId);
+    this.p9t.SetActive(t === 2);
+    this.GetItem(22).SetUIActive(t !== 3);
+    this.GetItem(23).SetUIActive(t !== 3);
+    this.GetItem(17).SetUIActive(t === 1);
+    this.GetItem(15).SetUIActive(t === 3);
+    this.GetExtendToggle(19).RootUIComp.SetUIActive(true);
+    this.mdo();
+    if (t === 3) {
+      LguiUtil_1.LguiUtil.SetLocalText(this.GetText(16), "RoleAlreadyMax");
+    } else {
+      i = this.Bmo.GetSkillNodeLevel(this.bmo);
+      this.Pke(i + 1);
+      if (t === 2) {
+        this.wgm("RoleLevelUp");
+      } else if (t === 1) {
+        i = this.Bmo.GetUnlockConditionTextId(this.bmo);
+        LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(18), i);
+      }
+      t = this.Bmo.GetSkillTreeUnsatisfiedCondition(this.bmo);
+      this.GetButton(26).RootUIComp.SetUIActive(t?.ConditionType !== 2);
+    }
+  }
+  ddo(i) {
+    var t = new CommonAttributeData_1.CommonAttributeData();
+    var e = ModelManager_1.ModelManager.RoleModel.GetSkillAttributeNameByOneSkillEffect(i);
+    t.AttrNameText = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(e) ?? "";
+    t.AttrBaseValue = ModelManager_1.ModelManager.RoleModel.GetSkillAttributeDescriptionByOneSkillEffect(i);
+    return t;
   }
   mdo() {
     this.Fmo.length = 0;
     this.Vmo.length = 0;
-    var i = ModelManager_1.ModelManager.RoleModel.RoleSkillResponseData.GetSkillEffect().EffectDescList;
-    var e = i !== undefined ? i.length : 0;
+    var t = ModelManager_1.ModelManager.RoleModel.RoleSkillResponseData.GetSkillEffect().EffectDescList;
+    var e = t !== undefined ? t.length : 0;
     var s = ModelManager_1.ModelManager.RoleModel.RoleSkillResponseData.GetNextLevelSkillEffect()?.EffectDescList;
-    for (let t = 0; t < e; t++) {
-      this.Fmo.push(this.ddo(i[t]));
+    for (let i = 0; i < e; i++) {
+      this.Fmo.push(this.ddo(t[i]));
       if (s) {
-        this.Vmo.push(this.ddo(s[t]));
+        this.Vmo.push(this.ddo(s[i]));
       }
     }
     this.Gmo.RefreshByData(this.Fmo);
   }
-  ShowLeftPanelByTabType(t) {
-    if (t === 1) {
+  ShowLeftPanelByTabType(i) {
+    if (i === 1) {
       this.odo();
     } else {
       this.Cdo();
     }
   }
-  odo(t = 0) {
+  odo(i = 0) {
     this.GetExtendToggle(4).SetToggleState(1);
     this.GetExtendToggle(5).SetToggleState(0);
     this.GetItem(7).SetUIActive(true);
     this.GetScrollViewWithScrollbar(8).GetRootComponent().SetUIActive(false);
     this.$mo();
     this.Kmo(this.kmo, this.Omo);
+    this.HFf(true);
   }
   Cdo() {
     this.GetExtendToggle(4).SetToggleState(0);
@@ -492,15 +513,16 @@ class RoleSkillTreeInfoItem extends UiPanelBase_1.UiPanelBase {
     this.GetScrollViewWithScrollbar(8).GetRootComponent().SetUIActive(true);
     this.Jmo();
     this.Kmo(this.kmo, this.Omo);
+    this.HFf(false);
   }
-  Kmo(t, i) {
+  Kmo(i, t) {
     if (this.kmo === 2) {
-      if (i) {
+      if (t) {
         this.gdo();
       } else {
         this.$mo();
       }
-    } else if (i) {
+    } else if (t) {
       this.fdo();
     } else {
       this.Jmo();
@@ -514,36 +536,36 @@ class RoleSkillTreeInfoItem extends UiPanelBase_1.UiPanelBase {
   }
   gdo() {
     this.GetItem(20).SetUIActive(true);
-    for (const t of this.Gmo.GetScrollItemList()) {
-      t.SetNextLevelItem(true);
+    for (const i of this.Gmo.GetScrollItemList()) {
+      i.SetNextLevelItem(true);
     }
   }
   $mo() {
     this.GetItem(20).SetUIActive(false);
-    for (const t of this.Gmo.GetScrollItemList()) {
-      t.SetNextLevelItem(false);
+    for (const i of this.Gmo.GetScrollItemList()) {
+      i.SetNextLevelItem(false);
     }
   }
-  Qmo(t) {
-    if (t) {
+  Qmo(i) {
+    if (i) {
       this.SPe.PlayOrReplaySequenceByName("ViewShow");
     } else {
       this.SPe.PlayOrReplaySequenceByName("ViewHide");
     }
   }
-  PlayItemSequence(t) {
-    this.SPe.PlayOrReplaySequenceByName(t);
+  PlayItemSequence(i) {
+    this.SPe.PlayOrReplaySequenceByName(i);
   }
-  async PlayItemSequenceAsync(t) {
-    await this.SPe.PlaySequenceAsync(t, new CustomPromise_1.CustomPromise());
+  async PlayItemSequenceAsync(i) {
+    await this.SPe.PlaySequenceAsync(i, new CustomPromise_1.CustomPromise());
   }
   RefreshRoleBackgroundMusicSwitchItem() {
-    var t = ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(this.BWd.RoleId);
-    if (t === undefined || t.IsTrialRole() || !t.GetRoleConfig().EnableOperateSelfBgm) {
+    var i = ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(this.GWd.RoleId);
+    if (i === undefined || i.IsTrialRole() || !i.GetRoleConfig().EnableOperateSelfBgm) {
       this.GetItem(34).SetUIActive(false);
     } else {
       this.GetItem(34).SetUIActive(true);
-      this.RoleBackgroundMusicSwitchItem?.RefreshByRoleData(t);
+      this.RoleBackgroundMusicSwitchItem?.RefreshByRoleData(i);
     }
   }
   OnHide() {
@@ -553,6 +575,27 @@ class RoleSkillTreeInfoItem extends UiPanelBase_1.UiPanelBase {
   }
   GetCurSkillTabShowType() {
     return this.kmo;
+  }
+  VFf() {
+    var i;
+    var t = this.GWd.SkillNodeId;
+    if (ModelManager_1.ModelManager.RoleModel.IsSkillNodeHasBranch(t)) {
+      this.NFf = true;
+      i = this.GWd.RoleId;
+      i = ModelManager_1.ModelManager.RoleModel.GetSkillNodeCurrentBranchId(i, t);
+      t = ConfigManager_1.ConfigManager.RoleConfig.GetSkillBranchConfigById(i);
+      i = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(t.Name);
+      t = ConfigManager_1.ConfigManager.RoleConfig.GetSkillBranchActivatedDescKey();
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(36), t, i);
+    } else {
+      this.NFf = false;
+    }
+  }
+  HFf(i) {
+    this.GetItem(35).SetUIActive(this.T4f && this.NFf && i);
+  }
+  SetSkillBranchEnable(i) {
+    this.T4f = i;
   }
 }
 exports.RoleSkillTreeInfoItem = RoleSkillTreeInfoItem;

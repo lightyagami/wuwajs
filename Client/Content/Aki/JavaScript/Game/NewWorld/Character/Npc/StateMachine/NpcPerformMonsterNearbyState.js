@@ -20,7 +20,7 @@ class NpcPerformMonsterNearbyState extends NpcPerformBaseState_1.NpcPerformBaseS
     this.Gtr = undefined;
   }
   CanChangeFrom(e) {
-    var t = this.Owner.Entity.GetComponent(191);
+    var t = this.Owner.Entity.GetComponent(197);
     return this.wtr && e === 1 && !t.IsInPlot;
   }
   OnCreate(e) {
@@ -36,9 +36,9 @@ class NpcPerformMonsterNearbyState extends NpcPerformBaseState_1.NpcPerformBaseS
   }
   OnEnter(e) {
     this.Gtr = e;
-    e = this.Owner.Entity.GetComponent(191);
+    e = this.Owner.Entity.GetComponent(197);
     if (e?.HasBrain) {
-      this.Owner.Entity.GetComponent(45)?.StopMove(false);
+      this.Owner.Entity.GetComponent(46)?.StopMove(false);
     }
     e = e?.GetMontagePath(this.Btr);
     this.PlayMontage({

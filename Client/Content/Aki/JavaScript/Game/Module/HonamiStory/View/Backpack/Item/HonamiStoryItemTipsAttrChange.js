@@ -13,15 +13,15 @@ const LguiUtil_1 = require("../../../../Util/LguiUtil");
 class HonamiStoryItemTipsAttrChange extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.rcm = undefined;
-    this.ocm = new Map();
+    this.R0m = undefined;
+    this.w0m = new Map();
     this.OWe = () => new HonamiStoryAttrItem_1.HonamiStoryAttrItem();
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIVerticalLayout], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem]];
   }
   OnStart() {
-    this.rcm = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(0), this.OWe, this.GetItem(1).GetOwner());
+    this.R0m = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(0), this.OWe, this.GetItem(1).GetOwner());
   }
   CombineDataList(e, t) {
     var i;
@@ -29,7 +29,7 @@ class HonamiStoryItemTipsAttrChange extends UiPanelBase_1.UiPanelBase {
     var r;
     var e = e.GetMainPropList();
     var t = t.GetMainPropList();
-    this.ocm.clear();
+    this.w0m.clear();
     const n = [];
     let o = undefined;
     for (const s of e) {
@@ -41,13 +41,13 @@ class HonamiStoryItemTipsAttrChange extends UiPanelBase_1.UiPanelBase {
           NewValue: 0,
           IsPercent: o.ShowPercent
         };
-        this.ocm.set(o.PropId, i);
+        this.w0m.set(o.PropId, i);
       }
     }
     for (const u of t) {
       if (o = ConfigManager_1.ConfigManager.HonamiStoryConfig.GetHonamiStoryProp(u)) {
         a = o.StandardProperty;
-        if ((r = this.ocm.get(o.PropId)) !== undefined) {
+        if ((r = this.w0m.get(o.PropId)) !== undefined) {
           r.NewValue = a;
         } else {
           r = {
@@ -57,18 +57,18 @@ class HonamiStoryItemTipsAttrChange extends UiPanelBase_1.UiPanelBase {
             NewValue: a,
             IsPercent: o.ShowPercent
           };
-          this.ocm.set(u, r);
+          this.w0m.set(u, r);
         }
       }
     }
-    this.ocm.forEach((e, t) => {
+    this.w0m.forEach((e, t) => {
       n.push(e);
     });
     return n;
   }
   Refresh(e, t, i) {
     e = this.CombineDataList(e, t);
-    this.rcm.RefreshByData(e, () => {
+    this.R0m.RefreshByData(e, () => {
       if (i) {
         i();
       }

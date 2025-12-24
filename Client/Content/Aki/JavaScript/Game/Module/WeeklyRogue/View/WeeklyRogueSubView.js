@@ -41,7 +41,7 @@ class WeeklyRogueSubView extends ActivitySubViewBase_1.ActivitySubViewBase {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIButtonComponent], [5, UE.UIItem], [6, UE.UIText], [7, UE.UITexture]];
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIButtonComponent], [5, UE.UIItem], [6, UE.UIText], [7, UE.UITexture], [8, UE.UIText], [9, UE.UIText]];
     this.BtnBindInfo = [[4, this.RQ_]];
   }
   async OnBeforeStartAsync() {
@@ -69,6 +69,7 @@ class WeeklyRogueSubView extends ActivitySubViewBase_1.ActivitySubViewBase {
       if (i) {
         this.LNe.SetSubTitleByTextId(t);
       }
+      this.LNe.SetActivityBaseData(this.ActivityBaseData);
       this.LNe.SetTitleByText(this.ActivityBaseData.GetTitle());
       i = e.Desc;
       this.DNe.SetContentByTextId(i);
@@ -96,6 +97,7 @@ class WeeklyRogueSubView extends ActivitySubViewBase_1.ActivitySubViewBase {
     this.BNe();
     this._Fe();
     this.l3e();
+    this.Qbf();
   }
   OnTimer(t) {
     this.FNe();
@@ -130,6 +132,12 @@ class WeeklyRogueSubView extends ActivitySubViewBase_1.ActivitySubViewBase {
   l3e() {
     var t = this.ActivityBaseData?.GetCycleConfig();
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(6), "PrefabTextItem_1382682910_Text", this.ActivityBaseData.Score.toString(), t.MaxScore);
+  }
+  Qbf() {
+    var t = this.ActivityBaseData?.FreeCount ?? 0;
+    var i = this.ActivityBaseData?.FreeCountMax ?? 0;
+    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(8), "Text_WeeklyRogue_FreeTime");
+    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(9), "Text_WeeklyRogue_FreeTime_Num", t, i);
   }
 }
 exports.WeeklyRogueSubView = WeeklyRogueSubView;

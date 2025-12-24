@@ -26,12 +26,12 @@ const RegisterComponent_1 = require("../../../../Core/Entity/RegisterComponent")
 const BaseAbilityComponent_1 = require("../../Character/Common/Component/Abilities/BaseAbilityComponent");
 let VehicleAbilityComponent = class VehicleAbilityComponent extends BaseAbilityComponent_1.BaseAbilityComponent {
   GetAbilitySystemComponent() {
-    var e = this.Entity.GetComponent(238);
+    var e = this.Entity.GetComponent(247);
     if (e) {
       e.Actor.TryAddTsAbilitySystemComponent();
       return e.Actor.AbilitySystemComponent;
     }
   }
 };
-VehicleAbilityComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(243)], VehicleAbilityComponent);
+VehicleAbilityComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(252)], VehicleAbilityComponent);
 exports.VehicleAbilityComponent = VehicleAbilityComponent; //# sourceMappingURL=VehicleAbilityComponent.js.map

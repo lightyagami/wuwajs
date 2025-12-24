@@ -32,6 +32,9 @@ class CardCommonComponent extends CardComponentBase_1.CardComponentBase {
       this.Sequence.PlaySequencePurely("Close");
     }
   }
+  SetComponentDisActiveWithoutSequence() {
+    this.SetActive(false);
+  }
   Refresh(e) {}
 }
 exports.CardCommonComponent = CardCommonComponent;

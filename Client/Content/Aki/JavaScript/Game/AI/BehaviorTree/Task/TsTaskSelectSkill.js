@@ -36,7 +36,7 @@ class TsTaskSelectSkill extends TsTaskAbortImmediatelyBase_1.default {
     if (a) {
       this.InitTsVariables();
       if (a.AiSkill) {
-        if ((e = a.CharAiDesignComp.Entity.GetComponent(40)).Valid) {
+        if ((e = a.CharAiDesignComp.Entity.GetComponent(41)).Valid) {
           if ((r = a.AiHateList.GetCurrentTarget())?.Valid) {
             if (AiLibrary_1.AiLibrary.SelectSkillWithTarget(a, e, r.Entity.GetComponent(3), this.TsSkillType, this.TsDebugLog)) {
               this.FinishExecute(true);

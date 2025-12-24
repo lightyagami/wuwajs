@@ -176,7 +176,7 @@ let CommonConnectComponent = CommonConnectComponent_1 = class CommonConnectCompo
   GetNeedBeProcessingEntity(t, e) {
     var i = ModelManager_1.ModelManager.ConnectGamePlayModel?.GetRelationByEntityId(this.Entity.Id);
     for (const r of t) {
-      var s = r.GetComponent(231);
+      var s = r.GetComponent(240);
       if ((!i || !i.has(r.Id)) && (!this.ServerProcessingEntities || !this.ServerProcessingEntities.has(r.Id))) {
         if (s && s !== this && this.CheckEntityMatchCondition(e, r)) {
           this.NeedBeProcessingEntity.set(r, new PassThroughPortalParam());
@@ -187,7 +187,7 @@ let CommonConnectComponent = CommonConnectComponent_1 = class CommonConnectCompo
   CheckEntityMatchCondition(t, e) {
     if (t && !(t.length <= 0)) {
       var i = e?.GetComponent(1);
-      var s = e?.GetComponent(200);
+      var s = e?.GetComponent(206);
       if (i && s) {
         var r = i.CreatureData.GetBaseInfo();
         if (r) {
@@ -236,7 +236,7 @@ let CommonConnectComponent = CommonConnectComponent_1 = class CommonConnectCompo
         var i;
         var s;
         var r = [];
-        if (e.Type !== 0 && (i = e.PortalPairId, s = ModelManager_1.ModelManager.CreatureModel?.GetEntity(i)?.Entity?.GetComponent(219))) {
+        if (e.Type !== 0 && (i = e.PortalPairId, s = ModelManager_1.ModelManager.CreatureModel?.GetEntity(i)?.Entity?.GetComponent(226))) {
           s = s.GetPairCreatureDataId();
           if (e.Type === 1) {
             r.push(MathUtils_1.MathUtils.NumberToLong(i));
@@ -499,8 +499,8 @@ let CommonConnectComponent = CommonConnectComponent_1 = class CommonConnectCompo
       if (!e) {
         return false;
       }
-      var n = ModelManager_1.ModelManager.CreatureModel?.GetEntity(s)?.Entity?.GetComponent(219);
-      var h = ModelManager_1.ModelManager.CreatureModel?.GetEntity(n.GetPairCreatureDataId())?.Entity?.GetComponent(219);
+      var n = ModelManager_1.ModelManager.CreatureModel?.GetEntity(s)?.Entity?.GetComponent(226);
+      var h = ModelManager_1.ModelManager.CreatureModel?.GetEntity(n.GetPairCreatureDataId())?.Entity?.GetComponent(226);
       var n = n?.GetTriggerComp();
       var h = h?.GetTriggerComp();
       if (!n || !h) {
@@ -703,9 +703,9 @@ let CommonConnectComponent = CommonConnectComponent_1 = class CommonConnectCompo
   }
   bna() {
     this.ActorComp = this.Entity.GetComponent(3);
-    this.Lna = this.Entity.GetComponent(124);
-    this.rXa = this.Entity.GetComponent(209);
-    this.kCl = this.Entity.GetComponent(67);
+    this.Lna = this.Entity.GetComponent(129);
+    this.rXa = this.Entity.GetComponent(215);
+    this.kCl = this.Entity.GetComponent(70);
     if (this.Tna.LogicType.Type === "Range") {
       this.cQs = this.Tna.LogicType.EnterRange;
       this.mQs = this.Tna.LogicType.LeaveRange;
@@ -824,7 +824,7 @@ let CommonConnectComponent = CommonConnectComponent_1 = class CommonConnectCompo
     if (t) {
       var i = ModelManager_1.ModelManager.PortalModel.GetPortal(t);
       if (i && i.Portal1Enable && i.Portal2Enable) {
-        var s = ModelManager_1.ModelManager.CreatureModel?.GetEntity(t)?.Entity?.GetComponent(219);
+        var s = ModelManager_1.ModelManager.CreatureModel?.GetEntity(t)?.Entity?.GetComponent(226);
         var r = (0, puerts_1.$ref)(undefined);
         s?.PortalCapture?.GetPair(r);
         var r = (0, puerts_1.$unref)(r);
@@ -862,7 +862,7 @@ let CommonConnectComponent = CommonConnectComponent_1 = class CommonConnectCompo
                   const M = Vector_1.Vector.DotProduct(h, C);
                   if (!(M < 0.5) && !(l = Vector_1.Vector.Create(), PortalUtils_1.PortalUtils.GetMappingPosToOtherPortal(v.ActorLocationProxy, t, !e, l), (v = Vector_1.Vector.Distance(l, this.ActorComp.ActorLocationProxy)) > this.cQs)) {
                     if (this.kwa(c.Id, e ? 1 : 2, t)) {
-                      l = c.GetComponent(231);
+                      l = c.GetComponent(240);
                       [m, f] = this.CheckEntityMatchCondition(a?.MatchConditions, c);
                       if (l && (m && this.NeedBeProcessingEntity.set(c, new PassThroughPortalParam(e ? 1 : 2, t, v)), f)) {
                         this.CanInteractEntity.add(c);
@@ -882,14 +882,14 @@ let CommonConnectComponent = CommonConnectComponent_1 = class CommonConnectCompo
     var e;
     if (ModelManager_1.ModelManager.ConnectGamePlayModel?.GetRelationByEntityId(this.Entity.Id)?.has(t.Id) || this.ServerProcessingEntities.has(t.Id)) {
       return [false, true];
-    } else if (this.ActorComp && (e = this.Tna?.LogicType) && t.GetComponent(1) && this.kwa(t.Id, 0) && t.GetComponent(231)) {
+    } else if (this.ActorComp && (e = this.Tna?.LogicType) && t.GetComponent(1) && this.kwa(t.Id, 0) && t.GetComponent(240)) {
       return this.CheckEntityMatchCondition(e?.MatchConditions, t);
     } else {
       return [false, false];
     }
   }
   Hna(t) {
-    if (t.GetComponent(231)) {
+    if (t.GetComponent(240)) {
       this.Una.add(t.Id);
     }
     return true;
@@ -905,12 +905,12 @@ let CommonConnectComponent = CommonConnectComponent_1 = class CommonConnectCompo
     return true;
   }
   Bna() {
-    this.ActorComp = this.Entity.GetComponent(206);
-    this.mBe = this.Entity.GetComponent(137);
+    this.ActorComp = this.Entity.GetComponent(212);
+    this.mBe = this.Entity.GetComponent(142);
     if (this.Rna?.LogicType.MatchConditions) {
       EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemStateChange, this.g_n);
     }
-    this.mBe = this.Entity.GetComponent(137);
+    this.mBe = this.Entity.GetComponent(142);
     if (this.Rna.LogicType.Type === "Range") {
       this.EQs = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(this.Rna.LogicType.ActiveState);
       this.cQs = this.Rna.LogicType.EnterRange;
@@ -962,5 +962,5 @@ let CommonConnectComponent = CommonConnectComponent_1 = class CommonConnectCompo
   }
 };
 CommonConnectComponent.DrawTraceDebug = false;
-CommonConnectComponent = CommonConnectComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(231)], CommonConnectComponent);
+CommonConnectComponent = CommonConnectComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(240)], CommonConnectComponent);
 exports.CommonConnectComponent = CommonConnectComponent; //# sourceMappingURL=CommonConnectComponent.js.map

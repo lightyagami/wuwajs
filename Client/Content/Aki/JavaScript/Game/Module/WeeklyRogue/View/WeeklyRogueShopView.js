@@ -24,8 +24,8 @@ class WeeklyRogueShopView extends UiViewBase_1.UiViewBase {
     this.CaptionItem = undefined;
     this.DetailPanel = undefined;
     this.GoodsLayout = undefined;
-    this.Wvt = (e, i) => {
-      this.DetailPanel.Refresh(i);
+    this.Wvt = (e, t) => {
+      this.DetailPanel.Refresh(t);
       this.GoodsLayout?.SelectGridProxy(e);
     };
     this.pMo = () => {
@@ -33,6 +33,9 @@ class WeeklyRogueShopView extends UiViewBase_1.UiViewBase {
         await this.RefreshItemList();
       });
       this.RunAsyncTask(e);
+    };
+    this.$bf = () => {
+      this.Wbf();
     };
     this.Mlo = () => {
       UiManager_1.UiManager.OpenView("WeeklyRogueInfo");
@@ -48,10 +51,20 @@ class WeeklyRogueShopView extends UiViewBase_1.UiViewBase {
   OnAddEventListener() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WeeklyRogueShopSelect, this.Wvt);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WeeklyRogueSelectOption, this.pMo);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PayShopGoodsBuy, this.$bf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPlayerCurrencyChange, this.$bf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnAddCommonItemList, this.$bf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRemoveCommonItem, this.$bf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnCommonItemCountRefresh, this.$bf);
   }
   OnRemoveEventListener() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WeeklyRogueShopSelect, this.Wvt);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WeeklyRogueSelectOption, this.pMo);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PayShopGoodsBuy, this.$bf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPlayerCurrencyChange, this.$bf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnAddCommonItemList, this.$bf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRemoveCommonItem, this.$bf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnCommonItemCountRefresh, this.$bf);
   }
   async OnBeforeStartAsync() {
     this.LevelSequencePlayer = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetRootItem());
@@ -69,28 +82,31 @@ class WeeklyRogueShopView extends UiViewBase_1.UiViewBase {
   OnAfterShow() {
     this.LevelSequencePlayer.PlayLevelSequenceByName("Show");
   }
+  Wbf() {
+    this.GoodsLayout?.RefreshAllGridProxies();
+  }
   async RefreshItemList() {
-    var e = ModelManager_1.ModelManager.WeeklyRogueModel.GetCurrentOption()?.UN_.sort((e, i) => {
-      var t;
-      var s;
-      if (e.BN_?.O2s !== i.BN_?.O2s) {
+    var e = ModelManager_1.ModelManager.WeeklyRogueModel.GetCurrentOption()?.UN_.sort((e, t) => {
+      var i;
+      var n;
+      if (e.BN_?.O2s !== t.BN_?.O2s) {
         if (e.BN_?.O2s) {
           return 1;
         } else {
           return -1;
         }
-      } else if ((t = e.BN_?.qN_ !== e.BN_?.kN_) != (s = i.BN_?.qN_ !== i.BN_?.kN_)) {
-        if (t) {
+      } else if ((i = e.BN_?.qN_ !== e.BN_?.kN_) != (n = t.BN_?.qN_ !== t.BN_?.kN_)) {
+        if (i) {
           return -1;
         } else {
           return 1;
         }
-      } else if (t && s) {
-        return e.BN_.qN_ - i.BN_.qN_;
-      } else if (t || s) {
-        return e.c5n - i.c5n;
+      } else if (i && n) {
+        return e.BN_.qN_ - t.BN_.qN_;
+      } else if (i || n) {
+        return e.c5n - t.c5n;
       } else {
-        return e.BN_.kN_ - i.BN_.kN_;
+        return e.BN_.kN_ - t.BN_.kN_;
       }
     });
     await this.GoodsLayout.RefreshByDataAsync(e);

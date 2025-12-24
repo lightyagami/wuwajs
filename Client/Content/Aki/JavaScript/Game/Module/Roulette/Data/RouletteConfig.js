@@ -8,6 +8,8 @@ const CommonParamById_1 = require("../../../../Core/Define/ConfigCommon/CommonPa
 const ExploreRouletteAll_1 = require("../../../../Core/Define/ConfigQuery/ExploreRouletteAll");
 const ExploreRouletteReplaceAll_1 = require("../../../../Core/Define/ConfigQuery/ExploreRouletteReplaceAll");
 const ExploreRouletteReplaceById_1 = require("../../../../Core/Define/ConfigQuery/ExploreRouletteReplaceById");
+const ExploreRouletteTypeAll_1 = require("../../../../Core/Define/ConfigQuery/ExploreRouletteTypeAll");
+const ExploreRouletteTypeById_1 = require("../../../../Core/Define/ConfigQuery/ExploreRouletteTypeById");
 const ExploreToolsAll_1 = require("../../../../Core/Define/ConfigQuery/ExploreToolsAll");
 const ExploreToolsByPhantomSkillId_1 = require("../../../../Core/Define/ConfigQuery/ExploreToolsByPhantomSkillId");
 const FuncMenuReplaceAll_1 = require("../../../../Core/Define/ConfigQuery/FuncMenuReplaceAll");
@@ -59,6 +61,12 @@ class RouletteConfig extends ConfigBase_1.ConfigBase {
     if (e) {
       return e.Cost;
     }
+  }
+  GetExploreRouletteTypeById(e) {
+    return ExploreRouletteTypeById_1.configExploreRouletteTypeById.GetConfig(e);
+  }
+  GetAllRouletteTypeConfig() {
+    return ExploreRouletteTypeAll_1.configExploreRouletteTypeAll.GetConfigList() ?? [];
   }
   GetTreasureBoxDetectorPlaceLimit() {
     return CommonParamById_1.configCommonParamById.GetIntConfig("TreasureBoxDetectionMaxNum") ?? 0;

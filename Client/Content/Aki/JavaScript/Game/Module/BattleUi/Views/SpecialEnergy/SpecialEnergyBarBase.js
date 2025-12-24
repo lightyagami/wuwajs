@@ -117,7 +117,7 @@ class SpecialEnergyBarBase extends UiPanelBase_1.UiPanelBase {
         this.Hide();
       }
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("Battle", 17, "改变特殊能量条显隐", ["visible", t], ["entityId", this.RoleData.EntityHandle?.Id]);
+        Log_1.Log.Debug("Battle", 17, "改变特殊能量条显隐", ["visible", t], ["entityId", this.RoleData?.EntityHandle?.Id]);
       }
     }
   }

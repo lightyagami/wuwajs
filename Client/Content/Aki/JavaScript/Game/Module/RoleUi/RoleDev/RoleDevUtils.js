@@ -9,6 +9,7 @@ const TimeUtil_1 = require("../../../Common/TimeUtil");
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
+const ExploreProgressDefine_1 = require("../../ExploreProgress/ExploreProgressDefine");
 const ItemDefines_1 = require("../../Item/Data/ItemDefines");
 const RoleStatePlayContext_1 = require("../View/ViewData/RoleStatePlayContext");
 const RoleViewViewModel_1 = require("../View/ViewData/RoleViewViewModel");
@@ -143,26 +144,26 @@ class RoleDevUtils {
   }
   static GroupMaterialsByType(e) {
     var t = new Map();
-    for (const i of e) {
-      if (t.has(i.ItemId)) {
-        t.get(i.ItemId).RequiredCount += i.RequiredCount;
+    for (const o of e) {
+      if (t.has(o.ItemId)) {
+        t.get(o.ItemId).RequiredCount += o.RequiredCount;
       } else {
-        t.set(i.ItemId, {
-          ...i
+        t.set(o.ItemId, {
+          ...o
         });
       }
     }
     var r = [];
-    for (const o of Array.from(t.values())) {
-      var a = o.ItemId;
+    for (const i of Array.from(t.values())) {
+      var a = i.ItemId;
       const n = ConfigManager_1.ConfigManager.RoleDevConfig?.GetItemJumpGroupConfig(a)?.ItemType;
       if (n) {
         if (a = r.find(e => e.Type === n)) {
-          a.Materials.push(o);
+          a.Materials.push(i);
         } else {
           r.push({
             Type: n,
-            Materials: [o]
+            Materials: [i]
           });
         }
       }
@@ -189,7 +190,7 @@ class RoleDevUtils {
   }
   static GetFirstUnlockedTeleportId(e) {
     for (const t of e) {
-      if (ModelManager_1.ModelManager.MapModel.CheckTeleportUnlocked(t)) {
+      if (RoleDevUtils.CheckAccessPathUnlocked(t)) {
         return t;
       }
     }
@@ -199,25 +200,44 @@ class RoleDevUtils {
       return undefined;
     }
   }
+  static CheckAccessPathUnlocked(e) {
+    var t = ConfigManager_1.ConfigManager.SkipInterfaceConfig?.GetAccessPathConfig(e);
+    if (t && t.SkipName === 2) {
+      return RoleDevUtils.CheckDungeonAccessUnlocked(t);
+    } else {
+      return ModelManager_1.ModelManager.MapModel?.CheckTeleportUnlocked(e) ?? false;
+    }
+  }
+  static CheckDungeonAccessUnlocked(e) {
+    var t = parseInt(e.Val1);
+    var e = parseInt(e.Val3);
+    var t = ModelManager_1.ModelManager.InstanceDungeonEntranceModel?.CheckInstanceUnlock(t) ?? false;
+    var e = ConfigManager_1.ConfigManager.MapConfig.GetConfigMark(e);
+    var e = ConfigManager_1.ConfigManager.MapConfig.GetEntityConfigByMapIdAndEntityId(e.MapId, e.EntityConfigId).AreaId;
+    var e = ConfigManager_1.ConfigManager.AreaConfig.GetAreaInfo(e);
+    var e = e ? ModelManager_1.ModelManager.AreaModel.GetAreaId(e, ExploreProgressDefine_1.AREA_LEVEL) : 0;
+    var e = ModelManager_1.ModelManager.MapModel.CheckAreasUnlocked(e);
+    return t && e;
+  }
   static BuildDetailItemData(e, t, r) {
     var a = [];
     for (const l of t.map(e => e.Type).sort((e, t) => e - t)) {
-      var i = ConfigManager_1.ConfigManager.RoleDevConfig?.GetTypeManageConfig(l)?.TypeDescribe ?? "";
-      var o = t.find(e => e.Type === l)?.Materials ?? [];
-      var o = this.vzd(o);
-      var n = this.MMm(r, l);
+      var o = ConfigManager_1.ConfigManager.RoleDevConfig?.GetTypeManageConfig(l)?.TypeDescribe ?? "";
+      var i = t.find(e => e.Type === l)?.Materials ?? [];
+      var i = this.Zzd(i);
+      var n = this._Bm(r, l);
       a.push({
         RoleId: e,
         MainPage: r,
         ButtonType: n,
-        Title: i,
+        Title: o,
         ItemGroupId: 0,
-        ItemGroup: o
+        ItemGroup: i
       });
     }
     return a;
   }
-  static MMm(e, t) {
+  static _Bm(e, t) {
     let r = undefined;
     switch (e) {
       case 1:
@@ -234,7 +254,7 @@ class RoleDevUtils {
     }
     return r || -1;
   }
-  static vzd(e) {
+  static Zzd(e) {
     return e.sort((e, t) => {
       e = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(e.ItemId);
       t = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(t.ItemId);
@@ -268,21 +288,21 @@ class RoleDevUtils {
     }
   }
   static CreateSkillDetailItemsData(e, t, r, a) {
-    var i = [];
-    this.y9d(e, t, r, i);
-    var e = this.GroupMaterialsByType(i);
+    var o = [];
+    this.y9d(e, t, r, o);
+    var e = this.GroupMaterialsByType(o);
     return this.BuildDetailItemData(a, e, 4);
   }
-  static y9d(r, e, a, i) {
+  static y9d(r, e, a, o) {
     for (let t = 0; t < r.length; t++) {
-      var o = e[t];
+      var i = e[t];
       var n = a[t];
-      for (let e = o + 1; e <= n; e++) {
+      for (let e = i + 1; e <= n; e++) {
         var l = ConfigManager_1.ConfigManager.RoleSkillConfig.GetRoleSkillTreeConsume(r[t], e);
         if (l) {
           for (var [s, f] of l) {
             if (!this.g9d(s)) {
-              this.s9d(i, s, f);
+              this.s9d(o, s, f);
             }
           }
         }

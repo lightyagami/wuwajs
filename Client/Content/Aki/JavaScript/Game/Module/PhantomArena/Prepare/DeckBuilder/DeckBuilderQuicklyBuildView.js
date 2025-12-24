@@ -39,16 +39,20 @@ class DeckBuilderQuicklyBuildView extends UiViewBase_1.UiViewBase {
           this.CloseMe();
         }
       });
-      PhantomArenaController_1.PhantomArenaController.OpenPhantomArenaConfirmBoxView(e);
+      var i = ModelManager_1.ModelManager.PhantomArenaModel.IsNewPhantomArenaActivity(this.Pe.ActivityId);
+      PhantomArenaController_1.PhantomArenaController.OpenPhantomArenaConfirmBoxView(e, i);
     };
     this.bK1 = () => {
-      var e = this.DeckLayout.GetSelectedGridIndex();
-      if (!(e < 0)) {
-        e = {
-          DeckInfo: this.DeckList[e],
-          ShowLocked: true
+      var e;
+      var i = this.DeckLayout.GetSelectedGridIndex();
+      if (!(i < 0)) {
+        i = {
+          DeckInfo: this.DeckList[i],
+          ShowLocked: true,
+          ActivityId: this.Pe.ActivityId
         };
-        UiManager_1.UiManager.OpenView("PhantomArenaDeckDetailView", e);
+        e = ModelManager_1.ModelManager.PhantomArenaModel.IsNewPhantomArenaActivity(this.Pe.ActivityId) ? "PhantomArenaDeckDetailViewNew" : "PhantomArenaDeckDetailView";
+        UiManager_1.UiManager.OpenView(e, i);
       }
     };
     this.PV1 = e => {
@@ -70,8 +74,7 @@ class DeckBuilderQuicklyBuildView extends UiViewBase_1.UiViewBase {
   async OnBeforeStartAsync() {
     this.Pe = this.OpenParam;
     this.DeckLayout = new GenericLayout_1.GenericLayout(this.GetLayoutBase(0), this.M61, this.GetItem(1).GetOwner());
-    var e = ModelManager_1.ModelManager.PhantomArenaModel.ActivityId;
-    var e = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetQuicklyBuildDeckList(e);
+    var e = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetQuicklyBuildDeckList(this.Pe.ActivityId);
     this.DeckList.length = 0;
     for (const t of e) {
       var i = ModelManager_1.ModelManager.PhantomArenaModel.CreateDeckInfoFromDeckConfigId(t);

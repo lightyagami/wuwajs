@@ -27,7 +27,7 @@ class SceneItemManipulableCastToOutletState extends SceneItemManipulableCastStat
       super.OnEnter();
       this.SceneItem.IsCanBeHeld = false;
       this.SceneItem.TargetActorComponent = this.NHo.GetComponent(1);
-      this.SceneItem.TargetOutletComponent = this.NHo.GetComponent(165);
+      this.SceneItem.TargetOutletComponent = this.NHo.GetComponent(170);
       if (this.NeedNotifyServer) {
         LevelGamePlayController_1.LevelGamePlayController.ManipulatableBeCastOrDrop2Server(this.SceneItem.Entity.Id, Protocol_1.Aki.Protocol.Zw_.Proto_EControlStateLockBaseThrowing);
       }

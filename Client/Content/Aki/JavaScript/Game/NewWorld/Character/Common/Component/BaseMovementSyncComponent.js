@@ -131,6 +131,7 @@ let BaseMovementSyncComponent = BaseMovementSyncComponent_1 = class BaseMovement
     this.LastRotation = Rotator_1.Rotator.Create();
     this.IsPending = false;
     this.PendingTime = 0;
+    this.SingleModeSendInterval = 1;
     this.PendingMoveInfos = [];
     this.LastReceiveMoveSample = undefined;
     this.LastApplyMoveSample = undefined;
@@ -179,8 +180,8 @@ let BaseMovementSyncComponent = BaseMovementSyncComponent_1 = class BaseMovement
   }
   OnStart() {
     this.ActorComp = this.Entity.GetComponent(1);
-    this.TimeScaleComp = this.Entity.GetComponent(183);
-    this.MoveComp = this.Entity.GetComponent(45);
+    this.TimeScaleComp = this.Entity.GetComponent(188);
+    this.MoveComp = this.Entity.GetComponent(46);
     this.CreatureDataComp = this.Entity.GetComponent(0);
     if (!ModelManager_1.ModelManager.CombatMessageModel.AddMoveSync(this)) {
       CombatLog_1.CombatLog.Warn("Move", this.Entity, "重复添加移动同步");
@@ -267,7 +268,7 @@ let BaseMovementSyncComponent = BaseMovementSyncComponent_1 = class BaseMovement
   }
   CustomPreTickInternal(t) {
     var e;
-    if (!this.ActorComp.IsMoveAutonomousProxy && !this.Entity.GetComponent(209).HasTag(-648310348)) {
+    if (!this.ActorComp.IsMoveAutonomousProxy && !this.Entity.GetComponent(215).HasTag(-648310348)) {
       this.IsPending = false;
       this.PendingMoveInfos.length = 0;
       this.TickReplaySamples();
@@ -312,7 +313,7 @@ let BaseMovementSyncComponent = BaseMovementSyncComponent_1 = class BaseMovement
   }
   TryPushMoveSingle(t, e, i) {
     var s;
-    var o = Time_1.Time.NowSeconds - this.LastSendTime >= BaseMovementSyncComponent_1.SingleModeSendInterval;
+    var o = Time_1.Time.NowSeconds - this.LastSendTime >= this.SingleModeSendInterval;
     var i = !this.LastSendLocation.Equals(e, BaseMovementSyncComponent_1.SingleModeSendLocationTolerance) || !this.LastSendRotation.Equals(i, BaseMovementSyncComponent_1.SingleModeSendRotationTolerance);
     var e = Global_1.Global.BaseCharacter?.EntityId === this.Entity.Id && !this.LastSendLocation.Equals(e, BaseMovementSyncComponent_1.SingleModeSendLocationToleranceMax);
     if (!t && this.LastMove) {
@@ -662,9 +663,8 @@ let BaseMovementSyncComponent = BaseMovementSyncComponent_1 = class BaseMovement
 };
 BaseMovementSyncComponent.PendingMoveCacheTime = 0.08;
 BaseMovementSyncComponent.MaxPendingMoveCacheTime = 1;
-BaseMovementSyncComponent.SingleModeSendInterval = 1;
 BaseMovementSyncComponent.SingleModeSendLocationTolerance = 10;
 BaseMovementSyncComponent.SingleModeSendRotationTolerance = 5;
 BaseMovementSyncComponent.SingleModeSendLocationToleranceMax = 600;
-BaseMovementSyncComponent = BaseMovementSyncComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(67)], BaseMovementSyncComponent);
+BaseMovementSyncComponent = BaseMovementSyncComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(70)], BaseMovementSyncComponent);
 exports.BaseMovementSyncComponent = BaseMovementSyncComponent; //# sourceMappingURL=BaseMovementSyncComponent.js.map

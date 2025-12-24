@@ -41,7 +41,7 @@ class HonamiStoryPickupBoxData extends HonamiStoryBackpackData_1.HonamiStoryBack
       }
       o = HonamiStoryUtil_1.HonamiStoryUtil.FindFirstAvailablePosition(this.EmptyGridSet, t, this.Width);
     }
-    a = new Protocol_1.Aki.Protocol.A$d();
+    a = new Protocol_1.Aki.Protocol.B$d();
     a.l9_ = o.Position;
     a.Gmd = o.IsCross;
     t.UpdatePositionInfo(a);

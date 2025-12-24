@@ -18,6 +18,7 @@ class DeckBuilderCardDetailPanel extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.Pe = undefined;
+    this.IsNewPhantomArenaActivity = false;
     this.eVi = undefined;
     this.Ept = undefined;
     this.DA1 = undefined;
@@ -45,6 +46,7 @@ class DeckBuilderCardDetailPanel extends UiPanelBase_1.UiPanelBase {
   }
   async OnBeforeStartAsync() {
     this.eVi = new DetailViewCardItem_1.DetailViewCardItem();
+    this.eVi.IsNewPhantomArenaActivity = this.IsNewPhantomArenaActivity;
     this.Ept = new CardDetailItem_1.CardDetailItem();
     this.DA1 = new CardDetailEntryDescLayoutItem_1.CardDetailEntryDescLayoutItem(this.GetLayoutBase(2));
     this.UA1 = new ButtonItem_1.ButtonItem();

@@ -54,7 +54,7 @@ let CharacterSelfCenterComponent = class CharacterSelfCenterComponent extends En
     this.Cdu = 0;
     this.tZ = false;
     this.W8c = t => {
-      var t = EntitySystem_1.EntitySystem.GetComponent(t, 293);
+      var t = EntitySystem_1.EntitySystem.GetComponent(t, 312);
       if (t?.$8c) {
         t = t.vHr?.GetForeverTimeScale(t.gdu) ?? 1;
         this.SetSelfCenterTimeDilation(t);
@@ -84,10 +84,10 @@ let CharacterSelfCenterComponent = class CharacterSelfCenterComponent extends En
     this.tZ = true;
     this.EIe = this.Entity.GetComponent(0);
     this.Hte = this.Entity.GetComponent(3);
-    this.vHr = this.Entity.GetComponent(183);
-    this.H8c = this.Entity.GetComponent(56);
+    this.vHr = this.Entity.GetComponent(188);
+    this.H8c = this.Entity.GetComponent(59);
     this.uZr = this.Entity.GetComponent(16);
-    this.hed = this.Entity.GetComponent(126);
+    this.hed = this.Entity.GetComponent(131);
     this.led = new Set();
     this._ed = new Set();
     if (ModelManager_1.ModelManager.CharacterModel?.EnabledSelfCentered && ModelManager_1.ModelManager.CharacterModel.SelfCenteredMode === 5) {
@@ -118,13 +118,13 @@ let CharacterSelfCenterComponent = class CharacterSelfCenterComponent extends En
       var i = this.H8c?.FollowIds;
       if (i) {
         for (const s of i) {
-          EntitySystem_1.EntitySystem.GetComponent(s, 293)?.SetSelfCenterTimeDilation(t, e);
+          EntitySystem_1.EntitySystem.GetComponent(s, 312)?.SetSelfCenterTimeDilation(t, e);
         }
       }
       i = this.EIe.CustomServerEntityIds;
       if (i.length > 0) {
         for (const h of i) {
-          EntitySystem_1.EntitySystem.GetComponent(ModelManager_1.ModelManager.CreatureModel.GetEntityId(h), 293)?.SetSelfCenterTimeDilation(t, e);
+          EntitySystem_1.EntitySystem.GetComponent(ModelManager_1.ModelManager.CreatureModel.GetEntityId(h), 312)?.SetSelfCenterTimeDilation(t, e);
         }
       }
     }
@@ -202,5 +202,5 @@ let CharacterSelfCenterComponent = class CharacterSelfCenterComponent extends En
     return this.tZ;
   }
 };
-CharacterSelfCenterComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(293)], CharacterSelfCenterComponent);
+CharacterSelfCenterComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(312)], CharacterSelfCenterComponent);
 exports.CharacterSelfCenterComponent = CharacterSelfCenterComponent; //# sourceMappingURL=CharacterSelfCenterComponent.js.map

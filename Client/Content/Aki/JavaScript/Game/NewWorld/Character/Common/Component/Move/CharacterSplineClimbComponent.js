@@ -93,9 +93,9 @@ let CharacterSplineClimbComponent = CharacterSplineClimbComponent_1 = class Char
     this.B2d = 0;
     this.mWi = undefined;
     this.k2d = false;
-    this.DKd = 0;
-    this.SJd = false;
-    this.jIm = false;
+    this.kKd = 0;
+    this.mZd = false;
+    this.cOm = false;
     this.ZQl = Transform_1.Transform.Create();
     this.O2d = Vector_1.Vector.Create();
     this.Due = Vector_1.Vector.Create();
@@ -125,7 +125,7 @@ let CharacterSplineClimbComponent = CharacterSplineClimbComponent_1 = class Char
       }
     };
     this.xsa = (t, i) => {
-      this.SJd = true;
+      this.mZd = true;
     };
   }
   get OPt() {
@@ -134,10 +134,10 @@ let CharacterSplineClimbComponent = CharacterSplineClimbComponent_1 = class Char
   }
   OnStart() {
     this.Hte = this.Entity.CheckGetComponent(3);
-    this.RWr = this.Entity.CheckGetComponent(34);
-    this.oRe = this.Entity.CheckGetComponent(181);
-    this.Lie = this.Entity.CheckGetComponent(209);
-    this.Gce = this.Entity.CheckGetComponent(182);
+    this.RWr = this.Entity.CheckGetComponent(35);
+    this.oRe = this.Entity.CheckGetComponent(186);
+    this.Lie = this.Entity.CheckGetComponent(215);
+    this.Gce = this.Entity.CheckGetComponent(187);
     this.rRe = this.oRe?.MainAnimInstance;
     return true;
   }
@@ -146,9 +146,9 @@ let CharacterSplineClimbComponent = CharacterSplineClimbComponent_1 = class Char
     return true;
   }
   OnTick() {
-    if (this.SJd) {
+    if (this.mZd) {
       this.ExitSplineClimb("位置状态改变", true, false);
-      this.SJd = false;
+      this.mZd = false;
     }
   }
   EnterSplineClimb(t, i, e) {
@@ -168,7 +168,7 @@ let CharacterSplineClimbComponent = CharacterSplineClimbComponent_1 = class Char
       this.Lie?.AddTag(s);
     }
     this.Ore();
-    i = this.Entity?.GetComponent(39);
+    i = this.Entity?.GetComponent(40);
     if (i) {
       i.StopAllSkills("开始样条跑墙");
     }
@@ -182,7 +182,7 @@ let CharacterSplineClimbComponent = CharacterSplineClimbComponent_1 = class Char
       this.Gce?.SetLockedRotation(false);
     }
     if (this.RWr) {
-      this.DKd = this.RWr.Disable("样条跑墙开始");
+      this.kKd = this.RWr.Disable("样条跑墙开始");
     }
     this.Due.DeepCopy(this.Hte.ActorLocationProxy);
     if (Log_1.Log.CheckInfo()) {
@@ -192,11 +192,11 @@ let CharacterSplineClimbComponent = CharacterSplineClimbComponent_1 = class Char
   ExitSplineClimb(t, i = true, e = true) {
     this.kre();
     if (this.RWr) {
-      this.RWr.Enable(this.DKd, "样条跑墙结束");
-      this.DKd = 0;
+      this.RWr.Enable(this.kKd, "样条跑墙结束");
+      this.kKd = 0;
     }
     var s;
-    var h = this.Entity.GetComponent(179).PositionState;
+    var h = this.Entity.GetComponent(184).PositionState;
     var e = !e || this.nz1();
     var n = i && e && (h === CharacterUnifiedStateTypes_1.ECharPositionState.Air || h === CharacterUnifiedStateTypes_1.ECharPositionState.Climb);
     var i = i && h === CharacterUnifiedStateTypes_1.ECharPositionState.Climb;
@@ -238,7 +238,7 @@ let CharacterSplineClimbComponent = CharacterSplineClimbComponent_1 = class Char
       this.Lie?.RemoveTag(r);
     }
     this.k2d = false;
-    this.SJd = false;
+    this.mZd = false;
     if (this.nz1()) {
       this.Gce?.SetLockedRotation(true);
     }
@@ -260,23 +260,23 @@ let CharacterSplineClimbComponent = CharacterSplineClimbComponent_1 = class Char
     this.U2d.DistanceInSource = t;
   }
   Ore() {
-    if (!this.jIm) {
+    if (!this.cOm) {
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TeleportStart, this.bpr);
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CharUseSkill, this.ero);
       EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CustomMoveSplineClimb, this.q2d);
       EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharOnRoleDeadTargetSelf, this.Jze);
       EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharOnPositionStateChanged, this.xsa);
-      this.jIm = true;
+      this.cOm = true;
     }
   }
   kre() {
-    if (this.jIm) {
+    if (this.cOm) {
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TeleportStart, this.bpr);
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CharUseSkill, this.ero);
       EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CustomMoveSplineClimb, this.q2d);
       EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CharOnRoleDeadTargetSelf, this.Jze);
       EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CharOnPositionStateChanged, this.xsa);
-      this.jIm = false;
+      this.cOm = false;
     }
   }
   SRa(e) {
@@ -445,5 +445,5 @@ let CharacterSplineClimbComponent = CharacterSplineClimbComponent_1 = class Char
   }
 };
 CharacterSplineClimbComponent.k2u = undefined;
-CharacterSplineClimbComponent = CharacterSplineClimbComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(307)], CharacterSplineClimbComponent);
+CharacterSplineClimbComponent = CharacterSplineClimbComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(326)], CharacterSplineClimbComponent);
 exports.CharacterSplineClimbComponent = CharacterSplineClimbComponent; //# sourceMappingURL=CharacterSplineClimbComponent.js.map

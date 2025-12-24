@@ -15,7 +15,7 @@ class ActivityLordGymController extends ActivityControllerBase_1.ActivityControl
   }
   OnOpenView(t) {}
   OnGetActivityResource(t) {
-    return "UiItem_ActivityLordGym";
+    return "UiItem_ActivityLordGymThird";
   }
   OnCreateSubPageComponent(t) {
     return new LordGymActivitySubView_1.LordGymActivitySubView();

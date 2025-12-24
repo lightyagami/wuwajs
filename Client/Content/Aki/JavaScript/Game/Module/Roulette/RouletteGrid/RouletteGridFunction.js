@@ -11,7 +11,7 @@ class RouletteGridFunction extends RouletteGridBase_1.RouletteGridBase {
   async Init() {
     let e = false;
     if (this.IsDataValid()) {
-      var t = ModelManager_1.ModelManager.RouletteModel.UnlockFunctionDataMap.get(this.Data.Id);
+      var t = ModelManager_1.ModelManager.RouletteModel.GetFuncDataByFuncId(this.Data.Id);
       if (!t) {
         this.Data.Id = 0;
         return;

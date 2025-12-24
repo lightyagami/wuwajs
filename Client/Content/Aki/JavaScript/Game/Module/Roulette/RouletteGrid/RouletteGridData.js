@@ -19,6 +19,7 @@ class RouletteData {
     this.Name = undefined;
     this.State = 1;
     this.ShowRedDot = true;
+    this.UseType = 0;
   }
   DeepCopy() {
     var t = new RouletteData();
@@ -30,6 +31,7 @@ class RouletteData {
     t.State = this.State;
     t.ShowIndex = this.ShowIndex;
     t.ShowRedDot = this.ShowRedDot;
+    t.UseType = this.UseType;
     return t;
   }
 }

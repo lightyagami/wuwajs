@@ -30,7 +30,7 @@ class WeeklyRogueActivityView extends UiViewBase_1.UiViewBase {
     this.ZAt = undefined;
     this.j3 = undefined;
     this.eHu = 0;
-    this.RJd = () => {
+    this.JZd = () => {
       this.eel?.RefreshScore();
     };
     this.oEc = () => {
@@ -78,13 +78,15 @@ class WeeklyRogueActivityView extends UiViewBase_1.UiViewBase {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIText], [2, UE.UIText], [3, UE.UIText], [4, UE.UIText], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UITexture], [8, UE.UIText]];
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIText], [2, UE.UIText], [3, UE.UIText], [4, UE.UIText], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UITexture], [8, UE.UIText], [9, UE.UIText], [10, UE.UIText]];
   }
   async OnBeforeStartAsync() {
-    var e = ModelManager_1.ModelManager.WeeklyRogueModel?.ActivityDataNew;
-    if (e) {
-      this.ActivityBaseData = e;
-      this.eHu = e.CycleId;
+    var e;
+    var t;
+    var i = ModelManager_1.ModelManager.WeeklyRogueModel?.ActivityDataNew;
+    if (i) {
+      this.ActivityBaseData = i;
+      this.eHu = i.CycleId;
       this.lqe = new PopupCaptionItem_1.PopupCaptionItem();
       this.eel = new WeekyRogueScoreItem_1.WeeklyRogueScoreItem();
       this.AddChild(this.eel);
@@ -92,13 +94,17 @@ class WeeklyRogueActivityView extends UiViewBase_1.UiViewBase {
         this.CloseMe();
       });
       this.lqe.SetHelpCallBack(this.SY_);
-      e = this.ActivityBaseData.GetCycleConfig();
-      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), e.CycleName);
+      i = this.ActivityBaseData.GetCycleConfig();
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), i.CycleName);
       this.GetText(8).SetText(this.ActivityBaseData.GetCycleBlackFlowerCost().toString());
       this.GetText(1).SetText(this.ActivityBaseData.GetTitle());
       this.ZAt = new ButtonItem_1.ButtonItem();
       this.ZAt.SetFunction(this.Qho);
-      await Promise.all([this.lqe.CreateThenShowByActorAsync(this.GetItem(0).GetOwner()), this.eel.CreateByActorAsync(this.GetItem(6).GetOwner()), this.ZAt.CreateThenShowByActorAsync(this.GetItem(5).GetOwner()), this.SetTextureAsync(e.ViewBackground, this.GetTexture(7)), WeeklyRogueController_1.WeeklyRogueController.Instance?.RogueWeeklyLastInfoRequest()]);
+      e = this.ActivityBaseData.FreeCount;
+      t = this.ActivityBaseData.FreeCountMax;
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(9), "Text_WeeklyRogue_FreeTime");
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(10), "Text_WeeklyRogue_FreeTime_Num", e, t);
+      await Promise.all([this.lqe.CreateThenShowByActorAsync(this.GetItem(0).GetOwner()), this.eel.CreateByActorAsync(this.GetItem(6).GetOwner()), this.ZAt.CreateThenShowByActorAsync(this.GetItem(5).GetOwner()), this.SetTextureAsync(i.ViewBackground, this.GetTexture(7)), WeeklyRogueController_1.WeeklyRogueController.Instance?.RogueWeeklyLastInfoRequest()]);
       await this.lqe.SetCurrencyItemList([ItemDefines_1.EItemId.Power]);
       this.lqe.SetCurrencyItemBtnFunction(ItemDefines_1.EItemId.Power, () => {
         PowerController_1.PowerController.OpenPowerView();
@@ -112,13 +118,14 @@ class WeeklyRogueActivityView extends UiViewBase_1.UiViewBase {
   }
   OnAddEventListener() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WeeklyRogueCycleRefresh, this.oEc);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WeeklyRogueRefreshScoreRedDot, this.RJd);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WeeklyRogueRefreshScoreRedDot, this.JZd);
   }
   OnRemoveEventListener() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WeeklyRogueCycleRefresh, this.oEc);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WeeklyRogueRefreshScoreRedDot, this.RJd);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WeeklyRogueRefreshScoreRedDot, this.JZd);
   }
   OnBeforeShow() {
+    ControllerHolder_1.ControllerHolder.SplashScreenController.FinishCurTask();
     if (this.eHu !== this.ActivityBaseData.CycleId) {
       this.oEc();
     }

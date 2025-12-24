@@ -116,7 +116,7 @@ class NpcWaitEntityTask {
     }
   }
   TryExecuteWithSceneItemActor(t) {
-    if (t.GetComponent(206)?.GetIsSceneInteractionLoadCompleted()) {
+    if (t.GetComponent(212)?.GetIsSceneInteractionLoadCompleted()) {
       this.Execute(t);
     } else {
       EventSystem_1.EventSystem.AddWithTarget(t, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted, this.OnSceneItemLoadComplete);
@@ -128,7 +128,7 @@ class NpcWaitEntityTask {
     }
   }
   Reset(t) {
-    t.GetComponent(206)?.GetIsSceneInteractionLoadCompleted();
+    t.GetComponent(212)?.GetIsSceneInteractionLoadCompleted();
   }
   Execute(t) {
     this.Finish();
@@ -136,7 +136,7 @@ class NpcWaitEntityTask {
 }
 class NpcIgnoreCollisionTask extends NpcWaitEntityTask {
   Reset(t) {
-    if (t.GetComponent(206)?.GetIsSceneInteractionLoadCompleted()) {
+    if (t.GetComponent(212)?.GetIsSceneInteractionLoadCompleted()) {
       this.IJa(t, false);
     }
   }
@@ -146,7 +146,7 @@ class NpcIgnoreCollisionTask extends NpcWaitEntityTask {
   }
   IJa(t, e) {
     var i;
-    var t = t.GetComponent(206);
+    var t = t.GetComponent(212);
     var s = this.NpcEntity?.GetComponent(2);
     if (t && s && (i = t.GetInteractCollisionActor())?.IsValid()) {
       s.Actor.IgnoreActorWhenMoving(i, e, true);

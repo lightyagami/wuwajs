@@ -4,12 +4,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.TsUiNavigationBehaviorListener = undefined;
-const puerts_1 = require("puerts");
 const UE = require("ue");
 const Log_1 = require("../../../../Core/Common/Log");
-const MathUtils_1 = require("../../../../Core/Utils/MathUtils");
 const StringUtils_1 = require("../../../../Core/Utils/StringUtils");
 const GlobalData_1 = require("../../../GlobalData");
+const UiNavigationScrollProxy_1 = require("./Scroll/UiNavigationScrollProxy");
 const NavigationSelectableCreator_1 = require("./Selectable/NavigationSelectableCreator");
 const UiNavigationCursorModule_1 = require("./UiNavigationCursorModule");
 const UiNavigationGlobalData_1 = require("./UiNavigationGlobalData");
@@ -41,7 +40,7 @@ class TsUiNavigationBehaviorListener extends UE.UINavigationBehaviour {
     this.IsUsePool = false;
     this.NavigateTolerance = 0;
     this.NavigateToleranceReverse = 0;
-    this.ScrollView = undefined;
+    this.ScrollProxy = undefined;
     this.LayoutBase = undefined;
     this.TextChangeComponent = undefined;
     this.PanelConfig = undefined;
@@ -51,7 +50,6 @@ class TsUiNavigationBehaviorListener extends UE.UINavigationBehaviour {
     this.IsAwakeCalled = false;
     this.IsStartCalled = false;
     this.IsInitLayout = false;
-    this.IsInitScroll = false;
     this.IsFocusScrollbar = false;
     this.AnimController = undefined;
     this.IsInitAnimController = false;
@@ -63,7 +61,7 @@ class TsUiNavigationBehaviorListener extends UE.UINavigationBehaviour {
     this.CursorModule = undefined;
   }
   Constructor() {
-    this.ScrollView = undefined;
+    this.ScrollProxy = undefined;
     this.LayoutBase = undefined;
     this.TextChangeComponent = undefined;
     this.PanelConfig = undefined;
@@ -73,7 +71,6 @@ class TsUiNavigationBehaviorListener extends UE.UINavigationBehaviour {
     this.IsAwakeCalled = false;
     this.IsStartCalled = false;
     this.IsInitLayout = false;
-    this.IsInitScroll = false;
     this.IsFocusScrollbar = false;
     this.AnimController = undefined;
     this.IsInitAnimController = false;
@@ -112,16 +109,17 @@ class TsUiNavigationBehaviorListener extends UE.UINavigationBehaviour {
     }
   }
   OnCheckCanSetNavigationBP() {
-    if (!this.ScrollView || !(this.ScrollView instanceof UE.UILoopScrollViewComponent) || this.ScrollView.NavigationIndex === -1) {
+    var i;
+    if (!this.ScrollProxy || !this.ScrollProxy.HasLoopScrollView() || (i = this.ScrollProxy.GetLoopScrollViewNavigationIndex()) === -1) {
       return this.InNavigation;
     } else if (UiNavigationGlobalData_1.UiNavigationGlobalData.IsAllowLoopScrollInteractHighlight) {
-      return this.ScrollView.NavigationIndex === this.LoopScrollViewGridIndex && this.InNavigation;
+      return i === this.LoopScrollViewGridIndex && this.InNavigation;
     } else {
-      return this.ScrollView.NavigationIndex !== this.LoopScrollViewGridIndex && this.InNavigation;
+      return i !== this.LoopScrollViewGridIndex && this.InNavigation;
     }
   }
   OnCheckLoopScrollChangeNavigationBP() {
-    return !!this.ScrollView && !!this.ScrollView.IsChangeNavigation && (this.ScrollView.ResetIsChangeNavigation(), true);
+    return !!this.ScrollProxy && this.ScrollProxy.CheckLoopScrollChangeNavigation();
   }
   OnEnableBP() {
     if (GlobalData_1.GlobalData.GameInstance) {
@@ -164,7 +162,6 @@ class TsUiNavigationBehaviorListener extends UE.UINavigationBehaviour {
       this.NavigationComponent?.Clear();
       this.PanelConfig = undefined;
       this.LayoutBase = undefined;
-      this.ScrollView = undefined;
     }
   }
   AwakeInit() {
@@ -196,7 +193,7 @@ class TsUiNavigationBehaviorListener extends UE.UINavigationBehaviour {
         Log_1.Log.Info("UiNavigation", 10, "可能存在从对象池获取的情况[TsUiNavigationBehaviorListener]", ["GroupName", this.GroupName], ["Name", this.RootUIComp.displayName]);
       }
       this.IsStartCalled = false;
-      this.IsInitScroll = false;
+      this.ScrollProxy = undefined;
       this.IsInitLayout = false;
       this.PanelConfig = undefined;
       this.StartInit();
@@ -207,12 +204,10 @@ class TsUiNavigationBehaviorListener extends UE.UINavigationBehaviour {
     this.InitLayout();
   }
   InitAnimController() {
-    var i;
     if (!this.IsInitAnimController) {
       this.IsInitAnimController = true;
-      if (this.ScrollView) {
-        i = this.ScrollView?.GetContent();
-        this.AnimController = i?.GetComponentByClass(UE.UIInturnAnimController.StaticClass());
+      if (this.ScrollProxy) {
+        this.AnimController = this.ScrollProxy.GetInturnAnimController();
       }
       if (this.LayoutBase) {
         this.AnimController = this.LayoutBase?.GetOwner().GetComponentByClass(UE.UIInturnAnimController.StaticClass());
@@ -220,7 +215,7 @@ class TsUiNavigationBehaviorListener extends UE.UINavigationBehaviour {
     }
   }
   InitScrollView() {
-    if (!!this.ScrollViewActor && !this.IsInitScroll && !(this.ScrollView = this.ScrollViewActor.GetComponentByClass(UE.UIScrollViewWithScrollbarComponent.StaticClass()), this.InitDynamicGridActor(), this.BindLoopScrollView(), this.IsInitScroll = true, this.ScrollView)) {
+    if (!!this.ScrollViewActor && !this.ScrollProxy && !(this.ScrollProxy = new UiNavigationScrollProxy_1.UiNavigationScrollProxy(), this.ScrollProxy.InitScrollView(this.ScrollViewActor, this.RootUIComp), this.DynamicGridActor = this.ScrollProxy.GetDynamicGridActor(), this.BindLoopScrollView(), this.ScrollProxy.ScrollView)) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("UiNavigation", 10, "找不到滚动列表组件", ["节点", this.RootUIComp.displayName]);
       }
@@ -230,23 +225,6 @@ class TsUiNavigationBehaviorListener extends UE.UINavigationBehaviour {
     if (!!this.LayoutActor && !this.IsInitLayout && !(this.LayoutBase = this.LayoutActor.GetComponentByClass(UE.UILayoutBase.StaticClass()), this.IsInitLayout = true, this.LayoutBase)) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("UiNavigation", 10, "找不到循环滚动列表组件", ["节点", this.RootUIComp.displayName]);
-      }
-    }
-  }
-  InitDynamicGridActor() {
-    if (this.HasDynamicScrollView()) {
-      var s = this.ScrollView?.GetContent();
-      if (s) {
-        let i = this.GetOwner();
-        let t = false;
-        while (i && i.IsValid() && i !== s) {
-          if (i.GetAttachParentActor() === s) {
-            t = true;
-            break;
-          }
-          i = i.GetAttachParentActor();
-        }
-        this.DynamicGridActor = t ? i : undefined;
       }
     }
   }
@@ -281,26 +259,29 @@ class TsUiNavigationBehaviorListener extends UE.UINavigationBehaviour {
   }
   BindLoopScrollView() {
     var i;
-    if (this.HasLoopScrollView()) {
+    if (this.ScrollProxy) {
       i = this.GetSelectableComponent();
-      this.ScrollView.BindParentUIItem(i);
+      this.ScrollProxy.BindScrollView(i);
     }
   }
   UnBindLoopScrollView() {
     var i;
-    if (this.HasLoopScrollView() && this.ScrollView.IsValid()) {
+    if (this.ScrollProxy) {
       i = this.GetSelectableComponent();
-      this.ScrollView.UnBindParentUIItem(i);
+      this.ScrollProxy.UnBindScrollView(i);
     }
   }
   HasNormalScrollView() {
-    return !!this.ScrollView && !this.HasLoopScrollView() && !this.HasDynamicScrollView();
+    return !!this.ScrollProxy && this.ScrollProxy.HasNormalScrollView();
   }
   HasLoopScrollView() {
-    return !!this.ScrollView && this.ScrollView instanceof UE.UILoopScrollViewComponent;
+    return !!this.ScrollProxy && this.ScrollProxy.HasLoopScrollView();
   }
   HasDynamicScrollView() {
-    return !!this.ScrollView && this.ScrollView instanceof UE.UIDynScrollViewComponent;
+    return !!this.ScrollProxy && this.ScrollProxy.HasDynamicScrollView();
+  }
+  HasMultiTemplateScrollView() {
+    return !!this.ScrollProxy && this.ScrollProxy.HasMultiTemplateScrollView();
   }
   RegisterListenerToPanel() {
     if (!this.PanelConfig) {
@@ -355,15 +336,15 @@ class TsUiNavigationBehaviorListener extends UE.UINavigationBehaviour {
   }
   IsScrollOrLayoutActor() {
     this.InitScrollViewAndLayout();
-    return !!(this.ScrollView ?? this.LayoutBase);
+    return !!(this.ScrollProxy?.ScrollView ?? this.LayoutBase);
   }
   GetScrollOrLayoutActor() {
     return this.ScrollViewActor || this.LayoutActor || undefined;
   }
   IsScrollOrLayoutActive() {
     this.InitScrollViewAndLayout();
-    if (this.ScrollView) {
-      return this.ScrollView.RootUIComp.IsUIActiveInHierarchy();
+    if (this.ScrollProxy) {
+      return this.ScrollProxy.IsScrollViewActive();
     } else {
       return !!this.LayoutBase && this.LayoutBase.RootUIComp.IsUIActiveInHierarchy();
     }
@@ -373,60 +354,19 @@ class TsUiNavigationBehaviorListener extends UE.UINavigationBehaviour {
     return this.AnimController?.IsPlaying() ?? false;
   }
   IsInNormalScrollDisplayByGridActor() {
-    var i;
-    var t;
-    return !this.HasNormalScrollView() || !this.GridBaseActor || (i = (0, puerts_1.$ref)(3), t = (0, puerts_1.$ref)(3), this.ScrollView.GetOutOfBottomBoundsType(this.GridBaseActor.GetUIItem(), i, t), this.ScrollView.Vertical ? (0, puerts_1.$unref)(i) === 0 : (0, puerts_1.$unref)(t) === 0);
+    return !this.HasNormalScrollView() || !this.GridBaseActor || this.ScrollProxy.IsInNormalScrollDisplayByGridActor(this.GridBaseActor);
   }
   IsInLoopScrollDisplay() {
-    var i;
-    return !this.HasLoopScrollView() || (i = this.ScrollView).NavigationIndex === -1 || i.NavigationIndex === this.LoopScrollViewGridIndex;
+    return !this.ScrollProxy || this.ScrollProxy.IsInLoopScrollDisplay(this.LoopScrollViewGridIndex);
   }
   IsInLoopScrollDisplayByGridActor() {
-    if (!this.HasLoopScrollView()) {
-      return true;
-    }
-    var i = this.ScrollView;
-    var t = (0, puerts_1.$ref)(3);
-    var s = (0, puerts_1.$ref)(3);
-    var h = this.GetErrorTolerance(i.Vertical);
-    let e = undefined;
-    e = this.GridBaseActor ? this.GridBaseActor.GetUIItem() : this.RootUIComp;
-    i.GetOutOfBottomBoundsType(e, t, s, h);
-    if (i.Vertical) {
-      return (0, puerts_1.$unref)(t) === 0;
-    } else {
-      return (0, puerts_1.$unref)(s) === 0;
-    }
-  }
-  GetErrorTolerance(i) {
-    var t;
-    var s = this.RootUIComp.RelativeScale3D;
-    let h = MathUtils_1.MathUtils.KindaSmallNumber * 2;
-    if (i && s.Y > 1) {
-      t = s.Y - 1;
-      h += t * this.RootUIComp.Height / 2;
-    } else if (!i && s.X > 1) {
-      t = s.X - 1;
-      h += t * this.RootUIComp.Width / 2;
-    }
-    return h;
+    return !this.ScrollProxy || this.ScrollProxy.IsInLoopScrollDisplayByGridActor(this.GridBaseActor);
   }
   IsInDynScrollDisplay() {
-    if (!this.HasDynamicScrollView()) {
-      return true;
-    }
-    var i = this.ScrollView;
-    var t = (0, puerts_1.$ref)(3);
-    var s = (0, puerts_1.$ref)(3);
-    var h = this.GetErrorTolerance(i.Vertical);
-    let e = undefined;
-    e = this.GridBaseActor ? this.GridBaseActor.GetUIItem() : this.RootUIComp;
-    i.GetOutOfBottomBoundsType(e, t, s, h);
-    if (i.Vertical) {
-      return (0, puerts_1.$unref)(t) === 0;
-    } else {
-      return (0, puerts_1.$unref)(s) === 0;
-    }
+    return !this.ScrollProxy || this.ScrollProxy.IsInDynScrollDisplay(this.GridBaseActor);
+  }
+  IsInScrollDisplayByGridActor() {
+    return !this.ScrollProxy || this.ScrollProxy.IsScrollDisplayByGridActor(this.GridBaseActor);
   }
   IsInScrollOrLayoutCanFocus() {
     var i = this.GetNavigationComponent();
@@ -468,8 +408,8 @@ class TsUiNavigationBehaviorListener extends UE.UINavigationBehaviour {
     }
   }
   UpdateLoopNavigationIndex(i) {
-    if (this.ScrollViewActor && this.ScrollView instanceof UE.UILoopScrollViewComponent) {
-      this.ScrollView.SetNavigationIndex(i);
+    if (this.ScrollViewActor && this.ScrollProxy) {
+      this.ScrollProxy.SetLoopScrollViewNavigationIndex(i);
     }
   }
   NotifyUnFocusListener() {

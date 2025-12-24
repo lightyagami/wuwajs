@@ -28,6 +28,7 @@ class ConsumeMediumItemGrid extends LoopScrollMediumItemGrid_1.LoopScrollMediumI
             Type: 4,
             Data: e,
             ItemConfigId: d.GetConfigId(true),
+            QualityId: d.GetQuality(),
             BottomTextId: a.Name,
             StarLevel: a.QualityId,
             Level: d.GetCost(),
@@ -43,20 +44,22 @@ class ConsumeMediumItemGrid extends LoopScrollMediumItemGrid_1.LoopScrollMediumI
           this.Apply(l);
         } else if (i === 2) {
           d = ModelManager_1.ModelManager.WeaponModel.GetWeaponDataByIncId(n);
-          const l = {
-            Type: 4,
-            Data: e,
-            ItemConfigId: r,
-            BottomTextId: "Text_LevelShow_Text",
-            BottomTextParameter: [d.GetLevel()],
-            StarLevel: a.QualityId,
-            Level: d.GetResonanceLevel(),
-            ReduceButtonInfo: {
-              IsVisible: true,
-              LongPressConfigId: 1
-            }
-          };
-          this.Apply(l);
+          if (d) {
+            const l = {
+              Type: 4,
+              Data: e,
+              ItemConfigId: r,
+              BottomTextId: "Text_LevelShow_Text",
+              BottomTextParameter: [d.GetLevel()],
+              StarLevel: a.QualityId,
+              Level: d.GetResonanceLevel(),
+              ReduceButtonInfo: {
+                IsVisible: true,
+                LongPressConfigId: 1
+              }
+            };
+            this.Apply(l);
+          }
         } else {
           const l = {
             Type: 4,

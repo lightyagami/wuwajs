@@ -74,30 +74,33 @@ const LOW_STRENGTH_EXIT_VALUE = 2200;
 const interruptAutoMoving = [0, 1, 2, 3, 4, 5, 7, 8, 9];
 const useDelayCacheModeRoleIds = [1409, 1306, 1410];
 class InputEvent {
-  constructor(t, i, e) {
+  constructor(t, i, e, s = -1) {
     this.Action = t;
     this.State = i;
     this.Time = e;
+    this.Id = s;
   }
 }
 exports.InputEvent = InputEvent;
 class InputCommand {
-  constructor(t, i, e, s, h) {
+  constructor(t, i, e, s, h, n = -1) {
     this.Action = t;
     this.State = i;
     this.Time = e;
     this.Command = s;
     this.Index = h;
+    this.Id = n;
   }
 }
 exports.InputCommand = InputCommand;
 class InputCache {
-  constructor(t, i, e, s, h) {
+  constructor(t, i, e, s, h, n = -1) {
     this.Action = t;
     this.State = i;
     this.Time = e;
     this.WorldTime = s;
     this.AccumulateTime = h;
+    this.Id = n;
   }
 }
 exports.InputCache = InputCache;
@@ -295,7 +298,7 @@ let CharacterInputComponent = CharacterInputComponent_1 = class CharacterInputCo
     this.F6r = undefined;
     this.V6r = undefined;
     this.Bhh = undefined;
-    this.qjd = undefined;
+    this.Gjd = undefined;
     this.H6r = new Array();
     this.j6r = new Array();
     this.QMe = new Map();
@@ -320,7 +323,7 @@ let CharacterInputComponent = CharacterInputComponent_1 = class CharacterInputCo
     this.Z6r = 0;
     this.e8r = 0;
     this.t8r = 0;
-    this.Bum = 1;
+    this.s0m = 1;
     this.BJe = (t, i, e) => {
       i = this.tRr?.GetSkillInfo(i);
       if (i && interruptAutoMoving.includes(i.SkillGenre)) {
@@ -348,7 +351,7 @@ let CharacterInputComponent = CharacterInputComponent_1 = class CharacterInputCo
     this._7_ = (t, i) => {
       if (this.Bhh) {
         if (i !== 0) {
-          i = t.GetComponent(287)?.GetMorphBpInputComp();
+          i = t.GetComponent(306)?.GetMorphBpInputComp();
           this.Bhh.SetBpInputComp(i);
         } else {
           this.Bhh.ResetBpInputComp();
@@ -382,11 +385,11 @@ let CharacterInputComponent = CharacterInputComponent_1 = class CharacterInputCo
     this.S8r = undefined;
     this.y8r = new Map();
     this.I8r = new Map();
-    this.Kmm = false;
+    this.Wvm = false;
     this.s5u = undefined;
     this.oFd = false;
     this.Exd = false;
-    this.yWd = undefined;
+    this.IWd = undefined;
     this.olc = undefined;
     this.Jze = () => {
       this.InterruptAutoMoving("角色死亡", true);
@@ -694,13 +697,13 @@ let CharacterInputComponent = CharacterInputComponent_1 = class CharacterInputCo
       InputController_1.InputController.AddInputHandler(this);
     }
     this.pZo = this.Entity.GetComponent(18);
-    this.Lie = this.Entity.GetComponent(209);
-    this.mBe = this.Entity.GetComponent(179);
-    this.tRr = this.Entity.GetComponent(40);
-    this.Gce = this.Entity.GetComponent(182);
-    this.rJo = this.Entity.GetComponent(179);
+    this.Lie = this.Entity.GetComponent(215);
+    this.mBe = this.Entity.GetComponent(184);
+    this.tRr = this.Entity.GetComponent(41);
+    this.Gce = this.Entity.GetComponent(187);
+    this.rJo = this.Entity.GetComponent(184);
     this.bhh();
-    this.Gjd();
+    this.Fjd();
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CharAnimBreakPoint, this.n8r);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharUseSkill, this.BJe);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharPossessed, this.PPr);
@@ -719,12 +722,12 @@ let CharacterInputComponent = CharacterInputComponent_1 = class CharacterInputCo
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnCharacterMorphTypeChanged, this._7_);
     this.F8r();
     ModelManager_1.ModelManager.InputModel?.InitInputCommandTransformMap();
-    this.kum();
+    this.a0m();
     return true;
   }
   OnEnd() {
     this.qhh();
-    this.Fjd();
+    this.Njd();
     InputController_1.InputController.RemoveInputHandler(this);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CharAnimBreakPoint, this.n8r);
     EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CharUseSkill, this.BJe);
@@ -823,7 +826,7 @@ let CharacterInputComponent = CharacterInputComponent_1 = class CharacterInputCo
     this.S8r.EndTask();
   }
   K8r() {
-    return this.Gce?.CharacterMovement?.CustomMovementMode === CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_LEISURE && (this.Entity.GetComponent(33)?.LockRotator ?? false);
+    return this.Gce?.CharacterMovement?.CustomMovementMode === CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_LEISURE && (this.Entity.GetComponent(34)?.LockRotator ?? false);
   }
   i8r(t) {
     let i = Vector_1.Vector.ZeroVectorProxy;
@@ -869,7 +872,7 @@ let CharacterInputComponent = CharacterInputComponent_1 = class CharacterInputCo
               i.DeepCopy(this.fz);
             }
           }
-          if (i.IsNearlyZero() || FormationDataController_1.FormationDataController.GlobalIsInFight || !e && !ModelManager_1.ModelManager.BattleUiModel?.FormationData?.AutoSprintSettingEnable) {
+          if (i.IsNearlyZero() || (FormationDataController_1.FormationDataController.GlobalIsInFight || !e && !ModelManager_1.ModelManager.BattleUiModel?.FormationData?.AutoSprintSettingEnable) && !this.CheckAutoSprintTag()) {
             this.jT1 = 0;
           } else {
             this.JC1(e, t);
@@ -900,6 +903,9 @@ let CharacterInputComponent = CharacterInputComponent_1 = class CharacterInputCo
       this.Hte.SetInputDirect(i, true);
       this.Q8r();
     }
+  }
+  CheckAutoSprintTag() {
+    return this.Lie?.HasTag(-1752974000) ?? false;
   }
   H8r(t) {
     var i;
@@ -1003,7 +1009,7 @@ let CharacterInputComponent = CharacterInputComponent_1 = class CharacterInputCo
     }
   }
   Q8r(t = true) {
-    if (this.Kmm) {
+    if (this.Wvm) {
       this.l5u();
     } else if (this.t6c) {
       this.Hte.SetInputFacing(this.Hte.ActorForwardProxy, t);
@@ -1066,7 +1072,7 @@ let CharacterInputComponent = CharacterInputComponent_1 = class CharacterInputCo
     if (this.j6r.length === 0) {
       return false;
     }
-    if (this.Bum === 0) {
+    if (this.s0m === 0) {
       return !(this.t6d = true);
     }
     const s = new Array();
@@ -1122,7 +1128,7 @@ let CharacterInputComponent = CharacterInputComponent_1 = class CharacterInputCo
     return i = i === undefined ? INVALID_PRIORITY : i;
   }
   Z8r(t) {
-    return (this.F6r?.CharacterActorComponent?.Entity?.GetComponent(40)).GetPriority(t);
+    return (this.F6r?.CharacterActorComponent?.Entity?.GetComponent(41)).GetPriority(t);
   }
   P8r(t, i) {
     CharacterInputComponent_1.P0l.Start();
@@ -1169,7 +1175,7 @@ let CharacterInputComponent = CharacterInputComponent_1 = class CharacterInputCo
     CharacterInputComponent_1.P0l.Stop();
   }
   t9r(t) {
-    var i = this.Entity.GetComponent(182);
+    var i = this.Entity.GetComponent(187);
     if (i.Valid) {
       if (t.IntValue === 1) {
         i.JumpPress();
@@ -1179,30 +1185,30 @@ let CharacterInputComponent = CharacterInputComponent_1 = class CharacterInputCo
     }
   }
   i9r(t) {
-    this.Entity.GetComponent(34)?.ClimbPress(t.IntValue === 1);
+    this.Entity.GetComponent(35)?.ClimbPress(t.IntValue === 1);
   }
   o9r(t) {
     if (t.IntValue === 1) {
-      this.Entity.CheckGetComponent(179).SprintPress();
+      this.Entity.CheckGetComponent(184).SprintPress();
     } else {
-      this.Entity.CheckGetComponent(179).SprintRelease();
+      this.Entity.CheckGetComponent(184).SprintRelease();
     }
   }
   r9r(t) {
-    this.Entity.CheckGetComponent(179).SwitchFastSwim(t.IntValue === 1);
+    this.Entity.CheckGetComponent(184).SwitchFastSwim(t.IntValue === 1);
   }
   n9r(t) {
-    this.Entity.CheckGetComponent(179).SwitchFastClimb(t.IntValue === 1);
+    this.Entity.CheckGetComponent(184).SwitchFastClimb(t.IntValue === 1);
   }
   a9r(t) {
-    this.Entity.CheckGetComponent(179).WalkPress();
+    this.Entity.CheckGetComponent(184).WalkPress();
   }
   rja(t) {
-    this.Entity.CheckGetComponent(59)?.SetSoarBoostOn(t.IntValue > 0);
+    this.Entity.CheckGetComponent(62)?.SetSoarBoostOn(t.IntValue > 0);
   }
   s9r(t) {}
   e9r(t, i) {
-    this.Entity.GetComponent(40).BeginSkillAsync(t, {
+    this.Entity.GetComponent(41).BeginSkillAsync(t, {
       Reason: "CharacterInputComponent.ExecuteSkill." + i
     });
   }
@@ -1225,6 +1231,12 @@ let CharacterInputComponent = CharacterInputComponent_1 = class CharacterInputCo
       if (e) {
         CharacterInputComponent_1.w0l.Start();
         for (const s of e) {
+          if (s.CheckBlockDispatchEvent(t)) {
+            if (Log_1.Log.CheckInfo()) {
+              Log_1.Log.Info("Input", 45, "[CharacterInputComponent.DispatchPressEvent]输入的事件被LayerMap屏蔽", ["entityId", this.Entity.Id], ["layer", s.GetLayerType()], ["action", t]);
+            }
+            break;
+          }
           s.DispatchPressEvent(t, i);
         }
         CharacterInputComponent_1.w0l.Stop();
@@ -1241,7 +1253,13 @@ let CharacterInputComponent = CharacterInputComponent_1 = class CharacterInputCo
       if (e) {
         CharacterInputComponent_1.B0l.Start();
         for (const s of e) {
-          s.DispatchReleaseEvent(t, i);
+          if (s.CheckBlockDispatchEvent(t)) {
+            if (Log_1.Log.CheckInfo()) {
+              Log_1.Log.Info("Input", 45, "[CharacterInputComponent.DispatchReleaseEvent]输入的事件被LayerMap屏蔽", ["entityId", this.Entity.Id], ["layer", s.GetLayerType()], ["action", t]);
+            }
+          } else {
+            s.DispatchReleaseEvent(t, i);
+          }
         }
         CharacterInputComponent_1.B0l.Stop();
       } else if (Log_1.Log.CheckError()) {
@@ -1260,7 +1278,7 @@ let CharacterInputComponent = CharacterInputComponent_1 = class CharacterInputCo
           var s = h.HandlePress(t, i);
           if (s && s.CommandType !== 0) {
             if (Log_1.Log.CheckDebug()) {
-              Log_1.Log.Debug("Battle", 67, "[CharacterInputComponent.HandlePress]输入层级处理指令", ["layerType", h.GetLayerType()]);
+              Log_1.Log.Debug("Battle", 67, "[CharacterInputComponent.HandlePress]输入层级处理指令", ["layerType", h.GetLayerType()], ["action", t], ["commandType", s.CommandType], ["commandValue", s.IntValue]);
             }
             CharacterInputComponent_1.b0l.Stop();
             return s;
@@ -1283,7 +1301,7 @@ let CharacterInputComponent = CharacterInputComponent_1 = class CharacterInputCo
           var s = h.HandleRelease(t, i);
           if (s && s.CommandType !== 0) {
             if (Log_1.Log.CheckDebug()) {
-              Log_1.Log.Debug("Battle", 67, "[CharacterInputComponent.HandleRelease]输入层级处理指令", ["layerType", h.GetLayerType()]);
+              Log_1.Log.Debug("Battle", 67, "[CharacterInputComponent.HandleRelease]输入层级处理指令", ["layerType", h.GetLayerType()], ["action", t], ["commandType", s.CommandType], ["commandValue", s.IntValue]);
             }
             CharacterInputComponent_1.q0l.Stop();
             return s;
@@ -1305,7 +1323,7 @@ let CharacterInputComponent = CharacterInputComponent_1 = class CharacterInputCo
           var s = h.HandleHold(t, i);
           if (s && s.CommandType !== 0) {
             if (Log_1.Log.CheckDebug()) {
-              Log_1.Log.Debug("Battle", 67, "[CharacterInputComponent.HandleHold]输入层级处理指令", ["layerType", h.GetLayerType()]);
+              Log_1.Log.Debug("Battle", 67, "[CharacterInputComponent.HandleHold]输入层级处理指令", ["layerType", h.GetLayerType()], ["action", t], ["commandType", s.CommandType], ["commandValue", s.IntValue]);
             }
             return s;
           }
@@ -1422,22 +1440,22 @@ let CharacterInputComponent = CharacterInputComponent_1 = class CharacterInputCo
       this.Bhh = undefined;
     }
   }
-  Gjd() {
+  Fjd() {
     var t;
     var i = InputController_1.InputController.CreateInputLayer(2);
     if (i && (t = ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(this.Entity)) && (i.Init(t, true), i.IsValid())) {
-      if (this.qjd) {
-        this.Fjd();
+      if (this.Gjd) {
+        this.Njd();
       }
-      this.qjd = i;
-      InputController_1.InputController.AddInputLayer(this.Entity.Id, this.qjd);
+      this.Gjd = i;
+      InputController_1.InputController.AddInputLayer(this.Entity.Id, this.Gjd);
     }
   }
-  Fjd() {
-    if (this.qjd) {
-      InputController_1.InputController.RemoveInputLayer(this.qjd);
-      this.qjd.Clear();
-      this.qjd = undefined;
+  Njd() {
+    if (this.Gjd) {
+      InputController_1.InputController.RemoveInputLayer(this.Gjd);
+      this.Gjd.Clear();
+      this.Gjd = undefined;
     }
   }
   GetBpInputComp() {
@@ -1460,7 +1478,7 @@ let CharacterInputComponent = CharacterInputComponent_1 = class CharacterInputCo
     this.awd = t;
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnOnlyAllowFightInputStateChanged);
   }
-  kum() {
+  a0m() {
     var i = this.Entity.GetComponent(0);
     if (i) {
       let t = i.GetPbDataId();
@@ -1472,69 +1490,69 @@ let CharacterInputComponent = CharacterInputComponent_1 = class CharacterInputCo
         }
       }
       if (useDelayCacheModeRoleIds.includes(t)) {
-        this.Bum = 0;
+        this.s0m = 0;
       }
     }
   }
   SetInputCacheMode(t) {
-    this.Bum = t;
+    this.s0m = t;
   }
   a5u() {
     this.s5u = this.Lie?.ListenForTagAddOrRemove(-869438579, (t, i) => {
       if (i) {
-        this.Kmm = true;
-        this.SWd(t => {
+        this.Wvm = true;
+        this.TWd(t => {
           for (const i of t.FirstPersonTagList) {
             this.Lie?.AddTag(i);
           }
         });
         this.mBe?.SetDirectionState(CharacterUnifiedStateTypes_1.ECharDirectionState.CameraDirection);
-        this.Entity?.GetComponent(45)?.SetLockedRotation(true);
+        this.Entity?.GetComponent(46)?.SetLockedRotation(true);
       } else {
-        this.Kmm = false;
-        this.cXd();
+        this.Wvm = false;
+        this.gXd();
       }
     });
   }
-  cXd() {
+  gXd() {
     this.rJo?.MarkWalkOrRun(false, false, false);
     this.mBe?.SetDirectionState(CharacterUnifiedStateTypes_1.ECharDirectionState.FaceDirection);
-    this.Entity?.GetComponent(45)?.SetLockedRotation(false);
-    if (this.yWd) {
-      for (const t of this.yWd.FirstPersonTagList) {
+    this.Entity?.GetComponent(46)?.SetLockedRotation(false);
+    if (this.IWd) {
+      for (const t of this.IWd.FirstPersonTagList) {
         this.Lie?.RemoveTag(t);
       }
     }
   }
   h5u() {
-    this.cXd();
+    this.gXd();
     this.oFd = false;
     this.Exd = false;
-    this.yWd = undefined;
+    this.IWd = undefined;
     this.s5u?.EndTask();
   }
-  SWd(i) {
+  TWd(i) {
     if (!this.oFd) {
       this.oFd = true;
       this.rJo?.MarkWalkOrRun(false, false, true);
     }
-    if (this.yWd) {
-      i(this.yWd);
+    if (this.IWd) {
+      i(this.IWd);
     } else {
       const t = FLYING_FEATHER_CONFIG_PATH;
-      this.yWd = new FirstPersonConfig();
+      this.IWd = new FirstPersonConfig();
       ResourceSystem_1.ResourceSystem.LoadTypeAsync("BP_FirstPersonConfig_C", () => {
         ResourceSystem_1.ResourceSystem.LoadAsync(t, UE.BP_FirstPersonConfig_C, t => {
-          this.yWd ||= new FirstPersonConfig();
+          this.IWd ||= new FirstPersonConfig();
           if (t?.IsValid()) {
-            this.yWd.Init(t);
+            this.IWd.Init(t);
           }
-          i(this.yWd);
+          i(this.IWd);
         });
       });
     }
   }
-  Msm(t) {
+  a_m(t) {
     if (t) {
       if (!this.Exd) {
         this.rJo?.SprintPress();
@@ -1548,21 +1566,21 @@ let CharacterInputComponent = CharacterInputComponent_1 = class CharacterInputCo
   l5u() {
     var t;
     if (this.rJo?.PositionState !== CharacterUnifiedStateTypes_1.ECharPositionState.Ground && this.rJo?.PositionState !== CharacterUnifiedStateTypes_1.ECharPositionState.Air && this.rJo?.PositionState !== CharacterUnifiedStateTypes_1.ECharPositionState.Water) {
-      this.Msm(false);
+      this.a_m(false);
     } else {
       if (this.rJo?.MoveState !== CharacterUnifiedStateTypes_1.ECharMoveState.Sprint) {
-        this.Msm(false);
+        this.a_m(false);
       }
       if (this.mBe.DirectionState !== CharacterUnifiedStateTypes_1.ECharDirectionState.CameraDirection) {
         this.mBe?.SetDirectionState(CharacterUnifiedStateTypes_1.ECharDirectionState.CameraDirection);
-        this.Entity?.GetComponent(45)?.SetLockedRotation(true);
+        this.Entity?.GetComponent(46)?.SetLockedRotation(true);
       }
-      if (this.rJo?.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Ground && !this.fz.IsNearlyZero() && !this.tRr?.CurrentSkill && (t = GravityUtils_1.GravityUtils.GetAngleOffsetInGravityForActor(this.Hte, this.Hte.ActorForwardProxy, this.Hte.InputDirectProxy), Math.abs(t) < (this.yWd?.ForwardAngle ?? FIRST_FORWARD_ANGLE))) {
-        this.Msm(true);
+      if (this.rJo?.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Ground && !this.fz.IsNearlyZero() && !this.tRr?.CurrentSkill && (t = GravityUtils_1.GravityUtils.GetAngleOffsetInGravityForActor(this.Hte, this.Hte.ActorForwardProxy, this.Hte.InputDirectProxy), Math.abs(t) < (this.IWd?.ForwardAngle ?? FIRST_FORWARD_ANGLE))) {
+        this.a_m(true);
       } else {
-        this.Msm(false);
+        this.a_m(false);
       }
-      if ((!this.yWd || !this.Lie?.HasAnyTag(this.yWd.ForbidRotationTagList)) && !(this.zC1(this.fz), this.fz.IsNearlyZero())) {
+      if ((!this.IWd || !this.Lie?.HasAnyTag(this.IWd.ForbidRotationTagList)) && !(this.zC1(this.fz), this.fz.IsNearlyZero())) {
         MathUtils_1.MathUtils.LookRotationForwardFirst(this.fz, this.Hte.ActorUpProxy, this.cie);
         this.Hte.SetActorRotation(this.cie.ToUeRotator(), "FirstPerson.CameraDirection", false);
         this.Hte.SetInputFacing(this.Hte.ActorForwardProxy);
@@ -1576,8 +1594,8 @@ let CharacterInputComponent = CharacterInputComponent_1 = class CharacterInputCo
     var t;
     var i;
     if (!this.olc) {
-      t = this.Entity.GetComponent(209);
-      i = this.Entity.GetComponent(213);
+      t = this.Entity.GetComponent(215);
+      i = this.Entity.GetComponent(220);
       this.olc = new InputContinuously(t, i);
       this.olc.InitConfig();
     }
@@ -1686,5 +1704,5 @@ CharacterInputComponent.B0l = Stats_1.Stat.Create("CharacterInputComponent.Dispa
 CharacterInputComponent.b0l = Stats_1.Stat.Create("CharacterInputComponent.HandlePress");
 CharacterInputComponent.q0l = Stats_1.Stat.Create("CharacterInputComponent.HandleRelease");
 CharacterInputComponent.T8r = new Map();
-CharacterInputComponent = CharacterInputComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(62)], CharacterInputComponent);
+CharacterInputComponent = CharacterInputComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(65)], CharacterInputComponent);
 exports.CharacterInputComponent = CharacterInputComponent; //# sourceMappingURL=CharacterInputComponent.js.map

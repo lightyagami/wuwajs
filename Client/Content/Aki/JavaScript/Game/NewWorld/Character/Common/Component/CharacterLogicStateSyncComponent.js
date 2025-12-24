@@ -81,7 +81,7 @@ let CharacterLogicStateSyncComponent = class CharacterLogicStateSyncComponent ex
   }
   OnStart() {
     this.Hte = this.Entity.CheckGetComponent(3);
-    this.I5r = this.Entity.CheckGetComponent(179);
+    this.I5r = this.Entity.CheckGetComponent(184);
     this.Xjt = this.Entity.GetComponent(0).IsRole();
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharSwitchControl, this.OnSwitchControl);
     return true;
@@ -146,7 +146,7 @@ let CharacterLogicStateSyncComponent = class CharacterLogicStateSyncComponent ex
     }
   }
   static LogicStateInitNotify(t, e) {
-    t?.GetComponent(64)?.A9r(e.RWn);
+    t?.GetComponent(67)?.A9r(e.RWn);
   }
   utc() {
     var t = this.Hte?.CreatureData?.GetPlayerId() ?? 0;
@@ -154,7 +154,7 @@ let CharacterLogicStateSyncComponent = class CharacterLogicStateSyncComponent ex
   }
   static SwitchLogicStateNotify(t, e) {
     if (!t?.GetComponent(3)?.IsMoveAutonomousProxy) {
-      if ((t = t?.GetComponent(64)) && e.rWn) {
+      if ((t = t?.GetComponent(67)) && e.rWn) {
         this.TId(t, 0, e.rWn.LWn);
         this.TId(t, 1, e.rWn.DWn);
         this.TId(t, 2, e.rWn.AWn);
@@ -170,5 +170,5 @@ let CharacterLogicStateSyncComponent = class CharacterLogicStateSyncComponent ex
 };
 __decorate([CombatMessage_1.CombatNet.Listen("qFn", true)], CharacterLogicStateSyncComponent, "LogicStateInitNotify", null);
 __decorate([CombatMessage_1.CombatNet.Listen("GFn", true)], CharacterLogicStateSyncComponent, "SwitchLogicStateNotify", null);
-CharacterLogicStateSyncComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(64)], CharacterLogicStateSyncComponent);
+CharacterLogicStateSyncComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(67)], CharacterLogicStateSyncComponent);
 exports.CharacterLogicStateSyncComponent = CharacterLogicStateSyncComponent; //# sourceMappingURL=CharacterLogicStateSyncComponent.js.map

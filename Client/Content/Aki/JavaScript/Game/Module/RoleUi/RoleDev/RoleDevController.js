@@ -73,9 +73,9 @@ class RoleDevController extends UiControllerBase_1.UiControllerBase {
       }
     });
   }
-  static LKd(o, r, t) {
+  static UKd(o, r, t) {
     try {
-      var e = RoleDevController.PKd(o);
+      var e = RoleDevController.xKd(o);
       var l = new LogReportDefine_1.RoleDevLogEvent();
       l.i_role_id = o;
       l.i_role_type = e;
@@ -92,7 +92,7 @@ class RoleDevController extends UiControllerBase_1.UiControllerBase {
       }
     }
   }
-  static PKd(o) {
+  static xKd(o) {
     try {
       if (ModelManager_1.ModelManager.RoleModel.GetRoleDataById(o)) {
         return 1;
@@ -107,13 +107,13 @@ class RoleDevController extends UiControllerBase_1.UiControllerBase {
     }
   }
   static LogRoleDevPageClick(e, o) {
-    e = RoleDevController.LKd(e, o, -1);
+    e = RoleDevController.UKd(e, o, -1);
     if (e) {
       LogController_1.LogController.LogRoleDevPush(e);
     }
   }
   static LogRoleDevSubPageClick(e, o, r) {
-    e = RoleDevController.LKd(e, o, r);
+    e = RoleDevController.UKd(e, o, r);
     if (e) {
       LogController_1.LogController.LogRoleDevPush(e);
     }

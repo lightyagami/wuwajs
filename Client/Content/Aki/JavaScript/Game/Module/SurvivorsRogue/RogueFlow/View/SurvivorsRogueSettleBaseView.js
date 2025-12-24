@@ -25,13 +25,13 @@ class SurvivorsRogueSettleBaseView extends UiViewBase_1.UiViewBase {
     super(...arguments);
     this.vBd = undefined;
     this.TSn = undefined;
-    this.Zjd = new ScrollingNumberTool_1.ScrollingNumberTool();
+    this.rHd = new ScrollingNumberTool_1.ScrollingNumberTool();
     this.OnClickBtnReturn = () => {};
     this.OnClickBtnReturnMain = () => {};
     this.$An = e => {
       if (e === "InturnAni") {
         this.vBd.GetUiAnimController()?.Play();
-        this.Zjd.StartScrolling();
+        this.rHd.StartScrolling();
       }
     };
     this.yBd = () => {
@@ -49,7 +49,7 @@ class SurvivorsRogueSettleBaseView extends UiViewBase_1.UiViewBase {
     this.vBd = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(15), this.yBd);
     this.TSn = new SurvivorsRogueRoleInfoItem_1.SurvivorsRogueRoleInfoItem();
     await this.TSn.CreateThenShowByActorAsync(this.GetItem(0).GetOwner());
-    await this.Zjd.InitCurve();
+    await this.rHd.InitCurve();
     await this.RefreshAsync();
   }
   OnAddEventListener() {
@@ -64,7 +64,7 @@ class SurvivorsRogueSettleBaseView extends UiViewBase_1.UiViewBase {
     });
   }
   OnBeforeDestroyImplement() {
-    this.Zjd.Clear();
+    this.rHd.Clear();
   }
   GetViewInfo() {}
   SBd(e, t) {
@@ -117,7 +117,7 @@ class SurvivorsRogueSettleBaseView extends UiViewBase_1.UiViewBase {
         LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(12), o);
         i = TimeUtil_1.TimeUtil.GetRemainTimeDataFormat6(Number(MathUtils_1.MathUtils.LongToBigInt(e.fAs)));
         this.GetText(13).SetText(i);
-        this.Zjd.Init(0, e.vDd, e => {
+        this.rHd.Init(0, e.vDd, e => {
           this.GetText(14).SetText(Math.round(e).toString());
         });
         r = this.SBd(e.YTd, e.yDd);

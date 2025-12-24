@@ -79,7 +79,7 @@ class TsTaskMoveToTarget extends TsTaskAbortImmediatelyBase_1.default {
     var e = t.AiController;
     if (e) {
       s = (e = e.CharActorComp).Entity;
-      this.MoveComp = s.GetComponent(45);
+      this.MoveComp = s.GetComponent(46);
       if (this.GetMoveToTargetPosition(this.TargetLocation)) {
         if (this.TryFindPathToTarget(this.TargetLocation)) {
           this.LastTime = Time_1.Time.WorldTime;

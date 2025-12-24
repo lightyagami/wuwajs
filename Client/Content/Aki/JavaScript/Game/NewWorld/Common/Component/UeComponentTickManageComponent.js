@@ -78,5 +78,5 @@ let UeComponentTickManageComponent = UeComponentTickManageComponent_1 = class Ue
     }
   }
 };
-UeComponentTickManageComponent = UeComponentTickManageComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(116)], UeComponentTickManageComponent);
+UeComponentTickManageComponent = UeComponentTickManageComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(121)], UeComponentTickManageComponent);
 exports.UeComponentTickManageComponent = UeComponentTickManageComponent; //# sourceMappingURL=UeComponentTickManageComponent.js.map

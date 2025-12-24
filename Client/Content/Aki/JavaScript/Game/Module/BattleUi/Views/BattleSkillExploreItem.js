@@ -10,7 +10,6 @@ const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const TouchFingerManager_1 = require("../../../Ui/TouchFinger/TouchFingerManager");
-const RouletteMainViewProxy_1 = require("../../Roulette/ViewProxy/RouletteMainViewProxy");
 const BattleSkillItem_1 = require("./BattleSkillItem");
 class BattleSkillExploreItem extends BattleSkillItem_1.BattleSkillItem {
   constructor() {
@@ -25,10 +24,10 @@ class BattleSkillExploreItem extends BattleSkillItem_1.BattleSkillItem {
       }
     };
     this.OnTouch = (e, t) => {
-      var i;
+      var r;
       if (!this.IsLongPress) {
         e = Number(e);
-        if ((i = TouchFingerManager_1.TouchFingerManager.GetTouchFingerData(e)?.GetPointerEventData()?.pressComponent) && i.GetOwner() === this.Jtt.GetOwner()) {
+        if ((r = TouchFingerManager_1.TouchFingerManager.GetTouchFingerData(e)?.GetPointerEventData()?.pressComponent) && r.GetOwner() === this.Jtt.GetOwner()) {
           this.ztt = e;
         }
       }
@@ -73,7 +72,7 @@ class BattleSkillExploreItem extends BattleSkillItem_1.BattleSkillItem {
     }
   }
   OpenRouletteMainView(e) {
-    var t = new RouletteMainViewProxy_1.RouletteMainViewProxy();
+    var t = ControllerHolder_1.ControllerHolder.RouletteController.GetCurrentRouletteMainViewProxy();
     t.TouchId = e;
     ControllerHolder_1.ControllerHolder.RouletteController.OpenRouletteMainView(t);
   }

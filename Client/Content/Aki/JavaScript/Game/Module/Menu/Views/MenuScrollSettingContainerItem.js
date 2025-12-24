@@ -54,6 +54,8 @@ class MenuScrollSettingContainerItem extends UiPanelBase_1.UiPanelBase {
         this.E91(e);
       } else if (this.Pe.FunctionId === GameSettingsDefine_1.EFunction.HIGHESTFPS) {
         this.sku(e);
+      } else if (this.Pe.FunctionId === GameSettingsDefine_1.EFunction.HDR) {
+        this.BBm(e);
       } else {
         ControllerHolder_1.ControllerHolder.MenuController.HandleFireSaveMenuChange(this.Pe, e);
       }
@@ -279,6 +281,9 @@ class MenuScrollSettingContainerItem extends UiPanelBase_1.UiPanelBase {
     } else {
       ControllerHolder_1.ControllerHolder.MenuController.HandleFireSaveMenuChange(this.Pe, e);
     }
+  }
+  BBm(e) {
+    ControllerHolder_1.ControllerHolder.MenuController.HandleFireSaveMenuChange(this.Pe, e);
   }
   E91(e) {
     var t;

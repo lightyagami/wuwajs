@@ -153,6 +153,13 @@ let VehicleActorComponent = VehicleActorComponent_1 = class VehicleActorComponen
     this.SetRotationRequestProxy = new FunctionRequestProxy_1.FunctionRequestProxy();
     return !!this.InitCreatureData();
   }
+  InitSizeInternal() {
+    var t = this.Actor.CapsuleComponent;
+    this.RadiusInternal = t.CapsuleRadius;
+    this.HalfHeightInternal = t.CapsuleHalfHeight;
+    this.DefaultRadiusInternal = this.RadiusInternal;
+    this.DefaultHalfHeightInternal = this.HalfHeightInternal;
+  }
   OnInit(t) {
     super.OnInit();
     var e = this.CreatureDataInternal.GetPbModelConfig()?.ModelId;
@@ -181,6 +188,7 @@ let VehicleActorComponent = VehicleActorComponent_1 = class VehicleActorComponen
     e = this.ActorInternal;
     e.VehicleActorComponent = this;
     e.SetEntityId(this.Entity.Id);
+    this.InitSizeInternal();
     this.InitDefaultController(this.ActorInternal);
     this.SetInputFacing(this.ActorForwardProxy);
     this.SetActorVisible(false, "[VehicleActorComponent.OnInit] 默认隐藏");
@@ -200,7 +208,7 @@ let VehicleActorComponent = VehicleActorComponent_1 = class VehicleActorComponen
     return true;
   }
   OnStart() {
-    return !!super.OnStart() && (this.InputComp = this.Entity.GetComponent(244), this.VehicleMoveComp = this.Entity.GetComponent(240), this.DebugMovementComp = this.Entity.GetComponent(30), true);
+    return !!super.OnStart() && (this.InputComp = this.Entity.GetComponent(253), this.VehicleMoveComp = this.Entity.GetComponent(249), this.DebugMovementComp = this.Entity.GetComponent(30), true);
   }
   OnActivate() {
     super.OnActivate();
@@ -210,8 +218,9 @@ let VehicleActorComponent = VehicleActorComponent_1 = class VehicleActorComponen
     this.SetTickEnable(true, "[VehicleActorComponent.OnActivate] Visible");
     this.Actor.VehicleMovementComponent.InitVehicleShapes();
     ControllerHolder_1.ControllerHolder.WorldController.SetActorDataByCreature(this.CreatureDataInternal, this.ActorInternal);
-    var t = VehiclePathMoveController_1.VehiclePathMoveController.GetEntitySplineMoveInfo(this.Entity);
-    this.SetAutonomous(!ModelManager_1.ModelManager.GameModeModel.IsMulti || !!t);
+    var t = this.CreatureDataInternal.GetPlayerId() === ModelManager_1.ModelManager.CreatureModel.GetPlayerId();
+    var e = VehiclePathMoveController_1.VehiclePathMoveController.GetEntitySplineMoveInfo(this.Entity);
+    this.SetAutonomous(t || !!e);
   }
   OnEnd() {
     if (this.ActorInternal?.IsValid() && (this.ActorInternal.OnDestroyed.Remove(this.OnActorDestroy), this.ActorInternal instanceof TsBaseVehicle_1.default && (this.ActorInternal.DitherEffectController?.Clear(), this.ActorInternal.DitherEffectController = undefined), this.Actor.PlatformActor?.IsValid())) {
@@ -230,13 +239,13 @@ let VehicleActorComponent = VehicleActorComponent_1 = class VehicleActorComponen
     this.ResetAllCachedTime();
   }
   OnChangeTimeDilation(t) {
-    var e = this.Entity.GetComponent(126)?.CurrentTimeScale ?? 1;
+    var e = this.Entity.GetComponent(131)?.CurrentTimeScale ?? 1;
     this.ActorInternal.CustomTimeDilation = t * e;
   }
   SetMoveAutonomous(t, e = "") {
     CombatLog_1.CombatLog.Info("Control", this.Entity, "设置移动主控", [e, t]);
     super.SetMoveAutonomous(t);
-    e = this.Entity.GetComponent(239);
+    e = this.Entity.GetComponent(248);
     if (e) {
       e.MainAnimInstance?.SetStateMachineNetMode(!t);
       e.SpecialAnimInstance?.SetStateMachineNetMode(!t);
@@ -414,9 +423,7 @@ let VehicleActorComponent = VehicleActorComponent_1 = class VehicleActorComponen
     var h;
     if (MathUtils_1.MathUtils.IsValidVector(t) && MathUtils_1.MathUtils.IsValidRotator(e)) {
       s = !r || ((h = new FunctionRequestProxy_1.FunctionRequestWithPriority()).ModuleName = i, h.Priority = r, this.SetRotationRequestProxy.DecideCall(h)) ? super.SetActorLocationAndRotation(t, e, i, o) : super.SetActorLocation(t, i, o);
-      this.CachedActorRotation.DeepCopy(e);
-      this.CachedRotationTime = Time_1.Time.Frame;
-      this.CachedActorRotation.Quaternion(this.CachedActorQuat);
+      this.ResetTransformCachedTime();
       this.OnTeleport();
       return s;
     } else {
@@ -478,10 +485,12 @@ let VehicleActorComponent = VehicleActorComponent_1 = class VehicleActorComponen
     }
   }
   FixBornLocation(t = undefined, e = "FixBornLocation") {
-    this.Entity.GetComponent(237)?.FixBornLocation(t, e);
+    this.Entity.GetComponent(246)?.FixBornLocation(t, e);
   }
+  EnterFirstPersonMode() {}
+  ExitFirstPersonMode() {}
 };
 VehicleActorComponent.TmpVector = Vector_1.Vector.Create(0, 0, 0);
 VehicleActorComponent.TmpQuat = Quat_1.Quat.Create();
-VehicleActorComponent = VehicleActorComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(238)], VehicleActorComponent);
+VehicleActorComponent = VehicleActorComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(247)], VehicleActorComponent);
 exports.VehicleActorComponent = VehicleActorComponent; //# sourceMappingURL=VehicleActorComponent.js.map

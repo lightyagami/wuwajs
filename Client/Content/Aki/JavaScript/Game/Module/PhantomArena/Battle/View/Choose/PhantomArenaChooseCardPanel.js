@@ -5,16 +5,17 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.PhantomArenaChooseCardPanel = undefined;
 const UE = require("ue");
-const ControllerHolder_1 = require("../../../../../Manager/ControllerHolder");
-const ModelManager_1 = require("../../../../../Manager/ModelManager");
 const UiPanelBase_1 = require("../../../../../Ui/Base/UiPanelBase");
 const ScrollingTipsController_1 = require("../../../../ScrollingTips/ScrollingTipsController");
 const GenericLayout_1 = require("../../../../Util/Layout/GenericLayout");
 const LguiUtil_1 = require("../../../../Util/LguiUtil");
 const PhantomArenaChooseCardItem_1 = require("./PhantomArenaChooseCardItem");
+const EventSystem_1 = require("../../../../../Common/Event/EventSystem");
+const EventDefine_1 = require("../../../../../Common/Event/EventDefine");
 class PhantomArenaChooseCardPanel extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
+    this.Data = undefined;
     this.ViewProxy = undefined;
     this.SelectedIdSet = new Set();
     this.LimitCount = 0;
@@ -33,11 +34,9 @@ class PhantomArenaChooseCardPanel extends UiPanelBase_1.UiPanelBase {
       this.GetItem(2).SetUIActive(t);
     };
     this.tWt = () => {
-      ControllerHolder_1.ControllerHolder.PhantomArenaBattleController.RequestPhantomBattleCardSelect(Array.from(this.SelectedIdSet)).then(t => {
-        if (t) {
-          this.ConfirmFunc?.();
-          this.ConfirmFunc = undefined;
-          this.SetActive(false);
+      this.Data.ConfirmFunc(Array.from(this.SelectedIdSet)).finally(() => {
+        if (this.Data.GuideType) {
+          this.ViewProxy.GuideManager.TryFinishGuideByType(this.Data.GuideType);
         }
       });
     };
@@ -46,16 +45,18 @@ class PhantomArenaChooseCardPanel extends UiPanelBase_1.UiPanelBase {
     };
     this.Ui1 = (t, i) => {
       this.dU1(t.CardId);
-      if (i && this.SelectedIdSet.size >= this.LimitCount) {
-        if (this.LimitCount > 1) {
-          ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("PhantomBattle_1079");
-          return;
+      if (!i || !this.Data.GuideType || this.ViewProxy.GuideManager.CheckCanExecuteAndShowFailTips(this.Data.GuideType, t.ConfigId)) {
+        if (i && this.SelectedIdSet.size >= this.LimitCount) {
+          if (this.LimitCount > 1) {
+            ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("PhantomBattle_1079");
+            return;
+          }
+          this.X31();
         }
-        this.X31();
+        this.Y31(t.CardId, i);
+        this.pG1();
+        this.mGe();
       }
-      this.Y31(t.CardId, i);
-      this.pG1();
-      this.mGe();
     };
   }
   OnRegisterComponent() {
@@ -66,26 +67,28 @@ class PhantomArenaChooseCardPanel extends UiPanelBase_1.UiPanelBase {
     this.Layout = new GenericLayout_1.GenericLayout(this.GetLayoutBase(0), this.sGe, this.GetItem(1).GetOwner());
   }
   async OnBeforeShowAsyncImplement() {
-    this.ViewProxy.RegisterCantDragReason(1);
+    this.ViewProxy.RegisterCantDragReason(0);
     this.SelectedIdSet.clear();
     this.CurrentSelectId = -1;
-    var t = ModelManager_1.ModelManager.PhantomArenaBattleModel.SelectCardData.GetSelectCardDataList();
-    await this.Layout.RefreshByDataAsync(t);
-    this.LimitCount = ModelManager_1.ModelManager.PhantomArenaBattleModel.SelectCardData.SelectNum;
+    await this.Layout.RefreshByDataAsync(this.Data.CardDataList);
+    this.LimitCount = this.Data.LimitCount;
     this.pG1();
     this.mGe();
     this.ViewProxy.HideCardTips();
     this.ViewProxy.SetCaptionItemActive(false);
-    this.ViewProxy.IsInPanelInteract = true;
+    this.ViewProxy.SetInPanelInteractType(1);
     this.ViewProxy.SetIsMainInVisible(false);
   }
   OnAfterHide() {
     this.GetItem(2).SetUIActive(true);
     this.ViewProxy.HideCardTips();
     this.ViewProxy.SetCaptionItemActive(true);
-    this.ViewProxy.UnRegisterCantDragReason(1);
+    this.ViewProxy.UnRegisterCantDragReason(0);
     this.ViewProxy.SetIsMainInVisible(true);
-    this.ViewProxy.IsInPanelInteract = false;
+    this.ViewProxy.SetInPanelInteractType(0);
+  }
+  OnAfterShow() {
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPhantomArenaChooseCardPanelShow);
   }
   Y31(t, i) {
     var e = this.Layout.GetLayoutItemByKey(t);
@@ -115,7 +118,7 @@ class PhantomArenaChooseCardPanel extends UiPanelBase_1.UiPanelBase {
       }
       if (i = this.Layout.GetLayoutItemByKey(t)) {
         i.SetSelectState(true);
-        this.ViewProxy.ShowCardTips(i.Card.Data);
+        this.ViewProxy.ShowCardTips(i.Card.Data, false);
       }
       this.CurrentSelectId = t;
     }
@@ -139,6 +142,22 @@ class PhantomArenaChooseCardPanel extends UiPanelBase_1.UiPanelBase {
   }
   RegisterViewProxy(t) {
     this.ViewProxy = t;
+  }
+  SetChooseCardData(t) {
+    this.Data = t;
+  }
+  GetGuideUiItemAndUiItemForShowEx(t) {
+    if (!(t.length <= 0) && t[0] === "BattleCardChooseById") {
+      var i = Number(t[1]);
+      for (const s of this.Layout.GetLayoutItemList()) {
+        if (s.Card.Data.ConfigId === i) {
+          var e = s.Card.GetRootItem();
+          if (e) {
+            return [e, e];
+          }
+        }
+      }
+    }
   }
 }
 exports.PhantomArenaChooseCardPanel = PhantomArenaChooseCardPanel;

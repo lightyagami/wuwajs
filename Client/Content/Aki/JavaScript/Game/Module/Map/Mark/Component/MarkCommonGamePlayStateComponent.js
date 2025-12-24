@@ -37,10 +37,12 @@ class MarkCommonGamePlayStateComponent extends MapComponent_1.MapComponent {
   OnAdd() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.LevelPlayStateDetailUpdate, this.OnLevelPlayStateUpdate);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnLevelPlayStateChange, this.EventUpdateLevelPlayState);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.LevelPlayRewardDetailUpdate, this.OnLevelPlayStateUpdate);
   }
   OnRemove() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.LevelPlayStateDetailUpdate, this.OnLevelPlayStateUpdate);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnLevelPlayStateChange, this.EventUpdateLevelPlayState);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.LevelPlayRewardDetailUpdate, this.OnLevelPlayStateUpdate);
   }
   dWl() {
     var n = this.GetRelativeId();

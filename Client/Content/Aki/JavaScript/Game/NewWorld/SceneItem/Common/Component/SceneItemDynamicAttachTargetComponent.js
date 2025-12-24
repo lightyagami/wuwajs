@@ -160,11 +160,11 @@ let SceneItemDynamicAttachTargetComponent = class SceneItemDynamicAttachTargetCo
     };
   }
   static get Dependencies() {
-    return [206, 0];
+    return [212, 0];
   }
   OnInitData(t) {
     this.EIe = this.Entity.GetComponent(0);
-    this.Hte = this.Entity.GetComponent(206);
+    this.Hte = this.Entity.GetComponent(212);
     return !!this.Hte || (Log_1.Log.CheckError() && Log_1.Log.Error("SceneItem", 39, "[DynamicAttachComp] Invalid ActorComp", ["PbDataId:", this.EIe?.GetPbDataId()]), false);
   }
   OnActivate() {
@@ -227,7 +227,7 @@ let SceneItemDynamicAttachTargetComponent = class SceneItemDynamicAttachTargetCo
     }
   }
   Lln(e) {
-    var i = e.Entity?.GetComponent(206);
+    var i = e.Entity?.GetComponent(212);
     if (i) {
       if (this.rln && !i?.GetIsSceneInteractionLoadCompleted()) {
         if (!EventSystem_1.EventSystem.HasWithTarget(e.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted, this.cln)) {
@@ -266,7 +266,7 @@ let SceneItemDynamicAttachTargetComponent = class SceneItemDynamicAttachTargetCo
     if (t?.Entity && EventSystem_1.EventSystem.HasWithTarget(t.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted, this.cln)) {
       EventSystem_1.EventSystem.RemoveWithTarget(t.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted, this.cln);
     }
-    var e = t?.Entity?.GetComponent(206);
+    var e = t?.Entity?.GetComponent(212);
     let i = undefined;
     i = this.rln && e?.GetIsSceneInteractionLoadCompleted() ? e?.GetActorInSceneInteraction(this.rln) : e?.Owner;
     this.gln(i);
@@ -527,5 +527,5 @@ let SceneItemDynamicAttachTargetComponent = class SceneItemDynamicAttachTargetCo
     Net_1.Net.Call(28932, t, () => {});
   }
 };
-SceneItemDynamicAttachTargetComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(129)], SceneItemDynamicAttachTargetComponent);
+SceneItemDynamicAttachTargetComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(134)], SceneItemDynamicAttachTargetComponent);
 exports.SceneItemDynamicAttachTargetComponent = SceneItemDynamicAttachTargetComponent; //# sourceMappingURL=SceneItemDynamicAttachTargetComponent.js.map

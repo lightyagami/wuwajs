@@ -17,6 +17,7 @@ const UiTickViewBase_1 = require("../../../../Ui/Base/UiTickViewBase");
 const UiManager_1 = require("../../../../Ui/UiManager");
 const ActivityControllerHolder_1 = require("../../../Activity/ActivityControllerHolder");
 const ConfirmBoxDefine_1 = require("../../../ConfirmBox/ConfirmBoxDefine");
+const TeleportMisc_1 = require("../../../Teleport/TeleportMisc");
 const UiCameraAnimationController_1 = require("../../../UiCameraAnimation/UiCameraAnimationController");
 const UiCameraAnimationManager_1 = require("../../../UiCameraAnimation/UiCameraAnimationManager");
 const AbyssButtonItem_1 = require("./AbyssButtonItem");
@@ -65,11 +66,11 @@ class DangoAbyssEntranceView extends UiTickViewBase_1.UiTickViewBase {
         if (t !== 0) {
           if (ModelManager_1.ModelManager.QuestNewModel.IsInFocusMode()) {
             (e = new ConfirmBoxDefine_1.ConfirmBoxDataNew(341)).FunctionMap.set(2, () => {
-              ControllerHolder_1.ControllerHolder.TeleportController.SendTeleportTransferRequest(t);
+              TeleportMisc_1.TeleportMisc.SendTeleportTransferRequest(t);
             });
             ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(e);
           } else {
-            ControllerHolder_1.ControllerHolder.TeleportController.SendTeleportTransferRequest(t);
+            TeleportMisc_1.TeleportMisc.SendTeleportTransferRequest(t);
           }
         }
       }

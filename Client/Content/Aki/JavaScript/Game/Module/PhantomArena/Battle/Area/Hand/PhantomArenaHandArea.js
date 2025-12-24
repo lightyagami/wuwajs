@@ -15,6 +15,7 @@ const ControllerHolder_1 = require("../../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../../Manager/ModelManager");
 const UiPanelBase_1 = require("../../../../../Ui/Base/UiPanelBase");
 const UiSequencePlayer_1 = require("../../../../../Ui/Base/UiSequencePlayer");
+const PhantomArenaLogicFactory_1 = require("../../Card/Logic/PhantomArenaLogicFactory");
 const PhantomArenaCard_1 = require("../../Card/PhantomArenaCard");
 const PhantomArenaDefine_1 = require("../../PhantomArenaDefine");
 const PhantomArenaHandAreaItem_1 = require("./PhantomArenaHandAreaItem");
@@ -34,6 +35,7 @@ class PhantomArenaHandArea extends UiPanelBase_1.UiPanelBase {
     this.OriginalOffset = 0;
     this.Sequence = undefined;
     this.IsLayoutHoist = false;
+    this.IsFirstTimeDrawCard = true;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIHorizontalLayout]];
@@ -76,10 +78,10 @@ class PhantomArenaHandArea extends UiPanelBase_1.UiPanelBase {
     this.GridWidth = e.GetRootItem().GetWidth();
     var a = ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.GetHandCardDataByCardId(a);
     var i = new PhantomArenaCard_1.PhantomArenaCard();
-    i.SetCardData(a);
+    i.RegisterCardLogic(PhantomArenaLogicFactory_1.PhantomArenaLogicFactory.CreateLogic(i, a.GetCardType(), this.Area.ViewProxy));
     t.Init(i, e, this.Area);
-    await i.CreateByResourceIdAsync("UiItem_SoundRemnantItem", e.GetRootItem());
-    await i.RefreshSelfAsync();
+    await i.InitializePhantomArenaCard(a, e.GetRootItem());
+    return i;
   }
   async ou1(a) {
     var t = new PhantomArenaHandCardProxy_1.PhantomArenaHandCardProxy();
@@ -129,22 +131,50 @@ class PhantomArenaHandArea extends UiPanelBase_1.UiPanelBase {
     await Promise.all(t);
     this.iu1();
   }
-  async knu(a) {
+  async UIf(a) {
+    let t = 1;
+    var e = [];
+    var i = [];
+    for (const s of this.CardMap.values()) {
+      if (!s.GetCard().Data.IsField) {
+        e.push(s.PlayStartTimeLocationTween(a, t * PhantomArenaDefine_1.PLAY_STARTTIME_CARD_TWEEN_DELAY));
+        t++;
+      }
+    }
+    await Promise.all(e);
+    let r = 1;
+    for (const n of this.CardMap.values()) {
+      if (n.GetCard().Data.IsField) {
+        i.push(n.PlayStartTimeLocationTween(a, r * PhantomArenaDefine_1.PLAY_STARTTIME_CARD_TWEEN_DELAY));
+        r++;
+      }
+    }
+    await Promise.all(i);
+  }
+  async xIf(a) {
     var t = [];
     let e = 1;
     for (const i of this.CardMap.values()) {
-      if (!i.IsFourCost()) {
+      if (!i.IsNoAllowDiscard()) {
         t.push(i.PlayStartTimeLocationTween(a, e * PhantomArenaDefine_1.PLAY_STARTTIME_CARD_TWEEN_DELAY));
         e++;
       }
     }
     await Promise.all(t);
   }
+  async knu(a) {
+    if (this.IsFirstTimeDrawCard) {
+      this.IsFirstTimeDrawCard = false;
+      await this.UIf(a);
+    } else {
+      await this.xIf(a);
+    }
+  }
   async Onu(a) {
     var t = [];
     let e = 1;
     for (const i of this.CardMap.values()) {
-      if (!i.IsFourCost()) {
+      if (!i.IsNoAllowDiscard()) {
         t.push(i.PlayEndTimeLocationTween(a, e * PhantomArenaDefine_1.PLAY_STARTTIME_CARD_TWEEN_DELAY));
         e++;
       }
@@ -184,18 +214,18 @@ class PhantomArenaHandArea extends UiPanelBase_1.UiPanelBase {
     }
     await Promise.all(e);
   }
-  async fhu(a, t) {
-    var e = [];
-    let i = 1;
-    for (const s of t) {
-      var r = this.CardMap.get(s);
-      if (r) {
-        e.push(r.PlayHandRecycleCardTween(a, i * PhantomArenaDefine_1.PLAY_STARTTIME_CARD_TWEEN_DELAY));
+  async fhu(a) {
+    var t = [];
+    let e = 1;
+    for (const r of a) {
+      var i = this.CardMap.get(r);
+      if (i) {
+        t.push(i.PlayHandRecycleCardTween(e * PhantomArenaDefine_1.PLAY_STARTTIME_CARD_TWEEN_DELAY));
       }
-      this.CardMap.delete(s);
-      i++;
+      this.CardMap.delete(r);
+      e++;
     }
-    await Promise.all(e);
+    await Promise.all(t);
     this.iu1();
   }
   async ghu(a) {
@@ -279,7 +309,7 @@ class PhantomArenaHandArea extends UiPanelBase_1.UiPanelBase {
   async EndTimeDiscardCard(a) {
     await this.Onu(a);
     for (var [t, e] of this.CardMap) {
-      if (!e.IsFourCost()) {
+      if (!e.IsNoAllowDiscard()) {
         e.Remove();
         this.CardMap.delete(t);
       }
@@ -288,14 +318,15 @@ class PhantomArenaHandArea extends UiPanelBase_1.UiPanelBase {
   async DiscardCard(a, t) {
     await this.dhu(a, t);
   }
-  async AddCard(a, t) {
-    await this.chu(t);
+  async AddCard(a) {
+    var t = this.Area.ViewProxy.GetOwnCardLibraryItem();
+    await this.chu(a);
     await TimerSystem_1.GameplayTimerSystem.Wait(TimerSystem_1.MIN_TIME);
-    await this.mhu(a, t);
-    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnHandAreaAddCard, t);
+    await this.mhu(t, a);
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnHandAreaAddCard, a);
   }
-  async RecycleCard(a, t) {
-    await this.fhu(a, t);
+  async RecycleCard(a) {
+    await this.fhu(a);
   }
   async ResetCardPosition(a) {
     await this.ghu(a.Data.CardId);
@@ -314,27 +345,37 @@ class PhantomArenaHandArea extends UiPanelBase_1.UiPanelBase {
     await TimerSystem_1.GameplayTimerSystem.Wait(TimerSystem_1.MIN_TIME);
     await this.ghu(a.Data.CardId);
   }
-  async HandToRecycle(a, t) {
-    await this.fhu(a, [t.Data.CardId]);
+  async HandToRecycle(a) {
+    await this.fhu([a.Data.CardId]);
   }
   async HandCardToFunctionalTop(a, t, e) {
     await this.v7c(a.Data.CardId, t, e);
   }
+  async ReconstructHandCardToRecycle(a) {
+    await this.fhu(a);
+  }
   GetGuideUiItemAndUiItemForShowEx(a) {
-    var t;
-    var e;
     if (a && !(a.length < 1)) {
-      if ((t = a[0]) === "HandCard") {
-        if (a.length < 2) {
-          return undefined;
+      var t = a[0];
+      if (t !== "HandCard") {
+        if (t === "HandArea") {
+          return Array.from(this.CardMap.values())[0]?.GetGuideUiItemAndUiItemForShowEx(a);
         } else {
-          e = parseInt(a[1]);
-          return Array.from(this.CardMap.values())[e]?.GetGuideUiItemAndUiItemForShowEx(a);
+          return undefined;
         }
-      } else if (t === "HandArea") {
-        return Array.from(this.CardMap.values())[0]?.GetGuideUiItemAndUiItemForShowEx(a);
-      } else {
-        return undefined;
+      }
+      if (!(a.length < 2)) {
+        var t = a[1];
+        var e = Array.from(this.CardMap.values());
+        if (t === "ConfigId") {
+          var i = Number(a[2]);
+          for (const r of e) {
+            if (r.GetCard().Data.ConfigId === i) {
+              return r.GetGuideUiItemAndUiItemForShowEx(a);
+            }
+          }
+        }
+        return e[parseInt(a[1])]?.GetGuideUiItemAndUiItemForShowEx(a);
       }
     }
   }

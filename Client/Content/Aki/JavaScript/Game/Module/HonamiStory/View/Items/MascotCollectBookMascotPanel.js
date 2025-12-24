@@ -25,22 +25,22 @@ class MascotCollectBookMascotPanel extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.CNe = undefined;
-    this.Uzd = undefined;
+    this.dJd = undefined;
     this.P5d = undefined;
-    this.udm = new Map();
+    this.GCm = new Map();
     this.R5d = undefined;
     this.bOe = undefined;
     this.p9t = undefined;
-    this.Dzd = [];
-    this.Dmm = undefined;
+    this.cJd = [];
+    this.pvm = undefined;
     this.bId = false;
-    this.xmm = undefined;
+    this.yvm = undefined;
     this.$An = t => {
       if (t === "Info_Switch_2") {
         this._$c();
       }
-      if (t === "PnlHead_Refresh" && this.Uzd) {
-        this.SetTextureShowUntilLoaded(this.Uzd.Config.Picture, this.GetTexture(11));
+      if (t === "PnlHead_Refresh" && this.dJd) {
+        this.SetTextureShowUntilLoaded(this.dJd.Config.Picture, this.GetTexture(11));
       }
     };
     this.D5d = () => {
@@ -53,16 +53,16 @@ class MascotCollectBookMascotPanel extends UiPanelBase_1.UiPanelBase {
       if (this.P5d !== t) {
         this.P5d?.OnDeselected();
         this.P5d = t;
-        this.Uzd = t.Data;
-        if (this.Dmm) {
-          this.Dmm();
+        this.dJd = t.Data;
+        if (this.pvm) {
+          this.pvm();
         }
-        this.xmm.PlaySequence("Switch_2");
+        this.yvm.PlaySequence("Switch_2");
       }
     };
     this.p5t = () => {
       var t;
-      if (this.Uzd && (t = this.Uzd).State === 1) {
+      if (this.dJd && (t = this.dJd).State === 1) {
         HonamiStoryController_1.HonamiStoryController.SendHonamiStoryMascotRewardRequest(t.Id, () => {
           this.bId = true;
         });
@@ -70,7 +70,7 @@ class MascotCollectBookMascotPanel extends UiPanelBase_1.UiPanelBase {
     };
     this.v6e = () => {
       if (this.bId) {
-        this.qRm();
+        this.IYm();
       }
     };
   }
@@ -78,8 +78,8 @@ class MascotCollectBookMascotPanel extends UiPanelBase_1.UiPanelBase {
     this.ComponentRegisterInfos = [[0, UE.UIVerticalLayout], [1, UE.UIItem], [2, UE.UIText], [3, UE.UIText], [4, UE.UIText], [5, UE.UIText], [6, UE.UIText], [7, UE.UIScrollViewWithScrollbarComponent], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UIItem], [11, UE.UITexture]];
   }
   OnBeforeCreateImplement() {
-    this.xmm = new UiViewSequence_1.UiBehaviorLevelSequence(this);
-    this.AddUiBehavior(this.xmm);
+    this.yvm = new UiViewSequence_1.UiBehaviorLevelSequence(this);
+    this.AddUiBehavior(this.yvm);
   }
   OnStart() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.$An);
@@ -90,7 +90,7 @@ class MascotCollectBookMascotPanel extends UiPanelBase_1.UiPanelBase {
     this.p9t.SetFunction(this.p5t);
   }
   OnBeforeShow() {
-    this.xmm.PlaySequence("Start");
+    this.yvm.PlaySequence("Start");
   }
   OnBeforeDestroy() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.$An);
@@ -98,31 +98,31 @@ class MascotCollectBookMascotPanel extends UiPanelBase_1.UiPanelBase {
   }
   async InitPanel() {
     this.CNe ||= ModelManager_1.ModelManager.HonamiStoryModel.GetActivityData();
-    if (this.udm.size === 0) {
+    if (this.GCm.size === 0) {
       this.U5d();
     }
     if (this.P5d) {
       this.P5d.OnDeselected();
     }
     this.P5d = undefined;
-    await this.xzd();
-    this.Bzd();
+    await this.mJd();
+    this.fJd();
     this._$c();
   }
   U5d() {
-    this.udm.clear();
+    this.GCm.clear();
     for (const e of this.CNe.GetHonamiStoryMascotAreaDataList()) {
       var t = this.CNe.GetHonamiStoryMascotDataListByAreaId(e.Id);
       if (t.length !== 0) {
-        this.udm.set(e.Id, t);
+        this.GCm.set(e.Id, t);
       }
     }
   }
-  async xzd() {
+  async mJd() {
     var t;
     var e;
     var i = [];
-    for ([t, e] of this.udm) {
+    for ([t, e] of this.GCm) {
       var s = {
         AreaData: this.CNe.GetHonamiStoryAreaData(t),
         MascotDataList: e
@@ -130,22 +130,22 @@ class MascotCollectBookMascotPanel extends UiPanelBase_1.UiPanelBase {
       i.push(s);
     }
     await this.R5d.RefreshByDataAsync(i);
-    this.Uzd = i[0].MascotDataList[0];
+    this.dJd = i[0].MascotDataList[0];
   }
-  Bzd() {
+  fJd() {
     for (const t of this.R5d.GetLayoutItemList()) {
       for (const e of t.GetMascotToggleList()) {
-        this.Dzd.push(e);
+        this.cJd.push(e);
       }
     }
-    if (this.Dzd.length > 0) {
-      this.P5d = this.Dzd[0];
+    if (this.cJd.length > 0) {
+      this.P5d = this.cJd[0];
       this.P5d.OnSelected();
     }
   }
   _$c() {
-    if (this.Uzd) {
-      var t = this.Uzd;
+    if (this.dJd) {
+      var t = this.dJd;
       var e = this.CNe.GetHonamiStoryAreaData(t.AreaId);
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), "HonamiStory_Mascot_Number_Text", t.Id);
       this.GetText(3).ShowTextNew(t.Name);
@@ -168,7 +168,7 @@ class MascotCollectBookMascotPanel extends UiPanelBase_1.UiPanelBase {
       this.p9t.SetShowText(HonamiStoryDefine_1.honamiCollectStateMap.get(e));
       var o = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.HonamiStoryMascotUnlockSet) ?? new Set();
       if (o.has(t.Id)) {
-        this.xmm?.PlaySequence("PnlHead_Refresh");
+        this.yvm?.PlaySequence("PnlHead_Refresh");
         o.delete(t.Id);
         LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.HonamiStoryMascotUnlockSet, o);
       } else if (e === 1 || e === 2) {
@@ -180,16 +180,16 @@ class MascotCollectBookMascotPanel extends UiPanelBase_1.UiPanelBase {
     }
   }
   BindSwitchCallback(t) {
-    this.Dmm = t;
+    this.pvm = t;
   }
   CloseWithSequence() {
-    this.xmm.PlaySequence("Close");
+    this.yvm.PlaySequence("Close");
   }
-  qRm() {
+  IYm() {
     this.bId = false;
     this.P5d.Refresh(this.P5d.Data, true, 0);
     this._$c();
-    this.xmm.PlaySequence("Stamp");
+    this.yvm.PlaySequence("Stamp");
   }
 }
 exports.MascotCollectBookMascotPanel = MascotCollectBookMascotPanel;

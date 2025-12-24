@@ -33,10 +33,10 @@ class HonamiStorySettleSuccessView extends UiViewBase_1.UiViewBase {
       this.xqe?.RefreshByData(e.DisplayItems, undefined, true);
       this.GetText(1).SetText(e.TotalReward.toString());
       this.GetItem(2).SetUIActive(e.IsNewRecord);
-      this.bbm();
+      this.c9m();
     }
   }
-  bbm() {
+  c9m() {
     var e = ModelManager_1.ModelManager.HonamiStoryModel.GetRandomDialogData(2);
     AudioSystem_1.AudioSystem.PostEvent(e.AudioEvent);
   }

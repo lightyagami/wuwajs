@@ -107,8 +107,8 @@ class ChargeSlashCurveControl extends (exports.CurveControlBase = CurveControlBa
     this.nB1 = false;
   }
   OnInit(t) {
-    this.Hte = this.Entity?.GetComponent(206);
-    this.Lie = this.Entity?.GetComponent(200);
+    this.Hte = this.Entity?.GetComponent(212);
+    this.Lie = this.Entity?.GetComponent(206);
     const s = t.CurveControlConfig;
     this.pb1 = s.UpHeight;
     if (s.UpCurvePath && !StringUtils_1.StringUtils.IsEmpty(s.UpCurvePath)) {

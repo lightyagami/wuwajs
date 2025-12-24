@@ -7,6 +7,7 @@ exports.CharGrassInteraction = undefined;
 const UE = require("ue");
 const TsBaseCharacter_1 = require("../../../../Character/TsBaseCharacter");
 const GlobalData_1 = require("../../../../GlobalData");
+const TsBaseVehicle_1 = require("../../../../NewWorld/Vehicle/TsBaseVehicle");
 const RenderConfig_1 = require("../../../Config/RenderConfig");
 const CharRenderBase_1 = require("../../Manager/CharRenderBase");
 const refBoneName = new UE.FName("Bip001Head");
@@ -34,35 +35,35 @@ class CharGrassInteraction extends CharRenderBase_1.CharRenderBase {
     }
   }
   SetConfig(t) {
+    var e;
     var s;
-    var i;
     if (t && !this.IsOnMobile) {
-      s = t.植被交互半径;
-      i = t.植被交互相对位置;
+      e = t.植被交互半径;
+      s = t.植被交互相对位置;
       t = t.启用植被交互;
-      this.UDa(s, i, t);
+      this.UDa(e, s, t);
     }
   }
-  UDa(t, s, i) {
+  UDa(t, e, s) {
     if (!this.IsOnMobile) {
-      const e = this.RenderComponent.GetCachedOwner();
-      if (e && e instanceof TsBaseCharacter_1.default) {
-        this.OwnerCapsule = e.CapsuleComponent;
-        this.OwnerSkeletal = e.Mesh;
+      const i = this.RenderComponent.GetCachedOwner();
+      if (i && (i instanceof TsBaseCharacter_1.default || i instanceof TsBaseVehicle_1.default)) {
+        this.OwnerCapsule = i.CapsuleComponent;
+        this.OwnerSkeletal = i.Mesh;
       }
       if (this.OwnerCapsule && this.OwnerSkeletal) {
         if (this.OwnerSkeletal.GetBoneIndex(refBoneName) !== -1) {
           this.M4a = this.E4a();
           this.S4a = true;
         }
-        this.BaseBias = new UE.Vector(s.X, s.Y, s.Z - this.OwnerCapsule.CapsuleHalfHeight);
+        this.BaseBias = new UE.Vector(e.X, e.Y, e.Z - this.OwnerCapsule.CapsuleHalfHeight);
         if (!this.GrassInteractionComponent) {
-          const e = this.GetRenderingComponent().GetOwner();
-          this.GrassInteractionComponent = e.AddComponentByClass(UE.KuroGrassInteractionSphereComponent.StaticClass(), false, new UE.Transform(this.BaseBias), false);
+          const i = this.GetRenderingComponent().GetOwner();
+          this.GrassInteractionComponent = i.AddComponentByClass(UE.KuroGrassInteractionSphereComponent.StaticClass(), false, new UE.Transform(this.BaseBias), false);
         }
         this.GrassInteractionComponent.Radius = t;
-        this.GrassInteractionComponent.bEnabled = i;
-        this.Enabled = i;
+        this.GrassInteractionComponent.bEnabled = s;
+        this.Enabled = s;
       }
     }
   }

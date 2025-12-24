@@ -27,7 +27,7 @@ class SurvivorsRogueCardBase extends UiPanelBase_1.UiPanelBase {
     this.iui = undefined;
     this.CPt = new Set();
     this.mPt = new Map();
-    this.ysm = [];
+    this.n_m = [];
     this.gPt = [];
     this.RYu = (e, i) => {
       if (i) {
@@ -49,12 +49,12 @@ class SurvivorsRogueCardBase extends UiPanelBase_1.UiPanelBase {
       }
     };
     this.Lke = () => this.LPt && this.Data ? this.LPt(this.Data, this.GetCardToggle().GetToggleState()) : this.OnCanExecuteChange();
-    this.lZd = () => {
+    this.kem = () => {
       if (this.tui && this.Data) {
         this.tui(this.Data, this.GetCardToggle().GetToggleState());
       }
     };
-    this._Zd = () => {
+    this.qem = () => {
       if (this.iui && this.Data) {
         this.iui(this.Data, this.GetCardToggle().GetToggleState());
       }
@@ -80,7 +80,7 @@ class SurvivorsRogueCardBase extends UiPanelBase_1.UiPanelBase {
   async Apply(e) {
     this.Data = e;
     this.oEd();
-    this.Ssm();
+    this.s_m();
     switch (e.Type) {
       case 0:
         await this.ApplyCardTypeItem(e);
@@ -164,14 +164,14 @@ class SurvivorsRogueCardBase extends UiPanelBase_1.UiPanelBase {
     }
     return i;
   }
-  Ssm() {
-    this.ysm.length = 0;
+  s_m() {
+    this.n_m.length = 0;
     this.gPt.length = 0;
   }
   GPt(e) {
     switch (e.GetLayoutLevel()) {
       case 0:
-        this.ysm.push(e);
+        this.n_m.push(e);
         break;
       case 1:
         this.gPt.push(e);
@@ -181,8 +181,8 @@ class SurvivorsRogueCardBase extends UiPanelBase_1.UiPanelBase {
     for (let e = 0; e < this.gPt.length; e++) {
       this.gPt[e]?.GetOriginalItem()?.SetHierarchyIndex(e);
     }
-    for (let e = 0; e < this.ysm.length; e++) {
-      this.ysm[e]?.GetOriginalItem()?.SetHierarchyIndex(e);
+    for (let e = 0; e < this.n_m.length; e++) {
+      this.n_m[e]?.GetOriginalItem()?.SetHierarchyIndex(e);
     }
   }
   oEd() {
@@ -286,8 +286,8 @@ class SurvivorsRogueCardBase extends UiPanelBase_1.UiPanelBase {
     var e = this.GetCardToggle();
     e.OnStateChange.Add(this.PPt);
     e.CanExecuteChange.Bind(this.Lke);
-    e.OnHover.Add(this.lZd);
-    e.OnUnHover.Add(this._Zd);
+    e.OnHover.Add(this.kem);
+    e.OnUnHover.Add(this.qem);
   }
   RemoveEvents() {
     var e = this.GetCardToggle();

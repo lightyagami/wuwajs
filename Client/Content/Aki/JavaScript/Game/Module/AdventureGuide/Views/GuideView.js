@@ -152,6 +152,7 @@ class AdventureGuideView extends UiViewBase_1.UiViewBase {
     var a;
     var s;
     var [, o] = ModelManager_1.ModelManager.AdventureGuideModel.GetCanShowDungeonRecordsByType(63);
+    o.push(...ModelManager_1.ModelManager.AdventureGuideModel.GetCanShowDungeonRecordsByType(64)[1]);
     for (const m of o) {
       if (m.SilentAreaDetectionRecord && (a = m.SilentAreaDetectionRecord.Conf.MapId, s = m.SilentAreaDetectionRecord.Conf.LevelPlayList[0], ModelManager_1.ModelManager.AdventureGuideModel.IsNightMareHaveConfig(a, s))) {
         n.push(ControllerHolder_1.ControllerHolder.AdventureGuideController.RequestLevelPlayVarAsync(a, s));

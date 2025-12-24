@@ -25,7 +25,7 @@ class SurvivorsRoguePopUpWaveTipsPanel extends UiPanelBase_1.UiPanelBase {
     this._fe = false;
     this.Zbd = 0;
     this.eRd = 0;
-    this.zjd = false;
+    this.tHd = false;
     this.$An = e => {
       if (e === "TipsShow") {
         if (ModelManager_1.ModelManager.SurvivorsRogueModel.IsEndlessWave) {
@@ -82,11 +82,11 @@ class SurvivorsRoguePopUpWaveTipsPanel extends UiPanelBase_1.UiPanelBase {
   }
   OnBeforeShow() {
     this.OnAddEventListener();
-    this.zjd = true;
+    this.tHd = true;
   }
   OnBeforeHide() {
     this.OnRemoveEventListener();
-    this.zjd = false;
+    this.tHd = false;
   }
   OnAddEventListener() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.$An);
@@ -125,7 +125,7 @@ class SurvivorsRoguePopUpWaveTipsPanel extends UiPanelBase_1.UiPanelBase {
     }
   }
   OnTick(e) {
-    if (this.zjd && this._fe) {
+    if (this.tHd && this._fe) {
       let t = WAVE_POINT_MOVE_SPEED * e;
       if (this.Zbd - t < 0) {
         t = this.Zbd;

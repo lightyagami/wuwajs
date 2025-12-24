@@ -23,7 +23,7 @@ class CharMaterialControllerV2 extends CharRenderBase_1.CharRenderBase {
     super(...arguments);
     this.Uhr = undefined;
     this.vel = new Map();
-    this.HZd = new Set();
+    this.Eim = new Set();
   }
   GetStatName() {
     return "CharMaterialControllerV2";
@@ -68,7 +68,7 @@ class CharMaterialControllerV2 extends CharRenderBase_1.CharRenderBase {
         Log_1.Log.Debug("RenderCharacter", 25, "添加材质控制器", ["IdentifyName", this.Uhr.IdentifyName], ["AssetData", e.GetName()], ["Handle", s]);
       }
       if (e.ForceBattleMask) {
-        this.HZd.add(s);
+        this.Eim.add(s);
         this.Uhr.AddBattleMaskCount(0);
       }
       if (e.ForceUpdateOnAdd && (this.Uhr.UpdateEffectsOnly(), Log_1.Log.CheckDebug())) {
@@ -92,11 +92,11 @@ class CharMaterialControllerV2 extends CharRenderBase_1.CharRenderBase {
       this.RenderComponent.OnRemoveMaterialController(e);
     }
     this.vel.clear();
-    var t = this.HZd.size;
+    var t = this.Eim.size;
     for (let e = 0; e < t; ++e) {
       this.Uhr.RemoveBattleMaskCount(0);
     }
-    this.HZd.clear();
+    this.Eim.clear();
   }
   CleanOriginEffectByOtherData() {
     for (const t of this.vel.keys()) {
@@ -108,9 +108,9 @@ class CharMaterialControllerV2 extends CharRenderBase_1.CharRenderBase {
   }
   Mel(e) {
     var t = this.vel.get(e);
-    if (t && (this.vel.delete(e), EventSystem_1.EventSystem.EmitWithTarget(this.RenderComponent, EventDefine_1.EEventName.OnRemoveMaterialController, e), this.RenderComponent.OnRemoveMaterialController(e), Log_1.Log.CheckDebug() && Log_1.Log.Debug("RenderCharacter", 25, "自动移除材质控制器", ["IdentifyName", this.Uhr.IdentifyName], ["AssetData", t.AssetData?.GetName()], ["Handle", e]), this.HZd.has(e))) {
+    if (t && (this.vel.delete(e), EventSystem_1.EventSystem.EmitWithTarget(this.RenderComponent, EventDefine_1.EEventName.OnRemoveMaterialController, e), this.RenderComponent.OnRemoveMaterialController(e), Log_1.Log.CheckDebug() && Log_1.Log.Debug("RenderCharacter", 25, "自动移除材质控制器", ["IdentifyName", this.Uhr.IdentifyName], ["AssetData", t.AssetData?.GetName()], ["Handle", e]), this.Eim.has(e))) {
       this.Uhr.RemoveBattleMaskCount(0);
-      this.HZd.delete(e);
+      this.Eim.delete(e);
     }
   }
   Update() {}

@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.DeckBuilderCardSlotItem = undefined;
 const UE = require("ue");
+const Info_1 = require("../../../../../Core/Common/Info");
 const TickSystem_1 = require("../../../../../Core/Tick/TickSystem");
 const ConfigManager_1 = require("../../../../Manager/ConfigManager");
 const LevelSequencePlayer_1 = require("../../../Common/LevelSequencePlayer");
@@ -20,10 +21,15 @@ class DeckBuilderCardSlotItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.$pt = undefined;
     this.Olu = 0;
     this.UYi = TickSystem_1.TickSystem.InvalidId;
+    this.LongPressStartTime = 0;
+    this.LongPressEndTime = 0;
     this.CanToggleChange = undefined;
     this.LongPressCallback = undefined;
+    this.LongPressEndCallback = undefined;
     this.ShortClickCallback = undefined;
     this.OnToggleStateChange = undefined;
+    this.OnPointEnterCallback = undefined;
+    this.OnPointExitCallback = undefined;
     this.CanToggleExecuteChangeInternal = () => !this.CanToggleChange || this.CanToggleChange(this);
     this.qlu = () => {
       if (this.UYi !== TickSystem_1.TickSystem.InvalidId) {
@@ -37,11 +43,14 @@ class DeckBuilderCardSlotItem extends GridProxyAbstract_1.GridProxyAbstract {
       i = i?.dragComponent;
       if (!i || !i.IsValid()) {
         if (this.UYi !== TickSystem_1.TickSystem.InvalidId) {
+          this.LongPressEndCallback?.();
           TickSystem_1.TickSystem.Remove(this.UYi);
           this.UYi = TickSystem_1.TickSystem.InvalidId;
         }
         this.UYi = TickSystem_1.TickSystem.InvalidId;
-        this.ShortClickCallback?.(this);
+        if (this.Olu < this.LongPressStartTime) {
+          this.ShortClickCallback?.(this);
+        }
         this.Olu = 0;
       }
     };
@@ -50,16 +59,31 @@ class DeckBuilderCardSlotItem extends GridProxyAbstract_1.GridProxyAbstract {
     };
     this.Glu = t => {
       this.Olu += t;
-      if (this.Olu > 1000) {
+      if (this.Olu >= this.LongPressStartTime) {
+        t = (this.Olu - this.LongPressStartTime) / (this.LongPressEndTime - this.LongPressStartTime);
+        this.LongPressCallback?.(this, t);
+      }
+      if (this.Olu > this.LongPressEndTime) {
+        this.LongPressEndCallback?.();
         TickSystem_1.TickSystem.Remove(this.UYi);
         this.UYi = TickSystem_1.TickSystem.InvalidId;
-        this.LongPressCallback?.(this);
       }
     };
     this.Nlu = () => {
+      this.LongPressEndCallback?.();
       TickSystem_1.TickSystem.Remove(this.UYi);
       this.UYi = TickSystem_1.TickSystem.InvalidId;
       return true;
+    };
+    this.btu = () => {
+      if (!Info_1.Info.IsInTouch()) {
+        this.OnPointEnterCallback?.(this.Data.SlotInfo.CardId);
+      }
+    };
+    this.Rtu = () => {
+      if (!Info_1.Info.IsInTouch()) {
+        this.OnPointExitCallback?.();
+      }
     };
   }
   OnRegisterComponent() {
@@ -67,26 +91,28 @@ class DeckBuilderCardSlotItem extends GridProxyAbstract_1.GridProxyAbstract {
   }
   async OnBeforeStartAsync() {
     this.aho = new CardElementItem_1.CardElementItem();
-    await this.aho.CreateThenShowByActorAsync(this.GetItem(5).GetOwner());
+    await Promise.all([this.aho.CreateThenShowByActorAsync(this.GetItem(5).GetOwner())]);
     var t = this.GetExtendToggle(0);
     t.CanExecuteChange.Bind(this.CanToggleExecuteChangeInternal);
     t.OnPointDownCallBack.Bind(this.qlu);
     t.OnStateChange.Add(this.eY1);
     t.OnPointUpCallBackWithEventData.Bind(this.Flu);
     t.OnPointerBeginDragCallBack.Bind(this.Nlu);
+    t.OnPointEnterCallBack.Bind(this.btu);
+    t.OnPointExitCallBack.Bind(this.Rtu);
     this.$pt = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetRootItem());
   }
-  Refresh(t, i, e) {
-    var s = (this.Data = t).SlotInfo;
-    var h = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardConfig(s.CardId);
+  Refresh(t, i, s) {
+    var e = (this.Data = t).SlotInfo;
+    var h = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardConfig(e.CardId);
     this.GetExtendToggle(0).SetToggleState(i ? 1 : 0);
     this.RefreshLockState();
     this.RefreshRedDot();
     this.GetText(3).SetText(h.Cost.toString());
-    this.GetText(4).SetText("×" + s.Count);
+    this.GetText(4).SetText("×" + e.Count);
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), h.Name);
     this.SetTextureByPath(h.DeckFaceTexture, this.GetTexture(1));
-    this.Hxt(s.Element);
+    this.Hxt(e.Element);
     this.RefreshOutlookState();
     if (t.NeedPlayAddAnim) {
       t.NeedPlayAddAnim = false;
@@ -116,7 +142,7 @@ class DeckBuilderCardSlotItem extends GridProxyAbstract_1.GridProxyAbstract {
     return this.Data?.SlotInfo;
   }
   TriggerLongPress() {
-    this.LongPressCallback?.(this);
+    this.LongPressCallback?.(this, -1);
   }
 }
 exports.DeckBuilderCardSlotItem = DeckBuilderCardSlotItem;

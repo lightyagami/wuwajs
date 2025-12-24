@@ -57,7 +57,7 @@ class SpecificScanEffectData {
         var a = i.Get(e);
         if (a !== undefined && a !== t && !this.aQ1.has(a) && !(ControllerHolder_1.ControllerHolder.LevelGamePlayController.HandleScanResponse(a, this.Ejd) && this.aQ1.add(a), !a.IsA(TsBaseCharacter_1.default.StaticClass())) && (a = a).Camp !== 0 && !this.hQ1.has(a)) {
           this.hQ1.add(a);
-          if ((a = EntitySystem_1.EntitySystem.GetComponent(a.EntityId, 209))?.Valid) {
+          if ((a = EntitySystem_1.EntitySystem.GetComponent(a.EntityId, 215))?.Valid) {
             a.AddTag(184255089);
           }
         }

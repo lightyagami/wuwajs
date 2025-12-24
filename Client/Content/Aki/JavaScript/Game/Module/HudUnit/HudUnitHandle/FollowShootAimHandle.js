@@ -80,7 +80,7 @@ class FollowShootAimHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
                   var a = t.Entity.GetComponent(0);
                   var _ = a?.GetEntityType();
                   if (_ !== Protocol_1.Aki.Protocol.kks.Proto_Player && _ !== Protocol_1.Aki.Protocol.kks.Proto_Npc) {
-                    if (_ === Protocol_1.Aki.Protocol.kks.Proto_SceneItem && a.GetBaseInfo()?.Category.MechanismType === "PortalCreater" && t.Entity.GetComponent(158) !== undefined) {
+                    if (_ === Protocol_1.Aki.Protocol.kks.Proto_SceneItem && a.GetBaseInfo()?.Category.MechanismType === "PortalCreater" && t.Entity.GetComponent(163) !== undefined) {
                       this.noi.SetIsAimTarget(true);
                       return;
                     } else {
@@ -117,7 +117,7 @@ class FollowShootAimHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
       this.m$e();
       if (t?.Valid) {
         this.sDe = t;
-        this.Xte = this.sDe.Entity?.GetComponent(209);
+        this.Xte = this.sDe.Entity?.GetComponent(215);
         this.c$e();
         this.xFa = this.Xte?.HasTag(this.UFa) ?? false;
         this.HGa();

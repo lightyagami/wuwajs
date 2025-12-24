@@ -21,7 +21,7 @@ class RoleDevPhantomDungeonData extends RoleDevPhantomVisionSuitItemData_1.RoleD
   GetDungeonDropRewards(e) {
     var a = [];
     if (e.ShowRewardMap) {
-      e = e.Secondary === 63 ? ConfigManager_1.ConfigManager.AdventureModuleConfig.GetNightMareShowReward(e.ShowRewardMapCalabash) : ConfigManager_1.ConfigManager.AdventureModuleConfig.GetShowReward(e.ShowRewardMap);
+      e = e.Secondary === 63 || e.Secondary === 64 ? ConfigManager_1.ConfigManager.AdventureModuleConfig.GetNightMareShowReward(e.ShowRewardMapCalabash) : ConfigManager_1.ConfigManager.AdventureModuleConfig.GetShowReward(e.ShowRewardMap);
       if (e) {
         for (var [o, n] of e) {
           a.push({

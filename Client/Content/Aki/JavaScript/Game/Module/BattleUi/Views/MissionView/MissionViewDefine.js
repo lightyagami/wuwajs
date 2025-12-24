@@ -13,16 +13,18 @@ class MissionViewStepTextInfoBase {
   }
 }
 class BehaviorTreeStepTextInfo extends MissionViewStepTextInfoBase {
-  constructor(t, s, e, i, h, r) {
+  constructor(t, s, e, i, h, r, o) {
     super(t, e, i);
     this.ShowSource = 0;
     this.Wfc = undefined;
     this.ProgressBar = undefined;
     this.BlankTitleStillShow = undefined;
     this.UsePreStateText = false;
+    this.CustomPlaceholderBindingProgressList = undefined;
     this.Wfc = s;
     this.ProgressBar = h;
     this.BlankTitleStillShow = r;
+    this.CustomPlaceholderBindingProgressList = o;
   }
   get TidTitle() {
     if (this.CurConditionTextIndex === undefined) {

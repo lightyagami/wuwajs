@@ -56,7 +56,7 @@ let CharacterUnifiedStateComponent = CharacterUnifiedStateComponent_1 = class Ch
     this.Nkr = (t, e) => {
       FormationDataController_1.FormationDataController.MarkAggroDirty();
       var i;
-      var a = t.CheckGetComponent(179);
+      var a = t.CheckGetComponent(184);
       this.Okr = a.Okr;
       if (e) {
         if (a.MoveState !== CharacterUnifiedStateTypes_1.ECharMoveState.Flying && a.MoveState !== CharacterUnifiedStateTypes_1.ECharMoveState.Roll && CharacterUnifiedStateTypes_1.legalMoveStates.get(this.PositionState).has(a.MoveState)) {
@@ -218,7 +218,7 @@ let CharacterUnifiedStateComponent = CharacterUnifiedStateComponent_1 = class Ch
     };
     this.OnInFight = t => {
       this.Vkr(t);
-      this.Entity.GetComponent(181)?.SetAnimParamsInFight(t);
+      this.Entity.GetComponent(186)?.SetAnimParamsInFight(t);
       ModelManager_1.ModelManager.CombatMessageModel.AnyHateChange = true;
     };
     this.OnUpdateSceneTeam = () => {
@@ -242,9 +242,9 @@ let CharacterUnifiedStateComponent = CharacterUnifiedStateComponent_1 = class Ch
     this.ActorComponent = this.Entity.GetComponent(3);
     this.qkr = this.Entity.GetComponent(21);
     this.bkr = this.Entity.CheckGetComponent(18);
-    this.TagComponent = this.Entity.CheckGetComponent(209);
-    this.o4o = this.Entity.CheckGetComponent(182);
-    this.Gkr = this.Entity.GetComponent(97);
+    this.TagComponent = this.Entity.CheckGetComponent(215);
+    this.o4o = this.Entity.CheckGetComponent(187);
+    this.Gkr = this.Entity.GetComponent(100);
     this.IsInGameInternal = false;
     this.InitCharState();
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.RoleOnStateInherit, this.Nkr);
@@ -356,7 +356,7 @@ let CharacterUnifiedStateComponent = CharacterUnifiedStateComponent_1 = class Ch
     }
     this.ActorComponent.UseControllerRotation = true;
     this.SetDirectionState(CharacterUnifiedStateTypes_1.ECharDirectionState.AimDirection);
-    this.Entity.GetComponent(63)?.OnEnterAimShoot();
+    this.Entity.GetComponent(66)?.OnEnterAimShoot();
   }
   ExitAimStatus() {
     this.TagComponent.RemoveTag(1118638468);
@@ -364,7 +364,7 @@ let CharacterUnifiedStateComponent = CharacterUnifiedStateComponent_1 = class Ch
     if (this.DirectionState === CharacterUnifiedStateTypes_1.ECharDirectionState.AimDirection) {
       this.SetDirectionState(CharacterUnifiedStateTypes_1.ECharDirectionState.FaceDirection);
     }
-    this.Entity.GetComponent(63)?.OnExitAimShoot();
+    this.Entity.GetComponent(66)?.OnExitAimShoot();
   }
   SetDirectionState(t) {
     var e;
@@ -480,7 +480,7 @@ let CharacterUnifiedStateComponent = CharacterUnifiedStateComponent_1 = class Ch
     }
   }
   SwitchFastClimb(t, e = false) {
-    t = t && !this.TagComponent.HasTag(1098729489);
+    t = t && !this.TagComponent.HasTag(1098729489) || this.TagComponent.HasTag(1401984924);
     if (e || this.MoveState !== CharacterUnifiedStateTypes_1.ECharMoveState.EnterClimb && this.MoveState !== CharacterUnifiedStateTypes_1.ECharMoveState.ExitClimb) {
       this.SetMoveState(t ? CharacterUnifiedStateTypes_1.ECharMoveState.FastClimb : CharacterUnifiedStateTypes_1.ECharMoveState.NormalClimb);
     }
@@ -493,21 +493,21 @@ let CharacterUnifiedStateComponent = CharacterUnifiedStateComponent_1 = class Ch
     if (this.TagComponent.HasTag(-1503953470) && !this.TagComponent.HasTag(-648310348)) {
       this.SetMoveState(CharacterUnifiedStateTypes_1.ECharMoveState.Other);
     }
-    this.Entity.GetComponent(61).DeActiveStiff(t);
+    this.Entity.GetComponent(64).DeActiveStiff(t);
     if (ModelManager_1.ModelManager.GameModeModel.IsMulti) {
-      this.Entity.GetComponent(68).CollectSampleAndSend();
+      this.Entity.GetComponent(71).CollectSampleAndSend();
     }
     if (this.ActorComponent.IsMoveAutonomousProxy) {
       BaseHitComponent_1.BaseHitComponent.HitEndRequest(this.Entity);
     }
-    t = this.Entity.GetComponent(55);
+    t = this.Entity.GetComponent(58);
     if (!!t && (t.CurrentState === 2 || t.CurrentState === 4 || t.CurrentState === 6)) {
-      this.Entity.GetComponent(55).ResetState();
+      this.Entity.GetComponent(58).ResetState();
       this.ActorComponent.ResetMoveControlled("退出受击");
     }
   }
   e2r() {
-    if (this.o4o?.CanWalkPress && this.MarkWalkOrRun(!this.Okr)) {
+    if (this.o4o?.CanWalkPress() && this.MarkWalkOrRun(!this.Okr)) {
       this.i2r(this.IsWalkMode);
     }
   }
@@ -516,11 +516,15 @@ let CharacterUnifiedStateComponent = CharacterUnifiedStateComponent_1 = class Ch
     return !(e = t ? this.MoveState !== CharacterUnifiedStateTypes_1.ECharMoveState.Walk : this.MoveState !== CharacterUnifiedStateTypes_1.ECharMoveState.Run) || !!this.o4o?.CanWalkPress && (this.MarkWalkOrRun(t) && this.i2r(t), true);
   }
   MarkWalkOrRun(t, e = true, i) {
-    if (t !== this.Okr && !this.rFd) {
+    if (t !== this.Okr && !this.rFd && !this.TagComponent?.HasTag(-1935101187)) {
       this.rFd = i ?? this.rFd;
       i = this.Okr;
       this.Okr = t;
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnChangeWalkOrRun, i, t, e);
+      if (!e || this.TagComponent?.HasTag(-1623972019)) {
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnChangeWalkOrRun, i, t, false);
+      } else {
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnChangeWalkOrRun, i, t, true);
+      }
     }
     return false;
   }
@@ -567,7 +571,7 @@ let CharacterUnifiedStateComponent = CharacterUnifiedStateComponent_1 = class Ch
   static OnPlayerBattleStateChangeNotify(t, e) {
     CharacterUnifiedStateComponent_1.n2r.Start();
     for (const a of ModelManager_1.ModelManager.SceneTeamModel.GetAllGroupEntities(e.W5n)) {
-      var i = a.Entity?.GetComponent(179);
+      var i = a.Entity?.GetComponent(184);
       i?.RefreshFightState(e.iWn);
       i?.OnInFight(e.iWn);
     }
@@ -594,7 +598,7 @@ let CharacterUnifiedStateComponent = CharacterUnifiedStateComponent_1 = class Ch
   }
   static Load() {
     if (this.s2r) {
-      this.PositionTagList = [-1898186757, 504239013, 40422668, 855966206, 1888918118, 485336017];
+      this.PositionTagList = [-1898186757, 504239013, 40422668, 855966206, 1888918118, 485336017, 696962771];
       this.MoveTagList = [-1867662364, 248240472, 498191540, -1625986130, 874657114, 316338736, 1781274524, -1756660346, 1453491643, -1515012024, -846247571, -1989694637, -1654460638, 2060652336, 2111364199, 756800494, 262865373, 31862857, -1973127492, -1504358738, -652371212, -648310348, 457513750, -1220068999, 84868970, 1785019708, 1502279607, 389944200, -2027866845, -959917199, 1552667325, 427266238, -1013665181, -158175522, -778097560];
       this.DirectionTagList = [-1150819426, 428837378, -1462404775, 1260125908];
       this.PositionSubStateTagList = [-1162654169, 1950824539, 1949638808];
@@ -644,5 +648,5 @@ CharacterUnifiedStateComponent.DirectionEnumKeys = Object.values(CharacterUnifie
 CharacterUnifiedStateComponent.PositionSubStateEnumKeys = Object.values(CharacterUnifiedStateTypes_1.ECharPositionSubState).filter(t => typeof t == "number");
 CharacterUnifiedStateComponent.s2r = true;
 __decorate([CombatMessage_1.CombatNet.Listen("y3n", false)], CharacterUnifiedStateComponent, "OnPlayerBattleStateChangeNotify", null);
-CharacterUnifiedStateComponent = CharacterUnifiedStateComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(179)], CharacterUnifiedStateComponent);
+CharacterUnifiedStateComponent = CharacterUnifiedStateComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(184)], CharacterUnifiedStateComponent);
 exports.CharacterUnifiedStateComponent = CharacterUnifiedStateComponent; //# sourceMappingURL=CharacterUnifiedStateComponent.js.map

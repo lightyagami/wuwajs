@@ -31,7 +31,7 @@ class TsTaskAnimalDropItem extends TsTaskAbortImmediatelyBase_1.default {
     this.InitTsVariables();
     var t = e.AiController;
     if (t) {
-      if ((t = t.CharActorComp.Entity).GetComponent(47)) {
+      if ((t = t.CharActorComp.Entity).GetComponent(48)) {
         if (!this.TsDoOnce || !this.HasDone) {
           t = t.GetComponent(0).GetCreatureDataId();
           ControllerHolder_1.ControllerHolder.CreatureController.AnimalDropItemRequest(Number(t));

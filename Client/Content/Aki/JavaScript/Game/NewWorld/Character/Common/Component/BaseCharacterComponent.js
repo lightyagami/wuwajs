@@ -3,20 +3,20 @@
 var __decorate = this && this.__decorate || function (t, e, o, r) {
   var i;
   var a = arguments.length;
-  var s = a < 3 ? e : r === null ? r = Object.getOwnPropertyDescriptor(e, o) : r;
+  var n = a < 3 ? e : r === null ? r = Object.getOwnPropertyDescriptor(e, o) : r;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    s = Reflect.decorate(t, e, o, r);
+    n = Reflect.decorate(t, e, o, r);
   } else {
-    for (var n = t.length - 1; n >= 0; n--) {
-      if (i = t[n]) {
-        s = (a < 3 ? i(s) : a > 3 ? i(e, o, s) : i(e, o)) || s;
+    for (var s = t.length - 1; s >= 0; s--) {
+      if (i = t[s]) {
+        n = (a < 3 ? i(n) : a > 3 ? i(e, o, n) : i(e, o)) || n;
       }
     }
   }
-  if (a > 3 && s) {
-    Object.defineProperty(e, o, s);
+  if (a > 3 && n) {
+    Object.defineProperty(e, o, n);
   }
-  return s;
+  return n;
 };
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -46,10 +46,6 @@ let BaseCharacterComponent = class BaseCharacterComponent extends BaseActorCompo
     super(...arguments);
     this.SubEntityType = 0;
     this.EntityType = Protocol_1.Aki.Protocol.kks.Proto_Npc;
-    this.RadiusInternal = 0;
-    this.HalfHeightInternal = 0;
-    this.DefaultRadiusInternal = 0;
-    this.DefaultHalfHeightInternal = 0;
     this.ModelResPath = "";
     this.ClassDefaultObject = undefined;
     this.wBn = false;
@@ -60,24 +56,6 @@ let BaseCharacterComponent = class BaseCharacterComponent extends BaseActorCompo
   }
   get SkeletalMesh() {
     return this.Actor.Mesh;
-  }
-  get ScaledRadius() {
-    return this.RadiusInternal * this.ActorScaleProxy.X;
-  }
-  get Radius() {
-    return this.RadiusInternal;
-  }
-  get ScaledHalfHeight() {
-    return this.HalfHeightInternal * this.ActorScaleProxy.Z;
-  }
-  get HalfHeight() {
-    return this.HalfHeightInternal;
-  }
-  get DefaultRadius() {
-    return this.DefaultRadiusInternal;
-  }
-  get DefaultHalfHeight() {
-    return this.DefaultHalfHeightInternal;
   }
   SetCamp(t) {
     var e = this.Entity.GetComponent(0);
@@ -95,29 +73,29 @@ let BaseCharacterComponent = class BaseCharacterComponent extends BaseActorCompo
       return [false, undefined];
     }
     var o = o ?? this.ActorLocationProxy;
-    var s = ModelManager_1.ModelManager.TraceElementModel.CommonStartLocation;
-    var n = ModelManager_1.ModelManager.TraceElementModel.CommonEndLocation;
+    var n = ModelManager_1.ModelManager.TraceElementModel.CommonStartLocation;
+    var s = ModelManager_1.ModelManager.TraceElementModel.CommonEndLocation;
     if (a) {
-      this.ActorUpProxy.Multiply(this.ScaledRadius, s);
-      this.ActorUpProxy.Multiply(-this.ScaledRadius + t, n);
+      this.ActorUpProxy.Multiply(this.ScaledRadius, n);
+      this.ActorUpProxy.Multiply(-this.ScaledRadius + t, s);
     } else {
-      this.ActorUpProxy.Multiply(this.ScaledHalfHeight - this.ScaledRadius, s);
-      this.ActorUpProxy.Multiply(-this.ScaledHalfHeight + t, n);
+      this.ActorUpProxy.Multiply(this.ScaledHalfHeight - this.ScaledRadius, n);
+      this.ActorUpProxy.Multiply(-this.ScaledHalfHeight + t, s);
     }
-    s.AdditionEqual(o);
     n.AdditionEqual(o);
-    let h = this.FixBornLocationInternal(o, s, n, false, e, r);
+    s.AdditionEqual(o);
+    let h = this.FixBornLocationInternal(o, n, s, false, e, r);
     if (!h[0] && i) {
       this.ActorUpProxy.Multiply(this.ScaledRadius, MathUtils_1.MathUtils.CommonTempVector);
-      s.AdditionEqual(MathUtils_1.MathUtils.CommonTempVector);
-      h = this.FixBornLocationInternal(o, s, n, true, e, r);
+      n.AdditionEqual(MathUtils_1.MathUtils.CommonTempVector);
+      h = this.FixBornLocationInternal(o, n, s, true, e, r);
     }
     return h;
   }
-  FixBornLocationInternal(t, e, o, i, a = true, s = "unknown.FixBornLocationInternal") {
-    var n = ControllerHolder_1.ControllerHolder.CreatureController.CheckEnableEntityLog(this.CreatureDataInternal.GetEntityType()) && a;
-    if (n && Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("Entity", 3, "[CharacterActorComponent.FixBornLocation] 实体地面修正:前", ["CreatureDataId", this.CreatureDataInternal.GetCreatureDataId()], ["PbDataId", this.CreatureDataInternal.GetPbDataId()], ["K2_GetActorLocation", this.Actor.D_K2_GetActorLocation()], ["ActorLocationProxy", t], ["InitLocation", this.CreatureDataInternal.GetInitLocation()], ["射线开始位置", e], ["射线结束位置", o], ["Context", s]);
+  FixBornLocationInternal(t, e, o, i, a = true, n = "unknown.FixBornLocationInternal") {
+    var s = ControllerHolder_1.ControllerHolder.CreatureController.CheckEnableEntityLog(this.CreatureDataInternal.GetEntityType()) && a;
+    if (s && Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("Entity", 3, "[CharacterActorComponent.FixBornLocation] 实体地面修正:前", ["CreatureDataId", this.CreatureDataInternal.GetCreatureDataId()], ["PbDataId", this.CreatureDataInternal.GetPbDataId()], ["K2_GetActorLocation", this.Actor.D_K2_GetActorLocation()], ["ActorLocationProxy", t], ["InitLocation", this.CreatureDataInternal.GetInitLocation()], ["射线开始位置", e], ["射线结束位置", o], ["Context", n]);
     }
     var r = ModelManager_1.ModelManager.TraceElementModel.GetActorTrace();
     r.WorldContextObject = this.Actor;
@@ -130,8 +108,8 @@ let BaseCharacterComponent = class BaseCharacterComponent extends BaseActorCompo
     }
     var h = TraceElementCommon_1.TraceElementCommon.ShapeTrace(this.Actor.CapsuleComponent, r, PROFILE_KEY, PROFILE_KEY);
     var c = r.HitResult;
-    if (n && Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("Entity", 3, "[CharacterActorComponent.FixBornLocation] 实体地面修正:检测地面结果", ["CreatureDataId", this.CreatureDataInternal.GetCreatureDataId()], ["PbDataId", this.CreatureDataInternal.GetPbDataId()], ["isHit", h], ["hitResult.bBlockingHit", c.bBlockingHit], ["allowStartPenetrating", i], ["hitResult.bStartPenetrating", c.bStartPenetrating], ["Context", s]);
+    if (s && Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("Entity", 3, "[CharacterActorComponent.FixBornLocation] 实体地面修正:检测地面结果", ["CreatureDataId", this.CreatureDataInternal.GetCreatureDataId()], ["PbDataId", this.CreatureDataInternal.GetPbDataId()], ["isHit", h], ["hitResult.bBlockingHit", c.bBlockingHit], ["allowStartPenetrating", i], ["hitResult.bStartPenetrating", c.bStartPenetrating], ["Context", n]);
     }
     if (h && c.bBlockingHit) {
       if (!i && c.bStartPenetrating) {
@@ -147,8 +125,8 @@ let BaseCharacterComponent = class BaseCharacterComponent extends BaseActorCompo
         var C = c.Actors.Get(t);
         if (C?.IsValid() && (e += C.GetName() + ", ", !C.IsA(UE.Character.StaticClass()))) {
           if (!i && c.TimeArray.Get(t) < MathUtils_1.MathUtils.SmallNumber) {
-            if (n && Log_1.Log.CheckInfo()) {
-              Log_1.Log.Info("Entity", 3, "[CharacterActorComponent.FixBornLocation] 实体地面修正:起始碰撞", ["CreatureDataId", this.CreatureDataInternal.GetCreatureDataId()], ["PbDataId", this.CreatureDataInternal.GetPbDataId()], ["isHit", h], ["hitResult.bBlockingHit", c.bBlockingHit], ["allowStartPenetrating", i], ["hitResult.bStartPenetrating", c.bStartPenetrating], ["hitResult.time", c.TimeArray.Get(t)], ["Context", s]);
+            if (s && Log_1.Log.CheckInfo()) {
+              Log_1.Log.Info("Entity", 3, "[CharacterActorComponent.FixBornLocation] 实体地面修正:起始碰撞", ["CreatureDataId", this.CreatureDataInternal.GetCreatureDataId()], ["PbDataId", this.CreatureDataInternal.GetPbDataId()], ["isHit", h], ["hitResult.bBlockingHit", c.bBlockingHit], ["allowStartPenetrating", i], ["hitResult.bStartPenetrating", c.bStartPenetrating], ["hitResult.time", c.TimeArray.Get(t)], ["Context", n]);
             }
             return [false, undefined];
           }
@@ -160,14 +138,11 @@ let BaseCharacterComponent = class BaseCharacterComponent extends BaseActorCompo
       }
       this.ActorUpProxy.Multiply(this.ScaledHalfHeight - this.ScaledRadius + FIX_LOCATION_TOLERANCE, MathUtils_1.MathUtils.CommonTempVector);
       l.AdditionEqual(MathUtils_1.MathUtils.CommonTempVector);
-      if (n && Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("Entity", 3, "[CharacterActorComponent.FixBornLocation] 实体地面修正:射线碰到地面", ["CreatureDataId", this.CreatureDataInternal.GetCreatureDataId()], ["PbDataId", this.CreatureDataInternal.GetPbDataId()], ["Actors", e], ["HitLocationIndex", o], ["HitLocationName", r], ["经过修正的位置", l], ["Context", s]);
+      if (s && Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Entity", 3, "[CharacterActorComponent.FixBornLocation] 实体地面修正:射线碰到地面", ["CreatureDataId", this.CreatureDataInternal.GetCreatureDataId()], ["PbDataId", this.CreatureDataInternal.GetPbDataId()], ["Actors", e], ["HitLocationIndex", o], ["HitLocationName", r], ["经过修正的位置", l], ["Context", n]);
       }
-      if (!this.wBn) {
-        this.wBn = true;
-        if ((a = this.Entity.GetComponent(181)) && a.Actor?.Mesh && (t = a.GetMeshTransform().GetLocation(), MathUtils_1.MathUtils.CommonTempVector.Set(0, 0, -FIX_LOCATION_TOLERANCE), a.AddModelLocation(MathUtils_1.MathUtils.CommonTempVector), n) && Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("Entity", 50, "[CharacterActorComponent.FixBornLocation] 实体地面修正:模型位置修正", ["CreatureDataId", this.CreatureDataInternal.GetCreatureDataId()], ["PbDataId", this.CreatureDataInternal.GetPbDataId()], ["OrigMeshLocation", t], ["FixMeshLocation", a.GetMeshTransform().GetLocation()], ["Context", s]);
-        }
+      if (!this.wBn && this.CreatureDataInternal.IsNpc() && (this.wBn = true, a = this.Entity.GetComponent(186)) && a.Actor?.Mesh && (t = a.GetMeshTransform().GetLocation(), MathUtils_1.MathUtils.CommonTempVector.Set(0, 0, -FIX_LOCATION_TOLERANCE), a.AddModelLocation(MathUtils_1.MathUtils.CommonTempVector), s) && Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Entity", 50, "[CharacterActorComponent.FixBornLocation] 实体地面修正:模型位置修正", ["CreatureDataId", this.CreatureDataInternal.GetCreatureDataId()], ["PbDataId", this.CreatureDataInternal.GetPbDataId()], ["OrigMeshLocation", t], ["FixMeshLocation", a.GetMeshTransform().GetLocation()], ["Context", n]);
       }
       ModelManager_1.ModelManager.TraceElementModel.ClearActorTrace();
       return [true, l];

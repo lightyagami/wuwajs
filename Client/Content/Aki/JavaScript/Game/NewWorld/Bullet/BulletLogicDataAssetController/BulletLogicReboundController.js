@@ -21,7 +21,7 @@ class BulletLogicReboundController extends BulletLogicController_1.BulletLogicCo
     super(t, e);
     this.n$t = undefined;
     this.a7o = undefined;
-    this.n$t = e.GetComponent(173);
+    this.n$t = e.GetComponent(178);
     this.a7o = this.Bullet.GetBulletInfo();
   }
   OnInit() {
@@ -30,14 +30,12 @@ class BulletLogicReboundController extends BulletLogicController_1.BulletLogicCo
   BulletLogicAction(t) {
     var e = t.BulletDataMain.Logic.ReboundChannel;
     if (!((this.LogicController.ReboundBitMask & e) <= 0)) {
-      if (this.LogicController.EffectRebound && UE.KismetSystemLibrary.IsValidSoftObjectReference(this.LogicController.EffectRebound)) {
-        r = (e = t.Attacker).GetComponent(61);
-        e = e.GetComponent(3);
-        l = UE.KismetMathLibrary.Conv_VectorToVectorDouble(this.LogicController.PositionOffset);
-        l = UE.KismetMathLibrary.D_TransformLocation(e.ActorTransform, l);
-        e = UE.KismetMathLibrary.D_TransformRotation(e.ActorTransform, this.LogicController.RotationOffset);
-        e = new UE.TransformDouble(e, l, Vector_1.Vector.OneVectorDouble);
-        r.OnReboundSuccess(this.LogicController.EffectRebound, e, t.EffectInfo.DisablePostProcess);
+      if (this.LogicController.EffectRebound && UE.KismetSystemLibrary.IsValidSoftObjectReference(this.LogicController.EffectRebound) && (l = (e = t.Attacker).GetComponent(1)) && (e = e.GetComponent(64))) {
+        r = UE.KismetMathLibrary.Conv_VectorToVectorDouble(this.LogicController.PositionOffset);
+        r = UE.KismetMathLibrary.D_TransformLocation(l.ActorTransform, r);
+        l = UE.KismetMathLibrary.D_TransformRotation(l.ActorTransform, this.LogicController.RotationOffset);
+        l = new UE.TransformDouble(l, r, Vector_1.Vector.OneVectorDouble);
+        e.OnReboundSuccess(this.LogicController.EffectRebound, l, t.EffectInfo.DisablePostProcess);
       }
       if (this.LogicController.ScreenShake && UE.KismetSystemLibrary.IsValidSoftClassReference(this.LogicController.ScreenShake) && CharacterUtils_1.CharacterUtils.CanCharacterMonsterOrSummonedDisplayEffect(this.a7o.AttackerHandle)) {
         ResourceSystem_1.ResourceSystem.LoadAsync(this.LogicController.ScreenShake.ToAssetPathName(), UE.Class, t => {
@@ -54,7 +52,7 @@ class BulletLogicReboundController extends BulletLogicController_1.BulletLogicCo
       var o = this.a7o.ContextId;
       for (let t = 0; t < i; t++) {
         var s = this.LogicController.BulletRowName.Get(t);
-        var s = BulletController_1.BulletController.CreateBulletCustomTarget(this.a7o.AttackerActorComp.Actor, s, this.n$t.ActorTransform, {
+        var s = BulletController_1.BulletController.CreateBulletCustomTarget(this.a7o.Attacker, s, this.n$t.ActorTransform, {
           SyncType: 1,
           ParentId: this.Bullet.Id,
           SkillId: this.a7o.BulletInitParams.SkillId,

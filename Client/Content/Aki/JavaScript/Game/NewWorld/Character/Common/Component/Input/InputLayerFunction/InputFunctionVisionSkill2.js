@@ -13,57 +13,16 @@ const InputFunctionCommon_1 = require("./InputFunctionCommon");
 function visionSkill2Function(o) {
   var n = Global_1.Global.BaseCharacter;
   if (n) {
-    var i = n.CharacterActorComponent?.Entity;
-    if (i) {
-      var t = i.GetComponent(209);
-      if (t && t.Valid && (0, InputFunctionCommon_1.canResponseInput)(i)) {
-        n = (0, InputFunctionCommon_1.createInputCommandFromDataTable)(i.Id, 9, 1);
-        if (n) {
-          return n;
-        }
-        if (t.HasTag(1427742187)) {
-          if ((0, InputFunctionCommon_1.hasEnoughEnergy)(i)) {
-            return (0, InputFunctionCommon_1.createSkillCommand)(i, InputDefine_1.SKILL_ID_VISION_CONTROL);
-          } else {
-            return undefined;
-          }
-        }
-        if (!t.HasTag(1787013240) || (0, InputFunctionCommon_1.hasEnoughEnergy)(i)) {
-          n = PhantomUtil_1.PhantomUtil.GetSummonedEntity(i, Protocol_1.Aki.Protocol.Summon.x3s.Proto_ESummonTypeConcomitantVision);
-          if (n?.Valid) {
-            var r = n.Entity;
-            if (t.HasTag(-851544994)) {
-              if (t.HasTag(693080645)) {
-                return (0, InputFunctionCommon_1.createSkillCommand)(i, InputDefine_1.SKILL_ID_VISION_ROGUE_2);
-              } else {
-                return (0, InputFunctionCommon_1.createSkillCommand)(i, InputDefine_1.SKILL_ID_VISION_ROGUE_1);
-              }
-            }
-            n = i.GetComponent(43);
-            if (n) {
-              var e = n.GetVisionIdList();
-              var l = n.GetVisionLevelList();
-              for (let o = 0; o < e.Num(); o++) {
-                var u = e.Get(o);
-                var a = PhantomUtil_1.PhantomUtil.GetVisionData(u);
-                if (a && a.类型 !== 2 && (a.类型 === 4 || !r.Active)) {
-                  a = a.空中能否释放;
-                  if (a || !t.HasTag(40422668)) {
-                    var m;
-                    var _ = PhantomUtil_1.PhantomUtil.GetEntityVisionSkillId(i.Id, u);
-                    if (_) {
-                      m = l.Get(o);
-                      BlackboardController_1.BlackboardController.SetIntValueByEntity(i.Id, "VisionLevel", m);
-                      BlackboardController_1.BlackboardController.SetIntValueByEntity(i.Id, "VisionID", u);
-                      BlackboardController_1.BlackboardController.SetIntValueByEntity(i.Id, "VisionAirSkill", Number(a));
-                      BlackboardController_1.BlackboardController.SetIntValueByEntity(i.Id, "VisionLink", Number(t.HasAnyTag([1408042260, 64219164, -488074998, 41340438])));
-                      return (0, InputFunctionCommon_1.createSkillCommand)(i, _);
-                    }
-                  }
-                }
-              }
-            }
-          }
+    n = n.CharacterActorComponent?.Entity;
+    if (n) {
+      var i;
+      var t;
+      var e;
+      var l;
+      var r = n.GetComponent(215);
+      if (r && r.Valid) {
+        if ((0, InputFunctionCommon_1.canResponseInput)(n)) {
+          return (0, InputFunctionCommon_1.createInputCommandFromDataTable)(n.Id, 9, 1) || (r.HasTag(1427742187) ? (0, InputFunctionCommon_1.hasEnoughEnergy)(n) ? (0, InputFunctionCommon_1.createSkillCommand)(n, InputDefine_1.SKILL_ID_VISION_CONTROL) : undefined : !r.HasTag(1787013240) || (0, InputFunctionCommon_1.hasEnoughEnergy)(n) ? r.HasTag(-851544994) ? r.HasTag(693080645) ? (0, InputFunctionCommon_1.createSkillCommand)(n, InputDefine_1.SKILL_ID_VISION_ROGUE_2) : (0, InputFunctionCommon_1.createSkillCommand)(n, InputDefine_1.SKILL_ID_VISION_ROGUE_1) : (l = n.GetComponent(44)) && (i = l.GetVisionId()) && (e = PhantomUtil_1.PhantomUtil.GetVisionData(i)) && (t = PhantomUtil_1.PhantomUtil.GetSummonedEntity(n, Protocol_1.Aki.Protocol.Summon.x3s.Proto_ESummonTypeConcomitantVision))?.Valid && !t.Entity.Active && ((t = e.空中能否释放) || !r.HasTag(40422668)) && (e = PhantomUtil_1.PhantomUtil.GetEntityVisionSkillId(n.Id, i)) ? (l = l.GetVisionLevel(), BlackboardController_1.BlackboardController.SetIntValueByEntity(n.Id, "VisionLevel", l), BlackboardController_1.BlackboardController.SetIntValueByEntity(n.Id, "VisionID", i), BlackboardController_1.BlackboardController.SetIntValueByEntity(n.Id, "VisionAirSkill", Number(t)), BlackboardController_1.BlackboardController.SetIntValueByEntity(n.Id, "VisionLink", Number(r.HasAnyTag([1408042260, 64219164, -488074998, 41340438]))), (0, InputFunctionCommon_1.createSkillCommand)(n, e)) : undefined : undefined);
         }
       }
     }

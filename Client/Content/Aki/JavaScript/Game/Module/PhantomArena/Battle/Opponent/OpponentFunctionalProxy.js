@@ -10,6 +10,7 @@ class OpponentFunctionalProxy extends OpponentFunctionAreaProxy_1.OpponentFuncti
     super(...arguments);
     this.AreaItem = undefined;
     this.IsMonster = false;
+    this.IsNeedPreload = false;
   }
   GetCardAttachItem() {
     return this.AreaItem.GetRootItem();

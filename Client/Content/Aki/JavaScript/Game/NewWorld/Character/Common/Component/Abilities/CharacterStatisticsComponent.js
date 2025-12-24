@@ -142,7 +142,7 @@ class CombatDataBase {
   static GetSkillConfigName(t, i) {
     t = EntitySystem_1.EntitySystem.Get(t);
     if (t) {
-      return t.GetComponent(40).GetSkillInfo(i).SkillName.toString();
+      return t.GetComponent(41).GetSkillInfo(i).SkillName.toString();
     }
   }
   static GetEntityConfigNameAndSkillName(t, i, e) {
@@ -178,7 +178,7 @@ class CombatDataBase {
       }
       if (n === Protocol_1.Aki.Protocol.kks.Proto_Monster) {
         a = PublicUtil_1.PublicUtil.GetConfigTextByKey(r.GetEntityTidName() ?? "");
-        o = t.GetComponent(40).GetSkillInfo(e);
+        o = t.GetComponent(41).GetSkillInfo(e);
         s = o.SkillName.toString();
         return [a, s];
       }
@@ -197,7 +197,7 @@ class CombatDataDamage extends CombatDataBase {
     var [t, i] = CombatDataBase.GetEntityConfigNameAndSkillName(this.AttackerId, this.DamageId, this.SkillId);
     var e = CombatDataBase.GetEntityConfigName(this.TargetId);
     var a = 0;
-    var a = EntitySystem_1.EntitySystem.Get(this.TargetId).GetComponent(177).GetCurrentValue(Protocol_1.Aki.Protocol.Vks.Proto_Life);
+    var a = EntitySystem_1.EntitySystem.Get(this.TargetId).GetComponent(182).GetCurrentValue(Protocol_1.Aki.Protocol.Vks.Proto_Life);
     return StringUtils_1.StringUtils.Format("<Date>[{0}]</><Atk>{1}</>施放了<Skill>{2}</>对<Victim>{3}</>造成<NumDmg>{4}</>点伤害<Change>{5}</>", this.DateCreate, t ?? "", i ?? "", e ?? "", this.DamageValue.toString(), a <= 0 ? "(死亡)" : StringUtils_1.StringUtils.Format("({0}->{1})", (a + this.DamageValue).toString(), a.toString()));
   }
 }
@@ -212,7 +212,7 @@ class CombatDataHeal extends CombatDataBase {
     var [t, i] = CombatDataBase.GetEntityConfigNameAndSkillName(this.AttackerId, this.HealId, this.SkillId);
     var e = CombatDataBase.GetEntityConfigName(this.TargetId);
     var a = 0;
-    var s = EntitySystem_1.EntitySystem.Get(this.TargetId).GetComponent(177);
+    var s = EntitySystem_1.EntitySystem.Get(this.TargetId).GetComponent(182);
     var a = s.GetCurrentValue(Protocol_1.Aki.Protocol.Vks.Proto_Life);
     var s = s.GetCurrentValue(Protocol_1.Aki.Protocol.Vks.l5n);
     return StringUtils_1.StringUtils.Format("<Date>[{0}]</><Atk>{1}</>施放了<Skill>{2}</>使<Victim>{3}</>恢复<NumDmg>{4}</>点生命<Change>{5}</>", this.DateCreate, t ?? "", i ?? "", e ?? "", this.HealValue.toString(), a === s ? "(满血)" : StringUtils_1.StringUtils.Format("({0}->{1})", a.toString(), (a - this.HealValue).toString()));
@@ -315,7 +315,7 @@ let CharacterStatisticsComponent = CharacterStatisticsComponent_1 = class Charac
           t = new CharacterOperationRecord(s, e, r.Id);
           CharacterStatisticsComponent_1.ekr.set(e, t);
         }
-        var s = this.Entity.GetComponent(40).GetSkillInfo(a).SkillGenre;
+        var s = this.Entity.GetComponent(41).GetSkillInfo(a).SkillGenre;
         let i = t.SkillOperationMap.get(s);
         if (!i) {
           i = new SkillOperationRecord(CharacterStatisticsComponent_1.tkr[s]);
@@ -614,12 +614,12 @@ let CharacterStatisticsComponent = CharacterStatisticsComponent_1 = class Charac
       EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSkillEnd, this.ZOr);
       EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharOnUnifiedMoveStateChanged, this.XOr);
       var t;
-      var i = this.Entity.GetComponent(179);
+      var i = this.Entity.GetComponent(184);
       if (i?.Valid) {
         i = i.MoveState;
         this.JOr(i);
       }
-      var e = this.Entity.CheckGetComponent(209);
+      var e = this.Entity.CheckGetComponent(215);
       if (e?.Valid) {
         this.QOr.push(e.ListenForTagAddOrRemove(-2044964178, this.UWi));
       }
@@ -629,7 +629,7 @@ let CharacterStatisticsComponent = CharacterStatisticsComponent_1 = class Charac
         }
       }
     } else {
-      var a = this.Entity.CheckGetComponent(209);
+      var a = this.Entity.CheckGetComponent(215);
       if (a?.Valid) {
         CharacterStatisticsComponent_1.Skr.push(this.Entity.Id);
         this.QOr.push(a.ListenForTagAddOrRemove(-1112841587, this.UWi));
@@ -703,7 +703,7 @@ let CharacterStatisticsComponent = CharacterStatisticsComponent_1 = class Charac
   }
   akr() {
     if (CharacterStatisticsComponent_1.$Or) {
-      var t = this.Entity.GetComponent(209);
+      var t = this.Entity.GetComponent(215);
       if (t) {
         var i = this.Entity.GetComponent(0).GetEntityType();
         var i = CharacterStatisticsComponent_1.StageInfo(i);

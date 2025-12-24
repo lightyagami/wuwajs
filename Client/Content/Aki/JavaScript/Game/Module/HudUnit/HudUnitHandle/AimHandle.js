@@ -78,7 +78,7 @@ class AimHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
                     return;
                   }
                   if (m === Protocol_1.Aki.Protocol.kks.Proto_SceneItem) {
-                    if (t.Entity.GetComponent(158) === undefined || l.GetBaseInfo().Camp !== 7) {
+                    if (t.Entity.GetComponent(163) === undefined || l.GetBaseInfo().Camp !== 7) {
                       this.noi.SetAimStatus(1);
                     } else {
                       this.noi.SetAimStatus(2);
@@ -105,7 +105,7 @@ class AimHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
                       if ((d = t.Entity.GetComponent(2)) && LockOnUtils_1.LockOnUtils.CheckFriendCamp(d.Actor.Camp)) {
                         this.noi.SetAimStatus(1);
                         return;
-                      } else if (t.Entity.GetComponent(69)?.IsWeakness(c)) {
+                      } else if (t.Entity.GetComponent(72)?.IsWeakness(c)) {
                         this.noi.SetAimStatus(3);
                         return;
                       } else {
@@ -172,8 +172,8 @@ class AimHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
         if (this.VRn) {
           t = true;
         } else {
-          i = s.Entity.GetComponent(179);
-          s = s.Entity.GetComponent(209);
+          i = s.Entity.GetComponent(184);
+          s = s.Entity.GetComponent(215);
           i = i.DirectionState;
           if (!(t = i === CharacterUnifiedStateTypes_1.ECharDirectionState.AimDirection) && this._oi) {
             t = s.HasTag(aimTagId);

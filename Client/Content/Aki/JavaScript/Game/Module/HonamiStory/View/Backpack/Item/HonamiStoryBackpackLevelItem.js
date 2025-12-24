@@ -33,17 +33,17 @@ class HonamiStoryBackpackLevelItem extends UiPanelBase_1.UiPanelBase {
   constructor(e) {
     super();
     this.H61 = e;
-    this.jum = false;
-    this._mm = false;
-    this.umm = 0;
-    this.cmm = 0;
-    this.dmm = 0;
-    this.mmm = false;
+    this.d0m = false;
+    this.Xpm = false;
+    this.Ypm = 0;
+    this.zpm = 0;
+    this.Jpm = 0;
+    this.Zpm = false;
     this.SPe = undefined;
-    this.fmm = undefined;
+    this.evm = undefined;
     this.wY = 0;
-    this._bm = undefined;
-    this.jJd = () => {
+    this.m7m = undefined;
+    this._em = () => {
       if (!this.H61) {
         var t = ModelManager_1.ModelManager.HonamiStoryModel.GetPlayerData().LifeSupportLevel;
         if (t < ModelManager_1.ModelManager.HonamiStoryModel.GetPlayerData().GetLifeSupportMaxLevel()) {
@@ -69,7 +69,7 @@ class HonamiStoryBackpackLevelItem extends UiPanelBase_1.UiPanelBase {
             var n = new ConfirmBoxDefine_1.ConfirmBoxDataNew(391);
             n.SetTextArgs(a.toString(), s.ToString(), t.toString(), i.toString(), r.toString());
             n.FunctionMap.set(2, () => {
-              this.x1m();
+              this.Xmm();
             });
             if (o < a) {
               n.SetTipsBgRed = true;
@@ -81,12 +81,12 @@ class HonamiStoryBackpackLevelItem extends UiPanelBase_1.UiPanelBase {
         }
       }
     };
-    this.x1m = () => {
+    this.Xmm = () => {
       HonamiStoryController_1.HonamiStoryController.RequestHonamiStoryLifeSupportUp().then(() => {
         this.RefreshLifeSupport();
       });
     };
-    this.B1m = () => {
+    this.Ymm = () => {
       this.CheckCanUpgrade();
       var e = ModelManager_1.ModelManager.HonamiStoryModel.GetPlayerData().LifeSupportLevel;
       var t = ModelManager_1.ModelManager.HonamiStoryModel.GetPlayerData().GetLifeSupportMaxLevel();
@@ -112,44 +112,44 @@ class HonamiStoryBackpackLevelItem extends UiPanelBase_1.UiPanelBase {
       };
       RoleLevelUpSuccessController_1.RoleLevelUpSuccessController.OpenSuccessAttributeView(r);
     };
-    this.gmm = () => {
+    this.tvm = () => {
       this.wY++;
-      var e = this.mmm ? ADD_FRAME : DOWN_FRAME;
-      this.cmm = this.mmm ? Math.ceil(this.umm + (this.dmm - this.umm) * this.wY / e) : Math.floor(this.umm - (this.umm - this.dmm) * this.wY / e);
-      if (this.mmm) {
-        this.cmm = Math.min(this.dmm, this.cmm);
+      var e = this.Zpm ? ADD_FRAME : DOWN_FRAME;
+      this.zpm = this.Zpm ? Math.ceil(this.Ypm + (this.Jpm - this.Ypm) * this.wY / e) : Math.floor(this.Ypm - (this.Ypm - this.Jpm) * this.wY / e);
+      if (this.Zpm) {
+        this.zpm = Math.min(this.Jpm, this.zpm);
       } else {
-        this.cmm = Math.max(this.dmm, this.cmm);
+        this.zpm = Math.max(this.Jpm, this.zpm);
       }
-      this.GetText(0)?.SetText("" + this.cmm);
+      this.GetText(0)?.SetText("" + this.zpm);
       if (this.wY < e) {
-        this.fmm = TimerSystem_1.TimerSystem.Next(this.gmm);
+        this.evm = TimerSystem_1.TimerSystem.Next(this.tvm);
       } else {
-        this.fmm = undefined;
+        this.evm = undefined;
       }
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIText], [2, UE.UIText], [3, UE.UIButtonComponent], [4, UE.UISprite], [5, UE.UIItem], [6, UE.UISprite], [7, UE.UINiagara], [8, UE.UISprite], [9, UE.UITexture], [11, UE.UIText]];
-    this.BtnBindInfo = [[3, this.jJd]];
+    this.BtnBindInfo = [[3, this._em]];
   }
   async OnBeforeStartAsync() {
-    this._bm = new HonamiStoryLevelPowerItem();
-    await this._bm.CreateThenShowByActorAsync(this.GetItem(5).GetOwner());
+    this.m7m = new HonamiStoryLevelPowerItem();
+    await this.m7m.CreateThenShowByActorAsync(this.GetItem(5).GetOwner());
   }
   OnStart() {
     this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
   }
   OnBeforeShow() {
-    this.jum = ModelManager_1.ModelManager.HonamiStoryModel.GetActivityData(false)?.GetPreGuideQuestFinishState() ?? false;
-    this._bm?.RefreshPowerVisible(this.jum);
+    this.d0m = ModelManager_1.ModelManager.HonamiStoryModel.GetActivityData(false)?.GetPreGuideQuestFinishState() ?? false;
+    this.m7m?.RefreshPowerVisible(this.d0m);
     this.RefreshLifeSupport();
     this.RefreshPowerLevel(false, false, 0, 0);
     this.CheckCanUpgrade();
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnHonamiStoryLifeSupportLevelUp, this.B1m);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnHonamiStoryLifeSupportLevelUp, this.Ymm);
   }
   OnBeforeHide() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnHonamiStoryLifeSupportLevelUp, this.B1m);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnHonamiStoryLifeSupportLevelUp, this.Ymm);
   }
   RefreshLifeSupport() {
     var e = ModelManager_1.ModelManager.HonamiStoryModel.GetPlayerData().GetLifeSupportMaxLevel();
@@ -183,20 +183,20 @@ class HonamiStoryBackpackLevelItem extends UiPanelBase_1.UiPanelBase {
     this.SetSpriteByPath(t, this.GetSprite(6), false);
   }
   RefreshPowerLevel(e, t, i, r) {
-    if (this.jum) {
+    if (this.d0m) {
       if (e) {
         this.wY = 0;
-        this.mmm = t;
-        this.dmm = r;
-        if (this.fmm) {
-          if (this.fmm.Valid()) {
-            TimerSystem_1.TimerSystem.Remove(this.fmm);
+        this.Zpm = t;
+        this.Jpm = r;
+        if (this.evm) {
+          if (this.evm.Valid()) {
+            TimerSystem_1.TimerSystem.Remove(this.evm);
           }
-          this.umm = this.cmm;
+          this.Ypm = this.zpm;
         } else {
-          this.umm = i;
+          this.Ypm = i;
         }
-        this.fmm = TimerSystem_1.TimerSystem.Next(this.gmm);
+        this.evm = TimerSystem_1.TimerSystem.Next(this.tvm);
         if (t) {
           this.SPe?.PlayOrReplaySequenceByName("Up");
           if (this.SPe?.IsPlayingSequence("Down")) {
@@ -231,8 +231,8 @@ class HonamiStoryBackpackLevelItem extends UiPanelBase_1.UiPanelBase {
         this.GetUiNiagara(7)?.SetUIActive(false);
       } else {
         e = ModelManager_1.ModelManager.HonamiStoryModel.GetPlayerData().GetCurLevelId(t);
-        if ((t = ConfigManager_1.ConfigManager.HonamiStoryConfig.GetLifeSupport(e).ConsumeItems.get(i.OutCoinItemId) <= ModelManager_1.ModelManager.HonamiStoryModel.GetCurrencyCount()) !== this._mm) {
-          if (this._mm = t) {
+        if ((t = ConfigManager_1.ConfigManager.HonamiStoryConfig.GetLifeSupport(e).ConsumeItems.get(i.OutCoinItemId) <= ModelManager_1.ModelManager.HonamiStoryModel.GetCurrencyCount()) !== this.Xpm) {
+          if (this.Xpm = t) {
             this.SPe?.PlayLevelSequenceByName("Tips_Circle");
           } else {
             this.GetUiNiagara(7)?.SetUIActive(false);

@@ -46,7 +46,7 @@ class UpWeaponGachaPoolItem extends GachaPoolItem_1.GachaPoolItem {
     }
   }
   OnAfterHide() {
-    this.ulm();
+    this.ydm();
   }
   Refresh() {
     var e;
@@ -73,7 +73,7 @@ class UpWeaponGachaPoolItem extends GachaPoolItem_1.GachaPoolItem {
       var s = this.GachaViewInfo.WeaponPrefabPath;
       var h = this.dWt.get(s);
       if (!h || h !== this.CWt) {
-        this.ulm();
+        this.ydm();
         let e = h;
         if (!e) {
           h = await LguiUtil_1.LguiUtil.LoadPrefabByAsync(s, t);
@@ -108,7 +108,7 @@ class UpWeaponGachaPoolItem extends GachaPoolItem_1.GachaPoolItem {
       e.StopCurrentSequence();
     }
   }
-  ulm() {
+  ydm() {
     if (this.CWt) {
       this.CWt.SetUIActive(false);
       this.hGc(this.CWt);

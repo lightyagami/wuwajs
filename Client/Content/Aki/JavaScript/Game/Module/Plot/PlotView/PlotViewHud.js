@@ -24,10 +24,10 @@ class PlotViewHud extends UiTickViewBase_1.UiTickViewBase {
     this.geo = undefined;
     this.xOi = undefined;
     this._9_ = false;
-    this.nMm = false;
+    this.txm = false;
     this.vto = false;
-    this.oLm = false;
-    this.nLm = false;
+    this.$gf = false;
+    this.Wgf = false;
     this.CZi = () => {
       this.$eo();
     };
@@ -37,13 +37,13 @@ class PlotViewHud extends UiTickViewBase_1.UiTickViewBase {
       ControllerHolder_1.ControllerHolder.FlowController.FlowShowTalk.SubmitSubtitle(this.geo.CurrentContent);
     };
     this.lqt = () => {
-      if (this.oLm || this.nLm) {
-        this.sMm(false);
-        this.sMm(true);
+      if (this.$gf || this.Wgf) {
+        this.ixm(false);
+        this.ixm(true);
       }
     };
     this.Heo = () => {
-      this.nMm = true;
+      this.txm = true;
       this.geo.ShowOptions();
       this.oXi();
     };
@@ -70,14 +70,14 @@ class PlotViewHud extends UiTickViewBase_1.UiTickViewBase {
             this.SetUiActive(false);
           }
           this.Abn();
-          this.aMm();
+          this.rxm();
           ControllerHolder_1.ControllerHolder.FlowController.CountDownSkip(true);
         } else {
           if (e) {
             this.SetUiActive(true);
           }
           this.J2n();
-          this.hMm();
+          this.oxm();
           ControllerHolder_1.ControllerHolder.FlowController.CountDownSkip(false);
         }
       }
@@ -88,11 +88,11 @@ class PlotViewHud extends UiTickViewBase_1.UiTickViewBase {
       this.Ito();
       this.Tto();
     };
-    this.lMm = () => {
-      this._Mm(0);
+    this.nxm = () => {
+      this.sxm(0);
     };
-    this.uMm = () => {
-      this._Mm(1);
+    this.axm = () => {
+      this.sxm(1);
     };
   }
   SimulateClickSubtitle() {}
@@ -146,9 +146,9 @@ class PlotViewHud extends UiTickViewBase_1.UiTickViewBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InputControllerChange, this.lqt);
   }
   ito() {
-    this.nMm = false;
+    this.txm = false;
     this.geo.ClearOptions();
-    this.cMm();
+    this.Atm();
   }
   OnAfterPlayStartSequence() {
     this.yto();
@@ -226,15 +226,15 @@ class PlotViewHud extends UiTickViewBase_1.UiTickViewBase {
       }
     }
   }
-  aMm() {
-    if (this.nMm) {
+  rxm() {
+    if (this.txm) {
       this.geo.MuteTimeLimitedOption = true;
-      this.cMm();
+      this.Atm();
     }
   }
-  hMm() {
+  oxm() {
     if (ModelManager_1.ModelManager.PlotModel.InOptions) {
-      if (this.nMm) {
+      if (this.txm) {
         this.geo.MuteTimeLimitedOption = false;
         this.oXi();
       } else {
@@ -246,41 +246,41 @@ class PlotViewHud extends UiTickViewBase_1.UiTickViewBase {
     ModelManager_1.ModelManager.PlotModel.TimeLimitedOptionTag = true;
     ControllerHolder_1.ControllerHolder.InputDistributeController.RefreshInputTag();
     ModelManager_1.ModelManager.BattleUiModel.ChildViewData.HideBattleView(14, [12, 23]);
-    this.sMm(true);
+    this.ixm(true);
   }
-  cMm() {
+  Atm() {
     ModelManager_1.ModelManager.PlotModel.TimeLimitedOptionTag = false;
     ControllerHolder_1.ControllerHolder.InputDistributeController.RefreshInputTag();
     ModelManager_1.ModelManager.BattleUiModel.ChildViewData.ShowBattleView(14);
-    this.sMm(false);
+    this.ixm(false);
   }
-  sMm(t) {
+  ixm(t) {
     if (t) {
       if (Info_1.Info.IsInGamepad()) {
-        if (!this.oLm) {
-          ControllerHolder_1.ControllerHolder.InputDistributeController.BindActionIgnoreLimit(InputMappingsDefine_1.actionMappings.D级限时选项_1, this.lMm);
-          ControllerHolder_1.ControllerHolder.InputDistributeController.BindActionIgnoreLimit(InputMappingsDefine_1.actionMappings.D级限时选项_2, this.uMm);
-          this.oLm = true;
+        if (!this.$gf) {
+          ControllerHolder_1.ControllerHolder.InputDistributeController.BindActionIgnoreLimit(InputMappingsDefine_1.actionMappings.D级限时选项_1, this.nxm);
+          ControllerHolder_1.ControllerHolder.InputDistributeController.BindActionIgnoreLimit(InputMappingsDefine_1.actionMappings.D级限时选项_2, this.axm);
+          this.$gf = true;
         }
-      } else if (!this.nLm) {
-        ControllerHolder_1.ControllerHolder.InputDistributeController.BindActionIgnoreLimit(InputMappingsDefine_1.actionMappings.切换角色1, this.lMm);
-        ControllerHolder_1.ControllerHolder.InputDistributeController.BindActionIgnoreLimit(InputMappingsDefine_1.actionMappings.切换角色2, this.uMm);
-        this.nLm = true;
+      } else if (!this.Wgf) {
+        ControllerHolder_1.ControllerHolder.InputDistributeController.BindActionIgnoreLimit(InputMappingsDefine_1.actionMappings.切换角色1, this.nxm);
+        ControllerHolder_1.ControllerHolder.InputDistributeController.BindActionIgnoreLimit(InputMappingsDefine_1.actionMappings.切换角色2, this.axm);
+        this.Wgf = true;
       }
     } else {
-      if (this.oLm) {
-        this.oLm = false;
-        ControllerHolder_1.ControllerHolder.InputDistributeController.UnBindActionIgnoreLimit(InputMappingsDefine_1.actionMappings.D级限时选项_1, this.lMm);
-        ControllerHolder_1.ControllerHolder.InputDistributeController.UnBindActionIgnoreLimit(InputMappingsDefine_1.actionMappings.D级限时选项_2, this.uMm);
+      if (this.$gf) {
+        this.$gf = false;
+        ControllerHolder_1.ControllerHolder.InputDistributeController.UnBindActionIgnoreLimit(InputMappingsDefine_1.actionMappings.D级限时选项_1, this.nxm);
+        ControllerHolder_1.ControllerHolder.InputDistributeController.UnBindActionIgnoreLimit(InputMappingsDefine_1.actionMappings.D级限时选项_2, this.axm);
       }
-      if (this.nLm) {
-        this.nLm = false;
-        ControllerHolder_1.ControllerHolder.InputDistributeController.UnBindActionIgnoreLimit(InputMappingsDefine_1.actionMappings.切换角色1, this.lMm);
-        ControllerHolder_1.ControllerHolder.InputDistributeController.UnBindActionIgnoreLimit(InputMappingsDefine_1.actionMappings.切换角色2, this.uMm);
+      if (this.Wgf) {
+        this.Wgf = false;
+        ControllerHolder_1.ControllerHolder.InputDistributeController.UnBindActionIgnoreLimit(InputMappingsDefine_1.actionMappings.切换角色1, this.nxm);
+        ControllerHolder_1.ControllerHolder.InputDistributeController.UnBindActionIgnoreLimit(InputMappingsDefine_1.actionMappings.切换角色2, this.axm);
       }
     }
   }
-  _Mm(e) {
+  sxm(e) {
     var t;
     if (this.geo?.Options && (t = this.geo.Options.find(t => t.OptionIndex === e))) {
       t.OptionClick();

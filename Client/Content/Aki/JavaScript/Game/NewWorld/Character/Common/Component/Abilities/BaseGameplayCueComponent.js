@@ -7,8 +7,8 @@ var __decorate = this && this.__decorate || function (e, a, t, r) {
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
     C = Reflect.decorate(e, a, t, r);
   } else {
-    for (var i = e.length - 1; i >= 0; i--) {
-      if (u = e[i]) {
+    for (var o = e.length - 1; o >= 0; o--) {
+      if (u = e[o]) {
         C = (l < 3 ? u(C) : l > 3 ? u(a, t, C) : u(a, t)) || C;
       }
     }
@@ -47,7 +47,11 @@ const GameplayCueHitEffect_1 = require("./GameplayCueSFX/GameplayCueHitEffect");
 const GameplayCueHookUp_1 = require("./GameplayCueSFX/GameplayCueHookUp");
 const GameplayCueManipulateInteract_1 = require("./GameplayCueSFX/GameplayCueManipulateInteract");
 const GameplayCueMaterial_1 = require("./GameplayCueSFX/GameplayCueMaterial");
+const GameplayCueMotorcycleFixHook_1 = require("./GameplayCueSFX/GameplayCueMotorcycleFixHook");
+const GameplayCueMotorcyclePullCollection_1 = require("./GameplayCueSFX/GameplayCueMotorcyclePullCollection");
 const GameplayCueMoveSpline_1 = require("./GameplayCueSFX/GameplayCueMoveSpline");
+const GameplayCueReference_1 = require("./GameplayCueSFX/GameplayCueReference");
+const GameplayCueRtpc_1 = require("./GameplayCueSFX/GameplayCueRtpc");
 const GameplayCueSkillTargetBeam_1 = require("./GameplayCueSFX/GameplayCueSkillTargetBeam");
 const GameplayCueSkinDamage_1 = require("./GameplayCueSFX/GameplayCueSkinDamage");
 const GameplayCueTraceRay_1 = require("./GameplayCueSFX/GameplayCueTraceRay");
@@ -95,6 +99,18 @@ function getGameplayCueClass(e, a) {
       } else {
         return GameplayCueFixHook_1.GameplayCueFixHook;
       }
+    case 29:
+      if (a) {
+        return undefined;
+      } else {
+        return GameplayCueMotorcycleFixHook_1.GameplayCueMotorcycleFixHook;
+      }
+    case 30:
+      if (a) {
+        return undefined;
+      } else {
+        return GameplayCueMotorcyclePullCollection_1.GameplayCueMotorcyclePullCollection;
+      }
     case 9:
       return GameplayCueCameraEffect_1.GameplayCueCameraEffect;
     case 10:
@@ -123,6 +139,10 @@ function getGameplayCueClass(e, a) {
       return GameplayCueCharacterAudioEvent_1.GameplayCueCharacterAudioEvent;
     case 26:
       return GameplayCueGhost_1.GameplayCueGhost;
+    case 27:
+      return GameplayCueReference_1.GameplayCueReference;
+    case 28:
+      return GameplayCueRtpc_1.GameplayCueRtpc;
     default:
       return;
   }
@@ -290,5 +310,5 @@ let BaseGameplayCueComponent = class BaseGameplayCueComponent extends EntityComp
   }
 };
 __decorate([CombatMessage_1.CombatNet.Listen("EJs", true)], BaseGameplayCueComponent, "GameplayCueNotify", null);
-BaseGameplayCueComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(229)], BaseGameplayCueComponent);
+BaseGameplayCueComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(238)], BaseGameplayCueComponent);
 exports.BaseGameplayCueComponent = BaseGameplayCueComponent; //# sourceMappingURL=BaseGameplayCueComponent.js.map

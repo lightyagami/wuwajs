@@ -12,7 +12,7 @@ class GameplayCueAudioEvent extends GameplayCueBase_1.GameplayCueBase {
     this.Zge = 0;
   }
   OnCreate() {
-    var e = this.EntityHandle.Entity?.GetComponent(51);
+    var e = this.EntityHandle.Entity?.GetComponent(52);
     if (e && this.CueConfig.Parameters.length !== 0) {
       this.Zge = AudioSystem_1.AudioSystem.PostEvent(this.CueConfig.Parameters[0], e.GetAkComponent());
     }

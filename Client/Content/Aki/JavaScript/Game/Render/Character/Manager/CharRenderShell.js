@@ -18,6 +18,7 @@ const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
 const TsBaseCharacter_1 = require("../../../Character/TsBaseCharacter");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const Global_1 = require("../../../Global");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const SceneTeamDefine_1 = require("../../../Module/SceneTeam/SceneTeamDefine");
@@ -29,11 +30,22 @@ class CharRenderShell {
     this.veh = false;
     this.hen = 0;
     this.sva = undefined;
-    this.zKd = e => {
+    this.hKf = false;
+    this.M6l = e => {
+      if (CharRenderShell.CharRenderShellGameBudgetOptimize && e.VehicleType === "Motorcycle" && e.IsRolePassenger(true)) {
+        this.lKf(GameBudgetAllocatorConfigCreator_1.GameBudgetAllocatorConfigCreator.TsMoveSceneItemEntityConfig);
+      }
+    };
+    this.E6l = e => {
+      if (CharRenderShell.CharRenderShellGameBudgetOptimize && this.RenderingComponent && e.VehicleType === "Motorcycle" && e.IsRolePassenger(true)) {
+        this.lKf(GameBudgetAllocatorConfigCreator_1.GameBudgetAllocatorConfigCreator.TsCharacterRenderConfig);
+      }
+    };
+    this.tXd = e => {
       var t;
       var i;
-      if (this.hen === 0 && ((t = (i = this.RenderingComponent?.GetCachedOwnerEntity())?.GetComponent(56)?.GetAttributeHolder()) !== i && (i = t?.CheckGetComponent(43)) && (this.hen = i.GetVisionId()), this.hen === 0)) {
-        EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.EndVisionSkill, this.zKd);
+      if (this.hen === 0 && ((t = (i = this.RenderingComponent?.GetCachedOwnerEntity())?.GetComponent(59)?.GetAttributeHolder()) !== i && (i = t?.CheckGetComponent(44)) && (this.hen = i.GetVisionId()), this.hen === 0)) {
+        EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.EndVisionSkill, this.tXd);
       }
       if (this.hen === e) {
         this.RenderingComponent?.CleanOriginEffect();
@@ -139,12 +151,27 @@ class CharRenderShell {
           }
         }
       }
-      e = this.RenderingComponent.GetCachedOwnerEntity();
-      if (e?.GetComponent(0)?.GetEntityType() === Protocol_1.Aki.Protocol.kks.Proto_Vision) {
-        EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.EndVisionSkill, this.zKd);
+      var e = this.RenderingComponent.GetCachedOwnerEntity();
+      var o = e?.GetComponent(0);
+      if (o?.GetEntityType() === Protocol_1.Aki.Protocol.kks.Proto_Vision) {
+        EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.EndVisionSkill, this.tXd);
+      } else if (o?.GetEntityType() === Protocol_1.Aki.Protocol.kks.Proto_Monster && Info_1.Info.IsPcOrGamepadPlatform() && o.GetMonsterMatchType() === 1) {
+        this.hKf = true;
+        EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnEnterVehicle, this.M6l);
+        EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnLeaveVehicle, this.E6l);
       }
-      this.sva = e?.GetComponent(190);
+      this.sva = e?.GetComponent(196);
       this.A4i();
+    }
+  }
+  lKf(e) {
+    if (this.RenderingComponent) {
+      if (this.yW) {
+        GameBudgetInterfaceController_1.GameBudgetInterfaceController.UnregisterTick(this);
+        this.yW = undefined;
+      }
+      this.Mq_ = false;
+      this.yW = GameBudgetInterfaceController_1.GameBudgetInterfaceController.RegisterTick(e.GroupName, e.SignificanceGroup, this, this.RenderingComponent.GetCachedOwner());
     }
   }
   Clear() {
@@ -167,8 +194,12 @@ class CharRenderShell {
       }
       this.OtherRoleEntityId = 0;
     }
-    if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.EndVisionSkill, this.zKd)) {
-      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.EndVisionSkill, this.zKd);
+    if (this.hKf) {
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnEnterVehicle, this.M6l);
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnLeaveVehicle, this.E6l);
+    }
+    if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.EndVisionSkill, this.tXd)) {
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.EndVisionSkill, this.tXd);
     }
   }
   A4i() {
@@ -180,14 +211,21 @@ class CharRenderShell {
         this.o3a();
       }
       let e = false;
-      var t = this.RenderingComponent.GetCachedOwnerEntity()?.GetComponent(0);
-      if (t?.GetEntityType() === Protocol_1.Aki.Protocol.kks.Proto_Npc && ((t = t.GetSubEntityType()) === 0 || t === 1 || t === 2)) {
+      var i = this.RenderingComponent.GetCachedOwnerEntity()?.GetComponent(0);
+      if (i?.GetEntityType() === Protocol_1.Aki.Protocol.kks.Proto_Npc && ((i = i.GetSubEntityType()) === 0 || i === 1 || i === 2)) {
         e = true;
       }
       this.r3a = Time_1.Time.WorldTimeSeconds;
-      var t = e ? GameBudgetAllocatorConfigCreator_1.GameBudgetAllocatorConfigCreator.TsNpcRenderConfig : this.Xjt ? GameBudgetAllocatorConfigCreator_1.GameBudgetAllocatorConfigCreator.TsPlayerAlwaysTickConfig : GameBudgetAllocatorConfigCreator_1.GameBudgetAllocatorConfigCreator.TsCharacterRenderConfig;
+      let t = GameBudgetAllocatorConfigCreator_1.GameBudgetAllocatorConfigCreator.TsCharacterRenderConfig;
+      if (this.hKf) {
+        if (Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity.GetComponent(242)?.VehicleType === "Motorcycle") {
+          t = GameBudgetAllocatorConfigCreator_1.GameBudgetAllocatorConfigCreator.TsMoveSceneItemEntityConfig;
+        }
+      } else {
+        t = e ? GameBudgetAllocatorConfigCreator_1.GameBudgetAllocatorConfigCreator.TsNpcRenderConfig : this.Xjt ? GameBudgetAllocatorConfigCreator_1.GameBudgetAllocatorConfigCreator.TsPlayerAlwaysTickConfig : GameBudgetAllocatorConfigCreator_1.GameBudgetAllocatorConfigCreator.TsCharacterRenderConfig;
+      }
       this.yW = GameBudgetInterfaceController_1.GameBudgetInterfaceController.RegisterTick(t.GroupName, t.SignificanceGroup, this, this.RenderingComponent.GetCachedOwner());
-      var i = this.RenderingComponent.GetOwner();
+      i = this.RenderingComponent.GetOwner();
       if (i) {
         this.s6a = i;
         EventSystem_1.EventSystem.AddWithTarget(this.s6a, EventDefine_1.EEventName.OnMarkActorInFighting, this.a6a);

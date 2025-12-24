@@ -127,7 +127,7 @@ class PatrolMovePointsLogic {
   czo(t) {
     this.Hte.SkeletalMesh?.SetVisibility(!t.IsHide);
     var i;
-    var e = this.Hte.Entity.GetComponent(209);
+    var e = this.Hte.Entity.GetComponent(215);
     if (e) {
       i = -841499802;
       if (t.IsHide) {

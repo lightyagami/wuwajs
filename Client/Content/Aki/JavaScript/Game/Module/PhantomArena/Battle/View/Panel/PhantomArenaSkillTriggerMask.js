@@ -47,6 +47,9 @@ class PhantomArenaSkillTriggerMask extends UiPanelBase_1.UiPanelBase {
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), e);
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(3), t, ...i);
   }
+  RefreshCancelBtnActive(e) {
+    this.GetButton(6)?.RootUIComp.SetUIActive(!e);
+  }
   HideTriggerMask() {
     this.SetActive(false);
     this.IsInSkillInteract = false;

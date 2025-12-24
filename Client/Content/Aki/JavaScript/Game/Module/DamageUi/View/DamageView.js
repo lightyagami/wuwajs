@@ -10,6 +10,7 @@ const Log_1 = require("../../../../Core/Common/Log");
 const Stats_1 = require("../../../../Core/Common/Stats");
 const ResourceSystem_1 = require("../../../../Core/Resource/ResourceSystem");
 const Vector_1 = require("../../../../Core/Utils/Math/Vector");
+const Vector2D_1 = require("../../../../Core/Utils/Math/Vector2D");
 const MathUtils_1 = require("../../../../Core/Utils/MathUtils");
 const StringUtils_1 = require("../../../../Core/Utils/StringUtils");
 const Global_1 = require("../../../Global");
@@ -20,14 +21,16 @@ const DamageUiManager_1 = require("../DamageUiManager");
 const ANIM_TIME = 1200;
 const ANIM_SCALE_TIME = 700;
 const MOBLIE_FONT_SIZE_SCALE = 1.5;
-const CRITICAL_OFFSET_SCALE = 3;
+const CRITICAL_OFFSET_SCALE = 1;
+const MERGE_NUM = 10;
+const MERGE_PER_TEXT_TIME = 100;
 class DamageView extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.uFt = Vector_1.Vector.Create();
+    this.sqm = Vector_1.Vector.Create();
     this.gX1 = new UE.VectorDouble();
-    this.cFt = 0;
-    this.mFt = 0;
+    this.aqm = Vector2D_1.Vector2D.Create();
     this.dFt = undefined;
     this.CFt = undefined;
     this._Ft = undefined;
@@ -38,7 +41,9 @@ class DamageView extends UiPanelBase_1.UiPanelBase {
     this.vFt = 0;
     this.bge = 1;
     this.tlh = 1;
-    this.DisableUpdatePos = false;
+    this.r7c = [];
+    this.hqm = -1;
+    this.lqm = false;
   }
   Init() {
     var i = ControllerHolder_1.ControllerHolder.BattleUiControl.Pool.GetDamageView();
@@ -72,30 +77,67 @@ class DamageView extends UiPanelBase_1.UiPanelBase {
     ControllerHolder_1.ControllerHolder.BattleUiControl.Pool.RecycleDamageView(this.RootActor);
     return true;
   }
-  InitializeData(e, s, i, a, h = false, r = false, o = false, _ = "", n = false) {
-    if (a) {
+  InitializeData(h, a, r, _, o = false, l = false, n = false, E = "", U = 0, g) {
+    if (_) {
       DamageView.MFt.Start();
-      this.gFt = a;
-      this.DisableUpdatePos = n;
-      this.uFt.FromUeVector(s);
+      this.lqm = n;
+      this.gFt = _;
+      this.uFt.FromUeVector(a);
+      this.sqm.FromUeVector(r);
       this.gX1.Set(this.uFt.X, this.uFt.Y, this.uFt.Z);
-      let i = a.GetRandomOffsetX();
-      let t = a.GetRandomOffsetY();
-      if (h) {
+      var a = DamageUiManager_1.DamageUiManager.GetDamageTextAreaById(U);
+      var r = UE.LGUIBPLibrary.ConvertWorldPosToLGUIPos(Global_1.Global.CharacterController, this.gX1);
+      let i = 0;
+      let t = 0;
+      let s = 0;
+      let e = 0;
+      e = a ? (i = a.MinDeviationX, t = a.MaxDeviationX, s = a.MinDeviationY, a.MaxDeviationY) : (i = _.MinRandomOffsetX, t = _.MaxRandomOffsetX, s = _.MinRandomOffsetY, _.MaxRandomOffsetY);
+      if (o) {
         i *= CRITICAL_OFFSET_SCALE;
+        s *= CRITICAL_OFFSET_SCALE;
         t *= CRITICAL_OFFSET_SCALE;
+        e *= CRITICAL_OFFSET_SCALE;
       }
-      n = ControllerHolder_1.ControllerHolder.CameraController.CameraLocation;
-      s = Vector_1.Vector.DistSquared(n, this.uFt);
-      a = MathUtils_1.MathUtils.RangeClamp(s, DamageUiManager_1.DamageUiManager.MinDamageOffsetDistance, DamageUiManager_1.DamageUiManager.MaxDamageOffsetDistance, DamageUiManager_1.DamageUiManager.MaxDamageOffsetScale, DamageUiManager_1.DamageUiManager.MinDamageOffsetScale);
-      this.cFt = i * a;
-      this.mFt = t * a;
-      n = !StringUtils_1.StringUtils.IsEmpty(_);
-      s = n ? _ : r ? "+" + e : e.toString();
-      this.EFt();
-      this.SFt(o, h, n);
-      this.yFt(h);
-      this.IFt(s, h, n);
+      this.aqm.X = MathUtils_1.MathUtils.GetRandomFloatNumber(i, t);
+      this.aqm.Y = MathUtils_1.MathUtils.GetRandomFloatNumber(s, e);
+      this.RFt(r.X + this.aqm.X, r.Y + this.aqm.Y);
+      this.r7c.length = 0;
+      if (g) {
+        if (StringUtils_1.StringUtils.IsEmpty(E)) {
+          U = l ? "+" + h : h.toString();
+          this.r7c.push(U);
+        }
+        let i = 0;
+        let t = 1;
+        for (const S of g) {
+          if (StringUtils_1.StringUtils.IsEmpty(E)) {
+            if (++t < MERGE_NUM) {
+              this.r7c.push(S.IsCure ? "+" + S.Damage : S.Damage.toString());
+            } else if (l) {
+              i += S.Damage;
+            } else {
+              i -= S.Damage;
+            }
+          }
+        }
+        if (i > 0) {
+          this.r7c.push("+" + i);
+        } else if (i < 0) {
+          this.r7c.push("" + -i);
+        }
+      }
+      if (this.r7c.length > 0) {
+        this.hqm = 0;
+        this.SFt(n, false, false);
+        this.yFt(false);
+        this.IFt(this.r7c[0], false, false);
+      } else {
+        this.hqm = -1;
+        _ = (a = !StringUtils_1.StringUtils.IsEmpty(E)) ? E : l ? "+" + h : h.toString();
+        this.SFt(n, o, a);
+        this.yFt(o);
+        this.IFt(_, o, a);
+      }
       this.TFt();
       this.SetActive(true);
       this.dFt.SetAlpha(0);
@@ -108,22 +150,22 @@ class DamageView extends UiPanelBase_1.UiPanelBase {
     this.SetActive(false);
     this.SetCriticalNiagaraVisible(false);
   }
-  SFt(i, t, e) {
+  SFt(i, t, s) {
     this.pFt = ANIM_TIME;
-    i = this.gFt.GetSequencePath(i, t, e);
+    i = this.gFt.GetSequencePath(i, t, s);
     t = DamageView.LFt.get(i);
     if (t === undefined) {
       if (Log_1.Log.CheckWarn()) {
         Log_1.Log.Warn("Battle", 17, "缺少伤害数字动画", ["sequencePath", i]);
       }
     } else {
-      var s = this.GetItem(t).GetOwner().K2_GetComponentsByClass(UE.LGUIPlayTweenComponent.StaticClass());
+      var e = this.GetItem(t).GetOwner().K2_GetComponentsByClass(UE.LGUIPlayTweenComponent.StaticClass());
       this.Sjs = [];
-      var a = s.Num();
-      for (let i = 0; i < a; i++) {
-        var h = s.Get(i);
-        this.Sjs.push(h);
-        h.Play();
+      var h = e.Num();
+      for (let i = 0; i < h; i++) {
+        var a = e.Get(i);
+        this.Sjs.push(a);
+        a.Play();
       }
     }
   }
@@ -152,15 +194,22 @@ class DamageView extends UiPanelBase_1.UiPanelBase {
       }
       if (this.pFt <= 0) {
         DamageUiManager_1.DamageUiManager.RemoveDamageView(this);
-      } else if (!this.DisableUpdatePos) {
-        this.EFt();
+      } else {
+        if (this.hqm !== -1 && (t = Math.floor((ANIM_TIME - this.pFt) / MERGE_PER_TEXT_TIME), this.hqm !== t) && (this.hqm = t, this.r7c.length > t)) {
+          this.dFt.SetText(this.r7c[t]);
+        }
+        if (this.lqm) {
+          this._qm();
+        } else {
+          this.EFt();
+        }
       }
     }
   }
   ilh(i) {
     if (this.tlh !== i && (this.tlh = i, this.Sjs)) {
-      for (const e of this.Sjs) {
-        var t = e.GetPlayTween()?.GetTweener();
+      for (const s of this.Sjs) {
+        var t = s.GetPlayTween()?.GetTweener();
         if (t) {
           t.SetSpeed(this.tlh);
         }
@@ -172,11 +221,21 @@ class DamageView extends UiPanelBase_1.UiPanelBase {
     }
   }
   EFt() {
-    var i = UE.LGUIBPLibrary.ConvertWorldPosToLGUIPos(Global_1.Global.CharacterController, this.gX1);
-    if (i) {
-      i.X = i.X + this.cFt;
-      i.Y = i.Y + this.mFt;
-      this.RFt(i);
+    var i;
+    var t = UE.LGUIBPLibrary.ConvertWorldPosToLGUIPos(Global_1.Global.CharacterController, this.gX1);
+    if (t) {
+      i = t.X + this.aqm.X;
+      t = t.Y + this.aqm.Y;
+      this.RFt(i, t);
+    }
+  }
+  _qm() {
+    var i;
+    var t = UE.LGUIBPLibrary.ConvertWorldPosToLGUIPos(Global_1.Global.CharacterController, this.gX1);
+    if (t) {
+      i = t.X + this.aqm.X;
+      t = t.Y + this.aqm.Y;
+      this.RFt(i, t);
     }
   }
   TFt() {
@@ -212,8 +271,8 @@ class DamageView extends UiPanelBase_1.UiPanelBase {
       t.SetUIActive(i);
     }
   }
-  IFt(i, t, e) {
-    if (e) {
+  IFt(i, t, s) {
+    if (s) {
       this.PFt(this.dFt, t);
       if (this.CFt.GetText() !== i) {
         LguiUtil_1.LguiUtil.SetLocalText(this.CFt, i);
@@ -246,22 +305,23 @@ class DamageView extends UiPanelBase_1.UiPanelBase {
     }
   }
   PFt(i, t) {
-    var e = i.GetOwner().GetComponentByClass(UE.UIEffectOutline.StaticClass());
-    let s = this.gFt.GetTextColor();
-    let a = this.gFt.GetStrokeColor();
+    var s = i.GetOwner().GetComponentByClass(UE.UIEffectOutline.StaticClass());
+    let e = this.gFt.GetTextColor();
+    let h = this.gFt.GetStrokeColor();
     if (t) {
-      s = this.gFt.GetCriticalTextColor();
-      a = this.gFt.GetCriticalStrokeColor();
+      e = this.gFt.GetCriticalTextColor();
+      h = this.gFt.GetCriticalStrokeColor();
     }
-    if (!i.GetColor().op_Equality(s)) {
-      i.SetColor(s);
+    if (!i.GetColor().op_Equality(e)) {
+      i.SetColor(e);
     }
-    if (!e.GetOutlineColor().op_Equality(a)) {
-      e.SetOutlineColor(a);
+    if (!s.GetOutlineColor().op_Equality(h)) {
+      s.SetOutlineColor(h);
     }
   }
-  RFt(i) {
-    this.RootItem.SetAnchorOffset(i);
+  RFt(i, t) {
+    this.RootItem.SetAnchorOffsetX(i);
+    this.RootItem.SetAnchorOffsetY(t);
   }
   SetTimeScale(i) {
     if ((this.bge = i) === 1) {

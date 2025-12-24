@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.UiCameraTargetTypePlayer = undefined;
 const UE = require("ue");
+const Global_1 = require("../../../Global");
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
@@ -14,6 +15,9 @@ class UiCameraTargetTypePlayer extends UiCameraTargetTypeBase_1.UiCameraTargetTy
     return ControllerHolder_1.ControllerHolder.CharacterController.GetActor(ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity);
   }
   GetTargetBodyKey() {
+    if (this.AQm()) {
+      return "Motor";
+    }
     var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentTeamItem;
     if (e) {
       e = e.GetConfigId;
@@ -28,6 +32,10 @@ class UiCameraTargetTypePlayer extends UiCameraTargetTypeBase_1.UiCameraTargetTy
     if (e) {
       return e.GetComponentByClass(UE.SkeletalMeshComponent.StaticClass());
     }
+  }
+  AQm() {
+    var e = Global_1.Global.BaseCharacter?.CharacterActorComponent;
+    return !!e && !!(e = e.Entity.CheckGetComponent(242)) && !!e.VehicleEntity?.Valid && e.VehicleType === "Motorcycle";
   }
 }
 exports.UiCameraTargetTypePlayer = UiCameraTargetTypePlayer;

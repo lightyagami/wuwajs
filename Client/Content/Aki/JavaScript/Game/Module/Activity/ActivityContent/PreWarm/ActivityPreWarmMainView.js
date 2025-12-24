@@ -28,15 +28,15 @@ class ActivityPreWarmMainView extends UiViewBase_1.UiViewBase {
     this.GZi = undefined;
     this.NZi = undefined;
     this.NHe = 0;
-    this.h1m = false;
-    this.l1m = 0;
+    this.Emm = false;
+    this.Imm = 0;
     this.LOe = 0;
     this.Pln = 0;
     this.Do1 = () => {
       this.XYt.Stop();
       this.QYt.SetSelectorOffset(0);
     };
-    this._1m = i => {
+    this.Tmm = i => {
       this.NHe += i;
       this.nOe();
       if (this.UiViewSequence?.HasSequenceNameInPlaying("Switch")) {
@@ -55,31 +55,31 @@ class ActivityPreWarmMainView extends UiViewBase_1.UiViewBase {
     this.AMo = () => {
       this.CloseMe();
     };
-    this.u1m = () => {
-      this.c1m(true);
+    this.bmm = () => {
+      this.Rmm(true);
     };
-    this.d1m = () => {
-      this.c1m(false);
+    this.wmm = () => {
+      this.Rmm(false);
     };
     this.Ko1 = () => {
-      this.tvm();
-      this._1m(-1);
+      this.ewm();
+      this.Tmm(-1);
     };
     this.Xo1 = () => {
-      this.tvm();
-      this._1m(1);
+      this.ewm();
+      this.Tmm(1);
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UISprite], [2, UE.UIText], [3, UE.UITexture], [4, UE.UITexture], [5, UE.UIText], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIButtonComponent], [9, UE.UIButtonComponent], [10, UE.UIButtonComponent], [11, UE.UIButtonComponent], [12, UE.UIButtonComponent], [13, UE.UITexture]];
-    this.BtnBindInfo = [[8, this.Ko1], [9, this.Xo1], [10, this.u1m], [11, this.d1m], [12, this.syd]];
+    this.BtnBindInfo = [[8, this.Ko1], [9, this.Xo1], [10, this.bmm], [11, this.wmm], [12, this.syd]];
   }
   async OnBeforeStartAsync() {
     var i = this.OpenParam;
     this.NHe = i.Id;
-    this.h1m = i.IsParsing ?? false;
+    this.Emm = i.IsParsing ?? false;
     this.LOe = i.ActivityId ?? 0;
-    if (this.h1m) {
+    if (this.Emm) {
       await this.pah();
     }
   }
@@ -107,10 +107,10 @@ class ActivityPreWarmMainView extends UiViewBase_1.UiViewBase {
   P9e() {
     if (this.QYt && this.XYt) {
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("ActivityPreWarm", 87, "播放打字动画", ["时长", this.l1m]);
+        Log_1.Log.Info("ActivityPreWarm", 87, "播放打字动画", ["时长", this.Imm]);
       }
       this.QYt.SetSelectorOffset(1);
-      this.XYt.GetPlayTween().duration = this.l1m;
+      this.XYt.GetPlayTween().duration = this.Imm;
       this.XYt.Play();
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("ActivityPreWarm", 87, "打字机组件未初始化");
@@ -123,7 +123,7 @@ class ActivityPreWarmMainView extends UiViewBase_1.UiViewBase {
   OnBeforeShow() {
     var i;
     var t;
-    if (this.h1m) {
+    if (this.Emm) {
       this.PlaySequence("Start01", () => {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("ActivityPreWarm", 87, "解析动画播放完成");
@@ -134,7 +134,7 @@ class ActivityPreWarmMainView extends UiViewBase_1.UiViewBase {
       if (t = this.RootActor?.GetSequencePlayerByKey("Start01")?.SequencePlayer?.GetDuration()) {
         i = t.Time.FrameNumber.Value + t.Time.SubFrame;
         t = t.Rate.Denominator / t.Rate.Numerator;
-        this.l1m = i * t;
+        this.Imm = i * t;
       }
     } else {
       this.GetItem(6)?.SetUIActive(false);
@@ -145,14 +145,14 @@ class ActivityPreWarmMainView extends UiViewBase_1.UiViewBase {
   U3e() {
     this.lqe = new PopupCaptionItem_1.PopupCaptionItem(this.GetItem(0));
     this.lqe.SetCloseCallBack(this.AMo);
-    this.lqe.SetCloseBtnActive(!this.h1m);
+    this.lqe.SetCloseBtnActive(!this.Emm);
   }
   nOe() {
     this.mGe();
-    this.m1m();
+    this.Lmm();
     this.RefreshLeftRightBtnState();
     this.Pqe();
-    this.f1m();
+    this.Pmm();
     this.Pln = Time_1.Time.Now;
   }
   mGe() {
@@ -164,29 +164,29 @@ class ActivityPreWarmMainView extends UiViewBase_1.UiViewBase {
     var i = ModelManager_1.ModelManager.ActivityPreWarmModel?.GetCollectItemDataById(this.NHe);
     LguiUtil_1.LguiUtil.TrySetLocalTextNew(this.GetText(5), i?.GetDesc());
     this.GetText(5)?.SetUIActive(true);
-    if (this.h1m) {
+    if (this.Emm) {
       this.P9e();
     }
   }
-  m1m() {
+  Lmm() {
     var i = ModelManager_1.ModelManager.ActivityPreWarmModel?.GetCollectItemDataById(this.NHe);
     this.TrySetTextureByPath(i?.GetBgPath(), this.GetTexture(3));
   }
-  f1m() {
+  Pmm() {
     var i;
-    if (this.h1m) {
+    if (this.Emm) {
       i = ModelManager_1.ModelManager.ActivityPreWarmModel?.GetCollectItemDataById(this.NHe);
       this.TrySetTextureByPath(i?.GetShadowIconPath(), this.GetTexture(4));
     }
   }
-  c1m(i) {
+  Rmm(i) {
     this.GetButton(10)?.RootUIComp.SetUIActive(!i);
     this.GetButton(11)?.RootUIComp.SetUIActive(i);
     this.UiViewSequence?.StopSequenceByKey(i ? "InfoHide" : "InfoShow");
     this.UiViewSequence?.PlaySequence(i ? "InfoShow" : "InfoHide");
   }
   RefreshLeftRightBtnState() {
-    if (this.h1m) {
+    if (this.Emm) {
       this.GetButton(8)?.RootUIComp.SetUIActive(false);
       this.GetButton(9)?.RootUIComp.SetUIActive(false);
     } else {
@@ -201,9 +201,9 @@ class ActivityPreWarmMainView extends UiViewBase_1.UiViewBase {
     }
     (0, puerts_1.releaseManualReleaseDelegate)(this.Do1);
     this.GZi = undefined;
-    this.tvm();
+    this.ewm();
   }
-  tvm() {
+  ewm() {
     var i;
     var t;
     if (this.Pln !== 0 && !((i = Time_1.Time.Now - this.Pln) <= STAYTIMETHRESHOLD)) {

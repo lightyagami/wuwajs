@@ -9,6 +9,7 @@ const CustomPromise_1 = require("../../../../Core/Common/CustomPromise");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const RedDotController_1 = require("../../../RedDot/RedDotController");
+const UiAsyncTask_1 = require("../../../Ui/Base/UiAsyncTask");
 const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
 const UiNavigationNewController_1 = require("../../UiNavigation/New/UiNavigationNewController");
 class RouletteGridBase extends UiPanelBase_1.UiPanelBase {
@@ -47,7 +48,7 @@ class RouletteGridBase extends UiPanelBase_1.UiPanelBase {
   OnBeforeDestroy() {
     this.UnBindRedDot();
     this.Data = undefined;
-    this.Toggle.CanExecuteChange.Unbind();
+    this.Toggle?.CanExecuteChange.Unbind();
     this.Toggle = undefined;
   }
   async Init() {}
@@ -57,9 +58,11 @@ class RouletteGridBase extends UiPanelBase_1.UiPanelBase {
   RefreshGrid(t) {
     this.Data = t;
     this.WH_();
-    this.Init().finally(() => {
+    t = new UiAsyncTask_1.UiAsyncTask("RouletteGridBase.RefreshGrid", async () => {
+      await this.Init();
       this.x0o();
     });
+    this.RunAsyncTask(t);
   }
   BindRedDot(t, i = 0) {
     var e = this.GetItem(11);
@@ -142,15 +145,22 @@ class RouletteGridBase extends UiPanelBase_1.UiPanelBase {
   AddToggleStateChangeEvent(t) {
     this.Toggle.OnStateChange.Add(t);
   }
+  RemoveToggleStateChangeEvent(t) {
+    this.Toggle.OnStateChange.Remove(t);
+  }
   SetGridToggleChangeEvent() {
     this.AddToggleStateChangeEvent(this.A0o);
     this.AddToggleStateChangeEvent(this.P0o);
   }
+  RemoveGridToggleChangeEvent() {
+    this.RemoveToggleStateChangeEvent(this.A0o);
+    this.RemoveToggleStateChangeEvent(this.P0o);
+  }
   SetToggleSelfInteractive(t) {
     this.Toggle.SetSelfInteractive(t);
   }
-  SetGridToggleState(t) {
-    this.Toggle.SetToggleState(t ? 1 : 0, true);
+  SetGridToggleState(t, i = true) {
+    this.Toggle.SetToggleState(t ? 1 : 0, i);
   }
   SetGridToggleNavigation(t) {
     if (t) {

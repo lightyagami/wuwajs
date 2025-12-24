@@ -88,6 +88,7 @@ class BulletInfo {
     this.TargetId = 0;
     this.TargetIdLast = 0;
     this.NHo = undefined;
+    this.ZCm = false;
     this.OHo = undefined;
     this.ParentBulletInfo = undefined;
     this.ChildEntityIds = undefined;
@@ -132,9 +133,6 @@ class BulletInfo {
   }
   get TransformCreate() {
     return this.SHo.InitialTransform;
-  }
-  get BaseVelocityEntityId() {
-    return this.SHo.BaseVelocityId;
   }
   get BulletRowName() {
     return this.SHo.BulletRowName;
@@ -306,7 +304,7 @@ class BulletInfo {
     return this.wHo;
   }
   get AttackerActorComp() {
-    this.eVo ||= this.Attacker?.GetComponent(3);
+    this.eVo ||= this.Attacker?.GetComponent(1);
     return this.eVo;
   }
   get AttackerSkillComp() {
@@ -314,31 +312,41 @@ class BulletInfo {
     return this.BHo;
   }
   get AttackerBuffComp() {
-    this.bHo ||= this.Attacker?.GetComponent(178);
+    this.bHo ||= this.Attacker?.GetComponent(220);
     return this.bHo;
   }
   get AttackerMoveComp() {
-    this.qHo ||= this.Attacker?.GetComponent(182);
+    this.qHo ||= this.Attacker?.GetComponent(187);
     return this.qHo;
   }
   get AttackerAudioComponent() {
-    this.GHo ||= this.Attacker?.GetComponent(51);
+    this.GHo ||= this.Attacker?.GetComponent(52);
     return this.GHo;
   }
   get Target() {
-    if (this.NHo) {
+    if (this.ZCm) {
+      return EntitySystem_1.EntitySystem.Get(this.TargetId);
+    } else if (this.NHo) {
       return this.NHo?.Entity;
+    } else {
+      return undefined;
     }
   }
   SetTargetById(t) {
-    t = ModelManager_1.ModelManager.CharacterModel.GetHandle(t);
-    if (t?.Valid) {
+    var i = ModelManager_1.ModelManager.CharacterModel.GetHandle(t);
+    if (i?.Valid) {
       this.QHo();
-      this.NHo = t;
+      this.TargetId = t;
+      this.NHo = i;
+      this.ZCm = false;
       this.OHo = undefined;
       this.XHo();
     } else {
       this.ClearTarget();
+      if (EntitySystem_1.EntitySystem.Get(t)?.Valid) {
+        this.TargetId = t;
+        this.ZCm = true;
+      }
     }
   }
   ClearTarget() {
@@ -346,13 +354,18 @@ class BulletInfo {
     this.NHo = undefined;
     this.TargetId = 0;
     this.OHo = undefined;
+    this.ZCm = false;
   }
   get TargetActorComp() {
-    this.OHo ||= this.Target?.GetComponent(1);
-    return this.OHo;
+    if (this.ZCm) {
+      return EntitySystem_1.EntitySystem.GetComponent(this.TargetId, 1);
+    } else {
+      this.OHo ||= this.Target?.GetComponent(1);
+      return this.OHo;
+    }
   }
   GetLockOnTargetDynamic() {
-    return this.xHo?.Entity?.GetComponent(32)?.GetCurrentTarget()?.Entity?.GetComponent(1);
+    return this.xHo?.Entity?.GetComponent(33)?.GetCurrentTarget()?.Entity?.GetComponent(1);
   }
   get ParentEntityId() {
     return this.SHo.ParentId;

@@ -20,7 +20,7 @@ class KeyItemBase extends UiPanelBase_1.UiPanelBase {
     this.ActionName = undefined;
     this.AxisName = undefined;
     this.Lut = undefined;
-    this.HEe = undefined;
+    this.KeyName = undefined;
     this.KeyTexturePath = undefined;
     this.IsEnable = false;
     this.IsGray = false;
@@ -57,7 +57,7 @@ class KeyItemBase extends UiPanelBase_1.UiPanelBase {
   }
   Reset() {
     this.Lut = undefined;
-    this.HEe = undefined;
+    this.KeyName = undefined;
     this.ActionName = undefined;
     this.AxisName = undefined;
     this.KeyTexturePath = undefined;
@@ -124,7 +124,7 @@ class KeyItemBase extends UiPanelBase_1.UiPanelBase {
   RefreshKey(t) {
     var i = t.GetKeyName();
     var t = t.GetKeyIconPath();
-    if (this.HEe !== i || this.KeyTexturePath != t) {
+    if (this.KeyName !== i || this.KeyTexturePath != t) {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Battle", 10, "[KeyItem]设置按键图片", ["actionName", this.ActionName], ["keyName", i], ["keyTexturePath", t]);
       }
@@ -133,7 +133,7 @@ class KeyItemBase extends UiPanelBase_1.UiPanelBase {
       } else {
         this.Aut(t);
       }
-      this.HEe = i;
+      this.KeyName = i;
     }
   }
   RefreshKeyByName(t) {

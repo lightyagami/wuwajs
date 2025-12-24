@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.BcView = exports.Code12 = exports.Code54 = exports.Code64 = exports.Converter = undefined;
 const cpp_1 = require("cpp");
+const puerts_1 = require("puerts");
 const UE = require("ue");
 const Log_1 = require("../../../../Core/Common/Log");
 const ModelManager_1 = require("../../../Manager/ModelManager");
@@ -233,7 +234,19 @@ class BcView extends UiViewBase_1.UiViewBase {
     if ((!cpp_1.KuroApplication.IsBuildShipping() || cpp_1.KuroApplication.GetAppReleaseType() !== "Product") && UE.KuroLauncherLibrary.GetAppInternalUseType() !== "Marketing") {
       let e = ModelManager_1.ModelManager.LoginModel.GetLoginUid();
       var t = Number(e);
-      var t = e = (Number.isNaN(t) || t.toString() !== e) && (e = "1", ModelManager_1.ModelManager.FunctionModel.PlayerId) ? ModelManager_1.ModelManager.FunctionModel.PlayerId.toString() : e;
+      if (!!Number.isNaN(t) || t.toString() !== e) {
+        e = "1";
+        if (ModelManager_1.ModelManager.FunctionModel.PlayerId) {
+          e = ModelManager_1.ModelManager.FunctionModel.PlayerId.toString();
+        } else {
+          t = (0, puerts_1.$ref)(UE.NewArray(UE.BuiltinInt));
+          UE.KuroStaticLibrary.GetLocalAdapterAddressesUint32(t);
+          if ((t = (0, puerts_1.$unref)(t)).Num() > 0) {
+            e = t.Get(0).toString();
+          }
+        }
+      }
+      var t = e;
       var r = this.GetItem(0);
       var o = this.GetItem(1);
       this.Ovi(r, o, t, 0);
@@ -275,25 +288,25 @@ class BcView extends UiViewBase_1.UiViewBase {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("UiCommon", 30, "" + h, ["repeatCount", M]);
     }
-    var d = [];
-    d.push(r);
-    for (let e = 1; e < h; e++) {
-      var l = LguiUtil_1.LguiUtil.DuplicateActor(r.GetOwner(), t);
-      d.push(l.GetComponentByClass(UE.UIItem.StaticClass()));
-    }
     var p = [];
-    var c = this.gdl.GetCodeTable();
+    p.push(r);
+    for (let e = 1; e < h; e++) {
+      var d = LguiUtil_1.LguiUtil.DuplicateActor(r.GetOwner(), t);
+      p.push(d.GetComponentByClass(UE.UIItem.StaticClass()));
+    }
+    var l = [];
+    var E = this.gdl.GetCodeTable();
     for (let r = 0; r < M; r++) {
       for (let t = 0; t < _; t++) {
-        var E = d[t + r * _];
-        var I = n[Math.floor(t / u)];
-        var T = t % u;
-        var I = c[I];
-        var I = u - 1 < T ? 0 : I[T];
-        p.push(I);
-        E.SetAlpha(I > 0 ? 1 : 0);
+        var U = p[t + r * _];
+        var c = n[Math.floor(t / u)];
+        var I = t % u;
+        var c = E[c];
+        var c = u - 1 < I ? 0 : c[I];
+        l.push(c);
+        U.SetAlpha(c > 0 ? 1 : 0);
         let e = 0;
-        switch (I) {
+        switch (c) {
           case 1:
             e = ITEM_HEIGHT_1;
             break;
@@ -301,9 +314,9 @@ class BcView extends UiViewBase_1.UiViewBase {
             e = ITEM_HEIGHT_2;
         }
         if (o === 0) {
-          E.SetHeight(e);
+          U.SetHeight(e);
         } else {
-          E.SetWidth(e);
+          U.SetWidth(e);
         }
       }
     }

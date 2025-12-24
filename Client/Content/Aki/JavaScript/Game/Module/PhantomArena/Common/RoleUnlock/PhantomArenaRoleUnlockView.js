@@ -20,11 +20,12 @@ class PhantomArenaRoleUnlockView extends UiViewBase_1.UiViewBase {
     this.CardRoleId = 0;
     this.IsWaitingChange = false;
     this.RoleTexture = undefined;
+    this.Vnu = undefined;
     this.AMo = () => {
       if (ModelManager_1.ModelManager.PhantomArenaModel.RoleUnlockQueue.length > 0) {
         this.ShowNext();
       } else {
-        this.CloseMe();
+        this.CloseMe(this.Vnu);
       }
     };
     this.C0u = e => {
@@ -38,6 +39,7 @@ class PhantomArenaRoleUnlockView extends UiViewBase_1.UiViewBase {
     this.BtnBindInfo = [[0, this.AMo]];
   }
   async OnBeforeStartAsync() {
+    this.Vnu = this.OpenParam;
     this.GetItem(3).SetUIActive(false);
     this.GetItem(1).SetUIActive(true);
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(5), "PhantomBattle_1120");

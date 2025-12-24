@@ -43,16 +43,16 @@ class RoleRobotData extends RoleDataBase_1.RoleDataBase {
     var e = this.GetSkillData();
     var t = this.GetRoleConfig().SkillId;
     var r = this.GetRoleId();
-    var o = ModelManager_1.ModelManager.RoleModel.ClientCheckRoleIsUpgradeLightMainRole(r);
+    var i = ModelManager_1.ModelManager.RoleModel.ClientCheckRoleIsUpgradeLightMainRole(r);
     for (const g of e.GetSkillList()) {
-      var i = this.__o(g.Id);
-      var i = i < a.UnlockSkillLevel ? i : a.UnlockSkillLevel;
-      var n = ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillTreeNodeByGroupIdAndSkillId(t, g.Id);
-      if (n || o) {
-        if (n?.NodeType === 3) {
+      var n = this.__o(g.Id);
+      var n = n < a.UnlockSkillLevel ? n : a.UnlockSkillLevel;
+      var o = ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillTreeNodeByGroupIdAndSkillId(t, g.Id);
+      if (o || i) {
+        if (o?.NodeType === 3) {
           e.SetSkillLevel(g.Id, 0);
         } else {
-          e.SetSkillLevel(g.Id, i);
+          e.SetSkillLevel(g.Id, n);
         }
         e.SetSkillReferenceMapBySkillId(g.Id);
       }
@@ -90,26 +90,26 @@ class RoleRobotData extends RoleDataBase_1.RoleDataBase {
     t.SetIsTrial(true);
     var r = ConfigManager_1.ConfigManager.RoleConfig.GetTrialRoleConfig(this.Id);
     for (let a = 0, e = r.PhantomEquipList.length; a < e; ++a) {
-      var o = r.PhantomEquipList[a];
-      var i = ConfigManager_1.ConfigManager.PhantomBattleConfig.GetTrialPhantomPropConfig(o.Item2);
-      var n = new PhantomTrialBattleData_1.PhantomTrialBattleData();
-      n.SetIncId(PhantomTrialBattleData_1.PhantomTrialBattleData.GenerateLocalUniqueId(this.GetRoleId(), a));
-      n.SetConfigId(o.Item1);
-      n.SetPhantomLevel(i.Level);
-      n.SetSlotIndex(a);
-      n.SetFetterGroupId(i.FetterGroupId);
-      for (const g of i.MainProps) {
+      var i = r.PhantomEquipList[a];
+      var n = ConfigManager_1.ConfigManager.PhantomBattleConfig.GetTrialPhantomPropConfig(i.Item2);
+      var o = new PhantomTrialBattleData_1.PhantomTrialBattleData();
+      o.SetIncId(PhantomTrialBattleData_1.PhantomTrialBattleData.GenerateLocalUniqueId(this.GetRoleId(), a));
+      o.SetConfigId(i.Item1);
+      o.SetPhantomLevel(n.Level);
+      o.SetSlotIndex(a);
+      o.SetFetterGroupId(n.FetterGroupId);
+      for (const g of n.MainProps) {
         var s = ConfigManager_1.ConfigManager.PhantomBattleConfig.GetTrailPhantomPropItemById(g);
-        var l = ConfigManager_1.ConfigManager.PhantomBattleConfig.GetPhantomGrowthValueByGrowthIdAndLevel(i.MainPropGrowth, i.Level);
+        var l = ConfigManager_1.ConfigManager.PhantomBattleConfig.GetPhantomGrowthValueByGrowthIdAndLevel(n.MainPropGrowth, n.Level);
         var l = AttributeModel_1.TipsDataTool.GetAttributeValue(s.Value, l, false);
-        n.SetMainPropValue(s.Id, l, s.IsRatio);
+        o.SetMainPropValue(s.Id, l, s.IsRatio);
       }
-      for (const h of i.SubPropList) {
+      for (const h of n.SubPropList) {
         var _ = ConfigManager_1.ConfigManager.PhantomBattleConfig.GetTrailPhantomPropItemById(h);
-        n.SetSubPropValue(_.Id, _.Value, _.IsRatio);
+        o.SetSubPropValue(_.Id, _.Value, _.IsRatio);
       }
-      t.SetDataMap(a, n);
-      ModelManager_1.ModelManager.PhantomBattleModel.SetRobotPhantomData(n.GetIncrId(), n);
+      t.SetDataMap(a, o);
+      ModelManager_1.ModelManager.PhantomBattleModel.SetRobotPhantomData(o.GetIncrId(), o);
     }
   }
   Cbl() {
@@ -144,6 +144,15 @@ class RoleRobotData extends RoleDataBase_1.RoleDataBase {
   }
   GetIsNew() {
     return false;
+  }
+  CanEditInFormation() {
+    return false;
+  }
+  IsVisibleInFormation() {
+    return false;
+  }
+  GetTrialRoleId() {
+    return this.Id;
   }
 }
 exports.RoleRobotData = RoleRobotData;

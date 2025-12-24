@@ -35,7 +35,7 @@ class BulletLogicCurveMovementController extends BulletLogicController_1.BulletL
     this.uoe = undefined;
     this._7o = 0;
     this.u7o = 1;
-    this.Hte = this.Bullet.GetComponent(173);
+    this.Hte = this.Bullet.GetComponent(178);
     this.a7o = this.Bullet.GetBulletInfo();
   }
   OnInit() {
@@ -97,7 +97,7 @@ class BulletLogicCurveMovementController extends BulletLogicController_1.BulletL
     TraceElementCommon_1.TraceElementCommon.SetTraceHitColor(this.uoe, ColorUtils_1.ColorUtils.LinearRed);
   }
   m7o() {
-    var t = this.a7o.TargetActorComp;
+    var t = this.a7o.Target?.Valid ? this.a7o.TargetActorComp : undefined;
     if (this.LogicController.UseTargetLocation) {
       return BulletUtil_1.BulletUtil.GetTargetLocation(t, FNameUtil_1.FNameUtil.NONE, this.a7o);
     }
@@ -106,7 +106,7 @@ class BulletLogicCurveMovementController extends BulletLogicController_1.BulletL
     }
     var e = t?.Valid;
     var i = (0, puerts_1.$ref)(undefined);
-    UE.BPL_Fight_C.获取Actor周围坐标点(e ? t.Owner : this.a7o.AttackerActorComp.Actor, e ? this.LogicController.Rotate : this.LogicController.SelfRotate, 0, e ? this.LogicController.Length : this.LogicController.SelfLength, this.Hte.Owner, i);
+    UE.BPL_Fight_C.获取Actor周围坐标点((e ? t : this.a7o.AttackerActorComp).Owner, e ? this.LogicController.Rotate : this.LogicController.SelfRotate, 0, e ? this.LogicController.Length : this.LogicController.SelfLength, this.Hte.Owner, i);
     var t = (0, puerts_1.$unref)(i);
     t.Z += e ? this.LogicController.Height : this.LogicController.SelfHeight;
     this.uoe.SetStartLocation(t.X, t.Y, t.Z + HEIGHT_DETECT);

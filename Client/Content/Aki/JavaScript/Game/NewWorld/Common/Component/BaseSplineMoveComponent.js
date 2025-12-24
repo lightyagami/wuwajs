@@ -21,35 +21,42 @@ var __decorate = this && this.__decorate || function (t, i, s, e) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.BaseSplineMoveComponent = exports.SplineMoveParams = undefined;
+exports.BaseSplineMoveComponent = exports.SplineMoveParams = exports.INVALID_TIME_KEY = undefined;
+const UE = require("ue");
 const Log_1 = require("../../../../Core/Common/Log");
 const Time_1 = require("../../../../Core/Common/Time");
 const EntityComponent_1 = require("../../../../Core/Entity/EntityComponent");
 const RegisterComponent_1 = require("../../../../Core/Entity/RegisterComponent");
+const ResourceSystem_1 = require("../../../../Core/Resource/ResourceSystem");
 const CurveUtils_1 = require("../../../../Core/Utils/Curve/CurveUtils");
 const PowerCurve3_1 = require("../../../../Core/Utils/Curve/PowerCurve3");
 const Quat_1 = require("../../../../Core/Utils/Math/Quat");
 const Rotator_1 = require("../../../../Core/Utils/Math/Rotator");
 const Vector_1 = require("../../../../Core/Utils/Math/Vector");
 const MathUtils_1 = require("../../../../Core/Utils/MathUtils");
+const EventDefine_1 = require("../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const GravityUtils_1 = require("../../../Utils/GravityUtils");
 const MAX_OFFSET_INCREASE = 100000;
 const HEIGHT_LIMIT = 100000;
-const INVALID_TIME_KEY = -1;
+const AUTO_PILOT_ROUTE_ID = exports.INVALID_TIME_KEY = -1;
 class SplineMoveParams {
-  constructor(t, i, s) {
-    this.Id = t;
-    this.Config = i;
-    this.Entity = s;
+  constructor() {
+    this.Id = 0;
+    this.Config = undefined;
+    this.Entity = undefined;
+    this.AutopilotRoute = undefined;
+    this.AllowInherit = false;
     this.Spline = undefined;
-    this.CurrentMaxOffsetSquared = 0;
-    this.CurrentMaxOffset = 0;
+    this.b9m = 0;
+    this.R9m = 0;
     this.InputLimitCos = 0;
     this.InputLimitSin = 0;
     this.Type = "PathLine";
     this.MaxOffsetDist = 0;
     this.OnlyForward = false;
+    this.Mbm = false;
     this.InputLimitAngle = 0;
     this.LayerVerticalLimit = HEIGHT_LIMIT;
     this.EdgeLimitCurve = CurveUtils_1.CurveUtils.DefaultLinear;
@@ -58,52 +65,166 @@ class SplineMoveParams {
     this.MaxSoarSplineSpeed = 0;
     this.SoarFriction = 0;
     this.SoarSprintLimit = 0;
-    this.SplineAnalyzeData = undefined;
     this.AdjustFacingType = undefined;
-    this.AdjustFacingYaw = 0;
-    this.AllowInherit = false;
+    this.AdjustFacingLimit = 0;
+    this.AdjustFacingLimitCurve = undefined;
+    this.AdjustFacingLimitPitchSin = Math.sin(MathUtils_1.MathUtils.DegToRad * 60);
+    this.PredictDist = 2000;
+    this.InputCorrectionBaseAngle = 30;
+    this.AutoDriveStandbyTime = 0;
+    this.AutoSprint = false;
+    this.InputCorrectionCurve = undefined;
+    this.CurrentRouteIndex = 0;
+    this.KeyOfAutopilotRoute = new Array();
+  }
+  get CurrentMaxOffset() {
+    return this.b9m;
+  }
+  set CurrentMaxOffset(t) {
+    this.b9m = t;
+    this.R9m = t * t;
+  }
+  get CurrentMaxOffsetSquared() {
+    return this.R9m;
+  }
+  get PositiveMove() {
+    return this.OnlyForward || this.Mbm;
+  }
+  InitBase(t, i, s) {
+    this.Id = t;
+    this.Config = i;
+    this.Entity = s;
     this.Type = i.Type;
     this.MaxOffsetDist = i.MaxOffsetDistance ?? 0;
     this.OnlyForward = i.IsOneWay ?? false;
     this.LayerVerticalLimit = i.LayerVerticalLimit ?? HEIGHT_LIMIT;
-    if (i.Type === "RacingTrack") {
-      this.InputLimitAngle = i.DirectionAngleLimit;
-      this.InputLimitCos = Math.cos(this.InputLimitAngle * MathUtils_1.MathUtils.DegToRad);
-      this.InputLimitSin = Math.sin(this.InputLimitAngle * MathUtils_1.MathUtils.DegToRad);
-    } else if (i.Type === "SlideTrack") {
-      this.InputLimitAngle = i.DirectionAngleLimit;
-      this.EdgeLimitCurve = new PowerCurve3_1.PowerCurve3(i.EdgeLimitCurveFactor);
-    } else if (i.Type === "PathLine") {
-      this.AdjustFacingType = i.FacingConfig?.Type;
-      if (i.FacingConfig) {
-        switch (i.FacingConfig.Type) {
-          case 0:
-            this.AdjustFacingYaw = i.FacingConfig.YawOffset ?? 0;
-            break;
-          case 1:
-            this.AdjustFacingYaw = i.FacingConfig.Yaw ?? 0;
+    switch (i.Type) {
+      case "RacingTrack":
+        this.InputLimitAngle = i.DirectionAngleLimit;
+        this.InputLimitCos = Math.cos(this.InputLimitAngle * MathUtils_1.MathUtils.DegToRad);
+        this.InputLimitSin = Math.sin(this.InputLimitAngle * MathUtils_1.MathUtils.DegToRad);
+        break;
+      case "SlideTrack":
+        this.InputLimitAngle = i.DirectionAngleLimit;
+        this.EdgeLimitCurve = new PowerCurve3_1.PowerCurve3(i.EdgeLimitCurveFactor);
+        break;
+      case "PathLine":
+        this.AdjustFacingType = i.FacingConfig?.Type;
+        if (i.FacingConfig) {
+          switch (i.FacingConfig.Type) {
+            case 0:
+              this.AdjustFacingLimit = i.FacingConfig.YawOffset ?? 0;
+              break;
+            case 1:
+              this.AdjustFacingLimit = i.FacingConfig.Yaw ?? 0;
+          }
         }
-      }
-    } else if (i.Type === "AirPassage" && ((s = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t)?.Entity?.GetComponent(268)) ? (this.MaxSoarSplineSpeed = s.SplineData.SpeedLimit, this.MaxOffsetDist = s.SplineData.MovableRadius, this.SoarFriction = s.SplineData.Resistance, this.SoarSprintLimit = s.SplineData.SprintSpeedLimit) : (this.MaxSoarSplineSpeed = 3000, this.SoarFriction = 0.5, this.SoarSprintLimit = 0), this.NeedLimitSoarTransform = !!i.Limit, i.Limit)) {
-      this.InputLimitAngle = i.Limit.DirectionAngleLimit;
-      this.EdgeLimitCurve = new PowerCurve3_1.PowerCurve3(i.Limit.EdgeLimitCurveFactor);
+        break;
+      case "AirPassage":
+        var e = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t)?.Entity?.GetComponent(286);
+        if (e?.SplineData) {
+          this.MaxSoarSplineSpeed = e.SplineData.SpeedLimit;
+          this.MaxOffsetDist = e.SplineData.MovableRadius;
+          this.SoarFriction = e.SplineData.Resistance;
+          this.SoarSprintLimit = e.SplineData.SprintSpeedLimit;
+        } else {
+          this.MaxSoarSplineSpeed = 3000;
+          this.SoarFriction = 0.5;
+          this.SoarSprintLimit = 0;
+        }
+        this.NeedLimitSoarTransform = !!i.Limit;
+        if (i.Limit) {
+          this.InputLimitAngle = i.Limit.DirectionAngleLimit;
+          this.EdgeLimitCurve = new PowerCurve3_1.PowerCurve3(i.Limit.EdgeLimitCurveFactor);
+        }
+        break;
+      case "MotorcycleTrack":
+        if (this.MaxOffsetDist <= 0) {
+          this.MaxOffsetDist = 1;
+        }
+        this.AdjustFacingLimit = i.ForwardAngleLimit >= 0 ? i.ForwardAngleLimit : 180;
+        if (i.LongitudinalAngleLimit !== undefined) {
+          this.AdjustFacingLimitPitchSin = Math.sin(MathUtils_1.MathUtils.DegToRad * i.LongitudinalAngleLimit);
+        }
+        if (i.CorrectionPredictionDistance !== undefined) {
+          this.PredictDist = i.CorrectionPredictionDistance;
+        } else {
+          this.PredictDist = 2000;
+        }
+        this.InputCorrectionBaseAngle = i.InputCorrectionBaseAngle ?? 30;
+        if (i.ForwardAngleLimitCurve) {
+          this.AdjustFacingLimitCurve = ResourceSystem_1.ResourceSystem.Load(i.ForwardAngleLimitCurve, UE.CurveFloat);
+        }
+        this.InputCorrectionCurve = ResourceSystem_1.ResourceSystem.Load(i.InputCorrectionCurve, UE.CurveFloat);
+        this.AutoDriveStandbyTime = i.AutomaticDrive?.StandbyTime !== undefined ? i.AutomaticDrive.StandbyTime : -1;
     }
     this.CurrentMaxOffset = this.MaxOffsetDist + MAX_OFFSET_INCREASE;
-    this.CurrentMaxOffsetSquared = this.CurrentMaxOffset * this.CurrentMaxOffset;
     if (this.Type === "AirPassage") {
       this.EarliestLeaveTime = Time_1.Time.NowSeconds + 1;
     } else {
       this.EarliestLeaveTime = Time_1.Time.NowSeconds;
     }
   }
+  InitByAutoPilotRoute(i, t) {
+    this.Id = AUTO_PILOT_ROUTE_ID;
+    this.Entity = t;
+    this.AutopilotRoute = i;
+    this.Spline = i.RoadSpline;
+    this.Type = "MotorcycleTrack";
+    this.CurrentMaxOffset = 0;
+    this.UpdateRouteParamsByIndex(0);
+    this.CurrentMaxOffset += MAX_OFFSET_INCREASE;
+    this.OnlyForward = false;
+    this.Mbm = true;
+    this.LayerVerticalLimit = HEIGHT_LIMIT;
+    this.AdjustFacingLimit = 180;
+    this.AdjustFacingLimitPitchSin = Math.sin(MathUtils_1.MathUtils.DegToRad * 60);
+    this.PredictDist = 2000;
+    this.AdjustFacingLimitCurve = ResourceSystem_1.ResourceSystem.Load("", UE.CurveFloat);
+    this.InputCorrectionCurve = ResourceSystem_1.ResourceSystem.Load("", UE.CurveFloat);
+    this.EarliestLeaveTime = Time_1.Time.NowSeconds;
+    var s = i.RoadSegmentInfos.Num();
+    for (let t = 0; t < s; ++t) {
+      var e = i.RoadSegmentInfos.Get(t);
+      this.KeyOfAutopilotRoute.push(e.StartKey);
+    }
+  }
+  UpdateParamsByTimeKey(s) {
+    if (this.AutopilotRoute) {
+      let t = 0;
+      let i = this.KeyOfAutopilotRoute.length;
+      while (i - t > 1) {
+        var e = t + i >> 1;
+        if (this.KeyOfAutopilotRoute[e] <= s) {
+          t = e;
+        } else {
+          i = e;
+        }
+      }
+      this.UpdateRouteParamsByIndex(t);
+    }
+  }
+  UpdateRouteParamsByIndex(t) {
+    this.CurrentRouteIndex = t;
+    t = this.AutopilotRoute.RoadSegmentInfos.Get(t).RoadInfo;
+    this.MaxOffsetDist = t.Width / 2;
+    this.AutoSprint = MathUtils_1.MathUtils.IsNearlyEqual(t.PavedRoadConfig, 2);
+    if (this.MaxOffsetDist <= 0) {
+      this.MaxOffsetDist = 1;
+    }
+    this.CurrentMaxOffset = Math.max(this.CurrentMaxOffset, this.MaxOffsetDist);
+  }
   EnableParams(t) {
     if (!this.Spline && t) {
       this.Spline = ModelManager_1.ModelManager.GameSplineModel.LoadAndGetSplineComponent(this.Id, this.Entity.Id, 1);
-      this.SplineAnalyzeData = ModelManager_1.ModelManager.GameSplineModel?.GetSplineAnalyzeData(this.Id);
     } else if (this.Spline && !t) {
       ModelManager_1.ModelManager.GameSplineModel.ReleaseSpline(this.Id, this.Entity.Id, 1);
       this.Spline = undefined;
-      this.SplineAnalyzeData = undefined;
+    }
+  }
+  Clear() {
+    if (this.AutopilotRoute) {
+      this.AutopilotRoute.Clear();
     }
   }
 }
@@ -121,7 +242,7 @@ let BaseSplineMoveComponent = class BaseSplineMoveComponent extends EntityCompon
     this.SplineDirection = Vector_1.Vector.Create();
     this.SplineLocation = Vector_1.Vector.Create();
     this.SplineQuat = Quat_1.Quat.Create();
-    this.LastTimeKey = INVALID_TIME_KEY;
+    this.LastTimeKey = exports.INVALID_TIME_KEY;
     this.LastSplineLocation = Vector_1.Vector.Create();
     this.LastSplineDirection = Vector_1.Vector.Create();
     this.AllowInherit = false;
@@ -134,6 +255,11 @@ let BaseSplineMoveComponent = class BaseSplineMoveComponent extends EntityCompon
     this.TmpQuat = Quat_1.Quat.Create();
     this.TmpQuat1 = Quat_1.Quat.Create();
     this.TmpRotator = Rotator_1.Rotator.Create();
+    this.OnTeleportWrapper = () => {
+      if (this.SplineMoveParamsMap.size || this.SplineStack.length) {
+        this.OnTeleportChangeLocation();
+      }
+    };
   }
   get CurrentSplineMoveType() {
     if (this.CurrentSplineMoveParamsInternal) {
@@ -148,7 +274,8 @@ let BaseSplineMoveComponent = class BaseSplineMoveComponent extends EntityCompon
   OnStart() {
     this.DisableKey = this.Disable("[SplineMoveComponent.OnStart] 默认Disable");
     this.ActorComp = this.Entity.GetComponent(1);
-    this.TagComp = this.Entity.GetComponent(209);
+    this.TagComp = this.Entity.GetComponent(215);
+    EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.TeleportChangeLocation, this.OnTeleportWrapper);
     return true;
   }
   OnTick(t) {
@@ -172,6 +299,7 @@ let BaseSplineMoveComponent = class BaseSplineMoveComponent extends EntityCompon
   }
   OnEnd() {
     this.ClearSplineMoveParams();
+    EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.TeleportChangeLocation, this.OnTeleportWrapper);
     return true;
   }
   PositionAdjust(t, i) {
@@ -209,10 +337,8 @@ let BaseSplineMoveComponent = class BaseSplineMoveComponent extends EntityCompon
     } else if (i.CurrentMaxOffset > i.MaxOffsetDist) {
       if (s > MathUtils_1.MathUtils.Square(i.MaxOffsetDist)) {
         i.CurrentMaxOffset = Math.sqrt(s);
-        i.CurrentMaxOffsetSquared = s;
       } else {
         i.CurrentMaxOffset = i.MaxOffsetDist;
-        i.CurrentMaxOffsetSquared = MathUtils_1.MathUtils.Square(i.MaxOffsetDist);
       }
     }
   }
@@ -235,21 +361,37 @@ let BaseSplineMoveComponent = class BaseSplineMoveComponent extends EntityCompon
   }
   InputAdjust() {}
   StartSplineMove(t, i, s = false) {
-    if (this.StartMoveConditionCheck(t, i)) {
-      (i = new SplineMoveParams(t, i, this.Entity)).AllowInherit = s;
-      this.StartSplineMoveInternal(t, i);
+    var e;
+    if (this.StartMoveConditionCheck(t, i) && ((e = new SplineMoveParams()).InitBase(t, i, this.Entity), e.AllowInherit = s, this.StartSplineMoveInternal(e), t = {
+      ...e
+    }, Log_1.Log.CheckWarn())) {
+      Log_1.Log.Warn("Test", 6, "TestClone", ["newParams2", t.Id]);
     }
   }
-  StartSplineMoveInternal(t, i) {
+  InheritStartSplineMove(t) {
+    if (this.StartMoveConditionCheck(t.Id, t.Config)) {
+      t = {
+        ...t
+      };
+      this.StartSplineMoveInternal(t);
+    }
+  }
+  StartSplineMoveWithAutoPilotRoute(t) {
+    var i = new SplineMoveParams();
+    i.InitByAutoPilotRoute(t, this.Entity);
+    this.StartSplineMoveInternal(i);
+  }
+  StartSplineMoveInternal(t) {
+    var i = t.Id;
     if (this.DisableKey) {
       this.Enable(this.DisableKey, "SplineMoveComponent.StartSplineMoveInternal");
       this.DisableKey = undefined;
-      this.OnSplineMoveEnable(t, i);
+      this.OnSplineMoveEnable(i, t);
     }
-    this.AddSplineMoveParams(t, i);
+    this.AddSplineMoveParams(i, t);
     this.SelectNextSplineMove();
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("Movement", 6, "StartSplineMove", ["Spline Id", t], ["Actor", this.ActorComp.Owner.GetName()], ["StackCount", this.SplineStack.length]);
+      Log_1.Log.Info("Movement", 6, "StartSplineMove", ["Spline Id", i], ["Actor", this.ActorComp.Owner.GetName()], ["StackCount", this.SplineStack.length]);
     }
   }
   EndSplineMove(t) {
@@ -262,6 +404,9 @@ let BaseSplineMoveComponent = class BaseSplineMoveComponent extends EntityCompon
         this.SelectNextSplineMove();
       }
     }
+  }
+  EndSplineMoveForAutoPilot() {
+    this.EndSplineMove(AUTO_PILOT_ROUTE_ID);
   }
   ForceStopSplineMove() {
     if (!this.DisableKey) {
@@ -304,7 +449,11 @@ let BaseSplineMoveComponent = class BaseSplineMoveComponent extends EntityCompon
     this.SplineStack.push(t);
   }
   RemoveSplineMoveParams(t) {
-    this.SplineMoveParamsMap.get(t)?.EnableParams(false);
+    var i = this.SplineMoveParamsMap.get(t);
+    if (i) {
+      i.EnableParams(false);
+      i.Clear();
+    }
     this.SplineMoveParamsMap.delete(t);
     while (this.SplineStack.length && !this.SplineMoveParamsMap.has(this.SplineStack[this.SplineStack.length - 1])) {
       this.SplineStack.length = this.SplineStack.length - 1;
@@ -323,7 +472,7 @@ let BaseSplineMoveComponent = class BaseSplineMoveComponent extends EntityCompon
     this.LastLocation.DeepCopy(this.ActorComp.ActorLocationProxy);
     this.LastSplineDirection.DeepCopy(this.SplineDirection);
     this.LastSplineLocation.DeepCopy(this.SplineLocation);
-    this.LastTimeKey = INVALID_TIME_KEY;
+    this.LastTimeKey = exports.INVALID_TIME_KEY;
   }
   UpdateSplineLocationAndDirection() {
     var t = this.CurrentSplineMoveParams.Spline;
@@ -341,7 +490,7 @@ let BaseSplineMoveComponent = class BaseSplineMoveComponent extends EntityCompon
   }
   UpdateLastSplineLocationAndDirection() {
     var t;
-    if (this.LastTimeKey !== INVALID_TIME_KEY) {
+    if (this.LastTimeKey !== exports.INVALID_TIME_KEY) {
       t = this.CurrentSplineMoveParamsInternal.Spline;
       this.LastSplineLocation.FromUeVector(t.D_GetLocationAtSplineInputKey(this.LastTimeKey, 1));
       this.LastSplineDirection.FromUeVector(t.GetDirectionAtSplineInputKey(this.LastTimeKey, 1));
@@ -351,6 +500,12 @@ let BaseSplineMoveComponent = class BaseSplineMoveComponent extends EntityCompon
       this.LastSplineDirection.Normalize();
     }
   }
+  OnTeleportChangeLocation() {
+    this.LastLocation.DeepCopy(this.ActorComp.ActorLocationProxy);
+    this.LastSplineDirection.DeepCopy(this.SplineDirection);
+    this.LastSplineLocation.DeepCopy(this.SplineLocation);
+    this.LastTimeKey = exports.INVALID_TIME_KEY;
+  }
 };
-BaseSplineMoveComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(110)], BaseSplineMoveComponent);
+BaseSplineMoveComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(115)], BaseSplineMoveComponent);
 exports.BaseSplineMoveComponent = BaseSplineMoveComponent; //# sourceMappingURL=BaseSplineMoveComponent.js.map

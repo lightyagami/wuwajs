@@ -80,7 +80,7 @@ class AiStateMachineTaskMoveToTarget extends AiStateMachineTask_1.AiStateMachine
         this.$ne(t === 1);
       }]
     }, false, false)) {
-      var t = this.Node.Entity.GetComponent(179);
+      var t = this.Node.Entity.GetComponent(184);
       if (t.Valid) {
         switch (this.MoveState) {
           case 1:

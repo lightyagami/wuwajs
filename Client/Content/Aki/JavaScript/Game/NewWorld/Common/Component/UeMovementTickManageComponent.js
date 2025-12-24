@@ -57,6 +57,9 @@ class VelocityCacheInfo {
   }
 }
 class UeMovementTickController {
+  static SetTickManageMode(t) {
+    this.ManageMode = t;
+  }
   static AddManager(t, i) {
     while (this.Managers.length <= i) {
       this.Managers.push(new Set());
@@ -69,50 +72,55 @@ class UeMovementTickController {
     }
     this.Managers[i].delete(t);
   }
+  static CanTickManager(t) {
+    return this.ManageMode === 1 && t.CanTickDefault() || this.ManageMode === 2 && t.CanTickWithDistance();
+  }
   static TickManagersPriority1(o) {
-    this.PreTickedManagers.length = 0;
-    if (UeSkeletalTickManageComponent_1.UeSkeletalTickController.EnabledNewSkelTickTiming) {
-      for (let s = this.Managers.length - 1; s >= 0; --s) {
-        let t = new Array();
-        for (const n of this.Managers[s]) {
-          if (n.Active) {
-            if (!n.SkelTickMgr?.MainSkelComp || n.SkelTickMgr.MainSkelComp.GetAnimInstanceUpdateState() > 1) {
-              this.PreTickedManagers.push(n);
-              n.PreProxyTick(o);
-            } else {
-              t.push(n);
+    if (this.ManageMode !== 0) {
+      this.PreTickedManagers.length = 0;
+      if (UeSkeletalTickManageComponent_1.UeSkeletalTickController.EnabledNewSkelTickTiming) {
+        for (let s = this.Managers.length - 1; s >= 0; --s) {
+          let t = new Array();
+          for (const n of this.Managers[s]) {
+            if (this.CanTickManager(n)) {
+              if (!n.SkelTickMgr?.MainSkelComp || n.SkelTickMgr.MainSkelComp.GetAnimInstanceUpdateState() > 1) {
+                this.PreTickedManagers.push(n);
+                n.PreProxyTick(o);
+              } else {
+                t.push(n);
+              }
+            }
+          }
+          let i = new Array();
+          let e = t.length + 1;
+          while (t.length > 0 && t.length < e) {
+            e = t.length;
+            for (const r of t) {
+              if (r.SkelTickMgr.MainSkelComp.GetAnimInstanceUpdateState() !== 1) {
+                this.PreTickedManagers.push(r);
+                r.PreProxyTick(o);
+              } else {
+                i.push(r);
+              }
+            }
+            var h = t;
+            t = i;
+            (i = h).length = 0;
+          }
+          if (t.length > 0) {
+            for (const a of t) {
+              this.PreTickedManagers.push(a);
+              a.PreProxyTick(o);
             }
           }
         }
-        let i = new Array();
-        let e = t.length + 1;
-        while (t.length > 0 && t.length < e) {
-          e = t.length;
-          for (const r of t) {
-            if (r.SkelTickMgr.MainSkelComp.GetAnimInstanceUpdateState() !== 1) {
-              this.PreTickedManagers.push(r);
-              r.PreProxyTick(o);
-            } else {
-              i.push(r);
+      } else {
+        for (let t = this.Managers.length - 1; t >= 0; --t) {
+          for (const i of this.Managers[t]) {
+            if (this.CanTickManager(i)) {
+              this.PreTickedManagers.push(i);
+              i.PreProxyTick(o);
             }
-          }
-          var h = t;
-          t = i;
-          (i = h).length = 0;
-        }
-        if (t.length > 0) {
-          for (const a of t) {
-            this.PreTickedManagers.push(a);
-            a.PreProxyTick(o);
-          }
-        }
-      }
-    } else {
-      for (let t = this.Managers.length - 1; t >= 0; --t) {
-        for (const i of this.Managers[t]) {
-          if (i.Active) {
-            this.PreTickedManagers.push(i);
-            i.PreProxyTick(o);
           }
         }
       }
@@ -133,6 +141,7 @@ class UeMovementTickController {
 }
 (exports.UeMovementTickController = UeMovementTickController).Managers = new Array();
 UeMovementTickController.PreTickedManagers = new Array();
+UeMovementTickController.ManageMode = 1;
 UeMovementTickController.dtc = true;
 let UeMovementTickManageComponent = UeMovementTickManageComponent_1 = class UeMovementTickManageComponent extends EntityComponent_1.EntityComponent {
   constructor() {
@@ -229,10 +238,10 @@ let UeMovementTickManageComponent = UeMovementTickManageComponent_1 = class UeMo
   }
   OnStart() {
     this.Hte = this.Entity.GetComponent(3);
-    this.Msn = this.Entity.GetComponent(45);
-    this.tr_ = this.Entity.GetComponent(237);
+    this.Msn = this.Entity.GetComponent(46);
+    this.tr_ = this.Entity.GetComponent(246);
     this.o4o = this.Hte.Owner.GetComponentByClass(UE.CharacterMovementComponent.StaticClass());
-    return !!this.o4o && (this.Esn = this.Entity.GetComponent(30), this.SkelTickMgr = this.Entity.GetComponent(118), this.o4o.SetKuroOnlyTickOutside(true), this.o4o.SetComponentTickEnabled(false), this.oRe = this.Entity.GetComponent(181), this.ForbiddenTickPose = this.Entity.GetTickInterval() > 1 || UeSkeletalTickManageComponent_1.UeSkeletalTickController.EnabledNewSkelTickTiming, this.Isn = Time_1.Time.Frame, this.utl = false, this.TickMode = UeMovementTickController.EnabledMovementParallel ? 1 : 2, ModelManager_1.ModelManager.SundryModel.RoleFallingDebugLogOn && this.Hte.IsRoleAndCtrlByMe && this.SetVelocityInfoCacheEnable(true), true);
+    return !!this.o4o && (this.Esn = this.Entity.GetComponent(30), this.SkelTickMgr = this.Entity.GetComponent(123), this.o4o.SetKuroOnlyTickOutside(true), this.o4o.SetComponentTickEnabled(false), this.oRe = this.Entity.GetComponent(186), this.ForbiddenTickPose = this.Entity.GetTickInterval() > 1 || UeSkeletalTickManageComponent_1.UeSkeletalTickController.EnabledNewSkelTickTiming, this.Isn = Time_1.Time.Frame, this.utl = false, this.TickMode = UeMovementTickController.EnabledMovementParallel ? 1 : 2, ModelManager_1.ModelManager.SundryModel.RoleFallingDebugLogOn && this.Hte.IsRoleAndCtrlByMe && this.SetVelocityInfoCacheEnable(true), true);
   }
   OnEnd() {
     this.TickMode = 0;
@@ -266,6 +275,16 @@ let UeMovementTickManageComponent = UeMovementTickManageComponent_1 = class UeMo
     this.mzl += this.Entity.TimeDilation * t;
     if (this.dzl >= this.Entity.GetTickInterval()) {
       this.TickMovement(this.mzl);
+    }
+  }
+  CanTickDefault() {
+    return this.Active;
+  }
+  CanTickWithDistance() {
+    if (this.Msn) {
+      return this.Active && this.Msn.CanMoveWithDistance;
+    } else {
+      return this.Active;
     }
   }
   ProxyTick() {
@@ -306,7 +325,7 @@ let UeMovementTickManageComponent = UeMovementTickManageComponent_1 = class UeMo
         this.Msn.ConsumeForceFallingSpeed();
         var i;
         var e;
-        var s = this.Entity.GetComponent(126)?.CurrentTimeScale ?? 1;
+        var s = this.Entity.GetComponent(131)?.CurrentTimeScale ?? 1;
         if (!!this.Msn.NeedRootMotionWhenAttached || !this.Msn.IsSpecialMove) {
           if (this.Msn) {
             this.Msn.GetAndConsumeAddMove(t * MathUtils_1.MathUtils.MillisecondToSecond * s, UeMovementTickManageComponent_1.Lz, UeMovementTickManageComponent_1.Gue);
@@ -430,5 +449,5 @@ let UeMovementTickManageComponent = UeMovementTickManageComponent_1 = class UeMo
 };
 UeMovementTickManageComponent.Lz = Vector_1.Vector.Create();
 UeMovementTickManageComponent.Gue = Rotator_1.Rotator.Create();
-UeMovementTickManageComponent = UeMovementTickManageComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(117)], UeMovementTickManageComponent);
+UeMovementTickManageComponent = UeMovementTickManageComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(122)], UeMovementTickManageComponent);
 exports.UeMovementTickManageComponent = UeMovementTickManageComponent; //# sourceMappingURL=UeMovementTickManageComponent.js.map

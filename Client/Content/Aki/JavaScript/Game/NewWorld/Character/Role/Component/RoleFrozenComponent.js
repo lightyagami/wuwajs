@@ -26,6 +26,7 @@ exports.RoleFrozenComponent = undefined;
 const UE = require("ue");
 const RegisterComponent_1 = require("../../../../../Core/Entity/RegisterComponent");
 const Vector_1 = require("../../../../../Core/Utils/Math/Vector");
+const CombatLog_1 = require("../../../../Utils/CombatLog");
 const CharacterNameDefines_1 = require("../../Common/CharacterNameDefines");
 const BaseFrozenComponent_1 = require("../../Common/Component/Abilities/BaseFrozenComponent");
 const GameplayCueController_1 = require("../../Common/Component/Abilities/GameplayCueSFX/Controller/GameplayCueController");
@@ -41,6 +42,11 @@ let RoleFrozenComponent = RoleFrozenComponent_1 = class RoleFrozenComponent exte
     this.SkillForbidHandle = undefined;
     this.FrozenCueHandle = GameplayCueController_1.INVALID_CUE_HANDLE;
     this.IsFrozenInternal = false;
+    this.CharacterActorComponent = undefined;
+  }
+  OnStart() {
+    this.CharacterActorComponent = this.Entity.GetComponent(3);
+    return super.OnStart();
   }
   IsFrozen() {
     return this.IsFrozenInternal;
@@ -48,13 +54,13 @@ let RoleFrozenComponent = RoleFrozenComponent_1 = class RoleFrozenComponent exte
   SetFrozen(e) {
     if (this.IsFrozenInternal !== e) {
       this.IsFrozenInternal = e;
-      var o = this.Entity.GetComponent(182);
-      var t = this.Entity.GetComponent(118);
+      var o = this.Entity.GetComponent(187);
+      var t = this.Entity.GetComponent(123);
       var n = this.Entity.GetComponent(18);
-      var i = this.Entity.GetComponent(40);
+      var i = this.Entity.GetComponent(41);
       const s = this.Entity.GetComponent(21);
-      var r = this.Entity.GetComponent(209)?.TagContainer;
-      if (this.Entity.GetComponent(117).Frozen = e) {
+      var r = this.Entity.GetComponent(215)?.TagContainer;
+      if (this.Entity.GetComponent(122).Frozen = e) {
         this.MoveForbidHandle = this.MoveForbidHandle ?? o?.Disable("RoleFrozen");
         this.AnimForbidHandle = this.AnimForbidHandle ?? t?.Disable("RoleFrozen");
         this.AbilityForbidHandle = this.AbilityForbidHandle ?? n?.Disable("RoleFrozen");
@@ -73,7 +79,7 @@ let RoleFrozenComponent = RoleFrozenComponent_1 = class RoleFrozenComponent exte
           r.AddExactTag(6, -291592299);
         }
         this.ChangeMovementModeInFrozen(o);
-        if (this.ActorComponent && (RoleFrozenComponent_1.TmpVector.DeepCopy(this.ActorComponent.ActorVelocityProxy), RoleFrozenComponent_1.TmpVector.Z > 0)) {
+        if (this.CharacterActorComponent && (RoleFrozenComponent_1.TmpVector.DeepCopy(this.CharacterActorComponent.ActorVelocityProxy), RoleFrozenComponent_1.TmpVector.Z > 0)) {
           RoleFrozenComponent_1.TmpVector.Z = 0;
           o.SetForceSpeed(RoleFrozenComponent_1.TmpVector);
         }
@@ -111,7 +117,7 @@ let RoleFrozenComponent = RoleFrozenComponent_1 = class RoleFrozenComponent exte
           r.RemoveTag(6, 930178923);
           r.RemoveTag(6, -291592299);
         }
-        if ((e = this.Entity.GetComponent(181)) && (o = e.MainAnimInstance, UE.KuroStaticLibrary.IsObjectClassByName(o, CharacterNameDefines_1.CharacterNameDefines.ABP_BASEROLE))) {
+        if ((e = this.Entity.GetComponent(186)) && (o = e.MainAnimInstance, UE.KuroStaticLibrary.IsObjectClassByName(o, CharacterNameDefines_1.CharacterNameDefines.ABP_BASEROLE))) {
           o.冰冻结束事件();
         }
       }
@@ -123,7 +129,7 @@ let RoleFrozenComponent = RoleFrozenComponent_1 = class RoleFrozenComponent exte
     if (e.CharacterMovement) {
       o = e.CharacterMovement.MovementMode;
       t = e.CharacterMovement.CustomMovementMode;
-      if (o !== 1 && o !== 3 && (o !== 6 || t !== CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_SWIM)) {
+      if (o !== 1 && o !== 3 && (o !== 6 || t !== CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_SWIM) && (o !== 6 || t !== CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_RIDE)) {
         e.ActorComp?.Actor.KuroSetMovementMode({
           Mode: 3,
           Context: "[RoleFrozenComponent.ChangeMovementModeInFrozen]"
@@ -133,5 +139,5 @@ let RoleFrozenComponent = RoleFrozenComponent_1 = class RoleFrozenComponent exte
   }
 };
 RoleFrozenComponent.TmpVector = Vector_1.Vector.Create();
-RoleFrozenComponent = RoleFrozenComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(196)], RoleFrozenComponent);
+RoleFrozenComponent = RoleFrozenComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(202)], RoleFrozenComponent);
 exports.RoleFrozenComponent = RoleFrozenComponent; //# sourceMappingURL=RoleFrozenComponent.js.map

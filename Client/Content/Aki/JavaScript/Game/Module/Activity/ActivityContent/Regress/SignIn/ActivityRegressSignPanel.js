@@ -68,6 +68,7 @@ class ActivityRegressSignPanel extends UiPanelBase_1.UiPanelBase {
     var e = ModelManager_1.ModelManager.ActivityRegressModel.ActivityData;
     var [e, i] = ModelManager_1.ModelManager.ActivityModel.GetTimeVisibleAndRemainTime(e);
     this.LNe.SetTimeTextVisible(e);
+    this.LNe.SetTogActPlayTypeVisible(false);
     if (e) {
       this.LNe.SetTimeTextByText(i);
     }

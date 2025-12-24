@@ -118,6 +118,7 @@ class MowingTowerSubView extends ActivitySubViewBase_1.ActivitySubViewBase {
     this.GetText(5).SetText("" + i.GetFullScore());
   }
   mGe() {
+    this.LNe.SetActivityBaseData(this.ActivityBaseData);
     this.LNe.SetTitleByText(this.ActivityBaseData.GetTitle());
     var [i, e] = this.GetTimeVisibleAndRemainTime();
     this.LNe.SetTimeTextVisible(i);

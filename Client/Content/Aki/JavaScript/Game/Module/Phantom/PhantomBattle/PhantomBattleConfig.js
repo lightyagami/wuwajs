@@ -19,6 +19,7 @@ const PhantomGrowthByGrowthIdAndLevel_1 = require("../../../../Core/Define/Confi
 const PhantomItemAll_1 = require("../../../../Core/Define/ConfigQuery/PhantomItemAll");
 const PhantomItemByItemId_1 = require("../../../../Core/Define/ConfigQuery/PhantomItemByItemId");
 const PhantomItemByMonsterId_1 = require("../../../../Core/Define/ConfigQuery/PhantomItemByMonsterId");
+const PhantomItemByParentMonsterId_1 = require("../../../../Core/Define/ConfigQuery/PhantomItemByParentMonsterId");
 const PhantomLevelByGroupId_1 = require("../../../../Core/Define/ConfigQuery/PhantomLevelByGroupId");
 const PhantomLevelByGroupIdAndLevel_1 = require("../../../../Core/Define/ConfigQuery/PhantomLevelByGroupIdAndLevel");
 const PhantomMainPropertyById_1 = require("../../../../Core/Define/ConfigQuery/PhantomMainPropertyById");
@@ -61,6 +62,9 @@ class PhantomBattleConfig extends ConfigBase_1.ConfigBase {
       }
     }
     return t;
+  }
+  GetPhantomItemByParentMonsterId(e) {
+    return PhantomItemByParentMonsterId_1.configPhantomItemByParentMonsterId.GetConfigList(e);
   }
   GetPhantomItemByMonsterId(e) {
     return PhantomItemByMonsterId_1.configPhantomItemByMonsterId.GetConfigList(e);

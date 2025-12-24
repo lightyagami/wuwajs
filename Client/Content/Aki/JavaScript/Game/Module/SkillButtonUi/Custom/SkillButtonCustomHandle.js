@@ -84,7 +84,7 @@ class SkillButtonCustomHandleHackFollowAttach extends SkillButtonCustomHandleBas
   }
   OnInit() {
     if (this.SkillButtonData) {
-      this.P2_ = this.SkillButtonData.GetEntityHandle()?.Entity?.GetComponent(285);
+      this.P2_ = this.SkillButtonData.GetEntityHandle()?.Entity?.GetComponent(304);
     }
   }
   Refresh() {

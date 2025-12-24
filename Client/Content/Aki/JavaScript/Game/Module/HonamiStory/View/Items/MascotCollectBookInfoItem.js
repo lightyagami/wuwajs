@@ -13,12 +13,12 @@ class MascotCollectBookInfoItem extends GridProxyAbstract_1.GridProxyAbstract {
     super(...arguments);
     this.b5d = undefined;
     this.R5d = undefined;
-    this.Dzd = [];
+    this.cJd = [];
     this.w5d = undefined;
     this.L5d = () => {
       var t = new MascotCollectBookMascotToggle_1.MascotCollectBookMascotToggle();
       t.BindMascotToggleClick(this.w5d);
-      this.Dzd.push(t);
+      this.cJd.push(t);
       return t;
     };
   }
@@ -47,7 +47,7 @@ class MascotCollectBookInfoItem extends GridProxyAbstract_1.GridProxyAbstract {
     }
   }
   GetMascotToggleList() {
-    return this.Dzd;
+    return this.cJd;
   }
   BindMascotToggleClick(t) {
     this.w5d = t;

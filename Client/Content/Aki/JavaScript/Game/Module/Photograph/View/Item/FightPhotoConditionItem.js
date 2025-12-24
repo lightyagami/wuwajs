@@ -14,7 +14,7 @@ class FightPhotoConditionItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
     super(...arguments);
     this.lNe = undefined;
-    this.kmm = false;
+    this.Evm = false;
     this.BPd = () => {
       this.RefreshConditionStatus();
     };
@@ -27,14 +27,14 @@ class FightPhotoConditionItem extends GridProxyAbstract_1.GridProxyAbstract {
   }
   Refresh(e, t, i) {
     this.lNe = e.Condition;
-    this.kmm = e.IsNeedCheckRole;
+    this.Evm = e.IsNeedCheckRole;
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), e.Text);
     this.RefreshConditionStatus();
   }
   RefreshConditionStatus() {
     var e = ControllerHolder_1.ControllerHolder.PhotographController.CurrentBtNode;
     if (e && e.InProgress) {
-      e = !this.kmm || e.CheckIsTargetRole();
+      e = !this.Evm || e.CheckIsTargetRole();
       e = ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckConditionNew(this.lNe, undefined) && e;
       this.GetSprite(0)?.SetUIActive(e);
       this.GetTexture(2)?.SetUIActive(e);

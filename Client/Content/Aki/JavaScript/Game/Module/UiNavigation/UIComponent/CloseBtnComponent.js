@@ -12,16 +12,16 @@ const HotKeyComponent_1 = require("./HotKeyComponent");
 class CloseBtnComponent extends HotKeyComponent_1.HotKeyComponent {
   constructor() {
     super(...arguments);
-    this.Wem = false;
+    this.Vrm = false;
   }
   OnPress(e) {
-    this.Wem = this.Tjd();
-    if (!this.Wem) {
+    this.Vrm = this.Tjd();
+    if (!this.Vrm) {
       ControllerHolder_1.ControllerHolder.UiNavigationNewController.HotKeyCloseView();
     }
   }
   OnRelease(e) {
-    if (this.Wem) {
+    if (this.Vrm) {
       ControllerHolder_1.ControllerHolder.UiNavigationNewController.HotKeyCloseView();
     }
   }

@@ -113,7 +113,7 @@ class RoleDataBase {
         ParamType: 0,
         OnlyMyRole: true
       });
-      var r = t ? t.EntityHandle.Entity.GetComponent(177) : undefined;
+      var r = t ? t.EntityHandle.Entity.GetComponent(182) : undefined;
       for (const i of e) {
         if (i.IsShow) {
           let e = 0;
@@ -146,7 +146,7 @@ class RoleDataBase {
       ParamType: 0,
       OnlyMyRole: true
     });
-    var a = a ? a.EntityHandle?.Entity?.GetComponent(177) : undefined;
+    var a = a ? a.EntityHandle?.Entity?.GetComponent(182) : undefined;
     let r = 0;
     if (a) {
       if ((r = a.GetCurrentValue(e)) === 0 && Log_1.Log.CheckWarn()) {
@@ -166,7 +166,7 @@ class RoleDataBase {
       ParamType: 0,
       OnlyMyRole: true
     });
-    var t = t ? t.EntityHandle.Entity.GetComponent(177) : undefined;
+    var t = t ? t.EntityHandle.Entity.GetComponent(182) : undefined;
     let a = 0;
     return a = t ? t.GetBaseValue(e) : this.GetAttributeData().GetRoleBaseAttr(e);
   }

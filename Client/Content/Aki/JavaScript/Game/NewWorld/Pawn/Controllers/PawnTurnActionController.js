@@ -44,7 +44,7 @@ class PawnTurnActionController {
       var t;
       if (this.Gce?.Valid) {
         t = Global_1.Global.BaseCharacter.CharacterActorComponent;
-        this.Gce.Entity.GetComponent(191)?.SightTarget(t, 3);
+        this.Gce.Entity.GetComponent(197)?.SightTarget(t, 3);
         if (this.WaitTurnEnd && (this.Jrr(false), this.OnTurnToInteractTargetEndHandle)) {
           this.OnTurnToInteractTargetEndHandle();
         }
@@ -58,7 +58,7 @@ class PawnTurnActionController {
       }
     };
     this.Jh = t;
-    this.Gce = t.GetComponent(45);
+    this.Gce = t.GetComponent(46);
     this.Hte = t.GetComponent(1);
     if (this.Gce?.Valid) {
       this.vir.DeepCopy(this.Hte.ActorForwardProxy);
@@ -82,7 +82,7 @@ class PawnTurnActionController {
         if (this.Gce.CharacterMovement.MovementMode === 1 || this.Gce.CharacterMovement.MovementMode === 6 && this.Gce.CharacterMovement.CustomMovementMode === CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_RIDE) {
           var t = Global_1.Global.BaseCharacter.CharacterActorComponent;
           var i = this.Gce.Entity;
-          const o = i.GetComponent(191);
+          const o = i.GetComponent(197);
           i = i.GetComponent(3);
           if (i) {
             var e = Vector_1.Vector.Create(t.ActorLocationProxy);
@@ -111,7 +111,7 @@ class PawnTurnActionController {
               }
               e = Vector_1.Vector.Create(t.ActorLocationProxy);
               e.AdditionEqual(this.PlayerOffset);
-              const o = this.Jh.GetComponent(46);
+              const o = this.Jh.GetComponent(47);
               o.PerformTurn(2, {
                 TargetLocation: e
               });
@@ -147,7 +147,7 @@ class PawnTurnActionController {
     var i;
     var e = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity;
     if (e) {
-      i = e.GetComponent(62);
+      i = e.GetComponent(65);
       if (t) {
         e.GetComponent(3).SetInputDirect(Vector_1.Vector.ZeroVector);
         i.ClearMoveVectorCache();
@@ -161,12 +161,12 @@ class PawnTurnActionController {
   TurnToDefaultForward() {
     if (this.Gce?.Valid) {
       var t = this.Gce.Entity;
-      const i = t.GetComponent(191);
+      const i = t.GetComponent(197);
       i?.SightTarget(undefined, 3);
       if (this.NeedTurn && this.Krr) {
         if (this.Gce.CharacterMovement.MovementMode === 1 || this.Gce.CharacterMovement.MovementMode === 6 && this.Gce.CharacterMovement.CustomMovementMode === CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_RIDE) {
           if (t.GetComponent(3)) {
-            const i = this.Jh.GetComponent(46);
+            const i = this.Jh.GetComponent(47);
             i.PerformTurn(2, {
               Direction: this.vir
             });

@@ -190,7 +190,7 @@ class RoleSort extends CommonSort_1.CommonSort {
         return ((i ? 1 : 0) - (e ? 1 : 0)) * (t ? -1 : 1);
       }
     };
-    this.qQd = (e, i, t) => {
+    this.VQd = (e, i, t) => {
       if (ModelManager_1.ModelManager.InstanceDungeonEntranceModel.SelectInstanceId) {
         var r = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(ModelManager_1.ModelManager.InstanceDungeonEntranceModel.SelectInstanceId);
         var r = [...r.RecommendRoleBottom, ...r.RecommendRole];
@@ -225,7 +225,7 @@ class RoleSort extends CommonSort_1.CommonSort {
     this.SortMap.set(16, this.sUt);
     this.SortMap.set(17, this.bua);
     this.SortMap.set(18, this.GQ_);
-    this.SortMap.set(19, this.qQd);
+    this.SortMap.set(19, this.VQd);
   }
 }
 exports.RoleSort = RoleSort;

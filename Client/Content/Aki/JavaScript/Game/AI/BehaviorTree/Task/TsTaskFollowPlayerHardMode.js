@@ -90,7 +90,7 @@ class TsTaskFollowPlayerHardMode extends TsTaskAbortImmediatelyBase_1.default {
       var h = s.CharActorComp;
       if (h?.Valid) {
         this.InitTsVariables();
-        this.MoveComp = h.Entity?.GetComponent(45);
+        this.MoveComp = h.Entity?.GetComponent(46);
         s.CharActorComp?.Actor.KuroSetMovementMode({
           Mode: 5,
           Context: "[TsTaskFollowPlayerHardMode.ReceiveExecuteAI]"

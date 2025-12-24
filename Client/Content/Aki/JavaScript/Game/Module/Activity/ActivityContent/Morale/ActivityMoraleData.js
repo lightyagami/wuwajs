@@ -15,6 +15,9 @@ class ActivityMoraleData extends ActivityData_1.ActivityBaseData {
     var e = ModelManager_1.ModelManager.MoraleModel;
     return !!e.RedDotScoreBox() || !!e.RedDotAreaBuff() || e.RedDotFlagBox();
   }
+  GetExternalButtonRedPointName() {
+    return "Morale";
+  }
   PhraseEx(e) {
     e = e.V91;
     if (e) {

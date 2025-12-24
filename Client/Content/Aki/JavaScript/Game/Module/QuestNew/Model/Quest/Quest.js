@@ -100,7 +100,7 @@ class Quest extends LogicTreeContainer_1.LogicTreeContainer {
     return this.Lo.ChapterId;
   }
   get HideAcceptQuestMark() {
-    return this.Lo.IsHideAcceptMarkOnNpc;
+    return this.IsHideInTaskList || this.Type === 11 || this.Lo.IsHideAcceptMarkOnNpc;
   }
   get Status() {
     return this.InnerStatus;
@@ -197,8 +197,8 @@ class Quest extends LogicTreeContainer_1.LogicTreeContainer {
     }
   }
   AddAcceptQuestMark() {
-    var t;
-    if (!this.HideAcceptQuestMark) {
+    var t = this.IsHideInTaskList || this.Type === 11;
+    if (!this.HideAcceptQuestMark && !t) {
       if (t = this.AcceptQuestOptionConfig) {
         this.Zro(t.EntityId, this.DungeonId);
       } else if (Log_1.Log.CheckError()) {

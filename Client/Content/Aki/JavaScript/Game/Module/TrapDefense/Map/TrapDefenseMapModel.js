@@ -25,7 +25,7 @@ const towerMapMarkConstructors = {
 class TrapDefenseMapModel {
   constructor() {
     this.Z3_ = 0;
-    this.Mim = false;
+    this.ksm = false;
     this.EDi = new Map();
     this.iJu = new Map();
     this.PhantomRoutes = new Map();
@@ -134,7 +134,7 @@ class TrapDefenseMapModel {
         }
       }
       this.InitSplineData();
-      if (!this.Mim) {
+      if (!this.ksm) {
         e = ModelManager_1.ModelManager.TrapDefenseModel.GetCurrentBatchData();
         this.MapId = e.MapId;
       }
@@ -144,7 +144,7 @@ class TrapDefenseMapModel {
   }
   ChangeMap(e) {
     this.MapId = e;
-    this.Mim = true;
+    this.ksm = true;
   }
   InitSplineData() {
     var e = ModelManager_1.ModelManager.TrapDefenseModel.GetCurInstToLevelData()?.Config.SplineList ?? [];
@@ -208,7 +208,7 @@ class TrapDefenseMapModel {
     this.RKc = 0;
   }
   ClearMapChanged() {
-    this.Mim = false;
+    this.ksm = false;
   }
 }
 exports.TrapDefenseMapModel = TrapDefenseMapModel;

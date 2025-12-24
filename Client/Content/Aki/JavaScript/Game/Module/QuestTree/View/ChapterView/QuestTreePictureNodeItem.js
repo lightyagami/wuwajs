@@ -21,21 +21,21 @@ class QuestTreePictureNodeItem extends QuestTreeNodeItemLoader_1.QuestTreeNodeIt
     this.Loader = undefined;
     this.Pe = undefined;
     this.YRd = undefined;
-    this.ZCm = undefined;
+    this.wTm = undefined;
     this.Hea = undefined;
     this.VDd = undefined;
     this.Type = 1;
     this.HierarchyIndex = 0;
     this.OriginalTopHeight = 0;
     this.OriginalBottomHeight = 0;
-    this._tm = 0;
+    this.Rom = 0;
     this.sKe = TickSystem_1.TickSystem.InvalidId;
     this.J_ = t => {
       this.zRd();
       var i = this.GetUiSizeControlByOther(34);
       var e = this.YRd.GetLayoutItemByIndex(this.YRd.GetDatas().length - 1);
       if (e) {
-        i.SetAdditionalHeight(this._tm - e.GetAdditionalHeight());
+        i.SetAdditionalHeight(this.Rom - e.GetAdditionalHeight());
       }
     };
     this.eTt = () => {
@@ -66,7 +66,7 @@ class QuestTreePictureNodeItem extends QuestTreeNodeItemLoader_1.QuestTreeNodeIt
         ControllerHolder_1.ControllerHolder.UiNavigationNewController.SetNavigationFocusForView(this.RootItem, true);
       }
     };
-    this.Vem = () => {
+    this.Brm = () => {
       if (this.Pe) {
         this.nOe(this.Pe);
       }
@@ -79,15 +79,15 @@ class QuestTreePictureNodeItem extends QuestTreeNodeItemLoader_1.QuestTreeNodeIt
   OnStart() {
     this.Hea = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
     this.YRd = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(18), () => this.Loader.CreateLogicalNodeItem(4), undefined, true);
-    this.ZCm = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(16), () => this.Loader.CreateLogicalNodeItem(4), undefined, true);
+    this.wTm = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(16), () => this.Loader.CreateLogicalNodeItem(4), undefined, true);
     this.OriginalTopHeight = this.GetUiSizeControlByOther(32).GetAdditionalHeight();
     this.OriginalBottomHeight = this.GetUiSizeControlByOther(33).GetAdditionalHeight();
     this.GetItem(9).SetUIActive(false);
-    this._tm = this.GetUiSizeControlByOther(34).GetAdditionalHeight();
+    this.Rom = this.GetUiSizeControlByOther(34).GetAdditionalHeight();
     this.sKe = TickSystem_1.TickSystem.Add(this.J_, "QuestTreePictureNodeItem", 0, true, undefined, true)?.Id ?? TickSystem_1.TickSystem.InvalidId;
     ModelManager_1.ModelManager.QuestTreeModel.ViewModelChapter.AddOnSelectedDataChange(this.jDd);
     ModelManager_1.ModelManager.QuestTreeModel.ViewModelChapter.AddOnLocatingNode(this.HDd);
-    ModelManager_1.ModelManager.QuestTreeModel.ViewModelChapter.AddOnUpdateNode(this.Vem);
+    ModelManager_1.ModelManager.QuestTreeModel.ViewModelChapter.AddOnUpdateNode(this.Brm);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.QuestTreeNodeDataUpdate, this.AOe);
   }
   OnBeforeDestroy() {
@@ -96,7 +96,7 @@ class QuestTreePictureNodeItem extends QuestTreeNodeItemLoader_1.QuestTreeNodeIt
       this.sKe = TickSystem_1.TickSystem.InvalidId;
     }
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.QuestTreeNodeDataUpdate, this.AOe);
-    ModelManager_1.ModelManager.QuestTreeModel.ViewModelChapter.RemoveOnUpdateNode(this.Vem);
+    ModelManager_1.ModelManager.QuestTreeModel.ViewModelChapter.RemoveOnUpdateNode(this.Brm);
     ModelManager_1.ModelManager.QuestTreeModel.ViewModelChapter.RemoveOnLocatingNode(this.HDd);
     ModelManager_1.ModelManager.QuestTreeModel.ViewModelChapter.RemoveOnSelectedDataChange(this.jDd);
   }
@@ -104,9 +104,9 @@ class QuestTreePictureNodeItem extends QuestTreeNodeItemLoader_1.QuestTreeNodeIt
     await this.CreateThenShowByResourceIdAsync("UiItem_TaskTreeBranch", t);
   }
   UpdateData(t) {
-    this.gWd(t);
+    this.yWd(t);
   }
-  async gWd(t) {
+  async yWd(t) {
     this.Pe = t;
     this.nOe(this.Pe);
     await this.JRd(this.Pe);
@@ -120,7 +120,7 @@ class QuestTreePictureNodeItem extends QuestTreeNodeItemLoader_1.QuestTreeNodeIt
     this.UpdateData(t);
   }
   async RefreshAsync(t) {
-    await this.gWd(t);
+    await this.yWd(t);
   }
   GetAdditionalHeight() {
     if (this.Pe.NextQuestNode?.Config.NodeType === 3 && this.VDd) {
@@ -165,7 +165,7 @@ class QuestTreePictureNodeItem extends QuestTreeNodeItemLoader_1.QuestTreeNodeIt
           this.GetItem(15).SetUIActive(r.Config.NodeType !== 1);
           this.GetItem(13).SetUIActive(true);
           this.GetVerticalLayout(16).GetRootComponent().SetUIActive(true);
-          await this.ZCm.RefreshByDataAsync(h);
+          await this.wTm.RefreshByDataAsync(h);
         }
         if ((r = t.GetDirectChildrenGroupsInDownArea()).length > 0) {
           this.GetItem(17).SetUIActive(true);

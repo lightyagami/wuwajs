@@ -16,6 +16,8 @@ const TURN_SPEED = 200;
 const NEARBY_CHAIR_OFFSET = 70;
 const MOVE_TO_CHAIR_SPEED = 70;
 const MOVE_TO_NEARBY_CHAIR_SPEED = 100;
+const MOVE_TO_CHAIR_DISTANCE_TOLERANCE = 5;
+const MODEL_BUFFER_SMOOTH_TIME = 200;
 class TsTaskNpcSitOnChair extends TsTaskAbortImmediatelyBase_1.default {
   constructor() {
     super(...arguments);
@@ -34,6 +36,7 @@ class TsTaskNpcSitOnChair extends TsTaskAbortImmediatelyBase_1.default {
     this.Entity = undefined;
     this.Character = undefined;
     this.MoveComp = undefined;
+    this.AnimComp = undefined;
     this.ChairController = undefined;
     this.IsInitTsVariables = false;
     this.TsChairEntityId = 0;
@@ -41,6 +44,7 @@ class TsTaskNpcSitOnChair extends TsTaskAbortImmediatelyBase_1.default {
     this.TsLoopDuration = 0;
     this.TsRepeatTimes = 0;
     this.ChairNearbyPos = undefined;
+    this.ChairSitPos = undefined;
     this.TempVec = undefined;
   }
   Constructor() {
@@ -56,6 +60,7 @@ class TsTaskNpcSitOnChair extends TsTaskAbortImmediatelyBase_1.default {
     this.Entity = undefined;
     this.Character = undefined;
     this.MoveComp = undefined;
+    this.AnimComp = undefined;
     this.ChairController = undefined;
     this.IsInitTsVariables = false;
     this.TsChairEntityId = 0;
@@ -63,17 +68,18 @@ class TsTaskNpcSitOnChair extends TsTaskAbortImmediatelyBase_1.default {
     this.TsLoopDuration = 0;
     this.TsRepeatTimes = 0;
     this.ChairNearbyPos = undefined;
+    this.ChairSitPos = undefined;
     this.TempVec = undefined;
   }
   get Phase() {
     return this.PhaseInternal;
   }
-  set Phase(t) {
-    if (this.PhaseInternal !== t) {
+  set Phase(i) {
+    if (this.PhaseInternal !== i) {
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("NPC", 50, "[TsTaskNpcSitOnChair] 切换阶段", ["Phase", t]);
+        Log_1.Log.Debug("NPC", 50, "[TsTaskNpcSitOnChair] 切换阶段", ["Phase", i]);
       }
-      this.PhaseInternal = t;
+      this.PhaseInternal = i;
     }
   }
   InitTsVariables() {
@@ -84,23 +90,25 @@ class TsTaskNpcSitOnChair extends TsTaskAbortImmediatelyBase_1.default {
       this.TsLoopDuration = this.LoopDuration;
       this.TsRepeatTimes = this.RepeatTimes;
       this.ChairNearbyPos = Vector_1.Vector.Create();
+      this.ChairSitPos = Vector_1.Vector.Create();
       this.TempVec = Vector_1.Vector.Create();
     }
   }
-  ReceiveExecuteAI(t, i) {
+  ReceiveExecuteAI(i, t) {
     this.InitTsVariables();
-    var s = t.AiController;
+    var s = i.AiController;
     if (s) {
       this.Entity = s.CharAiDesignComp.Entity;
       this.Character = this.Entity.GetComponent(3);
-      this.MoveComp = this.Entity.GetComponent(45);
+      this.MoveComp = this.Entity.GetComponent(46);
+      this.AnimComp = this.Entity.GetComponent(186);
       if (this.MoveComp?.CharacterMovement?.IsValid()) {
         s = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(this.TsChairEntityId);
-        this.ChairController = s?.Entity?.GetComponent(201)?.GetSubEntityInteractLogicController();
+        this.ChairController = s?.Entity?.GetComponent(207)?.GetSubEntityInteractLogicController();
         if (this.ChairController && this.ChairController.IsSceneInteractionLoadCompleted()) {
           if (this.TsMontagePath === "") {
             if (Log_1.Log.CheckError()) {
-              Log_1.Log.Error("BehaviorTree", 50, "[TsTaskSitOnChair]无效的Montage路径", ["Type", t.GetClass().GetName()], ["PbDataId", this.Character.CreatureData.GetPbDataId()]);
+              Log_1.Log.Error("BehaviorTree", 50, "[TsTaskSitOnChair]无效的Montage路径", ["Type", i.GetClass().GetName()], ["PbDataId", this.Character.CreatureData.GetPbDataId()]);
             }
             this.FinishExecute(true);
           } else {
@@ -111,18 +119,18 @@ class TsTaskNpcSitOnChair extends TsTaskAbortImmediatelyBase_1.default {
         }
       } else {
         if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("BehaviorTree", 50, "[TsTaskSitOnChair]MoveComp不合法", ["Type", t.GetClass().GetName()], ["PbDataId", this.Character.CreatureData.GetPbDataId()]);
+          Log_1.Log.Error("BehaviorTree", 50, "[TsTaskSitOnChair]MoveComp不合法", ["Type", i.GetClass().GetName()], ["PbDataId", this.Character.CreatureData.GetPbDataId()]);
         }
         this.FinishExecute(true);
       }
     } else {
       if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("BehaviorTree", 6, "错误的Controller类型", ["Type", t.GetClass().GetName()]);
+        Log_1.Log.Error("BehaviorTree", 6, "错误的Controller类型", ["Type", i.GetClass().GetName()]);
       }
       this.FinishExecute(true);
     }
   }
-  ReceiveTickAI(t, i, s) {
+  ReceiveTickAI(i, t, s) {
     switch (this.Phase) {
       case 1:
         this.Phase = 2;
@@ -156,13 +164,13 @@ class TsTaskNpcSitOnChair extends TsTaskAbortImmediatelyBase_1.default {
     }
   }
   OnAbort() {
-    var t;
+    var i;
     if (this.Phase === 2 || this.Phase === 3 || this.Phase === 6) {
       this.MoveComp?.StopMoveNew();
     } else if (this.Phase === 4) {
       this.Character?.ClearInput();
-    } else if (this.Phase === 5 && (t = this.Entity?.GetComponent(46), this.PlayingMontage !== -1)) {
-      t?.VolatileMontageStopByLoad(3, this.PlayingMontage, 0);
+    } else if (this.Phase === 5 && (i = this.Entity?.GetComponent(47), this.PlayingMontage !== -1)) {
+      i?.VolatileMontageStopByLoad(3, this.PlayingMontage, 0);
       this.PlayingMontage = -1;
     }
   }
@@ -176,61 +184,63 @@ class TsTaskNpcSitOnChair extends TsTaskAbortImmediatelyBase_1.default {
     this.IsExecuteMoveAway = false;
   }
   ExecuteMoveNearby() {
-    var t;
+    var i;
     if (!this.IsExecuteMoveNearby) {
       this.IsExecuteMoveNearby = true;
       this.ChairController.Possess(this.Entity);
-      t = this.ChairController.GetSitLocation();
+      i = this.ChairController.GetSitLocation();
       this.ChairController.GetForwardDirection().Multiply(NEARBY_CHAIR_OFFSET, this.ChairNearbyPos);
-      this.ChairNearbyPos.AdditionEqual(t);
-      t = {
-        Index: 0,
-        Position: this.ChairNearbyPos,
-        MoveState: IComponent_1.EPatrolMoveState.Walk,
-        MoveSpeed: MOVE_TO_NEARBY_CHAIR_SPEED
-      };
-      this.MoveComp.MoveAlongPath({
-        Points: [t],
+      this.ChairNearbyPos.AdditionEqual(i);
+      i = {
+        Points: [{
+          Index: 0,
+          Position: this.ChairNearbyPos,
+          MoveState: IComponent_1.EPatrolMoveState.Walk,
+          MoveSpeed: MOVE_TO_NEARBY_CHAIR_SPEED
+        }],
         Navigation: true,
         IsFly: false,
         DebugMode: true,
         Loop: false,
-        Callback: t => {
-          this.MoveComp.StopMoveNew();
+        Distance: MOVE_TO_CHAIR_DISTANCE_TOLERANCE,
+        Callback: i => {
+          this.MoveComp?.StopMoveNew();
           this.Phase = 3;
         },
         ReturnFalseWhenNavigationFailed: false
-      });
+      };
+      this.MoveComp.MoveAlongPath(i);
     }
   }
   ExecuteMoveClose() {
-    var t;
     var i;
+    var t;
     if (!this.IsExecuteMoveClose) {
       this.IsExecuteMoveClose = true;
       this.ChairController.Possess(this.Entity);
       this.ChairController.IgnoreCollision();
-      t = this.Character.ActorLocationProxy;
-      i = this.ChairController.GetSitLocation();
-      this.TempVec.Set(i.X, i.Y, t.Z);
-      i = {
-        Index: 0,
-        Position: this.TempVec,
-        MoveState: IComponent_1.EPatrolMoveState.Walk,
-        MoveSpeed: MOVE_TO_CHAIR_SPEED
-      };
-      this.MoveComp.MoveAlongPath({
-        Points: [i],
+      i = this.Character.ActorLocationProxy;
+      t = this.ChairController.GetSitLocation();
+      this.ChairSitPos.Set(t.X, t.Y, i.Z);
+      t = {
+        Points: [{
+          Index: 0,
+          Position: this.ChairSitPos,
+          MoveState: IComponent_1.EPatrolMoveState.Walk,
+          MoveSpeed: MOVE_TO_CHAIR_SPEED
+        }],
         Navigation: true,
         IsFly: false,
         DebugMode: true,
         Loop: false,
-        Callback: t => {
-          this.MoveComp.StopMoveNew();
+        Distance: MOVE_TO_CHAIR_DISTANCE_TOLERANCE,
+        Callback: i => {
+          this.MoveComp?.StopMoveNew();
           this.Phase = 4;
         },
         ReturnFalseWhenNavigationFailed: false
-      });
+      };
+      this.MoveComp.MoveAlongPath(t);
     }
   }
   ExecuteTurnTo() {
@@ -244,12 +254,13 @@ class TsTaskNpcSitOnChair extends TsTaskAbortImmediatelyBase_1.default {
     }
   }
   ExecutePlayMontage() {
-    var t;
+    var i;
     if (!this.IsExecutePlayMontage) {
       this.IsExecutePlayMontage = true;
-      t = this.Entity.GetComponent(46);
-      this.PlayingMontage = t.VolatileMontagePlayByLoad(3, this.TsMontagePath, undefined, undefined, t => {
-        if (t) {
+      this.AnimComp?.SetLocationAndRotatorWithModelBuffer(this.ChairSitPos.ToUeVector(), this.Character.ActorRotationProxy.ToUeRotator(), MODEL_BUFFER_SMOOTH_TIME, "TsTaskNpcSitOnChair.ExecuteTurnToFinish");
+      i = this.Entity.GetComponent(47);
+      this.PlayingMontage = i.VolatileMontagePlayByLoad(3, this.TsMontagePath, undefined, undefined, i => {
+        if (i) {
           this.Phase = 6;
         } else {
           this.FinishExecute(true);
@@ -258,30 +269,31 @@ class TsTaskNpcSitOnChair extends TsTaskAbortImmediatelyBase_1.default {
     }
   }
   ExecuteMoveAway() {
-    var t;
+    var i;
     if (!this.IsExecuteMoveAway) {
       this.IsExecuteMoveAway = true;
       this.ChairController.UnPossess(this.Entity);
-      t = {
-        Index: 0,
-        Position: this.ChairNearbyPos,
-        MoveState: IComponent_1.EPatrolMoveState.Walk,
-        MoveSpeed: MOVE_TO_CHAIR_SPEED
-      };
-      this.MoveComp.MoveAlongPath({
-        Points: [t],
+      i = {
+        Points: [{
+          Index: 0,
+          Position: this.ChairNearbyPos,
+          MoveState: IComponent_1.EPatrolMoveState.Walk,
+          MoveSpeed: MOVE_TO_CHAIR_SPEED
+        }],
         Navigation: true,
         IsFly: false,
         DebugMode: true,
         Loop: false,
-        Callback: t => {
+        Distance: MOVE_TO_CHAIR_DISTANCE_TOLERANCE,
+        Callback: i => {
           this.MoveComp.StopMoveNew();
           this.ChairController.ResetCollision();
           this.ChairController.UnPossess(this.Entity);
           this.Phase = 7;
         },
         ReturnFalseWhenNavigationFailed: false
-      });
+      };
+      this.MoveComp.MoveAlongPath(i);
     }
   }
 }

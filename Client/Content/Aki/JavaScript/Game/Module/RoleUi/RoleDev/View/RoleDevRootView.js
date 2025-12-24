@@ -53,8 +53,8 @@ class RoleDevRootView extends UiViewBase_1.UiViewBase {
     this.dLd = 0;
     this.Ryd = 0;
     this.mLd = true;
-    this.RWd = 0;
-    this.kdm = false;
+    this.AWd = 0;
+    this.gpm = false;
     this.S9d = () => {
       var e = ModelManager_1.ModelManager.RoleDevModel.DevTargetRoleId;
       var t = this.TempRoleMarkRoleId;
@@ -63,7 +63,7 @@ class RoleDevRootView extends UiViewBase_1.UiViewBase {
       } else if (e === 0 && t !== 0) {
         ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("RoleProject_Tips13");
       }
-      this.wWd(e);
+      this.DWd(e);
       this.eVd(this.CurSelectRoleId);
       this.WEd.RefreshWithoutDataSync();
     };
@@ -84,7 +84,7 @@ class RoleDevRootView extends UiViewBase_1.UiViewBase {
       e.BindOnCanExecuteChange(this.dyd);
       return e;
     };
-    this.Ypm = (e, t) => {
+    this.jbm = (e, t) => {
       this.Pnd.RoleDevPhantomViewItemData?.RefreshSuitDataList();
       this.Iyd();
     };
@@ -98,11 +98,11 @@ class RoleDevRootView extends UiViewBase_1.UiViewBase {
       e.BindOnCanExecuteChange(this.gyd);
       return e;
     };
-    this.Tgm = e => {
+    this.nMm = e => {
       this.p2d();
     };
     this.C0o = (e, t, i) => {
-      e = this.nKd(e);
+      e = this.lKd(e);
       this.Pnd.SetRoleDataList(e);
       this.Cyd(e, t, i);
     };
@@ -141,7 +141,7 @@ class RoleDevRootView extends UiViewBase_1.UiViewBase {
       return e;
     };
     this.etc = e => {
-      this.Agm(e);
+      this._Mm(e);
       this.Cxd(e);
     };
     this.Z4d = () => {
@@ -151,7 +151,7 @@ class RoleDevRootView extends UiViewBase_1.UiViewBase {
         let e = 0;
         e = i === t ? 0 : t;
         RoleDevController_1.RoleDevController.RequestRecordRoleMarkOperation(e);
-        this.LWd(e);
+        this.UWd(e);
       }
     };
   }
@@ -175,7 +175,7 @@ class RoleDevRootView extends UiViewBase_1.UiViewBase {
     this.cyd = new GenericLayout_1.GenericLayout(this.GetGridLayout(1), this.myd, e);
     this.WEd = new GenericLayout_1.GenericLayout(this.GetGridLayout(2), this.cHe, e);
     this.adi = new FilterSortEntrance_1.FilterSortEntrance(this.GetItem(4), this.C0o);
-    await Promise.all([this.jnd(), this.Hnd(), this.nTd(), this.sTd(), this.qdm(), ControllerHolder_1.ControllerHolder.HandBookController.SendIllustratedInfoRequestAsync([1])]);
+    await Promise.all([this.jnd(), this.Hnd(), this.nTd(), this.sTd(), this.Cpm(), ControllerHolder_1.ControllerHolder.HandBookController.SendIllustratedInfoRequestAsync([1])]);
   }
   OnStart() {
     this.fLd();
@@ -184,7 +184,7 @@ class RoleDevRootView extends UiViewBase_1.UiViewBase {
     var e = this.OpenParam;
     this.Pnd.InitHotRoleDataList();
     var t = ModelManager_1.ModelManager.RoleModel.GetAllConfigRoleDataList();
-    this.wWd(ModelManager_1.ModelManager.RoleDevModel.DevTargetRoleId);
+    this.DWd(ModelManager_1.ModelManager.RoleDevModel.DevTargetRoleId);
     if (this.IsFirstEnter) {
       this.SetIsFirstEnter(false);
       this.SetCurSelectRoleId(e);
@@ -194,10 +194,10 @@ class RoleDevRootView extends UiViewBase_1.UiViewBase {
     if (t.length > 0) {
       this.Pnd.InitAllDevItemDataByRoleId(this.CurSelectRoleId);
     }
-    this.kdm = true;
+    this.gpm = true;
     this.adi.UpdateData(47, t);
     await Promise.all([this.cyd.RefreshByDataAsync(this.Pnd.HotRoleDataList, false), this.WEd.RefreshByDataAsync(this.Pnd.RoleDataList, false)]);
-    this.kdm = false;
+    this.gpm = false;
     this.GetGridLayout(1).RootUIComp.SetUIActive(this.Pnd.HotRoleDataList.length > 0);
     this.pyd(this.CurSelectRoleId, this.CurSelectRoleListType);
     this.Cxd(this.CurSelectTab);
@@ -248,11 +248,11 @@ class RoleDevRootView extends UiViewBase_1.UiViewBase {
     this.Z1d = new RoleDevWeaponViewItem_1.RoleDevWeaponViewItem();
     this.eud = new RoleDevPhantomViewItem_1.RoleDevPhantomViewItem();
     this.tud = new RoleDevSkillViewItem_1.RoleDevSkillViewItem();
-    this.tud.OnPlanChangeCallback = this.Tgm;
+    this.tud.OnPlanChangeCallback = this.nMm;
     await Promise.all([this.J1d.CreateByResourceIdAsync("UiItem_PlanRole", this.GetItem(13), false), this.Z1d.CreateByResourceIdAsync("UiItem_PlanWeapon", this.GetItem(17), false), this.eud.CreateByResourceIdAsync("UiItem_PlanVision", this.GetItem(19), false), this.tud.CreateByResourceIdAsync("UiItem_PlanRoleSkill", this.GetItem(15), false)]);
-    this.eud.OnChangeFetterGroupSuccessCallBack = this.Ypm;
+    this.eud.OnChangeFetterGroupSuccessCallBack = this.jbm;
   }
-  async qdm() {
+  async Cpm() {
     this.yvt = [{
       TabIndex: 0,
       TabName: "RoleProject_Role",
@@ -304,7 +304,7 @@ class RoleDevRootView extends UiViewBase_1.UiViewBase {
     }
     this.Tnd.RefreshWithoutDataSync();
   }
-  nKd(e) {
+  lKd(e) {
     var t = ModelManager_1.ModelManager.RoleDevModel.DevTargetRoleId;
     if (t === 0) {
       return e;
@@ -317,7 +317,7 @@ class RoleDevRootView extends UiViewBase_1.UiViewBase {
     return [...i, ...s];
   }
   Cyd(e, t, i) {
-    if (!this.kdm) {
+    if (!this.gpm) {
       this.WEd.RefreshByData(e, () => {
         if (this.CurSelectRoleListType === 0) {
           this.WEd.SelectGridProxyByKey(this.CurSelectRoleId, false);
@@ -365,7 +365,7 @@ class RoleDevRootView extends UiViewBase_1.UiViewBase {
     this.Myd(t, e);
     this.p2d();
     this.Fnd(this.CurSelectTab);
-    this.Agm(this.CurSelectTab);
+    this._Mm(this.CurSelectTab);
   }
   CLd(t, i) {
     if (this.oTd) {
@@ -386,7 +386,7 @@ class RoleDevRootView extends UiViewBase_1.UiViewBase {
   }
   eVd(e) {
     this.tVd(e);
-    this.LWd();
+    this.UWd();
   }
   Iyd() {
     switch (this.CurSelectTab) {
@@ -430,7 +430,7 @@ class RoleDevRootView extends UiViewBase_1.UiViewBase {
       this.Syd(e);
     }
   }
-  Agm(e) {
+  _Mm(e) {
     this.SetCurSelectTab(e);
     this.vyd(e);
     e = RoleDevDefine_1.tabTypeToMainPageMap[e];
@@ -439,28 +439,28 @@ class RoleDevRootView extends UiViewBase_1.UiViewBase {
   Cxd(e) {
     switch (e) {
       case 0:
-        this.Xrm();
+        this.ghm();
         break;
       case 1:
-        this.Yrm();
+        this.Chm();
         break;
       case 2:
-        this.zrm();
+        this.phm();
         break;
       case 3:
-        this.Jrm();
+        this.vhm();
     }
   }
-  Xrm() {
+  ghm() {
     this.J1d?.UiViewSequence?.PlayOrReplaySequenceByName("Start");
   }
-  Yrm() {
+  Chm() {
     this.Z1d?.UiViewSequence?.PlayOrReplaySequenceByName("Start");
   }
-  zrm() {
+  phm() {
     this.eud?.UiViewSequence?.PlayOrReplaySequenceByName("Start");
   }
-  Jrm() {
+  vhm() {
     this.tud?.UiViewSequence?.PlayOrReplaySequenceByName("Start");
   }
   vyd(e) {
@@ -527,10 +527,10 @@ class RoleDevRootView extends UiViewBase_1.UiViewBase {
     e = ModelManager_1.ModelManager.RoleModel.IsRoleOwned(e);
     this.GetExtendToggle(22).RootUIComp.SetUIActive(e);
   }
-  wWd(e) {
-    this.RWd = e;
+  DWd(e) {
+    this.AWd = e;
   }
-  LWd(e) {
+  UWd(e) {
     var t = this.CurSelectRoleId;
     var e = e ?? this.TempRoleMarkRoleId;
     this.rVd(e === t ? 1 : 0);
@@ -573,12 +573,12 @@ class RoleDevRootView extends UiViewBase_1.UiViewBase {
     return this.mLd;
   }
   get TempRoleMarkRoleId() {
-    return this.RWd;
+    return this.AWd;
   }
   ClearCache() {
     this.sud = 0;
     this.dLd = 0;
-    this.RWd = 0;
+    this.AWd = 0;
   }
   OnBeforeDestroy() {
     this.gLd();

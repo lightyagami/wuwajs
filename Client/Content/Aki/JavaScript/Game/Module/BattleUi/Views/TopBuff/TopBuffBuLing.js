@@ -13,7 +13,7 @@ class TopBuffBuLing extends TopBuffContainer_1.TopBuffContainer {
     super(...arguments);
     this.HYc = false;
     this.x5e = [];
-    this.HCm = 0;
+    this.pTm = 0;
     this.Zmt = (t, s) => {
       this.HYc = true;
     };
@@ -71,16 +71,16 @@ class TopBuffBuLing extends TopBuffContainer_1.TopBuffContainer {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Battle", 17, "卜灵能量条图标变化", ["", f]);
       }
-      if (this.HCm === 4 && i === 4) {
+      if (this.pTm === 4 && i === 4) {
         t = this.x5e.shift();
         this.x5e.push(t);
         t.GetRootItem().SetHierarchyIndex(this.x5e[2].GetRootItem().GetHierarchyIndex());
       }
       let s = -1;
-      if (this.HCm - i == 2) {
+      if (this.pTm - i == 2) {
         s = i;
       }
-      this.HCm = i;
+      this.pTm = i;
       for (let s = 0; s < i; s++) {
         let t = 0;
         if (i === 0) {

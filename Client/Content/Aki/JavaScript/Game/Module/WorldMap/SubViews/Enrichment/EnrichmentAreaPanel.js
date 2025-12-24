@@ -28,7 +28,7 @@ class EnrichmentAreaPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondary
     super.SetupWorldMapSecondaryUiLayout();
     this.GetVerticalLayout(7).RootUIComp.SetUIActive(false);
     this.GetItem(6).SetUIActive(false);
-    this.LayoutContext.ConfirmButtonItem.SetUiActive(false);
+    this.LayoutContext.SetConfirmBtnActive(false);
     this.LayoutContext.DelButton.RootUIComp.SetUIActive(true);
   }
   OnShowWorldMapSecondaryUi(r) {

@@ -10,24 +10,30 @@ const MarkPanelBase_1 = require("../MarkPanelBase");
 class MarkSelectComponent extends MarkPanelBase_1.MarkPanelBase {
   constructor() {
     super(...arguments);
-    this.SPe = undefined;
-    this.mRi = false;
+    this.LevelSequencePlayer = undefined;
+    this.LastVisibility = false;
+  }
+  GetSelectSequenceName() {
+    return "xuanzhong";
+  }
+  GetUnSelectSequenceName() {
+    return "Close";
   }
   OnStart() {
-    this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
+    this.LevelSequencePlayer = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
   }
   SetActive(e) {
-    this._1a(e);
+    this.PlaySequenceAndSetActive(e);
   }
-  async _1a(e) {
-    if (this.mRi !== e) {
-      this.mRi = e;
-      if (this.mRi) {
-        this.RootItem.SetUIActive(this.mRi);
-        await this.SPe.PlaySequenceAsync("xuanzhong", new CustomPromise_1.CustomPromise());
+  async PlaySequenceAndSetActive(e) {
+    if (this.LastVisibility !== e) {
+      this.LastVisibility = e;
+      if (this.LastVisibility) {
+        this.RootItem.SetUIActive(this.LastVisibility);
+        await this.LevelSequencePlayer.PlaySequenceAsync(this.GetSelectSequenceName(), new CustomPromise_1.CustomPromise());
       } else {
-        await this.SPe.PlaySequenceAsync("Close", new CustomPromise_1.CustomPromise());
-        this.RootItem.SetUIActive(this.mRi);
+        await this.LevelSequencePlayer.PlaySequenceAsync(this.GetUnSelectSequenceName(), new CustomPromise_1.CustomPromise());
+        this.RootItem.SetUIActive(this.LastVisibility);
       }
     }
     return true;

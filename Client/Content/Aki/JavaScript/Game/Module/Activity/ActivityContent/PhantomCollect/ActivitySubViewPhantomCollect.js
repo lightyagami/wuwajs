@@ -62,6 +62,7 @@ class ActivitySubViewPhantomCollect extends ActivitySubViewBase_1.ActivitySubVie
   }
   OnStart() {
     this.ActivityDataBase = ActivityPhantomCollectController_1.ActivityPhantomCollectController.GetCurrentActivityDataById();
+    this.TitleComponent.SetActivityBaseData(this.ActivityBaseData);
     this.TitleComponent.SetTitleByText(this.ActivityBaseData.GetTitle());
   }
   OnRefreshView() {

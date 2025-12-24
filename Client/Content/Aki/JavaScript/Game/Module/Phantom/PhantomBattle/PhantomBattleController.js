@@ -106,7 +106,7 @@ class PhantomBattleController extends UiControllerBase_1.UiControllerBase {
     }
   }
   static SendPhantomPutOnRequest(e, t, n, r = -1, a = false) {
-    if (ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.GetComponent(209).HasTag(-1720844833)) {
+    if (ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.GetComponent(215).HasTag(-1720844833)) {
       ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("VisionSkilling");
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PhantomEquipError);
     } else {
@@ -164,7 +164,7 @@ class PhantomBattleController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Phantom", 27, "10014_角色幻象一键装配请求!!!!");
     }
-    if (ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.GetComponent(209).HasTag(-1720844833)) {
+    if (ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.GetComponent(215).HasTag(-1720844833)) {
       ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("VisionSkilling");
     } else {
       let e = false;
@@ -218,7 +218,7 @@ class PhantomBattleController extends UiControllerBase_1.UiControllerBase {
     }
   }
   static PhantomSkinChangeRequest(t, o, n) {
-    if (ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.GetComponent(209).HasTag(-1720844833)) {
+    if (ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.GetComponent(215).HasTag(-1720844833)) {
       ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("VisionSkilling");
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PhantomEquipError);
     } else {

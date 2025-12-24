@@ -29,8 +29,8 @@ class LongTimeToTriggerComponent extends HotKeyComponent_1.HotKeyComponent {
         this.OnHandleLongPressRefresh(i);
         this.ReleaseWithoutCheck();
       } else {
-        this.zym(i);
-        this.yzd(i > 0 ? 1 : 0);
+        this.rDm(i);
+        this.eJd(i > 0 ? 1 : 0);
       }
     };
   }
@@ -43,8 +43,8 @@ class LongTimeToTriggerComponent extends HotKeyComponent_1.HotKeyComponent {
     if (this.vqo >= e.LongPressTime + e.ReleaseFailureTime) {
       this.ClickButton(e.BindButtonTag);
     }
-    this.zym(0);
-    this.yzd(0);
+    this.rDm(0);
+    this.eJd(0);
     this.Iqo();
     this.OnReleaseAction();
     this.Eqo = false;
@@ -69,11 +69,11 @@ class LongTimeToTriggerComponent extends HotKeyComponent_1.HotKeyComponent {
   Tqo() {
     this.Mqo = TimerSystem_1.GameplayTimerSystem.Forever(this.Sqo, TimerSystem_1.MIN_TIME);
   }
-  zym(e) {
+  rDm(e) {
     this.CurComponent.SetLongPressState(e);
     this.OnHandleLongPressRefresh(e);
   }
-  yzd(e) {
+  eJd(e) {
     if (this.GetHotKeyConfig().ApplicableType === 6) {
       this.CurComponent.SetLongPressItemAlpha(e);
     }

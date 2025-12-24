@@ -8,7 +8,6 @@ const UE = require("ue");
 const StringUtils_1 = require("../../../../../../../Core/Utils/StringUtils");
 const EventDefine_1 = require("../../../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../../../Common/Event/EventSystem");
-const ConfigManager_1 = require("../../../../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../../../Manager/ModelManager");
 const UiManager_1 = require("../../../../../../Ui/UiManager");
@@ -21,7 +20,6 @@ const ActivityRewardList_1 = require("../../../UniversalComponents/Content/Activ
 const ActivityFunctionalTypeA_1 = require("../../../UniversalComponents/Functional/ActivityFunctionalTypeA");
 const ActivityTitleTypeA_1 = require("../../../UniversalComponents/Title/ActivityTitleTypeA");
 const FishingPermanentRewardButton_1 = require("../../FishingDock/FishingPermanentRewardButton");
-const ActivityFishingDefine_1 = require("../ActivityFishingDefine");
 const FishingRewardLimitTimeButton_1 = require("./Components/FishingRewardLimitTimeButton");
 class ActivityFishingSubView extends ActivitySubViewBase_1.ActivitySubViewBase {
   constructor() {
@@ -54,22 +52,7 @@ class ActivityFishingSubView extends ActivitySubViewBase_1.ActivitySubViewBase {
     };
     this.uZ_ = () => !ModelManager_1.ModelManager.GameModeModel.IsMulti || (ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("CantUseInMultiplayerMode"), false);
     this.DFe = () => {
-      if (this.uZ_()) {
-        if (this.ActivityBaseData.GetPreGuideQuestFinishState()) {
-          let i = ModelManager_1.ModelManager.FishingModel.GetShipData().GetLastPortId();
-          if (i <= 0) {
-            i = ActivityFishingDefine_1.DEFAULT_PORT_ID;
-          }
-          var e = {
-            MarkId: ConfigManager_1.ConfigManager.FishingConfig.GetFishingPortConfig(i).MarkId,
-            MarkType: 34
-          };
-          ControllerHolder_1.ControllerHolder.WorldMapController.OpenView(2, false, e);
-        } else {
-          e = this.ActivityBaseData.GetUnFinishPreGuideQuestId();
-          UiManager_1.UiManager.OpenView("QuestView", e);
-        }
-      }
+      ControllerHolder_1.ControllerHolder.ActivityController.OpenActivityContentView(this.ActivityBaseData);
     };
   }
   OnRegisterComponent() {
@@ -77,48 +60,49 @@ class ActivityFishingSubView extends ActivitySubViewBase_1.ActivitySubViewBase {
   }
   async OnBeforeStartAsync() {
     var i = [];
-    var e = this.GetItem(0);
+    var t = this.GetItem(0);
     this.LNe = new ActivityTitleTypeA_1.ActivityTitleTypeA();
-    i.push(this.LNe.CreateThenShowByActorAsync(e.GetOwner()));
-    var e = this.GetItem(1);
+    i.push(this.LNe.CreateThenShowByActorAsync(t.GetOwner()));
+    var t = this.GetItem(1);
     this.DNe = new ActivityDescriptionTypeA_1.ActivityDescriptionTypeA();
-    i.push(this.DNe.CreateThenShowByActorAsync(e.GetOwner()));
-    var e = this.GetItem(2);
+    i.push(this.DNe.CreateThenShowByActorAsync(t.GetOwner()));
+    var t = this.GetItem(2);
     this.UNe = new ActivityRewardList_1.ActivityRewardList();
-    i.push(this.UNe.CreateThenShowByActorAsync(e.GetOwner()));
-    var e = this.GetItem(3);
+    i.push(this.UNe.CreateThenShowByActorAsync(t.GetOwner()));
+    var t = this.GetItem(3);
     this.ANe = new ActivityFunctionalTypeA_1.ActivityFunctionalTypeA(this.ActivityBaseData);
-    i.push(this.ANe.CreateThenShowByActorAsync(e.GetOwner()));
-    var e = this.GetItem(4);
+    i.push(this.ANe.CreateThenShowByActorAsync(t.GetOwner()));
+    var t = this.GetItem(4);
     this.Atl = new FishingRewardLimitTimeButton_1.FishingRewardLimitTimeButton(this.ActivityBaseData);
-    i.push(this.Atl.CreateByActorAsync(e.GetOwner()));
-    var e = this.GetItem(5);
+    i.push(this.Atl.CreateByActorAsync(t.GetOwner()));
+    var t = this.GetItem(5);
     this.hx_ = new FishingPermanentRewardButton_1.FishingPermanentRewardButton();
-    i.push(this.hx_.CreateByActorAsync(e.GetOwner()));
-    var e = this.GetItem(6);
+    i.push(this.hx_.CreateByActorAsync(t.GetOwner()));
+    var t = this.GetItem(6);
     this.cxl = new RecommendQuestTipsSubPanel_1.RecommendQuestTipsSubPanel();
-    i.push(this.cxl.CreateThenShowByActorAsync(e.GetOwner()));
+    i.push(this.cxl.CreateThenShowByActorAsync(t.GetOwner()));
     this.cxl.BindClickBtnTipsCallBack(this.mxl);
     await Promise.all(i);
   }
   OnStart() {
     var i;
-    var e;
-    var t = this.ActivityBaseData.LocalConfig;
-    if (t) {
-      e = t.DescTheme;
-      i = !StringUtils_1.StringUtils.IsEmpty(e);
+    var t;
+    var e = this.ActivityBaseData.LocalConfig;
+    if (e) {
+      t = e.DescTheme;
+      i = !StringUtils_1.StringUtils.IsEmpty(t);
+      this.LNe.SetActivityBaseData(this.ActivityBaseData);
       this.LNe.SetTitleByText(this.ActivityBaseData.GetTitle());
       this.LNe.SetSubTitleVisible(i);
       if (i) {
-        this.LNe.SetSubTitleByTextId(e);
+        this.LNe.SetSubTitleByTextId(t);
       }
-      i = t.Desc;
+      i = e.Desc;
       this.DNe.SetContentByTextId(i);
-      e = this.ActivityBaseData.GetPreviewReward();
+      t = this.ActivityBaseData.GetPreviewReward();
       this.UNe.SetTitleByTextId("CollectActivity_reward");
       this.UNe.InitGridLayout(this.UNe.InitCommonGridItem);
-      this.UNe.RefreshItemLayout(e);
+      this.UNe.RefreshItemLayout(t);
       this.ZGe();
       this.ANe.FunctionButton.SetExtraFunction(this.xJa);
       this.KV_();
@@ -157,10 +141,10 @@ class ActivityFishingSubView extends ActivitySubViewBase_1.ActivitySubViewBase {
     this.ANe.RefreshGeneralPerformance(i);
   }
   FNe() {
-    var [i, e] = this.GetTimeVisibleAndRemainTime();
+    var [i, t] = this.GetTimeVisibleAndRemainTime();
     this.LNe.SetTimeTextVisible(i);
     if (i) {
-      this.LNe.SetTimeTextByText(e);
+      this.LNe.SetTimeTextByText(t);
     }
   }
   ZGe() {

@@ -10,18 +10,18 @@ const ActivityPreWarmDefine_1 = require("./ActivityPreWarmDefine");
 class ActivityPreWarmModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
-    this.g1m = new Map();
+    this.Amm = new Map();
   }
   CreateCollectItemData(t) {
     for (let e = 1; e <= ActivityPreWarmDefine_1.PREWARMTASKNUM; e++) {
       var r = new ActivityPreWarmCollectItemData_1.ActivityPreWarmCollectItemData(t);
       r.SetId(e);
-      this.g1m.set(e, r);
+      this.Amm.set(e, r);
     }
   }
   GetCollectItemDataById(e) {
     if (e !== undefined) {
-      return this.g1m.get(e);
+      return this.Amm.get(e);
     }
   }
   GetDefaultId() {
@@ -29,7 +29,7 @@ class ActivityPreWarmModel extends ModelBase_1.ModelBase {
     let t = 1;
     let r = false;
     let i = false;
-    for (var [a, o] of this.g1m) {
+    for (var [a, o] of this.Amm) {
       o = o.GetQuestState();
       e = Math.min(e, a);
       t = Math.max(t, a);
@@ -52,7 +52,7 @@ class ActivityPreWarmModel extends ModelBase_1.ModelBase {
   }
   GetLastFinishedId() {
     let e = 1;
-    for (var [t, r] of this.g1m) {
+    for (var [t, r] of this.Amm) {
       if (r.GetQuestState() !== 3) {
         break;
       }
@@ -62,7 +62,7 @@ class ActivityPreWarmModel extends ModelBase_1.ModelBase {
   }
   GetProgressId() {
     let e = undefined;
-    for (var [t, r] of this.g1m) {
+    for (var [t, r] of this.Amm) {
       if (r.GetQuestState() === 2) {
         e = t;
         break;
@@ -71,10 +71,10 @@ class ActivityPreWarmModel extends ModelBase_1.ModelBase {
     return e;
   }
   GetAllCollectItemData() {
-    return this.g1m;
+    return this.Amm;
   }
   IsHasQuest(e) {
-    for (const t of this.g1m.values()) {
+    for (const t of this.Amm.values()) {
       if (t.GetQuestId() === e) {
         return true;
       }
@@ -82,7 +82,7 @@ class ActivityPreWarmModel extends ModelBase_1.ModelBase {
     return false;
   }
   IsAllFinish() {
-    for (const e of this.g1m.values()) {
+    for (const e of this.Amm.values()) {
       if (e.GetQuestState() !== 3) {
         return false;
       }
@@ -90,7 +90,7 @@ class ActivityPreWarmModel extends ModelBase_1.ModelBase {
     return true;
   }
   OnClear() {
-    this.g1m.clear();
+    this.Amm.clear();
     return true;
   }
 }

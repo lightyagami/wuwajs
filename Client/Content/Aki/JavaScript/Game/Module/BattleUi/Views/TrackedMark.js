@@ -14,10 +14,12 @@ const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
 const Rotator_1 = require("../../../../Core/Utils/Math/Rotator");
 const Vector_1 = require("../../../../Core/Utils/Math/Vector");
 const Vector2D_1 = require("../../../../Core/Utils/Math/Vector2D");
+const StringUtils_1 = require("../../../../Core/Utils/StringUtils");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const Global_1 = require("../../../Global");
 const GlobalData_1 = require("../../../GlobalData");
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
@@ -29,15 +31,9 @@ const MapDefine_1 = require("../../Map/MapDefine");
 const MapUtil_1 = require("../../Map/MapUtil");
 const TaskTrackedMarkItem_1 = require("../../Map/Marks/MarkItem/TaskTrackedMarkItem");
 const ScrollingTipsController_1 = require("../../ScrollingTips/ScrollingTipsController");
+const TrackDefine_1 = require("../../Track/TrackDefine");
 const LguiUtil_1 = require("../../Util/LguiUtil");
 const BattleUiControl_1 = require("../BattleUiControl");
-const CENTER_Y = 62.5;
-const MAX_A = 1176;
-const MARGIN_A = 1008;
-const MAX_B = 712.5;
-const MARGIN_B = 495;
-const center = Vector2D_1.Vector2D.Create(0, CENTER_Y);
-const RAD_2_DEG = 180 / Math.PI;
 const WAVE_COLOR_NEAR = "86FF83";
 const WAVE_COLOR_MIDDLE = "FFE683";
 const WAVE_COLOR_FAR = "FFFFFF";
@@ -45,6 +41,9 @@ const VARNAME_WAVE_CYCLE_TIME = "LifeTime";
 const VARNAME_WAVE_NUM_SCALE = "Scale";
 const VARNAME_WAVE_COLOR = "Color";
 const VARNAME_WAVE_ROTATION = "Rotation";
+const TRACKA = "TrackA";
+const TRACKB = "TrackB";
+const TRACKC = "TrackC";
 const DELAY_TIME = 500;
 const SUB_SCALE = 0.8;
 const QUEST_TRACK_MARK_INDEX = 999;
@@ -52,6 +51,7 @@ class TrackedMark extends UiPanelBase_1.UiPanelBase {
   constructor(t) {
     var i;
     super();
+    this.FNl = t;
     this.TrackTarget = undefined;
     this.$pl = 0;
     this.IsSubTrack = false;
@@ -102,6 +102,14 @@ class TrackedMark extends UiPanelBase_1.UiPanelBase {
     this.XCt = 0;
     this.Wza = undefined;
     this._Fl = false;
+    this.$6m = undefined;
+    this.J6f = false;
+    this.Z6f = false;
+    this.e7f = undefined;
+    this.t7f = undefined;
+    this.i7f = undefined;
+    this.r7f = undefined;
+    this.o7f = undefined;
     this.ilt = () => {
       var t;
       if (!ModelManager_1.ModelManager.TrackModel.IsForceCloseTracked()) {
@@ -123,7 +131,7 @@ class TrackedMark extends UiPanelBase_1.UiPanelBase {
         this.YCt();
       }
     };
-    this.JCt = (t, i, e) => {
+    this.JCt = (t, i, s) => {
       if (t.Type === 6 && t.BtType === Protocol_1.Aki.Protocol.hps.Proto_BtTypeQuest) {
         this.YCt();
       }
@@ -142,22 +150,25 @@ class TrackedMark extends UiPanelBase_1.UiPanelBase {
       }
     };
     this.YCt = () => {
-      var t;
       if (this.RCt) {
-        t = this.RCt.GetCurrentSequence();
+        let t = this.J6f ? TRACKB : TRACKA;
+        if (!this.Z6f) {
+          t = TRACKC;
+        }
+        var i = this.RCt.GetCurrentSequence();
         if (this.jCt) {
-          if (t !== "Start") {
-            this.RCt.PlayLevelSequenceByName("Start");
+          if (i !== t) {
+            this.RCt.PlayLevelSequenceByName(t);
           }
           this.RCt.StopCurrentSequence(true, true);
-        } else if (t !== "Start" && this.BCt.bIsUIActive) {
+        } else if (i !== t && this.BCt.bIsUIActive) {
           this.CurShowTime = 0;
-          this.RCt.PlayLevelSequenceByName("Start");
+          this.RCt.PlayLevelSequenceByName(t);
         }
       }
     };
-    this.egt = (t, i, e, s, h) => {
-      if (t === this.ECt && s === this.MCt) {
+    this.egt = (t, i, s, e, h) => {
+      if (t === this.ECt && e === this.MCt) {
         this.IsInTrackRange = h;
         this.BCt?.SetUIActive(!h);
       }
@@ -168,6 +179,16 @@ class TrackedMark extends UiPanelBase_1.UiPanelBase {
       this.vCt = t.ShowGroupId;
       this.MCt = t.Id;
       this.ohl = t.MarkType ?? 0;
+      this.J6f = t.WeakTrack ?? false;
+      if (t.TaskMarkConfigId && (i = ConfigManager_1.ConfigManager.MapConfig.GetTaskMarkConfig(t.TaskMarkConfigId))) {
+        this.Z6f = true;
+        this.e7f = i.MarkRingPic;
+        this.t7f = i.MarkIcon;
+        this.i7f = i.RingColor;
+        this.r7f = i.SmallHaloColor;
+        this.o7f = i.LargeHaloColor;
+        this.Z6f = !StringUtils_1.StringUtils.IsBlank(this.e7f) && !StringUtils_1.StringUtils.IsBlank(this.t7f) && !StringUtils_1.StringUtils.IsBlank(this.r7f) && !StringUtils_1.StringUtils.IsBlank(this.o7f);
+      }
       if ((i = ModelManager_1.ModelManager.MapModel.GetDynamicMark(this.MCt)) instanceof MapDefine_1.QuestMarkCreateInfo) {
         this.Wza = new TaskTrackedMarkItem_1.TaskTrackedMarkItem(i, this.ECt);
       }
@@ -192,7 +213,7 @@ class TrackedMark extends UiPanelBase_1.UiPanelBase {
         this.IsForceHideDirection = true;
         this.jCt = true;
         this.HCt = true;
-        i = ModelManager_1.ModelManager.CreatureModel.GetEntityById(this.MCt)?.Entity?.GetComponent(164);
+        i = ModelManager_1.ModelManager.CreatureModel.GetEntityById(this.MCt)?.Entity?.GetComponent(169);
         this.KCt = (i?.AudioPointNearRadius ?? 0) * MapDefine_1.FLOAT_0_01;
         this.QCt = (i?.AudioPointMiddleRadius ?? 0) * MapDefine_1.FLOAT_0_01;
         this.XCt = (i?.AudioPointFarRadius ?? 0) * MapDefine_1.FLOAT_0_01;
@@ -207,21 +228,25 @@ class TrackedMark extends UiPanelBase_1.UiPanelBase {
       this.LastScreenPosition = Vector2D_1.Vector2D.Create();
       this.TempRotator = Rotator_1.Rotator.Create();
       t = UiLayer_1.UiLayer.UiRootItem;
-      this.y$e = Math.min(MAX_A, ((t?.GetWidth() ?? 0) - MARGIN_A) / 2);
-      this.I$e = Math.min(MAX_B, ((t?.GetHeight() ?? 0) - MARGIN_B) / 2);
+      this.y$e = Math.min(TrackDefine_1.MAX_A, ((t?.GetWidth() ?? 0) - TrackDefine_1.MARGIN_A) / 2);
+      this.I$e = Math.min(TrackDefine_1.MAX_B, ((t?.GetHeight() ?? 0) - TrackDefine_1.MARGIN_B) / 2);
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TaskRangeTrackStateChange, this.egt);
     }
   }
   Initialize(t) {
-    this.CreateThenShowByResourceIdAsync("UiItem_Mark_Prefab", t, true);
+    this.CreateThenShowByResourceIdAsync("UiItem_TrackedMarkMain", t, true);
   }
   CreateMark() {
     this.PCt = true;
     this.YCt();
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UISprite], [1, UE.UIText], [2, UE.UIItem], [3, UE.UIButtonComponent], [4, UE.UIItem], [5, UE.UINiagara], [6, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UISprite], [1, UE.UIText], [2, UE.UIItem], [3, UE.UIButtonComponent], [4, UE.UIItem], [5, UE.UINiagara], [6, UE.UIItem], [7, UE.UISprite], [8, UE.UISprite], [9, UE.UISprite], [10, UE.UISprite], [11, UE.UIItem]];
     this.BtnBindInfo = [[3, this.ilt]];
+  }
+  async OnBeforeStartAsync() {
+    var t = await LguiUtil_1.LguiUtil.LoadPrefabByResourceIdAsync("UiItem_AutocruiseMark", this.RootItem);
+    this.$6m = t?.GetComponentByClass(UE.UIItem.StaticClass());
   }
   OnStart() {
     this.xCt = this.GetItem(4);
@@ -230,6 +255,30 @@ class TrackedMark extends UiPanelBase_1.UiPanelBase {
     this.xCt.SetUIActive(!this.IsInTrackRange && !this.FCt);
     this.DirectionComp.SetUIActive(!this.IsInTrackRange && !this.IsForceHideDirection);
     this.BCt.SetUIActive(false);
+    this.GetSprite(7)?.SetUIActive(false);
+    var t = this.GetSprite(10);
+    var i = this.GetSprite(8);
+    var s = this.GetSprite(9);
+    var e = this.GetItem(11);
+    i?.SetUIActive(this.Z6f);
+    s?.SetUIActive(this.Z6f);
+    t?.SetUIActive(this.Z6f);
+    e.SetUIActive(this.Z6f);
+    if (this.Z6f) {
+      if (!StringUtils_1.StringUtils.IsBlank(this.t7f)) {
+        this.SetSpriteByPath(this.e7f, t, false);
+      }
+      if (!StringUtils_1.StringUtils.IsBlank(this.i7f)) {
+        t.SetColor(UE.Color.FromHex(this.i7f));
+        e.SetColor(UE.Color.FromHex(this.i7f));
+      }
+      if (!StringUtils_1.StringUtils.IsBlank(this.o7f)) {
+        i.SetColor(UE.Color.FromHex(this.o7f));
+      }
+      if (!StringUtils_1.StringUtils.IsBlank(this.r7f)) {
+        s.SetColor(UE.Color.FromHex(this.r7f));
+      }
+    }
     this.RCt = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
     this.RCt.BindSequenceCloseEvent(this.Tct);
     this.bCt = this.GetUiNiagara(5);
@@ -259,6 +308,10 @@ class TrackedMark extends UiPanelBase_1.UiPanelBase {
     }
     if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnLogicTreeTrackUpdate, this.$Ct)) {
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnLogicTreeTrackUpdate, this.$Ct);
+    }
+    if (this.$6m) {
+      UE.LGUIBPLibrary.DestroyActorWithHierarchy(this.$6m.GetOwner(), true);
+      this.$6m = undefined;
     }
   }
   OnUiShow() {
@@ -295,12 +348,9 @@ class TrackedMark extends UiPanelBase_1.UiPanelBase {
     this.TrackTarget = t;
   }
   ehi(t = false) {
-    var i = ModelManager_1.ModelManager.TrackModel.GetTrackData(this.ECt, this.MCt);
-    if (i !== undefined) {
-      i = i.IconPath;
-      t = t || i !== this.xst;
-      this.xst = i;
-    }
+    var i = this.Z6f && !StringUtils_1.StringUtils.IsBlank(this.t7f) ? this.t7f : this.FNl.IconPath;
+    var t = t || i !== this.xst;
+    this.xst = i;
     if (t && this.xst) {
       this.SetSpriteByPath(this.xst, this.GetSprite(0), false);
     }
@@ -327,8 +377,8 @@ class TrackedMark extends UiPanelBase_1.UiPanelBase {
   }
   Update(t) {
     var i;
-    var e;
     var s;
+    var e;
     if (GlobalData_1.GlobalData.World) {
       if (UiLayer_1.UiLayer.UiRootItem) {
         if (this.RootItem) {
@@ -355,10 +405,10 @@ class TrackedMark extends UiPanelBase_1.UiPanelBase {
             }
           }
           this.CurShowTime += t / CommonDefine_1.MILLIONSECOND_PER_SECOND;
-          e = (s = this.tgt()) !== this._Fl;
-          this._Fl = s;
+          s = (e = this.tgt()) !== this._Fl;
+          this._Fl = e;
           if (this._Fl) {
-            if (e) {
+            if (s) {
               this.ehi();
             }
             if (i < this.MarkHideDis && !this.PCt) {
@@ -372,9 +422,9 @@ class TrackedMark extends UiPanelBase_1.UiPanelBase {
               if (!this.InRange || this.IsInTrackRange || this.FCt) {
                 this.xCt.SetUIActive(false);
               } else {
-                s = Math.round(i);
-                if (this.DCt !== s) {
-                  this.DCt = s;
+                e = Math.round(i);
+                if (this.DCt !== e) {
+                  this.DCt = e;
                   LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), "Text_Meter_Text", this.DCt.toString());
                 }
                 this.xCt.SetUIActive(true);
@@ -383,6 +433,7 @@ class TrackedMark extends UiPanelBase_1.UiPanelBase {
                 this.ogt(t);
               }
               this.BCt.SetUIActive(!this.IsInTrackRange && !this.HCt);
+              this.$6m?.SetUIActive(ModelManager_1.ModelManager.AutoPilotModel?.GetIsTracking(this.MCt) ?? false);
             }
           } else {
             this.hj1(false);
@@ -397,46 +448,46 @@ class TrackedMark extends UiPanelBase_1.UiPanelBase {
   }
   UpdatePositionAndRotation(t) {
     var i;
-    var e = Global_1.Global.CharacterController;
-    var s = this.TempTrackPosition.ToUeVector();
-    var h = UE.GameplayStatics.D_ProjectWorldToScreen(e, s, this.ScreenPositionRef);
+    var s = Global_1.Global.CharacterController;
+    var e = this.TempTrackPosition.ToUeVector();
+    var h = UE.GameplayStatics.D_ProjectWorldToScreen(s, e, this.ScreenPositionRef);
     if (!h) {
-      (s = (i = ModelManager_1.ModelManager.CameraModel.CameraTransform).InverseTransformPositionNoScale(s)).X = -s.X;
-      i = i.TransformPositionNoScale(s);
-      UE.GameplayStatics.D_ProjectWorldToScreen(e, i, this.ScreenPositionRef);
+      (e = (i = ModelManager_1.ModelManager.CameraModel.CameraTransform).InverseTransformPositionNoScale(e)).X = -e.X;
+      i = i.TransformPositionNoScale(e);
+      UE.GameplayStatics.D_ProjectWorldToScreen(s, i, this.ScreenPositionRef);
     }
-    var s = (0, puerts_1.$unref)(this.ScreenPositionRef);
-    this.ScreenPosition.Set(s.X, s.Y);
+    var e = (0, puerts_1.$unref)(this.ScreenPositionRef);
+    this.ScreenPosition.Set(e.X, e.Y);
     if (!this.LastScreenPosition.Equals(this.ScreenPosition, 1) || !!this.NiagaraNeedActivateNextTick) {
       this.LastScreenPosition.DeepCopy(this.ScreenPosition);
-      e = ModelManager_1.ModelManager.BattleUiModel;
-      this.ScreenPosition.MultiplyEqual(e.ScreenPositionScale).AdditionEqual(e.ScreenPositionOffset).MultiplyEqual(this.PointTransport);
+      s = ModelManager_1.ModelManager.BattleUiModel;
+      this.ScreenPosition.MultiplyEqual(s.ScreenPositionScale).AdditionEqual(s.ScreenPositionOffset).MultiplyEqual(this.PointTransport);
       this.InRange = this.ClampToEllipse(this.ScreenPosition, h);
-      i = this.ScreenPosition.AdditionEqual(center);
+      i = this.ScreenPosition.AdditionEqual(TrackDefine_1.center);
       this.RootItem.SetAnchorOffset(i.ToUeVector2D());
       if (this.InRange || this.IsInTrackRange || this.IsForceHideDirection) {
         this.DirectionComp.SetUIActive(false);
       } else {
         this.TempRotator.Reset();
-        this.TempRotator.Yaw = Math.atan2(this.ScreenPosition.Y, this.ScreenPosition.X) * RAD_2_DEG;
+        this.TempRotator.Yaw = Math.atan2(this.ScreenPosition.Y, this.ScreenPosition.X) * TrackDefine_1.RAD_2_DEG;
         this.DirectionComp.SetUIRelativeRotation(this.TempRotator.ToUeRotator());
         this.DirectionComp.SetUIActive(true);
       }
       if (this.InRange || this.WCt !== 1) {
         this.bCt.SetNiagaraVarFloat(VARNAME_WAVE_ROTATION, 0.25);
       } else {
-        s = Math.atan2(this.ScreenPosition.Y, this.ScreenPosition.X) / (Math.PI * 2);
-        this.bCt.SetNiagaraVarFloat(VARNAME_WAVE_ROTATION, s);
+        e = Math.atan2(this.ScreenPosition.Y, this.ScreenPosition.X) / (Math.PI * 2);
+        this.bCt.SetNiagaraVarFloat(VARNAME_WAVE_ROTATION, e);
       }
     }
   }
-  MoveTowards(t, i, e) {
-    var s = i.X - t.X;
+  MoveTowards(t, i, s) {
+    var e = i.X - t.X;
     var i = i.Y - t.Y;
-    var h = Math.sqrt(s * s + i * i);
-    var i = Math.atan2(i, s);
-    var s = e * Math.abs(h) / (h + 1);
-    return new Vector2D_1.Vector2D(t.X + s * Math.cos(i), t.Y + s * Math.sin(i));
+    var h = Math.sqrt(e * e + i * i);
+    var i = Math.atan2(i, e);
+    var e = s * Math.abs(h) / (h + 1);
+    return new Vector2D_1.Vector2D(t.X + e * Math.cos(i), t.Y + e * Math.sin(i));
   }
   tgt() {
     if (this.TempTrackPosition?.IsNearlyZero()) {
@@ -469,11 +520,11 @@ class TrackedMark extends UiPanelBase_1.UiPanelBase {
     return ModelManager_1.ModelManager.TrackModel.IsTracking(this.ECt, this.MCt);
   }
   ClampToEllipse(t, i) {
-    var e = t.X;
-    var s = t.Y;
+    var s = t.X;
+    var e = t.Y;
     var h = this.y$e;
     var r = this.I$e;
-    return !!i && !!(e * e / (h * h) + s * s / (r * r) <= 1) || (i = h * r / Math.sqrt(r * r * e * e + h * h * s * s), t.MultiplyEqual(i), false);
+    return !!i && !!(s * s / (h * h) + e * e / (r * r) <= 1) || (i = h * r / Math.sqrt(r * r * s * s + h * h * e * e), t.MultiplyEqual(i), false);
   }
   ogt(t) {
     if (this.WCt === 1 && (this.bCt.IsUIActiveSelf() || this.NiagaraNeedActivateNextTick)) {
@@ -511,7 +562,7 @@ class TrackedMark extends UiPanelBase_1.UiPanelBase {
     if (this.RootItem && this.RootItem.IsUIActiveSelf() !== t) {
       if (t) {
         this.RootItem.SetUIActive(true);
-        this.RCt?.PlayLevelSequenceByName("Start");
+        this.YCt();
       } else if (this.DCt < 0) {
         this.RootItem.SetUIActive(false);
       } else {

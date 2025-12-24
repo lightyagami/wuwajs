@@ -13,7 +13,7 @@ class HonamiStoryItemCollectItemView extends GridProxyAbstract_1.GridProxyAbstra
   constructor() {
     super(...arguments);
     this.fGt = undefined;
-    this.Lim = undefined;
+    this.eam = undefined;
     this.OnClickToggleBack = undefined;
     this.CanToggleChange = undefined;
     this.kqe = () => {
@@ -26,8 +26,8 @@ class HonamiStoryItemCollectItemView extends GridProxyAbstract_1.GridProxyAbstra
   }
   OnStart() {
     this.GetExtendToggle(0).CanExecuteChange.Bind(() => !this.CanToggleChange || this.CanToggleChange(this.GridIndex));
-    this.Lim = new SmallItemGrid_1.SmallItemGrid();
-    this.Lim.Initialize(this.GetItem(1).GetOwner());
+    this.eam = new SmallItemGrid_1.SmallItemGrid();
+    this.eam.Initialize(this.GetItem(1).GetOwner());
   }
   Refresh(t, i, s) {
     this.fGt = t;
@@ -38,11 +38,11 @@ class HonamiStoryItemCollectItemView extends GridProxyAbstract_1.GridProxyAbstra
       Data: t,
       ItemConfigId: t.Id
     };
-    this.Lim.Apply(e);
+    this.eam.Apply(e);
     var e = ConfigManager_1.ConfigManager.HonamiStoryConfig.GetHonamiStoryItem(t.Id);
-    this.Lim.SetIconByPath(e.IconSmall);
-    this.Lim.SetQuality(t.Id);
-    this.Lim.SetLockBlackVisible(t.State === 0);
+    this.eam.SetIconByPath(e.IconSmall);
+    this.eam.SetQuality(t.Id);
+    this.eam.SetLockBlackVisible(t.State === 0);
     if (this.fGt.State !== 0) {
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), this.fGt.Name);
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(3), this.fGt.Desc);

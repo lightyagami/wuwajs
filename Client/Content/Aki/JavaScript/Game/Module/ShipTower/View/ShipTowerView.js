@@ -220,9 +220,9 @@ class ShipTowerView extends UiViewBase_1.UiViewBase {
     this.Fa_(this.e$_);
     this.bA_();
     this.InitCurStageItemPos();
-    this.Pem();
+    this._rm();
   }
-  Pem() {
+  _rm() {
     const t = this.OpenParam?.IsFromInstanceDungeon;
     this.UiBehaviourHomeBtn?.AddExtraAsyncCallback(async () => {
       if (t && ModelManager_1.ModelManager.ShipTowerModel.CheckInBattleShipTower()) {

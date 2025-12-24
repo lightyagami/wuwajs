@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.OpponentFunctionArea = undefined;
 const UE = require("ue");
 const Log_1 = require("../../../../../Core/Common/Log");
+const ModelManager_1 = require("../../../../Manager/ModelManager");
 const UiPanelBase_1 = require("../../../../Ui/Base/UiPanelBase");
 const PhantomArenaAreaFunctionalItem_1 = require("../Area/Functional/PhantomArenaAreaFunctionalItem");
 const PhantomArenaAreaMonsterItem_1 = require("../Area/Functional/PhantomArenaAreaMonsterItem");
@@ -25,34 +26,44 @@ class OpponentFunctionArea extends UiPanelBase_1.UiPanelBase {
     await this.Ri1();
   }
   async Ri1() {
-    var r = [this.GetItem(0), this.GetItem(1), this.GetItem(2), this.GetItem(3), this.GetItem(4), this.GetItem(5), this.GetItem(6)];
-    var e = r.length;
-    var n = [];
+    var a = [this.GetItem(0), this.GetItem(1), this.GetItem(2), this.GetItem(3), this.GetItem(4), this.GetItem(5), this.GetItem(6)];
+    var e = a.length;
+    var r = [];
     for (let t = 0; t < PhantomArenaDefine_1.functionAreaTypeList.length && !(t >= e); t++) {
-      var a;
-      var o = r[t];
+      var n;
+      var o = a[t];
       let e = undefined;
       if (PhantomArenaDefine_1.functionAreaTypeList[t] === 0) {
-        a = new PhantomArenaAreaMonsterItem_1.PhantomArenaAreaMonsterItem();
-        n.push(a.CreateThenShowByActorAsync(o.GetOwner()));
-        (e = new OpponentMonsterProxy_1.OpponentMonsterProxy(t, this)).SetAreaItem(a);
+        n = new PhantomArenaAreaMonsterItem_1.PhantomArenaAreaMonsterItem();
+        r.push(n.CreateThenShowByActorAsync(o.GetOwner()));
+        (e = new OpponentMonsterProxy_1.OpponentMonsterProxy(t, this)).SetAreaItem(n);
       } else {
-        a = new PhantomArenaAreaFunctionalItem_1.PhantomArenaAreaFunctionalItem();
-        n.push(a.CreateThenShowByActorAsync(o.GetOwner()));
-        (e = new OpponentFunctionalProxy_1.OpponentFunctionalProxy(t, this)).SetAreaItem(a);
+        n = new PhantomArenaAreaFunctionalItem_1.PhantomArenaAreaFunctionalItem();
+        r.push(n.CreateThenShowByActorAsync(o.GetOwner()));
+        (e = new OpponentFunctionalProxy_1.OpponentFunctionalProxy(t, this)).SetAreaItem(n);
       }
       this.CardProxyMap.set(t, e);
       this.ParentArea.ViewProxy.CanvasManager.AddAreaCanvas(e);
     }
-    await Promise.all(n);
+    await Promise.all(r);
   }
   RegisterBattleArea(e) {
     this.ParentArea = e;
   }
   async TrySettingCard(e, t) {
-    t = this.CardProxyMap.get(t);
+    var a;
+    var t = this.CardProxyMap.get(t);
     if (t) {
-      await t.SetCard(e);
+      a = this.ParentArea.HandArea.GetLayoutItem();
+      await t.SetCard(e, a);
+    }
+  }
+  async TrySettingCardFromLibrary(e, t) {
+    var a;
+    var t = this.CardProxyMap.get(t);
+    if (t) {
+      a = this.ParentArea.ViewProxy.GetOpponentCardLibraryItem();
+      await t.SetCard(e, a);
     }
   }
   async TryEvolveCard(e, t) {
@@ -63,9 +74,9 @@ class OpponentFunctionArea extends UiPanelBase_1.UiPanelBase {
   }
   async TryUseCardSkill(e) {
     let t = undefined;
-    for (const r of this.CardProxyMap.values()) {
-      if (!r.IsMonster) {
-        t = r;
+    for (const a of this.CardProxyMap.values()) {
+      if (!a.IsMonster) {
+        t = a;
         break;
       }
     }
@@ -74,8 +85,8 @@ class OpponentFunctionArea extends UiPanelBase_1.UiPanelBase {
     }
   }
   async TryChangeCard(e, t) {
+    var a;
     var r;
-    var n;
     if (e === -1 || t === -1) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("PhantomArena", 10, "Npc交换卡牌索引不能为-1");
@@ -87,10 +98,10 @@ class OpponentFunctionArea extends UiPanelBase_1.UiPanelBase {
     } else {
       e = this.CardProxyMap.get(e);
       t = this.CardProxyMap.get(t);
-      r = e.Card;
-      n = t.Card;
-      if (r || n) {
-        await Promise.all([e.ChangeCard(n), t.ChangeCard(r)]);
+      a = e.Card;
+      r = t.Card;
+      if (a || r) {
+        await Promise.all([e.ChangeCard(r), t.ChangeCard(a)]);
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("PhantomArena", 10, "Npc交换卡牌不能都为空");
       }
@@ -103,14 +114,14 @@ class OpponentFunctionArea extends UiPanelBase_1.UiPanelBase {
     }
   }
   ShowAddBuffEffect(e, t) {
-    for (const n of this.CardProxyMap.values()) {
-      var r;
-      if (n.Card && t.includes(n.Card.Data.FightId)) {
-        r = n;
+    for (const r of this.CardProxyMap.values()) {
+      var a;
+      if (r.Card && t.includes(r.Card.Data.FightId)) {
+        a = r;
         if (e === 1) {
-          r.AreaItem.SetBuffUpActive(true);
+          a.AreaItem.SetBuffUpActive(true);
         } else if (e === 2) {
-          r.AreaItem.SetBuffDownActive(true);
+          a.AreaItem.SetBuffDownActive(true);
         }
       }
     }
@@ -118,7 +129,7 @@ class OpponentFunctionArea extends UiPanelBase_1.UiPanelBase {
   async DestroyCardByIndex(e) {
     e = this.CardProxyMap.get(e);
     if (e) {
-      await e.DestroyCard();
+      await e.DissolveCard();
     }
   }
   RefreshBattleCard(e) {
@@ -146,19 +157,44 @@ class OpponentFunctionArea extends UiPanelBase_1.UiPanelBase {
   GetCardProxyByIndex(e) {
     return this.CardProxyMap.get(e);
   }
+  async CopyCardListToFight(e) {
+    var t = [];
+    for (const r of e) {
+      var a = ModelManager_1.ModelManager.PhantomArenaBattleModel.OpponentData.GetBattleCardByCardId(r.kg1);
+      var a = this.CardProxyMap.get(a.Index);
+      t.push(a.CopyCard(r.kg1));
+    }
+    await Promise.all(t);
+  }
+  async PlayDamageHitEffect(e, t) {
+    e = this.GetCardProxyByCardId(e);
+    if (e) {
+      await e.Card?.PlayHitEffect(t);
+    }
+  }
+  async ReconstructFightCardToRecycle(e) {
+    var t = [];
+    for (const r of e) {
+      var a = this.GetCardProxyByCardId(r);
+      if (a) {
+        t.push(a.PlayBackToRecycleTween());
+      }
+    }
+    await Promise.all(t);
+  }
   GetGuideUiItemAndUiItemForShowEx(e) {
     if (e && !(e.length < 3)) {
       var t = e[0];
       if (t === "BattleCard") {
-        r = parseInt(e[2]);
-        return this.CardProxyMap.get(r)?.Card?.GetGuideUiItemAndUiItemForShowEx(e);
+        a = parseInt(e[2]);
+        return this.CardProxyMap.get(a)?.Card?.GetGuideUiItemAndUiItemForShowEx(e);
       }
-      if (t === "BattleCardById") {
-        var r = Array.from(this.CardProxyMap.values());
-        var n = parseInt(e[2]);
-        for (const a of r) {
-          if (a.Card?.Data?.ConfigId === n) {
-            return a.Card.GetGuideUiItemAndUiItemForShowEx(e);
+      if (t === "BattleCardById" || t === "BattleCardSkillById") {
+        var a = Array.from(this.CardProxyMap.values());
+        var r = parseInt(e[2]);
+        for (const n of a) {
+          if (n.Card?.Data?.ConfigId === r) {
+            return n.Card.GetGuideUiItemAndUiItemForShowEx(e);
           }
         }
       }

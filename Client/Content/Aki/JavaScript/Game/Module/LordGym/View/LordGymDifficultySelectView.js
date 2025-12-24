@@ -27,50 +27,33 @@ const LordGymDifficultyItem_1 = require("./LordGymDifficultyItem");
 class LordGymDifficultySelectView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
-    this.lqe = undefined;
-    this.Gxl = 0;
-    this.jSi = 0;
-    this.WSi = undefined;
-    this.kxl = undefined;
+    this.CaptionItem = undefined;
+    this.LordEntranceSetId = 0;
+    this.LordEntranceId = 0;
+    this.LordList = undefined;
+    this.LordDifficultyScrollView = undefined;
     this.bOe = undefined;
-    this.Oxl = 0;
+    this.SelectedLordId = 0;
     this.AMo = () => {
       this.CloseMe();
     };
     this.dpt = () => {
-      var e = LordGymEntranceSetById_1.configLordGymEntranceSetById.GetConfig(this.Gxl).HelpId;
+      var e = LordGymEntranceSetById_1.configLordGymEntranceSetById.GetConfig(this.LordEntranceSetId).HelpId;
       HelpController_1.HelpController.OpenHelpById(e);
     };
-    this.Nxl = () => {
-      var e = new LordGymDifficultyItem_1.LordGymDifficultyItem();
-      e.OnToggleClick = this.Fxl;
-      e.CanExecuteChangeCallBack = this.Vxl;
-      return e;
-    };
+    this.Nxl = () => this.CreateItem();
     this.rOe = () => {
       return new CommonItemSmallItemGrid_1.CommonItemSmallItemGrid();
     };
     this.Hxl = () => {
-      var e;
-      if (LordGymController_1.LordGymController.IsInEntranceEntity()) {
-        e = this.kxl.GetSelectedGridIndex();
-        e = this.WSi[e];
-        LordGymController_1.LordGymController.LordGymBeginRequest(e).then(e => {
-          if (e) {
-            UiManager_1.UiManager.ResetToBattleView();
-            ModelManager_1.ModelManager.LordGymModel.LastChallengeLordEntranceId = this.jSi;
-          }
-        });
-      } else {
-        ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("LordGymOpen_ErrorTipText");
-      }
+      this.OnStartChallenge();
     };
     this.qPl = () => {
-      UiManager_1.UiManager.OpenView("LordGymChallengeRecordView", this.jSi);
+      UiManager_1.UiManager.OpenView("LordGymChallengeRecordView", this.LordEntranceId);
     };
-    this.Vxl = e => e !== this.kxl.GetSelectedGridIndex();
-    this.Fxl = e => {
-      if (this.Vxl(e)) {
+    this.CanLordDifficultyToggleChange = e => e !== this.LordDifficultyScrollView.GetSelectedGridIndex();
+    this.OnLordDifficultyToggleClick = e => {
+      if (this.CanLordDifficultyToggleChange(e)) {
         this.SelectLordDifficultyByIndex(e);
       }
     };
@@ -82,16 +65,16 @@ class LordGymDifficultySelectView extends UiViewBase_1.UiViewBase {
   async OnBeforeStartAsync() {
     var e = this.OpenParam;
     if (e) {
-      this.Gxl = e.LordEntranceSetId;
-      this.jSi = e.LordEntranceId;
-      if (LordGymEntranceSetById_1.configLordGymEntranceSetById.GetConfig(this.Gxl) && (this.WSi = ModelManager_1.ModelManager.LordGymModel.GetLordGymEntranceList(this.jSi), this.WSi)) {
-        this.kxl = new LoopScrollView_1.LoopScrollView(this.GetLoopScrollViewComponent(1), this.GetItem(2).GetOwner(), this.Nxl, true);
+      this.LordEntranceSetId = e.LordEntranceSetId;
+      this.LordEntranceId = e.LordEntranceId;
+      if (LordGymEntranceSetById_1.configLordGymEntranceSetById.GetConfig(this.LordEntranceSetId) && (this.LordList = ModelManager_1.ModelManager.LordGymModel.GetLordGymEntranceList(this.LordEntranceId), this.LordList)) {
+        this.LordDifficultyScrollView = new LoopScrollView_1.LoopScrollView(this.GetLoopScrollViewComponent(1), this.GetItem(2).GetOwner(), this.Nxl, true);
         this.bOe = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(6), this.rOe);
-        this.lqe = new PopupCaptionItem_1.PopupCaptionItem();
-        await Promise.all([this.kxl?.RefreshByDataAsync(this.WSi), this.lqe.CreateThenShowByActorAsync(this.GetItem(0).GetOwner())]);
-        e = LordGymEntranceById_1.configLordGymEntranceById.GetConfig(this.jSi);
-        this.lqe.SetTitleByTextIdAndArgNew(e.EntranceTitle);
-        this.lqe.SetHelpCallBack(this.dpt);
+        this.CaptionItem = new PopupCaptionItem_1.PopupCaptionItem();
+        await Promise.all([this.LordDifficultyScrollView?.RefreshByDataAsync(this.LordList), this.CaptionItem.CreateThenShowByActorAsync(this.GetItem(0).GetOwner())]);
+        e = LordGymEntranceById_1.configLordGymEntranceById.GetConfig(this.LordEntranceId);
+        this.CaptionItem.SetTitleByTextIdAndArgNew(e.EntranceTitle);
+        this.CaptionItem.SetHelpCallBack(this.dpt);
         this.nyi();
       }
     } else if (Log_1.Log.CheckError()) {
@@ -99,17 +82,40 @@ class LordGymDifficultySelectView extends UiViewBase_1.UiViewBase {
     }
   }
   OnHandleLoadScene() {
-    ControllerHolder_1.ControllerHolder.LordGymController.CreateLordModelByEntranceId(this.jSi);
+    UiSceneManager_1.UiSceneManager.InitLordSkeletalHandle();
+    ControllerHolder_1.ControllerHolder.LordGymController.CreateLordModelByEntranceId();
+    ControllerHolder_1.ControllerHolder.LordGymController.LoadLordModelByEntranceId(this.LordEntranceId);
   }
   OnHandleReleaseScene() {
     UiSceneManager_1.UiSceneManager.DestroyLordSkeletalHandle();
   }
+  CreateItem() {
+    var e = new LordGymDifficultyItem_1.LordGymDifficultyItem();
+    e.OnToggleClick = this.OnLordDifficultyToggleClick;
+    e.CanExecuteChangeCallBack = this.CanLordDifficultyToggleChange;
+    return e;
+  }
+  OnStartChallenge() {
+    var e;
+    if (LordGymController_1.LordGymController.IsInEntranceEntity()) {
+      e = this.LordDifficultyScrollView.GetSelectedGridIndex();
+      e = this.LordList[e];
+      LordGymController_1.LordGymController.LordGymBeginRequest(e).then(e => {
+        if (e) {
+          UiManager_1.UiManager.ResetToBattleView();
+          ModelManager_1.ModelManager.LordGymModel.LastChallengeLordEntranceId = this.LordEntranceId;
+        }
+      });
+    } else {
+      ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("LordGymOpen_ErrorTipText");
+    }
+  }
   nyi() {
-    if (this.WSi && this.WSi.length !== 0) {
+    if (this.LordList && this.LordList.length !== 0) {
       let i = 0;
       var t = ModelManager_1.ModelManager.LordGymModel;
-      for (let e = 0; e < this.WSi.length; e++) {
-        var r = this.WSi[e];
+      for (let e = 0; e < this.LordList.length; e++) {
+        var r = this.LordList[e];
         if (t.GetLordGymIsUnLock(r) && t.GetLastGymFinish(r) && e >= i) {
           i = e;
         }
@@ -118,16 +124,16 @@ class LordGymDifficultySelectView extends UiViewBase_1.UiViewBase {
     }
   }
   SelectLordDifficultyByIndex(e) {
-    this.kxl?.SelectGridProxy(e);
-    this.Oxl = this.WSi[e];
+    this.LordDifficultyScrollView?.SelectGridProxy(e);
+    this.SelectedLordId = this.LordList[e];
     this.RefreshDetail();
   }
   RefreshDetail() {
-    var e = ConfigManager_1.ConfigManager.LordGymConfig.GetLordGymConfig(this.Oxl);
+    var e = ConfigManager_1.ConfigManager.LordGymConfig.GetLordGymConfig(this.SelectedLordId);
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), "Text_InstanceDungeonRecommendLevel_Text", e.MonsterLevel.toString());
     var i = e.RewardId;
     var i = ConfigManager_1.ConfigManager.ExchangeRewardConfig.GetExchangeRewardPreviewRewardList(i);
-    const t = ModelManager_1.ModelManager.LordGymModel?.GetLordGymIsFinish(this.Oxl);
+    const t = ModelManager_1.ModelManager.LordGymModel?.GetLordGymIsFinish(this.SelectedLordId);
     this.bOe.RefreshByData(i, () => {
       for (const e of this.bOe.GetScrollItemList()) {
         e.SetReceivedVisible(t);
@@ -135,14 +141,14 @@ class LordGymDifficultySelectView extends UiViewBase_1.UiViewBase {
     });
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(5), e.PlayDescription);
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(3), e.NewGymTitle);
-    var i = ModelManager_1.ModelManager.LordGymModel.LordGymRecord.get(this.Oxl);
+    var i = ModelManager_1.ModelManager.LordGymModel.LordGymRecord.get(this.SelectedLordId);
     if (i !== undefined) {
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(8), "BestPassTime", TimeUtil_1.TimeUtil.GetTimeString(i.Qxs));
     } else {
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(8), "NoPassRecord");
     }
-    var i = !ModelManager_1.ModelManager.LordGymModel.GetLordGymIsUnLock(this.Oxl);
-    var r = ModelManager_1.ModelManager.LordGymModel.GetLastGymFinish(this.Oxl);
+    var i = !ModelManager_1.ModelManager.LordGymModel.GetLordGymIsUnLock(this.SelectedLordId);
+    var r = ModelManager_1.ModelManager.LordGymModel.GetLastGymFinish(this.SelectedLordId);
     var o = e.MonsterLevel > ModelManager_1.ModelManager.EditFormationModel.GetFormationAverageLevel();
     this.GetItem(12).SetUIActive(i || !r);
     this.GetItem(9).SetUIActive(o && !i && r);

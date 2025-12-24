@@ -201,7 +201,7 @@ let CharacterHitComponent = CharacterHitComponent_1 = class CharacterHitComponen
       var s;
       var h;
       if (this.DoubleHitInAirEffect.Valid) {
-        i = (t = this.Entity.GetComponent(182)).GetLastUpdateVelocity();
+        i = (t = this.Entity.GetComponent(187)).GetLastUpdateVelocity();
         e = this.Hte.ActorQuatProxy;
         s = this.DoubleHitInAirEffect.LandingBounce;
         CharacterHitComponent_1.D91.Set(s.X, 0, s.Z);
@@ -247,14 +247,14 @@ let CharacterHitComponent = CharacterHitComponent_1 = class CharacterHitComponen
   }
   OnStart() {
     this.Hte = this.Entity.GetComponent(3);
-    this.cBe = this.Entity.GetComponent(40);
-    this.$zo = this.Entity.GetComponent(178);
-    this.rJo = this.Entity.GetComponent(179);
-    this.oVr = this.Entity.GetComponent(55);
-    this.tVr = this.Entity.GetComponent(68);
-    this.vHr = this.Entity.GetComponent(126);
-    this.EVr = this.Entity.GetComponent(177);
-    this.SVr = this.Entity.GetComponent(209);
+    this.cBe = this.Entity.GetComponent(41);
+    this.$zo = this.Entity.GetComponent(183);
+    this.rJo = this.Entity.GetComponent(184);
+    this.oVr = this.Entity.GetComponent(58);
+    this.tVr = this.Entity.GetComponent(71);
+    this.vHr = this.Entity.GetComponent(131);
+    this.EVr = this.Entity.GetComponent(182);
+    this.SVr = this.Entity.GetComponent(215);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharOnPositionStateChanged, this.DVr);
     var t = this.Entity.GetComponent(0)?.GetVisionComponent();
     if (t) {
@@ -334,7 +334,7 @@ let CharacterHitComponent = CharacterHitComponent_1 = class CharacterHitComponen
     var t = this.AcceptedNewBeHit;
     if (this.AcceptedNewBeHit) {
       this.FVr(false);
-      this.Entity.GetComponent(181).MainAnimInstance.AddForceUpdateSlotNameWhenMontageBlend(DEFALUT_SLOT_NAME);
+      this.Entity.GetComponent(186).MainAnimInstance.AddForceUpdateSlotNameWhenMontageBlend(DEFALUT_SLOT_NAME);
     }
     return t;
   }
@@ -551,7 +551,7 @@ let CharacterHitComponent = CharacterHitComponent_1 = class CharacterHitComponen
     CharacterHitComponent_1.kY1.Stop();
     this.vJl(i);
     CharacterHitComponent_1.OY1.Start();
-    this.ipm();
+    this.GTm();
     CharacterHitComponent_1.OY1.Stop();
     CharacterHitComponent_1.qY1.Start();
     if (this.rVr) {
@@ -640,7 +640,7 @@ let CharacterHitComponent = CharacterHitComponent_1 = class CharacterHitComponen
     }
     if (this.CounterAttackInfoInternal.QTE弹刀忽略角度距离检测) {
       t = t.GetBulletInfo();
-      t = this.iVr.GetComponent(39).GetSkillInfo(t.BulletInitParams.SkillId);
+      t = this.iVr.GetComponent(40).GetSkillInfo(t.BulletInitParams.SkillId);
       if (t && t.SkillGenre === 4) {
         return true;
       }
@@ -677,7 +677,7 @@ let CharacterHitComponent = CharacterHitComponent_1 = class CharacterHitComponen
     if (!r && h > 0) {
       return false;
     }
-    this.xVr.FromUeVector(this.iVr.GetComponent(3).ActorLocationProxy);
+    this.xVr.FromUeVector(this.iVr.GetComponent(1).ActorLocationProxy);
     if (r) {
       t = this.Hte.GetBoneLocation(e.toString());
       this.wVr.FromUeVector(t);
@@ -715,7 +715,7 @@ let CharacterHitComponent = CharacterHitComponent_1 = class CharacterHitComponen
         if (e.Logic.Type === 2 && this.xoa?.替换近战子弹顿帧) {
           i = this.xoa.顿帧;
         }
-        this.iVr.GetComponent(126).SetTimeScale(i.优先级, i.时间膨胀值, i.时间膨胀变化曲线, n, 1, false, true);
+        this.iVr.GetComponent(131).SetTimeScale(i.优先级, i.时间膨胀值, i.时间膨胀变化曲线, n, 1, false, true);
         var s = a.CharacterCustomKeyTimeScale;
         var h = s?.length ?? 0;
         for (let t = 0; t < h; t++) {
@@ -723,7 +723,7 @@ let CharacterHitComponent = CharacterHitComponent_1 = class CharacterHitComponen
           var o = ModelManager_1.ModelManager.BulletModel.GetEntityIdByCustomKey(this.iVr.Id, r, this.rVr.BulletId.toString());
           var o = ModelManager_1.ModelManager.CharacterModel.GetHandle(o);
           if (o?.Valid) {
-            o.Entity.GetComponent(126)?.SetTimeScale(i.优先级, i.时间膨胀值, i.时间膨胀变化曲线, n, 1, false, true);
+            o.Entity.GetComponent(131)?.SetTimeScale(i.优先级, i.时间膨胀值, i.时间膨胀变化曲线, n, 1, false, true);
           } else if (Log_1.Log.CheckWarn()) {
             Log_1.Log.Warn("Character", 20, "", ["自定义连携顿帧单位key", r], ["子弹ID", this.rVr.BulletId]);
           }
@@ -740,9 +740,9 @@ let CharacterHitComponent = CharacterHitComponent_1 = class CharacterHitComponen
   gs1(t) {
     var i;
     var e;
-    if (ModelManager_1.ModelManager.CharacterModel?.EnabledSelfCentered && (i = t.Attacker?.GetComponent(293)) && !MathUtils_1.MathUtils.IsNearlyEqual(i.SelfCenterTimeDilation, 1)) {
+    if (ModelManager_1.ModelManager.CharacterModel?.EnabledSelfCentered && (i = t.Attacker?.GetComponent(312)) && !MathUtils_1.MathUtils.IsNearlyEqual(i.SelfCenterTimeDilation, 1)) {
       if ((e = t.ReBulletData.TimeScale.TimeScaleEffectImmune * BattleUiDefine_1.SECOND_TO_MILLISECOND) > TimerSystem_1.MIN_TIME) {
-        this.Entity.GetComponent(293)?.SetBeHitTimeDilation(i.SelfCenterTimeDilation, e);
+        this.Entity.GetComponent(312)?.SetBeHitTimeDilation(i.SelfCenterTimeDilation, e);
       } else if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Battle", 20, "ProcessSelfCenter immuneTimeScaleDuration < MIN_TIME", ["Bullet", t.BulletRowName]);
       }
@@ -773,9 +773,9 @@ let CharacterHitComponent = CharacterHitComponent_1 = class CharacterHitComponen
       var s = s ? s.Scale : Vector_1.Vector.OneVectorProxy;
       this.oHo.Set(h, this.rVr.HitEffectRotation.Quaternion(), s);
       CharacterHitComponent_1.rHo.Start();
-      var h = this.rVr.Attacker?.GetComponent(51);
+      var h = this.rVr.Attacker?.GetComponent(52);
       let e = 2;
-      if ((0, RegisterComponent_1.isComponentInstance)(h, 193)) {
+      if ((0, RegisterComponent_1.isComponentInstance)(h, 199)) {
         e = h.CurrentPriority;
       }
       var r = BulletStaticFunction_1.HitStaticFunction.CreateEffectContext(this.rVr.Attacker, true);
@@ -859,7 +859,7 @@ let CharacterHitComponent = CharacterHitComponent_1 = class CharacterHitComponen
     var a;
     var n = t.DamageId;
     var _ = t.Target;
-    if (!(n < 1) && _ && (r = t.Target.GetComponent(20), a = t.DirectTarget.GetComponent(40), r) && a) {
+    if (!(n < 1) && _ && (r = t.Target.GetComponent(20), a = t.DirectTarget.GetComponent(41), r) && a) {
       o = EntitySystem_1.EntitySystem.Get(t.BulletEntityId)?.GetBulletInfo().ContextId;
       a = a.CurrentSkill;
       return r?.ExecuteBulletDamage(t.BulletEntityId, {
@@ -885,11 +885,11 @@ let CharacterHitComponent = CharacterHitComponent_1 = class CharacterHitComponen
   }
   C6r(t) {
     var t = Object.assign(t);
-    var i = this.iVr.GetComponent(56)?.GetAttributeHolder();
+    var i = this.iVr.GetComponent(59)?.GetAttributeHolder();
     if (i) {
       t.Attacker = i;
     }
-    t.Target = this.Entity.GetComponent(56)?.GetAttributeHolderExceptVisionSummon() ?? this.Entity;
+    t.Target = this.Entity.GetComponent(59)?.GetAttributeHolderExceptVisionSummon() ?? this.Entity;
     return t;
   }
   n6r() {
@@ -947,9 +947,9 @@ let CharacterHitComponent = CharacterHitComponent_1 = class CharacterHitComponen
         this.NeedCalculateFallInjure = true;
         var h = h > 0 || this.ToughDecreaseValue <= 0 || this.OVr(1447214865);
         var r = this.IsTriggerCounterAttack && this.fVr;
-        var t = this.OVr(1922078392);
-        var o = s.被击动作 === 12;
-        if (h && !r && !o || t) {
+        var t = s.被击动作 === 12;
+        var o = this.OVr(1922078392);
+        if (h && !r && !t || o || t && this.OVr(-1525421570)) {
           this.HVr(i);
           this.cMc();
         } else {
@@ -987,7 +987,7 @@ let CharacterHitComponent = CharacterHitComponent_1 = class CharacterHitComponen
             if (this.VVr()) {
               this.BeHitAnim = BulletUtil_1.BulletUtil.GetOverrideHitAnimByAngle(this.Hte, this.BeHitAnim, this.mVr.Yaw);
             }
-            if (this.BeHitAnim !== 7) {
+            if (this.BeHitAnim !== 7 && this.BeHitAnim !== 12) {
               this.L6r(s);
             }
             this.wY1?.UpdateLastHitTime();
@@ -1001,12 +1001,12 @@ let CharacterHitComponent = CharacterHitComponent_1 = class CharacterHitComponen
   ConfirmExecutedBeHitState() {
     this.LF_ = true;
   }
-  ipm() {
+  GTm() {
     if (this.IsTriggerCounterAttack || !this.AY1) {
       let t = 0;
       var i;
       if ((t = this.cVr !== 2 || this.fVr ? t : this.VisionCounterAttackInfoInternal.对策事件ID) !== 0 || !!this.ehl) {
-        if (i = this.Entity.GetComponent(76)) {
+        if (i = this.Entity.GetComponent(79)) {
           this.LF_ = false;
           i.StateMachineGroup?.TriggerBeHitStateMachine(true, this.BeHitAnim, t);
           if (!this.LF_) {
@@ -1036,7 +1036,7 @@ let CharacterHitComponent = CharacterHitComponent_1 = class CharacterHitComponen
     var e = EntitySystem_1.EntitySystem.Get(t.BulletEntityId).GetBulletInfo();
     var s = e.BulletInitParams.SkillId;
     var h = e.BulletInitParams.SkillContextId;
-    var r = this.iVr?.GetComponent(39);
+    var r = this.iVr?.GetComponent(40);
     var h = {
       Attacker: this.iVr,
       Target: this.Entity,
@@ -1051,12 +1051,12 @@ let CharacterHitComponent = CharacterHitComponent_1 = class CharacterHitComponen
       SkillGenre: r?.GetSkillInfo(s)?.SkillGenre ?? -1,
       BattleFlags: r?.GetSkill(s)?.BattleFlags ?? []
     };
-    if (this.iVr && (SceneTeamController_1.SceneTeamController.EmitEvent(this.iVr, EventDefine_1.EEventName.CharHitLocal, t, h), e = this.iVr.GetComponent(0)) && (r = e.IsVision() ? this.iVr.GetComponent(56)?.GetAttributeHolder() ?? this.iVr : this.iVr)) {
+    if (this.iVr && (SceneTeamController_1.SceneTeamController.EmitEvent(this.iVr, EventDefine_1.EEventName.CharHitLocal, t, h), e = this.iVr.GetComponent(0)) && (r = e.IsVision() ? this.iVr.GetComponent(59)?.GetAttributeHolder() ?? this.iVr : this.iVr)) {
       SceneTeamController_1.SceneTeamController.EmitEvent(r, EventDefine_1.EEventName.CharHitIncludingVision, t, h);
     }
     SceneTeamController_1.SceneTeamController.EmitEvent(this.Entity, EventDefine_1.EEventName.CharBeHitLocal, t, h);
     GlobalData_1.GlobalData.BpEventManager.当有角色受击时.Broadcast(this.Hte.Actor, t.ToUeHitInformation());
-    this.Entity.GetComponent(76)?.Tick(0);
+    this.Entity.GetComponent(79)?.Tick(0);
   }
   L6r(t) {
     if (this.OVr(504239013) && (i = this.Entity.GetComponent(3)).Valid) {
@@ -1066,7 +1066,7 @@ let CharacterHitComponent = CharacterHitComponent_1 = class CharacterHitComponen
       });
     }
     this.FVr(true);
-    this.Entity.GetComponent(179).ExitAimStatus();
+    this.Entity.GetComponent(184).ExitAimStatus();
     EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.CharBeHitAnim);
     if (this.OVr(-1732582420)) {
       var i = t.地面受击滞空;
@@ -1108,13 +1108,13 @@ let CharacterHitComponent = CharacterHitComponent_1 = class CharacterHitComponen
     var h;
     var r;
     var o;
-    var a = this.Entity.GetComponent(182);
+    var a = this.Entity.GetComponent(187);
     if (a.Valid) {
       e = this.Hte;
       s = WhirlpoolPoint_1.WhirlpoolPoint.GenId();
       this.BVr.FromUeVector(t.滞空相对位置);
       MathUtils_1.MathUtils.TransformPosition(e.ActorLocationProxy, e.ActorRotationProxy, e.ActorScaleProxy, this.BVr, this.bVr);
-      h = this.iVr.GetComponent(3);
+      h = this.iVr.GetComponent(1);
       r = t.滞空高度限制;
       if (a.IsStandardGravity) {
         if ((o = h.ActorLocationProxy.Z + r) < this.bVr.Z) {
@@ -1135,7 +1135,7 @@ let CharacterHitComponent = CharacterHitComponent_1 = class CharacterHitComponen
   }
   QVr(t) {
     this.FVr(true);
-    this.Entity.GetComponent(179).ExitAimStatus();
+    this.Entity.GetComponent(184).ExitAimStatus();
     EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.CharBeHitAnim);
     if (this.BeHitAnim === 4) {
       this.P6r(t, false);
@@ -1146,7 +1146,7 @@ let CharacterHitComponent = CharacterHitComponent_1 = class CharacterHitComponen
   P6r(t, i) {
     this.ActiveStiff(-1);
     var e;
-    var s = this.Entity.GetComponent(182);
+    var s = this.Entity.GetComponent(187);
     if (s.Valid) {
       e = this.Hte;
       this.BVr.FromUeVector(i ? t.空中受击速度 : t.地面受击速度);
@@ -1182,7 +1182,7 @@ let CharacterHitComponent = CharacterHitComponent_1 = class CharacterHitComponen
     var r = t.地面受击移动时间;
     var o = t.命中硬直时间;
     var t = t.地面受击移动曲线;
-    if (r > 0 && (i = this.EVr?.GetCurrentValue(EAttributeId.Proto_Mass) ?? MASS_RATE, e = e.op_Multiply(MASS_RATE / i), (i = this.Entity.GetComponent(182)).Valid)) {
+    if (r > 0 && (i = this.EVr?.GetCurrentValue(EAttributeId.Proto_Mass) ?? MASS_RATE, e = e.op_Multiply(MASS_RATE / i), (i = this.Entity.GetComponent(187)).Valid)) {
       if (i.GetWhirlpoolEnable()) {
         i.EndWhirlpool();
       }
@@ -1205,7 +1205,7 @@ let CharacterHitComponent = CharacterHitComponent_1 = class CharacterHitComponen
   }
   ZVr() {
     RoleAudioController_1.RoleAudioController.PlayRoleAudio(this.iVr, 2005);
-    var t = this.iVr.CheckGetComponent(178);
+    var t = this.iVr.CheckGetComponent(220);
     switch (this.cVr) {
       case 1:
         if (this.CounterAttackInfoInternal.攻击者应用BuffID > 0 && SkillMessageController_1.SkillMessageController.CloseMonsterServerLogic) {
@@ -1262,7 +1262,7 @@ let CharacterHitComponent = CharacterHitComponent_1 = class CharacterHitComponen
     }
     this.b6r(t, i);
     this.q6r(i);
-    if (this.iVr.GetComponent(3).IsAutonomousProxy) {
+    if (this.iVr.GetComponent(1).IsAutonomousProxy) {
       this.G6r(i);
     }
     this.N6r();
@@ -1276,7 +1276,7 @@ let CharacterHitComponent = CharacterHitComponent_1 = class CharacterHitComponen
     var i = this.VisionCounterAttackInfoInternal.对策动作效果;
     this.b6r(t, i);
     this.q6r(i);
-    if (this.iVr.GetComponent(3).IsAutonomousProxy && !this.OVr(1161958668)) {
+    if (this.iVr.GetComponent(1).IsAutonomousProxy && !this.OVr(1161958668)) {
       this.G6r(i);
     }
     this.N6r();
@@ -1336,7 +1336,7 @@ let CharacterHitComponent = CharacterHitComponent_1 = class CharacterHitComponen
     return true;
   }
   SetCounterAttackEndTime(t) {
-    var i = this.Entity.GetComponent(181).MainAnimInstance;
+    var i = this.Entity.GetComponent(186).MainAnimInstance;
     if (i) {
       this.vVr = t + i.Montage_GetPosition(i.GetCurrentActiveMontage());
     }
@@ -1374,7 +1374,7 @@ let CharacterHitComponent = CharacterHitComponent_1 = class CharacterHitComponen
     var i = t.被击者顿帧;
     this.vHr?.SetTimeScale(i.优先级, i.时间膨胀值, i.时间膨胀变化曲线, i.时间膨胀时长, 4, false, true);
     i = t.攻击者顿帧;
-    this.iVr.GetComponent(126).SetTimeScale(i.优先级, i.时间膨胀值, i.时间膨胀变化曲线, i.时间膨胀时长, 3, false, true);
+    this.iVr.GetComponent(131).SetTimeScale(i.优先级, i.时间膨胀值, i.时间膨胀变化曲线, i.时间膨胀时长, 3, false, true);
   }
   G6r(t) {
     var i;
@@ -1387,7 +1387,7 @@ let CharacterHitComponent = CharacterHitComponent_1 = class CharacterHitComponen
   N6r() {
     var t;
     if (!this.kVr(forbidHitTagIds)) {
-      if ((t = this.Entity.GetComponent(181)).Valid) {
+      if ((t = this.Entity.GetComponent(186)).Valid) {
         t.MontageSetPosition(this.vVr);
       }
     }
@@ -1533,5 +1533,5 @@ CharacterHitComponent.S6r = Stats_1.Stat.Create("ProcessMain2");
 CharacterHitComponent.T6r = Stats_1.Stat.Create("ProcessMain3");
 CharacterHitComponent.D91 = Vector_1.Vector.Create();
 CharacterHitComponent.U91 = Vector_1.Vector.Create();
-CharacterHitComponent = CharacterHitComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(61)], CharacterHitComponent);
+CharacterHitComponent = CharacterHitComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(64)], CharacterHitComponent);
 exports.CharacterHitComponent = CharacterHitComponent; //# sourceMappingURL=CharacterHitComponent.js.map

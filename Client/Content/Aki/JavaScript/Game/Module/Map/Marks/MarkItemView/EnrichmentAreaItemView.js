@@ -16,7 +16,7 @@ class EnrichmentAreaItemView extends ServerMarkItemView_1.ServerMarkItemView {
       t.IsSelectThisFloor = t.GetMultiMapId() === e;
       this.OnIconPathChanged(t.IconPath);
     };
-    this.KRm = () => {
+    this.lZm = () => {
       var e = this.Holder;
       this.OnIconPathChanged(e.IconPath);
     };
@@ -30,11 +30,11 @@ class EnrichmentAreaItemView extends ServerMarkItemView_1.ServerMarkItemView {
   }
   RegisterEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldMapSelectMultiMap, this.Zbn);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TrackMapMark, this.KRm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TrackMapMark, this.lZm);
   }
   UnRegisterEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldMapSelectMultiMap, this.Zbn);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TrackMapMark, this.KRm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TrackMapMark, this.lZm);
   }
   OnIconPathChanged(e) {
     var t = this.Holder.CheckCanShowIcon();

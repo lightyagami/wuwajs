@@ -62,7 +62,7 @@ let BaseAttributeComponent = BaseAttributeComponent_1 = class BaseAttributeCompo
   OnInit() {
     super.OnInit();
     this.CreatureDataComponent = this.Entity.CheckGetComponent(0);
-    this.BuffComponent = this.Entity.GetComponent(213);
+    this.BuffComponent = this.Entity.GetComponent(220);
     return true;
   }
   OnCreate() {
@@ -86,7 +86,7 @@ let BaseAttributeComponent = BaseAttributeComponent_1 = class BaseAttributeCompo
     }
     switch (t) {
       case CharacterAttributeTypes_1.EAttributeId.Proto_Tough:
-      case CharacterAttributeTypes_1.EAttributeId.Proto_Jump:
+      case CharacterAttributeTypes_1.EAttributeId.RIm:
         return true;
       default:
         if (CharacterAttributeTypes_1.specialEnergyIds.includes(t)) {
@@ -98,7 +98,7 @@ let BaseAttributeComponent = BaseAttributeComponent_1 = class BaseAttributeCompo
     return false;
   }
   IsLocalAttribute(t) {
-    return t === CharacterAttributeTypes_1.EAttributeId.Proto_Jump || !!CharacterAttributeTypes_1.specialEnergyIds.includes(t) && (!this.BuffComponent || this.BuffComponent.HasBuffAuthority());
+    return t === CharacterAttributeTypes_1.EAttributeId.RIm || !!CharacterAttributeTypes_1.specialEnergyIds.includes(t) && (!this.BuffComponent || this.BuffComponent.HasBuffAuthority());
   }
   SetBaseValue(e, r) {
     if (this.IsWritableAttribute(e)) {
@@ -234,7 +234,7 @@ let BaseAttributeComponent = BaseAttributeComponent_1 = class BaseAttributeCompo
           {
             let t = n.SnapshotSource;
             if (t === undefined) {
-              t = AbilityUtils_1.AbilityUtils.GetAttrValue(n.SourceEntity === 0 ? this : ModelManager_1.ModelManager.CreatureModel.GetEntity(n.SourceEntity)?.Entity?.GetComponent(177), n.SourceAttributeId, n.SourceCalculationType);
+              t = AbilityUtils_1.AbilityUtils.GetAttrValue(n.SourceEntity === 0 ? this : ModelManager_1.ModelManager.CreatureModel.GetEntity(n.SourceEntity)?.Entity?.GetComponent(182), n.SourceAttributeId, n.SourceCalculationType);
             }
             var o = n.Min;
             if (o && (t -= o) <= 0) {
@@ -506,5 +506,5 @@ BaseAttributeComponent.___ = Stats_1.Stat.Create("BaseAttributeComponent.AutoRec
 BaseAttributeComponent.c__ = Stats_1.Stat.Create("BaseAttributeComponent.DispatchCurrentValueEvent", StatDefine_1.BATTLESTAT_GROUP);
 BaseAttributeComponent.pbr = new Map();
 BaseAttributeComponent.vbr = Stats_1.Stat.Create("AnyCurrentAttr event", StatDefine_1.BATTLESTAT_GROUP);
-BaseAttributeComponent = BaseAttributeComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(176)], BaseAttributeComponent);
+BaseAttributeComponent = BaseAttributeComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(181)], BaseAttributeComponent);
 exports.BaseAttributeComponent = BaseAttributeComponent; //# sourceMappingURL=BaseAttributeComponent.js.map

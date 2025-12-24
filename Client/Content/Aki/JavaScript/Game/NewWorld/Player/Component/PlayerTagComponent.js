@@ -37,7 +37,7 @@ let PlayerTagComponent = PlayerTagComponent_1 = class PlayerTagComponent extends
       PlayerTagComponent_1.kc_.Start();
       if (e !== undefined && o !== t) {
         for (const n of ModelManager_1.ModelManager.SceneTeamModel.GetTeamItemsByPlayer(this.PlayerId)) {
-          n.EntityHandle?.Entity?.GetComponent(209)?.TagContainer.UpdateExactTag(5, e, t - o);
+          n.EntityHandle?.Entity?.GetComponent(215)?.TagContainer.UpdateExactTag(5, e, t - o);
         }
       }
       PlayerTagComponent_1.kc_.Stop();
@@ -58,7 +58,7 @@ let PlayerTagComponent = PlayerTagComponent_1 = class PlayerTagComponent extends
     }
     for (const e of this.TagContainer.GetAllExactTags()) {
       for (const t of ModelManager_1.ModelManager.SceneTeamModel.GetTeamItemsByPlayer(this.PlayerId)) {
-        t.EntityHandle?.Entity?.GetComponent(209)?.TagContainer.RemoveExactTag(5, e);
+        t.EntityHandle?.Entity?.GetComponent(215)?.TagContainer.RemoveExactTag(5, e);
       }
     }
     return true;
@@ -70,12 +70,12 @@ let PlayerTagComponent = PlayerTagComponent_1 = class PlayerTagComponent extends
     })?.EntityHandle?.Entity;
   }
   GetCurrentTagComponent() {
-    return this.GetEntity()?.GetComponent(209);
+    return this.GetEntity()?.GetComponent(215);
   }
   HasTag(e) {
     return this.GetCurrentTagComponent()?.HasTag(e) ?? false;
   }
 };
 PlayerTagComponent.kc_ = Stats_1.Stat.Create("PlayerTagComponent.OnAnyExactTagChanged");
-PlayerTagComponent = PlayerTagComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(204)], PlayerTagComponent);
+PlayerTagComponent = PlayerTagComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(210)], PlayerTagComponent);
 exports.PlayerTagComponent = PlayerTagComponent; //# sourceMappingURL=PlayerTagComponent.js.map

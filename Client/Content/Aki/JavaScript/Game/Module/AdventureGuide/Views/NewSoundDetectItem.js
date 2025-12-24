@@ -20,7 +20,6 @@ const LevelSequencePlayer_1 = require("../../Common/LevelSequencePlayer");
 const ConfirmBoxDefine_1 = require("../../ConfirmBox/ConfirmBoxDefine");
 const InstanceDungeonController_1 = require("../../InstanceDungeon/InstanceDungeonController");
 const GridProxyAbstract_1 = require("../../Util/Grid/GridProxyAbstract");
-const LguiUtil_1 = require("../../Util/LguiUtil");
 const GenericScrollViewNew_1 = require("../../Util/ScrollView/GenericScrollViewNew");
 const NewSoundDetectRewardItem_1 = require("./NewSoundDetectRewardItem");
 const NewSoundLordItem_1 = require("./NewSoundLordItem");
@@ -105,7 +104,7 @@ class NewSoundDetectItem extends GridProxyAbstract_1.GridProxyAbstract {
       }
     };
     this.x8e = e => {
-      if (this.Pe.Conf.Secondary !== 63) {
+      if (this.Pe.Conf.Secondary !== 63 && this.Pe.Conf.Secondary !== 64) {
         var t = ConfigManager_1.ConfigManager.AdventureModuleConfig.GetShowReward(this.Pe.Conf.ShowRewardMap, e);
         var i = ModelManager_1.ModelManager.AdventureGuideModel.IsDetectionFinished(this.Pe);
         var o = new Array();
@@ -206,9 +205,9 @@ class NewSoundDetectItem extends GridProxyAbstract_1.GridProxyAbstract {
     var n = ModelManager_1.ModelManager.AdventureGuideModel.GetIsDetectionPreOpenByData(o);
     var s = n || !o.IsLock;
     var a = ModelManager_1.ModelManager.AdventureGuideModel.IsDetectionNewContentOpen(o);
-    this.GetItem(9).SetUIActive(n);
+    this.GetItem(7).SetUIActive(n);
     this.ZAt?.SetUiActive(s);
-    if (this.Pe.Conf.Secondary === 63) {
+    if (this.Pe.Conf.Secondary === 63 || this.Pe.Conf.Secondary === 64) {
       this.GetItem(6).SetUIActive(false);
       this.GetItem(11).SetUIActive(!s);
     } else {
@@ -217,16 +216,10 @@ class NewSoundDetectItem extends GridProxyAbstract_1.GridProxyAbstract {
     }
     if (r === 6) {
       s = ModelManager_1.ModelManager.AdventureGuideModel.IsRoleTutorialNew(o.Conf.Id) && !ModelManager_1.ModelManager.AdventureGuideModel.IsDetectionFinished(this.Pe);
-      this.GetItem(7).SetUIActive(s);
-      if (s) {
-        LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(8), "New_corner");
-      }
+      this.GetItem(9).SetUIActive(s);
     } else {
       r = !n && a;
-      this.GetItem(7).SetUIActive(r);
-      if (r) {
-        LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(8), o.Conf.NewContent);
-      }
+      this.GetItem(9).SetUIActive(r);
     }
     let h = 0;
     if (o.Type === 0) {
@@ -246,17 +239,17 @@ class NewSoundDetectItem extends GridProxyAbstract_1.GridProxyAbstract {
       l = a + 1;
     }
     l = l !== 0 ? l : ModelManager_1.ModelManager.AdventureGuideModel.CurrentShowLevel;
-    var _ = this.Pe.Conf.Secondary === 63 ? ConfigManager_1.ConfigManager.AdventureModuleConfig.GetNightMareShowReward(this.Pe.Conf.ShowRewardMapCalabash) : ConfigManager_1.ConfigManager.AdventureModuleConfig.GetShowReward(o.Conf.ShowRewardMap, l);
-    if (_) {
-      var d = ModelManager_1.ModelManager.AdventureGuideModel.IsDetectionFinished(this.Pe);
+    var d = this.Pe.Conf.Secondary === 63 || this.Pe.Conf.Secondary === 64 ? ConfigManager_1.ConfigManager.AdventureModuleConfig.GetNightMareShowReward(this.Pe.Conf.ShowRewardMapCalabash) : ConfigManager_1.ConfigManager.AdventureModuleConfig.GetShowReward(o.Conf.ShowRewardMap, l);
+    if (d) {
+      var _ = ModelManager_1.ModelManager.AdventureGuideModel.IsDetectionFinished(this.Pe);
       var u = new Array();
-      for (const g of _.keys()) {
+      for (const g of d.keys()) {
         const o = {
           ItemData: [{
             IncId: 0,
             ItemId: g
-          }, _.get(g)],
-          HaveFinish: d
+          }, d.get(g)],
+          HaveFinish: _
         };
         u.push(o);
       }

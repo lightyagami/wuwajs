@@ -35,7 +35,7 @@ class TrapDefenseTalentTreeView extends UiTickViewBase_1.UiTickViewBase {
     this.BZa = undefined;
     this.u1d = undefined;
     this.Hea = undefined;
-    this.jjd = false;
+    this.Qjd = false;
     this.h$c = () => {
       var e = ModelManager_1.ModelManager.TrapDefenseModel.ViewModelTalentTree.SelectedNode;
       if (e) {
@@ -46,7 +46,7 @@ class TrapDefenseTalentTreeView extends UiTickViewBase_1.UiTickViewBase {
       this.Clo();
       this._$c();
       if (t) {
-        this.jjd = true;
+        this.Qjd = true;
       }
     };
     this.AOe = () => {
@@ -92,14 +92,14 @@ class TrapDefenseTalentTreeView extends UiTickViewBase_1.UiTickViewBase {
   }
   Tick(e) {
     var t;
-    if (this.jjd && (t = ModelManager_1.ModelManager.TrapDefenseModel.ViewModelTalentTree.SelectedNode) && this.Hjd(t)) {
-      this.jjd = false;
+    if (this.Qjd && (t = ModelManager_1.ModelManager.TrapDefenseModel.ViewModelTalentTree.SelectedNode) && this.Kjd(t)) {
+      this.Qjd = false;
       this.u$c(t);
     }
   }
   OnStart() {
     ModelManager_1.ModelManager.TrapDefenseModel.ViewModelTalentTree.AddDelegateOnNodeSelect(this.l$c);
-    var e = this.$jd();
+    var e = this.Xjd();
     ModelManager_1.ModelManager.TrapDefenseModel.ViewModelTalentTree.SelectNode(e, true);
   }
   OnAddEventListener() {
@@ -157,7 +157,7 @@ class TrapDefenseTalentTreeView extends UiTickViewBase_1.UiTickViewBase {
     var e = this.a$c.GetItemByKey(Math.max(e.Row - 1, 1));
     this.GetScrollViewWithScrollbar(8).ScrollToTop(i, e, t);
   }
-  $jd() {
+  Xjd() {
     var e = this.OpenParam;
     let t = undefined;
     if (e && e.TalentFuncType) {
@@ -165,7 +165,7 @@ class TrapDefenseTalentTreeView extends UiTickViewBase_1.UiTickViewBase {
     }
     return t = e && t ? t : ModelManager_1.ModelManager.TrapDefenseModel.TalentTreeData.GetDefaultSelectNode();
   }
-  Hjd(e) {
+  Kjd(e) {
     var e = Math.max(e.Row - 1, 1);
     var t = this.a$c.GetItemByKey(e);
     return !!t && !!t.IsValid() && (e <= 1 || t.RelativeLocation.Y < GRID_START_POS);

@@ -183,14 +183,14 @@ class UiNavigationNewController extends UiControllerBase_1.UiControllerBase {
   static VerticalScrollBarChangeSchedule(i) {
     var t = this.KBo();
     if (t &&= t.GetCurrentScrollbar()) {
-      this.Wtm(t, i);
+      this._nm(t, i);
     }
   }
   static HorizontalScrollBarChangeSchedule(i) {
     var t = this.KBo();
     if (t) {
       t = t.GetCurrentScrollbar();
-      this.Qtm(t, i);
+      this.unm(t, i);
     }
   }
   static BookMarkNavigation(e, i) {
@@ -229,7 +229,7 @@ class UiNavigationNewController extends UiControllerBase_1.UiControllerBase {
           const o = UiNavigationLogic_1.UiNavigationLogic.TryFindNavigationDelegate(i, a);
           t = o?.GetOwner()?.GetComponentByClass(UE.UIExtendToggle.StaticClass());
         }
-        if (t && (e = t.GetOwner().GetComponentByClass(UE.TsUiNavigationBehaviorListener_C.StaticClass()), t?.bAutoScrollOnSelected && e?.ScrollView?.IsValid() && this.ebo(e), this.Dje(e), r.RefreshNavigation)) {
+        if (t && (e = t.GetOwner().GetComponentByClass(UE.TsUiNavigationBehaviorListener_C.StaticClass()), t?.bAutoScrollOnSelected && e?.ScrollProxy?.ScrollView?.IsValid() && this.ebo(e), this.Dje(e), r.RefreshNavigation)) {
           this.MarkViewHandleRefreshNavigationDirty();
         }
       } else if (Log_1.Log.CheckError()) {
@@ -285,8 +285,8 @@ class UiNavigationNewController extends UiControllerBase_1.UiControllerBase {
   }
   static ebo(i) {
     var t;
-    if (i.ScrollView && (t = i.GetSelectableComponent())) {
-      i.ScrollView.ScrollTo(t.GetRootComponent());
+    if (i.ScrollProxy?.ScrollView && (t = i.GetSelectableComponent())) {
+      i.ScrollProxy.ScrollView.ScrollTo(t.GetRootComponent());
     }
   }
   static ibo(i) {
@@ -325,6 +325,26 @@ class UiNavigationNewController extends UiControllerBase_1.UiControllerBase {
     }
     return this.rbo(i);
   }
+  static Exf(a, i) {
+    let e = undefined;
+    var n = (i.ScrollProxy?.ScrollView).DisplayItemArray;
+    for (let i = 0, t = n.Num(); i < t; ++i) {
+      var r = n.Get(i);
+      var o = UiNavigationNewController.hBd(r, a);
+      if (o.length !== 0) {
+        for (let i = 0, t = o.length; i < t; ++i) {
+          var s = o[i];
+          if (!e && s.IsCanFocus()) {
+            e = s;
+          }
+          if (s.IsInDynScrollDisplay() && s.IsInScrollOrLayoutCanFocus()) {
+            return s;
+          }
+        }
+      }
+    }
+    return e;
+  }
   static rbo(a) {
     let e = undefined;
     for (let i = 0, t = a.ListenerList.length; i < t; ++i) {
@@ -332,7 +352,12 @@ class UiNavigationNewController extends UiControllerBase_1.UiControllerBase {
       if (!e && n.IsCanFocus()) {
         e = n;
       }
-      if (n.IsInScrollOrLayoutCanFocus()) {
+      if (n.HasDynamicScrollView()) {
+        var r = UiNavigationNewController.Exf(a, n);
+        if (r) {
+          return r;
+        }
+      } else if (n.IsInScrollOrLayoutCanFocus()) {
         return n;
       }
     }
@@ -341,6 +366,8 @@ class UiNavigationNewController extends UiControllerBase_1.UiControllerBase {
   static nbo(i, t) {
     if (t.HasDynamicScrollView()) {
       return UiNavigationNewController.AWs(i, t);
+    } else if (t.HasMultiTemplateScrollView()) {
+      return UiNavigationNewController.sRf(i, t);
     } else {
       return UiNavigationNewController.UWs(i, t);
     }
@@ -358,7 +385,7 @@ class UiNavigationNewController extends UiControllerBase_1.UiControllerBase {
   }
   static AWs(a, i) {
     let e = undefined;
-    var n = i.ScrollView.DisplayItemArray;
+    var n = (i.ScrollProxy?.ScrollView).DisplayItemArray;
     for (let i = 0, t = n.Num(); i < t; ++i) {
       var r = n.Get(i);
       var o = UiNavigationNewController.hBd(r, a);
@@ -380,6 +407,18 @@ class UiNavigationNewController extends UiControllerBase_1.UiControllerBase {
     for (let i = 0, t = n.length; i < t; ++i) {
       var r = n[i];
       if (r.IsScrollOrLayoutActor() && r.IsInNormalScrollDisplayByGridActor() && r.IsInLoopScrollDisplayByGridActor() && (!a && r.IsCanFocus() && (a = r), !e || r.GetScrollOrLayoutActor() === e) && r.IsInScrollOrLayoutCanFocus()) {
+        return r;
+      }
+    }
+    return a;
+  }
+  static sRf(i, t) {
+    let a = undefined;
+    var e = t.GetScrollOrLayoutActor();
+    var n = i.MultiTemplateScrollSortListenerList;
+    for (let i = 0, t = n.length; i < t; ++i) {
+      var r = n[i];
+      if (r.IsScrollOrLayoutActor() && r.IsInScrollDisplayByGridActor() && (!a && r.IsCanFocus() && (a = r), !e || r.GetScrollOrLayoutActor() === e) && r.IsInScrollOrLayoutCanFocus()) {
         return r;
       }
     }
@@ -448,6 +487,10 @@ class UiNavigationNewController extends UiControllerBase_1.UiControllerBase {
     var a;
     return !this.yMd() && !!(a = LguiEventSystemManager_1.LguiEventSystemManager.LguiEventSystemActor) && a.SimulationPointerDownUp(UiNavigationDefine_1.GAMEPAD_POINT_ID, i.RootUIComp, t);
   }
+  static GamepadInteractSimulationPointer(i, t) {
+    var a;
+    return !!i && !!(a = LguiEventSystemManager_1.LguiEventSystemManager.LguiEventSystemActor) && a.SimulationPointerDownUp(0, i.RootUIComp, t);
+  }
   static SimulationPointDown(i) {
     i = this.GetCurrentNavigationActiveListenerByTag(i, true);
     if (i) {
@@ -499,15 +542,19 @@ class UiNavigationNewController extends UiControllerBase_1.UiControllerBase {
   }
   static ZBo(i, t) {
     if (i) {
-      i.SetVelocity(t * UiNavigationDefine_1.SCROLLBAR_INTERVAL);
+      if (i.Vertical) {
+        i.SetVelocity(t * UiNavigationDefine_1.SCROLLBAR_INTERVAL);
+      } else {
+        i.SetVelocity(-t * UiNavigationDefine_1.SCROLLBAR_INTERVAL);
+      }
     }
   }
-  static Wtm(i, t) {
+  static _nm(i, t) {
     if (i) {
       i.SetVerticalVelocity(t * UiNavigationDefine_1.SCROLLBAR_INTERVAL);
     }
   }
-  static Qtm(i, t) {
+  static unm(i, t) {
     if (i) {
       i.SetHorizontalVelocity(t * UiNavigationDefine_1.SCROLLBAR_INTERVAL);
     }
@@ -713,6 +760,17 @@ class UiNavigationNewController extends UiControllerBase_1.UiControllerBase {
       ModelManager_1.ModelManager.UiNavigationModel.ResetGuideFocusListener();
     }
   }
+  static GetNoneTagNavigateItemByUiItem(i) {
+    var t = UE.LGUIBPLibrary.GetComponentsInChildren(i.GetOwner(), UE.TsUiNavigationBehaviorListener_C.StaticClass(), true);
+    if (t) {
+      for (let i = t.Num() - 1; i >= 0; --i) {
+        var a = t.Get(i);
+        if (a.TagArray && !(a.TagArray.Num() > 0) && a.IsCanFocus()) {
+          return a.RootUIComp;
+        }
+      }
+    }
+  }
   static GetFocusListenerInsideListenerByTag(i, t) {
     let a = i.InsideActorMap?.Get(t);
     a = a || i.GetOwner();
@@ -810,7 +868,7 @@ class UiNavigationNewController extends UiControllerBase_1.UiControllerBase {
     if (!a) {
       return [];
     }
-    var e = i.ScrollView.DisplayItemArray;
+    var e = (i.ScrollProxy?.ScrollView).DisplayItemArray;
     var n = [];
     for (let i = 0, t = e.Num(); i < t; ++i) {
       var r = e.Get(i);

@@ -178,17 +178,17 @@ class KeepFollowingMoveLogic {
     this.e6u = CharacterUnifiedStateTypes_1.ECharMoveState.Walk;
     this.t6u = 0;
     this.qad = 0;
-    this.KQd = 0;
+    this.JQd = 0;
     this.kud = 0;
     this.xgd = Vector_1.Vector.Create();
-    this.XQd = false;
+    this.ZQd = false;
   }
   Init(t) {
     this.Jh = t;
     this.Hte = this.Jh.GetComponent(3);
-    this.rJo = this.Jh.GetComponent(104);
-    this.Gce = this.Jh.GetComponent(45);
-    this.oRe = this.Jh.GetComponent(181);
+    this.rJo = this.Jh.GetComponent(109);
+    this.Gce = this.Jh.GetComponent(46);
+    this.oRe = this.Jh.GetComponent(186);
     t = this.Hte?.CreatureData.GetEntityType();
     this.aO1 = t === Protocol_1.Aki.Protocol.kks.Proto_Player || t === Protocol_1.Aki.Protocol.kks.Proto_Npc;
     this.CapsuleHeight = (this.Hte.ScaledHalfHeight - this.Hte.ScaledRadius) * 2;
@@ -355,23 +355,23 @@ class KeepFollowingMoveLogic {
           var T = Math.sqrt(GravityUtils_1.GravityUtils.GetDistSquared2dForActor(s, s.ActorLocationProxy, s.LastActorLocation)) / t;
           var c = i.MoveParams.FollowingSpeedRange.X * MIN_MOVE_SPEED_RATE;
           if (h > i.MoveParams.CompensateDistanceSquared) {
-            this.$Yd();
+            this.Tzd();
             if (this.Fad(t, this.cz, s.ActorRotationProxy, E, c)) {
               this.Bgd(s, e, "障碍传送");
               return;
             }
           } else {
             this.qad = 0;
-            if (!this.XQd && this.YQd(t, E, T, c)) {
+            if (!this.ZQd && this.eKd(t, E, T, c)) {
               this.Bgd(s, e, "检测到在范围内位移很小，保持跟随目标面向");
               return;
             }
-            if (this.XQd) {
+            if (this.ZQd) {
               this.Bgd(s, e, "站立下检测到在范围内位移很小，保持跟随目标面向");
               return;
             }
           }
-          var h = s.Entity.GetComponent(104)?.MoveState;
+          var h = s.Entity.GetComponent(109)?.MoveState;
           var E = this.rJo?.MoveState;
           var g = h === CharacterUnifiedStateTypes_1.ECharMoveState.Stand || T < c;
           var C = Vector_1.Vector.Dist(this.pz, this.fz);
@@ -417,10 +417,10 @@ class KeepFollowingMoveLogic {
       }
     }
   }
-  $Yd() {
-    if (this.XQd) {
-      this.KQd = 0;
-      this.XQd = false;
+  Tzd() {
+    if (this.ZQd) {
+      this.JQd = 0;
+      this.ZQd = false;
     }
   }
   _6u(t, i, s, e, h) {
@@ -502,14 +502,14 @@ class KeepFollowingMoveLogic {
     var o = this.H5u;
     return !!o?.MoveParams.ObstacleTime && (e < h ? this.qad += t * BattleUiDefine_1.SECOND_TO_MILLISECOND : this.qad = 0, this.qad > o.MoveParams.ObstacleTime) && (this.Nad(i, s, "跟随模式,被阻挡传送"), !(this.qad = 0));
   }
-  YQd(t, i, s, e) {
+  eKd(t, i, s, e) {
     if (i < e || s < e) {
-      this.KQd += t * BattleUiDefine_1.SECOND_TO_MILLISECOND;
+      this.JQd += t * BattleUiDefine_1.SECOND_TO_MILLISECOND;
     } else {
-      this.KQd = 0;
-      this.XQd = false;
+      this.JQd = 0;
+      this.ZQd = false;
     }
-    return this.KQd > STAND_CHECK_TIME && (this.KQd = 0, this.XQd = true, Log_1.Log.CheckDebug() && Log_1.Log.Debug("Character", 42, "[KeepFollowing] 检测到在范围内位移很小保持站立"), true);
+    return this.JQd > STAND_CHECK_TIME && (this.JQd = 0, this.ZQd = true, Log_1.Log.CheckDebug() && Log_1.Log.Debug("Character", 42, "[KeepFollowing] 检测到在范围内位移很小保持站立"), true);
   }
   Nad(t, i, s) {
     if (this.xgd.Equals(t)) {
@@ -520,7 +520,7 @@ class KeepFollowingMoveLogic {
       this.xgd.DeepCopy(t);
       t = this.H5u;
       if (t.MoveParams.TeleportEffectBuffId.length) {
-        var e = this.Jh?.GetComponent(229);
+        var e = this.Jh?.GetComponent(238);
         for (const h of t.MoveParams.TeleportEffectBuffId) {
           e?.AddCue(h, {
             Instant: true
@@ -528,7 +528,7 @@ class KeepFollowingMoveLogic {
         }
       }
       GravityUtils_1.GravityUtils.AddZnInGravityForActor(this.Hte, this.xgd, this.Hte.ScaledHalfHeight);
-      this.XQd = true;
+      this.ZQd = true;
       this.Hte?.TeleportTo(this.xgd.ToUeVector(), i.ToUeRotator(), s);
       this.Gce?.MoveController.PushMoveInfo();
       if (Log_1.Log.CheckDebug()) {

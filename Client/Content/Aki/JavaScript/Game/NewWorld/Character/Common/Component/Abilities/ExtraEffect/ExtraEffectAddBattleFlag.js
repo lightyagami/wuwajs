@@ -56,7 +56,7 @@ class AddBattleFlag extends ExtraEffectBase_1.BuffEffect {
     return this.OwnerBuffComponent?.HasBuffAuthority() ?? false;
   }
   static Fod(e, t, s) {
-    var r = e.GetComponent(178);
+    var r = e.GetComponent(183);
     var e = r?.BuffEffectManager;
     if (e) {
       for (const a of e.FilterById(76)) {

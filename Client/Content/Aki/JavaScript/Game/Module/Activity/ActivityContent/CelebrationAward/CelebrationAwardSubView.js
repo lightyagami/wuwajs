@@ -52,9 +52,9 @@ class CelebrationAwardSubView extends ActivitySubViewBase_1.ActivitySubViewBase 
   }
   async OnBeforeStartAsync() {
     var i = [];
-    var e = this.GetItem(0);
+    var t = this.GetItem(0);
     this.LNe = new ActivityTitleTypeA_1.ActivityTitleTypeA();
-    i.push(this.LNe.CreateThenShowByActorAsync(e.GetOwner()));
+    i.push(this.LNe.CreateThenShowByActorAsync(t.GetOwner()));
     this.b11 = new SmallItemGrid_1.SmallItemGrid();
     i.push(this.b11.CreateThenShowByActorAsync(this.GetItem(9).GetOwner()));
     this.b11.BindOnExtendToggleClicked(this.u6e);
@@ -71,11 +71,12 @@ class CelebrationAwardSubView extends ActivitySubViewBase_1.ActivitySubViewBase 
   }
   OnStart() {
     var i = this.ActivityTimePointRewardData.LocalConfig;
+    this.LNe.SetActivityBaseData(this.ActivityBaseData);
     this.LNe.SetTitleByText(this.ActivityBaseData.GetTitle());
     this.gxl();
-    var e = !StringUtils_1.StringUtils.IsEmpty(i?.DescTheme);
-    this.LNe.SetSubTitleVisible(e);
-    if (e) {
+    var t = !StringUtils_1.StringUtils.IsEmpty(i?.DescTheme);
+    this.LNe.SetSubTitleVisible(t);
+    if (t) {
       this.LNe.SetSubTitleByTextId(i.DescTheme);
     }
     this.GetSpine(11).SetAnimation(0, "start", false).AnimationComplete.Add(() => {
@@ -94,21 +95,21 @@ class CelebrationAwardSubView extends ActivitySubViewBase_1.ActivitySubViewBase 
   }
   sqe() {
     var i;
-    var e;
-    var t = this.ActivityTimePointRewardData.GetRewardDataList();
+    var t;
+    var e = this.ActivityTimePointRewardData.GetRewardDataList();
     var r = [];
-    for ([i, e] of ConfigManager_1.ConfigManager.ActivityTimePointRewardConfig.GetTimePointRewardById(t[0].Id).RewardItem) {
+    for ([i, t] of ConfigManager_1.ConfigManager.ActivityTimePointRewardConfig.GetTimePointRewardById(e[0].Id).RewardItem) {
       var s = [{
         IncId: 0,
         ItemId: i
-      }, e];
+      }, t];
       var s = {
         Data: s,
         Type: 4,
         ItemConfigId: s[0].ItemId,
         BottomText: s[1].toString(),
-        IsLockVisible: t[0].RewardState === 0,
-        IsReceivedVisible: t[0].RewardState === 2
+        IsLockVisible: e[0].RewardState === 0,
+        IsReceivedVisible: e[0].RewardState === 2
       };
       r.push(s);
     }
@@ -119,21 +120,21 @@ class CelebrationAwardSubView extends ActivitySubViewBase_1.ActivitySubViewBase 
   }
   Nda() {
     var i = this.ActivityTimePointRewardData.GetRewardDataList();
-    var e = i[0].RewardState === 0;
-    this.GetText(4).SetUIActive(e);
-    this.GetText(5).SetUIActive(e);
-    this.GetText(3).SetUIActive(e);
-    this.GetItem(6).SetUIActive(!e);
-    if (e) {
-      e = i[0].RewardTime - TimeUtil_1.TimeUtil.GetServerTimeStamp();
-      this.w11(e);
-      if (e <= 1) {
+    var t = i[0].RewardState === 0;
+    this.GetText(4).SetUIActive(t);
+    this.GetText(5).SetUIActive(t);
+    this.GetText(3).SetUIActive(t);
+    this.GetItem(6).SetUIActive(!t);
+    if (t) {
+      t = i[0].RewardTime - TimeUtil_1.TimeUtil.GetServerTimeStamp();
+      this.w11(t);
+      if (t <= 1) {
         i[0].HasUnlock = true;
       }
     } else {
-      e = i[0].RewardState === 1;
-      this.GetText(8).SetUIActive(!e);
-      this.GetButton(7).RootUIComp.SetUIActive(e);
+      t = i[0].RewardState === 1;
+      this.GetText(8).SetUIActive(!t);
+      this.GetButton(7).RootUIComp.SetUIActive(t);
       if (!this.wM1) {
         this.GetSpine(12).SetAnimation(0, "start", false).AnimationComplete.Add(() => {
           this.GetSpine(12).SetAnimation(0, "idle", true);
@@ -143,33 +144,33 @@ class CelebrationAwardSubView extends ActivitySubViewBase_1.ActivitySubViewBase 
     }
   }
   w11(i) {
-    var e;
     var t;
+    var e;
     var i = i * TimeUtil_1.TimeUtil.Millisecond;
     if (i >= CommonDefine_1.SECOND_PER_DAY) {
-      t = i / TimeUtil_1.TimeUtil.Hour;
-      e = Math.floor(t / TimeUtil_1.TimeUtil.OneDayHourCount);
-      t = Math.ceil(t - e * TimeUtil_1.TimeUtil.OneDayHourCount);
-      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), "CelebrationAwardLeftTimeDay", `<color=#f39233>${e}</color>`, `<color=#f39233>${t}</color>`);
+      e = i / TimeUtil_1.TimeUtil.Hour;
+      t = Math.floor(e / TimeUtil_1.TimeUtil.OneDayHourCount);
+      e = Math.ceil(e - t * TimeUtil_1.TimeUtil.OneDayHourCount);
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), "CelebrationAwardLeftTimeDay", `<color=#f39233>${t}</color>`, `<color=#f39233>${e}</color>`);
     } else if (i >= CommonDefine_1.SECOND_PER_HOUR) {
-      e = i / TimeUtil_1.TimeUtil.Minute;
-      t = Math.floor(e / TimeUtil_1.TimeUtil.Minute);
-      e = Math.ceil(e - t * TimeUtil_1.TimeUtil.Minute);
-      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), "CelebrationAwardLeftTimeHour", `<color=#f39233>${t}</color>`, `<color=#f39233>${e}</color>`);
-    } else if (i >= CommonDefine_1.SECOND_PER_MINUTE) {
-      t = i;
-      e = Math.floor(i / TimeUtil_1.TimeUtil.Minute);
+      t = i / TimeUtil_1.TimeUtil.Minute;
+      e = Math.floor(t / TimeUtil_1.TimeUtil.Minute);
       t = Math.ceil(t - e * TimeUtil_1.TimeUtil.Minute);
-      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), "CelebrationAwardLeftTimeSecond", `<color=#f39233>${e}</color>`, `<color=#f39233>${t}</color>`);
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), "CelebrationAwardLeftTimeHour", `<color=#f39233>${e}</color>`, `<color=#f39233>${t}</color>`);
+    } else if (i >= CommonDefine_1.SECOND_PER_MINUTE) {
+      e = i;
+      t = Math.floor(i / TimeUtil_1.TimeUtil.Minute);
+      e = Math.ceil(e - t * TimeUtil_1.TimeUtil.Minute);
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), "CelebrationAwardLeftTimeSecond", `<color=#f39233>${t}</color>`, `<color=#f39233>${e}</color>`);
     } else {
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), "CelebrationAwardLeftTimeLessSecond", `<color=#f39233>${Math.max(Math.floor(i), 1)}</color>`);
     }
   }
   gxl() {
-    var [i, e] = ModelManager_1.ModelManager.ActivityModel.GetTimeVisibleAndRemainTime(this.ActivityTimePointRewardData);
+    var [i, t] = ModelManager_1.ModelManager.ActivityModel.GetTimeVisibleAndRemainTime(this.ActivityTimePointRewardData);
     this.LNe.SetTimeTextVisible(i);
     if (i) {
-      this.LNe.SetTimeTextByText(e);
+      this.LNe.SetTimeTextByText(t);
     }
   }
   OnTimer(i) {

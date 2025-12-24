@@ -150,7 +150,7 @@ class HonamiStoryRoleEquipData {
     if (t) {
       this.dFe = t.Q6n ?? -1;
       this.L6d = t.I4d ?? -1;
-      for (const r of t.x$d.sort((t, e) => t.T4d - e.T4d)) {
+      for (const r of t.q$d.sort((t, e) => t.T4d - e.T4d)) {
         var e;
         var o = r.T4d - 1;
         if (o >= this.VYc.length) {

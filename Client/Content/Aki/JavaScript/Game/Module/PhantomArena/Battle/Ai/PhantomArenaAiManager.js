@@ -11,11 +11,13 @@ class PhantomArenaAiManager {
     this.BattleProxy = e;
     this.gWt = new Queue_1.Queue();
     this.IsClear = false;
+    this.ExecCount = 0;
   }
   SetOperationList(e) {
     for (const t of e) {
       this.gWt.Push(t);
     }
+    this.ExecCount = 0;
   }
   async ExecuteAllOperation() {
     var e;
@@ -28,6 +30,7 @@ class PhantomArenaAiManager {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("PhantomArena", 10, "完成执行Npc操作", ["operationName", e.constructor.name]);
       }
+      this.ExecCount++;
       await this.ExecuteAllOperation();
     }
   }

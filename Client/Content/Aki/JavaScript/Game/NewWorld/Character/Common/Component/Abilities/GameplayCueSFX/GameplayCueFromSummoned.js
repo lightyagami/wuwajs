@@ -99,7 +99,7 @@ class GameplayCueFromSummoned extends GameplayCueBase_1.GameplayCueBase {
       if (this.p$o.length > 1) {
         i.FromUeVector(this.ActorInternal.Mesh.D_GetSocketLocation(this.p$o[1]));
       } else {
-        i.DeepCopy(this.ActorInternal.CharacterActorComponent.ActorLocationProxy);
+        i.DeepCopy(this.GetActorComponent().ActorLocationProxy);
       }
       s = this.H$o.GetRotation();
       i.SubtractionEqual(e).ToOrientationQuat(s);

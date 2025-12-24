@@ -74,7 +74,7 @@ class CommonKeySettingPanel extends KeySettingPanelBase_1.KeySettingPanelBase {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIButtonComponent], [2, UE.UIText], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIText], [9, UE.UIButtonComponent], [10, UE.UIItem], [11, UE.UIItem], [12, UE.UIItem], [13, UE.UIItem], [14, UE.UIButtonComponent], [15, UE.UIButtonComponent], [16, UE.UIButtonComponent]];
+    this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIButtonComponent], [2, UE.UIText], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIText], [9, UE.UIButtonComponent], [10, UE.UIItem], [11, UE.UIItem], [12, UE.UIItem], [13, UE.UIItem], [14, UE.UIButtonComponent], [15, UE.UIButtonComponent], [16, UE.UIButtonComponent], [17, UE.UIItem]];
     this.BtnBindInfo = [[0, this.Exi], [1, this.yxi], [9, this.Ixi], [14, this.Ixi], [15, this.Prh], [16, this.Prh]];
   }
   async OnBeforeStartAsync() {
@@ -95,6 +95,7 @@ class CommonKeySettingPanel extends KeySettingPanelBase_1.KeySettingPanelBase {
     this.Fxi();
     this.Rka();
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnDeviceLangChange, this.TZa);
+    this.GetItem(17)?.SetUIActive(false);
   }
   OnBeforeDestroy() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnDeviceLangChange, this.TZa);

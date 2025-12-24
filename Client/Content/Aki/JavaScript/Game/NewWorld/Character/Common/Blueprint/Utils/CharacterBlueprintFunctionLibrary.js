@@ -169,7 +169,7 @@ class CharacterBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     return CharacterStatisticsComponent_1.CharacterStatisticsComponent.GetItemListViewCount();
   }
   static TestLeaveSplineMove(t) {
-    t.GetEntityNoBlueprint().GetComponent(111).EndSplineMove(1);
+    t.GetEntityNoBlueprint().GetComponent(116).EndSplineMove(1);
     CameraController_1.CameraController.FightCamera.LogicComponent.ExitCameraSpline();
   }
   static GetBaseCharacterTransform() {
@@ -191,7 +191,7 @@ class CharacterBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   }
   static DetachFromHost(t, e, r) {
     var t = EntitySystem_1.EntitySystem.Get(t);
-    if (t?.Valid && (t = t.GetComponent(184))?.Valid) {
+    if (t?.Valid && (t = t.GetComponent(189))?.Valid) {
       t.DetachFromHost(e, r, true);
     }
   }
@@ -203,7 +203,7 @@ class CharacterBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   }
   static SetGravityDirect(t, e) {
     var t = ModelManager_1.ModelManager.CreatureModel.GetEntityById(t);
-    if (t?.Valid && (t = t.Entity.GetComponent(182))?.Valid) {
+    if (t?.Valid && (t = t.Entity.GetComponent(187))?.Valid) {
       t.SetGravityDirectByNumber(e.X, e.Y, e.Z);
     }
   }
@@ -246,7 +246,7 @@ class CharacterBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   static GetEntityForeverTimeDilation(t) {
     CharacterBlueprintFunctionLibrary.EntityTimeDilation ||= new UE.SEntityTimeDilation();
     CharacterBlueprintFunctionLibrary.EntityTimeDilation.SourceType = -1;
-    var t = EntitySystem_1.EntitySystem.GetComponent(t, 126);
+    var t = EntitySystem_1.EntitySystem.GetComponent(t, 131);
     if (t?.Valid && (t = t.GetTopForeverTimeScaleConfig())) {
       CharacterBlueprintFunctionLibrary.EntityTimeDilation.SourceType = t.SourceType;
       CharacterBlueprintFunctionLibrary.EntityTimeDilation.TimeDilation = t.TimeDilation;
@@ -268,6 +268,24 @@ class CharacterBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
       if (e) {
         t.ShowOnlyActors.Add(e);
       }
+    }
+  }
+  static SetCharacterDirectlySightLockEnableState(t, e) {
+    t = EntitySystem_1.EntitySystem.Get(t);
+    if (t?.Valid) {
+      t.GetComponent(186)?.SetDirectlySightEnableState(e, "通过蓝图接口设置");
+    }
+  }
+  static SetCharacterSightLockBoneLimit(t, e = -23, r = 23, a = -10, i = 13, n = 5, o = new UE.Vector(0.3, -1, 0), c = new UE.Vector(0.3, -1, 0)) {
+    t = EntitySystem_1.EntitySystem.Get(t);
+    if (t?.Valid) {
+      t.GetComponent(186)?.SetSightBoneLimit(e, r, a, i, n, o, c);
+    }
+  }
+  static RestoreSightLockBoneLimit(t) {
+    t = EntitySystem_1.EntitySystem.Get(t);
+    if (t?.Valid) {
+      t.GetComponent(186)?.RestoreSightBoneLimit();
     }
   }
 }

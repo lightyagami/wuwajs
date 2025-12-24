@@ -228,10 +228,10 @@ class BossRushController extends ActivityControllerBase_1.ActivityControllerBase
     this.RequestStartBossRush(s, e.GetCurrentSelectLevel().GetInstanceDungeonId(), t, r, n);
   }
   static RequestBossRushTaskReward(t) {
-    var e = new Protocol_1.Aki.Protocol.Jmm();
+    var e = new Protocol_1.Aki.Protocol.oym();
     e.w6n = t;
     var o = ModelManager_1.ModelManager.ActivityModel.GetActivityById(t);
-    e.Ifm = o.GetFinishAndUnclaimedTaskList();
+    e.Aym = o.GetFinishAndUnclaimedTaskList();
     Net_1.Net.Call(29383, e, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
         ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19588);

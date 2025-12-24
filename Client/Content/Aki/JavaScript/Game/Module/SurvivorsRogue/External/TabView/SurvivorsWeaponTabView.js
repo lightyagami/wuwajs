@@ -63,10 +63,10 @@ class SurvivorsWeaponTabView extends SurvivorsTabViewBase_1.SurvivorsTabViewBase
         SortId: e.SortId
       };
     });
-    this.i0m(e);
+    this.BMm(e);
     return e;
   }
-  i0m(e) {
+  BMm(e) {
     e.sort((e, t) => e.LockState !== t.LockState ? e.LockState ? 1 : -1 : e.SortId !== t.SortId ? e.SortId - t.SortId : e.Id - t.Id);
   }
   iGd(e) {

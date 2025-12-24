@@ -27,8 +27,9 @@ class PhantomArenaMainView extends PhantomArenaRootViewBase_1.PhantomArenaRootVi
     this.RoleSpineMap = new Map();
     this.CurShowRoleSpine = undefined;
     this.k7c = (i, t) => {
-      if (this.ViewModel.TextureCardRoleId !== i && (this.ViewModel.TextureCardRoleId = i, this.RefreshRoleTexture(), t)) {
-        this.PlayRoleTextureChangeAnim();
+      if (this.ViewModel.TextureCardRoleId !== i) {
+        this.ViewModel.TextureCardRoleId = i;
+        this.RefreshRoleTexture(t);
       }
     };
     this.ShowRoleTexture = i => {
@@ -69,11 +70,14 @@ class PhantomArenaMainView extends PhantomArenaRootViewBase_1.PhantomArenaRootVi
         }
       }
     };
-    this.RefreshRoleTexture = () => {
-      var i = new UiAsyncTask_1.UiAsyncTask("PhantomArenaMainView", async () => {
+    this.RefreshRoleTexture = (i = false) => {
+      var t = new UiAsyncTask_1.UiAsyncTask("PhantomArenaMainView", async () => {
         await this.RefreshRoleTextureAsync();
+        if (i) {
+          this.PlayRoleTextureChangeAnim();
+        }
       });
-      this.RunAsyncTask(i);
+      this.RunAsyncTask(t);
     };
     this.RefreshRoleTextureAsync = async () => {
       var t = this.ViewModel.TextureCardRoleId;
@@ -155,6 +159,9 @@ class PhantomArenaMainView extends PhantomArenaRootViewBase_1.PhantomArenaRootVi
   OnRegisterViewData() {
     var i = this.OpenParam;
     this.ViewModel = new PhantomArenaMainViewModel_1.PhantomArenaMainViewModel();
+    this.ActivityId = i.ActivityId;
+    this.ViewModel.ActivityId = this.ActivityId;
+    this.ViewModel.RecommendDeck = i.RecommendDeck;
     this.ViewModel.Init(i.ChallengeId);
     this.ViewModel.SetGetSwitchItemFunc(this.GetSwitchItem);
     this.ViewModel.RefreshRoleTexture = this.RefreshRoleTexture;

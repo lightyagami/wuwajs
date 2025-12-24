@@ -67,9 +67,9 @@ let RolePreloadComponent = RolePreloadComponent_1 = class RolePreloadComponent e
   }
   OnInitData() {
     if (PreloadDefine_1.PreloadSetting.UseNewPreload) {
-      this.tRr = this.Entity.GetComponent(39);
+      this.tRr = this.Entity.GetComponent(40);
       this.u1t = this.Entity.GetComponent(0);
-      this.Entity.GetComponent(209).ListenForTagAddOrRemove(1996802261, this.YJr);
+      this.Entity.GetComponent(215).ListenForTagAddOrRemove(1996802261, this.YJr);
     }
     return true;
   }
@@ -379,7 +379,7 @@ let RolePreloadComponent = RolePreloadComponent_1 = class RolePreloadComponent e
       if (o.Num() > 0) {
         this.XJr.HasMorphAssets = true;
         this.Entity.GetComponent(25)?.SetHasMorphMontage(true);
-        var t = this.Entity.GetComponent(287);
+        var t = this.Entity.GetComponent(306);
         var r = ResourceSystem_1.ResourceSystem.Load(DataTableUtil_1.dataTablePaths.get(0), UE.DataTable);
         var i = new Set();
         this.XJr.MorphAssetsPaths = i;
@@ -467,5 +467,5 @@ RolePreloadComponent.o31 = Stats_1.Stat.Create("Preload.LoadSkillAsync");
 RolePreloadComponent.cH1 = Stats_1.Stat.Create("Preload.PreloadHitEffect");
 RolePreloadComponent.yRc = Stats_1.Stat.Create("Preload.PreloadMorphCollectAssetByModelId");
 RolePreloadComponent.SRc = Stats_1.Stat.Create("Preload.PreloadMorphLoadAssetAsync");
-RolePreloadComponent = RolePreloadComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(223)], RolePreloadComponent);
+RolePreloadComponent = RolePreloadComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(230)], RolePreloadComponent);
 exports.RolePreloadComponent = RolePreloadComponent; //# sourceMappingURL=RolePreloadComponent.js.map

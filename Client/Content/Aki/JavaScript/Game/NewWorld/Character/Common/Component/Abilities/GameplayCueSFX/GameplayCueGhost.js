@@ -14,22 +14,22 @@ class GameplayCueGhost extends GameplayCueBase_1.GameplayCueBase {
   constructor() {
     super(...arguments);
     this.m$o = 0;
-    this.Dbm = 0;
-    this.Ubm = 20;
-    this.xbm = 0.25;
-    this.Bbm = true;
+    this.rjm = 0;
+    this.ojm = 20;
+    this.njm = 0.25;
+    this.sjm = true;
     this._0e = -1;
   }
   OnInit() {
     var t = this.CueConfig.Parameters;
     if (t.length > 0) {
-      this.Ubm = Number(t[0]);
+      this.ojm = Number(t[0]);
     }
     if (t.length > 1) {
-      this.xbm = Number(t[1]);
+      this.njm = Number(t[1]);
     }
     if (t.length > 2) {
-      this.Bbm = Number(t[2]) === 1;
+      this.sjm = Number(t[2]) === 1;
     }
     if (t.length > 3) {
       this._0e = Number(t[3]);
@@ -44,8 +44,8 @@ class GameplayCueGhost extends GameplayCueBase_1.GameplayCueBase {
     } else {
       (t = Transform_1.Transform.Create()).SetLocation(this.ActorInternal.D_K2_GetActorLocation());
       this.m$o = EffectSystem_1.EffectSystem.SpawnEffect(GlobalData_1.GlobalData.World, t.ToUeTransform(), this.GetPath(), "[GameplayCueGhost.OnCreate]", this.z5a(), 0);
-      this.Dbm = this.D9u();
-      this.CueComp.AddCueEffectToSet(this.m$o, this.Dbm);
+      this.rjm = this.D9u();
+      this.CueComp.AddCueEffectToSet(this.m$o, this.rjm);
     }
   }
   OnDestroy() {
@@ -58,16 +58,16 @@ class GameplayCueGhost extends GameplayCueBase_1.GameplayCueBase {
     var t = new EffectRuntimeGhostEffectContext_1.EffectRuntimeGhostEffectContext(undefined);
     t.SkeletalMeshComp = this.ActorInternal.Mesh;
     t.EntityId = this.EntityHandle.Id;
-    t.SpawnRate = this.Ubm;
-    t.UseSpawnRate = this.Bbm;
+    t.SpawnRate = this.ojm;
+    t.UseSpawnRate = this.sjm;
     t.SpawnInterval = this._0e;
-    t.GhostLifeTime = this.xbm;
+    t.GhostLifeTime = this.njm;
     t.SourceObject = this.ActorInternal;
     return t;
   }
   D9u() {
     var t;
-    if (this.BuffHandleId > 0 && (t = this.EntityHandle.Entity?.GetComponent(213)?.GetBuffByHandle(this.BuffHandleId)) && t.GetInstigator()?.GetComponent(0)?.IsRole()) {
+    if (this.BuffHandleId > 0 && (t = this.EntityHandle.Entity?.GetComponent(220)?.GetBuffByHandle(this.BuffHandleId)) && t.GetInstigator()?.GetComponent(0)?.IsRole()) {
       return 1;
     } else {
       return 0;

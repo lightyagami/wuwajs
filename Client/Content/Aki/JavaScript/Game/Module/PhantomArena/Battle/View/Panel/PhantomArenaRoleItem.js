@@ -14,8 +14,15 @@ class PhantomArenaRoleItem extends UiPanelBase_1.UiPanelBase {
     this.RoleHead = undefined;
     this.ViewProxy = undefined;
     this.Sequence = undefined;
+    this.ShieldSequence = undefined;
     this.LastLifeNum = 0;
+    this.LastShieldNum = 0;
     this.IsOwn = false;
+    this.$xt = t => {
+      if (t === "ShiedBreak") {
+        this.GetItem(7).SetUIActive(false);
+      }
+    };
     this.vG1 = () => {
       if (!this.ViewProxy.InCantDragState()) {
         this.ViewProxy.SwitchFourCostTips(this.IsOwn, this.GetItem(5));
@@ -23,7 +30,7 @@ class PhantomArenaRoleItem extends UiPanelBase_1.UiPanelBase {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIText], [2, UE.UIText], [3, UE.UISprite], [4, UE.UIButtonComponent], [5, UE.UIItem], [6, UE.UITexture]];
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIText], [2, UE.UIText], [3, UE.UISprite], [4, UE.UIButtonComponent], [5, UE.UIItem], [6, UE.UITexture], [7, UE.UIItem], [8, UE.UIText], [9, UE.UIText]];
     this.BtnBindInfo = [[4, this.vG1]];
   }
   async RZ1() {
@@ -38,57 +45,86 @@ class PhantomArenaRoleItem extends UiPanelBase_1.UiPanelBase {
     }
   }
   async OnBeforeStartAsync() {
-    this.Sequence = new UiSequencePlayer_1.UiSequencePlayer(this.RootItem);
     await Promise.all([this.RZ1()]);
   }
   OnStart() {
+    this.Sequence = new UiSequencePlayer_1.UiSequencePlayer(this.RootItem);
+    this.ShieldSequence = new UiSequencePlayer_1.UiSequencePlayer(this.GetItem(7));
+    this.ShieldSequence.BindOnEndSequenceEvent(this.$xt);
     this.ViewProxy.BanButtonClickModule.RegisterButton(this.GetButton(4));
+    this.GetItem(7).SetUIActive(false);
   }
   OnBeforeDestroy() {
     this.Sequence.Clear();
+    this.ShieldSequence.Clear();
   }
-  RefreshLifeNum(e, t) {
-    this.LastLifeNum = e;
-    this.GetText(2).SetText(e + "/" + t);
-    this.RoleHead.RefreshLifeBar(e / t);
+  RefreshLifeNum(t, i) {
+    this.LastLifeNum = t;
+    this.GetText(2).SetText(t + "/" + i);
+    this.RoleHead.RefreshLifeBar(t / i);
   }
-  RefreshLifeNumTween(e, t) {
-    this.GetText(2).SetText(Math.floor(e) + "/" + t);
-    this.RoleHead.RefreshDamageBar(e / t);
+  RefreshLifeNumTween(t, i) {
+    this.LastLifeNum = t;
+    this.GetText(2).SetText(Math.floor(t) + "/" + i);
+    this.RoleHead.RefreshDamageBar(t / i);
   }
-  RefreshLifeNumTweenStart(e, t) {
-    this.RoleHead.RefreshLifeBar(e / t);
+  RefreshLifeNumTweenStart(t, i) {
+    this.RoleHead.RefreshLifeBar(t / i);
   }
-  SetBarActive(e) {
-    this.RoleHead.SetBarActive(e);
+  SetBarActive(t) {
+    this.RoleHead.SetBarActive(t);
   }
-  SetPhantomBtnActive(e) {
-    this.GetButton(4).RootUIComp.SetUIActive(e);
+  SetPhantomBtnActive(t) {
+    this.GetButton(4).RootUIComp.SetUIActive(t);
   }
   ShowPhantomBtn() {
     this.SetPhantomBtnActive(true);
     this.Sequence.PlaySequencePurely("4cShow");
   }
-  RefreshHeadIcon(e) {
-    this.RoleHead.RefreshRoleIcon(e);
+  RefreshHeadIcon(t) {
+    this.RoleHead.RefreshRoleIcon(t);
   }
-  RefreshMonsterIcon(e) {
-    this.SetTextureByPath(e, this.GetTexture(6));
+  RefreshMonsterIcon(t) {
+    this.SetTextureByPath(t, this.GetTexture(6));
   }
-  RegisterViewProxy(e) {
-    this.ViewProxy = e;
+  RegisterViewProxy(t) {
+    this.ViewProxy = t;
   }
-  PlayAddHpEffect(e) {
-    if (e - this.LastLifeNum > 0) {
-      this.RoleHead.PlayAddHpEffect(e - this.LastLifeNum);
+  PlayHpEffect(t) {
+    t -= this.LastLifeNum;
+    if (t > 0) {
+      this.RoleHead.PlayAddHpEffect(t);
+    } else if (t < 0) {
+      this.RoleHead.PlayReduceHpEffect(t);
     }
   }
   PlayHitAnim() {
     this.Sequence.PlaySequencePurely("Hit");
   }
-  GetGuideUiItemAndUiItemForShowEx(e) {
-    if (e && e.length !== 0 && e[0] === "Task") {
-      return this.ViewProxy?.DetailsTipsItem?.GetGuideUiItemAndUiItemForShowEx(e);
+  RefreshShieldNum(t) {
+    var i;
+    if (t > this.LastShieldNum && this.LastShieldNum === 0) {
+      this.GetText(8).SetText(t.toString());
+      this.ShieldSequence.PlaySequencePurely("ShieldStart");
+      this.GetItem(7).SetUIActive(true);
+    } else if (t >= this.LastShieldNum) {
+      this.GetText(8).SetText(t.toString());
+    } else if (t === 0) {
+      this.ShieldSequence.PlaySequencePurely("ShiedBreak");
+    } else {
+      i = t - this.LastShieldNum;
+      this.GetText(8).SetText(t.toString());
+      this.GetText(9).SetText(i.toString());
+      this.ShieldSequence.PlaySequencePurely("ShieldHit");
+    }
+    this.LastShieldNum = t;
+  }
+  async PlayBeHitEffect(t) {
+    await this.RoleHead.PlayReduceHpEffect(t);
+  }
+  GetGuideUiItemAndUiItemForShowEx(t) {
+    if (t && t.length !== 0 && t[0] === "Task") {
+      return this.ViewProxy?.DetailsTipsItem?.GetGuideUiItemAndUiItemForShowEx(t);
     } else {
       return undefined;
     }

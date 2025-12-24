@@ -18,7 +18,7 @@ class GravityHookController {
     var l;
     var _;
     var e = ModelManager_1.ModelManager.CreatureModel.GetEntityById(e);
-    if (e?.Valid && (a = (e = e.Entity).GetComponent(182))?.Valid && (e = e.GetComponent(102))?.Valid && (e = e.GetCurrentTarget())?.Valid && (l = e.GetHookInteractConfig()) && l.Type === "GravityHook") {
+    if (e?.Valid && (a = (e = e.Entity).GetComponent(187))?.Valid && (e = e.GetComponent(105))?.Valid && (e = e.GetCurrentTarget())?.Valid && (l = e.GetHookInteractConfig()) && l.Type === "GravityHook") {
       _ = a.GravityDirect;
       e = e.Entity.GetComponent(1);
       l = GravityUtils_1.GravityUtils.GetGravityDirectionByConfigAndActor(l.GravityDirection, e);
@@ -28,7 +28,7 @@ class GravityHookController {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("LevelPlay", 48, "重力钩锁 更新重力方向", ["GravityDirect", l], ["SmoothSecond", _]);
       }
-      (t = new Protocol_1.Aki.Protocol.ULm()).F4n = MathUtils_1.MathUtils.NumberToLong(e.CreatureData.GetCreatureDataId());
+      (t = new Protocol_1.Aki.Protocol.CSf()).F4n = MathUtils_1.MathUtils.NumberToLong(e.CreatureData.GetCreatureDataId());
       Net_1.Net.Call(18866, t, e => {
         if (!e || e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
           if (Log_1.Log.CheckError()) {
@@ -39,7 +39,7 @@ class GravityHookController {
     }
   }
   static GetGravityHookLockInfo(e) {
-    var e = this.OQd(e);
+    var e = this.NQd(e);
     var t = new UE.SGravityHookLockInfo();
     if (e) {
       t.IsValid = true;
@@ -50,10 +50,10 @@ class GravityHookController {
     }
     return t;
   }
-  static OQd(e) {
+  static NQd(e) {
     e = ModelManager_1.ModelManager.CreatureModel.GetEntityById(e);
     if (e?.Valid) {
-      e = e.Entity.GetComponent(102);
+      e = e.Entity.GetComponent(105);
       if (e?.Valid) {
         e = e.GetCurrentTarget();
         if (e?.Valid) {

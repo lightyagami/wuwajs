@@ -21,9 +21,9 @@ class GameplayAbilityVisionBossRush extends GameplayAbilityVisionMorph_1.Gamepla
       this.VisionData = PhantomUtil_1.PhantomUtil.GetVisionData(o);
     }
   }
-  SetVisionEnable(o) {
-    ControllerHolder_1.ControllerHolder.CreatureController.SetEntityEnable(this.VisionEntity.Entity, o, "GameplayAbilityVisionBossRush.SetVisionEnable", true);
-    var i = this.VisionEntity?.Entity?.GetComponent(56);
+  SetVisionEnable(o, i = this.VisionEntity) {
+    ControllerHolder_1.ControllerHolder.CreatureController.SetEntityEnable(i.Entity, o, "GameplayAbilityVisionBossRush.SetVisionEnable", true);
+    i = this.VisionEntity?.Entity?.GetComponent(59);
     if (o) {
       i?.SetRelationship(this.EntityHandle);
     } else {

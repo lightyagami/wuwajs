@@ -29,18 +29,18 @@ class HonamiStoryEquipBackpackPanel extends HonamiStoryBackpackPanelBase_1.Honam
     this.TeamDataItem = undefined;
     this.RXl = undefined;
     this.fgd = [];
-    this.bum = undefined;
+    this.zgm = undefined;
     this.f_a = undefined;
     this.InsteadValueItem = undefined;
-    this.Rum = undefined;
-    this.Tlm = undefined;
-    this.blm = undefined;
+    this.Jgm = undefined;
+    this.Gdm = undefined;
+    this.Fdm = undefined;
     this.L6e = 0;
     this.ViewPanelHeight = 0;
     this.SelfHeight = 0;
     this.SelfOldHeight = 0;
     this.ContentHeight = 0;
-    this.SQd = i => {
+    this.TQd = i => {
       if (i.Qmd === this.RXl.BackpackId) {
         this.RefreshEquipItem().then(() => {
           for (const t of this.GetUpdateContextEffectGridItems(i)) {
@@ -53,22 +53,22 @@ class HonamiStoryEquipBackpackPanel extends HonamiStoryBackpackPanelBase_1.Honam
         this.RefreshRoleTipItem();
       }
     };
-    this.HMm = () => {
+    this.qBm = () => {
       this.RefreshEquipItem();
       this.RefreshRoleTipItem();
     };
-    this.VJd = (t, i) => {
+    this.lem = (t, i) => {
       this.RefreshNeedQuickAll();
       this.TeamDataItem.RefreshPowerLevel(t !== i, t < i, t, i);
     };
-    this.Rlm = () => {
+    this.Ndm = () => {
       var t = Time_1.Time.Now;
       if (!(t - this.L6e < HonamiStoryDefine_1.HONAMI_BAKCPACK_CLICK_CD)) {
         this.L6e = t;
         ModelManager_1.ModelManager.HonamiStoryModel.ApplyQuickAll();
       }
     };
-    this.wlm = () => {
+    this.Vdm = () => {
       var t = Time_1.Time.Now;
       if (!(t - this.L6e < HonamiStoryDefine_1.HONAMI_BAKCPACK_CLICK_CD)) {
         this.L6e = t;
@@ -77,14 +77,14 @@ class HonamiStoryEquipBackpackPanel extends HonamiStoryBackpackPanelBase_1.Honam
         }
       }
     };
-    this.wum = () => {
-      this.Lum();
+    this.Zgm = () => {
+      this.e0m();
     };
-    this.Pum = t => {
-      if (this.bum === t) {
-        this.Lum();
+    this.t0m = t => {
+      if (this.zgm === t) {
+        this.e0m();
       } else {
-        this.bum = t;
+        this.zgm = t;
         for (const e of this.fgd) {
           e.SetActive(e === t);
         }
@@ -93,7 +93,7 @@ class HonamiStoryEquipBackpackPanel extends HonamiStoryBackpackPanelBase_1.Honam
         this.RefreshRoleTipItem();
       }
     };
-    this.Odm = () => {
+    this.ppm = () => {
       this.TeamDataItem?.CheckCanUpgrade();
       for (const t of this.fgd) {
         for (const i of t.GetPluginItemList()) {
@@ -123,22 +123,22 @@ class HonamiStoryEquipBackpackPanel extends HonamiStoryBackpackPanelBase_1.Honam
     this.Cde();
   }
   OnBeforeDestroy() {
-    this.bum = undefined;
+    this.zgm = undefined;
     this.TeamDataItem = undefined;
   }
   dde() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnHonamiStoryBackpackUpdate, this.SQd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnHonamiStoryPowerLevelUpdate, this.VJd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnHonamiStoryRoleEquipChanged, this.HMm);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnAddCommonItemList, this.Odm);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRemoveCommonItem, this.Odm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnHonamiStoryBackpackUpdate, this.TQd);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnHonamiStoryPowerLevelUpdate, this.lem);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnHonamiStoryRoleEquipChanged, this.qBm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnAddCommonItemList, this.ppm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRemoveCommonItem, this.ppm);
   }
   Cde() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnHonamiStoryBackpackUpdate, this.SQd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnHonamiStoryPowerLevelUpdate, this.VJd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnHonamiStoryRoleEquipChanged, this.HMm);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnAddCommonItemList, this.Odm);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRemoveCommonItem, this.Odm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnHonamiStoryBackpackUpdate, this.TQd);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnHonamiStoryPowerLevelUpdate, this.lem);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnHonamiStoryRoleEquipChanged, this.qBm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnAddCommonItemList, this.ppm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRemoveCommonItem, this.ppm);
   }
   async Init(t) {
     this.RXl = t;
@@ -149,20 +149,20 @@ class HonamiStoryEquipBackpackPanel extends HonamiStoryBackpackPanelBase_1.Honam
     t.push(this.TeamDataItem.CreateThenShowByActorAsync(this.GetItem(0).GetOwner()));
     this.InsteadValueItem = new HonamiStoryBackpackValueCountItem_1.HonamiStoryBackpackInsteadItem();
     t.push(this.InsteadValueItem.CreateThenShowByActorAsync(this.GetItem(6).GetOwner()));
-    this.Tlm = new ButtonItem_1.ButtonItem();
-    this.Tlm.SetFunction(this.Rlm);
-    t.push(this.Tlm.CreateThenShowByActorAsync(this.GetItem(7).GetOwner()));
-    this.blm = new ButtonItem_1.ButtonItem();
-    this.blm.SetFunction(this.wlm);
-    t.push(this.blm.CreateThenShowByActorAsync(this.GetItem(8).GetOwner()));
-    this.Rum = new HonamiStoryRoleTipItem_1.HonamiStoryRoleTipItem();
-    this.Rum.RegisterCloseCallback(this.wum);
-    t.push(this.Rum.CreateByResourceIdAsync("PnlBackpackEquipTip", this.GetItem(11)));
-    this.Rum.SetActive(false);
+    this.Gdm = new ButtonItem_1.ButtonItem();
+    this.Gdm.SetFunction(this.Ndm);
+    t.push(this.Gdm.CreateThenShowByActorAsync(this.GetItem(7).GetOwner()));
+    this.Fdm = new ButtonItem_1.ButtonItem();
+    this.Fdm.SetFunction(this.Vdm);
+    t.push(this.Fdm.CreateThenShowByActorAsync(this.GetItem(8).GetOwner()));
+    this.Jgm = new HonamiStoryRoleTipItem_1.HonamiStoryRoleTipItem();
+    this.Jgm.RegisterCloseCallback(this.Zgm);
+    t.push(this.Jgm.CreateByResourceIdAsync("PnlBackpackEquipTip", this.GetItem(11)));
+    this.Jgm.SetActive(false);
     await Promise.all(t);
     this.ContentHeight = this.GetItem(13).GetHeight();
-    this.Tlm.SetLocalTextNew("HonamiStory_QuickEquippedAll");
-    this.blm.SetLocalTextNew("HonamiStory_QuickUnloadAll");
+    this.Gdm.SetLocalTextNew("HonamiStory_QuickEquippedAll");
+    this.Fdm.SetLocalTextNew("HonamiStory_QuickUnloadAll");
     this.InsteadValueItem.SetVisible(false);
     this.RefreshSelfPanel();
   }
@@ -183,7 +183,7 @@ class HonamiStoryEquipBackpackPanel extends HonamiStoryBackpackPanelBase_1.Honam
     t.OnExitGridCb = this.OnExitItem;
     t.OnDownGridCb = this.OnDownItem;
     t.OnClickedGridCb = this.OnClickItem;
-    t.OnMoreClickedCb = this.Pum;
+    t.OnMoreClickedCb = this.t0m;
     this.fgd.push(t);
     t.RegisterPanel(this);
     var i = LguiUtil_1.LguiUtil.CopyItem(this.GetItem(2), this.GetItem(1));
@@ -222,8 +222,8 @@ class HonamiStoryEquipBackpackPanel extends HonamiStoryBackpackPanelBase_1.Honam
     var i;
     var e;
     var s;
-    if (this.Rum && this.bum) {
-      this.Rum.Refresh(this.bum.GetRoleEquipData());
+    if (this.Jgm && this.zgm) {
+      this.Jgm.Refresh(this.zgm.GetRoleEquipData());
       i = this.RootItem.GetStretchBottom();
       t = this.RootItem.GetHeight();
       this.RootItem?.SetHeight(t + i);
@@ -231,7 +231,7 @@ class HonamiStoryEquipBackpackPanel extends HonamiStoryBackpackPanelBase_1.Honam
       i = this.GetItem(2).GetHeight();
       e = this.GetItem(11).GetAnchorOffsetY();
       s = this.GetScrollViewWithScrollbar(14).RootUIComp.GetStretchBottom();
-      this.Rum.GetRootItem().SetHeight(t - i - Math.abs(e) * 2 - s);
+      this.Jgm.GetRootItem().SetHeight(t - i - Math.abs(e) * 2 - s);
     }
   }
   async Mgd() {
@@ -291,12 +291,12 @@ class HonamiStoryEquipBackpackPanel extends HonamiStoryBackpackPanelBase_1.Honam
     var s;
     var t = this.Egd(t);
     if (t !== undefined && t.GetData() !== i && this.ygd(t, i)) {
-      (e = new Protocol_1.Aki.Protocol.q$d()).Qmd = this.RXl.BackpackId;
+      (e = new Protocol_1.Aki.Protocol.V$d()).Qmd = this.RXl.BackpackId;
       s = HonamiStoryUtil_1.HonamiStoryUtil.GetHonamiStoryItemSwapInfo(i, t.GetPosition());
-      e.B$d.push(s);
+      e.G$d.push(s);
       if (s = t.GetData()) {
         t = HonamiStoryUtil_1.HonamiStoryUtil.GetHonamiStoryItemSwapInfo(s, i.GetPosition());
-        e.B$d.push(t);
+        e.G$d.push(t);
       }
       return e;
     }
@@ -308,13 +308,13 @@ class HonamiStoryEquipBackpackPanel extends HonamiStoryBackpackPanelBase_1.Honam
         t = o;
         break;
       }
-      var e = new Protocol_1.Aki.Protocol.q$d();
+      var e = new Protocol_1.Aki.Protocol.V$d();
       e.Qmd = this.RXl.BackpackId;
       var s = HonamiStoryUtil_1.HonamiStoryUtil.GetHonamiStoryItemRemoveInfo(i);
-      e.B$d.push(s);
+      e.G$d.push(s);
       if (t !== undefined) {
         s = HonamiStoryUtil_1.HonamiStoryUtil.GetHonamiStoryItemAddInfo(t, i.GetPosition());
-        e.B$d.push(s);
+        e.G$d.push(s);
       }
       return e;
     }
@@ -323,14 +323,14 @@ class HonamiStoryEquipBackpackPanel extends HonamiStoryBackpackPanelBase_1.Honam
     if (i !== undefined) {
       t = this.Egd(t);
       if (t !== undefined) {
-        var s = new Protocol_1.Aki.Protocol.q$d();
+        var s = new Protocol_1.Aki.Protocol.V$d();
         s.Qmd = this.RXl.BackpackId;
         const o = HonamiStoryUtil_1.HonamiStoryUtil.GetHonamiStoryItemAddInfo(i, t.GetPosition());
-        s.B$d.push(o);
+        s.G$d.push(o);
         for (const r of e) {
           if (r) {
             const o = HonamiStoryUtil_1.HonamiStoryUtil.GetHonamiStoryItemRemoveInfo(r);
-            s.B$d.push(o);
+            s.G$d.push(o);
           }
         }
         return s;
@@ -351,14 +351,14 @@ class HonamiStoryEquipBackpackPanel extends HonamiStoryBackpackPanelBase_1.Honam
     if (t === 0) {
       this.SetPanelAlpha(t);
       this.RefreshBottomPanel(t);
-      this.Rum?.RefreshItemTipsOpen();
+      this.Jgm?.RefreshItemTipsOpen();
       for (const i of this.fgd) {
         i.RefreshState(t);
       }
     } else if (t === 4) {
       this.SetPanelAlpha(t);
     } else if (t === 1 || t === 2) {
-      this.Rum?.RefreshItemTipsOpen();
+      this.Jgm?.RefreshItemTipsOpen();
       for (const e of this.fgd) {
         e.RefreshState(t);
       }
@@ -398,15 +398,15 @@ class HonamiStoryEquipBackpackPanel extends HonamiStoryBackpackPanelBase_1.Honam
   }
   GetUpdateContextEffectGridItems(t) {
     var i = [];
-    for (const s of t.B$d) {
+    for (const s of t.G$d) {
       var e = ModelManager_1.ModelManager.HonamiStoryModel.GetItemData(s.Xmd);
-      if (e && (s.h5n === 0 || s.h5n === 1) && (e = e.GetPosition(), e = this.rpm(e))) {
+      if (e && (s.h5n === 0 || s.h5n === 1) && (e = e.GetPosition(), e = this.YTm(e))) {
         i.push(e);
       }
     }
     return i;
   }
-  rpm(t) {
+  YTm(t) {
     for (const i of this.fgd) {
       for (const e of i.GetPluginItemList()) {
         if (e.GetPosition() === t) {
@@ -425,8 +425,8 @@ class HonamiStoryEquipBackpackPanel extends HonamiStoryBackpackPanelBase_1.Honam
   SetPanelAlpha(t) {
     var i = t === 0;
     var e = t === 5 || t === 6;
-    this.Tlm?.SetEnableClick(i);
-    this.blm?.SetEnableClick(i);
+    this.Gdm?.SetEnableClick(i);
+    this.Fdm?.SetEnableClick(i);
     this.TeamDataItem?.SetIsEnable(i || e);
     for (const o of this.fgd) {
       o.SetEnableState(t);
@@ -436,11 +436,11 @@ class HonamiStoryEquipBackpackPanel extends HonamiStoryBackpackPanelBase_1.Honam
     this.GetItem(10)?.SetAlpha(i || e ? HonamiStoryDefine_1.HONAMI_ENABLE_ALPHA : HonamiStoryDefine_1.HONAMI_DISABLE_ALPHA);
   }
   RefreshBottomPanel(t) {
-    var i = this.bum !== undefined;
+    var i = this.zgm !== undefined;
     var e = t === 0;
     this.InsteadValueItem?.SetVisible(t === 3);
-    this.Tlm?.SetUiActive(e && !i);
-    this.blm?.SetUiActive(e && !i);
+    this.Gdm?.SetUiActive(e && !i);
+    this.Fdm?.SetUiActive(e && !i);
   }
   RefreshSelfPanel() {
     var t = this.GetItem(2).GetHeight();
@@ -456,15 +456,15 @@ class HonamiStoryEquipBackpackPanel extends HonamiStoryBackpackPanelBase_1.Honam
     this.SelfHeight = this.SelfOldHeight - t;
     this.RootItem?.SetHeight(this.SelfHeight);
   }
-  Lum() {
+  e0m() {
     for (const i of this.fgd) {
       i.SetActive(true);
     }
-    this.Rum?.ShowTips(false);
+    this.Jgm?.ShowTips(false);
     this.RootItem?.SetHeight(this.SelfHeight);
     this.GetItem(13)?.SetHeight(this.ContentHeight);
-    this.bum?.SetRoleTipOpenState(false);
-    this.bum = undefined;
+    this.zgm?.SetRoleTipOpenState(false);
+    this.zgm = undefined;
     var t = ModelManager_1.ModelManager.HonamiStoryModel.GetBackpackLogicState();
     this.RefreshBottomPanel(t);
   }
@@ -487,12 +487,12 @@ class HonamiStoryEquipBackpackPanel extends HonamiStoryBackpackPanelBase_1.Honam
     var e;
     var s;
     if (t !== undefined && t.GetData() !== i && this.ygd(t, i)) {
-      (e = new Protocol_1.Aki.Protocol.q$d()).Qmd = this.RXl.BackpackId;
+      (e = new Protocol_1.Aki.Protocol.V$d()).Qmd = this.RXl.BackpackId;
       s = HonamiStoryUtil_1.HonamiStoryUtil.GetHonamiStoryItemSwapInfo(i, t.GetPosition());
-      e.B$d.push(s);
+      e.G$d.push(s);
       if (s = t.GetData()) {
         t = HonamiStoryUtil_1.HonamiStoryUtil.GetHonamiStoryItemSwapInfo(s, i.GetPosition());
-        e.B$d.push(t);
+        e.G$d.push(t);
       }
       return e;
     }
@@ -504,13 +504,13 @@ class HonamiStoryEquipBackpackPanel extends HonamiStoryBackpackPanelBase_1.Honam
         t = o;
         break;
       }
-      var e = new Protocol_1.Aki.Protocol.q$d();
+      var e = new Protocol_1.Aki.Protocol.V$d();
       e.Qmd = this.RXl.BackpackId;
       var s = HonamiStoryUtil_1.HonamiStoryUtil.GetHonamiStoryItemRemoveInfo(i);
-      e.B$d.push(s);
+      e.G$d.push(s);
       if (t !== undefined) {
         s = HonamiStoryUtil_1.HonamiStoryUtil.GetHonamiStoryItemAddInfo(t, i.GetPosition());
-        e.B$d.push(s);
+        e.G$d.push(s);
       }
       return e;
     }
@@ -518,14 +518,14 @@ class HonamiStoryEquipBackpackPanel extends HonamiStoryBackpackPanelBase_1.Honam
   GetUpdateInfoInReceiveBackpackGamepad(t, i, e) {
     if (i !== undefined) {
       if (t !== undefined) {
-        var s = new Protocol_1.Aki.Protocol.q$d();
+        var s = new Protocol_1.Aki.Protocol.V$d();
         s.Qmd = this.RXl.BackpackId;
         const o = HonamiStoryUtil_1.HonamiStoryUtil.GetHonamiStoryItemAddInfo(i, t.GetPosition());
-        s.B$d.push(o);
+        s.G$d.push(o);
         for (const r of e) {
           if (r) {
             const o = HonamiStoryUtil_1.HonamiStoryUtil.GetHonamiStoryItemRemoveInfo(r);
-            s.B$d.push(o);
+            s.G$d.push(o);
           }
         }
         return s;
@@ -585,7 +585,7 @@ class HonamiStoryEquipBackpackPanel extends HonamiStoryBackpackPanelBase_1.Honam
           return undefined;
         }
       } else if (e === "SuitDesc") {
-        return this.Rum?.GetGuideUiItemAndUiItemForShowEx(t);
+        return this.Jgm?.GetGuideUiItemAndUiItemForShowEx(t);
       } else {
         return undefined;
       }

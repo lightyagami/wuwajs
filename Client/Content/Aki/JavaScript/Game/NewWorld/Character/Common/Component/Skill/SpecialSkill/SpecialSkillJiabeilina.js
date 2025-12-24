@@ -14,17 +14,17 @@ class SpecialSkillJiabeilina extends SpecialSkillBase_1.SpecialSkillBase {
     this.Hte = undefined;
     this.oRe = undefined;
     this.cBe = undefined;
-    this.Hfm = undefined;
-    this.CCm = undefined;
+    this.zym = undefined;
+    this.xIm = undefined;
     this.tTu = (e, t) => {
-      this.CCm ||= new Map();
+      this.xIm ||= new Map();
       let i = undefined;
-      if (this.CCm.has(e)) {
-        i = this.CCm.get(e);
+      if (this.xIm.has(e)) {
+        i = this.xIm.get(e);
       } else {
         var s = this.cBe?.GetSkill(e)?.GetLoadedMontages();
         if (!s) {
-          this.CCm.set(e, undefined);
+          this.xIm.set(e, undefined);
           return;
         }
         i = new Set();
@@ -39,35 +39,35 @@ class SpecialSkillJiabeilina extends SpecialSkillBase_1.SpecialSkillBase {
           }
         }
         if (!(i.size > 0)) {
-          this.CCm.set(e, undefined);
+          this.xIm.set(e, undefined);
           return;
         }
-        this.CCm.set(e, i);
+        this.xIm.set(e, i);
       }
       if (i && i.size > 0) {
-        this.pCm(i, false);
+        this.BIm(i, false);
       }
     };
     this.bJe = (e, t) => {
-      t = this.CCm?.get(t);
+      t = this.xIm?.get(t);
       if (t && t.size > 0) {
-        this.pCm(t, true);
+        this.BIm(t, true);
       }
     };
   }
   OnStart() {
     var e = this.SpecialSkillComponent.Entity;
     this.Hte = e.GetComponent(3);
-    this.cBe = e.GetComponent(39);
-    if (this.Hte?.IsRoleAndCtrlByMe && SpecialSkillJiabeilina.Wfm) {
-      this.CCm = new Map();
-      this.$fm();
+    this.cBe = e.GetComponent(40);
+    if (this.Hte?.IsRoleAndCtrlByMe && SpecialSkillJiabeilina.Zym) {
+      this.xIm = new Map();
+      this.Jym();
       EventSystem_1.EventSystem.AddWithTarget(e, EventDefine_1.EEventName.CharBeforeSkillWithTarget, this.tTu);
       EventSystem_1.EventSystem.AddWithTarget(e, EventDefine_1.EEventName.OnSkillEnd, this.bJe);
     }
   }
   OnEnd() {
-    this.Hfm?.clear();
+    this.zym?.clear();
     var e = this.SpecialSkillComponent.Entity;
     if (EventSystem_1.EventSystem.HasWithTarget(e, EventDefine_1.EEventName.CharBeforeSkillWithTarget, this.tTu)) {
       EventSystem_1.EventSystem.RemoveWithTarget(e, EventDefine_1.EEventName.CharBeforeSkillWithTarget, this.tTu);
@@ -78,22 +78,22 @@ class SpecialSkillJiabeilina extends SpecialSkillBase_1.SpecialSkillBase {
   }
   OnActivate() {
     var e = this.SpecialSkillComponent.Entity;
-    this.oRe = e.GetComponent(181);
-    if (this.Hfm) {
-      this.oRe?.SetNoUpdateMeshes(this.Hfm);
+    this.oRe = e.GetComponent(186);
+    if (this.zym) {
+      this.oRe?.SetNoUpdateMeshes(this.zym);
     }
   }
-  $fm() {
+  Jym() {
     if (this.Hte) {
       var t = ["OtherCase1", "OtherCase2", "OtherCase3", "OtherCase4", "OtherCase5", "OtherCase6", "OtherCase9", "OtherCase10"];
-      this.Hfm ||= new Set();
+      this.zym ||= new Set();
       var i = this.Hte.Actor.K2_GetComponentsByClass(UE.SkeletalMeshComponent.StaticClass());
       for (let e = 0; e < i.Num(); e++) {
         var s = i.Get(e);
         var h = s.GetName();
         if (t.includes(h)) {
           if (s.AnimClass) {
-            this.Hfm.add(s);
+            this.zym.add(s);
           } else {
             s.bNoSkeletonUpdate = true;
           }
@@ -101,31 +101,31 @@ class SpecialSkillJiabeilina extends SpecialSkillBase_1.SpecialSkillBase {
       }
     }
   }
-  pCm(i, s) {
-    if (this.Hte && this.Hfm) {
+  BIm(i, s) {
+    if (this.Hte && this.zym) {
       var h = this.Hte.Actor.K2_GetComponentsByClass(UE.SkeletalMeshComponent.StaticClass());
       let t = false;
       for (let e = 0; e < h.Num(); e++) {
         var a = h.Get(e);
         var n = a.GetName();
         if (i.has(n)) {
-          if (s && !this.Hfm.has(a)) {
-            this.Hfm.add(a);
+          if (s && !this.zym.has(a)) {
+            this.zym.add(a);
             t = true;
-          } else if (!s && this.Hfm.has(a)) {
-            this.Hfm.delete(a);
+          } else if (!s && this.zym.has(a)) {
+            this.zym.delete(a);
             t = true;
           }
         }
       }
       if (t) {
-        this.oRe?.SetNoUpdateMeshes(this.Hfm);
+        this.oRe?.SetNoUpdateMeshes(this.zym);
       }
     }
   }
   static SetOptimizeEnable(e) {
-    SpecialSkillJiabeilina.Wfm = e;
+    SpecialSkillJiabeilina.Zym = e;
   }
 }
-(exports.SpecialSkillJiabeilina = SpecialSkillJiabeilina).Wfm = true;
+(exports.SpecialSkillJiabeilina = SpecialSkillJiabeilina).Zym = true;
 //# sourceMappingURL=SpecialSkillJiabeilina.js.map

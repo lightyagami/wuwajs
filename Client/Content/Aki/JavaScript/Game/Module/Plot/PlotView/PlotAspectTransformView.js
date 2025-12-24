@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.PlotAspectTransformView = undefined;
 const UE = require("ue");
 const Log_1 = require("../../../../Core/Common/Log");
+const TickSystem_1 = require("../../../../Core/Tick/TickSystem");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
@@ -13,19 +14,27 @@ const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
 class PlotAspectTransformView extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.WI = false;
+    this.HIf = false;
     this.Rld = undefined;
     this.wld = undefined;
-    this.Lld = 0;
+    this.jIf = 0;
+    this.$If = 0;
     this.cwr = 0;
     this.r1t = 0;
     this.Ist = 0;
     this.qte = 0;
     this.Pld = false;
     this.LDe = -1;
+    this.WIf = false;
+    this.B7 = undefined;
     this.J_ = t => {
       if (this.r1t > this.cwr) {
-        this.Hide();
+        if (this.WIf) {
+          ControllerHolder_1.ControllerHolder.PlotController.RemoveAspectTransformView();
+        } else {
+          this.Hide();
+        }
+        this.B7?.();
       } else {
         this.r1t += t;
         this.qte += t * this.Ist;
@@ -36,50 +45,20 @@ class PlotAspectTransformView extends UiPanelBase_1.UiPanelBase {
           this.Rld?.SetStretchTop(this.qte);
           this.wld?.SetStretchBottom(this.qte);
         }
+        if (Log_1.Log.CheckDebug()) {
+          Log_1.Log.Debug("Plot", 26, "[Aspect] OnTick", ["Duration", this.r1t], ["BlendTime", this.cwr]);
+        }
       }
     };
-    this.Ald = () => {
+    this.QIf = () => {
       var t;
-      var s;
       var i;
-      var e;
-      if (this.WI) {
-        if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("Test", 26, "打印宽高尺寸.StartTransform");
-        }
-        this.WI = false;
-        this.Rld?.SetUIActive(true);
-        this.wld?.SetUIActive(true);
+      if (this.HIf) {
         t = this.RootItem.GetWidth();
-        s = this.RootItem.GetHeight();
-        this.Rld?.SetStretchRight(0);
-        this.wld?.SetStretchRight(0);
-        this.Rld?.SetStretchLeft(0);
-        this.wld?.SetStretchLeft(0);
-        this.Rld?.SetStretchTop(0);
-        this.wld?.SetStretchTop(0);
-        this.Rld?.SetStretchBottom(0);
-        this.wld?.SetStretchBottom(0);
-        i = t / s;
-        if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("Test", 26, "打印宽高尺寸.OnBeforeShow", ["X", t], ["Y", s], ["uiRatio", i], ["Cache.Ratio", this.Lld]);
-        }
-        if (this.Lld < i) {
-          this.Pld = true;
-          i = s * this.Lld;
-          this.Rld?.SetStretchRight(e = t / 2 + i / 2);
-          this.wld?.SetStretchLeft(e);
-          this.Ist = (t - i) / 2 / this.cwr;
-          this.qte = e;
-        } else {
-          this.Pld = false;
-          i = t / this.Lld;
-          this.Rld?.SetStretchTop(e = s / 2 + i / 2);
-          this.wld?.SetStretchBottom(e);
-          this.Ist = (s - i) / 2 / this.cwr;
-          this.qte = e;
-        }
-        this.LDe = ControllerHolder_1.ControllerHolder.PlotController.AddTick(this.J_);
+        i = this.RootItem.GetHeight();
+        this.$If = t / i;
+        this.HIf = false;
+        this.Ald();
       }
     };
   }
@@ -95,25 +74,93 @@ class PlotAspectTransformView extends UiPanelBase_1.UiPanelBase {
     this.wld?.SetAlpha(1);
     this.GetRootItem().GetRenderCanvas().bPostTickUpdate = true;
     this.GetRootItem().SetRaycastTarget(false);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.UIViewPortSizeChanged, this.Ald);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.UIViewPortSizeChanged, this.QIf);
   }
   OnBeforeDestroy() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.UIViewPortSizeChanged, this.Ald);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.UIViewPortSizeChanged, this.QIf);
   }
   OnBeforeShow() {}
   OnAfterShow() {
     if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("Test", 26, "打印宽高尺寸.OnAfterShow");
+      Log_1.Log.Debug("Plot", 26, "[Aspect] OnAfterShow");
     }
   }
   OnBeforeHide() {
-    ControllerHolder_1.ControllerHolder.PlotController.RemoveTick(this.LDe);
+    TickSystem_1.TickSystem.Remove(this.LDe);
     this.LDe = -1;
   }
-  EnableOnce(t) {
-    this.WI = true;
-    this.Lld = this.RootItem.GetWidth() / this.RootItem.GetHeight();
+  EnableAutoBlendOut(t) {
     this.cwr = t;
+    this.jIf = this.RootItem.GetWidth() / this.RootItem.GetHeight();
+    this.HIf = true;
+  }
+  ManualBlendOut(t, i, s, h = true) {
+    this.cwr = t;
+    this.B7 = s;
+    this.WIf = h;
+    this.jIf = i;
+    this.$If = this.RootItem.GetWidth() / this.RootItem.GetHeight();
+    this.Ald();
+  }
+  SetAspectRatio(t) {
+    this.Rld?.SetUIActive(true);
+    this.wld?.SetUIActive(true);
+    this.Rld?.SetStretchRight(0);
+    this.wld?.SetStretchRight(0);
+    this.Rld?.SetStretchLeft(0);
+    this.wld?.SetStretchLeft(0);
+    this.Rld?.SetStretchTop(0);
+    this.wld?.SetStretchTop(0);
+    this.Rld?.SetStretchBottom(0);
+    this.wld?.SetStretchBottom(0);
+    var i;
+    var s = this.RootItem.GetWidth();
+    var h = this.RootItem.GetHeight();
+    if (t < s / h) {
+      this.Rld?.SetStretchRight(i = s / 2 + h * t / 2);
+      this.wld?.SetStretchLeft(i);
+    } else {
+      this.Rld?.SetStretchTop(i = h / 2 + s / t / 2);
+      this.wld?.SetStretchBottom(i);
+    }
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("Plot", 26, "[Aspect] SetAspectRatio", ["Ratio", t]);
+    }
+  }
+  Ald() {
+    this.Rld?.SetUIActive(true);
+    this.wld?.SetUIActive(true);
+    this.Rld?.SetStretchRight(0);
+    this.wld?.SetStretchRight(0);
+    this.Rld?.SetStretchLeft(0);
+    this.wld?.SetStretchLeft(0);
+    this.Rld?.SetStretchTop(0);
+    this.wld?.SetStretchTop(0);
+    this.Rld?.SetStretchBottom(0);
+    this.wld?.SetStretchBottom(0);
+    var t;
+    var i;
+    var s = this.RootItem.GetWidth();
+    var h = this.RootItem.GetHeight();
+    if (this.jIf < this.$If) {
+      this.Pld = true;
+      t = h * this.jIf;
+      this.Rld?.SetStretchRight(i = s / 2 + t / 2);
+      this.wld?.SetStretchLeft(i);
+      this.Ist = (s - t) / 2 / this.cwr;
+      this.qte = i;
+    } else {
+      this.Pld = false;
+      t = s / this.jIf;
+      this.Rld?.SetStretchTop(i = h / 2 + t / 2);
+      this.wld?.SetStretchBottom(i);
+      this.Ist = (h - t) / 2 / this.cwr;
+      this.qte = i;
+    }
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("Plot", 26, "[Aspect] 过渡宽高比", ["BeforeRatio", this.jIf], ["AfterRatio", this.$If]);
+    }
+    this.LDe = TickSystem_1.TickSystem.Add(this.J_, "PlotAspectTransformView").Id;
   }
 }
 exports.PlotAspectTransformView = PlotAspectTransformView;

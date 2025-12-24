@@ -36,14 +36,14 @@ class WeaponBreachView extends UiTabViewBase_1.UiTabViewBase {
     this.N2i = undefined;
     this.O2i = undefined;
     this.dmo = undefined;
-    this.owm = undefined;
+    this.pef = undefined;
     this.AOo = () => {
       var e;
       if (this.ROo === 0 || this.ROo === 1) {
         e = {
-          SelectedItemList: this.cum(),
+          SelectedItemList: this.Rgm(),
           ClickConfirm: () => {
-            this.Cum();
+            this.Dgm();
           },
           BelongView: "WeaponRootView"
         };
@@ -53,7 +53,7 @@ class WeaponBreachView extends UiTabViewBase_1.UiTabViewBase {
           }
         });
       } else {
-        this.Cum();
+        this.Dgm();
       }
     };
     this.LevelUpLockTipClick = () => {
@@ -93,7 +93,7 @@ class WeaponBreachView extends UiTabViewBase_1.UiTabViewBase {
     this.b1o.SetButtonItemLocalText("RoleBreakup");
     this.AttributeLayout = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(3), this.G1o, this.GetItem(5).GetOwner());
   }
-  Cum() {
+  Dgm() {
     this.N2i = UiSceneManager_1.UiSceneManager.GetWeaponObserver();
     this.O2i = UiSceneManager_1.UiSceneManager.GetWeaponScabbardObserver();
     this.dmo = UiSceneManager_1.UiSceneManager.GetRoleSystemRoleActor();
@@ -110,8 +110,8 @@ class WeaponBreachView extends UiTabViewBase_1.UiTabViewBase {
       }, t);
     });
   }
-  cum() {
-    return this.owm ?? [];
+  Rgm() {
+    return this.pef ?? [];
   }
   OnBeforeShow() {
     this.DOo = this.ExtraParams;
@@ -151,11 +151,11 @@ class WeaponBreachView extends UiTabViewBase_1.UiTabViewBase {
       }
     }
     r = t.GoldConsume;
-    this.owm = n.map(e => ({
+    this.pef = n.map(e => ({
       ...e
     }));
     if (r > 0) {
-      this.owm.push({
+      this.pef.push({
         ItemId: ItemDefines_1.EItemId.Gold,
         IncId: 0,
         Count: r,
@@ -165,15 +165,15 @@ class WeaponBreachView extends UiTabViewBase_1.UiTabViewBase {
     this.b1o.Update(n, ItemDefines_1.EItemId.Gold, r);
     LguiUtil_1.LguiUtil.SetLocalText(this.GetText(1), "RoleBreakUpLevel", e.GetBreachLevel() + 1);
     this.k1o();
-    this.dum();
+    this.wgm();
   }
-  dum() {
+  wgm() {
     var e;
     if (this.ROo === 2) {
       this.b1o.SetButtonItemLocalText("RoleBreakup");
       this.b1o?.SetButtonItemInteractive(true);
     } else if (this.ROo === 0 || this.ROo === 1) {
-      if (e = ModelManager_1.ModelManager.ComposePopupModel.CheckOpenResult(this.cum())) {
+      if (e = ModelManager_1.ModelManager.ComposePopupModel.CheckOpenResult(this.Rgm())) {
         this.b1o.SetButtonItemLocalTextNew("AutoSynthesis_MaterialReplenishBtn_Text");
       } else {
         this.b1o.SetButtonItemLocalTextNew("AutoSynthesis_MaterialMissingBtn_Text");

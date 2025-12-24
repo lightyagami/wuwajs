@@ -7,6 +7,7 @@ exports.BaseBehaviorTree = undefined;
 const Log_1 = require("../../../../Core/Common/Log");
 const Queue_1 = require("../../../../Core/Container/Queue");
 const Protocol_1 = require("../../../../Core/Define/Net/Protocol");
+const IQuest_1 = require("../../../../UniverseEditor/Interface/IQuest");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const PublicUtil_1 = require("../../../Common/PublicUtil");
@@ -462,6 +463,8 @@ class BaseBehaviorTree {
       return 3;
     } else if (this.CheckCanGiveUp()) {
       return 1;
+    } else if (this.GetCurrentNodeCustomTrackBoard()?.TrackPhoneMessageBoard) {
+      return 5;
     } else {
       return 0;
     }
@@ -476,6 +479,13 @@ class BaseBehaviorTree {
   }
   CreateMapMarks() {
     this.Expression?.CreateMapMarks();
+  }
+  GetCurrentNodeCustomTrackBoard() {
+    for (const e of this.GetCurrentActiveChildQuestNodes()) {
+      if (e.NodeType === "ChildQuest" && e.TrackCustomBoard) {
+        return e.TrackCustomBoard;
+      }
+    }
   }
   DoAction(t, r, i, s, o, n, a) {
     if (this.BlackBoard.IsSleeping) {
@@ -534,6 +544,17 @@ class BaseBehaviorTree {
           case Protocol_1.Aki.Protocol.TOs.Proto_ChildQuestNodeStuckCheckAction:
             if (l.Type === "ChildQuest") {
               e = l.StuckCheck[t.IId.c5n].Actions;
+            }
+            break;
+          case Protocol_1.Aki.Protocol.TOs.Proto_RollBlockGamePlayActionCtx:
+            if (l.Type === "ChildQuest" && l.Condition.Type === IQuest_1.EChildQuest.FinishRollBlock) {
+              if (t.xvf?.h5n === Protocol_1.Aki.Protocol.Bvf.Proto_RbEnter) {
+                e = l.Condition.EnterActions;
+              } else if (t.xvf?.h5n === Protocol_1.Aki.Protocol.Bvf.Proto_RbMidWayExit) {
+                e = l.Condition.ExitActions;
+              } else if (t.xvf?.h5n === Protocol_1.Aki.Protocol.Bvf.Proto_RbPass) {
+                e = l.Condition.CompleteActions;
+              }
             }
         }
         if (e && e.length !== 0) {
@@ -634,7 +655,7 @@ class DynamicFlowInfo {
   ClearDynamicFlowNpcList() {
     for (const t of this.hQt) {
       var e = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t);
-      if (e &&= e.Entity.GetComponent(189)) {
+      if (e &&= e.Entity.GetComponent(195)) {
         e.PlayDynamicFlowEnd();
       }
     }

@@ -205,6 +205,7 @@ let BaseMoveComponent = BaseMoveComponent_1 = class BaseMoveComponent extends En
     this.uha = false;
     this.cha = 0;
     this.TurnRate = 1;
+    this.IsRegionMoveMode = false;
     this.GravityDirectInternal = Vector_1.Vector.Create(0, 0, -1);
     this.GravityUpInternal = Vector_1.Vector.Create(0, 0, 1);
     this.IsStandardGravityInternal = true;
@@ -302,7 +303,7 @@ let BaseMoveComponent = BaseMoveComponent_1 = class BaseMoveComponent extends En
           Context: "[BaseMoveComponent.SetGravityDirectByNumber]"
         });
       }
-      if (this.ActorComp.ActorUpProxy.DotProduct(this.TmpVector) > MathUtils_1.MathUtils.KindaSmallNumber - 1 && (this.TmpQuat.RotateVector(Vector_1.Vector.UpVectorProxy, this.TmpVector), this.TmpQuat.Multiply(this.ActorComp.ActorQuatProxy, this.TmpQuat2), this.TmpQuat2.Rotator(this.TmpRotator), this.AnimComp ? this.AnimComp.SetLocationAndRotatorWithModelBuffer(this.ActorComp.ActorLocationProxy.ToUeVector(), this.TmpRotator.ToUeRotator(), t, "SetGravity") : this.ActorComp.SetActorRotation(this.TmpRotator.ToUeRotator(), "SetGravity"), this.ActorComp?.IsRoleAndCtrlByMe) && !this.Entity.GetComponent(62)?.IsLocalInput) {
+      if (this.ActorComp.ActorUpProxy.DotProduct(this.TmpVector) > MathUtils_1.MathUtils.KindaSmallNumber - 1 && (this.TmpQuat.RotateVector(Vector_1.Vector.UpVectorProxy, this.TmpVector), this.TmpQuat.Multiply(this.ActorComp.ActorQuatProxy, this.TmpQuat2), this.TmpQuat2.Rotator(this.TmpRotator), this.AnimComp ? this.AnimComp.SetLocationAndRotatorWithModelBuffer(this.ActorComp.ActorLocationProxy.ToUeVector(), this.TmpRotator.ToUeRotator(), t, "SetGravity") : this.ActorComp.SetActorRotation(this.TmpRotator.ToUeRotator(), "SetGravity"), this.ActorComp?.IsRoleAndCtrlByMe) && !this.Entity.GetComponent(65)?.IsLocalInput) {
         this.TmpQuat.RotateVector(this.ActorComp.InputDirectProxy, this.TmpVector);
         this.ActorComp.SetInputDirect(this.TmpVector, true);
         this.TmpQuat.RotateVector(this.ActorComp.InputFacingProxy, this.TmpVector);
@@ -355,7 +356,7 @@ let BaseMoveComponent = BaseMoveComponent_1 = class BaseMoveComponent extends En
   }
   OnStart() {
     this.InitGravityDirect();
-    this.TimeScaleComp = this.Entity.GetComponent(126);
+    this.TimeScaleComp = this.Entity.GetComponent(131);
     return true;
   }
   SetUseDebugMovementSetting(t) {
@@ -918,6 +919,9 @@ let BaseMoveComponent = BaseMoveComponent_1 = class BaseMoveComponent extends En
   CanMove() {
     return this.CanMoveFromInputInternal && (this.CanMoveWithDistanceInternal || this.UnifiedStateComponent.IsInFighting);
   }
+  get CanMoveWithDistance() {
+    return this.CanMoveWithDistanceInternal;
+  }
   CanJumpPress() {
     return false;
   }
@@ -999,5 +1003,5 @@ let BaseMoveComponent = BaseMoveComponent_1 = class BaseMoveComponent extends En
 BaseMoveComponent.BaseMoveInheritCurveInternal = undefined;
 BaseMoveComponent.VelocityAdditionTotal = Vector_1.Vector.Create();
 BaseMoveComponent.VelocityAdditionDestination = Vector_1.Vector.Create();
-BaseMoveComponent = BaseMoveComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(45)], BaseMoveComponent);
+BaseMoveComponent = BaseMoveComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(46)], BaseMoveComponent);
 exports.BaseMoveComponent = BaseMoveComponent; //# sourceMappingURL=BaseMoveComponent.js.map

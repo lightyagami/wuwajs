@@ -23,7 +23,7 @@ class SurvivorsRogueCardShopItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.o6d = undefined;
     this.CardItem = undefined;
     this.Pe = undefined;
-    this.aYd = false;
+    this.GYd = false;
     this.Twd = undefined;
     this.bwd = [];
     this.OnPurchaseBtnClickCallback = undefined;
@@ -33,7 +33,7 @@ class SurvivorsRogueCardShopItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.Rwd = () => {
       if (this.HasImportantNode()) {
         this.n6d(true);
-        this.iJd().then(() => {
+        this.KJd().then(() => {
           this.OnPurchaseBtnClickCallback?.(this.Pe);
         });
       } else {
@@ -167,8 +167,8 @@ class SurvivorsRogueCardShopItem extends GridProxyAbstract_1.GridProxyAbstract {
     }
     if (!s) {
       this.GetItem(5).SetUIActive(false);
-      this.aYd = o.length > 0;
-      if (this.aYd) {
+      this.GYd = o.length > 0;
+      if (this.GYd) {
         await this.Twd.RefreshByDataAsync(o);
       }
     }
@@ -202,8 +202,8 @@ class SurvivorsRogueCardShopItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.GetItem(6).SetUIActive(t);
     this.GetItem(7).SetUIActive(t);
     this.GetButton(1).RootUIComp.SetUIActive(!t);
-    this.GetItem(2).SetUIActive(!t && this.aYd);
-    this.GetItem(8).SetUIActive(!t && this.aYd);
+    this.GetItem(2).SetUIActive(!t && this.GYd);
+    this.GetItem(8).SetUIActive(!t && this.GYd);
   }
   Pwd(e, i = false) {
     if (!i) {
@@ -245,7 +245,7 @@ class SurvivorsRogueCardShopItem extends GridProxyAbstract_1.GridProxyAbstract {
     }
     return false;
   }
-  async iJd() {
+  async KJd() {
     var t = [];
     for (const i of this.bwd) {
       var e = this.Twd.GetLayoutItemByKey(i);

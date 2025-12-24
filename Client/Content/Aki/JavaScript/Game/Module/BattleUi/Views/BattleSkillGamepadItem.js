@@ -161,7 +161,7 @@ class BattleSkillGamepadItem extends BattleSkillItem_1.BattleSkillItem {
   }
   RefreshEnable(t = false) {
     if (this.BehaviorButtonData) {
-      this.SetSkillItemEnable(this.BehaviorButtonData.IsEnable, t);
+      this.SetSkillItemEnable(this.BehaviorButtonData.IsEnable(), t);
     } else {
       super.RefreshEnable(t);
     }
@@ -216,13 +216,13 @@ class BattleSkillGamepadItem extends BattleSkillItem_1.BattleSkillItem {
   }
   RefreshSkillIcon() {
     if (this.BehaviorButtonData) {
-      this.SetSkillIcon(this.BehaviorButtonData.SkillIconPathList[this.BehaviorButtonData.State]);
+      this.SetSkillIcon(this.BehaviorButtonData.GetSkillTexturePath());
     } else {
       super.RefreshSkillIcon();
     }
   }
   IsVisible() {
-    return (!this.GamepadData.GetIsPressCombineButton() || this.HEe !== "Gamepad_LeftTrigger" && this.HEe !== "Gamepad_RightTrigger") && (this.BehaviorButtonData ? this.BehaviorButtonData.IsVisible : this.SkillButtonData?.GetButtonType() === 11 && !!this.GamepadData.IsAim() || super.IsVisible());
+    return (!this.GamepadData.GetIsPressCombineButton() || this.HEe !== "Gamepad_LeftTrigger" && this.HEe !== "Gamepad_RightTrigger") && (this.BehaviorButtonData ? this.BehaviorButtonData.IsVisible() : this.SkillButtonData?.GetButtonType() === 11 && !!this.GamepadData.IsAim() || super.IsVisible());
   }
   Deactivate() {
     super.Deactivate();
@@ -243,7 +243,7 @@ class BattleSkillGamepadItem extends BattleSkillItem_1.BattleSkillItem {
   }
   OnInputAction(t = false) {
     if (this.BehaviorButtonData) {
-      if (this.BehaviorButtonData.IsEnable && this.BehaviorButtonData.IsVisible) {
+      if (this.BehaviorButtonData.IsEnable() && this.BehaviorButtonData.IsVisible()) {
         this.ClickEffect?.Play();
       }
     } else {

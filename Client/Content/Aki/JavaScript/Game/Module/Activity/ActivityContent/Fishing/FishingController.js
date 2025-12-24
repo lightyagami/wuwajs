@@ -28,6 +28,7 @@ const InputMappingsDefine_1 = require("../../../../Ui/InputDistribute/InputMappi
 const UiManager_1 = require("../../../../Ui/UiManager");
 const ConfirmBoxDefine_1 = require("../../../ConfirmBox/ConfirmBoxDefine");
 const ScrollingTipsController_1 = require("../../../ScrollingTips/ScrollingTipsController");
+const TeleportMisc_1 = require("../../../Teleport/TeleportMisc");
 const DockyardItemBlockOriginalData_1 = require("./Dockyard/Base/DockyardItemBlockOriginalData");
 const DockyardCageViewModel_1 = require("./Dockyard/Cage/DockyardCageViewModel");
 const DockyardInteractViewModel_1 = require("./Dockyard/Interact/DockyardInteractViewModel");
@@ -455,7 +456,7 @@ class FishingController extends UiControllerBase_1.UiControllerBase {
     var o;
     var e = ConfigManager_1.ConfigManager.FishingConfig.GetFishingPortConfig(e);
     if (e &&= ConfigManager_1.ConfigManager.FishingConfig.GetFishingPortPosition(e.AshorePoint)) {
-      ModelManager_1.ModelManager.FishingModel.GetShipData().GetEntityHandle()?.Entity?.GetComponent(237)?.TryLeave(Global_1.Global.BaseCharacter.CharacterActorComponent.Entity, 1);
+      ModelManager_1.ModelManager.FishingModel.GetShipData().GetEntityHandle()?.Entity?.GetComponent(246)?.TryLeave(Global_1.Global.BaseCharacter.CharacterActorComponent.Entity, 1);
       o = e.Position;
       o = Vector_1.Vector.Create(o[0], o[1], o[2]);
       e = e.Rotation;
@@ -578,8 +579,8 @@ class FishingController extends UiControllerBase_1.UiControllerBase {
     }
   }
   static FishingTeleportToBoat() {
-    if (ControllerHolder_1.ControllerHolder.TeleportController.CheckCanTeleport()) {
-      if (!ControllerHolder_1.ControllerHolder.TeleportController.ShowTeleportConfirmBox(() => {
+    if (ModelManager_1.ModelManager.TeleportModel.AllowTeleportByUi) {
+      if (!TeleportMisc_1.TeleportMisc.ShowTeleportConfirmBox(() => {
         this.h5_();
       })) {
         this.h5_();
@@ -686,28 +687,38 @@ FishingController.w4_ = e => {
     UiManager_1.UiManager.CloseView("FishingWarningTips");
   }
 };
-FishingController.Hx_ = l => {
-  const _ = l?.l8n;
-  if (_) {
+FishingController.Hx_ = n => {
+  const a = n?.l8n;
+  if (a) {
     TimerSystem_1.GameplayTimerSystem.Delay(() => {
       var e = ModelManager_1.ModelManager.FishingModel.GetShipData();
-      e.GetEntityHandle()?.Entity?.GetComponent(284)?.ExecuteRevive();
-      var o = e.GetCreatureDataId();
+      e.GetEntityHandle()?.Entity?.GetComponent(303)?.ExecuteRevive();
       var e = e.IsShipDriving();
-      var r = new UE.VectorDouble(_.X, _.Y, _.Z);
-      var i = Rotator_1.Rotator.Create(l._8n?.Pitch ?? 0, l._8n?.Yaw ?? 0, l._8n?.Roll ?? 0);
-      var t = new Protocol_1.Aki.Protocol.M0_();
-      var n = new Protocol_1.Aki.Protocol.t4s();
-      (t.f5n = n).p5n = Protocol_1.Aki.Protocol.p5n.Proto_CenterText;
-      var a = new Protocol_1.Aki.Protocol.M4s();
-      a.v5n = "剧情_V2.1航海活动主线";
-      a.M5n = 20;
-      a.S5n = 1;
-      n.E5n = a;
+      var o = new UE.VectorDouble(a.X, a.Y, a.Z);
+      var r = Rotator_1.Rotator.Create(n._8n?.Pitch ?? 0, n._8n?.Yaw ?? 0, n._8n?.Roll ?? 0);
+      var i = new Protocol_1.Aki.Protocol.t4s();
+      i.p5n = Protocol_1.Aki.Protocol.p5n.Proto_CenterText;
+      var t = new Protocol_1.Aki.Protocol.M4s();
+      t.v5n = "剧情_V2.1航海活动主线";
+      t.M5n = 20;
+      t.S5n = 1;
+      i.E5n = t;
       if (e) {
-        ControllerHolder_1.ControllerHolder.TeleportControllerNew.TeleportPlayerWithVehicle(o, r, i, undefined, false, t);
+        ControllerHolder_1.ControllerHolder.TeleportController.TeleportPlayerInVehicle({
+          ClientReason: "FishingBoatDie",
+          TargetPosition: o,
+          TargetRotation: r,
+          ServerReason: Protocol_1.Aki.Protocol.v4s.Xvs,
+          Option: i
+        });
       } else {
-        ControllerHolder_1.ControllerHolder.TeleportControllerNew.TeleportPlayer("FishingBoatDie", r, i);
+        ControllerHolder_1.ControllerHolder.TeleportController.TeleportPlayer({
+          ClientReason: "FishingBoatDie",
+          TargetPosition: o,
+          TargetRotation: r,
+          ServerReason: Protocol_1.Aki.Protocol.v4s.Xvs,
+          Option: i
+        });
       }
     }, FISHING_SHIP_DEAD_TIME);
   } else if (Log_1.Log.CheckError()) {

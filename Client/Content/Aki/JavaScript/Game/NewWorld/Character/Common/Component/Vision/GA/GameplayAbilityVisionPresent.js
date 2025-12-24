@@ -6,7 +6,9 @@ Object.defineProperty(exports, "__esModule", {
 exports.GameplayAbilityVisionPresent = undefined;
 const Rotator_1 = require("../../../../../../../Core/Utils/Math/Rotator");
 const Vector_1 = require("../../../../../../../Core/Utils/Math/Vector");
-const PhantomUtil_1 = require("../../../../../../Module/Phantom/PhantomUtil");
+const EventDefine_1 = require("../../../../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../../../../Common/Event/EventSystem");
+const ControllerHolder_1 = require("../../../../../../Manager/ControllerHolder");
 const GameplayAbilityVisionMisc_1 = require("./GameplayAbilityVisionMisc");
 const GameplayAbilityVisionMorph_1 = require("./GameplayAbilityVisionMorph");
 class GameplayAbilityVisionPresent extends GameplayAbilityVisionMorph_1.GameplayAbilityVisionMorph {
@@ -16,12 +18,12 @@ class GameplayAbilityVisionPresent extends GameplayAbilityVisionMorph_1.Gameplay
     this.zd1 = Rotator_1.Rotator.Create();
     this.jY1 = false;
   }
-  SetVisionEnable(i) {
-    if (i) {
+  SetVisionEnable(e, i = this.VisionEntity) {
+    if (e) {
       this.jY1 = true;
       this.Yd1.DeepCopy(this.VisionActorComponent.ActorLocationProxy);
       this.zd1.DeepCopy(this.VisionActorComponent.ActorRotationProxy);
-      PhantomUtil_1.PhantomUtil.SetVisionEnable(this.VisionComponent.Entity, i, "GameplayAbilityVisionPresent.SetVisionEnable");
+      ControllerHolder_1.ControllerHolder.CreatureController.SetEntityEnable(i.Entity, e, "GameplayAbilityVisionPresent.SetVisionEnable", true);
     } else {
       this.VisionSkillComponent.StopGroup1Skill("驻场声骸技能结束");
       if (this.jY1) {
@@ -33,6 +35,7 @@ class GameplayAbilityVisionPresent extends GameplayAbilityVisionMorph_1.Gameplay
         Reason: "驻场声骸归位时的材质和粒子"
       });
     }
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPhantomEnableStateChange, e);
   }
   NeedNoAi() {
     return false;

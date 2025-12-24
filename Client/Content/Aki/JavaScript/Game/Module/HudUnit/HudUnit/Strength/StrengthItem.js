@@ -529,7 +529,7 @@ class StrengthItem extends StrengthItemBase_1.StrengthItemBase {
   }
   Buc() {
     var t;
-    if (this.wuc && (t = this.RoleData?.EntityHandle?.Entity?.GetComponent(62))) {
+    if (this.wuc && (t = this.RoleData?.EntityHandle?.Entity?.GetComponent(65))) {
       if (this.$Sc) {
         this.kuc(2, 1);
       } else {

@@ -21,13 +21,13 @@ class RoleDevSkillSlotItem extends UiPanelBase_1.UiPanelBase {
     this.fxd = false;
     this.gxd = false;
     this.NTt = undefined;
-    this.bWd = () => {
+    this.PWd = () => {
       this.NTt?.();
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UISprite], [1, UE.UISprite], [2, UE.UIText], [3, UE.UIButtonComponent]];
-    this.BtnBindInfo = [[3, this.bWd]];
+    this.BtnBindInfo = [[3, this.PWd]];
   }
   Refresh(i) {
     if (i) {

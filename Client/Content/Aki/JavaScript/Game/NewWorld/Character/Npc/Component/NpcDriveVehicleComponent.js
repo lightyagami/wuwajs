@@ -22,10 +22,13 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.NpcDriveVehicleComponent = undefined;
+const UE = require("ue");
+const Log_1 = require("../../../../../Core/Common/Log");
 const RegisterComponent_1 = require("../../../../../Core/Entity/RegisterComponent");
 const MathUtils_1 = require("../../../../../Core/Utils/MathUtils");
 const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const VehicleInfoDefines_1 = require("../../../Vehicle/Common/VehicleInfoDefines");
+const CharacterNameDefines_1 = require("../../Common/CharacterNameDefines");
 const CharacterDriveVehicleComponent_1 = require("../../Common/Component/CharacterDriveVehicleComponent");
 const DRIVE_MONTAGE_DEFAULT_OFFSET_X = 35;
 const VEHICLE_PB = "dI_";
@@ -33,9 +36,10 @@ let NpcDriveVehicleComponent = class NpcDriveVehicleComponent extends CharacterD
   constructor() {
     super(...arguments);
     this.NpcPerformComp = undefined;
+    this.AnimComp = undefined;
   }
   OnStart() {
-    return !!super.OnStart() && (this.NpcPerformComp = this.Entity.GetComponent(191), true);
+    return !!super.OnStart() && (this.NpcPerformComp = this.Entity.GetComponent(197), this.AnimComp = this.Entity.GetComponent(186), true);
   }
   OnActivate() {
     if (!this.NpcPerformComp?.IsBaseRoleNpc) {
@@ -52,7 +56,6 @@ let NpcDriveVehicleComponent = class NpcDriveVehicleComponent extends CharacterD
       ControllerHolder_1.ControllerHolder.VehicleController.VehicleUpdateEntity(e);
     }
   }
-  InitEnterEffectAsset() {}
   PostEnterVehiclePerform(e) {
     super.PostEnterVehiclePerform(e);
     this.NpcPerformComp?.OnEnterVehicle();
@@ -61,6 +64,27 @@ let NpcDriveVehicleComponent = class NpcDriveVehicleComponent extends CharacterD
     this.NpcPerformComp?.OnLeaveVehicle();
     super.LeaveVehiclePerform(e);
   }
+  RegisterExtraFollow(e) {
+    var t;
+    var r;
+    if (this.VehicleType === "Motorcycle" && (this.MoveComp.IsRegionMoveMode = true, t = this.Entity.GetComponent(108))) {
+      t.SyncLinkGameplayAnimBlueprint(1);
+      if ((t = this.ActorComp?.Actor?.Mesh?.GetLinkedAnimGraphInstanceByTag(CharacterNameDefines_1.CharacterNameDefines.ABP_GAMEPLAY))?.IsA(UE.KuroAnimInstance.StaticClass())) {
+        r = e.VehicleEntity?.GetComponent(248)?.MainAnimInstance;
+        if (t?.IsValid() && r?.IsValid()) {
+          t.RegisterExtraFollowOwnerAnimInstance(r);
+        }
+      } else if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Vehicle", 50, "NPC进入摩托时无法获取GameplayABP实例", ["P_PbDataId", this.ActorComp?.CreatureData.GetPbDataId()], ["V_PbDataId", e.VehicleEntity?.GetComponent(0)?.GetPbDataId()]);
+      }
+    }
+  }
+  UnregisterExtraFollow(e) {
+    var t;
+    if (this.VehicleType === "Motorcycle" && (this.MoveComp.IsRegionMoveMode = false, (t = this.ActorComp?.Actor?.Mesh?.GetLinkedAnimGraphInstanceByTag(CharacterNameDefines_1.CharacterNameDefines.ABP_GAMEPLAY))?.IsA(UE.KuroAnimInstance.StaticClass())) && (t?.IsValid() && t.RegisterExtraFollowOwnerAnimInstance(undefined), t = this.Entity.GetComponent(108))) {
+      t.SyncLinkGameplayAnimBlueprint(0);
+    }
+  }
 };
-NpcDriveVehicleComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(235)], NpcDriveVehicleComponent);
+NpcDriveVehicleComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(244)], NpcDriveVehicleComponent);
 exports.NpcDriveVehicleComponent = NpcDriveVehicleComponent; //# sourceMappingURL=NpcDriveVehicleComponent.js.map

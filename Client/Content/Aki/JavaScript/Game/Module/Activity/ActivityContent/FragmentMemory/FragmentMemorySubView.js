@@ -150,6 +150,7 @@ class FragmentMemorySubView extends ActivitySubViewBase_1.ActivitySubViewBase {
     this.JPn.SetActive(e);
   }
   mGe() {
+    this.LNe.SetActivityBaseData(this.ActivityBaseData);
     this.LNe.SetTitleByText(this.ActivityBaseData.GetTitle());
     var [e, t] = this.GetTimeVisibleAndRemainTime();
     this.LNe.SetTimeTextVisible(e);

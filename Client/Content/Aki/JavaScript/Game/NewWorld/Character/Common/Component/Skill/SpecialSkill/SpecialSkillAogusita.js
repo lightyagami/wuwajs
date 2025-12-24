@@ -41,7 +41,7 @@ class SpecialSkillAogusita extends SpecialSkillBase_1.SpecialSkillBase {
     this.Jze = () => {
       this.TMd(true);
     };
-    this.Eim = e => {
+    this.qsm = e => {
       this.cBe.EndSkill(PASSIVE_SKILL_ID, "触发通用QTE，终止奥古斯塔时停被动技能");
     };
     this.tTu = (e, t) => {
@@ -54,13 +54,13 @@ class SpecialSkillAogusita extends SpecialSkillBase_1.SpecialSkillBase {
     var e;
     var t = this.SpecialSkillComponent.Entity;
     this.Hte = t.GetComponent(3);
-    this.cBe = t.GetComponent(39);
+    this.cBe = t.GetComponent(40);
     if (this.Hte?.IsRoleAndCtrlByMe) {
-      this.Nce = t.GetComponent(62);
-      e = t.GetComponent(209);
+      this.Nce = t.GetComponent(65);
+      e = t.GetComponent(215);
       this.SMd = e?.ListenForTagAddOrRemove(1519720150, this.IMd);
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnChangeRole, this.xie);
-      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CommonQteStart, this.Eim);
+      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CommonQteStart, this.qsm);
       EventSystem_1.EventSystem.AddWithTarget(t, EventDefine_1.EEventName.CharOnRoleDeadTargetSelf, this.Jze);
     }
     EventSystem_1.EventSystem.AddWithTarget(t, EventDefine_1.EEventName.CharBeforeSkillWithTarget, this.tTu);
@@ -74,8 +74,8 @@ class SpecialSkillAogusita extends SpecialSkillBase_1.SpecialSkillBase {
     if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnChangeRole, this.xie)) {
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnChangeRole, this.xie);
     }
-    if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.CommonQteStart, this.Eim)) {
-      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CommonQteStart, this.Eim);
+    if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.CommonQteStart, this.qsm)) {
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CommonQteStart, this.qsm);
     }
     if (EventSystem_1.EventSystem.HasWithTarget(this.SpecialSkillComponent.Entity, EventDefine_1.EEventName.CharOnRoleDeadTargetSelf, this.Jze)) {
       EventSystem_1.EventSystem.RemoveWithTarget(this.SpecialSkillComponent.Entity, EventDefine_1.EEventName.CharOnRoleDeadTargetSelf, this.Jze);

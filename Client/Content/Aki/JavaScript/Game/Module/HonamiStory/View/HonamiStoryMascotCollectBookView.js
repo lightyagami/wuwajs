@@ -26,7 +26,7 @@ class HonamiStoryMascotCollectBookView extends UiViewBase_1.UiViewBase {
     this.KVd = undefined;
     this.XVd = undefined;
     this.YVd = undefined;
-    this.S_m = undefined;
+    this.kfm = undefined;
     this.zVd = t => {
       if (this.tJl !== t) {
         this.tJl = t;
@@ -35,20 +35,20 @@ class HonamiStoryMascotCollectBookView extends UiViewBase_1.UiViewBase {
         this.UiViewSequence?.PlaySequence("Desc_Switch");
       }
     };
-    this.Tzd = () => {
+    this.nJd = () => {
       this.QVd.SetRedDotVisible(this.CNe.CanMascotCollectGetReward());
       this.KVd.SetRedDotVisible(this.CNe.CanAreaCollectGetReward());
       var t = ModelManager_1.ModelManager.HonamiStoryModel.GetRandomDialogData(8);
-      this.S_m.SetTalkInfoTextAndPlayAudio(t);
+      this.kfm.SetTalkInfoTextAndPlayAudio(t);
     };
-    this.bzd = t => {
+    this.sJd = t => {
       this.KVd.SetRedDotVisible(this.CNe.CanAreaCollectGetReward());
     };
-    this.Dmm = () => {
+    this.pvm = () => {
       this.UiViewSequence?.PlaySequence("Paper_Fall");
     };
     this.V2i = () => {
-      this.Umm();
+      this.vvm();
       this.CloseMe();
     };
   }
@@ -74,13 +74,13 @@ class HonamiStoryMascotCollectBookView extends UiViewBase_1.UiViewBase {
     this.KVd.SetSelectType(1);
     this.KVd.BindToggleCallBack(this.zVd);
     this.XVd = new MascotCollectBookMascotPanel_1.MascotCollectBookMascotPanel();
-    this.XVd.BindSwitchCallback(this.Dmm);
+    this.XVd.BindSwitchCallback(this.pvm);
     t.push(this.XVd.CreateByResourceIdAsync("UiItem_CollectBookVermisstInfo", this.GetItem(3)));
     this.YVd = new MascotCollectBookStagePanel_1.MascotCollectBookStagePanel();
-    this.YVd.BindSwitchCallback(this.Dmm);
+    this.YVd.BindSwitchCallback(this.pvm);
     t.push(this.YVd.CreateByResourceIdAsync("UiItem_CollectBookStadtage", this.GetItem(3)));
-    this.S_m = new HonamiStoryBozaiTalkPanel_1.HonamiStoryBozaiTalkPanel();
-    t.push(this.S_m.CreateThenShowByActorAsync(this.GetItem(4).GetOwner()));
+    this.kfm = new HonamiStoryBozaiTalkPanel_1.HonamiStoryBozaiTalkPanel();
+    t.push(this.kfm.CreateThenShowByActorAsync(this.GetItem(4).GetOwner()));
     await Promise.all(t);
   }
   OnBeforeShow() {
@@ -94,15 +94,15 @@ class HonamiStoryMascotCollectBookView extends UiViewBase_1.UiViewBase {
       t = 7;
     }
     var e = ModelManager_1.ModelManager.HonamiStoryModel.GetRandomDialogData(t);
-    this.S_m.SetTalkInfoTextAndPlayAudio(e);
+    this.kfm.SetTalkInfoTextAndPlayAudio(e);
   }
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnHonamiStoryMascotRewardReceive, this.Tzd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnHonamiStoryAreaSecretRewardReceive, this.bzd);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnHonamiStoryMascotRewardReceive, this.nJd);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnHonamiStoryAreaSecretRewardReceive, this.sJd);
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnHonamiStoryMascotRewardReceive, this.Tzd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnHonamiStoryAreaSecretRewardReceive, this.bzd);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnHonamiStoryMascotRewardReceive, this.nJd);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnHonamiStoryAreaSecretRewardReceive, this.sJd);
   }
   Og() {
     if (this.tJl === 0) {
@@ -118,7 +118,7 @@ class HonamiStoryMascotCollectBookView extends UiViewBase_1.UiViewBase {
     this.QVd.RefreshToggleItem(this.tJl);
     this.KVd.RefreshToggleItem(this.tJl);
   }
-  Umm() {
+  vvm() {
     if (this.tJl === 0) {
       this.XVd.CloseWithSequence();
     }

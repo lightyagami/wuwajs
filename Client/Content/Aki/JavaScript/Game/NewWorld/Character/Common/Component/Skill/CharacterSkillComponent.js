@@ -1,23 +1,23 @@
 "use strict";
 
 var CharacterSkillComponent_1;
-var __decorate = this && this.__decorate || function (t, i, e, s) {
-  var r;
-  var h = arguments.length;
-  var a = h < 3 ? i : s === null ? s = Object.getOwnPropertyDescriptor(i, e) : s;
+var __decorate = this && this.__decorate || function (t, i, e, r) {
+  var s;
+  var a = arguments.length;
+  var h = a < 3 ? i : r === null ? r = Object.getOwnPropertyDescriptor(i, e) : r;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    a = Reflect.decorate(t, i, e, s);
+    h = Reflect.decorate(t, i, e, r);
   } else {
     for (var o = t.length - 1; o >= 0; o--) {
-      if (r = t[o]) {
-        a = (h < 3 ? r(a) : h > 3 ? r(i, e, a) : r(i, e)) || a;
+      if (s = t[o]) {
+        h = (a < 3 ? s(h) : a > 3 ? s(i, e, h) : s(i, e)) || h;
       }
     }
   }
-  if (h > 3 && a) {
-    Object.defineProperty(i, e, a);
+  if (a > 3 && h) {
+    Object.defineProperty(i, e, h);
   }
-  return a;
+  return h;
 };
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -38,9 +38,6 @@ const ROLLING_GROUNDED_RECOVER_TIME = 600;
 let CharacterSkillComponent = CharacterSkillComponent_1 = class CharacterSkillComponent extends BaseSkillComponent_1.BaseSkillComponent {
   constructor() {
     super(...arguments);
-    this.Yzr = Stats_1.Stat.Create("DoSkillBegin5 SetAnimState");
-    this.Jzr = Stats_1.Stat.Create("DoSkillBegin6 Target&Rotation");
-    this.zzr = Stats_1.Stat.Create("DoSkillBegin7 SetMoveState");
     this.ActorComp = undefined;
     this.Gce = undefined;
     this.mBe = undefined;
@@ -60,24 +57,22 @@ let CharacterSkillComponent = CharacterSkillComponent_1 = class CharacterSkillCo
     return !!super.OnInitData() && (this.ActorComp = this.Entity.GetComponent(3), CharacterSkillComponent_1.AZr || (CharacterSkillComponent_1.PZr = CommonParamById_1.configCommonParamById.GetIntConfig("jump_priority"), CharacterSkillComponent_1.xZr = CommonParamById_1.configCommonParamById.GetIntConfig("fly_priority"), CharacterSkillComponent_1.AZr = true), true);
   }
   OnInit() {
-    return !!super.OnInit() && (this.Gce = this.Entity.GetComponent(182), this.mBe = this.Entity.CheckGetComponent(179), this.oRe = this.Entity.GetComponent(181), true);
+    return !!super.OnInit() && (this.Gce = this.Entity.GetComponent(187), this.mBe = this.Entity.CheckGetComponent(184), this.oRe = this.Entity.GetComponent(186), true);
   }
   OnEnd() {
     return !!super.OnEnd() && (this.DZr = 0, void (this.RZr = 0) !== this.pZr && (TimerSystem_1.TimerSystem.Remove(this.pZr), this.pZr = undefined), true);
   }
   DoSkillBeginMoveAction(t, i) {
-    this.Yzr.Start();
+    CharacterSkillComponent_1.Yzr.Start();
     this.mBe.ExitHitState("释放技能");
-    if (!t.HasAnimTag) {
-      this.mBe.ExitAimStatus();
-    }
-    this.Yzr.Stop();
-    this.Jzr.Start();
+    CharacterSkillComponent_1.Yzr.Stop();
+    CharacterSkillComponent_1.Jzr.Start();
     this.SetSkillTargetDirection(i.SkillDirection, i.SkillTarget.SkillTargetPriority);
-    this.Jzr.Stop();
-    this.zzr.Start();
+    CharacterSkillComponent_1.Jzr.Stop();
+    CharacterSkillComponent_1.zzr.Start();
     this.RGl(t.SkillId, i);
-    this.zzr.Stop();
+    CharacterSkillComponent_1.zzr.Stop();
+    this.oRe?.StartForceDisableAnimOptimization(4, false);
   }
   SetSkillTargetDirection(t, i = 0) {
     if (this.LockOnComp?.Valid) {
@@ -100,7 +95,7 @@ let CharacterSkillComponent = CharacterSkillComponent_1 = class CharacterSkillCo
     }
   }
   een() {
-    if (this.ActorComp.IsAutonomousProxy && this.IsHasInputDir() && !this.Entity.GetComponent(62)?.IsLocalInput) {
+    if (this.ActorComp.IsAutonomousProxy && this.IsHasInputDir() && !this.Entity.GetComponent(65)?.IsLocalInput) {
       MathUtils_1.MathUtils.LookRotationUpFirst(this.ActorComp.InputDirectProxy, this.Gce.GravityUp, this.TmpRotator);
       this.TmpTransform.Set(this.ActorComp.ActorLocationProxy, this.TmpRotator.Quaternion(), this.ActorComp.ActorScaleProxy);
       this.ActorComp.SetActorTransform(this.TmpTransform.ToUeTransform(), "释放技能.转向输入方向", false, 1);
@@ -138,21 +133,21 @@ let CharacterSkillComponent = CharacterSkillComponent_1 = class CharacterSkillCo
     if (BaseSkillComponent_1.SKILL_GROUP_MAIN === i.GroupId) {
       if (this.Gce && this.Gce.CharacterMovement.MovementMode === 6) {
         if ((i = this.Gce.CharacterMovement.CustomMovementMode) === CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_GLIDE) {
-          if ((e = this.Entity.GetComponent(59)).Valid) {
+          if ((e = this.Entity.GetComponent(62)).Valid) {
             e.ExitGlideState("Skill");
           }
-        } else if (i === CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_SOAR && (e = this.Entity.GetComponent(59)).Valid) {
+        } else if (i === CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_SOAR && (e = this.Entity.GetComponent(62)).Valid) {
           e.ExitSoarState(3, "Skill");
         }
       }
       var e;
-      var s;
+      var r;
       var i = this.mBe.MoveState;
       switch (i) {
         case CharacterUnifiedStateTypes_1.ECharMoveState.Sprint:
           if (!this.TagComp.HasTag(-1800191060)) {
-            this.TagComp.RemoveTag(s = 388142570);
-            this.BuffComp?.RemoveBuffByTag(s, `技能${t}结束移动`);
+            this.TagComp.RemoveTag(r = 388142570);
+            this.BuffComp?.RemoveBuffByTag(r, `技能${t}结束移动`);
             this.mBe.SetMoveState(CharacterUnifiedStateTypes_1.ECharMoveState.Run);
           }
           break;
@@ -174,6 +169,7 @@ let CharacterSkillComponent = CharacterSkillComponent_1 = class CharacterSkillCo
     }
     this.Gce.CharacterMovement.OverrideTerminalVelocity = 0;
     this.Gce.ClearFallingHorizontalMaxSpeed();
+    this.oRe?.CancelForceDisableAnimOptimization(4);
   }
   OnBeforePlaySkillMontage() {
     this.mBe.ExitHitState("播放技能蒙太奇");
@@ -233,8 +229,11 @@ let CharacterSkillComponent = CharacterSkillComponent_1 = class CharacterSkillCo
     this.RZr = t;
   }
 };
+CharacterSkillComponent.Yzr = Stats_1.Stat.Create("DoSkillBegin5 SetAnimState");
+CharacterSkillComponent.Jzr = Stats_1.Stat.Create("DoSkillBegin6 Target&Rotation");
+CharacterSkillComponent.zzr = Stats_1.Stat.Create("DoSkillBegin7 SetMoveState");
 CharacterSkillComponent.AZr = false;
 CharacterSkillComponent.PZr = 0;
 CharacterSkillComponent.xZr = 0;
-CharacterSkillComponent = CharacterSkillComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(40)], CharacterSkillComponent);
+CharacterSkillComponent = CharacterSkillComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(41)], CharacterSkillComponent);
 exports.CharacterSkillComponent = CharacterSkillComponent; //# sourceMappingURL=CharacterSkillComponent.js.map

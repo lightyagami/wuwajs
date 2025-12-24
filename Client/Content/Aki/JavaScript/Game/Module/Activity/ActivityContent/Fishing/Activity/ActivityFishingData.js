@@ -21,36 +21,36 @@ class ActivityFishingData extends ActivityData_1.ActivityBaseData {
     this.icl = 0;
     this.ix_ = new Map();
     this.rx_ = new Map();
-    this.lVl = (e, t) => {
+    this.lVl = (t, e) => {
       var i;
       var r;
-      if (e.Status === t.Status) {
-        i = ConfigManager_1.ConfigManager.FishingConfig.GetFishingActivityLimitTask(e.Id);
-        r = ConfigManager_1.ConfigManager.FishingConfig.GetFishingActivityLimitTask(t.Id);
+      if (t.Status === e.Status) {
+        i = ConfigManager_1.ConfigManager.FishingConfig.GetFishingActivityLimitTask(t.Id);
+        r = ConfigManager_1.ConfigManager.FishingConfig.GetFishingActivityLimitTask(e.Id);
         if (i.SortId === r.SortId) {
-          return e.Id - t.Id;
+          return t.Id - e.Id;
         } else {
           return i.SortId - r.SortId;
         }
       } else {
-        return e.Status - t.Status;
+        return t.Status - e.Status;
       }
     };
     this.ox_ = new Map();
     this.nx_ = 0;
     this.MilestoneRewardMaxCount = 0;
   }
-  OnInit(e) {
+  OnInit(t) {
     this.sx_();
   }
-  PhraseEx(e) {
-    e = e.YS_;
-    if (e) {
-      this.tcl = MathUtils_1.MathUtils.LongToNumber(e._M_);
-      this.icl = MathUtils_1.MathUtils.LongToNumber(e.cM_);
-      this.RefreshLimitTimeTaskDataList(e.$M_, false);
-      this.MilestoneRewardItemAccumulate = e.QM_;
-      this.RefreshMilestoneReward(e.WM_, false);
+  PhraseEx(t) {
+    t = t.YS_;
+    if (t) {
+      this.tcl = MathUtils_1.MathUtils.LongToNumber(t._M_);
+      this.icl = MathUtils_1.MathUtils.LongToNumber(t.cM_);
+      this.RefreshLimitTimeTaskDataList(t.$M_, false);
+      this.MilestoneRewardItemAccumulate = t.QM_;
+      this.RefreshMilestoneReward(t.WM_, false);
     }
   }
   GetActivityConfig() {
@@ -66,6 +66,9 @@ class ActivityFishingData extends ActivityData_1.ActivityBaseData {
   GetButtonRedPointShowState() {
     return !this.IsUnLock() && this.GetPreOpenFirstCheckRedDotState();
   }
+  GetExternalButtonRedPointState() {
+    return this.GetButtonRedPointShowState();
+  }
   RefreshActivityRedDotState() {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.Id);
   }
@@ -73,9 +76,9 @@ class ActivityFishingData extends ActivityData_1.ActivityBaseData {
     return !!this.IsLimitTimeRewardOn() && (this.GetTimeLimitRewardRedDotState() || this.GetLimitTimeShopRedDotState());
   }
   GetTimeLimitRewardRedDotState() {
-    var t = this.GetRewardTargetTabList();
-    for (let e = 0; e < t.length; e++) {
-      var i = e + 1;
+    var e = this.GetRewardTargetTabList();
+    for (let t = 0; t < e.length; t++) {
+      var i = t + 1;
       if (this.GetTimeLimitTasksRedDotStateByGroupId(i)) {
         return true;
       }
@@ -89,12 +92,12 @@ class ActivityFishingData extends ActivityData_1.ActivityBaseData {
     return ModelManager_1.ModelManager.PayShopModel.CheckShopItemCheckFlag(209);
   }
   GetPreOpenFirstCheckRedDotState() {
-    var e = this.CanPreOpen();
-    var t = this.HasPreOpenCondition();
-    return !!e && !!t && ModelManager_1.ModelManager.ActivityModel.GetActivityCacheData(this.Id, 0, 0, 0, 0) === 0;
+    var t = this.CanPreOpen();
+    var e = this.HasPreOpenCondition();
+    return !!t && !!e && ModelManager_1.ModelManager.ActivityModel.GetActivityCacheData(this.Id, 0, 0, 0, 0) === 0;
   }
-  SaveFirstCheckRedDotState(e, t = 0) {
-    return ModelManager_1.ModelManager.ActivityModel.GetActivityCacheData(this.Id, 0, e, t, 0) === 1 || (ModelManager_1.ModelManager.ActivityModel.SaveActivityData(this.Id, e, t, 0, 1), this.RefreshActivityRedDotState(), false);
+  SaveFirstCheckRedDotState(t, e = 0) {
+    return ModelManager_1.ModelManager.ActivityModel.GetActivityCacheData(this.Id, 0, t, e, 0) === 1 || (ModelManager_1.ModelManager.ActivityModel.SaveActivityData(this.Id, t, e, 0, 1), this.RefreshActivityRedDotState(), false);
   }
   GetRewardTargetTabList() {
     return ConfigManager_1.ConfigManager.FishingConfig.GetAllFishingActivityGroupConfig();
@@ -103,66 +106,66 @@ class ActivityFishingData extends ActivityData_1.ActivityBaseData {
     return ConfigManager_1.ConfigManager.DynamicTabConfig.GetViewTabList("FishingTimeLimitView");
   }
   IsLimitTimeRewardOn() {
-    var e;
-    return !!this.IsUnLock() && (e = TimeUtil_1.TimeUtil.GetServerTime()) >= this.tcl && e <= this.icl;
+    var t;
+    return !!this.IsUnLock() && (t = TimeUtil_1.TimeUtil.GetServerTime()) >= this.tcl && t <= this.icl;
   }
   GetLimitTimeEndTime() {
     return this.icl;
   }
-  RefreshLimitTimeTaskDataList(e, t) {
-    for (const i of e) {
+  RefreshLimitTimeTaskDataList(t, e) {
+    for (const i of t) {
       this.ax_(i);
     }
-    if (t) {
+    if (e) {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.FishingTimeLimitRewardListRefresh);
     }
   }
-  ax_(t) {
-    let i = this.ix_.get(t.s5n);
+  ax_(e) {
+    let i = this.ix_.get(e.s5n);
     if (!i) {
       i = new ActivityCommonDefine_1.ActivityTaskData();
-      var r = ConfigManager_1.ConfigManager.FishingConfig.GetFishingActivityLimitTask(t.s5n);
+      var r = ConfigManager_1.ConfigManager.FishingConfig.GetFishingActivityLimitTask(e.s5n);
       if (!r) {
         if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("Fishing", 37, "[FishingActivity] 限时奖励无配置", ["TaskId", t.s5n]);
+          Log_1.Log.Error("Fishing", 37, "[FishingActivity] 限时奖励无配置", ["TaskId", e.s5n]);
         }
         return;
       }
-      let e = this.rx_.get(r.GroupId);
-      if (!e) {
-        e = new Set();
-        this.rx_.set(r.GroupId, e);
+      let t = this.rx_.get(r.GroupId);
+      if (!t) {
+        t = new Set();
+        this.rx_.set(r.GroupId, t);
       }
-      e.add(t.s5n);
-      this.ix_.set(t.s5n, i);
+      t.add(e.s5n);
+      this.ix_.set(e.s5n, i);
     }
-    i.Refresh(t);
+    i.Refresh(e);
   }
-  SetTimeLimitTaskDone(e) {
-    this.ix_.get(e).Status = 2;
+  SetTimeLimitTaskDone(t) {
+    this.ix_.get(t).Status = 2;
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.FishingTimeLimitRewardProgressRefresh);
   }
-  GetTimeLimitTasksByGroupId(e) {
-    var t = [];
-    var e = this.rx_.get(e);
-    if (!e) {
-      return t;
+  GetTimeLimitTasksByGroupId(t) {
+    var e = [];
+    var t = this.rx_.get(t);
+    if (!t) {
+      return e;
     }
-    for (const i of e.values()) {
-      t.push(this.ix_.get(i));
+    for (const i of t.values()) {
+      e.push(this.ix_.get(i));
     }
-    return t.sort(this.lVl);
+    return e.sort(this.lVl);
   }
-  GetTimeLimitTasksRedDotStateByGroupId(e) {
-    for (const t of this.GetTimeLimitTasksByGroupId(e)) {
-      if (t.Status === 0) {
+  GetTimeLimitTasksRedDotStateByGroupId(t) {
+    for (const e of this.GetTimeLimitTasksByGroupId(t)) {
+      if (e.Status === 0) {
         return true;
       }
     }
     return false;
   }
-  set MilestoneRewardItemAccumulate(e) {
-    this.nx_ = e;
+  set MilestoneRewardItemAccumulate(t) {
+    this.nx_ = t;
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.FishingTimeLimitRewardProgressRefresh);
   }
   get MilestoneRewardItemAccumulate() {
@@ -173,18 +176,18 @@ class ActivityFishingData extends ActivityData_1.ActivityBaseData {
   }
   sx_() {
     this.ox_.clear();
-    let e = -1;
+    let t = -1;
     for (const i of ConfigManager_1.ConfigManager.FishingConfig.GetAllFishingActivityMilestone()) {
-      var t = new ActivityFishingDefine_1.FishingRewardProgressData(i.Id, i.ItemNum);
-      this.ox_.set(i.Id, t);
-      e = Math.max(e, i.ItemNum);
+      var e = new ActivityFishingDefine_1.FishingRewardProgressData(i.Id, i.ItemNum);
+      this.ox_.set(i.Id, e);
+      t = Math.max(t, i.ItemNum);
     }
-    this.MilestoneRewardMaxCount = e;
+    this.MilestoneRewardMaxCount = t;
   }
-  RefreshMilestoneReward(e, t) {
-    for (const s of Object.keys(e)) {
+  RefreshMilestoneReward(t, e) {
+    for (const s of Object.keys(t)) {
       var i = Number.parseInt(s);
-      var r = e[s];
+      var r = t[s];
       var n = this.ox_.get(i);
       if (n) {
         n.State = r;
@@ -192,37 +195,37 @@ class ActivityFishingData extends ActivityData_1.ActivityBaseData {
         Log_1.Log.Error("Fishing", 37, "[FishingActivity] 里程碑奖励无配置", ["Id", i]);
       }
     }
-    if (t) {
+    if (e) {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.FishingTimeLimitRewardProgressRefresh);
     }
   }
   GetAllMilestoneReward() {
-    return Array.from(this.ox_.values()).sort((e, t) => e.Id - t.Id);
+    return Array.from(this.ox_.values()).sort((t, e) => t.Id - e.Id);
   }
   GetAllAvailableGetMilestoneRewardIds() {
-    var e;
     var t;
+    var e;
     var i = [];
-    for ([e, t] of this.ox_.entries()) {
-      if (t.IsReceivable()) {
-        i.push(e);
+    for ([t, e] of this.ox_.entries()) {
+      if (e.IsReceivable()) {
+        i.push(t);
       }
     }
     return i;
   }
   GetShopDataList() {
-    var e = ModelManager_1.ModelManager.PayShopModel.GetPayShopTabData(209);
+    var t = ModelManager_1.ModelManager.PayShopModel.GetPayShopTabData(209);
     if (ModelManager_1.ModelManager.PayShopModel.ReadShopItemCheckFlag(209)) {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.FishingTimeLimitShopRefresh);
       this.RefreshActivityRedDotState();
     }
-    return e;
+    return t;
   }
   GetRecommendQuestLinkId() {
-    var e = this.GetActivityConfig();
-    var t = [e.RecommendQuestId, ...e.RecommendQuestLinkList];
-    for (let e = t.length - 1; e >= 0; --e) {
-      var i = t[e];
+    var t = this.GetActivityConfig();
+    var e = [t.RecommendQuestId, ...t.RecommendQuestLinkList];
+    for (let t = e.length - 1; t >= 0; --t) {
+      var i = e[t];
       var r = ModelManager_1.ModelManager.QuestNewModel.GetQuest(i);
       var n = ModelManager_1.ModelManager.QuestNewModel.GetQuestState(i);
       var n = n === 2 || n === 1;
@@ -232,8 +235,8 @@ class ActivityFishingData extends ActivityData_1.ActivityBaseData {
     }
   }
   IsRecommendQuestFinished() {
-    var e = this.GetActivityConfig().RecommendQuestId;
-    return ModelManager_1.ModelManager.QuestNewModel.CheckQuestFinished(e);
+    var t = this.GetActivityConfig().RecommendQuestId;
+    return ModelManager_1.ModelManager.QuestNewModel.CheckQuestFinished(t);
   }
 }
 exports.ActivityFishingData = ActivityFishingData;

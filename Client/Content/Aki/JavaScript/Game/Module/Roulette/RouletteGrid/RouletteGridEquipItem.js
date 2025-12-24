@@ -14,31 +14,31 @@ const RouletteGridBase_1 = require("./RouletteGridBase");
 class RouletteGridEquipItem extends RouletteGridBase_1.RouletteGridBase {
   async Init() {
     var e;
-    var o;
     var t;
+    var o;
     this.Data.ShowNum = false;
     if (this.IsDataValid()) {
-      t = this.Data.Id;
-      e = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfig(t);
-      o = ConfigManager_1.ConfigManager.SpecialItemConfig.GetConfig(t);
+      o = this.Data.Id;
+      e = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfig(o);
+      t = ConfigManager_1.ConfigManager.SpecialItemConfig.GetConfig(o);
       if (!e) {
         if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("Phantom", 37, "[FuncMenuWheel]轮盘道具格子对应ItemId不存在", ["ItemId", t]);
+          Log_1.Log.Error("Phantom", 37, "[FuncMenuWheel]轮盘道具格子对应ItemId不存在", ["ItemId", o]);
         }
       }
-      if (!o || !!o.NeedShowNum) {
+      if (!t || !!t.NeedShowNum) {
         this.Data.ShowNum = true;
-        o = ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(t);
-        this.Data.DataNum = o;
+        t = ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(o);
+        this.Data.DataNum = t;
       }
       this.Data.Name = e.Name;
       this.IsIconTexture = true;
       await this.LoadIconByItemId(this.Data.Id);
-    } else {
+    } else if (this.Data.State === 1) {
       this.Data.Name = "ExploreTools_10001_Name";
       this.IsIconTexture = false;
-      t = CommonParamById_1.configCommonParamById.GetStringConfig("Roulette_EmptyItem_Sprite");
-      await this.LoadSpriteIcon(t);
+      o = CommonParamById_1.configCommonParamById.GetStringConfig("Roulette_EmptyItem_Sprite");
+      await this.LoadSpriteIcon(o);
     }
   }
   OnSelect(e) {
@@ -47,7 +47,7 @@ class RouletteGridEquipItem extends RouletteGridBase_1.RouletteGridBase {
         ControllerHolder_1.ControllerHolder.RouletteController.OpenEmptyTips();
       } else if (this.IsDataValid()) {
         e = this.Data.Id;
-        ModelManager_1.ModelManager.ExploreModel.SetExploreSkillId(e);
+        ModelManager_1.ModelManager.ExploreModel.SetExploreSkillId(e, 0, "RouletteGridEquipItem.OnSelect");
         ControllerHolder_1.ControllerHolder.RouletteController.EquipItemSetRequest(e, e => {
           if (e) {
             AudioSystem_1.AudioSystem.PostEvent("play_ui_fx_spl_roulette_new_equip");

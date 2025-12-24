@@ -31,6 +31,8 @@ const MediumItemGridLvAndStarComponent_1 = require("./MediumItemGridComponent/Me
 const MediumItemGridMainVisionComponent_1 = require("./MediumItemGridComponent/MediumItemGridMainVisionComponent");
 const MediumItemGridNewFlagComponent_1 = require("./MediumItemGridComponent/MediumItemGridNewFlagComponent");
 const MediumItemGridPhantomLockComponent_1 = require("./MediumItemGridComponent/MediumItemGridPhantomLockComponent");
+const MediumItemGridPhantomSortNumComponent_1 = require("./MediumItemGridComponent/MediumItemGridPhantomSortNumComponent");
+const MediumItemGridPhantomSpecialSkillComponent_1 = require("./MediumItemGridComponent/MediumItemGridPhantomSpecialSkillComponent");
 const MediumItemGridProhibitComponent_1 = require("./MediumItemGridComponent/MediumItemGridProhibitComponent");
 const MediumItemGridReceivedComponent_1 = require("./MediumItemGridComponent/MediumItemGridReceivedComponent");
 const MediumItemGridRecommendComponent_1 = require("./MediumItemGridComponent/MediumItemGridRecommendComponent");
@@ -49,13 +51,17 @@ const MediumItemGridSpriteIconComponent_1 = require("./MediumItemGridComponent/M
 const MediumItemGridSubIconComponent_1 = require("./MediumItemGridComponent/MediumItemGridSubIconComponent");
 const MediumItemGridTagsComponent_1 = require("./MediumItemGridComponent/MediumItemGridTagsComponent");
 const MediumItemGridTeamIconComponent_1 = require("./MediumItemGridComponent/MediumItemGridTeamIconComponent");
+const MediumItemGridTemplateIconComponent_1 = require("./MediumItemGridComponent/MediumItemGridTemplateIconComponent");
 const MediumItemGridTimeFlagComponent_1 = require("./MediumItemGridComponent/MediumItemGridTimeFlagComponent");
+const MediumItemGridTrialRoleRightBottomTag_1 = require("./MediumItemGridComponent/MediumItemGridTrialRoleRightBottomTag");
 const MediumItemGridUnRecommendComponent_1 = require("./MediumItemGridComponent/MediumItemGridUnRecommendComponent");
+const MediumItemGridUpgradeArrowComponent_1 = require("./MediumItemGridComponent/MediumItemGridUpgradeArrowComponent");
 const MediumItemGridUpgradeComponent_1 = require("./MediumItemGridComponent/MediumItemGridUpgradeComponent");
 const MediumItemGridVisionFetterComponent_1 = require("./MediumItemGridComponent/MediumItemGridVisionFetterComponent");
 const MediumItemGridVisionGreenSelectComponent_1 = require("./MediumItemGridComponent/MediumItemGridVisionGreenSelectComponent");
 const MediumItemGridVisionRoleHeadComponent_1 = require("./MediumItemGridComponent/MediumItemGridVisionRoleHeadComponent");
 const MediumItemGridVisionSlotComponent_1 = require("./MediumItemGridComponent/MediumItemGridVisionSlotComponent");
+const MediumItemGridWarningTipsComponent_1 = require("./MediumItemGridComponent/MediumItemGridWarningTipsComponent");
 const MediumItemGridWeeklyRogueTagComponent_1 = require("./MediumItemGridComponent/MediumItemGridWeeklyRogueTagComponent");
 const TRIAL_ROLE_ID = 10000;
 class MediumItemGrid extends ItemGridBase_1.ItemGridBase {
@@ -128,7 +134,7 @@ class MediumItemGrid extends ItemGridBase_1.ItemGridBase {
       this.mwt(e);
     }
     if (e.Type === 5) {
-      this.dzd(e);
+      this.Qzd(e);
     }
     this.RefreshComponentVisible();
     this.RefreshComponentHierarchyIndex();
@@ -180,16 +186,16 @@ class MediumItemGrid extends ItemGridBase_1.ItemGridBase {
     var T = e.ComposeIconTag;
     var q = e.ChangeAble;
     var U = e.IsUpGrade;
-    var y = e.TagPathList;
-    var D = e.SubIconPath;
+    var k = e.TagPathList;
+    var y = e.SubIconPath;
     var B = e.RightTopValue;
-    var k = ConfigManager_1.ConfigManager.InventoryConfig.GetItemDataTypeByConfigId(e.ItemConfigId) === 3;
+    var D = ConfigManager_1.ConfigManager.InventoryConfig.GetItemDataTypeByConfigId(e.ItemConfigId) === 3;
     var b = e.IsBranchUpgrade;
     var f = e.IsRecommendVisible;
     this.SetStartLevel(i);
     this.SetBuffSprite(m);
     this.SetRedDotVisible(o);
-    this.SetLevelAndLock(r, n, s, k, d);
+    this.SetLevelAndLock(r, n, s, D, d);
     this.SetRecommendVisible(f);
     this.SetItemPrice(e.ItemPrice);
     this.SetCoolDown(u, h);
@@ -211,8 +217,8 @@ class MediumItemGrid extends ItemGridBase_1.ItemGridBase {
     this.SetComposeChangeAble(q);
     this.SetDangoRoleHead(R);
     this.SetUpGradeVisible(U);
-    this.SetTagsInfo(y);
-    this.SetSubIconPath(D);
+    this.SetTagsInfo(k);
+    this.SetSubIconPath(y);
     this.SetRightTopValueInfo(B);
     this.SetIsBranchUpgrade(b);
     this.ApplyPropBaseDisplay(e);
@@ -231,6 +237,9 @@ class MediumItemGrid extends ItemGridBase_1.ItemGridBase {
     var p = e.IsLevelTextUseChangeColor;
     var I = e.FetterGroupId;
     var a = e.VisionRoleHeadInfo;
+    var C = e.SpecialSkill;
+    var M = e.SortNum;
+    var G = e.IsDisable;
     this.SetStartLevel(i);
     this.SetRedDotVisible(u);
     this.SetIsMainVision(t);
@@ -241,6 +250,9 @@ class MediumItemGrid extends ItemGridBase_1.ItemGridBase {
     this.SetNewVisible(o);
     this.SetVisionFetterGroup(I);
     this.SetVisionRoleHead(a);
+    this.SetPhantomIsSpecialSkill(C);
+    this.SetPhantomSortNum(M);
+    this.SetIsDisable(G);
     this.ApplyPhantomBaseDisplay(e);
   }
   mwt(e) {
@@ -259,9 +271,17 @@ class MediumItemGrid extends ItemGridBase_1.ItemGridBase {
       };
     }
     this.SetRoleRightBottomTagVisible(i);
+    let t = undefined;
+    if (e.IsTrialRoleVisible) {
+      t = {
+        IsTrialRole: e.IsTrialRoleVisible ?? false,
+        TrialRoleId: e.ItemConfigId ?? 0
+      };
+    }
+    this.SetTrialRoleRightBottomTagVisible(t);
     this.SetLevelAndLock(e.Level, e.IsShowLock, e.IsLevelTextUseChangeColor);
     this.SetNewVisible(e.IsNewVisible);
-    this.fwt(e.IsShowCost, e.ItemConfigId);
+    this.fwt(e.ShowCostData);
     this.SetHalfAreaInfo(e.HalfAreaInfo);
     this.SetWeeklyRogueTag(e.IsShowWeeklyRogueTag);
     this.SetLevelAndStar(e.LvAndStar);
@@ -269,7 +289,7 @@ class MediumItemGrid extends ItemGridBase_1.ItemGridBase {
     this.SetRoleDevelopTagMark(e.IsRoleDevelopTagMark);
     this.ApplyCharacterBaseDisplay(e);
   }
-  dzd(e) {
+  Qzd(e) {
     this.ApplyForecastCharacterBaseDisplay(e);
   }
   SetWeeklyRogueTag(e) {
@@ -327,6 +347,14 @@ class MediumItemGrid extends ItemGridBase_1.ItemGridBase {
   }
   SetVisionRoleHead(e) {
     this.RefreshComponent(MediumItemGridVisionRoleHeadComponent_1.MediumItemGridVisionRoleHeadComponent, e !== undefined && e.RoleConfigId > 0, e);
+  }
+  SetPhantomIsSpecialSkill(e) {
+    var i = e !== undefined && e !== 0;
+    this.RefreshComponent(MediumItemGridPhantomSpecialSkillComponent_1.MediumItemGridPhantomSpecialSkillComponent, i, e);
+  }
+  SetPhantomSortNum(e) {
+    var i = e !== undefined && e > 0;
+    this.RefreshComponent(MediumItemGridPhantomSortNumComponent_1.MediumItemGridPhantomSortNumComponent, i, e);
   }
   SetComposeIcon(e) {
     this.RefreshComponent(MediumItemGridComposeTag_1.MediumItemGridComposeTag, e !== undefined, e);
@@ -448,6 +476,9 @@ class MediumItemGrid extends ItemGridBase_1.ItemGridBase {
   SetRoleRightBottomTagVisible(e) {
     this.RefreshComponent(MediumItemGridRoleRightBottomTag_1.MediumItemGridRoleRightBottomTag, e !== undefined, e);
   }
+  SetTrialRoleRightBottomTagVisible(e) {
+    this.RefreshComponent(MediumItemGridTrialRoleRightBottomTag_1.MediumItemGridTrialRoleRightBottomTag, e !== undefined, e);
+  }
   SetIconSprite(e) {
     this.RefreshComponent(MediumItemGridSpriteIconComponent_1.MediumItemGridSpriteIconComponent, e !== undefined && e !== "", e);
   }
@@ -494,6 +525,8 @@ class MediumItemGrid extends ItemGridBase_1.ItemGridBase {
       d?.SetUIActive(true);
     } else if (r === 13) {
       this.eV1(i);
+    } else if (r === 21) {
+      this.cJf(i);
     } else {
       this.UTt(i);
     }
@@ -612,6 +645,15 @@ class MediumItemGrid extends ItemGridBase_1.ItemGridBase {
     });
     this.GetTexture(1)?.SetUIActive(false);
   }
+  cJf(e) {
+    var i = this.GetTexture(1);
+    if (e !== undefined && (e = ConfigManager_1.ConfigManager.MotorDiyConfig.GetMotorStickerConfig(e)?.IconMiddle)) {
+      this.SetTextureByPath(e, i);
+      i.SetUIActive(true);
+    } else {
+      i.SetUIActive(false);
+    }
+  }
   pwt(e) {
     var i = this.GetTexture(1);
     if (e === undefined) {
@@ -722,8 +764,8 @@ class MediumItemGrid extends ItemGridBase_1.ItemGridBase {
   GetItemGridExtendToggle() {
     return this.GetExtendToggle(6);
   }
-  fwt(e, i) {
-    this.RefreshComponent(MediumItemGridCostComponent_1.MediumItemGridCostComponent, e, i);
+  fwt(e) {
+    this.RefreshComponent(MediumItemGridCostComponent_1.MediumItemGridCostComponent, e !== undefined, e);
   }
   SetBottomTextColor(e) {
     this.GetText(2).SetColor(UE.Color.FromHex(e));
@@ -754,6 +796,15 @@ class MediumItemGrid extends ItemGridBase_1.ItemGridBase {
   }
   SetRoleDevelopTagMark(e) {
     this.RefreshComponent(MediumItemGridRoleDevelopTagMarkComponent_1.MediumItemGridRoleDevelopTagMarkComponent, e, e);
+  }
+  SetWarningTips(e) {
+    this.RefreshComponent(MediumItemGridWarningTipsComponent_1.MediumItemGridWarningTipsComponent, e, e);
+  }
+  SetUpgradeArrow(e) {
+    this.RefreshComponent(MediumItemGridUpgradeArrowComponent_1.MediumItemGridUpgradeArrowComponent, e, e);
+  }
+  SetTemplateIcon(e) {
+    this.RefreshComponent(MediumItemGridTemplateIconComponent_1.MediumItemGridTemplateIconComponent, e, e);
   }
 }
 exports.MediumItemGrid = MediumItemGrid;

@@ -142,6 +142,9 @@ class RoleSkillIconItem extends UiPanelBase_1.UiPanelBase {
   SetToggleState(t, i = false) {
     this.GetExtendToggle(0).SetToggleState(t, i);
   }
+  GetToggleItem() {
+    return this.GetExtendToggle(0).GetRootComponent();
+  }
 }
 exports.RoleSkillIconItem = RoleSkillIconItem;
 //# sourceMappingURL=RoleSkillIconItem.js.map

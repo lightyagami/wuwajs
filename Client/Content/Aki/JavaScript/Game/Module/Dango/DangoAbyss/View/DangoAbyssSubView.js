@@ -131,6 +131,7 @@ class DangoAbyssSubView extends ActivitySubViewBase_1.ActivitySubViewBase {
     if (t) {
       this.LNe.SetTimeTextByText(i);
     }
+    this.LNe.SetActivityBaseData(this.ActivityBaseData);
   }
   jqe() {
     var t = this.ActivityBaseData.GetPreviewReward();

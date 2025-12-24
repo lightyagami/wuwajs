@@ -17,6 +17,7 @@ const ModelManager_1 = require("../../../../Manager/ModelManager");
 const NpcPerformComponent_1 = require("../Component/NpcPerformComponent");
 const NpcPerformBaseState_1 = require("./NpcPerformBaseState");
 const DEFAULT_MAX_DEATH_MAT_EFFECT_TIME = 20;
+const DEFAULT_PRE_DESTORY_TIME = 100;
 class NpcPerformDestroyState extends NpcPerformBaseState_1.NpcPerformBaseState {
   constructor() {
     super(...arguments);
@@ -124,13 +125,13 @@ class NpcPerformDestroyState extends NpcPerformBaseState_1.NpcPerformBaseState {
     }
   }
   HandleDelayRemove() {
-    if (this.DestroyTime === 0) {
+    if (this.DestroyTime < DEFAULT_PRE_DESTORY_TIME) {
       ControllerHolder_1.ControllerHolder.CreatureController.DelayRemoveEntityFinished(this.Owner.Entity);
     } else {
       this.DestroyHandle = TimerSystem_1.TimerSystem.Delay(() => {
         this.DestroyHandle = undefined;
         ControllerHolder_1.ControllerHolder.CreatureController.DelayRemoveEntityFinished(this.Owner?.Entity);
-      }, this.DestroyTime);
+      }, this.DestroyTime - DEFAULT_PRE_DESTORY_TIME);
     }
   }
   TryAddDeathMaterialEffectEvents() {

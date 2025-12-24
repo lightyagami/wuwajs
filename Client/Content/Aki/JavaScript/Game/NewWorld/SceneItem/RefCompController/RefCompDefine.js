@@ -3,9 +3,10 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.PlayRateStruct = exports.TransitStruct = undefined;
+exports.PrePhysicsSequenceConfig = exports.PlayRateStruct = exports.TransitStruct = undefined;
+const CommonParamById_1 = require("../../../../Core/Define/ConfigCommon/CommonParamById");
 class TransitStruct {
-  constructor(t = 0, s = undefined, i = undefined, o = undefined, h = false, r = undefined) {
+  constructor(t = 0, s = undefined, i = undefined, e = undefined, o = false, r = undefined) {
     this.TransitType = 0;
     this.Duration = undefined;
     this.TransitFadeIn = undefined;
@@ -15,19 +16,28 @@ class TransitStruct {
     this.TransitType = t;
     this.Duration = s;
     this.TransitFadeIn = i;
-    this.TransitFadeOut = o;
-    this.IsValid = h;
+    this.TransitFadeOut = e;
+    this.IsValid = o;
     this.Mask = r;
   }
 }
 exports.TransitStruct = TransitStruct;
 class PlayRateStruct {
-  constructor(t = 1, s = 0, i = 0, o = 0) {
+  constructor(t = 1, s = 0, i = 0, e = 0) {
     this.PlayRateAbs = t;
     this.EaseType = s;
     this.EaseDuration = i;
-    this.EaseExponent = o;
+    this.EaseExponent = e;
   }
 }
 exports.PlayRateStruct = PlayRateStruct;
-//# sourceMappingURL=RefCompDefine.js.map
+class PrePhysicsSequenceConfig {
+  static Check(t) {
+    var s;
+    return !!t && (this.gU || ((s = CommonParamById_1.configCommonParamById.GetStringArrayConfig("UpdateAnimRefLevelSequencePaths")) && s.forEach(t => {
+      this.sYo.add(t);
+    }), this.gU = true), this.sYo.has(t));
+  }
+}
+(exports.PrePhysicsSequenceConfig = PrePhysicsSequenceConfig).sYo = new Set();
+PrePhysicsSequenceConfig.gU = false; //# sourceMappingURL=RefCompDefine.js.map

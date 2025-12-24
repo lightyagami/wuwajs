@@ -203,7 +203,7 @@ class GroupSkillCdInfo {
   }
   OnCountChanged() {
     if (this.sDe?.Valid) {
-      const i = this.sDe.Entity.GetComponent(178);
+      const i = this.sDe.Entity.GetComponent(183);
       var t;
       if (this.RemainingCount <= 0) {
         t = i.AddTagWithReturnHandle(this.CdTags);
@@ -221,7 +221,7 @@ class GroupSkillCdInfo {
     this.sDe = t;
     if (!(this.RemainingCount > 0) && !(this.Oqn.length > 0)) {
       if (this.sDe?.Valid) {
-        t = this.sDe.Entity.GetComponent(178).AddTagWithReturnHandle(this.CdTags);
+        t = this.sDe.Entity.GetComponent(183).AddTagWithReturnHandle(this.CdTags);
         this.Oqn.push(t);
       }
     }
@@ -229,7 +229,7 @@ class GroupSkillCdInfo {
   ClearCdTags(t) {
     if (this.sDe?.Id === t) {
       if (this.sDe?.Valid) {
-        const i = this.sDe.Entity.GetComponent(178);
+        const i = this.sDe.Entity.GetComponent(183);
         this.Oqn.forEach(t => {
           i.RemoveBuffByHandle(t, -1, "实体清理时移除技能CDTag");
         });

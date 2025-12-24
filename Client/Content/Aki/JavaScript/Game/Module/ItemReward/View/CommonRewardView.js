@@ -12,6 +12,7 @@ const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiViewBase_1 = require("../../../Ui/Base/UiViewBase");
 const UiInteractLogReport_1 = require("../../../Ui/LogReport/UiInteractLogReport");
 const UiManager_1 = require("../../../Ui/UiManager");
+const ButtonItem_1 = require("../../Common/Button/ButtonItem");
 const LguiUtil_1 = require("../../Util/LguiUtil");
 const ItemRewardController_1 = require("../ItemRewardController");
 const RewardItemList_1 = require("./RewardItemList");
@@ -20,24 +21,37 @@ class CommonRewardView extends UiViewBase_1.UiViewBase {
     super(...arguments);
     this.$Tt = undefined;
     this.sOe = undefined;
-    this.V0i = e => {
-      var t = e.GetRewardInfo();
-      if (t.Type === 1 && t.ViewName === "CommonRewardView" && (this.UiViewSequence?.PlaySequencePurely("Start01", true), this.$Tt = e, this.bYt())) {
+    this.q9a = undefined;
+    this.s$a = undefined;
+    this.V0i = t => {
+      var e = t.GetRewardInfo();
+      if (e.Type === 1 && e.ViewName === "CommonRewardView" && (this.UiViewSequence?.PlaySequencePurely("Start01", true), this.$Tt = t, this.bYt())) {
         this.qYt();
       }
     };
     this.dSt = () => {
-      UiInteractLogReport_1.UiInteractLogReport.ReportSpaceKeyInteract(10);
-      UiManager_1.UiManager.CloseView("CommonRewardView");
+      var t = this.$Tt?.GetRewardInfo();
+      if (!t?.LeftBtnTextId || !t?.RightBtnTextId) {
+        UiInteractLogReport_1.UiInteractLogReport.ReportSpaceKeyInteract(10);
+        UiManager_1.UiManager.CloseView("CommonRewardView");
+      }
     };
-    this.BYt = e => {
+    this.BYt = t => {
       if (this.bYt()) {
         this.qYt();
       }
     };
+    this.tNe = () => {
+      this.$Tt?.GetRewardInfo()?.LeftAction?.();
+      this.CloseMe();
+    };
+    this.iNe = () => {
+      this.$Tt?.GetRewardInfo()?.RightAction?.();
+      this.CloseMe();
+    };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIText], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIText], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem]];
     this.BtnBindInfo = [[0, this.dSt]];
   }
   OnAddEventListener() {
@@ -51,15 +65,19 @@ class CommonRewardView extends UiViewBase_1.UiViewBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRefreshRewardView, this.V0i);
   }
   async OnBeforeStartAsync() {
-    var e = this.GetItem(3);
+    var t = this.GetItem(3);
     this.sOe = new RewardItemList_1.RewardItemList();
-    await this.sOe.CreateThenShowByActorAsync(e.GetOwner(), e);
+    await this.sOe.CreateThenShowByActorAsync(t.GetOwner(), t);
+    this.q9a = new ButtonItem_1.ButtonItem(this.GetItem(5));
+    this.s$a = new ButtonItem_1.ButtonItem(this.GetItem(6));
+    this.q9a?.SetFunction(this.tNe);
+    this.s$a?.SetFunction(this.iNe);
   }
   OnStart() {
-    var e = this.OpenParam;
-    this.bl(e);
-    var e = e.GetRewardInfo().AudioId;
-    ItemRewardController_1.ItemRewardController.PlayAudio(e);
+    var t = this.OpenParam;
+    this.bl(t);
+    var t = t.GetRewardInfo().AudioId;
+    ItemRewardController_1.ItemRewardController.PlayAudio(t);
   }
   OnAfterPlayStartSequence() {
     this.UiViewSequence.PlaySequence("Switch");
@@ -71,15 +89,15 @@ class CommonRewardView extends UiViewBase_1.UiViewBase {
     this.UiViewSequence.StopSequenceByKey("Switch");
   }
   OnBeforeDestroy() {
-    var e = this.$Tt.GetRewardInfo().OnCloseCallback;
-    if (e) {
-      e();
+    var t = this.$Tt.GetRewardInfo().OnCloseCallback;
+    if (t) {
+      t();
     }
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnCloseRewardView);
     ModelManager_1.ModelManager.ItemRewardModel.ClearCurrentRewardData();
   }
-  bl(e) {
-    this.$Tt = e;
+  bl(t) {
+    this.$Tt = t;
     if (this.GYt()) {
       this.mGe();
     }
@@ -89,46 +107,64 @@ class CommonRewardView extends UiViewBase_1.UiViewBase {
     if (this.bYt()) {
       this.qYt();
     }
+    this.ZGe(t);
   }
   GYt() {
-    var e = this.$Tt.GetRewardInfo().Title;
-    var e = !StringUtils_1.StringUtils.IsEmpty(e);
-    this.GetItem(2).SetUIActive(e);
-    return e;
+    var t = this.$Tt.GetRewardInfo().Title;
+    var t = !StringUtils_1.StringUtils.IsEmpty(t);
+    this.GetItem(2).SetUIActive(t);
+    return t;
   }
   mGe() {
-    var e;
-    var t = this.$Tt.GetRewardInfo().Title;
-    if (!StringUtils_1.StringUtils.IsEmpty(t)) {
-      e = this.GetText(1);
-      LguiUtil_1.LguiUtil.SetLocalTextNew(e, t);
+    var t;
+    var e = this.$Tt.GetRewardInfo().Title;
+    if (!StringUtils_1.StringUtils.IsEmpty(e)) {
+      t = this.GetText(1);
+      LguiUtil_1.LguiUtil.SetLocalTextNew(t, e);
     }
   }
   NYt() {
-    var e = this.$Tt.GetRewardInfo().ContinueText;
-    var e = !StringUtils_1.StringUtils.IsEmpty(e);
+    var t = this.$Tt.GetRewardInfo();
+    var e = t.ContinueText;
+    var e = !StringUtils_1.StringUtils.IsEmpty(e) && t.LeftBtnTextId === undefined && t.RightBtnTextId === undefined;
     this.GetItem(4).SetUIActive(e);
     return e;
   }
   OYt() {
-    var e;
-    var t = this.$Tt.GetRewardInfo().ContinueText;
-    if (!StringUtils_1.StringUtils.IsEmpty(t)) {
-      e = this.GetText(4);
-      LguiUtil_1.LguiUtil.SetLocalTextNew(e, t);
+    var t;
+    var e = this.$Tt.GetRewardInfo().ContinueText;
+    if (!StringUtils_1.StringUtils.IsEmpty(e)) {
+      t = this.GetText(4);
+      LguiUtil_1.LguiUtil.SetLocalTextNew(t, e);
     }
   }
   bYt() {
-    var e = this.$Tt.GetRewardInfo().IsItemVisible;
-    var t = this.$Tt.GetItemList();
-    var e = e && t !== undefined && t?.length > 0;
-    if (this.sOe.GetActive() !== e) {
-      this.sOe.SetActive(e);
+    var t = this.$Tt.GetRewardInfo().IsItemVisible;
+    var e = this.$Tt.GetItemList();
+    var t = t && e !== undefined && e?.length > 0;
+    if (this.sOe.GetActive() !== t) {
+      this.sOe.SetActive(t);
     }
-    return e;
+    return t;
   }
   qYt() {
-    this.sOe.Refresh(this.$Tt.GetItemList());
+    this.sOe.Refresh(this.$Tt.GetItemList(), this.$Tt.GetRewardInfo().TipsCanSkip);
+  }
+  ZGe(t) {
+    t = t.GetRewardInfo();
+    if (t?.LeftBtnTextId) {
+      this.q9a?.SetShowText(t.LeftBtnTextId);
+      this.q9a?.SetUiActive(true);
+    } else {
+      this.q9a?.SetUiActive(false);
+    }
+    if (t?.RightBtnTextId) {
+      this.s$a?.SetShowText(t.RightBtnTextId);
+      this.s$a?.SetUiActive(true);
+    } else {
+      this.s$a?.SetUiActive(false);
+    }
+    this.GetText(4)?.SetUIActive(t.LeftBtnTextId !== undefined || t.RightBtnTextId !== undefined);
   }
 }
 exports.CommonRewardView = CommonRewardView;

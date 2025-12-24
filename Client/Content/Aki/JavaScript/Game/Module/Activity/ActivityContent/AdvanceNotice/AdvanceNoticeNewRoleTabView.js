@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.AdvanceNoticeNewRoleTabView = undefined;
 const UE = require("ue");
+const StringUtils_1 = require("../../../../../Core/Utils/StringUtils");
 const ConfigManager_1 = require("../../../../Manager/ConfigManager");
 const LguiUtil_1 = require("../../../Util/LguiUtil");
 const AdvanceNoticeNewRoleDetailItem_1 = require("./AdvanceNoticeNewRoleDetailItem");
@@ -30,27 +31,32 @@ class AdvanceNoticeNewRoleTabView extends AdvanceNoticeTabViewBase_1.AdvanceNoti
     var t = this.GetTexture(0);
     var s = this.GetTexture(7);
     var a = this.GetTexture(8);
-    var o = this.GetUiNiagara(9);
-    var n = this.GetUiNiagara(10);
+    var r = this.GetUiNiagara(9);
+    var o = this.GetUiNiagara(10);
     if (i.Type === 1) {
       s.SetUIActive(false);
       a.SetUIActive(false);
       t.SetUIActive(true);
+      r.SetUIActive(false);
       o.SetUIActive(false);
-      n.SetUIActive(false);
-      this.SetTextureByPath(i.MainBgPic, t);
+      this.ftg(i.MainBgPic, t);
     } else {
       s.SetUIActive(true);
       a.SetUIActive(true);
       t.SetUIActive(true);
-      this.SetTextureByPath(i.MainPic, s);
-      this.SetTextureByPath(i.MainBgPic, t);
-      this.SetTextureByPath(i.MainPic, a);
-      s = ConfigManager_1.ConfigManager.WeaponConfig.GetWeaponConfigByItemId(i.RoleOrWeaponId).QualityId;
-      o.SetUIActive(s === 4);
-      n.SetUIActive(s === 5);
+      this.ftg(i.MainPic, s);
+      this.ftg(i.MainBgPic, t);
+      this.ftg(i.MainPic, a);
+      s = i.QualityId;
+      r.SetUIActive(s === 4);
+      o.SetUIActive(s === 5);
     }
     this.Ept.Refresh(e);
+  }
+  ftg(e, i) {
+    if (!StringUtils_1.StringUtils.IsBlank(e)) {
+      this.SetTextureByPath(e, i);
+    }
   }
 }
 exports.AdvanceNoticeNewRoleTabView = AdvanceNoticeNewRoleTabView;

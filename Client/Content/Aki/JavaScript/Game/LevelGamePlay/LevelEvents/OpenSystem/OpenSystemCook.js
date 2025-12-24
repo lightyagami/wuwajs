@@ -9,7 +9,7 @@ const OpenSystemBase_1 = require("./OpenSystemBase");
 class OpenSystemCook extends OpenSystemBase_1.OpenSystemBase {
   constructor() {
     super(...arguments);
-    this.F0l = new Map([[0, "CookRootView"], [1, "CookMechanismRootView"]]);
+    this.F0l = new Map([[0, "CookRootView"], [1, "CookMechanismRootView"], [2, "CookSchoolMechanismRootView"]]);
   }
   async ExecuteOpenView(e, o) {
     e = this.F0l.get(e.BoardId);

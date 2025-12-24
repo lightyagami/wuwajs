@@ -261,6 +261,7 @@ class BulletActionInitCollision extends BulletActionBase_1.BulletActionBase {
     if (i) {
       i.bAsyncOverlap = true;
       i.bKuroOverlapNotify = false;
+      i.bReceivedAsyncOverlapResult = false;
       var s = this.CollisionInfo.NeedHitObstacles;
       var l = this.BulletInfo.BulletDataMain.Base.IsOversizeForTrace;
       let t = false;

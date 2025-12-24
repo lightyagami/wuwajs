@@ -94,10 +94,10 @@ class VisionAttrRecommendInfo {
 exports.VisionAttrRecommendInfo = VisionAttrRecommendInfo;
 class VisionMainPhantomInfo {
   constructor() {
-    this.srm = new Array();
+    this.Mam = new Array();
   }
   GetMainPhantomInfo() {
-    return this.srm;
+    return this.Mam;
   }
 }
 exports.VisionMainPhantomInfo = VisionMainPhantomInfo;
@@ -180,7 +180,7 @@ class VisionRecommendModel extends ModelBase_1.ModelBase {
     super(...arguments);
     this.Ro_ = new Map();
     this.Po_ = new Map();
-    this.arm = new Map();
+    this.Eam = new Map();
     this.CurrentSelectMainAttrArray = new Array();
     this.CurrentSelectSubAttrArray = new Array();
     this.CurrentMainPhantom = undefined;
@@ -289,19 +289,19 @@ class VisionRecommendModel extends ModelBase_1.ModelBase {
     }
   }
   OnRoleMainPhantomRecommendData(t, e) {
-    if (e && e.Zim) {
+    if (e && e.fam) {
       var r = new VisionMainPhantomInfo();
-      for (const o of e.Zim) {
+      for (const o of e.fam) {
         var n = new MainPhantomRecommendInfo();
         n.Phrase(o);
         r.GetMainPhantomInfo().push(n);
       }
-      this.arm.set(t, r);
+      this.Eam.set(t, r);
       this.SortRoleMainPhantomRecommendByUsage(t);
     }
   }
   SortRoleMainPhantomRecommendByUsage(t) {
-    t = this.arm.get(t);
+    t = this.Eam.get(t);
     if (t) {
       t.GetMainPhantomInfo().sort((t, e) => e.GetUsage() - t.GetUsage());
     }
@@ -316,7 +316,7 @@ class VisionRecommendModel extends ModelBase_1.ModelBase {
     }
   }
   GetRoleMainPhantomRecommendInfo(t) {
-    return this.arm.get(t);
+    return this.Eam.get(t);
   }
   CheckVisionOneKeyEquipRedDot(r) {
     var n;

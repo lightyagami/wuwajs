@@ -17,9 +17,9 @@ class QteCooperationHandler {
     }
     var e = e.EntityHandle;
     var r = r.EntityHandle;
-    var o = e.Entity.GetComponent(101);
-    var t = r.Entity.GetComponent(101);
-    var n = e.Entity.GetComponent(209);
+    var o = e.Entity.GetComponent(104);
+    var t = r.Entity.GetComponent(104);
+    var n = e.Entity.GetComponent(215);
     if (!o || !t) {
       return false;
     }

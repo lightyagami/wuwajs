@@ -53,7 +53,7 @@ class BulletActionChild extends BulletActionBase_1.BulletActionBase {
       var l = t;
       if (!(e.RowName <= MathCommon_1.MathCommon.KindaSmallNumber) && e.Condition === 0 && (!(e.Num > 0) || !!(this.ChildInfo.HaveSummonedBulletNumber[l] < e.Num)) && !(e.Delay < 0 && Log_1.Log.CheckError() && Log_1.Log.Error("Bullet", 20, "子弹Delay为负数！", ["Bullet", this.BulletInfo.BulletRowName]), this.BulletInfo.LiveTime < e.Delay * TimeUtil_1.TimeUtil.InverseMillisecond + this.ChildInfo.HaveSummonedBulletNumber[l] * e.Interval * TimeUtil_1.TimeUtil.InverseMillisecond)) {
         this.ChildInfo.HaveSummonedBulletNumber[l]++;
-        l = BulletController_1.BulletController.CreateBulletCustomTarget(this.BulletInfo.AttackerActorComp.Actor, e.RowName.toString(), this.BulletInfo.ActorComponent.ActorTransform, {
+        l = BulletController_1.BulletController.CreateBulletCustomTarget(this.BulletInfo.Attacker, e.RowName.toString(), this.BulletInfo.ActorComponent.ActorTransform, {
           SkillId: this.BulletInfo.BulletInitParams.SkillId,
           SkillContextId: this.BulletInfo.BulletInitParams.SkillContextId,
           ParentTargetId: this.BulletInfo.Target?.Id,

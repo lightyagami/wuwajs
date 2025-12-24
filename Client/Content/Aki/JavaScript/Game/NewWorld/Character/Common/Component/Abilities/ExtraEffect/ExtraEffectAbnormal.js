@@ -77,7 +77,7 @@ class AbnormalIce extends ExtraEffectBase_1.BuffEffect {
     this.RefreshModifier(t);
   }
   ClearModifier() {
-    var t = this.ExactOwnerEntity?.GetComponent(176);
+    var t = this.ExactOwnerEntity?.GetComponent(181);
     if (this.OQo) {
       t?.RemoveModifier(CharacterAttributeTypes_1.EAttributeId.vVn, this.OQo);
       this.OQo = 0;
@@ -85,7 +85,7 @@ class AbnormalIce extends ExtraEffectBase_1.BuffEffect {
   }
   RefreshModifier(r) {
     this.ClearModifier();
-    var t = this.ExactOwnerEntity?.GetComponent(176);
+    var t = this.ExactOwnerEntity?.GetComponent(181);
     if (t) {
       let e = 0;
       for (let t = this.HQo.length - 1; t >= 0; t--) {

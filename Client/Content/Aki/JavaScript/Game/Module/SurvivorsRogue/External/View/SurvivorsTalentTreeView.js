@@ -24,24 +24,24 @@ class SurvivorsTalentTreeView extends UiViewBase_1.UiViewBase {
     super(...arguments);
     this.mVd = undefined;
     this.ja_ = undefined;
-    this.Ljd = undefined;
+    this.Pjd = undefined;
     this.lqe = undefined;
     this.fVd = undefined;
     this.ebl = undefined;
     this.Hea = undefined;
     this.dVd = e => {
       new UiAsyncTask_1.UiAsyncTask("TalentNodeUpdate", async () => {
-        await this.Pjd(e);
+        await this.Ajd(e);
       }).Run();
     };
     this.gVd = e => {
       var i = ModelManager_1.ModelManager.SurvivorsRogueModel.ActivityData;
       if (i && e && e.Node) {
-        e.OnClickToggleBack = this.Ajd;
+        e.OnClickToggleBack = this.Djd;
         if (i.CurrentSelectNode.NodeId !== this.ja_.Node.NodeId || this.mVd) {
           if (i.CurrentSelectNode.NodeId === e.Node.NodeId) {
-            if (i = this.Ljd.GetItemByIndex(e.Node.AreaId - 1)) {
-              this.Ljd.LateScrollTo(i);
+            if (i = this.Pjd.GetItemByIndex(e.Node.AreaId - 1)) {
+              this.Pjd.LateScrollTo(i);
             }
             this.mVd = e;
             this.mVd.SelectNode();
@@ -52,7 +52,7 @@ class SurvivorsTalentTreeView extends UiViewBase_1.UiViewBase {
         }
       }
     };
-    this.Ajd = (e, i) => {
+    this.Djd = (e, i) => {
       if (this.ebl) {
         this.ebl.SetToggleState(0);
       }
@@ -92,12 +92,12 @@ class SurvivorsTalentTreeView extends UiViewBase_1.UiViewBase {
       this.lqe = new PopupCaptionItem_1.PopupCaptionItem();
       this.fVd = new SurvivorsTalentTreeSkillInfoPanel_1.SurvivorsTalentTreeSkillInfoPanel();
       this.ja_ = new SurvivorsTalentTreeSkillNodeItem_1.SurvivorsTalentTreeSkillNodeItem();
-      this.Ljd = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(0), this.CVd, this.GetItem(2).GetOwner());
+      this.Pjd = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(0), this.CVd, this.GetItem(2).GetOwner());
       e = [this.lqe.CreateThenShowByActorAsync(this.GetItem(4).GetOwner()), this.fVd.CreateThenShowByActorAsync(this.GetItem(3).GetOwner()), this.ja_.CreateThenShowByActorAsync(this.GetItem(1).GetOwner())];
       await Promise.all(e);
       await this.ja_.RefreshNodeAsyncByData(i.GetFirstTalentNode());
-      this.ja_.OnClickToggleBack = this.Ajd;
-      e = [this.lqe.SetCurrencyItemList([TALENT_TREE_COST_ITEM_ID]), this.Ljd.RefreshByDataAsync(i.AreaDataList)];
+      this.ja_.OnClickToggleBack = this.Djd;
+      e = [this.lqe.SetCurrencyItemList([TALENT_TREE_COST_ITEM_ID]), this.Pjd.RefreshByDataAsync(i.AreaDataList)];
       await Promise.all(e);
       this.lqe.SetHelpCallBack(this.pcr);
       this.lqe.SetCloseCallBack(this.Jvt);
@@ -109,13 +109,13 @@ class SurvivorsTalentTreeView extends UiViewBase_1.UiViewBase {
   OnRemoveEventListener() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SurvivorsRogueTalentNodeUpdate, this.dVd);
   }
-  async Pjd(e) {
+  async Ajd(e) {
     var i = [];
     let t = undefined;
     if (this.ja_ && (i.push(this.ja_.RefreshNodeAsync()), e === this.ja_.Node.NodeId)) {
       t = this.ja_;
     }
-    for (const r of this.Ljd.GetScrollItemList()) {
+    for (const r of this.Pjd.GetScrollItemList()) {
       for (const s of r.NodeItemMap.values()) {
         i.push(s.RefreshNodeAsync());
         if (e === s.Node.NodeId) {

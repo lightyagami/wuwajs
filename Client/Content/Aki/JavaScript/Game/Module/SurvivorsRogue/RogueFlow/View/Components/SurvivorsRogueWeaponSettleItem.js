@@ -17,8 +17,8 @@ class SurvivorsRogueWeaponSettleItem extends GridProxyAbstract_1.GridProxyAbstra
     super(...arguments);
     this.CBd = undefined;
     this.Data = undefined;
-    this.Zjd = new ScrollingNumberTool_1.ScrollingNumberTool();
-    this.AEm = false;
+    this.rHd = new ScrollingNumberTool_1.ScrollingNumberTool();
+    this.X2m = false;
     this.pBd = () => {
       return new SurvivorsRogueWeaponEvolveItem_1.SurvivorsRogueWeaponEvolveItem();
     };
@@ -32,14 +32,14 @@ class SurvivorsRogueWeaponSettleItem extends GridProxyAbstract_1.GridProxyAbstra
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [3, UE.UIItem], [4, UE.UITexture], [5, UE.UIText], [6, UE.UIText], [8, UE.UIText], [10, UE.UIHorizontalLayout], [11, UE.UIItem]];
   }
   async OnBeforeStartAsync() {
-    await this.Zjd.InitCurve();
+    await this.rHd.InitCurve();
   }
   OnStart() {
     this.CBd = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(10), this.pBd, undefined);
     this.RootActor.OnSequencePlayEvent.Bind(this.Wpu);
   }
   OnBeforeDestroy() {
-    this.Zjd.Clear();
+    this.rHd.Clear();
     this.RootActor.OnSequencePlayEvent.Unbind();
   }
   Refresh(i, t, e) {
@@ -52,9 +52,9 @@ class SurvivorsRogueWeaponSettleItem extends GridProxyAbstract_1.GridProxyAbstra
     }
   }
   PlayAnim() {
-    if (!this.AEm && !(this.AEm = true, !this.Data) && !this.Data.IsLock && !this.Data.IsDisable) {
+    if (!this.X2m && !(this.X2m = true, !this.Data) && !this.Data.IsLock && !this.Data.IsDisable) {
       this.l6d();
-      this.Zjd.StartScrolling();
+      this.rHd.StartScrolling();
     }
   }
   RAd() {
@@ -76,7 +76,7 @@ class SurvivorsRogueWeaponSettleItem extends GridProxyAbstract_1.GridProxyAbstra
     if (t && (i = ConfigManager_1.ConfigManager.SurvivorsRogueConfig.GetSurvivorsWeapon(t.ConfigId))) {
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(6), SurvivorsRogueUiDefine_1.SURVIVORS_LV_KEY, t.Data.F6n);
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(5), i.Name);
-      this.Zjd.Init(0, t.Data.vDd, i => {
+      this.rHd.Init(0, t.Data.vDd, i => {
         this.GetText(8).SetText(Math.round(i).toString());
       });
       this.SetTextureShowUntilLoaded(i.Icon, this.GetTexture(4));

@@ -57,7 +57,7 @@ class BulletActionSummonBullet extends BulletActionBase_1.BulletActionBase {
           this.ChildInfo.HaveSummonedBulletNumber[t]++;
           var o;
           var h;
-          var u = BulletController_1.BulletController.CreateBulletCustomTarget(this.BulletInfo.AttackerActorComp.Actor, r.RowName.toString(), s ?? this.BulletInfo.ActorComponent.ActorTransform, {
+          var u = BulletController_1.BulletController.CreateBulletCustomTarget(this.BulletInfo.Attacker, r.RowName.toString(), s ?? this.BulletInfo.ActorComponent.ActorTransform, {
             SkillId: this.BulletInfo.BulletInitParams.SkillId,
             SkillContextId: this.BulletInfo.BulletInitParams.SkillContextId,
             ParentVictimId: e.Victim?.Id,
@@ -84,7 +84,7 @@ class BulletActionSummonBullet extends BulletActionBase_1.BulletActionBase {
       var s = t;
       if (l.Condition === 5 && (!(l.Num > 0) || !!(this.ChildInfo.HaveSummonedBulletNumber[s] < l.Num)) && !(this.BulletInfo.LiveTime < this.ChildInfo.HaveSummonedBulletNumber[s] * l.Interval * TimeUtil_1.TimeUtil.InverseMillisecond)) {
         this.ChildInfo.HaveSummonedBulletNumber[s]++;
-        s = BulletController_1.BulletController.CreateBulletCustomTarget(this.BulletInfo.AttackerActorComp.Actor, l.RowName.toString(), this.BulletInfo.ActorComponent.ActorTransform, {
+        s = BulletController_1.BulletController.CreateBulletCustomTarget(this.BulletInfo.Attacker, l.RowName.toString(), this.BulletInfo.ActorComponent.ActorTransform, {
           SkillId: this.BulletInfo.BulletInitParams.SkillId,
           SkillContextId: this.BulletInfo.BulletInitParams.SkillContextId,
           ParentVictimId: e.Victim?.Id,

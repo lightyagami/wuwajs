@@ -51,7 +51,7 @@ class PhantomArenaBattleController extends UiControllerBase_1.UiControllerBase {
     Net_1.Net.Register(16084, PhantomArenaBattleController.KD1);
     Net_1.Net.Register(24738, PhantomArenaBattleController.XD1);
     Net_1.Net.Register(23923, PhantomArenaBattleController.YD1);
-    Net_1.Net.Register(24175, PhantomArenaBattleController.PhantomBattleBoardSettleNotify);
+    Net_1.Net.Register(24175, PhantomArenaBattleController.zD1);
     Net_1.Net.Register(19442, PhantomArenaBattleController._G1);
     Net_1.Net.Register(16340, PhantomArenaBattleController.uG1);
     Net_1.Net.Register(28525, PhantomArenaBattleController.cG1);
@@ -59,6 +59,10 @@ class PhantomArenaBattleController extends UiControllerBase_1.UiControllerBase {
     Net_1.Net.Register(18271, PhantomArenaBattleController.uY1);
     Net_1.Net.Register(29780, PhantomArenaBattleController.vhu);
     Net_1.Net.Register(15454, PhantomArenaBattleController.Hhu);
+    Net_1.Net.Register(22495, PhantomArenaBattleController.rBm);
+    Net_1.Net.Register(25148, PhantomArenaBattleController.SFm);
+    Net_1.Net.Register(22838, PhantomArenaBattleController.Vif);
+    Net_1.Net.Register(25549, PhantomArenaBattleController.COf);
   }
   static OnUnRegisterNetEvent() {
     Net_1.Net.UnRegister(27549);
@@ -84,6 +88,8 @@ class PhantomArenaBattleController extends UiControllerBase_1.UiControllerBase {
     Net_1.Net.UnRegister(18271);
     Net_1.Net.UnRegister(29780);
     Net_1.Net.UnRegister(15454);
+    Net_1.Net.UnRegister(22495);
+    Net_1.Net.UnRegister(25148);
   }
   static OnLeaveLevel() {
     PhantomArenaAssetManager_1.PhantomArenaAssetManager.Clear();
@@ -95,7 +101,7 @@ class PhantomArenaBattleController extends UiControllerBase_1.UiControllerBase {
   static s2u() {
     var e = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity;
     if (e) {
-      for (const t of [35, 77, 18, 192, 181, 81, 32, 65, 57, 223, 118]) {
+      for (const t of [36, 80, 18, 198, 186, 84, 33, 68, 60, 230, 123]) {
         e.GetComponent(t)?.Disable(PhantomArenaDefine_2.ENTITY_COMPONENT_DISABLE_KEY);
       }
       var o = Global_1.Global.BaseCharacter.CharacterActorComponent.Actor;
@@ -107,7 +113,47 @@ class PhantomArenaBattleController extends UiControllerBase_1.UiControllerBase {
   }
   static TestBattleSettleResultForGm(e) {
     ModelManager_1.ModelManager.PhantomArenaBattleModel.SetTurnCountResultEnd(true);
-    this.PhantomBattleBoardSettleNotify(e);
+    this.zD1(e);
+  }
+  static TriggerPhantomBattleBoardSettle() {
+    var e = ModelManager_1.ModelManager.PhantomArenaBattleModel.GetPhantomBattleSettleNotify();
+    if (e) {
+      ModelManager_1.ModelManager.PhantomArenaBattleModel.SetTurnCountResultEnd(true);
+      this.zD1(e);
+    }
+  }
+  static TriggerPhantomBattleResultShow(o) {
+    const e = () => {
+      ControllerHolder_1.ControllerHolder.PhantomArenaBattleController.qnu(o);
+    };
+    const t = () => {
+      if (ModelManager_1.ModelManager.PhantomArenaModel.RoleUnlockQueue.length <= 0) {
+        e();
+      } else {
+        UiManager_1.UiManager.OpenView("PhantomArenaRoleUnlockView", e);
+      }
+    };
+    if (o.DS_ && o.DS_.b51 !== 0) {
+      ControllerHolder_1.ControllerHolder.PhantomArenaBattleController.Gnu(o, () => {
+        var e = ModelManager_1.ModelManager.PhantomArenaModel.GetCardItemIdInBattleResult(o.DS_);
+        if (e.length <= 0) {
+          t();
+        } else {
+          ControllerHolder_1.ControllerHolder.PhantomArenaBattleController.PhantomBattleResultShowCards(e, t);
+        }
+      });
+    } else {
+      t();
+    }
+  }
+  static PhantomBattleResultShowCards(e, o) {
+    var t = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardConfig(e[0]).ActivityId;
+    var e = {
+      CardIdList: e,
+      CallbackOnClose: o,
+      IsNewPhantomArenaActivity: ModelManager_1.ModelManager.PhantomArenaModel.IsNewPhantomArenaActivity(t)
+    };
+    UiManager_1.UiManager.OpenView("PhantomArenaCardsRewardView", e);
   }
   static G3u(e, o) {
     return o === 0 && e === 2 || o === 1 && e === 1;
@@ -116,7 +162,7 @@ class PhantomArenaBattleController extends UiControllerBase_1.UiControllerBase {
     var o = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardRole(e);
     var t = ModelManager_1.ModelManager.PlayerInfoModel.GetPlayerGender();
     if (!this.G3u(o.Type, t)) {
-      o = ModelManager_1.ModelManager.PhantomArenaModel.GetPhantomArenaActivityData();
+      o = ModelManager_1.ModelManager.PhantomArenaModel.GetPhantomArenaActivityData(o.ActivityId);
       if (o) {
         o = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleActivityConfig(o.Id).MainRoleSexChange.get(e);
         if (o !== undefined) {
@@ -140,7 +186,7 @@ class PhantomArenaBattleController extends UiControllerBase_1.UiControllerBase {
       };
       ModelManager_1.ModelManager.PhantomArenaBattleModel.InitData();
       ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.RoleId = e;
-      ModelManager_1.ModelManager.PhantomArenaBattleModel.ChallengeId = o;
+      ModelManager_1.ModelManager.PhantomArenaBattleModel.SetChallengeId(o);
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("PhantomArena", 10, "进入道馆数据", ["卡牌角色id", e], ["挑战id", o]);
       }
@@ -184,7 +230,8 @@ class PhantomArenaBattleController extends UiControllerBase_1.UiControllerBase {
     o.HasToggle = true;
     o.FunctionMap.set(2, e);
     o.SetToggleFunction(this.E_u);
-    PhantomArenaController_1.PhantomArenaController.OpenPhantomArenaConfirmBoxView(o);
+    var e = !ModelManager_1.ModelManager.PhantomArenaBattleModel.IsOldBvb;
+    PhantomArenaController_1.PhantomArenaController.OpenPhantomArenaConfirmBoxView(o, e);
   }
   static RequestPhantomBattleStart() {
     var e = Protocol_1.Aki.Protocol.zx1.create();
@@ -490,6 +537,11 @@ class PhantomArenaBattleController extends UiControllerBase_1.UiControllerBase {
     });
     return a.Promise;
   }
+  static MFm(e) {
+    if (ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.FieldData?.CardData?.CardId === e && (e = UiManager_1.UiManager.GetViewByName("PhantomArenaBattleView"))) {
+      e.OpenParam.ServerActionQueue.PushFieldSkillEffectAction();
+    }
+  }
   static async RequestBattleCardSkill(o, e) {
     var t = Protocol_1.Aki.Protocol.uI1.create();
     t.uC1 = o;
@@ -507,7 +559,8 @@ class PhantomArenaBattleController extends UiControllerBase_1.UiControllerBase {
           if (Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("PhantomArena", 10, "卡牌技能效果选择对象返回成功");
           }
-          ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.RemoveHandCardByCardId(o);
+          ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.HandleFunctionalAreaCard(e);
+          PhantomArenaBattleController.MFm(o);
           ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.RefreshCardLibraryNum(e.ztu);
           ModelManager_1.ModelManager.PhantomArenaBattleModel.BuffEffectData.PushBuffEffectDataBySkill(e.eE1);
           a.SetResult(true);
@@ -545,30 +598,84 @@ class PhantomArenaBattleController extends UiControllerBase_1.UiControllerBase {
     });
     return t.Promise;
   }
-  static async RequestPhantomBattleCardTargetInfo(e, o) {
-    var t = Protocol_1.Aki.Protocol.KG1.create();
-    t.uC1 = e;
+  static async RequestPhantomBattleCallCard(e, o, t) {
+    var a = Protocol_1.Aki.Protocol.yxm.create();
+    a.Fxm = e;
+    a.Hxm = o;
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("PhantomArena", 10, "获取技能目标信息", ["卡牌id", e]);
+      Log_1.Log.Info("PhantomArena", 10, "声骸竞技场召唤卡牌请求", ["效果id", e], ["卡牌id", o]);
     }
-    const a = new CustomPromise_1.CustomPromise();
-    Net_1.Net.Call(26604, t, e => {
+    const r = new CustomPromise_1.CustomPromise();
+    Net_1.Net.Call(23312, a, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19198);
-          a.SetResult(false);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27349);
+          r.SetResult([]);
         } else {
-          ModelManager_1.ModelManager.PhantomArenaBattleModel.BuffEffectData.SetCardSkillTriggerInfo(e.eF1, e.uE1, e.D8n, e.uC1, o);
           if (Log_1.Log.CheckInfo()) {
-            Log_1.Log.Info("PhantomArena", 10, "获取技能目标信息返回成功");
+            Log_1.Log.Info("PhantomArena", 10, "声骸竞技场召唤卡牌请求返回成功");
           }
-          a.SetResult(true);
+          ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.CallCardListToFight(e.cC1, t);
+          ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.RefreshCardLibraryNum(e.Pxm);
+          r.SetResult(e.cC1);
         }
       } else {
-        a.SetResult(false);
+        r.SetResult([]);
+      }
+    });
+    return r.Promise;
+  }
+  static async RequestPhantomBattleReconstructCard(e, o) {
+    var t = Protocol_1.Aki.Protocol.Uif.create();
+    t.Fxm = e;
+    t.Hxm = o;
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("PhantomArena", 10, "声骸竞技场重构卡牌请求", ["效果id", e], ["卡牌id", o]);
+    }
+    const a = new CustomPromise_1.CustomPromise();
+    Net_1.Net.Call(16015, t, e => {
+      if (e) {
+        if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27349);
+          a.SetResult([]);
+        } else {
+          if (Log_1.Log.CheckInfo()) {
+            Log_1.Log.Info("PhantomArena", 10, "声骸竞技场重构卡牌请求返回成功");
+          }
+          ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.RemoveHandCardListToRecycle(e.Hxm);
+          a.SetResult(e.Hxm);
+        }
+      } else {
+        a.SetResult([]);
       }
     });
     return a.Promise;
+  }
+  static async RequestPhantomBattleCardTargetInfo(e, o, t, a) {
+    var r = Protocol_1.Aki.Protocol.KG1.create();
+    r.uC1 = e;
+    r.r5n = o;
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("PhantomArena", 10, "获取技能目标信息", ["卡牌id", e], ["技能id", o]);
+    }
+    const n = new CustomPromise_1.CustomPromise();
+    Net_1.Net.Call(26604, r, e => {
+      if (e) {
+        if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19198);
+          n.SetResult(false);
+        } else {
+          ModelManager_1.ModelManager.PhantomArenaBattleModel.BuffEffectData.SetCardSkillTriggerInfo(e.eF1, e.uE1, e.D8n, e.uC1, t, o, a);
+          if (Log_1.Log.CheckInfo()) {
+            Log_1.Log.Info("PhantomArena", 10, "获取技能目标信息返回成功");
+          }
+          n.SetResult(true);
+        }
+      } else {
+        n.SetResult(false);
+      }
+    });
+    return n.Promise;
   }
   static async RequestPhantomBattleCardRoleTargetInfo(e) {
     var o = Protocol_1.Aki.Protocol.YG1.create();
@@ -646,33 +753,93 @@ class PhantomArenaBattleController extends UiControllerBase_1.UiControllerBase {
     });
     return t.Promise;
   }
-  static async RequestPhantomBattleSlotCardSkill(o, e) {
-    var t = Protocol_1.Aki.Protocol.Dhu.create();
-    t.uC1 = o;
-    t.hC1 = e;
+  static async RequestPhantomBattleSlotCardSkill(o, e, t, a) {
+    var r = Protocol_1.Aki.Protocol.Dhu.create();
+    r.uC1 = o;
+    r.hC1 = e;
+    r.r5n = t;
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("PhantomArena", 10, "卡牌技能效果选择对象", ["卡牌id", o], ["目标id", e]);
+      Log_1.Log.Info("PhantomArena", 10, "卡牌主动使用技能效果选择对象", ["卡牌id", o], ["目标id", e], ["技能id", t]);
     }
-    const a = new CustomPromise_1.CustomPromise();
-    Net_1.Net.Call(29615, t, e => {
+    const n = new CustomPromise_1.CustomPromise();
+    Net_1.Net.Call(29615, r, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
           ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23250);
-          a.SetResult(false);
+          n.SetResult(false);
         } else {
           if (Log_1.Log.CheckInfo()) {
-            Log_1.Log.Info("PhantomArena", 10, "卡牌技能效果选择对象返回成功");
+            Log_1.Log.Info("PhantomArena", 10, "卡牌主动使用技能效果选择对象返回成功");
           }
-          ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.FightCardToFunctional(o);
-          ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.RefreshCardLibraryNum(e.ztu);
+          if (!a) {
+            ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.FightCardToFunctional(o);
+            ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.RefreshCardLibraryNum(e.ztu);
+          }
           ModelManager_1.ModelManager.PhantomArenaBattleModel.BuffEffectData.PushBuffEffectDataBySkill(e.eE1);
-          a.SetResult(true);
+          n.SetResult(true);
         }
       } else {
-        a.SetResult(false);
+        n.SetResult(false);
       }
     });
-    return a.Promise;
+    return n.Promise;
+  }
+  static OpenPhantomArenaMapEntrance(e) {
+    let o = undefined;
+    if (o = e ? {
+      ChallengeId: e,
+      MarkId: ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleChallenge(e).MarkId
+    } : ModelManager_1.ModelManager.PhantomArenaModel.GetPermanentDefaultChallengeIdAndMarkId()) {
+      if (o.MarkId === 0) {
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("PhantomArena", 87, "打开声骇竞技场地图入口失败, 对应Challenge没有配置markId");
+        }
+      } else {
+        e = {
+          MarkId: o.MarkId,
+          MarkType: 45,
+          IsNotFocal: true,
+          IsNotFocusTween: true,
+          SkipToExtraUiName: "PhantomArenaMapEntrance",
+          SkipToExtraUiParam: o.ChallengeId
+        };
+        ControllerHolder_1.ControllerHolder.WorldMapController.OpenExtraUi("PhantomArenaMapEntrance", e, o.ChallengeId);
+      }
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("PhantomArena", 87, "打开声骇竞技场地图入口失败, 找不到默认challengeId");
+    }
+  }
+  static TryTeleportChallenge(e, o) {
+    var t = ConfigManager_1.ConfigManager.PhantomArenaConfig?.GetPhantomBattleChallenge(e);
+    if (t) {
+      if (ModelManager_1.ModelManager.PhantomArenaModel?.GetPermanentChallengeStateById(e) === 2) {
+        this.STf(t.TeleporterId, t.ReChallengeQuestId, o);
+      } else {
+        this.DFf(t.TeleporterId, t.QuestId, o);
+      }
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("PhantomArena", 87, "PhantomArenaMapEntranceDetailPanel:获取挑战信息失败", ["ChallengeId", e]);
+    }
+  }
+  static DFf(e, o, t) {
+    var a = ModelManager_1.ModelManager.QuestNewModel?.GetQuestState(o);
+    if (a === 1 || a === 2) {
+      ControllerHolder_1.ControllerHolder.QuestNewController.RequestTrackQuest(o, true, 2);
+      a = ModelManager_1.ModelManager.QuestNewModel.GetQuest(o);
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnLogicTreeTrackUpdate, a.Tree.BtType, a.Tree.TreeIncId);
+    }
+    ControllerHolder_1.ControllerHolder.WorldMapController.TryTeleport(e, t);
+  }
+  static STf(e, o, t) {
+    var o = ModelManager_1.ModelManager.QuestNewModel?.GetQuestState(o);
+    if (o === 1 || o === 2) {
+      (o = new ConfirmBoxDefine_1.ConfirmBoxDataNew(423)).FunctionMap.set(2, () => {
+        ControllerHolder_1.ControllerHolder.WorldMapController.TryTeleport(e, t);
+      });
+      ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(o);
+    } else {
+      ControllerHolder_1.ControllerHolder.WorldMapController.TryTeleport(e, t);
+    }
   }
 }
 exports.PhantomArenaBattleController = PhantomArenaBattleController;
@@ -683,28 +850,35 @@ exports.PhantomArenaBattleController = PhantomArenaBattleController;
       e.OpenParam.RefreshByWorldDone();
     }
     _a.s2u();
+    ModelManager_1.ModelManager.PhantomArenaBattleModel.SetPhantomBattleBoardSettleNotify(undefined);
   }
 };
 PhantomArenaBattleController.OD1 = e => {
   if (Log_1.Log.CheckInfo()) {
-    Log_1.Log.Info("PhantomArena", 10, "游戏开始,通知棋盘数据");
+    Log_1.Log.Info("PhantomArena", 10, "游戏开始,通知棋盘数据", ["ChallengeId", e.e8n]);
   }
   var o;
   var t = ModelManager_1.ModelManager.PhantomArenaBattleModel;
-  t.ChallengeId = e.e8n;
+  t.SetChallengeId(e.e8n);
   for (const a of e.cC1) {
     if (a.qg1) {
       o = a.kg1;
-      if (a.qg1.Fg1 === 0) {
+      if (a.qg1.Fg1 === Protocol_1.Aki.Protocol.$xm.Proto_GamerFighterNpc) {
         t.OpponentData.FightId = o;
+        t.OpponentData.IsFieldActive = e.AWf;
         t.OpponentData.InitPlayerData(a.qg1);
-      } else if (a.qg1.Fg1 === 1) {
+      } else if (a.qg1.Fg1 === Protocol_1.Aki.Protocol.$xm.Proto_GamerFighterPlayer) {
         t.OwnData.FightId = o;
+        t.OwnData.IsFieldActive = e.DWf;
         t.OwnData.InitPlayerData(a.qg1);
       }
     }
   }
   t.InitTaskData(e.z21);
+  if (!t.IsOldBvb) {
+    t.InitFieldData();
+    t.InitRecycleData();
+  }
 };
 PhantomArenaBattleController.qD1 = e => {
   if (Log_1.Log.CheckInfo()) {
@@ -716,16 +890,19 @@ PhantomArenaBattleController.qD1 = e => {
   for (const a of e.cC1) {
     if (a.qg1) {
       o = a.kg1;
-      if (a.qg1.Fg1 === 0) {
+      if (a.qg1.Fg1 === Protocol_1.Aki.Protocol.$xm.Proto_GamerFighterNpc) {
         t.OpponentData.FightId = o;
         t.OpponentData.InitPlayerData(a.qg1);
-      } else if (a.qg1.Fg1 === 1) {
+      } else if (a.qg1.Fg1 === Protocol_1.Aki.Protocol.$xm.Proto_GamerFighterPlayer) {
         t.OwnData.FightId = o;
         t.OwnData.InitPlayerData(a.qg1);
       }
     }
   }
   t.OpponentData.CreateInitPromise();
+  if (!t.IsOldBvb) {
+    t.RefreshFieldAndRecycleLockData(e.wvm);
+  }
 };
 PhantomArenaBattleController.GD1 = e => {
   if (Log_1.Log.CheckInfo()) {
@@ -762,6 +939,11 @@ PhantomArenaBattleController.jD1 = e => {
     Log_1.Log.Info("PhantomArena", 10, "卡牌战斗属性变化通知");
   }
   ModelManager_1.ModelManager.PhantomArenaBattleModel.RefreshFighterAttr(e.gC1, e.Vg1);
+  var o;
+  var e = ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.GetCardDataByFightId(e.gC1);
+  if (e && e.LastEffectCount !== e.CurEffectCount && (o = UiManager_1.UiManager.GetViewByName("PhantomArenaBattleView"))) {
+    o.OpenParam.ServerActionQueue.PushCountSkillEffectAction(e.CardId, e.CurEffectCount);
+  }
 };
 PhantomArenaBattleController.PhantomBattleDealCardNotify = e => {
   if (Log_1.Log.CheckInfo()) {
@@ -798,7 +980,7 @@ PhantomArenaBattleController.WD1 = e => {
   }
   var o = UiManager_1.UiManager.GetViewByName("PhantomArenaBattleView");
   if (o) {
-    o.OpenParam.TriggerPassiveSkillInteract(e);
+    o.OpenParam.ServerActionQueue.PushTriggerPassiveSkillInteractAction(e);
   }
 };
 PhantomArenaBattleController.q31 = e => {
@@ -833,7 +1015,7 @@ PhantomArenaBattleController.XD1 = () => {
     var e = ModelManager_1.ModelManager.CreatureModel.GetEntity(t);
     var o = e?.Entity;
     if (e?.Valid && o?.IsStart) {
-      if (!o.GetComponent(47)?.EnableAi("PhantomArenaBattle")) {
+      if (!o.GetComponent(48)?.EnableAi("PhantomArenaBattle")) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("PhantomArena", 77, "唤醒实体AI失败");
         }
@@ -847,51 +1029,35 @@ PhantomArenaBattleController.YD1 = e => {
   if (Log_1.Log.CheckInfo()) {
     Log_1.Log.Info("PhantomArena", 10, "BVB结算");
   }
-  var o = ModelManager_1.ModelManager.PhantomArenaBattleModel.BattleData;
-  o.NpcDeduceLife = e.hD1;
-  o.NpcCurLife = e.lD1;
-  o.PlayerDeduceLife = e.sD1;
-  o.PlayerCurLife = e.aD1;
-  EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PhantomArenaStartTurnResult, e.nD1, o.NpcDeduceLife, o.NpcCurLife, o.PlayerDeduceLife, o.PlayerCurLife);
+  EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PhantomArenaStartTurnResult, e);
 };
-PhantomArenaBattleController.PhantomBattleBoardSettleNotify = o => {
+PhantomArenaBattleController.zD1 = e => {
+  var o;
   ModelManager_1.ModelManager.PhantomArenaBattleModel.SetIsInBattle(false);
-  if (Log_1.Log.CheckInfo()) {
-    Log_1.Log.Info("PhantomArena", 10, "BVB结算同步");
-  }
   if (ModelManager_1.ModelManager.PhantomArenaBattleModel.GetTurnCountResultEnd()) {
-    const t = () => {
-      ControllerHolder_1.ControllerHolder.PhantomArenaBattleController.qnu(o);
-    };
-    if (o.DS_ && o.DS_.b51 !== 0) {
-      ControllerHolder_1.ControllerHolder.PhantomArenaBattleController.Gnu(o, () => {
-        var e = ModelManager_1.ModelManager.PhantomArenaModel.GetCardItemIdInBattleResult(o.DS_);
-        if (e.length <= 0) {
-          t();
-        } else {
-          ControllerHolder_1.ControllerHolder.PhantomArenaBattleController.Bau(e, t);
-        }
-      });
+    if ((o = UiManager_1.UiManager.GetViewByName("PhantomArenaBattleView")) && o.IsShowOrShowing) {
+      o.OpenParam.ServerActionQueue.PushBattleResultAction(e);
     } else {
-      t();
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("PhantomArena", 10, "BVB结算同步");
+      }
+      ControllerHolder_1.ControllerHolder.PhantomArenaBattleController.TriggerPhantomBattleResultShow(e);
     }
   } else {
-    ModelManager_1.ModelManager.PhantomArenaBattleModel.SetPhantomBattleBoardSettleNotify(o);
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("PhantomArena", 10, "BVB结算同步, 未到显示时机");
+    }
+    ModelManager_1.ModelManager.PhantomArenaBattleModel.SetPhantomBattleBoardSettleNotify(e);
   }
 };
 PhantomArenaBattleController.Gnu = (e, o) => {
-  e = {
+  o = {
     Result: e,
     CallbackOnClose: o
   };
-  UiManager_1.UiManager.OpenView("PhantomArenaBattleResultView", e);
-};
-PhantomArenaBattleController.Bau = (e, o) => {
-  e = {
-    CardIdList: e,
-    CallbackOnClose: o
-  };
-  UiManager_1.UiManager.OpenView("PhantomArenaCardsRewardView", e);
+  e = e.jqm;
+  e = ModelManager_1.ModelManager.PhantomArenaModel.IsNewPhantomArenaActivity(e) ? "PhantomArenaBattleResultViewNew" : "PhantomArenaBattleResultView";
+  UiManager_1.UiManager.OpenView(e, o);
 };
 PhantomArenaBattleController.qnu = e => {
   var o = {
@@ -910,7 +1076,7 @@ PhantomArenaBattleController.qnu = e => {
     ButtonInfoList: [o],
     IsBagFull: false
   };
-  var e = ModelManager_1.ModelManager.PhantomArenaModel.GetRewardItemDataInBattleResult(e.DS_);
+  var e = ModelManager_1.ModelManager.PhantomArenaModel.GetRewardItemDataInBattleResult(e.DS_, e.jqm);
   if (e.length > 0) {
     o.RewardItemDataList = e;
   }
@@ -952,7 +1118,7 @@ PhantomArenaBattleController.a41 = e => {
   var o = ModelManager_1.ModelManager.PhantomArenaBattleModel;
   var t = o.OpponentData.GetCardDataByFightId(e.uC1);
   if (t = t || o.OwnData.GetCardDataByFightId(e.uC1)) {
-    t.NotifyRefreshCardData(e.YM1, e.__u);
+    t.NotifyRefreshCardData(e.YM1, e.ihf, e.__u);
   }
 };
 PhantomArenaBattleController.uY1 = e => {
@@ -977,6 +1143,41 @@ PhantomArenaBattleController.Hhu = e => {
   }
   ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId(PhantomArenaDefine_1.BVB_SPEEDUP_TIPS);
 };
+PhantomArenaBattleController.rBm = e => {
+  if (Log_1.Log.CheckInfo()) {
+    Log_1.Log.Info("PhantomArena", 10, "声骸竞技场召唤卡通知");
+  }
+  var o = UiManager_1.UiManager.GetViewByName("PhantomArenaBattleView");
+  if (o) {
+    o.OpenParam.ServerActionQueue.PushBattleCallCardAction(e);
+  }
+};
+PhantomArenaBattleController.SFm = e => {
+  if (Log_1.Log.CheckInfo()) {
+    Log_1.Log.Info("PhantomArena", 10, "声骸竞技场卡牌耐久空通知");
+  }
+  var o = UiManager_1.UiManager.GetViewByName("PhantomArenaBattleView");
+  if (o) {
+    o.OpenParam.ServerActionQueue.PushCardDurableEmptyAction(e);
+  }
+};
+PhantomArenaBattleController.Vif = e => {
+  if (Log_1.Log.CheckInfo()) {
+    Log_1.Log.Info("PhantomArena", 10, "声骸竞技场重构卡牌通知");
+  }
+  var o = UiManager_1.UiManager.GetViewByName("PhantomArenaBattleView");
+  if (o) {
+    o.OpenParam.ServerActionQueue.PushReconstructCardAction(e);
+  }
+};
+PhantomArenaBattleController.COf = e => {
+  if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("PhantomArena", 10, "声骸竞技场技能效果失败通知");
+    }
+    ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25549);
+  }
+};
 PhantomArenaBattleController.E_u = e => {
   ModelManager_1.ModelManager.PhantomArenaBattleModel.IsNeedShowTimeEndConfirm = !e;
 };
@@ -986,7 +1187,7 @@ PhantomArenaBattleController.Ecu = (e, o, t) => {
     ModelManager_1.ModelManager.PhantomArenaBattleModel.CurrentLoading++;
     a = o.Entity;
     if (o?.Valid && a?.IsStart) {
-      if (o = a.GetComponent(47)) {
+      if (o = a.GetComponent(48)) {
         o.SetAllAiSenseEnableWithoutForbidAllSense(false);
         o.AddOrRemoveAiScene(PhantomArenaDefine_2.AI_SENSE_ID, true);
         o.SetAiHateConfig(PhantomArenaDefine_2.AI_HATE_ID);

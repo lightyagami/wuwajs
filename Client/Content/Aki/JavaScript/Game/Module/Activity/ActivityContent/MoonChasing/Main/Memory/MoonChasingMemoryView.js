@@ -58,7 +58,7 @@ class MoonChasingMemoryView extends UiViewBase_1.UiViewBase {
     this.o4o = new BuildingMapMoveComponent_1.BuildingMapMoveComponent(this.GetDraggable(2), false, false);
     var e = CommonParamById_1.configCommonParamById.GetFloatConfig("MoonFiestaMapSizeParam");
     this.o4o.SetScaleSafeArea(e, 2);
-    this.o4o.SetScale(e, 4);
+    this.o4o.SetScale(e, 5);
   }
   async JDn() {
     this.kDn = new BuildingMapTileModule_1.BuildingMapTileModule(false, true);

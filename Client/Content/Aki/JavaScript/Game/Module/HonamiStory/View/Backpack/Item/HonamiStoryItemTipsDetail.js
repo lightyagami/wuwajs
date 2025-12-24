@@ -8,6 +8,7 @@ const UE = require("ue");
 const UiPanelBase_1 = require("../../../../../Ui/Base/UiPanelBase");
 const LguiUtil_1 = require("../../../../Util/LguiUtil");
 const HonamiStoryWeaponTagItem_1 = require("../../Items/HonamiStoryWeaponTagItem");
+const TIPS_OFFSET_WIDTH = 50;
 class HonamiStoryItemTipsDetail extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
@@ -34,7 +35,8 @@ class HonamiStoryItemTipsDetail extends UiPanelBase_1.UiPanelBase {
     t.SetUIParent(this.GetItem(4));
   }
   SetAutoLocation(t) {
-    var e = LguiUtil_1.LguiUtil.GetAdaptiveTipsPosition(t, this.RootItem);
+    var e = this.GetText(0).GetTextRenderSize().X;
+    var e = LguiUtil_1.LguiUtil.GetAdaptiveTipsPosition(t, this.RootItem, e + TIPS_OFFSET_WIDTH);
     var i = this.GetItem(6).Width;
     var t = t.Height > t.Width ? -t.Width / 2 : -t.Height / 2;
     e.X = e.X + i;

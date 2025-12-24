@@ -63,7 +63,7 @@ let CharacterCatapultComponent = CharacterCatapultComponent_1 = class CharacterC
     };
   }
   static get Dependencies() {
-    return [3, 182];
+    return [3, 187];
   }
   OnInitData() {
     this.x$r = new BigJumpUnit_1.BigJumpUnit();
@@ -71,7 +71,7 @@ let CharacterCatapultComponent = CharacterCatapultComponent_1 = class CharacterC
   }
   OnStart() {
     this.Hte = this.Entity.GetComponent(3);
-    this.Gce = this.Entity.GetComponent(182);
+    this.Gce = this.Entity.GetComponent(187);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CustomMoveCatapult, this.B$r);
     return true;
   }
@@ -95,11 +95,11 @@ let CharacterCatapultComponent = CharacterCatapultComponent_1 = class CharacterC
     });
     var t;
     var e;
-    var i = this.Entity.GetComponent(181);
+    var i = this.Entity.GetComponent(186);
     if (i) {
       i.SetLocationAndRotatorWithModelBuffer(this.Hte.ActorLocationProxy.ToUeVector(), this.x$r.Rotator.ToUeRotator(), MODEL_BUFFER_TIME_LENGTH, "Catapult Start");
     }
-    if (this.w$r && (t = this.Entity.GetComponent(40).GetSkillMontageInstance(Number(SUPER_CATAPULT_SKILL_ID), 0), i?.MainAnimInstance) && t?.IsValid()) {
+    if (this.w$r && (t = this.Entity.GetComponent(41).GetSkillMontageInstance(Number(SUPER_CATAPULT_SKILL_ID), 0), i?.MainAnimInstance) && t?.IsValid()) {
       e = i.MainAnimInstance.Montage_GetPosition(t);
       e = (t.SequenceLength - e) / this.x$r.RisingTime;
       i.MainAnimInstance.Montage_SetPlayRate(t, e);
@@ -110,5 +110,5 @@ let CharacterCatapultComponent = CharacterCatapultComponent_1 = class CharacterC
   }
 };
 CharacterCatapultComponent.Lz = Vector_1.Vector.Create();
-CharacterCatapultComponent = CharacterCatapultComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(33)], CharacterCatapultComponent);
+CharacterCatapultComponent = CharacterCatapultComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(34)], CharacterCatapultComponent);
 exports.CharacterCatapultComponent = CharacterCatapultComponent; //# sourceMappingURL=CharacterCatapultComponent.js.map

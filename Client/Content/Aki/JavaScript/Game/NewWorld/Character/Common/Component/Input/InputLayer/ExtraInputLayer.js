@@ -15,13 +15,13 @@ class ExtraInputLayer extends InputLayer_1.InputLayer {
   constructor() {
     super(...arguments);
     this.Aia = undefined;
-    this.Njd = false;
-    this.SCm = false;
+    this.Vjd = false;
+    this.XIm = false;
   }
   Init(s, t) {
-    this.SCm = t;
+    this.XIm = t;
     var t = s.Entity;
-    var s = t.GetComponent(223);
+    var s = t.GetComponent(230);
     var e = s?.GetCharacterLoadTypeList();
     var a = s?.GetFightInfo()?.BpInputMap;
     let n = "";
@@ -29,12 +29,12 @@ class ExtraInputLayer extends InputLayer_1.InputLayer {
       for (const r of e) {
         var u = a.Get(r);
         if ((n = u?.AssetPathName.toString() ?? "") && n !== "None") {
-          this.Njd = true;
+          this.Vjd = true;
           break;
         }
       }
     }
-    if (this.Njd) {
+    if (this.Vjd) {
       if (n) {
         const i = t.GetComponent(3).Actor;
         ResourceSystem_1.ResourceSystem.LoadAsync(n, UE.Class, s => {
@@ -100,7 +100,7 @@ class ExtraInputLayer extends InputLayer_1.InputLayer {
           s = this.Aia.通用交互按下(e);
       }
       ExtraInputLayer.b0l.Stop();
-      if (!this.SCm || s && s.CommandType !== 0) {
+      if (!this.XIm || s && s.CommandType !== 0) {
         return s;
       } else {
         return ExtraInputLayer.GetSwallowCommand();
@@ -152,7 +152,7 @@ class ExtraInputLayer extends InputLayer_1.InputLayer {
           s = this.Aia.瞄准抬起(e);
       }
       ExtraInputLayer.q0l.Stop();
-      if (!this.SCm || s && s.CommandType !== 0) {
+      if (!this.XIm || s && s.CommandType !== 0) {
         return s;
       } else {
         return ExtraInputLayer.GetSwallowCommand();
@@ -205,7 +205,7 @@ class ExtraInputLayer extends InputLayer_1.InputLayer {
         case InputEnums_1.EInputAction.瞄准:
           s = this.Aia.瞄准长按(e);
       }
-      if (!this.SCm || s && s.CommandType !== 0) {
+      if (!this.XIm || s && s.CommandType !== 0) {
         return s;
       } else {
         return ExtraInputLayer.GetSwallowCommand();
@@ -307,7 +307,7 @@ class ExtraInputLayer extends InputLayer_1.InputLayer {
     }
   }
   IsValid() {
-    return this.Njd;
+    return this.Vjd;
   }
 }
 (exports.ExtraInputLayer = ExtraInputLayer).b0l = Stats_1.Stat.Create("ExtraInputLayer.HandlePress");

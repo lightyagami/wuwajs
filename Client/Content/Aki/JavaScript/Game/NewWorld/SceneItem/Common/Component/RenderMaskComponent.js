@@ -187,7 +187,7 @@ let RenderMaskComponent = RenderMaskComponent_1 = class RenderMaskComponent exte
     var t;
     var e;
     if (this.p11()?.IsValid() && (t = ModelManager_1.ModelManager.SceneTeamModel?.GetCurrentEntity)) {
-      if ((t = t.Entity?.GetComponent(182)) && this.Yrc) {
+      if ((t = t.Entity?.GetComponent(187)) && this.Yrc) {
         e = MathUtils_1.MathUtils.RangeClamp(t.Speed, 0, MAX_SPEED, 0, 1);
         if (this.DebugMode && Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("SceneGameplay", 7, "RenderMaskComponent", ["CurSpeed", t.Speed], ["RtpcValue", e]);
@@ -287,5 +287,5 @@ let RenderMaskComponent = RenderMaskComponent_1 = class RenderMaskComponent exte
     }
   }
 };
-RenderMaskComponent = RenderMaskComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(259)], RenderMaskComponent);
+RenderMaskComponent = RenderMaskComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(277)], RenderMaskComponent);
 exports.RenderMaskComponent = RenderMaskComponent; //# sourceMappingURL=RenderMaskComponent.js.map

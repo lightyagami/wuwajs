@@ -163,7 +163,7 @@ class GuideLineAssistant extends ControllerAssistantBase_1.ControllerAssistantBa
     return !ModelManager_1.ModelManager.PlotModel?.IsInHighLevelPlot() && ((e = this.lzs()) && e.CanShowGuideLine() ? !!e.IsAlwaysShowGuideLine() || (e = ModelManager_1.ModelManager.GeneralLogicTreeModel?.GetGuideLineStartShowTime() ?? 0, this.cro || (t = ConfigManager_1.ConfigManager.QuestNewConfig?.GetGlobalConfig("GuideLineShowTime")) && (this.cro = parseInt(t)), TimeUtil_1.TimeUtil.GetServerTime() - e <= this.cro) : (this.Lro(), false));
   }
   Rro() {
-    var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(45);
+    var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(46);
     if (e) {
       return this.Pro(e.IsMoving);
     } else {

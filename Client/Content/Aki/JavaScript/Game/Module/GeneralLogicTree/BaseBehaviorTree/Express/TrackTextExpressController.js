@@ -31,6 +31,7 @@ class TrackTextExpressController {
     this.fXt.Clear();
     this.MXt.length = 0;
     this.vXt.clear();
+    ModelManager_1.ModelManager.LevelPlayModel.ChangeLevelPlayTrackRange(this.Yre.TreeConfigId, undefined);
     this.EndTextExpress();
   }
   EnableTrack(e, t = 0) {

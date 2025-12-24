@@ -34,14 +34,14 @@ class BattleTimeDilationButton extends FormationExtraButton_1.FormationExtraButt
     this.s2d = undefined;
     this.a2d = undefined;
     this.h2d = undefined;
-    this.mcm = undefined;
+    this.O0m = undefined;
     this.UiLevelSequence = undefined;
     this.q6d = 0;
     this.Lod = 0;
     this.mit = 0;
     this.dit = 0;
     this.l2d = false;
-    this.$Qd = false;
+    this.XQd = false;
     this._2d = (t, e) => {
       if (this.GetActive() && e === 0) {
         this.u2d();
@@ -65,7 +65,7 @@ class BattleTimeDilationButton extends FormationExtraButton_1.FormationExtraButt
             this.l2d = false;
             this.s2d?.SetUIActive(false);
             this.PlayLoopAnim();
-            this.fZd();
+            this.Mtm();
             break;
           case 2:
             this.l2d = true;
@@ -84,13 +84,13 @@ class BattleTimeDilationButton extends FormationExtraButton_1.FormationExtraButt
     };
     this.FQe = t => {
       if (t === "FightPhotographView") {
-        this.$Qd = true;
+        this.XQd = true;
         this.UPi();
       }
     };
     this.$Ge = t => {
       if (t === "FightPhotographView") {
-        this.$Qd = false;
+        this.XQd = false;
         this.UPi();
       }
     };
@@ -130,8 +130,8 @@ class BattleTimeDilationButton extends FormationExtraButton_1.FormationExtraButt
     this.s2d = this.GetItem(2);
     this.a2d = this.GetSprite(3);
     this.h2d = this.GetText(4);
-    this.mcm = this.GetExtendToggle(1);
-    this.mcm?.OnPointDownCallBack.Bind(this.jYe);
+    this.O0m = this.GetExtendToggle(1);
+    this.O0m?.OnPointDownCallBack.Bind(this.jYe);
     this.q6d = EffectSystem_1.EffectSystem.SpawnEffect(GlobalData_1.GlobalData.World, MathUtils_1.MathUtils.DefaultTransformDouble, POST_EFFECT_PATH, "BattleTimeDilationButton_effect", undefined, 3, undefined, this.F6d, undefined, true);
     ControllerHolder_1.ControllerHolder.InputDistributeController.BindAction(InputMappingsDefine_1.actionMappings.Link大招, this._2d);
   }
@@ -185,7 +185,7 @@ class BattleTimeDilationButton extends FormationExtraButton_1.FormationExtraButt
       ModelManager_1.ModelManager.BattleUiModel.SetTimeDilationState(2);
     }
   }
-  fZd() {
+  Mtm() {
     var t = new LogReportDefine_1.FightPhotoTimeDilationLogEvent();
     var e = ActivityControllerHolder_1.ActivityControllerHolder.FightPhotoController.GetActivityData().GetCurrentLevelData();
     t.inst_id = e.InstanceId;
@@ -234,7 +234,7 @@ class BattleTimeDilationButton extends FormationExtraButton_1.FormationExtraButt
   }
   N6d(t) {
     if (EffectSystem_1.EffectSystem.IsValid(t) && this.o1h()) {
-      if (this.$Qd) {
+      if (this.XQd) {
         EffectSystem_1.EffectSystem.SetEffectHidden(t, true);
       } else {
         switch (ModelManager_1.ModelManager.BattleUiModel.CurrentTimeDilationSkillState) {
@@ -253,7 +253,7 @@ class BattleTimeDilationButton extends FormationExtraButton_1.FormationExtraButt
     if (this.Lod) {
       ModelManager_1.ModelManager.ScreenEffectModel?.EndScreenEffect(this.Lod);
     }
-    if (this.o1h() && !this.$Qd && ModelManager_1.ModelManager.BattleUiModel.CurrentTimeDilationSkillState === 1) {
+    if (this.o1h() && !this.XQd && ModelManager_1.ModelManager.BattleUiModel.CurrentTimeDilationSkillState === 1) {
       this.Lod = ModelManager_1.ModelManager.ScreenEffectModel.PlayScreenEffect(SCREEN_EFFECT_PATH);
     }
   }

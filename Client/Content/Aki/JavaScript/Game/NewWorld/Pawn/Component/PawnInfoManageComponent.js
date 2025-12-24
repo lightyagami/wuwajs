@@ -41,16 +41,20 @@ let PawnInfoManageComponent = class PawnInfoManageComponent extends EntityCompon
     this.han = undefined;
     this.lan = undefined;
     this._an = -1;
+    this.Aif = undefined;
     this.xrr = undefined;
     this.KQs = undefined;
   }
   OnInit() {
     this.Ovr = this.Entity.GetComponent(0);
-    this.han = this.Entity.GetComponent(153);
+    this.han = this.Entity.GetComponent(158);
     return true;
   }
   get LockRange() {
     return this._an;
+  }
+  get LockControl() {
+    return this.Aif;
   }
   get PawnName() {
     if (this.xrr !== LanguageSystem_1.LanguageSystem.PackageLanguage) {
@@ -108,7 +112,7 @@ let PawnInfoManageComponent = class PawnInfoManageComponent extends EntityCompon
     return this.Entity.Id;
   }
   get HasQuestOption() {
-    var t = this.Entity.GetComponent(201);
+    var t = this.Entity.GetComponent(207);
     return !!t && !!(t = t.GetInteractController()) && t.HasDynamicOption;
   }
   uan() {
@@ -117,8 +121,13 @@ let PawnInfoManageComponent = class PawnInfoManageComponent extends EntityCompon
     if (this.lan) {
       t = this.Ovr.GetBaseInfo();
       this.he = PublicUtil_1.PublicUtil.GetConfigTextByKey(t.TidName);
-      t = (0, IComponent_1.getComponent)(this.lan.ComponentsData, "FightInteractComponent");
-      this._an = t ? t.LockRange : -1;
+      if (t = (0, IComponent_1.getComponent)(this.lan.ComponentsData, "FightInteractComponent")) {
+        this._an = t.LockRange;
+        this.Aif = t.LockControl ?? undefined;
+      } else {
+        this._an = -1;
+        this.Aif = undefined;
+      }
       return true;
     } else {
       if (Log_1.Log.CheckError()) {
@@ -145,5 +154,5 @@ let PawnInfoManageComponent = class PawnInfoManageComponent extends EntityCompon
     return t || ((t = this.Entity.GetComponent(0)?.GetModelConfig()) ? t.名字Z偏移 : 0);
   }
 };
-PawnInfoManageComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(121)], PawnInfoManageComponent);
+PawnInfoManageComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(126)], PawnInfoManageComponent);
 exports.PawnInfoManageComponent = PawnInfoManageComponent; //# sourceMappingURL=PawnInfoManageComponent.js.map

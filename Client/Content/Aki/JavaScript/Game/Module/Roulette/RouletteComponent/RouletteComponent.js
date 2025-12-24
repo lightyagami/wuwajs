@@ -3,16 +3,13 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.RouletteComponentBase = exports.trapDefenseExploreRouletteMap = exports.exploreRouletteMap = exports.functionRouletteMap = undefined;
+exports.RouletteComponentBase = undefined;
 const UE = require("ue");
 const Info_1 = require("../../../../Core/Common/Info");
 const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
 const LguiUtil_1 = require("../../Util/LguiUtil");
 const RouletteDefine_1 = require("../Data/RouletteDefine");
 const RouletteGridData_1 = require("../RouletteGrid/RouletteGridData");
-exports.functionRouletteMap = [[[1], 4, 1], [[2], 5, 1], [[3], 6, 1], [[4], 7, 1], [[5], 8, 1], [[6], 9, 1], [[7], 10, 1], [[8], 11, 1]];
-exports.exploreRouletteMap = [[[1], 4, 0], [[2], 5, 0], [[3], 6, 0], [[4], 7, 0], [[5], 8, 0], [[6], 9, 0], [[7], 10, 0], [[8], 11, 2]];
-exports.trapDefenseExploreRouletteMap = [[[1], 4, 0], [[2], 5, 0], [[3], 6, 0], [[4], 7, 0], [[5], 8, 0], [[6], 9, 0], [[7], 10, 0], [[8], 11, 0]];
 class RouletteComponentBase extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
@@ -93,9 +90,6 @@ class RouletteComponentBase extends UiPanelBase_1.UiPanelBase {
   GridDataDecorator(t) {
     t.State = this.JudgeGridStateByData(t.Id, t.GridType);
     return t;
-  }
-  AddAllGridToggleEvent(t) {
-    this.ToggleEventList.push(t);
   }
   AddAllGridToggleCanExecuteChangeEvent(t) {
     for (const e of this.RouletteGridList) {

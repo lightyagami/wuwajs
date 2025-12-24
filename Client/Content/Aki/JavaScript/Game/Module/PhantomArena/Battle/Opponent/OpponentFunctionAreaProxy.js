@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.OpponentFunctionAreaProxy = undefined;
 const CustomPromise_1 = require("../../../../../Core/Common/CustomPromise");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
+const PhantomArenaLogicFactory_1 = require("../Card/Logic/PhantomArenaLogicFactory");
 const PhantomArenaCard_1 = require("../Card/PhantomArenaCard");
 const PhantomArenaAssetManager_1 = require("../PhantomArenaAssetManager");
 const PhantomArenaDefine_1 = require("../PhantomArenaDefine");
@@ -24,35 +25,44 @@ class OpponentFunctionAreaProxy {
     this.AreaItem = t;
   }
   async AddCardById(t) {
-    var t = ModelManager_1.ModelManager.PhantomArenaBattleModel.OpponentData.GetCardDataByCardId(t);
+    var t = ModelManager_1.ModelManager.PhantomArenaBattleModel.OpponentData.GetBattleCardByCardId(t);
     var a = new PhantomArenaCard_1.PhantomArenaCard();
-    a.SetCardData(t);
-    var t = this.ParentArea.ParentArea.ViewProxy.GetDragRootItem();
-    await a.CreateByResourceIdAsync("UiItem_SoundRemnantItem", t);
+    a.RegisterCardLogic(PhantomArenaLogicFactory_1.PhantomArenaLogicFactory.CreateLogic(a, t.GetCardType(), this.ParentArea.ParentArea.ViewProxy));
     a.SetCardProxy(this);
-    await a.RefreshSelfAsync();
-    if (this.IsMonster) {
+    var i = this.ParentArea.ParentArea.ViewProxy.GetDragRootItem();
+    await a.InitializePhantomArenaCard(t, i);
+    if (this.IsNeedPreload) {
+      PhantomArenaAssetManager_1.PhantomArenaAssetManager.PreloadPhantomArenaAssetByCardConfigId(a.Data.ConfigId);
+    }
+    return a;
+  }
+  async AddFightCardById(t) {
+    var t = ModelManager_1.ModelManager.PhantomArenaBattleModel.OpponentData.GetBattleCardByCardId(t);
+    var a = new PhantomArenaCard_1.PhantomArenaCard();
+    a.RegisterCardLogic(PhantomArenaLogicFactory_1.PhantomArenaLogicFactory.CreateLogic(a, t.GetCardType(), this.ParentArea.ParentArea.ViewProxy));
+    a.SetCardProxy(this);
+    var i = this.GetCardAttachItem();
+    await a.InitializePhantomArenaCard(t, i);
+    if (this.IsNeedPreload) {
       PhantomArenaAssetManager_1.PhantomArenaAssetManager.PreloadPhantomArenaAssetByCardConfigId(a.Data.ConfigId);
     }
     return a;
   }
   async AddCardByCardData(t) {
     var a = new PhantomArenaCard_1.PhantomArenaCard();
-    a.SetCardData(t);
-    var t = this.ParentArea.ParentArea.ViewProxy.GetDragRootItem();
-    await a.CreateByResourceIdAsync("UiItem_SoundRemnantItem", t);
+    a.RegisterCardLogic(PhantomArenaLogicFactory_1.PhantomArenaLogicFactory.CreateLogic(a, t.GetCardType(), this.ParentArea.ParentArea.ViewProxy));
     a.SetCardProxy(this);
-    await a.RefreshSelfAsync();
-    if (this.IsMonster) {
+    var i = this.ParentArea.ParentArea.ViewProxy.GetDragRootItem();
+    await a.InitializePhantomArenaCard(t, i);
+    if (this.IsNeedPreload) {
       PhantomArenaAssetManager_1.PhantomArenaAssetManager.PreloadPhantomArenaAssetByCardConfigId(a.Data.ConfigId);
     }
     return a;
   }
-  async SetCard(t) {
+  async SetCard(t, a) {
     if (!this.Card) {
       this.Card = await this.AddCardById(t);
-      t = this.ParentArea.ParentArea.HandArea.GetLayoutItem();
-      await this.PlaySetBattleTween(t);
+      await this.PlaySetBattleTween(a);
     }
   }
   async ChangeCard(t) {
@@ -63,7 +73,7 @@ class OpponentFunctionAreaProxy {
   }
   async DestroyCard() {
     if (this.Card) {
-      if (this.IsMonster) {
+      if (this.IsNeedPreload) {
         PhantomArenaAssetManager_1.PhantomArenaAssetManager.RemovePhantomArenaAssetByCardConfigId(this.Card.Data.ConfigId);
       }
       await this.Card.DestroyAsync();
@@ -72,7 +82,7 @@ class OpponentFunctionAreaProxy {
   }
   async DissolveCard() {
     if (this.Card) {
-      if (this.IsMonster) {
+      if (this.IsNeedPreload) {
         PhantomArenaAssetManager_1.PhantomArenaAssetManager.RemovePhantomArenaAssetByCardConfigId(this.Card.Data.ConfigId);
       }
       await this.Card.Dissolve();
@@ -141,7 +151,8 @@ class OpponentFunctionAreaProxy {
         });
       },
       LocationCurveX: this.ParentArea.ParentArea.RecycleCurve,
-      LocationCurveY: this.ParentArea.ParentArea.RecycleCurve
+      LocationCurveY: this.ParentArea.ParentArea.RecycleCurve,
+      DurationTime: PhantomArenaDefine_1.PLAY_MOVE_DURATION
     };
     this.Card?.PlayLocationByItem(this.GetCardAttachItem(), t, i);
     this.Card?.PlaySequenceWithoutStop("DragUpHandtoTable");
@@ -163,7 +174,7 @@ class OpponentFunctionAreaProxy {
         this.Card?.SetToggleState(0, false);
       }
     } else if (this.Card) {
-      this.ParentArea.ParentArea.ViewProxy.ShowCardTips(this.Card.Data);
+      this.ParentArea.ParentArea.ViewProxy.ShowCardTips(this.Card.Data, true);
       this.ParentArea.ParentArea.ViewProxy.SetSelectedCardId(t, 3);
     }
   }

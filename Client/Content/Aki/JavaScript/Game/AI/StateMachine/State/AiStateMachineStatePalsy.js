@@ -29,7 +29,7 @@ class AiStateMachineStatePalsy extends AiStateMachineState_1.AiStateMachineState
         ControllerHolder_1.ControllerHolder.CameraController.FightCamera.LogicComponent.ApplyCameraModify(t.CameraData.Tag, t.CameraData.持续时间, t.CameraData.淡入时间, t.CameraData.淡出时间, t.CameraData.摄像机配置, undefined, t.CameraData.打断淡出时间, undefined, undefined, undefined, t.CameraData.CameraAttachSocket);
         this.Node?.TimeScaleComponent?.SetTimeScale(t.VictimTimeScale.优先级, t.VictimTimeScale.时间膨胀值, t.VictimTimeScale.时间膨胀变化曲线, t.VictimTimeScale.时间膨胀时长, 4);
         if (e = this.Node.AiController.AiHateList.GetCurrentTarget()) {
-          e.Entity.GetComponent(126).SetTimeScale(t.AttackerTimeScale.优先级, t.AttackerTimeScale.时间膨胀值, t.AttackerTimeScale.时间膨胀变化曲线, t.AttackerTimeScale.时间膨胀时长, 4);
+          e.Entity.GetComponent(131).SetTimeScale(t.AttackerTimeScale.优先级, t.AttackerTimeScale.时间膨胀值, t.AttackerTimeScale.时间膨胀变化曲线, t.AttackerTimeScale.时间膨胀时长, 4);
         }
         if (!!t.CameraShake && !ControllerHolder_1.ControllerHolder.CameraController.Model.IsModeEnabled(2) && !ControllerHolder_1.ControllerHolder.CameraController.Model.IsModeEnabled(1)) {
           e = ModelManager_1.ModelManager.CameraModel.FightCamera.GetComponent(4).CameraActor.D_K2_GetActorLocation();

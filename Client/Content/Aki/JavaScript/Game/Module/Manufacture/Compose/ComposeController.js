@@ -108,7 +108,7 @@ class ComposeController extends UiControllerBase_1.UiControllerBase {
     }
   }
   static async SendSynthesisItemRequestBatchNew(e, o) {
-    var t = new Protocol_1.Aki.Protocol.t1m();
+    var t = new Protocol_1.Aki.Protocol.gmm();
     for (const a of e) {
       var r = a.Item.Count - a.Item.SelectedCount;
       if (!(r <= 0)) {
@@ -119,17 +119,17 @@ class ComposeController extends UiControllerBase_1.UiControllerBase {
             UVn: s.Count
           });
         }
-        t.o1m.push({
+        t.vmm.push({
           s5n: a.Item.ItemId,
           m9n: r,
-          r1m: n
+          pmm: n
         });
       }
     }
-    if (t.o1m.length <= 0) {
+    if (t.vmm.length <= 0) {
       o?.();
     } else {
-      const i = await Net_1.Net.CallAsync(20420, Protocol_1.Aki.Protocol.t1m.create(t));
+      const i = await Net_1.Net.CallAsync(20420, Protocol_1.Aki.Protocol.gmm.create(t));
       if (i.Cvs === Protocol_1.Aki.Protocol.Q4n.KRs) {
         const l = [];
         Object.keys(i.bMs).forEach(e => {
@@ -138,7 +138,7 @@ class ComposeController extends UiControllerBase_1.UiControllerBase {
             UVn: i.bMs[e]
           });
         });
-        ComposeController.k_m(l, o);
+        ComposeController.zfm(l, o);
       } else {
         ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(i.Cvs, 29114);
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ComposeFail);
@@ -146,13 +146,13 @@ class ComposeController extends UiControllerBase_1.UiControllerBase {
     }
   }
   static async SendSynthesisItemRequestNew(e, o, t, r) {
-    var n = new Protocol_1.Aki.Protocol.t1m();
-    n.o1m = [{
+    var n = new Protocol_1.Aki.Protocol.gmm();
+    n.vmm = [{
       s5n: e,
       m9n: o,
-      r1m: t.filter(e => e.UVn > 0)
+      pmm: t.filter(e => e.UVn > 0)
     }];
-    const a = await Net_1.Net.CallAsync(20420, Protocol_1.Aki.Protocol.t1m.create(n));
+    const a = await Net_1.Net.CallAsync(20420, Protocol_1.Aki.Protocol.gmm.create(n));
     if (a.Cvs === Protocol_1.Aki.Protocol.Q4n.KRs) {
       const s = [];
       Object.keys(a.bMs).forEach(e => {
@@ -161,7 +161,7 @@ class ComposeController extends UiControllerBase_1.UiControllerBase {
           UVn: a.bMs[e]
         });
       });
-      ComposeController.k_m(s, r);
+      ComposeController.zfm(s, r);
     } else {
       ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(a.Cvs, 29114);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ComposeFail);
@@ -189,13 +189,13 @@ class ComposeController extends UiControllerBase_1.UiControllerBase {
       if (o.EPs.length !== 0) {
         t.push(...o.EPs);
       }
-      ComposeController.k_m(t);
+      ComposeController.zfm(t);
     } else {
       ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Cvs, 21127);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ComposeFail);
     }
   }
-  static k_m(e, o) {
+  static zfm(e, o) {
     var t = ModelManager_1.ModelManager.ComposeModel;
     var r = t.GetComposeInfo();
     var n = r.ComposeLevel;
@@ -584,7 +584,7 @@ class ComposeController extends UiControllerBase_1.UiControllerBase {
     if (this.YIi) {
       var e = EntitySystem_1.EntitySystem.Get(this.YIi);
       if (e) {
-        return e.GetComponent(200);
+        return e.GetComponent(206);
       }
     }
   }

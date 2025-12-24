@@ -35,13 +35,12 @@ class RouletteMainView extends UiTickViewBase_1.UiTickViewBase {
     this.fpo = () => {
       var e;
       var t;
-      if (Info_1.Info.IsInGamepad() && this.ts1.CanSwitchType) {
+      if (this.ts1.CanSwitchType) {
         [e, t] = this.pfo.GetCurrentIndexAndAngle();
-        this.ppo();
+        this.ts1.RouletteTypeSwitch();
+        this.pB_();
         this.vpo();
-        ModelManager_1.ModelManager.RouletteModel.SaveRouletteActionOpenConfig(this.ts1.ActionType, this.ts1.RouletteType);
         this.pfo.Refresh(e, t);
-        this.Mpo();
       }
     };
     this.cEa = () => {
@@ -88,21 +87,15 @@ class RouletteMainView extends UiTickViewBase_1.UiTickViewBase {
     UiInteractLogReport_1.UiInteractLogReport.RecordRouletteOpen();
   }
   async OnBeforeStartAsync() {
+    this.RouletteUiItem = this.GetItem(0);
     await this.ts1.BeforeStartAsync();
   }
   OnStart() {
     this.ts1.Start();
     this.pB_();
-    this.RouletteUiItem = this.GetItem(0);
-    var e = ModelManager_1.ModelManager.RouletteModel.IsExploreRouletteOpen();
-    var t = ModelManager_1.ModelManager.RouletteModel.IsFunctionRouletteOpen();
-    if (this.ts1.RouletteType === 1 && !t || this.ts1.RouletteType === 0 && !e) {
-      this.ppo();
-    }
     if (Info_1.Info.OperationType === 2) {
-      t = this.ts1.GetPanelSwitchOpen();
-      this.GetItem(1).SetUIActive(t);
-      this.Mpo();
+      e = this.ts1.GetPanelSwitchOpen();
+      this.GetItem(1).SetUIActive(e);
       this.QXa();
     }
     this.vpo();
@@ -167,17 +160,6 @@ class RouletteMainView extends UiTickViewBase_1.UiTickViewBase {
       this.pfo.Refresh(e, t);
     }
   }
-  Mpo() {
-    var e = this.ts1.RouletteType === 0;
-    var t = ModelManager_1.ModelManager.RouletteModel.IsExploreRouletteOpen();
-    var i = this.GetExtendToggle(2);
-    if (t) {
-      i.SetToggleState(e ? 1 : 0, false);
-    } else {
-      i.SetToggleState(2, false);
-    }
-    this.GetExtendToggle(3).SetToggleState(e ? 0 : 1, false);
-  }
   vpo() {
     this.zfo();
     this.Zfo();
@@ -193,16 +175,13 @@ class RouletteMainView extends UiTickViewBase_1.UiTickViewBase {
   zfo() {
     this.pfo.RefreshRouletteInputType();
   }
-  ppo() {
-    var e = this.ts1.RouletteType === 0;
-    this.ts1.RouletteType = e ? 1 : 0;
-    this.pB_();
-  }
   pB_() {
     var e;
     if (Info_1.Info.OperationType === 2) {
       e = this.ts1.GetCanOpenAssembly(this.ts1.RouletteType);
       this.GetItem(5).SetUIActive(e);
+      this.GetExtendToggle(2).SetToggleState(this.ts1.GetToggle1State() ?? 0, false);
+      this.GetExtendToggle(3).SetToggleState(this.ts1.GetToggle2State() ?? 0, false);
     }
   }
   QXa() {

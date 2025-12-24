@@ -45,9 +45,12 @@ class PhantomBattleFettersView extends UiViewBase_1.UiViewBase {
     } else {
       this._Dt = e[0];
       this.dFe = e[1];
+      e = e[2] ?? true;
       this.kvt = new PhantomBattleFettersViewItem_1.PhantomBattleFettersViewItem();
       this.kvt.SetSelectRoleId(this.dFe);
-      this.kvt.OnFastFilter = this.z6i;
+      if (e) {
+        this.kvt.OnFastFilter = this.z6i;
+      }
       await this.kvt.CreateThenShowByActorAsync(this.GetItem(1).GetOwner());
       this.n6t = new PopupCaptionItem_1.PopupCaptionItem(this.GetItem(0));
       this.n6t.SetCloseCallBack(() => {

@@ -13,7 +13,7 @@ const HonamiStoryWeaponSuitActiveItem_1 = require("./HonamiStoryWeaponSuitActive
 class HonamiStoryWeaponSuitInfoItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
     super(...arguments);
-    this.RYd = undefined;
+    this.nzd = undefined;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIText], [2, UE.UISprite], [3, UE.UISprite], [4, UE.UISprite], [5, UE.UIItem], [6, UE.UIText]];
@@ -27,8 +27,8 @@ class HonamiStoryWeaponSuitInfoItem extends GridProxyAbstract_1.GridProxyAbstrac
     ControllerHolder_1.ControllerHolder.TermExplanationController.RegisterTextHyperlinkByParam(t);
   }
   async OnBeforeStartAsync() {
-    this.RYd = new HonamiStoryWeaponSuitActiveItem_1.HonamiStoryWeaponSuitActiveItem();
-    await this.RYd.CreateThenShowByActorAsync(this.GetItem(5).GetOwner());
+    this.nzd = new HonamiStoryWeaponSuitActiveItem_1.HonamiStoryWeaponSuitActiveItem();
+    await this.nzd.CreateThenShowByActorAsync(this.GetItem(5).GetOwner());
   }
   Refresh(t, e, i) {
     var r = t.SuitId;
@@ -47,7 +47,7 @@ class HonamiStoryWeaponSuitInfoItem extends GridProxyAbstract_1.GridProxyAbstrac
     this.GetSprite(2).SetUIActive(s);
     this.GetSprite(3).SetUIActive(!s);
     this.GetSprite(4).SetUIActive(false);
-    this.RYd.Refresh(t);
+    this.nzd.Refresh(t);
   }
 }
 exports.HonamiStoryWeaponSuitInfoItem = HonamiStoryWeaponSuitInfoItem;

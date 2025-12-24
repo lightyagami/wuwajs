@@ -56,14 +56,14 @@ class PhotographView extends UiTickViewBase_1.UiTickViewBase {
     this.RQi = new UE.Vector2D(0, 0);
     this.cSl = false;
     this.mSl = true;
-    this.AQd = PhotographDefine_1.MIN_FOV;
-    this.DQd = PhotographDefine_1.MAX_FOV;
-    this.aom = 1;
+    this.BQd = PhotographDefine_1.MIN_FOV;
+    this.kQd = PhotographDefine_1.MAX_FOV;
+    this.Phm = 1;
     this.$2_ = undefined;
     this.SEd = undefined;
     this.N8i = t => {
       if (t.scrollAxisValue !== 0) {
-        this.AQi(t.scrollAxisValue * this.aom);
+        this.AQi(t.scrollAxisValue * this.Phm);
       }
     };
     this.O8i = (t, e) => {
@@ -142,7 +142,7 @@ class PhotographView extends UiTickViewBase_1.UiTickViewBase {
         }
       } else {
         ModelManager_1.ModelManager.PhotographModel.GetPhotographerStructure()?.GetFov();
-        o = MathUtils_1.MathUtils.RangeClamp(t, this.AQd, this.DQd, this.DQd, this.AQd);
+        o = MathUtils_1.MathUtils.RangeClamp(t, this.BQd, this.kQd, this.kQd, this.BQd);
         PhotographController_1.PhotographController.SetFov(o);
       }
     };
@@ -299,14 +299,14 @@ class PhotographView extends UiTickViewBase_1.UiTickViewBase {
     GlobalData_1.GlobalData.BpEventManager.OnEnterPhotograph.Broadcast();
     var t = ModelManager_1.ModelManager.SceneTeamModel?.GetCurrentEntity?.Entity;
     if (t?.Valid) {
-      t.GetComponent(118)?.SetLodBias(PhotographDefine_1.MAX_LOD_BIAS);
+      t.GetComponent(123)?.SetLodBias(PhotographDefine_1.MAX_LOD_BIAS);
     }
   }
   OnAfterDestroy() {
     GlobalData_1.GlobalData.BpEventManager.OnExitPhotograph.Broadcast();
     var t = ModelManager_1.ModelManager.SceneTeamModel?.GetCurrentEntity?.Entity;
     if (t?.Valid) {
-      t.GetComponent(118)?.SetLodBias(PhotographDefine_1.DEFAULT_LOD_BIAS);
+      t.GetComponent(123)?.SetLodBias(PhotographDefine_1.DEFAULT_LOD_BIAS);
     }
   }
   OnAddEventListener() {
@@ -429,15 +429,16 @@ class PhotographView extends UiTickViewBase_1.UiTickViewBase {
       InputDistributeController_1.InputDistributeController.BindTouches([InputMappingsDefine_1.touchIdMappings.Touch1, InputMappingsDefine_1.touchIdMappings.Touch2], this.Eqt);
       if (PhotographController_1.PhotographController.CheckIfInFightPhotographCamera()) {
         UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Kuro.KuroEnableScreenFilter 1");
-        this.AQd = CommonParamById_1.configCommonParamById.GetIntConfig("FightCameraMinFov");
-        this.DQd = CommonParamById_1.configCommonParamById.GetIntConfig("FightCameraMaxFov");
-        this.aom = CommonParamById_1.configCommonParamById.GetFloatConfig("PhotoFightCameraZoomSpeed") ?? 1;
+        this.BQd = CommonParamById_1.configCommonParamById.GetIntConfig("FightCameraMinFov");
+        this.kQd = CommonParamById_1.configCommonParamById.GetIntConfig("FightCameraMaxFov");
+        this.Phm = CommonParamById_1.configCommonParamById.GetFloatConfig("PhotoFightCameraZoomSpeed") ?? 1;
       } else {
         UiTimeDilation_1.UiTimeDilation.AddWaitSetTimeDilationTag(this.Info.Name);
-        this.aom = CommonParamById_1.configCommonParamById.GetFloatConfig("CommonCameraZoomSpeed") ?? 1;
+        this.Phm = CommonParamById_1.configCommonParamById.GetFloatConfig("CommonCameraZoomSpeed") ?? 1;
         ControllerHolder_1.ControllerHolder.FilterSettingController.SwitchFilter(false);
       }
       ControllerHolder_1.ControllerHolder.EyeProtectController.SwitchFilter(false);
+      UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Kuro.EnableCharacterLut 0");
       this.ZQi();
       this.JQi();
       RedDotController_1.RedDotController.BindRedDot("FunctionPhotograph", this.GetItem(19));
@@ -549,13 +550,13 @@ class PhotographView extends UiTickViewBase_1.UiTickViewBase {
     var o;
     var i = this.GetSlider(10);
     if (PhotographController_1.PhotographController.CheckIfInNormalCamera() || PhotographController_1.PhotographController.CheckIfInFightPhotographCamera()) {
-      i.SetMinValue(this.AQd, false, false);
-      i.SetMaxValue(this.DQd, false, false);
+      i.SetMinValue(this.BQd, false, false);
+      i.SetMaxValue(this.kQd, false, false);
       this.SetCameraFov();
     } else if (PhotographController_1.PhotographController.CheckIfInTogetherCamera()) {
-      i.SetMinValue(this.AQd, false, false);
-      i.SetMaxValue(this.DQd, false, false);
-      if ((t = PhotographController_1.PhotographController.TogetherCameraFov) && t >= this.AQd && t <= this.DQd) {
+      i.SetMinValue(this.BQd, false, false);
+      i.SetMaxValue(this.kQd, false, false);
+      if ((t = PhotographController_1.PhotographController.TogetherCameraFov) && t >= this.BQd && t <= this.kQd) {
         this.SetCameraFov(PhotographController_1.PhotographController.TogetherCameraFov, true);
       } else {
         this.SetCameraFov();
@@ -576,7 +577,7 @@ class PhotographView extends UiTickViewBase_1.UiTickViewBase {
     var o = this.GetSlider(10);
     if (t) {
       if (e) {
-        const i = MathUtils_1.MathUtils.RangeClamp(t, this.AQd, this.DQd, this.DQd, this.AQd);
+        const i = MathUtils_1.MathUtils.RangeClamp(t, this.BQd, this.kQd, this.kQd, this.BQd);
         o.SetValue(i);
         PhotographController_1.PhotographController.SetFov(t);
       } else {
@@ -584,7 +585,7 @@ class PhotographView extends UiTickViewBase_1.UiTickViewBase {
       }
     } else {
       e = ControllerHolder_1.ControllerHolder.PhotographController.GetCameraInitialFov();
-      const i = MathUtils_1.MathUtils.RangeClamp(e, this.AQd, this.DQd, this.DQd, this.AQd);
+      const i = MathUtils_1.MathUtils.RangeClamp(e, this.BQd, this.kQd, this.kQd, this.BQd);
       o.SetValue(i);
       PhotographController_1.PhotographController.SetFov(e);
     }

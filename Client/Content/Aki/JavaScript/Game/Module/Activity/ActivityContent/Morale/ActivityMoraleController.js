@@ -7,6 +7,7 @@ exports.ActivityMoraleController = undefined;
 const Protocol_1 = require("../../../../../Core/Define/Net/Protocol");
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
+const UiManager_1 = require("../../../../Ui/UiManager");
 const ActivityControllerBase_1 = require("../../ActivityControllerBase");
 const ActivityManager_1 = require("../../ActivityManager");
 const ActivityMoraleData_1 = require("./ActivityMoraleData");
@@ -19,7 +20,14 @@ class ActivityMoraleController extends ActivityControllerBase_1.ActivityControll
   OnGetIsOpeningActivityRelativeView() {
     return false;
   }
-  OnOpenView(e) {}
+  OnOpenView(e) {
+    if (e.GetPreGuideQuestFinishState()) {
+      UiManager_1.UiManager.OpenView("MoraleAreaSumView");
+    } else {
+      e = e.GetUnFinishPreGuideQuestId();
+      UiManager_1.UiManager.OpenView("QuestView", e);
+    }
+  }
   OnGetActivityResource(e) {
     return "UiItem_MoraleMain";
   }

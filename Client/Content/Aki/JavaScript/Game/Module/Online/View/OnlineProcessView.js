@@ -18,6 +18,7 @@ const PlayerTitleItem_1 = require("../../Common/PlayerTitleItem");
 const PersonalOptionItem_1 = require("../../Personal/View/PersonalOptionItem");
 const GenericLayoutNew_1 = require("../../Util/Layout/GenericLayoutNew");
 const LguiUtil_1 = require("../../Util/LguiUtil");
+const BackgroundCardById_1 = require("../../../../Core/Define/ConfigQuery/BackgroundCardById");
 class OnlineProcessView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
@@ -76,7 +77,7 @@ class OnlineProcessView extends UiViewBase_1.UiViewBase {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UISprite], [2, UE.UIText], [3, UE.UIItem], [4, UE.UIText], [5, UE.UIText], [6, UE.UIButtonComponent], [7, UE.UIText], [8, UE.UIItem], [9, UE.UIGridLayout], [11, UE.UIText], [10, UE.UIText], [12, UE.UIItem], [13, UE.UIText], [14, UE.UIItem], [15, UE.UITexture], [16, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UISprite], [2, UE.UIText], [3, UE.UIItem], [4, UE.UIText], [5, UE.UIText], [6, UE.UIButtonComponent], [7, UE.UIText], [8, UE.UIItem], [9, UE.UIGridLayout], [11, UE.UIText], [10, UE.UIText], [12, UE.UIItem], [13, UE.UIText], [14, UE.UIItem], [15, UE.UITexture], [16, UE.UIItem], [17, UE.UITexture]];
     this.BtnBindInfo = [[6, this.Z8t]];
   }
   async OnBeforeStartAsync() {
@@ -172,12 +173,19 @@ class OnlineProcessView extends UiViewBase_1.UiViewBase {
     var e = ModelManager_1.ModelManager.OnlineModel.CachePlayerData;
     this.gLt?.Refresh(e?.PlayerTitleId, e?.PlayerTitleStarLevel, e?.Sex);
   }
+  m$f() {
+    var e = ModelManager_1.ModelManager.OnlineModel.CachePlayerData;
+    if (e &&= BackgroundCardById_1.configBackgroundCardById.GetConfig(e.CurUsingCardId, false)) {
+      this.SetTextureByPath(e.FunctionViewCardPath, this.GetTexture(17));
+    }
+  }
   w8t() {
     var e = ModelManager_1.ModelManager.OnlineModel.CachePlayerData;
     this.P5e();
     this.r9t();
     this.Nxa();
     this.Gac();
+    this.m$f();
     var e = ModelManager_1.ModelManager.FriendModel.IsMyFriend(e.PlayerId);
     this.Y8t.GetRootItem().SetUIActive(e);
     this.W8t.GetRootItem().SetUIActive(false);

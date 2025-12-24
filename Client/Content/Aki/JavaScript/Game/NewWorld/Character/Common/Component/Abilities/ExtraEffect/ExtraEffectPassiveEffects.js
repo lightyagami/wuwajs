@@ -24,7 +24,10 @@ class PassiveEffects extends ExtraEffectBase_1.BuffEffect {
     return !!this.OwnerBuffComponent?.HasBuffAuthority();
   }
   GetEffectTarget() {
-    switch (this.TargetType) {
+    return this.GetTargetByType(this.TargetType);
+  }
+  GetTargetByType(e) {
+    switch (e) {
       case 0:
         return this.OwnerBuffComponent;
       case 1:
@@ -38,9 +41,9 @@ class PassiveEffects extends ExtraEffectBase_1.BuffEffect {
     }
   }
   GetBuffHolderSkillTarget() {
-    var e = this.OwnerBuffComponent?.GetEntity()?.CheckGetComponent(40)?.SkillTarget;
+    var e = this.OwnerBuffComponent?.GetEntity()?.CheckGetComponent(41)?.SkillTarget;
     if (e) {
-      return e.Entity.CheckGetComponent(213);
+      return e.Entity.CheckGetComponent(220);
     } else {
       return this.OwnerBuffComponent;
     }

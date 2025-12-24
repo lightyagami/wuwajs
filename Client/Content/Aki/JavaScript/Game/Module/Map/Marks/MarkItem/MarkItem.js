@@ -224,13 +224,13 @@ class MarkItem {
       } else {
         this.InnerView = this.CreateView();
         t = this.InnerView;
-        this.WRm(t);
+        this.hZm(t);
       }
     } else {
       this.UYc();
     }
   }
-  async WRm(t) {
+  async hZm(t) {
     await this.InnerView.InitializeMarkItemViewNewAsync(() => {
       if (this.InnerView === t) {
         this.UYc();
@@ -287,6 +287,12 @@ class MarkItem {
       }
     }
   }
+  get IsAutoPilotTracked() {
+    return this.MarkItemEntity.ViewLifeCircle.IsAutoPilotTracked;
+  }
+  set IsAutoPilotTracked(t) {
+    this.MarkItemEntity.ViewLifeCircle.IsAutoPilotTracked = t;
+  }
   get PermanentUpdate() {
     return this.IsTracked || MarkDefine_1.permanentUpdateTypeSet.has(this.MarkType) || this.MarkItemEntity.ViewLifeCircle.IsSelected;
   }
@@ -305,9 +311,15 @@ class MarkItem {
     }
     this.IsCanShowView = e;
     this.IsTracked = this.IsTracking();
+    if (this.MarkId) {
+      this.IsAutoPilotTracked = ModelManager_1.ModelManager.AutoPilotModel?.GetIsTracking(this.MarkId) ?? false;
+    }
     let s = true;
     s = !!e && !!t && (this.MapType === 1 && !this.IsTracked || (this.IsInAoiRange = true), this.IsTracked || this.IsInAoiRange);
     this.MarkItemEntity.ViewLifeCircle.SetChildViewVisibility(9, this.MarkItemEntity.GamePlay.CanShowGravityChildIcon);
+    if (ModelManager_1.ModelManager.MapModel?.HasExtraUiMarkType(this.MapType) && this.MarkType !== 1) {
+      s = ModelManager_1.ModelManager.MapModel?.IsExtraUiMarkTypeVisible(this.MapType, this.MarkType);
+    }
     this.MarkItemEntity.ViewLifeCircle.SetChildViewVisibility(0, s);
   }
   CreateOrCycleView() {
@@ -363,6 +375,14 @@ class MarkItem {
     this.MarkItemEntity.ViewLifeCircle.IsSelected = t;
     if (this.InnerView && !this.IsDestroy) {
       this.View.IsSelected = t;
+    }
+  }
+  IsViewReady() {
+    return this.View !== undefined && !this.View.IsCreating;
+  }
+  GetRootItemSync() {
+    if (this.IsViewReady()) {
+      return this.View?.GetRootItem();
     }
   }
   async GetRootItemAsync() {

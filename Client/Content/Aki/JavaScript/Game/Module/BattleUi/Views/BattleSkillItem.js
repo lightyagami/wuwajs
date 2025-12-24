@@ -11,7 +11,6 @@ const Stats_1 = require("../../../../Core/Common/Stats");
 const Time_1 = require("../../../../Core/Common/Time");
 const ResourceSystem_1 = require("../../../../Core/Resource/ResourceSystem");
 const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
-const Vector_1 = require("../../../../Core/Utils/Math/Vector");
 const ObjectUtils_1 = require("../../../../Core/Utils/ObjectUtils");
 const StringUtils_1 = require("../../../../Core/Utils/StringUtils");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
@@ -19,7 +18,6 @@ const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const TimeUtil_1 = require("../../../Common/TimeUtil");
 const InputController_1 = require("../../../Input/InputController");
 const InputEnums_1 = require("../../../Input/InputEnums");
-const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const InputDistributeController_1 = require("../../../Ui/InputDistribute/InputDistributeController");
 const InputMappingsDefine_1 = require("../../../Ui/InputDistribute/InputMappingsDefine");
@@ -34,6 +32,7 @@ const VisibleStateUtil_1 = require("../VisibleStateUtil");
 const BattleChildView_1 = require("./BattleChildView/BattleChildView");
 const BattleSkillConfigLongPressItem_1 = require("./BattleSkillConfigLongPressItem");
 const BattleSkillExtraEffectRhythmItem_1 = require("./BattleSkillExtraEffectRhythmItem");
+const BattleSkillItemDynamicEffect_1 = require("./BattleSkillItemDynamicEffect");
 const BattleSkillLongPressItem_1 = require("./BattleSkillLongPressItem");
 const BattleSkillNumItem_1 = require("./BattleSkillNumItem");
 const BattleSkillSwitchComponent_1 = require("./BattleSkillSwitchComponent");
@@ -60,18 +59,13 @@ class BattleSkillItem extends BattleChildView_1.BattleChildView {
     this.IsLongPress = false;
     this.fit = false;
     this.pit = "";
-    this.jtt = undefined;
-    this.vit = 0;
-    this.zQ_ = undefined;
-    this.Wtt = undefined;
-    this.Mem = 1;
+    this.fWm = undefined;
     this.Mit = undefined;
     this.Eit = 0;
     this.yit = undefined;
     this.Iit = undefined;
     this.KeyItem = undefined;
     this.SetTextureHandleId = 0;
-    this.Ktt = 0;
     this.Tit = 0;
     this.KeyActionName = undefined;
     this.KeyOperationType = undefined;
@@ -98,7 +92,7 @@ class BattleSkillItem extends BattleChildView_1.BattleChildView {
     this.SkillNameText = undefined;
     this.UltraComponentVisibleState = 0;
     this.XGu = 0;
-    this.uim = undefined;
+    this.Fnm = undefined;
     this.UltraComponent = undefined;
     this.NumComponent = undefined;
     this.SwitchComponent = undefined;
@@ -211,6 +205,7 @@ class BattleSkillItem extends BattleChildView_1.BattleChildView {
     this.wit = true;
     this.SkillNameText = this.GetText(11);
     this.ClickEffect = new BattleUiNiagaraItem_1.BattleUiNiagaraItem(this.GetUiNiagara(10));
+    this.fWm = new BattleSkillItemDynamicEffect_1.BattleSkillItemDynamicEffect(this.GetUiNiagara(7));
     this.GetUiNiagara(6).SetNiagaraUIActive(false, false);
     this.GetUiNiagara(7).SetNiagaraUIActive(false, true);
     this.AddEvents();
@@ -250,16 +245,11 @@ class BattleSkillItem extends BattleChildView_1.BattleChildView {
     this.PressActionType = InputEnums_1.EInputAction.None;
     this.ClickEffect.Stop();
     this.ZKa = 0;
-    this.CancelLoadDynamicEffectNiagara();
+    this.fWm?.Reset();
     this.CancelLoadCdCompletedNiagara();
     this.HideAndClearSkillSprite("休眠技能按钮");
     this.HideAndClearSkillTexture();
     this.Mit = undefined;
-    if (this.vit !== 0 || this.zQ_ !== undefined) {
-      this.GetUiNiagara(7)?.ResetOverrideParameters();
-      this.vit = 0;
-      this.zQ_ = undefined;
-    }
     if (this.UltraComponent) {
       this.UltraComponent.Destroy();
       this.UltraComponent = undefined;
@@ -312,7 +302,7 @@ class BattleSkillItem extends BattleChildView_1.BattleChildView {
     this.Uit = undefined;
     this.Ait = undefined;
     this.Pit = undefined;
-    this.uim = undefined;
+    this.Fnm = undefined;
     super.Reset();
   }
   Tick(t) {
@@ -325,7 +315,7 @@ class BattleSkillItem extends BattleChildView_1.BattleChildView {
         this.OnSkillButtonPressed();
       });
       this.GetPointEventButton().OnPointUpCallBack.Bind(() => {
-        this.OnSkillButtonReleased();
+        this.OnSkillButtonPointUp();
       });
       this.GetPointEventButton().OnPointCancelCallBack.Bind(() => {
         this.OnSkillButtonCancel();
@@ -383,7 +373,7 @@ class BattleSkillItem extends BattleChildView_1.BattleChildView {
   OnSkillButtonPressed() {
     var t;
     var i;
-    if (this.SkillButtonData && (this.SkillButtonData.IsEnableInput() && this.qit !== 0 && (t = this.SkillButtonData.GetActionType(), Log_1.Log.CheckDebug() && Log_1.Log.Debug("Battle", 17, "[SkillButton]当技能按钮按下时", ["inputActionType", t]), this.OnInputAction(), this.PressActionType = t, Info_1.Info.OperationType === 1 ? (i = this.SkillButtonData.GetInputAction(), InputDistributeController_1.InputDistributeController.InputAction(i, true)) : (i = t, InputController_1.InputController.InputAction(i, 1))), this.IsNeedLongPress())) {
+    if (this.SkillButtonData && (this.SkillButtonData.IsEnableInput() && this.qit !== 0 && (t = this.SkillButtonData.GetActionType(), Log_1.Log.CheckDebug() && Log_1.Log.Debug("Battle", 17, "[SkillButton]当技能按钮按下时", ["inputActionType", t]), this.OnInputAction(), this.PressActionType = t, Info_1.Info.OperationType === 1 ? (i = this.SkillButtonData.GetInputAction(), Log_1.Log.CheckDebug() && Log_1.Log.Debug("Battle", 17, "[SkillButton]当技能按钮按下时", ["inputAction", i]), InputDistributeController_1.InputDistributeController.InputAction(i, true)) : (i = t, InputController_1.InputController.InputAction(i, 1))), this.IsNeedLongPress())) {
       let t = this.SkillButtonData.GetLongPressTime();
       if (t <= 0) {
         if (Log_1.Log.CheckDebug()) {
@@ -399,6 +389,9 @@ class BattleSkillItem extends BattleChildView_1.BattleChildView {
   }
   IsNeedLongPress() {
     return this.SkillButtonData.GetIsLongPressControlCamera();
+  }
+  OnSkillButtonPointUp() {
+    this.OnSkillButtonReleased();
   }
   OnSkillButtonReleased() {
     var t;
@@ -648,8 +641,10 @@ class BattleSkillItem extends BattleChildView_1.BattleChildView {
   }
   Yit() {
     var t;
-    var i = this.SkillButtonData.GetGroupSkillCdInfo();
-    if (i) {
+    var i;
+    if (this.SkillButtonData.GetSkillId() === -1) {
+      this.PlaySkillCd(0, 0);
+    } else if (i = this.SkillButtonData.GetGroupSkillCdInfo()) {
       if (this.IsHideNumComp && i.RemainingCount > 0) {
         this.PlaySkillCd(0, 0);
       } else {
@@ -789,12 +784,12 @@ class BattleSkillItem extends BattleChildView_1.BattleChildView {
       if (!this.IsShowOrShowing) {
         this.Show();
         this.RefreshEnable(true);
-        this.uim?.();
+        this.Fnm?.();
       }
     } else if (!this.IsHideOrHiding) {
       this.TryReleaseButton();
       this.Hide();
-      this.uim?.();
+      this.Fnm?.();
     }
   }
   GetGuideItem() {
@@ -837,94 +832,15 @@ class BattleSkillItem extends BattleChildView_1.BattleChildView {
       return this.SkillButtonData.GetDynamicEffectConfig();
     }
   }
-  GetDynamicEffectPath(t) {
-    t = t.NiagaraPath;
-    if (!StringUtils_1.StringUtils.IsEmpty(t)) {
-      return t;
-    }
-  }
   CancelLoadDynamicEffectNiagara() {
-    if (this.Ktt) {
-      ResourceSystem_1.ResourceSystem.CancelAsyncLoad(this.Ktt);
-      this.Ktt = undefined;
-      this.Wtt = undefined;
-    }
+    this.fWm.CancelLoadDynamicEffectNiagara();
   }
   RefreshDynamicEffect() {
     var t = this.GetDynamicEffectConfig();
-    let i = undefined;
-    if (t) {
-      i = this.GetDynamicEffectPath(t);
-    }
-    this.RefreshDynamicEffectScale(t);
-    if (this.jtt === i) {
-      if (!this.Wtt) {
-        this.JQ_(t, true);
-      }
-    } else {
-      this.CancelLoadDynamicEffectNiagara();
-      this.jtt = i;
-      if (this.jtt) {
-        this.Wtt = this.jtt;
-        this.Ktt = ResourceSystem_1.ResourceSystem.LoadAsync(this.Wtt, UE.NiagaraSystem, t => {
-          var i;
-          this.Wtt = undefined;
-          if (t?.IsValid() && (i = this.GetUiNiagara(7))) {
-            i.SetNiagaraSystem(t);
-            i = this.GetDynamicEffectConfig();
-            this.JQ_(i);
-            this.SetDynamicEffectVisible(true);
-          }
-        });
-      } else {
-        this.SetDynamicEffectVisible(false);
-      }
-    }
-  }
-  JQ_(i, s = false) {
-    if (i && (i.ElementId !== this.vit || i.Color !== this.zQ_)) {
-      let t = undefined;
-      this.zQ_ = i.Color;
-      if (StringUtils_1.StringUtils.IsEmpty(this.zQ_)) {
-        this.vit = i.ElementId;
-        if (this.vit > 0) {
-          i = ConfigManager_1.ConfigManager.ElementInfoConfig.GetElementInfo(this.vit);
-          t = new UE.LinearColor(UE.Color.FromHex(i.SkillEffectColor));
-        }
-      } else {
-        this.vit = 0;
-        t = new UE.LinearColor(UE.Color.FromHex(this.zQ_));
-      }
-      i = this.GetUiNiagara(7);
-      if (t) {
-        i.SetNiagaraVarLinearColor("Color", t);
-      } else {
-        i.ResetOverrideParameters();
-        if (s && i.NiagaraComponent) {
-          i.NiagaraComponent.ResetOverrideParametersAndActivate();
-        }
-      }
-    }
-  }
-  RefreshDynamicEffectScale(t) {
-    t = t?.Scale ?? 1;
-    if (this.Mem !== t) {
-      this.Mem = t;
-      this.GetUiNiagara(7)?.SetUIItemScale(t === 1 ? Vector_1.Vector.OneVector : new UE.Vector(t, t, t));
-    }
+    this.fWm.RefreshDynamicEffect(t);
   }
   SetDynamicEffectVisible(t) {
-    var i = this.GetUiNiagara(7);
-    if (i) {
-      if (t) {
-        if (!i.bIsUIActive) {
-          i.SetUIActive(true);
-        }
-        i.ActivateSystem(true);
-      } else if (i.bIsUIActive) {
-        i.SetUIActive(false);
-      }
-    }
+    this.fWm.SetDynamicEffectVisible(t);
   }
   RefreshTimeDilation() {
     this.hot(this.lot());
@@ -1197,7 +1113,7 @@ class BattleSkillItem extends BattleChildView_1.BattleChildView {
     var t;
     var i;
     if (this.SkillButtonData) {
-      if (((t = this.SkillButtonData.GetButtonType()) === 1 || t === 6) && (t = this.SkillButtonData.IsShowLongPress())) {
+      if (t = this.SkillButtonData.IsShowLongPress()) {
         (i = this.GetLongPressComponent).SetComponentActive(t);
         i.SetAction(this.SkillButtonData.GetActionType());
         this.SkillButtonData.RefreshLongPressDuration();
@@ -1303,13 +1219,16 @@ class BattleSkillItem extends BattleChildView_1.BattleChildView {
   }
   OnDeactivate() {}
   SetOnVisibleChangedCallback(t) {
-    this.uim = t;
+    this.Fnm = t;
   }
   SetSkillItemLayout(t) {
     var i;
     if (this.XGu !== t.Index && (this.XGu = t.Index, (i = this.RootItem?.GetParentAsUIItem())?.SetUIParent(t.Item), t.Index === 0)) {
       i?.SetHierarchyIndex(1);
     }
+  }
+  GetKeyItem() {
+    return this.KeyItem;
   }
 }
 (exports.BattleSkillItem = BattleSkillItem).zit = Stats_1.Stat.Create("[SkillButton]PlaySkillCd");

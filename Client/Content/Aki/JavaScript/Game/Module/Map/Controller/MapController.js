@@ -132,8 +132,8 @@ class MapController extends ControllerWithAssistantBase_1.ControllerWithAssistan
   static RequestMapMarkReplace(e, t) {
     MapController.cYt(0).RequestMapMarkReplace(e, t);
   }
-  static RequestCreateCustomMark(e, t) {
-    MapController.cYt(0).RequestCreateCustomMark(e, t);
+  static RequestCreateCustomMark(e, t, r) {
+    MapController.cYt(0).RequestCreateCustomMark(e, t, r);
   }
   static RequestRemoveMapMarks(e, t) {
     var r = ModelManager_1.ModelManager.MapModel.GetCurTrackMark();
@@ -220,7 +220,9 @@ MapController.nye = () => {
 };
 MapController.pze = () => {
   _a.OLi();
+  MapController.cYt(0).RequestTrackInfo();
 };
 MapController.Mze = () => {
   _a.OLi();
+  MapController.cYt(0).RequestTrackInfo();
 }; //# sourceMappingURL=MapController.js.map

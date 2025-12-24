@@ -41,7 +41,7 @@ class VisionIntensifyView extends UiViewBase_1.UiViewBase {
     };
     this.uji = () => {
       if (!(ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomBattleData(this.aji).GetQuality() <= VisionDefine_1.CANNOTLEVELSUBQUALITY)) {
-        this.vmm();
+        this.ovm();
       }
     };
     this.CanToggleChange = e => {
@@ -77,7 +77,7 @@ class VisionIntensifyView extends UiViewBase_1.UiViewBase {
       this.CloseMe();
     };
     this.rId = () => {
-      this.vmm();
+      this.ovm();
       this.TabComponent.SelectToggleByIndex(this.I6e, true);
       this.TabViewComponent.SetCurrentTabViewState(true);
       this.K8e();
@@ -206,7 +206,7 @@ class VisionIntensifyView extends UiViewBase_1.UiViewBase {
     }
     this.TabComponent?.RefreshTabItemByLength(n, this.rId);
   }
-  vmm() {
+  ovm() {
     var e = this.TabComponent?.GetTabItemMap();
     if (e) {
       for (var [i, t] of e) {

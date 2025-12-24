@@ -30,23 +30,28 @@ class UiBehaviourUiBlur {
     }
   }
   kah() {
-    var e;
-    if (this.fXn && (e = Array.from(UiBehaviourUiBlur.Gah).pop()) && (e = UiManager_1.UiManager.GetView(e))) {
-      if (ConfigManager_1.ConfigManager.UiViewConfig.GetUiShowConfig(e.Info.Name).PartialBlur) {
+    var i;
+    if (this.fXn && (i = Array.from(UiBehaviourUiBlur.Gah).pop()) && (i = UiManager_1.UiManager.GetView(i))) {
+      if (ConfigManager_1.ConfigManager.UiViewConfig.GetUiShowConfig(i.Info.Name).PartialBlur) {
         UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.kuro.LGUIBlurTexture.save 1");
       } else {
         UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.kuro.LGUIBlurTexture.save 0");
       }
     }
   }
-  ChangeNeedBlurState(e) {
-    this.fXn = e;
+  RefreshBlur() {
+    if (this.fXn) {
+      UiBlurLogic_1.UiBlurLogic.SetNormalUiRenderAfterBlur(this.CurrentView);
+    }
   }
-  SetCurrentLayer(e) {
-    this.A_r = e;
+  ChangeNeedBlurState(i) {
+    this.fXn = i;
   }
-  SetViewInfo(e) {
-    this.CurrentView = e;
+  SetCurrentLayer(i) {
+    this.A_r = i;
+  }
+  SetViewInfo(i) {
+    this.CurrentView = i;
   }
   OnBeforeDestroy() {
     UiBehaviourUiBlur.Gah.delete(this.CurrentView.GetViewId());

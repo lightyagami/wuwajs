@@ -20,6 +20,7 @@ class CollectCardDetailView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
     this.nY1 = -1;
+    this.LOe = 0;
     this.ctu = -1;
     this.vua = -1;
     this.ypt = [];
@@ -77,24 +78,28 @@ class CollectCardDetailView extends UiViewBase_1.UiViewBase {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UILayoutBase], [1, UE.UIItem], [2, UE.UIButtonComponent], [3, UE.UIButtonComponent], [4, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UILayoutBase], [1, UE.UIItem], [2, UE.UIButtonComponent], [3, UE.UIButtonComponent], [4, UE.UIItem], [5, UE.UIItem]];
     this.BtnBindInfo = [[2, this.qLn], [3, this.GLn]];
   }
   async OnBeforeStartAsync() {
     var t = this.OpenParam;
     this.nY1 = t.CardId ?? -1;
+    this.LOe = t.ActivityId;
     this.Vnu = t.CallbackOnClose;
-    this.ypt = ModelManager_1.ModelManager.PhantomArenaModel.GetCollectCardDataList();
+    this.ypt = ModelManager_1.ModelManager.PhantomArenaModel.GetCollectCardDataList(this.LOe);
     this.ctu = this.ypt.findIndex(t => t.CardId === this.nY1);
     this.B7t = new GenericLayout_1.GenericLayout(this.GetLayoutBase(0), this.Hwn);
     var t = ModelManager_1.ModelManager.PhantomArenaModel.GetDetailViewTabDataList();
     this.lqe = new PopupCaptionItem_1.PopupCaptionItem();
     this.lqe.SetCloseCallBack(this.I5t);
     this.cs1 = new CollectCardDetailPanel_1.CollectCardDetailPanel();
+    var i = ModelManager_1.ModelManager.PhantomArenaModel.IsNewPhantomArenaActivity(this.LOe);
+    var e = (this.cs1.IsNewPhantomArenaActivity = i) ? "UiItem_CardDetailNew" : "UiItem_CardDetail";
     this.dgu = new DeckBuilderCardOutlookUnlockPanel_1.DeckBuilderCardOutlookUnlockPanel();
-    await Promise.all([this.B7t.RefreshByDataAsync(t), this.cs1.CreateByResourceIdAsync("UiItem_CardDetail", this.GetItem(4)), this.dgu.CreateByResourceIdAsync("UiItem_CardLevelUp", this.GetItem(4)), this.lqe.CreateThenShowByActorAsync(this.GetItem(1).GetOwner())]);
-    var t = ModelManager_1.ModelManager.PhantomArenaModel.GetDustItemId();
-    await this.lqe.SetCurrencyItemList([t]);
+    this.GetItem(5)?.SetUIActive(!i);
+    await Promise.all([this.B7t.RefreshByDataAsync(t), this.cs1.CreateByResourceIdAsync(e, this.GetItem(4)), this.dgu.CreateByResourceIdAsync("UiItem_CardLevelUp", this.GetItem(4)), this.lqe.CreateThenShowByActorAsync(this.GetItem(1).GetOwner())]);
+    var i = ModelManager_1.ModelManager.PhantomArenaModel.GetDustItemId(this.LOe);
+    await this.lqe.SetCurrencyItemList([i]);
   }
   OnStart() {
     if (this.ypt.length <= 0 && Log_1.Log.CheckError()) {

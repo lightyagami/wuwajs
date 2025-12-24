@@ -738,29 +738,30 @@ class SequenceAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
     }
   }
   yio() {
-    var t = this.Model.SequenceData;
-    for (let e = 0; e < t.剧情资源.Num(); e++) {
-      var i;
-      var r = t.剧情资源.Get(e);
-      var s = this.GetFinalPosition(r, FNameUtil_1.FNameUtil.IsNothing(t.GeneratedData?.BlendOutTag) ? SequenceDefine_1.HERO_TAG : t.GeneratedData.BlendOutTag);
-      if (s) {
-        i = Rotator_1.Rotator.Create(s.Rotator());
-        s = Vector_1.Vector.Create(s.GetLocation());
-        if (t.类型 === 0 || t.类型 === 2) {
-          i.Yaw += 90;
+    var i = this.Model.SequenceData;
+    for (let t = 0; t < i.剧情资源.Num(); t++) {
+      var r;
+      var s;
+      var o = i.剧情资源.Get(t);
+      let e = undefined;
+      if (e = i.GeneratedData?.IsCustomizedFinalPos ? this.GetFinalPosition(o, SequenceDefine_1.FINAL_POS_TAG) : this.GetFinalPosition(o, FNameUtil_1.FNameUtil.IsNothing(i.GeneratedData?.BlendOutTag) ? SequenceDefine_1.HERO_TAG : i.GeneratedData.BlendOutTag)) {
+        r = Rotator_1.Rotator.Create(e.Rotator());
+        s = Vector_1.Vector.Create(e.GetLocation());
+        if (i.类型 === 0 || i.类型 === 2) {
+          r.Yaw += 90;
         }
         if (s.IsNearlyZero()) {
-          FlowController_1.FlowController.LogError("Seq最终位置提取到0点坐标", ["name", r.GetName()]);
+          FlowController_1.FlowController.LogError("Seq最终位置提取到0点坐标", ["name", o.GetName()]);
         }
-        r = Transform_1.Transform.Create(i.Quaternion(), s, Vector_1.Vector.OneVectorProxy);
+        o = Transform_1.Transform.Create(r.Quaternion(), s, Vector_1.Vector.OneVectorProxy);
         if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("Plot", 26, "提取到坐标点", ["index", e], ["result", r]);
+          Log_1.Log.Debug("Plot", 26, "提取到坐标点", ["index", t], ["result", o]);
         }
-        this.Model.AddFinalPos(r);
+        this.Model.AddFinalPos(o);
       } else {
         this.Model.CurFinalPos.push(undefined);
         if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("Plot", 26, "提取不到坐标点", ["index", e]);
+          Log_1.Log.Debug("Plot", 26, "提取不到坐标点", ["index", t]);
         }
       }
     }

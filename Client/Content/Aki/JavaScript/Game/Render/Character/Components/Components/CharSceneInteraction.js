@@ -4,6 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.CharSceneInteraction = undefined;
+const FNameUtil_1 = require("../../../../../Core/Utils/FNameUtil");
 const RenderConfig_1 = require("../../../Config/RenderConfig");
 const SceneCharacterInteraction_1 = require("../../../Scene/Interaction/SceneCharacterInteraction");
 const CharRenderBase_1 = require("../../Manager/CharRenderBase");
@@ -52,6 +53,23 @@ class CharSceneInteraction extends CharRenderBase_1.CharRenderBase {
   }
   GetInWater(e) {
     return !!this.CharacterInteraction && this.CharacterInteraction.GetInWater() && this.CharacterInteraction.GetWaterDepth() > e;
+  }
+  GetWaterHitLocationZ() {
+    if (this.CharacterInteraction) {
+      return this.CharacterInteraction.GetWaterHitLocationZ();
+    } else {
+      return 0;
+    }
+  }
+  GetInAudioShr() {
+    return !!this.CharacterInteraction && this.CharacterInteraction.GetInAudioShr();
+  }
+  GetAudioShrTag() {
+    if (this.CharacterInteraction) {
+      return this.CharacterInteraction.GetAudioShrTag();
+    } else {
+      return FNameUtil_1.FNameUtil.NONE;
+    }
   }
 }
 exports.CharSceneInteraction = CharSceneInteraction;

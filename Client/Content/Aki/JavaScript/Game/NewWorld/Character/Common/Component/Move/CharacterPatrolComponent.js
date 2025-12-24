@@ -123,7 +123,7 @@ let CharacterPatrolComponent = class CharacterPatrolComponent extends EntityComp
   OnStart() {
     this.CreatureData = this.Entity.GetComponent(0);
     this.ActorComp = this.Entity.GetComponent(1);
-    this.MoveComp = this.Entity.GetComponent(45);
+    this.MoveComp = this.Entity.GetComponent(46);
     this.RecordList = new Map();
     this.SplineInfoList = new Map();
     this.CacheVector = Vector_1.Vector.Create();
@@ -605,7 +605,7 @@ let CharacterPatrolComponent = class CharacterPatrolComponent extends EntityComp
     }
   }
   TryInitSplineFromAiPatrol(i) {
-    var t = this.Entity.GetComponent(47)?.AiController.AiPatrol;
+    var t = this.Entity.GetComponent(48)?.AiController.AiPatrol;
     if (!t?.AllPatrolPoints || !t.AllPatrolPoints.length) {
       return false;
     }
@@ -625,5 +625,5 @@ let CharacterPatrolComponent = class CharacterPatrolComponent extends EntityComp
     return true;
   }
 };
-CharacterPatrolComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(48)], CharacterPatrolComponent);
+CharacterPatrolComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(49)], CharacterPatrolComponent);
 exports.CharacterPatrolComponent = CharacterPatrolComponent; //# sourceMappingURL=CharacterPatrolComponent.js.map

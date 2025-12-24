@@ -17,9 +17,9 @@ class BulletLogicManipulatableCreateBullet extends BulletLogicController_1.Bulle
   BulletLogicActionOnHitObstacles(t = undefined) {
     if (t && t instanceof BulletHitActorData_1.BulletHitActorData && t.Entity && t.Entity.GetComponent(0).IsSceneItem()) {
       var e = t.Entity;
-      if (e?.GetComponent(160) && this.CheckCondition(e)) {
+      if (e?.GetComponent(165) && this.CheckCondition(e)) {
         var l = this.Bullet.GetBulletInfo();
-        var r = l.AttackerActorComp.Actor;
+        var r = l.Attacker;
         var i = e.GetComponent(1)?.ActorTransform ?? MathUtils_1.MathUtils.DefaultTransformDouble;
         var o = this.h7o.CreateBulletRowName.Num();
         var a = l.ContextId;
@@ -41,7 +41,7 @@ class BulletLogicManipulatableCreateBullet extends BulletLogicController_1.Bulle
   }
   CheckCondition(t) {
     var e = this.h7o;
-    var l = t?.GetComponent(200);
+    var l = t?.GetComponent(206);
     if (!l) {
       return false;
     }

@@ -7,10 +7,10 @@ exports.EliteMonsterHeadStateView = undefined;
 const UE = require("ue");
 const Log_1 = require("../../../../../Core/Common/Log");
 const CommonParamById_1 = require("../../../../../Core/Define/ConfigCommon/CommonParamById");
-const Protocol_1 = require("../../../../../Core/Define/Net/Protocol");
 const RegisterComponent_1 = require("../../../../../Core/Entity/RegisterComponent");
 const ConfigManager_1 = require("../../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
+const CharacterAttributeTypes_1 = require("../../../../NewWorld/Character/Common/Component/Abilities/CharacterAttributeTypes");
 const LevelSequencePlayer_1 = require("../../../Common/LevelSequencePlayer");
 const LguiUtil_1 = require("../../../Util/LguiUtil");
 const BuffItemContainer_1 = require("../BuffItemContainer");
@@ -18,13 +18,12 @@ const VisibleAnimMachine_1 = require("../State/VisibleAnimMachine");
 const HeadStateWeaknessItem_1 = require("../Weakness/HeadStateWeaknessItem");
 const HeadStateViewBase_1 = require("./HeadStateViewBase");
 const RageBufferStateMachine_1 = require("./RageBufferStateMachine");
-var EAttributeId = Protocol_1.Aki.Protocol.Vks;
 const SCALE_TOLERATION = 0.003;
 const FALL_DOWN_DISAPPEAR_PERCENT = 0.8;
 const FALL_DOWN_DISAPPEAR_TAIL_COUNT_FACTOR = 5;
 const TOUGH_ANIM_TIME = 250;
-const fallDownAttributeId = EAttributeId.Proto_ParalysisTime;
-const fallDownMaxAttributeId = EAttributeId.Proto_ParalysisTimeMax;
+const fallDownAttributeId = CharacterAttributeTypes_1.EAttributeId.Proto_ParalysisTime;
+const fallDownMaxAttributeId = CharacterAttributeTypes_1.EAttributeId.Proto_ParalysisTimeMax;
 class EliteMonsterHeadStateView extends HeadStateViewBase_1.HeadStateViewBase {
   constructor() {
     super(...arguments);
@@ -46,6 +45,7 @@ class EliteMonsterHeadStateView extends HeadStateViewBase_1.HeadStateViewBase {
     this.Dnt = false;
     this.Rnt = 0;
     this.Unt = 0;
+    this.uUf = undefined;
     this.Qti = undefined;
     this.OnFallDownVisibleChange = () => {
       if (this.HeadStateData.HasFallDownTag) {
@@ -56,9 +56,9 @@ class EliteMonsterHeadStateView extends HeadStateViewBase_1.HeadStateViewBase {
         this.sst(false);
       }
     };
-    this.Xvm = () => {
-      this.Yvm();
-      this.zvm();
+    this.mLm = () => {
+      this.fLm();
+      this.gLm();
     };
     this.OnAddOrRemoveBuff = (t, i, e, s) => {
       if (this.HeadStateData.GetEntityId() === t) {
@@ -160,13 +160,13 @@ class EliteMonsterHeadStateView extends HeadStateViewBase_1.HeadStateViewBase {
     this.Hnt = new Map();
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UISprite], [1, UE.UISprite], [2, UE.UISprite], [3, UE.UISprite], [4, UE.UIText], [5, UE.UIItem], [6, UE.UINiagara], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UISprite], [11, UE.UIItem], [12, UE.UISprite], [13, UE.UINiagara], [14, UE.UISprite], [15, UE.UISprite], [16, UE.UIItem], [17, UE.UINiagara], [18, UE.UINiagara], [19, UE.UIItem], [20, UE.UIItem], [21, UE.UIItem], [22, UE.UIItem], [23, UE.UIItem], [24, UE.UIItem], [25, UE.UIItem], [26, UE.UIItem], [27, UE.UIItem], [28, UE.UISprite], [29, UE.UISprite], [30, UE.UISprite], [31, UE.UINiagara], [32, UE.UIItem], [33, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UISprite], [1, UE.UISprite], [2, UE.UISprite], [3, UE.UISprite], [4, UE.UIText], [5, UE.UIItem], [6, UE.UINiagara], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UISprite], [11, UE.UIItem], [12, UE.UISprite], [13, UE.UINiagara], [14, UE.UISprite], [15, UE.UISprite], [16, UE.UIItem], [17, UE.UINiagara], [18, UE.UINiagara], [19, UE.UIItem], [20, UE.UIItem], [21, UE.UIItem], [22, UE.UIItem], [23, UE.UIItem], [24, UE.UIItem], [25, UE.UIItem], [26, UE.UIItem], [27, UE.UIItem], [28, UE.UISprite], [29, UE.UINiagara], [30, UE.UIItem], [31, UE.UIItem]];
     this.ScaleToleration = SCALE_TOLERATION;
   }
   async OnBeforeStartAsync() {
     this.Qti = new HeadStateWeaknessItem_1.HeadStateWeaknessItem();
-    await this.Qti.InitializeAsync(this.GetItem(26));
-    this.Qti.SetStateChangeCallback(this.Xvm);
+    this.uUf = this.GetItem(26);
+    await this.Qti.InitializeAsync(this.uUf, 0.5);
   }
   ActiveBattleHeadState(t) {
     if (Log_1.Log.CheckDebug()) {
@@ -195,7 +195,7 @@ class EliteMonsterHeadStateView extends HeadStateViewBase_1.HeadStateViewBase {
     this.est();
     this.tst();
     this.Hlt();
-    this.Jvm();
+    this.CLm(true);
   }
   OnStart() {
     this.Qnt();
@@ -239,25 +239,31 @@ class EliteMonsterHeadStateView extends HeadStateViewBase_1.HeadStateViewBase {
     this.Qti?.Refresh(undefined);
     super.ResetBattleHeadState();
   }
-  Jvm() {
+  CLm(t = false) {
+    this.GetUiNiagara(29).SetUIActive(false);
     if (this.Qti) {
       this.Qti.Refresh(this.HeadStateData?.GetEntity());
+      this.fLm();
+      this.gLm(t);
+      this.Qti.SetStateChangeCallback(this.mLm);
     }
   }
-  Yvm() {
+  fLm() {
     if (this.Qti && this.Qti.IsFullState()) {
       this.GetSprite(28).SetFillAmount(this.CurrentBarPercent);
-      this.GetSprite(29).SetFillAmount(this.CurrentBarPercent);
-      this.GetSprite(30).SetFillAmount(this.CurrentBarPercent);
     }
   }
-  zvm() {
-    if (this.Qti.IsFullState()) {
+  gLm(t = false) {
+    if (this.Qti.IsInBreakAnim()) {
       this.GetItem(27).SetUIActive(true);
-      this.bnt(32);
-    } else if (this.Qti.IsBreakState()) {
+      if (!t) {
+        this.bnt(31);
+      }
+    } else if (this.Qti.IsFullState()) {
       this.GetItem(27).SetUIActive(true);
-      this.bnt(33);
+      if (!t) {
+        this.bnt(30);
+      }
     } else {
       this.GetItem(27).SetUIActive(false);
     }
@@ -272,6 +278,7 @@ class EliteMonsterHeadStateView extends HeadStateViewBase_1.HeadStateViewBase {
       this.Flt();
       this.Vlt();
       this.jlt(e);
+      this.Qti?.Tick(e);
       this.t1t.Update(e);
       this.nst();
     }
@@ -289,6 +296,7 @@ class EliteMonsterHeadStateView extends HeadStateViewBase_1.HeadStateViewBase {
     var t = this.IsDetailVisible();
     this.GetItem(7).SetUIActive(t);
     this.ExtraItem?.SetUiActive(t);
+    this.uUf.SetUIActive(t);
   }
   Flt() {
     var t = this.IsLevelTextVisible();
@@ -329,7 +337,7 @@ class EliteMonsterHeadStateView extends HeadStateViewBase_1.HeadStateViewBase {
     } else {
       this.StopBarLerpAnimation();
     }
-    this.Yvm();
+    this.fLm();
   }
   OnBeginBarAnimation(t) {
     this.ast(t);
@@ -397,7 +405,7 @@ class EliteMonsterHeadStateView extends HeadStateViewBase_1.HeadStateViewBase {
     var t;
     var i;
     var e;
-    if (this.HardnessAttributeId === EAttributeId.Proto_Rage) {
+    if (this.HardnessAttributeId === CharacterAttributeTypes_1.EAttributeId.Proto_Rage) {
       t = this.HeadStateData.GetAttributeCurrentValueById(this.MaxHardnessAttributeId);
       e = (i = this.HeadStateData.GetAttributeCurrentValueById(this.HardnessAttributeId)) / t;
       this.GetSprite(10).SetFillAmount(e);
@@ -428,7 +436,7 @@ class EliteMonsterHeadStateView extends HeadStateViewBase_1.HeadStateViewBase {
   }
   Mst() {
     var t;
-    if (this.Ent || this.HardnessAttributeId !== EAttributeId.Proto_Rage || this.HeadStateData.ContainsTagById(1261361093)) {
+    if (this.Ent || this.HardnessAttributeId !== CharacterAttributeTypes_1.EAttributeId.Proto_Rage || this.HeadStateData.ContainsTagById(1261361093)) {
       this.ynt = false;
     } else {
       t = this.HeadStateData.GetAttributeCurrentValueById(this.MaxHardnessAttributeId);
@@ -496,8 +504,8 @@ class EliteMonsterHeadStateView extends HeadStateViewBase_1.HeadStateViewBase {
     this.Est(22);
     this.Est(23);
     this.Est(24);
-    this.Est(32);
-    this.Est(33);
+    this.Est(30);
+    this.Est(31);
   }
   Est(t) {
     var i = [];

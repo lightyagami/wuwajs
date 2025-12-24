@@ -25,6 +25,7 @@ const TabComponentWithTitle_1 = require("../../Common/TabComponent/TabComponentW
 const EditFormationTabItem_1 = require("../../Common/TabComponent/TabItem/EditFormationTabItem");
 const QuickRoleSelectView_1 = require("../../RoleSelect/QuickRoleSelectView");
 const TeamRoleSelectView_1 = require("../../RoleSelect/TeamRoleSelectView");
+const RoleUtils_1 = require("../../RoleUi/RoleUtils");
 const ScrollingTipsController_1 = require("../../ScrollingTips/ScrollingTipsController");
 const LguiUtil_1 = require("../../Util/LguiUtil");
 const EditFormationController_1 = require("../EditFormationController");
@@ -44,9 +45,12 @@ class EditFormationView extends UiViewBase_1.UiViewBase {
     this.d5t = undefined;
     this.C5t = undefined;
     this.Dad = true;
+    this.JDf = true;
+    this.Teg = true;
     this.g5t = () => {
       if (!this.IsDestroyOrDestroying) {
         this.f5t(this._5t);
+        this.M3e();
       }
     };
     this.oZe = (e, i) => {
@@ -74,12 +78,14 @@ class EditFormationView extends UiViewBase_1.UiViewBase {
             i.push(t);
           }
         }
-        e = ModelManager_1.ModelManager.RoleModel.GetRoleList();
+        e = ModelManager_1.ModelManager.RoleModel.GetRoleDataList(this.Teg);
         e = new QuickRoleSelectView_1.QuickRoleSelectViewData(5, i, e);
         e.CanConfirm = this.S5t;
         e.OnConfirm = this.N4t;
         e.OnBack = this.y5t;
-        e.OnHideFinish = this.g5t;
+        e.OnHideFinish = this.a6f;
+        e.CanSelectRole = this.N6f;
+        e.CanUseSpecialTrialRole = this.JDf;
         UiManager_1.UiManager.OpenView("QuickRoleSelectView", e, (e, i) => {
           if (e) {
             this.AddChildViewById(i);
@@ -106,6 +112,7 @@ class EditFormationView extends UiViewBase_1.UiViewBase {
       }
       return !t || (ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("EditFormationAllDead"), false);
     };
+    this.N6f = (e, i) => RoleUtils_1.RoleUtils.HasMultiTrialRole(e, i) ? (ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("EditBattleTeamMultiTrialRole"), false) : !RoleUtils_1.RoleUtils.HasSameRole(e, i) || (ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("EditBattleTeamSameRole"), false);
     this.N4t = i => {
       this.k4t(true);
       var t = ModelManager_1.ModelManager.EditFormationModel;
@@ -139,14 +146,27 @@ class EditFormationView extends UiViewBase_1.UiViewBase {
     this.S4t = e => {
       var i;
       var t;
+      var o;
+      var r;
       if (this.E4t(e)) {
         BuffItemControl_1.BuffItemControl.TryUseResurrectionItem(e);
         return false;
       } else {
-        e = (t = ModelManager_1.ModelManager.EditFormationModel).IsInEditingFormation(this._5t, e);
-        i = t.GetCurrentFormationId === this._5t;
-        t = (t = t.GetEditingRoleIdList(this._5t)) && t.length === 1;
-        return !i || !e || !t || !(ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("EditBattleTeamRoleEmpty"), 1);
+        i = (t = ModelManager_1.ModelManager.EditFormationModel).IsInEditingFormation(this._5t, e);
+        r = t.GetCurrentFormationId === this._5t;
+        o = (t = t.GetEditingRoleIdList(this._5t)) && t.length === 1;
+        if (r && i && o) {
+          ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("EditBattleTeamRoleEmpty");
+          return false;
+        } else {
+          r = this.u5t - 1;
+          if (RoleUtils_1.RoleUtils.HasMultiTrialRole(e, t, r)) {
+            ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("EditBattleTeamMultiTrialRole");
+            return false;
+          } else {
+            return !RoleUtils_1.RoleUtils.HasSameRole(e, t, r) || (ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("EditBattleTeamSameRole"), false);
+          }
+        }
       }
     };
     this.X4t = e => {
@@ -183,6 +203,10 @@ class EditFormationView extends UiViewBase_1.UiViewBase {
         t.SetEditingRoleId(this._5t, this.u5t, e);
         this.T5t(e);
       }
+    };
+    this.a6f = () => {
+      this.g5t();
+      this.k4t(true);
     };
     this.v4t = e => !ModelManager_1.ModelManager.EditFormationModel.IsInEditingFormation(this._5t, e);
     this.M4t = e => this.E4t(e);
@@ -269,6 +293,9 @@ class EditFormationView extends UiViewBase_1.UiViewBase {
   }
   async OnBeforeStartAsync() {
     this.Dad = this.OpenParam ?? true;
+    var i = ModelManager_1.ModelManager.InstanceDungeonEntranceModel.GetMatchingState() !== 0;
+    this.Teg = ModelManager_1.ModelManager.RoleModel.CanUseSpecialTrialRole();
+    this.JDf = this.Teg && !i;
     var i = ModelManager_1.ModelManager.EditFormationModel;
     var t = i.GetCurrentFormationId;
     if (t === undefined) {
@@ -397,7 +424,7 @@ class EditFormationView extends UiViewBase_1.UiViewBase {
   }
   D5t() {
     var e = ModelManager_1.ModelManager.EditFormationModel;
-    var i = ModelManager_1.ModelManager.RoleModel.GetRoleList();
+    var i = ModelManager_1.ModelManager.RoleModel.GetRoleDataList(this.Teg);
     var t = e.GetEditingRoleId(this._5t, this.u5t);
     var t = new TeamRoleSelectView_1.TeamRoleSelectViewData(5, t, i, this.X4t, this.y5t, this.u5t);
     t.SetGetConfirmButtonEnableFunction(this.W4t);
@@ -406,6 +433,7 @@ class EditFormationView extends UiViewBase_1.UiViewBase {
     t.SetConfirmCheckFunction(this.S4t);
     t.IsNeedRevive = this.M4t;
     t.CanJoinTeam = this.v4t;
+    t.CanUseSpecialTrialRole = this.JDf;
     var i = e.GetEditingRoleIdList(this._5t);
     t.FormationRoleList = i;
     return t;
@@ -438,42 +466,48 @@ class EditFormationView extends UiViewBase_1.UiViewBase {
   }
   M3e() {
     if (!ModelManager_1.ModelManager.GameModeModel.IsMulti) {
-      var i = this._5t !== ModelManager_1.ModelManager.EditFormationModel.GetCurrentFormationId;
-      this.GetButton(6).SetSelfInteractive(i);
-      let e = undefined;
-      e = i ? "EditBattleTeamFight" : "EditBattleTeamFighting";
-      LguiUtil_1.LguiUtil.SetLocalText(this.GetText(7), e);
+      var t;
+      var o = this._5t !== ModelManager_1.ModelManager.EditFormationModel.GetCurrentFormationId;
+      let e = o;
+      if (e && !this.JDf) {
+        t = ModelManager_1.ModelManager.EditFormationModel.GetEditingRoleIdList(this._5t);
+        e = !t.some(e => RoleUtils_1.RoleUtils.IsSpecialTrialRole(e));
+      }
+      this.GetButton(6).SetSelfInteractive(e);
+      let i = undefined;
+      i = o ? "EditBattleTeamFight" : "EditBattleTeamFighting";
+      LguiUtil_1.LguiUtil.SetLocalText(this.GetText(7), i);
     }
   }
-  f5t(s) {
-    var h = ModelManager_1.ModelManager.EditFormationModel;
+  f5t(n) {
+    var l = ModelManager_1.ModelManager.EditFormationModel;
     var e = this.GetButton(1).RootUIComp;
-    if (h.GetEditingRoleIdList(s).length <= 0) {
+    if (l.GetEditingRoleIdList(n).length <= 0) {
       for (const i of this.l5t) {
         i.ResetRole();
       }
       e.SetUIActive(false);
     } else {
       e.SetUIActive(true);
-      var l;
+      var h;
       var _;
       var m;
       var g;
       var d = ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance();
-      for (let n = 1; n <= EditFormationDefine_1.EDITE_FORAMTION_MAX_NUM; n++) {
+      for (let s = 1; s <= EditFormationDefine_1.EDITE_FORAMTION_MAX_NUM; s++) {
         let e = 0;
         let i = 0;
         let t = "";
         let o = 0;
         let r = 0;
         let a = "";
-        if (h.IsMyPosition(n)) {
+        if (l.IsMyPosition(s)) {
           _ = ModelManager_1.ModelManager.RoleModel;
-          e = h.GetEditingRoleId(s, n);
-          if (m = _.GetRoleInstanceById(e)) {
-            l = m.GetLevelData();
+          e = l.GetEditingRoleId(n, s);
+          if (m = _.GetRoleDataById(e)) {
+            h = m.GetLevelData();
             m = m.GetRoleSkinId();
-            i = l.GetLevel();
+            i = h.GetLevel();
             r = ModelManager_1.ModelManager.CreatureModel.GetPlayerId();
             a = ModelManager_1.ModelManager.PlayerInfoModel.GetThirdPartyOnlineId() ?? "";
             if (ModelManager_1.ModelManager.GameModeModel.IsMulti) {
@@ -482,51 +516,51 @@ class EditFormationView extends UiViewBase_1.UiViewBase {
             } else {
               t = _.GetRoleName(e);
             }
-            this.t5t(n, e, m, i, t, o, r, a);
+            this.t5t(s, e, m, i, t, o, r, a);
           } else {
-            this.t5t(n);
+            this.t5t(s);
           }
-        } else if (l = h.GetCurrentFormationData?.GetRoleDataByPosition(n)) {
-          r = l.PlayerId;
+        } else if (h = l.GetCurrentFormationData?.GetRoleDataByPosition(s)) {
+          r = h.PlayerId;
           _ = ModelManager_1.ModelManager.CreatureModel.GetScenePlayerData(r);
           if (d && !_) {
-            this.t5t(n);
+            this.t5t(s);
           } else {
-            e = l.ConfigId;
+            e = h.ConfigId;
             m = ModelManager_1.ModelManager.OnlineModel.GetWorldTeamPlayerFightInfo(r);
-            g = l.RoleSkinId;
-            i = l.Level;
+            g = h.RoleSkinId;
+            i = h.Level;
             t = m?.Name ?? "";
             a = m?.ThirdPartyOnlineName ?? "";
             o = ModelManager_1.ModelManager.OnlineModel.GetCurrentTeamListById(r)?.PlayerNumber ?? 1;
-            this.t5t(n, e, g, i, t, o, r, a);
+            this.t5t(s, e, g, i, t, o, r, a);
           }
         } else {
-          this.t5t(n);
+          this.t5t(s);
         }
       }
     }
   }
-  t5t(e, i = 0, t = 0, o = 0, r = "", a = 0, n = 0, s = "") {
+  t5t(e, i = 0, t = 0, o = 0, r = "", a = 0, s = 0, n = "") {
     var e = e - 1;
-    var h = this.l5t[e];
+    var l = this.l5t[e];
     var e = this.GetUiSpriteTransition(this.u4t[e]);
-    let l = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("SP_TeamRoleSkillNone");
+    let h = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("SP_TeamRoleSkillNone");
     if (i) {
-      h.Refresh(i, t, o, r, a, n, s);
+      l.Refresh(i, t, o, r, a, s, n, this.JDf);
       t = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(i)?.SkillId;
       if (t) {
         for (const _ of ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillList(t)) {
           if (_.SkillType === EditFormationDefine_1.EXIT_SKILL_TYPE) {
-            l = _.Icon;
+            h = _.Icon;
             break;
           }
         }
       }
     } else {
-      h.ResetRole();
+      l.ResetRole();
     }
-    this.SetSpriteTransitionByPath(l, e);
+    this.SetSpriteTransitionByPath(h, e);
   }
   v5t() {
     var e = ModelManager_1.ModelManager.EditFormationModel;
@@ -542,7 +576,12 @@ class EditFormationView extends UiViewBase_1.UiViewBase {
         break;
       }
     }
-    return !t || (ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("EditFormationAllDead"), false);
+    if (t) {
+      ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("EditFormationAllDead");
+      return false;
+    } else {
+      return !!this.JDf || !i.some(e => RoleUtils_1.RoleUtils.IsSpecialTrialRole(e));
+    }
   }
   E4t(e) {
     var i;

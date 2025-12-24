@@ -1,20 +1,20 @@
 "use strict";
 
-var __decorate = this && this.__decorate || function (t, e, o, r) {
-  var n;
+var __decorate = this && this.__decorate || function (t, e, n, o) {
+  var r;
   var i = arguments.length;
-  var a = i < 3 ? e : r === null ? r = Object.getOwnPropertyDescriptor(e, o) : r;
+  var a = i < 3 ? e : o === null ? o = Object.getOwnPropertyDescriptor(e, n) : o;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    a = Reflect.decorate(t, e, o, r);
+    a = Reflect.decorate(t, e, n, o);
   } else {
-    for (var l = t.length - 1; l >= 0; l--) {
-      if (n = t[l]) {
-        a = (i < 3 ? n(a) : i > 3 ? n(e, o, a) : n(e, o)) || a;
+    for (var s = t.length - 1; s >= 0; s--) {
+      if (r = t[s]) {
+        a = (i < 3 ? r(a) : i > 3 ? r(e, n, a) : r(e, n)) || a;
       }
     }
   }
   if (i > 3 && a) {
-    Object.defineProperty(e, o, a);
+    Object.defineProperty(e, n, a);
   }
   return a;
 };
@@ -24,6 +24,8 @@ Object.defineProperty(exports, "__esModule", {
 exports.PlayerLifeCycleComponent = undefined;
 const EntityComponent_1 = require("../../../../Core/Entity/EntityComponent");
 const RegisterComponent_1 = require("../../../../Core/Entity/RegisterComponent");
+const EventDefine_1 = require("../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const FormationDataController_1 = require("../../../Module/Abilities/FormationDataController");
 const CombatLog_1 = require("../../../Utils/CombatLog");
 let PlayerLifeCycleComponent = class PlayerLifeCycleComponent extends EntityComponent_1.EntityComponent {
@@ -46,10 +48,18 @@ let PlayerLifeCycleComponent = class PlayerLifeCycleComponent extends EntityComp
       return false;
     }
   }
+  OnStart() {
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PlayerEntityStarted, this.PlayerId, this.Entity);
+    return true;
+  }
+  OnEnd() {
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PlayerEntityEnded, this.PlayerId, this.Entity);
+    return true;
+  }
   OnClear() {
     FormationDataController_1.FormationDataController.UnRegisterPlayerEntity(this.PlayerId);
     return true;
   }
 };
-PlayerLifeCycleComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(205)], PlayerLifeCycleComponent);
+PlayerLifeCycleComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(211)], PlayerLifeCycleComponent);
 exports.PlayerLifeCycleComponent = PlayerLifeCycleComponent; //# sourceMappingURL=PlayerLifeCycleComponent.js.map

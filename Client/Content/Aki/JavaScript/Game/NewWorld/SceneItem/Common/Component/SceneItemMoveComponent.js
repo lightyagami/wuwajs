@@ -163,7 +163,7 @@ let SceneItemMoveComponent = class SceneItemMoveComponent extends EntityComponen
     this.Fbu = [];
   }
   static get Dependencies() {
-    return [206, 0];
+    return [212, 0];
   }
   get IsMovingPrepareCompleted() {
     return this.Wln;
@@ -202,10 +202,10 @@ let SceneItemMoveComponent = class SceneItemMoveComponent extends EntityComponen
   }
   OnStart() {
     var e;
-    this.ActorComp = this.Entity.GetComponent(206);
-    this.Nln = this.Entity.GetComponent(162);
-    this.Oln = this.Entity.GetComponent(134);
-    this.U4u = this.Entity.GetComponent(303);
+    this.ActorComp = this.Entity.GetComponent(212);
+    this.Nln = this.Entity.GetComponent(167);
+    this.Oln = this.Entity.GetComponent(139);
+    this.U4u = this.Entity.GetComponent(322);
     this.Nln?.SetEnableMovementSync(false, "SceneItemMoveComponent OnStart");
     if (this.EIe && this.EIe.GetPbEntityInitData()) {
       if (this.Entity.GameBudgetConfig.GroupName.op_Equality(FNameUtil_1.FNameUtil.GetDynamicFName("MoveSceneItemEntity"))) {
@@ -773,5 +773,5 @@ let SceneItemMoveComponent = class SceneItemMoveComponent extends EntityComponen
     return e;
   }
 };
-SceneItemMoveComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(132)], SceneItemMoveComponent);
+SceneItemMoveComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(137)], SceneItemMoveComponent);
 exports.SceneItemMoveComponent = SceneItemMoveComponent; //# sourceMappingURL=SceneItemMoveComponent.js.map

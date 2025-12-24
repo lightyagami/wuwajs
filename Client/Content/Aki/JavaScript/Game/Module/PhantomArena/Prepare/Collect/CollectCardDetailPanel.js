@@ -17,6 +17,7 @@ class CollectCardDetailPanel extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.nY1 = -1;
+    this.IsNewPhantomArenaActivity = false;
     this.bs_ = undefined;
     this.htu = undefined;
     this.eVi = undefined;
@@ -34,6 +35,7 @@ class CollectCardDetailPanel extends UiPanelBase_1.UiPanelBase {
     this.bs_ = new ButtonItem_1.ButtonItem();
     this.htu = new ButtonItem_1.ButtonItem();
     this.eVi = new DetailViewCardItem_1.DetailViewCardItem();
+    this.eVi.IsNewPhantomArenaActivity = this.IsNewPhantomArenaActivity;
     this.Ept = new CardDetailItem_1.CardDetailItem();
     this.$pt = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetRootItem());
     this.ltu = new CardDetailEntryDescLayoutItem_1.CardDetailEntryDescLayoutItem(this.GetLayoutBase(2));

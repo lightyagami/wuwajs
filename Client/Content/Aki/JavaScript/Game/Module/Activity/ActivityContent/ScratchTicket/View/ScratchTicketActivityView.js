@@ -8,7 +8,6 @@ const UE = require("ue");
 const StringUtils_1 = require("../../../../../../Core/Utils/StringUtils");
 const EventDefine_1 = require("../../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../../Common/Event/EventSystem");
-const ControllerHolder_1 = require("../../../../../Manager/ControllerHolder");
 const UiManager_1 = require("../../../../../Ui/UiManager");
 const SkipTaskManager_1 = require("../../../../SkipInterface/SkipTaskManager");
 const GenericLayout_1 = require("../../../../Util/Layout/GenericLayout");
@@ -30,13 +29,13 @@ class ScratchTicketActivityView extends ActivitySubViewBase_1.ActivitySubViewBas
     this.o8a = undefined;
     this.Lol = undefined;
     this.DFe = () => {
-      var t;
-      if (this.Lol.GetIfFirstOpen()) {
-        ControllerHolder_1.ControllerHolder.ActivityController.RequestReadActivity(this.Lol);
+      var i;
+      if (!this.Lol.ActivityHasClick()) {
+        this.Lol.ClickRedDot();
       }
       if (this.Lol.GetPreGuideQuestFinishState()) {
-        t = this.Lol.GetScratchCardActivityConfig();
-        SkipTaskManager_1.SkipTaskManager.RunByConfigId(t.JumpId);
+        i = this.Lol.GetScratchCardActivityConfig();
+        SkipTaskManager_1.SkipTaskManager.RunByConfigId(i.JumpId);
       } else {
         UiManager_1.UiManager.OpenView("QuestView", this.Lol.GetUnFinishPreGuideQuestId());
       }
@@ -63,40 +62,41 @@ class ScratchTicketActivityView extends ActivitySubViewBase_1.ActivitySubViewBas
     this.o8a = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(8), this.n8a);
   }
   OnStart() {
-    var t;
     var i;
+    var t;
     var e = this.Lol.LocalConfig;
     if (e) {
+      this.gLt.SetActivityBaseData(this.Lol);
       this.gLt.SetTitleByText(this.Lol.GetTitle());
-      t = e.DescTheme;
-      i = !StringUtils_1.StringUtils.IsEmpty(t);
-      this.gLt.SetSubTitleVisible(i);
-      if (i) {
-        this.gLt.SetSubTitleByTextId(t);
+      i = e.DescTheme;
+      t = !StringUtils_1.StringUtils.IsEmpty(i);
+      this.gLt.SetSubTitleVisible(t);
+      if (t) {
+        this.gLt.SetSubTitleByTextId(i);
       }
       this.nnl.SetContentByTextId(e.Desc);
-      i = this.Lol.GetPreviewReward();
+      t = this.Lol.GetPreviewReward();
       this.snl.SetTitleByTextId("CollectActivity_reward");
       this.snl.InitGridLayout(this.snl.InitCommonGridItem);
-      this.snl.RefreshItemLayout(i);
+      this.snl.RefreshItemLayout(t);
       this.anl.FunctionButton.SetFunction(this.DFe);
     }
   }
   OnRefreshView() {
-    var t;
     var i;
+    var t;
     var e;
     var s = this.Lol.GetScratchCardActivityConfig();
-    if (s && (e = this.Lol.IsUnLock(), i = this.Lol.GetPreGuideQuestFinishState(), t = this.Lol.IsAllRoundFinish(), this.anl.SetPanelConditionVisible(!e), this.FNe(), e || this.anl.SetPerformanceConditionLock(this.Lol.ConditionGroupId, this.Lol.Id), this.anl.FunctionButton.SetUiActive(e), this.anl.FunctionButton.SetShowText(i ? "ScratchCardActivity_JoinIn02" : "ScratchCardActivity_JoinIn01"), this.anl.FunctionButton.SetRedDotVisible(this.Lol.RedPointShowState), this.nnl.SetUiActive(!i), this.GetItem(9).SetUIActive(i && t), this.GetItem(4).SetUIActive(i), e = this.Lol.GetRoundDataList(), this.lnl.RefreshByData(e), i && !t && (e = this.Lol.GetConditionDataList(), this.o8a.RefreshByData(e), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SetActivityViewCurrency, [s.ItemId])), this.GetItem(11).SetUIActive(!t), i = this.Lol.GetFirstProgressRoundData())) {
-      e = i.Config.TogRoundIcon;
+    if (s && (e = this.Lol.IsUnLock(), t = this.Lol.GetPreGuideQuestFinishState(), i = this.Lol.IsAllRoundFinish(), this.anl.SetPanelConditionVisible(!e), this.FNe(), e || this.anl.SetPerformanceConditionLock(this.Lol.ConditionGroupId, this.Lol.Id), this.anl.FunctionButton.SetUiActive(e), this.anl.FunctionButton.SetShowText(t ? "ScratchCardActivity_JoinIn02" : "ScratchCardActivity_JoinIn01"), this.anl.FunctionButton.SetRedDotVisible(this.Lol.RedPointShowState), this.nnl.SetUiActive(!t), this.GetItem(9).SetUIActive(t && i), this.GetItem(4).SetUIActive(t), e = this.Lol.GetRoundDataList(), this.lnl.RefreshByData(e), t && !i && (e = this.Lol.GetConditionDataList(), this.o8a.RefreshByData(e), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SetActivityViewCurrency, [s.ItemId])), this.GetItem(11).SetUIActive(!i), t = this.Lol.GetFirstProgressRoundData())) {
+      e = t.Config.TogRoundIcon;
       this.SetSpriteByPath(e, this.GetSprite(10), false, undefined);
     }
   }
   FNe() {
-    var [, t] = this.GetTimeVisibleAndRemainTime();
-    this.gLt.SetTimeTextByText(t);
+    var [, i] = this.GetTimeVisibleAndRemainTime();
+    this.gLt.SetTimeTextByText(i);
   }
-  OnTimer(t) {
+  OnTimer(i) {
     this.FNe();
   }
 }

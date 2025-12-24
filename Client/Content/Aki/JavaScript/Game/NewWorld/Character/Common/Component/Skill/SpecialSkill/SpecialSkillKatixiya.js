@@ -44,8 +44,8 @@ class SpecialSkillKatixiya extends SpecialSkillBase_1.SpecialSkillBase {
     this.Lpd = undefined;
     this.eNu = new Set();
     this.lF1 = (e, t) => {
-      if (e.Entity?.Id === this.SpecialSkillComponent.Entity.Id && this.zIu?.IsMorphing() && !this.UBu?.IsInQte && t?.Entity?.GetComponent(179)?.PositionState !== CharacterUnifiedStateTypes_1.ECharPositionState.Ground && this.EAu) {
-        var i = t?.Entity?.GetComponent(209);
+      if (e.Entity?.Id === this.SpecialSkillComponent.Entity.Id && this.zIu?.IsMorphing() && !this.UBu?.IsInQte && t?.Entity?.GetComponent(184)?.PositionState !== CharacterUnifiedStateTypes_1.ECharPositionState.Ground && this.EAu) {
+        var i = t?.Entity?.GetComponent(215);
         for (const s of this.EAu) {
           if (i?.HasTag(s)) {
             CombatLog_1.CombatLog.Info("Skill", this.SpecialSkillComponent.Entity, "还原形态", ["Reason", 3], ["TagId", s]);
@@ -133,15 +133,15 @@ class SpecialSkillKatixiya extends SpecialSkillBase_1.SpecialSkillBase {
   OnStart() {
     var e = this.SpecialSkillComponent.Entity;
     this.Hte = e.GetComponent(3);
-    this.oRe = e.GetComponent(44);
-    this.Lie = e.GetComponent(209);
-    this.cBe = e.GetComponent(39);
-    this.$zo = e.GetComponent(213);
+    this.oRe = e.GetComponent(45);
+    this.Lie = e.GetComponent(215);
+    this.cBe = e.GetComponent(40);
+    this.$zo = e.GetComponent(220);
     this.C51 = e.GetComponent(25);
-    this.zIu = e.GetComponent(287);
-    this.aeu = e.GetComponent(229);
-    this.UBu = e.GetComponent(101);
-    this.yqu = e.GetComponent(95);
+    this.zIu = e.GetComponent(306);
+    this.aeu = e.GetComponent(238);
+    this.UBu = e.GetComponent(104);
+    this.yqu = e.GetComponent(98);
     this.EAu = [];
     var t = CommonParamById_1.configCommonParamById.GetStringArrayConfig("KatixiyaChangeRoleResetMorphTags");
     if (t) {

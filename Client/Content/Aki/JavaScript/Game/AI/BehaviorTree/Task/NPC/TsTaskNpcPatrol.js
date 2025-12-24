@@ -157,10 +157,10 @@ class TsTaskNpcPatrol extends TsTaskAbortImmediatelyBase_1.default {
       this.CacheVector = Vector_1.Vector.Create();
       this.SingleMoveForward = Vector_1.Vector.Create();
     }
-    this.MoveComp = this.Entity.GetComponent(45);
-    this.StateComp = this.Entity.GetComponent(179);
-    this.AnimComp = this.Entity.GetComponent(181);
-    this.AiComp = this.Entity.GetComponent(47);
+    this.MoveComp = this.Entity.GetComponent(46);
+    this.StateComp = this.Entity.GetComponent(184);
+    this.AnimComp = this.Entity.GetComponent(186);
+    this.AiComp = this.Entity.GetComponent(48);
     this.CurTime = 0;
     this.IsInit = false;
     this.IsPause = false;

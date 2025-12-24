@@ -28,7 +28,7 @@ class SurvivorsLevelDetailView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
     this.Sqd = -1;
-    this.NQd = false;
+    this.$Qd = false;
     this.Mqd = undefined;
     this.Eqd = undefined;
     this.SPe = undefined;
@@ -47,7 +47,7 @@ class SurvivorsLevelDetailView extends UiViewBase_1.UiViewBase {
       UiManager_1.UiManager.OpenView("SurvivorsTeamEditView");
     };
     this.Lqd = e => {
-      if (this.NQd) {
+      if (this.$Qd) {
         if (e === 1) {
           if (this.Pqd()) {
             this.Aqd(true);
@@ -103,11 +103,11 @@ class SurvivorsLevelDetailView extends UiViewBase_1.UiViewBase {
     this.Hnd();
     this.Dqd(i.Name);
     this.xqd(i.Diff);
-    this.CJd(i.InitRoles, i.InitWeapons);
+    this._Zd(i.InitRoles, i.InitWeapons);
     this.Iqd?.FunctionButton?.SetFunction(this.Pkc);
     this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
     this.SPe.BindSequenceCloseEvent(this.w_o);
-    this.QJd();
+    this.vem();
   }
   OnBeforeDestroy() {
     this.SPe?.Clear();
@@ -160,12 +160,12 @@ class SurvivorsLevelDetailView extends UiViewBase_1.UiViewBase {
   Dqd(e) {
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), e);
   }
-  VQd(e) {
-    this.NQd = e;
+  WQd(e) {
+    this.$Qd = e;
     this.GetTexture(27)?.SetUIActive(!e);
     this.GetItem(32)?.SetUIActive(e);
   }
-  CJd(e, i) {
+  _Zd(e, i) {
     e = this.Jat(e);
     this.jqd?.RefreshByData(i);
     e = e || i.length > 0;
@@ -190,12 +190,12 @@ class SurvivorsLevelDetailView extends UiViewBase_1.UiViewBase {
       });
     });
   }
-  QJd() {
+  vem() {
     var e = ModelManager_1.ModelManager.SurvivorsRogueModel.SelectLevelInfo;
     var i = ConfigManager_1.ConfigManager.SurvivorsRogueConfig.GetSurvivorsLevel(e.LevelId);
     if (i.EndlessMode) {
       t = ModelManager_1.ModelManager.SurvivorsRogueModel.ActivityData.GetLevelUnlockState(e.LevelId, true);
-      this.VQd(t);
+      this.WQd(t);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SurvivorsRogueLevelDetailViewEndlessToggleRefresh, t);
     } else {
       this.GetExtendToggle(15)?.RootUIComp.SetUIActive(false);

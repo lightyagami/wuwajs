@@ -33,7 +33,7 @@ class RenderAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
     RenderUtil_1.RenderUtil.OpenMobileSpotLightShadow();
     GameSettingsDeviceRender_1.GameSettingsDeviceRender.SetSequenceFrameRateLimit();
     if (Info_1.Info.IsLowMemoryDevice) {
-      e = UE.StreamableRenderAsset.GetKuroStreamingRuntimeLODBiasDeviceMappingIndices(0, 0, 0, 3, 3, 4);
+      e = UE.StreamableRenderAsset.EncodeStreamingLODBiasMapping(0, 0, 0, 3, 4);
       UE.KuroSequencePerformanceManager.SimpleExecuteCommand("r.Streaming.RuntimeLODBiasDeviceMappingIndices " + e);
     }
     if (Info_1.Info.IsPcOrGamepadPlatform()) {
@@ -71,7 +71,7 @@ class RenderAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
     RenderUtil_1.RenderUtil.OpenToonSceneShadow();
     UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Mobile.EnableKuroSpotlightsShadow " + this.dio);
     if (Info_1.Info.IsLowMemoryDevice) {
-      e = UE.StreamableRenderAsset.GetKuroStreamingRuntimeLODBiasDeviceMappingIndices();
+      e = UE.StreamableRenderAsset.EncodeStreamingLODBiasMapping();
       UE.KuroSequencePerformanceManager.SimpleExecuteCommand("r.Streaming.RuntimeLODBiasDeviceMappingIndices " + e);
     }
     GameSettingsDeviceRender_1.GameSettingsDeviceRender.CancleSequenceFrameRateLimit();

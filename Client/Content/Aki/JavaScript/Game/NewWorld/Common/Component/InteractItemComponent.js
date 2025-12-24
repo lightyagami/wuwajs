@@ -57,5 +57,5 @@ let InteractItemComponent = class InteractItemComponent extends EntityComponent_
     }
   }
 };
-InteractItemComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(106)], InteractItemComponent);
+InteractItemComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(111)], InteractItemComponent);
 exports.InteractItemComponent = InteractItemComponent; //# sourceMappingURL=InteractItemComponent.js.map

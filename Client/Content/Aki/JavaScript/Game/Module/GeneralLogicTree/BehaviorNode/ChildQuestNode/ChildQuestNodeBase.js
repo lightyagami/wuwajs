@@ -19,6 +19,7 @@ class ChildQuestNodeBase extends BehaviorNodeBase_1.BehaviorNodeBase {
     this.Submitting = false;
     this.ChildQuestStatus = undefined;
     this.ModifyTrackAreaTextConfig = undefined;
+    this.TrackCustomBoard = undefined;
     this.NodeType = "ChildQuest";
   }
   get CanGiveUp() {
@@ -105,6 +106,7 @@ class ChildQuestNodeBase extends BehaviorNodeBase_1.BehaviorNodeBase {
     this.MultiTrackText = PublicUtil_1.PublicUtil.GetConfigTextByKey(this.TrackTextConfig);
     this.ModifyTrackAreaTextConfig = t.ModifyTrackAreaText;
     this.ShowTipBeforeEnterActions = t.ShowTipBeforeEnterActions ?? false;
+    this.TrackCustomBoard = t.TrackCustomBoard;
     return true;
   }
   OnStart(t) {}

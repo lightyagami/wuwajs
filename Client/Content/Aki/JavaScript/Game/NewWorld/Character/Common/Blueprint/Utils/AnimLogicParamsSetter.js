@@ -63,6 +63,8 @@ class AnimLogicParamsSetter {
     this.EnableBlendSpaceLookAt = false;
     this.CameraMode = 0;
     this.IsOnVehicle = false;
+    this.IsLeavingVehicle = false;
+    this.VehicleType = 0;
     this.EnableLowerBlend = false;
     this.EnableLeftArmBlend = false;
     this.EnableRightArmBlend = false;
@@ -73,6 +75,7 @@ class AnimLogicParamsSetter {
     this.LeftHandIkTarget = new HoldingHandsUtils_1.IkTarget();
     this.RightHandIkTarget = new HoldingHandsUtils_1.IkTarget();
     this.DisableBlink = false;
+    this.IsRegionMoveMode = false;
   }
 }
 exports.AnimLogicParamsSetter = AnimLogicParamsSetter;

@@ -206,7 +206,7 @@ class RailData {
     if (this.Params.RailType === 0) {
       this.RotatorSpeed = e?.RotatorSpeed ?? 1;
     }
-    if (this.Params.RailType === 0 && t.ExchangeRailConfigs) {
+    if (this.Params.RailType === 0 && t?.ExchangeRailConfigs) {
       for (const s of t.ExchangeRailConfigs) {
         if (s.NextRails) {
           for (const h of s.NextRails) {
@@ -301,11 +301,13 @@ let CharacterRailSlideComponent = CharacterRailSlideComponent_1 = class Characte
     this.aeu = undefined;
     this.Tb1 = false;
     this.jsu = false;
+    this.hYu = false;
     this.bb1 = false;
     this.Rb1 = false;
     this.Uj1 = undefined;
     this.Ab1 = undefined;
     this.Pb1 = new Map();
+    this.Fnf = [];
     this.Wnr = Vector_1.Vector.Create();
     this.Lz = Vector_1.Vector.Create();
     this.Tz = Vector_1.Vector.Create();
@@ -323,7 +325,7 @@ let CharacterRailSlideComponent = CharacterRailSlideComponent_1 = class Characte
     this.ero = (t, i, e) => {
       var s = this.Uj1?.InterruptSkillList.includes(i);
       if (t === this.Entity.Id && s) {
-        this.Hsu("使用了技能" + i);
+        this.SetExitSplineRailSlide("使用了技能" + i);
       } else if (!s) {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("AI", 42, "[RailSlide] 使用了技能，但不在打断列表中，不打断滑轨，如有需要请手动添加到BP_RailSlideConfig", ["SkillId", i]);
@@ -331,23 +333,23 @@ let CharacterRailSlideComponent = CharacterRailSlideComponent_1 = class Characte
       }
     };
     this.OnTeleportStart = () => {
-      this.Hsu("触发传送");
+      this.SetExitSplineRailSlide("触发传送");
     };
     this.hJl = () => {
-      this.Hsu("角色死亡");
+      this.SetExitSplineRailSlide("角色死亡");
     };
     this.heu = false;
     this.leu = 0;
   }
   static get Dependencies() {
-    return [3, 182, 179];
+    return [3, 187, 184];
   }
   OnStart() {
     this.Hte = this.Entity.GetComponent(3);
-    this.Lie = this.Entity.GetComponent(209);
-    this.mBe = this.Entity.GetComponent(179);
-    this.oRe = this.Entity.GetComponent(181);
-    this.aeu = this.Entity.GetComponent(229);
+    this.Lie = this.Entity.GetComponent(215);
+    this.mBe = this.Entity.GetComponent(184);
+    this.oRe = this.Entity.GetComponent(186);
+    this.aeu = this.Entity.GetComponent(238);
     return true;
   }
   OnEnd() {
@@ -359,6 +361,7 @@ let CharacterRailSlideComponent = CharacterRailSlideComponent_1 = class Characte
       if (!this.jsu) {
         t = Math.min(t * ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation, TEN_MS);
         this.sRc(t);
+        this.Nnf();
         this.Db1(t);
         this.Wnr.DeepCopy(this.Hte.ActorLocationProxy);
       }
@@ -372,7 +375,7 @@ let CharacterRailSlideComponent = CharacterRailSlideComponent_1 = class Characte
       }
     }
   }
-  StartRailSlide(t, i) {
+  StartRailSlide(t, i, e) {
     if (this.Tb1) {
       if (Log_1.Log.CheckWarn()) {
         Log_1.Log.Warn("Movement", 42, "[RailSlide] 重复触发进入轨道滑行");
@@ -386,30 +389,35 @@ let CharacterRailSlideComponent = CharacterRailSlideComponent_1 = class Characte
         });
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ForceReleaseInput, "CharacterRailSlideComponent.StartRailSlide");
         this.jsu = false;
+        this.hYu = false;
         this.Tb1 = true;
         this.xb1 = 0;
         this.mCu();
         this.Lie.AddTag(-1697149502);
-        this.Entity.GetComponent(45)?.SetLockedRotation(true);
+        this.Entity.GetComponent(46)?.SetLockedRotation(true);
         this.Wnr.DeepCopy(this.Hte.ActorLocationProxy);
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Movement", 42, "[RailSlide] 开始轨道滑行");
         }
-        i = this.Entity?.GetComponent(39);
-        if (i) {
+        i = this.Entity?.GetComponent(40);
+        if (i && this.Ab1.RailInfo) {
           i.StopAllSkills("开始轨道移动");
         }
         EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CharUseSkill, this.ero);
         EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TeleportStart, this.OnTeleportStart);
         EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharOnRoleDeadTargetSelf, this.hJl);
-        for (const e of this.Uj1.TagList) {
-          this.Lie?.AddTag(e);
+        for (const s of this.Uj1.TagList) {
+          this.Lie?.AddTag(s);
+        }
+        if (e) {
+          this.Fnf.push(e);
         }
       }
     }
   }
-  Hsu(t) {
+  SetExitSplineRailSlide(t, i = true) {
     this.jsu = true;
+    this.hYu = i;
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Movement", 42, "[RailSlide] 退出轨道滑行", ["Context", t]);
     }
@@ -429,7 +437,7 @@ let CharacterRailSlideComponent = CharacterRailSlideComponent_1 = class Characte
       this.xb1 = 0;
       this.mCu();
       this.Lie?.RemoveTag(-1697149502);
-      this.Entity?.GetComponent(45)?.SetLockedRotation(false);
+      this.Entity?.GetComponent(46)?.SetLockedRotation(false);
       this.Lie?.RemoveTag(-1254507003);
       if (this.Hte && this.mBe?.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.RailSlide) {
         if (this.IJr()) {
@@ -453,7 +461,12 @@ let CharacterRailSlideComponent = CharacterRailSlideComponent_1 = class Characte
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CharUseSkill, this.ero);
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TeleportStart, this.OnTeleportStart);
       EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CharOnRoleDeadTargetSelf, this.hJl);
+      for (const i of this.Fnf) {
+        i?.(this.hYu);
+      }
+      this.Fnf = [];
       this.jsu = false;
+      this.hYu = false;
     }
   }
   qb1() {
@@ -485,33 +498,29 @@ let CharacterRailSlideComponent = CharacterRailSlideComponent_1 = class Characte
   }
   lz1(t) {
     var i = this.Gb1(t);
-    if (i) {
-      var e = this.Fb1(i.RailSplineEntityId);
+    var e = this.Fb1(i?.RailSplineEntityId ?? t);
+    if (e) {
+      var s;
+      var h;
+      var e = e[0];
+      var a = Vector_1.Vector.Create();
+      var e = this.Nb1(e, a);
       if (e) {
-        var s;
-        var h;
-        var e = e[0];
-        var a = Vector_1.Vector.Create();
-        var e = this.Nb1(e, a);
-        if (e) {
-          s = e[0];
-          h = e[1];
-          e = e[2];
-          h = {
-            RailType: 1,
-            JumpType: 1,
-            ConnectionNextRail: t,
-            ConnectionStartDistance: h,
-            RotatorFixedDirection: a
-          };
-          (a = new RailData(this.Uj1, s, 0, s.GetSplineLength(), h)).SetRailInfo(i, e, this.Ab1);
-          return a;
-        }
-      } else if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("Movement", 42, "[RailSlide] 没有样条配置", ["splineId", i.RailSplineEntityId]);
+        s = e[0];
+        h = e[1];
+        e = e[2];
+        h = {
+          RailType: 1,
+          JumpType: 1,
+          ConnectionNextRail: t,
+          ConnectionStartDistance: h,
+          RotatorFixedDirection: a
+        };
+        (a = new RailData(this.Uj1, s, 0, s.GetSplineLength(), h)).SetRailInfo(i, e, this.Ab1);
+        return a;
       }
     } else if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("Movement", 42, "[RailSlide] 没有轨道配置", ["railId", t]);
+      Log_1.Log.Error("Movement", 42, "[RailSlide] 没有样条配置", ["splineId", i?.RailSplineEntityId ?? t]);
     }
   }
   _z1(t) {
@@ -550,37 +559,37 @@ let CharacterRailSlideComponent = CharacterRailSlideComponent_1 = class Characte
       Log_1.Log.Error("Movement", 42, "[RailSlide] 没有轨道配置", ["railId", t]);
     }
   }
-  jb1(t, i) {
-    var e = this.Gb1(t);
-    if (e) {
-      var s;
-      var h;
-      var a;
-      var o = this.Fb1(e.RailSplineEntityId);
-      if (o) {
-        s = MathUtils_1.MathUtils.Clamp(this.Ab1?.Speed ?? e.SlideSpeed ?? this.Uj1.InitSpeed, this.Uj1.MinLandSpeed, this.Uj1.MaxLandSpeed);
-        a = o[0];
-        (h = new SplineCurve_1.SplineCurve()).Init(a.SplineCurves.Position, a.SplineCurves.ReparamTable.Points, a.SplineCurves.Rotation, a.SplineCurves.Scale);
-        if (o[1]) {
-          h.SetSplineTransform(o[1], false);
-        }
-        (a = new RailData(this.Uj1, h, i, h.GetSplineLength(), {
-          RailType: 0,
-          JumpType: 2,
-          DefaultNextRailId: 0
-        })).SetRailInfo(e, s, this.Ab1);
-        a.AllowInputChangeRail = true;
-        if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("Movement", 42, "[RailSlide] 进入样条轨道", ["railId", t], ["Speed", s], ["startDist", i]);
-        }
-        this.apu(e.RailSplineEntityId);
-        return a;
+  jb1(i, e) {
+    var s = this.Gb1(i);
+    var h = this.Fb1(s?.RailSplineEntityId ?? i);
+    if (h) {
+      var a = MathUtils_1.MathUtils.Clamp(this.Ab1?.Speed ?? s?.SlideSpeed ?? this.Uj1.InitSpeed, this.Uj1.MinLandSpeed, this.Uj1.MaxLandSpeed);
+      var o = h[0];
+      var r = new SplineCurve_1.SplineCurve();
+      r.Init(o.SplineCurves.Position, o.SplineCurves.ReparamTable.Points, o.SplineCurves.Rotation, o.SplineCurves.Scale);
+      if (h[1]) {
+        r.SetSplineTransform(h[1], false);
       }
-      if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("Movement", 42, "[RailSlide] 没有样条配置", ["splineId", e.RailSplineEntityId]);
+      let t = undefined;
+      t = s ? {
+        RailType: 0,
+        JumpType: 2,
+        DefaultNextRailId: 0
+      } : {
+        RailType: 3,
+        JumpType: 0
+      };
+      o = new RailData(this.Uj1, r, e, r.GetSplineLength(), t);
+      o.SetRailInfo(s, a, this.Ab1);
+      o.AllowInputChangeRail = true;
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("Movement", 42, "[RailSlide] 进入样条轨道", ["railId", i], ["Speed", a], ["startDist", e]);
       }
-    } else if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("Movement", 42, "[RailSlide] 没有轨道配置", ["railId", t]);
+      this.apu(s?.RailSplineEntityId ?? i);
+      return o;
+    }
+    if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("Movement", 42, "[RailSlide] 没有样条配置", ["splineId", s?.RailSplineEntityId ?? i]);
     }
   }
   Bb1(t, i) {
@@ -636,6 +645,15 @@ let CharacterRailSlideComponent = CharacterRailSlideComponent_1 = class Characte
           }
         }
       }
+    }
+  }
+  Nnf() {
+    var t;
+    if (this.Ab1?.Params?.RailType === 3 && (t = ModelManager_1.ModelManager.InputModel?.GetPressTimes()?.get(InputEnums_1.EInputAction.跳跃)) && t !== -1 && !this.jsu) {
+      this.SetExitSplineRailSlide("跳跃输入退出轨道滑行");
+      this.Fnf.push(() => {
+        this.Entity.GetComponent(187).TrySetGlide();
+      });
     }
   }
   zou(t) {
@@ -924,7 +942,7 @@ let CharacterRailSlideComponent = CharacterRailSlideComponent_1 = class Characte
         }
       }
     } else {
-      this.Hsu("MoveToTargetAlongSpline 结束轨道滑行");
+      this.SetExitSplineRailSlide("MoveToTargetAlongSpline 结束轨道滑行", false);
     }
   }
   P91(t, i, e, s) {
@@ -932,7 +950,9 @@ let CharacterRailSlideComponent = CharacterRailSlideComponent_1 = class Characte
     switch (h.Params.JumpType) {
       case 0:
         this.Tz.DeepCopy(Vector_1.Vector.UpVectorProxy);
-        this.Tz.MultiplyEqual(this.Hte.ScaledHalfHeight);
+        if (h.RailInfo) {
+          this.Tz.MultiplyEqual(this.Hte.ScaledHalfHeight);
+        }
         h.UpdateRotatorSpeed(this.Hte.ActorRotationProxy, this.Gue);
         e.RotateVector(this.Tz, this.Tz);
         e.FromUeQuat(this.Hte.ActorInitGravityRotationProxy.Quaternion());
@@ -949,7 +969,9 @@ let CharacterRailSlideComponent = CharacterRailSlideComponent_1 = class Characte
         h.UpdateRotatorSpeed(this.Hte.ActorRotationProxy, this.EPn);
         MathUtils_1.MathUtils.RotatorInterpConstantTo(this.Hte.ActorRotationProxy, this.EPn, t, this.Ab1.RotatorSpeed, this.Gue);
         this.Tz.DeepCopy(Vector_1.Vector.UpVectorProxy);
-        this.Tz.MultiplyEqual(this.Hte.ScaledHalfHeight);
+        if (h.RailInfo) {
+          this.Tz.MultiplyEqual(this.Hte.ScaledHalfHeight);
+        }
         this.Gue.Quaternion(this.az);
         this.az.RotateVector(this.Tz, this.Tz);
         this.az.FromUeQuat(this.Hte.ActorInitGravityRotationProxy.Quaternion());
@@ -965,7 +987,9 @@ let CharacterRailSlideComponent = CharacterRailSlideComponent_1 = class Characte
           h.UpdateRotatorSpeed(this.Hte.ActorRotationProxy, this.EPn);
           MathUtils_1.MathUtils.RotatorInterpConstantTo(this.Hte.ActorRotationProxy, this.EPn, t, this.Ab1.RotatorSpeed, this.Gue);
           this.Tz.DeepCopy(Vector_1.Vector.UpVectorProxy);
-          this.Tz.MultiplyEqual(this.Hte.ScaledHalfHeight);
+          if (h.RailInfo) {
+            this.Tz.MultiplyEqual(this.Hte.ScaledHalfHeight);
+          }
           this.Gue.Quaternion(this.az);
           this.az.RotateVector(this.Tz, this.Tz);
           this.az.FromUeQuat(this.Hte.ActorInitGravityRotationProxy.Quaternion());
@@ -1182,5 +1206,5 @@ let CharacterRailSlideComponent = CharacterRailSlideComponent_1 = class Characte
   }
 };
 CharacterRailSlideComponent.DebugLog = false;
-CharacterRailSlideComponent = CharacterRailSlideComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(36)], CharacterRailSlideComponent);
+CharacterRailSlideComponent = CharacterRailSlideComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(37)], CharacterRailSlideComponent);
 exports.CharacterRailSlideComponent = CharacterRailSlideComponent; //# sourceMappingURL=CharacterRailSlideComponent.js.map

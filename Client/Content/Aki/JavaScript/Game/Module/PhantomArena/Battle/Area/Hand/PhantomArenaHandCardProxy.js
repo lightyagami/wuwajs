@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.PhantomArenaHandCardProxy = undefined;
 const CustomPromise_1 = require("../../../../../../Core/Common/CustomPromise");
+const Info_1 = require("../../../../../../Core/Common/Info");
 const Log_1 = require("../../../../../../Core/Common/Log");
 const TimerSystem_1 = require("../../../../../../Core/Timer/TimerSystem");
 const PhantomArenaDefine_1 = require("../../PhantomArenaDefine");
@@ -17,11 +18,11 @@ class PhantomArenaHandCardProxy {
     this.XGu = -1;
     this.IsInit = false;
   }
-  Init(t, i, s) {
+  Init(t, i, a) {
     this.wi1 = t;
     this.AreaItem = i;
     this.wi1.SetCardProxy(this);
-    this.Area = s;
+    this.Area = a;
     this.IsInit = true;
   }
   PointerClickCard(t, i) {
@@ -32,7 +33,7 @@ class PhantomArenaHandCardProxy {
   }
   PointerEnterCard(t) {}
   PointerDownCard(t, i) {
-    this.WD_ = this.Area.IsCanDragCard();
+    this.WD_ = this.Area.IsCanDragCard(t);
     if (this.WD_) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("PhantomArena", 10, "按下手牌");
@@ -105,14 +106,14 @@ class PhantomArenaHandCardProxy {
   }
   async PlayStartTimeLocationTween(t, i) {
     await TimerSystem_1.GameplayTimerSystem.Wait(i);
-    const s = new CustomPromise_1.CustomPromise();
+    const a = new CustomPromise_1.CustomPromise();
     i = {
       StartCallback: () => {
         this.wi1.SetActive(true);
       },
       CompleteCallback: () => {
         this.wi1.SetUiParent(this.AreaItem.GetRootItem(), true);
-        s.SetResult();
+        a.SetResult();
       },
       LocationCurveX: this.Area.DrawCardCurveX,
       LocationCurveY: this.Area.DrawCardCurveY
@@ -120,18 +121,18 @@ class PhantomArenaHandCardProxy {
     this.wi1.PlayLocationByItem(t, this.AreaItem.GetRootItem(), i);
     this.wi1.PlaySequenceWithoutStop("Rotation");
     this.PlayInHandSequence();
-    await s.Promise;
+    await a.Promise;
   }
   async PlayEndTimeLocationTween(t, i) {
     await TimerSystem_1.GameplayTimerSystem.Wait(i);
-    const s = new CustomPromise_1.CustomPromise();
+    const a = new CustomPromise_1.CustomPromise();
     i = {
       StartCallback: () => {
         this.wi1?.SetUiParent(this.Area.ViewProxy.GetDragRootItem());
       },
       CompleteCallback: () => {
         this.wi1.DestroyAsync().finally(() => {
-          s.SetResult();
+          a.SetResult();
         });
       },
       LocationCurveX: this.Area.DiscardCardCurveX,
@@ -139,18 +140,18 @@ class PhantomArenaHandCardProxy {
     };
     this.wi1.PlayLocationByItem(this.AreaItem.GetRootItem(), t, i);
     this.wi1.PlaySequenceWithoutStop("Rotation", true);
-    await s.Promise;
+    await a.Promise;
   }
   async PlayDiscardCardTween(t, i) {
     await TimerSystem_1.GameplayTimerSystem.Wait(i);
-    const s = new CustomPromise_1.CustomPromise();
+    const a = new CustomPromise_1.CustomPromise();
     i = {
       StartCallback: () => {
         this.wi1.SetUiParent(this.Area.ViewProxy.GetDragRootItem());
       },
       CompleteCallback: () => {
         this.wi1.DestroyAsync().finally(() => {
-          s.SetResult();
+          a.SetResult();
         });
       },
       LocationCurveX: this.Area.DiscardCardCurveX,
@@ -158,27 +159,28 @@ class PhantomArenaHandCardProxy {
     };
     this.wi1.PlayLocationByItem(this.AreaItem.GetRootItem(), t, i);
     this.wi1.PlaySequenceWithoutStop("Rotation", true);
-    await s.Promise;
+    await a.Promise;
   }
-  async PlayHandRecycleCardTween(t, i) {
-    await TimerSystem_1.GameplayTimerSystem.Wait(i);
-    const s = new CustomPromise_1.CustomPromise();
-    i = {
+  async PlayHandRecycleCardTween(t) {
+    var i = this.Area.ViewProxy.CardRecycle.GetRootItem();
+    await TimerSystem_1.GameplayTimerSystem.Wait(t);
+    const a = new CustomPromise_1.CustomPromise();
+    t = {
       StartCallback: () => {
         this.wi1.SetUiParent(this.Area.ViewProxy.GetDragRootItem());
       },
       CompleteCallback: () => {
         this.DissolveByLibrary().finally(() => {
-          s.SetResult();
+          a.SetResult();
         });
       },
       LocationCurveX: this.Area.RecycleCurve,
       LocationCurveY: this.Area.RecycleCurve,
       DurationTime: PhantomArenaDefine_1.PLAY_MOVE_DURATION
     };
-    this.wi1.PlayLocationByItem(this.wi1.GetOriginalItem(), t, i);
+    this.wi1.PlayLocationByItem(this.wi1.GetOriginalItem(), i, t);
     this.wi1.PlaySequence("DragUpHandtoTable");
-    await s.Promise;
+    await a.Promise;
   }
   async PlayResetPositionTween() {
     const t = new CustomPromise_1.CustomPromise();
@@ -200,13 +202,13 @@ class PhantomArenaHandCardProxy {
     await t.Promise;
   }
   async PlayHandToFunctionalTopTween(t, i) {
-    const s = new CustomPromise_1.CustomPromise();
+    const a = new CustomPromise_1.CustomPromise();
     var e = {
       StartCallback: () => {
         this.wi1.SetUiParent(this.Area.ViewProxy.GetDragRootItem());
       },
       CompleteCallback: () => {
-        s.SetResult();
+        a.SetResult();
       },
       LocationCurveX: this.Area.RecycleCurve,
       LocationCurveY: this.Area.RecycleCurve,
@@ -217,7 +219,26 @@ class PhantomArenaHandCardProxy {
       this.wi1.PlaySequence("DragUpHandtoTable");
       this.QX1();
     }
-    await s.Promise;
+    await a.Promise;
+  }
+  async CallHandCardToFight(t, i) {
+    const a = this.Area.HandArea.GetCardProxy(t.CardId).GetCard();
+    const e = new CustomPromise_1.CustomPromise();
+    t = {
+      CompleteCallback: () => {
+        a.StopSequence("DragUpHandtoTable");
+        a.PlaySequenceAsync("PutDownHandtoTable").finally(() => {
+          e.SetResult();
+        });
+      },
+      LocationCurveX: this.Area.RecycleCurve,
+      LocationCurveY: this.Area.RecycleCurve,
+      DurationTime: PhantomArenaDefine_1.PLAY_MOVE_DURATION
+    };
+    a.PlayLocationByItem(a.GetOriginalItem(), i, t);
+    a.PlaySequenceWithoutStop("DragUpHandtoTable");
+    this.QX1();
+    await e.Promise;
   }
   SetCardSelectedState(t) {
     if (t) {
@@ -232,8 +253,8 @@ class PhantomArenaHandCardProxy {
       this.wi1.SetSelectedState(false);
     }
   }
-  IsFourCost() {
-    return this.wi1.Data.IsFourCost;
+  IsNoAllowDiscard() {
+    return this.wi1.Data.IsNoAllowDiscard;
   }
   GetCard() {
     return this.wi1;
@@ -247,7 +268,15 @@ class PhantomArenaHandCardProxy {
   GetGuideUiItemAndUiItemForShowEx(t) {
     var i;
     if (t && t.length !== 0 && ((i = t[0]) === "HandCard" || i === "HandArea")) {
-      return this.wi1.GetGuideUiItemAndUiItemForShowEx(t);
+      if (Info_1.Info.IsInGamepad()) {
+        if (i = this.AreaItem.GetGuideUiItem("0")) {
+          return [i, i];
+        } else {
+          return undefined;
+        }
+      } else {
+        return this.wi1.GetGuideUiItemAndUiItemForShowEx(t);
+      }
     } else {
       return undefined;
     }

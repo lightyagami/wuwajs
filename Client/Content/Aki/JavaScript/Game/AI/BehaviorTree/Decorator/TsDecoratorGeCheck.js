@@ -61,7 +61,7 @@ class TsDecoratorGeCheck extends UE.BTDecorator_BlueprintBase {
       }
       i = e;
     }
-    var o = i.Entity.CheckGetComponent(178);
+    var o = i.Entity.CheckGetComponent(183);
     if (!o) {
       return false;
     }

@@ -252,12 +252,16 @@ class TsTaskQuerySwimLocation extends TsTaskAbortImmediatelyBase_1.default {
     if (t && this.ShallowTraceElement.HitResult.bBlockingHit) {
       var h = this.ShallowTraceElement.HitResult.Actors;
       var e = this.ShallowTraceElement.HitResult.Components;
+      var o = this.ShallowTraceElement.HitResult.ItemArray;
       for (let t = 0; t < h.Num(); t++) {
-        var o = h.Get(t);
-        if (o !== undefined) {
-          o = e.Get(t);
-          if (o && !s.op_Equality(o.GetCollisionProfileName())) {
-            return false;
+        var r = h.Get(t);
+        if (r !== undefined) {
+          r = e.Get(t);
+          if (r) {
+            var a = o.Get(t);
+            if (!s.op_Equality(UE.KuroCollisionLibrary.GetCollisionProfileName(r, a))) {
+              return false;
+            }
           }
         }
       }

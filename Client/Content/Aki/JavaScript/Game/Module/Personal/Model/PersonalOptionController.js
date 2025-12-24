@@ -1,10 +1,13 @@
 "use strict";
 
+var _a;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.PersonalOptionController = undefined;
 const UE = require("ue");
+const EventDefine_1 = require("../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiControllerBase_1 = require("../../../Ui/Base/UiControllerBase");
@@ -34,6 +37,16 @@ class PersonalOptionController extends UiControllerBase_1.UiControllerBase {
     this.v5i.set(14, this.Kac);
     this.v5i.set(15, this.BEd);
   }
+  static OnAddEvents() {
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestLookCard, PersonalOptionController._Ef);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestReportPlayer, PersonalOptionController.uEf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestChangePlayerRemark, PersonalOptionController.OXf);
+  }
+  static OnRemoveEvents() {
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestLookCard, PersonalOptionController._Ef);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestReportPlayer, PersonalOptionController.uEf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestChangePlayerRemark, PersonalOptionController.OXf);
+  }
   static GetOptionFunc(e) {
     if (this.v5i.size === 0) {
       this.InitOptionMap();
@@ -42,51 +55,52 @@ class PersonalOptionController extends UiControllerBase_1.UiControllerBase {
   }
   static GetPersonalData() {
     var e = new PersonalDefine_1.PersonalInfoData();
-    var r = ModelManager_1.ModelManager.FriendModel.GetSelectedPlayerOrItemInstance();
-    if (r) {
-      e.RoleShowList = r.RoleShowList;
-      e.CardShowList = r.CardShowList;
-      e.CurCardId = r.CurCard;
-      e.Birthday = r.Birthday;
-      e.IsBirthdayDisplay = r.IsBirthdayDisplay;
-      e.CardDataList = r.CardUnlockList;
-      e.Signature = r.Signature;
-      e.HeadPhotoId = r.PlayerHeadPhoto;
+    var o = ModelManager_1.ModelManager.FriendModel.GetSelectedPlayerOrItemInstance();
+    if (o) {
+      e.RoleShowList = o.RoleShowList;
+      e.CardShowList = o.CardShowList;
+      e.CurCardId = o.CurCard;
+      e.Birthday = o.Birthday;
+      e.IsBirthdayDisplay = o.IsBirthdayDisplay;
+      e.CardDataList = o.CardUnlockList;
+      e.Signature = o.Signature;
+      e.HeadPhotoId = o.PlayerHeadPhoto;
       e.IsOtherData = true;
-      e.Name = r.PlayerName;
-      e.PlayerId = r.PlayerId;
-      e.Level = r.PlayerLevel;
-      e.WorldLevel = r.WorldLevel;
-      e.CurPlayerTitleId = r.PlayerTitleId;
-      e.CurPlayerTitleLevel = r.PlayerTitleStarLevel;
-      e.Sex = r.PlayerSex;
-      e.PsnUserId = r.GetSdkUserId();
-      e.PsnOnlineId = r.GetSdkOnlineId();
+      e.Name = o.PlayerName;
+      e.PlayerId = o.PlayerId;
+      e.Level = o.PlayerLevel;
+      e.WorldLevel = o.WorldLevel;
+      e.CurPlayerTitleId = o.PlayerTitleId;
+      e.CurPlayerTitleLevel = o.PlayerTitleStarLevel;
+      e.Sex = o.PlayerSex;
+      e.PsnUserId = o.GetSdkUserId();
+      e.PsnOnlineId = o.GetSdkOnlineId();
     } else {
-      r = ModelManager_1.ModelManager.OnlineModel.CachePlayerData.PlayerDetails;
-      e.RoleShowList = r.MSs;
-      e.CardShowList = r.SSs;
-      e.CurCardId = r.ESs ?? undefined;
-      e.Birthday = r.ZVn ?? 0;
-      e.IsBirthdayDisplay = r.ySs ?? false;
+      o = ModelManager_1.ModelManager.OnlineModel.CachePlayerData.PlayerDetails;
+      e.RoleShowList = o.MSs;
+      e.CardShowList = o.SSs;
+      e.CurCardId = o.ESs ?? undefined;
+      e.Birthday = o.ZVn ?? 0;
+      e.IsBirthdayDisplay = o.ySs ?? false;
       e.CardDataList = ModelManager_1.ModelManager.OnlineModel.CachePlayerData.CardUnlockList;
-      e.Signature = r.zVn ?? "";
-      e.HeadPhotoId = r.dSs ?? undefined;
+      e.Signature = o.zVn ?? "";
+      e.HeadPhotoId = o.dSs ?? undefined;
       e.IsOtherData = true;
-      e.Name = r.H8n ?? "";
-      e.PlayerId = r.W5n ?? 0;
-      e.Level = r.F6n ?? 0;
-      e.WorldLevel = r.cSs ?? 0;
-      e.PsnUserId = r.Jxa ?? undefined;
-      e.PsnOnlineId = r.Qxa ?? undefined;
-      e.CurPlayerTitleId = r.tnc ?? undefined;
-      e.CurPlayerTitleLevel = r.inc ?? 0;
-      e.Sex = r.v7n ?? 0;
+      e.Name = o.H8n ?? "";
+      e.PlayerId = o.W5n ?? 0;
+      e.Level = o.F6n ?? 0;
+      e.WorldLevel = o.cSs ?? 0;
+      e.PsnUserId = o.Jxa ?? undefined;
+      e.PsnOnlineId = o.Qxa ?? undefined;
+      e.CurPlayerTitleId = o.tnc ?? undefined;
+      e.CurPlayerTitleLevel = o.inc ?? 0;
+      e.Sex = o.v7n ?? 0;
     }
     return e;
   }
 }
-(exports.PersonalOptionController = PersonalOptionController).v5i = new Map();
+exports.PersonalOptionController = PersonalOptionController;
+(_a = PersonalOptionController).v5i = new Map();
 PersonalOptionController.M5i = () => {
   var e = (UiManager_1.UiManager.IsViewOpen("OnlineProcessView") ? ModelManager_1.ModelManager.OnlineModel : ModelManager_1.ModelManager.FriendModel).CachePlayerData;
   if (ModelManager_1.ModelManager.ChatModel.IsInMute(e.PlayerId)) {
@@ -101,26 +115,26 @@ PersonalOptionController.S5i = () => {
 };
 PersonalOptionController.qHe = () => {
   var e = ModelManager_1.ModelManager.FriendModel;
-  const r = (UiManager_1.UiManager.IsViewOpen("OnlineProcessView") ? ModelManager_1.ModelManager.OnlineModel : e).CachePlayerData;
-  if (!e.HasFriend(r.PlayerId)) {
+  const o = (UiManager_1.UiManager.IsViewOpen("OnlineProcessView") ? ModelManager_1.ModelManager.OnlineModel : e).CachePlayerData;
+  if (!e.HasFriend(o.PlayerId)) {
     ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("NotOnFriendList");
     UiManager_1.UiManager.CloseView("FriendProcessView");
   }
   e = new ConfirmBoxDefine_1.ConfirmBoxDataNew(56);
-  e.SetTextArgs(r.PlayerName);
+  e.SetTextArgs(o.PlayerName);
   e.FunctionMap.set(2, () => {
-    FriendController_1.FriendController.RequestFriendDelete(r.PlayerId);
+    FriendController_1.FriendController.RequestFriendDelete(o.PlayerId);
   });
   ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(e);
 };
 PersonalOptionController.E5i = () => {
   const e = ModelManager_1.ModelManager.FriendModel.CachePlayerData;
-  var r = new ConfirmBoxDefine_1.ConfirmBoxDataNew(57);
-  r.SetTextArgs(e.PlayerName);
-  r.FunctionMap.set(2, () => {
+  var o = new ConfirmBoxDefine_1.ConfirmBoxDataNew(57);
+  o.SetTextArgs(e.PlayerName);
+  o.FunctionMap.set(2, () => {
     FriendController_1.FriendController.RequestBlockPlayer(e.PlayerId);
   });
-  ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(r);
+  ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(o);
 };
 PersonalOptionController.z7t = () => {
   ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("CopiedMyUid");
@@ -168,4 +182,14 @@ PersonalOptionController.D5i = () => {
 };
 PersonalOptionController.R5i = () => {
   CommonInputViewController_1.CommonInputViewController.OpenSetPlayerRemarkNameInputView();
+};
+PersonalOptionController._Ef = () => {
+  _a.D5i();
+};
+PersonalOptionController.uEf = e => {
+  _a.S5i();
+};
+PersonalOptionController.OXf = e => {
+  ModelManager_1.ModelManager.FriendModel.SetCurrentOperationPlayerId(e);
+  _a.R5i();
 }; //# sourceMappingURL=PersonalOptionController.js.map

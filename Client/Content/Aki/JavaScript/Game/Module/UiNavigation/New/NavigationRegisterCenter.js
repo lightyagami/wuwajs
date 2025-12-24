@@ -18,6 +18,7 @@ const RouletteViewPanelHandle_1 = require("./PanelHandle/RouletteViewPanelHandle
 const VisionAssemblePanelHandle_1 = require("./PanelHandle/VisionAssemblePanelHandle");
 const VisionChooseMainPanelHandle_1 = require("./PanelHandle/VisionChooseMainPanelHandle");
 const NavigationCalabashDetailExitButton_1 = require("./Selectable/Calabash/NavigationCalabashDetailExitButton");
+const NavigationCantFocusInScrollOrLayoutByJumpGroupButton_1 = require("./Selectable/Common/NavigationCantFocusInScrollOrLayoutByJumpGroupButton");
 const NavigationCommonRefreshNavigationButton_1 = require("./Selectable/Common/NavigationCommonRefreshNavigationButton");
 const NavigationFunctionPageButton_1 = require("./Selectable/FunctionView/NavigationFunctionPageButton");
 const NavigationFunctionPageLeftButton_1 = require("./Selectable/FunctionView/NavigationFunctionPageLeftButton");
@@ -98,7 +99,8 @@ const selectableCtorMap = {
   PhantomArenaEmptyButton: NavigationPhantomArenaEmptyButton_1.NavigationPhantomArenaEmptyButton,
   PhantomArenaCardToggle: NavigationPhantomArenaCardToggle_1.NavigationPhantomArenaCardToggle,
   PhantomManageConfigGridBig: NavigationPhantomManageConfigGridBig_1.NavigationPhantomManageConfigGridBig,
-  HonamiStoryGridItem: NavigationHonamiStoryGridItem_1.NavigationHonamiStoryGridItem
+  HonamiStoryGridItem: NavigationHonamiStoryGridItem_1.NavigationHonamiStoryGridItem,
+  CantFocusInScrollOrLayoutByJumpGroup: NavigationCantFocusInScrollOrLayoutByJumpGroupButton_1.NavigationCantFocusInScrollOrLayoutByJumpGroupButton
 };
 const panelHandleCtorMap = {
   Default: BasePanelHandle_1.BasePanelHandle,

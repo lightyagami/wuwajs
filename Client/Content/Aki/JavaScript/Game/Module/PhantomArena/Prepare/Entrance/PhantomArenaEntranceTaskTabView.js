@@ -15,6 +15,7 @@ const PhantomArenaEntranceTaskItem_1 = require("./PhantomArenaEntranceTaskItem")
 class PhantomArenaEntranceTaskTabView extends UiTabViewBase_1.UiTabViewBase {
   constructor() {
     super(...arguments);
+    this.ActivityId = 0;
     this.Dou = undefined;
     this.xqe = undefined;
     this.Bou = 0;
@@ -23,6 +24,7 @@ class PhantomArenaEntranceTaskTabView extends UiTabViewBase_1.UiTabViewBase {
     this.ou_ = () => {
       var e = new PhantomArenaEntranceTaskItem_1.PhantomBattleTaskTabItem();
       e.OnClickedCb = this.l6c;
+      e.ActivityId = this.ActivityId;
       return e;
     };
     this.l6c = t => {
@@ -46,6 +48,7 @@ class PhantomArenaEntranceTaskTabView extends UiTabViewBase_1.UiTabViewBase {
     this.ComponentRegisterInfos = [[0, UE.UIHorizontalLayout], [1, UE.UILoopScrollViewComponent], [2, UE.UIItem]];
   }
   OnStart() {
+    this.ActivityId = this.ExtraParams;
     this.Dou = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(0), this.ou_);
     this.xqe = new LoopScrollView_1.LoopScrollView(this.GetLoopScrollViewComponent(1), this.GetItem(2).GetOwner(), this.kou);
   }
@@ -67,13 +70,13 @@ class PhantomArenaEntranceTaskTabView extends UiTabViewBase_1.UiTabViewBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPhantomArenaTaskAwardUpdate, this.H5c);
   }
   cOn() {
-    this.TabTypeList = ModelManager_1.ModelManager.PhantomArenaModel.GetTaskTabList();
+    this.TabTypeList = ModelManager_1.ModelManager.PhantomArenaModel.GetTaskTabList(this.ActivityId);
     this.Bou = 0;
     return this.TabTypeList;
   }
   Esi(e) {
     this.ypt.length = 0;
-    this.ypt = ModelManager_1.ModelManager.PhantomArenaModel.GetTaskDataByTabId(e);
+    this.ypt = ModelManager_1.ModelManager.PhantomArenaModel.GetTaskDataByTabId(e, this.ActivityId);
     this.xqe.RefreshByDataAsync(this.ypt, false, true).then(() => {
       this.xqe.ScrollToGridIndex(0);
     });

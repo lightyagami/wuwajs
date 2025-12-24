@@ -17,7 +17,7 @@ class MascotCollectBookMascotToggle extends GridProxyAbstract_1.GridProxyAbstrac
     super(...arguments);
     this.B5d = undefined;
     this.w5d = undefined;
-    this.xmm = undefined;
+    this.yvm = undefined;
     this.$An = e => {
       if (e === "Bozai_Unlock") {
         this.sbi();
@@ -38,8 +38,8 @@ class MascotCollectBookMascotToggle extends GridProxyAbstract_1.GridProxyAbstrac
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.$An);
   }
   OnBeforeCreateImplement() {
-    this.xmm = new UiViewSequence_1.UiBehaviorLevelSequence(this);
-    this.AddUiBehavior(this.xmm);
+    this.yvm = new UiViewSequence_1.UiBehaviorLevelSequence(this);
+    this.AddUiBehavior(this.yvm);
   }
   get Data() {
     return this.B5d;
@@ -48,7 +48,7 @@ class MascotCollectBookMascotToggle extends GridProxyAbstract_1.GridProxyAbstrac
     this.B5d = e;
     var o = (LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.HonamiStoryMascotUnlockSet) ?? new Set()).has(e.Id);
     if (e.State === 1 && o) {
-      this.xmm?.PlaySequence("PnlHead_Unlock");
+      this.yvm?.PlaySequence("PnlHead_Unlock");
     } else {
       this.sbi();
     }

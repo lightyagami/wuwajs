@@ -36,6 +36,7 @@ const UiNavigationNewController_1 = require("../../UiNavigation/New/UiNavigation
 const LguiUtil_1 = require("../../Util/LguiUtil");
 const QuestController_1 = require("../Controller/QuestController");
 const QuestDefine_1 = require("../QuestDefine");
+const QuestUtil_1 = require("../QuestUtil");
 const FocusModeToggle_1 = require("./FocusModeToggle");
 const QuestTypeItem_1 = require("./QuestTypeItem");
 const QuestViewButton_1 = require("./QuestViewButton");
@@ -127,7 +128,7 @@ class QuestView extends UiTickViewBase_1.UiTickViewBase {
         this.zno(0);
       }
     };
-    this.FTm = () => {
+    this.rFm = () => {
       if (this.kno > 0) {
         this.Xno(this.kno, false);
       }
@@ -352,7 +353,11 @@ class QuestView extends UiTickViewBase_1.UiTickViewBase {
     this.BH1 = () => {
       var e = ModelManager_1.ModelManager.QuestNewModel.GetQuest(this.kno);
       if (e) {
-        var t = e.GetCurrentActiveChildQuestNodes();
+        var t = e.GetCurrentTrackCustomBoard();
+        if (QuestUtil_1.QuestUtil.HandleTrackCustomBoard(t)) {
+          return true;
+        }
+        t = e.GetCurrentActiveChildQuestNodes();
         if (t && t.length !== 0) {
           for (const o of t) {
             var i = e.GetDefaultMark(o.NodeId);
@@ -466,6 +471,8 @@ class QuestView extends UiTickViewBase_1.UiTickViewBase {
     this.GetItem(0).SetUIActive(false);
     this.GetItem(16).SetUIActive(false);
     this.GetButton(30).GetRootComponent().SetUIActive(true);
+    ModelManager_1.ModelManager.SubPackageDownLoadModel.UpdaterDownLoadSize();
+    ModelManager_1.ModelManager.SubPackageDownLoadModel.UpdaterFinishState();
     this.UiViewSequence.AddSequenceStartEvent("Start", this.OnStartSequenceEvent);
     this.UiViewSequence.AddSequenceStartEvent("ShowView", this.OnStartSequenceEvent);
     this.UiViewSequence.AddSequenceStartEvent("Sle", this.Jno);
@@ -587,7 +594,7 @@ class QuestView extends UiTickViewBase_1.UiTickViewBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.GeneralLogicTreeCancelSuspend, this.Qno);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnNavigationQuest, this.$no);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ActivityQuestCountdownEnd, this.OGn);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRefreshSubPackageDownLoadByPriority, this.FTm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRefreshSubPackageDownLoadByPriority, this.rFm);
     this.GetText(8).OnSelfLanguageChange.Bind(this.QuestDescChangeLang);
     ControllerHolder_1.ControllerHolder.TermExplanationController.RegisterTextHyperlink(this.GetText(8), 1, 3, 1);
   }
@@ -598,7 +605,7 @@ class QuestView extends UiTickViewBase_1.UiTickViewBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.GeneralLogicTreeCancelSuspend, this.Qno);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnNavigationQuest, this.$no);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ActivityQuestCountdownEnd, this.OGn);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRefreshSubPackageDownLoadByPriority, this.FTm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRefreshSubPackageDownLoadByPriority, this.rFm);
     this.GetText(8).OnSelfLanguageChange.Unbind();
     ControllerHolder_1.ControllerHolder.TermExplanationController.UnRegisterTextHyperlink(this.GetText(8));
   }

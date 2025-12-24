@@ -43,7 +43,7 @@ let PlayerBuffComponent = PlayerBuffComponent_1 = class PlayerBuffComponent exte
     this.PlayerId = 0;
     this.BuffEffectManager = undefined;
     this.TimeScaleComponent = undefined;
-    this.RZd = undefined;
+    this.oim = undefined;
     this.xie = () => {
       this.BuffLock++;
       var t = new Set();
@@ -66,14 +66,14 @@ let PlayerBuffComponent = PlayerBuffComponent_1 = class PlayerBuffComponent exte
       this.BuffLock--;
     };
     this.dLe = () => {
-      if (this.RZd) {
-        for (const e of this.RZd) {
+      if (this.oim) {
+        for (const e of this.oim) {
           var t = this.GetBuffById(e);
           if (t?.IsValid()) {
-            this.wZd(t);
+            this.nim(t);
           }
         }
-        this.RZd = undefined;
+        this.oim = undefined;
       }
     };
   }
@@ -83,7 +83,7 @@ let PlayerBuffComponent = PlayerBuffComponent_1 = class PlayerBuffComponent exte
   }
   OnInit() {
     super.OnInit();
-    this.TimeScaleComponent = this.Entity.GetComponent(126);
+    this.TimeScaleComponent = this.Entity.GetComponent(131);
     return true;
   }
   OnInitData(t) {
@@ -104,7 +104,7 @@ let PlayerBuffComponent = PlayerBuffComponent_1 = class PlayerBuffComponent exte
     for (const t of this.BuffContainer.values()) {
       t.Destroy();
     }
-    this.RZd = undefined;
+    this.oim = undefined;
     super.OnClear();
     return true;
   }
@@ -155,20 +155,20 @@ let PlayerBuffComponent = PlayerBuffComponent_1 = class PlayerBuffComponent exte
   }
   OnAnyBuffInhibitionChanged(t) {
     if (t.Config.FormationPolicy !== 5 || ModelManager_1.ModelManager.SceneTeamModel.IsTeamReady) {
-      this.wZd(t);
+      this.nim(t);
     } else {
-      this.RZd ||= [];
-      this.RZd.push(t.Id);
+      this.oim ||= [];
+      this.oim.push(t.Id);
     }
   }
-  wZd(t) {
-    PlayerBuffComponent_1.LZd.Start();
+  nim(t) {
+    PlayerBuffComponent_1.aim.Start();
     if (t.IsActive()) {
       this.CreateGameplayCueByBuff(t);
     } else {
       this.DestroyGameplayCueByBuff(t);
     }
-    PlayerBuffComponent_1.LZd.Stop();
+    PlayerBuffComponent_1.aim.Stop();
   }
   GetDebugName() {
     return "player_" + this.PlayerId;
@@ -184,16 +184,16 @@ let PlayerBuffComponent = PlayerBuffComponent_1 = class PlayerBuffComponent exte
     return this.Entity.TimeDilation * (this.TimeScaleComponent?.GetTopForeverTimeScale(0) ?? 1);
   }
   GetCurrentBuffComponent() {
-    return this.GetEntity()?.GetComponent(178);
+    return this.GetEntity()?.GetComponent(183);
   }
   GetSkillComponent() {
-    return this.GetEntity()?.GetComponent(39);
+    return this.GetEntity()?.GetComponent(40);
   }
   GetAttributeComponent() {
-    return this.GetEntity()?.GetComponent(177);
+    return this.GetEntity()?.GetComponent(182);
   }
   GetTagComponent() {
-    return this.GetEntity()?.GetComponent(209);
+    return this.GetEntity()?.GetComponent(215);
   }
   CheckAdd(t, e, o) {
     return !this.GetTagComponent() || super.CheckAdd(t, e, o);
@@ -208,10 +208,10 @@ let PlayerBuffComponent = PlayerBuffComponent_1 = class PlayerBuffComponent exte
     return this.GetEntity()?.GetComponent(1);
   }
   GetBuffLevel(t) {
-    return this.GetEntity()?.GetComponent(178)?.GetBuffLevel(t);
+    return this.GetEntity()?.GetComponent(183)?.GetBuffLevel(t);
   }
   GetCueComponent() {
-    return this.Entity.GetComponent(229);
+    return this.Entity.GetComponent(238);
   }
   GetFormationBuffTotalStackById(t, e = false) {
     return super.GetBuffTotalStackById(t, e);
@@ -240,7 +240,7 @@ let PlayerBuffComponent = PlayerBuffComponent_1 = class PlayerBuffComponent exte
       for (const B of e) {
         var m = B.EntityHandle?.Entity;
         if (B.EntityHandle?.Valid && m) {
-          var l = m?.GetComponent(178);
+          var l = m?.GetComponent(183);
           if (l && C.RemoveBuffWithTags && C.RemoveBuffWithTags.length > 0) {
             const h = `因为buff${t.Id}(handle=${t.Handle})的RemoveBuffWithTags导致移除`;
             for (const _ of C.RemoveBuffWithTags) {
@@ -378,12 +378,12 @@ let PlayerBuffComponent = PlayerBuffComponent_1 = class PlayerBuffComponent exte
     return o;
   }
 };
-PlayerBuffComponent.LZd = Stats_1.Stat.Create("PlayerBuffComponent.OnAnyBuffInhibitionChangedInternal");
+PlayerBuffComponent.aim = Stats_1.Stat.Create("PlayerBuffComponent.OnAnyBuffInhibitionChangedInternal");
 PlayerBuffComponent.q__ = Stats_1.Stat.Create("PlayerBuffComponent.OnBuffAdded");
 PlayerBuffComponent.O__ = Stats_1.Stat.Create("PlayerBuffComponent.OnBuffRemoved");
 PlayerBuffComponent.G__ = Stats_1.Stat.Create("PlayerBuffComponent.OnBuffStackIncreased");
 PlayerBuffComponent.F__ = Stats_1.Stat.Create("PlayerBuffComponent.OnBuffStackDecreased");
 PlayerBuffComponent.N__ = Stats_1.Stat.Create("PlayerBuffComponent.OnBuffActiveChanged");
 PlayerBuffComponent.R__ = Stats_1.Stat.Create("PlayerBuffComponent.BroadcastActivateBuff");
-PlayerBuffComponent = PlayerBuffComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(203)], PlayerBuffComponent);
+PlayerBuffComponent = PlayerBuffComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(209)], PlayerBuffComponent);
 exports.PlayerBuffComponent = PlayerBuffComponent; //# sourceMappingURL=PlayerBuffComponent.js.map

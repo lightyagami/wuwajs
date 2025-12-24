@@ -16,16 +16,16 @@ const HonamiStoryUtil_1 = require("../../HonamiStoryUtil");
 class HonamiStoryBackpackLogicController {
   constructor() {
     this.BackpackView = undefined;
-    this.Frm = undefined;
-    this.Nrm = undefined;
-    this.Bwm = undefined;
+    this.ahm = undefined;
+    this.hhm = undefined;
+    this.K_f = undefined;
     this.PanelBaseList = [];
     this._ii = 0;
-    this.com = undefined;
-    this.dom = new Set();
-    this.mom = 0;
-    this.wsm = undefined;
-    this.Lsm = undefined;
+    this.Bhm = undefined;
+    this.khm = new Set();
+    this.qhm = 0;
+    this.d_m = undefined;
+    this.m_m = undefined;
     this.TipsItem = undefined;
     this.vzi = undefined;
   }
@@ -33,40 +33,40 @@ class HonamiStoryBackpackLogicController {
     this.BCe();
   }
   OnClickGrid(t, i, o) {
-    if (this.Nrm !== undefined && t !== this.Nrm) {
-      this.Bwm?.CancelToggleSelect();
+    if (this.hhm !== undefined && t !== this.hhm) {
+      this.K_f?.CancelToggleSelect();
       this.BCe();
     }
-    this.Bwm = o;
-    this.Nrm = t;
-    if (this.Frm && this.Frm.Valid()) {
+    this.K_f = o;
+    this.hhm = t;
+    if (this.ahm && this.ahm.Valid()) {
       this.BCe();
-      this.Bwm = undefined;
-      return !(this.Nrm = undefined);
+      this.K_f = undefined;
+      return !(this.hhm = undefined);
     } else {
       o = ConfigManager_1.ConfigManager.HonamiStoryConfig.GetDoubleClickDelay();
-      this.Frm = TimerSystem_1.TimerSystem.Delay(() => {
-        this.Frm = undefined;
-        this.Bwm = undefined;
-        this.Nrm = undefined;
+      this.ahm = TimerSystem_1.TimerSystem.Delay(() => {
+        this.ahm = undefined;
+        this.K_f = undefined;
+        this.hhm = undefined;
         i();
       }, o);
       return false;
     }
   }
   BCe() {
-    if (this.Frm) {
-      if (this.Frm.Valid()) {
-        TimerSystem_1.TimerSystem.Remove(this.Frm);
+    if (this.ahm) {
+      if (this.ahm.Valid()) {
+        TimerSystem_1.TimerSystem.Remove(this.ahm);
       }
-      this.Frm = undefined;
+      this.ahm = undefined;
     }
   }
   RegisterPanel(t) {
     this.PanelBaseList.push(t);
   }
   RegisterValuePanel(t) {
-    this.com = t;
+    this.Bhm = t;
   }
   RegisterTipsItem(t) {
     this.TipsItem = t;
@@ -81,10 +81,10 @@ class HonamiStoryBackpackLogicController {
     this.BCe();
     var e = this._ii;
     this._ii = t;
-    this.wsm = i;
-    this.Lsm = o;
+    this.d_m = i;
+    this.m_m = o;
     if (t === 0) {
-      this.dom.clear();
+      this.khm.clear();
       this.InitDataSelectState();
       if (e === 4) {
         this.BackpackView?.SetSellMode(false);
@@ -93,9 +93,9 @@ class HonamiStoryBackpackLogicController {
     } else if (t === 4) {
       this.InitDataSelectState();
       this.BackpackView?.SetSellMode(true);
-      this.dom.clear();
-      this.mom = 0;
-      this.com.SetValue(0);
+      this.khm.clear();
+      this.qhm = 0;
+      this.Bhm.SetValue(0);
     }
     for (const r of this.PanelBaseList) {
       r.OnBackpackLogicStateChange(t);
@@ -133,20 +133,20 @@ class HonamiStoryBackpackLogicController {
     var i = !t.GetIsSelected();
     t.SetIsSelected(i);
     if (i) {
-      this.dom.add(t);
-      this.mom += t.GetSellPrice();
+      this.khm.add(t);
+      this.qhm += t.GetSellPrice();
     } else {
-      this.dom.delete(t);
-      this.mom -= t.GetSellPrice();
+      this.khm.delete(t);
+      this.qhm -= t.GetSellPrice();
     }
-    this.com.SetValue(this.mom);
+    this.Bhm.SetValue(this.qhm);
   }
   DoSell() {
-    if (this.dom.size === 0) {
+    if (this.khm.size === 0) {
       ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("HonamiStory_Sell_NoItem_Tip");
     } else {
       var t = [];
-      for (const o of this.dom) {
+      for (const o of this.khm) {
         var i = {
           ItemData: o,
           BackpackType: 1
@@ -156,9 +156,9 @@ class HonamiStoryBackpackLogicController {
       UiManager_1.UiManager.OpenView("HonamiStorySellConfirmBoxView", {
         SellItemList: t,
         SellCallback: () => {
-          this.dom.clear();
-          this.mom = 0;
-          this.com.SetValue(0);
+          this.khm.clear();
+          this.qhm = 0;
+          this.Bhm.SetValue(0);
           this.SetLogicState(0);
           ControllerHolder_1.ControllerHolder.UiNavigationNewController.SetLockUseDragStateByPanelItem(this.BackpackView.GetRootItem(), false);
         }
@@ -172,26 +172,26 @@ class HonamiStoryBackpackLogicController {
         if (r.GetItemType() === i && !r.IsLock() && (o === 0 || o === r.GetQuality())) {
           r.SetIsSelected(true);
           e.push(r);
-          this.dom.add(r);
+          this.khm.add(r);
         }
       }
-      this.mom = 0;
-      for (const s of this.dom) {
-        this.mom += s.GetSellPrice();
+      this.qhm = 0;
+      for (const s of this.khm) {
+        this.qhm += s.GetSellPrice();
       }
     } else {
-      for (const h of this.dom) {
+      for (const h of this.khm) {
         if (h.GetItemType() === i && (o === 0 || o === h.GetQuality())) {
           e.push(h);
           h.SetIsSelected(false);
         }
       }
       for (const n of e) {
-        this.dom.delete(n);
-        this.mom -= n.GetSellPrice();
+        this.khm.delete(n);
+        this.qhm -= n.GetSellPrice();
       }
     }
-    this.com.SetValue(this.mom);
+    this.Bhm.SetValue(this.qhm);
     for (const l of this.PanelBaseList) {
       if (l.GetBackpackType() === 0) {
         for (const a of e) {
@@ -202,23 +202,23 @@ class HonamiStoryBackpackLogicController {
     }
   }
   async DoTipsWithPluginsInstead(i, o) {
-    if (!this.wsm) {
+    if (!this.d_m) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("HonamiStory", 77, "Enter TipsWithPlugins Error");
       }
       return false;
     }
     let e = false;
-    if (this.Lsm !== 4) {
+    if (this.m_m !== 4) {
       let t = false;
-      if (t = o !== undefined && this.Lsm === 1 ? ModelManager_1.ModelManager.HonamiStoryModel.GetBackPackData(1).GetCapacity() <= this.wsm.GetPosition() : t) {
+      if (t = o !== undefined && this.m_m === 1 ? ModelManager_1.ModelManager.HonamiStoryModel.GetBackPackData(1).GetCapacity() <= this.d_m.GetPosition() : t) {
         e = true;
         ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("HonamiStory_NoSpaceForQuickAll");
       } else {
-        e = await HonamiStoryController_1.HonamiStoryController.RequestSwitchItem(this.wsm, o, this.wsm.GetPosition(), i, this.Lsm, 4);
+        e = await HonamiStoryController_1.HonamiStoryController.RequestSwitchItem(this.d_m, o, this.d_m.GetPosition(), i, this.m_m, 4);
       }
     } else {
-      e = await HonamiStoryController_1.HonamiStoryController.RequestSwitchInSameBag(this.wsm, i, 4);
+      e = await HonamiStoryController_1.HonamiStoryController.RequestSwitchInSameBag(this.d_m, i, 4);
     }
     if (e) {
       this.TipsItem.OnClickedMask();
@@ -226,7 +226,7 @@ class HonamiStoryBackpackLogicController {
     return e;
   }
   GetInsteadItem() {
-    return this.wsm;
+    return this.d_m;
   }
   GetTipsOpen() {
     return this.GetLogicState() === 1 || this.GetLogicState() === 2;

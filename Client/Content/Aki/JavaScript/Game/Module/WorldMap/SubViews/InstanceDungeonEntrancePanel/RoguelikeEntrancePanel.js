@@ -102,7 +102,7 @@ class RoguelikeEntrancePanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecond
       this.GetText(10).ShowTextNew("Instance_Dungeon_Rcommand_Text");
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(36), "Instance_RogueInstanceEntrance_Progress");
       e = this.UpdateQuickGoto();
-      this.ConfirmButton.SetActive(!e);
+      this.LayoutContext?.SetConfirmBtnActive(!e);
     }
   }
   jqe() {

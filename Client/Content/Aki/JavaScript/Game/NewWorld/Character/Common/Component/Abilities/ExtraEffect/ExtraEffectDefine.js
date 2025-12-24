@@ -31,6 +31,7 @@ const ExtraEffectShieldToAttribute_1 = require("./ExtraEffectShieldToAttribute")
 const ExtraEffectSkillLimitCount_1 = require("./ExtraEffectSkillLimitCount");
 const ExtraEffectSnapModifier_1 = require("./ExtraEffectSnapModifier");
 const ExtraEffectSnapReplacer_1 = require("./ExtraEffectSnapReplacer");
+const ExtraEffectSyncGameplayCue_1 = require("./ExtraEffectSyncGameplayCue");
 const ExtraExecutionEffect_1 = require("./ExtraExecutionEffect");
 function getBuffEffectClass(e) {
   switch (e) {
@@ -154,6 +155,12 @@ function getBuffEffectClass(e) {
       return ExtraEffectMisc_1.SyncTimeScaleEffect;
     case 87:
       return ExtraEffectMisc_1.SpecialEnergyModifier;
+    case 89:
+      return ExtraEffectSyncGameplayCue_1.SyncGameplayCue;
+    case 108:
+      return ExtraEffectMisc_1.DynamicModifyBuffStackEffect;
+    case 91:
+      return ExtraEffectMisc_1.BindBuffToVehicleEffect;
     default:
       return;
   }
@@ -181,7 +188,7 @@ function getBuffExecutionClass(e) {
     case 30:
       return ExtraExecutionEffect_1.PhantomAssistExecution;
     case 34:
-      return ExtraExecutionEffect_1.AddFormationAttributeExecution;
+      return ExtraExecutionEffect_1.ModifyFormationAttributeExecution;
     case 102:
       return ExtraExecutionEffect_1.AddEnergyExecution;
     case 52:
@@ -210,6 +217,10 @@ function getBuffExecutionClass(e) {
       return ExtraExecutionEffect_1.RemoveBuffByFilter;
     case 1002:
       return ExtraEffectAbnormal_1.AbnormalThunder;
+    case 90:
+      return ExtraExecutionEffect_1.ModifyTeamMemberBuff;
+    case 106:
+      return ExtraExecutionEffect_1.BuffMapper;
     default:
       return;
   }

@@ -617,10 +617,8 @@ class PlotView extends UiTickViewBase_1.UiTickViewBase {
       this.Oeo();
     } else {
       this.geo.MuteTimeLimitedOption = false;
-      if ((t = ModelManager_1.ModelManager.PlotModel.PlotConfig).IsAutoPlayCache) {
-        t.IsAutoPlay = true;
-        this.Oeo();
-      }
+      (t = ModelManager_1.ModelManager.PlotModel.PlotConfig).IsAutoPlay = t.IsAutoPlayCache;
+      this.Oeo();
       if (!!t.IsAutoPlay && !this.geo.IsTextAnimPlaying && !this.HasOptions) {
         this.OnBtnSubtitleSkipClick();
       }

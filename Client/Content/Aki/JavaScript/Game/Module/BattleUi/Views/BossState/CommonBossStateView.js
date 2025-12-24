@@ -145,9 +145,9 @@ class CommonBossStateView extends BossStateViewBase_1.BossStateViewBase {
     this.Vnt = () => {
       this.bnt(31);
     };
-    this.Xvm = () => {
-      this.Yvm();
-      this.zvm();
+    this.mLm = () => {
+      this.fLm();
+      this.gLm();
     };
     this.Hnt = new Map();
     this.jnt = t => {
@@ -167,7 +167,7 @@ class CommonBossStateView extends BossStateViewBase_1.BossStateViewBase {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIText], [2, UE.UIItem], [3, UE.UISprite], [4, UE.UISprite], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UISprite], [8, UE.UIItem], [9, UE.UISprite], [10, UE.UISprite], [11, UE.UIItem], [12, UE.UINiagara], [13, UE.UIItem], [14, UE.UIItem], [15, UE.UIItem], [16, UE.UIItem], [17, UE.UIItem], [18, UE.UISprite], [19, UE.UINiagara], [20, UE.UISprite], [21, UE.UISprite], [22, UE.UIItem], [23, UE.UINiagara], [24, UE.UINiagara], [25, UE.UIItem], [26, UE.UIItem], [27, UE.UIItem], [28, UE.UIItem], [29, UE.UIItem], [30, UE.UIItem], [31, UE.UIItem], [32, UE.UIItem], [33, UE.UITexture], [34, UE.UIItem], [35, UE.UIItem], [36, UE.UISprite], [37, UE.UISprite], [38, UE.UISprite], [39, UE.UINiagara], [40, UE.UIItem], [41, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIText], [2, UE.UIItem], [3, UE.UISprite], [4, UE.UISprite], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UISprite], [8, UE.UIItem], [9, UE.UISprite], [10, UE.UISprite], [11, UE.UIItem], [12, UE.UINiagara], [13, UE.UIItem], [14, UE.UIItem], [15, UE.UIItem], [16, UE.UIItem], [17, UE.UIItem], [18, UE.UISprite], [19, UE.UINiagara], [20, UE.UISprite], [21, UE.UISprite], [22, UE.UIItem], [23, UE.UINiagara], [24, UE.UINiagara], [25, UE.UIItem], [26, UE.UIItem], [27, UE.UIItem], [28, UE.UIItem], [29, UE.UIItem], [30, UE.UIItem], [31, UE.UIItem], [32, UE.UIItem], [33, UE.UITexture], [34, UE.UIItem], [35, UE.UIItem], [36, UE.UISprite], [37, UE.UINiagara], [38, UE.UIItem], [39, UE.UIItem]];
     this.fnt = CommonParamById_1.configCommonParamById.GetIntConfig("HitEffectDuration");
   }
   OnStart() {
@@ -221,7 +221,7 @@ class CommonBossStateView extends BossStateViewBase_1.BossStateViewBase {
     this.Znt();
     this.est();
     this.tst();
-    this.Jvm();
+    this.CLm(true);
     this.dnt.SetUpdateCallback(this.Nnt, this.knt, this.Vnt);
     this.ont.SetVisible(true, SHOW_VIEW_ANIM_TIME);
   }
@@ -251,7 +251,6 @@ class CommonBossStateView extends BossStateViewBase_1.BossStateViewBase {
   async InitializeAsync() {
     this.Qti = new HeadStateWeaknessItem_1.HeadStateWeaknessItem();
     await this.Qti.InitializeAsync(this.GetItem(34));
-    this.Qti.SetStateChangeCallback(this.Xvm);
   }
   OnBossShieldChanged(t) {
     this.Pnt(true);
@@ -300,9 +299,10 @@ class CommonBossStateView extends BossStateViewBase_1.BossStateViewBase {
       this.gnt += t;
     }
     this.mkn.Tick(t);
+    this.Qti?.Tick(t);
     super.Tick(t);
   }
-  ChangeBuff(t, i, s) {
+  ChangeBuff(t, i, s, e = 0) {
     if (i) {
       this.mkn.AddBuffByCue(t, s, true);
     } else {
@@ -319,7 +319,7 @@ class CommonBossStateView extends BossStateViewBase_1.BossStateViewBase {
       this.ist();
     }
     this.snt = i;
-    this.Yvm();
+    this.fLm();
   }
   fst(t) {
     var i;
@@ -451,6 +451,19 @@ class CommonBossStateView extends BossStateViewBase_1.BossStateViewBase {
       s.SetText(t + i);
     }
   }
+  SetNameAndLevel(t, i, s) {
+    var e = this.GetText(1);
+    if (e) {
+      e.SetText(t ?? i ?? "");
+    }
+    var e = this.GetText(0);
+    if (e) {
+      if (s) {
+        LguiUtil_1.LguiUtil.SetLocalText(e, "LevelShow", s);
+      }
+      e.SetUIActive(!!s);
+    }
+  }
   znt() {
     var t = this.Ent || this.ynt;
     if (this.Mnt !== t) {
@@ -556,28 +569,27 @@ class CommonBossStateView extends BossStateViewBase_1.BossStateViewBase {
       }
     }
   }
-  Jvm() {
+  CLm(t = false) {
+    this.GetUiNiagara(37).SetUIActive(false);
     if (this.Qti) {
       this.Qti.Refresh(this.GetEntity());
+      this.fLm();
+      this.gLm(t);
+      this.Qti.SetStateChangeCallback(this.mLm);
     }
-    this.GetUiNiagara(39).SetUIActive(false);
-    this.Yvm();
-    this.zvm();
   }
-  Yvm() {
+  fLm() {
     if (this.Qti && this.Qti.IsFullState()) {
       this.GetSprite(36).SetFillAmount(this.snt);
-      this.GetSprite(37).SetFillAmount(this.snt);
-      this.GetSprite(38).SetFillAmount(this.snt);
     }
   }
-  zvm() {
-    if (this.Qti.IsFullState()) {
+  gLm(t = false) {
+    if (this.Qti.IsInBreakAnim() && !t) {
       this.GetItem(35).SetUIActive(true);
-      this.bnt(40);
-    } else if (this.Qti.IsBreakState()) {
+      this.bnt(39);
+    } else if (this.Qti.IsFullState()) {
       this.GetItem(35).SetUIActive(true);
-      this.bnt(41);
+      this.bnt(38);
     } else {
       this.GetItem(35).SetUIActive(false);
     }
@@ -590,8 +602,8 @@ class CommonBossStateView extends BossStateViewBase_1.BossStateViewBase {
     this.Est(29);
     this.Est(30);
     this.Est(31);
-    this.Est(40);
-    this.Est(41);
+    this.Est(38);
+    this.Est(39);
   }
   Est(t) {
     var i = [];

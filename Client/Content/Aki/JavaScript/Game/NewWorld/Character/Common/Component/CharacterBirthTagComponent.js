@@ -65,7 +65,7 @@ let CharacterBirthTagComponent = class CharacterBirthTagComponent extends Entity
   }
   OnStart() {
     this.Hte = this.Entity.GetComponent(3);
-    this.Lie = this.Entity.GetComponent(209);
+    this.Lie = this.Entity.GetComponent(215);
     var t = this.Hte.CreatureData?.GetPbEntityInitData();
     if (t && this.Lie && this.Hte && (this._Ka = (0, IComponent_1.getComponent)(t.ComponentsData, "AiComponent"), this._Ka)) {
       switch (this._Ka.InitState?.Type) {
@@ -83,6 +83,9 @@ let CharacterBirthTagComponent = class CharacterBirthTagComponent extends Entity
           break;
         case 4:
           this.Lie.AddTag(-1609174800);
+          break;
+        case 5:
+          this.Lie.AddTag(1694559440);
       }
     }
     return true;
@@ -136,5 +139,5 @@ let CharacterBirthTagComponent = class CharacterBirthTagComponent extends Entity
     }
   }
 };
-CharacterBirthTagComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(261)], CharacterBirthTagComponent);
+CharacterBirthTagComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(279)], CharacterBirthTagComponent);
 exports.CharacterBirthTagComponent = CharacterBirthTagComponent; //# sourceMappingURL=CharacterBirthTagComponent.js.map

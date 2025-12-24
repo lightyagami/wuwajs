@@ -34,13 +34,13 @@ class BuffEffectBase {
     return this.InstigatorEntity?.Entity?.GetComponent(0)?.GetCreatureDataId() ?? ActiveBuffConfigs_1.NULL_INSTIGATOR_ID;
   }
   get InstigatorBuffComponent() {
-    return this.InstigatorEntity?.Entity?.CheckGetComponent(178);
+    return this.InstigatorEntity?.Entity?.CheckGetComponent(183);
   }
   get OpponentEntity() {
     return EntitySystem_1.EntitySystem.Get(this.OpponentEntityId);
   }
   get OpponentBuffComponent() {
-    return this.OpponentEntity?.CheckGetComponent(178);
+    return this.OpponentEntity?.CheckGetComponent(183);
   }
   get OwnerEntity() {
     return this.OwnerBuffComponent?.GetEntity();
@@ -58,7 +58,7 @@ class BuffEffectBase {
     return this.OwnerBuffComponent?.HasBuffAuthority() ?? false;
   }
   IsPlayerBuff() {
-    return (0, RegisterComponent_1.isComponentInstance)(this.OwnerBuffComponent, 203);
+    return (0, RegisterComponent_1.isComponentInstance)(this.OwnerBuffComponent, 209);
   }
   InitParameters(e) {}
   OnBuffStackOverflow(e, t, r, s) {
@@ -138,11 +138,20 @@ class BuffEffectBase {
         r = this.eXo(e.RequireTargetType);
         return (r && r.GetBuffTotalStackById(e.BuffId) >= e.MinStack && r.GetBuffTotalStackById(e.BuffId) <= e.MaxStack) ?? false;
       case 15:
-        return PhantomUtil_1.PhantomUtil.GetSummonedEntity(this.eXo(e.RequireTargetType).GetEntity(), e.SummonType, e.SummonIndex)?.Entity?.CheckGetComponent(209)?.HasAnyTag(e.RequireTagContainer) === e.IsExist;
+        return PhantomUtil_1.PhantomUtil.GetSummonedEntity(this.eXo(e.RequireTargetType).GetEntity(), e.SummonType, e.SummonIndex)?.Entity?.CheckGetComponent(215)?.HasAnyTag(e.RequireTagContainer) === e.IsExist;
       case 16:
         return e.CalculationTypes.includes(t.CalculateType ?? -1);
       case 18:
         return e.BattleFlags.some(e => t.BattleFlags?.includes(e));
+      case 19:
+        r = Number.isInteger(t.SourceType) && e.DamageSourceTypes.includes(t.SourceType);
+        if (e.CheckInclude) {
+          return r;
+        } else {
+          return !r;
+        }
+      case 20:
+        return e.ChangeWeaknessType === t.ChangeWeaknessType;
       default:
         return true;
     }

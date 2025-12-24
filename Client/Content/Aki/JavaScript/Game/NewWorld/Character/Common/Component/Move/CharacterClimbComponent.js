@@ -140,14 +140,14 @@ let CharacterClimbComponent = CharacterClimbComponent_1 = class CharacterClimbCo
     };
     this.I3r = (t, i) => {
       if (!i) {
-        if (t?.Valid && (i = t.GetComponent(34))?.Valid && (i.G$r.ContainsNaN() && (Log_1.Log.CheckError() && Log_1.Log.Error("Movement", 6, "OnStateInherit ClimbInput is Nan.", ["ClimbInput", i.G$r]), i.G$r.Reset()), this.G$r.DeepCopy(i.G$r), this.N$r.DeepCopy(i.N$r), this.O$r = i.O$r, this.k$r = i.k$r, this.F$r = i.F$r, this.V$r = i.V$r, this.y5a.DeepCopy(i.y5a), this.SetClimbState(i.H$r), this.SetEnterClimbType(i.j$r), this.SetExitClimbType(i.W$r), this.K$r = i.K$r, this.H$r !== 0)) {
+        if (t?.Valid && (i = t.GetComponent(35))?.Valid && (i.G$r.ContainsNaN() && (Log_1.Log.CheckError() && Log_1.Log.Error("Movement", 6, "OnStateInherit ClimbInput is Nan.", ["ClimbInput", i.G$r]), i.G$r.Reset()), this.G$r.DeepCopy(i.G$r), this.N$r.DeepCopy(i.N$r), this.O$r = i.O$r, this.k$r = i.k$r, this.F$r = i.F$r, this.V$r = i.V$r, this.y5a.DeepCopy(i.y5a), this.SetClimbState(i.H$r), this.SetEnterClimbType(i.j$r), this.SetExitClimbType(i.W$r), this.K$r = i.K$r, this.H$r !== 0)) {
           this.Q$r.SyncFromOther(i.Q$r);
           this.Hte.ResetCachedVelocityTime();
         }
       }
     };
     this.ero = (t, i, s) => {
-      if (this.Gce.CharacterMovement?.MovementMode === 6 && this.Gce.CharacterMovement?.CustomMovementMode === CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_CLIMB && !(i = this.Entity.GetComponent(40).GetSkillInfo(i), NORMAL_GROUP_ID !== i.GroupId) && (this.HBr.MoveState === CharacterUnifiedStateTypes_1.ECharMoveState.NormalClimb || this.HBr.MoveState === CharacterUnifiedStateTypes_1.ECharMoveState.FastClimb)) {
+      if (this.Gce.CharacterMovement?.MovementMode === 6 && this.Gce.CharacterMovement?.CustomMovementMode === CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_CLIMB && !(i = this.Entity.GetComponent(41).GetSkillInfo(i), NORMAL_GROUP_ID !== i.GroupId) && (this.HBr.MoveState === CharacterUnifiedStateTypes_1.ECharMoveState.NormalClimb || this.HBr.MoveState === CharacterUnifiedStateTypes_1.ECharMoveState.FastClimb)) {
         this.Hte?.Actor.KuroSetMovementMode({
           Mode: 1,
           Context: "[CharacterClimbComponent.OnUseSkill]"
@@ -287,7 +287,7 @@ let CharacterClimbComponent = CharacterClimbComponent_1 = class CharacterClimbCo
     this.jYr = Stats_1.Stat.Create("ClimbingExitPositionFix3");
   }
   static get Dependencies() {
-    return [3, 182];
+    return [3, 187];
   }
   get ClimbBlocking() {
     return this.lYr;
@@ -321,66 +321,21 @@ let CharacterClimbComponent = CharacterClimbComponent_1 = class CharacterClimbCo
     return true;
   }
   OnInit() {
-    this.Xte = this.Entity.GetComponent(209);
+    this.Xte = this.Entity.GetComponent(215);
     return true;
   }
   OnStart() {
     this.Hte = this.Entity.CheckGetComponent(3);
-    this.Gce = this.Entity.CheckGetComponent(182);
-    this.oRe = this.Entity.GetComponent(181);
-    this.HBr = this.Entity.CheckGetComponent(179);
+    this.Gce = this.Entity.CheckGetComponent(187);
+    this.oRe = this.Entity.GetComponent(186);
+    this.HBr = this.Entity.CheckGetComponent(184);
     this.k$r = true;
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharOnPositionStateChanged, this.DVr);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CustomMoveClimb, this.b$r);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.RoleOnStateInherit, this.I3r);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharUseSkill, this.ero);
-    this.X$r = ClimbById_1.configClimbById.GetConfig(this.Hte.CreatureData.GetRoleConfig().RoleBody);
-    if (!this.X$r) {
-      if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("Movement", 6, "没有配置攀爬", ["RoleBody", this.Hte.CreatureData.GetRoleConfig().RoleBody]);
-      }
-      return false;
-    }
-    this.Q$r = UE.NewObject(UE.KuroClimbObject.StaticClass(), this.Hte.Actor);
-    var t = UE.NewArray(UE.Vector);
-    for (const h of this.X$r.ClimbDetectPoints) {
-      t.Add(WorldGlobal_1.WorldGlobal.ToUeVectorOld(h));
-    }
-    this.Q$r.InitBase(this.Hte.Actor.CapsuleComponent, QueryTypeDefine_1.KuroCollisionChannel.Climb, t, this.X$r.DetectRadius, this.X$r.ClimbRadius, DEFAULT_DETECT_LENGTH);
-    this.Q$r.InitClimbSafety(MAX_ROLE_RADIUS, MAX_ROLE_HALF_HEIGHT, MAX_SAFETY_DIST);
-    this.$$r = WorldGlobal_1.WorldGlobal.ToUeVectorOld(this.X$r.ClimbVault);
-    this.Y$r = WorldGlobal_1.WorldGlobal.ToUeVectorOld(this.X$r.ClimbOnTop);
-    this.J$r = WorldGlobal_1.WorldGlobal.ToUeVectorOld(this.X$r.ClimbFromTop);
-    this.rYr = WorldGlobal_1.WorldGlobal.ToUeVectorOld(this.X$r.ClimbSprintVault);
-    this.z$r = new UE.SClimbInfo(Vector_1.Vector.ZeroVector, false, new UE.Vector2D(0, 0), false);
-    this.Z$r = new UE.ClimbInfoStruct();
-    this.eYr = new SClimbInfo();
-    this.tYr = new UE.SClimbState();
-    this.iYr = new UE.ClimbStateStruct();
-    this.oYr = new SClimbState();
-    t.Empty();
-    var i = UE.NewArray(UE.BuiltinFloat);
-    var s = UE.NewArray(UE.BuiltinFloat);
-    t.Add(this.Y$r);
-    i.Add(this.X$r.UpArriveRange.Min);
-    s.Add(this.X$r.UpArriveRange.Max);
-    t.Add(this.$$r);
-    i.Add(this.X$r.VaultRange.Min);
-    s.Add(this.X$r.VaultRange.Max);
-    this.Q$r.InitUpArrives(t, i, s);
-    this.Q$r.InitSprintVault(this.X$r.ForwardBlockHeight, this.X$r.ForwardBlockRadius, this.X$r.ForwardBlockDistance.Min, this.X$r.ForwardBlockDistance.Max, this.rYr, this.X$r.SprintVaultRange.Min, this.X$r.SprintVaultRange.Max, this.X$r.SprintVaultLongNeedDistance, this.X$r.SprintVaultLongHeight, QueryTypeDefine_1.KuroTraceTypeQuery.AcrossBlock, this.X$r.SprintVaultLongRange.Min, this.X$r.SprintVaultLongRange.Max, ENTER_SPINT_VAULT_ANGLE);
-    this.Q$r.InitBlockUps(WorldGlobal_1.WorldGlobal.ToUeVectorOld(this.X$r.BlockUpOffset), this.X$r.BlockUpDetectRadius, this.X$r.BlockUpDetectDistance, this.X$r.BlockUpBackDistance, this.X$r.BlockUpBackMinDist, WorldGlobal_1.WorldGlobal.ToUeVectorOld(this.X$r.BlockUpFinalMove), this.X$r.BlockUpVerticalRange.Min, this.X$r.BlockUpVerticalRange.Max);
-    this.hYr = true;
-    this.WYr();
-    if (this.Xte?.Valid) {
-      if (this.Xte.HasTag(1448371427)) {
-        this.yYr = this.Disable("[CharacterClimbComponent.OnStart] 包含了禁止攀爬Tag");
-      }
-      this.Xte.ListenForTagAnyCountChanged(1448371427, this.IYr);
-      this.Xte.ListenForTagAnyCountChanged(-866600078, this.LYr);
-    }
-    this.y5a.DeepCopy(this.Hte.ActorLocationProxy);
-    return true;
+    var t = this.Hte.CreatureData.GetRoleConfig().RoleBody;
+    return !!this.Wjm(t) && (this.hYr = true, this.WYr(), this.Xte?.Valid && (this.Xte.HasTag(1448371427) && (this.yYr = this.Disable("[CharacterClimbComponent.OnStart] 包含了禁止攀爬Tag")), this.Xte.ListenForTagAnyCountChanged(1448371427, this.IYr), this.Xte.ListenForTagAnyCountChanged(-866600078, this.LYr)), this.y5a.DeepCopy(this.Hte.ActorLocationProxy), true);
   }
   WYr() {
     this.mWi = UE.NewObject(UE.TraceSphereElement.StaticClass());
@@ -404,81 +359,83 @@ let CharacterClimbComponent = CharacterClimbComponent_1 = class CharacterClimbCo
     EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CharUseSkill, this.ero);
     return true;
   }
-  OnTick(t) {
-    if (ModelManager_1.ModelManager.SundryModel.SceneCheckOn) {
-      i = Vector_1.Vector.Dist(this.Hte.ActorLocationProxy, this.DYr);
-      if (Log_1.Log.CheckWarn()) {
-        Log_1.Log.Warn("Test", 6, "TickMove", ["Entity", this.Entity.Id], ["PrevLocation", this.DYr], ["CurrentLocation", this.Hte.ActorLocationProxy], ["MovementMode", this.Gce.CharacterMovement.MovementMode], ["CustomMode", this.Gce.CharacterMovement.CustomMovementMode], ["Delta", t], ["Dist", i], ["MainAnim", this.oRe.MainAnimInstance.GetDebugAnimNodeString()]);
+  OnTick(i) {
+    if (this.HBr?.PositionState !== CharacterUnifiedStateTypes_1.ECharPositionState.Ride) {
+      if (ModelManager_1.ModelManager.SundryModel.SceneCheckOn) {
+        s = Vector_1.Vector.Dist(this.Hte.ActorLocationProxy, this.DYr);
+        if (Log_1.Log.CheckWarn()) {
+          Log_1.Log.Warn("Test", 6, "TickMove", ["Entity", this.Entity.Id], ["PrevLocation", this.DYr], ["CurrentLocation", this.Hte.ActorLocationProxy], ["MovementMode", this.Gce.CharacterMovement.MovementMode], ["CustomMode", this.Gce.CharacterMovement.CustomMovementMode], ["Delta", i], ["Dist", s], ["MainAnim", this.oRe.MainAnimInstance.GetDebugAnimNodeString()]);
+        }
+        if (i * 2 < s && Log_1.Log.CheckWarn()) {
+          Log_1.Log.Warn("Test", 6, "OverSpeed", ["Velocity", this.Hte.ActorVelocityProxy]);
+        }
+        if (s > 500 && Log_1.Log.CheckWarn()) {
+          Log_1.Log.Warn("Test", 6, "OverSpeed2", ["Velocity", this.Hte.ActorVelocityProxy]);
+        }
+        (s = ModelManager_1.ModelManager.TraceElementModel.GetActorTrace()).WorldContextObject = this.Hte.Actor;
+        s.Radius = CLIMBING_CAPSULE_SIZE;
+        TraceElementCommon_1.TraceElementCommon.SetStartLocation(s, this.DYr);
+        TraceElementCommon_1.TraceElementCommon.SetEndLocation(s, this.Hte.ActorLocationProxy);
+        if (TraceElementCommon_1.TraceElementCommon.ShapeTrace(this.Hte.Actor.CapsuleComponent, s, PROFILE_KEY, PROFILE_KEY) && (s = s.HitResult, Log_1.Log.CheckWarn())) {
+          Log_1.Log.Warn("Test", 6, "MoveHit Something", ["Actor", s.Actors.Get(0)?.GetName()], ["Comp", s.Components.Get(0)?.GetName()]);
+        }
+        this.DYr.DeepCopy(this.Hte.ActorLocationProxy);
       }
-      if (t * 2 < i && Log_1.Log.CheckWarn()) {
-        Log_1.Log.Warn("Test", 6, "OverSpeed", ["Velocity", this.Hte.ActorVelocityProxy]);
-      }
-      if (i > 500 && Log_1.Log.CheckWarn()) {
-        Log_1.Log.Warn("Test", 6, "OverSpeed2", ["Velocity", this.Hte.ActorVelocityProxy]);
-      }
-      (i = ModelManager_1.ModelManager.TraceElementModel.GetActorTrace()).WorldContextObject = this.Hte.Actor;
-      i.Radius = CLIMBING_CAPSULE_SIZE;
-      TraceElementCommon_1.TraceElementCommon.SetStartLocation(i, this.DYr);
-      TraceElementCommon_1.TraceElementCommon.SetEndLocation(i, this.Hte.ActorLocationProxy);
-      if (TraceElementCommon_1.TraceElementCommon.ShapeTrace(this.Hte.Actor.CapsuleComponent, i, PROFILE_KEY, PROFILE_KEY) && (i = i.HitResult, Log_1.Log.CheckWarn())) {
-        Log_1.Log.Warn("Test", 6, "MoveHit Something", ["Actor", i.Actors.Get(0)?.GetName()], ["Comp", i.Components.Get(0)?.GetName()]);
-      }
-      this.DYr.DeepCopy(this.Hte.ActorLocationProxy);
-    }
-    this.RYr.Start();
-    var i = this.Hte.InputDirectProxy;
-    if (this.H$r !== 0) {
-      if (i.ContainsNaN()) {
-        this.G$r.Reset();
-        if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("Movement", 6, "Set Climb Input Nan.", ["Input", i]);
+      this.RYr.Start();
+      var s = this.Hte.InputDirectProxy;
+      if (this.H$r !== 0) {
+        if (s.ContainsNaN()) {
+          this.G$r.Reset();
+          if (Log_1.Log.CheckError()) {
+            Log_1.Log.Error("Movement", 6, "Set Climb Input Nan.", ["Input", s]);
+          }
+        } else {
+          this.G$r.X = s.X;
+          this.G$r.Y = s.Y;
+        }
+        if (this._Yr) {
+          if (this.N$r.IsNearlyZero()) {
+            this.N$r.DeepCopy(this.G$r);
+          } else if (!this.N$r.Equals(this.G$r)) {
+            this._Yr = 0;
+          }
         }
       } else {
-        this.G$r.X = i.X;
-        this.G$r.Y = i.Y;
+        this.G$r.Reset();
+        this.N$r.Reset();
       }
-      if (this._Yr) {
-        if (this.N$r.IsNearlyZero()) {
-          this.N$r.DeepCopy(this.G$r);
-        } else if (!this.N$r.Equals(this.G$r)) {
-          this._Yr = 0;
+      this.RYr.Stop();
+      this.UYr.Start();
+      let t = this.HBr.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Climb;
+      if (t) {
+        if (this.H$r !== 3) {
+          this.y5a.FromUeVector(this.Q$r.D_GetSafetyLocation());
         }
+      } else {
+        this.y5a.DeepCopy(this.Hte.ActorLocationProxy);
       }
-    } else {
-      this.G$r.Reset();
-      this.N$r.Reset();
-    }
-    this.RYr.Stop();
-    this.UYr.Start();
-    let s = this.HBr.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Climb;
-    if (s) {
-      if (this.H$r !== 3) {
-        this.y5a.FromUeVector(this.Q$r.D_GetSafetyLocation());
+      if (t) {
+        if (this.K$r > 0 && (this.K$r -= i, this.K$r <= 0)) {
+          this.OnExitClimb();
+          t = false;
+        }
+      } else {
+        this.K$r = 0;
       }
-    } else {
-      this.y5a.DeepCopy(this.Hte.ActorLocationProxy);
-    }
-    if (s) {
-      if (this.K$r > 0 && (this.K$r -= t, this.K$r <= 0)) {
-        this.OnExitClimb();
-        s = false;
+      if (!t && !this.O$r && (!!this.Gce.HasMoveInput || this.HBr?.MoveState === CharacterUnifiedStateTypes_1.ECharMoveState.Soar) && (!!this.Xte.HasTag(-1462404775) || !!(MathUtils_1.MathUtils.DotProduct(s, this.Hte.ActorForwardProxy) > THREADHOLD_ENTER_CLIMB_FORWARD_NEED))) {
+        this.SetClimbState(0);
+        this.KYr(i);
       }
-    } else {
-      this.K$r = 0;
-    }
-    if (!s && !this.O$r && (!!this.Gce.HasMoveInput || this.HBr?.MoveState === CharacterUnifiedStateTypes_1.ECharMoveState.Soar) && (!!this.Xte.HasTag(-1462404775) || !!(MathUtils_1.MathUtils.DotProduct(i, this.Hte.ActorForwardProxy) > THREADHOLD_ENTER_CLIMB_FORWARD_NEED))) {
-      this.SetClimbState(0);
-      this.KYr(t);
-    }
-    this.UYr.Stop();
-    this.AYr.Start();
-    if (s && FormationAttributeController_1.FormationAttributeController.GetValue(1) <= 0 && this.H$r !== 3 && !this.Xte.HasTag(-976785652)) {
-      this.TYr();
-    }
-    this.O$r = s;
-    this.AYr.Stop();
-    if (CharacterClimbComponent_1.DebugLogController && s) {
-      this.foc();
+      this.UYr.Stop();
+      this.AYr.Start();
+      if (t && FormationAttributeController_1.FormationAttributeController.GetValue(1) <= 0 && this.H$r !== 3 && !this.Xte.HasTag(-976785652)) {
+        this.TYr();
+      }
+      this.O$r = t;
+      this.AYr.Stop();
+      if (CharacterClimbComponent_1.DebugLogController && t) {
+        this.foc();
+      }
     }
   }
   GetExitClimbType() {
@@ -491,7 +448,7 @@ let CharacterClimbComponent = CharacterClimbComponent_1 = class CharacterClimbCo
         this.PYr.Start();
         this.$Yr(true);
         this.PYr.Stop();
-        i = this.Hte?.Entity?.GetComponent(40);
+        i = this.Hte?.Entity?.GetComponent(41);
         if (this.H$r !== 0) {
           this.xYr.Start();
           i.StopGroup1Skill("攀爬打断技能");
@@ -528,7 +485,7 @@ let CharacterClimbComponent = CharacterClimbComponent_1 = class CharacterClimbCo
         }
         break;
       case CharacterUnifiedStateTypes_1.ECharPositionState.Water:
-        if (this.JYr() && this.Entity.GetComponent(77).CheckCanEnterClimbFromSwim() && (this.zYr(), this.H$r === 0)) {
+        if (this.JYr() && this.Entity.GetComponent(80).CheckCanEnterClimbFromSwim() && (this.zYr(), this.H$r === 0)) {
           this.ZYr(1);
         }
     }
@@ -805,9 +762,9 @@ let CharacterClimbComponent = CharacterClimbComponent_1 = class CharacterClimbCo
     CharacterClimbComponent_1.wz.Start();
     var t = this.NeedProcessTransform();
     if (ModelManager_1.ModelManager.SundryModel.SceneCheckOn && Log_1.Log.CheckWarn()) {
-      Log_1.Log.Warn("Test", 6, "ProcessClimbing", ["Entity", this.Entity.Id], ["Location", this.Hte.ActorLocationProxy], ["HasKuroRootMotionAnim", this.oRe.MainAnimInstance.HasKuroRootMotionAnim()], ["MoveSpeed", this.Gce.CharacterMovement.AnimRootMotionVelocity], ["DeltaTime", i], ["NeedProcess", t]);
+      Log_1.Log.Warn("Test", 6, "ProcessClimbing", ["Entity", this.Entity.Id], ["Location", this.Hte.ActorLocationProxy], ["HasKuroRootMotionAnim", this.oRe.GetAnimInstance().HasKuroRootMotionAnim()], ["MoveSpeed", this.Gce.CharacterMovement.AnimRootMotionVelocity], ["DeltaTime", i], ["NeedProcess", t]);
     }
-    this.Lz.DeepCopy(this.oRe.MainAnimInstance.HasKuroRootMotionAnim() ? this.Gce.CharacterMovement.AnimRootMotionVelocity : Vector_1.Vector.ZeroVector);
+    this.Lz.DeepCopy(this.Gce.CharacterMovement.AnimRootMotionVelocity);
     if (this.CYr) {
       this.gYr += i;
       let t = 0;
@@ -1022,7 +979,7 @@ let CharacterClimbComponent = CharacterClimbComponent_1 = class CharacterClimbCo
     if (this.HBr.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Climb) {
       if (this.G$r.X < THREAHOLD_JUMP_LEAVE) {
         this.KickWallExit();
-      } else if ((t = this.Entity.GetComponent(181)).Valid) {
+      } else if ((t = this.Entity.GetComponent(186)).Valid) {
         t.ClimbDash();
       }
     }
@@ -1060,6 +1017,51 @@ let CharacterClimbComponent = CharacterClimbComponent_1 = class CharacterClimbCo
     this.sJr(t ? 4 : this.Gce.IsJump ? 2 : 0, this.Y8c, s);
     return this.H$r !== 0;
   }
+  ResetClimbObjectConfig(t) {
+    this.Wjm(t);
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("Movement", 42, "重新设置KuroClimbObject攀爬参数", ["key", t]);
+    }
+  }
+  Wjm(t) {
+    this.X$r = ClimbById_1.configClimbById.GetConfig(t);
+    if (!this.X$r) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Movement", 6, "没有配置攀爬", ["RoleBody", t]);
+      }
+      return false;
+    }
+    this.Q$r ||= UE.NewObject(UE.KuroClimbObject.StaticClass(), this.Hte.Actor);
+    var i = UE.NewArray(UE.Vector);
+    for (const h of this.X$r.ClimbDetectPoints) {
+      i.Add(WorldGlobal_1.WorldGlobal.ToUeVectorOld(h));
+    }
+    this.Q$r.InitBase(this.Hte.Actor.CapsuleComponent, QueryTypeDefine_1.KuroCollisionChannel.Climb, i, this.X$r.DetectRadius, this.X$r.ClimbRadius, DEFAULT_DETECT_LENGTH);
+    this.Q$r.InitClimbSafety(MAX_ROLE_RADIUS, MAX_ROLE_HALF_HEIGHT, MAX_SAFETY_DIST);
+    this.$$r = WorldGlobal_1.WorldGlobal.ToUeVectorOld(this.X$r.ClimbVault);
+    this.Y$r = WorldGlobal_1.WorldGlobal.ToUeVectorOld(this.X$r.ClimbOnTop);
+    this.J$r = WorldGlobal_1.WorldGlobal.ToUeVectorOld(this.X$r.ClimbFromTop);
+    this.rYr = WorldGlobal_1.WorldGlobal.ToUeVectorOld(this.X$r.ClimbSprintVault);
+    this.z$r = new UE.SClimbInfo(Vector_1.Vector.ZeroVector, false, new UE.Vector2D(0, 0), false);
+    this.Z$r = new UE.ClimbInfoStruct();
+    this.eYr = new SClimbInfo();
+    this.tYr = new UE.SClimbState();
+    this.iYr = new UE.ClimbStateStruct();
+    this.oYr = new SClimbState();
+    i.Empty();
+    var t = UE.NewArray(UE.BuiltinFloat);
+    var s = UE.NewArray(UE.BuiltinFloat);
+    i.Add(this.Y$r);
+    t.Add(this.X$r.UpArriveRange.Min);
+    s.Add(this.X$r.UpArriveRange.Max);
+    i.Add(this.$$r);
+    t.Add(this.X$r.VaultRange.Min);
+    s.Add(this.X$r.VaultRange.Max);
+    this.Q$r.InitUpArrives(i, t, s);
+    this.Q$r.InitSprintVault(this.X$r.ForwardBlockHeight, this.X$r.ForwardBlockRadius, this.X$r.ForwardBlockDistance.Min, this.X$r.ForwardBlockDistance.Max, this.rYr, this.X$r.SprintVaultRange.Min, this.X$r.SprintVaultRange.Max, this.X$r.SprintVaultLongNeedDistance, this.X$r.SprintVaultLongHeight, QueryTypeDefine_1.KuroTraceTypeQuery.AcrossBlock, this.X$r.SprintVaultLongRange.Min, this.X$r.SprintVaultLongRange.Max, ENTER_SPINT_VAULT_ANGLE);
+    this.Q$r.InitBlockUps(WorldGlobal_1.WorldGlobal.ToUeVectorOld(this.X$r.BlockUpOffset), this.X$r.BlockUpDetectRadius, this.X$r.BlockUpDetectDistance, this.X$r.BlockUpBackDistance, this.X$r.BlockUpBackMinDist, WorldGlobal_1.WorldGlobal.ToUeVectorOld(this.X$r.BlockUpFinalMove), this.X$r.BlockUpVerticalRange.Min, this.X$r.BlockUpVerticalRange.Max);
+    return true;
+  }
   oJr() {
     this.VYr.Start();
     this.Tz.FromUeVector(this.Q$r.D_GetSafetyLocation());
@@ -1095,13 +1097,13 @@ let CharacterClimbComponent = CharacterClimbComponent_1 = class CharacterClimbCo
     this.Hte.ResetCapsuleRadiusAndHeight();
   }
   QYr() {
-    return this.Xte.HasTag(388142570) && !this.Xte.HasTag(1098729489);
+    return this.Xte.HasTag(388142570) && !this.Xte.HasTag(1098729489) || this.Xte.HasTag(1401984924);
   }
   SetLastSafeLocation(t) {
     this.y5a.DeepCopy(t);
   }
   foc() {
-    var s = this.Entity.GetComponent(181).MainAnimInstance;
+    var s = this.Entity.GetComponent(186).MainAnimInstance;
     if (UE.KuroStaticLibrary.IsObjectClassByName(s, CharacterNameDefines_1.CharacterNameDefines.ABP_BASEROLE)) {
       var h = s.LogicParams.ClimbInfoRef.ClimbInput;
       let t = 180 / Math.PI * Math.atan2(h.Y, h.X);
@@ -1122,5 +1124,5 @@ CharacterClimbComponent.wz = Stats_1.Stat.Create("ClimbStat1");
 CharacterClimbComponent.Bz = Stats_1.Stat.Create("ClimbStat2");
 CharacterClimbComponent.bz = Stats_1.Stat.Create("ClimbStat3");
 CharacterClimbComponent.DebugLogController = false;
-CharacterClimbComponent = CharacterClimbComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(34)], CharacterClimbComponent);
+CharacterClimbComponent = CharacterClimbComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(35)], CharacterClimbComponent);
 exports.CharacterClimbComponent = CharacterClimbComponent; //# sourceMappingURL=CharacterClimbComponent.js.map

@@ -27,7 +27,7 @@ class ChargeSlashGameplayController extends ControllerBase_1.ControllerBase {
         var t = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(r);
         if (t && t.Entity) {
           if (t.IsInit && t.Entity.IsInit) {
-            const o = t.Entity.GetComponent(299);
+            const o = t.Entity.GetComponent(318);
             if (o) {
               const s = Math.max(Math.random() * e, SMALLEST_RANDOM_TIME);
               t = TimerSystem_1.TimerSystem.Delay(() => {
@@ -66,7 +66,7 @@ class ChargeSlashGameplayController extends ControllerBase_1.ControllerBase {
         var e = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t);
         if (e && e.Entity) {
           if (e.IsInit && e.Entity.IsInit) {
-            if (e = e.Entity.GetComponent(299)) {
+            if (e = e.Entity.GetComponent(318)) {
               if (Log_1.Log.CheckDebug()) {
                 Log_1.Log.Debug("ChargeSlash", 31, "StopChargeSlash", ["pbDataId", t]);
               }

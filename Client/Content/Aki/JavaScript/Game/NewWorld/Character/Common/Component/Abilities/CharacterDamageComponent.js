@@ -45,7 +45,7 @@ let CharacterDamageComponent = class CharacterDamageComponent extends BaseDamage
     this.tqr = 0;
   }
   OnStart() {
-    return !!super.OnStart() && (this.ActorComponent = this.Entity.CheckGetComponent(3), this.$br = this.Entity.CheckGetComponent(61), this.HBr = this.Entity.GetComponent(179), this.o4o = this.Entity.GetComponent(182), this.eqr = this.oqr(), true);
+    return !!super.OnStart() && (this.ActorComponent = this.Entity.CheckGetComponent(3), this.$br = this.Entity.CheckGetComponent(64), this.HBr = this.Entity.GetComponent(184), this.o4o = this.Entity.GetComponent(187), this.eqr = this.oqr(), true);
   }
   OnTick(e) {
     if ((this.o4o?.GravityDirect ?? Vector_1.Vector.DownVectorProxy).DotProduct(this.ActorComponent.ActorVelocityProxy) >= this.eqr) {
@@ -61,9 +61,9 @@ let CharacterDamageComponent = class CharacterDamageComponent extends BaseDamage
     var t;
     var r;
     var i;
-    if (!this.TagComponent.HasTag(1918148596) && !!this.HBr?.IsInGame && !ModelManager_1.ModelManager.DeadReviveModel.SkipFallInjure && !this.TagComponent.HasTag(560942831) && !(e = (this.o4o?.GravityUp ?? Vector_1.Vector.UpVectorProxy).DotProduct(this.ActorComponent.ActorVelocityProxy), r = this.Pqr(), -e < this.eqr && (this.tqr = 0), t = this.tqr ? Time_1.Time.WorldTimeSeconds - this.tqr : 0, r = Math.ceil(this.xqr(-e, r, t)), this.Entity.GetComponent(117)?.DumpVelocityCacheInfo("跌落伤害处理"), r <= 0)) {
+    if (!this.TagComponent.HasTag(1918148596) && !!this.HBr?.IsInGame && !ModelManager_1.ModelManager.DeadReviveModel.SkipFallInjure && !this.TagComponent.HasTag(560942831) && !(e = (this.o4o?.GravityUp ?? Vector_1.Vector.UpVectorProxy).DotProduct(this.ActorComponent.ActorVelocityProxy), r = this.Pqr(), -e < this.eqr && (this.tqr = 0), t = this.tqr ? Time_1.Time.WorldTimeSeconds - this.tqr : 0, r = Math.ceil(this.xqr(-e, r, t)), this.Entity.GetComponent(122)?.DumpVelocityCacheInfo("跌落伤害处理"), r <= 0)) {
       i = this.CreatureDataComponent.GetCreatureDataId();
-      this.Entity.GetComponent(68).CollectSampleAndSend();
+      this.Entity.GetComponent(71).CollectSampleAndSend();
       ControllerHolder_1.ControllerHolder.CreatureController.LandingDamageRequest(i, e, t * CommonDefine_1.MILLIONSECOND_PER_SECOND);
       EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.CharOnFallInjure, r, false);
       this.BuffComponent?.RemoveBuffByEffectType(36, "跌落伤害移除冰冻buff");

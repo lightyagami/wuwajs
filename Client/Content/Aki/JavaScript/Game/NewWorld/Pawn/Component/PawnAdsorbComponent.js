@@ -89,7 +89,7 @@ let PawnAdsorbComponent = PawnAdsorbComponent_1 = class PawnAdsorbComponent exte
     this.Bsn = t.Range;
     this.bsn = t.StartVelocity;
     this.qsn = t.Acceleration;
-    this.rzr = this.Entity.GetComponent(125);
+    this.rzr = this.Entity.GetComponent(130);
     this.rzr.SetLogicRange(SENSORY_RANGE);
     this.Ore();
     return true;
@@ -102,7 +102,7 @@ let PawnAdsorbComponent = PawnAdsorbComponent_1 = class PawnAdsorbComponent exte
       }
       return false;
     }
-    this.xsn = this.Entity.GetComponent(122);
+    this.xsn = this.Entity.GetComponent(127);
     if (!this.xsn) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Interaction", 29, "[PawnAdsorbComponent.OnStart] 吸收组件初始化失败 Pawn Interact Component Undefined");
@@ -120,7 +120,7 @@ let PawnAdsorbComponent = PawnAdsorbComponent_1 = class PawnAdsorbComponent exte
     this.Mne = t.GetPbDataId();
     t = t.GetBaseInfo();
     this.Qsn = t.OnlineInteractType ?? 0;
-    this.wsn = this.Entity.GetComponent(200);
+    this.wsn = this.Entity.GetComponent(206);
     if (!this.wsn) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Interaction", 29, "[PawnAdsorbComponent.OnStart] 吸收组件初始化失败 LevelTagComponent Undefined", ["EntityConfigID:", this.Mne]);
@@ -251,7 +251,7 @@ let PawnAdsorbComponent = PawnAdsorbComponent_1 = class PawnAdsorbComponent exte
         this.Vsn.MultiplyEqual(this.Hsn);
       }
       this.Vsn.Multiply(i, this.Fsn);
-      if (t = this.Entity.GetComponent(45)) {
+      if (t = this.Entity.GetComponent(46)) {
         t.MoveCharacter(this.Fsn, i, "Pawn吸附更新");
       } else {
         this.Hte.AddActorWorldOffset(this.Fsn.ToUeVector(), "Pawn吸附更新", true);
@@ -293,5 +293,5 @@ let PawnAdsorbComponent = PawnAdsorbComponent_1 = class PawnAdsorbComponent exte
     this.jsn = 0;
   }
 };
-PawnAdsorbComponent = PawnAdsorbComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(119)], PawnAdsorbComponent);
+PawnAdsorbComponent = PawnAdsorbComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(124)], PawnAdsorbComponent);
 exports.PawnAdsorbComponent = PawnAdsorbComponent; //# sourceMappingURL=PawnAdsorbComponent.js.map

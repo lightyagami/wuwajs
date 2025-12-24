@@ -54,14 +54,14 @@ class TaskMarkItemView extends ServerMarkItemView_1.ServerMarkItemView {
   HRi(r, e = false) {
     if (this.NRi) {
       if (this.Holder.IsCanShowView) {
-        var a;
-        var s = this.Holder;
-        var n = s.RangeMarkShowDis;
+        var s;
+        var a = this.Holder;
+        var n = a.RangeMarkShowDis;
         var h = n + 2;
         let e = 0;
         let t = false;
         let i = true;
-        t = s.RangeMarkShowDisUp !== 0 || s.RangeMarkShowDisDown !== 0 ? (a = (r.Z - this.Holder.WorldPosition.Z) * MapDefine_1.FLOAT_0_01, e = Vector_1.Vector.Dist2D(r, this.Holder.WorldPosition) * MapDefine_1.FLOAT_0_01, i = a < s.RangeMarkShowDisUp && a > s.RangeMarkShowDisDown, e > n && a > s.RangeMarkShowDisUp && a < s.RangeMarkShowDisDown) : (e = Vector_1.Vector.Dist(r, this.Holder.WorldPosition) * MapDefine_1.FLOAT_0_01) > n;
+        t = a.RangeMarkShowDisUp !== 0 || a.RangeMarkShowDisDown !== 0 ? (s = (r.Z - this.Holder.WorldPosition.Z) * MapDefine_1.FLOAT_0_01, e = Vector_1.Vector.Dist2D(r, this.Holder.WorldPosition) * MapDefine_1.FLOAT_0_01, i = s < a.RangeMarkShowDisUp && s > a.RangeMarkShowDisDown, e > n && s > a.RangeMarkShowDisUp && s < a.RangeMarkShowDisDown) : (e = Vector_1.Vector.Dist(r, this.Holder.WorldPosition) * MapDefine_1.FLOAT_0_01) > n;
         this.MarkItemTrackHandle.SetVisible(t && this.Holder.IsTracked);
         if (this.ige) {
           this.HQl(!t);
@@ -80,12 +80,19 @@ class TaskMarkItemView extends ServerMarkItemView_1.ServerMarkItemView {
     var t = this.Holder?.RawInstanceDungeonId;
     let i = ModelManager_1.ModelManager.CreatureModel.GetInstanceId();
     var r = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(i);
-    var t = t !== (i = r.EntranceEntities.length > 0 ? r.EntranceEntities[0].DungeonId : i);
-    this.jRi(e && !t);
+    if (r.EntranceEntities.length > 0) {
+      i = r.EntranceEntities[0].DungeonId;
+    }
+    if (this.Holder?.MapType === 2) {
+      r = t !== i;
+      this.jRi(e && !r);
+    } else {
+      this.jRi(e);
+    }
   }
   jRi(e) {
     var t;
-    if (this.NRi && this.ORi !== e) {
+    if (!!this.NRi && (this.ORi !== e || this.Holder?.MapType !== 1)) {
       this.ORi = e;
       this.MarkItemRangeHandle.SetVisible(e);
       if (this.Holder.MarkItemEntity.ViewLifeCircle.IsChildViewStateDirty(2) && this.Holder.MapType === 1) {

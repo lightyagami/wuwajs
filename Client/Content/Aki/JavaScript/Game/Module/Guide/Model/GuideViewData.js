@@ -12,7 +12,7 @@ class GuideStepViewData {
     this.xqe = undefined;
     this.OQt = undefined;
     this.uzt = undefined;
-    this.avm = undefined;
+    this._wm = undefined;
     this.czt = undefined;
     this.IsAttachToBattleView = false;
     this.mzt = undefined;
@@ -20,7 +20,7 @@ class GuideStepViewData {
     this.OQt = t;
   }
   get IsMultiAttach() {
-    return !!this.avm;
+    return !!this._wm;
   }
   get ViewConf() {
     switch (this.OQt.Config.ContentType) {
@@ -50,7 +50,7 @@ class GuideStepViewData {
     return this.dzt ?? this.mzt;
   }
   GetMultiAttachItems() {
-    return this.avm;
+    return this._wm;
   }
   SetAttachedUiItem(t) {
     if (this.OQt.Config.ContentType !== 4) {
@@ -58,6 +58,9 @@ class GuideStepViewData {
         Log_1.Log.Error("Guide", 16, `引导步骤 ${this.OQt.Id} 的界面类型不是聚焦引导, 无法添加依附的Ui节点`);
       }
     } else {
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("Guide", 95, "聚焦引导找到AttachedUiItem", ["Name", t?.GetDisplayName()]);
+      }
       this.mzt = t;
     }
   }
@@ -67,6 +70,9 @@ class GuideStepViewData {
         Log_1.Log.Error("Guide", 16, `引导步骤 ${this.OQt.Id} 的界面类型不是聚焦引导, 无法添加依附的Ui节点(显示用)`);
       }
     } else {
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("Guide", 95, "聚焦引导找到AttachedUiItemForShow", ["Name", t?.GetDisplayName()]);
+      }
       this.dzt = t;
     }
   }
@@ -76,7 +82,7 @@ class GuideStepViewData {
         Log_1.Log.Error("Guide", 16, `引导步骤 ${this.OQt.Id} 的界面类型不是聚焦引导, 无法添加依附的Ui节点`);
       }
     } else {
-      this.avm = t;
+      this._wm = t;
     }
   }
   TryLockScrollView(t) {

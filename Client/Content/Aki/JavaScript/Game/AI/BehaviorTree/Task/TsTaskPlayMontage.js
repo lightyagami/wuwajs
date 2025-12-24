@@ -77,7 +77,7 @@ class TsTaskPlayMontage extends TsTaskAbortImmediatelyBase_1.default {
         }
         this.FinishExecute(true);
       } else {
-        this.InteractComponent = this.Entity.GetComponent(201);
+        this.InteractComponent = this.Entity.GetComponent(207);
         if (this.TsMaskInteract && this.InteractComponent) {
           this.InteractComponent.SetInteractionState(false, "TsTaskPlayMontage ReceiveExecuteAI");
         }
@@ -95,18 +95,18 @@ class TsTaskPlayMontage extends TsTaskAbortImmediatelyBase_1.default {
       this.InteractComponent.SetInteractionState(true, "TsTaskPlayMontage OnClear");
     }
     this.InteractComponent = undefined;
-    this.Entity?.GetComponent(46)?.VolatileMontageStopByLoad(3, this.PlayingMontageId, this.TsKeepMontageWhenEnd ? 1 : 0);
+    this.Entity?.GetComponent(47)?.VolatileMontageStopByLoad(3, this.PlayingMontageId, this.TsKeepMontageWhenEnd ? 1 : 0);
     this.PlayingMontageId = -1;
   }
   PlayMontageByPerformComp() {
     var t = ServerGmController_1.ServerGmController.AnimalDebug;
-    var s = this.Entity.GetComponent(46);
+    var s = this.Entity.GetComponent(47);
     var i = {
       InitStateName: this.TsInitStateName,
       EndStateName: this.TsEndStateName
     };
     this.PlayingMontageId = s.VolatileMontagePlayByLoad(3, this.TsMontage, i, t => {
-      this.Entity?.GetComponent(191)?.ExpressionController?.ChangeFaceForExpression(t, this.TsExpressionId);
+      this.Entity?.GetComponent(197)?.ExpressionController?.ChangeFaceForExpression(t, this.TsExpressionId);
     }, () => {
       if (ServerGmController_1.ServerGmController.AnimalDebug && Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("AI", 6, "AnimalDebug PlayMontage3");

@@ -20,6 +20,7 @@ const GravityUtils_1 = require("../../../Utils/GravityUtils");
 const TaskSystem_1 = require("../../../World/Task/TaskSystem");
 const ConfirmBoxDefine_1 = require("../../ConfirmBox/ConfirmBoxDefine");
 const TimeOfDayController_1 = require("../../TimeOfDay/TimeOfDayController");
+const AtomicProcessBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/AtomicProcessBehaviorNode");
 const QuestFailedBehaviorNode_1 = require("../BehaviorNode/QuestFailedBehaviorNode");
 const GeneralLogicTreeDefine_1 = require("../Define/GeneralLogicTreeDefine");
 const GeneralLogicTreeUtil_1 = require("../GeneralLogicTreeUtil");
@@ -164,25 +165,30 @@ class RequestToServerAssistant extends ControllerAssistantBase_1.ControllerAssis
         } else {
           await TaskSystem_1.TaskSystem.Run();
           await ModelManager_1.ModelManager.SubLevelLoadingModel.LoadSubLevelPromise?.Promise;
-          (t = new ConfirmBoxDefine_1.ConfirmBoxDataNew(77)).FunctionMap.set(1, () => {
+          (r = new ConfirmBoxDefine_1.ConfirmBoxDataNew(77)).FunctionMap.set(1, () => {
             this.Q$t(o, false);
           });
-          t.FunctionMap.set(2, () => {
+          r.FunctionMap.set(2, () => {
             this.Q$t(o, true);
           });
-          t.FinishOpenFunction = e => {
+          r.FinishOpenFunction = e => {
             if (!e) {
               this.Q$t(o, false);
             }
           };
-          ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(t);
+          ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(r);
         }
-      } else if (e?.IsFadeInScreen()) {
-        ControllerHolder_1.ControllerHolder.LevelLoadingController.OpenLoading(2, 3, () => {
-          this.Q$t(o, true);
-        }, 1);
       } else {
-        this.Q$t(o, true);
+        if (t.TreeConfigId === 155000003 && t.GetNode(15) instanceof AtomicProcessBehaviorNode_1.AtomicProcessBehaviorNode) {
+          await TaskSystem_1.TaskSystem.Run();
+        }
+        if (e?.IsFadeInScreen()) {
+          ControllerHolder_1.ControllerHolder.LevelLoadingController.OpenLoading(2, 3, () => {
+            this.Q$t(o, true);
+          }, 1);
+        } else {
+          this.Q$t(o, true);
+        }
       }
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("GeneralLogicTree", 18, "请求回退失败，行为树不存在", ["treeId", o]);

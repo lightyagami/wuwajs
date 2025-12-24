@@ -21,7 +21,7 @@ class QuestTreeMainView extends UiTickViewBase_1.UiTickViewBase {
     this.JMd = undefined;
     this.Qyi = undefined;
     this.ZMd = 0;
-    this.U0m = false;
+    this.wEm = false;
     this.Ga_ = e => {
       var r = this.GetHorizontalLayout(4)?.GetRootComponent()?.GetAnchorOffsetX() ?? 0;
       var i = r - this.ZMd;
@@ -71,18 +71,18 @@ class QuestTreeMainView extends UiTickViewBase_1.UiTickViewBase {
     this.GetScrollViewWithScrollbar(0).SetCanScroll(false);
     ModelManager_1.ModelManager.QuestTreeModel.ViewModelMain.InitLocatingHelper(e);
     this.GetButton(6).GetRootComponent().SetUIActive(false);
-    this.s0m();
+    this.GMm();
     var e = new LogReportDefine_1.QuestTreeEnterLogEvent();
     ControllerHolder_1.ControllerHolder.LogReportController.LogReport(e);
   }
   OnBeforeShow() {
-    this.U0m = true;
+    this.wEm = true;
     this.JMd.RefreshByData(ModelManager_1.ModelManager.QuestTreeModel.ViewModelMain.GetViewDataList());
-    this.s0m();
+    this.GMm();
   }
   OnAfterShow() {
-    this.x0m(true);
-    this.U0m = false;
+    this.LEm(true);
+    this.wEm = false;
   }
   OnBeforeDestroy() {
     this.GetScrollViewWithScrollbar(3).OnScrollValueChange.Unbind();
@@ -90,14 +90,14 @@ class QuestTreeMainView extends UiTickViewBase_1.UiTickViewBase {
     ModelManager_1.ModelManager.QuestTreeModel.ViewModelMain.OnViewClose();
   }
   OnTick(e) {
-    if (this.U0m) {
-      this.x0m(false);
+    if (this.wEm) {
+      this.LEm(false);
     }
   }
-  s0m() {
+  GMm() {
     this.GetButton(7).GetRootComponent().SetUIActive(ModelManager_1.ModelManager.QuestTreeModel.GetCurTrackingChapterData() !== undefined);
   }
-  x0m(e = true) {
+  LEm(e = true) {
     var r = ModelManager_1.ModelManager.QuestTreeModel.ViewModelMain.GetDefaultLocatingNode();
     if (r && ModelManager_1.ModelManager.QuestTreeModel.ViewModelMain.ShouldLocateToDefaultNode) {
       ModelManager_1.ModelManager.QuestTreeModel.ViewModelMain.LocateNode(r, e);

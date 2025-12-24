@@ -58,7 +58,7 @@ class HonamiStoryActivityView extends ActivitySubViewBase_1.ActivitySubViewBase 
     this.KV_();
   }
   OnRefreshView() {
-    this.tem();
+    this.Bim();
     this._Fe();
     this.CommonInfoPanel.SetFunctionRedDotVisible(this.ActivityBaseData.CheckAllFunctionRedDot());
     this.Zmu.SetRedDotVisible(this.ActivityBaseData.IsPermanentTaskHasRedDot());
@@ -81,7 +81,7 @@ class HonamiStoryActivityView extends ActivitySubViewBase_1.ActivitySubViewBase 
     this.GetSpine(4).SetAutoPlay(false);
     (i ? this.GetSpine(3) : this.GetSpine(4)).SetAutoPlay(true);
   }
-  tem() {
+  Bim() {
     var i = this.ActivityBaseData.GetPermanentTaskIdsByState(2).length;
     var t = this.ActivityBaseData.GetPermanentTaskTotalNum();
     this.Zmu.SetText(i + "/" + t);

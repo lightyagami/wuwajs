@@ -35,7 +35,7 @@ class WorldMapFishingShipSecondaryPanel extends WorldMapSecondaryUiLayoutA_1.Wor
     this.LayoutContext.MarkItem = e;
     WorldMapSecondaryUiLayoutHelper_1.WorldMapSecondaryUiLayoutHelper.UpdateIconAndTitle(this.LayoutContext);
     WorldMapSecondaryUiLayoutHelper_1.WorldMapSecondaryUiLayoutHelper.UpdateDesc(this.LayoutContext);
-    this.LayoutContext.ConfirmButtonItem.SetLocalTextNew("Fishing_FastOnBoat");
+    this.LayoutContext?.SetConfirmBtnText("Fishing_FastOnBoat");
     this.bn_();
     this.UpdateQuickGotoActive(false);
   }

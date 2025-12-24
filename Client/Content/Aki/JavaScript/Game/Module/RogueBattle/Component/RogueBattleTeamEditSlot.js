@@ -37,7 +37,7 @@ class RogueBattleTeamEditSlot extends UiPanelBase_1.UiPanelBase {
     this.Index = e;
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIItem], [2, UE.UITexture], [3, UE.UIText], [4, UE.UIText], [5, UE.UIItem], [6, UE.UIText], [7, UE.UIVerticalLayout], [8, UE.UIItem], [9, UE.UIText], [10, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIItem], [2, UE.SpineSkeletonAnimationComponent], [3, UE.UIText], [4, UE.UIText], [5, UE.UIItem], [6, UE.UIText], [7, UE.UIVerticalLayout], [8, UE.UIItem], [9, UE.UIText], [10, UE.UIItem]];
     this.BtnBindInfo = [[0, this.rV_]];
   }
   async OnBeforeStartAsync() {
@@ -63,29 +63,32 @@ class RogueBattleTeamEditSlot extends UiPanelBase_1.UiPanelBase {
     } else {
       this.GetItem(1)?.SetUIActive(true);
       t = ModelManager_1.ModelManager.RoleModel.GetRoleDataById(e);
-      const o = t.GetRoleConfig();
+      const r = t.GetRoleConfig();
       var i = ModelManager_1.ModelManager.RogueBattleModel.GetIncIdByRoleId(e);
       var i = ModelManager_1.ModelManager.RogueBattleModel.GetRoleInfoById(i);
       var a = t.GetRoleSkinId();
-      var n = ConfigManager_1.ConfigManager.SkinConfig.GetRoleSkinConfig(a);
-      if (o) {
-        const r = this.GetTexture(2);
-        if (n) {
-          this.SetRoleSkinIcon(n.FormationRoleCard, r, a, undefined, () => {
-            r.SetAlpha(1);
-          });
-        } else {
-          this.SetRoleIcon(o.FormationRoleCard, r, e, undefined, () => {
-            r.SetAlpha(1);
-          });
-        }
-        this.ElementItem?.Refresh(o.ElementId, false, 0);
+      var a = ConfigManager_1.ConfigManager.SkinConfig.GetRoleSkinConfig(a);
+      if (r) {
+        const l = this.GetSpine(2);
+        const h = l.GetOwner().GetComponentByClass(UE.UIItem.StaticClass());
+        h.SetAlpha(0);
+        var n = (a || r).FormationSpineAtlas;
+        var o = (a || r).FormationSpineSkeletonData;
+        const u = a ? a.SpineParam : [0, 0, 1];
+        this.SetSpineAssetByPath(n, o, l).then(() => {
+          h.SetAlpha(1);
+          l.SetAnimation(0, "idle", true);
+          h.SetAnchorOffsetX(u[0]);
+          h.SetAnchorOffsetY(u[1]);
+          h.SetUIItemScale(new UE.Vector(u[2], u[2], u[2]));
+        });
+        this.ElementItem?.Refresh(r.ElementId, false, 0);
         this.GetText(3).SetText(t.GetName());
         LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), "RogueRes_FightFormation_RoleLevel", ModelManager_1.ModelManager.MapRogueModel.GetRogueRoleLevel());
         this.GetText(9).SetText(i.F6n.toString());
-        n = new UiAsyncTask_1.UiAsyncTask("RogueBattleTeamEditSlot.UpdateRoleInfo", async () => {
+        a = new UiAsyncTask_1.UiAsyncTask("RogueBattleTeamEditSlot.UpdateRoleInfo", async () => {
           var e = [];
-          var t = ConfigManager_1.ConfigManager.RogueBattleConfig.GetRogueResBondRole(o.Id);
+          var t = ConfigManager_1.ConfigManager.RogueBattleConfig.GetRogueResBondRole(r.Id);
           if (t) {
             var i = [];
             for (const n of t.BondIds) {
@@ -105,7 +108,7 @@ class RogueBattleTeamEditSlot extends UiPanelBase_1.UiPanelBase {
             this.FetterLayout.GetLayoutItemByKey(t)?.SetLinkEffectOn(true);
           }
         });
-        this.RunAsyncTask(n);
+        this.RunAsyncTask(a);
         this.XJu(e);
         this.ConfigId = e;
       }

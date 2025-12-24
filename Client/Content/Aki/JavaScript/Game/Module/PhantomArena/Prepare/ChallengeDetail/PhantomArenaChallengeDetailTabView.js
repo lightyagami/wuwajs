@@ -57,13 +57,16 @@ class PhantomArenaChallengeDetailTabView extends PhantomArenaChildViewBase_1.Pha
       this.OpenChildView("PhantomArenaDeckOverviewTabView");
     };
     this.R81 = () => {
-      var e = this.E81;
-      if (e) {
-        e = {
-          DeckInfo: e,
-          ShowLocked: false
+      var e;
+      var i = this.E81;
+      if (i) {
+        i = {
+          DeckInfo: i,
+          ShowLocked: false,
+          ActivityId: this.ActivityId
         };
-        UiManager_1.UiManager.OpenView("PhantomArenaDeckDetailView", e);
+        e = ModelManager_1.ModelManager.PhantomArenaModel.IsNewPhantomArenaActivity(this.ActivityId) ? "PhantomArenaDeckDetailViewNew" : "PhantomArenaDeckDetailView";
+        UiManager_1.UiManager.OpenView(e, i);
       }
     };
   }

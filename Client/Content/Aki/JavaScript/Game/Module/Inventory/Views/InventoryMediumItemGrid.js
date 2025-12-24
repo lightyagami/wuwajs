@@ -70,6 +70,7 @@ class InventoryMediumItemGrid extends LoopScrollMediumItemGrid_1.LoopScrollMediu
         var n = ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomBattleData(d);
         var h = n.GetCurrentSlotData();
         a.ItemConfigId = n.GetConfigId(true);
+        a.QualityId = s;
         a.Level = n.GetCost();
         a.IsLevelTextUseChangeColor = true;
         a.BottomText = "+" + n.GetPhantomLevel().toString();

@@ -20,8 +20,8 @@ const FightPhotoOptionItem_1 = require("./FightPhotoOptionItem");
 class FightPhotoOptionPanel extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.fzd = [];
-    this.gzd = new Map();
+    this.Xzd = [];
+    this.Yzd = new Map();
     this.yEd = undefined;
     this.o8a = undefined;
     this.TDe = undefined;
@@ -36,13 +36,13 @@ class FightPhotoOptionPanel extends UiPanelBase_1.UiPanelBase {
     this.N8e = e => {
       this.yEd.SelectGridProxy(e);
     };
-    this.Czd = e => {
-      this.pzd(!e);
+    this.zzd = e => {
+      this.Jzd(!e);
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIVerticalLayout], [1, UE.UIItem], [2, UE.UIScrollViewWithScrollbarComponent], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIText], [6, UE.UIItem], [7, UE.UISprite], [8, UE.UISprite], [9, UE.UIText], [10, UE.UIExtendToggle]];
-    this.BtnBindInfo = [[10, this.Czd]];
+    this.BtnBindInfo = [[10, this.zzd]];
   }
   async OnBeforeStartAsync() {
     this.yEd = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(2), this.Bqe);
@@ -101,7 +101,7 @@ class FightPhotoOptionPanel extends UiPanelBase_1.UiPanelBase {
   }
   OnBeforeHide() {
     this.xHe();
-    this.pzd(true);
+    this.Jzd(true);
   }
   kot() {
     this.xHe();
@@ -115,23 +115,23 @@ class FightPhotoOptionPanel extends UiPanelBase_1.UiPanelBase {
       this.TDe = undefined;
     }
   }
-  pzd(e) {
+  Jzd(e) {
     var i;
     var t;
-    if (this.fzd.length === 0) {
+    if (this.Xzd.length === 0) {
       i = CommonParamById_1.configCommonParamById.GetIntConfig("FightPhotoHideMonsterDistance");
-      ModelManager_1.ModelManager.CreatureModel.GetEntitiesInRange(i, 96, this.fzd);
+      ModelManager_1.ModelManager.CreatureModel.GetEntitiesInRange(i, 96, this.Xzd);
     }
-    for (const o of this.fzd) {
+    for (const o of this.Xzd) {
       if (o.Valid && o.Entity?.Valid && o.Entity.Active !== e) {
         if (e) {
-          if (t = this.gzd.get(o)) {
+          if (t = this.Yzd.get(o)) {
             o.Entity.Enable(t, "FightPhotoOptionPanel.OnHideMonsterToggleClick");
-            this.gzd.delete(o);
+            this.Yzd.delete(o);
           }
         } else {
           t = o.Entity.Disable("[FightPhotoOptionPanel.OnHideMonsterToggleClick] state为false");
-          this.gzd.set(o, t);
+          this.Yzd.set(o, t);
         }
       }
     }

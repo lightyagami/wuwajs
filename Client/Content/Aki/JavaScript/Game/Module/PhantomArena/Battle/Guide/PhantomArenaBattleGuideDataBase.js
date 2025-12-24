@@ -5,13 +5,17 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.PhantomArenaBattleGuideDataBase = undefined;
 class PhantomArenaBattleGuideDataBase {
-  constructor(t, s) {
+  constructor(t, e) {
     this.Type = t;
-    this.Param = s;
+    this.Param = e;
     this.Data = undefined;
     this.Tips = "";
     this.Tips = this.Param.TidPromptTxt;
     this.Data = this.Param.EnableOperation;
+  }
+  CacheGuideData() {}
+  CheckCanFinishGuide() {
+    return true;
   }
 }
 exports.PhantomArenaBattleGuideDataBase = PhantomArenaBattleGuideDataBase;

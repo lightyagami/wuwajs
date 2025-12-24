@@ -5,10 +5,12 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.PhantomArenaOwnData = undefined;
 const Log_1 = require("../../../../../Core/Common/Log");
+const Protocol_1 = require("../../../../../Core/Define/Net/Protocol");
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
 const PhantomArenaCardTaskData_1 = require("./PhantomArenaCardTaskData");
-const PhantomArenaSelectCardSaveData_1 = require("./PhantomArenaSelectCardSaveData");
+const PhantomArenaFieldData_1 = require("./PhantomArenaFieldData");
+const PhantomArenaRecycleData_1 = require("./PhantomArenaRecycleData");
 const PhantomCardData_1 = require("./PhantomCardData");
 class PhantomArenaOwnData {
   constructor() {
@@ -22,16 +24,15 @@ class PhantomArenaOwnData {
     this.pD1 = new Map();
     this.vD1 = new Map();
     this.TaskData = undefined;
-    this.SelectCardSaveData = undefined;
+    this.FieldData = undefined;
+    this.RecycleData = undefined;
     this.CanEvolveNum = 0;
     this.CanShowFourCostView = false;
     this.CoreCardId = 0;
     this.DiscardCardNum = 0;
     this.RequestCardId = 0;
+    this.IsFieldActive = false;
     this.PrevShowLifeInternal = 0;
-  }
-  get BattleCardNum() {
-    return this.pD1.size;
   }
   DD1(t) {
     this.pD1.set(t.CardId, t);
@@ -39,55 +40,57 @@ class PhantomArenaOwnData {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshBattleCardNum);
   }
   UD1(t) {
-    var a = this.pD1.delete(t.CardId);
+    var e = this.pD1.delete(t.CardId);
     var t = this.vD1.delete(t.Index);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshBattleCardNum);
-    return a && t;
+    return e && t;
   }
   BD1(t) {
-    var a = new PhantomCardData_1.PhantomCardData();
-    a.InitData(t);
-    this.xD1.set(a.CardId, a);
-    this.Fcu.push(a.CardId);
+    var e = new PhantomCardData_1.PhantomCardData();
+    e.InitData(t);
+    this.xD1.set(e.CardId, e);
+    this.Fcu.push(e.CardId);
   }
   InitHandData(t) {
     this.ClearHandData();
-    for (const a of t) {
-      this.BD1(a);
+    for (const e of t) {
+      this.BD1(e);
     }
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("PhantomArena", 10, "初始化手牌数据", ["Id", this.Fcu]);
     }
   }
   RefreshHandData(t) {
-    for (const e of t) {
-      var a = this.xD1.get(e.$g1);
-      if (a) {
-        a.InitData(e);
+    for (const a of t) {
+      var e = this.xD1.get(a.$g1);
+      if (e) {
+        e.InitData(a);
       } else {
-        this.BD1(e);
+        this.BD1(a);
       }
     }
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("PhantomArena", 10, "刷新手牌数据", ["Id", this.Fcu]);
     }
   }
-  AddHandDataList(t) {
+  AddHandDataList(t, e = true) {
     var a = [];
-    for (const e of t) {
-      if (!this.xD1.get(e.$g1)) {
-        this.BD1(e);
+    for (const r of t) {
+      if (!this.xD1.get(r.$g1)) {
+        this.BD1(r);
       }
-      a.push(e.$g1);
+      a.push(r.$g1);
     }
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("PhantomArena", 10, "新增手牌数据", ["数据", a]);
     }
-    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OwnHandCardAdd, a);
+    if (e) {
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OwnHandCardAdd, a);
+    }
   }
   RemoveHandDataList(t) {
-    for (const a of t) {
-      this.RemoveHandCardByCardId(a);
+    for (const e of t) {
+      this.RemoveHandCardByCardId(e);
     }
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("PhantomArena", 10, "移除手牌数据", ["数据", t]);
@@ -96,9 +99,9 @@ class PhantomArenaOwnData {
   }
   RemoveHandCardByCardId(t) {
     this.xD1.delete(t);
-    var a = this.Fcu.indexOf(t);
-    if (a >= 0) {
-      this.Fcu.splice(a, 1);
+    var e = this.Fcu.indexOf(t);
+    if (e >= 0) {
+      this.Fcu.splice(e, 1);
     }
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("PhantomArena", 10, "移除手牌数据", ["CardId", t]);
@@ -123,72 +126,106 @@ class PhantomArenaOwnData {
     this.jvu(t.uz1);
   }
   jvu(t) {
-    var a = [];
+    var e = [];
     for (const r of Object.keys(t)) {
-      var e = Number(r);
-      this.You.set(e, t[r]);
-      a.push(e);
+      var a = Number(r);
+      this.You.set(a, t[r]);
+      e.push(a);
     }
   }
   Vvu(t) {
-    var a = [];
+    var e = [];
     for (const r of Object.keys(t)) {
-      var e = Number(r);
-      this.Xou.set(e, t[r]);
-      a.push(e);
+      var a = Number(r);
+      this.Xou.set(a, t[r]);
+      e.push(a);
     }
   }
   RefreshBattleStatus(t) {
-    var a = [];
+    var e = [];
     for (const r of Object.keys(t)) {
-      var e = Number(r);
-      this.Xou.set(e, t[r]);
-      a.push(e);
+      var a = Number(r);
+      this.Xou.set(a, t[r]);
+      e.push(a);
     }
-    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OwnBattleStatusChange, a);
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OwnBattleStatusChange, e);
+  }
+  RefreshBattleHpStatus(t, e) {
+    this.Xou.set(Protocol_1.Aki.Protocol.qC1.Proto_PhantomBattleLife, t);
+    if (e) {
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OwnBattleStatusChange, [Protocol_1.Aki.Protocol.qC1.Proto_PhantomBattleLife]);
+    }
   }
   RefreshBattleAttr(t) {
-    var a = [];
+    var e = [];
     for (const r of Object.keys(t)) {
-      var e = Number(r);
-      this.You.set(e, t[r]);
-      a.push(e);
+      var a = Number(r);
+      this.You.set(a, t[r]);
+      e.push(a);
     }
-    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OwnBattleAttrChange, a);
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OwnBattleAttrChange, e);
   }
   RefreshCanEvolveNum(t) {
     this.CanEvolveNum = t;
   }
-  RefreshCardAttr(t, a) {
-    for (const e of this.pD1.values()) {
-      if (e.FightId === t) {
-        e.RefreshFightAttr(a);
+  RefreshCardAttr(t, e) {
+    for (const a of this.pD1.values()) {
+      if (a.FightId === t) {
+        a.RefreshFightAttr(e);
       }
+    }
+    if (t === this.FieldData?.CardData?.FightId) {
+      this.FieldData?.CardData.RefreshFightAttr(e);
     }
   }
   GetBattleStatusValue(t) {
     return this.Xou.get(t) ?? 0;
   }
-  HandCardToFightCard(t, a) {
+  GetBattleBattleAttr(t) {
+    return this.You.get(t) ?? 0;
+  }
+  HandCardToFightCard(t, e) {
     this.RemoveHandCardByCardId(t.CardId);
-    t.RefreshFightData(a);
+    t.RefreshFightData(e);
     this.DD1(t);
   }
   FightCardToHandCard(t) {
-    var a = this.pD1.get(t.$g1);
-    this.UD1(a);
-    a.InitData(t);
-    this.xD1.set(a.CardId, a);
-    this.Fcu.push(a.CardId);
+    var e = this.pD1.get(t.$g1);
+    this.UD1(e);
+    e.InitData(t);
+    this.xD1.set(e.CardId, e);
+    this.Fcu.push(e.CardId);
   }
   FightCardToRecycle(t) {
-    var a = this.pD1.get(t.$g1);
-    this.UD1(a);
+    var e = this.pD1.get(t.$g1);
+    this.UD1(e);
     this.RefreshCardLibraryNum(t.aE1);
   }
   FightCardToFunctional(t) {
     t = this.pD1.get(t);
+    if (t) {
+      this.UD1(t);
+    }
+  }
+  DestroyFightCard(t) {
+    t = this.pD1.get(t);
     this.UD1(t);
+  }
+  RemoveCardToLibrary(t, e) {
+    t = this.pD1.get(t);
+    this.UD1(t);
+    this.RefreshCardLibraryNum(e);
+  }
+  RemoveFightCardListToRecycle(t) {
+    for (const a of t) {
+      var e = this.pD1.get(a);
+      this.UD1(e);
+    }
+  }
+  RemoveHandCardListToRecycle(t) {
+    for (const e of t) {
+      this.RemoveHandCardByCardId(e);
+    }
   }
   GetHandCardIdList() {
     return this.Fcu;
@@ -204,81 +241,116 @@ class PhantomArenaOwnData {
   }
   GetHandCardDataList() {
     var t = [];
-    for (const e of this.Fcu) {
-      var a = this.xD1.get(e);
-      if (a) {
-        t.push(a);
+    for (const a of this.Fcu) {
+      var e = this.xD1.get(a);
+      if (e) {
+        t.push(e);
       }
     }
     return t;
   }
   NotifyExchangeBattleCard(t) {
-    var a;
-    var e = this.GetCardDataByFightId(t[0].dX1);
-    if (e) {
-      if (e && t[1] && e.Index !== t[1].mX1) {
+    var e;
+    var a = this.GetCardDataByFightId(t[0].dX1);
+    if (a) {
+      if (a && t[1] && a.Index !== t[1].mX1) {
         if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("PhantomArena", 10, "卡牌A位置不正确,不满足交换条件", ["AfterPos", t[0].mX1], ["Index", e.Index]);
+          Log_1.Log.Error("PhantomArena", 10, "卡牌A位置不正确,不满足交换条件", ["AfterPos", t[0].mX1], ["Index", a.Index]);
         }
-      } else if ((a = this.vD1.get(t[0].mX1)) && t[1] && a.FightId !== t[1].dX1) {
+      } else if ((e = this.vD1.get(t[0].mX1)) && t[1] && e.FightId !== t[1].dX1) {
         if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("PhantomArena", 10, "卡牌B位置不正确,不满足交换条件", ["AfterPos", t[1].mX1], ["Index", a.Index]);
+          Log_1.Log.Error("PhantomArena", 10, "卡牌B位置不正确,不满足交换条件", ["AfterPos", t[1].mX1], ["Index", e.Index]);
         }
       } else {
-        this.ExchangeBattleCardData(t[0].mX1, e.Index);
-        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.NotifyBattleCardChange, false, e.Index, t[1].mX1);
+        this.ExchangeBattleCardData(t[0].mX1, a.Index);
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.NotifyBattleCardChange, false, a.Index, t[1].mX1);
       }
     }
   }
-  ExchangeBattleCardData(t, a) {
-    var e = this.vD1.get(a);
+  ExchangeBattleCardData(t, e) {
+    var a = this.vD1.get(e);
     var r = this.vD1.get(t);
-    this.vD1.delete(a);
+    this.vD1.delete(e);
     this.vD1.delete(t);
-    if (e) {
-      e.Index = t;
-      this.vD1.set(e.Index, e);
+    if (a) {
+      a.Index = t;
+      this.vD1.set(a.Index, a);
     }
     if (r) {
-      r.Index = a;
+      r.Index = e;
       this.vD1.set(r.Index, r);
     }
   }
-  EvolveBattleCardData(t, a) {
-    this.RefreshCanEvolveNum(a.eC1);
-    this.RefreshCardLibraryNum(a.jg1);
-    var a = a.cC1;
-    var e = a.Gg1.Qg1;
-    var e = this.vD1.get(e);
-    this.UD1(e);
-    this.HandCardToFightCard(t, a);
+  EvolveBattleCardData(t, e) {
+    this.RefreshCanEvolveNum(e.eC1);
+    this.RefreshCardLibraryNum(e.jg1);
+    var e = e.cC1;
+    var a = e.Gg1.Qg1;
+    var a = this.vD1.get(a);
+    this.UD1(a);
+    this.HandCardToFightCard(t, e);
   }
   HandCardToRecycle(t) {
     this.RemoveHandCardByCardId(t);
+  }
+  iBm(t) {
+    for (const a of t) {
+      var e = this.GetHandCardDataByCardId(a.kg1);
+      if (e) {
+        this.HandCardToFightCard(e, a);
+      }
+    }
+  }
+  AddCardListToFight(t) {
+    for (const a of t) {
+      var e = new PhantomCardData_1.PhantomCardData();
+      e.RefreshFightData(a);
+      this.DD1(e);
+    }
+  }
+  CallCardListToFight(t, e) {
+    if (e === Protocol_1.Aki.Protocol.Qxm.Proto_Heap) {
+      this.AddCardListToFight(t);
+    } else {
+      this.iBm(t);
+    }
+  }
+  HandleFunctionalAreaCard(t) {
+    var e = this.xD1.get(t.uC1);
+    if (e && (this.RemoveHandCardByCardId(t.uC1), e.IsField)) {
+      this.FieldData.SetCardData(e);
+    }
+    this.RefreshCardLibraryNum(t.ztu);
   }
   RefreshCardLibraryNum(t) {
     this.CardLibraryNum = t;
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OwnCardLibraryChange);
   }
   GetFightIdList(t) {
-    var a = [];
+    var e = [];
     for (const r of t) {
-      var e = this.pD1.get(r);
-      if (e) {
-        a.push(e.FightId);
+      var a = this.pD1.get(r);
+      if (a) {
+        e.push(a.FightId);
       }
     }
-    return a;
+    return e;
   }
   GetCardDataByFightId(t) {
-    for (const a of this.pD1.values()) {
-      if (a.FightId === t) {
-        return a;
+    for (const e of this.pD1.values()) {
+      if (e.FightId === t) {
+        return e;
       }
     }
   }
-  get BattleCardLength() {
-    return this.pD1.size;
+  get MonsterCardLength() {
+    let t = 0;
+    for (const e of this.pD1.values()) {
+      if (e.IsNormal) {
+        t++;
+      }
+    }
+    return t;
   }
   ClearHandData() {
     this.xD1.clear();
@@ -295,9 +367,24 @@ class PhantomArenaOwnData {
       Log_1.Log.Error("PhantomArena", 10, "任务数据为空");
     }
   }
-  InitSelectCardSaveData(t) {
-    this.SelectCardSaveData = new PhantomArenaSelectCardSaveData_1.PhantomArenaSelectCardSaveData();
-    this.SelectCardSaveData.InitData(t.zau, t.Jg1);
+  InitFieldData() {
+    this.FieldData = new PhantomArenaFieldData_1.PhantomArenaFieldData();
+  }
+  RefreshFieldLockData(t) {
+    if (this.FieldData) {
+      this.FieldData.SetSealRemainRound(t);
+    }
+  }
+  InitRecycleData() {
+    this.RecycleData = new PhantomArenaRecycleData_1.PhantomArenaRecycleData();
+  }
+  RefreshRecycleLockData(t, e = true) {
+    if (this.RecycleData && (this.RecycleData.SealRemainRound = t, e)) {
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OwnSealRecycleChange, t);
+    }
+  }
+  get RecycleIsInSeal() {
+    return this.RecycleData?.IsSeal ?? false;
   }
   GetHandIndexByCardId(t) {
     return this.Fcu.indexOf(t);

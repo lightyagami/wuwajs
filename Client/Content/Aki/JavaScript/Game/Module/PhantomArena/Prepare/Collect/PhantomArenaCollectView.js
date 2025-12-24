@@ -21,6 +21,7 @@ const PhantomArenaDefine_1 = require("../../PhantomArenaDefine");
 class PhantomArenaCollectView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
+    this.ActivityId = 0;
     this.HRu = 0;
     this.yvt = [];
     this.Ivt = undefined;
@@ -29,15 +30,16 @@ class PhantomArenaCollectView extends UiViewBase_1.UiViewBase {
       this.CloseMe();
     };
     this.QCu = () => {
-      HelpController_1.HelpController.OpenHelpById(PhantomArenaDefine_1.HELP_ID_COLLECT);
+      var e = ModelManager_1.ModelManager.PhantomArenaModel.IsNewPhantomArenaActivity(this.ActivityId) ? PhantomArenaDefine_1.HELP_ID_COLLECT_NEW : PhantomArenaDefine_1.HELP_ID_COLLECT;
+      HelpController_1.HelpController.OpenHelpById(e);
     };
     this.fqe = e => new CommonTabItem_1.CommonTabItem();
     this.pqe = e => {
       var t = this.yvt[e];
       var n = t.ChildViewName;
-      var o = this.Ivt.GetTabItemByIndex(e);
+      var a = this.Ivt.GetTabItemByIndex(e);
       this.HRu = e;
-      this.Tvt.ToggleCallBack(t, n, o);
+      this.Tvt.ToggleCallBack(t, n, a, this.ActivityId);
       this.d7s(n);
     };
     this.yqe = e => {
@@ -50,21 +52,25 @@ class PhantomArenaCollectView extends UiViewBase_1.UiViewBase {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIText], [2, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIText], [2, UE.UIItem], [3, UE.UIItem]];
   }
   async OnBeforeStartAsync() {
+    this.ActivityId = this.OpenParam;
     var e = new CommonTabComponentData_1.CommonTabComponentData(this.fqe, this.pqe, this.yqe);
     this.Tvt = new TabViewComponent_1.TabViewComponent(this.GetItem(2));
     this.Ivt = new TabComponentWithCaptionItem_1.TabComponentWithCaptionItem(this.GetItem(0), e, this.i71);
     this.Ivt.SetHelpButtonShowState(true);
     this.Ivt.SetHelpButtonCallBack(this.QCu);
-    this.yvt = ModelManager_1.ModelManager.PhantomArenaModel.GetCollectTabDataList();
+    this.yvt = ModelManager_1.ModelManager.PhantomArenaModel.GetCollectTabDataList(this.Info.Name);
     var e = this.yvt.length;
     var e = this.Ivt.CreateTabItemDataByLength(e);
     await this.Ivt.RefreshTabItemAsync(e);
   }
   OnBeforeShow() {
     this.Ivt.SelectToggleByIndex(this.HRu);
+    if (ModelManager_1.ModelManager.PhantomArenaModel.IsNewPhantomArenaActivity(this.ActivityId)) {
+      this.GetItem(3)?.SetUIActive(false);
+    }
     this.K8e();
   }
   OnBeforeHide() {
@@ -81,17 +87,17 @@ class PhantomArenaCollectView extends UiViewBase_1.UiViewBase {
   d7s(e) {
     let t = 0;
     let n = 0;
-    let o = "";
+    let a = "";
     if (e === "PhantomArenaCollectBadgeTabView") {
-      t = ModelManager_1.ModelManager.PhantomArenaModel.GetBadgeUnlockCount();
-      n = ModelManager_1.ModelManager.PhantomArenaModel.GetBadgeAllCount();
-      o = "PhantomBattle_1118";
-    } else if (e === "PhantomArenaCollectCardTabView") {
-      t = ModelManager_1.ModelManager.PhantomArenaModel.GetCardUnlockCount();
-      n = ModelManager_1.ModelManager.PhantomArenaModel.GetCardAllCount();
-      o = "PhantomBattle_1119";
+      t = ModelManager_1.ModelManager.PhantomArenaModel.GetBadgeUnlockCount(this.ActivityId);
+      n = ModelManager_1.ModelManager.PhantomArenaModel.GetBadgeAllCount(this.ActivityId);
+      a = "PhantomBattle_1118";
+    } else if (e === "PhantomArenaCollectCardTabView" || e === "PhantomArenaCollectCardTabViewNew") {
+      t = ModelManager_1.ModelManager.PhantomArenaModel.GetCardUnlockCount(this.ActivityId);
+      n = ModelManager_1.ModelManager.PhantomArenaModel.GetCardAllCount(this.ActivityId);
+      a = "PhantomBattle_1119";
     }
-    LguiUtil_1.LguiUtil.TrySetLocalTextNew(this.GetText(1), o, t, n);
+    LguiUtil_1.LguiUtil.TrySetLocalTextNew(this.GetText(1), a, t, n);
   }
   K8e() {
     this.p1c("PhantomArenaCollectBadgeTabView", "RedDotPhantomArenaBadgeReward", true);
@@ -102,13 +108,13 @@ class PhantomArenaCollectView extends UiViewBase_1.UiViewBase {
     this.p1c("PhantomArenaCollectCardTabView", "RedDotPhantomArenaCardReward", false);
   }
   p1c(t, e, n) {
-    var o = this.yvt.findIndex(e => e.ChildViewName === t);
-    if (o >= 0) {
-      o = this.Ivt.GetTabItemByIndex(o);
+    var a = this.yvt.findIndex(e => e.ChildViewName === t);
+    if (a >= 0) {
+      a = this.Ivt.GetTabItemByIndex(a);
       if (n) {
-        o?.BindRedDot(e);
+        a?.BindRedDot(e, this.ActivityId);
       } else {
-        o?.UnBindRedDot();
+        a?.UnBindRedDot();
       }
     }
   }

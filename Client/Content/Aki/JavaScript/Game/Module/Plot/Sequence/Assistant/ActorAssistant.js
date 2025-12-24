@@ -52,50 +52,51 @@ class ActorAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
     this.PreLoadNpcMap = new Map();
     this.NpcEntityMap = new Map();
   }
-  Load(e) {
+  Load(t) {
     this.Jto();
     this.sjc();
-    this.zto(t => {
-      this.Zto(t);
-      this.tio(e);
+    this.zto(e => {
+      this.Zto(e);
+      this.tio(t);
     });
   }
   PreAllPlay(i) {
-    if ((this.Model.SequenceData.SaveFinalTransform && Global_1.Global.BaseCharacter.KuroSetMovementMode({
+    var e;
+    if ((!this.Model.SequenceData.SaveFinalTransform || (e = ModelManager_1.ModelManager.SceneTeamModel?.GetCurrentEntity)?.Valid && e.Entity?.GetComponent(242)?.IsOnVehicle && e.Entity?.GetComponent(242)?.VehicleType === "Motorcycle" || Global_1.Global.BaseCharacter.KuroSetMovementMode({
       Mode: Global_1.Global.BaseCharacter.CharacterMovement.DefaultLandMovementMode,
       Context: "[Plot Sequence: ActorAssistant.PreAllPlay]"
     }), this.PreLoadNpcMap && this.PreLoadNpcMap.size > 0) && this.Model.BlendInCharacters) {
       for (const s of this.PreLoadNpcMap.keys()) {
-        var e = this.PreLoadNpcMap.get(s);
-        if (e) {
-          let t = undefined;
+        var t = this.PreLoadNpcMap.get(s);
+        if (t) {
+          let e = undefined;
           if (this.Model.BlendInCharacters) {
             for (const r of this.Model.BlendInCharacters) {
               if (r?.IsA(UE.BP_BaseRole_Seq_V2_C.StaticClass())) {
                 var o = r;
-                if (o && o.SkeletalMeshComponent0?.SkeletalMesh === e.Mesh?.SkeletalMesh) {
-                  t = o;
+                if (o && o.SkeletalMeshComponent0?.SkeletalMesh === t.Mesh?.SkeletalMesh) {
+                  e = o;
                   break;
                 }
               }
             }
-            if (e && t) {
-              if (t.SkeletalMeshComponent0?.SkeletalMesh === e.Mesh?.SkeletalMesh) {
-                t.BeginSwitchPose(e, t, this.Model.SequenceData.AnimationBlendInTime, true);
+            if (t && e) {
+              if (e.SkeletalMeshComponent0?.SkeletalMesh === t.Mesh?.SkeletalMesh) {
+                e.BeginSwitchPose(t, e, this.Model.SequenceData.AnimationBlendInTime, true);
                 if (Log_1.Log.CheckInfo()) {
-                  Log_1.Log.Info("Plot", 45, "[NPC Blend]BeginSwitchPose 开始", ["Actor", t.GetName()]);
+                  Log_1.Log.Info("Plot", 45, "[NPC Blend]BeginSwitchPose 开始", ["Actor", e.GetName()]);
                 }
                 TimerSystem_1.TimerSystem.Next(() => {
-                  t.EndSwitchPose(t, true);
+                  e.EndSwitchPose(e, true);
                   if (Log_1.Log.CheckInfo()) {
-                    Log_1.Log.Info("Plot", 45, "[NPC Blend]EndSwitchPose 结束", ["Actor", t.GetName()]);
+                    Log_1.Log.Info("Plot", 45, "[NPC Blend]EndSwitchPose 结束", ["Actor", e.GetName()]);
                   }
                 });
                 if (this.NpcEntityMap.has(s)) {
                   ModelManager_1.ModelManager.SequenceModel.NeedHideNpcSet.add(this.NpcEntityMap.get(s));
                 }
               } else if (Log_1.Log.CheckInfo()) {
-                Log_1.Log.Info("Plot", 45, "[NPC Blend]SkeletalMesh不相等", ["Actor", t.GetName()]);
+                Log_1.Log.Info("Plot", 45, "[NPC Blend]SkeletalMesh不相等", ["Actor", e.GetName()]);
               }
             }
           }
@@ -106,19 +107,19 @@ class ActorAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
       if (this.Model.PoseSwitched) {
         i(true);
       } else {
-        let t = this.Model.BlendInCharacter;
-        if (t = t === undefined ? this.Model.SeqMainCharacter : t) {
-          const e = t;
-          if (e.SkeletalMeshComponent0.SkeletalMesh === Global_1.Global.BaseCharacter.Mesh.SkeletalMesh) {
-            e.BeginSwitchPose(Global_1.Global.BaseCharacter, e, this.Model.SequenceData.AnimationBlendInTime, true);
+        let e = this.Model.BlendInCharacter;
+        if (e = e === undefined ? this.Model.SeqMainCharacter : e) {
+          const t = e;
+          if (t.SkeletalMeshComponent0.SkeletalMesh === Global_1.Global.BaseCharacter.Mesh.SkeletalMesh) {
+            t.BeginSwitchPose(Global_1.Global.BaseCharacter, t, this.Model.SequenceData.AnimationBlendInTime, true);
             if (Log_1.Log.CheckDebug()) {
               Log_1.Log.Debug("Plot", 38, "BeginSwitchPose 开始", ["Actor", Global_1.Global.BaseCharacter?.GetName()]);
             }
             this.Model.PoseSwitched = true;
             TimerSystem_1.TimerSystem.Next(() => {
-              e.EndSwitchPose(e, true);
+              t.EndSwitchPose(t, true);
               if (Log_1.Log.CheckDebug()) {
-                Log_1.Log.Debug("Plot", 38, "EndSwitchPose 结束", ["Actor", e]);
+                Log_1.Log.Debug("Plot", 38, "EndSwitchPose 结束", ["Actor", t]);
               }
               i(true);
             });
@@ -137,35 +138,35 @@ class ActorAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
       this.Haa = true;
     }
     const o = UE.NewArray(UE.Actor);
-    this.Model.BindingActorMap.forEach((t, e) => {
-      t.D_K2_SetActorLocation(HidePos, false, undefined, true);
+    this.Model.BindingActorMap.forEach((e, t) => {
+      e.D_K2_SetActorLocation(HidePos, false, undefined, true);
       o.Empty();
-      o.Add(t);
-      if (e.op_Equality(SequenceDefine_1.HERO_TAG)) {
+      o.Add(e);
+      if (t.op_Equality(SequenceDefine_1.HERO_TAG)) {
         (i = UE.NewArray(UE.BuiltinName)).Add(SequenceDefine_1.HERO_TAG);
         i.Add(ModelManager_1.ModelManager.PlayerInfoModel?.GetPlayerGender() === 1 ? SequenceDefine_1.MALE_TAG : SequenceDefine_1.FEMALE_TAG);
         i = UE.KuroSequenceRuntimeFunctionLibrary.FindMatchAllTagsBinding(i, this.Model.GetCurrentSequence());
         UE.KuroSequenceRuntimeFunctionLibrary.SetBindings(this.Model.CurLevelSeqActor, i, o);
       } else {
-        this.Model.CurLevelSeqActor.SetBindingByTag(e, o, false, true);
+        this.Model.CurLevelSeqActor.SetBindingByTag(t, o, false, true);
       }
-      var i = t.GetComponentByClass(UE.SkeletalMeshComponent.StaticClass());
-      if (i && (e = i.GetLinkedAnimGraphInstanceByTag(SequenceDefine_1.ABP_Base_Name))) {
-        e.Montage_MuteAllMontage();
+      var i = e.GetComponentByClass(UE.SkeletalMeshComponent.StaticClass());
+      if (i && (t = i.GetLinkedAnimGraphInstanceByTag(SequenceDefine_1.ABP_Base_Name))) {
+        t.Montage_MuteAllMontage();
       }
     });
-    this.Model.BindingEntityMap.forEach((t, e) => {
+    this.Model.BindingEntityMap.forEach((e, t) => {
       o.Empty();
-      t = t.Entity?.GetComponent(1)?.Owner;
-      if (t) {
-        o.Add(t);
-        this.Model.CurLevelSeqActor.SetBindingByTag(e, o, false, true);
+      e = e.Entity?.GetComponent(1)?.Owner;
+      if (e) {
+        o.Add(e);
+        this.Model.CurLevelSeqActor.SetBindingByTag(t, o, false, true);
       }
     });
   }
   EachStop() {
-    this.Model.BindingActorMap.forEach((t, e) => {
-      t.D_K2_SetActorLocation(HidePos, false, undefined, true);
+    this.Model.BindingActorMap.forEach((e, t) => {
+      e.D_K2_SetActorLocation(HidePos, false, undefined, true);
     });
   }
   async AllStopPromise() {
@@ -180,7 +181,7 @@ class ActorAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
     if (this.Model.IsSeamless) {
       return true;
     }
-    let e = false;
+    let t = false;
     for (const n of ModelManager_1.ModelManager.SequenceModel.NeedHideNpcSet) {
       ControllerHolder_1.ControllerHolder.CreatureController.SetEntityEnable(n, true, "显示NPC", false);
     }
@@ -188,21 +189,21 @@ class ActorAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
       for (const l of this.PreLoadNpcMap.keys()) {
         var i = this.PreLoadNpcMap.get(l);
         if (i) {
-          let t = undefined;
+          let e = undefined;
           if (this.Model.BlendOutCharacters) {
-            for (const h of this.Model.BlendOutCharacters) {
-              if (h?.IsA(UE.BP_BaseRole_Seq_V2_C.StaticClass())) {
-                var o = h;
+            for (const a of this.Model.BlendOutCharacters) {
+              if (a?.IsA(UE.BP_BaseRole_Seq_V2_C.StaticClass())) {
+                var o = a;
                 if (o && o.SkeletalMeshComponent0?.SkeletalMesh === i.Mesh?.SkeletalMesh) {
-                  t = o;
+                  e = o;
                   break;
                 }
               }
             }
-            if (i && t) {
-              if (t.SkeletalMeshComponent0?.SkeletalMesh === i.Mesh?.SkeletalMesh) {
-                e = true;
-                t.BeginSwitchPose(t, i, this.Model.SequenceData.AnimationBlendOutTime, true);
+            if (i && e) {
+              if (e.SkeletalMeshComponent0?.SkeletalMesh === i.Mesh?.SkeletalMesh) {
+                t = true;
+                e.BeginSwitchPose(e, i, this.Model.SequenceData.AnimationBlendOutTime, true);
                 if (Log_1.Log.CheckInfo()) {
                   Log_1.Log.Info("Plot", 45, "[NPC Blend]BeginSwitchPose 开始", ["Actor", i.GetName()]);
                 }
@@ -214,9 +215,9 @@ class ActorAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
         }
       }
     }
-    let t = this.Model.BlendOutCharacter;
-    if (!(t = t === undefined ? this.Model.SeqMainCharacter : t)) {
-      if (e) {
+    let e = this.Model.BlendOutCharacter;
+    if (!(e = e === undefined ? this.Model.SeqMainCharacter : e)) {
+      if (t) {
         this.Model.BeginSwitchFrame = 2;
         const r = await this.Promise.Promise;
         return r;
@@ -224,9 +225,9 @@ class ActorAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
       return !(this.Promise = undefined);
     }
     this.jaa(false);
-    var s = t;
+    var s = e;
     if (s.SkeletalMeshComponent0.SkeletalMesh !== Global_1.Global.BaseCharacter.Mesh.SkeletalMesh) {
-      if (e) {
+      if (t) {
         this.Model.BeginSwitchFrame = 2;
         const r = await this.Promise.Promise;
         return r;
@@ -234,45 +235,45 @@ class ActorAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
       this.nio();
       return !(this.Promise = undefined);
     }
-    e = true;
+    t = true;
     s.BeginSwitchPose(s, Global_1.Global.BaseCharacter, this.Model.SequenceData.AnimationBlendOutTime, true);
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Plot", 38, "BeginSwitchPose 开始", ["Actor", Global_1.Global.BaseCharacter?.GetName()]);
     }
-    if (e) {
+    if (t) {
       this.Model.BeginSwitchFrame = 2;
     }
     const r = await this.Promise.Promise;
     return r;
   }
   EndSwitchPose() {
-    let t = this.Model.BlendOutCharacter;
-    (t = t === undefined ? this.Model.SeqMainCharacter : t)?.EndSwitchPose(Global_1.Global.BaseCharacter, true);
+    let e = this.Model.BlendOutCharacter;
+    (e = e === undefined ? this.Model.SeqMainCharacter : e)?.EndSwitchPose(Global_1.Global.BaseCharacter, true);
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Plot", 38, "EndSwitchPose结束", ["Actor", Global_1.Global.BaseCharacter?.GetName()]);
     }
     for (const o of this.PreLoadNpcMap.keys()) {
-      var e = this.PreLoadNpcMap.get(o);
-      if (e) {
-        let t = undefined;
+      var t = this.PreLoadNpcMap.get(o);
+      if (t) {
+        let e = undefined;
         if (this.Model.BlendOutCharacters) {
           for (const s of this.Model.BlendOutCharacters) {
             if (s?.IsA(UE.BP_BaseRole_Seq_V2_C.StaticClass())) {
               var i = s;
-              if (i && i.SkeletalMeshComponent0?.SkeletalMesh === e.Mesh?.SkeletalMesh) {
-                t = i;
+              if (i && i.SkeletalMeshComponent0?.SkeletalMesh === t.Mesh?.SkeletalMesh) {
+                e = i;
                 break;
               }
             }
           }
-          if (e && t) {
-            if (t.SkeletalMeshComponent0?.SkeletalMesh === e.Mesh?.SkeletalMesh) {
-              t.EndSwitchPose(e, true);
+          if (t && e) {
+            if (e.SkeletalMeshComponent0?.SkeletalMesh === t.Mesh?.SkeletalMesh) {
+              e.EndSwitchPose(t, true);
               if (Log_1.Log.CheckInfo()) {
-                Log_1.Log.Info("Plot", 45, "[NPC Blend]EndSwitchPose 结束", ["Actor", e.GetName()]);
+                Log_1.Log.Info("Plot", 45, "[NPC Blend]EndSwitchPose 结束", ["Actor", t.GetName()]);
               }
             } else if (Log_1.Log.CheckInfo()) {
-              Log_1.Log.Info("Plot", 45, "[NPC Blend]SkeletalMesh不相等", ["Actor", e.GetName()]);
+              Log_1.Log.Info("Plot", 45, "[NPC Blend]SkeletalMesh不相等", ["Actor", t.GetName()]);
             }
           }
         }
@@ -286,38 +287,56 @@ class ActorAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
     }
   }
   TeleportToFinal() {
+    var e;
     var t = Global_1.Global.BaseCharacter?.CharacterActorComponent;
     if (t?.Valid && this.Model.SequenceData.SaveFinalTransform) {
-      var e = this.Model.GetLastTransform();
-      if (e) {
-        if (!t.FixBornLocation("Sequence最终位置同步", true, e.GetLocation(), false) && this.Model.SequenceData.bIsForceFinalTrans) {
-          t.SetActorLocation(e.GetLocation().ToUeVector(), "Sequence最终位置同步", false);
-        }
-        t.SetActorRotation(e.GetRotation().Rotator().ToUeRotator(), "Sequence最终位置同步");
-        t.ClearInput();
-        if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("Plot", 26, "SaveFinalPos", ["transform", e]);
-        }
-        ControllerHolder_1.ControllerHolder.FlowController.RequestPosition(e.GetLocation(), e.GetRotation().Rotator());
-        t = this.Model.NpcGroupPerform;
-        for (const r of t) {
-          var i;
-          var o;
-          var s = ModelManager_1.ModelManager.SequenceModel.NpcRelationMap.get(r);
-          if (s) {
-            i = ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(s.Leader?.Entity);
-            o = ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(s.Follower?.Entity);
-            if (i && o) {
-              HoldingHandsController_1.HoldingHandsController.RequestHoldHands(s.Key, i, o, s.LeaderHandType, false, false, "Sequence结束");
-            } else if (Log_1.Log.CheckError()) {
-              Log_1.Log.Error("Plot", 45, "牵手者获取失败", ["leaderHandle", i], ["followerHandle", o]);
-            }
-          } else if (Log_1.Log.CheckWarn()) {
-            Log_1.Log.Warn("Plot", 45, "Relation获取失败");
+      if (e = this.Model.GetLastTransform()) {
+        this.Dqf(t, e);
+      } else if (Log_1.Log.CheckWarn()) {
+        Log_1.Log.Warn("Plot", 26, "SequenceData内缺失FinalPos，联系演出进行后处理");
+      }
+    }
+  }
+  Dqf(e, t) {
+    var i = ModelManager_1.ModelManager.SceneTeamModel?.GetCurrentEntity;
+    if (i?.Valid && i.Entity?.GetComponent(242)?.IsOnVehicle && i.Entity?.GetComponent(242)?.VehicleType === "Motorcycle") {
+      i = new UE.VectorDouble(t.GetLocation().X, t.GetLocation().Y, t.GetLocation().Z);
+      ControllerHolder_1.ControllerHolder.TeleportController.TeleportPlayerInVehicle({
+        ClientReason: "Sequence最终位置同步",
+        TargetPosition: i,
+        TargetRotation: t.GetRotation().Rotator(),
+        TeleportMode: 1,
+        NeedWaitStreaming: !this.Model.SequenceData.bIsForceFinalTrans
+      });
+    } else {
+      if (!e.FixBornLocation("Sequence最终位置同步", true, t.GetLocation(), false) && this.Model.SequenceData.bIsForceFinalTrans) {
+        e.SetActorLocation(t.GetLocation().ToUeVector(), "Sequence最终位置同步", false);
+      }
+      e.SetActorRotation(t.GetRotation().Rotator().ToUeRotator(), "Sequence最终位置同步");
+    }
+    e.ClearInput();
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("Plot", 26, "SaveFinalPos", ["transform", t]);
+    }
+    ControllerHolder_1.ControllerHolder.FlowController.RequestPosition(t.GetLocation(), t.GetRotation().Rotator());
+    var i = this.Model.NpcGroupPerform;
+    for (const n of i) {
+      var o;
+      var s;
+      var r = ModelManager_1.ModelManager.SequenceModel.NpcRelationMap.get(n);
+      if (r) {
+        if (r.RelationType === 1) {
+          r = r;
+          o = ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(r.Leader?.Entity);
+          s = ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(r.Follower?.Entity);
+          if (o && s) {
+            HoldingHandsController_1.HoldingHandsController.RequestHoldHands(r.Key, o, s, r.LeaderHandType, false, false, "Sequence结束");
+          } else if (Log_1.Log.CheckError()) {
+            Log_1.Log.Error("Plot", 45, "牵手者获取失败", ["leaderHandle", o], ["followerHandle", s]);
           }
         }
       } else if (Log_1.Log.CheckWarn()) {
-        Log_1.Log.Warn("Plot", 26, "SequenceData内缺失FinalPos，联系演出进行后处理");
+        Log_1.Log.Warn("Plot", 45, "Relation获取失败");
       }
     }
   }
@@ -345,6 +364,7 @@ class ActorAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
     this.jaa(false);
     this.nio();
     ModelManager_1.ModelManager.SequenceModel.NeedHideNpcSet.clear();
+    ModelManager_1.ModelManager.SequenceModel.PlotBindingVehicle = undefined;
     if (!this.Model.IsSeamless) {
       this.Model.PoseSwitched = false;
     }
@@ -353,39 +373,71 @@ class ActorAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
     this.PreLoadNpcMap.clear();
     ModelManager_1.ModelManager.SequenceModel.NeedHideNpcSet.clear();
     this.NpcEntityMap.clear();
-    var e = this.Model.SequenceData.绑定角色标签;
-    var i = e.Num();
+    ModelManager_1.ModelManager.SequenceModel.PlotBindingVehicle = undefined;
+    var t = this.Model.SequenceData.绑定角色标签;
+    var i = t.Num();
     if (i !== 0) {
-      for (let t = 0; t < i; t++) {
-        var o;
-        var s;
-        var r;
-        var n = e.Get(t);
-        if (n.toString().includes("Perform_NPC")) {
-          o = new Array();
-          ModelManager_1.ModelManager.CreatureModel.GetEntitiesWithTag(n.toString(), o);
-          if (o.length !== 1) {
+      for (let e = 0; e < i; e++) {
+        var o = t.Get(e);
+        if (o.toString().includes("Perform_NPC")) {
+          var s = new Array();
+          ModelManager_1.ModelManager.CreatureModel.GetEntitiesWithTag(o.toString(), s);
+          if (s.length !== 1) {
             if (Log_1.Log.CheckDebug()) {
-              Log_1.Log.Debug("Plot", 45, "[NPC Blend]tag获取的Entity数量并非唯一", ["Tag", n.toString()], ["num", o.length]);
+              Log_1.Log.Debug("Plot", 45, "[NPC Blend]tag获取的Entity数量并非唯一", ["Tag", o.toString()], ["num", s.length]);
             }
-          } else if (s = (r = o[0]).Entity?.GetComponent(0)) {
-            if ((r = r.Entity?.EntityData?.GetActor())?.IsValid()) {
-              if (r.IsA(UE.BP_BaseNPC_C.StaticClass())) {
-                r = r;
-                this.PreLoadNpcMap.set(s.GetPbDataId(), r);
-                r = s.GetCreatureDataId();
-                r = ModelManager_1.ModelManager.CreatureModel.GetEntityId(r);
-                if (r = EntitySystem_1.EntitySystem.Get(r)) {
-                  this.NpcEntityMap.set(s.GetPbDataId(), r);
-                }
+            continue;
+          }
+          var r = s[0];
+          var n = r.Entity?.GetComponent(0);
+          if (!n) {
+            if (Log_1.Log.CheckDebug()) {
+              Log_1.Log.Debug("Plot", 45, "[NPC Blend]不存在的Entity", ["Tag", o.toString()], ["num", s.length]);
+            }
+            continue;
+          }
+          var r = r.Entity?.EntityData?.GetActor();
+          if (!r?.IsValid()) {
+            if (Log_1.Log.CheckDebug()) {
+              Log_1.Log.Debug("Plot", 45, "[NPC Blend]不存在的Entity actor", ["Tag", o.toString()], ["num", s.length]);
+            }
+            continue;
+          }
+          if (!r.IsA(UE.BP_BaseNPC_C.StaticClass())) {
+            if (Log_1.Log.CheckDebug()) {
+              Log_1.Log.Debug("Plot", 45, "[NPC Blend]非BP_BaseNPC_C", ["Tag", o.toString()], ["num", s.length]);
+            }
+            continue;
+          }
+          var s = r;
+          this.PreLoadNpcMap.set(n.GetPbDataId(), s);
+          var r = n.GetCreatureDataId();
+          var s = ModelManager_1.ModelManager.CreatureModel.GetEntityId(r);
+          var r = EntitySystem_1.EntitySystem.Get(s);
+          if (!r) {
+            continue;
+          }
+          this.NpcEntityMap.set(n.GetPbDataId(), r);
+        }
+        if (SequenceDefine_1.MOTOR_TAG.op_Equality(o)) {
+          s = new Array();
+          ModelManager_1.ModelManager.CreatureModel.GetEntitiesWithTag(o.toString(), s);
+          if (s.length !== 1) {
+            if (Log_1.Log.CheckDebug()) {
+              Log_1.Log.Debug("Plot", 45, "[Motor Blend]tag获取的Entity数量并非唯一", ["Tag", o.toString()], ["num", s.length]);
+            }
+          } else if ((n = s[0]).Entity?.GetComponent(0)) {
+            if ((r = n.Entity?.EntityData?.GetActor())?.IsValid()) {
+              if (r.IsA(UE.TsBaseVehicle_C.StaticClass())) {
+                ModelManager_1.ModelManager.SequenceModel.PlotBindingVehicle = n;
               } else if (Log_1.Log.CheckDebug()) {
-                Log_1.Log.Debug("Plot", 45, "[NPC Blend]非BP_BaseNPC_C", ["Tag", n.toString()], ["num", o.length]);
+                Log_1.Log.Debug("Plot", 45, "[Motor Blend]非BP_BaseVehicle_C", ["Tag", o.toString()], ["num", s.length]);
               }
             } else if (Log_1.Log.CheckDebug()) {
-              Log_1.Log.Debug("Plot", 45, "[NPC Blend]不存在的Entity actor", ["Tag", n.toString()], ["num", o.length]);
+              Log_1.Log.Debug("Plot", 45, "[Motor Blend]不存在的Entity actor", ["Tag", o.toString()], ["num", s.length]);
             }
           } else if (Log_1.Log.CheckDebug()) {
-            Log_1.Log.Debug("Plot", 45, "[NPC Blend]不存在的Entity", ["Tag", n.toString()], ["num", o.length]);
+            Log_1.Log.Debug("Plot", 45, "[Motor Blend]不存在的Entity", ["Tag", o.toString()], ["num", s.length]);
           }
         }
       }
@@ -394,25 +446,25 @@ class ActorAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
   Jto() {
     this.Model.BlendInCharacter = undefined;
     this.Model.BlendOutCharacter = undefined;
-    var e = this.Model.SequenceData.GeneratedData?.BindingBP;
-    if (e) {
+    var t = this.Model.SequenceData.GeneratedData?.BindingBP;
+    if (t) {
       var i = this.Model.SequenceData.GeneratedData?.BlendInTag;
       var o = this.Model.SequenceData.GeneratedData?.BlendInTags;
       var s = this.Model.SequenceData.GeneratedData?.BlendOutTag;
       var r = this.Model.SequenceData.GeneratedData?.BlendOutTags;
       var n = this.Model.SequenceData.葫芦状态;
-      var l = e.Num();
-      for (let t = 0; t < l; t++) {
-        var h = e.Get(t);
-        var a = UE.KuroActorManager.D_SpawnActor(Info_1.Info.World, h, MathUtils_1.MathUtils.DefaultTransformDouble, 1, undefined);
-        if (ObjectUtils_1.ObjectUtils.IsValid(a)) {
+      var l = t.Num();
+      for (let e = 0; e < l; e++) {
+        var a = t.Get(e);
+        var h = UE.KuroActorManager.D_SpawnActor(Info_1.Info.World, a, MathUtils_1.MathUtils.DefaultTransformDouble, 1, undefined);
+        if (ObjectUtils_1.ObjectUtils.IsValid(h)) {
           if (Log_1.Log.CheckDebug()) {
-            Log_1.Log.Debug("Plot", 26, "生成Seq绑定蓝图的Actor", ["Class", a.GetName()]);
+            Log_1.Log.Debug("Plot", 26, "生成Seq绑定蓝图的Actor", ["Class", h.GetName()]);
           }
-          var _ = a;
+          var _ = h;
           if (_) {
-            this.Model.BindingActorMap.set(_.BindingTag, a);
-            a.D_K2_SetActorLocation(HidePos, false, undefined, true);
+            this.Model.BindingActorMap.set(_.BindingTag, h);
+            h.D_K2_SetActorLocation(HidePos, false, undefined, true);
             if (n > 0) {
               _.ChangeHuluState(n);
             }
@@ -420,8 +472,8 @@ class ActorAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
               this.Model.BlendInCharacter = _;
             }
             if (o) {
-              for (let t = 0; t < o.Num(); t++) {
-                var d = o.Get(t);
+              for (let e = 0; e < o.Num(); e++) {
+                var d = o.Get(e);
                 if (d && d.op_Equality(_.BindingTag) && !FNameUtil_1.FNameUtil.IsNothing(d)) {
                   this.Model.BlendInCharacters?.push(_);
                   break;
@@ -432,8 +484,8 @@ class ActorAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
               this.Model.BlendOutCharacter = _;
             }
             if (s) {
-              for (let t = 0; t < r.Num(); t++) {
-                var g = r.Get(t);
+              for (let e = 0; e < r.Num(); e++) {
+                var g = r.Get(e);
                 if (g && g.op_Equality(_.BindingTag) && !FNameUtil_1.FNameUtil.IsNothing(g)) {
                   this.Model.BlendOutCharacters?.push(_);
                   break;
@@ -442,19 +494,19 @@ class ActorAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
             }
           }
         } else if (Log_1.Log.CheckWarn()) {
-          Log_1.Log.Warn("Plot", 26, "Seq绑定蓝图生成Actor失败", ["Class", h.GetName()]);
+          Log_1.Log.Warn("Plot", 26, "Seq绑定蓝图生成Actor失败", ["Class", a.GetName()]);
         }
       }
     }
   }
   nio() {
     if (this.Model.BindingActorMap && this.Model.BindingActorMap.size !== 0) {
-      this.Model.BindingActorMap.forEach(t => {
-        t.D_K2_SetActorLocation(HidePos, false, undefined, true);
-        if (t) {
-          t.CleanHuluState();
+      this.Model.BindingActorMap.forEach(e => {
+        e.D_K2_SetActorLocation(HidePos, false, undefined, true);
+        if (e) {
+          e.CleanHuluState();
         }
-        UE.KuroActorManager.DestroyActor(t);
+        UE.KuroActorManager.DestroyActor(e);
       });
       this.Model.BindingActorMap.clear();
       this.Model.SeqMainCharacter = undefined;
@@ -465,218 +517,227 @@ class ActorAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
       this.Model.BlendOutCharacters = undefined;
     }
   }
-  jaa(t) {
-    var e;
+  jaa(e) {
+    var t;
     var i = this.Model.HidePlayerEntityHandle;
-    if (t) {
-      e = (t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity)?.Entity;
-      if (!i && e) {
-        this.Model.HidePlayerEntityHandle = t;
-        e.DisableByKey(7);
+    if (e) {
+      t = (e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity)?.Entity;
+      if (!i && t) {
+        this.Model.HidePlayerEntityHandle = e;
+        t.DisableByKey(7);
         ControllerHolder_1.ControllerHolder.PlotController.HideSummonedEntity();
       }
-    } else if (i) {
-      if (t = i.Entity) {
-        t.EnableByKey(7);
+      if (ModelManager_1.ModelManager.SequenceModel.PlotBindingVehicle?.Entity) {
+        ControllerHolder_1.ControllerHolder.CreatureController.SetEntityEnable(ModelManager_1.ModelManager.SequenceModel.PlotBindingVehicle?.Entity, false, "Plot hide vehicle", false);
       }
-      this.Model.HidePlayerEntityHandle = undefined;
+    } else {
+      if (i) {
+        if (e = i.Entity) {
+          e.EnableByKey(7);
+        }
+        this.Model.HidePlayerEntityHandle = undefined;
+      }
+      if (ModelManager_1.ModelManager.SequenceModel.PlotBindingVehicle?.Entity) {
+        ControllerHolder_1.ControllerHolder.CreatureController.SetEntityEnable(ModelManager_1.ModelManager.SequenceModel.PlotBindingVehicle?.Entity, true, "Plot enable vehicle", false);
+        ModelManager_1.ModelManager.SequenceModel.PlotBindingVehicle = undefined;
+      }
     }
   }
-  zto(e) {
+  zto(t) {
     const i = new Map();
     var o = this.Model.SequenceData.绑定角色标签;
     var s = o.Num();
     if (s === 0) {
-      e(undefined);
+      t(undefined);
     } else {
       var r = new Array();
-      for (let t = 0; t < s; t++) {
+      for (let e = 0; e < s; e++) {
         var n = new Array();
-        var l = o.Get(t);
-        if (!SequenceDefine_1.HERO_TAG.op_Equality(l) && !l.toString().includes("Perform_NPC") && (n.length = 0, ModelManager_1.ModelManager.CreatureModel.GetEntitiesWithTag(l.toString(), n), Log_1.Log.CheckDebug() && Log_1.Log.Debug("Plot", 26, "Sequence绑定找到实体", ["Tag", l.toString()], ["num", n.length]), n.length !== 0)) {
+        var l = o.Get(e);
+        if (!SequenceDefine_1.HERO_TAG.op_Equality(l) && !l.toString().includes("Perform_NPC") && !SequenceDefine_1.MOTOR_TAG.op_Equality(l) && (n.length = 0, ModelManager_1.ModelManager.CreatureModel.GetEntitiesWithTag(l.toString(), n), Log_1.Log.CheckDebug() && Log_1.Log.Debug("Plot", 26, "Sequence绑定找到实体", ["Tag", l.toString()], ["num", n.length]), n.length !== 0)) {
           i.set(l, n);
-          for (const a of n) {
-            var h = a.Entity.GetComponent(0);
-            r.push(h.GetCreatureDataId());
+          for (const h of n) {
+            var a = h.Entity.GetComponent(0);
+            r.push(a.GetCreatureDataId());
           }
         }
       }
       if (r.length === 0) {
-        e(undefined);
+        t(undefined);
       } else {
-        this.jto = WaitEntityTask_1.WaitEntityTask.Create("ActorAssistant.WaitBindingEntities", r, t => {
-          if (!t) {
+        this.jto = WaitEntityTask_1.WaitEntityTask.Create("ActorAssistant.WaitBindingEntities", r, e => {
+          if (!e) {
             if (Log_1.Log.CheckWarn()) {
               Log_1.Log.Warn("Plot", 26, "有需要绑定的实体，但实体创建失败了");
             }
           }
           this.jto = undefined;
-          e(i);
+          t(i);
         });
       }
     }
   }
-  Zto(e) {
-    if (e) {
+  Zto(t) {
+    if (t) {
       var i;
       var o = Global_1.Global.BaseCharacter?.CharacterActorComponent?.ActorLocationProxy;
       if (o) {
-        let t = undefined;
-        for (var [s, r] of e) {
-          t = undefined;
+        let e = undefined;
+        for (var [s, r] of t) {
+          e = undefined;
           if (r && r.length !== 0) {
             for (const n of r) {
-              if (n?.IsInit && n?.Valid && (i = n.Entity.GetComponent(1).ActorLocationProxy, i = Vector_1.Vector.DistSquared(i, o), t === undefined || t > i)) {
+              if (n?.IsInit && n?.Valid && (i = n.Entity.GetComponent(1).ActorLocationProxy, i = Vector_1.Vector.DistSquared(i, o), e === undefined || e > i)) {
                 this.Model.BindingEntityMap.set(s, n);
-                t = i;
+                e = i;
               }
             }
           }
         }
-        this.Model.BindingEntityMap.forEach((t, e) => {
-          t = t.Entity.GetComponent(0)?.GetCreatureDataId();
+        this.Model.BindingEntityMap.forEach((e, t) => {
+          e = e.Entity.GetComponent(0)?.GetCreatureDataId();
           if (Log_1.Log.CheckDebug()) {
-            Log_1.Log.Debug("Plot", 26, "实体被绑定入Sequence：", ["Tag", e.toString()], ["PbDataId", t]);
+            Log_1.Log.Debug("Plot", 26, "实体被绑定入Sequence：", ["Tag", t.toString()], ["PbDataId", e]);
           }
         });
       }
     }
   }
   eio() {
-    for (var [t, e] of this.Model.BindingEntityMap) {
+    for (var [e, t] of this.Model.BindingEntityMap) {
       var i;
       var o;
-      if (e.Valid) {
+      if (t.Valid) {
         i = new SequenceDefine_1.SequenceEntityInfo();
-        this.Model.ControlEntityMap.set(e.Id, i);
-        if ((o = e.Entity.GetComponent(40))?.Valid) {
+        this.Model.ControlEntityMap.set(t.Id, i);
+        if ((o = t.Entity.GetComponent(41))?.Valid) {
           o.StopAllSkills("ActorAssistant.ControlBindingEntity");
         }
-        if ((o = e.Entity.GetComponent(1))?.Valid && (o.SetCollisionEnable(false, "Plot Sequence Binding"), o.SetSequenceBinding(true), (0, RegisterComponent_1.isComponentInstance)(o, 3))) {
+        if ((o = t.Entity.GetComponent(1))?.Valid && (o.SetCollisionEnable(false, "Plot Sequence Binding"), o.SetSequenceBinding(true), (0, RegisterComponent_1.isComponentInstance)(o, 3))) {
           o.Actor.CharRenderingComponent?.SetDisableFightDither(true);
         }
-        if ((o = e.Entity.GetComponent(68))?.Valid) {
+        if ((o = t.Entity.GetComponent(71))?.Valid) {
           i.CacheMovementSync = o.GetEnableMovementSync();
           o.SetEnableMovementSync(false, "ActorAssistant");
         }
-        if (t.op_Equality(SequenceDefine_1.BOSS_TAG) && (o = e.Entity.GetComponent(181))?.Valid) {
+        if (e.op_Equality(SequenceDefine_1.BOSS_TAG) && (o = t.Entity.GetComponent(186))?.Valid) {
           o.MainAnimInstance.Montage_Stop(0);
           o.StartForceDisableAnimOptimization(0, false);
         }
-        if ((t = e.Entity.GetComponent(45))?.Valid) {
-          t.StopMove(true);
-          i.MoveCompDisableHandle = t.Disable("Plot Sequence Binding");
+        if ((e = t.Entity.GetComponent(46))?.Valid) {
+          e.StopMove(true);
+          i.MoveCompDisableHandle = e.Disable("Plot Sequence Binding");
         }
-        if ((o = e.Entity.GetComponent(117))?.Valid) {
+        if ((o = t.Entity.GetComponent(122))?.Valid) {
           i.UeMoveCompDisableHandle = o.Disable("Plot Sequence Binding");
         }
-        if ((t = e.Entity.GetComponent(178))?.Valid) {
-          t.AddBuff(CharacterBuffIds_1.buffId.StoryInvincibleCommon, {
-            InstigatorId: t.CreatureDataId,
+        if ((e = t.Entity.GetComponent(183))?.Valid) {
+          e.AddBuff(CharacterBuffIds_1.buffId.StoryInvincibleCommon, {
+            InstigatorId: e.CreatureDataId,
             Reason: "ActorAssistant.ControlBindingEntity"
           });
         }
-        e.Entity.GetComponent(47)?.DisableAi("Plot Sequence Binding");
+        t.Entity.GetComponent(48)?.DisableAi("Plot Sequence Binding");
       }
     }
   }
   rio() {
     this.Haa = false;
     if (this.Model.BindingEntityMap && this.Model.BindingEntityMap.size !== 0) {
-      for (var [t, e] of this.Model.BindingEntityMap) {
+      for (var [e, t] of this.Model.BindingEntityMap) {
         var i;
         var o;
         var s;
-        var r = this.Model.ControlEntityMap.get(e.Id);
-        if (e?.Valid) {
-          if ((o = e.Entity.GetComponent(1))?.Valid && (o.SetCollisionEnable(true, "Plot Sequence Binding"), o.SetSequenceBinding(false), (0, RegisterComponent_1.isComponentInstance)(o, 3)) && (o.ClearInput(), o.Actor.CharRenderingComponent?.SetDisableFightDither(false), o.Actor.Mesh.SetBoundsScale(1), i = o.Actor.GetComponentByClass(UE.SkeletalMeshComponent.StaticClass())) && (i = i.GetLinkedAnimGraphInstanceByTag(SequenceDefine_1.ABP_Base_Name))) {
+        var r = this.Model.ControlEntityMap.get(t.Id);
+        if (t?.Valid) {
+          if ((o = t.Entity.GetComponent(1))?.Valid && (o.SetCollisionEnable(true, "Plot Sequence Binding"), o.SetSequenceBinding(false), (0, RegisterComponent_1.isComponentInstance)(o, 3)) && (o.ClearInput(), o.Actor.CharRenderingComponent?.SetDisableFightDither(false), o.Actor.Mesh.SetBoundsScale(1), i = o.Actor.GetComponentByClass(UE.SkeletalMeshComponent.StaticClass())) && (i = i.GetLinkedAnimGraphInstanceByTag(SequenceDefine_1.ABP_Base_Name))) {
             i.StopSlotAnimation(BindingActorAnimBlendOutTime, SequenceDefine_1.ABP_Seq_Slot_Name);
           }
-          if (t.op_Equality(SequenceDefine_1.BOSS_TAG) && (i = e.Entity.GetComponent(181))?.Valid) {
+          if (e.op_Equality(SequenceDefine_1.BOSS_TAG) && (i = t.Entity.GetComponent(186))?.Valid) {
             i.CancelForceDisableAnimOptimization(0);
             i.ConsumeRootMotion();
           }
-          if (t !== SequenceDefine_1.HERO_TAG && (t = e.Entity.GetComponent(68))?.Valid && r.CacheMovementSync) {
-            t.SetEnableMovementSync(true, "ActorAssistant");
-            t.CollectSampleAndSend(true);
+          if (e !== SequenceDefine_1.HERO_TAG && (e = t.Entity.GetComponent(71))?.Valid && r.CacheMovementSync) {
+            e.SetEnableMovementSync(true, "ActorAssistant");
+            e.CollectSampleAndSend(true);
           }
-          if (WorldFunctionLibrary_1.default.GetEntityTypeByEntity(e.Entity.Id) === Protocol_1.Aki.Protocol.kks.Proto_Npc && (t = Protocol_1.Aki.Protocol.ecs.create(), (s = Protocol_1.Aki.Protocol.Zks.create()).F4n = MathUtils_1.MathUtils.NumberToLong(o.CreatureData.GetCreatureDataId()), s.P5n = o.ActorLocationProxy, s.g8n = o.ActorRotationProxy, t.iVn = [s], Net_1.Net.Send(27928, t), Log_1.Log.CheckInfo())) {
+          if (WorldFunctionLibrary_1.default.GetEntityTypeByEntity(t.Entity.Id) === Protocol_1.Aki.Protocol.kks.Proto_Npc && (e = Protocol_1.Aki.Protocol.ecs.create(), (s = Protocol_1.Aki.Protocol.Zks.create()).F4n = MathUtils_1.MathUtils.NumberToLong(o.CreatureData.GetCreatureDataId()), s.P5n = o.ActorLocationProxy, s.g8n = o.ActorRotationProxy, e.iVn = [s], Net_1.Net.Send(27928, e), Log_1.Log.CheckInfo())) {
             Log_1.Log.Info("AI", 42, "向服务器同步NPC位置", ["实体ID", s.F4n], ["X", s.P5n.X], ["Y", s.P5n.Y], ["Z", s.P5n.Z]);
           }
-          if ((o = e.Entity.GetComponent(45))?.Valid) {
+          if ((o = t.Entity.GetComponent(46))?.Valid) {
             o.StopMove(false);
             o.Enable(r.MoveCompDisableHandle, "[ActorAssistant.ReleaseBindingEntity] moveComp.Valid=true");
           }
-          if ((t = e.Entity.GetComponent(117))?.Valid) {
-            t.Enable(r.UeMoveCompDisableHandle, "[ActorAssistant.ReleaseBindingEntity] ueMoveComp.Valid=true");
+          if ((e = t.Entity.GetComponent(122))?.Valid) {
+            e.Enable(r.UeMoveCompDisableHandle, "[ActorAssistant.ReleaseBindingEntity] ueMoveComp.Valid=true");
           }
-          if ((s = e.Entity.GetComponent(178))?.Valid) {
+          if ((s = t.Entity.GetComponent(183))?.Valid) {
             s.RemoveBuff(CharacterBuffIds_1.buffId.StoryInvincibleCommon, -1, "ActorAssistant.ReleaseBindingEntity");
           }
-          e.Entity.GetComponent(47)?.EnableAi("Plot Sequence Binding");
+          t.Entity.GetComponent(48)?.EnableAi("Plot Sequence Binding");
         }
       }
       this.Model.BindingEntityMap.clear();
     }
   }
-  tio(e) {
-    var t;
+  tio(t) {
+    var e;
     this.Model.MainSeqCharacterMesh = undefined;
     if (this.Model.SequenceData.NeedSwitchMainCharacter) {
-      if ((t = this.Model.SeqMainCharacterModelConfig.网格体?.ToAssetPathName()) && t.length && t !== "None") {
+      if ((e = this.Model.SeqMainCharacterModelConfig.网格体?.ToAssetPathName()) && e.length && e !== "None") {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("Plot", 17, "剧情加载等待-Seq主角-开始");
         }
-        this.Qto = ModelManager_1.ModelManager.PreloadModelNew.PlotAssetManager.GetAsset(t, UE.SkeletalMesh, t => {
+        this.Qto = ModelManager_1.ModelManager.PreloadModelNew.PlotAssetManager.GetAsset(e, UE.SkeletalMesh, e => {
           this.Qto = ResourceSystem_1.ResourceSystem.InvalidId;
-          if (t) {
-            this.Model.MainSeqCharacterMesh = t;
+          if (e) {
+            this.Model.MainSeqCharacterMesh = e;
             if (Log_1.Log.CheckDebug()) {
               Log_1.Log.Debug("Plot", 17, "剧情加载等待-Seq主角-完成");
             }
           } else if (Log_1.Log.CheckDebug()) {
             Log_1.Log.Debug("Plot", 17, "剧情加载等待-Seq主角-失败");
           }
-          e(true);
+          t(true);
         });
       } else {
         ControllerHolder_1.ControllerHolder.FlowController.LogError("Seq主角的ModelConfig网格体为空", ["ID", this.Model.SeqMainCharacterModelConfig?.ID]);
-        e(true);
+        t(true);
       }
     } else {
-      e(true);
+      t(true);
     }
   }
   iio(i) {
-    var t;
+    var e;
     if (this.Model.SequenceData.NeedSwitchMainCharacter) {
-      if ((t = this.Model.SeqMainCharacterModelConfig.蓝图?.ToAssetPathName()) && t.length && t !== "None") {
+      if ((e = this.Model.SeqMainCharacterModelConfig.蓝图?.ToAssetPathName()) && e.length && e !== "None") {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("Plot", 17, "剧情加载等待-Seq主角BP-开始");
         }
-        this.Kto = ModelManager_1.ModelManager.PreloadModelNew.PlotAssetManager.GetAsset(t, UE.Class, t => {
+        this.Kto = ModelManager_1.ModelManager.PreloadModelNew.PlotAssetManager.GetAsset(e, UE.Class, e => {
           this.Kto = ResourceSystem_1.ResourceSystem.InvalidId;
           if (Log_1.Log.CheckDebug()) {
             Log_1.Log.Debug("Plot", 17, "剧情加载等待-Seq主角BP-完成");
           }
-          this.Model.SeqMainCharacter = UE.KuroActorManager.D_SpawnActor(Info_1.Info.World, t, Global_1.Global.BaseCharacter.CharacterActorComponent.ActorTransform, 1, undefined);
-          var t = this.Model.SeqMainCharacter.GetComponentByClass(UE.SkeletalMeshComponent.StaticClass());
-          if (t) {
-            t.SetSkeletalMesh(this.Model.MainSeqCharacterMesh);
+          this.Model.SeqMainCharacter = UE.KuroActorManager.D_SpawnActor(Info_1.Info.World, e, Global_1.Global.BaseCharacter.CharacterActorComponent.ActorTransform, 1, undefined);
+          var e = this.Model.SeqMainCharacter.GetComponentByClass(UE.SkeletalMeshComponent.StaticClass());
+          if (e) {
+            e.SetSkeletalMesh(this.Model.MainSeqCharacterMesh);
             if (this.Model.GetType() === 0 || this.Model.GetType() === 2) {
-              e = t.D_GetRelativeTransform();
-              this.Model.SeqMainCharacter.D_K2_AddActorWorldTransform(e, false, undefined, false);
-              t.D_K2_SetRelativeLocationAndRotation(Vector_1.Vector.ZeroVectorDouble, Rotator_1.Rotator.ZeroRotator, false, undefined, false);
+              t = e.D_GetRelativeTransform();
+              this.Model.SeqMainCharacter.D_K2_AddActorWorldTransform(t, false, undefined, false);
+              e.D_K2_SetRelativeLocationAndRotation(Vector_1.Vector.ZeroVectorDouble, Rotator_1.Rotator.ZeroRotator, false, undefined, false);
             }
           } else {
             ControllerHolder_1.ControllerHolder.FlowController.LogError("网格体类型错误");
           }
-          var e = this.Model.SeqMainCharacter;
-          if (e && (t = this.Model.SequenceData.葫芦状态) > 0) {
+          var t = this.Model.SeqMainCharacter;
+          if (t && (e = this.Model.SequenceData.葫芦状态) > 0) {
             if (Log_1.Log.CheckDebug()) {
-              Log_1.Log.Debug("Plot", 38, "葫芦状态", ["HuluState", t]);
+              Log_1.Log.Debug("Plot", 38, "葫芦状态", ["HuluState", e]);
             }
-            e.ChangeHuluState(t);
+            t.ChangeHuluState(e);
           }
           this.Model.SeqMainCharacter.D_K2_SetActorLocation(HidePos, false, undefined, true);
           this.Model.BindingActorMap.set(SequenceDefine_1.HERO_TAG, this.Model.SeqMainCharacter);
@@ -693,26 +754,26 @@ class ActorAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
     if (this.CurLoadMouthIndex >= this.PreLoadMouthAssetName.length) {
       this.Yto.SetResult(true);
     } else {
-      const e = this.PreLoadMouthAssetName[this.CurLoadMouthIndex];
+      const t = this.PreLoadMouthAssetName[this.CurLoadMouthIndex];
       this.CurLoadMouthIndex++;
-      if (StringUtils_1.StringUtils.IsEmpty(e)) {
+      if (StringUtils_1.StringUtils.IsEmpty(t)) {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("Plot", 38, "预加载口型资源跳过，textKey 为空");
         }
         this.sio();
       } else {
-        var t = PlotAudioById_1.configPlotAudioById.GetConfig(e);
-        if (t) {
-          const i = PlotAudioModel_1.PlotAudioModel.GetAudioMouthAnimName(t);
-          if (t.GenLipSync) {
-            ModelManager_1.ModelManager.PreloadModelNew.PlotAssetManager.GetAsset(i, UE.AnimSequence, t => {
-              if (t) {
-                this.PreLoadMouthAssetMap.set(e, t);
+        var e = PlotAudioById_1.configPlotAudioById.GetConfig(t);
+        if (e) {
+          const i = PlotAudioModel_1.PlotAudioModel.GetAudioMouthAnimName(e);
+          if (e.GenLipSync) {
+            ModelManager_1.ModelManager.PreloadModelNew.PlotAssetManager.GetAsset(i, UE.AnimSequence, e => {
+              if (e) {
+                this.PreLoadMouthAssetMap.set(t, e);
                 if (Log_1.Log.CheckDebug()) {
                   Log_1.Log.Debug("Plot", 38, "预加载口型资源", ["assetPath", i]);
                 }
               } else if (Log_1.Log.CheckWarn()) {
-                Log_1.Log.Warn("Plot", 38, "预加载口型资源错误：有语音没口型", ["textKey", e], ["assetPath", i]);
+                Log_1.Log.Warn("Plot", 38, "预加载口型资源错误：有语音没口型", ["textKey", t], ["assetPath", i]);
               }
               this.sio();
             });
@@ -721,7 +782,7 @@ class ActorAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
           }
         } else {
           if (Log_1.Log.CheckDebug()) {
-            Log_1.Log.Debug("Plot", 38, "预加载口型资源跳过，没有语音配置", ["textKey", e]);
+            Log_1.Log.Debug("Plot", 38, "预加载口型资源跳过，没有语音配置", ["textKey", t]);
           }
           this.sio();
         }
@@ -734,54 +795,54 @@ class ActorAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
     this.PreLoadMouthAssetMap.clear();
     return this.PreLoadMouthAssetName === undefined || this.PreLoadMouthAssetName.length === 0 || (this.sio(), this.Yto.Promise);
   }
-  TryApplyMouthAnim(t, e) {
+  TryApplyMouthAnim(e, t) {
     this.Model.TalkNpcList = this.Model.CurLevelSeqActor?.GetBindingByTag(SequenceDefine_1.TALK_NPC_TAG, true);
     this.StopMouthAnim();
     this.Xto = undefined;
     this.$to = undefined;
     if (this.Model.GetType() === 1) {
-      this.Xto = this.PreLoadMouthAssetMap.get(t);
+      this.Xto = this.PreLoadMouthAssetMap.get(e);
       if (this.Xto) {
-        this.FindApplyMouthAnim(e);
+        this.FindApplyMouthAnim(t);
         if (this.$to) {
           this.$to.PlaySlotAnimationAsDynamicMontage(this.Xto, SequenceDefine_1.ABP_Mouth_Slot_Name, 0, 0, 1, 1, -1, 0, true);
           if (Log_1.Log.CheckDebug()) {
-            Log_1.Log.Debug("Plot", 38, "MouthAnim 播放口型", ["Key", t], ["Asset", this.Xto.GetName()], ["ABP", this.$to.GetName()]);
+            Log_1.Log.Debug("Plot", 38, "MouthAnim 播放口型", ["Key", e], ["Asset", this.Xto.GetName()], ["ABP", this.$to.GetName()]);
           }
         } else if (Log_1.Log.CheckWarn()) {
-          Log_1.Log.Warn("Plot", 38, "MouthAnim 没有找到口型ABP", ["whoID", e]);
+          Log_1.Log.Warn("Plot", 38, "MouthAnim 没有找到口型ABP", ["whoID", t]);
         }
       } else if (Log_1.Log.CheckWarn()) {
-        Log_1.Log.Warn("Plot", 38, "MouthAnim 没有口型资源", ["TextKey", t]);
+        Log_1.Log.Warn("Plot", 38, "MouthAnim 没有口型资源", ["TextKey", e]);
       }
     }
   }
-  FindApplyMouthAnim(e) {
+  FindApplyMouthAnim(t) {
     let i = false;
-    this.Model.BindingActorMap.forEach(t => {
-      if (!!t?.IsValid() && (t.TalkID === e || t.TalkID_SP === e)) {
-        this.$to = t.SkeletalMeshComponent0?.GetLinkedAnimGraphInstanceByTag(SequenceDefine_1.ABP_Base_Name);
+    this.Model.BindingActorMap.forEach(e => {
+      if (!!e?.IsValid() && (e.TalkID === t || e.TalkID_SP === t)) {
+        this.$to = e.SkeletalMeshComponent0?.GetLinkedAnimGraphInstanceByTag(SequenceDefine_1.ABP_Base_Name);
         i = true;
       }
     });
     if (!i && this.Model.TalkNpcList !== undefined) {
       var o = this.Model.TalkNpcList.Num();
-      for (let t = 0; t < o; t++) {
-        var s = this.Model.TalkNpcList.Get(t);
+      for (let e = 0; e < o; e++) {
+        var s = this.Model.TalkNpcList.Get(e);
         var r = s;
-        if (r?.IsValid() && (r.TalkID === e || r.TalkID_SP === e) && (this.$to = r.SkeletalMeshComponent0?.GetLinkedAnimGraphInstanceByTag(SequenceDefine_1.ABP_Base_Name), this.$to)) {
+        if (r?.IsValid() && (r.TalkID === t || r.TalkID_SP === t) && (this.$to = r.SkeletalMeshComponent0?.GetLinkedAnimGraphInstanceByTag(SequenceDefine_1.ABP_Base_Name), this.$to)) {
           return;
         }
         r = s;
-        if (r?.IsValid() && (r.TalkID === e || r.TalkID_SP === e) && (this.$to = r.Skel_Main?.GetAnimInstance(), this.$to)) {
+        if (r?.IsValid() && (r.TalkID === t || r.TalkID_SP === t) && (this.$to = r.Skel_Main?.GetAnimInstance(), this.$to)) {
           return;
         }
         r = s;
-        if (r?.IsValid() && (r.TalkID === e || r.TalkID_SP === e) && (this.$to = r.SkeletalMesh?.GetAnimInstance(), this.$to)) {
+        if (r?.IsValid() && (r.TalkID === t || r.TalkID_SP === t) && (this.$to = r.SkeletalMesh?.GetAnimInstance(), this.$to)) {
           return;
         }
         r = s;
-        if (r?.IsValid() && (r.TalkID === e || r.TalkID_SP === e) && (this.$to = r.SkeletalMesh?.GetAnimInstance(), this.$to)) {
+        if (r?.IsValid() && (r.TalkID === t || r.TalkID_SP === t) && (this.$to = r.SkeletalMesh?.GetAnimInstance(), this.$to)) {
           return;
         }
       }
@@ -797,8 +858,8 @@ class ActorAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
     if (this.Model.SequenceData.HidePlayer || this.Model.SequenceData.NeedSwitchMainCharacter) {
       this.jaa(true);
     }
-    for (const t of ModelManager_1.ModelManager.SequenceModel.NeedHideNpcSet) {
-      ControllerHolder_1.ControllerHolder.CreatureController.SetEntityEnable(t, false, "隐藏NPC", false);
+    for (const e of ModelManager_1.ModelManager.SequenceModel.NeedHideNpcSet) {
+      ControllerHolder_1.ControllerHolder.CreatureController.SetEntityEnable(e, false, "隐藏NPC", false);
     }
   }
   PlayerHide() {

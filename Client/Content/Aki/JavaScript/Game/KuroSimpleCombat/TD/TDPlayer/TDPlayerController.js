@@ -14,6 +14,7 @@ const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const TowerDefenseEventController_1 = require("../../../Module/TowerDefenseEvent/TowerDefenseEventController");
+const FollowFunctionLibrary_1 = require("../../../NewWorld/Character/Common/Component/Abilities/Follow/FollowFunctionLibrary");
 const KscEntityHandle_1 = require("../../KscEntityHandle");
 const KscEnv_1 = require("../../KscEnv");
 const KscLog_1 = require("../../KscLog");
@@ -34,17 +35,17 @@ class TowerDefensePlayerController {
     if (!EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnPlayerFollowerEnableChange, this.xrh)) {
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPlayerFollowerEnableChange, this.xrh);
     }
-    if (!EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnPlayerFollowerDestroy, this._Fu)) {
-      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPlayerFollowerDestroy, this._Fu);
+    if (!EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnPlayerFollowerUnPossessed, this.vQm)) {
+      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPlayerFollowerUnPossessed, this.vQm);
     }
     this.Model.PendingRoleHandle = this.GetPlayerEntityHandle();
     this.Model.TowerDefenseWorldDone = true;
     this.DoPossessRole(this.Model.PendingRoleHandle);
-    var t = this.GetPlayerFollower();
+    var t = FollowFunctionLibrary_1.FollowFunctionLibrary.GetPlayerFollowShooter(ModelManager_1.ModelManager.CreatureModel.GetPlayerId());
     if (t && this.CheckPlayerFollowerMatch(t)) {
-      this.lFu(t);
-    } else if (!EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnPlayerFollowerCreate, this.lFu)) {
-      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPlayerFollowerCreate, this.lFu);
+      this.yQm(t);
+    } else if (!EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnPlayerFollowerPossessed, this.yQm)) {
+      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPlayerFollowerPossessed, this.yQm);
     }
     this.TryInitKSCEnityt();
     this.ced();
@@ -64,19 +65,15 @@ class TowerDefensePlayerController {
     if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnPlayerFollowerEnableChange, this.xrh)) {
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPlayerFollowerEnableChange, this.xrh);
     }
-    if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnPlayerFollowerDestroy, this._Fu)) {
-      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPlayerFollowerDestroy, this._Fu);
+    if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnPlayerFollowerUnPossessed, this.vQm)) {
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPlayerFollowerUnPossessed, this.vQm);
     }
-    if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnPlayerFollowerCreate, this.lFu)) {
-      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPlayerFollowerCreate, this.lFu);
+    if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnPlayerFollowerPossessed, this.yQm)) {
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPlayerFollowerPossessed, this.yQm);
     }
     this.ClearFollowerKSCData();
     this.Model?.OnStop();
     return true;
-  }
-  static GetPlayerFollower() {
-    var t = ModelManager_1.ModelManager.CreatureModel.GetPlayerId();
-    return ControllerHolder_1.ControllerHolder.FormationDataController.GetPlayerEntity(t)?.GetComponent(228)?.GetFollower();
   }
   static CheckPlayerFollowerMatch(t) {
     return t.Entity.GetComponent(0).TrapAuxiliaryConfigIds !== undefined;
@@ -154,10 +151,10 @@ class TowerDefensePlayerController {
     this.Model.PossessedFollowerProxies.clear();
     for (const o of t) {
       var e = new TDFollowerProxy_1.TowerDefenseFollowerProxy(o);
-      var s = KscUtil_1.KscUtil.GetFollowerSkillIdsByProxy(o);
-      var i = KscUtil_1.KscUtil.GetFollowerPropertyIdByProxy(o);
-      e.SkillIds = s;
-      e.PropertyId = i;
+      var i = KscUtil_1.KscUtil.GetFollowerSkillIdsByProxy(o);
+      var s = KscUtil_1.KscUtil.GetFollowerPropertyIdByProxy(o);
+      e.SkillIds = i;
+      e.PropertyId = s;
       this.Model.PossessedFollowerProxies.set(o, e);
     }
   }
@@ -172,11 +169,11 @@ class TowerDefensePlayerController {
   }
   static ced() {
     var t = ModelManager_1.ModelManager.CreatureModel.GetPlayerId();
-    ControllerHolder_1.ControllerHolder.FormationDataController.GetPlayerEntity(t)?.GetComponent(209)?.AddTag(-1383501816);
+    ControllerHolder_1.ControllerHolder.FormationDataController.GetPlayerEntity(t)?.GetComponent(215)?.AddTag(-1383501816);
   }
   static ded() {
     var t = ModelManager_1.ModelManager.CreatureModel.GetPlayerId();
-    ControllerHolder_1.ControllerHolder.FormationDataController.GetPlayerEntity(t)?.GetComponent(209)?.RemoveTag(-1383501816);
+    ControllerHolder_1.ControllerHolder.FormationDataController.GetPlayerEntity(t)?.GetComponent(215)?.RemoveTag(-1383501816);
   }
   static TogglePlayerFollower() {
     var t = this.IsPlayerFollowerEnabled();
@@ -184,8 +181,7 @@ class TowerDefensePlayerController {
   }
   static EnablePlayerFollower(t) {
     this.Model.CurrentFollowerEnable = t;
-    var e = ModelManager_1.ModelManager.CreatureModel.GetPlayerId();
-    ControllerHolder_1.ControllerHolder.FormationDataController.GetPlayerEntity(e)?.GetComponent(228)?.SetFollowerEnable(t);
+    FollowFunctionLibrary_1.FollowFunctionLibrary.SetPlayerFollowShooterEnable(ModelManager_1.ModelManager.CreatureModel.GetPlayerId(), t);
     if (!t) {
       this.RemoveChargeEffect();
       this.SetFollowerSKillAutoCast(false, true);
@@ -197,20 +193,20 @@ class TowerDefensePlayerController {
       const r = ModelManager_1.ModelManager.CreatureModel.GetEntity(t ?? 0)?.Entity;
       if (r) {
         KscLog_1.KscLog.Info("Common", 84, KscEnv_1.KscEnv.KscWorld, "塔防跟随物更新", ["entity", r]);
-        var s = r.GetComponent(3)?.Actor?.D_GetTransform() ?? new UE.TransformDouble();
-        var i = ControllerHolder_1.ControllerHolder.KuroSimpleCombatController.CurSubModel.EntityDataDt.get(TDPlayerModel_1.TowerDefensePlayerModel.FollowerEntityKey)?.[1];
-        const l = r.GetComponent(0).ComponentDataMap.get("sEu")?.sEu;
-        if (i) {
+        var i = r.GetComponent(3)?.Actor?.D_GetTransform() ?? new UE.TransformDouble();
+        var s = ControllerHolder_1.ControllerHolder.KuroSimpleCombatController.CurSubModel.EntityDataDt.get(TDPlayerModel_1.TowerDefensePlayerModel.FollowerEntityKey)?.[1];
+        const n = r.GetComponent(0).ComponentDataMap.get("sEu")?.sEu;
+        if (s) {
           this.Model.IsInFollowerInit = true;
           ControllerHolder_1.ControllerHolder.KuroSimpleCombatController.AsyncAddEntity({
             CreatureId: t,
             SimpleCombatId: TDPlayerModel_1.TowerDefensePlayerModel.FollowerEntityKey,
-            AssetPath: i,
+            AssetPath: s,
             PropertyId: 0,
-            Transform: s,
-            Buffs: l?.JHu,
+            Transform: i,
+            Buffs: n?.JHu,
             FinishCallback: t => {
-              KscLog_1.KscLog.Info("Common", 84, KscEnv_1.KscEnv.KscWorld, "塔防跟随物绑定", ["entity", r], ["buff", l?.JHu], ["kscHandle", this.Model.PossessedFollowerHandle], ["kscEntity", t]);
+              KscLog_1.KscLog.Info("Common", 84, KscEnv_1.KscEnv.KscWorld, "塔防跟随物绑定", ["entity", r], ["buff", n?.JHu], ["kscHandle", this.Model.PossessedFollowerHandle], ["kscEntity", t]);
               this.Model.PossessedFollowerHandle?.SetKscEntity(t);
               this.k6d();
               this.Upd();
@@ -224,12 +220,12 @@ class TowerDefensePlayerController {
       }
     } else {
       KscLog_1.KscLog.Info("Common", 84, KscEnv_1.KscEnv.KscWorld, "塔防跟随物更新可用性", ["isEnable", e], ["kscValid", this.Model.PossessedFollowerHandle?.Valid]);
-      i = this.Model.PossessedFollowerKscEntity;
-      if (i) {
-        i.SetActorHiddenInGame(!e);
-        var s = (0, puerts_1.$ref)(undefined);
-        i.GetAttachedActors(s, true);
-        var o = (0, puerts_1.$unref)(s);
+      s = this.Model.PossessedFollowerKscEntity;
+      if (s) {
+        s.SetActorHiddenInGame(!e);
+        var i = (0, puerts_1.$ref)(undefined);
+        s.GetAttachedActors(i, true);
+        var o = (0, puerts_1.$unref)(i);
         for (let t = 0; t < o.Num(); ++t) {
           o.Get(t).SetActorHiddenInGame(!e);
         }
@@ -240,44 +236,44 @@ class TowerDefensePlayerController {
     var t = this.Model.PossessedFollowerKscEntity;
     var e = this.I9u(t);
     if (e) {
-      var s;
+      var i;
       var t = ControllerHolder_1.ControllerHolder.KuroSimpleCombatController.GetAllSkillDataDt();
       if (this.Model.AllSkillId2SkillData === undefined) {
         this.Model.AllSkillId2SkillData = new Map();
       } else {
         this.Model.AllSkillId2SkillData.clear();
       }
-      for ([, s] of t) {
-        var i = s[0];
-        var o = s[1];
-        var r = i.Id;
-        var l = i.SkillId;
-        i.OperateType;
-        if (l > 0) {
-          l = {
+      for ([, i] of t) {
+        var s = i[0];
+        var o = i[1];
+        var r = s.Id;
+        var n = s.SkillId;
+        s.OperateType;
+        if (n > 0) {
+          n = {
             SkillType: 1,
-            SkillId: l,
-            Time: i.PressTime,
-            ChargeCueId: i.ChargeCueId,
-            ChargeFullCueId: i.ChargeFullCueId,
-            PsFeedback: i.PsFeedbackId,
-            OperateType: i.OperateType
+            SkillId: n,
+            Time: s.PressTime,
+            ChargeCueId: s.ChargeCueId,
+            ChargeFullCueId: s.ChargeFullCueId,
+            PsFeedback: s.PsFeedbackId,
+            OperateType: s.OperateType
           };
-          this.Model.AllSkillId2SkillData.set(r, l);
-        } else if (l = KscUtil_1.KscUtil.AssetPath2Name(o)) {
-          if ((o = e.get(l)) === undefined) {
-            KscLog_1.KscLog.Info("Skill", 84, KscEnv_1.KscEnv.KscWorld, "跟随物技能初始化忽略,索引异常", ["rowId", r], ["name", l]);
+          this.Model.AllSkillId2SkillData.set(r, n);
+        } else if (n = KscUtil_1.KscUtil.AssetPath2Name(o)) {
+          if ((o = e.get(n)) === undefined) {
+            KscLog_1.KscLog.Info("Skill", 84, KscEnv_1.KscEnv.KscWorld, "跟随物技能初始化忽略,索引异常", ["rowId", r], ["name", n]);
           } else {
-            l = {
+            n = {
               SkillType: 0,
               SkillId: o,
-              Time: i.PressTime,
-              ChargeCueId: i.ChargeCueId,
-              ChargeFullCueId: i.ChargeFullCueId,
-              PsFeedback: i.PsFeedbackId,
-              OperateType: i.OperateType
+              Time: s.PressTime,
+              ChargeCueId: s.ChargeCueId,
+              ChargeFullCueId: s.ChargeFullCueId,
+              PsFeedback: s.PsFeedbackId,
+              OperateType: s.OperateType
             };
-            this.Model.AllSkillId2SkillData.set(r, l);
+            this.Model.AllSkillId2SkillData.set(r, n);
           }
         } else {
           KscLog_1.KscLog.Info("Skill", 84, KscEnv_1.KscEnv.KscWorld, "跟随物技能初始化忽略,名称异常", ["rowId", r]);
@@ -367,21 +363,21 @@ class TowerDefensePlayerController {
     }
   }
   static bRd(t, e) {
-    var s;
-    if (this.Model.CurrentFollowerProxyId && (s = this.GetFollowListenSkillData(this.Model.CurrentFollowerProxyId)) && s === t && (s = e?.GetGroupSkillCdInfo(t.SkillId)?.CurMaxCd) && s > 0) {
-      this.OnFollowerEnterSkillCd(0, s);
+    var i;
+    if (this.Model.CurrentFollowerProxyId && (i = this.GetFollowListenSkillData(this.Model.CurrentFollowerProxyId)) && i === t && (i = e?.GetGroupSkillCdInfo(t.SkillId)?.CurMaxCd) && i > 0) {
+      this.OnFollowerEnterSkillCd(0, i);
     }
   }
   static BeginMontageSkillFollower(e) {
     var t = e.SkillId;
-    var s = this.Model.PossessedFollowerEntity?.GetComponent(39);
-    const i = this.Model.PossessedFollowerEntity?.GetComponent(211);
-    if (s && i && !i.IsSkillInCd(t) && s.Active) {
-      s.BeginSkillAsync(t, {
+    var i = this.Model.PossessedFollowerEntity?.GetComponent(40);
+    const s = this.Model.PossessedFollowerEntity?.GetComponent(218);
+    if (i && s && !s.IsSkillInCd(t) && i.Active) {
+      i.BeginSkillAsync(t, {
         Reason: "TDPlayerController.BeginSkillFollower"
       }).then(t => {
         if (t) {
-          this.bRd(e, i);
+          this.bRd(e, s);
         }
       }).catch(t => {
         KscLog_1.KscLog.Warn("Load", 85, KscEnv_1.KscEnv.KscWorld, "塔防辅助机:播放技能异常", ["error", t]);
@@ -392,9 +388,9 @@ class TowerDefensePlayerController {
     if (this.Model.BindFollowerSkills && this.Model.BindFollowerSkills.size !== 0) {
       t = this.Model.BindFollowerSkills.get(t);
       if (t !== undefined) {
-        for (const s of t) {
-          if (e >= s.Time) {
-            return s;
+        for (const i of t) {
+          if (e >= i.Time) {
+            return i;
           }
         }
       }
@@ -410,26 +406,26 @@ class TowerDefensePlayerController {
       }
     }
   }
-  static SetFollowerSKillAutoCast(e, s) {
-    if (this.Model.IsInAutoCast !== e || s) {
+  static SetFollowerSKillAutoCast(e, i) {
+    if (this.Model.IsInAutoCast !== e || i) {
       this.Model.IsInAutoCast = e;
       let t = false;
-      var i = this.Model.BindFollowerSkills?.get(3);
-      if (i) {
+      var s = this.Model.BindFollowerSkills?.get(3);
+      if (s) {
         var o = this.Model.PossessedFollowerKscEntity;
         var r = this.Model.PossessedFollowerEntity;
         if (o && r) {
-          for (const l of i) {
-            if (l.SkillType === 1) {
+          for (const n of s) {
+            if (n.SkillType === 1) {
               if (e) {
-                this.BeginMontageSkillFollower(l);
+                this.BeginMontageSkillFollower(n);
               }
               t = true;
             } else {
-              o.SetSkillAutoCast(l.SkillId, e ? 1 : 2);
+              o.SetSkillAutoCast(n.SkillId, e ? 1 : 2);
             }
           }
-          if (t || s) {
+          if (t || i) {
             if (e) {
               if (!EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.CharSkillCountChanged, this.OnCharSkillCountChanged)) {
                 EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CharSkillCountChanged, this.OnCharSkillCountChanged);
@@ -485,9 +481,9 @@ class TowerDefensePlayerController {
           if (this.Model.FollowCueHandle === undefined) {
             this.Model.FollowCueHandle = [];
           }
-          for (const i of t) {
-            var s = e.AddCue(i);
-            this.Model.FollowCueHandle?.push(s);
+          for (const s of t) {
+            var i = e.AddCue(s);
+            this.Model.FollowCueHandle?.push(i);
           }
         }
       }
@@ -508,47 +504,47 @@ class TowerDefensePlayerController {
     this.SetPsFeedbackId(undefined);
     this.Model.PsFeedbackId = undefined;
   }
-  static TryPlayCharageEffect(i, o) {
-    if (i !== 2) {
+  static TryPlayCharageEffect(s, o) {
+    if (s !== 2) {
       this.RemoveChargeEffect();
     } else {
       var r = this.Model.BindFollowerSkills?.get(1);
       if (r !== undefined && r.length !== 0) {
         let t = false;
         let e = undefined;
-        let s = -1;
+        let i = -1;
         if (o > r[0].Time) {
           t = true;
           e = r[0];
-          s = 0;
+          i = 0;
         } else {
           for (let t = r.length - 1; t >= 0; t--) {
             if (o <= r[t].Time) {
               e = r[t];
-              s = t;
+              i = t;
               break;
             }
           }
         }
-        var i = this.Model;
-        var l = i.PossessedFollowerEntity?.GetComponent(21);
-        if (l !== undefined && (t && !i.LastSkillChargeFull && (i.LastSkillChargeFull = true, e.ChargeFullCueId > 0 && l.AddCue(e.ChargeFullCueId, {
+        var s = this.Model;
+        var n = s.PossessedFollowerEntity?.GetComponent(21);
+        if (n !== undefined && (t && !s.LastSkillChargeFull && (s.LastSkillChargeFull = true, e.ChargeFullCueId > 0 && n.AddCue(e.ChargeFullCueId, {
           Instant: true
-        }), this.SetPsFeedbackId(e.PsFeedback)), i.ChargeSkill !== e)) {
-          if (i.ChargeSkill && i.ChargeSkill.ChargeFullCueId > 0) {
-            l.AddCue(i.ChargeSkill.ChargeFullCueId, {
+        }), this.SetPsFeedbackId(e.PsFeedback)), s.ChargeSkill !== e)) {
+          if (s.ChargeSkill && s.ChargeSkill.ChargeFullCueId > 0) {
+            n.AddCue(s.ChargeSkill.ChargeFullCueId, {
               Instant: true
             });
           }
-          if (i.ChargeCueHandle > 0) {
-            l.RemoveCueByHandle(i.ChargeCueHandle);
-            i.ChargeCueHandle = 0;
+          if (s.ChargeCueHandle > 0) {
+            n.RemoveCueByHandle(s.ChargeCueHandle);
+            s.ChargeCueHandle = 0;
           }
           if (e?.ChargeCueId && e.ChargeCueId > 0) {
-            i.ChargeCueHandle = l.AddCue(e.ChargeCueId);
+            s.ChargeCueHandle = n.AddCue(e.ChargeCueId);
           }
-          this.SetPsFeedbackId(r[s + 1]?.PsFeedback);
-          i.ChargeSkill = e;
+          this.SetPsFeedbackId(r[i + 1]?.PsFeedback);
+          s.ChargeSkill = e;
         }
       }
     }
@@ -556,19 +552,19 @@ class TowerDefensePlayerController {
   static I9u(t) {
     if (t) {
       var e = t.GetSkillComp()?.Skills_;
-      var s = e?.Num();
-      if (s) {
-        var i = new Map();
-        for (let t = 0; t < s; ++t) {
+      var i = e?.Num();
+      if (i) {
+        var s = new Map();
+        for (let t = 0; t < i; ++t) {
           var o = e.Get(t)?.DaSkill_;
           if (o === undefined) {
             KscLog_1.KscLog.Info("Skill", 84, KscEnv_1.KscEnv.KscWorld, "获取跟随物<技能名,索引>忽略", ["index", t]);
           } else {
             o = o.GetName();
-            i.set(o, t);
+            s.set(o, t);
           }
         }
-        return i;
+        return s;
       }
       KscLog_1.KscLog.Warn("Skill", 84, KscEnv_1.KscEnv.KscWorld, "获取跟随物<技能名,索引>异常,实体没有技能");
     } else {
@@ -594,17 +590,17 @@ class TowerDefensePlayerController {
             this.Model.SkillId2SkillData = new Map();
           }
           for (const r of e) {
-            var s = this.Model.AllSkillId2SkillData?.get(r);
-            if (s) {
-              var i = s.OperateType;
-              let t = this.Model.BindFollowerSkills.get(i);
+            var i = this.Model.AllSkillId2SkillData?.get(r);
+            if (i) {
+              var s = i.OperateType;
+              let t = this.Model.BindFollowerSkills.get(s);
               if (t === undefined) {
                 t = [];
-                this.Model.BindFollowerSkills.set(i, t);
+                this.Model.BindFollowerSkills.set(s, t);
               }
-              KscLog_1.KscLog.Info("Skill", 84, KscEnv_1.KscEnv.KscWorld, "跟随物技能操作绑定", ["skillId", r], ["skillData", s]);
-              t.push(s);
-              this.Model.SkillId2SkillData.set(r, s);
+              KscLog_1.KscLog.Info("Skill", 84, KscEnv_1.KscEnv.KscWorld, "跟随物技能操作绑定", ["skillId", r], ["skillData", i]);
+              t.push(i);
+              this.Model.SkillId2SkillData.set(r, i);
             } else {
               KscLog_1.KscLog.Info("Skill", 85, KscEnv_1.KscEnv.KscWorld, "辅助机技能操作绑定失败", ["skillId", r]);
             }
@@ -655,13 +651,13 @@ class TowerDefensePlayerController {
     var t = this.Model.PossessedFollowerKscEntity?.GetSkillComp();
     if (t) {
       var e = t.GetSkillCollDown();
-      var s = this.Model.PossessedFollowerEntity?.GetComponent(211);
-      if (s) {
+      var i = this.Model.PossessedFollowerEntity?.GetComponent(218);
+      if (i) {
         t = this.Model.SkillId2SkillData;
         if (t) {
-          for (var [, i] of t) {
-            if (i.SkillType === 1) {
-              s.ModifyCdInfo(i.SkillId, e);
+          for (var [, s] of t) {
+            if (s.SkillType === 1) {
+              i.ModifyCdInfo(s.SkillId, e);
             }
           }
         }
@@ -681,16 +677,16 @@ class TowerDefensePlayerController {
     return this.Model.SkillId2SkillData?.get(t);
   }
   static SetListenSkillCD(t, e) {
-    var s;
+    var i;
     if (e !== undefined && t) {
       t.OnSkillCD?.Unbind();
       t.OnSkillReady?.Unbind();
-      if (s = this.GetFollowListenSkillData(e)) {
-        if (s.SkillType === 0) {
-          KscLog_1.KscLog.Info("Skill", 85, KscEnv_1.KscEnv.KscWorld, "塔防辅助机监听KSC技能CD", ["KSCSkillId", s.SkillId]);
-          t.ListenCDSkillIndex = s.SkillId;
+      if (i = this.GetFollowListenSkillData(e)) {
+        if (i.SkillType === 0) {
+          KscLog_1.KscLog.Info("Skill", 85, KscEnv_1.KscEnv.KscWorld, "塔防辅助机监听KSC技能CD", ["KSCSkillId", i.SkillId]);
+          t.ListenCDSkillIndex = i.SkillId;
           t.OnSkillCD?.Bind(this.OnFollowerEnterSkillCd);
-          t.ListenSkillReadyIndex = s.SkillId;
+          t.ListenSkillReadyIndex = i.SkillId;
           t.OnSkillReady?.Bind(this.RefreshFolloerCdCue);
         } else if (!EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.CharSkillCountChanged, this.RefreshFolloerCdCue)) {
           EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CharSkillCountChanged, this.RefreshFolloerCdCue);
@@ -709,30 +705,30 @@ class TowerDefensePlayerController {
     return this.Mad(t, false);
   }
   static Mad(t, e) {
-    var s;
     var i;
+    var s;
     var o = this.GetFollowListenSkillData(t);
     if (o) {
-      if (i = this.Model.PossessedFollowerKscEntity) {
+      if (s = this.Model.PossessedFollowerKscEntity) {
         if (o.SkillType === 1) {
-          if ((s = this.Model.PossessedFollowerEntity?.GetComponent(211)?.GetGroupSkillCdInfo(o.SkillId)) === undefined) {
+          if ((i = this.Model.PossessedFollowerEntity?.GetComponent(218)?.GetGroupSkillCdInfo(o.SkillId)) === undefined) {
             return 0;
           } else if (e) {
-            return s.CurRemainingCd;
+            return i.CurRemainingCd;
           } else {
-            return s.CurMaxCd;
+            return i.CurMaxCd;
           }
         } else {
-          i = (s = i.GetSkillComp()?.Skills_)?.Num();
+          s = (i = s.GetSkillComp()?.Skills_)?.Num();
           o = o.SkillId;
-          if (!i || i <= o) {
+          if (!s || s <= o) {
             KscLog_1.KscLog.Warn("Skill", 85, KscEnv_1.KscEnv.KscWorld, "塔防辅助机CDSkill不合法", ["proxyId", t]);
             return 0;
-          } else if ((i = s.Get(o)) && i.IsValid()) {
+          } else if ((s = i.Get(o)) && s.IsValid()) {
             if (e) {
-              return i.GetSkillCoolDownRemain();
+              return s.GetSkillCoolDownRemain();
             } else {
-              return i.GetSkillCoolDownMax();
+              return s.GetSkillCoolDownMax();
             }
           } else {
             KscLog_1.KscLog.Warn("Skill", 85, KscEnv_1.KscEnv.KscWorld, "塔防辅助机技能不合法", ["proxyId", t]);
@@ -749,15 +745,15 @@ class TowerDefensePlayerController {
     }
   }
   static GMd(t, e) {
-    var s;
+    var i;
     if (t) {
       if (e === undefined) {
         KscLog_1.KscLog.Warn("Attr", 84, KscEnv_1.KscEnv.KscWorld, "跟随物输入非法的proxy id", ["kscEntity", t]);
-      } else if (s = this.Model.PossessedFollowerProxies?.get(e)) {
-        if ((s = s.PropertyId) === undefined) {
+      } else if (i = this.Model.PossessedFollowerProxies?.get(e)) {
+        if ((i = i.PropertyId) === undefined) {
           KscLog_1.KscLog.Warn("Attr", 84, KscEnv_1.KscEnv.KscWorld, "跟随物proxy的属性数据异常", ["kscEntity", t], ["proxy id", e]);
         } else {
-          ControllerHolder_1.ControllerHolder.KuroSimpleCombatController.CurSubController?.SetAttrs(t, s);
+          ControllerHolder_1.ControllerHolder.KuroSimpleCombatController.CurSubController?.SetAttrs(t, i);
         }
       } else {
         KscLog_1.KscLog.Warn("Attr", 84, KscEnv_1.KscEnv.KscWorld, "跟随物输入非法的proxy", ["kscEntity", t], ["proxy id", e]);
@@ -804,17 +800,17 @@ class TowerDefensePlayerController {
     }
   }
   static DoSkill(t, e) {
-    var s = t.GetComponent(0)?.GetCreatureDataId();
-    if (s) {
-      if ((s = ControllerHolder_1.ControllerHolder.KuroSimpleCombatController.CurSubModel.GetKscEntityHandle(s)) && s.Valid) {
-        if (s = s.KscEntity) {
-          if (s instanceof UE.KSC_Entity_AssistMachine) {
+    var i = t.GetComponent(0)?.GetCreatureDataId();
+    if (i) {
+      if ((i = ControllerHolder_1.ControllerHolder.KuroSimpleCombatController.CurSubModel.GetKscEntityHandle(i)) && i.Valid) {
+        if (i = i.KscEntity) {
+          if (i instanceof UE.KSC_Entity_AssistMachine) {
             if (t = t?.GetComponent(3)?.Actor) {
               t = t.D_GetTransform();
-              s.D_Fire(t, e);
+              i.D_Fire(t, e);
             }
           } else {
-            s.TryActiveSKill(e);
+            i.TryActiveSKill(e);
           }
         }
       } else {
@@ -834,10 +830,10 @@ TowerDefensePlayerController.xrh = t => {
     _a.DoPlayerFollowerEnableChange(t);
   }
 };
-TowerDefensePlayerController.lFu = t => {
+TowerDefensePlayerController.yQm = t => {
   _a.DoPlayerFollowerCreate(t);
 };
-TowerDefensePlayerController._Fu = () => {
+TowerDefensePlayerController.vQm = () => {
   _a.DoPlayerFollowerDestroy();
 };
 TowerDefensePlayerController.OnCharSkillCountChanged = t => {
@@ -853,15 +849,15 @@ TowerDefensePlayerController.RefreshFolloerCdCue = () => {
     if ((t = _a.GetFollowerSkillRemainCD(e) > 0 ? 1 : 2) !== _a.Model.FollowerState) {
       _a.ClearFollowerCdCue();
       _a.SetFollowerState(t);
-      var s = _a.Model.PossessedFollowerEntity?.GetComponent(21);
+      var i = _a.Model.PossessedFollowerEntity?.GetComponent(21);
       var e = KscUtil_1.KscUtil.GetFollowerCdCueIds(e, t);
-      if (e !== undefined && s) {
+      if (e !== undefined && i) {
         if (_a.Model.FollowerCdCueHandle === undefined) {
           _a.Model.FollowerCdCueHandle = [];
         }
         for (const o of e) {
-          var i = s.AddCue(o);
-          _a.Model.FollowerCdCueHandle.push(i);
+          var s = i.AddCue(o);
+          _a.Model.FollowerCdCueHandle.push(s);
         }
       }
     }

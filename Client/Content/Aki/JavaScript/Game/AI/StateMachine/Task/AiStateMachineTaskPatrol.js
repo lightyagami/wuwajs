@@ -28,7 +28,7 @@ class AiStateMachineTaskPatrol extends AiStateMachineTask_1.AiStateMachineTask {
   }
   OnEnter(t) {
     var i = this.Node.AiComponent.TsAiController;
-    if (i instanceof TsAiController_1.default && (this.Bte = i.AiController, this.JLn = this.Bte.AiPatrol, this.$ie = this.JLn.GetConfig(), this.$ie) && (this.Jh = this.Bte.CharAiDesignComp.Entity, this.Gce = this.Jh.GetComponent(45), this.mBe = this.Jh.GetComponent(104), this.zLn = this.Jh.GetComponent(48), this.Hte = this.Bte.CharActorComp, this.zLn)) {
+    if (i instanceof TsAiController_1.default && (this.Bte = i.AiController, this.JLn = this.Bte.AiPatrol, this.$ie = this.JLn.GetConfig(), this.$ie) && (this.Jh = this.Bte.CharAiDesignComp.Entity, this.Gce = this.Jh.GetComponent(46), this.mBe = this.Jh.GetComponent(109), this.zLn = this.Jh.GetComponent(49), this.Hte = this.Bte.CharActorComp, this.zLn)) {
       this.ZLn();
     } else {
       this.$ne();

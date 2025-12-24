@@ -37,8 +37,8 @@ class UiNavigationJoystickInput {
       }
     }
   }
-  static uZd(i) {
-    if (this.cZd && (UiNavigationLogic_1.UiNavigationLogic.ExecuteInputNavigation(this.dd_, this.dZd), this.cZd = false, this.dZd === 1)) {
+  static Oem(i) {
+    if (this.Gem && (UiNavigationLogic_1.UiNavigationLogic.ExecuteInputNavigation(this.dd_, this.Fem), this.Gem = false, this.Fem === 1)) {
       this.dd_ = "";
     }
   }
@@ -49,7 +49,7 @@ class UiNavigationJoystickInput {
   }
   static Tick(i) {
     this._d_(i);
-    this.uZd(i);
+    this.Oem(i);
     this.ud_(i);
   }
   static Lwo(i, t) {
@@ -147,16 +147,16 @@ class UiNavigationJoystickInput {
     if (!this.wut && (!!StringUtils_1.StringUtils.IsBlank(this.dd_) || this.dd_ === i)) {
       if (t === 0) {
         this.dd_ = i;
-        this.dZd = t;
-        this.cZd = true;
+        this.Fem = t;
+        this.Gem = true;
         this.cd_ = true;
         this.Gwo = 1;
         this.Bwo = 0;
         this.bwo = this.qwo;
       } else {
         this.dd_ = i;
-        this.dZd = t;
-        this.cZd = true;
+        this.Fem = t;
+        this.Gem = true;
         this.cd_ = false;
         this.Gwo = 0;
       }
@@ -170,8 +170,8 @@ class UiNavigationJoystickInput {
       UiNavigationLogic_1.UiNavigationLogic.ExecuteInputNavigation(this.dd_, 1);
       this.dd_ = "";
       this.cd_ = false;
-      this.dZd = undefined;
-      this.cZd = false;
+      this.Fem = undefined;
+      this.Gem = false;
       this.Gwo = 0;
     }
   }
@@ -189,9 +189,9 @@ UiNavigationJoystickInput.Gwo = undefined;
 UiNavigationJoystickInput.cz = Vector_1.Vector.Create();
 UiNavigationJoystickInput.wut = false;
 UiNavigationJoystickInput.dd_ = "";
-UiNavigationJoystickInput.dZd = undefined;
+UiNavigationJoystickInput.Fem = undefined;
 UiNavigationJoystickInput.cd_ = false;
-UiNavigationJoystickInput.cZd = false;
+UiNavigationJoystickInput.Gem = false;
 UiNavigationJoystickInput.Fwo = new Map([[InputMappingsDefine_1.actionMappings.Ui方向下, 0], [InputMappingsDefine_1.actionMappings.Ui方向右, 3], [InputMappingsDefine_1.actionMappings.Ui方向上, 1], [InputMappingsDefine_1.actionMappings.Ui方向左, 2]]);
 UiNavigationJoystickInput.Vwo = new Map();
 UiNavigationJoystickInput.Rwo = 0;

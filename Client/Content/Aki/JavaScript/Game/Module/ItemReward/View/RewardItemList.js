@@ -15,6 +15,7 @@ class RewardItemList extends UiPanelBase_1.UiPanelBase {
     this.wqe = undefined;
     this.kGe = undefined;
     this.OFt = undefined;
+    this.cZf = undefined;
     this.d2t = () => {
       return this.Pfi();
     };
@@ -27,7 +28,7 @@ class RewardItemList extends UiPanelBase_1.UiPanelBase {
       if (e !== undefined && e > 0) {
         ControllerHolder_1.ControllerHolder.ItemController.OpenItemTipsByItemUid(e, r);
       } else {
-        ControllerHolder_1.ControllerHolder.ItemController.OpenItemTipsByItemId(r);
+        ControllerHolder_1.ControllerHolder.ItemController.OpenItemTipsByItemId(r, this.cZf);
       }
     };
   }
@@ -44,7 +45,7 @@ class RewardItemList extends UiPanelBase_1.UiPanelBase {
     this.OFt = undefined;
     this.kGe = undefined;
   }
-  Refresh(e) {
+  Refresh(e, r = true) {
     e.sort((e, r) => {
       var i = e.GetDropItemType();
       var t = r.GetDropItemType();
@@ -59,6 +60,7 @@ class RewardItemList extends UiPanelBase_1.UiPanelBase {
       }
     });
     this.kGe.RefreshByData(e);
+    this.cZf = r;
   }
   Pfi() {
     var e = new RewardSmallItemGrid_1.RewardSmallItemGrid();

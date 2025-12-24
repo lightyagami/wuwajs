@@ -4,12 +4,15 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.StrengthHandle = undefined;
+const Log_1 = require("../../../../Core/Common/Log");
 const Stats_1 = require("../../../../Core/Common/Stats");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const StrengthUnit_1 = require("../HudUnit/StrengthUnit");
 const HudUnitHandleBase_1 = require("./HudUnitHandleBase");
+const flyTag = -2027866845;
+const motorcycleTag = 346080557;
 class StrengthHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
   constructor() {
     super(...arguments);
@@ -35,12 +38,11 @@ class StrengthHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
     this.zpe = (t, e) => {
       this.HDr(e);
     };
-    this.CRl = (t, e) => {
+    this.UWi = (t, e) => {
+      var i;
       if (this.vni) {
-        if (e) {
-          this.vni.AddStrengthItem(2, 1);
-        }
-        this.vni.SwapPlace(e);
+        i = ModelManager_1.ModelManager.BattleUiModel.GetCurRoleData();
+        this.zAl(i);
       }
     };
     this.VQ_ = (t, e) => {
@@ -57,9 +59,7 @@ class StrengthHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
         if (t = ModelManager_1.ModelManager.BattleUiModel.GetCurRoleData()) {
           this.c$e(t);
           this.vni.RefreshRoleData(t);
-          if (t.GameplayTagComponent?.HasTag(-2027866845)) {
-            this.vni?.AddStrengthItem(2, 1);
-          }
+          this.zAl(t);
         } else {
           this.vni.SetVisible(false);
         }
@@ -89,7 +89,8 @@ class StrengthHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
   c$e(t) {
     var e;
     if (t && (e = t.EntityHandle.Id, this.Rni !== e) && (this.Rni = e, this.X9e = t.EntityHandle, EventSystem_1.EventSystem.AddWithTargetUseHoldKey(this, t.EntityHandle, EventDefine_1.EEventName.RemoveEntity, this.zpe), e = t.GameplayTagComponent)) {
-      this.mdt(e, -2027866845, this.CRl);
+      this.mdt(e, flyTag, this.UWi);
+      this.mdt(e, motorcycleTag, this.UWi);
       this.mdt(e, -689911122, this.VQ_, true);
     }
   }
@@ -113,10 +114,21 @@ class StrengthHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
   }
   zAl(t) {
     if (this.vni && (t = t?.GameplayTagComponent)) {
-      if (t = t.HasTag(-2027866845)) {
+      if (t.HasTag(flyTag)) {
         this.vni.AddStrengthItem(2, 1);
+        this.vni.SwapPlace(true);
+        if (Log_1.Log.CheckDebug()) {
+          Log_1.Log.Debug("HudUnit", 17, "增加飞行体力条");
+        }
+      } else if (t.HasTag(motorcycleTag)) {
+        this.vni.AddStrengthItem(3, 1);
+        this.vni.SwapPlace(true);
+        if (Log_1.Log.CheckDebug()) {
+          Log_1.Log.Debug("HudUnit", 17, "增加摩托车体力条");
+        }
+      } else {
+        this.vni.SwapPlace(false);
       }
-      this.vni.SwapPlace(t);
     }
   }
 }

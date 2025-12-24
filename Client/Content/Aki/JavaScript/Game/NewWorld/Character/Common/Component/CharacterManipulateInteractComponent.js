@@ -136,8 +136,8 @@ let CharacterManipulateInteractComponent = CharacterManipulateInteractComponent_
   }
   OnStart() {
     this.Hte = this.Entity.GetComponent(3);
-    this.Lie = this.Entity.GetComponent(209);
-    this.$zo = this.Entity.GetComponent(178);
+    this.Lie = this.Entity.GetComponent(215);
+    this.$zo = this.Entity.GetComponent(183);
     this.EIe = this.Entity.GetComponent(0);
     this.gri = CameraController_1.CameraController.FightCamera.GetComponent(5);
     this.tat = CommonParamById_1.configCommonParamById.GetStringConfig("ManipulateInteractEffectPath");
@@ -483,7 +483,7 @@ let CharacterManipulateInteractComponent = CharacterManipulateInteractComponent_
     this.Y7r = undefined;
   }
   SetDataFromOldRole(t) {
-    t = t.Entity.GetComponent(66);
+    t = t.Entity.GetComponent(69);
     this.hHr = t.hHr;
     this.lHr(true, "切换角色时继承目标并加上Tag");
   }
@@ -496,5 +496,5 @@ let CharacterManipulateInteractComponent = CharacterManipulateInteractComponent_
   }
 };
 CharacterManipulateInteractComponent.dHr = false;
-CharacterManipulateInteractComponent = CharacterManipulateInteractComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(66)], CharacterManipulateInteractComponent);
+CharacterManipulateInteractComponent = CharacterManipulateInteractComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(69)], CharacterManipulateInteractComponent);
 exports.CharacterManipulateInteractComponent = CharacterManipulateInteractComponent; //# sourceMappingURL=CharacterManipulateInteractComponent.js.map

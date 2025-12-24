@@ -12,6 +12,7 @@ class MasterLevelItem extends AutoAttachItem_1.AutoAttachItem {
   constructor() {
     super(...arguments);
     this.Pe = undefined;
+    this.ActivityId = 0;
     this.CallbackOnSelect = undefined;
     this.SPe = undefined;
     this.Ynu = () => {
@@ -33,10 +34,10 @@ class MasterLevelItem extends AutoAttachItem_1.AutoAttachItem {
   }
   bl(e) {
     var t = e.Level;
-    var s = ModelManager_1.ModelManager.PhantomArenaModel.GetMasterLevelMax();
+    var s = ModelManager_1.ModelManager.PhantomArenaModel.GetMasterLevelMax(this.ActivityId);
     this.GetText(10).SetText(t.toString());
     this.GetText(11).SetText(t.toString());
-    var i = ModelManager_1.ModelManager.PhantomArenaModel.GetMasterLevel();
+    var i = ModelManager_1.ModelManager.PhantomArenaModel.GetMasterLevel(this.ActivityId);
     var i = i < t;
     this.GetSprite(3).SetUIActive(!i);
     this.GetText(10).SetUIActive(!i);
@@ -45,15 +46,15 @@ class MasterLevelItem extends AutoAttachItem_1.AutoAttachItem {
     this.GetTexture(8).SetUIActive(!i);
     this.GetTexture(7).SetIsGray(i);
     this.GetItem(14).SetUIActive(!i);
-    var i = ModelManager_1.ModelManager.PhantomArenaModel.GetMasterLevelRewardList(t);
+    var i = ModelManager_1.ModelManager.PhantomArenaModel.GetMasterLevelRewardList(t, this.ActivityId);
     var i = i.length === 0;
-    var h = ModelManager_1.ModelManager.PhantomArenaModel.GetMasterLevelRewardIfTaken(t);
-    var r = ModelManager_1.ModelManager.PhantomArenaModel.GetMasterLevelRewardCanTake(t);
+    var h = ModelManager_1.ModelManager.PhantomArenaModel.GetMasterLevelRewardIfTaken(t, this.ActivityId);
+    var r = ModelManager_1.ModelManager.PhantomArenaModel.GetMasterLevelRewardCanTake(t, this.ActivityId);
     this.GetItem(16).SetUIActive(!h && r && !i);
     this.GetSprite(1).SetUIActive(t < s);
     this.GetSprite(2).SetUIActive(t < s);
     if (!e.IsMax) {
-      h = ModelManager_1.ModelManager.PhantomArenaModel.GetMasterExpNow();
+      h = ModelManager_1.ModelManager.PhantomArenaModel.GetMasterExpNow(this.ActivityId);
       this.GetSprite(2).SetFillAmount((h - e.ExpLevel) / e.ExpNext);
     }
   }

@@ -38,7 +38,7 @@ let RoleTagComponent = class RoleTagComponent extends BaseTagComponent_1.BaseTag
       var e = this.Entity.GetComponent(0);
       var o = e.GetPlayerId();
       var t = ModelManager_1.ModelManager.SceneTeamModel.GetTeamItemsByPlayer(o);
-      var o = FormationDataController_1.FormationDataController.GetPlayerEntity(o)?.GetComponent(209);
+      var o = FormationDataController_1.FormationDataController.GetPlayerEntity(o)?.GetComponent(215);
       if (o) {
         var n;
         var r;
@@ -92,10 +92,10 @@ let RoleTagComponent = class RoleTagComponent extends BaseTagComponent_1.BaseTag
       super.OnAnyTagChanged(e, o, t, n);
       n = this.Entity.GetComponent(0)?.GetPlayerId();
       if (n) {
-        FormationDataController_1.FormationDataController.GetPlayerEntity(n)?.GetComponent(203)?.OnTagChanged(e);
+        FormationDataController_1.FormationDataController.GetPlayerEntity(n)?.GetComponent(209)?.OnTagChanged(e);
       }
     }
   }
 };
-RoleTagComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(197)], RoleTagComponent);
+RoleTagComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(203)], RoleTagComponent);
 exports.RoleTagComponent = RoleTagComponent; //# sourceMappingURL=RoleTagComponent.js.map

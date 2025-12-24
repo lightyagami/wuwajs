@@ -39,7 +39,7 @@ class MoveToLocationController {
     };
     this.Jh = o;
     this.Hte = o.GetComponent(3);
-    this.mBe = o.GetComponent(104);
+    this.mBe = o.GetComponent(109);
   }
   get oqn() {
     if (!this.c6u) {

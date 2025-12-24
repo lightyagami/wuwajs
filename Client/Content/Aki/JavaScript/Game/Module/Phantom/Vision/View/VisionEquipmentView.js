@@ -106,7 +106,7 @@ class VisionEquipmentView extends UiViewBase_1.UiViewBase {
         this.GetItem(11).SetUIActive(this.o7i);
       }
     };
-    this.Ohm = () => {
+    this.Vcm = () => {
       this.Z9i = 0;
       this.vpt?.TryClearData();
       if (this.h8e.GetSelectedIndex() !== this.Z9i) {
@@ -512,7 +512,7 @@ class VisionEquipmentView extends UiViewBase_1.UiViewBase {
     };
     this.tHi = undefined;
     this.Qvt = (i, t, s) => {
-      if (s === 0 && !t && this.ehm()) {
+      if (s === 0 && !t && this.C_m()) {
         this.Ko_.ClearSelectMainPhantom(false);
       } else {
         var e = i;
@@ -609,7 +609,7 @@ class VisionEquipmentView extends UiViewBase_1.UiViewBase {
     var i = this.GetItem(33);
     await this.Ko_.CreateByActorAsync(i.GetOwner());
     this.Ko_.BindOnChangeAttrCallBack(this.$o_);
-    this.Ko_.OnDeselectMainPhantomCallback = this.Ohm;
+    this.Ko_.OnDeselectMainPhantomCallback = this.Vcm;
     this.h8e = new CommonDropDown_1.CommonDropDown(this.GetItem(22), this.m8e, this.c8e);
     await this.h8e.Init();
   }
@@ -1224,7 +1224,7 @@ class VisionEquipmentView extends UiViewBase_1.UiViewBase {
     this.e7i.Destroy();
     this.h8e?.Destroy();
   }
-  ehm() {
+  C_m() {
     var i = this.vpt.GetSelectRuleDataMap();
     var t = ModelManager_1.ModelManager.VisionRecommendModel?.CurrentMainPhantom?.MonsterId;
     let s = false;

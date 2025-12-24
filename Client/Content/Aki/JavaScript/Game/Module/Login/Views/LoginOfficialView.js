@@ -15,7 +15,9 @@ const HotPatchLogReport_1 = require("../../../../Launcher/HotPatchLogReport");
 const CloudGameManagerLauncher_1 = require("../../../../Launcher/Platform/CloudGameManagerLauncher");
 const Platform_1 = require("../../../../Launcher/Platform/Platform");
 const PlatformSdkManagerNew_1 = require("../../../../Launcher/Platform/PlatformSdk/PlatformSdkManagerNew");
+const HotFixManager_1 = require("../../../../Launcher/Ui/HotFix/HotFixManager");
 const PakKeyUpdate_1 = require("../../../../Launcher/Update/PakKeyUpdate");
+const ResourceUpdateManager_1 = require("../../../../Launcher/Update/ResourceDiffUpdate/ResourceUpdateManager");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const GlobalData_1 = require("../../../GlobalData");
@@ -25,23 +27,27 @@ const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const ThirdPartySdkManager_1 = require("../../../Manager/ThirdPartySdkManager");
-const UiViewBase_1 = require("../../../Ui/Base/UiViewBase");
+const UiTickViewBase_1 = require("../../../Ui/Base/UiTickViewBase");
 const UiInteractLogReport_1 = require("../../../Ui/LogReport/UiInteractLogReport");
 const UiLayer_1 = require("../../../Ui/UiLayer");
 const UiManager_1 = require("../../../Ui/UiManager");
 const ConfirmBoxDefine_1 = require("../../ConfirmBox/ConfirmBoxDefine");
 const PreDownloadButton_1 = require("../../MobilePredownload/PreDownloadButton");
+const SubPackageDefine_1 = require("../../SubPackage/SubPackageDefine");
 const UiLoginSceneManager_1 = require("../../UiComponent/UiLoginSceneManager");
 const LguiUtil_1 = require("../../Util/LguiUtil");
 const LoginDefine_1 = require("../Data/LoginDefine");
-const LoginServerController_1 = require("../LoginServerController");
 const LoginAgeTipView_1 = require("./LoginAgeTipView");
-class LoginOfficialView extends UiViewBase_1.UiViewBase {
+class LoginOfficialView extends UiTickViewBase_1.UiTickViewBase {
   constructor() {
     super(...arguments);
     this.VEi = false;
     this.Ws1 = undefined;
     this.jeu = false;
+    this.rFm = () => {
+      this.RefreshDownLoadState();
+    };
+    this.fMf = false;
     this.OnClickQRCodeLoginBtn = () => {
       if (ControllerHolder_1.ControllerHolder.KuroSdkController.GetIfCanQRCodeLogin()) {
         ControllerHolder_1.ControllerHolder.KuroSdkController.DoQRCodeLogin();
@@ -66,20 +72,20 @@ class LoginOfficialView extends UiViewBase_1.UiViewBase {
       UiManager_1.UiManager.OpenView("ToolWindowView");
     };
     this.QEi = () => {
-      let r = false;
+      let o = false;
       if (ControllerHolder_1.ControllerHolder.KuroSdkController.CanUseSdk()) {
-        var o = ControllerHolder_1.ControllerHolder.KuroSdkController.GetAgreement();
-        for (let e = 0; e < o.length; e++) {
-          if (o[e].link.includes("agreement_public")) {
+        var r = ControllerHolder_1.ControllerHolder.KuroSdkController.GetAgreement();
+        for (let e = 0; e < r.length; e++) {
+          if (r[e].link.includes("agreement_public")) {
             var i = ConfigManager_1.ConfigManager.TextConfig.GetTextContentIdById("UserTitle");
             var i = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(i);
-            ControllerHolder_1.ControllerHolder.KuroSdkController.SdkOpenUrlWnd(i, o[e].link, true, false);
-            r = true;
+            ControllerHolder_1.ControllerHolder.KuroSdkController.SdkOpenUrlWnd(i, r[e].link, true, false);
+            o = true;
             break;
           }
         }
       }
-      if (!r) {
+      if (!o) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Login", 10, "打开用户协议");
         }
@@ -88,20 +94,20 @@ class LoginOfficialView extends UiViewBase_1.UiViewBase {
       }
     };
     this.XEi = () => {
-      let r = false;
+      let o = false;
       if (ControllerHolder_1.ControllerHolder.KuroSdkController.CanUseSdk()) {
-        var o = ControllerHolder_1.ControllerHolder.KuroSdkController.GetAgreement();
-        for (let e = 0; e < o.length; e++) {
-          if (o[e].link.includes("personal_privacy")) {
+        var r = ControllerHolder_1.ControllerHolder.KuroSdkController.GetAgreement();
+        for (let e = 0; e < r.length; e++) {
+          if (r[e].link.includes("personal_privacy")) {
             var i = ConfigManager_1.ConfigManager.TextConfig.GetTextContentIdById("PrivacyTitle");
             var i = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(i);
-            ControllerHolder_1.ControllerHolder.KuroSdkController.SdkOpenUrlWnd(i, o[e].link, true, false);
-            r = true;
+            ControllerHolder_1.ControllerHolder.KuroSdkController.SdkOpenUrlWnd(i, r[e].link, true, false);
+            o = true;
             break;
           }
         }
       }
-      if (!r) {
+      if (!o) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Login", 10, "打开隐私政策");
         }
@@ -110,20 +116,20 @@ class LoginOfficialView extends UiViewBase_1.UiViewBase {
       }
     };
     this.$Ei = () => {
-      let r = false;
+      let o = false;
       if (ControllerHolder_1.ControllerHolder.KuroSdkController.CanUseSdk()) {
-        var o = ControllerHolder_1.ControllerHolder.KuroSdkController.GetAgreement();
-        for (let e = 0; e < o.length; e++) {
-          if (o[e].link.includes("child_privacy")) {
+        var r = ControllerHolder_1.ControllerHolder.KuroSdkController.GetAgreement();
+        for (let e = 0; e < r.length; e++) {
+          if (r[e].link.includes("child_privacy")) {
             var i = ConfigManager_1.ConfigManager.TextConfig.GetTextContentIdById("ChildPrivacyTitle");
             var i = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(i);
-            ControllerHolder_1.ControllerHolder.KuroSdkController.SdkOpenUrlWnd(i, o[e].link, true, false);
-            r = true;
+            ControllerHolder_1.ControllerHolder.KuroSdkController.SdkOpenUrlWnd(i, r[e].link, true, false);
+            o = true;
             break;
           }
         }
       }
-      if (!r) {
+      if (!o) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Login", 10, "打开儿童隐私政策");
         }
@@ -144,7 +150,7 @@ class LoginOfficialView extends UiViewBase_1.UiViewBase {
       this.eSi();
     };
     this.Ckt = e => {
-      var r;
+      var o;
       if (e) {
         this.CloseMe();
         if ((e = ModelManager_1.ModelManager.LoginModel.GetPlayerSex()) === undefined) {
@@ -154,8 +160,8 @@ class LoginOfficialView extends UiViewBase_1.UiViewBase {
         } else {
           Stats_1.Stat.CreateInstantStat("LoginProcedure.LoginPromise:Start");
           ModelManager_1.ModelManager.LoginModel.CreateLoginPromise();
-          r = ConfigManager_1.ConfigManager.CreateCharacterConfig.GetInitialRoles();
-          UiLoginSceneManager_1.UiLoginSceneManager.PlayRoleMontage(r[e], 18);
+          o = ConfigManager_1.ConfigManager.CreateCharacterConfig.GetInitialRoles();
+          UiLoginSceneManager_1.UiLoginSceneManager.PlayRoleMontage(o[e], 18);
           if (Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("Login", 10, "登录请求成功");
           }
@@ -171,15 +177,30 @@ class LoginOfficialView extends UiViewBase_1.UiViewBase {
     };
     this.tSi = () => {
       if (ModelManager_1.ModelManager.LoginModel.IsSdkLoggedIn()) {
-        this.iSi(true);
-        Stats_1.Stat.CreateInstantStat("LoginProcedure.SdkLogin:End");
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Login", 16, "LoginProcedure-SdkLogin-登录成功");
         }
+        Stats_1.Stat.CreateInstantStat("LoginProcedure.SdkLogin:End");
+        this.iSi(true);
         if (!Platform_1.Platform.IsWindowsPlatform()) {
           UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.DepthOfFieldQuality 1");
         }
         this.Krc();
+        if (ControllerHolder_1.ControllerHolder.KuroSdkController.CanUseSdk() && !this.fSi()) {
+          this.fUf().then(() => {
+            if (ResourceUpdateManager_1.ResourceDiffUpdaterManager.IsGrayBoxHit() && !ModelManager_1.ModelManager.SubPackageDownLoadModel.IsKeyPackageDownLoadingFinish()) {
+              if (Log_1.Log.CheckInfo()) {
+                Log_1.Log.Info("Login", 5, "SdkLogin登录成功-需要下载核心包，自动开始下载");
+              }
+              ControllerHolder_1.ControllerHolder.SubPackageController.AutoDownLoadKeySubPackage();
+              this.RefreshDownLoadState();
+            } else {
+              this.gUf();
+            }
+          });
+        } else {
+          this.gUf();
+        }
       } else {
         this.iSi(false);
         ModelManager_1.ModelManager.LoginModel.PlayStationGameAutoLoginId = "-1";
@@ -190,6 +211,26 @@ class LoginOfficialView extends UiViewBase_1.UiViewBase {
     };
     this.nSi = () => {
       this.sSi();
+    };
+    this.$Oe = e => {
+      if (e === "LoginServerView") {
+        if (ControllerHolder_1.ControllerHolder.KuroSdkController.CanUseSdk()) {
+          this.wtg();
+          this.fUf().then(() => {
+            if (ResourceUpdateManager_1.ResourceDiffUpdaterManager.IsGrayBoxHit() && !ModelManager_1.ModelManager.SubPackageDownLoadModel.IsKeyPackageDownLoadingFinish()) {
+              if (Log_1.Log.CheckInfo()) {
+                Log_1.Log.Info("Login", 5, "SdkLogin-选服后 -需要下载核心包，自动开始下载");
+              }
+              ControllerHolder_1.ControllerHolder.SubPackageController.AutoDownLoadKeySubPackage();
+              this.RefreshDownLoadState();
+            } else {
+              this.gUf();
+            }
+          });
+        } else {
+          this.gUf();
+        }
+      }
     };
     this.V5a = () => {
       if (Log_1.Log.CheckInfo()) {
@@ -225,7 +266,7 @@ class LoginOfficialView extends UiViewBase_1.UiViewBase {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIButtonComponent], [2, UE.UIButtonComponent], [3, UE.UIButtonComponent], [4, UE.UIButtonComponent], [5, UE.UIExtendToggle], [6, UE.UIButtonComponent], [7, UE.UIButtonComponent], [8, UE.UIButtonComponent], [9, UE.UIText], [10, UE.UIText], [11, UE.UIButtonComponent], [12, UE.UIButtonComponent], [13, UE.UIItem], [14, UE.UIButtonComponent], [15, UE.UIText], [16, UE.UIItem], [17, UE.UITexture], [18, UE.UIItem], [19, UE.UIItem], [20, UE.UIButtonComponent]];
+    this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIButtonComponent], [2, UE.UIButtonComponent], [3, UE.UIButtonComponent], [4, UE.UIButtonComponent], [5, UE.UIExtendToggle], [6, UE.UIButtonComponent], [7, UE.UIButtonComponent], [8, UE.UIButtonComponent], [9, UE.UIText], [10, UE.UIText], [11, UE.UIButtonComponent], [12, UE.UIButtonComponent], [13, UE.UIItem], [14, UE.UIButtonComponent], [15, UE.UIText], [16, UE.UIItem], [17, UE.UITexture], [18, UE.UIItem], [19, UE.UIItem], [20, UE.UIButtonComponent], [22, UE.UIItem], [23, UE.UISprite], [24, UE.UIText], [25, UE.UIText], [26, UE.UIText]];
     this.BtnBindInfo = [[0, this.HEi], [1, this.jEi], [2, this.KEi], [3, this.HEi], [4, this.lSi], [5, this.hSi], [6, this.QEi], [7, this.XEi], [8, this.$Ei], [11, this.YEi], [12, this.JEi], [14, this.zEi], [20, this.OnClickQRCodeLoginBtn]];
   }
   async OnBeforeStartAsync() {
@@ -233,14 +274,6 @@ class LoginOfficialView extends UiViewBase_1.UiViewBase {
     await this.Ws1.CreateThenShowByActorAsync(this.GetItem(19).GetOwner());
   }
   OnStart() {
-    if (CloudGameManager_1.CloudGameManager.IsCloudGame) {
-      if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("CloudGame", 58, "云游戏设置LoginTraceId", ["trace", CloudGameManager_1.CloudGameManager.CloudGameTraceId]);
-      }
-      ModelManager_1.ModelManager.LoginModel.LoginTraceId = CloudGameManager_1.CloudGameManager.CloudGameTraceId;
-    } else {
-      ModelManager_1.ModelManager.LoginModel.LoginTraceId = UE.KismetGuidLibrary.NewGuid().ToString();
-    }
     ControllerHolder_1.ControllerHolder.LoginController.LogLoginProcessLink(LoginDefine_1.ELoginStatus.LoginViewOpen);
     ModelManager_1.ModelManager.LoginModel.FixLoginFailInfo();
     this.GetButton(14).RootUIComp.SetUIActive(false);
@@ -259,6 +292,7 @@ class LoginOfficialView extends UiViewBase_1.UiViewBase {
     this.Pfa();
     this.xfa();
     this.RefreshQRCodeLoginBtn();
+    this.RefreshDownLoadState();
     this.Ws1?.Refresh();
     if (!UiManager_1.UiManager.IsViewShow("LoginOfficialStatusView")) {
       UiManager_1.UiManager.OpenView("LoginOfficialStatusView");
@@ -277,31 +311,68 @@ class LoginOfficialView extends UiViewBase_1.UiViewBase {
     }
   }
   xfa(e = false) {
-    var r;
     var o;
+    var r;
     if (CloudGameManager_1.CloudGameManager.IsCloudGame) {
       this.GetButton(1).RootUIComp.SetUIActive(false);
     } else if (ControllerHolder_1.ControllerHolder.LoginController.IsSdkLoginMode()) {
-      r = PlatformSdkManagerNew_1.PlatformSdkManagerNew.IsSdkOn ? PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk().GetProductId() : UE.KuroSDKManager.GetPackageId();
-      o = ConfigManager_1.ConfigManager.LoginConfig.GetLoginViewNoAccountButtonPackageIdList();
-      e = e && !o.includes(r);
+      o = PlatformSdkManagerNew_1.PlatformSdkManagerNew.IsSdkOn ? PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk().GetProductId() : UE.KuroSDKManager.GetPackageId();
+      r = ConfigManager_1.ConfigManager.LoginConfig.GetLoginViewNoAccountButtonPackageIdList();
+      e = e && !r.includes(o);
       this.GetButton(1).RootUIComp.SetUIActive(e);
     } else {
       this.GetButton(1).RootUIComp.SetUIActive(true);
     }
   }
   RefreshQRCodeLoginBtn(e = false) {
-    var r;
     var o;
+    var r;
     var i;
     if (!CloudGameManager_1.CloudGameManager.IsCloudGame && ControllerHolder_1.ControllerHolder.LoginController.IsSdkLoginMode()) {
-      r = Info_1.Info.IsMobilePlatform();
-      o = ControllerHolder_1.ControllerHolder.KuroSdkController.GetIfGlobalSdk();
+      o = Info_1.Info.IsMobilePlatform();
+      r = ControllerHolder_1.ControllerHolder.KuroSdkController.GetIfGlobalSdk();
       i = ControllerHolder_1.ControllerHolder.KuroSdkController.GetIfCanQRCodeLogin();
-      e = e && r && !o && i;
+      e = e && o && !r && i;
       this.GetButton(20).RootUIComp.SetUIActive(e);
     } else {
       this.GetButton(20).RootUIComp.SetUIActive(false);
+    }
+  }
+  RefreshDownLoadState() {
+    var e;
+    if (ResourceUpdateManager_1.ResourceDiffUpdaterManager.IsGrayBoxHit()) {
+      e = !ModelManager_1.ModelManager.SubPackageDownLoadModel.IsKeyPackageDownLoadingFinish();
+      this.fMf = e && this.jeu;
+      this.GetItem(22).SetUIActive(this.fMf);
+      this.GetItem(18).SetUIActive(!this.fMf);
+      this.GetButton(0).RootUIComp.SetUIActive(!this.fMf);
+      this.GetButton(4).RootUIComp.SetUIActive(!ControllerHolder_1.ControllerHolder.LoginController.IsGlobalSdkLoginMode() && !this.fMf);
+      this.GetButton(2).SetSelfInteractive(!this.fMf);
+      this.GetButton(1).SetSelfInteractive(!this.fMf);
+      if (this.fMf) {
+        this.GetButton(2).RootUIComp.SetAlpha(0.5);
+        this.GetButton(1).RootUIComp.SetAlpha(0.5);
+      }
+      this.GetButton(14).RootUIComp.SetUIActive(ControllerHolder_1.ControllerHolder.LoginController.IsGlobalSdkLoginMode() && !this.fMf);
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Login", 5, "SdkLogin-刷新下载状态", ["this.NeedTickDownLoad", this.fMf]);
+      }
+      if (!this.fMf) {
+        this.gUf();
+      }
+    }
+  }
+  OnTick(e) {
+    var o;
+    var r;
+    if (this.fMf) {
+      r = ModelManager_1.ModelManager.SubPackageDownLoadModel.GetSubPackageCurrentHaveDownLoadSpace(SubPackageDefine_1.KEY_SUBPACKAGE_ID);
+      o = ModelManager_1.ModelManager.SubPackageDownLoadModel.GetSubPackageCurrentTotalSpace(SubPackageDefine_1.KEY_SUBPACKAGE_ID);
+      r = Number(r) / Number(o);
+      this.GetSprite(23).SetFillAmount(r);
+      this.GetText(25).SetText(ModelManager_1.ModelManager.SubPackageDownLoadModel.ByteConverter(ModelManager_1.ModelManager.SubPackageDownLoadModel.GetSubPackageDownLoadSpeed()) + "/s");
+      this.GetText(26).SetText(ModelManager_1.ModelManager.SubPackageDownLoadModel.GetKeyPackageDownLoadingFileName());
+      this.GetText(24).SetText(Math.floor(r * 100) + "%");
     }
   }
   _Si() {
@@ -317,8 +388,10 @@ class LoginOfficialView extends UiViewBase_1.UiViewBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SdkLoginResult, this.tSi);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnGetLoginPlayerInfo, this.aSi);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnConfirmServerItem, this.nSi);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CloseView, this.$Oe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PlayStationJoinSessionEvent, this.V5a);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPreDownloadAvailableUpdate, this.Veu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRefreshSubPackageDownLoadByPriority, this.rFm);
   }
   OnRemoveEventListener() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.LoginRequestResult, this.Ckt);
@@ -326,17 +399,20 @@ class LoginOfficialView extends UiViewBase_1.UiViewBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SdkLoginResult, this.tSi);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnGetLoginPlayerInfo, this.aSi);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnConfirmServerItem, this.nSi);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CloseView, this.$Oe);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PlayStationJoinSessionEvent, this.V5a);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPreDownloadAvailableUpdate, this.Veu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRefreshSubPackageDownLoadByPriority, this.rFm);
   }
-  OnAfterShow() {
-    LoginServerController_1.LoginServerController.PingAllRegion();
+  OnBeforeShow() {
     if (ControllerHolder_1.ControllerHolder.KuroSdkController.CanUseSdk()) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Login", 16, "LoginProcedure-SdkLogin-界面打开检测sdk状态设置表现");
       }
       this.tSi();
     }
+  }
+  OnAfterShow() {
     this.wml();
     if (CloudGameManager_1.CloudGameManager.IsCloudGame && (Log_1.Log.CheckInfo() && Log_1.Log.Info("Login", 16, "LoginProcedure-SdkLoginNew-云游戏登录"), CloudGameManagerLauncher_1.CloudGameManagerLauncher.IsPreLaunch)) {
       ControllerHolder_1.ControllerHolder.LoginController.OnSdkLogin(CloudGameManager_1.CloudGameManager.GetCloudGameLoginInfo());
@@ -396,8 +472,8 @@ class LoginOfficialView extends UiViewBase_1.UiViewBase {
                 ControllerHolder_1.ControllerHolder.LoginController.GetHttp(false, false);
               }, () => {
                 var e = new ConfirmBoxDefine_1.ConfirmBoxDataNew(33);
-                var r = ConfigManager_1.ConfigManager.TextConfig.GetTextById("NoNetwork");
-                e.SetTextArgs(r);
+                var o = ConfigManager_1.ConfigManager.TextConfig.GetTextById("NoNetwork");
+                e.SetTextArgs(o);
                 ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(e);
               }).catch(e => {});
             } else {
@@ -407,8 +483,8 @@ class LoginOfficialView extends UiViewBase_1.UiViewBase {
             }
           }, () => {
             var e = new ConfirmBoxDefine_1.ConfirmBoxDataNew(33);
-            var r = ConfigManager_1.ConfigManager.TextConfig.GetTextById("NoNetwork");
-            e.SetTextArgs(r);
+            var o = ConfigManager_1.ConfigManager.TextConfig.GetTextById("NoNetwork");
+            e.SetTextArgs(o);
             ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(e);
           }).catch(e => {});
         } else if (Log_1.Log.CheckInfo()) {
@@ -419,8 +495,25 @@ class LoginOfficialView extends UiViewBase_1.UiViewBase {
       ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("AgreementTips");
     }
   }
+  async fUf() {
+    if (ResourceUpdateManager_1.ResourceDiffUpdaterManager.IsGrayBoxHit()) {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Login", 5, "SdkLogin登录成功-获取HTTP");
+      }
+      await ControllerHolder_1.ControllerHolder.LoginController.GetSubPackageHttp();
+      HotFixManager_1.HotFixManager.LaunchSubPackageHttpData = ControllerHolder_1.ControllerHolder.LoginController.GameSubPackageHttpData;
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Login", 5, "SdkLogin登录成功-创建下载器");
+      }
+      await ModelManager_1.ModelManager.SubPackageDownLoadModel.InitGameCoreUpdater();
+    } else if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("Login", 5, "SdkLogin登录成功-分包灰度未命中");
+    }
+  }
   Krc() {
-    this.UiViewSequence.PlaySequence("Show");
+    if (this.IsShow) {
+      this.UiViewSequence.PlaySequence("Show");
+    }
     ControllerHolder_1.ControllerHolder.KuroSdkController.ShowExternalLogin();
     if (ControllerHolder_1.ControllerHolder.LoginController.IsGlobalSdkLoginMode()) {
       ModelManager_1.ModelManager.LoginServerModel.InitSuggestData(ModelManager_1.ModelManager.LoginModel.GetSdkLoginConfig()?.Uid ?? "", e => {
@@ -443,10 +536,34 @@ class LoginOfficialView extends UiViewBase_1.UiViewBase {
       this.GetButton(14).RootUIComp.SetUIActive(false);
     }
   }
+  gUf() {
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("Login", 5, "SdkLogin登录成功-最后刷新登录成功表现");
+    }
+    this.GetItem(22).SetUIActive(false);
+    this.GetItem(18).SetUIActive(true);
+    this.GetButton(4).RootUIComp.SetUIActive(!ControllerHolder_1.ControllerHolder.LoginController.IsGlobalSdkLoginMode());
+    this.GetButton(0).RootUIComp.SetUIActive(true);
+    this.GetButton(2).SetSelfInteractive(true);
+    this.GetButton(1).SetSelfInteractive(true);
+    this.GetButton(2).RootUIComp.SetAlpha(1);
+    this.GetButton(1).RootUIComp.SetAlpha(1);
+    this.GetButton(14).RootUIComp.SetUIActive(ControllerHolder_1.ControllerHolder.LoginController.IsGlobalSdkLoginMode());
+  }
+  wtg() {
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("Login", 5, "LoginOfficialView-DisableDownLoadAbout");
+    }
+    this.GetItem(18).SetUIActive(false);
+    this.GetButton(0).RootUIComp.SetUIActive(false);
+    this.GetButton(2).SetSelfInteractive(false);
+    this.GetButton(1).SetSelfInteractive(false);
+    this.GetButton(14).RootUIComp.SetUIActive(false);
+  }
   fSi() {
     var e = ModelManager_1.ModelManager.LoginServerModel;
-    var r = ModelManager_1.ModelManager.LoginModel;
-    return !!ControllerHolder_1.ControllerHolder.LoginController.IsGlobalSdkLoginMode() && !!e.IsFirstLogin(r.GetSdkLoginConfig()?.Uid ?? "");
+    var o = ModelManager_1.ModelManager.LoginModel;
+    return !!ControllerHolder_1.ControllerHolder.LoginController.IsGlobalSdkLoginMode() && !!e.IsFirstLogin(o.GetSdkLoginConfig()?.Uid ?? "");
   }
   GetLoginSequenceName(e) {
     if (e === LoginDefine_1.ELoginSex.Boy) {
@@ -480,15 +597,18 @@ class LoginOfficialView extends UiViewBase_1.UiViewBase {
     this.GetButton(11).RootUIComp.SetUIActive(ControllerHolder_1.ControllerHolder.LoginController.IsSdkLoginMode() && ModelManager_1.ModelManager.LoginModel.IsSdkLoggedIn());
   }
   iSi(e) {
-    var r = this.GetButton(2);
-    var o = this.GetButton(3);
+    var o = this.GetButton(2);
+    var r = this.GetButton(3);
+    var i = BaseConfigController_1.BaseConfigController.GetIosAuditFirstDownloadTip() || BaseConfigController_1.BaseConfigController.GetIosAuditFirstDownloadTipWithSkip();
     if (ControllerHolder_1.ControllerHolder.LoginController.IsSdkLoginMode()) {
-      r.RootUIComp.SetUIActive(e && !CloudGameManager_1.CloudGameManager.IsCloudGame);
-      o.RootUIComp.SetUIActive(!e);
-      this.GetItem(18).SetUIActive(e);
+      o.RootUIComp.SetUIActive(e && !CloudGameManager_1.CloudGameManager.IsCloudGame && !i);
+      r.RootUIComp.SetUIActive(!e);
+      if (!e) {
+        this.GetItem(18).SetUIActive(e);
+      }
     } else {
-      r.RootUIComp.SetUIActive(!CloudGameManager_1.CloudGameManager.IsCloudGame);
-      o.RootUIComp.SetUIActive(false);
+      o.RootUIComp.SetUIActive(!CloudGameManager_1.CloudGameManager.IsCloudGame && !i);
+      r.RootUIComp.SetUIActive(false);
     }
     if (!e && ControllerHolder_1.ControllerHolder.LoginController.IsGlobalSdkLoginMode()) {
       this.GetButton(14).RootUIComp.SetUIActive(false);

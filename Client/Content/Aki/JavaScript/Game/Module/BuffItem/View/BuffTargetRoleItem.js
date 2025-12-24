@@ -39,7 +39,7 @@ class BuffTargetRoleItem extends UiPanelBase_1.UiPanelBase {
     this.uft = (t, i, e) => {
       var s;
       if (i !== e && this.z0t) {
-        s = this.z0t.Entity.GetComponent(177).GetCurrentValue(EAttributeId.l5n);
+        s = this.z0t.Entity.GetComponent(182).GetCurrentValue(EAttributeId.l5n);
         this.z0t.SetCurrentAttribute(i);
         this.cft(e, i, s);
       }
@@ -113,12 +113,12 @@ class BuffTargetRoleItem extends UiPanelBase_1.UiPanelBase {
   }
   c$e() {
     if (this.z0t) {
-      this.z0t.Entity.GetComponent(177).AddListener(EAttributeId.Proto_Life, this.uft, "Life.BuffTargetRoleItem");
+      this.z0t.Entity.GetComponent(182).AddListener(EAttributeId.Proto_Life, this.uft, "Life.BuffTargetRoleItem");
     }
   }
   m$e() {
     if (this.z0t) {
-      this.z0t.Entity.GetComponent(177).RemoveListener(EAttributeId.Proto_Life, this.uft);
+      this.z0t.Entity.GetComponent(182).RemoveListener(EAttributeId.Proto_Life, this.uft);
     }
   }
   RefreshPreviewUseItem(t, i, e) {

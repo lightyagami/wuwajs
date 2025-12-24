@@ -64,8 +64,8 @@ class SortEntrance extends UiPanelBase_1.UiPanelBase {
   constructor(t, i) {
     super();
     this.UpdateDataListFunction = i;
-    this.hdm = new Map();
-    this._dm = FilterSortDefine_1.FILTER_SORT_UNVALUE_UNIQUE_ID;
+    this.kCm = new Map();
+    this.OCm = FilterSortDefine_1.FILTER_SORT_UNVALUE_UNIQUE_ID;
     this.hDt = undefined;
     this.Ufa = false;
     this._Dt = 1;
@@ -129,10 +129,10 @@ class SortEntrance extends UiPanelBase_1.UiPanelBase {
   OnBeforeDestroy() {
     this.lLt?.Destroy();
     this.XFa();
-    for (const t of this.hdm.values()) {
+    for (const t of this.kCm.values()) {
       ModelManager_1.ModelManager.SortModel.DeleteSortResultData(t);
     }
-    this.hdm.clear();
+    this.kCm.clear();
   }
   XFa() {
     var t;
@@ -181,7 +181,7 @@ class SortEntrance extends UiPanelBase_1.UiPanelBase {
           this.hDt.SetSelectAttributeSort(e);
         }
         ModelManager_1.ModelManager.SortModel.SetSortResultData(this.hDt);
-        this.hdm.set(this._Dt, this.hDt.UniqueId);
+        this.kCm.set(this._Dt, this.hDt.UniqueId);
       }
       if (this.Ufa) {
         if (s = this.hDt.GetSelectBaseSort()) {
@@ -232,7 +232,7 @@ class SortEntrance extends UiPanelBase_1.UiPanelBase {
   qpt(t) {
     let i = this.ypt;
     var s;
-    var e = ModelManager_1.ModelManager.FilterModel.GetFilterResultData(this._dm);
+    var e = ModelManager_1.ModelManager.FilterModel.GetFilterResultData(this.OCm);
     if (e) {
       s = ConfigManager_1.ConfigManager.FilterConfig.GetFilterId(this._Dt);
       e = e.GetSelectRuleData();
@@ -304,17 +304,17 @@ class SortEntrance extends UiPanelBase_1.UiPanelBase {
     this.GetExtendToggle(2).SetToggleStateForce(t);
   }
   GetUniqueIdByGroupId(t) {
-    return this.hdm.get(t) ?? FilterSortDefine_1.FILTER_SORT_UNVALUE_UNIQUE_ID;
+    return this.kCm.get(t) ?? FilterSortDefine_1.FILTER_SORT_UNVALUE_UNIQUE_ID;
   }
   DeleteUniqueIdByGroupId(t) {
-    var i = this.hdm.get(t);
+    var i = this.kCm.get(t);
     if (i) {
       ModelManager_1.ModelManager.SortModel.DeleteSortResultData(i);
-      this.hdm.delete(t);
+      this.kCm.delete(t);
     }
   }
   SetFilterUniqueId(t) {
-    this._dm = t;
+    this.OCm = t;
   }
 }
 exports.SortEntrance = SortEntrance;

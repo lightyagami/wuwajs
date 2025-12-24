@@ -17,18 +17,20 @@ class MediumItemGridItemPriceComponent extends MediumItemGridComponent_1.MediumI
   }
   OnRefresh(e) {
     if (e) {
-      this.SetPrice(e.CurPrice, e.OriginalPrice);
+      this.SetPrice(e.CurPrice, e.OriginalPrice, e.CurrencyNotEnough);
       this.SetTexture(e.TexPath);
       this.SetActive(true);
     } else {
       this.SetActive(false);
     }
   }
-  SetPrice(e, i) {
+  SetPrice(e, i, t) {
     if (i !== undefined && e !== i) {
-      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), "RogueInfoViewShopPriceWithDiscount", e, i);
+      const o = t ? "RogueInfoViewShopPriceWithDiscount_NE" : "RogueInfoViewShopPriceWithDiscount";
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), o, e, i);
     } else {
-      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), "RogueInfoViewShopPrice", e);
+      const o = t ? "RogueInfoViewShopPrice_NE" : "RogueInfoViewShopPrice";
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), o, e);
     }
   }
   SetTexture(e) {

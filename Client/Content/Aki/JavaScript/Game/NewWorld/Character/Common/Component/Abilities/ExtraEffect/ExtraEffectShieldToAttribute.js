@@ -46,8 +46,8 @@ class ConvertShieldAttribute extends ExtraEffectBase_1.BuffEffect {
     var e = this.UXo ? this.InstigatorEntity?.Entity : this.OwnerEntity;
     if (e) {
       var s;
-      var e = e.CheckGetComponent(75);
-      var h = this.OwnerEntity?.CheckGetComponent(177);
+      var e = e.CheckGetComponent(78);
+      var h = this.OwnerEntity?.CheckGetComponent(182);
       var e = e?.GetShieldValue(this.AXo) ?? 0;
       let t = e >= this.xXo;
       let i = e;
@@ -65,7 +65,7 @@ class ConvertShieldAttribute extends ExtraEffectBase_1.BuffEffect {
   }
   qXo() {
     if (this.OQo && (this.UXo ? this.InstigatorEntity?.Entity : this.OwnerEntity)) {
-      this.OwnerEntity?.CheckGetComponent(177)?.RemoveModifier(this.ine ?? 0, this.OQo);
+      this.OwnerEntity?.CheckGetComponent(182)?.RemoveModifier(this.ine ?? 0, this.OQo);
       this.OQo = undefined;
     }
   }

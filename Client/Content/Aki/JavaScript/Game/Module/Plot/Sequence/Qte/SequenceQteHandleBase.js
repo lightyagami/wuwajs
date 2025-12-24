@@ -6,8 +6,10 @@ Object.defineProperty(exports, "__esModule", {
 exports.SequenceQteHandleBase = exports.QteSpineInfoProxy = exports.PERCENT = undefined;
 const AudioSystem_1 = require("../../../../../Core/Audio/AudioSystem");
 const Log_1 = require("../../../../../Core/Common/Log");
+const CommonDefine_1 = require("../../../../../Core/Define/CommonDefine");
 const MathUtils_1 = require("../../../../../Core/Utils/MathUtils");
 const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../../../Manager/ModelManager");
 const UiManager_1 = require("../../../../Ui/UiManager");
 const EVENT_SUCCESS = "plot_seq_qte_success";
 const EVENT_FAIL = "plot_seq_qte_timeout";
@@ -83,6 +85,7 @@ class SequenceQteHandleBase {
     this.IsProgressQte = false;
     this.SequenceQteStartRange = undefined;
     this.SequenceQteEndRange = undefined;
+    this.IsUpdateWithProgress = false;
     this.MarkSequenceQtePending = false;
     this.IsForceStop = false;
     this.UpdateInterval = 0;
@@ -90,9 +93,12 @@ class SequenceQteHandleBase {
     this.CacheProgress = 0;
     this.LastProgress = 0;
     this.ProgressLerpSpeed = -1;
+    this.TickInterval = 0;
+    this.TickCheckTime = 0;
     this.HasFinished = false;
     this.HasCommonQteFinished = false;
     this.NeedTick = false;
+    this.SectionLength = 0;
     this.SpineInfo = undefined;
     this.CacheSpineProgress = 0;
     this.View = undefined;
@@ -145,9 +151,13 @@ class SequenceQteHandleBase {
     }
     this.ProgressLerpSpeed = -1;
     this.NeedTick = true;
+    if (this.IsProgressQte) {
+      this.SectionLength = this.SequenceQteEndRange.FrameNumber.Value - this.SequenceQteStartRange.FrameNumber.Value;
+    }
   }
   OnFinish() {
     this.EndSpineCheckList.clear();
+    this.QteManager.ResetPlayRate();
     if (this.SpineInfo) {
       this.View?.RegisterCallback(undefined);
       this.View = undefined;
@@ -165,25 +175,46 @@ class SequenceQteHandleBase {
   OnReceiveTick(t) {
     this.Progress = MathUtils_1.MathUtils.Clamp(this.Context.GetProgress(), 0, 1);
   }
-  OnTick(t) {
-    if (this.NeedTick && (this.LastProgress = this.CacheProgress, this.OnReceiveTick(t), this.ProgressLerpSpeed > 0 ? this.CacheProgress = MathUtils_1.MathUtils.InterpConstantTo(this.CacheProgress, this.Progress, t, this.ProgressLerpSpeed) : this.CacheProgress = this.Progress, this.UpdateSequenceQte(), this.UpdateSpine(), this.HasCommonQteFinished) && this.CheckProgressFinish()) {
-      this.NeedTick = false;
-      this.PlayEndSpine();
-      this.CheckFinish();
+  OnTick(i) {
+    if (this.NeedTick) {
+      let t = i;
+      if (this.TickInterval > 0) {
+        this.TickCheckTime += i;
+        if (this.TickCheckTime < this.TickInterval) {
+          return;
+        }
+        t = this.TickCheckTime;
+        this.TickCheckTime = 0;
+      }
+      this.LastProgress = this.CacheProgress;
+      this.OnReceiveTick(t);
+      if (this.ProgressLerpSpeed > 0) {
+        this.CacheProgress = MathUtils_1.MathUtils.InterpConstantTo(this.CacheProgress, this.Progress, t, this.ProgressLerpSpeed);
+      } else {
+        this.CacheProgress = this.Progress;
+      }
+      this.UpdateSequenceQte(t);
+      this.UpdateSpine();
+      if (this.HasCommonQteFinished && this.CheckProgressFinish()) {
+        this.NeedTick = false;
+        this.PlayEndSpine();
+        this.CheckFinish();
+      }
     }
   }
-  UpdateSequenceQte() {
+  UpdateSequenceQte(t) {
     if (this.CacheProgress > this.LastProgress) {
       this.QteManager.ForwardSequenceAnim(this.Context.QteId, this.CacheProgress, this.SequenceQteEndRange);
     } else if (this.CacheProgress < this.LastProgress) {
       this.MarkSequenceQtePending = true;
       this.QteManager.BackwardSequenceAnim(this.Context.QteId, this.CacheProgress, this.SequenceQteStartRange);
-    } else if (this.CanProgressFreeze()) {
-      this.QteManager.PauseSequenceAnim(this.Context.QteId);
     }
-  }
-  CanProgressFreeze() {
-    return false;
+    if (this.IsUpdateWithProgress && this.IsProgressQte) {
+      if (!(t <= 0)) {
+        t = Math.abs(this.CacheProgress - this.LastProgress) * this.SectionLength / ModelManager_1.ModelManager.SequenceModel.CurFrameRate * CommonDefine_1.MILLIONSECOND_PER_SECOND / t;
+        this.QteManager.SetPlayRate(t);
+      }
+    }
   }
   OnCommonQteFinished() {
     this.HasCommonQteFinished = true;

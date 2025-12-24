@@ -45,7 +45,7 @@ class HotKeyComponent extends UiPanelBase_1.UiPanelBase {
     this.OnInit();
   }
   async OnBeforeStartAsync() {
-    this._qo = !!this.nqo && this.nqo.LongPressTime > 0;
+    this._qo = this.GetIsLongPress();
     this.CurComponent = new IconKeyComponent_1.IconKeyComponent();
     this.CurComponent.SetIsNeedLongPress(this._qo);
     this.CurComponent.SetKeyName(this.uqo());
@@ -344,6 +344,9 @@ class HotKeyComponent extends UiPanelBase_1.UiPanelBase {
   OnInputAxis(t, i) {}
   OnStartInputAxis(t) {}
   OnFinishInputAxis(t) {}
+  GetIsLongPress() {
+    return !!this.nqo && this.nqo.LongPressTime > 0;
+  }
   ResetPressState() {
     if (!this._qo && this.IsPress) {
       this.IsPress = false;

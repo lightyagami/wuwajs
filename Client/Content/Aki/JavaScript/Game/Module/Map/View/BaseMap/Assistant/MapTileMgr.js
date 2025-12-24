@@ -102,6 +102,7 @@ class MapTileMgr {
     this.Cfc = 1;
     this.TLc = [];
     this.vv1 = undefined;
+    this.TotalTileSize = Vector2D_1.Vector2D.Create();
     this.tAi = () => {
       if (this.NUi) {
         this.NUi.GetOwner()?.K2_DestroyActor();
@@ -375,6 +376,7 @@ class MapTileMgr {
     }
   }
   Ifc() {
+    this.OnCalTotalTileNum();
     let t = 0;
     let i = 0;
     if (this.PUi === 1) {
@@ -386,45 +388,30 @@ class MapTileMgr {
         this.GUi.push(e);
       }
     } else {
-      this.xUi = {
-        MaxX: -1,
-        MinX: 1,
-        MaxY: -1,
-        MinY: 1
-      };
-      for (const r of this.AUi) {
-        var s = this.bUi(r.MapTileName);
-        var h = s.X;
-        var s = s.Y;
-        this.xUi.MaxX = Math.max(h, this.xUi.MaxX);
-        this.xUi.MinX = Math.min(h, this.xUi.MinX);
-        this.xUi.MaxY = Math.max(s, this.xUi.MaxY);
-        this.xUi.MinY = Math.min(s, this.xUi.MinY);
-      }
       i = this.xUi.MaxX - this.xUi.MinX + 1 + FAKE_TILE_COUNT * 2;
-      var a = this.xUi.MaxY - this.xUi.MinY + 1 + FAKE_TILE_COUNT * 2;
-      t = i * a;
+      var s = this.xUi.MaxY - this.xUi.MinY + 1 + FAKE_TILE_COUNT * 2;
+      t = i * s;
     }
     this.qUi.length = 0;
     this.VUi.SetUIActive(true);
     this.qUi.push(this.VUi);
     this.J__.length = 0;
     for (let i = 1; i < t; ++i) {
-      var _ = this.Mfc();
-      this.qUi.push(_);
+      var h = this.Mfc();
+      this.qUi.push(h);
     }
     return [t, i];
   }
-  Tfc() {
-    var i = this.xUi.MaxX;
-    var t = 1 - this.xUi.MinX;
-    var e = Math.max(i, t);
-    var s = this.xUi.MaxY;
-    var h = 1 - this.xUi.MinY;
-    var a = Math.max(s, h);
-    this.kUi.SetWidth(e * 2 * MapDefine_1.DETAIL_TILE_REALSIZE);
+  Tfc(i) {
+    var t = i.MaxX;
+    var e = 1 - i.MinX;
+    var s = Math.max(t, e);
+    var h = i.MaxY;
+    var i = 1 - i.MinY;
+    var a = Math.max(h, i);
+    this.kUi.SetWidth(s * 2 * MapDefine_1.DETAIL_TILE_REALSIZE);
     this.kUi.SetHeight(a * 2 * MapDefine_1.DETAIL_TILE_REALSIZE);
-    this.MapOffset.Set(Math.max(0, i - t) * MapDefine_1.DETAIL_TILE_REALSIZE * 2, Math.max(0, t - i) * MapDefine_1.DETAIL_TILE_REALSIZE * 2, Math.max(0, h - s) * MapDefine_1.DETAIL_TILE_REALSIZE * 2, Math.max(0, s - h) * MapDefine_1.DETAIL_TILE_REALSIZE * 2);
+    this.MapOffset.Set(Math.max(0, t - e) * MapDefine_1.DETAIL_TILE_REALSIZE * 2, Math.max(0, e - t) * MapDefine_1.DETAIL_TILE_REALSIZE * 2, Math.max(0, i - h) * MapDefine_1.DETAIL_TILE_REALSIZE * 2, Math.max(0, h - i) * MapDefine_1.DETAIL_TILE_REALSIZE * 2);
     this.FakeOffset = MapDefine_1.DETAIL_TILE_REALSIZE * FAKE_TILE_COUNT;
   }
   lAi() {
@@ -503,7 +490,7 @@ class MapTileMgr {
       }
     }
     if (this.PUi !== 1) {
-      this.Tfc();
+      this.Tfc(this.xUi);
     }
   }
   Pbc(i) {
@@ -1254,6 +1241,36 @@ class MapTileMgr {
   InValidTile(i) {
     i = MapUtil_1.MapUtil.GetTilePosition(i);
     return i.X >= this.xUi.MinX && i.X <= this.xUi.MaxX && i.Y >= this.xUi.MinY && i.Y <= this.xUi.MaxY;
+  }
+  UpdateDraggableParams(i) {
+    this.Tfc(i);
+  }
+  ResetDraggableParams() {
+    this.Tfc(this.xUi);
+  }
+  OnCalTotalTileNum() {
+    this.xUi = {
+      MaxX: -1,
+      MinX: 1,
+      MaxY: -1,
+      MinY: 1
+    };
+    for (const a of this.AUi) {
+      var i = this.bUi(a.MapTileName);
+      var t = i.X;
+      var i = i.Y;
+      this.xUi.MaxX = Math.max(t, this.xUi.MaxX);
+      this.xUi.MinX = Math.min(t, this.xUi.MinX);
+      this.xUi.MaxY = Math.max(i, this.xUi.MaxY);
+      this.xUi.MinY = Math.min(i, this.xUi.MinY);
+    }
+    var e = this.xUi.MaxX;
+    var s = 1 - this.xUi.MinX;
+    var e = Math.max(e, s);
+    var s = this.xUi.MaxY;
+    var h = 1 - this.xUi.MinY;
+    var s = Math.max(s, h);
+    this.TotalTileSize.Set(e * 2 * MapDefine_1.DETAIL_TILE_REALSIZE, s * 2 * MapDefine_1.DETAIL_TILE_REALSIZE);
   }
 }
 exports.MapTileMgr = MapTileMgr;

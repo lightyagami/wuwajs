@@ -6,7 +6,6 @@ Object.defineProperty(exports, "__esModule", {
 exports.RoleDevViewModel = undefined;
 const Log_1 = require("../../../../../Core/Common/Log");
 const ConfigManager_1 = require("../../../../Manager/ConfigManager");
-const ModelManager_1 = require("../../../../Manager/ModelManager");
 const RoleDevPhantomViewItemDataFactory_1 = require("../PhantomPage/Data/RoleDevPhantomViewItemDataFactory");
 const RoleDevUtils_1 = require("../RoleDevUtils");
 const RoleDisplayModelFactory_1 = require("../RoleDisplayModelFactory");
@@ -24,56 +23,38 @@ class RoleDevViewModel {
     this.HEd = {
       DevPropsList: []
     };
-    this.Rgm = new Set();
-    this.Ngm = new Map();
-    this.Vgm = new Map();
-    this.evm = new Map();
+    this.sMm = new Set();
+    this.yMm = new Map();
+    this.SMm = new Map();
+    this.Qbm = new Map();
   }
   InitHotRoleDataList() {
     this.byd.length = 0;
     var e;
     var t;
-    var a = ConfigManager_1.ConfigManager.RoleDevConfig.GetAllRoleDevProsListConfig();
-    for (const o of a) {
-      if (o.TypeId !== 6 && o.TypeId !== 0 && (e = RoleDevUtils_1.RoleDevUtils.IsProspectTimeValid(o.Id), t = RoleDevUtils_1.RoleDevUtils.IsGachaValid(o.GachaId), Log_1.Log.CheckDebug())) {
-        Log_1.Log.Debug("RoleDev", 88, "角色配置信息", ["roleId", o.Id], ["typeId", o.TypeId], ["gachaId", o.GachaId], ["isForecastValid", e], ["isGachaValid", t]);
+    var o = ConfigManager_1.ConfigManager.RoleDevConfig.GetAllRoleDevProsListConfig();
+    for (const a of o) {
+      if (a.TypeId !== 6 && a.TypeId !== 0 && (e = RoleDevUtils_1.RoleDevUtils.IsProspectTimeValid(a.Id), t = RoleDevUtils_1.RoleDevUtils.IsGachaValid(a.GachaId), Log_1.Log.CheckDebug())) {
+        Log_1.Log.Debug("RoleDev", 88, "角色配置信息", ["roleId", a.Id], ["typeId", a.TypeId], ["gachaId", a.GachaId], ["isForecastValid", e], ["isGachaValid", t]);
       }
     }
-    a = a.filter(e => {
+    o = o.filter(e => {
       var t;
       return e.TypeId !== 6 && e.TypeId !== 0 && (t = RoleDevUtils_1.RoleDevUtils.IsProspectTimeValid(e.Id), e = RoleDevUtils_1.RoleDevUtils.IsGachaValid(e.GachaId), t || e);
     }).map(e => e.Id).map(e => RoleDisplayModelFactory_1.RoleDisplayModelFactory.Instance.BuildRoleDisplayModel(e));
-    this.byd.push(...a);
+    this.byd.push(...o);
     this.wyd();
   }
   wyd() {
-    this.byd.sort((e, t) => {
-      const a = {
-        [2]: 0,
-        0: 1,
-        1: 2,
-        3: 3
-      };
-      var o = e => {
-        var t = a[e.TypeTag] ?? 3;
-        if (e.TypeTag === 0) {
-          return [t, e.Id];
-        } else if (e.TypeTag === 2 || e.TypeTag === 1) {
-          return [t, ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(e.Id) !== undefined ? 1 : 0, -e.Level, e.Id];
-        } else {
-          return [t];
-        }
-      };
-      var i = o(e);
-      var r = o(t);
-      for (let e = 0; e < Math.max(i.length, r.length); e++) {
-        var l = (i[e] ?? 0) - (r[e] ?? 0);
-        if (l != 0) {
-          return l;
-        }
+    const o = e => {
+      e = ConfigManager_1.ConfigManager.RoleDevConfig?.GetRoleDevProsListConfig(e.Id);
+      if (e) {
+        return e.SortId;
+      } else {
+        return Number.MAX_SAFE_INTEGER;
       }
-      return 0;
-    });
+    };
+    this.byd.sort((e, t) => o(e) - o(t));
   }
   SetRoleDataList(e) {
     this.nud = e;
@@ -83,10 +64,10 @@ class RoleDevViewModel {
     this._ud = RoleDevWeaponViewItemDataFactory_1.RoleDevWeaponViewItemDataFactory.Create(e, this);
     this.cud = RoleDevSkillViewItemDataFactory_1.RoleDevSkillViewItemDataFactory.Create(e, this);
     this.uud = RoleDevPhantomViewItemDataFactory_1.RoleDevPhantomViewItemDataFactory.Create(e, this);
-    this.Rgm.add(e);
+    this.sMm.add(e);
   }
   GetRoleSkillPlanState(e) {
-    var t = this.Ngm.get(e);
+    var t = this.yMm.get(e);
     if (t === undefined) {
       return RoleDevUtils_1.RoleDevUtils.GetDefaultSkillPlanByRoleId(e);
     } else {
@@ -94,10 +75,10 @@ class RoleDevViewModel {
     }
   }
   SetRoleSkillPlanState(e, t) {
-    this.Ngm.set(e, t);
+    this.yMm.set(e, t);
   }
   GetRoleWeaponTabType(e) {
-    e = this.Vgm.get(e);
+    e = this.SMm.get(e);
     if (e === undefined) {
       return 0;
     } else {
@@ -105,10 +86,10 @@ class RoleDevViewModel {
     }
   }
   SetRoleWeaponTabType(e, t) {
-    this.Vgm.set(e, t);
+    this.SMm.set(e, t);
   }
   GetRoleRecommendFetterGroupId(e) {
-    e = this.evm.get(e);
+    e = this.Qbm.get(e);
     if (e === undefined) {
       return 0;
     } else {
@@ -116,7 +97,7 @@ class RoleDevViewModel {
     }
   }
   SetRoleRecommendFetterGroupId(e, t) {
-    this.evm.set(e, t);
+    this.Qbm.set(e, t);
   }
   InitRoleDevelopConfigData(e) {
     this.HEd = e;
@@ -143,7 +124,7 @@ class RoleDevViewModel {
     return this.byd;
   }
   CheckRoleIdIsCreated(e) {
-    return this.Rgm.has(e);
+    return this.sMm.has(e);
   }
 }
 exports.RoleDevViewModel = RoleDevViewModel;

@@ -9,7 +9,7 @@ const InputLayer_1 = require("../../../Input/InputLayer");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 class SurvivorsRogueInputLayer extends InputLayer_1.InputLayer {
   GetLayerType() {
-    return 7;
+    return 8;
   }
   HandlePress(e, r) {
     switch (e) {

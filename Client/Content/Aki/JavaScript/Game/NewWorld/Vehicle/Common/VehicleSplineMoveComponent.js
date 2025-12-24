@@ -1,20 +1,20 @@
 "use strict";
 
-var __decorate = this && this.__decorate || function (e, t, n, o) {
-  var i;
+var __decorate = this && this.__decorate || function (e, t, i, o) {
+  var n;
   var s = arguments.length;
-  var r = s < 3 ? t : o === null ? o = Object.getOwnPropertyDescriptor(t, n) : o;
+  var r = s < 3 ? t : o === null ? o = Object.getOwnPropertyDescriptor(t, i) : o;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    r = Reflect.decorate(e, t, n, o);
+    r = Reflect.decorate(e, t, i, o);
   } else {
-    for (var l = e.length - 1; l >= 0; l--) {
-      if (i = e[l]) {
-        r = (s < 3 ? i(r) : s > 3 ? i(t, n, r) : i(t, n)) || r;
+    for (var h = e.length - 1; h >= 0; h--) {
+      if (n = e[h]) {
+        r = (s < 3 ? n(r) : s > 3 ? n(t, i, r) : n(t, i)) || r;
       }
     }
   }
   if (s > 3 && r) {
-    Object.defineProperty(t, n, r);
+    Object.defineProperty(t, i, r);
   }
   return r;
 };
@@ -25,7 +25,6 @@ exports.VehicleSplineMoveComponent = undefined;
 const RegisterComponent_1 = require("../../../../Core/Entity/RegisterComponent");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
-const Global_1 = require("../../../Global");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const BaseSplineMoveComponent_1 = require("../../Common/Component/BaseSplineMoveComponent");
 let VehicleSplineMoveComponent = class VehicleSplineMoveComponent extends BaseSplineMoveComponent_1.BaseSplineMoveComponent {
@@ -34,22 +33,36 @@ let VehicleSplineMoveComponent = class VehicleSplineMoveComponent extends BaseSp
     this.CharActorComp = undefined;
     this.PerformComp = undefined;
     this.ExtraMoveParams = undefined;
-    this.OnVehicleBeenLeaved = e => {
-      if (e.IsRolePassenger(true)) {
-        this.ForceStopSplineMove();
+    this.DisableKeyOfVehicle = undefined;
+    this.OnEnterVehicle = e => {
+      if (e.IsDriver && e.PassengerEntity?.GetComponent(3)?.IsRoleAndCtrlByMe && this.DisableKeyOfVehicle) {
+        this.Enable(this.DisableKeyOfVehicle, "没有驾驶员");
+        this.DisableKeyOfVehicle = undefined;
+      }
+    };
+    this.OnLeaveVehicle = e => {
+      if (!!e.IsDriver && !this.DisableKeyOfVehicle) {
+        this.DisableKeyOfVehicle = this.Disable("没有驾驶员");
       }
     };
   }
   OnStart() {
     super.OnStart();
-    if ((0, RegisterComponent_1.isComponentInstance)(this.ActorComp, 238)) {
+    if ((0, RegisterComponent_1.isComponentInstance)(this.ActorComp, 247)) {
       this.CharActorComp = this.ActorComp;
     }
-    this.PerformComp = this.Entity.GetComponent(241);
+    this.PerformComp = this.Entity.GetComponent(250);
+    EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnVehicleBeenEntered, this.OnEnterVehicle);
+    EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnVehicleBeenLeaved, this.OnLeaveVehicle);
+    if (!this.PerformComp?.Driver) {
+      this.DisableKeyOfVehicle = this.Disable("没有驾驶员");
+    }
     return true;
   }
   OnEnd() {
     this.OnSplineMoveDisable();
+    EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnVehicleBeenEntered, this.OnEnterVehicle);
+    EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnVehicleBeenLeaved, this.OnLeaveVehicle);
     return super.OnEnd();
   }
   InputAdjust() {
@@ -65,10 +78,6 @@ let VehicleSplineMoveComponent = class VehicleSplineMoveComponent extends BaseSp
   ResetExtraMoveParams() {
     this.ExtraMoveParams = undefined;
   }
-  StartMoveConditionCheck(e, t) {
-    var n = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint();
-    return !!n && !!this.PerformComp?.IsDriver(n) && super.StartMoveConditionCheck(e, t);
-  }
   ApplySplineMoveDaConfig() {}
   ResetSplineMoveDaConfig() {
     this.PerformComp?.ResetVehicleConfig(true);
@@ -76,21 +85,26 @@ let VehicleSplineMoveComponent = class VehicleSplineMoveComponent extends BaseSp
   OnSplineMoveEnable(e, t) {
     super.OnSplineMoveEnable(e, t);
     this.ApplySplineMoveDaConfig();
-    ControllerHolder_1.ControllerHolder.VehicleController.SetRideSharingEnable(false);
-    EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnVehicleBeenLeaved, this.OnVehicleBeenLeaved);
+    switch (this.PerformComp?.VehicleType) {
+      case "Gongduola":
+      case "AutoMoveGongduola":
+        ControllerHolder_1.ControllerHolder.VehicleController.SetRideSharingEnable(false);
+    }
   }
   OnSplineMoveDisable() {
     super.OnSplineMoveDisable();
     this.ResetSplineMoveDaConfig();
-    ControllerHolder_1.ControllerHolder.VehicleController.SetRideSharingEnable(true);
-    if (EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.OnVehicleBeenLeaved, this.OnVehicleBeenLeaved)) {
-      EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnVehicleBeenLeaved, this.OnVehicleBeenLeaved);
+    switch (this.PerformComp?.VehicleType) {
+      case "Gongduola":
+      case "AutoMoveGongduola":
+        ControllerHolder_1.ControllerHolder.VehicleController.SetRideSharingEnable(true);
     }
   }
   OnSelectNextSplineMoveEnd() {
+    super.OnSelectNextSplineMoveEnd();
     this.CharActorComp?.ClearInput();
     this.LastLocation.DeepCopy(this.ActorComp.ActorLocationProxy);
   }
 };
-VehicleSplineMoveComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(112)], VehicleSplineMoveComponent);
+VehicleSplineMoveComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(117)], VehicleSplineMoveComponent);
 exports.VehicleSplineMoveComponent = VehicleSplineMoveComponent; //# sourceMappingURL=VehicleSplineMoveComponent.js.map

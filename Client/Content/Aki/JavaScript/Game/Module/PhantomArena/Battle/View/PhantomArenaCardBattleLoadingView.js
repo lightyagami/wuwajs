@@ -21,7 +21,10 @@ class PhantomArenaCardBattleLoadingView extends LoadingViewBase_1.LoadingViewBas
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UITexture], [2, UE.UIText], [3, UE.UIText], [4, UE.UITexture], [5, UE.UIText], [6, UE.UIText]];
+    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UITexture], [2, UE.UIText], [3, UE.UIText], [4, UE.UITexture], [5, UE.UIText], [6, UE.UIText], [7, UE.UITexture], [8, UE.UITexture], [9, UE.UITexture], [10, UE.UITexture], [11, UE.UITexture]];
+  }
+  async OnBeforeStartAsync() {
+    await this.nGm();
   }
   OnStart() {
     super.OnStart();
@@ -40,19 +43,32 @@ class PhantomArenaCardBattleLoadingView extends LoadingViewBase_1.LoadingViewBas
   OnLevelSequencePlayerBandStateChange(e) {
     this.SequencePlayer?.PlayLevelSequenceByName("Start");
   }
+  async nGm() {
+    var e = ModelManager_1.ModelManager.PhantomArenaBattleModel.ChallengeId;
+    var e = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleChallenge(e);
+    var a = [];
+    a.push(this.SetTextureAsync(e.BvbLoadingBg, this.GetTexture(7)));
+    a.push(this.SetTextureAsync(e.BvbLoadingTriangleBg, this.GetTexture(8)));
+    a.push(this.SetTextureAsync(e.BvbLoadingLeftHand, this.GetTexture(9)));
+    a.push(this.SetTextureAsync(e.BvbLoadingRightHand, this.GetTexture(10)));
+    a.push(this.SetTextureAsync(e.BvbLoadingHandShadow, this.GetTexture(11)));
+    await Promise.all(a);
+  }
   Uan() {
     var e = ModelManager_1.ModelManager.FunctionModel.GetPlayerName();
-    var a = ModelManager_1.ModelManager.PhantomArenaModel.GetMasterLevel();
-    var n = ModelManager_1.ModelManager.PhantomArenaModel.GetMasterTitleId();
-    var n = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleMasterTitleById(n);
-    var n = ConfigManager_1.ConfigManager.TextConfig.GetMultiTextByKey(n.Name, n.Name);
-    var t = ModelManager_1.ModelManager.PhantomArenaBattleModel.LoadingConfig;
-    if (t) {
-      t = t.Ng1;
-      t = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardRole(t);
+    var a = ModelManager_1.ModelManager.PhantomArenaBattleModel.ChallengeId;
+    var a = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleChallenge(a).ActivityId;
+    var t = ModelManager_1.ModelManager.PhantomArenaModel.GetMasterLevel(a);
+    var a = ModelManager_1.ModelManager.PhantomArenaModel.GetMasterTitleId(a);
+    var a = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleMasterTitleById(a);
+    var a = ConfigManager_1.ConfigManager.TextConfig.GetMultiTextByKey(a.Name, a.Name);
+    var i = ModelManager_1.ModelManager.PhantomArenaBattleModel.LoadingConfig;
+    if (i) {
+      i = i.Ng1;
+      i = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardRole(i);
       this.GetText(2)?.SetText(e ?? "");
-      this.GetText(3)?.SetText(`Lv.${a} ${n}`);
-      this.SetTextureByPath(t?.RoleHeadTexture ?? "", this.GetTexture(1));
+      this.GetText(3)?.SetText(`Lv.${t} ${a}`);
+      this.SetTextureByPath(i?.RoleHeadTexture ?? "", this.GetTexture(1));
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("PhantomArena", 77, "Cant get Phantom fighter Config");
     }
@@ -60,15 +76,15 @@ class PhantomArenaCardBattleLoadingView extends LoadingViewBase_1.LoadingViewBas
   xsu() {
     var e;
     var a;
-    var n = ModelManager_1.ModelManager.PhantomArenaBattleModel.LoadingConfig;
-    if (n) {
-      n = n.e8n;
-      n = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleChallengeConfig(n);
-      e = ConfigManager_1.ConfigManager.TextConfig.GetMultiTextByKey(n.NpcName, n.NpcName);
-      a = ConfigManager_1.ConfigManager.TextConfig.GetMultiTextByKey(n.NpcTitle, n.NpcTitle);
+    var t = ModelManager_1.ModelManager.PhantomArenaBattleModel.LoadingConfig;
+    if (t) {
+      t = t.e8n;
+      t = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleChallengeConfig(t);
+      e = ConfigManager_1.ConfigManager.TextConfig.GetMultiTextByKey(t.NpcName, t.NpcName);
+      a = ConfigManager_1.ConfigManager.TextConfig.GetMultiTextByKey(t.NpcTitle, t.NpcTitle);
       this.GetText(5)?.SetText(e);
-      this.GetText(6)?.SetText(`Lv.${n.NpcLevel} ${a}`);
-      this.SetTextureByPath(n.NpcHead, this.GetTexture(4));
+      this.GetText(6)?.SetText(`Lv.${t.NpcLevel} ${a}`);
+      this.SetTextureByPath(t.NpcHead, this.GetTexture(4));
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("PhantomArena", 77, "Cant get Phantom fighter Config");
     }

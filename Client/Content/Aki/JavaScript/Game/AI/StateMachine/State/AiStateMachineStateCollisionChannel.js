@@ -10,7 +10,7 @@ class AiStateMachineStateCollisionChannel extends AiStateMachineState_1.AiStateM
   constructor() {
     super(...arguments);
     this.IgnoreChannels = undefined;
-    this.S0m = new Map();
+    this.mEm = new Map();
   }
   OnInit(t) {
     this.IgnoreChannels = [];
@@ -22,8 +22,8 @@ class AiStateMachineStateCollisionChannel extends AiStateMachineState_1.AiStateM
   OnActivate() {
     var e = this.Node.ActorComponent.Actor.K2_GetComponentsByClass(UE.ShapeComponent.StaticClass());
     for (const n of this.IgnoreChannels) {
-      this.S0m.set(n, new Map());
-      var i = this.S0m.get(n);
+      this.mEm.set(n, new Map());
+      var i = this.mEm.get(n);
       for (let t = 0; t < e.Num(); t++) {
         var a = e.Get(t);
         var s = a.GetCollisionResponseToChannel(n);
@@ -35,7 +35,7 @@ class AiStateMachineStateCollisionChannel extends AiStateMachineState_1.AiStateM
   OnDeactivate() {
     var e = this.Node.ActorComponent.Actor.K2_GetComponentsByClass(UE.ShapeComponent.StaticClass());
     for (const n of this.IgnoreChannels) {
-      var i = this.S0m.get(n);
+      var i = this.mEm.get(n);
       if (i) {
         for (let t = 0; t < e.Num(); t++) {
           var a = e.Get(t);
@@ -46,7 +46,7 @@ class AiStateMachineStateCollisionChannel extends AiStateMachineState_1.AiStateM
         }
       }
     }
-    this.S0m.clear();
+    this.mEm.clear();
   }
 }
 exports.AiStateMachineStateCollisionChannel = AiStateMachineStateCollisionChannel;

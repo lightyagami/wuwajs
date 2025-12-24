@@ -68,7 +68,7 @@ let OptimizationStrategyComponent = OptimizationStrategyComponent_1 = class Opti
     }
   }
   OnStart() {
-    this.vtn = this.Entity.GetComponent(86);
+    this.vtn = this.Entity.GetComponent(89);
     if (this.vtn) {
       this.d5u = new Array();
       this.p5u();
@@ -149,5 +149,5 @@ let OptimizationStrategyComponent = OptimizationStrategyComponent_1 = class Opti
     return true;
   }
 };
-OptimizationStrategyComponent = OptimizationStrategyComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(222)], OptimizationStrategyComponent);
+OptimizationStrategyComponent = OptimizationStrategyComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(229)], OptimizationStrategyComponent);
 exports.OptimizationStrategyComponent = OptimizationStrategyComponent; //# sourceMappingURL=OptimizationStrategyComponent.js.map

@@ -35,10 +35,10 @@ class MapMarkMgr {
     this.z3t = 0;
     this.Cfc = 1;
     this.uUi = e => {
-      this.cUi(e);
+      this.DUi(e, this.tUi, this.iUi);
     };
     this.mUi = e => {
-      this.dUi(e);
+      this.RUi(e, this.tUi, this.iUi);
     };
     this.ixa = e => {
       if (e === this.MapType) {
@@ -109,6 +109,7 @@ WorldPosition:${e.WorldPosition.ToString()}
     };
     this.gUi = (e, t, i, s = false) => {
       this.ylh.TrackMapMark(e, t, i, s);
+      this.RefreshMarkHierarchyIndexByTrack(e, t, i);
     };
     this.ngt = e => {
       this.ylh.TrackMark(e);
@@ -270,12 +271,6 @@ WorldPosition:${e.WorldPosition.ToString()}
       e.SetScale(this.lUi);
     }
   }
-  cUi(e) {
-    this.DUi(e, this.tUi, this.iUi);
-  }
-  dUi(e) {
-    this.RUi(e, this.tUi, this.iUi);
-  }
   GetMarkItemsByType(e, t = true) {
     return this.ylh.GetMarkItemsByType(e, t);
   }
@@ -314,27 +309,31 @@ WorldPosition:${e.WorldPosition.ToString()}
     var r = ModelManager_1.ModelManager.WorldMapModel.IsPlayerInActivityInstanceDungeon();
     for (const h of e) {
       var n = ModelManager_1.ModelManager.TrackModel.IsTracking(1, h.MarkId);
-      if (h.CreateOnStart === 1 || !!n) {
+      if (h.CreateOnStart === 1 || n) {
         if (r && h.InstanceDungeonId === this.z3t) {
           ModelManager_1.ModelManager.WorldMapModel.EnableInstanceDungeonFilterMark = true;
         }
         n = this._Ui === h.MapId;
-        this.ylh.AddCreateMarkTask(n, h.ObjectType, h.MarkId, () => {
-          var e = MarkItemUtil_1.MarkItemUtil.CreateConfigMark(h.MarkId, h, this.MapType, this.lUi, this.tUi);
-          this.AddMarkItem(h.ObjectType, e);
-        });
+        const _ = MarkItemUtil_1.MarkItemUtil.CreateConfigMark(h.MarkId, h, this.MapType, this.lUi, this.tUi);
+        if (MapDefine_1.mapLoadDirectlyConfigMarkSet.has(h.ObjectType) && !_.IsInConsistentDistrict()) {
+          this.AddMarkItem(h.ObjectType, _);
+        } else {
+          this.ylh.AddCreateMarkTask(n, h.ObjectType, h.MarkId, () => {
+            this.AddMarkItem(h.ObjectType, _);
+          });
+        }
       }
     }
-    for (const [_, o] of ModelManager_1.ModelManager.MapModel.GetEntityPendingList()) {
-      const M = EntitySystem_1.EntitySystem.Get(_);
-      if (M) {
-        s = ConfigManager_1.ConfigManager.MapConfig.GetConfigMark(o);
-        this.ylh.AddCreateMarkTask(true, s?.ObjectType ?? 0, o, () => {
-          var e = M.GetComponent(1)?.Owner;
-          this.EUi(o, _, e);
+    for (const [o, M] of ModelManager_1.ModelManager.MapModel.GetEntityPendingList()) {
+      const v = EntitySystem_1.EntitySystem.Get(o);
+      if (v) {
+        s = ConfigManager_1.ConfigManager.MapConfig.GetConfigMark(M);
+        this.ylh.AddCreateMarkTask(true, s?.ObjectType ?? 0, M, () => {
+          var e = v.GetComponent(1)?.Owner;
+          this.EUi(M, o, e);
         });
       } else if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("Map", 63, "找不到实体对象", ["实体ID", _.toString()]);
+        Log_1.Log.Debug("Map", 63, "找不到实体对象", ["实体ID", o.toString()]);
       }
     }
     this.no_();
@@ -408,6 +407,27 @@ WorldPosition:${e.WorldPosition.ToString()}
     if (ObjectUtils_1.ObjectUtils.IsValid(i)) {
       t = MarkItemUtil_1.MarkItemUtil.CreateEntityMark(t, e, this.tUi, i, this.MapType, this.lUi);
       this.AddMarkItem(7, t);
+    }
+  }
+  ResetAllMapMarks() {
+    this.OnMapSetup();
+  }
+  RefreshMarkHierarchyIndexBySelect(t, i, s) {
+    i = this.GetMarkItem(t, i);
+    if (i !== undefined && !i.IsDestroy && i.View && i.View.ViewInitialized && !i.IsTracked) {
+      var r = i.ShowPriority;
+      let e = 0;
+      e = s ? (this.iUi.RemoveMarkItem(t, r), this.iUi.AddMarkItem(t, 200000)) : (this.iUi.RemoveMarkItem(t, 200000), this.iUi.AddMarkItem(t, r));
+      i.View.GetRootItem().SetHierarchyIndex(e);
+    }
+  }
+  RefreshMarkHierarchyIndexByTrack(t, i, s) {
+    i = this.GetMarkItem(t, i);
+    if (i !== undefined && !i.IsDestroy && i.View && i.View.ViewInitialized) {
+      var r = i.ShowPriority;
+      let e = 0;
+      e = s ? (this.iUi.RemoveMarkItem(t, r), this.iUi.AddMarkItem(t, 100000)) : (this.iUi.RemoveMarkItem(t, 100000), this.iUi.AddMarkItem(t, r));
+      i.View.GetRootItem().SetHierarchyIndex(e);
     }
   }
 }

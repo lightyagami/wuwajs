@@ -14,6 +14,7 @@ const MathUtils_1 = require("../../../../Core/Utils/MathUtils");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const GlobalData_1 = require("../../../GlobalData");
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const MapComponent_1 = require("../../Map/Base/MapComponent");
 const MapUtil_1 = require("../../Map/MapUtil");
@@ -100,19 +101,23 @@ class WorldMapMoveComponent extends MapComponent_1.MapComponent {
   get SafeAreaSize() {
     var t = this.NYa.Map;
     var e = this.KFo;
-    e.MinX = -((this.FYa.X + t.MapOffset.Y) * this.MapScale - this.PYe.X) / 2;
-    e.MaxX = ((this.FYa.X - t.MapOffset.X) * this.MapScale - this.PYe.X) / 2;
-    e.MinY = -((this.FYa.Y - t.MapOffset.Z) * this.MapScale - this.PYe.Y) / 2;
-    e.MaxY = ((this.FYa.Y - t.MapOffset.W) * this.MapScale - this.PYe.Y) / 2;
+    var i = ConfigManager_1.ConfigManager.WorldMapConfig.GetAkiMapConfig(t.MapId);
+    var i = i.SafeAreaOffset.length === 4 ? i.SafeAreaOffset : [0, 0, 0, 0];
+    e.MinX = -((this.FYa.X + t.MapOffset.Y + i[1]) * this.MapScale - this.PYe.X) / 2;
+    e.MaxX = ((this.FYa.X - t.MapOffset.X - i[0]) * this.MapScale - this.PYe.X) / 2;
+    e.MinY = -((this.FYa.Y - t.MapOffset.Z + i[3]) * this.MapScale - this.PYe.Y) / 2;
+    e.MaxY = ((this.FYa.Y - t.MapOffset.W - i[2]) * this.MapScale - this.PYe.Y) / 2;
     return e;
   }
   get DangerousAreaSize() {
     var t = this.NYa.Map;
     var e = this.$Fo;
-    e.MinX = -((this.FYa.X + t.MapOffset.Y + t.FakeOffset) * this.MapScale - this.PYe.X) / 2;
-    e.MaxX = ((this.FYa.X - t.MapOffset.X + t.FakeOffset) * this.MapScale - this.PYe.X) / 2;
-    e.MinY = -((this.FYa.Y - t.MapOffset.Z + t.FakeOffset) * this.MapScale - this.PYe.Y) / 2;
-    e.MaxY = ((this.FYa.Y - t.MapOffset.W + t.FakeOffset) * this.MapScale - this.PYe.Y) / 2;
+    var i = ConfigManager_1.ConfigManager.WorldMapConfig.GetAkiMapConfig(t.MapId);
+    var i = i.SafeAreaOffset.length === 4 ? i.SafeAreaOffset : [0, 0, 0, 0];
+    e.MinX = -((this.FYa.X + t.MapOffset.Y + t.FakeOffset + i[1]) * this.MapScale - this.PYe.X) / 2;
+    e.MaxX = ((this.FYa.X - t.MapOffset.X + t.FakeOffset - i[0]) * this.MapScale - this.PYe.X) / 2;
+    e.MinY = -((this.FYa.Y - t.MapOffset.Z + t.FakeOffset + i[3]) * this.MapScale - this.PYe.Y) / 2;
+    e.MaxY = ((this.FYa.Y - t.MapOffset.W + t.FakeOffset - i[2]) * this.MapScale - this.PYe.Y) / 2;
     return e;
   }
   get IsTweeningMove() {
@@ -191,27 +196,27 @@ class WorldMapMoveComponent extends MapComponent_1.MapComponent {
     var h;
     var r;
     var n;
-    var o;
+    var a;
     if (this.BFo) {
       s = t.X;
       t = t.Y;
       h = this.NYa.Map.GetRootItem().GetAnchorOffset();
-      o = s * this.MapScale + h.X;
+      a = s * this.MapScale + h.X;
       h = t * this.MapScale + h.Y;
       r = this.BFo.FocusMark_AnchoredPosition.X;
       n = this.BFo.FocusMark_AnchoredPosition.Y;
-      if (o === r && h === n) {
+      if (a === r && h === n) {
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WorldMapPositionChanged);
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WorldMapUpdateMultiMap);
       } else {
-        o = Vector2D_1.Vector2D.Create(-s * this.MapScale + r, -t * this.MapScale + n);
-        this.SetMapPosition(o, e, i, this.BFo.TweenTypeEase, this.BFo.TweenTime, true, true);
+        a = Vector2D_1.Vector2D.Create(-s * this.MapScale + r, -t * this.MapScale + n);
+        this.SetMapPosition(a, e, i, this.BFo.TweenTypeEase, this.BFo.TweenTime, true, true);
       }
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("Map", 18, "请于根节点挂KuroWorldMapUIParams组件");
     }
   }
-  SetMapPosition(e, i, s = 0, h, r, n = true, o = false) {
+  SetMapPosition(e, i, s = 0, h, r, n = true, a = false) {
     if (e) {
       if (this.BFo) {
         let t = Vector2D_1.Vector2D.Create();
@@ -224,7 +229,7 @@ class WorldMapMoveComponent extends MapComponent_1.MapComponent {
         }
         var e = Vector2D_1.Vector2D.Create(t.X, t.Y);
         t = this.n3o(e, s);
-        const a = () => {
+        const o = () => {
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WorldMapPositionChanged);
           if (!this.HFo) {
             EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WorldMapUpdateMultiMap);
@@ -235,10 +240,10 @@ class WorldMapMoveComponent extends MapComponent_1.MapComponent {
           s = t.ToUeVector2D(true);
           if (this.Elh(e, s)) {
             this.l8l(t);
-            a();
+            o();
           } else {
             this.r3o();
-            this.hfu = o;
+            this.hfu = a;
             this.HFo = true;
             this.F9l = t;
             this.jFo = UE.LTweenBPLibrary.Vector2To(GlobalData_1.GlobalData.World, this.WFo, e, s, r, 0, h);
@@ -246,13 +251,13 @@ class WorldMapMoveComponent extends MapComponent_1.MapComponent {
               this.F9l = undefined;
               this.HFo = false;
               this.hfu = false;
-              a();
+              o();
             });
           }
         } else {
           this.l8l(t);
           if (n) {
-            a();
+            o();
           }
         }
       } else if (Log_1.Log.CheckError()) {

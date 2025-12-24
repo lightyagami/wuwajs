@@ -84,6 +84,9 @@ let VehicleMoveComponent = class VehicleMoveComponent extends EntityComponent_1.
     this.TmpTrans = Transform_1.Transform.Create();
     this.TmpQuat = Quat_1.Quat.Create();
     this.TmpQuat2 = Quat_1.Quat.Create();
+    this.zum = 2;
+    this.StopMoveContinuousTime = 0;
+    this.MCf = 1000;
     this.OnResponseInputTagsChanged = (t, i) => {
       if (i) {
         if (this.CannotResponseInputCount === 0) {
@@ -128,11 +131,11 @@ let VehicleMoveComponent = class VehicleMoveComponent extends EntityComponent_1.
     return true;
   }
   OnStart() {
-    this.ActorComp = this.Entity.GetComponent(238);
-    this.AnimComp = this.Entity.GetComponent(239);
-    this.TagComponent = this.Entity.GetComponent(209);
-    this.AudioComp = this.Entity.GetComponent(246);
-    this.UeMovementMgrComp = this.Entity.GetComponent(248);
+    this.ActorComp = this.Entity.GetComponent(247);
+    this.AnimComp = this.Entity.GetComponent(248);
+    this.TagComponent = this.Entity.GetComponent(215);
+    this.AudioComp = this.Entity.GetComponent(255);
+    this.UeMovementMgrComp = this.Entity.GetComponent(259);
     this.UeMovementDisableHandle = this.UeMovementMgrComp.Disable("载具出生时默认关闭移动组件");
     this.VehicleMovement = this.ActorComp.Actor.GetComponentByClass(UE.KuroVehicleMovementComponent.StaticClass());
     if (!this.VehicleMovement) {
@@ -144,8 +147,10 @@ let VehicleMoveComponent = class VehicleMoveComponent extends EntityComponent_1.
       this.GravityDirectInternal.Set(0, 0, -1);
     }
     this.GravityDirectInternal.UnaryNegation(this.GravityUpInternal);
-    if (this.ActorComp?.CreatureData.GetBaseInfo()?.Category.VehicleType !== "Motorcycle") {
-      this.VehicleMovement.GravityScale = 2;
+    if (this.ActorComp?.CreatureData.GetBaseInfo()?.Category.VehicleType === "Motorcycle") {
+      this.zum = this.VehicleMovement.GravityScale;
+    } else {
+      this.VehicleMovement.GravityScale = this.zum;
     }
     this.InitGravityDirect();
     this.CannotResponseInputCount = 0;
@@ -175,13 +180,13 @@ let VehicleMoveComponent = class VehicleMoveComponent extends EntityComponent_1.
       if (this.IsStopInternal) {
         this.Speed = 0;
       } else {
-        this.Speed = this.ActorComp.ActorVelocityProxy.Size2D();
+        this.Speed = this.ActorComp.ActorVelocityProxy.Size();
       }
       this.IsMoving = this.Speed > MIN_MOVE_SPEED;
       if (!this.IsMovePath) {
         this.AudioComp?.UpdateVehicleMoveSound(this.Speed, this.ActorComp.Owner);
       }
-      this.UpdateUeMovementDisableState();
+      this.UpdateUeMovementDisableState(i);
       var s = this.Entity.GetTickInterval() > 1 && this.AnimComp?.Valid && this.ActorComp.Owner.WasRecentlyRenderedOnScreen();
       let t = undefined;
       if (s) {
@@ -316,27 +321,42 @@ let VehicleMoveComponent = class VehicleMoveComponent extends EntityComponent_1.
     }
   }
   EnableUeMovementTick(t) {
-    if (this.AutoUpdateUeMovementTickState && this.UeMovementDisableHandle && (this.UeMovementMgrComp.Enable(this.UeMovementDisableHandle, "reason"), this.UeMovementDisableHandle = 0, Log_1.Log.CheckDebug())) {
-      Log_1.Log.Debug("Vehicle", 50, "外部临时开启移动组件Tick", ["PbDataId", this.ActorComp?.CreatureData.GetPbDataId()], ["Reason", t]);
+    if (this.AutoUpdateUeMovementTickState && this.UeMovementMgrComp && this.UeMovementDisableHandle && (this.UeMovementMgrComp.Enable(this.UeMovementDisableHandle, t), this.UeMovementDisableHandle = 0, this.StopMoveContinuousTime = 0, Log_1.Log.CheckDebug())) {
+      Log_1.Log.Debug("Vehicle", 50, "开启移动组件Tick", ["PbDataId", this.ActorComp?.CreatureData.GetPbDataId()], ["Reason", t]);
     }
   }
-  UpdateUeMovementDisableState() {
+  DisableUeMovementTick(t) {
+    if (this.AutoUpdateUeMovementTickState && this.UeMovementMgrComp) {
+      if (this.UeMovementDisableHandle) {
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("Vehicle", 72, "关闭移动组件Tick时已经有人Disable了, 保持不变", ["PbDataId", this.ActorComp?.CreatureData.GetPbDataId()], ["Reason", t], ["DisableInfo", this.UeMovementMgrComp?.DumpDisableInfo()]);
+        }
+      } else {
+        this.UeMovementDisableHandle = this.UeMovementMgrComp.Disable(t);
+        if (Log_1.Log.CheckDebug()) {
+          Log_1.Log.Debug("Vehicle", 72, "关闭移动组件Tick", ["PbDataId", this.ActorComp?.CreatureData.GetPbDataId()], ["Reason", t]);
+        }
+      }
+    }
+  }
+  UpdateUeMovementDisableState(t) {
     if (!!this.AutoUpdateUeMovementTickState && !this.IsSummoningPerform) {
       if (this.UeMovementDisableHandle) {
-        if (this.IsMoving && (this.UeMovementMgrComp.Enable(this.UeMovementDisableHandle, "有速度自动启用移动组件Tick"), this.UeMovementDisableHandle = 0, Log_1.Log.CheckDebug())) {
-          Log_1.Log.Debug("Vehicle", 50, "有速度自动启用移动组件Tick", ["PbDataId", this.ActorComp?.CreatureData.GetPbDataId()]);
+        if (this.IsMoving) {
+          this.EnableUeMovementTick("有速度自动启用移动组件Tick");
         }
-      } else if (!this.IsMoving) {
+      } else if (!this.IsMoving && !(this.StopMoveContinuousTime += t, this.StopMoveContinuousTime - this.MCf < MathUtils_1.MathUtils.KindaSmallNumber)) {
+        this.StopMoveContinuousTime = 0;
         this.SetForceSpeed(Vector_1.Vector.ZeroVector);
-        this.UeMovementDisableHandle = this.UeMovementMgrComp.Disable("无速度自动关闭移动组件Tick");
-        if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("Vehicle", 50, "无速度自动关闭移动组件Tick", ["PbDataId", this.ActorComp?.CreatureData.GetPbDataId()]);
-        }
+        this.DisableUeMovementTick("无速度自动关闭移动组件Tick");
       }
     }
   }
   CanMove() {
     return this.CanMoveFromInputInternal && this.CanMoveWithDistanceInternal;
+  }
+  get CanMoveWithDistance() {
+    return this.CanMoveWithDistanceInternal;
   }
   GetMovingSplineId() {
     return VehiclePathMoveController_1.VehiclePathMoveController.GetMovingSplineId(this.Entity);
@@ -347,7 +367,7 @@ let VehicleMoveComponent = class VehicleMoveComponent extends EntityComponent_1.
     if (s?.IsValid()) {
       t = i.StartFromNearest ? this.FindNearestNextPoint(s.CurveInfo.SplineCurve) : 0;
       s.JumpToPoint(t);
-      if (!i.ForceToFirstPoint && (s.CurveInfo.SplineCurve.GetTransformAtSplineIndex(t, 1, this.TmpTrans), t = s.CurveInfo.SplineConfig?.TransitionSpeed || s.CurveInfo.SplineCurve.GetSplineLength() / s.CurveInfo.TotalTime, (t = VehiclePathMoveController_1.VehiclePathMoveController.CreateMoveToTask(this.Entity, this.TmpTrans, t))?.IsValid())) {
+      if (!i.ForceToFirstPoint && (s.GetTransformAtSplineIndex(t, this.TmpTrans), t = s.CurveInfo.SplineConfig?.TransitionSpeed || s.CurveInfo.SplineCurve.GetSplineLength() / s.CurveInfo.TotalTime, (t = VehiclePathMoveController_1.VehiclePathMoveController.CreateMoveToTask(this.Entity, this.TmpTrans, t))?.IsValid())) {
         t.CurveInfo.SplineId = -i.SplineId;
         t.NeedSync = i.NeedSync ?? true;
         t.SimulateRotation &&= i.SimulateRotation ?? true;
@@ -364,6 +384,7 @@ let VehicleMoveComponent = class VehicleMoveComponent extends EntityComponent_1.
         };
         s.NeedSync = i.NeedSync ?? true;
         s.SimulateRotation = i.SimulateRotation ?? true;
+        s.KeepForward = i.KeepForward ?? false;
         s.EnableDynamicGravity(!!i.DynamicGravity);
         s.OnMoveEndHandle = t => {
           if (i.OnMoveEndHandle) {
@@ -453,6 +474,9 @@ let VehicleMoveComponent = class VehicleMoveComponent extends EntityComponent_1.
       GravityUtils_1.GravityUtils.RotatorInterpConstantToForActor(this.ActorComp, t, i, s, h, e);
     }
   }
+  ResetGravityScale() {
+    this.VehicleMovement.GravityScale = this.zum;
+  }
 };
-VehicleMoveComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(240)], VehicleMoveComponent);
+VehicleMoveComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(249)], VehicleMoveComponent);
 exports.VehicleMoveComponent = VehicleMoveComponent; //# sourceMappingURL=VehicleMoveComponent.js.map

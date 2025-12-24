@@ -22,8 +22,8 @@ class HonamiStoryPlayerBackpackData {
     if (t.Wmd) {
       this.Config = ConfigManager_1.ConfigManager.HonamiStoryConfig.GetHonamiStoryBackPack(t.Wmd.Vmd);
       this.wfd();
-      this.RefreshEquipInfo(t.U$d);
-      this.RefreshGridItemInfo(t.Wmd.D$d);
+      this.RefreshEquipInfo(t.O$d);
+      this.RefreshGridItemInfo(t.Wmd.k$d);
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("HonamiStory", 58, "Proto_EquipRack is undefined");
     }
@@ -79,7 +79,7 @@ class HonamiStoryPlayerBackpackData {
     var o = new Set();
     for (const n of t) {
       var i;
-      var r = ModelManager_1.ModelManager.HonamiStoryModel.CreateHonamiStoryItemData(n.P$d, n.A$d);
+      var r = ModelManager_1.ModelManager.HonamiStoryModel.CreateHonamiStoryItemData(n.x$d, n.B$d);
       if (r.GetItemType() === 2) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("HonamiStory", 58, "Invalid EquipItemType", ["itemId", r.GetItemId()], ["itemType", r.GetItemType()]);
@@ -115,12 +115,12 @@ class HonamiStoryPlayerBackpackData {
   }
   Efd(t) {
     var e = ModelManager_1.ModelManager.HonamiStoryModel.GetItemData(t.Xmd);
-    e.UpdatePositionInfo(t.A$d);
+    e.UpdatePositionInfo(t.B$d);
     this.bfd.set(e.GetPosition(), e);
     this.SetRoleItemData(e);
   }
   Mfd(t) {
-    t = t.k$d.l9_;
+    t = t.F$d.l9_;
     this.bfd.delete(t);
     this.RemoveRoleItemData(t);
   }

@@ -341,11 +341,13 @@ class MailBoxView extends UiViewBase_1.UiViewBase {
     this.tIi.BindCallback(this.PickAllAccessibleAttachment);
     this.tIi.RefreshText("GetAllItem");
     this.iIi = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
-    var i = ConfigManager_1.ConfigManager.MailConfig.GetFilterTypeList();
-    this.BSi.InitScroll(i, this.oIi);
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Mail", 27, "邮件界面：OnStartFinish");
     }
+  }
+  OnBeforeShow() {
+    var i = ConfigManager_1.ConfigManager.MailConfig.GetFilterTypeList();
+    this.BSi.InitScroll(i, this.oIi);
   }
   OnAddEventListener() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SelectedMail, this.rIi);

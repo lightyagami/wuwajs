@@ -1,19 +1,19 @@
 "use strict";
 
 var __decorate = this && this.__decorate || function (e, t, i, s) {
-  var n;
-  var r = arguments.length;
-  var o = r < 3 ? t : s === null ? s = Object.getOwnPropertyDescriptor(t, i) : s;
+  var r;
+  var n = arguments.length;
+  var o = n < 3 ? t : s === null ? s = Object.getOwnPropertyDescriptor(t, i) : s;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
     o = Reflect.decorate(e, t, i, s);
   } else {
     for (var a = e.length - 1; a >= 0; a--) {
-      if (n = e[a]) {
-        o = (r < 3 ? n(o) : r > 3 ? n(t, i, o) : n(t, i)) || o;
+      if (r = e[a]) {
+        o = (n < 3 ? r(o) : n > 3 ? r(t, i, o) : r(t, i)) || o;
       }
     }
   }
-  if (r > 3 && o) {
+  if (n > 3 && o) {
     Object.defineProperty(t, i, o);
   }
   return o;
@@ -100,6 +100,19 @@ let UiModelRenderingMaterialComponent = class UiModelRenderingMaterialComponent 
     this.m8();
     return i;
   }
+  AddRenderingMaterialGroup(e) {
+    var t = this.rKt;
+    var e = {
+      MaterialAssetData: e,
+      HandleId: ResourceSystem_1.ResourceSystem.InvalidId,
+      RenderingId: ResourceSystem_1.ResourceSystem.InvalidId,
+      IsGroup: true
+    };
+    this.tBr.set(t, e);
+    this.oBr.add(t);
+    this.m8();
+    return t;
+  }
   m8() {
     if (this.UiModelDataComponent?.GetModelLoadState() === 2) {
       for (const e of this.oBr) {
@@ -120,6 +133,8 @@ let UiModelRenderingMaterialComponent = class UiModelRenderingMaterialComponent 
     if (t.MaterialAssetData) {
       if (t.WithAnimObject) {
         t.RenderingId = i.AddMaterialControllerDataWithAnimObject(t.MaterialAssetData, t.AnimMeshComp, undefined);
+      } else if (t.IsGroup) {
+        t.RenderingId = i.AddMaterialControllerDataGroup(t.MaterialAssetData);
       } else {
         t.RenderingId = i.AddMaterialControllerData(t.MaterialAssetData);
       }
@@ -133,20 +148,31 @@ let UiModelRenderingMaterialComponent = class UiModelRenderingMaterialComponent 
         ResourceSystem_1.ResourceSystem.CancelAsyncLoad(t);
       }
       if ((t = i.RenderingId) && t !== ResourceSystem_1.ResourceSystem.InvalidId) {
-        this.ActorComponent.CharRenderingComponent.RemoveMaterialControllerData(t);
+        if (i.IsGroup) {
+          this.ActorComponent.CharRenderingComponent.RemoveMaterialControllerDataGroup(t);
+        } else {
+          this.ActorComponent.CharRenderingComponent.RemoveMaterialControllerData(t);
+        }
       }
       this.tBr.delete(e);
     }
   }
   RemoveRenderingMaterialWithEnding(e) {
     var t;
-    var i = this.tBr.get(e);
-    if (i) {
-      if ((t = i.HandleId) && t !== ResourceSystem_1.ResourceSystem.InvalidId) {
+    var i;
+    var s = this.tBr.get(e);
+    if (s) {
+      if ((t = s.HandleId) && t !== ResourceSystem_1.ResourceSystem.InvalidId) {
         ResourceSystem_1.ResourceSystem.CancelAsyncLoad(t);
       }
-      if ((t = i.RenderingId) && t !== ResourceSystem_1.ResourceSystem.InvalidId) {
-        this.ActorComponent.CharRenderingComponent.RemoveMaterialControllerDataWithEnding(t);
+      t = s.RenderingId;
+      i = this.ActorComponent.CharRenderingComponent;
+      if (t && t !== ResourceSystem_1.ResourceSystem.InvalidId) {
+        if (s.IsGroup) {
+          i.RemoveMaterialControllerDataGroupWithEnding(t);
+        } else {
+          i.RemoveMaterialControllerDataWithEnding(t);
+        }
       }
       this.tBr.delete(e);
     }

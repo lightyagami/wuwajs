@@ -7,6 +7,8 @@ exports.GachaTagItem = undefined;
 const UE = require("ue");
 const Log_1 = require("../../../../Core/Common/Log");
 const StringUtils_1 = require("../../../../Core/Utils/StringUtils");
+const LocalStorage_1 = require("../../../Common/LocalStorage");
+const LocalStorageDefine_1 = require("../../../Common/LocalStorageDefine");
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const GridProxyAbstract_1 = require("../../Util/Grid/GridProxyAbstract");
@@ -39,11 +41,21 @@ class GachaTagItem extends GridProxyAbstract_1.GridProxyAbstract {
     }
   }
   RefreshRedDot() {
-    this.GetItem(2)?.SetUIActive(ModelManager_1.ModelManager.GachaModel.CheckNewGachaPoolById(this.GachaId));
+    let t = ModelManager_1.ModelManager.GachaModel.CheckNewGachaPoolById(this.GachaId);
+    var e;
+    var i;
+    if (!t) {
+      if ((e = ModelManager_1.ModelManager.GachaModel.GetGachaInfo(this.GachaId))?.GetFirstValidPool()?.UiType === 5) {
+        e = e?.UsePoolId === 0;
+        i = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.FirstOpenCommonWeaponSelect, false) ?? false;
+        t = e && !i;
+      }
+    }
+    this.GetItem(2)?.SetUIActive(t);
   }
   InitData() {
     var t;
-    var i;
+    var e;
     if (this.Data) {
       t = this.Data.PoolInfo.Id;
       if (t = ConfigManager_1.ConfigManager.GachaConfig.GetGachaViewInfo(t)) {
@@ -51,11 +63,11 @@ class GachaTagItem extends GridProxyAbstract_1.GridProxyAbstract {
         this.SetSpriteByPath(t.TagSelectedSpritePath, this.GetSprite(1), false);
         this.GetItem(4).SetUIActive(true);
         t = t.Type;
-        if ((i = (t = ConfigManager_1.ConfigManager.GachaConfig.GetGachaViewTypeConfig(t)).TagText) && !StringUtils_1.StringUtils.IsBlank(i)) {
+        if ((e = (t = ConfigManager_1.ConfigManager.GachaConfig.GetGachaViewTypeConfig(t)).TagText) && !StringUtils_1.StringUtils.IsBlank(e)) {
           this.GetItem(4).SetUIActive(true);
           LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(6), t.TagText);
-          i = UE.Color.FromHex(t.TagColor);
-          this.GetSprite(5).SetColor(i);
+          e = UE.Color.FromHex(t.TagColor);
+          this.GetSprite(5).SetColor(e);
         } else {
           this.GetItem(4).SetUIActive(false);
         }
@@ -64,17 +76,17 @@ class GachaTagItem extends GridProxyAbstract_1.GridProxyAbstract {
       }
     }
   }
-  Refresh(t, i, e) {
+  Refresh(t, e, i) {
     this.Data = t;
     this.InitData();
     this.RefreshRedDot();
-    if (i) {
+    if (e) {
       this.OnSelected(false);
     } else {
       this.OnDeselected(false);
     }
   }
-  GetKey(t, i) {
+  GetKey(t, e) {
     return this.GachaId;
   }
   OnSelected(t) {

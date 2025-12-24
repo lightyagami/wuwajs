@@ -29,7 +29,7 @@ class PassiveSkillCdInfo {
   IsInCd(t) {
     return this.GetCurRemainingCd(t) > Math.max(this.Threshold, 0);
   }
-  PSm() {
+  fxm() {
     for (var [t] of this.SkillCdFinishStampMap) {
       if (this.IsInCd(t)) {
         break;
@@ -50,7 +50,7 @@ class PassiveSkillCdInfo {
       this.CurMaxCd = s;
       e = this.SkillCdFinishStampMap.get(i) ?? 0;
       e = (Time_1.Time.FlowTime > e ? Time_1.Time.FlowTime : e) + s * TimeUtil_1.TimeUtil.InverseMillisecond;
-      this.PSm();
+      this.fxm();
       this.SkillCdFinishStampMap.delete(i);
       this.SkillCdFinishStampMap.set(i, e);
       if (Log_1.Log.CheckDebug()) {

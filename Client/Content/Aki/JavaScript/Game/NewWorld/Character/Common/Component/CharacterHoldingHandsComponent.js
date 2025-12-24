@@ -203,7 +203,8 @@ let CharacterHoldingHandsComponent = CharacterHoldingHandsComponent_1 = class Ch
     this.Hpd = undefined;
     this.$pd = undefined;
     this.CanSkillInterrupt = true;
-    this.PYd = false;
+    this.hzd = false;
+    this.d2f = false;
     this.e6d = undefined;
     this.bJe = (t, i) => {
       if (listenSkillIds.has(i) && (Log_1.Log.CheckInfo() && Log_1.Log.Info("Character", 82, "[CharacterHoldingHandsComponent.OnSkillEnd]", ["entityId", t], ["skillId", i]), i === SKILL_ID_INVITATION_END)) {
@@ -217,7 +218,7 @@ let CharacterHoldingHandsComponent = CharacterHoldingHandsComponent_1 = class Ch
     };
     this.OnStateInherit = (t, i) => {
       if (t?.Valid && !i) {
-        var s = t.GetComponent(302);
+        var s = t.GetComponent(321);
         if (s) {
           for (const r of this.zKu) {
             var e = r[0];
@@ -270,11 +271,11 @@ let CharacterHoldingHandsComponent = CharacterHoldingHandsComponent_1 = class Ch
     if (t !== Protocol_1.Aki.Protocol.kks.Proto_Monster || this.EIe.IsCharacterMonster()) {
       this.aO1 = t === Protocol_1.Aki.Protocol.kks.Proto_Player;
       this.ActorComp = this.Entity.CheckGetComponent(3);
-      this.oRe = this.Entity.CheckGetComponent(181);
-      this.Lie = this.Entity.CheckGetComponent(209);
-      this.I5r = this.Entity.CheckGetComponent(104);
-      this.MoveComp = this.Entity.CheckGetComponent(45);
-      this.cBe = this.Entity.GetComponent(39);
+      this.oRe = this.Entity.CheckGetComponent(186);
+      this.Lie = this.Entity.CheckGetComponent(215);
+      this.I5r = this.Entity.CheckGetComponent(109);
+      this.MoveComp = this.Entity.CheckGetComponent(46);
+      this.cBe = this.Entity.GetComponent(40);
       this.SkelMesh = this.ActorComp?.Actor.Mesh;
       this.AnimInstance = this.oRe?.MainAnimInstance;
     } else {
@@ -286,7 +287,7 @@ let CharacterHoldingHandsComponent = CharacterHoldingHandsComponent_1 = class Ch
     var t;
     var i = this.oRe?.MainAnimInstance;
     if (UE.KuroStaticLibrary.IsObjectClassByName(i, CharacterNameDefines_1.CharacterNameDefines.ABP_BASEROLENPC) || UE.KuroStaticLibrary.IsObjectClassByName(i, CharacterNameDefines_1.CharacterNameDefines.ABP_BASEROLE)) {
-      if (this.EIe?.HoldHandTargetEntityId && !this.EIe?.HoldHandIsFollow && (i = this.EIe.GetCreatureDataId().toString() + this.EIe?.HoldHandTargetEntityId.toString(), t = ModelManager_1.ModelManager.CreatureModel?.GetEntity(this.EIe?.HoldHandTargetEntityId)?.Entity?.GetComponent(302))) {
+      if (this.EIe?.HoldHandTargetEntityId && !this.EIe?.HoldHandIsFollow && (i = this.EIe.GetCreatureDataId().toString() + this.EIe?.HoldHandTargetEntityId.toString(), t = ModelManager_1.ModelManager.CreatureModel?.GetEntity(this.EIe?.HoldHandTargetEntityId)?.Entity?.GetComponent(321))) {
         HoldingHandsController_1.HoldingHandsController.AddBinding(i, this, t, this.EIe.HoldHandType).NoLerpNextUpdate = true;
       }
     } else {
@@ -539,7 +540,7 @@ let CharacterHoldingHandsComponent = CharacterHoldingHandsComponent_1 = class Ch
         e.Normalize();
         e.MultiplyEqual(i.Params.InvitationEndDistance);
         s.Addition(e, h.YJo);
-        h.Entity.GetComponent(104)?.SetMoveState(CharacterUnifiedStateTypes_1.ECharMoveState.Walk);
+        h.Entity.GetComponent(109)?.SetMoveState(CharacterUnifiedStateTypes_1.ECharMoveState.Walk);
         var t = {
           Index: 0,
           Position: h.YJo,
@@ -641,6 +642,7 @@ let CharacterHoldingHandsComponent = CharacterHoldingHandsComponent_1 = class Ch
   OnEnterHoldingHands(t) {
     var i = this.GetRoleState();
     if (i !== 0) {
+      this.SetDisableInputTags(false);
       this.Qpd(false, i);
       this.Kpd(true, i);
       if (i === 2) {
@@ -665,6 +667,11 @@ let CharacterHoldingHandsComponent = CharacterHoldingHandsComponent_1 = class Ch
     for (const e of this.zKu.values()) {
       HoldingHandsController_1.HoldingHandsController.RequestReleaseHands(e, t, i, s);
     }
+    this.SetDisableInputTags(false);
+    if (this.nPd) {
+      this.nPd.Follower?.SetDisableInputTags(false);
+      this.nPd.Leader?.SetDisableInputTags(false);
+    }
   }
   OnDeleteRelation(t, i, s = true) {
     var e;
@@ -682,6 +689,7 @@ let CharacterHoldingHandsComponent = CharacterHoldingHandsComponent_1 = class Ch
   }
   F2u(t, i, s) {
     var e = t ? 2 : 1;
+    this.SetDisableInputTags(false);
     this.Kpd(false, e);
     this.Qpd(false, e);
     if (this.I_d) {
@@ -770,25 +778,25 @@ let CharacterHoldingHandsComponent = CharacterHoldingHandsComponent_1 = class Ch
     }
   }
   TryAddEvents() {
-    if (!this.PYd) {
+    if (!this.hzd) {
       EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSkillEnd, this.bJe);
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CharInterruptSkill, this.S7u);
       EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.TeleportStart, this.bpr);
       if (this.aO1) {
         EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnChangeRole, this.xie);
       }
-      this.PYd = true;
+      this.hzd = true;
     }
   }
   TryRemoveEvents() {
-    if (this.PYd) {
+    if (this.hzd) {
       EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnSkillEnd, this.bJe);
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CharInterruptSkill, this.S7u);
       EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.TeleportStart, this.bpr);
       if (this.aO1) {
         EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnChangeRole, this.xie);
       }
-      this.PYd = false;
+      this.hzd = false;
     }
   }
   CheckObstacle(t) {
@@ -820,7 +828,7 @@ let CharacterHoldingHandsComponent = CharacterHoldingHandsComponent_1 = class Ch
     if (this.Bhh) {
       this.Eol();
     }
-    this.Bhh = InputController_1.InputController.CreateInputLayer(8);
+    this.Bhh = InputController_1.InputController.CreateInputLayer(9);
     this.Bhh.Init(this);
     InputController_1.InputController.AddInputLayer(this.Entity.Id, this.Bhh);
   }
@@ -848,36 +856,52 @@ let CharacterHoldingHandsComponent = CharacterHoldingHandsComponent_1 = class Ch
     for (const t of this.zKu.values()) {
       const i = this.Model?.GetRelation(t);
       if (i && i instanceof HoldingHandsUtils_1.Binding && i.Follower) {
-        this.SetDisableInputTags(true);
-        i.Follower.SetDisableInputTags(true);
-        const s = ((this.nPd = i).Follower.nPd = i).Follower;
-        const e = this.Entity.GetComponent(29);
-        if (e) {
-          e.OnLeaveSitDown = () => {
-            if (!s.IsSitDown() && i) {
-              i.Leader.OnLeaderAndFollowerStandUp();
+        (this.nPd = i).Follower.nPd = i;
+        const s = this.Entity.GetComponent(29);
+        if (s) {
+          s.OnLeaveSitDown = () => {
+            s.OnLeaveSitDown = undefined;
+            if (i) {
+              i.Leader?.SetDisableInputTags(false);
+              i.Follower?.SetDisableInputTags(false);
+              if (i.IsValid()) {
+                if (!i.Follower.IsSitDown()) {
+                  i.Leader.OnLeaderAndFollowerStandUp();
+                }
+              } else {
+                i.Leader?.ClearSavedRelation();
+                i.Follower?.ClearSavedRelation();
+              }
             }
-            e.OnLeaveSitDown = undefined;
           };
         }
         HoldingHandsController_1.HoldingHandsController.RequestReleaseHands(t, "坐下临时断开", false, false);
+        this.SetDisableInputTags(true);
+        i.Follower.SetDisableInputTags(true);
         return i;
       }
     }
   }
-  OnLeaderAndFollowerStandUp() {
-    this.SetDisableInputTags(false);
-    this.nPd.Follower.SetDisableInputTags(false);
-    HoldingHandsController_1.HoldingHandsController.AddBinding(this.nPd.Key, this.nPd.Leader, this.nPd.Follower, this.nPd.LeaderHandType);
-    this.nPd.Follower.nPd = undefined;
+  ClearSavedRelation() {
     this.nPd = undefined;
   }
+  OnLeaderAndFollowerStandUp() {
+    if (this.nPd) {
+      if (this.nPd.IsValid()) {
+        HoldingHandsController_1.HoldingHandsController.AddBinding(this.nPd.Key, this.nPd.Leader, this.nPd.Follower, this.nPd.LeaderHandType);
+      }
+      if (this.nPd.Follower) {
+        this.nPd.Follower.ClearSavedRelation();
+      }
+      this.ClearSavedRelation();
+    }
+  }
   IsSitDown() {
-    var t = this.Entity.GetComponent(29);
+    var t = this.Entity?.GetComponent(29);
     if (t) {
       return t.IsSitDown;
     } else {
-      return !!(t = this.Entity.GetComponent(93)) && t.Phase !== 0;
+      return !!(t = this.Entity?.GetComponent(96)) && t.Phase !== 0;
     }
   }
   IsSitDownWithHoldingHands() {
@@ -904,18 +928,21 @@ let CharacterHoldingHandsComponent = CharacterHoldingHandsComponent_1 = class Ch
   }
   SetDisableInputTags(t = true) {
     if (this.Lie) {
-      if (t) {
+      if (t && !this.d2f) {
         for (const i of disableInputTagIds) {
           this.Lie?.AddTag(i);
+          this.d2f = true;
         }
-      } else {
+      }
+      if (!t && this.d2f) {
         for (const s of disableInputTagIds) {
           this.Lie?.RemoveTag(s);
+          this.d2f = false;
         }
       }
     }
   }
 };
 CharacterHoldingHandsComponent.k2u = undefined;
-CharacterHoldingHandsComponent = CharacterHoldingHandsComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(302)], CharacterHoldingHandsComponent);
+CharacterHoldingHandsComponent = CharacterHoldingHandsComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(321)], CharacterHoldingHandsComponent);
 exports.CharacterHoldingHandsComponent = CharacterHoldingHandsComponent; //# sourceMappingURL=CharacterHoldingHandsComponent.js.map

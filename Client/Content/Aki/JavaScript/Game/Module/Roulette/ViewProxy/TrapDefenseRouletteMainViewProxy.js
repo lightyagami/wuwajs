@@ -8,13 +8,13 @@ const Info_1 = require("../../../../Core/Common/Info");
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const InputMappingsDefine_1 = require("../../../Ui/InputDistribute/InputMappingsDefine");
-const RouletteComponent_1 = require("../RouletteComponent/RouletteComponent");
 const RouletteComponentMain_1 = require("../RouletteComponent/RouletteComponentMain");
 const TrapDefenseRouletteItemTips_1 = require("../View/TrapDefenseRouletteItemTips");
 const RouletteMainViewProxyBase_1 = require("./RouletteMainViewProxyBase");
 class TrapDefenseRouletteMainViewProxy extends RouletteMainViewProxyBase_1.RouletteMainViewProxyBase {
   constructor() {
     super(...arguments);
+    this.KOm = [[[1], 4, 0], [[2], 5, 0], [[3], 6, 0], [[4], 7, 0], [[5], 8, 0], [[6], 9, 0], [[7], 10, 0], [[8], 11, 0]];
     this.Cpo = undefined;
     this.ItemTips = undefined;
   }
@@ -40,7 +40,7 @@ class TrapDefenseRouletteMainViewProxy extends RouletteMainViewProxyBase_1.Roule
     return this.Cpo;
   }
   OnGetRouletteType() {
-    return 2;
+    return 0;
   }
   OnGetCanSwitchType() {
     return false;
@@ -52,7 +52,10 @@ class TrapDefenseRouletteMainViewProxy extends RouletteMainViewProxyBase_1.Roule
     return false;
   }
   OnGetExploreRouletteDataMap() {
-    return RouletteComponent_1.trapDefenseExploreRouletteMap;
+    return this.KOm;
+  }
+  OnGetRouletteGridId(e, t) {
+    return ModelManager_1.ModelManager.RouletteModel.RouletteListDataMap.get(this.RouletteType).GetRouletteGridId(e, t, true);
   }
   OnGetActionName() {
     return InputMappingsDefine_1.actionMappings.塔防轮盘;

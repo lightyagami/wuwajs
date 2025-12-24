@@ -9,11 +9,12 @@ const UE = require("ue");
 const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
 const GenericLayout_1 = require("../Layout/GenericLayout");
 class GenericScrollViewNew {
-  constructor(t, e, i = undefined, r = false) {
+  constructor(t, e, i = undefined, r = false, s = undefined) {
     this.cNo = undefined;
     this.Sui = undefined;
     this.cNo = t;
-    this.Sui = new GenericLayout_1.GenericLayout(this.cNo.GetContent().GetComponentByClass(UE.UILayoutBase.StaticClass()), e, i, r);
+    s = s ?? this.cNo.GetContent().GetComponentByClass(UE.UILayoutBase.StaticClass());
+    this.Sui = new GenericLayout_1.GenericLayout(s, e, i, r);
     this.Sui.AnimControllerComponent = t?.GetOwner().GetComponentByClass(UE.UIInturnAnimController.StaticClass());
   }
   get IsExpand() {

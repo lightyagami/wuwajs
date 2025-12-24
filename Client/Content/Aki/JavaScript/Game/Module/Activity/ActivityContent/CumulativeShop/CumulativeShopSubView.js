@@ -76,6 +76,7 @@ class CumulativeShopSubView extends ActivitySubViewBase_1.ActivitySubViewBase {
     this.Ftl = ConfigManager_1.ConfigManager.TextConfig.GetMultiTextByKey("LeiXiao_GetScore_prompt") ?? "";
     this.CF1 = ConfigManager_1.ConfigManager.TextConfig.GetMultiTextByKey("ActivityRemainingTime") ?? "";
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), "keyActivity_105100001_Desc");
+    this.LNe.SetActivityBaseData(this.Oy1);
     this.LNe.SetTitleByText(this.Oy1.GetTitle());
     this.LNe.SetTimeTextVisible(true);
     var e = ModelManager_1.ModelManager.ActivityModel.GetRemainTimeText(this.Oy1.EndShowTime, this.CF1) ?? "";

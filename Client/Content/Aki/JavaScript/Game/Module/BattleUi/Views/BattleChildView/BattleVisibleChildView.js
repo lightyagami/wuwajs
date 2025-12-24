@@ -22,7 +22,7 @@ class BattleVisibleChildView extends BattleChildView_1.BattleChildView {
   }
   InitChildType(i = 0) {
     this.ChildType = i;
-    if (this.ChildType === 37) {
+    if (this.ChildType === 41) {
       this.BaseVisible = true;
       this.InnerVisibleState = 1;
     } else {

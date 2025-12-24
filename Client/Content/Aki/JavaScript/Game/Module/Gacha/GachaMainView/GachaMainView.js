@@ -15,6 +15,8 @@ const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
 const StringUtils_1 = require("../../../../Core/Utils/StringUtils");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const LocalStorage_1 = require("../../../Common/LocalStorage");
+const LocalStorageDefine_1 = require("../../../Common/LocalStorageDefine");
 const TimeUtil_1 = require("../../../Common/TimeUtil");
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
@@ -23,6 +25,7 @@ const UiTickViewBase_1 = require("../../../Ui/Base/UiTickViewBase");
 const PopupCaptionItem_1 = require("../../../Ui/Common/PopupCaptionItem");
 const UiLayer_1 = require("../../../Ui/UiLayer");
 const UiManager_1 = require("../../../Ui/UiManager");
+const ButtonItem_1 = require("../../Common/Button/ButtonItem");
 const CommonTextItem_1 = require("../../Common/Button/CommonTextItem");
 const ConfirmBoxController_1 = require("../../ConfirmBox/ConfirmBoxController");
 const ConfirmBoxDefine_1 = require("../../ConfirmBox/ConfirmBoxDefine");
@@ -62,6 +65,7 @@ class GachaMainView extends UiTickViewBase_1.UiTickViewBase {
     this.lqe = undefined;
     this.djt = undefined;
     this.Cjt = undefined;
+    this.Dqm = undefined;
     this.gjt = undefined;
     this.Dvt = false;
     this._Ma = 0;
@@ -131,8 +135,8 @@ class GachaMainView extends UiTickViewBase_1.UiTickViewBase {
           case 6:
           case 9:
             var t = [];
-            for (const n of i) {
-              var a = ConfigManager_1.ConfigManager.GachaConfig.GetGachaTextureInfo(n);
+            for (const h of i) {
+              var a = ConfigManager_1.ConfigManager.GachaConfig.GetGachaTextureInfo(h);
               t.push(a.TrialId);
             }
             RoleController_1.RoleController.OpenRoleMainView(1, 0, t);
@@ -143,16 +147,16 @@ class GachaMainView extends UiTickViewBase_1.UiTickViewBase {
           case 10:
             var r = [];
             for (const _ of i) {
-              var s = ConfigManager_1.ConfigManager.GachaConfig.GetGachaTextureInfo(_);
-              var o = new WeaponTrialData_1.WeaponTrialData();
-              o.SetTrialId(s.TrialId);
-              r.push(o);
+              var o = ConfigManager_1.ConfigManager.GachaConfig.GetGachaTextureInfo(_);
+              var s = new WeaponTrialData_1.WeaponTrialData();
+              s.SetTrialId(o.TrialId);
+              r.push(s);
             }
-            var h = {
+            var n = {
               WeaponDataList: r,
               SelectedIndex: 0
             };
-            UiManager_1.UiManager.OpenView("WeaponPreviewView", h);
+            UiManager_1.UiManager.OpenView("WeaponPreviewView", n);
         }
       }
     };
@@ -160,6 +164,7 @@ class GachaMainView extends UiTickViewBase_1.UiTickViewBase {
       var e = this.vjt;
       if (e) {
         GachaController_1.GachaController.OpenGachaSelectionView(e);
+        this.x7m();
       }
     };
     this.RefreshLeftTime = () => {
@@ -369,8 +374,8 @@ class GachaMainView extends UiTickViewBase_1.UiTickViewBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PlaySequenceEventByStringParam, this.E5e);
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIButtonComponent], [2, UE.UIButtonComponent], [3, UE.UIButtonComponent], [4, UE.UIButtonComponent], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIScrollViewWithScrollbarComponent], [9, UE.UIText], [10, UE.UIText], [11, UE.UIItem], [12, UE.UIText], [13, UE.UIText], [14, UE.UIVerticalLayout], [15, UE.UIItem], [16, UE.UIText], [17, UE.UIHorizontalLayout], [18, UE.UIButtonComponent], [19, UE.UITexture], [20, UE.UITexture], [21, UE.UITexture], [22, UE.UIItem], [23, UE.UIButtonComponent], [24, UE.UIText], [25, UE.UIItem], [26, UE.UIText], [27, UE.UIText], [28, UE.UIText], [29, UE.UIScrollViewWithScrollbarComponent], [30, UE.UIInturnAnimController]];
-    this.BtnBindInfo = [[3, this.dpt], [1, this.Sjt], [4, this.yjt], [2, this.Ijt], [18, this.Tjt], [23, this.Tjt]];
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIButtonComponent], [2, UE.UIButtonComponent], [3, UE.UIButtonComponent], [4, UE.UIButtonComponent], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIScrollViewWithScrollbarComponent], [9, UE.UIText], [10, UE.UIText], [11, UE.UIItem], [12, UE.UIText], [13, UE.UIText], [14, UE.UIVerticalLayout], [15, UE.UIItem], [16, UE.UIText], [17, UE.UIHorizontalLayout], [18, UE.UIButtonComponent], [19, UE.UITexture], [20, UE.UITexture], [21, UE.UITexture], [22, UE.UIItem], [23, UE.UIItem], [24, UE.UIText], [25, UE.UIItem], [26, UE.UIText], [27, UE.UIText], [28, UE.UIText], [29, UE.UIScrollViewWithScrollbarComponent], [30, UE.UIInturnAnimController]];
+    this.BtnBindInfo = [[3, this.dpt], [1, this.Sjt], [4, this.yjt], [2, this.Ijt], [18, this.Tjt]];
   }
   async OnBeforeStartAsync() {
     this.Dvt = true;
@@ -378,6 +383,8 @@ class GachaMainView extends UiTickViewBase_1.UiTickViewBase {
     this.djt = new GachaButton_1.GachaButton(GachaDefine_1.GACHA_ONE);
     this.Cjt = new GachaButton_1.GachaButton(GachaDefine_1.GACHA_TEN);
     await Promise.all([this.djt.CreateThenShowByActorAsync(this.GetItem(5).GetOwner()), this.Cjt.CreateThenShowByActorAsync(this.GetItem(6).GetOwner())]);
+    this.Dqm = new ButtonItem_1.ButtonItem(this.GetItem(23));
+    this.Dqm.SetFunction(this.Tjt);
     this.cjt = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(14), this.bjt);
     this.lqe = new PopupCaptionItem_1.PopupCaptionItem(this.GetItem(0));
     this.lqe.SetCloseCallBack(this.B6e);
@@ -438,21 +445,23 @@ class GachaMainView extends UiTickViewBase_1.UiTickViewBase {
         }
       }
       let i = false;
-      for (const s of this.vjt.GachaConsumes) {
-        if (s.$Us === this.Cjt.Times) {
-          this.Cjt.Refresh(this.Fjt, s.HUs);
+      for (const o of this.vjt.GachaConsumes) {
+        if (o.$Us === this.Cjt.Times) {
+          this.Cjt.Refresh(this.Fjt, o.HUs);
           i = true;
           break;
         }
       }
       this.djt.GetRootItem().SetUIActive(e && this.vjt.UsePoolId !== 0);
       this.Cjt.GetRootItem().SetUIActive(i && this.vjt.UsePoolId !== 0);
-      this.GetButton(23)?.RootUIComp.SetUIActive(this.vjt.UsePoolId === 0);
-      this.GetItem(22)?.SetUIActive(this.vjt.UsePoolId === 0);
-      var t;
-      var a = ConfigManager_1.ConfigManager.GachaConfig.GetGachaViewInfo(this.Ejt);
-      if ((a &&= a.Type) && (a = ConfigManager_1.ConfigManager.GachaConfig.GetGachaViewTypeConfig(a))) {
-        a = a.GachaButtonTip;
+      var t = this.vjt?.UsePoolId === 0;
+      this.Dqm?.SetActive(t);
+      var a = this.Mjt?.UiType === 5;
+      var a = (a && !LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.FirstOpenCommonWeaponSelect, false)) ?? false;
+      this.Dqm?.SetRedDotVisible(t && a);
+      var t = ConfigManager_1.ConfigManager.GachaConfig.GetGachaViewInfo(this.Ejt);
+      if (t && (a = t.Type) && (t = ConfigManager_1.ConfigManager.GachaConfig.GetGachaViewTypeConfig(a))) {
+        a = t.GachaButtonTip;
         t = StringUtils_1.StringUtils.IsBlank(a);
         this.GetText(24).SetUIActive(!t);
         if (!t) {
@@ -483,6 +492,12 @@ class GachaMainView extends UiTickViewBase_1.UiTickViewBase {
       i.push(t);
     }
     this.cjt.RefreshByData(i);
+  }
+  x7m() {
+    var e;
+    if (this.Mjt?.UiType === 5 && !(LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.FirstOpenCommonWeaponSelect, false) ?? false) && (LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.FirstOpenCommonWeaponSelect, true), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnOpenCommonWeaponSelect), this.jjt(), e = this._jt.GetGenericLayout().GetSelectedGridIndex(), e = this._jt?.GetScrollItemByIndex(e))) {
+      e.RefreshRedDot();
+    }
   }
   async Hjt() {
     var e = ConfigManager_1.ConfigManager.GachaConfig.GetGachaViewType(this.Ejt);

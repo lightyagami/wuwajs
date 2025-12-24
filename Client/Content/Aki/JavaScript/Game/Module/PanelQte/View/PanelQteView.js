@@ -128,7 +128,7 @@ class PanelQteView extends UiTickViewBase_1.UiTickViewBase {
     var i;
     if (this.BuffId && !(Time_1.Time.WorldTime < this.BuffEnableTime) && (this.BuffEnableTime = Time_1.Time.WorldTime + this.BuffCd, t = (e = ModelManager_1.ModelManager.PanelQteModel.GetContext()).GetSourceEntity())) {
       i = t.GetComponent(0).GetCreatureDataId();
-      t.GetComponent(178)?.AddBuff(this.BuffId, {
+      t.GetComponent(183)?.AddBuff(this.BuffId, {
         InstigatorId: i,
         Reason: "界面QTE输入时添加",
         PreMessageId: e.PreMessageId

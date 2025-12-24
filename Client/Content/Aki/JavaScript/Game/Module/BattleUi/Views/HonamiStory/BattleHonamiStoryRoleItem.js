@@ -16,11 +16,11 @@ const ModelManager_1 = require("../../../../Manager/ModelManager");
 class BattleHonamiStoryRoleItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.jEm = [];
+    this.Skm = [];
     this.$pt = undefined;
-    this.Sbm = undefined;
-    this.Mbm = undefined;
-    this.Ebm = undefined;
+    this.a9m = undefined;
+    this.h9m = undefined;
+    this.l9m = undefined;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UITexture], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UISprite], [5, UE.UIItem], [6, UE.UISprite], [7, UE.UINiagara]];
@@ -28,13 +28,13 @@ class BattleHonamiStoryRoleItem extends UiPanelBase_1.UiPanelBase {
   async OnBeforeStartAsync() {
     var e = [];
     for (const t of [1, 2, 3]) {
-      e.push(this.yYd(t));
+      e.push(this.JYd(t));
     }
     await Promise.all(e);
   }
-  async yYd(e) {
+  async JYd(e) {
     var t = new BattleHonamiStoryRoleSuitItem_1.BattleHonamiStoryRoleSuitItem();
-    this.jEm.push(t);
+    this.Skm.push(t);
     return t.CreateThenShowByActorAsync(this.GetItem(e).GetOwner());
   }
   OnStart() {
@@ -47,24 +47,24 @@ class BattleHonamiStoryRoleItem extends UiPanelBase_1.UiPanelBase {
   async OnHideAsyncImplementImplement() {
     this.$pt?.StopPrevSequence(false, true);
     await this.$pt?.PlaySequenceAsync("Close", new CustomPromise_1.CustomPromise());
-    if (this.Mbm) {
-      this.Mbm.Remove();
-      this.Mbm = undefined;
+    if (this.h9m) {
+      this.h9m.Remove();
+      this.h9m = undefined;
       this.GetUiNiagara(7).SetUIActive(false);
     }
   }
   OnAfterHide() {
-    this.Ebm?.();
+    this.l9m?.();
   }
   OnBeforeDestroy() {
-    this.Ebm = undefined;
+    this.l9m = undefined;
     this.$pt?.Clear();
     this.$pt = undefined;
-    this.Sbm?.Remove();
-    this.Sbm = undefined;
+    this.a9m?.Remove();
+    this.a9m = undefined;
   }
   RegisterOnAfterHide(e) {
-    this.Ebm = e;
+    this.l9m = e;
   }
   ShowRoleItem(e, t) {
     var i = e.RoleId;
@@ -80,8 +80,8 @@ class BattleHonamiStoryRoleItem extends UiPanelBase_1.UiPanelBase {
       });
       if (e.BuffActive) {
         this.GetUiNiagara(7).SetUIActive(true);
-        this.Mbm = TimerSystem_1.GameplayTimerSystem.Delay(() => {
-          this.Mbm = undefined;
+        this.h9m = TimerSystem_1.GameplayTimerSystem.Delay(() => {
+          this.h9m = undefined;
           this.GetUiNiagara(7).SetUIActive(false);
         }, 1000);
       }
@@ -92,14 +92,14 @@ class BattleHonamiStoryRoleItem extends UiPanelBase_1.UiPanelBase {
       this.GetItem(5).SetUIActive(!r);
       if (!r) {
         var n = e.ItemSubType;
-        var m = this.jEm.length;
+        var m = this.Skm.length;
         var l = Math.min(a.length, m);
         let t = undefined;
         for (let e = 0; e < l; e++) {
           var d = a[e];
           var u = h[e];
           var d = ModelManager_1.ModelManager.HonamiStoryModel.GetWeaponSuitData(d).WeaponPluginType;
-          var v = this.jEm[e];
+          var v = this.Skm[e];
           v.Refresh(u, d);
           v.SetUiActive(true);
           if (u.IsActive && n === d) {
@@ -108,28 +108,28 @@ class BattleHonamiStoryRoleItem extends UiPanelBase_1.UiPanelBase {
         }
         t?.PlayBurst();
         for (let e = l; e < m; e++) {
-          this.jEm[e].SetUiActive(false);
+          this.Skm[e].SetUiActive(false);
         }
       }
-      this.Vbm(t);
+      this.Djm(t);
     } else {
       if (Log_1.Log.CheckWarn()) {
         Log_1.Log.Warn("HonamiStory", 48, "拾取提示角色配置不存在", ["RoleId", i]);
       }
-      this.Ebm?.();
+      this.l9m?.();
     }
   }
-  Vbm(e) {
-    this.Sbm = TimerSystem_1.GameplayTimerSystem.Delay(() => {
-      this.Sbm = undefined;
+  Djm(e) {
+    this.a9m = TimerSystem_1.GameplayTimerSystem.Delay(() => {
+      this.a9m = undefined;
       if (!this.IsHideOrHiding) {
         this.SetActive(false);
       }
     }, e);
   }
   HideRoleItem() {
-    this.Sbm?.Remove();
-    this.Sbm = undefined;
+    this.a9m?.Remove();
+    this.a9m = undefined;
     if (!this.IsHideOrHiding) {
       this.SetActive(false);
     }

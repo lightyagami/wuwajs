@@ -60,7 +60,7 @@ class BattleHonamiStoryMapLevelHoverItem extends UiPanelBase_1.UiPanelBase {
     this.xKt = undefined;
     this.$pt = undefined;
     this.TDe = undefined;
-    this.MIm = undefined;
+    this.rqm = undefined;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem]];
@@ -84,7 +84,7 @@ class BattleHonamiStoryMapLevelHoverItem extends UiPanelBase_1.UiPanelBase {
       this.TDe = undefined;
       this.$pt?.StopPrevSequence(false, true);
       this.SetActive(false);
-      this.MIm?.();
+      this.rqm?.();
     }, 8000);
   }
   async OnBeforeHideAsync() {
@@ -97,7 +97,7 @@ class BattleHonamiStoryMapLevelHoverItem extends UiPanelBase_1.UiPanelBase {
     this.xKt?.Refresh();
   }
   RegisterOnAutoClose(e) {
-    this.MIm = e;
+    this.rqm = e;
   }
 }
 exports.BattleHonamiStoryMapLevelHoverItem = BattleHonamiStoryMapLevelHoverItem;

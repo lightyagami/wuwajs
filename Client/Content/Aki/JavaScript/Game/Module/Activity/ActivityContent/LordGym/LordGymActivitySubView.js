@@ -5,12 +5,12 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.LordGymActivitySubView = undefined;
 const UE = require("ue");
-const CommonParamById_1 = require("../../../../../Core/Define/ConfigCommon/CommonParamById");
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
 const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const UiManager_1 = require("../../../../Ui/UiManager");
+const LordGymDefine_1 = require("../../../LordGym/LordGymDefine");
 const ActivitySubViewBase_1 = require("../../View/SubView/ActivitySubViewBase");
 const ActivitySubViewGeneralInfo_1 = require("../../View/SubView/ActivitySubViewGeneralInfo");
 const LordGymBossCard_1 = require("./LordGymBossCard");
@@ -21,14 +21,15 @@ class LordGymActivitySubView extends ActivitySubViewBase_1.ActivitySubViewBase {
     this.CommonInfoPanel = undefined;
     this.BossCard = undefined;
     this.tWt = () => {
-      var e;
       this.ActivityBaseData.ReadRedDot();
       if (this.ActivityBaseData.GetPreGuideQuestFinishState()) {
-        e = {
-          MarkId: CommonParamById_1.configCommonParamById.GetIntConfig("LordGymActivityJumpMarkId"),
-          MarkType: 19
-        };
-        ControllerHolder_1.ControllerHolder.WorldMapController.OpenView(2, false, e);
+        if (ModelManager_1.ModelManager.OnlineModel.GetIsTeamModel()) {
+          ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("ErrorCode_600064_Text");
+        } else if (ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance()) {
+          ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("ErrorCode_200172_Text");
+        } else {
+          ControllerHolder_1.ControllerHolder.InstanceDungeonEntranceController.EnterEntrance(LordGymDefine_1.THRID_ENTRANCE_ID);
+        }
       } else {
         UiManager_1.UiManager.OpenView("QuestView", this.ActivityBaseData.GetUnFinishPreGuideQuestId());
       }

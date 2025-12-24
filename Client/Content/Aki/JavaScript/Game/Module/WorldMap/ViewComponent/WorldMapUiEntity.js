@@ -31,7 +31,7 @@ class WorldMapUiEntity extends MapEntity_1.MapEntity {
     this.ClickedItem = undefined;
     this.du_ = new MapGamePlayRequestPreemptiveFrameQueue_1.MapGamePlayRequestPreemptiveFrameQueue(200);
     this.f8_ = new MapUpdateTaskPreemptiveFrameQueue_1.MapUpdateTaskPreemptiveFrameQueue(1500);
-    this.n4o = (s, r, a) => {
+    this.n4o = (s, a, r) => {
       if (this.ClickedItem) {
         this.MoveComponent.PushMap(this.ClickedItem, false);
       } else {
@@ -40,7 +40,7 @@ class WorldMapUiEntity extends MapEntity_1.MapEntity {
         var h = Vector2D_1.Vector2D.Create(this.Map.GetRootItem().GetAnchorOffset());
         var n = this.MoveComponent.TweenTarget;
         let i = undefined;
-        switch (a) {
+        switch (r) {
           case 1:
           case 2:
           case 3:
@@ -48,24 +48,31 @@ class WorldMapUiEntity extends MapEntity_1.MapEntity {
           case 5:
             i = this.s4o();
         }
-        a = s === 0 ? 1 : r / s;
+        r = s === 0 ? 1 : a / s;
         if (i) {
-          t = h.SubtractionEqual(i).MultiplyEqual(a).AdditionEqual(i);
+          t = h.SubtractionEqual(i).MultiplyEqual(r).AdditionEqual(i);
           if (n) {
-            e = n.SubtractionEqual(i).MultiplyEqual(a).AdditionEqual(i);
+            e = n.SubtractionEqual(i).MultiplyEqual(r).AdditionEqual(i);
           }
         } else {
-          t = h.MultiplyEqual(a);
+          t = h.MultiplyEqual(r);
           if (n) {
-            e = n.MultiplyEqual(a);
+            e = n.MultiplyEqual(r);
           }
         }
         this.MoveComponent.SetMapPositionCauseByScaling(t, e, 2);
       }
+      this.Map?.AutoPilotLine?.RefreshFindPathLine();
     };
     this.MarkEdgeSize = undefined;
     this.OnMarkItemTrackStateChanged = t => {
       if (!t.IsDestroy) {
+        this.UpdateSingleMarkItem(t, true);
+      }
+    };
+    this.OnMarkItemAutoPilotTrackStateChanged = (t, e) => {
+      t = this.Map.GetMarkItem(t, e);
+      if (t && !t.IsDestroy) {
         this.UpdateSingleMarkItem(t, true);
       }
     };
@@ -167,18 +174,18 @@ class WorldMapUiEntity extends MapEntity_1.MapEntity {
     }
     s = i.GetCurrentAreaId(2);
     if (s !== 0) {
-      const r = e.GetAreaInfo(s);
-      if (r) {
-        return r.MapConfigId === this.MapId;
+      const a = e.GetAreaInfo(s);
+      if (a) {
+        return a.MapConfigId === this.MapId;
       }
     }
     i = t.LastHighLevelArea;
     if (!i) {
       return t.CurrentWorldMapConfigId === this.MapId;
     }
-    const r = e.GetAreaInfo(e.GetLevelOneAreaId(i));
-    if (r) {
-      return r.MapConfigId === this.MapId;
+    const a = e.GetAreaInfo(e.GetLevelOneAreaId(i));
+    if (a) {
+      return a.MapConfigId === this.MapId;
     } else {
       return t.CurrentWorldMapConfigId === this.MapId;
     }
@@ -212,6 +219,9 @@ class WorldMapUiEntity extends MapEntity_1.MapEntity {
   }
   get WorldMapAlterMapComponent() {
     return this.GetComponent(9);
+  }
+  get WorldMapExtraUiPanelComponent() {
+    return this.GetComponent(19);
   }
   OnInit() {
     this.Reset();
@@ -261,8 +271,10 @@ class WorldMapUiEntity extends MapEntity_1.MapEntity {
     this.AddComponent(7);
     this.AddComponent(8);
     this.AddComponent(9);
+    this.AddComponent(19);
     this.AddComponent(4).ScaleChangeEvent = this.n4o;
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnMarkItemTrackStateChange, this.OnMarkItemTrackStateChanged);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnMarkItemAutoPilotTrackStateChange, this.OnMarkItemAutoPilotTrackStateChanged);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.MarkForceVisibleChanged, this.kH_);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ScenePlayerLocationChanged, this.OnPlayerMarkPositionChanged);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnMapMarkTaskComplete, this.Fll);
@@ -271,6 +283,7 @@ class WorldMapUiEntity extends MapEntity_1.MapEntity {
   }
   OnDispose() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnMarkItemTrackStateChange, this.OnMarkItemTrackStateChanged);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnMarkItemAutoPilotTrackStateChange, this.OnMarkItemAutoPilotTrackStateChanged);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.MarkForceVisibleChanged, this.kH_);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ScenePlayerLocationChanged, this.OnPlayerMarkPositionChanged);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnMapMarkTaskComplete, this.Fll);
@@ -310,13 +323,18 @@ class WorldMapUiEntity extends MapEntity_1.MapEntity {
     }
   }
   InitSelfPlayerMark() {
-    var t = this.IsInPlayerMap;
-    var e = this.Map.SelfPlayerNode;
-    e.SetUIActive(t);
-    if (t) {
-      e.SetAsLastHierarchy();
+    var t;
+    var e;
+    if (this.WorldMapExtraUiPanelComponent.IsExtraUiViewOpened) {
+      this.Map?.SelfPlayerNode?.SetUIActive(this.WorldMapExtraUiPanelComponent.IsShowPlayerMark);
+    } else {
+      t = this.IsInPlayerMap;
+      (e = this.Map.SelfPlayerNode).SetUIActive(t);
+      if (t) {
+        e.SetAsLastHierarchy();
+      }
+      this.dBc();
     }
-    this.dBc();
   }
   dBc() {
     var t = ModelManager_1.ModelManager.WorldMapModel.IsGravityMap(this.MapId);
@@ -330,26 +348,32 @@ class WorldMapUiEntity extends MapEntity_1.MapEntity {
     }
   }
   UpdateSelfPlayerMark() {
-    this.PlayerComponent.UpdatePlayerPosition();
-    var t = this.PlayerComponent.PlayerRotation;
-    var e = this.PlayerComponent.PlayerUiPosition;
-    var i = this.ScaleComponent.MapScale;
-    this.Map.PlayerArrow.SetUIRelativeRotation(new UE.Rotator(0, t, 0));
-    var t = this.MoveComponent.MapUiPosition;
-    var s = Vector2D_1.Vector2D.Create();
-    e.Multiply(i, s).Addition(t, s);
-    var [e, i] = this.ClampToMarkEdge(s);
-    var r = this.Map.PlayerOutOfBoundIndicator;
-    if (i) {
-      this.PlayerComponent.PlayerOutOfBound = true;
-      this.Map.SelfPlayerNode.SetAnchorOffset(e.SubtractionEqual(t).DivisionEqual(this.ScaleComponent.MapScale).ToUeVector2D(true));
-      e = Math.atan2(s.Y, s.X) * RAD_2_DEG - DEG_PI_4;
-      r.SetUIRelativeRotation(new UE.Rotator(0, e, 0));
-    } else {
-      this.PlayerComponent.PlayerOutOfBound = false;
-      this.Map.SelfPlayerNode.SetAnchorOffset(this.PlayerComponent.PlayerUiPosition.ToUeVector2D());
+    var t;
+    var e;
+    var i;
+    var s;
+    var a;
+    if (!this.WorldMapExtraUiPanelComponent.IsExtraUiViewOpened || !!this.WorldMapExtraUiPanelComponent.IsShowPlayerMark) {
+      this.PlayerComponent.UpdatePlayerPosition();
+      t = this.PlayerComponent.PlayerRotation;
+      a = this.PlayerComponent.PlayerUiPosition;
+      i = this.ScaleComponent.MapScale;
+      this.Map.PlayerArrow.SetUIRelativeRotation(new UE.Rotator(0, t, 0));
+      t = this.MoveComponent.MapUiPosition;
+      e = Vector2D_1.Vector2D.Create();
+      [a, i] = (a.Multiply(i, e).Addition(t, e), this.ClampToMarkEdge(e));
+      s = this.Map.PlayerOutOfBoundIndicator;
+      if (i) {
+        this.PlayerComponent.PlayerOutOfBound = true;
+        this.Map.SelfPlayerNode.SetAnchorOffset(a.SubtractionEqual(t).DivisionEqual(this.ScaleComponent.MapScale).ToUeVector2D(true));
+        a = Math.atan2(e.Y, e.X) * RAD_2_DEG - DEG_PI_4;
+        s.SetUIRelativeRotation(new UE.Rotator(0, a, 0));
+      } else {
+        this.PlayerComponent.PlayerOutOfBound = false;
+        this.Map.SelfPlayerNode.SetAnchorOffset(this.PlayerComponent.PlayerUiPosition.ToUeVector2D());
+      }
+      s.SetUIActive(i);
     }
-    r.SetUIActive(i);
   }
   fdl(t = true) {
     this.UpdateSelfPlayerMark();
@@ -372,6 +396,18 @@ class WorldMapUiEntity extends MapEntity_1.MapEntity {
       }
       return [e, true];
     }
+  }
+  async UpdateMarkItemsAsync() {
+    var t;
+    var e = [];
+    for ([, t] of this.Map.GetAllMarkItems()) {
+      for (var [, i] of t) {
+        if (MapDefine_1.mapLoadDirectlyConfigMarkSet.has(i.MarkType)) {
+          e.push(this.UpdateSingleMarkItemAsync(i, true));
+        }
+      }
+    }
+    await Promise.all(e);
   }
   pdl(t) {
     return !!t.PermanentUpdate || !!this.WorldMapStreamingComponent.HandleStreamingUpdate(t);
@@ -412,23 +448,34 @@ class WorldMapUiEntity extends MapEntity_1.MapEntity {
     };
     this.TK_(t, e);
   }
-  TK_(t, e) {
+  async UpdateSingleMarkItemAsync(t, e = false) {
+    e = {
+      MapUiPosition: this.MoveComponent.MapUiPosition,
+      MapScale: this.ScaleComponent.MapScale,
+      PlayerWorldPosition: this.PlayerComponent.PlayerWorldPosition,
+      IsDragging: this.InteractComponent.IsDragging,
+      IsScaleDirty: this.ScaleComponent.IsScaleDirty,
+      ForceViewUpdate: e
+    };
+    await this.TK_(t, e);
+  }
+  async TK_(t, e) {
     var i;
     var s;
-    var r;
     var a;
+    var r;
     if (this.pdl(t)) {
       t.LogicUpdate(this.PlayerComponent.PlayerWorldPosition);
       if (t.MarkItemEntity.ViewLifeCircle.IsChildViewStateDirty(0) || e.ForceViewUpdate) {
-        t.ViewUpdateAsync(e.PlayerWorldPosition, e.IsDragging, e.IsScaleDirty);
+        await t.ViewUpdateAsync(e.PlayerWorldPosition, e.IsDragging, e.IsScaleDirty);
         this.mu_(t);
       }
       if (t.View) {
         i = e.MapScale;
         s = Vector2D_1.Vector2D.Create(t.UiPosition.X, t.UiPosition.Y);
-        if (t.CanOutOfBound && (e = e.MapUiPosition, r = Vector2D_1.Vector2D.Create(), [r, a] = (s.Multiply(i, r).Addition(e, r), this.ClampToMarkEdge(r)), a)) {
-          t.MarkItemEntity.Resource.OutOfBoundDirection = r;
-          t.SetAnchorOffset(r.SubtractionEqual(e).DivisionEqual(i));
+        if (t.CanOutOfBound && (e = e.MapUiPosition, a = Vector2D_1.Vector2D.Create(), [a, r] = (s.Multiply(i, a).Addition(e, a), this.ClampToMarkEdge(a)), r)) {
+          t.MarkItemEntity.Resource.OutOfBoundDirection = a;
+          t.SetAnchorOffset(a.SubtractionEqual(e).DivisionEqual(i));
           t.IsOutOfBound = true;
         } else {
           t.IsOutOfBound = false;
@@ -456,17 +503,17 @@ class WorldMapUiEntity extends MapEntity_1.MapEntity {
         this.du_.AddTask(i);
         s = t.MarkItemEntity.GetComponent(15).MapMarkConfig;
         if (s instanceof MapMark_1.MapMark) {
-          for (const a of s.AssociatedGameplayMarks) {
-            var r = ConfigManager_1.ConfigManager.MapConfig.GetConfigMark(a);
-            if (r !== undefined) {
-              r = {
+          for (const r of s.AssociatedGameplayMarks) {
+            var a = ConfigManager_1.ConfigManager.MapConfig.GetConfigMark(r);
+            if (a !== undefined) {
+              a = {
                 Priority: 0,
                 Execute: () => {},
                 MarkId: t.MarkId,
-                GamePlayId: r.RelativeId,
-                InstId: r.RelativeDungeonId
+                GamePlayId: a.RelativeId,
+                InstId: a.RelativeDungeonId
               };
-              this.du_.AddTask(r);
+              this.du_.AddTask(a);
             }
           }
         }

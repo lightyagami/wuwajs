@@ -24,9 +24,9 @@ Object.defineProperty(exports, "__esModule", {
 exports.VehiclePerformComponent = undefined;
 const cpp_1 = require("cpp");
 const UE = require("ue");
+const Time_1 = require("../../../../Core/Common/Time");
 const QueryTypeDefine_1 = require("../../../../Core/Define/QueryTypeDefine");
 const RegisterComponent_1 = require("../../../../Core/Entity/RegisterComponent");
-const MathCommon_1 = require("../../../../Core/Utils/Math/MathCommon");
 const Rotator_1 = require("../../../../Core/Utils/Math/Rotator");
 const Vector_1 = require("../../../../Core/Utils/Math/Vector");
 const MathUtils_1 = require("../../../../Core/Utils/MathUtils");
@@ -44,8 +44,10 @@ let VehiclePerformComponent = class VehiclePerformComponent extends BaseVehicleP
     this.MoveComp = undefined;
     this.TagComp = undefined;
     this.IsBeingImpacted = false;
-    this.CollisionStrength = 0;
-    this.CollisionDirection = 0;
+    this.ImpactedVelocity = Vector_1.Vector.Create();
+    this.CacheImpactHitResult = undefined;
+    this.SimulatedHitNormal = undefined;
+    this.m$m = 0;
     this.CollisionVelocity = Vector_1.Vector.Create();
     this.HasRoleAndCtrlByMe = false;
     this.IsHidePassenger = false;
@@ -53,20 +55,25 @@ let VehiclePerformComponent = class VehiclePerformComponent extends BaseVehicleP
     this.VehicleTagListeners = undefined;
     this.kIc = undefined;
     this.OnEnterHitCollision = (e, t, i, r, s) => {
-      this.CalculateImpactStrength(s);
-      this.CalculateImpactDirection(s);
-      this.IsBeingImpacted = true;
+      this.CacheImpact(s);
+      this.OnHit(s);
       this.MoveComp?.EnableUeMovementTick("载具受到碰撞");
     };
+  }
+  get ActorLocationProxy() {
+    return this.ActorComp?.ActorLocationProxy;
+  }
+  get ActorRotationProxy() {
+    return this.ActorComp?.ActorRotationProxy;
   }
   OnStart() {
     if (!super.OnStart()) {
       return false;
     }
-    this.ActorComp = this.Entity.GetComponent(238);
-    this.AnimComp = this.Entity.GetComponent(239);
-    this.MoveComp = this.Entity.GetComponent(240);
-    this.TagComp = this.Entity.GetComponent(209);
+    this.ActorComp = this.Entity.GetComponent(247);
+    this.AnimComp = this.Entity.GetComponent(248);
+    this.MoveComp = this.Entity.GetComponent(249);
+    this.TagComp = this.Entity.GetComponent(215);
     this.HasRoleAndCtrlByMe = false;
     var e = this.ActorComp?.Owner;
     if (e?.IsValid()) {
@@ -76,6 +83,9 @@ let VehiclePerformComponent = class VehiclePerformComponent extends BaseVehicleP
   }
   OnTick(e) {
     this.UpdateRotYawSpeed(e);
+    if (Time_1.Time.Frame !== this.m$m && this.ActorComp?.IsMoveAutonomousProxy) {
+      this.IsBeingImpacted = false;
+    }
   }
   LoadVehicleConfigAsset() {
     if (this.ActorComp?.Actor.VehicleMovementComponent?.IsValid()) {
@@ -128,32 +138,6 @@ let VehiclePerformComponent = class VehiclePerformComponent extends BaseVehicleP
   RefreshRideSharingSkillState() {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnVehicleSkillEnableChanged, this.CheckIfCanRiderSharing(), InputEnums_1.EInputAction.技能1);
   }
-  CalculateImpactStrength(e) {
-    var t = e.Component;
-    var i = this.TmpVector1;
-    var r = this.TmpVector2;
-    i.FromUeVector(e.ImpactNormal);
-    r.Reset();
-    if (t) {
-      r.FromUeVector(t.GetComponentVelocity());
-    }
-    this.ActorComp.ActorVelocityProxy.Subtraction(r, this.CollisionVelocity);
-    this.CollisionStrength = Math.abs(Vector_1.Vector.DotProduct(this.CollisionVelocity, i));
-  }
-  CalculateImpactDirection(e) {
-    var t = this.CollisionVelocity.ToUeVector();
-    var i = this.ActorComp.ActorRight;
-    var i = t.CosineAngle2D(i);
-    var i = MathCommon_1.MathCommon.RadianToDegree(Math.acos(i));
-    var r = this.ActorComp.ActorForward;
-    var t = t.CosineAngle2D(r);
-    var r = MathCommon_1.MathCommon.RadianToDegree(Math.acos(t));
-    if (i > MathCommon_1.MathCommon.RightAngle) {
-      this.CollisionDirection = r * -1;
-    } else {
-      this.CollisionDirection = r;
-    }
-  }
   EnterVehiclePerform(e) {
     if (e.IsRolePassenger(true)) {
       this.HasRoleAndCtrlByMe = true;
@@ -205,13 +189,13 @@ let VehiclePerformComponent = class VehiclePerformComponent extends BaseVehicleP
   SetGravityDirectForVehicle(e) {
     this.MoveComp.SetGravityDirect(e);
     for (const t of this.PassengerInfoMap.values()) {
-      t.PassengerEntity?.GetComponent(45)?.SetGravityDirectWithoutRotate(e);
+      t.PassengerEntity?.GetComponent(46)?.SetGravityDirectWithoutRotate(e);
     }
   }
   SetGravityDirectForVehicleWithoutRotate(e) {
     this.MoveComp.SetGravityDirectWithoutRotate(e);
     for (const t of this.PassengerInfoMap.values()) {
-      t.PassengerEntity?.GetComponent(45)?.SetGravityDirectWithoutRotate(e);
+      t.PassengerEntity?.GetComponent(46)?.SetGravityDirectWithoutRotate(e);
     }
   }
   GetVehicleVelocity(e) {
@@ -225,6 +209,22 @@ let VehiclePerformComponent = class VehiclePerformComponent extends BaseVehicleP
     this.ActorComp.SimulatedRotYawSpeed = MathUtils_1.MathUtils.WrapAngle(i - t) / (e * 0.001);
     this.LastActorRotation.DeepCopy(this.ActorComp.ActorRotationProxy);
   }
+  CacheImpact(e) {
+    if (this.ActorComp?.IsMoveAutonomousProxy) {
+      this.m$m = Time_1.Time.Frame;
+      this.IsBeingImpacted = true;
+      this.ImpactedVelocity.FromUeVector(this.MoveComp.VehicleMovement.Velocity);
+      this.CacheImpactHitResult = e;
+    }
+  }
+  SimulatedImpactInfo(e, t, i, r, s, o) {
+    this.CacheImpactHitResult ||= new UE.HitResult();
+    this.SimulatedHitNormal ||= new UE.Vector();
+    this.SimulatedHitNormal.Set(r, s, o);
+    this.CacheImpactHitResult.Normal = this.SimulatedHitNormal;
+    this.ImpactedVelocity.Set(e, t, i);
+  }
+  OnHit(e) {}
 };
-VehiclePerformComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(241)], VehiclePerformComponent);
+VehiclePerformComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(250)], VehiclePerformComponent);
 exports.VehiclePerformComponent = VehiclePerformComponent; //# sourceMappingURL=VehiclePerformComponent.js.map

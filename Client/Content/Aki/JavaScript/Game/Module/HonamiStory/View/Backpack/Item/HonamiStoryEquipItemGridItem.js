@@ -13,7 +13,7 @@ const HonamiStoryItemGridItem_1 = require("./HonamiStoryItemGridItem");
 class HonamiStoryEquipItemGridItem extends HonamiStoryItemGridItem_1.HonamiStoryItemGridItem {
   constructor() {
     super(...arguments);
-    this.Wnm = undefined;
+    this.g1m = undefined;
   }
   RefreshLogicData() {
     this.SetLockItemEnable(this.ItemData.IsLock(), false);
@@ -48,12 +48,12 @@ class HonamiStoryEquipItemGridItem extends HonamiStoryItemGridItem_1.HonamiStory
     }
   }
   SetReplaceEnable(e) {
-    this.Wnm?.SetUiActive(e);
-    if (e && !this.Wnm) {
-      this.Wnm = new UiPanelBase_1.UiPanelBase();
-      this.Wnm.CreateThenShowByResourceIdAsync("SprChange", this.RootItem).then(() => {
+    this.g1m?.SetUiActive(e);
+    if (e && !this.g1m) {
+      this.g1m = new UiPanelBase_1.UiPanelBase();
+      this.g1m.CreateThenShowByResourceIdAsync("SprChange", this.RootItem).then(() => {
         var e = ModelManager_1.ModelManager.HonamiStoryModel.GetBackpackLogicState();
-        this.Wnm?.SetUiActive(e === 3);
+        this.g1m?.SetUiActive(e === 3);
       });
     }
   }

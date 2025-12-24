@@ -62,13 +62,13 @@ let CharacterMorphComponent = CharacterMorphComponent_1 = class CharacterMorphCo
     this.CRc = undefined;
     this.pRc = undefined;
     this.vRc = undefined;
-    this.bRm = undefined;
+    this.cKm = undefined;
     this.EIe = undefined;
     this.C6_ = undefined;
     this.Hte = undefined;
     this.Gce = undefined;
     this.Lie = undefined;
-    this.cwm = undefined;
+    this.$if = undefined;
     this.HIu = undefined;
     this.$Iu = false;
     this.WIu = undefined;
@@ -90,11 +90,11 @@ let CharacterMorphComponent = CharacterMorphComponent_1 = class CharacterMorphCo
   }
   OnStart() {
     this.EIe = this.Entity.GetComponent(0);
-    this.C6_ = this.Entity.GetComponent(223);
+    this.C6_ = this.Entity.GetComponent(230);
     this.Hte = this.Entity.GetComponent(3);
-    this.Gce = this.Entity.GetComponent(182);
-    this.Lie = this.Entity.GetComponent(209);
-    this.cwm = this.Entity.GetComponent(181);
+    this.Gce = this.Entity.GetComponent(187);
+    this.Lie = this.Entity.GetComponent(215);
+    this.$if = this.Entity.GetComponent(186);
     this.p6_();
     if (this.qQ_) {
       if (this.Lie) {
@@ -348,12 +348,12 @@ let CharacterMorphComponent = CharacterMorphComponent_1 = class CharacterMorphCo
     this.vRc.set(t, e);
   }
   SetMontageSubPathMorphType(t, e) {
-    this.bRm ||= new Map();
-    this.bRm.set(t, e);
+    this.cKm ||= new Map();
+    this.cKm.set(t, e);
   }
   GetMontagePathMorphType(t) {
-    if (this.bRm) {
-      for (var [e, i] of this.bRm.entries()) {
+    if (this.cKm) {
+      for (var [e, i] of this.cKm.entries()) {
         if (t.includes(e)) {
           return i;
         }
@@ -430,7 +430,7 @@ let CharacterMorphComponent = CharacterMorphComponent_1 = class CharacterMorphCo
   gZ_() {
     var t;
     if (this.Hte?.Actor.Mesh && (t = this.CW_?.ComponentVectorParams?.get(MESH_COMPONENT)?.get(MESH_LOCATION))) {
-      this.cwm?.SetOriginLocation(t);
+      this.$if?.SetOriginLocation(t);
     }
   }
   vW_() {
@@ -451,7 +451,7 @@ let CharacterMorphComponent = CharacterMorphComponent_1 = class CharacterMorphCo
           e.ResetCapsuleRadiusAndHeight(true);
         }
         if (s) {
-          ControllerHolder_1.ControllerHolder.GameBudgetInterfaceController.SetCenterActorLocationOffset(Vector_1.Vector.ZeroVectorDouble);
+          ControllerHolder_1.ControllerHolder.GameBudgetCenterRoleController.SetCenterOffset(Vector_1.Vector.ZeroVectorDouble);
         }
       } else {
         o = (r = this.CW_?.ComponentFloatParams?.get(CAPSULE_COMPONENT))?.get(CAPSULE_HALF_HEIGHT);
@@ -468,7 +468,7 @@ let CharacterMorphComponent = CharacterMorphComponent_1 = class CharacterMorphCo
             }
             if (s && (h = e.DefaultHalfHeight, i = e.DefaultRadius, h > 0) && i > 0) {
               this.WIu ||= Vector_1.Vector.Create(0, 0, -(o + r - h - i));
-              ControllerHolder_1.ControllerHolder.GameBudgetInterfaceController.SetCenterActorLocationOffset(this.WIu.ToUeVector());
+              ControllerHolder_1.ControllerHolder.GameBudgetCenterRoleController.SetCenterOffset(this.WIu.ToUeVector());
             }
             this.U3u = e.DefaultHalfHeight;
             this.D3u = e.DefaultRadius;
@@ -520,7 +520,7 @@ let CharacterMorphComponent = CharacterMorphComponent_1 = class CharacterMorphCo
         this.JFu = true;
         ResourceSystem_1.ResourceSystem.LoadAsync(t, UE.Class, t => {
           var e = this.Hte?.Actor;
-          if (e && ((t = e.AddComponentByClass(t, false, MathUtils_1.MathUtils.DefaultTransform, false)).OwnerActor = e, this.Aia = t, this.m6_ === 1) && this.Entity.GetComponent(62)) {
+          if (e && ((t = e.AddComponentByClass(t, false, MathUtils_1.MathUtils.DefaultTransform, false)).OwnerActor = e, this.Aia = t, this.m6_ === 1) && this.Entity.GetComponent(65)) {
             ControllerHolder_1.ControllerHolder.InputController.GetInputLayer(this.Entity.Id, 1)?.SetBpInputComp(t);
           }
           this.JFu = false;
@@ -530,5 +530,5 @@ let CharacterMorphComponent = CharacterMorphComponent_1 = class CharacterMorphCo
   }
 };
 CharacterMorphComponent.KIu = Stats_1.Stat.Create("[CharacterMorphComponent]SetMorphType");
-CharacterMorphComponent = CharacterMorphComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(287)], CharacterMorphComponent);
+CharacterMorphComponent = CharacterMorphComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(306)], CharacterMorphComponent);
 exports.CharacterMorphComponent = CharacterMorphComponent; //# sourceMappingURL=CharacterMorphComponent.js.map

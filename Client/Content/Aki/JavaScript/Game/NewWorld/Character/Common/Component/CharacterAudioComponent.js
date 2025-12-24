@@ -1,30 +1,32 @@
 "use strict";
 
-var __decorate = this && this.__decorate || function (t, e, o, i) {
-  var r;
-  var s = arguments.length;
-  var n = s < 3 ? e : i === null ? i = Object.getOwnPropertyDescriptor(e, o) : i;
+var __decorate = this && this.__decorate || function (t, e, i, o) {
+  var s;
+  var r = arguments.length;
+  var u = r < 3 ? e : o === null ? o = Object.getOwnPropertyDescriptor(e, i) : o;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    n = Reflect.decorate(t, e, o, i);
+    u = Reflect.decorate(t, e, i, o);
   } else {
-    for (var h = t.length - 1; h >= 0; h--) {
-      if (r = t[h]) {
-        n = (s < 3 ? r(n) : s > 3 ? r(e, o, n) : r(e, o)) || n;
+    for (var n = t.length - 1; n >= 0; n--) {
+      if (s = t[n]) {
+        u = (r < 3 ? s(u) : r > 3 ? s(e, i, u) : s(e, i)) || u;
       }
     }
   }
-  if (s > 3 && n) {
-    Object.defineProperty(e, o, n);
+  if (r > 3 && u) {
+    Object.defineProperty(e, i, u);
   }
-  return n;
+  return u;
 };
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.CharacterAudioComponent = undefined;
+const AudioSystem_1 = require("../../../../../Core/Audio/AudioSystem");
 const RegisterComponent_1 = require("../../../../../Core/Entity/RegisterComponent");
 const Global_1 = require("../../../../Global");
 const GameAudioController_1 = require("../../../../Module/Audio/GameAudioController");
+const BulletStaticFunction_1 = require("../../../Bullet/BulletStaticMethod/BulletStaticFunction");
 const BaseAudioComponent_1 = require("./BaseAudioComponent");
 let CharacterAudioComponent = class CharacterAudioComponent extends BaseAudioComponent_1.BaseAudioComponent {
   constructor() {
@@ -32,6 +34,19 @@ let CharacterAudioComponent = class CharacterAudioComponent extends BaseAudioCom
     this.SummonerId = 0;
     this.ActorComp = undefined;
     this.CurrentPriority = 0;
+    this.BWf = undefined;
+    this.kWf = 0;
+    this.qWf = (t, e) => {
+      if (e) {
+        if (this.kWf === 3 || this.kWf === 2) {
+          AudioSystem_1.AudioSystem.PostEvent("play_role_ui_execute_state_full_boss");
+        } else if (this.kWf === 1) {
+          AudioSystem_1.AudioSystem.PostEvent("play_role_ui_execute_state_full_elite", this.ActorComp?.Owner);
+        } else {
+          BulletStaticFunction_1.HitStaticFunction.PlayHitAudioByActor(this.ActorComp?.Owner, "play_role_ui_execute_state_full_ordinary", this.CurrentPriority);
+        }
+      }
+    };
   }
   OnInit() {
     super.OnInit();
@@ -43,11 +58,12 @@ let CharacterAudioComponent = class CharacterAudioComponent extends BaseAudioCom
     if (this.SummonerId !== 0) {
       GameAudioController_1.GameAudioController.RemoveRolePrioritySummon(this.SummonerId, this.Entity.Id);
     }
+    this.OWf();
     return true;
   }
   OnStart() {
     super.OnStart();
-    return !!this.ActorComp?.Valid && !!this.ActorComp.Owner && !(this.Rvl(), 0);
+    return !!this.ActorComp?.Valid && !!this.ActorComp.Owner && !(this.Rvl(), this.GWf(), 0);
   }
   OnAkComponentCreated() {
     super.OnAkComponentCreated();
@@ -81,6 +97,20 @@ let CharacterAudioComponent = class CharacterAudioComponent extends BaseAudioCom
       }
     }
   }
+  GWf() {
+    var t = this.Entity.GetComponent(0);
+    if (t?.IsMonster()) {
+      this.kWf = t?.GetMonsterMatchType() ?? 0;
+      t = this.Entity.GetComponent(215);
+      this.BWf = t?.ListenForTagAddOrRemove(1100879485, this.qWf);
+    }
+  }
+  OWf() {
+    if (this.BWf) {
+      this.BWf.EndTask();
+      this.BWf = undefined;
+    }
+  }
 };
-CharacterAudioComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(51)], CharacterAudioComponent);
+CharacterAudioComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(52)], CharacterAudioComponent);
 exports.CharacterAudioComponent = CharacterAudioComponent; //# sourceMappingURL=CharacterAudioComponent.js.map

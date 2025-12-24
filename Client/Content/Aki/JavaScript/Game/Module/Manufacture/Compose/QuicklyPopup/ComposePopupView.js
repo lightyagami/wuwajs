@@ -23,37 +23,37 @@ class ComposePopupView extends UiViewBase_1.UiViewBase {
     this.JPt = undefined;
     this.hRa = undefined;
     this.ZAt = undefined;
-    this.Z_m = undefined;
-    this.eum = undefined;
-    this.tum = false;
-    this.ium = undefined;
-    this.rum = undefined;
-    this.VMm = false;
-    this.jMm = undefined;
+    this.fgm = undefined;
+    this.ggm = undefined;
+    this.Cgm = false;
+    this.pgm = undefined;
+    this.vgm = undefined;
+    this.UBm = false;
+    this.xBm = undefined;
     this.N8e = e => {
-      this.tum = e === 1;
+      this.Cgm = e === 1;
       this.Og();
     };
-    this.oum = () => {
-      if (!this.VMm) {
-        if (TimerSystem_1.GameplayTimerSystem.Has(this.jMm)) {
-          TimerSystem_1.GameplayTimerSystem.Remove(this.jMm);
+    this.ygm = () => {
+      if (!this.UBm) {
+        if (TimerSystem_1.GameplayTimerSystem.Has(this.xBm)) {
+          TimerSystem_1.GameplayTimerSystem.Remove(this.xBm);
         }
-        this.jMm = TimerSystem_1.GameplayTimerSystem.Delay(() => {
-          this.jMm = undefined;
+        this.xBm = TimerSystem_1.GameplayTimerSystem.Delay(() => {
+          this.xBm = undefined;
           this.Og();
         }, DELAY_REFRESH_TIME);
       }
     };
     this.jWt = () => {
       var e = new ComposePopupGridItem_1.ComposePopupGridItem();
-      e.BelongView = this.rum;
+      e.BelongView = this.vgm;
       return e;
     };
     this.p5t = () => {
-      if (this.eum) {
+      if (this.ggm) {
         let e = 0;
-        for (const s of this.eum) {
+        for (const s of this.ggm) {
           if (s.Item.ItemId === ItemDefines_1.EItemId.Gold) {
             var t = s.Item.Count - s.Item.SelectedCount;
             if (t <= 0) {
@@ -72,11 +72,11 @@ class ComposePopupView extends UiViewBase_1.UiViewBase {
         if (e > 0) {
           (i = new ConfirmBoxDefine_1.ConfirmBoxDataNew(390)).ItemIdMap = new Map([[ItemDefines_1.EItemId.Gold, e]]);
           i.FunctionMap.set(2, () => {
-            this.aum();
+            this.Sgm();
           });
           ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(i);
         } else {
-          this.aum();
+          this.Sgm();
         }
       }
     };
@@ -105,13 +105,13 @@ class ComposePopupView extends UiViewBase_1.UiViewBase {
     var t = this.OpenParam;
     if (t) {
       e = ModelManager_1.ModelManager.ComposePopupModel.MergeDuplicateSelectedData(t.SelectedItemList);
-      this.Z_m = this.Bvm(e);
-      this.ium = t.ClickConfirm;
-      this.rum = t.BelongView;
-      e = this.hum(this.Z_m);
-      this.tum = e.Result !== 0;
+      this.fgm = this.Kwm(e);
+      this.pgm = t.ClickConfirm;
+      this.vgm = t.BelongView;
+      e = this.Mgm(this.fgm);
+      this.Cgm = e.Result !== 0;
       this.GetText(0)?.ShowTextNew(e.Result === 0 ? "AutoSynthesis_MaterialEnough_Title" : "AutoSynthesis_MaterialMissing_Title");
-      this.GetExtendToggle(5).SetToggleStateForce(this.tum ? 1 : 0, false);
+      this.GetExtendToggle(5).SetToggleStateForce(this.Cgm ? 1 : 0, false);
     }
   }
   OnBeforeShow() {
@@ -123,46 +123,46 @@ class ComposePopupView extends UiViewBase_1.UiViewBase {
     });
   }
   OnBeforeDestroy() {
-    if (TimerSystem_1.GameplayTimerSystem.Has(this.jMm)) {
-      TimerSystem_1.GameplayTimerSystem.Remove(this.jMm);
+    if (TimerSystem_1.GameplayTimerSystem.Has(this.xBm)) {
+      TimerSystem_1.GameplayTimerSystem.Remove(this.xBm);
     }
   }
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnCommonItemCountAnyChange, this.oum);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnCommonItemCountAnyChange, this.ygm);
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnCommonItemCountAnyChange, this.oum);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnCommonItemCountAnyChange, this.ygm);
   }
   Og() {
-    for (const t of this.Z_m) {
+    for (const t of this.fgm) {
       t.SelectedCount = ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(t.ItemId);
     }
-    var e = ModelManager_1.ModelManager.ComposePopupModel.CheckComposeResult(this.Z_m, this.tum);
+    var e = ModelManager_1.ModelManager.ComposePopupModel.CheckComposeResult(this.fgm, this.Cgm);
     this.Esi(e.GridDataList);
     this.M3e(e.Result === 0);
-    this.lum();
+    this.Egm();
   }
   Esi(e) {
-    this.eum = e;
+    this.ggm = e;
     this.JPt?.RefreshByData(e);
   }
   M3e(e) {
     this.ZAt?.SetEnableClick(e);
     this.ZAt?.SetShowText(e ? "AutoSynthesis_LevelUpBtn_Text" : "AutoSynthesis_MaterialMissingBtn_Text");
   }
-  lum() {
-    this.GetExtendToggle(5)?.RootUIComp.SetUIActive(ModelManager_1.ModelManager.ComposePopupModel.IsComposeGiftShouldShow(this.Z_m));
+  Egm() {
+    this.GetExtendToggle(5)?.RootUIComp.SetUIActive(ModelManager_1.ModelManager.ComposePopupModel.IsComposeGiftShouldShow(this.fgm));
   }
-  aum() {
+  Sgm() {
     this.ZAt?.SetEnableClick(false);
-    ControllerHolder_1.ControllerHolder.ComposeController.SendSynthesisItemRequestBatchNew(this.eum, () => {
-      this.VMm = true;
-      this.ium?.();
+    ControllerHolder_1.ControllerHolder.ComposeController.SendSynthesisItemRequestBatchNew(this.ggm, () => {
+      this.UBm = true;
+      this.pgm?.();
     }).finally(() => {
       this.CloseMe();
     });
   }
-  hum(e) {
+  Mgm(e) {
     var t = ModelManager_1.ModelManager.ComposePopupModel.CheckComposeResult(e, false);
     if (t.Result === 0) {
       return {
@@ -181,7 +181,7 @@ class ComposePopupView extends UiViewBase_1.UiViewBase {
       };
     }
   }
-  Bvm(e) {
+  Kwm(e) {
     return e.sort((e, t) => {
       e = e.SelectedCount - e.Count >= 0;
       t = t.SelectedCount - t.Count >= 0;

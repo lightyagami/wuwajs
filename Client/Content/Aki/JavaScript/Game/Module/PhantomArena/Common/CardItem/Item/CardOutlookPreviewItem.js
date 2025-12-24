@@ -11,7 +11,7 @@ const CommonBaseCardItem_1 = require("./CommonBaseCardItem");
 class CardOutlookPreviewItem extends CommonBaseCardItem_1.CommonBaseCardItem {
   OnRegisterCardComponent() {
     this.ComponentsRegisterInfoByItem = [[0, this.GetRootItem()]];
-    this.ComponentsRegisterInfoByResourceId = [[7, "UiItem_SoundRemnantItem512Spine", this.GetSpineRootItem()]];
+    this.ComponentsRegisterInfoByResourceId = [[9, "UiItem_SoundRemnantItem512Spine", this.GetSpineRootItem()]];
   }
   Refresh(e) {
     var o = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardConfig(e);
@@ -33,7 +33,7 @@ class CardOutlookPreviewItem extends CommonBaseCardItem_1.CommonBaseCardItem {
       CardSpineData: ModelManager_1.ModelManager.PhantomArenaModel.CreateCardSpineData(e),
       ShowSpine: !a
     };
-    this.GetComponent(7)?.Refresh(o);
+    this.GetComponent(9)?.Refresh(o);
   }
 }
 exports.CardOutlookPreviewItem = CardOutlookPreviewItem;

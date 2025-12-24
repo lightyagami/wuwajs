@@ -36,7 +36,7 @@ class SequenceQteManager {
       }
       while (!this.Wcd.Empty) {
         var o = this.Wcd.Pop();
-        this.Fom(o);
+        this.hlm(o);
       }
     };
   }
@@ -80,7 +80,7 @@ class SequenceQteManager {
       o = new UE.FrameTime(e.StartFrame.FrameNumber, e.StartFrame.SubFrame);
       --(n = new UE.FrameTime(e.EndFrame.FrameNumber, e.EndFrame.SubFrame)).FrameNumber.Value;
     }
-    const i = this.CreateQte(e.QteId, e.SubtitleId, t, e.IsGroupQte, o, n, e.AttachActor, e.SpineInfo, e.SubQteParams);
+    const i = this.CreateQte(e.QteId, e.SubtitleId, t, e.IsGroupQte, o, n, e.AttachActor, e.SpineInfo, e.SubQteParams, e.IsUpdateWithProgress);
     if (i) {
       this.utd.set(e.QteId, i);
       i.OnBegin();
@@ -125,7 +125,7 @@ class SequenceQteManager {
       this.Wcd.Push(e);
     }
   }
-  Fom(e) {
+  hlm(e) {
     var t;
     var o = this.utd.get(e);
     if (o) {
@@ -170,51 +170,46 @@ class SequenceQteManager {
       UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "Animation.ForbiddenEvaluateTwice 1");
     }
   }
-  PauseSequenceAnim(e) {
-    e = this.utd.get(e);
-    if (e && this.ctd !== 2 && (this.ctd = 2, e.IsProgressQte) && ModelManager_1.ModelManager.SequenceModel.IsPlaying) {
-      ModelManager_1.ModelManager.SequenceModel.CurLevelSeqActor?.SequencePlayer?.PauseOnNextFrame();
-    }
-  }
   FinishSequenceAnim(e) {
     if (this.utd.get(e)) {
       this.QteManager?.FinishQte(e);
     }
   }
   SetPlayRate(e) {
-    if (ModelManager_1.ModelManager.SequenceModel.IsPlaying) {
-      ModelManager_1.ModelManager.SequenceModel.CurLevelSeqActor?.SequencePlayer?.SetPlayRate(e);
+    if (ModelManager_1.ModelManager.SequenceModel.IsPlaying && (ModelManager_1.ModelManager.SequenceModel.CurLevelSeqActor?.SequencePlayer?.SetPlayRate(e), Log_1.Log.CheckDebug())) {
+      Log_1.Log.Debug("Plot", 26, "[FlowSequence][PlotQte] Sequence Qte 播放速度", ["PlayRate", e]);
     }
   }
   ResetPlayRate() {
-    if (ModelManager_1.ModelManager.SequenceModel.IsPlaying) {
-      ModelManager_1.ModelManager.SequenceModel.CurLevelSeqActor?.SequencePlayer?.SetPlayRate(1);
+    if (ModelManager_1.ModelManager.SequenceModel.IsPlaying && (ModelManager_1.ModelManager.SequenceModel.CurLevelSeqActor?.SequencePlayer?.SetPlayRate(1), Log_1.Log.CheckDebug())) {
+      Log_1.Log.Debug("Plot", 26, "[FlowSequence][PlotQte] Sequence Qte 播放速度重置");
     }
   }
-  CreateQte(e, t, o, n, i, r, a, l, s) {
-    let u = undefined;
-    if (u = n ? ControllerHolder_1.ControllerHolder.CommonQteController.StartQteGroup(e, undefined, undefined, 2, {
-      AttachTarget: a
+  CreateQte(e, t, o, n, i, l, r, a, s, u) {
+    let _ = undefined;
+    if (_ = n ? ControllerHolder_1.ControllerHolder.CommonQteController.StartQteGroup(e, undefined, undefined, 2, {
+      AttachTarget: r
     }) : ControllerHolder_1.ControllerHolder.CommonQteController.StartQte(e, undefined, undefined, 2, {
-      AttachTarget: a
+      AttachTarget: r
     })) {
       let e = undefined;
-      if (u.Type === 2) {
-        e = new SequenceQteLongPress_1.SequenceQteLongPress(this, u);
-      } else if (u.Type === 1) {
-        e = new SequenceQteContinuousClick_1.SequenceQteContinuousClick(this, u);
-      } else if (u.Type === 4) {
-        e = new SequenceQteSelectOption_1.SequenceQteSelectOption(this, u);
-      } else if (u.Type === 5) {
-        (e = new SequenceQteGroup_1.SequenceQteGroup(this, u)).SetSubQteParams(s);
+      if (_.Type === 2) {
+        e = new SequenceQteLongPress_1.SequenceQteLongPress(this, _);
+      } else if (_.Type === 1) {
+        e = new SequenceQteContinuousClick_1.SequenceQteContinuousClick(this, _);
+      } else if (_.Type === 4) {
+        e = new SequenceQteSelectOption_1.SequenceQteSelectOption(this, _);
+      } else if (_.Type === 5) {
+        (e = new SequenceQteGroup_1.SequenceQteGroup(this, _)).SetSubQteParams(s);
       } else {
-        e = new (u.Type === 3 ? SequenceQteDrag_1.SequenceQteDrag : SequenceQteHandleBase_1.SequenceQteHandleBase)(this, u);
+        e = new (_.Type === 3 ? SequenceQteDrag_1.SequenceQteDrag : SequenceQteHandleBase_1.SequenceQteHandleBase)(this, _);
       }
       e.SubtitleId = t;
       e.IsProgressQte = o;
       e.SequenceQteStartRange = i;
-      e.SequenceQteEndRange = r;
-      e.SpineInfo = SequenceQteHandleBase_1.QteSpineInfoProxy.CreateQteSpineInfo(l);
+      e.SequenceQteEndRange = l;
+      e.SpineInfo = SequenceQteHandleBase_1.QteSpineInfoProxy.CreateQteSpineInfo(a);
+      e.IsUpdateWithProgress = u ?? false;
       return e;
     }
   }

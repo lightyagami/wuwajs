@@ -23,13 +23,17 @@ class PhantomArenaSubView extends ActivitySubViewBase_1.ActivitySubViewBase {
     this.evu = undefined;
     this.Zpu = undefined;
     this.p5t = e => {
-      UiManager_1.UiManager.OpenView("PhantomArenaEntranceView");
+      UiManager_1.UiManager.OpenView("PhantomArenaEntranceView", this.ActivityBaseData.Id);
     };
     this.Z6c = () => {
-      UiManager_1.UiManager.OpenView("PhantomArenaEntranceShopMainView", "PhantomArenaEntranceTaskTabView");
+      var e = {
+        TabViewName: "PhantomArenaEntranceTaskTabView",
+        ActivityId: this.ActivityBaseData.Id
+      };
+      UiManager_1.UiManager.OpenView("PhantomArenaEntranceShopMainView", e);
     };
     this.Jj1 = () => {
-      UiManager_1.UiManager.OpenView("PhantomArenaMasterInfoView");
+      UiManager_1.UiManager.OpenView("PhantomArenaMasterInfoView", this.ActivityBaseData.Id);
     };
     this.Ibu = () => {
       var e = this.ActivityBaseData;
@@ -89,7 +93,7 @@ class PhantomArenaSubView extends ActivitySubViewBase_1.ActivitySubViewBase {
   nOe() {
     this.Q6a.SetBtnText(PhantomArenaDefine_1.ACTIVITY_SUBVIEW_TEXT_UNLOCK);
     this.Q6a?.RefreshFunction();
-    var [e, t] = ModelManager_1.ModelManager.PhantomArenaModel.IsInLimitTime();
+    var [e, t] = ModelManager_1.ModelManager.PhantomArenaModel.IsInLimitTime(this.ActivityBaseData.Id);
     this.evu?.SetUiActive(e);
     if (e) {
       this.evu?.SetText(t);
@@ -104,8 +108,8 @@ class PhantomArenaSubView extends ActivitySubViewBase_1.ActivitySubViewBase {
   }
   pmt() {
     var e = ModelManager_1.ModelManager.PhantomArenaModel;
-    var t = e.GetMasterLevel();
-    var e = e.GetMasterLevelMax();
+    var t = e.GetMasterLevel(this.ActivityBaseData.Id);
+    var e = e.GetMasterLevelMax(this.ActivityBaseData.Id);
     this.Zpu?.SetLocalTextNew(PhantomArenaDefine_1.ENTRANCE_LEVEL_COUNT_ID, t, e);
   }
   OnBeforeHide() {
@@ -113,9 +117,9 @@ class PhantomArenaSubView extends ActivitySubViewBase_1.ActivitySubViewBase {
   }
   K8e() {
     this.Ovt();
-    this.evu.BindRedDot("RedDotPhantomArenaLimitReward");
-    this.Zpu.BindRedDot("RedDotPhantomArenaLevelReward");
-    this.Q6a?.GetFunctional()?.FunctionButton?.BindRedDot("RedDotPhantomArenaActivity");
+    this.evu.BindRedDot("RedDotPhantomArenaLimitReward", this.ActivityBaseData.Id);
+    this.Zpu.BindRedDot("RedDotPhantomArenaLevelReward", this.ActivityBaseData.Id);
+    this.Q6a?.GetFunctional()?.FunctionButton?.BindRedDot("RedDotPhantomArenaActivity", this.ActivityBaseData.Id);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.ActivityBaseData.Id);
   }
   Ovt() {
@@ -124,7 +128,7 @@ class PhantomArenaSubView extends ActivitySubViewBase_1.ActivitySubViewBase {
     this.Q6a?.GetFunctional()?.FunctionButton?.UnBindRedDot();
   }
   OnTimer() {
-    var [e, t] = ModelManager_1.ModelManager.PhantomArenaModel.IsInLimitTime();
+    var [e, t] = ModelManager_1.ModelManager.PhantomArenaModel.IsInLimitTime(this.ActivityBaseData.Id);
     this.evu?.SetUiActive(e);
     if (e) {
       this.evu?.SetText(t);

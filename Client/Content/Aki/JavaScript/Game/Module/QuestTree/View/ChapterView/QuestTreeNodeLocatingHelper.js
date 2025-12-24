@@ -40,10 +40,10 @@ class QuestTreeNodeLocatingHelper {
       r = y - (a.Y + (0.5 - i.GetPivot().Y) * i.GetHeight()) + o.Y;
       this.Aae.X = MathUtils_1.MathUtils.Clamp(c, _, u);
       this.Aae.Y = MathUtils_1.MathUtils.Clamp(r, t, e);
+      if (this.MoveTweener) {
+        this.MoveTweener.Kill();
+      }
       if (s) {
-        if (this.MoveTweener) {
-          this.MoveTweener.Kill();
-        }
         L = h.GetRelativeTransform().GetLocation();
         l = this.Aae.X - o.X;
         U = this.Aae.Y - o.Y;

@@ -126,18 +126,21 @@ class InputKeyItem extends UiPanelBase_1.UiPanelBase {
     this.oAt = t;
   }
   SetKeyTexture(t) {
-    var i = InputSettings_1.InputSettings.GetKeyIconPath(t);
-    if (this.XUt !== t || this.C1u !== i) {
-      this.XUt = t;
-      this.C1u = i;
-      const s = this.GetTexture(0);
-      if (i) {
-        this.SetTextureByPath(i, s, undefined, () => {
-          s.SetSizeFromTexture();
-          s.SetUIActive(true);
-        });
-      } else {
-        s?.SetUIActive(false);
+    var i = InputSettings_1.InputSettings.GetKey(t);
+    if (i) {
+      i = i.GetKeyIconPath();
+      if (this.XUt !== t || this.C1u !== i) {
+        this.XUt = t;
+        this.C1u = i;
+        const s = this.GetTexture(0);
+        if (i) {
+          this.SetTextureByPath(i, s, undefined, () => {
+            s.SetSizeFromTexture();
+            s.SetUIActive(true);
+          });
+        } else {
+          s?.SetUIActive(false);
+        }
       }
     }
   }
@@ -194,6 +197,9 @@ class InputKeyItem extends UiPanelBase_1.UiPanelBase {
       }
       this.vq = t;
     }
+  }
+  GetKeyName() {
+    return this.HEe;
   }
 }
 exports.InputKeyItem = InputKeyItem;

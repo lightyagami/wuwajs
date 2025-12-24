@@ -43,7 +43,7 @@ class GreatSwordMarkPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondary
     this.GetItem(6).SetUIActive(false);
     this.GetVerticalLayout(5).RootUIComp.SetUIActive(false);
     this.GetItem(32).SetUIActive(false);
-    this.ConfirmButton.SetActive(true);
+    this.LayoutContext?.SetConfirmBtnActive(true);
   }
   OnShowWorldMapSecondaryUi(r) {
     var e = this.u2o.MarkConfigId;

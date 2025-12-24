@@ -43,6 +43,7 @@ class InviteNewbieActivityItem extends UiPanelBase_1.UiPanelBase {
   }
   OnStart() {
     var i = this.gV_.LocalConfig;
+    this.LNe.SetActivityBaseData(this.gV_);
     this.LNe.SetTitleByText(this.gV_.GetTitle());
     this.LNe.SetSubTitleVisible(!StringUtils_1.StringUtils.IsEmpty(i?.DescTheme));
     if (i?.DescTheme) {

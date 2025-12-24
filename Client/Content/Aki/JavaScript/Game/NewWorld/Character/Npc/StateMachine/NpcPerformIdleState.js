@@ -84,7 +84,7 @@ class NpcPerformIdleState extends NpcPerformBaseState_1.NpcPerformBaseState {
       this.Xer = undefined;
       this.etr = false;
       this.utr();
-      this.Owner.Entity.GetComponent(191).AnyIdleLoopMontagePlaying = false;
+      this.Owner.Entity.GetComponent(197).AnyIdleLoopMontagePlaying = false;
     };
     this.ctr = false;
     this.mtr = false;
@@ -97,7 +97,7 @@ class NpcPerformIdleState extends NpcPerformBaseState_1.NpcPerformBaseState {
       var t;
       var i;
       this.vtr();
-      this.Owner.Entity.GetComponent(191)?.PauseAi("StalkAlert");
+      this.Owner.Entity.GetComponent(197)?.PauseAi("StalkAlert");
       this.dtr = true;
       if (Global_1.Global.BaseCharacter) {
         t = Global_1.Global.BaseCharacter.CharacterActorComponent;
@@ -107,16 +107,16 @@ class NpcPerformIdleState extends NpcPerformBaseState_1.NpcPerformBaseState {
     };
     this.Oer = () => {
       this.vtr();
-      this.Owner.Entity.GetComponent(191)?.ResumeAi("StalkAlert");
+      this.Owner.Entity.GetComponent(197)?.ResumeAi("StalkAlert");
       this.dtr = false;
     };
     this.xei = () => {
       this.vtr();
-      this.Owner.Entity?.GetComponent(191)?.ResumeAi("LeaveLogicRange");
+      this.Owner.Entity?.GetComponent(197)?.ResumeAi("LeaveLogicRange");
       this.dtr = false;
     };
     this.Mtr = () => {
-      this.Owner.Entity?.GetComponent(191)?.PauseAi("LeaveLogicRange");
+      this.Owner.Entity?.GetComponent(197)?.PauseAi("LeaveLogicRange");
       this.dtr = true;
     };
   }
@@ -159,7 +159,7 @@ class NpcPerformIdleState extends NpcPerformBaseState_1.NpcPerformBaseState {
   StartFromBornState() {
     this.Etr();
     this.Ore();
-    if (!this.itr && !(this._Ll?.RunTask(), this.Owner.Entity.GetComponent(191)?.IsInPlot) && !this.dtr && !this.gqn?.IsMoving) {
+    if (!this.itr && !(this._Ll?.RunTask(), this.Owner.Entity.GetComponent(197)?.IsInPlot) && !this.dtr && !this.gqn?.IsMoving) {
       if (this.Ker) {
         this.Itr(true);
       } else {
@@ -172,7 +172,7 @@ class NpcPerformIdleState extends NpcPerformBaseState_1.NpcPerformBaseState {
     if (t === 0) {
       this.StartFromBornState();
     } else {
-      (t = this.Owner.Entity.GetComponent(191))?.ResumeAi("NpcPerformIdleState");
+      (t = this.Owner.Entity.GetComponent(197))?.ResumeAi("NpcPerformIdleState");
       this.Ore();
       if (!this.itr && !(this.ker = true, this.utr(), t?.IsInPlot) && !this.dtr && !this.InteractRequestWaiting) {
         if (this.gqn?.IsMoving) {
@@ -187,7 +187,7 @@ class NpcPerformIdleState extends NpcPerformBaseState_1.NpcPerformBaseState {
     return Time_1.Time.WorldTimeSeconds > this.Her + this.jer;
   }
   OnUpdate(t) {
-    if (!this.itr && !(this.XWa(), this.Owner.Entity.GetComponent(191)?.IsInPlot) && !this.dtr && !this.InteractRequestWaiting) {
+    if (!this.itr && !(this.XWa(), this.Owner.Entity.GetComponent(197)?.IsInPlot) && !this.dtr && !this.InteractRequestWaiting) {
       if (this.gqn?.IsMoving || this.Ker && this.Xer && this.Xer !== this.Rga.MontagePath) {
         this.vtr();
       } else if (!this.Xaa && !this.Wer) {
@@ -206,7 +206,7 @@ class NpcPerformIdleState extends NpcPerformBaseState_1.NpcPerformBaseState {
       this.vtr();
     }
     this.kre();
-    this.Owner.Entity.GetComponent(191)?.PauseAi("NpcPerformIdleState");
+    this.Owner.Entity.GetComponent(197)?.PauseAi("NpcPerformIdleState");
   }
   OnDestroy() {
     this.YWa();
@@ -221,20 +221,20 @@ class NpcPerformIdleState extends NpcPerformBaseState_1.NpcPerformBaseState {
     var e;
     var s;
     var h;
-    if (this.rtr && !this.atr && (this.ntr = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(this.rtr), this.ntr) && (s = this.ntr.Entity.GetComponent(201)?.GetSubEntityInteractLogicController()) && s.IsSceneInteractionLoadCompleted() && (this.atr = true, t = this.Owner.Entity, s.Possess(t), s.IgnoreCollision(), i = (t = t.GetComponent(2)).CreatureData.GetPbDataId(), e = s.GetSitLocation(), s = s.GetForwardDirection(), h = Rotator_1.Rotator.Create(), s.ToOrientationRotator(h), t.SetActorLocationAndRotation(e.ToUeVector(), h.ToUeRotator(), "Npc椅子交互位置修正", false), t instanceof CharacterActorComponent_1.CharacterActorComponent && t.SetInputRotator(h), this.TurnActionController?.UpdateDefaultDirect(s), Log_1.Log.CheckDebug())) {
+    if (this.rtr && !this.atr && (this.ntr = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(this.rtr), this.ntr) && (s = this.ntr.Entity.GetComponent(207)?.GetSubEntityInteractLogicController()) && s.IsSceneInteractionLoadCompleted() && (this.atr = true, t = this.Owner.Entity, s.Possess(t), s.IgnoreCollision(), i = (t = t.GetComponent(2)).CreatureData.GetPbDataId(), e = s.GetSitLocation(), s = s.GetForwardDirection(), h = Rotator_1.Rotator.Create(), s.ToOrientationRotator(h), t.SetActorLocationAndRotation(e.ToUeVector(), h.ToUeRotator(), "Npc椅子交互位置修正", false), t instanceof CharacterActorComponent_1.CharacterActorComponent && t.SetInputRotator(h), this.TurnActionController?.UpdateDefaultDirect(s), Log_1.Log.CheckDebug())) {
       Log_1.Log.Debug("AI", 50, "[HandleLeisureInteract] 修正坐下位置和朝向", ["Location", e], ["Rotation", h], ["chairPbDataId", this.rtr], ["npcPbDataId", i]);
     }
   }
   YWa() {
     var t;
-    if (this.rtr && (this.ntr = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(this.rtr), this.ntr) && (t = this.ntr.Entity.GetComponent(201)?.GetSubEntityInteractLogicController()) && t.IsSceneInteractionLoadCompleted()) {
+    if (this.rtr && (this.ntr = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(this.rtr), this.ntr) && (t = this.ntr.Entity.GetComponent(207)?.GetSubEntityInteractLogicController()) && t.IsSceneInteractionLoadCompleted()) {
       t.UnPossess(this.Owner.Entity);
       t.ResetCollision();
     }
   }
   Itr(r = false) {
     if (!this.Xaa && !this.Wer) {
-      const n = this.Owner.Entity.GetComponent(191);
+      const n = this.Owner.Entity.GetComponent(197);
       const o = this.Ker ? this.Rga : this.Rtr();
       if (o && o.MontagePath && o.MontagePath !== "" && o.MontagePath !== "Empty") {
         var t = o.MontagePath;
@@ -320,8 +320,8 @@ class NpcPerformIdleState extends NpcPerformBaseState_1.NpcPerformBaseState {
   Etr() {
     var t;
     var i;
-    var e = this.Owner.Entity.GetComponent(47);
-    if (e?.IsEnabled() && ((t = e.AiController?.AiBase?.SubBehaviorConfigs?.get("AiSense")) && (i = this.Owner.Entity.GetComponent(125), t = AiSenseById_1.configAiSenseById.GetConfig(Number(t))) && (t = Math.max(t.SenseDistanceRange.Max, 0), i.SetLogicRange(t), this.ctr = t > 0), i = e.AiController?.AiBase?.SubBehaviorConfigs?.get("AiAlert")) && AiAlertById_1.configAiAlertById.GetConfig(Number(i))) {
+    var e = this.Owner.Entity.GetComponent(48);
+    if (e?.IsEnabled() && ((t = e.AiController?.AiBase?.SubBehaviorConfigs?.get("AiSense")) && (i = this.Owner.Entity.GetComponent(130), t = AiSenseById_1.configAiSenseById.GetConfig(Number(t))) && (t = Math.max(t.SenseDistanceRange.Max, 0), i.SetLogicRange(t), this.ctr = t > 0), i = e.AiController?.AiBase?.SubBehaviorConfigs?.get("AiAlert")) && AiAlertById_1.configAiAlertById.GetConfig(Number(i))) {
       this.mtr = true;
     }
   }
@@ -335,7 +335,7 @@ class NpcPerformIdleState extends NpcPerformBaseState_1.NpcPerformBaseState {
     if (this.ctr && !this.mtr) {
       EventSystem_1.EventSystem.AddWithTarget(this.Owner.Entity, EventDefine_1.EEventName.EnterLogicRange, this.xei);
       EventSystem_1.EventSystem.AddWithTarget(this.Owner.Entity, EventDefine_1.EEventName.LeaveLogicRange, this.Mtr);
-      if (!this.Owner.Entity.GetComponent(125)?.IsInLogicRange) {
+      if (!this.Owner.Entity.GetComponent(130)?.IsInLogicRange) {
         this.Mtr();
       }
     }
@@ -355,7 +355,7 @@ class NpcPerformIdleState extends NpcPerformBaseState_1.NpcPerformBaseState {
     }
   }
   OnPlayerInteractTurnActionStart() {
-    this.Owner.Entity.GetComponent(191)?.PauseAi("PlayerInteractTurnAction");
+    this.Owner.Entity.GetComponent(197)?.PauseAi("PlayerInteractTurnAction");
     this.InteractRequestWaiting = true;
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("NPC", 50, "[NpcPerformIdleState.OnPlayerInteractTurnActionStart] 开始执行交互转身", ["PbDataID", this.ConfigId]);
@@ -363,7 +363,7 @@ class NpcPerformIdleState extends NpcPerformBaseState_1.NpcPerformBaseState {
     this.TurnActionController.TurnToInteractTarget();
   }
   OnPlayerInteractTurnActionEnd() {
-    var t = this.Owner.Entity.GetComponent(44);
+    var t = this.Owner.Entity.GetComponent(45);
     if (t.MainAnimInstance.IsAnyMontagePlaying() && this.TurnActionController.NeedTurn) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("NPC", 50, "[NpcPerformIdleState.OnPlayerInteractTurnActionEnd][结束交互转身] 停止播放Montage", ["PbDataID", this.ConfigId], ["IsIdleMontage", this.Xaa], ["CurrentMontage", t?.MainAnimInstance?.GetCurrentActiveMontage()?.GetName()]);
@@ -372,7 +372,7 @@ class NpcPerformIdleState extends NpcPerformBaseState_1.NpcPerformBaseState {
     }
     this.TurnActionController.OnTurnToDefaultForwardEndHandle = () => {
       if (this?.Owner?.Valid) {
-        this.Owner.Entity.GetComponent(191)?.ResumeAi("PlayerInteractTurnAction");
+        this.Owner.Entity.GetComponent(197)?.ResumeAi("PlayerInteractTurnAction");
         this.TurnActionController.NeedTurn = false;
       }
     };

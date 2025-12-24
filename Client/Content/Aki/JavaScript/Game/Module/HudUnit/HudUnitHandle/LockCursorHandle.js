@@ -44,7 +44,7 @@ class LockCursorHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
           this.xoi = true;
         }
       }
-      if (this.Poi && !ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(209)?.HasTag(-2140742267)) {
+      if (this.Poi && !ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(215)?.HasTag(-2140742267)) {
         if (i === 0) {
           this.qoi();
         } else {
@@ -86,7 +86,7 @@ class LockCursorHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
   qoi() {
     var t;
     if (this.Poi?.IsForceLockState()) {
-      t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.GetComponent(62).GetBpInputComp().UnlockLongPressTime * TimeUtil_1.TimeUtil.InverseMillisecond;
+      t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.GetComponent(65).GetBpInputComp().UnlockLongPressTime * TimeUtil_1.TimeUtil.InverseMillisecond;
       this.Poi.ActivateUnlockTimeDown(t);
     }
   }
@@ -117,7 +117,7 @@ class LockCursorHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
   }
   Ooi() {
     var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
-    return !!t?.Valid && t.Entity.GetComponent(179)?.DirectionState === CharacterUnifiedStateTypes_1.ECharDirectionState.AimDirection;
+    return !!t?.Valid && t.Entity.GetComponent(184)?.DirectionState === CharacterUnifiedStateTypes_1.ECharDirectionState.AimDirection;
   }
   Activate() {
     if (this.Poi) {
@@ -142,22 +142,26 @@ class LockCursorHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
     this.EG_();
     var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
     if (t?.Valid) {
-      const e = t.Entity.CheckGetComponent(32);
-      var i = e.GetTargetInfo();
-      if (i.ShowTarget?.Valid) {
-        this.vG_ = i.ShowTarget;
-        this.yG_ = i.SocketName;
+      const e = t.Entity.CheckGetComponent(33).GetTargetInfo();
+      if (e.ShowTarget?.Valid) {
+        this.vG_ = e.ShowTarget;
+        this.yG_ = e.SocketName;
         this.SG_ = t;
         this.MG_ = true;
-      } else if (t.Entity.GetComponent(209)?.HasTag(-2100129479)) {
-        i = PhantomUtil_1.PhantomUtil.GetSummonedEntity(t.Entity, Protocol_1.Aki.Protocol.Summon.x3s.Proto_ESummonTypeConcomitantVision);
-        if (i?.Valid) {
-          const e = i.Entity.CheckGetComponent(32);
-          if (e && (t = e.GetTargetInfo()).ShowTarget?.Valid) {
-            this.vG_ = t.ShowTarget;
-            this.yG_ = t.SocketName;
-            this.SG_ = i;
+      } else {
+        var i = t.Entity.GetComponent(243)?.VehicleEntity?.GetComponent(32);
+        if (i) {
+          const e = i.GetTargetInfo();
+          if (e.ShowTarget?.Valid) {
+            this.vG_ = e.ShowTarget;
+            this.yG_ = e.SocketName;
+            return;
           }
+        }
+        if (t.Entity.GetComponent(215)?.HasTag(-2100129479) && (i = PhantomUtil_1.PhantomUtil.GetSummonedEntity(t.Entity, Protocol_1.Aki.Protocol.Summon.x3s.Proto_ESummonTypeConcomitantVision))?.Valid && (t = i.Entity.CheckGetComponent(33)) && (t = t.GetTargetInfo()).ShowTarget?.Valid) {
+          this.vG_ = t.ShowTarget;
+          this.yG_ = t.SocketName;
+          this.SG_ = i;
         }
       }
     }

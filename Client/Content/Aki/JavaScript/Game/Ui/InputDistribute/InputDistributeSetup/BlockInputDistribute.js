@@ -15,22 +15,23 @@ const InputDistributeDefine_1 = require("../InputDistributeDefine");
 const InputDistributeSetup_1 = require("./InputDistributeSetup");
 class BlockInputDistribute extends InputDistributeSetup_1.InputDistributeSetup {
   OnRefresh() {
+    if (this.Bc_()) {
+      if (ModelManager_1.ModelManager.SeamlessTravelModel?.IsSeamlessTravel) {
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("Input", 50, "[InputDistribute]无缝加载过渡场景中，使用无缝加载设置的输入分发tag");
+        }
+        this.SetInputDistributeTags(ModelManager_1.ModelManager.SeamlessTravelModel.SeamlessTravelInputDistributeTags);
+      } else {
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("Input", 50, "[InputDistribute]无缝加载过渡场景中，只允许角色轴向输入");
+        }
+        this.SetInputDistributeTag(InputDistributeDefine_1.inputDistributeTagDefine.FightInputRoot.AxisInputTag);
+      }
+      return true;
+    }
     {
       var t;
-      if (this.Bc_()) {
-        if (ModelManager_1.ModelManager.SeamlessTravelModel?.IsSeamlessTravel) {
-          if (Log_1.Log.CheckInfo()) {
-            Log_1.Log.Info("Input", 50, "[InputDistribute]无缝加载过渡场景中，使用无缝加载设置的输入分发tag");
-          }
-          this.SetInputDistributeTags(ModelManager_1.ModelManager.SeamlessTravelModel.SeamlessTravelInputDistributeTags);
-        } else {
-          if (Log_1.Log.CheckInfo()) {
-            Log_1.Log.Info("Input", 50, "[InputDistribute]无缝加载过渡场景中，只允许角色轴向输入");
-          }
-          this.SetInputDistributeTag(InputDistributeDefine_1.inputDistributeTagDefine.FightInputRoot.AxisInputTag);
-        }
-        return true;
-      } else if (this.v$e()) {
+      if (this.v$e()) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Input", 10, "[InputDistribute]加载中设置输入分发tag为 MouseInputTag NavigationTag");
         }
@@ -90,7 +91,7 @@ class BlockInputDistribute extends InputDistributeSetup_1.InputDistributeSetup {
         }
         this.SetInputDistributeTag(InputDistributeDefine_1.inputDistributeTagDefine.BlockAllInputTag);
         return true;
-      } else if ((t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(209)) && t.HasTag(191377386)) {
+      } else if ((t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(215)) && t.HasTag(191377386)) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Input", 10, "[InputDistribute]角色落水中，则设置输入分发tag为 MouseInputTag");
         }
@@ -120,13 +121,19 @@ class BlockInputDistribute extends InputDistributeSetup_1.InputDistributeSetup {
         }
         this.SetInputDistributeTag(InputDistributeDefine_1.inputDistributeTagDefine.BlockAllInputTag);
         return true;
+      } else if (ModelManager_1.ModelManager.SubLevelModel?.IsInSubLevelSwitchingAndBlockingInput()) {
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("Input", 10, "[InputDistribute]切换子关卡且禁止输入 设置输入分发tag为 BlockAllInputTag");
+        }
+        this.SetInputDistributeTag(InputDistributeDefine_1.inputDistributeTagDefine.BlockAllInputTag);
+        return true;
       } else {
-        return !!ModelManager_1.ModelManager.SubLevelModel?.IsInSubLevelSwitchingAndBlockingInput() && (Log_1.Log.CheckInfo() && Log_1.Log.Info("Input", 10, "[InputDistribute]切换子关卡且禁止输入 设置输入分发tag为 BlockAllInputTag"), this.SetInputDistributeTag(InputDistributeDefine_1.inputDistributeTagDefine.BlockAllInputTag), true);
+        return !!ModelManager_1.ModelManager.DeadEyeModeModel.IsInDeadEyeMode && (Log_1.Log.CheckInfo() && Log_1.Log.Info("Input", 67, "[InputDistribute]死眼跳台玩法中 设置输入分发tag为 BlockAllInputTag"), t = [InputDistributeDefine_1.inputDistributeTagDefine.FightInputRoot.AxisInput.CameraInput.CameraRotationTag, InputDistributeDefine_1.inputDistributeTagDefine.UiInputRootTag], this.SetInputDistributeTags(t), true);
       }
     }
   }
   Bc_() {
-    return ModelManager_1.ModelManager.SeamlessTravelModel.IsSeamlessTravel || ModelManager_1.ModelManager.TeleportModel.IsInSeamlessTeleport;
+    return ModelManager_1.ModelManager.SeamlessTravelModel.IsSeamlessTravel || ModelManager_1.ModelManager.TeleportModel.TeleportContext?.IsInSeamlessTeleport === true;
   }
   v$e() {
     return ModelManager_1.ModelManager.LoadingModel.IsLoading;
@@ -147,7 +154,7 @@ class BlockInputDistribute extends InputDistributeSetup_1.InputDistributeSetup {
     return ModelManager_1.ModelManager.BattleUiModel.IsInBattleSettlement;
   }
   qc_() {
-    return !!Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity.GetComponent(233)?.VehicleEntity?.GetComponent(249)?.IsWaterfallMove;
+    return !!Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity.GetComponent(242)?.VehicleEntity?.GetComponent(260)?.IsWaterfallMove;
   }
   dgl() {
     return ControllerHolder_1.ControllerHolder.BattleLinkController?.GetIsInLinkExplosion();

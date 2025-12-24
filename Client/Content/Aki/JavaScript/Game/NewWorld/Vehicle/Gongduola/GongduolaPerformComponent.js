@@ -85,6 +85,8 @@ let GongduolaPerformComponent = class GongduolaPerformComponent extends VehicleP
     this.WaterfallUiDisableHandle = 0;
     this.WaterTrace = undefined;
     this.UeMovementDisableHandle = 0;
+    this.CollisionStrength = 0;
+    this.CollisionDirection = 0;
     this.MKl = (t, i) => {
       var e = this.CheckIfCanLeave();
       this.f3_(e);
@@ -125,7 +127,9 @@ let GongduolaPerformComponent = class GongduolaPerformComponent extends VehicleP
         this.EndWaterfallMove();
       }
       for (const e of this.PassengerInfoMap.values()) {
-        this.Leave(e.PassengerEntity);
+        if (e.PassengerEntity?.Valid) {
+          this.Leave(e.PassengerEntity);
+        }
       }
     };
     this.OnTeleport = () => {
@@ -133,7 +137,7 @@ let GongduolaPerformComponent = class GongduolaPerformComponent extends VehicleP
     };
   }
   OnStart() {
-    return !!super.OnStart() && (this.UeMovementMgr = this.Entity.GetComponent(248), this.VehicleType === "AutoMoveGongduola" && (this.CanBeenManipulated = false, this.UeMovementMgr?.Disable("城区贡多拉默认关闭移动组件")), this.EnterSprintTagListenTask = this.TagComp?.ListenForTagAddOrRemove(653152204, this.EnterSprintTagListenTaskCallback), this.InitWaterfallMoveMontage(), this.InitWaterTraceElement(), EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.TeleportChangeLocation, this.OnTeleport), true);
+    return !!super.OnStart() && (this.UeMovementMgr = this.Entity.GetComponent(259), this.VehicleType === "AutoMoveGongduola" && (this.CanBeenManipulated = false, this.UeMovementMgr?.Disable("城区贡多拉默认关闭移动组件")), this.EnterSprintTagListenTask = this.TagComp?.ListenForTagAddOrRemove(653152204, this.EnterSprintTagListenTaskCallback), this.InitWaterfallMoveMontage(), this.InitWaterTraceElement(), EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.TeleportChangeLocation, this.OnTeleport), true);
   }
   OnActivate() {
     this.ActorComp.Actor.VehicleMovementComponent.SetMovementMode(2);
@@ -604,5 +608,5 @@ let GongduolaPerformComponent = class GongduolaPerformComponent extends VehicleP
     return !!t && (this.MoveComp?.IsStandardGravity ? i.FromUeRotator(t) : (this.TmpRotator.FromUeRotator(t), GravityUtils_1.GravityUtils.GetBaseQuatInGravityForActor(this.ActorComp, this.TmpQuat1), this.TmpQuat1.Inverse(this.TmpQuat2), GravityUtils_1.GravityUtils.GetRotInInverseQuat(this.TmpRotator, this.TmpQuat2, i)), true);
   }
 };
-GongduolaPerformComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(249)], GongduolaPerformComponent);
+GongduolaPerformComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(260)], GongduolaPerformComponent);
 exports.GongduolaPerformComponent = GongduolaPerformComponent; //# sourceMappingURL=GongduolaPerformComponent.js.map

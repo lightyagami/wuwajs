@@ -71,7 +71,7 @@ class CaughtTriggerInfo {
     this.TriggerInfo = this.AYo.TriggerInfo;
     t = BulletUtil_1.BulletUtil.CreateBulletFromAN(e.Actor, this.TriggerInfo.BulletId, e.ActorTransform, h, false, s.CaughtTriggerAnsMessageId);
     this.BulletEntity = ModelManager_1.ModelManager.BulletModel?.GetBulletEntityById(t);
-    this.BulletActorComponent = this.BulletEntity?.GetComponent(173);
+    this.BulletActorComponent = this.BulletEntity?.GetComponent(178);
     if (this.BulletEntity) {
       this.BulletEntity.GetBulletInfo().AddTagId(1481010069);
       this.Handle = t => {
@@ -114,7 +114,7 @@ class CaughtBindingInfo {
     if (this.BindingInfo.BulletId) {
       this.BulletEntityId = BulletUtil_1.BulletUtil.CreateBulletFromAN(e.Actor, this.BindingInfo.BulletId, e.ActorTransform, h, false, s.CaughtBindingAnsMessageId);
     }
-    this.BulletActorComponent = this.BulletEntity?.GetComponent(173);
+    this.BulletActorComponent = this.BulletEntity?.GetComponent(178);
   }
   get BulletEntity() {
     if (this.BulletEntityId) {
@@ -170,7 +170,7 @@ let CharacterCaughtNewComponent = class CharacterCaughtNewComponent extends Enti
     this.uae = Vector_1.Vector.Create();
     this.Wxr = false;
     this.m4r = false;
-    this.ccm = Vector_1.Vector.Create();
+    this.k0m = Vector_1.Vector.Create();
     this.n5t = Vector_1.Vector.Create();
     this.OnCatcherForceRemove = (t, i) => {
       if (t === Protocol_1.Aki.Protocol.Fks.Proto_RemoveTypeForce || t === Protocol_1.Aki.Protocol.Fks.Proto_RemoveTypeNormal) {
@@ -184,14 +184,14 @@ let CharacterCaughtNewComponent = class CharacterCaughtNewComponent extends Enti
     };
   }
   OnInit() {
-    this.Xte = this.Entity.GetComponent(209);
-    this.m1t = this.Entity.GetComponent(178);
+    this.Xte = this.Entity.GetComponent(215);
+    this.m1t = this.Entity.GetComponent(183);
     return true;
   }
   OnStart() {
-    this.HBr = this.Entity.GetComponent(179);
-    this.Gce = this.Entity.GetComponent(182);
-    this.cBe = this.Entity.GetComponent(40);
+    this.HBr = this.Entity.GetComponent(184);
+    this.Gce = this.Entity.GetComponent(187);
+    this.cBe = this.Entity.GetComponent(41);
     this.Hte = this.Entity.GetComponent(3);
     var t = this.Entity.GetComponent(0);
     this.t4r = t?.GetEntityPropertyConfig();
@@ -226,7 +226,7 @@ let CharacterCaughtNewComponent = class CharacterCaughtNewComponent extends Enti
     this.h4r = ConfigManager_1.ConfigManager.WorldConfig.GetCaughtDataInfo();
   }
   OnChangeTimeDilation(t) {
-    var i = this.Entity.GetComponent(126)?.CurrentTimeScale ?? 1;
+    var i = this.Entity.GetComponent(131)?.CurrentTimeScale ?? 1;
     this.Bv1 = t * i * TimeUtil_1.TimeUtil.Millisecond;
   }
   OnTick(t) {
@@ -240,7 +240,7 @@ let CharacterCaughtNewComponent = class CharacterCaughtNewComponent extends Enti
       var r;
       var n = [];
       for ([e, s] of this.PendingCaughtList) {
-        if (s && (s[2] > 1 ? (n.push(e), CombatLog_1.CombatLog.Info("Caught", this.Entity, "超时移除抓取搁置", ["caught id", e])) : s[2] += i, (h = s[0]?.GetComponent(52))?.aWl) && IS_DEBUG && (o = this.a4r.get(e)) && o.BulletActorComponent) {
+        if (s && (s[2] > 1 ? (n.push(e), CombatLog_1.CombatLog.Info("Caught", this.Entity, "超时移除抓取搁置", ["caught id", e])) : s[2] += i, (h = s[0]?.GetComponent(53))?.aWl) && IS_DEBUG && (o = this.a4r.get(e)) && o.BulletActorComponent) {
           a = (r = o.BulletActorComponent.Owner).D_K2_GetActorLocation();
           this.c1u(r, a, e.toString(), 8, new UE.LinearColor(1, 1, 0, 1));
           r = h.d1u(o.BindingInfo.TargetBoneName, 0)?.GetLocation();
@@ -260,7 +260,7 @@ let CharacterCaughtNewComponent = class CharacterCaughtNewComponent extends Enti
       var m;
       var v = [];
       for ([_, l] of this.lWl) {
-        if (l && (l[2] > 1 ? (v.push(_), CombatLog_1.CombatLog.Info("Caught", this.Entity, "超时移除远端抓取搁置", ["caught id", _])) : l[2] += i, (C = l[0]?.GetComponent(52))?.aWl) && IS_DEBUG && (g = this.a4r.get(_)) && g.BulletActorComponent) {
+        if (l && (l[2] > 1 ? (v.push(_), CombatLog_1.CombatLog.Info("Caught", this.Entity, "超时移除远端抓取搁置", ["caught id", _])) : l[2] += i, (C = l[0]?.GetComponent(53))?.aWl) && IS_DEBUG && (g = this.a4r.get(_)) && g.BulletActorComponent) {
           u = (m = g.BulletActorComponent.Owner).D_K2_GetActorLocation();
           this.c1u(m, u, _.toString(), 8, new UE.LinearColor(1, 0, 1, 1));
           m = C.d1u(g.BindingInfo.TargetBoneName, 0)?.GetLocation();
@@ -298,7 +298,7 @@ let CharacterCaughtNewComponent = class CharacterCaughtNewComponent extends Enti
     if (i.Num() === 0) {
       return true;
     }
-    var e = t.GetComponent(209);
+    var e = t.GetComponent(215);
     for (let t = 0; t < i.Num(); t++) {
       var s = i.Get(t);
       if (s && e.HasTag(s.TagId)) {
@@ -308,7 +308,7 @@ let CharacterCaughtNewComponent = class CharacterCaughtNewComponent extends Enti
     return false;
   }
   E4r(t, i) {
-    return !t || this.Entity.GetComponent(40).SkillTarget?.Id === i;
+    return !t || this.Entity.GetComponent(41).SkillTarget?.Id === i;
   }
   S4r(t, i) {
     this.Hte.Actor.CapsuleComponent.SetCollisionResponseToChannel(t, i);
@@ -373,6 +373,9 @@ let CharacterCaughtNewComponent = class CharacterCaughtNewComponent extends Enti
           i.Subtraction(this.n4r, i);
           i.Set(-i.X, -i.Y, 0);
           MathUtils_1.MathUtils.LookRotationUpFirst(i, this.Gce.GravityUp, this.Gue);
+          break;
+        case 3:
+          return;
       }
       h.SetActorRotation(this.Gue.ToUeRotator(), "抓取", false);
     }
@@ -410,14 +413,17 @@ let CharacterCaughtNewComponent = class CharacterCaughtNewComponent extends Enti
   }
   CheckCaught(t, i) {
     var e = this.Xte;
-    var s = i.GetComponent(209);
-    var h = i.GetComponent(52);
+    var s = i.GetComponent(215);
+    var h = i.GetComponent(53);
+    var o = s.HasTag(501201000);
+    var a = s.HasTag(-1800191060);
+    var e = e.HasTag(1105662407);
     if (s.HasTag(-648310348) || !this.M4r(t.TriggerInfo.CaughtTargetTag, i) || !this.E4r(t.TriggerInfo.CaughtAimTarget, i.Id) || s.HasTag(943579542)) {
       return 2;
-    } else if (s.HasTag(627353781) || s.HasTag(501201000) || s.HasTag(-1800191060) && !e.HasTag(1105662407) || h.A4r(this.Entity) || t.TriggerInfo.CaughtLevel < h.r4r) {
-      return 1;
-    } else {
+    } else if (!s.HasTag(627353781) && !o && !a && !h.A4r(this.Entity) && !(t.TriggerInfo.CaughtLevel < h.r4r) || o && a && e) {
       return 0;
+    } else {
+      return 1;
     }
   }
   SetCaughtTriggerAnsInfo(t) {
@@ -440,7 +446,7 @@ let CharacterCaughtNewComponent = class CharacterCaughtNewComponent extends Enti
           this.PendingCaughtList.set(t.CaughtId, [i, Time_1.Time.NowSeconds, 0]);
         }
         GlobalData_1.GlobalData.BpEventManager.CaughtEntity.Broadcast(this.Entity.Id, i.Id, t.CaughtId, 0);
-        this.Entity.GetComponent(118)?.SetTakeOverTick(true);
+        this.Entity.GetComponent(123)?.SetTakeOverTick(true);
         break;
       case 1:
         GlobalData_1.GlobalData.BpEventManager.CaughtEntity.Broadcast(this.Entity.Id, i.Id, t.CaughtId, 1);
@@ -471,13 +477,13 @@ let CharacterCaughtNewComponent = class CharacterCaughtNewComponent extends Enti
       var o = this.lWl.get(s);
       if (o) {
         CombatLog_1.CombatLog.Info("Caught", this.Entity, "抓取远端搁置目标", ["id", s], ["remote id", o[0].Id]);
-        o[0].GetComponent(52).P4r(h, this.Entity, true);
+        o[0].GetComponent(53).P4r(h, this.Entity, true);
       }
     }
   }
   CaughtTarget(i, t) {
     CombatLog_1.CombatLog.Info("Caught", this.Entity, "抓取目标", ["CaughtId", i.CaughtId], ["target EntityId", t.Id]);
-    var e = this.Entity.GetComponent(178);
+    var e = this.Entity.GetComponent(183);
     for (let t = 0; t < i.BindingInfo.SourceBuffIds.Num(); t++) {
       e.AddBuff(Number(i.BindingInfo.SourceBuffIds.Get(t)), {
         InstigatorId: e.CreatureDataId,
@@ -485,14 +491,14 @@ let CharacterCaughtNewComponent = class CharacterCaughtNewComponent extends Enti
         Reason: "抓取目标添加buff"
       });
     }
-    t.GetComponent(52).BeginBeCaught(i, this.Entity);
+    t.GetComponent(53).BeginBeCaught(i, this.Entity);
   }
   EndCaught() {
     CombatLog_1.CombatLog.Info("Caught", this.Entity, "结束抓取绑定器");
     this.sWl = false;
     for (var [, t] of this.a4r) {
       for (const i of t.Targets) {
-        i.GetComponent(52).EndBeCaught();
+        i.GetComponent(53).EndBeCaught();
       }
       if (t.BindingInfo.EndBulletId !== "") {
         BulletUtil_1.BulletUtil.CreateBulletFromAN(this.Hte.Actor, t.BindingInfo.EndBulletId, this.Hte.ActorTransform, this.wmo, false, this.CaughtBindingAnsMessageId);
@@ -513,7 +519,7 @@ let CharacterCaughtNewComponent = class CharacterCaughtNewComponent extends Enti
     }
     this.cBe.StopAllSkills("CharacterCaughtNewComponent.BeginBeCaught");
     this.P4r(i, t);
-    var s = t.GetComponent(52);
+    var s = t.GetComponent(53);
     for (let t = 0; t < i.BindingInfo.TargetBuffIds.Num(); t++) {
       this.m1t.AddBuff(Number(i.BindingInfo.TargetBuffIds.Get(t)), {
         InstigatorId: this.m1t.CreatureDataId,
@@ -530,7 +536,7 @@ let CharacterCaughtNewComponent = class CharacterCaughtNewComponent extends Enti
   }
   Vh1(t, i) {
     CombatLog_1.CombatLog.Info("Caught", this.Entity, "远端被抓取");
-    var e = i.GetComponent(52);
+    var e = i.GetComponent(53);
     var s = e.a4r.get(t);
     if (e.sWl && s) {
       this.P4r(s, i, true);
@@ -573,6 +579,7 @@ let CharacterCaughtNewComponent = class CharacterCaughtNewComponent extends Enti
       o.RotationRule = 2;
       o.ScaleRule = 2;
       o.WeldSimulatedBodies = true;
+      o.RelativeRotation = e.GetBulletInfo().BulletDataMain?.Data.基础设置.初始旋转;
       if (t.BindingInfo.TargetBoneName && (a = this.Rkd(t.BindingInfo.TargetBoneName))) {
         a = this.Hte.ActorTransform.InverseTransformPosition(a);
         o.RelativeLocation = a.op_Multiply(-1);
@@ -653,8 +660,8 @@ let CharacterCaughtNewComponent = class CharacterCaughtNewComponent extends Enti
       if (this.Wxr) {
         TraceElementCommon_1.TraceElementCommon.GetHitLocation(this.Fse.HitResult, 0, this.n5t);
         e = s.op_Subtraction(t.ActorLocation);
-        this.ccm.DeepCopy(e);
-        this.n5t = this.SetAddRadiusLocation(this.ccm, this.n5t, t.Radius + ADD_LENGTH);
+        this.k0m.DeepCopy(e);
+        this.n5t = this.SetAddRadiusLocation(this.k0m, this.n5t, t.Radius + ADD_LENGTH);
         if (!this.n5t.IsZero()) {
           CombatLog_1.CombatLog.Info("Caught", this.Entity, "被抓取结束时与抓取者碰撞检测修正", ["FixPos", this.n5t], ["StartTrace", s], ["EndTrace", t.ActorLocation], ["Radius", t.Radius]);
           t.SetActorLocation(this.n5t.ToUeVector(), "抓取.结束被抓取", false);
@@ -681,7 +688,7 @@ let CharacterCaughtNewComponent = class CharacterCaughtNewComponent extends Enti
     }
   }
   w4r(t, i) {
-    var e = t.GetComponent(181);
+    var e = t.GetComponent(186);
     if (e) {
       e.GetCameraPosition(i);
     } else {
@@ -742,7 +749,7 @@ let CharacterCaughtNewComponent = class CharacterCaughtNewComponent extends Enti
   static CaughtNotify(t, i) {
     var e = MathUtils_1.MathUtils.LongToBigInt(i.YVn._Wn).toString();
     CombatLog_1.CombatLog.Info("Caught", t, "收到抓取Notify", ["抓取Id", e], ["is end", i.YVn.uWn]);
-    var t = t?.GetComponent(52);
+    var t = t?.GetComponent(53);
     if (t) {
       if (i.YVn.uWn) {
         t.EndBeCaughtHandle();
@@ -774,5 +781,5 @@ let CharacterCaughtNewComponent = class CharacterCaughtNewComponent extends Enti
   }
 };
 __decorate([CombatMessage_1.CombatNet.Listen("zFn", true)], CharacterCaughtNewComponent, "CaughtNotify", null);
-CharacterCaughtNewComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(52)], CharacterCaughtNewComponent);
+CharacterCaughtNewComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(53)], CharacterCaughtNewComponent);
 exports.CharacterCaughtNewComponent = CharacterCaughtNewComponent; //# sourceMappingURL=CharacterCaughtNewComponent.js.map

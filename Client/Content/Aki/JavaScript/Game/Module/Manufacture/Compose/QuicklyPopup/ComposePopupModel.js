@@ -55,9 +55,9 @@ class ComposePopupModel extends ModelBase_1.ModelBase {
       }
       var o = [];
       var i = this.GetMaxCreateCountNormal(e, false);
-      var [n, s] = this.FLm(e, r = t <= i ? false : r, t, i);
+      var [n, s] = this.mMf(e, r = t <= i ? false : r, t, i);
       if (n <= 0) {
-        return this.Y_m(s);
+        return this.ugm(s);
       }
       for (const u of a.ConsumeItems) {
         let e = u.Count * n;
@@ -76,7 +76,7 @@ class ComposePopupModel extends ModelBase_1.ModelBase {
           return;
         }
       }
-      return this.Y_m([...o, ...s]);
+      return this.ugm([...o, ...s]);
     }
   }
   GetComposeMaterialListPurification(e) {
@@ -183,9 +183,9 @@ class ComposePopupModel extends ModelBase_1.ModelBase {
     }
     var a = [];
     var o = this.GetMaxCreateCountPurification(e, false);
-    var [t, i] = this.FLm(e, r = t <= o ? false : r, t, o);
+    var [t, i] = this.mMf(e, r = t <= o ? false : r, t, o);
     if (t <= 0) {
-      return this.Y_m(i);
+      return this.ugm(i);
     }
     var n = this.GetLowestLevelExchangeMap(e);
     let s = n.get(e) * t;
@@ -215,10 +215,10 @@ class ComposePopupModel extends ModelBase_1.ModelBase {
     if (s > 0) {
       return undefined;
     } else {
-      return this.Y_m([...a, ...i]);
+      return this.ugm([...a, ...i]);
     }
   }
-  FLm(e, t, r, a) {
+  mMf(e, t, r, a) {
     if (t && a < r) {
       t = this.GetMaxGiftExchangeCount(e);
       a = Math.min(t, r);
@@ -345,13 +345,13 @@ class ComposePopupModel extends ModelBase_1.ModelBase {
       } else {
         var a = ConfigManager_1.ConfigManager.ComposeConfig.GetSynthesisFormulaByItemId(o.ItemId);
         let e = undefined;
-        e = a ? this.z_m(o, t) : this.J_m(o, t);
+        e = a ? this.dgm(o, t) : this.mgm(o, t);
         r.push(e);
       }
     }
     return r;
   }
-  z_m(e, t) {
+  dgm(e, t) {
     var r = e.Count - e.SelectedCount;
     if (t) {
       const a = this.CalcComposeList(e.ItemId, r, true);
@@ -383,7 +383,7 @@ class ComposePopupModel extends ModelBase_1.ModelBase {
       };
     }
   }
-  J_m(t, e) {
+  mgm(t, e) {
     var r = t.Count - t.SelectedCount;
     if (e) {
       let e = undefined;
@@ -470,7 +470,7 @@ class ComposePopupModel extends ModelBase_1.ModelBase {
     }
     return false;
   }
-  Y_m(e) {
+  ugm(e) {
     var t = new Map();
     var r = [];
     for (const o of e) {

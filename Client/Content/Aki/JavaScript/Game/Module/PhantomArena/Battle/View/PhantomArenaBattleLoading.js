@@ -74,7 +74,7 @@ class PhantomArenaBattleLoading extends UiTickViewBase_1.UiTickViewBase {
     this.sU1 = () => new PhantomArenaBattleLoadingItem();
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UILayoutBase], [1, UE.UIItem], [2, UE.UILayoutBase], [3, UE.UIItem], [4, UE.UISliderComponent], [5, UE.UISliderComponent], [6, UE.UIText]];
+    this.ComponentRegisterInfos = [[0, UE.UILayoutBase], [1, UE.UIItem], [2, UE.UILayoutBase], [3, UE.UIItem], [4, UE.UISliderComponent], [5, UE.UISliderComponent], [6, UE.UIText], [7, UE.UITexture]];
   }
   OnBeforeShow() {
     GameAudioController_1.GameAudioController.UpdateLoadingType(1);
@@ -85,11 +85,16 @@ class PhantomArenaBattleLoading extends UiTickViewBase_1.UiTickViewBase {
   OnAfterHide() {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPhantomArenaBattleLoadingHide);
   }
+  async qTm() {
+    var t = ModelManager_1.ModelManager.PhantomArenaBattleModel.ChallengeId;
+    var t = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleChallengeConfig(t);
+    await this.SetTextureAsync(t.BvbBattleLoadingBg, this.GetTexture(7));
+  }
   async aU1() {
     var t = ModelManager_1.ModelManager.PhantomArenaBattleModel.OpponentData.GetCardDataList();
     var e = new Map();
-    for (const r of t) {
-      e.set(this.Psu(r.Index), r);
+    for (const n of t) {
+      e.set(this.Psu(n.Index), n);
     }
     var i = [];
     for (let t = 0; t < CARD_TOTAL; t++) {
@@ -115,8 +120,8 @@ class PhantomArenaBattleLoading extends UiTickViewBase_1.UiTickViewBase {
   async hU1() {
     var t = ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.GetBattleCardDataList();
     var e = new Map();
-    for (const r of t) {
-      e.set(r.Index, r);
+    for (const n of t) {
+      e.set(n.Index, n);
     }
     var i = [];
     for (let t = 0; t < CARD_TOTAL; t++) {
@@ -134,7 +139,7 @@ class PhantomArenaBattleLoading extends UiTickViewBase_1.UiTickViewBase {
   }
   async OnBeforeStartAsync() {
     await ModelManager_1.ModelManager.PhantomArenaBattleModel.BattleData.PrepareLoadingPromise?.Promise;
-    await Promise.all([this.aU1(), this.hU1()]);
+    await Promise.all([this.aU1(), this.hU1(), this.qTm()]);
     this.WaitEntityLoadFinish();
   }
   WaitEntityLoadFinish() {
@@ -189,6 +194,13 @@ class PhantomArenaBattleLoading extends UiTickViewBase_1.UiTickViewBase {
       ModelManager_1.ModelManager.PhantomArenaBattleModel.CurrentLoading = 0;
       UiManager_1.UiManager.CloseView("PhantomArenaBattleLoading");
     });
+  }
+  GetExtraResourceId(t) {
+    if (ModelManager_1.ModelManager.PhantomArenaBattleModel.IsOldBvb) {
+      return "UiView_DesktopLoading";
+    } else {
+      return "UiView_DesktopLoadingNew";
+    }
   }
 }
 exports.PhantomArenaBattleLoading = PhantomArenaBattleLoading;

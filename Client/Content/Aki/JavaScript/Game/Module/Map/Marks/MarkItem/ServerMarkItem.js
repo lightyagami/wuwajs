@@ -83,7 +83,7 @@ class ServerMarkItem extends MarkItem_1.MarkItem {
     return this.MultiMapIdInternal;
   }
   get IsServerDisable() {
-    return this.ServerMarkInfo.ServerMarkState === Protocol_1.Aki.Protocol.htm.Proto_MarkDisable;
+    return this.ServerMarkInfo.ServerMarkState === Protocol_1.Aki.Protocol.Tom.Proto_MarkDisable;
   }
   get MapId() {
     return this.ServerMarkInfo.MapId;

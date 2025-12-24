@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.PunishReportSettlementViewParams = exports.FlySettlementViewParams = exports.ChallengeCountDownViewParams = exports.ModifyTrackAreaConfig = exports.SilentAreaShowInfo = exports.TreeTrackTextExpressionInfo = exports.BtCustomUiConfig = exports.btChildQuestNodeStatusLogString = exports.btNodeStatusLogString = exports.btTypeLogString = exports.NodeInfo = exports.NPCFARAWAY_TIMERTYPE = exports.OUTRANGEFAILED_TIMERTYPE = exports.CHALLENGELEVELPLAY_TRACKICONID = exports.COMMONLEVELPLAY_TRACKICONID = exports.INVALID_INTERACTOPTION_ID = undefined;
+exports.PunishReportSettlementViewParams = exports.MotorSettlementViewParams = exports.FlySettlementViewParams = exports.ChallengeCountDownViewParams = exports.ModifyTrackAreaConfig = exports.SilentAreaShowInfo = exports.TreeTrackTextExpressionInfo = exports.BtCustomUiConfig = exports.btChildQuestNodeStatusLogString = exports.btNodeStatusLogString = exports.btTypeLogString = exports.NodeInfo = exports.NPCFARAWAY_TIMERTYPE = exports.OUTRANGEFAILED_TIMERTYPE = exports.CHALLENGELEVELPLAY_TRACKICONID = exports.COMMONLEVELPLAY_TRACKICONID = exports.INVALID_INTERACTOPTION_ID = undefined;
 const Protocol_1 = require("../../../../Core/Define/Net/Protocol");
 const PublicUtil_1 = require("../../../Common/PublicUtil");
 const MissionViewDefine_1 = require("../../BattleUi/Views/MissionView/MissionViewDefine");
@@ -41,9 +41,9 @@ exports.btChildQuestNodeStatusLogString = {
   [Protocol_1.Aki.Protocol.FNs.Proto_CQNS_Finished]: "4-完成"
 };
 class BtCustomUiConfig {
-  constructor(o, t) {
-    this.SourceOfAdd = o;
-    this.CustomUiConfig = t;
+  constructor(t, o) {
+    this.SourceOfAdd = t;
+    this.CustomUiConfig = o;
   }
 }
 exports.BtCustomUiConfig = BtCustomUiConfig;
@@ -57,68 +57,78 @@ class TreeTrackTextExpressionInfo {
     this.MainTitle = undefined;
     this.ClearSubTitle();
   }
-  SetMainTitle(o) {
-    this.MainTitle = o ? new MissionViewDefine_1.BehaviorTreeStepTextInfo(o.TidTitle, o.QuestScheduleType) : undefined;
+  SetMainTitle(t) {
+    this.MainTitle = t ? new MissionViewDefine_1.BehaviorTreeStepTextInfo(t.TidTitle, t.QuestScheduleType) : undefined;
   }
-  AddSubTitle(o) {
-    this.SubTitles.push(new MissionViewDefine_1.BehaviorTreeStepTextInfo(o.TidTitle, o.QuestScheduleType, o.ShowConditions, o.ConditionText, o.ProgressBar, o.BlankTitleStillShow));
+  AddSubTitle(t) {
+    this.SubTitles.push(new MissionViewDefine_1.BehaviorTreeStepTextInfo(t.TidTitle, t.QuestScheduleType, t.ShowConditions, t.ConditionText, t.ProgressBar, t.BlankTitleStillShow, t.CustomPlaceholderBindingProgressList));
   }
   ClearSubTitle() {
     this.SubTitles = [];
   }
-  CopyConfig(o) {
-    this.SetMainTitle(o.MainTitle);
+  CopyConfig(t) {
+    this.SetMainTitle(t.MainTitle);
     this.ClearSubTitle();
-    for (const t of o.SubTitles) {
-      this.AddSubTitle(t);
+    for (const o of t.SubTitles) {
+      this.AddSubTitle(o);
     }
   }
-  IsSubTitle(t) {
-    return !!this.SubTitles && this.SubTitles.length !== 0 && this.SubTitles.find(o => {
-      o = o.QuestScheduleType;
-      return o !== undefined && o.ChildQuestId === t;
+  IsSubTitle(o) {
+    return !!this.SubTitles && this.SubTitles.length !== 0 && this.SubTitles.find(t => {
+      t = t.QuestScheduleType;
+      return t !== undefined && t.ChildQuestId === o;
     }) !== undefined;
   }
 }
 exports.TreeTrackTextExpressionInfo = TreeTrackTextExpressionInfo;
 class SilentAreaShowInfo {
-  constructor(o, t) {
-    this.SourceOfAdd = o;
-    this.ShowInfo = t;
+  constructor(t, o) {
+    this.SourceOfAdd = t;
+    this.ShowInfo = o;
   }
 }
 exports.SilentAreaShowInfo = SilentAreaShowInfo;
 class ModifyTrackAreaConfig {
-  constructor(o, t) {
-    this.SourceOfAdd = o;
-    this.TrackConfig = t;
+  constructor(t, o) {
+    this.SourceOfAdd = t;
+    this.TrackConfig = o;
     this.ModifyTrackAreaText = "";
     this.ModifyTrackAreaText = PublicUtil_1.PublicUtil.GetConfigTextByKey(this.TrackConfig.Tid);
   }
 }
 exports.ModifyTrackAreaConfig = ModifyTrackAreaConfig;
 class ChallengeCountDownViewParams {
-  constructor(o, t) {
-    this.TimerEndTime = o;
-    this.UiTitleKey = t;
+  constructor(t, o) {
+    this.TimerEndTime = t;
+    this.UiTitleKey = o;
   }
 }
 exports.ChallengeCountDownViewParams = ChallengeCountDownViewParams;
 class FlySettlementViewParams {
-  constructor(o, t, e, s, r, i) {
-    this.Score = o;
-    this.RankS = t;
-    this.RankA = e;
-    this.RankB = s;
+  constructor(t, o, s, e, r, i) {
+    this.Score = t;
+    this.RankS = o;
+    this.RankA = s;
+    this.RankB = e;
     this.BestRecordScore = r;
     this.IncId = i;
   }
 }
 exports.FlySettlementViewParams = FlySettlementViewParams;
+class MotorSettlementViewParams {
+  constructor(t, o, s, e, r) {
+    this.Score = t;
+    this.RankS = o;
+    this.RankA = s;
+    this.RankB = e;
+    this.IncId = r;
+  }
+}
+exports.MotorSettlementViewParams = MotorSettlementViewParams;
 class PunishReportSettlementViewParams {
-  constructor(o, t) {
-    this.TreeConfigId = o;
-    this.States = t;
+  constructor(t, o) {
+    this.TreeConfigId = t;
+    this.States = o;
   }
 }
 exports.PunishReportSettlementViewParams = PunishReportSettlementViewParams;

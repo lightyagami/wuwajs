@@ -53,8 +53,12 @@ class ComposeRootView extends UiViewBase_1.UiViewBase {
       this.bTi = true;
       this.MNt.SetResultDataDirty();
       this.MNt.UpdateData(20, this.LNt());
+      var e = this.MNt.GetUniqueIdByGroupId(20);
+      this.vNt.SetSortUniqueId(e);
       this.vNt.SetActive(true);
       this.vNt.UpdateData(20, this.LNt());
+      var e = this.vNt.GetUniqueIdByGroupId(20);
+      this.MNt.SetFilterUniqueId(e);
       this.bTi = false;
       this.GTi();
       this.YGt();
@@ -176,13 +180,21 @@ class ComposeRootView extends UiViewBase_1.UiViewBase {
       switch (ModelManager_1.ModelManager.ComposeModel.CurrentComposeListType) {
         case 1:
           this.vNt.UpdateData(20, this.LNt());
+          var e = this.vNt.GetUniqueIdByGroupId(20);
+          this.MNt.SetFilterUniqueId(e);
           this.MNt.SetResultDataDirty();
           this.MNt.UpdateData(20, this.LNt());
+          var e = this.MNt.GetUniqueIdByGroupId(20);
+          this.vNt.SetSortUniqueId(e);
           break;
         case 2:
           this.vNt.UpdateData(22, this.LNt());
+          e = this.vNt.GetUniqueIdByGroupId(22);
+          this.MNt.SetFilterUniqueId(e);
           this.MNt.SetResultDataDirty();
           this.MNt.UpdateData(22, this.LNt());
+          e = this.MNt.GetUniqueIdByGroupId(22);
+          this.vNt.SetSortUniqueId(e);
           break;
         case 3:
           this.MNt.SetResultDataDirty();

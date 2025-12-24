@@ -14,20 +14,20 @@ const ROME_ICON_PATH = "/Game/Aki/UI/UIResources/Common/Atlas/SP_ComRomeText_0{0
 class HonamiStoryTechnologyAreaItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
     super(...arguments);
-    this.fem = undefined;
+    this.Kim = undefined;
     this.OnAfterRefreshOneNode = undefined;
   }
   get GetNodeItemMap() {
-    return this.fem;
+    return this.Kim;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem], [14, UE.UISprite], [10, UE.UIItem]];
   }
   OnStart() {
-    this.fem = new Map();
+    this.Kim = new Map();
   }
   OnBeforeDestroy() {
-    this.fem = undefined;
+    this.Kim = undefined;
   }
   Refresh(e, r, t) {
     var e = e.NodeIds;
@@ -57,10 +57,10 @@ class HonamiStoryTechnologyAreaItem extends GridProxyAbstract_1.GridProxyAbstrac
     var t = new Map();
     for (const h of e) {
       var o = h.GetConfig.Id;
-      var s = this.fem.get(o);
+      var s = this.Kim.get(o);
       if (!s) {
         s = new HonamiStoryTechnologyNodeItem_1.HonamiStoryTechnologyNodeItem();
-        this.fem.set(o, s);
+        this.Kim.set(o, s);
         r.push(s.CreateThenShowByActorAsync(this.GetItem(h.GetConfig.IndexId - 1).GetOwner()));
       }
       t.set(o, h);
@@ -68,12 +68,12 @@ class HonamiStoryTechnologyAreaItem extends GridProxyAbstract_1.GridProxyAbstrac
     await Promise.all(r);
     var i = [];
     for (const c of t.keys()) {
-      var a = this.fem.get(c);
+      var a = this.Kim.get(c);
       var n = t.get(c);
       i.push(a.RefreshNodeAsyncByData(n));
     }
     await Promise.all(i);
-    for (const m of this.fem.values()) {
+    for (const m of this.Kim.values()) {
       this.OnAfterRefreshOneNode?.(m);
     }
   }

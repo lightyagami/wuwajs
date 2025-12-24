@@ -44,7 +44,7 @@ let MonsterDeathComponent = class MonsterDeathComponent extends BaseDeathCompone
     this.Xte = undefined;
     this.sDe = undefined;
     this.s7r = undefined;
-    this.VZd = undefined;
+    this.Sim = undefined;
     this.DeathTagTask = undefined;
     this.DeathTimerTask = undefined;
     this.OnDeathEnded = () => {
@@ -54,7 +54,7 @@ let MonsterDeathComponent = class MonsterDeathComponent extends BaseDeathCompone
         this.Xte.AddTag(-208062360);
       }
       this.Entity.Disable("[DeathComponent.SetActive] 死亡隐藏");
-      this.Entity.GetComponent(44)?.CancelForceDisableAnimOptimization(6);
+      this.Entity.GetComponent(45)?.CancelForceDisableAnimOptimization(6);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.DropItemStarted, this.Entity?.Id);
       ControllerHolder_1.ControllerHolder.CreatureController.DelayRemoveEntityFinished(this.Entity);
     };
@@ -65,7 +65,7 @@ let MonsterDeathComponent = class MonsterDeathComponent extends BaseDeathCompone
     };
   }
   OnInit() {
-    this.Xte = this.Entity.CheckGetComponent(209);
+    this.Xte = this.Entity.CheckGetComponent(215);
     return true;
   }
   OnStart() {
@@ -81,19 +81,19 @@ let MonsterDeathComponent = class MonsterDeathComponent extends BaseDeathCompone
       }
       this.sDe = undefined;
     }
-    if (this.VZd) {
-      this.VZd.Clear();
-      this.VZd = undefined;
+    if (this.Sim) {
+      this.Sim.Clear();
+      this.Sim = undefined;
     }
     return true;
   }
   ExecuteDeath(e) {
-    return !!super.ExecuteDeath(e) && (this.Entity.GetComponent(178)?.RemoveBuffByEffectType(36, "实体死亡移除冰冻buff"), this.Xte.AddTag(1008164187), this.Entity.GetComponent(184)?.DetachFromHost(true, false, false), this.Entity.GetComponent(40)?.StopAllSkills("MonsterDeathComponent.ExecuteDeath"), this.Entity.GetComponent(104)?.ResetCharState(), this.Entity.GetComponent(178)?.RemoveAllDurationBuffs("实体死亡清理持续型buff"), this.PlayDeathAnimation(e), this.Bml(), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.CharOnRoleDead, this.Entity.Id), EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.CharOnRoleDeadTargetSelf), true);
+    return !!super.ExecuteDeath(e) && (this.Entity.GetComponent(183)?.RemoveBuffByEffectType(36, "实体死亡移除冰冻buff"), this.Xte.AddTag(1008164187), this.Entity.GetComponent(189)?.DetachFromHost(true, false, false), this.Entity.GetComponent(41)?.StopAllSkills("MonsterDeathComponent.ExecuteDeath"), this.Entity.GetComponent(109)?.ResetCharState(), this.Entity.GetComponent(183)?.RemoveAllDurationBuffs("实体死亡清理持续型buff"), this.PlayDeathAnimation(e), this.Bml(), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.CharOnRoleDead, this.Entity.Id), EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.CharOnRoleDeadTargetSelf), true);
   }
   PlayDeathAnimation(i) {
     if (!ModelManager_1.ModelManager.DeadReviveModel.SkipDeathAnim && !this.Xte?.HasTag(-1943786195) && this.MontageComponent?.Valid && this.Entity.IsInit && this.Entity.Active) {
-      if (!this.ezd()) {
-        var e = this.Entity.GetComponent(104)?.PositionState;
+      if (!this.xzd()) {
+        var e = this.Entity.GetComponent(109)?.PositionState;
         if (e === CharacterUnifiedStateTypes_1.ECharPositionState.Water) {
           this.PlayDeathMontageWithType(1, this.OnDeathEnded, i, true);
         } else {
@@ -140,11 +140,11 @@ let MonsterDeathComponent = class MonsterDeathComponent extends BaseDeathCompone
       e.ResetEventTargets();
     }
   }
-  ezd() {
-    var e = this.tzd();
-    return !!e && (this.VZd = new MonsterDeathEffectMachine_1.MonsterDeathEffectMachine(), this.VZd.Init(this.Entity, e, this.OnDeathEnded), this.VZd.Play(), true);
+  xzd() {
+    var e = this.Bzd();
+    return !!e && (this.Sim = new MonsterDeathEffectMachine_1.MonsterDeathEffectMachine(), this.Sim.Init(this.Entity, e, this.OnDeathEnded), this.Sim.Play(), true);
   }
-  tzd() {
+  Bzd() {
     var t = this.Entity.GetComponent(0)?.GetMonsterComponent();
     if (t) {
       t = t.PerformConfig?.ShowOnDeath?.EffectId;
@@ -176,5 +176,5 @@ let MonsterDeathComponent = class MonsterDeathComponent extends BaseDeathCompone
     }
   }
 };
-MonsterDeathComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(187)], MonsterDeathComponent);
+MonsterDeathComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(192)], MonsterDeathComponent);
 exports.MonsterDeathComponent = MonsterDeathComponent; //# sourceMappingURL=MonsterDeathComponent.js.map

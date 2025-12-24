@@ -293,7 +293,7 @@ class TsUiNavigationPanelConfig extends UE.LGUIBehaviour {
           return;
         }
         if (s.HasDynamicScrollView()) {
-          if (!s.ScrollView.IsAllDisplayItemUpdateCompleted()) {
+          if (!(s.ScrollProxy?.ScrollView).IsAllDisplayItemUpdateCompleted()) {
             t.Result = 7;
             return;
           }
@@ -422,8 +422,14 @@ class TsUiNavigationPanelConfig extends UE.LGUIBehaviour {
     }
   }
   NotifyListenerFocus(i) {
-    if (this.ViewHandle?.IsListenerCanFocusByPanelConfig && this.IsAllowNavigate()) {
-      this.ViewHandle.UpdateFocus(i);
+    if (this.ViewHandle) {
+      if (this.ViewHandle.IsListenerCanFocusByPanelConfig && this.IsAllowNavigate()) {
+        this.ViewHandle.UpdateFocus(i);
+      }
+    } else {
+      this.HandleViewHandleFunction(() => {
+        this.NotifyListenerFocus(i);
+      });
     }
   }
   UpdateHotKeyTextForce(i, t) {

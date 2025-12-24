@@ -14,7 +14,7 @@ class FourCostTaskOperation extends NpcAiOperation_1.NpcAiOperation {
   async ExecuteAiOperation(e) {
     var r = ModelManager_1.ModelManager.PhantomArenaBattleModel.OpponentData;
     r.RefreshHandCardNum(this.Info.Hg1, false);
-    r.RefreshLibraryNum(this.Info.aE1);
+    r.RefreshCardLibraryNum(this.Info.aE1);
     r.TaskData.IsExecuteFourCostLogic = true;
     await e.OpponentArea.HandArea.RefreshHandCardNum(this.Info.Hg1);
   }

@@ -20,7 +20,7 @@ const BulletDataSummon_1 = require("./BulletDataSummon");
 const BulletDataTimeScale_1 = require("./BulletDataTimeScale");
 const TRACE_SIZE_MAX = 600;
 class BulletDataMain {
-  constructor(e, t) {
+  constructor(e, t, a) {
     this.Data = e;
     this.BulletRowName = t;
     this.BulletFName = e.子弹名称;
@@ -35,13 +35,14 @@ class BulletDataMain {
     this.Scale = new BulletDataScale_1.BulletDataScale(e.缩放设置);
     this.Summon = new BulletDataSummon_1.BulletDataSummon(e.召唤实体);
     this.Children = new Array();
-    var a = e.子子弹设置.Num();
-    for (let t = 0; t < a; t++) {
-      var l = e.子子弹设置.Get(t);
-      this.Children.push(new BulletDataChild_1.BulletDataChild(l));
+    var l = e.子子弹设置.Num();
+    for (let t = 0; t < l; t++) {
+      var i = e.子子弹设置.Get(t);
+      this.Children.push(new BulletDataChild_1.BulletDataChild(i));
     }
     this.Obstacle = new BulletDataObstacle_1.BulletDataObstacle(e.障碍检测);
     this.Interact = new BulletDataInteract_1.BulletDataInteract(e.环境交互);
+    this.IsPerformance = a;
     this.SimpleBullet = BulletDataMain.U8o(this);
   }
   static U8o(t) {

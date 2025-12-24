@@ -14,6 +14,7 @@ class PhantomArenaRootViewBase extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
     this.ViewModel = undefined;
+    this.ActivityId = 0;
     this.ContentItem = undefined;
     this.DefaultChildViewName = undefined;
     this.OCu = new Stack_1.Stack();
@@ -57,6 +58,7 @@ class PhantomArenaRootViewBase extends UiViewBase_1.UiViewBase {
     s.ViewModel = this.ViewModel;
     s.RootView = this;
     s.ViewName = e;
+    s.ActivityId = this.ActivityId;
     await s.CreateByResourceIdAsync(i[1], this.ContentItem);
     return s;
   }

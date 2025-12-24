@@ -30,7 +30,9 @@ const GenericLayout_1 = require("../../Util/Layout/GenericLayout");
 const LguiUtil_1 = require("../../Util/LguiUtil");
 const MainRoleController_1 = require("../MainRoleController");
 const RoleController_1 = require("../RoleController");
+const RoleDefine_1 = require("../RoleDefine");
 const RoleTagSmallIconItem_1 = require("../RoleTag/RoleTagSmallIconItem");
+const RoleUtils_1 = require("../RoleUtils");
 const StarItem_1 = require("../View/StarItem");
 const RoleViewViewModel_1 = require("../View/ViewData/RoleViewViewModel");
 class RoleAttributeTabView extends UiTabViewBase_1.UiTabViewBase {
@@ -138,7 +140,7 @@ class RoleAttributeTabView extends UiTabViewBase_1.UiTabViewBase {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIItem], [2, UE.UIText], [3, UE.UISprite], [4, UE.UIText], [6, UE.UIText], [5, UE.UIItem], [7, UE.UIText], [8, UE.UIText], [9, UE.UITexture], [10, UE.UIHorizontalLayout], [11, UE.UIText], [12, UE.UIItem], [13, UE.UIItem], [14, UE.UIButtonComponent], [15, UE.UIItem], [16, UE.UIButtonComponent], [17, UE.UIHorizontalLayout], [18, UE.UIItem], [19, UE.UIButtonComponent], [20, UE.UIButtonComponent], [21, UE.UIButtonComponent], [22, UE.UIItem], [23, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIItem], [2, UE.UIText], [3, UE.UISprite], [4, UE.UIText], [6, UE.UIText], [5, UE.UIItem], [7, UE.UIText], [8, UE.UIText], [9, UE.UITexture], [10, UE.UIHorizontalLayout], [11, UE.UIText], [12, UE.UIItem], [13, UE.UIItem], [14, UE.UIButtonComponent], [15, UE.UIItem], [16, UE.UIButtonComponent], [17, UE.UIHorizontalLayout], [18, UE.UIItem], [19, UE.UIButtonComponent], [20, UE.UIButtonComponent], [21, UE.UIButtonComponent], [22, UE.UIItem], [23, UE.UIItem], [24, UE.UISprite], [25, UE.UIText]];
     this.BtnBindInfo = [[0, this.DetailClick], [14, this.TeachClick], [16, this.RoleChangeClick], [19, this.RoleTagClick], [21, this.OnRoleSkinClick]];
   }
   OnStart() {
@@ -169,16 +171,16 @@ class RoleAttributeTabView extends UiTabViewBase_1.UiTabViewBase {
     var n = t.length;
     for (let e = 0; e < n; ++e) {
       r = e === 0 ? o : LguiUtil_1.LguiUtil.CopyItem(o, i);
-      var a = t[e];
-      var l = new AttributeItem_1.AttributeItem();
-      l.CreateThenShowByActor(r.GetOwner());
-      l.UpdateParam(a, false);
+      var l = t[e];
+      var s = new AttributeItem_1.AttributeItem();
+      s.CreateThenShowByActor(r.GetOwner());
+      s.UpdateParam(l, false);
       if (n > 2 && e % 2 == 0) {
-        l.SetBgActive(true);
+        s.SetBgActive(true);
       } else {
-        l.SetBgActive(false);
+        s.SetBgActive(false);
       }
-      this.AttributeItemList.push(l);
+      this.AttributeItemList.push(s);
     }
   }
   AddEventListener() {
@@ -290,8 +292,19 @@ class RoleAttributeTabView extends UiTabViewBase_1.UiTabViewBase {
     this.GetText(11).SetText(this.RoleInstance.GetName());
   }
   zdo() {
-    var e = this.RoleInstance.IsTrialRole();
-    this.GetItem(13).SetUIActive(e);
+    var e;
+    var t = this.RoleInstance.IsTrialRole();
+    this.GetItem(13).SetUIActive(t);
+    if (t) {
+      t = this.RoleInstance.GetTrialRoleId();
+      e = RoleUtils_1.RoleUtils.GetTrailRoleLabelIconById(t);
+      e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(e);
+      this.SetSpriteByPath(e, this.GetSprite(24), false);
+      e = RoleUtils_1.RoleUtils.GetTrialRoleType(t);
+      t = RoleDefine_1.trialRoleHexColor[e] ?? RoleDefine_1.trialRoleHexColor[1];
+      e = UE.Color.FromHex(t);
+      this.GetText(25)?.SetColor(e);
+    }
   }
   UpdateButtonState() {
     if (this.RoleInstance.IsTrialRole()) {

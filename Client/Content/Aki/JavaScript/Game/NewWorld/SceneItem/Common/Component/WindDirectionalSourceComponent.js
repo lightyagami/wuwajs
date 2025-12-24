@@ -128,5 +128,5 @@ let WindDirectionalSourceComponent = class WindDirectionalSourceComponent extend
     return true;
   }
 };
-WindDirectionalSourceComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(294)], WindDirectionalSourceComponent);
+WindDirectionalSourceComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(313)], WindDirectionalSourceComponent);
 exports.WindDirectionalSourceComponent = WindDirectionalSourceComponent; //# sourceMappingURL=WindDirectionalSourceComponent.js.map

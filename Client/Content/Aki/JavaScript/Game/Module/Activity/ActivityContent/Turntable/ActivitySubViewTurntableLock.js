@@ -53,7 +53,7 @@ class ActivitySubViewTurntableLock extends ActivitySubViewBase_1.ActivitySubView
     var i;
     var t;
     var e = this.ActivityBaseData.LocalConfig;
-    if (e && (t = e.DescTheme, i = !StringUtils_1.StringUtils.IsEmpty(t), this.LNe.SetTitleByText(this.ActivityBaseData.GetTitle()), this.LNe.SetSubTitleVisible(i), i && this.LNe.SetSubTitleByTextId(t), i = e.Desc, this.DNe.SetContentByTextId(i), t = this.ActivityBaseData.GetPreviewReward(), this.UNe.SetTitleByTextId("CollectActivity_reward"), this.UNe.InitGridLayout(this.UNe.InitCommonGridItem), this.UNe.RefreshItemLayout(t), this.ANe.FunctionButton.SetFunction(this.DFe), this.ActivityTurntableData.IsUnLock())) {
+    if (e && (t = e.DescTheme, i = !StringUtils_1.StringUtils.IsEmpty(t), this.LNe.SetActivityBaseData(this.ActivityBaseData), this.LNe.SetTitleByText(this.ActivityBaseData.GetTitle()), this.LNe.SetSubTitleVisible(i), i && this.LNe.SetSubTitleByTextId(t), i = e.Desc, this.DNe.SetContentByTextId(i), t = this.ActivityBaseData.GetPreviewReward(), this.UNe.SetTitleByTextId("CollectActivity_reward"), this.UNe.InitGridLayout(this.UNe.InitCommonGridItem), this.UNe.RefreshItemLayout(t), this.ANe.FunctionButton.SetFunction(this.DFe), this.ActivityTurntableData.IsUnLock())) {
       this.ActivityTurntableData.SaveUnlockRedDot();
     }
   }

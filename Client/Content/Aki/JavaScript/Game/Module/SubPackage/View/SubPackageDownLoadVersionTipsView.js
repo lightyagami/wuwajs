@@ -13,7 +13,7 @@ const BG_ITEM_OFFSETZ = 20;
 class SubPackageDownLoadVersionTipsView extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.fRm = new UE.VectorDouble();
+    this.WWm = new UE.VectorDouble();
     this.aRo = () => {
       this.SetUiActive(false);
     };
@@ -27,9 +27,9 @@ class SubPackageDownLoadVersionTipsView extends UiPanelBase_1.UiPanelBase {
     if (e) {
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), e.HelpTitle);
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(3), e.HelpDesc);
-      this.fRm.X = i.X + BG_ITEM_OFFSETX;
-      this.fRm.Z = i.Z + BG_ITEM_OFFSETZ;
-      this.GetItem(1).D_K2_SetWorldLocation(this.fRm, false, undefined, false);
+      this.WWm.X = i.X + BG_ITEM_OFFSETX;
+      this.WWm.Z = i.Z + BG_ITEM_OFFSETZ;
+      this.GetItem(1).D_K2_SetWorldLocation(this.WWm, false, undefined, false);
     }
   }
 }

@@ -24,13 +24,13 @@ class HonamiStoryLimitTaskView extends UiViewBase_1.UiViewBase {
     this.T8e = undefined;
     this.VOe = () => {
       var i = new HonamiStoryLimitTaskItem_1.HonamiStoryLimitTaskItem();
-      i.OnClickToGet = this.oem;
+      i.OnClickToGet = this.qim;
       return i;
     };
-    this.oem = i => {
+    this.qim = i => {
       var e = this.CNe.GetFinishedLimitTaskIds();
       HonamiStoryController_1.HonamiStoryController.SendHonamiStoryLimitTaskRewardRequest(e, () => {
-        this.nem();
+        this.Oim();
         this.dx_();
       });
     };
@@ -58,27 +58,27 @@ class HonamiStoryLimitTaskView extends UiViewBase_1.UiViewBase {
     var i = [this.lqe.CreateThenShowByActorAsync(this.GetItem(0).GetOwner()), this.hfl.CreateThenShowByActorAsync(this.GetItem(3).GetOwner())];
     await Promise.all(i);
     this.hfl.OnClickToGet = this.mx_;
-    var i = [this.sem(), this.aem()];
+    var i = [this.Gim(), this.Fim()];
     await Promise.all(i);
     this.lqe.SetHelpCallBack(this.pcr);
     this.lqe.SetCloseCallBack(this.Jvt);
     this.GetScrollViewWithScrollbar(1).Content.GetComponentByClass(UE.UIInturnAnimController.StaticClass())?.Play();
   }
-  nem() {
+  Oim() {
     new UiAsyncTask_1.UiAsyncTask("RefreshProgress", async () => {
-      await this.sem();
+      await this.Gim();
     }).Run();
   }
-  async sem() {
+  async Gim() {
     var i = this.CNe.GetLimitTaskDataList();
     await this.T8e.RefreshByDataAsync(i, true);
   }
   dx_() {
     new UiAsyncTask_1.UiAsyncTask("RefreshProgress", async () => {
-      await this.aem();
+      await this.Fim();
     }).Run();
   }
-  async aem() {
+  async Fim() {
     var i = this.CNe.GetScoreRewardDataList();
     var e = this.CNe.GetCurrentScore();
     await this.hfl.RefreshAsync(e, i);

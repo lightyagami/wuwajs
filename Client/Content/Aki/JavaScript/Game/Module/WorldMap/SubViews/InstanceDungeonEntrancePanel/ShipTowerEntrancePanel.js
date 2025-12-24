@@ -59,7 +59,7 @@ class ShipTowerEntrancePanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecond
     WorldMapSecondaryUiLayoutHelper_1.WorldMapSecondaryUiLayoutHelper.UpdateDesc(this.LayoutContext);
     WorldMapSecondaryUiLayoutHelper_1.WorldMapSecondaryUiLayoutHelper.UpdateAreaTxtByConfigMarkItem(this.LayoutContext);
     e = this.UpdateQuickGoto();
-    this.ConfirmButton.SetActive(!e);
+    this.LayoutContext?.SetConfirmBtnActive(!e);
     e = ModelManager_1.ModelManager.ShipTowerModel.IsOpen();
     this.bec(e);
   }

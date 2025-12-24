@@ -185,16 +185,16 @@ class FightPhotoSaveView extends UiViewBase_1.UiViewBase {
     e.SetHeight(t.Y / (i * PhotographDefine_1.SCREEN_SHOT_TEXTURE_SCALE));
   }
   OnAfterShow() {
-    this.lXd();
+    this.dXd();
   }
-  async lXd() {
+  async dXd() {
     this.D4_(true);
     this.v5_(true);
-    await this._Xd();
-    await this.uXd(true);
+    await this.mXd();
+    await this.fXd(true);
     this.v5_(false);
-    await this._Xd();
-    await this.uXd(false);
+    await this.mXd();
+    await this.fXd(false);
     this.D4_(false);
     this.UiViewSequence?.PlaySequence("ScreenShot", true);
   }
@@ -205,26 +205,26 @@ class FightPhotoSaveView extends UiViewBase_1.UiViewBase {
     if (e) {
       t.SetWidth(i.X / r);
       t.SetHeight(i.Y / r);
-      this.xYd(true);
+      this.dzd(true);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPreparePhotoScreenShot, false);
     } else {
       t.SetWidth(i.X / (r * PhotographDefine_1.SCREEN_SHOT_TEXTURE_SCALE));
       t.SetHeight(i.Y / (r * PhotographDefine_1.SCREEN_SHOT_TEXTURE_SCALE));
-      this.xYd(false);
+      this.dzd(false);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPreparePhotoScreenShot, true);
     }
   }
-  xYd(e) {
+  dzd(e) {
     this.GetTexture(9)?.SetUIActive(!e);
     this.GetItem(10)?.SetUIActive(!e);
     this.GetItem(11)?.SetUIActive(!e);
   }
-  async lbm() {
+  async w3m() {
     UiLayer_1.UiLayer.SetLayerRenderable(UiLayerType_1.ELayerType.Float, false, "ScreenShot");
     UiLayer_1.UiLayer.SetLayerRenderable(UiLayerType_1.ELayerType.Pop, false, "ScreenShot");
     UiLayer_1.UiLayer.SetLayerRenderable(UiLayerType_1.ELayerType.Normal, false, "ScreenShot");
-    await this._Xd();
-    await this._Xd();
+    await this.mXd();
+    await this.mXd();
     var e = UE.WidgetLayoutLibrary.GetViewportSize(GlobalData_1.GlobalData.World);
     ControllerHolder_1.ControllerHolder.PhotographController.TrySaveFightPhotoFromBuffer(0, 0, e.X, e.Y);
     ControllerHolder_1.ControllerHolder.PhotographController.FightPhotoLogReport();
@@ -237,7 +237,7 @@ class FightPhotoSaveView extends UiViewBase_1.UiViewBase {
     const o = this.p5_ && e || !this.p5_ && !e;
     if (Info_1.Info.IsPs5Platform()) {
       if (o) {
-        this.lbm();
+        this.w3m();
       }
       r();
     } else if (e = ScreenShotManager_1.ScreenShotManager.PrepareTakeScreenshot("", t[0], t[1], t[2], t[3], false)) {
@@ -321,14 +321,14 @@ class FightPhotoSaveView extends UiViewBase_1.UiViewBase {
   oKi() {
     this.CloseMe();
   }
-  async _Xd() {
+  async mXd() {
     return new Promise(e => {
       TimerSystem_1.GameplayTimerSystem.Next(() => {
         e();
       });
     });
   }
-  async uXd(t) {
+  async fXd(t) {
     return new Promise(e => {
       this.B4_(t, e);
     });

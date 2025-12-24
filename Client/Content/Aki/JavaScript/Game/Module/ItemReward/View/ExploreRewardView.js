@@ -53,7 +53,7 @@ class ExploreRewardView extends UiViewBase_1.UiViewBase {
     this.hD_ = undefined;
     this.P_c = undefined;
     this.rv1 = undefined;
-    this.Enm = undefined;
+    this.Ilm = undefined;
     this.Het = [];
     this.efi = () => {
       var t = this.N0i.ButtonInfoList;
@@ -163,7 +163,7 @@ class ExploreRewardView extends UiViewBase_1.UiViewBase {
       await this.ov1();
     }
     if (this.N0i.HonamiTowerSuccessData) {
-      await this.Inm();
+      await this.Tlm();
     }
     var t = this.N0i.ButtonInfoList;
     if (t && t?.length > 0) {
@@ -418,14 +418,14 @@ class ExploreRewardView extends UiViewBase_1.UiViewBase {
       this.rv1.Refresh(t);
     }
   }
-  async Inm() {
+  async Tlm() {
     var e;
     var t = this.N0i.HonamiTowerSuccessData;
     if (t) {
       e = this.GetItem(20);
-      this.Enm = new RewardExploreHonamiTowerSuccessItem_1.RewardExploreHonamiTowerSuccessItem();
-      await this.Enm.CreateThenShowByResourceIdAsync("UiItem_HonamiStoryTowerResult", e);
-      this.Enm.Refresh(t);
+      this.Ilm = new RewardExploreHonamiTowerSuccessItem_1.RewardExploreHonamiTowerSuccessItem();
+      await this.Ilm.CreateThenShowByResourceIdAsync("UiItem_HonamiStoryTowerResult", e);
+      this.Ilm.Refresh(t);
     }
   }
   afi(e, t) {

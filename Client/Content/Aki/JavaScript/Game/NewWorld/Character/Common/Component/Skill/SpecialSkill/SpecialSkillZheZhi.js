@@ -49,7 +49,7 @@ class SpecialSkillZheZhi extends SpecialSkillBase_1.SpecialSkillBase {
     this.n$t = this.f2a.GetComponent(3);
     var e = this.f2a.GetComponent(0);
     if (e.GetPlayerId() === ModelManager_1.ModelManager.CreatureModel.GetPlayerId()) {
-      this.Xte = this.f2a?.GetComponent(209);
+      this.Xte = this.f2a?.GetComponent(215);
       for (let t = 1; t < HE_MAX_COUNT + 1; t++) {
         const s = PhantomUtil_1.PhantomUtil.GetSummonedEntity(this.f2a, Protocol_1.Aki.Protocol.Summon.x3s.Proto_ESummonTypeConcomitantCustom, t);
         if (!s) {
@@ -59,7 +59,7 @@ class SpecialSkillZheZhi extends SpecialSkillBase_1.SpecialSkillBase {
           return;
         }
         this.M2a.set(t, s);
-        var i = s.Entity.GetComponent(125);
+        var i = s.Entity.GetComponent(130);
         i.SetLogicRange(HE_ACTIVE_DIS);
         i.CreatePerceptionEvent(HE_ACTIVE_DIS, s.Entity?.GameBudgetManagedToken, () => {
           this.S2a.add(s);
@@ -89,7 +89,7 @@ class SpecialSkillZheZhi extends SpecialSkillBase_1.SpecialSkillBase {
       this.V2a();
       this.M2a.forEach((t, e) => {
         var i = t.Entity;
-        var s = i?.GetComponent(209);
+        var s = i?.GetComponent(215);
         if (i && i.Active && this.S2a.has(t) && s?.HasTag(activeTag)) {
           t = i.GetComponent(3);
           s = UE.GameplayStatics.D_ProjectWorldToScreen(Global_1.Global.CharacterController, t.ActorLocationProxy.ToUeVector(), this.fii, true);
@@ -135,7 +135,7 @@ class SpecialSkillZheZhi extends SpecialSkillBase_1.SpecialSkillBase {
     if (!this.Xte?.HasTag(activeTag)) {
       this.Xte?.AddTag(activeTag);
     }
-    var e = this.f2a.GetComponent(40);
+    var e = this.f2a.GetComponent(41);
     if (e?.Valid) {
       e.CallAnimBreakPoint();
     }

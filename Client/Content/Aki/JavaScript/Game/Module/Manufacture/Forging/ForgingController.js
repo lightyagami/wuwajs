@@ -374,7 +374,7 @@ class ForgingController extends UiControllerBase_1.UiControllerBase {
     if (e) {
       e = EntitySystem_1.EntitySystem.Get(e);
       if (e) {
-        return e.GetComponent(200);
+        return e.GetComponent(206);
       }
     }
   }

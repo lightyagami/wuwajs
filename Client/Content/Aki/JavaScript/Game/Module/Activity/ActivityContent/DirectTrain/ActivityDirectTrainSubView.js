@@ -30,7 +30,7 @@ class ActivityDirectTrainSubView extends ActivitySubViewBase_1.ActivitySubViewBa
     this.uxl = undefined;
     this.cxl = undefined;
     this.Nda = () => {
-      const e = ActivityDirectTrainHelper_1.ActivityDirectTrainHelper.IsGetActivityRewards();
+      const e = ActivityDirectTrainHelper_1.ActivityDirectTrainHelper.IsGetActivityRewards(this.LOe);
       this.UNe.GetLayoutItemList().forEach(i => {
         i.SetReceivedVisible(e);
       });
@@ -38,7 +38,7 @@ class ActivityDirectTrainSubView extends ActivitySubViewBase_1.ActivitySubViewBa
     this.mxl = () => {
       var i = new ConfirmBoxDefine_1.ConfirmBoxDataNew(237);
       i.FunctionMap.set(2, () => {
-        var i = ActivityDirectTrainHelper_1.ActivityDirectTrainHelper.GetRecommendQuestLinkId();
+        var i = ActivityDirectTrainHelper_1.ActivityDirectTrainHelper.GetRecommendQuestLinkId(this.LOe);
         UiManager_1.UiManager.OpenView("QuestView", i);
       });
       ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(i);
@@ -46,20 +46,21 @@ class ActivityDirectTrainSubView extends ActivitySubViewBase_1.ActivitySubViewBa
     this.dxl = () => {
       this.ActivityDirectTrainData.HaveDisplayedGotoRedDot = true;
       var i = this.RPl();
-      var e = ModelManager_1.ModelManager.ActivityDirectTrainModel.GetSkipQuestId();
+      var e = ModelManager_1.ModelManager.ActivityDirectTrainModel.GetSkipQuestId(this.LOe);
       if (i) {
         if (ModelManager_1.ModelManager.QuestNewModel.GetQuestState(e) === 0) {
           if (this.uo_()) {
-            const t = ActivityDirectTrainHelper_1.ActivityDirectTrainHelper.GetRecommendQuestLinkId();
+            const t = ActivityDirectTrainHelper_1.ActivityDirectTrainHelper.GetRecommendQuestLinkId(this.LOe);
             i = {
               GotoCallBack: () => {
                 UiManager_1.UiManager.OpenView("QuestView", t);
               },
               SkipCallBack: () => {
-                ActivityDirectTrainHelper_1.ActivityDirectTrainHelper.RequestThroughTrain(() => {
+                ActivityDirectTrainHelper_1.ActivityDirectTrainHelper.RequestThroughTrain(this.LOe, () => {
                   UiManager_1.UiManager.ResetToBattleView();
                 });
-              }
+              },
+              ActivityId: this.LOe
             };
             UiManager_1.UiManager.OpenView("SkipMainQuestWindowView", i);
           }
@@ -73,6 +74,9 @@ class ActivityDirectTrainSubView extends ActivitySubViewBase_1.ActivitySubViewBa
   }
   get ActivityDirectTrainData() {
     return this.ActivityBaseData;
+  }
+  get LOe() {
+    return this.ActivityBaseData.Id;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem]];
@@ -94,13 +98,13 @@ class ActivityDirectTrainSubView extends ActivitySubViewBase_1.ActivitySubViewBa
     await this.uxl.CreateThenShowByActorAsync(e.GetOwner());
     this.uxl.FunctionButton.SetFunction(this.dxl);
     if (ModelManager_1.ModelManager.FunctionModel.IsOpen(10053)) {
-      this.uxl.FunctionButton.BindRedDot("ActivityDirectTrain");
+      this.uxl.FunctionButton.BindRedDot("ActivityDirectTrain", i.Id);
     } else {
-      this.uxl.FunctionButton.BindRedDot("ActivityDirectTrainPro");
+      this.uxl.FunctionButton.BindRedDot("ActivityDirectTrainPro", i.Id);
     }
-    var i = this.GetItem(4);
+    var e = this.GetItem(4);
     this.cxl = new RecommendQuestTipsSubPanel_1.RecommendQuestTipsSubPanel();
-    await this.cxl.CreateThenShowByActorAsync(i.GetOwner());
+    await this.cxl.CreateThenShowByActorAsync(e.GetOwner());
     this.cxl.BindClickBtnTipsCallBack(this.mxl);
   }
   OnStart() {
@@ -111,7 +115,7 @@ class ActivityDirectTrainSubView extends ActivitySubViewBase_1.ActivitySubViewBa
     this.Cxl();
   }
   OnBeforeShow() {
-    ActivityDirectTrainHelper_1.ActivityDirectTrainHelper.RequestThroughTrainFinishViewAsync();
+    ActivityDirectTrainHelper_1.ActivityDirectTrainHelper.RequestThroughTrainFinishViewAsync(this.LOe);
     ModelManager_1.ModelManager.ActivityDirectTrainModel.AlreadyStartView = true;
     SplashScreenController_1.SplashScreenController.FinishCurTask(3);
   }
@@ -132,6 +136,7 @@ class ActivityDirectTrainSubView extends ActivitySubViewBase_1.ActivitySubViewBa
   }
   mGe() {
     var i = this.ActivityDirectTrainData.GetTitle();
+    this.LNe.SetActivityBaseData(this.ActivityBaseData);
     this.LNe.SetTitleByText(i);
     this.gxl();
   }
@@ -164,21 +169,21 @@ class ActivityDirectTrainSubView extends ActivitySubViewBase_1.ActivitySubViewBa
     this.UNe.RefreshItemLayout(i, this.Nda);
   }
   RPl() {
-    var i = ModelManager_1.ModelManager.ActivityDirectTrainModel.GetRecommendQuestId();
+    var i = ModelManager_1.ModelManager.ActivityDirectTrainModel.GetRecommendQuestId(this.LOe);
     return !ModelManager_1.ModelManager.QuestNewModel.CheckQuestFinished(i);
   }
   Cxl() {
     var i = this.RPl();
     this.cxl.SetUiActive(i);
     if (i) {
-      i = ModelManager_1.ModelManager.ActivityDirectTrainModel.GetRecommendQuestTipsTextId();
+      i = ModelManager_1.ModelManager.ActivityDirectTrainModel.GetRecommendQuestTipsTextId(this.LOe);
       this.cxl.SetTipsTxtByTextId(i);
     }
   }
   NDn() {
     var i = this.ActivityDirectTrainData;
     var e = i.IsUnLock();
-    var t = ModelManager_1.ModelManager.ActivityDirectTrainModel.GetSkipQuestId();
+    var t = ModelManager_1.ModelManager.ActivityDirectTrainModel.GetSkipQuestId(this.LOe);
     var t = ModelManager_1.ModelManager.QuestNewModel.GetQuestState(t);
     var r = ModelManager_1.ModelManager.SubPackageDownLoadModel.CheckActivityTeleportHaveSubPackage(i.Id);
     if (e) {
@@ -186,6 +191,7 @@ class ActivityDirectTrainSubView extends ActivitySubViewBase_1.ActivitySubViewBa
         this.uxl.FunctionButton.SetLocalTextNew(t === 0 ? "DirectTrainActivity_Button_Unlock" : "DirectTrainActivity_Button_Goto");
       } else {
         this.uxl.SetPerformanceSubPackageLock(i.LocalConfig.AreaTips, i.LocalConfig.AreaList);
+        this.uxl.SetLockTextByTextId("SubPackageDownLoad_ActivityLock_Des");
       }
     } else {
       this.uxl.SetPerformanceConditionLock(i.ConditionGroupId, i.Id);
@@ -194,9 +200,6 @@ class ActivityDirectTrainSubView extends ActivitySubViewBase_1.ActivitySubViewBa
     var i = t === 3;
     this.uxl.FunctionButton.SetUiActive(e && !i && r);
     this.uxl.PanelActivate.SetUiActive(e && i && r);
-    if (!r) {
-      this.uxl.SetLockTextByTextId("SubPackageDownLoad_ActivityLock_Des");
-    }
     if (i) {
       this.uxl.PanelActivate.SetTextByTextId("DirectTrainActivity_Finish");
     }

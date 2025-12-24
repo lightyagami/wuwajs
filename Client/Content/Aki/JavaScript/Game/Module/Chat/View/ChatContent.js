@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ChatContent = exports.ChatContentItem = undefined;
 const UE = require("ue");
+const Info_1 = require("../../../../Core/Common/Info");
 const Log_1 = require("../../../../Core/Common/Log");
 const Protocol_1 = require("../../../../Core/Define/Net/Protocol");
 const StringUtils_1 = require("../../../../Core/Utils/StringUtils");
@@ -23,6 +24,7 @@ const ChatTeamTipsContent_1 = require("./ChatTeamTipsContent");
 class ChatContentItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
+    this.Data = undefined;
     this.YGl = undefined;
     this.L8e = undefined;
     this._U1 = undefined;
@@ -59,6 +61,7 @@ class ChatContentItem extends UiPanelBase_1.UiPanelBase {
     this.Destroy();
   }
   Update(e, t) {
+    this.Data = e;
     this.YGl?.SetUiActive(false);
     this.L8e?.SetUiActive(false);
     this._U1?.SetUiActive(false);
@@ -75,6 +78,9 @@ class ChatContentItem extends UiPanelBase_1.UiPanelBase {
         this._U1?.SetUiActive(true);
         this._U1?.Refresh(e.ChatContentData);
     }
+  }
+  GetInteractItem() {
+    return (this.Data?.Type === 0 ? this.L8e : this.YGl).GetBtnItem();
   }
 }
 exports.ChatContentItem = ChatContentItem;
@@ -93,6 +99,9 @@ class ChatContent extends UiPanelBase_1.UiPanelBase {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIText], [2, UE.UIText], [3, UE.UIItem], [4, UE.UITexture], [5, UE.UIItem], [6, UE.UIText], [8, UE.UIItem], [9, UE.UITexture], [10, UE.UIText], [7, UE.UIItem], [11, UE.UIItem]];
+    if (!Info_1.Info.IsInTouch()) {
+      this.ComponentRegisterInfos.push([12, UE.UIItem]);
+    }
   }
   async OnBeforeStartAsync() {
     this.gLt = new PlayerTitleItem_1.PlayerTitleItem();
@@ -252,6 +261,11 @@ class ChatContent extends UiPanelBase_1.UiPanelBase {
   }
   LOn() {
     this.SPe?.PlayLevelSequenceByName("Start");
+  }
+  GetBtnItem() {
+    if (!Info_1.Info.IsInTouch()) {
+      return this.GetItem(12);
+    }
   }
 }
 exports.ChatContent = ChatContent;

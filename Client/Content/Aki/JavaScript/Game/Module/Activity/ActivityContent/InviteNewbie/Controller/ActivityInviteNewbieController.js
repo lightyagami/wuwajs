@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.ActivityInviteNewbieController = undefined;
 const UE = require("ue");
 const Log_1 = require("../../../../../../Core/Common/Log");
+const Protocol_1 = require("../../../../../../Core/Define/Net/Protocol");
 const Net_1 = require("../../../../../../Core/Net/Net");
 const StringUtils_1 = require("../../../../../../Core/Utils/StringUtils");
 const EventDefine_1 = require("../../../../../Common/Event/EventDefine");
@@ -64,6 +65,10 @@ class ActivityInviteNewbieController extends ActivityControllerBase_1.ActivityCo
   OnUnRegisterNetEvent() {
     Net_1.Net.UnRegister(21990);
   }
+  o1f() {
+    var e = new Protocol_1.Aki.Protocol.ehf();
+    Net_1.Net.Call(16100, e, e => {});
+  }
   mIi() {
     let e = undefined;
     var t = ModelManager_1.ModelManager.InviteNewbieModel.RootUrl;
@@ -78,6 +83,7 @@ class ActivityInviteNewbieController extends ActivityControllerBase_1.ActivityCo
       }
       if (e !== undefined) {
         ModelManager_1.ModelManager.InviteNewbieModel.SaveClickState();
+        this.o1f();
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.InviteNewbieEntered);
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, ModelManager_1.ModelManager.InviteNewbieModel.CurrentActivityId);
         if (ModelManager_1.ModelManager.InviteNewbieModel.IsInternalBrowser) {

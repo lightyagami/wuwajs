@@ -29,11 +29,11 @@ const EXTRA_EXPIRED_TIME = 5000;
 const MAX_EXPIRED_TIME = 60000;
 class CommonQteController extends ControllerBase_1.ControllerBase {
   static OnInit() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TeleportAfterComplete, this.V3u);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TeleportComplete, this.Ilt);
     return true;
   }
   static OnClear() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TeleportAfterComplete, this.V3u);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TeleportComplete, this.Ilt);
     return true;
   }
   static OnLeaveLevel() {
@@ -652,7 +652,7 @@ CommonQteController.pYi = undefined;
 CommonQteController.Pod = undefined;
 CommonQteController.CommonQteViewMapDebug = undefined;
 CommonQteController.CommonQteItemMapDebug = undefined;
-CommonQteController.V3u = () => {
+CommonQteController.Ilt = () => {
   if (_a.IsInQte() && _a.nx?.IsActive() && _a.nx?.IsPending()) {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("CommonQte", 67, "传送状态结束, 尝试恢复Qte时停", ["QteId", _a.nx.QteId]);

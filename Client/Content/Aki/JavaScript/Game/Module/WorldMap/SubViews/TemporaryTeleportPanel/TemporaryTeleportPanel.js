@@ -37,6 +37,7 @@ class TemporaryTeleportPanel extends WorldMapSecondaryUiLayoutB_1.WorldMapSecond
     super.OnStart();
   }
   OnShowWorldMapSecondaryUi(e) {
+    this.LayoutContext.MarkItem = e;
     this.u2o = e;
     this.GetText(1).SetText(StringUtils_1.StringUtils.Format("{0}{1}/{2}", this.u2o.GetTitleText(), ModelManager_1.ModelManager.MapModel.GetMarkCountByType(15).toString(), CommonParamById_1.configCommonParamById.GetIntConfig("TemporaryTeleportCountLimit").toString()));
     this.RightConfirmBtn.SetUiActive(false);

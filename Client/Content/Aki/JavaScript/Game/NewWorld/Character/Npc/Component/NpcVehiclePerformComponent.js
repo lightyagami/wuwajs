@@ -7,8 +7,8 @@ var __decorate = this && this.__decorate || function (e, r, t, o) {
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
     s = Reflect.decorate(e, r, t, o);
   } else {
-    for (var c = e.length - 1; c >= 0; c--) {
-      if (i = e[c]) {
+    for (var h = e.length - 1; h >= 0; h--) {
+      if (i = e[h]) {
         s = (n < 3 ? i(s) : n > 3 ? i(r, t, s) : i(r, t)) || s;
       }
     }
@@ -43,6 +43,14 @@ let NpcVehiclePerformComponent = class NpcVehiclePerformComponent extends BaseVe
   TryEnter(e, r) {
     return !!this.EnterConditionCheck(e, r) && (this.Enter(e, r), true);
   }
+  TryEnterAtOnce(e, r, t = 0) {
+    if (this.EnterConditionCheck(e, r)) {
+      this.Enter(e, r);
+      return BaseVehiclePerformComponent_1.ALWAYS_SUCCESS_VEHICLE_PREPERFORM_HANDLE;
+    } else {
+      return 0;
+    }
+  }
   Enter(e, r) {
     var t = e.GetComponent(0);
     if (t?.IsRole()) {
@@ -60,6 +68,14 @@ let NpcVehiclePerformComponent = class NpcVehiclePerformComponent extends BaseVe
   }
   TryLeave(e, r = 0) {
     return !!this.LeaveConditionCheck(e) && (this.Leave(e, r), true);
+  }
+  TryLeaveAtOnce(e, r = 0, t) {
+    if (this.LeaveConditionCheck(e)) {
+      this.Leave(e, r);
+      return BaseVehiclePerformComponent_1.ALWAYS_SUCCESS_VEHICLE_PREPERFORM_HANDLE;
+    } else {
+      return 0;
+    }
   }
   Leave(e, r = 0) {
     var t = e.GetComponent(0);
@@ -81,5 +97,5 @@ let NpcVehiclePerformComponent = class NpcVehiclePerformComponent extends BaseVe
     }
   }
 };
-NpcVehiclePerformComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(236)], NpcVehiclePerformComponent);
+NpcVehiclePerformComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(245)], NpcVehiclePerformComponent);
 exports.NpcVehiclePerformComponent = NpcVehiclePerformComponent; //# sourceMappingURL=NpcVehiclePerformComponent.js.map

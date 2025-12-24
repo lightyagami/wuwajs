@@ -16,6 +16,8 @@ const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const ConfirmBoxDefine_1 = require("../../../Module/ConfirmBox/ConfirmBoxDefine");
 const ScrollingTipsController_1 = require("../../../Module/ScrollingTips/ScrollingTipsController");
+const UiConfig_1 = require("../../Define/UiConfig");
+const UiLayerType_1 = require("../../Define/UiLayerType");
 const InputDistributeDefine_1 = require("../../InputDistribute/InputDistributeDefine");
 const UiManager_1 = require("../../UiManager");
 const UiModel_1 = require("../../UiModel");
@@ -59,7 +61,7 @@ class MobileSwitchInputController {
       });
     }
   }
-  static SwitchToGamepad(e, t) {
+  static SwitchToGamepad(e, o) {
     if (e) {
       if (this.Brl()) {
         MobileSwitchInputController.gWa = e;
@@ -75,7 +77,7 @@ class MobileSwitchInputController {
         }
       }
     } else if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("MobileInputSwitch", 10, "触屏切换手柄异常,传入无效的输入设备类型", ["reason", t]);
+      Log_1.Log.Error("MobileInputSwitch", 10, "触屏切换手柄异常,传入无效的输入设备类型", ["reason", o]);
     }
   }
   static SwitchToTouch() {
@@ -125,10 +127,13 @@ MobileSwitchInputController.vWa = () => {
     });
   }
 };
-MobileSwitchInputController.Ck_ = (e, t) => e === "MobileSwitchInputView" || (_a.gk_.set(e, {
-  UiViewName: e,
-  Param: t
-}), Log_1.Log.CheckInfo() && Log_1.Log.Info("MobileInputSwitch", 10, "缓存切换期间打开的界面数据", ["viewName", e]), false);
+MobileSwitchInputController.Ck_ = (e, o) => {
+  var t;
+  return e === "MobileSwitchInputView" || !!(t = UiConfig_1.UiConfig.TryGetViewInfo(e)) && !!((t.Type & UiLayerType_1.MOBILE_SWITCH_ALLOW_VIEW_TYPE) > 0) || (_a.gk_.set(e, {
+    UiViewName: e,
+    Param: o
+  }), Log_1.Log.CheckInfo() && Log_1.Log.Info("MobileInputSwitch", 10, "缓存切换期间打开的界面数据", ["viewName", e]), false);
+};
 MobileSwitchInputController.ReOpenBattleView = () => {
   UiManager_1.UiManager.RemoveOpenViewCheckFunction("All", MobileSwitchInputController.Ck_);
   ControllerHolder_1.ControllerHolder.BattleUiControl.OpenMainView();

@@ -21,39 +21,39 @@ const HonamiStoryTipsPropertyItem_1 = require("./HonamiStoryTipsPropertyItem");
 class HonamiStoryRoleTipItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.dYd = undefined;
-    this.CYd = undefined;
+    this.$Yd = undefined;
+    this.XYd = undefined;
     this.SkillLayout = undefined;
     this.PropertyLayout = undefined;
     this.ESc = undefined;
     this.LevelSequencePlayer = undefined;
     this.PNo = undefined;
-    this.yYd = () => new HonamiStoryWeaponSuitInfoItem_1.HonamiStoryWeaponSuitInfoItem();
+    this.JYd = () => new HonamiStoryWeaponSuitInfoItem_1.HonamiStoryWeaponSuitInfoItem();
     this.yId = () => new HonamiStoryTipsPropertyItem_1.HonamiStoryTipsTextItem();
-    this.Aum = () => new HonamiStoryTipsPropertyItem_1.HonamiStoryTipsPropertyItem();
+    this.i0m = () => new HonamiStoryTipsPropertyItem_1.HonamiStoryTipsPropertyItem();
     this.ySc = () => new HonamiStoryWeaponTagItem_1.HonamiStoryWeaponTagItem();
     this.UFe = () => {
       ModelManager_1.ModelManager.HonamiStoryModel.GetBackpackLogic()?.CloseTips();
       this.GetExtendToggle(15)?.RootUIComp.SetUIActive(false);
     };
-    this.Dum = () => {
+    this.r0m = () => {
       if (this.PNo) {
         this.PNo();
       }
       this.ShowTips(false);
     };
-    this.sbm = () => {
+    this.JNm = () => {
       this.s8l();
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[1, UE.UIText], [0, UE.UIItem], [3, UE.UIVerticalLayout], [4, UE.UIItem], [2, UE.UIItem], [5, UE.UIItem], [6, UE.UIVerticalLayout], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIVerticalLayout], [10, UE.UIItem], [12, UE.UIItem], [13, UE.UIItem], [11, UE.UIButtonComponent], [14, UE.UIItem], [15, UE.UIExtendToggle], [16, UE.UIScrollViewWithScrollbarComponent], [17, UE.UIItem], [18, UE.UIMultiTemplateLayout], [19, UE.UIItem]];
-    this.BtnBindInfo = [[11, this.Dum], [15, this.UFe]];
+    this.BtnBindInfo = [[11, this.r0m], [15, this.UFe]];
   }
   async OnBeforeStartAsync() {
-    this.CYd = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(3), this.yYd);
+    this.XYd = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(3), this.JYd);
     this.SkillLayout = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(6), this.yId);
-    this.PropertyLayout = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(9), this.Aum);
+    this.PropertyLayout = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(9), this.i0m);
     this.ESc = new GenericLayout_1.GenericLayout(this.GetMultiTemplateLayout(18), this.ySc);
     await super.OnBeforeStartAsync();
   }
@@ -67,17 +67,17 @@ class HonamiStoryRoleTipItem extends UiPanelBase_1.UiPanelBase {
     this.LevelSequencePlayer = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
     e = ModelManager_1.ModelManager.HonamiStoryModel.GetBackpackLogic().GetTipsOpen();
     this.GetExtendToggle(15)?.RootUIComp.SetUIActive(e);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnHonamiStorySkillDescModeChange, this.sbm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnHonamiStorySkillDescModeChange, this.JNm);
   }
   OnBeforeDestroy() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnHonamiStorySkillDescModeChange, this.sbm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnHonamiStorySkillDescModeChange, this.JNm);
   }
   Refresh(e) {
     this.GetScrollViewWithScrollbar(16)?.ScrollToTop(undefined, this.GetItem(0), true);
-    this.dYd = e;
+    this.$Yd = e;
     this.RefreshItemTipsOpen();
     this.s8l();
-    this.Uum();
+    this.o0m();
     this.ShowTips(true);
   }
   RefreshItemTipsOpen() {
@@ -88,8 +88,8 @@ class HonamiStoryRoleTipItem extends UiPanelBase_1.UiPanelBase {
     }
   }
   s8l() {
-    if (this.dYd) {
-      var e = this.dYd.GetWeaponId();
+    if (this.$Yd) {
+      var e = this.$Yd.GetWeaponId();
       var t = e !== 0;
       if (t) {
         var e = ModelManager_1.ModelManager.HonamiStoryModel.GetWeaponData(e);
@@ -102,10 +102,10 @@ class HonamiStoryRoleTipItem extends UiPanelBase_1.UiPanelBase {
         for (const o of r) {
           s.push({
             SuitId: o,
-            EquipData: this.dYd
+            EquipData: this.$Yd
           });
         }
-        this.CYd?.RefreshByData(s);
+        this.XYd?.RefreshByData(s);
         this.ESc?.RefreshByData(e.PluginTags);
       }
       this.GetItem(0)?.SetUIActive(t);
@@ -114,8 +114,8 @@ class HonamiStoryRoleTipItem extends UiPanelBase_1.UiPanelBase {
       this.GetItem(17)?.SetUIActive(t);
     }
   }
-  Uum() {
-    var e = this.dYd.GetPluginList();
+  o0m() {
+    var e = this.$Yd.GetPluginList();
     var t = e && e.some(e => e !== undefined);
     if (t) {
       var i = new Map();
@@ -123,7 +123,7 @@ class HonamiStoryRoleTipItem extends UiPanelBase_1.UiPanelBase {
       for (const n of e) {
         if (n) {
           for (const a of n.GetBuffTempIdList()) {
-            if (!a.RoleId || !!HonamiStoryUtil_1.HonamiStoryUtil.CheckRolePowerValid(a.RoleId, this.dYd.GetParentRoleId())) {
+            if (!a.RoleId || !!HonamiStoryUtil_1.HonamiStoryUtil.CheckRolePowerValid(a.RoleId, this.$Yd.GetParentRoleId())) {
               i.set(a.BuffId, a);
             }
           }
@@ -166,7 +166,7 @@ class HonamiStoryRoleTipItem extends UiPanelBase_1.UiPanelBase {
   }
   GetGuideUiItemAndUiItemForShowEx(e) {
     var t;
-    if (e.length !== 0 && e[0] === "SuitDesc" && (e = Number(e[1]), e = this.CYd.GetItemByIndex(e), t = this.GetItem(2), this.GetScrollViewWithScrollbar(16)?.StopMovement(), this.GetScrollViewWithScrollbar(16)?.ScrollTo(t, true), e)) {
+    if (e.length !== 0 && e[0] === "SuitDesc" && (e = Number(e[1]), e = this.XYd.GetItemByIndex(e), t = this.GetItem(2), this.GetScrollViewWithScrollbar(16)?.StopMovement(), this.GetScrollViewWithScrollbar(16)?.ScrollTo(t, true), e)) {
       return [e, e];
     } else {
       return undefined;

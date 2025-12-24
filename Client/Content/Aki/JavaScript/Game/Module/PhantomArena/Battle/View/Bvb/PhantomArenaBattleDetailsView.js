@@ -4,8 +4,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.PhantomArenaBattleDetailsView = undefined;
-const puerts_1 = require("puerts");
 const UE = require("ue");
+const AudioSystem_1 = require("../../../../../../Core/Audio/AudioSystem");
 const Info_1 = require("../../../../../../Core/Common/Info");
 const Log_1 = require("../../../../../../Core/Common/Log");
 const Protocol_1 = require("../../../../../../Core/Define/Net/Protocol");
@@ -13,7 +13,6 @@ const TimerSystem_1 = require("../../../../../../Core/Timer/TimerSystem");
 const Vector_1 = require("../../../../../../Core/Utils/Math/Vector");
 const EventDefine_1 = require("../../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../../Common/Event/EventSystem");
-const GlobalData_1 = require("../../../../../GlobalData");
 const ConfigManager_1 = require("../../../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../../Manager/ModelManager");
@@ -26,10 +25,13 @@ const UiManager_1 = require("../../../../../Ui/UiManager");
 const LevelSequencePlayer_1 = require("../../../../Common/LevelSequencePlayer");
 const FlowController_1 = require("../../../../Plot/Flow/FlowController");
 const LoadAsyncPromise_1 = require("../../../../UiComponent/LoadAsyncPromise");
+const LguiFloatTween_1 = require("../../../../Util/Lgui/LguiFloatTween");
 const PhantomArenaDefine_1 = require("../../PhantomArenaDefine");
+const PhantomArenaBattleDamageStatisticsPanel_1 = require("./DamageStatistics/PhantomArenaBattleDamageStatisticsPanel");
 const PhantomArenaBattleDetailsAreaItem_1 = require("./PhantomArenaBattleDetailsAreaItem");
 const PhantomArenaJoystick_1 = require("./PhantomArenaJoystick");
 const ANIM_DAMAGE_DELAY = 4500;
+const DAMAGE_FIRST = 10;
 class PhantomArenaBattleDetailsView extends UiTickViewBase_1.UiTickViewBase {
   constructor() {
     super(...arguments);
@@ -38,8 +40,8 @@ class PhantomArenaBattleDetailsView extends UiTickViewBase_1.UiTickViewBase {
     this.Proxy = undefined;
     this.HeadStatePanel = undefined;
     this.MobileJoystick = undefined;
+    this.DamageStatistics = undefined;
     this.IsWin = false;
-    this.IsSelfPhantomAlive = false;
     this.AccumulateTween = false;
     this.AnimDamageTween = false;
     this.CurveZ = undefined;
@@ -53,15 +55,14 @@ class PhantomArenaBattleDetailsView extends UiTickViewBase_1.UiTickViewBase {
     this.TweenerNpcZ = undefined;
     this.TweenerMeX = undefined;
     this.TweenerMeZ = undefined;
-    this.DelegateNpcX = undefined;
-    this.DelegateNpcZ = undefined;
-    this.DelegateMeX = undefined;
-    this.DelegateMeZ = undefined;
     this.SequencePlayer = undefined;
     this.MeDamaged = 0;
     this.MeBeforeDamaged = 0;
+    this.MeOriginalDamage = 0;
     this.NpcDamaged = 0;
     this.NpcBeforeDamaged = 0;
+    this.NpcOriginalDamage = 0;
+    this.IsFinishSettle = false;
     this.FlowListName = "";
     this.DamageAnimEnd = false;
     this.TimeHandle = undefined;
@@ -72,11 +73,14 @@ class PhantomArenaBattleDetailsView extends UiTickViewBase_1.UiTickViewBase {
       ModelManager_1.ModelManager.PhantomArenaBattleModel.SetSpeedUp();
       this.Emu();
     };
-    this.Pcu = (t, i, e, s, h) => {
-      this.IsWin = t;
-      this.NpcDamaged = i;
-      this.MeDamaged = s;
-      this.xcu(t);
+    this.Pcu = t => {
+      this.IsWin = t.nD1;
+      this.NpcDamaged = t.hD1;
+      this.NpcOriginalDamage = t.wWm;
+      this.MeDamaged = t.sD1;
+      this.MeOriginalDamage = t.RWm;
+      this.IsFinishSettle = t.Oxm;
+      this.kTm();
     };
     this.Ucu = t => {
       if (t === "DamageAccumulate") {
@@ -89,11 +93,15 @@ class PhantomArenaBattleDetailsView extends UiTickViewBase_1.UiTickViewBase {
             this.OpponentArea?.StartAccumulate(this.CurveOppositeX, this.CurveZ, this.CurveCommon);
           }
         }
-      } else if (t === "Damage" && !this.AnimDamageTween) {
-        this.AnimDamageTween = true;
-        if (this.MeDamaged > 0) {
-          this.OwnArea?.SetDamageTween(this.CurveDamageX, this.MeDamaged);
+      } else if (t === "Damage") {
+        if (!this.AnimDamageTween) {
+          this.AnimDamageTween = true;
+          if (this.MeDamaged > 0) {
+            this.OwnArea?.SetDamageTween(this.CurveDamageX, this.MeDamaged);
+          }
         }
+      } else if (t === "DamageNPC" && !this.AnimDamageTween) {
+        this.AnimDamageTween = true;
         if (this.NpcDamaged > 0) {
           this.OpponentArea?.SetDamageTween(this.CurveDamageX, this.NpcDamaged);
         }
@@ -120,23 +128,19 @@ class PhantomArenaBattleDetailsView extends UiTickViewBase_1.UiTickViewBase {
       this.GetUiNiagara(7).D_K2_SetWorldLocation(i, false, undefined, false);
     };
     this.hSu = () => {
-      this.TweenerNpcX &&= undefined;
       this.GetUiNiagara(5).SetUIActive(false);
-    };
-    this.lSu = () => {
-      this.TweenerNpcZ &&= undefined;
+      this.SequencePlayer?.PlayLevelSequenceByName("Damage");
+      this.nBf();
     };
     this._Su = () => {
-      this.TweenerMeX &&= undefined;
       this.GetUiNiagara(7).SetUIActive(false);
-    };
-    this.uSu = () => {
-      this.TweenerMeZ &&= undefined;
+      this.SequencePlayer?.PlayLevelSequenceByName("DamageNPC");
+      this.sBf();
     };
     this.Bcu = () => {
       var t;
       var i;
-      if (this.IsWin && this.IsSelfPhantomAlive) {
+      if (this.IsWin && this.IsFinishSettle) {
         t = ModelManager_1.ModelManager.PhantomArenaBattleModel.InstId;
         if (i = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetSeqConfig(t)) {
           this.FlowListName = i.FlowListName;
@@ -152,7 +156,7 @@ class PhantomArenaBattleDetailsView extends UiTickViewBase_1.UiTickViewBase {
           this.kcu();
         }
         if (this.NpcBeforeDamaged) {
-          this.cSu();
+          this.mYm();
         }
       }
     };
@@ -171,23 +175,15 @@ class PhantomArenaBattleDetailsView extends UiTickViewBase_1.UiTickViewBase {
         this.OpponentArea?.RoleItem.RefreshLifeNum(Math.max(t, 0), i);
         this.HeadStatePanel?.RefreshAllHeadState(0);
         this.TimeHandle = TimerSystem_1.GameplayTimerSystem.Delay(() => {
-          UiManager_1.UiManager.OpenView("PhantomArenaBattleDamageView", this.NpcDamaged);
-          if (this.TimeHandle) {
-            if (TimerSystem_1.GameplayTimerSystem.Has(this.TimeHandle)) {
-              TimerSystem_1.GameplayTimerSystem.Remove(this.TimeHandle);
-            }
-            this.TimeHandle = undefined;
-          }
+          UiManager_1.UiManager.OpenView("PhantomArenaBattleDamageView", this.MeOriginalDamage);
+          this.TimeHandle = undefined;
         }, ANIM_DAMAGE_DELAY);
       }
     };
     this.Cjo = t => {
       if (this.IsWin && t.FlowListName === this.FlowListName) {
         if (this.TimeHandle) {
-          if (TimerSystem_1.GameplayTimerSystem.Has(this.TimeHandle)) {
-            TimerSystem_1.GameplayTimerSystem.Remove(this.TimeHandle);
-          }
-          this.TimeHandle = undefined;
+          this.GAn();
         } else {
           UiManager_1.UiManager.CloseView("PhantomArenaBattleDamageView");
         }
@@ -202,7 +198,7 @@ class PhantomArenaBattleDetailsView extends UiTickViewBase_1.UiTickViewBase {
   }
   OnRegisterComponent() {
     this.Proxy = this.OpenParam;
-    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIButtonComponent], [3, UE.UIButtonComponent], [4, UE.UIDraggableComponent], [5, UE.UINiagara], [6, UE.UIText], [7, UE.UINiagara], [8, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIButtonComponent], [3, UE.UIButtonComponent], [4, UE.UIDraggableComponent], [5, UE.UINiagara], [6, UE.UIText], [7, UE.UINiagara], [8, UE.UIItem], [9, UE.UIItem]];
     this.BtnBindInfo = [[2, this.Awe], [3, this.$Ht]];
   }
   async EEu() {
@@ -225,6 +221,7 @@ class PhantomArenaBattleDetailsView extends UiTickViewBase_1.UiTickViewBase {
     var t = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardRole(t);
     this.OwnArea.RoleItem.RefreshHeadIcon(t.RoleHeadTexture);
     this.VU1();
+    this.nBf();
   }
   async Wi1() {
     this.OpponentArea = new PhantomArenaBattleDetailsAreaItem_1.PhantomArenaBattleDetailsAreaItem();
@@ -241,31 +238,73 @@ class PhantomArenaBattleDetailsView extends UiTickViewBase_1.UiTickViewBase {
       this.OpponentArea.RoleItem.RefreshHeadIcon(t.NpcHead);
     }
     this.jU1();
+    this.sBf();
   }
   async qcu() {
-    var t = [this.SAo(this.CurveZ, "CardBattleAccumulateY"), this.SAo(this.CurveMeX, "CardBattleAccumulateMeX"), this.SAo(this.CurveOppositeX, "CardBattleAccumulateNpcX"), this.SAo(this.CurveCommon, "CardBattleAccumulateCommon"), this.SAo(this.CurveDamageX, "CardBattleDamage"), this.SAo(this.CurveDamageYMe, "CardBattleDamageY"), this.SAo(this.CurveDamageYNpc, "CardBattleDamageYNPC")];
+    var t = [this.VTf(), this.HTf(), this.jTf(), this.$Tf(), this.WTf(), this.QTf(), this.KTf()];
     await Promise.all(t);
   }
-  async SAo(t, i) {
-    i = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(i);
-    await new LoadAsyncPromise_1.LoadAsyncPromise(i, UE.CurveFloat).Promise;
+  async VTf() {
+    var t = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("CardBattleAccumulateY");
+    var t = new LoadAsyncPromise_1.LoadAsyncPromise(t, UE.CurveFloat);
+    this.CurveZ = await t.Promise;
+  }
+  async HTf() {
+    var t = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("CardBattleAccumulateMeX");
+    var t = new LoadAsyncPromise_1.LoadAsyncPromise(t, UE.CurveFloat);
+    this.CurveMeX = await t.Promise;
+  }
+  async jTf() {
+    var t = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("CardBattleAccumulateNpcX");
+    var t = new LoadAsyncPromise_1.LoadAsyncPromise(t, UE.CurveFloat);
+    this.CurveOppositeX = await t.Promise;
+  }
+  async $Tf() {
+    var t = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("CardBattleAccumulateCommon");
+    var t = new LoadAsyncPromise_1.LoadAsyncPromise(t, UE.CurveFloat);
+    this.CurveCommon = await t.Promise;
+  }
+  async WTf() {
+    var t = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("CardBattleDamage");
+    var t = new LoadAsyncPromise_1.LoadAsyncPromise(t, UE.CurveFloat);
+    this.CurveDamageX = await t.Promise;
+  }
+  async QTf() {
+    var t = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("CardBattleDamageY");
+    var t = new LoadAsyncPromise_1.LoadAsyncPromise(t, UE.CurveFloat);
+    this.CurveDamageYMe = await t.Promise;
+  }
+  async KTf() {
+    var t = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("CardBattleDamageYNPC");
+    var t = new LoadAsyncPromise_1.LoadAsyncPromise(t, UE.CurveFloat);
+    this.CurveDamageYNpc = await t.Promise;
   }
   oU1() {
     var t = UiManager_1.UiManager.GetViewByName("BattleView").OpenParam;
     this.HeadStatePanel = t.HeadStatePanel;
   }
+  async y3m() {
+    this.DamageStatistics = new PhantomArenaBattleDamageStatisticsPanel_1.PhantomArenaBattleDamageStatisticsPanel();
+    await this.DamageStatistics.CreateThenShowByActorAsync(this.GetItem(9).GetOwner());
+  }
   async OnBeforeStartAsync() {
     this.Proxy.RegisterView(this);
-    await Promise.all([this.$i1(), this.Wi1(), this.EEu(), this.qcu()]);
+    await Promise.all([this.$i1(), this.Wi1(), this.EEu(), this.qcu(), this.y3m()]);
     this.oU1();
   }
   OnStart() {
     this.SequencePlayer = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
     this.SequencePlayer.BindSequenceCloseEvent(this.Ocu);
-    this.DelegateNpcX = (0, puerts_1.toManualReleaseDelegate)(this.oSu);
-    this.DelegateNpcZ = (0, puerts_1.toManualReleaseDelegate)(this.nSu);
-    this.DelegateMeX = (0, puerts_1.toManualReleaseDelegate)(this.sSu);
-    this.DelegateMeZ = (0, puerts_1.toManualReleaseDelegate)(this.aSu);
+    this.TweenerNpcX = new LguiFloatTween_1.LguiFloatTween();
+    this.TweenerNpcX.BindUpdateTween(this.oSu);
+    this.TweenerNpcX.BindCompleteTween(this.hSu);
+    this.TweenerNpcZ = new LguiFloatTween_1.LguiFloatTween();
+    this.TweenerNpcZ.BindUpdateTween(this.nSu);
+    this.TweenerMeX = new LguiFloatTween_1.LguiFloatTween();
+    this.TweenerMeX.BindUpdateTween(this.sSu);
+    this.TweenerMeX.BindCompleteTween(this._Su);
+    this.TweenerMeZ = new LguiFloatTween_1.LguiFloatTween();
+    this.TweenerMeZ.BindUpdateTween(this.aSu);
     this.GetUiNiagara(5).SetUIActive(false);
     this.GetUiNiagara(7).SetUIActive(false);
     ModelManager_1.ModelManager.BattleUiModel.ChildViewData.AddBattleUiCommonChildVisibleReason(1);
@@ -273,7 +312,8 @@ class PhantomArenaBattleDetailsView extends UiTickViewBase_1.UiTickViewBase {
     this.Gk1();
     this.Fk1();
     this.Emu();
-    var t = ModelManager_1.ModelManager.FunctionModel.IsOpen(10093);
+    var t = ModelManager_1.ModelManager.PhantomArenaBattleModel.IsOldBvb ? 10093 : 10141;
+    var t = ModelManager_1.ModelManager.FunctionModel.IsOpen(t);
     this.GetButton(3)?.RootUIComp.SetUIActive(t);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PlotSequencePlay, this.djo);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PlotNetworkEnd, this.Cjo);
@@ -297,25 +337,19 @@ class PhantomArenaBattleDetailsView extends UiTickViewBase_1.UiTickViewBase {
     this.Vk1();
     ModelManager_1.ModelManager.BattleUiModel.ChildViewData.RemoveBattleUiCommonChildVisibleReason(1);
     this.Proxy.DialogManager.Clear();
-    this.TweenerNpcX &&= undefined;
-    this.TweenerNpcZ &&= undefined;
+    this.TweenerNpcX.Destroy();
+    this.TweenerNpcZ.Destroy();
+    this.TweenerMeX.Destroy();
+    this.TweenerMeZ.Destroy();
     this.CurveZ = undefined;
     this.CurveMeX = undefined;
     this.CurveOppositeX = undefined;
     this.CurveCommon = undefined;
-    (this.CurveDamageX = undefined, puerts_1.releaseManualReleaseDelegate)(this.oSu);
-    (0, puerts_1.releaseManualReleaseDelegate)(this.nSu);
-    (0, puerts_1.releaseManualReleaseDelegate)(this.sSu);
-    (0, puerts_1.releaseManualReleaseDelegate)(this.aSu);
+    this.CurveDamageX = undefined;
     if (UiManager_1.UiManager.IsViewOpen("PhantomArenaBattleFloatTips")) {
       UiManager_1.UiManager.CloseView("PhantomArenaBattleFloatTips");
     }
-    if (this.TimeHandle) {
-      if (TimerSystem_1.GameplayTimerSystem.Has(this.TimeHandle)) {
-        TimerSystem_1.GameplayTimerSystem.Remove(this.TimeHandle);
-      }
-      this.TimeHandle = undefined;
-    }
+    this.GAn();
     ModelManager_1.ModelManager.PhantomArenaBattleModel.SetIsInBattle(false);
     UiManager_1.UiManager.CloseView("PhantomArenaBattleDamageView");
   }
@@ -324,6 +358,7 @@ class PhantomArenaBattleDetailsView extends UiTickViewBase_1.UiTickViewBase {
     this.OwnArea?.TickMonster(t);
     this.OpponentArea?.TickMonster(t);
     this.MobileJoystick?.Tick(t);
+    this.DamageStatistics?.Tick(t);
   }
   Gk1() {
     InputExtraShowCursorCenter_1.InputExtraShowCursorCenter.RegisterExtraRefreshData(this.Info.Name, this);
@@ -348,10 +383,18 @@ class PhantomArenaBattleDetailsView extends UiTickViewBase_1.UiTickViewBase {
     var i = ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.GetBattleStatusValue(Protocol_1.Aki.Protocol.qC1.Proto_PhantomBattleMaxLife);
     this.OwnArea.RoleItem.RefreshLifeNum(t, i);
   }
+  nBf() {
+    var t = ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.GetBattleBattleAttr(Protocol_1.Aki.Protocol.GC1.Proto_Defence);
+    this.OwnArea.RoleItem.RefreshShieldNum(t);
+  }
   jU1() {
     var t = ModelManager_1.ModelManager.PhantomArenaBattleModel.OpponentData.GetBattleStatusValue(Protocol_1.Aki.Protocol.qC1.Proto_PhantomBattleLife);
     var i = ModelManager_1.ModelManager.PhantomArenaBattleModel.OpponentData.GetBattleStatusValue(Protocol_1.Aki.Protocol.qC1.Proto_PhantomBattleMaxLife);
     this.OpponentArea.RoleItem.RefreshLifeNum(t, i);
+  }
+  sBf() {
+    var t = ModelManager_1.ModelManager.PhantomArenaBattleModel.OpponentData.GetBattleBattleAttr(Protocol_1.Aki.Protocol.GC1.Proto_Defence);
+    this.OpponentArea.RoleItem.RefreshShieldNum(t);
   }
   Emu() {
     var t = ModelManager_1.ModelManager.PhantomArenaBattleModel.GetSpeedUpText();
@@ -382,64 +425,63 @@ class PhantomArenaBattleDetailsView extends UiTickViewBase_1.UiTickViewBase {
     var t = Array.from(t);
     return t.length === 0 || t[t.length - 1] !== this.Info.Name;
   }
-  xcu(t) {
+  kTm() {
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("PhantomArena", 77, "声骸竞技场3D BvB演出开始", ["isWin", t], ["MeDamaged", this.MeDamaged], ["NpcDamaged", this.NpcDamaged]);
+      Log_1.Log.Info("PhantomArena", 77, "声骸竞技场BvB结算表现开始", ["isWin", this.IsWin], ["MeDamaged", this.MeDamaged], ["NpcDamaged", this.NpcDamaged]);
     }
     this.NpcBeforeDamaged = this.OwnArea.GetBeforeDamage();
-    this.IsSelfPhantomAlive = this.OwnArea.GetPhantomAlive();
     this.MeBeforeDamaged = this.OpponentArea.GetBeforeDamage();
     if (this.NpcBeforeDamaged || this.MeBeforeDamaged) {
       this.OwnArea?.SetHitNum(this.MeDamaged);
       this.OpponentArea?.SetHitNum(this.NpcDamaged);
-      if (t || this.NpcBeforeDamaged) {
+      if (this.IsWin || this.NpcBeforeDamaged) {
         this.OwnArea?.StartShowWinAnim();
       }
-      if (!t || !!this.MeBeforeDamaged) {
+      if (!this.IsWin || !!this.MeBeforeDamaged) {
         this.OpponentArea?.StartShowWinAnim();
       }
     } else {
       ModelManager_1.ModelManager.PhantomArenaBattleModel.TryPhantomBattleDealCardNotify();
     }
   }
-  kcu() {
-    this.SequencePlayer?.PlayLevelSequenceByName("Damage");
+  fYm(t) {
+    let i = "";
+    i = t < DAMAGE_FIRST ? "NS_Fx_LGUI_Trail_0" : "NS_Fx_LGUI_Trail_1";
+    return ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(i);
+  }
+  async kcu() {
+    var t = this.fYm(this.NpcOriginalDamage);
+    await this.SetNiagaraSystemByPathAsync(t, this.GetUiNiagara(5));
     this.GetUiNiagara(5).SetUIActive(true);
     var t = this.OwnArea.GetHeadLocation();
     var i = this.OpponentArea.GetHeadLocation();
     this.GetUiNiagara(5).D_K2_SetWorldLocation(i, false, undefined, false);
-    var e = PhantomArenaDefine_1.DAMAGE_TWEEN_TIME;
-    this.TweenerNpcX = UE.LTweenBPLibrary.FloatTo(GlobalData_1.GlobalData.World, this.DelegateNpcX, i.X, t.X, e);
-    this.TweenerNpcZ = UE.LTweenBPLibrary.FloatTo(GlobalData_1.GlobalData.World, this.DelegateNpcZ, i.Z, t.Z, e);
-    if (this.TweenerNpcX) {
-      this.TweenerNpcX.SetEase(28);
-      this.TweenerNpcX.SetCurveFloat(this.CurveDamageX);
-      this.TweenerNpcX.OnCompleteCallBack.Bind(this.hSu);
-    }
-    if (this.TweenerNpcZ) {
-      this.TweenerNpcZ.SetEase(28);
-      this.TweenerNpcZ.SetCurveFloat(this.CurveDamageYNpc);
-      this.TweenerNpcZ.OnCompleteCallBack.Bind(this.lSu);
-    }
+    this.TweenerNpcX.PlayTween(i.X, t.X, PhantomArenaDefine_1.DAMAGE_TWEEN_TIME, this.CurveDamageX);
+    this.TweenerNpcZ.PlayTween(i.Z, t.Z, PhantomArenaDefine_1.DAMAGE_TWEEN_TIME, this.CurveDamageYNpc);
+    AudioSystem_1.AudioSystem.PostEvent(PhantomArenaDefine_1.DAMAGE_AUDIO);
   }
-  cSu() {
-    this.SequencePlayer?.PlayLevelSequenceByName("DamageNPC");
+  async mYm() {
+    var t = this.fYm(this.MeOriginalDamage);
+    await this.SetNiagaraSystemByPathAsync(t, this.GetUiNiagara(7));
     this.GetUiNiagara(7).SetUIActive(true);
     var t = this.OpponentArea.GetHeadLocation();
     var i = this.OwnArea.GetHeadLocation();
     this.GetUiNiagara(7).D_K2_SetWorldLocation(i, false, undefined, false);
-    var e = PhantomArenaDefine_1.DAMAGE_TWEEN_TIME;
-    this.TweenerMeX = UE.LTweenBPLibrary.FloatTo(GlobalData_1.GlobalData.World, this.DelegateMeX, i.X, t.X, e);
-    this.TweenerMeZ = UE.LTweenBPLibrary.FloatTo(GlobalData_1.GlobalData.World, this.DelegateMeZ, i.Z, t.Z, e);
-    if (this.TweenerMeX) {
-      this.TweenerMeX.SetEase(28);
-      this.TweenerMeX.SetCurveFloat(this.CurveDamageX);
-      this.TweenerMeX.OnCompleteCallBack.Bind(this._Su);
+    this.TweenerMeX.PlayTween(i.X, t.X, PhantomArenaDefine_1.DAMAGE_TWEEN_TIME, this.CurveDamageX);
+    this.TweenerMeZ.PlayTween(i.Z, t.Z, PhantomArenaDefine_1.DAMAGE_TWEEN_TIME, this.CurveDamageYMe);
+    AudioSystem_1.AudioSystem.PostEvent(PhantomArenaDefine_1.DAMAGE_AUDIO);
+  }
+  GAn() {
+    if (this.TimeHandle) {
+      TimerSystem_1.GameplayTimerSystem.Remove(this.TimeHandle);
+      this.TimeHandle = undefined;
     }
-    if (this.TweenerMeZ) {
-      this.TweenerMeZ.SetEase(28);
-      this.TweenerMeZ.SetCurveFloat(this.CurveDamageYMe);
-      this.TweenerMeZ.OnCompleteCallBack.Bind(this.uSu);
+  }
+  OnGetLoopAudioEvent() {
+    if (ModelManager_1.ModelManager.PhantomArenaBattleModel.IsOldBvb) {
+      return this.Info.LoopAudioEvent;
+    } else {
+      return "play_ui_music_3_0_arena_card_battle";
     }
   }
 }

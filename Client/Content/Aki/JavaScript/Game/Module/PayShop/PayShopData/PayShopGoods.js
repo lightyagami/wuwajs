@@ -163,6 +163,9 @@ class PayShopGoods {
   InUpdateTime() {
     return !!this.Pe.HasBuyLimit() && this.Pe.UpdateTime !== 0 && Number(this.Pe.UpdateTime) > TimeUtil_1.TimeUtil.GetServerTime();
   }
+  NeedDown() {
+    return !!this.EFi && !this.IsPermanentSell() && !this.InUnPermanentSellTime() && !(this.EFi = false);
+  }
   NeedUpdate() {
     if (this.InSellTime() && !this.EFi) {
       return this.EFi = true;
@@ -541,6 +544,29 @@ class PayShopGoods {
     } else {
       return 0;
     }
+  }
+  GetRewardMotorSkinId() {
+    var t = this.GetGoodsData().ItemId;
+    var t = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfig(t);
+    if (t && t.Parameters) {
+      if (!this.CheckIfGiftPackage()) {
+        return 0;
+      }
+      t = ConfigManager_1.ConfigManager.GiftPackageConfig.GetGiftPackageConfig(this.GetPackageRewardId());
+      if (!t) {
+        return 0;
+      }
+      for (const i of t.Content) {
+        var e = i[0];
+        if (ConfigManager_1.ConfigManager.InventoryConfig.GetItemDataTypeByConfigId(e) === 21) {
+          return e;
+        }
+      }
+    }
+    return 0;
+  }
+  CheckIfMotorSkinGoods() {
+    return this.GetRewardMotorSkinId() !== 0;
   }
   HasCloudGameInfo() {
     return this.Pe.CloudGameTime > 0;

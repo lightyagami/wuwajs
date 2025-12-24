@@ -26,13 +26,13 @@ class HonamiStoryShopView extends UiViewBase_1.UiViewBase {
     this.CNe = undefined;
     this.PopupCaption = undefined;
     this.c6c = undefined;
-    this.ptm = new Map();
-    this.HLm = () => {
+    this.kom = new Map();
+    this.CVm = () => {
       var e = this.CNe.ShopId;
       this.c6c.Refresh(e);
     };
     this.Hh_ = () => {
-      this.vtm(10);
+      this.qom(10);
     };
     this._5e = () => {
       ModelManager_1.ModelManager.PayShopModel.ReadShopItemCheckFlag(this.CNe.ShopId);
@@ -51,7 +51,7 @@ class HonamiStoryShopView extends UiViewBase_1.UiViewBase {
   }
   async OnBeforeStartAsync() {
     this.CNe ||= ModelManager_1.ModelManager.HonamiStoryModel.GetActivityData();
-    this.ptm = new Map();
+    this.kom = new Map();
     this.PopupCaption = new PopupCaptionItem_1.PopupCaptionItem(this.GetItem(0));
     this.PopupCaption.SetCloseCallBack(this._5e);
     this.PopupCaption.SetHelpBtnActive(false);
@@ -59,35 +59,36 @@ class HonamiStoryShopView extends UiViewBase_1.UiViewBase {
     var i = this.GetItem(4);
     this.c6c = new HonamiStoryShopScrollItem_1.HonamiStoryShopScrollItem(e, i, this.GetViewId(), HonamiStoryShopGriditem_1.HonamiStoryShopGridItem);
     await this.c6c.CreateThenShowByActorAsync(e.GetOwner());
+  }
+  OnBeforeShow() {
+    var e;
     var i = this.CNe.ShopId;
     if (i > 0) {
       e = ConfigManager_1.ConfigManager.PayShopConfig.GetPayShopConfig(i);
-      await this.PopupCaption.SetCurrencyItemList(e.Money);
+      this.PopupCaption.SetCurrencyItemList(e.Money);
       ControllerHolder_1.ControllerHolder.PayShopController.SendRequestPayShopUpdate(i, false);
     }
-  }
-  OnBeforeShow() {
-    this.vtm(9);
-    this._Rm();
+    this.qom(9);
+    this.eWm();
   }
   OnBeforeHide() {
-    this.uRm();
+    this.tWm();
   }
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RefreshPayShop, this.HLm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RefreshPayShop, this.CVm);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PayShopGoodsBuy, this.Hh_);
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RefreshPayShop, this.HLm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RefreshPayShop, this.CVm);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PayShopGoodsBuy, this.Hh_);
   }
-  vtm(i) {
+  qom(i) {
     var t = ModelManager_1.ModelManager.HonamiStoryModel.GetRandomDialogData(i);
     if (t) {
-      let e = this.ptm.get(i);
+      let e = this.kom.get(i);
       e = e || 0;
       if (!(Math.abs(Time_1.Time.ServerTimeStamp - e) < t.Interval * CommonDefine_1.THOUSAND)) {
-        this.ptm.set(i, Time_1.Time.ServerTimeStamp);
+        this.kom.set(i, Time_1.Time.ServerTimeStamp);
         this.Xh_(t);
         this.Yh_(t);
         this.XZi(t);
@@ -104,8 +105,8 @@ class HonamiStoryShopView extends UiViewBase_1.UiViewBase {
     if (!(t <= 0)) {
       t = ModelManager_1.ModelManager.CreatureModel.GetEntityIdByPbDataId(t);
       if (t = ModelManager_1.ModelManager.CreatureModel.GetEntityById(t)) {
-        i = t?.Entity?.GetComponent(190);
-        t = t?.Entity?.GetComponent(44);
+        i = t?.Entity?.GetComponent(196);
+        t = t?.Entity?.GetComponent(45);
         i?.PlayPerformMontage(2, {
           MontagePath: t?.GetMontageResPathByName(e.MontagePath)
         });
@@ -117,13 +118,13 @@ class HonamiStoryShopView extends UiViewBase_1.UiViewBase {
       AudioSystem_1.AudioSystem.PostEvent(e.AudioEvent);
     }
   }
-  _Rm() {
+  eWm() {
     var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
     if (e) {
       ControllerHolder_1.ControllerHolder.CreatureController.SetActorVisible(e.Entity, false, true, true, "HonamiStoryShopView");
     }
   }
-  uRm() {
+  tWm() {
     var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
     if (e) {
       ControllerHolder_1.ControllerHolder.CreatureController.SetActorVisible(e.Entity, true, true, true, "HonamiStoryShopView");

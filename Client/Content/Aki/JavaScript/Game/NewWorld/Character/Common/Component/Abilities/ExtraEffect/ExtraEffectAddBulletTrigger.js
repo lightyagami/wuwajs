@@ -22,7 +22,7 @@ class AddBulletTrigger extends ExtraEffectPassiveEffects_1.PassiveEffects {
   }
   OnExecute() {
     var e = this.GetEffectTarget()?.GetEntity();
-    var t = e?.CheckGetComponent(3)?.ActorTransform;
+    var t = e?.CheckGetComponent(1)?.ActorTransform;
     var r = this.InstigatorBuffComponent?.ActorComponent?.Entity;
     if (e && r && t) {
       var s = this.Buff.MessageId;

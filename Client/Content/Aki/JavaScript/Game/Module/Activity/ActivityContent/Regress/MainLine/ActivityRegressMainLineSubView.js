@@ -18,7 +18,6 @@ class ActivityRegressMainLineSubView extends ActivityRegressMainSubViewBase_1.Ac
     this.Wwn = e => {
       e = this.Gda[e].Config;
       this.$da.RefreshByData(e);
-      this.InvokePassRecallBaseCallBack(e, 0);
       this.SequencePlayer.PlaySequence("Start");
     };
   }

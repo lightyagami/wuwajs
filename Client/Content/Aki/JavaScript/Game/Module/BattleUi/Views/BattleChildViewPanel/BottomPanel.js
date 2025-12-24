@@ -32,10 +32,10 @@ class BottomPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     this.m4u = undefined;
     this.DF_ = undefined;
     this.n$1 = undefined;
-    this.eQd = undefined;
-    this.plm = undefined;
+    this.oQd = undefined;
+    this.Pdm = undefined;
     this.s$1 = false;
-    this.oWd = () => {
+    this.hWd = () => {
       var e = ModelManager_1.ModelManager.BattleUiModel.GetCurRoleData();
       this.f4u(e);
     };
@@ -134,7 +134,7 @@ class BottomPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem]];
   }
   async InitializeAsync() {
-    await Promise.all([this.CJe(), this.gJe(), this.fJe(), this.pJe(), this.NXa(), this.tQd()]);
+    await Promise.all([this.CJe(), this.gJe(), this.fJe(), this.pJe(), this.NXa(), this.nQd()]);
     var e = ModelManager_1.ModelManager.BattleUiModel.GetCurRoleData();
     this.lJe.Refresh(e);
     this.uJe.Refresh(e);
@@ -193,15 +193,15 @@ class BottomPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     this.m4u = await this.NewStaticChildViewAsync(e.GetOwner(), RoleUniqueBuffView_1.RoleUniqueBuffView);
     this.m4u.ShowBattleVisibleChildView();
   }
-  async tQd() {
+  async nQd() {
     var e;
     if (HonamiStoryUtil_1.HonamiStoryUtil.CheckInHonamiStoryDungeon()) {
       e = this.GetItem(6);
-      this.eQd = await this.NewDynamicChildViewByResourceId(e, "UiItem_HonamiStoryMainBar", HonamiStoryView_1.HonamiStoryView);
-      this.eQd.ShowBattleVisibleChildView();
+      this.oQd = await this.NewDynamicChildViewByResourceId(e, "UiItem_HonamiStoryMainBar", HonamiStoryView_1.HonamiStoryView);
+      this.oQd.ShowBattleVisibleChildView();
       if (!ModelManager_1.ModelManager.FunctionModel.IsOpen(10105)) {
-        this.plm = await this.NewDynamicChildViewByResourceId(e, "UiItem_HonamiStoryMainQuestBar", HonamiStoryMainQuestView_1.HonamiStoryMainQuestView);
-        this.plm.ShowBattleVisibleChildView();
+        this.Pdm = await this.NewDynamicChildViewByResourceId(e, "UiItem_HonamiStoryMainQuestBar", HonamiStoryMainQuestView_1.HonamiStoryMainQuestView);
+        this.Pdm.ShowBattleVisibleChildView();
       }
     }
   }
@@ -215,7 +215,7 @@ class BottomPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.DriveFishingShipStateChanged, this.Gd_);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnBattleStateChanged, this.Zpe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnMoraleActiveChanged, this.h$1);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SeamlessTravelUIRefresh, this.oWd);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SeamlessTravelUIRefresh, this.hWd);
   }
   RemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiCurRoleDataChangedNextTick, this.xie);
@@ -227,7 +227,7 @@ class BottomPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.DriveFishingShipStateChanged, this.Gd_);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnBattleStateChanged, this.Zpe);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnMoraleActiveChanged, this.h$1);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SeamlessTravelUIRefresh, this.oWd);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SeamlessTravelUIRefresh, this.hWd);
   }
   BF_(e, t) {
     this.lJe?.SetVisible(e, t);

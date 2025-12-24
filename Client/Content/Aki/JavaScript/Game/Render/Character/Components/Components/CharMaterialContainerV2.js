@@ -52,11 +52,11 @@ class CharMaterialContainerV2 extends CharRenderBase_1.CharRenderBase {
     this.gel.ManualTick(this.GetDeltaTime() * t, false, false);
     this.gel.UpdateEffects();
     this.gel.SetUpdateForce(false);
-    var i = this.gel.RemoveDeadEffects();
+    var s = this.gel.RemoveDeadEffects();
     if (this.pel) {
-      for (let t = 0, e = i.Num(); t < e; ++t) {
-        for (const s of this.pel) {
-          s(i.Get(t));
+      for (let t = 0, e = s.Num(); t < e; ++t) {
+        for (const i of this.pel) {
+          i(s.Get(t));
         }
       }
     }
@@ -68,6 +68,7 @@ class CharMaterialContainerV2 extends CharRenderBase_1.CharRenderBase {
   }
   UpdateEffectsOnly() {
     this.pk1?.Start();
+    this.gel.MarkForceUpdateAllOnce();
     this.gel.UpdateEffects();
     this.pk1?.Stop();
   }
@@ -75,8 +76,8 @@ class CharMaterialContainerV2 extends CharRenderBase_1.CharRenderBase {
     this.gel?.MarkForceUpdateAllOnce();
     this.gel?.SetUpdateForce(true);
   }
-  AddSkeletalComponent(t, e, i = false) {
-    this.gel.AddSkeletalMeshComponent(t, new UE.FName(e), i);
+  AddSkeletalComponent(t, e, s = false) {
+    this.gel.AddSkeletalMeshComponent(t, new UE.FName(e), s);
   }
   GetSkeletalComponent(t) {
     return this.gel.GetRegisteredSkeletalMeshComponent(new UE.FName(t));
@@ -87,8 +88,8 @@ class CharMaterialContainerV2 extends CharRenderBase_1.CharRenderBase {
   RemoveSkeletalComponent(t) {
     this.gel.RemoveSkeletalMeshComponent(new UE.FName(t));
   }
-  AddEffect(t, e, i, s, a = false) {
-    return this.gel.AddEffect_Ex(t, e, i, s, a);
+  AddEffect(t, e, s, i, a = false) {
+    return this.gel.AddEffect_Ex(t, e, s, i, a);
   }
   SetEffectLoop(t, e) {
     this.gel.SetHandleLoop(t, e, true);
@@ -107,36 +108,46 @@ class CharMaterialContainerV2 extends CharRenderBase_1.CharRenderBase {
       }
     }
   }
+  RemoveAllUnloopedEffects() {
+    var s = this.gel.RemoveAllUnloopedEffects();
+    if (this.pel) {
+      for (let t = 0, e = s.Num(); t < e; ++t) {
+        for (const i of this.pel) {
+          i(s.Get(t));
+        }
+      }
+    }
+  }
   OnResetRenderState() {
     this.gel.RemoveAllEffects();
     this.gel.UpdateEffects();
   }
-  SetFloatUpdateParamPermanent(t, e, i, s, a) {
-    this.gel.AddFloatUpdateParamPermanent(t, e, i, s, a ?? 17);
+  SetFloatUpdateParamPermanent(t, e, s, i, a) {
+    this.gel.AddFloatUpdateParamPermanent(t, e, s, i, a ?? 17);
   }
-  AddFloatUpdateParamPermanentByIndex(t, e, i, s) {
-    this.gel.AddFloatUpdateParamPermanentByIndex(t, e, i, s);
+  AddFloatUpdateParamPermanentByIndex(t, e, s, i) {
+    this.gel.AddFloatUpdateParamPermanentByIndex(t, e, s, i);
   }
-  SetColorUpdateParamPermanent(t, e, i, s, a) {
-    this.gel.AddColorUpdateParamPermanent(t, e, i, s, a ?? 17);
+  SetColorUpdateParamPermanent(t, e, s, i, a) {
+    this.gel.AddColorUpdateParamPermanent(t, e, s, i, a ?? 17);
   }
-  SetTextureUpdateParamPermanent(t, e, i, s, a) {
-    this.gel.AddTextureUpdateParamPermanent(t, e, i, s, a ?? 17);
+  SetTextureUpdateParamPermanent(t, e, s, i, a) {
+    this.gel.AddTextureUpdateParamPermanent(t, e, s, i, a ?? 17);
   }
-  RemoveFloatUpdateParamPermanent(t, e, i, s) {
-    this.gel.RemoveFloatUpdateParamPermanent(t, e, i, s ?? 17);
+  RemoveFloatUpdateParamPermanent(t, e, s, i) {
+    this.gel.RemoveFloatUpdateParamPermanent(t, e, s, i ?? 17);
   }
-  RemoveColorUpdateParamPermanent(t, e, i, s) {
-    this.gel.RemoveColorUpdateParamPermanent(t, e, i, s ?? 17);
+  RemoveColorUpdateParamPermanent(t, e, s, i) {
+    this.gel.RemoveColorUpdateParamPermanent(t, e, s, i ?? 17);
   }
-  RemoveTextureUpdateParamPermanent(t, e, i, s) {
-    this.gel.RemoveTextureUpdateParamPermanent(t, e, i, s ?? 17);
+  RemoveTextureUpdateParamPermanent(t, e, s, i) {
+    this.gel.RemoveTextureUpdateParamPermanent(t, e, s, i ?? 17);
   }
-  SetExternalMaterialReplace(t, e, i, s) {
-    this.gel.SetExternalMaterialReplace(t, e, i, s ?? 17);
+  SetExternalMaterialReplace(t, e, s, i) {
+    this.gel.SetExternalMaterialReplace(t, e, s, i ?? 17);
   }
-  RemoveExternalMaterialReplace(t, e, i) {
-    this.gel.RemoveExternalMaterialReplace(t, e, i ?? 17);
+  RemoveExternalMaterialReplace(t, e, s) {
+    this.gel.RemoveExternalMaterialReplace(t, e, s ?? 17);
   }
   AddAlphaTestCount(t) {
     this.gel.AddExternalAlphaTestRefCount(t);
@@ -180,6 +191,13 @@ class CharMaterialContainerV2 extends CharRenderBase_1.CharRenderBase {
   }
   GetAnyUnloopEffect() {
     return this.gel.GetAnyUnloopEffect();
+  }
+  EnableTickGetHeadPosInAllMeshes(e) {
+    var s = this.gel.GetAllRegisteredBodyNames();
+    var i = s.Num();
+    for (let t = 0; t < i; ++t) {
+      this.gel.GetRegisteredSkeletalMeshComponent(s.Get(t))?.EnableTickGetHeadBonePos(e);
+    }
   }
   Destroy() {}
   GetStatName() {

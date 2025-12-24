@@ -5,9 +5,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ChatView = undefined;
 const UE = require("ue");
+const Info_1 = require("../../../../Core/Common/Info");
 const Log_1 = require("../../../../Core/Common/Log");
 const CommonParamById_1 = require("../../../../Core/Define/ConfigCommon/CommonParamById");
-const MultiTextLang_1 = require("../../../../Core/Define/ConfigQuery/MultiTextLang");
 const Protocol_1 = require("../../../../Core/Define/Net/Protocol");
 const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
 const StringUtils_1 = require("../../../../Core/Utils/StringUtils");
@@ -53,6 +53,7 @@ class ChatView extends UiTickViewBase_1.UiTickViewBase {
     this.ASt = false;
     this.PSt = false;
     this.XPn = new InputKeyDisplayData_1.InputKeyDisplayData();
+    this.eut = false;
     this.NPn = (t, e, i) => {
       return new ChatContent_1.ChatContentItem();
     };
@@ -100,8 +101,8 @@ class ChatView extends UiTickViewBase_1.UiTickViewBase {
     this.$St = (t, e) => {
       var i;
       var r = ModelManager_1.ModelManager.ChatModel;
-      var a = r.GetJoinedChatRoom();
-      if (a && (i = a.GetUniqueId(), t = t.GetUniqueId(), r = r.GetAllSortedChatRoom(), this.jSt(r), this.WSt(a, r), i === t)) {
+      var s = r.GetJoinedChatRoom();
+      if (s && (i = s.GetUniqueId(), t = t.GetUniqueId(), r = r.GetAllSortedChatRoom(), this.jSt(r), this.WSt(s, r), i === t)) {
         this.vXa(e);
       }
     };
@@ -181,19 +182,9 @@ class ChatView extends UiTickViewBase_1.UiTickViewBase {
     };
     this.hyt = () => {
       var t = ModelManager_1.ModelManager.ChatModel.GetJoinedChatRoom();
-      if (t) {
-        var e = this.GetButton(8).GetOwner().GetComponentByClass(UE.UIItem.StaticClass());
-        if (e && t instanceof PrivateChatRoom_1.PrivateChatRoom) {
-          const i = t.GetTargetPlayerId();
-          ControllerHolder_1.ControllerHolder.FriendController.RequestPlayerCurrentDeactivationState(i, t => {
-            if (t) {
-              t = MultiTextLang_1.configMultiTextLang.GetLocalTextNew("PlayerDeleteSelf");
-              ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByItsType(9, undefined, undefined, [t]);
-            } else {
-              UiManager_1.UiManager.OpenView("ChatOption", i);
-            }
-          });
-        }
+      if (t && this.GetButton(8).GetOwner().GetComponentByClass(UE.UIItem.StaticClass()) && t instanceof PrivateChatRoom_1.PrivateChatRoom) {
+        t = t.GetTargetPlayerId();
+        ControllerHolder_1.ControllerHolder.ChatController.RequestChatOption(t);
       }
     };
     this.lyt = () => {
@@ -228,7 +219,12 @@ class ChatView extends UiTickViewBase_1.UiTickViewBase {
       }
     };
     this.XBo = () => {
-      this.$Pn();
+      if (this.eut && !Info_1.Info.IsInTouch()) {
+        this.CloseMe();
+      } else {
+        this.eut = Info_1.Info.IsInTouch();
+        this.$Pn();
+      }
     };
     this.myt = (t, e) => {
       var i = ModelManager_1.ModelManager.ChatModel;
@@ -268,6 +264,7 @@ class ChatView extends UiTickViewBase_1.UiTickViewBase {
     await this.SOd.Init();
   }
   OnStart() {
+    this.eut = Info_1.Info.IsInTouch();
     this.ChatInputMaxNum = CommonParamById_1.configCommonParamById.GetIntConfig("chat_character");
     this.GetInputText(2).MaxInput = this.ChatInputMaxNum;
     this.GetItem(10).SetUIActive(false);
@@ -366,7 +363,7 @@ class ChatView extends UiTickViewBase_1.UiTickViewBase {
     var i = await PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk()?.GetSdkBlockingUser();
     if (!(e = i && t.PsAccountId && i.get(t.PsAccountId) ? true : e)) {
       this.EOd.push(t);
-      this.YSt(this.EOd);
+      this.YSt(this.EOd, true);
       TimerSystem_1.GameplayTimerSystem.Delay(() => {
         this.SOd?.ScrollToItemIndex(this.EOd.length - 1);
       }, ChatDefine_1.CHAT_SCROLL_DELAY);
@@ -378,8 +375,8 @@ class ChatView extends UiTickViewBase_1.UiTickViewBase {
       var i = this.XPn.GetDisplayKeyNameList();
       if (i) {
         let t = "";
-        for (const a of i) {
-          var r = InputSettings_1.InputSettings.GetKeyIconPath(a);
+        for (const s of i) {
+          var r = InputSettings_1.InputSettings.GetKeyIconPath(s);
           t += `<texture=${r}>`;
         }
         LguiUtil_1.LguiUtil.SetLocalTextNew(e, "SendChatText", t);
@@ -487,33 +484,46 @@ class ChatView extends UiTickViewBase_1.UiTickViewBase {
       }, ChatDefine_1.FIRST_CHAT_SCROLL_DELAY);
     }
   }
-  YSt(t) {
-    var e;
-    var i;
-    var r = [];
-    for (const a of t) {
-      if (a.NoticeType === Protocol_1.Aki.Protocol.GFs.Proto_EnterTeam || a.NoticeType === Protocol_1.Aki.Protocol.GFs.Proto_ExitTeam) {
-        e = {
-          ChatContentData: a,
+  YSt(t, e) {
+    const i = [];
+    for (const n of t) {
+      var r;
+      var s;
+      if (n.NoticeType === Protocol_1.Aki.Protocol.GFs.Proto_EnterTeam || n.NoticeType === Protocol_1.Aki.Protocol.GFs.Proto_ExitTeam) {
+        r = {
+          ChatContentData: n,
           Type: 2
         };
-        r.push(e);
-      } else if (a.IsOwnSend()) {
-        e = {
-          ChatContentData: a,
+        i.push(r);
+      } else if (n.IsOwnSend()) {
+        r = {
+          ChatContentData: n,
           Type: 1
         };
-        r.push(e);
+        i.push(r);
       } else {
-        i = {
-          ChatContentData: a,
+        s = {
+          ChatContentData: n,
           Type: 0
         };
-        r.push(i);
+        i.push(s);
       }
     }
     this.EOd = t;
-    this.SOd?.RefreshByData(r, true, true);
+    this.SOd?.RefreshByData(i, true, true);
+    if (e && !Info_1.Info.IsInTouch()) {
+      this.SOd?.BindLateUpdate(() => {
+        this.SOd?.ScrollToItemIndex(i.length - 1).then(() => {
+          for (const t of this.SOd?.GetScrollItemItems() ?? []) {
+            if (t.Data.ChatContentData.TimeStamp === i[i.length - 1].ChatContentData.TimeStamp) {
+              ControllerHolder_1.ControllerHolder.UiNavigationNewController.SetNavigationFocusForView(t.GetInteractItem(), true, true);
+              break;
+            }
+          }
+        });
+        this.SOd?.UnBindLateUpdate();
+      });
+    }
   }
   fyt() {
     for (const t of this.TSt) {

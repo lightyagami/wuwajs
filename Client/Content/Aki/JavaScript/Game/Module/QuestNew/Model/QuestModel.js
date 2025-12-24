@@ -15,6 +15,7 @@ const StringUtils_1 = require("../../../../Core/Utils/StringUtils");
 const ResourceUpdateManager_1 = require("../../../../Launcher/Update/ResourceDiffUpdate/ResourceUpdateManager");
 const IGlobal_1 = require("../../../../UniverseEditor/Interface/IGlobal");
 const IQuest_1 = require("../../../../UniverseEditor/Interface/IQuest");
+const EventCSharpBridge_1 = require("../../../Common/Event/EventCSharpBridge");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const PublicUtil_1 = require("../../../Common/PublicUtil");
@@ -32,6 +33,7 @@ class QuestNewModel extends ModelBase_1.ModelBase {
     this.eno = undefined;
     this.tno = undefined;
     this.ino = undefined;
+    this.FinishedMainQuests = [];
     this.nVa = undefined;
     this.OF1 = undefined;
     this.j7u = new Set();
@@ -74,7 +76,7 @@ class QuestNewModel extends ModelBase_1.ModelBase {
         return e.Id - t.Id;
       }
     };
-    this.dRm = new Map();
+    this.jWm = new Map();
   }
   OnInit() {
     this.eno = new Map();
@@ -88,6 +90,7 @@ class QuestNewModel extends ModelBase_1.ModelBase {
     this.ano = new Map();
     this.ActivityIdsByQuestId = new Map();
     this.ActivityStatesByQuestId = new Map();
+    this.FinishedMainQuests = [];
     this.InitQuestConfig();
     this.SetActivityStates();
     PublicUtil_1.PublicUtil.RegisterEditorLocalConfig();
@@ -120,7 +123,9 @@ class QuestNewModel extends ModelBase_1.ModelBase {
     this.ActivityIdsByQuestId = undefined;
     this.ActivityStatesByQuestId?.clear();
     this.IsServerNotifyEnd = false;
-    return !(this.ServerNotifyEndQuestId = 0);
+    this.ServerNotifyEndQuestId = 0;
+    this.FinishedMainQuests = [];
+    return true;
   }
   OnLeaveLevel() {
     return true;
@@ -158,6 +163,9 @@ class QuestNewModel extends ModelBase_1.ModelBase {
   }
   AddFinishedQuest(e) {
     this.ino.set(e, true);
+    if (this.GetQuestConfig(e)?.Type === 1) {
+      this.FinishedMainQuests.push(e);
+    }
   }
   GetCanAcceptQuest() {
     return this.tno;
@@ -300,9 +308,9 @@ class QuestNewModel extends ModelBase_1.ModelBase {
   }
   RemovePendingAcceptQuestOnFocusMode(e) {
     this.TH1.delete(e);
-    e = this.GetQuest(e);
-    if (e) {
-      e.LockByFocusMode = false;
+    var t = this.GetQuest(e);
+    if (t && (t.LockByFocusMode = false, t = ModelManager_1.ModelManager.QuestTreeModel.GetNodeDataFromQuestId(e))) {
+      EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsHandleQuestTreeNodeResponse, 3, t.Id);
     }
   }
   CheckNeedBanQuestPushByFocusMode(e) {
@@ -517,7 +525,7 @@ class QuestNewModel extends ModelBase_1.ModelBase {
       return 7;
     }
     if (t.LockByLackResource) {
-      if (!this.mRm(t.Id)) {
+      if (!this.$Wm(t.Id)) {
         return 2;
       }
       if (!t.SuspendByOnline) {
@@ -738,31 +746,31 @@ class QuestNewModel extends ModelBase_1.ModelBase {
   GetAllLockQuests() {
     return this.j7u;
   }
-  mRm(e) {
+  $Wm(e) {
     if (!ResourceUpdateManager_1.ResourceDiffUpdaterManager.IsGrayBoxHit()) {
       return true;
     }
-    let t = this.dRm.get(e);
+    let t = this.jWm.get(e);
     if (!t) {
       var [i, r] = ControllerHolder_1.ControllerHolder.ResourceManagerController.GetQuestRefRes(e);
       for (const n of i) {
         var s = ModelManager_1.ModelManager.SubPackageDownLoadModel.GetBlockBelongToSubPackage(n);
         if (ModelManager_1.ModelManager.SubPackageDownLoadModel.GetSubPackageDownLoadItemStateById(s) !== 5) {
           t = false;
-          this.dRm.set(e, t);
+          this.jWm.set(e, t);
           return t;
         }
       }
-      for (const u of r) {
-        var o = ModelManager_1.ModelManager.SubPackageDownLoadModel.GetVideoBelongToSubPackage(u);
+      for (const a of r) {
+        var o = ModelManager_1.ModelManager.SubPackageDownLoadModel.GetVideoBelongToSubPackage(a);
         if (o > 0 && ModelManager_1.ModelManager.SubPackageDownLoadModel.GetSubPackageDownLoadItemStateById(o) !== 5) {
           t = false;
-          this.dRm.set(e, t);
+          this.jWm.set(e, t);
           return t;
         }
       }
       t = true;
-      this.dRm.set(e, t);
+      this.jWm.set(e, t);
     }
     return t;
   }

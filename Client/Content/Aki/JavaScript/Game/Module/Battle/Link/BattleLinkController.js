@@ -187,7 +187,7 @@ class BattleLinkController extends ControllerBase_1.ControllerBase {
           if (Log_1.Log.CheckDebug()) {
             Log_1.Log.Debug("Battle", 67, "[BattleLink]触发队友大招成功", ["MessageId", this.Zqi], ["entityId", e.Id]);
           }
-          e = e.GetComponent(178);
+          e = e.GetComponent(183);
           t = MathUtils_1.MathUtils.LongToBigInt(this.Zqi);
           if (i = CommonParamById_1.configCommonParamById.GetLong54Config("LinkSkillNotifyBuff")) {
             e.AddBuff(i, {
@@ -336,7 +336,7 @@ class BattleLinkController extends ControllerBase_1.ControllerBase {
       var i;
       var a = MathUtils_1.MathUtils.LongToBigInt(this.Zqi);
       var n = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity;
-      var o = n.GetComponent(178);
+      var o = n.GetComponent(183);
       let e = undefined;
       let t = undefined;
       if (ModelManager_1.ModelManager.BattleLinkModel?.CheckInDreamLink()) {
@@ -367,7 +367,7 @@ class BattleLinkController extends ControllerBase_1.ControllerBase {
   }
   static yBu() {
     if (this.vBu && this.vBu.length !== 0) {
-      var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(178);
+      var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(183);
       if (e) {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("Battle", 67, "[BattleLink]离开Link爆发状态, 开始移除Link爆发Buff");
@@ -380,7 +380,7 @@ class BattleLinkController extends ControllerBase_1.ControllerBase {
     }
   }
   static SetPlayerUltraSkillEnable(e) {
-    var t = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity?.GetComponent(209);
+    var t = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity?.GetComponent(215);
     if (t) {
       if (e) {
         t.RemoveTag(-732810197);
@@ -510,7 +510,7 @@ BattleLinkController.BJe = (e, t, i) => {
   }
   var a = _a.Ash.get(e);
   if (a) {
-    if (a.Entity?.GetComponent(40)?.GetSkillInfo(t)?.SkillGenre === 3 && ModelManager_1.ModelManager.BattleLinkModel.CanUseLinkSkill(e)) {
+    if (a.Entity?.GetComponent(41)?.GetSkillInfo(t)?.SkillGenre === 3 && ModelManager_1.ModelManager.BattleLinkModel.CanUseLinkSkill(e)) {
       ModelManager_1.ModelManager.BattleLinkModel.AddLinkEntityId(e);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnBattleLinkStop);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnBattleLinkStatusChanged, 3);

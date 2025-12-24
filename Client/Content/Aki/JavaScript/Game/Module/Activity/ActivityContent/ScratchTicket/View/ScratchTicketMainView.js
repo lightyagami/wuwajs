@@ -229,6 +229,7 @@ class ScratchTicketMainView extends UiTickViewBase_1.UiTickViewBase {
   Cnl() {
     var i;
     if (this.Lol.GetScratchCardActivityConfig() && this.Lol.LocalConfig) {
+      this.gLt.SetActivityBaseData(this.Lol);
       this.gLt.SetTitleByText(this.Lol.GetTitle());
       this.H3e.RefreshByData(this.cnl.GetRemainRewardList());
       this.FNe();

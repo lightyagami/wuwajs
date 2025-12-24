@@ -18,13 +18,13 @@ class HonamiStoryQuickRoleData {
     this.SuitNeedList = [];
     this.SuitNeedMap = new Map();
     this.SlotUnlockCount = 0;
-    this.xJd = [];
-    this.BJd = new Map();
+    this.eem = [];
+    this.tem = new Map();
     this.BestResult = [];
     this.BestPower = 0;
     this.RealBestPower = 0;
-    this.wRm = new HonamiSortOrderListClass();
-    this.kJd = (t, i) => {
+    this.CKm = new HonamiSortOrderListClass();
+    this.iem = (t, i) => {
       var r = this.GetPower(i);
       var o = this.GetPower(t);
       if (r === o) {
@@ -43,7 +43,7 @@ class HonamiStoryQuickRoleData {
         return r - o;
       }
     };
-    this.KCm = (t, i) => {
+    this.MTm = (t, i) => {
       return this.GetPower(i, false) - this.GetPower(t, false);
     };
   }
@@ -51,20 +51,20 @@ class HonamiStoryQuickRoleData {
     this.Clear();
     this.RoleData = t;
     this.RoleId = this.RoleData.GetParentRoleId();
-    this.qJd();
+    this.oem();
     this.SlotUnlockCount = this.RoleData.GetUnlockCounts();
     t = ModelManager_1.ModelManager.HonamiStoryModel.GetWeaponData(this.RoleData.GetWeaponId());
     if (t) {
-      this.xJd = t.PluginTags;
+      this.eem = t.PluginTags;
     }
   }
   Clear() {
-    this.BJd.clear();
-    this.xJd.length = 0;
+    this.tem.clear();
+    this.eem.length = 0;
     this.SuitNeedList.length = 0;
     this.SuitNeedMap.clear();
   }
-  qJd() {
+  oem() {
     if (!(this.RoleData.GetParentRoleId() <= 0)) {
       var t = this.RoleData.GetWeaponId();
       if (!(t <= 0)) {
@@ -94,45 +94,45 @@ class HonamiStoryQuickRoleData {
     }
     for (const h of t) {
       var o = h[0];
-      if (!this.BJd.has(o)) {
-        (s = [...h[1]]).sort(this.kJd);
-        this.BJd.set(o, s);
+      if (!this.tem.has(o)) {
+        (s = [...h[1]]).sort(this.iem);
+        this.tem.set(o, s);
       }
       var s = {
         SubType: o,
         ItemList: []
       };
-      var e = this.BJd.get(o);
-      s.ItemList = this.XCm(e, this.SlotUnlockCount * 2, i ?? new Set());
+      var e = this.tem.get(o);
+      s.ItemList = this.ETm(e, this.SlotUnlockCount * 2, i ?? new Set());
       r[o - 1] = s;
     }
-    this.BestPower = this.OJd(r);
+    this.BestPower = this.nem(r);
     this.RealBestPower = this.RoleData.GetPowerLevelByItemList(this.BestResult, true);
     return this.BestPower;
   }
   GetPower(t, i = true) {
     let r = t.GetBaseEnhance();
-    if (i && (this.xJd.includes(t.GetWeaponTag()) && (r += t.GetWeaponEnhance()), HonamiStoryUtil_1.HonamiStoryUtil.CheckRolePowerValid(this.RoleId, t.GetRoleId()))) {
+    if (i && (this.eem.includes(t.GetWeaponTag()) && (r += t.GetWeaponEnhance()), HonamiStoryUtil_1.HonamiStoryUtil.CheckRolePowerValid(this.RoleId, t.GetRoleId()))) {
       r += t.GetRoleEnhance() + HonamiStoryDefine_1.HONAMI_ROLE_VIRTUAL_SCORE;
     }
     return r;
   }
-  OJd(r) {
+  nem(r) {
     let o = 0;
-    for (const i of this.wRm.GetSortOrderList(3)) {
+    for (const i of this.CKm.GetSortOrderList(3)) {
       var t = i[0];
       var s = i[1];
       var e = i[2];
       for (let i = 0; i <= this.SlotUnlockCount; i++) {
         var h = new Set();
         var a = [];
-        [h, a] = this.LRm(r[t].ItemList, h, i);
+        [h, a] = this.pKm(r[t].ItemList, h, i);
         for (let t = 0; t <= this.SlotUnlockCount - i; t++) {
           var n = new Set(h);
           var l = [];
-          [n, l] = this.LRm(r[s].ItemList, n, t);
+          [n, l] = this.pKm(r[s].ItemList, n, t);
           var f = [];
-          [n, f] = this.LRm(r[e].ItemList, n, this.SlotUnlockCount - i - t);
+          [n, f] = this.pKm(r[e].ItemList, n, this.SlotUnlockCount - i - t);
           var n = a.concat(l).concat(f);
           var l = this.RoleData.GetPowerLevelByItemList(n, false);
           if (l > o) {
@@ -144,7 +144,7 @@ class HonamiStoryQuickRoleData {
     }
     return o;
   }
-  XCm(t, i, r) {
+  ETm(t, i, r) {
     let o = 0;
     var s = new Set();
     for (var e = [], h = []; o < t.length && e.length < i;) {
@@ -162,10 +162,10 @@ class HonamiStoryQuickRoleData {
         o++;
       }
     }
-    h.sort(this.KCm);
-    return this.YCm(e, h, i);
+    h.sort(this.MTm);
+    return this.ITm(e, h, i);
   }
-  YCm(t, i, r) {
+  ITm(t, i, r) {
     var o;
     var s = [];
     let e = 0;
@@ -186,14 +186,14 @@ class HonamiStoryQuickRoleData {
     }
     return s;
   }
-  LRm(t, i, r) {
+  pKm(t, i, r) {
     var o = new Set(i);
     var s = [];
     var e = [];
     for (const h of t) {
       (h.GetRoleId() === this.RoleId && this.RoleId !== 0 ? o.has(h.GetGroupId()) ? e : (o.add(h.GetGroupId()), s) : s).push(h);
     }
-    t = this.YCm(s, e, r);
+    t = this.ITm(s, e, r);
     for (const a of t) {
       if (a.GetGroupId() !== 0) {
         i.add(a.GetGroupId());
@@ -214,12 +214,12 @@ class HonamiStoryQuickRoleData {
       } else if (i.has(f)) {
         i.delete(f);
         n = HonamiStoryUtil_1.HonamiStoryUtil.GetHonamiStoryItemSwapInfo(f, l);
-        r.B$d.push(n);
+        r.G$d.push(n);
       } else {
         n = HonamiStoryUtil_1.HonamiStoryUtil.GetHonamiStoryItemRemoveInfo(f);
-        (a === undefined || a.GetItemDataByInstanceId(f.GetIncId(), false) !== undefined ? (h.push(f.GetPosition()), o) : s).B$d.push(n);
+        (a === undefined || a.GetItemDataByInstanceId(f.GetIncId(), false) !== undefined ? (h.push(f.GetPosition()), o) : s).G$d.push(n);
         f = HonamiStoryUtil_1.HonamiStoryUtil.GetHonamiStoryItemAddInfo(f, l);
-        r.B$d.push(f);
+        r.G$d.push(f);
       }
     }
     return h;
@@ -227,34 +227,34 @@ class HonamiStoryQuickRoleData {
 }
 class HonamiSortOrderListClass {
   constructor() {
-    this.aIm = [];
-    this.hIm = [];
-    this.lIm = [];
-    this._Im = 0;
+    this.Gkm = [];
+    this.Fkm = [];
+    this.Nkm = [];
+    this.Vkm = 0;
   }
   GetSortOrderList(i) {
-    if (i !== this._Im) {
-      this.lIm.length = 0;
-      this.aIm.length = 0;
-      for (let t = this.hIm.length = 0; t < i; t++) {
-        this.hIm.push(false);
+    if (i !== this.Vkm) {
+      this.Nkm.length = 0;
+      this.Gkm.length = 0;
+      for (let t = this.Fkm.length = 0; t < i; t++) {
+        this.Fkm.push(false);
       }
-      this.uIm();
-      this._Im = i;
+      this.jkm();
+      this.Vkm = i;
     }
-    return this.lIm;
+    return this.Nkm;
   }
-  uIm() {
-    if (this.aIm.length === this.hIm.length) {
-      this.lIm.push(this.aIm.slice());
+  jkm() {
+    if (this.Gkm.length === this.Fkm.length) {
+      this.Nkm.push(this.Gkm.slice());
     } else {
-      for (let t = 0; t < this.hIm.length; t++) {
-        if (!this.hIm[t]) {
-          this.hIm[t] = true;
-          this.aIm.push(t);
-          this.uIm();
-          this.aIm.pop();
-          this.hIm[t] = false;
+      for (let t = 0; t < this.Fkm.length; t++) {
+        if (!this.Fkm[t]) {
+          this.Fkm[t] = true;
+          this.Gkm.push(t);
+          this.jkm();
+          this.Gkm.pop();
+          this.Fkm[t] = false;
         }
       }
     }
@@ -264,21 +264,21 @@ class HonamiStoryQuickEquipAllManager {
   constructor() {
     this.CurPowerLevel = 0;
     this.CurRealPowerLevel = 0;
-    this.GJd = 0;
+    this.sem = 0;
     this.IsDirty = true;
-    this.FJd = new Set();
+    this.aem = new Set();
     this.pXe = new Map();
-    this.cIm = new HonamiSortOrderListClass();
+    this.Hkm = new HonamiSortOrderListClass();
   }
   Refresh(t) {
     if (!this.IsDirty && !t) {
       return false;
     }
     this.IsDirty = false;
-    this.GJd = this.CurPowerLevel;
+    this.sem = this.CurPowerLevel;
     this.CurPowerLevel = 0;
     this.CurRealPowerLevel = 0;
-    this.FJd.clear();
+    this.aem.clear();
     var i = ModelManager_1.ModelManager.HonamiStoryModel.GetPlayerBackpackData().GetRoleEquipDataList();
     this.pXe.clear();
     for (let t = 0; t < i.length; t++) {
@@ -287,18 +287,18 @@ class HonamiStoryQuickEquipAllManager {
       o.Init(r);
       this.pXe.set(t, o);
     }
-    var s = this.NJd(i);
+    var s = this.hem(i);
     let e = 0;
     let h = [];
     var a;
-    var t = this.cIm.GetSortOrderList(i.length);
+    var t = this.Hkm.GetSortOrderList(i.length);
     var n = new Map();
     for (let t = 0; t < this.pXe.size; t++) {
       var l = this.pXe.get(t);
       if (l.RoleId === 0) {
         n.set(t, []);
       } else {
-        l = this.PRm(l.RoleId, s);
+        l = this.vKm(l.RoleId, s);
         n.set(t, l);
       }
     }
@@ -333,16 +333,16 @@ class HonamiStoryQuickEquipAllManager {
     if (e > 0) {
       for (var [, S] of n) {
         for (const d of S) {
-          this.FJd.add(d);
+          this.aem.add(d);
         }
       }
       for (const w of h) {
         for (const g of n.get(w)) {
-          this.FJd.delete(g);
+          this.aem.delete(g);
         }
-        this.pXe.get(w).GetMaxPower(s, this.FJd);
+        this.pXe.get(w).GetMaxPower(s, this.aem);
         for (const L of this.pXe.get(w).BestResult) {
-          this.FJd.add(L);
+          this.aem.add(L);
         }
       }
     }
@@ -351,7 +351,7 @@ class HonamiStoryQuickEquipAllManager {
       this.CurRealPowerLevel += a.RealBestPower;
     }
     t = ModelManager_1.ModelManager.HonamiStoryModel.GetPlayerData().PowerLevel;
-    return this.CurPowerLevel > this.GJd && this.CurPowerLevel > t;
+    return this.CurPowerLevel > this.sem && this.CurPowerLevel > t;
   }
   GetCurPowerLevel() {
     return this.CurPowerLevel;
@@ -374,11 +374,11 @@ class HonamiStoryQuickEquipAllManager {
     }
     var e;
     var t = [];
-    var h = new Protocol_1.Aki.Protocol.q$d();
+    var h = new Protocol_1.Aki.Protocol.V$d();
     h.Qmd = 4;
-    var a = new Protocol_1.Aki.Protocol.q$d();
+    var a = new Protocol_1.Aki.Protocol.V$d();
     a.Qmd = r;
-    var n = new Protocol_1.Aki.Protocol.q$d();
+    var n = new Protocol_1.Aki.Protocol.V$d();
     n.Qmd = 3;
     let l = [];
     for ([, e] of this.pXe) {
@@ -388,7 +388,7 @@ class HonamiStoryQuickEquipAllManager {
     l.sort((t, i) => t - i);
     var _ = new Set();
     if (o.size > 0) {
-      if (i && o.size > l.length && Log_1.Log.CheckError()) {
+      if (!i && o.size > l.length && Log_1.Log.CheckError()) {
         Log_1.Log.Error("HonamiStory", 77, "QuickAll Apply Error");
       }
       var v = ModelManager_1.ModelManager.HonamiStoryModel.GetBackPackData(r);
@@ -396,9 +396,9 @@ class HonamiStoryQuickEquipAllManager {
         var c = l.shift();
         if (c !== undefined && c < v.GetCapacity()) {
           var S = HonamiStoryUtil_1.HonamiStoryUtil.GetHonamiStoryItemRemoveInfo(y);
-          h.B$d.push(S);
+          h.G$d.push(S);
           var S = HonamiStoryUtil_1.HonamiStoryUtil.GetHonamiStoryItemAddInfo(y, c);
-          a.B$d.push(S);
+          a.G$d.push(S);
           _.add(c);
         } else {
           S = HonamiStoryUtil_1.HonamiStoryUtil.FindFirstAvailablePosition(v.GetEmptyGridSet(), y, v.GetWidthCount(), _);
@@ -407,27 +407,27 @@ class HonamiStoryQuickEquipAllManager {
             return;
           }
           c = HonamiStoryUtil_1.HonamiStoryUtil.GetHonamiStoryItemRemoveInfo(y);
-          h.B$d.push(c);
+          h.G$d.push(c);
           c = HonamiStoryUtil_1.HonamiStoryUtil.GetHonamiStoryItemAddInfo(y, S.Position);
-          a.B$d.push(c);
+          a.G$d.push(c);
           _.add(S.Position);
         }
       }
     }
-    if (h.B$d.length > 0) {
+    if (h.G$d.length > 0) {
       t.push(h);
     }
-    if (a.B$d.length > 0) {
+    if (a.G$d.length > 0) {
       t.push(a);
     }
-    if (n.B$d.length > 0) {
+    if (n.G$d.length > 0) {
       t.push(n);
     }
     if (t.length > 0) {
       HonamiStoryController_1.HonamiStoryController.SendHonamiStoryBagOperateRequest(t);
     }
   }
-  NJd(t) {
+  hem(t) {
     var i;
     var r = new Map();
     for (const h of t) {
@@ -471,14 +471,14 @@ class HonamiStoryQuickEquipAllManager {
     return r;
   }
   SetDirty() {
-    this.FJd.clear();
+    this.aem.clear();
     this.pXe.clear();
     this.IsDirty = true;
   }
   GetDirty() {
     return this.IsDirty;
   }
-  PRm(t, i) {
+  vKm(t, i) {
     var r = [];
     if (!(t <= 0)) {
       var o;

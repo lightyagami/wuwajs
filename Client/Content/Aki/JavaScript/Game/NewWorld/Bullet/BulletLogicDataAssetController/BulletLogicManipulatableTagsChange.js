@@ -14,9 +14,9 @@ class BulletLogicManipulatableTagsChange extends BulletLogicController_1.BulletL
   BulletLogicActionOnHitObstacles(t = undefined) {
     if (t && t instanceof BulletHitActorData_1.BulletHitActorData && t.Entity && t.Entity.GetComponent(0).IsSceneItem()) {
       var t = t.Entity;
-      var e = t?.GetComponent(160);
+      var e = t?.GetComponent(165);
       var r = this.Parameter;
-      var l = t?.GetComponent(200);
+      var l = t?.GetComponent(206);
       if (e && this.CheckCondition(t) && l) {
         var o = r.AddTags.GameplayTags;
         var a = o.Num();
@@ -35,7 +35,7 @@ class BulletLogicManipulatableTagsChange extends BulletLogicController_1.BulletL
   }
   CheckCondition(t) {
     var e = this.Parameter;
-    var r = t?.GetComponent(200);
+    var r = t?.GetComponent(206);
     if (!r) {
       return false;
     }

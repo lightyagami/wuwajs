@@ -4,18 +4,15 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.DeckRenameInputView = undefined;
+const CommonParamById_1 = require("../../../../../Core/Define/ConfigCommon/CommonParamById");
 const StringUtils_1 = require("../../../../../Core/Utils/StringUtils");
-const ConfigManager_1 = require("../../../../Manager/ConfigManager");
-const ModelManager_1 = require("../../../../Manager/ModelManager");
 const CommonInputViewBase_1 = require("./CommonInputViewBase");
 class DeckRenameInputView extends CommonInputViewBase_1.CommonInputViewBase {
   GetMinLimit() {
-    var e = ModelManager_1.ModelManager.PhantomArenaModel.ActivityId;
-    return ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleActivityConfig(e).GroupNameLimit[0];
+    return CommonParamById_1.configCommonParamById.GetIntArrayConfig("GroupNameLimit")[0];
   }
   GetMaxLimit() {
-    var e = ModelManager_1.ModelManager.PhantomArenaModel.ActivityId;
-    return ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleActivityConfig(e).GroupNameLimit[1];
+    return CommonParamById_1.configCommonParamById.GetIntArrayConfig("GroupNameLimit")[1];
   }
   InitExtraParam() {
     this.Hqe();

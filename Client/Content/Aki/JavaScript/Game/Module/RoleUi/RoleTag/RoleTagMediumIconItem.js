@@ -14,21 +14,23 @@ class RoleTagMediumIconItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.ComponentRegisterInfos = [[0, UE.UISprite], [1, UE.UIText], [2, UE.UISprite]];
   }
   Refresh(e, i, r) {
-    var t;
     var o = ConfigManager_1.ConfigManager.RoleConfig.GetRoleTagConfig(e);
     if (o === undefined) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Role", 58, "RoleTagMediumIconItem无效tagId", ["TagId", e]);
       }
     } else {
-      e = this.GetSprite(2);
-      t = this.GetText(1);
-      this.SetSpriteByPath(o.TagIcon, e, false);
-      LguiUtil_1.LguiUtil.SetLocalTextNew(t, o.TagName);
+      const t = this.GetSprite(2);
+      e = this.GetText(1);
+      t?.SetUIActive(false);
+      this.SetSpriteByPath(o.TagIcon, t, false, undefined, () => {
+        t.SetUIActive(true);
+      });
+      LguiUtil_1.LguiUtil.SetLocalTextNew(e, o.TagName);
       o = UE.Color.FromHex(o.TagNameColor);
       this.GetSprite(0).SetColor(o);
-      e.SetColor(o);
       t.SetColor(o);
+      e.SetColor(o);
     }
   }
 }

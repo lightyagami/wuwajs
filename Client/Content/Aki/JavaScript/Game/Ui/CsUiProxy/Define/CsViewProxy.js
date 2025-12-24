@@ -9,35 +9,35 @@ const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const UiViewBase_1 = require("../../Base/UiViewBase");
 class CsViewProxy extends UiViewBase_1.UiViewBase {
-  qpm() {
+  Lbm() {
     this.CsUiLife.OnCreateAsyncPromise ||= new CustomPromise_1.CustomPromise();
   }
   async OnCreateAsync() {
-    this.qpm();
+    this.Lbm();
     await this.CsUiLife.OnCreateAsyncPromise.Promise;
     this.CsUiLife.OnCreateAsyncPromise = undefined;
   }
-  Opm() {
+  Pbm() {
     this.CsUiLife.OnBeforeStartAsyncPromise ||= new CustomPromise_1.CustomPromise();
   }
   async OnBeforeStartAsync() {
-    this.Opm();
+    this.Pbm();
     await this.CsUiLife.OnBeforeStartAsyncPromise.Promise;
     this.CsUiLife.OnBeforeStartAsyncPromise = undefined;
   }
-  Gpm() {
+  Abm() {
     this.CsUiLife.OnBeforeHideAsyncPromise ||= new CustomPromise_1.CustomPromise();
   }
   async OnBeforeHideAsync() {
-    this.Gpm();
+    this.Abm();
     await this.CsUiLife.OnBeforeHideAsyncPromise.Promise;
     this.CsUiLife.OnBeforeHideAsyncPromise = undefined;
   }
-  Fpm() {
+  Dbm() {
     this.CsUiLife.OnBeforeShowAsyncImplementImplementPromise ||= new CustomPromise_1.CustomPromise();
   }
   async OnBeforeShowAsyncImplementImplement() {
-    this.Fpm();
+    this.Dbm();
     await this.CsUiLife.OnBeforeShowAsyncImplementImplementPromise.Promise;
     this.CsUiLife.OnBeforeShowAsyncImplementImplementPromise = undefined;
   }
@@ -63,7 +63,10 @@ class CsViewProxy extends UiViewBase_1.UiViewBase {
   OnBeforeShowImplementImplement() {}
   OnBeforeShowImplement() {}
   OnShowAsyncImplementImplementCompatible() {}
-  OnAfterShowImplement() {}
+  OnAfterShowImplement() {
+    this.OpenPromise?.SetResult(true);
+    this.ShowPromise?.SetResult(undefined);
+  }
   HandleCacheShowActionFailIfIsPair() {}
   OnHideAsyncImplementImplementCompatible() {}
   OnAfterHideImplementImplement() {}
@@ -72,6 +75,7 @@ class CsViewProxy extends UiViewBase_1.UiViewBase {
   }
   OnDestroyAsyncImplementImplementCompatible() {}
   OnAfterDestroyImplement() {
+    this.ClosePromise?.SetResult(undefined);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.CloseView, this.Info.Name, this.GetViewId());
   }
 }

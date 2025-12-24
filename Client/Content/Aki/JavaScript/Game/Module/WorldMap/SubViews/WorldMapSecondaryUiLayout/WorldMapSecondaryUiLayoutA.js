@@ -15,22 +15,24 @@ const HonamiStoryUtil_1 = require("../../../HonamiStory/HonamiStoryUtil");
 const MapController_1 = require("../../../Map/Controller/MapController");
 const MarkUiUtils_1 = require("../../../Map/Mark/Misc/MarkUiUtils");
 const MapLogger_1 = require("../../../Map/Misc/MapLogger");
-const TeleportController_1 = require("../../../Teleport/TeleportController");
 const WorldMapSecondaryUi_1 = require("../../ViewComponent/WorldMapSecondaryUi");
 const WorldMapController_1 = require("../../WorldMapController");
 const WorldMapDefine_1 = require("../../WorldMapDefine");
 const MapTipsActivateTipPanel_1 = require("../Common/MapTipsActivateTipPanel");
 const MediumItemListPanel_1 = require("../Common/MediumItemListPanel");
+const WorldMapSecondaryUiAutoPilotContext_1 = require("./WorldMapSecondaryUiAutoPilotContext");
 const WorldMapSecondaryUiContext_1 = require("./WorldMapSecondaryUiContext");
+const WorldMapSecondaryUiLayoutHelper_1 = require("./WorldMapSecondaryUiLayoutHelper");
 class WorldMapSecondaryUiLayoutA extends WorldMapSecondaryUi_1.WorldMapSecondaryUi {
   constructor() {
     super(...arguments);
-    this.ConfirmButton = undefined;
+    this.ZAt = undefined;
     this.TrackBtn = undefined;
     this.GotoBtn = undefined;
     this.MapTipsActivateTipPanel = undefined;
     this.LayoutContext = undefined;
     this.DeliveryPropView = undefined;
+    this.AutoPilotContext = undefined;
     this.OQu = this.UpdateTopRightIconActive.bind(this);
     this.OnConfirmBtnClick = () => {
       this.HandleTeleportAndTrack();
@@ -44,6 +46,9 @@ class WorldMapSecondaryUiLayoutA extends WorldMapSecondaryUi_1.WorldMapSecondary
     this.OnDetailBtnClick = () => {};
     this.OnStripBtnClick = () => {};
     this.OnDelBtnClick = () => {};
+    this.PKt = () => {
+      this.OnRefreshPanel();
+    };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = WorldMapDefine_1.secondaryUiPanelComponentsRegisterInfoA;
@@ -51,18 +56,23 @@ class WorldMapSecondaryUiLayoutA extends WorldMapSecondaryUi_1.WorldMapSecondary
   }
   async OnBeforeStartAsync() {
     await super.OnBeforeStartAsync();
-    this.ConfirmButton = new ButtonItem_1.ButtonItem(this.GetButton(11).RootUIComp);
-    this.ConfirmButton.SetActive(true);
-    this.ConfirmButton.SetFunction(this.OnConfirmBtnClick);
+    this.ZAt = new ButtonItem_1.ButtonItem(this.GetButton(11).RootUIComp);
+    this.ZAt.SetActive(true);
+    this.ZAt.SetFunction(this.OnConfirmBtnClick);
     this.TrackBtn = new ButtonItem_1.ButtonItem(this.GetButton(28).RootUIComp);
     this.TrackBtn.SetFunction(this.OnTrackBtnClick);
     this.GotoBtn = new ButtonItem_1.ButtonItem(this.GetButton(29).RootUIComp);
     this.GotoBtn.SetFunction(this.OnGotoBtnClick);
-    this.oaa();
     this.MapTipsActivateTipPanel = new MapTipsActivateTipPanel_1.MapTipsActivateTipPanel();
-    await this.MapTipsActivateTipPanel.CreateByActorAsync(this.GetItem(31).GetOwner());
+    this.oaa();
+    var t = [];
+    t.push(this.MapTipsActivateTipPanel.CreateByActorAsync(this.GetItem(31).GetOwner()));
     this.DeliveryPropView = new MediumItemListPanel_1.MediumItemListPanel();
-    await this.DeliveryPropView.CreateThenShowByActorAsync(this.GetVerticalLayout(40).GetOwner());
+    t.push(this.DeliveryPropView.CreateThenShowByActorAsync(this.GetVerticalLayout(40).GetOwner()));
+    if (this.AutoPilotContext) {
+      t.push(this.AutoPilotContext.InitAutoPilotUi());
+    }
+    await Promise.all(t);
   }
   OnStart() {
     this.RootItem.SetRaycastTarget(false);
@@ -78,16 +88,24 @@ class WorldMapSecondaryUiLayoutA extends WorldMapSecondaryUi_1.WorldMapSecondary
     this.LayoutContext.AreaText = this.GetText(3);
     this.LayoutContext.AreaIconItem = this.GetItem(22);
     this.LayoutContext.DescriptionText = this.GetText(4);
-    this.LayoutContext.ConfirmButtonItem = this.ConfirmButton;
+    if (this.ZAt) {
+      this.LayoutContext.SetConfirmBtnItem(this.ZAt);
+    }
     this.LayoutContext.TrackButtonItem = this.TrackBtn;
     this.LayoutContext.DownStateIcon = this.GetSprite(23);
     this.LayoutContext.PanelProgressItem = this.GetItem(14);
     this.LayoutContext.PanelListLayout = this.GetVerticalLayout(5);
     this.LayoutContext.DelButton = this.GetButton(39);
+    this.LayoutContext.MapTipsActivateTipPanel = this.MapTipsActivateTipPanel;
+    this.AutoPilotContext = new WorldMapSecondaryUiAutoPilotContext_1.WorldMapSecondaryUiAutoPilotContext(this.LayoutContext);
+    this.AutoPilotContext.SetCloseSecondaryUiFunction(this.Close);
+    this.AutoPilotContext.SetDownStateBtnRoot(this.GetItem(27));
+    this.AutoPilotContext.SetUiParent(this.GetItem(47));
+    this.AutoPilotContext.RefreshPanelCallback = this.PKt;
   }
   OnBeforeDestroy() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnMarkTopRightIconUpdate, this.OQu);
-    this.ConfirmButton.Destroy();
+    this.ZAt.Destroy();
     this.TrackBtn.Destroy();
     this.GotoBtn.Destroy();
     this.MapTipsActivateTipPanel.Destroy();
@@ -106,6 +124,10 @@ class WorldMapSecondaryUiLayoutA extends WorldMapSecondaryUi_1.WorldMapSecondary
     this.MapTipsActivateTipPanel.SetUiActive(false);
     this.GetButton(39).RootUIComp.SetUIActive(false);
     this.GetVerticalLayout(40).RootUIComp.SetUIActive(false);
+    this.AutoPilotContext?.SetMap(this.Map);
+    this.AutoPilotContext?.SetDownStateBtnRootActive(true);
+    this.AutoPilotContext?.SetAutoPilotTrackToggleActive(false);
+    this.AutoPilotContext?.RefreshAutoPilotTrackBtnGroup(false);
   }
   UpdateQuickGoto() {
     var t = this.LayoutContext.MarkItem;
@@ -118,7 +140,7 @@ class WorldMapSecondaryUiLayoutA extends WorldMapSecondaryUi_1.WorldMapSecondary
     var e;
     var s = this.LayoutContext.MarkItem;
     this.GetItem(32).SetUIActive(t);
-    if (!t || (t = this.GetButton(29), i = TeleportController_1.TeleportController.CheckCanTeleport(), e = MarkUiUtils_1.MarkUiUtils.FindNearbyValidGotoMark(this.Map, s), t.SetSelfInteractive(i && e !== undefined), t = s.MarkItemEntity.GamePlay.IsHide, this.MapTipsActivateTipPanel.SetUiActive((!i || e === undefined || t) && !HonamiStoryUtil_1.HonamiStoryUtil.CheckInHonamiStoryDungeon()), t)) {
+    if (!t || (t = this.GetButton(29), i = ModelManager_1.ModelManager.TeleportModel.AllowTeleportByUi, e = MarkUiUtils_1.MarkUiUtils.FindNearbyValidGotoMark(this.Map, s), t.SetSelfInteractive(i && e !== undefined), t = s.MarkItemEntity.GamePlay.IsHide, this.MapTipsActivateTipPanel.SetUiActive((!i || e === undefined || t) && !HonamiStoryUtil_1.HonamiStoryUtil.CheckInHonamiStoryDungeon()), t)) {
       this.UpdateHidePlayMapTipPanel();
     } else {
       this.MapTipsActivateTipPanel.SetDistanceTips();
@@ -148,8 +170,8 @@ class WorldMapSecondaryUiLayoutA extends WorldMapSecondaryUi_1.WorldMapSecondary
     var i = ModelManager_1.ModelManager.MapModel.GetMarkExtraShowState(t.MarkId).ShowFlag !== Protocol_1.Aki.Protocol.U5s.Proto_ShowDisable;
     var e = !t.IsLocked;
     var t = t.MarkConfig.EnableQuickTransfer === 1;
-    this.ConfirmButton.SetActive(t && e);
-    this.ConfirmButton.SetEnableClick(e);
+    this.LayoutContext?.SetConfirmBtnActive(t && e);
+    this.ZAt.SetEnableClick(e);
     this.UpdateQuickGotoActive(!t || !e);
     if (i) {
       this.UpdateTopRightIconActive();
@@ -294,6 +316,12 @@ class WorldMapSecondaryUiLayoutA extends WorldMapSecondaryUi_1.WorldMapSecondary
         this.Close();
       });
     }
+  }
+  OnAfterShowWorldMapSecondaryUi() {
+    this.AutoPilotContext?.UpdateAutoPilotState();
+  }
+  OnRefreshPanel() {
+    WorldMapSecondaryUiLayoutHelper_1.WorldMapSecondaryUiLayoutHelper.UpdateTrackButtonTextWithTrackStyle(this.LayoutContext);
   }
 }
 exports.WorldMapSecondaryUiLayoutA = WorldMapSecondaryUiLayoutA;

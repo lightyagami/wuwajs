@@ -9,6 +9,7 @@ class CharacterNameDefines {}
 (exports.CharacterNameDefines = CharacterNameDefines).NORMAL = new UE.FName("Normal");
 CharacterNameDefines.ABP_BASE = new UE.FName("ABP_Base");
 CharacterNameDefines.ABP_SPECIAL = new UE.FName("ABP_Special");
+CharacterNameDefines.ABP_GAMEPLAY = new UE.FName("ABP_Gameplay");
 CharacterNameDefines.ROOT_ROTATABLE = new UE.FName("RootRotatable");
 CharacterNameDefines.ROOT_X = new UE.FName("RootX");
 CharacterNameDefines.ROOT_Y = new UE.FName("RootY");

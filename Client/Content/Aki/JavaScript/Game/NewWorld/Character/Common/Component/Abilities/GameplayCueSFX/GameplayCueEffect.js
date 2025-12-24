@@ -101,7 +101,7 @@ class GameplayCueEffect extends GameplayCueMagnitude_1.GameplayCueMagnitude {
     }
   }
   kBu() {
-    var t = this.EntityHandle.Entity?.GetComponent(126);
+    var t = this.EntityHandle.Entity?.GetComponent(131);
     if (t && this.EffectTimeScaleType === 0) {
       EffectUtil_1.EffectUtil.ListenForeverTimeScale(this.EffectViewHandle, t);
     }
@@ -169,7 +169,7 @@ class GameplayCueEffect extends GameplayCueMagnitude_1.GameplayCueMagnitude {
   }
   M$o() {
     var t;
-    if (this.ActorInternal?.IsValid() && this.CueConfig.Comp === 2 && (t = this.EntityHandle.Entity?.GetComponent(81))?.Valid) {
+    if (this.ActorInternal?.IsValid() && this.CueConfig.Comp === 2 && (t = this.EntityHandle.Entity?.GetComponent(84))?.Valid) {
       return t;
     } else {
       return undefined;
@@ -220,7 +220,7 @@ class GameplayCueEffect extends GameplayCueMagnitude_1.GameplayCueMagnitude {
   }
   D9u() {
     var t;
-    if (this.BuffHandleId > 0 && (t = this.EntityHandle.Entity?.GetComponent(213)?.GetBuffByHandle(this.BuffHandleId)) && t.GetInstigator()?.GetComponent(0)?.IsRole()) {
+    if (this.BuffHandleId > 0 && (t = this.EntityHandle.Entity?.GetComponent(220)?.GetBuffByHandle(this.BuffHandleId)) && t.GetInstigator()?.GetComponent(0)?.IsRole()) {
       return 1;
     } else {
       return 0;

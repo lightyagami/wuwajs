@@ -36,7 +36,7 @@ let FishingBoatInputComponent = class FishingBoatInputComponent extends Gongduol
     if (e === 210012) {
       PhotographController_1.PhotographController.PhotographFastScreenShot();
     } else {
-      this.Entity.GetComponent(39).BeginSkill(e, {
+      this.Entity.GetComponent(40).BeginSkill(e, {
         Reason: "FishingBoatInputComponent.ExecuteSkill"
       });
     }
@@ -52,5 +52,5 @@ let FishingBoatInputComponent = class FishingBoatInputComponent extends Gongduol
     ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(o);
   }
 };
-FishingBoatInputComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(251)], FishingBoatInputComponent);
+FishingBoatInputComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(262)], FishingBoatInputComponent);
 exports.FishingBoatInputComponent = FishingBoatInputComponent; //# sourceMappingURL=FishingBoatInputComponent.js.map

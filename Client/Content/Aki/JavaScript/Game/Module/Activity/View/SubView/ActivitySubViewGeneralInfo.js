@@ -47,6 +47,7 @@ class ActivitySubViewGeneralInfo extends ActivitySubViewBase_1.ActivitySubViewBa
     if (e) {
       t = e.DescTheme;
       i = !StringUtils_1.StringUtils.IsEmpty(t);
+      this.LNe.SetActivityBaseData(this.ActivityBaseData);
       this.LNe.SetTitleByText(this.ActivityBaseData.GetTitle());
       this.LNe.SetSubTitleVisible(i);
       if (i && (i = e.DescThemeIcon, this.LNe.SetSubTitleByTextId(t), i)) {

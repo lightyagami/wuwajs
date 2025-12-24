@@ -23,7 +23,13 @@ class RoleDevRecommendItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.svd = undefined;
     this.sft = undefined;
     this.Pe = undefined;
-    this.Rnm = 0;
+    this.Xlm = 0;
+    this.hJs = () => {
+      var t = this.Pe?.WeaponId;
+      if (t) {
+        ControllerHolder_1.ControllerHolder.ItemController.OpenItemTipsByItemId(t);
+      }
+    };
     this.y8i = () => {
       if (this.Pe?.GachaId) {
         this.avd();
@@ -68,8 +74,7 @@ class RoleDevRecommendItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.svd = new ButtonItem_1.ButtonItem();
     this.sft = new SmallItemGrid_1.SmallItemGrid();
     this.sft.Initialize(this.GetItem(0).GetOwner());
-    this.sft.SetExtendToggleEnable(false);
-    this.sft.SetToggleInteractive(false);
+    this.sft.BindOnExtendToggleClicked(this.hJs);
     await Promise.all([this.fOe.CreateThenShowByActorAsync(this.GetItem(3).GetOwner()), this.svd.CreateThenShowByActorAsync(this.GetItem(6).GetOwner())]);
   }
   OnStart() {
@@ -89,12 +94,12 @@ class RoleDevRecommendItem extends GridProxyAbstract_1.GridProxyAbstract {
   }
   Refresh(t, e, i) {
     this.Pe = t;
-    this.Rnm = i;
+    this.Xlm = i;
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), t.WeaponName);
     this.PKt(t);
   }
   get ItemIndex() {
-    return this.Rnm;
+    return this.Xlm;
   }
   PKt(t) {
     this.GetItem(7)?.SetUIActive(t.IsEquipped);

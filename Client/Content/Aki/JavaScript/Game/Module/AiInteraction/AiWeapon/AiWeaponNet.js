@@ -24,7 +24,7 @@ class AiWeaponNet {
   yje(e) {
     var t = MathUtils_1.MathUtils.LongToNumber(e.F4n);
     var t = ModelManager_1.ModelManager.CreatureModel.GetEntity(t);
-    if (t &&= t.Entity.GetComponent(81)) {
+    if (t &&= t.Entity.GetComponent(84)) {
       if (e.nRs !== 0) {
         t.RegisterCharacterDropWeaponEvent(e.nRs);
         t.ChangeWeaponByWeaponByConfigId(e.nRs);
@@ -35,7 +35,7 @@ class AiWeaponNet {
   }
   SendHoldWeaponPushOnSafe(e, t) {
     var r = EntitySystem_1.EntitySystem.Get(t);
-    return !!r && !!r.GetComponent(148).CanBeUsed() && this.SendHoldWeaponPush(e, t);
+    return !!r && !!r.GetComponent(153).CanBeUsed() && this.SendHoldWeaponPush(e, t);
   }
   SendHoldWeaponPush(e, t) {
     var r = new Protocol_1.Aki.Protocol.Jcs();
@@ -56,7 +56,7 @@ class AiWeaponNet {
     var o = new Protocol_1.Aki.Protocol.C8n();
     r.F4n = this.Ije(e.Entity.Id);
     var a = e.Entity.GetComponent(3);
-    var e = e.Entity.GetComponent(61);
+    var e = e.Entity.GetComponent(64);
     let i = undefined;
     if (e.GetHitData()) {
       i = Vector_1.Vector.Create(e.GetHitData().HitPosition);

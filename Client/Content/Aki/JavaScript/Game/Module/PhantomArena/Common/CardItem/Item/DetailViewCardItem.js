@@ -9,11 +9,17 @@ class DetailViewCardItem extends CommonBaseCardItem_1.CommonBaseCardItem {
   constructor() {
     super(...arguments);
     this.Data = undefined;
+    this.IsNewPhantomArenaActivity = false;
     this.Bpt = () => false;
   }
   OnRegisterCardComponent() {
-    this.ComponentsRegisterInfoByItem = [[0, this.GetRootItem()]];
-    this.ComponentsRegisterInfoByResourceId = [[1, "UiItem_CardLock", this.GetContentRootItem()], [7, "UiItem_SoundRemnantItem512Spine", this.GetSpineRootItem()]];
+    var e = this.IsNewPhantomArenaActivity ? "UiItem_CardLockNew" : "UiItem_CardLock";
+    if (this.IsNewPhantomArenaActivity) {
+      this.ComponentsRegisterInfoByItem = [[1, this.GetRootItem()]];
+    } else {
+      this.ComponentsRegisterInfoByItem = [[0, this.GetRootItem()]];
+    }
+    this.ComponentsRegisterInfoByResourceId = [[2, e, this.GetContentRootItem()], [9, "UiItem_SoundRemnantItem512Spine", this.GetSpineRootItem()]];
   }
   Refresh(e) {
     var t = {
@@ -28,15 +34,16 @@ class DetailViewCardItem extends CommonBaseCardItem_1.CommonBaseCardItem {
       OutlookUnlocked: e.OutlookUnlocked
     };
     this.GetComponent(0)?.Refresh(t);
+    this.GetComponent(1)?.Refresh(t);
     var t = {
       CardSpineData: e.CardSpineData,
       ShowSpine: e.CardFaceType === 1
     };
-    this.GetComponent(7)?.Refresh(t);
+    this.GetComponent(9)?.Refresh(t);
     this.RefreshIsLocked();
   }
   RefreshIsLocked() {
-    this.GetComponent(1)?.Refresh(this.Data.IsLock);
+    this.GetComponent(2)?.Refresh(this.Data.IsLock);
   }
 }
 exports.DetailViewCardItem = DetailViewCardItem;

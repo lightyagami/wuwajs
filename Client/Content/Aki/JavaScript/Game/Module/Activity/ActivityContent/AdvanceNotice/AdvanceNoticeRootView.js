@@ -46,7 +46,7 @@ class AdvanceNoticeRootView extends UiViewBase_1.UiViewBase {
       t.SetSmallIcon(i);
       return t;
     };
-    this._ym = t => {
+    this.FLm = t => {
       var i = this.TabViewComponent.GetTabViewByTabKey(this.ViewModel.CurrentTabView);
       if (i) {
         i.OnSwitchSubTab(t);
@@ -61,12 +61,12 @@ class AdvanceNoticeRootView extends UiViewBase_1.UiViewBase {
     this.ZA1 = () => {
       this.AdvanceNoticeSwitchComponent.SelectNextThumb();
     };
-    this.iIm = () => {
+    this.xkm = () => {
       if (this.HasTabScrollFirstLateUpdate) {
         this.gsi();
       }
     };
-    this.rIm = () => {
+    this.Bkm = () => {
       if (!this.HasTabScrollFirstLateUpdate) {
         this.gsi();
         this.HasTabScrollFirstLateUpdate = true;
@@ -79,20 +79,20 @@ class AdvanceNoticeRootView extends UiViewBase_1.UiViewBase {
   }
   async OnBeforeStartAsync() {
     this.ViewModel = this.OpenParam;
-    this.ViewModel.OnSwitchSubTabDelegate = this._ym;
+    this.ViewModel.OnSwitchSubTabDelegate = this.FLm;
     this.InitTabComponent();
     this.AdvanceNoticeSwitchComponent = new AdvanceNoticeSwitchComponent_1.AdvanceNoticeSwitchComponent();
     this.AdvanceNoticeSwitchComponent.Initialize(this.GetButton(6), this.GetButton(7), this.GetScrollViewWithScrollbar(4), this.GetItem(5));
-    await this.qdm();
+    await this.Cpm();
     var t = this.TabComponent.GetScrollView();
-    t.OnScrollValueChange.Bind(this.iIm);
-    t.OnLateUpdate.Bind(this.rIm);
+    t.OnScrollValueChange.Bind(this.xkm);
+    t.OnLateUpdate.Bind(this.Bkm);
     var t = this.ViewModel?.ActivityId;
     var t = ConfigManager_1.ConfigManager.AdvanceNoticeConfig.GetAdvertisingPageInfoByActivityId(t);
     LguiUtil_1.LguiUtil.TrySetLocalTextNew(this.GetText(8), "Advertising_VersionText", t?.TitleVersion);
   }
   OnBeforeShow() {
-    this.oIm();
+    this.kkm();
     this.HasTabScrollFirstLateUpdate = false;
     let t = this.ViewModel.TabIndex;
     if (!t || t === -1) {
@@ -106,7 +106,7 @@ class AdvanceNoticeRootView extends UiViewBase_1.UiViewBase {
     this.TabComponent.SetHelpButtonShowState(false);
     this.TabViewComponent = new TabViewComponent_1.TabViewComponent(this.GetItem(1));
   }
-  async qdm() {
+  async Cpm() {
     var t = this.ViewModel.TabList.length;
     var t = this.TabComponent.CreateTabItemDataByLength(t);
     await this.TabComponent.RefreshTabItemAsync(t);
@@ -132,10 +132,10 @@ class AdvanceNoticeRootView extends UiViewBase_1.UiViewBase {
       this.GetItem(2).SetUIActive((0, puerts_1.$unref)(i) === 1);
       this.GetItem(3).SetUIActive((0, puerts_1.$unref)(e) === 2);
     } else {
-      this.oIm();
+      this.kkm();
     }
   }
-  oIm() {
+  kkm() {
     this.GetItem(2).SetUIActive(false);
     this.GetItem(3).SetUIActive(false);
   }

@@ -16,36 +16,40 @@ const RoleSkillTreeItemData_1 = require("./RoleSkillTreeItemData");
 class RoleSkillMergeView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
-    this.DWd = undefined;
-    this.UWd = undefined;
-    this.xWd = new RoleSkillTreeItemData_1.RoleSkillTreeItemData();
-    this.BWd = new RoleSkillTreeInfoItemData_1.RoleSkillTreeInfoItemData();
-    this.tgm = -1;
+    this.kWd = undefined;
+    this.OWd = undefined;
+    this.qWd = new RoleSkillTreeItemData_1.RoleSkillTreeItemData();
+    this.GWd = new RoleSkillTreeInfoItemData_1.RoleSkillTreeInfoItemData();
+    this.hSm = -1;
     this.xpt = () => {
       this.CloseMe();
     };
     this.Ido = e => {
-      this.DWd?.SelectSkillItem(e);
-      this.Rcm();
+      this.kWd?.SelectSkillItem(e);
+      this.z0m();
     };
-    this.wcm = () => {
-      var e = this.DWd?.GetCurrentSelectedSkillItem();
+    this.J0m = () => {
+      var e = this.kWd?.GetCurrentSelectedSkillItem();
       if (e) {
         e = e.GetSkillNodeId();
-        this.BWd.SkillNodeId = e;
-        this.UWd.Update(this.BWd);
-        this.UWd.ShowLeftPanelByTabType(this.UWd.GetCurSkillTabShowType());
+        this.GWd.SkillNodeId = e;
+        this.OWd.Update(this.GWd);
+        this.OWd.ShowLeftPanelByTabType(this.OWd.GetCurSkillTabShowType());
       }
     };
     this.Udo = e => {
-      this.DWd?.OnSkillNodeLevelUp(e);
-      this.Rcm();
+      this.kWd?.OnSkillNodeLevelUp(e);
+      this.z0m();
     };
     this.TTt = () => {
-      this.DWd?.OnAddCommonItemList();
+      this.kWd?.OnAddCommonItemList();
     };
     this.qdi = () => {
-      this.UWd?.OnCommonItemCountAnyChange();
+      this.OWd?.OnCommonItemCountAnyChange();
+    };
+    this.FFf = () => {
+      this.kWd?.OnRoleSkillBranchChanged();
+      this.z0m();
     };
   }
   OnRegisterComponent() {
@@ -57,6 +61,7 @@ class RoleSkillMergeView extends UiViewBase_1.UiViewBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SkillTreeNodeLevelUp, this.Udo);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnAddCommonItemList, this.TTt);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnCommonItemCountAnyChange, this.qdi);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRoleSkillBranchChanged, this.FFf);
   }
   OnRemoveEventListener() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSkillTreeNodeToggleClick, this.Ido);
@@ -64,62 +69,64 @@ class RoleSkillMergeView extends UiViewBase_1.UiViewBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SkillTreeNodeLevelUp, this.Udo);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnAddCommonItemList, this.TTt);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnCommonItemCountAnyChange, this.qdi);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRoleSkillBranchChanged, this.FFf);
   }
   async OnBeforeStartAsync() {
-    await this.NWd();
+    await this.$Wd();
     this.AU();
   }
   OnBeforeShow() {
     this.bl();
-    if (this.tgm >= 0) {
-      this.igm(this.tgm);
-      this.tgm = -1;
+    if (this.hSm >= 0) {
+      this.lSm(this.hSm);
+      this.hSm = -1;
     }
-    this.DWd?.PlayItemSequence("ChangeRole");
-    this.DWd?.PlayItemSequence("MoveRight");
-    this.UWd?.PlayItemSequence("Start");
+    this.kWd?.PlayItemSequence("MoveRight");
+    this.OWd?.PlayItemSequence("Start");
   }
-  async NWd() {
-    this.DWd = new RoleSkillTreeItem_1.RoleSkillTreeItem();
-    this.UWd = new RoleSkillTreeInfoItem_1.RoleSkillTreeInfoItem();
-    await Promise.all([this.DWd.CreateThenShowByResourceIdAsync("UiItem_RoleSkillTree", this.GetItem(0), false), this.UWd.CreateThenShowByResourceIdAsync("UiItem_RoleSkillTreeDetail", this.GetItem(1), false)]);
-    this.UWd.OnBackBtnCallBack = this.xpt;
+  async $Wd() {
+    this.kWd = new RoleSkillTreeItem_1.RoleSkillTreeItem();
+    this.kWd.SetEnableSwitchBranch(true);
+    this.OWd = new RoleSkillTreeInfoItem_1.RoleSkillTreeInfoItem();
+    this.OWd.SetSkillBranchEnable(true);
+    await Promise.all([this.kWd.CreateThenShowByResourceIdAsync("UiItem_RoleSkillTree", this.GetItem(0), false), this.OWd.CreateThenShowByResourceIdAsync("UiItem_RoleSkillTreeDetail", this.GetItem(1), false)]);
+    this.OWd.OnBackBtnCallBack = this.xpt;
   }
   async OnPlayingStartSequenceAsync() {
-    await Promise.all([this.UWd?.PlayItemSequenceAsync("Start"), this.DWd?.PlayItemSequenceAsync("Start")]);
+    await this.OWd?.PlayItemSequenceAsync("Start");
   }
   async OnPlayingCloseSequenceAsync() {
-    await Promise.all([this.UWd?.PlayItemSequenceAsync("Close"), this.DWd?.PlayItemSequenceAsync("Close")]);
+    await Promise.all([this.OWd?.PlayItemSequenceAsync("Close"), this.kWd?.PlayItemSequenceAsync("Close")]);
   }
   AU() {
     var e = this.OpenParam;
-    this.xWd.RoleId = e.RoleId;
-    this.BWd.RoleId = e.RoleId;
-    this.tgm = e.SkillNodeIndex;
+    this.qWd.RoleId = e.RoleId;
+    this.GWd.RoleId = e.RoleId;
+    this.hSm = e.SkillNodeIndex;
   }
-  igm(e) {
-    e = this.DWd.GetSkillItemByIndex(e);
+  lSm(e) {
+    e = this.kWd.GetSkillItemByIndex(e);
     if (e) {
-      this.DWd.SelectSkillItem(e, true);
-      this.Rcm();
+      this.kWd.SelectSkillItem(e, true);
+      this.z0m();
     }
   }
   bl() {
-    this.DWd?.UpdateRole(this.xWd.RoleId);
-    this.DWd?.SetSkillInputButtonVisible(false);
-    this.Rcm();
+    this.kWd?.UpdateRole(this.qWd.RoleId);
+    this.kWd?.SetSkillInputButtonVisible(false);
+    this.z0m();
   }
-  Rcm() {
+  z0m() {
     var e;
     var t;
-    var i = this.DWd?.GetCurrentSelectedSkillItem();
+    var i = this.kWd?.GetCurrentSelectedSkillItem();
     if (i) {
       if ((e = i.GetType()) === 4 || e === 3) {
-        this.wcm();
+        this.J0m();
       } else {
         e = i.GetRoleId();
         t = (t = i.GetUpgradeSkillId()) > 0 ? t : i.GetSkillId();
-        RoleController_1.RoleController.SendRoleSkillViewRequest(e, t, this.wcm);
+        RoleController_1.RoleController.SendRoleSkillViewRequest(e, t, this.J0m);
       }
     }
   }

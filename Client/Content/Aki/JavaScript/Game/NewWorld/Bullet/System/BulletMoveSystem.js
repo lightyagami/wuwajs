@@ -143,14 +143,18 @@ class BulletMoveSystem extends BulletSystemBase_1.BulletSystemBase {
       case 5:
       case 9:
       case 4:
-        e = t.TargetActorComp;
+        e = t.Target?.Valid ? t.TargetActorComp : undefined;
         break;
       case 1:
         e = BulletUtil_1.BulletUtil.GetCurrentRole(t);
         break;
       case 3:
         if (t.BulletInitParams.FromRemote) {
-          return t.TargetActorComp;
+          if (t.Target?.Valid) {
+            return t.TargetActorComp;
+          } else {
+            return undefined;
+          }
         }
         e = t.GetLockOnTargetDynamic();
         this.OnChangeTargetRequest(t, e?.Entity ? e?.Entity.Id : -1);
@@ -162,7 +166,7 @@ class BulletMoveSystem extends BulletSystemBase_1.BulletSystemBase {
   }
   vu1(t) {
     var e = t.Target;
-    if (e) {
+    if (e?.Valid) {
       if ((e = e.GetComponent(0))?.IsRole()) {
         if ((e = ModelManager_1.ModelManager.SceneTeamModel.GetTeamItem(e.GetPlayerId(), {
           ParamType: 2,
@@ -190,7 +194,7 @@ class BulletMoveSystem extends BulletSystemBase_1.BulletSystemBase {
     if (a?.Valid) {
       e = BulletPool_1.BulletPool.CreateVector();
       if (r.FollowTargetBottom) {
-        l = (o = a.Entity.GetComponent(182)).ActorComp.ActorLocation;
+        l = (o = a.Entity.GetComponent(187)).ActorComp.ActorLocation;
         e.Set(l.X, l.Y, l.Z - o.GetHeightAboveGround(Math.min(r.MinFollowHeight, MIN_HEIGHT_FOLLOW_TARGET)) - o.ActorComp.HalfHeight);
       } else {
         l = t.BulletDataMain?.Move.TrackTargetBone;
@@ -220,7 +224,7 @@ class BulletMoveSystem extends BulletSystemBase_1.BulletSystemBase {
       var r = this.KWo(e);
       let t = undefined;
       if (o > 1) {
-        o = r?.Entity?.GetComponent(182);
+        o = r?.Entity?.GetComponent(187);
         if (!o?.Valid) {
           return;
         }
@@ -246,7 +250,7 @@ class BulletMoveSystem extends BulletSystemBase_1.BulletSystemBase {
         t = BulletUtil_1.BulletUtil.GetTargetLocation(r, StringUtils_1.StringUtils.IsNothing(o) ? e.SkillBoneName : FNameUtil_1.FNameUtil.GetDynamicFName(o), e);
       }
       if (t) {
-        if (r?.Entity.GetComponent(209)?.HasTag(1008164187)) {
+        if (r?.Entity.GetComponent(215)?.HasTag(1008164187)) {
           e.OnTargetInValid();
         } else if (l.TrackParams[0].X !== 0) {
           this.XWo(e, t);
@@ -326,7 +330,7 @@ class BulletMoveSystem extends BulletSystemBase_1.BulletSystemBase {
         if ((n = BulletUtil_1.BulletUtil.GetCurrentRole(t))?.Valid) {
           BulletUtil_1.BulletUtil.AroundBulletAxisAndBeginVector(s, _, e.RoundOnceAxis, l, n, u ? undefined : t.AttackerMoveComp.GravityUp);
         } else if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("Bullet", 20, "围绕中心旋转子弹获取不到当前玩家控制的角色", ["Id", t.BulletRowName], ["Attacker", t.AttackerActorComp.Actor.GetName()]);
+          Log_1.Log.Error("Bullet", 20, "围绕中心旋转子弹获取不到当前玩家控制的角色", ["Id", t.BulletRowName], ["Attacker", t.AttackerActorComp?.Owner?.GetName()]);
         }
       } else if ((n = this.KWo(t))?.Valid) {
         BulletUtil_1.BulletUtil.AroundBulletAxisAndBeginVector(s, _, e.RoundOnceAxis, l, n, u ? undefined : t.AttackerMoveComp.GravityUp);
@@ -442,7 +446,7 @@ class BulletMoveSystem extends BulletSystemBase_1.BulletSystemBase {
         }
         var s;
         var n;
-        var B = BulletUtil_1.BulletUtil.GetTargetLocation(t.TargetActorComp, t.SkillBoneName, t);
+        var B = BulletUtil_1.BulletUtil.GetTargetLocation(t.Target?.Valid ? t.TargetActorComp : undefined, t.SkillBoneName, t);
         if (B) {
           s = r - (Time_1.Time.WorldTime - t.GenerateTime) / TimeUtil_1.TimeUtil.InverseMillisecond;
           s = MathUtils_1.MathUtils.IsNearlyZero(s, MathCommon_1.MathCommon.KindaSmallNumber) ? MathCommon_1.MathCommon.KindaSmallNumber : s;
@@ -505,7 +509,7 @@ class BulletMoveSystem extends BulletSystemBase_1.BulletSystemBase {
   }
   zWo(t, e, l) {
     if (l === 10 && (l = t.BulletDataMain.Move.Trajectory) !== 5 && l !== 4) {
-      (l = BulletPool_1.BulletPool.CreateVector()).FromUeVector(BulletUtil_1.BulletUtil.GetTargetLocation(undefined, FNameUtil_1.FNameUtil.NONE, t));
+      (l = BulletPool_1.BulletPool.CreateVector()).FromUeVector(t.BulletInitParams.InitTargetLocation);
       e = e.BulletSpeedDir.SizeSquared();
       if (Vector_1.Vector.DistSquared(t.GetActorLocation(), l) < e) {
         t.IsTimeNotEnough = true;
@@ -569,7 +573,7 @@ class BulletMoveSystem extends BulletSystemBase_1.BulletSystemBase {
     if (ModelManager_1.ModelManager.GameModeModel.IsMulti && !t.BulletInitParams.FromRemote) {
       if (t.BulletDataMain.Base.SyncType !== 1) {
         if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("Bullet", 20, "动态改变目标的子弹必须设置 基础设置.网络同步类型 为 网络同步子弹", ["BulletId", t.BulletRowName], ["Attacker", t.AttackerActorComp?.Actor?.GetName()]);
+          Log_1.Log.Error("Bullet", 20, "动态改变目标的子弹必须设置 基础设置.网络同步类型 为 网络同步子弹", ["BulletId", t.BulletRowName], ["Attacker", t.AttackerActorComp?.Owner?.GetName()]);
         }
       } else {
         if (t.TargetIdLast !== e && (l = ModelManager_1.ModelManager.BulletModel.GetBulletHandleById(t.BulletEntityId), o = ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(e), (r = Protocol_1.Aki.Protocol.Ce_.create()).Ajn = {

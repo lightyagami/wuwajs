@@ -19,6 +19,7 @@ const RewardItemBar_1 = require("../RewardItemBar");
 const TipsListView_1 = require("../TipsListView");
 const WorldMapSecondaryUiLayoutA_1 = require("../WorldMapSecondaryUiLayout/WorldMapSecondaryUiLayoutA");
 const WorldMapSecondaryUiLayoutHelper_1 = require("../WorldMapSecondaryUiLayout/WorldMapSecondaryUiLayoutHelper");
+const ROGUE_FREE_COUNT = "rougeFreeCount";
 const ROGUE_SCORE_KEY = "rougeScore";
 const ROGUE_TIME = "rogueTime";
 class WeeklyRogueEntrancePanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondaryUiLayoutA {
@@ -110,7 +111,7 @@ class WeeklyRogueEntrancePanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSeco
       this.GetText(10).ShowTextNew("Instance_Dungeon_Rcommand_Text");
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(36), "Instance_RogueInstanceEntrance_Progress");
       e = this.UpdateQuickGoto();
-      this.ConfirmButton.SetActive(!e);
+      this.LayoutContext?.SetConfirmBtnActive(!e);
     }
   }
   jqe() {
@@ -129,6 +130,7 @@ class WeeklyRogueEntrancePanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSeco
     this.jqe();
     this.h4i();
     this.hea();
+    this.Kbf();
     if (this.IRe) {
       TimerSystem_1.GameplayTimerSystem.Remove(this.IRe);
     }
@@ -163,6 +165,21 @@ class WeeklyRogueEntrancePanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSeco
       e.SetRightText(i);
       i = StringUtils_1.StringUtils.Format(MultiTextLang_1.configMultiTextLang.GetLocalTextNew("Text_Weekly_Rogue_Week_Score") ?? "", "");
       e.SetLeftText(i);
+      e.SetHelpButtonVisible(false);
+    }
+  }
+  Kbf() {
+    var e;
+    var i;
+    var t = ModelManager_1.ModelManager.WeeklyRogueModel?.ActivityData;
+    if (t) {
+      this.U2o.AddItemToLayout([ROGUE_FREE_COUNT]);
+      (e = this.U2o.GetLayoutItemByKey(ROGUE_FREE_COUNT)).SetIconVisible(false);
+      e.SetStarVisible(false);
+      i = MultiTextLang_1.configMultiTextLang.GetLocalTextNew("Text_WeeklyRogue_FreeTime_Map") ?? "";
+      e.SetLeftText(i);
+      i = t.FreeCount + "/" + t.FreeCountMax;
+      e.SetRightText(i);
       e.SetHelpButtonVisible(false);
     }
   }

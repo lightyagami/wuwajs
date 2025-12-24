@@ -26,6 +26,7 @@ const InstanceDungeonController_1 = require("../../../InstanceDungeon/InstanceDu
 const InstanceDungeonGuideController_1 = require("../../../InstanceDungeon/InstanceDungeonGuideController");
 const MapRogueController_1 = require("../../../MapRogue/MapRogueController");
 const OnlineController_1 = require("../../../Online/OnlineController");
+const PhoneMsgController_1 = require("../../../PhoneMessage/PhoneMsgController");
 const ResDownLoadTopPanel_1 = require("../../../ResDownLoad/ResDownLoadTopPanel");
 const RoguelikeController_1 = require("../../../Roguelike/RoguelikeController");
 const TowerDefenceController_1 = require("../../../TowerDefence/TowerDefenceController");
@@ -37,6 +38,7 @@ const BattleEntranceButton_1 = require("../BattleChildView/BattleEntranceButton"
 const BattleFishingView_1 = require("../BattleChildView/BattleFishingView");
 const BattleFormationButton_1 = require("../BattleChildView/BattleFormationButton");
 const BattleOnlineButton_1 = require("../BattleChildView/BattleOnlineButton");
+const BattlePhoneMessageButton_1 = require("../BattleChildView/BattlePhoneMessageButton");
 const BattleQuestButton_1 = require("../BattleChildView/BattleQuestButton");
 const BattleTowerButton_1 = require("../BattleChildView/BattleTowerButton");
 const BattleHonamiStoryLeaveButton_1 = require("../HonamiStory/BattleHonamiStoryLeaveButton");
@@ -62,6 +64,7 @@ class TopPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     this.ZB1 = undefined;
     this.dau = undefined;
     this.Qet = undefined;
+    this.K$m = undefined;
     this.Xet = undefined;
     this.$et = undefined;
     this.Yet = undefined;
@@ -79,10 +82,10 @@ class TopPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     this.XWl = undefined;
     this.BMl = undefined;
     this.YWl = undefined;
-    this.iQd = undefined;
-    this.QZd = undefined;
-    this.Utm = undefined;
-    this.UEm = undefined;
+    this.sQd = undefined;
+    this.Rim = undefined;
+    this.zom = undefined;
+    this.ukm = undefined;
     this.pO_ = undefined;
     this.NL1 = undefined;
     this.Oze = false;
@@ -133,10 +136,10 @@ class TopPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
       }
       this.Qet.RefreshButtonState();
       if (this.Oze) {
-        this.GetItem(37).SetUIActive(false);
+        this.GetItem(39).SetUIActive(false);
         this.zWl();
       } else if (!Info_1.Info.IsInTouch()) {
-        this.GetItem(37).SetUIActive(true);
+        this.GetItem(39).SetUIActive(true);
       }
     };
     this.itt = () => {
@@ -227,6 +230,9 @@ class TopPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     this._tt = () => {
       FunctionController_1.FunctionController.OpenFunctionRelateView(10002);
     };
+    this.X$m = () => {
+      PhoneMsgController_1.PhoneMsgController.OpenAndJumpShowTipShortMessage(1, 1);
+    };
     this.Omt = () => {
       FunctionController_1.FunctionController.OpenFunctionRelateView(10010);
     };
@@ -310,23 +316,23 @@ class TopPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     this.AF1 = () => {
       this.PF1();
     };
-    this.rQd = () => {
+    this.aQd = () => {
       FunctionController_1.FunctionController.OpenFunctionRelateView(10102);
     };
-    this.oQd = () => !HonamiStoryUtil_1.HonamiStoryUtil.CheckInHonamiStoryDungeon();
+    this.hQd = () => !HonamiStoryUtil_1.HonamiStoryUtil.CheckInHonamiStoryDungeon();
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UIItem], [11, UE.UIItem], [12, UE.UIItem], [13, UE.UIItem], [17, UE.UIItem], [16, UE.UIItem], [15, UE.UIItem], [18, UE.UIExtendToggle], [19, UE.UIItem], [20, UE.UIItem], [21, UE.UIItem], [22, UE.UIItem], [23, UE.UIItem], [24, UE.UIItem], [25, UE.UIItem], [27, UE.UIItem], [28, UE.UIItem], [29, UE.UIItem], [30, UE.UIItem], [31, UE.UIItem], [32, UE.UIItem], [33, UE.UIItem], [34, UE.UIItem], [35, UE.UIItem], [36, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UIItem], [11, UE.UIItem], [12, UE.UIItem], [13, UE.UIItem], [17, UE.UIItem], [16, UE.UIItem], [15, UE.UIItem], [18, UE.UIExtendToggle], [19, UE.UIItem], [20, UE.UIItem], [21, UE.UIItem], [22, UE.UIItem], [23, UE.UIItem], [24, UE.UIItem], [25, UE.UIItem], [27, UE.UIItem], [28, UE.UIItem], [29, UE.UIItem], [30, UE.UIItem], [31, UE.UIItem], [32, UE.UIItem], [33, UE.UIItem], [34, UE.UIItem], [35, UE.UIItem], [36, UE.UIItem], [38, UE.UIItem]];
     if (!Info_1.Info.IsInTouch()) {
-      this.ComponentRegisterInfos.push([37, UE.UIItem]);
-      this.ComponentRegisterInfos.push([38, UE.UIItem]);
       this.ComponentRegisterInfos.push([39, UE.UIItem]);
+      this.ComponentRegisterInfos.push([40, UE.UIItem]);
+      this.ComponentRegisterInfos.push([41, UE.UIItem]);
     }
     this.BtnBindInfo = [[18, this.Ett]];
   }
   async InitializeAsync() {
     this.Het = [];
-    await Promise.all([this.Stt(), this.ytt(), this.Itt(), this.Ttt(), this.Ltt(), this.Dtt(), this.gau(), this.v2c(), this.Rtt(), this.Utt(), this.Att(), this.Ptt(), this.xtt(), this.wtt(), this.Btt(), this.MDn(), this.u8c(), this.btt(), this.rk1(), this.qtt(), this.Gtt(), this.MCa(), this.LG_(), this.EJ1(), this.R_c(), this.xF1(), this.W9a(), this.yml(), this.qMl(), this.vO_(), this.jL1(), this.art(), this.xtm()]);
+    await Promise.all([this.Stt(), this.ytt(), this.Itt(), this.Ttt(), this.Ltt(), this.Dtt(), this.gau(), this.v2c(), this.Rtt(), this.Utt(), this.Att(), this.Ptt(), this.xtt(), this.wtt(), this.Btt(), this.MDn(), this.u8c(), this.btt(), this.rk1(), this.qtt(), this.Gtt(), this.MCa(), this.LG_(), this.EJ1(), this.R_c(), this.xF1(), this.W9a(), this.yml(), this.qMl(), this.vO_(), this.jL1(), this.art(), this.Jom(), this.Y$m()]);
     this.Ntt();
   }
   OnSeamlessTravelFinish() {
@@ -351,8 +357,8 @@ class TopPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     this.Sml.ShowBattleVisibleChildView();
     this.pO_.ShowBattleVisibleChildView();
     this.NL1.ShowBattleVisibleChildView();
-    this.Utm?.ShowBattleVisibleChildView();
-    this.UEm?.ShowBattleVisibleChildView();
+    this.zom?.ShowBattleVisibleChildView();
+    this.ukm?.ShowBattleVisibleChildView();
     if (this.Oze && !this.Qet.GetActive()) {
       this.Qet.RefreshButtonState();
     }
@@ -374,8 +380,8 @@ class TopPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     this.BMl.HideBattleVisibleChildView();
     this.pO_.HideBattleVisibleChildView();
     this.NL1.HideBattleVisibleChildView();
-    this.Utm?.HideBattleVisibleChildView();
-    this.UEm?.HideBattleVisibleChildView();
+    this.zom?.HideBattleVisibleChildView();
+    this.ukm?.HideBattleVisibleChildView();
   }
   Ntt() {
     this.Oze = Info_1.Info.IsInGamepad();
@@ -406,10 +412,10 @@ class TopPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
       Log_1.Log.Info("BattleUiSet", 27, "初始化IOS 背景播放按钮");
     }
     if (this.Oze) {
-      this.GetItem(37).SetUIActive(false);
+      this.GetItem(39).SetUIActive(false);
       this.zWl();
     } else if (!Info_1.Info.IsInTouch()) {
-      this.GetItem(37).SetUIActive(true);
+      this.GetItem(39).SetUIActive(true);
     }
   }
   Reset() {
@@ -495,7 +501,7 @@ class TopPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
         await this.lza();
       }
     } else {
-      this.GetItem(38)?.SetUIActive(false);
+      this.GetItem(40)?.SetUIActive(false);
     }
   }
   async lza() {
@@ -581,22 +587,22 @@ class TopPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
   }
   rkd() {
     if (HonamiStoryUtil_1.HonamiStoryUtil.CheckInHonamiStoryDungeon()) {
-      this.sQd();
+      this._Qd();
     } else {
       this.Ftt();
     }
   }
-  sQd() {
+  _Qd() {
     this.Het.forEach(t => {
       t.SetOtherHide(true);
     });
-    this.iQd?.SetOtherHide(false);
+    this.sQd?.SetOtherHide(false);
     this.fDn.SetOtherHide(false);
     this.Xet.SetOtherHide(false);
     if (HonamiStoryUtil_1.HonamiStoryUtil.CheckInHonamiStoryMainDungeon()) {
       this.jet.SetOtherHide(false);
     } else {
-      this.QZd?.SetOtherHide(false);
+      this.Rim?.SetOtherHide(false);
       this.wF1?.EndShow();
       this.wF1?.SetOtherHide(true);
     }
@@ -650,6 +656,23 @@ class TopPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
   async Dtt() {
     var t = this.GetItem(6);
     (await this.Vtt(t, "FunctionInventory", undefined, true)).BindOnClicked(this._tt);
+  }
+  async Y$m() {
+    var t;
+    if (BaseConfigController_1.BaseConfigController.GetIosAuditFirstDownloadTipWithSkip()) {
+      this.GetItem(38).SetUIActive(false);
+    } else {
+      t = this.GetItem(38);
+      this.K$m = await this.NewStaticChildViewAsync(t.GetOwner(), BattlePhoneMessageButton_1.BattlePhoneMessageButton, {
+        RedDotName: "FunctionPhoneMsg",
+        FunctionType: 10130,
+        ChildType: 3,
+        HideInGamepad: true,
+        HideByRoleConfig: true
+      });
+      this.Het.push(this.K$m);
+      this.K$m.BindOnClicked(this.X$m);
+    }
   }
   async v2c() {
     var t;
@@ -808,7 +831,7 @@ class TopPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
   }
   async rk1() {
     var t = this.GetItem(31);
-    var t = await this.Vtt(t, "ActivityDirectTrainPro", 10095);
+    var t = await this.Vtt(t, "ActivityDirectTrainProEntry", 10095);
     t.BindOnClicked(this.ek1);
     t.SetGetOtherHideCallCall(this.tk1);
     this.ZB1 = t;
@@ -825,14 +848,14 @@ class TopPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     this.Sml = await this.NewStaticChildViewAsync(this.GetItem(23).GetOwner(), TopPanelWavePlateTip_1.TopPanelWavePlateTip);
   }
   async ZWl() {
-    this.XWl = await this.NewStaticChildViewAsync(this.GetItem(39).GetOwner(), TopPanelWavePlateTip_1.TopPanelWavePlateTip);
+    this.XWl = await this.NewStaticChildViewAsync(this.GetItem(41).GetOwner(), TopPanelWavePlateTip_1.TopPanelWavePlateTip);
   }
   async qMl() {
     var t = this.GetItem(24);
     this.BMl = await this.NewDynamicChildViewByResourceId(t, "UiItem_TipWarn", AlertAreaInfoView_1.AlertAreaInfoView);
   }
   async JWl() {
-    this.YWl = await this.NewStaticChildViewAsync(this.GetItem(38).GetOwner(), GamepadTopPanel_1.GamepadTopPanel);
+    this.YWl = await this.NewStaticChildViewAsync(this.GetItem(40).GetOwner(), GamepadTopPanel_1.GamepadTopPanel);
   }
   async vO_() {
     this.pO_ = await this.NewDynamicChildViewByResourceId(this.GetItem(25), "UiItem_FishingEnter", BattleFishingView_1.BattleFishingView);
@@ -854,21 +877,21 @@ class TopPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
           return undefined;
         }
       } else if (e === "HonamiStoryPlayerLevel") {
-        if (i = this.UEm?.GetGuideUiItem("0")) {
+        if (i = this.ukm?.GetGuideUiItem("0")) {
           return [i, i];
         } else {
           return undefined;
         }
       } else if (e === "HonamiStoryMapLevel") {
-        i = this.Utm?.GetGuideUiItem("0");
-        s = this.Utm.GetRootItem();
+        i = this.zom?.GetGuideUiItem("0");
+        s = this.zom.GetRootItem();
         if (i) {
           return [s, i];
         } else {
           return undefined;
         }
       } else if (e === "HonamiStoryLeaveBtn") {
-        if (s = this.QZd?.GetGuideUiItem("0")) {
+        if (s = this.Rim?.GetGuideUiItem("0")) {
           return [s, s];
         } else {
           return undefined;
@@ -878,20 +901,36 @@ class TopPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
       }
     }
   }
-  async xtm() {
+  async Jom() {
     var t;
     if (HonamiStoryUtil_1.HonamiStoryUtil.CheckInHonamiStoryDungeon()) {
       t = this.GetItem(30);
-      this.iQd = await this.hkd(t, "/Game/Aki/UI/UIResources/UiFight/Atlas/SP_FightIconBag.SP_FightIconBag", undefined, 10102);
-      this.iQd.BindOnClicked(this.rQd);
-      this.iQd.SetGetOtherHideCallCall(this.oQd);
-      this.iQd.SetOtherHide(this.oQd());
-      this.QZd = await this.NewDynamicChildViewByResourceId(this.GetItem(35), "UiItem_HonamiStoryBtnLeave", BattleHonamiStoryLeaveButton_1.BattleHonamiStoryLeaveButton);
-      this.Het.push(this.QZd);
-      this.Utm = await this.NewDynamicChildViewByResourceId(this.GetItem(32), "UiItem_HonamiStoryMapLevel", BattleHonamiStoryMapLevelView_1.BattleHonamiStoryMapLevelView);
+      this.sQd = await this.hkd(t, "/Game/Aki/UI/UIResources/UiFight/Atlas/SP_FightIconBag.SP_FightIconBag", undefined, 10102);
+      this.sQd.BindOnClicked(this.aQd);
+      this.sQd.SetGetOtherHideCallCall(this.hQd);
+      this.sQd.SetOtherHide(this.hQd());
+      this.Rim = await this.NewDynamicChildViewByResourceId(this.GetItem(35), "UiItem_HonamiStoryBtnLeave", BattleHonamiStoryLeaveButton_1.BattleHonamiStoryLeaveButton);
+      this.Het.push(this.Rim);
+      this.zom = await this.NewDynamicChildViewByResourceId(this.GetItem(32), "UiItem_HonamiStoryMapLevel", BattleHonamiStoryMapLevelView_1.BattleHonamiStoryMapLevelView);
       if (!HonamiStoryUtil_1.HonamiStoryUtil.CheckInHonamiStoryMainDungeon()) {
-        this.UEm = await this.NewDynamicChildViewByResourceId(t, "UiItem_HonamiStoryMainStateTip", BattleHonamiStoryPlayerStateView_1.BattleHonamiStoryPlayerStateView);
+        this.ukm = await this.NewDynamicChildViewByResourceId(t, "UiItem_HonamiStoryMainStateTip", BattleHonamiStoryPlayerStateView_1.BattleHonamiStoryPlayerStateView);
       }
+    }
+  }
+  GetPanelItem(t) {
+    if (t === "PhoneMsgButton") {
+      if (Info_1.Info.IsInGamepad()) {
+        return this.YWl.GetPanelItem(t);
+      } else {
+        return this.GetItem(38);
+      }
+    }
+  }
+  GetPhoneMsgButton() {
+    if (Info_1.Info.IsInGamepad()) {
+      return this.YWl.GetPhoneMsgButton();
+    } else {
+      return this.K$m;
     }
   }
 }

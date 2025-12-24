@@ -16,12 +16,12 @@ class HomeBtnModel extends ModelBase_1.ModelBase {
     this.dQc = true;
     this.vLd = new Map();
     this.K9d = new Set();
-    this.$tm = e => {
+    this.lnm = e => {
       this.dQc = e;
     };
   }
   OnInit() {
-    EventSystem_1.EventSystem.AddWithTarget(this, EventDefine_1.EEventName.BtnStateUpdate, this.$tm);
+    EventSystem_1.EventSystem.AddWithTarget(this, EventDefine_1.EEventName.BtnStateUpdate, this.lnm);
     return true;
   }
   get EnableHomeBtnLogic() {
@@ -48,7 +48,7 @@ class HomeBtnModel extends ModelBase_1.ModelBase {
   }
   GetShowHomeBtn(e) {
     var t;
-    return !!this.dQc && ((t = this.vLd.get(e.Info.Name)) !== undefined ? t : (t = ConfigManager_1.ConfigManager.UiViewConfig.GetUiShowConfig(e.Info.Name)) ? t.HomeBtnShowType === 1 : (Log_1.Log.CheckError() && Log_1.Log.Error("HomeBtn", 87, "未找到UI界面配置", ["ViewName:", e.Info.Name]), false));
+    return !!this.dQc && ((t = this.vLd.get(e)) !== undefined ? t : (t = ConfigManager_1.ConfigManager.UiViewConfig.GetUiShowConfig(e)) ? t.HomeBtnShowType === 1 : (Log_1.Log.CheckError() && Log_1.Log.Error("HomeBtn", 87, "未找到UI界面配置", ["ViewName:", e]), false));
   }
   set EnableHomeBtnFunction(e) {
     this.dQc = e;
@@ -66,7 +66,7 @@ class HomeBtnModel extends ModelBase_1.ModelBase {
     return !this.K9d.has(e);
   }
   OnClear() {
-    EventSystem_1.EventSystem.RemoveWithTarget(this, EventDefine_1.EEventName.BtnStateUpdate, this.$tm);
+    EventSystem_1.EventSystem.RemoveWithTarget(this, EventDefine_1.EEventName.BtnStateUpdate, this.lnm);
     this.vLd.clear();
     this.K9d.clear();
     return true;

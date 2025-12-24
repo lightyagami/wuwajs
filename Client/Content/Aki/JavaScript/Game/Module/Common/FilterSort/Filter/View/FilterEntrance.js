@@ -18,7 +18,7 @@ class FilterEntrance extends UiPanelBase_1.UiPanelBase {
   constructor(t, i) {
     super();
     this.UpdateDataListFunction = i;
-    this.hdm = new Map();
+    this.kCm = new Map();
     this.rRt = FilterSortDefine_1.FILTER_SORT_UNVALUE_UNIQUE_ID;
     this.hDt = undefined;
     this.ypt = [];
@@ -37,7 +37,7 @@ class FilterEntrance extends UiPanelBase_1.UiPanelBase {
       this.P5e();
       this.qpt(false);
     };
-    this.qhm = () => {
+    this.Ncm = () => {
       this.OnBtnClearClickCallback?.();
       this.gPe();
     };
@@ -57,7 +57,7 @@ class FilterEntrance extends UiPanelBase_1.UiPanelBase {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIItem], [2, UE.UIText], [3, UE.UIButtonComponent]];
-    this.BtnBindInfo = [[0, this.uDt], [3, this.qhm]];
+    this.BtnBindInfo = [[0, this.uDt], [3, this.Ncm]];
   }
   TryClearData() {
     var t;
@@ -68,10 +68,10 @@ class FilterEntrance extends UiPanelBase_1.UiPanelBase {
     this.AddEventListener();
   }
   OnBeforeDestroy() {
-    for (const t of this.hdm.values()) {
+    for (const t of this.kCm.values()) {
       ModelManager_1.ModelManager.FilterModel.DeleteFilterResultData(t);
     }
-    this.hdm.clear();
+    this.kCm.clear();
     this.RemoveEventListener();
   }
   AddEventListener() {
@@ -133,7 +133,7 @@ class FilterEntrance extends UiPanelBase_1.UiPanelBase {
       });
       this.hDt.SetRuleData(s);
       ModelManager_1.ModelManager.FilterModel.SetFilterResultData(this.hDt);
-      this.hdm.set(this._Dt, this.hDt.UniqueId);
+      this.kCm.set(this._Dt, this.hDt.UniqueId);
     }
   }
   CDt() {
@@ -186,7 +186,7 @@ class FilterEntrance extends UiPanelBase_1.UiPanelBase {
     return false;
   }
   GetUniqueIdByGroupId(t) {
-    return this.hdm.get(t) ?? FilterSortDefine_1.FILTER_SORT_UNVALUE_UNIQUE_ID;
+    return this.kCm.get(t) ?? FilterSortDefine_1.FILTER_SORT_UNVALUE_UNIQUE_ID;
   }
   SetSortUniqueId(t) {
     this.rRt = t;

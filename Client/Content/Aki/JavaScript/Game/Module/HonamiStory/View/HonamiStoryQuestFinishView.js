@@ -13,13 +13,13 @@ const HonamiStoryDefine_1 = require("../HonamiStoryDefine");
 class HonamiStoryQuestFinishView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
-    this.jgm = undefined;
+    this.MMm = undefined;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIText]];
   }
   OnStart() {
-    this.jgm = this.OpenParam;
+    this.MMm = this.OpenParam;
     this.UiViewSequence?.AddSequenceFinishEvent("Start", () => {
       TimerSystem_1.GameplayTimerSystem.Next(() => {
         this.CloseMe();
@@ -30,7 +30,7 @@ class HonamiStoryQuestFinishView extends UiViewBase_1.UiViewBase {
     this.Og();
   }
   Og() {
-    var i = this.jgm;
+    var i = this.MMm;
     if (i) {
       var t = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(i.GetNameKey());
       var r = this.GetText(1);

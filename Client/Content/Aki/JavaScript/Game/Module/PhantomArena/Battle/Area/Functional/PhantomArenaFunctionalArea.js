@@ -7,6 +7,7 @@ exports.PhantomArenaFunctionalArea = undefined;
 const UE = require("ue");
 const Log_1 = require("../../../../../../Core/Common/Log");
 const ControllerHolder_1 = require("../../../../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../../../../Manager/ModelManager");
 const UiPanelBase_1 = require("../../../../../Ui/Base/UiPanelBase");
 const PhantomArenaDefine_1 = require("../../PhantomArenaDefine");
 const PhantomArenaAreaFunctionalItem_1 = require("./PhantomArenaAreaFunctionalItem");
@@ -28,35 +29,35 @@ class PhantomArenaFunctionalArea extends UiPanelBase_1.UiPanelBase {
   }
   async Ri1() {
     var e = [this.GetItem(0), this.GetItem(1), this.GetItem(2), this.GetItem(3), this.GetItem(4), this.GetItem(5), this.GetItem(6)];
-    var r = e.length;
-    var a = [];
-    for (let t = 0; t < PhantomArenaDefine_1.functionAreaTypeList.length && !(t >= r); t++) {
+    var a = e.length;
+    var r = [];
+    for (let t = 0; t < PhantomArenaDefine_1.functionAreaTypeList.length && !(t >= a); t++) {
       var i;
       var n;
       var s = e[t];
       var o = PhantomArenaDefine_1.functionAreaTypeList[t];
       if (o === 1) {
         i = new PhantomArenaAreaFunctionalItem_1.PhantomArenaAreaFunctionalItem();
-        a.push(i.CreateThenShowByActorAsync(s.GetOwner()));
+        r.push(i.CreateThenShowByActorAsync(s.GetOwner()));
         (n = new PhantomArenaAreaFunctionalProxy_1.PhantomArenaAreaFunctionalProxy(t, this)).SetAreaItem(i);
         this.CardProxyMap.set(t, n);
         this.ParentArea.ViewProxy.CanvasManager.AddAreaCanvas(n);
       } else if (o === 0) {
         i = new PhantomArenaAreaMonsterItem_1.PhantomArenaAreaMonsterItem();
-        a.push(i.CreateThenShowByActorAsync(s.GetOwner()));
+        r.push(i.CreateThenShowByActorAsync(s.GetOwner()));
         (n = new PhantomArenaAreaMonsterProxy_1.PhantomArenaAreaMonsterProxy(t, this)).SetAreaItem(i);
         this.CardProxyMap.set(t, n);
         this.ParentArea.ViewProxy.CanvasManager.AddAreaCanvas(n);
       }
     }
-    await Promise.all(a);
+    await Promise.all(r);
   }
   SetAllCardProxyUseActiveState(t, e) {
-    for (const r of this.CardProxyMap.values()) {
-      if (t && r.CheckSettingCardCondition(e)) {
-        r.SetCanUseStateActive(t);
+    for (const a of this.CardProxyMap.values()) {
+      if (t && a.CheckSettingCardCondition(e)) {
+        a.SetCanUseStateActive(t);
       } else {
-        r.SetCanUseStateActive(false);
+        a.SetCanUseStateActive(false);
       }
     }
   }
@@ -73,11 +74,11 @@ class PhantomArenaFunctionalArea extends UiPanelBase_1.UiPanelBase {
   }
   RefreshStateByDragCard(t) {
     let e = -1;
-    let r = PhantomArenaDefine_1.DISTANCE_MAX;
-    for (var [a, i] of this.CardProxyMap) {
-      if (i.IsCanSettingCard(t) && i.Distance < r) {
-        r = i.Distance;
-        e = a;
+    let a = PhantomArenaDefine_1.DISTANCE_MAX;
+    for (var [r, i] of this.CardProxyMap) {
+      if (i.IsCanSettingCard(t) && i.Distance < a) {
+        a = i.Distance;
+        e = r;
       }
     }
     var n;
@@ -100,30 +101,30 @@ class PhantomArenaFunctionalArea extends UiPanelBase_1.UiPanelBase {
     }
   }
   RefreshStateByGamepad(t, e) {
-    let r = -1;
-    const a = this.CardProxyMap.get(e);
-    if (a && a.CheckSettingCardCondition(t)) {
-      r = e;
+    let a = -1;
+    const r = this.CardProxyMap.get(e);
+    if (r && r.CheckSettingCardCondition(t)) {
+      a = e;
     }
-    if (this.Zo1 !== r) {
-      if (this.Zo1 === -1 && r !== -1) {
+    if (this.Zo1 !== a) {
+      if (this.Zo1 === -1 && a !== -1) {
         this.SetAllCardProxyUseActiveState(true, t);
-      } else if (this.Zo1 !== -1 && r === -1) {
+      } else if (this.Zo1 !== -1 && a === -1) {
         this.SetAllCardProxyUseActiveState(false, t);
       }
       if (this.Zo1 !== -1 && (e = this.CardProxyMap.get(this.Zo1))) {
         e.SetHoverStateActive(false);
       }
-      if (r !== -1) {
-        const a = this.CardProxyMap.get(r);
-        if (a) {
-          a.SetHoverStateActive(true);
+      if (a !== -1) {
+        const r = this.CardProxyMap.get(a);
+        if (r) {
+          r.SetHoverStateActive(true);
         }
       }
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("PhantomArena", 10, "找到放置区的位置", ["LastProxyIndex", this.Zo1], ["CurrentProxyIndex", r]);
+        Log_1.Log.Info("PhantomArena", 10, "找到放置区的位置", ["LastProxyIndex", this.Zo1], ["CurrentProxyIndex", a]);
       }
-      this.Zo1 = r;
+      this.Zo1 = a;
     }
   }
   ResetLastProxyIndexByGamepad() {
@@ -133,21 +134,21 @@ class PhantomArenaFunctionalArea extends UiPanelBase_1.UiPanelBase {
     var e;
     return !this.ParentArea.ViewProxy.GuideManager.InGuiding || !(e = this.GetNearlyAreaItemProxyByCard(t)) || e.CheckGuideCondition(t);
   }
-  async TrySettingCard(t, e, r) {
+  async TrySettingCard(t, e, a) {
     this.SetAllCardProxyUseActiveState(false, t);
     if (this.Zo1 === -1) {
       return false;
     }
-    var a = this.CardProxyMap.get(this.Zo1);
-    if (r) {
-      if (!(await a.HandleCardSetting(t))) {
-        a.SetHoverStateActive(false);
+    var r = this.CardProxyMap.get(this.Zo1);
+    if (a) {
+      if (!(await r.HandleCardSetting(t))) {
+        r.SetHoverStateActive(false);
         return false;
       }
     } else {
-      await a.SetCard(t);
+      await r.SetCard(t);
     }
-    a.SetHoverStateActive(false);
+    r.SetHoverStateActive(false);
     t.PlaySequenceWithoutStop("PutDownHandtoTable");
     if (e !== this.Zo1) {
       t.PlaySpineAnimAndEffect("start", false);
@@ -157,14 +158,14 @@ class PhantomArenaFunctionalArea extends UiPanelBase_1.UiPanelBase {
   }
   GetNearlyAreaItemProxyByCard(t) {
     let e = PhantomArenaDefine_1.DISTANCE_MAX;
-    let r = undefined;
-    for (const a of this.CardProxyMap.values()) {
-      if (a.IsCardNearlyAreaItem(t) && a.Distance < e) {
-        e = a.Distance;
-        r = a;
+    let a = undefined;
+    for (const r of this.CardProxyMap.values()) {
+      if (r.IsCardNearlyAreaItem(t) && r.Distance < e) {
+        e = r.Distance;
+        a = r;
       }
     }
-    return r;
+    return a;
   }
   async TryChangeCard(t, e) {
     if (this.Zo1 === -1 || e === -1) {
@@ -174,33 +175,36 @@ class PhantomArenaFunctionalArea extends UiPanelBase_1.UiPanelBase {
       await this.TrySettingCard(t, e, false);
       return true;
     }
-    var r = this.CardProxyMap.get(this.Zo1);
+    var a = this.CardProxyMap.get(this.Zo1);
     if (this.ParentArea.ViewProxy.GuideManager.InGuiding) {
       this.ParentArea.ViewProxy.GuideManager.ShowGuideTips();
-      r?.SetHoverStateActive(false);
+      a?.SetHoverStateActive(false);
       this.SetAllCardProxyUseActiveState(false, t);
       return false;
     }
     if (PhantomArenaDefine_1.functionAreaTypeList[this.Zo1] === 1) {
-      const a = await this.TrySettingCard(t, e, true);
-      if (a) {
+      const r = await this.TrySettingCard(t, e, true);
+      if (r) {
         const i = this.CardProxyMap.get(e);
         await i.SetCard(undefined);
       }
-      return a;
+      return r;
     }
-    const a = await ControllerHolder_1.ControllerHolder.PhantomArenaBattleController.RequestPhantomBattleSlotInstead(e, this.Zo1);
-    if (!a) {
+    if (!ModelManager_1.ModelManager.PhantomArenaBattleModel.CanSetSlotIndex(this.Zo1)) {
+      return false;
+    }
+    const r = await ControllerHolder_1.ControllerHolder.PhantomArenaBattleController.RequestPhantomBattleSlotInstead(e, this.Zo1);
+    if (!r) {
       this.SetAllCardProxyUseActiveState(false, t);
-      r?.SetHoverStateActive(false);
+      a?.SetHoverStateActive(false);
       return false;
     }
     const i = this.CardProxyMap.get(e);
     var n;
-    var r = r?.Card;
-    if (r) {
+    var a = a?.Card;
+    if (a) {
       if (n = await this.TrySettingCard(t, e, false)) {
-        await i.ChangeCard(r);
+        await i.ChangeCard(a);
       }
       return n;
     } else {
@@ -227,14 +231,14 @@ class PhantomArenaFunctionalArea extends UiPanelBase_1.UiPanelBase {
     }
   }
   ShowAddBuffEffect(t, e) {
-    for (const a of this.CardProxyMap.values()) {
-      var r;
-      if (a.Card && e.includes(a.Card.Data.FightId)) {
-        r = a;
+    for (const r of this.CardProxyMap.values()) {
+      var a;
+      if (r.Card && e.includes(r.Card.Data.FightId)) {
+        a = r;
         if (t === 1) {
-          r.AreaItem.SetBuffUpActive(true);
+          a.AreaItem.SetBuffUpActive(true);
         } else if (t === 2) {
-          r.AreaItem.SetBuffDownActive(true);
+          a.AreaItem.SetBuffDownActive(true);
         }
       }
     }
@@ -264,10 +268,10 @@ class PhantomArenaFunctionalArea extends UiPanelBase_1.UiPanelBase {
       }
     }
   }
-  DestroyCardByLibrary(t) {
+  async DestroyCardByLibrary(t) {
     t = this.CardProxyMap.get(t);
     if (t) {
-      t.DissolveByLibrary();
+      await t.DissolveByLibrary();
     }
   }
   async ResetCardPosition(t) {
@@ -276,44 +280,82 @@ class PhantomArenaFunctionalArea extends UiPanelBase_1.UiPanelBase {
       await t.PlayResetPositionTween();
     }
   }
-  async ResetFunctionalToMonster(t, e, r) {
-    r = this.CardProxyMap.get(r);
-    if (r) {
-      await r.SetCard(undefined);
-    }
-    r = this.CardProxyMap.get(e);
-    if (r) {
-      await r.ChangeCard(t);
+  async RemoveCardToLibrary(t) {
+    t = this.CardProxyMap.get(t);
+    if (t) {
+      await t.PlayCardToLibraryTween();
     }
   }
-  async FunctionalCardToFunctionalTop(t, e, r) {
+  async ResetFunctionalToMonster(t, e, a) {
+    a = this.CardProxyMap.get(a);
+    if (a) {
+      await a.SetCard(undefined);
+    }
+    a = this.CardProxyMap.get(e);
+    if (a) {
+      await a.ChangeCard(t);
+    }
+  }
+  async FunctionalCardToFunctionalTop(t, e, a) {
     t = this.CardProxyMap.get(t.Data.Index);
     if (t) {
       e = this.CardProxyMap.get(e).AreaItem.GetRootItem();
-      await t.PlayFunctionalCardToFunctionalTopTween(e, r);
+      await t.PlayFunctionalCardToFunctionalTopTween(e, a);
     }
   }
-  async FunctionalToRecycle(t, e) {
-    e = this.CardProxyMap.get(e.Data.Index);
-    if (e) {
-      await e.PlayFunctionalCardToRecycleTween(t);
+  async CopyCardListToFight(t) {
+    var e = [];
+    for (const i of t) {
+      var a = ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.GetBattleCardByCardId(i.kg1);
+      var r = this.CardProxyMap.get(a.Index);
+      e.push(r.CopyCard(a));
+    }
+    await Promise.all(e);
+  }
+  async PlayDamageHitEffect(t, e) {
+    t = this.GetCardProxyByCardId(t);
+    if (t) {
+      await t.Card?.PlayHitEffect(e);
+    }
+  }
+  async FunctionalToRecycle(t) {
+    t = this.CardProxyMap.get(t.Data.Index);
+    if (t) {
+      await t.PlayFunctionalCardToRecycleTween();
     }
   }
   GetCardProxyByIndex(t) {
     return this.CardProxyMap.get(t);
   }
+  async RefreshEffect(t, e) {
+    t = this.GetCardProxyByCardId(t);
+    if (t) {
+      await t.Card?.RefreshEffect(e);
+    }
+  }
+  async ReconstructFightCardToRecycle(t) {
+    var e = [];
+    for (const r of t) {
+      var a = this.GetCardProxyByCardId(r);
+      if (a) {
+        this.ParentArea.ViewProxy.CancelSelectedCard();
+        e.push(a.PlayFunctionalCardToRecycleTween());
+      }
+    }
+    await Promise.all(e);
+  }
   GetGuideUiItemAndUiItemForShowEx(t) {
     if (t && !(t.length < 3)) {
       var e = t[0];
       if (e === "BattleCard") {
-        r = parseInt(t[2]);
-        return this.CardProxyMap.get(r)?.Card?.GetGuideUiItemAndUiItemForShowEx(t);
+        a = parseInt(t[2]);
+        return this.CardProxyMap.get(a)?.Card?.GetGuideUiItemAndUiItemForShowEx(t);
       }
-      if (e === "BattleCardById") {
-        var r = Array.from(this.CardProxyMap.values());
-        var a = parseInt(t[2]);
-        for (const i of r) {
-          if (i.Card?.Data?.ConfigId === a) {
+      if (e === "BattleCardById" || e === "BattleCardSkillById") {
+        var a = Array.from(this.CardProxyMap.values());
+        var r = parseInt(t[2]);
+        for (const i of a) {
+          if (i.Card?.Data?.ConfigId === r) {
             return i.Card.GetGuideUiItemAndUiItemForShowEx(t);
           }
         }

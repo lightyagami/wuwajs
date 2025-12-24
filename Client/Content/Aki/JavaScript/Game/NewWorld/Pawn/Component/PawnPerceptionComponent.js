@@ -44,6 +44,7 @@ let PawnPerceptionComponent = class PawnPerceptionComponent extends EntityCompon
     this.rzr = undefined;
     this.ConfigId = -0;
     this.Ihn = undefined;
+    this.Kkf = new Map();
     this.iOu = new Map();
     this.rOu = new Set();
     this.Thn = undefined;
@@ -89,6 +90,30 @@ let PawnPerceptionComponent = class PawnPerceptionComponent extends EntityCompon
         this.vhn = false;
         EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnInEntityInteractRangeChange, false);
       }, undefined, undefined, e, i);
+    }
+  }
+  SetInteractRangeWithTags(t, e, i = 0, n = undefined, s = undefined, h = undefined) {
+    this.rzr.SetLogicRange(Math.max(e + INTERACT_LOGIC_OFFSET, i) + (n ? n.Size() : 0));
+    if (this.Kkf.has(t)) {
+      const o = this.Kkf.get(t);
+      o.UpdateDistance(e, i === 0 ? e : i);
+    } else {
+      const o = this.rzr.CreatePerceptionEvent(e, this.Entity?.GameBudgetManagedToken, () => {
+        if (Log_1.Log.CheckDebug()) {
+          Log_1.Log.Debug("Interaction", 93, "进入Tag交互范围", ["EntityId", this.Entity.Id], ["TagId", t]);
+        }
+        if (s) {
+          s();
+        }
+      }, () => {
+        if (Log_1.Log.CheckDebug()) {
+          Log_1.Log.Debug("Interaction", 93, "离开Tag交互范围", ["EntityId", this.Entity.Id], ["TagId", t]);
+        }
+        if (h) {
+          h();
+        }
+      }, undefined, undefined, i, n);
+      this.Kkf.set(t, o);
     }
   }
   SetOffsetOptionInteractRange(t, e, i = 0, n = undefined, s = undefined, h = undefined) {
@@ -146,7 +171,7 @@ let PawnPerceptionComponent = class PawnPerceptionComponent extends EntityCompon
     return true;
   }
   OnInit() {
-    this.rzr = this.Entity.GetComponent(125);
+    this.rzr = this.Entity.GetComponent(130);
     return true;
   }
   OnStart() {
@@ -167,7 +192,7 @@ let PawnPerceptionComponent = class PawnPerceptionComponent extends EntityCompon
   OnActivate() {
     var t;
     var e;
-    var i = this.Entity.GetComponent(164);
+    var i = this.Entity.GetComponent(169);
     if (i) {
       t = i.ShowRange;
       e = i.HideRange;
@@ -194,6 +219,7 @@ let PawnPerceptionComponent = class PawnPerceptionComponent extends EntityCompon
     this.Ihn = undefined;
     this.Thn = undefined;
     this.Lhn = undefined;
+    this.Kkf.clear();
     this.yhn.Empty();
     return true;
   }
@@ -214,5 +240,5 @@ InteractRangeInfo:
     return t;
   }
 };
-PawnPerceptionComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(123)], PawnPerceptionComponent);
+PawnPerceptionComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(128)], PawnPerceptionComponent);
 exports.PawnPerceptionComponent = PawnPerceptionComponent; //# sourceMappingURL=PawnPerceptionComponent.js.map

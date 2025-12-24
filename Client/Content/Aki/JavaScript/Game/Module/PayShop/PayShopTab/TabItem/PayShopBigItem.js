@@ -36,7 +36,7 @@ class PayShopBigItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.ckn = "";
     this.q71 = 0;
     this.R3i = () => {
-      if (this.Pe && this.IsUiActiveInHierarchy() && (this.RefreshCommonItem(), this.RefreshRechargeItem(), this.G71(), this.iFi(), this.Ozd(), this.F71(), this.RefreshRedDot(), this.Pe instanceof PayShopGoods_1.PayShopGoods) && (this.N71(this.Pe) || this.V71(this.Pe))) {
+      if (this.Pe && this.IsUiActiveInHierarchy() && (this.RefreshCommonItem(), this.RefreshRechargeItem(), this.G71(), this.iFi(), this.pJd(), this.F71(), this.RefreshRedDot(), this.Pe instanceof PayShopGoods_1.PayShopGoods) && (this.N71(this.Pe) || this.V71(this.Pe))) {
         this.TryEmitRefreshTips();
       }
     };
@@ -116,7 +116,7 @@ class PayShopBigItem extends GridProxyAbstract_1.GridProxyAbstract {
       }
       this.G71();
       this.iFi();
-      this.Ozd();
+      this.pJd();
       this.F71();
       this.RefreshRedDot();
       this.RefreshCommonItem();
@@ -207,7 +207,7 @@ class PayShopBigItem extends GridProxyAbstract_1.GridProxyAbstract {
       this.B71.get(7)?.SetTextByTextId("Text_DefaultBonus_Text", t.BonusItemCount);
     });
   }
-  Ozd() {
+  pJd() {
     var t;
     var i;
     if (ModelManager_1.ModelManager.PayShopModel.BusinessCompliance) {

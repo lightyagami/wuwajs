@@ -77,7 +77,7 @@ class SequenceController extends ControllerWithAssistantBase_1.ControllerWithAss
   static get zio() {
     return this.Assistants.get(6);
   }
-  static Play(t, s, i, e = true, h = true, r = false, a = 1, n = false) {
+  static Play(t, s, i, e = true, a = true, h = false, n = 1, r = false) {
     if (this.jio.IsPlaying) {
       ControllerHolder_1.ControllerHolder.FlowController.LogError("重复播放剧情Sequence，当前一次只能播放一段");
       i(false);
@@ -89,10 +89,10 @@ class SequenceController extends ControllerWithAssistantBase_1.ControllerWithAss
       }
       this.jio.Config = t;
       this.jio.IsViewTargetControl = e;
-      this.jio.IsSubtitleUiUse = h;
-      this.jio.IsWaitRenderData = r;
-      this.jio.PlayRate = a;
-      this.jio.IsSeamless = n;
+      this.jio.IsSubtitleUiUse = a;
+      this.jio.IsWaitRenderData = h;
+      this.jio.PlayRate = n;
+      this.jio.IsSeamless = r;
       this.jio.FinishCallback = i;
       this.un(t => {
         if (!this.jio.IsEnding) {
@@ -163,10 +163,10 @@ class SequenceController extends ControllerWithAssistantBase_1.ControllerWithAss
       var t = this.zio.LoadPromise();
       var i = this.Kio.BeginLoadMouthAssetPromise();
       const e = new CustomPromise_1.CustomPromise();
-      const h = new CustomPromise_1.CustomPromise();
+      const a = new CustomPromise_1.CustomPromise();
       this.Qio.Load(t => {
         if (t) {
-          this.zio.PreloadUi(h);
+          this.zio.PreloadUi(a);
           this.Kio.Load(t => {
             if (t) {
               this.$io.Load(t => {
@@ -193,11 +193,12 @@ class SequenceController extends ControllerWithAssistantBase_1.ControllerWithAss
             }
           });
         } else {
+          ControllerHolder_1.ControllerHolder.FlowController.LogError("Sequence加载失败");
           e.SetResult(false);
-          h.SetResult(false);
+          a.SetResult(false);
         }
       });
-      Promise.all([t, i, e.Promise, h.Promise]).then(t => {
+      Promise.all([t, i, e.Promise, a.Promise]).then(t => {
         t = t[0] && t[1] && t[2] && t[3];
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Plot", 26, "[剧情加载等待] Sequence加载-完成", ["result", t]);
@@ -249,6 +250,7 @@ class SequenceController extends ControllerWithAssistantBase_1.ControllerWithAss
     this.Kio.CheckHideBattleCharacter();
     this.jio.State = 3;
     this.ooo(t);
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PlotSequenceStarted);
   }
   static ooo(t) {
     this.Jio.PreEachPlay();
@@ -263,6 +265,7 @@ class SequenceController extends ControllerWithAssistantBase_1.ControllerWithAss
       this.Jio.EachStop();
       this.Yio.EachStop();
       if (this.jio.IsFinish()) {
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PlotSequenceEnd);
         t(true);
       } else {
         this.ooo(t);
@@ -303,9 +306,9 @@ class SequenceController extends ControllerWithAssistantBase_1.ControllerWithAss
       var i = s.Num();
       var e = new UE.FName("SequencePostProcess");
       for (let t = 0; t < i; t++) {
-        var h = s.Get(t);
-        if (h.ActorHasTag(e)) {
-          h.Settings = new UE.PostProcessSettings();
+        var a = s.Get(t);
+        if (a.ActorHasTag(e)) {
+          a.Settings = new UE.PostProcessSettings();
         }
       }
       this.jio.State = 0;
@@ -370,6 +373,9 @@ class SequenceController extends ControllerWithAssistantBase_1.ControllerWithAss
     }
     this.Yio.CalcPreloadLocation();
     UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.InvalidSeveralFrameOcculusion 5");
+    if (GlobalData_1.GlobalData.IsSm5 && UE.KuroSequencePerformanceManager.GetPerformanceMode() === 1 && UE.KuroSequencePerformanceManager.GetShadowUpdateCVar()) {
+      this.Wio.CmdShadowUpdate();
+    }
   }
   static ShowLogo(t) {
     this.$io.ShowLogo(t);
@@ -407,6 +413,13 @@ class SequenceController extends ControllerWithAssistantBase_1.ControllerWithAss
   }
   static AdditionSeqEnd() {
     this.$io.AdditionSeqEnd();
+  }
+  static EnableCameraShake(t, s) {
+    if (t) {
+      this.Yio.StartCameraShake(s);
+    } else {
+      this.Yio.StopCameraShake(s);
+    }
   }
 }
 (exports.SequenceController = SequenceController).IsTickEvenPausedInternal = true;

@@ -17,6 +17,7 @@ class PhantomArenaAreaProxyBase {
     this.Card = undefined;
     this.ParentArea = undefined;
     this.SettingFailReason = "";
+    this.IsInCardTween = false;
     this.Index = t;
     this.ParentArea = e;
   }
@@ -93,7 +94,7 @@ class PhantomArenaAreaProxyBase {
     const t = new CustomPromise_1.CustomPromise();
     var e = {
       CompleteCallback: () => {
-        this.Card?.SetUiParent(this.AreaItem.GetRootItem(), true);
+        this.Card?.SetUiParent(this.GetCardRootItem(), true);
         this.Card?.PlayStateSequence("SeleClose");
         t.SetResult();
       },
@@ -101,7 +102,7 @@ class PhantomArenaAreaProxyBase {
       LocationCurveY: this.ParentArea.ParentArea.RecycleCurve,
       DurationTime: PhantomArenaDefine_1.PLAY_RESET_POS_TWEEN_DURATION
     };
-    this.Card?.PlayLocationByItem(this.Card.GetOriginalItem(), this.AreaItem.GetRootItem(), e);
+    this.Card?.PlayLocationByItem(this.Card.GetOriginalItem(), this.GetCardRootItem(), e);
     this.Card?.PlaySequence("DragUpTabletoHand", true);
     await t.Promise;
   }
@@ -122,7 +123,7 @@ class PhantomArenaAreaProxyBase {
       LocationCurveY: this.ParentArea.ParentArea.RecycleCurve,
       DurationTime: PhantomArenaDefine_1.PLAY_CHANGE_CARD_TWEEN_DURATION
     };
-    this.Card?.PlayLocationByItem(t, this.AreaItem.GetRootItem(), i);
+    this.Card?.PlayLocationByItem(t, this.GetCardRootItem(), i);
     this.Card?.PlaySequenceWithoutStop("DragUpTabletoHand");
     await e.Promise;
   }
@@ -133,7 +134,7 @@ class PhantomArenaAreaProxyBase {
         this.Card?.SetUiParent(this.ParentArea.ParentArea.ViewProxy.GetDragRootItem());
       },
       CompleteCallback: () => {
-        this.Card?.SetUiParent(this.AreaItem.GetRootItem(), true);
+        this.Card?.SetUiParent(this.GetCardRootItem(), true);
         this.Card?.StopSequence("DragUpTabletoHand");
         this.Card?.PlaySequenceAsync("PutDownHandtoTable").finally(() => {
           t.SetResult();
@@ -143,7 +144,7 @@ class PhantomArenaAreaProxyBase {
       LocationCurveY: this.ParentArea.ParentArea.RecycleCurve,
       DurationTime: PhantomArenaDefine_1.PLAY_CHANGE_CARD_TWEEN_DURATION
     };
-    this.Card?.PlayLocationByItem(this.Card.GetOriginalItem(), this.AreaItem.GetRootItem(), e);
+    this.Card?.PlayLocationByItem(this.Card.GetOriginalItem(), this.GetCardRootItem(), e);
     this.Card?.PlaySequenceWithoutStop("DragUpHandtoTable");
     await t.Promise;
   }
@@ -167,7 +168,9 @@ class PhantomArenaAreaProxyBase {
     }
     await i.Promise;
   }
-  async PlayFunctionalCardToRecycleTween(t) {
+  async PlayFunctionalCardToRecycleTween() {
+    this.IsInCardTween = true;
+    var t = this.ParentArea.ParentArea.ViewProxy.CardRecycle.GetRootItem();
     const e = new CustomPromise_1.CustomPromise();
     var i = {
       StartCallback: () => {
@@ -175,6 +178,28 @@ class PhantomArenaAreaProxyBase {
       },
       CompleteCallback: () => {
         this.DissolveByLibrary().finally(() => {
+          this.IsInCardTween = false;
+          e.SetResult();
+        });
+      },
+      LocationCurveX: this.ParentArea.ParentArea.RecycleCurve,
+      LocationCurveY: this.ParentArea.ParentArea.RecycleCurve,
+      DurationTime: PhantomArenaDefine_1.PLAY_MOVE_DURATION
+    };
+    this.Card?.PlayLocationByItem(this.Card.GetOriginalItem(), t, i);
+    await e.Promise;
+  }
+  async PlayCardToLibraryTween() {
+    this.IsInCardTween = true;
+    var t = this.ParentArea.ParentArea.ViewProxy.GetOwnCardLibraryItem();
+    const e = new CustomPromise_1.CustomPromise();
+    var i = {
+      StartCallback: () => {
+        this.Card?.SetUiParent(this.ParentArea.ParentArea.ViewProxy.GetDragRootItem());
+      },
+      CompleteCallback: () => {
+        this.DissolveByLibrary().finally(() => {
+          this.IsInCardTween = false;
           e.SetResult();
         });
       },

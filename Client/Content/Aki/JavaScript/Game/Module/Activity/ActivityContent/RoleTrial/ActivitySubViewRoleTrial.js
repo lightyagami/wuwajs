@@ -93,7 +93,7 @@ class ActivitySubViewRoleTrial extends ActivitySubViewBase_1.ActivitySubViewBase
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UITexture], [1, UE.UITexture], [2, UE.UIHorizontalLayout], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIButtonComponent], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UIItem], [11, UE.UIButtonComponent], [12, UE.UITexture], [13, UE.UITexture], [14, UE.UITexture], [15, UE.UITexture], [16, UE.UITexture], [17, UE.UITexture], [18, UE.UITexture], [19, UE.UIButtonComponent]];
+    this.ComponentRegisterInfos = [[0, UE.UITexture], [1, UE.SpineSkeletonAnimationComponent], [2, UE.UIHorizontalLayout], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIButtonComponent], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UIItem], [11, UE.UIButtonComponent], [12, UE.UITexture], [13, UE.UITexture], [14, UE.UITexture], [15, UE.UITexture], [16, UE.UITexture], [17, UE.UITexture], [18, UE.UITexture], [19, UE.UIButtonComponent], [20, UE.UIScrollViewWithScrollbarComponent], [21, UE.UIItem], [22, UE.UIItem]];
     this.BtnBindInfo = [[6, this.X2e], [11, this.aFe], [19, this.j41]];
   }
   OnSetData() {}
@@ -118,6 +118,7 @@ class ActivitySubViewRoleTrial extends ActivitySubViewBase_1.ActivitySubViewBase
   }
   OnStart() {
     var t = this.ActivityBaseData.LocalConfig;
+    this.LNe.SetActivityBaseData(this.ActivityBaseData);
     this.LNe.SetTitleByText(this.ActivityBaseData.GetTitle());
     this.LNe.SetSubTitleVisible(!StringUtils_1.StringUtils.IsEmpty(t?.DescTheme));
     if (t?.DescTheme) {
@@ -135,6 +136,12 @@ class ActivitySubViewRoleTrial extends ActivitySubViewBase_1.ActivitySubViewBase
       } else if (this.ActivityBaseData.CurrentRoleId && t.includes(this.ActivityBaseData.CurrentRoleId)) {
         i = this.ActivityBaseData.CurrentRoleId;
       }
+      var e = this.GetScrollViewWithScrollbar(20);
+      var s = e.RootUIComp.GetWidth();
+      var r = this.GetHorizontalLayout(2);
+      var h = this.GetItem(21);
+      var h = Math.min((h.GetWidth() + r.GetSpacing()) * t.length, s);
+      e.RootUIComp.SetWidth(h);
       this.tFe.RefreshByData(t, () => {
         this.rFe(i);
       });
@@ -205,27 +212,36 @@ class ActivitySubViewRoleTrial extends ActivitySubViewBase_1.ActivitySubViewBase
       this.DNe.SetContentByTextId(s);
     }
     this.j2e.Update(t.RoleId);
-    var r = this.GetTexture(1);
-    this.SetTextureShowUntilLoaded(e.RoleStand, r);
-    var r = this.GetTexture(12);
-    var h = this.GetTexture(13);
+    const h = this.GetItem(22);
+    const n = this.GetSpine(1);
+    r = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(t.RoleId);
+    h.SetUIActive(false);
+    const o = e.SpineParam;
+    this.SetSpineAssetByPath(e.FormationSpineAtlas, e.FormationSpineSkeletonData, n).then(() => {
+      h.SetAnchorOffsetX(o[0]);
+      h.SetAnchorOffsetY(o[1]);
+      h.SetUIItemScale(new UE.Vector(o[2], o[2], o[2]));
+      h.SetUIActive(true);
+      n.SetAnimation(0, "idle", true);
+    });
+    var a = this.GetTexture(12);
+    var l = this.GetTexture(13);
     if (e.RoleStand2) {
-      this.SetTextureShowUntilLoaded(e.RoleStand2, r);
-      this.SetTextureShowUntilLoaded(e.RoleStand2, h);
+      this.SetTextureShowUntilLoaded(e.RoleStand2, a);
+      this.SetTextureShowUntilLoaded(e.RoleStand2, l);
     }
     this.h$a(e.UiConfigId);
-    var r = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(t.RoleId);
     if (r) {
-      h = r.PartyId;
-      e = ConfigManager_1.ConfigManager.InfluenceConfig.GetInfluenceConfig(h);
-      if (!StringUtils_1.StringUtils.IsEmpty(e?.Logo)) {
-        r = this.GetTexture(0);
-        this.SetTextureByPath(e.Logo, r);
+      a = r.PartyId;
+      l = ConfigManager_1.ConfigManager.InfluenceConfig.GetInfluenceConfig(a);
+      if (!StringUtils_1.StringUtils.IsEmpty(l?.Logo)) {
+        e = this.GetTexture(0);
+        this.SetTextureByPath(l.Logo, e);
       }
     }
-    var h = this.GetButton(19);
-    var e = ModelManager_1.ModelManager.FunctionModel.IsOpen(10009);
-    h?.RootUIComp.SetUIActive(t.GachaId > 0 && e);
+    var r = this.GetButton(19);
+    var a = ModelManager_1.ModelManager.FunctionModel.IsOpen(10009);
+    r?.RootUIComp.SetUIActive(t.GachaId > 0 && a);
     this.jqe(i);
   }
   sFe() {

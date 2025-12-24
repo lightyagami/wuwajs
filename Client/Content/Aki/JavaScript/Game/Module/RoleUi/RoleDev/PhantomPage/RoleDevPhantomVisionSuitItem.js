@@ -87,7 +87,8 @@ class RoleDevPhantomVisionSuitItem extends GridProxyAbstract_1.GridProxyAbstract
     }
   }
   Jsd(t, e) {
-    UiManager_1.UiManager.OpenView("PhantomBattleFettersView", [t, e]);
+    var i = ModelManager_1.ModelManager.RoleModel.IsRoleOwned(e);
+    UiManager_1.UiManager.OpenView("PhantomBattleFettersView", [t, e, i]);
   }
 }
 exports.RoleDevPhantomVisionSuitItem = RoleDevPhantomVisionSuitItem;

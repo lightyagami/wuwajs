@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.motorcycleVisionSkill1OnRelease = exports.motorcycleVisionSkill1OnPress = undefined;
+exports.getVisionSkill1SkillId = exports.motorcycleVisionSkill1OnRelease = exports.motorcycleVisionSkill1OnPress = undefined;
 const Info_1 = require("../../../../../../../Core/Common/Info");
 const Log_1 = require("../../../../../../../Core/Common/Log");
 const Global_1 = require("../../../../../../Global");
@@ -12,28 +12,42 @@ const UiBlueprintFunctionLibrary_1 = require("../../../../../../Module/BpBridge/
 const PhantomUtil_1 = require("../../../../../../Module/Phantom/PhantomUtil");
 const InputDefine_1 = require("./InputDefine");
 const InputFunctionCommon_1 = require("./InputFunctionCommon");
-function visionSkill1Function(n) {
+const pullCollectionMutexSkillIds = new Set([InputDefine_1.SKILL_ID_MOTORCYCLE_SHOW_VISION_ENTRY, InputDefine_1.SKILL_ID_MOTORCYCLE_CRUISE, InputDefine_1.SKILL_ID_MOTOCYCLE_PHOTOGRAPH, InputDefine_1.SKILL_ID_MOTOCYCLE_EAGLE_EYE]);
+function visionSkill1Function(n, e = false) {
   var o = Global_1.Global.BaseCharacter;
   if (o) {
-    var o = o.CharacterActorComponent?.Entity;
-    var i = o?.GetComponent(233)?.VehicleEntity;
-    if (i) {
-      var e = (0, InputFunctionCommon_1.createInputCommandFromDataTable)(i.Id, 7, 1);
-      if (e) {
-        return e;
-      }
-      e = ModelManager_1.ModelManager.RouletteModel.CurrentExploreSkillId;
-      if (e) {
+    o = o.CharacterActorComponent?.Entity?.GetComponent(242)?.VehicleEntity;
+    if (o) {
+      var l = o.GetComponent(215);
+      if (l) {
+        var r = (0, InputFunctionCommon_1.createInputCommandFromDataTable)(o.Id, 7, 1);
+        if (r) {
+          return r;
+        }
         let n = 0;
-        e = PhantomUtil_1.PhantomUtil.GetVisionData(e);
-        if ((n = e && e.类型 === 2 ? e.技能ID : n) === InputDefine_1.SKILL_ID_HOOK && o?.GetComponent(102)?.CanActivateFixHook()) {
-          n = InputDefine_1.SKILL_ID_FIX_HOOK_1;
+        let i = 0;
+        var r = o?.GetComponent(57);
+        var t = r?.GetSkillIdByCurrentTarget();
+        if (t) {
+          n = t;
+          i = 6004;
+        }
+        if (n === 0) {
+          i = ModelManager_1.ModelManager.RouletteModel.CurrentExploreSkillId;
+          t = PhantomUtil_1.PhantomUtil.GetVisionData(i);
+          if ((n = t && t.类型 === 2 ? t.技能ID : n) === InputDefine_1.SKILL_ID_MOTORCYCLE_SHOW_VISION_ENTRY && l.HasAnyTag([-1330336472, -1699006823, 761126017, -1281364710])) {
+            return;
+          }
+          if (pullCollectionMutexSkillIds.has(n) && l.HasTag(1376124731)) {
+            return;
+          }
         }
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("Character", 82, "Motorcycle VisionSkill1", ["skillId", n]);
+          Log_1.Log.Info("Vehicle", 79, "摩托车释放技能", ["skillId", n]);
         }
-        if (n !== 0 && ModelManager_1.ModelManager.ExploreSkillFlagModel.GetExploreSkillFlagEnable(n)) {
-          return (0, InputFunctionCommon_1.createSkillCommand)(i, n);
+        if (n !== 0 && (e || ModelManager_1.ModelManager.ExploreSkillFlagModel.GetExploreSkillFlagEnable(n))) {
+          ModelManager_1.ModelManager.RouletteModel.TrySendExploreToolGeneralUseLogData(i, n, r?.FocusTarget?.EntityConfigId);
+          return (0, InputFunctionCommon_1.createSkillCommand)(o, n);
         } else {
           return undefined;
         }
@@ -51,5 +65,12 @@ function motorcycleVisionSkill1OnRelease(n) {
     return visionSkill1Function(n);
   }
 }
+function getVisionSkill1SkillId(n = false) {
+  n = visionSkill1Function(0, n);
+  if (n) {
+    return n.IntValue;
+  }
+}
 exports.motorcycleVisionSkill1OnPress = motorcycleVisionSkill1OnPress;
-exports.motorcycleVisionSkill1OnRelease = motorcycleVisionSkill1OnRelease; //# sourceMappingURL=InputFunctionMotorcycle.js.map
+exports.motorcycleVisionSkill1OnRelease = motorcycleVisionSkill1OnRelease;
+exports.getVisionSkill1SkillId = getVisionSkill1SkillId; //# sourceMappingURL=InputFunctionMotorcycle.js.map

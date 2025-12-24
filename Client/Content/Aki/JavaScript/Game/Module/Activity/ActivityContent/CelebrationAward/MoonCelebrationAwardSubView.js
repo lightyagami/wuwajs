@@ -19,19 +19,19 @@ class MoonCelebrationAwardSubView extends ActivitySubViewBase_1.ActivitySubViewB
   constructor() {
     super(...arguments);
     this.ActivityTimePointRewardData = undefined;
-    this.Tem = 0;
-    this.bem = 0;
+    this.orm = 0;
+    this.nrm = 0;
     this.L11 = () => {
       var e = this.ActivityTimePointRewardData.GetRewardDataList();
       if (e[0].RewardState === 1) {
         ActivityTimePointRewardController_1.ActivityTimePointRewardController.GetRewardById(this.ActivityTimePointRewardData.Id, e[0].Id);
       }
     };
-    this.Rem = () => {
-      ControllerHolder_1.ControllerHolder.ItemController.OpenItemTipsByItemId(this.Tem);
+    this.srm = () => {
+      ControllerHolder_1.ControllerHolder.ItemController.OpenItemTipsByItemId(this.orm);
     };
-    this.wem = () => {
-      ControllerHolder_1.ControllerHolder.ItemController.OpenItemTipsByItemId(this.bem);
+    this.arm = () => {
+      ControllerHolder_1.ControllerHolder.ItemController.OpenItemTipsByItemId(this.nrm);
     };
     this.wNe = e => {
       if (this.ActivityBaseData.Id === e) {
@@ -42,7 +42,7 @@ class MoonCelebrationAwardSubView extends ActivitySubViewBase_1.ActivitySubViewB
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[4, UE.UIButtonComponent], [6, UE.UIButtonComponent], [2, UE.UIText], [3, UE.UIText], [10, UE.UIText], [0, UE.UIButtonComponent], [1, UE.UIText], [5, UE.UIText], [7, UE.UIText], [8, UE.UITexture], [9, UE.UITexture], [11, UE.UIItem]];
-    this.BtnBindInfo = [[0, this.L11], [4, this.Rem], [6, this.wem]];
+    this.BtnBindInfo = [[0, this.L11], [4, this.srm], [6, this.arm]];
   }
   OnSetData() {
     this.ActivityTimePointRewardData = this.ActivityBaseData;
@@ -70,12 +70,12 @@ class MoonCelebrationAwardSubView extends ActivitySubViewBase_1.ActivitySubViewB
         if (r) {
           this.SetTextureByPath(o.Icon, this.GetTexture(9));
           this.GetText(7).SetText("X" + i);
-          this.bem = e;
+          this.nrm = e;
         } else {
           this.SetTextureByPath(o.Icon, this.GetTexture(8));
           this.GetText(5).SetText("X" + i);
           r = true;
-          this.Tem = e;
+          this.orm = e;
         }
       }
     }

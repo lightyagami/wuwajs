@@ -122,6 +122,9 @@ let UiModelActorComponent = class UiModelActorComponent extends UiModelComponent
         break;
       case 5:
         this.CharRenderingComponent.AddComponentByCase(7, this.MainMeshComponent);
+        break;
+      case 6:
+        this.CharRenderingComponent.AddComponent("CharacterMesh0", this.MainMeshComponent);
     }
   }
   ChangeMesh(e, t, i, s, o = 0) {
@@ -137,6 +140,9 @@ let UiModelActorComponent = class UiModelActorComponent extends UiModelComponent
       case 4:
       case 5:
         this.xwr(e, t, undefined, o);
+        break;
+      case 6:
+        this.xwr(e, undefined, undefined, o);
     }
   }
   xwr(e, t, i, s = 0) {
@@ -174,7 +180,7 @@ let UiModelActorComponent = class UiModelActorComponent extends UiModelComponent
     } else {
       this.CharRenderingComponent.ResetAllRenderingState();
       this.wwr();
-      this.Cym();
+      this.lPm();
       this.D_r?.DestroyAllEffect();
       var n = this.MainMeshComponent;
       let t = undefined;
@@ -203,7 +209,7 @@ let UiModelActorComponent = class UiModelActorComponent extends UiModelComponent
       }
       if (o && o.length > 0) {
         for (const _ of o) {
-          this.pym(_);
+          this._Pm(_);
         }
       }
       this.Awr();
@@ -219,7 +225,7 @@ let UiModelActorComponent = class UiModelActorComponent extends UiModelComponent
     this.CharRenderingComponent.AddComponent("OtherCase" + e, t);
     return t;
   }
-  pym(e) {
+  _Pm(e) {
     this.DecorationMeshComponentList ||= [];
     var t = this.Uwr(e.Transform);
     this.QN1(t, e.SkeletalMesh);
@@ -235,7 +241,7 @@ let UiModelActorComponent = class UiModelActorComponent extends UiModelComponent
       this.ChildMeshComponentList.length = 0;
     }
   }
-  Cym() {
+  lPm() {
     if (this.DecorationMeshComponentList) {
       for (const e of this.DecorationMeshComponentList) {
         this.Bwr(e);

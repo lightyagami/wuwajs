@@ -40,10 +40,12 @@ const ENTITY_REMOVE_DELAY = 3;
 const DEFAULT_MOVE_SPEED = 100;
 const DEFAULT_EXCEPTION_COUNTER_TIME = 5000;
 const MIN_MOVE_SPEED = 20;
+const ENABLE_IK_MIN_ANGLE_DEGREE = 5;
 let NpcPasserbyComponent = class NpcPasserbyComponent extends EntityComponent_1.EntityComponent {
   constructor() {
     super(...arguments);
     this.Hte = undefined;
+    this.oRe = undefined;
     this.Gce = undefined;
     this.Htn = 0;
     this.jtn = 0;
@@ -61,7 +63,8 @@ let NpcPasserbyComponent = class NpcPasserbyComponent extends EntityComponent_1.
   OnCreate(t) {
     this.lf1 = false;
     this.Hte = this.Entity.CheckGetComponent(2);
-    this.Gce = this.Entity.GetComponent(45);
+    this.oRe = this.Entity.GetComponent(186);
+    this.Gce = this.Entity.GetComponent(46);
     return !!this.Hte && !!this.Gce;
   }
   OnStart() {
@@ -92,16 +95,12 @@ let NpcPasserbyComponent = class NpcPasserbyComponent extends EntityComponent_1.
     for (const o of i.MoveConfig.Routes) {
       if (this.Htn === o.SplineEntityId) {
         this.szo = !!o.IsLoop;
-        this.sH1 = !!o.IsIkEnabled;
         if (o.MoveState) {
           this.tu = o.MoveState.MoveState;
           this.jnr = o.MoveState.MoveSpeed;
         }
         break;
       }
-    }
-    if (this.sH1 && this.Hte?.Actor.IsA(UE.BP_BaseNPC_C.StaticClass())) {
-      this.Hte.Owner.IsEnableIK = true;
     }
     this.SBu = i.NpcMaterialDa;
     t = this.Hte.Actor.CharacterMovement;
@@ -121,6 +120,7 @@ let NpcPasserbyComponent = class NpcPasserbyComponent extends EntityComponent_1.
     if (this.CheckMoveException(t) && this._f1 <= 0) {
       this.SendMessage();
     }
+    this.TryEnableIK();
   }
   HC(t) {
     var e = new GameSplineComponent_1.GameSplineComponent(t);
@@ -212,9 +212,17 @@ let NpcPasserbyComponent = class NpcPasserbyComponent extends EntityComponent_1.
   }
   InitMatFromGenerator() {
     if (this.SBu) {
-      this.Entity.GetComponent(190)?.MaterialController?.ApplyMaterialEffect(this.SBu);
+      this.Entity.GetComponent(196)?.MaterialController?.ApplyMaterialEffect(this.SBu);
+    }
+  }
+  TryEnableIK() {
+    var t;
+    var e;
+    if (this.oRe && this.Hte?.Owner?.IsA(UE.BP_BaseNPC_C.StaticClass()) && (t = this.Hte.Owner, (e = !!this.Hte?.MoveComp?.IsMoving && Math.abs(this.oRe.DegMovementSlope) > ENABLE_IK_MIN_ANGLE_DEGREE) !== this.sH1)) {
+      this.sH1 = e;
+      t.IsEnableIK = e;
     }
   }
 };
-NpcPasserbyComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(92)], NpcPasserbyComponent);
+NpcPasserbyComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(95)], NpcPasserbyComponent);
 exports.NpcPasserbyComponent = NpcPasserbyComponent; //# sourceMappingURL=NpcPasserbyComponent.js.map

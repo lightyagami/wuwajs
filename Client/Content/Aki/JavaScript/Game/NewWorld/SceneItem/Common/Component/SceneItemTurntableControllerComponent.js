@@ -110,7 +110,7 @@ let SceneItemTurntableControllerComponent = SceneItemTurntableControllerComponen
     return true;
   }
   OnStart() {
-    this.Xte = this.Entity.GetComponent(200);
+    this.Xte = this.Entity.GetComponent(206);
     if (this.Xte) {
       if (this.p_n) {
         EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted, this.Rnn);
@@ -153,7 +153,7 @@ let SceneItemTurntableControllerComponent = SceneItemTurntableControllerComponen
     return true;
   }
   E_n() {
-    var t = this.Entity?.GetComponent(206);
+    var t = this.Entity?.GetComponent(212);
     if (!t) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("SceneItem", 39, "稷廷开门机关组件初始化错误，SceneItemActorComponent组件获取失败");
@@ -562,5 +562,5 @@ let SceneItemTurntableControllerComponent = SceneItemTurntableControllerComponen
     return s;
   }
 };
-SceneItemTurntableControllerComponent = SceneItemTurntableControllerComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(139)], SceneItemTurntableControllerComponent);
+SceneItemTurntableControllerComponent = SceneItemTurntableControllerComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(144)], SceneItemTurntableControllerComponent);
 exports.SceneItemTurntableControllerComponent = SceneItemTurntableControllerComponent; //# sourceMappingURL=SceneItemTurntableControllerComponent.js.map

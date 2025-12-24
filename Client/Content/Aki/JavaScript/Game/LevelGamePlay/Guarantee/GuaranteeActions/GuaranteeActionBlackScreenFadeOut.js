@@ -8,6 +8,7 @@ const Log_1 = require("../../../../Core/Common/Log");
 const Global_1 = require("../../../Global");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
+const LevelGeneralContextDefine_1 = require("../../LevelGeneralContextDefine");
 const GuaranteeActionBase_1 = require("./GuaranteeActionBase");
 class GuaranteeActionBlackScreenFadeOut extends GuaranteeActionBase_1.GuaranteeActionBase {
   OnExecute(e) {
@@ -31,7 +32,18 @@ class GuaranteeActionBlackScreenFadeOut extends GuaranteeActionBase_1.GuaranteeA
     }
   }
   OnClear(e, r) {
-    ModelManager_1.ModelManager.GeneralLogicTreeModel.AddGuaranteeActionsWhenLogicTreeRemove("ActionBlackScreenFadeOut", e, r);
+    if (r instanceof LevelGeneralContextDefine_1.GeneralLogicTreeContext) {
+      var a = r;
+      if (a && a.TreeIncId && ModelManager_1.ModelManager.GeneralLogicTreeModel) {
+        a = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(a.TreeIncId);
+        if (a && !a.GetRollbackPoint()) {
+          return;
+        }
+      }
+    }
+    if (e && e.KeepFadeAfterTreeRollBack && ModelManager_1.ModelManager.GeneralLogicTreeModel) {
+      ModelManager_1.ModelManager.GeneralLogicTreeModel.AddGuaranteeActionsWhenLogicTreeRemove("ActionBlackScreenFadeOut", e, r);
+    }
   }
 }
 exports.GuaranteeActionBlackScreenFadeOut = GuaranteeActionBlackScreenFadeOut;

@@ -21,7 +21,7 @@ class ActivityListPanel extends WorldMapSecondaryUi_1.WorldMapSecondaryUi {
       ModelManager_1.ModelManager.WorldMapModel.UpdateActivityListItemData(false);
       this.xqe?.RefreshByDataAsync(this.wja());
     };
-    this._cm = () => {
+    this.x0m = () => {
       ModelManager_1.ModelManager.WorldMapModel.ActivityListData.forEach(e => {
         e.OnLeftTimeRefreshCb(e);
       });
@@ -50,7 +50,7 @@ class ActivityListPanel extends WorldMapSecondaryUi_1.WorldMapSecondaryUi {
     this.zJa.SetHelpBtnActive(false);
   }
   OnShowWorldMapSecondaryUi() {
-    this.IRe ||= TimerSystem_1.GameplayTimerSystem.Forever(this._cm, 1000);
+    this.IRe ||= TimerSystem_1.GameplayTimerSystem.Forever(this.x0m, 1000);
     this.JSd();
   }
   OnBeforeHide() {

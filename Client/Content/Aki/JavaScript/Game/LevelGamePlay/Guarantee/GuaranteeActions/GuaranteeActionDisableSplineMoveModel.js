@@ -30,7 +30,7 @@ class GuaranteeActionDisableSplineMoveModel extends GuaranteeActionBase_1.Guaran
           }
           return;
       }
-      o = e?.GetComponent(110);
+      o = e?.GetComponent(115);
       if (o?.Valid) {
         o.EndSplineMove(a.SplineEntityId);
       }

@@ -15,7 +15,7 @@ class DiscardCardOperation extends NpcAiOperation_1.NpcAiOperation {
     var r = ModelManager_1.ModelManager.PhantomArenaBattleModel.OpponentData;
     r.RefreshHandCardNum(this.Info.Hg1, false);
     await e.OpponentArea.HandArea.DiscardCard(this.Info.eG1);
-    r.RefreshLibraryNum(this.Info.aE1);
+    r.RefreshCardLibraryNum(this.Info.aE1);
   }
 }
 exports.DiscardCardOperation = DiscardCardOperation;

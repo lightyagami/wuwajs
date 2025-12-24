@@ -5,10 +5,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.SequenceNode = undefined;
 const Log_1 = require("../../../../../Core/Common/Log");
-const GameBudgetInterfaceController_1 = require("../../../../../Core/GameBudgetAllocator/GameBudgetInterfaceController");
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
+const GameBudgetCenterRoleController_1 = require("../../../GameBudget/GameBudgetCenterRoleController");
 const LogicNodeBase_1 = require("./LogicNodeBase");
 class SequenceNode extends LogicNodeBase_1.LogicNodeBase {
   constructor(e) {
@@ -24,7 +24,7 @@ class SequenceNode extends LogicNodeBase_1.LogicNodeBase {
     if (this.Config.BudgetCameraType === "Role") {
       if (e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity) {
         if ((e = e.Entity.GetComponent(1)?.Owner)?.IsValid()) {
-          GameBudgetInterfaceController_1.GameBudgetInterfaceController.SetCenterRole(e);
+          GameBudgetCenterRoleController_1.GameBudgetCenterRoleController.SetCenterRole(e);
         } else if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("Event", 24, "SetRoleAsCameraToGameBudget: Current entity's actor is not valid!");
         }

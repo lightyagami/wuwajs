@@ -55,6 +55,7 @@ class ActivitySubViewTimePointReward extends ActivitySubViewBase_1.ActivitySubVi
   }
   OnStart() {
     var e = this.ActivityTimePointRewardData.LocalConfig;
+    this.LNe.SetActivityBaseData(this.ActivityBaseData);
     this.LNe.SetTitleByText(this.ActivityBaseData.GetTitle());
     var i = !StringUtils_1.StringUtils.IsEmpty(e?.DescTheme);
     this.LNe.SetSubTitleVisible(i);

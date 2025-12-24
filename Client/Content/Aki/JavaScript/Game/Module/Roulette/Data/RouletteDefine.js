@@ -3,9 +3,15 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.ROULETTE_FUNCTION_IN_USE = exports.ROULETTE_EXPLORE_IN_USE = exports.ROULETTE_NUM = exports.DEFAULT_ITEM_ROULETTE_GRID_INDEX = exports.ROULETTE_TEXT_EMPTY = exports.AssemblyTipsData = exports.AssemblyEquipItemGridData = exports.AssemblyFunctionGridData = exports.AssemblyExploreGridData = exports.AssemblyGridData = undefined;
+exports.ROULETTE_FUNCTION_IN_USE = exports.ROULETTE_EXPLORE_IN_USE = exports.ROULETTE_NUM = exports.DEFAULT_ITEM_ROULETTE_GRID_INDEX = exports.ROULETTE_TEXT_EMPTY = exports.AssemblyTipsData = exports.AssemblyEquipItemGridData = exports.AssemblyFunctionGridData = exports.AssemblyExploreGridData = exports.AssemblyGridData = exports.rouletteTypeDefine = undefined;
+const Protocol_1 = require("../../../../Core/Define/Net/Protocol");
 const LocalStorageDefine_1 = require("../../../Common/LocalStorageDefine");
 const ModelManager_1 = require("../../../Manager/ModelManager");
+exports.rouletteTypeDefine = {
+  [0]: Protocol_1.Aki.Protocol.o6s.Proto_Explore,
+  1: Protocol_1.Aki.Protocol.o6s.n6s,
+  3: Protocol_1.Aki.Protocol.o6s.Proto_Motorcycle
+};
 class AssemblyGridData {
   constructor() {
     this.Id = 0;
@@ -22,7 +28,7 @@ class AssemblyExploreGridData extends (exports.AssemblyGridData = AssemblyGridDa
     super(...arguments);
     this.IconPath = "";
   }
-  get HasRedDot() {
+  get HasNew() {
     return ModelManager_1.ModelManager.NewFlagModel.HasNewFlag(LocalStorageDefine_1.ELocalStoragePlayerKey.RouletteAssemblyItemRedDot, this.Id);
   }
 }
@@ -58,6 +64,7 @@ class AssemblyTipsData {
     this.CanSetItemNum = [0, 0];
     this.NeedItemMap = new Map();
     this.Authorization = [];
+    this.ShowPhantomInteractEquipment = false;
   }
 }
 exports.AssemblyTipsData = AssemblyTipsData;

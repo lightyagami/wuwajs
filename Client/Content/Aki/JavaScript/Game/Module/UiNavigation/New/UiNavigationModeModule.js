@@ -44,7 +44,7 @@ class UiNavigationModeModule {
     return Math.abs(i - t) < MathUtils_1.MathUtils.KindaSmallNumber && (UiNavigationModeModule.BBo.X < 0 || UiNavigationModeModule.BBo.Z > 0) || t - i >= MathUtils_1.MathUtils.KindaSmallNumber;
   }
   static kRc(i, t, e) {
-    return e === 4 && i !== t.ScrollView;
+    return e === 4 && i !== t.ScrollProxy?.ScrollView;
   }
   static FindDynamicScrollViewNavigationComponent(i) {
     var t;
@@ -57,7 +57,7 @@ class UiNavigationModeModule {
       return UiNavigationModeModule.FindOppositeNavigationComponent(a, e, i.WrapMode, i.PriorityMode, i.IsVertical, i.NavigateTolerance, i.NavigateToleranceReverse, t, i.GroupConfig, i.NegativeDirection);
     }
     if (!i.NeedWaitScroll) {
-      var o = UiNavigationModeModule.pJd(i.LastListener);
+      var o = UiNavigationModeModule.uZd(i.LastListener);
       var a = i.IsScrollToEdge ? -1 : o.indexOf(i.LastListener);
       if (i.NextType === 1) {
         var r = a === -1 ? 0 : a + 1;
@@ -106,85 +106,85 @@ class UiNavigationModeModule {
       var C = o[i];
       if (C.GetNavigationComponent().CheckFindOpposite() && !this.kRc(d, C, a)) {
         this.qBo(C).Subtraction(e, f);
-        var R = f.Size();
+        var m = f.Size();
         p.DeepCopy(f);
         p.Normalize();
-        var m = Vector_1.Vector.DotProduct(UiNavigationModeModule.BBo, p);
-        if (!MathUtils_1.MathUtils.IsNearlyEqual(m, 0, MathUtils_1.MathUtils.KindaSmallNumber)) {
+        var R = Vector_1.Vector.DotProduct(UiNavigationModeModule.BBo, p);
+        if (!MathUtils_1.MathUtils.IsNearlyEqual(R, 0, MathUtils_1.MathUtils.KindaSmallNumber)) {
           var E;
-          var O;
-          var F = r ? Math.abs(f.Z) : Math.abs(f.X);
-          if (m > 0) {
-            var V = MathUtils_1.MathUtils.IsNearlyEqual(m, 1, n);
+          var F;
+          var O = r ? Math.abs(f.Z) : Math.abs(f.X);
+          if (R > 0) {
+            var V = MathUtils_1.MathUtils.IsNearlyEqual(R, 1, n);
             var y = MathUtils_1.MathUtils.IsNearlyEqual(M, 1, n);
             let i = false;
             let t = false;
             switch (a) {
               case 1:
-                if (V && R < l) {
+                if (V && m < l) {
                   i = true;
                 }
                 break;
               case 0:
               case 4:
                 if ((t = this.xBo(f, r, C)) && u) {
-                  if (MathUtils_1.MathUtils.IsNearlyEqual(F, h, 1)) {
-                    if (this.wBo(R, l)) {
+                  if (MathUtils_1.MathUtils.IsNearlyEqual(O, h, 1)) {
+                    if (this.wBo(m, l)) {
                       i = true;
                     }
-                  } else if (F < h) {
+                  } else if (O < h) {
                     i = true;
                   }
-                } else if (this.wBo(R, l)) {
+                } else if (this.wBo(m, l)) {
                   i = true;
                 }
                 break;
               case 2:
                 if (V) {
-                  if (!y || R < l) {
+                  if (!y || m < l) {
                     i = true;
                   }
-                } else if (!y && R < l) {
+                } else if (!y && m < l) {
                   i = true;
                 }
                 break;
               case 3:
-                if (V && (!y || m > M)) {
+                if (V && (!y || R > M)) {
                   i = true;
                 }
             }
             if (i) {
-              M = m;
-              l = R;
+              M = R;
+              l = m;
               N = C;
-              h = F;
+              h = O;
               u = t;
             }
           } else {
             let i = false;
             if (a === 4) {
-              if (MathUtils_1.MathUtils.IsNearlyEqual(F, _, 1)) {
-                if (R < g) {
+              if (MathUtils_1.MathUtils.IsNearlyEqual(O, _, 1)) {
+                if (m < g) {
                   i = true;
                 }
-              } else if (F > _) {
+              } else if (O > _) {
                 i = true;
               }
             } else {
-              O = MathUtils_1.MathUtils.IsNearlyEqual(m, -1, s);
+              F = MathUtils_1.MathUtils.IsNearlyEqual(R, -1, s);
               E = MathUtils_1.MathUtils.IsNearlyEqual(U, -1, s);
-              if (O) {
-                if (!E || R > g) {
+              if (F) {
+                if (!E || m > g) {
                   i = true;
                 }
-              } else if (!E && (!(O = MathUtils_1.MathUtils.IsNearlyEqual(m, U)) && m < U || O && R > g)) {
+              } else if (!E && (!(F = MathUtils_1.MathUtils.IsNearlyEqual(R, U)) && R < U || F && m > g)) {
                 i = true;
               }
             }
             if (i) {
-              U = m;
-              _ = F;
-              g = R;
+              U = R;
+              _ = O;
+              g = m;
               c = C;
             }
           }
@@ -208,9 +208,12 @@ class UiNavigationModeModule {
   }
   static nvc(i, t, e) {
     var o;
-    return !i?.ScrollView || !t || t instanceof UE.UIDynScrollViewComponent || !!t.CheckContentUnderSize() || !(t.Horizontal && t.HorizontalScrollbarComp && UiNavigationModeModule.BBo.X !== 0 ? (i = t.HorizontalScrollbarComp.Value, o = UiNavigationModeModule.BBo.X > 0, i < 1 - ERRORTOLERANCE && o && e?.SlideToRightOrDown || i > ERRORTOLERANCE && !o && e?.SlideToLeftOrTop) : t.Vertical && t.VerticalScrollbarComp && UiNavigationModeModule.BBo.Z !== 0 && (i = t.VerticalScrollbarComp.Value, o = UiNavigationModeModule.BBo.Z < 0, i < 1 - ERRORTOLERANCE && o && e?.SlideToRightOrDown || i > ERRORTOLERANCE && !o && e?.SlideToLeftOrTop));
+    return !i?.ScrollProxy?.ScrollView || !t || t instanceof UE.UIDynScrollViewComponent || !!t.CheckContentUnderSize() || !(t.Horizontal && t.HorizontalScrollbarComp && UiNavigationModeModule.BBo.X !== 0 ? (i = t.HorizontalScrollbarComp.Value, o = UiNavigationModeModule.BBo.X > 0, i < 1 - ERRORTOLERANCE && o && e?.SlideToRightOrDown || i > ERRORTOLERANCE && !o && e?.SlideToLeftOrTop) : t.Vertical && t.VerticalScrollbarComp && UiNavigationModeModule.BBo.Z !== 0 && (i = t.VerticalScrollbarComp.Value, o = UiNavigationModeModule.BBo.Z < 0, i < 1 - ERRORTOLERANCE && o && e?.SlideToRightOrDown || i > ERRORTOLERANCE && !o && e?.SlideToLeftOrTop));
   }
-  GBo(i, t, e) {
+  oRf(i, t, e) {
+    return this.Nxo.GetNavigationComponent().FindMultiTemplateScrollViewNavigationComponent(UiNavigationModeModule.BBo.ToUeVectorOld(), i, t, this.fgt, this.PBo, this.r2d);
+  }
+  nRf(i, t, e) {
     let o = this.Nxo.GetNavigationComponent().FindLoopScrollViewNavigationComponent(UiNavigationModeModule.BBo.ToUeVectorOld(), i);
     var a;
     var r;
@@ -218,7 +221,7 @@ class UiNavigationModeModule {
     var s;
     if (!o) {
       a = this.Nxo.GetNavigationGroup();
-      r = this.Nxo.ScrollView;
+      r = this.Nxo.ScrollProxy?.ScrollView;
       s = this.Nxo.ScrollViewActor;
       n = this.Nxo.LayoutActor;
       s = a.GetOppositeListenerListByListener(s, n).filter(i => i !== this.Nxo);
@@ -232,7 +235,14 @@ class UiNavigationModeModule {
     }
     return o;
   }
-  Mum(i, t, e) {
+  GBo(i, t, e) {
+    if (this.Nxo.HasMultiTemplateScrollView()) {
+      return this.oRf(i, t, e);
+    } else {
+      return this.nRf(i, t, e);
+    }
+  }
+  qgm(i, t, e) {
     var o;
     var a = i.TotalItemNum;
     var r = i.GetStartItemIndex();
@@ -277,10 +287,10 @@ class UiNavigationModeModule {
     var s;
     var d;
     var v;
-    if (!!this.Nxo.HasDynamicScrollView() && (!(r = this.Nxo.ScrollView) || i === r.Vertical || t !== 0) && !r.IsAllItemDisplayed()) {
+    if (!!this.Nxo.HasDynamicScrollView() && (!(r = this.Nxo.ScrollProxy?.ScrollView) || i === r.Vertical || t !== 0) && !r.IsAllItemDisplayed()) {
       n = r.TotalItemNum;
       s = i ? UiNavigationModeModule.BBo.Z < 0 : UiNavigationModeModule.BBo.X > 0;
-      s = this.Mum(r, o, s);
+      s = this.qgm(r, o, s);
       v = UiNavigationModeModule.qBo(this.Nxo);
       (d = new NavigationDynamicScrollViewFindContext_1.NavigationDynamicScrollViewFindContext()).LastListenerPosition = v;
       d.WrapMode = t;
@@ -301,7 +311,7 @@ class UiNavigationModeModule {
       r.ScrollToItemIndexForNavigation(s.NeedScrollToIndex, s.IsReversed, v);
     }
   }
-  static pJd(i) {
+  static uZd(i) {
     if (i.HasDynamicScrollView()) {
       return ControllerHolder_1.ControllerHolder.UiNavigationNewController.GetDynamicScrollListenerListByListener(i);
     } else {
@@ -309,14 +319,18 @@ class UiNavigationModeModule {
     }
   }
   NBo(i, t, e) {
+    if (this.Nxo.HasMultiTemplateScrollView()) {
+      UiNavigationModeModule.BBo.Set(1, 0, 0);
+      return this.Nxo.GetNavigationComponent().FindMultiTemplateScrollViewNavigationComponent(UiNavigationModeModule.BBo.ToUeVectorOld(), 2, e, this.fgt, this.PBo, this.r2d);
+    }
     if (this.Nxo.HasLoopScrollView()) {
       UiNavigationModeModule.BBo.Set(1, 0, 0);
-      var o = this.Nxo.ScrollView.FindNavigationComponent(this.Nxo.GetSelectableComponent(), UiNavigationModeModule.BBo.ToUeVectorOld(), 2);
+      var o = this.Nxo.ScrollProxy.ScrollView.FindNavigationComponent(this.Nxo.GetSelectableComponent(), UiNavigationModeModule.BBo.ToUeVectorOld(), 2);
       if (o) {
         return o;
       }
     }
-    var a = UiNavigationModeModule.pJd(this.Nxo);
+    var a = UiNavigationModeModule.uZd(this.Nxo);
     var r = a.length;
     if (r <= 0) {
       return this.Nxo.GetSelectableComponent();
@@ -331,7 +345,7 @@ class UiNavigationModeModule {
         }
       }
       if (this.Nxo?.HasDynamicScrollView()) {
-        if (!this.Nxo.ScrollView.IsAllItemDisplayed()) {
+        if (!(this.Nxo.ScrollProxy?.ScrollView).IsAllItemDisplayed()) {
           UiNavigationModeModule.FindOppositeNavigationResult.IsOppositeNavigationPositive = false;
           this.Vud(i, t, e, this.Nxo.GetNavigationGroup(), 1);
           return;
@@ -347,14 +361,18 @@ class UiNavigationModeModule {
     }
   }
   OBo(i, t, e) {
+    if (this.Nxo.HasMultiTemplateScrollView()) {
+      UiNavigationModeModule.BBo.Set(-1, 0, 0);
+      return this.Nxo.GetNavigationComponent().FindMultiTemplateScrollViewNavigationComponent(UiNavigationModeModule.BBo.ToUeVectorOld(), 2, e, this.fgt, this.PBo, this.r2d);
+    }
     if (this.Nxo.HasLoopScrollView()) {
       UiNavigationModeModule.BBo.Set(-1, 0, 0);
-      var o = this.Nxo.ScrollView.FindNavigationComponent(this.Nxo.GetSelectableComponent(), UiNavigationModeModule.BBo.ToUeVectorOld(), 2);
+      var o = this.Nxo.ScrollProxy.ScrollView.FindNavigationComponent(this.Nxo.GetSelectableComponent(), UiNavigationModeModule.BBo.ToUeVectorOld(), 2);
       if (o) {
         return o;
       }
     }
-    var a = UiNavigationModeModule.pJd(this.Nxo);
+    var a = UiNavigationModeModule.uZd(this.Nxo);
     var o = a.length;
     if (o <= 0) {
       return this.Nxo.GetSelectableComponent();
@@ -369,7 +387,7 @@ class UiNavigationModeModule {
         }
       }
       if (this.Nxo?.HasDynamicScrollView()) {
-        if (!this.Nxo.ScrollView.IsAllItemDisplayed()) {
+        if (!(this.Nxo.ScrollProxy?.ScrollView).IsAllItemDisplayed()) {
           UiNavigationModeModule.FindOppositeNavigationResult.IsOppositeNavigationPositive = false;
           this.Vud(i, t, e, this.Nxo.GetNavigationGroup(), 2);
           return;

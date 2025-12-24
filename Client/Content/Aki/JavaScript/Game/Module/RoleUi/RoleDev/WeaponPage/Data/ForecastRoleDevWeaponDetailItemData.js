@@ -16,20 +16,20 @@ class ForecastRoleDevWeaponDetailItemData {
     this.E1d = [];
     var r = ConfigManager_1.ConfigManager.RoleDevConfig.GetRoleDevProsProjectConfig(e).WeaponExperience;
     if (this.M9d(t)) {
-      this.jXd(e, r);
+      this.SYd(e, r);
       this.Nyd(e);
     }
   }
   M9d(e) {
     return ConfigManager_1.ConfigManager.RoleDevConfig.GetRoleDevWeaponItemConfig(e);
   }
-  jXd(e, t) {
-    e = this.HXd(e, t);
+  SYd(e, t) {
+    e = this.MYd(e, t);
     if (e) {
       this.E1d.push(e);
     }
   }
-  HXd(e, t) {
+  MYd(e, t) {
     if (!(t <= 0)) {
       var r = this.W7d();
       var r = this.Hyd(r, t);
@@ -106,13 +106,13 @@ class ForecastRoleDevWeaponDetailItemData {
   jyd(e) {
     var t = this.$7d(e);
     if (t) {
-      t = this.$Xd(t);
+      t = this.EYd(t);
       if (t.length !== 0) {
         return this.X7d(e, t);
       }
     }
   }
-  $Xd(e) {
+  EYd(e) {
     var t = [];
     for (const a of e.WeaponBreachItemGroup) {
       var r = ConfigManager_1.ConfigManager.RoleDevConfig.GetRoleDevProsRoleItemConfig(a);

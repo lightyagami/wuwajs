@@ -15,10 +15,10 @@ const RoleDevPhantomVisionSuitItem_1 = require("./RoleDevPhantomVisionSuitItem")
 class RoleDevPhantomSuitItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
     super(...arguments);
-    this.zgm = undefined;
+    this.PMm = undefined;
     this.Hsd = undefined;
     this.ko_ = 0;
-    this.Jgm = () => new RoleDevPhantomVisionSuitItem_1.RoleDevPhantomVisionSuitItem();
+    this.AMm = () => new RoleDevPhantomVisionSuitItem_1.RoleDevPhantomVisionSuitItem();
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIText], [2, UE.UIText], [3, UE.UILayoutBase]];
@@ -28,7 +28,7 @@ class RoleDevPhantomSuitItem extends GridProxyAbstract_1.GridProxyAbstract {
   }
   async $sd() {
     this.Hsd = new VisionFetterSuitItem_1.VisionFetterSuitItem(this.GetItem(0));
-    this.zgm = new GenericLayout_1.GenericLayout(this.GetLayoutBase(3), this.Jgm);
+    this.PMm = new GenericLayout_1.GenericLayout(this.GetLayoutBase(3), this.AMm);
     await Promise.all([this.Hsd.Init()]);
   }
   Refresh(t) {
@@ -60,7 +60,7 @@ class RoleDevPhantomSuitItem extends GridProxyAbstract_1.GridProxyAbstract {
       o.InitByDungeon(r);
       e.push(o);
     }
-    this.zgm?.RefreshByData(e);
+    this.PMm?.RefreshByData(e);
   }
   GetKey(t, e) {
     return t.SuitId;

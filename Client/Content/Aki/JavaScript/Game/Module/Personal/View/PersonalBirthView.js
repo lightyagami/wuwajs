@@ -73,6 +73,7 @@ class PersonalBirthView extends UiTickViewBase_1.UiTickViewBase {
     };
     this.V5i = (i, t, e) => {
       i = new PersonalBirthAttachItem_1.PersonalBirthAttachItem(i);
+      i.SetDateType(1);
       i.BindOnSelected(this.H5i);
       return i;
     };
@@ -91,6 +92,7 @@ class PersonalBirthView extends UiTickViewBase_1.UiTickViewBase {
     };
     this.j5i = (i, t, e) => {
       i = new PersonalBirthAttachItem_1.PersonalBirthAttachItem(i);
+      i.SetDateType(0);
       i.BindOnSelected(this.W5i);
       return i;
     };
@@ -128,8 +130,8 @@ class PersonalBirthView extends UiTickViewBase_1.UiTickViewBase {
       r = ModelManager_1.ModelManager.PersonalModel.GetBirthday();
       e = Math.floor(r / 100);
       r = r % 100;
-      i.SetText(String(e));
-      t.SetText(String(r));
+      i.SetText(ConfigManager_1.ConfigManager.PersonalConfig.GetBirthLocalText(e, 1));
+      t.SetText(ConfigManager_1.ConfigManager.PersonalConfig.GetBirthLocalText(r, 0));
       this.GetButton(5).SetSelfInteractive(true);
       this.GetInteractionGroup(14).SetInteractable(true);
       LguiUtil_1.LguiUtil.SetLocalText(this.GetText(12), "BirthIsSetCanNotChange");

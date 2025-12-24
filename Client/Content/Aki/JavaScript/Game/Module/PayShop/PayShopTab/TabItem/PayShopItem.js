@@ -37,12 +37,12 @@ class PayShopItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.D3i = true;
     this.K71 = false;
     this.RMa = undefined;
-    this.GLm = undefined;
+    this.eMf = undefined;
     this.jbe = () => {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Shop", 10, "PayShop:ShopItem 点击商品", ["Id", this.Pe.GetGoodsData().Id]);
       }
-      ControllerHolder_1.ControllerHolder.PayShopController.OpenBuyViewByGoodsId(this.Pe, this.GLm);
+      ControllerHolder_1.ControllerHolder.PayShopController.OpenBuyViewByGoodsId(this.Pe, this.eMf);
       if (this.RMa) {
         this.RMa(this, this.Pe);
       }
@@ -315,7 +315,7 @@ class PayShopItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.GetItem(17).SetUIActive(t);
   }
   SetExchangeExtraData(t) {
-    this.GLm = t;
+    this.eMf = t;
   }
   SetExtraFunction(t) {
     this.RMa = t;

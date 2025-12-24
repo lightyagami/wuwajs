@@ -26,8 +26,8 @@ const EntityComponent_1 = require("../../../../../Core/Entity/EntityComponent");
 const RegisterComponent_1 = require("../../../../../Core/Entity/RegisterComponent");
 let SceneItemDebugComponent = class SceneItemDebugComponent extends EntityComponent_1.EntityComponent {
   GetTagDebugStrings() {
-    return this.Entity.GetComponent(200).GetTagDebugStrings();
+    return this.Entity.GetComponent(206).GetTagDebugStrings();
   }
 };
-SceneItemDebugComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(130)], SceneItemDebugComponent);
+SceneItemDebugComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(135)], SceneItemDebugComponent);
 exports.SceneItemDebugComponent = SceneItemDebugComponent; //# sourceMappingURL=SceneItemDebugComponent.js.map

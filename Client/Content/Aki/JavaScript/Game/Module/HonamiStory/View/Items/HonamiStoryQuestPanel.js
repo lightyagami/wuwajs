@@ -20,28 +20,28 @@ const HonamiStoryUtil_1 = require("../../HonamiStoryUtil");
 class HonamiStoryQuestPanel extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.E_m = undefined;
-    this.I_m = undefined;
-    this.T_m = () => new HonamiStoryQuestItem();
-    this.b_m = () => {
+    this.Ofm = undefined;
+    this.Gfm = undefined;
+    this.Ffm = () => new HonamiStoryQuestItem();
+    this.Nfm = () => {
       UiManager_1.UiManager.OpenView("HonamiStoryQuestView");
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIButtonComponent], [2, UE.UIText], [3, UE.UIScrollViewWithScrollbarComponent], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIVerticalLayout], [7, UE.UIItem]];
-    this.BtnBindInfo = [[1, this.b_m]];
+    this.BtnBindInfo = [[1, this.Nfm]];
   }
   async OnBeforeStartAsync() {
     await super.OnBeforeStartAsync();
-    this.E_m = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(3), this.T_m);
-    this.I_m = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(6), this.T_m);
+    this.Ofm = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(3), this.Ffm);
+    this.Gfm = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(6), this.Ffm);
   }
   Refresh(e = true) {
     var i = HonamiStoryUtil_1.HonamiStoryUtil.CheckInActivityQuest();
     var t = ModelManager_1.ModelManager.HonamiStoryModel.GetQuestDataListByQuestType(1);
     if (i && t.length > 0) {
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), t[0].GetNameKey());
-      this.E_m?.RefreshByData(t);
+      this.Ofm?.RefreshByData(t);
     }
     this.GetItem(0).SetUIActive(i && t.length > 0);
     var i = ModelManager_1.ModelManager.FunctionModel?.IsOpen(10113) ?? false;
@@ -50,7 +50,7 @@ class HonamiStoryQuestPanel extends UiPanelBase_1.UiPanelBase {
       if ((t = ModelManager_1.ModelManager.HonamiStoryModel.GetQuestDataListByQuestType(2)).length === 0) {
         r = false;
       } else {
-        this.I_m?.RefreshByData(t);
+        this.Gfm?.RefreshByData(t);
       }
     }
     this.GetItem(5).SetUIActive(r);

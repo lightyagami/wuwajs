@@ -51,6 +51,7 @@ class VisionRefineMediumItemGrid extends LoopScrollMediumItemGrid_1.LoopScrollMe
         case 3:
           {
             a.ItemConfigId = r.GetConfigId(true);
+            a.QualityId = r.GetQuality();
             a.Level = r.GetCost();
             a.IsLevelTextUseChangeColor = true;
             a.BottomTextId = "VisionLevel";

@@ -107,6 +107,7 @@ class TowerDefenseSubView extends ActivitySubViewBase_1.ActivitySubViewBase {
   }
   mGe() {
     var e = TowerDefenceController_1.TowerDefenseController.GetActivitySubViewTitle();
+    this.LNe.SetActivityBaseData(this.ActivityBaseData);
     this.LNe.SetTitleByText(e);
   }
   FNe() {

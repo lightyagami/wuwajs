@@ -31,6 +31,9 @@ class OpenSystemMingSuTi extends OpenSystemBase_1.OpenSystemBase {
         return "PupuVillageItemViewQIQIU";
       case MingSuDefine_1.DARK_COAST_POOL_CONFIG_ID:
         return "DarkCoastDeliveryMainView";
+      case MingSuDefine_1.LAHAILUOSHENGXIA_POOL_CONFIG_ID:
+      case MingSuDefine_1.RILINGCOLLECT_POOL_CONFIG_ID:
+        return "LaHaiLuoCollectView";
       default:
         return "MingSuView";
     }

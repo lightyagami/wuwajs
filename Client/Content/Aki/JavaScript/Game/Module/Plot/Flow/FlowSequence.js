@@ -44,18 +44,18 @@ class FlowSequence {
     this.njc = new Array();
     this.U$i = -1;
     this.A$i = false;
-    this.owt = t => {
-      t *= 1000;
-      if (t > TimerSystem_1.MIN_TIME && t < TimerSystem_1.MAX_TIME) {
+    this.owt = e => {
+      e *= 1000;
+      if (e > TimerSystem_1.MIN_TIME && e < TimerSystem_1.MAX_TIME) {
         this.Q9u = TimerSystem_1.TimerSystem.Delay(() => {
           ControllerHolder_1.ControllerHolder.FlowController.EnableSkip(true);
           this.Q9u = undefined;
-        }, t);
+        }, e);
       } else {
         ControllerHolder_1.ControllerHolder.FlowController.EnableSkip(true);
       }
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("Plot", 26, "[FlowSequence] Seq开始播放允许跳过", ["time", t]);
+        Log_1.Log.Debug("Plot", 26, "[FlowSequence] Seq开始播放允许跳过", ["time", e]);
       }
     };
     this.P$i = () => {
@@ -76,39 +76,39 @@ class FlowSequence {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PlotEndShowTalk);
       ControllerHolder_1.ControllerHolder.FlowController.RunNextAction();
     };
-    this.x$i = t => {
-      var e;
+    this.x$i = e => {
+      var t;
       if (this.SubtitleActionPromise) {
-        e = this.SubtitleActionPromise;
+        t = this.SubtitleActionPromise;
         this.SubtitleActionPromise = undefined;
-        e.SetResult();
+        t.SetResult();
       }
-      if (this.T$i && t) {
+      if (this.T$i && e) {
         if (this.w$i()) {
           this.OnSelectOption(ControllerHolder_1.ControllerHolder.FlowController.GetRecommendedOption(this.S$i));
         } else if (this.L$i >= this.v$i.TalkItems.length) {
           this.OnSequenceStop();
         } else {
-          e = this.v$i.TalkItems[this.L$i].Id;
-          this.OnSubtitleStart(e);
-          this.OnSubtitleEnd(e);
+          t = this.v$i.TalkItems[this.L$i].Id;
+          this.OnSubtitleStart(t);
+          this.OnSubtitleEnd(t);
         }
       }
     };
-    this.B$i = t => {
-      var e;
+    this.B$i = e => {
+      var t;
       if (this.OptionActionPromise) {
-        e = this.OptionActionPromise;
+        t = this.OptionActionPromise;
         this.OptionActionPromise = undefined;
-        e.SetResult();
+        t.SetResult();
       }
-      if (t && this.T$i) {
+      if (e && this.T$i) {
         if (this.L$i >= this.v$i.TalkItems.length) {
           this.OnSequenceStop();
         } else {
-          e = this.v$i.TalkItems[this.L$i].Id;
-          this.OnSubtitleStart(e);
-          this.OnSubtitleEnd(e);
+          t = this.v$i.TalkItems[this.L$i].Id;
+          this.OnSubtitleStart(t);
+          this.OnSubtitleEnd(t);
         }
       }
     };
@@ -154,22 +154,22 @@ class FlowSequence {
       Log_1.Log.Debug("Plot", 38, "清理引用数据-FlowSequence");
     }
   }
-  Init(t, e) {
+  Init(e, t) {
     this.Clear();
-    this.v$i = t;
+    this.v$i = e;
     if (!this.v$i || StringUtils_1.StringUtils.IsEmpty(this.v$i.SequenceDataAsset)) {
       ControllerHolder_1.ControllerHolder.FlowController.LogError("[FlowSequence] 配置错误");
     } else {
-      this.v$i.TalkSequence?.forEach((t, e) => {
-        t.forEach(t => {
-          if (this.M$i.has(t)) {
+      this.v$i.TalkSequence?.forEach((e, t) => {
+        e.forEach(e => {
+          if (this.M$i.has(e)) {
             ControllerHolder_1.ControllerHolder.FlowController.LogError("[FlowSequence] 初始化分段时Id重复");
           } else {
-            this.M$i.set(t, e);
+            this.M$i.set(e, t);
           }
         });
       });
-      this.nx = e;
+      this.nx = t;
       this.nx.CurTalkId = -1;
       this.nx.CurOptionId = -1;
       this.nx.CurSubActionId = 0;
@@ -179,7 +179,7 @@ class FlowSequence {
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PlotSequencePlay, this.owt);
     }
   }
-  Start(t) {
+  Start(e) {
     if (this.IsInit && !this.IsPlaying) {
       this.p$i = true;
       if (Log_1.Log.CheckDebug()) {
@@ -193,24 +193,24 @@ class FlowSequence {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PlotStartShowTalk, this.v$i);
       ModelManager_1.ModelManager.PlotModel.CurShowTalk = this.v$i;
       const i = new Array();
-      this.v$i.TalkFrameEvents?.forEach(t => {
-        var e;
-        i.push(t.FrameEvent);
-        if (ModelManager_1.ModelManager.SequenceModel.FrameEventsMap.has(t.Position?.TalkItemId)) {
-          if (e = ModelManager_1.ModelManager.SequenceModel.FrameEventsMap.get(t.Position.TalkItemId)) {
-            e.add(t.FrameEvent.EventKey);
-            ModelManager_1.ModelManager.SequenceModel.FrameEventsMap.set(t.Position.TalkItemId, e);
+      this.v$i.TalkFrameEvents?.forEach(e => {
+        var t;
+        i.push(e.FrameEvent);
+        if (ModelManager_1.ModelManager.SequenceModel.FrameEventsMap.has(e.Position?.TalkItemId)) {
+          if (t = ModelManager_1.ModelManager.SequenceModel.FrameEventsMap.get(e.Position.TalkItemId)) {
+            t.add(e.FrameEvent.EventKey);
+            ModelManager_1.ModelManager.SequenceModel.FrameEventsMap.set(e.Position.TalkItemId, t);
           }
         } else {
-          (e = new Set()).add(t.FrameEvent.EventKey);
-          ModelManager_1.ModelManager.SequenceModel.FrameEventsMap.set(t.Position.TalkItemId, e);
+          (t = new Set()).add(e.FrameEvent.EventKey);
+          ModelManager_1.ModelManager.SequenceModel.FrameEventsMap.set(e.Position.TalkItemId, t);
         }
       });
-      const e = [];
+      const t = [];
       if (ModelManager_1.ModelManager.PlotModel.PlotConfig.PlotLevel === "LevelB") {
-        this.v$i.TalkItems?.forEach(t => {
-          if (t.TidTalk && t.PlayVoice) {
-            e.push(t.TidTalk);
+        this.v$i.TalkItems?.forEach(e => {
+          if (e.TidTalk && e.PlayVoice) {
+            t.push(e.TidTalk);
           }
         });
       }
@@ -228,11 +228,11 @@ class FlowSequence {
           Path: this.v$i.SequenceDataAsset,
           ResetCamera: this.v$i.ResetCamera,
           FrameEvents: i
-        }, e, this.OnSequenceStop, true, true, this.nx.IsWaitRenderData, 1, t);
+        }, t, this.OnSequenceStop, true, true, this.nx.IsWaitRenderData, 1, e);
       }
     }
   }
-  Stop(t = 0) {
+  Stop(e = 0) {
     if (this.IsInit) {
       if (this.IsPlaying) {
         this.p$i = false;
@@ -245,27 +245,27 @@ class FlowSequence {
     await PlotController_1.PlotController.CheckFormation();
     await PlotController_1.PlotController.CheckSwitchSubLevel();
     if (this.T$i && !ModelManager_1.ModelManager.AutoRunModel.IsInLogicTreeGmMode()) {
-      var t = this.S$i ? this.M$i.get(this.S$i.Id) : 0;
-      if (t >= 0 && t < this.R$i.length && this.R$i[t]) {
+      var e = this.S$i ? this.M$i.get(this.S$i.Id) : 0;
+      if (e >= 0 && e < this.R$i.length && this.R$i[e]) {
         ModelManager_1.ModelManager.PlotModel.IsFadeIn = true;
       }
       if (this.D$i) {
-        if (t = t < this.D$i.length ? this.D$i[t] : undefined) {
+        if (e = e < this.D$i.length ? this.D$i[e] : undefined) {
           if (Log_1.Log.CheckDebug()) {
-            Log_1.Log.Debug("Plot", 26, "SaveFinalPos", ["transform", t]);
+            Log_1.Log.Debug("Plot", 26, "SaveFinalPos", ["transform", e]);
           }
-          await TeleportController_1.TeleportController.TeleportToPositionNoLoading(t.GetLocation().ToUeVector(), t.GetRotation().Rotator().ToUeRotator(), "FlowSequence.Stop", false);
-          FlowNetworks_1.FlowNetworks.RequestSeqEndPosition(this.nx, t.GetLocation(), t.GetRotation().Rotator());
+          await TeleportController_1.TeleportController.TeleportToPositionNoLoading(e.GetLocation().ToUeVector(), e.GetRotation().Rotator().ToUeRotator(), "FlowSequence.Stop", false);
+          FlowNetworks_1.FlowNetworks.RequestSeqEndPosition(this.nx, e.GetLocation(), e.GetRotation().Rotator());
         } else if (Log_1.Log.CheckWarn()) {
           Log_1.Log.Warn("Plot", 26, "剧情SeqDA的FinalPos未配置，跳过时最终位置将不准确，联系策划修改");
         }
       }
       for (const o of this.njc) {
-        var e;
+        var t;
         var i;
         var s = ModelManager_1.ModelManager.HoldingHandsModel.GetRelation(o.toString());
-        if (s && (e = ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(s.Leader?.Entity), i = ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(s.Follower?.Entity), e) && i) {
-          HoldingHandsController_1.HoldingHandsController.RequestHoldHands(s.Key, e, i, s.LeaderHandType, false, false, "FlowSequence结束");
+        if (s && (t = ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(s.Leader?.Entity), i = ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(s.Follower?.Entity), t) && i) {
+          HoldingHandsController_1.HoldingHandsController.RequestHoldHands(s.Key, t, i, s.LeaderHandType, false, false, "FlowSequence结束");
         }
       }
     }
@@ -279,23 +279,27 @@ class FlowSequence {
       if (ModelManager_1.ModelManager.SequenceModel.CurFinalPos?.length !== 0) {
         this.D$i = Object.assign([], ModelManager_1.ModelManager.SequenceModel.CurFinalPos);
       }
-      ModelManager_1.ModelManager.SequenceModel.IsFadeEnd.forEach(t => {
-        this.R$i.push(t);
+      ModelManager_1.ModelManager.SequenceModel.IsFadeEnd.forEach(e => {
+        this.R$i.push(e);
       });
-      ModelManager_1.ModelManager.SequenceModel.FrameEvents.forEach((t, e) => {
-        this.Ajs.set(e, t);
+      ModelManager_1.ModelManager.SequenceModel.FrameEvents.forEach((e, t) => {
+        this.Ajs.set(t, e);
       });
-      ModelManager_1.ModelManager.SequenceModel.FrameEventsMap.forEach((t, e) => {
-        this.Djs.set(e, t);
+      ModelManager_1.ModelManager.SequenceModel.FrameEventsMap.forEach((e, t) => {
+        this.Djs.set(t, e);
       });
-      ModelManager_1.ModelManager.SequenceModel.FrameEventsMap.forEach((t, e) => {
-        this.Djs.set(e, t);
+      ModelManager_1.ModelManager.SequenceModel.FrameEventsMap.forEach((e, t) => {
+        this.Djs.set(t, e);
       });
-      for (const e of ModelManager_1.ModelManager.SequenceModel.NeedHideNpcSet) {
-        ControllerHolder_1.ControllerHolder.CreatureController.SetEntityEnable(e, true, "显示NPC", false);
+      for (const t of ModelManager_1.ModelManager.SequenceModel.NeedHideNpcSet) {
+        ControllerHolder_1.ControllerHolder.CreatureController.SetEntityEnable(t, true, "显示NPC", false);
       }
-      var t;
+      var e;
       ModelManager_1.ModelManager.SequenceModel.NeedHideNpcSet.clear();
+      if (ModelManager_1.ModelManager.SequenceModel.PlotBindingVehicle?.Entity) {
+        ControllerHolder_1.ControllerHolder.CreatureController.SetEntityEnable(ModelManager_1.ModelManager.SequenceModel.PlotBindingVehicle?.Entity, true, "Plot enable vehicle", false);
+        ModelManager_1.ModelManager.SequenceModel.PlotBindingVehicle = undefined;
+      }
       for (const i of ModelManager_1.ModelManager.SequenceModel.NpcGroupPerform) {
         this.njc.push(i);
       }
@@ -316,9 +320,9 @@ class FlowSequence {
         this.OnSequenceStop();
       } else {
         this.RunSequenceFrameEventsWhenSkip(this.S$i?.Id);
-        t = this.v$i.TalkItems[this.L$i].Id;
-        this.OnSubtitleStart(t);
-        this.OnSubtitleEnd(t);
+        e = this.v$i.TalkItems[this.L$i].Id;
+        this.OnSubtitleStart(e);
+        this.OnSubtitleEnd(e);
       }
     }
   }
@@ -332,10 +336,10 @@ class FlowSequence {
     this.U$i = this.S$i?.Id ?? -1;
     this.A$i = this.w$i();
   }
-  OnJumpTalk(e) {
-    if (this.IsInit && (this.E$i = this.M$i.get(e) ?? exports.FINISH_INDEX, SequenceController_1.SequenceController.SetNextSequenceIndex(this.E$i), Log_1.Log.CheckDebug() && Log_1.Log.Debug("Plot", 26, "[FlowSequence] JumpTalk设置下个分支Seq", ["NextIndex", this.E$i]), this.L$i = this.v$i.TalkItems.findIndex(t => t.Id === e), this.T$i)) {
-      this.OnSubtitleStart(e);
-      this.OnSubtitleEnd(e);
+  OnJumpTalk(t) {
+    if (this.IsInit && (this.E$i = this.M$i.get(t) ?? exports.FINISH_INDEX, SequenceController_1.SequenceController.SetNextSequenceIndex(this.E$i), Log_1.Log.CheckDebug() && Log_1.Log.Debug("Plot", 26, "[FlowSequence] JumpTalk设置下个分支Seq", ["NextIndex", this.E$i]), this.L$i = this.v$i.TalkItems.findIndex(e => e.Id === t), this.T$i)) {
+      this.OnSubtitleStart(t);
+      this.OnSubtitleEnd(t);
     }
   }
   OnFinishTalk() {
@@ -343,100 +347,100 @@ class FlowSequence {
       this.OnSequenceStop();
     }
   }
-  OnSubtitleStart(e) {
-    var t;
+  OnSubtitleStart(t) {
+    var e;
     if (this.IsInit) {
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("Plot", 26, "[FlowSequence][Subtitle] 字幕显示", ["talkId", e]);
+        Log_1.Log.Info("Plot", 26, "[FlowSequence][Subtitle] 字幕显示", ["talkId", t]);
       }
-      t = this.v$i.TalkItems.find(t => t.Id === e);
-      if (this.GetNextTalkItem().Id !== e) {
-        ControllerHolder_1.ControllerHolder.FlowController.LogError("[FlowSequence][Subtitle] Seq字幕顺序与编辑器对不上", ["talkId", e], ["SeqIndex", ModelManager_1.ModelManager.SequenceModel.SubSeqIndex], ["index in seq", this.L$i]);
-        this.L$i = this.v$i.TalkItems.indexOf(t);
+      e = this.v$i.TalkItems.find(e => e.Id === t);
+      if (this.GetNextTalkItem().Id !== t) {
+        ControllerHolder_1.ControllerHolder.FlowController.LogError("[FlowSequence][Subtitle] Seq字幕顺序与编辑器对不上", ["talkId", t], ["SeqIndex", ModelManager_1.ModelManager.SequenceModel.SubSeqIndex], ["index in seq", this.L$i]);
+        this.L$i = this.v$i.TalkItems.indexOf(e);
       }
       this.L$i++;
-      if (!t) {
-        ControllerHolder_1.ControllerHolder.FlowController.LogError("[FlowSequence][Subtitle] 依赖编辑器的Seq找不到字幕", ["talkItem.ID", e]);
+      if (!e) {
+        ControllerHolder_1.ControllerHolder.FlowController.LogError("[FlowSequence][Subtitle] 依赖编辑器的Seq找不到字幕", ["talkItem.ID", t]);
       }
       this.y$i = true;
-      this.nx.CurTalkId = e;
+      this.nx.CurTalkId = t;
       this.nx.CurOptionId = -1;
-      this.S$i = t;
+      this.S$i = e;
       this.b$i();
       this.I$i = false;
     }
   }
-  OnSubtitleEnd(t) {
+  OnSubtitleEnd(e) {
     if (this.T$i) {
-      this.RunSequenceFrameEventsWhenSkip(t);
+      this.RunSequenceFrameEventsWhenSkip(e);
     }
-    return !!this.IsInit && !!this.y$i && !(t !== undefined && this.S$i.Id !== t ? (ControllerHolder_1.ControllerHolder.FlowController.LogError("[FlowSequence] 结束对话Id错误", ["id", t], ["cur", this.S$i.Id]), 1) : (this.y$i = false, this.SubtitleActionPromise = new CustomPromise_1.CustomPromise(), Log_1.Log.CheckInfo() && Log_1.Log.Info("Plot", 26, "[FlowSequence][Subtitle] 字幕关闭"), this.G$i(this.S$i.Actions, this.x$i), 0));
+    return !!this.IsInit && !!this.y$i && !(e !== undefined && this.S$i.Id !== e ? (ControllerHolder_1.ControllerHolder.FlowController.LogError("[FlowSequence] 结束对话Id错误", ["id", e], ["cur", this.S$i.Id]), 1) : (this.y$i = false, this.SubtitleActionPromise = new CustomPromise_1.CustomPromise(), Log_1.Log.CheckInfo() && Log_1.Log.Info("Plot", 26, "[FlowSequence][Subtitle] 字幕关闭"), this.G$i(this.S$i.Actions, this.x$i), 0));
   }
-  OnQteStart(e) {
-    var t = this.v$i.TalkItems.find(t => t.Id === e);
-    if (this.GetNextTalkItem().Id !== e) {
-      ControllerHolder_1.ControllerHolder.FlowController.LogError("[FlowSequence][Subtitle] Qte在Seq中顺序与编辑器不符合", ["id", e], ["SeqIndex", ModelManager_1.ModelManager.SequenceModel.SubSeqIndex], ["index in seq", this.L$i]);
-      this.L$i = this.v$i.TalkItems.indexOf(t);
+  OnQteStart(t) {
+    var e = this.v$i.TalkItems.find(e => e.Id === t);
+    if (this.GetNextTalkItem().Id !== t) {
+      ControllerHolder_1.ControllerHolder.FlowController.LogError("[FlowSequence][Subtitle] Qte在Seq中顺序与编辑器不符合", ["id", t], ["SeqIndex", ModelManager_1.ModelManager.SequenceModel.SubSeqIndex], ["index in seq", this.L$i]);
+      this.L$i = this.v$i.TalkItems.indexOf(e);
     }
     this.L$i++;
-    this.fkl.set(e, t);
+    this.fkl.set(t, e);
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("Plot", 26, "[FlowSequence][Subtitle] Qte开启", ["id", e]);
+      Log_1.Log.Info("Plot", 26, "[FlowSequence][Subtitle] Qte开启", ["id", t]);
     }
-    return t.QteId;
+    return e.QteId;
   }
-  OnQteExecute(e, i) {
-    var s = this.fkl.get(e);
-    if (s && (this.L9_.set(e, -1), s.Options) && s.Options.length !== 0) {
-      for (let t = 0; t < s.Options.length; t++) {
-        var o = s.Options[t];
+  OnQteExecute(t, i) {
+    var s = this.fkl.get(t);
+    if (s && (this.L9_.set(t, -1), s.Options) && s.Options.length !== 0) {
+      for (let e = 0; e < s.Options.length; e++) {
+        var o = s.Options[e];
         if (o.TypeParams) {
           switch (o.TypeParams.Type) {
             case "QteSucceed":
-              if (i && (this.w9_(s, t), Log_1.Log.CheckInfo())) {
-                Log_1.Log.Info("Plot", 26, "[FlowSequence][Subtitle] Qte成功执行", ["id", e], ["optionIndex", t]);
+              if (i && (this.w9_(s, e), Log_1.Log.CheckInfo())) {
+                Log_1.Log.Info("Plot", 26, "[FlowSequence][Subtitle] Qte成功执行", ["id", t], ["optionIndex", e]);
               }
               break;
             case "QteFailed":
               if (!i) {
-                this.w9_(s, t);
+                this.w9_(s, e);
                 if (Log_1.Log.CheckInfo()) {
-                  Log_1.Log.Info("Plot", 26, "[FlowSequence][Subtitle] Qte失败执行", ["id", e], ["optionIndex", t]);
+                  Log_1.Log.Info("Plot", 26, "[FlowSequence][Subtitle] Qte失败执行", ["id", t], ["optionIndex", e]);
                 }
               }
               break;
             case "QteSucceedDelayExec":
               if (i) {
-                this.L9_.set(e, t);
+                this.L9_.set(t, e);
               }
               break;
             case "QteFailedDelayExec":
               if (!i) {
-                this.L9_.set(e, t);
+                this.L9_.set(t, e);
               }
           }
         }
       }
     }
   }
-  OnQteEnd(t) {
-    if (this.fkl.has(t)) {
-      if (!this.L9_.has(t)) {
+  OnQteEnd(e) {
+    if (this.fkl.has(e)) {
+      if (!this.L9_.has(e)) {
         if (!this.T$i) {
           return;
         }
-        this.OnQteExecute(t, false);
+        this.OnQteExecute(e, false);
       }
-      var e = this.fkl.get(t);
-      var i = this.L9_.get(t);
-      this.L9_.delete(t);
-      this.fkl.delete(t);
-      if (i !== -1 && (this.w9_(e, i), Log_1.Log.CheckInfo())) {
-        Log_1.Log.Info("Plot", 26, "[FlowSequence][Subtitle] Qte关闭", ["id", t], ["delay option index", i], ["delay no more", this.T$i]);
+      var t = this.fkl.get(e);
+      var i = this.L9_.get(e);
+      this.L9_.delete(e);
+      this.fkl.delete(e);
+      if (i !== -1 && (this.w9_(t, i), Log_1.Log.CheckInfo())) {
+        Log_1.Log.Info("Plot", 26, "[FlowSequence][Subtitle] Qte关闭", ["id", e], ["delay option index", i], ["delay no more", this.T$i]);
       }
     }
   }
-  OnSelectOption(t) {
+  OnSelectOption(e) {
     if (!this.IsInit) {
       return false;
     }
@@ -444,41 +448,41 @@ class FlowSequence {
       return false;
     }
     this.I$i = true;
-    var e;
+    var t;
     var i;
     var s = this.S$i;
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("Plot", 26, "[FlowSequence] 选择选项", ["index", t]);
+      Log_1.Log.Info("Plot", 26, "[FlowSequence] 选择选项", ["index", e]);
     }
-    i = t < (e = s.Options?.length ?? 0) ? s.Options[t].Actions : undefined;
-    if (e <= t) {
+    i = e < (t = s.Options?.length ?? 0) ? s.Options[e].Actions : undefined;
+    if (t <= e) {
       ControllerHolder_1.ControllerHolder.FlowController.LogError("[FlowSequence] 选项超出下标");
       return false;
     } else {
-      ControllerHolder_1.ControllerHolder.FlowController.SelectOption(s.Id, t);
+      ControllerHolder_1.ControllerHolder.FlowController.SelectOption(s.Id, e);
       this.OptionActionPromise = new CustomPromise_1.CustomPromise();
       this.G$i(i, this.B$i);
       return true;
     }
   }
-  w9_(t, e) {
-    if (t.Options && t.Options.length !== 0) {
-      ControllerHolder_1.ControllerHolder.FlowController.SelectOption(t.Id, e);
-      this.G$i(t.Options[e].Actions, undefined, true);
+  w9_(e, t) {
+    if (e.Options && e.Options.length !== 0) {
+      ControllerHolder_1.ControllerHolder.FlowController.SelectOption(e.Id, t);
+      this.G$i(e.Options[t].Actions, undefined, true);
     }
   }
-  G$i(t, e, i = false) {
-    ControllerHolder_1.ControllerHolder.FlowController.ExecuteSubActions(t, t => {
-      e?.(t);
+  G$i(e, t, i = false) {
+    ControllerHolder_1.ControllerHolder.FlowController.ExecuteSubActions(e, e => {
+      t?.(e);
     }, i);
   }
-  CreateSubtitleFromTalkItem(e) {
-    var t;
+  CreateSubtitleFromTalkItem(t) {
+    var e;
     if (this.IsInit) {
-      if (!(t = this.v$i.TalkItems.find(t => t.Id === e))) {
-        ControllerHolder_1.ControllerHolder.FlowController.LogError("[FlowSequence] 剧情Seq找不到字幕", ["talkId", e]);
+      if (!(e = this.v$i.TalkItems.find(e => e.Id === t))) {
+        ControllerHolder_1.ControllerHolder.FlowController.LogError("[FlowSequence] 剧情Seq找不到字幕", ["talkId", t]);
       }
-      return t;
+      return e;
     }
   }
   GetNextTalkItem() {
@@ -490,15 +494,15 @@ class FlowSequence {
   }
   RunSequenceFrameEventsWhenSkip(i) {
     if (i) {
-      let t = undefined;
-      if (t = this.Djs.has(i) ? this.Djs.get(i) : t) {
-        t.forEach(t => {
-          var e = this.Ajs.get(t);
-          if (e && e.length !== 0) {
+      let e = undefined;
+      if (e = this.Djs.has(i) ? this.Djs.get(i) : e) {
+        e.forEach(e => {
+          var t = this.Ajs.get(e);
+          if (t && t.length !== 0) {
             if (Log_1.Log.CheckInfo()) {
-              Log_1.Log.Info("Plot", 45, "RunSequenceFrameEventsWhenSkip", ["id", i], ["key", t]);
+              Log_1.Log.Info("Plot", 45, "RunSequenceFrameEventsWhenSkip", ["id", i], ["key", e]);
             }
-            ControllerHolder_1.ControllerHolder.FlowController.ExecuteSubActions(e, () => {});
+            ControllerHolder_1.ControllerHolder.FlowController.ExecuteSubActions(t, () => {});
           }
         });
       }
@@ -507,13 +511,13 @@ class FlowSequence {
     }
   }
   GetAllQte() {
-    const e = new Array();
-    this.v$i?.TalkItems.forEach(t => {
-      if (t.Type === "QTE") {
-        e.push(t.QteId);
+    const t = new Array();
+    this.v$i?.TalkItems.forEach(e => {
+      if (e.Type === "QTE") {
+        t.push(e.QteId);
       }
     });
-    return e;
+    return t;
   }
 }
 exports.FlowSequence = FlowSequence;

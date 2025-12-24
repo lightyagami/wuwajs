@@ -28,8 +28,8 @@ class RoleDevRoleViewItem extends UiPanelBase_1.UiPanelBase {
     this.CanClickCallBack = undefined;
     this.pnd = undefined;
     this.Pe = undefined;
-    this.Gdm = undefined;
-    this.Fdm = undefined;
+    this.vpm = undefined;
+    this.ypm = undefined;
     this.vnd = () => {
       return new RoleDevDetailItem_1.RoleDevDetailItem();
     };
@@ -125,13 +125,13 @@ class RoleDevRoleViewItem extends UiPanelBase_1.UiPanelBase {
         } else {
           this.GetText(2).SetUIActive(true);
           LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), "RoleProject_TargetLevel", [e.RoleGoalUpgradeLevel]);
-          this.fvm(e);
+          this.pwm(e);
           this.GetItem(7)?.SetUIActive(false);
         }
       } else {
         this.GetText(2).SetUIActive(true);
         LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), "RoleProject_Tips04");
-        this.fvm(e);
+        this.pwm(e);
         this.GetItem(7)?.SetUIActive(false);
       }
     } else {
@@ -148,17 +148,17 @@ class RoleDevRoleViewItem extends UiPanelBase_1.UiPanelBase {
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), "RoleProject_TargetLevel", [e.RoleGoalUpgradeLevel]);
     }
   }
-  fvm(e) {
+  pwm(e) {
     if (!ModelManager_1.ModelManager.RoleModel.GetRoleNeedBreakUp(e.RoleId) || ModelManager_1.ModelManager.RoleModel.GetRoleBreachState(e.RoleId) !== 4) {
-      this.yMm(e);
+      this.pxm(e);
     } else {
       this.GetItem(4).SetUIActive(true);
       this.GetItem(5).SetUIActive(false);
-      this.Gdm?.SetLocalTextNew("RoleProject_Button02");
+      this.vpm?.SetLocalTextNew("RoleProject_Button02");
     }
   }
-  yMm(e) {
-    (e.IsAllMaterialEnough ? (this.GetItem(4).SetUIActive(false), this.GetItem(5).SetUIActive(true), this.Fdm) : (this.GetItem(4).SetUIActive(true), this.GetItem(5).SetUIActive(false), this.Gdm))?.SetLocalTextNew("RoleProject_Button01");
+  pxm(e) {
+    (e.IsAllMaterialEnough ? (this.GetItem(4).SetUIActive(false), this.GetItem(5).SetUIActive(true), this.ypm) : (this.GetItem(4).SetUIActive(true), this.GetItem(5).SetUIActive(false), this.vpm))?.SetLocalTextNew("RoleProject_Button01");
   }
   Qvd() {
     this.Wvd = new SmallItemGrid_1.SmallItemGrid();
@@ -171,16 +171,16 @@ class RoleDevRoleViewItem extends UiPanelBase_1.UiPanelBase {
     this.pnd = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(8), this.vnd);
   }
   O1d() {
-    this.Gdm = new ButtonItem_1.ButtonItem(this.GetItem(4));
-    this.Gdm.SetLocalTextNew("RoleProject_Button01");
-    this.Gdm.SetFunction(() => {
+    this.vpm = new ButtonItem_1.ButtonItem(this.GetItem(4));
+    this.vpm.SetLocalTextNew("RoleProject_Button01");
+    this.vpm.SetFunction(() => {
       this.i9i();
     });
   }
   q1d() {
-    this.Fdm = new ButtonItem_1.ButtonItem(this.GetItem(5));
-    this.Fdm.SetLocalTextNew("RoleProject_Button01");
-    this.Fdm.SetFunction(() => {
+    this.ypm = new ButtonItem_1.ButtonItem(this.GetItem(5));
+    this.ypm.SetLocalTextNew("RoleProject_Button01");
+    this.ypm.SetFunction(() => {
       this.i9i();
     });
   }

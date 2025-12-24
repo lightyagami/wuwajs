@@ -9,6 +9,7 @@ const TimerSystem_1 = require("../../../../../../Core/Timer/TimerSystem");
 const ModelManager_1 = require("../../../../../Manager/ModelManager");
 const UiPanelBase_1 = require("../../../../../Ui/Base/UiPanelBase");
 const GenericLayout_1 = require("../../../../Util/Layout/GenericLayout");
+const PhantomArenaFieldItem_1 = require("../Field/PhantomArenaFieldItem");
 const PhantomArenaBattleDetailsTips_1 = require("../Panel/PhantomArenaBattleDetailsTips");
 const PhantomArenaBattleDetailsIconItem_1 = require("./PhantomArenaBattleDetailsIconItem");
 class PhantomArenaBattleDetailsAreaItem extends UiPanelBase_1.UiPanelBase {
@@ -17,6 +18,7 @@ class PhantomArenaBattleDetailsAreaItem extends UiPanelBase_1.UiPanelBase {
     this.Layout = undefined;
     this.RoleItem = undefined;
     this.SkillItem = undefined;
+    this.FieldItem = undefined;
     this.Proxy = undefined;
     this.IsOwn = false;
     this.EntityIdList = [];
@@ -29,6 +31,10 @@ class PhantomArenaBattleDetailsAreaItem extends UiPanelBase_1.UiPanelBase {
       t.RegisterProxy(this.Proxy);
       return t;
     };
+    this.IFm = (t, e) => {
+      this.DetailsTipsItem.SetUiActive(true);
+      this.DetailsTipsItem.RefreshByCardData(t.CardData);
+    };
     this.u2u = t => {
       t = ModelManager_1.ModelManager.PhantomArenaBattleModel.BattleData.GetCardDataByEntityId(t);
       this.DetailsTipsItem.SetUiActive(true);
@@ -39,7 +45,7 @@ class PhantomArenaBattleDetailsAreaItem extends UiPanelBase_1.UiPanelBase {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UILayoutBase], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UILayoutBase], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem]];
   }
   async tU1() {
     this.Layout = new GenericLayout_1.GenericLayout(this.GetLayoutBase(1), this.n8i, this.GetItem(2).GetOwner());
@@ -53,22 +59,39 @@ class PhantomArenaBattleDetailsAreaItem extends UiPanelBase_1.UiPanelBase {
   async t1o() {
     this.SkillItem = new PhantomArenaBattleDetailsIconItem_1.PhantomArenaBattleDetailsSkillItem();
     await this.SkillItem.CreateThenShowByActorAsync(this.GetItem(3).GetOwner());
-  }
-  async OnBeforeStartAsync() {
-    await this.t1o();
-    await Promise.all([this.tU1(), this.iU1()]);
     this.SetSettlePoint(0);
+  }
+  async TFm() {
     this.DetailsTipsItem = new PhantomArenaBattleDetailsTips_1.PhantomArenaBattleDetailsTips();
     await this.DetailsTipsItem.CreateThenShowByResourceIdAsync("PnlCardTips", this.GetItem(4));
-    this.DetailsTipsItem.SetTipsActive(false);
+    this.DetailsTipsItem.SetTipsActive(0);
     this.DetailsTipsItem.SetUiActive(false);
     var t = this.IsOwn ? 1 : 2;
-    var t = {
+    var e = this.IsOwn ? 3 : 0;
+    var e = {
       AttachItem: this.GetItem(4),
+      PositionType: e,
       ShowType: t
     };
-    this.DetailsTipsItem.SetTipsPosition(t);
+    this.DetailsTipsItem.SetTipsPositionByAttachItem(e);
     this.DetailsTipsItem.SetBtnMaskCallback(this.c2u);
+  }
+  async bFm() {
+    var t;
+    if (ModelManager_1.ModelManager.PhantomArenaBattleModel.IsOldBvb) {
+      this.GetItem(5).SetUIActive(false);
+    } else {
+      t = (this.IsOwn ? ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData : ModelManager_1.ModelManager.PhantomArenaBattleModel.OpponentData).FieldData;
+      this.GetItem(5).SetUIActive(true);
+      this.FieldItem = new PhantomArenaFieldItem_1.PhantomArenaFieldItem();
+      this.FieldItem.SetInteractClickCallback(this.IFm);
+      await this.FieldItem.CreateByActorAsync(this.GetItem(6).GetOwner());
+      await this.FieldItem.Refresh(t);
+      this.FieldItem.SetFieldItemActive(true);
+    }
+  }
+  async OnBeforeStartAsync() {
+    await Promise.all([this.t1o(), this.tU1(), this.iU1(), this.TFm(), this.bFm()]);
   }
   RegisterProxy(t) {
     this.Proxy = t;

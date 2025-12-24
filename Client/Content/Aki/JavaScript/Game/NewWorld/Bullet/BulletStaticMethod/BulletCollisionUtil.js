@@ -191,7 +191,7 @@ class BulletCollisionUtil {
       const n = e.Entity;
       var o = t.BulletDataMain.Execution.TagIdOnVictimEnter;
       if (o) {
-        var i = n.GetComponent(209);
+        var i = n.GetComponent(215);
         var a = o.length;
         if (a > 0 && i?.Valid) {
           for (let t = 0; t < a; t++) {
@@ -204,7 +204,7 @@ class BulletCollisionUtil {
         var s;
         var e = t.CollisionInfo;
         var _ = e.CharacterEntityMap.get(n);
-        if (_ !== undefined && !((s = n.GetComponent(3)) && (this.tHo(t, n, s.IsRoleAndCtrlByMe), _ > 0) && n.GetComponent(126)?.RemoveTimeScale(_), e.CharacterEntityMap.delete(n), t.CollisionInfo.IntervalMs <= 0 && e.ObjectsHitCurrent.delete(n.Id), e.CharacterEntityMap.size)) {
+        if (_ !== undefined && !((s = n.GetComponent(3)) && (this.tHo(t, n, s.IsRoleAndCtrlByMe), _ > 0) && n.GetComponent(131)?.RemoveTimeScale(_), e.CharacterEntityMap.delete(n), t.CollisionInfo.IntervalMs <= 0 && e.ObjectsHitCurrent.delete(n.Id), e.CharacterEntityMap.size)) {
           e.HaveCharacterInBullet = false;
         }
       } else if (l.Type === 2) {
@@ -221,7 +221,7 @@ class BulletCollisionUtil {
   static EntityEnter(t, l) {
     var e = t.BulletDataMain.Execution.TagIdOnVictimEnter;
     if (e) {
-      var o = l.GetComponent(209);
+      var o = l.GetComponent(215);
       var i = e.length;
       if (i > 0 && o?.Valid) {
         for (let t = 0; t < i; t++) {
@@ -237,7 +237,7 @@ class BulletCollisionUtil {
     e = l.GetComponent(0)?.IsRole() && !e;
     t = t.BulletDataMain;
     if (!e && t.Execution.GeIdApplyToVictim) {
-      var o = l.GetComponent(178);
+      var o = l.GetComponent(220);
       if (o) {
         for (const i of t.Execution.GeIdApplyToVictim) {
           o.RemoveBuff(i, -1, "BulletCollisionUtil.CharacterLeaveBulletUseBuff");
@@ -299,7 +299,7 @@ class BulletCollisionUtil {
       return i;
     } else {
       e = t.EffectOnHit.get(12);
-      if (!StringUtils_1.StringUtils.IsBlank(e) && o?.GetComponent(209)?.HasTag(412116357)) {
+      if (!StringUtils_1.StringUtils.IsBlank(e) && o?.GetComponent(215)?.HasTag(412116357)) {
         return e;
       } else {
         return t.EffectOnHit.get(l ? 7 : 4);
@@ -324,65 +324,69 @@ class BulletCollisionUtil {
       return undefined;
     }
   }
-  static PlayHitEffect(l, e, o, i, a, r, t) {
-    var s = l.BulletDataMain;
-    var _ = s.Render;
+  static PlayHitEffect(l, e, i, a, r, s, t) {
+    var o = l.BulletDataMain;
+    var _ = o.Render;
     var n = l.CollisionInfo.DamageId > 0;
-    var u = e.Entity.GetComponent(209);
-    var i = BulletCollisionUtil.GetHitEffects(e, _, i, o, n, s.Base.EnablePartHitAudio, t, u, l.Attacker);
-    if (i.size > 0) {
-      o = _.EffectOnHitConf.get(0);
+    var u = e.Entity.GetComponent(215);
+    var a = BulletCollisionUtil.GetHitEffects(e, _, a, i, n, o.Base.EnablePartHitAudio, t, u, l.Attacker);
+    if (a.size > 0) {
+      i = _.EffectOnHitConf.get(0);
       let t = undefined;
-      t = o ? (o.EnableHighLimit && BulletCollisionUtil.ye1(l, o.HighLimit, a), o.Scale) : Vector_1.Vector.OneVectorProxy;
-      BulletCollisionUtil.oHo.Set(a, r.Quaternion(), t);
+      t = i ? (i.EnableHighLimit && BulletCollisionUtil.ye1(l, i.HighLimit, r), i.Scale) : Vector_1.Vector.OneVectorProxy;
+      BulletCollisionUtil.oHo.Set(r, s.Quaternion(), t);
       BulletCollisionUtil.rHo.Start();
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("Bullet", 20, "命中特效位置", ["TF", a]);
+        Log_1.Log.Debug("Bullet", 20, "命中特效位置", ["TF", r]);
       }
-      var c = l.Attacker?.GetComponent(61)?.HitEffectMap;
+      var c = l.Attacker?.GetComponent(64)?.HitEffectMap;
       var B = l.Attacker?.GetComponent(3);
-      var n = l.Attacker?.GetComponent(51);
-      let e = 2;
-      if ((0, RegisterComponent_1.isComponentInstance)(n, 193)) {
-        e = n.CurrentPriority;
+      var n = l.Attacker?.GetComponent(52);
+      let o = 2;
+      if ((0, RegisterComponent_1.isComponentInstance)(n, 199)) {
+        o = n.CurrentPriority;
       }
       var U = BulletStaticFunction_1.HitStaticFunction.CreateEffectContext(l.Attacker, l.EffectInfo.DisablePostProcess);
       const v = _.AudioOnHit;
       var C;
       var f;
       var h = (t, l) => {
-        BulletStaticFunction_1.HitStaticFunction.PlayHitAudio(t, l, v, e);
+        BulletStaticFunction_1.HitStaticFunction.PlayHitAudio(t, l, v, o);
       };
-      for ([C, f] of i) {
-        let t = 0;
-        let l = B?.GetReplaceEffect(C);
-        l = l || C;
+      for ([C, f] of a) {
+        let l = 0;
+        let e = B?.GetReplaceEffect(C);
+        e = e || C;
         if (!!U && (f === 3 || f === 2)) {
           U.HitEffectType = f;
         }
-        var E = c.get(l);
-        if (E && E.Size >= CharacterHitComponent_1.MAX_HIT_EFFECT_COUNT && (t = E.Pop(), EffectSystem_1.EffectSystem.IsValid(t))) {
-          EffectSystem_1.EffectSystem.ReplayEffect(t, "ReUseHitEffect", BulletCollisionUtil.oHo.ToUeTransform());
-          EffectSystem_1.EffectSystem.SetAdditionTimeScale(14, t, ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation);
-          E.Push(t);
+        var E = c?.get(e);
+        if (E && E.Size >= CharacterHitComponent_1.MAX_HIT_EFFECT_COUNT && (l = E.Pop(), EffectSystem_1.EffectSystem.IsValid(l))) {
+          EffectSystem_1.EffectSystem.ReplayEffect(l, "ReUseHitEffect", BulletCollisionUtil.oHo.ToUeTransform());
+          EffectSystem_1.EffectSystem.SetAdditionTimeScale(14, l, ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation);
+          E.Push(l);
           if (f === 1) {
-            BulletStaticFunction_1.HitStaticFunction.PlayHitAudio(5, t, v, e);
+            BulletStaticFunction_1.HitStaticFunction.PlayHitAudio(5, l, v, o);
           }
         } else {
-          t = EffectSystem_1.EffectSystem.SpawnEffect(GlobalData_1.GlobalData.World, BulletCollisionUtil.oHo.ToUeTransform(), l, "[BulletCollisionUtil.ProcessHitEffect]", U, 0, undefined, f === 1 ? h : undefined);
-          EffectSystem_1.EffectSystem.SetAdditionTimeScale(14, t, ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation);
-          if (!c.has(l)) {
-            c.set(l, new Queue_1.Queue());
+          l = EffectSystem_1.EffectSystem.SpawnEffect(GlobalData_1.GlobalData.World, BulletCollisionUtil.oHo.ToUeTransform(), e, "[BulletCollisionUtil.ProcessHitEffect]", U, 0, undefined, f === 1 ? h : undefined);
+          EffectSystem_1.EffectSystem.SetAdditionTimeScale(14, l, ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation);
+          if (c) {
+            let t = c.get(e);
+            if (!t) {
+              t = new Queue_1.Queue();
+              c.set(e, t);
+            }
+            t.Push(l);
           }
-          c.get(l).Push(t);
         }
       }
       BulletCollisionUtil.rHo.Stop();
-    } else if (l.Attacker?.GetComponent(61)?.ShouldOptimize) {
-      s = l.Attacker.GetComponent(51);
+    } else if (l.Attacker?.GetComponent(64)?.ShouldOptimize) {
+      o = l.Attacker.GetComponent(52);
       let t = 2;
-      if ((0, RegisterComponent_1.isComponentInstance)(s, 193)) {
-        t = s.CurrentPriority;
+      if ((0, RegisterComponent_1.isComponentInstance)(o, 199)) {
+        t = o.CurrentPriority;
       }
       BulletStaticFunction_1.HitStaticFunction.PlayHitAudioByActor(e.Actor, _.AudioOnHit, t);
     }
@@ -418,12 +422,12 @@ class BulletCollisionUtil {
     }
   }
   static PlaySceneItemHitEffect(t, l, e, o, i) {
-    var a = t?.GetComponent(61)?.HitEffectMap;
+    var a = t?.GetComponent(64)?.HitEffectMap;
     let r = 0;
-    var s = a.get(l);
-    var _ = t?.GetComponent(51);
+    var s = a?.get(l);
+    var _ = t?.GetComponent(52);
     let n = 2;
-    if ((0, RegisterComponent_1.isComponentInstance)(_, 193)) {
+    if ((0, RegisterComponent_1.isComponentInstance)(_, 199)) {
       n = _.CurrentPriority;
     }
     if (s && s.Size >= CharacterHitComponent_1.MAX_HIT_EFFECT_COUNT && (r = s.Pop(), EffectSystem_1.EffectSystem.IsValid(r))) {
@@ -437,10 +441,14 @@ class BulletCollisionUtil {
         BulletStaticFunction_1.HitStaticFunction.PlayHitAudio(t, l, o, n);
       });
       EffectSystem_1.EffectSystem.SetAdditionTimeScale(14, r, ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation);
-      if (!a.has(l)) {
-        a.set(l, new Queue_1.Queue());
+      if (a) {
+        let t = a.get(l);
+        if (!t) {
+          t = new Queue_1.Queue();
+          a.set(l, t);
+        }
+        t.Push(r);
       }
-      a.get(l).Push(r);
     }
   }
   static PlayVehicleHitEffect(i, a, r) {
@@ -451,11 +459,11 @@ class BulletCollisionUtil {
       let t = undefined;
       t = n ? (n.EnableHighLimit && BulletCollisionUtil.ye1(i, n.HighLimit, a), n.Scale) : Vector_1.Vector.OneVectorProxy;
       BulletCollisionUtil.oHo.Set(a, r.Quaternion(), t);
-      n = i.Attacker?.GetComponent(61)?.HitEffectMap;
+      n = i.Attacker?.GetComponent(64)?.HitEffectMap;
       a = i.Attacker?.GetComponent(3);
-      r = i.Attacker?.GetComponent(51);
+      r = i.Attacker?.GetComponent(52);
       let e = 2;
-      if ((0, RegisterComponent_1.isComponentInstance)(r, 193)) {
+      if ((0, RegisterComponent_1.isComponentInstance)(r, 199)) {
         e = r.CurrentPriority;
       }
       r = BulletStaticFunction_1.HitStaticFunction.CreateEffectContext(i.Attacker, i.EffectInfo.DisablePostProcess);
@@ -463,7 +471,7 @@ class BulletCollisionUtil {
       let l = 0;
       let o = a?.GetReplaceEffect(_);
       o = o || _;
-      i = n.get(o);
+      i = n?.get(o);
       if (i && i.Size >= CharacterHitComponent_1.MAX_HIT_EFFECT_COUNT && (l = i.Pop(), EffectSystem_1.EffectSystem.IsValid(l))) {
         EffectSystem_1.EffectSystem.ReplayEffect(l, "ReUseHitEffect", BulletCollisionUtil.oHo.ToUeTransform());
         EffectSystem_1.EffectSystem.SetAdditionTimeScale(14, l, ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation);
@@ -474,10 +482,14 @@ class BulletCollisionUtil {
           BulletStaticFunction_1.HitStaticFunction.PlayHitAudio(t, l, u, e);
         });
         EffectSystem_1.EffectSystem.SetAdditionTimeScale(14, l, ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation);
-        if (!n.has(o)) {
-          n.set(o, new Queue_1.Queue());
+        if (n) {
+          let t = n.get(o);
+          if (!t) {
+            t = new Queue_1.Queue();
+            n.set(o, t);
+          }
+          t.Push(l);
         }
-        n.get(o).Push(l);
       }
     }
   }

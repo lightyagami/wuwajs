@@ -12,17 +12,17 @@ const HonamiStoryUtil_1 = require("../HonamiStoryUtil");
 class HonamiStoryLeaveTip extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
-    this.Thm = false;
-    this.Uwm = false;
+    this.dcm = false;
+    this.Fhf = false;
     this.osa = undefined;
     this.rsa = undefined;
     this.Ldu = () => {
-      this.Thm = false;
+      this.dcm = false;
       this.CloseMe();
       this.rsa?.();
     };
     this.Htu = () => {
-      this.Thm = true;
+      this.dcm = true;
       this.CloseMe();
       this.osa?.();
     };
@@ -33,7 +33,7 @@ class HonamiStoryLeaveTip extends UiViewBase_1.UiViewBase {
   }
   OnStart() {
     var i = this.OpenParam;
-    this.Uwm = i.ShowSafeLeaveUpdate ?? false;
+    this.Fhf = i.ShowSafeLeaveUpdate ?? false;
     this.osa = i.ConfirmCallback;
     this.rsa = i.CancelCallback;
     var i = HonamiStoryUtil_1.HonamiStoryUtil.CheckInHonamiStoryTopTower() ? 3 : i.LeaveType;
@@ -85,12 +85,12 @@ class HonamiStoryLeaveTip extends UiViewBase_1.UiViewBase {
     this.UiViewSequence.StartSequenceName = i === 1 ? "FailStart" : "SuccessStart";
   }
   async OnPlayingCloseSequenceAsync() {
-    await this.PlaySequenceAsync(this.Thm ? "Close1" : "Close2", true);
+    await this.PlaySequenceAsync(this.dcm ? "Close1" : "Close2", true);
   }
   OnBeforeDestroy() {
-    if (this.Uwm) {
+    if (this.Fhf) {
       HonamiStoryController_1.HonamiStoryController.ShowSafeLeaveUpdate();
-      this.Uwm = false;
+      this.Fhf = false;
     }
   }
 }

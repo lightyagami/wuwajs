@@ -35,11 +35,11 @@ class GameplayCueHitEffect extends GameplayCueBase_1.GameplayCueBase {
   }
   Uoa(e) {
     var t;
-    return !!e && !!this.EntityHandle.Valid && !!(t = this.EntityHandle.Entity.GetComponent(61)) && t.ReplaceHitEffect(e);
+    return !!e && !!this.EntityHandle.Valid && !!(t = this.EntityHandle.Entity.GetComponent(64)) && t.ReplaceHitEffect(e);
   }
   Kgl() {
     var e;
-    if (this.EntityHandle.Valid && (e = this.EntityHandle.Entity.GetComponent(61))) {
+    if (this.EntityHandle.Valid && (e = this.EntityHandle.Entity.GetComponent(64))) {
       e.RemoveHitEffectReplaced();
     }
   }

@@ -394,15 +394,17 @@ class BattlePassModel extends ModelBase_1.ModelBase {
     return a;
   }
   CheckHasRewardWaitTake() {
-    for (const t of this.RewardDataList) {
-      for (const e of t.FreeRewardItem) {
-        if (e.ItemType === 1) {
-          return true;
+    if (this.GetInTimeRange()) {
+      for (const t of this.RewardDataList) {
+        for (const e of t.FreeRewardItem) {
+          if (e.ItemType === 1) {
+            return true;
+          }
         }
-      }
-      for (const a of t.PayRewardItem) {
-        if (a.ItemType === 1) {
-          return true;
+        for (const a of t.PayRewardItem) {
+          if (a.ItemType === 1) {
+            return true;
+          }
         }
       }
     }
@@ -419,7 +421,7 @@ class BattlePassModel extends ModelBase_1.ModelBase {
     return false;
   }
   CheckHasTaskWaitTakeWithType(t) {
-    if (this.bki !== this.UQ) {
+    if (this.GetInTimeRange() && this.bki !== this.UQ) {
       for (var [, e] of this.BattlePassTaskMap) {
         if (t === e.UpdateType && e.TaskState === 3) {
           return true;

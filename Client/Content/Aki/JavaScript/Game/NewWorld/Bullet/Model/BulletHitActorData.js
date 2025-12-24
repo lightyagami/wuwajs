@@ -87,6 +87,7 @@ class BulletHitTempResult {
     this.ImpactPoint = Vector_1.Vector.Create();
     this.Component = undefined;
     this.Actor = undefined;
+    this.HitItem = 0;
   }
 }
 exports.BulletHitTempResult = BulletHitTempResult;

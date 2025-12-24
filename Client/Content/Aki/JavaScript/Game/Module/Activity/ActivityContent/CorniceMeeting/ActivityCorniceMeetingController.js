@@ -61,12 +61,12 @@ class ActivityCorniceMeetingController extends ActivityControllerBase_1.Activity
     const r = {};
     o.forEach((e, t) => {
       r[t] = {
-        DJd: e
+        Cem: e
       };
     });
-    var t = new Protocol_1.Aki.Protocol.LJd();
+    var t = new Protocol_1.Aki.Protocol.mem();
     t.w6n = e;
-    t.AJd = r;
+    t.gem = r;
     Net_1.Net.Call(29384, t, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
         ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29384);

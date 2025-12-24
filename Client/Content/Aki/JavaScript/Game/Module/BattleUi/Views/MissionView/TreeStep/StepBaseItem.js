@@ -93,10 +93,10 @@ class StepBaseItem extends UiPanelBase_1.UiPanelBase {
           t = undefined;
         }
         if (this.DescribeTextVisible || h?.NodeType !== "ChildQuest" || h.ChildQuestType !== IQuest_1.EChildQuest.PlayFlow) {
-          this.QRm(this.DistanceTextComp, t, e);
+          this._Zm(this.DistanceTextComp, t, e);
           return true;
         } else {
-          this.QRm(this.DescribeTextComp, t, e);
+          this._Zm(this.DescribeTextComp, t, e);
           return !(this.DescribeTextVisible = true);
         }
       }
@@ -104,7 +104,7 @@ class StepBaseItem extends UiPanelBase_1.UiPanelBase {
       if (n) {
         return QuestUtil_1.QuestUtil.SetTrackDistanceText(this.DistanceTextComp, n);
       } else {
-        return !!s && (this.QRm(this.DistanceTextComp, undefined, s.ModifyTrackAreaText), true);
+        return !!s && (this._Zm(this.DistanceTextComp, undefined, s.ModifyTrackAreaText), true);
       }
     };
   }
@@ -247,7 +247,7 @@ class StepBaseItem extends UiPanelBase_1.UiPanelBase {
   async OnReset() {
     await this.Refresh(undefined, undefined);
   }
-  QRm(e, t, i) {
+  _Zm(e, t, i) {
     if (t) {
       LguiUtil_1.LguiUtil.SetLocalTextNew(e, t, i);
     } else {

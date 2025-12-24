@@ -9,6 +9,7 @@ const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
+const LevelSequencePlayer_1 = require("../../Common/LevelSequencePlayer");
 const LguiUtil_1 = require("../../Util/LguiUtil");
 const RoleSkillIconItem_1 = require("./RoleSkillIconItem");
 class RoleSkillTreeSkillItemBase extends UiPanelBase_1.UiPanelBase {
@@ -16,13 +17,27 @@ class RoleSkillTreeSkillItemBase extends UiPanelBase_1.UiPanelBase {
     super(...arguments);
     this.pdo = undefined;
     this.ac = undefined;
+    this.cXf = undefined;
+    this.dXf = undefined;
+    this.T4f = false;
     this.N8e = () => {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSkillTreeNodeToggleClick, this);
     };
   }
   OnStart() {
     this.pdo = new RoleSkillIconItem_1.RoleSkillIconItem(this.GetSkillIconItem(), this.IsIconTexture());
+    this.InitBranchSequencePlayer();
     this.SetToggleCallBack(this.N8e);
+  }
+  InitBranchSequencePlayer() {
+    var e = this.GetLeftBranchItem();
+    if (e) {
+      this.cXf = new LevelSequencePlayer_1.LevelSequencePlayer(e);
+    }
+    var e = this.GetRightBranchItem();
+    if (e) {
+      this.dXf = new LevelSequencePlayer_1.LevelSequencePlayer(e);
+    }
   }
   Update(e, t) {
     this.pdo.SetId(e, t);
@@ -53,12 +68,20 @@ class RoleSkillTreeSkillItemBase extends UiPanelBase_1.UiPanelBase {
   GetLevelText() {}
   GetNameText() {}
   GetLockItem() {}
+  GetLeftBranchItem() {}
+  GetLeftBranchIcon() {}
+  GetRightBranchItem() {}
+  GetRightBranchIcon() {}
   GetStrongArrowUpItem() {}
+  HasActiveBranchItem() {
+    return this.GetLeftBranchItem()?.IsUIActiveSelf() || (this.GetRightBranchItem()?.IsUIActiveSelf() ?? false);
+  }
   Refresh() {
     this.pdo.Refresh();
     this.RefreshName();
     this.RefreshLevel();
     this.RefreshState();
+    this.RefreshSkillBranch();
   }
   RefreshName() {
     var e;
@@ -83,6 +106,9 @@ class RoleSkillTreeSkillItemBase extends UiPanelBase_1.UiPanelBase {
   }
   SetToggleState(e, t = false) {
     this.pdo.SetToggleState(e, t);
+  }
+  GetSkillIconToggleItem() {
+    return this.pdo.GetToggleItem();
   }
   RefreshState() {
     var e;
@@ -128,6 +154,50 @@ class RoleSkillTreeSkillItemBase extends UiPanelBase_1.UiPanelBase {
   }
   TriggerToggle() {
     this.N8e();
+  }
+  RefreshSkillBranch(e = false) {
+    var t;
+    var i;
+    var s;
+    var h = this.GetLeftBranchItem();
+    var r = this.GetRightBranchItem();
+    if (this.GXf()) {
+      s = this.GetRoleId();
+      t = this.GetSkillNodeId();
+      i = ModelManager_1.ModelManager.RoleModel.GetRoleCurrentBranchIndex(s);
+      if (e && this.cXf && this.dXf) {
+        h?.SetUIActive(true);
+        r?.SetUIActive(true);
+        this.cXf.StopCurrentSequence(false, true);
+        this.dXf.StopCurrentSequence(false, true);
+        this.cXf.PlayLevelSequenceByName(i === 0 ? "Start" : "Close", true);
+        this.dXf.PlayLevelSequenceByName(i !== 0 ? "Start" : "Close", true);
+      } else {
+        h?.SetUIActive(i === 0);
+        r?.SetUIActive(i !== 0);
+      }
+      if (e = i === 0 ? this.GetLeftBranchIcon() : this.GetRightBranchIcon()) {
+        i = ModelManager_1.ModelManager.RoleModel.GetSkillNodeCurrentBranchId(s, t);
+        s = ConfigManager_1.ConfigManager.RoleConfig.GetSkillBranchConfigById(i);
+        this.SetSpriteByPath(s.Icon, e, false);
+      }
+    } else {
+      h?.SetUIActive(false);
+      r?.SetUIActive(false);
+    }
+  }
+  GXf() {
+    var e = this.GetRoleId();
+    var t = this.GetSkillNodeId();
+    return e !== 0 && t !== 0 && this.T4f && ModelManager_1.ModelManager.RoleModel.IsRoleHasBranch(e) && ModelManager_1.ModelManager.RoleModel.IsSkillNodeHasBranch(t);
+  }
+  OnSkillBranchChanged() {
+    if (this.GXf()) {
+      this.RefreshSkillBranch(true);
+    }
+  }
+  SetSkillBranchEnable(e) {
+    this.T4f = e;
   }
 }
 exports.RoleSkillTreeSkillItemBase = RoleSkillTreeSkillItemBase;

@@ -23,9 +23,9 @@ class PersonalPlayerTitleComponent extends UiPanelBase_1.UiPanelBase {
     this.xqe = undefined;
     this.Jac = undefined;
     this.p5i = undefined;
-    this.XKd = undefined;
+    this.ZKd = undefined;
     this.P7e = undefined;
-    this.YKd = -1;
+    this.eXd = -1;
     this.Zac = () => {
       this.RefreshScrollView();
       this.RefreshConfirmBtnState();
@@ -56,8 +56,8 @@ class PersonalPlayerTitleComponent extends UiPanelBase_1.UiPanelBase {
     this.BtnBindInfo = [[10, this.yVd]];
   }
   async OnBeforeStartAsync() {
-    this.XKd = new PersonalPlayerTitleMiniPreView_1.PersonalPlayerTitleMiniPreView();
-    await this.XKd.CreateThenShowByActorAsync(this.GetItem(9).GetOwner());
+    this.ZKd = new PersonalPlayerTitleMiniPreView_1.PersonalPlayerTitleMiniPreView();
+    await this.ZKd.CreateThenShowByActorAsync(this.GetItem(9).GetOwner());
     this.xqe = new LoopScrollView_1.LoopScrollView(this.GetLoopScrollViewComponent(0), this.GetItem(1).GetOwner(), this.ehc, true);
     this.AddEventListener();
   }
@@ -118,17 +118,17 @@ class PersonalPlayerTitleComponent extends UiPanelBase_1.UiPanelBase {
         r.SetUIActive(false);
       }
       this.RefreshConfirmBtnState();
-      this.XKd.RefreshView(this.Jac);
+      this.ZKd.RefreshView(this.Jac);
     }
   }
   RefreshScrollView() {
     var e = this.fwd();
     this.xqe.RefreshByData(e);
     let t = 0;
-    t = (t = this.YKd !== -1 && this.p5i.CurPlayerTitleId <= 0 ? e.findIndex(e => e.PlayerTitleId === this.YKd) : t) < 0 ? 0 : t;
+    t = (t = this.eXd !== -1 && this.p5i.CurPlayerTitleId <= 0 ? e.findIndex(e => e.PlayerTitleId === this.eXd) : t) < 0 ? 0 : t;
     this.xqe.SelectGridProxy(t);
     this.xqe.ScrollToGridIndex(t);
-    this.YKd = this.p5i.CurPlayerTitleId;
+    this.eXd = this.p5i.CurPlayerTitleId;
     ControllerHolder_1.ControllerHolder.UiNavigationNewController.SetNavigationFocusForView(this.xqe.GetGrid(t), true);
   }
   RefreshConfirmBtnState() {

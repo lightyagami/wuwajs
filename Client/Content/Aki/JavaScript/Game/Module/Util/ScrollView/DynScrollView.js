@@ -6,6 +6,8 @@ Object.defineProperty(exports, "__esModule", {
 exports.DynamicScrollView = undefined;
 const puerts_1 = require("puerts");
 const UE = require("ue");
+const EventDefine_1 = require("../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const InTurnGridAppearAnimation_1 = require("../Grid/GridAnimation/InTurnGridAppearAnimation");
 class DynamicScrollView {
   constructor(t, i, s, e) {
@@ -48,6 +50,8 @@ class DynamicScrollView {
       return h.GetUsingItem(e);
     };
     this.rNo = (t, i) => {
+      var s = this.GetGrid(t);
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnDynamicScrollViewClearItem, s);
       this.YGo.delete(t);
       var s = this.Vfa.get(t);
       if (s) {
@@ -107,6 +111,12 @@ class DynamicScrollView {
   GetGrid(t) {
     return this.XGo.GetItem(t)?.GetUIItem();
   }
+  LateScrollTo(i) {
+    this.BindLateUpdate(t => {
+      this.ScrollToItemIndex(i);
+      this.UnBindLateUpdate();
+    });
+  }
   GetGridByDisplayIndex(t) {
     var i = (0, puerts_1.$ref)(0);
     this.XGo.GetItemDisplayIndex(t, i);
@@ -158,6 +168,9 @@ class DynamicScrollView {
   }
   oNo(t, i) {
     t.SetUiActive(true);
+  }
+  GetItemSizeFromData(t) {
+    return this.$Go.GetItemSize(t);
   }
   GetScrollItemFromIndex(t) {
     t = this.YGo.get(t);

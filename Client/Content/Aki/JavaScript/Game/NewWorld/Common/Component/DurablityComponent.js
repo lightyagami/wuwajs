@@ -50,7 +50,7 @@ let DurabilityComponent = class DurabilityComponent extends EntityComponent_1.En
     if (!t.DurabilityStateConfig?.NonDestructable) {
       this.DeadActions = t.DestructionActions;
     }
-    this.Entity.GetComponent(125).SetLogicRange(ConfigManager_1.ConfigManager.ManipulateConfig.SearchRange);
+    this.Entity.GetComponent(130).SetLogicRange(ConfigManager_1.ConfigManager.ManipulateConfig.SearchRange);
     return true;
   }
   OnStart() {
@@ -78,5 +78,5 @@ let DurabilityComponent = class DurabilityComponent extends EntityComponent_1.En
     }
   }
 };
-DurabilityComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(105)], DurabilityComponent);
+DurabilityComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(110)], DurabilityComponent);
 exports.DurabilityComponent = DurabilityComponent; //# sourceMappingURL=DurablityComponent.js.map

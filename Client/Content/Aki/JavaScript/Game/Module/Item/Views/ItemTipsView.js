@@ -64,7 +64,7 @@ class ItemTipsView extends UiViewBase_1.UiViewBase {
             await this.xDl(t);
             break;
           case "HonamiStoryTipsItem":
-            await this.nom(t);
+            await this.bhm(t);
         }
       }
     }
@@ -88,7 +88,7 @@ class ItemTipsView extends UiViewBase_1.UiViewBase {
     await t.CreateByResourceIdAsync("UiView_CardPreview", this.GetItem(1));
     (this.TipsProxy = t).Refresh(e);
   }
-  async nom(e) {
+  async bhm(e) {
     var t = new HonamiStoryItemTipsComponent_1.HonamiStoryItemTipsComponent();
     await t.CreateByResourceIdAsync("UiItem_TipHonamiStoryItem", this.GetItem(1));
     (this.TipsProxy = t).Refresh(e);

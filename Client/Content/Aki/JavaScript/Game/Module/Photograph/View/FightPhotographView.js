@@ -14,10 +14,10 @@ const PhotographView_1 = require("./PhotographView");
 class FightPhotographView extends PhotographView_1.PhotographView {
   constructor() {
     super(...arguments);
-    this.BYd = false;
-    this.kYd = false;
+    this.mzd = false;
+    this.fzd = false;
     this.PPd = () => {
-      this.BYd = true;
+      this.mzd = true;
     };
     this.OnBackButtonClicked = () => {
       if (ControllerHolder_1.ControllerHolder.PhotographController.IsFightPhotoCanSettle()) {
@@ -40,14 +40,14 @@ class FightPhotographView extends PhotographView_1.PhotographView {
   }
   OnAfterTick(e) {
     var o;
-    if (!ControllerHolder_1.ControllerHolder.PhotographController.CurrentBtNode || this.BYd) {
+    if (!ControllerHolder_1.ControllerHolder.PhotographController.CurrentBtNode || this.mzd) {
       if (this.UiViewSequence?.HasSequenceNameInPlaying("Loop")) {
         this.UiViewSequence.StopSequenceByKey("Loop", false, true);
       }
     } else {
       o = ControllerHolder_1.ControllerHolder.PhotographController.IsSatisfyAllConditions();
-      if (this.kYd !== o) {
-        if (this.kYd = o) {
+      if (this.fzd !== o) {
+        if (this.fzd = o) {
           this.UiViewSequence.PlaySequence("ShowChanging");
           this.UiViewSequence.PlaySequence("Loop");
         } else {
@@ -68,13 +68,13 @@ class FightPhotographView extends PhotographView_1.PhotographView {
   }
   NDc() {
     var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
-    if (e?.Valid && e.Entity?.Valid && (e = e.Entity.GetComponent(209)) && !e.HasTag(-561064175)) {
+    if (e?.Valid && e.Entity?.Valid && (e = e.Entity.GetComponent(215)) && !e.HasTag(-561064175)) {
       e.AddTag(-561064175);
     }
   }
   VDc() {
     var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
-    if (e?.Valid && e.Entity?.Valid && (e = e.Entity.GetComponent(209)) && e.HasTag(-561064175)) {
+    if (e?.Valid && e.Entity?.Valid && (e = e.Entity.GetComponent(215)) && e.HasTag(-561064175)) {
       e.RemoveTag(-561064175);
     }
   }

@@ -364,7 +364,7 @@ class ComposeModel extends ModelBase_1.ModelBase {
   }
   CheckComposeMaterialEnough(t) {
     if (this.IsInPurificationList()) {
-      return this.q_m(t);
+      return this.Jfm(t);
     }
     var e = ConfigManager_1.ConfigManager.ComposeConfig.GetSynthesisFormulaById(t);
     if (e) {
@@ -665,7 +665,7 @@ class ComposeModel extends ModelBase_1.ModelBase {
   }
   GetComposeMaterialList(t) {
     let e = new Array();
-    if (!this.IsInPurificationList() || !((e = this.O_m(t)).length > 0)) {
+    if (!this.IsInPurificationList() || !((e = this.Zfm(t)).length > 0)) {
       for (const o of ConfigManager_1.ConfigManager.ComposeConfig.GetSynthesisFormulaById(t).ConsumeItems) {
         e.push({
           L8n: o.ItemId,
@@ -776,7 +776,7 @@ class ComposeModel extends ModelBase_1.ModelBase {
       return 0;
     }
   }
-  O_m(t) {
+  Zfm(t) {
     t = ConfigManager_1.ConfigManager.ComposeConfig.GetSynthesisFormulaById(t);
     if (t) {
       return (ModelManager_1.ModelManager.ComposePopupModel.GetComposeMaterialListPurification(t.ItemId) ?? []).map(t => ({
@@ -788,7 +788,7 @@ class ComposeModel extends ModelBase_1.ModelBase {
       return [];
     }
   }
-  q_m(t) {
+  Jfm(t) {
     if (ConfigManager_1.ConfigManager.ComposeConfig.GetSynthesisFormulaById(t)) {
       return this.GetMaxCreateCountPurification(t) > 0;
     } else {

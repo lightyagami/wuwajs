@@ -57,7 +57,7 @@ class BattlePassExtraRewardView extends UiViewBase_1.UiViewBase {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIButtonComponent], [2, UE.UIScrollViewWithScrollbarComponent], [3, UE.UIItem], [4, UE.UIScrollViewWithScrollbarComponent], [5, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIButtonComponent], [2, UE.UIScrollViewWithScrollbarComponent], [3, UE.UIItem], [4, UE.UIScrollViewWithScrollbarComponent], [5, UE.UIItem], [6, UE.UIText]];
     this.BtnBindInfo = [[0, this.GLn], [1, this.qLn]];
   }
   async OnBeforeStartAsync() {
@@ -84,6 +84,10 @@ class BattlePassExtraRewardView extends UiViewBase_1.UiViewBase {
     if (e !== undefined) {
       e.sort(this.Bc1);
       this.Dc1?.RefreshByData(e);
+    }
+    var e = this.eZs?.GetRewardInfo().TipsTextId;
+    if (e) {
+      this.GetText(6)?.ShowTextNew(e);
     }
   }
 }

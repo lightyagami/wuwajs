@@ -11,14 +11,14 @@ const UiViewSequence_1 = require("../../../../Ui/Base/UiViewSequence");
 class BattleHonamiStoryRoleSuitItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.xmm = undefined;
+    this.yvm = undefined;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UISprite]];
   }
   OnBeforeCreateImplement() {
-    this.xmm = new UiViewSequence_1.UiBehaviorLevelSequence(this);
-    this.AddUiBehavior(this.xmm);
+    this.yvm = new UiViewSequence_1.UiBehaviorLevelSequence(this);
+    this.AddUiBehavior(this.yvm);
   }
   Refresh(e, t) {
     t = ConfigManager_1.ConfigManager.HonamiStoryConfig.GetPluginSubType(t);
@@ -33,8 +33,8 @@ class BattleHonamiStoryRoleSuitItem extends UiPanelBase_1.UiPanelBase {
     this.SetSpriteByPath(i, this.GetSprite(0), true);
   }
   PlayBurst() {
-    this.xmm?.StopPrevSequence(false, true);
-    this.xmm?.PlaySequence("Burst");
+    this.yvm?.StopPrevSequence(false, true);
+    this.yvm?.PlaySequence("Burst");
   }
 }
 exports.BattleHonamiStoryRoleSuitItem = BattleHonamiStoryRoleSuitItem;

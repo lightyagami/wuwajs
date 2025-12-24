@@ -9,12 +9,33 @@ const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const ItemDataBase_1 = require("./ItemDataBase");
 class CommonItemData extends ItemDataBase_1.ItemDataBase {
-  constructor(e, t, r, i, s) {
-    super(e, r, i);
+  constructor(t, e, i, s, r) {
+    super(t, i, s);
     this.UniqueId = 0;
     this.EndTime = 0;
-    this.UniqueId = t;
-    this.EndTime = s ?? 0;
+    this.MainTypeId = undefined;
+    this.Type = undefined;
+    this.MaxStackCount = 0;
+    this.QualityId = 0;
+    this.SortIndex = 0;
+    this.ItemAccess = [];
+    this.ShowTypes = [];
+    this.UseCountLimit = 0;
+    this.RedDotDisableRule = 0;
+    this.ShowUseButton = false;
+    this.UniqueId = e;
+    this.EndTime = r ?? 0;
+    t = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfig(this.ConfigId);
+    this.MainTypeId = t?.MainTypeId;
+    this.Type = t?.ItemType;
+    this.MaxStackCount = t?.MaxStackableNum ?? 0;
+    this.QualityId = t?.QualityId ?? 0;
+    this.SortIndex = t?.SortIndex ?? 0;
+    this.ItemAccess = t?.ItemAccess ?? [];
+    this.ShowTypes = t?.ShowTypes ?? [];
+    this.UseCountLimit = t?.UseCountLimit ?? 0;
+    this.RedDotDisableRule = t?.RedDotDisableRule ?? 0;
+    this.ShowUseButton = t?.ShowUseButton ?? false;
   }
   GetConfig() {
     return ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfig(this.ConfigId);
@@ -23,49 +44,38 @@ class CommonItemData extends ItemDataBase_1.ItemDataBase {
     return this.UniqueId;
   }
   GetMainType() {
-    var e = this.GetConfig();
-    if (e) {
-      return e.MainTypeId;
-    }
+    return this.MainTypeId;
   }
   GetType() {
-    var e = this.GetConfig();
-    if (e) {
-      return e.ItemType;
-    }
+    return this.Type;
   }
   GetMaxStackCount() {
-    var e = this.GetConfig();
-    if (e) {
-      return e.MaxStackableNum;
-    } else {
-      return 0;
-    }
+    return this.MaxStackCount;
   }
   GetQuality() {
-    return this.GetConfig()?.QualityId;
+    return this.QualityId;
   }
   GetSortIndex() {
-    return this.GetConfig()?.SortIndex;
+    return this.SortIndex;
   }
   GetItemAccess() {
-    return this.GetConfig()?.ItemAccess;
+    return this.ItemAccess;
   }
   GetShowTypeList() {
-    return this.GetConfig()?.ShowTypes;
+    return this.ShowTypes;
   }
   GetUseCountLimit() {
-    return this.GetConfig().UseCountLimit;
+    return this.UseCountLimit;
   }
   GetRedDotDisableRule() {
-    return this.GetConfig().RedDotDisableRule;
+    return this.RedDotDisableRule;
   }
   HasRedDot() {
-    var e = this.GetConfigId();
-    return ModelManager_1.ModelManager.InventoryModel.IsCommonItemHasRedDot(e);
+    var t = this.GetConfigId();
+    return ModelManager_1.ModelManager.InventoryModel.IsCommonItemHasRedDot(t);
   }
-  SetEndTime(e) {
-    this.EndTime = e;
+  SetEndTime(t) {
+    this.EndTime = t;
   }
   IsLimitTimeItem() {
     return this.EndTime > 0 && !this.IsOverTime();
@@ -89,9 +99,9 @@ class CommonItemData extends ItemDataBase_1.ItemDataBase {
     return ConfigManager_1.ConfigManager.BuffItemConfig.IsBuffItem(this.ConfigId);
   }
   GetIsShowUseButton() {
-    return this.GetConfig().ShowUseButton;
+    return this.ShowUseButton;
   }
-  GetItemViewDataInfo(e) {}
+  GetItemViewDataInfo(t) {}
 }
 exports.CommonItemData = CommonItemData;
 //# sourceMappingURL=CommonItemData.js.map

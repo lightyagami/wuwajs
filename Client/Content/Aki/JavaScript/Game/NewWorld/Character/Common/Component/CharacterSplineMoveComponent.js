@@ -65,7 +65,7 @@ let CharacterSplineMoveComponent = CharacterSplineMoveComponent_1 = class Charac
     this.LocalQuat = Quat_1.Quat.Create();
     this.DebugMode = false;
     this.I3r = (t, i) => {
-      var s = t.GetComponent(111);
+      var s = t.GetComponent(116);
       if (s?.Active) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Movement", 50, "[CharacterSplineMoveComp] 轨道模式继承", ["LastEntity", t.Id], ["CurEntity", this.Entity.Id]);
@@ -74,7 +74,7 @@ let CharacterSplineMoveComponent = CharacterSplineMoveComponent_1 = class Charac
         for (const e of s.SplineStack) {
           var h = s.SplineMoveParamsMap.get(e);
           if (h.AllowInherit) {
-            this.StartSplineMove(e, h.Config, true);
+            this.InheritStartSplineMove(h);
           }
         }
         this.LastTimeKey = s.LastTimeKey;
@@ -101,10 +101,10 @@ let CharacterSplineMoveComponent = CharacterSplineMoveComponent_1 = class Charac
     if ((0, RegisterComponent_1.isComponentInstance)(this.ActorComp, 3)) {
       this.isn = this.ActorComp;
     }
-    this.Gce = this.Entity.GetComponent(182);
-    this.oRe = this.Entity.GetComponent(181);
-    this.rJo = this.Entity.GetComponent(179);
-    this.osn = this.Entity.GetComponent(177);
+    this.Gce = this.Entity.GetComponent(187);
+    this.oRe = this.Entity.GetComponent(186);
+    this.rJo = this.Entity.GetComponent(184);
+    this.osn = this.Entity.GetComponent(182);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.RoleOnStateInherit, this.I3r);
     return true;
   }
@@ -446,13 +446,13 @@ let CharacterSplineMoveComponent = CharacterSplineMoveComponent_1 = class Charac
       case 0:
         if (Math.abs(this.SplineDirection.DotProduct(this.Gce.GravityUp)) < 1 - MathUtils_1.MathUtils.KindaSmallNumber) {
           MathUtils_1.MathUtils.LookRotationUpFirst(this.SplineDirection, this.Gce.GravityUp, this.TmpQuat);
-          this.TmpVector1.Set(Math.cos(MathUtils_1.MathUtils.DegToRad * t.AdjustFacingYaw), Math.sin(MathUtils_1.MathUtils.DegToRad * t.AdjustFacingYaw), 0);
+          this.TmpVector1.Set(Math.cos(MathUtils_1.MathUtils.DegToRad * t.AdjustFacingLimit), Math.sin(MathUtils_1.MathUtils.DegToRad * t.AdjustFacingLimit), 0);
           this.TmpQuat.RotateVector(this.TmpVector1, this.TmpVector);
           this.isn.SetInputFacing(this.TmpVector, true);
         }
         break;
       case 1:
-        this.TmpVector.Set(Math.cos(MathUtils_1.MathUtils.DegToRad * t.AdjustFacingYaw), Math.sin(MathUtils_1.MathUtils.DegToRad * t.AdjustFacingYaw), 0);
+        this.TmpVector.Set(Math.cos(MathUtils_1.MathUtils.DegToRad * t.AdjustFacingLimit), Math.sin(MathUtils_1.MathUtils.DegToRad * t.AdjustFacingLimit), 0);
         this.isn.SetInputFacing(this.TmpVector, true);
     }
   }
@@ -491,17 +491,18 @@ let CharacterSplineMoveComponent = CharacterSplineMoveComponent_1 = class Charac
   LerpAngle(t, i, s) {
     return MathUtils_1.MathUtils.WrapAngle(t + MathUtils_1.MathUtils.WrapAngle(i - t) * s);
   }
-  StartSplineMoveInternal(t, i) {
+  StartSplineMoveInternal(t) {
+    var i = t.Id;
     if (this.DisableKey) {
       this.Enable(this.DisableKey, "SplineMoveComponent.StartSplineMoveInternal");
       this.DisableKey = undefined;
-      this.OnSplineMoveEnable(t, i);
+      this.OnSplineMoveEnable(i, t);
     }
-    this.AddSplineMoveParams(t, i);
+    this.AddSplineMoveParams(i, t);
     this.SelectNextSplineMove();
     this.LastRightSpeed = 0;
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("Movement", 6, "StartSplineMove", ["Spline Id", t], ["Actor", this.ActorComp.Owner.GetName()], ["StackCount", this.SplineStack.length]);
+      Log_1.Log.Info("Movement", 6, "StartSplineMove", ["Spline Id", i], ["Actor", this.ActorComp.Owner.GetName()], ["StackCount", this.SplineStack.length]);
     }
   }
   IsPlannerMove() {
@@ -509,19 +510,19 @@ let CharacterSplineMoveComponent = CharacterSplineMoveComponent_1 = class Charac
   }
   ApplySplineMoveDaConfig(t) {
     if (t.Type !== "SlideTrack" && t.Type !== "AirPassage") {
-      this.V0m(true);
+      this.FEm(true);
     }
   }
   ResetSplineMoveDaConfig() {
-    this.V0m(false);
+    this.FEm(false);
   }
-  V0m(t) {
+  FEm(t) {
     if (t) {
       this.Gce?.SetTurnRate(CharacterSplineMoveComponent_1.SplineMoveConfig.TurnRate);
       this.Gce?.SetAirControl(CharacterSplineMoveComponent_1.SplineMoveConfig.AirControl);
       this.Gce?.SetOverrideMaxFallingSpeed(CharacterSplineMoveComponent_1.SplineMoveConfig.MaxFlySpeed);
       this.TagComp?.AddTag(-451106150);
-      this.osn?.SetBaseValue(Protocol_1.Aki.Protocol.Vks.Proto_Jump, CharacterAttributeTypes_1.PER_TEN_THOUSAND * CharacterSplineMoveComponent_1.SplineMoveConfig.JumpHeightRate);
+      this.osn?.SetBaseValue(Protocol_1.Aki.Protocol.Vks.RIm, CharacterAttributeTypes_1.PER_TEN_THOUSAND * CharacterSplineMoveComponent_1.SplineMoveConfig.JumpHeightRate);
       t = this.oRe?.MainAnimInstance;
       if (UE.KuroStaticLibrary.IsObjectClassByName(t, CharacterNameDefines_1.CharacterNameDefines.ABP_BASEROLE)) {
         t.设置跳跃速率(CharacterSplineMoveComponent_1.SplineMoveConfig.JumpTimeScale);
@@ -531,7 +532,7 @@ let CharacterSplineMoveComponent = CharacterSplineMoveComponent_1 = class Charac
       this.Gce?.ResetAirControl();
       this.Gce?.ResetOverrideMaxFallingSpeed();
       this.TagComp?.RemoveTag(-451106150);
-      this.osn?.SetBaseValue(Protocol_1.Aki.Protocol.Vks.Proto_Jump, CharacterAttributeTypes_1.PER_TEN_THOUSAND);
+      this.osn?.SetBaseValue(Protocol_1.Aki.Protocol.Vks.RIm, CharacterAttributeTypes_1.PER_TEN_THOUSAND);
       t = this.oRe?.MainAnimInstance;
       if (UE.KuroStaticLibrary.IsObjectClassByName(t, CharacterNameDefines_1.CharacterNameDefines.ABP_BASEROLE)) {
         t.设置跳跃速率(1);
@@ -562,5 +563,5 @@ let CharacterSplineMoveComponent = CharacterSplineMoveComponent_1 = class Charac
 };
 CharacterSplineMoveComponent.DaPath = "/Game/Aki/Data/Fight/DA_SplineMoveConfig.DA_SplineMoveConfig";
 CharacterSplineMoveComponent.msn = undefined;
-CharacterSplineMoveComponent = CharacterSplineMoveComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(111)], CharacterSplineMoveComponent);
+CharacterSplineMoveComponent = CharacterSplineMoveComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(116)], CharacterSplineMoveComponent);
 exports.CharacterSplineMoveComponent = CharacterSplineMoveComponent; //# sourceMappingURL=CharacterSplineMoveComponent.js.map

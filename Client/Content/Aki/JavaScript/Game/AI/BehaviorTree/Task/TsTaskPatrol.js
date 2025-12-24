@@ -67,7 +67,7 @@ class TsTaskPatrol extends TsTaskAbortImmediatelyBase_1.default {
     if (e) {
       this.PatrolLogic = e.AiPatrol;
       this.PatrolConfig = this.PatrolLogic.GetConfig();
-      if (this.PatrolConfig && (this.Entity = e.CharAiDesignComp.Entity, this.MoveComp = this.Entity.GetComponent(45), this.StateComp = this.Entity.GetComponent(104), this.ActorComp = e.CharActorComp, this.PatrolConfig.ContainZ && e.CharActorComp?.Actor.KuroSetMovementMode({
+      if (this.PatrolConfig && (this.Entity = e.CharAiDesignComp.Entity, this.MoveComp = this.Entity.GetComponent(46), this.StateComp = this.Entity.GetComponent(109), this.ActorComp = e.CharActorComp, this.PatrolConfig.ContainZ && e.CharActorComp?.Actor.KuroSetMovementMode({
         Mode: 5,
         Context: "[TsTaskPatrol.ReceiveExecuteAI]"
       }), this.HandleMoveEnd ||= t => {

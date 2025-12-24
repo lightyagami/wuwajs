@@ -33,13 +33,13 @@ class InterestActionLookAt extends InterestActionBase {
     this.IsExclusive = true;
   }
   OnEnter(t, e) {
-    t = t.GetComponent(191);
-    if (t && (e = this.Mvm(e))) {
+    t = t.GetComponent(197);
+    if (t && (e = this.Twm(e))) {
       t.SightTarget(e, 0);
     }
   }
   OnLeave(t, e) {
-    t = t.GetComponent(191);
+    t = t.GetComponent(197);
     if (t) {
       t.SightTarget(undefined, 0);
     }
@@ -52,7 +52,7 @@ class InterestActionLookAt extends InterestActionBase {
       return Infinity;
     }
   }
-  Mvm(t) {
+  Twm(t) {
     switch (t.Type) {
       case 1:
         return t.Position;
@@ -152,7 +152,7 @@ class InterestEvent {
     this.IsEntered = false;
     this.Id = ++InterestEvent.Yla;
     this.OwnerEntity = t;
-    t = this.OwnerEntity.GetComponent(191);
+    t = this.OwnerEntity.GetComponent(197);
     this.OwnerController = t.InterestEventController;
   }
   GetPriority() {

@@ -34,8 +34,8 @@ class FightPhotoMainView extends UiTickViewBase_1.UiTickViewBase {
     this.CNe = undefined;
     this.W9d = undefined;
     this.Hwl = undefined;
-    this.LSm = [];
-    this.ucm = false;
+    this.mDm = [];
+    this.B0m = false;
     this.hLt = -1;
     this.lqe = undefined;
     this.wVl = undefined;
@@ -112,8 +112,8 @@ class FightPhotoMainView extends UiTickViewBase_1.UiTickViewBase {
       while (t.length < TEAM_MAX_NUMBER) {
         t.push(0);
       }
-      this.LSm = t;
-      this.tFe.RefreshByData(this.LSm);
+      this.mDm = t;
+      this.tFe.RefreshByData(this.mDm);
     };
     this.Oye = t => {
       if (!(t.length <= 0)) {
@@ -145,7 +145,7 @@ class FightPhotoMainView extends UiTickViewBase_1.UiTickViewBase {
         ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("ErrorCode_600064_Text");
       } else {
         ModelManager_1.ModelManager.LoadingModel.SetSpecifiedLoadingConfigId(this.Hwl.LoadingId);
-        ActivityControllerHolder_1.ActivityControllerHolder.FightPhotoController.EnterFightPhotoDungeonDirectly(this.CNe.Id, this.Hwl.LevelId, this.Hwl.InstanceId, this.LSm);
+        ActivityControllerHolder_1.ActivityControllerHolder.FightPhotoController.EnterFightPhotoDungeonDirectly(this.CNe.Id, this.Hwl.LevelId, this.Hwl.InstanceId, this.mDm);
       }
     };
     this.Q9d = () => {
@@ -218,7 +218,7 @@ class FightPhotoMainView extends UiTickViewBase_1.UiTickViewBase {
     var i;
     if (this.W9d) {
       if (this.W9d.IsUnLock) {
-        if (!this.ucm) {
+        if (!this.B0m) {
           this.Og(this.W9d);
         }
       } else {
@@ -238,7 +238,7 @@ class FightPhotoMainView extends UiTickViewBase_1.UiTickViewBase {
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), this.W9d.TargetRoleName);
     }
     this.W9d = i;
-    this.ucm = i.IsUnLock;
+    this.B0m = i.IsUnLock;
     this.GLl.DeselectCurrentGridProxy();
     this.GLl.RefreshByData(i.LevelDataList, () => {
       let t = this.CNe.GetCurrentLevelData(false);
@@ -265,8 +265,8 @@ class FightPhotoMainView extends UiTickViewBase_1.UiTickViewBase {
         t.SetIsFinished(this.Hwl.IsFinished);
       }
     });
-    this.LSm = t.GetRoleIdListIncludeZero();
-    this.tFe.RefreshByData(this.LSm);
+    this.mDm = t.GetRoleIdListIncludeZero();
+    this.tFe.RefreshByData(this.mDm);
     this.GetButton(19)?.RootUIComp.SetUIActive(t.IsUnLock);
     this.wVl?.SetUiActive(t.LevelGroupData.IsUnLock && !t.IsUnLock);
     if (!t.IsUnLock) {

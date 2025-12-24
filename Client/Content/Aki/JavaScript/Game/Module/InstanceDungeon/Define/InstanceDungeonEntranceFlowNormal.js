@@ -20,7 +20,7 @@ class InstanceDungeonEntranceFlowNormal extends InstanceDungeonEntranceFlowBase_
       UiManager_1.UiManager.OpenView("InstanceDungeonEntranceView", n);
     });
     this.AddStep(() => {
-      EditBattleTeamController_1.EditBattleTeamController.PlayerOpenEditBattleTeamView(ModelManager_1.ModelManager.InstanceDungeonEntranceModel.InstanceId);
+      EditBattleTeamController_1.EditBattleTeamController.PlayerOpenEditBattleTeamView(ModelManager_1.ModelManager.InstanceDungeonEntranceModel.InstanceId, false, true, false);
     });
     this.AddStep(() => {
       InstanceDungeonEntranceController_1.InstanceDungeonEntranceController.EnterInstanceDungeon().then(e => {

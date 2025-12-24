@@ -14,13 +14,15 @@ class RoleSkillInnerSkillAndOuterAttributeItem extends RoleSkillChainItem_1.Role
   }
   OnStart() {
     var e = new RoleSkillInnerSkillItem_1.RoleSkillInnerSkillItem();
+    e.SetSkillBranchEnable(this.IsSkillBranchEnable);
     e.CreateThenShowByActor(this.GetItem(0).GetOwner());
     this.SkillNodeItemList.push(e);
     for (const r of [1, 2]) {
-      var l = this.GetItem(r);
-      var t = new RoleSkillOuterAttributeSkillItem_1.RoleSkillOuterAttributeSkillItem();
-      t.CreateThenShowByActor(l.GetOwner());
-      this.SkillNodeItemList.push(t);
+      var t = this.GetItem(r);
+      var l = new RoleSkillOuterAttributeSkillItem_1.RoleSkillOuterAttributeSkillItem();
+      l.SetSkillBranchEnable(this.IsSkillBranchEnable);
+      l.CreateThenShowByActor(t.GetOwner());
+      this.SkillNodeItemList.push(l);
     }
     for (const n of [3, 4]) {
       var i = this.GetItem(n);

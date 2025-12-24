@@ -176,7 +176,7 @@ class SmallItemGrid extends ItemGridBase_1.ItemGridBase {
     this.Sbt(t);
   }
   ApplyForecastCharacterSmallItemGrid(t) {
-    this.mzd(t);
+    this.Kzd(t);
   }
   vbt(t) {
     var e = t.ItemConfigId;
@@ -190,7 +190,9 @@ class SmallItemGrid extends ItemGridBase_1.ItemGridBase {
     } else if (o === 13) {
       this.eV1(e);
     } else if (o === 17) {
-      this.iom(e);
+      this.Ehm(e);
+    } else if (o === 21) {
+      this.cJf(e);
     } else {
       this.UTt(e);
     }
@@ -256,7 +258,7 @@ class SmallItemGrid extends ItemGridBase_1.ItemGridBase {
     this.RefreshTopRightText(t);
     this.SetExtendToggleEnable(true);
   }
-  mzd(t) {
+  Kzd(t) {
     this.Data = t.Data;
     var t = ConfigManager_1.ConfigManager.RoleDevConfig.GetRoleDevProsProjectConfig(t.RoleId);
     var e = t.ElementId;
@@ -323,11 +325,20 @@ class SmallItemGrid extends ItemGridBase_1.ItemGridBase {
     });
     this.GetTexture(1)?.SetUIActive(false);
   }
-  iom(t) {
+  Ehm(t) {
     var e = this.GetTexture(1);
     var t = ConfigManager_1.ConfigManager.HonamiStoryConfig.GetHonamiStoryItem(t);
     if (t) {
       this.SetTextureByPath(t.IconMiddle, e);
+      e.SetUIActive(true);
+    } else {
+      e.SetUIActive(false);
+    }
+  }
+  cJf(t) {
+    var e = this.GetTexture(1);
+    if (t !== undefined && (t = ConfigManager_1.ConfigManager.MotorDiyConfig.GetMotorStickerConfig(t)?.IconSmall)) {
+      this.SetTextureByPath(t, e);
       e.SetUIActive(true);
     } else {
       e.SetUIActive(false);
@@ -366,7 +377,7 @@ class SmallItemGrid extends ItemGridBase_1.ItemGridBase {
     } else if (e === 13) {
       this.JO1(t);
     } else if (e === 17) {
-      this.Ihm(t);
+      this.ccm(t);
     } else {
       this.SetSkinQuality(undefined);
       this.jpl(t);
@@ -459,7 +470,7 @@ class SmallItemGrid extends ItemGridBase_1.ItemGridBase {
       e.SetUIActive(true);
     }
   }
-  Ihm(t) {
+  ccm(t) {
     var e;
     var i = this.GetSprite(0);
     if (!t || !t.ItemConfigId || t.IsQualityHidden) {

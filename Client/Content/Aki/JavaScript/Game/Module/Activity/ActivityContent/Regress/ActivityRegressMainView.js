@@ -5,8 +5,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ActivityRegressMainView = undefined;
 const UE = require("ue");
+const Info_1 = require("../../../../../Core/Common/Info");
+const Time_1 = require("../../../../../Core/Common/Time");
+const MultiTextLang_1 = require("../../../../../Core/Define/ConfigQuery/MultiTextLang");
 const TimerSystem_1 = require("../../../../../Core/Timer/TimerSystem");
-const StringUtils_1 = require("../../../../../Core/Utils/StringUtils");
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
 const TimeUtil_1 = require("../../../../Common/TimeUtil");
@@ -18,24 +20,35 @@ const CommonTabComponentData_1 = require("../../../Common/TabComponent/CommonTab
 const CommonTabData_1 = require("../../../Common/TabComponent/CommonTabData");
 const CommonTabTitleData_1 = require("../../../Common/TabComponent/CommonTabTitleData");
 const CommonTabItemBase_1 = require("../../../Common/TabComponent/TabItem/CommonTabItemBase");
-const ActivityRegressAreaSubView_1 = require("./Area/ActivityRegressAreaSubView");
-const ActivityRegressMainLineSubView_1 = require("./MainLine/ActivityRegressMainLineSubView");
+const ActivityControllerHolder_1 = require("../../ActivityControllerHolder");
+const ActivityRegressAdventureView_1 = require("./30RegressMainSubView/ActivityRegressAdventureView");
+const ActivityRegressDoubleDropView_1 = require("./30RegressMainSubView/ActivityRegressDoubleDropView");
+const ActivityRegressRecommendView_1 = require("./30RegressMainSubView/ActivityRegressRecommendView");
+const ActivityRegressNewVersionMainQuestView_1 = require("./30RegressNewVersion/ActivityRegressNewVersionMainQuestView");
+const ActivityRegressNewVersionRoleView_1 = require("./30RegressNewVersion/ActivityRegressNewVersionRoleView");
+const RegressBpMainView_1 = require("./BPView/RegressBpMainView");
 const ActivityRegressMainCaptionListPanel_1 = require("./Panels/ActivityRegressMainCaptionListPanel");
 const ActivityRegressTabItemPanel_1 = require("./Panels/ActivityRegressTabItemPanel");
-const ActivityRegressRoleSubView_1 = require("./Role/ActivityRegressRoleSubView");
 const ActivityRegressSignInSubView_1 = require("./SignIn/ActivityRegressSignInSubView");
+const TAB_CD = 600;
 class ActivityRegressMainView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
+    this.CNe = undefined;
+    this.HVf = 0;
     this.GOe = undefined;
     this._da = new Map();
     this.uda = undefined;
     this.cda = undefined;
-    this.dda = undefined;
-    this.TDe = undefined;
+    this.z3f = [];
     this.lBa = false;
+    this.Ftl = "";
     this.kOe = () => {
-      if (!ModelManager_1.ModelManager.ActivityRegressModel.CheckIfInShowTime) {
+      var e;
+      if (this.CNe?.CheckIfInShowTime()) {
+        e = ModelManager_1.ModelManager.ActivityModel.GetRemainTimeText(this.CNe.EndShowTime, this.Ftl);
+        this.GetText(5).SetText(e);
+      } else {
         this.CloseMe();
       }
     };
@@ -49,75 +62,48 @@ class ActivityRegressMainView extends UiViewBase_1.UiViewBase {
       if (this.lBa) {
         this.lBa = false;
       } else {
-        this.mda(e);
+        this.L6e = Time_1.Time.Now;
+        this.mda(this.z3f[e]);
       }
     };
     this.yqe = e => {
-      var e = this.dda[e];
-      var i = e.Title;
-      var e = this.CTa(e.EntryType);
+      var e = this.z3f[e];
+      var i = this.J3f(e) ?? "";
+      var e = this.Z3f(e);
       var e = e !== undefined ? ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(e) : "";
       return new CommonTabData_1.CommonTabData(e, new CommonTabTitleData_1.CommonTabTitleData(i));
     };
-    this.QCa = (t, a) => {
-      var s = this.fda(this.uda);
-      if (a === s) {
-        let e = "";
-        switch (a) {
-          case 0:
-          case 1:
-            e = this.KCa(t);
-            break;
-          case 2:
-            var r = t.GachaId;
-            var r = ConfigManager_1.ConfigManager.GachaConfig.GetGachaViewInfo(r);
-            e = r ? r.UnderBgTexturePath : ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("T_CircumfluenceSignInBg");
-            break;
-          default:
-            e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("T_CircumfluenceSignInBg");
-        }
-        let i = undefined;
-        (a === 2 ? (i = this.GetTexture(3), this.GetTexture(1)) : (i = this.GetTexture(1), this.GetTexture(3))).SetUIActive(false);
-        s = !StringUtils_1.StringUtils.IsEmpty(e);
-        i.SetUIActive(s);
-        if (s) {
-          this.SetTextureByPath(e, i);
-        }
-        this.UiViewSequence.StopSequenceByKey("Switch");
-        this.PlaySequenceAsync("Switch", true);
-      }
-    };
-    this.Ifa = () => {
-      var e = ModelManager_1.ModelManager.ActivityRegressModel.EntryEndTimeStamp;
-      if (e !== undefined && e - TimeUtil_1.TimeUtil.GetServerTimeStamp() <= 0 && (this.Lfa(), this.Tfa(), ModelManager_1.ModelManager.ActivityRegressModel.IsRegressEntrance(this.uda))) {
-        this.cda.SelectToggleByIndex(0);
-      }
+    this.L6e = 0;
+    this.CanToggleChange = e => {
+      var i;
+      return !!Info_1.Info.IsInGamepad() || (i = TAB_CD, !this.L6e) || Time_1.Time.Now - this.L6e >= i;
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UITexture], [2, UE.UIItem], [3, UE.UITexture]];
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UITexture], [2, UE.UIItem], [3, UE.UITexture], [4, UE.UIItem], [5, UE.UIText]];
   }
   async OnBeforeStartAsync() {
+    this.Ftl = MultiTextLang_1.configMultiTextLang.GetLocalTextNew("ActivityRemainingTime");
     var e = this.OpenParam;
-    var i = ModelManager_1.ModelManager.ActivityRegressModel.IsRegressEntrance(e);
-    await this.sso();
-    if (i) {
-      if (e === 3) {
-        this.lBa = true;
-        this.cda.SelectToggleByIndex(2, undefined, true);
-        await this.mda(e, 1);
-      } else {
-        this.cda.SelectToggleByIndex(e, true);
-      }
-    } else {
-      await this.mda(e);
+    var i = e.SubView;
+    this.HVf = e.OpenType;
+    switch (e.OpenType) {
+      case 0:
+        this.CNe = ModelManager_1.ModelManager.ActivityRegressModel.ActivityData;
+        break;
+      case 1:
+        this.CNe = ActivityControllerHolder_1.ActivityControllerHolder.ActivityNewPlayerSupportController.ActivityData;
+        var t = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("T_ActivityBeginnerSupportRecommendBg");
+        this.SetTextureByPath(t, this.GetTexture(1));
     }
-    this.cda.SetPnlListUiActive(i);
+    await this.sso();
+    this.cda.SelectToggleByIndex(this.z3f.indexOf(i) ?? 0, true, true);
+    this.cda.SetPnlListUiActive(i !== 6);
+    this.cda.BindCanExecuteChange(this.CanToggleChange);
   }
   OnBeforeShow() {
     var e;
-    var i = this.fda(this.uda);
-    var i = this._da.get(i);
+    var i = this._da.get(this.uda);
     if (i) {
       e = i.IsShowOrShowing;
       i.SetActive(true);
@@ -128,6 +114,7 @@ class ActivityRegressMainView extends UiViewBase_1.UiViewBase {
       }
     }
     this.GOe = TimerSystem_1.GameplayTimerSystem.Forever(this.kOe, TimeUtil_1.TimeUtil.InverseMillisecond);
+    this.kOe();
   }
   jm() {
     if (TimerSystem_1.GameplayTimerSystem.Has(this.GOe)) {
@@ -137,8 +124,7 @@ class ActivityRegressMainView extends UiViewBase_1.UiViewBase {
   }
   OnAfterHide() {
     this.jm();
-    var e = this.fda(this.uda);
-    var e = this._da.get(e);
+    var e = this._da.get(this.uda);
     if (e) {
       e.SetActive(false);
     }
@@ -153,7 +139,6 @@ class ActivityRegressMainView extends UiViewBase_1.UiViewBase {
       this.cda.Destroy();
       this.cda = undefined;
     }
-    this.Lfa();
   }
   OnAddEventListener() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RecallActivityInfoUpdate, this.itt);
@@ -161,30 +146,21 @@ class ActivityRegressMainView extends UiViewBase_1.UiViewBase {
   OnRemoveEventListener() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RecallActivityInfoUpdate, this.itt);
   }
-  async gda(e, i) {
-    const t = this.fda(e);
-    if (!this._da.has(t)) {
-      await this.vda(e).then(e => {
+  async gda(i, e) {
+    if (!this._da.has(i)) {
+      await this.vda(i).then(e => {
         if (e) {
-          this._da.set(t, e);
+          this._da.set(i, e);
         }
       });
     }
-    e = this._da.get(t);
-    await e.ShowAsync();
-    e.Update(i);
+    var t = this._da.get(i);
+    await t.ShowAsync();
+    t.Update(e);
   }
   async pda(e) {
-    e = this.fda(e);
     if (this._da.has(e)) {
       await this._da.get(e).HideAsync();
-    }
-  }
-  fda(e) {
-    if (e === 2 || e === 3) {
-      return 2;
-    } else {
-      return e;
     }
   }
   Cda() {
@@ -198,21 +174,27 @@ class ActivityRegressMainView extends UiViewBase_1.UiViewBase {
     let i = undefined;
     var t = this.GetItem(2);
     switch (e) {
-      case 4:
+      case 6:
         await (i = new ActivityRegressSignInSubView_1.ActivityRegressSignInSubView()).CreateThenShowByResourceIdAsync("UiItem_CircumfluenceSignin", t);
         break;
-      case 1:
-        await (i = new ActivityRegressAreaSubView_1.ActivityRegressAreaSubView()).CreateThenShowByResourceIdAsync("UiItem_CircumfluenceArea", t);
-        break;
       case 0:
-        await (i = new ActivityRegressMainLineSubView_1.ActivityRegressMainLineSubView()).CreateThenShowByResourceIdAsync("UiItem_CircumfluenceArea", t);
+        await (i = new RegressBpMainView_1.RegressBpMainView()).CreateThenShowByResourceIdAsync("UiItem_CircumfluenceBPRoot", t);
+        break;
+      case 1:
+        await (i = new ActivityRegressRecommendView_1.ActivityRegressRecommendView()).CreateThenShowByResourceIdAsync(this.HVf === 1 ? "UiItem_BeginnerSupportRecommend" : "UiItem_CircumfluenceRecommend30", t);
         break;
       case 2:
+        await (i = new ActivityRegressDoubleDropView_1.ActivityRegressDoubleDropView()).CreateThenShowByResourceIdAsync("UiItem_CircumfluenceChallenge", t);
+        break;
       case 3:
-        (i = new ActivityRegressRoleSubView_1.ActivityRegressRoleSubView()).OpenParam = 3;
-        await i.CreateThenShowByResourceIdAsync("UiItem_CircumfluenceArea", t);
+        await (i = new ActivityRegressAdventureView_1.ActivityRegressAdventureView()).CreateThenShowByResourceIdAsync(this.HVf === 1 ? "UiItem_BeginnerSupportRoleDevelop" : "UiItem_CircumfluenceRoleDevelop30", t);
+        break;
+      case 4:
+        await (i = new ActivityRegressNewVersionRoleView_1.ActivityRegressNewVersionRoleView()).CreateThenShowByResourceIdAsync("UiItem_InvocationGuide", t);
+        break;
+      case 5:
+        await (i = new ActivityRegressNewVersionMainQuestView_1.ActivityRegressNewVersionMainQuestView()).CreateThenShowByResourceIdAsync("UiItem_MissionGuide", t);
     }
-    i.BindPassRecallBaseCallBack(this.QCa);
     return i;
   }
   async mda(e, i = 0) {
@@ -223,11 +205,26 @@ class ActivityRegressMainView extends UiViewBase_1.UiViewBase {
       await this.gda(e, i);
       this.uda = e;
       this.qEi();
+      if (e === 1) {
+        ModelManager_1.ModelManager.ActivityRegressModel.ActivityData?.SetRecommendRedDotChecked();
+      }
+      if (e === 2) {
+        ModelManager_1.ModelManager.ActivityRegressModel.ActivityData?.SetDoubleDropRedDotChecked();
+      }
+      if (e === 3) {
+        ModelManager_1.ModelManager.ActivityRegressModel.ActivityData?.SetAdventureRedDotChecked();
+        ActivityControllerHolder_1.ActivityControllerHolder.ActivityNewPlayerSupportController?.NotifyRedDotRefresh();
+      }
+      if (this.uda === 4 || this.uda === 5) {
+        this.GetItem(4).SetUIActive(false);
+      } else {
+        this.GetItem(4).SetUIActive(true);
+      }
     }
   }
   qEi() {
     let e = undefined;
-    if (this.uda === 4) {
+    if (this.uda === 6) {
       e = "RecallActivity_Sign_Title";
     }
     var i = this.gTa();
@@ -235,27 +232,60 @@ class ActivityRegressMainView extends UiViewBase_1.UiViewBase {
     if (e) {
       this.cda.UpdateTitle(i, new CommonTabTitleData_1.CommonTabTitleData(e));
     }
+    this.GetItem(4).SetUIActive(this.uda !== 6);
   }
-  CTa(e) {
+  Z3f(e) {
     switch (e) {
+      case 0:
+        return "SP_IconCircumfluence1";
       case 1:
-        return "SP_CircumfluenceIconyeqianA";
+        return "SP_IconTab01";
       case 2:
-        return "SP_CircumfluenceIconyeqianB";
+        return "SP_IconCircumfluence3";
       case 3:
+        return "SP_IconBeginnerDev";
+      case 6:
+        return "SP_IconCircumfluence1";
       case 4:
-        return "SP_FuncIconRoleC";
+        return "SP_IconComDrawcard";
+      case 5:
+        return "SP_FuncIconRenwu";
+    }
+  }
+  J3f(e) {
+    switch (e) {
+      case 0:
+        return "Regress_BattlePass_Title";
+      case 1:
+        return "Regress_Recommend_Title";
+      case 2:
+        return "Regress_DoubleDrop_Title";
+      case 3:
+        return "Regress_Adventure_Title";
+      case 6:
+        return "Regress_Sign_Title";
+      case 4:
+        return "Regress_NewVersion_Role_Title";
+      case 5:
+        return "Regress_NewVersion_MainLine_Title";
     }
   }
   gTa() {
     switch (this.uda) {
       case 0:
-        return "SP_CircumfluenceIconyeqianA";
+        return "SP_IconCircumfluence1";
       case 1:
-        return "SP_CircumfluenceIconyeqianB";
+        return "SP_IconTab01";
       case 2:
+        return "SP_IconCircumfluence3";
       case 3:
-        return "SP_FuncIconRoleC";
+        return "SP_IconBeginnerDev";
+      case 6:
+        return "SP_IconCircumfluence1";
+      case 4:
+        return "SP_IconComDrawcard";
+      case 5:
+        return "SP_FuncIconRenwu";
     }
   }
   Og() {
@@ -266,7 +296,6 @@ class ActivityRegressMainView extends UiViewBase_1.UiViewBase {
   }
   async sso() {
     var e = new CommonTabComponentData_1.CommonTabComponentData(this.jdi, this.zno, this.yqe);
-    this.dda = ConfigManager_1.ConfigManager.ActivityRegressConfig.GetUnlockRegressEntryViewConfigList();
     this.cda = new ActivityRegressMainCaptionListPanel_1.ActivityRegressMainCaptionListPanel();
     var i = this.GetItem(0).GetOwner();
     this.cda.Init(e);
@@ -277,47 +306,24 @@ class ActivityRegressMainView extends UiViewBase_1.UiViewBase {
     });
   }
   async Tfa() {
-    this.dda = ConfigManager_1.ConfigManager.ActivityRegressConfig.GetUnlockRegressEntryViewConfigList();
+    this.z3f = ModelManager_1.ModelManager.ActivityRegressModel.GetNewRegressSubView(this.OpenParam.SubView === 6, this.HVf);
     var i = new Array();
-    let t = undefined;
-    for (let e = 0; e < this.dda.length; e++) {
-      var a = new CommonTabItemBase_1.CommonTabItemData();
-      a.Index = e;
-      a.Data = this.cda.GetTabComponentData(e);
-      var s = this.dda[e];
-      var [s, r] = ModelManager_1.ModelManager.ActivityRegressModel.CheckIfEntryOpen(s);
-      if (s) {
-        if (r !== undefined && r > 0) {
-          t = t === undefined ? r : Math.min(r, t);
-        }
-        i.push(a);
+    for (let e = 0; e < this.z3f.length; e++) {
+      var t = new CommonTabItemBase_1.CommonTabItemData();
+      t.Index = e;
+      t.Data = this.cda.GetTabComponentData(e);
+      i.push(t);
+      if (this.z3f[e] === 1) {
+        t.RedDotName = "ActivityRegressRecommend";
+      }
+      if (this.z3f[e] === 2) {
+        t.RedDotName = "ActivityRegressDoubleDrop";
+      }
+      if (this.z3f[e] === 3) {
+        t.RedDotName = "ActivityRegressAdventure";
       }
     }
     await this.cda.RefreshTabItemByDataAsync(i);
-    if (t !== undefined && t > 0) {
-      this.Lfa();
-      ModelManager_1.ModelManager.ActivityRegressModel.EntryEndTimeStamp = TimeUtil_1.TimeUtil.GetServerTimeStamp() + t * TimeUtil_1.TimeUtil.InverseMillisecond;
-      this.TDe = TimerSystem_1.RealTimeTimerSystem.Forever(this.Ifa, TimeUtil_1.TimeUtil.InverseMillisecond);
-    } else {
-      ModelManager_1.ModelManager.ActivityRegressModel.EntryEndTimeStamp = undefined;
-    }
-  }
-  KCa(e) {
-    var i = ModelManager_1.ModelManager.PlayerInfoModel.GetPlayerGender();
-    if (i === 1) {
-      return e.BgPath;
-    } else if (i === 0) {
-      return e.BgPathF;
-    } else {
-      return "";
-    }
-  }
-  Lfa() {
-    if (this.TDe) {
-      TimerSystem_1.RealTimeTimerSystem.Remove(this.TDe);
-      this.TDe = undefined;
-    }
-    ModelManager_1.ModelManager.ActivityRegressModel.EntryEndTimeStamp = undefined;
   }
 }
 exports.ActivityRegressMainView = ActivityRegressMainView;

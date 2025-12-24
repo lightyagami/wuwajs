@@ -18,12 +18,12 @@ class ActivityCorniceMeetingRewardItem extends UiPanelBase_1.UiPanelBase {
     this.DisplayIndex = 0;
     this.bOe = undefined;
     this.HFe = 0;
-    this.mZd = undefined;
+    this.Stm = undefined;
     this.JGe = () => {
       return new CommonItemSmallItemGrid_1.CommonItemSmallItemGrid();
     };
     this.s3e = () => {
-      this.mZd?.();
+      this.Stm?.();
     };
   }
   GetKey(e, i) {}
@@ -39,7 +39,7 @@ class ActivityCorniceMeetingRewardItem extends UiPanelBase_1.UiPanelBase {
   OnDeselected(e) {}
   Refresh(e, i, t) {
     this.HFe = e.RewardId;
-    this.mZd = e.OnClickFinishBtnCb;
+    this.Stm = e.OnClickFinishBtnCb;
     this.mGe();
     this.jqe();
     this.n3e();

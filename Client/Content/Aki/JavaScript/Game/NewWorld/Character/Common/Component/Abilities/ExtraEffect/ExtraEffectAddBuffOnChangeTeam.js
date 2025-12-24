@@ -20,7 +20,7 @@ class AddBuffOnChangeTeam extends ExtraEffectBase_1.BuffEffect {
       if (i?.IsValid()) {
         (e = ModelManager_1.ModelManager.SceneTeamModel.GetTeamEntities()).forEach(e => {
           if (!this.WQo.includes(e.Id)) {
-            var t = e.Entity.GetComponent(178);
+            var t = e.Entity.GetComponent(183);
             for (const s of this.jQo) {
               t?.AddIterativeBuff(s, i, undefined, false, `新入队角色加Buff（前置buff Id=${this.BuffId}, handle=${this.ActiveHandleId}）`);
             }
@@ -60,7 +60,7 @@ class BindBuffToTeam extends ExtraEffectBase_1.BuffEffect {
       if (this.PendingBuff) {
         var e = ModelManager_1.ModelManager.SceneTeamModel.GetTeamEntities(this.mXu);
         for (const r of e) {
-          var t = r.Entity?.GetComponent(213);
+          var t = r.Entity?.GetComponent(220);
           if (t && !this.WQo.includes(r.Id)) {
             for (const f of this.jQo) {
               t.AddIterativeBuff(f, this.PendingBuff, undefined, false, this.aFl);
@@ -68,7 +68,7 @@ class BindBuffToTeam extends ExtraEffectBase_1.BuffEffect {
           }
         }
         for (const n of this.WQo) {
-          var s = ModelManager_1.ModelManager.CharacterModel?.GetHandle(n)?.Entity?.GetComponent(213);
+          var s = ModelManager_1.ModelManager.CharacterModel?.GetHandle(n)?.Entity?.GetComponent(220);
           if (s && !e.some(e => e.Id === n)) {
             for (const h of this.jQo) {
               var i = CharacterBuffController_1.default.GetBuffDefinition(h)?.DefaultStackCount ?? -1;
@@ -94,7 +94,7 @@ class BindBuffToTeam extends ExtraEffectBase_1.BuffEffect {
     if (this.OwnerBuffComponent?.HasBuffAuthority()) {
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnUpdateSceneTeam, this.yvi);
       for (const s of this.WQo) {
-        var e = ModelManager_1.ModelManager.CharacterModel?.GetHandle(s)?.Entity?.GetComponent(213);
+        var e = ModelManager_1.ModelManager.CharacterModel?.GetHandle(s)?.Entity?.GetComponent(220);
         if (e) {
           for (const i of this.jQo) {
             var t = CharacterBuffController_1.default.GetBuffDefinition(i)?.DefaultStackCount ?? -1;

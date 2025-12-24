@@ -21,7 +21,7 @@ class ConcertoResponseItem extends BattleVisibleChildView_1.BattleVisibleChildVi
     this.Qst = undefined;
     this.Xst = undefined;
     this.hJ = 0;
-    this.Yzd = undefined;
+    this.PJd = undefined;
     this.ufe = 0;
     this.o$e = t => {
       if (t === this.E0) {
@@ -33,7 +33,7 @@ class ConcertoResponseItem extends BattleVisibleChildView_1.BattleVisibleChildVi
         this.RefreshVisible();
       }
     };
-    this.zzd = (t, e) => {
+    this.AJd = (t, e) => {
       this.RefreshExtraEffect(t, e);
     };
   }
@@ -42,7 +42,7 @@ class ConcertoResponseItem extends BattleVisibleChildView_1.BattleVisibleChildVi
   }
   Initialize(t) {
     super.Initialize(t);
-    this.InitChildType(37);
+    this.InitChildType(41);
     this.Ore();
   }
   OnBeforeDestroy() {
@@ -50,10 +50,10 @@ class ConcertoResponseItem extends BattleVisibleChildView_1.BattleVisibleChildVi
   }
   Reset() {
     this.kre();
-    if (this.Yzd) {
-      this.Yzd.Stop();
-      this.Yzd.Destroy();
-      this.Yzd = undefined;
+    if (this.PJd) {
+      this.PJd.Stop();
+      this.PJd.Destroy();
+      this.PJd = undefined;
     }
     super.Reset();
   }
@@ -85,12 +85,12 @@ class ConcertoResponseItem extends BattleVisibleChildView_1.BattleVisibleChildVi
   Ore() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiElementEnergyChanged, this.o$e);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiElementHideTagChanged, this.Yst);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiConcertoExtraEffectRefresh, this.zzd);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiConcertoExtraEffectRefresh, this.AJd);
   }
   kre() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiElementEnergyChanged, this.o$e);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiElementHideTagChanged, this.Yst);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiConcertoExtraEffectRefresh, this.zzd);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiConcertoExtraEffectRefresh, this.AJd);
   }
   RefreshVisible() {
     if (this.Wst) {
@@ -109,26 +109,26 @@ class ConcertoResponseItem extends BattleVisibleChildView_1.BattleVisibleChildVi
   }
   RefreshExtraEffect(t, e) {
     if (t === 0) {
-      if (this.Yzd) {
-        this.Yzd.SetComponentActive(false);
+      if (this.PJd) {
+        this.PJd.SetComponentActive(false);
       }
     } else {
-      if (this.Yzd) {
-        if (this.Yzd.GetEffectType() === this.ufe) {
-          this.Yzd.SetComponentActive(true);
-          this.Yzd.Refresh(e);
+      if (this.PJd) {
+        if (this.PJd.GetEffectType() === this.ufe) {
+          this.PJd.SetComponentActive(true);
+          this.PJd.Refresh(e);
           return;
         }
-        this.Yzd.Destroy();
-        this.Yzd = undefined;
+        this.PJd.Destroy();
+        this.PJd = undefined;
       }
       if ((this.ufe = t) === 1) {
-        this.Yzd = new BattleSkillExtraEffectRhythmItem_1.BattleSkillExtraEffectRhythmItem();
-        this.Yzd.Init(this.RootItem);
-        this.Yzd.SetComponentActive(true);
-        this.Yzd.Refresh(e);
+        this.PJd = new BattleSkillExtraEffectRhythmItem_1.BattleSkillExtraEffectRhythmItem();
+        this.PJd.Init(this.RootItem);
+        this.PJd.SetComponentActive(true);
+        this.PJd.Refresh(e);
       }
-      this.Yzd?.SetEffectType(t);
+      this.PJd?.SetEffectType(t);
     }
   }
   Jst(t) {

@@ -43,6 +43,7 @@ const NEARBY_CHAIR_TOLERANCE_SQUARED = 2500;
 const NEARBY_CHAIR_OFFSET = 50;
 const MOVE_TO_CHAIR_SPEED = 70;
 const MOVE_TO_NEARBY_CHAIR_SPEED = 100;
+const MOVE_TO_CHAIR_DISTANCE_TOLERANCE = 5;
 const MODEL_BUFFER_TIME = 500;
 const SIT_UP_TIME = 2000;
 const SIT_DOWN_TIME = 1500;
@@ -94,9 +95,9 @@ let NpcSitOnChairComponent = class NpcSitOnChairComponent extends EntityComponen
   }
   OnStart() {
     this.Hte = this.Entity.GetComponent(3);
-    this.Gce = this.Entity.GetComponent(45);
-    this.ph_ = this.Entity.GetComponent(46);
-    this.oRe = this.Entity.GetComponent(181);
+    this.Gce = this.Entity.GetComponent(46);
+    this.ph_ = this.Entity.GetComponent(47);
+    this.oRe = this.Entity.GetComponent(186);
     var t = this.oRe?.MainAnimInstance;
     if (t && UE.KuroStaticLibrary.IsObjectClassByName(t, CharacterNameDefines_1.CharacterNameDefines.ABP_BASEROLENPC)) {
       this.n$u = true;
@@ -130,7 +131,7 @@ let NpcSitOnChairComponent = class NpcSitOnChairComponent extends EntityComponen
       this.OPt = t;
       if (this.Gce?.CharacterMovement?.IsValid()) {
         t = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(this.OPt.ChairEntityId);
-        this.Man = t?.Entity?.GetComponent(201)?.GetSubEntityInteractLogicController();
+        this.Man = t?.Entity?.GetComponent(207)?.GetSubEntityInteractLogicController();
         if (this.Man && this.Man.IsSceneInteractionLoadCompleted()) {
           if (this.OPt.MontagePath === "") {
             if (Log_1.Log.CheckError()) {
@@ -257,12 +258,13 @@ let NpcSitOnChairComponent = class NpcSitOnChairComponent extends EntityComponen
           IsFly: false,
           DebugMode: true,
           Loop: false,
+          Distance: MOVE_TO_CHAIR_DISTANCE_TOLERANCE,
           Callback: t => {
             if (t === 2) {
               this.Man.Possess(this.Entity);
               this.Man.IgnoreCollision();
               if (this.OPt?.TeleportEffect?.length) {
-                var i = this.Entity?.GetComponent(229);
+                var i = this.Entity?.GetComponent(238);
                 for (const e of this.OPt.TeleportEffect) {
                   i?.AddCue(e, {
                     Instant: true
@@ -306,6 +308,7 @@ let NpcSitOnChairComponent = class NpcSitOnChairComponent extends EntityComponen
         IsFly: false,
         DebugMode: true,
         Loop: false,
+        Distance: MOVE_TO_CHAIR_DISTANCE_TOLERANCE,
         Callback: t => {
           if (t === 2) {
             this.kgd(this.hAd, "ExecuteMoveClose.移动靠近椅子保底");
@@ -361,6 +364,7 @@ let NpcSitOnChairComponent = class NpcSitOnChairComponent extends EntityComponen
         IsFly: false,
         DebugMode: true,
         Loop: false,
+        Distance: MOVE_TO_CHAIR_DISTANCE_TOLERANCE,
         Callback: t => {
           if (t === 2) {
             this.kgd(this.o$u, "ExecuteMoveAway.移动离开椅子保底");
@@ -385,9 +389,9 @@ let NpcSitOnChairComponent = class NpcSitOnChairComponent extends EntityComponen
     }
   }
   kgd(t, i) {
-    var e = this.Entity.GetComponent(181).GetMeshTransform();
+    var e = this.Entity.GetComponent(186).GetMeshTransform();
     this.Hte?.SetActorLocation(t.ToUeVector(), "[NpcSitOnChairComponent]" + i, false);
-    this.Entity.GetComponent(181)?.SetModelBuffer(e, MODEL_BUFFER_TIME);
+    this.Entity.GetComponent(186)?.SetModelBuffer(e, MODEL_BUFFER_TIME);
   }
   _Ad(t, i, e) {
     this.gtd();
@@ -429,6 +433,7 @@ let NpcSitOnChairComponent = class NpcSitOnChairComponent extends EntityComponen
   }
   E$u() {
     if (this.OPt.MontagePath) {
+      this.oRe?.SetLocationAndRotatorWithModelBuffer(this.hAd.ToUeVector(), this.Hte.ActorRotationProxy.ToUeRotator(), MODEL_BUFFER_TIME, "NpcSitOnChairComp.NormalNpcSitOnChair");
       this.s$u = this.ph_.VolatileMontagePlayByLoad(3, this.OPt.MontagePath, undefined, undefined, t => {
         if (t) {
           this.Phase = 6;
@@ -473,16 +478,16 @@ let NpcSitOnChairComponent = class NpcSitOnChairComponent extends EntityComponen
     if (t) {
       this.cz.Reset();
       this.Gce.SetForceSpeed(this.cz);
-      i = t.GetComponent(206);
-      t = t.GetComponent(201);
+      i = t.GetComponent(212);
+      t = t.GetComponent(207);
       this.cz.DeepCopy(t.GetInteractPoint());
       this.cz.Z += this.Hte.HalfHeight;
-      t = this.Entity.GetComponent(181).GetMeshTransform();
+      t = this.Entity.GetComponent(186).GetMeshTransform();
       this.cie.DeepCopy(i.ActorRotationProxy);
       this.cie.Yaw += 90;
       this.Hte.SetInputRotator(this.cie);
       this.Hte.SetActorLocationAndRotation(this.cz.ToUeVector(), this.cie.ToUeRotator(), "角色坐下", false);
-      this.Entity.GetComponent(181)?.SetModelBuffer(t, MODEL_BUFFER_TIME);
+      this.Entity.GetComponent(186)?.SetModelBuffer(t, MODEL_BUFFER_TIME);
     }
   }
   L2r(t) {
@@ -498,7 +503,7 @@ let NpcSitOnChairComponent = class NpcSitOnChairComponent extends EntityComponen
       return 0;
     }
     this.cz.Normalize();
-    t = t.GetComponent(201).GetInteractController().SectorRange;
+    t = t.GetComponent(207).GetInteractController().SectorRange;
     if (this.cz.DotProduct(this.Hte.ActorForwardProxy) > ZERO_EIGHT || !t) {
       return 0;
     } else {
@@ -517,7 +522,7 @@ let NpcSitOnChairComponent = class NpcSitOnChairComponent extends EntityComponen
     }
   }
   I$u(t) {
-    t = t.GetComponent(206);
+    t = t.GetComponent(212);
     if (!t) {
       return 0;
     }
@@ -549,12 +554,12 @@ let NpcSitOnChairComponent = class NpcSitOnChairComponent extends EntityComponen
   }
   ResetCollision(t) {
     this.Hte.Actor.CapsuleComponent.SetCollisionResponseToChannel(2, 2);
-    if ((t &&= t.GetComponent(206)) && t.Entity) {
+    if ((t &&= t.GetComponent(212)) && t.Entity) {
       this.HTe(t, false);
     }
   }
   FTe(t) {
-    t = t.GetComponent(206);
+    t = t.GetComponent(212);
     if (t && t.Entity) {
       this.HTe(t, true);
     }
@@ -564,7 +569,7 @@ let NpcSitOnChairComponent = class NpcSitOnChairComponent extends EntityComponen
     var e = t.Entity.GetComponent(0)?.GetPbDataId() ?? 0;
     var e = ModelManager_1.ModelManager.CreatureModel.GetOwnerEntity(e);
     let s = undefined;
-    s = e && (e = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e))?.Valid ? e.Entity.GetComponent(206) : t;
+    s = e && (e = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e))?.Valid ? e.Entity.GetComponent(212) : t;
     var e = (0, puerts_1.$ref)(undefined);
     s.Owner.GetAttachedActors(e);
     var h = (0, puerts_1.$unref)(e);
@@ -581,5 +586,5 @@ let NpcSitOnChairComponent = class NpcSitOnChairComponent extends EntityComponen
     }
   }
 };
-NpcSitOnChairComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(93)], NpcSitOnChairComponent);
+NpcSitOnChairComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(96)], NpcSitOnChairComponent);
 exports.NpcSitOnChairComponent = NpcSitOnChairComponent; //# sourceMappingURL=NpcSitOnChairComponent.js.map

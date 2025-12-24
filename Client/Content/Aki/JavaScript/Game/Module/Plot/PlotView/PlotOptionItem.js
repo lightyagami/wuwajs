@@ -85,7 +85,7 @@ class PlotOptionItem extends GridProxyAbstract_1.GridProxyAbstract {
             case 0:
               if (this.vzi) {
                 PlotController_1.PlotController.EndInteraction(this.Mzi.Type.Type === "Flow");
-                this.vzi.SecondConfirmHandle = TsInteractionUtils_1.TsInteractionUtils.HandleInteractionSecondConfirm(this.Mzi, this.vzi, this.stm);
+                this.vzi.SecondConfirmHandle = TsInteractionUtils_1.TsInteractionUtils.HandleInteractionSecondConfirm(this.Mzi, this.vzi, this.Eom);
               } else {
                 PlotController_1.PlotController.EndInteraction();
               }
@@ -103,7 +103,7 @@ class PlotOptionItem extends GridProxyAbstract_1.GridProxyAbstract {
         Log_1.Log.Warn("Plot", 26, "剧情选项点击失效", ["index", this.OptionIndex], ["id", this.Ezi]);
       }
     };
-    this.stm = (t, i, e) => {
+    this.Eom = (t, i, e) => {
       PlotController_1.PlotController.EndInteraction(this.Mzi.Type.Type === "Flow");
       if (this.vzi.SecondConfirmHandle === t && InteractConfirmController_1.InteractConfirmController.CheckHandleValid(t) && i && e) {
         TsInteractionUtils_1.TsInteractionUtils.HandleInteractionOptionNew(this.Mzi, this.vzi);

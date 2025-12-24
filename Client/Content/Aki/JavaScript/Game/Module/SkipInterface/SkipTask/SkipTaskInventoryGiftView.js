@@ -22,7 +22,7 @@ class SkipToInventoryGiftView extends SkipTask_1.SkipTask {
         for (const M of n) {
           var t = ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(M);
           if (t > 0) {
-            var s = this.gum(M, i);
+            var s = this.Agm(M, i);
             let e = 1;
             if (o && o > 0 && s > 0) {
               e = Math.ceil(o / s);
@@ -48,7 +48,7 @@ class SkipToInventoryGiftView extends SkipTask_1.SkipTask {
   wec() {
     ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("InventoryToGift_GiftNotFound");
   }
-  gum(e, r) {
+  Agm(e, r) {
     e = ConfigManager_1.ConfigManager.ItemConfig.GetConfig(e).Parameters;
     return ConfigManager_1.ConfigManager.GiftPackageConfig.GetGiftPackageConfig(e.values().next().value)?.Content.get(r) ?? 0;
   }

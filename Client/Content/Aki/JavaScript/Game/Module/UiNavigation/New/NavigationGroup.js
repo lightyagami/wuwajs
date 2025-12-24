@@ -8,7 +8,7 @@ const StringUtils_1 = require("../../../../Core/Utils/StringUtils");
 class NavigationGroup {
   constructor(t) {
     this.Lo = undefined;
-    this.Cim = new Set();
+    this.Rsm = new Set();
     this.Oeh = undefined;
     this.Geh = undefined;
     this.keh = false;
@@ -30,12 +30,12 @@ class NavigationGroup {
     };
     this.Lo = t;
     if (!StringUtils_1.StringUtils.IsBlank(this.Lo.InsideGroupName)) {
-      this.Cim.add(this.Lo.InsideGroupName);
+      this.Rsm.add(this.Lo.InsideGroupName);
     }
     for (let t = 0, e = this.Lo.ExtraInsideGroupNameList.Num(); t < e; ++t) {
       var i = this.Lo.ExtraInsideGroupNameList.Get(t);
       if (!StringUtils_1.StringUtils.IsBlank(i)) {
-        this.Cim.add(i);
+        this.Rsm.add(i);
       }
     }
   }
@@ -58,6 +58,17 @@ class NavigationGroup {
       let i = 0;
       let r = 0;
       if (t.HasLoopScrollView() && e.HasLoopScrollView() && (t.IsValid() && (i = t.LoopScrollViewGridIndex), e.IsValid() && (r = e.LoopScrollViewGridIndex), i !== r)) {
+        return i - r;
+      } else {
+        return this.Jo1(t, e);
+      }
+    });
+  }
+  get MultiTemplateScrollSortListenerList() {
+    return this.ListenerList.slice().sort((t, e) => {
+      let i = 0;
+      let r = 0;
+      if (t.HasMultiTemplateScrollView() && e.HasMultiTemplateScrollView() && (t.IsValid() && (i = t.LoopScrollViewGridIndex), e.IsValid() && (r = e.LoopScrollViewGridIndex), i !== r)) {
         return i - r;
       } else {
         return this.Jo1(t, e);
@@ -114,7 +125,7 @@ class NavigationGroup {
     return this.Lo.HorizontalWrapMode;
   }
   get InsideGroupNameSet() {
-    return this.Cim;
+    return this.Rsm;
   }
   set LastSelectListener(t) {
     this.Geh = t;

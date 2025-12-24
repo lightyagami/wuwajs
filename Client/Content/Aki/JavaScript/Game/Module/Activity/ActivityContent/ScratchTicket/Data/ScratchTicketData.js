@@ -5,11 +5,14 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ScratchTicketData = undefined;
 const Log_1 = require("../../../../../../Core/Common/Log");
+const EventDefine_1 = require("../../../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../../../Common/Event/EventSystem");
 const ConfigManager_1 = require("../../../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../../../Manager/ModelManager");
 const ActivityData_1 = require("../../../ActivityData");
 const ScratchTicketConditionData_1 = require("./ScratchTicketConditionData");
 const ScratchTicketRoundData_1 = require("./ScratchTicketRoundData");
+const SCRATCH_TICKET_RED_DOT_CACHE_KEY = 100;
 class ScratchTicketData extends ActivityData_1.ActivityBaseData {
   constructor() {
     super(...arguments);
@@ -24,7 +27,7 @@ class ScratchTicketData extends ActivityData_1.ActivityBaseData {
     }
   }
   NeedSelfControlFirstRedPoint() {
-    return true;
+    return false;
   }
   InitData(t) {
     this.Lo = ConfigManager_1.ConfigManager.ActivityScratchTicketConfig.GetScratchTicketConfig(this.Id);
@@ -36,9 +39,9 @@ class ScratchTicketData extends ActivityData_1.ActivityBaseData {
   wol(t) {
     if (!(this.xol.length > 0)) {
       this.xol = [];
-      for (const r of t) {
+      for (const e of t) {
         var i = new ScratchTicketRoundData_1.ScratchTicketRoundData();
-        i.Init(r);
+        i.Init(e);
         this.xol.push(i);
       }
       this.xol.sort((t, i) => t.Config.PreRoundId - i.Config.PreRoundId);
@@ -48,12 +51,12 @@ class ScratchTicketData extends ActivityData_1.ActivityBaseData {
   UpdateAllRoundState() {
     for (let t = 0; t < this.xol.length; t++) {
       var i;
-      var r = this.xol[t];
+      var e = this.xol[t];
       if (t === 0) {
-        r.UpdateRoundState(2);
+        e.UpdateRoundState(2);
       } else {
         i = this.xol[t - 1];
-        r.UpdateRoundState(i.GetRoundState());
+        e.UpdateRoundState(i.GetRoundState());
       }
     }
   }
@@ -68,24 +71,31 @@ class ScratchTicketData extends ActivityData_1.ActivityBaseData {
   Bol(t) {
     if (!(this.Pol.length > 0)) {
       this.Pol = [];
-      for (const r of t) {
+      for (const e of t) {
         var i = new ScratchTicketConditionData_1.ScratchTicketConditionData();
-        i.Init(r);
+        i.Init(e);
         this.Pol.push(i);
       }
     }
   }
   RefreshConditionData(t) {
-    for (const r of t) {
-      var i = this.qol(r.s5n);
+    for (const e of t) {
+      var i = this.qol(e.s5n);
       if (i !== undefined) {
-        i.RefreshCondition(r);
+        i.RefreshCondition(e);
       }
     }
   }
   GetExDataRedPointShowState() {
-    var t = this.GetRemainCount();
-    return this.HasRoundInProgress() && t > 0;
+    var t;
+    return !this.ActivityHasClick() || (t = this.GetRemainCount(), this.HasRoundInProgress() && t > 0);
+  }
+  ActivityHasClick() {
+    return ModelManager_1.ModelManager.ActivityModel.GetActivityCacheData(this.Id, 0, SCRATCH_TICKET_RED_DOT_CACHE_KEY, 0, 0) === 1;
+  }
+  ClickRedDot() {
+    ModelManager_1.ModelManager.ActivityModel.SaveActivityData(this.Id, SCRATCH_TICKET_RED_DOT_CACHE_KEY, 0, 0, 1);
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.Id);
   }
   GetExDataFinishShowState() {
     return !!this.GetPreGuideQuestFinishState() && this.IsAllRoundFinish();

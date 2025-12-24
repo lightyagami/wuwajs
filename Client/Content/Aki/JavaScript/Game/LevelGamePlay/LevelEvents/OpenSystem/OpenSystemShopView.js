@@ -13,7 +13,7 @@ class OpenSystemShopView extends OpenSystemBase_1.OpenSystemBase {
       return false;
     }
     const o = new CustomPromise_1.CustomPromise();
-    return !!ControllerHolder_1.ControllerHolder.ShopController.OpenShop(e.BoardId, e => {
+    return !!ControllerHolder_1.ControllerHolder.ShopController.OpenShop(e.BoardId, e.UiCameraName, e => {
       o.SetResult(e);
     }) && o.Promise;
   }

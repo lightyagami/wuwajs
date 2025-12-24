@@ -133,7 +133,7 @@ let ScanComponent = ScanComponent_1 = class ScanComponent extends EntityComponen
     this.pie();
     this.n$t = this.Entity.GetComponent(1);
     this.Ovr = this.Entity.GetComponent(0);
-    this.rzr = this.Entity.GetComponent(125);
+    this.rzr = this.Entity.GetComponent(130);
     if (this.rzr) {
       this.rzr.SetLogicRange(ConfigManager_1.ConfigManager.LevelGamePlayConfig.ScanDetectConcealedDistance * M_TO_CM);
     }
@@ -269,7 +269,7 @@ let ScanComponent = ScanComponent_1 = class ScanComponent extends EntityComponen
       }
       EffectSystem_1.EffectSystem.SpawnEffect(GlobalData_1.GlobalData.World, this.n$t.Owner.D_GetTransform(), this.czr.ScanConcealEffectPath, "[ScanComponent.CancelEntityConcealState]", new EffectContext_1.EffectContext(this.Entity.Id));
     }
-    var t = this.Entity.GetComponent(200);
+    var t = this.Entity.GetComponent(206);
     if (t?.HasTag(1227933697)) {
       t.RemoveTag(1227933697);
     }
@@ -314,7 +314,7 @@ let ScanComponent = ScanComponent_1 = class ScanComponent extends EntityComponen
     if (t && i && n) {
       this.jGn = true;
       if (this.Ovr?.GetEntityType() === Protocol_1.Aki.Protocol.kks.Proto_Npc) {
-        this.Entity.GetComponent(191)?.MaterialController?.ApplySimpleMaterialEffect(n);
+        this.Entity.GetComponent(197)?.MaterialController?.ApplySimpleMaterialEffect(n);
         this.hzr++;
       } else if (this.Ovr?.GetEntityType() === Protocol_1.Aki.Protocol.kks.Proto_Monster) {
         let e = this.n$t?.Owner?.GetComponentByClass(UE.CharRenderingComponent_C.StaticClass());
@@ -355,7 +355,7 @@ let ScanComponent = ScanComponent_1 = class ScanComponent extends EntityComponen
             }
             if (this.jGn) {
               if (this.Ovr?.GetEntityType() === Protocol_1.Aki.Protocol.kks.Proto_Npc) {
-                this.Entity.GetComponent(191)?.MaterialController?.RemoveSimpleMaterialEffect();
+                this.Entity.GetComponent(197)?.MaterialController?.RemoveSimpleMaterialEffect();
               } else if (this.Ovr?.GetEntityType() === Protocol_1.Aki.Protocol.kks.Proto_Monster) {
                 this.n$t?.Owner?.GetComponentByClass(UE.CharRenderingComponent_C.StaticClass())?.RemoveMaterialControllerDataGroupWithEnding(this.Sjd);
               }
@@ -515,5 +515,5 @@ ScanComponent.EnableLog = false;
 ScanComponent.Ezr = -1;
 ScanComponent.Szr = -1;
 ScanComponent.yzr = -1;
-ScanComponent = ScanComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(83)], ScanComponent);
+ScanComponent = ScanComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(86)], ScanComponent);
 exports.ScanComponent = ScanComponent; //# sourceMappingURL=ScanComponent.js.map

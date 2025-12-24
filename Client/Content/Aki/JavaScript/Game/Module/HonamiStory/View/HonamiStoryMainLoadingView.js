@@ -25,19 +25,18 @@ class HonamiStoryMainLoadingView extends LoadingViewBase_1.LoadingViewBase {
       if ((e = e).LoadingId && e.LoadingId > 0) {
         this.BGc = ConfigManager_1.ConfigManager.HonamiStoryConfig.GetLoadingPerformConfigById(e.LoadingId);
       }
-      this.Adm();
+      this.upm();
     }
   }
   UpdateProgressRate(e) {}
   UpdateProgressValue(e) {
     this.SetTextProgressValue(0, e);
   }
-  Adm() {
+  upm() {
     var e;
     if (this.BGc) {
       e = this.BGc;
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), e.Title);
-      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), e.Tips);
       ModelManager_1.ModelManager.HonamiStoryModel.ClearCurLoadingData();
     }
   }

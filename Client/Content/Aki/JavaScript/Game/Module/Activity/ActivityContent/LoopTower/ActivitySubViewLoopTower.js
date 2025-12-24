@@ -75,6 +75,7 @@ class ActivitySubViewLoopTower extends ActivitySubViewBase_1.ActivitySubViewBase
     await ControllerHolder_1.ControllerHolder.TowerController.RefreshTower();
   }
   OnStart() {
+    this.LNe.SetActivityBaseData(this.ActivityBaseData);
     this.LNe.SetTitleByText(this.ActivityBaseData.GetTitle());
     this.DNe.SetContentByTextId(this.ActivityBaseData.LocalConfig.Desc);
     this.kNe();

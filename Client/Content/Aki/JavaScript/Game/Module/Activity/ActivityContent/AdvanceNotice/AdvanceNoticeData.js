@@ -10,27 +10,30 @@ class AdvanceNoticeData extends ActivityData_1.ActivityBaseData {
   constructor() {
     super(...arguments);
     this.xC = false;
-    this.DEm = 0;
+    this._km = 0;
   }
   PhraseEx(t) {
-    t = t.U_m;
+    t = t.Kfm;
     if (t) {
       this.xC = t.mJc;
-      this.DEm = MathUtils_1.MathUtils.LongToNumber(t.SMm);
+      this._km = MathUtils_1.MathUtils.LongToNumber(t.lBm);
     } else {
       this.xC = false;
-      this.DEm = 0;
+      this._km = 0;
     }
   }
   GetIsShow() {
     return this.xC;
   }
+  SetIsShow(t) {
+    this.xC = t;
+  }
   CheckIfInShowTime() {
-    return this.xC && super.CheckIfInShowTime();
+    return (AdvanceNoticeData.DebugFlag || this.xC) && super.CheckIfInShowTime();
   }
   GetUnlockTimeStamp() {
-    return this.DEm;
+    return this._km;
   }
 }
-exports.AdvanceNoticeData = AdvanceNoticeData;
+(exports.AdvanceNoticeData = AdvanceNoticeData).DebugFlag = false;
 //# sourceMappingURL=AdvanceNoticeData.js.map

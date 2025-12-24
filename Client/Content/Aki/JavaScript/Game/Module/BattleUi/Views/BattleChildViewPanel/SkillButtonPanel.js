@@ -7,15 +7,14 @@ exports.SkillButtonPanel = undefined;
 const puerts_1 = require("puerts");
 const UE = require("ue");
 const Info_1 = require("../../../../../Core/Common/Info");
+const Log_1 = require("../../../../../Core/Common/Log");
 const Stats_1 = require("../../../../../Core/Common/Stats");
 const CommonParamById_1 = require("../../../../../Core/Define/ConfigCommon/CommonParamById");
 const TimerSystem_1 = require("../../../../../Core/Timer/TimerSystem");
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
 const Global_1 = require("../../../../Global");
-const InputEnums_1 = require("../../../../Input/InputEnums");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
-const CharacterUnifiedStateTypes_1 = require("../../../../NewWorld/Character/Common/Component/Abilities/CharacterUnifiedStateTypes");
 const InputDistributeController_1 = require("../../../../Ui/InputDistribute/InputDistributeController");
 const InputMappingsDefine_1 = require("../../../../Ui/InputDistribute/InputMappingsDefine");
 const BattleSkillExploreItem_1 = require("../BattleSkillExploreItem");
@@ -25,7 +24,7 @@ const BattleChildViewPanel_1 = require("./BattleChildViewPanel");
 const INIT_OFFSET_X = -86;
 const ITEM_WIDTH = 144;
 const MOBILE_INDEX_EXPLORE_ITEM = 3;
-const actionNameList = [InputMappingsDefine_1.actionMappings.攻击, InputMappingsDefine_1.actionMappings.大招, InputMappingsDefine_1.actionMappings.幻象1, InputMappingsDefine_1.actionMappings.幻象2, InputMappingsDefine_1.actionMappings.技能1, InputMappingsDefine_1.actionMappings.闪避, InputMappingsDefine_1.actionMappings.瞄准, InputMappingsDefine_1.actionMappings.锁定目标];
+const actionNameList = [InputMappingsDefine_1.actionMappings.攻击, InputMappingsDefine_1.actionMappings.大招, InputMappingsDefine_1.actionMappings.幻象1, InputMappingsDefine_1.actionMappings.幻象2, InputMappingsDefine_1.actionMappings.技能1, InputMappingsDefine_1.actionMappings.闪避, InputMappingsDefine_1.actionMappings.瞄准, InputMappingsDefine_1.actionMappings.锁定目标, InputMappingsDefine_1.actionMappings.载具漂移, InputMappingsDefine_1.actionMappings.载具子弹跳, InputMappingsDefine_1.actionMappings.载具退场技和下车, InputMappingsDefine_1.actionMappings.载具探索工具, InputMappingsDefine_1.actionMappings.载具氮气, InputMappingsDefine_1.actionMappings.载具空中抬升, InputMappingsDefine_1.actionMappings.载具子弹跳1, InputMappingsDefine_1.actionMappings.载具视角切换, InputMappingsDefine_1.actionMappings.载具锁定目标];
 const SECOND_LAYOUT_START_COUNT = 6;
 class SkillButtonPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
   constructor() {
@@ -33,15 +32,15 @@ class SkillButtonPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     this.lZe = [];
     this.Tet = new Map();
     this.Let = Stats_1.Stat.Create("[SkillButton]RefreshAllBattleSkillItem");
-    this.eim = Stats_1.Stat.Create("[SkillButton]RefreshSkillItemLayoutStat");
+    this.Pnm = Stats_1.Stat.Create("[SkillButton]RefreshSkillItemLayoutStat");
     this.Det = undefined;
     this.$Qe = false;
-    this.tim = [];
+    this.Anm = [];
     this.DXe = (0, puerts_1.$ref)(0);
     this.RXe = (0, puerts_1.$ref)(0);
-    this.iim = 1.77778;
-    this.trm = 1.33333;
-    this.rim = undefined;
+    this.Dnm = 1.77778;
+    this.Cam = 1.33333;
+    this.Unm = undefined;
     this.Ret = t => {
       if (t) {
         for (const e of this.lZe) {
@@ -55,19 +54,22 @@ class SkillButtonPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
       }
     };
     this.uZe = t => {
-      if (t !== 3 && t !== 2) {
+      if (t !== 4 && t !== 3) {
         this.cZe();
+        this.wet();
         this.Aet();
-        this.nim();
+        this.Bnm();
       }
     };
     this.mZe = () => {
       this.dZe();
     };
     this.CZe = () => {
-      this.cZe();
-      this.Aet();
-      this.nim();
+      if (!Info_1.Info.IsInTouch() || !ModelManager_1.ModelManager.BattleUiModel.MotorcycleData.IsDriving) {
+        this.cZe();
+        this.Aet();
+        this.Bnm();
+      }
     };
     this.gZe = (t, e) => {
       t = this.GetBattleSkillItemByButtonType(t);
@@ -82,7 +84,7 @@ class SkillButtonPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
         t.RefreshKey();
         if (!Info_1.Info.IsInTouch()) {
           this.Aet();
-          this.nim();
+          this.Bnm();
         }
       }
     };
@@ -131,10 +133,16 @@ class SkillButtonPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
         t.RefreshConfigLongPress();
       }
     };
-    this.dXd = t => {
+    this.$Xd = t => {
       t = this.GetBattleSkillItemByButtonType(t);
       if (t) {
         t.RefreshExtraEffect();
+      }
+    };
+    this.uWm = t => {
+      t = this.Uet(t);
+      if (t) {
+        t.RefreshEnable(false);
       }
     };
     this.DZe = t => {
@@ -143,14 +151,23 @@ class SkillButtonPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
         t.RefreshVisible();
       }
     };
-    this.Pet = () => {
-      this.xet();
+    this.cWm = t => {
+      t = this.Uet(t);
+      if (t) {
+        t.RefreshAll();
+      }
     };
-    this.xie = (t, e) => {
-      SkillButtonPanel.kQe.Start();
-      this.wet();
-      this.xet();
-      SkillButtonPanel.kQe.Stop();
+    this.dWm = t => {
+      t = this.Uet(t);
+      if (t) {
+        t.RefreshSkillIcon();
+      }
+    };
+    this.mWm = t => {
+      t = this.Uet(t);
+      if (t) {
+        t.RefreshDynamicEffect();
+      }
     };
     this.LZe = t => {
       for (const e of this.lZe) {
@@ -169,7 +186,7 @@ class SkillButtonPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
         this.SetVisible(5, true);
         this.cZe();
         this.Aet();
-        this.nim();
+        this.Bnm();
       }
     };
     this.bet = t => {
@@ -178,22 +195,26 @@ class SkillButtonPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
       }
     };
     this.xQe = () => {
-      this.oim();
-      this.nim();
+      this.xnm();
+      this.Bnm();
     };
-    this.aim = () => {
-      this.him();
+    this.knm = () => {
+      this.qnm();
     };
-    this.lim = () => {
-      this.rim = undefined;
-      this.nim();
+    this.Onm = () => {
+      this.Unm = undefined;
+      this.Bnm();
     };
     this.bMe = (t, e) => {
       if (e === 0) {
-        if (t === InputMappingsDefine_1.actionMappings.瞄准) {
-          this.Tet.get(101)?.OnInputAction();
-        } else if (t === InputMappingsDefine_1.actionMappings.锁定目标) {
-          this.Tet.get(102)?.OnInputAction();
+        if (t === InputMappingsDefine_1.actionMappings.瞄准 || t === InputMappingsDefine_1.actionMappings.载具视角切换) {
+          if ((e = this.Tet.get(101))?.GetActionName() === t) {
+            e.OnInputAction();
+          }
+        } else if (t === InputMappingsDefine_1.actionMappings.锁定目标 || t === InputMappingsDefine_1.actionMappings.载具锁定目标) {
+          if ((e = this.Tet.get(102))?.GetActionName() === t) {
+            e.OnInputAction();
+          }
         } else {
           for (const s of this.lZe) {
             var i = s.GetSkillButtonData();
@@ -202,6 +223,19 @@ class SkillButtonPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
               return;
             }
           }
+        }
+      }
+    };
+    this.zAf = () => {
+      this.RefreshKeyItemEnableInMotorcycle();
+    };
+    this.sJm = () => {
+      if (!Info_1.Info.IsInTouch() && !ModelManager_1.ModelManager.BattleUiModel.MotorcycleData?.IsDriving) {
+        for (const t of this.lZe) {
+          t.GetKeyItem()?.SetEnable(true);
+        }
+        for (const e of this.Tet.values()) {
+          e.GetKeyItem()?.SetEnable(true);
         }
       }
     };
@@ -218,20 +252,19 @@ class SkillButtonPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     this.SetVisible(5, !Info_1.Info.IsInGamepad());
     this.cZe();
     this.wet();
-    this.xet();
     this.Aet();
     var t = CommonParamById_1.configCommonParamById.GetFloatConfig("SkillButtonLayoutAspectRatio");
     if (t) {
-      this.trm = t;
+      this.Cam = t;
     }
-    this.oim();
-    this.nim();
+    this.xnm();
+    this.Bnm();
   }
   Reset() {
     this.lZe.length = 0;
     super.Reset();
     this.Det = undefined;
-    this._im();
+    this.Gnm();
   }
   OnAfterShow() {
     for (const t of this.lZe) {
@@ -247,11 +280,13 @@ class SkillButtonPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
         t.TryReleaseButton();
       }
     }
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSkillButtonPanelVisibleChange);
   }
   OnShowBattleChildViewPanel() {
     for (const t of this.lZe) {
       t.RefreshSkillCoolDownOnShow();
     }
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSkillButtonPanelVisibleChange);
   }
   OnTickBattleChildViewPanel(t) {
     if (this.Visible) {
@@ -262,6 +297,9 @@ class SkillButtonPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
   }
   cZe() {
     if (!Info_1.Info.IsInGamepad()) {
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("Battle", 17, "SkillButtonPanel RefreshAllBattleSkillItems");
+      }
       this.Let.Start();
       var e = ModelManager_1.ModelManager.SkillButtonUiModel;
       var i = e.GetButtonTypeList();
@@ -296,11 +334,11 @@ class SkillButtonPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
       t = [this.GetItem(0).GetOwner(), this.GetItem(1).GetOwner(), this.GetItem(2).GetOwner(), this.GetItem(3).GetOwner(), this.GetItem(4).GetOwner(), this.GetItem(5).GetOwner(), this.GetItem(8).GetOwner()];
       e = this.GetItem(9);
       i = this.GetItem(10);
-      this.tim.push({
+      this.Anm.push({
         Item: e,
         Index: 0
       });
-      this.tim.push({
+      this.Anm.push({
         Item: i,
         Index: 1
       });
@@ -315,7 +353,7 @@ class SkillButtonPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     let s = undefined;
     s = i && e === MOBILE_INDEX_EXPLORE_ITEM ? await this.NewStaticChildViewAsync(t, BattleSkillExploreItem_1.BattleSkillExploreItem, e) : await this.NewStaticChildViewAsync(t, BattleSkillItem_1.BattleSkillItem, e);
     if (!i) {
-      s?.SetOnVisibleChangedCallback(this.aim);
+      s?.SetOnVisibleChangedCallback(this.knm);
     }
     this.lZe.push(s);
     return s;
@@ -336,42 +374,30 @@ class SkillButtonPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     if (i === 2) {
       t = this.GetItem(6);
       e = this.GetItem(7);
-      await Promise.all([this.ket(t.GetOwner(), 101, InputEnums_1.EInputAction[InputEnums_1.EInputAction.瞄准], true), this.ket(e.GetOwner(), 102, InputEnums_1.EInputAction[InputEnums_1.EInputAction.锁定目标])]);
+      await Promise.all([this.ket(t.GetOwner(), 101, true), this.ket(e.GetOwner(), 102)]);
     } else if (i === 1) {
       t = this.GetItem(8);
       e = this.GetItem(7);
-      await Promise.all([this.ket(t.GetOwner(), 101, undefined, true), this.ket(e.GetOwner(), 102)]);
+      await Promise.all([this.ket(t.GetOwner(), 101, true), this.ket(e.GetOwner(), 102)]);
     }
   }
-  async ket(t, e, i, s = false) {
+  async ket(t, e, i = false) {
     i = {
       InputActionType: e,
-      ActionName: i,
-      IsToggle: s
+      IsToggle: i
     };
-    s = await this.NewStaticChildViewAsync(t, BehaviorButton_1.BehaviorButton, i);
-    this.Tet.set(e, s);
+    t = await this.NewStaticChildViewAsync(t, BehaviorButton_1.BehaviorButton, i);
+    this.Tet.set(e, t);
     if (this.GetOperationType() === 2) {
-      s?.SetOnVisibleChangedCallback(this.aim);
+      t?.SetOnVisibleChangedCallback(this.knm);
     }
-    return s;
+    return t;
   }
   wet() {
     var t = ModelManager_1.ModelManager.SkillButtonUiModel;
     for (const i of this.Tet.values()) {
       var e = t.GetBehaviorButtonDataByButton(i.BehaviorType);
       i.Refresh(e);
-    }
-  }
-  xet() {
-    var t;
-    var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
-    if (e?.Valid && (e = e.Entity.GetComponent(179).DirectionState, (t = this.Uet(101)) && (e === CharacterUnifiedStateTypes_1.ECharDirectionState.AimDirection ? t.SetBehaviorToggleState(1) : t.SetBehaviorToggleState(0)), t = this.Uet(102))) {
-      if (e === CharacterUnifiedStateTypes_1.ECharDirectionState.LockDirection) {
-        t.SetBehaviorToggleState(1);
-      } else {
-        t.SetBehaviorToggleState(0);
-      }
     }
   }
   Uet(t) {
@@ -390,10 +416,12 @@ class SkillButtonPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSkillButtonIconPathRefresh, this.IZe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSkillButtonCdRefresh, this.TZe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSkillButtonLongPressRefresh, this.lvl);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSkillButtonExtraEffectRefresh, this.dXd);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSkillButtonExtraEffectRefresh, this.$Xd);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnBehaviorButtonEnableRefresh, this.uWm);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnBehaviorButtonVisibleRefresh, this.DZe);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnAimStateChanged, this.Pet);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnChangeRole, this.xie);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnBehaviorButtonSkillIdRefresh, this.cWm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnBehaviorButtonIconPathRefresh, this.dWm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnBehaviorButtonDynamicEffectRefresh, this.mWm);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PauseGame, this.LZe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TriggerUiTimeDilation, this.zze);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CharSkillCdPauseStateChanged, this.zze);
@@ -401,7 +429,9 @@ class SkillButtonPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnFunctionOpenUpdate, this.RQe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InputControllerChange, this.XBo);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiExploreModeChanged, this.bet);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiMotorcycleStateChanged, this.sJm);
     if (this.GetOperationType() === 2) {
+      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiPressMotorcycleCombineButtonChanged, this.zAf);
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.UIViewPortSizeChanged, this.xQe);
       InputDistributeController_1.InputDistributeController.BindActions(actionNameList, this.bMe);
     }
@@ -419,10 +449,12 @@ class SkillButtonPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSkillButtonIconPathRefresh, this.IZe);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSkillButtonCdRefresh, this.TZe);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSkillButtonLongPressRefresh, this.lvl);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSkillButtonExtraEffectRefresh, this.dXd);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSkillButtonExtraEffectRefresh, this.$Xd);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnBehaviorButtonEnableRefresh, this.uWm);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnBehaviorButtonVisibleRefresh, this.DZe);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnAimStateChanged, this.Pet);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnChangeRole, this.xie);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnBehaviorButtonSkillIdRefresh, this.cWm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnBehaviorButtonIconPathRefresh, this.dWm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnBehaviorButtonDynamicEffectRefresh, this.mWm);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PauseGame, this.LZe);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TriggerUiTimeDilation, this.zze);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CharSkillCdPauseStateChanged, this.zze);
@@ -430,7 +462,9 @@ class SkillButtonPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnFunctionOpenUpdate, this.RQe);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InputControllerChange, this.XBo);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiExploreModeChanged, this.bet);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiMotorcycleStateChanged, this.sJm);
     if (this.GetOperationType() === 2) {
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiPressMotorcycleCombineButtonChanged, this.zAf);
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.UIViewPortSizeChanged, this.xQe);
       InputDistributeController_1.InputDistributeController.UnBindActions(actionNameList, this.bMe);
     }
@@ -489,17 +523,17 @@ class SkillButtonPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
       this.RootItem?.SetAnchorOffsetX(i);
     }
   }
-  oim() {
+  xnm() {
     Global_1.Global.CharacterController.GetViewportSize(this.DXe, this.RXe);
     var t = (0, puerts_1.$unref)(this.DXe);
     var e = (0, puerts_1.$unref)(this.RXe);
     if (e !== 0) {
-      this.iim = t / e;
+      this.Dnm = t / e;
     }
   }
-  nim() {
-    if (Info_1.Info.IsInKeyBoard() && this.tim.length !== 0) {
-      this.eim.Start();
+  Bnm() {
+    if (Info_1.Info.IsInKeyBoard() && this.Anm.length !== 0) {
+      this.Pnm.Start();
       var t = this.Tet.get(101);
       var i = this.Tet.get(102);
       var s = t?.IsVisible() && i?.IsVisible();
@@ -510,32 +544,58 @@ class SkillButtonPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
           e += 1;
         }
         if (e < SECOND_LAYOUT_START_COUNT) {
-          n.SetSkillItemLayout(this.tim[0]);
+          n.SetSkillItemLayout(this.Anm[0]);
         } else if (e === SECOND_LAYOUT_START_COUNT) {
-          if (this.iim <= this.trm || s) {
-            n.SetSkillItemLayout(this.tim[1]);
+          if (this.Dnm <= this.Cam || s) {
+            n.SetSkillItemLayout(this.Anm[1]);
           } else {
-            n.SetSkillItemLayout(this.tim[0]);
+            n.SetSkillItemLayout(this.Anm[0]);
           }
         } else if (e > SECOND_LAYOUT_START_COUNT) {
-          n.SetSkillItemLayout(this.tim[1]);
+          n.SetSkillItemLayout(this.Anm[1]);
         }
       }
-      this._im();
-      this.eim.Stop();
+      this.Gnm();
+      this.Pnm.Stop();
     }
   }
-  him() {
-    this.rim ||= TimerSystem_1.TimerSystem.Next(this.lim);
+  qnm() {
+    this.Unm ||= TimerSystem_1.TimerSystem.Next(this.Onm);
   }
-  _im() {
-    if (this.rim) {
-      if (TimerSystem_1.TimerSystem.Has(this.rim)) {
-        TimerSystem_1.TimerSystem.Remove(this.rim);
+  Gnm() {
+    if (this.Unm) {
+      if (TimerSystem_1.TimerSystem.Has(this.Unm)) {
+        TimerSystem_1.TimerSystem.Remove(this.Unm);
       }
-      this.rim = undefined;
+      this.Unm = undefined;
+    }
+  }
+  RefreshKeyItemEnableInMotorcycle() {
+    if (Info_1.Info.IsInGamepad()) {
+      var t = ModelManager_1.ModelManager.BattleUiModel.MotorcycleData;
+      if (t?.IsDriving) {
+        if (ModelManager_1.ModelManager.SkillButtonUiModel.GetGamepadDataByType(1)?.GetIsPressCombineButton()) {
+          for (const e of this.lZe) {
+            if (e.IsVisible()) {
+              e.GetKeyItem()?.SetDisableBySingleKeyList(["LeftMouseButton", "RightMouseButton", "MiddleMouseButton"]);
+            }
+          }
+          for (const i of this.Tet.values()) {
+            if (i.IsVisible()) {
+              i.GetKeyItem()?.SetDisableBySingleKeyList(["LeftMouseButton", "RightMouseButton", "MiddleMouseButton"]);
+            }
+          }
+        } else {
+          for (const s of this.lZe) {
+            s.GetKeyItem()?.SetEnable(true);
+          }
+          for (const n of this.Tet.values()) {
+            n.GetKeyItem()?.SetEnable(true);
+          }
+        }
+      }
     }
   }
 }
-(exports.SkillButtonPanel = SkillButtonPanel).kQe = Stats_1.Stat.Create("[ChangeRole]SkillButtonPanel");
+exports.SkillButtonPanel = SkillButtonPanel;
 //# sourceMappingURL=SkillButtonPanel.js.map

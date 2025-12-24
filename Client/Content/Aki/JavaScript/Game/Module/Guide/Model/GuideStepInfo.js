@@ -304,7 +304,21 @@ class GuideStepInfo {
     }
   }
   szt() {
-    return !!UiLayer_1.UiLayer.IsUiActive() && !ModelManager_1.ModelManager.GuideModel.ShouldBlockGuideBecauseUiNotRender && !UiManager_1.UiManager.IsViewShow("PhantomExploreView");
+    if (UiLayer_1.UiLayer.IsUiActive()) {
+      if (ModelManager_1.ModelManager.GuideModel.ShouldBlockGuideBecauseUiNotRender) {
+        if (Log_1.Log.CheckDebug()) {
+          Log_1.Log.Debug("Guide", 95, "[CanEnterExecuting] 失败 ShouldBlockGuideBecauseUiNotRender");
+        }
+        return false;
+      } else {
+        return !UiManager_1.UiManager.IsViewShow("PhantomExploreView") || (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Guide", 95, "[CanEnterExecuting] 失败 轮盘界面开始"), false);
+      }
+    } else {
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("Guide", 95, "[CanEnterExecuting] 失败 UiLayer.IsUiActive() Fail");
+      }
+      return false;
+    }
   }
   azt() {
     if (this.Config.ContentType === 4 && ConfigManager_1.ConfigManager.GuideConfig.GetGuideFocus(this.Id).UseMask) {
@@ -313,14 +327,51 @@ class GuideStepInfo {
     return false;
   }
   hzt() {
-    var i;
-    var e = ConfigManager_1.ConfigManager.GuideConfig.GetGuideFocus(this.Id);
-    var t = e.ViewName;
-    if (t) {
-      return !!(i = UiConfig_1.UiConfig.TryGetViewInfo(t)) && !!(i = UiModel_1.UiModel.GetTopView(i.Type)) && !(i.Info.Name !== t ? (Log_1.Log.CheckWarn() && Log_1.Log.Warn("Guide", 16, "当前打开的界面与聚焦步骤的目标界面不一致", ["当前打开界面", i.Info.Name], ["聚焦引导目标界面", t], ["步骤Id", e.GuideId]), 1) : (e.DynamicTabName ? EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.GuideFocusNeedUiTabView, this, e) : (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Guide", 53, "设置引导attachedview", ["当前打开界面", i.Info.Name], ["界面id", i.ComponentId], ["步骤Id", e.GuideId]), this.ViewData.SetAttachedView(i)), 0));
-    } else {
+    var i = ConfigManager_1.ConfigManager.GuideConfig.GetGuideFocus(this.Id);
+    var e = i.ViewName;
+    if (!e) {
       if (Log_1.Log.CheckWarn()) {
-        Log_1.Log.Warn("Guide", 16, "聚焦引导步骤未配置界面名称", ["步骤Id", e.GuideId]);
+        Log_1.Log.Warn("Guide", 16, "聚焦引导步骤未配置界面名称", ["步骤Id", i.GuideId]);
+      }
+      return false;
+    }
+    var t = UiConfig_1.UiConfig.TryGetViewInfo(e);
+    if (!t) {
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("Guide", 95, "[GuideStepInfo.CanEnterExecuting] 失败 取不到ViewInfo", ["ViewName", e]);
+      }
+      return false;
+    }
+    let s = undefined;
+    if (t.Type === UiLayerType_1.ELayerType.Float) {
+      if (!(s = UiModel_1.UiModel.GetFloatView(e))) {
+        if (Log_1.Log.CheckDebug()) {
+          Log_1.Log.Debug("Guide", 95, "[CanEnterExecuting.GetFloatView] No float view");
+        }
+      }
+    } else {
+      s = UiModel_1.UiModel.GetTopView(t.Type);
+    }
+    if (s) {
+      if (s.Info.Name !== e) {
+        if (Log_1.Log.CheckWarn()) {
+          Log_1.Log.Warn("Guide", 16, "当前打开的界面与聚焦步骤的目标界面不一致", ["当前打开界面", s.Info.Name], ["聚焦引导目标界面", e], ["步骤Id", i.GuideId]);
+        }
+        return false;
+      } else {
+        if (i.DynamicTabName) {
+          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.GuideFocusNeedUiTabView, this, i);
+        } else {
+          if (Log_1.Log.CheckDebug()) {
+            Log_1.Log.Debug("Guide", 53, "设置引导attachedview", ["当前打开界面", s.Info.Name], ["界面id", s.ComponentId], ["步骤Id", i.GuideId]);
+          }
+          this.ViewData.SetAttachedView(s);
+        }
+        return true;
+      }
+    } else {
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("Guide", 95, "[GuideStepInfo.CanEnterExecuting] 失败 没有top view", ["ViewType", t.Type]);
       }
       return false;
     }

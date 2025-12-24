@@ -27,11 +27,11 @@ class QuestTreeSeriesNodeItem extends QuestTreeNodeItemLoader_1.QuestTreeNodeIte
     this.HierarchyIndex = 0;
     this.$Dd = false;
     this.Ijd = undefined;
-    this.ltm = undefined;
-    this._tm = 0;
+    this.bom = undefined;
+    this.Rom = 0;
     this.N8e = () => {
       this.$Dd = !this.$Dd;
-      this.CWd(this.$Dd);
+      this.SWd(this.$Dd);
     };
     this.HDd = (e, t) => {
       if (e === this.Pe || e?.BelongedNode === this.Pe) {
@@ -42,17 +42,17 @@ class QuestTreeSeriesNodeItem extends QuestTreeNodeItemLoader_1.QuestTreeNodeIte
         }
       }
     };
-    this.jem = e => {
+    this.krm = e => {
       if (e === this.Pe || e?.BelongedNode === this.Pe) {
         this.nOe(this.Pe);
       }
     };
-    this.Vem = () => {
+    this.Brm = () => {
       if (this.Pe) {
         this.nOe(this.Pe);
       }
     };
-    this.utm = e => {
+    this.wom = e => {
       this.GetUiSizeControlByOther(14).SetAdditionalHeight(e);
     };
   }
@@ -63,21 +63,21 @@ class QuestTreeSeriesNodeItem extends QuestTreeNodeItemLoader_1.QuestTreeNodeIte
   OnStart() {
     this.iwd = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(12), () => this.Loader.CreateLogicalNodeItem(2));
     this.Ijd = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetRootItem());
-    this.ltm = (0, puerts_1.toManualReleaseDelegate)(this.utm);
-    this._tm = this.GetUiSizeControlByOther(14).GetAdditionalHeight();
+    this.bom = (0, puerts_1.toManualReleaseDelegate)(this.wom);
+    this.Rom = this.GetUiSizeControlByOther(14).GetAdditionalHeight();
     this.GetExtendToggle(0).bLockStateOnSelect = false;
     ModelManager_1.ModelManager.QuestTreeModel.ViewModelChapter.AddOnLocatingNode(this.HDd);
-    ModelManager_1.ModelManager.QuestTreeModel.ViewModelChapter.AddOnUpdateNode(this.Vem);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.QuestTreeNodeDataUpdate, this.jem);
+    ModelManager_1.ModelManager.QuestTreeModel.ViewModelChapter.AddOnUpdateNode(this.Brm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.QuestTreeNodeDataUpdate, this.krm);
   }
   OnBeforeDestroy() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.QuestTreeNodeDataUpdate, this.jem);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.QuestTreeNodeDataUpdate, this.krm);
     this.Ijd.Clear();
-    ModelManager_1.ModelManager.QuestTreeModel.ViewModelChapter.RemoveOnUpdateNode(this.Vem);
+    ModelManager_1.ModelManager.QuestTreeModel.ViewModelChapter.RemoveOnUpdateNode(this.Brm);
     ModelManager_1.ModelManager.QuestTreeModel.ViewModelChapter.RemoveOnLocatingNode(this.HDd);
-    if (this.ltm) {
-      (0, puerts_1.releaseManualReleaseDelegate)(this.utm);
-      this.ltm = undefined;
+    if (this.bom) {
+      (0, puerts_1.releaseManualReleaseDelegate)(this.wom);
+      this.bom = undefined;
     }
   }
   async CreateSelf(e) {
@@ -89,7 +89,7 @@ class QuestTreeSeriesNodeItem extends QuestTreeNodeItemLoader_1.QuestTreeNodeIte
     this.rwd(e.GetIncludeNodes());
     this.GetItem(10).SetUIActive(t);
     this.GetItem(9).SetUIActive(!t);
-    this.Hem(true);
+    this.qrm(true);
   }
   GetAdditionalHeight() {
     return this.GetRootItem().GetHeight();
@@ -108,39 +108,39 @@ class QuestTreeSeriesNodeItem extends QuestTreeNodeItemLoader_1.QuestTreeNodeIte
   rwd(e) {
     this.iwd.RefreshByData(e, undefined, true);
   }
-  async CWd(e) {
+  async SWd(e) {
     var t = ModelManager_1.ModelManager.QuestTreeModel.ViewModelChapter.View.GetScrollView();
     t.SetHorizontal(false);
     if (e) {
       this.Ijd.PlaySequenceAsync("CloseList", new CustomPromise_1.CustomPromise());
       await TimerSystem_1.TimerSystem.Wait(200);
-      this.ctm();
+      this.Lom();
     } else {
-      this.dtm();
-      this.Hem(true);
+      this.Pom();
+      this.qrm(true);
       await this.Ijd.PlaySequenceAsync("OpenList", new CustomPromise_1.CustomPromise());
     }
     await TimerSystem_1.TimerSystem.Wait(500);
     t.SetHorizontal(true);
   }
-  Hem(e) {
+  qrm(e) {
     if (this.Pe.IsLastNodeOfMainQuestChildren()) {
       this.GetUiSizeControlByOther(14).GetRootComponent().SetUIActive(false);
     } else {
       this.GetUiSizeControlByOther(14).GetRootComponent().SetUIActive(e);
     }
   }
-  dtm() {
+  Pom() {
     var e = this.GetUiSizeControlByOther(14);
-    var t = -(this.GetVerticalLayout(12).GetRootComponent().GetHeight() + this._tm);
-    var i = this._tm;
+    var t = -(this.GetVerticalLayout(12).GetRootComponent().GetHeight() + this.Rom);
+    var i = this.Rom;
     e.SetAdditionalHeight(t);
-    UE.LTweenBPLibrary.FloatTo(GlobalData_1.GlobalData.World, this.ltm, t, i, 0.3);
+    UE.LTweenBPLibrary.FloatTo(GlobalData_1.GlobalData.World, this.bom, t, i, 0.3);
   }
-  ctm() {
-    var e = this._tm;
+  Lom() {
+    var e = this.Rom;
     var t = -this.GetVerticalLayout(12).GetRootComponent().GetHeight();
-    UE.LTweenBPLibrary.FloatTo(GlobalData_1.GlobalData.World, this.ltm, e, t, 0.3);
+    UE.LTweenBPLibrary.FloatTo(GlobalData_1.GlobalData.World, this.bom, e, t, 0.3);
   }
 }
 exports.QuestTreeSeriesNodeItem = QuestTreeSeriesNodeItem;

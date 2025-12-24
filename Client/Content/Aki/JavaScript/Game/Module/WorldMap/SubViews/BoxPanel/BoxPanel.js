@@ -16,7 +16,7 @@ class BoxPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondaryUiLayoutA {
     this.GetVerticalLayout(7).RootUIComp.SetUIActive(false);
     this.GetItem(6).SetUIActive(false);
     this.GetVerticalLayout(5).RootUIComp.SetUIActive(false);
-    this.ConfirmButton.SetActive(false);
+    this.LayoutContext?.SetConfirmBtnActive(false);
     this.GetItem(32).SetUIActive(false);
   }
   OnShowWorldMapSecondaryUi(e) {

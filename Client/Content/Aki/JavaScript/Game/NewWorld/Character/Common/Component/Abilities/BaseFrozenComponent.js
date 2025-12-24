@@ -2,21 +2,21 @@
 
 var __decorate = this && this.__decorate || function (t, e, i, s) {
   var o;
-  var h = arguments.length;
-  var n = h < 3 ? e : s === null ? s = Object.getOwnPropertyDescriptor(e, i) : s;
+  var n = arguments.length;
+  var h = n < 3 ? e : s === null ? s = Object.getOwnPropertyDescriptor(e, i) : s;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    n = Reflect.decorate(t, e, i, s);
+    h = Reflect.decorate(t, e, i, s);
   } else {
     for (var r = t.length - 1; r >= 0; r--) {
       if (o = t[r]) {
-        n = (h < 3 ? o(n) : h > 3 ? o(e, i, n) : o(e, i)) || n;
+        h = (n < 3 ? o(h) : n > 3 ? o(e, i, h) : o(e, i)) || h;
       }
     }
   }
-  if (h > 3 && n) {
-    Object.defineProperty(e, i, n);
+  if (n > 3 && h) {
+    Object.defineProperty(e, i, h);
   }
-  return n;
+  return h;
 };
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -24,6 +24,8 @@ Object.defineProperty(exports, "__esModule", {
 exports.BaseFrozenComponent = undefined;
 const EntityComponent_1 = require("../../../../../../Core/Entity/EntityComponent");
 const RegisterComponent_1 = require("../../../../../../Core/Entity/RegisterComponent");
+const EventDefine_1 = require("../../../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../../../Common/Event/EventSystem");
 const CombatLog_1 = require("../../../../../Utils/CombatLog");
 const ETERNAL_DURATION = 10000000;
 let BaseFrozenComponent = class BaseFrozenComponent extends EntityComponent_1.EntityComponent {
@@ -36,7 +38,7 @@ let BaseFrozenComponent = class BaseFrozenComponent extends EntityComponent_1.En
     this.Tbr = undefined;
     this.Lbr = (t, e) => {
       if (e) {
-        this.ActorComponent.Actor.StopAnimMontage();
+        this.ActorComponent?.Actor.StopAnimMontage();
       }
     };
     this.Dbr = new Map();
@@ -46,9 +48,9 @@ let BaseFrozenComponent = class BaseFrozenComponent extends EntityComponent_1.En
     this.FrozenLockSet = new Set();
   }
   OnStart() {
-    this.ActorComponent = this.Entity.CheckGetComponent(3);
-    this.$br = this.Entity.CheckGetComponent(61);
-    this.ybr = this.Entity.CheckGetComponent(126);
+    this.ActorComponent = this.Entity.GetComponent(2);
+    this.$br = this.Entity.GetComponent(64);
+    this.ybr = this.Entity.CheckGetComponent(131);
     this.Ubr();
     return true;
   }
@@ -64,11 +66,11 @@ let BaseFrozenComponent = class BaseFrozenComponent extends EntityComponent_1.En
     return true;
   }
   Ubr() {
-    var t = this.Entity.CheckGetComponent(209);
+    var t = this.Entity.CheckGetComponent(215);
     this.Ibr = t.ListenForTagAddOrRemove(2118071836, this.Lbr);
   }
   AddTimeScaleByBuff(t, e, i, s, o) {
-    if (!this.Dbr.has(t) && !this.$br.IsImmuneTimeScaleEffect()) {
+    if (!this.Dbr.has(t) && !this.$br?.IsImmuneTimeScaleEffect()) {
       e = this.ybr.SetTimeScale(e, i, o, s ?? ETERNAL_DURATION, 6);
       this.Dbr.set(t, e);
     }
@@ -107,7 +109,9 @@ let BaseFrozenComponent = class BaseFrozenComponent extends EntityComponent_1.En
   }
   SetFrozen(t) {}
   RefreshFrozen() {
-    this.SetFrozen(this.FrozenLockSet.size > 0);
+    var t = this.FrozenLockSet.size > 0;
+    this.SetFrozen(t);
+    EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.CharAfterFrozenChange, t);
   }
   LockFrozen(t) {
     this.FrozenLockSet.add(t);

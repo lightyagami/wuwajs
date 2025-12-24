@@ -26,7 +26,7 @@ class PartStatePanel {
         }
       } else if (r) {
         var i;
-        var s = r.GetComponent(69).Parts;
+        var s = r.GetComponent(72).Parts;
         if (!(s.length <= 0)) {
           for (const o of s) {
             if (o.BoneName.op_Equality(e)) {
@@ -57,7 +57,7 @@ class PartStatePanel {
   }
   OnCreateEntity(t) {
     if (t) {
-      var e = t.GetComponent(69);
+      var e = t.GetComponent(72);
       if (e) {
         e = e.Parts;
         if (e && e.length !== 0) {
@@ -79,7 +79,7 @@ class PartStatePanel {
   }
   ActivatePartStateByRole(t) {
     if (t) {
-      var e = t.GetComponent(69).Parts;
+      var e = t.GetComponent(72).Parts;
       if (e.length !== 0) {
         for (const a of e) {
           this.ActivatePartState(t, a);

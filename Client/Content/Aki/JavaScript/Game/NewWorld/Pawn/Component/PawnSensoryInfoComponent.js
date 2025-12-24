@@ -165,5 +165,5 @@ LogicRangeInfo:
     return t;
   }
 };
-PawnSensoryInfoComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(125)], PawnSensoryInfoComponent);
+PawnSensoryInfoComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(130)], PawnSensoryInfoComponent);
 exports.PawnSensoryInfoComponent = PawnSensoryInfoComponent; //# sourceMappingURL=PawnSensoryInfoComponent.js.map

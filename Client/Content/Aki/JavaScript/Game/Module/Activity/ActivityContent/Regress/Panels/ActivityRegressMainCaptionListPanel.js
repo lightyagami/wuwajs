@@ -78,6 +78,9 @@ class ActivityRegressMainCaptionListPanel extends UiPanelBase_1.UiPanelBase {
       this.TabTitle.UpdateTitle(i);
     }
   }
+  BindCanExecuteChange(t) {
+    this.Ivt.SetCanChange(t);
+  }
 }
 exports.ActivityRegressMainCaptionListPanel = ActivityRegressMainCaptionListPanel;
 //# sourceMappingURL=ActivityRegressMainCaptionListPanel.js.map

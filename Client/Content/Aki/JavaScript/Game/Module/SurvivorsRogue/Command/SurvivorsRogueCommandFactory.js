@@ -33,7 +33,7 @@ class SurvivorsRogueCommandFactory {
       case "KTd":
         e = 5;
         break;
-      case "Wzd":
+      case "RJd":
         e = 6;
     }
     if (e !== undefined) {

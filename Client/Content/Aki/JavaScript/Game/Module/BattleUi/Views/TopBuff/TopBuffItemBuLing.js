@@ -15,12 +15,12 @@ const iconList = ["T_BulingBuffBlueNor", "T_BulingBuffBlueA", "T_BulingBuffOrang
 class TopBuffItemBuLing extends TopBuffItem_1.TopBuffItem {
   constructor() {
     super(...arguments);
-    this.$Cm = 0;
-    this.WCm = 0;
+    this.vTm = 0;
+    this.yTm = 0;
     this._ii = 0;
-    this.qCm = -1;
+    this.uTm = -1;
     this.Cdt = 0;
-    this.QCm = 0;
+    this.STm = 0;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UITexture], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIItem]];
@@ -37,9 +37,9 @@ class TopBuffItemBuLing extends TopBuffItem_1.TopBuffItem {
   }
   Refresh(s, t, i, e = false) {
     if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("Battle", 17, "卜灵能量条图标变化", ["oldId", this.WCm], ["newId", s], ["old", this._ii], ["new", t], ["usedType", i]);
+      Log_1.Log.Debug("Battle", 17, "卜灵能量条图标变化", ["oldId", this.yTm], ["newId", s], ["old", this._ii], ["new", t], ["usedType", i]);
     }
-    if (this.WCm !== s) {
+    if (this.yTm !== s) {
       if (s === 0) {
         if (this._ii === 1) {
           if (i === 1) {
@@ -51,13 +51,13 @@ class TopBuffItemBuLing extends TopBuffItem_1.TopBuffItem {
           this.PlayTweenAnimOnly(5);
         }
       } else {
-        if (this.WCm === 0) {
+        if (this.yTm === 0) {
           this.PlayTweenAnimOnly(1);
         }
         this.GetItem(8).SetUIActive(s === 1);
         this.GetItem(7).SetUIActive(s === 2);
       }
-      this.WCm = s;
+      this.yTm = s;
     }
     if (this._ii !== t) {
       if (this._ii !== 1 && t === 1) {
@@ -70,17 +70,17 @@ class TopBuffItemBuLing extends TopBuffItem_1.TopBuffItem {
       this._ii = t;
     }
     if (s === 0) {
-      if (this.QCm === 0) {
+      if (this.STm === 0) {
         if (e) {
-          this.QCm = Time_1.Time.Now + HIDE_ANIM_TIME;
+          this.STm = Time_1.Time.Now + HIDE_ANIM_TIME;
         } else {
           this.SetVisible(1, false);
         }
       }
     } else {
-      this.QCm = 0;
+      this.STm = 0;
       this.SetVisible(1, true);
-      if (this.$Cm !== (i = (s - 1) * 2 + (t === 1 ? 1 : 0)) && (this.$Cm = i, e = iconList[i])) {
+      if (this.vTm !== (i = (s - 1) * 2 + (t === 1 ? 1 : 0)) && (this.vTm = i, e = iconList[i])) {
         s = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(e);
         this.SetIcon(s);
       }
@@ -107,16 +107,16 @@ class TopBuffItemBuLing extends TopBuffItem_1.TopBuffItem {
     }
   }
   PlayTweenAnimOnly(s) {
-    if (this.qCm >= 0) {
-      this.StopTweenAnim(this.qCm);
+    if (this.uTm >= 0) {
+      this.StopTweenAnim(this.uTm);
     }
-    this.qCm = s;
+    this.uTm = s;
     this.PlayTweenAnim(s);
   }
   TickHiding(s) {
-    if (!(this.QCm <= 0) && !(this.QCm > Time_1.Time.Now)) {
+    if (!(this.STm <= 0) && !(this.STm > Time_1.Time.Now)) {
       this.SetVisible(1, false);
-      this.QCm = 0;
+      this.STm = 0;
     }
   }
 }

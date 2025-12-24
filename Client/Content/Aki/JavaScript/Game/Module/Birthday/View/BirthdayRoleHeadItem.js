@@ -21,7 +21,7 @@ class BirthdayRoleHeadItem extends GridProxyAbstract_1.GridProxyAbstract {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UITexture], [2, UE.UITexture]];
+    this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UITexture]];
     this.BtnBindInfo = [[0, this.N8e]];
   }
   OnStart() {
@@ -37,8 +37,6 @@ class BirthdayRoleHeadItem extends GridProxyAbstract_1.GridProxyAbstract {
       this.SetTextureByPath(e, this.GetTexture(1));
     }
     this.SetToggleState(t);
-    var e = ModelManager_1.ModelManager.BirthdayModel.IsRoleSelected(this.dFe);
-    this.GetTexture(2).SetUIActive(e);
   }
   SetToggleState(e) {
     e = e ? 1 : 0;

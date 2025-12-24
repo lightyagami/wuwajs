@@ -29,7 +29,7 @@ class FightPhotoController extends ActivityControllerBase_1.ActivityControllerBa
   constructor() {
     super(...arguments);
     this.SPd = undefined;
-    this.jQd = 0;
+    this.QQd = 0;
     this.MPd = e => {
       this.SPd.UpdateTaskData(e.kLd);
     };
@@ -38,8 +38,8 @@ class FightPhotoController extends ActivityControllerBase_1.ActivityControllerBa
     };
     this.JDe = () => {
       var e;
-      if (this.SPd && this.CheckInFightPhotoDungeon() && (UiManager_1.UiManager.OpenView("FightPhotoFocusView"), ControllerHolder_1.ControllerHolder.FilterSettingController.SetDefaultFilterSetting(), (e = this.HQd()) < MAX_STEP_NUM) && this.jQd < e) {
-        this.jQd = e;
+      if (this.SPd && this.CheckInFightPhotoDungeon() && (UiManager_1.UiManager.OpenView("FightPhotoFocusView"), ControllerHolder_1.ControllerHolder.FilterSettingController.SetDefaultFilterSetting(), (e = this.KQd()) < MAX_STEP_NUM) && this.QQd < e) {
+        this.QQd = e;
         this.ShowFightPhotoTips(exports.stepTextIdList[e]);
       }
     };
@@ -173,7 +173,7 @@ class FightPhotoController extends ActivityControllerBase_1.ActivityControllerBa
       }
       ControllerHolder_1.ControllerHolder.PhotographController.ClearAllSavedFightPhotos();
       ControllerHolder_1.ControllerHolder.InstanceDungeonEntranceController.LeaveInstanceDungeonRequest();
-      this.jQd = 0;
+      this.QQd = 0;
     }
   }
   tHu() {
@@ -182,7 +182,7 @@ class FightPhotoController extends ActivityControllerBase_1.ActivityControllerBa
     });
     ControllerHolder_1.ControllerHolder.SplashScreenController.PushSplashScreenTask(e);
   }
-  HQd() {
+  KQd() {
     return ControllerHolder_1.ControllerHolder.PhotographController.GetSavedFightPhotos().length;
   }
   ShowFightPhotoTips(e) {

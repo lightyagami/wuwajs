@@ -13,9 +13,9 @@ class HonamiStoryPlayerData {
     this.PowerLevel = INVALID_NUM;
     this.LifeSupportLevel = INVALID_NUM;
     this.LifeSupportId = INVALID_NUM;
-    this.Oum = "";
-    this.Gum = "";
-    this.Fum = "";
+    this.l0m = "";
+    this._0m = "";
+    this.u0m = "";
     this.w6d = new Map();
   }
   static Create() {
@@ -64,21 +64,21 @@ class HonamiStoryPlayerData {
     if (ModelManager_1.ModelManager.FunctionModel.IsOpen(10105)) {
       e = ControllerHolder_1.ControllerHolder.FormationAttributeController.GetValue(13);
       if (ControllerHolder_1.ControllerHolder.FormationAttributeController.GetMax(13) / 2 < e) {
-        if (this.Oum === "") {
-          this.Oum = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("SP_MainBarIcon");
+        if (this.l0m === "") {
+          this.l0m = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("SP_MainBarIcon");
         }
-        return this.Oum;
+        return this.l0m;
       } else {
-        if (this.Gum === "") {
-          this.Gum = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("SP_MainBarIconDanger");
+        if (this._0m === "") {
+          this._0m = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("SP_MainBarIconDanger");
         }
-        return this.Gum;
+        return this._0m;
       }
     } else {
-      if (this.Fum === "") {
-        this.Fum = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("SP_MainBarIconFirst");
+      if (this.u0m === "") {
+        this.u0m = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("SP_MainBarIconFirst");
       }
-      return this.Fum;
+      return this.u0m;
     }
   }
 }

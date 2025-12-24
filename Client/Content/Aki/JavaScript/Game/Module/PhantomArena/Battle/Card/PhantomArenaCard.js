@@ -4,16 +4,20 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.PhantomArenaCard = undefined;
+const UE = require("ue");
+const AudioSystem_1 = require("../../../../../Core/Audio/AudioSystem");
 const CustomPromise_1 = require("../../../../../Core/Common/CustomPromise");
 const Log_1 = require("../../../../../Core/Common/Log");
 const TickSystem_1 = require("../../../../../Core/Tick/TickSystem");
 const Transform_1 = require("../../../../../Core/Utils/Math/Transform");
 const Vector_1 = require("../../../../../Core/Utils/Math/Vector");
 const Vector2D_1 = require("../../../../../Core/Utils/Math/Vector2D");
+const ModelManager_1 = require("../../../../Manager/ModelManager");
 const UiSequencePlayer_1 = require("../../../../Ui/Base/UiSequencePlayer");
 const LguiEventSystemManager_1 = require("../../../../Ui/LguiEventSystem/LguiEventSystemManager");
 const LguiUtil_1 = require("../../../Util/LguiUtil");
 const CommonBaseCardItem_1 = require("../../Common/CardItem/Item/CommonBaseCardItem");
+const PhantomArenaDefine_1 = require("../PhantomArenaDefine");
 const PhantomArenaCardTweenLogic_1 = require("./PhantomArenaCardTweenLogic");
 const TICK_DURATION = 1000;
 class PhantomArenaCard extends CommonBaseCardItem_1.CommonBaseCardItem {
@@ -34,10 +38,12 @@ class PhantomArenaCard extends CommonBaseCardItem_1.CommonBaseCardItem {
     this.e8 = 0;
     this.Sequence = undefined;
     this.TweenLogic = undefined;
+    this.CardLogic = undefined;
     this.fD1 = [];
     this.Data = undefined;
     this.HalfWidth = 0;
     this.HalfHeight = 0;
+    this.CopyEffect = undefined;
     this.Ui1 = t => {
       if (this.th1) {
         this.th1 = false;
@@ -100,14 +106,23 @@ class PhantomArenaCard extends CommonBaseCardItem_1.CommonBaseCardItem {
     };
   }
   OnRegisterCardComponent() {
-    this.ComponentsRegisterInfoByItem = [[2, this.GetCardRootItem()]];
-    this.ComponentsRegisterInfoByResourceId = [[6, "PnlStateChoose1", this.GetCardRootItem()]];
+    if (ModelManager_1.ModelManager.PhantomArenaBattleModel.IsOldBvb) {
+      this.ComponentsRegisterInfoByItem = [[3, this.GetCardRootItem()]];
+    } else {
+      this.ComponentsRegisterInfoByItem = [[4, this.GetCardRootItem()]];
+    }
+    this.ComponentsRegisterInfoByResourceId = [[8, "PnlStateChoose1", this.GetCardRootItem()]];
     for (var [t, i] of this.fD1) {
       this.ComponentsRegisterInfoByResourceId.push([t, i, this.GetCardRootItem()]);
     }
+    if (this.CardLogic) {
+      for (var [e, s, h] of this.CardLogic.GetComponentsDataList()) {
+        this.ComponentsRegisterInfoByResourceId.push([e, s, h]);
+      }
+    }
   }
   async OnBeforeChildStartAsync() {
-    var t = this.GetComponent(2);
+    var t = this.ikm();
     if (this.Data) {
       t.SetCardData(this.Data);
       await t.InitSpine();
@@ -117,7 +132,7 @@ class PhantomArenaCard extends CommonBaseCardItem_1.CommonBaseCardItem {
   OnStart() {
     this.Sequence = new UiSequencePlayer_1.UiSequencePlayer(this.GetCardRootItem());
     this.Sequence.BindOnEndSequenceEvent(this.vK1);
-    var t = this.GetComponent(2);
+    var t = this.ikm();
     t.CardClickCallback = this.Ui1;
     var t = t.GetCardToggle();
     t.OnPointEnterCallBack.Bind(this.ki1);
@@ -127,6 +142,7 @@ class PhantomArenaCard extends CommonBaseCardItem_1.CommonBaseCardItem {
     t.OnPointerBeginDragCallBack.Bind(this.pKe);
     t.OnPointerDragCallBack.Bind(this.vKe);
     t.OnPointerEndDragCallBack.Bind(this.SKe);
+    this.CardLogic?.BeforeStart();
     this.sKe = TickSystem_1.TickSystem.Add(this.r6, "LongPressComponent", 0, true, undefined, true).Id;
     this.HalfWidth = this.GetCardRootItem().Width / 2;
     this.HalfHeight = this.GetCardRootItem().Height / 2;
@@ -134,6 +150,10 @@ class PhantomArenaCard extends CommonBaseCardItem_1.CommonBaseCardItem {
     this.TweenLogic.Init(this.GetRootItem());
   }
   OnBeforeDestroy() {
+    if (this.CopyEffect) {
+      UE.LGUIBPLibrary.DestroyActorWithHierarchy(this.CopyEffect, true);
+      this.CopyEffect = undefined;
+    }
     if (this.sKe !== TickSystem_1.TickSystem.InvalidId) {
       TickSystem_1.TickSystem.Remove(this.sKe);
       this.sKe = TickSystem_1.TickSystem.InvalidId;
@@ -148,11 +168,27 @@ class PhantomArenaCard extends CommonBaseCardItem_1.CommonBaseCardItem {
       this.wut = t;
     }
   }
+  ikm() {
+    if (ModelManager_1.ModelManager.PhantomArenaBattleModel.IsOldBvb) {
+      return this.GetComponent(3);
+    } else {
+      return this.GetComponent(4);
+    }
+  }
+  rkm(t) {
+    this.Data = t;
+  }
   Bi1() {
     if (!this.rh1) {
       return this.Di1 || undefined;
     }
     this.rh1 = false;
+  }
+  async InitializePhantomArenaCard(t, i) {
+    this.rkm(t);
+    t = ModelManager_1.ModelManager.PhantomArenaBattleModel.IsOldBvb ? "UiItem_SoundRemnantItem" : "UiItem_SoundRemnantItemNew";
+    await this.CreateByResourceIdAsync(t, i);
+    await this.RefreshSelfAsync();
   }
   AddComponentsRegisterInfoByResourceId(t) {
     this.fD1.push(t);
@@ -161,14 +197,15 @@ class PhantomArenaCard extends CommonBaseCardItem_1.CommonBaseCardItem {
     this.RefreshAsync(t);
   }
   async RefreshAsync(t) {
-    this.SetCardData(t);
-    await this.GetComponent(2)?.RefreshAsync(t);
+    this.rkm(t);
+    await this.RefreshSelfAsync();
   }
   async RefreshSelfAsync() {
-    await this.GetComponent(2)?.RefreshAsync(this.Data);
+    this.CardLogic?.Refresh(this.Data);
+    await this.ikm()?.RefreshAsync(this.Data);
   }
-  SetCardData(t) {
-    this.Data = t;
+  RegisterCardLogic(t) {
+    this.CardLogic = t;
   }
   SetCardProxy(t) {
     if (this.Di1 !== t) {
@@ -212,13 +249,13 @@ class PhantomArenaCard extends CommonBaseCardItem_1.CommonBaseCardItem {
     return this.QTc;
   }
   SetToggleState(t, i = true) {
-    this.GetComponent(2).GetCardToggle().SetToggleState(t, i);
+    this.ikm().GetCardToggle().SetToggleState(t, i);
   }
   GetToggleState() {
-    return this.GetComponent(2).GetCardToggle().GetToggleState();
+    return this.ikm().GetCardToggle().GetToggleState();
   }
   RefreshDebugText() {
-    this.GetComponent(2)?.SetDebugText();
+    this.ikm()?.SetDebugText();
   }
   OverrideCanvasSortOrder(t) {
     var i = this.GetOriginalItem()?.GetRenderCanvas();
@@ -247,10 +284,10 @@ class PhantomArenaCard extends CommonBaseCardItem_1.CommonBaseCardItem {
     }
   }
   PlayStateSequence(t) {
-    this.GetComponent(2)?.PlaySequence(t);
+    this.ikm()?.PlaySequence(t);
   }
-  PlayLocationByItem(t, i, s) {
-    this.TweenLogic.PlayLocationByItem(t, i, s);
+  PlayLocationByItem(t, i, e) {
+    this.TweenLogic.PlayLocationByItem(t, i, e);
   }
   StopSequence(t) {
     this.Sequence.StopSequenceByKey(t, false, true);
@@ -267,18 +304,54 @@ class PhantomArenaCard extends CommonBaseCardItem_1.CommonBaseCardItem {
     await this.Sequence.PlaySequenceAsync(t, i);
   }
   PlaySpineAnimAndEffect(t, i) {
-    var s = this.GetComponent(2);
-    s?.PlaySpineAnim(t, i);
-    s?.PlayEffect();
+    var e = this.ikm();
+    e?.PlaySpineAnim(t, i);
+    e?.PlayEffect();
+  }
+  SetSelectedStateWithoutSequence() {
+    this.GetComponent(8).SetComponentDisActiveWithoutSequence();
+    this.CardLogic?.SetSelectedState(false);
   }
   SetSelectedState(t) {
-    this.GetComponent(6).SetComponentActive(t);
+    this.GetComponent(8).SetComponentActive(t);
+    this.CardLogic?.SetSelectedState(t);
+  }
+  SetSelectedStateByGamepad(t) {
+    this.CardLogic?.SetSelectedState(t);
+  }
+  async RefreshEffect(t) {
+    await this.CardLogic?.RefreshEffect(t);
+  }
+  async ShowCopyEffect() {
+    this.CopyEffect ||= await LguiUtil_1.LguiUtil.LoadPrefabByResourceIdAsync("UiItem_CardTemporary", this.GetSpineRootItem());
+    await Promise.all([this.ShowAsync(), this.PlaySequenceAsync("Copy"), this.PlaySequenceAsync("PutDownHandtoTable")]);
+  }
+  async PlayHitEffect(t) {
+    AudioSystem_1.AudioSystem.PostEvent(PhantomArenaDefine_1.HIT_AUDIO);
+    await Promise.all([this.PlaySequenceAsync("CardHit"), this.ikm()?.PlayHitEffect?.(t)]);
+  }
+  GetPhantomArenaCardRootItem() {
+    return this.GetCardRootItem();
+  }
+  GetPhantomArenaCardSpineRootItem() {
+    return this.GetSpineRootItem();
   }
   GetGuideUiItemAndUiItemForShowEx(t) {
-    if (t && !(t.length <= 0) && (t = this.GetComponent(2)?.GetRootItem())) {
-      return [t, t];
-    } else {
-      return undefined;
+    var i;
+    if (t && !(t.length <= 0)) {
+      if (t[0] === "BattleCardSkillById") {
+        i = (t = this.GetComponent(12))?.GetGuideUiItem("T_技能按钮");
+        t = t?.GetGuideUiItem("V_技能按钮");
+        if (i && t) {
+          return [i, t];
+        } else {
+          return undefined;
+        }
+      } else if (i = this.ikm()?.GetRootItem()) {
+        return [i, i];
+      } else {
+        return undefined;
+      }
     }
   }
 }

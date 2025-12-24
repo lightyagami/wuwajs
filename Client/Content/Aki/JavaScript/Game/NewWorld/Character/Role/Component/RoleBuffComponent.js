@@ -71,7 +71,7 @@ let RoleBuffComponent = RoleBuffComponent_1 = class RoleBuffComponent extends Ch
   }
   GetFormationBuffComp() {
     if (this.HasBuffAuthority()) {
-      return FormationDataController_1.FormationDataController.GetPlayerEntity(ModelManager_1.ModelManager.CreatureModel.GetPlayerId())?.GetComponent(203);
+      return FormationDataController_1.FormationDataController.GetPlayerEntity(ModelManager_1.ModelManager.CreatureModel.GetPlayerId())?.GetComponent(209);
     }
     CombatLog_1.CombatLog.Warn("Buff", this.Entity, "暂不支持对其它玩家操作编队buff");
   }
@@ -127,7 +127,7 @@ let RoleBuffComponent = RoleBuffComponent_1 = class RoleBuffComponent extends Ch
         var i = ModelManager_1.ModelManager.SceneTeamModel.GetTeamEntities(true);
         if (i.some(e => e.Entity === this.Entity)) {
           for (const m of i) {
-            var u = m.Entity?.GetComponent(178);
+            var u = m.Entity?.GetComponent(183);
             if (m.Entity !== this.Entity && u) {
               s.push(u);
             }
@@ -222,5 +222,5 @@ let RoleBuffComponent = RoleBuffComponent_1 = class RoleBuffComponent extends Ch
   }
 };
 RoleBuffComponent.FrozenImmuneTags = [400631093, -2100129479, -1009010563, -1221493771, 1733479717, 855966206, 1918148596, 1918148596];
-RoleBuffComponent = RoleBuffComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(194)], RoleBuffComponent);
+RoleBuffComponent = RoleBuffComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(200)], RoleBuffComponent);
 exports.RoleBuffComponent = RoleBuffComponent; //# sourceMappingURL=RoleBuffComponent.js.map

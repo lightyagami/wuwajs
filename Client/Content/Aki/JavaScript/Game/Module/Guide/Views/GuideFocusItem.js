@@ -36,8 +36,8 @@ class GuideFocusItem extends UiPanelBase_1.UiPanelBase {
     this.Gzt = undefined;
     this.Nzt = undefined;
     this.Ozt = undefined;
-    this.hvm = new UE.Vector2D(0, 0);
-    this.lvm = new UE.Vector(0, 0, 0);
+    this.uwm = new UE.Vector2D(0, 0);
+    this.cwm = new UE.Vector(0, 0, 0);
     this.Fr = () => {
       if (GuideFocusItem.IsOpenLog && Log_1.Log.CheckWarn()) {
         Log_1.Log.Warn("Guide", 16, "OnButtonClick enter");
@@ -175,7 +175,7 @@ class GuideFocusItem extends UiPanelBase_1.UiPanelBase {
             }
             e.OnPointEnterCallBack.Execute();
           }
-        } else if (t.IsA(UE.UIExtendToggle.StaticClass()) && ((e = t).OnHover && (GuideFocusItem.IsOpenLog && Log_1.Log.CheckWarn() && Log_1.Log.Warn("Guide", 74, "OnButtonHover execute parent UIExtendToggle"), e.OnHover.Broadcast()), e.OnPointEnterCallBack)) {
+        } else if (t.IsA(UE.UIExtendToggle.StaticClass()) && ((e = t).OnHover && (GuideFocusItem.IsOpenLog && Log_1.Log.CheckWarn() && Log_1.Log.Warn("Guide", 74, "OnButtonHover execute parent UIExtendToggle"), e.OnHover.Broadcast()), e.OnPointEnterCallBack.IsBound())) {
           if (GuideFocusItem.IsOpenLog && Log_1.Log.CheckWarn()) {
             Log_1.Log.Warn("Guide", 74, "OnButtonHover execute parent UIExtendToggle");
           }
@@ -442,16 +442,16 @@ class GuideFocusItem extends UiPanelBase_1.UiPanelBase {
       var i = [10000, 10000];
       var o = [0, 0];
       for (const g of this.Owner.GetGuideStepInfo().ViewData.GetMultiAttachItems() ?? []) {
-        var [n, s, u, a] = this._vm(g);
+        var [n, s, u, a] = this.dwm(g);
         i[0] = Math.min(i[0], n);
         i[1] = Math.min(i[1], s);
         o[0] = Math.max(o[0], u);
         o[1] = Math.max(o[1], a);
       }
-      this.RootItem.SetPivot(this.hvm);
-      this.lvm.X = i[1];
-      this.lvm.Y = i[0];
-      this.RootItem.SetLGUISpaceAbsolutePosition(this.lvm);
+      this.RootItem.SetPivot(this.uwm);
+      this.cwm.X = i[1];
+      this.cwm.Y = i[0];
+      this.RootItem.SetLGUISpaceAbsolutePosition(this.cwm);
       this.RootItem.SetHeight(o[0] - i[0]);
       this.RootItem.SetWidth(o[1] - i[1]);
     } else {
@@ -490,7 +490,7 @@ class GuideFocusItem extends UiPanelBase_1.UiPanelBase {
       e.SetWidth(UiLayer_1.UiLayer.UiRootItem.Width);
     }
   }
-  _vm(e) {
+  dwm(e) {
     var t = e.GetLGUISpaceCenterAbsolutePosition();
     var i = e.D_K2_GetComponentScale();
     var o = e.Width * i.X;

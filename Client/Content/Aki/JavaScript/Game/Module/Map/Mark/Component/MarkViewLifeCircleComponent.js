@@ -78,6 +78,15 @@ class MarkViewLifeCircleComponent extends MapComponent_1.MapComponent {
   get IsTrackedDirty() {
     return this.PropertyMap.isDirty(4);
   }
+  set IsAutoPilotTracked(e) {
+    this.PropertyMap.set(5, e);
+  }
+  get IsAutoPilotTracked() {
+    return this.PropertyMap.tryGet(5, false);
+  }
+  get IsAutoPilotTrackedDirty() {
+    return this.PropertyMap.isDirty(5);
+  }
 }
 exports.MarkViewLifeCircleComponent = MarkViewLifeCircleComponent;
 //# sourceMappingURL=MarkViewLifeCircleComponent.js.map

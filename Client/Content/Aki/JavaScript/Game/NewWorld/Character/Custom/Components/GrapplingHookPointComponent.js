@@ -3,35 +3,39 @@
 var GrapplingHookPointComponent_1;
 var __decorate = this && this.__decorate || function (t, e, i, o) {
   var r;
-  var n = arguments.length;
-  var s = n < 3 ? e : o === null ? o = Object.getOwnPropertyDescriptor(e, i) : o;
+  var s = arguments.length;
+  var n = s < 3 ? e : o === null ? o = Object.getOwnPropertyDescriptor(e, i) : o;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    s = Reflect.decorate(t, e, i, o);
+    n = Reflect.decorate(t, e, i, o);
   } else {
-    for (var a = t.length - 1; a >= 0; a--) {
-      if (r = t[a]) {
-        s = (n < 3 ? r(s) : n > 3 ? r(e, i, s) : r(e, i)) || s;
+    for (var h = t.length - 1; h >= 0; h--) {
+      if (r = t[h]) {
+        n = (s < 3 ? r(n) : s > 3 ? r(e, i, n) : r(e, i)) || n;
       }
     }
   }
-  if (n > 3 && s) {
-    Object.defineProperty(e, i, s);
+  if (s > 3 && n) {
+    Object.defineProperty(e, i, n);
   }
-  return s;
+  return n;
 };
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.GrapplingHookPointComponent = undefined;
+const puerts_1 = require("puerts");
 const UE = require("ue");
 const Log_1 = require("../../../../../Core/Common/Log");
 const Time_1 = require("../../../../../Core/Common/Time");
 const EntityComponent_1 = require("../../../../../Core/Entity/EntityComponent");
 const RegisterComponent_1 = require("../../../../../Core/Entity/RegisterComponent");
+const ResourceSystem_1 = require("../../../../../Core/Resource/ResourceSystem");
 const TimerSystem_1 = require("../../../../../Core/Timer/TimerSystem");
+const Quat_1 = require("../../../../../Core/Utils/Math/Quat");
 const Rotator_1 = require("../../../../../Core/Utils/Math/Rotator");
 const Vector_1 = require("../../../../../Core/Utils/Math/Vector");
 const MathUtils_1 = require("../../../../../Core/Utils/MathUtils");
+const IComponent_1 = require("../../../../../UniverseEditor/Interface/IComponent");
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
 const TimeUtil_1 = require("../../../../Common/TimeUtil");
@@ -43,31 +47,63 @@ const LevelGeneralContextDefine_1 = require("../../../../LevelGamePlay/LevelGene
 const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const CharacterNameDefines_1 = require("../../Common/CharacterNameDefines");
-const HOOK_VISION_ID = 1001;
+const GrapplingHookPointDefine_1 = require("./Define/GrapplingHookPointDefine");
 const OVERWRITE_HOOK_LOCATION_KEY = "OverwriteLocation";
-const hookPointStateTagMap = new Map([[0, 1888174838], [1, -1156116864], [2, -43463105], [3, -981394298]]);
-const hookTypeTagMap = new Map([["FixedPointHook", -833935142], ["SuiGuangHook", 561771029], ["FlyingFeather", 576579223], ["KiteHook", -1526637662], ["RagDollJumpingPoint", -1347421268], ["RagDollClimbingPoint", 1978109078], ["MovementPointHook", -1771378495], ["SlashHook", -105059496], ["ChargeSlashHook", -105059496], ["GravityHook", 749203951]]);
+const CAPTURE_LENGTH_SQUARE = 10000;
+const CAPTURE_DECAY_LENGTH_SQUARE = 40000;
+const CAPTURE_LENGTH_LIMIT_SQUARE = 100000000;
+const NORMALIZE = 0.01;
+const PULL_COLLECTION_MOVE_SPEED = 4000;
+const PULL_COLLECTION_MOVE_ACC = 500;
+const PULL_COLLECTION_MOVE_MAX_SPEED = 6000;
+const PULL_COLLECTION_MOVE_MIN_SPEED = 3000;
+const PULL_COLLECTION_MOVE_DURATION = 500;
 const slashLeftQteTag = 898914517;
 const slashRightQteTag = 2102950531;
+const tmpRotator = Rotator_1.Rotator.Create();
+const tmpQuat = Quat_1.Quat.Create();
 let GrapplingHookPointComponent = GrapplingHookPointComponent_1 = class GrapplingHookPointComponent extends EntityComponent_1.EntityComponent {
   constructor() {
     super(...arguments);
+    this.ActorComp = undefined;
+    this.Lie = undefined;
+    this.EIe = undefined;
     this.cql = -1;
     this.mql = undefined;
     this.dql = false;
     this.Ihu = undefined;
     this.mjl = false;
     this.Lo = undefined;
-    this.Lie = undefined;
-    this.RadiusSquared = 0;
+    this.NormalHookMinRadiusSquared = 0;
+    this.MotorcycleHookMinRadiusSquared = 0;
+    this.NormalHookMaxRadiusSquared = 0;
+    this.MotorcycleHookMaxRadiusSquared = 0;
+    this.B_f = 0;
+    this.Dtg = 0;
+    this.Utg = 0;
     this.ac = 4;
-    this.Hte = undefined;
-    this.N1_ = undefined;
+    this.N1_ = [];
     this.Hfn = undefined;
     this.fen = false;
     this.d6o = undefined;
     this.Ful = 0;
     this.ggl = 0;
+    this.x_f = undefined;
+    this.Lz = undefined;
+    this.k_f = false;
+    this.Wuf = 0;
+    this.q_f = true;
+    this.mHf = undefined;
+    this.Rnn = () => {
+      var t = this.ActorComp?.GetActorInSceneInteraction(OVERWRITE_HOOK_LOCATION_KEY)?.D_K2_GetActorLocation();
+      this.dql = !!t;
+    };
+    this.zZd = t => {
+      if (t === GrapplingHookPointDefine_1.HOOK_VISION_ID) {
+        this.Lie.AddTag(1888174838);
+        this.ac = 0;
+      }
+    };
     this.pgl = () => {
       ++this.Ful;
     };
@@ -75,26 +111,28 @@ let GrapplingHookPointComponent = GrapplingHookPointComponent_1 = class Grapplin
       ++this.ggl;
       ++this.Ful;
     };
-    this.Rnn = () => {
-      var t = this.Hte?.GetActorInSceneInteraction(OVERWRITE_HOOK_LOCATION_KEY)?.D_K2_GetActorLocation();
-      this.dql = !!t;
-    };
-    this.pen = t => {
-      if (t === HOOK_VISION_ID) {
-        this.Lie.AddTag(1888174838);
-        this.ac = 0;
-      }
-    };
+  }
+  get ServerEntityId() {
+    return this.EIe?.GetCreatureDataId() ?? 0;
+  }
+  get EntityConfigId() {
+    return this.EIe?.GetPbDataId() ?? 0;
+  }
+  get HookInteractType() {
+    return this.Lo?.HookInteractConfig?.Type;
   }
   get HookLocation() {
-    return this.Cql ?? this.Hte?.ActorLocationProxy ?? Vector_1.Vector.ZeroVectorProxy;
+    return this.Cql ?? this.ActorComp?.ActorLocationProxy ?? Vector_1.Vector.ZeroVectorProxy;
+  }
+  get HookTransform() {
+    return this.ActorComp?.ActorTransform;
   }
   get Cql() {
     var t;
     if (this.dql) {
       if (this.cql < Time_1.Time.Frame) {
         this.cql = Time_1.Time.Frame;
-        if (t = this.Hte?.GetActorInSceneInteraction(OVERWRITE_HOOK_LOCATION_KEY)?.D_K2_GetActorLocation()) {
+        if (t = this.ActorComp?.GetActorInSceneInteraction(OVERWRITE_HOOK_LOCATION_KEY)?.D_K2_GetActorLocation()) {
           this.mql ||= Vector_1.Vector.Create();
           this.mql.FromUeVector(t);
         } else {
@@ -106,12 +144,12 @@ let GrapplingHookPointComponent = GrapplingHookPointComponent_1 = class Grapplin
     }
   }
   get TriggerLocation() {
-    var t = this.Hte.ActorTransform;
+    var t = this.ActorComp.ActorTransform;
     var e = Vector_1.Vector.Create(this.Lo?.Range.Center.X ?? 0, this.Lo?.Range.Center.Y ?? 0, this.Lo?.Range.Center.Z ?? 0);
     return Vector_1.Vector.Create(t.TransformPosition(e.ToUeVector()));
   }
   get Radius() {
-    return this.Lo?.Range.Radius ?? 0;
+    return this.Lo?.Range?.Radius ?? 0;
   }
   get CameraGaze() {
     return this.Lo?.CameraGaze;
@@ -145,7 +183,7 @@ let GrapplingHookPointComponent = GrapplingHookPointComponent_1 = class Grapplin
   }
   get IsNormalHookPoint() {
     var t = this.Lo?.HookInteractConfig?.Type;
-    return t === undefined || t === "FixedPointHook";
+    return t === undefined || t === "FixedPointHook" || t === "PilotThrow" || t === "MotorPullInteract";
   }
   get IsGravityHookPoint() {
     return this.Lo?.HookInteractConfig?.Type === "GravityHook";
@@ -174,30 +212,85 @@ let GrapplingHookPointComponent = GrapplingHookPointComponent_1 = class Grapplin
   get SplineMoveBrokenCount() {
     return this.ggl;
   }
+  get EntityType() {
+    return this.x_f;
+  }
+  get PullCollectionWithProgress() {
+    return this.Lo?.HookInteractConfig?.Type === "MotorPullInteract" && (this.Lo.HookInteractConfig.IsPlayPullProgress ?? false);
+  }
+  get MoveFinish() {
+    return this.q_f;
+  }
+  get PlayerDetectable() {
+    return this.Lo?.HookInteractConfig?.Type !== "MotorPullInteract" || (this.Lo.HookInteractConfig.IsFixedWhenNotRide ?? false);
+  }
+  get MotorcycleDetectable() {
+    var t;
+    if (this.mHf !== undefined) {
+      return this.mHf;
+    } else if ((t = this.Lo?.HookInteractConfig?.Type) && GrapplingHookPointDefine_1.motorcycleDetectableHookType.has(t)) {
+      return this.mHf = true;
+    } else if (this.mHf || this.Lo?.MotorHookConfig === undefined) {
+      return this.mHf = false;
+    } else {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("SceneItem", 79, "钩锁类型不在MotorcycleDetectableHookType里, 但是又包含了MotorHookConfig配置", ["EHookInteractType", t]);
+      }
+      return this.mHf = true;
+    }
+  }
+  get AllowPull() {
+    return this.Lo?.HookInteractConfig?.Type === "MotorPullInteract";
+  }
+  get IsMoving() {
+    return this.k_f;
+  }
   OnInitData(t) {
-    var t = t.GetParam(GrapplingHookPointComponent_1)[0];
-    this.Lo = t || undefined;
+    var e = this.Entity.GetComponent(0);
+    var i = e.GetPbEntityInitData();
+    if (!i) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("SceneItem", 79, "GrapplingHookPointComponent.OnInitData Failed, GetPbEntityInitData is undefined.");
+      }
+      return false;
+    }
+    var i = (0, IComponent_1.getComponent)(i.ComponentsData, "HookLockPoint");
+    this.Lo = i;
+    this.Lz = Vector_1.Vector.Create(0, 0, 0);
+    this.ActorComp = this.Entity.GetComponent(212);
+    this.Lie = this.Entity.GetComponent(206);
+    this.EIe = this.Entity.GetComponent(0);
+    this.NormalHookMinRadiusSquared = MathUtils_1.MathUtils.Square(this.Lo?.NonInteractiveInnerRadius ?? 0);
+    this.MotorcycleHookMinRadiusSquared = MathUtils_1.MathUtils.Square(this.Lo?.MotorHookConfig?.NonInteractiveInnerRadius ?? 0);
+    this.NormalHookMaxRadiusSquared = MathUtils_1.MathUtils.Square(this.Lo?.Range.Radius ?? 0);
+    this.MotorcycleHookMaxRadiusSquared = MathUtils_1.MathUtils.Square(this.Lo?.MotorHookConfig?.Radius ?? 0);
+    if (this.Lo?.HookInteractConfig?.Type === "MotorPullInteract") {
+      this.B_f = this.Lo.HookInteractConfig.PullMoveSpeed ?? PULL_COLLECTION_MOVE_SPEED;
+      this.Dtg = PULL_COLLECTION_MOVE_ACC;
+      this.Utg = this.B_f;
+    }
+    this.x_f = e.GetPbModelConfig()?.EntityType;
+    this.mjl = e.PbHookLockPointDisabled;
+    this.Hfn = e.GetBaseInfo()?.OnlineInteractType;
+    this.N1_.length = 0;
     if (this.Lo.PlayerStateRestritionId) {
-      t = {
+      i = {
         Type: "CheckPlayerStateRestriction",
         RestrictionId: this.Lo.PlayerStateRestritionId
       };
-      this.N1_ ||= [];
       this.N1_.push({
         Type: 0,
-        Conditions: [t]
+        Conditions: [i]
       });
     }
     if (this.Lo.HookEnableCondition) {
-      this.N1_ ||= [];
       this.N1_.push(this.Lo.HookEnableCondition);
     }
-    this.Lie = this.Entity.GetComponent(200);
     if (this.Lie?.Valid) {
       this.Lie.AddTag(-254251760);
     }
     if (this.Lo.HookInteractConfig) {
-      this.d6o = hookTypeTagMap.get(this.Lo.HookInteractConfig.Type);
+      this.d6o = GrapplingHookPointDefine_1.normalHookTagMap.get(this.Lo.HookInteractConfig.Type);
       if (this.Lo.HookInteractConfig.Type === "SlashHook") {
         switch (this.Lo.HookInteractConfig.SlashHitType) {
           case "QTELeft":
@@ -210,76 +303,125 @@ let GrapplingHookPointComponent = GrapplingHookPointComponent_1 = class Grapplin
     } else {
       this.d6o = -833935142;
     }
-    this.RadiusSquared = MathUtils_1.MathUtils.Square(this.Radius);
-    t = this.Entity.GetComponent(0);
-    this.mjl = t.PbHookLockPointDisabled;
     return true;
   }
   OnStart() {
-    this.Hte = this.Entity.GetComponent(206);
-    var e = this.Entity.GetComponent(0);
-    if (e) {
-      e = e.GetBaseInfo();
-      this.Hfn = e?.OnlineInteractType;
-      if (!GrapplingHookPointComponent_1.ven) {
-        if (ModelManager_1.ModelManager.RouletteModel.UnlockExploreSkillDataMap.has(HOOK_VISION_ID)) {
-          GrapplingHookPointComponent_1.ven = true;
-        }
-      }
+    if (ModelManager_1.ModelManager.RouletteModel.GetExploreDataBySkillId(GrapplingHookPointDefine_1.HOOK_VISION_ID)) {
       let t = false;
-      if (GrapplingHookPointComponent_1.ven) {
-        for (const i of hookPointStateTagMap.keys()) {
-          if (this.Lie.HasTag(i)) {
-            t = true;
-            break;
-          }
-        }
-        if (!t) {
-          this.Lie.AddTag(1888174838);
-          this.ac = 0;
+      for (const e of GrapplingHookPointDefine_1.hookPointStateToTagMap.values()) {
+        if (this.Lie.HasTag(e)) {
+          t = true;
+          break;
         }
       }
-      GrapplingHookPointComponent_1.AllPoints.push(this);
-      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.AddExploreVisionSkill, this.pen);
-      EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemSplineMoveBroken, this.fgl);
-      EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemSplineMoveStopped, this.pgl);
-      EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted, this.Rnn);
+      if (!t) {
+        this.zZd(GrapplingHookPointDefine_1.HOOK_VISION_ID);
+      }
     }
+    if (this.PlayerDetectable) {
+      GrapplingHookPointComponent_1.PlayerDetectableHookPoints.push(this);
+    }
+    if (this.MotorcycleDetectable) {
+      GrapplingHookPointComponent_1.MotorcycleDetectableHookPoints.push(this);
+    }
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.AddExploreVisionSkill, this.zZd);
+    EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemSplineMoveBroken, this.fgl);
+    EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemSplineMoveStopped, this.pgl);
+    EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted, this.Rnn);
     return true;
   }
   OnEnd() {
-    var t = GrapplingHookPointComponent_1.AllPoints.indexOf(this);
-    if (t >= 0) {
-      GrapplingHookPointComponent_1.AllPoints.splice(t, 1);
+    var t;
+    if (this.PlayerDetectable && (t = GrapplingHookPointComponent_1.PlayerDetectableHookPoints.indexOf(this)) >= 0) {
+      GrapplingHookPointComponent_1.PlayerDetectableHookPoints.splice(t, 1);
     }
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.AddExploreVisionSkill, this.pen);
+    if (this.MotorcycleDetectable && (t = GrapplingHookPointComponent_1.MotorcycleDetectableHookPoints.indexOf(this)) >= 0) {
+      GrapplingHookPointComponent_1.MotorcycleDetectableHookPoints.splice(t, 1);
+    }
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.AddExploreVisionSkill, this.zZd);
     EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemSplineMoveBroken, this.fgl);
     EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemSplineMoveStopped, this.pgl);
     EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted, this.Rnn);
     return true;
   }
+  OnTick(t) {
+    this.O_f(t);
+  }
+  O_f(t) {
+    var e;
+    var i;
+    if (this.k_f) {
+      if (this.PullCollectionWithProgress) {
+        if ((e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity.GetComponent(3)) && this.ActorComp) {
+          this.Lz.DeepCopy(e.ActorLocationProxy);
+          if ((i = this.Lz.SubtractionEqual(this.ActorComp.ActorLocationProxy).SizeSquared()) < CAPTURE_LENGTH_SQUARE) {
+            if (Log_1.Log.CheckInfo()) {
+              Log_1.Log.Info("SceneItem", 79, "摩托车拉取采集物被捕获");
+            }
+            this.k_f = false;
+            this.q_f = true;
+          } else {
+            if (i > CAPTURE_LENGTH_LIMIT_SQUARE) {
+              if (Log_1.Log.CheckInfo()) {
+                Log_1.Log.Info("SceneItem", 79, "摩托车拉取采集物超出距离限制, 重置状态");
+              }
+              this.StopPulledMove();
+            }
+            this.Lz.Normalize(NORMALIZE);
+            if (i < CAPTURE_DECAY_LENGTH_SQUARE) {
+              this.Utg = Math.min(this.Utg - this.Dtg, PULL_COLLECTION_MOVE_MIN_SPEED);
+            } else {
+              this.Utg = Math.max(this.Utg + this.Dtg, PULL_COLLECTION_MOVE_MAX_SPEED);
+            }
+            this.Lz.MultiplyEqual(this.Utg * t * MathUtils_1.MathUtils.MillisecondToSecond).AdditionEqual(this.ActorComp.ActorLocationProxy);
+            this.ActorComp.SetActorLocation(this.Lz.ToUeVector());
+            if (Log_1.Log.CheckInfo()) {
+              Log_1.Log.Info("SceneItem", 79, "MoveTick(WithPullProgress)", ["LengthSquared", i], ["CurrentLocation", this.ActorComp.ActorLocationProxy], ["TargetLocation", e.ActorLocationProxy], ["Speed", this.Utg], ["MinSpeed", PULL_COLLECTION_MOVE_MIN_SPEED], ["MaxSpeed", PULL_COLLECTION_MOVE_MAX_SPEED], ["Direction", this.Lz]);
+            }
+          }
+        }
+      } else {
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("SceneItem", 79, "MoveTick(NoPullProgress)", ["delta", t], ["MovePassedTime", this.Wuf]);
+        }
+        this.Wuf += t;
+        if (this.Wuf > PULL_COLLECTION_MOVE_DURATION) {
+          this.k_f = false;
+          this.q_f = true;
+          this.Wuf = 0;
+        }
+      }
+    }
+  }
   UpdateHookPointInfoByNotify(t) {
     this.mjl = t.UI_;
   }
   IsMovable() {
-    return !!this.Entity.GetComponent(67) || this.GetHookInteractType() === "SuiGuangHook" || this.GetHookInteractType() === "FlyingFeather";
+    return !!this.Entity.GetComponent(70) || this.GetHookInteractType() === "SuiGuangHook" || this.GetHookInteractType() === "FlyingFeather" || this.GetHookInteractType() === "PilotThrow";
+  }
+  OnFixHookSkillEnd() {
+    this.ChangeHookPointState(0);
   }
   ChangeHookPointState(t) {
     if (this.ac !== t) {
-      this.Lie.RemoveTag(hookPointStateTagMap.get(this.ac));
+      this.Lie.RemoveTag(GrapplingHookPointDefine_1.hookPointStateToTagMap.get(this.ac));
       if (this.ac === 1) {
-        this.Entity.GetComponent(206).PlaySceneInteractionEndEffect(0);
+        this.Entity.GetComponent(212).PlaySceneInteractionEndEffect(0);
       }
       this.ac = t;
-      this.Lie.AddTag(hookPointStateTagMap.get(this.ac));
+      this.Lie.AddTag(GrapplingHookPointDefine_1.hookPointStateToTagMap.get(this.ac));
+      EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnHookPointStateChanged, this.ac);
     }
   }
+  GetCurrentHookPointState() {
+    return this.ac;
+  }
   CheckCondition() {
-    return this.N1_ === undefined || this.N1_.length === 0 || this.N1_.every(t => ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckConditionNew(t, this.Hte.Owner, LevelGeneralContextDefine_1.EntityContext.Create(this.Entity.Id)));
+    return this.N1_ === undefined || this.N1_.length === 0 || this.N1_.every(t => ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckConditionNew(t, this.ActorComp.Owner, LevelGeneralContextDefine_1.EntityContext.Create(this.Entity.Id)));
   }
   CheckHookEnableCondition() {
     var t = this.Lo.HookEnableCondition;
-    return !t || ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckConditionNew(t, this.Hte.Owner, LevelGeneralContextDefine_1.EntityContext.Create(this.Entity.Id));
+    return !t || ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckConditionNew(t, this.ActorComp.Owner, LevelGeneralContextDefine_1.EntityContext.Create(this.Entity.Id));
   }
   BeHooked(t) {
     this.zNc();
@@ -299,7 +441,7 @@ let GrapplingHookPointComponent = GrapplingHookPointComponent_1 = class Grapplin
     var e = this.Lo?.HookInteractConfig;
     var i = e.SlashAngleType;
     var e = e.DefaultSlashDir;
-    var o = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint()?.GetComponent(209);
+    var o = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint()?.GetComponent(215);
     if (o) {
       switch (i) {
         case "Slash30":
@@ -326,20 +468,20 @@ let GrapplingHookPointComponent = GrapplingHookPointComponent_1 = class Grapplin
     }
   }
   WasRecentlyRenderOnScreen() {
-    let t = this.Hte?.CurLevelPrefabShowActor;
+    let t = this.ActorComp?.CurLevelPrefabShowActor;
     if (t?.IsValid()) {
       if (t instanceof TsEffectActor_1.default) {
         var e = t.GetHandle();
-        if (!EffectSystem_1.EffectSystem.IsValid(e) && (this.Hte.RefreshShowActor(), !(t = this.Hte?.CurLevelPrefabShowActor)?.IsValid())) {
+        if (!EffectSystem_1.EffectSystem.IsValid(e) && (this.ActorComp.RefreshShowActor(), !(t = this.ActorComp?.CurLevelPrefabShowActor)?.IsValid())) {
           return false;
         }
       } else if (t.IsA(UE.EffectSystemActor.StaticClass())) {
         e = t.GetHandle();
-        if (!EffectSystem_1.EffectSystem.IsValid(e) && (this.Hte.RefreshShowActor(), !(t = this.Hte?.CurLevelPrefabShowActor)?.IsValid())) {
+        if (!EffectSystem_1.EffectSystem.IsValid(e) && (this.ActorComp.RefreshShowActor(), !(t = this.ActorComp?.CurLevelPrefabShowActor)?.IsValid())) {
           return false;
         }
       }
-      if (UE.KuroStaticLibrary.IsObjectClassByName(t, CharacterNameDefines_1.CharacterNameDefines.BP_BASEITEM) && (this.Hte.RefreshShowActor(), !(t = this.Hte?.CurLevelPrefabShowActor)?.IsValid())) {
+      if (UE.KuroStaticLibrary.IsObjectClassByName(t, CharacterNameDefines_1.CharacterNameDefines.BP_BASEITEM) && (this.ActorComp.RefreshShowActor(), !(t = this.ActorComp?.CurLevelPrefabShowActor)?.IsValid())) {
         return false;
       } else {
         return t.WasRecentlyRenderedOnScreen(0.5);
@@ -348,10 +490,21 @@ let GrapplingHookPointComponent = GrapplingHookPointComponent_1 = class Grapplin
     return false;
   }
   GetTagId() {
-    return this.d6o;
+    var t;
+    if (this.MotorcycleDetectable && (t = this.GetHookInteractType()) && (t = GrapplingHookPointDefine_1.multipurposeHookTagMap.get(t))) {
+      if (ModelManager_1.ModelManager.ExploreModel.IsPlayerDrivingMotorcycle) {
+        return t[1];
+      } else {
+        return t[0];
+      }
+    } else {
+      return this.d6o;
+    }
   }
   GetHookInteractType() {
-    return this.Lo.HookInteractConfig?.Type ?? "FixedPointHook";
+    if (this.Lo) {
+      return this.Lo.HookInteractConfig?.Type ?? "FixedPointHook";
+    }
   }
   GetHookActions() {
     return this.Lo.HookInteractConfig?.HookActions;
@@ -441,8 +594,44 @@ let GrapplingHookPointComponent = GrapplingHookPointComponent_1 = class Grapplin
     }
     return e;
   }
+  GetMotorcycleFixHookParams(t, e, i, o, r) {
+    var s = this.Lo?.MotorHookConfig;
+    if (s?.MotorHookAcceleration) {
+      (0, puerts_1.$set)(t, s.MotorHookAcceleration.MaxSpeed);
+      (0, puerts_1.$set)(e, ResourceSystem_1.ResourceSystem.Load(s.MotorHookAcceleration.SpeedSampleCurve, UE.CurveFloat));
+      if (s.HookEndDir) {
+        tmpRotator.Set(s.HookEndDir.EndRot.Y ?? 0, s.HookEndDir.EndRot.Z ?? 0, s.HookEndDir.EndRot.X ?? 0);
+        tmpRotator.Quaternion(tmpQuat);
+        (0, puerts_1.$set)(i, true);
+        (0, puerts_1.$set)(o, tmpQuat.ToUeQuat());
+        (0, puerts_1.$set)(r, ResourceSystem_1.ResourceSystem.Load(s.HookEndDir.TransitionCurve, UE.CurveFloat));
+      } else {
+        (0, puerts_1.$set)(i, false);
+      }
+    }
+  }
+  StartPulledMove() {
+    this.q_f = false;
+    if (this.k_f || this.q_f) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("SceneItem", 79, "钩锁点已经在拉取中或已拉取完成", ["MoveFinishInternal", this.q_f]);
+      }
+      return this.k_f = false;
+    } else {
+      return this.k_f = true;
+    }
+  }
+  StopPulledMove() {
+    if (this.k_f) {
+      this.k_f = false;
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("SceneItem", 79, "停止拉取采集物并还原位置", ["EntityConfigId", this.EIe?.GetPbDataId()], ["Location", this.EIe.GetPbLocation()]);
+      }
+      this.ActorComp.SetActorLocation(this.EIe.GetPbLocation());
+    }
+  }
 };
-GrapplingHookPointComponent.AllPoints = [];
-GrapplingHookPointComponent.ven = false;
-GrapplingHookPointComponent = GrapplingHookPointComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(85)], GrapplingHookPointComponent);
+GrapplingHookPointComponent.PlayerDetectableHookPoints = [];
+GrapplingHookPointComponent.MotorcycleDetectableHookPoints = [];
+GrapplingHookPointComponent = GrapplingHookPointComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(88)], GrapplingHookPointComponent);
 exports.GrapplingHookPointComponent = GrapplingHookPointComponent; //# sourceMappingURL=GrapplingHookPointComponent.js.map

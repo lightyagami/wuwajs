@@ -22,7 +22,6 @@ class ShipTowerRoleGrid extends LoopScrollMediumItemGrid_1.LoopScrollMediumItemG
       BottomTextId: "Text_LevelShow_Text",
       BottomTextParameter: [r.GetLevel()],
       ElementId: e.GetRoleConfig().ElementId,
-      IsShowCost: false,
       Data: e,
       IsRecommendVisible: false,
       HalfAreaInfo: ModelManager_1.ModelManager.ShipTowerModel.GetAllTeamRoleData(i)

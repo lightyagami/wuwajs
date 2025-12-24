@@ -19,6 +19,7 @@ class SkipMainQuestWindowView extends UiViewBase_1.UiViewBase {
     this.vKt = undefined;
     this.vxl = undefined;
     this.Sxl = undefined;
+    this.LOe = 0;
     this.dxl = () => {
       this.CloseMe();
       this.vxl?.();
@@ -32,33 +33,35 @@ class SkipMainQuestWindowView extends UiViewBase_1.UiViewBase {
     this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIText], [2, UE.UIButtonComponent], [3, UE.UIButtonComponent], [4, UE.UIText]];
   }
   OnStart() {
-    var i = this.OpenParam;
-    this.vxl = i?.GotoCallBack;
-    this.Sxl = i?.SkipCallBack;
+    var t = this.OpenParam;
+    var i = ModelManager_1.ModelManager.ActivityDirectTrainModel;
+    this.vxl = t?.GotoCallBack;
+    this.Sxl = t?.SkipCallBack;
+    this.LOe = t?.ActivityId;
     this.I8a = new ButtonItem_1.ButtonItem(this.GetButton(2).RootUIComp);
     this.I8a.SetFunction(this.dxl);
     this.vKt = new ButtonItem_1.ButtonItem(this.GetButton(3).RootUIComp);
     this.vKt.SetFunction(this.Mxl);
-    this.PPl("DirectTrainActivity_Tip_Title");
-    this.xPl("DirectTrainActivity_Tip_Content");
+    this.PPl(i.GetSkipTipTitleTextId(this.LOe));
+    this.xPl(i.GetSkipTipContentTextId(this.LOe));
     this.wPl();
   }
-  xPl(i, ...t) {
-    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), i, t);
+  xPl(t, ...i) {
+    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), t, i);
   }
-  PPl(i, ...t) {
-    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), i, t);
+  PPl(t, ...i) {
+    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), t, i);
   }
   wPl() {
-    var i;
     var t;
-    var e = ActivityDirectTrainHelper_1.ActivityDirectTrainHelper.GetRecommendQuestLinkId();
+    var i;
+    var e = ActivityDirectTrainHelper_1.ActivityDirectTrainHelper.GetRecommendQuestLinkId(this.LOe);
     var r = ModelManager_1.ModelManager.QuestNewModel?.GetQuestConfig(e);
-    if (r && (t = ConfigManager_1.ConfigManager.QuestNewConfig.GetChapterConfig(r.ChapterId))) {
-      i = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(t.ChapterNum);
-      t = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(t.SectionNum);
+    if (r && (i = ConfigManager_1.ConfigManager.QuestNewConfig.GetChapterConfig(r.ChapterId))) {
+      t = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(i.ChapterNum);
+      i = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(i.SectionNum);
       e = ModelManager_1.ModelManager.QuestNewModel.GetQuest(e)?.Name ?? MultiTextLang_1.configMultiTextLang.GetLocalTextNew(r.TidName);
-      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), "DirectTrainActivity_ChapterName", i, t, e);
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), "DirectTrainActivity_ChapterName", t, i, e);
     }
   }
 }

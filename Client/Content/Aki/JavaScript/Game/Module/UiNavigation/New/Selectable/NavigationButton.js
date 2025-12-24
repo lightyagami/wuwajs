@@ -42,8 +42,8 @@ class NavigationButton extends NavigationSelectableBase_1.NavigationSelectableBa
     return this.GetType() !== "Button";
   }
   OnHandlePointerSelect(t) {
-    if (this.Listener.ScrollView) {
-      this.Listener.ScrollView.ScrollToSelectableComponent(this.Selectable);
+    if (this.Listener.ScrollProxy?.ScrollView) {
+      this.Listener.ScrollProxy.ScrollView.ScrollToSelectableComponent(this.Selectable);
     }
     var i = this.Listener.GetNavigationGroup();
     return (i ? i.InsideGroupNameSet : new Set()).size > 0 && (i = UiNavigationNewController_1.UiNavigationNewController.GetCurrentNavigationFocusListener(), UiNavigationNewController_1.UiNavigationNewController.IsInFocusInsideListenerList(this.Listener, i));

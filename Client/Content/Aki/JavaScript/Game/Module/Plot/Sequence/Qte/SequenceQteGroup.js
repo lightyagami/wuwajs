@@ -18,19 +18,19 @@ class SequenceQteGroup extends SequenceQteHandleBase_1.SequenceQteHandleBase {
     super(e, t);
     this.QteManager = e;
     this.Context = t;
-    this.w_m = new Map();
+    this.jfm = new Map();
     this.ltd = PAUSED_TIME_BUFFER;
-    this.L_m = new Map();
-    this.P_m = e => {
-      this.A_m(e);
+    this.Hfm = new Map();
+    this.$fm = e => {
+      this.Wfm(e);
     };
-    this.D_m = e => {
-      this.A_m(e);
+    this.Qfm = e => {
+      this.Wfm(e);
     };
     if (this.Context.ContextMap) {
       this.Context.ContextMap.forEach(e => {
-        e.SuccessCallback = this.P_m;
-        e.FailCallback = this.D_m;
+        e.SuccessCallback = this.$fm;
+        e.FailCallback = this.Qfm;
       });
     }
   }
@@ -40,7 +40,7 @@ class SequenceQteGroup extends SequenceQteHandleBase_1.SequenceQteHandleBase {
   }
   OnFinish() {
     super.OnFinish();
-    this.L_m.clear();
+    this.Hfm.clear();
   }
   OnReceiveTick(t) {
     if (this.Context.ContextMap && this.Context.MainQteContext && this.Context.ContextMap.size !== 0) {
@@ -54,10 +54,10 @@ class SequenceQteGroup extends SequenceQteHandleBase_1.SequenceQteHandleBase {
       for ([, s] of this.Context.ContextMap) {
         if (s.Type === 1) {
           if (i) {
-            this.L_m.set(s.HandleId, s.GetProgress());
+            this.Hfm.set(s.HandleId, s.GetProgress());
             e += s.GetProgress();
           } else {
-            e += this.L_m.get(s.HandleId) ?? 0;
+            e += this.Hfm.get(s.HandleId) ?? 0;
           }
         } else if (s.Type === 2) {
           e += s.GetProgress();
@@ -76,12 +76,12 @@ class SequenceQteGroup extends SequenceQteHandleBase_1.SequenceQteHandleBase {
         var h = new MovieSceneSubQteParamsProxy();
         h.SubQteId = i.SubQteId;
         h.SpineInfo = SequenceQteHandleBase_1.QteSpineInfoProxy.CreateQteSpineInfo(i.SpineInfo);
-        this.w_m.set(i.SubQteId, h);
+        this.jfm.set(i.SubQteId, h);
       }
     }
   }
-  A_m(e) {
-    if ((e &&= this.w_m.get(e.QteId)) && e.SpineInfo) {
+  Wfm(e) {
+    if ((e &&= this.jfm.get(e.QteId)) && e.SpineInfo) {
       e.SpineInfo.EndSpine?.forEach(e => {
         if (e.Name) {
           if (this.SpineInfo.WaitEndSpineFinish && !e.NeedLoop) {

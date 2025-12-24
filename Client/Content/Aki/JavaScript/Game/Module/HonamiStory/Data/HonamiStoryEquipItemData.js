@@ -21,7 +21,7 @@ class HonamiStoryEquipItemData extends HonamiStoryItemDataBase_1.HonamiStoryItem
   }
   Init(t) {
     super.Init(t);
-    var t = t.L$d;
+    var t = t.U$d;
     if (t) {
       this.MainPropLibraryId = t.kmd;
       this.OriBuffTempId = t.Omd;

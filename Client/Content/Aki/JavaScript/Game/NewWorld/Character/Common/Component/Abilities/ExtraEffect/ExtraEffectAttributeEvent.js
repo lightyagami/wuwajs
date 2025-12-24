@@ -65,7 +65,7 @@ class AttributeEventEffects extends ExtraEffectBase_1.BuffEffect {
   OnCreated() {
     var t = this.JQo();
     if (t) {
-      this.QQo = t.GetComponent(177);
+      this.QQo = t.GetComponent(182);
       if (this.KQo.IsPerTenThousand && this.KQo.MaxAttributeId === undefined) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("Character", 19, "Buff额外效果6 监听属性变化到特定区间，基于相对最大值的万分比，但是监听的属性没有对应的最大值属性，该效果无效", ["buff Id", this.BuffId], ["属性Id", this.KQo.ListenAttributeId]);
@@ -205,7 +205,7 @@ class AttributeConvert extends ExtraEffectBase_1.BuffEffect {
     this.yB = AbilityUtils_1.AbilityUtils.GetLevelValue(t, h, -1);
   }
   OnCreated() {
-    var t = this.ExactOwnerEntity?.GetComponent(177);
+    var t = this.ExactOwnerEntity?.GetComponent(182);
     if (t) {
       if (!this.Bul || this.Pul !== CharacterAttributeTypes_1.EAttributeId.Proto_EAttributeType_None) {
         t.AddListener(this.xul, this._yo, "ExtraEffectAttributeEvent");
@@ -215,10 +215,10 @@ class AttributeConvert extends ExtraEffectBase_1.BuffEffect {
     }
   }
   OnRemoved() {
-    this.OwnerEntity?.GetComponent(176)?.RemoveListener(this.xul, this._yo);
+    this.OwnerEntity?.GetComponent(181)?.RemoveListener(this.xul, this._yo);
   }
   OnExecute(i) {
-    var e = this.OwnerEntity?.GetComponent(176);
+    var e = this.OwnerEntity?.GetComponent(181);
     if (e) {
       let t = this.qul ? Math.abs(i) : i;
       if (this.Bul) {

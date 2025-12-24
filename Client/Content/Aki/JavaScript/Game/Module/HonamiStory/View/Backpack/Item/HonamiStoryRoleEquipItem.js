@@ -33,18 +33,18 @@ class HonamiStoryRoleEquipItem extends UiPanelBase_1.UiPanelBase {
     this.Xmt = undefined;
     this.Ufd = [];
     this.fcl = undefined;
-    this.nwm = false;
-    this.k1m = e => {
+    this.etf = false;
+    this.zmm = e => {
       if (this.OnEnterGridCb) {
         this.OnEnterGridCb(e);
       }
     };
-    this.q1m = () => {
+    this.Jmm = () => {
       if (this.OnExitGridCb) {
         this.OnExitGridCb();
       }
     };
-    this.ncm = () => {
+    this.L0m = () => {
       if (this.OnDownGridCb) {
         this.OnDownGridCb();
       }
@@ -64,14 +64,14 @@ class HonamiStoryRoleEquipItem extends UiPanelBase_1.UiPanelBase {
         ModelManager_1.ModelManager.HonamiStoryModel.GetBackpackLogic()?.CloseTips();
       }
     };
-    this.uYd = () => {
-      var e = this.rRm();
+    this.jYd = () => {
+      var e = this.C$m();
       var t = HonamiStoryUtil_1.HonamiStoryUtil.CheckInHonamiStoryDungeon();
       ModelManager_1.ModelManager.HonamiStoryModel.AddLevel = [90, 90];
       if (t || !e) {
-        this.Vwm();
+        this.Fuf();
       } else {
-        this.Hwm();
+        this.Nuf();
       }
     };
     this.osa = e => {
@@ -111,7 +111,7 @@ class HonamiStoryRoleEquipItem extends UiPanelBase_1.UiPanelBase {
       return !ModelManager_1.ModelManager.RoleModel.GetRoleDataById(e)?.IsTrialRole() && !!ModelManager_1.ModelManager.EditFormationModel.IsRoleDead(e);
     };
     this.v4t = t => {
-      var e = this.rRm();
+      var e = this.C$m();
       var i = HonamiStoryUtil_1.HonamiStoryUtil.CheckInHonamiStoryDungeon();
       if (!e || i) {
         return false;
@@ -141,7 +141,7 @@ class HonamiStoryRoleEquipItem extends UiPanelBase_1.UiPanelBase {
       }
       return true;
     };
-    this.cYd = () => {
+    this.HYd = () => {
       var t = ModelManager_1.ModelManager.HonamiStoryModel.GetAllRoleIdList();
       for (let e = 0; e < t.length; e++) {
         if (!ModelManager_1.ModelManager.RoleModel?.GetRoleDataById(t[e])?.IsTrialRole() && !ModelManager_1.ModelManager.RoleModel?.GetRoleInstanceById(t[e])) {
@@ -151,7 +151,7 @@ class HonamiStoryRoleEquipItem extends UiPanelBase_1.UiPanelBase {
       this.g0o();
       ModelManager_1.ModelManager.HonamiStoryModel.AddLevel = [-1, -1];
     };
-    this.WJd = e => {
+    this.dem = e => {
       var t = this.xfd.GetWeaponId();
       var i = HonamiStoryUtil_1.HonamiStoryUtil.CheckInHonamiStoryDungeon();
       if (t <= 0 && i) {
@@ -161,7 +161,7 @@ class HonamiStoryRoleEquipItem extends UiPanelBase_1.UiPanelBase {
         this.fcl?.ResetToggleState();
       }
     };
-    this.hwm = () => {
+    this.Gif = () => {
       this.fcl?.SetNewItemShow(false);
     };
   }
@@ -173,26 +173,26 @@ class HonamiStoryRoleEquipItem extends UiPanelBase_1.UiPanelBase {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UISprite], [2, UE.UITexture], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIButtonComponent]];
-    this.BtnBindInfo = [[0, this.uYd], [5, this.jR1]];
+    this.BtnBindInfo = [[0, this.jYd], [5, this.jR1]];
   }
   async OnBeforeStartAsync() {
     var e = [];
     e.push(this.kfd());
     this.fcl = new HonamiStoryWeaponToggleItem_1.HonamiStoryWeaponToggleItem();
-    this.fcl.BindWeaponToggleClick(this.WJd);
+    this.fcl.BindWeaponToggleClick(this.dem);
     e.push(this.fcl.CreateThenShowByActorAsync(this.GetItem(3).GetOwner()));
     await Promise.all(e);
   }
   OnStart() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnHonamiStoryBackpackClickWeapon, this.hwm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnHonamiStoryBackpackClickWeapon, this.Gif);
   }
   OnBeforeShow() {
     this.g0o();
     this.a8l();
-    this.swm();
+    this.ttf();
   }
   OnBeforeDestroy() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnHonamiStoryBackpackClickWeapon, this.hwm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnHonamiStoryBackpackClickWeapon, this.Gif);
   }
   g0o() {
     var e;
@@ -232,7 +232,7 @@ class HonamiStoryRoleEquipItem extends UiPanelBase_1.UiPanelBase {
     await this.Gfd();
     this.g0o();
     this.a8l();
-    this.swm();
+    this.ttf();
   }
   async Gfd() {
     var t = this.xfd.GetPluginList();
@@ -256,9 +256,9 @@ class HonamiStoryRoleEquipItem extends UiPanelBase_1.UiPanelBase {
   }
   async qfd() {
     var e = new HonamiStoryEquipGridItem_1.HonamiStoryEquipGridItem(false);
-    e.OnEnterGridCb = this.k1m;
-    e.OnExitGridCb = this.q1m;
-    e.OnDownGridCb = this.ncm;
+    e.OnEnterGridCb = this.zmm;
+    e.OnExitGridCb = this.Jmm;
+    e.OnDownGridCb = this.L0m;
     e.OnClickedGridCb = this.hJs;
     await e.CreateThenShowByResourceIdAsync("UiItem_HonamiStoryGrid", this.GetItem(4));
     return e;
@@ -274,15 +274,15 @@ class HonamiStoryRoleEquipItem extends UiPanelBase_1.UiPanelBase {
     return this.Ufd;
   }
   SetRoleTipOpenState(e) {
-    var t = this.awm();
-    this.nwm = e;
+    var t = this.itf();
+    this.etf = e;
     this.GetButton(5)?.RootUIComp.SetUIActive(t && !e);
   }
-  swm() {
-    var e = this.awm();
-    this.GetButton(5)?.RootUIComp.SetUIActive(e && !this.nwm);
+  ttf() {
+    var e = this.itf();
+    this.GetButton(5)?.RootUIComp.SetUIActive(e && !this.etf);
   }
-  awm() {
+  itf() {
     var e;
     var t;
     return (!!ModelManager_1.ModelManager.HonamiStoryModel.GetBackpackLogic().IsBackpackView() || !HonamiStoryUtil_1.HonamiStoryUtil.IsMobileView()) && !(e = this.xfd.GetWeaponId() <= 0, t = this.xfd.GetEquipItemDataList().length === 0, e && t);
@@ -308,10 +308,10 @@ class HonamiStoryRoleEquipItem extends UiPanelBase_1.UiPanelBase {
       t.Refresh(t.GetData(), -1);
     }
   }
-  rRm() {
+  C$m() {
     return ModelManager_1.ModelManager.FunctionModel.IsOpen(10111);
   }
-  Vwm() {
+  Fuf() {
     const t = HonamiStoryUtil_1.HonamiStoryUtil.CheckInHonamiStoryDungeon();
     var e = this.xfd.GetRoleId();
     var i = this.xfd.GetPosition();
@@ -326,14 +326,14 @@ class HonamiStoryRoleEquipItem extends UiPanelBase_1.UiPanelBase {
     e = new TeamRoleSelectView_1.TeamRoleSelectViewData(5, e, o, undefined, undefined, i + 1);
     e.FormationRoleList = r;
     e.IsNeedRevive = this.E4t;
-    e.BackCallBack = this.cYd;
+    e.BackCallBack = this.HYd;
     e.ForFunction = 1;
     e.ShowLockPanel = e => true;
     e.GetLockTextCallBack = e => t ? "HonamiStory_UnableSwitch1" : "HonamiStory_UnableSwitch2";
     RoleController_1.RoleController.OpenTeamRoleSelectView(e);
     AudioSystem_1.AudioSystem.PostEvent("play_ui_honamistory_roleselect_page_start");
   }
-  Hwm() {
+  Nuf() {
     var e = this.xfd.GetRoleId();
     var t = this.xfd.GetPosition();
     var i = ModelManager_1.ModelManager.HonamiStoryModel.GetActivityData(false);
@@ -374,7 +374,7 @@ class HonamiStoryRoleEquipItem extends UiPanelBase_1.UiPanelBase {
           r.GetConfirmButtonTextCallBack = this.Q4t;
           r.GetConfirmButtonEnableCallBack = this.v4t;
           r.CanJoinTeam = this.v4t;
-          r.BackCallBack = this.cYd;
+          r.BackCallBack = this.HYd;
           r.ForFunction = 1;
           RoleController_1.RoleController.OpenTeamRoleSelectView(r);
           AudioSystem_1.AudioSystem.PostEvent("play_ui_honamistory_roleselect_page_start");

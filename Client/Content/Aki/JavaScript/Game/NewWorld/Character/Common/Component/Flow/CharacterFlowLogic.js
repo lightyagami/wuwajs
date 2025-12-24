@@ -37,7 +37,7 @@ class CharacterFlowLogic {
     this.WaitSecondsRemain = 0;
     this.IsWaitForDialogueUi = false;
     this.ActorComp = t;
-    this.HeadInfoComp = t.Entity.GetComponent(82);
+    this.HeadInfoComp = t.Entity.GetComponent(85);
     this.TempFlowInfoList = new Array();
     this.HYo = this.ActorComp.CreatureData.GetPbDataId();
     if (i) {
@@ -184,7 +184,7 @@ class CharacterFlowLogic {
       this.WaitSecondsRemain = this.GetWaitSeconds(i);
       i = this.WaitSecondsRemain + 0.05;
       this.IsWaitForDialogueUi = true;
-      t.GetComponent(82).SetDialogueText(s, i).finally(() => {
+      t.GetComponent(85).SetDialogueText(s, i).finally(() => {
         this.IsWaitForDialogueUi = false;
       });
     }
@@ -195,8 +195,10 @@ class CharacterFlowLogic {
     this.IsWaitForDialogueUi = false;
     if (this.DynamicFlowData) {
       this.WaitSecondsRemain = this.DynamicFlowData.WaitTime || DEFAULT_LOOP_TIME;
-      var i = this.ActorComp.CreatureData.GetPbDataId();
-      var i = DynamicFlowController_1.DynamicFlowController.GetDynamicFlowByMasterActor(i).Callback;
+      var i = new DynamicFlowController_1.DynamicFlowActorInfo();
+      i.PbDataId = this.ActorComp.CreatureData.GetPbDataId();
+      i.CreatureId = this.ActorComp.CreatureData.GetCreatureDataId();
+      var i = DynamicFlowController_1.DynamicFlowController.GetDynamicFlowByMasterActorInfo(i).Callback;
       if (i) {
         i();
       }
@@ -275,15 +277,17 @@ class CharacterFlowLogic {
     return this.DynamicFlowData !== undefined;
   }
   FindDynamicFlow() {
-    var t = this.ActorComp.CreatureData.GetPbDataId();
-    var t = DynamicFlowController_1.DynamicFlowController.GetDynamicFlowByMasterActor(t);
+    var t = new DynamicFlowController_1.DynamicFlowActorInfo();
+    t.PbDataId = this.ActorComp.CreatureData.GetPbDataId();
+    t.CreatureId = this.ActorComp.CreatureData.GetCreatureDataId();
+    var t = DynamicFlowController_1.DynamicFlowController.GetDynamicFlowByMasterActorInfo(t);
     this.DynamicFlowData = t?.BubbleData;
     return !!t;
   }
   IsFlowActorsReady() {
     let t = undefined;
     if (!(t = this.DynamicFlowData ? this.DynamicFlowData.EntityIds : this.EntityList)?.length) {
-      return false;
+      return !!this.ActorComp?.Entity.IsInit;
     }
     for (const i of t) {
       if (!ModelManager_1.ModelManager.CreatureModel?.GetEntityByPbDataId(i)?.IsInit) {

@@ -15,7 +15,7 @@ class SurvivorsWeaponAttributeView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
     this.lqe = undefined;
-    this.rJd = undefined;
+    this.XJd = undefined;
     this.mvt = () => new SurvivorsWeaponAttributeItem();
   }
   OnRegisterComponent() {
@@ -29,8 +29,8 @@ class SurvivorsWeaponAttributeView extends UiViewBase_1.UiViewBase {
         this.CloseMe();
       });
       this.lqe.SetHelpBtnActive(false);
-      this.rJd = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(2), this.mvt);
-      this.rJd.RefreshByData(i.GetWeaponSpecialAttributeList());
+      this.XJd = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(2), this.mvt);
+      this.XJd.RefreshByData(i.GetWeaponSpecialAttributeList());
     }
   }
 }

@@ -16,10 +16,10 @@ class NotObtainedRoleDevSkillData extends RoleDevSkillViewItemDataBase_1.RoleDev
     this.E1d = [];
     this.Q1d = [];
     this.X1d = [];
-    this.PZd = undefined;
+    this.him = undefined;
   }
   InitByRoleType(e, t) {
-    this.PZd = t;
+    this.him = t;
     this.l9d(e);
   }
   l9d(t) {
@@ -84,7 +84,7 @@ class NotObtainedRoleDevSkillData extends RoleDevSkillViewItemDataBase_1.RoleDev
     return false;
   }
   GetIsPerfectPlan() {
-    return this.PZd?.GetRoleSkillPlanState(this.RoleId) ?? false;
+    return this.him?.GetRoleSkillPlanState(this.RoleId) ?? false;
   }
   GetIsNormalPlanFinished() {
     return false;
@@ -130,7 +130,7 @@ class NotObtainedRoleDevSkillData extends RoleDevSkillViewItemDataBase_1.RoleDev
   }
   SwitchPlan() {
     var e = this.GetIsPerfectPlan();
-    this.PZd?.SetRoleSkillPlanState(this.RoleId, !e);
+    this.him?.SetRoleSkillPlanState(this.RoleId, !e);
     this.oyd();
   }
   oyd() {

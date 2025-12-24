@@ -91,6 +91,7 @@ class PawnInteractController {
     this.yrr = "";
     this.Irr = DEFAULT_INTERACT_RANGE;
     this.Trr = -1;
+    this.Xkf = new Map();
     this.SectorRange = undefined;
     this.LocationOffset = undefined;
     this.InteractCameraOffsetConifg = undefined;
@@ -118,7 +119,19 @@ class PawnInteractController {
     this.OnInteractionUpdate = undefined;
     this.OnInteractActionEnd = undefined;
     this.rOu = new Set();
+    this.Ykf = new Set();
+    this.zkf = new Map();
     this.SecondConfirmHandle = 0;
+    this.NeedActiveUi = true;
+    this.Jkf = (t, i) => {
+      if (!i && this.Ykf.has(t)) {
+        this.Ykf.delete(t);
+        this.frr?.ForceUpdate();
+      } else if (i && !this.Ykf.has(t)) {
+        this.Ykf.add(t);
+        this.frr?.ForceUpdate();
+      }
+    };
     this.InteractEntity = new InteractEntity(t.Entity);
     this.frr = t;
     this.Hte = t.Entity.GetComponent(1);
@@ -143,6 +156,12 @@ class PawnInteractController {
       InteractConfirmController_1.InteractConfirmController.CancelAction(this.SecondConfirmHandle);
     }
     this.SecondConfirmHandle = 0;
+    this.Ykf.clear();
+    for (const t of this.zkf.values()) {
+      t.EndTask();
+    }
+    this.zkf.clear();
+    this.Xkf.clear();
   }
   get DefaultShowOption() {
     var t = this.GetInteractiveOption();
@@ -174,9 +193,17 @@ class PawnInteractController {
       this.vrr = new Array();
       var e = (0, IComponent_1.getComponent)(i.ComponentsData, "InteractComponent");
       if (e) {
+        if (e.InteractStyleType) {
+          this.NeedActiveUi = false;
+        }
         this.PreTalkConfigs = e.PreFlow;
         if (e.Range) {
           this.Irr = e.Range;
+        }
+        if (e.RangesByTags) {
+          for (const r of e.RangesByTags) {
+            this.Xkf.set(r.Tag, r);
+          }
         }
         if (e.ExitRange) {
           this.Trr = e.ExitRange;
@@ -263,11 +290,14 @@ class PawnInteractController {
       return false;
     }
     var n;
-    var o;
+    var s;
     if (!this.Hte.Owner) {
       return false;
     }
     if (!this.InteractEntity) {
+      return false;
+    }
+    if (!this.NeedActiveUi) {
       return false;
     }
     this.TempDirectOptionInstances.length = 0;
@@ -278,19 +308,19 @@ class PawnInteractController {
     if (this.HasDynamicOption) {
       return true;
     }
-    let s = false;
+    let o = false;
     for (const a of this.prr) {
       if (!a.Disabled) {
         if (a.DoIntactType !== "Direct") {
-          s = true;
+          o = true;
         } else if (!r || a.Type.Type === "Flow") {
           if (a.CustomOptionType !== 1 && a.CustomOptionType !== 3 && this.Nrr(a) && this.oOu(a, e) && !!this.InteractEntity.EntityId && ModelManager_1.ModelManager.InteractionModel.CheckOptionUniqueness(this.InteractEntity.EntityId, a, t)) {
             this.TempDirectOptionInstances.push(a);
             this.InteractEntity.DirectOptionInstanceIds.push(a.InstanceId);
             if ((n = a.TidContent ? PublicUtil_1.PublicUtil.GetConfigTextByKey(a.TidContent) : undefined) && !a.ConditionCheck && a.LockTips?.TidAppendText) {
-              o = PublicUtil_1.PublicUtil.GetConfigTextByKey(a.LockTips.TidAppendText);
-              o = new StringBuilder_1.StringBuilder(n, InteractionModel_1.COLOR_PREFIX, o, InteractionModel_1.COLOR_SUFFIX);
-              this.InteractEntity.DirectOptionNames.push(o.ToString());
+              s = PublicUtil_1.PublicUtil.GetConfigTextByKey(a.LockTips.TidAppendText);
+              s = new StringBuilder_1.StringBuilder(n, InteractionModel_1.COLOR_PREFIX, s, InteractionModel_1.COLOR_SUFFIX);
+              this.InteractEntity.DirectOptionNames.push(s.ToString());
             } else {
               this.InteractEntity.DirectOptionNames.push(n);
             }
@@ -324,7 +354,7 @@ class PawnInteractController {
         }
       }
     }
-    return s || this.InteractEntity.DirectOptionInstanceIds.length > 0;
+    return o || this.InteractEntity.DirectOptionInstanceIds.length > 0;
   }
   brr(t, i, e) {
     if (t && t.PIs && t.PIs.length) {
@@ -358,16 +388,16 @@ class PawnInteractController {
   InitOptionWithOffset(t) {
     var i = this.prr;
     if (i && i.length !== 0) {
-      for (const o of i) {
-        if (o.Offset && !o.Offset.IsNearlyZero()) {
-          const s = o.InstanceId;
-          var e = o.Range;
+      for (const s of i) {
+        if (s.Offset && !s.Offset.IsNearlyZero()) {
+          const o = s.InstanceId;
+          var e = s.Range;
           var r = this.Trr === -1 ? e : this.Trr;
-          var n = o.Offset;
-          t(s, e, r, n, () => {
-            this.rOu.add(s);
+          var n = s.Offset;
+          t(o, e, r, n, () => {
+            this.rOu.add(o);
           }, () => {
-            this.rOu.delete(s);
+            this.rOu.delete(o);
           });
         }
       }
@@ -396,17 +426,17 @@ class PawnInteractController {
       var r = MathCommon_1.MathCommon.WrapAngle(this.SectorRange.Begin);
       var n = MathCommon_1.MathCommon.WrapAngle(this.SectorRange.End);
       let t = undefined;
-      var o = this.Hte.CreatureData.GetEntityType();
-      t = o === Protocol_1.Aki.Protocol.kks.Proto_SceneItem ? this.Hte.ActorRightProxy : this.Hte.ActorForwardProxy;
-      var o = PawnInteractController.cz;
-      var s = PawnInteractController.fz;
-      e.ActorLocationProxy.Subtraction(this.GetInteractPoint(), o);
-      o.Z = 0;
-      o.Normalize();
-      var e = o.DotProduct(t);
+      var s = this.Hte.CreatureData.GetEntityType();
+      t = s === Protocol_1.Aki.Protocol.kks.Proto_SceneItem ? this.Hte.ActorRightProxy : this.Hte.ActorForwardProxy;
+      var s = PawnInteractController.cz;
+      var o = PawnInteractController.fz;
+      e.ActorLocationProxy.Subtraction(this.GetInteractPoint(), s);
+      s.Z = 0;
+      s.Normalize();
+      var e = s.DotProduct(t);
       let i = Math.acos(e) * MathUtils_1.MathUtils.RadToDeg;
-      o.CrossProduct(t, s);
-      if (s.Z > 0) {
+      s.CrossProduct(t, o);
+      if (o.Z > 0) {
         i *= -1;
       }
       i = MathCommon_1.MathCommon.WrapAngle(i);
@@ -458,25 +488,25 @@ class PawnInteractController {
     var n = Global_1.Global.BaseCharacter?.CharacterActorComponent;
     if (n) {
       let t = undefined;
-      var o = this.Hte.CreatureData.GetEntityType();
-      t = o === Protocol_1.Aki.Protocol.kks.Proto_SceneItem ? this.Hte.ActorRightProxy : this.Hte.ActorForwardProxy;
-      var o = PawnInteractController.pz;
-      this.Hte.ActorInitGravityRotationProxy.Quaternion().RotateVector(Vector_1.Vector.UpVectorProxy, o);
-      var s = PawnInteractController.tdc;
-      t.CrossProduct(o, s);
+      var s = this.Hte.CreatureData.GetEntityType();
+      t = s === Protocol_1.Aki.Protocol.kks.Proto_SceneItem ? this.Hte.ActorRightProxy : this.Hte.ActorForwardProxy;
+      var s = PawnInteractController.pz;
+      this.Hte.ActorInitGravityRotationProxy.Quaternion().RotateVector(Vector_1.Vector.UpVectorProxy, s);
+      var o = PawnInteractController.tdc;
+      t.CrossProduct(s, o);
       var h = PawnInteractController.cz;
       var a = PawnInteractController.fz;
       n.ActorLocationProxy.Subtraction(this.GetInteractPoint(), h);
       h.Normalize();
       var n = h.DotProduct(t);
-      var l = h.DotProduct(s);
+      var l = h.DotProduct(o);
       t.Multiply(n, a);
-      s.Multiply(l, h);
+      o.Multiply(l, h);
       h.AdditionEqual(a);
       h.Normalize();
       var n = h.DotProduct(t);
       let i = Math.acos(n) * MathUtils_1.MathUtils.RadToDeg;
-      if (i !== 0 && (h.CrossProduct(t, a), a.DotProduct(o) > 0)) {
+      if (i !== 0 && (h.CrossProduct(t, a), a.DotProduct(s) > 0)) {
         i *= -1;
       }
       i = MathCommon_1.MathCommon.WrapAngle(i);
@@ -508,14 +538,14 @@ class PawnInteractController {
     i.Normalize();
     var r = t.ActorForwardProxy;
     var n = t.ActorRightProxy;
-    var o = i.DotProduct(r);
-    var s = i.DotProduct(n);
-    r.Multiply(o, e);
-    n.Multiply(s, i);
+    var s = i.DotProduct(r);
+    var o = i.DotProduct(n);
+    r.Multiply(s, e);
+    n.Multiply(o, i);
     i.AdditionEqual(e);
     i.Normalize();
-    var o = i.DotProduct(r);
-    let h = Math.acos(o) * MathUtils_1.MathUtils.RadToDeg;
+    var s = i.DotProduct(r);
+    let h = Math.acos(s) * MathUtils_1.MathUtils.RadToDeg;
     if (h !== 0 && (i.CrossProduct(r, e), e.DotProduct(t.ActorUpProxy) > 0)) {
       h *= -1;
     }
@@ -579,8 +609,8 @@ class PawnInteractController {
           var r = e[t];
           if (!r.Disabled && (!i || r.Type.Type === "Flow")) {
             var n = this.Nrr(r);
-            var o = this.oOu(r);
-            if (n && o) {
+            var s = this.oOu(r);
+            if (n && s) {
               this.Arr = r;
               break;
             }
@@ -591,14 +621,14 @@ class PawnInteractController {
       }
     }
   }
-  Orr(t, i, e, r = 0, n = 0, o = false) {
-    var s = t.Range || this.Irr;
+  Orr(t, i, e, r = 0, n = 0, s = false) {
+    var o = t.Range || this.Irr;
     let h = this.Drr;
     if (t.DoIntactType) {
       h = t.DoIntactType;
     }
     var a = new LevelGameplayActionsDefine_1.CommonInteractOption();
-    a.Init(++this.NUe, t, e, s, h, i, r, n, o, t.OptionLockTip);
+    a.Init(++this.NUe, t, e, o, h, i, r, n, s, t.OptionLockTip);
     return a;
   }
   AddDynamicInteractOption(t, i, e, r = false, n = true) {
@@ -608,19 +638,19 @@ class PawnInteractController {
       }
       return -1;
     }
-    let o = 0;
     let s = 0;
+    let o = 0;
     if (i) {
       if (i instanceof LevelGeneralContextDefine_1.QuestContext) {
-        s = 1;
-        o = i.QuestId;
+        o = 1;
+        s = i.QuestId;
       } else if (i instanceof LevelGeneralContextDefine_1.GeneralLogicTreeContext && i.BtType === Protocol_1.Aki.Protocol.hps.Proto_BtTypeQuest) {
-        s = 1;
-        o = i.TreeConfigId;
+        o = 1;
+        s = i.TreeConfigId;
       }
     }
-    r = this.Orr(t, 1, i, 0, s, r);
-    r.OptionContentId = o;
+    r = this.Orr(t, 1, i, 0, o, r);
+    r.OptionContentId = s;
     if (e !== undefined) {
       r.TidContent = e;
     }
@@ -633,13 +663,19 @@ class PawnInteractController {
     }
     this.prr.push(r);
     this.Mrr.push(r);
-    if (s === 1) {
+    if (o === 1) {
       this.Err.push(r);
       this.Vrr();
     }
     if (i) {
       e = this.Hrr(r.Context);
       this.ChangeOptionDisabled(r.InstanceId, !e);
+    }
+    if (this.NeedActiveUi) {
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("Panoramic", 45, "[环视]设置为无法交互");
+      }
+      this.ChangeOptionDisabled(r.InstanceId, false);
     }
     if (n) {
       this.Grr();
@@ -710,7 +746,7 @@ class PawnInteractController {
     }
     return n;
   }
-  AddClientInteractOption(t, i, e = "Option", r, n, o = 0, s, h) {
+  AddClientInteractOption(t, i, e = "Option", r, n, s = 0, o, h) {
     var a = new LevelGameplayActionsDefine_1.CommonActionInfo();
     a.Params = t;
     var t = new Array();
@@ -727,11 +763,11 @@ class PawnInteractController {
     if (n) {
       t.TidContent = n;
     }
-    if (s) {
-      this.LocationOffset = s;
+    if (o) {
+      this.LocationOffset = o;
     }
     if (this.prr) {
-      a = this.Orr(t, 3, undefined, o);
+      a = this.Orr(t, 3, undefined, s);
       this.prr.push(a);
       this.Grr();
       if (h !== undefined) {
@@ -1008,7 +1044,7 @@ class PawnInteractController {
   HandleInteractRequest() {
     if (this.frr?.Valid) {
       if (WorldFunctionLibrary_1.default.GetEntityTypeByEntity(this.frr.Entity.Id) === Protocol_1.Aki.Protocol.kks.Proto_Npc) {
-        this.frr.Entity.GetComponent(45)?.MoveController?.PushMoveInfo();
+        this.frr.Entity.GetComponent(46)?.MoveController?.PushMoveInfo();
       }
       this.frr.SetInteractionState(false, "发送交互请求");
       InputDistributeController_1.InputDistributeController.RefreshInputTag();
@@ -1034,7 +1070,7 @@ class PawnInteractController {
         PlotController_1.PlotController.EndInteraction(false, true);
       }
     } else {
-      if (i = this.Hte?.Entity?.GetComponent(145)) {
+      if (i = this.Hte?.Entity?.GetComponent(150)) {
         i.CloseAllCollisions();
       }
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnInteractDropItemSuccess);
@@ -1101,6 +1137,46 @@ class PawnInteractController {
       return t;
     }
     return "无";
+  }
+  InitInteractPerceptionWithOffset(t) {
+    var i = this.Xkf;
+    if (i.size !== 0) {
+      for (const r of i.values()) {
+        var e = r.ExitRange || this.Trr;
+        t(r.Tag, r.Range, e, this.LocationOffset, () => {
+          var t;
+          this.Ykf.add(r.Tag);
+          if (!this.zkf.has(r.Tag)) {
+            t = this.frr.PlayerTagComponent.ListenForTagAddOrRemove(r.Tag, this.Jkf);
+            this.zkf.set(r.Tag, t);
+          }
+          if (this.frr?.PlayerTagComponent?.HasExactTag(r.Tag)) {
+            this.frr?.ForceUpdate();
+          }
+        }, () => {
+          this.Ykf.delete(r.Tag);
+          var t = this.zkf.get(r.Tag);
+          if (t) {
+            t.EndTask();
+            this.zkf.delete(r.Tag);
+          }
+          if (this.frr?.PlayerTagComponent?.HasExactTag(r.Tag)) {
+            this.frr?.ForceUpdate();
+          }
+        });
+      }
+    }
+  }
+  IsAnyTagCheckInRange() {
+    return this.Ykf.size > 0;
+  }
+  IsHasTagInTagCheckRange() {
+    for (const t of this.Ykf) {
+      if (this.frr?.PlayerTagComponent?.HasExactTag(t)) {
+        return true;
+      }
+    }
+    return false;
   }
 }
 (exports.PawnInteractController = PawnInteractController).cz = Vector_1.Vector.Create();

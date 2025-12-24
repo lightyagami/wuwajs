@@ -28,7 +28,7 @@ class HonamiStoryItemDataBase {
   }
   Init(t) {
     this._Xe = t.b9n;
-    this.ETt = t.R$d;
+    this.ETt = t.A$d;
     this.FuncValue = t.Vws;
     t = this.GetBaseConfig(this.ETt);
     this.l4i = t.ItemType;

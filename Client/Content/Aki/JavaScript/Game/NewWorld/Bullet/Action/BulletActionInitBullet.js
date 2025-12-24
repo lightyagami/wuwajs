@@ -28,7 +28,6 @@ class BulletActionInitBullet extends BulletActionBase_1.BulletActionBase {
     e.ContextId = l.FromRemote ? l.ContextId : ModelManager_1.ModelManager.CombatMessageModel.GenMessageId();
     ModelManager_1.ModelManager.CombatMessageModel?.OnBulletAdded(l.SkillContextId, e.ContextId, e.BulletRowName);
     var o = l.TargetId;
-    e.TargetId = o;
     e.SetTargetById(o);
     var o = e.AttackerCreatureDataComp;
     if (o) {

@@ -37,28 +37,28 @@ class LevelAiTaskSitDown extends LevelAiTask_1.LevelAiTask {
       if (e) {
         switch (e.Option.Type) {
           case IAction_1.ENpcLeisureInteract.SitDown:
-            this.ecm(e.Option);
+            this.I0m(e.Option);
             break;
           case IAction_1.ENpcLeisureInteract.Swing:
-            this.tcm(e.Option);
+            this.T0m(e.Option);
             break;
           case IAction_1.ENpcLeisureInteract.SwingGetUp:
-            this.icm(e.Option);
+            this.b0m(e.Option);
         }
       }
     }
   }
-  tcm(e) {
-    ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e.TargetNpcId)?.Entity?.GetComponent(306)?.StartSwing(e.SwingDa, e.EntityId, e.SkipSitDown);
+  T0m(e) {
+    ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e.TargetNpcId)?.Entity?.GetComponent(325)?.StartSwing(e.SwingDa, e.EntityId, e.SkipSitDown);
   }
-  icm(e) {
-    ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e.TargetNpcId)?.Entity?.GetComponent(306)?.ExitLoopSwing();
+  b0m(e) {
+    ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e.TargetNpcId)?.Entity?.GetComponent(325)?.ExitLoopSwing();
   }
-  ecm(e) {
+  I0m(e) {
     var i = e.PosEntityId;
     this.jTe = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(i);
     if (this.jTe) {
-      var t = this.jTe.Entity.GetComponent(201);
+      var t = this.jTe.Entity.GetComponent(207);
       if (t) {
         var t = t.GetSubEntityInteractLogicController();
         var s = this.CreatureDataComponent.Entity.GetComponent(1);

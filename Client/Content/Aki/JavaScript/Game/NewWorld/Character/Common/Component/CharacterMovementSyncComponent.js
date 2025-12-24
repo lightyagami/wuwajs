@@ -138,7 +138,7 @@ let CharacterMovementSyncComponent = class CharacterMovementSyncComponent extend
     }
   }
   OnStart() {
-    return !!super.OnStart() && (this.Nce = this.Entity.GetComponent(62), this.MHr = this.Entity.GetComponent(35), this.rJo = this.Entity.GetComponent(104), this.uwl = this.Entity.GetComponent(233), this.ez1 = this.Entity.GetComponent(47), EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSkillEnd, this.ene), true);
+    return !!super.OnStart() && (this.Nce = this.Entity.GetComponent(65), this.MHr = this.Entity.GetComponent(36), this.rJo = this.Entity.GetComponent(109), this.uwl = this.Entity.GetComponent(242), this.ez1 = this.Entity.GetComponent(48), EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSkillEnd, this.ene), true);
   }
   OnEnd() {
     return !!super.OnEnd() && (EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnSkillEnd, this.ene), true);
@@ -333,5 +333,5 @@ let CharacterMovementSyncComponent = class CharacterMovementSyncComponent extend
     this.LastBasePlatform = undefined;
   }
 };
-CharacterMovementSyncComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(68)], CharacterMovementSyncComponent);
+CharacterMovementSyncComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(71)], CharacterMovementSyncComponent);
 exports.CharacterMovementSyncComponent = CharacterMovementSyncComponent; //# sourceMappingURL=CharacterMovementSyncComponent.js.map

@@ -36,6 +36,7 @@ const Vector_1 = require("../../../../../Core/Utils/Math/Vector");
 const IComponent_1 = require("../../../../../UniverseEditor/Interface/IComponent");
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
+const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const AudioUtils_1 = require("../../../../Utils/AudioUtils");
 let SceneItemStateAudioComponent = SceneItemStateAudioComponent_1 = class SceneItemStateAudioComponent extends EntityComponent_1.EntityComponent {
@@ -51,6 +52,7 @@ let SceneItemStateAudioComponent = SceneItemStateAudioComponent_1 = class SceneI
     this.O1n = undefined;
     this.k1n = undefined;
     this.fd1 = undefined;
+    this.W0f = undefined;
     this.V1n = undefined;
     this.H1n = undefined;
     this.j1n = undefined;
@@ -61,6 +63,9 @@ let SceneItemStateAudioComponent = SceneItemStateAudioComponent_1 = class SceneI
         var i = this.O1n.get(this.W1n);
         if (i) {
           this.X1n(i, 0);
+        }
+        if (this.W0f.get(this.W1n)) {
+          ControllerHolder_1.ControllerHolder.MotorcycleMusicPlayerController.PushAreaDisableCount();
         }
       } else if (this.b1n && !t) {
         let t = false;
@@ -75,6 +80,9 @@ let SceneItemStateAudioComponent = SceneItemStateAudioComponent_1 = class SceneI
         i = this.fd1.get(this.W1n);
         if (i) {
           this.$1n(i);
+        }
+        if (this.W0f.get(this.W1n)) {
+          ControllerHolder_1.ControllerHolder.MotorcycleMusicPlayerController.PopAreaDisableCount();
         }
       }
       this.b1n = t;
@@ -128,7 +136,7 @@ let SceneItemStateAudioComponent = SceneItemStateAudioComponent_1 = class SceneI
     };
   }
   static get Dependencies() {
-    return [206, 0];
+    return [212, 0];
   }
   OnInitData(t) {
     var t = t.GetParam(SceneItemStateAudioComponent_1)[0];
@@ -140,7 +148,7 @@ let SceneItemStateAudioComponent = SceneItemStateAudioComponent_1 = class SceneI
   }
   OnStart() {
     var t;
-    this.cen = this.Entity.GetComponent(137);
+    this.cen = this.Entity.GetComponent(142);
     if (!this.cen) {
       t = this.EIe.GetPbDataId();
       if (Log_1.Log.CheckError()) {
@@ -163,7 +171,7 @@ let SceneItemStateAudioComponent = SceneItemStateAudioComponent_1 = class SceneI
         this.Z1n(true);
         break;
       case IComponent_1.EAudioRangeType.SceneActorRefComp:
-        this.Men = this.Entity.GetComponent(167);
+        this.Men = this.Entity.GetComponent(172);
         if (!this.Men) {
           if (Log_1.Log.CheckError()) {
             Log_1.Log.Error("Entity", 39, "SceneItemReferenceComponent不存在", ["entityConfigId", this.EIe.GetPbDataId()]);
@@ -211,10 +219,20 @@ let SceneItemStateAudioComponent = SceneItemStateAudioComponent_1 = class SceneI
     this.O1n = new Map();
     this.k1n = new Map();
     this.fd1 = new Map();
+    this.W0f = new Map();
     for (const i of this.q1n.Config ?? []) {
       var t = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(i.State);
-      if (t && (i.AkEvent && this.O1n.set(t, i.AkEvent), i.LeaveAkEvent && this.k1n.set(t, i.LeaveAkEvent), i.AudioFade)) {
-        this.fd1.set(t, i.AudioFade);
+      if (t) {
+        if (i.AkEvent) {
+          this.O1n.set(t, i.AkEvent);
+        }
+        if (i.LeaveAkEvent) {
+          this.k1n.set(t, i.LeaveAkEvent);
+        }
+        if (i.AudioFade) {
+          this.fd1.set(t, i.AudioFade);
+        }
+        this.W0f.set(t, !!i.IsBanVehicleRadio);
       }
     }
   }
@@ -252,7 +270,7 @@ let SceneItemStateAudioComponent = SceneItemStateAudioComponent_1 = class SceneI
   o_n(t, i) {
     var e;
     if (this.N1n.Type === IComponent_1.EAkEventType.Default && t) {
-      if ((e = this.Entity?.GetComponent(206)?.Owner)?.IsValid()) {
+      if ((e = this.Entity?.GetComponent(212)?.Owner)?.IsValid()) {
         t = (0, AudioSystem_1.parseAudioEventPath)(t);
         t = AudioSystem_1.AudioSystem.PostEvent(t, e);
         if (i !== 1) {
@@ -351,6 +369,9 @@ let SceneItemStateAudioComponent = SceneItemStateAudioComponent_1 = class SceneI
       if (i) {
         this.X1n(i, 0);
       }
+      if (this.W0f.get(this.W1n)) {
+        ControllerHolder_1.ControllerHolder.MotorcycleMusicPlayerController.PushAreaDisableCount();
+      }
     } else {
       let t = false;
       i = this.k1n.get(this.W1n);
@@ -364,6 +385,9 @@ let SceneItemStateAudioComponent = SceneItemStateAudioComponent_1 = class SceneI
       i = this.fd1.get(this.W1n);
       if (i) {
         this.$1n(i);
+      }
+      if (this.W0f.get(this.W1n)) {
+        ControllerHolder_1.ControllerHolder.MotorcycleMusicPlayerController.PopAreaDisableCount();
       }
     }
   }
@@ -406,5 +430,5 @@ let SceneItemStateAudioComponent = SceneItemStateAudioComponent_1 = class SceneI
     }
   }
 };
-SceneItemStateAudioComponent = SceneItemStateAudioComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(135)], SceneItemStateAudioComponent);
+SceneItemStateAudioComponent = SceneItemStateAudioComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(140)], SceneItemStateAudioComponent);
 exports.SceneItemStateAudioComponent = SceneItemStateAudioComponent; //# sourceMappingURL=SceneItemStateAudioComponent.js.map

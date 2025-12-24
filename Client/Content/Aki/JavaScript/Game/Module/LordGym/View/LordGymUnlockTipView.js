@@ -21,7 +21,7 @@ class LordGymUnlockTipView extends UiViewBase_1.UiViewBase {
   }
   _yi(e) {
     var r = ConfigManager_1.ConfigManager.LordGymConfig.GetLordGymConfig(e);
-    if (r.IsNew) {
+    if (r.Version === 2 || r.Version === 3) {
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), "Text_LordGymNewDifficultyUnlock_Text");
     } else {
       r = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(r.GymTitle);

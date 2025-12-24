@@ -81,11 +81,11 @@ class PayPackageData {
       var i = t.rTd[s];
       this.CurrencyDiscountTags.set(s, i);
     }
-    this.DisclaimerText = t.czd;
+    this.DisclaimerText = t.Wzd;
     this.MFi();
     this.vFi.SetGoodsData(this.pql());
     this.vFi.SetPayGiftId(this.Id);
-    if (this.ShowInSkinShop() || this.ShowInFlySkinShop()) {
+    if (this.ShowInSkinShop() || this.ShowInFlySkinShop() || this.ShowInMotorSkinShop()) {
       this.vFi.GetGoodsData().SetShowAfterSoldOut(true);
     }
   }
@@ -99,13 +99,16 @@ class PayPackageData {
     }
   }
   ShowInShop() {
-    return this.Type !== 2 && !this.ShowInSkinShop() && !this.ShowInFlySkinShop();
+    return this.Type !== 2 && !this.ShowInSkinShop() && !this.ShowInFlySkinShop() && !this.ShowInMotorSkinShop() && this.Type !== 6;
   }
   ShowInSkinShop() {
     return this.vFi?.CheckIfRoleSkinGoods() ?? false;
   }
   ShowInFlySkinShop() {
     return this.vFi?.CheckIfFlySkinGoods() ?? false;
+  }
+  ShowInMotorSkinShop() {
+    return this.vFi?.CheckIfMotorSkinGoods() ?? false;
   }
   GetName() {
     return this.he;

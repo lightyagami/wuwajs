@@ -81,6 +81,15 @@ class MapFocusPlayerComponent extends MapInteractComponentBase {
   OnPress(e) {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WorldMapShowTrackList);
   }
+  OnRefreshSelfHotKeyState(e) {
+    var t;
+    var n = this.GetBindButtonTag();
+    if (!n || !(e = e.GetFocusListener()) || (t = e.GetNavigationGroup(), StringUtils_1.StringUtils.IsEmpty(t.GroupName)) || !e.TagArray?.Contains(n) || ModelManager_1.ModelManager.WorldMapModel.WorldExtraUiCount > 0) {
+      this.SetVisibleMode(2, false);
+    } else {
+      this.SetVisibleMode(2, true);
+    }
+  }
 }
 exports.MapFocusPlayerComponent = MapFocusPlayerComponent;
 //# sourceMappingURL=MapInteractComponent.js.map

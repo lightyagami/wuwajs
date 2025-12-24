@@ -18,17 +18,17 @@ class HonamiStoryQuestItem extends UiPanelBase_1.UiPanelBase {
     this.DisplayIndex = 0;
     this.V5d = 1;
     this.qoh = undefined;
-    this.qnm = [];
+    this.a1m = [];
     this.Hc_ = -1;
     this.Z6c = undefined;
-    this.Him = () => {
+    this.sam = () => {
       var e = new HonamiStoryQuestItemChildItem_1.HonamiStoryQuestItemChildItem();
       if (this.Z6c) {
         e.BindOnClickTask(this.Z6c);
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("HonamiStory", 78, "HonamiStoryQuestItem do not have callback");
       }
-      this.qnm.push(e);
+      this.a1m.push(e);
       return e;
     };
   }
@@ -36,7 +36,7 @@ class HonamiStoryQuestItem extends UiPanelBase_1.UiPanelBase {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIVerticalLayout], [2, UE.UIText], [3, UE.UISprite], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem]];
   }
   OnStart() {
-    this.qoh = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(1), this.Him);
+    this.qoh = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(1), this.sam);
   }
   async RefreshAsync(e, t, i) {
     this.V5d = e;
@@ -59,7 +59,7 @@ class HonamiStoryQuestItem extends UiPanelBase_1.UiPanelBase {
     }
   }
   GetTaskChildItemList() {
-    return this.qnm;
+    return this.a1m;
   }
   Clear() {}
   OnSelected(e) {}

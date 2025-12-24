@@ -19,13 +19,13 @@ class RoguelikeExitTips extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
     this.OpenParam = undefined;
-    this.iYd = undefined;
-    this.rYd = undefined;
-    this.oYd = undefined;
-    this.nYd = undefined;
-    this.sYd = undefined;
+    this.xYd = undefined;
+    this.BYd = undefined;
+    this.kYd = undefined;
+    this.OYd = undefined;
+    this.qYd = undefined;
     this.Vho = () => {
-      if (this.iYd) {
+      if (this.xYd) {
         UiManager_1.UiManager.CloseView(this.Info.Name);
       } else if (ModelManager_1.ModelManager.WeeklyRogueModel.CheckIsInWeeklyRogue()) {
         UiManager_1.UiManager.CloseView(this.Info.Name, e => {
@@ -38,7 +38,7 @@ class RoguelikeExitTips extends UiViewBase_1.UiViewBase {
       }
     };
     this.Hho = () => {
-      if (this.iYd) {
+      if (this.xYd) {
         UiManager_1.UiManager.CloseView(this.Info.Name, e => {
           ActivityManager_1.ActivityManager.GetActivityController(Protocol_1.Aki.Protocol.uks.Proto_RogueWeekly)?.InstanceSettleRequest();
         });
@@ -62,18 +62,18 @@ class RoguelikeExitTips extends UiViewBase_1.UiViewBase {
     this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIItem], [2, UE.UIItem]];
   }
   OnBeforeCreate() {
-    this.iYd = this.OpenParam?.IsLastLayer ?? false;
-    this.rYd = this.OpenParam?.CurrentInGameScore ?? 0;
-    this.oYd = this.OpenParam?.MaxInGameScore ?? 0;
+    this.xYd = this.OpenParam?.IsLastLayer ?? false;
+    this.BYd = this.OpenParam?.CurrentInGameScore ?? 0;
+    this.kYd = this.OpenParam?.MaxInGameScore ?? 0;
   }
   async OnBeforeStartAsync() {
-    this.nYd = new ButtonItem_1.ButtonItem(this.GetItem(1));
-    this.sYd = new ButtonItem_1.ButtonItem(this.GetItem(2));
-    this.nYd.SetFunction(this.Vho);
-    this.sYd.SetFunction(this.Hho);
-    if (this.iYd) {
-      this.nYd.SetLocalTextNew("WeRougeEndButtonBack");
-      this.sYd.SetLocalTextNew("WeRougeEndButtonQuit");
+    this.OYd = new ButtonItem_1.ButtonItem(this.GetItem(1));
+    this.qYd = new ButtonItem_1.ButtonItem(this.GetItem(2));
+    this.OYd.SetFunction(this.Vho);
+    this.qYd.SetFunction(this.Hho);
+    if (this.xYd) {
+      this.OYd.SetLocalTextNew("WeRougeEndButtonBack");
+      this.qYd.SetLocalTextNew("WeRougeEndButtonQuit");
     }
     return Promise.resolve();
   }
@@ -85,9 +85,9 @@ class RoguelikeExitTips extends UiViewBase_1.UiViewBase {
     if (ModelManager_1.ModelManager.WeeklyRogueModel.CheckIsInWeeklyRogue()) {
       e = ModelManager_1.ModelManager.WeeklyRogueModel.CurrentLayer;
       t = ModelManager_1.ModelManager.WeeklyRogueModel.MaxLayer;
-      if (this.iYd) {
-        i = this.rYd;
-        o = this.oYd;
+      if (this.xYd) {
+        i = this.BYd;
+        o = this.kYd;
         LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), "WeRouge_ExitCopyPopup", i, o);
       } else {
         LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), "RoguelikeExitTipsCurRoom", e, t);
@@ -95,7 +95,7 @@ class RoguelikeExitTips extends UiViewBase_1.UiViewBase {
     } else {
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), "RoguelikeExitTipsCurRoom", ModelManager_1.ModelManager.RoguelikeModel.CurRoomCount, ModelManager_1.ModelManager.RoguelikeModel.TotalRoomCount);
     }
-    this.nYd.GetBtn().RootUIComp.SetUIActive(!ModelManager_1.ModelManager.RoguelikeModel?.CheckIsGuideDungeon());
+    this.OYd.GetBtn().RootUIComp.SetUIActive(!ModelManager_1.ModelManager.RoguelikeModel?.CheckIsGuideDungeon());
   }
 }
 exports.RoguelikeExitTips = RoguelikeExitTips;

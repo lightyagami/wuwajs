@@ -13,6 +13,7 @@ const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
 const CommonItemSmallItemGrid_1 = require("../../Common/ItemGrid/CommonItemSmallItemGrid");
 const ItemTipsGetWay_1 = require("../../Common/ItemTips/SubComponents/ItemTipsGetWay");
 const HelpController_1 = require("../../Help/HelpController");
+const PhantomInteractRouletteTipsPanel_1 = require("../../Phantom/PhantomInteract/View/PhantomInteractRouletteTipsPanel");
 const GridProxyAbstract_1 = require("../../Util/Grid/GridProxyAbstract");
 const GenericLayout_1 = require("../../Util/Layout/GenericLayout");
 const LguiUtil_1 = require("../../Util/LguiUtil");
@@ -23,6 +24,7 @@ class RouletteAssemblyTips extends UiPanelBase_1.UiPanelBase {
     this.Axt = undefined;
     this.hfo = undefined;
     this.lfo = undefined;
+    this.KEf = undefined;
     this.XOe = () => {
       var t = this.Pe.HelpId;
       if (t !== 0) {
@@ -31,16 +33,24 @@ class RouletteAssemblyTips extends UiPanelBase_1.UiPanelBase {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UITexture], [1, UE.UISprite], [2, UE.UITexture], [3, UE.UIText], [4, UE.UIButtonComponent], [5, UE.UIText], [6, UE.UIItem], [7, UE.UIText], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UIItem], [11, UE.UIItem], [12, UE.UIItem], [13, UE.UIText]];
+    this.ComponentRegisterInfos = [[0, UE.UITexture], [1, UE.UISprite], [2, UE.UITexture], [3, UE.UIText], [4, UE.UIButtonComponent], [5, UE.UIText], [6, UE.UIItem], [7, UE.UIText], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UIItem], [11, UE.UIItem], [12, UE.UIItem], [13, UE.UIText], [14, UE.UIItem]];
     this.BtnBindInfo = [[4, this.XOe]];
   }
   async OnBeforeStartAsync() {
-    var t = this.GetItem(10);
+    var t = [];
+    var e = this.GetItem(10);
     this.hfo = new RouletteTipsItemPanel();
-    await this.hfo.CreateByActorAsync(t.GetOwner());
-    var t = this.GetItem(11);
+    var e = this.hfo.CreateByActorAsync(e.GetOwner());
+    t.push(e);
+    var e = this.GetItem(11);
     this.lfo = new RouletteTipsItemPanel();
-    await this.lfo.CreateByActorAsync(t.GetOwner());
+    var e = this.lfo.CreateByActorAsync(e.GetOwner());
+    t.push(e);
+    var e = this.GetItem(14);
+    this.KEf = new PhantomInteractRouletteTipsPanel_1.PhantomInteractRouletteTipsPanel();
+    var e = this.KEf.CreateByResourceIdAsync("UiItem_VisionEditExploring", e);
+    t.push(e);
+    await Promise.all(t);
   }
   OnStart() {
     var t = this.GetItem(9);
@@ -71,6 +81,7 @@ class RouletteAssemblyTips extends UiPanelBase_1.UiPanelBase {
     this.mfo();
     this.dfo();
     this.Cfo();
+    this.RefreshPhantomInteractEquipmentPanel();
   }
   mGe() {
     this.GetText(3).ShowTextNew(this.Pe.Title);
@@ -163,6 +174,14 @@ class RouletteAssemblyTips extends UiPanelBase_1.UiPanelBase {
         e.push(i);
       }
       this.lfo.RefreshItemPanel(e);
+    }
+  }
+  RefreshPhantomInteractEquipmentPanel() {
+    if (this.Pe?.ShowPhantomInteractEquipment) {
+      this.KEf.SetUiActive(true);
+      this.KEf.Refresh();
+    } else {
+      this.KEf.SetUiActive(false);
     }
   }
 }

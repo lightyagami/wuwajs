@@ -21,8 +21,8 @@ const LguiEventSystemManager_1 = require("../../../../../Ui/LguiEventSystem/Lgui
 const HonamiStoryDefine_1 = require("../../../HonamiStoryDefine");
 const HonamiStoryGridDynamic_1 = require("./HonamiStoryGridDynamic");
 const HonamiStoryItemGridItem_1 = require("./HonamiStoryItemGridItem");
-const DRAG_MIN_ANGLE = 30;
-const DRAG_MAX_ANGLE = 150;
+const DRAG_MIN_ANGLE = 75;
+const DRAG_MAX_ANGLE = 105;
 const DARG_MOVE_DISTANCE = 40;
 const POINTER_DOWN_DELAY = 500;
 class HonamiStoryGridItemBase extends UiPanelBase_1.UiPanelBase {
@@ -35,27 +35,29 @@ class HonamiStoryGridItemBase extends UiPanelBase_1.UiPanelBase {
     this.OnClickedGridCb = undefined;
     this.Panel = undefined;
     this.Data = undefined;
-    this.HEm = undefined;
+    this.Mkm = undefined;
     this.Dfd = false;
-    this.Llm = 0;
-    this.NIm = undefined;
+    this.jdm = 0;
+    this.Aqm = undefined;
     this.BKs = Vector_1.Vector.Create(0, 0, 0);
     this.n5t = Vector_1.Vector.Create(0, 0, 0);
-    this.Plm = 0;
-    this.Alm = 0;
-    this.Dlm = DARG_MOVE_DISTANCE;
-    this.Zlm = 0;
-    this.cLm = false;
+    this.aLf = Vector_1.Vector.Create(0, 0, 0);
+    this.hLf = Vector_1.Vector.Create(0, 0, 0);
+    this.Hdm = 0;
+    this.$dm = 0;
+    this.Wdm = DARG_MOVE_DISTANCE;
+    this.mmm = 0;
+    this.Zgf = false;
     this.bzt = false;
-    this.dLm = false;
-    this.MLm = false;
-    this.Ztm = false;
-    this.xlm = 0;
-    this.uEm = 0;
+    this.e0f = false;
+    this.Tpf = false;
+    this.Lnm = false;
+    this.Kdm = 0;
+    this.S2m = 0;
     this.ItemGridItem = undefined;
     this.SpriteBg = undefined;
     this.SweepItem = undefined;
-    this.Hrm = () => {
+    this.uhm = () => {
       this.DoClickedGridButton();
     };
     this.OnBtnPointDown = () => {
@@ -64,10 +66,10 @@ class HonamiStoryGridItemBase extends UiPanelBase_1.UiPanelBase {
         ModelManager_1.ModelManager.HonamiStoryModel.GetBackpackLogic().CloseTips();
       }
     };
-    this.LLm = () => {
+    this.qpf = () => {
       ModelManager_1.ModelManager.HonamiStoryModel.GetInteractController().OnHoverItem(true, this.GetButton(2).RootUIComp);
     };
-    this.PLm = () => {
+    this.Opf = () => {
       ModelManager_1.ModelManager.HonamiStoryModel.GetInteractController().OnUnHover();
     };
     this.OnPointerEnter = () => {
@@ -86,86 +88,105 @@ class HonamiStoryGridItemBase extends UiPanelBase_1.UiPanelBase {
       }
     };
     this.OnPointerDown = () => {
-      var t;
-      var i;
       if (this.OnDownGridCb) {
         this.OnDownGridCb();
       }
-      if (ModelManager_1.ModelManager.HonamiStoryModel.GetBackpackLogicState() === 0 && (this.ItemGridItem.SetCanOpenTips(true), (t = LguiEventSystemManager_1.LguiEventSystemManager.GetPointerEventData(0)) && (this.Plm = 0, this.Alm = 0, this.BKs.DeepCopy(t.pointerPosition), this.Dfd = true, this.Llm = Time_1.Time.Now, this.NIm = TimerSystem_1.TimerSystem.Delay(() => {
-        AudioSystem_1.AudioSystem.PostEvent("play_ui_honamistory_backpack_drag");
-      }, POINTER_DOWN_DELAY)), this.dLm = ControllerHolder_1.ControllerHolder.UiNavigationNewController.IsNavigationMousePositionDragging(), this.dLm)) {
-        if (i = ModelManager_1.ModelManager.HonamiStoryModel.GetGamepadLogic()) {
-          i.PickUp(this);
+      var t = ModelManager_1.ModelManager.HonamiStoryModel.GetBackpackLogicState();
+      if (t !== 0) {
+        if (t === 4) {
+          const i = LguiEventSystemManager_1.LguiEventSystemManager.GetPointerEventData(0);
+          if (i) {
+            this.aLf.DeepCopy(i.pointerPosition);
+          }
         }
-        this.mLm();
-        this.Panel.OnDragBegin(t, this);
-        this.Panel.OnDrag(t, this);
+      } else {
+        this.ItemGridItem.SetCanOpenTips(true);
+        const i = LguiEventSystemManager_1.LguiEventSystemManager.GetPointerEventData(0);
+        if (i) {
+          this.Hdm = 0;
+          this.$dm = 0;
+          this.BKs.DeepCopy(i.pointerPosition);
+          this.Dfd = true;
+          this.jdm = Time_1.Time.Now;
+          this.Aqm = TimerSystem_1.TimerSystem.Delay(() => {
+            AudioSystem_1.AudioSystem.PostEvent("play_ui_honamistory_backpack_drag");
+          }, POINTER_DOWN_DELAY);
+        }
+        this.e0f = ControllerHolder_1.ControllerHolder.UiNavigationNewController.IsNavigationMousePositionDragging();
+        if (this.e0f) {
+          if (t = ModelManager_1.ModelManager.HonamiStoryModel.GetGamepadLogic()) {
+            t.PickUp(this);
+          }
+          this.t0f();
+          this.Panel.OnDragBegin(i, this);
+          this.Panel.OnDrag(i, this);
+        }
       }
     };
     this.OnPointerCancel = () => {
-      if (!this.cLm) {
+      if (!this.Zgf) {
         this.OnPointerUp();
       }
     };
     this.OnPointerUp = () => {
       var t = ModelManager_1.ModelManager.HonamiStoryModel.GetBackpackLogicState();
-      this.VIm();
+      this.zqm();
       this.ItemGridItem.SetCanOpenTips(t !== 5 && t !== 6);
-      if (this.dLm) {
+      if (this.e0f) {
         if (t = ModelManager_1.ModelManager.HonamiStoryModel.GetGamepadLogic()) {
           t.PutDown(this);
         }
         t = LguiEventSystemManager_1.LguiEventSystemManager.GetPointerEventData(0);
         this.Panel.OnDragEnd(t, this);
-        this.dLm = false;
+        this.e0f = false;
         ModelManager_1.ModelManager.HonamiStoryModel.SetBackpackLogicState(0);
       }
     };
     this.OnDragBegin = t => {
-      this.cLm = true;
-      if (this.BLm(true)) {
+      this.Zgf = true;
+      if (this.ASf(true, t)) {
         return false;
       }
-      if (this.dLm) {
+      if (this.e0f) {
         return false;
       }
-      if (!this.YMm(true)) {
+      if (!this.s2m(true)) {
         return false;
       }
       this.n5t.DeepCopy(t.pointerPosition);
-      var i = Time_1.Time.Now - this.Llm;
+      var i = Time_1.Time.Now - this.jdm;
       if (i >= POINTER_DOWN_DELAY) {
-        this.zMm();
+        this.a2m();
         return false;
       }
-      this.VIm();
+      this.zqm();
       var s = MathUtils_1.MathUtils.GetAngleByVector2D(this.n5t.SubtractionEqual(this.BKs));
       if (Math.abs(s) < DRAG_MIN_ANGLE || Math.abs(s) > DRAG_MAX_ANGLE) {
-        this.zMm();
+        this.a2m();
         return false;
       }
       this.n5t.DeepCopy(t.pointerPosition);
       s = Vector_1.Vector.Distance(this.n5t, this.BKs);
-      if (this.Zlm / (s * 1000 / i) > this.xlm) {
-        this.zMm();
+      if (this.mmm / (s * 1000 / i) > this.Kdm) {
+        this.a2m();
         return false;
       } else {
         return !(this.Dfd = false);
       }
     };
     this.OnDrag = t => {
-      if (!this.YMm(false)) {
+      if (!this.s2m(false)) {
         return true;
       }
       this.n5t.DeepCopy(t.pointerPosition);
       var i = this.n5t.X - this.BKs.X;
-      this.Plm += i;
+      this.Hdm += i;
       var i = this.n5t.Y - this.BKs.Y;
-      this.Alm += i;
+      this.$dm += i;
       this.BKs.DeepCopy(this.n5t);
-      if (!this.bzt && Math.abs(this.Plm) + Math.abs(this.Alm) > this.Dlm) {
-        if (!this.dLm) {
-          this.mLm();
+      if (!this.bzt && Math.abs(this.Hdm) + Math.abs(this.$dm) > this.Wdm) {
+        if (!this.e0f) {
+          this.t0f();
           this.Panel.OnDragBegin(t, this);
         }
         return !(this.bzt = true);
@@ -174,15 +195,15 @@ class HonamiStoryGridItemBase extends UiPanelBase_1.UiPanelBase {
       }
     };
     this.OnDragEnd = t => {
-      this.BLm(false);
-      this.cLm = false;
-      if (this.YMm(false)) {
+      this.ASf(false, undefined);
+      this.Zgf = false;
+      if (this.s2m(false)) {
         this.Panel.OnDragEnd(t, this);
         AudioSystem_1.AudioSystem.PostEvent("play_ui_honamistory_backpack_equip");
         ModelManager_1.ModelManager.HonamiStoryModel.SetBackpackLogicState(0);
         this.bzt = false;
-        this.dLm = false;
-        return this.MLm = false;
+        this.e0f = false;
+        return this.Tpf = false;
       } else {
         return true;
       }
@@ -206,10 +227,10 @@ class HonamiStoryGridItemBase extends UiPanelBase_1.UiPanelBase {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UISprite], [2, UE.UIButtonComponent]];
-    this.BtnBindInfo = [[2, this.Hrm]];
+    this.BtnBindInfo = [[2, this.uhm]];
   }
   async OnBeforeStartAsync() {
-    if (this.Ztm) {
+    if (this.Lnm) {
       await this.InitItemGridItem(undefined, -1);
       this.ItemGridItem.SetIsForDrag(true);
     } else if (this.Pco) {
@@ -219,13 +240,13 @@ class HonamiStoryGridItemBase extends UiPanelBase_1.UiPanelBase {
   OnStart() {
     var t = UE.WidgetLayoutLibrary.GetViewportSize(GlobalData_1.GlobalData.World);
     var i = UE.WidgetLayoutLibrary.GetViewportScale(GlobalData_1.GlobalData.World);
-    this.Zlm = t.Y / i;
-    this.Dlm = i * DARG_MOVE_DISTANCE;
-    this.xlm = ConfigManager_1.ConfigManager.HonamiStoryConfig.GetDragThresholdSpeed();
+    this.mmm = t.Y / i;
+    this.Wdm = i * DARG_MOVE_DISTANCE;
+    this.Kdm = ConfigManager_1.ConfigManager.HonamiStoryConfig.GetDragThresholdSpeed();
     this.SpriteBg = this.GetSprite(1);
     this.GetButton(2)?.OnPointDownCallBack.Bind(this.OnBtnPointDown);
-    this.GetButton(2)?.OnPointEnterCallBack.Bind(this.LLm);
-    this.GetButton(2)?.OnPointExitCallBack.Bind(this.PLm);
+    this.GetButton(2)?.OnPointEnterCallBack.Bind(this.qpf);
+    this.GetButton(2)?.OnPointExitCallBack.Bind(this.Opf);
   }
   OnBeforeDestroy() {
     this.GetButton(2)?.OnPointDownCallBack.Unbind();
@@ -239,7 +260,7 @@ class HonamiStoryGridItemBase extends UiPanelBase_1.UiPanelBase {
     return this.Panel;
   }
   GetEmptyPosition() {
-    return this.uEm;
+    return this.S2m;
   }
   GetItemGridItem() {
     return this.ItemGridItem;
@@ -282,11 +303,11 @@ class HonamiStoryGridItemBase extends UiPanelBase_1.UiPanelBase {
   Refresh(t, i) {
     var s;
     this.Data = t;
-    if (this.Ztm) {
+    if (this.Lnm) {
       this.GetSprite(1)?.SetUIActive(false);
     }
     if (t === undefined) {
-      this.uEm = i;
+      this.S2m = i;
       this.CheckOverflowEnable(i, false);
       this.SetSpriteByPath(HonamiStoryDefine_1.HONAMI_EMPTY_GRID_BG, this.GetSprite(1), false);
       this.ItemGridItem?.SetUiActive(false);
@@ -311,7 +332,7 @@ class HonamiStoryGridItemBase extends UiPanelBase_1.UiPanelBase {
     return this.Data;
   }
   SetIsForDrag(t) {
-    this.Ztm = t;
+    this.Lnm = t;
   }
   async PlaySequenceByName(t) {
     if (!this.SweepItem) {
@@ -343,27 +364,27 @@ class HonamiStoryGridItemBase extends UiPanelBase_1.UiPanelBase {
     const e = ModelManager_1.ModelManager.HonamiStoryModel.GetBackPackData(1);
     if (!i) {
       if (t < e.GetCapacity()) {
-        this.HEm?.SetUiActive(false);
+        this.Mkm?.SetUiActive(false);
         return false;
       } else {
-        if (this.HEm && !this.HEm.InAsyncLoading()) {
-          this.HEm.SetUiActive(true);
+        if (this.Mkm && !this.Mkm.InAsyncLoading()) {
+          this.Mkm.SetUiActive(true);
         } else {
-          this.HEm = new UiPanelBase_1.UiPanelBase();
-          this.HEm.CreateThenShowByResourceIdAsync("UiItem_HonamiStoryItemTagEmptyOverflow", this.RootItem).then(() => {
+          this.Mkm = new UiPanelBase_1.UiPanelBase();
+          this.Mkm.CreateThenShowByResourceIdAsync("UiItem_HonamiStoryItemTagEmptyOverflow", this.RootItem).then(() => {
             var t;
             if (this.ItemGridItem !== undefined && this.ItemGridItem.IsUiActiveInHierarchy()) {
-              this.HEm?.SetUiActive(false);
+              this.Mkm?.SetUiActive(false);
             } else {
               t = e.GetCapacity();
-              this.HEm?.SetUiActive(this.uEm >= t);
+              this.Mkm?.SetUiActive(this.S2m >= t);
             }
           });
         }
         return true;
       }
     }
-    this.HEm?.SetUiActive(false);
+    this.Mkm?.SetUiActive(false);
     s = e.GetHeightCount(false);
     i = this.fGt.GetRow() + this.fGt.GetGridHeight() > s;
     this.ItemGridItem?.SetOverFlowEnable(i);
@@ -378,7 +399,7 @@ class HonamiStoryGridItemBase extends UiPanelBase_1.UiPanelBase {
   CancelItemToggleSelect() {
     this.ItemGridItem?.CancelToggleSelect();
   }
-  YMm(t) {
+  s2m(t) {
     var i = ModelManager_1.ModelManager.HonamiStoryModel.GetBackpackLogicState();
     if (t) {
       return this.fGt !== undefined && (i === 0 || i === 1 || i === 2);
@@ -386,32 +407,45 @@ class HonamiStoryGridItemBase extends UiPanelBase_1.UiPanelBase {
       return this.Dfd && (i === 0 || i === 6 || i === 5);
     }
   }
-  BLm(t) {
-    var i;
-    return ModelManager_1.ModelManager.HonamiStoryModel.GetBackpackLogicState() === 4 && (i = ModelManager_1.ModelManager.HonamiStoryModel.GetInteractController(), t ? (this.dLm || (t = MathUtils_1.MathUtils.GetAngleByVector2D(this.n5t.SubtractionEqual(this.BKs)), Math.abs(t) < DRAG_MIN_ANGLE) || Math.abs(t) > DRAG_MAX_ANGLE) && (i.IsSellDragging = true, this.ItemGridItem.DoSellLogic(), true) : !(i.IsSellDragging = false));
+  ASf(t, i) {
+    if (ModelManager_1.ModelManager.HonamiStoryModel.GetBackpackLogicState() !== 4) {
+      return false;
+    }
+    var s = ModelManager_1.ModelManager.HonamiStoryModel.GetInteractController();
+    if (!t) {
+      return !(s.IsSellDragging = false);
+    }
+    if (this.e0f) {
+      s.IsSellDragging = true;
+      this.ItemGridItem.DoSellLogic();
+      return true;
+    }
+    this.hLf.DeepCopy(i.pointerPosition);
+    t = MathUtils_1.MathUtils.GetAngleByVector2D(this.hLf.SubtractionEqual(this.aLf));
+    return (Math.abs(t) < DRAG_MIN_ANGLE || Math.abs(t) > DRAG_MAX_ANGLE) && (s.IsSellDragging = true, this.ItemGridItem.DoSellLogic(), true);
   }
-  zMm() {
+  a2m() {
     var t = ModelManager_1.ModelManager.HonamiStoryModel.GetBackpackLogicState();
     if (t === 1 || t === 2) {
       ModelManager_1.ModelManager.HonamiStoryModel.GetBackpackLogic().CloseTips();
     }
   }
   PlayMoveItemSeq() {
-    if (this.Ztm) {
+    if (this.Lnm) {
       this.ItemGridItem.PlayMoveItemSeq();
     }
   }
-  VIm() {
-    if (this.NIm && this.NIm.Valid()) {
-      TimerSystem_1.TimerSystem.Remove(this.NIm);
+  zqm() {
+    if (this.Aqm && this.Aqm.Valid()) {
+      TimerSystem_1.TimerSystem.Remove(this.Aqm);
     }
-    this.NIm = undefined;
+    this.Aqm = undefined;
   }
   MarkUseCancel() {
-    this.MLm = true;
+    this.Tpf = true;
   }
   GetIsUseCancel() {
-    return this.MLm;
+    return this.Tpf;
   }
   TriggerOnEnterGridCb() {
     if (Info_1.Info.IsInGamepad()) {
@@ -429,7 +463,7 @@ class HonamiStoryGridItemBase extends UiPanelBase_1.UiPanelBase {
     t.OnPointerDragCallBack.Bind(this.OnDrag);
     t.OnPointerEndDragCallBack.Bind(this.OnDragEnd);
   }
-  mLm() {
+  t0f() {
     if (this.GetData().GetItemType() === 1) {
       ModelManager_1.ModelManager.HonamiStoryModel.SetBackpackLogicState(6);
     } else {

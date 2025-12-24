@@ -18,9 +18,11 @@ class UiBehaviorAudio {
     this.OQt = undefined;
     this.LAe = undefined;
     this.AudioFilter = undefined;
+    this.LoopAudioEvent = undefined;
     this.OQt = i;
     if (this.OQt && this.OQt.Info) {
       this.LAe = this.OQt.Info;
+      this.LoopAudioEvent = this.OQt.GetLoopAudioEvent();
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("Audio", 75, "BehaviorAudio 缺少UiViewInfo");
     }
@@ -43,8 +45,8 @@ class UiBehaviorAudio {
       UiAudioModel_1.UiAudioModel.SetRtpcLevelOpening(this.bne.Level);
       UiAudioModel_1.UiAudioModel.CalculateRtpcValueAndApply();
     }
-    if (this.LAe.LoopAudioEvent && this.OQt.GetLoopAudioEventSwitch()) {
-      UiAudioModel_1.UiAudioModel.SetLoopAudioEventShow(this.OQt.GetViewId(), this.OQt.GetRootActor(), this.LAe.LoopAudioEvent);
+    if (this.LoopAudioEvent && this.OQt.GetLoopAudioEventSwitch()) {
+      UiAudioModel_1.UiAudioModel.SetLoopAudioEventShow(this.OQt.GetViewId(), this.OQt.GetRootActor(), this.LoopAudioEvent);
     } else if (this.LAe.KeepLoopEvent) {
       UiAudioModel_1.UiAudioModel.KeepLoopAudioEventShow(this.OQt.GetViewId(), this.OQt.GetRootActor());
     }
@@ -55,16 +57,16 @@ class UiBehaviorAudio {
       UiAudioModel_1.UiAudioModel.RemoveAudioStateData(this.bne);
       UiAudioModel_1.UiAudioModel.CalculateRtpcValueAndApply();
     }
-    if (this.LAe.LoopAudioEvent && this.OQt.GetLoopAudioEventSwitch()) {
-      UiAudioModel_1.UiAudioModel.SetLoopAudioEventHide(this.OQt.GetViewId(), this.OQt.GetRootActor(), this.LAe.LoopAudioEvent);
+    if (this.LoopAudioEvent && this.OQt.GetLoopAudioEventSwitch()) {
+      UiAudioModel_1.UiAudioModel.SetLoopAudioEventHide(this.OQt.GetViewId(), this.OQt.GetRootActor(), this.LoopAudioEvent);
     } else if (this.LAe.KeepLoopEvent) {
       UiAudioModel_1.UiAudioModel.KeepLoopAudioEventHide(this.OQt.GetViewId(), this.OQt.GetRootActor());
     }
   }
   OnBeforeDestroy() {
     this.D_r = undefined;
-    if (this.LAe.LoopAudioEvent && this.OQt.GetLoopAudioEventSwitch()) {
-      UiAudioModel_1.UiAudioModel.SetLoopAudioEventDestroy(this.OQt.GetViewId(), this.OQt.GetRootActor(), this.LAe.LoopAudioEvent);
+    if (this.LoopAudioEvent && this.OQt.GetLoopAudioEventSwitch()) {
+      UiAudioModel_1.UiAudioModel.SetLoopAudioEventDestroy(this.OQt.GetViewId(), this.OQt.GetRootActor(), this.LoopAudioEvent);
     } else if (this.LAe.KeepLoopEvent) {
       UiAudioModel_1.UiAudioModel.KeepLoopAudioEventDestroy(this.OQt.GetViewId(), this.OQt.GetRootActor());
     }

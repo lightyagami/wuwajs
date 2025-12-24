@@ -7,6 +7,8 @@ exports.BirthdayRoleSelectView = undefined;
 const UE = require("ue");
 const MultiTextLang_1 = require("../../../../Core/Define/ConfigQuery/MultiTextLang");
 const RoleInfoById_1 = require("../../../../Core/Define/ConfigQuery/RoleInfoById");
+const EventDefine_1 = require("../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiViewBase_1 = require("../../../Ui/Base/UiViewBase");
 const UiManager_1 = require("../../../Ui/UiManager");
@@ -40,15 +42,30 @@ class BirthdayRoleSelectView extends UiViewBase_1.UiViewBase {
     };
     this.WI1 = () => {
       if (this.HI1) {
-        UiManager_1.UiManager.OpenView("BirthdaySelectConfirmView", new BirthdayDefine_1.BirthdayInfo(this.fL1, this.DI1, this.HI1));
+        if (this.fL1 === 2) {
+          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnBirthRoleChange, this.HI1);
+          this.CloseMe();
+        } else {
+          UiManager_1.UiManager.OpenView("BirthdaySelectConfirmView", new BirthdayDefine_1.BirthdayInfo(this.fL1, this.DI1, this.HI1));
+        }
       } else {
         ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("BirthdayUnSelectedRole");
       }
     };
+    this.lyt = () => {
+      this.CloseMe();
+    };
+  }
+  GetExtraResourceId(e) {
+    if (e) {
+      return ModelManager_1.ModelManager.BirthdayModel.GetRoleSelectViewResource(e.Year);
+    } else {
+      return "";
+    }
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UILoopScrollViewComponent], [2, UE.UIItem], [3, UE.UIButtonComponent], [4, UE.UIText]];
-    this.BtnBindInfo = [[3, this.WI1]];
+    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UILoopScrollViewComponent], [2, UE.UIItem], [3, UE.UIButtonComponent], [4, UE.UIText], [6, UE.UIButtonComponent], [5, UE.UIText]];
+    this.BtnBindInfo = [[3, this.WI1], [6, this.lyt]];
   }
   async OnBeforeStartAsync() {
     var e = this.OpenParam;
@@ -66,6 +83,16 @@ class BirthdayRoleSelectView extends UiViewBase_1.UiViewBase {
     var e = ModelManager_1.ModelManager.BirthdayModel.GetBirthdayDate(this.DI1);
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), "BirthdaySelectedTip", this.DI1, e.getMonth() + 1, e.getDate());
     this.Sfi();
+    if (this.fL1 === 2) {
+      this.GetButton(6).RootUIComp.SetUIActive(true);
+    } else {
+      this.GetButton(6).RootUIComp.SetUIActive(false);
+    }
+  }
+  OnStart() {
+    if (this.fL1 === 2) {
+      this.UiViewSequence.StartSequenceName = "ShowView";
+    }
   }
   Sfi() {
     let e = "";

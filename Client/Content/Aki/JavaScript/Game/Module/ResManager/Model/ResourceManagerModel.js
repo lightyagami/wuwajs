@@ -11,11 +11,11 @@ const QuestRefMapBlockConfigAll_1 = require("../../../../Core/Define/ConfigQuery
 class ResourceManagerModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
-    this.bMm = new Map();
-    this.RMm = new Set();
-    this.wMm = [];
-    this.XTm = new Map();
-    this.RefBlockQuests = new Set();
+    this.CBm = new Map();
+    this.pBm = new Set();
+    this.vBm = [];
+    this.dFm = new Map();
+    this.QuestsRefBlocks = new Map();
     this.BlockNeedReOpenMap = new Set();
   }
   OnInit() {
@@ -27,7 +27,7 @@ class ResourceManagerModel extends ModelBase_1.ModelBase {
       return false;
     }
     for (const o of e) {
-      this.bMm.set(o.BlockId, o.PakName);
+      this.CBm.set(o.BlockId, o.PakName);
     }
     e = QuestRefMapBlockConfigAll_1.configQuestRefMapBlockConfigAll.GetConfigList(false);
     if (!e) {
@@ -37,34 +37,37 @@ class ResourceManagerModel extends ModelBase_1.ModelBase {
       return false;
     }
     for (const t of e) {
-      this.RefBlockQuests.add(t.QuestId);
+      this.QuestsRefBlocks.set(t.QuestId, t.MapBlockId);
     }
     return true;
   }
   FillLoginInfo(e, o) {
-    this.RMm.clear();
-    e.forEach(e => this.RMm.add(e));
-    this.wMm.length = 0;
-    this.wMm.push(...o);
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("QuestResource", 70, "填充登录资源信息", ["quests", e], ["sceneInfos", o]);
+    }
+    this.pBm.clear();
+    e.forEach(e => this.pBm.add(e));
+    this.vBm.length = 0;
+    this.vBm.push(...o);
   }
   get LoginSceneInfos() {
-    return this.wMm;
+    return this.vBm;
   }
   get MapBlockIdToPackName() {
-    return this.bMm;
+    return this.CBm;
   }
   get LoginQuests() {
-    return this.RMm;
+    return this.pBm;
   }
   SetBlockDownloadState(e, o) {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("QuestResource", 70, `设置地块下载状态: ${e} => ${o}`);
     }
-    this.XTm.set(e, o);
+    this.dFm.set(e, o);
   }
   GetBlockDownloadState(e) {
-    if (this.XTm.has(e)) {
-      return this.XTm.get(e);
+    if (this.dFm.has(e)) {
+      return this.dFm.get(e);
     } else {
       if (Log_1.Log.CheckWarn()) {
         Log_1.Log.Warn("QuestResource", 70, "未知或未分包的地块ID: " + e);

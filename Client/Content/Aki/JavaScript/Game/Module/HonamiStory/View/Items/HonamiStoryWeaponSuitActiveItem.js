@@ -13,15 +13,15 @@ const START_SHOW_MIN_COUNT = 2;
 class HonamiStoryWeaponSuitActiveItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.xmm = undefined;
+    this.yvm = undefined;
     this.E0i = false;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UISprite]];
   }
   OnBeforeCreateImplement() {
-    this.xmm = new UiViewSequence_1.UiBehaviorLevelSequence(this);
-    this.AddUiBehavior(this.xmm);
+    this.yvm = new UiViewSequence_1.UiBehaviorLevelSequence(this);
+    this.AddUiBehavior(this.yvm);
   }
   Refresh(e) {
     var i;
@@ -34,7 +34,7 @@ class HonamiStoryWeaponSuitActiveItem extends UiPanelBase_1.UiPanelBase {
       i = e.NeedCount - START_SHOW_MIN_COUNT;
       i = e.CurCount - i;
       if ((e = e.CurCount >= e.NeedCount) && e !== this.E0i) {
-        this.xmm?.PlaySequence("Burst");
+        this.yvm?.PlaySequence("Burst");
       }
       this.E0i = e;
       r = i >= 2 ? 2 : i >= 1 ? 1 : 0;

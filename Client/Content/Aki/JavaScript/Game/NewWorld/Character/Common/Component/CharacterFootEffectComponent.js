@@ -26,6 +26,7 @@ exports.CharacterFootEffectComponent = undefined;
 const puerts_1 = require("puerts");
 const UE = require("ue");
 const Log_1 = require("../../../../../Core/Common/Log");
+const Stats_1 = require("../../../../../Core/Common/Stats");
 const Time_1 = require("../../../../../Core/Common/Time");
 const QueryTypeDefine_1 = require("../../../../../Core/Define/QueryTypeDefine");
 const EntityComponent_1 = require("../../../../../Core/Entity/EntityComponent");
@@ -42,7 +43,7 @@ const EffectSystem_1 = require("../../../../Effect/EffectSystem");
 const GlobalData_1 = require("../../../../GlobalData");
 const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
-const VoxelUtils_1 = require("../../../../Utils/VoxelUtils");
+const AudioUtils_1 = require("../../../../Utils/AudioUtils");
 const CharacterUnifiedStateTypes_1 = require("./Abilities/CharacterUnifiedStateTypes");
 const PROFILE_KEY = "CharacterFootEffectComponent_FootTrace";
 const FOOTPRINT_DETECT_DURATION = 150;
@@ -84,8 +85,11 @@ let CharacterFootEffectComponent = CharacterFootEffectComponent_1 = class Charac
     this.fHo = Vector_1.Vector.Create();
     this.Gue = Rotator_1.Rotator.Create();
     this.XQc = Vector_1.Vector.Create();
+    this.g9f = Stats_1.Stat.Create("CharacterFootEffectComponent.AsyncTraceDelegate");
+    this.C9f = Stats_1.Stat.Create("CharacterFootEffectComponent.GetFootTexture");
+    this.p9f = Stats_1.Stat.Create("CharacterFootEffectComponent.PostFootStepAudio");
     this.w5r = new Map();
-    this.FYd = new Map();
+    this.vzd = new Map();
     this.B5r = 0;
     this.e0u = 0;
     this.b5r = Vector_1.Vector.Create();
@@ -128,6 +132,7 @@ let CharacterFootEffectComponent = CharacterFootEffectComponent_1 = class Charac
     };
     this.i0u = undefined;
     this.r0u = (t, e, i, r) => {
+      this.g9f.Start();
       if (this.i0u && i < this.i0u.Frame || this.i0u && i === this.i0u.Frame && r < this.i0u.Index) {
         this.o0u();
       } else if (t) {
@@ -136,10 +141,11 @@ let CharacterFootEffectComponent = CharacterFootEffectComponent_1 = class Charac
       } else if (Log_1.Log.CheckWarn()) {
         Log_1.Log.Warn("Test", 6, "Detect Footprint Failed", ["location", this.Hte?.ActorLocationProxy], ["start", this._ae], ["end", this.uae]);
       }
+      this.g9f.Stop();
     };
   }
   static get Dependencies() {
-    return [3, 51, 181, 179, 0];
+    return [3, 52, 186, 184, 0];
   }
   OnInit(t) {
     super.OnInit(t);
@@ -151,16 +157,16 @@ let CharacterFootEffectComponent = CharacterFootEffectComponent_1 = class Charac
     if (!t?.Valid) {
       return false;
     }
-    if (!this.Entity.GetComponent(181)?.Valid) {
+    if (!this.Entity.GetComponent(186)?.Valid) {
       return false;
     }
-    if (!this.Entity.GetComponent(51)?.Valid) {
+    if (!this.Entity.GetComponent(52)?.Valid) {
       return false;
     }
     if (!this.Entity.GetComponent(0)?.Valid) {
       return false;
     }
-    var e = this.Entity.GetComponent(179);
+    var e = this.Entity.GetComponent(184);
     if (!e?.Valid) {
       return false;
     }
@@ -172,7 +178,7 @@ let CharacterFootEffectComponent = CharacterFootEffectComponent_1 = class Charac
     }
     this.R5r = UE.NewObject(UE.TraceSphereElement.StaticClass());
     this.R5r.bIsSingle = true;
-    this.R5r.bTraceComplex = false;
+    this.R5r.bTraceComplex = true;
     this.R5r.bIgnoreSelf = true;
     this.R5r.WorldContextObject = this.Hte.Actor;
     this.R5r.Radius = 10;
@@ -194,10 +200,10 @@ let CharacterFootEffectComponent = CharacterFootEffectComponent_1 = class Charac
       s.OverrideGlobalFootEffect = o.OverrideGlobalFootEffect;
       s.OverrideOtherCharacterFootEffect = o.OverrideOtherCharacterFootEffect;
       var o = o.Tag.TagId;
-      if (!this.FYd.has(o)) {
-        this.FYd.set(o, []);
+      if (!this.vzd.has(o)) {
+        this.vzd.set(o, []);
       }
-      this.FYd.get(o).push(s);
+      this.vzd.get(o).push(s);
     }
     this.wq_ = (0, puerts_1.toManualReleaseDelegate)(this.Bq_);
     this.Rq_ = (0, puerts_1.toManualReleaseDelegate)(this.qq_);
@@ -209,7 +215,7 @@ let CharacterFootEffectComponent = CharacterFootEffectComponent_1 = class Charac
     this.R5r?.Dispose();
     this.R5r = undefined;
     this.w5r.clear();
-    this.FYd.clear();
+    this.vzd.clear();
     (0, puerts_1.releaseManualReleaseDelegate)(this.Bq_);
     (0, puerts_1.releaseManualReleaseDelegate)(this.qq_);
     this.wq_ = undefined;
@@ -233,35 +239,32 @@ let CharacterFootEffectComponent = CharacterFootEffectComponent_1 = class Charac
     if (!t?.IsValid()) {
       return "DirtSurface";
     }
-    var e;
-    var i;
-    var r = this.Hte?.Actor;
-    if (!r?.IsValid()) {
+    var e = this.Hte?.Actor;
+    if (!e?.IsValid()) {
       return "DirtSurface";
     }
-    let o = false;
-    if (o = !!r.CharRenderingComponent?.GetInWater() || !(r = t.Components.Get(0), !(r = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetComponentPhysicalMaterial(r))?.IsValid() || r.GetName() !== "WaterLightLand") || o) {
-      return this.uQ_();
+    var i = this.kTn;
+    let r = false;
+    let o = t.PhysMaterials.Num() > 0 ? t.PhysMaterials.Get(0) : undefined;
+    if (e.CharRenderingComponent?.GetInWater()) {
+      e = e.CharRenderingComponent.GetWaterHitLocationZ();
+      r = e > i.Z;
     } else {
-      r = this.kTn;
-      TraceElementCommon_1.TraceElementCommon.GetHitLocation(t, 0, r);
-      t = r.ToUeVector();
-      r = this.Hte.ScaledHalfHeight;
-      e = (0, puerts_1.$ref)(undefined);
-      i = (0, puerts_1.$ref)(undefined);
-      if (VoxelUtils_1.VoxelUtils.TryGetVoxelInfo(GlobalData_1.GlobalData.World, t, e, r, i)) {
-        if ((r = (0, puerts_1.$unref)(e)).MtlID === MATERIAL_ID_WAT || r.MtlID === MATERIAL_ID_SHR) {
-          return "DirtSurface";
-        } else {
-          return UE.KuroVoxelSystem.GetMtlNameByID(r.MtlID);
-        }
-      } else {
-        if (Log_1.Log.CheckWarn()) {
-          Log_1.Log.Warn("Test", 42, "[WorldController]Streaming:获取体素信息失败", ["Location", t], ["ErrorCode", (0, puerts_1.$unref)(i)]);
-        }
-        return "DirtSurface";
+      e = t.Components.Get(0);
+      if ((e = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetComponentPhysicalMaterial(e))?.IsValid() && e.GetName() === "WaterLightLand") {
+        r = true;
       }
     }
+    if (r) {
+      return this.uQ_();
+    }
+    TraceElementCommon_1.TraceElementCommon.GetHitLocation(t, 0, i);
+    e = AudioUtils_1.AudioUtils.QueryFoliageAudioPhysicalMaterial(i.ToUeVector(), this.Entity);
+    let s = undefined;
+    if (e.IsHitFoliage && e.PhysicalMaterial) {
+      o = e.PhysicalMaterial;
+    }
+    return s = (s = o?.IsValid() ? o.SurfaceType === MATERIAL_ID_WAT || o.SurfaceType === MATERIAL_ID_SHR ? "DirtSurface" : UE.KuroAudioMaterialSettings.GetFootstepTextureName(o.SurfaceType).toString() : s) || "DirtSurface";
   }
   PostFootstepVoice() {
     if (Time_1.Time.Now - this.e0u < FOOTPRINT_DETECT_DURATION) {
@@ -282,23 +285,23 @@ let CharacterFootEffectComponent = CharacterFootEffectComponent_1 = class Charac
     let i = undefined;
     return i = !(i = !e || !(e = this.w5r.get(e.SurfaceType)) || t && t.PriorToGlobal ? i : e.EffectPath?.ToAssetPathName()) && t ? t.EffectPath?.ToAssetPathName() : i;
   }
-  VYd(t) {
+  Szd(t) {
     var t = this.YQc(t);
-    var e = this.jYd();
+    var e = this.Mzd();
     if (e) {
-      return this.HYd(e, t);
+      return this.Ezd(e, t);
     } else if (t) {
       return [t];
     } else {
       return [];
     }
   }
-  jYd() {
-    var i = this.Entity?.GetComponent(209);
+  Mzd() {
+    var i = this.Entity?.GetComponent(215);
     if (i) {
       let t = undefined;
       let e = Number.MIN_SAFE_INTEGER;
-      for (var [r, o] of this.FYd) {
+      for (var [r, o] of this.vzd) {
         if (i.HasTag(r)) {
           for (const s of o) {
             if (s.SortId > e) {
@@ -311,7 +314,7 @@ let CharacterFootEffectComponent = CharacterFootEffectComponent_1 = class Charac
       return t;
     }
   }
-  HYd(t, e) {
+  Ezd(t, e) {
     var i = t.EffectPath?.ToAssetPathName();
     var r = [];
     switch (t.OverrideGlobalFootEffect) {
@@ -345,7 +348,7 @@ let CharacterFootEffectComponent = CharacterFootEffectComponent_1 = class Charac
   }
   JQc(t, e, i) {
     var r;
-    if (i && this.EK1 && this.Hte && this.EK1 && i.SurfaceType !== 10 && this.EK1.GetRainWalkOcclusionParam() < 1 - MathCommon_1.MathCommon.ThreshPointOnPlane && (i = this.EK1.GetEnviInteractionData()) && !i.bInWater) {
+    if (i && this.EK1 && this.Hte && this.EK1.bUpdateRainOcclusion && this.EK1 && i.SurfaceType !== 10 && this.EK1.GetRainWalkOcclusionParam() < 1 - MathCommon_1.MathCommon.ThreshPointOnPlane && (i = this.EK1.GetEnviInteractionData()) && !i.bInWater) {
       i = this.fHo;
       if (this.Hte && this.Hte.Owner && this.Hte.Owner.IsA(UE.TsBaseCharacter_C.StaticClass()) && (r = this.Hte.Owner) && r.Mesh) {
         i.Z = r.Mesh.D_K2_GetComponentLocation().Z;
@@ -366,9 +369,20 @@ let CharacterFootEffectComponent = CharacterFootEffectComponent_1 = class Charac
     }
   }
   TriggerFootprint(t) {
-    if (this.R5r?.HitResult?.bBlockingHit && !(Time_1.Time.Now - this.B5r < FOOTPRINT_SPAWN_DURATION) && !(t ? this.XQc.FromUeVector(this.Hte.Actor.Mesh.D_GetSocketLocation(CharacterFootEffectComponent_1.LeftFootSocketName)) : this.XQc.FromUeVector(this.Hte.Actor.Mesh.D_GetSocketLocation(CharacterFootEffectComponent_1.RightFootSocketName)), Vector_1.Vector.DistSquared(this.XQc, this.b5r) < FOOTPRINT_SPAWN_MIN_DISTANCE_SQUARED)) {
-      var e = this.R5r.HitResult.PhysMaterials?.Get(0);
-      const i = this.VYd(e);
+    if (this.R5r?.HitResult?.bBlockingHit && this.R5r.HitResult.GetHitCount() !== 0 && !(Time_1.Time.Now - this.B5r < FOOTPRINT_SPAWN_DURATION) && !(t ? this.XQc.FromUeVector(this.Hte.Actor.Mesh.D_GetSocketLocation(CharacterFootEffectComponent_1.LeftFootSocketName)) : this.XQc.FromUeVector(this.Hte.Actor.Mesh.D_GetSocketLocation(CharacterFootEffectComponent_1.RightFootSocketName)), Vector_1.Vector.DistSquared(this.XQc, this.b5r) < FOOTPRINT_SPAWN_MIN_DISTANCE_SQUARED)) {
+      var e = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetComponentPhysicalMaterial(this.R5r.HitResult.Components.Get(0));
+      var r = this.R5r.HitResult.PhysMaterials?.Get(0);
+      let i = [];
+      if (e) {
+        i = this.Szd(e);
+      }
+      if (r) {
+        for (const o of this.Szd(r)) {
+          if (!i.includes(o)) {
+            i.push(o);
+          }
+        }
+      }
       this.zQc(this.R5r.HitResult, this.XQc, this.fHo, this.Gue);
       i.forEach((t, e) => {
         if (t) {
@@ -384,8 +398,12 @@ let CharacterFootEffectComponent = CharacterFootEffectComponent_1 = class Charac
     }
   }
   o0u() {
+    this.C9f.Start();
     var t = this.n0u();
-    this.Entity.GetComponent(193)?.PostFootstepAudio(t);
+    this.C9f.Stop();
+    this.p9f.Start();
+    this.Entity.GetComponent(199)?.PostFootstepAudio(t);
+    this.p9f.Stop();
   }
   k5r() {
     if (!ModelManager_1.ModelManager.TeleportModel.IsTeleport && this.Hte.EnableVoxelDetection && this.Hte && this.I5r && this.I5r.MoveState !== CharacterUnifiedStateTypes_1.ECharMoveState.Stand) {
@@ -409,5 +427,5 @@ let CharacterFootEffectComponent = CharacterFootEffectComponent_1 = class Charac
 };
 CharacterFootEffectComponent.LeftFootSocketName = new UE.FName("Bip001LFoot");
 CharacterFootEffectComponent.RightFootSocketName = new UE.FName("Bip001RFoot");
-CharacterFootEffectComponent = CharacterFootEffectComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(57)], CharacterFootEffectComponent);
+CharacterFootEffectComponent = CharacterFootEffectComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(60)], CharacterFootEffectComponent);
 exports.CharacterFootEffectComponent = CharacterFootEffectComponent; //# sourceMappingURL=CharacterFootEffectComponent.js.map

@@ -30,10 +30,12 @@ class PhantomArenaEntranceRepeatTabView extends PhantomArenaChildViewBase_1.Phan
     this.Xhu = undefined;
     this.bs_ = undefined;
     this.ZW1 = () => {
-      UiManager_1.UiManager.OpenView("PhantomArenaMainView", {
+      var e = {
         ChallengeId: 0,
-        OpenView: "PhantomArenaDeckOverviewTabView"
-      });
+        OpenView: "PhantomArenaDeckOverviewTabView",
+        ActivityId: this.ActivityId
+      };
+      UiManager_1.UiManager.OpenView("PhantomArenaMainView", e);
     };
     this.p5t = () => {
       if (ModelManager_1.ModelManager.PhantomArenaModel.GetRepeatChallengeOpen(this.hyc)) {
@@ -46,7 +48,7 @@ class PhantomArenaEntranceRepeatTabView extends PhantomArenaChildViewBase_1.Phan
       return new CommonItemSmallItemGrid_1.CommonItemSmallItemGrid();
     };
     this.Ewu = (e, t) => {
-      return e !== t && ModelManager_1.ModelManager.PhantomArenaModel.GetChallengeStateListByGymLevel(PhantomArenaDefine_1.GYM_MAX_LEVEL)[t].State !== 0;
+      return e !== t && ModelManager_1.ModelManager.PhantomArenaModel.GetChallengeStateListByGymLevel(PhantomArenaDefine_1.GYM_MAX_LEVEL, this.ActivityId)[t].State !== 0;
     };
     this.f_i = (e, t) => {
       this.yuu = t;
@@ -71,9 +73,9 @@ class PhantomArenaEntranceRepeatTabView extends PhantomArenaChildViewBase_1.Phan
   }
   OnStart() {
     this.a71 = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(4), this.rOe, this.GetItem(5).GetOwner());
-    ModelManager_1.ModelManager.PhantomArenaModel.SetGymRedDotChecked(PhantomArenaDefine_1.GYM_MAX_LEVEL);
+    ModelManager_1.ModelManager.PhantomArenaModel.SetGymRedDotChecked(PhantomArenaDefine_1.GYM_MAX_LEVEL, this.ActivityId);
     var e = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.PhantomArenaRepeatLastIndex) ?? 0;
-    var t = ModelManager_1.ModelManager.PhantomArenaModel.GetChallengeStateListByGymLevel(PhantomArenaDefine_1.GYM_MAX_LEVEL);
+    var t = ModelManager_1.ModelManager.PhantomArenaModel.GetChallengeStateListByGymLevel(PhantomArenaDefine_1.GYM_MAX_LEVEL, this.ActivityId);
     this.yuu = t[e];
     this.Khu.InitScroll(t, this.g_i, e);
     this.Khu.SetShowType(1);
@@ -92,9 +94,9 @@ class PhantomArenaEntranceRepeatTabView extends PhantomArenaChildViewBase_1.Phan
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(3), t.NpcDesc);
       t = ModelManager_1.ModelManager.PhantomArenaModel.GetRewardListByChallengeId(this.hyc);
       this.a71.RefreshByData(t);
-      t = ModelManager_1.ModelManager.PhantomArenaModel.GetMasterLevel();
+      t = ModelManager_1.ModelManager.PhantomArenaModel.GetMasterLevel(this.ActivityId);
       t = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetRepeatGymExpWeekLimitByLevel(t);
-      e = ModelManager_1.ModelManager.PhantomArenaModel.GetMasterExpWeek();
+      e = ModelManager_1.ModelManager.PhantomArenaModel.GetMasterExpWeek(this.ActivityId);
       LguiUtil_1.LguiUtil.TrySetLocalTextNew(this.GetText(6), "PhantomBattle_1117", e, t);
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("PhantomArena", 75, "获取挑战信息失败", ["ChallengeId", this.hyc]);
@@ -102,7 +104,7 @@ class PhantomArenaEntranceRepeatTabView extends PhantomArenaChildViewBase_1.Phan
   }
   Yhu() {
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), PhantomArenaDefine_1.POINTS_NAME_TEXT);
-    var e = ModelManager_1.ModelManager.PhantomArenaModel.GetPointsItemId();
+    var e = ModelManager_1.ModelManager.PhantomArenaModel.GetPointsItemId(this.ActivityId);
     var e = ModelManager_1.ModelManager.InventoryModel.GetCommonItemCount(e);
     this.GetText(1).SetText(e.toString());
   }

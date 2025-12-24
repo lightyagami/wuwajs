@@ -179,12 +179,16 @@ GTime:${ModelManager_1.ModelManager.TimeOfDayModel.GameTime.HourMinuteString}`);
         i.push("  Gravity:" + l.GravityDirect.ToString());
       }
     }
+    var t = UE.CSharpBlueprintFunctionLibrary.HasSharpherealModuleGreyBoxHit();
+    var r = UE.CSharpBlueprintFunctionLibrary.HasCSharpEnvironmentInitialized();
+    i.push(`
+C# Inited:${r} Hit:${t}`);
     if (!this.ola) {
-      t = KscEnv_1.KscEnv.KscWorld?.Entities_.Num() ?? 0;
-      r = ControllerHolder_1.ControllerHolder.BulletController.KuroBulletWorld?.BulletEntityMap.Num() ?? 0;
-      e = t > 0 || r > 0 ? `
-Ksc:Entity${t},Bullet${r}` : "";
-      i.push(` ServerIp:${ModelManager_1.ModelManager.LoginModel.Platform}${a}${e}${this.Eet}  Bullet:${c}
+      e = KscEnv_1.KscEnv.KscWorld?.Entities_.Num() ?? 0;
+      s = ControllerHolder_1.ControllerHolder.BulletController.KuroBulletWorld?.BulletEntityMap.Num() ?? 0;
+      o = e > 0 || s > 0 ? `
+Ksc:Entity${e},Bullet${s}` : "";
+      i.push(` ServerIp:${ModelManager_1.ModelManager.LoginModel.Platform}${a}${o}${this.Eet}  Bullet:${c}
 Actor:${n}/${h} (${_}) Load:${loadModeName[ResourceSystem_1.ResourceSystem.GetLoadMode()]} Budge:${budgetName[GameBudgetInterfaceController_1.GameBudgetInterfaceController.CurrentGlobalMode]}`);
     }
     if (UE.KuroRenderingRuntimeBPPluginBPLibrary.GetRayTracingSupportedType() === 0 && UE.KismetSystemLibrary.GetConsoleVariableIntValue("r.RayTracing.Enable")) {
@@ -214,21 +218,21 @@ Actor:${n}/${h} (${_}) Load:${loadModeName[ResourceSystem_1.ResourceSystem.GetLo
       i.push(`
  RayTracing Feature: <color=green>${e}</color>`);
     }
-    var s = UE.KismetSystemLibrary.GetConsoleVariableIntValue("r.Streaming.DetailPanel");
-    var o = UE.StreamableRenderAsset.GetStreamingBudgetInfo();
-    if (s > 0 && (o.X > 0 || o.Z > 0) && (l = o.X < o.Y ? "green" : "#ff0000ff", t = o.Z < o.W ? "green" : "#ff0000ff", r = s > 1, a = s < 3 ? 6 : (s - 1) * 6, e = o.X < o.Y ? 0 : a, c = o.Z < o.W ? 0 : a, i.push(`
-StreamingPool: `), n = r ? "Require " : "", h = r ? "Budget " : "", o.W > 0 ? (o.X > 0 && i.push(`<color=${l}><size=+${e}> Texture ${n}${o.X}/${h}${o.Y}, </size></color>`), o.Z > 0 && i.push(`<color=${t}><size=+${c}> Mesh ${n}${o.Z}/${h}${o.W}</size></color>`)) : o.X > 0 && i.push(`<color=${l}><size=+${e}> Texture + Mesh ${n}${o.X}/${h}${o.Y}</size></color>`), r)) {
+    var l = UE.KismetSystemLibrary.GetConsoleVariableIntValue("r.Streaming.DetailPanel");
+    var r = UE.StreamableRenderAsset.GetStreamingBudgetInfo();
+    if (l > 0 && (r.X > 0 || r.Z > 0) && (t = r.X < r.Y ? "green" : "#ff0000ff", e = r.Z < r.W ? "green" : "#ff0000ff", s = l > 1, a = l < 3 ? 6 : (l - 1) * 6, o = r.X < r.Y ? 0 : a, c = r.Z < r.W ? 0 : a, i.push(`
+StreamingPool: `), n = s ? "Require " : "", h = s ? "Budget " : "", r.W > 0 ? (r.X > 0 && i.push(`<color=${t}><size=+${o}> Texture ${n}${r.X}/${h}${r.Y}, </size></color>`), r.Z > 0 && i.push(`<color=${e}><size=+${c}> Mesh ${n}${r.Z}/${h}${r.W}</size></color>`)) : r.X > 0 && i.push(`<color=${t}><size=+${o}> Texture + Mesh ${n}${r.X}/${h}${r.Y}</size></color>`), s)) {
       _ = UE.StreamableRenderAsset.GetStreamingRenderAssetsInfo();
       i.push(`
 RenderAssetNum: Texture ${_.X} Mesh ${_.Y}`);
       i.push(`
 CurrentTextureMem:${_.Z} RTMem:${_.W}`);
-      s = UE.StreamableRenderAsset.GetStreamingPoolInfo();
+      l = UE.StreamableRenderAsset.GetStreamingPoolInfo();
       i.push(`
-TextureStreamingPoolSize:${s.X} NonStreaming:${s.Y}`);
-      if (s.Z > 0) {
+TextureStreamingPoolSize:${l.X} NonStreaming:${l.Y}`);
+      if (l.Z > 0) {
         i.push(`
-AvailableStreamingVRAM:${s.Z} UsableVRAM:${s.W})`);
+AvailableStreamingVRAM:${l.Z} UsableVRAM:${l.W})`);
       }
       i.push(`
 

@@ -18,6 +18,9 @@ class RouletteComponentMain extends RouletteComponent_1.RouletteComponentBase {
     this.bll = false;
     this.ViewProxy = undefined;
   }
+  RegisterViewProxy(e) {
+    this.ViewProxy = e;
+  }
   OnStart() {
     var e;
     super.OnStart();
@@ -45,9 +48,6 @@ class RouletteComponentMain extends RouletteComponent_1.RouletteComponentBase {
     }
     this.IsEmptyChoose = true;
   }
-  RegisterViewProxy(e) {
-    this.ViewProxy = e;
-  }
   TryEmitCurrentGridSelectOn() {
     if (this.hIa) {
       this.OnEmitCurrentGridSelectOn();
@@ -73,7 +73,7 @@ class RouletteComponentMain extends RouletteComponent_1.RouletteComponentBase {
     return false;
   }
   GetGridId(e, t) {
-    return ModelManager_1.ModelManager.RouletteModel.GetRouletteGridId(e, t, true);
+    return this.ViewProxy.GetRouletteGridId(e, t);
   }
   SetCurrentToggleState(e) {
     this.GetCurrentGrid()?.SetGridToggleState(e);
@@ -133,11 +133,9 @@ class RouletteComponentMainExplore extends (exports.RouletteComponentMain = Roul
     if (Info_1.Info.IsInTouch()) {
       t = e ? "Text_ProbeToolFunctionNotice3_Text" : "Text_ExploreToolsSwitchMobile_Text";
     } else if (Info_1.Info.IsInKeyBoard()) {
-      t = e ? undefined : "Text_ExploreToolsSwitchPC_Text";
-    } else if (Info_1.Info.IsInGamepad()) {
-      e = this.GetCurrentGrid()?.Data.State !== 1;
-      e = this.CurrentGridIndex !== undefined && this.CurrentGridIndex !== -1 && !e;
-      t = e ? "Text_ExploreToolsSwitchPC_Text" : undefined;
+      t = e ? undefined : this.GetCurrentGrid()?.Data.UseType === 0 ? "Text_ExploreToolsSwitchPC_Text" : "Text_ExploreToolsSwitchPC_Text02";
+    } else if (Info_1.Info.IsInGamepad() && (e = this.GetCurrentGrid()?.Data.State !== 1, this.CurrentGridIndex !== undefined) && this.CurrentGridIndex !== -1 && !e) {
+      t = this.GetCurrentGrid()?.Data.UseType === 0 ? "Text_ExploreToolsSwitchPC_Text" : "Text_ExploreToolsSwitchPC_Text02";
     }
     this.SetTipsActive(t !== undefined);
     return t;
@@ -146,7 +144,7 @@ class RouletteComponentMainExplore extends (exports.RouletteComponentMain = Roul
 exports.RouletteComponentMainExplore = RouletteComponentMainExplore;
 class RouletteComponentMainFunction extends RouletteComponentMain {
   GetRouletteInfoMap() {
-    return RouletteComponent_1.functionRouletteMap;
+    return ModelManager_1.ModelManager.RouletteModel.RouletteListDataMap.get(1).GetRouletteDataMap();
   }
   JudgeGridStateByData(e, t) {
     var o = e !== undefined && e !== 0;

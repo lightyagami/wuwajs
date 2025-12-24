@@ -6,15 +6,17 @@ Object.defineProperty(exports, "__esModule", {
 exports.BehaviorButton = undefined;
 const UE = require("ue");
 const Info_1 = require("../../../../Core/Common/Info");
+const Log_1 = require("../../../../Core/Common/Log");
 const ResourceSystem_1 = require("../../../../Core/Resource/ResourceSystem");
 const StringUtils_1 = require("../../../../Core/Utils/StringUtils");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const InputController_1 = require("../../../Input/InputController");
 const ModelManager_1 = require("../../../Manager/ModelManager");
+const InputMultiKeyItem_1 = require("../../Common/InputKey/InputMultiKeyItem");
 const BattleChildView_1 = require("./BattleChildView/BattleChildView");
+const BattleSkillItemDynamicEffect_1 = require("./BattleSkillItemDynamicEffect");
 const BattleUiNiagaraItem_1 = require("./BattleUiNiagaraItem");
-const CommonKeyItem_1 = require("./KeyItem/CommonKeyItem");
 class BehaviorButton extends BattleChildView_1.BattleChildView {
   constructor() {
     super(...arguments);
@@ -22,14 +24,15 @@ class BehaviorButton extends BattleChildView_1.BattleChildView {
     this.Mit = "";
     this.frt = undefined;
     this.prt = undefined;
-    this.ActionName = "";
+    this.KeyActionName = undefined;
     this.BehaviorType = 101;
     this.Qtt = undefined;
     this.vrt = undefined;
     this.Mrt = undefined;
     this.qit = 1;
     this.Git = 1;
-    this.uim = undefined;
+    this.Fnm = undefined;
+    this.fWm = undefined;
     this.Ert = () => {
       var t;
       if (this.qit !== 0) {
@@ -48,26 +51,27 @@ class BehaviorButton extends BattleChildView_1.BattleChildView {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UISprite], [2, UE.UINiagara]];
+    this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UISprite], [2, UE.UINiagara], [3, UE.UINiagara]];
     if (!Info_1.Info.IsInTouch()) {
-      this.ComponentRegisterInfos.push([3, UE.UIItem]);
+      this.ComponentRegisterInfos.push([4, UE.UIItem]);
     }
   }
   Initialize(t) {
     super.Initialize();
     this.Ore();
-    var i = this.GetSprite(1);
-    this.prt = i.GetOwner().GetComponentByClass(UE.UISpriteTransition.StaticClass());
+    this.BehaviorType = t.InputActionType;
+    t = this.GetSprite(1);
+    this.prt = t.GetOwner().GetComponentByClass(UE.UISpriteTransition.StaticClass());
     this.vrt = new BattleUiNiagaraItem_1.BattleUiNiagaraItem(this.GetUiNiagara(2));
+    this.fWm = new BattleSkillItemDynamicEffect_1.BattleSkillItemDynamicEffect(this.GetUiNiagara(3));
   }
-  async InitializeAsync(t) {
-    var i;
+  async InitializeAsync() {
+    var t;
     if (!Info_1.Info.IsInTouch()) {
-      i = this.GetItem(3);
-      this.Qtt = new CommonKeyItem_1.CommonKeyItem();
-      await this.Qtt.CreateThenShowByActorAsync(i.GetOwner());
+      t = this.GetItem(4);
+      this.Qtt = new InputMultiKeyItem_1.InputMultiKeyItem(true);
+      await this.Qtt.CreateByActorAsync(t.GetOwner());
     }
-    this.RefreshBehaviorButton(t.InputActionType, t.ActionName);
   }
   OnBeforeDestroy() {
     this.tit = undefined;
@@ -78,9 +82,11 @@ class BehaviorButton extends BattleChildView_1.BattleChildView {
       ResourceSystem_1.ResourceSystem.CancelAsyncLoad(this.frt);
       this.frt = undefined;
     }
+    this.fWm?.Reset();
+    this.fWm = undefined;
     this.kre();
     this.Mrt = undefined;
-    this.uim = undefined;
+    this.Fnm = undefined;
   }
   Ore() {
     var t = this.GetButton(0);
@@ -103,11 +109,15 @@ class BehaviorButton extends BattleChildView_1.BattleChildView {
   Refresh(t) {
     this.tit = t;
     this.RefreshVisible();
+    this.RefreshEnable(true);
+    this.RefreshSkillIcon();
+    this.RefreshDynamicEffect();
+    this.RefreshKey();
   }
-  RefreshBehaviorButton(t, i) {
-    this.BehaviorType = t;
-    this.ActionName = i;
-    this.Qtt?.RefreshAction(i);
+  RefreshAll() {
+    if (this.tit) {
+      this.Refresh(this.tit);
+    }
   }
   Srt(t, i) {
     this.OnInputAction();
@@ -118,10 +128,10 @@ class BehaviorButton extends BattleChildView_1.BattleChildView {
       this.vrt?.Play();
     }
   }
-  SetBehaviorToggleState(t) {
+  RefreshSkillIcon() {
+    var t;
     if (this.tit) {
-      this.tit.State = t;
-      t = this.tit.SkillIconPathList[t];
+      t = this.tit.GetSkillTexturePath();
       this.Irt(t);
     }
   }
@@ -154,11 +164,11 @@ class BehaviorButton extends BattleChildView_1.BattleChildView {
       } else {
         this.Hide();
       }
-      this.uim?.();
+      this.Fnm?.();
     }
   }
   IsVisible() {
-    return !!this.tit && (this.BehaviorType !== 102 || !!ModelManager_1.ModelManager.FunctionModel.IsOpen(10031)) && this.tit.IsVisible;
+    return !!this.tit && (this.BehaviorType !== 102 || !!ModelManager_1.ModelManager.FunctionModel.IsOpen(10031)) && this.tit.IsVisible();
   }
   RefreshEnable(t) {}
   SetVisibleByExploreMode(t, i = false) {
@@ -189,7 +199,44 @@ class BehaviorButton extends BattleChildView_1.BattleChildView {
     }
   }
   SetOnVisibleChangedCallback(t) {
-    this.uim = t;
+    this.Fnm = t;
+  }
+  RefreshDynamicEffect() {
+    var t = this.GetDynamicEffectConfig();
+    this.fWm?.RefreshDynamicEffect(t);
+  }
+  GetDynamicEffectConfig() {
+    if (this.tit) {
+      return this.tit.GetDynamicEffectConfig();
+    }
+  }
+  GetKeyItem() {
+    return this.Qtt;
+  }
+  RefreshKey() {
+    var t;
+    if (Info_1.Info.OperationType === 2) {
+      t = this.tit.GetActionName();
+      if (this.KeyActionName === t) {
+        if (Log_1.Log.CheckDebug()) {
+          Log_1.Log.Debug("Battle", 17, "[KeyItem]刷新技能按钮按键图标时，行为名称与上一次刷新一致，因此不刷新", ["actionName", t]);
+        }
+      } else {
+        if (Log_1.Log.CheckDebug()) {
+          Log_1.Log.Debug("Battle", 17, "[KeyItem]刷新技能按钮按键图标", ["actionName", t]);
+        }
+        if (this.Qtt) {
+          this.Qtt.RefreshByActionOrAxis({
+            ActionOrAxisName: t
+          });
+          this.Qtt.SetActive(true);
+        }
+        this.KeyActionName = t;
+      }
+    }
+  }
+  GetActionName() {
+    return this.KeyActionName;
   }
 }
 exports.BehaviorButton = BehaviorButton;

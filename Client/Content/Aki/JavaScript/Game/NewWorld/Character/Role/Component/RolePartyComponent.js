@@ -29,7 +29,7 @@ const ConfigManager_1 = require("../../../../Manager/ConfigManager");
 let RolePartyComponent = class RolePartyComponent extends EntityComponent_1.EntityComponent {
   OnStart() {
     var e = this.Entity.GetComponent(0);
-    var t = this.Entity.CheckGetComponent(209);
+    var t = this.Entity.CheckGetComponent(215);
     var o = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(e.GetRoleId());
     var o = ConfigManager_1.ConfigManager.InfluenceConfig.GetInfluenceConfig(o.PartyId);
     if (o) {
@@ -42,5 +42,5 @@ let RolePartyComponent = class RolePartyComponent extends EntityComponent_1.Enti
     return true;
   }
 };
-RolePartyComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(277)], RolePartyComponent);
+RolePartyComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(295)], RolePartyComponent);
 exports.RolePartyComponent = RolePartyComponent; //# sourceMappingURL=RolePartyComponent.js.map

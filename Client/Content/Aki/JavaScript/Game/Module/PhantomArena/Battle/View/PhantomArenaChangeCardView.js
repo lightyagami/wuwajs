@@ -75,7 +75,7 @@ class PhantomArenaChangeCardView extends UiViewBase_1.UiViewBase {
       }
       if (t = this.Layout.GetLayoutItemByKey(e)) {
         t.SetSelectState(true);
-        this._U1.RefreshTips(t.Card.Data);
+        this._U1.RefreshTips(t.Card.Data, false);
         this._U1.SetTipsActive(true);
       }
       this.uU1 = e;
@@ -86,6 +86,13 @@ class PhantomArenaChangeCardView extends UiViewBase_1.UiViewBase {
       this.Layout.GetLayoutItemByKey(this.uU1)?.SetSelectState(false);
       this.uU1 = -1;
       this._U1.SetTipsActive(false);
+    }
+  }
+  GetExtraResourceId(e) {
+    if (ModelManager_1.ModelManager.PhantomArenaBattleModel.IsOldBvb) {
+      return "UiView_CardChage";
+    } else {
+      return "UiView_CardChageNew";
     }
   }
 }

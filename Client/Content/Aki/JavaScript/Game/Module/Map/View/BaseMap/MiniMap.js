@@ -11,50 +11,55 @@ const EventSystem_1 = require("../../../../Common/Event/EventSystem");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const UiAsyncTask_1 = require("../../../../Ui/Base/UiAsyncTask");
 const UiPanelBase_1 = require("../../../../Ui/Base/UiPanelBase");
+const AutoPilotLine_1 = require("../../../AutoPilot/AutoPilotLine");
 const BattleUiDefine_1 = require("../../../BattleUi/BattleUiDefine");
 const TaskMarkItem_1 = require("../../Marks/MarkItem/TaskMarkItem");
 const TaskMarkItemView_1 = require("../../Marks/MarkItemView/TaskMarkItemView");
 const MapRangePanel_1 = require("../SubView/MapRangePanel");
 const MapMarkMgr_1 = require("./Assistant/MapMarkMgr");
+const MapRoadWaysMgr_1 = require("./Assistant/MapRoadWaysMgr");
 const MapSoundBoxSfxMgr_1 = require("./Assistant/MapSoundBoxSfxMgr");
 const MapTileMgr_1 = require("./Assistant/MapTileMgr");
 class MiniMap extends UiPanelBase_1.UiPanelBase {
-  constructor(e, t, i, s = 1, a) {
+  constructor(t, i, e, s = 1, a) {
     super();
     this.MapType = 1;
     this.Z3_ = 0;
     this.e4_ = 0;
     this.CAi = undefined;
-    this.gAi = undefined;
+    this.MapTileMgr = undefined;
     this.ODl = undefined;
     this.fAi = undefined;
     this.dAi = 1;
     this.lUi = 1;
     this.Lfc = undefined;
+    this.Y6m = undefined;
+    this.d5f = undefined;
     this.MAi = () => {
-      this.gAi.OnMapSetUp();
-      this.gAi.LoadMapBorder();
+      this.MapTileMgr.OnMapSetUp();
+      this.MapTileMgr.LoadMapBorder();
       this.CAi.OnMapSetup();
+      this.d5f?.OnMapSetup();
       this.RootItem.SetUIActive(true);
     };
-    this.MapType = e;
-    this.e4_ = t;
-    this.Z3_ = ModelManager_1.ModelManager.MapModel.GetDungeonMapConfigId(t);
-    this.dAi = i;
+    this.MapType = t;
+    this.e4_ = i;
+    this.Z3_ = ModelManager_1.ModelManager.MapModel.GetDungeonMapConfigId(i);
+    this.dAi = e;
     this.lUi = s;
     this.fAi = a;
   }
   get MapId() {
     return this.Z3_;
   }
-  set MapId(e) {
-    this.Z3_ = e;
+  set MapId(t) {
+    this.Z3_ = t;
   }
   get InstanceDungeonId() {
     return this.e4_;
   }
-  set InstanceDungeonId(e) {
-    this.e4_ = e;
+  set InstanceDungeonId(t) {
+    this.e4_ = t;
   }
   get MapGravity() {
     return ModelManager_1.ModelManager.MapModel.CurrentPlayerGravity;
@@ -63,14 +68,18 @@ class MiniMap extends UiPanelBase_1.UiPanelBase {
     this.UnBindEvents();
     this.CAi?.Dispose();
     this.CAi = undefined;
-    this.gAi?.Dispose();
-    this.gAi = undefined;
+    this.MapTileMgr?.Dispose();
+    this.MapTileMgr = undefined;
     this.ODl = undefined;
     this.Lfc?.Destroy();
     this.Lfc = undefined;
+    this.Y6m?.Destroy();
+    this.Y6m = undefined;
+    this.d5f?.Dispose();
+    this.d5f = undefined;
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIItem], [2, UE.UITexture], [1, UE.UIItem], [3, UE.UIItem], [4, UE.UITexture], [5, UE.UIItem], [6, UE.UITexture]];
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [2, UE.UITexture], [1, UE.UIItem], [3, UE.UIItem], [4, UE.UITexture], [5, UE.UIItem], [6, UE.UITexture], [7, UE.UIItem]];
   }
   OnStart() {
     this.SetMapScale(this.dAi);
@@ -80,10 +89,16 @@ class MiniMap extends UiPanelBase_1.UiPanelBase {
     this.RootItem.SetHierarchyIndex(0);
     this.Lfc = new MapRangePanel_1.MapRangePanel(this);
     this.Lfc.CheckExploreMarkRangeInfo();
+    this.Y6m = new AutoPilotLine_1.AutoPilotLine(this);
+    this.Y6m?.CheckAutoPilotLineInfo();
+    this.d5f = new MapRoadWaysMgr_1.MapRoadWaysMgr({
+      MapId: this.MapId,
+      Container: this.GetItem(7)
+    });
   }
-  F$t(e) {
-    var t = this.GetItem(0);
-    var i = this.GetItem(1);
+  F$t(t) {
+    var i = this.GetItem(0);
+    var e = this.GetItem(1);
     let s = this.GetTexture(2);
     var a = this.GetItem(3);
     var n = this.GetTexture(4);
@@ -91,19 +106,19 @@ class MiniMap extends UiPanelBase_1.UiPanelBase {
     if (MiniMap.MapMaterialVersion === 2) {
       (s = this.GetTexture(6)).SetUIActive(false);
     }
-    var r = this.GetItem(5);
-    var t = {
+    var h = this.GetItem(5);
+    var i = {
       MapType: this.MapType,
       MapId: this.MapId,
       InstanceDungeonId: this.InstanceDungeonId,
-      MarkContainer: t,
-      MarkScale: e
+      MarkContainer: i,
+      MarkScale: t
     };
-    this.CAi = new MapMarkMgr_1.MapMarkMgr(t);
+    this.CAi = new MapMarkMgr_1.MapMarkMgr(i);
     this.CAi.Initialize();
-    var e = {
+    var t = {
       MapRootItem: this.RootItem,
-      TileContainer: i,
+      TileContainer: e,
       TileTexture: s,
       SubMapContainer: a,
       SubMapTexture: n,
@@ -112,10 +127,10 @@ class MiniMap extends UiPanelBase_1.UiPanelBase {
       InstanceDungeonId: this.InstanceDungeonId,
       MapVersion: MiniMap.MapMaterialVersion,
       PreloadTiles: this.fAi,
-      SubMapMask: r
+      SubMapMask: h
     };
-    this.gAi = new MapTileMgr_1.MapTileMgr(e);
-    this.gAi.Initialize();
+    this.MapTileMgr = new MapTileMgr_1.MapTileMgr(t);
+    this.MapTileMgr.Initialize();
     this.ODl = new MapSoundBoxSfxMgr_1.MapSoundBoxSfxMgr();
   }
   yWe() {
@@ -130,79 +145,84 @@ class MiniMap extends UiPanelBase_1.UiPanelBase {
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDone, this.MAi);
     }
   }
-  MiniMapUpdateMarkItems(a, n, r) {
-    this.CAi.UpdateNearbyMarkItem(r, t => {
-      t.LogicUpdate(r);
-      t.IsInAoiRange = true;
-      t.ViewUpdateAsync(r);
-      this.ODl.OnMarkItemBecomeVisible(t, r);
-      var e = t.UiPosition;
-      if (e) {
-        const i = Vector2D_1.Vector2D.Create(e.X, e.Y);
-        if (t.CanOutOfBound) {
+  MiniMapUpdateMarkItems(a, n, h) {
+    this.CAi.UpdateNearbyMarkItem(h, i => {
+      i.LogicUpdate(h);
+      i.IsInAoiRange = true;
+      i.ViewUpdateAsync(h);
+      this.ODl.OnMarkItemBecomeVisible(i, h);
+      var t = i.UiPosition;
+      if (t) {
+        const e = Vector2D_1.Vector2D.Create(t.X, t.Y);
+        if (i.CanOutOfBound) {
           const s = Vector2D_1.Vector2D.Create();
-          i.Multiply(n, s).Addition(a, s);
-          let e = false;
-          if (t instanceof TaskMarkItem_1.TaskMarkItem && t.View instanceof TaskMarkItemView_1.TaskMarkItemView) {
-            e = t.View.IsRangeImageActive() ?? false;
+          e.Multiply(n, s).Addition(a, s);
+          let t = false;
+          if (i instanceof TaskMarkItem_1.TaskMarkItem && i.View instanceof TaskMarkItemView_1.TaskMarkItemView) {
+            t = i.View.IsRangeImageActive() ?? false;
           }
-          if (s.Size() > BattleUiDefine_1.CLAMP_RANGE && !e) {
+          if (s.Size() > BattleUiDefine_1.CLAMP_RANGE && !t) {
             s.DivisionEqual(s.Size()).MultiplyEqual(BattleUiDefine_1.CLAMP_RANGE).SubtractionEqual(a).DivisionEqual(n);
-            t.GetRootItemAsync().then(e => {
-              if (e?.IsValid() && t.MarkItemEntity.ViewLifeCircle.IsChildViewVisible(0)) {
-                e.SetAnchorOffset(s.ToUeVector2D(true));
+            i.GetRootItemAsync().then(t => {
+              if (t?.IsValid() && i.MarkItemEntity.ViewLifeCircle.IsChildViewVisible(0)) {
+                t.SetAnchorOffset(s.ToUeVector2D(true));
               }
             });
           } else {
-            t.GetRootItemAsync().then(e => {
-              if (e?.IsValid() && t.MarkItemEntity.ViewLifeCircle.IsChildViewVisible(0)) {
-                e.SetAnchorOffset(i.ToUeVector2D(true));
+            i.GetRootItemAsync().then(t => {
+              if (t?.IsValid() && i.MarkItemEntity.ViewLifeCircle.IsChildViewVisible(0)) {
+                t.SetAnchorOffset(e.ToUeVector2D(true));
               }
             });
           }
         } else {
-          t.GetRootItemAsync().then(e => {
-            if (e?.IsValid() && t.MarkItemEntity.ViewLifeCircle.IsChildViewVisible(0)) {
-              e.SetAnchorOffset(i.ToUeVector2D(true));
+          i.GetRootItemAsync().then(t => {
+            if (t?.IsValid() && i.MarkItemEntity.ViewLifeCircle.IsChildViewVisible(0)) {
+              t.SetAnchorOffset(e.ToUeVector2D(true));
             }
           });
         }
       }
-    }, e => {
-      e.IsInAoiRange = false;
-      e.LogicUpdate(r);
-      e.ViewUpdateAsync(r);
-      this.ODl.OnMarkItemBecomeInvisible(e);
+    }, t => {
+      t.IsInAoiRange = false;
+      t.LogicUpdate(h);
+      t.ViewUpdateAsync(h);
+      this.ODl.OnMarkItemBecomeInvisible(t);
     });
     this.Lfc.MiniMapUpdate();
   }
   Tick() {
     this.CAi?.Tick();
+    this.Y6m?.OnMiniMapTick();
   }
-  UpdateMinimapTiles(e) {
-    this.gAi.UpdateMinimapTiles(e);
+  UpdateMinimapTiles(t) {
+    this.MapTileMgr.UpdateMinimapTiles(t);
   }
-  SetMapScale(e) {
-    this.RootItem.D_SetWorldScale3D(new UE.VectorDouble(e, e, e));
+  SetMapScale(t) {
+    this.RootItem.D_SetWorldScale3D(new UE.VectorDouble(t, t, t));
   }
-  GetMarkItem(e, t) {
-    return this.CAi.GetMarkItem(e, t);
+  GetMarkItem(t, i) {
+    return this.CAi.GetMarkItem(t, i);
   }
-  async ChangeMapAsync(e) {
-    if (this.MapId !== e) {
-      e = ModelManager_1.ModelManager.MapModel.GetInstanceIdByWorldMapId(e);
-      this.InstanceDungeonId = e;
-      this.Z3_ = ModelManager_1.ModelManager.MapModel.GetDungeonWorldMapConfigId(e);
-      e = new UiAsyncTask_1.UiAsyncTask("Map.ChangeMapAsync", async () => {
+  async ChangeMapAsync(t) {
+    if (this.MapId !== t) {
+      t = ModelManager_1.ModelManager.MapModel.GetInstanceIdByWorldMapId(t);
+      this.InstanceDungeonId = t;
+      this.Z3_ = ModelManager_1.ModelManager.MapModel.GetDungeonWorldMapConfigId(t);
+      t = new UiAsyncTask_1.UiAsyncTask("Map.ChangeMapAsync", async () => {
         if (!this.WaitToDestroy) {
           this.Lfc?.Destroy();
           this.Lfc = new MapRangePanel_1.MapRangePanel(this);
-          await this.gAi.OnChangeTilesAsync(this.Z3_, this.e4_, this.MapGravity);
+          this.Y6m?.Destroy();
+          this.Y6m = new AutoPilotLine_1.AutoPilotLine(this);
+          await this.MapTileMgr.OnChangeTilesAsync(this.Z3_, this.e4_, this.MapGravity);
           this.Lfc.CheckExploreMarkRangeInfo();
+          this.Y6m?.CheckAutoPilotLineInfo();
           this.CAi.OnChangeWorldMap(this.Z3_, this.e4_, this.MapGravity);
+          this.d5f?.OnChangeWorldMap(this.Z3_);
         }
       });
-      await this.RunAsyncTask(e);
+      await this.RunAsyncTask(t);
     }
   }
 }

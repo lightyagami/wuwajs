@@ -23,6 +23,7 @@ const CollectRewardPopup_1 = require("./CollectRewardPopup");
 class PhantomArenaCollectCardTabView extends UiTabViewBase_1.UiTabViewBase {
   constructor() {
     super(...arguments);
+    this.ActivityId = 0;
     this.CardScrollView = undefined;
     this.H3e = undefined;
     this.Mli = undefined;
@@ -43,6 +44,7 @@ class PhantomArenaCollectCardTabView extends UiTabViewBase_1.UiTabViewBase {
     this.ZW1 = e => {
       e = {
         CardId: e,
+        ActivityId: this.ActivityId,
         CallbackOnClose: this.jgu
       };
       UiManager_1.UiManager.OpenView("CollectCardDetailView", e);
@@ -54,12 +56,7 @@ class PhantomArenaCollectCardTabView extends UiTabViewBase_1.UiTabViewBase {
       this.cHt();
       this.jqe();
     };
-    this.jgu = e => {
-      this.CardScrollView.GetGridAndScrollToByJudge(e, this.$gu, false);
-    };
-    this.$gu = (e, t) => {
-      return e === t.CardId;
-    };
+    this.jgu = e => {};
     this.Y5i = () => {
       var e = new CollectGridCardItem_1.CollectGridCardItem();
       e.CallbackOnClick = this.ZW1;
@@ -79,6 +76,7 @@ class PhantomArenaCollectCardTabView extends UiTabViewBase_1.UiTabViewBase {
     this.ComponentRegisterInfos = [[0, UE.UIArtText], [1, UE.UISprite], [2, UE.UIHorizontalLayout], [3, UE.UIItem], [4, UE.UILoopScrollViewComponent], [5, UE.UIItem], [6, UE.UIHorizontalLayout], [7, UE.UIText]];
   }
   async OnBeforeStartAsync() {
+    this.ActivityId = this.ExtraParams;
     this.S2t = new CollectRewardPopup_1.CollectRewardPopup();
     await this.S2t.CreateByResourceIdAsync("UiItem_SoundRemnantArenaRewardPopup", this.RootItem);
   }
@@ -107,33 +105,33 @@ class PhantomArenaCollectCardTabView extends UiTabViewBase_1.UiTabViewBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPhantomArenaCardOutlookUnlock, this.Hgu);
   }
   cHt() {
-    var e = ModelManager_1.ModelManager.PhantomArenaModel.GetCollectCardDataList();
+    var e = ModelManager_1.ModelManager.PhantomArenaModel.GetCollectCardDataList(this.ActivityId);
     this.CardScrollView.RefreshByData(e, true);
-    var e = ModelManager_1.ModelManager.PhantomArenaModel.GetCollectCardElementDataList();
+    var e = ModelManager_1.ModelManager.PhantomArenaModel.GetCollectCardElementDataList(this.ActivityId);
     this.Mli.RefreshByData(e);
     var e = ConfigManager_1.ConfigManager.TextConfig.GetMultiTextByKey(PhantomArenaDefine_1.COLLECT_ELEMENT_PHYSICAL_NAME, "");
-    var t = ModelManager_1.ModelManager.PhantomArenaModel.GetCollectCardElementCount().get(0);
-    var r = t?.[0] ?? 0;
+    var t = ModelManager_1.ModelManager.PhantomArenaModel.GetCollectCardElementCount(this.ActivityId).get(0);
+    var i = t?.[0] ?? 0;
     var t = t?.[1] ?? 0;
-    this.GetText(7).SetText(StringUtils_1.StringUtils.Format("{0} {1}/{2}", e, r.toString(), t.toString()));
+    this.GetText(7).SetText(StringUtils_1.StringUtils.Format("{0} {1}/{2}", e, i.toString(), t.toString()));
   }
   jqe() {
-    var e = ModelManager_1.ModelManager.PhantomArenaModel.GetCardRewardConfigList();
+    var e = ModelManager_1.ModelManager.PhantomArenaModel.GetCardRewardConfigList(this.ActivityId);
     this.H3e.RefreshByData(e);
-    var e = ModelManager_1.ModelManager.PhantomArenaModel.GetCardUnlockCount();
+    var e = ModelManager_1.ModelManager.PhantomArenaModel.GetCardUnlockCount(this.ActivityId);
     this.GetArtText(0).SetText(e.toString());
-    var e = ModelManager_1.ModelManager.PhantomArenaModel.GetCardRewardProgress();
+    var e = ModelManager_1.ModelManager.PhantomArenaModel.GetCardRewardProgress(this.ActivityId);
     this.GetSprite(1).SetFillAmount(e);
   }
   hOe() {
     var e = [];
-    for (const t of ModelManager_1.ModelManager.PhantomArenaModel.GetCardRewardConfigList()) {
+    for (const t of ModelManager_1.ModelManager.PhantomArenaModel.GetCardRewardConfigList(this.ActivityId)) {
       if (ModelManager_1.ModelManager.PhantomArenaModel.GetCardRewardStateById(t) === 2) {
         e.push(t);
       }
     }
     if (!(e.length <= 0)) {
-      PhantomArenaController_1.PhantomArenaController.CardRewardRequest(e);
+      PhantomArenaController_1.PhantomArenaController.CardRewardRequest(e, this.ActivityId);
     }
   }
   OnBeforeHide() {

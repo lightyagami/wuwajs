@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.SequenceRenderSettings = exports.PlotSubtitleConfig = exports.SequenceEntityInfo = exports.MAX_FRAME = exports.DEFAULT_LAST_SUBTITLE_TIME = exports.PLOT_WAIT_ENTITY_TIME = exports.FEMALE_SEQ_MODEL_ID = exports.MALE_SEQ_MODEL_ID = exports.ABP_Mouth_Slot_Name = exports.ABP_Seq_Slot_Name = exports.ABP_Base_Name = exports.FREEATTACH_TAG = exports.TALK_NPC_TAG = exports.CAMERA_TAG = exports.BOSS_TAG = exports.HERO_TAG = exports.FEMALE_TAG = exports.MALE_TAG = exports.FRAME_PER_MILLISECOND = undefined;
+exports.SequenceRenderSettings = exports.PlotSubtitleConfig = exports.SequenceEntityInfo = exports.MAX_FRAME = exports.DEFAULT_LAST_SUBTITLE_TIME = exports.PLOT_WAIT_ENTITY_TIME = exports.FEMALE_SEQ_MODEL_ID = exports.MALE_SEQ_MODEL_ID = exports.MOTOR_TAG = exports.FINAL_POS_TAG = exports.SeqStreamingSourceProxy_TAG = exports.ABP_Mouth_Slot_Name = exports.ABP_Seq_Slot_Name = exports.ABP_Base_Name = exports.FREEATTACH_TAG = exports.TALK_NPC_TAG = exports.CAMERA_TAG = exports.BOSS_TAG = exports.HERO_TAG = exports.FEMALE_TAG = exports.MALE_TAG = exports.FRAME_PER_MILLISECOND = undefined;
 const UE = require("ue");
 const Info_1 = require("../../../../Core/Common/Info");
 const Rotator_1 = require("../../../../Core/Utils/Math/Rotator");
@@ -19,20 +19,23 @@ exports.FREEATTACH_TAG = new UE.FName("FreeAttach");
 exports.ABP_Base_Name = new UE.FName("ABP_Base");
 exports.ABP_Seq_Slot_Name = new UE.FName("KuroSequenceSlot");
 exports.ABP_Mouth_Slot_Name = new UE.FName("SeqMouth");
+exports.SeqStreamingSourceProxy_TAG = new UE.FName("StreamingSource");
+exports.FINAL_POS_TAG = new UE.FName("FinalPos");
+exports.MOTOR_TAG = new UE.FName("Motor");
 exports.MALE_SEQ_MODEL_ID = 110004;
 exports.FEMALE_SEQ_MODEL_ID = 110006;
 exports.PLOT_WAIT_ENTITY_TIME = -1;
 exports.DEFAULT_LAST_SUBTITLE_TIME = 1;
 exports.MAX_FRAME = 9999999;
 class SequenceEntityInfo {
-  constructor(t = -1, e = -1, s = 0, o = false, r = Vector_1.Vector.Create(), i = Rotator_1.Rotator.Create(), h = false) {
+  constructor(t = -1, e = -1, s = 0, o = false, r = Vector_1.Vector.Create(), i = Rotator_1.Rotator.Create(), n = false) {
     this.MoveCompDisableHandle = t;
     this.UeMoveCompDisableHandle = e;
     this.CacheMovementMode = s;
     this.CacheMovementSync = o;
     this.CacheLocation = r;
     this.CacheRotation = i;
-    this.CacheAiEnable = h;
+    this.CacheAiEnable = n;
   }
 }
 exports.SequenceEntityInfo = SequenceEntityInfo;

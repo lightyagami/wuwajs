@@ -28,17 +28,24 @@ class LordGymDifficultyItem extends GridProxyAbstract_1.GridProxyAbstract {
     if (this.CanExecuteChangeCallBack) {
       this.GetExtendToggle(0)?.CanExecuteChange.Bind(() => this.CanExecuteChangeCallBack?.(this.GridIndex) ?? true);
     }
+    this.GetItem(4).SetUIActive(false);
   }
-  Refresh(t, i, e) {
+  Refresh(t, e, i) {
     this.syi = t;
+    var r;
     var t = !ModelManager_1.ModelManager.LordGymModel.GetLordGymIsUnLock(this.syi) || !ModelManager_1.ModelManager.LordGymModel.GetLastGymFinish(this.syi);
     this.GetItem(2).SetUIActive(t);
     var t = ConfigManager_1.ConfigManager.LordGymConfig.GetLordGymConfig(this.syi);
-    var r = ModelManager_1.ModelManager.LordGymModel.GetLordGymIsFinish(this.syi);
-    this.GetItem(3).SetUIActive(r);
+    if (t) {
+      r = ModelManager_1.ModelManager.LordGymModel.GetLordGymIsFinish(this.syi);
+      this.GetItem(3).SetUIActive(r);
+      this.SetLevelText(t);
+      r = e ? 1 : 0;
+      this.GetExtendToggle(0).SetToggleState(r, false);
+    }
+  }
+  SetLevelText(t) {
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), t.GymTitle);
-    var r = i ? 1 : 0;
-    this.GetExtendToggle(0).SetToggleState(r, false);
   }
   OnSelected(t) {
     this.GetExtendToggle(0).SetToggleState(1, t);

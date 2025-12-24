@@ -10,6 +10,7 @@ const PhantomArenaController_1 = require("../PhantomArenaController");
 class PhantomArenaMainViewModel {
   constructor() {
     this.hyc = 0;
+    this.ActivityId = 0;
     this.P81 = undefined;
     this.QuicklyBuildDeckUseTimes = new Map();
     this.LastQuicklyBuildId = 0;
@@ -17,6 +18,7 @@ class PhantomArenaMainViewModel {
     this.TextureCardRoleId = 0;
     this.RoleTextureActive = false;
     this.j81 = undefined;
+    this.RecommendDeck = undefined;
     this.EditableDeckList = [];
     this.UsedDeckIndex = -1;
     this.SelectedDeckIndex = -1;
@@ -53,11 +55,11 @@ class PhantomArenaMainViewModel {
       this.CanShowRewardInRoleSelectTabView = true;
       this.CanShowSelectBtnInDeckOverviewTabView = false;
     }
-    var t = i.GetLastUsedCardRoleId();
-    this.CardRoleList = i.GetCardRoleList();
+    var t = i.GetLastUsedCardRoleId(this.ActivityId);
+    this.CardRoleList = i.GetCardRoleList(this.ActivityId);
     this.SelectedCardRoleId = t;
     this.TextureCardRoleId = t;
-    var t = i.GetLastUsedCardDeckServerId();
+    var t = i.GetLastUsedCardDeckServerId(this.ActivityId);
     this.UsedDeckIndex = t >= 0 ? t : -1;
     this.SelectedDeckIndex = this.UsedDeckIndex;
     this.UpdateEditableDeckList();
@@ -85,13 +87,13 @@ class PhantomArenaMainViewModel {
   }
   GetUsedDeck() {
     if (!(this.UsedDeckIndex < 0)) {
-      return ModelManager_1.ModelManager.PhantomArenaModel.GetDeckByDeckId(this.UsedDeckIndex);
+      return ModelManager_1.ModelManager.PhantomArenaModel.GetDeckByDeckId(this.UsedDeckIndex, this.ActivityId);
     }
   }
   UpdateEditableDeckList() {
-    this.EditableDeckList = ModelManager_1.ModelManager.PhantomArenaModel.CreateEditableDeckListFromProtocolData();
+    this.EditableDeckList = ModelManager_1.ModelManager.PhantomArenaModel.CreateEditableDeckListFromProtocolData(this.ActivityId);
     var t = this.EditableDeckList.length;
-    var i = ModelManager_1.ModelManager.PhantomArenaModel.GetPhantomArenaActivityData().GetMaxDeckCount();
+    var i = ModelManager_1.ModelManager.PhantomArenaModel.GetPhantomArenaActivityData(this.ActivityId).GetMaxDeckCount();
     if (this.EditableDeckList.length < i) {
       this.EditableDeckList.push(this.CreateEmptyTempDeck());
     }
@@ -107,7 +109,7 @@ class PhantomArenaMainViewModel {
     return this.EditableDeckList;
   }
   CreateEmptyTempDeck() {
-    return ModelManager_1.ModelManager.PhantomArenaModel.CreateEmptyTempDeckInfo();
+    return ModelManager_1.ModelManager.PhantomArenaModel.CreateEmptyTempDeckInfo(this.ActivityId);
   }
   CreateTempDeckFromDeck(t) {
     return t.DeepCopy();
@@ -139,6 +141,7 @@ class PhantomArenaMainViewModel {
   }
   ReportDeckDelete(t) {
     t = {
+      ActivityId: this.ActivityId,
       DeckInfo: t,
       Operation: 2,
       QuicklyBuildDeckUseTimes: this.QuicklyBuildDeckUseTimes,
@@ -148,6 +151,7 @@ class PhantomArenaMainViewModel {
   }
   ReportDeckCreate(t) {
     t = {
+      ActivityId: this.ActivityId,
       DeckInfo: t,
       Operation: 1,
       QuicklyBuildDeckUseTimes: this.QuicklyBuildDeckUseTimes,
@@ -157,6 +161,7 @@ class PhantomArenaMainViewModel {
   }
   ReportDeckCover(t) {
     t = {
+      ActivityId: this.ActivityId,
       DeckInfo: t,
       Operation: 3,
       QuicklyBuildDeckUseTimes: this.QuicklyBuildDeckUseTimes,

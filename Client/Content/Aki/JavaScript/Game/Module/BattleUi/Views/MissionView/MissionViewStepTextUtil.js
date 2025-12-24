@@ -13,7 +13,7 @@ class MissionViewStepTextUtil {
   static GetStepTextByConfig(e, t) {
     switch (t.ShowSource) {
       case 0:
-        return GeneralLogicTreeController_1.GeneralLogicTreeController.GetTitleText(e, t.TidTitle, t.QuestScheduleType, t.UsePreStateText ?? false);
+        return GeneralLogicTreeController_1.GeneralLogicTreeController.GetTitleText(e, t.TidTitle, t.QuestScheduleType, t.UsePreStateText ?? false, t.CustomPlaceholderBindingProgressList);
       case 1:
         return MissionViewStepTextUtil.QU_(t);
       case 2:

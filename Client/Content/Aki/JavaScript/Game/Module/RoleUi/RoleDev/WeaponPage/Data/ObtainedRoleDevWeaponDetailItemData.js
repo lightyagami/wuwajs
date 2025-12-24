@@ -49,10 +49,10 @@ class ObtainedRoleDevWeaponDetailItemData {
     for (let e = a; e < r; e++) {
       i += t.GetLevelExp(e);
     }
-    a = this.Qrm(t);
+    a = this.mhm(t);
     return i += a;
   }
-  Qrm(e) {
+  mhm(e) {
     var t = e.GetBreachLevel();
     var e = RoleDevUtils_1.RoleDevUtils.GetCultivateProject(e.GetRoleId()).WeaponBreachLevel - t;
     if (e <= 0) {

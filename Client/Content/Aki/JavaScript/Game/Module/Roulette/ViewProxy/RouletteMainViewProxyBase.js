@@ -53,11 +53,19 @@ class RouletteMainViewProxyBase {
   GetPanelSwitchOpen() {
     return this.OnGetPanelSwitchOpen();
   }
+  RouletteTypeSwitch() {
+    this.OnRouletteTypeSwitch();
+  }
+  GetToggle1State() {}
+  GetToggle2State() {}
   GetCanOpenAssembly(t) {
     return this.OnGetCanOpenAssembly(t);
   }
   GetExploreRouletteDataMap() {
     return this.OnGetExploreRouletteDataMap();
+  }
+  GetRouletteGridId(t, e) {
+    return this.OnGetRouletteGridId(t, e);
   }
   GetActionName() {
     return this.OnGetActionName();
@@ -75,6 +83,7 @@ class RouletteMainViewProxyBase {
   OnRemoveEventListenerByStart() {}
   OnAddEventListener() {}
   OnRemoveEventListener() {}
+  OnRouletteTypeSwitch() {}
   OnRefreshTips() {}
 }
 exports.RouletteMainViewProxyBase = RouletteMainViewProxyBase;

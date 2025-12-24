@@ -12,14 +12,14 @@ const PlotTipsViewBase_1 = require("./PlotTipsViewBase");
 class PlotBattleTopRightTipsView extends PlotTipsViewBase_1.PlotTipsViewBase {
   constructor() {
     super();
-    this.uhm = undefined;
-    this.chm = undefined;
-    this.dhm = undefined;
-    this.mhm = undefined;
-    this.fhm = undefined;
-    this.ghm = () => {
-      this.fhm.SetResult(true);
-      this.fhm = undefined;
+    this.Zum = undefined;
+    this.ecm = undefined;
+    this.tcm = undefined;
+    this.icm = undefined;
+    this.rcm = undefined;
+    this.ocm = () => {
+      this.rcm.SetResult(true);
+      this.rcm = undefined;
     };
     this.ResourceId = "UiItem_MainTalk";
   }
@@ -31,39 +31,39 @@ class PlotBattleTopRightTipsView extends PlotTipsViewBase_1.PlotTipsViewBase {
     this.SubtitleItem = this.GetText(1);
     this.IconItem.GetParentAsUIItem().SetUIItemAlpha(0);
     this.SubtitleItem.GetParentAsUIItem().SetUIItemAlpha(0);
-    this.uhm = this.GetItem(2).GetOwner().GetComponentByClass(UE.LGUIPlayTweenComponent.StaticClass());
-    if (this.uhm) {
-      this.uhm.Stop();
+    this.Zum = this.GetItem(2).GetOwner().GetComponentByClass(UE.LGUIPlayTweenComponent.StaticClass());
+    if (this.Zum) {
+      this.Zum.Stop();
     }
-    this.chm = this.GetItem(3).GetOwner().GetComponentByClass(UE.LGUIPlayTweenComponent.StaticClass());
-    if (this.chm) {
-      this.chm.Stop();
-      this.dhm = (0, puerts_1.toManualReleaseDelegate)(this.ghm);
-      this.mhm = this.chm.GetPlayTween().RegisterOnComplete(this.dhm);
+    this.ecm = this.GetItem(3).GetOwner().GetComponentByClass(UE.LGUIPlayTweenComponent.StaticClass());
+    if (this.ecm) {
+      this.ecm.Stop();
+      this.tcm = (0, puerts_1.toManualReleaseDelegate)(this.ocm);
+      this.icm = this.ecm.GetPlayTween().RegisterOnComplete(this.tcm);
     }
   }
   OnAfterShow() {
     var i = this.IsHang;
     super.OnAfterShow();
-    if (this.uhm && !i) {
-      this.uhm.Play();
+    if (this.Zum && !i) {
+      this.Zum.Play();
     }
   }
   async OnHideAsyncImplementImplement() {
-    if (this.chm && !this.IsHang) {
-      this.fhm = new CustomPromise_1.CustomPromise();
-      this.chm.Play();
-      await this.fhm.Promise;
+    if (this.ecm && !this.IsHang) {
+      this.rcm = new CustomPromise_1.CustomPromise();
+      this.ecm.Play();
+      await this.rcm.Promise;
     }
   }
   OnBeforeDestroy() {
-    if (this.dhm) {
-      (0, puerts_1.releaseManualReleaseDelegate)(this.ghm);
-      this.dhm = undefined;
+    if (this.tcm) {
+      (0, puerts_1.releaseManualReleaseDelegate)(this.ocm);
+      this.tcm = undefined;
     }
-    if (this.mhm) {
-      this.chm.GetPlayTween().UnregisterOnComplete(this.mhm);
-      this.mhm = undefined;
+    if (this.icm) {
+      this.ecm.GetPlayTween().UnregisterOnComplete(this.icm);
+      this.icm = undefined;
     }
   }
   GetParentItem() {

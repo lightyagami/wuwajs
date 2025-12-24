@@ -46,7 +46,7 @@ class CalabashSkinController extends UiControllerBase_1.UiControllerBase {
       if (r?.Valid) {
         r.HuluSkinId = t;
       }
-      var r = e?.Entity.GetComponent(81);
+      var r = e?.Entity.GetComponent(84);
       if (r?.Valid) {
         r.OnEntityHuluSkinChangeNotify(t);
       }

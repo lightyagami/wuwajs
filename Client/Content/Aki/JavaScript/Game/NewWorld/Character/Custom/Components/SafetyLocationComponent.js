@@ -35,7 +35,7 @@ let SafetyLocationComponent = SafetyLocationComponent_1 = class SafetyLocationCo
     this.Rya = false;
     this.Aya = t => {
       this.Rya = t;
-      var e = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint()?.GetComponent(100);
+      var e = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint()?.GetComponent(103);
       if (e) {
         if (t) {
           e.AddSafetyLocationConfig(this.Entity, this.R0n);
@@ -62,5 +62,5 @@ let SafetyLocationComponent = SafetyLocationComponent_1 = class SafetyLocationCo
     return true;
   }
 };
-SafetyLocationComponent = SafetyLocationComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(256)], SafetyLocationComponent);
+SafetyLocationComponent = SafetyLocationComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(274)], SafetyLocationComponent);
 exports.SafetyLocationComponent = SafetyLocationComponent; //# sourceMappingURL=SafetyLocationComponent.js.map

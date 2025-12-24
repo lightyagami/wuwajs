@@ -133,9 +133,9 @@ class TowerVariationView extends UiTickViewBase_1.UiTickViewBase {
     for (let e = 0; e < this.CRo.length; e++) {
       this.CRo[e].Refresh(r[e]);
     }
-    this.Pem();
+    this._rm();
   }
-  Pem() {
+  _rm() {
     this.UiBehaviourHomeBtn?.AddExtraAsyncCallback(async () => {
       if (ModelManager_1.ModelManager.TowerModel.CheckInTower()) {
         await TowerController_1.TowerController.LeaveTower();

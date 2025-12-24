@@ -27,6 +27,7 @@ const PhantomArenaMatchGymItem_1 = require("./PhantomArenaMatchGymItem");
 class PhantomArenaMatchView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
+    this.ActivityId = 0;
     this.Stu = -1;
     this.o71 = undefined;
     this.Mtu = undefined;
@@ -40,6 +41,7 @@ class PhantomArenaMatchView extends UiViewBase_1.UiViewBase {
     this.Itu = () => {
       var e = new PhantomArenaMatchGymItem_1.MatchGymItem();
       e.CallbackOnClick = this.Ttu;
+      e.ActivityId = this.ActivityId;
       return e;
     };
     this.d71 = () => {
@@ -54,7 +56,7 @@ class PhantomArenaMatchView extends UiViewBase_1.UiViewBase {
     };
     this.Ttu = (e, t, i) => {
       if (this.Stu === e || i === 2) {
-        if (ModelManager_1.ModelManager.PhantomArenaModel.IsGymLock(e)) {
+        if (ModelManager_1.ModelManager.PhantomArenaModel.IsGymLock(e, this.ActivityId)) {
           ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId(PhantomArenaDefine_1.ENTRANCE_GYM_LOCK_TEXT_ID);
         }
       } else {
@@ -129,13 +131,15 @@ class PhantomArenaMatchView extends UiViewBase_1.UiViewBase {
     this.s71 = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(3), this.d71);
   }
   OnBeforeShow() {
-    var e = ModelManager_1.ModelManager.PhantomArenaModel.GetPhantomBattleGymLevelList(true);
-    this.Etu = e;
-    this.Mtu.RefreshByData(e);
-    this.Stu = this.OpenParam;
-    var e = this.Etu.indexOf(this.Stu);
+    var e = this.OpenParam;
+    this.ActivityId = e.ActivityId;
+    var t = ModelManager_1.ModelManager.PhantomArenaModel.GetPhantomBattleGymLevelList(this.ActivityId, true);
+    this.Etu = t;
+    this.Mtu.RefreshByData(t);
+    this.Stu = e.Level;
+    var t = this.Etu.indexOf(this.Stu);
     this.Mtu.DeselectCurrentGridProxy();
-    this.Mtu.SelectGridProxy(e);
+    this.Mtu.SelectGridProxy(t);
     this.WNe();
     this.f71();
     this.nOe();
@@ -147,13 +151,13 @@ class PhantomArenaMatchView extends UiViewBase_1.UiViewBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPhantomArenaChallengeUpdate, this.e5u);
   }
   WNe() {
-    var e = ModelManager_1.ModelManager.PhantomArenaModel.GetPhantomBattleGymConfigByLevel(this.Stu);
+    var e = ModelManager_1.ModelManager.PhantomArenaModel.GetPhantomBattleGymConfigByLevel(this.Stu, this.ActivityId);
     this.SetTextureByPath(e.TextureBg, this.GetTexture(15));
   }
   f71() {
     var e;
     if (this.Stu) {
-      e = ModelManager_1.ModelManager.PhantomArenaModel.GetChallengeStateListByGymLevel(this.Stu);
+      e = ModelManager_1.ModelManager.PhantomArenaModel.GetChallengeStateListByGymLevel(this.Stu, this.ActivityId);
       this.l71 = e;
       this.s71.RefreshByData(e);
       this.s71.DeselectCurrentGridProxy();
@@ -162,7 +166,7 @@ class PhantomArenaMatchView extends UiViewBase_1.UiViewBase {
       }
       e = this.l71.indexOf(this.o71);
       this.s71.SelectGridProxy(e);
-      ModelManager_1.ModelManager.PhantomArenaModel.SetGymRedDotChecked(this.Stu);
+      ModelManager_1.ModelManager.PhantomArenaModel.SetGymRedDotChecked(this.Stu, this.ActivityId);
     } else {
       this.s71.RefreshByData([]);
     }

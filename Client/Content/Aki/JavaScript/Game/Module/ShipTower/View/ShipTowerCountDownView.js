@@ -86,10 +86,10 @@ class ShipTowerCountDownView extends UiViewBase_1.UiViewBase {
     this._q_();
   }
   i9_() {
-    if (this.t9_ !== undefined) {
+    if (this.t9_ !== undefined && TimerSystem_1.TimerSystem.Has(this.t9_)) {
       TimerSystem_1.TimerSystem.Remove(this.t9_);
-      this.t9_ = undefined;
     }
+    this.t9_ = undefined;
   }
 }
 exports.ShipTowerCountDownView = ShipTowerCountDownView;

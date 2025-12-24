@@ -53,6 +53,9 @@ class TeleportMarkItem extends ConfigMarkItem_1.ConfigMarkItem {
   get IsShipTowerEntrance() {
     return ConfigManager_1.ConfigManager.InstanceDungeonEntranceConfig.CheckMarkIdIsShipTowerEntrance(this.MarkConfigId);
   }
+  get IsWheelTowerEntrance() {
+    return ConfigManager_1.ConfigManager.InstanceDungeonEntranceConfig.CheckMarkIdIsWheelTower(this.MarkConfigId);
+  }
   IsMultiMap() {
     return this.MarkConfig.MultiMapFloorId !== 0;
   }
@@ -73,6 +76,8 @@ class TeleportMarkItem extends ConfigMarkItem_1.ConfigMarkItem {
         return WorldMapDefine_1.ESecondaryPanel.RogueResPanel;
       } else if (this.IsShipTowerEntrance) {
         return WorldMapDefine_1.ESecondaryPanel.ShipTowerEntrancePanel;
+      } else if (this.IsWheelTowerEntrance) {
+        return WorldMapDefine_1.ESecondaryPanel.WheelTowerEntrancePanel;
       } else {
         return WorldMapDefine_1.ESecondaryPanel.InstanceDungeonEntrancePanel;
       }

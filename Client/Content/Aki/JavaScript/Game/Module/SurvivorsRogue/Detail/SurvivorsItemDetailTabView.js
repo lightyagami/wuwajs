@@ -41,9 +41,9 @@ class SurvivorsItemDetailTabView extends UiPanelBase_1.UiPanelBase {
   OnStart() {
     var i = ModelManager_1.ModelManager.SurvivorsRogueModel.GainData.GetItemGainList();
     if (i.length === 0) {
-      this.GQd(true);
+      this.jQd(true);
     } else {
-      this.GQd(false);
+      this.jQd(false);
       this.Spt?.RefreshByDataAsync(i).then(() => {
         this.Spt?.ScrollToGridIndex(0);
         this.Spt.UnsafeGetGridProxy(0)?.SetToggleStateForce(true, true, true);
@@ -51,7 +51,7 @@ class SurvivorsItemDetailTabView extends UiPanelBase_1.UiPanelBase {
     }
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(3), "SurvivorsPropAttribute_PropNum", i.length);
   }
-  GQd(i) {
+  jQd(i) {
     this.GetItem(4)?.SetUIActive(!i);
     this.GetItem(5)?.SetUIActive(i);
     this.GetTexture(6)?.SetUIActive(!i);

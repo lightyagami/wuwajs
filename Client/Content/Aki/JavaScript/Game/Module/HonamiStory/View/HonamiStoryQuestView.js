@@ -29,13 +29,13 @@ class HonamiStoryQuestView extends UiViewBase_1.UiViewBase {
     this.SPe = undefined;
     this.p9t = undefined;
     this.jno = undefined;
-    this.knm = undefined;
-    this.qnm = [];
+    this.s1m = undefined;
+    this.a1m = [];
     this.nu_ = t => {
-      if (this.knm !== t) {
-        this.knm?.OnDeselected();
-        this.knm = t;
-        this.knm.OnSelected();
+      if (this.s1m !== t) {
+        this.s1m?.OnDeselected();
+        this.s1m = t;
+        this.s1m.OnSelected();
         this.Wjt();
         if (this.SPe?.GetCurrentSequence() !== "Switch") {
           this.SPe?.PlayLevelSequenceByName("Switch");
@@ -53,7 +53,7 @@ class HonamiStoryQuestView extends UiViewBase_1.UiViewBase {
       return new CommonItemSmallItemGrid_1.CommonItemSmallItemGrid();
     };
     this.p5t = () => {
-      var t = this.knm?.Data;
+      var t = this.s1m?.Data;
       if (t) {
         ModelManager_1.ModelManager.HonamiStoryModel.SetSubQuestTrack(t);
         this.CloseMe();
@@ -75,8 +75,8 @@ class HonamiStoryQuestView extends UiViewBase_1.UiViewBase {
     this.p9t = new ButtonItem_1.ButtonItem(this.GetItem(13));
     this.p9t.SetFunction(this.p5t);
     this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
-    await this.Onm();
-    this.Gnm();
+    await this.h1m();
+    this.l1m();
   }
   OnBeforeShow() {
     this.GetItem(11).SetUIActive(false);
@@ -84,7 +84,7 @@ class HonamiStoryQuestView extends UiViewBase_1.UiViewBase {
     this.GetItem(5).SetUIActive(false);
     this.Wjt();
   }
-  async Onm() {
+  async h1m() {
     var t = [];
     if (HonamiStoryUtil_1.HonamiStoryUtil.CheckInActivityQuest()) {
       t.push(1);
@@ -95,23 +95,23 @@ class HonamiStoryQuestView extends UiViewBase_1.UiViewBase {
     }
     await this.zc_.RefreshByDataAsync(t);
   }
-  Gnm() {
-    if (this.knm) {
-      this.knm.OnDeselected();
-      this.knm = undefined;
+  l1m() {
+    if (this.s1m) {
+      this.s1m.OnDeselected();
+      this.s1m = undefined;
     }
     for (const t of this.zc_.GetLayoutItemList()) {
       for (const i of t.GetTaskChildItemList()) {
-        this.qnm.push(i);
+        this.a1m.push(i);
       }
     }
-    if (this.qnm.length === 0) {
+    if (this.a1m.length === 0) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("HonamiStory", 78, "HonamiStoryQuestView 没有任务子item");
       }
     } else {
-      this.knm ||= this.qnm[0];
-      this.knm.OnSelected();
+      this.s1m ||= this.a1m[0];
+      this.s1m.OnSelected();
     }
   }
   Wjt() {
@@ -119,10 +119,10 @@ class HonamiStoryQuestView extends UiViewBase_1.UiViewBase {
     var i;
     var e;
     var s;
-    if (this.knm) {
-      if (t = this.knm.Data) {
+    if (this.s1m) {
+      if (t = this.s1m.Data) {
         i = t.IsInDungeon;
-        this.rwm(t);
+        this.Cef(t);
         this.GetText(8).SetText(t.GetDesc());
         if ((s = t.GetRewardId()) === 0) {
           this.H3e.SetActive(false);
@@ -148,7 +148,7 @@ class HonamiStoryQuestView extends UiViewBase_1.UiViewBase {
           this.p9t.SetEnableClick(false);
           this.p9t.SetActive(true);
         }
-        this.M_m(t);
+        this.qfm(t);
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("HonamiStory", 78, "HonamiStoryQuestView 没有任务数据");
       }
@@ -156,7 +156,7 @@ class HonamiStoryQuestView extends UiViewBase_1.UiViewBase {
       Log_1.Log.Error("HonamiStory", 78, "HonamiStoryQuestView 没有当前选中任务item");
     }
   }
-  rwm(t) {
+  Cef(t) {
     var i = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(t.GetNameKey());
     var e = this.GetText(3);
     let s = "";
@@ -176,7 +176,7 @@ class HonamiStoryQuestView extends UiViewBase_1.UiViewBase {
       this.p9t.SetLocalTextNew("HonamiStory_Track");
     }
   }
-  async M_m(t) {
+  async qfm(t) {
     var i = this.GetItem(5);
     var t = t.GetTreeShowData();
     if (t) {
@@ -197,7 +197,7 @@ class HonamiStoryQuestView extends UiViewBase_1.UiViewBase {
     var s;
     var r = [];
     var t = ConfigManager_1.ConfigManager.RewardConfig.GetDropPackagePreview(t);
-    var o = this.knm?.Data;
+    var o = this.s1m?.Data;
     for ([i, e] of t) {
       if (o?.TaskType === 2) {
         s = e * ModelManager_1.ModelManager.HonamiStoryModel.GetSubTaskBonusDataList();

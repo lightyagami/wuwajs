@@ -15,22 +15,22 @@ const EFFECT_BASE_PERCENT = 17 / 41;
 class SpecialEnergyBarBuLing extends SpecialEnergyBarBase_1.SpecialEnergyBarBase {
   constructor() {
     super(...arguments);
-    this.xCm = false;
-    this.BCm = false;
-    this.kCm = false;
+    this.hTm = false;
+    this.lTm = false;
+    this._Tm = false;
     this.ac = 0;
-    this.qCm = -1;
+    this.uTm = -1;
     this.Rdt = undefined;
-    this.OCm = (t, i) => {
-      this.xCm = i;
+    this.cTm = (t, i) => {
+      this.hTm = i;
       this._Oe();
     };
-    this.GCm = (t, i) => {
-      this.BCm = i;
+    this.dTm = (t, i) => {
+      this.lTm = i;
       this._Oe();
     };
-    this.FCm = (t, i) => {
-      this.kCm = i;
+    this.mTm = (t, i) => {
+      this._Tm = i;
       this._Oe();
     };
   }
@@ -39,9 +39,9 @@ class SpecialEnergyBarBuLing extends SpecialEnergyBarBase_1.SpecialEnergyBarBase
   }
   OnInitData() {
     super.OnInitData();
-    this.ListenForTagAddOrRemoveChanged(tagLeft, this.OCm);
-    this.ListenForTagAddOrRemoveChanged(tagRight, this.GCm);
-    this.ListenForTagAddOrRemoveChanged(tagAll, this.FCm);
+    this.ListenForTagAddOrRemoveChanged(tagLeft, this.cTm);
+    this.ListenForTagAddOrRemoveChanged(tagRight, this.dTm);
+    this.ListenForTagAddOrRemoveChanged(tagAll, this.mTm);
   }
   async OnBeforeStartAsync() {
     var t = [];
@@ -62,23 +62,23 @@ class SpecialEnergyBarBuLing extends SpecialEnergyBarBase_1.SpecialEnergyBarBase
     this.InitTweenAnim(10);
     this.InitTweenAnim(11);
     this.InitTweenAnim(12);
-    this.xCm = this.TagComponent?.HasTag(tagLeft) ?? false;
-    this.BCm = this.TagComponent?.HasTag(tagRight) ?? false;
-    this.kCm = this.TagComponent?.HasTag(tagAll) ?? false;
+    this.hTm = this.TagComponent?.HasTag(tagLeft) ?? false;
+    this.lTm = this.TagComponent?.HasTag(tagRight) ?? false;
+    this._Tm = this.TagComponent?.HasTag(tagAll) ?? false;
     this._Oe(true);
   }
   _Oe(t = false) {
-    this.Rdt.SetState(this.xCm || this.kCm, this.BCm || this.kCm);
+    this.Rdt.SetState(this.hTm || this._Tm, this.lTm || this._Tm);
     let i = 0;
     var s;
-    if (this.kCm) {
+    if (this._Tm) {
       i = 3;
-    } else if (this.xCm) {
+    } else if (this.hTm) {
       i = 1;
-    } else if (this.BCm) {
+    } else if (this.lTm) {
       i = 2;
     }
-    if ((i !== this.ac || !!t) && !(s = this.ac, this.ac = i, Log_1.Log.CheckDebug() && Log_1.Log.Debug("Battle", 17, "卜灵能量条改变状态", ["state", i]), this.GetItem(1)?.SetUIActive(this.ac === 0), this.GetItem(3)?.SetUIActive(this.ac === 1), this.GetItem(2)?.SetUIActive(this.ac === 2), this.GetItem(4)?.SetUIActive(this.ac === 3), this.GetItem(5)?.SetUIActive(this.xCm || this.kCm), this.GetItem(6)?.SetUIActive(this.BCm || this.kCm), t)) {
+    if ((i !== this.ac || !!t) && !(s = this.ac, this.ac = i, Log_1.Log.CheckDebug() && Log_1.Log.Debug("Battle", 17, "卜灵能量条改变状态", ["state", i]), this.GetItem(1)?.SetUIActive(this.ac === 0), this.GetItem(3)?.SetUIActive(this.ac === 1), this.GetItem(2)?.SetUIActive(this.ac === 2), this.GetItem(4)?.SetUIActive(this.ac === 3), this.GetItem(5)?.SetUIActive(this.hTm || this._Tm), this.GetItem(6)?.SetUIActive(this.lTm || this._Tm), t)) {
       if (this.ac === 0) {
         if (s === 3) {
           this.PlayTweenAnimOnly(10);
@@ -99,10 +99,10 @@ class SpecialEnergyBarBuLing extends SpecialEnergyBarBase_1.SpecialEnergyBarBase
     }
   }
   PlayTweenAnimOnly(t) {
-    if (this.qCm >= 0) {
-      this.StopTweenAnim(this.qCm);
+    if (this.uTm >= 0) {
+      this.StopTweenAnim(this.uTm);
     }
-    this.qCm = t;
+    this.uTm = t;
     this.PlayTweenAnim(t);
   }
   Tick(t) {

@@ -9,6 +9,7 @@ const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const BattleVisibleChildView_1 = require("../BattleChildView/BattleVisibleChildView");
+const MotorcycleSpecialEnergyBar_1 = require("./MotorcycleSpecialEnergyBar");
 const RoleSpecialEnergyBar_1 = require("./RoleSpecialEnergyBar");
 class SpecialEnergyBarContainer extends BattleVisibleChildView_1.BattleVisibleChildView {
   constructor() {
@@ -17,17 +18,22 @@ class SpecialEnergyBarContainer extends BattleVisibleChildView_1.BattleVisibleCh
     this.E0 = 0;
     this.Edt = undefined;
     this.Sdt = new Map();
+    this.kLf = new MotorcycleSpecialEnergyBar_1.MotorcycleSpecialEnergyBar();
     this.kpe = () => {
       this.ydt();
+      this.Idt();
+    };
+    this.qLf = () => {
       this.Idt();
     };
   }
   Initialize(e) {
     super.Initialize(e);
-    this.InitChildType(37);
+    this.InitChildType(41);
     this.Mdt = e;
     this.E0 = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Id ?? 0;
     this.ydt();
+    this.kLf.Init(this.RootItem, this.qLf);
     this.Idt();
     this.Ore();
   }
@@ -36,6 +42,7 @@ class SpecialEnergyBarContainer extends BattleVisibleChildView_1.BattleVisibleCh
     for (const e of this.Sdt.values()) {
       e.Destroy();
     }
+    this.kLf.Destroy();
   }
   Reset() {
     this.kre();
@@ -45,6 +52,7 @@ class SpecialEnergyBarContainer extends BattleVisibleChildView_1.BattleVisibleCh
     for (const i of this.Sdt.values()) {
       i.Tick(e);
     }
+    this.kLf?.Tick(e);
   }
   OnChangeRole(e) {
     var i;
@@ -69,9 +77,11 @@ class SpecialEnergyBarContainer extends BattleVisibleChildView_1.BattleVisibleCh
   }
   Ore() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiAllRoleDataChanged, this.kpe);
+    this.kLf.AddEvents();
   }
   kre() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiAllRoleDataChanged, this.kpe);
+    this.kLf.RemoveEvents();
   }
   ydt() {
     for (const i of ModelManager_1.ModelManager.SceneTeamModel.GetTeamItems(true)) {
@@ -95,11 +105,11 @@ class SpecialEnergyBarContainer extends BattleVisibleChildView_1.BattleVisibleCh
   }
   Idt() {
     for (var [e, i] of this.Sdt) {
-      if (e === this.E0) {
+      if (e !== this.E0 || this.kLf.IsEnable()) {
+        i.SetVisible(false);
+      } else {
         i.SetVisible(true);
         this.Edt = i;
-      } else {
-        i.SetVisible(false);
       }
     }
   }

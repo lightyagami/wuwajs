@@ -134,13 +134,13 @@ class GuideEffectAssistant extends ControllerAssistantBase_1.ControllerAssistant
         this.$oo = e ? e.Id : undefined;
       }
     };
-    this.Eym = -1;
-    this.Iym = undefined;
-    this.Tym = undefined;
-    this.bym = () => {
-      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnChangeRole, this.bym);
-      if (this.Eym !== -1 && this.Iym && this.Tym && Global_1.Global.BaseCharacter) {
-        this.Rym(this.Eym, this.Iym, this.Tym);
+    this.zAm = -1;
+    this.JAm = undefined;
+    this.ZAm = undefined;
+    this.eDm = () => {
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnChangeRole, this.eDm);
+      if (this.zAm !== -1 && this.JAm && this.ZAm && Global_1.Global.BaseCharacter) {
+        this.tDm(this.zAm, this.JAm, this.ZAm);
       }
     };
   }
@@ -280,12 +280,12 @@ class GuideEffectAssistant extends ControllerAssistantBase_1.ControllerAssistant
             this._0e = i.Space;
           }
           if (Global_1.Global.BaseCharacter) {
-            this.Rym(e, s, t);
+            this.tDm(e, s, t);
           } else {
-            this.Eym = e;
-            this.Iym = s;
-            this.Tym = t;
-            EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnChangeRole, this.bym);
+            this.zAm = e;
+            this.JAm = s;
+            this.ZAm = t;
+            EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnChangeRole, this.eDm);
           }
         }
       } else if (Log_1.Log.CheckWarn()) {
@@ -295,7 +295,7 @@ class GuideEffectAssistant extends ControllerAssistantBase_1.ControllerAssistant
       Log_1.Log.Warn("Level", 31, "[SceneItemGuidePathComponent.LoadPathAsset] 无法找到Spline Entity", ["SplineEntityId", e]);
     }
   }
-  Rym(e, t, i) {
+  tDm(e, t, i) {
     var s = ModelManager_1.ModelManager.GameSplineModel.LoadAndGetSplineComponent(e, Global_1.Global.BaseCharacter.EntityId, 1);
     var n = ModelManager_1.ModelManager.GameSplineModel.GetSplineActorBySplineId(e);
     if (ObjectUtils_1.ObjectUtils.IsValid(n)) {

@@ -16,15 +16,15 @@ class FlowActionSetNpcGroupPerform extends FlowActionBase_1.FlowActionBase {
         Log_1.Log.Error("Plot", 45, "FlowActionSetNpcGroupPerform");
       }
     }
-    var e = e.PerformType.Key;
-    var o = new UE.FName(e);
+    var o = e.PerformType.Key;
+    var r = new UE.FName(o);
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("Plot", 45, "FlowActionSetNpcGroupPerform", ["key", e], ["keyName", o]);
+      Log_1.Log.Info("Plot", 45, "FlowActionSetNpcGroupPerform", ["key", o], ["keyName", r]);
     }
-    var e = ModelManager_1.ModelManager.HoldingHandsModel.GetRelation(e);
-    if (e) {
-      ModelManager_1.ModelManager.SequenceModel.NpcGroupPerform.push(o);
-      ModelManager_1.ModelManager.SequenceModel.NpcRelationMap.set(o, e);
+    let t = undefined;
+    if (t = e.PerformType.Type === 0 ? ModelManager_1.ModelManager.HoldingHandsModel.GetRelation(o) : t) {
+      ModelManager_1.ModelManager.SequenceModel.NpcGroupPerform.push(r);
+      ModelManager_1.ModelManager.SequenceModel.NpcRelationMap.set(r, t);
     }
     this.FinishExecute(true);
   }

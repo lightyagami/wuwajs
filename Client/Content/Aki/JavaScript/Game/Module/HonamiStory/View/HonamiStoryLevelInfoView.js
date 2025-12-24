@@ -31,30 +31,30 @@ const hardColor = UE.Color.FromHex("#A04661");
 class HonamiStoryLevelInfoView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
-    this.GRm = 0;
-    this.FRm = 0;
-    this.NRm = 0;
-    this.VRm = 0;
+    this.ezm = 0;
+    this.tzm = 0;
+    this.izm = 0;
+    this.rzm = 0;
     this.lqe = undefined;
     this.S9_ = undefined;
-    this.j1m = undefined;
-    this.H1m = undefined;
-    this.$1m = undefined;
-    this.W1m = undefined;
-    this.S_m = undefined;
-    this.gym = undefined;
+    this.ofm = undefined;
+    this.nfm = undefined;
+    this.sfm = undefined;
+    this.afm = undefined;
+    this.kfm = undefined;
+    this.zLm = undefined;
     this.Hea = undefined;
-    this.bSm = new Map([[1, 11], [2, 11], [3, 12], [4, 12], [5, 12]]);
-    this.dem = undefined;
-    this.Q1m = undefined;
-    this.Y1m = 1;
-    this.K1m = 1;
-    this.X1m = 1;
-    this.Wum = false;
-    this.z1m = undefined;
-    this.Mmm = false;
-    this.Emm = false;
-    this.Imm = false;
+    this.uDm = new Map([[1, 11], [2, 11], [3, 12], [4, 12], [5, 12]]);
+    this.Wim = undefined;
+    this.hfm = undefined;
+    this.ufm = 1;
+    this.lfm = 1;
+    this._fm = 1;
+    this.g0m = false;
+    this.cfm = undefined;
+    this.hvm = false;
+    this.lvm = false;
+    this._vm = false;
     this.pcr = () => {
       ControllerHolder_1.ControllerHolder.HelpController.OpenHelpById(HonamiStoryDefine_1.HONAMI_HELP_READYGO);
     };
@@ -62,171 +62,172 @@ class HonamiStoryLevelInfoView extends UiViewBase_1.UiViewBase {
       this.CloseMe();
     };
     this.sh_ = () => {
-      if (this.Q1m !== 0) {
-        this.J1m(0);
+      if (this.hfm !== 0) {
+        this.dfm(0);
       }
     };
     this.nh_ = () => {
-      if (this.Imm) {
-        if (this.Q1m !== 1) {
+      if (this._vm) {
+        if (this.hfm !== 1) {
           if (LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.HonamiStorySelectLvTowerUnLockTogRedDot)) {
-            this.H1m.SetRedDotShow(false);
+            this.nfm.SetRedDotShow(false);
             LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.HonamiStorySelectLvTowerUnLockTogRedDot, false);
           }
-          this.J1m(1);
+          this.dfm(1);
         }
       } else {
         ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("HonamiStory_TowerUnlockedPrompt");
-        this.H1m.GetTog.SetToggleState(0, false);
+        this.nfm.GetTog.SetToggleState(0, false);
       }
     };
-    this.Bpt = i => i !== this.Q1m;
-    this.KTm = "";
+    this.Bpt = i => i !== this.hfm;
+    this.cFm = "";
     this.$An = i => {
-      if (i === "Enter04" && this.KTm) {
-        this.SetTextureByPath(this.KTm, this.GetTexture(0));
+      if (i === "Enter04" && this.cFm) {
+        this.SetTextureByPath(this.cFm, this.GetTexture(0));
       }
     };
-    this.Z1m = () => {
-      switch (this.Q1m) {
+    this.mfm = () => {
+      switch (this.hfm) {
         case 0:
-          if (!(this.Y1m > this.GRm)) {
+          if (!(this.ufm > this.ezm)) {
             return;
           }
-          --this.Y1m;
-          this.K1m = this.Y1m;
+          --this.ufm;
+          this.lfm = this.ufm;
           break;
         case 1:
-          if (!(this.Y1m > this.NRm)) {
+          if (!(this.ufm > this.izm)) {
             return;
           }
-          --this.Y1m;
-          this.X1m = this.Y1m;
+          --this.ufm;
+          this._fm = this.ufm;
       }
-      var i = ConfigManager_1.ConfigManager.HonamiStoryConfig.GetDangerLevelConfig(this.Y1m);
-      this.z1m = i.DangerLv;
-      this.Jjd();
-      this.e_m();
-      this.Tmm();
-      this.$1m.SetCostData(i.ConsumeItems);
+      var i = ConfigManager_1.ConfigManager.HonamiStoryConfig.GetDangerLevelConfig(this.ufm);
+      this.cfm = i.DangerLv;
+      this.iHd();
+      this.ffm();
+      this.uvm();
+      this.sfm.SetCostData(i.ConsumeItems);
     };
-    this.i_m = () => {
-      switch (this.Q1m) {
+    this.Cfm = () => {
+      switch (this.hfm) {
         case 0:
-          if (!(this.Y1m < this.FRm)) {
+          if (!(this.ufm < this.tzm)) {
             return;
           }
-          this.Y1m += 1;
-          this.K1m = this.Y1m;
+          this.ufm += 1;
+          this.lfm = this.ufm;
           break;
         case 1:
-          if (!(this.Y1m < this.VRm)) {
+          if (!(this.ufm < this.rzm)) {
             return;
           }
-          this.Y1m += 1;
-          this.X1m = this.Y1m;
+          this.ufm += 1;
+          this._fm = this.ufm;
       }
-      var i = ConfigManager_1.ConfigManager.HonamiStoryConfig.GetDangerLevelConfig(this.Y1m);
-      this.z1m = i.DangerLv;
-      this.Jjd();
-      this.e_m();
-      this.Tmm();
-      this.$1m.SetCostData(i.ConsumeItems);
+      var i = ConfigManager_1.ConfigManager.HonamiStoryConfig.GetDangerLevelConfig(this.ufm);
+      this.cfm = i.DangerLv;
+      this.iHd();
+      this.ffm();
+      this.uvm();
+      this.sfm.SetCostData(i.ConsumeItems);
     };
-    this.Qum = () => {
-      this.Wum = this.GetExtendToggle(16).GetToggleState() === 1;
-      this.$1m.RefreshView();
+    this.C0m = () => {
+      this.g0m = this.GetExtendToggle(16).GetToggleState() === 1;
+      this.sfm.RefreshView();
     };
   }
   get GetCurTarget() {
-    return this.Q1m;
+    return this.hfm;
   }
   get GetCurDangerLv() {
-    return this.Y1m;
+    return this.ufm;
   }
   get GetIsBuySafe() {
-    return this.Wum;
+    return this.g0m;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UITexture], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIText], [6, UE.UIText], [7, UE.UIItem], [8, UE.UITexture], [9, UE.UIText], [10, UE.UITexture], [11, UE.UIItem], [12, UE.UISprite], [13, UE.UIButtonComponent], [14, UE.UIButtonComponent], [15, UE.UISprite], [16, UE.UIExtendToggle], [17, UE.UIText], [18, UE.UITexture], [19, UE.UIText], [20, UE.UIItem], [21, UE.UIText], [22, UE.UIItem], [23, UE.UIItem], [24, UE.UIText]];
-    this.BtnBindInfo = [[13, this.Z1m], [14, this.i_m], [16, this.Qum]];
+    this.BtnBindInfo = [[13, this.mfm], [14, this.Cfm], [16, this.C0m]];
   }
   async OnBeforeStartAsync() {
     this.lqe = new PopupCaptionItem_1.PopupCaptionItem();
-    this.j1m = new TargetTog();
-    this.j1m.CanToggleChange = this.Bpt;
-    this.H1m = new TargetTog();
-    this.H1m.CanToggleChange = this.Bpt;
-    this.$1m = new BtnGo();
-    this.W1m = new PnlTeam();
+    this.ofm = new TargetTog();
+    this.ofm.CanToggleChange = this.Bpt;
+    this.nfm = new TargetTog();
+    this.nfm.CanToggleChange = this.Bpt;
+    this.sfm = new BtnGo();
+    this.afm = new PnlTeam();
     this.S9_ = new HonamiStoryQuestPanel_1.HonamiStoryQuestPanel();
-    this.S_m = new HonamiStoryBozaiTalkPanel_1.HonamiStoryBozaiTalkPanel();
-    this.gym = new HonamiStoryProfitPanel_1.HonamiStoryProfitPanel();
+    this.kfm = new HonamiStoryBozaiTalkPanel_1.HonamiStoryBozaiTalkPanel();
+    this.zLm = new HonamiStoryProfitPanel_1.HonamiStoryProfitPanel();
     this.Hea = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
-    var i = [this.lqe.CreateThenShowByActorAsync(this.GetItem(1).GetOwner()), this.j1m.CreateThenShowByActorAsync(this.GetItem(3).GetOwner()), this.H1m.CreateThenShowByActorAsync(this.GetItem(4).GetOwner()), this.$1m.CreateThenShowByActorAsync(this.GetItem(20).GetOwner()), this.W1m.CreateThenShowByActorAsync(this.GetItem(7).GetOwner()), this.S9_.CreateThenShowByActorAsync(this.GetItem(2).GetOwner()), this.S_m.CreateThenShowByActorAsync(this.GetItem(22).GetOwner()), this.gym.CreateThenShowByActorAsync(this.GetItem(23).GetOwner())];
+    var i = [this.lqe.CreateThenShowByActorAsync(this.GetItem(1).GetOwner()), this.ofm.CreateThenShowByActorAsync(this.GetItem(3).GetOwner()), this.nfm.CreateThenShowByActorAsync(this.GetItem(4).GetOwner()), this.sfm.CreateThenShowByActorAsync(this.GetItem(20).GetOwner()), this.afm.CreateThenShowByActorAsync(this.GetItem(7).GetOwner()), this.S9_.CreateThenShowByActorAsync(this.GetItem(2).GetOwner()), this.kfm.CreateThenShowByActorAsync(this.GetItem(22).GetOwner()), this.zLm.CreateThenShowByActorAsync(this.GetItem(23).GetOwner())];
     await Promise.all(i);
     this.lqe.SetHelpCallBack(this.pcr);
     this.lqe.SetCloseCallBack(this.Jvt);
-    this.dem = ModelManager_1.ModelManager.HonamiStoryModel.GetActivityData();
-    if (this.dem) {
-      i = ConfigManager_1.ConfigManager.HonamiStoryConfig.GetHonamiStoryActivityConfig(this.dem.Id);
-      this.GRm = i.OriAreaDangerLevel;
-      this.FRm = i.MaxAreaDangerLevel;
-      this.NRm = i.OriTopTowerDangerLevel;
-      this.VRm = i.MaxTopTowerDangerLevel;
-      this.$1m.SetPnlSelectLv(this);
-      this.Mmm = ModelManager_1.ModelManager.FunctionModel.IsOpen(10121);
-      this.Emm = ModelManager_1.ModelManager.FunctionModel.IsOpen(10115);
-      this.Imm = ModelManager_1.ModelManager.FunctionModel.IsOpen(10120);
-      if (this.Mmm) {
-        this.K1m = this.dem.CurHonamiLv;
+    this.Wim = ModelManager_1.ModelManager.HonamiStoryModel.GetActivityData();
+    if (this.Wim) {
+      i = ConfigManager_1.ConfigManager.HonamiStoryConfig.GetHonamiStoryActivityConfig(this.Wim.Id);
+      this.ezm = i.OriAreaDangerLevel;
+      this.tzm = i.MaxAreaDangerLevel;
+      this.izm = i.OriTopTowerDangerLevel;
+      this.rzm = i.MaxTopTowerDangerLevel;
+      this.sfm.SetPnlSelectLv(this);
+      this.hvm = ModelManager_1.ModelManager.FunctionModel.IsOpen(10121);
+      this.lvm = ModelManager_1.ModelManager.FunctionModel.IsOpen(10115);
+      this._vm = ModelManager_1.ModelManager.FunctionModel.IsOpen(10120);
+      if (this.hvm) {
+        this.lfm = this.Wim.CurHonamiLv;
       } else {
-        this.K1m = this.dem.GetCurrentProgressAreaDataId();
+        this.lfm = this.Wim.GetCurrentProgressAreaDataId();
       }
-      this.X1m = this.dem.CurTowerLv;
-      if (this.Imm) {
-        this.J1m(this.dem.CurTarget);
+      this._fm = this.Wim.CurTowerLv;
+      if (this._vm) {
+        this.dfm(this.Wim.CurTarget);
       } else {
-        this.J1m(0);
-        this.KTm = ConfigManager_1.ConfigManager.HonamiStoryConfig.GetHonamiStoryAreaConfig(this.K1m).LvSelectBgPath;
+        this.dfm(0);
+        this.cFm = ConfigManager_1.ConfigManager.HonamiStoryConfig.GetHonamiStoryAreaConfig(this.lfm).LvSelectBgPath;
       }
-      this.SetTextureByPath(this.KTm, this.GetTexture(0));
-      i = ConfigManager_1.ConfigManager.HonamiStoryConfig.GetDangerLevelConfig(this.Y1m);
-      this.z1m = i.DangerLv;
-      await this.lqe.SetCurrencyItemList([this.dem.OutCoinItemId]);
-      this.j1m.RefreshTog(0, true);
-      this.j1m.OnClickToggleBack = this.sh_;
-      this.j1m.SetRedDotShow(false);
-      this.H1m.RefreshTog(1, this.Imm);
-      this.H1m.OnClickToggleBack = this.nh_;
-      this.H1m.SetRedDotShow(false);
-      this.S9_.Refresh(this.Q1m === 0);
-      this.gym.RefreshNormal();
-      this.Jjd();
-      this.e_m();
-      this.Tmm();
-      this.$1m.SetCostData(i.ConsumeItems);
-      this.$1m.SetRedDotShow(false);
+      this.SetTextureByPath(this.cFm, this.GetTexture(0));
+      i = ConfigManager_1.ConfigManager.HonamiStoryConfig.GetDangerLevelConfig(this.ufm);
+      this.cfm = i.DangerLv;
+      await this.lqe.SetCurrencyItemList([this.Wim.OutCoinItemId]);
+      this.ofm.RefreshTog(0, true);
+      this.ofm.OnClickToggleBack = this.sh_;
+      this.ofm.SetRedDotShow(false);
+      this.nfm.RefreshTog(1, this._vm);
+      this.nfm.OnClickToggleBack = this.nh_;
+      this.nfm.SetRedDotShow(false);
+      this.S9_.Refresh(this.hfm === 0);
+      this.zLm.RefreshNormal();
+      this.iHd();
+      this.ffm();
+      this.uvm();
+      this.sfm.SetCostData(i.ConsumeItems);
+      this.sfm.SetRedDotShow(false);
       i = ModelManager_1.ModelManager.HonamiStoryModel.GetRandomDialogData(1);
-      this.S_m.SetTalkInfoTextAndPlayAudio(i);
+      this.kfm.SetTalkInfoTextAndPlayAudio(i);
     }
   }
   OnBeforeShow() {
-    this.W1m.RefreshView();
-    this.S9_.Refresh(this.Q1m === 0);
-    this.gym.RefreshNormal();
-    this.I0m();
-    this.T0m();
+    this.afm.RefreshView();
+    this.S9_.Refresh(this.hfm === 0);
+    this.zLm.RefreshNormal();
+    this.vEm();
+    this.yEm();
+    this.sfm.RefreshView();
   }
   OnAfterShow() {
-    this.dcm();
-    this.Mdm();
+    this.q0m();
+    this.JCm();
     let i = 13;
-    if (!this.Mmm && this.bSm.has(this.Y1m)) {
-      i = this.bSm.get(this.Y1m);
+    if (!this.hvm && this.uDm.has(this.ufm)) {
+      i = this.uDm.get(this.ufm);
     }
     var t = ModelManager_1.ModelManager.HonamiStoryModel.GetRandomDialogData(i);
-    this.S_m.SetTalkInfoTextAndPlayAudio(t);
+    this.kfm.SetTalkInfoTextAndPlayAudio(t);
   }
   OnAddEventListener() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.$An);
@@ -235,18 +236,18 @@ class HonamiStoryLevelInfoView extends UiViewBase_1.UiViewBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.$An);
   }
   OnBeforeHide() {
-    this.dem.CurTarget = this.Q1m;
-    this.dem.CurHonamiLv = this.K1m;
-    this.dem.CurTowerLv = this.X1m;
+    this.Wim.CurTarget = this.hfm;
+    this.Wim.CurHonamiLv = this.lfm;
+    this.Wim.CurTowerLv = this._fm;
   }
   GetCurSafeLeavePrice() {
-    if (this.Emm && this.Q1m === 0 && this.Wum) {
-      return ConfigManager_1.ConfigManager.HonamiStoryConfig.GetDangerLevelConfig(this.Y1m).SafeLeavePrice;
+    if (this.lvm && this.hfm === 0 && this.g0m) {
+      return ConfigManager_1.ConfigManager.HonamiStoryConfig.GetDangerLevelConfig(this.ufm).SafeLeavePrice;
     } else {
       return 0;
     }
   }
-  dcm() {
+  q0m() {
     var i = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.HonamiStorySelectLvAreaUnLockTips) ?? undefined;
     if (i) {
       for (const s of [...i.keys()].sort((i, t) => i - t)) {
@@ -264,98 +265,98 @@ class HonamiStoryLevelInfoView extends UiViewBase_1.UiViewBase {
       }
     }
   }
-  Mdm() {
+  JCm() {
     var i = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.HonamiStorySelectLvTowerUnLockTips) ?? true;
-    if (this.Imm && i) {
+    if (this._vm && i) {
       (i = new DifficultUnlockTipView_1.DifficultUnlockTipsData()).Text = "HonamiStory_LevelUnlocked_6";
       UiManager_1.UiManager.OpenView("DifficultUnlockTipView", i);
-      this.H1m.SetRedDotShow(true);
-      this.$1m.SetRedDotShow(true);
+      this.nfm.SetRedDotShow(true);
+      this.sfm.SetRedDotShow(true);
       LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.HonamiStorySelectLvTowerUnLockTogRedDot, true);
       LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.HonamiStorySelectLvTowerUnLockBtnGoRedDot, true);
       LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.HonamiStorySelectLvTowerUnLockTips, false);
     }
   }
-  I0m() {
+  vEm() {
     var i;
-    if (!this.Mmm) {
-      i = this.dem.GetHonamiStoryAreaDataList().length;
-      if (this.Y1m <= i && !this.dem.GetHonamiStoryAreaData(this.Y1m).IsAreaCanEnter) {
-        this.j1m.SetRedDotShow(true);
-        this.$1m.SetRedDotShow(true);
+    if (!this.hvm) {
+      i = this.Wim.GetHonamiStoryAreaDataList().length;
+      if (this.ufm <= i && this.Wim.GetHonamiStoryAreaData(this.ufm).IsAreaCanEnter) {
+        this.ofm.SetRedDotShow(true);
+        this.sfm.SetRedDotShow(true);
       }
     }
   }
-  T0m() {
+  yEm() {
     if (LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.HonamiStorySelectLvTowerUnLockTogRedDot)) {
-      this.H1m.SetRedDotShow(true);
+      this.nfm.SetRedDotShow(true);
     }
     if (LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.HonamiStorySelectLvTowerUnLockBtnGoRedDot)) {
-      this.$1m.SetRedDotShow(true);
+      this.sfm.SetRedDotShow(true);
     }
   }
-  J1m(i) {
+  dfm(i) {
     switch (i) {
       case 0:
-        this.Q1m = 0;
-        this.Y1m = this.K1m;
-        this.j1m.GetTog.SetToggleState(1, false);
-        this.H1m.GetTog.SetToggleState(0, false);
-        this.KTm = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("HonamiSelectLvBg1");
+        this.hfm = 0;
+        this.ufm = this.lfm;
+        this.ofm.GetTog.SetToggleState(1, false);
+        this.nfm.GetTog.SetToggleState(0, false);
+        this.cFm = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("HonamiSelectLvBg1");
         break;
       case 1:
-        this.Q1m = 1;
-        this.Y1m = this.X1m;
-        this.j1m.GetTog.SetToggleState(0, false);
-        this.H1m.GetTog.SetToggleState(1, false);
-        this.KTm = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("HonamiSelectLvBg2");
+        this.hfm = 1;
+        this.ufm = this._fm;
+        this.ofm.GetTog.SetToggleState(0, false);
+        this.nfm.GetTog.SetToggleState(1, false);
+        this.cFm = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("HonamiSelectLvBg2");
     }
     this.Hea?.StopSequenceByKey("Switch");
     this.Hea?.PlayLevelSequenceByName("Switch");
-    var i = ConfigManager_1.ConfigManager.HonamiStoryConfig.GetDangerLevelConfig(this.Y1m);
-    this.z1m = i.DangerLv;
-    this.Jjd();
-    this.e_m();
-    var t = this.Q1m === 0;
+    var i = ConfigManager_1.ConfigManager.HonamiStoryConfig.GetDangerLevelConfig(this.ufm);
+    this.cfm = i.DangerLv;
+    this.iHd();
+    this.ffm();
+    var t = this.hfm === 0;
     this.S9_.Refresh(t);
     this.GetText(24).SetUIActive(t);
     this.GetText(6).SetUIActive(t);
-    this.Tmm();
-    this.$1m.SetCostData(i.ConsumeItems);
+    this.uvm();
+    this.sfm.SetCostData(i.ConsumeItems);
   }
-  Jjd() {
+  iHd() {
     var i;
-    var t = ConfigManager_1.ConfigManager.HonamiStoryConfig.GetDangerLevelConfig(this.Y1m);
-    if (this.Q1m === 0) {
+    var t = ConfigManager_1.ConfigManager.HonamiStoryConfig.GetDangerLevelConfig(this.ufm);
+    if (this.hfm === 0) {
       if (ModelManager_1.ModelManager.FunctionModel.IsOpen(10121)) {
         LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(21), "HonamiStory_FreeRegionName");
       } else {
-        i = this.dem.GetHonamiStoryAreaData(this.Y1m).Config.LvSelectName;
+        i = this.Wim.GetHonamiStoryAreaData(this.ufm).Config.LvSelectName;
         LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(21), i);
       }
     } else {
-      i = this.dem.TowerName;
+      i = this.Wim.TowerName;
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(21), i);
     }
     this.GetText(5).SetText(t.LvShow);
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(6), t.FallQuaId);
   }
-  Tmm() {
+  uvm() {
     var i;
     var t = this.GetExtendToggle(16);
     var e = this.GetText(17);
     var s = this.GetTexture(18);
     var h = this.GetText(19);
-    if (this.Q1m === 0) {
-      if (this.Emm) {
+    if (this.hfm === 0) {
+      if (this.lvm) {
         t.RootUIComp.SetUIActive(true);
         e.SetUIActive(true);
         s.SetUIActive(true);
         h.SetUIActive(true);
         LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(17), "HonamiStory_ExtractionChargeBuy");
-        i = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(this.dem.OutCoinItemId).Icon;
+        i = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(this.Wim.OutCoinItemId).Icon;
         this.SetTextureByPath(i, this.GetTexture(18));
-        i = ConfigManager_1.ConfigManager.HonamiStoryConfig.GetDangerLevelConfig(this.Y1m);
+        i = ConfigManager_1.ConfigManager.HonamiStoryConfig.GetDangerLevelConfig(this.ufm);
         this.GetText(19).SetText(i.SafeLeavePrice.toString());
       } else {
         t.RootUIComp.SetUIActive(false);
@@ -370,11 +371,11 @@ class HonamiStoryLevelInfoView extends UiViewBase_1.UiViewBase {
       s.SetUIActive(false);
       h.SetUIActive(true);
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(17), "HonamiStory_PassFloors");
-      i = this.dem.GetMaxFloorByDangerLv(this.Y1m);
+      i = this.Wim.GetMaxFloorByDangerLv(this.ufm);
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(19), "HonamiStory_PassFloorsNumbers", i);
     }
   }
-  e_m() {
+  ffm() {
     var e = this.GetButton(13);
     var s = this.GetButton(14);
     var h = this.GetSprite(12);
@@ -382,31 +383,31 @@ class HonamiStoryLevelInfoView extends UiViewBase_1.UiViewBase {
     var t = this.GetText(9);
     var o = this.GetTexture(10);
     var r = this.GetTexture(8);
-    e.RootUIComp.SetUIActive(this.Mmm);
-    s.RootUIComp.SetUIActive(this.Mmm);
-    h.SetUIActive(this.Mmm);
-    i.SetUIActive(!this.Mmm);
-    var a = "RomanNum" + this.Y1m.toString();
-    if (this.Mmm) {
+    e.RootUIComp.SetUIActive(this.hvm);
+    s.RootUIComp.SetUIActive(this.hvm);
+    h.SetUIActive(this.hvm);
+    i.SetUIActive(!this.hvm);
+    var a = "RomanNum" + this.ufm.toString();
+    if (this.hvm) {
       let i = 0;
       let t = 0;
-      switch (this.Q1m) {
+      switch (this.hfm) {
         case 0:
-          i = this.GRm;
-          t = this.FRm;
+          i = this.ezm;
+          t = this.tzm;
           break;
         case 1:
-          i = this.NRm;
-          t = this.VRm;
+          i = this.izm;
+          t = this.rzm;
       }
-      e.SetSelfInteractive(this.Y1m !== i);
-      s.SetSelfInteractive(this.Y1m !== t);
+      e.SetSelfInteractive(this.ufm !== i);
+      s.SetSelfInteractive(this.ufm !== t);
       this.SetSpriteByPath(ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(a), h, false);
     } else {
       this.SetSpriteByPath(ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(a), i, false);
     }
     let n = "";
-    switch (this.z1m) {
+    switch (this.cfm) {
       case 1:
         LguiUtil_1.LguiUtil.SetLocalTextNew(t, "HonamiStory_easy");
         t.SetColor(safeColor);
@@ -440,13 +441,13 @@ class TargetTog extends UiPanelBase_1.UiPanelBase {
     this.Target = undefined;
     this.OnClickToggleBack = undefined;
     this.CanToggleChange = undefined;
-    this.r_m = () => {
+    this.pfm = () => {
       this.OnClickToggleBack?.();
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem]];
-    this.BtnBindInfo = [[0, this.r_m]];
+    this.BtnBindInfo = [[0, this.pfm]];
   }
   OnStart() {
     this.GetExtendToggle(0).CanExecuteChange.Bind(() => !this.CanToggleChange || this.CanToggleChange(this.Target));
@@ -469,72 +470,72 @@ class BtnGo extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.hgi = 0;
-    this.o_m = 0;
-    this.Xum = undefined;
-    this.Rmm = false;
-    this.pEm = new Map();
-    this.n_m = () => {
+    this.vfm = 0;
+    this.v0m = undefined;
+    this.dvm = false;
+    this.U2m = new Map();
+    this.yfm = () => {
       var t = ModelManager_1.ModelManager.HonamiStoryModel.GetAllRoleIdList();
       if (!t || t.length === 0 || t.every(i => i === 0)) {
         ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("HonamiStory_Tips_TeamUnderstaffed");
-      } else if (this.Xum) {
+      } else if (this.v0m) {
         var t = ModelManager_1.ModelManager.HonamiStoryModel.GetBackPackData(1);
         if (t.GetOverflowCapacity() > 0) {
-          (t = new ConfirmBoxDefine_1.ConfirmBoxDataNew(418)).FunctionMap.set(2, this.a_m);
+          (t = new ConfirmBoxDefine_1.ConfirmBoxDataNew(418)).FunctionMap.set(2, this.Mfm);
           ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(t);
-        } else if (ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(this.o_m) >= this.hgi) {
-          t = this.Xum.GetCurTarget === 1;
-          let i = this.Xum.GetIsBuySafe;
+        } else if (ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(this.vfm) >= this.hgi) {
+          t = this.v0m.GetCurTarget === 1;
+          let i = this.v0m.GetIsBuySafe;
           if (t && (i = false, LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.HonamiStorySelectLvTowerUnLockBtnGoRedDot))) {
             LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.HonamiStorySelectLvTowerUnLockBtnGoRedDot, false);
           }
-          this.Pdm(t);
-          HonamiStoryController_1.HonamiStoryController.SendHonamiStoryItemEnterRequest(t, this.Xum.GetCurDangerLv, i);
+          this._pm(t);
+          HonamiStoryController_1.HonamiStoryController.SendHonamiStoryItemEnterRequest(t, this.v0m.GetCurDangerLv, i);
         } else {
           ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("HonamiStory_InsufficientBalance");
         }
       }
     };
-    this.a_m = () => {
+    this.Mfm = () => {
       HonamiStoryController_1.HonamiStoryController.OpenHonamiStoryBag();
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIText], [2, UE.UIItem], [3, UE.UITexture], [4, UE.UIText], [5, UE.UIItem]];
-    this.BtnBindInfo = [[0, this.n_m]];
+    this.BtnBindInfo = [[0, this.yfm]];
   }
   SetPnlSelectLv(i) {
-    this.Xum = i;
-    this.Rmm = ModelManager_1.ModelManager.FunctionModel.IsOpen(10121);
+    this.v0m = i;
+    this.dvm = ModelManager_1.ModelManager.FunctionModel.IsOpen(10121);
     i = ModelManager_1.ModelManager.HonamiStoryModel.GetActivityData();
     if (i) {
-      this.o_m = i.OutCoinItemId;
+      this.vfm = i.OutCoinItemId;
     }
   }
   SetCostData(i) {
-    this.pEm = i;
+    this.U2m = i;
     this.RefreshView();
   }
   RefreshView() {
     var i = this.GetTexture(3);
     var t = this.GetText(4);
     var e = this.GetItem(5);
-    let s = this.Xum.GetCurSafeLeavePrice();
-    if (this.Rmm) {
-      s += this.pEm.get(this.o_m) ?? 0;
+    let s = this.v0m.GetCurSafeLeavePrice();
+    if (this.dvm) {
+      s += this.U2m.get(this.vfm) ?? 0;
     }
     var h = s > 0;
     e.SetUIActive(h);
-    var e = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(this.o_m);
+    var e = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(this.vfm);
     if (e) {
       this.SetTextureByPath(e.Icon, i);
       this.hgi = s;
       t.SetText(this.hgi.toString());
-      h = ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(this.o_m) >= this.hgi;
+      h = ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(this.vfm) >= this.hgi;
       t.SetChangeColor(!h, t.changeColor);
     }
   }
-  Pdm(i) {
+  _pm(i) {
     var t;
     if (i) {
       HonamiStoryController_1.HonamiStoryController.SetHonamiStoryLoadingInfoByTimingOnly(7);
@@ -558,20 +559,20 @@ exports.BtnGo = BtnGo;
 class PnlTeam extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.s_m = [];
-    this.a_m = () => {
+    this.Sfm = [];
+    this.Mfm = () => {
       HonamiStoryController_1.HonamiStoryController.OpenHonamiStoryBag();
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIText], [2, UE.UISprite], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem]];
-    this.BtnBindInfo = [[0, this.a_m]];
+    this.BtnBindInfo = [[0, this.Mfm]];
   }
   OnStart() {
-    this.h_m();
+    this.Efm();
     this.RefreshView();
   }
-  h_m() {
+  Efm() {
     var t = this.GetItem(3);
     var e = this.GetItem(4);
     let s = undefined;
@@ -579,7 +580,7 @@ class PnlTeam extends UiPanelBase_1.UiPanelBase {
       s = i === 0 ? e : LguiUtil_1.LguiUtil.CopyItem(e, t);
       var h = new PnlHeadBox();
       h.CreateThenShowByActor(s.GetOwner());
-      this.s_m.push(h);
+      this.Sfm.push(h);
     }
   }
   RefreshView() {
@@ -590,11 +591,11 @@ class PnlTeam extends UiPanelBase_1.UiPanelBase {
     this.GetItem(5).SetUIActive(i);
     var t = ModelManager_1.ModelManager.HonamiStoryModel.GetAllRoleIdList();
     if (t) {
-      for (let i = 0; i < this.s_m.length; ++i) {
+      for (let i = 0; i < this.Sfm.length; ++i) {
         if (i < t.length) {
-          this.s_m[i].RefreshView(t[i]);
+          this.Sfm[i].RefreshView(t[i]);
         } else {
-          this.s_m[i].RefreshView(0);
+          this.Sfm[i].RefreshView(0);
         }
       }
     }

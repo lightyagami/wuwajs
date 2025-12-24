@@ -122,7 +122,7 @@ class WeeklyRogueRoleSelectView extends UiViewBase_1.UiViewBase {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIDynScrollViewComponent], [2, UE.UIItem], [3, UE.UIText], [4, UE.UIItem], [5, UE.UIText], [6, UE.UITexture], [7, UE.UIText], [8, UE.UIButtonComponent], [9, UE.UIText], [10, UE.UIHorizontalLayout], [11, UE.UIItem], [12, UE.UIItem], [13, UE.UISprite], [14, UE.UIText], [15, UE.UIItem], [16, UE.UIItem], [17, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIDynScrollViewComponent], [2, UE.UIItem], [3, UE.UIText], [4, UE.UIItem], [5, UE.UIText], [6, UE.UITexture], [7, UE.UIText], [8, UE.UIButtonComponent], [9, UE.UIText], [10, UE.UIHorizontalLayout], [11, UE.UIItem], [12, UE.UIItem], [13, UE.UISprite], [14, UE.UIText], [15, UE.UIItem], [16, UE.UIItem], [17, UE.UIItem], [18, UE.UIText]];
     this.BtnBindInfo = [[8, this.oV_]];
   }
   async OnBeforeStartAsync() {
@@ -153,7 +153,15 @@ class WeeklyRogueRoleSelectView extends UiViewBase_1.UiViewBase {
   OnStart() {
     var e = ModelManager_1.ModelManager.WeeklyRogueModel.ActivityDataNew;
     var t = e.GetCycleConfig();
-    this.GetText(7).SetText(e.GetCycleBlackFlowerCost().toString());
+    var i = e.FreeCount;
+    var r = e.FreeCountMax;
+    if (i > 0) {
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(18), "Text_WeeklyRogue_FreeTime_Select", i, r);
+      this.GetText(7).SetText("0");
+    } else {
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(18), "PrefabTextItem_2775660132_Text");
+      this.GetText(7).SetText(e.GetCycleBlackFlowerCost().toString());
+    }
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(9), t.BuffDesc, ...t.BuffDescParam);
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(5), "WeRougeFormationMonsterLevel", e.GetLvInfo());
     this.SetItemIcon(this.GetTexture(6), ItemDefines_1.EItemId.Power);

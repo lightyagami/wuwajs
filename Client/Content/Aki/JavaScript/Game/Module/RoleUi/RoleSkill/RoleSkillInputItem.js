@@ -10,14 +10,14 @@ const MultiTextLang_1 = require("../../../../Core/Define/ConfigQuery/MultiTextLa
 const StringBuilder_1 = require("../../../../Core/Utils/StringBuilder");
 const StringUtils_1 = require("../../../../Core/Utils/StringUtils");
 const InputKeyDisplayData_1 = require("../../../InputSettings/InputKeyDisplayData");
+const InputKeyUtils_1 = require("../../../InputSettings/InputKeyUtils");
 const InputSettings_1 = require("../../../InputSettings/InputSettings");
 const InputSettingsManager_1 = require("../../../InputSettings/InputSettingsManager");
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const GridProxyAbstract_1 = require("../../Util/Grid/GridProxyAbstract");
 const KeyUtil_1 = require("../../Util/KeyUtil");
 const LguiUtil_1 = require("../../Util/LguiUtil");
 const RoleSkillTreeSkillSpriteItem_1 = require("./RoleSkillTreeSkillSpriteItem");
-const InputKeyUtils_1 = require("../../../InputSettings/InputKeyUtils");
-const GridProxyAbstract_1 = require("../../Util/Grid/GridProxyAbstract");
 class RoleSkillInputItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
     super(...arguments);
@@ -50,27 +50,29 @@ class RoleSkillInputItem extends GridProxyAbstract_1.GridProxyAbstract {
     for (let t = 0; t < r; t++) {
       var n = e.InputArray[t];
       var n = KeyUtil_1.KeyUtil.GetPcKeyNameByAction(n);
-      var l = n[0];
-      var s = n[1];
-      var u = new StringBuilder_1.StringBuilder();
-      var a = l.length;
-      var o = s.length;
-      var g = a + o;
-      for (let t = 0; t < g; t++) {
-        var _ = t < a ? l[t] : s[t - a];
-        var _ = InputKeyUtils_1.InputKeyUtils.GetPcKeyIconPathByCurrentPlatform(_);
-        if (_) {
-          u.Append("<texture=");
-          u.Append(_);
-          u.Append("/>");
+      if (n) {
+        var l = n[0];
+        var s = n[1];
+        var u = new StringBuilder_1.StringBuilder();
+        var a = l.length;
+        var o = s.length;
+        var g = a + o;
+        for (let t = 0; t < g; t++) {
+          var _ = t < a ? l[t] : s[t - a];
+          var _ = InputKeyUtils_1.InputKeyUtils.GetPcKeyIconPathByCurrentPlatform(_);
+          if (_) {
+            u.Append("<texture=");
+            u.Append(_);
+            u.Append("/>");
+          }
+          if (t === a - 1 && o > 0) {
+            u.Append("/");
+          } else if (t < g - 1) {
+            u.Append("+");
+          }
         }
-        if (t === a - 1 && o > 0) {
-          u.Append("/");
-        } else if (t < g - 1) {
-          u.Append("+");
-        }
+        i.push(u.ToString());
       }
-      i.push(u.ToString());
     }
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), e.Description, ...i);
   }

@@ -282,7 +282,7 @@ let CharacterGlideComponent = CharacterGlideComponent_1 = class CharacterGlideCo
       }
     };
     this.OnStateInherit = (t, e) => {
-      if (t?.Valid && (t = t.GetComponent(59))?.Valid && !e) {
+      if (t?.Valid && (t = t.GetComponent(62))?.Valid && !e) {
         this.K5r.DeepCopy(t.K5r);
         this.Q5r.DeepCopy(t.Q5r);
         this.Ioh = t.Ioh;
@@ -302,7 +302,7 @@ let CharacterGlideComponent = CharacterGlideComponent_1 = class CharacterGlideCo
     };
     this.KQc = () => {
       var t = ModelManager_1.ModelManager.RouletteModel.CurrentExploreSkillId === 1015;
-      var e = this.Entity.GetComponent(179).PositionState;
+      var e = this.Entity.GetComponent(184).PositionState;
       if (t && e === CharacterUnifiedStateTypes_1.ECharPositionState.Ground) {
         if (!this.Xte?.HasTag(1340982160)) {
           this.Xte?.AddTag(1340982160);
@@ -363,10 +363,10 @@ let CharacterGlideComponent = CharacterGlideComponent_1 = class CharacterGlideCo
     if (this.b6l !== t) {
       if (this.b6l = t) {
         if (t = ResourceSystem_1.ResourceSystem.GetLoadedAsset(exports.SOAR_AUTO_FLIGHT_PATH, UE.BP_CameraDrivenAutoFlightData_C)) {
-          this.Entity.GetComponent(62)?.TurnOnCameraDrivenAutoFlightMode(t);
+          this.Entity.GetComponent(65)?.TurnOnCameraDrivenAutoFlightMode(t);
         }
       } else {
-        this.Entity.GetComponent(62)?.TurnOffCameraDrivenAutoFlightMode();
+        this.Entity.GetComponent(65)?.TurnOffCameraDrivenAutoFlightMode();
       }
     }
   }
@@ -446,11 +446,11 @@ let CharacterGlideComponent = CharacterGlideComponent_1 = class CharacterGlideCo
   }
   OnStart() {
     this.Hte = this.Entity.CheckGetComponent(3);
-    this.o4o = this.Entity.CheckGetComponent(182);
-    this.H5r = this.Entity.CheckGetComponent(81);
-    this.Xte = this.Entity.CheckGetComponent(209);
-    this.oRe = this.Entity.CheckGetComponent(181);
-    this.Xdl = this.Entity.GetComponent(111);
+    this.o4o = this.Entity.CheckGetComponent(187);
+    this.H5r = this.Entity.CheckGetComponent(84);
+    this.Xte = this.Entity.CheckGetComponent(215);
+    this.oRe = this.Entity.CheckGetComponent(186);
+    this.Xdl = this.Entity.GetComponent(116);
     this.Hkl = SoarConfigParams.SoarConfigBase;
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharOnUnifiedMoveStateChanged, this.hUe);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharOnPositionStateChanged, this.DVr);
@@ -667,7 +667,7 @@ let CharacterGlideComponent = CharacterGlideComponent_1 = class CharacterGlideCo
     this.o4o.GravityDirect.Multiply(this.Hkl.SoarGravityValue, CharacterGlideComponent_1.Lz);
     return UE.KuroMovementBPLibrary.KuroSoar(e, i, this.Hkl.SoarAirFriction, MathUtils_1.MathUtils.RangeClamp(h, this.Hkl.SoarSpeedThresholdMin, this.Hkl.SoarSpeedThresholdMax, this.Hkl.SoarAerodynamicsMin, this.Hkl.SoarAerodynamicsMax), CharacterGlideComponent_1.Lz.ToUeVectorOld(), this.K5r.ToUeVectorOld(), this.Hkl.SoarMaxSpeed);
   }
-  eCl(t, e) {
+  eCl(e, t) {
     var i = this.Hte;
     var h = this.Xdl;
     var s = this.oRe?.HasKuroRootMotion;
@@ -676,19 +676,24 @@ let CharacterGlideComponent = CharacterGlideComponent_1 = class CharacterGlideCo
     var r = a.Size();
     var n = h.CurrentSplineMoveParams;
     if (s || !o) {
-      s = h.CurrentSplineMoveParams?.OnlyForward || h.SplineDirection.DotProduct(a) > 0;
-      o = n.SplineAnalyzeData.GetKeyTimeByLengthOffset(h.SplineTimeKey, Math.max(this.Hkl.SoarSplineMinSpeed, r) * (s ? 0.5 : -0.5));
+      var s = h.CurrentSplineMoveParams?.OnlyForward || h.SplineDirection.DotProduct(a) > 0;
+      var o = n.Spline.GetDistanceAlongSplineAtSplineInputKey(h.SplineTimeKey);
+      let t = n.Spline.GetNumberOfSplinePoints();
+      if (!n.Spline.IsClosedLoop()) {
+        --t;
+      }
+      var _ = n.Spline.GetInputKeyAtDistanceAlongSpline(o + Math.max(this.Hkl.SoarSplineMinSpeed, r) * (s ? 0.5 : -0.5)) * t;
       if (this.Hkl.DebugDraw) {
         if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("Test", 6, "Soar Spline", ["CurrentKeyTime", h.SplineTimeKey], ["Predict", o]);
+          Log_1.Log.Debug("Test", 6, "Soar Spline", ["CurrentKeyTime", h.SplineTimeKey], ["Predict", _], ["dist", o], ["add", Math.max(this.Hkl.SoarSplineMinSpeed, r) * (s ? 0.5 : -0.5)]);
         }
         UE.KismetSystemLibrary.D_DrawDebugArrow(i.Actor, i.ActorLocation, CharacterGlideComponent_1.Lz.ToUeVector(), 100, greenColor, undefined, 10);
       }
-      CharacterGlideComponent_1.Lz.FromUeVector(n.Spline.GetDirectionAtSplineInputKey(o, 1));
+      CharacterGlideComponent_1.Lz.FromUeVector(n.Spline.GetDirectionAtSplineInputKey(_, 1));
       if (!s) {
         CharacterGlideComponent_1.Lz.MultiplyEqual(-1);
       }
-      MathUtils_1.MathUtils.SqInterpToVector(this.Zdl, CharacterGlideComponent_1.Lz, this.Hkl.SoarSplineRotateAngleSpeedWithoutInput * t, this.Zdl);
+      MathUtils_1.MathUtils.SqInterpToVector(this.Zdl, CharacterGlideComponent_1.Lz, this.Hkl.SoarSplineRotateAngleSpeedWithoutInput * e, this.Zdl);
     } else {
       CharacterGlideComponent_1.Lz.Set(this.Hkl.SoarSplineInputAngleCos, this.Hkl.SoarSplineInputAngleSin * i.InputDirectProxy.Y, -this.Hkl.SoarSplineInputAngleSin * i.InputDirectProxy.X);
       CharacterGlideComponent_1.Lz.Normalize();
@@ -705,28 +710,28 @@ let CharacterGlideComponent = CharacterGlideComponent_1 = class CharacterGlideCo
         }
         this.Hte.ActorQuatProxy.RotateVector(CharacterGlideComponent_1.Tz, CharacterGlideComponent_1.Lz);
       }
-      MathUtils_1.MathUtils.SqInterpToVector(this.Zdl, CharacterGlideComponent_1.Lz, this.Hkl.SoarSplineRotateAngleSpeedWithInput * t, this.Zdl);
+      MathUtils_1.MathUtils.SqInterpToVector(this.Zdl, CharacterGlideComponent_1.Lz, this.Hkl.SoarSplineRotateAngleSpeedWithInput * e, this.Zdl);
     }
-    MathUtils_1.MathUtils.SqLerpVector(a, this.Zdl, 1 - Math.pow(1 - this.Hkl.SoarSplineRotateLerp, t), CharacterGlideComponent_1.Lz);
+    MathUtils_1.MathUtils.SqLerpVector(a, this.Zdl, 1 - Math.pow(1 - this.Hkl.SoarSplineRotateLerp, e), CharacterGlideComponent_1.Lz);
     i.SetActorVelocity(CharacterGlideComponent_1.Lz);
     MathUtils_1.MathUtils.LookRotationUpFirst(CharacterGlideComponent_1.Lz, i.MoveComp.GravityUp, CharacterGlideComponent_1.KJ);
     CharacterGlideComponent_1.KJ.Rotator(CharacterGlideComponent_1.Gue);
     i.SetActorRotation(CharacterGlideComponent_1.Gue.ToUeRotator(), "SoarSpline", false);
     a.Normalize();
-    var s = MathUtils_1.MathUtils.Clamp(h.SplineDirection.DotProduct(a), -1, 1);
-    var o = (1 - Math.acos(Math.abs(s)) * MathUtils_1.MathUtils.RadToDeg / 45) * this.Hkl.SoarSplineAccel;
-    var s = MathUtils_1.MathUtils.Clamp(r + o * t, this.Hkl.SoarSplineMinSpeed, this.SoarBoostOn && n.SoarSprintLimit > 0 ? n.SoarSprintLimit : n.MaxSoarSplineSpeed);
-    a.Multiply(s, CharacterGlideComponent_1.Lz);
+    var _ = MathUtils_1.MathUtils.Clamp(h.SplineDirection.DotProduct(a), -1, 1);
+    var s = (1 - Math.acos(Math.abs(_)) * MathUtils_1.MathUtils.RadToDeg / 45) * this.Hkl.SoarSplineAccel;
+    var o = MathUtils_1.MathUtils.Clamp(r + s * e, this.Hkl.SoarSplineMinSpeed, this.SoarBoostOn && n.SoarSprintLimit > 0 ? n.SoarSprintLimit : n.MaxSoarSplineSpeed);
+    a.Multiply(o, CharacterGlideComponent_1.Lz);
     i.SetActorVelocity(CharacterGlideComponent_1.Lz);
-    if (t > MathUtils_1.MathUtils.SmallNumber) {
+    if (e > MathUtils_1.MathUtils.SmallNumber) {
       h.SplineLocation.Subtraction(i.ActorLocationProxy, CharacterGlideComponent_1.Lz);
-      r = CharacterGlideComponent_1.Lz.Size();
-      o = MathUtils_1.MathUtils.RangeClamp(r, this.Hkl.SoarSplinePushCenterDistMin, this.Hkl.SoarSplinePushCenterDistMax, this.Hkl.SoarSplinePushCenterSpeedMin, this.Hkl.SoarSplinePushCenterSpeedMax);
-      CharacterGlideComponent_1.Lz.MultiplyEqual(Math.min(1, o * t / r));
-      i.MoveComp.MoveCharacter(CharacterGlideComponent_1.Lz, t, "Soar.Spline.Push");
+      _ = CharacterGlideComponent_1.Lz.Size();
+      r = MathUtils_1.MathUtils.RangeClamp(_, this.Hkl.SoarSplinePushCenterDistMin, this.Hkl.SoarSplinePushCenterDistMax, this.Hkl.SoarSplinePushCenterSpeedMin, this.Hkl.SoarSplinePushCenterSpeedMax);
+      CharacterGlideComponent_1.Lz.MultiplyEqual(Math.min(1, r * e / _));
+      i.MoveComp.MoveCharacter(CharacterGlideComponent_1.Lz, e, "Soar.Spline.Push");
     }
     if (this.SoarBoostOn) {
-      this.ija(e, t);
+      this.ija(t, e);
     }
     if (this.Hkl.DebugDraw) {
       const a = i.ActorVelocityProxy;
@@ -740,7 +745,7 @@ let CharacterGlideComponent = CharacterGlideComponent_1 = class CharacterGlideCo
         Log_1.Log.Debug("Movement", 6, "Soar Spline", ["Speed", s.Size()], ["Planar", s.Size2D()], ["Z", s.Z]);
       }
     }
-    return UE.KuroMovementBPLibrary.KuroSoar(t, e, n.SoarFriction, 0, Vector_1.Vector.ZeroVector, Vector_1.Vector.ZeroVector, this.SoarBoostOn && n.SoarSprintLimit > 0 ? n.SoarSprintLimit : n.MaxSoarSplineSpeed);
+    return UE.KuroMovementBPLibrary.KuroSoar(e, t, n.SoarFriction, 0, Vector_1.Vector.ZeroVector, Vector_1.Vector.ZeroVector, this.SoarBoostOn && n.SoarSprintLimit > 0 ? n.SoarSprintLimit : n.MaxSoarSplineSpeed);
   }
   SwitchCurrentSoarType(t) {
     if (this.CurrentSoarType !== t) {
@@ -751,8 +756,8 @@ let CharacterGlideComponent = CharacterGlideComponent_1 = class CharacterGlideCo
   }
   $7c() {
     var t = this.Hte?.CreatureData.GetPbDataId();
-    var e = this.Entity.GetComponent(178);
-    if (this.Entity.GetComponent(179)?.MoveState === CharacterUnifiedStateTypes_1.ECharMoveState.Soar && this.CurrentSoarType === 1) {
+    var e = this.Entity.GetComponent(183);
+    if (this.Entity.GetComponent(184)?.MoveState === CharacterUnifiedStateTypes_1.ECharMoveState.Soar && this.CurrentSoarType === 1) {
       this.Xte?.AddTag(1850415886);
       e?.AddBuff(ROAM_EFFECT_BUFF_ID, {
         InstigatorId: e.CreatureDataId,
@@ -775,5 +780,5 @@ CharacterGlideComponent.Tz = Vector_1.Vector.Create();
 CharacterGlideComponent.Gue = Rotator_1.Rotator.Create();
 CharacterGlideComponent.az = Quat_1.Quat.Create();
 CharacterGlideComponent.KJ = Quat_1.Quat.Create();
-CharacterGlideComponent = CharacterGlideComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(59)], CharacterGlideComponent);
+CharacterGlideComponent = CharacterGlideComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(62)], CharacterGlideComponent);
 exports.CharacterGlideComponent = CharacterGlideComponent; //# sourceMappingURL=CharacterGlideComponent.js.map

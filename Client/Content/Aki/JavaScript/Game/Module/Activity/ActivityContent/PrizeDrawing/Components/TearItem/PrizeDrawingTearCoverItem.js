@@ -48,65 +48,65 @@ class PrizeDrawingTearCoverItem extends (exports.PrizeDrawingTearCoverItemBase =
   constructor() {
     super(...arguments);
     this.a7d = [];
-    this.TEm = [];
+    this.N2m = [];
     this.h7d = 0;
     this.l7d = false;
     this.OpenedCallback = undefined;
-    this.Vym = new UE.LinearColor(1, 5, 0, 0);
-    this.bEm = [];
-    this.REm = [];
-    this.wEm = -1;
-    this.HIm = 0;
-    this.$Im = 0;
-    this.WIm = false;
-    this.QIm = undefined;
-    this.jym = undefined;
-    this.LEm = undefined;
-    this.Hym = undefined;
-    this.$ym = undefined;
-    this.Wym = undefined;
-    this.QEm = undefined;
-    this.KEm = undefined;
-    this.XEm = undefined;
-    this.YEm = undefined;
-    this.zEm = undefined;
+    this.VAm = new UE.LinearColor(1, 5, 0, 0);
+    this.V2m = [];
+    this.j2m = [];
+    this.H2m = -1;
+    this.dOm = 0;
+    this.mOm = 0;
+    this.fOm = false;
+    this.gOm = undefined;
+    this.jAm = undefined;
+    this.$2m = undefined;
+    this.HAm = undefined;
+    this.$Am = undefined;
+    this.WAm = undefined;
+    this.Tkm = undefined;
+    this.bkm = undefined;
+    this.Rkm = undefined;
+    this.wkm = undefined;
+    this.Lkm = undefined;
     this.SPe = undefined;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UINiagara], [3, UE.UINiagara], [4, UE.UITexture], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UINiagara], [11, UE.UITexture], [12, UE.UINiagara], [13, UE.UINiagara], [14, UE.UIItem], [15, UE.UIItem]];
   }
   OnStart() {
-    this.jym = this.GetItem(1);
-    this.LEm = this.GetItem(5);
-    var t = this.jym.GetAttachUIChildren();
+    this.jAm = this.GetItem(1);
+    this.$2m = this.GetItem(5);
+    var t = this.jAm.GetAttachUIChildren();
     for (let i = 0; i < t.Num(); i++) {
       this.a7d?.push(t.Get(i));
     }
-    var s = this.LEm.GetAttachUIChildren();
+    var s = this.$2m.GetAttachUIChildren();
     for (let i = 0; i < s.Num(); i++) {
-      this.TEm?.push(s.Get(i));
+      this.N2m?.push(s.Get(i));
     }
-    this.bEm.push(this.GetItem(6), this.GetItem(7), this.GetItem(8), this.GetItem(9));
-    this.bEm.forEach(i => {
-      this.REm.push(new LevelSequencePlayer_1.LevelSequencePlayer(i));
+    this.V2m.push(this.GetItem(6), this.GetItem(7), this.GetItem(8), this.GetItem(9));
+    this.V2m.forEach(i => {
+      this.j2m.push(new LevelSequencePlayer_1.LevelSequencePlayer(i));
     });
     this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
-    this.JEm();
+    this.Pkm();
   }
   OnBeforeDestroy() {
     this.SPe?.Clear();
-    this.REm.forEach(i => {
+    this.j2m.forEach(i => {
       i.Clear();
     });
-    if (this.QIm !== undefined) {
-      AudioSystem_1.AudioSystem.ExecuteAction(this.QIm, 0);
+    if (this.gOm !== undefined) {
+      AudioSystem_1.AudioSystem.ExecuteAction(this.gOm, 0);
     }
   }
   OnTick(t) {
     if (!this.l7d) {
-      if (t > DRAG_START_DISTANCE && !this.WIm) {
-        this.WIm = true;
-        this.KIm();
+      if (t > DRAG_START_DISTANCE && !this.fOm) {
+        this.fOm = true;
+        this.COm();
       }
       var s = 1 / this.a7d.length;
       var e = Math.abs(t % s) / s;
@@ -116,8 +116,8 @@ class PrizeDrawingTearCoverItem extends (exports.PrizeDrawingTearCoverItemBase =
         this.Open(true);
       } else {
         if (this.h7d !== i) {
-          if (i > this.HIm) {
-            this.HIm = i;
+          if (i > this.dOm) {
+            this.dOm = i;
             AudioSystem_1.AudioSystem.PostEvent(AUDIO_TEAR_FIRST);
           } else if (i < this.h7d) {
             AudioSystem_1.AudioSystem.PostEvent(AUDIO_TEAR_BACK);
@@ -126,22 +126,22 @@ class PrizeDrawingTearCoverItem extends (exports.PrizeDrawingTearCoverItemBase =
           }
           this.m7d(i);
         }
-        if ((s = i - 1) > this.wEm) {
-          this.PEm(s);
-          this.REm[s].PlaySequencePurely("Emoji");
+        if ((s = i - 1) > this.H2m) {
+          this.W2m(s);
+          this.j2m[s].PlaySequencePurely("Emoji");
         }
         if (s == -1) {
-          this.PEm(-1);
+          this.W2m(-1);
         }
         s = MathUtils_1.MathUtils.Lerp(shineDissolve[i - 1] ?? 0, shineDissolve[i], e);
-        this.Hym?.SetNiagaraVarFloat("Dissolve", s);
-        this.QEm?.SetNiagaraVarFloat("Dissolve", s);
-        this.Vym.A = MathUtils_1.MathUtils.Lerp(glowMaskOffsetV[i - 1] ?? DEFAULT_GLOW_MASK_UV_OFFSET, glowMaskOffsetV[i], e);
-        this.$ym?.SetCustomMaterialVectorParameter(GLOW_MASK_UV_NAME, this.Vym);
-        this.XEm?.SetCustomMaterialVectorParameter(GLOW_MASK_UV_NAME, this.Vym);
+        this.HAm?.SetNiagaraVarFloat("Dissolve", s);
+        this.Tkm?.SetNiagaraVarFloat("Dissolve", s);
+        this.VAm.A = MathUtils_1.MathUtils.Lerp(glowMaskOffsetV[i - 1] ?? DEFAULT_GLOW_MASK_UV_OFFSET, glowMaskOffsetV[i], e);
+        this.$Am?.SetCustomMaterialVectorParameter(GLOW_MASK_UV_NAME, this.VAm);
+        this.Rkm?.SetCustomMaterialVectorParameter(GLOW_MASK_UV_NAME, this.VAm);
         s = MathUtils_1.MathUtils.Lerp(glowAlpha[i - 1] ?? 0, glowAlpha[i], e);
-        this.$ym?.SetAlpha(s);
-        this.XEm?.SetAlpha(s);
+        this.$Am?.SetAlpha(s);
+        this.Rkm?.SetAlpha(s);
         AudioSystem_1.AudioSystem.SetRtpcValue(AUDIO_RTPC_TEAR, t * 100);
       }
     }
@@ -152,34 +152,34 @@ class PrizeDrawingTearCoverItem extends (exports.PrizeDrawingTearCoverItemBase =
   m7d(i) {
     this.a7d[this.h7d]?.SetUIActive(false);
     this.a7d[i]?.SetUIActive(true);
-    this.TEm[this.h7d]?.SetUIActive(false);
-    this.TEm[i]?.SetUIActive(true);
+    this.N2m[this.h7d]?.SetUIActive(false);
+    this.N2m[i]?.SetUIActive(true);
     this.h7d = i;
   }
-  PEm(i) {
-    this.bEm[this.wEm]?.SetUIActive(false);
-    this.bEm[i]?.SetUIActive(true);
-    this.wEm = i;
+  W2m(i) {
+    this.V2m[this.H2m]?.SetUIActive(false);
+    this.V2m[i]?.SetUIActive(true);
+    this.H2m = i;
   }
   SetTearShadowActive(i) {
-    this.LEm?.SetUIActive(i);
+    this.$2m?.SetUIActive(i);
   }
   Open(i) {
     this.l7d = true;
-    this.jym?.SetUIActive(false);
-    this.LEm?.SetUIActive(false);
-    this.PEm(-1);
+    this.jAm?.SetUIActive(false);
+    this.$2m?.SetUIActive(false);
+    this.W2m(-1);
     this.OnOpened();
     if (i) {
-      if (this.$Im !== 0) {
-        if (this.QIm !== undefined) {
-          AudioSystem_1.AudioSystem.ExecuteAction(this.QIm, 0);
-          this.QIm = undefined;
+      if (this.mOm !== 0) {
+        if (this.gOm !== undefined) {
+          AudioSystem_1.AudioSystem.ExecuteAction(this.gOm, 0);
+          this.gOm = undefined;
         }
         AudioSystem_1.AudioSystem.SetRtpcValue(AUDIO_RTPC_TEAR, 0);
         AudioSystem_1.AudioSystem.PostEvent(AUDIO_TEAR_LOOP_STOP);
       }
-      switch (this.$Im) {
+      switch (this.mOm) {
         case 2:
           AudioSystem_1.AudioSystem.PostEvent(AUDIO_TEAR_OPEN);
           break;
@@ -194,28 +194,28 @@ class PrizeDrawingTearCoverItem extends (exports.PrizeDrawingTearCoverItemBase =
   PlayRevelAnimation() {
     this.TearItem?.PlayRevelAnimation();
   }
-  KIm() {
-    if (this.$Im === 2) {
-      this.Wym?.SetUIActive(true);
-    } else if (this.$Im === 1) {
-      this.KEm?.SetUIActive(true);
+  COm() {
+    if (this.mOm === 2) {
+      this.WAm?.SetUIActive(true);
+    } else if (this.mOm === 1) {
+      this.bkm?.SetUIActive(true);
     }
-    if (this.$Im !== 0) {
+    if (this.mOm !== 0) {
       AudioSystem_1.AudioSystem.PostEvent(AUDIO_TEAR_START);
     }
   }
   OnStartDragging() {
-    if (this.$Im !== 0) {
-      this.QIm = AudioSystem_1.AudioSystem.PostEvent(AUDIO_TEAR_LOOP);
+    if (this.mOm !== 0) {
+      this.gOm = AudioSystem_1.AudioSystem.PostEvent(AUDIO_TEAR_LOOP);
     }
   }
   OnStopDragging() {
-    if (this.$Im !== 0) {
-      if (this.QIm !== undefined) {
-        AudioSystem_1.AudioSystem.ExecuteAction(this.QIm, 0, {
+    if (this.mOm !== 0) {
+      if (this.gOm !== undefined) {
+        AudioSystem_1.AudioSystem.ExecuteAction(this.gOm, 0, {
           TransitionDuration: AUDIO_FADE_OUT_TIME
         });
-        this.QIm = undefined;
+        this.gOm = undefined;
       }
       AudioSystem_1.AudioSystem.PostEvent(AUDIO_TEAR_LOOP_STOP);
     }
@@ -225,27 +225,27 @@ class PrizeDrawingTearCoverItem extends (exports.PrizeDrawingTearCoverItemBase =
   }
   Reset() {
     this.l7d = false;
-    this.jym.SetUIActive(true);
+    this.jAm.SetUIActive(true);
     this.m7d(0);
-    this.Hym?.SetNiagaraVarFloat("Dissolve", 0);
-    this.QEm?.SetNiagaraVarFloat("Dissolve", 0);
-    this.Vym.A = DEFAULT_GLOW_MASK_UV_OFFSET;
-    this.$ym?.SetCustomMaterialVectorParameter(GLOW_MASK_UV_NAME, this.Vym);
-    this.XEm?.SetCustomMaterialVectorParameter(GLOW_MASK_UV_NAME, this.Vym);
-    this.$ym?.SetAlpha(0);
-    this.XEm?.SetAlpha(0);
-    this.Wym?.SetUIActive(false);
-    this.KEm?.SetUIActive(false);
-    this.HIm = 0;
-    this.WIm = false;
+    this.HAm?.SetNiagaraVarFloat("Dissolve", 0);
+    this.Tkm?.SetNiagaraVarFloat("Dissolve", 0);
+    this.VAm.A = DEFAULT_GLOW_MASK_UV_OFFSET;
+    this.$Am?.SetCustomMaterialVectorParameter(GLOW_MASK_UV_NAME, this.VAm);
+    this.Rkm?.SetCustomMaterialVectorParameter(GLOW_MASK_UV_NAME, this.VAm);
+    this.$Am?.SetAlpha(0);
+    this.Rkm?.SetAlpha(0);
+    this.WAm?.SetUIActive(false);
+    this.bkm?.SetUIActive(false);
+    this.dOm = 0;
+    this.fOm = false;
   }
   RefreshEffectVisible(i) {
-    this.$Im = i;
-    this.LEm.SetUIActive(i === 0);
-    this.YEm?.SetUIActive(i === 2);
-    this.YEm?.SetAlpha(i === 2 ? 1 : 0);
-    this.zEm?.SetUIActive(i === 1);
-    this.zEm?.SetAlpha(i === 1 ? 1 : 0);
+    this.mOm = i;
+    this.$2m.SetUIActive(i === 0);
+    this.wkm?.SetUIActive(i === 2);
+    this.wkm?.SetAlpha(i === 2 ? 1 : 0);
+    this.Lkm?.SetUIActive(i === 1);
+    this.Lkm?.SetAlpha(i === 1 ? 1 : 0);
   }
   async CreateTearItem(i, t) {
     let s = undefined;
@@ -271,28 +271,28 @@ class PrizeDrawingTearCoverItem extends (exports.PrizeDrawingTearCoverItemBase =
     await this.TearItem.CreateThenShowByResourceIdAsync(s, this.GetItem(0));
   }
   GetFxControl() {
-    return this.YEm;
+    return this.wkm;
   }
   GetFxControlMinor() {
-    return this.zEm;
+    return this.Lkm;
   }
-  JEm() {
-    this.Hym = this.GetUiNiagara(3);
-    this.$ym = this.GetTexture(4);
-    this.Wym = this.GetUiNiagara(2);
-    this.QEm = this.GetUiNiagara(13);
-    this.KEm = this.GetUiNiagara(12);
-    this.XEm = this.GetTexture(11);
-    this.YEm = this.GetItem(14);
-    this.zEm = this.GetItem(15);
-    this.Hym?.SetUIActive(true);
-    this.$ym?.SetUIActive(true);
-    this.Wym?.SetUIActive(false);
-    this.QEm?.SetUIActive(true);
-    this.KEm?.SetUIActive(false);
-    this.XEm?.SetUIActive(true);
-    this.YEm?.SetUIActive(false);
-    this.zEm?.SetUIActive(false);
+  Pkm() {
+    this.HAm = this.GetUiNiagara(3);
+    this.$Am = this.GetTexture(4);
+    this.WAm = this.GetUiNiagara(2);
+    this.Tkm = this.GetUiNiagara(13);
+    this.bkm = this.GetUiNiagara(12);
+    this.Rkm = this.GetTexture(11);
+    this.wkm = this.GetItem(14);
+    this.Lkm = this.GetItem(15);
+    this.HAm?.SetUIActive(true);
+    this.$Am?.SetUIActive(true);
+    this.WAm?.SetUIActive(false);
+    this.Tkm?.SetUIActive(true);
+    this.bkm?.SetUIActive(false);
+    this.Rkm?.SetUIActive(true);
+    this.wkm?.SetUIActive(false);
+    this.Lkm?.SetUIActive(false);
   }
 }
 exports.PrizeDrawingTearCoverItem = PrizeDrawingTearCoverItem;

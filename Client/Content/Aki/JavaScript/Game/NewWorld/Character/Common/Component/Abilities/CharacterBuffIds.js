@@ -54,8 +54,10 @@ exports.buffId = {
   ChangeRoleBuff: 3118,
   ManipulateInteractBuffId: 640003012,
   ManipulateInteractBuffIdMaleX: 640003013,
-  MotorSprintBuff: 7000000204,
-  HardLockCompensateBuff: 1001006001
+  HardLockCompensateBuff: 1001006001,
+  Morph1: 1001007001,
+  MultiBuff: 1101013021,
+  BattleMultiBuff: 1101013022
 };
 exports.noBroadCastBuff = new Set([1201, 1202, 1203, 12021, 12022, 12023, 1204, 1205, 1206, 1207, 1209, 1210, 1211, 3009, 3010, 3011, 3015, 3023, 1101003010, 1101003012, 1101003013, 90001003, 1001006001, 613670000]);
 exports.gameplayAbilityVisionBuffId = {
@@ -68,5 +70,5 @@ exports.specialIgnoreGaBuff = [1404500005, 1103200005];
 exports.specialIgnoreBuff = [5003001003, 3124, 1403081001, 640003009, 640003010, 1101009002, 80014011, 621030203, 621030207, 80003009, 80003002, 70000003, 5008001002];
 exports.checkBuffInSpecialList = checkBuffInSpecialList;
 exports.specialBulletToSkillIdMap = new Map([["77042000004", 77042034], ["1103000013", 11030000], ["1104015010", 1104017], ["1403021001", 1403012], ["28000701", 280007050], ["28000702", 280007051]]);
-exports.specialIgnoreBullet = ["4000000003", "210000004", "80004012001", "80012901001", "80012901003", "80012901004", "80012901005", "80012901006", "80012901008", "80012901009"];
+exports.specialIgnoreBullet = ["4000000003", "210000004", "80004012001", "80012901001", "80012901003", "80012901004", "80012901005", "80012901006", "80012901008", "80012901009", "200300046"];
 exports.checkBulletInSpecialList = checkBulletInSpecialList; //# sourceMappingURL=CharacterBuffIds.js.map

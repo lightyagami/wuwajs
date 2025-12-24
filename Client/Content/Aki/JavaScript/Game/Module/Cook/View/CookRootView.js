@@ -52,8 +52,12 @@ class CookRootView extends UiViewBase_1.UiViewBase {
       this.INt();
       this.TNt();
       this.vNt.UpdateData(19, this.LNt());
+      var e = this.vNt.GetUniqueIdByGroupId(19);
+      this.MNt.SetFilterUniqueId(e);
       this.MNt.SetResultDataDirty();
       this.MNt.UpdateData(19, this.LNt());
+      var e = this.MNt.GetUniqueIdByGroupId(19);
+      this.vNt.SetSortUniqueId(e);
       this.YGt();
       var e = ModelManager_1.ModelManager.CookModel.GetCookerMaxLevel();
       var t = ModelManager_1.ModelManager.CookModel.GetCookerInfo().CookingLevel;
@@ -85,6 +89,8 @@ class CookRootView extends UiViewBase_1.UiViewBase {
         CookController_1.CookController.SendCookingDataRequestAsync().then(e => {
           if (e) {
             this.vNt.UpdateData(19, this.LNt());
+            e = this.vNt.GetUniqueIdByGroupId(19);
+            this.MNt.SetFilterUniqueId(e);
           }
         });
       }
@@ -112,14 +118,23 @@ class CookRootView extends UiViewBase_1.UiViewBase {
       this.FNt(e);
     };
     this.GNt = () => {
+      var e;
       if (ModelManager_1.ModelManager.CookModel.CurrentCookListType === 0) {
         this.vNt.UpdateData(19, this.LNt());
+        e = this.vNt.GetUniqueIdByGroupId(19);
+        this.MNt.SetFilterUniqueId(e);
         this.MNt.SetResultDataDirty();
         this.MNt.UpdateData(19, this.LNt());
+        e = this.MNt.GetUniqueIdByGroupId(19);
+        this.vNt.SetSortUniqueId(e);
       } else {
         this.vNt.UpdateData(27, this.LNt());
+        e = this.vNt.GetUniqueIdByGroupId(27);
+        this.MNt.SetFilterUniqueId(e);
         this.MNt.SetResultDataDirty();
         this.MNt.UpdateData(27, this.LNt());
+        e = this.MNt.GetUniqueIdByGroupId(27);
+        this.vNt.SetSortUniqueId(e);
       }
     };
     this.HNt = (e = true) => {

@@ -37,7 +37,7 @@ class TsTaskAiMarkItem extends TsTaskAbortImmediatelyBase_1.default {
     var o = t.AiController;
     if (o) {
       this.InitTsVariables();
-      s = (o = o.CharActorComp).Entity.GetComponent(81);
+      s = (o = o.CharActorComp).Entity.GetComponent(84);
       i = ControllerHolder_1.ControllerHolder.BlackboardController.GetIntValueByEntity(o.Entity.Id, this.TsItemBlackboardKey);
       if (s.AiItemMarkId !== 0 && this.TsSearchFilterIsMarkByAi) {
         if (s.AiItemMarkId === i) {
@@ -45,7 +45,7 @@ class TsTaskAiMarkItem extends TsTaskAbortImmediatelyBase_1.default {
         } else {
           this.FinishExecute(false);
         }
-      } else if (!(i = EntitySystem_1.EntitySystem.Get(i)) || !(r = i.GetComponent(148)) || r.IsSearchByOther(o.Entity.Id)) {
+      } else if (!(i = EntitySystem_1.EntitySystem.Get(i)) || !(r = i.GetComponent(153)) || r.IsSearchByOther(o.Entity.Id)) {
         this.FinishExecute(false);
       } else {
         if (this.TsSearchFilterIsMarkByAi) {

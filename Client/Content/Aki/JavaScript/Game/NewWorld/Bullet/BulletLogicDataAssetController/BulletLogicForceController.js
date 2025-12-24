@@ -30,7 +30,7 @@ class BulletLogicForceController extends BulletLogicController_1.BulletLogicCont
     this.E7o = Vector_1.Vector.Create();
     this.h7o = t;
     this.a7o = i.GetBulletInfo();
-    this.S7o = i.GetComponent(173);
+    this.S7o = i.GetComponent(178);
     this.y7o = new Map();
     this.I7o = new Map();
     this.NeedTick = true;
@@ -71,13 +71,13 @@ class BulletLogicForceController extends BulletLogicController_1.BulletLogicCont
         this.v7o.clear();
       }
       for ([i] of this.a7o.CollisionInfo.CharacterEntityMap) {
-        if (!!i && (!this.T7o || !!i.GetComponent(209).HasAnyTag(e))) {
+        if (!!i && (!this.T7o || !!i.GetComponent(215).HasAnyTag(e))) {
           this.R7o(i);
         }
       }
     } else {
       for (var [s] of this.a7o.CollisionInfo.CharacterEntityMap) {
-        var o = s.GetComponent(209);
+        var o = s.GetComponent(215);
         if (!!s && (!this.T7o || !!o.HasAnyTag(e)) && !o.HasTag(1077681329)) {
           this.U7o(s);
         }
@@ -88,8 +88,8 @@ class BulletLogicForceController extends BulletLogicController_1.BulletLogicCont
     var i;
     var e;
     var s;
-    var o = t.GetComponent(182);
-    if (!!o?.Valid && !(o.CharacterWeight > this.h7o.LimitWeight) && !(s = t.GetComponent(3).ActorLocationProxy, (e = Vector_1.Vector.Dist(this.S7o.ActorLocationProxy, s)) > this.h7o.OuterRadius) && !(e < this.h7o.InnerRadius) && !(this.h7o.OuterRadius <= 0)) {
+    var o = t.GetComponent(187);
+    if (!!o?.Valid && !(o.CharacterWeight > this.h7o.LimitWeight) && !(s = t.GetComponent(1).ActorLocationProxy, (e = Vector_1.Vector.Dist(this.S7o.ActorLocationProxy, s)) > this.h7o.OuterRadius) && !(e < this.h7o.InnerRadius) && !(this.h7o.OuterRadius <= 0)) {
       i = Math.max(MIN_WEIGHT, o.CharacterWeight) - WEIGHT_COEFFICIENT;
       e = Math.exp(-(e / this.h7o.OuterRadius * this.h7o.ForceDampingRatio * FORCE_DAMPING_RATIO)) * this.h7o.ForceBase * FORCE_RATIO / (i * i) * LENGTH_CONVERSION;
       (i = Vector_1.Vector.Create(this.S7o.ActorLocation)).SubtractionEqual(s);
@@ -101,14 +101,14 @@ class BulletLogicForceController extends BulletLogicController_1.BulletLogicCont
       s = this.y7o.get(t);
       s = o.SetAddMoveWorld(i.ToUeVector(), MOVE_TIME, undefined, s);
       this.y7o.set(t, s);
-      if (this.KIa > 0 && (e = t.GetComponent(61)) && !e.IsImmuneTimeScaleEffect()) {
+      if (this.KIa > 0 && (e = t.GetComponent(64)) && !e.IsImmuneTimeScaleEffect()) {
         e.AddImmuneTimeScaleEffectTimer(this.KIa * CommonDefine_1.MILLIONSECOND_PER_SECOND);
       }
     }
   }
   R7o(s) {
-    var o = s.GetComponent(179);
-    var h = s.GetComponent(182);
+    var o = s.GetComponent(184);
+    var h = s.GetComponent(187);
     if (o?.Valid && h?.Valid) {
       let i = CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_GLIDE;
       if (this.p7o) {
@@ -129,7 +129,7 @@ class BulletLogicForceController extends BulletLogicController_1.BulletLogicCont
         }
       }
       let e = this.y7o.get(s);
-      var o = s.GetComponent(3);
+      var o = s.GetComponent(1);
       var r = this.a7o.AttackerMoveComp?.IsStandardGravity ?? true;
       let t = 0;
       if (r) {

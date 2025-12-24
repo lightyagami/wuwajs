@@ -12,6 +12,7 @@ const Macro_1 = require("../../../../Core/Preprocessor/Macro");
 const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const TimeUtil_1 = require("../../../Common/TimeUtil");
 const GameSettingsDeviceRender_1 = require("../../../GameSettings/GameSettingsDeviceRender");
 const GlobalData_1 = require("../../../GlobalData");
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
@@ -26,6 +27,7 @@ const OneTextTitleItem_1 = require("../../Common/DropDown/Item/OneText/OneTextTi
 const LevelSequencePlayer_1 = require("../../Common/LevelSequencePlayer");
 const ConfirmBoxDefine_1 = require("../../ConfirmBox/ConfirmBoxDefine");
 const HelpController_1 = require("../../Help/HelpController");
+const LogReportDefine_1 = require("../../LogReport/LogReportDefine");
 const LguiUtil_1 = require("../../Util/LguiUtil");
 const DynScrollView_1 = require("../../Util/ScrollView/DynScrollView");
 const GenericScrollViewNew_1 = require("../../Util/ScrollView/GenericScrollViewNew");
@@ -38,6 +40,7 @@ const ActivityTipsButton_1 = require("./SubView/ActivityTipsButton");
 class CommonActivityView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
+    this.Dvt = true;
     this.e5e = true;
     this.lqe = undefined;
     this.t5e = 0;
@@ -51,29 +54,29 @@ class CommonActivityView extends UiViewBase_1.UiViewBase {
     this.yvt = undefined;
     this.JPd = undefined;
     this.ZPd = ActivityCommonDefine_1.ACTIVITY_FILTER_ALL_ID;
-    this.$vm = false;
+    this.lLm = false;
     this.s5e = undefined;
-    this.Xdm = undefined;
+    this.xpm = undefined;
     this.SPe = undefined;
     this.h5e = [];
     this.Nel = new Map();
     this.PRn = [];
     this.FY_ = [undefined, undefined];
     this.XY_ = [undefined, undefined];
-    this.eAd = (t, i, e) => {
+    this.eAd = (i, t, e) => {
       var s = new ActivitySwitchToggle_1.ActivitySwitchToggle();
-      s.InitData(t);
+      s.InitData(i);
       s.SetOnToggleClicked(this.c5e);
       return s;
     };
-    this.Xmm = t => {
-      return ActivityManager_1.ActivityManager.GetActivityController(t.Type).CreateSubPageComponent(t);
+    this.tym = i => {
+      return ActivityManager_1.ActivityManager.GetActivityController(i.Type).CreateSubPageComponent(i);
     };
-    this.Ydm = t => {
-      if (t.IsShowOrShowing) {
-        t.Hide();
+    this.Bpm = i => {
+      if (i.IsShowOrShowing) {
+        i.Hide();
       }
-      t.Destroy();
+      i.Destroy();
     };
     this.NY_ = () => {
       if (this.FY_[0]) {
@@ -94,104 +97,105 @@ class CommonActivityView extends UiViewBase_1.UiViewBase {
     this.$Oe = () => {
       this.CloseMe();
     };
-    this.c5e = (t, i, e) => {
-      if (t.Id === this.XPd) {
+    this.c5e = (i, t, e) => {
+      if (i.Id === this.XPd) {
         this.zPd?.SetToggleStateForce(1, false);
       } else if (e === 1) {
-        if (t.TextId) {
-          this.lqe?.SetTitleLocalText(t.TextId);
+        if (i.TextId) {
+          this.lqe?.SetTitleLocalText(i.TextId);
         }
         this.zPd?.SetToggleStateForce(0, false);
-        this.zPd = i;
-        this.tAd(t.Id);
+        this.zPd = t;
+        this.tAd(i.Id);
       }
     };
     this.C5e = () => {
-      var t = new ActivityPageSelectContent_1.ActivityPageSelectContent();
-      t.BindCanToggleExecuteChange(this.A5e);
-      t.BindToggleClick(this.Bke);
-      return t;
+      var i = new ActivityPageSelectContent_1.ActivityPageSelectContent();
+      i.BindCanToggleExecuteChange(this.A5e);
+      i.BindToggleClick(this.Bke);
+      return i;
     };
-    this.A5e = (t, i) => true;
-    this.Bke = (t, i) => {
-      if (i) {
-        this.Gel(t, true);
+    this.A5e = (i, t) => true;
+    this.Bke = (i, t) => {
+      if (t) {
+        this.Gel(i, true);
       }
     };
-    this.jY_ = t => {
-      this.BNe(t);
+    this.jY_ = i => {
+      this.BNe(i);
       this.HY_();
+      this.Kjf(i);
     };
     this.$Y_ = () => {
-      var t;
-      var i = this.FY_;
-      if (i[0] && i[1]) {
-        t = this.i5e.IsItemInViewport(i[0], ActivityCommonDefine_1.REDDOT_TOLERANCE);
-        i = this.i5e.IsItemInViewport(i[1], ActivityCommonDefine_1.REDDOT_TOLERANCE);
-        this.XY_[0].SetUIActive(t === 1);
-        this.XY_[1].SetUIActive(i === 2);
+      var i;
+      var t = this.FY_;
+      if (t[0] && t[1]) {
+        i = this.i5e.IsItemInViewport(t[0], ActivityCommonDefine_1.REDDOT_TOLERANCE);
+        t = this.i5e.IsItemInViewport(t[1], ActivityCommonDefine_1.REDDOT_TOLERANCE);
+        this.XY_[0].SetUIActive(i === 1);
+        this.XY_[1].SetUIActive(t === 2);
       } else {
         this.XY_[0].SetUIActive(false);
         this.XY_[1].SetUIActive(false);
       }
     };
-    this.CLn = t => {
-      if (!(t.length <= 0)) {
+    this.CLn = i => {
+      if (!(i.length <= 0)) {
         this.lqe.SetCurrencyItemVisible(true);
-        this.lqe.SetCurrencyItemList(t).catch(() => {});
+        this.lqe.SetCurrencyItemList(i).catch(() => {});
       }
     };
-    this.cMl = t => {
-      this.UiBlurBehaviour?.ChangeNeedBlurState(t);
+    this.cMl = i => {
+      this.UiBlurBehaviour?.ChangeNeedBlurState(i);
     };
-    this.p5e = i => {
-      if (i) {
-        i = ModelManager_1.ModelManager.ActivityModel.GetActivityById(i);
-        if (i && i.CheckIfInShowTime()) {
-          let t = undefined;
-          t = i.TimeType === 0 ? i.LocalConfig.FilterTabType : ActivityCommonDefine_1.ACTIVITY_PERMANENT_TAB_ID;
-          this.qel.set(t, i.Id);
-          if (t !== this.XPd) {
-            this.iAd(t, true);
+    this.p5e = t => {
+      if (t) {
+        t = ModelManager_1.ModelManager.ActivityModel.GetActivityById(t);
+        if (t && t.CheckIfInShowTime()) {
+          let i = undefined;
+          i = t.TimeType === 0 ? t.LocalConfig.FilterTabType : ActivityCommonDefine_1.ACTIVITY_PERMANENT_TAB_ID;
+          this.qel.set(i, t.Id);
+          if (i !== this.XPd) {
+            this.iAd(i, true);
           } else {
             this.v5e(this.XPd, true);
           }
         }
       }
     };
-    this.M5e = t => {
-      if (this.k4e === t) {
+    this.M5e = i => {
+      if (this.k4e === i) {
         this.s5e?.RefreshView();
       }
     };
     this.OnActivityUpdate = () => {
-      var t = () => {
+      var i = () => {
         UiManager_1.UiManager.ResetToBattleView();
       };
-      var i = new ConfirmBoxDefine_1.ConfirmBoxDataNew(115);
-      i.FunctionMap.set(1, t);
-      i.FunctionMap.set(0, t);
-      ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(i);
+      var t = new ConfirmBoxDefine_1.ConfirmBoxDataNew(115);
+      t.FunctionMap.set(1, i);
+      t.FunctionMap.set(0, i);
+      ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(t);
     };
-    this.E5e = t => {
-      this.s5e?.PlaySubViewSequence(t);
+    this.E5e = i => {
+      this.s5e?.PlaySubViewSequence(i);
     };
-    this.u5e = (t, i = 0, e) => {
-      this.PRn = ActivityCommonDefine_1.activityViewStateSequence[i];
-      if (t !== this.e5e) {
-        this.e5e = t;
-        this.UiViewSequence.PlaySequence(t ? this.PRn[0] : this.PRn[1], e);
-        this.s5e?.OnCommonViewStateChange(t);
+    this.u5e = (i, t = 0, e) => {
+      this.PRn = ActivityCommonDefine_1.activityViewStateSequence[t];
+      if (i !== this.e5e) {
+        this.e5e = i;
+        this.UiViewSequence.PlaySequence(i ? this.PRn[0] : this.PRn[1], e);
+        this.s5e?.OnCommonViewStateChange(i);
       }
       this.RefreshTabIcon();
     };
   }
   get k4e() {
-    var t = this.XPd ?? this.yvt?.at(0)?.Id;
-    if (t === undefined) {
+    var i = this.XPd ?? this.yvt?.at(0)?.Id;
+    if (i === undefined) {
       return 0;
     } else {
-      return this.qel.get(t) ?? 0;
+      return this.qel.get(i) ?? 0;
     }
   }
   OnRegisterComponent() {
@@ -204,7 +208,6 @@ class CommonActivityView extends UiViewBase_1.UiViewBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ActivityViewRefreshCurrent, this.M5e);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnActivityClose, this.OnActivityUpdate);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnActivityOpen, this.OnActivityUpdate);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PlaySequenceEventByStringParam, this.E5e);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SetActivityViewState, this.u5e);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SetActivityViewCurrency, this.CLn);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ChangeActivityViewNeedBlurState, this.cMl);
@@ -216,80 +219,81 @@ class CommonActivityView extends UiViewBase_1.UiViewBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ActivityViewRefreshCurrent, this.M5e);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivityClose, this.OnActivityUpdate);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivityOpen, this.OnActivityUpdate);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PlaySequenceEventByStringParam, this.E5e);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SetActivityViewState, this.u5e);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SetActivityViewCurrency, this.CLn);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ChangeActivityViewNeedBlurState, this.cMl);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.jY_);
   }
   async OnBeforeStartAsync() {
+    ControllerHolder_1.ControllerHolder.ActivityController.EnableRefreshTimer(TimeUtil_1.TimeUtil.InverseMillisecond);
     this.I5e();
-    var t = Info_1.Info.IsLowMemoryDevice ? ActivityDefine_1.LOW_MEMORY_CACHE_VIEW_COUNT : ActivityDefine_1.NORMAL_MEMORY_CACHE_VIEW_COUNT;
-    this.Xdm = new Lru_1.Lru(t, this.Xmm, this.Ydm);
+    var i = Info_1.Info.IsLowMemoryDevice ? ActivityDefine_1.LOW_MEMORY_CACHE_VIEW_COUNT : ActivityDefine_1.NORMAL_MEMORY_CACHE_VIEW_COUNT;
+    this.xpm = new Lru_1.Lru(i, this.tym, this.Bpm);
     await this.T5e();
   }
   bvt() {
-    var t = [];
-    var i = ConfigManager_1.ConfigManager.ActivityConfig.GetAllActivityFilter();
-    if (i) {
+    var i = [];
+    var t = ConfigManager_1.ConfigManager.ActivityConfig.GetAllActivityFilter();
+    if (t) {
       var e = ModelManager_1.ModelManager.ActivityModel.GetCurrentShowingActivities();
-      for (const h of i) {
-        var s = this.FilterActivitiesByTabId(e, h.Id);
+      for (const n of t) {
+        var s = this.FilterActivitiesByTabId(e, n.Id);
         if (s.length !== 0) {
-          if (h.Id === ActivityCommonDefine_1.ACTIVITY_PERMANENT_TAB_ID) {
-            t.push({
+          if (n.Id === ActivityCommonDefine_1.ACTIVITY_PERMANENT_TAB_ID) {
+            i.push({
               IsLineType: true
             });
           }
-          t.push({
-            Id: h.Id,
-            TextId: h.FilterName,
+          i.push({
+            Id: n.Id,
+            TextId: n.FilterName,
             IsLineType: false,
-            IconPath: h.FilterIcon,
+            IconPath: n.FilterIcon,
             Activities: s
           });
         }
       }
-      this.yvt = t;
+      this.yvt = i;
       this.YPd.RefreshByData(this.yvt);
     }
   }
   I5e() {
-    var t = this.GetScrollViewWithScrollbar(1);
-    this.i5e = new GenericScrollViewNew_1.GenericScrollViewNew(t, this.C5e);
+    var i = this.GetScrollViewWithScrollbar(1);
+    this.i5e = new GenericScrollViewNew_1.GenericScrollViewNew(i, this.C5e);
   }
   async T5e() {
-    var t = [];
+    var i = [];
     this.lqe = new PopupCaptionItem_1.PopupCaptionItem(this.GetItem(0));
     this.lqe.SetHelpCallBack(this.XOe);
     this.lqe.SetCloseCallBack(this.$Oe);
     this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
     this.bel = new ActivityTipsButton_1.ActivityTipsButton();
-    t.push(this.bel.CreateByActorAsync(this.GetItem(7).GetOwner()));
+    i.push(this.bel.CreateByActorAsync(this.GetItem(7).GetOwner()));
     this.YPd = new DynScrollView_1.DynamicScrollView(this.GetUIDynScrollViewComponent(15), this.GetItem(16), new ActivitySwitchToggle_1.ActivitySwitchToggleDynamicItem(), this.eAd);
-    t.push(this.YPd.Init());
-    this.JPd = new CommonDropDown_1.CommonDropDown(this.GetItem(14), t => new OneTextDropDownItem_1.OneTextDropDownItem(t), t => new OneTextTitleItem_1.OneTextTitleItem(t));
+    i.push(this.YPd.Init());
+    this.JPd = new CommonDropDown_1.CommonDropDown(this.GetItem(14), i => new OneTextDropDownItem_1.OneTextDropDownItem(i), i => new OneTextTitleItem_1.OneTextTitleItem(i));
     this.JPd.SetOnSelectCall(this.rAd.bind(this));
     this.JPd.SetShowType(0);
-    t.push(this.JPd.Init());
-    await Promise.all(t);
+    i.push(this.JPd.Init());
+    await Promise.all(i);
   }
   OnStart() {
-    var [t, i, e] = this.OpenParam ?? [4, 0, undefined];
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PlaySequenceEventByStringParam, this.E5e);
+    var [i, t, e] = this.OpenParam ?? [4, 0, undefined];
     this.H41 = e;
-    ModelManager_1.ModelManager.ActivityModel.SendActivityViewOpenLogData(t);
+    ModelManager_1.ModelManager.ActivityModel.SendActivityViewOpenLogData(i);
     this.PRn = ActivityCommonDefine_1.activityViewStateSequence[0];
     this.lqe.SetTitleLocalText("Activity_Title");
     this.uxt();
     this.bvt();
     let s = undefined;
-    var h = [];
-    for (const n of this.yvt) {
-      if (!n.IsLineType) {
-        for (const r of n.Activities) {
-          h.push(r.Id);
-          if (r.Id === i) {
-            s = n.Id;
+    var n = [];
+    for (const h of this.yvt) {
+      if (!h.IsLineType) {
+        for (const r of h.Activities) {
+          n.push(r.Id);
+          if (r.Id === t) {
+            s = h.Id;
           }
         }
       }
@@ -301,16 +305,16 @@ class CommonActivityView extends UiViewBase_1.UiViewBase {
         }
         this.oAd();
       }
-      this.BindRedDotIds(h);
+      this.BindRedDotIds(n);
       this.XY_[0] = this.GetButton(11).RootUIComp;
       this.XY_[1] = this.GetButton(12).RootUIComp;
-      this.qel.set(s, i);
+      this.qel.set(s, t);
       this.iAd(s, true);
     }
   }
   OnBeforeShow() {
-    for (const t of this.h5e) {
-      if (!t.CheckIfInShowTime()) {
+    for (const i of this.h5e) {
+      if (!i.CheckIfInShowTime()) {
         ControllerHolder_1.ControllerHolder.ActivityController.RequestActivityData().finally(() => {
           this.OnActivityUpdate();
         });
@@ -319,15 +323,21 @@ class CommonActivityView extends UiViewBase_1.UiViewBase {
     }
     this.BNe();
     this.HY_();
+    if (!this.Dvt) {
+      this.J$f();
+    }
     this.i5e.BindScrollValueChange(this.$Y_);
     this.s5e?.RefreshView();
     GameSettingsDeviceRender_1.GameSettingsDeviceRender.TemporaryDisableFrameGeneration("CommonActivityView");
+    this.Dvt = false;
   }
   async OnBeforeHideAsync() {
     await this.s5e?.BeforeHideSelfAsync();
     GameSettingsDeviceRender_1.GameSettingsDeviceRender.CancelTemporaryDisableFrameGeneration("CommonActivityView");
   }
   OnBeforeDestroy() {
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PlaySequenceEventByStringParam, this.E5e);
+    ControllerHolder_1.ControllerHolder.ActivityController.DisableRefreshTimer();
     this.i5e.UnBindScrollValueChange();
     if (this.YPd) {
       this.YPd.ClearChildren();
@@ -336,12 +346,12 @@ class CommonActivityView extends UiViewBase_1.UiViewBase {
   }
   OnAfterDestroy() {
     this.s5e?.Destroy();
-    this.Xdm.Clear();
+    this.xpm.Clear();
   }
-  tAd(t, i = true) {
-    this.XPd = t;
+  tAd(i, t = true) {
+    this.XPd = i;
     if (ModelManager_1.ModelManager.ActivityModel.GetDebugPermanentFilterVisible()) {
-      this.GetItem(13)?.SetUIActive(t === ActivityCommonDefine_1.ACTIVITY_PERMANENT_TAB_ID);
+      this.GetItem(13)?.SetUIActive(i === ActivityCommonDefine_1.ACTIVITY_PERMANENT_TAB_ID);
     } else {
       this.GetItem(13)?.SetUIActive(false);
     }
@@ -349,46 +359,46 @@ class CommonActivityView extends UiViewBase_1.UiViewBase {
     this.GetItem(9).SetUIActive(false);
     this.XY_[0]?.SetUIActive(false);
     this.XY_[1]?.SetUIActive(false);
-    this.$vm = true;
-    this.v5e(t, false).finally(() => {
-      this.SPe.PlayLevelSequenceByName(i ? "SwitchModel" : "SwitchList", true);
+    this.lLm = true;
+    this.v5e(i, false).finally(() => {
+      this.SPe.PlayLevelSequenceByName(t ? "SwitchModel" : "SwitchList", true);
       this.GetItem(8).SetUIActive(true);
       this.GetItem(9).SetUIActive(true);
       this.HY_();
       TimerSystem_1.GameplayTimerSystem.Delay(() => {
-        this.$vm = false;
+        this.lLm = false;
         this.HY_();
         this.$Y_();
       }, 100);
     });
   }
-  iAd(i, t) {
-    var e = this.yvt?.findIndex(t => t.Id === i);
+  iAd(t, i) {
+    var e = this.yvt?.findIndex(i => i.Id === t);
     if (e !== undefined && e !== -1 && (e = this.YPd?.GetScrollItemFromIndex(e))) {
-      e.OnSelected(t);
+      e.OnSelected(i);
     }
   }
-  async Gel(t, i) {
-    if (t.Id !== this.k4e) {
+  async Gel(i, t) {
+    if (i.Id !== this.k4e) {
       this.i5e.GetScrollItemByKey(this.k4e)?.SetToggleState(false, false);
     }
-    this.qel.set(this.XPd, t.Id);
-    if (!t.NeedSelfControlFirstRedPoint()) {
-      ControllerHolder_1.ControllerHolder.ActivityController.RequestReadActivity(t);
+    this.qel.set(this.XPd, i.Id);
+    if (!i.NeedSelfControlFirstRedPoint()) {
+      ControllerHolder_1.ControllerHolder.ActivityController.RequestReadActivity(i);
     }
-    await this.f5e(i);
+    await this.f5e(t);
   }
   S5e() {}
   y5e() {}
-  BindRedDotIds(t) {
-    for (const i of t) {
-      this.BNe(i);
+  BindRedDotIds(i) {
+    for (const t of i) {
+      this.BNe(t);
     }
   }
-  BNe(t) {
-    if (t) {
-      var i = ModelManager_1.ModelManager.ActivityModel.GetActivityRedDotState(t);
-      this.Nel.set(t, i);
+  BNe(i) {
+    if (i) {
+      var t = ModelManager_1.ModelManager.ActivityModel.GetActivityRedDotState(i);
+      this.Nel.set(i, t);
     } else {
       for (const s of this.h5e) {
         var e = ModelManager_1.ModelManager.ActivityModel.GetActivityRedDotState(s.Id);
@@ -397,82 +407,109 @@ class CommonActivityView extends UiViewBase_1.UiViewBase {
     }
   }
   HY_() {
-    if (this.$vm) {
+    if (this.lLm) {
       this.FY_ = [undefined, undefined];
     } else {
-      var i = [];
-      for (let t = 0; t < this.h5e.length; t++) {
-        var e = this.h5e[t].Id;
+      var t = [];
+      for (let i = 0; i < this.h5e.length; i++) {
+        var e = this.h5e[i].Id;
         if (this.Nel.get(e)) {
-          i.push(t);
+          t.push(i);
         }
       }
-      this.FY_ = i.length <= 0 ? [undefined, undefined] : [this.i5e.GetItemByIndex(i[0]), this.i5e.GetItemByIndex(i[i.length - 1])];
+      this.FY_ = t.length <= 0 ? [undefined, undefined] : [this.i5e.GetItemByIndex(t[0]), this.i5e.GetItemByIndex(t[t.length - 1])];
     }
   }
-  async v5e(t, i) {
-    var e = ModelManager_1.ModelManager.ActivityModel.GetCurrentShowingActivities();
-    this.h5e = this.FilterActivitiesByTabId(e, t);
-    if (this.IsPermanentTab(t) && this.ZPd !== ActivityCommonDefine_1.ACTIVITY_FILTER_ALL_ID) {
-      this.h5e = this.h5e.filter(t => t.LocalConfig.PermanentFilterType === this.ZPd);
+  Kjf(i) {
+    i = this.i5e.GetGenericLayout()?.GetLayoutItemByKey(i);
+    if (i) {
+      i.RefreshBubbleAndCheckTimer();
     }
+  }
+  J$f() {
+    var i = this.i5e.GetGenericLayout()?.GetLayoutItemList();
+    if (i) {
+      for (const t of i) {
+        t.RefreshBubbleAndCheckTimer();
+      }
+    }
+  }
+  async v5e(i, t) {
+    var e = ModelManager_1.ModelManager.ActivityModel.GetCurrentShowingActivities();
+    this.h5e = this.FilterActivitiesByTabId(e, i);
+    if (this.IsPermanentTab(i) && this.ZPd !== ActivityCommonDefine_1.ACTIVITY_FILTER_ALL_ID) {
+      this.h5e = this.h5e.filter(i => i.LocalConfig.PermanentFilterType === this.ZPd);
+    }
+    var s = new LogReportDefine_1.OnClickActivityCategorytab();
+    if (i === 1) {
+      s.i_type = 1;
+    } else if (i === 3) {
+      s.i_type = 2;
+    } else if (i === ActivityCommonDefine_1.ACTIVITY_PERMANENT_TAB_ID) {
+      s.i_type = 3;
+    }
+    s.o_content = [];
+    for (const h of this.h5e) {
+      s.o_content.push(new ActivityDefine_1.ActivityLogReportInfo(h.Id, Number(h.Type)));
+    }
+    ControllerHolder_1.ControllerHolder.LogReportController.LogReport(s);
     await this.i5e.RefreshByDataAsync(this.h5e);
-    let s = 0;
-    for (let t = 0; t < this.h5e.length; t++) {
-      if (this.k4e === this.h5e[t].Id) {
-        s = t;
+    let n = 0;
+    for (let i = 0; i < this.h5e.length; i++) {
+      if (this.k4e === this.h5e[i].Id) {
+        n = i;
         break;
       }
     }
-    e = this.i5e.GetScrollItemByIndex(s);
+    e = this.i5e.GetScrollItemByIndex(n);
     if (e) {
       this.i5e.LateScrollTo(e.GetRootItem());
       e.SetToggleState(true, false);
-      await this.Gel(this.h5e[s], i);
+      await this.Gel(this.h5e[n], t);
     }
   }
-  async f5e(t) {
-    var i = ModelManager_1.ModelManager.ActivityModel.GetActivityById(this.k4e);
-    this.D5e(i);
-    await this.R5e(i, t);
+  async f5e(i) {
+    var t = ModelManager_1.ModelManager.ActivityModel.GetActivityById(this.k4e);
+    this.D5e(t);
+    await this.R5e(t, i);
   }
-  D5e(t) {
-    this.t5e = t.GetHelpId();
+  D5e(i) {
+    this.t5e = i.GetHelpId();
     this.lqe.SetHelpBtnActive(this.t5e !== 0);
-    this.bel.SetActive(t.LocalConfig.ShowPermanentTips);
+    this.bel.SetActive(i.LocalConfig.ShowPermanentTips);
     this.RefreshTabIcon();
   }
-  async WNe(t) {
-    const i = new CustomPromise_1.CustomPromise();
+  async WNe(i) {
+    const t = new CustomPromise_1.CustomPromise();
     var e = this.GetTexture(5);
     e.SetUIActive(false);
-    var t = t.BgTexturePath;
-    this.SetTextureByPath(t, e, undefined, () => {
-      i.SetResult();
+    var i = i.BgTexturePath;
+    this.SetTextureByPath(i, e, undefined, () => {
+      t.SetResult();
     });
-    await i.Promise;
+    await t.Promise;
   }
-  async R5e(t, i) {
-    let e = this.Xdm.Get(t);
+  async R5e(i, t) {
+    let e = this.xpm.Get(i);
     if (!e) {
-      if (!(e = this.Xdm.Create(t))) {
+      if (!(e = this.xpm.Create(i))) {
         return;
       }
-      var s = ActivityManager_1.ActivityManager.GetActivityController(t.Type);
-      var h = this.GetItem(3);
-      var s = s.GetActivityResource(t);
+      var s = ActivityManager_1.ActivityManager.GetActivityController(i.Type);
+      var n = this.GetItem(3);
+      var s = s.GetActivityResource(i);
       if (this.H41) {
         e.SetOpenParam(this.H41);
         this.H41 = undefined;
       }
-      e.SetData(t);
-      await e.CreateByPathAsync(s, h);
+      e.SetData(i);
+      await e.CreateByPathAsync(s, n);
     }
-    if (this.k4e === t.Id) {
-      await this.WNe(t);
+    if (this.k4e === i.Id) {
+      await this.WNe(i);
       if (this.s5e) {
         this.s5e.SetActive(false);
-        this.Xdm.Put(this.s5e);
+        this.xpm.Put(this.s5e);
       }
       this.lqe.SetCurrencyItemVisible(false);
       this.s5e = e;
@@ -480,7 +517,7 @@ class CommonActivityView extends UiViewBase_1.UiViewBase {
       this.s5e.RefreshView();
       this.GetTexture(5).SetUIActive(true);
       this.s5e.SetActive(true);
-      if (i) {
+      if (t) {
         if (this.UiViewSequence.HasSequenceNameInPlaying("Switch")) {
           this.UiViewSequence.ReplaySequence("Switch");
         } else {
@@ -491,73 +528,92 @@ class CommonActivityView extends UiViewBase_1.UiViewBase {
     }
   }
   RefreshTabIcon() {
-    var t = ModelManager_1.ModelManager.ActivityModel.GetActivityById(this.k4e).LocalConfig;
-    var t = this.e5e ? t.TabResource : t.TabResource2;
-    if (t) {
-      this.lqe.SetTitleIcon(t);
+    var i = ModelManager_1.ModelManager.ActivityModel.GetActivityById(this.k4e).LocalConfig;
+    var i = this.e5e ? i.TabResource : i.TabResource2;
+    if (i) {
+      this.lqe.SetTitleIcon(i);
     }
   }
   uxt() {
-    var t = this.GetText(10);
+    var i = this.GetText(10);
     if (GlobalData_1.GlobalData.IsPlayInEditor) {
-      t.SetUIActive(true);
+      i.SetUIActive(true);
     } else {
-      t.SetUIActive(false);
+      i.SetUIActive(false);
     }
   }
-  W6l(t) {
-    this.GetText(10).SetText("DebugId: " + t);
+  W6l(i) {
+    this.GetText(10).SetText("DebugId: " + i);
   }
-  GetGuideUiItemAndUiItemForShowEx(t) {
-    var i;
-    if (!(t.length <= 0)) {
-      if (t[0] === "BackToBattleViewBtn") {
-        if ((i = UE.LGUIBPLibrary.GetComponentInChildren(this.GetRootActor(), UE.TsUiHomeHelper_C.StaticClass(), false)?.GetOwner()) && (i = UE.LGUIBPLibrary.GetComponentInChildren(i, UE.UIButtonComponent.StaticClass(), false)?.GetRootComponent())) {
-          return [i, i];
+  GetGuideUiItemAndUiItemForShowEx(i) {
+    if (!(i.length <= 0)) {
+      var t;
+      var e = i[0];
+      if (e === "BackToBattleViewBtn") {
+        if ((t = UE.LGUIBPLibrary.GetComponentInChildren(this.GetRootActor(), UE.TsUiHomeHelper_C.StaticClass(), false)?.GetOwner()) && (t = UE.LGUIBPLibrary.GetComponentInChildren(t, UE.UIButtonComponent.StaticClass(), false)?.GetRootComponent())) {
+          return [t, t];
         } else {
           return undefined;
         }
-      } else if (this.s5e !== undefined) {
-        return this.s5e.GetGuideUiItemAndUiItemForShowEx(t);
-      } else {
-        return undefined;
+      }
+      if (e !== "FirstRecommendActivityTog") {
+        if (this.s5e !== undefined) {
+          return this.s5e.GetGuideUiItemAndUiItemForShowEx(i);
+        } else {
+          return undefined;
+        }
+      }
+      {
+        let t = undefined;
+        for (let i = 0; i < this.h5e.length; i++) {
+          if (this.h5e[i].LocalConfig?.IsTabEffectNotice) {
+            t = this.i5e.GetItemByIndex(i);
+            this.i5e.ScrollTo(t);
+            break;
+          }
+        }
+        if (t) {
+          return [t, t];
+        } else {
+          return undefined;
+        }
       }
     }
   }
-  IsPermanentTab(t) {
-    return t === ActivityCommonDefine_1.ACTIVITY_PERMANENT_TAB_ID;
+  IsPermanentTab(i) {
+    return i === ActivityCommonDefine_1.ACTIVITY_PERMANENT_TAB_ID;
   }
-  FilterActivitiesByTabId(t, i) {
-    const e = this.IsPermanentTab(i);
-    return t.filter(t => e ? t.TimeType === 1 : t.TimeType === 0 && t.LocalConfig?.FilterTabType === i);
+  FilterActivitiesByTabId(i, t) {
+    const e = this.IsPermanentTab(t);
+    return i.filter(i => (!i.Type || !ActivityDefine_1.hideActivityTypeList.includes(i.Type)) && !(e ? i.TimeType !== 1 : i.TimeType !== 0 || i.LocalConfig?.FilterTabType !== t));
   }
-  rAd(t, i) {
-    this.ZPd = i.Id;
+  rAd(i, t) {
+    this.ZPd = t.Id;
     if (this.IsPermanentTab(this.XPd)) {
       this.tAd(this.XPd, false);
       ModelManager_1.ModelManager.ActivityModel?.SetActivityPermanentFilterId(this.ZPd);
     }
   }
   oAd() {
-    var i = ConfigManager_1.ConfigManager.ActivityConfig.GetAllActivityPermanentFilter();
-    if (i) {
-      var e = this.yvt?.find(t => t.Id === ActivityCommonDefine_1.ACTIVITY_PERMANENT_TAB_ID);
-      var s = [i.find(t => t.Id === ActivityCommonDefine_1.ACTIVITY_FILTER_ALL_ID)];
+    var t = ConfigManager_1.ConfigManager.ActivityConfig.GetAllActivityPermanentFilter();
+    if (t) {
+      var e = this.yvt?.find(i => i.Id === ActivityCommonDefine_1.ACTIVITY_PERMANENT_TAB_ID);
+      var s = [t.find(i => i.Id === ActivityCommonDefine_1.ACTIVITY_FILTER_ALL_ID)];
       if (e) {
-        var h = new Set(e.Activities?.map(t => t.LocalConfig.PermanentFilterType) ?? []);
-        for (const n of i) {
-          if (n.Id !== ActivityCommonDefine_1.ACTIVITY_FILTER_ALL_ID && h.has(n.Id)) {
-            s.push(n);
+        var n = new Set(e.Activities?.map(i => i.LocalConfig.PermanentFilterType) ?? []);
+        for (const h of t) {
+          if (h.Id !== ActivityCommonDefine_1.ACTIVITY_FILTER_ALL_ID && n.has(h.Id)) {
+            s.push(h);
           }
         }
       }
-      let t = s.findIndex(t => t.Id === this.ZPd);
-      if (t === -1) {
-        t = 0;
+      let i = s.findIndex(i => i.Id === this.ZPd);
+      if (i === -1) {
+        i = 0;
       }
-      this.JPd.InitScroll(s, t => {
-        return new LguiUtil_1.TableTextArgNew(t.FilterName);
-      }, t);
+      this.JPd.InitScroll(s, i => {
+        return new LguiUtil_1.TableTextArgNew(i.FilterName);
+      }, i);
     }
   }
 }

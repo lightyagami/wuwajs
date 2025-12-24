@@ -69,8 +69,8 @@ class CharacterPart {
     this.HitBoneName = "";
     this.BaseEntity = t;
     this.ActorComp = t.GetComponent(3);
-    this.TagComponent = t.GetComponent(209);
-    this.AttributeComp = t.GetComponent(177);
+    this.TagComponent = t.GetComponent(215);
+    this.AttributeComp = t.GetComponent(182);
     this.Index = i;
     this.PartTag = GameplayTagUtils_1.GameplayTagUtils.GetGameplayTagByName(e.部位标签.TagName);
     this.ActiveTag = GameplayTagUtils_1.GameplayTagUtils.GetGameplayTagByName(e.部位激活标签.TagName);
@@ -199,7 +199,7 @@ let CharacterPartComponent = class CharacterPartComponent extends EntityComponen
     return true;
   }
   OnInit() {
-    this.TagComponent = this.Entity.GetComponent(209);
+    this.TagComponent = this.Entity.GetComponent(215);
     if (this.Entity.GetComponent(3).Actor?.DtCharacterPart) {
       this.ajr = true;
     }
@@ -301,7 +301,7 @@ let CharacterPartComponent = class CharacterPartComponent extends EntityComponen
     var e = MathUtils_1.MathUtils.LongToNumber(i.F4n);
     var e = ModelManager_1.ModelManager.CreatureModel.GetEntity(e);
     if (e) {
-      var s = e.Entity.GetComponent(69);
+      var s = e.Entity.GetComponent(72);
       for (const a of i.xTs) {
         s.GetPartByIndex(a.jjn)?.UpdatePartInfo(a);
       }
@@ -312,7 +312,7 @@ let CharacterPartComponent = class CharacterPartComponent extends EntityComponen
     var e = ModelManager_1.ModelManager.CreatureModel.GetEntity(e);
     if (e) {
       CombatLog_1.CombatLog.Info("Part", t, "PartComponentInitNotify");
-      var s = e.Entity.GetComponent(69);
+      var s = e.Entity.GetComponent(72);
       for (const a of i._ys.PTs) {
         s.GetPartByIndex(a.jjn)?.UpdatePartInfo(a);
       }
@@ -328,5 +328,5 @@ let CharacterPartComponent = class CharacterPartComponent extends EntityComponen
 };
 __decorate([CombatMessage_1.CombatNet.Listen("RFn", false)], CharacterPartComponent, "PartUpdateNotify", null);
 __decorate([CombatMessage_1.CombatNet.Listen("xFn", false)], CharacterPartComponent, "PartComponentInitNotify", null);
-CharacterPartComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(69)], CharacterPartComponent);
+CharacterPartComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(72)], CharacterPartComponent);
 exports.CharacterPartComponent = CharacterPartComponent; //# sourceMappingURL=CharacterPartComponent.js.map

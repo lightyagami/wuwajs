@@ -66,7 +66,7 @@ class TowerEntrancePanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondaryU
     WorldMapSecondaryUiLayoutHelper_1.WorldMapSecondaryUiLayoutHelper.UpdateDesc(this.LayoutContext);
     WorldMapSecondaryUiLayoutHelper_1.WorldMapSecondaryUiLayoutHelper.UpdateAreaTxtByConfigMarkItem(this.LayoutContext);
     var i = this.UpdateQuickGoto();
-    this.ConfirmButton.SetActive(!i);
+    this.LayoutContext?.SetConfirmBtnActive(!i);
     this.jm();
     this.IRe = TimerSystem_1.GameplayTimerSystem.Forever(() => {
       this.q2o();

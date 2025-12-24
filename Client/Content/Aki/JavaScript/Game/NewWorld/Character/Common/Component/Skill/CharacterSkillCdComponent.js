@@ -49,8 +49,8 @@ let CharacterSkillCdComponent = class CharacterSkillCdComponent extends BaseSkil
   }
   OnInit() {
     super.OnInit();
-    this.cBe = this.Entity.CheckGetComponent(39);
-    this.Bzr = this.Entity.CheckGetComponent(176);
+    this.cBe = this.Entity.CheckGetComponent(40);
+    this.Bzr = this.Entity.CheckGetComponent(181);
     this.fZo = ModelManager_1.ModelManager.SkillCdModel.GetCurWorldSkillCdData();
     this.qzr = new Map();
     this.TGn = new Map();
@@ -222,8 +222,8 @@ let CharacterSkillCdComponent = class CharacterSkillCdComponent extends BaseSkil
       }
     }
     var s = ControllerHolder_1.ControllerHolder.FormationDataController.GetPlayerEntity(ModelManager_1.ModelManager.CreatureModel.GetPlayerId());
-    if (s?.GetComponent(210)?.HasModifyCdEffect) {
-      s = s?.GetComponent(213);
+    if (s?.GetComponent(217)?.HasModifyCdEffect) {
+      s = s?.GetComponent(220);
       if (s) {
         for (const l of s.BuffEffectManager.FilterById(49)) {
           if (this.Hoa(l, e, i)) {
@@ -286,5 +286,5 @@ let CharacterSkillCdComponent = class CharacterSkillCdComponent extends BaseSkil
     }
   }
 };
-CharacterSkillCdComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(211)], CharacterSkillCdComponent);
+CharacterSkillCdComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(218)], CharacterSkillCdComponent);
 exports.CharacterSkillCdComponent = CharacterSkillCdComponent; //# sourceMappingURL=CharacterSkillCdComponent.js.map

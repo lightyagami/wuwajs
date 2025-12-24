@@ -135,7 +135,7 @@ let CharacterPlanComponent = class CharacterPlanComponent extends EntityComponen
     return true;
   }
   OnActivate() {
-    if (this.bjr && this.Entity.GetComponent(46)?.InLevelAiControl()) {
+    if (this.bjr && this.Entity.GetComponent(47)?.InLevelAiControl()) {
       this.StartLevelAi();
     }
   }
@@ -244,5 +244,5 @@ let CharacterPlanComponent = class CharacterPlanComponent extends EntityComponen
     return false;
   }
 };
-CharacterPlanComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(73)], CharacterPlanComponent);
+CharacterPlanComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(76)], CharacterPlanComponent);
 exports.CharacterPlanComponent = CharacterPlanComponent; //# sourceMappingURL=CharacterPlanComponent.js.map

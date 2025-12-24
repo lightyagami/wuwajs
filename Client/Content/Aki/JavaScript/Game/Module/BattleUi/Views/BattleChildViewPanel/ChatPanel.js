@@ -62,6 +62,9 @@ class ChatPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     this.RZe = e => {
       this.Sah();
     };
+    this.LLf = e => {
+      this.Sah();
+    };
     this.Ize = () => {
       if (!UiManager_1.UiManager.IsViewShow("ChatView")) {
         UiManager_1.UiManager.OpenView("ChatView");
@@ -179,16 +182,16 @@ class ChatPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
       var t = ModelManager_1.ModelManager.FriendModel;
       var i = [];
       for (const a of this.oze.values()) {
-        var r;
         var n;
-        var s = a.GetChatRowData();
-        if (s) {
-          r = s.UniqueId;
-          if ((n = s.TargetPlayerId) && t.HasBlockedPlayer(n)) {
-            i.push(r);
+        var s;
+        var r = a.GetChatRowData();
+        if (r) {
+          n = r.UniqueId;
+          if ((s = r.TargetPlayerId) && t.HasBlockedPlayer(s)) {
+            i.push(n);
           }
-          if (!s.IsVisible) {
-            i.push(r);
+          if (!r.IsVisible) {
+            i.push(n);
           }
         }
       }
@@ -239,6 +242,8 @@ class ChatPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InputControllerChange, this.XBo);
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiEnvironmentKeyChanged, this.Eze);
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiPressCombineButtonChanged, this.RZe);
+      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiPressMotorcycleCombineButtonChanged, this.RZe);
+      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiMotorcycleStateChanged, this.LLf);
       InputDistributeController_1.InputDistributeController.BindActions([InputMappingsDefine_1.actionMappings.环境特性, InputMappingsDefine_1.actionMappings.组合主键], this.bMe);
     }
   }
@@ -255,6 +260,12 @@ class ChatPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
       }
       if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.BattleUiPressCombineButtonChanged, this.RZe)) {
         EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiPressCombineButtonChanged, this.RZe);
+      }
+      if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.BattleUiPressMotorcycleCombineButtonChanged, this.RZe)) {
+        EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiPressMotorcycleCombineButtonChanged, this.RZe);
+      }
+      if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.BattleUiMotorcycleStateChanged, this.LLf)) {
+        EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiMotorcycleStateChanged, this.LLf);
       }
       InputDistributeController_1.InputDistributeController.UnBindActions([InputMappingsDefine_1.actionMappings.环境特性, InputMappingsDefine_1.actionMappings.组合主键], this.bMe);
     }
@@ -333,17 +344,17 @@ class ChatPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
       if (!i) {
         return;
       }
-      var r = ModelManager_1.ModelManager.FriendModel;
-      var n = r.GetFriendById(i);
-      if (!n) {
+      var n = ModelManager_1.ModelManager.FriendModel;
+      var s = n.GetFriendById(i);
+      if (!s) {
         return;
       }
-      if (r.HasBlockedPlayer(i) || n.GetBlockBySdk()) {
+      if (n.HasBlockedPlayer(i) || s.GetBlockBySdk()) {
         return;
       }
     }
-    r = this.GetItem(2);
-    i = await this.NewDynamicChildViewByResourceId(r, "UiItem_ChatRowItem_Prefab", ChatRowItem_1.ChatRowItem, true, e);
+    n = this.GetItem(2);
+    i = await this.NewDynamicChildViewByResourceId(n, "UiItem_ChatRowItem_Prefab", ChatRowItem_1.ChatRowItem, true, e);
     this.oze.set(t, i);
     this.OJs.push(t);
   }

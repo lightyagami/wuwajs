@@ -178,7 +178,11 @@ class CalabashCollectTabView extends UiTabViewBase_1.UiTabViewBase {
   }
   OnBeforeShow() {
     this.vpt.UpdateData(15, ModelManager_1.ModelManager.CalabashModel.GetCalabashDevelopRewardSortData());
+    var e = this.vpt.GetUniqueIdByGroupId(15);
+    this.Mpt.SetFilterUniqueId(e);
     this.Mpt.UpdateData(15, ModelManager_1.ModelManager.CalabashModel.GetCalabashDevelopRewardSortData());
+    var e = this.Mpt.GetUniqueIdByGroupId(15);
+    this.vpt.SetSortUniqueId(e);
     this.Ept.RefreshDetailState();
     this.GetButton(9).RootUIComp.SetActive(this.Apt);
   }

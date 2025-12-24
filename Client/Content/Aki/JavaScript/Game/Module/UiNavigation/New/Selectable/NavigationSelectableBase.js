@@ -5,7 +5,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.NavigationSelectableBase = undefined;
 const StringUtils_1 = require("../../../../../Core/Utils/StringUtils");
+const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const UiLayer_1 = require("../../../../Ui/UiLayer");
+const FindMultiTemplateNavigationListener_1 = require("../FindAction/FindMultiTemplateNavigationListener");
 const TsUiNavigationBehaviorListener_1 = require("../TsUiNavigationBehaviorListener");
 const UiNavigationGlobalData_1 = require("../UiNavigationGlobalData");
 class NavigationSelectableBase {
@@ -74,6 +76,22 @@ class NavigationSelectableBase {
   FindLoopScrollViewNavigationComponent(t, i) {
     return this.OnFindLoopScrollViewNavigationComponent(t, i);
   }
+  FindMultiTemplateScrollViewNavigationComponent(t, i, e, r, n, s) {
+    t = this.OnFindMultiTemplateScrollViewNavigationComponent(t, i, e, n, s);
+    i = t[0]?.GetOwner()?.GetComponentByClass(TsUiNavigationBehaviorListener_1.default.StaticClass());
+    e = this.Listener.PanelConfig?.HandleAfterFindOpposite(r, this.Listener, i, t[1]);
+    if (t[2] !== -1 && !e) {
+      (n = new FindMultiTemplateNavigationListener_1.FindMultiTemplateNavigationListener()).PanelConfig = this.Listener.PanelConfig;
+      n.AddParam([this.Listener, t[2]]);
+      this.Listener.PanelConfig?.SetFindNavigationAction(n);
+      ControllerHolder_1.ControllerHolder.UiNavigationNewController.MarkViewHandleRefreshNavigationDirty();
+    }
+    s = e?.GetSelectableComponent();
+    return s;
+  }
+  MultiTemplateScrollViewScrollToIndex(t, i) {
+    this.Listener.ScrollProxy.ScrollView.TryScrollToGridIndex(t, i);
+  }
   NotifyFocusListener(t) {
     this.OnNotifyFocusListener(t);
   }
@@ -110,9 +128,22 @@ class NavigationSelectableBase {
     if (this.Listener.HasLoopScrollView()) {
       let t = 0;
       let i = this.Listener;
-      while (t < 20 && (n = this.Listener.ScrollView.FindNavigationComponent(i.GetSelectableComponent(), e, r)) !== undefined && (i = n?.GetOwner()?.GetComponentByClass(TsUiNavigationBehaviorListener_1.default.StaticClass()), t++, !i?.IsCanFocus()));
+      while (t < 20 && (n = this.Listener.ScrollProxy.ScrollView.FindNavigationComponent(i.GetSelectableComponent(), e, r)) !== undefined && (i = n?.GetOwner()?.GetComponentByClass(TsUiNavigationBehaviorListener_1.default.StaticClass()), t++, !i?.IsCanFocus()));
     }
     return n;
+  }
+  OnFindMultiTemplateScrollViewNavigationComponent(t, i, e, r, n) {
+    let s = undefined;
+    let o = true;
+    let a = -1;
+    var h;
+    var l;
+    if (this.Listener.HasMultiTemplateScrollView() && (l = (h = this.Listener.ScrollProxy.ScrollView).GetGridIndexByChildComponent(this.Listener.GetSelectableComponent()), (a = h.FindNavigationIndex(this.Listener.GetSelectableComponent(), t, i, e, r, n)) !== -1)) {
+      s = h.IsInDisplayRange(a) ? h.GetNavigationComponentByGridIndex(a) : undefined;
+      o = this.Listener.ScrollProxy.GetMultiTemplateScrollPositiveFind(t, l, a);
+      this.Listener.ScrollProxy.TryMultiTemplateScrollToGridIndex(l, a);
+    }
+    return [s, o, a];
   }
   cBo() {
     var t;

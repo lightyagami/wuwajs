@@ -15,7 +15,7 @@ class LevelAiTaskMoveTo extends LevelAiTask_1.LevelAiTask {
   }
   ExecuteTask() {
     var e;
-    this.Gce = this.CreatureDataComponent.Entity.GetComponent(45);
+    this.Gce = this.CreatureDataComponent.Entity.GetComponent(46);
     if (this.Gce) {
       e = {
         Index: 0,

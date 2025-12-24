@@ -27,10 +27,12 @@ const EntityComponent_1 = require("../../../../Core/Entity/EntityComponent");
 const RegisterComponent_1 = require("../../../../Core/Entity/RegisterComponent");
 const PerformanceDecorators_1 = require("../../../../Core/Performance/PerformanceDecorators");
 const BulletLogicAdditiveAccelerateController_1 = require("../BulletLogicDataAssetController/BulletLogicAdditiveAccelerateController");
+const BulletLogicCameraModify_1 = require("../BulletLogicDataAssetController/BulletLogicCameraModify");
 const BulletLogicCreateBulletController_1 = require("../BulletLogicDataAssetController/BulletLogicCreateBulletController");
 const BulletLogicCurveMovementController_1 = require("../BulletLogicDataAssetController/BulletLogicCurveMovementController");
 const BulletLogicDestroyBulletController_1 = require("../BulletLogicDataAssetController/BulletLogicDestroyBulletController");
 const BulletLogicDestroyOtherBullet_1 = require("../BulletLogicDataAssetController/BulletLogicDestroyOtherBullet");
+const BulletLogicEffectSave_1 = require("../BulletLogicDataAssetController/BulletLogicEffectSave");
 const BulletLogicForceController_1 = require("../BulletLogicDataAssetController/BulletLogicForceController");
 const BulletLogicFreezeController_1 = require("../BulletLogicDataAssetController/BulletLogicFreezeController");
 const BulletLogicManipulatableCreateBullet_1 = require("../BulletLogicDataAssetController/BulletLogicManipulatableCreateBullet");
@@ -46,9 +48,11 @@ const BulletLogicSummonRandom_1 = require("../BulletLogicDataAssetController/Bul
 const BulletLogicSupportController_1 = require("../BulletLogicDataAssetController/BulletLogicSupportController");
 const BulletLogicWhirlpool_1 = require("../BulletLogicDataAssetController/BulletLogicWhirlpool");
 const LogicDataAdditiveAccelerate_1 = require("../LogicDataClass/LogicDataAdditiveAccelerate");
+const LogicDataCameraModify_1 = require("../LogicDataClass/LogicDataCameraModify");
 const LogicDataCreateBullet_1 = require("../LogicDataClass/LogicDataCreateBullet");
 const LogicDataDestroyBullet_1 = require("../LogicDataClass/LogicDataDestroyBullet");
 const LogicDataDestroyOtherBullet_1 = require("../LogicDataClass/LogicDataDestroyOtherBullet");
+const LogicDataEffectSave_1 = require("../LogicDataClass/LogicDataEffectSave");
 const LogicDataForce_1 = require("../LogicDataClass/LogicDataForce");
 const LogicDataFreeze_1 = require("../LogicDataClass/LogicDataFreeze");
 const LogicDataManipulatableCreateBullet_1 = require("../LogicDataClass/LogicDataManipulatableCreateBullet");
@@ -303,6 +307,10 @@ let BulletActionLogicComponent = class BulletActionLogicComponent extends Entity
       return new BulletLogicShieldController_1.BulletLogicShieldController(t, this.Entity);
     } else if (t instanceof LogicDataSummonRandom_1.default) {
       return new BulletLogicSummonRandom_1.BulletLogicSummonRandom(t, this.Entity);
+    } else if (t instanceof LogicDataCameraModify_1.default) {
+      return new BulletLogicCameraModify_1.BulletLogicCameraModify(t, this.Entity);
+    } else if (t instanceof LogicDataEffectSave_1.default) {
+      return new BulletLogicEffectSave_1.BulletLogicEffectSave(t, this.Entity);
     } else {
       return undefined;
     }

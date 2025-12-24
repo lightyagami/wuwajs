@@ -49,5 +49,5 @@ let EffectAreaComponent = class EffectAreaComponent extends EntityComponent_1.En
     return true;
   }
 };
-EffectAreaComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(224)], EffectAreaComponent);
+EffectAreaComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(231)], EffectAreaComponent);
 exports.EffectAreaComponent = EffectAreaComponent; //# sourceMappingURL=EffectAreaComponent.js.map

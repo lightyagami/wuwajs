@@ -46,7 +46,7 @@ class FunctionView extends UiViewBase_1.UiViewBase {
     this.F7t = undefined;
     this.V7t = undefined;
     this._4_ = undefined;
-    this.HKd = undefined;
+    this.KKd = undefined;
     this.gLt = undefined;
     this.TCc = undefined;
     this.P31 = undefined;
@@ -152,16 +152,7 @@ class FunctionView extends UiViewBase_1.UiViewBase {
       this.cHt();
     };
     this.mHt = () => {
-      var e;
-      var t = ModelManager_1.ModelManager.PersonalModel.GetBirthday();
-      var i = this.GetText(26);
-      if (t === 0) {
-        LguiUtil_1.LguiUtil.SetLocalText(i, "BirthDay", "--", "--");
-      } else {
-        e = Math.floor(t / 100);
-        t = t % 100;
-        LguiUtil_1.LguiUtil.SetLocalText(i, "BirthDay", e, t);
-      }
+      this.yHt();
     };
     this.dHt = e => {
       this.BNe(e);
@@ -211,7 +202,7 @@ class FunctionView extends UiViewBase_1.UiViewBase {
     this.F7t = new FunctionBottomButtonItem_1.FunctionBottomButtonItem(this.GetButton(8).RootUIComp, "FunctionMail");
     this.V7t = new FunctionBottomButtonItem_1.FunctionBottomButtonItem(this.GetButton(15).RootUIComp, "FunctionNotice");
     this._4_ = new FunctionBottomButtonItem_1.FunctionBottomButtonItem(this.GetButton(20).RootUIComp, "FunctionPhotograph");
-    this.HKd = new FunctionBottomButtonItem_1.FunctionBottomButtonItem(this.GetButton(13).RootUIComp, "FunctionSetting");
+    this.KKd = new FunctionBottomButtonItem_1.FunctionBottomButtonItem(this.GetButton(13).RootUIComp, "FunctionSetting");
     this.TCc = new PreDownloadButton_1.PreDownloadButtonItemB(this.GetButton(37).RootUIComp);
     var e = ModelManager_1.ModelManager.FunctionModel.IsOpen(10060);
     this.GetButton(21).RootUIComp.SetRaycastTarget(e);
@@ -326,7 +317,7 @@ class FunctionView extends UiViewBase_1.UiViewBase {
     this.F7t.Destroy();
     this.V7t.Destroy();
     this._4_.Destroy();
-    this.HKd.Destroy();
+    this.KKd.Destroy();
     this.gLt.Destroy();
     this.TCc.Destroy();
     this.P31.EndShow();
@@ -336,7 +327,7 @@ class FunctionView extends UiViewBase_1.UiViewBase {
     this.F7t.BindRedDot();
     this.V7t.BindRedDot();
     this._4_.BindRedDot();
-    this.HKd.BindRedDot();
+    this.KKd.BindRedDot();
     this.TCc.BindRedDot();
     RedDotController_1.RedDotController.BindRedDot("PersonalInfo", this.GetItem(34));
   }
@@ -344,7 +335,7 @@ class FunctionView extends UiViewBase_1.UiViewBase {
     this.F7t.UnBindRedDot();
     this.V7t.UnBindRedDot();
     this._4_.UnBindRedDot();
-    this.HKd.UnBindRedDot();
+    this.KKd.UnBindRedDot();
     this.TCc.UnBindRedDot();
     RedDotController_1.RedDotController.UnBindGivenUi("PersonalInfo", this.GetItem(34));
   }
@@ -414,6 +405,8 @@ class FunctionView extends UiViewBase_1.UiViewBase {
     } else {
       e = Math.floor(t / 100);
       t = t % 100;
+      e = ConfigManager_1.ConfigManager.PersonalConfig.GetBirthLocalText(e, 1);
+      t = ConfigManager_1.ConfigManager.PersonalConfig.GetBirthLocalText(t, 0);
       LguiUtil_1.LguiUtil.SetLocalText(i, "BirthDay", e, t);
     }
   }

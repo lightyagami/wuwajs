@@ -42,6 +42,7 @@ class FlowContext {
     this.EndSeamlessShowTalkId = 0;
     this.NeedPreloadUiSequenceData = undefined;
     this.PromptStyle = undefined;
+    this.Callback = undefined;
   }
   Init(t, i) {
     this.ht();
@@ -63,6 +64,7 @@ class FlowContext {
       this.NeedPreloadUiSequenceData = [...t.PreloadSequenceUiData];
     }
     this.PromptStyle = t.PromptStyle;
+    this.Callback = t.Callback;
   }
   ht() {
     this.FlowIncId = -1;
@@ -94,6 +96,7 @@ class FlowContext {
     this.SeamlessPlot = false;
     this.EndSeamlessShowTalkId = 0;
     this.NeedPreloadUiSequenceData = undefined;
+    this.Callback = undefined;
   }
   static Create() {
     let t = FlowContext.Pool.Get();

@@ -17,6 +17,7 @@ class GymItemBase extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.Level = -1;
+    this.ActivityId = 0;
     this.CallbackOnClick = undefined;
     this.CallbackOnHover = undefined;
     this.CallbackOnFocus = undefined;
@@ -24,7 +25,7 @@ class GymItemBase extends UiPanelBase_1.UiPanelBase {
     this.SequencePlayer = undefined;
     this.OnClickLevel = () => {
       if (this.Level > 0 && this.CallbackOnClick) {
-        if (ModelManager_1.ModelManager.PhantomArenaModel.IsGymLock(this.Level)) {
+        if (ModelManager_1.ModelManager.PhantomArenaModel.IsGymLock(this.Level, this.ActivityId)) {
           ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId(PhantomArenaDefine_1.ENTRANCE_GYM_LOCK_TEXT_ID);
         } else {
           this.CallbackOnClick(this.Level);
@@ -53,14 +54,14 @@ class GymItemBase extends UiPanelBase_1.UiPanelBase {
   Refresh() {}
   PlayUnlock() {
     var t;
-    if (!!this.Level && !(this.Level <= 0) && !(t = ModelManager_1.ModelManager.PhantomArenaModel).IsGymLock(this.Level) && !t.IsGymUnlockChecked(this.Level)) {
-      ModelManager_1.ModelManager.PhantomArenaModel.SetGymUnlockChecked(this.Level);
+    if (!!this.Level && !(this.Level <= 0) && !(t = ModelManager_1.ModelManager.PhantomArenaModel).IsGymLock(this.Level, this.ActivityId) && !t.IsGymUnlockChecked(this.Level, this.ActivityId)) {
+      ModelManager_1.ModelManager.PhantomArenaModel.SetGymUnlockChecked(this.Level, this.ActivityId);
       this.Refresh();
       this.SequencePlayer?.PlaySequence("Unlock");
     }
   }
   GetRedDotState() {
-    return this.Level > 0 && ModelManager_1.ModelManager.PhantomArenaModel.GetGymRedDotById(this.Level);
+    return this.Level > 0 && ModelManager_1.ModelManager.PhantomArenaModel.GetGymRedDotById(this.Level, this.ActivityId);
   }
   RefreshRedDot() {}
 }
@@ -94,8 +95,8 @@ class EntranceGymItem extends (exports.GymItemBase = GymItemBase) {
     var i;
     var s;
     if (!(this.Level < 0)) {
-      e = (t = ModelManager_1.ModelManager.PhantomArenaModel).IsGymLock(this.Level) || !t.IsGymUnlockChecked(this.Level);
-      if (i = t.GetPhantomBattleGymConfigByLevel(this.Level)) {
+      e = (t = ModelManager_1.ModelManager.PhantomArenaModel).IsGymLock(this.Level, this.ActivityId) || !t.IsGymUnlockChecked(this.Level, this.ActivityId);
+      if (i = t.GetPhantomBattleGymConfigByLevel(this.Level, this.ActivityId)) {
         this.GetSprite(4).SetUIActive(!e);
         this.GetSprite(5).SetUIActive(e);
         this.SetSpriteByPath(i.IconBg, this.GetSprite(4), false);
@@ -107,7 +108,7 @@ class EntranceGymItem extends (exports.GymItemBase = GymItemBase) {
         this.SetSpriteByPath(s, this.GetSprite(6), false);
         this.SetSpriteByPath(i.IconRoman, this.GetSprite(10), false);
         LguiUtil_1.LguiUtil.TrySetLocalTextNew(this.GetText(1), i?.Name);
-        s = t.GetChallengeStateListByGymLevel(this.Level);
+        s = t.GetChallengeStateListByGymLevel(this.Level, this.ActivityId);
         this.i_u.RefreshByData(s);
         this.i_u.SetActive(!e);
         this.RefreshRedDot();
@@ -138,8 +139,8 @@ class EntranceGymRepeatItem extends GymItemBase {
     var t;
     var e;
     if (!(this.Level < 0)) {
-      t = (e = ModelManager_1.ModelManager.PhantomArenaModel).IsGymLock(this.Level) || !e.IsGymUnlockChecked(this.Level);
-      e = e.GetPhantomBattleGymConfigByLevel(this.Level);
+      t = (e = ModelManager_1.ModelManager.PhantomArenaModel).IsGymLock(this.Level, this.ActivityId) || !e.IsGymUnlockChecked(this.Level, this.ActivityId);
+      e = e.GetPhantomBattleGymConfigByLevel(this.Level, this.ActivityId);
       this.GetSprite(4).SetUIActive(!t);
       this.GetTexture(5).SetUIActive(t);
       this.GetTexture(6).SetUIActive(!t);

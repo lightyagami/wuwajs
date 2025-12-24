@@ -70,7 +70,7 @@ let PawnSelfCenterComponent = class PawnSelfCenterComponent extends EntityCompon
     return !!e && (e = (0, IComponent_1.getComponent)(e, "BaseInfoComponent"), this.SeparatelyHandleSelfCenteredMode = !!e?.TimeScaleConfig?.IgnoreGlobalTimeScale, true);
   }
   OnStart() {
-    this.TimeScaleComp = this.Entity.GetComponent(126);
+    this.TimeScaleComp = this.Entity.GetComponent(131);
     if (!EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnSwitchSelfCenteredMode, this.MEu)) {
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSwitchSelfCenteredMode, this.MEu);
     }
@@ -87,5 +87,5 @@ let PawnSelfCenterComponent = class PawnSelfCenterComponent extends EntityCompon
     return true;
   }
 };
-PawnSelfCenterComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(292)], PawnSelfCenterComponent);
+PawnSelfCenterComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(311)], PawnSelfCenterComponent);
 exports.PawnSelfCenterComponent = PawnSelfCenterComponent; //# sourceMappingURL=PawnSelfCenterComponent.js.map

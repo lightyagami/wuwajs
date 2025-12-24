@@ -16,16 +16,16 @@ const HonamiStoryUtil_1 = require("../HonamiStoryUtil");
 const HonamiStoryGamepadInteractController_1 = require("../View/Backpack/HonamiStoryGamepadInteractController");
 class HonamiStoryGamepadLogicController {
   constructor() {
-    this.ZMm = undefined;
-    this.yLm = undefined;
-    this._Lm = -1;
+    this.l2m = undefined;
+    this.Epf = undefined;
+    this.zgf = -1;
     this.vzi = undefined;
-    this.tEm = 1;
+    this.u2m = 1;
     this.wKs = -1;
-    this.lwm = -1;
+    this.Oif = -1;
     this.Wee = new Map();
     this.U5c = new Map();
-    this.iEm = new Map();
+    this.c2m = new Map();
     this.MYl = Vector2D_1.Vector2D.Create();
   }
   InitInteract(t) {
@@ -38,31 +38,31 @@ class HonamiStoryGamepadLogicController {
     this.U5c.set(t, e);
   }
   RegisterItemToGrid(t, e) {
-    this.iEm.set(t, e);
+    this.c2m.set(t, e);
   }
   SetCurItem(t) {
-    this.ZMm = t;
-    this._Lm = t?.GetData()?.GetIncId() ?? -1;
+    this.l2m = t;
+    this.zgf = t?.GetData()?.GetIncId() ?? -1;
   }
   SetScrollingPosition(t) {
-    this.lwm = t;
+    this.Oif = t;
   }
   GetCurItem() {
-    return this.ZMm;
+    return this.l2m;
   }
   GetSelectItem() {}
   GetScrollingPosition() {
-    return this.lwm;
+    return this.Oif;
   }
   GetGridItemByAnyItem(t) {
     let e = undefined;
-    return e = (e = this.U5c.get(t)) || this.iEm.get(t);
+    return e = (e = this.U5c.get(t)) || this.c2m.get(t);
   }
   GetGridItemByBtnItem(t) {
     return this.U5c.get(t);
   }
   GetCurPanelIndex() {
-    return this.tEm;
+    return this.u2m;
   }
   GetInteractController() {
     return this.vzi;
@@ -81,7 +81,7 @@ class HonamiStoryGamepadLogicController {
   IsInGame() {
     return HonamiStoryUtil_1.HonamiStoryUtil.CheckInHonamiStoryDungeon();
   }
-  uLm() {
+  Jgf() {
     var i = ControllerHolder_1.ControllerHolder.UiNavigationNewController.GetMouseViewportPosition();
     if (!i) {
       return [-1, false];
@@ -103,7 +103,7 @@ class HonamiStoryGamepadLogicController {
     return [r, o];
   }
   JumpToPrevPanelNew() {
-    var [t, e] = this.uLm();
+    var [t, e] = this.Jgf();
     let i = -1;
     i = e ? t - 1 < 0 ? this.vzi.PanelBaseList.length - 1 : t - 1 : t < 0 ? this.vzi.PanelBaseList.length - 1 : t;
     e = this.vzi.PanelBaseList[i];
@@ -112,7 +112,7 @@ class HonamiStoryGamepadLogicController {
     }
   }
   JumpToNextPanelNew() {
-    var [t] = this.uLm();
+    var [t] = this.Jgf();
     var t = t + 1 > this.vzi.PanelBaseList.length - 1 ? 0 : t + 1;
     var t = this.vzi.PanelBaseList[t];
     if (t) {
@@ -120,22 +120,22 @@ class HonamiStoryGamepadLogicController {
     }
   }
   SetPanelIndexByGridItem(t) {
-    this.tEm = this.vzi.GetPanelIndexByGridItem(t);
+    this.u2m = this.vzi.GetPanelIndexByGridItem(t);
     var e = t.GetData();
     this.wKs = e ? e.GetPosition() : t.GetEmptyPosition();
     if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("HonamiStory", 78, "当前导航到的Panel Index", ["panelIndex", this.tEm]);
+      Log_1.Log.Debug("HonamiStory", 78, "当前导航到的Panel Index", ["panelIndex", this.u2m]);
     }
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("HonamiStory", 78, "当前导航到的Position", ["position", this.wKs]);
     }
   }
   SetFocusByGridItem(t) {
-    if (t.Data && t.Data.GetIncId() === this._Lm && (t = t.GetBtnItem())) {
+    if (t.Data && t.Data.GetIncId() === this.zgf && (t = t.GetBtnItem())) {
       ControllerHolder_1.ControllerHolder.UiNavigationNewController.SetNavigationMousePositionForView(t);
     }
   }
-  rEm(t) {
+  d2m(t) {
     let e = t[0];
     for (const i of t) {
       if (i.GetItemGridItem() !== undefined) {
@@ -146,26 +146,26 @@ class HonamiStoryGamepadLogicController {
     return e;
   }
   SetFocusByCurPanelIndex() {
-    var t = this.GetBackpackTypeByPanelIndex(this.tEm);
-    var e = this.Wee.get(this.tEm);
+    var t = this.GetBackpackTypeByPanelIndex(this.u2m);
+    var e = this.Wee.get(this.u2m);
     if (e) {
       this.SetFocusByGridItem(e);
     } else {
       e = this.vzi.GetGridItemListByBackpackType(t);
-      if (t = this.rEm(e)) {
+      if (t = this.d2m(e)) {
         this.SetFocusByGridItem(t);
       }
     }
   }
   PickUp(t) {
-    this.yLm = t.GetItemGridItem();
+    this.Epf = t.GetItemGridItem();
     this.vzi.OnPickUp(t);
   }
   PutDown(t) {
     this.vzi.OnPutDown(t);
-    this.yLm = undefined;
+    this.Epf = undefined;
   }
-  oEm() {
+  m2m() {
     var t = UiManager_1.UiManager.GetViewByName("HonamiStoryBackpackView");
     if (t) {
       t.HideAllTips();
@@ -188,39 +188,39 @@ class HonamiStoryGamepadLogicController {
   }
   CancelOperationByGamepad() {
     var t;
-    if (this.yLm && (t = this.GetGridItemByAnyItem(this.yLm.GetRootItem()))) {
+    if (this.Epf && (t = this.GetGridItemByAnyItem(this.Epf.GetRootItem()))) {
       t.MarkUseCancel();
     }
     this.Cancel();
   }
   SetDefaultFocus(t = false) {
-    this.tEm = t ? 3 : 2;
+    this.u2m = t ? 3 : 2;
     this.SetFocusByCurPanelIndex();
   }
-  SLm() {
+  Ipf() {
     var t;
-    return !!this.ZMm && !!(t = LguiEventSystemManager_1.LguiEventSystemManager.GetPointerEventData(0)) && !!HonamiStoryUtil_1.HonamiStoryUtil.CheckEventDataInItemViewport(t, this.ZMm.GetRootItem(), true);
+    return !!this.l2m && !!(t = LguiEventSystemManager_1.LguiEventSystemManager.GetPointerEventData(0)) && !!HonamiStoryUtil_1.HonamiStoryUtil.CheckEventDataInItemViewport(t, this.l2m.GetRootItem(), true);
   }
   Cancel() {
     var t;
-    if (this.yLm && (t = this.GetGridItemByAnyItem(this.yLm.GetRootItem()))) {
+    if (this.Epf && (t = this.GetGridItemByAnyItem(this.Epf.GetRootItem()))) {
       this.SetPanelIndexByGridItem(t);
     }
-    this.oEm();
+    this.m2m();
     this.vzi.Reset();
-    if (this.SLm()) {
+    if (this.Ipf()) {
       this.TriggerCurItemEnterGrid();
     } else {
-      this.ZMm = undefined;
-      this._Lm = -1;
+      this.l2m = undefined;
+      this.zgf = -1;
     }
-    this.yLm = undefined;
+    this.Epf = undefined;
   }
   Discard() {
     var t;
     var e;
-    if (this.ZMm && (t = this.ZMm.GetData())) {
-      e = this.ZMm.GetBackpackType() === 1 ? 2 : 4;
+    if (this.l2m && (t = this.l2m.GetData())) {
+      e = this.l2m.GetBackpackType() === 1 ? 2 : 4;
       if (ModelManager_1.ModelManager.HonamiStoryModel.GetBackPackData(3).GetCapacity() > 0) {
         if (ModelManager_1.ModelManager.HonamiStoryModel.SetItemIntoBag(t, e, 3)) {
           ModelManager_1.ModelManager.HonamiStoryModel.SetBackpackLogicState(0);
@@ -234,8 +234,8 @@ class HonamiStoryGamepadLogicController {
   SellSingleOne() {
     var t;
     var e;
-    if (this.ZMm && (t = this.ZMm.GetData())) {
-      e = this.ZMm.GetBackpackType() === 0 ? 1 : 4;
+    if (this.l2m && (t = this.l2m.GetData())) {
+      e = this.l2m.GetBackpackType() === 0 ? 1 : 4;
       ModelManager_1.ModelManager.HonamiStoryModel.SellSingleItem(t, e).then(t => {
         if (t) {
           ModelManager_1.ModelManager.HonamiStoryModel.SetBackpackLogicState(0);
@@ -247,8 +247,8 @@ class HonamiStoryGamepadLogicController {
     var t;
     var e;
     var i;
-    if (this.ZMm && (t = this.ZMm.GetData())) {
-      e = this.ZMm.GetBackpackType();
+    if (this.l2m && (t = this.l2m.GetData())) {
+      e = this.l2m.GetBackpackType();
       i = t.GetPosition();
       if (e === 1 || e === 0) {
         if (t.GetItemType() === 1) {
@@ -266,7 +266,7 @@ class HonamiStoryGamepadLogicController {
   QuickEquipOff() {
     var t;
     var e;
-    if (this.ZMm && (t = this.ZMm.GetData())) {
+    if (this.l2m && (t = this.l2m.GetData())) {
       e = this.IsInGame() ? 2 : 1;
       if (!ModelManager_1.ModelManager.HonamiStoryModel.SetItemIntoBag(t, 4, e)) {
         ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("HonamiStory_NoEnoughSpace");
@@ -278,21 +278,21 @@ class HonamiStoryGamepadLogicController {
     var e;
     var i;
     var r;
-    if (this.ZMm && (t = this.ZMm.GetData()) && (e = this.ZMm.GetBackpackType(), i = t.IsLock(), r = HonamiStoryDefine_1.HonamiBackpackTypeMap.get(e), await HonamiStoryController_1.HonamiStoryController.RequestHonamiStoryLockItem(t.GetIncId(), r, !i), t.SetIsLock(!i), r = ModelManager_1.ModelManager.HonamiStoryModel.GetBackpackLogic())) {
+    if (this.l2m && (t = this.l2m.GetData()) && (e = this.l2m.GetBackpackType(), i = t.IsLock(), r = HonamiStoryDefine_1.HonamiBackpackTypeMap.get(e), await HonamiStoryController_1.HonamiStoryController.RequestHonamiStoryLockItem(t.GetIncId(), r, !i), t.SetIsLock(!i), r = ModelManager_1.ModelManager.HonamiStoryModel.GetBackpackLogic())) {
       r.RefreshItemLockState(t, e);
     }
   }
   Collect() {
     var t;
     var e;
-    if (this.ZMm && (t = this.ZMm.GetData())) {
+    if (this.l2m && (t = this.l2m.GetData())) {
       e = t.GetPosition();
       ModelManager_1.ModelManager.HonamiStoryModel.QuickPickUpFromPickUpBox(t, e);
     }
   }
   TriggerCurItemEnterGrid() {
     var t;
-    if (this.ZMm && (t = this.GetGridItemByAnyItem(this.ZMm.GetRootItem()))) {
+    if (this.l2m && (t = this.GetGridItemByAnyItem(this.l2m.GetRootItem()))) {
       t.TriggerOnEnterGridCb();
     }
   }

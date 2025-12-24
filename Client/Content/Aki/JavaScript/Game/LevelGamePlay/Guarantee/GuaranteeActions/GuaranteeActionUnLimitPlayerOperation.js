@@ -20,7 +20,7 @@ class GuaranteeActionUnLimitPlayerOperation extends GuaranteeActionBase_1.Guaran
     LevelEventLockInputState_1.LevelEventLockInputState.InputLimitView = [];
     var r;
     var t = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity;
-    if (t?.Valid && ((t = t.GetComponent(209))?.HasTag(r = 477750727) && (t.RemoveTag(r), Log_1.Log.CheckDebug()) && Log_1.Log.Debug("Test", 29, "[GuaranteeActionUnLimitPlayerOperation.OnExecute] RemoveTag 禁止冲刺"), t?.HasTag(r = -63548288) && t.RemoveTag(r), t?.HasTag(r = 229513169))) {
+    if (t?.Valid && ((t = t.GetComponent(215))?.HasTag(r = 477750727) && (t.RemoveTag(r), Log_1.Log.CheckDebug()) && Log_1.Log.Debug("Test", 29, "[GuaranteeActionUnLimitPlayerOperation.OnExecute] RemoveTag 禁止冲刺"), t?.HasTag(r = -63548288) && t.RemoveTag(r), t?.HasTag(r = 229513169))) {
       t.RemoveTag(r);
     }
     ModelManager_1.ModelManager.LevelFuncFlagModel.SetFuncFlagEnable(0, true);

@@ -83,6 +83,7 @@ class BulletModel extends ModelBase_1.ModelBase {
     this.ajo = new Map();
     this.hjo = new Map();
     this.ljo = new Map();
+    this.VWf = new Map();
     this._jo = new Map();
     this.ujo = new Map();
     this.SelfAdaptBeHitAnim = undefined;
@@ -113,13 +114,13 @@ class BulletModel extends ModelBase_1.ModelBase {
     this.IsSceneBulletOwnerCreated = false;
     this.ala = undefined;
     this.Aal = undefined;
-    this.Iim = undefined;
-    this.Tim = undefined;
+    this.Osm = undefined;
+    this.Gsm = undefined;
     this.zpe = (t, e) => {
       var l;
       var e = ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(e.Id);
-      if (this.Tim.has(e) && (l = this.Tim.get(e), this.Tim.delete(e), this.Iim.has(l))) {
-        this.Iim.get(l).delete(e);
+      if (this.Gsm.has(e) && (l = this.Gsm.get(e), this.Gsm.delete(e), this.Osm.has(l))) {
+        this.Osm.get(l).delete(e);
       }
     };
   }
@@ -134,6 +135,9 @@ class BulletModel extends ModelBase_1.ModelBase {
   }
   GetAttackerBulletIterator() {
     return this.tjo.values();
+  }
+  GetAttackers() {
+    return this.tjo.keys();
   }
   get OnHitMaterialMsDelay() {
     return this.Y$s;
@@ -166,8 +170,8 @@ class BulletModel extends ModelBase_1.ModelBase {
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BulletHit, this.sjo);
     }
     this.gjo();
-    this.Iim = new Map();
-    this.Tim = new Map();
+    this.Osm = new Map();
+    this.Gsm = new Map();
     return true;
   }
   IsBulletHit(t) {
@@ -215,14 +219,15 @@ class BulletModel extends ModelBase_1.ModelBase {
     BulletActorPool_1.BulletActorPool.Clear();
     BulletTraceElementPool_1.BulletTraceElementPool.Clear();
     this.ljo.clear();
+    this.VWf.clear();
     this.ejo.length = 0;
     this.pjo();
     this.SceneBulletOwnerId = 0;
     this.hla();
-    this.Iim?.clear();
-    this.Iim = undefined;
-    this.Tim?.clear();
-    return !(this.Tim = undefined);
+    this.Osm?.clear();
+    this.Osm = undefined;
+    this.Gsm?.clear();
+    return !(this.Gsm = undefined);
   }
   CreateBullet(t, e, l, i, o = 0, s, r = false, n = 0, u, h, a, _, B = 0, d = undefined, v = undefined, f = Protocol_1.Aki.Protocol.E4s.Proto_NormalSource, c = undefined, m = undefined, g = -1, M = undefined, y = undefined, S = undefined, C = undefined, E = 0) {
     var L = this.vjo(e);
@@ -231,25 +236,21 @@ class BulletModel extends ModelBase_1.ModelBase {
         _ = _ ?? ConfigManager_1.ConfigManager.BulletConfig.GetBulletData(t, e, true, g);
         if (_) {
           if (!r) {
-            var I = t.GetComponent(209);
+            var I = t.GetComponent(215);
             var p = _.Base.BornForbidTagIds;
             if (p) {
-              for (const P of p) {
-                if (I.HasTag(P)) {
-                  if (Log_1.Log.CheckDebug()) {
-                    Log_1.Log.Debug("Bullet", 17, "BulletModel.InitBullet 中止，攻击者存在该子弹禁止生成Tag ", ["子弹名称:", e]);
-                  }
+              for (const w of p) {
+                if (I.HasTag(w)) {
+                  BulletLog_1.BulletLog.Debug(t, "BulletModel.InitBullet中止 攻击者存在该子弹禁止生成Tag ", ["子弹名称:", e]);
                   return;
                 }
               }
             }
             p = _.Base.BornRequireTagIds;
             if (p) {
-              for (const w of p) {
-                if (!I.HasTag(w)) {
-                  if (Log_1.Log.CheckDebug()) {
-                    Log_1.Log.Debug("Bullet", 17, "BulletModel.InitBullet 中止，攻击者不存在该子弹生成所需Tag", ["子弹名称:", e]);
-                  }
+              for (const P of p) {
+                if (!I.HasTag(P)) {
+                  BulletLog_1.BulletLog.Debug(t, "BulletModel.InitBullet中止 攻击者不存在该子弹生成所需Tag", ["子弹名称:", e]);
                   return;
                 }
               }
@@ -311,7 +312,7 @@ class BulletModel extends ModelBase_1.ModelBase {
     }
   }
   rMc(s, r, n) {
-    s = s.GetComponent(178)?.BuffEffectManager;
+    s = s.GetComponent(220)?.BuffEffectManager;
     if (s) {
       let t = 0;
       let e = 0;
@@ -356,11 +357,9 @@ class BulletModel extends ModelBase_1.ModelBase {
       if (!r.NeedDestroy) {
         r.NeedDestroy = true;
         if (BulletConstant_1.BulletConstant.OpenDestroyLog) {
-          if (Log_1.Log.CheckError()) {
-            Log_1.Log.Error("Bullet", 17, "销毁子弹开始", ...BulletLog_1.BulletLog.ToPairs(r));
-          }
-        } else if (BulletConstant_1.BulletConstant.OpenCreateLog && Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("Bullet", 17, "销毁子弹开始", ...BulletLog_1.BulletLog.ToPairs(r));
+          BulletLog_1.BulletLog.Error(r.Attacker, "销毁子弹开始", ...BulletLog_1.BulletLog.ToPairs(r));
+        } else if (BulletConstant_1.BulletConstant.OpenCreateLog) {
+          BulletLog_1.BulletLog.Debug(r.Attacker, "销毁子弹开始", ...BulletLog_1.BulletLog.ToPairs(r));
         }
         o = r.BulletRowName;
         if (StatDefine_1.BATTLESTAT_ENABLED) {
@@ -408,8 +407,8 @@ class BulletModel extends ModelBase_1.ModelBase {
           }
           this.DeregisterBullet(e);
         }
-        if (BulletConstant_1.BulletConstant.OpenCreateLog && Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("Bullet", 17, "销毁子弹完成", ["BulletId", t.BulletRowName], ["EntityId", t.BulletEntityId]);
+        if (BulletConstant_1.BulletConstant.OpenCreateLog) {
+          BulletLog_1.BulletLog.Debug(t.Attacker, "销毁子弹完成", ["BulletId", t.BulletRowName], ["EntityId", t.BulletEntityId]);
         }
         this.ZHo.delete(o);
         BulletModel.Sjo.Start();
@@ -526,6 +525,15 @@ class BulletModel extends ModelBase_1.ModelBase {
         Log_1.Log.Error("Bullet", 20, "设置自定义目标失败", ["Key", e], ["Entity", l]);
       }
     }
+  }
+  GetCustomBulletAttacker(t) {
+    return this.VWf.get(t);
+  }
+  SetCustomBulletAttacker(t, e) {
+    this.VWf.set(t, e);
+  }
+  RemoveCustomBulletAttacker(t) {
+    return this.VWf.delete(t);
   }
   ShowBulletCollision(t = 0) {
     return this._jo.has(t) && (this._jo.get(t) ?? false);
@@ -661,16 +669,16 @@ class BulletModel extends ModelBase_1.ModelBase {
     }
   }
   SummonerSummon(t, e) {
-    if (!this.Iim.has(t)) {
-      this.Iim.set(t, new Set());
+    if (!this.Osm.has(t)) {
+      this.Osm.set(t, new Set());
     }
-    this.Iim.get(t).add(e);
-    this.Tim.set(e, t);
+    this.Osm.get(t).add(e);
+    this.Gsm.set(e, t);
   }
   GetSummonEntityIds(t) {
     const l = [];
-    if (this.Iim.has(t)) {
-      this.Iim.get(t).forEach(t => {
+    if (this.Osm.has(t)) {
+      this.Osm.get(t).forEach(t => {
         var e = ModelManager_1.ModelManager.CreatureModel.GetEntityId(t);
         if (e) {
           l.push(e);

@@ -36,9 +36,10 @@ let CharacterAttributeComponent = class CharacterAttributeComponent extends Base
   constructor() {
     super(...arguments);
     this.BuffComponent = undefined;
+    this.InitializeGASAttributes = true;
     this.qbr = (e, t, r) => {
       if (CharacterAttributeTypes_1.stateAttributeIds.has(e) || [...CharacterAttributeTypes_1.attributeIdsWithMax.values()].some(t => t === e)) {
-        this.Gbr?.InternalApplyModToAttribute(e, 3, t);
+        this.ApplyModToAttributeToAbilitySystem(e, 3, t);
       }
     };
     this.Gbr = undefined;
@@ -96,7 +97,7 @@ let CharacterAttributeComponent = class CharacterAttributeComponent extends Base
     }
   }
   static AttributeChangedNotify(t, e) {
-    var r = t?.GetComponent(177);
+    var r = t?.GetComponent(182);
     if (t && r) {
       for (const i of e.GSs) {
         if (CharacterAttributeTypes_1.stateAttributeIds.has(i.tSs)) {
@@ -110,7 +111,7 @@ let CharacterAttributeComponent = class CharacterAttributeComponent extends Base
     }
   }
   static RecoverPropChangedNotify(t, e) {
-    var r = t?.GetComponent(177);
+    var r = t?.GetComponent(182);
     if (r) {
       var i = Time_1.Time.ServerCombatStopTime - Number(MathUtils_1.MathUtils.LongToBigInt(e.S6n));
       for (const s of e.GSs) {
@@ -120,7 +121,7 @@ let CharacterAttributeComponent = class CharacterAttributeComponent extends Base
   }
   OnInit() {
     super.OnInit();
-    this.BuffComponent = this.Entity.CheckGetComponent(178);
+    this.BuffComponent = this.Entity.CheckGetComponent(183);
     return true;
   }
   OnStart() {
@@ -128,12 +129,13 @@ let CharacterAttributeComponent = class CharacterAttributeComponent extends Base
     var t = this.Entity.CheckGetComponent(1)?.Owner;
     if (t && t instanceof UE.BaseCharacter) {
       this.Gbr = t.AbilitySystemComponent;
+      this.InitializeGASAttributes = t.bInitializeAttributes;
     }
     for (const e of CharacterAttributeTypes_1.attributeIdsWithMax.values()) {
-      this.Gbr?.InternalApplyModToAttribute(e, 3, this.GetCurrentValue(e));
+      this.ApplyModToAttributeToAbilitySystem(e, 3, this.GetCurrentValue(e));
     }
     for (const r of CharacterAttributeTypes_1.stateAttributeIds.values()) {
-      this.Gbr?.InternalApplyModToAttribute(r, 3, this.GetCurrentValue(r));
+      this.ApplyModToAttributeToAbilitySystem(r, 3, this.GetCurrentValue(r));
     }
     return true;
   }
@@ -154,6 +156,11 @@ let CharacterAttributeComponent = class CharacterAttributeComponent extends Base
       }
     }
   }
+  ApplyModToAttributeToAbilitySystem(t, e, r) {
+    if (this.InitializeGASAttributes) {
+      this.Gbr?.InternalApplyModToAttribute(t, e, r);
+    }
+  }
   DispatchCurrentValueEventImplement(t, e, r) {
     super.DispatchCurrentValueEventImplement(t, e, r);
     SceneTeamController_1.SceneTeamController.EmitAbilityEvent(this.Entity, 5, t, t, this.Entity, e, r);
@@ -161,5 +168,5 @@ let CharacterAttributeComponent = class CharacterAttributeComponent extends Base
 };
 __decorate([CombatMessage_1.CombatNet.Listen("OFn", true)], CharacterAttributeComponent, "AttributeChangedNotify", null);
 __decorate([CombatMessage_1.CombatNet.Listen("v3n", true)], CharacterAttributeComponent, "RecoverPropChangedNotify", null);
-CharacterAttributeComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(177)], CharacterAttributeComponent);
+CharacterAttributeComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(182)], CharacterAttributeComponent);
 exports.CharacterAttributeComponent = CharacterAttributeComponent; //# sourceMappingURL=CharacterAttributeComponent.js.map

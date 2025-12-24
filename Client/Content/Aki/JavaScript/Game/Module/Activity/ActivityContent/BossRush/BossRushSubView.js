@@ -117,6 +117,7 @@ class BossRushSubView extends ActivitySubViewBase_1.ActivitySubViewBase {
     this.ANe.FunctionButton.SetUiActive(i);
   }
   mGe() {
+    this.LNe.SetActivityBaseData(this.ActivityBaseData);
     this.LNe.SetTitleByText(this.ActivityBaseData.GetTitle());
     var [i, t] = this.GetTimeVisibleAndRemainTime();
     this.LNe.SetTimeTextVisible(i);

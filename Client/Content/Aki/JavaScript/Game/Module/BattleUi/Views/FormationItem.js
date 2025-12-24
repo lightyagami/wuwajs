@@ -28,6 +28,7 @@ const FormationTrialItem_1 = require("./FormationTrialItem");
 const CombineKeyItem_1 = require("./KeyItem/CombineKeyItem");
 var EAttributeId = Protocol_1.Aki.Protocol.Vks;
 const FormationDataController_1 = require("../../Abilities/FormationDataController");
+const RoleUtils_1 = require("../../RoleUi/RoleUtils");
 const REFRESH_COOLDOWN_INTERVAL = 100;
 const CURE_DELAY = 1000;
 const LOW_HP_PERCENT = 0.2;
@@ -46,7 +47,7 @@ class FormationItem extends BattleChildView_1.BattleChildView {
     this.RoleConfig = undefined;
     this.RoleSkinConfig = undefined;
     this.i$e = [];
-    this.Lwm = 0;
+    this.hhf = 0;
     this.vat = 0;
     this.Sat = 0;
     this.yat = undefined;
@@ -66,6 +67,7 @@ class FormationItem extends BattleChildView_1.BattleChildView {
     this.yoh = false;
     this.rxl = false;
     this.Znh = false;
+    this.JAf = undefined;
     this.qat = t => {
       if (Info_1.Info.OperationType === 2) {
         t = t * TimeUtil_1.TimeUtil.InverseMillisecond;
@@ -178,6 +180,11 @@ class FormationItem extends BattleChildView_1.BattleChildView {
       this.Qtt = new CombineKeyItem_1.CombineKeyItem();
       await this.Qtt.CreateByActorAsync(i.GetOwner());
     }
+    await this.v4f();
+  }
+  async v4f() {
+    this.Pat = new FormationTrialItem_1.FormationTrialItem();
+    await this.Pat.CreateThenShowByResourceIdAsync("UiItem_FigthRoleHeadTest", this.RootItem);
   }
   ResetItem() {
     this.ClearData();
@@ -267,11 +274,11 @@ class FormationItem extends BattleChildView_1.BattleChildView {
     var i;
     EventSystem_1.EventSystem.AddWithTarget(t, EventDefine_1.EEventName.OnChangeRoleCoolDownChanged, this.qat);
     if (this.IsMyRole) {
-      i = t.GetComponent(209);
+      i = t.GetComponent(215);
       this.d$e(i, 1414093614, this.jat);
       this.d$e(i, -2107968822, this.f51);
     } else {
-      i = t.GetComponent(209);
+      i = t.GetComponent(215);
       this.d$e(i, 166024319, this.Vat);
     }
   }
@@ -322,7 +329,7 @@ class FormationItem extends BattleChildView_1.BattleChildView {
   OnTick(t) {
     var i;
     if (this.vat > 0) {
-      if ((i = this.Lwm - Time_1.Time.PlayerWorldTime) <= 0) {
+      if ((i = this.hhf - Time_1.Time.PlayerWorldTime) <= 0) {
         this.vat = 0;
         this.nht();
       } else {
@@ -362,7 +369,7 @@ class FormationItem extends BattleChildView_1.BattleChildView {
       var i = ModelManager_1.ModelManager.BattleUiModel.GetCurRoleData()?.EntityHandle;
       var e = this.RoleData.EntityHandle;
       if (i && e?.IsInit) {
-        t = i.Entity.GetComponent(101).IsQteReady(e);
+        t = i.Entity.GetComponent(104).IsQteReady(e);
       }
       this.hht(t, false);
     }
@@ -386,7 +393,7 @@ class FormationItem extends BattleChildView_1.BattleChildView {
     this._ht();
   }
   tht() {
-    var t = this.RoleData?.EntityHandle?.Entity?.GetComponent(96);
+    var t = this.RoleData?.EntityHandle?.Entity?.GetComponent(99);
     if (!!t && !((t = t.GetChangeRoleCoolDown()) <= 0)) {
       this.Gat(t, t);
     }
@@ -483,17 +490,19 @@ class FormationItem extends BattleChildView_1.BattleChildView {
     var i = this.RoleConfigId;
     if (i <= RoleDefine_1.ROBOT_DATA_MIN_ID) {
       this.Pat?.SetActive(false);
-    } else if (ConfigManager_1.ConfigManager.RoleConfig?.GetTrialRoleConfig(i)?.HideTrialLabel) {
-      this.Pat?.SetActive(false);
     } else {
-      if (this.Pat) {
-        this.Pat.SetActive(true);
+      var e = ConfigManager_1.ConfigManager.RoleConfig?.GetTrialRoleConfig(i);
+      if (e?.HideTrialLabel) {
+        this.Pat?.SetActive(false);
       } else {
-        this.Pat = new FormationTrialItem_1.FormationTrialItem(this.RootItem);
+        this.Pat?.SetActive(true);
+        let t = "";
+        t = this.IsMyRole ? RoleUtils_1.RoleUtils.IsSpecialTrialRole(i) ? "" : ModelManager_1.ModelManager.RoleModel.GetRoleName(i) : ModelManager_1.ModelManager.OnlineModel.GetCurrentTeamListById(this.PlayerId)?.Name ?? "";
+        this.Pat?.SetNameText(t);
+        i = e?.Type ?? 1;
+        e = RoleUtils_1.RoleUtils.GetTrialRoleLabelIconByType(i);
+        this.Pat?.SetTrialIcon(e);
       }
-      let t = "";
-      t = this.IsMyRole ? ModelManager_1.ModelManager.RoleModel.GetRoleName(i) : ModelManager_1.ModelManager.OnlineModel.GetCurrentTeamListById(this.PlayerId)?.Name ?? "";
-      this.Pat.SetNameText(t);
     }
   }
   SetRoleSelected(i) {
@@ -521,7 +530,7 @@ class FormationItem extends BattleChildView_1.BattleChildView {
       }
       this.nht();
     } else {
-      this.Lwm = Time_1.Time.PlayerWorldTime + i;
+      this.hhf = Time_1.Time.PlayerWorldTime + i;
       this.vat = t;
       this.Sat = i;
       this.sht();
@@ -680,10 +689,9 @@ class FormationItem extends BattleChildView_1.BattleChildView {
   eht() {
     var t;
     if (Info_1.Info.OperationType === 2) {
-      if (this.IsMyRole && this.zPl() || (t = ModelManager_1.ModelManager.BattleUiModel.FormationPanelData?.GetRolePosition(this.PlayerId, this.RoleConfigId) ?? 0) <= 0) {
+      if (this.IsMyRole && this.zPl() || (t = ModelManager_1.ModelManager.BattleUiModel.FormationPanelData?.GetRolePosition(this.PlayerId, this.RoleConfigId) ?? 0) <= 0 || (this.Qtt.RefreshAction("切换角色" + t), (t = this.Qtt.GetKeyName()) && this.JAf?.includes(t))) {
         this.Qtt.SetActive(false);
       } else {
-        this.Qtt.RefreshAction("切换角色" + t);
         this.Qtt.SetActive(true);
       }
     }
@@ -853,6 +861,10 @@ class FormationItem extends BattleChildView_1.BattleChildView {
         s.SetUIActive(i);
       }
     }
+  }
+  SetInvisibleByKeyList(t) {
+    this.JAf = t;
+    this.eht();
   }
 }
 exports.FormationItem = FormationItem;

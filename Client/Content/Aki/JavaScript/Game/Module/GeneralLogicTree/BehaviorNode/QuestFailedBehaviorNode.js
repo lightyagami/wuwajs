@@ -19,10 +19,10 @@ const IAction_1 = require("../../../../UniverseEditor/Interface/IAction");
 const IComponent_1 = require("../../../../UniverseEditor/Interface/IComponent");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
-const EffectParameterNiagara_1 = require("../../../Effect/EffectParameter/EffectParameterNiagara");
 const EffectSystem_1 = require("../../../Effect/EffectSystem");
 const Global_1 = require("../../../Global");
 const GlobalData_1 = require("../../../GlobalData");
+const LevelGamePlayUtils_1 = require("../../../LevelGamePlay/LevelGamePlayUtils");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const CharacterBuffIds_1 = require("../../../NewWorld/Character/Common/Component/Abilities/CharacterBuffIds");
@@ -31,7 +31,6 @@ const QuestController_1 = require("../../QuestNew/Controller/QuestController");
 const RangeCheck_1 = require("../../Util/RangeCheck");
 const BehaviorNodeBase_1 = require("./BehaviorNodeBase");
 const STALK_FAILED_DELAY_TIME = 1000;
-const vectorArrayName = FNameUtil_1.FNameUtil.GetDynamicFName("VectorArray");
 class RangeFailedParameterContext {
   constructor(e) {
     this.RangeEffectHandleId = 0;
@@ -79,10 +78,10 @@ class RangeFailedEffectRangeEntitiesHandler extends RangeFailedEffectHandler {
   static async SN1(t, e, i) {
     try {
       var r = await RangeFailedEffectRangeEntitiesHandler.MN1(t);
-      var a = await RangeFailedEffectRangeEntitiesHandler.EN1(r.D_K2_GetActorLocation(), i.RangeFailedEffectPath);
-      i.RangeEffectHandleId = a;
-      EffectSystem_1.EffectSystem.RegisterCustomCheckOwnerFunc(a, () => i.RangeEffectHandleId !== 0);
-      RangeFailedEffectRangeEntitiesHandler.IN1(a, r.K2_GetActorLocation(), e);
+      var n = await RangeFailedEffectRangeEntitiesHandler.EN1(r.D_K2_GetActorLocation(), i.RangeFailedEffectPath);
+      i.RangeEffectHandleId = n;
+      EffectSystem_1.EffectSystem.RegisterCustomCheckOwnerFunc(n, () => i.RangeEffectHandleId !== 0);
+      LevelGamePlayUtils_1.LevelGamePlayUtils.SetSplinePointEffectParam(n, r.GetTransform(), e);
     } catch (e) {
       if (e instanceof Error) {
         if (Log_1.Log.CheckError()) {
@@ -106,37 +105,28 @@ class RangeFailedEffectRangeEntitiesHandler extends RangeFailedEffectHandler {
   }
   static async MN1(o) {
     return new Promise((i, r) => {
-      const a = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetSubsystem(GlobalData_1.GlobalData.World, UE.KuroTriggerVolumeManager.StaticClass());
-      if (!a) {
+      const n = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetSubsystem(GlobalData_1.GlobalData.World, UE.KuroTriggerVolumeManager.StaticClass());
+      if (!n) {
         r(new Error("[GetVolumeLocationAsync] 没有获得有效KuroTriggerVolumeManager WorldSubSystem"));
       }
-      var e = a.GetKuroTriggerVolume(FNameUtil_1.FNameUtil.GetDynamicFName(o.VolumeKey));
+      var e = n.GetKuroTriggerVolume(FNameUtil_1.FNameUtil.GetDynamicFName(o.VolumeKey));
       if (e) {
         i(e);
       } else {
-        const n = e => {
+        const a = e => {
           var t;
           if (e?.toString() === o.VolumeKey) {
-            a?.OnTriggerVolumeAddToSubsystem.Remove(n);
-            if ((t = a.GetKuroTriggerVolume(e))?.IsValid()) {
+            n?.OnTriggerVolumeAddToSubsystem.Remove(a);
+            if ((t = n.GetKuroTriggerVolume(e))?.IsValid()) {
               i(t);
             } else {
               r(new Error("[GetVolumeLocationAsync] TriggerVolume无效" + e));
             }
           }
         };
-        a.OnTriggerVolumeAddToSubsystem.Add(n);
+        n.OnTriggerVolumeAddToSubsystem.Add(a);
       }
     });
-  }
-  static IN1(e, t, i) {
-    var r = UE.NewArray(UE.Vector);
-    for (const a of i) {
-      r.Add(new UE.Vector(t.X + (a.Position.X ?? 0), t.Y + (a.Position.Y ?? 0), t.Z + (a.Position.Z ?? 0)));
-    }
-    i = new EffectParameterNiagara_1.EffectParameterNiagara();
-    i.UserParameterArrayVector = [[vectorArrayName, r]];
-    EffectSystem_1.EffectSystem.SetEffectParameterNiagara(e, i);
   }
   CanHandle(e) {
     return RangeFailedEffectRangeEntitiesHandler.yN1(e);
@@ -374,7 +364,7 @@ class QuestFailedBehaviorNode extends BehaviorNodeBase_1.BehaviorNodeBase {
     }
   }
   B$t(e) {
-    var t = Global_1.Global.BaseCharacter.GetEntityNoBlueprint().GetComponent(178);
+    var t = Global_1.Global.BaseCharacter.GetEntityNoBlueprint().GetComponent(183);
     if (t?.Valid) {
       if (e) {
         t.AddBuff(CharacterBuffIds_1.buffId.StealthIgnoreHateBuff, {

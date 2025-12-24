@@ -15,7 +15,7 @@ class GachaUiSceneManager {
   static async OpenUiScene() {
     const e = new CustomPromise_1.CustomPromise();
     RenderModuleController_1.RenderModuleController.DebugNewUiSceneWorkflow;
-    UiSceneManager_1.UiSceneManager.OpenUiScene(GachaDefine_1.GACHA_3D_SCENE_PATH, () => {
+    UiSceneManager_1.UiSceneManager.OpenUiScene(GachaDefine_1.GACHA_3D_SCENE_PATH, [], () => {
       e.SetResult(true);
     });
     await e.Promise;

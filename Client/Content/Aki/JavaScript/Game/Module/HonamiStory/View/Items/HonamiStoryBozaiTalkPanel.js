@@ -13,18 +13,18 @@ const StringUtils_1 = require("../../../../../Core/Utils/StringUtils");
 class HonamiStoryBozaiTalkPanel extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.ptm = new Map();
+    this.kom = new Map();
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIText]];
   }
   SetTalkInfoTextAndPlayAudio(i) {
     if (i) {
-      let e = this.ptm.get(i.Type);
+      let e = this.kom.get(i.Type);
       e = e || 0;
       var t = Time_1.Time.ServerTimeStamp / 1000;
       if (!(Math.abs(t - e) < i.Interval)) {
-        this.ptm.set(i.Type, Time_1.Time.ServerTimeStamp);
+        this.kom.set(i.Type, Time_1.Time.ServerTimeStamp);
         if (!StringUtils_1.StringUtils.IsBlank(i.Desc)) {
           LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), i.Desc);
         }

@@ -46,6 +46,7 @@ class AnimNotifyEffect extends UE.KuroEffectMakerAN {
     this.WhenSkillEnd = 0;
     this.WhenSkillEndEnableTime = 0;
     this.IgnoreWhenInvisible = false;
+    this.DisableOnVehicle = false;
     this.LastSkeletalMesh = undefined;
   }
   Constructor() {
@@ -76,48 +77,58 @@ class AnimNotifyEffect extends UE.KuroEffectMakerAN {
       AnimNotifyEffect.NotifyStat.Stop();
       return false;
     }
+    if (this.DisableOnVehicle && i instanceof TsBaseCharacter_1.default) {
+      var o = i.GetEntityNoBlueprint()?.GetComponent(242);
+      if (o?.IsOnVehicle && o.VehicleType === "Motorcycle") {
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("RenderEffect", 50, "AnimNotifyEffect: 特效不在骑乘摩托情况下播放", ["meshComp", t?.GetName()], ["outer", i?.GetName()], ["animation", e?.GetName()]);
+        }
+        AnimNotifyEffect.NotifyStat.Stop();
+        return false;
+      }
+    }
     EffectSystem_1.EffectSystem.InitializeWithPreview(false);
-    let o = Info_1.Info.IsGameRunning() ? 3 : 0;
+    let n = Info_1.Info.IsGameRunning() ? 3 : 0;
     if (Info_1.Info.IsInCg()) {
-      o = 0;
+      n = 0;
     }
     if (GlobalData_1.GlobalData.IsUiSceneOpen || i.Tags.Contains(RenderConfig_1.RenderConfig.UIName)) {
-      o = 1;
-    } else if (i instanceof TsBaseCharacter_1.default && i.CharacterActorComponent?.Entity?.GetComponent(39) || i instanceof TsEffectActor_1.default && i.GetEffectType() === 0 || i?.IsA(UE.EffectSystemActor.StaticClass()) && i.GetEffectType() === 0) {
-      o = 0;
+      n = 1;
+    } else if (i instanceof TsBaseCharacter_1.default && i.CharacterActorComponent?.Entity?.GetComponent(40) || i instanceof TsEffectActor_1.default && i.GetEffectType() === 0 || i?.IsA(UE.EffectSystemActor.StaticClass()) && i.GetEffectType() === 0) {
+      n = 0;
     }
     AnimNotifyEffect.CreateEffectContextStat.Start();
-    let n = undefined;
+    let s = undefined;
     if (i instanceof TsBaseCharacter_1.default && i.CharacterActorComponent?.Entity) {
-      n = new SkeletalMeshEffectContext_1.SkeletalMeshEffectContext(i.CharacterActorComponent?.Entity.Id);
+      s = new SkeletalMeshEffectContext_1.SkeletalMeshEffectContext(i.CharacterActorComponent?.Entity.Id);
     } else if (i.IsA(UE.TsEffectActor_C.StaticClass())) {
-      (n = new SkeletalMeshEffectContext_1.SkeletalMeshEffectContext(i.OwnerEntityId)).IsSyncEffectTimeScale = this.IsSyncEffectTimeScale || (ModelManager_1.ModelManager.CharacterModel?.EnabledSelfCentered ?? false);
+      (s = new SkeletalMeshEffectContext_1.SkeletalMeshEffectContext(i.OwnerEntityId)).IsSyncEffectTimeScale = this.IsSyncEffectTimeScale || (ModelManager_1.ModelManager.CharacterModel?.EnabledSelfCentered ?? false);
     } else if (i.IsA(UE.EffectSystemActor.StaticClass())) {
-      (n = new SkeletalMeshEffectContext_1.SkeletalMeshEffectContext(i.GetOwnerEntityId())).IsSyncEffectTimeScale = this.IsSyncEffectTimeScale || (ModelManager_1.ModelManager.CharacterModel?.EnabledSelfCentered ?? false);
+      (s = new SkeletalMeshEffectContext_1.SkeletalMeshEffectContext(i.GetOwnerEntityId())).IsSyncEffectTimeScale = this.IsSyncEffectTimeScale || (ModelManager_1.ModelManager.CharacterModel?.EnabledSelfCentered ?? false);
     } else {
-      n = new SkeletalMeshEffectContext_1.SkeletalMeshEffectContext(undefined);
+      s = new SkeletalMeshEffectContext_1.SkeletalMeshEffectContext(undefined);
     }
-    n.SkeletalMeshComp = t;
-    n.SourceObject = i;
-    n.DisablePostProcess = this.IsDisablePostProcess(t);
-    n.CreateFromType = 1;
+    s.SkeletalMeshComp = t;
+    s.SourceObject = i;
+    s.DisablePostProcess = this.IsDisablePostProcess(t);
+    s.CreateFromType = 1;
     if (i?.ActorHasTag(AnimNotifyEffect.TagFlagNoNiagara)) {
-      n.PlayFlag |= 1;
+      s.PlayFlag |= 1;
     }
     AnimNotifyEffect.CreateEffectContextStat.Stop();
     AnimNotifyEffect.SpawnEffectStat.Start();
-    let s = undefined;
+    let r = undefined;
     if (Info_1.Info.IsGameRunning()) {
       if (i instanceof TsBaseCharacter_1.default) {
-        s = i.CharacterActorComponent?.GetReplaceEffect(f);
+        r = i.CharacterActorComponent?.GetReplaceEffect(f);
       }
     } else {
-      s = EffectUtil_1.EffectUtil.GetPreviewReplaceEffectPath(f);
+      r = EffectUtil_1.EffectUtil.GetPreviewReplaceEffectPath(f);
     }
-    e = EffectSystem_1.EffectSystem.SpawnUnloopedEffect(i, MathUtils_1.MathUtils.DefaultTransformDouble, s || f, "[AnimNotifyEffect.K2_Notify]", n, o);
-    EffectSystem_1.EffectSystem.SetEffectNotRecord(e, true);
+    o = EffectSystem_1.EffectSystem.SpawnUnloopedEffect(i, MathUtils_1.MathUtils.DefaultTransformDouble, r || f, "[AnimNotifyEffect.K2_Notify]", s, n);
+    EffectSystem_1.EffectSystem.SetEffectNotRecord(o, true);
     AnimNotifyEffect.SpawnEffectStat.Stop();
-    this.AttachEffectAndSetupTransform(i, e);
+    this.AttachEffectAndSetupTransform(i, o);
     AnimNotifyEffect.NotifyStat.Stop();
     return true;
   }
@@ -134,7 +145,7 @@ class AnimNotifyEffect extends UE.KuroEffectMakerAN {
     }
   }
   GameplayTagsCheck(t) {
-    var e = t.CharacterActorComponent?.Entity?.GetComponent(209);
+    var e = t.CharacterActorComponent?.Entity?.GetComponent(215);
     if (e) {
       var i = this.PlayNeedTags.Num();
       if (this.NeedAnyTag) {
@@ -159,7 +170,7 @@ class AnimNotifyEffect extends UE.KuroEffectMakerAN {
   }
   AttachEffectToSkill(e, i) {
     if (e instanceof TsBaseCharacter_1.default) {
-      e = e.CharacterActorComponent?.Entity?.GetComponent(39);
+      e = e.CharacterActorComponent?.Entity?.GetComponent(40);
       if (e) {
         let t = 0;
         if (!!this.DetachWhenSkillEnd || this.WhenSkillEnd !== 0) {
@@ -188,8 +199,8 @@ class AnimNotifyEffect extends UE.KuroEffectMakerAN {
   AttachEffectToSelfCentered(t, e) {
     var i;
     if (t instanceof TsBaseCharacter_1.default) {
-      if (!(i = t.CharacterActorComponent?.Entity?.GetComponent(39)) || !i.CurrentSkill) {
-        if ((i = t.CharacterActorComponent?.Entity?.GetComponent(293))?.Valid) {
+      if (!(i = t.CharacterActorComponent?.Entity?.GetComponent(40)) || !i.CurrentSkill) {
+        if ((i = t.CharacterActorComponent?.Entity?.GetComponent(312))?.Valid) {
           i.AddEffect(e);
         }
       }
@@ -374,8 +385,9 @@ class AnimNotifyEffect extends UE.KuroEffectMakerAN {
     }
   }
   IsDisablePostProcess(t) {
+    var e;
     var t = t.GetOwner();
-    return t instanceof TsBaseCharacter_1.default && !!(t = ModelManager_1.ModelManager.CreatureModel.GetEntityById(t.EntityId))?.Valid && !CharacterUtils_1.CharacterUtils.CanCharacterMonsterOrSummonedDisplayEffect(t);
+    return t instanceof TsBaseCharacter_1.default && (ModelManager_1.ModelManager.CreatureModel ? !!(e = ModelManager_1.ModelManager.CreatureModel.GetEntityById(t.EntityId))?.Valid && !CharacterUtils_1.CharacterUtils.CanCharacterMonsterOrSummonedDisplayEffect(e) : (Log_1.Log.CheckError() && Log_1.Log.Error("Test", 6, "TsBaseCharacter Approach in Editor.", ["owner", t.GetName()]), false));
   }
 }
 AnimNotifyEffect.TmpVector = undefined;

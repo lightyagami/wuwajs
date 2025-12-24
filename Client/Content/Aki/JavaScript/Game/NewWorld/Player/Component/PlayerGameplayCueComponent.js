@@ -59,5 +59,5 @@ let PlayerGameplayCueComponent = class PlayerGameplayCueComponent extends BaseGa
     return ModelManager_1.ModelManager.CreatureModel.GetEntity(e ?? 0);
   }
 };
-PlayerGameplayCueComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(230)], PlayerGameplayCueComponent);
+PlayerGameplayCueComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(239)], PlayerGameplayCueComponent);
 exports.PlayerGameplayCueComponent = PlayerGameplayCueComponent; //# sourceMappingURL=PlayerGameplayCueComponent.js.map

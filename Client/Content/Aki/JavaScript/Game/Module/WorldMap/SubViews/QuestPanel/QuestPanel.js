@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.QuestPanel = undefined;
 const MultiTextLang_1 = require("../../../../../Core/Define/ConfigQuery/MultiTextLang");
+const ConfigManager_1 = require("../../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const GeneralLogicTreeController_1 = require("../../../GeneralLogicTree/GeneralLogicTreeController");
 const MapController_1 = require("../../../Map/Controller/MapController");
@@ -81,7 +82,7 @@ class QuestPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondaryUiLayoutA
     this.Zno();
     WorldMapSecondaryUiLayoutHelper_1.WorldMapSecondaryUiLayoutHelper.UpdateIcon(this.LayoutContext);
     e = this.UpdateQuickGoto();
-    this.ConfirmButton.SetActive(!e);
+    this.LayoutContext?.SetConfirmBtnActive(!e);
   }
   OnCloseWorldMapSecondaryUi() {
     this.tFo?.Clear();
@@ -125,8 +126,6 @@ class QuestPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondaryUiLayoutA
     }
   }
   Zno() {
-    var e;
-    var t;
     if (this.Z2o !== 0) {
       this.Fno = ModelManager_1.ModelManager.QuestNewModel.IsTrackingQuest(this.FRe);
     } else {
@@ -134,8 +133,13 @@ class QuestPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondaryUiLayoutA
       t = ModelManager_1.ModelManager.MapModel.GetCurTrackMark();
       this.Fno = !!t && t.MarkId === e;
     }
-    this.ConfirmButton.SetLocalText(this.Fno ? "InstanceDungeonEntranceCancelTrack" : "InstanceDungeonEntranceTrack");
+    var e;
+    var t = ConfigManager_1.ConfigManager.TextConfig.GetTextContentIdById(this.Fno ? "InstanceDungeonEntranceCancelTrack" : "InstanceDungeonEntranceTrack");
+    this.LayoutContext?.SetConfirmBtnText(t);
     this.TrackBtn.SetLocalText(this.Fno ? "InstanceDungeonEntranceCancelTrack" : "InstanceDungeonEntranceTrack");
+  }
+  OnRefreshPanel() {
+    this.Zno();
   }
 }
 exports.QuestPanel = QuestPanel;

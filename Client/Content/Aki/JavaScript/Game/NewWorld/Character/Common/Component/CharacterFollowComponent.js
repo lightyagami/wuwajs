@@ -59,8 +59,8 @@ let CharacterFollowComponent = class CharacterFollowComponent extends EntityComp
   }
   kZl(t) {
     this.RJl = t;
-    if (this.RJl !== 0 && (t = EntitySystem_1.EntitySystem.Get(this.RJl)?.GetComponent(98))) {
-      this.Entity.GetComponent(40)?.ResetRoleGrowComponent(t);
+    if (this.RJl !== 0 && (t = EntitySystem_1.EntitySystem.Get(this.RJl)?.GetComponent(101))) {
+      this.Entity.GetComponent(41)?.ResetRoleGrowComponent(t);
     }
   }
   GetRoleActor() {
@@ -94,7 +94,7 @@ let CharacterFollowComponent = class CharacterFollowComponent extends EntityComp
   DeleteFollowEntity() {
     var t = ModelManager_1.ModelManager.CreatureModel.GetEntity(this.u1t.GetSummonerId());
     if (t?.Valid) {
-      t.Entity.GetComponent(56).pJs(this.Entity.Id);
+      t.Entity.GetComponent(59)?.pJs(this.Entity.Id);
     }
   }
   GetAttributeHolder() {
@@ -137,7 +137,7 @@ let CharacterFollowComponent = class CharacterFollowComponent extends EntityComp
         this.SetRelationship(t);
       }
       var e;
-      var o = this.Entity.GetComponent(209);
+      var o = this.Entity.GetComponent(215);
       if (o) {
         o.RemoveTag(-1615796724);
         switch (this.u1t?.SummonType) {
@@ -168,9 +168,9 @@ let CharacterFollowComponent = class CharacterFollowComponent extends EntityComp
   }
   SetRelationship(t) {
     this.kZl(t.Id);
-    t.Entity.GetComponent(56).SetFollowId(this.Entity.Id);
+    t.Entity.GetComponent(59).SetFollowId(this.Entity.Id);
     EventSystem_1.EventSystem.EmitWithTarget(this, EventDefine_1.EEventName.OnCharacterSetMaster, t.Id);
   }
 };
-CharacterFollowComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(56)], CharacterFollowComponent);
+CharacterFollowComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(59)], CharacterFollowComponent);
 exports.CharacterFollowComponent = CharacterFollowComponent; //# sourceMappingURL=CharacterFollowComponent.js.map

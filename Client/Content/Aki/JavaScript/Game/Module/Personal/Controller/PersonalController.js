@@ -8,6 +8,7 @@ exports.PersonalController = undefined;
 const Protocol_1 = require("../../../../Core/Define/Net/Protocol");
 const Net_1 = require("../../../../Core/Net/Net");
 const StringUtils_1 = require("../../../../Core/Utils/StringUtils");
+const EventCSharpBridge_1 = require("../../../Common/Event/EventCSharpBridge");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
@@ -35,6 +36,8 @@ class PersonalController extends UiControllerBase_1.UiControllerBase {
     Net_1.Net.Call(29171, e, e => {
       if (e) {
         ModelManager_1.ModelManager.PersonalModel.InitPlayerHeadData(e.FE_);
+        e = Protocol_1.Aki.Protocol.I0_.encode(e).finish().slice().buffer;
+        EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsSyncHeadInfo, e);
       }
     });
   }

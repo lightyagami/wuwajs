@@ -10,6 +10,7 @@ const BackSlotCardLibraryOperation_1 = require("./BackSlotCardLibraryOperation")
 const BackToLibraryOperation_1 = require("./BackToLibraryOperation");
 const CardAttrOperation_1 = require("./CardAttrOperation");
 const ChangeCardOperation_1 = require("./ChangeCardOperation");
+const ClickCardSkillOperation_1 = require("./ClickCardSkillOperation");
 const DiscardCardOperation_1 = require("./DiscardCardOperation");
 const EvolveCardOperation_1 = require("./EvolveCardOperation");
 const FourCostTaskOperation_1 = require("./FourCostTaskOperation");
@@ -49,6 +50,7 @@ class PhantomArenaAiOperationFactory {
   12: LeaveSlotOperation_1.LeaveSlotOperation,
   13: BackSlotCardLibraryOperation_1.BackSlotCardLibraryOperation,
   14: ReserveCardOperation_1.ReserveCardOperation,
-  15: NpcCardUpdateOperation_1.NpcCardUpdateOperation
+  15: NpcCardUpdateOperation_1.NpcCardUpdateOperation,
+  16: ClickCardSkillOperation_1.ClickCardSkillOperation
 };
 //# sourceMappingURL=PhantomArenaAiOperationFactory.js.map

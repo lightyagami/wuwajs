@@ -4,6 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.Trigger = undefined;
+const UE = require("ue");
 const Time_1 = require("../../../../../../../Core/Common/Time");
 const EntitySystem_1 = require("../../../../../../../Core/Entity/EntitySystem");
 const Macro_1 = require("../../../../../../../Core/Preprocessor/Macro");
@@ -11,9 +12,11 @@ const GameplayTagUtils_1 = require("../../../../../../../Core/Utils/GameplayTagU
 const Vector_1 = require("../../../../../../../Core/Utils/Math/Vector");
 const EventDefine_1 = require("../../../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../../../Common/Event/EventSystem");
+const ControllerHolder_1 = require("../../../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../../../Manager/ModelManager");
 const FormationAttributeController_1 = require("../../../../../../Module/Abilities/FormationAttributeController");
 const SceneTeamEvent_1 = require("../../../../../../Module/SceneTeam/SceneTeamEvent");
+const ActorUtils_1 = require("../../../../../../Utils/ActorUtils");
 const CombatLog_1 = require("../../../../../../Utils/CombatLog");
 const ConditionFormula_1 = require("../../../../../../Utils/Trigger/ConditionFormula");
 const CampUtils_1 = require("../../../Blueprint/Utils/CampUtils");
@@ -123,6 +126,10 @@ class Trigger {
         return ShieldTrigger;
       case TriggerType_1.ETriggerEvent.ShowTargetTrigger:
         return ShowTargetTrigger;
+      case TriggerType_1.ETriggerEvent.RegionDetectTrigger:
+        return RegionDetectTrigger;
+      case TriggerType_1.ETriggerEvent.BreakWeaknessTrigger:
+        return BreakWeaknessTrigger;
     }
   }
   EvaluateAndExecute(t) {
@@ -311,13 +318,13 @@ class AttributeChangedTrigger extends Trigger {
     }
     switch (this.TargetType) {
       case 0:
-        this.vym(this.OwnerTriggerComp?.Entity);
+        this.uPm(this.OwnerTriggerComp?.Entity);
         break;
       case 1:
       case 2:
         var e = this.TargetType === 1;
         for (const i of ModelManager_1.ModelManager.SceneTeamModel.GetTeamEntities(e)) {
-          this.vym(i.Entity);
+          this.uPm(i.Entity);
         }
     }
   }
@@ -327,8 +334,8 @@ class AttributeChangedTrigger extends Trigger {
       AbilityEvent_1.AbilityEvent.Remove(t, 5, this.AttributeId, this.OnEvent);
     }
   }
-  vym(t) {
-    var e = t?.GetComponent(177);
+  uPm(t) {
+    var e = t?.GetComponent(182);
     if (e) {
       e = e.GetCurrentValue(this.AttributeId);
       this.OnEvent(this.AttributeId, t, e, e);
@@ -388,7 +395,7 @@ class TagTrigger extends Trigger {
   }
   OnActive() {
     if (this.TagId !== undefined) {
-      var t = this.OwnerTriggerComp?.Entity.GetComponent(209);
+      var t = this.OwnerTriggerComp?.Entity.GetComponent(215);
       if (t) {
         switch (this.InitBehavior) {
           case 1:
@@ -407,7 +414,7 @@ class TagTrigger extends Trigger {
   }
   OnInactive() {
     if (this.TagId !== undefined) {
-      this.OwnerTriggerComp?.Entity.GetComponent(209)?.RemoveTagAddOrRemoveListener(this.TagId, this.OnEvent);
+      this.OwnerTriggerComp?.Entity.GetComponent(215)?.RemoveTagAddOrRemoveListener(this.TagId, this.OnEvent);
     }
   }
 }
@@ -438,7 +445,7 @@ class TagStackTrigger extends Trigger {
   }
   OnActive() {
     if (this.TagId !== undefined) {
-      var t = this.OwnerTriggerComp?.Entity.GetComponent(209);
+      var t = this.OwnerTriggerComp?.Entity.GetComponent(215);
       if (t) {
         var e = t.GetTagCount(this.TagId);
         switch (this.InitBehavior) {
@@ -459,7 +466,7 @@ class TagStackTrigger extends Trigger {
   }
   OnInactive() {
     if (this.TagId !== undefined) {
-      this.OwnerTriggerComp?.Entity.GetComponent(209)?.RemoveTagChangedListener(this.TagId, this.OnEvent);
+      this.OwnerTriggerComp?.Entity.GetComponent(215)?.RemoveTagChangedListener(this.TagId, this.OnEvent);
     }
   }
 }
@@ -473,7 +480,7 @@ class LimitDodgeTrigger extends Trigger {
           Attacker: t,
           Victim: e,
           SkillID: i,
-          SkillType: EntitySystem_1.EntitySystem.Get(t.Id)?.GetComponent(40)?.GetSkillInfo(i)?.SkillGenre,
+          SkillType: EntitySystem_1.EntitySystem.Get(t.Id)?.GetComponent(41)?.GetSkillInfo(i)?.SkillGenre,
           BulletID: s
         };
         this.EvaluateAndExecute(e);
@@ -506,7 +513,7 @@ class SkillTrigger extends Trigger {
     this.OnSelfEvent = (t, e) => {
       if ((!this.Checker || this.Checker()) && (this.AllSKill || this.SkillIds.includes(e))) {
         var t = EntitySystem_1.EntitySystem.Get(t);
-        var i = t?.GetComponent(40);
+        var i = t?.GetComponent(41);
         var s = i?.GetSkillInfo(e);
         if (i && s) {
           var r = [];
@@ -813,9 +820,12 @@ class GameplayEventTrigger extends Trigger {
   constructor() {
     super(...arguments);
     this.TagId = 0;
-    this.OnEvent = t => {
+    this.OnEvent = (t, e) => {
       if (!this.Checker || !!this.Checker()) {
-        this.EvaluateAndExecute({});
+        e = {
+          Target: e.Target ? ActorUtils_1.ActorUtils.GetEntityByActor(e.Target)?.Entity : undefined
+        };
+        this.EvaluateAndExecute(e);
       }
     };
   }
@@ -1258,6 +1268,127 @@ class ShowTargetTrigger extends Trigger {
     var t = getTarget(this.OwnerTriggerComp?.Entity, this.TargetType);
     if (t && EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.CharSetShowTarget, this.OnEvent)) {
       EventSystem_1.EventSystem.RemoveWithTarget(t, EventDefine_1.EEventName.CharSetShowTarget, this.OnEvent);
+    }
+  }
+}
+class RegionDetectTrigger extends Trigger {
+  constructor() {
+    super(...arguments);
+    this.$1m = new Set();
+    this.W1m = 0;
+    this.Q1m = new Map();
+    this.K1m = undefined;
+    this.RefreshDetectRoles = () => {
+      if (this.X1m) {
+        var t = UE.NewArray(UE.Actor);
+        for (const s of ModelManager_1.ModelManager.SceneTeamModel.GetTeamItems()) {
+          var e;
+          var i = s.EntityHandle;
+          if (i?.Valid && (e = ControllerHolder_1.ControllerHolder.CharacterController.GetActor(i))) {
+            this.Q1m.set(e, i.Id);
+            t.Add(e);
+          }
+        }
+        this.X1m.SetEventTargets(t, this.W1m);
+      }
+    };
+  }
+  get X1m() {
+    var t;
+    return this.K1m || (t = this.OwnerTriggerComp?.Entity.GetComponent(2)?.Actor?.GetComponentByClass(UE.KuroRegionDetectComponent.StaticClass()), this.K1m = t);
+  }
+  OnInitParams(t) {
+    this.$1m = new Set(t[0].split("#"));
+  }
+  OnActive() {
+    this.mSe();
+    var t = this.X1m;
+    if (t) {
+      this.W1m = t.GetRegionDetectId();
+      this.RefreshDetectRoles();
+      for (const i of this.$1m) {
+        var e = t.GetRegionEvent(i, this.W1m);
+        if (e) {
+          e.Callback.Add((t, e) => {
+            if (e &&= this.Q1m.get(e)) {
+              this.OnEvent(e, i, t);
+            }
+          });
+        }
+      }
+    } else {
+      CombatLog_1.CombatLog.Error("PassiveSkill", this.OwnerTriggerComp?.Entity, "[被动]RegionDetectTrigger regionDetect为空");
+    }
+  }
+  OnInactive() {
+    this.dSe();
+    var t = this.X1m;
+    if (t) {
+      if (this.W1m > 0) {
+        t.RemoveRegionDetect(this.W1m);
+      }
+    } else {
+      CombatLog_1.CombatLog.Error("PassiveSkill", this.OwnerTriggerComp?.Entity, "[被动]RegionDetectTrigger regionDetect为空");
+    }
+  }
+  mSe() {
+    var t = this.OwnerTriggerComp?.Entity;
+    if (t) {
+      if (!EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.OnChangeRole, this.RefreshDetectRoles)) {
+        EventSystem_1.EventSystem.AddWithTarget(t, EventDefine_1.EEventName.OnChangeRole, this.RefreshDetectRoles);
+      }
+      if (!EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.OnOtherChangeRole, this.RefreshDetectRoles)) {
+        EventSystem_1.EventSystem.AddWithTarget(t, EventDefine_1.EEventName.OnOtherChangeRole, this.RefreshDetectRoles);
+      }
+      if (!EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.OnUpdateSceneTeam, this.RefreshDetectRoles)) {
+        EventSystem_1.EventSystem.AddWithTarget(t, EventDefine_1.EEventName.OnUpdateSceneTeam, this.RefreshDetectRoles);
+      }
+    }
+  }
+  dSe() {
+    var t = this.OwnerTriggerComp?.Entity;
+    if (t && (EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.OnChangeRole, this.RefreshDetectRoles) && EventSystem_1.EventSystem.RemoveWithTarget(t, EventDefine_1.EEventName.OnChangeRole, this.RefreshDetectRoles), EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.OnOtherChangeRole, this.RefreshDetectRoles) && EventSystem_1.EventSystem.RemoveWithTarget(t, EventDefine_1.EEventName.OnOtherChangeRole, this.RefreshDetectRoles), EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.OnUpdateSceneTeam, this.RefreshDetectRoles))) {
+      EventSystem_1.EventSystem.RemoveWithTarget(t, EventDefine_1.EEventName.OnUpdateSceneTeam, this.RefreshDetectRoles);
+    }
+  }
+  OnEvent(t, e, i) {
+    if (!this.Checker || !!this.Checker()) {
+      t = EntitySystem_1.EntitySystem.Get(t);
+      this.EvaluateAndExecute({
+        Target: t,
+        IsInRegion: i,
+        RegionName: e
+      });
+    }
+  }
+}
+class BreakWeaknessTrigger extends Trigger {
+  constructor() {
+    super(...arguments);
+    this.TargetType = 0;
+    this.OnEvent = (t, e, i) => {
+      if (!this.Checker || !!this.Checker()) {
+        this.EvaluateAndExecute({
+          Attacker: t,
+          Target: e,
+          TargetSocket: i
+        });
+      }
+    };
+  }
+  OnInitParams(t) {
+    this.TargetType = Number(t[0] ?? 0);
+  }
+  OnActive() {
+    var t = getTarget(this.OwnerTriggerComp?.Entity, this.TargetType);
+    if (t && !EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.TriggerBreakWeakness, this.OnEvent)) {
+      EventSystem_1.EventSystem.AddWithTarget(t, EventDefine_1.EEventName.TriggerBreakWeakness, this.OnEvent);
+    }
+  }
+  OnInactive() {
+    var t = getTarget(this.OwnerTriggerComp?.Entity, this.TargetType);
+    if (t && EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.TriggerBreakWeakness, this.OnEvent)) {
+      EventSystem_1.EventSystem.RemoveWithTarget(t, EventDefine_1.EEventName.TriggerBreakWeakness, this.OnEvent);
     }
   }
 }

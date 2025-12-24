@@ -22,40 +22,40 @@ const HonamiStoryItemCollectItem_1 = require("./Items/HonamiStoryItemCollectItem
 class HonamiStoryItemCollectView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
-    this.dem = undefined;
+    this.Wim = undefined;
     this.lqe = undefined;
-    this.bim = undefined;
-    this.Rim = undefined;
+    this.zsm = undefined;
+    this.Jsm = undefined;
     this.s6e = undefined;
-    this.wim = () => {
+    this.Zsm = () => {
       var t = new HonamiStoryItemCollectItem_1.HonamiStoryItemCollectItemView();
       t.OnClickToggleBack = this.jbe;
       t.CanToggleChange = this.Bpt;
       return t;
     };
     this.Og = () => {
-      this.Fhm();
-      var t = this.Orm();
-      this.bim.GetGenericLayout().DeselectCurrentGridProxy();
-      this.bim.RefreshByData(t);
+      this.Ycm();
+      var t = this.Zam();
+      this.zsm.GetGenericLayout().DeselectCurrentGridProxy();
+      this.zsm.RefreshByData(t);
       this.jbe(0, t[0]);
     };
     this.jbe = (t, e) => {
-      this.Rim = e;
-      this.bim.SelectGridProxy(t);
+      this.Jsm = e;
+      this.zsm.SelectGridProxy(t);
       this.SetTextureByPath(e.GetConfig.Icon, this.GetTexture(9));
       this.GetTexture(9).SetChangeColor(e.State === 0, this.GetTexture(9).changeColor);
       this.GetItem(8).SetUIActive(e.State === 0);
-      if (this.Rim.State !== 0) {
-        LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(3), this.Rim.Name);
-        LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), this.Rim.Desc);
-        LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), this.Rim.Desc);
+      if (this.Jsm.State !== 0) {
+        LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(3), this.Jsm.Name);
+        LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), this.Jsm.Desc);
+        LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), this.Jsm.Desc);
       }
-      this.GetItem(2).SetUIActive(this.Rim.State !== 0);
-      this.GetText(4).SetUIActive(this.Rim.State !== 0);
-      this.s6e.RefreshView(this.Rim);
+      this.GetItem(2).SetUIActive(this.Jsm.State !== 0);
+      this.GetText(4).SetUIActive(this.Jsm.State !== 0);
+      this.s6e.RefreshView(this.Jsm);
     };
-    this.Bpt = t => t !== this.bim.GetSelectedIndex();
+    this.Bpt = t => t !== this.zsm.GetSelectedIndex();
     this.pcr = () => {
       ControllerHolder_1.ControllerHolder.HelpController.OpenHelpById(HonamiStoryDefine_1.HONAMI_HELP_COLLECT);
     };
@@ -71,16 +71,16 @@ class HonamiStoryItemCollectView extends UiViewBase_1.UiViewBase {
     this.lqe = new PopupCaptionItem_1.PopupCaptionItem();
     this.lqe.SetHelpCallBack(this.pcr);
     this.lqe.SetCloseCallBack(this.Jvt);
-    this.dem = ModelManager_1.ModelManager.HonamiStoryModel.GetActivityData();
-    if (this.dem) {
+    this.Wim = ModelManager_1.ModelManager.HonamiStoryModel.GetActivityData();
+    if (this.Wim) {
       this.s6e = new HonamiStoryItemCollectRewardBtn();
-      this.bim = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(0), this.wim, this.GetExtendToggle(1).GetOwner());
+      this.zsm = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(0), this.Zsm, this.GetExtendToggle(1).GetOwner());
       t = [this.lqe.CreateThenShowByActorAsync(this.GetItem(6).GetOwner()), this.s6e.CreateThenShowByActorAsync(this.GetItem(5).GetOwner())];
       await Promise.all(t);
-      if (this.dem.GetItemCollectionDataList().length > 0) {
-        await this.bim.RefreshByDataAsync(this.Orm(), true);
-        this.Fhm();
-        this.jbe(0, this.Orm()[0]);
+      if (this.Wim.GetItemCollectionDataList().length > 0) {
+        await this.zsm.RefreshByDataAsync(this.Zam(), true);
+        this.Ycm();
+        this.jbe(0, this.Zam()[0]);
       }
     } else {
       this.CloseMe();
@@ -92,22 +92,22 @@ class HonamiStoryItemCollectView extends UiViewBase_1.UiViewBase {
   OnRemoveEventListener() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnHonamiStoryItemCollectGetReward, this.Og);
   }
-  Fhm() {
-    var t = this.Nhm().toString();
-    var e = this.dem.GetItemCollectionDataList().length.toString();
+  Ycm() {
+    var t = this.zcm().toString();
+    var e = this.Wim.GetItemCollectionDataList().length.toString();
     this.GetText(7).SetText(t + "/" + e);
   }
-  Nhm() {
+  zcm() {
     let t = 0;
-    for (const e of this.dem.GetItemCollectionDataList()) {
+    for (const e of this.Wim.GetItemCollectionDataList()) {
       if (e.State !== 0) {
         t += 1;
       }
     }
     return t;
   }
-  Orm() {
-    if (!this.dem) {
+  Zam() {
+    if (!this.Wim) {
       return [];
     }
     const i = {
@@ -115,20 +115,20 @@ class HonamiStoryItemCollectView extends UiViewBase_1.UiViewBase {
       2: 2,
       0: 3
     };
-    return [...this.dem.GetItemCollectionDataList()].sort((t, e) => i[t.State] - i[e.State]);
+    return [...this.Wim.GetItemCollectionDataList()].sort((t, e) => i[t.State] - i[e.State]);
   }
 }
 exports.HonamiStoryItemCollectView = HonamiStoryItemCollectView;
 class HonamiStoryItemCollectRewardBtn extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.Rim = undefined;
+    this.Jsm = undefined;
     this.qsi = undefined;
     this.YDo = () => {
-      if (this.Rim !== undefined) {
-        switch (this.Rim.State) {
+      if (this.Jsm !== undefined) {
+        switch (this.Jsm.State) {
           case 1:
-            ActivityControllerHolder_1.ActivityControllerHolder.HonamiStoryController.SendHonamiStoryItemCollectionRequest([this.Rim.Id]);
+            ActivityControllerHolder_1.ActivityControllerHolder.HonamiStoryController.SendHonamiStoryItemCollectionRequest([this.Jsm.Id]);
             break;
           case 2:
             return;
@@ -149,8 +149,8 @@ class HonamiStoryItemCollectRewardBtn extends UiPanelBase_1.UiPanelBase {
     this.qsi.BindOnExtendToggleClicked(this.YDo);
   }
   RefreshView(t) {
-    this.Rim = t;
-    this.GetSprite(2).SetUIActive(this.Rim.State === 1);
+    this.Jsm = t;
+    this.GetSprite(2).SetUIActive(this.Jsm.State === 1);
     this.GetItem(1)?.SetUIActive(true);
     var e;
     var i;

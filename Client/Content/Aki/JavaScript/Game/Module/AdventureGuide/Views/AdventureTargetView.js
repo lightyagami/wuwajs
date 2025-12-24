@@ -62,7 +62,7 @@ class AdventureTargetView extends UiTabViewBase_1.UiTabViewBase {
         });
       }
     };
-    this.U1m = () => {
+    this.Kmm = () => {
       if (ConfigManager_1.ConfigManager.AdventureModuleConfig.GetChapterAdventureConfig(this.n6e)) {
         var e = ModelManager_1.ModelManager.AdventureGuideModel.GetRewardChaptersList();
         for (const t of this.H3e?.GetLayoutItemList() ?? []) {
@@ -109,7 +109,7 @@ class AdventureTargetView extends UiTabViewBase_1.UiTabViewBase {
         this.SetAdventureTargetInfoByChapter(e, false);
         this.GetItem(9).SetUIActive(false);
         this.C6e();
-        this.U1m();
+        this.Kmm();
       }
     };
     this.p6e = e => {
@@ -241,7 +241,7 @@ class AdventureTargetView extends UiTabViewBase_1.UiTabViewBase {
       }, i.get(d)];
       r.push(l);
     }
-    this.H3e.RefreshByData(r, this.U1m);
+    this.H3e.RefreshByData(r, this.Kmm);
     var g = ModelManager_1.ModelManager.AdventureGuideModel.GetChapterReceivedCount(e);
     var v = t.RewardUnlockCount;
     this.s6e?.RootUIComp.SetUIActive(n.includes(e));

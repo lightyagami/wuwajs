@@ -44,6 +44,7 @@ class ActivitySubViewDoubleReward extends ActivitySubViewBase_1.ActivitySubViewB
     if (t) {
       i = t.DescTheme;
       i = !StringUtils_1.StringUtils.IsEmpty(i);
+      this.LNe.SetActivityBaseData(this.ActivityBaseData);
       this.LNe.SetTitleByText(this.ActivityBaseData.GetTitle());
       this.LNe.SetSubTitleVisible(i);
       if (i) {

@@ -247,7 +247,7 @@ class MapRogueMapModule extends UiPanelBase_1.UiPanelBase {
       this.MoveComponent.SetScaleSafeArea(i, t);
       this.SetTextureByPath(e.MapBackground, this.GetTexture(11));
       this.MoveComponent.SetChangeScaleCallback(this.$E1);
-      this.MoveComponent.SetScale(s, 4);
+      this.MoveComponent.SetScale(s, 5);
       this.GameInfo.TriggerGuideEventOnFocusStart();
       this.FocusOnGrid(this.GameInfo.PlayerGridIndex, false);
       this.GameInfo.TriggerGuideEventOnFocusEnd();

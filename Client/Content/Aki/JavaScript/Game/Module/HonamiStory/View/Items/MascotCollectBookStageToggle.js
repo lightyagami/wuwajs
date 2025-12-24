@@ -14,14 +14,14 @@ class MascotCollectBookStageToggle extends GridProxyAbstract_1.GridProxyAbstract
     this.CNe = undefined;
     this.xOl = undefined;
     this.F5d = undefined;
-    this.xmm = undefined;
+    this.yvm = undefined;
     this.Cke = () => {
       this.F5d?.(this);
     };
   }
   OnBeforeCreateImplement() {
-    this.xmm = new UiViewSequence_1.UiBehaviorLevelSequence(this);
-    this.AddUiBehavior(this.xmm);
+    this.yvm = new UiViewSequence_1.UiBehaviorLevelSequence(this);
+    this.AddUiBehavior(this.yvm);
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UITexture], [2, UE.UITexture], [3, UE.UITexture], [4, UE.UISprite], [5, UE.UISprite], [6, UE.UISprite], [7, UE.UISprite], [8, UE.UIText], [9, UE.UIItem], [10, UE.UIItem], [11, UE.UIItem], [12, UE.UITexture]];
@@ -38,7 +38,7 @@ class MascotCollectBookStageToggle extends GridProxyAbstract_1.GridProxyAbstract
     this.xOl = t;
     this.sbi();
     if (t.IsSecretFinished) {
-      this.xmm?.PlaySequence("Unlock");
+      this.yvm?.PlaySequence("Unlock");
     }
   }
   sbi() {

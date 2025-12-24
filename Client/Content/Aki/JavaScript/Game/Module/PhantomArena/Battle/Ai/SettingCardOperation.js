@@ -18,9 +18,9 @@ class SettingCardOperation extends NpcAiOperation_1.NpcAiOperation {
       Log_1.Log.Info("PhantomArena", 10, "执行设置卡牌操作", ["放置索引", r.Qg1], ["CardId", r.$g1]);
     }
     var t = ModelManager_1.ModelManager.PhantomArenaBattleModel.OpponentData;
-    t.RefreshHandCardNum(this.Info.ZM1);
+    t.RefreshHandCardNum(this.Info.ZM1, false);
     t.SetBattleCardData(this.Info.cC1);
-    await e.OpponentArea.FunctionalArea.TrySettingCard(r.$g1, r.Qg1);
+    await Promise.all([e.OpponentArea.FunctionalArea.TrySettingCard(r.$g1, r.Qg1), e.OpponentArea.HandArea.RefreshHandCardNum(this.Info.ZM1)]);
   }
 }
 exports.SettingCardOperation = SettingCardOperation;

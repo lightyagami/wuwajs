@@ -202,7 +202,7 @@ class PhantomManageConfigView extends UiViewBase_1.UiViewBase {
       e.SetName(t);
       var t = await ControllerHolder_1.ControllerHolder.InventoryController.PhantomManageConfigUpdateRequest(i.GetType(), e.Integrate());
       if (t === Protocol_1.Aki.Protocol.Q4n.KRs) {
-        this._Gu(false, e);
+        this._Gu(false, i);
       }
       return t;
     };
@@ -212,13 +212,13 @@ class PhantomManageConfigView extends UiViewBase_1.UiViewBase {
       var t = t === 1;
       var e = i.Clone();
       e.SetIsOn(t);
-      var i = await ControllerHolder_1.ControllerHolder.InventoryController.PhantomManageConfigUpdateRequest(i.GetType(), e.Integrate());
-      if (i === Protocol_1.Aki.Protocol.Q4n.KRs) {
+      var e = await ControllerHolder_1.ControllerHolder.InventoryController.PhantomManageConfigUpdateRequest(i.GetType(), e.Integrate());
+      if (e === Protocol_1.Aki.Protocol.Q4n.KRs) {
         ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId(t ? "PhantomProject_Warning09" : "PhantomProject_Warning10");
-        this._Gu(false, e);
+        this._Gu(false, i);
       } else {
         this.Vxe.SetConfigState(!t);
-        (i = this.GetTexture(13)).SetChangeColor(!t, i.changeColor);
+        (e = this.GetTexture(13)).SetChangeColor(!t, e.changeColor);
       }
       UiLayer_1.UiLayer.SetShowMaskLayer("ManageConfigSwitchClick", false);
     };

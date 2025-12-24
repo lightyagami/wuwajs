@@ -1,20 +1,20 @@
 "use strict";
 
-var __decorate = this && this.__decorate || function (t, e, o, i) {
+var __decorate = this && this.__decorate || function (t, i, e, o) {
   var s;
   var r = arguments.length;
-  var n = r < 3 ? e : i === null ? i = Object.getOwnPropertyDescriptor(e, o) : i;
+  var n = r < 3 ? i : o === null ? o = Object.getOwnPropertyDescriptor(i, e) : o;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    n = Reflect.decorate(t, e, o, i);
+    n = Reflect.decorate(t, i, e, o);
   } else {
     for (var h = t.length - 1; h >= 0; h--) {
       if (s = t[h]) {
-        n = (r < 3 ? s(n) : r > 3 ? s(e, o, n) : s(e, o)) || n;
+        n = (r < 3 ? s(n) : r > 3 ? s(i, e, n) : s(i, e)) || n;
       }
     }
   }
   if (r > 3 && n) {
-    Object.defineProperty(e, o, n);
+    Object.defineProperty(i, e, n);
   }
   return n;
 };
@@ -28,85 +28,132 @@ const Log_1 = require("../../../../Core/Common/Log");
 const EntityComponent_1 = require("../../../../Core/Entity/EntityComponent");
 const RegisterComponent_1 = require("../../../../Core/Entity/RegisterComponent");
 const baseName = new UE.FName("Base");
+class MotorConfigParams {
+  constructor(t, i, e, o) {
+    this.Name = t;
+    this.Lo = i;
+    this.Lie = e;
+    this.oLf = o;
+    this.cSa = false;
+    this.mQt = new Array();
+    this.nLf = UE.NewArray(UE.BuiltinInt);
+    var s = i.ActivateTags.GameplayTags;
+    for (let t = s.Num() - 1; t >= 0; --t) {
+      this.mQt.push(s.Get(t).TagId);
+    }
+    MotorConfigParams.ConvertVarNames(i.VarNames, this.nLf);
+  }
+  static ConvertVarNames(i, e) {
+    e.Empty();
+    var o = i.Num();
+    for (let t = 0; t < o; ++t) {
+      e.Add(i.Get(t));
+    }
+  }
+  TryActivate() {
+    if (!this.cSa) {
+      for (const t of this.mQt) {
+        if (!this.Lie.HasTag(t)) {
+          return;
+        }
+      }
+      this.cSa = true;
+      this.oLf.AddSubConfigByNumber(this.Name, this.Lo.Priority, this.nLf, this.Lo.Configs);
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Movement", 6, "MotorConfig AddTagListen", ["Name", this.Name]);
+      }
+    }
+  }
+  Inactivate() {
+    if (this.cSa && (this.cSa = false, this.oLf.RemoveSubConfig(this.Name), Log_1.Log.CheckInfo())) {
+      Log_1.Log.Info("Movement", 6, "MotorConfig RemoveSubConfig", ["Name", this.Name]);
+    }
+  }
+}
 let MotorcycleConfigComponent = class MotorcycleConfigComponent extends EntityComponent_1.EntityComponent {
   constructor() {
     super(...arguments);
     this.Lie = undefined;
     this.ACd = undefined;
     this.hId = undefined;
-    this.DCd = new Map();
-    this.xCd = new Set();
+    this.sLf = new Map();
     this.UCd = (0, puerts_1.$ref)(undefined);
-    this.EGd = UE.NewArray(UE.BuiltinInt);
-    this.UWi = (t, e) => {
-      var o;
+    this.UWi = (t, i) => {
       if (this.ACd) {
-        if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("Movement", 6, "MotorConfig AddTagListen", ["tag", t], ["tagExist", e]);
-        }
-        if (e) {
-          if (!this.xCd.has(t)) {
-            this.xCd.add(t);
-            e = this.DCd.get(t);
-            this.ACd.GetConfigDataByKeyName(e, this.UCd);
-            o = (0, puerts_1.$unref)(this.UCd);
-            this.ConvertVarNames(o.VarNames, this.EGd);
-            this.hId.AddSubConfigByNumber(e, o.Priority, this.EGd, o.Configs);
-            if (Log_1.Log.CheckInfo()) {
-              Log_1.Log.Info("Movement", 6, "MotorConfig AddSubConfig", ["tag", t], ["keyName", e]);
+        t = this.sLf.get(t);
+        if (t) {
+          if (i) {
+            for (const e of t) {
+              e.TryActivate();
+            }
+          } else {
+            for (const o of t) {
+              o.Inactivate();
             }
           }
-        } else if (this.xCd.delete(t) && (o = this.DCd.get(t), this.hId.RemoveSubConfig(o), Log_1.Log.CheckInfo())) {
-          Log_1.Log.Info("Movement", 6, "MotorConfig RemoveSubConfig", ["tag", t], ["keyName", o]);
         }
       }
     };
   }
   OnStart() {
-    this.Lie = this.Entity.GetComponent(245);
+    this.Lie = this.Entity.GetComponent(254);
     if (!this.Lie) {
       return false;
     }
-    this.ACd = this.Entity.GetComponent(238)?.Actor;
+    this.ACd = this.Entity.GetComponent(247)?.Actor;
     if (!this.ACd.GetConfigDataNameTagMap) {
       return false;
     }
-    var t = (0, puerts_1.$ref)(undefined);
-    this.ACd.GetConfigDataNameTagMap(t);
-    var e = (0, puerts_1.$unref)(t);
-    var o = e.Num();
     this.hId = this.ACd.VehicleMovementComponent.MotorConfigHelper;
     if (!this.hId) {
       this.hId = UE.NewObject(UE.KuroConfigHelper.StaticClass(), this.ACd.VehicleMovementComponent, "MotorConfigHelper");
       this.ACd.VehicleMovementComponent.MotorConfigHelper = this.hId;
     }
+    var t;
+    var i = (0, puerts_1.$ref)(undefined);
+    UE.DataTableFunctionLibrary.GetDataTableRowNames(this.ACd.VehicleMovementComponent?.MotorConfigDataTable, i);
+    var e = (0, puerts_1.$unref)(i);
+    var o = e.Num();
+    this.sLf.clear();
     for (let t = 0; t < o; ++t) {
-      var i;
-      var s = e.GetKey(t);
-      var r = e.Get(s);
+      var s = e.Get(t);
+      this.ACd.GetConfigDataByKeyName(s, this.UCd);
+      var r = (0, puerts_1.$unref)(this.UCd);
       if (s.op_Equality(baseName)) {
-        this.ACd.GetConfigDataByKeyName(s, this.UCd);
-        i = (0, puerts_1.$unref)(this.UCd);
-        this.hId.InitBase(this.ACd.VehicleMovementComponent, i.Configs);
-      } else if (r && r.TagName !== "None" && (this.DCd.set(r.TagId, s), this.Lie.HasTag(r.TagId) && this.UWi(r.TagId, true), this.Lie.AddTagAddOrRemoveListener(r.TagId, this.UWi), Log_1.Log.CheckInfo())) {
-        Log_1.Log.Info("Movement", 6, "MotorConfig AddTagListen", ["tag", r.TagId], ["keyName", s]);
+        this.hId.InitBase(this.ACd.VehicleMovementComponent, r.Configs);
+      } else {
+        var n = new MotorConfigParams(s, r, this.Lie, this.hId);
+        var h = r.ActivateTags.GameplayTags;
+        var f = h.Num();
+        for (let t = 0; t < f; ++t) {
+          var a;
+          var c = h.Get(t);
+          if (c && c.TagName !== "None") {
+            if (a = this.sLf.get(c.TagId)) {
+              a.push(n);
+            } else {
+              this.sLf.set(c.TagId, [n]);
+            }
+          }
+        }
+        n.TryActivate();
       }
+    }
+    for ([t] of this.sLf) {
+      this.Lie.AddTagAddOrRemoveListener(t, this.UWi);
+    }
+    var i = this.Entity.GetComponent(246)?.Config?.Asset;
+    if (i &&= i.ConfigDataTable) {
+      this.ACd.VehicleMovementComponent.MotorConfigDataTable = i;
     }
     return true;
   }
   OnEnd() {
-    for (var [t] of this.DCd) {
+    for (var [t] of this.sLf) {
       this.Lie.RemoveTagAddOrRemoveListener(t, this.UWi);
     }
     return true;
   }
-  ConvertVarNames(e, o) {
-    o.Empty();
-    var i = e.Num();
-    for (let t = 0; t < i; ++t) {
-      o.Add(e.Get(t));
-    }
-  }
 };
-MotorcycleConfigComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(255)], MotorcycleConfigComponent);
+MotorcycleConfigComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(268)], MotorcycleConfigComponent);
 exports.MotorcycleConfigComponent = MotorcycleConfigComponent; //# sourceMappingURL=MotorcylceConfigComponent.js.map

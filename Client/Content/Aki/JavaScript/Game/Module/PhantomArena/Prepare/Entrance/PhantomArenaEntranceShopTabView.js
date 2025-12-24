@@ -21,13 +21,14 @@ class PhantomArenaEntranceShopItem extends PayShopItem_1.PayShopItem {
 class PhantomArenaEntranceShopTabView extends UiTabViewBase_1.UiTabViewBase {
   constructor() {
     super(...arguments);
+    this.ActivityId = 0;
     this.xqe = undefined;
     this.InitItem = () => {
       return new PhantomArenaEntranceShopItem();
     };
     this.OnRefreshGoods = () => {
-      ModelManager_1.ModelManager.PhantomArenaModel.OnShopViewOpen();
-      var e = ModelManager_1.ModelManager.PhantomArenaModel.GetShopList();
+      ModelManager_1.ModelManager.PhantomArenaModel.OnShopViewOpen(this.ActivityId);
+      var e = ModelManager_1.ModelManager.PhantomArenaModel.GetShopList(this.ActivityId);
       this.xqe?.RefreshByData(e, undefined, undefined, true);
     };
   }
@@ -35,6 +36,7 @@ class PhantomArenaEntranceShopTabView extends UiTabViewBase_1.UiTabViewBase {
     this.ComponentRegisterInfos = [[0, UE.UILoopScrollViewComponent], [1, UE.UIItem]];
   }
   OnStart() {
+    this.ActivityId = this.ExtraParams;
     this.xqe = new LoopScrollView_1.LoopScrollView(this.GetLoopScrollViewComponent(0), this.GetItem(1).GetOwner(), this.InitItem);
   }
   OnBeforeDestroy() {

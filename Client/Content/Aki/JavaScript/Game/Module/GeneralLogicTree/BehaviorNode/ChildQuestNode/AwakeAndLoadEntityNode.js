@@ -14,13 +14,13 @@ class AwakeAndLoadEntityNode extends TickBehaviorNode_1.TickBehaviorNode {
     super(...arguments);
     this.fLe = undefined;
     this.GAc = 0;
-    this.GYd = false;
+    this.pzd = false;
     this.lQa = e => {
       this.GAc = e ? 2 : 0;
     };
   }
   OnCreate(e) {
-    return !!super.OnCreate(e) && (e = e.Condition).Type === IQuest_1.EChildQuest.AwakeAndLoadEntity && (this.fLe = e.EntityIds, this.IntervalTime = 1000, this.GYd = e.IsWaitForShow ?? false, true);
+    return !!super.OnCreate(e) && (e = e.Condition).Type === IQuest_1.EChildQuest.AwakeAndLoadEntity && (this.fLe = e.EntityIds, this.IntervalTime = 1000, this.pzd = e.IsWaitForShow ?? false, true);
   }
   OnTick() {
     if (this.GAc === 0) {
@@ -32,12 +32,12 @@ class AwakeAndLoadEntityNode extends TickBehaviorNode_1.TickBehaviorNode {
               if (!e.IsInit) {
                 return;
               }
-              var t = e.Entity.GetComponent(160);
+              var t = e.Entity.GetComponent(165);
               if (t && !t.LoadingBaseConfigFinish) {
                 return;
               }
-              t = e.Entity.GetComponent(206);
-              if (this.GYd && t && !t.GetIsSceneInteractionLoadCompleted()) {
+              t = e.Entity.GetComponent(212);
+              if (this.pzd && t && !t.GetIsSceneInteractionLoadCompleted()) {
                 return;
               }
             } else if (Log_1.Log.CheckInfo()) {

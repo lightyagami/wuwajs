@@ -15,8 +15,10 @@ const UiTickViewBase_1 = require("../../../Ui/Base/UiTickViewBase");
 const PopupCaptionItem_1 = require("../../../Ui/Common/PopupCaptionItem");
 const UiManager_1 = require("../../../Ui/UiManager");
 const UiModel_1 = require("../../../Ui/UiModel");
+const ButtonItem_1 = require("../../Common/Button/ButtonItem");
 const HelpController_1 = require("../../Help/HelpController");
 const ScrollingTipsController_1 = require("../../ScrollingTips/ScrollingTipsController");
+const SkipTaskManager_1 = require("../../SkipInterface/SkipTaskManager");
 const UiNavigationNewController_1 = require("../../UiNavigation/New/UiNavigationNewController");
 const LoopScrollView_1 = require("../../Util/ScrollView/LoopScrollView");
 const ExploreProgressController_1 = require("../ExploreProgressController");
@@ -36,6 +38,7 @@ class MapExploreDetailView extends UiTickViewBase_1.UiTickViewBase {
     this.eNl = undefined;
     this.tNl = undefined;
     this.NSd = undefined;
+    this.jjd = new ButtonItem_1.ButtonItem();
     this.wOl = () => {
       ExploreProgressController_1.ExploreProgressController.ReceiveAreaStageRewardAsyncRequest(this.YOl.GetStageRewardDataList().filter(t => t.State === 1).map(t => t.Id));
     };
@@ -80,18 +83,22 @@ class MapExploreDetailView extends UiTickViewBase_1.UiTickViewBase {
         ExploreAreaItemData: this.eNl
       }, this.Zjl);
     };
-    this.Zjl = (t, e) => {
+    this.Zjl = (t, i) => {
       if (t) {
-        UiModel_1.UiModel.NormalStack.Peek().AddChildViewById(e);
+        UiModel_1.UiModel.NormalStack.Peek().AddChildViewById(i);
       }
     };
     this.lNl = () => {
-      if (UiManager_1.UiManager.IsViewShow("WorldMapView")) {
-        this.eNl?.TrackPoint();
+      if (this.eNl && !this.eNl.IsUnlocked()) {
+        SkipTaskManager_1.SkipTaskManager.RunByConfigId(this.eNl.AccessPathId);
       } else {
-        ModelManager_1.ModelManager.ExploreProgressModel.SetTrackExploreAreaItemData(this.eNl);
+        if (UiManager_1.UiManager.IsViewShow("WorldMapView")) {
+          this.eNl?.TrackPoint();
+        } else {
+          ModelManager_1.ModelManager.ExploreProgressModel.SetTrackExploreAreaItemData(this.eNl);
+        }
+        this.CloseMe();
       }
-      this.CloseMe();
     };
     this.hNl = () => {
       this.CloseMe();
@@ -132,23 +139,23 @@ class MapExploreDetailView extends UiTickViewBase_1.UiTickViewBase {
     this.MNl = () => {
       this.yNl();
     };
-    this.A8l = (t, e) => {
+    this.A8l = (t, i) => {
       if (this.YOl?.AreaId === t) {
-        this.x8l(e);
+        this.x8l(i);
       } else {
-        this.R8l(t, e);
+        this.R8l(t, i);
       }
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIButtonComponent], [2, UE.UIButtonComponent], [3, UE.UILoopScrollViewComponent], [4, UE.UIButtonComponent], [5, UE.UIText], [6, UE.UIButtonComponent], [7, UE.UIItem], [8, UE.UIText], [9, UE.UIItem], [10, UE.UIButtonComponent], [11, UE.UITexture], [12, UE.UIText], [13, UE.UIItem], [14, UE.UIText], [15, UE.UIButtonComponent], [16, UE.UIItem], [17, UE.UIButtonComponent], [18, UE.UIButtonComponent], [19, UE.UIItem], [20, UE.UIItem], [21, UE.UIItem], [22, UE.UIItem], [23, UE.UIText], [24, UE.UIItem], [25, UE.UIText], [26, UE.UISprite], [27, UE.UIItem], [28, UE.UIItem]];
-    this.BtnBindInfo = [[1, this._Nl], [2, this.cNl], [4, this.oNl], [6, this.rNl], [15, this.nNl], [10, this.sNl], [17, this.aNl], [18, this.lNl]];
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIButtonComponent], [2, UE.UIButtonComponent], [3, UE.UILoopScrollViewComponent], [4, UE.UIButtonComponent], [5, UE.UIText], [6, UE.UIButtonComponent], [7, UE.UIItem], [8, UE.UIText], [9, UE.UIItem], [10, UE.UIButtonComponent], [11, UE.UITexture], [12, UE.UIText], [13, UE.UIItem], [14, UE.UIText], [15, UE.UIButtonComponent], [16, UE.UIItem], [17, UE.UIButtonComponent], [18, UE.UIButtonComponent], [19, UE.UIItem], [20, UE.UIItem], [21, UE.UIItem], [22, UE.UIItem], [23, UE.UIText], [24, UE.UIItem], [25, UE.UIText], [26, UE.UISprite], [27, UE.UIItem], [28, UE.UIItem], [29, UE.UIItem]];
+    this.BtnBindInfo = [[1, this._Nl], [2, this.cNl], [4, this.oNl], [6, this.rNl], [15, this.nNl], [10, this.sNl], [17, this.aNl]];
   }
   async OnBeforeStartAsync() {
     var t = this.OpenParam;
-    var e = t.AreaId;
-    if (this.dNl(e)) {
-      await Promise.all([this.VSd(), this.jSd(), this.HSd()]);
+    var i = t.AreaId;
+    if (this.dNl(i)) {
+      await Promise.all([this.VSd(), this.jSd(), this.HSd(), this.Hjd()]);
       this.zJa = new PopupCaptionItem_1.PopupCaptionItem(this.GetItem(0));
       this.zJa.SetCloseCallBack(this.hNl);
       if (t?.ExploreType) {
@@ -170,6 +177,10 @@ class MapExploreDetailView extends UiTickViewBase_1.UiTickViewBase {
     this.NSd = new ExploreDetailLockItem_1.ExploreDetailLockItem();
     await this.NSd.CreateThenShowByActorAsync(this.GetItem(28).GetOwner());
     this.NSd.SetUiActive(false);
+  }
+  async Hjd() {
+    await this.jjd.CreateByActorAsync(this.GetButton(18).GetOwner());
+    this.jjd.SetFunction(this.lNl);
   }
   OnStart() {
     this.GetText(25)?.SetText("0");
@@ -216,17 +227,17 @@ class MapExploreDetailView extends UiTickViewBase_1.UiTickViewBase {
   }
   b8l() {
     var t = this.YOl.GetAllExploreAreaItemData();
-    let e = 0;
-    if ((e = this.eNl ? t.findIndex(t => t.ExploreType === this.eNl.ExploreType) : e) === -1) {
-      e = 0;
-      this.eNl = t[e];
+    let i = 0;
+    if ((i = this.eNl ? t.findIndex(t => t.ExploreType === this.eNl.ExploreType) : i) === -1) {
+      i = 0;
+      this.eNl = t[i];
     }
-    return e;
+    return i;
   }
   uNl(t) {
-    var e = this.zOl.length;
+    var i = this.zOl.length;
     var t = this.JOl + t;
-    if ((t = MathUtils_1.MathUtils.Clamp(t, 0, e - 1)) !== this.JOl) {
+    if ((t = MathUtils_1.MathUtils.Clamp(t, 0, i - 1)) !== this.JOl) {
       this.JOl = t;
       this.YOl = this.zOl[t];
       this.CNl();
@@ -254,15 +265,15 @@ class MapExploreDetailView extends UiTickViewBase_1.UiTickViewBase {
   TNl() {
     this.GetText(5)?.ShowTextNew(this.YOl.GetNameId());
     var t = this.YOl.GetProgress();
-    var e = t + "%";
-    this.GetText(8)?.SetText(e);
-    var e = this.GetText(25);
-    e.SetChangeColor(t > 0, e.changeColor);
+    var i = t + "%";
+    this.GetText(8)?.SetText(i);
+    var i = this.GetText(25);
+    i.SetChangeColor(t > 0, i.changeColor);
   }
   dNl(t) {
-    var e = ModelManager_1.ModelManager.ExploreProgressModel.GetExploreAreaData(t);
-    if (e) {
-      this.YOl = e;
+    var i = ModelManager_1.ModelManager.ExploreProgressModel.GetExploreAreaData(t);
+    if (i) {
+      this.YOl = i;
       if (this.zOl.length <= 0) {
         this.zOl = ModelManager_1.ModelManager.ExploreProgressModel.GetAllAreaDataListSortCountryState();
         this.zOl.forEach(t => {
@@ -279,42 +290,63 @@ class MapExploreDetailView extends UiTickViewBase_1.UiTickViewBase {
   OnTick(t) {
     this.ZOl?.OnTickRefresh(t);
   }
-  x8l(t, e = true) {
-    if (t && t !== this.eNl.ExploreType && (t = this.YOl.GetExploreAreaItemData(t)) && (this.eNl = t, e)) {
+  x8l(t, i = true) {
+    if (t && t !== this.eNl.ExploreType && (t = this.YOl.GetExploreAreaItemData(t)) && (this.eNl = t, i)) {
       this.T8l();
     }
   }
-  R8l(t, e) {
+  R8l(t, i) {
     if (this.dNl(t)) {
-      this.x8l(e, false);
+      this.x8l(i, false);
       this.CNl();
     }
   }
   vNl() {
     var t;
-    var e = !!this.eNl?.IsUnlocked();
-    this.GetItem(21)?.SetUIActive(e);
-    this.GetItem(22)?.SetUIActive(!e);
-    if (e) {
+    var i = !!this.eNl?.IsUnlocked();
+    this.GetItem(21)?.SetUIActive(i);
+    this.GetItem(22)?.SetUIActive(!i);
+    if (i) {
+      this.GetItem(29).SetUIActive(true);
+      this.GetText(12).SetUIActive(true);
       this.SetTextureByPath(this.eNl.DescBg, this.GetTexture(11));
       this.GetText(12)?.ShowTextNew(this.eNl.DescId);
-      e = this.eNl.IsCompleted();
+      i = this.eNl.IsCompleted();
       t = this.eNl.HasPhantomSkill();
-      this.GetItem(24)?.SetUIActive(e);
-      this.GetItem(13)?.SetUIActive(!e && t);
+      this.GetItem(24)?.SetUIActive(i);
+      this.GetItem(13)?.SetUIActive(!i && t);
       t = this.$Sd();
       this.UNl();
-      e = this.eNl.IsShowTrackBtn && !e && t;
-      this.GetButton(18)?.RootUIComp.SetUIActive(e);
+      i = this.eNl.IsShowTrackBtn && !i && t;
+      this.jjd.SetActive(i);
+      this.jjd.SetLocalTextNew("ExploreButton_1");
       t = this.GetText(14);
-      if (e = this.eNl.GetIsPhantomSkillUnlock() ? this.eNl.GetUnlockTextId() : this.eNl.GetLockTextId()) {
-        t.ShowTextNew(e);
+      if (i = this.eNl.GetIsPhantomSkillUnlock() ? this.eNl.GetUnlockTextId() : this.eNl.GetLockTextId()) {
+        t.ShowTextNew(i);
       }
-      t.SetUIActive(!!e);
+      t.SetUIActive(!!i);
       t = this.eNl.ExploreType === 6;
       this.GetButton(10).RootUIComp.SetUIActive(t);
-    } else if (e = this.eNl?.GetLockDetailId()) {
-      this.GetText(23)?.ShowTextNew(e);
+    } else {
+      this.$jd();
+    }
+  }
+  $jd() {
+    this.GetItem(22)?.SetUIActive(true);
+    if (this.eNl.AccessPathId) {
+      this.GetItem(21).SetUIActive(true);
+      this.GetItem(19).SetUIActive(false);
+      this.GetItem(29).SetUIActive(false);
+      this.GetText(12).SetUIActive(false);
+      this.GetItem(24).SetUIActive(false);
+      this.GetItem(13).SetUIActive(false);
+      this.NSd?.Reset();
+      this.jjd.SetActive(true);
+      this.jjd.SetLocalTextNew("ExploreButton_2");
+    }
+    var t = this.eNl?.GetLockDetailId();
+    if (t) {
+      this.GetText(23)?.ShowTextNew(t);
     }
   }
   UNl() {
@@ -327,16 +359,17 @@ class MapExploreDetailView extends UiTickViewBase_1.UiTickViewBase {
   }
   $Sd() {
     var t = this.eNl.GetNearTrackMapMark();
-    let e = true;
+    let i = true;
+    this.NSd?.Reset();
     if (t && t.GameplayLockJumpId !== 0 && t.GameplayLockText !== "") {
       if (this.eNl?.GetPlayIdIsUnlock(t.RelativeId)) {
         this.NSd?.Reset();
       } else {
         this.NSd?.RefreshExternalByData(t.MarkId);
-        e = false;
+        i = false;
       }
     }
-    return e;
+    return i;
   }
   LNl() {
     for (const t of this.zOl) {

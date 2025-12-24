@@ -122,6 +122,7 @@ class ActivitySubViewTurntable extends ActivitySubViewBase_1.ActivitySubViewBase
     await Promise.all(t);
   }
   OnStart() {
+    this.LNe.SetActivityBaseData(this.ActivityBaseData);
     this.LNe.SetTitleByText(this.ActivityBaseData.GetTitle());
     this.vUn.FunctionButton.SetFunction(this.nLn);
     this.vUn.SetFunctionRedDotVisible(true);

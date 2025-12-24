@@ -31,8 +31,8 @@ class TabComponent extends UiPanelBase_1.UiPanelBase {
       this.ToggleCallBack(e);
     };
     this.Lke = (e, t) => (this.NOe !== e || !!t) && (!this.MUt || this.MUt(e, t));
-    this.CreateThenShowByActor(e.GetOwner());
     this.qbt = s;
+    this.CreateThenShowByActor(e.GetOwner());
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UILayoutBase]];

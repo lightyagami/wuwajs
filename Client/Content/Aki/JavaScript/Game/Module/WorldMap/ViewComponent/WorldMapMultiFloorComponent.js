@@ -53,6 +53,8 @@ class WorldMapMultiFloorComponent extends MapComponent_1.MapComponent {
     this.SetMultiMapMenuActive(false);
   }
   InitMultiMap() {
+    this.Eal = false;
+    this.MultiMapFloorContainer.SetUIActive(false);
     var e;
     var t = ModelManager_1.ModelManager.AreaModel.GetCurrentAreaId();
     var i = ConfigManager_1.ConfigManager.MapConfig.GetSubMapConfigByAreaId(t);

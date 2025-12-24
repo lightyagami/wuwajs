@@ -15,10 +15,12 @@ class RoleSkillInnerPassiveSkillAndOuterPassiveSkillItem extends RoleSkillChainI
   OnStart() {
     var e = new RoleSkillInnerPassiveSkillItem_1.RoleSkillInnerPassiveSkillItem();
     e.CreateThenShowByActor(this.GetItem(0).GetOwner());
+    e.SetSkillBranchEnable(this.IsSkillBranchEnable);
     this.SkillNodeItemList.push(e);
     for (const t of [1, 2]) {
       var l = this.GetItem(t);
       var i = new RoleSkillOuterPassiveSkillItem_1.RoleSkillOuterPassiveSkillItem();
+      i.SetSkillBranchEnable(this.IsSkillBranchEnable);
       i.CreateThenShowByActor(l.GetOwner());
       this.SkillNodeItemList.push(i);
     }

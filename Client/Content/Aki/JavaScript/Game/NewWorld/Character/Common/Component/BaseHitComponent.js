@@ -274,7 +274,7 @@ let BaseHitComponent = class BaseHitComponent extends EntityComponent_1.EntityCo
     CombatMessage_1.CombatNet.Send(23508, t, e);
   }
   static PreHitNotify(t, e) {
-    if (e.TWn?.SWn && !e.TWn.gWn && (t = t.GetComponent(55)) && !t.PreSwitchRemoteFightState(e.TWn.mVn)) {
+    if (e.TWn?.SWn && !e.TWn.gWn && (t = t.GetComponent(58)) && !t.PreSwitchRemoteFightState(e.TWn.mVn)) {
       e.TWn.gWn = true;
       e.TWn.mVn = 0;
     }
@@ -301,7 +301,7 @@ let BaseHitComponent = class BaseHitComponent extends EntityComponent_1.EntityCo
           o.HitPart = FNameUtil_1.FNameUtil.GetDynamicFName(e.TWn.EWn);
         }
         s = WorldGlobal_1.WorldGlobal.ToUeRotator(e.TWn.MWn);
-        (t = t?.GetComponent(60))?.ReceiveOnHit(o, a, e.TWn.SWn ?? false, e.TWn.yWn ?? false, e.TWn.gWn ?? false, e.TWn.fWn ?? false, e.TWn.pWn ?? false, e.TWn.vWn ?? false, s, e.TWn.mVn, e.TWn.CWn);
+        (t = t?.GetComponent(63))?.ReceiveOnHit(o, a, e.TWn.SWn ?? false, e.TWn.yWn ?? false, e.TWn.gWn ?? false, e.TWn.fWn ?? false, e.TWn.pWn ?? false, e.TWn.vWn ?? false, s, e.TWn.mVn, e.TWn.CWn);
         t?.BroadcastRemoteEvent(a, e.TWn);
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("World", 14, `[ControllerHolder.CreatureController.HitNotify] 子弹数据不存在;${i}。`);
@@ -316,7 +316,7 @@ let BaseHitComponent = class BaseHitComponent extends EntityComponent_1.EntityCo
     var i = EntitySystem_1.EntitySystem.Get(t.BulletEntityId).GetBulletInfo();
     var o = Number(i.BulletInitParams.SkillId);
     var s = i.BulletInitParams.SkillContextId;
-    var r = e?.GetComponent(39);
+    var r = e?.GetComponent(40);
     var s = {
       Attacker: e,
       Target: this.Entity,
@@ -341,7 +341,7 @@ let BaseHitComponent = class BaseHitComponent extends EntityComponent_1.EntityCo
     var o;
     if (t && e && t) {
       i = MathUtils_1.MathUtils.LongToNumber(e.r5n);
-      o = t.GetComponent(39);
+      o = t.GetComponent(40);
       e = {
         Attacker: t,
         Target: this.Entity,
@@ -363,5 +363,5 @@ let BaseHitComponent = class BaseHitComponent extends EntityComponent_1.EntityCo
 };
 __decorate([CombatMessage_1.CombatNet.Preprocess("TFn")], BaseHitComponent, "PreHitNotify", null);
 __decorate([CombatMessage_1.CombatNet.Listen("TFn", true)], BaseHitComponent, "HitNotify", null);
-BaseHitComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(60)], BaseHitComponent);
+BaseHitComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(63)], BaseHitComponent);
 exports.BaseHitComponent = BaseHitComponent; //# sourceMappingURL=BaseHitComponent.js.map

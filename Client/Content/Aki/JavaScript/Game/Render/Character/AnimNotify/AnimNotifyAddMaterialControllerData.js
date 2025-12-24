@@ -49,7 +49,7 @@ class AnimNotifyAddMaterialControllerData extends UE.KuroAnimNotify {
             r.CharRenderingComponent.Init(r.RenderType);
           }
           if ((i = (o = r.CharRenderingComponent.AddMaterialControllerDataWithAnimObject(this.MaterialAssetData, e, undefined)) >= 0) && this.RemoveWhenRevive) {
-            EntitySystem_1.EntitySystem.GetComponent(r.EntityId, 195)?.AddMaterialHandle(o);
+            EntitySystem_1.EntitySystem.GetComponent(r.EntityId, 201)?.AddMaterialHandle(o);
           }
           return i;
         }

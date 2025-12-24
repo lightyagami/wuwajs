@@ -67,6 +67,8 @@ class QuestTreeNodeData {
       return 4;
     } else if (this.IsDummy) {
       return 1;
+    } else if (this.QuestIdList.length === 0 || this.PreQuestNodes.some(e => e.State !== 4)) {
+      return 0;
     } else {
       e = ConfigManager_1.ConfigManager.QuestTreeConfig.GetMoonChasingQuestId();
       if (this.Config.QuestArray.includes(e)) {
@@ -75,8 +77,6 @@ class QuestTreeNodeData {
         } else {
           return 0;
         }
-      } else if (this.QuestIdList.length === 0 || this.PreQuestNodes.some(e => e.State !== 4)) {
-        return 0;
       } else if (this.QuestIdList.every(e => ModelManager_1.ModelManager.QuestNewModel.GetQuestState(e) === 0 || !ModelManager_1.ModelManager.QuestNewModel.GetQuestConfig(e))) {
         return 1;
       } else if (this.QuestIdList.every(e => ModelManager_1.ModelManager.QuestNewModel.GetQuestState(e) === 3 || !ModelManager_1.ModelManager.QuestNewModel.GetQuestConfig(e))) {
@@ -330,14 +330,14 @@ class QuestTreeNodeData {
       e.push(t);
     } else if (this.State === 1) {
       for (const s of this.QuestConfig?.ProvideType?.Conditions ?? []) {
-        var r = QuestTreeNodeUnlockConditionUtils_1.QuestTreeNodeUnlockConditionFactory.Instance.Create(s);
+        var r = QuestTreeNodeUnlockConditionUtils_1.QuestTreeNodeUnlockConditionFactory.Instance.Create(s, this.QuestId);
         var r = {
           Type: 1,
-          TextKey: r.DefaultText,
-          TextParam: r.DefaultTextParam,
+          TextKey: r.Text,
+          TextParam: r.TextParam,
           IsFinished: r.IsFinished,
-          HelpId: r.DefaultHelp,
-          OnGoto: r.HasGoto ? r.DefaultGoto : undefined
+          HelpId: r.HasGoto ? 0 : r.HelpId,
+          OnGoto: r.HasGoto ? r.Goto : undefined
         };
         e.push(r);
       }

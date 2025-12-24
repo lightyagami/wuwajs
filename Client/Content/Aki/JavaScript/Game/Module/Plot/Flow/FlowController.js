@@ -186,6 +186,9 @@ class FlowController extends ControllerWithAssistantBase_1.ControllerWithAssista
   static StartFlowForView(t, i, e, s, r = true) {
     return this.cYt(3).StartFlow(t, i, e, undefined, undefined, false, false, s, r);
   }
+  static StartFlowForCallback(t, i, e, s, r, o, n, a, c, l) {
+    return this.cYt(3).StartFlow(t, i, e, r, o, n, a, undefined, undefined, c, l, s);
+  }
   static StartPlotNetworkPending() {
     this.cYt(3).StartPlotNetworkPending();
   }

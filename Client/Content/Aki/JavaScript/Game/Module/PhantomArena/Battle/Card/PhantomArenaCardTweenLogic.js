@@ -4,58 +4,9 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.PhantomArenaCardTweenLogic = undefined;
-const puerts_1 = require("puerts");
-const UE = require("ue");
 const Vector_1 = require("../../../../../Core/Utils/Math/Vector");
-const GlobalData_1 = require("../../../../GlobalData");
+const LguiFloatTween_1 = require("../../../Util/Lgui/LguiFloatTween");
 const PhantomArenaDefine_1 = require("../PhantomArenaDefine");
-class LguiFloatTween {
-  constructor() {
-    this.Delegate = undefined;
-    this.IsFinished = false;
-    this.Tweener = undefined;
-    this.UpdateTween = undefined;
-    this.StartTween = undefined;
-    this.CompleteTween = undefined;
-    this.OAn = t => {
-      this.UpdateTween?.(t);
-    };
-    this.Tiu = () => {
-      this.StartTween?.();
-    };
-    this.biu = () => {
-      this.IsFinished = true;
-      this.KillTween();
-      this.CompleteTween?.();
-    };
-    this.Delegate = (0, puerts_1.toManualReleaseDelegate)(this.OAn);
-  }
-  PlayTween(t, i, s, h) {
-    this.IsFinished = false;
-    this.KillTween();
-    this.Tweener = UE.LTweenBPLibrary.FloatTo(GlobalData_1.GlobalData.World, this.Delegate, t, i, s);
-    if (this.Tweener) {
-      if (h) {
-        this.Tweener.SetEase(28);
-        this.Tweener.SetCurveFloat(h);
-      }
-      this.Tweener.OnStartCallBack.Bind(this.Tiu);
-      this.Tweener.OnCompleteCallBack.Bind(this.biu);
-    }
-  }
-  KillTween() {
-    if (this.Tweener) {
-      this.Tweener.Kill();
-      this.Tweener.OnStartCallBack.Unbind();
-      this.Tweener.OnCompleteCallBack.Unbind();
-      this.Tweener = undefined;
-    }
-  }
-  Destroy() {
-    this.KillTween();
-    (0, puerts_1.releaseManualReleaseDelegate)(this.OAn);
-  }
-}
 class PhantomArenaCardTweenLogic {
   constructor() {
     this.eVi = undefined;
@@ -67,26 +18,26 @@ class PhantomArenaCardTweenLogic {
     this.kAn = undefined;
   }
   wiu() {
-    this.LocationXTween = new LguiFloatTween();
-    this.LocationXTween.UpdateTween = t => {
+    this.LocationXTween = new LguiFloatTween_1.LguiFloatTween();
+    this.LocationXTween.BindUpdateTween(t => {
       this.CardWorldPos.X = t;
       this.eVi.SetUIWorldLocation(this.CardWorldPos.ToUeVectorOld());
-    };
-    this.LocationXTween.CompleteTween = () => {
+    });
+    this.LocationXTween.BindCompleteTween(() => {
       this.CardWorldPos.X = this.ToPos.X;
       this.eVi.SetUIWorldLocation(this.CardWorldPos.ToUeVectorOld());
       this.bwu();
-    };
-    this.LocationYTween = new LguiFloatTween();
-    this.LocationYTween.UpdateTween = t => {
+    });
+    this.LocationYTween = new LguiFloatTween_1.LguiFloatTween();
+    this.LocationYTween.BindUpdateTween(t => {
       this.CardWorldPos.Z = t;
       this.eVi.SetUIWorldLocation(this.CardWorldPos.ToUeVectorOld());
-    };
-    this.LocationYTween.CompleteTween = () => {
+    });
+    this.LocationYTween.BindCompleteTween(() => {
       this.CardWorldPos.Z = this.ToPos.Z;
       this.eVi.SetUIWorldLocation(this.CardWorldPos.ToUeVectorOld());
       this.bwu();
-    };
+    });
   }
   bwu() {
     if (this.LocationXTween.IsFinished && this.LocationYTween.IsFinished) {
@@ -106,7 +57,7 @@ class PhantomArenaCardTweenLogic {
     this.ToPos.DeepCopy(i.D_K2_GetComponentLocation());
     this.CardWorldPos.DeepCopy(this.FromPos);
     this.eVi.SetUIWorldLocation(this.CardWorldPos.ToUeVectorOld());
-    this.LocationXTween.StartTween = s?.StartCallback;
+    this.LocationXTween.BindStartTween(s?.StartCallback);
     this.kAn = s?.CompleteCallback;
     t = s?.DurationTime ?? PhantomArenaDefine_1.PLAY_TWEEN_DURATION;
     this.LocationXTween.PlayTween(this.FromPos.X, this.ToPos.X, t, s?.LocationCurveX);

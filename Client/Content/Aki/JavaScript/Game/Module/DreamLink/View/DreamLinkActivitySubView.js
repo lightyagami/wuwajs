@@ -5,7 +5,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.DreamLinkActivitySubView = undefined;
 const UE = require("ue");
-const UiManager_1 = require("../../../Ui/UiManager");
+const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../../Manager/ModelManager");
 const ActivitySubViewBase_1 = require("../../Activity/View/SubView/ActivitySubViewBase");
 const ActivitySubViewGeneralInfo_1 = require("../../Activity/View/SubView/ActivitySubViewGeneralInfo");
 const DreamLinkScoreRewardItem_1 = require("./DreamLinkScoreRewardItem");
@@ -18,32 +19,23 @@ class DreamLinkActivitySubView extends ActivitySubViewBase_1.ActivitySubViewBase
     this.Atl = undefined;
     this.qsi = undefined;
     this.eje = () => {
-      var i;
-      if (this.ActivityBaseData.IsDreamLinkFunctionUnlock(0)) {
-        if (this.ActivityBaseData.GetActivityConfig()) {
-          UiManager_1.UiManager.OpenView("DreamLinkMainView", 1);
-        }
-      } else {
-        i = this.ActivityBaseData.GetUnFinishPreGuideQuestId();
-        this.ActivityBaseData.SaveQuestRedDotState();
-        UiManager_1.UiManager.OpenView("QuestView", i);
-      }
+      ControllerHolder_1.ControllerHolder.ActivityController.OpenActivityContentView(this.ActivityBaseData);
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem]];
   }
   async OnBeforeStartAsync() {
-    var i = [];
+    var e = [];
     this.GeneralActivityInfo = new ActivitySubViewGeneralInfo_1.ActivitySubViewGeneralInfo();
     this.GeneralActivityInfo.SetData(this.ActivityBaseData);
     this.GeneralActivityInfo.SetClickFunc(this.eje);
-    i.push(this.GeneralActivityInfo.CreateThenShowByActorAsync(this.GetItem(0).GetOwner()));
+    e.push(this.GeneralActivityInfo.CreateThenShowByActorAsync(this.GetItem(0).GetOwner()));
     this.qsi = new DreamLinkScoreRewardItem_1.DreamLinkScoreRewardItem(this.ActivityBaseData);
-    i.push(this.qsi.CreateByActorAsync(this.GetItem(2).GetOwner()));
+    e.push(this.qsi.CreateByActorAsync(this.GetItem(2).GetOwner()));
     this.Atl = new DreamLinkLimitTimeRewardItem_1.DreamLinkLimitTimeRewardItem(this.ActivityBaseData);
-    i.push(this.Atl.CreateByActorAsync(this.GetItem(1).GetOwner()));
-    await Promise.all(i);
+    e.push(this.Atl.CreateByActorAsync(this.GetItem(1).GetOwner()));
+    await Promise.all(e);
   }
   async OnBeforeHideSelfAsync() {
     this.qsi.SetActive(false);
@@ -59,14 +51,24 @@ class DreamLinkActivitySubView extends ActivitySubViewBase_1.ActivitySubViewBase
     }
   }
   Rtl() {
-    var i = this.ActivityBaseData.GetInstStage() === 0;
-    this.GetItem(3).SetUIActive(i);
-    this.GetItem(4).SetUIActive(!i);
+    var e = this.ActivityBaseData.GetInstStage() === 0;
+    this.GetItem(3).SetUIActive(e);
+    this.GetItem(4).SetUIActive(!e);
   }
   ZGe() {
+    var e;
+    var i;
     if (this.ActivityBaseData.IsDreamLinkFunctionUnlock(0)) {
-      this.GeneralActivityInfo.SetFunctionRedDotVisible(this.ActivityBaseData.RedPointShowState);
-      this.GeneralActivityInfo?.SetBtnText("FragmentMemoryEnterText");
+      if (e = ModelManager_1.ModelManager.SubPackageDownLoadModel.CheckActivityTeleportHaveSubPackage(this.ActivityBaseData.Id)) {
+        this.GeneralActivityInfo.SetFunctionRedDotVisible(this.ActivityBaseData.RedPointShowState);
+        this.GeneralActivityInfo?.SetBtnText("FragmentMemoryEnterText");
+      } else {
+        (i = this.GeneralActivityInfo.GetFunctional()).SetPerformanceSubPackageLock(this.ActivityBaseData.LocalConfig.AreaTips, this.ActivityBaseData.LocalConfig.AreaList);
+        i.SetLockTextByTextId("SubPackageDownLoad_ActivityLock_Des");
+        i.SetPanelConditionVisible(!e);
+        i.FunctionButton.SetUiActive(e);
+        i.PanelActivate.SetUiActive(e);
+      }
     } else {
       this.GeneralActivityInfo.SetFunctionRedDotVisible(this.ActivityBaseData.GetQuestRedDotState());
       this.GeneralActivityInfo?.SetBtnText("PrefabTextItem_2152138235_Text");

@@ -58,10 +58,10 @@ class ObtainedRoleDevRoleDetailItemData {
     for (let e = a + 1; e <= r; e++) {
       i += ModelManager_1.ModelManager.RoleModel.GetRoleLevelUpExp(t, e);
     }
-    a = this.Qrm(t);
+    a = this.mhm(t);
     return i = i + a - e;
   }
-  Qrm(e) {
+  mhm(e) {
     var t = this.h9d(e).GetLevelData().GetBreachLevel();
     var e = RoleDevUtils_1.RoleDevUtils.GetCultivateProject(e).RoleBreachLevel - t;
     if (e <= 0) {

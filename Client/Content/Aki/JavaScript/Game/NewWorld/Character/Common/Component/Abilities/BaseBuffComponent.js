@@ -75,6 +75,9 @@ let BaseBuffComponent = BaseBuffComponent_1 = class BaseBuffComponent extends En
     this.Buff2CueMap = new Map();
     this.SeamlessTravelBuffCue = undefined;
   }
+  get CreatureDataId() {
+    return this.CreatureDataComponent.GetCreatureDataId();
+  }
   GetDebugName() {
     return "";
   }
@@ -339,7 +342,7 @@ let BaseBuffComponent = BaseBuffComponent_1 = class BaseBuffComponent extends En
     if (s) {
       for (const [d, e] of [...s]) {
         for (const _ of [...e]) {
-          var a = ModelManager_1.ModelManager.CreatureModel.GetEntity(d)?.Entity?.GetComponent(213);
+          var a = ModelManager_1.ModelManager.CreatureModel.GetEntity(d)?.Entity?.GetComponent(220);
           var n = a?.GetBuffByHandle(_);
           if (a && n && a.CheckRemove(n.Config, n.GetInstigator())) {
             a.RemoveBuffInner(_, -1, true, `因为施加者的tag ${f}的变化触发`);
@@ -349,7 +352,7 @@ let BaseBuffComponent = BaseBuffComponent_1 = class BaseBuffComponent extends En
       for (const [C, e] of [...s]) {
         for (const v of [...e]) {
           var u;
-          var h = ModelManager_1.ModelManager.CreatureModel.GetEntity(C)?.Entity?.GetComponent(213);
+          var h = ModelManager_1.ModelManager.CreatureModel.GetEntity(C)?.Entity?.GetComponent(220);
           var c = h?.GetBuffByHandle(v);
           if (h && c) {
             if ((u = h.CheckActivate(c.Config, c.GetInstigator())) !== c.IsActive()) {
@@ -393,7 +396,7 @@ let BaseBuffComponent = BaseBuffComponent_1 = class BaseBuffComponent extends En
       this.BuffLock++;
       for (const [l, e] of [...r]) {
         for (const d of [...e]) {
-          var s = ModelManager_1.ModelManager.CreatureModel.GetEntity(l)?.Entity?.GetComponent(213);
+          var s = ModelManager_1.ModelManager.CreatureModel.GetEntity(l)?.Entity?.GetComponent(220);
           var a = s?.GetBuffByHandle(d);
           if (s && a && s.CheckRemove(a.Config, a.GetInstigator())) {
             s.RemoveBuffInner(d, -1, true, `因为施加者的buff ${t}的变化触发`);
@@ -403,7 +406,7 @@ let BaseBuffComponent = BaseBuffComponent_1 = class BaseBuffComponent extends En
       for (const [_, e] of [...r]) {
         for (const C of [...e]) {
           var n;
-          var u = ModelManager_1.ModelManager.CreatureModel.GetEntity(_)?.Entity?.GetComponent(213);
+          var u = ModelManager_1.ModelManager.CreatureModel.GetEntity(_)?.Entity?.GetComponent(220);
           var h = u?.GetBuffByHandle(C);
           if (u && h) {
             if ((n = u.CheckActivate(h.Config, h.GetInstigator())) !== h.IsActive()) {
@@ -460,7 +463,7 @@ let BaseBuffComponent = BaseBuffComponent_1 = class BaseBuffComponent extends En
       }
       const i = this.GetTagComponent();
       f = ModelManager_1.ModelManager.CreatureModel.GetEntity(e)?.Entity;
-      const o = f?.GetComponent(209);
+      const o = f?.GetComponent(215);
       if (t.Probability < CharacterAttributeTypes_1.PER_TEN_THOUSAND && RandomSystem_1.default.GetRandomPercent() > t.Probability) {
         return false;
       }
@@ -512,8 +515,8 @@ let BaseBuffComponent = BaseBuffComponent_1 = class BaseBuffComponent extends En
   }
   CheckRemoveAction(t, e) {
     if (t.BuffAction) {
-      const f = e?.GetComponent(209);
-      const i = e?.GetComponent(213);
+      const f = e?.GetComponent(215);
+      const i = e?.GetComponent(220);
       const o = this.GetTagComponent();
       for (const r of t.BuffAction) {
         switch (r.Type) {
@@ -603,8 +606,8 @@ let BaseBuffComponent = BaseBuffComponent_1 = class BaseBuffComponent extends En
   }
   CheckInactivateAction(t, e) {
     if (t.BuffAction) {
-      const f = e?.GetComponent(209);
-      const i = e?.GetComponent(213);
+      const f = e?.GetComponent(215);
+      const i = e?.GetComponent(220);
       const o = this.GetTagComponent();
       for (const r of t.BuffAction) {
         switch (r.Type) {
@@ -761,7 +764,7 @@ let BaseBuffComponent = BaseBuffComponent_1 = class BaseBuffComponent extends En
     CombatLog_1.CombatLog.Error("Buff", this.Entity, "CreateANCWithSkill Error", ["ANIndex", e], ["montageInfo", t]);
   }
   CreateAnimNotifyContent(t, e) {
-    var f = this.Entity.GetComponent(25)?.GetMontageInfo(t);
+    var f = this.Entity.GetComponent(24)?.GetMontageInfo(t);
     if (f) {
       if (this.GetSkillComponent()?.GetSkill(f.SkillId ?? 0)) {
         return this.CreateAnimNotifyContentWithSkill(f, e);
@@ -789,7 +792,7 @@ let BaseBuffComponent = BaseBuffComponent_1 = class BaseBuffComponent extends En
     } else {
       f = ModelManager_1.ModelManager.GameModeModel.InstanceDungeon.CustomTypes.includes(5);
       if (e.PreMessageId || (0, CharacterBuffIds_1.checkBuffInSpecialList)(t) || f) {
-        e.Level = e.Level ?? ModelManager_1.ModelManager.CreatureModel.GetEntity(e.InstigatorId)?.Entity?.GetComponent(213).GetBuffLevel(t);
+        e.Level = e.Level ?? ModelManager_1.ModelManager.CreatureModel.GetEntity(e.InstigatorId)?.Entity?.GetComponent(220).GetBuffLevel(t);
         if (this.HasBuffAuthority()) {
           this.AddBuffLocal(t, e);
         } else if (this.NeedAddBuffOrder(t)) {
@@ -819,7 +822,7 @@ let BaseBuffComponent = BaseBuffComponent_1 = class BaseBuffComponent extends En
     var _;
     if (this.HasBuffAuthority()) {
       if (d = CharacterBuffController_1.default.GetBuffDefinition(t)) {
-        _ = ModelManager_1.ModelManager.CreatureModel.GetEntity(e)?.Entity?.GetComponent(213);
+        _ = ModelManager_1.ModelManager.CreatureModel.GetEntity(e)?.Entity?.GetComponent(220);
         f = f ?? _?.GetBuffLevel(t) ?? ActiveBuffConfigs_1.DEFAULT_BUFF_LEVEL;
         return this.AddBuffInner(t, d, e, f, i, o, r, s, a, undefined, n, c, false, u, h, undefined, B, l);
       } else {
@@ -851,20 +854,24 @@ let BaseBuffComponent = BaseBuffComponent_1 = class BaseBuffComponent extends En
       f.SetRemainDuration(u);
     }
   }
-  AddIterativeBuff(t, e, f, i, o, r) {
-    if (e) {
-      this.AddBuff(t, {
-        InstigatorId: e.InstigatorId ?? ActiveBuffConfigs_1.NULL_INSTIGATOR_ID,
-        Level: e.Level,
-        PreMessageId: e.MessageId,
-        ServerId: e.ServerId,
-        OuterStackCount: f,
-        IsIterable: i,
-        Reason: o,
-        BulletMessageId: r
+  AddIterativeBuff(e, f, i, o, r, s, a) {
+    if (f) {
+      let t = f.InstigatorId ?? ActiveBuffConfigs_1.NULL_INSTIGATOR_ID;
+      if (a) {
+        t = a?.CreatureDataId;
+      }
+      this.AddBuff(e, {
+        InstigatorId: t,
+        Level: f.Level,
+        PreMessageId: f.MessageId,
+        ServerId: f.ServerId,
+        OuterStackCount: i,
+        IsIterable: o,
+        Reason: r,
+        BulletMessageId: s
       });
     } else {
-      CombatLog_1.CombatLog.Error("Buff", this.Entity, "尝试添加迭代buff失败，未找到前置buff", ["buffId", t], ["持有者", this.GetDebugName()], ["原因", o]);
+      CombatLog_1.CombatLog.Error("Buff", this.Entity, "尝试添加迭代buff失败，未找到前置buff", ["buffId", e], ["持有者", this.GetDebugName()], ["原因", r]);
     }
   }
   static GetBuffStat(t) {
@@ -1340,7 +1347,7 @@ let BaseBuffComponent = BaseBuffComponent_1 = class BaseBuffComponent extends En
         t.Id;
         this.BuffEffectManager.OnStackIncreased(t, f, e, i);
         if (this.HasBuffAuthority()) {
-          l = d.StackLimitCount > 0 ? d.StackLimitCount : Infinity;
+          l = t.StackLimitCount > 0 ? t.StackLimitCount : Infinity;
           if (l <= e && l <= f) {
             s = d.OverflowEffects;
             if (s && s.length > 0) {
@@ -1441,7 +1448,7 @@ let BaseBuffComponent = BaseBuffComponent_1 = class BaseBuffComponent extends En
     var i = e.uVn;
     var o = MathUtils_1.MathUtils.LongToNumber(e.s5n);
     var r = MathUtils_1.MathUtils.LongToNumber(e.Rjn);
-    var t = t?.GetComponent(213);
+    var t = t?.GetComponent(220);
     var s = MathUtils_1.MathUtils.LongToBigInt(f?.X8n ?? -1);
     var f = MathUtils_1.MathUtils.LongToBigInt(f?.$8n ?? -1);
     if (t?.Valid) {
@@ -1483,7 +1490,7 @@ let BaseBuffComponent = BaseBuffComponent_1 = class BaseBuffComponent extends En
     var i;
     var o = e.cVn;
     var r = e.Gjn;
-    var s = t?.GetComponent(213);
+    var s = t?.GetComponent(220);
     var a = s?.GetBuffByHandle(o);
     if (s && a && (a.StackCount > r ? s.OnBuffStackDecreased(a, a.StackCount, r, true, "远端Buff层数变化通知", e.WL1 ? 1 : 0) : a.StackCount <= r && (f = MathUtils_1.MathUtils.LongToNumber(e.Rjn ?? 0), i = undefined, (i = ModelManager_1.ModelManager.CreatureModel.GetEntity(f)?.Entity) && SceneTeamController_1.SceneTeamController.EmitAbilityEvent(i, 1, a.Id, a.Id, s.Entity, i), SceneTeamController_1.SceneTeamController.EmitAbilityEvent(t, 3, a.Id, a.Id, o), s.OnBuffStackIncreased(a, a.StackCount, r, a.InstigatorId ?? ActiveBuffConfigs_1.NULL_INSTIGATOR_ID, a.Level, undefined, Protocol_1.Aki.Protocol.uFs.Proto_Common, undefined, undefined, a.ServerId, false, false, "远端Buff层数变化通知", e.$L1 ? 1 : 0, e.WL1 ? 1 : 0)), (f = e.n5n) !== undefined && a.SetDuration(f), (i = e.QEs) !== undefined)) {
       a.SetRemainDuration(i);
@@ -1491,7 +1498,7 @@ let BaseBuffComponent = BaseBuffComponent_1 = class BaseBuffComponent extends En
   }
   static BroadcastRemoveBuffNotify(t, e) {
     var f = e.uVn;
-    var i = t?.GetComponent(213);
+    var i = t?.GetComponent(220);
     if (i?.Valid) {
       i?.RemoveBuffInner(f, -1, true, "远端通知移除buff");
     } else {
@@ -1500,14 +1507,14 @@ let BaseBuffComponent = BaseBuffComponent_1 = class BaseBuffComponent extends En
   }
   static BuffDurationNotify(t, e) {
     var f = e.cVn;
-    var t = t?.GetComponent(213);
+    var t = t?.GetComponent(220);
     var f = t?.GetBuffByHandle(f);
     if (t && f && (t = e.n5n, e = e.QEs, t !== undefined && f.SetDuration(t), e !== undefined)) {
       f.SetRemainDuration(e);
     }
   }
   static OrderAddBuffS2cNotify(t, e, f) {
-    var i = t?.GetComponent(213);
+    var i = t?.GetComponent(220);
     var o = MathUtils_1.MathUtils.LongToNumber(e.s5n);
     var r = MathUtils_1.MathUtils.LongToNumber(e.Rjn);
     var f = MathUtils_1.MathUtils.LongToBigInt(f?.$8n ?? -1);
@@ -1531,7 +1538,7 @@ let BaseBuffComponent = BaseBuffComponent_1 = class BaseBuffComponent extends En
     CombatMessage_1.CombatNet.Send(NetDefine_1.ECombatPushDataMessage.G4n, t, a, f, undefined, true);
   }
   static OrderRemoveBuffS2cNotify(t, e, f) {
-    var i = t?.GetComponent(213);
+    var i = t?.GetComponent(220);
     var f = MathUtils_1.MathUtils.LongToBigInt(f?.$8n ?? -1);
     i?.RemoveBuffByHandle(e.uVn, e.Bjn, "远端请求移除buff(s2c)", f, true);
     var i = new Protocol_1.Aki.Protocol.O4n();
@@ -1539,7 +1546,7 @@ let BaseBuffComponent = BaseBuffComponent_1 = class BaseBuffComponent extends En
     CombatMessage_1.CombatNet.Send(NetDefine_1.ECombatPushDataMessage.O4n, t, i, f, undefined, true);
   }
   static OrderRemoveBuffByIdS2cNotify(t, e, f) {
-    var i = t?.GetComponent(213);
+    var i = t?.GetComponent(220);
     var o = MathUtils_1.MathUtils.LongToNumber(e.b6n);
     var f = MathUtils_1.MathUtils.LongToBigInt(f?.$8n ?? -1);
     var r = new Protocol_1.Aki.Protocol.N4n();
@@ -1556,7 +1563,7 @@ let BaseBuffComponent = BaseBuffComponent_1 = class BaseBuffComponent extends En
     var i;
     var o;
     var r;
-    var s = t?.GetComponent(213);
+    var s = t?.GetComponent(220);
     if (s && s.HasBuffAuthority()) {
       i = e.wjn;
       o = e.x9n;
@@ -1569,7 +1576,7 @@ let BaseBuffComponent = BaseBuffComponent_1 = class BaseBuffComponent extends En
   }
   static OrderAddBuffNotify(t, e, f) {
     var i;
-    var o = t?.CheckGetComponent(213);
+    var o = t?.CheckGetComponent(220);
     if (o) {
       if (o) {
         i = MathUtils_1.MathUtils.LongToNumber(e.s5n);
@@ -1591,7 +1598,7 @@ let BaseBuffComponent = BaseBuffComponent_1 = class BaseBuffComponent extends En
     }
   }
   static OrderRemoveBuffNotify(t, e) {
-    var f = t?.GetComponent(213);
+    var f = t?.GetComponent(220);
     var i = MathUtils_1.MathUtils.LongToNumber(e.s5n);
     if (f) {
       f.RemoveBuffLocal(i, e.Bjn, "服务端或其它客户端请求本端移除buff");
@@ -1601,7 +1608,7 @@ let BaseBuffComponent = BaseBuffComponent_1 = class BaseBuffComponent extends En
     }
   }
   static OrderRemoveBuffByTagsNotify(t, e) {
-    var f = t?.GetComponent(213);
+    var f = t?.GetComponent(220);
     if (f) {
       for (const o of e.bjn) {
         var i = GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(o);
@@ -1612,7 +1619,7 @@ let BaseBuffComponent = BaseBuffComponent_1 = class BaseBuffComponent extends En
     }
   }
   static BroadcastActivateBuffNotify(t, e) {
-    var f = t?.GetComponent(213);
+    var f = t?.GetComponent(220);
     var i = e.uVn;
     var o = e.qjn;
     var r = f?.GetBuffByHandle(i);
@@ -1729,7 +1736,8 @@ let BaseBuffComponent = BaseBuffComponent_1 = class BaseBuffComponent extends En
         f += i;
       }
     }
-    return Math.max(1, e.Config.StackLimitCount + f);
+    e.StackLimitCount = Math.max(1, e.Config.StackLimitCount + f);
+    return e.StackLimitCount;
   }
   RefreshBuffStack(t) {
     var e;
@@ -1745,11 +1753,17 @@ let BaseBuffComponent = BaseBuffComponent_1 = class BaseBuffComponent extends En
     t = CharacterBuffController_1.default.GetBuffDefinition(t);
     return !!t && t.StackLimitCount > 0;
   }
+  static BroadcastTransformBuffStackNotify(t, e) {
+    var t = t?.GetComponent(220);
+    var f = MathUtils_1.MathUtils.LongToNumber(e.b6n);
+    var i = MathUtils_1.MathUtils.LongToNumber(e.ITs);
+    t?.AddBuffStackModifier(f, i, e.YFf);
+  }
   ChangeBuffStack(t, e, f, i, o) {
     if (this.HasBuffAuthority()) {
       for (const a of this.GetAllBuffById(t)) {
         var r = a.StackCount;
-        var s = this.CalculateBuffStackMax(t);
+        var s = a.StackLimitCount;
         var s = Math.min(r + i, s);
         if (s <= 0) {
           this.RemoveBuffInner(a.Handle, -1, true, o);
@@ -1872,10 +1886,11 @@ __decorate([CombatMessage_1.CombatNet.Listen("W7l", false)], BaseBuffComponent, 
 __decorate([CombatMessage_1.CombatNet.Listen("d3n", false)], BaseBuffComponent, "OrderAddBuffS2cNotify", null);
 __decorate([CombatMessage_1.CombatNet.Listen("C3n", false)], BaseBuffComponent, "OrderRemoveBuffS2cNotify", null);
 __decorate([CombatMessage_1.CombatNet.Listen("M3n", false)], BaseBuffComponent, "OrderRemoveBuffByIdS2cNotify", null);
-__decorate([CombatMessage_1.CombatNet.Listen("Edm", false)], BaseBuffComponent, "OrderRemoveBuffByServerIdNotify", null);
+__decorate([CombatMessage_1.CombatNet.Listen("rpm", false)], BaseBuffComponent, "OrderRemoveBuffByServerIdNotify", null);
 __decorate([CombatMessage_1.CombatNet.Listen("HFn", false)], BaseBuffComponent, "OrderAddBuffNotify", null);
 __decorate([CombatMessage_1.CombatNet.Listen("jFn", false)], BaseBuffComponent, "OrderRemoveBuffNotify", null);
 __decorate([CombatMessage_1.CombatNet.Listen("KFn", false)], BaseBuffComponent, "OrderRemoveBuffByTagsNotify", null);
 __decorate([CombatMessage_1.CombatNet.Listen("WFn", false)], BaseBuffComponent, "BroadcastActivateBuffNotify", null);
-BaseBuffComponent = BaseBuffComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(213)], BaseBuffComponent);
+__decorate([CombatMessage_1.CombatNet.Listen("XFf", false)], BaseBuffComponent, "BroadcastTransformBuffStackNotify", null);
+BaseBuffComponent = BaseBuffComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(220)], BaseBuffComponent);
 exports.BaseBuffComponent = BaseBuffComponent; //# sourceMappingURL=BaseBuffComponent.js.map

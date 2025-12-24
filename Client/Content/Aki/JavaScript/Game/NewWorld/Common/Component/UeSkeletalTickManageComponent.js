@@ -274,7 +274,7 @@ let UeSkeletalTickManageComponent = class UeSkeletalTickManageComponent extends 
   }
   OnActivate() {
     this.Hte = this.Entity.GetComponent(1);
-    this.I5r = this.Entity.GetComponent(104);
+    this.I5r = this.Entity.GetComponent(109);
     var e = this.Hte.Owner.K2_GetComponentsByClass(UE.SkeletalMeshComponent.StaticClass());
     var i = e.Num();
     for (let t = 0; t < i; ++t) {
@@ -302,7 +302,7 @@ let UeSkeletalTickManageComponent = class UeSkeletalTickManageComponent extends 
     } else {
       this.Psn();
     }
-    var t = this.Entity.GetComponent(181);
+    var t = this.Entity.GetComponent(186);
     if (!this.Active && t) {
       TickProcessSystem_1.TickProcessSystem.RegisterOnceTickProcess(5, true, t.EndAnimNotifyStates);
     }
@@ -318,7 +318,7 @@ let UeSkeletalTickManageComponent = class UeSkeletalTickManageComponent extends 
     return true;
   }
   OnTick(t) {
-    t = t * MathUtils_1.MathUtils.MillisecondToSecond * (this.Entity.GetComponent(126)?.CurrentTimeScale ?? 1);
+    t = t * MathUtils_1.MathUtils.MillisecondToSecond * (this.Entity.GetComponent(131)?.CurrentTimeScale ?? 1);
     if (this.Entity.GetTickInterval() > 1 && this.ForceDisableAnimDelaySet.size === 0) {
       this.mYs?.SetDelayAnimTime(Math.min(MAX_TIME_DELAY_ANIM, t), Math.min(MAX_COLLECT_PERIOD_DELAY_ANIM, t / 2));
     } else if (this.I5r?.IsInFighting) {
@@ -351,7 +351,7 @@ let UeSkeletalTickManageComponent = class UeSkeletalTickManageComponent extends 
     if (this.TickType === 1 || this.TickType === 2) {
       this.Rsn?.Start();
       this.d3r = Time_1.Time.Frame;
-      var i = this.Entity.GetComponent(126)?.CurrentTimeScale;
+      var i = this.Entity.GetComponent(131)?.CurrentTimeScale;
       var s = t * this.TimeDilation * (i === undefined || this.Tsn && i === 0 ? 1 : i);
       this.mYs?.AddDeltaForDelayAnim(s);
       this.gtc.length = 0;
@@ -384,7 +384,7 @@ let UeSkeletalTickManageComponent = class UeSkeletalTickManageComponent extends 
   AfterProxyTick(t) {
     if (this.TickType === 1) {
       this.Rsn?.Start();
-      var e = this.Entity.GetComponent(126)?.CurrentTimeScale;
+      var e = this.Entity.GetComponent(131)?.CurrentTimeScale;
       var i = t * this.TimeDilation * (e === undefined || this.Tsn && e === 0 ? 1 : e);
       if (this.Tsn && (this.Tsn = false, this.d3r !== Time_1.Time.Frame)) {
         for (const s of this.SkeletalComps) {
@@ -470,5 +470,5 @@ let UeSkeletalTickManageComponent = class UeSkeletalTickManageComponent extends 
     this.mYs?.SetDelayAnimTime(0, 0);
   }
 };
-UeSkeletalTickManageComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(118)], UeSkeletalTickManageComponent);
+UeSkeletalTickManageComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(123)], UeSkeletalTickManageComponent);
 exports.UeSkeletalTickManageComponent = UeSkeletalTickManageComponent; //# sourceMappingURL=UeSkeletalTickManageComponent.js.map

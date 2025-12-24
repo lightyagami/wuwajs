@@ -19,7 +19,7 @@ const ModelManager_1 = require("../../../Manager/ModelManager");
 const ExploreProgressDefine_1 = require("../../ExploreProgress/ExploreProgressDefine");
 const ControllerAssistantBase_1 = require("../../GeneralLogicTree/ControllerAssistant/ControllerAssistantBase");
 const ScrollingTipsController_1 = require("../../ScrollingTips/ScrollingTipsController");
-const TeleportController_1 = require("../../Teleport/TeleportController");
+const TeleportMisc_1 = require("../../Teleport/TeleportMisc");
 const WorldMapController_1 = require("../../WorldMap/WorldMapController");
 const MapOperationQueue_1 = require("../Container/MapOperation/MapOperationQueue");
 const MapDefine_1 = require("../MapDefine");
@@ -37,7 +37,7 @@ class MarkAssistant extends ControllerAssistantBase_1.ControllerAssistantBase {
           ModelManager_1.ModelManager.MapModel.AddEntityIdToPendingList(r.Id, t.MapIcon);
           EventSystem_1.EventSystem.AddWithTargetUseHoldKey(this, r, EventDefine_1.EEventName.RemoveEntity, this.zpe);
         } else {
-          this.zWd(t?.Category.ExploratoryDegree, r);
+          this.tQd(t?.Category.ExploratoryDegree, r);
         }
       }
     };
@@ -47,8 +47,8 @@ class MarkAssistant extends ControllerAssistantBase_1.ControllerAssistantBase {
         EventSystem_1.EventSystem.RemoveWithTargetUseKey(this, r, EventDefine_1.EEventName.RemoveEntity, this.zpe);
       }
     };
-    this.JWd = (e, r) => {
-      EventSystem_1.EventSystem.RemoveWithTargetUseKey(this, r, EventDefine_1.EEventName.RemoveEntity, this.JWd);
+    this.iQd = (e, r) => {
+      EventSystem_1.EventSystem.RemoveWithTargetUseKey(this, r, EventDefine_1.EEventName.RemoveEntity, this.iQd);
       var o = ModelManager_1.ModelManager.MapModel.GetEntityIdToMarkType(r.PbDataId);
       ModelManager_1.ModelManager.MapModel.RemoveEntityIdToMarkType(r.PbDataId);
       if (o !== undefined && e !== Protocol_1.Aki.Protocol.Fks.Proto_RemoveTypeForce) {
@@ -81,13 +81,13 @@ class MarkAssistant extends ControllerAssistantBase_1.ControllerAssistantBase {
       for (const r of e.cbs) {
         switch (r.U7n) {
           case Protocol_1.Aki.Protocol.w5s.ENUMS.Proto_HonamiStory:
-            this.mMm(r);
+            this._xm(r);
             break;
           case Protocol_1.Aki.Protocol.w5s.ENUMS.Proto_HonamiStoryChild:
-            this.fMm(r, true, MarkDefine_1.HONAMI_SCAN_MARK_ITEM_ID, 2);
+            this.uxm(r, true, MarkDefine_1.HONAMI_SCAN_MARK_ITEM_ID, 2);
             break;
           default:
-            this.fMm(r);
+            this.uxm(r);
         }
       }
       for (const o of e.dbs) {
@@ -122,7 +122,7 @@ class MarkAssistant extends ControllerAssistantBase_1.ControllerAssistantBase {
       var o = e.Kb_;
       var a = ModelManager_1.ModelManager.MapModel.GetDynamicMark(r);
       if (a) {
-        a.ServerMarkState = e.Kb_ ? Protocol_1.Aki.Protocol.htm.Proto_MarkDisable : Protocol_1.Aki.Protocol.htm.Proto_MarkNormal;
+        a.ServerMarkState = e.Kb_ ? Protocol_1.Aki.Protocol.Tom.Proto_MarkDisable : Protocol_1.Aki.Protocol.Tom.Proto_MarkNormal;
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Map", 63, "[地图系统]->MarkAssistant动态标记状态更新失败，没找到标记", ["markId", r], ["isDisable", o]);
       }
@@ -266,13 +266,13 @@ class MarkAssistant extends ControllerAssistantBase_1.ControllerAssistantBase {
     EventSystem_1.EventSystem.RemoveAllTargetUseKey(this);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnUseMapExploreToolSuccess, this.rDi);
   }
-  zWd(e, r) {
+  tQd(e, r) {
     if (e !== undefined && (e = ExploreProgressDefine_1.exploratoryDegree2MarkType.get(e)) !== undefined) {
       ModelManager_1.ModelManager.MapModel.AddEntityIdToMarkType(r.PbDataId, e);
-      EventSystem_1.EventSystem.AddWithTargetUseHoldKey(this, r, EventDefine_1.EEventName.RemoveEntity, this.JWd);
+      EventSystem_1.EventSystem.AddWithTargetUseHoldKey(this, r, EventDefine_1.EEventName.RemoveEntity, this.iQd);
     }
   }
-  fMm(e, r = false, o, a) {
+  uxm(e, r = false, o, a) {
     var t = e.L7n === 0 ? Vector2D_1.Vector2D.Create(e.D7n, e.A7n) : Vector_1.Vector.Create(e.D7n, e.A7n, e.L7n);
     var o = o ?? e.v9n;
     var t = new MapDefine_1.DynamicMarkCreateInfo({
@@ -290,7 +290,7 @@ class MarkAssistant extends ControllerAssistantBase_1.ControllerAssistantBase {
     });
     ModelManager_1.ModelManager.MapModel.CreateServerSaveMark(t);
   }
-  mMm(e) {
+  _xm(e) {
     var r = ConfigManager_1.ConfigManager.MapConfig.GetMapMarkByEntityConfigId(e.A5n);
     if (r) {
       ModelManager_1.ModelManager.MapModel.UpdateHonamiScanMarkInfo(r.MarkId, e.Y4n);
@@ -366,7 +366,7 @@ class MarkAssistant extends ControllerAssistantBase_1.ControllerAssistantBase {
           }
           break;
         case 40:
-          if (e.Y4n === Protocol_1.Aki.Protocol.htm.Proto_MarkNormal) {
+          if (e.Y4n === Protocol_1.Aki.Protocol.Tom.Proto_MarkNormal) {
             ModelManager_1.ModelManager.HonamiStoryModel.ScanMarkItemIds.add(e.T7n);
           }
       }
@@ -500,26 +500,37 @@ class MarkAssistant extends ControllerAssistantBase_1.ControllerAssistantBase {
     };
     MapOperationQueue_1.MapOperationQueue.RunMapMark(e);
   }
-  RequestCreateCustomMark(e, r) {
-    var o;
+  RequestCreateCustomMark(e, r, o) {
+    var a;
     if (e) {
-      if (!(ModelManager_1.ModelManager.MapModel.GetMarkCountByType(9) >= ModelManager_1.ModelManager.WorldMapModel.CustomMarkSize)) {
-        o = e instanceof Vector_1.Vector ? e.Z : 0;
-        o = this.sDi(Vector_1.Vector.Create(e.X, e.Y, o), Protocol_1.Aki.Protocol.w5s.ENUMS.Proto_Custom, r, ModelManager_1.ModelManager.WorldMapModel.CurrentWorldMapConfigId);
-        if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("Map", 63, "[CustomMarkItem Debug]MarkAssistant.RequestCreateCustomMark->", ["trackPosition", e], ["configId", r], ["request", o]);
+      if (ModelManager_1.ModelManager.MapModel.GetMarkCountByType(9) >= ModelManager_1.ModelManager.WorldMapModel.CustomMarkSize) {
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("Map", 63, "向服务器请求创建标记时，自定义标记数量已达上限");
         }
-        Net_1.Net.Call(17561, o, e => {
+        o?.(false);
+      } else {
+        a = e instanceof Vector_1.Vector ? e.Z : 0;
+        a = this.sDi(Vector_1.Vector.Create(e.X, e.Y, a), Protocol_1.Aki.Protocol.w5s.ENUMS.Proto_Custom, r, ModelManager_1.ModelManager.WorldMapModel.CurrentWorldMapConfigId);
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("Map", 63, "[CustomMarkItem Debug]MarkAssistant.RequestCreateCustomMark->", ["trackPosition", e], ["configId", r], ["request", a]);
+        }
+        Net_1.Net.Call(17561, a, e => {
           if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
             ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24976);
-          }
-          if (Log_1.Log.CheckInfo()) {
-            Log_1.Log.Info("Map", 63, "[CustomMarkItem Debug]MarkAssistant.response->", ["response.Info", e?.YVn]);
+            o?.(false);
+          } else {
+            if (Log_1.Log.CheckInfo()) {
+              Log_1.Log.Info("Map", 63, "[CustomMarkItem Debug]MarkAssistant.response->", ["response.Info", e?.YVn]);
+            }
+            o?.(true);
           }
         });
       }
-    } else if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("Map", 63, "向服务器请求创建标记时，坐标不存在");
+    } else {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Map", 63, "向服务器请求创建标记时，坐标不存在");
+      }
+      o?.(false);
     }
   }
   RequestTrackEnrichmentArea(e, r) {
@@ -671,8 +682,8 @@ class MarkAssistant extends ControllerAssistantBase_1.ControllerAssistantBase {
     }
   }
   RequestTeleportToTargetByTemporaryTeleport(e, r, o) {
-    if (TeleportController_1.TeleportController.CheckCanTeleport()) {
-      if (!ControllerHolder_1.ControllerHolder.TeleportController.ShowTeleportConfirmBox(() => {
+    if (ModelManager_1.ModelManager.TeleportModel.AllowTeleportByUi) {
+      if (!TeleportMisc_1.TeleportMisc.ShowTeleportConfirmBox(() => {
         ModelManager_1.ModelManager.InstanceDungeonModel.ClearInstanceDungeonInfo();
         this.$Mc(e, r, o);
       })) {

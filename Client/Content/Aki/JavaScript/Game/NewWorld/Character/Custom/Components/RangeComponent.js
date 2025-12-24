@@ -63,8 +63,8 @@ let RangeComponent = RangeComponent_1 = class RangeComponent extends EntityCompo
     this.Hte = undefined;
     this.Men = undefined;
     this.bjo = undefined;
-    this.AYd = undefined;
-    this.DYd = undefined;
+    this.lzd = undefined;
+    this._zd = undefined;
     this.Een = undefined;
     this.aln = undefined;
     this._P1 = new Array();
@@ -278,7 +278,7 @@ let RangeComponent = RangeComponent_1 = class RangeComponent extends EntityCompo
   OnInitData() {
     this.EIe = this.Entity.GetComponent(0);
     this.Hte = this.Entity.GetComponent(1);
-    this.Men = this.Entity.GetComponent(167);
+    this.Men = this.Entity.GetComponent(172);
     var t = this.EIe?.GetPbEntityInitData();
     return !!t && (this.XKs(t) ? (this.YKs(t), this.b7a(t), this.ooh(t), this.WKl(t), ModelManager_1.ModelManager.SundryModel?.GetModuleDebugLevel(DEBUG_DETAIL_KEY) && Log_1.Log.CheckInfo() && Log_1.Log.Info("SceneItem", 39, "[RangeComponent] 初始化网络节省配置完成", ["CreatureDataId", this.EIe.GetCreatureDataId()], ["ConfigId", this.EIe.GetPbDataId()], ["ReqEntityAccessRange", this.WKs], ["ReqPlayerAccessRange", this.KKs]), this.Oen = new Map(), this.Fen = false, this.ken = new Set(), this.eoh = new Set(), this.$Tl = new Map(), this.Hen = new Map(), this.jen = new Set(), this.ben = [], this.qen = [], this.Nen = [], this.wen = false, this.xen = false, this.Wen = new Map(), this.EIe.PbInRangeEntityCreatureDataIds && this.ServerUpdateEntitiesInRangeOnline(true, this.EIe.PbInRangeEntityCreatureDataIds), this.EIe.PbInRangePlayerIds && this.ServerUpdatePlayerInRangeOnline(true, this.EIe.PbInRangePlayerIds), this.Kua = Stats_1.Stat.CreateNoFlameGraph("[RangeComp.BeginOverlap] CfgId:" + this.EIe?.GetPbDataId()), this.Xua = Stats_1.Stat.CreateNoFlameGraph("[RangeComp.EndOverlap] CfgId:" + this.EIe?.GetPbDataId()), this.Dzl = Stats_1.Stat.CreateNoFlameGraph("[RangeComp.SetupRangeActor] CfgId:" + this.EIe?.GetPbDataId()), true) : (Log_1.Log.CheckError() && Log_1.Log.Error("SceneGameplay", 29, "[RangeComponent] 范围数据出错", ["CreatureDataId", this.EIe.GetCreatureDataId()], ["ConfigId", this.EIe.GetPbDataId()], ["PlayerId", this.EIe.GetPlayerId()]), false));
   }
@@ -289,7 +289,7 @@ let RangeComponent = RangeComponent_1 = class RangeComponent extends EntityCompo
     var h = (0, IComponent_1.getComponent)(t.ComponentsData, "MonitorComponent");
     if (e) {
       this.bjo = e.Shape;
-      this.AYd = e.SetRangeActorCollisionResponseToChannels;
+      this.lzd = e.SetRangeActorCollisionResponseToChannels;
     } else if (i) {
       i = {
         Type: "Cylinder",
@@ -413,14 +413,14 @@ let RangeComponent = RangeComponent_1 = class RangeComponent extends EntityCompo
       this.uP1.length = 0;
     }
     this.yen = undefined;
-    if (this.DYd && this.Ien?.IsValid()) {
-      RangeComponent_1.UYd(this.Ien, this.DYd, false);
+    if (this._zd && this.Ien?.IsValid()) {
+      RangeComponent_1.uzd(this.Ien, this._zd, false);
     }
-    if (this.DYd) {
-      this.DYd.length = 0;
+    if (this._zd) {
+      this._zd.length = 0;
     }
-    if (this.AYd) {
-      this.AYd.length = 0;
+    if (this.lzd) {
+      this.lzd.length = 0;
     }
     if (this.Den && (this.Ien?.IsValid() && (this.Ien.SetActorEnableCollision(false), ActorSystem_1.ActorSystem.Put("RangeComponent.OnEnd1", this.Ien)), this.F0a?.IsValid())) {
       this.F0a.SetActorEnableCollision(false);
@@ -446,7 +446,7 @@ let RangeComponent = RangeComponent_1 = class RangeComponent extends EntityCompo
   Qoh() {
     return !!this.xen && !!this.wen && !this.Entity.IsEnd && !this.EIe?.GetRemoveState() && !!RoleTriggerController_1.RoleTriggerController.IsInitTrigger;
   }
-  static UYd(t, e, i) {
+  static uzd(t, e, i) {
     var s = [];
     if (e && e.length !== 0) {
       var h = t.GetComponentByClass(UE.PrimitiveComponent.StaticClass());
@@ -538,7 +538,7 @@ let RangeComponent = RangeComponent_1 = class RangeComponent extends EntityCompo
         var e = this.aln.GetActor(new UE.FName(t));
         if (e?.IsValid()) {
           this.InitRangeAsyncCallback?.(this.Uhl(e));
-          this.DYd = RangeComponent_1.UYd(e, this.AYd, true);
+          this._zd = RangeComponent_1.uzd(e, this.lzd, true);
         } else {
           if (Log_1.Log.CheckDebug()) {
             Log_1.Log.Debug("Entity", 31, "[RangeComponent] Actor未找到，等待加载", ["Key", t], ["CreatureDataId", this.EIe.GetCreatureDataId()], ["ConfigId", this.EIe.GetPbDataId()], ["PlayerId", this.EIe.GetPlayerId()]);
@@ -546,7 +546,7 @@ let RangeComponent = RangeComponent_1 = class RangeComponent extends EntityCompo
           this.Rhl = t => {
             var e = i.ActorRef.PathName.split(".")[1] + "." + i.ActorRef.PathName.split(".")[2];
             if (t?.toString() === e && (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Entity", 31, "[RangeComponent] Actor已加载", ["Key", e], ["CreatureDataId", this.EIe.GetCreatureDataId()], ["ConfigId", this.EIe.GetPbDataId()], ["PlayerId", this.EIe.GetPlayerId()]), e = this.aln?.GetActor(t), this.InitRangeAsyncCallback?.(!!e && this.Uhl(e)), this.Rhl && (this.aln?.OnAddToSubsystem.Remove(this.Rhl), this.Rhl = undefined), e?.IsValid())) {
-              this.DYd = RangeComponent_1.UYd(e, this.AYd, true);
+              this._zd = RangeComponent_1.uzd(e, this.lzd, true);
             }
           };
           this.aln.OnAddToSubsystem.Add(this.Rhl);
@@ -966,7 +966,7 @@ let RangeComponent = RangeComponent_1 = class RangeComponent extends EntityCompo
         if (this.DP1(s)) {
           return;
         }
-        var h = s.Entity?.GetComponent(206);
+        var h = s.Entity?.GetComponent(212);
         if (h && !h.IsReadyForOverlap && (t === h?.Owner || t === h.GetMainCollisionActor())) {
           return;
         }
@@ -1304,7 +1304,7 @@ let RangeComponent = RangeComponent_1 = class RangeComponent extends EntityCompo
         Log_1.Log.Info("SceneItem", 39, "[RangeComp] 本机玩家进出:(发起PlayerAccessRange)", ["PbDataId", this.EIe?.GetPbDataId()], ["CreatureDataId", this.EIe?.GetCreatureDataId()], ["IsEnter", t], ["OtherPbDataId", s?.GetPbDataId()], ["OtherCreatureId", h], ["OtherLocation", i?.ActorLocationProxy]);
       }
       e.Entity?.GetComponent(3)?.ResetLocationCachedTime();
-      if ((s = e.Entity?.GetComponent(68))?.GetEnableMovementSync()) {
+      if ((s = e.Entity?.GetComponent(71))?.GetEnableMovementSync()) {
         s.CollectSampleAndSend(true);
       }
       (h = Protocol_1.Aki.Protocol.Ugs.create()).zWn = this.EIe.GetCreatureDataId();
@@ -1331,7 +1331,7 @@ let RangeComponent = RangeComponent_1 = class RangeComponent extends EntityCompo
         var s;
         var h = n.Entity?.GetComponent(0);
         var o = h?.GetCreatureDataId();
-        if (o && (i.push(o), ModelManager_1.ModelManager.SundryModel?.GetModuleDebugLevel(DEBUG_DETAIL_KEY) && (s = n.Entity?.GetComponent(1), Log_1.Log.CheckInfo()) && Log_1.Log.Info("SceneItem", 39, "[RangeComp] 实体进出:(加入EntityAccessRange队列)", ["PbDataId", this.EIe?.GetPbDataId()], ["CreatureDataId", this.EIe?.GetCreatureDataId()], ["IsEnter", t], ["OtherPbDataId", h?.GetPbDataId()], ["OtherCreatureId", o], ["OtherPos", s?.ActorLocationProxy]), n.Entity?.GetComponent(1)?.ResetLocationCachedTime(), (h = n.Entity?.GetComponent(67))?.GetEnableMovementSync())) {
+        if (o && (i.push(o), ModelManager_1.ModelManager.SundryModel?.GetModuleDebugLevel(DEBUG_DETAIL_KEY) && (s = n.Entity?.GetComponent(1), Log_1.Log.CheckInfo()) && Log_1.Log.Info("SceneItem", 39, "[RangeComp] 实体进出:(加入EntityAccessRange队列)", ["PbDataId", this.EIe?.GetPbDataId()], ["CreatureDataId", this.EIe?.GetCreatureDataId()], ["IsEnter", t], ["OtherPbDataId", h?.GetPbDataId()], ["OtherCreatureId", o], ["OtherPos", s?.ActorLocationProxy]), n.Entity?.GetComponent(1)?.ResetLocationCachedTime(), (h = n.Entity?.GetComponent(70))?.GetEnableMovementSync())) {
           h.CollectSampleAndSend(true);
         }
       }
@@ -1461,5 +1461,5 @@ let RangeComponent = RangeComponent_1 = class RangeComponent extends EntityCompo
     }
   }
 };
-RangeComponent = RangeComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(86)], RangeComponent);
+RangeComponent = RangeComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(89)], RangeComponent);
 exports.RangeComponent = RangeComponent; //# sourceMappingURL=RangeComponent.js.map

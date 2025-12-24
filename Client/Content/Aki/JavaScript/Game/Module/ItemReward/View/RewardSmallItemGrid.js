@@ -51,21 +51,22 @@ class RewardSmallItemGrid extends LoopScrollSmallItemGrid_1.LoopScrollSmallItemG
         r = CommonParamById_1.configCommonParamById.GetStringConfig("Reward_Tag_Magnification_Bg_Color");
         i = CommonParamById_1.configCommonParamById.GetStringConfig("Reward_Tag_Magnification_Text_Color");
     }
+    let n = true;
     switch (t.ItemDataType) {
       case 1:
         {
-          var n = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(o);
-          const s = {
+          var m = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(o);
+          const d = {
             Data: e,
             Type: 2,
             ItemConfigId: o,
-            BottomTextId: n.Name,
-            QualityId: n.QualityId,
+            BottomTextId: m.Name,
+            QualityId: m.QualityId,
             TopRightTextId: a,
             TopRightTextBgColor: r,
             TopRightTextColor: i
           };
-          this.Apply(s);
+          this.Apply(d);
           return;
         }
       case 3:
@@ -73,33 +74,35 @@ class RewardSmallItemGrid extends LoopScrollSmallItemGrid_1.LoopScrollSmallItemG
           if (ConfigManager_1.ConfigManager.PhantomBattleConfig.GetPhantomItemById(o).ParentMonsterId !== 0) {
             break;
           }
-          var n = ModelManager_1.ModelManager.InventoryModel.GetPhantomItemData(e.UniqueId);
-          var m = ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomBattleData(e.UniqueId);
-          const s = {
+          var m = ModelManager_1.ModelManager.InventoryModel.GetPhantomItemData(e.UniqueId);
+          var s = ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomBattleData(e.UniqueId);
+          const d = {
             Data: e,
             Type: 3,
             ItemConfigId: o,
             TopRightTextId: a,
             TopRightTextBgColor: r,
             TopRightTextColor: i,
-            FetterGroupId: m.GetFetterGroupId(),
-            IsPhantomLock: n.GetIsLock(),
-            IsPhantomDeprecate: n.GetIsDeprecated()
+            FetterGroupId: s.GetFetterGroupId(),
+            IsPhantomLock: m.GetIsLock(),
+            IsPhantomDeprecate: m.GetIsDeprecated()
           };
-          this.Apply(s);
+          this.Apply(d);
           return;
         }
+      case 21:
+        n = false;
     }
-    const s = {
+    const d = {
       Data: e,
       Type: 4,
       ItemConfigId: o,
-      BottomText: "x" + e.Count,
+      BottomText: n ? "x" + e.Count : "",
       TopRightTextId: a,
       TopRightTextBgColor: r,
       TopRightTextColor: i
     };
-    this.Apply(s);
+    this.Apply(d);
   }
 }
 exports.RewardSmallItemGrid = RewardSmallItemGrid;

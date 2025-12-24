@@ -39,7 +39,7 @@ class TrapDefenseBuildingDevelopBottomItem extends UiPanelBase_1.UiPanelBase {
       if (t === this.MenuData) {
         LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), "TowerDefense_Battle_Unload");
       } else {
-        LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), this.aKd(t));
+        LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), this.uKd(t));
       }
       this.Layout.DeselectCurrentGridProxy();
       this.Layout?.SelectGridProxy(this.CurSelectedIndex);
@@ -76,7 +76,7 @@ class TrapDefenseBuildingDevelopBottomItem extends UiPanelBase_1.UiPanelBase {
     if ((this.MenuData = e) === this.DataList[this.CurSelectedIndex].GetSlotData()) {
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), "TowerDefense_Battle_Unload");
     } else {
-      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), this.aKd(e));
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), this.uKd(e));
     }
   }
   UpdateSlot() {
@@ -88,10 +88,10 @@ class TrapDefenseBuildingDevelopBottomItem extends UiPanelBase_1.UiPanelBase {
     if (this.DataList[this.CurSelectedIndex].GetSlotData() === this.MenuData) {
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), "TowerDefense_Battle_Unload");
     } else {
-      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), this.aKd(this.MenuData));
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), this.uKd(this.MenuData));
     }
   }
-  aKd(e) {
+  uKd(e) {
     if (!e || e.IsBuilding) {
       return "TowerDefense_Battle_Equip";
     } else {

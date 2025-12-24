@@ -185,8 +185,8 @@ class LordGymPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondaryUiLayou
       t = ModelManager_1.ModelManager.MapModel.IsLevelPlayOccupied(this.Ymt.Id);
       e = !t.IsOccupied;
     }
-    this.ConfirmButton.SetActive(r);
-    this.ConfirmButton.SetEnableClick(i);
+    this.LayoutContext?.SetConfirmBtnActive(r);
+    this.LayoutContext?.SetConfirmBtnEnableClick(i);
     this.UpdateQuickGotoActive(e);
   }
   W2o() {

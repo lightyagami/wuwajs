@@ -31,8 +31,8 @@ class SpecialSkillBuling extends SpecialSkillBase_1.SpecialSkillBase {
   }
   OnStart() {
     this.Jh = this.SpecialSkillComponent.Entity;
-    this.$te = this.Jh.GetComponent(176);
-    this.Xte = this.Jh.GetComponent(197);
+    this.$te = this.Jh.GetComponent(181);
+    this.Xte = this.Jh.GetComponent(203);
     this.n$t = this.Jh.CheckGetComponent(3);
     this.fwu();
     if (this.n$t?.IsRoleAndCtrlByMe) {

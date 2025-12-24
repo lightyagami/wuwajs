@@ -139,6 +139,12 @@ let CreatureDataComponent = CreatureDataComponent_1 = class CreatureDataComponen
     this.HoldHandIsFollow = false;
     this.HonamiStoryItemInfo = undefined;
     this.HonamiStoryLevel = 0;
+    this.RbBlockInfo = undefined;
+    this.RbFloorInfo = undefined;
+    this.RbItemInfo = undefined;
+    this.PlayerFollowersInfo = undefined;
+    this.FollowerInfo = undefined;
+    this.MotorOutlookInfo = undefined;
     this.HuluSkinId = 0;
     this.wDe = 0;
     this.vH = 0;
@@ -148,6 +154,7 @@ let CreatureDataComponent = CreatureDataComponent_1 = class CreatureDataComponen
     this.CXr = false;
     this.gXr = "";
     this.ger = undefined;
+    this.Zwf = 0n;
     this.fXr = 0;
     this.pXr = undefined;
     this.vXr = false;
@@ -167,9 +174,9 @@ let CreatureDataComponent = CreatureDataComponent_1 = class CreatureDataComponen
     this.TXr = undefined;
     this.sd1 = false;
     this.LXr = 0;
-    this.DXr = 0;
+    this.vYm = new Array();
     this.RXr = new Array();
-    this.Grm = 0;
+    this.ehm = 0;
     this.UXr = new Array();
     this.xRn = new Map();
     this.ComponentsKey = 0n;
@@ -280,6 +287,9 @@ let CreatureDataComponent = CreatureDataComponent_1 = class CreatureDataComponen
   get EntityPbModelConfigId() {
     return this.gXr;
   }
+  get MotorContextId() {
+    return this.Zwf;
+  }
   get LiftFloor() {
     return this.fXr;
   }
@@ -309,17 +319,17 @@ let CreatureDataComponent = CreatureDataComponent_1 = class CreatureDataComponen
   set VisionControlCreatureDataId(t) {
     this.LXr = t;
   }
-  get VisionSkillServerEntityId() {
-    return this.DXr;
+  get VisionServerEntityIds() {
+    return this.vYm;
   }
-  set VisionSkillServerEntityId(t) {
-    this.DXr = t;
+  set VisionServerEntityIds(t) {
+    this.vYm = t;
   }
   get CustomServerEntityIds() {
     return this.RXr;
   }
   get BossRushCreatureDataId() {
-    return this.Grm;
+    return this.ehm;
   }
   get SummonEntityIds() {
     return this.UXr;
@@ -1046,20 +1056,23 @@ let CreatureDataComponent = CreatureDataComponent_1 = class CreatureDataComponen
           this.AutonomousId = MathUtils_1.MathUtils.LongToNumber(d.Yys.wIs);
           break;
         case "Dys":
-          this.VisionSkillServerEntityId = MathUtils_1.MathUtils.LongToNumber(d.Dys.Z5n);
+          this.vYm.length = 0;
+          for (const C of d.Dys.uXm) {
+            this.vYm.push(MathUtils_1.MathUtils.LongToNumber(C));
+          }
           this.RXr.length = 0;
-          for (const C of d.Dys.OIs) {
-            this.RXr.push(MathUtils_1.MathUtils.LongToNumber(C));
+          for (const c of d.Dys.OIs) {
+            this.RXr.push(MathUtils_1.MathUtils.LongToNumber(c));
           }
           this.VisionControlCreatureDataId = MathUtils_1.MathUtils.LongToNumber(d.Dys.kIs);
-          this.Grm = MathUtils_1.MathUtils.LongToNumber(d.Dys.Ktm);
+          this.ehm = MathUtils_1.MathUtils.LongToNumber(d.Dys.Vnm);
           break;
         case "wys":
-          for (const c of d.wys.FIs) {
-            this.OccupiedGridInfo.set(c.iLs, c);
+          for (const m of d.wys.FIs) {
+            this.OccupiedGridInfo.set(m.iLs, m);
           }
-          for (const m of d.wys.VIs) {
-            this.DynamicGridInfo.push(m);
+          for (const P of d.wys.VIs) {
+            this.DynamicGridInfo.push(P);
           }
           this.BoardCanMove = d.wys.gI_;
           break;
@@ -1153,16 +1166,38 @@ let CreatureDataComponent = CreatureDataComponent_1 = class CreatureDataComponen
           this.HoldHandTargetEntityId = MathUtils_1.MathUtils.LongToNumber(l.TVn);
           this.HoldHandIsFollow = l.o7u;
           break;
-        case "kjd":
-          l = d.kjd;
+        case "Ojd":
+          l = d.Ojd;
           this.PbMoveToPointConfig = l?.V41;
           break;
-        case "j$d":
-          var u = d.j$d;
-          this.HonamiStoryItemInfo = u.P$d;
+        case "Q$d":
+          var u = d.Q$d;
+          this.HonamiStoryItemInfo = u.x$d;
           break;
-        case "H$d":
-          this.HonamiStoryLevel = d.H$d.F6n;
+        case "K$d":
+          this.HonamiStoryLevel = d.K$d.F6n;
+          break;
+        case "kSm":
+          this.RbBlockInfo = d.kSm;
+          break;
+        case "qSm":
+          this.RbFloorInfo = d.qSm;
+          break;
+        case "OSm":
+          this.RbItemInfo = d.OSm;
+          break;
+        case "nI_":
+          this.PlayerFollowersInfo = d.nI_;
+          break;
+        case "GVm":
+          this.FollowerInfo = d.GVm;
+          break;
+        case "XTf":
+          u = d.XTf;
+          this.Zwf = u ? MathUtils_1.MathUtils.LongToBigInt(u.YTf) : 0n;
+          break;
+        case "v0f":
+          this.MotorOutlookInfo = d.v0f;
       }
     }
   }
@@ -1336,8 +1371,8 @@ let CreatureDataComponent = CreatureDataComponent_1 = class CreatureDataComponen
     this.CustomServerEntityIds.forEach(t => {
       CreatureGroupController_1.CreatureGroupController.AddBindEntity(t, this.Wpo);
     });
-    if (this.VisionSkillServerEntityId) {
-      CreatureGroupController_1.CreatureGroupController.AddBindEntity(this.VisionSkillServerEntityId, this.Wpo);
+    for (const t of this.VisionServerEntityIds) {
+      CreatureGroupController_1.CreatureGroupController.AddBindEntity(t, this.Wpo);
     }
     if (this.VisionControlCreatureDataId) {
       CreatureGroupController_1.CreatureGroupController.AddBindEntity(this.VisionControlCreatureDataId, this.Wpo);

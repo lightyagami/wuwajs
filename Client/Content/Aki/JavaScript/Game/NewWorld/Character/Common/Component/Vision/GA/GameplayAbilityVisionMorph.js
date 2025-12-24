@@ -41,7 +41,6 @@ class GameplayAbilityVisionMorph extends GameplayAbilityVisionBase_1.GameplayAbi
     this.vAr = false;
     this.zZo = false;
     this.ZZo = false;
-    this.kQo = 0;
   }
   OnCreate() {
     this.C6c = this.GameplayTagComponent.ListenForTagAddOrRemove(GameplayAbilityVisionMisc_1.stealthTag, (i, t) => {
@@ -101,21 +100,20 @@ class GameplayAbilityVisionMorph extends GameplayAbilityVisionBase_1.GameplayAbi
     }
     return true;
   }
-  OnChangeVision() {
-    this.VisionSkillComponent?.ExitMultiSkillState();
-    this.g6c = undefined;
-  }
   HandlePress(i, t) {
     return !!this.VisionSkillComponent && this.VisionSkillComponent.HandlePress(i, t);
   }
   AU() {
     this.PreInit();
-    return !!this.VisionEntity.IsInit && (!this.NeedNoActive() || !this.VisionEntity.Entity.Active) && !(this.NeedNoAi() && this.VisionEntity.Entity.GetComponent(47)?.IsEnabled() ? (CombatLog_1.CombatLog.Error("Skill", this.VisionEntity.Entity, "变身幻象不能配置AI，请检查一下AI配置"), 1) : (this.VisionActorComponent = this.VisionEntity.Entity.GetComponent(3), this.g6c = this.VisionEntity.Entity.GetComponent(209), this.VisionBuffComponent = this.VisionEntity.Entity.GetComponent(178), this.fAr = this.VisionEntity.Entity.GetComponent(21), this.TSa = this.VisionEntity.Entity.GetComponent(182), this.VisionSkillComponent = this.VisionEntity.Entity.GetComponent(42), this.VisionSkillComponent.InitVisionSkill(this.EntityHandle, true), 0));
+    return !!this.VisionEntity.IsInit && (!this.NeedNoActive() || !this.VisionEntity.Entity.Active) && !(this.NeedNoAi() && this.VisionEntity.Entity.GetComponent(48)?.IsEnabled() ? (CombatLog_1.CombatLog.Error("Skill", this.VisionEntity.Entity, "变身幻象不能配置AI，请检查一下AI配置"), 1) : (this.VisionActorComponent = this.VisionEntity.Entity.GetComponent(3), this.g6c = this.VisionEntity.Entity.GetComponent(215), this.VisionBuffComponent = this.VisionEntity.Entity.GetComponent(183), this.fAr = this.VisionEntity.Entity.GetComponent(21), this.TSa = this.VisionEntity.Entity.GetComponent(187), this.VisionSkillComponent = this.VisionEntity.Entity.GetComponent(43), this.VisionSkillComponent.InitVisionSkill(this.EntityHandle, true), 0));
   }
-  aZo(i) {
-    CollisionUtils_1.CollisionUtils.SetCollisionResponseToPawn(this.VisionActorComponent.Actor.CapsuleComponent, 2, i ? 2 : 0);
-    this.VisionActorComponent.Actor.CapsuleComponent.IgnoreActorWhenMoving(this.ActorComponent.Actor, !i);
-    this.ActorComponent.Actor.CapsuleComponent.IgnoreActorWhenMoving(this.VisionActorComponent.Actor, !i);
+  aZo(i, t = this.VisionEntity) {
+    t = t?.Entity?.GetComponent(3);
+    if (t) {
+      CollisionUtils_1.CollisionUtils.SetCollisionResponseToPawn(t.Actor.CapsuleComponent, 2, i ? 2 : 0);
+      t.Actor.CapsuleComponent.IgnoreActorWhenMoving(this.ActorComponent.Actor, !i);
+      this.ActorComponent.Actor.CapsuleComponent.IgnoreActorWhenMoving(t.Actor, !i);
+    }
   }
   oer() {
     this.vAr = true;
@@ -212,25 +210,27 @@ class GameplayAbilityVisionMorph extends GameplayAbilityVisionBase_1.GameplayAbi
     return s && i.HitResult.bBlockingHit;
   }
   NZo() {
-    this.ota = TimerSystem_1.TimerSystem.Delay(() => {
-      if (Log_1.Log.CheckWarn()) {
-        Log_1.Log.Warn("Battle", 28, "幻象消失材质没有正常结束，被保底");
-      }
-      this.iba();
-    }, GameplayAbilityVisionMisc_1.VISION_HIDDEN_DELAY * (ModelManager_1.ModelManager.CharacterModel?.SelfCenteredTimeDilation ?? 1));
-    this.fAr?.AddCue(GameplayAbilityVisionMisc_1.MORPH_PARTICLE_CUE_ID, {
+    const i = this.VisionEntity;
+    const t = this.fAr;
+    t?.AddCue(GameplayAbilityVisionMisc_1.MORPH_PARTICLE_CUE_ID, {
       Sync: true,
       Instant: true
     });
-    this.kQo = this.fAr.AddCue(GameplayAbilityVisionMisc_1.MATERIAL_CUE_ID, {
+    const s = t.AddCue(GameplayAbilityVisionMisc_1.MATERIAL_CUE_ID, {
       EndCallback: () => {
         if (TimerSystem_1.TimerSystem.Has(this.ota)) {
           TimerSystem_1.TimerSystem.Remove(this.ota);
-          this.iba();
+          this.iba(s, i, t);
         }
       },
       Sync: true
     });
+    this.ota = TimerSystem_1.TimerSystem.Delay(() => {
+      if (Log_1.Log.CheckWarn()) {
+        Log_1.Log.Warn("Battle", 28, "幻象消失材质没有正常结束，被保底");
+      }
+      this.iba(s, i, t);
+    }, GameplayAbilityVisionMisc_1.VISION_HIDDEN_DELAY * (ModelManager_1.ModelManager.CharacterModel?.SelfCenteredTimeDilation ?? 1));
   }
   Wxr(i, t) {
     var s = SkillUtils_1.SkillUtils.GetStaticLineTrace();
@@ -239,20 +239,21 @@ class GameplayAbilityVisionMorph extends GameplayAbilityVisionBase_1.GameplayAbi
     var i = TraceElementCommon_1.TraceElementCommon.LineTrace(s, "GameplayAbilityVisionMorph.FixLocation");
     return i && s.HitResult.bBlockingHit;
   }
-  iba() {
+  iba(i, t, s) {
     this.ota = undefined;
     if (this.pAr) {
       this.GameplayTagComponent.RemoveTag(GameplayAbilityVisionMisc_1.invincibleTag);
     }
-    if (this.VisionEntity?.Valid) {
-      BulletController_1.BulletController.CreateBulletCustomTarget(this.VisionEntity.Entity, GameplayAbilityVisionMisc_1.VISION_END_BULLET, undefined);
-      this.fAr?.RemoveCueByHandle(this.kQo);
-      this.SetVisionEnable(false);
-      this.aZo(true);
+    if (t?.Valid) {
+      BulletController_1.BulletController.CreateBulletCustomTarget(t.Entity, GameplayAbilityVisionMisc_1.VISION_END_BULLET, undefined);
+      s?.RemoveCueByHandle(i);
+      this.SetVisionEnable(false, t);
+      this.aZo(true, t);
     }
   }
-  SetVisionEnable(i) {
-    PhantomUtil_1.PhantomUtil.SetVisionEnable(this.VisionComponent.Entity, i, "GameplayAbilityVisionMorph.SetVisionEnable");
+  SetVisionEnable(i, t = this.VisionEntity) {
+    ControllerHolder_1.ControllerHolder.CreatureController.SetEntityEnable(t.Entity, i, "GameplayAbilityVisionMorph.SetVisionEnable", true);
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPhantomEnableStateChange, i);
   }
   NeedNoAi() {
     return true;

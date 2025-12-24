@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.WorldMapSecondaryUiLayoutHelper = undefined;
 const Protocol_1 = require("../../../../../Core/Define/Net/Protocol");
 const ConfigManager_1 = require("../../../../Manager/ConfigManager");
+const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 class WorldMapSecondaryUiLayoutHelper {
   static UpdateAreaTxtByConfigMarkItem(t) {
@@ -64,21 +65,23 @@ class WorldMapSecondaryUiLayoutHelper {
     t.DescriptionText.ShowTextNew(e.MarkDesc);
   }
   static UpdateConfirmButtonTextWithFastMoveStyle(t) {
-    t.ConfirmButtonItem.SetLocalText("TeleportFastMove");
+    var e = ConfigManager_1.ConfigManager.TextConfig.GetTextContentIdById("TeleportFastMove");
+    t.SetConfirmBtnText(e);
   }
   static UpdateConfirmButtonTextWithStopDetectionStyle(t) {
-    t.ConfirmButtonItem.SetLocalTextNew("Text_TeleportStop_Text");
+    t.SetConfirmBtnText("Text_TeleportStop_Text");
   }
   static UpdateConfirmButtonTextWithTrackStyle(t) {
     var e = t.MarkItem;
     let a = "";
     a = e.IsTracked ? "InstanceDungeonEntranceCancelTrack" : "InstanceDungeonEntranceTrack";
-    t.ConfirmButtonItem.SetLocalText(a);
+    e = ConfigManager_1.ConfigManager.TextConfig.GetTextContentIdById(a);
+    t.SetConfirmBtnText(e);
   }
   static UpdateConfirmButtonEnableClickByTeleportState(t) {
     var e = t.MarkItem;
     var e = ModelManager_1.ModelManager.MapModel.GetMarkExtraShowState(e.MarkId).ShowFlag === Protocol_1.Aki.Protocol.U5s.Proto_ShowDisable;
-    t.ConfirmButtonItem.SetEnableClick(!e);
+    t.SetConfirmBtnEnableClick(!e);
   }
   static UpdateTrackButtonTextWithTrackStyle(t) {
     var e = t.MarkItem;
@@ -94,6 +97,31 @@ class WorldMapSecondaryUiLayoutHelper {
     if (a) {
       t.SetSpriteByPathAction(e, t.DownStateIcon, false);
     }
+  }
+  static UpdateAutoPilotState(t) {
+    var e;
+    var a = t.LayoutContext.MarkItem;
+    if (a && this.u7m(t)) {
+      if (!(e = ModelManager_1.ModelManager.AutoPilotModel?.IsPlayerInAutoPilotArea)) {
+        t.LayoutContext.MapTipsActivateTipPanel?.SetUiActive(true);
+        t.LayoutContext.MapTipsActivateTipPanel?.SetActivatedTip("AutoPilot_AreaNotSupported", false);
+      }
+      t.UpdateAutoPilotTrackToggle(!e ? 2 : a.IsAutoPilotTracked ? 1 : 0);
+      t.SetDownStateBtnRootActive(!a.IsAutoPilotTracked);
+      t.RefreshAutoPilotTrackBtnGroup(a.IsAutoPilotTracked);
+    }
+  }
+  static u7m(t) {
+    let e = true;
+    if (t.LayoutContext.GetIsConfirmBtnActive()) {
+      e = false;
+    }
+    var a = t.LayoutContext.MarkItem;
+    if (!ControllerHolder_1.ControllerHolder.AutoPilotController.CheckIsInAutoPilotArea(a.WorldPosition, a.MapId)) {
+      e = false;
+    }
+    t.SetAutoPilotTrackToggleActive(e);
+    return e;
   }
 }
 exports.WorldMapSecondaryUiLayoutHelper = WorldMapSecondaryUiLayoutHelper;

@@ -59,11 +59,12 @@ class TsTaskMoveToLocation extends TsTaskAbortImmediatelyBase_1.default {
   ReceiveExecuteAI(t, i) {
     this.InitTsVariables();
     var s;
-    var e = t.AiController;
-    if (e) {
-      e = e.CharActorComp.Entity;
-      if (s = ControllerHolder_1.ControllerHolder.BlackboardController.GetVectorValueByEntity(e.Id, this.TsBlackboardLocation)) {
-        s = Vector_1.Vector.Create(s);
+    var e;
+    var o = t.AiController;
+    if (o) {
+      s = (o = o.CharActorComp).Entity;
+      if (e = ControllerHolder_1.ControllerHolder.BlackboardController.GetVectorValueByEntity(s.Id, this.TsBlackboardLocation)) {
+        e = Vector_1.Vector.Create(e);
         this.HandleMoveEnd ||= t => {
           if (t === 1) {
             this.Finish(true);
@@ -71,21 +72,24 @@ class TsTaskMoveToLocation extends TsTaskAbortImmediatelyBase_1.default {
             this.Finish(false);
           }
         };
-        this.MoveComp = e.GetComponent(45);
-        e = {
-          Points: [{
-            Index: 0,
-            Position: s,
-            MoveState: this.TsMoveState
-          }],
+        this.MoveComp = s.GetComponent(46);
+        s = {
+          Index: 0,
+          Position: e,
+          MoveState: this.TsMoveState
+        };
+        e = o.ScaledRadius;
+        o = {
+          Points: [s],
           Navigation: this.TsNavigationOn,
           IsFly: this.TsIsFly,
           DebugMode: this.TsOpenDebugNode,
           Loop: false,
           Callback: this.HandleMoveEnd,
-          ReturnFalseWhenNavigationFailed: true
+          ReturnFalseWhenNavigationFailed: true,
+          Distance: this.EndDistance + e
         };
-        this.MoveComp.MoveAlongPath(e);
+        this.MoveComp.MoveAlongPath(o);
         if (this.TsLimitTime > -1) {
           this.EndTime = Time_1.Time.WorldTime + this.TsLimitTime;
         }

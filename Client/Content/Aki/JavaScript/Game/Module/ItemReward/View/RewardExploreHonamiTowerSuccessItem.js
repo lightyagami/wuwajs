@@ -24,9 +24,9 @@ class RewardExploreHonamiTowerSuccessItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.OFt = undefined;
-    this.Tnm = undefined;
+    this.blm = undefined;
     this.H3e = undefined;
-    this.bnm = () => new HonamiTowerRecordItem();
+    this.Rlm = () => new HonamiTowerRecordItem();
     this.d2t = () => {
       var e = new RewardSmallItemGrid_1.RewardSmallItemGrid();
       e.BindOnCanExecuteChange(() => false);
@@ -50,11 +50,11 @@ class RewardExploreHonamiTowerSuccessItem extends UiPanelBase_1.UiPanelBase {
     this.ComponentRegisterInfos = [[0, UE.UIVerticalLayout], [1, UE.UIText], [2, UE.UIItem], [3, UE.UIHorizontalLayout]];
   }
   OnStart() {
-    this.Tnm = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(0), this.bnm);
+    this.blm = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(0), this.Rlm);
     this.H3e = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(3), this.d2t);
   }
   Refresh(e) {
-    this.Tnm.RefreshByData(e.RecordItemList);
+    this.blm.RefreshByData(e.RecordItemList);
     this.KGt(e.RewardItemList);
   }
   KGt(e) {

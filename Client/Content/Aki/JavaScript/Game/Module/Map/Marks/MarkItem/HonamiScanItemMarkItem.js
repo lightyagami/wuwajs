@@ -18,9 +18,9 @@ class HonamiScanItemMarkItem extends ServerMarkItem_1.ServerMarkItem {
     super(...arguments);
     this.InnerView = undefined;
     this.IsDirty = false;
-    this.kLm = false;
+    this.DSf = false;
     this.OnSubMapChanged = () => {
-      this.iLm();
+      this.$ff();
     };
   }
   OnInitialize() {
@@ -28,12 +28,12 @@ class HonamiScanItemMarkItem extends ServerMarkItem_1.ServerMarkItem {
     var e = this.ServerMarkInfo;
     this.SetTrackData(e.TrackTarget);
     var e = MarkDefine_1.HONAMI_SCAN_MARK_ITEM_ID;
-    this.qLm();
+    this.USf();
     this.SetConfigId(e);
     this.UpdateVisibleRelativeState();
-    this.qmm();
+    this.Qvm();
     this.yn_();
-    this.iLm();
+    this.$ff();
     if (this.MapType === 2) {
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldMapSubMapChangedFromUpdate, this.OnSubMapChanged);
     }
@@ -71,7 +71,7 @@ class HonamiScanItemMarkItem extends ServerMarkItem_1.ServerMarkItem {
         this.MinShowScale = e.ShowRange[0] ?? 0;
         this.MaxShowScale = e.ShowRange[1] ?? 0;
       }
-      this.qmm();
+      this.Qvm();
       if (e.ShowPriority) {
         this.ShowPriority = e.ShowPriority;
       }
@@ -79,18 +79,18 @@ class HonamiScanItemMarkItem extends ServerMarkItem_1.ServerMarkItem {
       this.CornerScale = e.CornerScale ?? 1;
     }
   }
-  qLm() {
+  USf() {
     if (this.EntityConfigId !== undefined && this.EntityConfigId !== 0) {
-      this.kLm = ConfigManager_1.ConfigManager.HonamiStoryConfig.GetHonamiScanItemWhileListIds().includes(this.EntityConfigId);
+      this.DSf = ConfigManager_1.ConfigManager.HonamiStoryConfig.GetHonamiScanItemWhileListIds().includes(this.EntityConfigId);
     }
   }
   OnUpdate(e) {
     super.OnUpdate(e);
     if (this.MapType === 1) {
-      this.ALm();
+      this.svf();
     }
   }
-  qmm() {
+  Qvm() {
     var e = ConfigManager_1.ConfigManager.HonamiStoryConfig.GetHonamiMapMarkById(this.GetHonamiMarkCategory());
     if (e) {
       this.IconPath = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(e.MarkIconResourceId);
@@ -107,7 +107,7 @@ class HonamiScanItemMarkItem extends ServerMarkItem_1.ServerMarkItem {
   }
   GetMultiMapId() {
     var e;
-    if (this.EntityConfigId !== undefined && this.EntityConfigId !== 0 && this.kLm && (e = ConfigManager_1.ConfigManager.HonamiStoryConfig.GetHonamiScanItemWhiteListConfigByEntityConfigId(this.EntityConfigId))) {
+    if (this.EntityConfigId !== undefined && this.EntityConfigId !== 0 && this.DSf && (e = ConfigManager_1.ConfigManager.HonamiStoryConfig.GetHonamiScanItemWhiteListConfigByEntityConfigId(this.EntityConfigId))) {
       return e.MultiMapId;
     } else {
       return 0;
@@ -137,13 +137,13 @@ class HonamiScanItemMarkItem extends ServerMarkItem_1.ServerMarkItem {
   }
   yn_() {
     var e = this.ServerMarkInfo;
-    this.MarkItemEntity.GamePlay.GamePlayState = e.ServerMarkState === Protocol_1.Aki.Protocol.htm.Proto_MarkComplete ? 2 : 0;
+    this.MarkItemEntity.GamePlay.GamePlayState = e.ServerMarkState === Protocol_1.Aki.Protocol.Tom.Proto_MarkComplete ? 2 : 0;
   }
-  ALm() {
+  svf() {
     this.IsSelectThisFloor = this.GetIsSelectThisFloor();
   }
-  iLm() {
-    this.ALm();
+  $ff() {
+    this.svf();
     this.InnerView?.OnIconPathChanged(this.IconPath);
   }
 }

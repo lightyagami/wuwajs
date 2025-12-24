@@ -18,6 +18,7 @@ class PhantomBattleTaskTabItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
     super(...arguments);
     this.Pe = 0;
+    this.ActivityId = 0;
     this.OnClickedCb = undefined;
     this.jYe = () => {
       if (this.OnClickedCb) {
@@ -36,7 +37,7 @@ class PhantomBattleTaskTabItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.RefreshRedDot();
   }
   RefreshRedDot() {
-    var t = ModelManager_1.ModelManager.PhantomArenaModel.CheckTaskRedDotByTab(this.Pe);
+    var t = ModelManager_1.ModelManager.PhantomArenaModel.CheckTaskRedDotByTab(this.Pe, this.ActivityId);
     this.GetItem(2)?.SetUIActive(t);
   }
   SetToggleState(t, e) {
@@ -53,7 +54,7 @@ class PhantomBattleTaskItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.Uou = 0;
     this.JGe = () => new CommonItemSmallItemGrid_1.CommonItemSmallItemGrid();
     this.qOe = () => {
-      PhantomArenaController_1.PhantomArenaController.TaskRewardRequest(this.Pe.TaskConfig.s5n);
+      PhantomArenaController_1.PhantomArenaController.TaskAllRewardRequest(this.Pe.TaskConfig.s5n);
     };
     this.i9i = () => {
       if (this.Pe && this.Uou) {

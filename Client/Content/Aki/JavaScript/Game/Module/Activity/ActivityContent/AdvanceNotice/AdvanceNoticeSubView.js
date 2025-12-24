@@ -16,7 +16,7 @@ class AdvanceNoticeSubView extends ActivitySubViewBase_1.ActivitySubViewBase {
   constructor() {
     super(...arguments);
     this.MultiGridItem = undefined;
-    this.Lfm = () => {
+    this.kym = () => {
       var e;
       if (this.ActivityBaseData && ControllerHolder_1.ControllerHolder.KuroSdkController.CanUseSdk()) {
         if (!!(e = ConfigManager_1.ConfigManager.AdvanceNoticeConfig.GetAdvertisingPageInfoByActivityId(this.ActivityBaseData.Id)) && !((e = e.PVLinkId) <= 0)) {
@@ -29,7 +29,7 @@ class AdvanceNoticeSubView extends ActivitySubViewBase_1.ActivitySubViewBase {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIButtonComponent], [2, UE.UISprite], [3, UE.UIItem], [4, UE.UIText], [5, UE.UIText], [6, UE.UIText], [7, UE.UIText], [8, UE.UITexture]];
-    this.BtnBindInfo = [[1, this.Lfm]];
+    this.BtnBindInfo = [[1, this.kym]];
   }
   async OnBeforeStartAsync() {
     var e = this.ActivityBaseData.Id;

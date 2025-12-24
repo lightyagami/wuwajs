@@ -13,7 +13,7 @@ class RoleSelectionMediumItemGrid extends LoopScrollMediumItemGrid_1.LoopScrollM
     this.f1a = false;
   }
   SetNeedShowTrial(e) {
-    this.f1a = false;
+    this.f1a = e;
   }
   OnRefresh(e, t, o) {
     var i = e.GetDataId();
@@ -23,7 +23,7 @@ class RoleSelectionMediumItemGrid extends LoopScrollMediumItemGrid_1.LoopScrollM
     var i = {
       Type: 2,
       Data: e,
-      ItemConfigId: e.GetRoleId(),
+      ItemConfigId: e.GetDataId(),
       SkinId: e.GetRoleSkinId(),
       BottomTextId: "Text_LevelShow_Text",
       BottomTextParameter: [e.GetLevelData().GetLevel()],

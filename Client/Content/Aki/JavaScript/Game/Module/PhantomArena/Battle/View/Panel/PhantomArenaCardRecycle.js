@@ -24,19 +24,24 @@ class PhantomArenaCardRecycle extends UiPanelBase_1.UiPanelBase {
     this.TotalHeight = 0;
     this.Pivot = Vector2D_1.Vector2D.Create(0, 0);
     this.EffectItem = undefined;
+    this.SealEffectItem = undefined;
     this.EffectItemActive = false;
     this.SettingFailReason = "";
     this.Sequence = undefined;
     this.LightSequence = undefined;
+    this.SealLightSequence = undefined;
     this.LightSequenceName = "RecycleLightClose";
+    this.SealLightSequenceName = "RecycleLightRedClose";
     this.Nno = e => {
       if (e === "RecycleDisactive" || e === "RecycleSuccess") {
         this.EffectItem.SetUIActive(false);
+      } else if (e === "BanSuccess" || e === "BanDisactive") {
+        this.SealEffectItem.SetUIActive(false);
       }
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIItem], [2, UE.UIText]];
+    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIItem], [2, UE.UIText], [3, UE.UIItem], [4, UE.UIItem]];
   }
   OnStart() {
     this.Sequence = new UiSequencePlayer_1.UiSequencePlayer(this.RootItem);
@@ -46,12 +51,17 @@ class PhantomArenaCardRecycle extends UiPanelBase_1.UiPanelBase {
     this.TotalHeight = this.RootItem.GetHeight();
     this.Pivot.FromUeVector2D(this.RootItem.GetPivot());
     this.EffectItem = this.GetItem(1);
+    this.SealEffectItem = this.GetItem(4);
     this.LightSequence = new UiSequencePlayer_1.UiSequencePlayer(this.EffectItem);
+    this.SealLightSequence = new UiSequencePlayer_1.UiSequencePlayer(this.SealEffectItem);
     this.EffectItem.SetUIActive(false);
+    this.SealEffectItem.SetUIActive(false);
+    this.GetItem(3)?.SetUIActive(false);
   }
   OnBeforeDestroy() {
     this.Sequence.Clear();
     this.LightSequence.Clear();
+    this.SealLightSequence.Clear();
   }
   CheckCardInRecycleArea(e) {
     this.TempCardPos.FromUeVector(e.GetWorldLocation());
@@ -62,16 +72,19 @@ class PhantomArenaCardRecycle extends UiPanelBase_1.UiPanelBase {
     var t = e === 0;
     if (this.EffectItemActive !== t) {
       this.EffectItemActive = t;
+      t = ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.RecycleIsInSeal;
       if (e === 0) {
-        this.EffectItem.SetUIActive(true);
+        this.EffectItem.SetUIActive(!t);
+        this.SealEffectItem.SetUIActive(t);
         this.Sequence.StopPrevSequence(false, true);
-        this.Sequence.PlaySequencePurely("RecycleActive");
+        this.Sequence.PlaySequencePurely(t ? "BanActive" : "RecycleActive");
       } else if (e === 1) {
         this.Sequence.StopPrevSequence(false, true);
-        this.Sequence.PlaySequencePurely("RecycleDisactive");
+        this.Sequence.PlaySequencePurely(t ? "BanDisactive" : "RecycleDisactive");
       } else {
         this.Sequence.StopPrevSequence(false, true);
-        this.Sequence.PlaySequencePurely("RecycleSuccess");
+        this.Sequence.PlaySequencePurely(t ? "BanSuccess" : "RecycleSuccess");
+        this.SealLightSequenceName = "RecycleLightRedClose";
         this.LightSequenceName = "RecycleLightClose";
       }
     }
@@ -84,23 +97,30 @@ class PhantomArenaCardRecycle extends UiPanelBase_1.UiPanelBase {
     return this.ViewProxy.GuideManager.CheckCanExecuteAndShowFailTips("BvbRecycleBoardCard", e);
   }
   RefreshCardRecycleArea(e) {
-    e = this.CheckCardInRecycleArea(e) ? "RecycleLight" : "RecycleLightClose";
-    if (this.LightSequenceName !== e) {
-      this.LightSequenceName = e;
-      this.LightSequence.PlaySequence(e);
+    var t;
+    var e = this.CheckCardInRecycleArea(e);
+    if (ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.RecycleIsInSeal) {
+      if (this.SealLightSequenceName !== (t = e ? "RecycleLightRed" : "RecycleLightRedClose")) {
+        this.SealLightSequenceName = t;
+        this.SealLightSequence.PlaySequence(t);
+      }
+    } else if (this.LightSequenceName !== (t = e ? "RecycleLight" : "RecycleLightClose")) {
+      this.LightSequenceName = t;
+      this.LightSequence.PlaySequence(t);
     }
   }
   async TrySettingCardByHand(e, t = false) {
-    if ((this.SettingFailReason = "", !t) && !this.CheckCardInRecycleArea(e)) {
+    var i;
+    if ((this.ResetSettingFailReason(), !t) && !this.CheckCardInRecycleArea(e)) {
       return false;
     }
-    return !!this.CheckSettingGuideCondition(e.Data.CardId) && !(e.Data.UseCost === 0 ? this.SettingFailReason = "PhantomBattle_1047" : (t = ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.GetBattleStatusValue(Protocol_1.Aki.Protocol.qC1.Proto_PhantomBattleCostPoint), !(await ControllerHolder_1.ControllerHolder.PhantomArenaBattleController.RequestPhantomBattleBackLibrary(e.Data.CardId)) || ((e = ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.GetBattleStatusValue(Protocol_1.Aki.Protocol.qC1.Proto_PhantomBattleCostPoint) - t) > 0 && this.GetText(2).SetText("+" + e), this.ViewProxy.GuideManager.FinishCurrentGuide(), 0)));
+    return !!this.CheckSettingGuideCondition(e.Data.CardId) && !([t, i] = e.CardLogic.CheckRecycleSettingConditionFromHead(), this.SettingFailReason = i, !t) && !(i = ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.GetBattleStatusValue(Protocol_1.Aki.Protocol.qC1.Proto_PhantomBattleCostPoint), !(await ControllerHolder_1.ControllerHolder.PhantomArenaBattleController.RequestPhantomBattleBackLibrary(e.Data.CardId))) && !((t = ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.GetBattleStatusValue(Protocol_1.Aki.Protocol.qC1.Proto_PhantomBattleCostPoint) - i) > 0 && this.GetText(2).SetText("+" + t), this.ViewProxy.GuideManager.FinishCurrentGuide(), 0);
   }
   async TrySettingCardByFunctional(e, t, i = false) {
-    if ((this.SettingFailReason = "", !i) && !this.CheckCardInRecycleArea(e)) {
+    if ((this.ResetSettingFailReason(), !i) && !this.CheckCardInRecycleArea(e)) {
       return false;
     }
-    return !!this.CheckEvolveGuideCondition(t) && !(e.Data.UseCost === 0 ? this.SettingFailReason = "PhantomBattle_1047" : (i = ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.GetBattleStatusValue(Protocol_1.Aki.Protocol.qC1.Proto_PhantomBattleCostPoint), !(await ControllerHolder_1.ControllerHolder.PhantomArenaBattleController.RequestPhantomBattleBackSlotCardLibrary(e.Data.CardId)) || ((t = ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.GetBattleStatusValue(Protocol_1.Aki.Protocol.qC1.Proto_PhantomBattleCostPoint) - i) > 0 && this.GetText(2).SetText("+" + t), this.ViewProxy.GuideManager.FinishCurrentGuide(), 0)));
+    return !!this.CheckEvolveGuideCondition(t) && !([i, t] = e.CardLogic.CheckRecycleSettingConditionFromFunctional(), this.SettingFailReason = t, !i) && !(t = ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.GetBattleStatusValue(Protocol_1.Aki.Protocol.qC1.Proto_PhantomBattleCostPoint), !(await ControllerHolder_1.ControllerHolder.PhantomArenaBattleController.RequestPhantomBattleBackSlotCardLibrary(e.Data.CardId))) && !((i = ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.GetBattleStatusValue(Protocol_1.Aki.Protocol.qC1.Proto_PhantomBattleCostPoint) - t) > 0 && this.GetText(2).SetText("+" + i), this.ViewProxy.GuideManager.FinishCurrentGuide(), 0);
   }
   RefreshCostNum() {
     var e = ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.GetBattleStatusValue(Protocol_1.Aki.Protocol.qC1.Proto_PhantomBattleCostPoint);

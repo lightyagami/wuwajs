@@ -11,13 +11,13 @@ class SpecialEnergyBarJiaBeiLiNaSlot extends SpecialEnergyBarSlot_1.SpecialEnerg
   constructor() {
     super(...arguments);
     this.RedPercentMachine = new SpecialEnergyBarPercentMachine_1.SpecialEnergyBarPercentMachine();
-    this.olm = false;
+    this.ddm = false;
     this.PercentCallback = undefined;
-    this.nlm = (t, e, i) => {
+    this.mdm = (t, e, i) => {
       this.RedPercentMachine.SetTargetPercent(this.GetRedTargetAttributePercent());
       this.RefreshRedBarPercent();
     };
-    this.slm = (t, e, i) => {
+    this.fdm = (t, e, i) => {
       this.RedPercentMachine.SetTargetPercent(this.GetRedTargetAttributePercent());
       this.RefreshRedBarPercent();
     };
@@ -43,8 +43,8 @@ class SpecialEnergyBarJiaBeiLiNaSlot extends SpecialEnergyBarSlot_1.SpecialEnerg
   }
   AddEvents() {
     super.AddEvents();
-    this.ListenForAttributeChanged(CharacterAttributeTypes_1.EAttributeId.Proto_SpecialEnergy2, this.nlm);
-    this.ListenForAttributeChanged(CharacterAttributeTypes_1.EAttributeId.Proto_SpecialEnergy2Max, this.slm);
+    this.ListenForAttributeChanged(CharacterAttributeTypes_1.EAttributeId.Proto_SpecialEnergy2, this.mdm);
+    this.ListenForAttributeChanged(CharacterAttributeTypes_1.EAttributeId.Proto_SpecialEnergy2Max, this.fdm);
   }
   RefreshRedBarPercent(t = 0) {
     var e = this.RedPercentMachine.GetCurPercent();
@@ -59,9 +59,9 @@ class SpecialEnergyBarJiaBeiLiNaSlot extends SpecialEnergyBarSlot_1.SpecialEnerg
     this.PercentCallback?.(1, e);
     this.KeyItem?.RefreshKeyEnable(i, t);
     if (t) {
-      this.olm = i;
-    } else if (this.olm !== i) {
-      this.olm = i;
+      this.ddm = i;
+    } else if (this.ddm !== i) {
+      this.ddm = i;
       this.RefreshRedBarPercent();
     }
   }

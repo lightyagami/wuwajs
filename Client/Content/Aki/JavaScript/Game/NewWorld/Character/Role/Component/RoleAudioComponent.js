@@ -25,11 +25,11 @@ Object.defineProperty(exports, "__esModule", {
 exports.RoleAudioComponent = undefined;
 const UE = require("ue");
 const AudioSystem_1 = require("../../../../../Core/Audio/AudioSystem");
-const Info_1 = require("../../../../../Core/Common/Info");
 const Log_1 = require("../../../../../Core/Common/Log");
 const Time_1 = require("../../../../../Core/Common/Time");
 const RegisterComponent_1 = require("../../../../../Core/Entity/RegisterComponent");
 const StateRef_1 = require("../../../../../Core/Utils/Audio/StateRef");
+const FNameUtil_1 = require("../../../../../Core/Utils/FNameUtil");
 const Vector_1 = require("../../../../../Core/Utils/Math/Vector");
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
@@ -37,12 +37,11 @@ const Global_1 = require("../../../../Global");
 const ConfigManager_1 = require("../../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const GameAudioController_1 = require("../../../../Module/Audio/GameAudioController");
-const VoxelUtils_1 = require("../../../../Utils/VoxelUtils");
 const CharacterAttributeTypes_1 = require("../../Common/Component/Abilities/CharacterAttributeTypes");
 const CharacterUnifiedStateTypes_1 = require("../../Common/Component/Abilities/CharacterUnifiedStateTypes");
 const CharacterAudioComponent_1 = require("../../Common/Component/CharacterAudioComponent");
 const CustomMovementDefine_1 = require("../../Common/Component/Move/CustomMovementDefine");
-const hookSkillEventMap = new Map([[100020, "play_role_commonskl_gousuo_target_start"], [100021, "play_role_commonskl_gousuo_target_start"], [100022, "play_amb_interact_suiguang_gousuo_target_start"], [100024, "play_role_commonskl_gousuo_target_start"], [210130, "play_role_commonskl_gousuo_target_start"], [210032, "play_role_commonskl_gousuo_target_start"]]);
+const hookSkillEventMap = new Map([[100020, "play_role_commonskl_gousuo_target_start"], [100021, "play_role_commonskl_gousuo_target_start"], [100022, "play_amb_interact_suiguang_gousuo_target_start"], [100024, "play_role_commonskl_gousuo_target_start"], [210130, "play_role_commonskl_gousuo_target_start"], [210032, "play_role_commonskl_gousuo_target_start"], [210033, "play_role_commonskl_gousuo_target_type2_start"]]);
 const footstepVariantMap = new Map([[0, "land"], [1, "run"], [2, "runstop"], [3, "sprint"], [4, "sprintstop"], [5, "walk"], [6, "walkstop"], [7, "turnback"]]);
 const foleyVariantMap = new Map([[0, "bodyfall"], [1, "fly"], [2, "run"], [3, "sprint"], [4, "hard"], [5, "hardfast"], [6, "weak"], [7, "weakfast"]]);
 const ROLE_GO_DOWN_FINISH_EVENT = "scene_role_switched_behind";
@@ -50,7 +49,6 @@ const ROLE_INTERACT_SHR = "play_amb_role_interact_shr";
 const ROLE_MOVE = "role_move";
 const TICK_INTERVAL = 250;
 const LOCATION_TOLERANCE = 32;
-const MATERIAL_ID_SHR = 14;
 const SPECIAL_JINXI_OPEN_BOX_ROLE_ID = 1304;
 const SPECIAL_JINXI_OPEN_BOX_COUNTRY_ID = 1;
 let RoleAudioComponent = RoleAudioComponent_1 = class RoleAudioComponent extends CharacterAudioComponent_1.CharacterAudioComponent {
@@ -66,6 +64,8 @@ let RoleAudioComponent = RoleAudioComponent_1 = class RoleAudioComponent extends
     this.Xvl = undefined;
     this.mBe = undefined;
     this.$te = undefined;
+    this.IsInAudioShrubOverride = false;
+    this.AudioShrubTagNameOverride = undefined;
     this.A$_ = e => {
       if (e === this.CreatureData?.GetPbDataId()) {
         if (Log_1.Log.CheckDebug()) {
@@ -192,8 +192,8 @@ let RoleAudioComponent = RoleAudioComponent_1 = class RoleAudioComponent extends
   OnInit() {
     super.OnInit();
     this.lUr();
-    this.mBe = this.Entity.CheckGetComponent(179);
-    this.$te = this.Entity.CheckGetComponent(177);
+    this.mBe = this.Entity.CheckGetComponent(184);
+    this.$te = this.Entity.CheckGetComponent(182);
     if (this.Config && (EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRoleSkinChange, this.A$_), EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharBeDamage, this.Dca), EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharUseSkill, this.ero), EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnRoleGoDownFinish, this.M9s), EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharPossessed, this.PPr), EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharUnpossessed, this.xPr), EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnInteractionWaterTypeChange, this.sk_), EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharMovementModeChanged, this.Hqr), this.Config.Id === SPECIAL_JINXI_OPEN_BOX_ROLE_ID)) {
       this.Xvl = new StateRef_1.StateRef("patch_jinxi_openbox_state", "none");
       this.Hje();
@@ -285,12 +285,17 @@ let RoleAudioComponent = RoleAudioComponent_1 = class RoleAudioComponent extends
   }
   xin() {
     var e;
+    var t;
     if (!!this.ActorComp?.Valid && !(e = this.ActorComp.ActorLocationProxy).Equals(RoleAudioComponent_1.LHo, LOCATION_TOLERANCE)) {
       RoleAudioComponent_1.LHo.DeepCopy(e);
       GameAudioController_1.GameAudioController.UpdatePlayerLocation(e);
       e = this.ActorComp.ActorLocation;
-      if (VoxelUtils_1.VoxelUtils.GetVoxelInfo(Info_1.Info.World, e).MtlID === MATERIAL_ID_SHR) {
-        AudioSystem_1.AudioSystem.PostEvent(ROLE_INTERACT_SHR, new UE.TransformDouble(e));
+      if (this.GetInAudioShr()) {
+        if ((t = this.GetAudioShrubTag()) !== FNameUtil_1.FNameUtil.NONE) {
+          AudioSystem_1.AudioSystem.PostEvent(t.toString(), new UE.TransformDouble(e));
+        } else {
+          AudioSystem_1.AudioSystem.PostEvent(ROLE_INTERACT_SHR, new UE.TransformDouble(e));
+        }
       }
     }
   }
@@ -321,8 +326,22 @@ let RoleAudioComponent = RoleAudioComponent_1 = class RoleAudioComponent extends
       AudioSystem_1.AudioSystem.PostEvent(t, e);
     }
   }
+  UpdateIsInAudioShrubEvent(e, t) {
+    this.IsInAudioShrubOverride = e;
+    this.AudioShrubTagNameOverride = t;
+  }
+  GetInAudioShr() {
+    let e = this.IsInAudioShrubOverride;
+    var t = this.ActorComp?.Actor?.CharRenderingComponent;
+    return e = t ? e || t.GetInAudioShr() : e;
+  }
+  GetAudioShrubTag() {
+    let e = this.AudioShrubTagNameOverride;
+    var t = this.ActorComp?.Actor?.CharRenderingComponent;
+    return (e = t?.GetAudioShrTag() !== FNameUtil_1.FNameUtil.NONE ? t.GetAudioShrTag() : e) || FNameUtil_1.FNameUtil.NONE;
+  }
 };
 RoleAudioComponent.IYt = 0;
 RoleAudioComponent.LHo = Vector_1.Vector.Create();
-RoleAudioComponent = RoleAudioComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(193)], RoleAudioComponent);
+RoleAudioComponent = RoleAudioComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(199)], RoleAudioComponent);
 exports.RoleAudioComponent = RoleAudioComponent; //# sourceMappingURL=RoleAudioComponent.js.map

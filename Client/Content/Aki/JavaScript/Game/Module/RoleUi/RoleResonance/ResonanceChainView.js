@@ -99,8 +99,8 @@ class ResonanceChainView extends UiTabViewBase_1.UiTabViewBase {
       this.Zco();
       var t = [];
       for (let e = 0; e < RESONANCE_ITEM_COUNT; e++) {
-        t.push(this.bhm(e));
-        t.push(this.Rhm(e));
+        t.push(this.mcm(e));
+        t.push(this.fcm(e));
       }
       this.xKt = new ResonanceChainInfoItem_1.ResonanceChainInfoItem();
       t.push(this.xKt.CreateByResourceIdAsync("UIItem_ResonanceChainInfo", this.RootItem));
@@ -164,14 +164,14 @@ class ResonanceChainView extends UiTabViewBase_1.UiTabViewBase {
       return RESONANCE_FIRST_ITEM_ANGLE + e * RESONANCE_PER_ITEM_ANGLE;
     }
   }
-  async bhm(e) {
+  async mcm(e) {
     var t = new ResonanceChainItem_1.ResonanceChainLockedItem();
     await (this.Oco[e] = t).CreateByResourceIdAsync("UIItem_ResonanceChainLockedItem", this.Fco[e]);
     t.BindToggleCallBack(this.Yco);
     t.SetIconRotation(this.tmo(e));
     return t;
   }
-  async Rhm(e) {
+  async fcm(e) {
     var t = new ResonanceChainItem_1.ResonanceChainActivatedItem();
     await (this.Nco[e] = t).CreateByResourceIdAsync("UIItem_ResonanceChainActivatedItem", this.Fco[e]);
     t.BindToggleCallBack(this.Yco);

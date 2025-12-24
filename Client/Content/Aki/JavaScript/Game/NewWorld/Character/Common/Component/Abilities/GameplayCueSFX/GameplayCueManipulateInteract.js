@@ -39,7 +39,7 @@ class GameplayCueManipulateInteract extends GameplayCueBase_1.GameplayCueBase {
     ActorSystem_1.ActorSystem.Put("GameplayCueManipulateInteract.OnDestroy", this.c$o);
   }
   GetTargetPosition() {
-    return this.EntityHandle.Entity.GetComponent(66).GetTargetLocation().ToUeVector();
+    return this.EntityHandle.Entity.GetComponent(69).GetTargetLocation().ToUeVector();
   }
 }
 exports.GameplayCueManipulateInteract = GameplayCueManipulateInteract;

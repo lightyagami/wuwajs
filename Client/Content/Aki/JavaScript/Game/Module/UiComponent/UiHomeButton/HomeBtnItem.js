@@ -12,7 +12,7 @@ class HomeBtnItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.Gvr = () => {};
-    this.yum = undefined;
+    this.kgm = undefined;
     this.Fr = () => {
       if (this.Gvr) {
         this.Gvr();
@@ -26,7 +26,7 @@ class HomeBtnItem extends UiPanelBase_1.UiPanelBase {
   async OnBeforeStartAsync() {
     var t;
     var i;
-    if (this.yum !== undefined && (i = HomeBtnStyleById_1.configHomeBtnStyleById.GetConfig(this.yum)) !== undefined && (t = this.GetUiSpriteTransition(1))) {
+    if (this.kgm !== undefined && (i = HomeBtnStyleById_1.configHomeBtnStyleById.GetConfig(this.kgm)) !== undefined && (t = this.GetUiSpriteTransition(1))) {
       if (!StringUtils_1.StringUtils.IsEmpty(i.SPNormal)) {
         await this.SetSpriteTransitionByPath(i.SPNormal, t, 0);
       }
@@ -46,7 +46,7 @@ class HomeBtnItem extends UiPanelBase_1.UiPanelBase {
     this.Gvr = t;
   }
   SetHomeBtnStyle(t) {
-    this.yum = t;
+    this.kgm = t;
   }
 }
 exports.HomeBtnItem = HomeBtnItem;

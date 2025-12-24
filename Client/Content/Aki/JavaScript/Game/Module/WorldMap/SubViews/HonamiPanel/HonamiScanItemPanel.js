@@ -31,8 +31,8 @@ class HonamiScanItemPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondary
     this.UpdateTopRightIconActive();
   }
   UpdateEnableFastMoveLayout() {
-    this.ConfirmButton.SetActive(false);
-    this.ConfirmButton.SetEnableClick(false);
+    this.LayoutContext?.SetConfirmBtnActive(false);
+    this.LayoutContext?.SetConfirmBtnEnableClick(false);
     this.UpdateQuickGotoActive(true);
   }
   sCo() {

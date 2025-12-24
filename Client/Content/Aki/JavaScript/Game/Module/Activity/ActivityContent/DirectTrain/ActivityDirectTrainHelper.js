@@ -20,8 +20,7 @@ const UiManager_1 = require("../../../../Ui/UiManager");
 const QuestController_1 = require("../../../QuestNew/Controller/QuestController");
 const SplashScreenController_1 = require("../../../SplashScreen/SplashScreenController");
 const SplashScreenTask_1 = require("../../../SplashScreen/SplashScreenTask");
-const ActivityController_1 = require("../../ActivityController");
-const ActivityManager_1 = require("../../ActivityManager");
+const ActivityDirectTrainData_1 = require("./ActivityDirectTrainData");
 const ActivityDirectTrainDefine_1 = require("./ActivityDirectTrainDefine");
 class ActivityDirectTrainHelper {
   static get IsInValidInstance() {
@@ -31,20 +30,11 @@ class ActivityDirectTrainHelper {
     }
     return e.includes(ModelManager_1.ModelManager.CreatureModel.GetInstanceId());
   }
-  static GetActivityData() {
-    var e = ModelManager_1.ModelManager.ActivityDirectTrainModel.ActivityId;
-    return ModelManager_1.ModelManager.ActivityModel.GetActivityById(e);
-  }
-  static GetActivityController() {
-    var e = ActivityDirectTrainHelper.GetActivityData();
-    return ActivityManager_1.ActivityManager.GetActivityController(e.Type);
-  }
-  static IsGetActivityRewards() {
-    var e = ModelManager_1.ModelManager.ActivityDirectTrainModel.GetSkipQuestId();
+  static IsGetActivityRewards(e) {
+    e = ModelManager_1.ModelManager.ActivityDirectTrainModel.GetSkipQuestId(e);
     return ModelManager_1.ModelManager.QuestNewModel.CheckQuestFinished(e);
   }
-  static GetRecommendQuestLinkId() {
-    var e = ModelManager_1.ModelManager.ActivityDirectTrainModel.ActivityId;
+  static GetRecommendQuestLinkId(e) {
     var r = ConfigManager_1.ConfigManager.ActivityDirectTrainConfig.GetDirectTrainActivityConfById(e).RecommendQuestLinkList;
     for (let e = r.length - 1; e >= 0; --e) {
       var t = r[e];
@@ -62,56 +52,67 @@ class ActivityDirectTrainHelper {
     }
   }
   static async TryOpenPro(e = true) {
+    var r;
+    var t;
     if (!PublicUtil_1.PublicUtil.GetIsSilentLogin()) {
       if (this.IsInValidInstance) {
-        const r = await ActivityDirectTrainHelper.YB1();
+        r = await ActivityDirectTrainHelper.RequestDirectTrainInfoBeforeActivityOpen();
         if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("ActivityDirectTrain", 64, "RequestActivityDataBeforeActivityOpen", ["activityData", r], ["isByTask", e]);
+          Log_1.Log.Debug("ActivityDirectTrain", 64, "RequestDirectTrainInfoBeforeActivityOpen", ["activityData", r], ["isByTask", e]);
         }
-        if (r !== undefined && r.s5n !== 0) {
-          ActivityDirectTrainHelper.IsProOpen = true;
-          this.EmitEventsForOther(true);
+        (t = ModelManager_1.ModelManager.ActivityDirectTrainModel).LoadDataFromInfoProto(r);
+        r = t.HasValidDirectTrainProData;
+        ActivityDirectTrainHelper.IsProOpen = r;
+        ActivityDirectTrainHelper.EmitEventsForOther(r);
+        if (r) {
           if (e) {
-            if (!LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.IsDirectTrainProOpened)) {
-              e = new SplashScreenTask_1.SplashScreenTask(5, 0, () => {
+            if (Log_1.Log.CheckDebug()) {
+              Log_1.Log.Debug("ActivityDirectTrain", 95, "尝试以SplashScreenTask打开直通车");
+            }
+            if (LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.IsDirectTrainProOpened)) {
+              if (Log_1.Log.CheckDebug()) {
+                Log_1.Log.Debug("ActivityDirectTrain", 95, "LocalStorage中直通车Pro已打开过，跳过");
+              }
+            } else {
+              t = new SplashScreenTask_1.SplashScreenTask(5, 0, () => {
+                var e;
                 if (!ModelManager_1.ModelManager.FunctionModel.IsOpen(10053)) {
-                  this.ProActivityDataCache = ActivityController_1.ActivityController.CreateActivityData(r);
-                  UiManager_1.UiManager.OpenView("DirectTrainProView", this.ProActivityDataCache);
+                  e = ActivityDirectTrainData_1.ActivityDirectTrainProParam.LoadDataFromModel();
+                  UiManager_1.UiManager.OpenView("DirectTrainProView", e);
                   LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.IsDirectTrainProOpened, true);
                 }
               });
-              SplashScreenController_1.SplashScreenController.PushSplashScreenTask(e);
+              SplashScreenController_1.SplashScreenController.PushSplashScreenTask(t);
             }
           } else {
-            this.ProActivityDataCache = ActivityController_1.ActivityController.CreateActivityData(r);
-            UiManager_1.UiManager.OpenView("DirectTrainProView", this.ProActivityDataCache);
+            r = ActivityDirectTrainData_1.ActivityDirectTrainProParam.LoadDataFromModel();
+            UiManager_1.UiManager.OpenView("DirectTrainProView", r);
             LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.IsDirectTrainProOpened, true);
           }
-        } else {
-          ActivityDirectTrainHelper.IsProOpen = false;
-          ActivityDirectTrainHelper.EmitEventsForOther(false);
+        } else if (Log_1.Log.CheckDebug()) {
+          Log_1.Log.Debug("ActivityDirectTrain", 95, "尝试打开直通车，但服务器没有返回有效的活动数据");
         }
       } else {
         this.EmitEventsForOther(false);
       }
     }
   }
-  static async YB1() {
+  static async RequestDirectTrainInfoBeforeActivityOpen() {
     var e = Protocol_1.Aki.Protocol.$U1.create();
     var e = await Net_1.Net.CallAsync(28783, e);
     if (e) {
-      return e.XU1;
+      return e;
     }
   }
-  static RequestThroughTrain(r) {
-    var e = Protocol_1.Aki.Protocol.zp_.create();
-    e.w6n = ModelManager_1.ModelManager.ActivityDirectTrainModel.ActivityId;
-    Net_1.Net.Call(21409, e, e => {
+  static RequestThroughTrain(e, r) {
+    const t = Protocol_1.Aki.Protocol.zp_.create();
+    t.w6n = e;
+    Net_1.Net.Call(21409, t, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
           ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15513);
         } else {
-          if ((e = ModelManager_1.ModelManager.ActivityDirectTrainModel.GetSkipQuestId()) !== ModelManager_1.ModelManager.QuestNewModel.GetCurTrackedQuest()?.Id) {
+          if ((e = ModelManager_1.ModelManager.ActivityDirectTrainModel.GetSkipQuestId(t.w6n)) !== ModelManager_1.ModelManager.QuestNewModel.GetCurTrackedQuest()?.Id) {
             QuestController_1.QuestNewController.RequestTrackQuest(e, true, 1);
           }
           r?.();
@@ -119,20 +120,21 @@ class ActivityDirectTrainHelper {
       }
     });
   }
-  static async RequestThroughTrainFinishViewAsync() {
-    var e;
+  static async RequestThroughTrainFinishViewAsync(e) {
+    var r;
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("ActivityDirectTrain", 95, "[直通车活动] RequestThroughTrainFinishViewAsync()->", ["actId", e]);
+    }
     if ((ActivityDirectTrainHelper.DirectTrainStartConditionMap.get(ActivityDirectTrainDefine_1.EDirectTrainStartCondition.ServerConditionDone) ?? false) || this.IsProOpen) {
-      (e = Protocol_1.Aki.Protocol.Kx_.create()).w6n = ModelManager_1.ModelManager.ActivityDirectTrainModel.ActivityId;
-      await Net_1.Net.CallAsync(26409, e);
+      (r = Protocol_1.Aki.Protocol.Kx_.create()).w6n = e;
+      await Net_1.Net.CallAsync(26409, r);
       this.DirectTrainStartConditionMap.set(ActivityDirectTrainDefine_1.EDirectTrainStartCondition.ServerConditionDone, false);
     }
   }
   static EmitEventsForOther(e) {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnActivityDirectTrainProSetActive, e);
-    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ActivityDirectTrainRedDotUpdate);
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ActivityDirectTrainRedDotUpdate, 0);
   }
 }
 (exports.ActivityDirectTrainHelper = ActivityDirectTrainHelper).DirectTrainStartConditionMap = new Map();
-ActivityDirectTrainHelper.IsProOpen = false;
-ActivityDirectTrainHelper.CurrentActivityId = 103000003;
-ActivityDirectTrainHelper.ProActivityDataCache = undefined; //# sourceMappingURL=ActivityDirectTrainHelper.js.map
+ActivityDirectTrainHelper.IsProOpen = false; //# sourceMappingURL=ActivityDirectTrainHelper.js.map

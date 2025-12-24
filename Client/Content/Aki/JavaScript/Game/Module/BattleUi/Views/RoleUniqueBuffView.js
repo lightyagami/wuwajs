@@ -32,7 +32,7 @@ class RoleUniqueBuffView extends BattleVisibleChildView_1.BattleVisibleChildView
   }
   OnStart() {
     super.OnStart();
-    this.InitChildType(37);
+    this.InitChildType(41);
     this.E4u();
     var e = CommonParamById_1.configCommonParamById.GetIntConfig("RoleUniqueBuffItemCount");
     this.mkn.Init(this.RootItem, e, false, true, true, this.S4u.GetRootItem());

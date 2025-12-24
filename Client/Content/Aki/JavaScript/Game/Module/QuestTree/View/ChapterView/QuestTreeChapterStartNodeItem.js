@@ -17,14 +17,14 @@ class QuestTreeChapterStartNodeItem extends UiPanelBase_1.UiPanelBase {
     this.Pe = e;
     this.iwd = undefined;
     this.sKe = TickSystem_1.TickSystem.InvalidId;
-    this._tm = 0;
+    this.Rom = 0;
     this.J_ = e => {
       var t = this.GetVerticalLayout(4);
       ModelManager_1.ModelManager.QuestTreeModel.ViewModelChapter.RecordHeightBalanceValue(-1, 0, t?.GetRootComponent()?.GetHeight() ?? 0);
       var t = this.GetUiSizeControlByOther(5);
       var i = this.iwd.GetLayoutItemByIndex(this.iwd.GetDatas().length - 1);
       if (i) {
-        t.SetAdditionalHeight(this._tm - i.GetAdditionalHeight());
+        t.SetAdditionalHeight(this.Rom - i.GetAdditionalHeight());
       }
     };
   }
@@ -35,7 +35,7 @@ class QuestTreeChapterStartNodeItem extends UiPanelBase_1.UiPanelBase {
     await this.nOe();
   }
   OnStart() {
-    this._tm = this.GetUiSizeControlByOther(5).GetAdditionalHeight();
+    this.Rom = this.GetUiSizeControlByOther(5).GetAdditionalHeight();
     this.iwd = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(4), () => QuestTreeNodeItemFactory_1.QuestTreeNodeItemFactory.Instance.CreateLogicalNodeItem(4));
     this.rwd();
     this.sKe = TickSystem_1.TickSystem.Add(this.J_, "QuestTreeChapterStartNodeItem", 0, true, undefined, true)?.Id ?? TickSystem_1.TickSystem.InvalidId;
@@ -45,6 +45,11 @@ class QuestTreeChapterStartNodeItem extends UiPanelBase_1.UiPanelBase {
       TickSystem_1.TickSystem.Remove(this.sKe);
       this.sKe = TickSystem_1.TickSystem.InvalidId;
     }
+  }
+  async RefreshByData(e) {
+    this.Pe = e;
+    this.rwd();
+    await this.nOe();
   }
   async nOe() {
     var e = this.GetText(1);

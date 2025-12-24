@@ -3,21 +3,27 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.RouletteComponentAssemblyFunction = exports.RouletteComponentAssemblyExplore = exports.RouletteComponentAssembly = undefined;
-const ModelManager_1 = require("../../../Manager/ModelManager");
+exports.RouletteComponentAssembly = undefined;
 const RouletteGridForbiddenSettings_1 = require("../RouletteGrid/RouletteGridForbiddenSettings");
 const RouletteComponent_1 = require("./RouletteComponent");
 class RouletteComponentAssembly extends RouletteComponent_1.RouletteComponentBase {
-  IsCurrentEquippedId(e) {
+  constructor() {
+    super(...arguments);
+    this.ViewProxy = undefined;
+  }
+  RegisterViewProxy(t) {
+    this.ViewProxy = t;
+  }
+  IsCurrentEquippedId(t) {
     return false;
   }
   GamepadReturnEmptyGrid() {
     this.IsEmptyChoose = false;
   }
-  JudgeGridStateByData(e, t) {
-    if (e !== undefined && e !== 0) {
-      if ((t = RouletteGridForbiddenSettings_1.RouletteGridForbiddenSettings.CheckGridSpecialState(0, t, e)) !== undefined) {
-        return t;
+  JudgeGridStateByData(t, e) {
+    if (t !== undefined && t !== 0) {
+      if ((e = RouletteGridForbiddenSettings_1.RouletteGridForbiddenSettings.CheckGridSpecialState(0, e, t)) !== undefined) {
+        return e;
       } else {
         return 1;
       }
@@ -25,93 +31,53 @@ class RouletteComponentAssembly extends RouletteComponent_1.RouletteComponentBas
       return 2;
     }
   }
-  SetCurrentToggleState(e) {
-    this.GetCurrentGrid()?.SetGridToggleNavigation(e);
+  SetCurrentToggleState(t) {
+    this.GetCurrentGrid()?.SetGridToggleNavigation(t);
   }
-  InitGridEvent(e) {
-    super.InitGridEvent(e);
-    e.SetGridToggleChangeEvent();
+  InitGridEvent(t) {
+    super.InitGridEvent(t);
+    t.SetGridToggleChangeEvent();
   }
-  GridDataDecorator(e) {
-    e.State = this.JudgeGridStateByData(e.Id, e.GridType);
-    e.ShowIndex = true;
-    e.ShowRedDot = false;
-    return e;
+  GridDataDecorator(t) {
+    t.State = this.JudgeGridStateByData(t.Id, t.GridType);
+    t.ShowIndex = true;
+    t.ShowRedDot = false;
+    return t;
   }
-  GetGridId(e, t) {
-    return ModelManager_1.ModelManager.RouletteModel.GetRouletteGridId(e, t, false);
+  GetRouletteInfoMap() {
+    return this.ViewProxy.GetRouletteDataMap();
   }
-  y0o(e, t) {
-    switch (t) {
-      case 0:
-        var o = ModelManager_1.ModelManager.RouletteModel.GetDefaultExploreSkillIdList();
-        if (e > o.length) {
-          return undefined;
-        } else {
-          return o[e];
-        }
-      case 1:
-        o = ModelManager_1.ModelManager.RouletteModel.GetDefaultFunctionIdList();
-        if (e > o.length) {
-          return undefined;
-        } else {
-          return o[e];
-        }
-      case 2:
-        return;
-    }
+  GetGridId(t, e) {
+    return this.ViewProxy.GetRouletteGridId(t, e);
   }
-  ResetAllGridDefault() {
-    for (const o of this.RouletteGridList) {
-      o.SetGridEquipped(false);
-      o.SetGridToggleState(false);
-      var e = o.Data;
-      e.Name = undefined;
-      var t = this.y0o(e.DataIndex, e.GridType);
-      e.Id = t ?? e.Id;
-      e.State = this.JudgeGridStateByData(e.Id, e.GridType);
-      o.RefreshGrid(e);
-    }
-  }
-  GetGridByValidId(e) {
-    if (e !== 0 && e !== undefined) {
-      for (const t of this.RouletteGridList) {
-        if (t.Data.Id === e) {
-          return t;
+  GetGridByValidId(t) {
+    if (t !== 0 && t !== undefined) {
+      for (const e of this.RouletteGridList) {
+        if (e.Data.Id === t) {
+          return e;
         }
       }
     }
   }
-  SetCurrentGridByData(e) {
-    this.CurrentGridIndex = e.GridIndex;
+  SetCurrentGridByData(t) {
+    this.CurrentGridIndex = t.GridIndex;
     this.RefreshRouletteComponent();
   }
-  RefreshCurrentGridData(e) {
-    this.GridDataDecorator(e);
-    this.GetCurrentGrid()?.RefreshGrid(e);
+  RefreshCurrentGridData(t) {
+    this.GridDataDecorator(t);
+    this.GetCurrentGrid()?.RefreshGrid(t);
     this.RefreshRouletteComponent();
   }
-  GetGridByIndex(e) {
-    if (!(e < 0) && !(e >= this.RouletteGridList.length)) {
-      return this.RouletteGridList[e];
+  DeactivateGridToggleChangeEvent() {
+    for (const t of this.RouletteGridList) {
+      t.RemoveGridToggleChangeEvent();
     }
   }
-  SetAllGridDeselect() {
-    for (const e of this.RouletteGridList) {
-      e.SetGridToggleState(false);
+  GetGridByIndex(t) {
+    if (!(t < 0) && !(t >= this.RouletteGridList.length)) {
+      return this.RouletteGridList[t];
     }
   }
 }
-class RouletteComponentAssemblyExplore extends (exports.RouletteComponentAssembly = RouletteComponentAssembly) {
-  GetRouletteInfoMap() {
-    return RouletteComponent_1.exploreRouletteMap;
-  }
-}
-exports.RouletteComponentAssemblyExplore = RouletteComponentAssemblyExplore;
-class RouletteComponentAssemblyFunction extends RouletteComponentAssembly {
-  GetRouletteInfoMap() {
-    return RouletteComponent_1.functionRouletteMap;
-  }
-}
-exports.RouletteComponentAssemblyFunction = RouletteComponentAssemblyFunction;
+exports.RouletteComponentAssembly = RouletteComponentAssembly;
 //# sourceMappingURL=RouletteComponentAssembly.js.map

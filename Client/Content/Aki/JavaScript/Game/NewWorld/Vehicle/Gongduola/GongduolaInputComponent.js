@@ -1,19 +1,19 @@
 "use strict";
 
-var __decorate = this && this.__decorate || function (t, i, e, o) {
-  var s;
-  var r = arguments.length;
-  var n = r < 3 ? i : o === null ? o = Object.getOwnPropertyDescriptor(i, e) : o;
+var __decorate = this && this.__decorate || function (t, i, e, s) {
+  var o;
+  var h = arguments.length;
+  var n = h < 3 ? i : s === null ? s = Object.getOwnPropertyDescriptor(i, e) : s;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    n = Reflect.decorate(t, i, e, o);
+    n = Reflect.decorate(t, i, e, s);
   } else {
-    for (var h = t.length - 1; h >= 0; h--) {
-      if (s = t[h]) {
-        n = (r < 3 ? s(n) : r > 3 ? s(i, e, n) : s(i, e)) || n;
+    for (var r = t.length - 1; r >= 0; r--) {
+      if (o = t[r]) {
+        n = (h < 3 ? o(n) : h > 3 ? o(i, e, n) : o(i, e)) || n;
       }
     }
   }
-  if (r > 3 && n) {
+  if (h > 3 && n) {
     Object.defineProperty(i, e, n);
   }
   return n;
@@ -45,12 +45,15 @@ let GongduolaInputComponent = class GongduolaInputComponent extends VehicleInput
     this.LastInput = Vector_1.Vector.Create();
     this.TmpVector1 = Vector_1.Vector.Create();
     this.TmpVector2 = Vector_1.Vector.Create();
+    this.TagEventChangeRoll1 = undefined;
+    this.TagEventChangeRoll2 = undefined;
+    this.TagEventChangeRoll3 = undefined;
     this.TagEventSprint = undefined;
   }
   UpdateVehicleInputDirectAndFacing() {
     this.UpdateMoveCache();
     this.InputAdjusted(this.TmpVector1);
-    this.ActorComp.SetInputDirect(this.TmpVector1, true);
+    this.ActorComp.SetInputDirect(this.TmpVector1);
     this.SetInputFacingFromInputDirect();
   }
   SetInputFacingFromInputDirect(t = true) {
@@ -70,27 +73,27 @@ let GongduolaInputComponent = class GongduolaInputComponent extends VehicleInput
     i.DeepCopy(this.MoveVectorCache);
     var e = Math.abs(this.MoveVectorCache.X);
     var t = this.MoveVectorCache.X < 0 ? -1 : 1;
-    var o = Math.abs(this.MoveVectorCache.Y);
-    var s = this.MoveVectorCache.Y < 0 ? -1 : 1;
-    if (this.TurningForceInputFactor && o !== 0) {
-      var r = this.ActorComp.ActorVelocityProxy.Size();
+    var s = Math.abs(this.MoveVectorCache.Y);
+    var o = this.MoveVectorCache.Y < 0 ? -1 : 1;
+    if (this.TurningForceInputFactor && s !== 0) {
+      var h = this.ActorComp.ActorVelocityProxy.Size();
       var n = Vector_1.Vector.DotProduct(this.ActorComp.ActorVelocityProxy, this.ActorComp.ActorForwardProxy);
-      var r = !!this.PerformComp?.IsBeingImpacted || r < 1 || n >= 0;
-      var n = r ? 1 : this.TurnBackwardInputMaxX;
-      var h = r ? this.TurnForwardInputMinX : -1;
-      let t = r ? 1 : -1;
-      if (i.X < h) {
+      var h = !!this.PerformComp?.IsBeingImpacted || h < 1 || n >= 0;
+      var n = h ? 1 : this.TurnBackwardInputMaxX;
+      var r = h ? this.TurnForwardInputMinX : -1;
+      let t = h ? 1 : -1;
+      if (i.X < r) {
         t = -1;
       } else if (i.X > n) {
         t = 1;
       }
-      i.X = t * Math.max(e, o * this.TurningForceInputFactor);
+      i.X = t * Math.max(e, s * this.TurningForceInputFactor);
     }
     if (e >= this.MaxForwardThreshold) {
       i.X = t;
     }
-    if (o >= this.MaxRightThreshold) {
-      i.Y = s;
+    if (s >= this.MaxRightThreshold) {
+      i.Y = o;
     }
     if (Info_1.Info.IsInGamepad() && i.Y * this.LastInput.Y < 0) {
       i.Y = 0;
@@ -98,15 +101,15 @@ let GongduolaInputComponent = class GongduolaInputComponent extends VehicleInput
     this.LastInput.DeepCopy(i);
   }
   ExecuteSprint(t) {
-    this.Entity.GetComponent(249)?.TryEnterSprint();
+    this.Entity.GetComponent(260)?.TryEnterSprint();
   }
   ExecuteSkill(t) {
     t = t.IntValue;
     if (t === 210012) {
       PhotographController_1.PhotographController.PhotographFastScreenShot();
     } else if (t === SKILL_ID_RIDER_SHARING) {
-      if (this.Entity.GetComponent(249)?.CheckIfCanRiderSharing()) {
-        if (this.Entity.GetComponent(240)?.IsMoving) {
+      if (this.Entity.GetComponent(260)?.CheckIfCanRiderSharing()) {
+        if (this.Entity.GetComponent(249)?.IsMoving) {
           ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("ShipTogetherViewCanNotOpenWhenMoving");
         } else {
           UiManager_1.UiManager.OpenView("ShipTogetherView");
@@ -119,11 +122,23 @@ let GongduolaInputComponent = class GongduolaInputComponent extends VehicleInput
   AddBlockEvents() {
     super.AddBlockEvents();
     this.TagEventSprint = this.AddBlockActionEvent(-1347413397, InputEnums_1.EInputAction.闪避);
+    this.TagEventChangeRoll1 = this.AddBlockActionEvent(-1216591977, InputEnums_1.EInputAction.切换角色1);
+    this.TagEventChangeRoll2 = this.AddBlockActionEvent(-1199814358, InputEnums_1.EInputAction.切换角色2);
+    this.TagEventChangeRoll3 = this.AddBlockActionEvent(-1183036739, InputEnums_1.EInputAction.切换角色3);
   }
   RemoveBlockActionEvents() {
     super.RemoveBlockActionEvents();
     this.TagEventSprint?.EndTask();
+    this.TagEventChangeRoll1.EndTask();
+    this.TagEventChangeRoll2.EndTask();
+    this.TagEventChangeRoll3.EndTask();
+  }
+  InitPassengerInputForbidTagInfo() {
+    super.InitPassengerInputForbidTagInfo();
+    this.PassengerInputForbidTagArray.push(-1216591977);
+    this.PassengerInputForbidTagArray.push(-1199814358);
+    this.PassengerInputForbidTagArray.push(-1183036739);
   }
 };
-GongduolaInputComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(250)], GongduolaInputComponent);
+GongduolaInputComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(261)], GongduolaInputComponent);
 exports.GongduolaInputComponent = GongduolaInputComponent; //# sourceMappingURL=GongduolaInputComponent.js.map

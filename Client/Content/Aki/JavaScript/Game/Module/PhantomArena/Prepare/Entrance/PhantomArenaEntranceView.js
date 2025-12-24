@@ -32,7 +32,8 @@ class PhantomArenaEntranceView extends PhantomArenaRootViewBase_1.PhantomArenaRo
     this.Euu = () => {
       var t = {
         ChallengeId: this.ViewModel.GetRepeatChallenge(),
-        OpenView: "PhantomArenaChallengeDetailTabView"
+        OpenView: ModelManager_1.ModelManager.PhantomArenaModel.IsNewPhantomArenaActivity(this.ActivityId) ? "PhantomArenaChallengeDetailTabViewNew" : "PhantomArenaChallengeDetailTabView",
+        ActivityId: this.ActivityId
       };
       UiManager_1.UiManager.OpenView("PhantomArenaMainView", t, () => {
         this.GetItem(8).SetUIActive(false);
@@ -42,33 +43,37 @@ class PhantomArenaEntranceView extends PhantomArenaRootViewBase_1.PhantomArenaRo
       this.Back();
     };
     this.Gou = () => {
-      UiManager_1.UiManager.OpenView("PhantomArenaEntranceShopMainView", "PhantomArenaEntranceTaskTabView");
+      var t = {
+        TabViewName: "PhantomArenaEntranceTaskTabView",
+        ActivityId: this.ActivityId
+      };
+      UiManager_1.UiManager.OpenView("PhantomArenaEntranceShopMainView", t);
     };
     this.dmu = () => {
-      UiManager_1.UiManager.OpenView("PhantomArenaMasterInfoView");
+      UiManager_1.UiManager.OpenView("PhantomArenaMasterInfoView", this.ActivityId);
     };
     this.XL1 = () => {
       UiManager_1.UiManager.OpenView("PhantomArenaHelpView", PhantomArenaDefine_1.HELP_ID_ENTRANCE);
     };
     this.fTu = t => {
-      var e;
+      var i;
       if (t === 0) {
-        e = this.ViewModel.GetTabView();
-        this.OpenChildView(e);
+        i = this.ViewModel.GetTabView();
+        this.OpenChildView(i);
       } else if (t === 1) {
         this.K5t();
       }
     };
-    this.fqe = (t, e) => {
+    this.fqe = (t, i) => {
       return new CommonTabItem_1.CommonTabItem();
     };
     this.pqe = t => {};
     this.yqe = t => new CommonTabData_1.CommonTabData("", undefined);
     this.kOe = t => {
-      var [e, i] = ModelManager_1.ModelManager.PhantomArenaModel.IsInLimitTime();
-      this.Muu?.SetUiActive(e);
-      if (e) {
-        this.Muu?.SetText(i);
+      var [i, e] = ModelManager_1.ModelManager.PhantomArenaModel.IsInLimitTime(this.ActivityId);
+      this.Muu?.SetUiActive(i);
+      if (i) {
+        this.Muu?.SetText(e);
       }
     };
   }
@@ -87,18 +92,19 @@ class PhantomArenaEntranceView extends PhantomArenaRootViewBase_1.PhantomArenaRo
     this.ViewModel.Bind(this.fTu);
   }
   async OnBeforeStartAsync() {
+    this.ActivityId = this.OpenParam;
     await super.OnBeforeStartAsync();
     var t = [];
     this.TabViewComponent = new TabViewComponent_1.TabViewComponent(this.GetItem(7));
     t.push(this._yn());
-    var e = this.GetItem(2);
+    var i = this.GetItem(2);
     this.Muu = new ActivityButtonItem_1.ActivityButtonItem();
     this.Muu.SetFunction(this.Gou);
-    t.push(this.Muu.CreateThenShowByActorAsync(e.GetOwner()));
-    var e = this.GetItem(3);
+    t.push(this.Muu.CreateThenShowByActorAsync(i.GetOwner()));
+    var i = this.GetItem(3);
     this.Zpu = new ActivityButtonItem_1.ActivityButtonItem();
     this.Zpu.SetFunction(this.dmu);
-    t.push(this.Zpu.CreateThenShowByActorAsync(e.GetOwner()));
+    t.push(this.Zpu.CreateThenShowByActorAsync(i.GetOwner()));
     await Promise.all(t);
   }
   async _yn() {
@@ -136,29 +142,29 @@ class PhantomArenaEntranceView extends PhantomArenaRootViewBase_1.PhantomArenaRo
   }
   nOe() {
     var t;
-    var e = ModelManager_1.ModelManager.PhantomArenaModel;
-    var i = e.GetMasterLevel();
-    this.GetText(1).SetText(i.toString());
-    var n = e.GetMasterExpNextNeed();
+    var i = ModelManager_1.ModelManager.PhantomArenaModel;
+    var e = i.GetMasterLevel(this.ActivityId);
+    this.GetText(1).SetText(e.toString());
+    var n = i.GetMasterExpNextNeed(this.ActivityId);
     var n = StringUtils_1.StringUtils.Format("/{0}", n.toString());
     this.GetText(5).SetText(n);
-    var n = e.GetMasterExpNow();
+    var n = i.GetMasterExpNow(this.ActivityId);
     this.GetText(4).SetText(n.toString());
-    var a = e.GetMasterLevelConfig(i);
+    var a = i.GetMasterLevelConfig(e, this.ActivityId);
     if (a) {
       t = a.TitleId;
       t = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleMasterTitleById(t);
       this.SetTextureByPath(t.Icon, this.GetTexture(10));
       this.SetTextureByPath(t.IconBg, this.GetTexture(11));
       n = (n - a.ExpNeed) / a.ExpNext;
-      [a, n] = (this.GetSprite(6).SetFillAmount(n), LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(12), t.Name), ModelManager_1.ModelManager.PhantomArenaModel.IsInLimitTime());
+      [a, n] = (this.GetSprite(6).SetFillAmount(n), LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(12), t.Name), ModelManager_1.ModelManager.PhantomArenaModel.IsInLimitTime(this.ActivityId));
       this.Muu?.SetUiActive(a);
       if (a) {
         this.Xbe = TimerSystem_1.RealTimeTimerSystem.Forever(this.kOe, TimeUtil_1.TimeUtil.InverseMillisecond);
         this.Muu?.SetText(n);
       }
-      t = e.GetMasterLevelMax();
-      this.Zpu?.SetLocalTextNew(PhantomArenaDefine_1.ENTRANCE_LEVEL_COUNT_ID, i, t);
+      t = i.GetMasterLevelMax(this.ActivityId);
+      this.Zpu?.SetLocalTextNew(PhantomArenaDefine_1.ENTRANCE_LEVEL_COUNT_ID, e, t);
     }
   }
   K5t() {
@@ -166,8 +172,8 @@ class PhantomArenaEntranceView extends PhantomArenaRootViewBase_1.PhantomArenaRo
     this.UiViewSequence.PlaySequence("MatchStart");
   }
   K8e() {
-    this.Muu?.BindRedDot("RedDotPhantomArenaLimitReward");
-    this.Zpu?.BindRedDot("RedDotPhantomArenaLevelReward");
+    this.Muu?.BindRedDot("RedDotPhantomArenaLimitReward", this.ActivityId);
+    this.Zpu?.BindRedDot("RedDotPhantomArenaLevelReward", this.ActivityId);
   }
   W8e() {
     this.Muu?.UnBindRedDot();

@@ -611,8 +611,14 @@ class InventoryView extends UiViewBase_1.UiViewBase {
     }
   }
   Y4l(t) {
-    t = t.IsBuffEquippedItem();
-    this.fCi(5, t ? "Mask_Remove_01" : "Mask_Wear_01");
+    var e = t.IsBuffEquippedItem();
+    let i = e ? "Mask_Remove_01" : "Mask_Wear_01";
+    if (!e) {
+      if (ModelManager_1.ModelManager.BuffItemModel.IsEquippedBuffCategory(ConfigManager_1.ConfigManager.BuffItemConfig.GetBuffEquipItemCategory(t.GetConfigId()))) {
+        i = "Instead";
+      }
+    }
+    this.fCi(5, i);
   }
   G6a(t) {
     var e = new Array();

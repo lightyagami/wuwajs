@@ -58,7 +58,7 @@ let RoleDeathComponent = class RoleDeathComponent extends BaseDeathComponent_1.B
         this.m1t.TriggerEvents(14, this.m1t, {});
         for (const i of e.values()) {
           if (this.Entity.Id !== i.Id && i.Valid) {
-            if (!(t = i.Entity.GetComponent(195)).IsDead()) {
+            if (!(t = i.Entity.GetComponent(201)).IsDead()) {
               t.m1t?.TriggerEvents(15, this.m1t, {});
             }
           }
@@ -107,7 +107,7 @@ let RoleDeathComponent = class RoleDeathComponent extends BaseDeathComponent_1.B
       this.HBr.ResetCharState();
       var t;
       var e;
-      var i = this.Entity.CheckGetComponent(195);
+      var i = this.Entity.CheckGetComponent(201);
       if (i.IsDead()) {
         i.OnDeathEnded();
       }
@@ -116,12 +116,12 @@ let RoleDeathComponent = class RoleDeathComponent extends BaseDeathComponent_1.B
   OnInit() {
     this.n$t = this.Entity.GetComponent(3);
     this.u1t = this.Entity.CheckGetComponent(0);
-    this.Xte = this.Entity.GetComponent(209);
-    this.tRr = this.Entity.GetComponent(40);
-    this.m1t = this.Entity.GetComponent(178);
-    this.HBr = this.Entity.GetComponent(179);
-    this.$te = this.Entity.GetComponent(177);
-    this.aTu = this.Entity.GetComponent(287);
+    this.Xte = this.Entity.GetComponent(215);
+    this.tRr = this.Entity.GetComponent(41);
+    this.m1t = this.Entity.GetComponent(183);
+    this.HBr = this.Entity.GetComponent(184);
+    this.$te = this.Entity.GetComponent(182);
+    this.aTu = this.Entity.GetComponent(306);
     return true;
   }
   OnStart() {
@@ -148,9 +148,9 @@ let RoleDeathComponent = class RoleDeathComponent extends BaseDeathComponent_1.B
         case CharacterUnifiedStateTypes_1.ECharPositionState.Air:
           var e = this.HBr.MoveState;
           if (e === CharacterUnifiedStateTypes_1.ECharMoveState.Glide) {
-            this.Entity.GetComponent(59)?.ExitGlideState("Death");
+            this.Entity.GetComponent(62)?.ExitGlideState("Death");
           } else if (e === CharacterUnifiedStateTypes_1.ECharMoveState.Soar) {
-            this.Entity.GetComponent(59)?.ExitSoarState(3, "Death");
+            this.Entity.GetComponent(62)?.ExitSoarState(3, "Death");
           }
           break;
         case CharacterUnifiedStateTypes_1.ECharPositionState.Climb:
@@ -226,7 +226,7 @@ let RoleDeathComponent = class RoleDeathComponent extends BaseDeathComponent_1.B
     }
   }
   static DrownNotify(t, e) {
-    t = t?.CheckGetComponent(195);
+    t = t?.CheckGetComponent(201);
     if (t && (t.PlayDeathMontageWithType(1), t.m1t?.HasBuffAuthority())) {
       t.m1t.RemoveBuffByEffectType(36, "溺水移除冰冻buff");
     }
@@ -235,8 +235,8 @@ let RoleDeathComponent = class RoleDeathComponent extends BaseDeathComponent_1.B
     var t;
     var e;
     if (!this.IsDrowning()) {
-      this.Entity.CheckGetComponent(209).AddTag(191377386);
-      t = (e = this.Entity.CheckGetComponent(177)).GetCurrentValue(CharacterAttributeTypes_1.EAttributeId.Proto_Life);
+      this.Entity.CheckGetComponent(215).AddTag(191377386);
+      t = (e = this.Entity.CheckGetComponent(182)).GetCurrentValue(CharacterAttributeTypes_1.EAttributeId.Proto_Life);
       this.m1t.AddBuff(CharacterBuffIds_1.buffId.DrownPunishment, {
         InstigatorId: this.m1t.CreatureDataId,
         Reason: "溺水流程添加"
@@ -256,5 +256,5 @@ let RoleDeathComponent = class RoleDeathComponent extends BaseDeathComponent_1.B
   }
 };
 __decorate([CombatMessage_1.CombatNet.Listen("VFn", true)], RoleDeathComponent, "DrownNotify", null);
-RoleDeathComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(195)], RoleDeathComponent);
+RoleDeathComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(201)], RoleDeathComponent);
 exports.RoleDeathComponent = RoleDeathComponent; //# sourceMappingURL=RoleDeathComponent.js.map

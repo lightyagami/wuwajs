@@ -20,7 +20,7 @@ class HonamiStoryViewBase extends BattleVisibleChildView_1.BattleVisibleChildVie
     super(...arguments);
     this.DangerPercent = 0;
     this.NormalPercent = 0;
-    this.zZd = 0;
+    this.Aim = 0;
     this.HpTextType = 0;
     this.InTweenType = 0;
     this.OutTweenType = 0;
@@ -55,7 +55,7 @@ class HonamiStoryViewBase extends BattleVisibleChildView_1.BattleVisibleChildVie
   }
   OnStart() {
     this.OnInitData();
-    this.InitChildType(37);
+    this.InitChildType(41);
     this.$pt = new UiSequencePlayer_1.UiSequencePlayer(this.RootItem);
     this.DangerPercent = CommonParamById_1.configCommonParamById.GetFloatConfig(this.DangerPercentConfigId) ?? 0;
     this.NormalPercent = 1 - this.DangerPercent;
@@ -109,7 +109,7 @@ class HonamiStoryViewBase extends BattleVisibleChildView_1.BattleVisibleChildVie
     } else if (s <= this.DangerPercent) {
       r = 1;
     }
-    if (e || r !== this.zZd) {
+    if (e || r !== this.Aim) {
       this.OnRefreshState(r);
       let t = "Start";
       switch (r) {
@@ -124,11 +124,11 @@ class HonamiStoryViewBase extends BattleVisibleChildView_1.BattleVisibleChildVie
       }
       this.lwr(t);
     }
-    this.zZd = r;
+    this.Aim = r;
     this.OnRefreshAttribute(s, r);
-    this.GetText(this.HpTextType).SetText(this.JZd(r, t, i));
+    this.GetText(this.HpTextType).SetText(this.Dim(r, t, i));
   }
-  JZd(t, e, i) {
+  Dim(t, e, i) {
     switch (t) {
       case 1:
         return `<color=#ec5a7aff>${Math.ceil(e)}</color><color=#ffffff>/${Math.ceil(i)}</color>`;

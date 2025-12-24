@@ -22,16 +22,16 @@ class HonamiStoryPermanentTaskView extends UiViewBase_1.UiViewBase {
     this.CNe = undefined;
     this.lqe = undefined;
     this.T8e = undefined;
-    this.Uvm = undefined;
+    this.Vwm = undefined;
     this.VOe = () => {
       var e = new HonamiStoryPermanentTaskItem_1.HonamiStoryPermanentTaskItem();
-      e.OnClickToGet = this.oem;
+      e.OnClickToGet = this.qim;
       return e;
     };
-    this.oem = e => {
+    this.qim = e => {
       var i = this.CNe.GetPermanentTaskIdsByState(0);
       HonamiStoryController_1.HonamiStoryController.SendHonamiStoryPermanentTaskRewardRequest(i, () => {
-        this.nem();
+        this.Oim();
       });
     };
     this.pcr = () => {
@@ -48,11 +48,11 @@ class HonamiStoryPermanentTaskView extends UiViewBase_1.UiViewBase {
     this.CNe = ModelManager_1.ModelManager.HonamiStoryModel.GetActivityData();
     this.lqe = new PopupCaptionItem_1.PopupCaptionItem();
     this.T8e = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(1), this.VOe, this.GetItem(2).GetOwner());
-    this.Uvm = new HonamiStoryProfitPanel_1.HonamiStoryProfitPanel();
-    await Promise.all([this.lqe.CreateThenShowByActorAsync(this.GetItem(0).GetOwner()), this.Uvm.CreateThenShowByActorAsync(this.GetItem(3).GetOwner()), this.sem()]);
+    this.Vwm = new HonamiStoryProfitPanel_1.HonamiStoryProfitPanel();
+    await Promise.all([this.lqe.CreateThenShowByActorAsync(this.GetItem(0).GetOwner()), this.Vwm.CreateThenShowByActorAsync(this.GetItem(3).GetOwner()), this.Gim()]);
     this.lqe.SetHelpCallBack(this.pcr);
     this.lqe.SetCloseCallBack(this.Jvt);
-    this.Uvm.RefreshNormal(false);
+    this.Vwm.RefreshNormal(false);
     var e = this.CNe.IsUnLock();
     this.GetItem(3).SetUIActive(e);
     var i = this.GetText(4);
@@ -62,12 +62,12 @@ class HonamiStoryPermanentTaskView extends UiViewBase_1.UiViewBase {
     t.SetUIActive(e);
     this.GetScrollViewWithScrollbar(1).Content.GetComponentByClass(UE.UIInturnAnimController.StaticClass())?.Play();
   }
-  nem() {
+  Oim() {
     new UiAsyncTask_1.UiAsyncTask("RefreshProgress", async () => {
-      await this.sem();
+      await this.Gim();
     }).Run();
   }
-  async sem() {
+  async Gim() {
     var e = this.CNe.GetPermanentTaskDataList();
     await this.T8e.RefreshByDataAsync(e, true);
   }

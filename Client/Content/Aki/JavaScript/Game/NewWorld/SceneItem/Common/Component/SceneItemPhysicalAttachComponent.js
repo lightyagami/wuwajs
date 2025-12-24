@@ -79,9 +79,9 @@ let SceneItemPhysicalAttachComponent = SceneItemPhysicalAttachComponent_1 = clas
     return true;
   }
   OnStart() {
-    this.Hte = this.Entity.GetComponent(206);
+    this.Hte = this.Entity.GetComponent(212);
     this.Qln = this.Hte.Owner?.GetComponentByClass(UE.StaticMeshComponent.StaticClass());
-    this.Xln = this.Entity.GetComponent(158);
+    this.Xln = this.Entity.GetComponent(163);
     this.Xln.RegisterComponent(this);
     this.mSe();
     return true;
@@ -204,5 +204,5 @@ let SceneItemPhysicalAttachComponent = SceneItemPhysicalAttachComponent_1 = clas
     }
   }
 };
-SceneItemPhysicalAttachComponent = SceneItemPhysicalAttachComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(225)], SceneItemPhysicalAttachComponent);
+SceneItemPhysicalAttachComponent = SceneItemPhysicalAttachComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(232)], SceneItemPhysicalAttachComponent);
 exports.SceneItemPhysicalAttachComponent = SceneItemPhysicalAttachComponent; //# sourceMappingURL=SceneItemPhysicalAttachComponent.js.map

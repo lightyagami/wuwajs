@@ -11,7 +11,7 @@ const CommonBaseCardItem_1 = require("./CommonBaseCardItem");
 class UnlockViewCardItem extends CommonBaseCardItem_1.CommonBaseCardItem {
   OnRegisterCardComponent() {
     this.ComponentsRegisterInfoByItem = [[0, this.GetRootItem()]];
-    this.ComponentsRegisterInfoByResourceId = [[7, "UiItem_SoundRemnantItem512Spine", this.GetSpineRootItem()]];
+    this.ComponentsRegisterInfoByResourceId = [[9, "UiItem_SoundRemnantItem512Spine", this.GetSpineRootItem()]];
   }
   Refresh(e) {
     var a = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardConfig(e);
@@ -34,7 +34,7 @@ class UnlockViewCardItem extends CommonBaseCardItem_1.CommonBaseCardItem {
       CardSpineData: r,
       ShowSpine: t === 1
     };
-    this.GetComponent(7)?.Refresh(a);
+    this.GetComponent(9)?.Refresh(a);
   }
 }
 exports.UnlockViewCardItem = UnlockViewCardItem;

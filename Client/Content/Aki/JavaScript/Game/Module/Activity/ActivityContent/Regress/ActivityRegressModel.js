@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.ActivityRegressModel = undefined;
 const Info_1 = require("../../../../../Core/Common/Info");
 const Log_1 = require("../../../../../Core/Common/Log");
+const CommonParamById_1 = require("../../../../../Core/Define/ConfigCommon/CommonParamById");
 const ModelBase_1 = require("../../../../../Core/Framework/ModelBase");
 const MathUtils_1 = require("../../../../../Core/Utils/MathUtils");
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
@@ -19,10 +20,12 @@ const UiManager_1 = require("../../../../Ui/UiManager");
 const ActivityRegressDefine_1 = require("./ActivityRegressDefine");
 const ActivityRegressQuestionnaireItemData_1 = require("./Questionnaire/ActivityRegressQuestionnaireItemData");
 const ActivityRegressTaskDefine_1 = require("./Task/ActivityRegressTaskDefine");
+const OLD_VERSION = 0;
 class ActivityRegressModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
     this.Mda = 0;
+    this.NeedShowExtraRewardView = false;
     this.Rfa = false;
     this.AlreadyStartView = false;
     this.iq1 = new Map();
@@ -31,6 +34,9 @@ class ActivityRegressModel extends ModelBase_1.ModelBase {
     this.EntryEndTimeStamp = undefined;
     this.$k1 = 0;
     this.LastUnGetRewardLevelPlayId = 0;
+    this.g4f = [];
+    this.C4f = [];
+    this.LatestBranch = 0;
     this.Zl1 = undefined;
     this.e_1 = undefined;
     this.LG1 = false;
@@ -53,12 +59,18 @@ class ActivityRegressModel extends ModelBase_1.ModelBase {
   get Grade() {
     return this.ActivityData.Grade;
   }
+  get DisposableReward() {
+    return this.ActivityData.DisposableReward;
+  }
   OnInit() {
     this.$k1 = TimeUtil_1.TimeUtil.Hour * 3 * TimeUtil_1.TimeUtil.OneDayHourCount;
     this.bI1();
     if (Info_1.Info.IsPlayInEditor) {
       this.Rfa = true;
     }
+    this.g4f = CommonParamById_1.configCommonParamById.GetIntArrayConfig("BranchOneMainQuest") ?? [];
+    this.C4f = CommonParamById_1.configCommonParamById.GetIntArrayConfig("BranchTwoMainQuest") ?? [];
+    this.LatestBranch = CommonParamById_1.configCommonParamById.GetIntConfig("LatestBranch") ?? 0;
     return true;
   }
   OnClear() {
@@ -91,10 +103,10 @@ class ActivityRegressModel extends ModelBase_1.ModelBase {
     var t = ConfigManager_1.ConfigManager.ActivityRegressConfig.GetRegressSignRewards(this.ActivityId, this.Grade);
     if (t !== undefined) {
       for (let e = t.length - 1; e >= 0; e--) {
-        var i = t[e];
-        var r = e + 1;
-        if (this.CheckSignRewardState(r, 1)) {
-          return this.GetSignRewardPreviewItemInfo(i);
+        var r = t[e];
+        var i = e + 1;
+        if (this.CheckSignRewardState(i, 1)) {
+          return this.GetSignRewardPreviewItemInfo(r);
         }
       }
     }
@@ -122,17 +134,17 @@ class ActivityRegressModel extends ModelBase_1.ModelBase {
     this.Zl1 = undefined;
   }
   GetSignRewardPreviewItemInfo(e) {
-    var [t, i] = this.GetSignRewardPreviewReward(e);
-    var r = ConfigManager_1.ConfigManager.ItemConfig.GetConfig(t);
-    if (r) {
+    var [t, r] = this.GetSignRewardPreviewReward(e);
+    var i = ConfigManager_1.ConfigManager.ItemConfig.GetConfig(t);
+    if (i) {
       return {
-        ItemInfo: r,
-        ItemCount: i,
+        ItemInfo: i,
+        ItemCount: r,
         RewardState: this.GetSignRewardState(e.SignDayNum)
       };
     } else {
       if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("ActivityRecall", 63, "回流活动-ActivityRecallModel.GetSignRewardPreviewItemInfo()->", ["签到奖励的掉落包预览道具配置不存在, itemId:", t], ["itemConfig:", r]);
+        Log_1.Log.Error("ActivityRecall", 63, "回流活动-ActivityRecallModel.GetSignRewardPreviewItemInfo()->", ["签到奖励的掉落包预览道具配置不存在, itemId:", t], ["itemConfig:", i]);
       }
       return {
         ItemCount: 0,
@@ -159,14 +171,14 @@ class ActivityRegressModel extends ModelBase_1.ModelBase {
     var t = ConfigManager_1.ConfigManager.RewardConfig.GetDropPackage(e);
     if (t && t.DropPreview.size > 0) {
       t = t.DropPreview;
-      let [i, r] = [0, 0];
+      let [r, i] = [0, 0];
       t.forEach((e, t) => {
-        if (i === 0) {
-          i = t;
-          r = e;
+        if (r === 0) {
+          r = t;
+          i = e;
         }
       });
-      return [i, r];
+      return [r, i];
     }
     if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("ActivityRecall", 63, "回归活动->掉落包预览道具不存在", ["dropId:", e]);
@@ -175,15 +187,15 @@ class ActivityRegressModel extends ModelBase_1.ModelBase {
   }
   GetDropPreviewRewardItemListForPreview(e) {
     var t;
-    var i;
-    var r = ConfigManager_1.ConfigManager.RewardConfig.GetDropPackage(e);
+    var r;
+    var i = ConfigManager_1.ConfigManager.RewardConfig.GetDropPackage(e);
     var a = [];
-    if (r && r.DropPreview.size > 0) {
-      for ([t, i] of r.DropPreview) {
+    if (i && i.DropPreview.size > 0) {
+      for ([t, r] of i.DropPreview) {
         var o = [{
           IncId: 0,
           ItemId: t
-        }, i];
+        }, r];
         a.push(o);
       }
     } else if (Log_1.Log.CheckError()) {
@@ -206,14 +218,14 @@ class ActivityRegressModel extends ModelBase_1.ModelBase {
   }
   CheckIfEntryOpen(e) {
     var t;
-    var i;
+    var r;
     var e = e.GachaId;
     if (e > 0) {
-      if ((i = ModelManager_1.ModelManager.GachaModel.GetGachaInfo(e)) !== undefined) {
+      if ((r = ModelManager_1.ModelManager.GachaModel.GetGachaInfo(e)) !== undefined) {
         t = TimeUtil_1.TimeUtil.GetServerTime();
         e = this.GetValidGachaPool(e);
-        i = i.GetPoolEndTimeByPoolInfo(e) - t;
-        return [!MathUtils_1.MathUtils.IsNearlyZero(i, 0.1), i];
+        r = r.GetPoolEndTimeByPoolInfo(e) - t;
+        return [!MathUtils_1.MathUtils.IsNearlyZero(r, 0.1), r];
       } else {
         return [false, 0];
       }
@@ -222,11 +234,11 @@ class ActivityRegressModel extends ModelBase_1.ModelBase {
     }
   }
   GetValidGachaPool(e) {
-    for (const i of ModelManager_1.ModelManager.GachaModel.GachaInfoArray) {
-      if (ModelManager_1.ModelManager.GachaModel.CheckGachaValid(i)) {
-        var t = i.UsePoolId;
-        var t = t > 0 ? i.GetPoolInfo(t) : i.GetFirstValidPool();
-        if (t && i.Id === e) {
+    for (const r of ModelManager_1.ModelManager.GachaModel.GachaInfoArray) {
+      if (ModelManager_1.ModelManager.GachaModel.CheckGachaValid(r)) {
+        var t = r.UsePoolId;
+        var t = t > 0 ? r.GetPoolInfo(t) : r.GetFirstValidPool();
+        if (t && r.Id === e) {
           return t;
         }
       }
@@ -302,9 +314,9 @@ class ActivityRegressModel extends ModelBase_1.ModelBase {
           var t = ConfigManager_1.ConfigManager.InstanceDungeonEntranceConfig.GetConfig(a.DungeonId);
           if (t !== undefined) {
             var t = t.InstanceDungeonList;
-            var i = this.DG1(a.Secondary);
+            var r = this.DG1(a.Secondary);
             for (const o of t) {
-              i.add(o);
+              r.add(o);
             }
             this.UG1(a.Secondary).add(a.DungeonId);
             this.BG1(a.Id, 0, a.Secondary);
@@ -316,14 +328,14 @@ class ActivityRegressModel extends ModelBase_1.ModelBase {
     if (e) {
       for (const n of e) {
         if (n.Secondary === 21 || n.Secondary === 7) {
-          var r = this.oq1.get(n.Secondary) ?? new Set();
+          var i = this.oq1.get(n.Secondary) ?? new Set();
           for (const s of n.LevelPlayList) {
-            r.add(s);
+            i.add(s);
           }
           if (n.DungeonId !== 0) {
-            r.add(n.DungeonId);
+            i.add(n.DungeonId);
           }
-          this.oq1.set(n.Secondary, r);
+          this.oq1.set(n.Secondary, i);
           this.BG1(n.Id, 1, n.Secondary);
         }
       }
@@ -339,10 +351,10 @@ class ActivityRegressModel extends ModelBase_1.ModelBase {
     this.rq1.set(e, t);
     return t;
   }
-  BG1(e, t, i) {
+  BG1(e, t, r) {
     var e = ConfigManager_1.ConfigManager.AdventureModuleConfig.GetPreOpenDetectionConfListByDetectionId(e, t);
-    var r = this.DG1(i);
-    var a = this.UG1(i);
+    var i = this.DG1(r);
+    var a = this.UG1(r);
     for (const s of e) {
       if (s !== undefined) {
         if (s.DungeonEntranceId !== 0) {
@@ -350,21 +362,21 @@ class ActivityRegressModel extends ModelBase_1.ModelBase {
           var n = ConfigManager_1.ConfigManager.InstanceDungeonEntranceConfig.GetConfig(o);
           if (n !== undefined) {
             for (const g of n.InstanceDungeonList) {
-              r.add(g);
+              i.add(g);
             }
             a.add(o);
           }
         }
         if (s.InstanceID !== 0) {
           n = s.InstanceID;
-          r.add(n);
+          i.add(n);
         }
       }
     }
   }
   DungeonHasDoubleDropTimes(e, t) {
-    var i;
-    return !(this.HasDoubleDropRestTimes() <= 0) && (i = this.iq1.get(t), t = this.rq1.get(t), i = i?.has(e) ?? false, t = t?.has(e) ?? false, i || t);
+    var r;
+    return !(this.HasDoubleDropRestTimes() <= 0) && (r = this.iq1.get(t), t = this.rq1.get(t), r = r?.has(e) ?? false, t = t?.has(e) ?? false, r || t);
   }
   LevelPlayHasDoubleDropTimes(e, t) {
     return !(this.HasDoubleDropRestTimes() <= 0) && !!this.oq1.get(t)?.has(e);
@@ -402,22 +414,22 @@ class ActivityRegressModel extends ModelBase_1.ModelBase {
   }
   GetDetectionDoubleDropTuple(e) {
     let t = 0;
-    let i = 0;
+    let r = 0;
     if (e === 7) {
       t = ModelManager_1.ModelManager.ActivityRegressModel.GetDoubleDropRestTimes(2);
-      i = ModelManager_1.ModelManager.ActivityRegressModel.GetDoubleDropMaxTimes(2);
+      r = ModelManager_1.ModelManager.ActivityRegressModel.GetDoubleDropMaxTimes(2);
     }
     if (e === 21) {
       t = ModelManager_1.ModelManager.ActivityRegressModel.GetDoubleDropRestTimes(1);
-      i = ModelManager_1.ModelManager.ActivityRegressModel.GetDoubleDropMaxTimes(1);
+      r = ModelManager_1.ModelManager.ActivityRegressModel.GetDoubleDropMaxTimes(1);
     }
-    return [t > 0, t, i, t > 0 ? "Reward_doubling_time" : "Reward_doubling_end", "PrefabTextItem_2334179570_Text"];
+    return [t > 0, t, r, t > 0 ? "Reward_doubling_time" : "Reward_doubling_end", "PrefabTextItem_2334179570_Text"];
   }
   CalculateRegressCultivateReachTaskCount(e) {
     let t = 0;
-    for (const r of e) {
-      var i = r.Config.Id;
-      if (ModelManager_1.ModelManager.ActivityRegressModel.ActivityData.GetTaskRewardState(i) !== 0) {
+    for (const i of e) {
+      var r = i.Config.Id;
+      if (ModelManager_1.ModelManager.ActivityRegressModel.ActivityData.GetTaskRewardState(r) !== 0) {
         ++t;
       }
     }
@@ -427,21 +439,21 @@ class ActivityRegressModel extends ModelBase_1.ModelBase {
     var e = this.ActivityData.GetRegressTaskListByType(2);
     var t = [];
     if (e) {
-      for (const r of e) {
-        var i = {
-          Config: r
+      for (const i of e) {
+        var r = {
+          Config: i
         };
-        t.push(i);
+        t.push(r);
       }
     }
     t.sort((e, t) => {
-      var i = ModelManager_1.ModelManager.ActivityRegressModel.ActivityData.GetTaskRewardState(e.Config.Id);
-      var r = ModelManager_1.ModelManager.ActivityRegressModel.ActivityData.GetTaskRewardState(t.Config.Id);
-      if (i === 1 && r !== 1) {
+      var r = ModelManager_1.ModelManager.ActivityRegressModel.ActivityData.GetTaskRewardState(e.Config.Id);
+      var i = ModelManager_1.ModelManager.ActivityRegressModel.ActivityData.GetTaskRewardState(t.Config.Id);
+      if (r === 1 && i !== 1) {
         return -1;
-      } else if (r === 1 && i !== 1 || i === 2 && r !== 2) {
+      } else if (i === 1 && r !== 1 || r === 2 && i !== 2) {
         return 1;
-      } else if (r === 2 && i !== 2) {
+      } else if (i === 2 && r !== 2) {
         return -1;
       } else {
         return e.Config.Id - t.Config.Id;
@@ -451,10 +463,10 @@ class ActivityRegressModel extends ModelBase_1.ModelBase {
   }
   GetRegressCultivateTaskRewardItemDataList(e) {
     var [e, t] = this.GetDropPreviewRewardTupleForPreview(e.TargetReward);
-    var i = ConfigManager_1.ConfigManager.ItemConfig.GetConfig(e);
-    if (!i) {
+    var r = ConfigManager_1.ConfigManager.ItemConfig.GetConfig(e);
+    if (!r) {
       if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("ActivityRecall", 63, "回流活动-ActivityRecallModel.GetRegressCultivateTaskRewardItemDataList()->", ["问卷调查奖励的掉落包预览道具配置不存在, itemId:", e], ["itemConfig:", i]);
+        Log_1.Log.Error("ActivityRecall", 63, "回流活动-ActivityRecallModel.GetRegressCultivateTaskRewardItemDataList()->", ["问卷调查奖励的掉落包预览道具配置不存在, itemId:", e], ["itemConfig:", r]);
       }
     }
     return [{
@@ -463,17 +475,17 @@ class ActivityRegressModel extends ModelBase_1.ModelBase {
     }, t];
   }
   GetQuestionRewardPreviewItemInfo(e) {
-    var [t, i] = this.GetDropPreviewRewardTupleForPreview(e.Reward);
-    var r = ConfigManager_1.ConfigManager.ItemConfig.GetConfig(t);
-    if (r) {
+    var [t, r] = this.GetDropPreviewRewardTupleForPreview(e.Reward);
+    var i = ConfigManager_1.ConfigManager.ItemConfig.GetConfig(t);
+    if (i) {
       return {
-        ItemInfo: r,
-        ItemCount: i,
+        ItemInfo: i,
+        ItemCount: r,
         RewardState: this.ActivityData.GetQuestionnaireRewardState(e.Id)
       };
     } else {
       if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("ActivityRecall", 63, "回流活动-ActivityRecallModel.GetQuestionRewardPreviewItemInfo()->", ["问卷调查奖励的掉落包预览道具配置不存在, itemId:", t], ["itemConfig:", r]);
+        Log_1.Log.Error("ActivityRecall", 63, "回流活动-ActivityRecallModel.GetQuestionRewardPreviewItemInfo()->", ["问卷调查奖励的掉落包预览道具配置不存在, itemId:", t], ["itemConfig:", i]);
       }
       return {
         ItemCount: 0,
@@ -483,27 +495,31 @@ class ActivityRegressModel extends ModelBase_1.ModelBase {
   }
   GetRegressQuestionnaireRewardDataList(e) {
     var t = ConfigManager_1.ConfigManager.ActivityRegressConfig.GetRegressQuestionnaireConfig(e);
-    var i = [];
-    var r = new ActivityRegressQuestionnaireItemData_1.ActivityRegressQuestionnaireItemData();
-    r.Type = e;
-    r.ItemData = this.GetQuestionRewardPreviewItemInfo(t);
-    i.push(r);
-    return i;
+    var r = [];
+    var i = new ActivityRegressQuestionnaireItemData_1.ActivityRegressQuestionnaireItemData();
+    i.Type = e;
+    i.ItemData = this.GetQuestionRewardPreviewItemInfo(t);
+    r.push(i);
+    return r;
   }
   GetRegressMainTaskScoreRewardGridDataArr() {
-    var e = [];
-    for (const i of ConfigManager_1.ConfigManager.ActivityRegressConfig.GetRegressBonusRewardConfigList(this.Grade) ?? []) {
-      var t = new ActivityRegressDefine_1.ActivityRegressTaskScoreRewardGridData();
-      t.Config = i;
-      t.RewardState = ModelManager_1.ModelManager.ActivityRegressModel.ActivityData.GetRegressTaskScoreRewardState(i);
-      e.push(t);
+    var e;
+    var t = [];
+    for (const r of ConfigManager_1.ConfigManager.ActivityRegressConfig.GetRegressBonusRewardConfigList(this.Grade) ?? []) {
+      if (r.Version !== OLD_VERSION) {
+        (e = new ActivityRegressDefine_1.ActivityRegressTaskScoreRewardGridData()).Config = r;
+        e.RewardState = ModelManager_1.ModelManager.ActivityRegressModel.ActivityData.GetRegressTaskScoreRewardState(r);
+        e.PayRewardState = ModelManager_1.ModelManager.ActivityRegressModel.ActivityData.GetRegressTaskPayScoreRewardState(r);
+        t.push(e);
+      }
     }
-    return e;
+    return t;
   }
   GetRegressMainTaskGridDataGroupByTypeAndSortedArr() {
     var e = [];
     this.t_1(e, 0);
     this.t_1(e, 1);
+    this.t_1(e, 6);
     return e;
   }
   i_1(e) {
@@ -512,14 +528,14 @@ class ActivityRegressModel extends ModelBase_1.ModelBase {
     });
   }
   t_1(e, t) {
-    var i = this.ActivityData.GetRegressTaskListByType(t);
-    if (i !== undefined) {
-      var r = new ActivityRegressTaskDefine_1.ActivityRegressTaskDynamicData();
-      r.ItemType = 0;
-      r.TaskType = t;
-      e.push(r);
-      this.i_1(i);
-      for (const o of i) {
+    var r = this.ActivityData.GetRegressTaskListByType(t);
+    if (r !== undefined) {
+      var i = new ActivityRegressTaskDefine_1.ActivityRegressTaskDynamicData();
+      i.ItemType = 0;
+      i.TaskType = t;
+      e.push(i);
+      this.i_1(r);
+      for (const o of r) {
         var a = new ActivityRegressTaskDefine_1.ActivityRegressTaskDynamicData();
         a.ItemType = 1;
         a.TaskType = t;
@@ -529,17 +545,17 @@ class ActivityRegressModel extends ModelBase_1.ModelBase {
     }
   }
   GetRegressTaskRewardItemInfo(e) {
-    var [t, i] = this.GetDropPreviewRewardTupleForPreview(e.TargetReward);
-    var r = ConfigManager_1.ConfigManager.ItemConfig.GetConfig(t);
-    if (r) {
+    var [t, r] = this.GetDropPreviewRewardTupleForPreview(e.TargetReward);
+    var i = ConfigManager_1.ConfigManager.ItemConfig.GetConfig(t);
+    if (i) {
       return {
-        ItemInfo: r,
-        ItemCount: i,
+        ItemInfo: i,
+        ItemCount: r,
         RewardState: this.ActivityData.GetTaskRewardState(e.Id)
       };
     } else {
       if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("ActivityRecall", 63, "回流活动-ActivityRegressModel.GetRegressTaskRewardItemInfo()->", ["回归任务的奖励掉落包预览道具不存在, itemId:", t], ["itemConfig:", r]);
+        Log_1.Log.Error("ActivityRecall", 63, "回流活动-ActivityRegressModel.GetRegressTaskRewardItemInfo()->", ["回归任务的奖励掉落包预览道具不存在, itemId:", t], ["itemConfig:", i]);
       }
       return {
         ItemCount: 0,
@@ -550,26 +566,26 @@ class ActivityRegressModel extends ModelBase_1.ModelBase {
   GetRegressScoreRewardInfoList(e) {
     var t = e.Drop;
     var t = ConfigManager_1.ConfigManager.RewardConfig.GetDropPackage(t).DropPreview;
-    var i = [];
+    var r = [];
     if (t.size > 0) {
-      for (var [r, a] of t) {
-        var o = ConfigManager_1.ConfigManager.ItemConfig.GetConfig(r);
+      for (var [i, a] of t) {
+        var o = ConfigManager_1.ConfigManager.ItemConfig.GetConfig(i);
         if (o !== undefined) {
-          if (i.length < 2) {
-            i.push({
+          if (r.length < 2) {
+            r.push({
               ItemInfo: o,
               ItemCount: a,
               RewardState: this.ActivityData.GetRegressTaskScoreRewardState(e)
             });
           }
         } else if (Log_1.Log.CheckWarn()) {
-          Log_1.Log.Warn("ActivityRecall", 63, "回流活动-ActivityRecallModel.GetRegressScoreRewardInfoList()->回归任务的积分奖励的掉落包预览道具不存在", ["itemId:", r], ["itemCount:", a], ["RegressBonusReward", e.Id]);
+          Log_1.Log.Warn("ActivityRecall", 63, "回流活动-ActivityRecallModel.GetRegressScoreRewardInfoList()->回归任务的积分奖励的掉落包预览道具不存在", ["itemId:", i], ["itemCount:", a], ["RegressBonusReward", e.Id]);
         }
       }
     } else if (Log_1.Log.CheckWarn()) {
       Log_1.Log.Warn("ActivityRecall", 63, "回流活动-ActivityRecallModel.GetRegressScoreRewardInfoList()->回归任务的积分奖励配置异常，请检查积分奖励|RegressBonusReward配置!");
     }
-    return i;
+    return r;
   }
   GetFirstUnFinishMainQuestId() {
     return ModelManager_1.ModelManager.QuestNewModel.GetFirstShowQuestByType(1)?.Id;
@@ -577,11 +593,11 @@ class ActivityRegressModel extends ModelBase_1.ModelBase {
   GetFirstShowRoleQuest() {
     var e = ModelManager_1.ModelManager.QuestNewModel.GetQuestsByType(3);
     e.sort((e, t) => {
-      var i = ConfigManager_1.ConfigManager.QuestNewConfig.GetQuestMainTypeConfig(e.MainTypeId);
-      var r = ConfigManager_1.ConfigManager.QuestNewConfig.GetQuestMainTypeConfig(t.MainTypeId);
-      if (i && r) {
-        if (i.SortValue !== r.SortValue) {
-          return i.SortValue - r.SortValue;
+      var r = ConfigManager_1.ConfigManager.QuestNewConfig.GetQuestMainTypeConfig(e.MainTypeId);
+      var i = ConfigManager_1.ConfigManager.QuestNewConfig.GetQuestMainTypeConfig(t.MainTypeId);
+      if (r && i) {
+        if (r.SortValue !== i.SortValue) {
+          return r.SortValue - i.SortValue;
         } else {
           return e.Id - t.Id;
         }
@@ -598,7 +614,8 @@ class ActivityRegressModel extends ModelBase_1.ModelBase {
   IsActivityRecallSplashFirstShow() {
     var e = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.ActivityRecallSplashFirstShowTime, 0);
     var t = this.ActivityData.EndShowTime;
-    return e === 0 || e < t;
+    var r = !this.ActivityData.DisposableReward;
+    return (e === 0 || e < t) && r;
   }
   RecordActivityRecallSplashFirstShow() {
     var e = this.ActivityData.EndShowTime;
@@ -629,6 +646,7 @@ class ActivityRegressModel extends ModelBase_1.ModelBase {
       this.ActivityData.ResetShopRemindRedDot();
       this.ActivityData.ResetQuestionnaireRedDot();
       this.ActivityData.ResetDoubleDropFirstRedDot();
+      this.ActivityData.ResetBpPayButtonRedDot();
       this.LG1 = true;
     }
     this.ActivityRecallFirstShow = false;
@@ -638,17 +656,17 @@ class ActivityRegressModel extends ModelBase_1.ModelBase {
   }
   IsMainLineTaskFinish(e) {
     let t = true;
-    for (const r of e.ArgId) {
-      var i = ModelManager_1.ModelManager.QuestNewModel.CheckQuestFinished(r);
-      t = t && i;
+    for (const i of e.ArgId) {
+      var r = ModelManager_1.ModelManager.QuestNewModel.CheckQuestFinished(i);
+      t = t && r;
     }
     return t;
   }
   GetFirstUnFinishTask(e) {
-    for (const i of e.ArgId) {
-      var t = ModelManager_1.ModelManager.QuestNewModel.GetQuestState(i);
+    for (const r of e.ArgId) {
+      var t = ModelManager_1.ModelManager.QuestNewModel.GetQuestState(r);
       if (t !== 0 && t !== 3) {
-        return i;
+        return r;
       }
     }
   }
@@ -666,15 +684,231 @@ class ActivityRegressModel extends ModelBase_1.ModelBase {
   GetShopGoodsMaxDiscount() {
     var [e, t] = this.ActivityData.GetShopIdAndTabIndex();
     var e = ModelManager_1.ModelManager.PayShopModel.GetPayShopTabData(e, t);
-    let i = 0;
+    let r = 0;
     if (e !== undefined) {
-      for (const r of e) {
-        if (r.HasDiscount()) {
-          i = Math.max(i, r.GetDiscount());
+      for (const i of e) {
+        if (i.HasDiscount()) {
+          r = Math.max(r, i.GetDiscount());
         }
       }
     }
-    return i;
+    return r;
+  }
+  GetTargetLevelRewardList(t, e) {
+    e.length = 0;
+    var r;
+    var i = this.ActivityData.GetCurLevelProgressData().Level;
+    var a = new Map();
+    var o = [...(ConfigManager_1.ConfigManager.ActivityRegressConfig.GetRegressBonusRewardConfigList(this.Grade) ?? [])].sort((e, t) => e.NeedScore - t.NeedScore);
+    for (let e = i; e < t; e++) {
+      var n = o[e];
+      if (n) {
+        var s = [n.Drop];
+        if (this.ActivityData.IsPayRewardUnlock()) {
+          s.push(n.PayDrop);
+        }
+        for (const d of s) {
+          var g;
+          var l;
+          var _ = ConfigManager_1.ConfigManager.RewardConfig.GetDropPackage(d);
+          if (_) {
+            for ([g, l] of _.DropPreview) {
+              if (a.has(g)) {
+                a.get(g)[1] += l;
+              } else {
+                a.set(g, [{
+                  IncId: 0,
+                  ItemId: g
+                }, l]);
+              }
+            }
+          }
+        }
+      }
+    }
+    for ([, r] of a) {
+      e.push(r);
+    }
+    const f = new Map();
+    const h = e => {
+      var t;
+      if (!f.has(e)) {
+        t = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfig(e);
+        f.set(e, t ? t.QualityId : 0);
+      }
+      return f.get(e);
+    };
+    e.sort((e, t) => {
+      var r = h(e[0].ItemId);
+      var i = h(t[0].ItemId);
+      if (r === i) {
+        return e[1] - t[1];
+      } else {
+        return i - r;
+      }
+    });
+  }
+  GetNewRegressSubView(e, t) {
+    if (e) {
+      return [6];
+    }
+    switch (t) {
+      case 0:
+        return [0, 3, 1, 2];
+      case 1:
+        if (ModelManager_1.ModelManager.ActivityRegressModel.GetGachaPoolUpPool().length <= 0) {
+          return [3, 1, 5];
+        } else {
+          return [3, 1, 4, 5];
+        }
+    }
+    return [];
+  }
+  GetCurrentMainLineQuest() {
+    var r = ModelManager_1.ModelManager.QuestNewModel.GetQuestsByType(1);
+    if (r.length > 0) {
+      let e = 0;
+      let t = 0;
+      for (const o of r) {
+        var i = this.g4f.includes(o.Id);
+        var a = this.C4f.includes(o.Id);
+        if (!i && !a) {
+          return o.Id;
+        }
+        if (a) {
+          t = o.Id;
+        }
+        if (i) {
+          e = o.Id;
+        }
+      }
+      if (t) {
+        return t;
+      } else {
+        return e;
+      }
+    }
+    return 0;
+  }
+  GetCurrentMainLineBranch() {
+    var t = ModelManager_1.ModelManager.QuestNewModel.GetQuestsByType(1);
+    if (t.length > 0) {
+      let e = false;
+      for (const n of t) {
+        var r = this.g4f.includes(n.Id);
+        var i = this.C4f.includes(n.Id);
+        if (!r && !i) {
+          return this.LatestBranch;
+        }
+        if (i) {
+          e = true;
+        }
+      }
+      if (e) {
+        return 2;
+      } else {
+        return 1;
+      }
+    }
+    let e = false;
+    for (const s of ModelManager_1.ModelManager.QuestNewModel.FinishedMainQuests) {
+      var a = this.g4f.includes(s);
+      var o = this.C4f.includes(s);
+      if (!a && !o) {
+        return this.LatestBranch;
+      }
+      if (o) {
+        e = true;
+      }
+    }
+    if (e) {
+      return 2;
+    } else {
+      return 1;
+    }
+  }
+  GetLatestRegressBase() {
+    var r = ConfigManager_1.ConfigManager.ActivityRegressConfig.GetRegressBaseConfigListByType(1);
+    if (r && !(r.length <= 0)) {
+      let e = 0;
+      let t = undefined;
+      for (const i of r) {
+        if (i.Id >= e) {
+          e = i.Id;
+          t = i;
+        }
+      }
+      return t;
+    }
+  }
+  GetRecommendDataList() {
+    var e = [];
+    var t = ConfigManager_1.ConfigManager.ActivityRegressConfig.GetRegressDisposableReward(ModelManager_1.ModelManager.ActivityRegressModel.ActivityId).ShowRecommendActivityGroup;
+    for (const i of [...(ConfigManager_1.ConfigManager.ActivityRegressConfig.GetRegressRecommendByGroup(t) ?? [])].sort((e, t) => e.Sort - t.Sort)) {
+      var r = ModelManager_1.ModelManager.ActivityModel.GetActivityById(i.JumpParam);
+      if (r && r.CheckIfInShowTime()) {
+        e.push(i.Id);
+      }
+    }
+    t = [...(ConfigManager_1.ConfigManager.ActivityRegressConfig.GetRegressRecommendByType(4) ?? [])].sort((e, t) => {
+      if (e.Sort !== t.Sort) {
+        return e.Sort - t.Sort;
+      } else {
+        e = ModelManager_1.ModelManager.ExploreProgressModel.GetExploreAreaData(e.JumpParam);
+        t = ModelManager_1.ModelManager.ExploreProgressModel.GetExploreAreaData(t.JumpParam);
+        return e.GetProgress() - t.GetProgress();
+      }
+    });
+    if (t.length > 0) {
+      e.push(t[0].Id);
+    }
+    e.sort((e, t) => {
+      e = ConfigManager_1.ConfigManager.ActivityRegressConfig.GetRegressRecommend(e);
+      t = ConfigManager_1.ConfigManager.ActivityRegressConfig.GetRegressRecommend(t);
+      e = e?.Type === 4 ? ModelManager_1.ModelManager.ExploreProgressModel.GetExploreAreaData(e.JumpParam)?.IsReachMaxProgress : ModelManager_1.ModelManager.ActivityModel.GetActivityById(e.JumpParam)?.FinishShowState;
+      if (e !== (t?.Type === 4 ? ModelManager_1.ModelManager.ExploreProgressModel.GetExploreAreaData(t.JumpParam)?.IsReachMaxProgress : ModelManager_1.ModelManager.ActivityModel.GetActivityById(t.JumpParam)?.FinishShowState) && e) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+    return e;
+  }
+  GetGachaPoolUpRole() {
+    var e = [];
+    var t = ModelManager_1.ModelManager.GachaModel.GachaInfoArray;
+    if (t && !(t.length <= 0)) {
+      for (const i of t) {
+        for (const a of i.GetValidPoolList() ?? []) {
+          var r = ConfigManager_1.ConfigManager.GachaConfig.GetGachaViewInfo(a.Id);
+          if (r?.Type === 2 || r?.Type === 9) {
+            r = ConfigManager_1.ConfigManager.GachaConfig.GetGachaPoolConfig(a.Id);
+            if ((r = ModelManager_1.ModelManager.ActivityRegressModel.GetValidGachaPool(r.GachaId)) && !e.includes(r.PreviewIdList[0])) {
+              e.push(r.PreviewIdList[0]);
+            }
+          }
+        }
+      }
+    }
+    return e;
+  }
+  GetGachaPoolUpPool() {
+    var e = [];
+    var t = ModelManager_1.ModelManager.GachaModel.GachaInfoArray;
+    if (t && !(t.length <= 0)) {
+      for (const i of t) {
+        for (const a of i.GetValidPoolList() ?? []) {
+          var r = ConfigManager_1.ConfigManager.GachaConfig.GetGachaViewInfo(a.Id);
+          if (r?.Type === 2 || r?.Type === 9) {
+            r = ConfigManager_1.ConfigManager.GachaConfig.GetGachaPoolConfig(a.Id);
+            if ((r = ModelManager_1.ModelManager.ActivityRegressModel.GetValidGachaPool(r.GachaId)) && !e.includes(r)) {
+              e.push(r);
+            }
+          }
+        }
+      }
+    }
+    return e;
   }
 }
 exports.ActivityRegressModel = ActivityRegressModel;

@@ -18,56 +18,57 @@ const DelayTask_1 = require("../../../World/Task/DelayTask");
 const TaskSystem_1 = require("../../../World/Task/TaskSystem");
 const ConfirmBoxController_1 = require("../../ConfirmBox/ConfirmBoxController");
 const ConfirmBoxDefine_1 = require("../../ConfirmBox/ConfirmBoxDefine");
+const InfrastructureController_1 = require("../../Infrastructure/InfrastructureController");
 const GeneralLogicTreeDefine_1 = require("../Define/GeneralLogicTreeDefine");
 const ControllerAssistantBase_1 = require("./ControllerAssistantBase");
 class ServerNotifyAssistant extends ControllerAssistantBase_1.ControllerAssistantBase {
   constructor() {
     super(...arguments);
     this.X$t = e => {
-      var o = MathUtils_1.MathUtils.LongToBigInt(e.C9n);
-      var r = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(o);
-      if (r) {
+      var r = MathUtils_1.MathUtils.LongToBigInt(e.C9n);
+      var o = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(r);
+      if (o) {
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("Quest", 18, "行为树节点状态更新", ["树Id", r.TreeConfigId], ["节点Id", e.b5n], ["节点状态", GeneralLogicTreeDefine_1.btNodeStatusLogString[e.H6n]]);
+          Log_1.Log.Info("Quest", 18, "行为树节点状态更新", ["树Id", o.TreeConfigId], ["节点Id", e.b5n], ["节点状态", GeneralLogicTreeDefine_1.btNodeStatusLogString[e.H6n]]);
         }
-        r.UpdateNodeState(0, e.b5n, e.H6n);
+        o.UpdateNodeState(0, e.b5n, e.H6n);
       } else if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("GeneralLogicTree", 18, "收到节点状态更新协议时：行为树不存在，1.检查本地配置是否正确 2.服务端检查协议下发顺序", ["treeId", o]);
+        Log_1.Log.Error("GeneralLogicTree", 18, "收到节点状态更新协议时：行为树不存在，1.检查本地配置是否正确 2.服务端检查协议下发顺序", ["treeId", r]);
       }
     };
     this.$$t = e => {
-      var o = MathUtils_1.MathUtils.LongToBigInt(e.C9n);
-      var r = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(o);
-      if (r) {
+      var r = MathUtils_1.MathUtils.LongToBigInt(e.C9n);
+      var o = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(r);
+      if (o) {
         if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("Quest", 18, "行为树节点进度更新", ["树Id", r.TreeConfigId], ["节点Id", e.b5n]);
+          Log_1.Log.Debug("Quest", 18, "行为树节点进度更新", ["树Id", o.TreeConfigId], ["节点Id", e.b5n]);
         }
-        r.UpdateNodeProgress(e.b5n, e.nvs);
+        o.UpdateNodeProgress(e.b5n, e.nvs);
       } else if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("GeneralLogicTree", 18, "收到节点进度更新协议时：行为树不存在，1.检查本地配置是否正确 2.服务端检查协议下发顺序", ["treeId", o]);
+        Log_1.Log.Error("GeneralLogicTree", 18, "收到节点进度更新协议时：行为树不存在，1.检查本地配置是否正确 2.服务端检查协议下发顺序", ["treeId", r]);
       }
     };
     this.Y$t = e => {
-      var o = MathUtils_1.MathUtils.LongToBigInt(e.C9n);
-      var o = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(o);
-      if (o) {
+      var r = MathUtils_1.MathUtils.LongToBigInt(e.C9n);
+      var r = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(r);
+      if (r) {
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("Quest", 18, "行为树ChildQuest节点状态更新", ["树Id", o.TreeConfigId], ["节点Id", e.b5n], ["ChildQuest子节点状态", GeneralLogicTreeDefine_1.btChildQuestNodeStatusLogString[e.H6n]]);
+          Log_1.Log.Info("Quest", 18, "行为树ChildQuest节点状态更新", ["树Id", r.TreeConfigId], ["节点Id", e.b5n], ["ChildQuest子节点状态", GeneralLogicTreeDefine_1.btChildQuestNodeStatusLogString[e.H6n]]);
         }
-        o.UpdateChildQuestNodeState(e.b5n, e.H6n, 0);
+        r.UpdateChildQuestNodeState(e.b5n, e.H6n, 0);
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("GeneralLogicTree", 18, "收到子任务节点状态更新协议时：行为树不存在，1.检查本地配置是否正确 2.服务端检查协议下发顺序", ["treeId", e.C9n]);
       }
     };
     this.J$t = e => {
-      var o = MathUtils_1.MathUtils.LongToBigInt(e.C9n);
-      var o = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(o);
-      if (o) {
+      var r = MathUtils_1.MathUtils.LongToBigInt(e.C9n);
+      var r = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(r);
+      if (r) {
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("GeneralLogicTree", 18, "服务器通知客户端做回退准备", ["treeConfigId", o.TreeConfigId]);
+          Log_1.Log.Info("GeneralLogicTree", 18, "服务器通知客户端做回退准备", ["treeConfigId", r.TreeConfigId]);
         }
-        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.GeneralLogicTreePrepareRollback, o.TreeConfigId);
-        o.PrepareRollback(e.NEs, e.kEs);
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.GeneralLogicTreePrepareRollback, r.TreeConfigId);
+        r.PrepareRollback(e.NEs, e.kEs);
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("GeneralLogicTree", 18, "服务器通知回退准备时：行为树不存在，1.检查本地配置是否正确 2.服务端检查协议下发顺序", ["treeId", e.C9n]);
       }
@@ -83,33 +84,33 @@ class ServerNotifyAssistant extends ControllerAssistantBase_1.ControllerAssistan
       }
     };
     this.Z$t = e => {
-      var o = MathUtils_1.MathUtils.LongToBigInt(e.C9n);
-      var r = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(o);
-      if (r) {
+      var r = MathUtils_1.MathUtils.LongToBigInt(e.C9n);
+      var o = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(r);
+      if (o) {
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("GeneralLogicTree", 18, "服务器通知行为树回退", ["treeConfigId", r.TreeConfigId]);
+          Log_1.Log.Info("GeneralLogicTree", 18, "服务器通知行为树回退", ["treeConfigId", o.TreeConfigId]);
         }
         var t = ModelManager_1.ModelManager.GeneralLogicTreeModel;
-        var i = r.IsTracking();
-        t.RemoveBehaviorTree(o, 1);
-        const n = t.CreateBehaviorTree(e.$Es);
-        if (i) {
-          if (r.BtType === Protocol_1.Aki.Protocol.hps.Proto_BtTypeLevelPlay) {
+        var n = o.IsTracking();
+        t.RemoveBehaviorTree(r, 1);
+        const i = t.CreateBehaviorTree(e.$Es);
+        if (n) {
+          if (o.BtType === Protocol_1.Aki.Protocol.hps.Proto_BtTypeLevelPlay) {
             ModelManager_1.ModelManager.LevelPlayModel.SetTrackLevelPlayId(0);
           } else {
-            n.SetTrack(true);
+            i.SetTrack(true);
           }
         }
         t = new ActionTask_1.ActionTask("OnRollbackInfoNotify", () => {
           ControllerHolder_1.ControllerHolder.LevelLoadingController.CloseLoading(2);
-          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.GeneralLogicTreePrepareRollbackFinish, n?.TreeConfigId ?? 0);
+          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.GeneralLogicTreePrepareRollbackFinish, i?.TreeConfigId ?? 0);
           return true;
         });
         TaskSystem_1.TaskSystem.AddTask(t);
         TaskSystem_1.TaskSystem.Run();
       } else {
         if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("GeneralLogicTree", 18, "收到服务器回退通知时：行为树不存在，1.检查本地配置是否正确 2.服务端检查协议下发顺序", ["treeId", o]);
+          Log_1.Log.Error("GeneralLogicTree", 18, "收到服务器回退通知时：行为树不存在，1.检查本地配置是否正确 2.服务端检查协议下发顺序", ["treeId", r]);
         }
         ControllerHolder_1.ControllerHolder.LevelLoadingController.CloseLoading(2);
       }
@@ -118,47 +119,47 @@ class ServerNotifyAssistant extends ControllerAssistantBase_1.ControllerAssistan
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnQuestRedDotStateChange, e.B5n);
     };
     this.eYt = e => {
-      var o = MathUtils_1.MathUtils.LongToBigInt(e.C9n);
-      var r = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(o);
-      if (r) {
-        r.UpdateOccupations(e.b5n, e._Es, e.uEs);
+      var r = MathUtils_1.MathUtils.LongToBigInt(e.C9n);
+      var o = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(r);
+      if (o) {
+        o.UpdateOccupations(e.b5n, e._Es, e.uEs);
       } else if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("GeneralLogicTree", 18, "收到服务器挂起通知时：行为树不存在，1.检查本地配置是否正确 2.服务端检查协议下发顺序", ["treeId", o]);
+        Log_1.Log.Error("GeneralLogicTree", 18, "收到服务器挂起通知时：行为树不存在，1.检查本地配置是否正确 2.服务端检查协议下发顺序", ["treeId", r]);
       }
     };
     this.iYt = e => {
-      var o = MathUtils_1.MathUtils.LongToBigInt(e.C9n);
-      var r = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(o);
-      if (r) {
-        r.UpdateTimer(e.HEs);
+      var r = MathUtils_1.MathUtils.LongToBigInt(e.C9n);
+      var o = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(r);
+      if (o) {
+        o.UpdateTimer(e.HEs);
       } else if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("GeneralLogicTree", 18, "服务器通知更新定时器时：行为树不存在，1.检查本地配置是否正确 2.服务端检查协议下发顺序", ["treeId", o]);
+        Log_1.Log.Error("GeneralLogicTree", 18, "服务器通知更新定时器时：行为树不存在，1.检查本地配置是否正确 2.服务端检查协议下发顺序", ["treeId", r]);
       }
     };
     this.oYt = e => {
-      var o = MathUtils_1.MathUtils.LongToBigInt(e.C9n);
-      var r = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(o);
-      if (!r) {
+      var r = MathUtils_1.MathUtils.LongToBigInt(e.C9n);
+      var o = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(r);
+      if (!o) {
         if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("GeneralLogicTree", 31, "服务器通知更新变量时：行为树不存在，1.检查本地配置是否正确 2.服务端检查协议下发顺序", ["treeId", o]);
+          Log_1.Log.Error("GeneralLogicTree", 31, "服务器通知更新变量时：行为树不存在，1.检查本地配置是否正确 2.服务端检查协议下发顺序", ["treeId", r]);
         }
       }
-      r.UpdateTreeVars(e);
+      o.UpdateTreeVars(e);
     };
     this.rYt = e => {
       e = e.cEs;
       if (e && e.length !== 0) {
-        for (const o of e) {
-          ModelManager_1.ModelManager.GeneralLogicTreeModel.CreateBehaviorTree(o);
+        for (const r of e) {
+          ModelManager_1.ModelManager.GeneralLogicTreeModel.CreateBehaviorTree(r);
         }
       }
     };
     this.nYt = e => {
       e = e.dEs;
       if (e && e.length !== 0) {
-        for (const r of e) {
-          var o = MathUtils_1.MathUtils.LongToBigInt(r);
-          ModelManager_1.ModelManager.GeneralLogicTreeModel.RemoveBehaviorTree(o);
+        for (const o of e) {
+          var r = MathUtils_1.MathUtils.LongToBigInt(o);
+          ModelManager_1.ModelManager.GeneralLogicTreeModel.RemoveBehaviorTree(r);
         }
       }
     };
@@ -168,55 +169,80 @@ class ServerNotifyAssistant extends ControllerAssistantBase_1.ControllerAssistan
       ModelManager_1.ModelManager.AutoRunModel.SetAutoRunState(e.C2s ? "Running" : "Stopped");
     };
     this.uMa = e => {
-      var o = ModelManager_1.ModelManager.PlayerInfoModel.GetId();
-      if (!o || e.W5n === o) {
+      var r = ModelManager_1.ModelManager.PlayerInfoModel.GetId();
+      if (!r || e.W5n === r) {
         const t = e.K4s;
         if (t) {
           switch (t.uS_) {
             case Protocol_1.Aki.Protocol.tw_.Proto_ActionOpenSystem:
-              var r = t.dS_;
-              if (r) {
-                (r = new ConfirmBoxDefine_1.ConfirmBoxDataNew(r.cS_)).FunctionMap.set(1, () => {
+              var o = t.dS_;
+              if (o) {
+                (o = new ConfirmBoxDefine_1.ConfirmBoxDataNew(o.cS_)).FunctionMap.set(1, () => {
                   this.OpenSystemBoardResultRequest(0, t.w5n);
                 });
-                r.FunctionMap.set(2, () => {
+                o.FunctionMap.set(2, () => {
                   this.OpenSystemBoardResultRequest(1, t.w5n);
                 });
-                ConfirmBoxController_1.ConfirmBoxController.ShowConfirmBoxNew(r);
+                ConfirmBoxController_1.ConfirmBoxController.ShowConfirmBoxNew(o);
               } else if (Log_1.Log.CheckError()) {
                 Log_1.Log.Error("GeneralLogicTree", 18, "ActionOpenSystemBoardNotify:打开带返回值的确认框时，服务端下发参数为空");
               }
               break;
             case Protocol_1.Aki.Protocol.tw_.Proto_SoaringChallenge:
-              r = t.mS_;
-              if (!r) {
+              o = t.mS_;
+              if (!o) {
                 if (Log_1.Log.CheckError()) {
                   Log_1.Log.Error("GeneralLogicTree", 18, "ActionOpenSystemBoardNotify:打开翱翔结算时，服务端下发参数为空");
                 }
                 return;
               }
-              r = new GeneralLogicTreeDefine_1.FlySettlementViewParams(r.SMs, r.aS_, r.hS_, r.lS_, ModelManager_1.ModelManager.GeneralLogicTreeModel.HistorySoarScore, t.w5n);
-              UiManager_1.UiManager.OpenView("FlySettlementView", r);
+              o = new GeneralLogicTreeDefine_1.FlySettlementViewParams(o.SMs, o.aS_, o.hS_, o.lS_, ModelManager_1.ModelManager.GeneralLogicTreeModel.HistorySoarScore, t.w5n);
+              UiManager_1.UiManager.OpenView("FlySettlementView", o);
               break;
             case Protocol_1.Aki.Protocol.tw_.Proto_FishingHandIn:
-              r = t.fS_;
-              if (!r) {
+              o = t.fS_;
+              if (!o) {
                 if (Log_1.Log.CheckError()) {
                   Log_1.Log.Error("GeneralLogicTree", 10, "ActionOpenSystemBoardNotify:打开捕鱼交付界面时，服务端下发参数为空");
                 }
                 return;
               }
-              ControllerHolder_1.ControllerHolder.FishingController.OpenDockyardInteractView(r._S_, t.w5n);
+              ControllerHolder_1.ControllerHolder.FishingController.OpenDockyardInteractView(o._S_, t.w5n);
               break;
             case Protocol_1.Aki.Protocol.tw_.Proto_GreatSwordChallenge:
-              r = t.j$c;
-              if (!r) {
+              o = t.j$c;
+              if (!o) {
                 if (Log_1.Log.CheckError()) {
                   Log_1.Log.Error("GeneralLogicTree", 88, "ActionOpenSystemBoardNotify:打开大剑挑战时，服务端下发参数为空");
                 }
                 return;
               }
-              ControllerHolder_1.ControllerHolder.GreatSwordController.RequestGreatSwordInfoAndOpenView(r.s5n, t.w5n);
+              ControllerHolder_1.ControllerHolder.GreatSwordController.RequestGreatSwordInfoAndOpenView(o.s5n, t.w5n);
+              break;
+            case Protocol_1.Aki.Protocol.tw_.Proto_InfrHandIn:
+              o = t.vNm;
+              if (!o) {
+                if (Log_1.Log.CheckError()) {
+                  Log_1.Log.Error("Infrastructure", 86, "ActionOpenSystemBoardNotify:打开基建交付时，服务端下发参数为空");
+                }
+                return;
+              }
+              if (ModelManager_1.ModelManager.CreatureModel.GetIsLoadingScene()) {
+                ControllerHolder_1.ControllerHolder.GeneralLogicTreeController.OpenSystemBoardResultRequest(0, t.w5n);
+                return;
+              }
+              InfrastructureController_1.InfrastructureController.OpenMaterialDelivery(o.h5n, o.s5n, t.w5n, 1);
+              break;
+            case Protocol_1.Aki.Protocol.tw_.Proto_MotorRaceChallenge:
+              o = t.FTf;
+              if (!o) {
+                if (Log_1.Log.CheckError()) {
+                  Log_1.Log.Error("GeneralLogicTree", 71, "ActionOpenSystemBoardNotify:打开摩托模拟赛结算时，服务端下发参数为空");
+                }
+                return;
+              }
+              o = new GeneralLogicTreeDefine_1.MotorSettlementViewParams(o.SMs, o.aS_, o.hS_, o.lS_, t.w5n);
+              UiManager_1.UiManager.OpenView("MotorRaceSettlementView", o);
           }
         }
       }
@@ -254,14 +280,14 @@ class ServerNotifyAssistant extends ControllerAssistantBase_1.ControllerAssistan
     Net_1.Net.UnRegister(20385);
     Net_1.Net.UnRegister(25954);
   }
-  OpenSystemBoardResultRequest(e, o) {
-    var r = ModelManager_1.ModelManager.PlayerInfoModel.GetId();
-    var r = Protocol_1.Aki.Protocol.mm_.create({
-      W5n: r,
+  OpenSystemBoardResultRequest(e, r) {
+    var o = ModelManager_1.ModelManager.PlayerInfoModel.GetId();
+    var o = Protocol_1.Aki.Protocol.mm_.create({
+      W5n: o,
       j7n: e,
-      w5n: o
+      w5n: r
     });
-    Net_1.Net.Call(16596, r, e => {
+    Net_1.Net.Call(16596, o, e => {
       if (e.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
         ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 20997, undefined, false);
       }

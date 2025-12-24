@@ -11,7 +11,10 @@ const PhantomArenaBattleGuideMagicUseCardFromHand_1 = require("./PhantomArenaBat
 const PhantomArenaBattleGuideMagicUseCardFromMonster_1 = require("./PhantomArenaBattleGuideMagicUseCardFromMonster");
 const PhantomArenaBattleGuideRecycleCardFromHand_1 = require("./PhantomArenaBattleGuideRecycleCardFromHand");
 const PhantomArenaBattleGuideRecycleCardFromMonster_1 = require("./PhantomArenaBattleGuideRecycleCardFromMonster");
+const PhantomArenaBattleGuideSelectCard_1 = require("./PhantomArenaBattleGuideSelectCard");
 const PhantomArenaBattleGuideSettingCard_1 = require("./PhantomArenaBattleGuideSettingCard");
+const PhantomArenaBattleGuideUseFieldCardSkill_1 = require("./PhantomArenaBattleGuideUseFieldCardSkill");
+const PhantomArenaBattleGuideUseItemCardSkill_1 = require("./PhantomArenaBattleGuideUseItemCardSkill");
 class PhantomArenaBattleGuideFactory {
   static GetGuideData(e, a) {
     var t = this.M1u.get(e);
@@ -24,5 +27,5 @@ class PhantomArenaBattleGuideFactory {
     throw new Error("未注册的声骸竞技场定制类型: " + e);
   }
 }
-(exports.PhantomArenaBattleGuideFactory = PhantomArenaBattleGuideFactory).M1u = new Map([["BvbDeploy", PhantomArenaBattleGuideSettingCard_1.PhantomArenaBattleGuideSettingCard], ["BvbEvolution", PhantomArenaBattleGuideEvolveCard_1.PhantomArenaBattleGuideEvolveCard], ["BvbChangeHandCard", PhantomArenaBattleGuideMagicUseCardFromHand_1.PhantomArenaBattleGuideMagicUseCardFromHand], ["BvbChangeBoardCard", PhantomArenaBattleGuideMagicUseCardFromMonster_1.PhantomArenaBattleGuideMagicUseCardFromMonster], ["BvbRecycleHandCard", PhantomArenaBattleGuideRecycleCardFromHand_1.PhantomArenaBattleGuideRecycleCardFromHand], ["BvbRecycleBoardCard", PhantomArenaBattleGuideRecycleCardFromMonster_1.PhantomArenaBattleGuideRecycleCardFromMonster], ["BvbChangeHandCard", PhantomArenaBattleGuideMagicUseCardFromHand_1.PhantomArenaBattleGuideMagicUseCardFromHand], ["BvbEndTurn", PhantomArenaBattleGuideEndTime_1.PhantomArenaBattleGuideEndTime]]);
+(exports.PhantomArenaBattleGuideFactory = PhantomArenaBattleGuideFactory).M1u = new Map([["BvbDeploy", PhantomArenaBattleGuideSettingCard_1.PhantomArenaBattleGuideSettingCard], ["BvbEvolution", PhantomArenaBattleGuideEvolveCard_1.PhantomArenaBattleGuideEvolveCard], ["BvbChangeHandCard", PhantomArenaBattleGuideMagicUseCardFromHand_1.PhantomArenaBattleGuideMagicUseCardFromHand], ["BvbChangeBoardCard", PhantomArenaBattleGuideMagicUseCardFromMonster_1.PhantomArenaBattleGuideMagicUseCardFromMonster], ["BvbRecycleHandCard", PhantomArenaBattleGuideRecycleCardFromHand_1.PhantomArenaBattleGuideRecycleCardFromHand], ["BvbRecycleBoardCard", PhantomArenaBattleGuideRecycleCardFromMonster_1.PhantomArenaBattleGuideRecycleCardFromMonster], ["BvbChangeHandCard", PhantomArenaBattleGuideMagicUseCardFromHand_1.PhantomArenaBattleGuideMagicUseCardFromHand], ["BvbEndTurn", PhantomArenaBattleGuideEndTime_1.PhantomArenaBattleGuideEndTime], ["BvbUseItemCardSkill", PhantomArenaBattleGuideUseItemCardSkill_1.PhantomArenaBattleGuideUseItemCardSkill], ["BvbUseFieldCardSkill", PhantomArenaBattleGuideUseFieldCardSkill_1.PhantomArenaBattleGuideUseFieldCardSkill], ["BvbSelectCard", PhantomArenaBattleGuideSelectCard_1.PhantomArenaBattleGuideSelectCard]]);
 //# sourceMappingURL=PhantomArenaBattleGuideFactory.js.map

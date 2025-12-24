@@ -31,23 +31,23 @@ class CommonQteCompassRotateItem extends CommonQteItemBase_1.CommonQteItemBase {
     this.Wad = false;
     this.Qad = false;
     this.bzt = false;
-    this.Nom = undefined;
-    this.Vom = new UE.Rotator();
-    this.jom = undefined;
-    this.Hom = 0;
-    this.$om = 0;
-    this.Wom = 0;
-    this.sgm = 90;
-    this.Qom = Vector2D_1.Vector2D.Create();
+    this.llm = undefined;
+    this._lm = new UE.Rotator();
+    this.ulm = undefined;
+    this.clm = 0;
+    this.dlm = 0;
+    this.mlm = 0;
+    this.RSm = 90;
+    this.flm = Vector2D_1.Vector2D.Create();
     this.Pnr = 0;
-    this.agm = 90;
+    this.wSm = 90;
     this.lqt = (t, i) => {
       if (Info_1.Info.IsInGamepad()) {
-        this.agm = 90;
-        this.Hom = 0;
-        this.$om = 0;
+        this.wSm = 90;
+        this.clm = 0;
+        this.dlm = 0;
       } else {
-        this.Qom.Reset();
+        this.flm.Reset();
         this.Qad = false;
         this.Wad = false;
       }
@@ -64,23 +64,23 @@ class CommonQteCompassRotateItem extends CommonQteItemBase_1.CommonQteItemBase {
     };
     this.BZu = (t, i) => {
       if (this.IsValidInput() && Info_1.Info.IsInGamepad()) {
-        this.Qom.X = i;
+        this.flm.X = i;
         this.Wad = i !== 0;
         this.Kad(this.Wad || this.Qad);
       }
     };
     this.kZu = (t, i) => {
       if (this.IsValidInput() && Info_1.Info.IsInGamepad()) {
-        this.Qom.Y = -i;
+        this.flm.Y = -i;
         this.Qad = i !== 0;
         this.Kad(this.Wad || this.Qad);
       }
     };
     this.JCo = t => {
-      this.agm = this.sgm;
+      this.wSm = this.RSm;
     };
-    this.hgm = t => {
-      this.agm = 90;
+    this.LSm = t => {
+      this.wSm = 90;
     };
     this.w8i = t => {
       var i;
@@ -89,7 +89,7 @@ class CommonQteCompassRotateItem extends CommonQteItemBase_1.CommonQteItemBase {
         t = t.pointerPosition;
         i = Vector2D_1.Vector2D.Create();
         LguiUtil_1.LguiUtil.ConvertPointerPositionToLguiCenterPosition(t, i);
-        this.Hom = Rotator_1.Rotator.ClampAxis(Math.atan2(i.Y - this.jom.Y, i.X - this.jom.X) * MathUtils_1.MathUtils.RadToDeg);
+        this.clm = Rotator_1.Rotator.ClampAxis(Math.atan2(i.Y - this.ulm.Y, i.X - this.ulm.X) * MathUtils_1.MathUtils.RadToDeg);
       }
     };
     this.B8i = t => {
@@ -97,23 +97,23 @@ class CommonQteCompassRotateItem extends CommonQteItemBase_1.CommonQteItemBase {
       if (this.IsValidInput() && this.NQa && this.bzt && t) {
         if (TouchFingerManager_1.TouchFingerManager.GetTouchFingerCount() > 1) {
           this.Kad(false);
-          this.$om = 0;
-          this.Hom = 0;
+          this.dlm = 0;
+          this.clm = 0;
         } else {
           t = t.pointerPosition;
           i = Vector2D_1.Vector2D.Create();
           LguiUtil_1.LguiUtil.ConvertPointerPositionToLguiCenterPosition(t, i);
-          t = Rotator_1.Rotator.ClampAxis(Math.atan2(i.Y - this.jom.Y, i.X - this.jom.X) * MathUtils_1.MathUtils.RadToDeg);
-          this.$om = t - this.Hom;
+          t = Rotator_1.Rotator.ClampAxis(Math.atan2(i.Y - this.ulm.Y, i.X - this.ulm.X) * MathUtils_1.MathUtils.RadToDeg);
+          this.dlm = t - this.clm;
         }
       }
     };
     this.b8i = t => {
       if (this.IsValidInput() && this.NQa) {
         this.Kad(false);
-        this.$om = 0;
-        this.Hom = 0;
-        this.agm = 90;
+        this.dlm = 0;
+        this.clm = 0;
+        this.wSm = 90;
       }
     };
   }
@@ -142,13 +142,13 @@ class CommonQteCompassRotateItem extends CommonQteItemBase_1.CommonQteItemBase {
     t.OnPointerDragCallBack.Bind(this.B8i);
     t.OnPointerEndDragCallBack.Bind(this.b8i);
     t.OnPointerDownCallBack.Bind(this.JCo);
-    t.OnPointerUpCallBack.Bind(this.hgm);
-    this.Nom = this.GetItem(2);
-    this.Vom.Pitch = 0;
-    this.Vom.Roll = 0;
-    this.Vom.Yaw = 0;
-    this.Wom = 90;
-    this.jom = this.GetItem(2).GetUIWorldPosition();
+    t.OnPointerUpCallBack.Bind(this.LSm);
+    this.llm = this.GetItem(2);
+    this._lm.Pitch = 0;
+    this._lm.Roll = 0;
+    this._lm.Yaw = 0;
+    this.mlm = 90;
+    this.ulm = this.GetItem(2).GetUIWorldPosition();
   }
   OnBeforeDestroy() {
     super.OnBeforeDestroy();
@@ -264,19 +264,19 @@ class CommonQteCompassRotateItem extends CommonQteItemBase_1.CommonQteItemBase {
         } else {
           this.fS1.UpdateTime(t);
           if (Info_1.Info.IsInGamepad()) {
-            if (MathUtils_1.MathUtils.IsNearlyZero(this.Qom.Size())) {
-              this.Wom = this.agm;
+            if (MathUtils_1.MathUtils.IsNearlyZero(this.flm.Size())) {
+              this.mlm = this.wSm;
             } else {
-              this.Wom = Math.atan2(this.Qom.Y, this.Qom.X) * MathUtils_1.MathUtils.RadToDeg;
+              this.mlm = Math.atan2(this.flm.Y, this.flm.X) * MathUtils_1.MathUtils.RadToDeg;
             }
           } else {
-            this.Wom = this.agm + this.$om;
+            this.mlm = this.wSm + this.dlm;
           }
-          this.Wom = MathUtils_1.MathUtils.ClampAngle(this.Wom, 0, 90);
-          this.sgm = MathUtils_1.MathUtils.InterpConstantTo(this.sgm, this.Wom, t, this.Pnr);
-          this.fS1.SetDraggingInfo(0, (90 - this.sgm) * MathUtils_1.MathUtils.DegToRad);
-          this.Vom.Yaw = this.sgm;
-          this.Nom.SetUIRelativeRotation(this.Vom);
+          this.mlm = MathUtils_1.MathUtils.ClampAngle(this.mlm, 0, 90);
+          this.RSm = MathUtils_1.MathUtils.InterpConstantTo(this.RSm, this.mlm, t, this.Pnr);
+          this.fS1.SetDraggingInfo(0, (90 - this.RSm) * MathUtils_1.MathUtils.DegToRad);
+          this._lm.Yaw = this.RSm;
+          this.llm.SetUIRelativeRotation(this._lm);
           if (ModelManager_1.ModelManager.CommonQteModel?.IsRefreshMode) {
             this.Bfc();
           }

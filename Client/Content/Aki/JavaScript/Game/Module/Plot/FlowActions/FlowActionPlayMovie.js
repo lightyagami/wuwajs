@@ -14,7 +14,7 @@ class FlowActionPlayMovie extends FlowActionBase_1.FlowActionBase {
     VideoLauncher_1.VideoLauncher.ShowVideoCg(e.VideoName, () => {
       ControllerHolder_1.ControllerHolder.FlowController.EnableSkip(false);
       this.FinishExecute(true);
-    }, e.BackgroundFade, o, true);
+    }, e.BackgroundFade, o, true, e.ProgramSpecialConfig, e.Mp4FadeOutTime, e.BlackBorderFadeOutTime);
   }
   OnInterruptExecute() {
     VideoLauncher_1.VideoLauncher.CloseVideoCg();

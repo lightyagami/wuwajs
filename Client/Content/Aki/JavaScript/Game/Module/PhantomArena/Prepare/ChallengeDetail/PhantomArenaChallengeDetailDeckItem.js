@@ -22,69 +22,81 @@ class PhantomArenaChallengeDetailDeckItem extends GridProxyAbstract_1.GridProxyA
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIItem], [3, UE.UIText], [2, UE.UITexture], [4, UE.UIText], [5, UE.UIText], [6, UE.UIItem], [7, UE.UIText], [8, UE.UISprite], [9, UE.UIItem], [10, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIItem], [3, UE.UIText], [2, UE.UITexture], [4, UE.UIText], [5, UE.UIText], [6, UE.UIItem], [7, UE.UIText], [8, UE.UISprite], [9, UE.UIItem], [10, UE.UIItem], [11, UE.UIItem], [12, UE.UIText], [13, UE.UISprite]];
     this.BtnBindInfo = [[0, this.v81]];
   }
   async OnBeforeStartAsync() {
-    var t = [];
-    for (let e = 9; e <= 10; e++) {
+    var e = [];
+    for (let t = 9; t <= 10; t++) {
       var i = new CardElementItem_1.CardElementItem();
       this.ElementList.push(i);
-      t.push(i.CreateByActorAsync(this.GetItem(e).GetOwner()));
+      e.push(i.CreateByActorAsync(this.GetItem(t).GetOwner()));
     }
-    await Promise.all(t);
+    await Promise.all(e);
   }
   OnStart() {
     this.SequencePlayer = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
   }
-  Refresh(e) {
-    this.DeckInfo = e;
-    var t = this.GetText(5);
+  Refresh(t) {
+    this.DeckInfo = t;
+    var e = this.GetText(5);
     var i = this.GetText(7);
     var r = this.GetTexture(2);
-    if (e) {
+    if (t) {
       this.GetItem(6).SetUIActive(false);
       this.GetItem(1).SetUIActive(true);
       this.GetText(3).SetText("1");
-      this.GetText(4).SetText(e.GetName());
-      t.SetUIActive(true);
+      this.GetText(4).SetText(t.GetName());
+      e.SetUIActive(true);
       i.SetUIActive(true);
-      var s = e.GetNormalCardCount();
-      var a = e.GetNormalCardCountLimit();
+      var s = t.GetNormalCardCount();
+      var a = t.GetNormalCardCountLimit();
       if (s === a) {
-        t.SetText(s + "/" + a);
+        e.SetText(s + "/" + a);
       } else {
-        LguiUtil_1.LguiUtil.SetLocalTextNew(t, "PhantomBattle_1042", s, a);
+        LguiUtil_1.LguiUtil.SetLocalTextNew(e, "PhantomBattle_1042", s, a);
       }
-      var s = e.IsCoreCardSlotLocked();
+      var s = t.IsCoreCardSlotLocked();
       this.GetSprite(8).SetIsGray(s);
       i.SetChangeColor(s, i.changeColor);
       if (s) {
         LguiUtil_1.LguiUtil.SetLocalTextNew(i, "PhantomBattle_1039");
-      } else if ((a = e.GetCoreCardCount()) === (s = e.GetCoreCardCountLimit())) {
+      } else if ((a = t.GetCoreCardCount()) === (s = t.GetCoreCardCountLimit())) {
         i.SetText(a + "/" + s);
       } else {
         LguiUtil_1.LguiUtil.SetLocalTextNew(i, "PhantomBattle_1042", a, s);
       }
-      var a = e.GetDeckFaceCardId();
-      r.SetUIActive(a > 0);
-      if (a > 0) {
-        s = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardConfig(a);
-        this.SetTextureByPath(s.DeckFaceTexture, r);
+      this.GetItem(11).SetUIActive(t.GetFieldCardCountLimit() !== 0);
+      var a = this.GetText(12);
+      var s = t.GetFieldCardCount();
+      var n = t.GetFieldCardCountLimit();
+      if (s === n) {
+        a.SetText(s + "/" + n);
+      } else {
+        LguiUtil_1.LguiUtil.SetLocalTextNew(a, "PhantomBattle_1042", s, n);
       }
-      var h = e.GetElementList();
-      for (let e = 0; e < this.ElementList.length; e++) {
-        if (e >= h.length) {
-          this.ElementList[e].SetActive(false);
+      var a = t.GetFieldCardSlot()?.Element;
+      var s = a !== undefined ? ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleElementConfig(a).FieldCardElementInDeck : ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("SP_IconSoundRemnantArenaField");
+      this.SetSpriteByPath(s, this.GetSprite(13), false);
+      var n = t.GetDeckFaceCardId();
+      r.SetUIActive(n > 0);
+      if (n > 0) {
+        a = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardConfig(n);
+        this.SetTextureByPath(a.DeckFaceTexture, r);
+      }
+      var h = t.GetElementList();
+      for (let t = 0; t < this.ElementList.length; t++) {
+        if (t >= h.length) {
+          this.ElementList[t].SetActive(false);
         } else {
-          this.ElementList[e].SetActive(true);
-          this.ElementList[e].RefreshElement(h[e]);
+          this.ElementList[t].SetActive(true);
+          this.ElementList[t].RefreshElement(h[t]);
         }
       }
     } else {
       this.GetItem(6).SetUIActive(true);
       this.GetItem(1).SetUIActive(false);
-      t.SetUIActive(false);
+      e.SetUIActive(false);
       i.SetUIActive(false);
       r.SetUIActive(false);
     }

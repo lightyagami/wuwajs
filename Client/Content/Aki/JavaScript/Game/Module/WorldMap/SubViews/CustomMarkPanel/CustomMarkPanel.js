@@ -9,7 +9,6 @@ const MultiTextLang_1 = require("../../../../../Core/Define/ConfigQuery/MultiTex
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
 const ConfigManager_1 = require("../../../../Manager/ConfigManager");
-const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const MapController_1 = require("../../../Map/Controller/MapController");
 const MarkUiUtils_1 = require("../../../Map/Mark/Misc/MarkUiUtils");
@@ -24,14 +23,13 @@ class CustomMarkPanel extends WorldMapSecondaryUiLayoutB_1.WorldMapSecondaryUiLa
     this.g2o = undefined;
     this.u2o = undefined;
     this.f2o = false;
-    this.Woa = false;
     this.p2o = 0;
     this.OnRightConfirmBtnClick = () => {
-      if (!this.Woa) {
+      if (!this.LayoutContext?.TakeAction) {
         switch (this.p2o) {
           case 0:
             MapController_1.MapController.RequestCreateCustomMark(this.u2o.TrackPosition, this.u2o.ConfigId);
-            this.Woa = true;
+            this.LayoutContext.TakeAction = true;
             this.Close();
             break;
           case 1:
@@ -45,7 +43,7 @@ class CustomMarkPanel extends WorldMapSecondaryUiLayoutB_1.WorldMapSecondaryUiLa
       }
     };
     this.OnLeftConfirmBtnClick = () => {
-      if (!this.Woa) {
+      if (!this.LayoutContext?.TakeAction) {
         this.CheckAndShowCrossMapTips(this.u2o);
         MapController_1.MapController.RequestTrackMapMark({
           MarkType: this.u2o.MarkType,
@@ -53,17 +51,17 @@ class CustomMarkPanel extends WorldMapSecondaryUiLayoutB_1.WorldMapSecondaryUiLa
           Track: !this.f2o,
           TrackMode: 1
         });
-        this.Woa = true;
+        this.LayoutContext.TakeAction = true;
         this.f2o = !this.f2o;
         this.Close();
       }
     };
     this.OnDelBtnClick = () => {
-      if (!this.Woa) {
+      if (!this.LayoutContext?.TakeAction) {
         if (this.p2o === 1) {
           MapController_1.MapController.RequestRemoveMapMarks(9, [this.u2o.MarkId]);
         }
-        this.Woa = true;
+        this.LayoutContext.TakeAction = true;
         this.Close();
       }
     };
@@ -77,9 +75,13 @@ class CustomMarkPanel extends WorldMapSecondaryUiLayoutB_1.WorldMapSecondaryUiLa
     this.E2o();
   }
   OnShowWorldMapSecondaryUi(t, i) {
+    if (this.LayoutContext) {
+      this.LayoutContext.MarkItem = t;
+    }
     this.p2o = i;
+    t.IsCreated = i === 1;
     this.u2o = t;
-    this.Woa = false;
+    this.LayoutContext.TakeAction = false;
     this.QQl();
     this.SetSpriteByPath(this.u2o.IconPath, this.GetSprite(0), false);
     i = ModelManager_1.ModelManager.MapModel.GetMarkCountByType(9);
@@ -110,21 +112,20 @@ class CustomMarkPanel extends WorldMapSecondaryUiLayoutB_1.WorldMapSecondaryUiLa
       case 0:
         var t = MultiTextLang_1.configMultiTextLang.GetLocalTextNew("Text_Add_Text") ?? "";
         this.RightConfirmBtn.SetText(t);
-        this.RightConfirmBtn.RefreshEnable(true);
+        this.RightConfirmBtn.SetEnableClick(true);
         break;
       case 1:
-        var t = ControllerHolder_1.ControllerHolder.TeleportController.CheckCanTeleport();
-        var i = MarkUiUtils_1.MarkUiUtils.FindNearbyValidGotoMark(this.Map, this.u2o);
-        this.RightConfirmBtn.RefreshEnable(t && i !== undefined);
-        this.RightConfirmBtn.RefreshTextNew("MapMarkQuickTransfer_Text");
+        t = MarkUiUtils_1.MarkUiUtils.FindNearbyValidGotoMark(this.Map, this.u2o);
+        this.RightConfirmBtn.SetEnableClick(ModelManager_1.ModelManager.TeleportModel.AllowTeleportByUi && t !== undefined);
+        this.RightConfirmBtn.TrySetLocalTextNew("MapMarkQuickTransfer_Text");
     }
-    var e = this.p2o === 0;
-    this.SetDelBtnActive(!e);
-    this.LeftConfirmBtn.RefreshEnable(!e);
+    var i = this.p2o === 0;
+    this.SetDelBtnActive(!i);
+    this.LeftConfirmBtn.SetEnableClick(!i);
     this.Zno(this.u2o.IsTracked);
   }
   OnCloseWorldMapSecondaryUi() {
-    this.Woa = false;
+    this.LayoutContext.TakeAction = false;
     if (this.u2o && this.p2o === 0) {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RemoveMapMark, 9, this.u2o.MarkId);
     }
@@ -161,6 +162,18 @@ class CustomMarkPanel extends WorldMapSecondaryUiLayoutB_1.WorldMapSecondaryUiLa
       }
       this.GetItem(6).SetUIActive(false);
     }
+  }
+  OnAfterShowWorldMapSecondaryUi() {
+    super.OnAfterShowWorldMapSecondaryUi();
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnMapCustomMarkPanelShow);
+  }
+  OnRefreshPanel(t) {
+    this.u2o = t;
+    if (this.u2o) {
+      this.LayoutContext.MarkItem = this.u2o;
+    }
+    this.p2o = this.u2o?.IsCreated ? 1 : 0;
+    this.QQl();
   }
 }
 (exports.CustomMarkPanel = CustomMarkPanel).PanelSize = new UE.Vector2D(CUSTOM_MARK_PANEL_WIDTH, CUSTOM_MARK_PANEL_HEIGHT);

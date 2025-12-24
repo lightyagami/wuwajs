@@ -650,7 +650,7 @@ class BattleLinkModel extends ModelBase_1.ModelBase {
   $Uu(t) {
     for (const e of ModelManager_1.ModelManager.SceneTeamModel.GetTeamItems()) {
       if (t === ConfigManager_1.ConfigManager.RoleConfig.GetBaseRoleId(e.GetConfigId)) {
-        return !!e.EntityHandle?.Entity?.GetComponent(287)?.IsMorphing();
+        return !!e.EntityHandle?.Entity?.GetComponent(306)?.IsMorphing();
       }
     }
     return false;

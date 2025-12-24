@@ -5,18 +5,29 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.PhantomArenaBattleSkillTips = undefined;
 const UE = require("ue");
-const ConfigManager_1 = require("../../../../../Manager/ConfigManager");
-const ModelManager_1 = require("../../../../../Manager/ModelManager");
+const TimerSystem_1 = require("../../../../../../Core/Timer/TimerSystem");
 const UiPanelBase_1 = require("../../../../../Ui/Base/UiPanelBase");
 const UiSequencePlayer_1 = require("../../../../../Ui/Base/UiSequencePlayer");
+const LguiEventSystemManager_1 = require("../../../../../Ui/LguiEventSystem/LguiEventSystemManager");
 const LguiUtil_1 = require("../../../../Util/LguiUtil");
 class PhantomArenaBattleSkillTips extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.Sequence = undefined;
+    this.IsInActive = false;
+    this.TimerHandle = undefined;
     this.Nno = e => {
       if (e === "Close") {
         this.SetActive(false);
+      }
+    };
+    this.tmf = () => {
+      if (this.RootItem) {
+        if (!LguiEventSystemManager_1.LguiEventSystemManager.GetPointerEventData(0, true).enterComponentStack.Contains(this.RootItem)) {
+          this.dbu();
+        }
+      } else {
+        this.FBd();
       }
     };
   }
@@ -29,29 +40,56 @@ class PhantomArenaBattleSkillTips extends UiPanelBase_1.UiPanelBase {
   }
   OnBeforeDestroy() {
     this.Sequence.Clear();
+    this.FBd();
+  }
+  wFm(e, i, t) {
+    var s = this.GetOriginalItem();
+    s?.SetPivot(new UE.Vector2D(e, i));
+    s?.SetAnchorHAlign(t);
+    s?.SetAnchorOffset(new UE.Vector2D(0, 0));
+  }
+  cGf() {
+    this.FBd();
+    this.TimerHandle = TimerSystem_1.GameplayTimerSystem.Forever(() => {
+      this.tmf();
+    }, 100);
+  }
+  FBd() {
+    if (this.TimerHandle) {
+      TimerSystem_1.GameplayTimerSystem.Remove(this.TimerHandle);
+      this.TimerHandle = undefined;
+    }
+  }
+  jt_() {
+    this.FBd();
+    this.SetActive(true);
+    this.Sequence.StopPrevSequence(false, true);
+    this.Sequence.PlaySequence("Start");
+  }
+  dbu() {
+    this.FBd();
+    this.Sequence.StopPrevSequence(false, true);
+    this.Sequence.PlaySequence("Close");
   }
   Refresh(e) {
-    var i;
-    var t = ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.RoleId;
-    var t = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardRole(t);
-    let s = undefined;
-    let a = undefined;
-    let r = [];
-    r = e.IsPassive ? (i = t.PassiveSkillId.indexOf(e.SkillId), s = t.PassiveSkillNameList[i], a = t.PassiveSkillDescList[i], t.PassiveSkillDescParamsList[i] ? t.PassiveSkillDescParamsList[i].ArrayString : []) : (i = t.ActiveSkillId.indexOf(e.SkillId), s = t.SkillNameList[i], a = t.SkillDescList[i], t.SkillDescParamsList[i] ? t.SkillDescParamsList[i].ArrayString : []);
-    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), s);
-    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), a, ...r);
+    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), e.SkillName);
+    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), e.SkillDesc, ...e.SkillDescParams);
   }
-  SetAttachItem(e) {
+  SetTipsPosition(e, i) {
     this.RootItem?.SetUIParent(e);
+    if (i) {
+      this.wFm(1, 0, 3);
+    } else {
+      this.wFm(0, 1, 1);
+    }
   }
   SetTipsActive(e) {
-    if (e) {
-      this.SetActive(true);
-      this.Sequence.StopPrevSequence(false, true);
-      this.Sequence.PlaySequence("Start");
-    } else {
-      this.Sequence.StopPrevSequence(false, true);
-      this.Sequence.PlaySequence("Close");
+    if (this.IsInActive !== e) {
+      if (this.IsInActive = e) {
+        this.jt_();
+      } else {
+        this.cGf();
+      }
     }
   }
 }

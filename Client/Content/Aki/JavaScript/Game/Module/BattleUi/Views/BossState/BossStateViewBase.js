@@ -113,11 +113,12 @@ class BossStateViewBase extends BattleEntityChildView_1.BattleEntityChildView {
     EventSystem_1.EventSystem.RemoveWithTarget(t, EventDefine_1.EEventName.CharShieldChange, this.u$e);
     EventSystem_1.EventSystem.RemoveWithTarget(t, EventDefine_1.EEventName.CharBeHitTimeScale, this.OnTimeScale);
   }
+  UpdateStyle(t) {}
   Reset() {
     super.Reset();
   }
   Tick(t) {}
-  ChangeBuff(t, i, e) {}
+  ChangeBuff(t, i, e, s = 0) {}
   HideBossName(t) {}
   OnLanguageChange() {
     if (this.IsValid()) {
@@ -129,7 +130,7 @@ class BossStateViewBase extends BattleEntityChildView_1.BattleEntityChildView {
     this.OnBossStateChange();
   }
   RefreshHardnessAttributeId() {
-    if (this.GetEntity().GetComponent(209).HasTag(-1838149281)) {
+    if (this.GetEntity().GetComponent(215).HasTag(-1838149281)) {
       this.HardnessAttributeId = EAttributeId.Proto_Rage;
       this.MaxHardnessAttributeId = EAttributeId.Proto_RageMax;
     } else {
@@ -145,7 +146,7 @@ class BossStateViewBase extends BattleEntityChildView_1.BattleEntityChildView {
   OnBossHardnessChanged(t) {}
   OnBossLanguageChange() {}
   RefreshHiddenTagState() {
-    var t = this.GetEntity()?.GetComponent(209);
+    var t = this.GetEntity()?.GetComponent(215);
     this.HasHiddenTag = t?.HasTag(-13489149);
     this.HasFallDownTag = t?.HasTag(1922078392);
     this.HasFightTag = t?.HasTag(1996802261) ?? false;
@@ -185,14 +186,14 @@ class BossStateViewBase extends BattleEntityChildView_1.BattleEntityChildView {
     return [t / i, s];
   }
   GetAttributeComponent() {
-    return this.GetEntity().CheckGetComponent(177);
+    return this.GetEntity().CheckGetComponent(182);
   }
   GetCurrentAttributeValueById(t) {
     return this.GetAttributeComponent().GetCurrentValue(t);
   }
   GetBossShield() {
     if (this.IsValid()) {
-      return this.GetEntity().CheckGetComponent(75).ShieldTotal;
+      return this.GetEntity().CheckGetComponent(78).ShieldTotal;
     } else {
       return 0;
     }

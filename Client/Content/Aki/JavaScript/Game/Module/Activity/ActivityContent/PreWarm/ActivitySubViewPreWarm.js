@@ -27,50 +27,50 @@ class ActivitySubViewPreWarm extends ActivitySubViewBase_1.ActivitySubViewBase {
   constructor() {
     super(...arguments);
     this.T8e = undefined;
-    this.C1m = undefined;
-    this.p1m = undefined;
-    this.v1m = new Map();
-    this.y1m = [5, 6, 7, 8, 9, 10, 11];
-    this.S1m = undefined;
+    this.Dmm = undefined;
+    this.Umm = undefined;
+    this.xmm = new Map();
+    this.Bmm = [5, 6, 7, 8, 9, 10, 11];
+    this.kmm = undefined;
     this.$pt = undefined;
     this.ActivityBaseData = undefined;
-    this.vcm = undefined;
+    this.j0m = undefined;
     this.JGe = () => {
       return new CommonItemSmallItemGrid_1.CommonItemSmallItemGrid();
     };
-    this.M1m = i => {
-      if (this.C1m) {
-        this.v1m.get(this.C1m.GetId())?.SetToggleState(0);
+    this.qmm = i => {
+      if (this.Dmm) {
+        this.xmm.get(this.Dmm.GetId())?.SetToggleState(0);
       }
-      this.I3e(this.C1m?.GetId(), i);
-      this.v1m.get(i)?.SetToggleState(1);
-      this.C1m = ModelManager_1.ModelManager.ActivityPreWarmModel?.GetCollectItemDataById(i);
+      this.I3e(this.Dmm?.GetId(), i);
+      this.xmm.get(i)?.SetToggleState(1);
+      this.Dmm = ModelManager_1.ModelManager.ActivityPreWarmModel?.GetCollectItemDataById(i);
       this.jqe();
       this.brd();
       this.mGe();
       this.Dsd();
-      this.Abm();
+      this.ijm();
     };
     this.Dwa = () => {
       this.PKt();
     };
-    this.E1m = () => {
-      var i = this.C1m?.GetQuestId();
+    this.Omm = () => {
+      var i = this.Dmm?.GetQuestId();
       if (i !== undefined) {
         this.ActivityBaseData?.RemoveQuestRedDot(i);
         UiManager_1.UiManager.OpenView("QuestView", i);
       }
     };
-    this.I1m = () => {
+    this.Gmm = () => {
       var i;
-      if (this.C1m) {
+      if (this.Dmm) {
         i = {
-          Id: this.C1m.GetId(),
-          ActivityId: this.C1m.GetActivityId()
+          Id: this.Dmm.GetId(),
+          ActivityId: this.Dmm.GetActivityId()
         };
         UiManager_1.UiManager.OpenView("ActivityPreWarmMainView", i);
-        (i = new LogReportDefine_1.ActivityPreWarmOpenLogEvent()).i_activity_id = this.C1m.GetActivityId();
-        i.i_chapter_id = this.C1m.GetId();
+        (i = new LogReportDefine_1.ActivityPreWarmOpenLogEvent()).i_activity_id = this.Dmm.GetActivityId();
+        i.i_chapter_id = this.Dmm.GetId();
         ControllerHolder_1.ControllerHolder.LogReportController.LogReport(i);
       }
     };
@@ -83,19 +83,19 @@ class ActivitySubViewPreWarm extends ActivitySubViewBase_1.ActivitySubViewBase {
     };
     this.Wpu = (i, e) => {
       if (i === "SwitchDown" && e === "SwitchDown" || i === "SwitchUp" && e === "SwitchUp") {
-        this.vcm?.SetResult();
+        this.j0m?.SetResult();
       }
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UITexture], [1, UE.UISprite], [2, UE.UIText], [3, UE.UIItem], [4, UE.UITexture], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UIItem], [11, UE.UIItem], [12, UE.UIScrollViewWithScrollbarComponent], [13, UE.UIButtonComponent], [14, UE.UIButtonComponent], [15, UE.UIItem], [16, UE.UIText], [17, UE.UIText], [18, UE.UITexture], [19, UE.UIItem], [20, UE.UIItem], [21, UE.UIItem], [22, UE.UIButtonComponent], [23, UE.UIItem]];
-    this.BtnBindInfo = [[13, this.E1m], [14, this.I1m], [22, this.JGn]];
+    this.BtnBindInfo = [[13, this.Omm], [14, this.Gmm], [22, this.JGn]];
   }
   async OnBeforeStartAsync() {
-    this.T1m();
+    this.Fmm();
     var i = [];
-    i.push(this.b1m());
-    i.push(...this.R1m());
+    i.push(this.Nmm());
+    i.push(...this.Vmm());
     await Promise.all(i);
   }
   OnStart() {
@@ -109,33 +109,33 @@ class ActivitySubViewPreWarm extends ActivitySubViewBase_1.ActivitySubViewBase {
   }
   OnBeforeShow() {
     var i = ModelManager_1.ModelManager.ActivityPreWarmModel?.GetDefaultId() ?? 1;
-    this.v1m.get(i)?.SetToggleState(1, true);
+    this.xmm.get(i)?.SetToggleState(1, true);
   }
-  async b1m() {
+  async Nmm() {
     var i;
     var e;
     var t;
-    if (this.ActivityBaseData && (this.p1m = new ActivityTitleTypeA_1.ActivityTitleTypeA(), await this.p1m.CreateThenShowByActorAsync(this.GetItem(3).GetOwner()), this.p1m.SetTitleByText(this.ActivityBaseData.GetTitle()), e = (i = this.ActivityBaseData.LocalConfig)?.DescTheme, t = !StringUtils_1.StringUtils.IsEmpty(e), this.p1m?.SetSubTitleVisible(t), t) && (t = i?.DescThemeIcon, e && this.p1m?.SetSubTitleByTextId(e), t)) {
-      this.p1m?.SetSubTitleIconByPath(t);
+    if (this.ActivityBaseData && (this.Umm = new ActivityTitleTypeA_1.ActivityTitleTypeA(), await this.Umm.CreateThenShowByActorAsync(this.GetItem(3).GetOwner()), this.Umm.SetActivityBaseData(this.ActivityBaseData), this.Umm.SetTitleByText(this.ActivityBaseData.GetTitle()), e = (i = this.ActivityBaseData.LocalConfig)?.DescTheme, t = !StringUtils_1.StringUtils.IsEmpty(e), this.Umm?.SetSubTitleVisible(t), t) && (t = i?.DescThemeIcon, e && this.Umm?.SetSubTitleByTextId(e), t)) {
+      this.Umm?.SetSubTitleIconByPath(t);
     }
   }
-  T1m() {
+  Fmm() {
     this.T8e = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(12), this.JGe);
   }
-  R1m() {
+  Vmm() {
     const s = [];
-    this.y1m.forEach((i, e) => {
+    this.Bmm.forEach((i, e) => {
       var i = this.GetItem(i);
       var t = new ActivityPreWarmCollectItem_1.ActivityPreWarmCollectItem();
       var e = e + 1;
-      this.v1m.set(e, t);
-      t.SetSelectCallBack(this.M1m, e);
+      this.xmm.set(e, t);
+      t.SetSelectCallBack(this.qmm, e);
       s.push(t.CreateThenShowByActorAsync(i.GetOwner()));
     });
     return s;
   }
   jqe() {
-    const e = this.C1m?.GetQuestState();
+    const e = this.Dmm?.GetQuestState();
     switch (e) {
       case 0:
       case 1:
@@ -151,7 +151,7 @@ class ActivitySubViewPreWarm extends ActivitySubViewBase_1.ActivitySubViewBase {
         LguiUtil_1.LguiUtil.TrySetLocalTextNew(this.GetText(17), "RestoreFrequency_Reward_1");
     }
     var i;
-    if (this.T8e && (i = this.C1m?.GetPreviewReward())) {
+    if (this.T8e && (i = this.Dmm?.GetPreviewReward())) {
       this.T8e.RefreshByData(i, () => {
         this.T8e?.GetScrollItemList().forEach(i => {
           i.SetReceivedVisible(e === 3);
@@ -159,64 +159,64 @@ class ActivitySubViewPreWarm extends ActivitySubViewBase_1.ActivitySubViewBase {
       });
     }
   }
-  get Pbm() {
+  get tjm() {
     return this.ActivityBaseData?.IsUnLock() ?? false;
   }
-  Abm() {
+  ijm() {
     var i;
-    if (!!this.Pbm && !(i = this.C1m?.GetIsUnlock())?.IsUnlock) {
+    if (!!this.tjm && !(i = this.Dmm?.GetIsUnlock())?.IsUnlock) {
       LguiUtil_1.LguiUtil.TrySetLocalTextNew(this.GetText(16), "RestoreFrequency_Unlock_0", i?.CdTime);
     }
   }
   brd() {
     var i;
-    this.GetButton(22)?.RootUIComp.SetUIActive(!this.Pbm);
-    if (this.Pbm) {
-      this.S1m?.SetUIActive(false);
-      switch (this.C1m?.GetQuestState()) {
+    this.GetButton(22)?.RootUIComp.SetUIActive(!this.tjm);
+    if (this.tjm) {
+      this.kmm?.SetUIActive(false);
+      switch (this.Dmm?.GetQuestState()) {
         case 0:
         case 1:
-          this.S1m = this.GetItem(15);
-          if (this.C1m?.GetIsUnlock()?.IsUnlock) {
+          this.kmm = this.GetItem(15);
+          if (this.Dmm?.GetIsUnlock()?.IsUnlock) {
             LguiUtil_1.LguiUtil.TrySetLocalTextNew(this.GetText(16), "RestoreFrequency_Unlock_1");
           }
           break;
         case 2:
-          this.S1m = this.GetButton(13)?.RootUIComp;
+          this.kmm = this.GetButton(13)?.RootUIComp;
           break;
         case 3:
-          this.S1m = this.GetButton(14)?.RootUIComp;
+          this.kmm = this.GetButton(14)?.RootUIComp;
       }
-      this.S1m?.SetUIActive(true);
+      this.kmm?.SetUIActive(true);
     } else {
       this.GetItem(15)?.SetUIActive(true);
-      this.S1m = this.GetItem(15);
+      this.kmm = this.GetItem(15);
       i = LevelGeneralCommons_1.LevelGeneralCommons.GetConditionGroupHintText(this.ActivityBaseData.ConditionGroupId);
       LguiUtil_1.LguiUtil.TrySetLocalTextNew(this.GetText(16), i);
     }
   }
   mGe() {
-    this.TrySetSpriteByPath(this.C1m?.GetTitleNumIconPath(), this.GetSprite(1), false);
-    var i = this.C1m?.GetQuestState();
+    this.TrySetSpriteByPath(this.Dmm?.GetTitleNumIconPath(), this.GetSprite(1), false);
+    var i = this.Dmm?.GetQuestState();
     if (i === 0 || i === 1) {
       LguiUtil_1.LguiUtil.TrySetLocalTextNew(this.GetText(2), "RestoreFrequency_Title_0");
     } else {
-      LguiUtil_1.LguiUtil.TrySetLocalTextNew(this.GetText(2), this.C1m?.GetTitle());
+      LguiUtil_1.LguiUtil.TrySetLocalTextNew(this.GetText(2), this.Dmm?.GetTitle());
     }
   }
   async Dsd() {
-    await this.vcm?.Promise;
-    if (this.C1m?.GetQuestState() === 3) {
+    await this.j0m?.Promise;
+    if (this.Dmm?.GetQuestState() === 3) {
       this.GetItem(19)?.SetUIActive(true);
       this.GetItem(20)?.SetUIActive(false);
-      this.TrySetTextureByPath(this.C1m.GetIconPath(), this.GetTexture(4));
+      this.TrySetTextureByPath(this.Dmm.GetIconPath(), this.GetTexture(4));
     } else {
       this.GetItem(19)?.SetUIActive(false);
       this.GetItem(20)?.SetUIActive(true);
     }
   }
-  L1m() {
-    this.v1m.forEach(i => {
+  Hmm() {
+    this.xmm.forEach(i => {
       i.Refresh();
     });
   }
@@ -231,23 +231,23 @@ class ActivitySubViewPreWarm extends ActivitySubViewBase_1.ActivitySubViewBase {
   }
   OnTimer(i) {
     this.FNe();
-    this.Abm();
+    this.ijm();
   }
   FNe() {
     var [i, e] = this.GetTimeVisibleAndRemainTime();
-    this.p1m?.SetTimeTextVisible(i);
+    this.Umm?.SetTimeTextVisible(i);
     if (i) {
-      this.p1m?.SetTimeTextByText(e);
+      this.Umm?.SetTimeTextByText(e);
     }
   }
   PKt() {
-    this.L1m();
+    this.Hmm();
     this.brd();
     this.Dsd();
   }
   I3e(e, t) {
     if (e !== undefined) {
-      this.vcm = new CustomPromise_1.CustomPromise();
+      this.j0m = new CustomPromise_1.CustomPromise();
       var s = ActivityPreWarmDefine_1.leftCollectItems.includes(e);
       var r = ActivityPreWarmDefine_1.leftCollectItems.includes(t);
       let i = undefined;
@@ -266,7 +266,7 @@ class ActivitySubViewPreWarm extends ActivitySubViewBase_1.ActivitySubViewBase {
     }
   }
   OnBeforeDestroy() {
-    this.v1m.clear();
+    this.xmm.clear();
     RedDotController_1.RedDotController.UnBindRedDot("CommonActivityPage");
   }
 }

@@ -12,14 +12,17 @@ class PhantomArenaProcessManager {
     this.Sia = [];
     this.JD1 = false;
     this.vK = false;
-    this.$p1 = new Map([[2, [1]], [3, [2, 1]], [4, [3]], [5, [4]], [6, [5]], [7, [6]], [8, [6, 7]], [9, [8]], [10, [9]]]);
+    this.$p1 = new Map([[2, [1]], [3, [2, 1]], [4, [3]], [5, [4]], [6, [5]], [7, [5, 6]], [8, [7]], [9, [7, 8]], [10, [9]], [11, [10]]]);
     this.Cbo = 0;
   }
   get State() {
     return this.Cbo;
   }
   get IsInOwnPlaying() {
-    return this.Cbo === 8;
+    return this.Cbo === 9;
+  }
+  get IsNotInOwnPlaying() {
+    return this.Cbo < 9;
   }
   InitStateMap() {
     this.kh.set(1, this.Proxy.ShowTimeStart);
@@ -27,11 +30,12 @@ class PhantomArenaProcessManager {
     this.kh.set(3, this.Proxy.ShowBothDrawCard);
     this.kh.set(4, this.Proxy.ShowOpponentStartPanel);
     this.kh.set(5, this.Proxy.StartAiOperation);
-    this.kh.set(6, this.Proxy.ShowOwnStartPanel);
-    this.kh.set(7, this.Proxy.ShowOwnCoreCard);
-    this.kh.set(8, this.Proxy.ShowOwnPlaying);
-    this.kh.set(9, this.Proxy.RoundOver);
-    this.kh.set(10, this.Proxy.JumpLoading);
+    this.kh.set(6, this.Proxy.ShowGameOver);
+    this.kh.set(7, this.Proxy.ShowOwnStartPanel);
+    this.kh.set(8, this.Proxy.ShowOwnCoreCard);
+    this.kh.set(9, this.Proxy.ShowOwnPlaying);
+    this.kh.set(10, this.Proxy.RoundOver);
+    this.kh.set(11, this.Proxy.JumpLoading);
   }
   async ZD1(t) {
     if (!this.vK && !(this.Sia.push(t), this.JD1)) {

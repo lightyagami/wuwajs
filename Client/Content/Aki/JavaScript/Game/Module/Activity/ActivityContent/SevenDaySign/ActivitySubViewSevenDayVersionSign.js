@@ -52,6 +52,7 @@ class ActivitySubViewSevenDayVersionSign extends ActivitySubViewBase_1.ActivityS
     await Promise.all(e);
   }
   OnStart() {
+    this.LNe.SetActivityBaseData(this.ActivitySignData);
     this.LNe.SetTitleByText(this.ActivitySignData.GetTitle());
   }
   OnRefreshView() {

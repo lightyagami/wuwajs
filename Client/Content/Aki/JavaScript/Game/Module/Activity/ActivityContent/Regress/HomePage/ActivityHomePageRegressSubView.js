@@ -134,6 +134,7 @@ class ActivityHomePageRegressSubView extends ActivitySubViewBase_1.ActivitySubVi
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnCommonItemCountAnyChange, this.TDa);
   }
   mGe() {
+    this.LNe.SetActivityBaseData(ModelManager_1.ModelManager.ActivityRegressModel.ActivityData);
     this.LNe.SetTitleByText(ModelManager_1.ModelManager.ActivityRegressModel.ActivityData.GetTitle());
     var [e, t] = ModelManager_1.ModelManager.ActivityModel.GetTimeVisibleAndRemainTime(ModelManager_1.ModelManager.ActivityRegressModel.ActivityData);
     this.LNe.SetTimeTextVisible(e);

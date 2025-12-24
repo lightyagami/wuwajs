@@ -106,6 +106,7 @@ class WorldMapSecondaryUi extends UiPanelBase_1.UiPanelBase {
       this.RootItem.SetAlpha(1);
       this.SetActive(true);
       this.OnShowWorldMapSecondaryUi(...t);
+      this.OnAfterShowWorldMapSecondaryUi();
       this.SPe.PlayLevelSequenceByName("Start");
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WorldMapSecondaryUiOpened);
     }
@@ -129,6 +130,7 @@ class WorldMapSecondaryUi extends UiPanelBase_1.UiPanelBase {
       MapHelper_1.MapHelper.CheckAndShowCrossMapTips(e.MarkId, e.MarkType, e.TrackAreaId, e.WorldPosition);
     }
   }
+  OnAfterShowWorldMapSecondaryUi() {}
 }
 exports.WorldMapSecondaryUi = WorldMapSecondaryUi;
 //# sourceMappingURL=WorldMapSecondaryUi.js.map

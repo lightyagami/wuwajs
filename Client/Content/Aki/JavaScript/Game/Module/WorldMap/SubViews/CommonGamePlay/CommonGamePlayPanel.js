@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.CommonGamePlayPanel = undefined;
 const Log_1 = require("../../../../../Core/Common/Log");
 const ConfigManager_1 = require("../../../../Manager/ConfigManager");
+const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const LevelPlay_1 = require("../../../LevelPlay/LevelPlay");
 const MapHelper_1 = require("../../../Map/MapHelper");
@@ -41,6 +42,10 @@ class CommonGamePlayPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondary
     if (!this.UJc(e)) {
       this.BJc();
     }
+    var i = e.MarkConfig;
+    if (i.RelativeType === 1 && e.IsGameplayHasReward()) {
+      await Promise.all([ControllerHolder_1.ControllerHolder.LevelPlayReportController.RequestLevelPlayRewardsAsync(i.RelativeDungeonId, i.RelativeId), this.CreateRewardItemBar()]);
+    }
   }
   SetupWorldMapSecondaryUiLayout() {
     super.SetupWorldMapSecondaryUiLayout();
@@ -64,6 +69,9 @@ class CommonGamePlayPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondary
     this.UpdateTopRightIconActive();
     if (!this.UpdateDeliveryPropLayout()) {
       this.UpdateMoraleFlagReward(e);
+    }
+    if (e.MarkConfig.RelativeType === 1) {
+      this.Dkf(e);
     }
   }
   UpdateMoraleFlagReward(e) {
@@ -119,15 +127,7 @@ class CommonGamePlayPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondary
     this.hDu(false);
   }
   UJc(e) {
-    return !!e.IsNightMareFlag() && (this.Ymt = ModelManager_1.ModelManager.LevelPlayModel.GetLevelPlayInfo(e.MarkConfig.RelativeId), this.Ymt || (this.Ymt = new LevelPlay_1.LevelPlayInfo(e.MarkConfig.RelativeId), this.Ymt.InitConfig()), this.InitNightMareRewards(e), true);
-  }
-  async CreateRewardItemBar() {
-    var e;
-    if (!this.RewardsView) {
-      this.RewardsView = new RewardItemBar_1.RewardItemBar();
-      e = this.GetItem(8).GetOwner();
-      await this.RewardsView.CreateThenShowByActorAsync(e);
-    }
+    return (!!e.IsNightMareFlag() || !!e.IsVisionSettlementFlag()) && !(this.Ymt = ModelManager_1.ModelManager.LevelPlayModel.GetLevelPlayInfo(e.MarkConfig.RelativeId), this.Ymt || (this.Ymt = new LevelPlay_1.LevelPlayInfo(e.MarkConfig.RelativeId), this.Ymt.InitConfig()), this.InitNightMareRewards(e), 0);
   }
   InitNightMareRewards(e) {
     var [i, t, a, r, s] = MapHelper_1.MapHelper.GetDoubleRestAndMaxTimes(e);
@@ -173,6 +173,35 @@ class CommonGamePlayPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondary
       this.hDu(true);
     } else {
       e.SetUiActive(false);
+    }
+  }
+  async CreateRewardItemBar() {
+    var e;
+    if (!this.RewardsView) {
+      this.RewardsView = new RewardItemBar_1.RewardItemBar();
+      e = this.GetItem(8).GetOwner();
+      await this.RewardsView.CreateThenShowByActorAsync(e);
+    }
+  }
+  Dkf(i) {
+    var t = i.MarkConfig.RelativeId;
+    if (ModelManager_1.ModelManager.LevelPlayModel.GetLevelPlayConfig(t)) {
+      t = i.MarkItemEntity.GamePlay.GameplayDropPreviewItemList;
+      if (!t || t.length <= 0) {
+        this.GetVerticalLayout(7).RootUIComp.SetUIActive(false);
+      } else {
+        this.GetVerticalLayout(7).RootUIComp.SetUIActive(true);
+        this.GetItem(8).SetUIActive(true);
+        let e = false;
+        e = i.MarkItemEntity.GamePlay.GameplayCompleteRewardIds.length > 0 ? i.MarkItemEntity.GamePlay.IsFinish : i.MarkItemEntity.GamePlay.IsAllRewardReceived;
+        this.RewardsView?.RebuildRewardsByLevelRewardData({
+          FinishRecord: e,
+          ItemList: t
+        });
+        this.RewardsView?.SetTitleNewTxt("GameplayMark_Reward_Text");
+      }
+    } else {
+      this.GetVerticalLayout(7).RootUIComp.SetUIActive(false);
     }
   }
   OnBeforeDestroy() {

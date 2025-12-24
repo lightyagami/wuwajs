@@ -4,13 +4,15 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.QuestTreeChapterViewModel = undefined;
+const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
+const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const QuestTreeNodeLocatingHelper_1 = require("../View/ChapterView/QuestTreeNodeLocatingHelper");
 class QuestTreeChapterViewModel {
   constructor() {
-    this.Ism = false;
+    this.l_m = false;
     this.ZDd = [];
     this.eUd = [];
-    this.$em = [];
+    this.Orm = [];
     this.MaxToggleHeight = 0;
     this.SelectedData = undefined;
     this.LocatingHelper = undefined;
@@ -18,10 +20,10 @@ class QuestTreeChapterViewModel {
     this.View = undefined;
   }
   get OverrideLockReasonGoto() {
-    return !!this.View && this.Ism;
+    return !!this.View && this.l_m;
   }
   SetOverrideLockReasonGoto(e) {
-    this.Ism = e;
+    this.l_m = e;
   }
   get MaxTopHeight() {
     let e = 0;
@@ -57,7 +59,7 @@ class QuestTreeChapterViewModel {
   Clear() {
     this.ZDd.length = 0;
     this.eUd.length = 0;
-    this.$em.length = 0;
+    this.Orm.length = 0;
     this.SelectedData = undefined;
     if (this.LocatingHelper) {
       this.LocatingHelper.Clear();
@@ -105,17 +107,23 @@ class QuestTreeChapterViewModel {
     }
   }
   AddOnUpdateNode(e) {
-    this.$em.push(e);
+    this.Orm.push(e);
   }
   RemoveOnUpdateNode(e) {
-    e = this.$em.indexOf(e);
+    e = this.Orm.indexOf(e);
     if (e !== -1) {
-      this.$em.splice(e, 1);
+      this.Orm.splice(e, 1);
     }
   }
   NotifyUpdateNode() {
-    for (const e of this.$em) {
+    for (const e of this.Orm) {
       e();
+    }
+  }
+  async RefreshViewByData(e, t = true) {
+    if (this.View && (t && (await ControllerHolder_1.ControllerHolder.BlackScreenController.AddBlackScreenAsync("Start", "QuestTreeViewRefresh")), await this.View.RefreshByData(e), t)) {
+      await TimerSystem_1.TimerSystem.Wait(500);
+      ControllerHolder_1.ControllerHolder.BlackScreenController.RemoveBlackScreen("Close", "QuestTreeViewRefresh");
     }
   }
 }

@@ -6,32 +6,47 @@ Object.defineProperty(exports, "__esModule", {
 exports.ActivityRegressConfig = undefined;
 const Log_1 = require("../../../../../Core/Common/Log");
 const ConditionGroupById_1 = require("../../../../../Core/Define/ConfigQuery/ConditionGroupById");
+const GachaRoleDevelopInsById_1 = require("../../../../../Core/Define/ConfigQuery/GachaRoleDevelopInsById");
+const GachaRoleDevelopInsByRoleId_1 = require("../../../../../Core/Define/ConfigQuery/GachaRoleDevelopInsByRoleId");
 const RegressBaseByEntryType_1 = require("../../../../../Core/Define/ConfigQuery/RegressBaseByEntryType");
 const RegressBonusRewardByGrade_1 = require("../../../../../Core/Define/ConfigQuery/RegressBonusRewardByGrade");
+const RegressDisposableRewardById_1 = require("../../../../../Core/Define/ConfigQuery/RegressDisposableRewardById");
 const RegressDoubleDropByGrade_1 = require("../../../../../Core/Define/ConfigQuery/RegressDoubleDropByGrade");
 const RegressEntryByEntryType_1 = require("../../../../../Core/Define/ConfigQuery/RegressEntryByEntryType");
 const RegressInvestigationByInvestigationTypeAndIfGlobal_1 = require("../../../../../Core/Define/ConfigQuery/RegressInvestigationByInvestigationTypeAndIfGlobal");
 const RegressQuestById_1 = require("../../../../../Core/Define/ConfigQuery/RegressQuestById");
+const RegressRecommendAll_1 = require("../../../../../Core/Define/ConfigQuery/RegressRecommendAll");
+const RegressRecommendByActivityGroup_1 = require("../../../../../Core/Define/ConfigQuery/RegressRecommendByActivityGroup");
+const RegressRecommendById_1 = require("../../../../../Core/Define/ConfigQuery/RegressRecommendById");
+const RegressRecommendByType_1 = require("../../../../../Core/Define/ConfigQuery/RegressRecommendByType");
 const RegressSignRewardByGradeAndActivityId_1 = require("../../../../../Core/Define/ConfigQuery/RegressSignRewardByGradeAndActivityId");
+const RegressTrialRoleAll_1 = require("../../../../../Core/Define/ConfigQuery/RegressTrialRoleAll");
 const RewardConfigById_1 = require("../../../../../Core/Define/ConfigQuery/RewardConfigById");
 const ConfigBase_1 = require("../../../../../Core/Framework/ConfigBase");
 const LauncherNetworkDetectionController_1 = require("../../../../../Launcher/NetworkDetection/LauncherNetworkDetectionController");
+const ConfigManager_1 = require("../../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 class ActivityRegressConfig extends ConfigBase_1.ConfigBase {
   GetRegressSignRewards(e, r) {
-    var i = RegressSignRewardByGradeAndActivityId_1.configRegressSignRewardByGradeAndActivityId.GetConfigList(r, e);
-    if (i === undefined && Log_1.Log.CheckError()) {
+    var o = RegressSignRewardByGradeAndActivityId_1.configRegressSignRewardByGradeAndActivityId.GetConfigList(r, e);
+    if (o === undefined && Log_1.Log.CheckError()) {
       Log_1.Log.Error("ActivityRecall", 63, "回归活动->获取回流签到奖励配置失败,请检查配置表RegressSignReward", ["activityId:", e], ["grade:", r]);
     }
-    return i;
+    var n = [];
+    for (const i of o ?? []) {
+      if (i.Version > 0) {
+        n.push(i);
+      }
+    }
+    return n;
   }
   GetRegressQuestionnaireConfig(e) {
     var r = LauncherNetworkDetectionController_1.LauncherNetworkDetectionController.IsGlobalPlayer();
-    var i = RegressInvestigationByInvestigationTypeAndIfGlobal_1.configRegressInvestigationByInvestigationTypeAndIfGlobal.GetConfig(e, r);
-    if (i === undefined && Log_1.Log.CheckError()) {
+    var o = RegressInvestigationByInvestigationTypeAndIfGlobal_1.configRegressInvestigationByInvestigationTypeAndIfGlobal.GetConfig(e, r);
+    if (o === undefined && Log_1.Log.CheckError()) {
       Log_1.Log.Error("ActivityRecall", 63, "回归活动->获取回流调查问卷配置失败,请检查配置表RegressInvestigation", ["type:", e], ["ifGlobal:", r]);
     }
-    return i;
+    return o;
   }
   GetRegressBaseConfigListByType(e) {
     var r;
@@ -58,7 +73,13 @@ class ActivityRegressConfig extends ConfigBase_1.ConfigBase {
     return RegressQuestById_1.configRegressQuestById.GetConfig(e);
   }
   GetRegressBonusRewardConfigList(e) {
-    return RegressBonusRewardByGrade_1.configRegressBonusRewardByGrade.GetConfigList(e);
+    var r = [];
+    for (const o of RegressBonusRewardByGrade_1.configRegressBonusRewardByGrade.GetConfigList(e) ?? []) {
+      if (o.Version > 0) {
+        r.push(o);
+      }
+    }
+    return r;
   }
   GetRegressRoleEntryConfigTuple() {
     var e = this.GetSortedOpenRegressEntryConfigList();
@@ -69,16 +90,16 @@ class ActivityRegressConfig extends ConfigBase_1.ConfigBase {
     var e = Array.from(e);
     e.sort((e, r) => {
       if (e === undefined || r === undefined) {
-        const i = e ? 1 : 0;
-        const t = r ? 1 : 0;
-        return t - i;
+        const o = e ? 1 : 0;
+        const n = r ? 1 : 0;
+        return n - o;
       }
-      const i = ModelManager_1.ModelManager.ActivityRegressModel.CheckIfEntryOpen(e)[0] ? 1 : 0;
-      const t = ModelManager_1.ModelManager.ActivityRegressModel.CheckIfEntryOpen(r)[0] ? 1 : 0;
-      if (t === i) {
+      const o = ModelManager_1.ModelManager.ActivityRegressModel.CheckIfEntryOpen(e)[0] ? 1 : 0;
+      const n = ModelManager_1.ModelManager.ActivityRegressModel.CheckIfEntryOpen(r)[0] ? 1 : 0;
+      if (n === o) {
         return e.Id - r.Id;
       } else {
-        return t - i;
+        return n - o;
       }
     });
     return e;
@@ -113,19 +134,19 @@ class ActivityRegressConfig extends ConfigBase_1.ConfigBase {
   GetUnlockRegressEntryViewConfigList() {
     var e;
     var r = [];
-    var i = this.GetRegressEntrySingleConfigByType(1);
-    r.push(i);
-    var i = this.GetRegressEntrySingleConfigByType(2);
-    r.push(i);
-    var [i, t] = this.GetRegressRoleEntryConfigTuple();
-    var [n] = ModelManager_1.ModelManager.ActivityRegressModel.CheckIfEntryOpen(i);
-    let o = false;
-    if (t !== undefined) {
-      [e] = ModelManager_1.ModelManager.ActivityRegressModel.CheckIfEntryOpen(t);
-      o = e;
+    var o = this.GetRegressEntrySingleConfigByType(1);
+    r.push(o);
+    var o = this.GetRegressEntrySingleConfigByType(2);
+    r.push(o);
+    var [o, n] = this.GetRegressRoleEntryConfigTuple();
+    var [i] = ModelManager_1.ModelManager.ActivityRegressModel.CheckIfEntryOpen(o);
+    let s = false;
+    if (n !== undefined) {
+      [e] = ModelManager_1.ModelManager.ActivityRegressModel.CheckIfEntryOpen(n);
+      s = e;
     }
-    if ((n || o) && (n && r.push(i), !n) && o) {
-      r.push(t);
+    if ((i || s) && (i && r.push(o), !i) && s) {
+      r.push(n);
     }
     return r;
   }
@@ -134,6 +155,38 @@ class ActivityRegressConfig extends ConfigBase_1.ConfigBase {
   }
   GetConditionGroup(e) {
     return ConditionGroupById_1.configConditionGroupById.GetConfig(e);
+  }
+  GetRegressRecommend(e) {
+    return RegressRecommendById_1.configRegressRecommendById.GetConfig(e);
+  }
+  GetAllRegressRecommend() {
+    return RegressRecommendAll_1.configRegressRecommendAll.GetConfigList();
+  }
+  GetRegressRecommendByType(e) {
+    return RegressRecommendByType_1.configRegressRecommendByType.GetConfigList(e);
+  }
+  GetRegressRecommendByGroup(e) {
+    return RegressRecommendByActivityGroup_1.configRegressRecommendByActivityGroup.GetConfigList(e);
+  }
+  GetRegressDisposableReward(e) {
+    return RegressDisposableRewardById_1.configRegressDisposableRewardById.GetConfig(e);
+  }
+  GetGachaRoleDevelopIns(e) {
+    return GachaRoleDevelopInsById_1.configGachaRoleDevelopInsById.GetConfig(e);
+  }
+  GetGachaRoleDevelopInsByRoleId(e) {
+    return GachaRoleDevelopInsByRoleId_1.configGachaRoleDevelopInsByRoleId.GetConfigList(e);
+  }
+  GetTrialRoleAll() {
+    return RegressTrialRoleAll_1.configRegressTrialRoleAll.GetConfigList();
+  }
+  GetTrialRoleUnlockDesc() {
+    var e = new Map();
+    for (const o of this.GetTrialRoleAll() ?? []) {
+      var r = ConfigManager_1.ConfigManager.ConditionConfig.GetConditionGroupConfig(o.ConditionGroup).HintText;
+      e.set(o.TrialRoleGroupId, r);
+    }
+    return e;
   }
 }
 exports.ActivityRegressConfig = ActivityRegressConfig;

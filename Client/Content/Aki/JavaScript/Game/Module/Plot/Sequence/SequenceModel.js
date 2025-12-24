@@ -82,6 +82,7 @@ class SequenceModel extends ModelBase_1.ModelBase {
     this.NpcGroupPerform = new Array();
     this.NpcRelationMap = new Map();
     this.NeedHideNpcSet = new Set();
+    this.PlotBindingVehicle = undefined;
   }
   get SeqMainCharacterModelConfig() {
     if (!this._Du) {
@@ -140,6 +141,7 @@ class SequenceModel extends ModelBase_1.ModelBase {
     this.NpcRelationMap.clear();
     this.NeedHideNpcSet.clear();
     this.QteKeyFrames.length = 0;
+    this.PlotBindingVehicle = undefined;
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Plot", 38, "清理引用数据-SequenceModel");
     }

@@ -36,12 +36,12 @@ class ShipTowerScoreItem extends BaseScoreItem_1.BaseScoreItem {
     this._el = 0;
     this.edt = undefined;
     this.Nll = undefined;
-    this.bQd = 0;
-    this.RQd = undefined;
+    this.PQd = 0;
+    this.AQd = undefined;
     this.yct = t => {
       if (t === "Start") {
         if (this.lel <= 0) {
-          this.SPe?.PlayLevelSequenceByName("Back", false, 1000 / this.bQd);
+          this.SPe?.PlayLevelSequenceByName("Back", false, 1000 / this.PQd);
         }
       } else if (t === "Start2") {
         this.jpu("Loop1");
@@ -87,7 +87,7 @@ class ShipTowerScoreItem extends BaseScoreItem_1.BaseScoreItem {
   OnBeforeDestroy() {
     this.SPe?.Clear();
     this.SPe = undefined;
-    this.wQd();
+    this.DQd();
     super.OnBeforeDestroy();
   }
   OnBattleScoreChanged(t, e) {
@@ -142,7 +142,7 @@ class ShipTowerScoreItem extends BaseScoreItem_1.BaseScoreItem {
   }
   OnTick(t) {
     ShipTowerScoreItem.Ult.Start();
-    if (this.nel && this.hel !== this.lel && this.GetActive() && Time_1.Time.TimeDilation !== 0 && (this._el = Math.min(this.bQd, this._el + t), t = this._el / this.bQd, this.hel = this.ael * (1 - t) + this.lel * t, this.xte > 0)) {
+    if (this.nel && this.hel !== this.lel && this.GetActive() && Time_1.Time.TimeDilation !== 0 && (this._el = Math.min(this.PQd, this._el + t), t = this._el / this.PQd, this.hel = this.ael * (1 - t) + this.lel * t, this.xte > 0)) {
       t = this.hel / this.xte;
       this.GetSprite(0)?.SetFillAmount(t);
       this.Nll.Yaw = t * -360;
@@ -150,7 +150,7 @@ class ShipTowerScoreItem extends BaseScoreItem_1.BaseScoreItem {
     }
     ShipTowerScoreItem.Ult.Stop();
   }
-  LQd() {
+  UQd() {
     var t = ModelManager_1.ModelManager.ShipTowerModel.GetInTheBattleBuffInfo()?.ItemInfo?.ItemConfigId ?? 0;
     if (t) {
       t = ConfigManager_1.ConfigManager.ShipTowerConfig?.GetBuffCfgByItemId(t);
@@ -160,21 +160,21 @@ class ShipTowerScoreItem extends BaseScoreItem_1.BaseScoreItem {
     }
     return this.SBn?.BuffTime ?? 0;
   }
-  PQd() {
-    this.wQd();
-    this.RQd = TimerSystem_1.FlowTimeTimerSystem.Forever(() => {
-      var t = Math.floor((1 - this._el / this.bQd) * 100);
+  xQd() {
+    this.DQd();
+    this.AQd = TimerSystem_1.FlowTimeTimerSystem.Forever(() => {
+      var t = Math.floor((1 - this._el / this.PQd) * 100);
       this.xvi.SetText(t + "%");
       if (t <= 0) {
-        this.wQd();
+        this.DQd();
       }
     }, MAX_SMOOTH_TIME);
   }
-  wQd() {
-    if (this.RQd !== undefined) {
+  DQd() {
+    if (this.AQd !== undefined) {
       this.SPe?.StopSequenceByKey("Back", true, true);
-      TimerSystem_1.FlowTimeTimerSystem.Remove(this.RQd);
-      this.RQd = undefined;
+      TimerSystem_1.FlowTimeTimerSystem.Remove(this.AQd);
+      this.AQd = undefined;
     }
   }
   uel(t) {
@@ -188,24 +188,24 @@ class ShipTowerScoreItem extends BaseScoreItem_1.BaseScoreItem {
           Log_1.Log.Info("Battle", 78, "焚潮开始", ["score", t]);
         }
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ShipTowerBattleTip, "ShipTower_BurningTide_Start");
-        if ((e = this.LQd()) > 0) {
+        if ((e = this.UQd()) > 0) {
           this.jpu("Start");
-          this.bQd = e;
+          this.PQd = e;
           this.lel = 0;
-          this.PQd();
+          this.xQd();
         } else {
           this.jpu("Immortal");
-          this.bQd = MAX_SMOOTH_TIME;
+          this.PQd = MAX_SMOOTH_TIME;
         }
       } else {
-        this.bQd = MAX_SMOOTH_TIME;
+        this.PQd = MAX_SMOOTH_TIME;
       }
     } else {
-      this.wQd();
+      this.DQd();
       this.ael = this.hel;
       this.lel = 0;
       this._el = MAX_SMOOTH_TIME;
-      this.bQd = MAX_SMOOTH_TIME;
+      this.PQd = MAX_SMOOTH_TIME;
       this.jpu("Start2");
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Battle", 78, "焚潮结束", ["score", t]);

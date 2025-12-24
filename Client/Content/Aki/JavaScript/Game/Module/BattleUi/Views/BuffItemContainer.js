@@ -65,11 +65,11 @@ class BuffItemContainer {
   RefreshBuff(t) {
     this.ClearAll();
     if (t?.IsInit) {
-      this.m1t = t.Entity.GetComponent(178);
-      this.vkn = t.Entity.GetComponent(194);
+      this.m1t = t.Entity.GetComponent(183);
+      this.vkn = t.Entity.GetComponent(200);
       t = t.Entity.GetComponent(21);
       this.Fah(t);
-      if (this.YLe && (t = ControllerHolder_1.ControllerHolder.FormationDataController.GetPlayerEntity(ModelManager_1.ModelManager.CreatureModel.GetPlayerId())?.GetComponent(230))) {
+      if (this.YLe && (t = ControllerHolder_1.ControllerHolder.FormationDataController.GetPlayerEntity(ModelManager_1.ModelManager.CreatureModel.GetPlayerId())?.GetComponent(239))) {
         this.Fah(t);
       }
     } else {

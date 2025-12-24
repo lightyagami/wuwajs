@@ -58,6 +58,8 @@ let BaseAnimationComponent = class BaseAnimationComponent extends EntityComponen
     this.SightTargetItemId = 0;
     this.SightTargetPoint = undefined;
     this.SightTargetActor = undefined;
+    this.HeadBaseYaw = 0;
+    this.HeadBaseYawBuffer = 0;
     this.EnableSightDirectInternal = false;
     this.DisableBlink = false;
     this.R2r = [...xAngleLimits];
@@ -123,6 +125,9 @@ let BaseAnimationComponent = class BaseAnimationComponent extends EntityComponen
     this.R2r = [...xAngleLimits];
     this.U2r = [...yAngleLimits];
   }
+  SetHeadBaseYaw(t) {
+    this.HeadBaseYaw = MathUtils_1.MathUtils.WrapAngle(t);
+  }
   SetSightTargetItem(t) {
     this.SightTargetPoint = undefined;
     this.SightTargetActor = undefined;
@@ -158,6 +163,9 @@ let BaseAnimationComponent = class BaseAnimationComponent extends EntityComponen
   }
   GetSightDirect() {
     return this.SightDirect.ToUeVectorOld();
+  }
+  GetHeadBaseYawBuffer() {
+    return this.HeadBaseYawBuffer;
   }
   GetTsSightDirect() {
     return this.SightDirect;
@@ -314,7 +322,7 @@ let BaseAnimationComponent = class BaseAnimationComponent extends EntityComponen
     }
   }
   RefreshAnimOptimization() {
-    var t = this.Entity.GetComponent(179)?.IsInFighting ?? false;
+    var t = this.Entity.GetComponent(184)?.IsInFighting ?? false;
     var e = this.ForceDisableAnimOptimizationSet.size > 0;
     var i = e || t;
     var s = this.Actor.K2_GetComponentsByClass(UE.SkeletalMeshComponent.StaticClass());
@@ -404,5 +412,5 @@ let BaseAnimationComponent = class BaseAnimationComponent extends EntityComponen
     this.MontageManager.OnTick(t);
   }
 };
-BaseAnimationComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(44)], BaseAnimationComponent);
+BaseAnimationComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(45)], BaseAnimationComponent);
 exports.BaseAnimationComponent = BaseAnimationComponent; //# sourceMappingURL=BaseAnimationComponent.js.map

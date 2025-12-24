@@ -23,40 +23,40 @@ class HonamiStoryTechnologyView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
     this.lqe = undefined;
-    this.hem = undefined;
-    this.lem = undefined;
-    this._em = undefined;
+    this.Nim = undefined;
+    this.Vim = undefined;
+    this.jim = undefined;
     this.ebl = undefined;
-    this.uem = undefined;
-    this.cem = false;
-    this.jLm = -1;
+    this.Him = undefined;
+    this.$im = false;
+    this.mEf = -1;
     this.gVd = e => {
       if (e) {
         e.OnClickToggleBack ||= this.jbe;
-        if (!this.cem) {
-          if (this.jLm === this.hem.GetNodeDataConfig().Id) {
-            this.hem.SelectNode();
-            ControllerHolder_1.ControllerHolder.UiNavigationNewController.SetNavigationFocusForView(this.hem.ToggleItem.RootUIComp);
-            this.cem = true;
-          } else if (this.jLm === e.GetNodeDataConfig().Id) {
+        if (!this.$im) {
+          if (this.mEf === this.Nim.GetNodeDataConfig().Id) {
+            this.Nim.SelectNode();
+            ControllerHolder_1.ControllerHolder.UiNavigationNewController.SetNavigationFocusForView(this.Nim.ToggleItem.RootUIComp, true, true);
+            this.$im = true;
+          } else if (this.mEf === e.GetNodeDataConfig().Id) {
             e.SelectNode();
-            ControllerHolder_1.ControllerHolder.UiNavigationNewController.SetNavigationFocusForView(e.ToggleItem.RootUIComp);
-            if (e = this.lem.GetItemByIndex(e.GetNodeDataConfig().Area - 1)) {
-              this.lem.LateScrollTo(e);
+            ControllerHolder_1.ControllerHolder.UiNavigationNewController.SetNavigationFocusForView(e.ToggleItem.RootUIComp, true, true);
+            if (e = this.Vim.GetItemByIndex(e.GetNodeDataConfig().Area - 1)) {
+              this.Vim.LateScrollTo(e);
             }
-            this.cem = true;
+            this.$im = true;
           }
         }
       }
     };
-    this.mem = () => {
+    this.Qim = () => {
       var e;
       new UiAsyncTask_1.UiAsyncTask("TechNodeUpdate", async () => {
-        await this.Pjd();
+        await this.Ajd();
       }).Run();
-      if (this.uem) {
+      if (this.Him) {
         e = ModelManager_1.ModelManager.HonamiStoryModel.GetRandomDialogData(5);
-        this.uem.SetTalkInfoTextAndPlayAudio(e);
+        this.Him.SetTalkInfoTextAndPlayAudio(e);
       }
     };
     this.CVd = () => {
@@ -65,13 +65,13 @@ class HonamiStoryTechnologyView extends UiViewBase_1.UiViewBase {
       return e;
     };
     this.jbe = (e, i, t) => {
-      if (this.ebl) {
+      if (this.ebl && this.ebl !== t) {
         this.ebl.SetToggleState(0);
       }
       this.ebl = t;
       ModelManager_1.ModelManager.HonamiStoryModel.CurrentSelectNode = i;
       ModelManager_1.ModelManager.HonamiStoryModel.CurrentSelectNodeItem = e;
-      this._em.Refresh(i);
+      this.jim.Refresh(i);
     };
     this.Jvt = () => {
       this.CloseMe();
@@ -88,47 +88,47 @@ class HonamiStoryTechnologyView extends UiViewBase_1.UiViewBase {
   }
   async OnBeforeStartAsync() {
     this.lqe = new PopupCaptionItem_1.PopupCaptionItem();
-    this.hem = new HonamiStoryTechnologyNodeItem_1.HonamiStoryTechnologyNodeItem();
-    this._em = new HonamiStoryTechnologyInfoPanel_1.HonamiStoryTechnologyInfoPanel();
-    this.uem = new HonamiStoryBozaiTalkPanel_1.HonamiStoryBozaiTalkPanel();
-    this.lem = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(3), this.CVd, this.GetItem(1).GetOwner());
-    var e = [this.lqe.CreateThenShowByActorAsync(this.GetItem(5).GetOwner()), this.hem.CreateThenShowByActorAsync(this.GetItem(0).GetOwner()), this._em.CreateThenShowByActorAsync(this.GetItem(2).GetOwner()), this.uem.CreateThenShowByActorAsync(this.GetItem(6).GetOwner())];
+    this.Nim = new HonamiStoryTechnologyNodeItem_1.HonamiStoryTechnologyNodeItem();
+    this.jim = new HonamiStoryTechnologyInfoPanel_1.HonamiStoryTechnologyInfoPanel();
+    this.Him = new HonamiStoryBozaiTalkPanel_1.HonamiStoryBozaiTalkPanel();
+    this.Vim = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(3), this.CVd, this.GetItem(1).GetOwner());
+    var e = [this.lqe.CreateThenShowByActorAsync(this.GetItem(5).GetOwner()), this.Nim.CreateThenShowByActorAsync(this.GetItem(0).GetOwner()), this.jim.CreateThenShowByActorAsync(this.GetItem(2).GetOwner()), this.Him.CreateThenShowByActorAsync(this.GetItem(6).GetOwner())];
     await Promise.all(e);
     this.lqe.SetCloseCallBack(this.Jvt);
-    this.hem.OnClickToggleBack = this.jbe;
+    this.Nim.OnClickToggleBack = this.jbe;
     ModelManager_1.ModelManager.HonamiStoryModel.CheckCurrentTalentTreeNode();
-    this.jLm = ModelManager_1.ModelManager.HonamiStoryModel.CurrentSelectNode?.GetConfig.Id ?? -1;
-    await this.hem.RefreshNodeAsyncByData(ModelManager_1.ModelManager.HonamiStoryModel.GetFirstTechnologyNode());
-    var e = [this.lqe.SetCurrencyItemList([COST_ITEM_ID]), this.lem.RefreshByDataAsync(ModelManager_1.ModelManager.HonamiStoryModel.GetTechAreaDataList)];
+    this.mEf = ModelManager_1.ModelManager.HonamiStoryModel.CurrentSelectNode?.GetConfig.Id ?? -1;
+    await this.Nim.RefreshNodeAsyncByData(ModelManager_1.ModelManager.HonamiStoryModel.GetFirstTechnologyNode());
+    var e = [this.lqe.SetCurrencyItemList([COST_ITEM_ID]), this.Vim.RefreshByDataAsync(ModelManager_1.ModelManager.HonamiStoryModel.GetTechAreaDataList)];
     await Promise.all(e);
-    this.lem.GetScrollItemByIndex(ModelManager_1.ModelManager.HonamiStoryModel.GetTechAreaDataList.length - 1).CloseLineRight();
-    var i = this.lem.GetScrollItemList();
+    this.Vim.GetScrollItemByIndex(ModelManager_1.ModelManager.HonamiStoryModel.GetTechAreaDataList.length - 1).CloseLineRight();
+    var i = this.Vim.GetScrollItemList();
     for (let e = 0; e < i.length; e++) {
-      this.lem.GetItemByIndex(e).SetUIParent(this.GetItem(4));
+      this.Vim.GetItemByIndex(e).SetUIParent(this.GetItem(4));
     }
     e = ModelManager_1.ModelManager.HonamiStoryModel.GetRandomDialogData(4);
-    this.uem.SetTalkInfoTextAndPlayAudio(e);
+    this.Him.SetTalkInfoTextAndPlayAudio(e);
   }
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnHonamiStoryTechNodeLevelUpdate, this.mem);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnHonamiStoryTechNodeLevelUpdate, this.Qim);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PlotNetworkEnd, this.Cjo);
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnHonamiStoryTechNodeLevelUpdate, this.mem);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnHonamiStoryTechNodeLevelUpdate, this.Qim);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PlotNetworkEnd, this.Cjo);
   }
-  async Pjd() {
+  async Ajd() {
     var e = [];
-    if (this.hem) {
-      e.push(this.hem.RefreshNodeAsync());
+    if (this.Nim) {
+      e.push(this.Nim.RefreshNodeAsync());
     }
-    var i = this.lem.GetScrollItemList();
+    var i = this.Vim.GetScrollItemList();
     for (const t of i) {
       for (const o of t.GetNodeItemMap.values()) {
         e.push(o.RefreshNodeAsync());
       }
     }
-    this._em.Refresh(ModelManager_1.ModelManager.HonamiStoryModel.CurrentSelectNode);
+    this.jim.Refresh(ModelManager_1.ModelManager.HonamiStoryModel.CurrentSelectNode);
     await Promise.all(e);
   }
 }

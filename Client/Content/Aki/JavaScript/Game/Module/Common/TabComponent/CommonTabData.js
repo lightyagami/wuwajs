@@ -8,7 +8,7 @@ class CommonTabData {
   constructor(t, e, s) {
     this.xbt = t;
     this.wbt = e;
-    this.TSm = s;
+    this._Dm = s;
     this.Bbt = "";
   }
   SetSmallIcon(t) {
@@ -24,7 +24,7 @@ class CommonTabData {
     return this.wbt;
   }
   GetTabItemTitleData() {
-    return this.TSm;
+    return this._Dm;
   }
 }
 exports.CommonTabData = CommonTabData;

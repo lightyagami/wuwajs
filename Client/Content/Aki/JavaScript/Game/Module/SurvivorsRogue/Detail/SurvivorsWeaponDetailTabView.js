@@ -31,17 +31,17 @@ class SurvivorsWeaponDetailTabView extends UiPanelBase_1.UiPanelBase {
     this.eGd = undefined;
     this.pNd = undefined;
     this.kuo = undefined;
-    this.oJd = undefined;
+    this.YJd = undefined;
     this.vNd = () => new SurvivorsAttributeItem_1.SurvivorsAttributeItem();
     this.Hqd = () => new SurvivorsWeaponDetailItem_1.SurvivorsWeaponDetailItem();
-    this.nJd = () => new SurvivorsWeaponAttributeIconItem_1.SurvivorsWeaponAttributeIconItem();
-    this.sJd = () => {
+    this.zJd = () => new SurvivorsWeaponAttributeIconItem_1.SurvivorsWeaponAttributeIconItem();
+    this.JJd = () => {
       UiManager_1.UiManager.OpenView("SurvivorsWeaponAttributeView", this.yBr);
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIScrollViewWithScrollbarComponent], [2, UE.UIItem], [3, UE.UIVerticalLayout], [4, UE.UILoopScrollViewComponent], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIHorizontalLayout], [8, UE.UIItem], [9, UE.UIButtonComponent]];
-    this.BtnBindInfo = [[9, this.sJd]];
+    this.BtnBindInfo = [[9, this.JJd]];
   }
   async OnBeforeStartAsync() {
     this.eVi = new SurvivorsRogueCardBase_1.SurvivorsRogueCardBase();
@@ -61,7 +61,7 @@ class SurvivorsWeaponDetailTabView extends UiPanelBase_1.UiPanelBase {
   }
   OnStart() {
     this.eGd = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(1), this.Hqd);
-    this.oJd = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(7), this.nJd);
+    this.YJd = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(7), this.zJd);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SurvivorsRogueWeaponDetailTabViewShow, true);
   }
   OnBeforeDestroy() {
@@ -74,7 +74,7 @@ class SurvivorsWeaponDetailTabView extends UiPanelBase_1.UiPanelBase {
     this.RefreshEvolveInfo(i, t);
     this.FFd(i, e.Data.GTd);
     this.RefreshWeaponTotalList(e.Data.vDd);
-    this.aJd();
+    this.ZJd();
   }
   RefreshWeaponCard(e) {
     e = SurvivorsRogueCardDataFactory_1.SurvivorsRogueCardDataFactory.CreateGeneralWeapon(e);
@@ -141,10 +141,10 @@ class SurvivorsWeaponDetailTabView extends UiPanelBase_1.UiPanelBase {
     o.sort((e, i) => e.IsRecommend !== i.IsRecommend ? e.IsRecommend ? -1 : 1 : e.AttrId - i.AttrId);
     this.kuo.RefreshByData(o);
   }
-  aJd() {
+  ZJd() {
     var e = this.yBr.GetWeaponSpecialAttributeList().map(e => e.AttrId);
     if (e.length > 0) {
-      this.oJd.RefreshByData(e.slice(0, SPECIAL_ATTRIBUTE_COUNT));
+      this.YJd.RefreshByData(e.slice(0, SPECIAL_ATTRIBUTE_COUNT));
     }
     this.GetItem(6).SetUIActive(e.length > 0);
   }

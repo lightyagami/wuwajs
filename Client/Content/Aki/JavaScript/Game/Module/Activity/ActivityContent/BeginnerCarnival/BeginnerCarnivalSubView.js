@@ -115,6 +115,7 @@ class BeginnerCarnivalSubView extends ActivitySubViewBase_1.ActivitySubViewBase 
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), i);
   }
   mGe() {
+    this.LNe.SetActivityBaseData(this.ActivityBaseData);
     this.LNe.SetTitleByText(this.ActivityBaseData.GetTitle());
     var [i, e] = this.GetTimeVisibleAndRemainTime();
     this.LNe.SetTimeTextVisible(i);
@@ -151,8 +152,8 @@ class BeginnerCarnivalSubView extends ActivitySubViewBase_1.ActivitySubViewBase 
         this.GetButton(12).RootUIComp.SetUIActive(false);
       }
       let i = false;
-      for (const n of ModelManager_1.ModelManager.PayShopModel.GetPayShopTabData(3, CARNIVAL_SHOP_TAB_ID)) {
-        const e = n.GetRemainingData();
+      for (const s of ModelManager_1.ModelManager.PayShopModel.GetPayShopTabData(3, CARNIVAL_SHOP_TAB_ID)) {
+        const e = s.GetRemainingData();
         if (e && e.Count > 0) {
           i = true;
           break;

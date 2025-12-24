@@ -49,7 +49,7 @@ class WeaponSkinController extends UiControllerBase_1.UiControllerBase {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Character", 4, "服务器下发武器皮肤", ["WeaponSkinId", e.lI_?.yI_], ["ServerEntityId", t]);
       }
-      t = ModelManager_1.ModelManager.CreatureModel.GetEntity(t).Entity.GetComponent(81);
+      t = ModelManager_1.ModelManager.CreatureModel.GetEntity(t).Entity.GetComponent(84);
       if (t) {
         t.OnEntityEquipSkinChangeNotify(e);
       }
@@ -60,7 +60,7 @@ class WeaponSkinController extends UiControllerBase_1.UiControllerBase {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("Character", 4, "服务器下发翱翔与滑翔翼皮肤", ["FlySkinId", o.cGc], ["ServerEntityId", t]);
         }
-        t = ModelManager_1.ModelManager.CreatureModel.GetEntity(t).Entity.GetComponent(81);
+        t = ModelManager_1.ModelManager.CreatureModel.GetEntity(t).Entity.GetComponent(84);
         if (!t) {
           return;
         }

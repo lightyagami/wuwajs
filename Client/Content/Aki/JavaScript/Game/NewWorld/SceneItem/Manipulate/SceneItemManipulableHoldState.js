@@ -80,12 +80,12 @@ class SceneItemManipulableHoldState extends SceneItemManipulableBaseState_1.Scen
     if (this.SceneItem.IsProjectileAimMode) {
       this.Qnr();
     }
-    var t = Global_1.Global.BaseCharacter.CharacterActorComponent.Entity.GetComponent(209);
+    var t = Global_1.Global.BaseCharacter.CharacterActorComponent.Entity.GetComponent(215);
     t.AddTag(-1011082332);
     if (!this.SceneItem.ManipulateBaseConfig?.抛物瞄准模式开关) {
       t.AddTag(510134989);
     }
-    var e = this.SceneItem.Entity.GetComponent(142);
+    var e = this.SceneItem.Entity.GetComponent(147);
     if (e?.Valid) {
       t.AddTag(882475449);
     } else {
@@ -108,7 +108,7 @@ class SceneItemManipulableHoldState extends SceneItemManipulableBaseState_1.Scen
       this.vsr();
     }
     this.Msr();
-    var t = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity?.GetComponent(209);
+    var t = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity?.GetComponent(215);
     t?.RemoveTag(-1011082332);
     t?.RemoveTag(510134989);
     t?.RemoveTag(-624589333);
@@ -130,7 +130,7 @@ class SceneItemManipulableHoldState extends SceneItemManipulableBaseState_1.Scen
     let s = UE.KismetMathLibrary.ComposeRotators(this.SceneItem.ConfigHoldRotator, e.Rotator());
     var e = new UE.Rotator(0, this.Timer * t.角速度, 0);
     s = UE.KismetMathLibrary.ComposeRotators(e, s);
-    var t = this.SceneItem.Entity.GetComponent(142);
+    var t = this.SceneItem.Entity.GetComponent(147);
     if (t?.Valid) {
       e = new UE.Rotator(0, -t.Rotation, 0);
       s = UE.KismetMathLibrary.ComposeRotators(e, s);
@@ -234,7 +234,7 @@ class SceneItemManipulableHoldState extends SceneItemManipulableBaseState_1.Scen
       this.asr = n.HitResult;
       this.lsr = n.LastTraceDestination;
       this.qga = n.PathData;
-      this.Fga = this.asr.bBlockingHit && this.asr.Component.GetCollisionProfileName().op_Equality(FNameUtil_1.FNameUtil.GetDynamicFName(PORTAL_COLLISION));
+      this.Fga = this.asr.bBlockingHit && UE.KuroCollisionLibrary.GetCollisionProfileName(this.asr.Component, this.asr.Item).op_Equality(FNameUtil_1.FNameUtil.GetDynamicFName(PORTAL_COLLISION));
       if (this.Fga && (a = Vector_1.Vector.Create(this.asr.Location), s = this.asr.Actor, r = Vector_1.Vector.Create(s.GetActorForwardVector()), t = Vector_1.Vector.Create(this.SceneItem.ActorComp.ActorLocation), s = Vector_1.Vector.Create(), t.Subtraction(a, s), s.Z = 0, s.Normalize(), s.DotProduct(r) < -MathUtils_1.MathUtils.KindaSmallNumber)) {
         this.Fga = false;
       }
@@ -257,7 +257,7 @@ class SceneItemManipulableHoldState extends SceneItemManipulableBaseState_1.Scen
         do {
           var _ = this.asr.Actor;
           let t = undefined;
-          _ = (t = (UE.KuroStaticLibrary.IsImplementInterface(_.GetClass(), UE.BPI_CreatureInterface_C.StaticClass()) ? ActorUtils_1.ActorUtils : ModelManager_1.ModelManager.SceneInteractionModel).GetEntityByActor(_))?.Entity?.GetComponent(219);
+          _ = (t = (UE.KuroStaticLibrary.IsImplementInterface(_.GetClass(), UE.BPI_CreatureInterface_C.StaticClass()) ? ActorUtils_1.ActorUtils : ModelManager_1.ModelManager.SceneInteractionModel).GetEntityByActor(_))?.Entity?.GetComponent(226);
           if (_) {
             var c = _.GetPortalModel();
             let t = _.GetCreatureDataId();
@@ -274,20 +274,20 @@ class SceneItemManipulableHoldState extends SceneItemManipulableBaseState_1.Scen
             if (!_ || !c) {
               break;
             }
-            var v = _.InverseTransformVector(new UE.VectorDouble(this.lsr.Velocity));
-            var v = new UE.TransformDouble(new UE.Quat(Vector_1.Vector.ZAxisVector, Math.PI)).TransformVector(v);
-            var v = c.TransformVector(v);
-            o.LaunchVelocity = v.op_ToVector();
-            var E = UE.KismetMathLibrary.WD_LocalToWorld(GlobalData_1.GlobalData.World, this.qga.Get(this.qga.Num() - 1).Location);
-            var _ = _.InverseTransformPosition(E);
-            var E = new UE.TransformDouble(new UE.Quat(Vector_1.Vector.ZAxisVector, Math.PI)).TransformPosition(_);
-            E.X = -E.X;
-            var _ = c.TransformPosition(E);
-            var c = Vector_1.Vector.Create(v);
+            var E = _.InverseTransformVector(new UE.VectorDouble(this.lsr.Velocity));
+            var E = new UE.TransformDouble(new UE.Quat(Vector_1.Vector.ZAxisVector, Math.PI)).TransformVector(E);
+            var E = c.TransformVector(E);
+            o.LaunchVelocity = E.op_ToVector();
+            var v = UE.KismetMathLibrary.WD_LocalToWorld(GlobalData_1.GlobalData.World, this.qga.Get(this.qga.Num() - 1).Location);
+            var _ = _.InverseTransformPosition(v);
+            var v = new UE.TransformDouble(new UE.Quat(Vector_1.Vector.ZAxisVector, Math.PI)).TransformPosition(_);
+            v.X = -v.X;
+            var _ = c.TransformPosition(v);
+            var c = Vector_1.Vector.Create(E);
             c.Normalize();
-            var E = _.op_Addition(c.ToUeVector());
-            var v = UE.KismetMathLibrary.WD_WorldToLocal(GlobalData_1.GlobalData.World, E);
-            o.StartLocation = v;
+            var v = _.op_Addition(c.ToUeVector());
+            var E = UE.KismetMathLibrary.WD_WorldToLocal(GlobalData_1.GlobalData.World, v);
+            o.StartLocation = E;
             const f = (0, puerts_1.$ref)(new UE.PredictProjectilePathResult());
             UE.GameplayStatics.Blueprint_PredictProjectilePath_Advanced(this.SceneItem.ActorComp.Owner, o, f);
             n = (0, puerts_1.$unref)(f);
@@ -296,18 +296,18 @@ class SceneItemManipulableHoldState extends SceneItemManipulableBaseState_1.Scen
             } else {
               this.Oga?.Empty();
             }
-            var d = new UE.VectorDouble(v);
+            var d = new UE.VectorDouble(E);
             for (let e = 0; e < n.PathData.Num(); e++) {
               let t = new UE.VectorDouble(n.PathData.Get(e).Location);
               t = t.op_Subtraction(d);
               this.Oga.Add(t);
             }
             ModelManager_1.ModelManager.ManipulaterModel?.SetAfterPortalProjectilePath(this.Oga);
-            ModelManager_1.ModelManager.ManipulaterModel?.SetAfterPortalStartPosition(E);
+            ModelManager_1.ModelManager.ManipulaterModel?.SetAfterPortalStartPosition(v);
             this.Nga.D_SetSplinePoints(this.Oga, 0, true);
-            this.Gga.D_K2_SetActorLocation(E, false, undefined, true);
-            (i = Vector_1.Vector.Create(this.Oga.Get(this.Oga.Num() - 1))).AdditionEqual(Vector_1.Vector.Create(E));
-            this.N0a = E;
+            this.Gga.D_K2_SetActorLocation(v, false, undefined, true);
+            (i = Vector_1.Vector.Create(this.Oga.Get(this.Oga.Num() - 1))).AdditionEqual(Vector_1.Vector.Create(v));
+            this.N0a = v;
           }
         } while (0);
       } else {

@@ -22,7 +22,7 @@ class MapTileItem {
     this.z__ = undefined;
     this.X__ = undefined;
     this.MUe = ResourceSystem_1.ResourceSystem.InvalidId;
-    this.OLm = e => {
+    this.$Sf = e => {
       this.MUe = ResourceSystem_1.ResourceSystem.InvalidId;
       this.Y__.LoadMapTileCallBack(e);
     };
@@ -40,7 +40,7 @@ class MapTileItem {
     var r = this.Y__.FogDefaultColor;
     const h = this.Y__.MapId;
     if (t && !StringUtils_1.StringUtils.IsEmpty(t.MapTilePath)) {
-      this.MUe = ResourceSystem_1.ResourceSystem.LoadAsync(t.MapTilePath, UE.Texture, this.OLm, 102, "Ui.MapUi");
+      this.MUe = ResourceSystem_1.ResourceSystem.LoadAsync(t.MapTilePath, UE.Texture, this.$Sf, 102, "Ui.MapUi");
       if (Info_1.Info.IsPcOrGamepadPlatform() && !StringUtils_1.StringUtils.IsEmpty(t.HdMapTilePath) && e === 2) {
         this.MUe = ResourceSystem_1.ResourceSystem.LoadAsync(t.HdMapTilePath, UE.Texture, e => {
           if (e === undefined && Log_1.Log.CheckError()) {

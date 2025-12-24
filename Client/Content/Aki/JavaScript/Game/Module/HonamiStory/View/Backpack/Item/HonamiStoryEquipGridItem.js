@@ -21,9 +21,9 @@ class HonamiStoryEquipGridItem extends HonamiStoryGridItemBase_1.HonamiStoryGrid
   constructor() {
     super(...arguments);
     this.cC = 0;
-    this.Vrm = false;
-    this.Xim = undefined;
-    this.$nm = undefined;
+    this.lhm = false;
+    this.uam = undefined;
+    this.f1m = undefined;
     this.OnBtnPointDown = () => {};
   }
   GetPosition() {
@@ -56,7 +56,7 @@ class HonamiStoryEquipGridItem extends HonamiStoryGridItemBase_1.HonamiStoryGrid
     if ((this.Data = t) === undefined) {
       this.ItemGridItem?.SetUiActive(false);
       var [e, o] = this.GetSlotUnlockConfig();
-      this.Vrm = o;
+      this.lhm = o;
       this.SpriteBg.SetUIActive(e);
       this.SetLockEnable(!e, o);
       if (e) {
@@ -75,11 +75,11 @@ class HonamiStoryEquipGridItem extends HonamiStoryGridItemBase_1.HonamiStoryGrid
           this.ItemGridItem.Refresh(t, i !== -1);
           this.SetSpriteByPath(e.GridBg, this.SpriteBg, false);
           this.PlayNewlyPickedUpSweepAnimation(t);
-          this.Avm(r);
+          this.Fwm(r);
         } else {
           this.InitItemGridItem(t, -1).then(() => {
             this.PlayNewlyPickedUpSweepAnimation(t);
-            this.Avm(r);
+            this.Fwm(r);
           });
         }
       } else if (Log_1.Log.CheckError()) {
@@ -87,7 +87,7 @@ class HonamiStoryEquipGridItem extends HonamiStoryGridItemBase_1.HonamiStoryGrid
       }
     }
   }
-  Avm(t) {
+  Fwm(t) {
     if (t) {
       this.PlaySequenceByName("Activate");
     } else {
@@ -98,14 +98,14 @@ class HonamiStoryEquipGridItem extends HonamiStoryGridItemBase_1.HonamiStoryGrid
     return new HonamiStoryEquipItemGridItem_1.HonamiStoryEquipItemGridItem(t);
   }
   SetLockEnable(t, i) {
-    if (t || this.Xim) {
-      if (this.Xim) {
-        if (!this.Xim.InAsyncLoading()) {
+    if (t || this.uam) {
+      if (this.uam) {
+        if (!this.uam.InAsyncLoading()) {
           this.RefreshLockState();
         }
       } else {
-        this.Xim = new HonamiStoryGridDynamic_1.HonamiStorySlotLockStateItem();
-        this.Xim.CreateThenShowByResourceIdAsync("UiItem_HonamiStoryItemStateAdd", this.RootItem).then(() => {
+        this.uam = new HonamiStoryGridDynamic_1.HonamiStorySlotLockStateItem();
+        this.uam.CreateThenShowByResourceIdAsync("UiItem_HonamiStoryItemStateAdd", this.RootItem).then(() => {
           this.RefreshLockState();
         });
       }
@@ -116,7 +116,7 @@ class HonamiStoryEquipGridItem extends HonamiStoryGridItemBase_1.HonamiStoryGrid
     var i;
     var e;
     var o;
-    if (this.Xim) {
+    if (this.uam) {
       [t, i] = this.GetSlotUnlockConfig();
       o = ModelManager_1.ModelManager.HonamiStoryModel.ActivityId;
       e = (e = ModelManager_1.ModelManager.HonamiStoryModel.GetRoleItemDataByPosition(this.GetPosition())).GetSlotList()[e.GetHonamiStoryPluginIndex(this.GetPosition())];
@@ -124,22 +124,22 @@ class HonamiStoryEquipGridItem extends HonamiStoryGridItemBase_1.HonamiStoryGrid
       o = ConfigManager_1.ConfigManager.HonamiStoryConfig.GetHonamiStoryActivityConfig(o).OutCoinItemId;
       e = e.ConsumeItems.get(o);
       o = ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(o);
-      this.Xim.RefreshState(!t, i, e <= o);
+      this.uam.RefreshState(!t, i, e <= o);
     }
   }
   SetCanPlaceEnable(t) {
-    this.$nm?.SetUiActive(t);
+    this.f1m?.SetUiActive(t);
     if (t) {
-      this.$nm?.Refresh();
+      this.f1m?.Refresh();
     }
-    if (t && !this.$nm) {
-      this.$nm = new HonamiStoryGridDynamic_1.HonamiStoryItemGridPlacementItem();
-      this.$nm.CreateThenShowByResourceIdAsync("UiItem_HonamiStoryItemStatePut", this.RootItem).then(() => {
+    if (t && !this.f1m) {
+      this.f1m = new HonamiStoryGridDynamic_1.HonamiStoryItemGridPlacementItem();
+      this.f1m.CreateThenShowByResourceIdAsync("UiItem_HonamiStoryItemStatePut", this.RootItem).then(() => {
         var t = ModelManager_1.ModelManager.HonamiStoryModel.GetBackpackLogicState();
         var t = t === 2 || t === 6;
-        this.$nm?.SetUiActive(t);
+        this.f1m?.SetUiActive(t);
         if (t) {
-          this.$nm?.Refresh();
+          this.f1m?.Refresh();
         }
       });
     }
@@ -149,8 +149,8 @@ class HonamiStoryEquipGridItem extends HonamiStoryGridItemBase_1.HonamiStoryGrid
     var i = ModelManager_1.ModelManager.HonamiStoryModel.GetBackpackLogicState();
     if (i === 0) {
       if (!this.GetIsUnlock()) {
-        if (this.Vrm) {
-          this.jrm();
+        if (this.lhm) {
+          this._hm();
         } else {
           t = ModelManager_1.ModelManager.HonamiStoryModel.GetActivityData(false)?.GetPreGuideQuestFinishState() ?? false;
           if (!HonamiStoryUtil_1.HonamiStoryUtil.CheckInHonamiStoryDungeon() && t) {
@@ -169,7 +169,7 @@ class HonamiStoryEquipGridItem extends HonamiStoryGridItemBase_1.HonamiStoryGrid
   SetIsEnable(t) {
     this.ItemGridItem?.SetIsEnable(t);
   }
-  jrm() {
+  _hm() {
     var t = ModelManager_1.ModelManager.HonamiStoryModel.ActivityId;
     const i = ModelManager_1.ModelManager.HonamiStoryModel.GetRoleItemDataByPosition(this.GetPosition());
     const e = i.GetSlotList()[i.GetHonamiStoryPluginIndex(this.GetPosition())];
@@ -224,7 +224,7 @@ class HonamiStoryEquipGridItem extends HonamiStoryGridItemBase_1.HonamiStoryGrid
     if (t.length !== 0) {
       var t = t[0];
       if (t === "AddBtn") {
-        if (this.Xim?.IsUiActiveInHierarchy() && this.Vrm) {
+        if (this.uam?.IsUiActiveInHierarchy() && this.lhm) {
           if (t = this.GetBtnItem()) {
             return [t, t];
           } else {

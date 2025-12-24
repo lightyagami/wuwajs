@@ -9,24 +9,24 @@ const LongTimeToTriggerComponent_1 = require("./LongTimeToTriggerComponent");
 class KujiLongTimeToTriggerComponent extends LongTimeToTriggerComponent_1.LongTimeToTriggerComponent {
   constructor() {
     super(...arguments);
-    this.Yym = undefined;
+    this.iDm = undefined;
   }
   OnInit() {
-    this.Yym = UiManager_1.UiManager.GetViewByName("PrizeDrawingTearView");
+    this.iDm = UiManager_1.UiManager.GetViewByName("PrizeDrawingTearView");
   }
   OnHandleLongPressRefresh(e) {
-    if (this.Yym) {
-      this.Yym.OnGamepadHold(e);
+    if (this.iDm) {
+      this.iDm.OnGamepadHold(e);
     }
   }
   OnPressAction() {
-    if (this.Yym) {
-      this.Yym.OnGamepadPress();
+    if (this.iDm) {
+      this.iDm.OnGamepadPress();
     }
   }
   OnReleaseAction() {
-    if (this.Yym) {
-      this.Yym.OnGamepadRelease();
+    if (this.iDm) {
+      this.iDm.OnGamepadRelease();
     }
   }
   OnRefreshSelfHotKeyState(e) {

@@ -10,7 +10,7 @@ const LguiUtil_1 = require("../../../../Util/LguiUtil");
 class HonamiStoryAttrItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
     super(...arguments);
-    this.URm = undefined;
+    this.dXm = undefined;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UITexture], [1, UE.UIText], [2, UE.UIText], [4, UE.UIText], [3, UE.UIItem], [5, UE.UIItem]];
@@ -30,9 +30,9 @@ class HonamiStoryAttrItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.GetText(2).SetText(e);
     var U = this.GetText(4);
     U.SetText(o);
-    this.URm ||= U.Color;
+    this.dXm ||= U.Color;
     if (s) {
-      s = t.NewValue < t.OldValue ? U.changeColor : this.URm;
+      s = t.NewValue < t.OldValue ? U.changeColor : this.dXm;
       U.SetColor(s);
     } else {
       U.SetColor(UE.Color.FromHex("#ffffff"));

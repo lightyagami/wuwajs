@@ -57,7 +57,7 @@ class VisionEquipGroupController extends UiControllerBase_1.UiControllerBase {
     }
   }
   static RequestApplyVisionGroup(o, r) {
-    if (ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.GetComponent(209).HasTag(-1720844833)) {
+    if (ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.GetComponent(215).HasTag(-1720844833)) {
       ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("VisionSkilling");
     } else {
       let e = false;

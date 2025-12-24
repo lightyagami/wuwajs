@@ -84,7 +84,7 @@ class ComposeCarryOnView extends UiViewBase_1.UiViewBase {
     this.Kti = 0;
     this.L6e = 0;
     this.D8l = [];
-    this._um = undefined;
+    this.Igm = undefined;
     this.LGt = t => {
       var i;
       this.t6 = t;
@@ -177,11 +177,16 @@ class ComposeCarryOnView extends UiViewBase_1.UiViewBase {
       }
     };
     this.qTi = (t = 0) => {
+      var i;
       if (t === 0) {
         this.MNt.SetResultDataDirty();
         this.MNt.UpdateData(23, this.LNt());
+        i = this.MNt.GetUniqueIdByGroupId(23);
+        this.vNt.SetSortUniqueId(i);
         this.vNt.SetActive(true);
         this.vNt.UpdateData(23, this.LNt());
+        i = this.vNt.GetUniqueIdByGroupId(23);
+        this.MNt.SetFilterUniqueId(i);
       }
       this.Ivt?.SelectToggleByIndex(t, true);
       this.YGt();
@@ -255,13 +260,21 @@ class ComposeCarryOnView extends UiViewBase_1.UiViewBase {
       switch (ModelManager_1.ModelManager.ComposeModel.CurrentComposeListType) {
         case 1:
           this.vNt.UpdateData(20, this.LNt());
+          var t = this.vNt.GetUniqueIdByGroupId(20);
+          this.MNt.SetFilterUniqueId(t);
           this.MNt.SetResultDataDirty();
           this.MNt.UpdateData(20, this.LNt());
+          var t = this.MNt.GetUniqueIdByGroupId(20);
+          this.vNt.SetSortUniqueId(t);
           break;
         case 2:
           this.vNt.UpdateData(22, this.LNt());
+          t = this.vNt.GetUniqueIdByGroupId(22);
+          this.MNt.SetFilterUniqueId(t);
           this.MNt.SetResultDataDirty();
           this.MNt.UpdateData(22, this.LNt());
+          t = this.MNt.GetUniqueIdByGroupId(22);
+          this.vNt.SetSortUniqueId(t);
           break;
         case 3:
           this.MNt.SetResultDataDirty();
@@ -440,7 +453,7 @@ class ComposeCarryOnView extends UiViewBase_1.UiViewBase {
   OnBeforeShow() {
     var t = this.OpenParam;
     this.v5l = t?.SelectData;
-    this._um = t?.SkipSourceView;
+    this.Igm = t?.SkipSourceView;
     this.Kti = this.v5l?.ItemId ?? 0;
     this.qTi(t ? this.mFi.indexOf(t.Type) : 0);
     this.Kti = 0;
@@ -863,11 +876,11 @@ class ComposeCarryOnView extends UiViewBase_1.UiViewBase {
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(21), "MakeLimit", t, i.TotalMakeCountInLimitTime);
     }
   }
-  uum() {
+  Tgm() {
     return !!this.v5l && !(this.v5l.Count <= 0) && (this.fGt.MainType === 4 ? this.fGt.ConfigId === this.v5l.ItemId : ConfigManager_1.ConfigManager.ComposeConfig.GetSynthesisFormulaById(this.fGt.ConfigId)?.ItemId === this.v5l.ItemId);
   }
   Gjl() {
-    if (this.uum()) {
+    if (this.Tgm()) {
       this.xjl = true;
       this.GetText(22)?.SetUIActive(true);
       var e = ModelManager_1.ModelManager.InventoryModel.GetCommonItemCount(this.v5l.ItemId);
@@ -876,7 +889,7 @@ class ComposeCarryOnView extends UiViewBase_1.UiViewBase {
       t = e < s ? StringUtils_1.StringUtils.Format(ComposeDefine_1.EXCHANGE_MATERIAL_NOT_ENOUGHT_TEXT_PATTERN_B, e.toString()) : StringUtils_1.StringUtils.Format(ComposeDefine_1.EXCHANGE_MATERIAL_ENOUGHT_TEXT_PATTERN_B, e.toString());
       this.GetSprite(42)?.SetUIActive(s <= e);
       let i = undefined;
-      i = this._um ? skipViewPrefixMap.get(this._um) ?? "ComposeNeedTips" : "ComposeNeedTips";
+      i = this.Igm ? skipViewPrefixMap.get(this.Igm) ?? "ComposeNeedTips" : "ComposeNeedTips";
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(22), i, t, "" + s);
     } else {
       this.GetText(22)?.SetUIActive(false);

@@ -18,7 +18,7 @@ class HonamiStoryItemTipsComponent extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.SPe = undefined;
-    this.rom = undefined;
+    this.Ihm = undefined;
     this.jlo = undefined;
     this.vId = () => new HonamiStoryTipsPropertyItem_1.HonamiStoryTipsPropertyItem();
     this.yId = () => new HonamiStoryTipsPropertyItem_1.HonamiStoryTipsTextItem();
@@ -37,7 +37,7 @@ class HonamiStoryItemTipsComponent extends UiPanelBase_1.UiPanelBase {
     this.GetExtendToggle(6).RootUIComp.SetUIActive(false);
     this.GetItem(24)?.SetUIActive(false);
     this.GetItem(23)?.SetUIActive(false);
-    this.rom = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(9), this.vId);
+    this.Ihm = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(9), this.vId);
     this.jlo = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(11), this.yId);
     this.GetRootItem().SetPivot(new UE.Vector2D(0.5, 0.5));
     this.GetRootItem().SetAnchorOffset(new UE.Vector2D(0, 0));
@@ -79,7 +79,7 @@ class HonamiStoryItemTipsComponent extends UiPanelBase_1.UiPanelBase {
               PropId: s
             });
           }
-          this.rom.RefreshByData(r, undefined, true);
+          this.Ihm.RefreshByData(r, undefined, true);
           t = i.GetBuffTempIdList();
           this.jlo.RefreshByData(t, undefined, true);
         }

@@ -17,6 +17,9 @@ class CardDetailAttributeLayoutItem extends UiPanelBase_1.UiPanelBase {
   Refresh(e) {
     this.nvt.RefreshByData(e);
   }
+  SetLayoutActive(e) {
+    this.nvt.GetRootUiItem()?.SetUIActive(e);
+  }
 }
 exports.CardDetailAttributeLayoutItem = CardDetailAttributeLayoutItem;
 //# sourceMappingURL=CardDetailAttributeLayoutItem.js.map

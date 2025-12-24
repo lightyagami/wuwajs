@@ -80,7 +80,7 @@ let NpcPerformComponent = class NpcPerformComponent extends BasePerformComponent
   OnStart() {
     super.OnStart();
     this.ActorComp = this.Entity.GetComponent(2);
-    this.AnimComp = this.Entity.GetComponent(44);
+    this.AnimComp = this.Entity.GetComponent(45);
     this.Owner = this.ActorComp.Owner;
     this.InitFromEntityData();
     this.MaterialController = new NpcMaterialController_1.NpcMaterialController(this.Entity);
@@ -96,7 +96,7 @@ let NpcPerformComponent = class NpcPerformComponent extends BasePerformComponent
   OnEnd() {
     this.MaterialController?.Dispose();
     this.DestroyVisibleDitherEvent();
-    var t = this.Entity.GetComponent(229);
+    var t = this.Entity.GetComponent(238);
     for (const e of this.CueHandles) {
       t?.RemoveCueByHandle(e);
     }
@@ -127,13 +127,13 @@ let NpcPerformComponent = class NpcPerformComponent extends BasePerformComponent
           Log_1.Log.Debug("NPC", 50, "[NpcPerformComp] NPC显示", ["PbDataId", this.ActorComp?.CreatureData.GetPbDataId()], ["CreatureData", this.ActorComp?.CreatureData.GetCreatureDataId()], ["Reason", e]);
         }
         i.EnterAppearEffect(1, 1, false);
-        this.Entity.GetComponent(82)?.EnableHeadInfo(true);
+        this.Entity.GetComponent(85)?.EnableHeadInfo(true);
       } else {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("NPC", 50, "[NpcPerformComp] NPC隐藏", ["PbDataId", this.ActorComp?.CreatureData.GetPbDataId()], ["CreatureData", this.ActorComp?.CreatureData.GetCreatureDataId()], ["Reason", e]);
         }
         i.EnterDisappearEffect(1, 1, false);
-        this.Entity.GetComponent(82)?.EnableHeadInfo(false);
+        this.Entity.GetComponent(85)?.EnableHeadInfo(false);
       }
     }
   }
@@ -196,8 +196,8 @@ let NpcPerformComponent = class NpcPerformComponent extends BasePerformComponent
       Context: "[NpcPerformComponent.FixNpcOnInitLocation]"
     });
     this.ActorComp.SetActorLocation(MathUtils_1.MathUtils.CommonTempVector.ToUeVector(), "NPC待机表演使用固定位置", false);
-    var t = this.Entity.GetComponent(185);
-    var e = this.Entity.GetComponent(117);
+    var t = this.Entity.GetComponent(190);
+    var e = this.Entity.GetComponent(122);
     t?.Disable("NPC待机表演使用固定位置");
     e?.Disable("NPC待机表演使用固定位置");
   }
@@ -265,7 +265,7 @@ let NpcPerformComponent = class NpcPerformComponent extends BasePerformComponent
         });
       }
       if (e?.DefaultPerform?.BuffEffectIds) {
-        var i = this.Entity.GetComponent(229);
+        var i = this.Entity.GetComponent(238);
         for (const r of e.DefaultPerform.BuffEffectIds) {
           this.CueHandles.add(i.AddCue(r));
         }
@@ -273,5 +273,5 @@ let NpcPerformComponent = class NpcPerformComponent extends BasePerformComponent
     }
   }
 };
-NpcPerformComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(190)], NpcPerformComponent);
+NpcPerformComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(196)], NpcPerformComponent);
 exports.NpcPerformComponent = NpcPerformComponent; //# sourceMappingURL=NpcPerformComponent.js.map

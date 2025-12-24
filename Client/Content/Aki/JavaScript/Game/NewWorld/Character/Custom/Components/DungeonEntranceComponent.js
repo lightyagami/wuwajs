@@ -39,7 +39,7 @@ let DungeonEntranceComponent = class DungeonEntranceComponent extends EntityComp
     };
   }
   OnStart() {
-    this.cen = this.Entity.GetComponent(137);
+    this.cen = this.Entity.GetComponent(142);
     this.men = new Array();
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemStateChange, this.den);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemStatePreChangeInSequence, this.gen);
@@ -75,5 +75,5 @@ let DungeonEntranceComponent = class DungeonEntranceComponent extends EntityComp
     }
   }
 };
-DungeonEntranceComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(84)], DungeonEntranceComponent);
+DungeonEntranceComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(87)], DungeonEntranceComponent);
 exports.DungeonEntranceComponent = DungeonEntranceComponent; //# sourceMappingURL=DungeonEntranceComponent.js.map

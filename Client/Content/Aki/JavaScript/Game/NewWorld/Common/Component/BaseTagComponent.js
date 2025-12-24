@@ -81,7 +81,7 @@ let BaseTagComponent = BaseTagComponent_1 = class BaseTagComponent extends Entit
   OnStart() {
     var t = this.Entity.GetComponent(0);
     let e = undefined;
-    if ((e = (t?.IsVehicle() ? this.Entity.GetComponent(238) : this.Entity.GetComponent(3))?.Actor?.AbilitySystemComponent)?.IsValid()) {
+    if ((e = (t?.IsVehicle() ? this.Entity.GetComponent(247) : this.Entity.GetComponent(3))?.Actor?.AbilitySystemComponent)?.IsValid()) {
       this.TagContainer.BindTsTagContainer(e);
     }
     return true;
@@ -233,7 +233,7 @@ let BaseTagComponent = BaseTagComponent_1 = class BaseTagComponent extends Entit
         EventSystem_1.EventSystem.EmitWithTarget(o, EventDefine_1.EEventName.OnGlobalGameplayTagChanged, this.Entity.Id, t, a, e);
       }
       BaseTagComponent_1.Dc_.Stop();
-      this.Entity.GetComponent(213)?.OnTagChanged(t);
+      this.Entity.GetComponent(220)?.OnTagChanged(t);
     }
     BaseTagComponent_1.Pc_.Stop();
   }
@@ -251,5 +251,5 @@ BaseTagComponent.Rc_ = new Map();
 BaseTagComponent.Pc_ = Stats_1.Stat.Create("BaseTagComponent.OnAnyTagChanged");
 BaseTagComponent.wc_ = Stats_1.Stat.Create("BaseTagComponent.OnAnyTagChanged.Callbacks");
 BaseTagComponent.Dc_ = Stats_1.Stat.Create("BaseTagComponent.OnAnyTagChanged.OnGlobalGameplayTagChanged");
-BaseTagComponent = BaseTagComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(209)], BaseTagComponent);
+BaseTagComponent = BaseTagComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(215)], BaseTagComponent);
 exports.BaseTagComponent = BaseTagComponent; //# sourceMappingURL=BaseTagComponent.js.map

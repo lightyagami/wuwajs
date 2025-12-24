@@ -26,7 +26,7 @@ class NpcPerceptionReactionUtil {
     o.Normalize();
     var i = Rotator_1.Rotator.Create();
     o.ToOrientationRotator(i);
-    var r = e.GetComponent(45);
+    var r = e.GetComponent(46);
     if (r) {
       r.SmoothCharacterRotation(i, TURN_SPEED, Time_1.Time.DeltaTimeSeconds);
     } else {
@@ -35,7 +35,7 @@ class NpcPerceptionReactionUtil {
   }
   static ShowHeadDialog(e, t, r) {
     if (!(t < MathUtils_1.MathUtils.GetRandomFloatNumber(0, BUBBLE_RANDOM_MAX))) {
-      if ((t = e.GetComponent(82)) && (e = ConfigManager_1.ConfigManager.FlowConfig.GetRandomFlow(r.FlowListName, r.FlowId, e.GetComponent(2).Actor.ActorLabel, r.StateId)) && e.TalkItems.length !== 0) {
+      if ((t = e.GetComponent(85)) && (e = ConfigManager_1.ConfigManager.FlowConfig.GetRandomFlow(r.FlowListName, r.FlowId, e.GetComponent(2).Actor.ActorLabel, r.StateId)) && e.TalkItems.length !== 0) {
         r = e.TalkItems[0];
         if (!StringUtils_1.StringUtils.IsEmpty(r.TidTalk)) {
           e = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(r.TidTalk);

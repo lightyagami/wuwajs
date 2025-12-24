@@ -15,7 +15,7 @@ class ActivitySoarSubView extends ActivitySubViewBase_1.ActivitySubViewBase {
     super(...arguments);
     this.ActivityBaseData = undefined;
     this.CommonInfoPanel = undefined;
-    this.pHd = false;
+    this.MHd = false;
     this.tWt = () => {
       this.ActivityBaseData.SaveFirstClick();
       UiManager_1.UiManager.OpenView("QuestView", this.ActivityBaseData.GetQuestId());
@@ -55,8 +55,8 @@ class ActivitySoarSubView extends ActivitySubViewBase_1.ActivitySubViewBase {
     }
   }
   OnTimer(i) {
-    if (!this.pHd && !this.ActivityBaseData.CheckIfInShowTime()) {
-      this.pHd = true;
+    if (!this.MHd && !this.ActivityBaseData.CheckIfInShowTime()) {
+      this.MHd = true;
       ModelManager_1.ModelManager.ActivityModel.RefreshShowingActivities();
     }
   }

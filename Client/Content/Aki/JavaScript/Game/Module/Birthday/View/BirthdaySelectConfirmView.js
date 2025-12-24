@@ -5,9 +5,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.BirthdaySelectConfirmView = undefined;
 const UE = require("ue");
+const BirthDayByYear_1 = require("../../../../Core/Define/ConfigQuery/BirthDayByYear");
 const MultiTextLang_1 = require("../../../../Core/Define/ConfigQuery/MultiTextLang");
 const RoleInfoById_1 = require("../../../../Core/Define/ConfigQuery/RoleInfoById");
-const RoleSkinBirthdayById_1 = require("../../../../Core/Define/ConfigQuery/RoleSkinBirthdayById");
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiViewBase_1 = require("../../../Ui/Base/UiViewBase");
@@ -35,8 +36,15 @@ class BirthdaySelectConfirmView extends UiViewBase_1.UiViewBase {
       }
     };
   }
+  GetExtraResourceId(e) {
+    if (e) {
+      return ModelManager_1.ModelManager.BirthdayModel.GetSelectConfirmViewResource(e.Year);
+    } else {
+      return "";
+    }
+  }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UITexture], [1, UE.UIButtonComponent], [2, UE.UIButtonComponent], [3, UE.UIText], [4, UE.UIText], [5, UE.UIText]];
+    this.ComponentRegisterInfos = [[0, UE.UITexture], [1, UE.UIButtonComponent], [2, UE.UIButtonComponent], [3, UE.UIText], [4, UE.UIText]];
     this.BtnBindInfo = [[1, this.KI1], [2, this.WI1]];
   }
   OnBeforeShow() {
@@ -44,10 +52,14 @@ class BirthdaySelectConfirmView extends UiViewBase_1.UiViewBase {
     var e = this.QI1.RoleId;
     let i = ModelManager_1.ModelManager.RoleModel.GetRoleDataById(e)?.GetRoleSkinId();
     i = i || RoleInfoById_1.configRoleInfoById.GetConfig(e).SkinId;
-    var t = RoleSkinBirthdayById_1.configRoleSkinBirthdayById.GetConfig(i);
-    if (t && (this.SetTextureByPath(t.RolePortrait, this.GetTexture(0)), t = ModelManager_1.ModelManager.BirthdayModel.GetBirthdayDate(this.QI1.Year), LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(3), "BirthdayConfirmText", this.QI1.Year, t.getMonth() + 1, t.getDate()), t = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(RoleInfoById_1.configRoleInfoById.GetConfig(e).Name), LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(5), "BirthdaySelected_GO", t), e = ModelManager_1.ModelManager.BirthdayModel.IsRoleSelected(e), this.GetText(4)?.SetUIActive(e), e)) {
-      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), "PrefabTextItem_434004484_Text", t);
+    var r = ConfigManager_1.ConfigManager.SkinConfig.GetRoleSkinConfig(i)?.FormationRoleCard;
+    if (r) {
+      this.SetTextureByPath(r, this.GetTexture(0));
     }
+    var r = ModelManager_1.ModelManager.BirthdayModel.GetBirthdayDate(this.QI1.Year);
+    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(3), "BirthdayConfirmText", this.QI1.Year, r.getMonth() + 1, r.getDate());
+    var r = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(RoleInfoById_1.configRoleInfoById.GetConfig(e).Name);
+    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), "BirthdaySelected_GO", r);
   }
   gL1() {
     var e = this.QI1.RoleId;
@@ -58,6 +70,8 @@ class BirthdaySelectConfirmView extends UiViewBase_1.UiViewBase {
     var e = ModelManager_1.ModelManager.BirthdayModel.GetBirthdayCount();
     i.i_birthday_count = e + 1;
     i.i_trigger_type = 1;
+    var e = BirthDayByYear_1.configBirthDayByYear.GetConfig(this.QI1.Year);
+    i.bird_round_id = e.Id;
     ControllerHolder_1.ControllerHolder.LogReportController.LogReport(i);
   }
 }

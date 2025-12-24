@@ -220,7 +220,7 @@ class PhantomArenaBattleDetailsMonsterItem extends GridProxyAbstract_1.GridProxy
     this.EntityId = t;
     this.GU1();
     var i = ModelManager_1.ModelManager.CreatureModel.GetEntity(t);
-    this.AttributeComp = i?.Entity?.GetComponent(176);
+    this.AttributeComp = i?.Entity?.GetComponent(181);
     this.NU1();
     const s = ModelManager_1.ModelManager.PhantomArenaBattleModel.BattleData.GetCardDataByEntityId(t);
     i = s.GetFightValueByAttr(Protocol_1.Aki.Protocol.GC1.Proto_CostAbility);
@@ -233,7 +233,7 @@ class PhantomArenaBattleDetailsMonsterItem extends GridProxyAbstract_1.GridProxy
   }
   Lcu() {
     if (!(this.CurShowTime + FACTOR_INTERVAL > Time_1.Time.Now)) {
-      var t = ModelManager_1.ModelManager.CreatureModel.GetEntity(this.EntityId)?.Entity?.GetComponent(209);
+      var t = ModelManager_1.ModelManager.CreatureModel.GetEntity(this.EntityId)?.Entity?.GetComponent(215);
       if (t) {
         var i = [];
         for (const s of ModelManager_1.ModelManager.PhantomArenaBattleModel.GetPhantomTagMap()) {
@@ -296,6 +296,7 @@ class PhantomArenaBattleDetailsRoleItem extends UiPanelBase_1.UiPanelBase {
     this.IsOwn = false;
     this.MaxLife = 0;
     this.CurLife = 0;
+    this.LastShieldNum = 0;
     this.wcu = t => {
       this.RoleHead?.RefreshDamageBar(t / this.MaxLife);
       t = Math.max(0, Math.floor(t));
@@ -306,7 +307,7 @@ class PhantomArenaBattleDetailsRoleItem extends UiPanelBase_1.UiPanelBase {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIText], [2, UE.UIItem], [3, UE.UIText]];
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIText], [2, UE.UIItem], [3, UE.UIText], [4, UE.UIItem], [5, UE.UIText], [6, UE.UIText]];
   }
   OnStart() {
     this.DelegateDamage = (0, puerts_1.toManualReleaseDelegate)(this.wcu);
@@ -353,6 +354,22 @@ class PhantomArenaBattleDetailsRoleItem extends UiPanelBase_1.UiPanelBase {
   }
   RefreshHeadIcon(t) {
     this.RoleHead.RefreshRoleIcon(t);
+  }
+  RefreshShieldNum(t) {
+    var i;
+    if (t > this.LastShieldNum && this.LastShieldNum === 0) {
+      this.GetText(5).SetText(t.toString());
+      this.GetItem(4).SetUIActive(true);
+    } else if (t >= this.LastShieldNum) {
+      this.GetText(5).SetText(t.toString());
+    } else if (t === 0) {
+      this.GetItem(4).SetUIActive(false);
+    } else {
+      i = t - this.LastShieldNum;
+      this.GetText(5).SetText(t.toString());
+      this.GetText(6).SetText(i.toString());
+    }
+    this.LastShieldNum = t;
   }
   RegisterViewProxy(t) {
     this.ViewProxy = t;

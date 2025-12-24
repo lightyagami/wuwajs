@@ -18,14 +18,14 @@ class AdvanceNoticeThumbItem extends GridProxyAbstract_1.GridProxyAbstract {
         this.OnItemToggleClickDelegate?.(this.Pe, this.GridIndex);
       }
     };
-    this.dym = () => !!this.Pe && (this.CanItemToggleChangeDelegate?.(this.Pe, this.GridIndex) ?? true);
+    this.jLm = () => !!this.Pe && (this.CanItemToggleChangeDelegate?.(this.Pe, this.GridIndex) ?? true);
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UITexture], [2, UE.UIText], [3, UE.UIItem], [4, UE.UISprite], [5, UE.UISprite]];
     this.BtnBindInfo = [[0, this.SV1]];
   }
   OnStart() {
-    this.GetExtendToggle(0).CanExecuteChange.Bind(this.dym);
+    this.GetExtendToggle(0).CanExecuteChange.Bind(this.jLm);
   }
   Refresh(t, i, s) {
     this.Pe = t;
@@ -36,7 +36,6 @@ class AdvanceNoticeThumbItem extends GridProxyAbstract_1.GridProxyAbstract {
   }
   RefreshToggleState(t) {
     this.GetSprite(4).SetUIActive(t);
-    this.GetSprite(5).SetUIActive(t);
     this.GetExtendToggle(0).SetToggleState(t ? 1 : 0);
   }
 }

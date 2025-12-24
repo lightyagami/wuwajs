@@ -31,17 +31,17 @@ class SurvivorsRogueFightInfoPanel extends UiPanelBase_1.UiPanelBase {
     this.Gbd = undefined;
     this.Fbd = undefined;
     this.Nbd = undefined;
-    this.dKd = undefined;
+    this.CKd = undefined;
     this.jbd = undefined;
     this.NNd = 0;
     this.OUd = undefined;
     this.mNe = 0;
-    this.SZd = 0;
-    this.MZd = 0;
+    this.ztm = 0;
+    this.Jtm = 0;
     this._fe = false;
-    this.zjd = false;
-    this.IIm = 0;
-    this.TIm = false;
+    this.tHd = false;
+    this.uqm = 0;
+    this.cqm = false;
     this.Qbd = () => {
       SurvivorsRogueController_1.SurvivorsRogueController.OpenLeaveInstanceView();
     };
@@ -73,7 +73,7 @@ class SurvivorsRogueFightInfoPanel extends UiPanelBase_1.UiPanelBase {
     this.Gbd = this.GetArtText(4);
     this.Fbd = this.GetSprite(3);
     this.Nbd = this.GetTexture(5);
-    this.dKd = this.GetText(6);
+    this.CKd = this.GetText(6);
     this.jbd = this.GetSprite(7);
     this.xUd = new LevelSequencePlayer_1.LevelSequencePlayer(this.UUd.GetRootItem());
     this.xUd.BindSequenceCloseEvent(() => {
@@ -116,17 +116,17 @@ class SurvivorsRogueFightInfoPanel extends UiPanelBase_1.UiPanelBase {
     var i = ModelManager_1.ModelManager.SurvivorsRogueModel.BattleData;
     this.RefreshCurrencyNum(i.GetCurrencyCount(), false);
     this.RefreshChestNum(i.GetChestCount(), false);
-    this.zjd = true;
+    this.tHd = true;
   }
   OnBeforeHide() {
-    this.zjd = false;
+    this.tHd = false;
   }
   OnTick(i) {
-    if (this.zjd && this._fe) {
-      if (this.SZd > 0) {
-        this.SZd -= i;
+    if (this.tHd && this._fe) {
+      if (this.ztm > 0) {
+        this.ztm -= i;
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("SurvivorsRogue", 79, "连杀时间冻结中", ["剩余冻结时间", this.SZd]);
+          Log_1.Log.Info("SurvivorsRogue", 79, "连杀时间冻结中", ["剩余冻结时间", this.ztm]);
         }
       } else {
         this.mNe -= i;
@@ -151,22 +151,22 @@ class SurvivorsRogueFightInfoPanel extends UiPanelBase_1.UiPanelBase {
       Log_1.Log.Info("SurvivorsRogue", 79, "RefreshComboNum", ["ComboNum", i]);
     }
     if (i === 0) {
-      this.SZd = 0;
+      this.ztm = 0;
       this.mNe = 0;
       this.Kbd(0);
-      this.SetComboAreaActive(false, this.IIm > 0);
+      this.SetComboAreaActive(false, this.uqm > 0);
       this._fe = false;
-      this.IIm = 0;
+      this.uqm = 0;
     } else {
       this.Gbd.SetText(i.toString());
       this.Kbd(1);
-      this.SetComboAreaActive(true, this.IIm === 0);
+      this.SetComboAreaActive(true, this.uqm === 0);
       this._fe = true;
-      this.IIm = i;
+      this.uqm = i;
     }
-    this.EZd(i);
+    this.Ztm(i);
   }
-  EZd(e) {
+  Ztm(e) {
     var t = ModelManager_1.ModelManager.SurvivorsRogueModel;
     var i = t.CurComboConfig;
     if (i) {
@@ -181,20 +181,20 @@ class SurvivorsRogueFightInfoPanel extends UiPanelBase_1.UiPanelBase {
         var r = SurvivorsRogueModel_1.COMBO_LEVEL_CONFIG_LENGTH - 1;
         for (let i = 0; i < r; i++) {
           if (e >= s[i] && e < s[i + 1]) {
-            this.IZd(i, o[i], t.ComboDurationAdditionCfg[i], h[i]);
+            this.eim(i, o[i], t.ComboDurationAdditionCfg[i], h[i]);
             return;
           }
         }
-        this.IZd(r, o[r], t.ComboDurationAdditionCfg[r], h[r]);
+        this.eim(r, o[r], t.ComboDurationAdditionCfg[r], h[r]);
       }
     }
   }
-  IZd(i, e, t, s) {
+  eim(i, e, t, s) {
     this.OUd[i]();
     this.NNd = (e + t) * TimeUtil_1.TimeUtil.InverseMillisecond;
-    if (this.MZd !== i) {
-      this.MZd = i;
-      this.SZd += s * TimeUtil_1.TimeUtil.InverseMillisecond;
+    if (this.Jtm !== i) {
+      this.Jtm = i;
+      this.ztm += s * TimeUtil_1.TimeUtil.InverseMillisecond;
     }
     this.mNe = this.NNd;
     if (Log_1.Log.CheckInfo()) {
@@ -252,9 +252,9 @@ class SurvivorsRogueFightInfoPanel extends UiPanelBase_1.UiPanelBase {
       Log_1.Log.Info("SurvivorsRogue", 79, "RefreshPositiveArea", ["Value", i]);
     }
     var e = i > 0;
-    LguiUtil_1.LguiUtil.SetLocalTextNew(this.dKd, "SurvivorsCombat_IncomeBuff", Math.ceil(i / 100));
-    this.SetPositiveAreaActive(e, this.TIm !== e);
-    this.TIm = e;
+    LguiUtil_1.LguiUtil.SetLocalTextNew(this.CKd, "SurvivorsCombat_IncomeBuff", Math.ceil(i / 100));
+    this.SetPositiveAreaActive(e, this.cqm !== e);
+    this.cqm = e;
   }
   Kbd(i) {
     if (this.Fbd.bIsUIActive) {

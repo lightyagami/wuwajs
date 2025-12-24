@@ -24,7 +24,7 @@ class HoldingHandsInputLayer extends InputLayer_1.InputLayer {
     this.MWu.clear();
   }
   GetLayerType() {
-    return 8;
+    return 9;
   }
   GetIsHoldingHands() {
     return this.SWu.GetRoleState() !== 0;

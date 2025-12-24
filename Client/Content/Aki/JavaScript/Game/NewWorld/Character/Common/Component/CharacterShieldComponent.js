@@ -63,8 +63,8 @@ let CharacterShieldComponent = class CharacterShieldComponent extends EntityComp
     return this.Qjr;
   }
   OnStart() {
-    this.m1t = this.Entity.CheckGetComponent(178);
-    this.Xte = this.Entity.CheckGetComponent(209);
+    this.m1t = this.Entity.CheckGetComponent(183);
+    this.Xte = this.Entity.CheckGetComponent(215);
     return true;
   }
   OnActivate() {
@@ -121,7 +121,7 @@ let CharacterShieldComponent = class CharacterShieldComponent extends EntityComp
     }
   }
   static OnShieldUpdateNotify(e, t) {
-    var i = e?.GetComponent(75);
+    var i = e?.GetComponent(78);
     if (i) {
       for (const s of t.kAs) {
         var o = s.OAs;
@@ -161,5 +161,5 @@ let CharacterShieldComponent = class CharacterShieldComponent extends EntityComp
   }
 };
 __decorate([CombatMessage_1.CombatNet.Listen("E3n", false)], CharacterShieldComponent, "OnShieldUpdateNotify", null);
-CharacterShieldComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(75)], CharacterShieldComponent);
+CharacterShieldComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(78)], CharacterShieldComponent);
 exports.CharacterShieldComponent = CharacterShieldComponent; //# sourceMappingURL=CharacterShieldComponent.js.map

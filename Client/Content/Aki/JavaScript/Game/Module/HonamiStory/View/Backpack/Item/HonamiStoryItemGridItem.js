@@ -27,8 +27,8 @@ class HonamiStoryItemGridItem extends UiPanelBase_1.UiPanelBase {
     this.SellValueItem = undefined;
     this.OverflowItem = undefined;
     this.DragGridFrame = undefined;
-    this.Ztm = false;
-    this.$Em = true;
+    this.Lnm = false;
+    this.Ekm = true;
     this.OnTipsCallback = () => {
       if (this.OnClickedGridTipsCb) {
         this.OnClickedGridTipsCb();
@@ -37,7 +37,7 @@ class HonamiStoryItemGridItem extends UiPanelBase_1.UiPanelBase {
     this.OnClickedToggle = () => {
       var i;
       var t;
-      if (this.$Em) {
+      if (this.Ekm) {
         if ((t = (i = ModelManager_1.ModelManager.HonamiStoryModel.GetBackpackLogic()).GetLogicState()) === 0) {
           if (i.OnClickGrid(this.ItemData, this.OnTipsCallback, this)) {
             i.TipsItem.SetItemDataOut(undefined);
@@ -59,7 +59,7 @@ class HonamiStoryItemGridItem extends UiPanelBase_1.UiPanelBase {
     this.BtnBindInfo = [[0, this.OnClickedToggle]];
   }
   OnStart() {
-    if (this.Ztm) {
+    if (this.Lnm) {
       this.GetExtendToggle(0)?.SetEnable(false);
     } else {
       this.DraggableComponent = this.GetExtendToggle(0);
@@ -74,7 +74,7 @@ class HonamiStoryItemGridItem extends UiPanelBase_1.UiPanelBase {
     var h = this.GetTexture(1);
     if (h) {
       var r;
-      var o = this.Ztm ? e.GetIsDragCross() : e.GetIsCross();
+      var o = this.Lnm ? e.GetIsDragCross() : e.GetIsCross();
       var a = e.GetBaseGridWidth(o);
       var n = e.GetBaseGridHeight(o);
       let i = 0;
@@ -95,7 +95,7 @@ class HonamiStoryItemGridItem extends UiPanelBase_1.UiPanelBase {
     return this.GetItem(5);
   }
   SetLockItemEnable(i, t) {
-    if (!this.Ztm) {
+    if (!this.Lnm) {
       this.LockItem?.SetUiActive(i);
       this.LockItem?.RefreshMask(t, this.ItemData, this.BackpackType);
       if (i && !this.LockItem) {
@@ -152,7 +152,7 @@ class HonamiStoryItemGridItem extends UiPanelBase_1.UiPanelBase {
     return this.BackpackType;
   }
   SetIsForDrag(i) {
-    if (this.Ztm = i) {
+    if (this.Lnm = i) {
       this.GetItem(3)?.SetUIActive(false);
       this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
       i = HonamiStoryUtil_1.HonamiStoryUtil.CheckInHonamiStoryDungeon();
@@ -163,7 +163,7 @@ class HonamiStoryItemGridItem extends UiPanelBase_1.UiPanelBase {
     }
   }
   SetCanOpenTips(i) {
-    this.$Em = i;
+    this.Ekm = i;
   }
   SetOverFlowEnable(i) {
     if (i) {
@@ -259,7 +259,7 @@ class HonamiStoryItemGridItem extends UiPanelBase_1.UiPanelBase {
     this.DraggableComponent.SetToggleState(0);
   }
   PlayMoveItemSeq() {
-    if (this.Ztm && HonamiStoryUtil_1.HonamiStoryUtil.IsMobileView()) {
+    if (this.Lnm && HonamiStoryUtil_1.HonamiStoryUtil.IsMobileView()) {
       this.SPe?.PlayOrReplaySequenceByName("MoveUp");
     }
   }

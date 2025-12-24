@@ -45,13 +45,13 @@ let CharacterRollComponent = class CharacterRollComponent extends EntityComponen
     };
   }
   static get Dependencies() {
-    return [182];
+    return [187];
   }
   OnInit(e) {
     return true;
   }
   OnStart() {
-    this.Gce = this.Entity.GetComponent(182);
+    this.Gce = this.Entity.GetComponent(187);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CustomMoveRoll, this.Uxa);
     return true;
   }
@@ -79,5 +79,5 @@ let CharacterRollComponent = class CharacterRollComponent extends EntityComponen
     });
   }
 };
-CharacterRollComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(37)], CharacterRollComponent);
+CharacterRollComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(38)], CharacterRollComponent);
 exports.CharacterRollComponent = CharacterRollComponent; //# sourceMappingURL=CharacterRollComponent.js.map

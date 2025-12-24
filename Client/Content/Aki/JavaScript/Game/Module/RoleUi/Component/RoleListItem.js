@@ -14,6 +14,7 @@ const RedDotController_1 = require("../../../RedDot/RedDotController");
 const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
 const EditFormationDefine_1 = require("../../EditFormation/EditFormationDefine");
 const GridProxyAbstract_1 = require("../../Util/Grid/GridProxyAbstract");
+const RoleUtils_1 = require("../RoleUtils");
 class RoleListItemData {
   constructor() {
     this.RoleDataId = 0;
@@ -39,7 +40,7 @@ class RoleListItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.CanToggleExecuteChangeInternal = () => !this.CanToggleExecuteChange || this.CanToggleExecuteChange(this.GridIndex);
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UISprite], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UISprite], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UISprite]];
     this.BtnBindInfo = [[0, this.cFe]];
   }
   async OnBeforeStartAsync() {
@@ -56,10 +57,15 @@ class RoleListItem extends GridProxyAbstract_1.GridProxyAbstract {
   }
   s1o(e, t = true) {
     this.RoleIconItem.Refresh(e);
-    if (t) {
-      this.GetItem(4).SetUIActive(e.IsTrialRole());
+    var i = this.GetSprite(8);
+    this.GetItem(4).SetUIActive(false);
+    if (t && e.IsTrialRole()) {
+      t = RoleUtils_1.RoleUtils.GetTrailRoleLabelIconById(this.DataId);
+      e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(t);
+      this.SetSpriteByPath(e, i, false);
+      i?.SetUIActive(true);
     } else {
-      this.GetItem(4).SetUIActive(false);
+      i?.SetUIActive(false);
     }
   }
   a1o(e) {

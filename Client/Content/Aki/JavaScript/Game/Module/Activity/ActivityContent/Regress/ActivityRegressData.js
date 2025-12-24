@@ -25,8 +25,15 @@ class ActivityRegressData extends ActivityData_1.ActivityBaseData {
     this.tda = new Map();
     this.ida = new Map();
     this.yfa = 0;
+    this.CurrentUseTrialRole = 0;
+    this.DisposableReward = false;
+    this.c$f = 0;
+    this.d$f = undefined;
     this.lp1 = [RegressDefine_1.ERegressQuestionnaireType.Type1, RegressDefine_1.ERegressQuestionnaireType.Type2];
     this.Jl1 = new Map();
+  }
+  get PrevBpExp() {
+    return this.c$f;
   }
   PhraseEx(e) {
     this.zl1 = e.Zh1;
@@ -49,6 +56,10 @@ class ActivityRegressData extends ActivityData_1.ActivityBaseData {
           Log_1.Log.Warn("ActivityRecall", 63, "回流活动-ActivityRegressData.PhraseEx()->", ["协议下发的回流活动数据没有已经领取的积分奖励, data:", this.zl1.Hca]);
         }
       }
+      this.DisposableReward = this.zl1.Gyf;
+      this.CurrentUseTrialRole = this.zl1.RIf;
+      this._Df(this.zl1.J6n);
+      ModelManager_1.ModelManager.TrialRoleModel.SetCurUseTrialRole(this.CurrentUseTrialRole, this.zl1.oXf);
       this.EndOpenTimeInternal = MathUtils_1.MathUtils.LongToNumber(this.zl1.dps);
       this.EndShowTimeInternal = this.EndOpenTimeInternal;
       if (this.EndOpenTimeInternal === 0) {
@@ -61,6 +72,7 @@ class ActivityRegressData extends ActivityData_1.ActivityBaseData {
       });
       this.oda();
       this.RefreshRegressTaskMapping();
+      this.RefreshPrevBpExp();
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("ActivityRecall", 63, "回流活动-ActivityRegressData.PhraseEx()->", ["开启状态, IsOpen:", this.IsActivityOpen()], ["leftTime, 剩余开启时间:", this.GetActivityOpenTimeLeft()]);
       }
@@ -69,6 +81,29 @@ class ActivityRegressData extends ActivityData_1.ActivityBaseData {
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("ActivityRecall", 63, "回流活动-ActivityRegressData.PhraseEx()->", ["协议下发的活动数据没有回流活动相关的, data:", this.zl1]);
     }
+  }
+  _Df(e) {
+    var t;
+    var r;
+    var i = [];
+    var o = new Set();
+    for (const s of e) {
+      i.push({
+        TrialRoleId: s.Ogf,
+        IsUnlocked: true
+      });
+      var a = ConfigManager_1.ConfigManager.TrialRoleConfig?.GetTrialRoleGroupId(s.Ogf);
+      o.add(a);
+    }
+    for ([t, r] of ConfigManager_1.ConfigManager.TrialRoleConfig?.GetTrialRoleAllConfigByType(3)) {
+      if (!o.has(t)) {
+        i.push({
+          TrialRoleId: r[0].Id,
+          IsUnlocked: false
+        });
+      }
+    }
+    ModelManager_1.ModelManager.TrialRoleModel.AddTrialRoles(i);
   }
   GetActivityState() {
     if (this.IsUnLock() && this.zl1 && MathUtils_1.MathUtils.LongToNumber(this.zl1.dps) !== 0 && this.CheckIfInOpenTime()) {
@@ -172,7 +207,7 @@ class ActivityRegressData extends ActivityData_1.ActivityBaseData {
     }
   }
   GetExDataRedPointShowState() {
-    return !!this.IsActivityOpen() && (this.HasSignRewardCanClaimed() || this.CheckHaveTaskRewardCanGet() || this.CheckRegressScoreRewardReached() || this.CheckShowQuestionnaireRedDot() || this.CheckShopRedDot() || ModelManager_1.ModelManager.ActivityRegressModel.ShouldShowDoubleDropRedDot() || this.HasReachableCultivateTask());
+    return !!this.IsActivityOpen() && (this.HasSignRewardCanClaimed() || this.CheckRegressScoreRewardReached() || this.CheckShowQuestionnaireRedDot() || this.CheckShopRedDot() || this.CheckTrialRoleRedDot() || this.CheckDisposableRewardRedDot() || this.HasReachableConstantTask());
   }
   GetBossDoubleDropCount() {
     return this.zl1.tl1;
@@ -211,6 +246,9 @@ class ActivityRegressData extends ActivityData_1.ActivityBaseData {
     var e;
     return !!this.IsActivityOpen() && (e = this.IsQuestionnaireUnlock(RegressDefine_1.ERegressQuestionnaireType.Type2), !LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.ActivityRegressSecondQuestionnaireRedDotCheckedInPeriod, false)) && e;
   }
+  CheckDisposableRewardRedDot() {
+    return !this.DisposableReward;
+  }
   ResetQuestionnaireRedDot() {
     LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.ActivityRegressQuestionnaireRedDotCheckedInPeriod, false);
     LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.ActivityRegressSecondQuestionnaireRedDotCheckedInPeriod, false);
@@ -228,6 +266,32 @@ class ActivityRegressData extends ActivityData_1.ActivityBaseData {
   CheckShopRedDot() {
     return !!this.IsActivityOpen() && !LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.ActivityRegressShopRedDotCheckedInPeriod, false);
   }
+  CheckTrialRoleRedDot() {
+    return !!this.IsActivityOpen() && (this.CheckNewUnLockRole() || this.IsTrialRoleUpgradeRedPoint());
+  }
+  CheckNewUnLockRole() {
+    return !LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.ActivityRegressTrialRoleRedDotCheckedInPeriod, false);
+  }
+  IsTrialRoleUpgradeRedPoint() {
+    for (const e of this.GetTrialRoleList()) {
+      if (e.CanUpgrade()) {
+        return true;
+      }
+    }
+    return false;
+  }
+  GetTrialRoleList() {
+    return ModelManager_1.ModelManager.TrialRoleModel.GetDataListByType(3);
+  }
+  CheckDoubleDropRedDot() {
+    return !!this.IsActivityOpen() && !LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.ActivityRegressDoubleDropRedDotCheckedInPeriod, false);
+  }
+  CheckRecommendRedDot() {
+    return !!this.IsActivityOpen() && !LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.ActivityRegressRecommendRedDotCheckedInPeriod, false);
+  }
+  CheckAdventureRedDot() {
+    return !!this.IsActivityOpen() && !LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.ActivityRegressAdventureRedDotCheckedInPeriod, false);
+  }
   ResetShopRemindRedDot() {
     LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.ActivityRegressShopRedDotCheckedInPeriod, false);
   }
@@ -235,6 +299,23 @@ class ActivityRegressData extends ActivityData_1.ActivityBaseData {
     LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.ActivityRegressShopRedDotCheckedInPeriod, true);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RecallActivityInfoUpdate);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.Id);
+  }
+  SetTrialRoleRedDotChecked(e) {
+    LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.ActivityRegressTrialRoleRedDotCheckedInPeriod, e);
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RecallActivityInfoUpdate);
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.Id);
+  }
+  SetDoubleDropRedDotChecked() {
+    LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.ActivityRegressDoubleDropRedDotCheckedInPeriod, true);
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RecallActivityInfoUpdate);
+  }
+  SetRecommendRedDotChecked() {
+    LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.ActivityRegressRecommendRedDotCheckedInPeriod, true);
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RecallActivityInfoUpdate);
+  }
+  SetAdventureRedDotChecked() {
+    LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.ActivityRegressAdventureRedDotCheckedInPeriod, true);
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RecallActivityInfoUpdate);
   }
   GetShopIdAndTabIndex() {
     var e = ConfigManager_1.ConfigManager.SkipInterfaceConfig.GetAccessPathConfig(RegressDefine_1.REGRESS_SKIP_SHOPID);
@@ -264,11 +345,14 @@ class ActivityRegressData extends ActivityData_1.ActivityBaseData {
   GetRegressTaskListByType(e) {
     return this.Jl1.get(e);
   }
+  GetAllRegressTaskList() {
+    return Array.from(this.Jl1.values()).flat();
+  }
   HasReachableTask(e) {
     return this.GetRegressTaskListByType(e)?.some(e => this.GetTaskRewardState(e.Id) === 1) ?? false;
   }
   HasReachableConstantTask() {
-    return !(this.GetRegressTaskProgressFloat01() >= 1) && (this.HasReachableTask(0) || this.HasReachableTask(1));
+    return !(this.GetRegressTaskProgressFloat01() >= 1) && (this.HasReachableTask(0) || this.HasReachableTask(1) || this.HasReachableTask(6));
   }
   HasReachableCultivateTask() {
     return this.HasReachableTask(2);
@@ -289,6 +373,9 @@ class ActivityRegressData extends ActivityData_1.ActivityBaseData {
   hda(e) {
     return this.zl1.Hca.includes(e);
   }
+  DBf(e) {
+    return this.zl1.Oyf.includes(e);
+  }
   GetRegressTaskScoreRewardState(e) {
     if (this.hda(e.Id)) {
       return 2;
@@ -298,9 +385,20 @@ class ActivityRegressData extends ActivityData_1.ActivityBaseData {
       return 0;
     }
   }
+  GetRegressTaskPayScoreRewardState(e) {
+    if (this.DBf(e.Id)) {
+      return 2;
+    } else if (this.zl1.mAf && this.GetRegressTaskScore() >= e.NeedScore) {
+      return 1;
+    } else {
+      return 0;
+    }
+  }
   CheckRegressScoreRewardReached() {
-    for (const e of ConfigManager_1.ConfigManager.ActivityRegressConfig.GetRegressBonusRewardConfigList(this.Grade) ?? []) {
-      if (this.GetRegressTaskScoreRewardState(e) === 1) {
+    for (const r of ConfigManager_1.ConfigManager.ActivityRegressConfig.GetRegressBonusRewardConfigList(this.Grade) ?? []) {
+      var e = this.GetRegressTaskScoreRewardState(r);
+      var t = this.GetRegressTaskPayScoreRewardState(r);
+      if (e === 1 || t === 1) {
         return true;
       }
     }
@@ -308,6 +406,9 @@ class ActivityRegressData extends ActivityData_1.ActivityBaseData {
   }
   SetRegressScoreRewardReached(e) {
     this.zl1.Hca = this.zl1.Hca.concat(e);
+    if (this.zl1.mAf) {
+      this.zl1.Oyf = this.zl1.Oyf.concat(e);
+    }
   }
   GetRegressTaskProgressTuple() {
     var e = ModelManager_1.ModelManager.InventoryModel.GetCommonItemCount(20);
@@ -344,8 +445,8 @@ class ActivityRegressData extends ActivityData_1.ActivityBaseData {
     }
     r = this.ida.get(e.Id);
     e = r - i;
-    let s = 0;
-    return [s = t > i ? t < r ? t - i : e : s, e];
+    let o = 0;
+    return [o = t > i ? t < r ? t - i : e : o, e];
   }
   IsDoubleDropUnlock(e) {
     if (e === 1) {
@@ -364,6 +465,80 @@ class ActivityRegressData extends ActivityData_1.ActivityBaseData {
   }
   CheckDoubleDropFirstRedDot() {
     return !!this.IsActivityOpen() && !LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.ActivityRegressDoubleDropFirstRedDotCheckedInPeriod, false);
+  }
+  GetLevelByScore(e) {
+    var t = this.GetSortedRegressBonusRewardConfigList();
+    let r = 0;
+    for (var i = t.length; r < i && !(e < t[r].NeedScore); r++);
+    return r;
+  }
+  GetLevelProgressDataByScore(e) {
+    var t = this.GetSortedRegressBonusRewardConfigList();
+    let r = 0;
+    var i;
+    var o = t.length;
+    if (o !== 0) {
+      for (; r < o; r++) {
+        if (e < t[r].NeedScore) {
+          break;
+        }
+      }
+      if (r === o) {
+        return {
+          Level: r,
+          MaxLevel: o,
+          CurScore: t[r - 1]?.NeedScore,
+          NeedScore: t[r - 1]?.NeedScore
+        };
+      } else {
+        i = t[r - 1]?.NeedScore ?? 0;
+        return {
+          Level: r,
+          MaxLevel: o,
+          CurScore: e - i,
+          NeedScore: t[r]?.NeedScore - i
+        };
+      }
+    }
+  }
+  GetCurLevelProgressData() {
+    var e = ModelManager_1.ModelManager.InventoryModel.GetCommonItemCount(20);
+    let t = this.GetLevelProgressDataByScore(e);
+    return t = t || {
+      Level: 0,
+      MaxLevel: 0,
+      CurScore: 0,
+      NeedScore: 0
+    };
+  }
+  IsPayRewardUnlock() {
+    return this.zl1?.mAf ?? false;
+  }
+  GetMaxLevel() {
+    return this.GetSortedRegressBonusRewardConfigList().length;
+  }
+  SetPayRewardUnlock(e) {
+    this.zl1.mAf = e;
+  }
+  ResetBpPayButtonRedDot() {
+    LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.ActivityRegressBpPayButtonRedDotCheckedInPeriod, false);
+  }
+  CheckBpPayButtonRedDot() {
+    return !!this.IsActivityOpen() && !LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.ActivityRegressBpPayButtonRedDotCheckedInPeriod, false);
+  }
+  SetBpPayButtonRedDotChecked() {
+    LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.ActivityRegressBpPayButtonRedDotCheckedInPeriod, true);
+  }
+  RefreshPrevBpExp() {
+    this.c$f = ModelManager_1.ModelManager.InventoryModel.GetCommonItemCount(20);
+  }
+  GetSortedRegressBonusRewardConfigList() {
+    var e;
+    if (this.d$f === undefined || this.d$f.length === 0) {
+      e = ConfigManager_1.ConfigManager.ActivityRegressConfig.GetRegressBonusRewardConfigList(this.Grade) ?? [];
+      this.d$f = [...e].sort((e, t) => e.NeedScore - t.NeedScore);
+    }
+    return this.d$f;
   }
 }
 exports.ActivityRegressData = ActivityRegressData;

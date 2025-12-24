@@ -112,7 +112,7 @@ class InventoryGiftView extends UiViewBase_1.UiViewBase {
       GetExchangeTableText: this.KGe,
       ValueChangeFunction: () => {}
     };
-    if (this.frm()) {
+    if (this.Pam()) {
       this.WGe.SetLimitMaxValue(ConfigManager_1.ConfigManager.CommonConfig.GetGiftMaxNineNineNine());
     }
     this.WGe.Init(i);
@@ -132,7 +132,7 @@ class InventoryGiftView extends UiViewBase_1.UiViewBase {
     }
     this.RefreshSelectCountInfo();
   }
-  frm() {
+  Pam() {
     var i = this.Zmi.ConfigId;
     return i !== 0 && ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(i).ItemType === 11;
   }

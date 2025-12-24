@@ -18,13 +18,13 @@ class HonamiStoryWeaponPanelItem extends UiPanelBase_1.UiPanelBase {
     this.ScrollViewDelegate = undefined;
     this.GridIndex = 0;
     this.DisplayIndex = 0;
-    this.IYd = undefined;
-    this.TYd = undefined;
-    this.Vim = [];
-    this.bYd = () => {
+    this.izd = undefined;
+    this.rzd = undefined;
+    this.oam = [];
+    this.ozd = () => {
       var e = new HonamiStoryWeaponToggleItem_1.HonamiStoryWeaponToggleItem();
-      e.BindWeaponToggleClick(this.IYd);
-      this.Vim.push(e);
+      e.BindWeaponToggleClick(this.izd);
+      this.oam.push(e);
       return e;
     };
   }
@@ -32,7 +32,7 @@ class HonamiStoryWeaponPanelItem extends UiPanelBase_1.UiPanelBase {
     this.ComponentRegisterInfos = [[0, UE.UIHorizontalLayout], [1, UE.UIItem], [2, UE.UIText], [3, UE.UISprite]];
   }
   OnStart() {
-    this.TYd = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(0), this.bYd);
+    this.rzd = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(0), this.ozd);
   }
   async RefreshAsync(e, t, i) {
     var a = ModelManager_1.ModelManager.HonamiStoryModel.GetWeaponDataListByType(e);
@@ -51,13 +51,13 @@ class HonamiStoryWeaponPanelItem extends UiPanelBase_1.UiPanelBase {
         });
       }
     }
-    await this.TYd.RefreshByDataAsync(o);
+    await this.rzd.RefreshByDataAsync(o);
   }
   BindWeaponToggleClick(e) {
-    this.IYd = e;
+    this.izd = e;
   }
   GetWeaponToggleList() {
-    return this.Vim;
+    return this.oam;
   }
   Clear() {}
   OnSelected(e) {}

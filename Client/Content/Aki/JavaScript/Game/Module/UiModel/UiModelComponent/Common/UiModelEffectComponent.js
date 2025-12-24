@@ -93,9 +93,9 @@ let UiModelEffectComponent = class UiModelEffectComponent extends UiModelCompone
         this.SetAllEffectShowState(this.Zla);
       }
       if (t) {
-        this.cdm();
+        this.VCm();
       } else {
-        this.ddm();
+        this.jCm();
       }
     };
     this.i1a = t => {
@@ -226,14 +226,14 @@ let UiModelEffectComponent = class UiModelEffectComponent extends UiModelCompone
       EffectSystem_1.EffectSystem.SetEffectHidden(t, !e);
     });
   }
-  cdm() {
+  VCm() {
     this.led.forEach(t => {
-      EffectSystem_1.EffectSystem.SetAdditionTimeScale(17, t, 1);
+      EffectSystem_1.EffectSystem.SetAdditionTimeScale(18, t, 1);
     });
   }
-  ddm() {
+  jCm() {
     this.led.forEach(t => {
-      EffectSystem_1.EffectSystem.SetAdditionTimeScale(17, t, 0);
+      EffectSystem_1.EffectSystem.SetAdditionTimeScale(18, t, 0);
     });
   }
   StopEffect(t, e = true) {

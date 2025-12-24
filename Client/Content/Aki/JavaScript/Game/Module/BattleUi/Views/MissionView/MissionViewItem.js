@@ -26,6 +26,7 @@ const LevelSequencePlayer_1 = require("../../../Common/LevelSequencePlayer");
 const ConfirmBoxDefine_1 = require("../../../ConfirmBox/ConfirmBoxDefine");
 const GeneralLogicTreeController_1 = require("../../../GeneralLogicTree/GeneralLogicTreeController");
 const GeneralLogicTreeUtil_1 = require("../../../GeneralLogicTree/GeneralLogicTreeUtil");
+const QuestUtil_1 = require("../../../QuestNew/QuestUtil");
 const BattleUiDefine_1 = require("../../BattleUiDefine");
 const BattleChildView_1 = require("../BattleChildView/BattleChildView");
 const FishingEntrustNavigationItem_1 = require("./FishingEntrustNavigationItem");
@@ -40,8 +41,8 @@ class ShortcutKeyController {
     this.vct = 0;
     this.mW1 = undefined;
     this.pct = false;
-    this.bMe = (t, i) => {
-      if (i === 1) {
+    this.bMe = (t, e) => {
+      if (e === 1) {
         this.OnShortcutKeyClick();
       }
     };
@@ -53,10 +54,10 @@ class ShortcutKeyController {
   get ShowData() {
     return ModelManager_1.ModelManager.BattleUiModel.GetMissionViewData(this.v9a);
   }
-  Init(t, i, e, s) {
+  Init(t, e, i, s) {
     this.v9a = t;
-    this.ShortcutKeyRoot = i;
-    this.ShortcutKeySprite = e;
+    this.ShortcutKeyRoot = e;
+    this.ShortcutKeySprite = i;
     this.ShortcutTextComp = s;
   }
   OnPanelShow() {
@@ -82,9 +83,9 @@ class ShortcutKeyController {
     }
   }
   gW1(t) {
-    let i = undefined;
+    let e = undefined;
     if (this.ShowData?.DataSource === 0) {
-      i = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(this.ShowData.Id);
+      e = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(this.ShowData.Id);
     }
     switch (t) {
       case 0:
@@ -94,30 +95,30 @@ class ShortcutKeyController {
         break;
       case 1:
         {
-          let t = i.GetGiveUpText();
+          let t = e.GetGiveUpText();
           t = t || ConfigManager_1.ConfigManager.TextConfig.GetTextById("GeneralLogicTreeGiveUp");
           if (Info_1.Info.IsInKeyBoard()) {
-            var e = InputSettingsManager_1.InputSettingsManager.GetActionBinding(InputMappingsDefine_1.actionMappings.玩法放弃);
-            if (!e) {
+            var i = InputSettingsManager_1.InputSettingsManager.GetActionBinding(InputMappingsDefine_1.actionMappings.玩法放弃);
+            if (!i) {
               this.ShortcutKeyRoot.SetUIActive(false);
               break;
             }
-            e = e.GetPcKey();
-            if (!e) {
+            i = i.GetPcKey();
+            if (!i) {
               this.ShortcutKeyRoot.SetUIActive(false);
               if (Log_1.Log.CheckError()) {
                 Log_1.Log.Error("GeneralLogicTree", 18, "pcKey为空", ["actionMapping", InputMappingsDefine_1.actionMappings.玩法放弃]);
               }
               break;
             }
-            e = `<texture=${e.GetKeyIconPath()}/>${t}`;
-            this.ShortcutTextComp.SetText(e);
+            i = `<texture=${i.GetKeyIconPath()}/>${t}`;
+            this.ShortcutTextComp.SetText(i);
           } else if (Info_1.Info.IsInGamepad()) {
-            e = this.Nct(InputMappingsDefine_1.actionMappings.玩法放弃, t) ?? t;
-            this.ShortcutTextComp.SetText(e);
+            i = this.Nct(InputMappingsDefine_1.actionMappings.玩法放弃, t) ?? t;
+            this.ShortcutTextComp.SetText(i);
           } else {
-            e = `<texture=${ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("FightMissionStop")}/>${t}`;
-            this.ShortcutTextComp.SetText(e);
+            i = `<texture=${ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("FightMissionStop")}/>${t}`;
+            this.ShortcutTextComp.SetText(i);
           }
           this.ShortcutTextComp.SetAlpha(1);
           this.ShortcutTextComp.SetUIActive(true);
@@ -129,30 +130,30 @@ class ShortcutKeyController {
         }
       case 3:
         {
-          let t = i.GetGiveUpText();
+          let t = e.GetGiveUpText();
           t = t || ConfigManager_1.ConfigManager.TextConfig.GetTextById("ChallengeAgain");
           if (Info_1.Info.IsInKeyBoard()) {
-            e = InputSettingsManager_1.InputSettingsManager.GetActionBinding(InputMappingsDefine_1.actionMappings.重新挑战);
-            if (!e) {
+            i = InputSettingsManager_1.InputSettingsManager.GetActionBinding(InputMappingsDefine_1.actionMappings.重新挑战);
+            if (!i) {
               this.ShortcutKeyRoot.SetUIActive(false);
               break;
             }
-            e = e.GetPcKey();
-            if (!e) {
+            i = i.GetPcKey();
+            if (!i) {
               this.ShortcutKeyRoot.SetUIActive(false);
               if (Log_1.Log.CheckError()) {
                 Log_1.Log.Error("GeneralLogicTree", 18, "pcKey为空", ["actionMapping", InputMappingsDefine_1.actionMappings.重新挑战]);
               }
               break;
             }
-            e = `<texture=${e.GetKeyIconPath()}/>${t}`;
-            this.ShortcutTextComp.SetText(e);
+            i = `<texture=${i.GetKeyIconPath()}/>${t}`;
+            this.ShortcutTextComp.SetText(i);
           } else if (Info_1.Info.IsInGamepad()) {
-            e = this.Nct(InputMappingsDefine_1.actionMappings.重新挑战, t) ?? t;
-            this.ShortcutTextComp.SetText(e);
+            i = this.Nct(InputMappingsDefine_1.actionMappings.重新挑战, t) ?? t;
+            this.ShortcutTextComp.SetText(i);
           } else {
-            e = ConfigManager_1.ConfigManager.TextConfig.GetTextById("ChallengeAgain_mobile") ?? t;
-            this.ShortcutTextComp.SetText(e);
+            i = ConfigManager_1.ConfigManager.TextConfig.GetTextById("ChallengeAgain_mobile") ?? t;
+            this.ShortcutTextComp.SetText(i);
           }
           this.ShortcutTextComp.SetAlpha(1);
           this.ShortcutTextComp.SetUIActive(true);
@@ -162,8 +163,8 @@ class ShortcutKeyController {
         }
       case 2:
         {
-          e = InputSettingsManager_1.InputSettingsManager.GetActionBinding(InputMappingsDefine_1.actionMappings.任务追踪);
-          if (!e) {
+          i = InputSettingsManager_1.InputSettingsManager.GetActionBinding(InputMappingsDefine_1.actionMappings.任务追踪);
+          if (!i) {
             this.ShortcutKeyRoot.SetUIActive(false);
             if (Log_1.Log.CheckError()) {
               Log_1.Log.Error("GeneralLogicTree", 18, "找不到actionBinding配置", ["actionMapping", InputMappingsDefine_1.actionMappings.任务追踪]);
@@ -175,16 +176,16 @@ class ShortcutKeyController {
           var s = ConfigManager_1.ConfigManager.TextConfig.GetTextById("QuestCommunicateCallback");
           let t = s;
           if (Info_1.Info.IsInKeyBoard()) {
-            e = e.GetPcKey();
-            if (!e) {
+            i = i.GetPcKey();
+            if (!i) {
               this.ShortcutKeyRoot.SetUIActive(false);
               if (Log_1.Log.CheckError()) {
                 Log_1.Log.Error("GeneralLogicTree", 18, "pcKey为空", ["actionMapping", InputMappingsDefine_1.actionMappings.任务追踪]);
               }
               break;
             }
-            e = e.GetKeyIconPath();
-            t = `<texture=${e}/>${s}`;
+            i = i.GetKeyIconPath();
+            t = `<texture=${i}/>${s}`;
           } else if (Info_1.Info.IsInGamepad()) {
             t = this.Nct(InputMappingsDefine_1.actionMappings.任务追踪, s) ?? s;
           }
@@ -201,6 +202,42 @@ class ShortcutKeyController {
           InputDistributeController_1.InputDistributeController.BindAction(InputMappingsDefine_1.actionMappings.任务追踪, this.bMe);
         } else {
           this.ShortcutKeyRoot.SetUIActive(false);
+        }
+        break;
+      case 5:
+        {
+          i = InputSettingsManager_1.InputSettingsManager.GetActionBinding(InputMappingsDefine_1.actionMappings.任务追踪);
+          if (!i) {
+            this.ShortcutKeyRoot.SetUIActive(false);
+            if (Log_1.Log.CheckError()) {
+              Log_1.Log.Error("GeneralLogicTree", 18, "找不到actionBinding配置", ["actionMapping", InputMappingsDefine_1.actionMappings.任务追踪]);
+            }
+            break;
+          }
+          InputDistributeController_1.InputDistributeController.UnBindAction(InputMappingsDefine_1.actionMappings.任务追踪, this.bMe);
+          InputDistributeController_1.InputDistributeController.BindAction(InputMappingsDefine_1.actionMappings.任务追踪, this.bMe);
+          s = ConfigManager_1.ConfigManager.TextConfig.GetTextById("QuestTrack_ReadMessage") ?? "";
+          let t = s;
+          if (Info_1.Info.IsInKeyBoard()) {
+            i = i.GetPcKey();
+            if (!i) {
+              this.ShortcutKeyRoot.SetUIActive(false);
+              if (Log_1.Log.CheckError()) {
+                Log_1.Log.Error("GeneralLogicTree", 18, "pcKey为空", ["actionMapping", InputMappingsDefine_1.actionMappings.任务追踪]);
+              }
+              break;
+            }
+            i = i.GetKeyIconPath();
+            t = `<texture=${i}/>${s}`;
+          } else if (Info_1.Info.IsInGamepad()) {
+            t = this.Nct(InputMappingsDefine_1.actionMappings.任务追踪, s) ?? s;
+          }
+          this.ShortcutTextComp.SetText(t);
+          this.ShortcutTextComp.SetAlpha(1);
+          this.ShortcutTextComp.SetUIActive(true);
+          this.ShortcutKeyRoot.SetUIActive(true);
+          this.ShortcutKeySprite.SetUIActive(false);
+          break;
         }
     }
   }
@@ -222,19 +259,19 @@ class ShortcutKeyController {
     if (!this.ShowData || this.ShowData.DataSource !== 0) {
       return false;
     }
-    var i = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(this.ShowData.Id);
-    if (!i) {
-      return false;
-    }
-    i = i.GetClosestMapMarkId();
-    if (!i) {
-      return false;
-    }
-    var e = GeneralLogicTreeUtil_1.GeneralLogicTreeUtil.GetPlayerLocation();
+    var e = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(this.ShowData.Id);
     if (!e) {
       return false;
     }
-    this.mW1 = ModelManager_1.ModelManager.MapModel.QueryNearestTeleporter(i, 12, e);
+    e = e.GetClosestMapMarkId();
+    if (!e) {
+      return false;
+    }
+    var i = GeneralLogicTreeUtil_1.GeneralLogicTreeUtil.GetPlayerLocation();
+    if (!i) {
+      return false;
+    }
+    this.mW1 = ModelManager_1.ModelManager.MapModel.QueryNearestTeleporter(e, 12, i);
     var s = this.mW1.Info === undefined;
     let n = "";
     switch (Info_1.Info.InputControllerMainType) {
@@ -248,8 +285,8 @@ class ShortcutKeyController {
           return false;
         }
         var r = r.GetKeyIconPath();
-        var h = ConfigManager_1.ConfigManager.TextConfig.GetMultiTextByKey(s ? "FastTravel_CurrentLocationIsCloser" : "FastTravel_ClickToFastTravel");
-        n = `<texture=${r}/>${h}`;
+        var a = ConfigManager_1.ConfigManager.TextConfig.GetMultiTextByKey(s ? "FastTravel_CurrentLocationIsCloser" : "FastTravel_ClickToFastTravel");
+        n = `<texture=${r}/>${a}`;
         break;
       case 2:
         r = ConfigManager_1.ConfigManager.TextConfig.GetMultiTextByKey(s ? "FastTravel_CurrentLocationIsCloser" : "FastTravel_ClickToFastTravel");
@@ -265,47 +302,47 @@ class ShortcutKeyController {
     this.ShortcutKeySprite.SetUIActive(Info_1.Info.InputControllerMainType === 3);
     return true;
   }
-  Nct(e, s) {
-    var t = InputSettingsManager_1.InputSettingsManager.GetCombinationActionBindingByActionName(e);
+  Nct(i, s) {
+    var t = InputSettingsManager_1.InputSettingsManager.GetCombinationActionBindingByActionName(i);
     if (t) {
       var n = new Map();
       t.GetCurrentPlatformKeyNameMap(n);
       if (n) {
-        let t = e;
-        let i = e;
-        for (var [r, h] of n) {
+        let t = i;
+        let e = i;
+        for (var [r, a] of n) {
           r = InputSettings_1.InputSettings.GetKey(r);
-          h = InputSettings_1.InputSettings.GetKey(h);
+          a = InputSettings_1.InputSettings.GetKey(a);
           if (r) {
             t = r.GetKeyIconPath();
           }
-          if (h) {
-            i = h.GetKeyIconPath();
+          if (a) {
+            e = a.GetKeyIconPath();
           }
           break;
         }
-        return `<texture=${t}/>+<texture=${i}/>${s}`;
+        return `<texture=${t}/>+<texture=${e}/>${s}`;
       }
     }
   }
   OnShortcutKeyClick() {
     if (this.ShowData && this.ShowData.DataSource === 0 && !this.pct) {
       this.pct = true;
-      const i = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(this.ShowData.Id);
-      if (i) {
+      const e = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(this.ShowData.Id);
+      if (e) {
         switch (this.vct) {
           case 1:
             var t = new ConfirmBoxDefine_1.ConfirmBoxDataNew(114);
             t.SetCloseFunction(() => {
-              if (i.ContainTag(6)) {
-                EventSystem_1.EventSystem.EmitWithTarget(i.GetBlackBoard(), EventDefine_1.EEventName.GeneralLogicTreeRollbackWaitingUpdate);
+              if (e.ContainTag(6)) {
+                EventSystem_1.EventSystem.EmitWithTarget(e.GetBlackBoard(), EventDefine_1.EEventName.GeneralLogicTreeRollbackWaitingUpdate);
               }
             });
             t.FunctionMap.set(1, () => {
               this.pct = false;
             });
             t.FunctionMap.set(2, () => {
-              if (!this.ShowData || i.ContainTag(6)) {
+              if (!this.ShowData || e.ContainTag(6)) {
                 this.pct = false;
               } else {
                 GeneralLogicTreeController_1.GeneralLogicTreeController.RequestGiveUp(this.ShowData.Id, () => {
@@ -316,7 +353,7 @@ class ShortcutKeyController {
             ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(t);
             break;
           case 2:
-            t = i.GetBlackBoard().GetCurrentCommunicateId();
+            t = e.GetBlackBoard().GetCurrentCommunicateId();
             if (t !== undefined) {
               EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.CommunicateAgain, t);
               this.UpdateShortcutButton();
@@ -334,8 +371,19 @@ class ShortcutKeyController {
                 ControllerHolder_1.ControllerHolder.WorldMapController.FocusNearestTargetOnWorldMap(this.mW1);
                 this.pct = false;
               } else if (Log_1.Log.CheckDebug()) {
-                Log_1.Log.Debug("BattleUiSet", 18, "MissionPanel.OnShortcutKeyClick,没找到最近的传送点", ["TreeConfigId", i.TreeConfigId], ["FailedReason", this.mW1.FailedReason]);
+                Log_1.Log.Debug("BattleUiSet", 18, "MissionPanel.OnShortcutKeyClick,没找到最近的传送点", ["TreeConfigId", e.TreeConfigId], ["FailedReason", this.mW1.FailedReason]);
               }
+            }
+            break;
+          case 5:
+            {
+              const e = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(this.ShowData.Id);
+              t = e?.GetCurrentNodeCustomTrackBoard();
+              if (t) {
+                QuestUtil_1.QuestUtil.HandleTrackCustomBoard(t, true);
+              }
+              this.pct = false;
+              break;
             }
         }
       }
@@ -370,7 +418,7 @@ class MissionViewItem extends BattleChildView_1.BattleChildView {
         this.OU_.UpdateShortcutButton();
       }
     };
-    this.wQt = (t, i) => {
+    this.wQt = (t, e) => {
       if (t.Type === 6 && t.TreeIncId === this.ShowDataId) {
         this.zOn(0);
       }
@@ -423,16 +471,16 @@ class MissionViewItem extends BattleChildView_1.BattleChildView {
     };
     this.fxn = () => {
       var t = this.GetText(8);
-      var i = this.GetItem(9);
-      var e = this.sec();
-      t.SetText(e);
-      if (StringUtils_1.StringUtils.IsBlank(e)) {
+      var e = this.GetItem(9);
+      var i = this.sec();
+      t.SetText(i);
+      if (StringUtils_1.StringUtils.IsBlank(i)) {
         t.SetUIActive(false);
-        i?.SetUIActive(false);
+        e?.SetUIActive(false);
         return false;
       } else {
         t.SetUIActive(true);
-        i?.SetUIActive(true);
+        e?.SetUIActive(true);
         return true;
       }
     };
@@ -445,10 +493,10 @@ class MissionViewItem extends BattleChildView_1.BattleChildView {
     };
     this.Sct = () => {
       var t;
-      var i;
-      if (this.ShowData && (t = ConfigManager_1.ConfigManager.QuestNewConfig.GetQuestMarkConfig(this.ShowData.TrackIconConfigId)) && (i = this.GetUiNiagara(7))) {
-        i.SetColor(UE.Color.FromHex(t.TrackTextStartEffectColor));
-        i.ActivateSystem(true);
+      var e;
+      if (this.ShowData && (t = ConfigManager_1.ConfigManager.QuestNewConfig.GetQuestMarkConfig(this.ShowData.TrackIconConfigId)) && (e = this.GetUiNiagara(7))) {
+        e.SetColor(UE.Color.FromHex(t.TrackTextStartEffectColor));
+        e.ActivateSystem(true);
       }
     };
     this.Rct = t => {
@@ -573,20 +621,20 @@ class MissionViewItem extends BattleChildView_1.BattleChildView {
   }
   Ost() {
     var t;
-    var i;
+    var e;
     if (this.ShowData && (t = this.ShowData.TrackIconConfigId)) {
-      i = this.GetSprite(0);
+      e = this.GetSprite(0);
       if (MissionViewStepTextUtil_1.MissionViewStepTextUtil.CheckShowConfigEmpty(this.ShowData)) {
-        i.SetUIActive(false);
+        e.SetUIActive(false);
       } else {
-        i.SetUIActive(true);
-        this.SetSpriteByPath(ConfigManager_1.ConfigManager.QuestNewConfig.GetQuestTypeMark(t), i, false);
+        e.SetUIActive(true);
+        this.SetSpriteByPath(ConfigManager_1.ConfigManager.QuestNewConfig.GetQuestTypeMark(t), e, false);
       }
     }
   }
-  async StartShow(t, i, e) {
+  async StartShow(t, e, i) {
     if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("BattleUiSet", 18, "MissionPanel:MissionViewItem.StartShow流程开始", ["showDataId", i.Id]);
+      Log_1.Log.Debug("BattleUiSet", 18, "MissionPanel:MissionViewItem.StartShow流程开始", ["showDataId", e.Id]);
     }
     if (ModelManager_1.ModelManager.BattleUiModel.IsShowingMissionViewItems?.get(this.ViewType)) {
       await this.fct?.OnReset();
@@ -594,17 +642,17 @@ class MissionViewItem extends BattleChildView_1.BattleChildView {
     ModelManager_1.ModelManager.BattleUiModel.IsShowingMissionViewItems?.set(this.ViewType, true);
     this.Zut = t;
     this.OU_.OnProcessStart();
-    this.ZOn(i);
-    let s = e;
+    this.ZOn(e);
+    let s = i;
     if (!this.CheckVisible()) {
       s = true;
     }
     var t = this.fxn();
-    var e = i.DataSource;
+    var i = e.DataSource;
     if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("BattleUiSet", 18, "MissionPanel:MissionViewItem.StartShow数据更新完毕", ["是否在totalSequence之后播步骤开始动画", t], ["DataSource", e]);
+      Log_1.Log.Debug("BattleUiSet", 18, "MissionPanel:MissionViewItem.StartShow数据更新完毕", ["是否在totalSequence之后播步骤开始动画", t], ["DataSource", i]);
     }
-    if (e === 1) {
+    if (i === 1) {
       await this.GU_.ShowAsync();
     } else {
       await this.GU_.HideAsync();
@@ -631,7 +679,7 @@ class MissionViewItem extends BattleChildView_1.BattleChildView {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("BattleUiSet", 18, "MissionPanel:MissionViewItem.StartShow StepSequence播放开始");
       }
-      await this.fct.StartShow(i, s);
+      await this.fct.StartShow(e, s);
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("BattleUiSet", 18, "MissionPanel:MissionViewItem.StartShow StepSequence播放结束");
       }
@@ -639,14 +687,14 @@ class MissionViewItem extends BattleChildView_1.BattleChildView {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("BattleUiSet", 18, "MissionPanel:MissionViewItem.StartShow TotalSequence以及StepSequence播放开始");
       }
-      e = [];
+      i = [];
       this.JF_ = new CustomPromise_1.CustomPromise();
       if (s) {
         this.TotalTitleSequencePlayer.EndSequenceLastFrame("Start");
       }
-      e.push(this.JF_.Promise);
-      e.push(this.fct.StartShow(i, s));
-      await Promise.all(e);
+      i.push(this.JF_.Promise);
+      i.push(this.fct.StartShow(e, s));
+      await Promise.all(i);
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("BattleUiSet", 18, "MissionPanel:MissionViewItem.StartShow TotalSequence以及StepSequence播放结束");
       }
@@ -654,37 +702,37 @@ class MissionViewItem extends BattleChildView_1.BattleChildView {
     this.Zut = 0;
     this.OU_.OnProcessEnd();
     if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("BattleUiSet", 18, "MissionPanel:MissionViewItem.StartShow流程结束", ["showDataId", i.Id]);
+      Log_1.Log.Debug("BattleUiSet", 18, "MissionPanel:MissionViewItem.StartShow流程结束", ["showDataId", e.Id]);
     }
     return true;
   }
-  async OnLogicTreeUpdateShow(t, i, e) {
+  async OnLogicTreeUpdateShow(t, e, i) {
     this.Zut = t;
     this.OU_.OnProcessStart();
     this.fct.Update();
-    await this.fct.ExecuteSequenceOnUpdate(i, this.ZOn, e);
+    await this.fct.ExecuteSequenceOnUpdate(e, this.ZOn, i);
     this.Zut = 0;
     this.OU_.OnProcessEnd();
     return true;
   }
-  async EndShow(t, i, e) {
+  async EndShow(t, e, i) {
     ModelManager_1.ModelManager.BattleUiModel.IsShowingMissionViewItems?.set(this.ViewType, false);
     if (this.IsShowOrShowing) {
       this.Zut = t;
       this.OU_.OnProcessStart();
-      if (e === 2) {
+      if (i === 2) {
         this.Ect();
         this.mct.SetUIActive(false);
         this.dct.SetUIActive(true);
         this.QuestFinishSequencePlayer.PlayLevelSequenceByName("Start");
         this.eN_ = new CustomPromise_1.CustomPromise();
-        if (i) {
+        if (e) {
           this.QuestFinishSequencePlayer.EndSequenceLastFrame("Start");
         }
         await this.eN_.Promise;
         this.QuestFinishSequencePlayer.PlayLevelSequenceByName("Close");
         this.tN_ = new CustomPromise_1.CustomPromise();
-        if (i) {
+        if (e) {
           this.QuestFinishSequencePlayer.EndSequenceLastFrame("Close");
         }
         await this.tN_.Promise;
@@ -693,7 +741,7 @@ class MissionViewItem extends BattleChildView_1.BattleChildView {
       } else {
         this.TotalTitleSequencePlayer.PlayLevelSequenceByName("Close");
         this.ZF_ = new CustomPromise_1.CustomPromise();
-        if (i) {
+        if (e) {
           this.TotalTitleSequencePlayer.EndSequenceLastFrame("Close");
         }
         await this.ZF_.Promise;
@@ -708,8 +756,8 @@ class MissionViewItem extends BattleChildView_1.BattleChildView {
     }
     return true;
   }
-  async ChildStepConditionIndexChange(t, i) {
-    return this.fct.ChildStepConditionIndexChange(t, i);
+  async ChildStepConditionIndexChange(t, e) {
+    return this.fct.ChildStepConditionIndexChange(t, e);
   }
   sec() {
     if (this.ShowData && this.ShowData.TitleTextKey) {
@@ -718,13 +766,13 @@ class MissionViewItem extends BattleChildView_1.BattleChildView {
       return "";
     }
   }
-  OnRefresh(t, i) {
+  OnRefresh(t, e) {
     this.BP1();
     if (this.$On) {
       this.fct.OnTick(t);
       if (this.YOn > BattleUiDefine_1.REFRESH_POSITION_INTERVAL) {
         this.YOn -= BattleUiDefine_1.REFRESH_POSITION_INTERVAL;
-        this.zOn(i);
+        this.zOn(e);
       }
       this.YOn += t;
     }

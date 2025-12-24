@@ -8,8 +8,8 @@ var __decorate = this && this.__decorate || function (t, i, e, s) {
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
     o = Reflect.decorate(t, i, e, s);
   } else {
-    for (var h = t.length - 1; h >= 0; h--) {
-      if (l = t[h]) {
+    for (var r = t.length - 1; r >= 0; r--) {
+      if (l = t[r]) {
         o = (n < 3 ? l(o) : n > 3 ? l(i, e, o) : l(i, e)) || o;
       }
     }
@@ -22,7 +22,7 @@ var __decorate = this && this.__decorate || function (t, i, e, s) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.BaseSkillComponent = exports.SkillRotateTarget = exports.SKILL_GROUP_MAIN = undefined;
+exports.BaseSkillComponent = exports.SkillRotateTarget = exports.AnimNotifyStateSkillRotateStyle = exports.SKILL_GROUP_MAIN = undefined;
 const UE = require("ue");
 const Info_1 = require("../../../../../../Core/Common/Info");
 const Log_1 = require("../../../../../../Core/Common/Log");
@@ -49,7 +49,6 @@ const PreloadDefine_1 = require("../../../../../Preload/PreloadDefine");
 const ActorUtils_1 = require("../../../../../Utils/ActorUtils");
 const CombatLog_1 = require("../../../../../Utils/CombatLog");
 const EffectUtil_1 = require("../../../../../Utils/EffectUtil");
-const GravityUtils_1 = require("../../../../../Utils/GravityUtils");
 const FightDebugUtil_1 = require("../../../FightDebugUtil");
 const BaseAbilityComponent_1 = require("../Abilities/BaseAbilityComponent");
 const CharacterBuffIds_1 = require("../Abilities/CharacterBuffIds");
@@ -79,6 +78,7 @@ class AnimNotifyStateSkillRotateStyle {
     this.IsPaused = false;
   }
 }
+exports.AnimNotifyStateSkillRotateStyle = AnimNotifyStateSkillRotateStyle;
 class SkillRotateTarget {
   constructor() {
     this.Target = undefined;
@@ -102,7 +102,7 @@ let BaseSkillComponent = BaseSkillComponent_1 = class BaseSkillComponent extends
     this.w6a = new Map();
     this.DtSkillInfoExtraList = undefined;
     this.DtSkillInfoMapForDebug = new Map();
-    this.rbm = false;
+    this.VFm = false;
     this.DtBulletInfo = undefined;
     this.DtBulletInfoExtraList = undefined;
     this.DtHitEffect = undefined;
@@ -149,8 +149,8 @@ let BaseSkillComponent = BaseSkillComponent_1 = class BaseSkillComponent extends
     this.gZr = () => {
       this.StopGroup1Skill("受击打断技能");
     };
-    this.obm = () => {
-      this.rbm = true;
+    this.jFm = () => {
+      this.VFm = true;
     };
     this.OnSwitchControl = t => {
       for (var [i, e] of this.LoadedSkills) {
@@ -186,7 +186,7 @@ let BaseSkillComponent = BaseSkillComponent_1 = class BaseSkillComponent extends
       }
     };
     this.I3r = t => {
-      t = t.GetComponent(39);
+      t = t.GetComponent(40);
       this.SkillTarget = t.SkillTarget;
       this.SkillTargetSocket = t.SkillTargetSocket;
     };
@@ -227,55 +227,60 @@ let BaseSkillComponent = BaseSkillComponent_1 = class BaseSkillComponent extends
     t = this.MontageComp?.GetMontageInfo(t);
     return !!t && (t.SkillId ?? 0) !== (this.CurrentSkill?.SkillId ?? 0);
   }
-  GetSkillInfo(e) {
-    if (this._Zr && e !== 0) {
+  GetSkillInfo(t) {
+    if (this._Zr && t !== 0) {
       if (!GlobalData_1.GlobalData.IsPlayInEditor) {
-        var s = this.LoadedSkills.get(e);
-        if (s) {
-          return s.SkillInfo;
+        var e = this.LoadedSkills.get(t);
+        if (e) {
+          return e.SkillInfo;
         }
       }
-      var l = e.toString();
-      let i = DataTableUtil_1.DataTableUtil.GetDataTableRow(this._Zr, l);
+      var s = t.toString();
+      let i = DataTableUtil_1.DataTableUtil.GetDataTableRow(this._Zr, s);
       if (this.DtSkillInfoExtraList) {
-        for (const n of this.DtSkillInfoExtraList) {
-          var t = DataTableUtil_1.DataTableUtil.GetDataTableRow(n, l);
-          if (t) {
-            i = t;
+        for (const r of this.DtSkillInfoExtraList) {
+          var l = DataTableUtil_1.DataTableUtil.GetDataTableRow(r, s);
+          if (l) {
+            i = l;
             break;
           }
         }
       }
-      if (!(i = this.DtSkillInfoMapForDebug && (s = this.DtSkillInfoMapForDebug.get(FightDebugUtil_1.FightDebugUtil.DtSkillTypeForDebug), s = DataTableUtil_1.DataTableUtil.GetDataTableRow(s, l)) ? s : i)) {
+      if (!(i = this.DtSkillInfoMapForDebug && (e = this.DtSkillInfoMapForDebug.get(FightDebugUtil_1.FightDebugUtil.DtSkillTypeForDebug), e = DataTableUtil_1.DataTableUtil.GetDataTableRow(e, s)) ? e : i)) {
         let t = undefined;
-        var s = this.EIe.GetEntityType();
-        if (s === Protocol_1.Aki.Protocol.kks.Proto_Player) {
+        var e = this.EIe.GetEntityType();
+        if (e === Protocol_1.Aki.Protocol.kks.Proto_Player) {
           t = ConfigManager_1.ConfigManager.WorldConfig.GetRoleCommonSkillInfo();
-        } else if (s === Protocol_1.Aki.Protocol.kks.Proto_Monster) {
+        } else if (e === Protocol_1.Aki.Protocol.kks.Proto_Monster) {
           t = ConfigManager_1.ConfigManager.WorldConfig.GetMonsterCommonSkillInfo();
-        } else if (s === Protocol_1.Aki.Protocol.kks.Proto_Vision) {
+        } else if (e === Protocol_1.Aki.Protocol.kks.Proto_Vision) {
           t = ConfigManager_1.ConfigManager.WorldConfig.GetVisionCommonSkillInfo();
         }
         if (t) {
-          i = DataTableUtil_1.DataTableUtil.GetDataTableRow(t, l);
+          i = DataTableUtil_1.DataTableUtil.GetDataTableRow(t, s);
         }
       }
       if (!i) {
-        this.EIe.CustomServerEntityIds.forEach(t => {
-          t = ModelManager_1.ModelManager.CreatureModel.GetEntity(t);
-          if (t) {
-            i = t.Entity?.GetComponent(39)?.GetSkillInfo(e);
+        for (const h of this.EIe.CustomServerEntityIds) {
+          var n = ModelManager_1.ModelManager.CreatureModel.GetEntity(h);
+          if (n) {
+            i = n.Entity?.GetComponent(40)?.GetSkillInfo(t);
+            break;
           }
-        });
-      }
-      if (!i) {
-        if (s = ModelManager_1.ModelManager.CreatureModel.GetEntity(this.EIe.VisionSkillServerEntityId)) {
-          i = s.Entity?.GetComponent(39)?.GetSkillInfo(e);
         }
       }
       if (!i) {
-        if (this.EIe.VisionControlCreatureDataId && (s = ModelManager_1.ModelManager.CreatureModel.GetEntity(this.EIe.VisionControlCreatureDataId))) {
-          i = s.Entity?.GetComponent(39)?.GetSkillInfo(e);
+        for (const a of this.EIe.VisionServerEntityIds) {
+          var o = ModelManager_1.ModelManager.CreatureModel.GetEntity(a);
+          if (o) {
+            i = o.Entity?.GetComponent(40)?.GetSkillInfo(t);
+            break;
+          }
+        }
+      }
+      if (!i) {
+        if (this.EIe.VisionControlCreatureDataId && (e = ModelManager_1.ModelManager.CreatureModel.GetEntity(this.EIe.VisionControlCreatureDataId))) {
+          i = e.Entity?.GetComponent(40)?.GetSkillInfo(t);
         }
       }
       return i;
@@ -319,7 +324,7 @@ let BaseSkillComponent = BaseSkillComponent_1 = class BaseSkillComponent extends
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RemoveEntity, this.zpe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TeleportStart, this.bpr);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TeleportOpenLoadingEnd, this.Oul);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SetFightDtTypeForDebug, this.obm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SetFightDtTypeForDebug, this.jFm);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharBeHitAnim, this.gZr);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharSwitchControl, this.OnSwitchControl);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.AiHateTargetChanged, this.MZr);
@@ -328,20 +333,20 @@ let BaseSkillComponent = BaseSkillComponent_1 = class BaseSkillComponent extends
     return true;
   }
   OnInit() {
-    this.Bzr = this.Entity.CheckGetComponent(176);
-    this.TagComp = this.Entity.CheckGetComponent(209);
+    this.Bzr = this.Entity.CheckGetComponent(181);
+    this.TagComp = this.Entity.CheckGetComponent(215);
     this.AbilityComp = this.Entity.CheckGetComponent(17);
-    this.BuffComp = this.Entity.GetComponent(178);
+    this.BuffComp = this.Entity.GetComponent(183);
     this.uZr = this.Entity.GetComponent(16);
     this.LockOnComp = this.Entity.GetComponent(32);
-    this.bre = this.Entity.GetComponent(47);
-    this.mZr = this.Entity.GetComponent(98);
-    this.vHr = this.Entity.GetComponent(126);
-    this.dZr = this.Entity.GetComponent(211);
-    this.FightStateComp = this.Entity.GetComponent(55);
-    this.StateMachineComp = this.Entity.GetComponent(76);
+    this.bre = this.Entity.GetComponent(48);
+    this.mZr = this.Entity.GetComponent(101);
+    this.vHr = this.Entity.GetComponent(131);
+    this.dZr = this.Entity.GetComponent(218);
+    this.FightStateComp = this.Entity.GetComponent(58);
+    this.StateMachineComp = this.Entity.GetComponent(79);
     this.MontageComp = this.Entity.GetComponent(24);
-    this.qk_ = this.Entity.GetComponent(223);
+    this.qk_ = this.Entity.GetComponent(230);
     return true;
   }
   OnDisable(t) {
@@ -374,7 +379,7 @@ let BaseSkillComponent = BaseSkillComponent_1 = class BaseSkillComponent extends
     }
   }
   OZr(i, e) {
-    if (!this.LoadedSkills.has(i) || this.rbm) {
+    if (!this.LoadedSkills.has(i) || this.VFm) {
       try {
         var t = new Skill_1.Skill();
         this.LoadedSkills.set(i, t);
@@ -428,7 +433,7 @@ let BaseSkillComponent = BaseSkillComponent_1 = class BaseSkillComponent extends
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RemoveEntity, this.zpe);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TeleportStart, this.bpr);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TeleportOpenLoadingEnd, this.Oul);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SetFightDtTypeForDebug, this.obm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SetFightDtTypeForDebug, this.jFm);
     EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CharBeHitAnim, this.gZr);
     EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CharSwitchControl, this.OnSwitchControl);
     EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.AiHateTargetChanged, this.MZr);
@@ -503,10 +508,10 @@ let BaseSkillComponent = BaseSkillComponent_1 = class BaseSkillComponent extends
   }
   EndOwnerAndFollowSkills() {
     this.StopAllSkills("BaseSkillComponent.EndOwnerAndFollowSkills");
-    var t = this.Entity.GetComponent(56)?.FollowIds;
+    var t = this.Entity.GetComponent(59)?.FollowIds;
     if (t) {
       for (const e of t) {
-        var i = EntitySystem_1.EntitySystem.Get(e)?.GetComponent(39);
+        var i = EntitySystem_1.EntitySystem.Get(e)?.GetComponent(40);
         if (i) {
           i.StopAllSkills("BaseSkillComponent.EndOwnerAndFollowSkills");
         }
@@ -552,15 +557,15 @@ let BaseSkillComponent = BaseSkillComponent_1 = class BaseSkillComponent extends
     let n = true;
     if (t === exports.SKILL_GROUP_MAIN) {
       var o;
-      var h;
       var r;
+      var h;
       var a = this.CurrentSkill;
       if (a) {
         S = a.InterruptLevel < i;
         o = a.InterruptLevel === i && this.vZr;
-        h = this.IsMainSkillReadyEnd;
-        r = ModelManager_1.ModelManager.SkillCdModel?.SkillDebugMode ?? false;
-        if (S || o || h || r) {
+        r = this.IsMainSkillReadyEnd;
+        h = ModelManager_1.ModelManager.SkillCdModel?.SkillDebugMode ?? false;
+        if (S || o || r || h) {
           e.push(a);
         } else {
           n = false;
@@ -678,7 +683,7 @@ let BaseSkillComponent = BaseSkillComponent_1 = class BaseSkillComponent extends
     }
   }
   KZr(t) {
-    if (!this.LoadedSkills.has(t) && PreloadDefine_1.PreloadSetting.UseNewPreload || this.rbm) {
+    if (!this.LoadedSkills.has(t) && PreloadDefine_1.PreloadSetting.UseNewPreload || this.VFm) {
       this.qk_.LoadSkillAsync(t);
       this.qk_.FlushSkill(t);
       var i = this.GetSkillInfo(t);
@@ -691,9 +696,12 @@ let BaseSkillComponent = BaseSkillComponent_1 = class BaseSkillComponent extends
     return this.LoadedSkills.get(t);
   }
   async qj1(t) {
-    if (!this.LoadedSkills.has(t) && PreloadDefine_1.PreloadSetting.UseNewPreload || this.rbm) {
+    if (!this.LoadedSkills.has(t) && PreloadDefine_1.PreloadSetting.UseNewPreload || this.VFm) {
       var i = await this.qk_.LoadSkillAsync(t, 105);
       if (i !== 3 && (CombatLog_1.CombatLog.Error("Skill", this.Entity, "没有预加载数据", ["技能Id", t]), !Info_1.Info.IsPlayInEditor)) {
+        return;
+      }
+      if (!this.Valid) {
         return;
       }
       i = this.GetSkillInfo(t);
@@ -715,7 +723,7 @@ let BaseSkillComponent = BaseSkillComponent_1 = class BaseSkillComponent extends
     if (await this.qj1(t)) {
       i.IsAsync = true;
       e = this.BeginSkill(t, i);
-    } else {
+    } else if (this.Valid) {
       CombatLog_1.CombatLog.Error("Skill", this.Entity, "BeginSkill使用了不存在的技能", ["技能Id", t]);
     }
     return e;
@@ -730,55 +738,56 @@ let BaseSkillComponent = BaseSkillComponent_1 = class BaseSkillComponent extends
     BaseSkillComponent_1.Ozr.Stop();
     return i;
   }
-  Gj1(t, i = {}) {
+  Gj1(i, t) {
     BaseSkillComponent_1.kzr.Start();
     if (!this.CheckIsLoaded()) {
       BaseSkillComponent_1.kzr.Stop();
       return false;
     }
-    var e = this.LoadedSkills.has(t);
-    var s = this.GetSkillInfo(t);
+    var e = this.LoadedSkills.has(i);
+    var s = this.GetSkillInfo(i);
     if (!e && this.AbilityComp.GetAbilityScopeLockCount() > 0 && s.SkillMode === 1) {
-      this.BeginSkillAsync(t, i);
+      this.BeginSkillAsync(i, t);
       BaseSkillComponent_1.kzr.Stop();
       return false;
     }
-    var l = this.KZr(t);
+    var l = this.KZr(i);
     if (!l) {
-      CombatLog_1.CombatLog.Error("Skill", this.Entity, "BeginSkill使用了不存在的技能", ["技能Id", t]);
+      CombatLog_1.CombatLog.Error("Skill", this.Entity, "BeginSkill使用了不存在的技能", ["技能Id", i]);
       BaseSkillComponent_1.kzr.Stop();
       return false;
     }
-    l.ExtraTargetLocation = i.ExtraTargetLocation;
-    if (this.Vh_(t)) {
-      CombatLog_1.CombatLog.Error("Skill", this.Entity, "技能打断的过程中不能新开技能", ["技能Id", t], ["技能名", l.SkillName], ["原因", i.Reason]);
+    l.ExtraTargetLocation = t.ExtraTargetLocation;
+    if (this.Vh_(i)) {
+      CombatLog_1.CombatLog.Error("Skill", this.Entity, "技能打断的过程中不能新开技能", ["技能Id", i], ["技能名", l.SkillName], ["原因", t.Reason]);
       BaseSkillComponent_1.kzr.Stop();
       return false;
     }
-    SkillUtils_1.SkillUtils.Log(0, 0, this.Entity, "BaseSkillComponent." + (i.IsAsync ? "BeginSkillAsync" : "BeginSkill"), ["技能Id", t], ["技能名", l.SkillName], ["技能目标", (i.Target instanceof Entity_1.Entity ? i.Target.GetComponent(1)?.Owner : i.Target)?.GetName()], ["原因", i.Reason]);
+    SkillUtils_1.SkillUtils.Log(0, 0, this.Entity, "BaseSkillComponent." + (t.IsAsync ? "BeginSkillAsync" : "BeginSkill"), ["技能Id", i], ["技能名", l.SkillName], ["技能目标", (t.Target instanceof Entity_1.Entity ? t.Target.GetComponent(1)?.Owner : t.Target)?.GetName()], ["原因", t.Reason]);
     var e = [];
     var n = this.WZr(l, e);
     if (n) {
-      SkillUtils_1.SkillUtils.Log(0, 0, this.Entity, "BaseSkillComponent.CheckSkillCanBegin条件不满足", ["技能Id", t], ["技能名", l.SkillName], ["当前技能", this.CurrentSkill?.SkillId], ["当前技能名", this.CurrentSkill?.SkillName], ["原因", n]);
+      SkillUtils_1.SkillUtils.Log(0, 0, this.Entity, "BaseSkillComponent.CheckSkillCanBegin条件不满足", ["技能Id", i], ["技能名", l.SkillName], ["当前技能", this.CurrentSkill?.SkillId], ["当前技能名", this.CurrentSkill?.SkillName], ["原因", n]);
       BaseSkillComponent_1.kzr.Stop();
       return false;
     }
     BaseSkillComponent_1.kzr.Stop();
     BaseSkillComponent_1.Fzr.Start();
-    this.jh_(t, true);
+    this.jh_(i, true);
     e.forEach(t => {
+      EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.CharBeforeInterruptWithTarget, i, t.SkillId);
       t.EndSkillInfo.Reason = Protocol_1.Aki.Protocol.rR_.Proto_EEndSkillReason_BeginOtherSkill;
       this.FZr(t, "开始新技能");
     });
-    this.jh_(t, false);
+    this.jh_(i, false);
     BaseSkillComponent_1.Fzr.Stop();
     BaseSkillComponent_1.Vzr.Start();
     n = this.ActorComp?.IsAutonomousProxy ?? false;
-    e = this.StateMachineComp?.StateMachineGroup?.IsCurrentTaskSkill(t);
+    e = this.StateMachineComp?.StateMachineGroup?.IsCurrentTaskSkill(i);
     if (this.FightStateComp && s.GroupId === exports.SKILL_GROUP_MAIN && !e) {
       e = this.FightStateComp.TrySwitchSkillState(l.InterruptLevel, l.SkillInfo, true);
       if (!e) {
-        CombatLog_1.CombatLog.Info("Skill", this.Entity, "技能释放失败，状态不满足", ["技能Id", t], ["技能名", l.SkillName]);
+        CombatLog_1.CombatLog.Info("Skill", this.Entity, "技能释放失败，状态不满足", ["技能Id", i], ["技能名", l.SkillName]);
         BaseSkillComponent_1.Vzr.Stop();
         return false;
       }
@@ -788,9 +797,9 @@ let BaseSkillComponent = BaseSkillComponent_1 = class BaseSkillComponent extends
     }
     BaseSkillComponent_1.Vzr.Stop();
     BaseSkillComponent_1.Hzr.Start();
-    this.QZr(i.Target, i.SocketName, s.SkillTarget, s.IsLockOn);
-    l.PreContextId = i.ContextId;
-    EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.CharBeforeSkillWithTarget, t, n);
+    this.QZr(t.Target, t.SocketName, s.SkillTarget, s.IsLockOn);
+    l.PreContextId = t.ContextId;
+    EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.CharBeforeSkillWithTarget, i, n);
     BaseSkillComponent_1.Hzr.Stop();
     BaseSkillComponent_1.jzr.Start();
     switch (s.SkillMode) {
@@ -846,13 +855,13 @@ let BaseSkillComponent = BaseSkillComponent_1 = class BaseSkillComponent extends
       CombatLog_1.CombatLog.Warn("Skill", this.Entity, "重复释放远端技能", ["技能Id", t]);
     }
     var o = n.SkillInfo;
-    var h = this.StateMachineComp?.StateMachineGroup?.IsCurrentTaskSkill(t);
-    if (this.FightStateComp && n.SkillInfo.GroupId === exports.SKILL_GROUP_MAIN && !h) {
-      h = this.FightStateComp.TrySwitchSkillState(n.InterruptLevel, n.SkillInfo, false);
-      if (!h) {
+    var r = this.StateMachineComp?.StateMachineGroup?.IsCurrentTaskSkill(t);
+    if (this.FightStateComp && n.SkillInfo.GroupId === exports.SKILL_GROUP_MAIN && !r) {
+      r = this.FightStateComp.TrySwitchSkillState(n.InterruptLevel, n.SkillInfo, false);
+      if (!r) {
         return false;
       }
-      n.FightStateHandle = h;
+      n.FightStateHandle = r;
     } else {
       n.FightStateHandle = 0;
     }
@@ -863,7 +872,7 @@ let BaseSkillComponent = BaseSkillComponent_1 = class BaseSkillComponent extends
       }
       this.ActorComp.SetMoveControlled(false, s, "远端特殊技能");
     }
-    this.Entity.GetComponent(179).ExitHitState("远端释放技能");
+    this.Entity.GetComponent(184)?.ExitHitState("远端释放技能");
     SceneTeamController_1.SceneTeamController.EmitEvent(this.Entity, EventDefine_1.EEventName.CharUseSkillRemote, this.Entity.Id, n.SkillId);
     this.YZr(o.GroupId, n);
     n.SimulatedBeginSkill(l);
@@ -984,13 +993,13 @@ let BaseSkillComponent = BaseSkillComponent_1 = class BaseSkillComponent extends
       }
       BaseSkillComponent_1.Xzr.Stop();
       e = this.GetSkillLevelBySkillInfoId(t.SkillId);
-      if (i.GroupId === exports.SKILL_GROUP_MAIN) {
-        this.IsMainSkillReadyEnd = false;
-      }
       BaseSkillComponent_1.$zr.Start();
       t.BeginSkillBuffAndTag(e);
       BaseSkillComponent_1.$zr.Stop();
-      this.DoSkillBeginMoveAction(t, i);
+      if (i.GroupId === exports.SKILL_GROUP_MAIN) {
+        this.IsMainSkillReadyEnd = false;
+        this.DoSkillBeginMoveAction(t, i);
+      }
       if (i.AutonomouslyBySimulate) {
         this.ActorComp.SetMoveControlled(true, i.MoveControllerTime, "特殊技能");
       }
@@ -1014,8 +1023,8 @@ let BaseSkillComponent = BaseSkillComponent_1 = class BaseSkillComponent extends
         this.vZr = false;
         this.IsMainSkillReadyEnd = true;
         this.UZr = 0;
+        this.DoSkillEndMoveAction(i);
       }
-      this.DoSkillEndMoveAction(i);
       this.JZr(i.GroupId, t);
       t.EndSkill();
       BaseSkillComponent_1.iZr.Stop();
@@ -1161,7 +1170,7 @@ let BaseSkillComponent = BaseSkillComponent_1 = class BaseSkillComponent extends
     return this.GetCurrentSkillRotateDirect();
   }
   GetCurrentSkillRotateDirect() {
-    SkillUtils_1.SkillUtils.GetSkillRotateDirect(ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(this.Entity), this.IZr, this.oxr);
+    SkillUtils_1.SkillUtils.GetSkillRotateDirect(ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(this.Entity), this.IZr, this.SZr, this.oxr);
     return this.oxr;
   }
   GetCurrentSkillRotateTargetDirect(t, i) {
@@ -1174,25 +1183,6 @@ let BaseSkillComponent = BaseSkillComponent_1 = class BaseSkillComponent extends
     }
     this.oxr.SubtractionEqual(i);
     this.oxr.Normalize();
-    if (this.SZr.IsUseAnsRotateOffset && this.SZr.AnsRotateOffset !== 0) {
-      this.TmpRotator.Set(0, this.SZr.AnsRotateOffset, 0);
-      GravityUtils_1.GravityUtils.ConvertToPlanarVectorForActor(this.ActorComp, this.oxr);
-      GravityUtils_1.GravityUtils.RotateDirectInGravityForActor(this.ActorComp, this.TmpRotator, this.oxr);
-    }
-    e = this.ActorComp.ActorForwardProxy;
-    t = GravityUtils_1.GravityUtils.GetAngleOffsetInGravityAbsForActor(this.ActorComp, this.oxr, e);
-    if (this.SZr.IsPaused) {
-      if (this.SZr.ResumeRotateThreshold > 0) {
-        if (t < this.SZr.ResumeRotateThreshold) {
-          this.oxr.DeepCopy(e);
-        } else {
-          this.SZr.IsPaused = false;
-        }
-      }
-    } else if (this.SZr.PauseRotateThreshold > 0 && t < this.SZr.PauseRotateThreshold) {
-      this.SZr.IsPaused = true;
-      this.oxr.DeepCopy(e);
-    }
     return this.oxr;
   }
   get CurrentPriority() {
@@ -1330,11 +1320,11 @@ let BaseSkillComponent = BaseSkillComponent_1 = class BaseSkillComponent extends
   *GetAllSkillId(t = 7) {
     var i = new Set();
     if (this.DtSkillInfoExtraList && t & 4) {
-      for (const h of this.DtSkillInfoExtraList) {
+      for (const r of this.DtSkillInfoExtraList) {
         var e = new Array();
-        DataTableUtil_1.DataTableUtil.GetDataTableAllRowNamesFromTable(h, e);
-        for (const r of e) {
-          var s = Number(r);
+        DataTableUtil_1.DataTableUtil.GetDataTableAllRowNamesFromTable(r, e);
+        for (const h of e) {
+          var s = Number(h);
           if (!i.has(s)) {
             i.add(s);
             yield s;
@@ -1392,8 +1382,8 @@ let BaseSkillComponent = BaseSkillComponent_1 = class BaseSkillComponent extends
     if (this.DtBulletInfo && t & 1) {
       t = new Array();
       DataTableUtil_1.DataTableUtil.GetDataTableAllRowNamesFromTable(this.DtBulletInfo, t);
-      for (const h of t) {
-        var l = BigInt(h);
+      for (const r of t) {
+        var l = BigInt(r);
         if (!i.has(l)) {
           i.add(l);
           yield l;
@@ -1424,5 +1414,5 @@ BaseSkillComponent.iZr = Stats_1.Stat.Create("DoSkillEnd2 RestoreSkillInfoStaff"
 BaseSkillComponent.oZr = Stats_1.Stat.Create("DoSkillEnd3 RestoreMoveState");
 BaseSkillComponent.rZr = Stats_1.Stat.Create("DoSkillEnd4 NetSend");
 BaseSkillComponent.nZr = Stats_1.Stat.Create("DoSkillEnd5 EmitSkillEnd");
-BaseSkillComponent = BaseSkillComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(39)], BaseSkillComponent);
+BaseSkillComponent = BaseSkillComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(40)], BaseSkillComponent);
 exports.BaseSkillComponent = BaseSkillComponent; //# sourceMappingURL=BaseSkillComponent.js.map

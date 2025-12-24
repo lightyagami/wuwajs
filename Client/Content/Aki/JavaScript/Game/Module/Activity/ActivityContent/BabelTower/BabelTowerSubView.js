@@ -105,6 +105,7 @@ class BabelTowerSubView extends ActivitySubViewBase_1.ActivitySubViewBase {
     this.DNe.SetContentByTextId(e);
   }
   mGe() {
+    this.LNe.SetActivityBaseData(this.ActivityBaseData);
     this.LNe.SetTitleByText(this.ActivityBaseData.GetTitle());
     var [e, t] = this.GetTimeVisibleAndRemainTime();
     this.LNe.SetTimeTextVisible(e);

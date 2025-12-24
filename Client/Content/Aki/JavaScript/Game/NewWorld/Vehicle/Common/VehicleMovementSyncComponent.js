@@ -8,8 +8,8 @@ var __decorate = this && this.__decorate || function (e, t, o, n) {
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
     l = Reflect.decorate(e, t, o, n);
   } else {
-    for (var c = e.length - 1; c >= 0; c--) {
-      if (r = e[c]) {
+    for (var s = e.length - 1; s >= 0; s--) {
+      if (r = e[s]) {
         l = (i < 3 ? r(l) : i > 3 ? r(t, o, l) : r(t, o)) || l;
       }
     }
@@ -31,15 +31,17 @@ const ModelManager_1 = require("../../../Manager/ModelManager");
 const CombatLog_1 = require("../../../Utils/CombatLog");
 const BaseMovementSyncComponent_1 = require("../../Character/Common/Component/BaseMovementSyncComponent");
 const VehiclePathMoveController_1 = require("../Controller/VehiclePathMoveController");
+const MOTORCYCLE_MOVE_SYNC_INTERVAL = 0.3;
 let VehicleMovementSyncComponent = VehicleMovementSyncComponent_1 = class VehicleMovementSyncComponent extends BaseMovementSyncComponent_1.BaseMovementSyncComponent {
   constructor() {
     super(...arguments);
     this.InputComp = undefined;
     this.VehicleMoveComp = undefined;
+    this.PerformComp = undefined;
     this.Li_ = 0;
   }
   OnStart() {
-    return !!super.OnStart() && (this.InputComp = this.Entity.GetComponent(244), this.VehicleMoveComp = this.Entity.GetComponent(240), true);
+    return !!super.OnStart() && (this.InputComp = this.Entity.GetComponent(253), this.VehicleMoveComp = this.Entity.GetComponent(249), this.PerformComp = this.Entity.GetComponent(246), this.SingleModeSendInterval = this.GetSingleModeMoveSyncInterval(), true);
   }
   DefaultEnableMovementSync() {
     return true;
@@ -57,14 +59,14 @@ let VehicleMovementSyncComponent = VehicleMovementSyncComponent_1 = class Vehicl
     }
     return t;
   }
-  ApplyMoveSample(e, t, o, n, r, i, l, c, s, h, m) {
-    super.ApplyMoveSample(e, t, o, n, r, i, l, c, s, h, m);
+  ApplyMoveSample(e, t, o, n, r, i, l, s, c, h, m) {
+    super.ApplyMoveSample(e, t, o, n, r, i, l, s, c, h, m);
     this.VehicleMoveComp?.SetForceSpeed(n);
   }
   CustomAfterTickInternal(e) {
     var t;
     var o = VehiclePathMoveController_1.VehiclePathMoveController.GetEntitySplineMoveInfo(this.Entity);
-    if (o) {
+    if (o && this.PerformComp?.VehicleType !== "Motorcycle") {
       if (Time_1.Time.NowSeconds - this.Li_ >= VehicleMovementSyncComponent_1.VehiclePathRatioSyncInterval) {
         (t = Protocol_1.Aki.Protocol.g0_.create()).F4n = this.ActorComp.CreatureData.GetCreatureDataId();
         t.Ii_ = o.SplineId;
@@ -93,7 +95,14 @@ let VehicleMovementSyncComponent = VehicleMovementSyncComponent_1 = class Vehicl
       super.CustomPreTickInternal(e);
     }
   }
+  GetSingleModeMoveSyncInterval() {
+    if (this.PerformComp?.VehicleType !== "Motorcycle") {
+      return 1;
+    } else {
+      return MOTORCYCLE_MOVE_SYNC_INTERVAL;
+    }
+  }
 };
 VehicleMovementSyncComponent.VehiclePathRatioSyncInterval = 2;
-VehicleMovementSyncComponent = VehicleMovementSyncComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(247)], VehicleMovementSyncComponent);
+VehicleMovementSyncComponent = VehicleMovementSyncComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(256)], VehicleMovementSyncComponent);
 exports.VehicleMovementSyncComponent = VehicleMovementSyncComponent; //# sourceMappingURL=VehicleMovementSyncComponent.js.map

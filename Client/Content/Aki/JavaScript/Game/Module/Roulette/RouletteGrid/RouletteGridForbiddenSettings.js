@@ -63,8 +63,8 @@ class RouletteGridForbiddenSettings {
         break;
       case 2:
         var i = e === 1;
-        var a = ModelManager_1.ModelManager.RouletteModel.IsExploreRouletteReplace();
-        if (i && a) {
+        var n = ModelManager_1.ModelManager.RouletteModel.GetCurrentExploreRouletteListData().IsRouletteReplace();
+        if (i && n) {
           if (ModelManager_1.ModelManager.RouletteModel.CurrentEquipItemId === 0) {
             return 3;
           }
@@ -74,10 +74,14 @@ class RouletteGridForbiddenSettings {
 }
 exports.RouletteGridForbiddenSettings = RouletteGridForbiddenSettings;
 (_a = RouletteGridForbiddenSettings).w0o = () => {
-  return ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(209)?.HasTag(-1002623896) ?? false;
+  return ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(215)?.HasTag(-1002623896) ?? false;
 };
 RouletteGridForbiddenSettings.vha = () => {
-  return ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(209)?.HasTag(-1488322179) ?? false;
+  return ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(215)?.HasTag(-1488322179) ?? false;
 };
-RouletteGridForbiddenSettings.qla = new Map([[1001, _a.w0o], [1013, _a.vha]]);
-RouletteGridForbiddenSettings.Gla = new Map([]); //# sourceMappingURL=RouletteGridForbiddenSettings.js.map
+RouletteGridForbiddenSettings.qQf = () => ModelManager_1.ModelManager.GameModeModel.IsMulti;
+RouletteGridForbiddenSettings.OQf = () => {
+  ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("Flying_Tip_002");
+};
+RouletteGridForbiddenSettings.qla = new Map([[1001, _a.w0o], [1013, _a.vha], [6015, _a.qQf]]);
+RouletteGridForbiddenSettings.Gla = new Map([[6015, _a.OQf]]); //# sourceMappingURL=RouletteGridForbiddenSettings.js.map

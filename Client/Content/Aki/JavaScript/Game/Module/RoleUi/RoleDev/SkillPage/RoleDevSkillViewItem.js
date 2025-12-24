@@ -22,8 +22,8 @@ class RoleDevSkillViewItem extends UiPanelBase_1.UiPanelBase {
     this.Qhd = [];
     this.pnd = undefined;
     this.Pe = undefined;
-    this.Gdm = undefined;
-    this.Fdm = undefined;
+    this.vpm = undefined;
+    this.ypm = undefined;
     this.OnClickToggleCallBack = undefined;
     this.CanClickCallBack = undefined;
     this.OnConfirmCallback = undefined;
@@ -55,7 +55,7 @@ class RoleDevSkillViewItem extends UiPanelBase_1.UiPanelBase {
         UiManager_1.UiManager.OpenView("RoleSkillMergeView", e);
       }
     };
-    this.bWd = e => {
+    this.PWd = e => {
       var i = this.Pe?.SkillSlots ?? [];
       var i = e < i.length ? i[e] : undefined;
       if (i) {
@@ -128,17 +128,17 @@ class RoleDevSkillViewItem extends UiPanelBase_1.UiPanelBase {
       let t = "";
       let s = false;
       s = o ? (r = l.IsBreakthroughLevelLow, e = true, i = false, t = "RoleProject_Button02", r) : (o = l.CurrentPlanMaterialEnough, e = !o, i = o, !(t = "RoleProject_Button01"));
-      this.Gdm?.SetLocalTextNew(t);
-      this.Fdm?.SetLocalTextNew(t);
-      this.Gdm?.SetUiActive(e);
-      this.Fdm?.SetUiActive(i);
+      this.vpm?.SetLocalTextNew(t);
+      this.ypm?.SetLocalTextNew(t);
+      this.vpm?.SetUiActive(e);
+      this.ypm?.SetUiActive(i);
       this.GetItem(9).SetUIActive(s);
       if (s) {
         LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(9), "RoleProject_Tips05");
       }
     } else {
-      this.Gdm?.SetUiActive(false);
-      this.Fdm?.SetUiActive(false);
+      this.vpm?.SetUiActive(false);
+      this.ypm?.SetUiActive(false);
       this.GetItem(9).SetUIActive(false);
     }
   }
@@ -151,18 +151,18 @@ class RoleDevSkillViewItem extends UiPanelBase_1.UiPanelBase {
       var s = l.CreateThenShowByActorAsync(this.GetItem(s).GetOwner());
       t.push(s);
       l.SetClickCallback(() => {
-        this.bWd(e);
+        this.PWd(e);
       });
       this.Qhd.push(l);
     }
     await Promise.all(t);
   }
   async ayd() {
-    this.Gdm = new ButtonItem_1.ButtonItem();
-    this.Fdm = new ButtonItem_1.ButtonItem();
-    await Promise.all([this.Gdm.CreateThenShowByActorAsync(this.GetItem(8).GetOwner()), this.Fdm.CreateThenShowByActorAsync(this.GetItem(10).GetOwner())]);
-    this.Gdm.SetFunction(this.syd);
-    this.Fdm.SetFunction(this.syd);
+    this.vpm = new ButtonItem_1.ButtonItem();
+    this.ypm = new ButtonItem_1.ButtonItem();
+    await Promise.all([this.vpm.CreateThenShowByActorAsync(this.GetItem(8).GetOwner()), this.ypm.CreateThenShowByActorAsync(this.GetItem(10).GetOwner())]);
+    this.vpm.SetFunction(this.syd);
+    this.ypm.SetFunction(this.syd);
   }
   zhd(i) {
     var t = i.SkillSlots;

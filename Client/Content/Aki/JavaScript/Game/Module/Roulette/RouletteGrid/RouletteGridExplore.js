@@ -23,6 +23,7 @@ class RouletteGridExplore extends RouletteGridBase_1.RouletteGridBase {
         this.Data.ShowNum = ModelManager_1.ModelManager.RouletteModel.IsExploreSkillHasNumBySkillData(e);
         this.Data.DataNum = ModelManager_1.ModelManager.RouletteModel.GetExploreSkillShowNumBySkillData(e);
         await this.LoadSpriteIcon(e.Icon);
+        this.Data.UseType = e.UseType;
       } else {
         this.Data.Name = "Fishing_SkillUnlock";
         e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("SP_RouletteGridLock");
@@ -37,14 +38,20 @@ class RouletteGridExplore extends RouletteGridBase_1.RouletteGridBase {
       } else if (this.Data.State === 5) {
         RouletteGridForbiddenSettings_1.RouletteGridForbiddenSettings.TipsLockState(this.Data.GridType, this.Data.Id);
       } else {
-        e = this.Data.Id;
-        ModelManager_1.ModelManager.ExploreModel.SetExploreSkillId(e);
-        ControllerHolder_1.ControllerHolder.RouletteController.ExploreSkillSetRequest(e, e => {
-          if (e) {
-            AudioSystem_1.AudioSystem.PostEvent("play_ui_fx_spl_roulette_new_equip");
-          }
-        });
-        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ChangeVisionSkillByTab, this.Data.Id);
+        switch (this.Data.UseType) {
+          case 0:
+            var t = this.Data.Id;
+            ModelManager_1.ModelManager.ExploreModel.SetExploreSkillId(t, 0, "RouletteGridExplore.OnSelect");
+            ControllerHolder_1.ControllerHolder.RouletteController.ExploreSkillSetRequest(t, e => {
+              if (e) {
+                AudioSystem_1.AudioSystem.PostEvent("play_ui_fx_spl_roulette_new_equip");
+              }
+            });
+            EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ChangeVisionSkillByTab, this.Data.Id);
+            break;
+          case 1:
+            ControllerHolder_1.ControllerHolder.RouletteExploreSkillController.UseRouletteExploreId(this.Data.Id);
+        }
       }
     }
   }

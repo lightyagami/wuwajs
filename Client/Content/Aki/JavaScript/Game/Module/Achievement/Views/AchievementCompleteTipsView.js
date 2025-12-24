@@ -11,11 +11,13 @@ const UiTickViewBase_1 = require("../../../Ui/Base/UiTickViewBase");
 const GenericLayout_1 = require("../../Util/Layout/GenericLayout");
 const AchievementCompleteTipsStarItem_1 = require("./AchievementCompleteTipsStarItem");
 const CLOSE_TIME = 4000;
+const CLOSE_LESS_TIME = 500;
 class AchievementCompleteTipsView extends UiTickViewBase_1.UiTickViewBase {
   constructor() {
     super(...arguments);
     this.$be = undefined;
     this.Ybe = 0;
+    this.uKf = true;
     this.vNi = false;
     this.zbe = () => new AchievementCompleteTipsStarItem_1.AchievementCompleteTipsStarItem();
   }
@@ -24,17 +26,24 @@ class AchievementCompleteTipsView extends UiTickViewBase_1.UiTickViewBase {
   }
   OnStart() {
     var e;
-    var i = this.OpenParam;
-    if (i !== undefined) {
+    var t = this.OpenParam;
+    if (t !== undefined) {
       this.$be = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(2), this.zbe);
-      e = i.GetGroupId();
+      e = t.GetGroupId();
       e = ModelManager_1.ModelManager.AchievementModel.GetAchievementGroupData(e);
       if (!StringUtils_1.StringUtils.IsEmpty(e.GetTexture())) {
         this.SetTextureByPath(e.GetTexture(), this.GetTexture(0));
       }
-      this.GetText(1).SetText(i.GetTitle());
-      this.Zbe(i);
+      this.GetText(1).SetText(t.GetTitle());
+      this.Zbe(t);
     }
+  }
+  OnBeforeShow() {
+    if (this.Ybe < CLOSE_LESS_TIME && !this.uKf) {
+      this.Ybe = 0;
+      this.UiViewSequence.PlaySequence("Start");
+    }
+    this.uKf = false;
   }
   OnTick(e) {
     if (!this.vNi) {
@@ -46,14 +55,14 @@ class AchievementCompleteTipsView extends UiTickViewBase_1.UiTickViewBase {
     }
   }
   Zbe(e) {
-    var i = [];
-    var t = e.GetMaxStar();
+    var t = [];
+    var i = e.GetMaxStar();
     var s = e.GetAchievementConfigStar();
-    for (let e = 0; e < t; e++) {
+    for (let e = 0; e < i; e++) {
       var r = s > e;
-      i.push(r);
+      t.push(r);
     }
-    this.$be.RefreshByData(i);
+    this.$be.RefreshByData(t);
   }
 }
 exports.AchievementCompleteTipsView = AchievementCompleteTipsView;

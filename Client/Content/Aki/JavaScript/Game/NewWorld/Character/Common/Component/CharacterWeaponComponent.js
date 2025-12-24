@@ -107,6 +107,7 @@ let CharacterWeaponComponent = class CharacterWeaponComponent extends EntityComp
     this.WKr = 0;
     this.Mba = false;
     this.HuluHideEffect = 0;
+    this.m5f = false;
     this.Paragliding = undefined;
     this.ParaglidingIsOpen = false;
     this.ParaglidingIsHover = false;
@@ -158,10 +159,10 @@ let CharacterWeaponComponent = class CharacterWeaponComponent extends EntityComp
     this.I3r = (t, i) => {
       var s;
       if (t?.Valid) {
-        s = t.GetComponent(81);
+        s = t.GetComponent(84);
         this.vQr();
         this.CheckAndHangWeapons(false);
-        (i ? (this.MQr(0), this) : (this.MQr(0), this.SyncParagliding(s), (i = t.GetComponent(209)).HasTag(this.oQr) && !this.Lie.HasTag(this.oQr) && (i.RemoveTag(this.oQr), this.Lie.AddTag(this.oQr)), s)).OpenParagliding(false);
+        (i ? (this.MQr(0), this) : (this.MQr(0), this.SyncParagliding(s), (i = t.GetComponent(215)).HasTag(this.oQr) && !this.Lie.HasTag(this.oQr) && (i.RemoveTag(this.oQr), this.Lie.AddTag(this.oQr)), s)).OpenParagliding(false);
         if (this.SoarWing && s.SoarWing) {
           this.$gl();
           this.SoarWing.GetAnimInstance()?.SyncAnimStates(s.SoarWing.GetAnimInstance());
@@ -171,7 +172,7 @@ let CharacterWeaponComponent = class CharacterWeaponComponent extends EntityComp
       }
     };
     this.EQr = (t, i) => {
-      if (!!i && !this.ParaglidingIsOpen && this.Entity.GetComponent(179).MoveState === CharacterUnifiedStateTypes_1.ECharMoveState.Glide) {
+      if (!!i && !this.ParaglidingIsOpen && this.Entity.GetComponent(184).MoveState === CharacterUnifiedStateTypes_1.ECharMoveState.Glide) {
         this.OpenParagliding(true);
       }
     };
@@ -236,7 +237,7 @@ let CharacterWeaponComponent = class CharacterWeaponComponent extends EntityComp
     this.TQr = (t, i) => {
       if (i) {
         this.MQr(1);
-        this.SetHuluHidden(false, false);
+        this.SetHuluHidden(this.m5f, false);
       } else {
         this.MQr(0);
         this.SetHuluHidden(false);
@@ -314,10 +315,10 @@ let CharacterWeaponComponent = class CharacterWeaponComponent extends EntityComp
   }
   OnStart() {
     this.Hte = this.Entity.CheckGetComponent(3);
-    this.oRe = this.Entity.GetComponent(181);
-    this.Lie = this.Entity.GetComponent(209);
-    this.y5r = this.Entity.GetComponent(51);
-    this.I5r = this.Entity.GetComponent(179);
+    this.oRe = this.Entity.GetComponent(186);
+    this.Lie = this.Entity.GetComponent(215);
+    this.y5r = this.Entity.GetComponent(52);
+    this.I5r = this.Entity.GetComponent(184);
     this.Xjt = this.Hte.CreatureData.GetEntityType() === Protocol_1.Aki.Protocol.kks.Proto_Player;
     this.zKr = this.Xjt || this.Hte.CreatureData.GetBaseInfo()?.Category.MonsterMatchType === 4;
     this.iQr = 0;
@@ -475,6 +476,12 @@ let CharacterWeaponComponent = class CharacterWeaponComponent extends EntityComp
       t.DebugDestructText = "";
     }
     return true;
+  }
+  OnEnable() {
+    this.GQr();
+  }
+  OnDisable(t) {
+    this.GQr();
   }
   BQr() {
     if (this.Lie.HasTag(this.oQr)) {
@@ -657,10 +664,12 @@ let CharacterWeaponComponent = class CharacterWeaponComponent extends EntityComp
   }
   jQr(i) {
     if (this.WKr !== i) {
+      this.m5f = false;
       if (this.Hulu) {
         this.Hte.Actor.CharRenderingComponent.RemoveComponentByCase(6);
       } else {
         (t = this.Hte.Actor.AddComponentByClass(UE.SkeletalMeshComponent.StaticClass(), false, MathUtils_1.MathUtils.DefaultTransform, false, CharacterNameDefines_1.CharacterNameDefines.HULU_MESH_COMP_NAME)).K2_AttachToComponent(this.Hte.Actor.Mesh, CharacterNameDefines_1.CharacterNameDefines.HULU_SOCKET_NAME, 0, 0, 0, true);
+        t.SetAnimationMode(2);
         this.Hulu = t;
         this.MQr(0);
       }
@@ -672,6 +681,7 @@ let CharacterWeaponComponent = class CharacterWeaponComponent extends EntityComp
           i = s.NewEffects[i];
           this.Hte.ReplaceEffectMap.set(t, i);
         });
+        this.m5f = !!s && s.HideParaglider > 0;
         ResourceSystem_1.ResourceSystem.LoadAsync(t.网格体.ToAssetPathName(), UE.SkeletalMesh, t => {
           if (t) {
             this.Hulu.SetSkeletalMesh(t);
@@ -1134,8 +1144,9 @@ let CharacterWeaponComponent = class CharacterWeaponComponent extends EntityComp
   }
   GQr() {
     if (this.QKr?.CharacterWeapons) {
-      for (const t of this.QKr.CharacterWeapons) {
-        t.SetBuffEffectsHiddenInGame(t.WeaponHidden);
+      var t = this.Hte?.Actor.bHidden || !this.Active;
+      for (const i of this.QKr.CharacterWeapons) {
+        i.SetBuffEffectsHiddenInGame(t || i.WeaponHidden);
       }
     }
   }
@@ -1303,7 +1314,7 @@ let CharacterWeaponComponent = class CharacterWeaponComponent extends EntityComp
     }
   }
   W7c() {
-    return this.I5r?.MoveState === CharacterUnifiedStateTypes_1.ECharMoveState.Soar && this.Entity.GetComponent(59)?.CurrentSoarType !== 1;
+    return this.I5r?.MoveState === CharacterUnifiedStateTypes_1.ECharMoveState.Soar && this.Entity.GetComponent(62)?.CurrentSoarType !== 1;
   }
   UT1() {
     var t;
@@ -1320,5 +1331,5 @@ let CharacterWeaponComponent = class CharacterWeaponComponent extends EntityComp
     }
   }
 };
-CharacterWeaponComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(81)], CharacterWeaponComponent);
+CharacterWeaponComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(84)], CharacterWeaponComponent);
 exports.CharacterWeaponComponent = CharacterWeaponComponent; //# sourceMappingURL=CharacterWeaponComponent.js.map

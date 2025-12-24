@@ -35,7 +35,7 @@ class SurvivorsActivityData extends ActivityData_1.ActivityBaseData {
     var e = ConfigManager_1.ConfigManager.SurvivorsRogueConfig.GetSurvivorsActivityConfigByActivityId(this.Id);
     if (e) {
       this.ActId = e.Id;
-      this.u_m();
+      this.bfm();
       this.sx_();
       this.OKs();
       this.QSd();
@@ -105,16 +105,16 @@ class SurvivorsActivityData extends ActivityData_1.ActivityBaseData {
   set NotTipsEnterInst(t) {
     this.SaveCacheState(6, 0, 0, t ? 1 : 0);
   }
-  u_m() {
+  bfm() {
     for (const t of ConfigManager_1.ConfigManager.SurvivorsRogueConfig.GetSurvivorsTaskByActId(this.ActId)) {
-      this.c_m(t.Id);
+      this.Rfm(t.Id);
     }
   }
   RefreshRewardTaskData(t) {
     let e = this.RewardTaskMap.get(t.s5n);
-    (e = e || this.c_m(t.s5n)).Refresh(t);
+    (e = e || this.Rfm(t.s5n)).Refresh(t);
   }
-  c_m(t) {
+  Rfm(t) {
     var e = new ActivityCommonDefine_1.ActivityTaskData();
     var i = ConfigManager_1.ConfigManager.SurvivorsRogueConfig.GetSurvivorsTask(t)?.PageType ?? 0;
     e.TypeId = i;

@@ -7,20 +7,20 @@ exports.AdvanceNoticeNewEnemyTabView = undefined;
 const UE = require("ue");
 const StringUtils_1 = require("../../../../../Core/Utils/StringUtils");
 const ConfigManager_1 = require("../../../../Manager/ConfigManager");
-const VisionFetterSuitItem_1 = require("../../../Phantom/Vision/View/VisionFetterSuitItem");
 const GenericLayout_1 = require("../../../Util/Layout/GenericLayout");
 const LguiUtil_1 = require("../../../Util/LguiUtil");
 const AdvanceNoticeFetterSuitDetailItem_1 = require("./AdvanceNoticeFetterSuitDetailItem");
+const AdvanceNoticeSuitItem_1 = require("./AdvanceNoticeSuitItem");
 const AdvanceNoticeTabViewBase_1 = require("./AdvanceNoticeTabViewBase");
 class AdvanceNoticeNewEnemyTabView extends AdvanceNoticeTabViewBase_1.AdvanceNoticeTabViewBase {
   constructor() {
     super(...arguments);
-    this.HTm = undefined;
-    this.$Tm = undefined;
-    this.WTm = () => {
-      return new VisionFetterSuitItem_1.VisionFetterSuitItem();
+    this._Gm = undefined;
+    this.uGm = undefined;
+    this.cGm = () => {
+      return new AdvanceNoticeSuitItem_1.AdvanceNoticeSuitItem();
     };
-    this.QTm = () => {
+    this.dGm = () => {
       return new AdvanceNoticeFetterSuitDetailItem_1.AdvanceNoticeFetterSuitDetailItem();
     };
   }
@@ -29,8 +29,8 @@ class AdvanceNoticeNewEnemyTabView extends AdvanceNoticeTabViewBase_1.AdvanceNot
   }
   async OnBeforeStartAsync() {
     this.GetText(19)?.ShowTextNew("Advertising_EnemyTips");
-    this.HTm = new GenericLayout_1.GenericLayout(this.GetLayoutBase(15), this.WTm);
-    this.$Tm = new GenericLayout_1.GenericLayout(this.GetLayoutBase(18), this.QTm);
+    this._Gm = new GenericLayout_1.GenericLayout(this.GetLayoutBase(15), this.cGm);
+    this.uGm = new GenericLayout_1.GenericLayout(this.GetLayoutBase(18), this.dGm);
     return super.OnBeforeStartAsync();
   }
   RefreshView() {
@@ -52,7 +52,7 @@ class AdvanceNoticeNewEnemyTabView extends AdvanceNoticeTabViewBase_1.AdvanceNot
     var i = this.ViewModel.CurrentSubTabId;
     var i = ConfigManager_1.ConfigManager.AdvanceNoticeConfig.GetAdvertisingTabEnemyById(i);
     this.SetTextureByPath(i.MainPic, this.GetTexture(0));
-    this.wfm(i);
+    this.Bym(i);
     this.GetItem(12).SetUIActive(true);
     this.GetText(11).SetUIActive(true);
     this.GetItem(13).SetUIActive(false);
@@ -68,12 +68,12 @@ class AdvanceNoticeNewEnemyTabView extends AdvanceNoticeTabViewBase_1.AdvanceNot
     var i = this.ViewModel.CurrentSubTabId;
     var i = ConfigManager_1.ConfigManager.AdvanceNoticeConfig.GetAdvertisingTabEnemyById(i);
     this.SetTextureByPath(i.MainPic, this.GetTexture(0));
-    this.wfm(i);
+    this.Bym(i);
     var t = [];
-    for (const e of i.VisionFetterList) {
-      t.push(ConfigManager_1.ConfigManager.PhantomBattleConfig.GetFetterGroupById(e));
+    for (const e of i.VisionFetterIconList) {
+      t.push(e);
     }
-    this.HTm.RefreshByData(t);
+    this._Gm.RefreshByData(t);
     this.GetItem(12).SetUIActive(true);
     this.GetText(11).SetUIActive(true);
     this.GetItem(13).SetUIActive(true);
@@ -91,7 +91,7 @@ class AdvanceNoticeNewEnemyTabView extends AdvanceNoticeTabViewBase_1.AdvanceNot
     var t;
     var e = this.ViewModel.CurrentSubTabId;
     var e = ConfigManager_1.ConfigManager.AdvanceNoticeConfig.GetAdvertisingTabEnemyById(e);
-    this.wfm(e);
+    this.Bym(e);
     this.SetSpriteByPath(e.SuitCoreSprite, this.GetSprite(5), false);
     this.SetSpriteByPath(e.SuitCoreBgSprite, this.GetSprite(6), false);
     this.SetTextureByPath(e.SuitOuterBgTexture, this.GetTexture(7));
@@ -112,13 +112,13 @@ class AdvanceNoticeNewEnemyTabView extends AdvanceNoticeTabViewBase_1.AdvanceNot
       };
       r.push(h);
     }
-    this.$Tm.RefreshByData(r);
+    this.uGm.RefreshByData(r);
     this.GetItem(12).SetUIActive(false);
     this.GetText(11).SetUIActive(false);
     this.GetLayoutBase(18).RootUIComp.SetUIActive(true);
     this.GetText(19)?.SetUIActive(false);
   }
-  wfm(i) {
+  Bym(i) {
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), i.SubTitle);
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), i.Title);
     if (StringUtils_1.StringUtils.IsEmpty(i.Description)) {

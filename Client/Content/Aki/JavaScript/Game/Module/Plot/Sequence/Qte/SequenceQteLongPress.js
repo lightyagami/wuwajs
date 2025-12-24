@@ -14,9 +14,6 @@ class SequenceQteLongPress extends SequenceQteHandleBase_1.SequenceQteHandleBase
   OnReceiveTick(e) {
     this.Progress = MathUtils_1.MathUtils.Clamp(this.Context.CurrentProgress * SequenceQteHandleBase_1.PERCENT, 0, 1);
   }
-  CanProgressFreeze() {
-    return this.Context.DecreaseSpeed <= 0;
-  }
 }
 exports.SequenceQteLongPress = SequenceQteLongPress;
 //# sourceMappingURL=SequenceQteLongPress.js.map

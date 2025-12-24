@@ -131,7 +131,7 @@ class InstanceDungeonEntrancePanel extends WorldMapSecondaryUiLayoutA_1.WorldMap
       this.GetItem(9).SetUIActive(!this.u2o.IsFogUnlock);
       this.GetText(10).ShowTextNew("Instance_Dungeon_Rcommand_Text");
       e = this.UpdateQuickGoto();
-      this.ConfirmButton.SetActive(!e);
+      this.LayoutContext?.SetConfirmBtnActive(!e);
     }
   }
   x2o() {

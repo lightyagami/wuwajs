@@ -30,5 +30,7 @@ exports.INVALID_TRIGGER_HANDLE = exports.ETriggerEvent = undefined;
   r[r.BuffAddFailureTrigger = 21] = "BuffAddFailureTrigger";
   r[r.ShieldTrigger = 22] = "ShieldTrigger";
   r[r.ShowTargetTrigger = 23] = "ShowTargetTrigger";
+  r[r.RegionDetectTrigger = 24] = "RegionDetectTrigger";
+  r[r.BreakWeaknessTrigger = 25] = "BreakWeaknessTrigger";
 })(ETriggerEvent = exports.ETriggerEvent ||= {});
 exports.INVALID_TRIGGER_HANDLE = -1; //# sourceMappingURL=TriggerType.js.map

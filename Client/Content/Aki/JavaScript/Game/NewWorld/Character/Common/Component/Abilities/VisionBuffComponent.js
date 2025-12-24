@@ -1,28 +1,29 @@
 "use strict";
 
-var __decorate = this && this.__decorate || function (t, e, o, s) {
-  var i;
+var __decorate = this && this.__decorate || function (t, e, o, i) {
+  var s;
   var r = arguments.length;
-  var f = r < 3 ? e : s === null ? s = Object.getOwnPropertyDescriptor(e, o) : s;
+  var n = r < 3 ? e : i === null ? i = Object.getOwnPropertyDescriptor(e, o) : i;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    f = Reflect.decorate(t, e, o, s);
+    n = Reflect.decorate(t, e, o, i);
   } else {
-    for (var n = t.length - 1; n >= 0; n--) {
-      if (i = t[n]) {
-        f = (r < 3 ? i(f) : r > 3 ? i(e, o, f) : i(e, o)) || f;
+    for (var f = t.length - 1; f >= 0; f--) {
+      if (s = t[f]) {
+        n = (r < 3 ? s(n) : r > 3 ? s(e, o, n) : s(e, o)) || n;
       }
     }
   }
-  if (r > 3 && f) {
-    Object.defineProperty(e, o, f);
+  if (r > 3 && n) {
+    Object.defineProperty(e, o, n);
   }
-  return f;
+  return n;
 };
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.VisionBuffComponent = undefined;
 const RegisterComponent_1 = require("../../../../../../Core/Entity/RegisterComponent");
+const PhantomUtil_1 = require("../../../../../Module/Phantom/PhantomUtil");
 const CombatLog_1 = require("../../../../../Utils/CombatLog");
 const CharacterBuffComponent_1 = require("./CharacterBuffComponent");
 let VisionBuffComponent = class VisionBuffComponent extends CharacterBuffComponent_1.CharacterBuffComponent {
@@ -32,17 +33,16 @@ let VisionBuffComponent = class VisionBuffComponent extends CharacterBuffCompone
   }
   h2r() {
     var t;
-    var e;
     if (this.a2r !== undefined) {
       return this.a2r;
     } else {
-      return (e = this.Entity.GetComponent(56)?.GetAttributeHolder()) !== this.Entity && ((e = e?.CheckGetComponent(43)) && (t = e.GetVisionId(), e = e.GetVisionData(t), this.a2r = e?.buff是否转移 === true), this.a2r ?? false);
+      return !!(t = this.Entity.GetComponent(59)?.GetAttributeHolder()) && t !== this.Entity && ((t = this.CreatureDataComponent.GetVisionComponent()) && (t = t.VisionId, t = PhantomUtil_1.PhantomUtil.GetVisionData(t), this.a2r = t?.buff是否转移 === true), this.a2r ?? false);
     }
   }
   AddBuff(t, e) {
     var o;
     if (this.CreatureDataId !== e.InstigatorId && this.h2r()) {
-      if ((o = this.Entity.GetComponent(56)?.GetAttributeHolder()?.GetComponent(178)) && o !== this) {
+      if ((o = this.Entity.GetComponent(59)?.GetAttributeHolder()?.GetComponent(183)) && o !== this) {
         o.AddBuff(t, e);
       } else {
         CombatLog_1.CombatLog.Error("Buff", this.Entity, "添加幻象buff时无法获取到合法的召唤者", ["buffId", t], ["reason", e?.Reason]);
@@ -52,10 +52,10 @@ let VisionBuffComponent = class VisionBuffComponent extends CharacterBuffCompone
     }
   }
   RemoveBuff(t, e, o) {
-    var s;
+    var i;
     if (this.h2r()) {
-      if ((s = this.Entity.GetComponent(56)?.GetAttributeHolder()?.GetComponent(178)) && s !== this) {
-        s.RemoveBuff(t, e, o);
+      if ((i = this.Entity.GetComponent(59)?.GetAttributeHolder()?.GetComponent(183)) && i !== this) {
+        i.RemoveBuff(t, e, o);
       } else {
         CombatLog_1.CombatLog.Error("Buff", this.Entity, "移除幻象buff时无法获取到合法的召唤者", ["buffId", t], ["reason", o]);
       }
@@ -66,12 +66,12 @@ let VisionBuffComponent = class VisionBuffComponent extends CharacterBuffCompone
     var o;
     if (this.CreatureDataId === e || !this.h2r()) {
       return this;
-    } else if ((o = this.Entity.GetComponent(56)?.GetAttributeHolder()?.GetComponent(178)) && o !== this) {
+    } else if ((o = this.Entity.GetComponent(59)?.GetAttributeHolder()?.GetComponent(183)) && o !== this) {
       return o.GetBuffApplyTarget(t, e);
     } else {
       return undefined;
     }
   }
 };
-VisionBuffComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(180)], VisionBuffComponent);
+VisionBuffComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(185)], VisionBuffComponent);
 exports.VisionBuffComponent = VisionBuffComponent; //# sourceMappingURL=VisionBuffComponent.js.map

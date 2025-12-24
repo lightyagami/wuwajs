@@ -17,13 +17,12 @@ class MediumItemGridElementComponent extends MediumItemGridComponent_1.MediumIte
   OnRefresh(e) {
     var t;
     var n;
-    var i;
-    if (e === undefined || !(t = ConfigManager_1.ConfigManager.CommonConfig.GetElementConfig(e)) || (n = t.Icon5) === "" || n.length === 0) {
+    if (e === undefined || !(e = ConfigManager_1.ConfigManager.CommonConfig.GetElementConfig(e)) || (t = e.Icon5) === "" || t.length === 0) {
       this.SetActive(false);
     } else {
-      i = this.GetTexture(0);
-      this.SetElementIcon(n, i, e);
-      i.SetColor(UE.Color.FromHex(t.ElementColor));
+      n = this.GetTexture(0);
+      this.SetTextureShowUntilLoaded(t, n);
+      n.SetColor(UE.Color.FromHex(e.ElementColor));
       this.SetActive(true);
     }
   }

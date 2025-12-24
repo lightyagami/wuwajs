@@ -21,7 +21,7 @@ class RoleViewViewModel {
     this.RoleStatePlayContextOnHide = undefined;
     this.NeedShowOnViewPlayingStartSequence = false;
     this.NeedHideOnViewPlayingCloseSequence = false;
-    this.oHd = false;
+    this.hHd = false;
     this.Nlo = 0;
     this.FadeInCurveId = "None";
     this.FadeOutCurveId = "None";
@@ -34,8 +34,8 @@ class RoleViewViewModel {
     var i;
     var o;
     if (this.IsNeedLoadRole) {
-      if (!this.TsUiSceneRoleActor && !this.oHd) {
-        this.oHd = true;
+      if (!this.TsUiSceneRoleActor && !this.hHd) {
+        this.hHd = true;
         this.TsUiSceneRoleActor = UiSceneManager_1.UiSceneManager.InitRoleSystemRoleActor(1);
         o = ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(this.RoleId);
         await RoleController_1.RoleController.RefreshUiSceneRoleActorAsync(this.TsUiSceneRoleActor, this.RoleId, o.GetRoleSkinId());
@@ -55,7 +55,7 @@ class RoleViewViewModel {
     this.InitRoleActor().then(() => {
       e?.();
     });
-    this.vWd();
+    this.EWd();
     this.TsUiSceneRoleActor.Model?.CheckGetComponent(1)?.SetTransformByTag("RoleCase");
   }
   ShowActor() {
@@ -79,7 +79,7 @@ class RoleViewViewModel {
       RoleController_1.RoleController.PlayRoleMontage(this.RoleStatePlayContextOnHide.RoleState, this.RoleStatePlayContextOnHide.ReLoop, this.RoleStatePlayContextOnHide.ReLoopFromLoopToStart, this.RoleStatePlayContextOnHide.WaitLaseStateEnd);
     }
   }
-  vWd() {
+  EWd() {
     var e = UiSceneManager_1.UiSceneManager.GetActorByTag("RoleFloorCase");
     if (e) {
       this.Nlo = EffectUtil_1.EffectUtil.SpawnUiEffect("RoleSystemFloorEffect", "[RoleRootView.LoadFloorEffect]", e.D_GetTransform(), new EffectContext_1.EffectContext(undefined, e));
@@ -94,7 +94,7 @@ class RoleViewViewModel {
     this.TsUiSceneRoleActor = undefined;
     UiSceneManager_1.UiSceneManager.ClearUiSequenceFrame();
     this.IsNeedLoadRole = true;
-    this.oHd = false;
+    this.hHd = false;
   }
 }
 exports.RoleViewViewModel = RoleViewViewModel;

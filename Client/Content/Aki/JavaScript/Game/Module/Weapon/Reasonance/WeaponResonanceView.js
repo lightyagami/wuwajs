@@ -33,8 +33,8 @@ class WeaponResonanceView extends UiTabViewBase_1.UiTabViewBase {
     this.DOo = 0;
     this.N2i = undefined;
     this.O2i = undefined;
-    this.EHd = false;
-    this.IHd = undefined;
+    this.RHd = false;
+    this.wHd = undefined;
     this.ZOo = (e, t) => {
       var i;
       if (e === this.DOo) {
@@ -43,8 +43,8 @@ class WeaponResonanceView extends UiTabViewBase_1.UiTabViewBase {
         WeaponController_1.WeaponController.PlayWeaponRenderingMaterial("WeaponResonanceUpMaterialController", this.N2i, this.O2i);
         i = this.N2i.Model;
         UiModelUtil_1.UiModelUtil.PlayEffectAtRootComponent(i, "WeaponResonanceUpEffect");
-        if (this.EHd) {
-          this.THd();
+        if (this.RHd) {
+          this.LHd();
         } else {
           this.zOo.ClearSelectData();
         }
@@ -61,7 +61,7 @@ class WeaponResonanceView extends UiTabViewBase_1.UiTabViewBase {
       this.pmt();
     };
     this.eko = () => {
-      const i = this.bHd();
+      const i = this.PHd();
       if (i) {
         if (this.B1o) {
           var t = i.IncId;
@@ -114,13 +114,13 @@ class WeaponResonanceView extends UiTabViewBase_1.UiTabViewBase {
   }
   OnStart() {
     this.DOo = this.ExtraParams;
-    if (this.RHd().MaterialPlaceType === 1) {
-      this.EHd = true;
+    if (this.AHd().MaterialPlaceType === 1) {
+      this.RHd = true;
     }
-    if (this.EHd) {
-      this.IHd = new MediumItemGrid_1.MediumItemGrid();
-      this.IHd.Initialize(this.GetItem(5).GetOwner());
-      this.THd();
+    if (this.RHd) {
+      this.wHd = new MediumItemGrid_1.MediumItemGrid();
+      this.wHd.Initialize(this.GetItem(5).GetOwner());
+      this.LHd();
     } else {
       this.iko();
     }
@@ -147,7 +147,7 @@ class WeaponResonanceView extends UiTabViewBase_1.UiTabViewBase {
   }
   rko(e, t) {
     let i = 0;
-    if (this.EHd || this.zOo.GetCurrentSelectedData()) {
+    if (this.RHd || this.zOo.GetCurrentSelectedData()) {
       n = ModelManager_1.ModelManager.WeaponModel.GetWeaponDataByIncId(this.DOo).GetWeaponConfig();
       i = ModelManager_1.ModelManager.WeaponModel.GetResonanceNeedMoney(n.ResonId, e, t);
     }
@@ -213,8 +213,8 @@ class WeaponResonanceView extends UiTabViewBase_1.UiTabViewBase {
   tko() {
     var e = ModelManager_1.ModelManager.WeaponModel.GetWeaponDataByIncId(this.DOo);
     var t = e.GetResonanceLevel();
-    var i = this.bHd();
-    if (this.EHd || !i || i.IncId === 0) {
+    var i = this.PHd();
+    if (this.RHd || !i || i.IncId === 0) {
       return t + 1;
     } else {
       t = ModelManager_1.ModelManager.WeaponModel.GetWeaponDataByIncId(i.IncId).GetResonanceLevel() + e.GetResonanceLevel();
@@ -225,11 +225,11 @@ class WeaponResonanceView extends UiTabViewBase_1.UiTabViewBase {
       }
     }
   }
-  bHd() {
+  PHd() {
     var e;
-    if (this.EHd) {
+    if (this.RHd) {
       return {
-        ItemId: e = this.RHd().AlternativeConsume[0],
+        ItemId: e = this.AHd().AlternativeConsume[0],
         IncId: 0,
         Count: ModelManager_1.ModelManager.InventoryModel?.GetCommonItemCount(e) ?? 0,
         SelectedCount: 1
@@ -238,13 +238,13 @@ class WeaponResonanceView extends UiTabViewBase_1.UiTabViewBase {
       return this.zOo.GetCurrentSelectedData();
     }
   }
-  RHd() {
+  AHd() {
     var e = ModelManager_1.ModelManager.WeaponModel.GetWeaponDataByIncId(this.DOo);
     var t = e.GetWeaponConfig();
     return ConfigManager_1.ConfigManager.WeaponConfig.GetWeaponResonanceConfig(t.ResonId, e.GetResonanceLevel());
   }
-  THd() {
-    const e = this.bHd().ItemId;
+  LHd() {
+    const e = this.PHd().ItemId;
     var t = {
       Type: 4,
       ItemConfigId: e
@@ -255,9 +255,9 @@ class WeaponResonanceView extends UiTabViewBase_1.UiTabViewBase {
       t.BottomTextId = "Text_ItemNotEnoughText_Text";
     }
     t.BottomTextParameter = [i, 1];
-    this.IHd.Apply(t);
-    this.IHd.BindOnCanExecuteChange(() => false);
-    this.IHd.BindOnExtendToggleClicked(() => {
+    this.wHd.Apply(t);
+    this.wHd.BindOnCanExecuteChange(() => false);
+    this.wHd.BindOnExtendToggleClicked(() => {
       ControllerHolder_1.ControllerHolder.ItemController.OpenItemTipsByItemId(e);
     });
   }

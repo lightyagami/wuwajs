@@ -91,7 +91,8 @@ class SceneObjectWaterEffect {
         const r = i.HitResult;
         var h = r.GetHitCount();
         for (let t = 0; t < h; t++) {
-          var o = r.Components.Get(t).GetCollisionProfileName();
+          var o = r.Components.Get(t);
+          var o = UE.KuroCollisionLibrary.GetCollisionProfileName(o, t);
           if (RenderConfig_1.RenderConfig.WaterCollisionProfileName.op_Equality(o)) {
             this.WaterHeight = r.ImpactPointZ_Array.Get(t);
             this.TempPosition.DeepCopy(this.TempVector);

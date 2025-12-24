@@ -12,15 +12,15 @@ const ServerMarkItemView_1 = require("./ServerMarkItemView");
 class HonamiScanItemMarkItemView extends ServerMarkItemView_1.ServerMarkItemView {
   constructor(e) {
     super(e);
-    this.Gmm = new HonamiNiagaraPanel_1.HonamiNiagaraPanel();
+    this.Xvm = new HonamiNiagaraPanel_1.HonamiNiagaraPanel();
     this.fRi = () => {
       if (this.Holder?.MapType === 2) {
         if (ModelManager_1.ModelManager.HonamiStoryModel.ScanMarkItemIds.has(this.Holder.MarkId)) {
-          this.Gmm.SetUiActive(true);
+          this.Xvm.SetUiActive(true);
           ModelManager_1.ModelManager.HonamiStoryModel.ScanMarkItemIds.delete(this.Holder.MarkId);
-          this.Gmm.SetNiagaraAndShow("NS_Fx_LGUI_HonamiStory_Map_Burst");
+          this.Xvm.SetNiagaraAndShow("NS_Fx_LGUI_HonamiStory_Map_Burst");
         } else {
-          this.Gmm.SetUiActive(false);
+          this.Xvm.SetUiActive(false);
         }
       }
     };
@@ -32,7 +32,7 @@ class HonamiScanItemMarkItemView extends ServerMarkItemView_1.ServerMarkItemView
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldMapViewOpened, this.fRi);
   }
   async OnBeforeStartAsync() {
-    await this.Gmm.CreateByResourceIdAsync("UiItem_MapMarkActiveScan", this.RootItem);
+    await this.Xvm.CreateByResourceIdAsync("UiItem_MapMarkActiveScan", this.RootItem);
   }
   OnIconPathChanged(e) {
     super.OnIconPathChanged(e);

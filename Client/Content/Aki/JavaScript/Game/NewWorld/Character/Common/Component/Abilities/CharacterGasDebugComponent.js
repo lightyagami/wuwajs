@@ -3,21 +3,21 @@
 var CharacterGasDebugComponent_1;
 var __decorate = this && this.__decorate || function (t, e, r, a) {
   var i;
-  var n = arguments.length;
-  var o = n < 3 ? e : a === null ? a = Object.getOwnPropertyDescriptor(e, r) : a;
+  var o = arguments.length;
+  var n = o < 3 ? e : a === null ? a = Object.getOwnPropertyDescriptor(e, r) : a;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    o = Reflect.decorate(t, e, r, a);
+    n = Reflect.decorate(t, e, r, a);
   } else {
     for (var s = t.length - 1; s >= 0; s--) {
       if (i = t[s]) {
-        o = (n < 3 ? i(o) : n > 3 ? i(e, r, o) : i(e, r)) || o;
+        n = (o < 3 ? i(n) : o > 3 ? i(e, r, n) : i(e, r)) || n;
       }
     }
   }
-  if (n > 3 && o) {
-    Object.defineProperty(e, r, o);
+  if (o > 3 && n) {
+    Object.defineProperty(e, r, n);
   }
-  return o;
+  return n;
 };
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -100,7 +100,7 @@ const MAX_DEBUG_STRING_NUMS = 50;
   t[t.MOVE_MAX = 7] = "MOVE_MAX";
 })(EMovementModeName = EMovementModeName || {});
 class OperateRecordNode extends Json_1.JsonObjBase {
-  constructor(t, e, r, a = false, i = "", n = 0, o = 0, s = 0, h = 0) {
+  constructor(t, e, r, a = false, i = "", o = 0, n = 0, s = 0, h = 0) {
     super();
     this.TimeLine = "";
     this.Actor = "";
@@ -116,8 +116,8 @@ class OperateRecordNode extends Json_1.JsonObjBase {
     this.Action = r;
     this.Press = a;
     this.Key = i;
-    this.TimeInterval = n;
-    this.PositionX = o;
+    this.TimeInterval = o;
+    this.PositionX = n;
     this.PositionY = s;
     this.PositionZ = h;
   }
@@ -183,16 +183,16 @@ class RecordDamageSum {
   }
 }
 class DamageRecordDsp {
-  constructor(t, e, r, a, i, n) {
+  constructor(t, e, r, a, i, o) {
     this.TimeStamp = t;
     this.DamageValue = e;
     this.QteBegin = r;
     this.InGame = a;
     this.OutGame = i;
-    this.OutGameSkill = n;
+    this.OutGameSkill = o;
   }
 }
-const attributeIdArray = [EAttributeId.Proto_Life, EAttributeId.l5n, EAttributeId.Proto_Atk, EAttributeId.Proto_Crit, EAttributeId.Proto_CritDamage, EAttributeId.Proto_Def, EAttributeId.Proto_EnergyEfficiency, EAttributeId.Proto_EnergyMax, EAttributeId.Proto_Energy, EAttributeId.Proto_AutoAttackSpeed, EAttributeId.Proto_CastAttackSpeed, EAttributeId.Proto_DamageChangeNormalSkill, EAttributeId.Proto_DamageChange, EAttributeId.Proto_DamageChangePhantom, EAttributeId.Proto_DamageChangeAuto, EAttributeId.Proto_DamageChangeCast, EAttributeId.Proto_DamageChangeUltra, EAttributeId.Proto_DamageChangeQte, EAttributeId.Proto_DamageChangePhys, EAttributeId.Proto_DamageChangeElement1, EAttributeId.Proto_DamageChangeElement2, EAttributeId.Proto_DamageChangeElement3, EAttributeId.Proto_DamageChangeElement4, EAttributeId.Proto_DamageChangeElement5, EAttributeId.Proto_DamageChangeElement6, EAttributeId.Proto_DamageResistancePhys, EAttributeId.Proto_DamageResistanceElement1, EAttributeId.Proto_DamageResistanceElement2, EAttributeId.Proto_DamageResistanceElement3, EAttributeId.Proto_DamageResistanceElement4, EAttributeId.Proto_DamageResistanceElement5, EAttributeId.Proto_DamageResistanceElement6, EAttributeId.Proto_HealChange, EAttributeId.Proto_HealedChange, EAttributeId.Proto_DamageReduce, EAttributeId.Proto_DamageReducePhys, EAttributeId.Proto_DamageReduceElement1, EAttributeId.Proto_DamageReduceElement2, EAttributeId.Proto_DamageReduceElement3, EAttributeId.Proto_DamageReduceElement4, EAttributeId.Proto_DamageReduceElement5, EAttributeId.Proto_DamageReduceElement6, EAttributeId.Proto_ToughMax, EAttributeId.Proto_Tough, EAttributeId.Proto_ToughRecover, EAttributeId.Proto_ToughChange, EAttributeId.Proto_ToughReduce, EAttributeId.Proto_RageMax, EAttributeId.Proto_Rage, EAttributeId.Proto_RageRecover, EAttributeId.Proto_RagePunishTime, EAttributeId.Proto_RageChange, EAttributeId.Proto_RageReduce, EAttributeId.Proto_HardnessMax, EAttributeId.Proto_Hardness, EAttributeId.Proto_HardnessRecover, EAttributeId.Proto_HardnessPunishTime, EAttributeId.Proto_HardnessChange, EAttributeId.Proto_HardnessReduce];
+const attributeIdArray = [EAttributeId.Proto_Life, EAttributeId.l5n, EAttributeId.Proto_Atk, EAttributeId.Proto_Crit, EAttributeId.Proto_CritDamage, EAttributeId.Proto_Def, EAttributeId.Proto_EnergyEfficiency, EAttributeId.Proto_EnergyMax, EAttributeId.Proto_Energy, EAttributeId.Proto_AutoAttackSpeed, EAttributeId.Proto_CastAttackSpeed, EAttributeId.Proto_DamageChangeNormalSkill, EAttributeId.Proto_DamageChange, EAttributeId.Proto_DamageChangePhantom, EAttributeId.Proto_DamageChangeAuto, EAttributeId.Proto_DamageChangeCast, EAttributeId.Proto_DamageChangeUltra, EAttributeId.Proto_DamageChangeQte, EAttributeId.Proto_DamageChangePhys, EAttributeId.Proto_DamageChangeElement1, EAttributeId.Proto_DamageChangeElement2, EAttributeId.Proto_DamageChangeElement3, EAttributeId.Proto_DamageChangeElement4, EAttributeId.Proto_DamageChangeElement5, EAttributeId.Proto_DamageChangeElement6, EAttributeId.Proto_DamageResistancePhys, EAttributeId.Proto_DamageResistanceElement1, EAttributeId.Proto_DamageResistanceElement2, EAttributeId.Proto_DamageResistanceElement3, EAttributeId.Proto_DamageResistanceElement4, EAttributeId.Proto_DamageResistanceElement5, EAttributeId.Proto_DamageResistanceElement6, EAttributeId.Proto_HealChange, EAttributeId.Proto_HealedChange, EAttributeId.Proto_DamageReduce, EAttributeId.Proto_DamageReducePhys, EAttributeId.Proto_DamageReduceElement1, EAttributeId.Proto_DamageReduceElement2, EAttributeId.Proto_DamageReduceElement3, EAttributeId.Proto_DamageReduceElement4, EAttributeId.Proto_DamageReduceElement5, EAttributeId.Proto_DamageReduceElement6, EAttributeId.Proto_ToughMax, EAttributeId.Proto_Tough, EAttributeId.Proto_ToughRecover, EAttributeId.Proto_ToughChange, EAttributeId.Proto_ToughReduce, EAttributeId.Proto_RageMax, EAttributeId.Proto_Rage, EAttributeId.Proto_RageRecover, EAttributeId.Proto_RagePunishTime, EAttributeId.Proto_RageChange, EAttributeId.Proto_RageReduce, EAttributeId.Proto_HardnessMax, EAttributeId.Proto_Hardness, EAttributeId.Proto_HardnessRecover, EAttributeId.Proto_HardnessPunishTime, EAttributeId.Proto_HardnessChange, EAttributeId.Proto_HardnessReduce, EAttributeId.Proto_BreakWeaknessRatio, EAttributeId.Proto_WeaknessMastery];
 let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterGasDebugComponent extends EntityComponent_1.EntityComponent {
   constructor() {
     super(...arguments);
@@ -212,6 +212,7 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
     };
     this.rCd = new Array();
     this.BCd = new Array();
+    this.fZm = new Array();
     this.Fqr = new Array();
     this.Vqr = new Array();
     this.Hqr = (t, e, r, a, i) => {
@@ -239,22 +240,30 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
           if (i === Protocol_1.Aki.Protocol.kks.Proto_Player) {
             r.push("角色");
             r.push(a.GetPbDataId().toFixed());
-            var n = a.Valid ? a.GetRoleId() : 0;
-            var n = ConfigManager_1.ConfigManager.RoleConfig.GetBaseRoleId(n);
-            if (!n) {
+            var o = a.Valid ? a.GetRoleId() : 0;
+            var o = ConfigManager_1.ConfigManager.RoleConfig.GetBaseRoleId(o);
+            if (!o) {
               return;
             }
-            n = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(n);
-            n = n ? ConfigManager_1.ConfigManager.RoleConfig.GetRoleName(n.Name) : "";
-            r.push(n);
-          } else {
-            if (i !== Protocol_1.Aki.Protocol.kks.Proto_Monster) {
-              return;
-            }
+            o = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(o);
+            o = o ? ConfigManager_1.ConfigManager.RoleConfig.GetRoleName(o.Name) : "";
+            r.push(o);
+          } else if (i === Protocol_1.Aki.Protocol.kks.Proto_Monster) {
             r.push("怪物");
             r.push(a.GetPbDataId().toFixed());
-            n = PublicUtil_1.PublicUtil.GetConfigTextByKey(a.GetEntityTidName() ?? "");
-            r.push(n);
+            o = PublicUtil_1.PublicUtil.GetConfigTextByKey(a.GetEntityTidName() ?? "");
+            r.push(o);
+          } else {
+            if (i !== Protocol_1.Aki.Protocol.kks.HI_) {
+              return;
+            }
+            if (!CharacterGasDebugComponent_1.lXf(e)) {
+              return;
+            }
+            o = PublicUtil_1.PublicUtil.GetConfigTextByKey(a.GetEntityTidName() ?? "");
+            r.push("摩托车");
+            r.push(a.GetPbDataId().toFixed());
+            r.push(o);
           }
           r.push(t.BulletRowName);
           i = t.BulletDataMain;
@@ -262,8 +271,8 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
           r.push(t.CollisionInfo.DamageId.toString());
           a = t.BulletInitParams.SkillId;
           r.push(a ? a.toFixed() : "");
-          n = e.GetComponent(39);
-          i = a ? n.GetSkillInfo(a) : undefined;
+          o = e.GetComponent(40);
+          i = a ? o.GetSkillInfo(a) : undefined;
           r.push(i ? ESkillGenreName[i.SkillGenre] : "");
           e = t.Entity.Id;
           CharacterGasDebugComponent_1.zqr.set(e, r);
@@ -274,29 +283,29 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
     this.RecordMove = (t, e, r) => {
       var a;
       var i;
-      var n;
+      var o;
       if (CharacterGasDebugComponent_1.$qr && t?.Valid && this.Yqr(this.Entity)) {
         a = this.Entity;
         (i = new Array()).push(CharacterGasDebugComponent_1.SecondsSinceStartup());
         i.push(CharacterGasDebugComponent_1.Jqr(Date.now()));
-        if (a?.GetComponent(98)) {
+        if (a?.GetComponent(101)) {
           i.push("角色");
         } else {
           i.push("怪物");
         }
-        n = a?.CheckGetComponent(0).GetPbDataId();
-        i.push(n.toFixed(0));
-        n = a?.GetComponent(3).Actor.GetName();
-        i.push(n);
+        o = a?.CheckGetComponent(0).GetPbDataId();
+        i.push(o.toFixed(0));
+        o = a?.GetComponent(3).Actor.GetName();
+        i.push(o);
         i.push(e.toString());
         i.push(ESkillGenreName[r]);
-        n = a.GetComponent(177);
-        i.push(n.GetCurrentValue(EAttributeId.Proto_Atk).toFixed());
-        i.push(n.GetCurrentValue(EAttributeId.Proto_Crit).toFixed());
-        i.push(n.GetCurrentValue(EAttributeId.Proto_CritDamage).toFixed());
-        i.push(n.GetCurrentValue(EAttributeId.Proto_Life).toFixed());
-        i.push(n.GetCurrentValue(EAttributeId.Proto_Def).toFixed());
-        i.push(n.GetCurrentValue(EAttributeId.Proto_DamageChange).toFixed());
+        o = a.GetComponent(182);
+        i.push(o.GetCurrentValue(EAttributeId.Proto_Atk).toFixed());
+        i.push(o.GetCurrentValue(EAttributeId.Proto_Crit).toFixed());
+        i.push(o.GetCurrentValue(EAttributeId.Proto_CritDamage).toFixed());
+        i.push(o.GetCurrentValue(EAttributeId.Proto_Life).toFixed());
+        i.push(o.GetCurrentValue(EAttributeId.Proto_Def).toFixed());
+        i.push(o.GetCurrentValue(EAttributeId.Proto_DamageChange).toFixed());
         CharacterGasDebugComponent_1.eGr.push(i.join(","));
         CharacterGasDebugComponent_1.tGr(a, t.Entity, r);
       }
@@ -304,8 +313,8 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
     this.RecordInpuuAction = (e, r, a) => {
       if (CharacterGasDebugComponent_1.$qr && ESkillNeedRecordName[e] !== undefined && this.Yqr(this.Entity) && this.Entity?.GetComponent(3).Active) {
         var i = this.Entity;
-        if (i?.GetComponent(98)) {
-          var n = CharacterGasDebugComponent_1.LGr(i)?.Name ?? "unknown";
+        if (i?.GetComponent(101)) {
+          var o = CharacterGasDebugComponent_1.LGr(i)?.Name ?? "unknown";
           var i = i.GetComponent(1);
           let t = new UE.Vector(0, 0, 0);
           if (i) {
@@ -313,7 +322,7 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
             t = new UE.Vector(i.X, i.Y, i.Z);
           }
           if (r) {
-            CharacterGasDebugComponent_1.KQu.set(e, new OperateRecordNode(CharacterGasDebugComponent_1.SecondsSinceStartupFix(), n, e, r, a.KeyName.toString(), t.X, t.Y, t.Z));
+            CharacterGasDebugComponent_1.KQu.set(e, new OperateRecordNode(CharacterGasDebugComponent_1.SecondsSinceStartupFix(), o, e, r, a.KeyName.toString(), t.X, t.Y, t.Z));
           } else if (i = CharacterGasDebugComponent_1.KQu.get(e)) {
             i.TimeInterval = Number(CharacterGasDebugComponent_1.SecondsSinceStartupFix()) - Number(i.TimeLine);
             CharacterGasDebugComponent_1.V9u.push(new OperateRecordNode(i.TimeLine, i.Actor, i.Action, i.Press, i.Key, Number(i.TimeInterval.toFixed(2)), t.X, t.Y, t.Z));
@@ -330,7 +339,7 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
     this.er1 = new Map();
     this.tr1 = 0;
     this.oGr = (t, e) => {
-      var e = this.Entity.GetComponent(39)?.GetSkillInfo(e);
+      var e = this.Entity.GetComponent(40)?.GetSkillInfo(e);
       CharacterGasDebugComponent_1.rGr ||= new Map();
       var r = this.Entity.Id;
       if (e.SkillGenre === 4) {
@@ -399,7 +408,7 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
     return this.iCd.join(" ");
   }
   GetTagDebugStrings() {
-    return this.Entity.GetComponent(209)?.TagContainer.GetDebugString() ?? "找不到tag组件";
+    return this.Entity.GetComponent(215)?.TagContainer.GetDebugString() ?? "找不到tag组件";
   }
   AddSkillLogString(t, ...e) {
     if (this.rCd.length >= MAX_DEBUG_STRING_NUMS) {
@@ -458,6 +467,33 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
   ClearSkillBehaviorLogString() {
     this.BCd.length = 0;
   }
+  AddBulletDebugLogString(t, ...e) {
+    if (this.fZm.length >= MAX_DEBUG_STRING_NUMS) {
+      this.fZm.shift();
+    }
+    let r = "#";
+    r += t;
+    if (e.length > 0) {
+      r += " ";
+      for (const a of e) {
+        r += `[${a[0]}: ${a[1]}]`;
+      }
+    }
+    this.fZm.push(r);
+  }
+  GetBulletLogString(t) {
+    var e = [...t.matchAll(/[0-9]+/g)].map(t => t[0] ?? "");
+    var r = [];
+    for (const a of this.fZm) {
+      if (!(e.length > 0) || !!e.some(t => a.includes(t))) {
+        r.push(a);
+      }
+    }
+    return r.join("\n");
+  }
+  ClearBulletLogString() {
+    this.fZm.length = 0;
+  }
   GetTagContainerDebugString(e) {
     var r = e.GameplayTags?.Num() ?? 0;
     if (r <= 0) {
@@ -471,7 +507,7 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
   }
   GetBuffEffectDebugString(t) {
     let e = "";
-    for (const r of this.Entity.GetComponent(178).BuffEffectManager.GetAllEffects()) {
+    for (const r of this.Entity.GetComponent(183).BuffEffectManager.GetAllEffects()) {
       if (this.cGr(t, String(r.BuffId))) {
         e += `${r.constructor.name} buffId:${r.BuffId} handle:${r.ActiveHandleId}\n`;
       }
@@ -484,22 +520,22 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
     var r;
     var a;
     var i = [...t.matchAll(/[0-9]+/g)].map(t => t[0] ?? "");
-    var t = this.Entity.GetComponent(75);
+    var t = this.Entity.GetComponent(78);
     if (t) {
-      for (const [, n] of t.GetDebugShieldInfo()) {
-        if (!(i.length > 0) || !!i.some(t => String(n.TemplateId).startsWith(t))) {
-          e = n.ShieldValue;
-          r = n.Priority;
-          a = n.TemplateId;
+      for (const [, o] of t.GetDebugShieldInfo()) {
+        if (!(i.length > 0) || !!i.some(t => String(o.TemplateId).startsWith(t))) {
+          e = o.ShieldValue;
+          r = o.Priority;
+          a = o.TemplateId;
           this.Fqr.push(`Shield magnitude: ${e} priority: ${r} templateId: ${a}`);
         }
       }
     }
-    t = this.Entity.GetComponent(177)?.GetLockDebugString(i) ?? "";
+    t = this.Entity.GetComponent(182)?.GetLockDebugString(i) ?? "";
     return "\n\nShields:\n" + this.Fqr.join("\n") + t;
   }
   GetAttributeDebugStrings() {
-    var e = this.Entity.GetComponent(177);
+    var e = this.Entity.GetComponent(182);
     if (!e) {
       return "Invalid";
     }
@@ -507,13 +543,13 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
     for (let t = 1; t < CharacterAttributeTypes_1.ATTRIBUTE_ID_MAX; t++) {
       var a = e.GetBaseValue(t);
       var i = e.GetCurrentValue(t);
-      var n = Protocol_1.Aki.Protocol.Vks[t];
+      var o = Protocol_1.Aki.Protocol.Vks[t];
       if (CharacterAttributeTypes_1.stateAttributeIds.has(t) || i === a) {
-        r += `#${t} ${n}	= ${i.toFixed(0)}
+        r += `#${t} ${o}	= ${i.toFixed(0)}
 `;
       } else {
-        r += a < i ? `#${t} ${n}	= ${i.toFixed(0)}(+${(i - a).toFixed(0)})
-` : `#${t} ${n}	= ${i.toFixed(0)}(${(i - a).toFixed(0)})
+        r += a < i ? `#${t} ${o}	= ${i.toFixed(0)}(+${(i - a).toFixed(0)})
+` : `#${t} ${o}	= ${i.toFixed(0)}(${(i - a).toFixed(0)})
 `;
       }
     }
@@ -521,7 +557,7 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
   }
   GetAllAttributeDebugStrings() {
     this.Vqr.length = 0;
-    var e = this.Entity.GetComponent(177);
+    var e = this.Entity.GetComponent(182);
     for (let t = 1; t < CharacterAttributeTypes_1.ATTRIBUTE_ID_MAX; t++) {
       var r = e.GetBaseValue(t);
       var a = e.GetCurrentValue(t);
@@ -535,8 +571,8 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
   }
   static GetFormationAttributeDebugStrings() {
     let t = "";
-    for (const n of FormationPropertyAll_1.configFormationPropertyAll.GetConfigList()) {
-      var e = n.Id;
+    for (const o of FormationPropertyAll_1.configFormationPropertyAll.GetConfigList()) {
+      var e = o.Id;
       var r = FormationAttributeController_1.FormationAttributeController.GetValue(e);
       var a = FormationAttributeController_1.FormationAttributeController.GetMax(e);
       var i = FormationAttributeController_1.FormationAttributeController.GetSpeed(e);
@@ -546,16 +582,16 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
     return t;
   }
   GetAllAttributeDebugInfo() {
-    var a = this.Entity.GetComponent(177);
+    var a = this.Entity.GetComponent(182);
     if (!a) {
       return "Invalid";
     }
     let i = "";
-    const n = this.ServerDebugInfo?.GSs;
-    var o = new Array(CharacterAttributeTypes_1.ATTRIBUTE_ID_MAX);
-    if (n) {
-      for (const p of n) {
-        o[p.tSs] = p;
+    const o = this.ServerDebugInfo?.GSs;
+    var n = new Array(CharacterAttributeTypes_1.ATTRIBUTE_ID_MAX);
+    if (o) {
+      for (const p of o) {
+        n[p.tSs] = p;
       }
     }
     for (let r = 1; r < CharacterAttributeTypes_1.ATTRIBUTE_ID_MAX; r++) {
@@ -568,13 +604,13 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
       }
       t = h === s ? "" : `(${t})`;
       var _ = Protocol_1.Aki.Protocol.Vks[r].replace("Proto_", "");
-      const n = o[r];
-      var C = n?.y6n.toFixed(0) ?? "0";
-      let e = n ? (n.y6n - n.eSs).toFixed(0) : "0";
-      if (n && n.y6n > n.eSs) {
+      const o = n[r];
+      var C = o?.y6n.toFixed(0) ?? "0";
+      let e = o ? (o.y6n - o.eSs).toFixed(0) : "0";
+      if (o && o.y6n > o.eSs) {
         e = "+" + e;
       }
-      e = n?.y6n === n?.eSs ? "" : `(${e})`;
+      e = o?.y6n === o?.eSs ? "" : `(${e})`;
       if (CharacterAttributeTypes_1.stateAttributeIds.has(r) || h === s) {
         i += `#${r} ${_}	 C:${u} | S:${C}
 `;
@@ -596,10 +632,10 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
       var c = FormationAttributeController_1.FormationAttributeController.GetValue(r);
       var l = FormationAttributeController_1.FormationAttributeController.GetMax(r);
       var g = FormationAttributeController_1.FormationAttributeController.GetSpeed(r);
-      const n = e[r];
-      var f = n?.y6n.toFixed(0) ?? "???";
-      var m = n?.I6n.toFixed(0) ?? "???";
-      var b = n?.L6n.toFixed(0) ?? "???";
+      const o = e[r];
+      var f = o?.y6n.toFixed(0) ?? "???";
+      var m = o?.I6n.toFixed(0) ?? "???";
+      var b = o?.L6n.toFixed(0) ?? "???";
       i += `#${r}	 C:${c?.toFixed(0)}/${l?.toFixed(0)} (${g?.toFixed(0)}/s) | S:${f}/${m} (${b}/s)
 `;
     }
@@ -625,7 +661,7 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
   }
   DebugResetBaseValue(t, e) {
     if (t >= EAttributeId.Proto_Lv && t < CharacterAttributeTypes_1.ATTRIBUTE_ID_MAX) {
-      this.Entity.GetComponent(177).SetBaseValue(t, e);
+      this.Entity.GetComponent(182).SetBaseValue(t, e);
     }
   }
   static get IsServerLogOff() {
@@ -692,17 +728,17 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
     UE.KuroStaticLibrary.SaveStringToFile(r, UE.BlueprintPathsLibrary.ProjectSavedDir() + this.XQu + "OperateRecord" + a.toString() + ".json", true);
     var i = new Array();
     var r = "X秒,当前时间,对象,对象ID,对象名称,子弹ID,子弹名称,伤害ID,技能ID,技能类型,子弹是否命中\n";
-    for (const o of this.Zqr) {
-      var n = this.zqr.get(o);
-      n.push(ModelManager_1.ModelManager.BulletModel.IsBulletHit(o) ? "1" : "0");
-      i.push(n.join(","));
+    for (const n of this.Zqr) {
+      var o = this.zqr.get(n);
+      o.push(ModelManager_1.ModelManager.BulletModel.IsBulletHit(n) ? "1" : "0");
+      i.push(o.join(","));
     }
     UE.KuroStaticLibrary.SaveStringToFile(r + i.join("\n"), UE.BlueprintPathsLibrary.ProjectSavedDir() + this.Pt + "BulletRecord.csv", true);
     r = "X秒,当前时间,对象,对象ID,对象名称,伤害来源,结算ID,子弹名称,伤害值,技能ID,技能名称,唯一ID,Config ID,攻击,暴击,爆伤,生命,防御,伤害加成\n";
     UE.KuroStaticLibrary.SaveStringToFile(r + this.vGr.join("\n"), UE.BlueprintPathsLibrary.ProjectSavedDir() + this.Pt + "DamageRecord.csv", true);
-    r = "X秒,当前时间,对象,对象ID,对象名称,伤害来源,结算ID,子弹名称,伤害值,技能ID,技能名称,是否暴击,唯一ID,协奏能量,基础攻击,倍率系数,当前生效增伤,伤害加深,防御承伤系数,抗性承伤系数,实际生效防御值,共鸣能量变动,实时暴击率,实时当前生命值,实时生命值上限,实时攻击,暴击,实时暴击伤害,实时防御,实时共鸣效率,实时共鸣能量上限,实时共鸣能量,实时普攻速度,实时重击速度,实时共鸣技能伤害加成,实时通用伤害加成,实时声骸技能伤害加成,实时普攻伤害加成,实时蓄力攻击伤害加成,实时共鸣解放伤害加成,实时连携技能伤害加成,实时物理伤害加成,实时冷凝伤害加成,实时热熔伤害加成,实时导电伤害加成,实时气动伤害加成,实时衍射伤害加成,实时解离伤害加成,实时物理伤害抗性,实时冷凝伤害抗性,实时热熔伤害抗性,实时导电伤害抗性,实时气动伤害抗性,实时衍射伤害抗性,实时解离伤害抗性,实时治疗效果加成,实时受治疗效果加成,实时通用受伤减免,实时物理伤害减免,实时冷凝伤害减免,实时热熔伤害减免,实时导电伤害减免,实时气动伤害减免,实时衍射伤害减免,实时解离伤害减免,实时韧性上限,实时韧性,实时韧性恢复速度,实时削韧倍率,实时被削韧倍率,实时狂暴上限,实时狂暴,实时狂暴恢复,实时空狂暴惩罚时间,实时破狂暴倍率,实时被破狂暴倍率,实时共振度上限,实时共振度上限,实时共振度恢复速度,实时空共振度惩罚时间,实时破共振度倍率,实时被破共振度倍率,当前生命值,生命值上限,攻击,暴击,暴击伤害,防御,共鸣效率,共鸣能量上限,共鸣能量,普攻速度,重击速度,共鸣技能伤害加成,通用伤害加成,声骸技能伤害加成,普攻伤害加成,蓄力攻击伤害加成,共鸣解放伤害加成,连携技能伤害加成,物理伤害加成,冷凝伤害加成,热熔伤害加成,导电伤害加成,气动伤害加成,衍射伤害加成,解离伤害加成,物理伤害抗性,冷凝伤害抗性,热熔伤害抗性,导电伤害抗性,气动伤害抗性,衍射伤害抗性,解离伤害抗性,治疗效果加成,受治疗效果加成,通用受伤减免,物理伤害减免,冷凝伤害减免,热熔伤害减免,导电伤害减免,气动伤害减免,衍射伤害减免,解离伤害减免,韧性上限,韧性,韧性恢复速度,削韧倍率,被削韧倍率,狂暴上限,狂暴,狂暴恢复,空狂暴惩罚时间,破狂暴倍率,被破狂暴倍率,共振度上限,共振度上限,共振度恢复速度,空共振度惩罚时间,破共振度倍率,被破共振度倍率,被击者实时当前生命值,被击者实时生命值上限,被击者实时攻击,被击者实时暴击,被击者实时暴击伤害,被击者实时防御,被击者实时共鸣效率,被击者实时共鸣能量上限,被击者实时共鸣能量,被击者实时普攻速度,被击者实时重击速度,被击者实时共鸣技能伤害加成,被击者实时通用伤害加成,被击者实时声骸技能伤害加成,被击者实时普攻伤害加成,被击者实时蓄力攻击伤害加成,被击者实时共鸣解放伤害加成,被击者实时连携技能伤害加成,被击者实时物理伤害加成,被击者实时冷凝伤害加成,被击者实时热熔伤害加成,被击者实时导电伤害加成,被击者实时气动伤害加成,被击者实时衍射伤害加成,被击者实时解离伤害加成,被击者实时物理伤害抗性,被击者实时冷凝伤害抗性,被击者实时热熔伤害抗性,被击者实时导电伤害抗性,被击者实时气动伤害抗性,被击者实时衍射伤害抗性,被击者实时解离伤害抗性,被击者实时治疗效果加成,被击者实时受治疗效果加成,被击者实时通用受伤减免,被击者实时物理伤害减免,被击者实时冷凝伤害减免,被击者实时热熔伤害减免,被击者实时导电伤害减免,被击者实时气动伤害减免,被击者实时衍射伤害减免,被击者实时解离伤害减免,被击者实时韧性上限,被击者实时韧性,被击者实时韧性恢复速度,被击者实时削韧倍率,被击者实时被削韧倍率,被击者实时狂暴上限,被击者实时狂暴,被击者实时狂暴恢复,被击者实时空狂暴惩罚时间,被击者实时破狂暴倍率,被击者实时被破狂暴倍率,被击者实时共振度上限,被击者实时共振度上限,被击者实时共振度恢复速度,被击者实时空共振度惩罚时间,被击者实时破共振度倍率,被击者实时被破共振度倍率,被击者当前生命值,被击者生命值上限,被击者攻击,被击者暴击,被击者暴击伤害,被击者防御,被击者共鸣效率,被击者共鸣能量上限,被击者共鸣能量,被击者普攻速度,被击者重击速度,被击者共鸣技能伤害加成,被击者通用伤害加成,被击者声骸技能伤害加成,被击者普攻伤害加成,被击者蓄力攻击伤害加成,被击者共鸣解放伤害加成,被击者连携技能伤害加成,被击者物理伤害加成,被击者冷凝伤害加成,被击者热熔伤害加成,被击者导电伤害加成,被击者气动伤害加成,被击者衍射伤害加成,被击者解离伤害加成,被击者物理伤害抗性,被击者冷凝伤害抗性,被击者热熔伤害抗性,被击者导电伤害抗性,被击者气动伤害抗性,被击者衍射伤害抗性,被击者解离伤害抗性,被击者治疗效果加成,被击者受治疗效果加成,被击者通用受伤减免,被击者物理伤害减免,被击者冷凝伤害减免,被击者热熔伤害减免,被击者导电伤害减免,被击者气动伤害减免,被击者衍射伤害减免,被击者解离伤害减免,被击者韧性上限,被击者韧性,被击者韧性恢复速度,被击者削韧倍率,被击者被削韧倍率,被击者狂暴上限,被击者狂暴,被击者狂暴恢复,被击者空狂暴惩罚时间,被击者破狂暴倍率,被击者被破狂暴倍率,被击者共振度上限,被击者共振度上限,被击者共振度恢复速度,被击者空共振度惩罚时间,被击者破共振度倍率,被击者被破共振度倍率,结算表HardnessLv,结算表Percent0,结算表Percent1,结算表ToughLv,结算表Energy,结算表ElementPowerType,结算表ElementPower,攻击者BuffID,攻击者Buff名称,受击者存在的BuffID,受击者存在的Buff名称\n";
+    r = "X秒,当前时间,对象,对象ID,对象名称,伤害来源,结算ID,子弹名称,伤害值,技能ID,技能名称,是否暴击,唯一ID,协奏能量,基础攻击,倍率系数,当前生效增伤,伤害加深,防御承伤系数,抗性承伤系数,实际生效防御值,共鸣能量变动,实时暴击率,是否弱点伤害类型,弱点伤害增幅系数,怪物类型系数,受击方通用伤害减免,受击方属性伤害减免,偏谐值,实时当前生命值,实时生命值上限,实时攻击,暴击,实时暴击伤害,实时防御,实时共鸣效率,实时共鸣能量上限,实时共鸣能量,实时普攻速度,实时重击速度,实时共鸣技能伤害加成,实时通用伤害加成,实时声骸技能伤害加成,实时普攻伤害加成,实时蓄力攻击伤害加成,实时共鸣解放伤害加成,实时连携技能伤害加成,实时物理伤害加成,实时冷凝伤害加成,实时热熔伤害加成,实时导电伤害加成,实时气动伤害加成,实时衍射伤害加成,实时解离伤害加成,实时物理伤害抗性,实时冷凝伤害抗性,实时热熔伤害抗性,实时导电伤害抗性,实时气动伤害抗性,实时衍射伤害抗性,实时解离伤害抗性,实时治疗效果加成,实时受治疗效果加成,实时通用受伤减免,实时物理伤害减免,实时冷凝伤害减免,实时热熔伤害减免,实时导电伤害减免,实时气动伤害减免,实时衍射伤害减免,实时解离伤害减免,实时韧性上限,实时韧性,实时韧性恢复速度,实时削韧倍率,实时被削韧倍率,实时狂暴上限,实时狂暴,实时狂暴恢复,实时空狂暴惩罚时间,实时破狂暴倍率,实时被破狂暴倍率,实时共振度上限,实时共振度上限,实时共振度恢复速度,实时空共振度惩罚时间,实时破共振度倍率,实时被破共振度倍率,实时弱点击破速率,实时弱点增幅,当前生命值,生命值上限,攻击,暴击,暴击伤害,防御,共鸣效率,共鸣能量上限,共鸣能量,普攻速度,重击速度,共鸣技能伤害加成,通用伤害加成,声骸技能伤害加成,普攻伤害加成,蓄力攻击伤害加成,共鸣解放伤害加成,连携技能伤害加成,物理伤害加成,冷凝伤害加成,热熔伤害加成,导电伤害加成,气动伤害加成,衍射伤害加成,解离伤害加成,物理伤害抗性,冷凝伤害抗性,热熔伤害抗性,导电伤害抗性,气动伤害抗性,衍射伤害抗性,解离伤害抗性,治疗效果加成,受治疗效果加成,通用受伤减免,物理伤害减免,冷凝伤害减免,热熔伤害减免,导电伤害减免,气动伤害减免,衍射伤害减免,解离伤害减免,韧性上限,韧性,韧性恢复速度,削韧倍率,被削韧倍率,狂暴上限,狂暴,狂暴恢复,空狂暴惩罚时间,破狂暴倍率,被破狂暴倍率,共振度上限,共振度上限,共振度恢复速度,空共振度惩罚时间,破共振度倍率,被破共振度倍率,弱点击破速率,弱点增幅,被击者实时当前生命值,被击者实时生命值上限,被击者实时攻击,被击者实时暴击,被击者实时暴击伤害,被击者实时防御,被击者实时共鸣效率,被击者实时共鸣能量上限,被击者实时共鸣能量,被击者实时普攻速度,被击者实时重击速度,被击者实时共鸣技能伤害加成,被击者实时通用伤害加成,被击者实时声骸技能伤害加成,被击者实时普攻伤害加成,被击者实时蓄力攻击伤害加成,被击者实时共鸣解放伤害加成,被击者实时连携技能伤害加成,被击者实时物理伤害加成,被击者实时冷凝伤害加成,被击者实时热熔伤害加成,被击者实时导电伤害加成,被击者实时气动伤害加成,被击者实时衍射伤害加成,被击者实时解离伤害加成,被击者实时物理伤害抗性,被击者实时冷凝伤害抗性,被击者实时热熔伤害抗性,被击者实时导电伤害抗性,被击者实时气动伤害抗性,被击者实时衍射伤害抗性,被击者实时解离伤害抗性,被击者实时治疗效果加成,被击者实时受治疗效果加成,被击者实时通用受伤减免,被击者实时物理伤害减免,被击者实时冷凝伤害减免,被击者实时热熔伤害减免,被击者实时导电伤害减免,被击者实时气动伤害减免,被击者实时衍射伤害减免,被击者实时解离伤害减免,被击者实时韧性上限,被击者实时韧性,被击者实时韧性恢复速度,被击者实时削韧倍率,被击者实时被削韧倍率,被击者实时狂暴上限,被击者实时狂暴,被击者实时狂暴恢复,被击者实时空狂暴惩罚时间,被击者实时破狂暴倍率,被击者实时被破狂暴倍率,被击者实时共振度上限,被击者实时共振度上限,被击者实时共振度恢复速度,被击者实时空共振度惩罚时间,被击者实时破共振度倍率,被击者实时被破共振度倍率,被击者实时弱点击破速率,被击者实时弱点增幅,被击者当前生命值,被击者生命值上限,被击者攻击,被击者暴击,被击者暴击伤害,被击者防御,被击者共鸣效率,被击者共鸣能量上限,被击者共鸣能量,被击者普攻速度,被击者重击速度,被击者共鸣技能伤害加成,被击者通用伤害加成,被击者声骸技能伤害加成,被击者普攻伤害加成,被击者蓄力攻击伤害加成,被击者共鸣解放伤害加成,被击者连携技能伤害加成,被击者物理伤害加成,被击者冷凝伤害加成,被击者热熔伤害加成,被击者导电伤害加成,被击者气动伤害加成,被击者衍射伤害加成,被击者解离伤害加成,被击者物理伤害抗性,被击者冷凝伤害抗性,被击者热熔伤害抗性,被击者导电伤害抗性,被击者气动伤害抗性,被击者衍射伤害抗性,被击者解离伤害抗性,被击者治疗效果加成,被击者受治疗效果加成,被击者通用受伤减免,被击者物理伤害减免,被击者冷凝伤害减免,被击者热熔伤害减免,被击者导电伤害减免,被击者气动伤害减免,被击者衍射伤害减免,被击者解离伤害减免,被击者韧性上限,被击者韧性,被击者韧性恢复速度,被击者削韧倍率,被击者被削韧倍率,被击者狂暴上限,被击者狂暴,被击者狂暴恢复,被击者空狂暴惩罚时间,被击者破狂暴倍率,被击者被破狂暴倍率,被击者共振度上限,被击者共振度上限,被击者共振度恢复速度,被击者空共振度惩罚时间,被击者破共振度倍率,被击者被破共振度倍率,被击者弱点击破速率,被击者弱点增幅,结算表HardnessLv,结算表Percent0,结算表Percent1,结算表ToughLv,结算表Energy,结算表ElementPowerType,结算表ElementPower,攻击者BuffID,攻击者Buff名称,受击者存在的BuffID,受击者存在的Buff名称\n";
     UE.KuroStaticLibrary.SaveStringToFile(r + this.MGr.join("\n"), UE.BlueprintPathsLibrary.ProjectSavedDir() + this.Pt + "DamageRecord_Attr.csv", true);
-    r = "X秒,当前时间,对象,对象ID,对象名称,伤害来源,结算ID,子弹名称,伤害值,技能ID,技能名称,唯一ID,是否暴击,当前生命值,生命值上限,攻击,暴击,暴击伤害,防御,共鸣效率,共鸣能量上限,共鸣能量,普攻速度,重击速度,共鸣技能伤害加成,通用伤害加成,声骸技能伤害加成,普攻伤害加成,蓄力攻击伤害加成,共鸣解放伤害加成,连携技能伤害加成,物理伤害加成,冷凝伤害加成,热熔伤害加成,导电伤害加成,气动伤害加成,衍射伤害加成,解离伤害加成,物理伤害抗性,冷凝伤害抗性,热熔伤害抗性,导电伤害抗性,气动伤害抗性,衍射伤害抗性,解离伤害抗性,治疗效果加成,受治疗效果加成,通用受伤减免,物理伤害减免,冷凝伤害减免,热熔伤害减免,导电伤害减免,气动伤害减免,衍射伤害减免,解离伤害减免,韧性上限,韧性,韧性恢复速度,削韧倍率,被削韧倍率,狂暴上限,狂暴,狂暴恢复,空狂暴惩罚时间,破狂暴倍率,被破狂暴倍率,共振度上限,共振度上限,共振度恢复速度,空共振度惩罚时间,破共振度倍率,被破共振度倍率,当前生命值,生命值上限,攻击,暴击,暴击伤害,防御,共鸣效率,共鸣能量上限,共鸣能量,普攻速度,重击速度,共鸣技能伤害加成,通用伤害加成,声骸技能伤害加成,普攻伤害加成,蓄力攻击伤害加成,共鸣解放伤害加成,连携技能伤害加成,物理伤害加成,冷凝伤害加成,热熔伤害加成,导电伤害加成,气动伤害加成,衍射伤害加成,解离伤害加成,物理伤害抗性,冷凝伤害抗性,热熔伤害抗性,导电伤害抗性,气动伤害抗性,衍射伤害抗性,解离伤害抗性,治疗效果加成,受治疗效果加成,通用受伤减免,物理伤害减免,冷凝伤害减免,热熔伤害减免,导电伤害减免,气动伤害减免,衍射伤害减免,解离伤害减免,韧性上限,韧性,韧性恢复速度,削韧倍率,被削韧倍率,狂暴上限,狂暴,狂暴恢复,空狂暴惩罚时间,破狂暴倍率,被破狂暴倍率,共振度上限,共振度上限,共振度恢复速度,空共振度惩罚时间,破共振度倍率,被破共振度倍率,削刃,大招能量,元素能量类型,元素能量,存在的BuffID,存在的Buff名称,存在的BuffID,存在的Buff名称\n";
+    r = "X秒,当前时间,对象,对象ID,对象名称,伤害来源,结算ID,子弹名称,伤害值,技能ID,技能名称,唯一ID,是否暴击,当前生命值,生命值上限,攻击,暴击,暴击伤害,防御,共鸣效率,共鸣能量上限,共鸣能量,普攻速度,重击速度,共鸣技能伤害加成,通用伤害加成,声骸技能伤害加成,普攻伤害加成,蓄力攻击伤害加成,共鸣解放伤害加成,连携技能伤害加成,物理伤害加成,冷凝伤害加成,热熔伤害加成,导电伤害加成,气动伤害加成,衍射伤害加成,解离伤害加成,物理伤害抗性,冷凝伤害抗性,热熔伤害抗性,导电伤害抗性,气动伤害抗性,衍射伤害抗性,解离伤害抗性,治疗效果加成,受治疗效果加成,通用受伤减免,物理伤害减免,冷凝伤害减免,热熔伤害减免,导电伤害减免,气动伤害减免,衍射伤害减免,解离伤害减免,韧性上限,韧性,韧性恢复速度,削韧倍率,被削韧倍率,狂暴上限,狂暴,狂暴恢复,空狂暴惩罚时间,破狂暴倍率,被破狂暴倍率,共振度上限,共振度上限,共振度恢复速度,空共振度惩罚时间,破共振度倍率,被破共振度倍率,弱点击破速率,弱点增幅,当前生命值,生命值上限,攻击,暴击,暴击伤害,防御,共鸣效率,共鸣能量上限,共鸣能量,普攻速度,重击速度,共鸣技能伤害加成,通用伤害加成,声骸技能伤害加成,普攻伤害加成,蓄力攻击伤害加成,共鸣解放伤害加成,连携技能伤害加成,物理伤害加成,冷凝伤害加成,热熔伤害加成,导电伤害加成,气动伤害加成,衍射伤害加成,解离伤害加成,物理伤害抗性,冷凝伤害抗性,热熔伤害抗性,导电伤害抗性,气动伤害抗性,衍射伤害抗性,解离伤害抗性,治疗效果加成,受治疗效果加成,通用受伤减免,物理伤害减免,冷凝伤害减免,热熔伤害减免,导电伤害减免,气动伤害减免,衍射伤害减免,解离伤害减免,韧性上限,韧性,韧性恢复速度,削韧倍率,被削韧倍率,狂暴上限,狂暴,狂暴恢复,空狂暴惩罚时间,破狂暴倍率,被破狂暴倍率,共振度上限,共振度上限,共振度恢复速度,空共振度惩罚时间,破共振度倍率,被破共振度倍率,弱点击破速率,弱点增幅,削刃,大招能量,元素能量类型,元素能量,存在的BuffID,存在的Buff名称,存在的BuffID,存在的Buff名称\n";
     UE.KuroStaticLibrary.SaveStringToFile(r + this.EGr.join("\n"), UE.BlueprintPathsLibrary.ProjectSavedDir() + this.Pt + "DamageRecord_Snipeshot.csv", true);
     a = "X秒,当前时间,对象,对象ID,对象名称,BuffId,Buff名称,添加or删除\n" + this.SGr.join("\n");
     UE.KuroStaticLibrary.SaveStringToFile(a, UE.BlueprintPathsLibrary.ProjectSavedDir() + this.Pt + "BuffRecord.csv", true);
@@ -729,10 +765,10 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
     UE.KuroStaticLibrary.SaveStringToFile(a, UE.BlueprintPathsLibrary.ProjectSavedDir() + this.Pt + "MonsterDamageSum.csv", true);
     t.length = 0;
     e += a + "\n";
-    CharacterGasDebugComponent_1.sWd();
+    CharacterGasDebugComponent_1._Wd();
     return e;
   }
-  static sWd() {
+  static _Wd() {
     if (Info_1.Info.IsPlayInEditor) {
       let t = "";
       var a = Time_1.Time.WorldTimeSeconds - CharacterGasDebugComponent_1.dGr - CharacterGasDebugComponent_1.sGr;
@@ -745,8 +781,8 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
       var i = (0, puerts_1.$ref)(e);
       UE.FileSystemOperation.ReadFile(UE.KismetSystemLibrary.GetProjectDirectory() + "../Config/ResConfig/RoleDspTpl.txt", i);
       e = (e = (0, puerts_1.$unref)(i)).replace("TPL_XAXIS_VALUES", t);
-      var n = new StringBuilder_1.StringBuilder();
-      var o = new Map();
+      var o = new StringBuilder_1.StringBuilder();
+      var n = new Map();
       var s = new Map();
       var h = new Map();
       var u = new Map();
@@ -775,8 +811,8 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
           if (!g.has(f)) {
             g.set(f, new Array());
           }
-          if (!o.has(f)) {
-            o.set(f, 0);
+          if (!n.has(f)) {
+            n.set(f, 0);
           }
           if (!s.has(f)) {
             s.set(f, 0);
@@ -792,7 +828,7 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
               break;
             }
             if (b.DamageValue > 0) {
-              o.set(f, o.get(f) + b.DamageValue);
+              n.set(f, n.get(f) + b.DamageValue);
             } else if (b.InGame) {
               h.set(f, true);
             } else if (b.OutGame) {
@@ -807,13 +843,13 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
               Log_1.Log.Debug("Character", 20, "打印时间", ["time", b.TimeStamp]);
             }
           }
-          u.get(f).push(o.get(f));
+          u.get(f).push(n.get(f));
           _.get(f).push(h.get(f) ? "-10" : "'-'");
           C.get(f).push(t ? "-20" : "'-'");
           c.get(f).push(e ? "-30" : "'-'");
           var p = s.get(f);
-          g.get(f).push(p > 0 ? o.get(f) / p : 0);
-          l.get(f).push(r > 0 ? o.get(f) / r : 0);
+          g.get(f).push(p > 0 ? n.get(f) / p : 0);
+          l.get(f).push(r > 0 ? n.get(f) / r : 0);
           if (h.get(f)) {
             s.set(f, s.get(f) + 0.5);
           }
@@ -828,107 +864,107 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
       var G;
       var S;
       var y;
-      var M;
       var I;
+      var M;
       var U;
       var w;
-      var R;
       var T;
+      var R;
       var B;
       var N;
       var O;
       var P = [];
       var $ = [];
-      var q = [];
+      var L = [];
       for ([D, d] of u) {
-        var L = EntitySystem_1.EntitySystem.Get(D);
-        if (L?.Valid) {
+        var q = EntitySystem_1.EntitySystem.Get(D);
+        if (q?.Valid) {
           P.push(D);
-          L = (L = L.GetComponent(0)).Valid ? L.GetRoleId() : 0;
-          if (L = ConfigManager_1.ConfigManager.RoleConfig.GetBaseRoleId(L)) {
-            L = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(L);
-            L = ConfigManager_1.ConfigManager.RoleConfig.GetRoleName(L.Name);
-            $.push(L);
-            n.Append(StringUtils_1.StringUtils.Format("{name: '{0}伤害', type: 'line', data: [{1}],},", L, d.join(",")));
+          q = (q = q.GetComponent(0)).Valid ? q.GetRoleId() : 0;
+          if (q = ConfigManager_1.ConfigManager.RoleConfig.GetBaseRoleId(q)) {
+            q = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(q);
+            q = ConfigManager_1.ConfigManager.RoleConfig.GetRoleName(q.Name);
+            $.push(q);
+            o.Append(StringUtils_1.StringUtils.Format("{name: '{0}伤害', type: 'line', data: [{1}],},", q, d.join(",")));
           } else {
-            q.push(D);
+            L.push(D);
           }
         } else {
-          q.push(D);
+          L.push(D);
         }
       }
       for ([E, v] of l) {
-        if (!q.includes(E)) {
+        if (!L.includes(E)) {
           A = P.indexOf(E);
-          n.Append(StringUtils_1.StringUtils.Format("{name: '{0}绝对DPS', type: 'line', data: [{1}],},", $[A], v.join(",")));
+          o.Append(StringUtils_1.StringUtils.Format("{name: '{0}绝对DPS', type: 'line', data: [{1}],},", $[A], v.join(",")));
         }
       }
       for ([G, S] of g) {
-        if (!q.includes(G)) {
+        if (!L.includes(G)) {
           y = P.indexOf(G);
-          n.Append(StringUtils_1.StringUtils.Format("{name: '{0}站场DPS', type: 'line', data: [{1}],},", $[y], S.join(",")));
+          o.Append(StringUtils_1.StringUtils.Format("{name: '{0}站场DPS', type: 'line', data: [{1}],},", $[y], S.join(",")));
         }
       }
-      for ([M, I] of _) {
-        if (!q.includes(M)) {
-          U = P.indexOf(M);
-          n.Append(StringUtils_1.StringUtils.Format("{name: '{0}在场上', type: 'line', data: [{1}],},", $[U], I.join(",")));
+      for ([I, M] of _) {
+        if (!L.includes(I)) {
+          U = P.indexOf(I);
+          o.Append(StringUtils_1.StringUtils.Format("{name: '{0}在场上', type: 'line', data: [{1}],},", $[U], M.join(",")));
         }
       }
-      for ([w, R] of C) {
-        if (!q.includes(w)) {
-          T = P.indexOf(w);
-          n.Append(StringUtils_1.StringUtils.Format("{name: '{0}QTE', type: 'line', data: [{1}],},", $[T], R.join(",")));
+      for ([w, T] of C) {
+        if (!L.includes(w)) {
+          R = P.indexOf(w);
+          o.Append(StringUtils_1.StringUtils.Format("{name: '{0}QTE', type: 'line', data: [{1}],},", $[R], T.join(",")));
         }
       }
       for ([B, N] of c) {
-        if (!q.includes(B)) {
+        if (!L.includes(B)) {
           O = P.indexOf(B);
-          n.Append(StringUtils_1.StringUtils.Format("{name: '{0}退场技', type: 'line', data: [{1}],},", $[O], N.join(",")));
+          o.Append(StringUtils_1.StringUtils.Format("{name: '{0}退场技', type: 'line', data: [{1}],},", $[O], N.join(",")));
         }
       }
-      e = e.replace("CONTENT_SERIES", n.ToString());
+      e = e.replace("CONTENT_SERIES", o.ToString());
       UE.KuroStaticLibrary.SaveStringToFile(e, UE.BlueprintPathsLibrary.ProjectSavedDir() + this.Pt + "RoleDsp.html", true);
     }
   }
   Yqr(t) {
     return CharacterStatisticsComponent_1.CharacterStatisticsComponent.IsInRecordArea(t);
   }
-  static RecordDamage(a, i, n, o) {
+  static RecordDamage(a, i, o, n) {
     var s = new Array();
-    s.push(n);
     s.push(o);
-    var n = CharacterGasDebugComponent_1.LGr(a);
-    if (n) {
-      s.push(n.Type);
-      s.push(n.ConfigId);
-      s.push(n.Name);
-      if (a.GetComponent(98)) {
+    s.push(n);
+    var o = CharacterGasDebugComponent_1.LGr(a);
+    if (o) {
+      s.push(o.Type);
+      s.push(o.ConfigId);
+      s.push(o.Name);
+      if (a.GetComponent(101)) {
         s.push("角色");
       } else if (a.GetComponent(0)?.GetEntityType() === Protocol_1.Aki.Protocol.kks.Proto_SceneEntity) {
         s.push("场景伤害");
       } else {
         s.push("怪物");
       }
-      s.push(CharacterGasDebugComponent_1.ytm(i.KAs));
+      s.push(CharacterGasDebugComponent_1.Oom(i.KAs));
       let t = ConfigManager_1.ConfigManager.BulletConfig.GetBulletData(a, MathUtils_1.MathUtils.LongToBigInt(i.Mjn).toString(), false);
       let e = undefined;
       if (!t) {
-        o = ControllerHolder_1.ControllerHolder.WorldController.GetCustomEntityId(a.Id, 1);
-        if ((e = EntitySystem_1.EntitySystem.Get(o))?.Valid) {
+        n = ControllerHolder_1.ControllerHolder.WorldController.GetCustomEntityId(a.Id, 1);
+        if ((e = EntitySystem_1.EntitySystem.Get(n))?.Valid) {
           t = ConfigManager_1.ConfigManager.BulletConfig.GetBulletData(e, MathUtils_1.MathUtils.LongToBigInt(i.Mjn).toString());
         }
       }
-      n = MathUtils_1.MathUtils.LongToNumber(i.r5n);
+      o = MathUtils_1.MathUtils.LongToNumber(i.r5n);
       s.push(t?.BulletName ?? "");
       s.push(i.QAs.toFixed());
-      s.push(n.toFixed());
-      let r = a.GetComponent(39)?.GetSkillInfo(n);
-      r = r || e?.GetComponent(39)?.GetSkillInfo(n);
+      s.push(o.toFixed());
+      let r = a.GetComponent(40)?.GetSkillInfo(o);
+      r = r || e?.GetComponent(40)?.GetSkillInfo(o);
       s.push(r?.SkillName?.toString());
       s.push(MathUtils_1.MathUtils.LongToBigInt(i.Zjn.F4n).toString());
-      var o = a?.CheckGetComponent(0).GetPbDataId().toFixed();
-      s.push(o);
+      var n = a?.CheckGetComponent(0).GetPbDataId().toFixed();
+      s.push(n);
       var h = s.length;
       for (const u of i.JAs.HAs) {
         if (u.tSs === EAttributeId.Proto_Atk) {
@@ -946,37 +982,37 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
         }
       }
       CharacterGasDebugComponent_1.vGr.push(s.join(","));
-      n = ModelManager_1.ModelManager.CreatureModel.GetEntityId(MathUtils_1.MathUtils.LongToNumber(i.JAs.F4n));
-      o = EntitySystem_1.EntitySystem.Get(n);
-      CharacterGasDebugComponent_1.DGr(o, a, i.QAs, r?.SkillGenre);
+      o = ModelManager_1.ModelManager.CreatureModel.GetEntityId(MathUtils_1.MathUtils.LongToNumber(i.JAs.F4n));
+      n = EntitySystem_1.EntitySystem.Get(o);
+      CharacterGasDebugComponent_1.DGr(n, a, i.QAs, r?.SkillGenre);
     }
   }
   static DGr(t, e, r, a) {
     let i = this.IGr;
-    if (!t?.GetComponent(98)) {
+    if (!t?.GetComponent(101)) {
       i = this.TGr;
     }
-    var n;
-    var o = t.Id.toFixed() + e.Id.toFixed();
-    var s = i.get(o);
+    var o;
+    var n = t.Id.toFixed() + e.Id.toFixed();
+    var s = i.get(n);
     if (s) {
       s.TotalDamage += r;
-      n = s.RecordDamage.get(a) ?? 0;
-      s.RecordDamage.set(a, n + r);
+      o = s.RecordDamage.get(a) ?? 0;
+      s.RecordDamage.set(a, o + r);
     } else {
       s = new RecordDamageSum();
-      n = t?.CheckGetComponent(0).GetPbDataId();
-      s.ConfigId = n ?? 0;
+      o = t?.CheckGetComponent(0).GetPbDataId();
+      s.ConfigId = o ?? 0;
       s.UniqueId = t.Id;
-      s.Name = t?.GetComponent(3).Actor.GetName() ?? "";
-      n = e?.CheckGetComponent(0).GetPbDataId();
-      s.DamageSourceConfigId = n;
-      s.SourceName = e?.GetComponent(3).Actor.GetName();
+      s.Name = t?.GetComponent(1)?.Owner?.GetName() ?? "";
+      o = e?.CheckGetComponent(0).GetPbDataId();
+      s.DamageSourceConfigId = o;
+      s.SourceName = e?.GetComponent(1)?.Owner?.GetName() ?? "";
       s.SourceUniqueId = e?.Id;
       s.TotalDamage = r;
       t = s.RecordDamage.get(a) ?? 0;
       s.RecordDamage.set(a, t + r);
-      i.set(o, s);
+      i.set(n, s);
     }
   }
   static tGr(t, e, r) {
@@ -1011,11 +1047,11 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
     }
     if (this.ServerDebugInfo.xAs.EIs.length > 0) {
       t += "\nCD : \n";
-      for (const n of this.ServerDebugInfo.xAs.EIs) {
-        if (!(n.GTs.length <= 0)) {
-          t += "[" + MathUtils_1.MathUtils.LongToBigInt(n.b6n).toString() + "] ";
-          for (const o of n.GTs) {
-            t += o.toFixed() + ", ";
+      for (const o of this.ServerDebugInfo.xAs.EIs) {
+        if (!(o.GTs.length <= 0)) {
+          t += "[" + MathUtils_1.MathUtils.LongToBigInt(o.b6n).toString() + "] ";
+          for (const n of o.GTs) {
+            t += n.toFixed() + ", ";
           }
         }
       }
@@ -1061,8 +1097,8 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
     }
     return false;
   }
-  RGr(t, e, r, a, i, n, o, s, h) {
-    return "[" + t + ", " + e + "] " + a + "层," + i + "级," + (n ? "激活. " : "失效. ") + "施:" + o + ". 时:" + s.toFixed(1) + "/" + h.toFixed() + ". " + r + "\n";
+  RGr(t, e, r, a, i, o, n, s, h) {
+    return "[" + t + ", " + e + "] " + a + "层," + i + "级," + (o ? "激活. " : "失效. ") + "施:" + n + ". 时:" + s.toFixed(1) + "/" + h.toFixed() + ". " + r + "\n";
   }
   GetServerTagString() {
     let t = "";
@@ -1124,7 +1160,7 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
   }
   GetCltBuffHandleSet() {
     const e = new Set();
-    this.Entity.GetComponent(213)?.GetAllBuffs()?.forEach(t => e.add(t.Handle));
+    this.Entity.GetComponent(220)?.GetAllBuffs()?.forEach(t => e.add(t.Handle));
     return e;
   }
   Union(e, t) {
@@ -1176,35 +1212,45 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
     }
   }
   static LGr(t) {
-    var e;
-    var t = t.GetComponent(0);
-    var r = t.GetEntityType();
-    if (r === Protocol_1.Aki.Protocol.kks.Proto_Player) {
-      e = t.Valid ? t.GetRoleId() : 0;
-      if (e = ConfigManager_1.ConfigManager.RoleConfig.GetBaseRoleId(e)) {
-        e = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(e);
+    const e = t.GetComponent(0);
+    var r;
+    var a = e.GetEntityType();
+    if (a === Protocol_1.Aki.Protocol.kks.Proto_Player) {
+      r = e.Valid ? e.GetRoleId() : 0;
+      if (r = ConfigManager_1.ConfigManager.RoleConfig.GetBaseRoleId(r)) {
+        r = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(r);
         return {
-          Name: ConfigManager_1.ConfigManager.RoleConfig.GetRoleName(e.Name),
+          Name: ConfigManager_1.ConfigManager.RoleConfig.GetRoleName(r.Name),
           Type: "角色",
-          ConfigId: t.GetPbDataId().toFixed()
+          ConfigId: e.GetPbDataId().toFixed()
         };
       } else {
         return undefined;
       }
-    } else if (r === Protocol_1.Aki.Protocol.kks.Proto_Monster) {
+    }
+    if (a === Protocol_1.Aki.Protocol.kks.Proto_Monster) {
       return {
-        Name: PublicUtil_1.PublicUtil.GetConfigTextByKey(t.GetEntityTidName() ?? ""),
+        Name: PublicUtil_1.PublicUtil.GetConfigTextByKey(e.GetEntityTidName() ?? ""),
         Type: "怪物",
-        ConfigId: t.GetPbDataId().toFixed()
+        ConfigId: e.GetPbDataId().toFixed()
       };
-    } else if (r === Protocol_1.Aki.Protocol.kks.Proto_SceneEntity) {
+    }
+    if (a === Protocol_1.Aki.Protocol.kks.Proto_SceneEntity) {
       return {
-        Name: PublicUtil_1.PublicUtil.GetConfigTextByKey(t.GetEntityTidName() ?? ""),
+        Name: PublicUtil_1.PublicUtil.GetConfigTextByKey(e.GetEntityTidName() ?? ""),
         Type: "场景实体",
-        ConfigId: t.GetPbDataId().toFixed()
+        ConfigId: e.GetPbDataId().toFixed()
       };
-    } else {
-      return undefined;
+    }
+    if (a === Protocol_1.Aki.Protocol.kks.HI_ && CharacterGasDebugComponent_1.lXf(t)) {
+      const e = t.GetComponent(0);
+      if (e) {
+        return {
+          Name: PublicUtil_1.PublicUtil.GetConfigTextByKey(e.GetEntityTidName() ?? ""),
+          Type: "摩托车",
+          ConfigId: e.GetPbDataId().toFixed()
+        };
+      }
     }
   }
   static SetDamageRecord(t) {
@@ -1227,7 +1273,7 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
     var t;
     var a;
     var i = EntitySystem_1.EntitySystem.Get(ModelManager_1.ModelManager.CreatureModel.GetEntityId(MathUtils_1.MathUtils.LongToNumber(r.Zjn.F4n)));
-    if (i.GetComponent(0)?.GetEntityType() === Protocol_1.Aki.Protocol.kks.Proto_SceneEntity || !!i.GetComponent(27)?.GetStatisticsEnable()) {
+    if (i.GetComponent(0)?.GetEntityType() === Protocol_1.Aki.Protocol.kks.Proto_SceneEntity || i.GetComponent(0)?.GetEntityType() === Protocol_1.Aki.Protocol.kks.HI_ && CharacterGasDebugComponent_1.lXf(i) || i.GetComponent(27)?.GetStatisticsEnable()) {
       t = ((MathUtils_1.MathUtils.LongToNumber(r.WAs) - CharacterGasDebugComponent_1.CGr) * 0.001 - CharacterGasDebugComponent_1.sGr).toFixed(2);
       a = this.Jqr(r.WAs);
       this.RecordDamage(i, r, t, a);
@@ -1235,6 +1281,9 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
       this.PGr(i, r, t, a);
       this.xGr(i, r);
     }
+  }
+  static lXf(t) {
+    return !!t.GetComponent(267);
   }
   static xGr(e, r) {
     var a = e.GetComponent(0);
@@ -1260,65 +1309,66 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
     t = new DamageRecordDsp(Time_1.Time.WorldTimeSeconds - CharacterGasDebugComponent_1.sGr, -1, false, e, r, false);
     a.Push(t);
   }
-  static PGr(a, i, n, o) {
+  static PGr(a, i, o, n) {
     var t = MathUtils_1.MathUtils.LongToNumber(i.KAs);
     var s = ModelManager_1.ModelManager.DamageModel?.GetDamageConfigById(t);
     if (s) {
       var h = new Array();
-      h.push(n);
       h.push(o);
-      var n = CharacterGasDebugComponent_1.LGr(a);
-      if (n) {
-        h.push(n.Type);
-        h.push(n.ConfigId);
-        h.push(n.Name);
+      h.push(n);
+      var o = CharacterGasDebugComponent_1.LGr(a);
+      if (o) {
+        h.push(o.Type);
+        h.push(o.ConfigId);
+        h.push(o.Name);
         h.push(i.XAs === Protocol_1.Aki.Protocol.XAs.Proto_FromBullet ? "子弹" : "Buff");
-        h.push(CharacterGasDebugComponent_1.ytm(i.KAs));
+        h.push(CharacterGasDebugComponent_1.Oom(i.KAs));
         let t = ConfigManager_1.ConfigManager.BulletConfig.GetBulletData(a, MathUtils_1.MathUtils.LongToBigInt(i.Mjn).toString(), false);
         let e = undefined;
         if (!t) {
-          o = ControllerHolder_1.ControllerHolder.WorldController.GetCustomEntityId(a.Id, 1);
-          if ((e = EntitySystem_1.EntitySystem.Get(o))?.Valid) {
+          n = ControllerHolder_1.ControllerHolder.WorldController.GetCustomEntityId(a.Id, 1);
+          if ((e = EntitySystem_1.EntitySystem.Get(n))?.Valid) {
             t = ConfigManager_1.ConfigManager.BulletConfig.GetBulletData(e, MathUtils_1.MathUtils.LongToBigInt(i.Mjn).toString());
           }
         }
         h.push(t?.BulletName ?? "");
         h.push(i.QAs.toFixed());
-        n = MathUtils_1.MathUtils.LongToNumber(i.r5n);
-        h.push(n.toFixed());
-        let r = a.GetComponent(39)?.GetSkillInfo(n)?.SkillName;
-        r = r || e?.GetComponent(39)?.GetSkillInfo(n)?.SkillName;
+        o = MathUtils_1.MathUtils.LongToNumber(i.r5n);
+        h.push(o.toFixed());
+        let r = a.GetComponent(40)?.GetSkillInfo(o)?.SkillName;
+        r = r || e?.GetComponent(40)?.GetSkillInfo(o)?.SkillName;
         h.push(r?.toString() ?? "");
         h.push(MathUtils_1.MathUtils.LongToBigInt(i.Zjn.F4n).toString());
         h.push(i.YAs ? "1" : "0");
-        var o = h.length;
-        this.wGr(i.JAs.jAs, h, o);
-        this.wGr(i.Zjn.jAs, h, o + 59);
-        var n = i.Wjn;
-        h[o + 118] = AbilityUtils_1.AbilityUtils.GetLevelValue(s.ToughLv, n, 0).toString();
-        h[o + 119] = AbilityUtils_1.AbilityUtils.GetLevelValue(s.Energy, n, 0).toString();
-        h[o + 120] = s.ElementPowerType.toString();
-        h[o + 121] = AbilityUtils_1.AbilityUtils.GetLevelValue(s.ElementPower, n, 0).toString();
-        var u = new Array();
+        var n = h.length;
+        var o = attributeIdArray.length;
+        this.wGr(i.JAs.jAs, h, n);
+        this.wGr(i.Zjn.jAs, h, n + o);
+        var u = i.Wjn;
+        h[n + o * 2] = AbilityUtils_1.AbilityUtils.GetLevelValue(s.ToughLv, u, 0).toString();
+        h[n + o * 2 + 1] = AbilityUtils_1.AbilityUtils.GetLevelValue(s.Energy, u, 0).toString();
+        h[n + o * 2 + 2] = s.ElementPowerType.toString();
+        h[n + o * 2 + 3] = AbilityUtils_1.AbilityUtils.GetLevelValue(s.ElementPower, u, 0).toString();
         var _ = new Array();
-        for (const f of i.Zjn.$As) {
-          var C = MathUtils_1.MathUtils.LongToNumber(f);
-          var c = CharacterBuffController_1.default.GetBuffDefinition(C);
-          u.push(c.Desc);
-          _.push(C);
+        var C = new Array();
+        for (const m of i.Zjn.$As) {
+          var c = MathUtils_1.MathUtils.LongToNumber(m);
+          var l = CharacterBuffController_1.default.GetBuffDefinition(c);
+          _.push(l.Desc);
+          C.push(c);
         }
-        h[o + 122] = _.join("|");
-        h[o + 123] = u.join("|");
-        u.length = 0;
+        h[n + o * 2 + 4] = C.join("|");
+        h[n + o * 2 + 5] = _.join("|");
         _.length = 0;
-        for (const m of i.JAs.$As) {
-          var l = MathUtils_1.MathUtils.LongToNumber(m);
-          var g = CharacterBuffController_1.default.GetBuffDefinition(l);
-          u.push(g.Desc);
-          _.push(l);
+        C.length = 0;
+        for (const b of i.JAs.$As) {
+          var g = MathUtils_1.MathUtils.LongToNumber(b);
+          var f = CharacterBuffController_1.default.GetBuffDefinition(g);
+          _.push(f.Desc);
+          C.push(g);
         }
-        h[o + 124] = _.join("|");
-        h[o + 125] = u.join("|");
+        h[n + o * 2 + 6] = C.join("|");
+        h[n + o * 2 + 7] = _.join("|");
         s = h.join(",");
         this.EGr.push(s);
         if (Log_1.Log.CheckDebug()) {
@@ -1326,9 +1376,9 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
         }
       }
     } else {
-      n = a.GetComponent(1)?.Owner?.ActorLabel;
+      u = a.GetComponent(1)?.Owner?.ActorLabel;
       if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("Test", 20, "伤害配置为空", ["伤害ID", t], ["Name", n ?? ""]);
+        Log_1.Log.Error("Test", 20, "伤害配置为空", ["伤害ID", t], ["Name", u ?? ""]);
       }
     }
   }
@@ -1336,68 +1386,74 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
     t = new Date(MathUtils_1.MathUtils.LongToNumber(t));
     return StringUtils_1.StringUtils.Format("{0}月{1}日{2}:{3}:{4}:{5}", t.getMonth().toString(), t.getDate().toString(), t.getHours().toString(), t.getMinutes().toString(), t.getSeconds().toString(), t.getMilliseconds().toString());
   }
-  static ytm(t) {
+  static Oom(t) {
     t = MathUtils_1.MathUtils.LongToNumber(t);
-    if (CharacterGasDebugComponent_1.Stm.has(t)) {
-      return CharacterGasDebugComponent_1.Stm.get(t);
+    if (CharacterGasDebugComponent_1.Gom.has(t)) {
+      return CharacterGasDebugComponent_1.Gom.get(t);
     } else {
       return t.toString();
     }
   }
-  static AGr(i, n, o, s) {
-    var t = MathUtils_1.MathUtils.LongToNumber(n.KAs);
+  static AGr(i, o, n, s) {
+    var t = MathUtils_1.MathUtils.LongToNumber(o.KAs);
     var h = ModelManager_1.ModelManager.DamageModel?.GetDamageConfigById(t);
     if (h) {
       var u = new Array();
-      u.push(o);
+      u.push(n);
       u.push(s);
-      var o = CharacterGasDebugComponent_1.LGr(i);
-      if (o) {
-        u.push(o.Type);
-        u.push(o.ConfigId);
-        u.push(o.Name);
-        u.push(n.XAs === Protocol_1.Aki.Protocol.XAs.Proto_FromBullet ? "子弹" : "Buff");
-        u.push(CharacterGasDebugComponent_1.ytm(n.KAs));
-        let t = ConfigManager_1.ConfigManager.BulletConfig.GetBulletData(i, MathUtils_1.MathUtils.LongToBigInt(n.Mjn).toString(), false);
+      var n = CharacterGasDebugComponent_1.LGr(i);
+      if (n) {
+        u.push(n.Type);
+        u.push(n.ConfigId);
+        u.push(n.Name);
+        u.push(o.XAs === Protocol_1.Aki.Protocol.XAs.Proto_FromBullet ? "子弹" : "Buff");
+        u.push(CharacterGasDebugComponent_1.Oom(o.KAs));
+        let t = ConfigManager_1.ConfigManager.BulletConfig.GetBulletData(i, MathUtils_1.MathUtils.LongToBigInt(o.Mjn).toString(), false);
         let e = undefined;
         if (!t) {
           s = ControllerHolder_1.ControllerHolder.WorldController.GetCustomEntityId(i.Id, 1);
           if ((e = EntitySystem_1.EntitySystem.Get(s))?.Valid) {
-            t = ConfigManager_1.ConfigManager.BulletConfig.GetBulletData(e, MathUtils_1.MathUtils.LongToBigInt(n.Mjn).toString());
+            t = ConfigManager_1.ConfigManager.BulletConfig.GetBulletData(e, MathUtils_1.MathUtils.LongToBigInt(o.Mjn).toString());
           }
         }
         u.push(t?.BulletName ?? "");
-        u.push(n.QAs.toFixed());
-        o = MathUtils_1.MathUtils.LongToNumber(n.r5n);
-        u.push(o.toString());
-        let r = i.GetComponent(39)?.GetSkillInfo(o)?.SkillName;
-        r = r || e?.GetComponent(39)?.GetSkillInfo(o)?.SkillName;
+        u.push(o.QAs.toFixed());
+        n = MathUtils_1.MathUtils.LongToNumber(o.r5n);
+        u.push(n.toString());
+        let r = i.GetComponent(40)?.GetSkillInfo(n)?.SkillName;
+        r = r || e?.GetComponent(40)?.GetSkillInfo(n)?.SkillName;
         u.push(r?.toString() ?? "");
-        u.push(n.YAs ? "1" : "0");
-        u.push(MathUtils_1.MathUtils.LongToBigInt(n.Zjn.F4n).toString());
+        u.push(o.YAs ? "1" : "0");
+        u.push(MathUtils_1.MathUtils.LongToBigInt(o.Zjn.F4n).toString());
         let a = u.length;
         u.push("0");
-        for (const m of n.Zjn.HAs) {
+        for (const m of o.Zjn.HAs) {
           if (m.tSs === EAttributeId.Proto_ElementEnergy) {
             u[a] = m.eSs.toFixed();
           }
         }
-        u.push(MathUtils_1.MathUtils.LongToBigInt(n?.jKd?.BKd ?? 0).toString());
-        var s = (n?.jKd?.qKd ?? 0) * 100;
+        u.push(MathUtils_1.MathUtils.LongToBigInt(o?.QKd?.GKd ?? 0).toString());
+        var s = (o?.QKd?.VKd ?? 0) * 100;
         u.push(s.toFixed(2));
-        u.push(n?.jKd?.GKd?.toString() ?? "0");
-        u.push(n?.jKd?.FKd?.toString() ?? "0");
-        u.push(n?.jKd?.NKd?.toString() ?? "0");
-        u.push(n?.jKd?.VKd?.toString() ?? "0");
-        u.push(n?.jKd?.OKd?.toString() ?? "0");
-        u.push(MathUtils_1.MathUtils.LongToBigInt(n?.jKd?.kKd ?? 0).toString());
-        u.push(n?.jKd?.BRm ? MathUtils_1.MathUtils.LongToNumber(n.jKd.BRm).toString() : "0");
+        u.push(o?.QKd?.jKd?.toString() ?? "0");
+        u.push(o?.QKd?.HKd?.toString() ?? "0");
+        u.push(o?.QKd?.$Kd?.toString() ?? "0");
+        u.push(o?.QKd?.WKd?.toString() ?? "0");
+        u.push(o?.QKd?.NKd?.toString() ?? "0");
+        u.push(MathUtils_1.MathUtils.LongToBigInt(o?.QKd?.FKd ?? 0).toString());
+        u.push(o?.QKd?.pYm ? MathUtils_1.MathUtils.LongToNumber(o.QKd.pYm).toString() : "0");
+        u.push(o?.zHf ? "1" : "0");
+        u.push((o?.QKd?.QHf ?? 0).toString());
+        u.push((o?.QKd?.KHf ?? 0).toString());
+        u.push((o?.QKd?.XHf ?? 0).toString());
+        u.push((o?.QKd?.YHf ?? 0).toString());
+        u.push((o?.QKd?.KJf ?? 0).toString());
         a = u.length;
-        var o = attributeIdArray.length;
-        CharacterGasDebugComponent_1.BGr(n.Zjn.HAs, u, a, a + o);
-        CharacterGasDebugComponent_1.BGr(n.JAs.HAs, u, a + o * 2, a + o * 3);
-        var s = n.Wjn;
-        u[a + o * 4] = AbilityUtils_1.AbilityUtils.GetLevelValue(h.HardnessLv, s, 0).toString();
+        var n = attributeIdArray.length;
+        CharacterGasDebugComponent_1.BGr(o.Zjn.HAs, u, a, a + n);
+        CharacterGasDebugComponent_1.BGr(o.JAs.HAs, u, a + n * 2, a + n * 3);
+        var s = o.Wjn;
+        u[a + n * 4] = AbilityUtils_1.AbilityUtils.GetLevelValue(h.HardnessLv, s, 0).toString();
         u.push(AbilityUtils_1.AbilityUtils.GetLevelValue(h.Percent0, s, 0).toString());
         u.push(AbilityUtils_1.AbilityUtils.GetLevelValue(h.Percent1, s, 0).toString());
         u.push(AbilityUtils_1.AbilityUtils.GetLevelValue(h.ToughLv, s, 0).toString());
@@ -1406,7 +1462,7 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
         u.push(AbilityUtils_1.AbilityUtils.GetLevelValue(h.ElementPower, s, 0).toString());
         var _ = new Array();
         var C = new Array();
-        for (const b of n.Zjn.$As) {
+        for (const b of o.Zjn.$As) {
           var c = MathUtils_1.MathUtils.LongToNumber(b);
           var l = CharacterBuffController_1.default.GetBuffDefinition(c);
           _.push(l.Desc);
@@ -1416,7 +1472,7 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
         u.push(_.join("|"));
         _.length = 0;
         C.length = 0;
-        for (const p of n.JAs.$As) {
+        for (const p of o.JAs.$As) {
           var g = MathUtils_1.MathUtils.LongToNumber(p);
           var f = CharacterBuffController_1.default.GetBuffDefinition(g);
           _.push(f.Desc);
@@ -1424,10 +1480,10 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
         }
         u.push(C.join("|"));
         u.push(_.join("|"));
-        o = u.join(",");
-        this.MGr.push(o);
+        n = u.join(",");
+        this.MGr.push(n);
         if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("Recorder", 20, "结算信息Attr", ["Result", o]);
+          Log_1.Log.Debug("Recorder", 20, "结算信息Attr", ["Result", n]);
         }
       }
     } else {
@@ -1437,12 +1493,12 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
       }
     }
   }
-  static BGr(r, a, i, n) {
+  static BGr(r, a, i, o) {
     for (let t = 0, e = attributeIdArray.length; t < e; t++) {
-      for (const o of r) {
-        if (o.tSs === attributeIdArray[t]) {
-          a[i + t] = (o.y6n > 0 ? o.y6n : o.eSs).toString();
-          a[n + t] = o.eSs.toString();
+      for (const n of r) {
+        if (n.tSs === attributeIdArray[t]) {
+          a[i + t] = (n.y6n > 0 ? n.y6n : n.eSs).toString();
+          a[o + t] = n.eSs.toString();
           break;
         }
       }
@@ -1490,7 +1546,7 @@ CharacterGasDebugComponent.zqr = new Map();
 CharacterGasDebugComponent.Zqr = new Array();
 CharacterGasDebugComponent.Pt = "Statistics/FightDataRecord/";
 CharacterGasDebugComponent.XQu = "Statistics/FightOperateRecord/";
-CharacterGasDebugComponent.Stm = new Map([[1001, "1001(风蚀)"], [1002, "1002(电磁)"], [1003, "1003(霜渐)"], [1004, "1004(聚爆)"], [1005, "1005(光噪)"], [1006, "1006(虚湮)"]]);
+CharacterGasDebugComponent.Gom = new Map([[1001, "1001(风蚀)"], [1002, "1002(电磁)"], [1003, "1003(霜渐)"], [1004, "1004(聚爆)"], [1005, "1005(光噪)"], [1006, "1006(虚湮)"]]);
 CharacterGasDebugComponent.SGr = new Array();
 CharacterGasDebugComponent.rGr = undefined;
 CharacterGasDebugComponent.nGr = (t, e) => t.TimeStamp - e.TimeStamp;

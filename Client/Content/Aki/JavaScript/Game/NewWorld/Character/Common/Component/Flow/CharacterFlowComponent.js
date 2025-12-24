@@ -1,20 +1,20 @@
 "use strict";
 
-var __decorate = this && this.__decorate || function (t, i, e, o) {
+var __decorate = this && this.__decorate || function (t, i, o, e) {
   var s;
   var r = arguments.length;
-  var h = r < 3 ? i : o === null ? o = Object.getOwnPropertyDescriptor(i, e) : o;
+  var h = r < 3 ? i : e === null ? e = Object.getOwnPropertyDescriptor(i, o) : e;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    h = Reflect.decorate(t, i, e, o);
+    h = Reflect.decorate(t, i, o, e);
   } else {
     for (var n = t.length - 1; n >= 0; n--) {
       if (s = t[n]) {
-        h = (r < 3 ? s(h) : r > 3 ? s(i, e, h) : s(i, e)) || h;
+        h = (r < 3 ? s(h) : r > 3 ? s(i, o, h) : s(i, o)) || h;
       }
     }
   }
   if (r > 3 && h) {
-    Object.defineProperty(i, e, h);
+    Object.defineProperty(i, o, h);
   }
   return h;
 };
@@ -48,35 +48,27 @@ let CharacterFlowComponent = class CharacterFlowComponent extends EntityComponen
   }
   OnStart() {
     this.ActorComp = this.Entity.GetComponent(1);
-    this.HeadInfoComp = this.Entity.GetComponent(82);
+    this.HeadInfoComp = this.Entity.GetComponent(85);
     var t = this.ActorComp?.CreatureData.GetPbEntityInitData();
     if (t) {
       this.FlowData = (0, IComponent_1.getComponent)(t.ComponentsData, "BubbleComponent");
       this.InitFlowLogic(this.FlowData);
-      t = this.ActorComp.CreatureData.ComponentDataMap.get("Oys")?.Oys?.RIs;
-      if (t) {
-        for (const e of t) {
-          var i = ConfigManager_1.ConfigManager.BubbleConfig.GetBubbleData(e.LIs);
-          if (i) {
-            i = DynamicFlowController_1.DynamicFlowController.CreateCharacterFlowData(i);
-            DynamicFlowController_1.DynamicFlowController.AddDynamicFlow(i);
-            break;
-          }
-        }
-      }
+      this.InitCachedDynamicFlow();
+      this.HeadInfoComp?.UpdateDialogScale(this.FlowData?.Scale ?? 0.5);
     }
     return true;
   }
   OnActivate() {
     var t;
-    if (this.ActorComp && (t = this.ActorComp.CreatureData.GetPbDataId(), t = DynamicFlowController_1.DynamicFlowController.GetDynamicFlowByMasterActor(t))) {
+    if (this.ActorComp && ((t = new DynamicFlowController_1.DynamicFlowActorInfo()).PbDataId = this.ActorComp.CreatureData.GetPbDataId(), t.CreatureId = this.ActorComp.CreatureData.GetCreatureDataId(), t = DynamicFlowController_1.DynamicFlowController.GetDynamicFlowByMasterActorInfo(t))) {
       this.PlayDynamicFlowBegin(t);
     }
   }
   OnClear() {
     var t;
     if (this.IsPlayDynamicFlow) {
-      t = this.ActorComp.CreatureData.GetPbDataId();
+      (t = new DynamicFlowController_1.DynamicFlowActorInfo()).PbDataId = this.ActorComp.CreatureData.GetPbDataId();
+      t.CreatureId = this.ActorComp.CreatureData.GetCreatureDataId();
       DynamicFlowController_1.DynamicFlowController.RemoveDynamicFlow(t);
     }
     return true;
@@ -101,6 +93,21 @@ let CharacterFlowComponent = class CharacterFlowComponent extends EntityComponen
   }
   InitFlowLogicRange(t, i) {
     return !!this.FlowData && !!this.FlowLogic && !(t = t ?? exports.DEFAULT_BUBBLE_ENTER_RANGE, i = i ?? exports.DEFAULT_BUBBLE_LEAVE_RANGE, this.MinRangeSquared = t * t, this.MaxRangeSquared = i * i, 0);
+  }
+  InitCachedDynamicFlow() {
+    var t = this.ActorComp.CreatureData;
+    var i = t.ComponentDataMap.get("Oys")?.Oys?.RIs;
+    if (i) {
+      for (const s of i) {
+        var o = ConfigManager_1.ConfigManager.BubbleConfig.GetBubbleData(s.LIs);
+        if (o) {
+          var e = t.GetCreatureDataId();
+          var e = o.EntityIds.length ? DynamicFlowController_1.DynamicFlowController.CreateCharacterFlowData(o) : DynamicFlowController_1.DynamicFlowController.CreateCharacterFlowDataForMasterCreatureId(e, o);
+          DynamicFlowController_1.DynamicFlowController.AddDynamicFlow(e);
+          break;
+        }
+      }
+    }
   }
   CheckCondition() {
     return !!this.FlowData && !!this.IsInit && (!!this.FlowLogic.HasValidFlow() || !!this.IsPlayDynamicFlow) && !!this.ActorComp?.Owner?.IsValid() && !!Global_1.Global.BaseCharacter && (!this.ActorComp.Owner.bHidden && !!this.HeadInfoComp?.CanShowHeadItem() || !(this.ForceStopFlow(), 1));

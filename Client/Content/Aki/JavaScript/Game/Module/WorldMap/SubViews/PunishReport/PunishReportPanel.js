@@ -60,7 +60,7 @@ class PunishReportPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondaryUi
       this.UpdateTopRightIconActive();
       this.UpdateHidePlayMapTipPanel();
       e = this.UpdateQuickGoto();
-      this.ConfirmButton.SetActive(!e);
+      this.LayoutContext?.SetConfirmBtnActive(!e);
       this.GetVerticalLayout(16).RootUIComp.SetUIActive(true);
       e = this.u2o.CanGetReward();
       this.GetItem(25).SetUIActive(e);

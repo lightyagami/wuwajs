@@ -21,56 +21,56 @@ class ComposePopupGridItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
     super(...arguments);
     this.sft = undefined;
-    this.G_m = undefined;
-    this.F_m = undefined;
-    this.N_m = undefined;
-    this.mlm = undefined;
-    this.V_m = 0;
+    this.egm = undefined;
+    this.tgm = undefined;
+    this.igm = undefined;
+    this.bdm = undefined;
+    this.rgm = 0;
     this.BelongView = undefined;
-    this.j_m = () => {
+    this.ogm = () => {
       var e = new ComposePopupScrollItemGrid();
       e.OnToggleCallback = e => {
-        this.H_m(e);
+        this.ngm(e);
       };
       return e;
     };
     this.p5t = () => {
-      if (this.mlm) {
-        switch (this.mlm.State) {
+      if (this.bdm) {
+        switch (this.bdm.State) {
           case 0:
             {
               const t = [];
-              this.mlm.ComposeList?.forEach(e => {
+              this.bdm.ComposeList?.forEach(e => {
                 t.push({
                   L8n: e.ItemId,
                   UVn: e.Count
                 });
               });
-              var e = this.mlm.Item.Count - this.mlm.Item.SelectedCount;
-              ControllerHolder_1.ControllerHolder.ComposeController.SendSynthesisItemRequestNew(this.mlm.Item.ItemId, e, t, () => {
+              var e = this.bdm.Item.Count - this.bdm.Item.SelectedCount;
+              ControllerHolder_1.ControllerHolder.ComposeController.SendSynthesisItemRequestNew(this.bdm.Item.ItemId, e, t, () => {
                 ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("AutoSynthesis_PurificationFinish_Tips");
               });
-              this.Kym();
+              this.XAm();
               break;
             }
           case 1:
-            e = this.mlm.ComposeList?.[0];
+            e = this.bdm.ComposeList?.[0];
             if (!e) {
               if (Log_1.Log.CheckError()) {
                 Log_1.Log.Error("Compose", 90, "置换材料列表为空，请检查数据！");
               }
               return;
             }
-            ControllerHolder_1.ControllerHolder.ComposeController.SendExchangeRequest(this.mlm.Item.ItemId, e.ItemId, e.Count, () => {
+            ControllerHolder_1.ControllerHolder.ComposeController.SendExchangeRequest(this.bdm.Item.ItemId, e.ItemId, e.Count, () => {
               ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("AutoSynthesis_SynthesizeFinish_Tips");
             });
-            this.Kym();
+            this.XAm();
             break;
           case 3:
-            if (this.V_m === 0) {
+            if (this.rgm === 0) {
               ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("SkipTask_Prevent");
             } else {
-              SkipTaskManager_1.SkipTaskManager.RunByConfigId(this.V_m, this.mlm.Item.ItemId);
+              SkipTaskManager_1.SkipTaskManager.RunByConfigId(this.rgm, this.bdm.Item.ItemId);
             }
         }
       }
@@ -83,26 +83,26 @@ class ComposePopupGridItem extends GridProxyAbstract_1.GridProxyAbstract {
     var e = [];
     this.sft = new ComposePopupMediumItemGrid();
     e.push(this.sft.CreateThenShowByActorAsync(this.GetItem(7).GetOwner()));
-    this.F_m = new ButtonItem_1.ButtonItem();
-    e.push(this.F_m.CreateThenShowByActorAsync(this.GetItem(10).GetOwner()));
-    this.N_m = new ButtonItem_1.ButtonItem();
-    e.push(this.N_m.CreateThenShowByActorAsync(this.GetItem(9).GetOwner()));
+    this.tgm = new ButtonItem_1.ButtonItem();
+    e.push(this.tgm.CreateThenShowByActorAsync(this.GetItem(10).GetOwner()));
+    this.igm = new ButtonItem_1.ButtonItem();
+    e.push(this.igm.CreateThenShowByActorAsync(this.GetItem(9).GetOwner()));
     await Promise.all(e);
-    this.G_m = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(2), this.j_m);
+    this.egm = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(2), this.ogm);
   }
   OnStart() {
     this.sft?.BindOnCanExecuteChange(() => false);
     this.sft.UseSelectedCoin = false;
-    this.F_m?.SetFunction(this.p5t);
-    this.N_m?.SetFunction(this.p5t);
+    this.tgm?.SetFunction(this.p5t);
+    this.igm?.SetFunction(this.p5t);
   }
   Refresh(e, t, i) {
-    if (this.mlm?.Item.ItemId !== e.Item.ItemId) {
+    if (this.bdm?.Item.ItemId !== e.Item.ItemId) {
       this.StopNiagara();
     }
-    this.mlm = e;
+    this.bdm = e;
     this.$8d(e.State);
-    this.$_m(e.Item);
+    this.sgm(e.Item);
     if (e.ComposeList) {
       let t = undefined;
       if (e.Item.ItemId === ItemDefines_1.EItemId.Gold) {
@@ -114,9 +114,9 @@ class ComposePopupGridItem extends GridProxyAbstract_1.GridProxyAbstract {
         t = e.ComposeList;
       }
       if (e.State === 0) {
-        this.W_m(t);
+        this.agm(t);
       } else {
-        this.G_m?.RefreshByData(t);
+        this.egm?.RefreshByData(t);
       }
     }
   }
@@ -130,17 +130,17 @@ class ComposePopupGridItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.GetItem(11)?.SetUIActive(e);
     this.GetItem(6)?.SetUIActive(i);
     this.GetItem(12)?.SetUIActive(r);
-    this.GetItem(13)?.SetUIActive(t === 3 && this.mlm.Item.ItemId !== ItemDefines_1.EItemId.Gold);
-    this.F_m?.SetUiActive(o);
-    this.N_m?.SetUiActive(r && !o);
+    this.GetItem(13)?.SetUIActive(t === 3 && this.bdm.Item.ItemId !== ItemDefines_1.EItemId.Gold);
+    this.tgm?.SetUiActive(o);
+    this.igm?.SetUiActive(r && !o);
     if (o) {
       let e = undefined;
-      e = this.mlm.Item.ItemId === ItemDefines_1.EItemId.Gold ? "AutoSynthesis_GetCellCreditBtn_Text" : "PrefabTextItem_4115765186_Text";
-      this.F_m?.SetShowText(e);
+      e = this.bdm.Item.ItemId === ItemDefines_1.EItemId.Gold ? "AutoSynthesis_GetCellCreditBtn_Text" : "PrefabTextItem_4115765186_Text";
+      this.tgm?.SetShowText(e);
     } else if (r) {
       let e = undefined;
       e = t === 1 ? "AutoSynthesis_ConversionBtn_Text" : "AutoSynthesis_TrackBtn_Text";
-      this.N_m?.SetShowText(e);
+      this.igm?.SetShowText(e);
     }
     let n = i;
     e = this.GetText(5);
@@ -148,24 +148,24 @@ class ComposePopupGridItem extends GridProxyAbstract_1.GridProxyAbstract {
     if (t === 1) {
       e?.ShowTextNew("AutoSynthesis_Conversion_Tips");
     } else if (t === 3) {
-      o = this.Q_m(this.mlm.Item.ItemId);
+      o = this.hgm(this.bdm.Item.ItemId);
       if (!o) {
         e?.ShowTextNew("AutoSynthesis_Track_Tips");
-        this.V_m = 0;
+        this.rgm = 0;
         return;
       }
-      if (this.mlm.Item.ItemId === ItemDefines_1.EItemId.Gold) {
+      if (this.bdm.Item.ItemId === ItemDefines_1.EItemId.Gold) {
         e?.ShowTextNew("AutoSynthesis_CellCreditMissing_Tips");
         n = true;
-        this.G_m?.RefreshByData([this.mlm.Item]);
+        this.egm?.RefreshByData([this.bdm.Item]);
       } else {
         e?.ShowTextNew(o.Description);
       }
-      this.V_m = o.Id;
+      this.rgm = o.Id;
     }
     this.GetScrollViewWithScrollbar(2)?.RootUIComp.SetUIActive(n);
   }
-  Q_m(e) {
+  hgm(e) {
     e = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(e)?.ItemAccess;
     if (e && !(e.length <= 0)) {
       var t = CommonParamById_1.configCommonParamById.GetIntArrayConfig("ComposePopupSkipBlackList");
@@ -181,13 +181,13 @@ class ComposePopupGridItem extends GridProxyAbstract_1.GridProxyAbstract {
       }
     }
   }
-  $_m(e) {
+  sgm(e) {
     this.sft?.Refresh(e, false, 0);
     this.sft?.BindOnExtendToggleClicked(() => {
-      this.H_m(e);
+      this.ngm(e);
     });
   }
-  W_m(t) {
+  agm(t) {
     var i = CommonParamById_1.configCommonParamById.GetIntConfig("CraftingMaterialTypeMax");
     var s = [...t];
     for (let e = t.length; e < i; e++) {
@@ -198,15 +198,15 @@ class ComposePopupGridItem extends GridProxyAbstract_1.GridProxyAbstract {
         SelectedCount: 0
       });
     }
-    this.G_m?.RefreshByData(s);
+    this.egm?.RefreshByData(s);
   }
-  H_m(e) {
+  ngm(e) {
     ControllerHolder_1.ControllerHolder.ItemController.OpenItemTipsByItemId(e.ItemId, true);
     ModelManager_1.ModelManager.ComposeModel.ComposeSelectItem = e;
     ModelManager_1.ModelManager.ComposeModel.ComposeSkipSourceView = this.BelongView;
     ModelManager_1.ModelManager.InventoryModel.SetItemNeedCount(e.Count - e.SelectedCount);
   }
-  Kym() {
+  XAm() {
     this.GetUiNiagara(14)?.SetUIActive(true);
   }
   StopNiagara() {
@@ -217,18 +217,18 @@ exports.ComposePopupGridItem = ComposePopupGridItem;
 class ComposePopupScrollItemGrid extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
     super(...arguments);
-    this.K_m = undefined;
+    this.lgm = undefined;
     this.OnToggleCallback = undefined;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem]];
   }
   async OnBeforeStartAsync() {
-    this.K_m = new ComposePopupMediumItemGrid();
-    await this.K_m.CreateThenShowByActorAsync(this.GetItem(0).GetOwner());
+    this.lgm = new ComposePopupMediumItemGrid();
+    await this.lgm.CreateThenShowByActorAsync(this.GetItem(0).GetOwner());
   }
   OnStart() {
-    this.K_m?.BindOnCanExecuteChange(() => false);
+    this.lgm?.BindOnCanExecuteChange(() => false);
   }
   Refresh(e, t, i) {
     if (e.ItemId === ITEM_INVALID_ID) {
@@ -237,8 +237,8 @@ class ComposePopupScrollItemGrid extends GridProxyAbstract_1.GridProxyAbstract {
     } else {
       this.GetItem(1)?.SetUIActive(false);
       this.GetItem(0)?.SetUIActive(true);
-      this.K_m?.Refresh(e, t, i);
-      this.K_m?.BindOnExtendToggleClicked(() => {
+      this.lgm?.Refresh(e, t, i);
+      this.lgm?.BindOnExtendToggleClicked(() => {
         this.OnToggleCallback?.(e);
       });
     }
@@ -251,12 +251,12 @@ class ComposePopupMediumItemGrid extends CostMediumItemGrid_1.CostMediumItemGrid
   }
   OnRefresh(e, t, i) {
     if (e.ItemId === ItemDefines_1.EItemId.Gold) {
-      this.X_m(e);
+      this._gm(e);
     } else {
       super.OnRefresh(e, t, i);
     }
   }
-  X_m(e) {
+  _gm(e) {
     var t = e.ItemId;
     var i = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(t);
     if (i) {

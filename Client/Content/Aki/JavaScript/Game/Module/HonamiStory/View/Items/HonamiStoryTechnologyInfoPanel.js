@@ -16,14 +16,14 @@ const HonamiStoryController_1 = require("../../HonamiStoryController");
 class HonamiStoryTechnologyInfoPanel extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.gem = undefined;
+    this.Xim = undefined;
     this.ucc = undefined;
     this.U1a = undefined;
     this.uVd = undefined;
-    this.Cem = "/Game/Aki/UI/UIResources/UiActivity/Atlas/Activity28/HonamiStory/HonamiStorySkillTree/SP_SkillFrmLockNor.SP_SkillFrmLockNor";
-    this.pem = "/Game/Aki/UI/UIResources/UiActivity/Atlas/Activity28/HonamiStory/HonamiStorySkillTree/SP_SkillFrmANor.SP_SkillFrmANor";
+    this.Yim = "/Game/Aki/UI/UIResources/UiActivity/Atlas/Activity28/HonamiStory/HonamiStorySkillTree/SP_SkillFrmLockNor.SP_SkillFrmLockNor";
+    this.zim = "/Game/Aki/UI/UIResources/UiActivity/Atlas/Activity28/HonamiStory/HonamiStorySkillTree/SP_SkillFrmANor.SP_SkillFrmANor";
     this.L3e = () => {
-      HonamiStoryController_1.HonamiStoryController.SendHonamiStoryActivateTalentRequest(this.gem.Id, () => {
+      HonamiStoryController_1.HonamiStoryController.SendHonamiStoryActivateTalentRequest(this.Xim.Id, () => {
         var i = ModelManager_1.ModelManager.HonamiStoryModel;
         i.CurrentSelectNodeItem?.PlayActivateAnim();
         if (i.CurrentSelectNode) {
@@ -53,11 +53,11 @@ class HonamiStoryTechnologyInfoPanel extends UiPanelBase_1.UiPanelBase {
   }
   Refresh(i) {
     if (i) {
-      this.gem = i;
+      this.Xim = i;
       var t;
-      var e = this.gem.GetConfig;
+      var e = this.Xim.GetConfig;
       var s = ModelManager_1.ModelManager.HonamiStoryModel.CheckNodeCanActiveAndIsEnough(i);
-      var o = this.gem.GetNodeStatus === 2 ? this.pem : this.Cem;
+      var o = this.Xim.GetNodeStatus === 2 ? this.zim : this.Yim;
       this.SetSpriteByPath(o, this.GetSprite(0), false);
       this.SetTextureByPath(e.Icon, this.GetTexture(1));
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), e.Name);
@@ -77,7 +77,7 @@ class HonamiStoryTechnologyInfoPanel extends UiPanelBase_1.UiPanelBase {
       this.GetItem(5).SetUIActive(false);
       this.GetItem(6).SetUIActive(false);
       this.GetItem(8).SetUIActive(false);
-      switch (this.gem.GetNodeStatus) {
+      switch (this.Xim.GetNodeStatus) {
         case 2:
           this.U1a.SetUiActive(false);
           this.GetItem(8).SetUIActive(true);

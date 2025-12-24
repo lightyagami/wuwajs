@@ -26,7 +26,7 @@ class HonamiStoryMobileEquipPanel extends HonamiStoryBackpackPanelBase_1.HonamiS
   constructor() {
     super(...arguments);
     this.SPe = undefined;
-    this.jum = false;
+    this.d0m = false;
     this.L6e = 0;
     this.xqe = undefined;
     this.ViewportItem = undefined;
@@ -36,30 +36,30 @@ class HonamiStoryMobileEquipPanel extends HonamiStoryBackpackPanelBase_1.HonamiS
     this.RXl = undefined;
     this.fgd = [];
     this.f_a = undefined;
-    this.Y0m = undefined;
+    this.tIm = undefined;
     this.InsteadValueItem = undefined;
     this.CurrentValueItem = undefined;
     this.Fmi = undefined;
     this.Vmi = undefined;
-    this.XMm = true;
+    this.n2m = true;
     this.HXl = undefined;
     this.ToggleA = undefined;
     this.ToggleB = undefined;
     this.MoveUpItem = undefined;
     this.MoveDownItem = undefined;
-    this.Mlm = false;
-    this.Elm = 10;
-    this.J0m = 0;
-    this.Z0m = 0;
-    this.VJd = (t, i) => {
+    this.kdm = false;
+    this.qdm = 10;
+    this.rIm = 0;
+    this.oIm = 0;
+    this.lem = (t, i) => {
       this.RefreshNeedQuickAll();
       this.TeamDataItem.RefreshPowerLevel(t !== i, t < i, t, i);
     };
-    this.Wbm = () => {
+    this.pHm = () => {
       this.xqe.StopMovement();
       this.xqe.ScrollToTop(undefined, this.HXl.GetRootItem(), true);
     };
-    this.SQd = i => {
+    this.TQd = i => {
       if (i.Qmd === this.RXl.BackpackId) {
         this.RefreshEquipItem().then(() => {
           for (const t of this.GetUpdateContextEffectGridItems(i)) {
@@ -69,11 +69,11 @@ class HonamiStoryMobileEquipPanel extends HonamiStoryBackpackPanelBase_1.HonamiS
       }
     };
     this.Ga_ = t => {
-      this.eCm(t);
+      this.nIm(t);
       ModelManager_1.ModelManager.HonamiStoryModel.GetInteractController().RefreshSelectedUiItem();
       this.HXl.UpdateViewportItems();
       if (this.f_a) {
-        this.vgd(this.f_a, this.Y0m);
+        this.vgd(this.f_a, this.tIm);
       }
     };
     this.qLn = () => {
@@ -94,7 +94,7 @@ class HonamiStoryMobileEquipPanel extends HonamiStoryBackpackPanelBase_1.HonamiS
       if (!(i - this.L6e < HonamiStoryDefine_1.HONAMI_BAKCPACK_CLICK_CD)) {
         this.L6e = i;
         if ((t = (i = ModelManager_1.ModelManager.HonamiStoryModel.GetBackpackLogic()).GetLogicState()) === 0) {
-          if (this.XMm) {
+          if (this.n2m) {
             ModelManager_1.ModelManager.HonamiStoryModel.QuickUnloadAllSlot();
           } else {
             ModelManager_1.ModelManager.HonamiStoryModel.SortBackpack();
@@ -110,12 +110,12 @@ class HonamiStoryMobileEquipPanel extends HonamiStoryBackpackPanelBase_1.HonamiS
   }
   OnStart() {
     this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
-    this.Elm = ConfigManager_1.ConfigManager.HonamiStoryConfig.GetScrollingSpeed();
+    this.qdm = ConfigManager_1.ConfigManager.HonamiStoryConfig.GetScrollingSpeed();
     this.xqe = this.GetScrollViewWithScrollbar(14);
     this.ViewportItem = this.GetItem(15);
     this.ContentItem = this.GetItem(13);
     this.ViewportHeight = this.ViewportItem.GetHeight();
-    this.jum = ModelManager_1.ModelManager.HonamiStoryModel.GetActivityData(false)?.GetPreGuideQuestFinishState() ?? false;
+    this.d0m = ModelManager_1.ModelManager.HonamiStoryModel.GetActivityData(false)?.GetPreGuideQuestFinishState() ?? false;
   }
   OnBeforeShow() {
     this.RefreshNeedQuickAll();
@@ -128,18 +128,18 @@ class HonamiStoryMobileEquipPanel extends HonamiStoryBackpackPanelBase_1.HonamiS
   }
   dde() {
     this.xqe.OnScrollValueChange.Bind(this.Ga_);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnHonamiStoryBackpackUpdate, this.SQd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnHonamiStoryPowerLevelUpdate, this.VJd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnHonamiStorySortSuccess, this.Wbm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnHonamiStoryBackpackUpdate, this.TQd);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnHonamiStoryPowerLevelUpdate, this.lem);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnHonamiStorySortSuccess, this.pHm);
   }
   OnBeforeHide() {
     this.Cde();
   }
   Cde() {
     this.xqe.OnScrollValueChange.Unbind();
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnHonamiStoryBackpackUpdate, this.SQd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnHonamiStoryPowerLevelUpdate, this.VJd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnHonamiStorySortSuccess, this.Wbm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnHonamiStoryBackpackUpdate, this.TQd);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnHonamiStoryPowerLevelUpdate, this.lem);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnHonamiStorySortSuccess, this.pHm);
   }
   async Init() {
     this.RXl = ModelManager_1.ModelManager.HonamiStoryModel.GetPlayerBackpackData();
@@ -162,7 +162,7 @@ class HonamiStoryMobileEquipPanel extends HonamiStoryBackpackPanelBase_1.HonamiS
     this.RefreshBottomPanel();
     await this.$Xl();
     this.InsteadValueItem.SetVisible(false);
-    this.CurrentValueItem.SetVisible(this.jum);
+    this.CurrentValueItem.SetVisible(this.d0m);
     if (this.IsShow) {
       this.ScrollAfterInit();
     }
@@ -230,14 +230,14 @@ class HonamiStoryMobileEquipPanel extends HonamiStoryBackpackPanelBase_1.HonamiS
     this.RefreshScrollMoveState(t);
     if (this.f_a !== e) {
       this.f_a = e;
-      this.Y0m = i;
+      this.tIm = i;
       this.vgd(e, i);
       this.OnCheckAttrItem(e, i);
     }
   }
   OnHoverEnd() {
     this.f_a = undefined;
-    this.Y0m = undefined;
+    this.tIm = undefined;
     this.RefreshScrollMoveState(undefined);
     this.vgd(undefined, undefined);
     this.OnCheckAttrItem(undefined, undefined);
@@ -259,12 +259,12 @@ class HonamiStoryMobileEquipPanel extends HonamiStoryBackpackPanelBase_1.HonamiS
     var s;
     var t = this.Egd(t);
     if (t !== undefined && t.GetData() !== i && this.ygd(t, i)) {
-      (e = new Protocol_1.Aki.Protocol.q$d()).Qmd = this.RXl.BackpackId;
+      (e = new Protocol_1.Aki.Protocol.V$d()).Qmd = this.RXl.BackpackId;
       s = HonamiStoryUtil_1.HonamiStoryUtil.GetHonamiStoryItemSwapInfo(i, t.GetPosition());
-      e.B$d.push(s);
+      e.G$d.push(s);
       if (s = t.GetData()) {
         t = HonamiStoryUtil_1.HonamiStoryUtil.GetHonamiStoryItemSwapInfo(s, i.GetPosition());
-        e.B$d.push(t);
+        e.G$d.push(t);
       }
       return e;
     }
@@ -276,13 +276,13 @@ class HonamiStoryMobileEquipPanel extends HonamiStoryBackpackPanelBase_1.HonamiS
         t = h;
         break;
       }
-      var e = new Protocol_1.Aki.Protocol.q$d();
+      var e = new Protocol_1.Aki.Protocol.V$d();
       e.Qmd = this.RXl.BackpackId;
       var s = HonamiStoryUtil_1.HonamiStoryUtil.GetHonamiStoryItemRemoveInfo(i);
-      e.B$d.push(s);
+      e.G$d.push(s);
       if (t !== undefined) {
         s = HonamiStoryUtil_1.HonamiStoryUtil.GetHonamiStoryItemAddInfo(t, i.GetPosition());
-        e.B$d.push(s);
+        e.G$d.push(s);
       }
       return e;
     }
@@ -291,14 +291,14 @@ class HonamiStoryMobileEquipPanel extends HonamiStoryBackpackPanelBase_1.HonamiS
     if (i !== undefined) {
       t = this.Egd(t);
       if (t !== undefined) {
-        var s = new Protocol_1.Aki.Protocol.q$d();
+        var s = new Protocol_1.Aki.Protocol.V$d();
         s.Qmd = this.RXl.BackpackId;
         const h = HonamiStoryUtil_1.HonamiStoryUtil.GetHonamiStoryItemAddInfo(i, t.GetPosition());
-        s.B$d.push(h);
+        s.G$d.push(h);
         for (const o of e) {
           if (o) {
             const h = HonamiStoryUtil_1.HonamiStoryUtil.GetHonamiStoryItemRemoveInfo(o);
-            s.B$d.push(h);
+            s.G$d.push(h);
           }
         }
         return s;
@@ -342,15 +342,15 @@ class HonamiStoryMobileEquipPanel extends HonamiStoryBackpackPanelBase_1.HonamiS
   }
   GetUpdateContextEffectGridItems(t) {
     var i = [];
-    for (const s of t.B$d) {
+    for (const s of t.G$d) {
       var e = ModelManager_1.ModelManager.HonamiStoryModel.GetItemData(s.Xmd);
-      if (e && (s.h5n === 0 || s.h5n === 1) && (e = e.GetPosition(), e = this.rpm(e))) {
+      if (e && (s.h5n === 0 || s.h5n === 1) && (e = e.GetPosition(), e = this.YTm(e))) {
         i.push(e);
       }
     }
     return i;
   }
-  rpm(t) {
+  YTm(t) {
     for (const i of this.fgd) {
       for (const e of i.GetPluginItemList()) {
         if (e.GetPosition() === t) {
@@ -374,7 +374,7 @@ class HonamiStoryMobileEquipPanel extends HonamiStoryBackpackPanelBase_1.HonamiS
       var t = this.GetItem(11).GetHeight();
       var i = this.ContentItem.GetHeight();
       var e = this.ViewportItem.GetHeight();
-      this.Z0m = t / (i - e);
+      this.oIm = t / (i - e);
       var t = this.fgd[this.fgd.length - 1];
       this.xqe.ScrollToTop(undefined, t.GetRootItem(), true);
     });
@@ -441,13 +441,13 @@ class HonamiStoryMobileEquipPanel extends HonamiStoryBackpackPanelBase_1.HonamiS
     var i = t === 3;
     var t = t === 5 || t === 6;
     this.InsteadValueItem?.SetVisible(i);
-    this.CurrentValueItem?.SetVisible(!i && this.jum && !this.XMm);
+    this.CurrentValueItem?.SetVisible(!i && this.d0m && !this.n2m);
     if (!i) {
-      e = this.XMm ? "HonamiStory_QuickUnloadAll" : "HonamiStory_BackpackSort";
+      e = this.n2m ? "HonamiStory_QuickUnloadAll" : "HonamiStory_BackpackSort";
       this.Vmi?.SetLocalTextNew(e);
     }
     this.Vmi?.SetUiActive(!i);
-    this.Fmi?.SetUiActive(this.XMm && !i);
+    this.Fmi?.SetUiActive(this.n2m && !i);
     this.Vmi?.SetEnableClick(!t);
     this.Fmi?.SetEnableClick(!t);
     var e = t ? HonamiStoryDefine_1.HONAMI_DISABLE_ALPHA : HonamiStoryDefine_1.HONAMI_ENABLE_ALPHA;
@@ -465,28 +465,28 @@ class HonamiStoryMobileEquipPanel extends HonamiStoryBackpackPanelBase_1.HonamiS
       this.MoveUpItem.SetUIActive(i);
       this.MoveDownItem.SetUIActive(e);
       if (i || e) {
-        e = this.ydm(i, t);
-        this.Mlm = i;
-        this.Ilm(e);
+        e = this.YCm(i, t);
+        this.kdm = i;
+        this.Odm(e);
       }
     } else {
       this.MoveUpItem.SetUIActive(false);
       this.MoveDownItem.SetUIActive(false);
     }
   }
-  Ilm(t) {
+  Odm(t) {
     var i = this.ContentItem.GetRelativeTransform().GetLocation();
-    var t = (this.Mlm ? -this.Elm : this.Elm) * t;
+    var t = (this.kdm ? -this.qdm : this.qdm) * t;
     this.xqe.SetScrollValue(new UE.Vector2D(0, Math.max(0, i.Y + t)));
     var i = this.ContentItem.GetStretchTop();
     var t = this.ContentItem.GetStretchBottom();
-    if (this.Mlm && i >= 0) {
+    if (this.kdm && i >= 0) {
       this.MoveUpItem.SetUIActive(false);
-    } else if (!this.Mlm && t >= 0) {
+    } else if (!this.kdm && t >= 0) {
       this.MoveDownItem.SetUIActive(false);
     }
   }
-  ydm(t, i) {
+  YCm(t, i) {
     var e = t ? this.MoveUpItem : this.MoveDownItem;
     var i = HonamiStoryUtil_1.HonamiStoryUtil.GetOffsetVector(i.GetWorldPointInPlane());
     var e = e.GetUIWorldPosition();
@@ -502,16 +502,22 @@ class HonamiStoryMobileEquipPanel extends HonamiStoryBackpackPanelBase_1.HonamiS
       return 2;
     }
   }
-  eCm(t) {
+  nIm(t) {
     var i;
+    var e;
+    var s;
     if (t) {
-      this.J0m = t.Y;
-      t = this.J0m <= this.Z0m ? 1 : 0;
-      i = this.J0m <= this.Z0m ? 0 : 1;
-      this.XMm = this.J0m <= this.Z0m;
+      e = this.GetItem(11).GetHeight();
+      s = this.ContentItem.GetHeight();
+      i = this.ViewportItem.GetHeight();
+      this.oIm = e / (s - i);
+      this.rIm = t.Y;
+      e = this.rIm <= this.oIm ? 1 : 0;
+      s = this.rIm <= this.oIm ? 0 : 1;
+      this.n2m = this.rIm <= this.oIm;
       this.RefreshBottomPanel();
-      this.ToggleA.SetToggleState(t);
-      this.ToggleB.SetToggleState(i);
+      this.ToggleA.SetToggleState(e);
+      this.ToggleB.SetToggleState(s);
     }
   }
   RefreshNeedQuickAll() {
@@ -533,12 +539,12 @@ class HonamiStoryMobileEquipPanel extends HonamiStoryBackpackPanelBase_1.HonamiS
     }
   }
   OnClickedEquipToggle() {
-    var t = this.J0m <= this.Z0m ? 1 : 0;
+    var t = this.rIm <= this.oIm ? 1 : 0;
     this.ToggleA.SetToggleState(t);
     this.xqe.ScrollToTop(undefined, this.GetItem(11), true);
   }
   OnClickedBackpackToggle() {
-    var t = this.J0m <= this.Z0m ? 0 : 1;
+    var t = this.rIm <= this.oIm ? 0 : 1;
     this.ToggleB.SetToggleState(t);
     this.xqe.ScrollToTop(undefined, this.HXl.GetRootItem(), true);
   }

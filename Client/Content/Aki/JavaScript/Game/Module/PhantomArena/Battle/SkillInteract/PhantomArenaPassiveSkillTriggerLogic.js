@@ -5,19 +5,20 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.PhantomArenaPassiveSkillTriggerLogic = undefined;
 const Log_1 = require("../../../../../Core/Common/Log");
-const PhantomArenaDefine_1 = require("../PhantomArenaDefine");
 const PhantomArenaSkillInteractFactory_1 = require("./PhantomArenaSkillInteractFactory");
 class PhantomArenaPassiveSkillTriggerLogic {
-  constructor(e, t) {
-    this.ViewProxy = t;
+  constructor(t, e) {
+    this.ViewProxy = e;
     this.Data = undefined;
     this.Data = {
-      InteractType: e.eF1,
-      SelectFightIdList: e.uE1,
-      SelectNum: e.D8n,
+      InteractType: t.eF1,
+      SelectFightIdList: t.uE1,
+      SelectNum: t.D8n,
       IsRole: false,
       IsPassive: true,
-      LastCardIndex: PhantomArenaDefine_1.HAND_PHANTOMARENA_INDEX
+      IsFight: false,
+      IsClickInteract: false,
+      DataId: t.dRf
     };
   }
   async Execute() {

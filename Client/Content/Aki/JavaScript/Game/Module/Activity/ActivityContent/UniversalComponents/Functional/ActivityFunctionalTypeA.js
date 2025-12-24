@@ -185,12 +185,18 @@ class ActivityFunctionalTypeA extends UiPanelBase_1.UiPanelBase {
       ControllerHolder_1.ControllerHolder.ActivityController.OpenActivityConditionView(e);
     };
   }
-  SetPerformanceSubPackageLock(t, e) {
+  SetPerformanceSubPackageLock(e, i) {
     this.SetPanelConditionVisible(true);
     this.SetActivatePanelConditionVisible(false);
     this.SetLockConditionButtonVisible(true);
     this.PanelLock.ButtonCallBack = () => {
-      ModelManager_1.ModelManager.SubPackageDownLoadModel.OpenSubPackageDownLoadConfirm(t, e);
+      for (const t of i) {
+        if (ControllerHolder_1.ControllerHolder.ResourceManagerController.IsNeedReOpenMap(t)) {
+          ModelManager_1.ModelManager.SubPackageDownLoadModel.OpenBlockNeedReLoginConfirm();
+          return;
+        }
+      }
+      ModelManager_1.ModelManager.SubPackageDownLoadModel.OpenSubPackageDownLoadConfirm(e, i);
     };
   }
 }

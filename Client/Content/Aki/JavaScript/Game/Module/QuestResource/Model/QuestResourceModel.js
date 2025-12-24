@@ -14,19 +14,17 @@ const VideoUpdateManager_1 = require("../../../../Launcher/Update/VideoUpdateMan
 const LauncherStorageLib_1 = require("../../../../Launcher/Util/LauncherStorageLib");
 const LauncherTextLib_1 = require("../../../../Launcher/Util/LauncherTextLib");
 const ProcedureUtil_1 = require("../../../../Launcher/Util/ProcedureUtil");
-const EventDefine_1 = require("../../../Common/Event/EventDefine");
-const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiManager_1 = require("../../../Ui/UiManager");
 const ConfirmBoxDefine_1 = require("../../ConfirmBox/ConfirmBoxDefine");
 const LogReportDefine_1 = require("../../LogReport/LogReportDefine");
 class QuestResourceUpdateProxy {
-  async ShowNotEnoughSpaceConfirmation(i) {
+  async ShowNotEnoughSpaceConfirmation(r) {
     var e = new LogReportDefine_1.DownloadVideoResNotEnoughSpaceLogData();
     e.i_popup_type = 2;
     e.b_if_storage_alert = true;
-    e.i_required_space = Number(i) / LauncherTextLib_1.NUMBER_MB;
+    e.i_required_space = Number(r) / LauncherTextLib_1.NUMBER_MB;
     var o = VideoResUpdate_1.VideoResUpdate.GetFreeSpace();
     e.i_remaining_space = Number(o) / LauncherTextLib_1.NUMBER_MB;
     ControllerHolder_1.ControllerHolder.LogReportController.LogReport(e);
@@ -38,7 +36,7 @@ class QuestResourceUpdateProxy {
         e(false);
         AppUtil_1.AppUtil.QuitGame("DownloadVideo");
       };
-      var s = LauncherTextLib_1.LauncherTextLib.SpaceSizeFormat(i);
+      var s = LauncherTextLib_1.LauncherTextLib.SpaceSizeFormat(r);
       o.SetTextArgs(s);
       o.FunctionMap.set(2, () => {
         e(true);
@@ -55,7 +53,7 @@ class QuestResourceModel extends ModelBase_1.ModelBase {
     super(...arguments);
     this.GF1 = new Map();
     this.FF1 = new Map();
-    this.nIm = new Map();
+    this.qkm = new Map();
     this.KQ1 = false;
     this.f1u = 0;
     this.UserClickPromise = undefined;
@@ -64,37 +62,10 @@ class QuestResourceModel extends ModelBase_1.ModelBase {
     this.UserClickNetWorkErrorPromise = undefined;
     this.LoginQuests = new Set();
     this.Qeu = undefined;
-    this.sCm = 0;
-    this.aCm = undefined;
+    this.uIm = 0;
+    this.cIm = undefined;
     this.Keu = false;
     this.Ypu = undefined;
-    this.Gro = () => {
-      this.g1u();
-    };
-    this.g1u = () => {
-      var e = new Map();
-      var o = ModelManager_1.ModelManager.PlayerInfoModel.GetPlayerGender();
-      for (const i of this.FF1) {
-        var t = ModelManager_1.ModelManager.QuestNewModel.CheckQuestFinished(i[0]);
-        if (o === 0 && this.LoginQuests.has(i[0]) || t) {
-          for (const r of i[1]) {
-            e.set(r, true);
-          }
-        }
-      }
-      for (const a of this.GF1) {
-        var s = ModelManager_1.ModelManager.QuestNewModel.CheckQuestFinished(a[0]);
-        if (o === 1 && this.LoginQuests.has(a[0]) || s) {
-          for (const n of a[1]) {
-            e.set(n, true);
-          }
-        }
-      }
-      if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("QuestResource", 38, "本地保存已完成任务资源", ["finishedSave", e]);
-      }
-      LauncherStorageLib_1.LauncherStorageLib.SetGlobal(LauncherStorageLib_1.ELauncherStorageGlobalKey.UserFinishedVideoList, e);
-    };
   }
   get IsSeparateVideo() {
     return VideoResUpdate_1.VideoResUpdate.GetIsSeparateVideo();
@@ -136,14 +107,14 @@ class QuestResourceModel extends ModelBase_1.ModelBase {
           }
         }
         var s;
-        var i;
-        var r = Number(a.PakName.split("_")[0]);
-        if (!isNaN(r)) {
-          if (this.nIm.has(a.QuestId)) {
-            this.nIm.get(a.QuestId).add(r);
+        var r;
+        var i = Number(a.PakName.split("_")[0]);
+        if (!isNaN(i)) {
+          if (this.qkm.has(a.QuestId)) {
+            this.qkm.get(a.QuestId).add(i);
           } else {
-            (i = new Set()).add(r);
-            this.nIm.set(a.QuestId, i);
+            (r = new Set()).add(i);
+            this.qkm.set(a.QuestId, r);
           }
         }
       }
@@ -154,9 +125,6 @@ class QuestResourceModel extends ModelBase_1.ModelBase {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("QuestResource", 38, "用户最初选择任务资源状态", ["state", this.f1u]);
       }
-      if (this.f1u === 2) {
-        EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnQuestFinishListNotify, this.Gro);
-      }
     }
     return true;
   }
@@ -166,10 +134,11 @@ class QuestResourceModel extends ModelBase_1.ModelBase {
   get MaleQuestIdToPack() {
     return this.GF1;
   }
+  get QuestIdToCgIds() {
+    return this.qkm;
+  }
   OnClear() {
-    if (VideoResUpdate_1.VideoResUpdate.GetIsSeparateVideo() && this.f1u === 2) {
-      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnQuestFinishListNotify, this.Gro);
-    }
+    VideoResUpdate_1.VideoResUpdate.GetIsSeparateVideo();
     return true;
   }
   ClearCheckQuests() {
@@ -191,11 +160,11 @@ class QuestResourceModel extends ModelBase_1.ModelBase {
     var e = new Set();
     var o = ModelManager_1.ModelManager.PlayerInfoModel.GetPlayerGender();
     if (o === 0) {
-      for (const i of this.LoginQuests) {
-        var t = this.FF1.get(i);
+      for (const r of this.LoginQuests) {
+        var t = this.FF1.get(r);
         if (t) {
-          for (const r of t) {
-            e.add(r);
+          for (const i of t) {
+            e.add(i);
           }
         }
       }
@@ -280,22 +249,22 @@ class QuestResourceModel extends ModelBase_1.ModelBase {
     this.UserClickPromise = undefined;
     this.UserDownloadSucPromise = undefined;
   }
-  hCm() {
+  dIm() {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("QuestResource", 39, "检查网络: 打开蜂窝网络下载同意弹窗");
     }
-    if (this.aCm?.IsPending()) {
+    if (this.cIm?.IsPending()) {
       if (Log_1.Log.CheckWarn()) {
         Log_1.Log.Warn("QuestResource", 39, "检查网络: 已存在蜂窝网络下载同意弹窗的Promise, 不重复打开");
       }
     } else {
-      this.aCm = new CustomPromise_1.CustomPromise();
+      this.cIm = new CustomPromise_1.CustomPromise();
       const t = () => {
         var e;
-        this.sCm = 0;
-        if (this.aCm?.IsPending()) {
-          e = this.aCm;
-          this.aCm = undefined;
+        this.uIm = 0;
+        if (this.cIm?.IsPending()) {
+          e = this.cIm;
+          this.cIm = undefined;
           e.SetResult(false);
         }
       };
@@ -304,18 +273,18 @@ class QuestResourceModel extends ModelBase_1.ModelBase {
       e.FunctionMap.set(1, t);
       e.FunctionMap.set(2, () => {
         var e;
-        this.sCm = 0;
-        if (this.aCm?.IsPending()) {
+        this.uIm = 0;
+        if (this.cIm?.IsPending()) {
           VideoResUpdate_1.VideoResUpdate.SetIsAllowCellDownload(true);
-          e = this.aCm;
-          this.aCm = undefined;
+          e = this.cIm;
+          this.cIm = undefined;
           e.SetResult(true);
         }
       });
       ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowNetWorkConfirmBoxView(e, (e, o) => {
         if (e) {
-          if (this.aCm?.IsPending()) {
-            this.sCm = o;
+          if (this.cIm?.IsPending()) {
+            this.uIm = o;
           } else {
             ControllerHolder_1.ControllerHolder.ConfirmBoxController.CloseNetWorkConfirmBoxView(o);
           }
@@ -328,21 +297,21 @@ class QuestResourceModel extends ModelBase_1.ModelBase {
       });
     }
   }
-  lCm(e) {
+  mIm(e) {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("QuestResource", 39, "检查网络: 程序主动关闭蜂窝网络下载同意弹窗", ["bConfirm", e]);
     }
-    var o = this.aCm;
-    this.aCm = undefined;
-    ControllerHolder_1.ControllerHolder.ConfirmBoxController.CloseNetWorkConfirmBoxView(this.sCm);
+    var o = this.cIm;
+    this.cIm = undefined;
+    ControllerHolder_1.ControllerHolder.ConfirmBoxController.CloseNetWorkConfirmBoxView(this.uIm);
     o?.SetResult(e);
   }
-  async _Cm() {
-    if (this.aCm) {
+  async fIm() {
+    if (this.cIm) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("QuestResource", 39, "检查网络：等待用户确认蜂窝网络下载");
       }
-      if (!(await this.aCm.Promise)) {
+      if (!(await this.cIm.Promise)) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("QuestResource", 39, "检查网络：用户拒绝蜂窝网络下载");
         }
@@ -374,7 +343,7 @@ class QuestResourceModel extends ModelBase_1.ModelBase {
         let a = undefined;
         a = u === 0 ? VideoUpdateManager_1.VideoUpdateManager.GetVideoUpdater(3) : VideoUpdateManager_1.VideoUpdateManager.GetVideoUpdater(4);
         const d = () => {
-          if (this.aCm?.IsPending()) {
+          if (this.cIm?.IsPending()) {
             if (Log_1.Log.CheckInfo()) {
               Log_1.Log.Info("QuestResource", 39, "检查网络：已有开启中的蜂窝网络下载同意弹窗，再次检测");
             }
@@ -382,10 +351,10 @@ class QuestResourceModel extends ModelBase_1.ModelBase {
               if (Log_1.Log.CheckInfo()) {
                 Log_1.Log.Info("QuestResource", 39, "检查网络：再次检测后可以继续下载，关闭蜂窝网络下载同意弹窗");
               }
-              this.lCm(true);
+              this.mIm(true);
             }
           } else if (VideoResUpdate_1.VideoResUpdate.GetIsCellNetworkType() && !VideoResUpdate_1.VideoResUpdate.GetIsAllowCellDownload()) {
-            this.hCm();
+            this.dIm();
             a?.Pause();
           }
         };
@@ -402,7 +371,7 @@ class QuestResourceModel extends ModelBase_1.ModelBase {
           VideoResUpdate_1.VideoResUpdate.SetVideoResSize(5, e);
           this.SetIsReportDownloadNotEnoughSpace(false);
           d();
-          if (this.aCm?.IsPending()) {
+          if (this.cIm?.IsPending()) {
             return {
               Success: false
             };
@@ -420,11 +389,11 @@ class QuestResourceModel extends ModelBase_1.ModelBase {
             e.i_role_id = 1;
             e.i_resource_type = 1;
           }
-          var [t, s, i, r] = VideoUpdateManager_1.VideoUpdateManager.GetVideoUpdater(5).GetReportLogData();
+          var [t, s, r, i] = VideoUpdateManager_1.VideoUpdateManager.GetVideoUpdater(5).GetReportLogData();
           e.i_peak_speed = t;
           e.i_resource_size = s;
-          e.i_download_time = i;
-          e.b_if_storage_alert = r;
+          e.i_download_time = r;
+          e.b_if_storage_alert = i;
           e.i_download_status = 1;
           ControllerHolder_1.ControllerHolder.LogReportController.LogReport(e);
           VideoResUpdate_1.VideoResUpdate.ResetNetworkTypeRecord();
@@ -436,8 +405,8 @@ class QuestResourceModel extends ModelBase_1.ModelBase {
             Success: o
           };
         }, async (e, o) => {
-          if (this.aCm) {
-            if (await this._Cm()) {
+          if (this.cIm) {
+            if (await this.fIm()) {
               return o();
             } else {
               AppUtil_1.AppUtil.QuitGame("DownloadVideoNotAllowedInCellNetwork");
@@ -497,15 +466,15 @@ class QuestResourceModel extends ModelBase_1.ModelBase {
             }
           }
         }
-        var [, i, r] = VideoResUpdate_1.VideoResUpdate.AnalyzeRequireFilesByNames([...o]);
-        VideoResUpdate_1.VideoResUpdate.SetVideoResSize(3, i);
-        VideoResUpdate_1.VideoResUpdate.SetVideoResSavedSize(3, r);
+        var [, r, i] = VideoResUpdate_1.VideoResUpdate.AnalyzeRequireFilesByNames([...o]);
+        VideoResUpdate_1.VideoResUpdate.SetVideoResSize(3, r);
+        VideoResUpdate_1.VideoResUpdate.SetVideoResSavedSize(3, i);
         VideoResUpdate_1.VideoResUpdate.SetVideoResPak(3, [...o]);
         if (VideoUpdateManager_1.VideoUpdateManager.GetVideoUpdater(3).GetDownLoadState() === 0) {
-          VideoUpdateManager_1.VideoUpdateManager.GetVideoUpdater(3).SetDownLoadProgress(r, i);
+          VideoUpdateManager_1.VideoUpdateManager.GetVideoUpdater(3).SetDownLoadProgress(i, r);
         }
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("QuestResource", 38, "VideoDown CalcPrepareRes Female", ["needSize", i], ["savedSize", r]);
+          Log_1.Log.Info("QuestResource", 38, "VideoDown CalcPrepareRes Female", ["needSize", r], ["savedSize", i]);
         }
         var a = new Set();
         for (const h of this.GF1) {
@@ -520,15 +489,15 @@ class QuestResourceModel extends ModelBase_1.ModelBase {
             }
           }
         }
-        var [, i, r] = VideoResUpdate_1.VideoResUpdate.AnalyzeRequireFilesByNames([...a]);
-        VideoResUpdate_1.VideoResUpdate.SetVideoResSize(4, i);
-        VideoResUpdate_1.VideoResUpdate.SetVideoResSavedSize(4, r);
+        var [, r, i] = VideoResUpdate_1.VideoResUpdate.AnalyzeRequireFilesByNames([...a]);
+        VideoResUpdate_1.VideoResUpdate.SetVideoResSize(4, r);
+        VideoResUpdate_1.VideoResUpdate.SetVideoResSavedSize(4, i);
         VideoResUpdate_1.VideoResUpdate.SetVideoResPak(4, [...a]);
         if (VideoUpdateManager_1.VideoUpdateManager.GetVideoUpdater(4).GetDownLoadState() === 0) {
-          VideoUpdateManager_1.VideoUpdateManager.GetVideoUpdater(4).SetDownLoadProgress(r, i);
+          VideoUpdateManager_1.VideoUpdateManager.GetVideoUpdater(4).SetDownLoadProgress(i, r);
         }
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("QuestResource", 38, "VideoDown CalcPrepareRes Male", ["needSize", i], ["savedSize", r]);
+          Log_1.Log.Info("QuestResource", 38, "VideoDown CalcPrepareRes Male", ["needSize", r], ["savedSize", i]);
         }
         this.KQ1 = true;
       }
@@ -552,12 +521,34 @@ class QuestResourceModel extends ModelBase_1.ModelBase {
     return Array.from(new Set(t));
   }
   GetQuestRefCgIds(e) {
-    e = this.nIm.get(e);
+    e = this.qkm.get(e);
     if (e) {
       return Array.from(e);
     } else {
       return [];
     }
+  }
+  FilterVideoByFinishedQuest(e) {
+    var o;
+    var t;
+    var s = [];
+    var r = new Set();
+    for ([o, t] of this.qkm) {
+      if (ModelManager_1.ModelManager.QuestNewModel.CheckQuestFinished(o)) {
+        for (const i of t) {
+          r.add(i);
+        }
+      }
+    }
+    for (const a of e) {
+      if (!r.has(a)) {
+        s.push(a);
+      }
+    }
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("QuestResource", 70, "过滤已完成任务视频", ["inputVideos", e], ["outputVideos", s]);
+    }
+    return s;
   }
 }
 exports.QuestResourceModel = QuestResourceModel;

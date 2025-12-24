@@ -13,7 +13,7 @@ class AnimalPerformStandState extends AnimalPerformStateBase_1.AnimalPerformStat
   }
   OnExit(t) {
     if (this.EcologicalInterface?.IsValid()) {
-      this.Owner.GetComponent(201)?.SetInteractionState(false, "AnimalPerformStandState OnExit");
+      this.Owner.GetComponent(207)?.SetInteractionState(false, "AnimalPerformStandState OnExit");
       this.EcologicalInterface.NoneStateEnd();
     }
   }

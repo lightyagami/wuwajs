@@ -16,7 +16,7 @@ class AstrologyPointView extends UiPanelBase_1.UiPanelBase {
     this.bad = undefined;
     this.Dzu = 0;
     this.dce = false;
-    this.Som = false;
+    this.Hhm = false;
     this.Nno = t => {
       if (t === "Close") {
         this.SetActive(false);
@@ -27,7 +27,7 @@ class AstrologyPointView extends UiPanelBase_1.UiPanelBase {
     this.Uzu = () => {
       if (this.bad && this.bad()) {
         this.Rad?.();
-        this.Som = true;
+        this.Hhm = true;
         this.$pt.PlaySequencePurely("Start2");
       }
     };
@@ -51,8 +51,8 @@ class AstrologyPointView extends UiPanelBase_1.UiPanelBase {
     this.$pt = undefined;
   }
   Prr() {
-    if (this.Som) {
-      this.Som = false;
+    if (this.Hhm) {
+      this.Hhm = false;
       this.xzu?.(this.Dzu);
     }
   }

@@ -1,16 +1,16 @@
 "use strict";
 
 var VehicleAnimationComponent_1;
-var __decorate = this && this.__decorate || function (t, i, s, h) {
-  var e;
+var __decorate = this && this.__decorate || function (t, i, s, e) {
+  var h;
   var n = arguments.length;
-  var o = n < 3 ? i : h === null ? h = Object.getOwnPropertyDescriptor(i, s) : h;
+  var o = n < 3 ? i : e === null ? e = Object.getOwnPropertyDescriptor(i, s) : e;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    o = Reflect.decorate(t, i, s, h);
+    o = Reflect.decorate(t, i, s, e);
   } else {
     for (var r = t.length - 1; r >= 0; r--) {
-      if (e = t[r]) {
-        o = (n < 3 ? e(o) : n > 3 ? e(i, s, o) : e(i, s)) || o;
+      if (h = t[r]) {
+        o = (n < 3 ? h(o) : n > 3 ? h(i, s, o) : h(i, s)) || o;
       }
     }
   }
@@ -22,7 +22,7 @@ var __decorate = this && this.__decorate || function (t, i, s, h) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.VehicleAnimationComponent = undefined;
+exports.VehicleAnimationComponent = exports.DEFAULT_CAMERA_HEIGHT_RATE = undefined;
 const puerts_1 = require("puerts");
 const UE = require("ue");
 const Info_1 = require("../../../../Core/Common/Info");
@@ -47,7 +47,7 @@ const FORCE_DISABLE_ANIM_OPTIMIZATION_TIME = 100;
 const MIN_BUFFER_TIME_LENGTH = 10;
 const MODEL_BUFFER_SMOOTH_FACTOR = 0.75;
 const BLINK_MOVE_MIN_TIME = 5;
-const DEFAULT_CAMERA_HEIGHT_RATE = 0.5;
+exports.DEFAULT_CAMERA_HEIGHT_RATE = 0.5;
 let VehicleAnimationComponent = VehicleAnimationComponent_1 = class VehicleAnimationComponent extends EntityComponent_1.EntityComponent {
   constructor() {
     super(...arguments);
@@ -79,7 +79,7 @@ let VehicleAnimationComponent = VehicleAnimationComponent_1 = class VehicleAnima
     this.TemporaryHiddenHandle = 0;
     this.HiddenCount = -1;
     this.CameraPositionType = 2;
-    this.M3r = Vector_1.Vector.Create();
+    this.CameraPositionOffset = Vector_1.Vector.Create();
     this.TmpTransform = Transform_1.Transform.Create();
     this.TmpTransform2 = Transform_1.Transform.Create();
     this.TmpQuat = Quat_1.Quat.Create();
@@ -87,11 +87,11 @@ let VehicleAnimationComponent = VehicleAnimationComponent_1 = class VehicleAnima
     this.TmpDirect = Vector_1.Vector.Create();
     this.TmpDirect2 = Vector_1.Vector.Create();
     this.TmpDirect3 = Vector_1.Vector.Create();
-    this.kYs = false;
-    this.GYs = (t, i) => {
+    this.ri_ = 0;
+    this.Dof = (t, i) => {
       if (t === this.Entity.Id && i) {
         this.StartForceDisableAnimOptimization(1);
-        this.kYs = true;
+        this.ri_ = 2;
       }
     };
     this.OnRequestClearMeshRotationBuffer = () => {
@@ -99,7 +99,7 @@ let VehicleAnimationComponent = VehicleAnimationComponent_1 = class VehicleAnima
     };
   }
   static get Dependencies() {
-    return [238, 0];
+    return [247, 0];
   }
   get MainAnimInstance() {
     return this.MainAnimInstanceInternal;
@@ -116,12 +116,12 @@ let VehicleAnimationComponent = VehicleAnimationComponent_1 = class VehicleAnima
     return true;
   }
   OnStart() {
-    this.ActorComp = this.Entity.CheckGetComponent(238);
+    this.ActorComp = this.Entity.CheckGetComponent(247);
     if (this.ActorComp.Actor?.Mesh) {
       this.Actor = this.ActorComp.Actor;
       this.Mesh = this.Actor.Mesh;
-      this.MoveComp = this.Entity.GetComponent(240);
-      this.PerformComp = this.Entity.GetComponent(241);
+      this.MoveComp = this.Entity.GetComponent(249);
+      this.PerformComp = this.Entity.GetComponent(250);
       if (!Info_1.Info.EnableForceTick) {
         this.AnimationComp = this.Actor.GetComponentByClass(UE.KuroCharacterAnimationComponent.StaticClass());
         if (!this.AnimationComp?.IsValid()) {
@@ -130,7 +130,7 @@ let VehicleAnimationComponent = VehicleAnimationComponent_1 = class VehicleAnima
         this.AnimationComp.SetComponentTickEnabled(true);
       }
       this.GetAnimInstanceFromMesh();
-      return !!this.MainAnimInstanceInternal && (this.IsPlayer = false, this.DefaultVisibilityBasedAnimTickOption = 3, this.Grn(), this.pie(), this.AddEvents(), this.Mesh.DoesSocketExist(VehicleAnimationComponent_1.CameraPosition) ? (this.CameraPositionType = 0, this.M3r.FromUeVector(this.Mesh.D_GetSocketTransform(VehicleAnimationComponent_1.CameraPosition, 1).GetLocation())) : this.Mesh.DoesSocketExist(VehicleAnimationComponent_1.SeatProp01) ? (this.CameraPositionType = 1, this.M3r.FromUeVector(this.Mesh.D_GetSocketTransform(VehicleAnimationComponent_1.SeatProp01, 1).GetLocation())) : this.CameraPositionType = 2, true);
+      return !!this.MainAnimInstanceInternal && (this.IsPlayer = false, this.DefaultVisibilityBasedAnimTickOption = 3, this.Grn(), this.pie(), this.AddEvents(), this.Mesh.DoesSocketExist(VehicleAnimationComponent_1.CameraPosition) ? (this.CameraPositionType = 0, this.CameraPositionOffset.FromUeVector(this.Mesh.D_GetSocketTransform(VehicleAnimationComponent_1.CameraPosition, 1).GetLocation())) : this.Mesh.DoesSocketExist(VehicleAnimationComponent_1.SeatProp01) ? (this.CameraPositionType = 1, this.CameraPositionOffset.FromUeVector(this.Mesh.D_GetSocketTransform(VehicleAnimationComponent_1.SeatProp01, 1).GetLocation())) : this.CameraPositionType = 2, true);
     } else {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Character", 6, "模型仍未初始化", ["Entity", this.Entity.Id]);
@@ -146,8 +146,7 @@ let VehicleAnimationComponent = VehicleAnimationComponent_1 = class VehicleAnima
     this.StartAnimInstance();
   }
   OnTick(t) {
-    if (this.kYs) {
-      this.kYs = false;
+    if (this.ri_ > 0 && (this.ri_ = this.ri_ - 1, this.ri_ <= 0)) {
       this.CancelForceDisableAnimOptimization(1);
     }
     this.ResetTemporaryHidden();
@@ -159,8 +158,8 @@ let VehicleAnimationComponent = VehicleAnimationComponent_1 = class VehicleAnima
     this.UpdateModelBuffer(t);
   }
   OnEnd() {
-    if (this.kYs) {
-      this.kYs = false;
+    if (this.ri_ > 0) {
+      this.ri_ = 0;
       this.CancelForceDisableAnimOptimization(1);
     }
     this.RemoveEvents();
@@ -209,8 +208,8 @@ let VehicleAnimationComponent = VehicleAnimationComponent_1 = class VehicleAnima
     var i = this.ActorComp.Actor.K2_GetComponentsByClass(UE.SkeletalMeshComponent.StaticClass());
     for (let t = 0; t < i.Num(); ++t) {
       var s;
-      var h = i.Get(t);
-      if (h instanceof UE.SkeletalMeshComponent && ((s = h.GetAnimInstance()) && s instanceof UE.KuroAnimInstance && s !== this.MainAnimInstance && s.OnComponentStart(), s = h.GetLinkedAnimGraphInstanceByTag(CharacterNameDefines_1.CharacterNameDefines.ABP_BASE)) && s instanceof UE.KuroAnimInstance && s !== this.MainAnimInstance) {
+      var e = i.Get(t);
+      if (e instanceof UE.SkeletalMeshComponent && ((s = e.GetAnimInstance()) && s instanceof UE.KuroAnimInstance && s !== this.MainAnimInstance && s.OnComponentStart(), s = e.GetLinkedAnimGraphInstanceByTag(CharacterNameDefines_1.CharacterNameDefines.ABP_BASE)) && s instanceof UE.KuroAnimInstance && s !== this.MainAnimInstance) {
         s.OnComponentStart();
       }
     }
@@ -338,13 +337,13 @@ let VehicleAnimationComponent = VehicleAnimationComponent_1 = class VehicleAnima
     }
   }
   RefreshAnimOptimization() {
-    var i = this.Entity.GetComponent(179)?.IsInFighting ?? false;
+    var i = this.Entity.GetComponent(184)?.IsInFighting ?? false;
     var s = this.ForceDisableAnimOptimizationSet.size > 0;
-    var h = s || i;
-    var e = this.Actor.K2_GetComponentsByClass(UE.SkeletalMeshComponent.StaticClass());
-    for (let t = 0; t < e.Num(); t++) {
-      var n = e.Get(t);
-      n.bEnableUpdateRateOptimizations = !h;
+    var e = s || i;
+    var h = this.Actor.K2_GetComponentsByClass(UE.SkeletalMeshComponent.StaticClass());
+    for (let t = 0; t < h.Num(); t++) {
+      var n = h.Get(t);
+      n.bEnableUpdateRateOptimizations = !e;
       n.VisibilityBasedAnimTickOption = this.RefreshVisibilityBasedAnimTickOption(s, i);
     }
   }
@@ -354,8 +353,8 @@ let VehicleAnimationComponent = VehicleAnimationComponent_1 = class VehicleAnima
       if (i) {
         return 0;
       }
-      for (const h of this.ForceDisableAnimOptimizationSet) {
-        s = Math.min(s, CharacterAnimOptimizationSetting_1.DisableAnimOptimizationTypeDefines[h]);
+      for (const e of this.ForceDisableAnimOptimizationSet) {
+        s = Math.min(s, CharacterAnimOptimizationSetting_1.DisableAnimOptimizationTypeDefines[e]);
       }
     }
     return s;
@@ -363,7 +362,7 @@ let VehicleAnimationComponent = VehicleAnimationComponent_1 = class VehicleAnima
   Grn(t = true) {
     var i = Info_1.Info.IsMobilePlatform();
     var s = new UE.AnimUpdateRateParameters();
-    var h = this.Mesh.LODInfo.Num();
+    var e = this.Mesh.LODInfo.Num();
     if (t) {
       s.bShouldUseDistanceMap = true;
       s.BaseVisibleDistanceThresholds.Empty();
@@ -375,21 +374,21 @@ let VehicleAnimationComponent = VehicleAnimationComponent_1 = class VehicleAnima
     } else {
       s.bShouldUseLodMap = true;
       s.LODToFrameSkipMap.Empty();
-      for (let t = 0; t < h; t++) {
+      for (let t = 0; t < e; t++) {
         s.LODToFrameSkipMap.Add(t, t < 2 ? 0 : t - 1);
       }
     }
     s.BaseNonRenderedUpdateRate = 8;
     s.MaxEvalRateForInterpolation = 8;
-    var e = (0, puerts_1.$ref)(s);
+    var h = (0, puerts_1.$ref)(s);
     var n = this.Actor.K2_GetComponentsByClass(UE.SkeletalMeshComponent.StaticClass());
     for (let t = 0; t < n.Num(); t++) {
       var o = n.Get(t);
       o.bEnableUpdateRateOptimizations = true;
-      o.SetAnimUpdateRateParameters(e);
+      o.SetAnimUpdateRateParameters(h);
       o.VisibilityBasedAnimTickOption = this.DefaultVisibilityBasedAnimTickOption;
     }
-    (0, puerts_1.$unref)(e);
+    (0, puerts_1.$unref)(h);
   }
   ResetTemporaryHidden() {
     if (this.HiddenCount > 0) {
@@ -497,12 +496,12 @@ let VehicleAnimationComponent = VehicleAnimationComponent_1 = class VehicleAnima
       this.BufferLocation = !this.BufferModelTransform.GetLocation().Equals(this.BufferShowTransform.GetLocation(), 10);
     }
   }
-  SetLocationAndRotatorWithModelBuffer(t, i, s, h, e = 2) {
+  SetLocationAndRotatorWithModelBuffer(t, i, s, e, h = 2) {
     if (s < MIN_BUFFER_TIME_LENGTH) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Test", 6, "ModelBuffer Time is Too Short", ["Actor", this.ActorComp?.Actor.GetName()], ["timeLength", s]);
       }
-      this.ActorComp.SetActorLocationAndRotation(t, i, "移动表现优化，Mesh缓动.没有缓动", true, e);
+      this.ActorComp.SetActorLocationAndRotation(t, i, "移动表现优化，Mesh缓动.没有缓动", true, h);
       this.StopModelBuffer();
     } else {
       if (Info_1.Info.EnableForceTick) {
@@ -514,12 +513,12 @@ let VehicleAnimationComponent = VehicleAnimationComponent_1 = class VehicleAnima
         this.AnimationComp?.SetComponentTickEnabled(true);
       }
       s = this.Mesh.D_K2_GetComponentToWorld();
-      this.ActorComp.SetActorLocationAndRotationExceptMesh(t, i, "移动表现优化，Mesh缓动", true, e);
+      this.ActorComp.SetActorLocationAndRotationExceptMesh(t, i, "移动表现优化，Mesh缓动", true, h);
       this.G3r(s, this.ActorComp, this.BufferModelTransform);
       this.BufferLocation = !this.BufferModelTransform.GetLocation().Equals(this.BufferShowTransform.GetLocation(), 10);
     }
   }
-  SetLocationAndRotatorWithKeepingModelBuffer(t, i, s, h, e = 2) {
+  SetLocationAndRotatorWithKeepingModelBuffer(t, i, s, e, h = 2) {
     if (Info_1.Info.EnableForceTick) {
       this.BufferNowTime = 0;
       this.BufferTimeLength = s;
@@ -537,14 +536,14 @@ let VehicleAnimationComponent = VehicleAnimationComponent_1 = class VehicleAnima
         this.StopModelBuffer();
       }
       if (this.BufferTimeLength > BLINK_MOVE_MIN_TIME) {
-        this.ActorComp.SetActorLocation(t, h, false);
+        this.ActorComp.SetActorLocation(t, e, false);
       } else {
-        this.ActorComp.SetActorLocationNoTeleport(t, h, false);
+        this.ActorComp.SetActorLocationNoTeleport(t, e, false);
       }
-      this.ActorComp.SetActorRotation(i, h, true);
+      this.ActorComp.SetActorRotation(i, e, true);
     } else {
       s = this.Mesh.D_K2_GetComponentToWorld();
-      this.ActorComp.SetActorLocationAndRotationExceptMesh(t, i, h, false, e);
+      this.ActorComp.SetActorLocationAndRotationExceptMesh(t, i, e, false, h);
       this.AnimationComp.BufferNowTime = 0;
       this.AnimationComp.BufferTimeLength = this.BufferTimeLength;
       this.AnimationComp.SetComponentTickEnabled(true);
@@ -622,11 +621,11 @@ let VehicleAnimationComponent = VehicleAnimationComponent_1 = class VehicleAnima
   }
   AddEvents() {
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.RequestClearMeshRotationBuffer, this.OnRequestClearMeshRotationBuffer);
-    EventSystem_1.EventSystem.AddWithTarget(this.Handle, EventDefine_1.EEventName.OnSetActorHidden, this.GYs);
+    EventSystem_1.EventSystem.AddWithTarget(this.Handle, EventDefine_1.EEventName.OnPreSetActorHidden, this.Dof);
   }
   RemoveEvents() {
     EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.RequestClearMeshRotationBuffer, this.OnRequestClearMeshRotationBuffer);
-    EventSystem_1.EventSystem.RemoveWithTarget(this.Handle, EventDefine_1.EEventName.OnSetActorHidden, this.GYs);
+    EventSystem_1.EventSystem.RemoveWithTarget(this.Handle, EventDefine_1.EEventName.OnPreSetActorHidden, this.Dof);
   }
   ConsumeRootMotion() {
     this.Mesh?.GetAnimInstance()?.ConsumeExtractedRootMotion(1);
@@ -662,20 +661,24 @@ let VehicleAnimationComponent = VehicleAnimationComponent_1 = class VehicleAnima
       }
     }
   }
-  GetCameraPosition(t) {
-    switch (this.CameraPositionType) {
-      case 0:
-      case 1:
-        (this.HasModelBuffer() ? (this.TmpQuat.DeepCopy(this.Mesh.D_K2_GetComponentToWorld().GetRotation()), this.BufferShowTransform.GetRotation().Inverse(this.TmpQuat2), this.TmpQuat2.Multiply(this.TmpQuat, this.TmpQuat), this.TmpQuat) : this.ActorComp.ActorQuatProxy).RotateVector(this.M3r, this.TmpDirect);
-        this.ActorComp.ActorLocationProxy.Addition(this.TmpDirect, t);
-        break;
-      default:
-        this.ActorComp.ActorUpProxy.Multiply(DEFAULT_CAMERA_HEIGHT_RATE * this.ActorComp.Actor.VehicleMovementComponent.VehicleShapeBounds.BoxExtent.Z, this.TmpDirect);
-        this.ActorComp.ActorLocationProxy.Addition(this.TmpDirect, t);
+  GetCameraPosition(t, i = FNameUtil_1.FNameUtil.EMPTY) {
+    if (FNameUtil_1.FNameUtil.IsEmpty(i)) {
+      switch (this.CameraPositionType) {
+        case 0:
+        case 1:
+          (this.HasModelBuffer() ? (this.TmpQuat.DeepCopy(this.Mesh.D_K2_GetComponentToWorld().GetRotation()), this.BufferShowTransform.GetRotation().Inverse(this.TmpQuat2), this.TmpQuat2.Multiply(this.TmpQuat, this.TmpQuat), this.TmpQuat) : this.ActorComp.ActorQuatProxy).RotateVector(this.CameraPositionOffset, this.TmpDirect);
+          this.ActorComp.ActorLocationProxy.Addition(this.TmpDirect, t);
+          break;
+        default:
+          this.ActorComp.ActorUpProxy.Multiply(exports.DEFAULT_CAMERA_HEIGHT_RATE * this.ActorComp.Actor.VehicleMovementComponent.VehicleShapeBounds.BoxExtent.Z, this.TmpDirect);
+          this.ActorComp.ActorLocationProxy.Addition(this.TmpDirect, t);
+      }
+    } else {
+      t.DeepCopy(this.Mesh.D_GetSocketLocation(i));
     }
   }
 };
 VehicleAnimationComponent.CameraPosition = new UE.FName("CameraPosition");
 VehicleAnimationComponent.SeatProp01 = new UE.FName("SeatProp01");
-VehicleAnimationComponent = VehicleAnimationComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(239)], VehicleAnimationComponent);
+VehicleAnimationComponent = VehicleAnimationComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(248)], VehicleAnimationComponent);
 exports.VehicleAnimationComponent = VehicleAnimationComponent; //# sourceMappingURL=VehicleAnimationComponent.js.map

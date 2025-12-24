@@ -13,6 +13,7 @@ class MatchGymItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
     super(...arguments);
     this.Level = -1;
+    this.ActivityId = 0;
     this.CallbackOnClick = undefined;
     this.i_u = undefined;
     this.zbe = () => {
@@ -40,9 +41,9 @@ class MatchGymItem extends GridProxyAbstract_1.GridProxyAbstract {
     var s;
     var h;
     var r;
-    var t = ModelManager_1.ModelManager.PhantomArenaModel.GetPhantomBattleGymConfigByLevel(t);
+    var t = ModelManager_1.ModelManager.PhantomArenaModel.GetPhantomBattleGymConfigByLevel(t, this.ActivityId);
     if (t) {
-      r = (s = ModelManager_1.ModelManager.PhantomArenaModel.IsGymLock(this.Level)) ? t.IconLock : t.Icon;
+      r = (s = ModelManager_1.ModelManager.PhantomArenaModel.IsGymLock(this.Level, this.ActivityId)) ? t.IconLock : t.Icon;
       h = this.GetSprite(4);
       this.SetSpriteByPath(r, h, false);
       h.SetChangeColor(s, h.changeColor);
@@ -50,18 +51,18 @@ class MatchGymItem extends GridProxyAbstract_1.GridProxyAbstract {
       this.SetSpriteByPath(t.IconRoman, this.GetSprite(2), false);
       this.SetSpriteByPath(t.IconBg, this.GetSprite(3), false);
       this.Oei(e);
-      r = ModelManager_1.ModelManager.PhantomArenaModel.GetChallengeStateListByGymLevel(this.Level);
+      r = ModelManager_1.ModelManager.PhantomArenaModel.GetChallengeStateListByGymLevel(this.Level, this.ActivityId);
       this.i_u.RefreshByData(r);
       this.i_u.SetActive(!s);
       this.RefreshRedDot();
     }
   }
   RefreshRedDot() {
-    var t = this.Level > 0 && ModelManager_1.ModelManager.PhantomArenaModel.GetGymRedDotById(this.Level);
+    var t = this.Level > 0 && ModelManager_1.ModelManager.PhantomArenaModel.GetGymRedDotById(this.Level, this.ActivityId);
     this.GetItem(11).SetUIActive(t);
   }
   Oei(t) {
-    var e = ModelManager_1.ModelManager.PhantomArenaModel.IsGymLock(this.Level);
+    var e = ModelManager_1.ModelManager.PhantomArenaModel.IsGymLock(this.Level, this.ActivityId);
     var i = e ? 2 : !e && t ? 1 : 0;
     this.GetExtendToggle(0).SetToggleState(i, false);
     this.GetSprite(1).SetUIActive(!t);

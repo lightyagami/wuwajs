@@ -14,68 +14,71 @@ const EventDefine_1 = require("../../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../../Common/Event/EventSystem");
 const GlobalData_1 = require("../../../../../GlobalData");
 const ModelManager_1 = require("../../../../../Manager/ModelManager");
-const VoxelUtils_1 = require("../../../../../Utils/VoxelUtils");
+const AudioUtils_1 = require("../../../../../Utils/AudioUtils");
 class TsMeshAnimBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   Constructor() {}
   static MainAnimInstance(t) {
-    return EntitySystem_1.EntitySystem.GetComponent(t, 181)?.MainAnimInstance;
+    return EntitySystem_1.EntitySystem.GetComponent(t, 186)?.MainAnimInstance;
   }
   static MainAnimInstanceForVehicle(t) {
-    return EntitySystem_1.EntitySystem.GetComponent(t, 239)?.MainAnimInstance;
+    return EntitySystem_1.EntitySystem.GetComponent(t, 248)?.MainAnimInstance;
   }
   static GetSightDirect(t) {
-    return EntitySystem_1.EntitySystem.GetComponent(t, 44)?.GetSightDirect();
+    return EntitySystem_1.EntitySystem.GetComponent(t, 45)?.GetSightDirect();
+  }
+  static GetHeadBaseYawBuffer(t) {
+    return EntitySystem_1.EntitySystem.GetComponent(t, 45)?.GetHeadBaseYawBuffer() ?? 0;
   }
   static GetHulu(t) {
-    return EntitySystem_1.EntitySystem.GetComponent(t, 81)?.Hulu;
+    return EntitySystem_1.EntitySystem.GetComponent(t, 84)?.Hulu;
   }
   static GetBattleIdleTime(t) {
-    return EntitySystem_1.EntitySystem.GetComponent(t, 181)?.BattleIdleEndTime;
+    return EntitySystem_1.EntitySystem.GetComponent(t, 186)?.BattleIdleEndTime;
   }
   static GetDisableBlink(t) {
-    return EntitySystem_1.EntitySystem.GetComponent(t, 44)?.DisableBlink ?? false;
+    return EntitySystem_1.EntitySystem.GetComponent(t, 45)?.DisableBlink ?? false;
   }
   static EnterBattleIdle(t) {
-    EntitySystem_1.EntitySystem.GetComponent(t, 181)?.EnterBattleIdle();
+    EntitySystem_1.EntitySystem.GetComponent(t, 186)?.EnterBattleIdle();
   }
   static SetTransformWithModelBuffer(t, e, i) {
-    EntitySystem_1.EntitySystem.GetComponent(t, 181)?.SetTransformWithModelBuffer(e, i);
+    var n = EntitySystem_1.EntitySystem.GetComponent(t, 186);
+    if (n = n || EntitySystem_1.EntitySystem.GetComponent(t, 248)) {
+      n.SetTransformWithModelBuffer(e, i);
+    }
   }
   static SetSightDirectEnable(t, e) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 44);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 45);
     if (t) {
       t.EnableSightDirect = e;
     }
   }
   static HideWeaponsWhenHideBones(t, e, i) {
-    EntitySystem_1.EntitySystem.GetComponent(t, 81)?.HideWeaponsWhenHideBones(e, i);
+    EntitySystem_1.EntitySystem.GetComponent(t, 84)?.HideWeaponsWhenHideBones(e, i);
   }
   static ChangeWeaponHangState(t, e, i, n, r) {
-    EntitySystem_1.EntitySystem.GetComponent(t, 81)?.ChangeWeaponHangState(e, (0, puerts_1.$unref)(n), (0, puerts_1.$unref)(r), i);
+    EntitySystem_1.EntitySystem.GetComponent(t, 84)?.ChangeWeaponHangState(e, (0, puerts_1.$unref)(n), (0, puerts_1.$unref)(r), i);
   }
   static GetCurrentWeaponHangState(t) {
-    return EntitySystem_1.EntitySystem.GetComponent(t, 81)?._Pr;
+    return EntitySystem_1.EntitySystem.GetComponent(t, 84)?._Pr;
   }
   static GetIsCurrentWeaponHideEffectPlaying(t) {
-    return EntitySystem_1.EntitySystem.GetComponent(t, 81)?.IsCurrentWeaponHideEffectPlaying() ?? false;
+    return EntitySystem_1.EntitySystem.GetComponent(t, 84)?.IsCurrentWeaponHideEffectPlaying() ?? false;
   }
   static ChangeWeapon(t, e) {
-    EntitySystem_1.EntitySystem.GetComponent(t, 81)?.ChangeWeaponByWeaponSocketItem(e);
+    EntitySystem_1.EntitySystem.GetComponent(t, 84)?.ChangeWeaponByWeaponSocketItem(e);
   }
   static GetRandomStandActionIndex(t) {
-    return EntitySystem_1.EntitySystem.GetComponent(t, 181)?.GetRandomStandActionIndex();
+    return EntitySystem_1.EntitySystem.GetComponent(t, 186)?.GetRandomStandActionIndex();
   }
   static HideWeapon(t, e, i, n, r = false) {
-    EntitySystem_1.EntitySystem.GetComponent(t, 81)?.HideWeapon(i, e, n, false, r ? 1 : 0);
+    EntitySystem_1.EntitySystem.GetComponent(t, 84)?.HideWeapon(i, e, n, false, r ? 1 : 0);
   }
   static HideHulu(t, e) {
-    EntitySystem_1.EntitySystem.GetComponent(t, 81)?.SetHuluHidden(e);
-  }
-  static ChangeMeshAnim(t, e, i) {
-    EntitySystem_1.EntitySystem.GetComponent(t, 3)?.ChangeMeshAnim(e, i);
+    EntitySystem_1.EntitySystem.GetComponent(t, 84)?.SetHuluHidden(e);
   }
   static GetDegMovementSlope(t) {
-    return EntitySystem_1.EntitySystem.GetComponent(t, 181)?.DegMovementSlope;
+    return EntitySystem_1.EntitySystem.GetComponent(t, 186)?.DegMovementSlope;
   }
   static GetRoleFootStepState(t) {
     var t = EntitySystem_1.EntitySystem.GetComponent(t, 0);
@@ -94,13 +97,13 @@ class TsMeshAnimBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     }
   }
   static SetIkMeshOffset(t, e) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 181);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 186);
     if (t) {
       t.IkMeshOffset = e;
     }
   }
   static GetWeaponBreachLevel(t) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 81);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 84);
     if (t) {
       return t.GetWeaponBreachLevel();
     } else {
@@ -110,8 +113,8 @@ class TsMeshAnimBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   static UpdateAnimInfoMeshAnim(t, e) {
     var i;
     var n;
-    var r = EntitySystem_1.EntitySystem.GetComponent(t, 181);
-    if (r?.Valid && (e = e, i = r.AnimLogicParamsSetter, n = r.BattleIdleEndTime, i.BattleIdleTime !== n && (i.BattleIdleTime = n, e.BattleIdleTimeRef = n), n = r.DegMovementSlope, i.DegMovementSlope !== n && (i.DegMovementSlope = n, e.DegMovementSlopeRef = n), n = r.GetTsSightDirect(), i.SightDirect.Equals(n) || (i.SightDirect.DeepCopy(n), e.SightDirectRef = n.ToUeVectorOld()), n = r.DisableBlink, i.DisableBlink !== n && (i.DisableBlink = n, e.DisableBlinkRef = n), r = EntitySystem_1.EntitySystem.GetComponent(t, 72).GetRagRollQuitState(), i.RagQuitState !== r)) {
+    var r = EntitySystem_1.EntitySystem.GetComponent(t, 186);
+    if (r?.Valid && (e = e, i = r.AnimLogicParamsSetter, n = r.BattleIdleEndTime, i.BattleIdleTime !== n && (i.BattleIdleTime = n, e.BattleIdleTimeRef = n), n = r.DegMovementSlope, i.DegMovementSlope !== n && (i.DegMovementSlope = n, e.DegMovementSlopeRef = n), n = r.GetTsSightDirect(), i.SightDirect.Equals(n) || (i.SightDirect.DeepCopy(n), e.SightDirectRef = n.ToUeVectorOld()), n = r.DisableBlink, i.DisableBlink !== n && (i.DisableBlink = n, e.DisableBlinkRef = n), r = EntitySystem_1.EntitySystem.GetComponent(t, 75).GetRagRollQuitState(), i.RagQuitState !== r)) {
       i.RagQuitState = r;
       e.RagQuitStateRef = r;
     }
@@ -119,7 +122,7 @@ class TsMeshAnimBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   static UpdateAnimInfoMeshAnimRoleNpc(t, e) {
     var i;
     var n;
-    var t = EntitySystem_1.EntitySystem.GetComponent(t, 181);
+    var t = EntitySystem_1.EntitySystem.GetComponent(t, 186);
     if (t?.Valid && (e = e, i = t.AnimLogicParamsSetter, n = t.DegMovementSlope, i.DegMovementSlope !== n && (i.DegMovementSlope = n, e.DegMovementSlopeRef = n), n = t.GetTsSightDirect(), i.SightDirect.Equals(n) || (i.SightDirect.DeepCopy(n), e.SightDirectRef = n.ToUeVectorOld()), n = t.DisableBlink, i.DisableBlink !== n && (i.DisableBlink = n, e.DisableBlinkRef = n), n = t.GetTsLookAt(), i.LookAt.Equals(n) || (i.LookAt.DeepCopy(n), e.LookAtRef = n.ToUeVector2D()), i.EnableBlendSpaceLookAt !== t.EnableBlendSpaceLookAt && (i.EnableBlendSpaceLookAt = t.EnableBlendSpaceLookAt, e.EnableBlendSpaceLookAtRef = t.EnableBlendSpaceLookAt), i.EnableLowerBlend !== t.EnableLowerBlend && (i.EnableLowerBlend = t.EnableLowerBlend, e.StateLowerBlend = t.EnableLowerBlend), i.EnableLeftArmBlend !== t.EnableLeftArmBlend && (i.EnableLeftArmBlend = t.EnableLeftArmBlend, e.StateLeftArmBlend = t.EnableLeftArmBlend), i.EnableRightArmBlend !== t.EnableRightArmBlend)) {
       i.EnableRightArmBlend = t.EnableRightArmBlend;
       e.StateRightArmBlend = t.EnableRightArmBlend;
@@ -127,39 +130,45 @@ class TsMeshAnimBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   }
   static UpdateAnimInfoHoldingHandsRoleNpc(t, e) {
     var i;
-    var n = EntitySystem_1.EntitySystem.GetComponent(t, 181);
-    if (n?.Valid && (t = EntitySystem_1.EntitySystem.GetComponent(t, 302)) && (e = e, n = n.AnimLogicParamsSetter, (i = t.GetHandIkTarget(0)) && !n.LeftHandIkTarget.Equals(i) && (n.LeftHandIkTarget.DeepCopy(i), i = t.GetHandIkTargetUe(0)) && (e.LeftHandIKTargetCS = i), (i = t.GetHandIkTarget(1)) && !n.RightHandIkTarget.Equals(i) && (n.RightHandIkTarget.DeepCopy(i), i = t.GetHandIkTargetUe(1)) && (e.RightHandIKTargetCS = i), (i = t.GetIsHoldingHands()) !== n.IsHoldingHands && (n.IsHoldingHands = i, e.IsHoldingHands = i), (i = t.GetIsBeHoldingHands()) !== n.IsBeHoldingHands && (n.IsBeHoldingHands = i, e.IsBeHoldingHands = i), (i = t.GetHandReachable(0) || t.GetHandReachable(1)) !== n.IsHoldingHandsReachable && (n.IsHoldingHandsReachable = i, e.IsHoldingHandsReachable = i), (i = t.GetIsAcceptingInvitation()) !== n.IsAcceptingInvitation)) {
+    var n = EntitySystem_1.EntitySystem.GetComponent(t, 186);
+    if (n?.Valid && (t = EntitySystem_1.EntitySystem.GetComponent(t, 321)) && (e = e, n = n.AnimLogicParamsSetter, (i = t.GetHandIkTarget(0)) && !n.LeftHandIkTarget.Equals(i) && (n.LeftHandIkTarget.DeepCopy(i), i = t.GetHandIkTargetUe(0)) && (e.LeftHandIKTargetCS = i), (i = t.GetHandIkTarget(1)) && !n.RightHandIkTarget.Equals(i) && (n.RightHandIkTarget.DeepCopy(i), i = t.GetHandIkTargetUe(1)) && (e.RightHandIKTargetCS = i), (i = t.GetIsHoldingHands()) !== n.IsHoldingHands && (n.IsHoldingHands = i, e.IsHoldingHands = i), (i = t.GetIsBeHoldingHands()) !== n.IsBeHoldingHands && (n.IsBeHoldingHands = i, e.IsBeHoldingHands = i), (i = t.GetHandReachable(0) || t.GetHandReachable(1)) !== n.IsHoldingHandsReachable && (n.IsHoldingHandsReachable = i, e.IsHoldingHandsReachable = i), (i = t.GetIsAcceptingInvitation()) !== n.IsAcceptingInvitation)) {
       n.IsAcceptingInvitation = i;
       e.IsAcceptingInvitation = i;
     }
   }
-  static UpdateFootstepAudioEvent(e, i, n) {
+  static UpdateFootstepAudioEvent(t, i, n) {
     var r = n.碰撞信息;
     if (n["状态-地面-Sprint"] || r.bBlockingHit) {
-      e = EntitySystem_1.EntitySystem.GetComponent(e, 3);
-      if (e?.Valid) {
-        var a = e.Owner;
+      t = EntitySystem_1.EntitySystem.GetComponent(t, 3);
+      if (t?.Valid) {
+        var a = t.Owner;
         if (a instanceof TsBaseCharacter_1.default) {
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnCharFootOnTheGround);
-          e = e.Entity.GetComponent(49);
-          if (e?.Valid) {
-            var s = e.GetAkComponentBySocketName(FNameUtil_1.FNameUtil.GetDynamicFName("hitcase"));
+          t = t.Entity.GetComponent(50);
+          if (t?.Valid) {
+            var s = t.GetAkComponentBySocketName(FNameUtil_1.FNameUtil.GetDynamicFName("hitcase"));
             if (s?.IsValid()) {
-              r = a.CharRenderingComponent.GetInWater() ? n.缓存角色位置 : r.Location;
-              let t = "";
+              var o = a.CharRenderingComponent.GetInWater() ? n.缓存角色位置 : r.Location;
+              let e = "";
+              var y = GlobalData_1.GlobalData.World;
               if (a.CharRenderingComponent.GetInWater()) {
-                UE.AkGameplayStatics.SetRTPCValue(undefined, e.WaterDepth, 0, undefined, FNameUtil_1.FNameUtil.NONE);
-                t = "WaterSurface";
+                UE.AkGameplayStatics.SetRTPCValue(undefined, t.WaterDepth, 0, undefined, FNameUtil_1.FNameUtil.NONE);
+                e = "WaterSurface";
               } else {
-                a = GlobalData_1.GlobalData.World;
-                if (!a?.IsValid()) {
+                if (!y?.IsValid()) {
                   return;
                 }
-                r = UE.KismetMathLibrary.Conv_VectorToVectorDouble(r);
-                t = UE.KuroVoxelSystem.GetMtlNameByID(VoxelUtils_1.VoxelUtils.GetVoxelInfo(a, r).MtlID);
+                {
+                  a = UE.KismetMathLibrary.Conv_VectorToVectorDouble(o);
+                  y = AudioUtils_1.AudioUtils.QueryFoliageAudioPhysicalMaterial(a);
+                  let t = r.PhysMaterial;
+                  o = (t = y.IsHitFoliage && y.PhysicalMaterial ? y.PhysicalMaterial : t)?.SurfaceType;
+                  a = o ? UE.KuroAudioMaterialSettings.GetFootstepTextureName(o) : FNameUtil_1.FNameUtil.NONE;
+                  e = (e = a === FNameUtil_1.FNameUtil.NONE ? a.toString() : "").length > 0 ? e : "DirtSurface";
+                }
               }
-              s.SetSwitch(undefined, "FootStep_Ground_Texture", t);
-              e.FootSwitch = t;
+              s.SetSwitch(undefined, "FootStep_Ground_Texture", e);
+              t.FootSwitch = e;
               s.SetSwitch(undefined, "FootStep_Shoes", TsMeshAnimBlueprintFunctionLibrary.GetRoleFootStepState(i));
               if (n["状态-地面-Walk"] || n["状态-跑停-WalkStop"]) {
                 s.PostAkEvent(n.WalkAkAudioEvent, 0, undefined, "");
@@ -177,7 +186,7 @@ class TsMeshAnimBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     }
   }
   static ChangeTickOverlap(t, e) {
-    EntitySystem_1.EntitySystem.GetComponent(t, 118).SetTakeOverTick(e);
+    EntitySystem_1.EntitySystem.GetComponent(t, 123).SetTakeOverTick(e);
   }
   static AnimTurnLog(t) {
     var e = EntitySystem_1.EntitySystem.GetComponent(t, 3);
@@ -186,10 +195,10 @@ class TsMeshAnimBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     }
   }
   static IsNpcTurning(t) {
-    return !!EntitySystem_1.EntitySystem.GetComponent(t, 185)?.IsTurning;
+    return !!EntitySystem_1.EntitySystem.GetComponent(t, 190)?.IsTurning;
   }
   static UpdateAndGetRotateBonesMap(t, e, i, n) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 181);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 186);
     if (t && t.RotateBonesToTargetMgr) {
       t.RotateBonesToTargetMgr.Update(e);
       t.RotateBonesToTargetMgr.GetActivateBones((0, puerts_1.$unref)(i));

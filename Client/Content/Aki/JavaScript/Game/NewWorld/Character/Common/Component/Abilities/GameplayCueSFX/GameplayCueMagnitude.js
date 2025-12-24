@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.GameplayCueMagnitude = undefined;
 const Log_1 = require("../../../../../../../Core/Common/Log");
+const Time_1 = require("../../../../../../../Core/Common/Time");
 const GameplayTagUtils_1 = require("../../../../../../../Core/Utils/GameplayTagUtils");
 const MathUtils_1 = require("../../../../../../../Core/Utils/MathUtils");
 const CameraController_1 = require("../../../../../../Camera/CameraController");
@@ -21,16 +22,18 @@ class GameplayCueMagnitude extends GameplayCueBase_1.GameplayCueBase {
     this.z$o = undefined;
     this.one = 0;
     this.rne = 0;
-    this.Xe = 0;
+    this.Value = 0;
     this.Z$o = 0;
     this.ajc = false;
+    this.LMf = 0;
+    this.kkf = false;
     this._yo = (t, i, s) => {
       if (t === this.z$o) {
         this.rne = i;
       } else {
-        this.Xe = i;
+        this.Value = i;
       }
-      this.eYo(this.Xe);
+      this.eYo(this.Value);
     };
     this.tYo = t => {
       this.eYo(t);
@@ -48,8 +51,12 @@ class GameplayCueMagnitude extends GameplayCueBase_1.GameplayCueBase {
       if (!t) {
         this.Z$o = 0;
       }
-    } else if (this.ajc && !MathUtils_1.MathUtils.IsNearlyEqual(this.Xe, CameraController_1.CameraController.CameraRotator.Pitch)) {
-      this.eYo(CameraController_1.CameraController.CameraRotator.Pitch, false);
+    } else if (this.ajc) {
+      if (!MathUtils_1.MathUtils.IsNearlyEqual(this.Value, CameraController_1.CameraController.CameraRotator.Pitch)) {
+        this.eYo(CameraController_1.CameraController.CameraRotator.Pitch, false);
+      }
+    } else if (this.kkf) {
+      this.eYo(Time_1.Time.FlowTime - this.LMf, false);
     }
   }
   OnCreate() {
@@ -114,6 +121,11 @@ class GameplayCueMagnitude extends GameplayCueBase_1.GameplayCueBase {
         this.ajc = this.CueConfig.bListenAttr;
         t = CameraController_1.CameraController.CameraRotator.Pitch;
         break;
+      case 6:
+        this.LMf = Time_1.Time.FlowTime;
+        this.kkf = true;
+        t = 0;
+        break;
       default:
         return false;
     }
@@ -142,6 +154,9 @@ class GameplayCueMagnitude extends GameplayCueBase_1.GameplayCueBase {
           break;
         case 5:
           this.ajc = false;
+          break;
+        case 6:
+          this.kkf = false;
       }
     }
   }
@@ -149,21 +164,21 @@ class GameplayCueMagnitude extends GameplayCueBase_1.GameplayCueBase {
     if (!this.Ii(this.rne >= this.one, "Buff特效表Min>Max！有问题")) {
       return false;
     }
-    this.Xe = t;
-    t = this.nYo();
+    this.Value = t;
+    t = this.Normalize();
     if (i && Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Battle", 28, "Cue特效幅度", ["BuffId", this.BuffId], ["CueId", this.CueConfig.Id], ["EntityId", this.EntityHandle.Id], ["Value", t]);
     }
     this.OnSetMagnitude(t);
     return true;
   }
-  nYo() {
+  Normalize() {
     if (this.Z$o) {
-      return this.Xe;
+      return this.Value;
     } else if (this.one === this.rne) {
       return 0;
     } else {
-      return (MathUtils_1.MathUtils.Clamp(this.Xe, this.one, this.rne) - this.one) / (this.rne - this.one);
+      return (MathUtils_1.MathUtils.Clamp(this.Value, this.one, this.rne) - this.one) / (this.rne - this.one);
     }
   }
   ToRange(t) {
@@ -182,9 +197,9 @@ class GameplayCueMagnitude extends GameplayCueBase_1.GameplayCueBase {
     }
   }
   iqi() {
-    this.$te = this.EntityHandle.Entity.GetComponent(176);
-    this.m1t = this.EntityHandle.Entity.GetComponent(213);
-    this.Xte = this.EntityHandle.Entity.GetComponent(209);
+    this.$te = this.EntityHandle.Entity.GetComponent(181);
+    this.m1t = this.EntityHandle.Entity.GetComponent(220);
+    this.Xte = this.EntityHandle.Entity.GetComponent(215);
   }
 }
 exports.GameplayCueMagnitude = GameplayCueMagnitude;

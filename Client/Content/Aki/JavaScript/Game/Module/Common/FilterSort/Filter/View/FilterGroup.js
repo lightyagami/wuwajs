@@ -131,7 +131,7 @@ class FilterGroup extends UiPanelBase_1.UiPanelBase {
     var t = ModelManager_1.ModelManager.FilterModel.GetFilterResultData(this.wTt);
     this.Mne = t.ConfigId;
   }
-  ldm() {
+  qCm() {
     this.SDt = ModelManager_1.ModelManager.FilterModel.GetFilterItemDataList(this.pDt, this.Mne);
   }
   LDt() {
@@ -186,7 +186,7 @@ class FilterGroup extends UiPanelBase_1.UiPanelBase {
     this.pDt = t;
     this.wTt = i;
     this.mDt();
-    this.ldm();
+    this.qCm();
     this.LDt();
     this.InitFilterSetData();
     this.RDt();

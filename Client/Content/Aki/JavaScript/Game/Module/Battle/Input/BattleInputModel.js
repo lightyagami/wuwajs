@@ -60,14 +60,10 @@ class BattleInputModel extends ModelBase_1.ModelBase {
       this.SetInputVisible(t, e, n);
     }
   }
-  SetAllInputEnableWithIgnoreList(e, n, i) {
-    var s = InputEnums_1.EInputAction.MaxCount;
-    for (let t = 0; t < s; t++) {
-      if (n.includes(t)) {
-        this.SetInputEnable(t, !e, i);
-      } else {
-        this.SetInputEnable(t, e, i);
-      }
+  SetAllInputEnableWithIgnoreSet(e, n, i) {
+    var r = InputEnums_1.EInputAction.MaxCount;
+    for (let t = 0; t < r; t++) {
+      this.SetInputEnable(t, n.has(t) !== e, i);
     }
   }
   Qaa(t, e) {

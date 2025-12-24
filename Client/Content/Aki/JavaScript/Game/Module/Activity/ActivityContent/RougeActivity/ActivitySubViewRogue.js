@@ -103,6 +103,7 @@ class ActivitySubViewRogue extends ActivitySubViewBase_1.ActivitySubViewBase {
       if (i) {
         this.LNe.SetSubTitleByTextId(t);
       }
+      this.LNe.SetActivityBaseData(this.ActivityBaseData);
       this.LNe.SetTitleByText(this.ActivityBaseData.GetTitle());
       i = e.Desc;
       this.DNe.SetContentByTextId(i);

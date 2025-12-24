@@ -20,9 +20,9 @@ class SubPackageDownLoadItem extends UiPanelBase_1.UiPanelBase {
     this.OnClickBtnCallBack = undefined;
     this.OnClickCallBack = undefined;
     this.OnClickHelpBtnCallBack = undefined;
-    this.pTm = undefined;
-    this.vTm = undefined;
-    this.yTm = undefined;
+    this.BGm = undefined;
+    this.kGm = undefined;
+    this.qGm = undefined;
     this.OnChildItemClickBtn = () => {
       if (this.Data) {
         this.OnClickBtnCallBack?.(this.Data);
@@ -41,36 +41,36 @@ class SubPackageDownLoadItem extends UiPanelBase_1.UiPanelBase {
   }
   Update(t, i) {
     this.Data = t;
-    this.pTm?.SetUiActive(false);
-    this.vTm?.SetUiActive(false);
-    this.yTm?.SetUiActive(false);
+    this.BGm?.SetUiActive(false);
+    this.kGm?.SetUiActive(false);
+    this.qGm?.SetUiActive(false);
     if (t.Type) {
-      this.pTm?.SetUiActive(true);
-      this.pTm?.RefreshItem(t.Type);
+      this.BGm?.SetUiActive(true);
+      this.BGm?.RefreshItem(t.Type);
     } else if (t.VersionId) {
-      this.vTm?.SetUiActive(true);
-      this.vTm?.RefreshItem(t.VersionId, t.IsShowItem);
+      this.kGm?.SetUiActive(true);
+      this.kGm?.RefreshItem(t.VersionId, t.IsShowItem);
     } else if (t.SubPackageId) {
-      this.yTm?.SetUiActive(true);
-      this.yTm?.RefreshItem(t.SubPackageId);
+      this.qGm?.SetUiActive(true);
+      this.qGm?.RefreshItem(t.SubPackageId);
     }
   }
   async WZt() {
-    this.pTm = new SubPackageDownLoadTitleItem();
-    this.AddChild(this.pTm);
-    this.vTm = new SubPackageDownLoadVersionItem();
-    this.AddChild(this.vTm);
-    this.yTm = new SubPackageDownLoadSubPackageItem();
-    this.AddChild(this.yTm);
-    await Promise.all([this.pTm.CreateByActorAsync(this.GetItem(0).GetOwner()), this.vTm.CreateByActorAsync(this.GetItem(1).GetOwner()), this.yTm.CreateByActorAsync(this.GetItem(2).GetOwner())]);
-    this.vTm.OnClickCallBack = this.OnClickCallBack;
-    this.vTm.OnClickHelpBtnCallBack = this.OnClickHelpBtnCallBack;
-    this.vTm.OnClickBtn = this.OnChildItemClickBtn;
-    this.yTm.OnClickBtn = this.OnChildItemClickBtn;
+    this.BGm = new SubPackageDownLoadTitleItem();
+    this.AddChild(this.BGm);
+    this.kGm = new SubPackageDownLoadVersionItem();
+    this.AddChild(this.kGm);
+    this.qGm = new SubPackageDownLoadSubPackageItem();
+    this.AddChild(this.qGm);
+    await Promise.all([this.BGm.CreateByActorAsync(this.GetItem(0).GetOwner()), this.kGm.CreateByActorAsync(this.GetItem(1).GetOwner()), this.qGm.CreateByActorAsync(this.GetItem(2).GetOwner())]);
+    this.kGm.OnClickCallBack = this.OnClickCallBack;
+    this.kGm.OnClickHelpBtnCallBack = this.OnClickHelpBtnCallBack;
+    this.kGm.OnClickBtn = this.OnChildItemClickBtn;
+    this.qGm.OnClickBtn = this.OnChildItemClickBtn;
   }
   RefreshDownLoadState() {
-    this.vTm?.RefreshDownLoadStateByTime();
-    this.yTm?.RefreshDownLoadStateByTime();
+    this.kGm?.RefreshDownLoadStateByTime();
+    this.qGm?.RefreshDownLoadStateByTime();
   }
   ClearItem() {
     this.Destroy();
@@ -80,9 +80,9 @@ class SubPackageDownLoadItem extends UiPanelBase_1.UiPanelBase {
   }
   GetInteractItem() {
     if (this.Data?.VersionId) {
-      return this.vTm.GetToggleItem();
+      return this.kGm.GetToggleItem();
     } else {
-      return this.yTm.GetBtnItem();
+      return this.qGm.GetBtnItem();
     }
   }
 }
@@ -110,39 +110,39 @@ class SubPackageDownLoadVersionItem extends UiPanelBase_1.UiPanelBase {
     this.OnClickCallBack = undefined;
     this.OnClickHelpBtnCallBack = undefined;
     this.Type = 1;
-    this.STm = 0;
-    this.MTm = false;
-    this.ETm = [];
+    this.OGm = 0;
+    this.GGm = false;
+    this.FGm = [];
     this.ac = 4;
     this.SPe = undefined;
     this.pcr = () => {
-      this.OnClickHelpBtnCallBack?.(this.STm, this.GetButton(2).RootUIComp);
+      this.OnClickHelpBtnCallBack?.(this.OGm, this.GetButton(2).RootUIComp);
     };
-    this.ITm = () => {
+    this.NGm = () => {
       this.OnClickBtn?.();
-      for (const t of this.ETm) {
+      for (const t of this.FGm) {
         if (ModelManager_1.ModelManager.SubPackageDownLoadModel.GetSubPackageDownLoadItemStateById(t) === 2) {
           ControllerHolder_1.ControllerHolder.SubPackageController.RestartSubPackageDownLoading(t, this.WF1);
           break;
         }
       }
     };
-    this.TTm = () => {
+    this.VGm = () => {
       this.OnClickBtn?.();
       if (ModelManager_1.ModelManager.SubPackageDownLoadModel.IsKeyPackageDownLoading() && this.Type !== 1) {
         ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("SubPackageDownLoad_Des_WaitKeyItemDownLoad");
       }
-      ControllerHolder_1.ControllerHolder.SubPackageController.PushSubPackageDownLoading(this.ETm, () => {
-        if (this.GetExtendToggle(17).ToggleState === 1 || this.MTm) {
+      ControllerHolder_1.ControllerHolder.SubPackageController.PushSubPackageDownLoading(this.FGm, () => {
+        if (this.GetExtendToggle(17).ToggleState === 1 || this.GGm) {
           this.WF1();
         } else {
-          this.OnClickCallBack?.(this.STm, true);
+          this.OnClickCallBack?.(this.OGm, true);
         }
       });
     };
-    this.bTm = () => {
+    this.jGm = () => {
       this.OnClickBtn?.();
-      for (const t of this.ETm) {
+      for (const t of this.FGm) {
         if (ModelManager_1.ModelManager.SubPackageDownLoadModel.GetSubPackageDownLoadItemStateById(t) === 1) {
           ControllerHolder_1.ControllerHolder.SubPackageController.StopSubPackageDownLoading(t, this.WF1);
         }
@@ -150,62 +150,63 @@ class SubPackageDownLoadVersionItem extends UiPanelBase_1.UiPanelBase {
     };
     this.uHe = () => {
       this.OnClickBtn?.();
-      ControllerHolder_1.ControllerHolder.SubPackageController.CancelSubPackageDownLoadingList(this.ETm);
+      ControllerHolder_1.ControllerHolder.SubPackageController.CancelSubPackageDownLoadingList(this.FGm);
       this.WF1();
     };
-    this.RTm = () => {
+    this.HGm = () => {
       this.OnClickBtn?.();
-      ControllerHolder_1.ControllerHolder.SubPackageController.PrioritySubPackageDownLoading(this.ETm, this.WF1);
+      ControllerHolder_1.ControllerHolder.SubPackageController.PrioritySubPackageDownLoading(this.FGm, this.WF1);
     };
     this.kqe = t => {
-      if (!this.MTm) {
-        this.OnClickCallBack?.(this.STm, t === 1);
+      if (!this.GGm) {
+        this.OnClickCallBack?.(this.OGm, t === 1);
       }
     };
     this.WF1 = () => {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRefreshSubPackDownLoadState);
     };
-    this.wTm = () => {
+    this.$Gm = () => {
       this.RefreshState();
       this.RefreshTipsText();
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UITexture], [1, UE.UIText], [2, UE.UIButtonComponent], [3, UE.UIText], [4, UE.UIText], [5, UE.UISprite], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIText], [9, UE.UIButtonComponent], [10, UE.UIButtonComponent], [11, UE.UIButtonComponent], [12, UE.UIButtonComponent], [13, UE.UIButtonComponent], [14, UE.UIItem], [15, UE.UIItem], [16, UE.UIItem], [17, UE.UIExtendToggle], [18, UE.UIItem]];
-    this.BtnBindInfo = [[2, this.pcr], [9, this.ITm], [10, this.TTm], [11, this.bTm], [17, this.kqe], [12, this.uHe], [13, this.RTm]];
+    this.BtnBindInfo = [[2, this.pcr], [9, this.NGm], [10, this.VGm], [11, this.jGm], [17, this.kqe], [12, this.uHe], [13, this.HGm]];
   }
   OnStart() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRefreshSubPackDownLoadState, this.wTm);
+    this.GetText(4).SetUIActive(false);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRefreshSubPackDownLoadState, this.$Gm);
     this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
   }
   OnBeforeDestroy() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRefreshSubPackDownLoadState, this.wTm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRefreshSubPackDownLoadState, this.$Gm);
     if (this.SPe) {
       this.SPe.Clear();
       this.SPe = undefined;
     }
   }
   RefreshItem(t, i) {
-    this.STm = t;
-    this.ETm = [];
-    t = ConfigManager_1.ConfigManager.SubPackageConfig.GetDownLoadVersionByVersion(this.STm);
+    this.OGm = t;
+    this.FGm = [];
+    t = ConfigManager_1.ConfigManager.SubPackageConfig.GetDownLoadVersionByVersion(this.OGm);
     if (t) {
-      for (const s of ConfigManager_1.ConfigManager.SubPackageConfig.GetDownLoadSubPackageListByVersion(this.STm) ?? []) {
-        this.ETm.push(s.Id);
+      for (const e of ConfigManager_1.ConfigManager.SubPackageConfig.GetDownLoadSubPackageListByVersion(this.OGm) ?? []) {
+        this.FGm.push(e.Id);
       }
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), t.Title);
       this.SetTextureByPath(t.Pic, this.GetTexture(0));
       this.GetItem(7).SetUIActive(t.IsRecommend);
       this.Type = t.Type;
-      this.MTm = !ModelManager_1.ModelManager.SubPackageDownLoadModel.GetVersionShowArrowByType(this.Type);
-      this.GetItem(6).SetUIActive(!this.MTm);
+      this.GGm = !ModelManager_1.ModelManager.SubPackageDownLoadModel.GetVersionShowArrowByType(this.Type);
+      this.GetItem(6).SetUIActive(!this.GGm);
       this.GetExtendToggle(17).SetToggleState(i ? 1 : 0);
       this.RefreshState();
       this.RefreshTipsText();
     }
   }
   RefreshState() {
-    this.ac = ModelManager_1.ModelManager.SubPackageDownLoadModel.GetSubPackageDownLoadVersionStateById(this.STm);
+    this.ac = ModelManager_1.ModelManager.SubPackageDownLoadModel.GetSubPackageDownLoadVersionStateById(this.OGm);
     this.GetButton(9).RootUIComp.SetUIActive(this.ac === 2);
     this.GetButton(10).RootUIComp.SetUIActive(this.ac === 4);
     this.GetButton(11).RootUIComp.SetUIActive(this.ac === 1);
@@ -215,12 +216,6 @@ class SubPackageDownLoadVersionItem extends UiPanelBase_1.UiPanelBase {
     this.GetButton(13).RootUIComp.SetUIActive(this.ac === 3 && ModelManager_1.ModelManager.SubPackageDownLoadModel.IsKeyPackageDownLoadingFinish() && this.Type !== 1);
   }
   RefreshTipsText() {
-    if (this.Type === 1 || ModelManager_1.ModelManager.SubPackageDownLoadModel.IsKeyPackageDownLoadingFinish() || this.ac === 5) {
-      this.GetText(4).SetUIActive(false);
-    } else {
-      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), "SubPackageDownLoad_Des_WaitKeyItemDownLoad");
-      this.GetText(4).SetUIActive(true);
-    }
     var t = this.GetText(8);
     if (this.ac === 1) {
       t.SetUIActive(true);
@@ -232,30 +227,40 @@ class SubPackageDownLoadVersionItem extends UiPanelBase_1.UiPanelBase {
       t.SetUIActive(false);
     }
     let i = BigInt(0);
-    let s = BigInt(0);
-    for (const o of this.ETm) {
-      var e;
-      var h = ModelManager_1.ModelManager.SubPackageDownLoadModel.GetSubPackageSpace(o);
+    let e = BigInt(0);
+    for (const r of this.FGm) {
+      var s;
+      var h = ModelManager_1.ModelManager.SubPackageDownLoadModel.GetSubPackageSpace(r);
       if (h) {
-        e = ModelManager_1.ModelManager.SubPackageDownLoadModel.GetSubPackageDownLoadItemStateById(o);
-        i += e !== 5 ? ModelManager_1.ModelManager.SubPackageDownLoadModel.GetSubPackageHaveDownLoadSpace(o) : h;
-        s += h;
+        s = ModelManager_1.ModelManager.SubPackageDownLoadModel.GetSubPackageDownLoadItemStateById(r);
+        i += s !== 5 ? ModelManager_1.ModelManager.SubPackageDownLoadModel.GetSubPackageHaveDownLoadSpace(r) : h;
+        e += h;
       }
     }
-    this.GetText(3).SetUIActive(s > 0);
-    this.GetText(3).SetText(ModelManager_1.ModelManager.SubPackageDownLoadModel.ByteConverter(i) + "/" + ModelManager_1.ModelManager.SubPackageDownLoadModel.ByteConverter(s));
-    var a;
-    var t = this.GetItem(18).IsUIActiveSelf();
-    if (this.ac === 5) {
-      this.GetItem(18).SetUIActive(true);
-      this.GetSprite(5).SetFillAmount(1);
-      if (!t) {
-        this.SPe?.PlayLevelSequenceByName("Load");
+    this.GetText(3).SetUIActive(e > 0);
+    if (i <= 0) {
+      this.GetText(3).SetText(ModelManager_1.ModelManager.SubPackageDownLoadModel.ByteConverter(i) + "/" + ModelManager_1.ModelManager.SubPackageDownLoadModel.ByteConverter(e));
+    } else if (this.ac === 5 || this.ac === 4) {
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(3), "ResDownLoadVersion_FinishTips", ModelManager_1.ModelManager.SubPackageDownLoadModel.ByteConverter(i) + "/" + ModelManager_1.ModelManager.SubPackageDownLoadModel.ByteConverter(e));
+    } else {
+      let t = BigInt(0);
+      let i = BigInt(0);
+      for (const l of this.FGm) {
+        var o;
+        var a = ModelManager_1.ModelManager.SubPackageDownLoadModel.GetSubPackageSpace(l);
+        if (a && (o = ModelManager_1.ModelManager.SubPackageDownLoadModel.GetSubPackageDownLoadItemStateById(l)) !== 5 && o !== 4) {
+          t += ModelManager_1.ModelManager.SubPackageDownLoadModel.GetSubPackageHaveDownLoadSpace(l);
+          i += a;
+        }
       }
-    } else if (s) {
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(3), "ResDownLoadVersion_DownLoadingTips", ModelManager_1.ModelManager.SubPackageDownLoadModel.ByteConverter(t) + "/" + ModelManager_1.ModelManager.SubPackageDownLoadModel.ByteConverter(i), ModelManager_1.ModelManager.SubPackageDownLoadModel.ByteConverter(e));
+    }
+    var n;
+    var t = this.GetItem(18).IsUIActiveSelf();
+    if (this.ac !== 5 && this.ac !== 4 && e) {
       this.GetItem(18).SetUIActive(i > 0);
-      a = Number(i) / Number(s);
-      this.GetSprite(5).SetFillAmount(a);
+      n = Number(i) / Number(e);
+      this.GetSprite(5).SetFillAmount(n);
       if (!t && i > 0) {
         this.SPe?.PlayLevelSequenceByName("Load");
       }
@@ -277,37 +282,37 @@ class SubPackageDownLoadSubPackageItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.OnClickBtn = undefined;
-    this.LTm = 0;
+    this.WGm = 0;
     this.ac = 4;
-    this.ITm = () => {
+    this.NGm = () => {
       this.OnClickBtn?.();
-      ControllerHolder_1.ControllerHolder.SubPackageController.RestartSubPackageDownLoading(this.LTm, this.WF1);
+      ControllerHolder_1.ControllerHolder.SubPackageController.RestartSubPackageDownLoading(this.WGm, this.WF1);
     };
-    this.PTm = () => {
+    this.QGm = () => {
       this.OnClickBtn?.();
       if (ModelManager_1.ModelManager.SubPackageDownLoadModel.IsKeyPackageDownLoading()) {
         ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("SubPackageDownLoad_Des_WaitKeyItemDownLoad");
       }
-      ControllerHolder_1.ControllerHolder.SubPackageController.PushSubPackageDownLoading([this.LTm], this.WF1);
+      ControllerHolder_1.ControllerHolder.SubPackageController.PushSubPackageDownLoading([this.WGm], this.WF1);
     };
-    this.bTm = () => {
+    this.jGm = () => {
       this.OnClickBtn?.();
-      ControllerHolder_1.ControllerHolder.SubPackageController.StopSubPackageDownLoading(this.LTm, this.WF1);
+      ControllerHolder_1.ControllerHolder.SubPackageController.StopSubPackageDownLoading(this.WGm, this.WF1);
     };
     this.uHe = () => {
       this.OnClickBtn?.();
-      ControllerHolder_1.ControllerHolder.SubPackageController.CancelSubPackageDownLoading(this.LTm);
+      ControllerHolder_1.ControllerHolder.SubPackageController.CancelSubPackageDownLoading(this.WGm);
       this.WF1();
     };
-    this.RTm = () => {
+    this.HGm = () => {
       this.OnClickBtn?.();
-      ControllerHolder_1.ControllerHolder.SubPackageController.PrioritySubPackageDownLoading([this.LTm], this.WF1);
+      ControllerHolder_1.ControllerHolder.SubPackageController.PrioritySubPackageDownLoading([this.WGm], this.WF1);
     };
     this.WF1 = () => {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRefreshSubPackDownLoadState);
     };
-    this.ATm = () => {
-      if (this.LTm) {
+    this.KGm = () => {
+      if (this.WGm) {
         this.RefreshState();
         this.Qbe();
       }
@@ -315,17 +320,17 @@ class SubPackageDownLoadSubPackageItem extends UiPanelBase_1.UiPanelBase {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIText], [2, UE.UIButtonComponent], [3, UE.UIButtonComponent], [4, UE.UIButtonComponent], [5, UE.UIButtonComponent], [6, UE.UIButtonComponent], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UIItem]];
-    this.BtnBindInfo = [[2, this.ITm], [3, this.PTm], [4, this.bTm], [5, this.uHe], [6, this.RTm]];
+    this.BtnBindInfo = [[2, this.NGm], [3, this.QGm], [4, this.jGm], [5, this.uHe], [6, this.HGm]];
   }
   OnStart() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRefreshSubPackDownLoadState, this.ATm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRefreshSubPackDownLoadState, this.KGm);
   }
   OnBeforeDestroy() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRefreshSubPackDownLoadState, this.ATm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRefreshSubPackDownLoadState, this.KGm);
   }
   RefreshItem(t) {
-    this.LTm = t;
-    t = ConfigManager_1.ConfigManager.SubPackageConfig.GetDownLoadSubPackageById(this.LTm);
+    this.WGm = t;
+    t = ConfigManager_1.ConfigManager.SubPackageConfig.GetDownLoadSubPackageById(this.WGm);
     if (t) {
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), t.Title);
       this.RefreshState();
@@ -333,7 +338,7 @@ class SubPackageDownLoadSubPackageItem extends UiPanelBase_1.UiPanelBase {
     }
   }
   RefreshState() {
-    this.ac = ModelManager_1.ModelManager.SubPackageDownLoadModel.GetSubPackageDownLoadItemStateById(this.LTm);
+    this.ac = ModelManager_1.ModelManager.SubPackageDownLoadModel.GetSubPackageDownLoadItemStateById(this.WGm);
     this.GetButton(2).RootUIComp.SetUIActive(this.ac === 2);
     this.GetButton(3).RootUIComp.SetUIActive(this.ac === 4);
     this.GetButton(4).RootUIComp.SetUIActive(this.ac === 1);
@@ -350,8 +355,8 @@ class SubPackageDownLoadSubPackageItem extends UiPanelBase_1.UiPanelBase {
     i.SetChangeColor(t, i.changeColor);
   }
   Qbe() {
-    var t = ModelManager_1.ModelManager.SubPackageDownLoadModel.GetSubPackageHaveDownLoadSpace(this.LTm);
-    var i = ModelManager_1.ModelManager.SubPackageDownLoadModel.GetSubPackageSpace(this.LTm);
+    var t = ModelManager_1.ModelManager.SubPackageDownLoadModel.GetSubPackageHaveDownLoadSpace(this.WGm);
+    var i = ModelManager_1.ModelManager.SubPackageDownLoadModel.GetSubPackageSpace(this.WGm);
     if (t <= 0 || this.ac === 5) {
       this.GetText(1).SetText(ModelManager_1.ModelManager.SubPackageDownLoadModel.ByteConverter(i));
     } else {

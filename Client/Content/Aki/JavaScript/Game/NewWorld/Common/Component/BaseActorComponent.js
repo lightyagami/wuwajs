@@ -127,9 +127,14 @@ let BaseActorComponent = class BaseActorComponent extends EntityComponent_1.Enti
     this.jrn = undefined;
     this.LastActorLocation = Vector_1.Vector.Create();
     this.vJ = undefined;
+    this.IsRoleAndCtrlByMe = false;
     this.D3c = new Set();
     this.B3c = new Set();
     this.OwnedBasePlatform = undefined;
+    this.RadiusInternal = 0;
+    this.HalfHeightInternal = 0;
+    this.DefaultRadiusInternal = 0;
+    this.DefaultHalfHeightInternal = 0;
   }
   get IsAutonomousProxy() {
     return this.Nrn;
@@ -137,6 +142,25 @@ let BaseActorComponent = class BaseActorComponent extends EntityComponent_1.Enti
   get IsMoveAutonomousProxy() {
     return this.Orn;
   }
+  get ScaledRadius() {
+    return this.RadiusInternal * this.ActorScaleProxy.X;
+  }
+  get Radius() {
+    return this.RadiusInternal;
+  }
+  get ScaledHalfHeight() {
+    return this.HalfHeightInternal * this.ActorScaleProxy.Z;
+  }
+  get HalfHeight() {
+    return this.HalfHeightInternal;
+  }
+  get DefaultRadius() {
+    return this.DefaultRadiusInternal;
+  }
+  get DefaultHalfHeight() {
+    return this.DefaultHalfHeightInternal;
+  }
+  InitSizeInternal() {}
   OnCreate() {
     this.DisableActorHandle = new DisableEntityHandle("SetActorHiddenInGame");
     this.DisableCollisionHandle = new DisableEntityHandle("SetActorEnableCollision");
@@ -150,8 +174,8 @@ let BaseActorComponent = class BaseActorComponent extends EntityComponent_1.Enti
     return true;
   }
   OnStart() {
-    this.MoveComp = this.Entity.GetComponent(45);
-    this.VehicleMoveComp = this.Entity.GetComponent(240);
+    this.MoveComp = this.Entity.GetComponent(46);
+    this.VehicleMoveComp = this.Entity.GetComponent(249);
     this.vJ = ModelManager_1.ModelManager.CreatureModel?.GetEntityById(this.Entity.Id);
     return true;
   }
@@ -403,10 +427,10 @@ let BaseActorComponent = class BaseActorComponent extends EntityComponent_1.Enti
     if (this.ActorInternal?.IsValid() && (s = this.ActorInternal.K2_KuroSetActorRotation(t, e, false), this.CheckIsForbidSettingLocAndRot(false, true), this.DebugMovementComp)) {
       this.DebugMovementComp.MarkDebugRecord(i + ".SetActorRotation", 1);
     }
-    this.Qrn();
+    this.ResetRotationCachedTime();
     return s;
   }
-  Qrn() {
+  ResetRotationCachedTime() {
     this.CachedTransformTime = 0;
     this.CachedRotationTime = 0;
     this.CachedUpTime = 0;
@@ -488,7 +512,7 @@ let BaseActorComponent = class BaseActorComponent extends EntityComponent_1.Enti
       if (this.DebugMovementComp) {
         this.DebugMovementComp.MarkDebugRecord(i + ".AddActorWorldRotation", 1);
       }
-      this.Qrn();
+      this.ResetRotationCachedTime();
     }
   }
   AddActorLocalRotation(t, i = "unknown", e = false) {
@@ -497,7 +521,7 @@ let BaseActorComponent = class BaseActorComponent extends EntityComponent_1.Enti
       if (this.DebugMovementComp) {
         this.DebugMovementComp.MarkDebugRecord(i + ".AddActorLocalRotation", 1);
       }
-      this.Qrn();
+      this.ResetRotationCachedTime();
     }
   }
   ResetTransformCachedTime() {
@@ -543,9 +567,6 @@ let BaseActorComponent = class BaseActorComponent extends EntityComponent_1.Enti
       case 4:
         this.k3c(t, i, this.D3c);
         this.k3c(t, i, this.B3c);
-    }
-    if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("Test", 50, "[BaseActorComp] SetForbidSettingLocation", ["PbDataId", this.CreatureData.GetPbDataId()], ["CreatureId", this.CreatureData.GetCreatureDataId()], ["Forbid", t], ["Reason", i]);
     }
   }
   CheckIsForbidSettingLocAndRot(t = false, i = false, e = true) {
@@ -601,9 +622,11 @@ let BaseActorComponent = class BaseActorComponent extends EntityComponent_1.Enti
         var t = this.DisableActorHandle.Empty;
         this.ActorInternal.SetActorHiddenInGame(!t);
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSetActorHidden, this.Entity.Id, t);
-        EventSystem_1.EventSystem.EmitWithTarget(ModelManager_1.ModelManager.CreatureModel.GetEntityById(this.Entity.Id), EventDefine_1.EEventName.OnSetActorHidden, this.Entity.Id, t);
+        if (this.vJ) {
+          EventSystem_1.EventSystem.EmitWithTarget(this.vJ, EventDefine_1.EEventName.OnSetActorHidden, this.Entity.Id, t);
+        }
       };
-      if (this.Entity.GetComponent(118)) {
+      if (this.Entity.GetComponent(123)) {
         TimerSystem_1.TimerSystem.Next(() => {
           if (this.ActorInternal?.IsValid()) {
             i();
@@ -632,7 +655,7 @@ let BaseActorComponent = class BaseActorComponent extends EntityComponent_1.Enti
     return this.DisableCollisionHandle.DumpDisableInfo();
   }
   DumpDisableTickInfo() {
-    var t = this.Entity.GetComponent(115);
+    var t = this.Entity.GetComponent(120);
     if (t) {
       return t.DumpDisableTickInfo();
     } else {
@@ -662,11 +685,11 @@ let BaseActorComponent = class BaseActorComponent extends EntityComponent_1.Enti
   SetTickEnable(t, i) {
     if (t) {
       if (this.Vrn) {
-        this.Entity.GetComponent(115)?.EnableTickWithLog(this.Vrn, i);
+        this.Entity.GetComponent(120)?.EnableTickWithLog(this.Vrn, i);
         this.Vrn = undefined;
       }
     } else {
-      this.Vrn ||= this.Entity.GetComponent(115)?.DisableTickWithLog(i);
+      this.Vrn ||= this.Entity.GetComponent(120)?.DisableTickWithLog(i);
     }
   }
   OnClear() {

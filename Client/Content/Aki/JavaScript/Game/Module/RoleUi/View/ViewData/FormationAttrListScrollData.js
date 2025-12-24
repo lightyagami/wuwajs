@@ -7,17 +7,17 @@ exports.FormationAttrListScrollData = undefined;
 const FormationPropertyById_1 = require("../../../../../Core/Define/ConfigQuery/FormationPropertyById");
 const AttrListScrollData_1 = require("./AttrListScrollData");
 class FormationAttrListScrollData extends AttrListScrollData_1.AttrListScrollData {
-  WMm() {
+  GBm() {
     return FormationPropertyById_1.configFormationPropertyById.GetConfig(this.Id);
   }
   GetName() {
-    return this.WMm().Name;
+    return this.GBm().Name;
   }
   GetIcon() {
-    return this.WMm().Icon;
+    return this.GBm().Icon;
   }
   GetDesc() {
-    return this.WMm().Dec;
+    return this.GBm().Dec;
   }
 }
 exports.FormationAttrListScrollData = FormationAttrListScrollData;

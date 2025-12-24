@@ -97,16 +97,20 @@ class LoginDebugView extends UiViewBase_1.UiViewBase {
     this.E3t = e => {
       this.GetSprite(8).SetUIActive(e === 1);
     };
-    this.S3t = e => {
+    this.zWm = e => {
       this.GetSprite(10).SetUIActive(e === 1);
+      Platform_1.Platform.IsFakeCloudGame = e === 1;
+    };
+    this.S3t = e => {
+      this.GetSprite(12).SetUIActive(e === 1);
     };
     this.zIa = e => {
       if (e === 1) {
         ModelManager_1.ModelManager.LoginModel.IsCopyAccount = true;
-        this.GetItem(17)?.SetUIActive(true);
+        this.GetItem(19)?.SetUIActive(true);
       } else {
         ModelManager_1.ModelManager.LoginModel.IsCopyAccount = false;
-        this.GetItem(17)?.SetUIActive(false);
+        this.GetItem(19)?.SetUIActive(false);
       }
     };
     this.y3t = e => {
@@ -160,7 +164,7 @@ class LoginDebugView extends UiViewBase_1.UiViewBase {
       }
     };
     this.L3t = () => {
-      var i = this.GetInputText(11).GetText();
+      var i = this.GetInputText(13).GetText();
       var e = this.GetDropdown(4);
       if (StringUtils_1.StringUtils.IsEmpty(i)) {
         e.SetOptions(this.u3t);
@@ -185,7 +189,7 @@ class LoginDebugView extends UiViewBase_1.UiViewBase {
           if (Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("Login", 63, "切换服务器IP", ["ServerIp", i.Ip]);
           }
-          this.GetInputText(12).SetText(i.Ip);
+          this.GetInputText(14).SetText(i.Ip);
         }
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Login", 63, "切换服务器IP失败, 服务器列表为空", ["SelectIndex", e]);
@@ -233,19 +237,19 @@ class LoginDebugView extends UiViewBase_1.UiViewBase {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIButtonComponent], [2, UE.UITextInputComponent], [3, UE.UIDropdownComponent], [4, UE.UIDropdownComponent], [5, UE.UIButtonComponent], [6, UE.UIButtonComponent], [7, UE.UIExtendToggle], [8, UE.UISprite], [9, UE.UIExtendToggle], [10, UE.UISprite], [11, UE.UITextInputComponent], [12, UE.UITextInputComponent], [13, UE.UIDropdownComponent], [14, UE.UIDropdownComponent], [15, UE.UITextInputComponent], [16, UE.UIExtendToggle], [17, UE.UIItem], [18, UE.UITextInputComponent]];
-    this.BtnBindInfo = [[0, this.d3t], [1, this.C3t], [5, this.v3t], [6, this.f3t], [7, this.E3t], [9, this.S3t], [16, this.zIa]];
+    this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIButtonComponent], [2, UE.UITextInputComponent], [3, UE.UIDropdownComponent], [4, UE.UIDropdownComponent], [5, UE.UIButtonComponent], [6, UE.UIButtonComponent], [7, UE.UIExtendToggle], [8, UE.UISprite], [9, UE.UIExtendToggle], [10, UE.UISprite], [11, UE.UIExtendToggle], [12, UE.UISprite], [13, UE.UITextInputComponent], [14, UE.UITextInputComponent], [15, UE.UIDropdownComponent], [16, UE.UIDropdownComponent], [17, UE.UITextInputComponent], [18, UE.UIExtendToggle], [19, UE.UIItem], [20, UE.UITextInputComponent]];
+    this.BtnBindInfo = [[0, this.d3t], [1, this.C3t], [5, this.v3t], [6, this.f3t], [7, this.E3t], [9, this.zWm], [11, this.S3t], [18, this.zIa]];
   }
   OnStart() {
     this.m3t = (0, puerts_1.toManualReleaseDelegate)(this.D3t);
     ModelManager_1.ModelManager.LoginModel.InitConfig();
     ModelManager_1.ModelManager.LoginModel.FixLoginFailInfo();
     ModelManager_1.ModelManager.LoginModel.InitRecentlyAccountList();
-    this.GetExtendToggle(16)?.SetToggleState(0);
-    this.GetItem(17)?.SetUIActive(false);
+    this.GetExtendToggle(18)?.SetToggleState(0);
+    this.GetItem(19)?.SetUIActive(false);
     this.u3t = UE.NewArray(UE.UIDropdownOptionData);
     this.c3t = UE.NewArray(UE.UIDropdownOptionData);
-    this.GetInputText(11).OnTextChange.Bind(this.L3t);
+    this.GetInputText(13).OnTextChange.Bind(this.L3t);
     this.GetDropdown(3).OnSelectChange.Bind(this.lLu);
     this._Lu();
     this.GetInputText(2).SetText(ModelManager_1.ModelManager.LoginModel.GetAccount());
@@ -255,6 +259,7 @@ class LoginDebugView extends UiViewBase_1.UiViewBase {
     this.P3t();
     this.x3t();
     this.w3t();
+    this.JWm();
     this.B3t();
     if (GlobalData_1.GlobalData.IsPlayInEditor && !UiManager_1.UiManager.IsViewShow("LoginStatusView")) {
       UiManager_1.UiManager.OpenView("LoginStatusView");
@@ -306,7 +311,7 @@ class LoginDebugView extends UiViewBase_1.UiViewBase {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Login", 63, "设置服务器IP", ["ServerIp", e]);
     }
-    this.GetInputText(12).SetText(e);
+    this.GetInputText(14).SetText(e);
   }
   x3t() {
     var t = this.GetDropdown(4);
@@ -322,13 +327,13 @@ class LoginDebugView extends UiViewBase_1.UiViewBase {
       if (a) {
         for (let e = 0; e < a.length; ++e) {
           var l = a[e];
-          var g = l.MapId + "-" + l.MapName;
-          var s = new UE.UIDropdownOptionData(g, r, 0, "");
-          this.u3t.Add(s);
-          t.Options.Add(s);
+          var s = l.MapId + "-" + l.MapName;
+          var g = new UE.UIDropdownOptionData(s, r, 0, "");
+          this.u3t.Add(g);
+          t.Options.Add(g);
           if (l.MapId === n) {
             t.Value = e;
-            t.CaptionText.UIText.SetText(g);
+            t.CaptionText.UIText.SetText(s);
             o = true;
           }
           if (l.MapId === _) {
@@ -353,9 +358,15 @@ class LoginDebugView extends UiViewBase_1.UiViewBase {
       this.E3t(e);
     }
   }
+  JWm() {
+    if (this.GetExtendToggle(9)) {
+      this.GetExtendToggle(9).SetToggleState(0);
+      this.zWm(0);
+    }
+  }
   B3t() {
     var e;
-    var i = this.GetExtendToggle(9);
+    var i = this.GetExtendToggle(11);
     if (i) {
       e = LocalStorage_1.LocalStorage.GetGlobal(LocalStorageDefine_1.ELocalStorageGlobalKey.SkipPlot, false) ? 1 : 0;
       i.SetToggleState(e);
@@ -368,13 +379,13 @@ class LoginDebugView extends UiViewBase_1.UiViewBase {
       (0, puerts_1.releaseManualReleaseDelegate)(this.D3t);
       this.m3t = undefined;
     }
-    this.GetDropdown(13).OnSelectChange.Unbind();
+    this.GetDropdown(15).OnSelectChange.Unbind();
     ModelManager_1.ModelManager.LoginModel.SaveRecentlyAccountList();
     ModelManager_1.ModelManager.LoginModel.CleanConfig();
-    ModelManager_1.ModelManager.LoginModel.SetServerId(this.GetInputText(18).GetText());
+    ModelManager_1.ModelManager.LoginModel.SetServerId(this.GetInputText(20).GetText());
   }
   q3t() {
-    var e = this.GetDropdown(14);
+    var e = this.GetDropdown(16);
     if (e) {
       e.CaptionText.UIText.text = "选择最近登录账号";
       var i = e.GetOption(0).Sprite;
@@ -389,7 +400,7 @@ class LoginDebugView extends UiViewBase_1.UiViewBase {
     }
   }
   b3t() {
-    var e = this.GetDropdown(13);
+    var e = this.GetDropdown(15);
     if (e) {
       var i = e.GetOption(0).Sprite;
       e.Options.Empty();
@@ -467,7 +478,7 @@ class LoginDebugView extends UiViewBase_1.UiViewBase {
     } else if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Login", 10, "服务器下拉列表节点获取不到");
     }
-    var i = this.GetInputText(12).GetText();
+    var i = this.GetInputText(14).GetText();
     if (!StringUtils_1.StringUtils.IsEmpty(i)) {
       if (r = this.aGn(i)) {
         ModelManager_1.ModelManager.LoginModel.SetServerName("手动输入IP地址服务器");
@@ -479,8 +490,8 @@ class LoginDebugView extends UiViewBase_1.UiViewBase {
     LocalStorage_1.LocalStorage.SetGlobal(LocalStorageDefine_1.ELocalStorageGlobalKey.LoginSex, i === LoginDefine_1.ELoginSex.Girl);
     ModelManager_1.ModelManager.LoginModel.SetPlayerSex(i);
     ModelManager_1.ModelManager.LoginModel.SetAccount(this.GetInputText(2).Text);
-    ModelManager_1.ModelManager.LoginModel.SetSourceAccount(this.GetInputText(15).Text);
-    var r = this.GetExtendToggle(9).ToggleState === 1;
+    ModelManager_1.ModelManager.LoginModel.SetSourceAccount(this.GetInputText(17).Text);
+    var r = this.GetExtendToggle(11).ToggleState === 1;
     LocalStorage_1.LocalStorage.SetGlobal(LocalStorageDefine_1.ELocalStorageGlobalKey.SkipPlot, r);
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Login", 8, "已保存登录数据", ["ServerIp", this.tFn()], ["CustomServerPort", ModelManager_1.ModelManager.LoginModel.GetCustomServerPort()], ["SingleId", ModelManager_1.ModelManager.LoginModel.GetSingleMapId()], ["MultiMapId", ModelManager_1.ModelManager.LoginModel.GetMultiMapId()], ["Account", ModelManager_1.ModelManager.LoginModel.GetAccount()], ["LoginSex", LoginDefine_1.ELoginSex[i]]);

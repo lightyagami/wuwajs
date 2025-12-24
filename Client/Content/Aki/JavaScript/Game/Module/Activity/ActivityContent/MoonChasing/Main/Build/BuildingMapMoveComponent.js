@@ -30,6 +30,11 @@ class BuildingMapMoveComponent {
     this.IsTweening = false;
     this.TCa = undefined;
     this.uGo = undefined;
+    this.kvf = undefined;
+    this.qvf = undefined;
+    this.Ovf = Vector2D_1.Vector2D.Create();
+    this.Gvf = Vector_1.Vector.Create();
+    this.Fvf = Vector_1.Vector.Create();
     this.LCa = Vector2D_1.Vector2D.Create();
     this.DCa = Vector2D_1.Vector2D.Create();
     this.ScaleStep = 0.05;
@@ -119,6 +124,10 @@ class BuildingMapMoveComponent {
     this.YFo = t => {
       this.Jjs.SetAnchorOffset(t);
     };
+    this.Nvf = t => {
+      this.Ovf.Set(t.Y, t.Z);
+      this.SetScale(t.X, 4, this.Ovf);
+    };
     this.dUa = (t, i) => {
       this.Q_t.FromUeVector2D(this.Jjs.GetAnchorOffset());
       this.Q_t.X = this.Q_t.X - t;
@@ -180,6 +189,7 @@ class BuildingMapMoveComponent {
   }
   Fq() {
     this.bCa();
+    this.Vvf();
     this.oRn();
     this.nRn();
     this.qCa();
@@ -187,6 +197,9 @@ class BuildingMapMoveComponent {
   }
   bCa() {
     this.uGo = (0, puerts_1.toManualReleaseDelegate)(this.YFo);
+  }
+  Vvf() {
+    this.qvf = (0, puerts_1.toManualReleaseDelegate)(this.Nvf);
   }
   oRn() {
     this.PYe.X = UiLayer_1.UiLayer.UiRootItem.GetWidth();
@@ -237,31 +250,40 @@ class BuildingMapMoveComponent {
     t.X = MathUtils_1.MathUtils.Clamp(t.X, this.UCa.MinX, this.UCa.MaxX);
     t.Y = MathUtils_1.MathUtils.Clamp(t.Y, this.UCa.MinY, this.UCa.MaxY);
   }
-  SetScale(t, i) {
-    var s;
+  SetScale(t, i, s) {
+    var h;
     var t = MathUtils_1.MathUtils.Clamp(t, this.MapScaleSafeArea.Min, this.MapScaleSafeArea.Max);
-    if (t !== this.HCa) {
+    if (t !== this.HCa || i === 4) {
       this.xCa();
-      s = this.HCa;
+      h = this.HCa;
       this.HCa = t;
       this.qCa();
       this.rRn();
       this.cz.Set(t, t, t);
       this.Jjs.SetUIRelativeScale3D(this.cz.ToUeVectorOld());
-      t = this.iWs(t, s, i);
+      t = this.iWs(t, h, i, s);
       this.Q_t.Reset();
       this.Q_t.AdditionEqual(t);
       this.wCa(this.Q_t);
       this.zjs?.(i);
     }
   }
-  iWs(t, i, s) {
-    var h = Vector2D_1.Vector2D.Create(this.Jjs.GetAnchorOffset());
-    if (s === 0 || s === 1) {
-      (s = this.PCa(this.Yjs.X, this.Yjs.Y)).Set(s.X - this.PYe.X / 2, s.Y - this.PYe.Y / 2);
-      return h.SubtractionEqual(s).MultiplyEqual(t / i).AdditionEqual(s);
-    } else {
-      return h.MultiplyEqual(t / i);
+  iWs(t, i, s, h) {
+    var e = Vector2D_1.Vector2D.Create(this.Jjs.GetAnchorOffset());
+    switch (s) {
+      case 0:
+      case 1:
+        var r = this.PCa(this.Yjs.X, this.Yjs.Y);
+        r.Set(r.X - this.PYe.X / 2, r.Y - this.PYe.Y / 2);
+        return e.SubtractionEqual(r).MultiplyEqual(t / i).AdditionEqual(r);
+      case 4:
+        if (h) {
+          return h.MultiplyEqual(-1).MultiplyEqual(this.MapScale);
+        } else {
+          return e.MultiplyEqual(t / i);
+        }
+      default:
+        return e.MultiplyEqual(t / i);
     }
   }
   PCa(t, i) {
@@ -308,6 +330,12 @@ class BuildingMapMoveComponent {
       this.TCa = undefined;
     }
   }
+  VCa() {
+    if (this.kvf) {
+      this.kvf.Kill();
+      this.kvf = undefined;
+    }
+  }
   OCa(t, i = 0, s = TWEEN_TIME) {
     this.sRn(t);
     this.IsTweening = true;
@@ -335,6 +363,32 @@ class BuildingMapMoveComponent {
       this.wCa(this.Q_t);
     }
     e?.();
+  }
+  ScaleToTarget(t, i, s = 0, h = TWEEN_TIME, e = 0, r) {
+    let o = t;
+    if (e === 1) {
+      o = this.MapScale > t ? this.MapScale : t;
+    } else if (e === 2) {
+      o = this.MapScale < t ? this.MapScale : t;
+    }
+    if (h !== 0) {
+      this.Hvf(o, i, s, h);
+    } else {
+      this.Ovf.Set(i[0], i[1]);
+      this.SetScale(t, 4, this.Ovf);
+    }
+    r?.();
+  }
+  Hvf(t, i, s = 0, h = TWEEN_TIME) {
+    this.IsTweening = true;
+    this.VCa();
+    var e = this.Jjs.GetAnchorOffset();
+    this.Gvf.Set(this.HCa, -e.X / this.HCa, -e.Y / this.HCa);
+    this.Fvf.Set(t, i[0], i[1]);
+    this.kvf = UE.LTweenBPLibrary.Vector3To(GlobalData_1.GlobalData.World, this.qvf, this.Gvf.ToUeVectorOld(), this.Fvf.ToUeVectorOld(), h, 0, s);
+    this.kvf.OnCompleteCallBack.Bind(() => {
+      this.IsTweening = false;
+    });
   }
   Zjs() {
     var t = Global_1.Global.CharacterController;
@@ -377,7 +431,9 @@ class BuildingMapMoveComponent {
   }
   Destroy() {
     this.xCa();
+    this.VCa();
     (0, puerts_1.releaseManualReleaseDelegate)(this.YFo);
+    (0, puerts_1.releaseManualReleaseDelegate)(this.Nvf);
   }
   AddGamepadEvent() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.GamepadMoveOverScreen, this.dUa);

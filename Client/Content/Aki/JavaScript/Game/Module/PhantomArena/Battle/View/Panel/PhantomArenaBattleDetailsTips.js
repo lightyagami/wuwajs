@@ -6,10 +6,16 @@ Object.defineProperty(exports, "__esModule", {
 exports.PhantomArenaBattleDetailsTips = undefined;
 const UE = require("ue");
 const Protocol_1 = require("../../../../../../Core/Define/Net/Protocol");
+const TimerSystem_1 = require("../../../../../../Core/Timer/TimerSystem");
+const Transform_1 = require("../../../../../../Core/Utils/Math/Transform");
+const Vector_1 = require("../../../../../../Core/Utils/Math/Vector");
 const ConfigManager_1 = require("../../../../../Manager/ConfigManager");
+const ModelManager_1 = require("../../../../../Manager/ModelManager");
 const UiPanelBase_1 = require("../../../../../Ui/Base/UiPanelBase");
 const UiSequencePlayer_1 = require("../../../../../Ui/Base/UiSequencePlayer");
+const LguiEventSystemManager_1 = require("../../../../../Ui/LguiEventSystem/LguiEventSystemManager");
 const DynamicMaskButton_1 = require("../../../../DynamicMask/DynamicMaskButton");
+const LguiUtil_1 = require("../../../../Util/LguiUtil");
 const CardDetailEntryDescLayoutItem_1 = require("../../../Common/CardDetail/CardDetailEntryDescLayoutItem");
 const CardDetailFactorDescItem_1 = require("../../../Common/CardDetail/CardDetailFactorDescItem");
 const CardDetailItem_1 = require("../../../Common/CardDetail/CardDetailItem");
@@ -22,9 +28,13 @@ class PhantomArenaBattleDetailsTips extends UiPanelBase_1.UiPanelBase {
     this.MaskButton = undefined;
     this.MaskAttach = undefined;
     this.IsEntryShow = false;
+    this.ShowTipsType = 0;
     this.IsInActive = false;
     this.ShowType = 0;
     this.BtnBottomCb = undefined;
+    this.TempWorldPos = Vector_1.Vector.Create();
+    this.ItemWorldTrans = Transform_1.Transform.Create();
+    this.TimerHandle = undefined;
     this.Nno = t => {
       if (t === "Close") {
         this.SetActive(false);
@@ -74,88 +84,263 @@ class PhantomArenaBattleDetailsTips extends UiPanelBase_1.UiPanelBase {
   OnBeforeDestroy() {
     this.Sequence.Clear();
     this.MaskButton?.Destroy();
+    this.FBd();
   }
   RefreshByTaskData(t) {
     var i = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardConfig(t.TaskCardConfigId);
-    var s = i.InitAttack.get(Protocol_1.Aki.Protocol.GC1.Proto_AttackAbility);
-    var e = i.InitAttack.get(Protocol_1.Aki.Protocol.GC1.Proto_LifeAbility);
-    var a = [];
-    for (const h of i.CardFactorId) {
+    var e = i.InitAttack.get(Protocol_1.Aki.Protocol.GC1.Proto_AttackAbility);
+    var a = i.InitAttack.get(Protocol_1.Aki.Protocol.GC1.Proto_LifeAbility);
+    var s = [];
+    for (const o of i.CardFactorId) {
       var r = new CardDetailFactorDescItem_1.CardDetailFactorDescItemData();
-      r.FactorConfigId = h;
+      r.FactorConfigId = o;
       r.IsActive = false;
-      a.push(r);
+      s.push(r);
     }
-    var o = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomArenaFourTask(t.TaskCardConfigId);
-    var t = t.GetConditionDescCurrentProgress(o.TaskDescConditionId);
-    var o = {
-      Desc: o.TaskDesc,
+    var h = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomArenaFourTask(t.TaskCardConfigId);
+    var t = t.GetConditionDescCurrentProgress(h.TaskDescConditionId);
+    var h = {
+      Desc: h.TaskDesc,
       CurrentProgress: t
     };
     var t = {
-      Name: i.Name,
       Cost: i.Cost,
-      Attack: s,
-      Life: e,
-      CardDescription: i.CardEffectDescription,
-      CardDescriptionParams: i.CardEffectDescriptionParams,
-      FactorDataList: a,
-      TaskData: o
+      Attack: e,
+      Life: a
     };
-    this.DetailItem.Refresh(t);
+    var e = {
+      Description: i.CardEffectDescription,
+      DescriptionParams: i.CardEffectDescriptionParams
+    };
+    var a = {
+      Name: i.Name,
+      AttributeData: t,
+      CardDescriptionData: e,
+      FactorDataList: s,
+      TaskData: h
+    };
+    this.DetailItem.Refresh(a);
     this.EntryDescLayoutItem.RefreshByCardConfig(i);
   }
-  RefreshByCardData(t) {
+  S3m(t) {
+    if (t.IsTool) {
+      return [];
+    }
     var i = [];
-    for (const h of t.ExtraFactors) {
-      var s = new CardDetailFactorDescItem_1.CardDetailFactorDescItemData();
-      s.FactorConfigId = h;
-      s.IsActive = true;
-      i.push(s);
+    for (const s of t.ExtraFactors) {
+      var e = new CardDetailFactorDescItem_1.CardDetailFactorDescItemData();
+      e.FactorConfigId = s;
+      e.IsActive = true;
+      i.push(e);
     }
-    var e = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardConfig(t.ConfigId);
-    var a = t.GetFightValueByAttr(Protocol_1.Aki.Protocol.GC1.Proto_AttackAbility);
-    var r = t.GetFightValueByAttr(Protocol_1.Aki.Protocol.GC1.Proto_LifeAbility);
-    var t = t.GetFightValueByAttr(Protocol_1.Aki.Protocol.GC1.Proto_CostAbility);
-    for (const n of e.CardFactorId) {
-      var o = new CardDetailFactorDescItem_1.CardDetailFactorDescItemData();
-      o.FactorConfigId = n;
-      o.IsActive = false;
-      i.push(o);
+    for (const r of t.UnActiveFactors) {
+      var a = new CardDetailFactorDescItem_1.CardDetailFactorDescItemData();
+      a.FactorConfigId = r;
+      a.IsActive = false;
+      i.push(a);
     }
-    t = {
-      Name: e.Name,
-      Cost: t,
-      Attack: a,
-      Life: r,
-      CardDescription: e.CardEffectDescription,
-      CardDescriptionParams: e.CardEffectDescriptionParams,
-      FactorDataList: i
-    };
-    this.DetailItem.Refresh(t);
-    this.EntryDescLayoutItem.RefreshByCardConfig(e);
+    return i;
   }
-  SetTipsPosition(t) {
-    this.GetOriginalItem()?.SetUIParent(t.AttachItem);
+  ZBm(t) {
+    var i;
+    var e;
+    if (!t.IsTool) {
+      i = t.GetFightValueByAttr(Protocol_1.Aki.Protocol.GC1.Proto_AttackAbility);
+      e = t.GetFightValueByAttr(Protocol_1.Aki.Protocol.GC1.Proto_LifeAbility);
+      return {
+        Cost: t.GetFightValueByAttr(Protocol_1.Aki.Protocol.GC1.Proto_CostAbility),
+        Attack: i,
+        Life: e
+      };
+    }
+  }
+  M3m(t) {
+    if (!t.IsTool) {
+      return {
+        Description: (t = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardConfig(t.ConfigId)).CardEffectDescription,
+        DescriptionParams: t.CardEffectDescriptionParams
+      };
+    }
+  }
+  E3m(t) {
+    if (t.HasDurability) {
+      return {
+        DurationDesc: t.Durable + "/" + t.DurableMax
+      };
+    }
+  }
+  I3m(t) {
+    if (t.HasClickActiveSkill) {
+      return {
+        Desc: (t = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardConfig(t.ConfigId)).DurableSkillDescription,
+        Params: t.DurableSkillDescriptionParams
+      };
+    }
+  }
+  T3m(t) {
+    var i;
+    var e;
+    var a;
+    if (t.IsField) {
+      i = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardConfig(t.ConfigId);
+      e = (t.IsNpcCard ? ModelManager_1.ModelManager.PhantomArenaBattleModel.OpponentData : ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData).IsFieldActive ? "PhantomBattle_1144" : "PhantomBattle_1143";
+      e = {
+        TextArg: new LguiUtil_1.TableTextArgNew(e)
+      };
+      a = t.HasCountSkill ? {
+        CurrentEffectCount: t.CurEffectCount,
+        TotalEffectCount: t.MaxEffectCount
+      } : undefined;
+      return {
+        Desc: t.HasCountSkill ? i.CountSkillDescription : i.CardEffectDescription,
+        Params: t.HasCountSkill ? i.CountSkillDescriptionParams : i.CardEffectDescriptionParams,
+        FieldData: {
+          InData: e
+        },
+        EffectCountData: a
+      };
+    }
+  }
+  b3m(t) {
+    var i;
+    if (t.HasCountSkill) {
+      i = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardConfig(t.ConfigId);
+      t = {
+        CurrentEffectCount: t.CurEffectCount,
+        TotalEffectCount: t.MaxEffectCount
+      };
+      return {
+        Desc: i.CountSkillDescription,
+        Params: i.CountSkillDescriptionParams,
+        EffectCountData: t
+      };
+    }
+  }
+  xQm(t) {
+    if (t.IsCopy) {
+      return {
+        RemainRound: 1
+      };
+    }
+  }
+  B7m(t) {
+    var i = this.S3m(t);
+    var e = this.ZBm(t);
+    var a = this.M3m(t);
+    var s = this.E3m(t);
+    var r = this.I3m(t);
+    var h = this.b3m(t);
+    var o = this.xQm(t);
+    var t = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardConfig(t.ConfigId);
+    var e = {
+      Name: t.Name,
+      AttributeData: e,
+      CardDescriptionData: a,
+      FactorDataList: i,
+      DurationData: s,
+      ActiveSkillData: r,
+      PassiveSkillData: h,
+      RemainRoundData: o
+    };
+    this.DetailItem.Refresh(e);
+    this.EntryDescLayoutItem.RefreshByCardConfig(t);
+  }
+  k7m(t) {
+    var i = this.I3m(t);
+    var e = this.T3m(t);
+    var t = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardConfig(t.ConfigId);
+    var i = {
+      Name: t.Name,
+      ActiveSkillData: i,
+      PassiveSkillData: e
+    };
+    this.DetailItem.Refresh(i);
+    this.EntryDescLayoutItem.RefreshByCardConfig(t);
+  }
+  QWm(t) {
+    if (t) {
+      this.TempWorldPos.FromUeVector(t.D_K2_GetComponentLocation());
+      this.ItemWorldTrans.FromUeTransform(this.ParentUiItem.K2_GetComponentToWorld());
+      this.ItemWorldTrans.InverseTransformPosition(this.TempWorldPos, this.TempWorldPos);
+      this.GetOriginalItem()?.SetUIRelativeLocation(this.TempWorldPos.ToUeVectorOld());
+    }
+  }
+  KWm(t) {
     this.ShowType = t.ShowType;
-    if (t.ShowType === 1) {
-      this.GetItem(1).SetHierarchyIndex(0);
-      this.SetPivotAndResetOffset(1, 0);
-    } else if (t.ShowType === 2) {
+    if (t.PositionType === 0) {
       this.GetItem(0).SetHierarchyIndex(0);
       this.SetPivotAndResetOffset(0, 1);
+    } else if (t.PositionType === 1) {
+      this.GetItem(1).SetHierarchyIndex(0);
+      this.SetPivotAndResetOffset(1, 1);
+    } else if (t.PositionType === 2) {
+      this.GetItem(0).SetHierarchyIndex(0);
+      this.SetPivotAndResetOffset(0, 0);
+    } else {
+      this.GetItem(1).SetHierarchyIndex(0);
+      this.SetPivotAndResetOffset(1, 0);
     }
   }
+  cGf() {
+    this.FBd();
+    this.TimerHandle = TimerSystem_1.GameplayTimerSystem.Forever(() => {
+      this.tmf();
+    }, 100);
+  }
+  FBd() {
+    if (this.TimerHandle) {
+      TimerSystem_1.GameplayTimerSystem.Remove(this.TimerHandle);
+      this.TimerHandle = undefined;
+    }
+  }
+  jt_() {
+    this.FBd();
+    this.SetActive(true);
+    this.Sequence.StopPrevSequence(false, true);
+    this.Sequence.PlaySequence("Start");
+  }
+  dbu() {
+    this.FBd();
+    this.Sequence.StopPrevSequence(false, true);
+    this.Sequence.PlaySequence("Close");
+    this.ShowType = 0;
+  }
+  tmf() {
+    if (this.RootItem) {
+      if (!LguiEventSystemManager_1.LguiEventSystemManager.GetPointerEventData(0, true).enterComponentStack.Contains(this.RootItem)) {
+        this.dbu();
+      }
+    } else {
+      this.FBd();
+    }
+  }
+  RefreshByCardData(t) {
+    if (t.IsField) {
+      this.k7m(t);
+    } else {
+      this.B7m(t);
+    }
+  }
+  SetTipsPositionByAttachItem(t) {
+    this.GetOriginalItem()?.SetUIParent(t.AttachItem);
+    this.KWm(t);
+  }
+  SetTipsPositionByTriggerItem(t) {
+    this.KWm(t);
+    this.QWm(t.TriggerItem);
+  }
   SetTipsActive(t) {
-    if (this.IsInActive !== t) {
-      if (this.IsInActive = t) {
-        this.SetActive(true);
-        this.Sequence.StopPrevSequence(false, true);
-        this.Sequence.PlaySequence("Start");
-      } else {
-        this.Sequence.StopPrevSequence(false, true);
-        this.Sequence.PlaySequence("Close");
-        this.ShowType = 0;
+    var i = t === 2 || t === 3;
+    if (this.IsInActive !== i) {
+      this.IsInActive = i;
+      i = this.ShowTipsType;
+      this.ShowTipsType = t;
+      if (this.IsInActive) {
+        this.jt_();
+      } else if (i === 2) {
+        this.dbu();
+      } else if (i === 3) {
+        this.cGf();
       }
     }
   }
@@ -193,10 +378,14 @@ class PhantomArenaBattleDetailsTips extends UiPanelBase_1.UiPanelBase {
   }
   GetGuideUiItemAndUiItemForShowEx(t) {
     var i;
-    if (t && !(t.length <= 0) && ((i = t[0]) === "CardEffect" || i === "CardAttr" || i === "Task")) {
-      return this.DetailItem?.GetGuideUiItemAndUiItemForShowEx(t);
-    } else {
-      return undefined;
+    if (t && !(t.length <= 0)) {
+      if ((i = t[0]) === "CardEffect" || i === "CardAttr" || i === "Task") {
+        return this.DetailItem?.GetGuideUiItemAndUiItemForShowEx(t);
+      } else if (i === "CardFullInfo" && (t = this.GetItem(0))) {
+        return [t, t];
+      } else {
+        return undefined;
+      }
     }
   }
 }

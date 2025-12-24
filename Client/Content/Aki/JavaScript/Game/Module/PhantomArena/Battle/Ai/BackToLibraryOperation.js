@@ -14,6 +14,7 @@ class BackToLibraryOperation extends NpcAiOperation_1.NpcAiOperation {
   async ExecuteAiOperation(e) {
     await e.OpponentArea.HandArea.BackToRecycle(1);
     ModelManager_1.ModelManager.PhantomArenaBattleModel.OpponentData.BackToLibrary(this.Info);
+    await e.OpponentArea.HandArea.RefreshHandCardNum(this.Info.Hg1);
   }
 }
 exports.BackToLibraryOperation = BackToLibraryOperation;

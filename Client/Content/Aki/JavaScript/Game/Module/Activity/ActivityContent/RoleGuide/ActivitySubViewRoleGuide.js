@@ -82,6 +82,7 @@ class ActivitySubViewRoleGuide extends ActivitySubViewBase_1.ActivitySubViewBase
   }
   OnStart() {
     var i = this.ActivityBaseData.LocalConfig;
+    this.LNe.SetActivityBaseData(this.ActivityBaseData);
     this.LNe.SetTitleByText(this.ActivityBaseData.GetTitle());
     this.LNe.SetSubTitleVisible(!StringUtils_1.StringUtils.IsEmpty(i?.DescTheme));
     if (i?.DescTheme) {

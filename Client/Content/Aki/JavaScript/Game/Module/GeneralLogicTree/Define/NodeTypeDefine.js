@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.newNodeObj = exports.childQuestNodeType = exports.NodeTypeData = undefined;
 const IQuest_1 = require("../../../../UniverseEditor/Interface/IQuest");
 const TimerNode_1 = require("../../TimerNode");
+const AtomicProcessBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/AtomicProcessBehaviorNode");
 const AwakeAndLoadEntityNode_1 = require("../BehaviorNode/ChildQuestNode/AwakeAndLoadEntityNode");
 const CheckCombatStateBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/CheckCombatStateBehaviorNode");
 const CheckEntityStateNode_1 = require("../BehaviorNode/ChildQuestNode/CheckEntityStateNode");
@@ -24,6 +25,7 @@ const ParkourBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/ParkourBeh
 const PlayFlowBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/PlayFlowBehaviorNode");
 const ReachAreaBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/ReachAreaBehaviorNode");
 const ReadMailBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/ReadMailBehaviorNode");
+const ReadPhoneMessageBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/ReadPhoneMessageBehaviorNode");
 const ServerAchieveChildQuestNode_1 = require("../BehaviorNode/ChildQuestNode/ServerAchieveChildQuestNode");
 const ShowUiBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/ShowUiBehaviorNode");
 const TakePicturesWithTimeScaleChildQuestNode_1 = require("../BehaviorNode/ChildQuestNode/TakePicturesWithTimeScaleChildQuestNode");
@@ -38,28 +40,32 @@ class NodeTypeData {
     this.Ctor = e;
   }
 }
-function newNodeObj(o) {
-  if (o) {
-    let e = undefined;
-    var d = o.Id;
-    switch (o.Type) {
+const defaultNodeType = new (exports.NodeTypeData = NodeTypeData)(ServerAchieveChildQuestNode_1.ServerAchieveChildQuestNode);
+function newNodeObj(d) {
+  if (d) {
+    let o = undefined;
+    var a = d.Id;
+    switch (d.Type) {
       case "ChildQuest":
-        var a = o.Condition.Type;
-        e = new exports.childQuestNodeType[a].Ctor(d);
-        break;
+        {
+          var r = d.Condition.Type;
+          let e = exports.childQuestNodeType[r];
+          e = e || defaultNodeType;
+          o = new e.Ctor(a);
+          break;
+        }
       case "QuestFailed":
-        e = new QuestFailedBehaviorNode_1.QuestFailedBehaviorNode(d);
+        o = new QuestFailedBehaviorNode_1.QuestFailedBehaviorNode(a);
         break;
       case "ParallelSelect":
-        e = new ParallelSelectNode_1.ParallelSelectNode(d);
+        o = new ParallelSelectNode_1.ParallelSelectNode(a);
         break;
       case "Sequence":
-        e = new SequenceNode_1.SequenceNode(d);
+        o = new SequenceNode_1.SequenceNode(a);
     }
-    return e;
+    return o;
   }
 }
-exports.NodeTypeData = NodeTypeData;
 exports.childQuestNodeType = {
   [IQuest_1.EChildQuest.DoInteract]: new NodeTypeData(InteractBehaviorNode_1.InteractBehaviorNode),
   [IQuest_1.EChildQuest.Kill]: new NodeTypeData(KillBehaviorNode_1.KillBehaviorNode),
@@ -106,6 +112,10 @@ exports.childQuestNodeType = {
   [IQuest_1.EChildQuest.ProgramSpecialProcess]: new NodeTypeData(ServerAchieveChildQuestNode_1.ServerAchieveChildQuestNode),
   [IQuest_1.EChildQuest.WaitUntilLevelSequenceReachMark]: new NodeTypeData(WaitSceneReferenceEntityPlaySequenceNode_1.WaitSceneReferenceEntityPlaySequenceNode),
   [IQuest_1.EChildQuest.FinishSurvivorsRouge]: new NodeTypeData(ServerAchieveChildQuestNode_1.ServerAchieveChildQuestNode),
-  [IQuest_1.EChildQuest.TakePicturesWithTimeScale]: new NodeTypeData(TakePicturesWithTimeScaleChildQuestNode_1.TakePicturesWithTimeScaleChildQuestNode)
+  [IQuest_1.EChildQuest.TakePicturesWithTimeScale]: new NodeTypeData(TakePicturesWithTimeScaleChildQuestNode_1.TakePicturesWithTimeScaleChildQuestNode),
+  [IQuest_1.EChildQuest.AtomicProcess]: new NodeTypeData(AtomicProcessBehaviorNode_1.AtomicProcessBehaviorNode),
+  [IQuest_1.EChildQuest.FinishRollBlock]: new NodeTypeData(ServerAchieveChildQuestNode_1.ServerAchieveChildQuestNode),
+  [IQuest_1.EChildQuest.ReadPhoneMessage]: new NodeTypeData(ReadPhoneMessageBehaviorNode_1.ReadPhoneMessageBehaviorNode),
+  [IQuest_1.EChildQuest.UseWeatherSwitch]: new NodeTypeData(ServerAchieveChildQuestNode_1.ServerAchieveChildQuestNode)
 };
 exports.newNodeObj = newNodeObj; //# sourceMappingURL=NodeTypeDefine.js.map

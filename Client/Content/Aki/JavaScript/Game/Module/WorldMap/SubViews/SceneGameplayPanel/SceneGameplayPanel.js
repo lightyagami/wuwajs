@@ -11,7 +11,9 @@ const MapMarkByMarkId_1 = require("../../../../../Core/Define/ConfigQuery/MapMar
 const MapMarkPhantomGroupByMarkId_1 = require("../../../../../Core/Define/ConfigQuery/MapMarkPhantomGroupByMarkId");
 const MultiTextLang_1 = require("../../../../../Core/Define/ConfigQuery/MultiTextLang");
 const TimerSystem_1 = require("../../../../../Core/Timer/TimerSystem");
+const MathUtils_1 = require("../../../../../Core/Utils/MathUtils");
 const StringUtils_1 = require("../../../../../Core/Utils/StringUtils");
+const IComponent_1 = require("../../../../../UniverseEditor/Interface/IComponent");
 const TimeUtil_1 = require("../../../../Common/TimeUtil");
 const ConfigManager_1 = require("../../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
@@ -29,6 +31,7 @@ const WorldMapSecondaryUiLayoutHelper_1 = require("../WorldMapSecondaryUiLayout/
 const SceneGameplayTipGrid_1 = require("./SceneGameplayTipGrid");
 const HELP_ID = 88;
 const HELP_ID_2 = 348;
+const HELP_ID_VISION_SETTLEMENT = 462;
 const POWER_COST_KEY = "power";
 const REBORN_TIME_KEY = "reborn";
 const REWARD_SHARE_COUNT = "reward";
@@ -47,11 +50,16 @@ class SceneGameplayPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondaryU
     this.rFo = undefined;
     this.nFo = false;
     this.h1d = false;
+    this.B0f = undefined;
     this.mji = () => {
       HelpController_1.HelpController.OpenHelpById(HELP_ID);
     };
     this.XDu = () => {
-      HelpController_1.HelpController.OpenHelpById(HELP_ID_2);
+      if (this.cEf()) {
+        HelpController_1.HelpController.OpenHelpById(HELP_ID_VISION_SETTLEMENT);
+      } else {
+        HelpController_1.HelpController.OpenHelpById(HELP_ID_2);
+      }
     };
     this.OnDetailBtnClick = () => {
       var e = ModelManager_1.ModelManager.MapModel.IsLevelPlayOccupied(this.Ymt.Id);
@@ -93,6 +101,10 @@ class SceneGameplayPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondaryU
       this.AddChild(this.k2o);
       this.k2o = undefined;
     }
+    if (this.B0f) {
+      this.AddChild(this.B0f);
+      this.B0f = undefined;
+    }
     this.F2o = undefined;
     this.V2o = undefined;
     this.cG();
@@ -130,7 +142,7 @@ class SceneGameplayPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondaryU
   SHe() {
     var e;
     var i;
-    var t = this.u2o?.MarkConfig?.RelativeSubType === 9;
+    var t = this.dEf();
     this.F2o = t ? this.u2o?.MarkConfig?.Reward ? ExchangeRewardById_1.configExchangeRewardById.GetConfig(this.u2o.MarkConfig.Reward) : undefined : this.Ymt.RewardId ? ExchangeRewardById_1.configExchangeRewardById.GetConfig(this.Ymt.RewardId) : undefined;
     this.V2o = this.Ymt.FirstRewardId ? ExchangeRewardById_1.configExchangeRewardById.GetConfig(this.Ymt.FirstRewardId) : undefined;
     var t = this.u2o.MarkConfigId;
@@ -145,9 +157,9 @@ class SceneGameplayPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondaryU
       this.GetButton(18).RootUIComp?.SetUIActive(this.u2o.MarkConfig.RelativeSubType === 1);
       r = !(i = ModelManager_1.ModelManager.MapModel.IsLevelPlayOccupied(this.Ymt.Id)).IsOccupied && MarkUiUtils_1.MarkUiUtils.IsShowGoto(this.u2o);
       if (i.IsOccupied) {
-        this.ConfirmButton.SetActive(false);
+        this.LayoutContext?.SetConfirmBtnActive(false);
       } else {
-        this.ConfirmButton.SetActive(!r);
+        this.LayoutContext?.SetConfirmBtnActive(!r);
       }
       this.UpdateMarkItemRelativeLayout();
       this.UpdateQuickGotoActive(r);
@@ -171,7 +183,7 @@ class SceneGameplayPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondaryU
     this.rFo?.SetActive(false);
     var i;
     var t;
-    var r = this.u2o?.MarkConfig?.RelativeSubType === 9;
+    var r = this.dEf();
     if (r && (r = this.u2o?.MarkConfig?.MapId, i = this.u2o?.MarkConfig?.RelativeId, ModelManager_1.ModelManager.AdventureGuideModel.IsNightMareHaveConfig(r, i))) {
       ControllerHolder_1.ControllerHolder.AdventureGuideController.RequestLevelPlayVarAsync(r, i).then(() => {
         var e;
@@ -202,7 +214,7 @@ class SceneGameplayPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondaryU
       e = StringUtils_1.StringUtils.Format(MultiTextLang_1.configMultiTextLang.GetLocalTextNew("Quest_Require_Note") ?? "", e.Name);
       this.GetText(13).SetText(e);
     }
-    this.GetItem(17).SetUIActive(this.u2o.MarkConfig.RelativeSubType === 1 || this.u2o.MarkConfig.RelativeSubType === 9);
+    this.GetItem(17).SetUIActive(this.u2o.MarkConfig.RelativeSubType === 1);
   }
   InitRewards() {
     var [e, i, t, r, a] = MapHelper_1.MapHelper.GetDoubleRestAndMaxTimes(this.u2o);
@@ -222,6 +234,8 @@ class SceneGameplayPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondaryU
       this.O2o = new SceneGameplayTipGrid_1.SceneGameplayTipGrid();
       this.O2o.Initialize(LguiUtil_1.LguiUtil.DuplicateActor(r, i));
       this.O2o.OnClickPreviewCall = this.aFo;
+      this.B0f = new SceneGameplayTipGrid_1.SceneGameplayTipGridMonster();
+      this.B0f.Initialize(LguiUtil_1.LguiUtil.DuplicateActor(r, i));
     }
     var t = ModelManager_1.ModelManager.WorldLevelModel.CurWorldLevel;
     this.k2o?.SetBtnPreviewVisible(false);
@@ -233,23 +247,24 @@ class SceneGameplayPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondaryU
       this.K2o(this.k2o, this.V2o, t, "FirstReward");
     }
     this.K2o(this.O2o, this.F2o, t, "ProbReward", e);
+    this.k0f();
   }
   K2o(e, r, a, i, s = false) {
     if (r) {
-      var h = r.PreviewReward;
+      var o = r.PreviewReward;
       let t = undefined;
       for (let e = a; e >= 0; e--) {
-        if (h.has(e)) {
-          t = h.get(e).MapIntInt;
+        if (o.has(e)) {
+          t = o.get(e).MapIntInt;
           break;
         }
       }
       if (!t) {
-        var o = r.RewardId;
+        var n = r.RewardId;
         let i = 0;
         for (let e = a; e >= 0; e--) {
-          if (o.has(e)) {
-            i = o.get(e);
+          if (n.has(e)) {
+            i = n.get(e);
             break;
           }
         }
@@ -262,21 +277,21 @@ class SceneGameplayPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondaryU
         }
       }
       if (this.u2o.MarkConfig.RelativeSubType === 1) {
-        var n;
+        var h;
         var _;
         var l;
         var M = ModelManager_1.ModelManager.CalabashModel.GetCalabashLevel();
         var d = ConfigManager_1.ConfigManager.CalabashConfig?.GetCalabashConfigByLevel(M);
         var g = [];
-        for ([n] of t) {
-          if (this._Fo(n) && (_ = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(n), l = d.QualityDropWeight.get(_.QualityId) ?? 0, _.ShowTypes.includes(TARGET_ITEM_SHOW_TYPE)) && l <= 0 && _) {
-            g.push(n);
+        for ([h] of t) {
+          if (this._Fo(h) && (_ = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(h), l = d.QualityDropWeight.get(_.QualityId) ?? 0, _.ShowTypes.includes(TARGET_ITEM_SHOW_TYPE)) && l <= 0 && _) {
+            g.push(h);
           }
         }
         g.forEach(e => {
           t.delete(e);
         });
-      } else if (this.u2o.MarkConfig.RelativeSubType === 9) {
+      } else if (this.dEf()) {
         t = ConfigManager_1.ConfigManager.AdventureModuleConfig.GetNightMareShowReward(r.RewardIdCalabash);
       }
       if (t) {
@@ -300,7 +315,8 @@ class SceneGameplayPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondaryU
     let e = "";
     var i = !ModelManager_1.ModelManager.MapModel.IsLevelPlayOccupied(this.Ymt.Id).IsOccupied && MarkUiUtils_1.MarkUiUtils.IsShowGoto(this.u2o);
     e = i ? this.u2o.IsTracked ? "InstanceDungeonEntranceCancelTrack" : "InstanceDungeonEntranceTrack" : "TeleportFastMove";
-    this.ConfirmButton.SetLocalText(e);
+    var i = ConfigManager_1.ConfigManager.TextConfig.GetTextContentIdById(e);
+    this.LayoutContext?.SetConfirmBtnText(i);
     this.TrackBtn.SetLocalText(e);
   }
   hFo() {
@@ -308,7 +324,7 @@ class SceneGameplayPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondaryU
     var t = this.Ymt.RefreshTime;
     if (t < i) {
       this.cG();
-    } else if (this.u2o?.MarkConfig?.RelativeSubType === 9 && !this.h1d) {
+    } else if (this.dEf() && !this.h1d) {
       this.cG();
     } else {
       t = t - i;
@@ -318,6 +334,41 @@ class SceneGameplayPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondaryU
       if (this.IRe === undefined) {
         this.tGo();
       }
+    }
+  }
+  k0f() {
+    if (this.cEf()) {
+      this.B0f?.SetUiActive(true);
+      var e = this.Ymt?.Children ?? [];
+      var i = new Map();
+      for (const a of e) {
+        var t = a.split("_");
+        var t = t[t.length - 1];
+        var t = MathUtils_1.MathUtils.StringToNumber(t);
+        if (t) {
+          t = ModelManager_1.ModelManager.CreatureModel.GetCompleteEntityData(t, this.Ymt.MapId);
+          if (t) {
+            t = (0, IComponent_1.getComponent)(t.ComponentsData, "SpawnMonsterComponent");
+            if (t) {
+              for (const s of t.SpawnMonsterConfigs) {
+                if (s.TargetsToAwake) {
+                  for (const o of s.TargetsToAwake) {
+                    var r = ModelManager_1.ModelManager.CreatureModel.GetCompleteEntityData(o, this.Ymt.MapId);
+                    if ((r &&= (0, IComponent_1.getComponent)(r.ComponentsData, "VisionCaptureComponent")) && (r = r.VisionCaptureId, r = ConfigManager_1.ConfigManager.PhantomBattleConfig.GetPhantomItemByMonsterId(r)) && r.length !== 0) {
+                      r = r[0];
+                      i.set(r, (i.get(r) ?? 0) + 1);
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      e = new Map(Array.from(i.entries()).sort((e, i) => i[0].Rarity - e[0].Rarity).map(([e, i]) => [e.ItemId, i]));
+      this.B0f?.Refresh(e, "GuaiWuJuLuo_MonInfo", true, false, false);
+    } else {
+      this.B0f?.SetUiActive(false);
     }
   }
   tGo() {
@@ -332,6 +383,15 @@ class SceneGameplayPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondaryU
       this.IRe = undefined;
       this.rFo?.SetActive(false);
     }
+  }
+  dEf() {
+    return this.u2o?.MarkConfig?.RelativeSubType === 9 || this.u2o?.MarkConfig?.RelativeSubType === 10;
+  }
+  cEf() {
+    return this.u2o?.MarkConfig?.RelativeSubType === 10;
+  }
+  OnRefreshPanel() {
+    this.l_i();
   }
 }
 exports.SceneGameplayPanel = SceneGameplayPanel;

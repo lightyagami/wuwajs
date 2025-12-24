@@ -24,27 +24,27 @@ class BattleHonamiStoryMapLevelView extends BattleVisibleChildView_1.BattleVisib
     super(...arguments);
     this.cie = Rotator_1.Rotator.Create();
     this.G2e = 0;
-    this.qtm = undefined;
+    this.tnm = undefined;
     this.Oml = undefined;
     this.qbi = 0;
     this.f_a = undefined;
-    this.Ybm = () => {
-      this.Gtm(true);
+    this.wHm = () => {
+      this.rnm(true);
     };
-    this.Otm = () => {
-      this.Gtm();
+    this.inm = () => {
+      this.rnm();
       this.f_a?.Refresh();
     };
     this.RQe = (e, t) => {
       if (e === 10114 && t) {
         this.SetVisible(1, true);
-        this.Smm();
+        this.avm();
       }
     };
     this.kqe = e => {
       this.f_a?.SetActive(e);
     };
-    this.MIm = () => {
+    this.rqm = () => {
       var e = this.GetExtendToggle(9);
       if (e) {
         if (e.GetToggleState() === 1) {
@@ -61,7 +61,7 @@ class BattleHonamiStoryMapLevelView extends BattleVisibleChildView_1.BattleVisib
   }
   async OnBeforeStartAsync() {
     this.f_a = new BattleHonamiStoryMapLevelHoverItem_1.BattleHonamiStoryMapLevelHoverItem();
-    this.f_a.RegisterOnAutoClose(this.MIm);
+    this.f_a.RegisterOnAutoClose(this.rqm);
     await this.f_a.CreateByResourceIdAsync("UiItem_HoverTipsC", this.GetItem(8));
   }
   Initialize(e) {
@@ -70,7 +70,7 @@ class BattleHonamiStoryMapLevelView extends BattleVisibleChildView_1.BattleVisib
     this.Oml = new BattleUiTweenAnimPlayer_1.BattleUiTweenAnimPlayer();
     this.Oml.InitTweenAnim(6, this.GetItem(6));
     this.Oml.InitTweenAnim(7, this.GetItem(7));
-    this.Ybm();
+    this.wHm();
     this.Ore();
     if (!ModelManager_1.ModelManager.FunctionModel.IsOpen(10114)) {
       this.SetVisible(1, false);
@@ -80,22 +80,22 @@ class BattleHonamiStoryMapLevelView extends BattleVisibleChildView_1.BattleVisib
   }
   Reset() {
     this.kre();
-    this.qtm?.Remove();
-    this.qtm = undefined;
+    this.tnm?.Remove();
+    this.tnm = undefined;
     this.Oml?.Clear();
     this.Oml = undefined;
     super.Reset();
   }
   Ore() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnHonamiStoryInstInfoUpdate, this.Ybm);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnHonamiStoryPollutionUpdate, this.Otm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnHonamiStoryInstInfoUpdate, this.wHm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnHonamiStoryPollutionUpdate, this.inm);
   }
   kre() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnHonamiStoryInstInfoUpdate, this.Ybm);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnHonamiStoryPollutionUpdate, this.Otm);
-    this.Smm();
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnHonamiStoryInstInfoUpdate, this.wHm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnHonamiStoryPollutionUpdate, this.inm);
+    this.avm();
   }
-  Smm() {
+  avm() {
     if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnFunctionOpenSet, this.RQe)) {
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnFunctionOpenSet, this.RQe);
     }
@@ -103,13 +103,13 @@ class BattleHonamiStoryMapLevelView extends BattleVisibleChildView_1.BattleVisib
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnFunctionOpenUpdate, this.RQe);
     }
   }
-  Gtm(e = false) {
+  rnm(e = false) {
     var t = ModelManager_1.ModelManager.HonamiStoryModel.PollutionLevel;
     var i = ModelManager_1.ModelManager.HonamiStoryModel.PollutionMaxLevel;
     var i = i > 0 && t === i;
-    var s = i ? 2 : this.Ftm(t);
+    var s = i ? 2 : this.onm(t);
     if (!!e || s !== this.G2e) {
-      this.Ntm(s);
+      this.nnm(s);
       this.G2e = s;
     }
     var e = "#ffffff";
@@ -122,15 +122,15 @@ class BattleHonamiStoryMapLevelView extends BattleVisibleChildView_1.BattleVisib
     this.qbi = t;
     var s = HonamiStoryUtil_1.HonamiStoryUtil.CheckInHonamiStoryTopTower();
     if (i || s) {
-      this.qtm?.Remove();
-      this.qtm = undefined;
+      this.tnm?.Remove();
+      this.tnm = undefined;
       e = i ? BAR_MAX_YAW : BAR_MIN_YAW;
       t = i ? BAR_MAX_FILL : 0;
       this.cie.Set(0, e, 0);
       this.GetSprite(2).SetFillAmount(t);
       this.GetItem(3).SetUIRelativeRotation(this.cie.ToUeRotator());
     } else {
-      this.qtm ||= TimerSystem_1.GameplayTimerSystem.Forever(() => {
+      this.tnm ||= TimerSystem_1.GameplayTimerSystem.Forever(() => {
         var e = ModelManager_1.ModelManager.HonamiStoryModel.PollutionLevel;
         var t = ModelManager_1.ModelManager.HonamiStoryModel.PollutionStarTime;
         var t = t > 0 ? TimeUtil_1.TimeUtil.GetServerStopTimeStamp() - t : 0;
@@ -142,7 +142,7 @@ class BattleHonamiStoryMapLevelView extends BattleVisibleChildView_1.BattleVisib
       }, 500);
     }
   }
-  Ntm(e) {
+  nnm(e) {
     let t = "";
     let i = "";
     i = e === 0 ? (t = "#bbf0b4", "#ffffff") : e === 1 ? (t = "#e9ce83", "#fff6c9") : (t = "#f54667", "#f51818");
@@ -152,7 +152,7 @@ class BattleHonamiStoryMapLevelView extends BattleVisibleChildView_1.BattleVisib
     this.GetText(4).SetColor(e);
     this.GetTexture(5).SetColor(s);
   }
-  Ftm(e) {
+  onm(e) {
     var t = ModelManager_1.ModelManager.HonamiStoryModel.PollutionWarningLevel;
     var i = ModelManager_1.ModelManager.HonamiStoryModel.PollutionDangerLevel;
     if (i > 0 && i <= e) {

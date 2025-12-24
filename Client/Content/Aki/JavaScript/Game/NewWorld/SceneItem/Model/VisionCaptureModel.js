@@ -11,12 +11,12 @@ class VisionCaptureModel extends ModelBase_1.ModelBase {
     super(...arguments);
     this.jsr = undefined;
     this.Vku = undefined;
-    this.uwm = undefined;
+    this.jif = undefined;
   }
   OnInit() {
     this.jsr = new Map();
     this.Vku = new Map();
-    this.uwm = new Map();
+    this.jif = new Map();
     return true;
   }
   AddVisionCapture(i, e) {
@@ -26,7 +26,7 @@ class VisionCaptureModel extends ModelBase_1.ModelBase {
       }
       this.jsr.set(i, e);
     }
-    this.uwm.set(e, true);
+    this.jif.set(e, true);
   }
   AddVisionCaptureFinish(i, e) {
     if (i) {
@@ -38,7 +38,7 @@ class VisionCaptureModel extends ModelBase_1.ModelBase {
       this.jsr.delete(i);
       this.Vku.delete(i);
     }
-    this.uwm.delete(e);
+    this.jif.delete(e);
   }
   GetVisionCapture(i) {
     return this.jsr.get(i);
@@ -47,14 +47,14 @@ class VisionCaptureModel extends ModelBase_1.ModelBase {
     return this.Vku;
   }
   get AllVisionEntityIds() {
-    return this.uwm;
+    return this.jif;
   }
   OnClear() {
     this.jsr = undefined;
     this.Vku?.clear();
     this.Vku = undefined;
-    this.uwm?.clear();
-    return !(this.uwm = undefined);
+    this.jif?.clear();
+    return !(this.jif = undefined);
   }
 }
 exports.VisionCaptureModel = VisionCaptureModel;

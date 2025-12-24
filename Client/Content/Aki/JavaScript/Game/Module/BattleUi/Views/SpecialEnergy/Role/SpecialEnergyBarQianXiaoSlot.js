@@ -22,15 +22,15 @@ class SpecialEnergyBarQianXiaoSlot extends SpecialEnergyBarSlot_1.SpecialEnergyB
     this.GearRollbackCurve = undefined;
     this.FullEffectEnable = false;
     this.ac = 0;
-    this.qIm = 0;
-    this.JTm = 0;
-    this.ZTm = true;
-    this.ebm = false;
-    this.tbm = false;
-    this.OIm = Vector_1.Vector.Create();
-    this.GIm = Vector_1.Vector.Create();
-    this.FIm = 0;
-    this.KYd = 0;
+    this.Rqm = 0;
+    this.gFm = 0;
+    this.CFm = true;
+    this.pFm = false;
+    this.vFm = false;
+    this.wqm = Vector_1.Vector.Create();
+    this.Lqm = Vector_1.Vector.Create();
+    this.Pqm = 0;
+    this.wzd = 0;
   }
   RefreshBarPercent(t = false) {
     var i = this.PercentMachine.GetCurPercent();
@@ -38,103 +38,103 @@ class SpecialEnergyBarQianXiaoSlot extends SpecialEnergyBarSlot_1.SpecialEnergyB
     var h = this.SlotItemList[0];
     this.KeyItem?.RefreshKeyEnable(s, t);
     var e = i * END_LOCATION_X + (1 - i) * START_LOCATION_X;
-    this.OIm.X = e;
-    this.PointItem?.SetUIRelativeLocation(this.OIm.ToUeVectorOld());
-    var r = this.ebm || this.tbm;
-    if (this.ebm) {
-      this.ebm = false;
+    this.wqm.X = e;
+    this.PointItem?.SetUIRelativeLocation(this.wqm.ToUeVectorOld());
+    var r = this.pFm || this.vFm;
+    if (this.pFm) {
+      this.pFm = false;
       h.UpdatePercent(0, false, true);
-    } else if (this.tbm) {
-      this.tbm = false;
+    } else if (this.vFm) {
+      this.vFm = false;
       h.UpdatePercent(1, false, true);
       h.SetFullEffectVisible(false);
     }
-    if (this.ac !== 1 && s && this.ZTm) {
-      this.ZTm = false;
+    if (this.ac !== 1 && s && this.CFm) {
+      this.CFm = false;
       h.PlayChangeEffectWithPercent(1);
     }
     if (this.ac === 1) {
       h.UpdatePercentWithFullEffect(i, i > 0 ? 1 : 0, t);
-      this.GIm.X = e;
-      this.GearItem?.SetUIRelativeLocation(this.GIm.ToUeVectorOld());
+      this.Lqm.X = e;
+      this.GearItem?.SetUIRelativeLocation(this.Lqm.ToUeVectorOld());
     } else if (s) {
       h.UpdatePercentWithFullEffect(i, i > 0 ? 1 : 0, t);
     } else if (!r) {
       h.UpdatePercent(i, false, t);
     }
-    if (this.ac === 0 && this.KYd === 1 && i === 0) {
-      h.PlayUseEffectWithPercent(this.KYd);
+    if (this.ac === 0 && this.wzd === 1 && i === 0) {
+      h.PlayUseEffectWithPercent(this.wzd);
     }
-    this.KYd = i;
+    this.wzd = i;
   }
   Tick(t) {
     super.Tick(t);
     if (this.ac === 2) {
-      this.qIm += t;
-      if (this.qIm >= GEAR_ROLLBACK_DURATION) {
-        this.GIm.X = END_LOCATION_X;
-        this.GearItem?.SetUIRelativeLocation(this.GIm.ToUeVectorOld());
+      this.Rqm += t;
+      if (this.Rqm >= GEAR_ROLLBACK_DURATION) {
+        this.Lqm.X = END_LOCATION_X;
+        this.GearItem?.SetUIRelativeLocation(this.Lqm.ToUeVectorOld());
         this.SetState(0);
       } else if (this.GearRollbackCurve) {
-        t = this.GearRollbackCurve.GetFloatValue(this.qIm * TimeUtil_1.TimeUtil.Millisecond);
-        this.GIm.X = t * END_LOCATION_X + (1 - t) * this.FIm;
-        this.GearItem?.SetUIRelativeLocation(this.GIm.ToUeVectorOld());
+        t = this.GearRollbackCurve.GetFloatValue(this.Rqm * TimeUtil_1.TimeUtil.Millisecond);
+        this.Lqm.X = t * END_LOCATION_X + (1 - t) * this.Pqm;
+        this.GearItem?.SetUIRelativeLocation(this.Lqm.ToUeVectorOld());
       }
     }
-    if (this.JTm > 0 && this.JTm <= Time_1.Time.Now) {
+    if (this.gFm > 0 && this.gFm <= Time_1.Time.Now) {
       this.GlowItem?.SetUIActive(false);
-      this.JTm = 0;
+      this.gFm = 0;
     }
   }
   SetState(t) {
     if (this.ac !== t) {
       if ((this.ac = t) === 0) {
-        this.ZTm = true;
+        this.CFm = true;
       } else if (t === 1) {
-        this.GIm.X = END_LOCATION_X;
-        this.GearItem?.SetUIRelativeLocation(this.GIm.ToUeVectorOld());
+        this.Lqm.X = END_LOCATION_X;
+        this.GearItem?.SetUIRelativeLocation(this.Lqm.ToUeVectorOld());
         this.GlowItem?.SetUIActive(false);
-        this.ebm = true;
+        this.pFm = true;
         this.RefreshBarPercent();
       } else {
         if ((t = this.PercentMachine.GetCurPercent()) > 0) {
           this.GlowSlider?.SetValue(t);
           this.GlowItem?.SetUIActive(true);
         }
-        this.qIm = 0;
-        this.FIm = this.GearItem.RelativeLocation.X;
-        this.JTm = GLOW_EFFECT_DURATION + Time_1.Time.Now;
-        this.ZTm = true;
+        this.Rqm = 0;
+        this.Pqm = this.GearItem.RelativeLocation.X;
+        this.gFm = GLOW_EFFECT_DURATION + Time_1.Time.Now;
+        this.CFm = true;
       }
     }
   }
   SetFullEffectEnable(t) {
     if (this.FullEffectEnable !== t) {
       if (!(this.FullEffectEnable = t) && this.ac !== 2 && this.GetKeyEnable()) {
-        this.tbm = true;
+        this.vFm = true;
       }
       this.RefreshBarPercent();
     }
   }
   SetPointItem(t) {
     this.PointItem = t;
-    this.OIm.FromUeVector(t.RelativeLocation);
+    this.wqm.FromUeVector(t.RelativeLocation);
   }
   SetGearItem(t) {
     this.GearItem = t;
-    this.GIm.FromUeVector(t.RelativeLocation);
+    this.Lqm.FromUeVector(t.RelativeLocation);
   }
   SetGearRollbackCurve(t) {
     this.GearRollbackCurve = t;
   }
   StopCoolDownState() {
     if (this.ac === 2) {
-      this.GIm.X = END_LOCATION_X;
-      this.GearItem?.SetUIRelativeLocation(this.GIm.ToUeVectorOld());
+      this.Lqm.X = END_LOCATION_X;
+      this.GearItem?.SetUIRelativeLocation(this.Lqm.ToUeVectorOld());
       this.SetState(0);
     }
-    if (this.JTm > 0) {
-      this.JTm = 0;
+    if (this.gFm > 0) {
+      this.gFm = 0;
       this.GlowItem?.SetUIActive(false);
     }
   }

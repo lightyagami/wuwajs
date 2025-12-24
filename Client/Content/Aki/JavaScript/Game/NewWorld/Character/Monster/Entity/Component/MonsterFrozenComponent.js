@@ -40,9 +40,9 @@ let MonsterFrozenComponent = class MonsterFrozenComponent extends BaseFrozenComp
   SetFrozen(e) {
     if (this.IsFrozenInternal !== e) {
       this.IsFrozenInternal = e;
-      var t = this.Entity.GetComponent(126);
+      var t = this.Entity.GetComponent(131);
       const n = this.Entity.GetComponent(21);
-      var o = this.Entity.GetComponent(209)?.TagContainer;
+      var o = this.Entity.GetComponent(215)?.TagContainer;
       if (e) {
         this.FrozenHandle = this.FrozenHandle ?? t?.SetTimeScale(Infinity, 0, undefined, Infinity, 6);
         if (this.FrozenCueHandle === GameplayCueController_1.INVALID_CUE_HANDLE) {
@@ -72,5 +72,5 @@ let MonsterFrozenComponent = class MonsterFrozenComponent extends BaseFrozenComp
     }
   }
 };
-MonsterFrozenComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(188)], MonsterFrozenComponent);
+MonsterFrozenComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(194)], MonsterFrozenComponent);
 exports.MonsterFrozenComponent = MonsterFrozenComponent; //# sourceMappingURL=MonsterFrozenComponent.js.map

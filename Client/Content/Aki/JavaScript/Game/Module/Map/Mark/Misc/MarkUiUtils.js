@@ -96,9 +96,9 @@ class MarkUiUtils {
       }
     }
   }
-  static QuickGotoTeleport(r, a, o) {
-    const n = GeneralLogicTreeUtil_1.GeneralLogicTreeUtil.GetPlayerLocation();
-    if (n) {
+  static QuickGotoTeleport(r, a, o, n) {
+    const t = GeneralLogicTreeUtil_1.GeneralLogicTreeUtil.GetPlayerLocation();
+    if (t) {
       const M = () => {
         TrackHelper_1.TrackHelper.SetMarkItemTrack(r);
       };
@@ -116,10 +116,9 @@ class MarkUiUtils {
           M();
           l();
         };
-        var t;
         var i = () => {
           var e = ModelManager_1.ModelManager.GameModeModel.InstanceDungeon.Id;
-          if (!MarkUiUtils.IsDungeonBelongDiffMap(e, r.MapId) && Vector_1.Vector.DistSquared(n, r.WorldPosition) <= Vector_1.Vector.DistSquared(a.WorldPosition, r.WorldPosition)) {
+          if (!MarkUiUtils.IsDungeonBelongDiffMap(e, r.MapId) && Vector_1.Vector.DistSquared(t, r.WorldPosition) <= Vector_1.Vector.DistSquared(a.WorldPosition, r.WorldPosition)) {
             (e = new ConfirmBoxDefine_1.ConfirmBoxDataNew(223)).FunctionMap.set(2, () => {
               m();
             });
@@ -128,24 +127,41 @@ class MarkUiUtils {
             m();
           }
         };
-        if (ModelManager_1.ModelManager.WorldMapModel.HideQuickTransferConfirmBox) {
-          i();
+        if (n ? !ModelManager_1.ModelManager.AutoPilotModel?.HideQuickTransferConfirmBox : !ModelManager_1.ModelManager.WorldMapModel.HideQuickTransferConfirmBox) {
+          if (n) {
+            this.Vxf(i);
+          } else {
+            (n = new ConfirmBoxDefine_1.ConfirmBoxDataNew(216)).HasToggle = true;
+            n.ToggleTextKey = "Text_FastTravelConfirmToggle_text";
+            n.SetToggleFunction(e => {
+              ModelManager_1.ModelManager.WorldMapModel.HideQuickTransferConfirmBox = e;
+            });
+            n.FunctionMap.set(1, () => {
+              ModelManager_1.ModelManager.WorldMapModel.HideQuickTransferConfirmBox = false;
+            });
+            n.FunctionMap.set(2, i);
+            ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(n);
+          }
         } else {
-          (t = new ConfirmBoxDefine_1.ConfirmBoxDataNew(216)).HasToggle = true;
-          t.ToggleTextKey = "Text_FastTravelConfirmToggle_text";
-          t.SetToggleFunction(e => {
-            ModelManager_1.ModelManager.WorldMapModel.HideQuickTransferConfirmBox = e;
-          });
-          t.FunctionMap.set(1, () => {
-            ModelManager_1.ModelManager.WorldMapModel.HideQuickTransferConfirmBox = false;
-          });
-          t.FunctionMap.set(2, i);
-          ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(t);
+          i();
         }
       }
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("Map", 63, "[地图系统]MarkUiUtils->没有玩家坐标，快速前往失败", ["markId", a.MarkId]);
     }
+  }
+  static Vxf(e) {
+    var r = new ConfirmBoxDefine_1.ConfirmBoxDataNew(427);
+    r.HasToggle = true;
+    r.ToggleTextKey = "Text_FastTravelConfirmToggle_text";
+    r.SetToggleFunction(e => {
+      ModelManager_1.ModelManager.AutoPilotModel.HideQuickTransferConfirmBox = e;
+    });
+    r.FunctionMap.set(1, () => {
+      ModelManager_1.ModelManager.AutoPilotModel.HideQuickTransferConfirmBox = false;
+    });
+    r.FunctionMap.set(2, e);
+    ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(r);
   }
   static IsDungeonBelongDiffMap(e, r) {
     var a = ConfigManager_1.ConfigManager.WorldMapConfig.GetDungeonConfig(e);

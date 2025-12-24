@@ -104,10 +104,7 @@ class CharBodyEffect extends CharRenderBase_1.CharRenderBase {
   Start() {
     this.Opacity = 1;
     var t = this.GetRenderingComponent().GetOwner();
-    if (t instanceof TsBaseCharacter_1.default && t.CharacterActorComponent?.Entity) {
-      this.Entity = t.CharacterActorComponent.Entity;
-      this.vJ = ModelManager_1.ModelManager.CreatureModel?.GetEntityById(this.Entity.Id);
-      EventSystem_1.EventSystem.AddWithTarget(this.vJ, EventDefine_1.EEventName.OnSetActorHidden, this.OnSetActorVisible);
+    if (t instanceof TsBaseCharacter_1.default && t.CharacterActorComponent?.Entity && (this.Entity = t.CharacterActorComponent.Entity, this.vJ = ModelManager_1.ModelManager.CreatureModel?.GetEntityById(this.Entity.Id), EventSystem_1.EventSystem.AddWithTarget(this.vJ, EventDefine_1.EEventName.OnSetActorHidden, this.OnSetActorVisible), this.GetRenderingComponent()?.RenderType !== 3)) {
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnUpdateSceneTeam, this.yvi);
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnChangeRole, this.xie);
       EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnRoleGoDownFinish, this.M9s);
@@ -130,8 +127,7 @@ class CharBodyEffect extends CharRenderBase_1.CharRenderBase {
   }
   LateUpdate() {}
   Destroy() {
-    if (this.Entity) {
-      EventSystem_1.EventSystem.RemoveWithTarget(this.vJ, EventDefine_1.EEventName.OnSetActorHidden, this.OnSetActorVisible);
+    if (this.Entity && (EventSystem_1.EventSystem.RemoveWithTarget(this.vJ, EventDefine_1.EEventName.OnSetActorHidden, this.OnSetActorVisible), this.GetRenderingComponent()?.RenderType !== 3)) {
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnUpdateSceneTeam, this.yvi);
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnChangeRole, this.xie);
       EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnRoleGoDownFinish, this.M9s);

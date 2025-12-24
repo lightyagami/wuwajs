@@ -345,11 +345,11 @@ class SkillBehaviorBatchBulletTask {
     r.wmo = s;
     r.OQt = t.GetComponent(3)?.Actor;
     if (StringUtils_1.NONE_STRING !== e.ContinueWithTag.TagName) {
-      r.Xte = t.GetComponent(209);
+      r.Xte = t.GetComponent(215);
     }
-    r.tRr = t.GetComponent(39);
+    r.tRr = t.GetComponent(40);
     r.Hhc = e.StopOnSkillEnd;
-    var s = t.GetComponent(286);
+    var s = t.GetComponent(305);
     r.IQ_ = e.ContinueWithTag.TagId;
     r.xe = new Array();
     var h = e.Id.Num();

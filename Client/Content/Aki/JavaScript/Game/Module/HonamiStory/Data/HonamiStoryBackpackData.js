@@ -13,7 +13,7 @@ class HonamiStoryBackpackData {
   constructor() {
     this.Width = 0;
     this.Capacity = 0;
-    this.qum = 0;
+    this.h0m = 0;
     this.SelfBackpackType = undefined;
     this.SelfBackpackId = -1;
     this.ItemList = [];
@@ -23,11 +23,11 @@ class HonamiStoryBackpackData {
   }
   Init(t) {
     this.Width = t.jmd;
-    this.Capacity = t.Iem;
+    this.Capacity = t.rrm;
     this.ClearBackpack();
     this.SelfBackpackId = t.Vmd;
     this.SelfBackpackType = ConfigManager_1.ConfigManager.HonamiStoryConfig.GetHonamiStoryBackPack(t.Vmd).Type;
-    this.Fq(t.D$d);
+    this.Fq(t.k$d);
   }
   Fq(t) {
     for (const e of t) {
@@ -42,16 +42,16 @@ class HonamiStoryBackpackData {
     this.RefreshOverflowCapacity();
   }
   Sfd(t) {
-    let e = this.AQ.get(t.P$d.b9n);
+    let e = this.AQ.get(t.x$d.b9n);
     if (e) {
       for (const i of e.GetGridFillPositionList()) {
         this.ItemPosMap.delete(i);
         this.EmptyGridSet.add(i);
       }
-      e.Init(t.P$d);
-      e.UpdatePositionInfo(t.A$d);
+      e.Init(t.x$d);
+      e.UpdatePositionInfo(t.B$d);
     } else {
-      e = ModelManager_1.ModelManager.HonamiStoryModel.CreateHonamiStoryItemData(t.P$d, t.A$d);
+      e = ModelManager_1.ModelManager.HonamiStoryModel.CreateHonamiStoryItemData(t.x$d, t.B$d);
     }
     e.SetBackpackWidth(this.Width);
     this.RefreshItemMapByAddItem(e);
@@ -79,13 +79,13 @@ class HonamiStoryBackpackData {
   }
   AddItemData(t) {
     var e = ModelManager_1.ModelManager.HonamiStoryModel.GetItemData(t.Xmd);
-    e.UpdatePositionInfo(t.A$d);
+    e.UpdatePositionInfo(t.B$d);
     e.SetBackpackWidth(this.Width);
     this.RefreshItemMapByAddItem(e);
   }
   Mfd(t) {
     var e = this.GetItemDataByInstanceId(t.Xmd);
-    for (const i of e.GetGridFillPositionByPosition(t.k$d.l9_, t.k$d.Gmd)) {
+    for (const i of e.GetGridFillPositionByPosition(t.F$d.l9_, t.F$d.Gmd)) {
       this.ItemPosMap.delete(i);
       this.EmptyGridSet.add(i);
     }
@@ -103,7 +103,7 @@ class HonamiStoryBackpackData {
     for (let t = 0; t < this.GetCapacity(); t++) {
       this.EmptyGridSet.add(t);
     }
-    this.qum = 0;
+    this.h0m = 0;
     this.ItemList.length = 0;
     this.AQ.clear();
     this.ItemPosMap.clear();
@@ -133,7 +133,7 @@ class HonamiStoryBackpackData {
     return this.Width;
   }
   GetHeightCount(t = false) {
-    t = t ? this.GetCapacity() + this.qum : this.GetCapacity();
+    t = t ? this.GetCapacity() + this.h0m : this.GetCapacity();
     return Math.floor(t / this.GetWidthCount());
   }
   GetCellWidth() {
@@ -171,14 +171,14 @@ class HonamiStoryBackpackData {
     return this.Capacity;
   }
   GetOverflowCapacity() {
-    return this.qum;
+    return this.h0m;
   }
   RefreshOverflowCapacity() {
     if (this.BackpackType !== 0) {
-      return this.qum = 0;
+      return this.h0m = 0;
     }
     var t = this.Capacity / this.Width;
-    var e = this.qum;
+    var e = this.h0m;
     let i = 0;
     var r = new Set();
     for (const s of this.ItemList) {
@@ -193,20 +193,20 @@ class HonamiStoryBackpackData {
         }
       }
     }
-    this.qum = i * this.Width;
+    this.h0m = i * this.Width;
     var a = this.GetCapacity();
-    if (e > this.qum) {
-      for (let t = this.qum; t < e; t++) {
+    if (e > this.h0m) {
+      for (let t = this.h0m; t < e; t++) {
         this.EmptyGridSet.delete(a + t);
       }
     } else {
-      for (let t = e; t < this.qum; t++) {
+      for (let t = e; t < this.h0m; t++) {
         if (!r.has(a + t)) {
           this.EmptyGridSet.add(a + t);
         }
       }
     }
-    return this.qum;
+    return this.h0m;
   }
   GetOccupy() {
     let t = 0;

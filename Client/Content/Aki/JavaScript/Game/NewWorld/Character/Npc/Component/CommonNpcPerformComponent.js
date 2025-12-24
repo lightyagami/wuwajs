@@ -2,19 +2,19 @@
 
 var CommonNpcPerformComponent_1;
 var __decorate = this && this.__decorate || function (t, e, i, s) {
-  var r;
-  var h = arguments.length;
-  var o = h < 3 ? e : s === null ? s = Object.getOwnPropertyDescriptor(e, i) : s;
+  var h;
+  var r = arguments.length;
+  var o = r < 3 ? e : s === null ? s = Object.getOwnPropertyDescriptor(e, i) : s;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
     o = Reflect.decorate(t, e, i, s);
   } else {
     for (var n = t.length - 1; n >= 0; n--) {
-      if (r = t[n]) {
-        o = (h < 3 ? r(o) : h > 3 ? r(e, i, o) : r(e, i)) || o;
+      if (h = t[n]) {
+        o = (r < 3 ? h(o) : r > 3 ? h(e, i, o) : h(e, i)) || o;
       }
     }
   }
-  if (h > 3 && o) {
+  if (r > 3 && o) {
     Object.defineProperty(e, i, o);
   }
   return o;
@@ -65,7 +65,7 @@ let CommonNpcPerformComponent = CommonNpcPerformComponent_1 = class CommonNpcPer
     this.Mne = 0;
     this.Lo = undefined;
     this.KBr = false;
-    this.yvm = false;
+    this.Ewm = false;
     this.jBr = undefined;
     this.Y8e = undefined;
     this.Lie = undefined;
@@ -195,6 +195,11 @@ let CommonNpcPerformComponent = CommonNpcPerformComponent_1 = class CommonNpcPer
         }
       }
     };
+    this.OnChangeRole = (t, e) => {
+      if (this.Ewm && (t = t.Entity?.GetComponent(3))) {
+        this.SightTarget(t, 1);
+      }
+    };
   }
   GetCurrentState() {
     return this.StateMachine?.CurrentState;
@@ -212,28 +217,8 @@ let CommonNpcPerformComponent = CommonNpcPerformComponent_1 = class CommonNpcPer
     this.IsBaseRoleNpc = t.SpecialNpcPerformConfig?.Type === IComponent_1.ESpecialNpcType.BaseRoleNpc;
     var e = this.Entity.GetComponent(0);
     this.Mne = e.GetPbDataId();
-    this.Y8e = this.Entity.GetComponent(122);
-    this.Lie = this.Entity.GetComponent(200);
-    var e = ModelManager_1.ModelManager.CreatureModel.GetEntity(e.GetCreatureDataId());
-    this.StateMachine = new StateMachine_1.StateMachine(e, this.Pz);
-    this.StateMachine.AddState(0, NpcPerformBornState_1.NpcPerformBornState, t);
-    this.StateMachine.AddState(1, NpcPerformIdleState_1.NpcPerformIdleState, t);
-    this.StateMachine.AddState(2, NpcPerformInteractState_1.NpcPerformInteractState, t);
-    this.StateMachine.AddState(3, NpcPerformUnderAttackState_1.NpcPerformUnderAttackState, t);
-    this.StateMachine.AddState(4, NpcPerformImpactedState_1.NpcPerformImpactedState);
-    this.StateMachine.AddState(5, NpcPerformSystemUiState_1.NpcPerformSystemUiState, t);
-    this.StateMachine.AddState(6, NpcPerformAlertState_1.NpcPerformAlertState);
-    this.StateMachine.AddState(7, NpcPerformMonsterNearbyState_1.NpcPerformMonsterNearbyState, t);
-    this.StateMachine.AddState(8, NpcPerformRideVehicleState_1.NpcPerformRideVehicleState, t);
-    this.StateMachine.AddState(9, NpcPerformDestroyState_1.NpcPerformDestroyState, t);
-    this.BornState = this.StateMachine.GetState(0);
-    this.IdleState = this.StateMachine.GetState(1);
-    this.InteractState = this.StateMachine.GetState(2);
-    this.UnderAttackState = this.StateMachine.GetState(3);
-    this.MonsterNearbyState = this.StateMachine.GetState(7);
-    this.SystemUiState = this.StateMachine.GetState(5);
-    this.RideVehicleState = this.StateMachine.GetState(8);
-    this.DestroyState = this.StateMachine.GetState(9);
+    this.Y8e = this.Entity.GetComponent(127);
+    this.Lie = this.Entity.GetComponent(206);
     this.Lo = t;
     return true;
   }
@@ -247,16 +232,17 @@ let CommonNpcPerformComponent = CommonNpcPerformComponent_1 = class CommonNpcPer
     this.InterestEventController = new NpcInterestEventController_1.NpcInterestEventController(this.Entity);
     this.ExpressionController = new NpcFacialExpressionController_1.NpcFacialExpressionController(this.Entity.Id);
     if (this.oin) {
+      this.InitStateMachine();
       if (this.Owner.IsA(UE.BP_BaseNPC_C.StaticClass()) && ((t = this.Owner).CanPlayerImpact = this.Lo.IsShowStrike, t.CanLookAtPlayer = this.Lo.IsStare, this.KBr = t.CanLookAtPlayer, this.Lo.NpcHitShow ? t.CanPlayerAttack = true : t.CanPlayerAttack = false, this.oin) && (this.Lo.IsShowStrike || this.Lo.NpcHitShow)) {
         t.HitCollision.OnComponentBeginOverlap.Add(this.rin);
       }
-      this.jBr = this.Entity.GetComponent(123);
+      this.jBr = this.Entity.GetComponent(128);
       if (this.jBr) {
         this.jBr.SetSightRange(DEFAULT_SIGHT_RANGE);
       }
       this.Ore();
-      this.zLn = this.Entity.GetComponent(48);
-      this.rzr = this.Entity.GetComponent(125);
+      this.zLn = this.Entity.GetComponent(49);
+      this.rzr = this.Entity.GetComponent(130);
     }
     return true;
   }
@@ -278,6 +264,7 @@ let CommonNpcPerformComponent = CommonNpcPerformComponent_1 = class CommonNpcPer
     this.TurnActionController?.Dispose();
     this.ExpressionController?.Dispose();
     super.OnEnd();
+    this.YAf();
     if (this.oin) {
       this.fin();
       this.kre();
@@ -287,10 +274,36 @@ let CommonNpcPerformComponent = CommonNpcPerformComponent_1 = class CommonNpcPer
   OnClear() {
     this.TurnActionController = undefined;
     if (this.oin) {
-      this.StateMachine.Destroy();
+      this.StateMachine?.Destroy();
       this.pin();
     }
     return true;
+  }
+  InitStateMachine() {
+    var t;
+    if (this.Lo) {
+      t = this.Entity.GetComponent(0);
+      t = ModelManager_1.ModelManager.CreatureModel.GetEntity(t.GetCreatureDataId());
+      this.StateMachine = new StateMachine_1.StateMachine(t, this.Pz);
+      this.StateMachine.AddState(0, NpcPerformBornState_1.NpcPerformBornState, this.Lo);
+      this.StateMachine.AddState(1, NpcPerformIdleState_1.NpcPerformIdleState, this.Lo);
+      this.StateMachine.AddState(2, NpcPerformInteractState_1.NpcPerformInteractState, this.Lo);
+      this.StateMachine.AddState(3, NpcPerformUnderAttackState_1.NpcPerformUnderAttackState, this.Lo);
+      this.StateMachine.AddState(4, NpcPerformImpactedState_1.NpcPerformImpactedState);
+      this.StateMachine.AddState(5, NpcPerformSystemUiState_1.NpcPerformSystemUiState, this.Lo);
+      this.StateMachine.AddState(6, NpcPerformAlertState_1.NpcPerformAlertState);
+      this.StateMachine.AddState(7, NpcPerformMonsterNearbyState_1.NpcPerformMonsterNearbyState, this.Lo);
+      this.StateMachine.AddState(8, NpcPerformRideVehicleState_1.NpcPerformRideVehicleState, this.Lo);
+      this.StateMachine.AddState(9, NpcPerformDestroyState_1.NpcPerformDestroyState, this.Lo);
+      this.BornState = this.StateMachine.GetState(0);
+      this.IdleState = this.StateMachine.GetState(1);
+      this.InteractState = this.StateMachine.GetState(2);
+      this.UnderAttackState = this.StateMachine.GetState(3);
+      this.MonsterNearbyState = this.StateMachine.GetState(7);
+      this.SystemUiState = this.StateMachine.GetState(5);
+      this.RideVehicleState = this.StateMachine.GetState(8);
+      this.DestroyState = this.StateMachine.GetState(9);
+    }
   }
   pin() {
     this.BornState = undefined;
@@ -317,8 +330,13 @@ let CommonNpcPerformComponent = CommonNpcPerformComponent_1 = class CommonNpcPer
       this.$Br = false;
     }
   }
+  YAf() {
+    if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnChangeRole, this.OnChangeRole)) {
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnChangeRole, this.OnChangeRole);
+    }
+  }
   Cin() {
-    this.IdleState.NpcMoveComp = this.Entity.GetComponent(45);
+    this.IdleState.NpcMoveComp = this.Entity.GetComponent(46);
     this.UnderAttackState.SetDefaultDirect(this.ActorComp.ActorForwardProxy);
   }
   OnMonsterNearby() {
@@ -330,12 +348,12 @@ let CommonNpcPerformComponent = CommonNpcPerformComponent_1 = class CommonNpcPer
       e.Init(this.Lo.NpcMonsterClosePerform.Range);
       e.OnEnterSensoryRange = t => this.OnMonsterNearby();
       e.OnExitSensoryRange = t => !!e.CheckInRange() || this.StateMachine.CurrentState !== 7 || this.StateMachine.Switch(1);
-      this.Ztn = this.Entity.GetComponent(124).AddSensoryInfo(e);
+      this.Ztn = this.Entity.GetComponent(129).AddSensoryInfo(e);
     }
   }
   fin() {
     if (this.Ztn >= 0) {
-      this.Entity.GetComponent(124).RemoveSensoryInfo(this.Ztn);
+      this.Entity.GetComponent(129).RemoveSensoryInfo(this.Ztn);
       this.Ztn = -1;
     }
   }
@@ -415,10 +433,10 @@ let CommonNpcPerformComponent = CommonNpcPerformComponent_1 = class CommonNpcPer
   OnTick(t) {
     if (this.AnimComp && (this.PerformGroupController?.Tick(t), this.InterestEventController?.Tick(t), this.oin)) {
       this.StateMachine.Update(t);
-      this.Svm(t);
+      this.Iwm(t);
     }
   }
-  Svm(t) {
+  Iwm(t) {
     if (this.KBr) {
       if (this.jBr.IsInSightRange && this.lbr()) {
         this.EnableLookAtPlayer(true);
@@ -448,11 +466,9 @@ let CommonNpcPerformComponent = CommonNpcPerformComponent_1 = class CommonNpcPer
     return this.KBr;
   }
   SetLookAtPlayerEnabled(t) {
-    if (!t && this.AnimComp) {
-      this.AnimComp.SetSightTargetItem(undefined);
-      this.AnimComp.SetSightTargetPoint(undefined);
+    if (this.KBr !== t && !(this.KBr = t, this.SightController?.LockSightChange(5, !t), t)) {
+      this.EnableLookAtPlayer(false);
     }
-    this.KBr = t;
   }
   SetUiOpenPerformance(t, e) {
     if (this.IsInPlot) {
@@ -472,10 +488,10 @@ let CommonNpcPerformComponent = CommonNpcPerformComponent_1 = class CommonNpcPer
         i = i.GetBaseInfo().ChildEntityIds;
         if (i && !(i.length < 1)) {
           var s = ModelManager_1.ModelManager.CreatureModel;
-          for (const h of i) {
-            var r = s.GetEntityByPbDataId(h);
-            if (r?.Valid && (r = r.Entity.GetComponent(191))?.Valid) {
-              r.SetUiOpenPerformance(t, e);
+          for (const r of i) {
+            var h = s.GetEntityByPbDataId(r);
+            if (h?.Valid && (h = h.Entity.GetComponent(197))?.Valid) {
+              h.SetUiOpenPerformance(t, e);
             }
           }
         }
@@ -505,7 +521,7 @@ let CommonNpcPerformComponent = CommonNpcPerformComponent_1 = class CommonNpcPer
     }
   }
   nin() {
-    var t = Global_1.Global.BaseCharacter.CharacterActorComponent.Entity.GetComponent(209);
+    var t = Global_1.Global.BaseCharacter.CharacterActorComponent.Entity.GetComponent(215);
     return !!t && (t.HasTag(1408042260) || t.HasTag(64219164) || t.HasTag(1733479717));
   }
   Ein() {
@@ -557,23 +573,23 @@ let CommonNpcPerformComponent = CommonNpcPerformComponent_1 = class CommonNpcPer
   }
   ResumeAi(t) {
     if (this._in === 2) {
-      this.Entity.GetComponent(73).Resume(t);
+      this.Entity.GetComponent(76).Resume(t);
     } else if (this._in === 1) {
-      this.Entity.GetComponent(47).EnableAi(t);
+      this.Entity.GetComponent(48).EnableAi(t);
     }
     this.cin = false;
   }
   PauseAi(t) {
     if (this._in === 2) {
-      this.Entity.GetComponent(73).Pause(t);
+      this.Entity.GetComponent(76).Pause(t);
     } else if (this._in === 1) {
-      this.Entity.GetComponent(47).DisableAi(t);
+      this.Entity.GetComponent(48).DisableAi(t);
     }
     this.cin = true;
   }
   InitAiControllerType() {
-    var t = this.Entity.GetComponent(47);
-    var e = this.Entity.GetComponent(73);
+    var t = this.Entity.GetComponent(48);
+    var e = this.Entity.GetComponent(76);
     if (t && e?.IsNeedPlan) {
       this._in = BehaviorTreeDefines_1.BehaviorTreeDefines.CanUseLevelAiBehaviorTree(this.Entity) ? 1 : 2;
     } else if (t) {
@@ -635,14 +651,16 @@ let CommonNpcPerformComponent = CommonNpcPerformComponent_1 = class CommonNpcPer
     }, undefined, undefined, t.NpcFollow.PerformerWhenExit.Range);
   }
   EnableLookAtPlayer(t) {
-    if (this.yvm !== t) {
-      if (this.yvm = t) {
+    if (this.Ewm !== t) {
+      if (this.Ewm = t) {
         this.SightTarget(Global_1.Global.BaseCharacter.CharacterActorComponent, 1);
+        EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnChangeRole, this.OnChangeRole);
       } else {
         this.SightTarget(undefined, 1);
+        EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnChangeRole, this.OnChangeRole);
       }
     }
   }
 };
-CommonNpcPerformComponent = CommonNpcPerformComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(191)], CommonNpcPerformComponent);
+CommonNpcPerformComponent = CommonNpcPerformComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(197)], CommonNpcPerformComponent);
 exports.CommonNpcPerformComponent = CommonNpcPerformComponent; //# sourceMappingURL=CommonNpcPerformComponent.js.map

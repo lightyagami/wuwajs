@@ -36,10 +36,10 @@ let VehicleHitComponent = class VehicleHitComponent extends BaseHitComponent_1.B
     this.hXs = undefined;
   }
   OnStart() {
-    this.Hte = this.Entity.GetComponent(238);
+    this.Hte = this.Entity.GetComponent(247);
     this.Qr_ = this.Entity.GetComponent(19);
-    this.ph_ = this.Entity.GetComponent(241);
-    this.vHr = this.Entity.GetComponent(126);
+    this.ph_ = this.Entity.GetComponent(250);
+    this.vHr = this.Entity.GetComponent(131);
     var t = this.Hte?.Actor.CharRenderingComponent;
     if (t) {
       this.hXs = new BaseHitComponent_1.OnHitMaterialAction(t, this.vHr);
@@ -93,5 +93,5 @@ let VehicleHitComponent = class VehicleHitComponent extends BaseHitComponent_1.B
     }
   }
 };
-VehicleHitComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(280)], VehicleHitComponent);
+VehicleHitComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(299)], VehicleHitComponent);
 exports.VehicleHitComponent = VehicleHitComponent; //# sourceMappingURL=VehicleHitComponent.js.map

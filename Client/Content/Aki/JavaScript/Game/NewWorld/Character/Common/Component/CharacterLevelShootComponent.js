@@ -58,7 +58,7 @@ let CharacterLevelShootComponent = CharacterLevelShootComponent_1 = class Charac
   }
   OnInitData() {
     this.Hte = this.Entity.GetComponent(3);
-    this.Lie = this.Entity.GetComponent(209);
+    this.Lie = this.Entity.GetComponent(215);
     this._9r = new Array();
     this.u9r = Vector_1.Vector.Create();
     this.c9r = Vector_1.Vector.Create();
@@ -170,7 +170,7 @@ let CharacterLevelShootComponent = CharacterLevelShootComponent_1 = class Charac
           i = true;
           break;
         }
-        var a = n.Entity.GetComponent(166);
+        var a = n.Entity.GetComponent(171);
         if (!a) {
           i = true;
           break;
@@ -243,5 +243,5 @@ let CharacterLevelShootComponent = CharacterLevelShootComponent_1 = class Charac
 CharacterLevelShootComponent.I9r = Vector_1.Vector.ForwardVectorProxy;
 CharacterLevelShootComponent.Mz = new Array();
 CharacterLevelShootComponent.y9r = new Array();
-CharacterLevelShootComponent = CharacterLevelShootComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(63)], CharacterLevelShootComponent);
+CharacterLevelShootComponent = CharacterLevelShootComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(66)], CharacterLevelShootComponent);
 exports.CharacterLevelShootComponent = CharacterLevelShootComponent; //# sourceMappingURL=CharacterLevelShootComponent.js.map

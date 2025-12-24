@@ -13,24 +13,24 @@ class HonamiScanMarkItem extends ConfigMarkItem_1.ConfigMarkItem {
     super(e, t, i, r, a, s);
     this.InnerView = undefined;
     this.IsDirty = false;
-    this.Omm = "";
+    this.Kvm = "";
   }
   OnInitialize() {
     super.OnInitialize();
     this.yn_();
-    this.iLm();
+    this.$ff();
   }
   OnUpdate(e) {
     super.OnUpdate(e);
     if (this.MapType === 1) {
-      this.iLm();
+      this.$ff();
     }
   }
   InitIcon() {
     this.UpdateIcon();
   }
   UpdateIcon() {
-    this.Omm = this.IsLocked ? this.MarkConfig.LockMarkPic : this.MarkConfig.UnlockMarkPic;
+    this.Kvm = this.IsLocked ? this.MarkConfig.LockMarkPic : this.MarkConfig.UnlockMarkPic;
   }
   GetMarkItemViewType() {
     return 29;
@@ -39,21 +39,21 @@ class HonamiScanMarkItem extends ConfigMarkItem_1.ConfigMarkItem {
     return new HonamiScanMarkItemView_1.HonamiScanMarkItemView(this);
   }
   get IsLocked() {
-    return ModelManager_1.ModelManager.MapModel.GetHonamiScanMarkInfo(this.MarkId) === Protocol_1.Aki.Protocol.htm.Proto_MarkDisable;
+    return ModelManager_1.ModelManager.MapModel.GetHonamiScanMarkInfo(this.MarkId) === Protocol_1.Aki.Protocol.Tom.Proto_MarkDisable;
   }
   get IconPath() {
-    return this.Omm;
+    return this.Kvm;
   }
   set IconPath(e) {
-    this.Omm = e;
+    this.Kvm = e;
   }
   GamePlayIsFinish() {
-    return ModelManager_1.ModelManager.MapModel.GetHonamiScanMarkInfo(this.MarkId) === Protocol_1.Aki.Protocol.htm.Proto_MarkComplete;
+    return ModelManager_1.ModelManager.MapModel.GetHonamiScanMarkInfo(this.MarkId) === Protocol_1.Aki.Protocol.Tom.Proto_MarkComplete;
   }
   yn_() {
     this.MarkItemEntity.GamePlay.GamePlayState = this.GamePlayIsFinish() ? 2 : 0;
   }
-  iLm() {
+  $ff() {
     this.IsSelectThisFloor = this.GetIsSelectThisFloor();
   }
 }

@@ -101,10 +101,18 @@ class VisionRecoveryChoosePanel extends UiPanelBase_1.UiPanelBase {
     this.vpt.GetRootItem().SetUIActive(s);
     if (i || s) {
       if (i) {
+        n = this.vpt.GetUniqueIdByGroupId(e);
+        this.Mpt.SetFilterUniqueId(n);
         this.Mpt.UpdateData(e, t);
+        n = this.Mpt.GetUniqueIdByGroupId(e);
+        this.vpt.SetSortUniqueId(n);
       }
       if (s) {
+        n = this.Mpt.GetUniqueIdByGroupId(e);
+        this.vpt.SetSortUniqueId(n);
         this.vpt.UpdateData(e, t);
+        n = this.vpt.GetUniqueIdByGroupId(e);
+        this.Mpt.SetFilterUniqueId(n);
       }
     } else {
       this.Fvt.UpdateByDataList(t);

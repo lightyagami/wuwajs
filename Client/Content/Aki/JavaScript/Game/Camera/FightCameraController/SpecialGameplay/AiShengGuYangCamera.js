@@ -288,7 +288,7 @@ class AiShengGuYangCamera {
       Mode: 5,
       CustomMode: 0,
       Context: "[AiShengGuYangCamera.OnInitInternal]"
-    }), this.Gce = i.Entity?.GetComponent(45), this.Gce?.Valid && (this.Gce.CanMoveFromInput = false), this.Lie = i.Entity?.GetComponent(209), this.Lie?.Valid) && (this.Nce = i.Entity?.GetComponent(62), this.Nce?.Valid) && (this.Mme.Set(Vector_1.Vector.ZeroVectorProxy, Quat_1.Quat.Create(), Vector_1.Vector.OneVectorProxy), this.Fce?.IsValid() || (this.Fce = ActorSystem_1.ActorSystem.Get(UE.CommonEffectMoveSpline2_C.StaticClass(), this.Mme.ToUeTransform(), undefined), this.Vce = this.Fce.KuroMoveSpline), this.Oce?.IsValid() || (this.Oce = ActorSystem_1.ActorSystem.Get(TsGameSplineActor_1.default.StaticClass(), this.Mme.ToUeTransform(), undefined)), !this.kce?.IsValid()) && this.Oce.IsValid()) {
+    }), this.Gce = i.Entity?.GetComponent(46), this.Gce?.Valid && (this.Gce.CanMoveFromInput = false), this.Lie = i.Entity?.GetComponent(215), this.Lie?.Valid) && (this.Nce = i.Entity?.GetComponent(65), this.Nce?.Valid) && (this.Mme.Set(Vector_1.Vector.ZeroVectorProxy, Quat_1.Quat.Create(), Vector_1.Vector.OneVectorProxy), this.Fce?.IsValid() || (this.Fce = ActorSystem_1.ActorSystem.Get(UE.CommonEffectMoveSpline2_C.StaticClass(), this.Mme.ToUeTransform(), undefined), this.Vce = this.Fce.KuroMoveSpline), this.Oce?.IsValid() || (this.Oce = ActorSystem_1.ActorSystem.Get(TsGameSplineActor_1.default.StaticClass(), this.Mme.ToUeTransform(), undefined)), !this.kce?.IsValid()) && this.Oce.IsValid()) {
       this.kce = GameSplineUtils_1.GameSplineUtils.InitGameSplineBySplineEntity(MOVE_SPLINE_PB_DATA_ID, this.Oce);
     }
   }

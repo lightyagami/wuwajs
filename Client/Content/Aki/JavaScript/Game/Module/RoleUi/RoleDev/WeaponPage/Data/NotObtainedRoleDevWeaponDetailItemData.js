@@ -14,15 +14,15 @@ class NotObtainedRoleDevWeaponDetailItemData {
   }
   InitByWeaponType(e, t) {
     var a = RoleDevUtils_1.RoleDevUtils.GetCultivateProject(e).WeaponBreachLevel - 1;
-    var r = this.WXd(t);
+    var r = this.IYd(t);
     this.E1d = [];
     var t = this.M9d(t);
     if (t) {
-      this.jXd(e, r);
+      this.SYd(e, r);
       this.Nyd(e, t, 0, a);
     }
   }
-  WXd(e) {
+  IYd(e) {
     var t;
     var e = this.M9d(e);
     if (e) {
@@ -35,13 +35,13 @@ class NotObtainedRoleDevWeaponDetailItemData {
   M9d(e) {
     return ConfigManager_1.ConfigManager.RoleDevConfig.GetRoleDevWeaponItemConfig(e);
   }
-  jXd(e, t) {
-    e = this.HXd(e, t);
+  SYd(e, t) {
+    e = this.MYd(e, t);
     if (e) {
       this.E1d.push(e);
     }
   }
-  HXd(e, t) {
+  MYd(e, t) {
     if (!(t <= 0)) {
       var a = this.W7d();
       var a = this.Hyd(a, t);

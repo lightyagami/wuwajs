@@ -35,7 +35,7 @@ class SurvivorsRogueCommandAdditionRewardGot extends SurvivorsRogueCommandBaseOb
     }
   }
   Uwd() {
-    return this.Data.Wzd.XTd;
+    return this.Data.RJd.XTd;
   }
   GetViewInfo() {
     var o = this.Uwd();

@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.LogicNodeBase = undefined;
 const UE = require("ue");
+const Log_1 = require("../../../../../Core/Common/Log");
 const Protocol_1 = require("../../../../../Core/Define/Net/Protocol");
 const StringUtils_1 = require("../../../../../Core/Utils/StringUtils");
 const IQuest_1 = require("../../../../../UniverseEditor/Interface/IQuest");
@@ -13,6 +14,7 @@ const GlobalData_1 = require("../../../../GlobalData");
 const LevelGeneralController_1 = require("../../../../LevelGamePlay/LevelGeneralController");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const SneakController_1 = require("../../../../World/Controller/SneakController");
+const AnimController_1 = require("../../../Anim/AnimController");
 const BehaviorNodeBase_1 = require("../BehaviorNodeBase");
 class LogicNodeBase extends BehaviorNodeBase_1.BehaviorNodeBase {
   constructor() {
@@ -52,7 +54,7 @@ class LogicNodeBase extends BehaviorNodeBase_1.BehaviorNodeBase {
       UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "a.Animation.AnimSeqSkeletonCheck false");
     }
     if (this.Config.LogicProgramSpecialProcess) {
-      this.mrm(true);
+      this.Lam(true);
     }
     if (this.CustomUiConfig) {
       this.AddTag(0);
@@ -113,25 +115,33 @@ class LogicNodeBase extends BehaviorNodeBase_1.BehaviorNodeBase {
       UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "a.Animation.AnimSeqSkeletonCheck true");
     }
     if (this.Config.LogicProgramSpecialProcess) {
-      this.mrm(false);
+      this.Lam(false);
     }
     super.OnNodeDeActive(t);
   }
-  mrm(t) {
+  Lam(t) {
     for (const e of this.Config.LogicProgramSpecialProcess.SpecialProcessList) {
       if (e.Type === IQuest_1.ELogicProgramSpecialProcess.DisableURO) {
+        if (Log_1.Log.CheckDebug()) {
+          Log_1.Log.Debug("World", 35, "程序特殊处理节点", ["Ids", e.EntityIds]);
+        }
         for (const s of e.EntityIds) {
           var i = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(s)?.Entity;
           if (i?.Valid) {
-            i = i.GetComponent(44);
+            i = i.GetComponent(45);
             if (t) {
               i?.StartForceDisableAnimOptimization(0, false);
             } else {
               i?.CancelForceDisableAnimOptimization(0);
             }
+          } else if (t) {
+            AnimController_1.AnimController.CacheForceDisableAnimOptimization(s);
           }
         }
       }
+    }
+    if (!t) {
+      AnimController_1.AnimController.ClearForceDisableAnimOptimizationCache();
     }
   }
   L$t(t) {

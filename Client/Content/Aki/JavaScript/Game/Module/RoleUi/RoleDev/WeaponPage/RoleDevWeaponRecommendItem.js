@@ -25,6 +25,19 @@ class RoleDevWeaponRecommendItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.D1d = undefined;
     this.OnClickBtnSwitch = undefined;
     this.Pe = undefined;
+    this.hJs = () => {
+      var t;
+      var e;
+      if (this.Pe) {
+        t = ModelManager_1.ModelManager.WeaponModel.GetWeaponInstanceByRoleId(this.Pe.RoleId)?.GetIncId() ?? 0;
+        e = this.Pe?.WeaponConfigId;
+        if (t > 0) {
+          ControllerHolder_1.ControllerHolder.ItemController.OpenItemTipsByItemUid(t, e);
+        } else if (e > 0) {
+          ControllerHolder_1.ControllerHolder.ItemController.OpenItemTipsByItemId(e);
+        }
+      }
+    };
     this.vnd = () => {
       return new RoleDevRecommendItem_1.RoleDevRecommendItem();
     };
@@ -50,8 +63,7 @@ class RoleDevWeaponRecommendItem extends GridProxyAbstract_1.GridProxyAbstract {
     var t = [];
     this.sft = new SmallItemGrid_1.SmallItemGrid();
     this.sft.Initialize(this.GetItem(3).GetOwner());
-    this.sft.SetExtendToggleEnable(false);
-    this.sft.SetToggleInteractive(false);
+    this.sft.BindOnExtendToggleClicked(this.hJs);
     this.pnd = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(9), this.vnd);
     this.A1d = new ButtonItem_1.ButtonItem();
     t.push(this.A1d.CreateThenShowByActorAsync(this.GetItem(7).GetOwner()));

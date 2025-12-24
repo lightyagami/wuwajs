@@ -23,7 +23,7 @@ class BulletActionTimeScale extends BulletActionBase_1.BulletActionBase {
   }
   OnExecute() {
     if (this.BulletInfo.BulletDataMain.TimeScale.TimeScaleWithAttacker) {
-      this.kVo = this.BulletInfo.Attacker.GetComponent(126);
+      this.kVo = this.BulletInfo.Attacker.GetComponent(131);
     } else {
       this.BulletInfo.TimeScaleList = new PriorityQueue_1.PriorityQueue(PawnTimeScaleComponent_1.PawnTimeScaleComponent.CompareScalePriority);
       this.BulletInfo.TimeScaleMap = new Map();
@@ -73,7 +73,7 @@ class BulletActionTimeScale extends BulletActionBase_1.BulletActionBase {
       this.OVo = this.BulletInfo.TimeScaleList.Top.CalculateTimeScale();
     }
     i *= this.OVo;
-    var r = this.BulletInfo.Attacker?.GetComponent(126)?.GetTopForeverTimeScale(0) ?? ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation;
+    var r = this.BulletInfo.Attacker?.GetComponent(131)?.GetTopForeverTimeScale(0) ?? ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation;
     this.OVo *= r;
     if (this.FVo !== i || this.zUu !== r) {
       this.FVo = i;

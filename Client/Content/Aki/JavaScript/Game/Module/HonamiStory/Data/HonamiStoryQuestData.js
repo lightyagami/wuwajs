@@ -30,9 +30,9 @@ class HonamiStoryQuestDataBase {
 class HonamiStoryMainQuestData extends HonamiStoryQuestDataBase {
   constructor() {
     super();
-    this.Chm = 0;
+    this.ncm = 0;
     this.TaskType = 1;
-    this.Chm = this.ActivityData.ActivityQuestId;
+    this.ncm = this.ActivityData.ActivityQuestId;
   }
   GetLevelPlayInfo() {
     if (this.IsInDungeon) {
@@ -50,7 +50,7 @@ class HonamiStoryMainQuestData extends HonamiStoryQuestDataBase {
         return t.NameKey;
       }
     }
-    t = ModelManager_1.ModelManager.QuestNewModel.GetQuest(this.Chm);
+    t = ModelManager_1.ModelManager.QuestNewModel.GetQuest(this.ncm);
     if (t) {
       return t.NameKey;
     } else {
@@ -59,7 +59,7 @@ class HonamiStoryMainQuestData extends HonamiStoryQuestDataBase {
   }
   GetDesc() {
     var t;
-    if (!this.IsInDungeon && (t = ModelManager_1.ModelManager.QuestNewModel.GetQuest(this.Chm))) {
+    if (!this.IsInDungeon && (t = ModelManager_1.ModelManager.QuestNewModel.GetQuest(this.ncm))) {
       return t.QuestDescribe;
     } else {
       return "";
@@ -72,7 +72,7 @@ class HonamiStoryMainQuestData extends HonamiStoryQuestDataBase {
         return t.RewardId;
       }
     }
-    t = ModelManager_1.ModelManager.QuestNewModel.GetQuest(this.Chm);
+    t = ModelManager_1.ModelManager.QuestNewModel.GetQuest(this.ncm);
     if (t) {
       return t.RewardId ?? 0;
     } else {
@@ -94,7 +94,7 @@ class HonamiStoryMainQuestData extends HonamiStoryQuestDataBase {
   GetTreeShowData() {
     var t = HonamiStoryUtil_1.HonamiStoryUtil.CheckInActivityQuest();
     if (!this.IsInDungeon && t) {
-      if (t = ModelManager_1.ModelManager.QuestNewModel.GetQuest(this.Chm)) {
+      if (t = ModelManager_1.ModelManager.QuestNewModel.GetQuest(this.ncm)) {
         return t.Tree?.GetBlackBoard()?.CreateShowData(true);
       } else {
         return undefined;
@@ -110,11 +110,11 @@ exports.HonamiStoryMainQuestData = HonamiStoryMainQuestData;
 class HonamiStorySubQuestData extends HonamiStoryQuestDataBase {
   constructor(t) {
     super();
-    this.eSm = 0;
+    this.sDm = 0;
     this.h0i = 1;
     this.le = 0;
     this.sor = 1;
-    this.eSm = t;
+    this.sDm = t;
     this.TaskType = 2;
   }
   UpdateData(t) {
@@ -122,11 +122,11 @@ class HonamiStorySubQuestData extends HonamiStoryQuestDataBase {
     this.le = t.lMs;
     this.sor = t.j6n;
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("HonamiStory", 78, "HonamiStoryLimitTaskData UpdateData", ["taskId", this.eSm.toString()], ["status", this.h0i], ["current", this.le], ["target", this.sor]);
+      Log_1.Log.Info("HonamiStory", 78, "HonamiStoryLimitTaskData UpdateData", ["taskId", this.sDm.toString()], ["status", this.h0i], ["current", this.le], ["target", this.sor]);
     }
   }
   get Config() {
-    return ConfigManager_1.ConfigManager.HonamiStoryConfig.GetHonamiStoryAreaTaskById(this.eSm);
+    return ConfigManager_1.ConfigManager.HonamiStoryConfig.GetHonamiStoryAreaTaskById(this.sDm);
   }
   GetNameKey() {
     return this.Config.Name;

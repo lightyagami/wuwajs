@@ -15,6 +15,7 @@ const RedDotController_1 = require("../../../../RedDot/RedDotController");
 const UiManager_1 = require("../../../../Ui/UiManager");
 const LevelSequencePlayer_1 = require("../../../Common/LevelSequencePlayer");
 const BattleVisibleChildView_1 = require("../BattleChildView/BattleVisibleChildView");
+const GamepadPhoneMessageButton_1 = require("../Phone/GamepadPhoneMessageButton");
 const iconTypeSprite = {
   [0]: "T_IconPcBtn_Xbox17_UI",
   1: "T_IconPcBtn_Xbox17_UI",
@@ -29,7 +30,9 @@ class GamepadTopPanel extends BattleVisibleChildView_1.BattleVisibleChildView {
   constructor() {
     super(...arguments);
     this.kgl = undefined;
+    this.SPe = undefined;
     this.C$l = undefined;
+    this.K$m = undefined;
     this.g$l = e => {
       if (e) {
         this.C$l?.PlayLevelSequenceByName("BtnShow");
@@ -37,7 +40,7 @@ class GamepadTopPanel extends BattleVisibleChildView_1.BattleVisibleChildView {
       }
     };
     this.$Wl = () => {
-      var e = this.GetItem(3).bIsUIActive || this.GetItem(4).bIsUIActive || this.GetItem(5).bIsUIActive || this.GetItem(6).bIsUIActive || this.GetItem(8).bIsUIActive;
+      var e = this.GetItem(3).bIsUIActive || this.GetItem(4).bIsUIActive || this.GetItem(5).bIsUIActive || this.GetItem(6).bIsUIActive || this.GetItem(8).bIsUIActive || this.GetItem(9).bIsUIActive;
       this.GetItem(1).SetUIActive(e);
     };
     this.XBo = () => {
@@ -52,6 +55,9 @@ class GamepadTopPanel extends BattleVisibleChildView_1.BattleVisibleChildView {
       if (e === 10023 && t) {
         RedDotController_1.RedDotController.BindRedDot("AdventureBattleButton", this.GetItem(4));
       }
+      if (e === 10130 && t) {
+        RedDotController_1.RedDotController.BindRedDot("FunctionPhoneMsg", this.GetItem(9));
+      }
     };
     this.stt = () => {
       if (ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance()) {
@@ -60,9 +66,13 @@ class GamepadTopPanel extends BattleVisibleChildView_1.BattleVisibleChildView {
         UiManager_1.UiManager.OpenView("FunctionView");
       }
     };
+    this.Lkf = () => {
+      this.SPe?.StopSequenceByKey("Phone");
+      this.SPe?.PlayLevelSequenceByName("Phone");
+    };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UITexture], [8, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UITexture], [8, UE.UIItem], [9, UE.UIItem]];
     this.BtnBindInfo = [[0, this.stt]];
   }
   Initialize(e) {
@@ -72,9 +82,18 @@ class GamepadTopPanel extends BattleVisibleChildView_1.BattleVisibleChildView {
     this.BindRedDot();
     this.kgl = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
     this.C$l = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetButton(0).RootUIComp);
+    this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
+  }
+  async InitializeAsync(e) {
+    this.K$m = new GamepadPhoneMessageButton_1.GamepadPhoneMessageButton();
+    await this.K$m.CreateThenShowByActorAsync(this.GetItem(9).GetOwner());
   }
   Reset() {
     super.Reset();
+    this.SPe?.Clear();
+    this.SPe = undefined;
+    this.K$m?.Destroy();
+    this.K$m = undefined;
     this.RemoveEvents();
     this.RemoveRedDot();
   }
@@ -89,7 +108,10 @@ class GamepadTopPanel extends BattleVisibleChildView_1.BattleVisibleChildView {
       }
       RedDotController_1.RedDotController.BindRedDot("BattleViewGachaButton", this.GetItem(5), this.g$l);
       RedDotController_1.RedDotController.BindRedDot("BattlePass", this.GetItem(6), this.g$l);
-      RedDotController_1.RedDotController.BindRedDot("ActivityDirectTrainPro", this.GetItem(8), this.g$l);
+      RedDotController_1.RedDotController.BindRedDot("ActivityDirectTrainProEntry", this.GetItem(8), this.g$l);
+      if (ModelManager_1.ModelManager.FunctionModel.IsOpen(10130)) {
+        RedDotController_1.RedDotController.BindRedDot("FunctionPhoneMsg", this.GetItem(9), this.g$l);
+      }
     }
   }
   RemoveRedDot() {
@@ -101,28 +123,50 @@ class GamepadTopPanel extends BattleVisibleChildView_1.BattleVisibleChildView {
       }
       RedDotController_1.RedDotController.UnBindRedDot("BattleViewGachaButton");
       RedDotController_1.RedDotController.UnBindRedDot("BattlePass");
-      RedDotController_1.RedDotController.UnBindRedDot("ActivityDirectTrainPro");
+      RedDotController_1.RedDotController.UnBindRedDot("ActivityDirectTrainProEntry");
     }
   }
   AddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InputControllerChange, this.XBo);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnFunctionOpenUpdate, this.RQe);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPhoneTipsClose, this.Lkf);
   }
   RemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InputControllerChange, this.XBo);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnFunctionOpenUpdate, this.RQe);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPhoneTipsClose, this.Lkf);
   }
   OnShowBattleChildView() {
     this.$Wl();
     this.yQl();
+    this.XJf();
     this.kgl?.PlayLevelSequenceByName("BtnShow");
   }
   OnHideBattleChildView() {
+    this.YJf();
     this.kgl?.PlayLevelSequenceByName("BtnHide");
   }
   yQl() {
     var e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(iconTypeSprite[Info_1.Info.InputControllerType]);
     this.SetTextureByPath(e, this.GetTexture(7));
+  }
+  XJf() {
+    if (ModelManager_1.ModelManager.FunctionModel.IsOpen(10130)) {
+      this.K$m?.OnShowGamepadTopPanel();
+    }
+  }
+  YJf() {
+    if (ModelManager_1.ModelManager.FunctionModel.IsOpen(10130)) {
+      this.K$m?.OnHideGamepadTopPanel();
+    }
+  }
+  GetPanelItem(e) {
+    if (e === "PhoneMsgButton") {
+      return this.GetItem(9);
+    }
+  }
+  GetPhoneMsgButton() {
+    return this.K$m;
   }
 }
 exports.GamepadTopPanel = GamepadTopPanel;

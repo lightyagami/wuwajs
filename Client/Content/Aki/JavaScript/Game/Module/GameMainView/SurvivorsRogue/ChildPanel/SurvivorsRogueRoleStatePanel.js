@@ -21,28 +21,28 @@ const DEAD_SEQUENCE_NAME = "Dead";
 class SurvivorsRogueRoleStatePanel extends UiPanelBase_1.UiPanelBase {
   constructor(t = true, e = true) {
     super();
-    this.eJd = t;
-    this.tJd = e;
+    this.WJd = t;
+    this.QJd = e;
     this.VNd = undefined;
     this.aKu = undefined;
     this.nKu = undefined;
-    this.fKd = undefined;
-    this.gKd = undefined;
-    this.CKd = undefined;
-    this.pKd = undefined;
     this.vKd = undefined;
-    this.tom = undefined;
+    this.yKd = undefined;
+    this.SKd = undefined;
+    this.MKd = undefined;
+    this.EKd = undefined;
+    this.Mhm = undefined;
     this.Cmt = 0;
     this.dmt = new UE.Margin();
     this.snt = -1;
     this.j1t = 0;
     this.W1t = 0;
-    this.yKd = -1;
-    this.SKd = 0;
-    this.Yim = -1;
-    this.MKd = undefined;
-    this.EKd = false;
-    this.IKd = undefined;
+    this.IKd = -1;
+    this.TKd = 0;
+    this.cam = -1;
+    this.bKd = undefined;
+    this.RKd = false;
+    this.wKd = undefined;
     this.CAd = undefined;
     this.RoleGrid = undefined;
     this.O6u = () => {
@@ -60,11 +60,11 @@ class SurvivorsRogueRoleStatePanel extends UiPanelBase_1.UiPanelBase {
     this.vmt = () => {
       this.Pnt();
     };
-    this.yHd = () => {
+    this.IHd = () => {
       this.Pnt(true);
     };
   }
-  get TKd() {
+  get LKd() {
     var t;
     if (this.VNd && (t = this.VNd.Get(3)) && t > 0) {
       return t;
@@ -75,9 +75,9 @@ class SurvivorsRogueRoleStatePanel extends UiPanelBase_1.UiPanelBase {
   get tRd() {
     var t;
     if (this.VNd && (t = this.VNd.Get(2)) && t > 0) {
-      return this.Yim = t;
+      return this.cam = t;
     } else {
-      return this.Yim;
+      return this.cam;
     }
   }
   OnRegisterComponent() {
@@ -92,17 +92,17 @@ class SurvivorsRogueRoleStatePanel extends UiPanelBase_1.UiPanelBase {
   OnStart() {
     this.aKu = this.GetSprite(4);
     this.nKu = this.GetSprite(3);
-    this.fKd = this.GetSprite(9);
-    this.gKd = this.GetSprite(6);
-    this.CKd = this.GetText(5);
-    this.pKd = this.GetText(8);
-    this.vKd = this.GetItem(7).GetOwner().GetComponentByClass(UE.LGUICanvas.StaticClass());
-    this.tom = this.GetItem(10);
-    this.Cmt = this.CKd.GetWidth();
+    this.vKd = this.GetSprite(9);
+    this.yKd = this.GetSprite(6);
+    this.SKd = this.GetText(5);
+    this.MKd = this.GetText(8);
+    this.EKd = this.GetItem(7).GetOwner().GetComponentByClass(UE.LGUICanvas.StaticClass());
+    this.Mhm = this.GetItem(10);
+    this.Cmt = this.SKd.GetWidth();
     this.CAd = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(1), this.O6u, undefined);
-    this.SKd = CommonParamById_1.configCommonParamById.GetIntConfig("PlayerHPAttenuateBufferSpeed");
-    this.MKd = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetSprite(4));
-    this.IKd = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetRootItem());
+    this.TKd = CommonParamById_1.configCommonParamById.GetIntConfig("PlayerHPAttenuateBufferSpeed");
+    this.bKd = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetSprite(4));
+    this.wKd = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetRootItem());
   }
   OnBeforeShow() {
     this.vAd();
@@ -115,23 +115,23 @@ class SurvivorsRogueRoleStatePanel extends UiPanelBase_1.UiPanelBase {
   }
   OnAddEventListener() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TextLanguageChange, this.vmt);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnKscPlayerHpChanged, this.yHd);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnKscPlayerHpChanged, this.IHd);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SurvivorsRoguePlayerEntityCreated, this.jNd);
-    if (this.eJd) {
+    if (this.WJd) {
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SurvivorsRogueRoleGainUpdate, this.vAd);
     }
-    if (this.tJd) {
+    if (this.QJd) {
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SurvivorsRogueWeaponGainUpdate, this.yAd);
     }
   }
   OnRemoveEventListener() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TextLanguageChange, this.vmt);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnKscPlayerHpChanged, this.yHd);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnKscPlayerHpChanged, this.IHd);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SurvivorsRoguePlayerEntityCreated, this.jNd);
-    if (this.eJd) {
+    if (this.WJd) {
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SurvivorsRogueRoleGainUpdate, this.vAd);
     }
-    if (this.tJd) {
+    if (this.QJd) {
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SurvivorsRogueWeaponGainUpdate, this.yAd);
     }
   }
@@ -140,9 +140,9 @@ class SurvivorsRogueRoleStatePanel extends UiPanelBase_1.UiPanelBase {
     if (t = t && t.GetSkillComp()?.AttrSet_?.Attrs_) {
       this.VNd = t;
       this.Pnt();
-      this.tom.SetUIActive(true);
+      this.Mhm.SetUIActive(true);
     } else {
-      this.tom.SetUIActive(false);
+      this.Mhm.SetUIActive(false);
     }
   }
   OnTick(t) {
@@ -152,8 +152,8 @@ class SurvivorsRogueRoleStatePanel extends UiPanelBase_1.UiPanelBase {
     var e;
     var i;
     var s;
-    if (this.VNd && (i = this.VNd.Get(4) ?? 0, e = this.TKd / this.tRd, i = Math.min(i / this.tRd, 1), this.dmt.Right = -(1 - e) * this.Cmt, this.vKd.SetRectClipOffset(this.dmt), s = Math.ceil(this.TKd) + "/" + Math.ceil(this.tRd), this.CKd.SetText(s), this.pKd.SetText(s), this.Cst(e), this.gst(i), this.dmt.Right = -(1 - e) * this.Cmt, this.vKd.SetRectClipOffset(this.dmt), t ? this.fst() : this.ist(), (this.snt = e) <= 0)) {
-      this.IKd.PlayOrReplaySequenceByName(DEAD_SEQUENCE_NAME);
+    if (this.VNd && (i = this.VNd.Get(4) ?? 0, e = this.LKd / this.tRd, i = Math.min(i / this.tRd, 1), this.dmt.Right = -(1 - e) * this.Cmt, this.EKd.SetRectClipOffset(this.dmt), s = Math.ceil(this.LKd) + "/" + Math.ceil(this.tRd), this.SKd.SetText(s), this.MKd.SetText(s), this.Cst(e), this.gst(i), this.dmt.Right = -(1 - e) * this.Cmt, this.EKd.SetRectClipOffset(this.dmt), t ? this.fst() : this.ist(), (this.snt = e) <= 0)) {
+      this.wKd.PlayOrReplaySequenceByName(DEAD_SEQUENCE_NAME);
     }
   }
   gst(t) {
@@ -162,42 +162,42 @@ class SurvivorsRogueRoleStatePanel extends UiPanelBase_1.UiPanelBase {
     if (e) {
       this.aKu.SetFillAmount(t);
     }
-    if (this.EKd !== e && (this.EKd = e)) {
-      this.MKd.PlayLevelSequenceByName("Start");
+    if (this.RKd !== e && (this.RKd = e)) {
+      this.bKd.PlayLevelSequenceByName("Start");
     }
   }
   Cst(t) {
-    (t <= LOW_HP_PERCENT ? (this.fKd.SetUIActive(true), this.nKu.SetUIActive(false), this.fKd) : (this.fKd.SetUIActive(false), this.nKu.SetUIActive(true), this.nKu)).SetFillAmount(t);
+    (t <= LOW_HP_PERCENT ? (this.vKd.SetUIActive(true), this.nKu.SetUIActive(false), this.vKd) : (this.vKd.SetUIActive(false), this.nKu.SetUIActive(true), this.nKu)).SetFillAmount(t);
   }
   fst() {
     var t;
     var e;
     if (this.VNd) {
-      t = this.TKd / this.tRd;
+      t = this.LKd / this.tRd;
       if (!((e = this.snt) <= t)) {
         this.j1t = t;
         this.W1t = e;
-        this.yKd = 0;
+        this.IKd = 0;
       }
     }
   }
   ist() {
     this.j1t = 0;
     this.W1t = 0;
-    this.yKd = -1;
-    this.gKd.SetUIActive(false);
+    this.IKd = -1;
+    this.yKd.SetUIActive(false);
   }
   ast(t) {
-    this.gKd.SetFillAmount(t);
-    this.gKd.SetUIActive(true);
+    this.yKd.SetFillAmount(t);
+    this.yKd.SetUIActive(true);
   }
   nmt(t) {
     var e;
-    if (this.yKd !== -1 && !(this.yKd >= this.SKd && this.ist(), this.j1t >= this.W1t)) {
-      e = this.yKd / this.SKd;
+    if (this.IKd !== -1 && !(this.IKd >= this.TKd && this.ist(), this.j1t >= this.W1t)) {
+      e = this.IKd / this.TKd;
       e = MathUtils_1.MathUtils.Lerp(this.W1t, this.j1t, e);
       this.ast(e);
-      this.yKd = this.yKd + t;
+      this.IKd = this.IKd + t;
     }
   }
   GetWeaponGrid(t) {

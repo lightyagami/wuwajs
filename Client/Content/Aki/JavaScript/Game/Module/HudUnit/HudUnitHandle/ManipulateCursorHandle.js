@@ -43,8 +43,8 @@ class ManipulateCursorHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
     this.fHe = (t, i) => {
       this.X9e = t;
       this.dri = this.X9e.Entity.GetComponent(1);
-      this.Cri = this.X9e.Entity.GetComponent(65);
-      this.fri = t.Entity.GetComponent(209);
+      this.Cri = this.X9e.Entity.GetComponent(68);
+      this.fri = t.Entity.GetComponent(215);
       this.Eri();
       for (const s of this.pri) {
         var e = this.fri.ListenForTagAddOrRemove(s, this.Sri, ManipulateCursorHandle.SYe);
@@ -112,9 +112,9 @@ class ManipulateCursorHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
     this.InitCursorAxis();
     this.X9e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
     if (this.X9e?.Valid) {
-      this.fri = this.X9e.Entity.GetComponent(209);
+      this.fri = this.X9e.Entity.GetComponent(215);
       this.dri = this.X9e.Entity.GetComponent(1);
-      this.Cri = this.X9e.Entity.GetComponent(65);
+      this.Cri = this.X9e.Entity.GetComponent(68);
       this.gri = CameraController_1.CameraController.FightCamera.GetComponent(5);
       var t = CommonParamById_1.configCommonParamById.GetStringConfig("ManipulateAimVisibleTags");
       if (t) {
@@ -187,7 +187,7 @@ class ManipulateCursorHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
   foi(t) {
     this.lri = t;
     this._ri = t.GetComponent(1);
-    if (!(0, RegisterComponent_1.isComponentInstance)(this._ri, 206) || !(this.cri = SceneInteractionManager_1.SceneInteractionManager.Get().GetMainCollisionActor(this._ri.GetSceneInteractionLevelHandleId()), this.cri?.IsValid())) {
+    if (!(0, RegisterComponent_1.isComponentInstance)(this._ri, 212) || !(this.cri = SceneInteractionManager_1.SceneInteractionManager.Get().GetMainCollisionActor(this._ri.GetSceneInteractionLevelHandleId()), this.cri?.IsValid())) {
       this.cri = this._ri.Owner;
     }
     this.yri(1);
@@ -205,7 +205,7 @@ class ManipulateCursorHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
   H7l() {
     var t;
     if (Info_1.Info.IsInTouch()) {
-      t = this.lri?.GetComponent(154)?.ExploreSkillUiResource;
+      t = this.lri?.GetComponent(159)?.ExploreSkillUiResource;
       this.hri?.SetIconPath(t);
     }
   }
@@ -243,7 +243,7 @@ class ManipulateCursorHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
     if (this.lri?.Valid && this.cri?.IsValid()) {
       this.cri.D_GetActorBounds(false, this.mri, undefined);
       let t = Vector_1.Vector.Create((0, puerts_1.$unref)(this.mri));
-      var i = this.lri.GetComponent(160);
+      var i = this.lri.GetComponent(165);
       if (i !== undefined && i.GetPassThroughPortalType() !== 0) {
         PortalUtils_1.PortalUtils.GetMappingPosToOtherPortal(t, i.GetPassThroughPortalId(), i.GetPassThroughPortalType() === 1, t);
       }
@@ -251,19 +251,19 @@ class ManipulateCursorHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
       if (i !== Vector_1.Vector.ZeroVectorProxy) {
         t = i;
       }
-      var i = this.lri.GetComponent(152);
+      var i = this.lri.GetComponent(157);
       if (i !== undefined && this.rii) {
         t = i.GetHitPoint();
       }
-      var i = this.lri.GetComponent(165);
+      var i = this.lri.GetComponent(170);
       if (i !== undefined && this.rii) {
         t = i.GetSocketLocation(this.Cri.GetHoldingEntity());
       }
-      var i = this.lri.GetComponent(144);
+      var i = this.lri.GetComponent(149);
       if (i !== undefined && this.rii) {
         t = i.GetHitPoint();
       }
-      var i = this.lri.GetComponent(154);
+      var i = this.lri.GetComponent(159);
       return t = i !== undefined ? i.Location : t;
     }
   }

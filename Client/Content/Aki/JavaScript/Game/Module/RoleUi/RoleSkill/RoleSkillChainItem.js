@@ -7,22 +7,24 @@ exports.RoleSkillChainItem = undefined;
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
+const RoleSkillTreeSkillItemBase_1 = require("./RoleSkillTreeSkillItemBase");
 class RoleSkillChainItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.SkillNodeItemList = [];
     this.LineItemList = [];
+    this.IsSkillBranchEnable = false;
   }
-  Update(a, e) {
-    this.SkillNodeItemList[0].Update(a, e);
+  Update(i, e) {
+    this.SkillNodeItemList[0].Update(i, e);
     let r = ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillTreeNode(e).NodeIndex;
-    let t = ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(a);
-    var i = (t = t || ModelManager_1.ModelManager.RoleModel.GetRoleDataById(a)).GetRoleSkillTreeConfig();
+    let t = ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(i);
+    var a = (t = t || ModelManager_1.ModelManager.RoleModel.GetRoleDataById(i)).GetRoleSkillTreeConfig();
     for (let e = 1; e < this.SkillNodeItemList.length; e++) {
-      for (const s of i) {
-        if (s.ParentNodes.length === 1 && s.ParentNodes[0] === r) {
-          this.SkillNodeItemList[e].Update(a, s.Id);
-          r = s.NodeIndex;
+      for (const l of a) {
+        if (l.ParentNodes.length === 1 && l.ParentNodes[0] === r) {
+          this.SkillNodeItemList[e].Update(i, l.Id);
+          r = l.NodeIndex;
           break;
         }
       }
@@ -31,26 +33,41 @@ class RoleSkillChainItem extends UiPanelBase_1.UiPanelBase {
   }
   RefreshLine() {
     for (let e = 0; e < this.LineItemList.length; e++) {
-      var a = e + 1;
-      if (a >= this.SkillNodeItemList.length) {
+      var i = e + 1;
+      if (i >= this.SkillNodeItemList.length) {
         return;
       }
-      var a = this.SkillNodeItemList[a];
-      var r = a.GetSkillNodeId();
-      var a = a.GetRoleId();
-      var a = ModelManager_1.ModelManager.RoleModel.GetRoleSkillTreeNodeLevel(a, r);
+      var i = this.SkillNodeItemList[i];
+      var r = i.GetSkillNodeId();
+      var i = i.GetRoleId();
+      var i = ModelManager_1.ModelManager.RoleModel.GetRoleSkillTreeNodeLevel(i, r);
       var r = this.LineItemList[e];
-      r.SetChangeColor(a === 0, r.changeColor);
+      r.SetChangeColor(i === 0, r.changeColor);
     }
   }
   OnNodeLevelChange(e) {
-    for (const a of this.SkillNodeItemList) {
-      a.OnNodeLevelChange(e);
+    for (const i of this.SkillNodeItemList) {
+      i.OnNodeLevelChange(e);
     }
     this.RefreshLine();
   }
   GetSkillNodeItems() {
     return this.SkillNodeItemList;
+  }
+  SetSkillBranchEnable(e) {
+    this.IsSkillBranchEnable = e;
+  }
+  OnSkillBranchChanged() {
+    for (const e of this.SkillNodeItemList) {
+      e.OnSkillBranchChanged();
+    }
+  }
+  FindDoubleTagSkillTog() {
+    for (const e of this.SkillNodeItemList) {
+      if (e instanceof RoleSkillTreeSkillItemBase_1.RoleSkillTreeSkillItemBase && e.HasActiveBranchItem()) {
+        return e.GetRootItem();
+      }
+    }
   }
 }
 exports.RoleSkillChainItem = RoleSkillChainItem;

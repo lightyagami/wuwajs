@@ -11,7 +11,7 @@ class QuestTreeCollectBtnItem extends UiPanelBase_1.UiPanelBase {
   constructor(e) {
     super();
     this.Pe = e;
-    this.rKd = () => {
+    this.aKd = () => {
       var e = this.Pe.GetAcceptableNodeList();
       if (e.length !== 0) {
         ControllerHolder_1.ControllerHolder.QuestTreeController.OpenAvailableListView(e);
@@ -21,7 +21,7 @@ class QuestTreeCollectBtnItem extends UiPanelBase_1.UiPanelBase {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIItem], [2, UE.UIItem]];
-    this.BtnBindInfo = [[0, this.rKd]];
+    this.BtnBindInfo = [[0, this.aKd]];
   }
   OnStart() {
     this.Refresh();
@@ -29,6 +29,10 @@ class QuestTreeCollectBtnItem extends UiPanelBase_1.UiPanelBase {
   Refresh() {
     var e = this.Pe.GetAcceptableNodeList().some(e => e.HasNewTag());
     this.GetItem(2).SetUIActive(e);
+  }
+  RefreshByData(e) {
+    this.Pe = e;
+    this.Refresh();
   }
 }
 exports.QuestTreeCollectBtnItem = QuestTreeCollectBtnItem;

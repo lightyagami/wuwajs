@@ -83,7 +83,7 @@ class ComboTeachingNode extends AutoAttachItem_1.AutoAttachItem {
       }
       this.SPe.StopCurrentSequence(false, true);
       this.SPe.PlayLevelSequenceByName("Start");
-      if (t && (i = Global_1.Global.BaseCharacter.GetEntityIdNoBlueprint(), i = EntitySystem_1.EntitySystem.Get(i).GetComponent(40).GetSkillInfo(Number(t)))) {
+      if (t && (i = Global_1.Global.BaseCharacter.GetEntityIdNoBlueprint(), i = EntitySystem_1.EntitySystem.Get(i).GetComponent(41).GetSkillInfo(Number(t)))) {
         this.SetSpriteByPath(i.SkillIcon?.AssetPathName?.toString(), this.GetSprite(0), false, "ComboTeachingView");
       }
       if (e.IconTagText.length > s && e.IconTagText[s] !== "") {
@@ -243,7 +243,7 @@ class ComboTeachingNode extends AutoAttachItem_1.AutoAttachItem {
     var i = this.Pe.SuccessCondition.GetConditionType();
     if (i === 9 || i === 1) {
       i = {
-        HitSkillId: t.Attacker.GetComponent(40)?.CurrentSkill?.SkillId ?? 0,
+        HitSkillId: t.Attacker.GetComponent(41)?.CurrentSkill?.SkillId ?? 0,
         BulletId: t.BulletId
       };
       this.CheckSuccessDelay(i);

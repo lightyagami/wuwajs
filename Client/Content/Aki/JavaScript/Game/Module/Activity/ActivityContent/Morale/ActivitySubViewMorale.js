@@ -9,7 +9,6 @@ const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
 const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
-const UiManager_1 = require("../../../../Ui/UiManager");
 const MoraleDefine_1 = require("../../../Morale/MoraleDefine");
 const MoraleScoreProgressActivityPanel_1 = require("../../../Morale/View/MoraleScoreProgressActivityPanel");
 const ActivitySubViewBase_1 = require("../../View/SubView/ActivitySubViewBase");
@@ -23,13 +22,7 @@ class ActivitySubViewMorale extends ActivitySubViewBase_1.ActivitySubViewBase {
     this.ScoreProgressPanel = undefined;
     this.FinishTipsSubPanel = undefined;
     this.Jk_ = () => {
-      var e;
-      if (this.ActivityBaseData.GetPreGuideQuestFinishState()) {
-        UiManager_1.UiManager.OpenView("MoraleAreaSumView");
-      } else {
-        e = this.ActivityBaseData.GetUnFinishPreGuideQuestId();
-        UiManager_1.UiManager.OpenView("QuestView", e);
-      }
+      ControllerHolder_1.ControllerHolder.ActivityController.OpenActivityContentView(this.ActivityBaseData);
     };
     this.Jtu = () => {
       ControllerHolder_1.ControllerHolder.HelpController.OpenHelpById(MoraleDefine_1.MORALE_ACTIVITY_CLOSE_HELP_ID);

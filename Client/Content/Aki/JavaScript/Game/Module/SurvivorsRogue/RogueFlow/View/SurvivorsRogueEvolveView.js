@@ -22,16 +22,16 @@ class SurvivorsRogueEvolveView extends UiViewBase_1.UiViewBase {
     this.CommandIncId = 0;
     this.Command = undefined;
     this.eVi = undefined;
-    this.hJd = undefined;
+    this.eZd = undefined;
     this.RIr = [];
-    this.lJd = 0;
+    this.tZd = 0;
     this.wNd = false;
-    this._Jd = true;
+    this.iZd = true;
     this.xli = () => {
-      this.uJd().then(() => {
-        this.lJd++;
-        if (this.lJd >= this.RIr.length) {
-          this.UiViewSequence.CloseSequenceName = this._Jd ? "Close" : "Close01";
+      this.rZd().then(() => {
+        this.tZd++;
+        if (this.tZd >= this.RIr.length) {
+          this.UiViewSequence.CloseSequenceName = this.iZd ? "Close" : "Close01";
           this.Command.Execute();
         } else {
           this.Owd(true, true);
@@ -39,7 +39,7 @@ class SurvivorsRogueEvolveView extends UiViewBase_1.UiViewBase {
       });
     };
     this.Wpu = (i, e) => {
-      if (i === "LevelUp" && e === "LevelUp" && (i = this.RIr.at(this.lJd)) && i.PlayTween && (e = i.SourceId, i = this.cJd(i.WeaponEvolveIds), e = this.hJd.GetWeaponGrid(e))) {
+      if (i === "LevelUp" && e === "LevelUp" && (i = this.RIr.at(this.tZd)) && i.PlayTween && (e = i.SourceId, i = this.oZd(i.WeaponEvolveIds), e = this.eZd.GetWeaponGrid(e))) {
         e.SetQualityById(i);
         e.SetLevelUp();
       }
@@ -52,22 +52,22 @@ class SurvivorsRogueEvolveView extends UiViewBase_1.UiViewBase {
   CloseView() {
     this.CloseMe();
   }
-  async uJd() {
-    var i = this.RIr.at(this.lJd);
+  async rZd() {
+    var i = this.RIr.at(this.tZd);
     if (i && i.PlayTween) {
       i = i.SourceId;
-      this._Jd = false;
+      this.iZd = false;
       this.G1a(i);
       await this.UiViewSequence.PlaySequenceAsync("LevelUp", new CustomPromise_1.CustomPromise(), true);
     } else {
-      this._Jd = true;
+      this.iZd = true;
     }
   }
   async OnBeforeStartAsync() {
     var i;
     this.CommandIncId = this.OpenParam.CommandIncId;
     if (this.CommandIncId) {
-      if (!(i = ModelManager_1.ModelManager.SurvivorsRogueModel.CommandQueue.GetCommandByIncId(this.CommandIncId)) || (this.Command = i, this.dJd(), i = [], this.eVi = new SurvivorsRogueCardBase_1.SurvivorsRogueCardBase(), i.push(this.eVi.CreateThenShowByActorAsync(this.GetItem(2).GetOwner())), this.hJd = new SurvivorsRogueRoleStatePanel_1.SurvivorsRogueRoleStatePanel(true, false), i.push(this.hJd.CreateThenShowByActorAsync(this.GetItem(7).GetOwner())), await Promise.all(i), await this.Z$1(), this.mJd(), this.Owd(false, false), this.Command.AfterDelete)) {
+      if (!(i = ModelManager_1.ModelManager.SurvivorsRogueModel.CommandQueue.GetCommandByIncId(this.CommandIncId)) || (this.Command = i, this.nZd(), i = [], this.eVi = new SurvivorsRogueCardBase_1.SurvivorsRogueCardBase(), i.push(this.eVi.CreateThenShowByActorAsync(this.GetItem(2).GetOwner())), this.eZd = new SurvivorsRogueRoleStatePanel_1.SurvivorsRogueRoleStatePanel(true, false), i.push(this.eZd.CreateThenShowByActorAsync(this.GetItem(7).GetOwner())), await Promise.all(i), await this.Z$1(), this.sZd(), this.Owd(false, false), this.Command.AfterDelete)) {
         this.CloseMe();
       } else {
         this.RootActor.OnSequencePlayEvent.Bind(this.Wpu);
@@ -77,10 +77,10 @@ class SurvivorsRogueEvolveView extends UiViewBase_1.UiViewBase {
       Log_1.Log.Error("SurvivorsRogue", 37, "[SurvivorsRogue] 界面打开时缺少CommandIncId");
     }
   }
-  dJd() {
+  nZd() {
     var i = this.Command.GetViewInfoList();
     this.RIr = i;
-    this.lJd = 0;
+    this.tZd = 0;
   }
   OnBeforeShow() {}
   OnAfterShow() {}
@@ -89,8 +89,8 @@ class SurvivorsRogueEvolveView extends UiViewBase_1.UiViewBase {
     this.Command?.BindView(undefined);
   }
   Refresh() {
-    this.dJd();
-    this.mJd();
+    this.nZd();
+    this.sZd();
     this.Owd(false, true);
   }
   Owd(e, t) {
@@ -101,12 +101,12 @@ class SurvivorsRogueEvolveView extends UiViewBase_1.UiViewBase {
         i.push(this.Z$1());
       }
       if (e) {
-        if (this._Jd) {
+        if (this.iZd) {
           i.push(this.UiViewSequence.PlaySequenceAsync("Switch", new CustomPromise_1.CustomPromise(), true));
         } else {
           i.push(this.UiViewSequence.PlaySequenceAsync("Start", new CustomPromise_1.CustomPromise(), true));
         }
-        this._Jd = true;
+        this.iZd = true;
       }
       await Promise.all(i);
       if (this.wNd) {
@@ -116,7 +116,7 @@ class SurvivorsRogueEvolveView extends UiViewBase_1.UiViewBase {
     this.RunAsyncTask(i);
   }
   async Z$1() {
-    var i = this.RIr.at(this.lJd);
+    var i = this.RIr.at(this.tZd);
     if (i) {
       this.wNd = false;
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), i.TitleId);
@@ -172,25 +172,25 @@ class SurvivorsRogueEvolveView extends UiViewBase_1.UiViewBase {
       var o = s.Get(i);
       var a = o.GetPlayTween();
       var h = this.eVi.GetTextureIconItem();
-      var n = this.hJd.GetWeaponGrid(e).GetRootItem();
+      var n = this.eZd.GetWeaponGrid(e).GetRootItem();
       a.from = Vector_1.Vector.Create(h.GetLGUISpaceAbsolutePosition()).ToUeVectorOld();
       a.to = Vector_1.Vector.Create(n.GetLGUISpaceAbsolutePosition()).ToUeVectorOld();
       o.Stop();
       o.Play();
     }
   }
-  mJd() {
+  sZd() {
     for (const t of this.RIr) {
       var i;
       var e;
       if (t.WeaponEvolveIds && (i = t.SourceId, e = ModelManager_1.ModelManager.SurvivorsRogueModel.GainData.GetWeaponDataByWeaponId(i))) {
         e = e.Data.FTd.filter(i => !t.WeaponEvolveIds.includes(i));
-        e = this.cJd(e);
-        this.hJd.GetWeaponGrid(i)?.SetQualityById(e);
+        e = this.oZd(e);
+        this.eZd.GetWeaponGrid(i)?.SetQualityById(e);
       }
     }
   }
-  cJd(i) {
+  oZd(i) {
     let e = 0;
     for (const s of i) {
       var t = ConfigManager_1.ConfigManager.SurvivorsRogueConfig.GetSurvivorsWeaponEvolve(s);

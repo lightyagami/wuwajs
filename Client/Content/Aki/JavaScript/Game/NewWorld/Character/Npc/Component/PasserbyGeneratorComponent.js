@@ -55,23 +55,20 @@ let PasserbyGeneratorComponent = class PasserbyGeneratorComponent extends Entity
   OnStart() {
     this.Hte = this.Entity.GetComponent(1);
     this.EIe = this.Entity.GetComponent(0);
-    var e;
-    var t;
-    var o = (0, IComponent_1.getComponent)(this.EIe.GetPbEntityInitData().ComponentsData, "PasserbyNpcSpawnComponent");
-    if (!o?.SpawnConfig.MinDistance) {
+    var e = (0, IComponent_1.getComponent)(this.EIe.GetPbEntityInitData().ComponentsData, "PasserbyNpcSpawnComponent");
+    if (!e?.SpawnConfig.MinDistance) {
       return !(this.Din = false);
     }
-    this.Lin = o.SpawnConfig.MinDistance * o.SpawnConfig.MinDistance;
-    for (const r of o.MoveConfig.Routes) {
-      if (r.IsLoop) {
-        e = r.SplineEntityId;
-        if ((t = new GameSplineComponent_1.GameSplineComponent(e)).Initialize()) {
-          if (t.GetNumberOfSplinePoints()) {
-            this.Tin.push(new SplineStateInfo(e, t.GetWorldLocationAtSplinePoint(0)));
-          }
-        } else if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("NPC", 50, "行人生成器获取样条信息错误", ["PbDataId", this.EIe?.GetPbDataId()], ["SplinePbDataId", e]);
+    this.Lin = e.SpawnConfig.MinDistance * e.SpawnConfig.MinDistance;
+    for (const r of e.MoveConfig.Routes) {
+      var t = r.SplineEntityId;
+      var o = new GameSplineComponent_1.GameSplineComponent(t);
+      if (o.Initialize()) {
+        if (o.GetNumberOfSplinePoints()) {
+          this.Tin.push(new SplineStateInfo(t, o.GetWorldLocationAtSplinePoint(0)));
         }
+      } else if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("NPC", 50, "行人生成器获取样条信息错误", ["PbDataId", this.EIe?.GetPbDataId()], ["SplinePbDataId", t]);
       }
     }
     if (!this.Tin.length) {
@@ -141,5 +138,5 @@ let PasserbyGeneratorComponent = class PasserbyGeneratorComponent extends Entity
     };
   }
 };
-PasserbyGeneratorComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(215)], PasserbyGeneratorComponent);
+PasserbyGeneratorComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(222)], PasserbyGeneratorComponent);
 exports.PasserbyGeneratorComponent = PasserbyGeneratorComponent; //# sourceMappingURL=PasserbyGeneratorComponent.js.map

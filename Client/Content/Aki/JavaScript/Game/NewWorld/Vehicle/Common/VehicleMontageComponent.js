@@ -30,12 +30,12 @@ let VehicleMontageComponent = class VehicleMontageComponent extends BaseMontageC
     this.AnimationComponent = undefined;
   }
   OnStart() {
-    this.AnimationComponent = this.Entity.CheckGetComponent(239);
+    this.AnimationComponent = this.Entity.CheckGetComponent(248);
     return !!super.OnStart();
   }
   GetMainAnimInstance() {
     return this.AnimationComponent.MainAnimInstance;
   }
 };
-VehicleMontageComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(283)], VehicleMontageComponent);
+VehicleMontageComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(302)], VehicleMontageComponent);
 exports.VehicleMontageComponent = VehicleMontageComponent; //# sourceMappingURL=VehicleMontageComponent.js.map

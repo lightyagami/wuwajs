@@ -17,19 +17,19 @@ class HonamiStorySlotLockStateItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.Rjt = undefined;
-    this.Vrm = undefined;
+    this.lhm = undefined;
     this.owe = undefined;
     this.SPe = undefined;
-    this.zdm = false;
+    this.kpm = false;
     this.Dlu = e => {
       if (e === "Hide") {
         this.SetUiActive(false);
-      } else if (e === "Show" && this.zdm) {
-        this.zdm = false;
+      } else if (e === "Show" && this.kpm) {
+        this.kpm = false;
         this.SPe?.PlayLevelSequenceByName("Tips_Square");
       }
     };
-    this.Jdm = e => {
+    this.qpm = e => {
       if (e === "EmptyGridUnlock" && this.SPe.IsPlayingSequence("Show")) {
         e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("SP_GridIconAdd");
         this.SetSpriteByPath(e, this.GetSprite(0), false);
@@ -44,21 +44,21 @@ class HonamiStorySlotLockStateItem extends UiPanelBase_1.UiPanelBase {
     this.SPe.BindSequenceCloseEvent(this.Dlu);
   }
   OnBeforeShow() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.Jdm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.qpm);
   }
   OnBeforeHide() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.Jdm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.qpm);
   }
   RefreshState(e, t, i) {
     if (e) {
       this.RootItem?.SetUIActive(e);
       if (i && i !== this.owe && t) {
-        if (this.Vrm === undefined || this.Vrm) {
+        if (this.lhm === undefined || this.lhm) {
           if (!this.SPe.IsPlayingSequence("Tips_Square")) {
             this.SPe?.PlayLevelSequenceByName("Tips_Square");
           }
         } else {
-          this.zdm = true;
+          this.kpm = true;
         }
       } else if (!i) {
         this.GetUiNiagara(1)?.SetUIActive(false);
@@ -77,7 +77,7 @@ class HonamiStorySlotLockStateItem extends UiPanelBase_1.UiPanelBase {
   }
   RefreshUnlockState(e = false) {
     var t;
-    if (this.Vrm !== undefined && !this.Vrm && e) {
+    if (this.lhm !== undefined && !this.lhm && e) {
       if (!this.SPe.IsPlayingSequence("Show")) {
         this.SPe?.PlayLevelSequenceByName("Show");
       }
@@ -86,7 +86,7 @@ class HonamiStorySlotLockStateItem extends UiPanelBase_1.UiPanelBase {
       t = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(t);
       this.SetSpriteByPath(t, this.GetSprite(0), false);
     }
-    this.Vrm = e;
+    this.lhm = e;
   }
 }
 exports.HonamiStorySlotLockStateItem = HonamiStorySlotLockStateItem;
@@ -168,10 +168,10 @@ class HonamiStoryItemSweepItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.SPe = undefined;
-    this.opm = undefined;
+    this.zTm = undefined;
     this.Dlu = e => {
-      this.opm?.(e);
-      this.tRm(false);
+      this.zTm?.(e);
+      this.f$m(false);
     };
   }
   OnRegisterComponent() {
@@ -182,7 +182,7 @@ class HonamiStoryItemSweepItem extends UiPanelBase_1.UiPanelBase {
     this.SPe.BindSequenceCloseEvent(this.Dlu);
   }
   BindSeqEndCb(e) {
-    this.opm = e;
+    this.zTm = e;
   }
   SetData(i, s) {
     if (i) {
@@ -198,26 +198,26 @@ class HonamiStoryItemSweepItem extends UiPanelBase_1.UiPanelBase {
     }
   }
   PlaySequenceByNamePurely(e) {
-    this.tRm(true);
+    this.f$m(true);
     this.SPe?.PlaySequencePurely(e);
   }
   ClearSequence() {
     this.SPe?.StopCurrentSequence(false, true);
-    this.tRm(false);
-    this.iRm(false);
+    this.f$m(false);
+    this.g$m(false);
   }
-  tRm(e) {
+  f$m(e) {
     this.GetTexture(0)?.SetUIActive(e);
     this.GetTexture(1)?.SetUIActive(e);
   }
-  iRm(e) {
+  g$m(e) {
     this.GetTexture(2)?.SetUIActive(e);
   }
   OnBeforeShow() {
-    this.tRm(false);
+    this.f$m(false);
   }
   OnBeforeHide() {
-    this.tRm(false);
+    this.f$m(false);
   }
 }
 exports.HonamiStoryItemSweepItem = HonamiStoryItemSweepItem;

@@ -19,13 +19,13 @@ class VisionEquipmentRecommendItem extends UiPanelBase_1.UiPanelBase {
     super(...arguments);
     this.Oo_ = new Array();
     this.Go_ = new Array();
-    this.hrm = undefined;
+    this.Iam = undefined;
     this.Fo_ = new Array();
     this.No_ = new Array();
-    this._rm = new Array();
+    this.Tam = new Array();
     this.Vo_ = undefined;
     this.jo_ = undefined;
-    this.urm = undefined;
+    this.bam = undefined;
     this.O5t = 0;
     this.ko_ = 0;
     this.Ho_ = undefined;
@@ -39,15 +39,15 @@ class VisionEquipmentRecommendItem extends UiPanelBase_1.UiPanelBase {
       this.Go_ = [];
       this.ClearSelectMainPhantom();
     };
-    this.crm = t => {
+    this.Ram = t => {
       var i;
-      if (this.hrm && t.MonsterId === this.hrm.MonsterId && t.FetterGroupId === this.hrm.FetterGroupId) {
+      if (this.Iam && t.MonsterId === this.Iam.MonsterId && t.FetterGroupId === this.Iam.FetterGroupId) {
         this.ClearSelectMainPhantom();
       } else {
         (i = new VisionRecommendModel_1.VisionMainSelectPhantomData()).MonsterId = t.MonsterId;
         i.FetterGroupId = t.FetterGroupId;
-        this.hrm = i;
-        this.Zam(this.O5t, this.ko_);
+        this.Iam = i;
+        this.g_m(this.O5t, this.ko_);
         this.Wo_();
       }
     };
@@ -102,27 +102,27 @@ class VisionEquipmentRecommendItem extends UiPanelBase_1.UiPanelBase {
     this.jo_ = new RecommendAttrItem();
     await this.jo_.CreateByActorAsync(this.GetItem(3).GetOwner());
     this.jo_.SetActive(true);
-    this.urm = new MainPhantomRecommendItem();
-    await this.urm.CreateByActorAsync(this.GetItem(5).GetOwner());
-    this.urm.SetActive(true);
+    this.bam = new MainPhantomRecommendItem();
+    await this.bam.CreateByActorAsync(this.GetItem(5).GetOwner());
+    this.bam.SetActive(true);
   }
   BindOnChangeAttrCallBack(t) {
     this.Ho_ = t;
   }
   ChangeCost(t, i) {
     this.ko_ = i;
-    this.urm?.SetUiActive(t === 0);
+    this.bam?.SetUiActive(t === 0);
     if (t !== 0) {
-      this.hrm = undefined;
+      this.Iam = undefined;
     }
-    this.Zam(t, i);
+    this.g_m(t, i);
     this.Wo_();
     this.Pd_(t);
   }
-  Zam(t, i) {
+  g_m(t, i) {
     let e = t;
-    if (this.hrm) {
-      t = ConfigManager_1.ConfigManager.PhantomBattleConfig.GetPhantomItemByMonsterId(this.hrm.MonsterId)[0].Rarity;
+    if (this.Iam) {
+      t = ConfigManager_1.ConfigManager.PhantomBattleConfig.GetPhantomItemByMonsterId(this.Iam.MonsterId)[0].Rarity;
       e = ConfigManager_1.ConfigManager.PhantomBattleConfig.GetPhantomRareConfig(t).Cost;
     }
     this.O5t = e;
@@ -165,20 +165,20 @@ class VisionEquipmentRecommendItem extends UiPanelBase_1.UiPanelBase {
   }
   Wo_() {
     var t = ModelManager_1.ModelManager.VisionRecommendModel.GetRoleMainPhantomRecommendInfo(this.ko_);
-    ModelManager_1.ModelManager.VisionRecommendModel.CurrentMainPhantom = this.hrm;
+    ModelManager_1.ModelManager.VisionRecommendModel.CurrentMainPhantom = this.Iam;
     if (t) {
       t = t.GetMainPhantomInfo();
-      this._rm = new Array();
+      this.Tam = new Array();
       for (const n of t.slice(0, 3)) {
         var i = new MainPhantomItemData();
         i.MonsterId = n.GetMonsterId();
         i.FetterGroupId = n.GetFetterGroupId();
-        i.CurrentSelectMainPhantom = this.hrm;
+        i.CurrentSelectMainPhantom = this.Iam;
         i.UsageText = n.GetUsageText();
-        i.OnMainPhantomCallBack = this.crm;
-        this._rm.push(i);
+        i.OnMainPhantomCallBack = this.Ram;
+        this.Tam.push(i);
       }
-      this.urm?.Refresh(this._rm);
+      this.bam?.Refresh(this.Tam);
     }
     t = ModelManager_1.ModelManager.VisionRecommendModel.GetRoleCostAttrRecommendInfo(this.ko_, this.O5t);
     ModelManager_1.ModelManager.VisionRecommendModel.CurrentSelectMainAttrArray = this.Oo_;
@@ -222,12 +222,12 @@ class VisionEquipmentRecommendItem extends UiPanelBase_1.UiPanelBase {
   }
   ClearSelectMainPhantom(t = true) {
     let i = false;
-    if (this.hrm) {
-      this.hrm = undefined;
+    if (this.Iam) {
+      this.Iam = undefined;
       this.O5t = 0;
       i = true;
     }
-    this.Zam(this.O5t, this.ko_);
+    this.g_m(this.O5t, this.ko_);
     if (i && t) {
       this.OnDeselectMainPhantomCallback?.();
     } else {
@@ -330,7 +330,7 @@ class MainPhantomContent extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
     super(...arguments);
     this.$8i = undefined;
-    this.drm = undefined;
+    this.wam = undefined;
     this.OnClickTogOption = () => {
       if (this.$8i !== undefined && this.$8i.OnMainPhantomCallBack !== undefined) {
         this.$8i.OnMainPhantomCallBack(this.$8i);
@@ -342,8 +342,8 @@ class MainPhantomContent extends GridProxyAbstract_1.GridProxyAbstract {
     this.BtnBindInfo = [[0, this.OnClickTogOption]];
   }
   async OnBeforeStartAsync() {
-    this.drm = new VisionMainFetterSuitItem(this.GetItem(4));
-    await this.drm.Init();
+    this.wam = new VisionMainFetterSuitItem(this.GetItem(4));
+    await this.wam.Init();
   }
   OnStart() {
     this.GetItem(5).SetUIActive(false);
@@ -351,7 +351,7 @@ class MainPhantomContent extends GridProxyAbstract_1.GridProxyAbstract {
   }
   OnUpdateItem(t) {
     if (t &&= ConfigManager_1.ConfigManager.PhantomBattleConfig.GetFetterGroupById(t.FetterGroupId)) {
-      this.drm.Update(t);
+      this.wam.Update(t);
     }
   }
   Refresh(t, i, e) {
@@ -364,7 +364,7 @@ class MainPhantomContent extends GridProxyAbstract_1.GridProxyAbstract {
       this.GetText(2).ShowTextNew(s);
     }
     var s = ConfigManager_1.ConfigManager.PhantomBattleConfig.GetFetterGroupById(t.FetterGroupId);
-    this.drm?.Refresh(s);
+    this.wam?.Refresh(s);
     var s = t.UsageText;
     this.GetText(3).SetText(s);
     let h = false;

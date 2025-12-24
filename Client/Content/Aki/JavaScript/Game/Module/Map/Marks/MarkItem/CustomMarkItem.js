@@ -17,6 +17,7 @@ const ServerMarkItem_1 = require("./ServerMarkItem");
 class CustomMarkItem extends ServerMarkItem_1.ServerMarkItem {
   constructor(e, r, t, a) {
     super(e, r, t, a);
+    this.IsCreated = false;
     this.NDi = false;
   }
   get MarkType() {

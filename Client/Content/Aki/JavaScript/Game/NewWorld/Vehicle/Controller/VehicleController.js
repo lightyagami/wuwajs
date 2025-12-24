@@ -5,32 +5,47 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.VehicleController = undefined;
+const Info_1 = require("../../../../Core/Common/Info");
 const Log_1 = require("../../../../Core/Common/Log");
+const Queue_1 = require("../../../../Core/Container/Queue");
 const Protocol_1 = require("../../../../Core/Define/Net/Protocol");
 const ControllerBase_1 = require("../../../../Core/Framework/ControllerBase");
+const GameBudgetInterfaceController_1 = require("../../../../Core/GameBudgetAllocator/GameBudgetInterfaceController");
 const Net_1 = require("../../../../Core/Net/Net");
 const MathUtils_1 = require("../../../../Core/Utils/MathUtils");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const Global_1 = require("../../../Global");
+const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const GameModePromise_1 = require("../../../World/Define/GameModePromise");
 const WaitEntityTask_1 = require("../../../World/Define/WaitEntityTask");
 const CustomMovementDefine_1 = require("../../Character/Common/Component/Move/CustomMovementDefine");
 const VehicleInfoDefines_1 = require("../Common/VehicleInfoDefines");
 const WAIT_ENTITY_CREATE_TIMEOUT = 60000;
-const TRIAL_ROLE_ID = 10000;
 const CHECK_DRIVE_INFO_INTERVAL = 500;
+const enableMotorcycleTagId = -1118575054;
+const disableMotorcycleTagId = 379437700;
+const MIN_UPDATE_FIFO_BUDGET_TIME_IN_MOTORCYCLE = 6;
+const SOURCE_MIN_UPDATE_FIFO_BUDGET_TIME = 3;
 class VehicleController extends ControllerBase_1.ControllerBase {
   static OnInit() {
+    this.Fkf = new Queue_1.Queue();
     Net_1.Net.Register(29073, this.VehicleUpdateNotify);
-    Net_1.Net.Register(29170, this.OnUpdateVehicleRideSharingNotify);
+    Net_1.Net.Register(29170, this.VehiclePassengerUpdateNotify);
     Net_1.Net.Register(20089, this.VehicleUpdateEntityNotify);
+    Net_1.Net.Register(21947, this.VehicleShareNotify);
+    Net_1.Net.Register(28979, this.MotorOutlookChange);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnChangeRole, this.OnChangeRole);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnOtherChangeRole, this.OnOtherChangeRole);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnEnterVehicle, this.OnEnterVehicle);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnLeaveVehicle, this.OnLeaveVehicle);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnChangeRideSharingPassenger, this.OnChangeVehicleRideSharing);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRemoveRideSharingPassenger, this.OnRemoveVehicleRideSharing);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnFunctionOpenSet, this.lxf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnFunctionOpenUpdate, this.lxf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PlayerEntityStarted, this._xf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PlayerEntityEnded, this.uxf);
     return true;
   }
   static OnTick(e) {
@@ -40,22 +55,37 @@ class VehicleController extends ControllerBase_1.ControllerBase {
     }
   }
   static OnClear() {
+    this.Fkf?.Clear();
+    this.Fkf = undefined;
     Net_1.Net.UnRegister(29073);
     Net_1.Net.UnRegister(29170);
     Net_1.Net.UnRegister(20089);
+    Net_1.Net.UnRegister(21947);
+    Net_1.Net.UnRegister(28979);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnChangeRole, this.OnChangeRole);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnOtherChangeRole, this.OnOtherChangeRole);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnEnterVehicle, this.OnEnterVehicle);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnLeaveVehicle, this.OnLeaveVehicle);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnChangeRideSharingPassenger, this.OnChangeVehicleRideSharing);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRemoveRideSharingPassenger, this.OnRemoveVehicleRideSharing);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnFunctionOpenSet, this.lxf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnFunctionOpenUpdate, this.lxf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PlayerEntityStarted, this._xf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PlayerEntityEnded, this.uxf);
     return true;
   }
   static VehicleUpdateEntity(e) {
     ModelManager_1.ModelManager.VehicleModel.UpdateEntityVehicleData(e);
-    this.RegisterWaitEntityTask(e);
+    var t = ModelManager_1.ModelManager.CreatureModel.GetEntity(e.EntityCreatureId)?.Entity;
+    var o = ModelManager_1.ModelManager.CreatureModel.GetEntity(e.VehicleCreatureId)?.Entity;
+    this.W5_(t, o, e.Seat, e.ExitType);
+  }
+  static CheckMotorAllowed(e = true) {
+    var t;
+    return !!ModelManager_1.ModelManager.FunctionModel?.IsOpen(10098) && !ModelManager_1.ModelManager.FunctionModel?.IsLimit(10098) && !(t = ModelManager_1.ModelManager.CreatureModel.GetPlayerId(), !(t = ControllerHolder_1.ControllerHolder.FormationDataController.GetPlayerEntity(t)?.CheckGetComponent(210))?.HasTag(enableMotorcycleTagId)) && (!e || !t?.HasTag(disableMotorcycleTagId));
   }
   static W5_(e, t, o, r = 0) {
-    if (e?.IsInit && t?.IsInit && (t = t.GetComponent(237))) {
+    if (e?.IsInit && t?.IsInit && t?.Active && (t = t.GetComponent(246))) {
       if (o !== -1) {
         t.Enter(e, o);
       } else {
@@ -69,65 +99,57 @@ class VehicleController extends ControllerBase_1.ControllerBase {
     var o;
     var r;
     var a = ModelManager_1.ModelManager.CreatureModel.GetPlayerId();
-    var i = ModelManager_1.ModelManager.VehicleModel.GetPlayerVehicleData(a);
-    if (i && (r = i.EntityCreatureId, e = i.VehicleCreatureId, t = ModelManager_1.ModelManager.CreatureModel.GetEntity(r)?.Entity, o = ModelManager_1.ModelManager.CreatureModel.GetEntity(e)?.Entity, this.Q5_ && (this.Q5_.SetResult(true), this.Q5_ = undefined), t?.IsInit && o?.IsInit || (Log_1.Log.CheckInfo() && Log_1.Log.Info("Vehicle", 48, "角色或船未加载完成，进行等待", ["passengerCreatureId", r], ["vehicleCreatureId", e]), this.Q5_ = new GameModePromise_1.GameModePromise(), WaitEntityTask_1.WaitEntityTask.Create("VehicleController.UpdatePlayerVehiclePerform", [e, r], () => {
+    var n = ModelManager_1.ModelManager.VehicleModel.GetPlayerVehicleData(a);
+    if (n && (r = n.EntityCreatureId, e = n.VehicleCreatureId, t = ModelManager_1.ModelManager.CreatureModel.GetEntity(r)?.Entity, o = ModelManager_1.ModelManager.CreatureModel.GetEntity(e)?.Entity, this.Q5_ && (this.Q5_.SetResult(true), this.Q5_ = undefined), t?.IsInit && o?.IsInit || (Log_1.Log.CheckInfo() && Log_1.Log.Info("Vehicle", 48, "角色或船未加载完成，进行等待", ["passengerCreatureId", r], ["vehicleCreatureId", e]), this.Q5_ = new GameModePromise_1.GameModePromise(), WaitEntityTask_1.WaitEntityTask.Create("VehicleController.UpdatePlayerVehiclePerform", [e, r], () => {
       this.Q5_?.SetResult(true);
       this.Q5_ = undefined;
     }, WAIT_ENTITY_CREATE_TIMEOUT)), await this.Q5_?.Promise, r === (r = ModelManager_1.ModelManager.VehicleModel.GetPlayerVehicleData(a))?.EntityCreatureId) && e === r?.VehicleCreatureId) {
       this.W5_(t, o, -1, 1);
-      this.W5_(t, o, i.Seat, i.ExitType);
+      this.W5_(t, o, n.Seat, n.ExitType);
     }
   }
-  static OnCharacterActivate(e) {
+  static OnCharacterEnable(e) {
     var t = e.GetComponent(0);
+    var o = t.GetCreatureDataId();
+    var r = t.GetPbDataId();
+    var a = t.GetPlayerId();
+    var n = t.IsRole() ? ModelManager_1.ModelManager.VehicleModel.GetPlayerVehicleData(t.GetPlayerId()) : ModelManager_1.ModelManager.VehicleModel.GetEntityVehicleData(t.GetCreatureDataId());
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("Vehicle", 50, "OnRoleActivate", ["PlayerId", t.GetPlayerId()], ["PlayerCreatureId", t.GetCreatureDataId()]);
+      Log_1.Log.Info("Vehicle", 50, "[OnCharacterActivate] 乘客实体准备完成", ["PbDataId", r], ["CreatureId", o], ["PlayerId", a]);
     }
-    var o = ModelManager_1.ModelManager.VehicleModel.GetPlayerVehicleData(t.GetPlayerId());
-    if (o?.EntityCreatureId !== t.GetCreatureDataId()) {
+    if (n?.EntityCreatureId !== t.GetCreatureDataId()) {
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("Vehicle", 50, "OnRoleActivate 非当前角色乘坐", ["PlayerId", t.GetPlayerId()], ["PlayerCreatureId", t.GetCreatureDataId()]);
+        Log_1.Log.Info("Vehicle", 50, "[OnCharacterActivate] 非当前乘客实体乘坐", ["PbDataId", r], ["CreatureId", o], ["PlayerId", a]);
       }
-    } else if (o?.VehicleCreatureId) {
-      t = ModelManager_1.ModelManager.CreatureModel.GetEntity(o.VehicleCreatureId)?.Entity;
-      this.W5_(e, t, o.Seat, o.ExitType);
+    } else if (!!n?.VehicleCreatureId && (t = ModelManager_1.ModelManager.CreatureModel.GetEntity(n.VehicleCreatureId)?.Entity)?.Active) {
+      this.W5_(e, t, n.Seat, n.ExitType);
     }
   }
-  static OnVehicleActivate(e) {
+  static OnVehicleEnable(e) {
     var t;
     var o = e.GetComponent(0);
+    var r = o.GetCreatureDataId();
+    var o = o.GetPbDataId();
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("Vehicle", 50, "OnVehicleActivate", ["VehicleCreatureId", o.GetCreatureDataId()]);
+      Log_1.Log.Info("Vehicle", 50, "[OnCharacterActivate] 载具实体准备完成", ["PbDataId", o], ["CreatureId", r]);
     }
-    var o = ModelManager_1.ModelManager.VehicleModel.GetVehiclePlayerData(o.GetCreatureDataId());
-    for (const r of o) {
-      if (r.VehicleCreatureId && r.Seat >= 0) {
-        t = ModelManager_1.ModelManager.CreatureModel.GetEntity(r.EntityCreatureId)?.Entity;
-        this.W5_(t, e, r.Seat, r.ExitType);
+    var o = ModelManager_1.ModelManager.VehicleModel.GetVehicleEntityData(r);
+    for (const a of o) {
+      if (a.VehicleCreatureId && a.Seat >= 0) {
+        t = ModelManager_1.ModelManager.CreatureModel.GetEntity(a.EntityCreatureId)?.Entity;
+        this.W5_(t, e, a.Seat, a.ExitType);
       }
     }
   }
-  static RegisterWaitEntityTask(o) {
-    var e = ModelManager_1.ModelManager.VehicleModel.PassengerVehicleMap.get(o.EntityCreatureId);
-    if (e?.Context?.Equals(o) && !e.WaitTask) {
-      const r = o.EntityCreatureId;
-      const a = o.VehicleCreatureId;
-      if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("Vehicle", 50, "[VehicleController] 创建载具等待实体任务", ["EntityCreatureId", r], ["VehicleCreatureId", a], ["Seat", o.Seat]);
-      }
-      e.WaitTask = WaitEntityTask_1.WaitEntityTask.Create("VehicleController.RegisterWaitEntityTask", [a, r], e => {
-        var t;
-        if (e && (e = ModelManager_1.ModelManager.VehicleModel.PassengerVehicleMap.get(r))?.Context?.Equals(o)) {
-          if (Log_1.Log.CheckInfo()) {
-            Log_1.Log.Info("Vehicle", 50, "[VehicleController] 开始执行载具等待实体任务", ["EntityCreatureId", r], ["VehicleCreatureId", a], ["Seat", o.Seat]);
-          }
-          e.WaitTask = undefined;
-          e = ModelManager_1.ModelManager.CreatureModel.GetEntity(r)?.Entity;
-          t = ModelManager_1.ModelManager.CreatureModel.GetEntity(a)?.Entity;
-          this.W5_(e, t, o.Seat, o.ExitType);
-          ModelManager_1.ModelManager.VehicleModel.PostUpdateVehicleEntityData(o);
+  static aKf(e, t) {
+    if (Info_1.Info.IsPcOrGamepadPlatform() && t.IsRolePassenger(true) && t.VehicleType === "Motorcycle") {
+      if (e) {
+        if (GameBudgetInterfaceController_1.GameBudgetInterfaceController.MinUpdateFifoBudgetTime === SOURCE_MIN_UPDATE_FIFO_BUDGET_TIME) {
+          GameBudgetInterfaceController_1.GameBudgetInterfaceController.UpdateMinUpdateFifoBudgetTime(MIN_UPDATE_FIFO_BUDGET_TIME_IN_MOTORCYCLE);
         }
-      }, WAIT_ENTITY_CREATE_TIMEOUT, false, true);
+      } else if (GameBudgetInterfaceController_1.GameBudgetInterfaceController.MinUpdateFifoBudgetTime === MIN_UPDATE_FIFO_BUDGET_TIME_IN_MOTORCYCLE) {
+        GameBudgetInterfaceController_1.GameBudgetInterfaceController.UpdateMinUpdateFifoBudgetTime(SOURCE_MIN_UPDATE_FIFO_BUDGET_TIME);
+      }
     }
   }
   static TryEnterRideSharingMode(e) {
@@ -135,7 +157,7 @@ class VehicleController extends ControllerBase_1.ControllerBase {
     var o;
     if (this.CanResponseRideSharingModeChange(e)) {
       if (ModelManager_1.ModelManager.VehicleModel.IsReadyRiderSharing) {
-        t = e.VehicleEntity?.GetComponent(238);
+        t = e.VehicleEntity?.GetComponent(247);
         o = e.PassengerEntity?.GetComponent(2);
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("Vehicle", 50, "重复进入共乘玩法", ["VehicleId", t?.CreatureData.GetPbDataId()], ["PassengerId", o?.CreatureData.GetPbDataId()], ["Seat", e.Seat]);
@@ -157,7 +179,7 @@ class VehicleController extends ControllerBase_1.ControllerBase {
     var o;
     if (this.CanResponseRideSharingModeChange(e)) {
       if (!ModelManager_1.ModelManager.VehicleModel.IsReadyRiderSharing) {
-        t = e.VehicleEntity?.GetComponent(238);
+        t = e.VehicleEntity?.GetComponent(247);
         o = e.PassengerEntity?.GetComponent(2);
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("Vehicle", 50, "离开载具前已退出共乘玩法", ["VehicleId", t?.CreatureData.GetPbDataId()], ["PassengerId", o?.CreatureData.GetPbDataId()], ["Seat", e.Seat]);
@@ -178,33 +200,49 @@ class VehicleController extends ControllerBase_1.ControllerBase {
     }
   }
   static CanResponseRideSharingModeChange(e) {
-    return !!e.IsRolePassenger(true) && !(e.PassengerEntity.GetComponent(0).GetRoleId() > TRIAL_ROLE_ID) && !!e.VehicleEntity.GetComponent(237) && !!this.CheckVehicleTypeForRideSharing(e);
+    return !!e.IsRolePassenger(true) && !!e.VehicleEntity.GetComponent(246) && !!this.CheckVehicleTypeForRideSharing(e);
   }
   static CheckVehicleTypeForRideSharing(e) {
     switch (e.VehicleType) {
       case "Gongduola":
       case "AutoMoveGongduola":
+      case "Motorcycle":
         return e.IsDriver;
       case "CoBathingEmptyVehicle":
         return true;
     }
     return false;
   }
-  static OnChangeMode() {
-    ModelManager_1.ModelManager.VehicleModel.Reset();
-    return true;
-  }
   static SetRideSharingEnable(e) {
-    if (ModelManager_1.ModelManager.VehicleModel.IsForbidRiderSharing === e && (ModelManager_1.ModelManager.VehicleModel.IsForbidRiderSharing = !e, Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity?.GetComponent(233)?.VehicleEntity?.GetComponent(241)?.RefreshRideSharingSkillState(), !e)) {
+    if (ModelManager_1.ModelManager.VehicleModel.IsForbidRiderSharing === e && (ModelManager_1.ModelManager.VehicleModel.IsForbidRiderSharing = !e, Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity?.GetComponent(242)?.VehicleEntity?.GetComponent(250)?.RefreshRideSharingSkillState(), !e)) {
       var t = ModelManager_1.ModelManager.VehicleModel.RideSharingInfoMap.size;
       for (let e = 0; e < t; e++) {
         this.OnRemoveVehicleRideSharing(-1, -1);
       }
     }
   }
+  static ChangeRoleEntityOnVehicle(e) {
+    var t;
+    var o;
+    var r;
+    var a = e.Entity.GetComponent(0);
+    var n = ModelManager_1.ModelManager.VehicleModel.GetPlayerVehicleData(a.GetPlayerId());
+    if (n?.VehicleCreatureId) {
+      t = n.DeepCopy();
+      o = n.DeepCopy();
+      r = this.K6_(n.EntityCreatureId)?.Entity;
+      n = ModelManager_1.ModelManager.CreatureModel.GetEntity(n.VehicleCreatureId)?.Entity;
+      o.VehicleCreatureId = 0;
+      ModelManager_1.ModelManager.VehicleModel.UpdatePlayerVehicleData(o);
+      this.W5_(r, n, -1, 1);
+      t.EntityCreatureId = a.GetCreatureDataId();
+      ModelManager_1.ModelManager.VehicleModel.UpdatePlayerVehicleData(t);
+      this.W5_(e.Entity, n, t.Seat);
+    }
+  }
   static $bl(e) {
     if (e.IsDriver && e.IsRolePassenger(true) && e.VehicleEntity) {
-      this.Kbl = e.VehicleEntity.GetComponent(240);
+      this.Kbl = e.VehicleEntity.GetComponent(249);
       switch (e.VehicleType) {
         case "Gongduola":
           ModelManager_1.ModelManager.GameAudioModel.AddAllGondolaMusic(e.VehicleEntity);
@@ -254,11 +292,39 @@ class VehicleController extends ControllerBase_1.ControllerBase {
   static K6_(e) {
     return ModelManager_1.ModelManager.CreatureModel.GetEntity(e) ?? ModelManager_1.ModelManager.CreatureModel.GetEntityWithDelayRemoveContainer(e) ?? ModelManager_1.ModelManager.CreatureModel.GetEntityWithPendingRemoveContainer(e);
   }
+  static async Nkf(e) {
+    var t;
+    if (!e || !!VehicleController.CheckMotorAllowed(false)) {
+      if (this.Vkf) {
+        this.Fkf.Push(e);
+      } else {
+        this.Vkf = true;
+        (t = new Protocol_1.Aki.Protocol.pUf()).vUf = e;
+        e = await Net_1.Net.CallAsync(24832, t);
+        this.Vkf = false;
+        if (!this.Fkf.Empty) {
+          t = this.Fkf.Pop();
+          this.Nkf(t);
+        }
+        if (e && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && !ModelManager_1.ModelManager.FunctionModel.GetFunctionInstance(10098)?.GetIsOpen() && Log_1.Log.CheckWarn()) {
+          Log_1.Log.Warn("Vehicle", 72, "MotorCreateRequest failed, motorcycle function is not set or open", ["errorCode", e.Q4n]);
+        }
+      }
+    }
+  }
+  static xtg(e, t = "") {
+    var o = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity?.CheckGetComponent(242);
+    if (o && o.VehicleEntity?.Valid && o.VehicleType === e && (o = o.VehicleEntity.CheckGetComponent(246)) && o.VehicleType === e) {
+      o.TryLeaveAllAtOnce(0, t);
+    }
+  }
 }
 exports.VehicleController = VehicleController;
 (_a = VehicleController).mie = 0;
 VehicleController.Kbl = undefined;
 VehicleController.Q5_ = undefined;
+VehicleController.Fkf = undefined;
+VehicleController.Vkf = false;
 VehicleController.VehicleUpdateNotify = e => {
   var t;
   var o;
@@ -288,15 +354,17 @@ VehicleController.VehicleUpdateEntityNotify = e => {
 VehicleController.OnEnterVehicle = e => {
   _a.TryEnterRideSharingMode(e);
   _a.$bl(e);
+  _a.aKf(true, e);
 };
 VehicleController.OnLeaveVehicle = e => {
   _a.TryExitRideSharingMode(e);
   _a.zbl(e);
+  _a.aKf(false, e);
 };
 VehicleController.OnChangeVehicleRideSharing = (t, o) => {
   var e;
-  var r = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity.GetComponent(234)?.VehicleEntity;
-  if (r && ModelManager_1.ModelManager.VehicleModel.IsReadyRiderSharing && !ModelManager_1.ModelManager.VehicleModel.IsForbidRiderSharing && (r = r.GetComponent(237), (r = o !== -1 ? o : r.TryFindUsableSeat(false)) !== -1) && ((e = Protocol_1.Aki.Protocol.vp_.create()).Q6n = t, e.fhl = r, Net_1.Net.Call(27060, e, e => {
+  var r = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity.GetComponent(243)?.VehicleEntity;
+  if (r && ModelManager_1.ModelManager.VehicleModel.IsReadyRiderSharing && !ModelManager_1.ModelManager.VehicleModel.IsForbidRiderSharing && (r = r.GetComponent(246), (r = o !== -1 ? o : r.TryFindUsableSeat(false)) !== -1) && ((e = Protocol_1.Aki.Protocol.vp_.create()).Q6n = t, e.fhl = r, Net_1.Net.Call(27060, e, e => {
     if (e && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && Log_1.Log.CheckError()) {
       Log_1.Log.Error("Vehicle", 50, "共乘ChangeRole请求失败", ["ErrorCode", e.Q4n], ["RoleId", t], ["Seat", o]);
     }
@@ -320,7 +388,7 @@ VehicleController.OnRemoveVehicleRideSharing = (e, t) => {
     }
   }
 };
-VehicleController.OnUpdateVehicleRideSharingNotify = e => {
+VehicleController.VehiclePassengerUpdateNotify = e => {
   var t;
   if (e.Q6n) {
     t = new VehicleInfoDefines_1.VehicleRideSharingInfo(e);
@@ -339,31 +407,66 @@ VehicleController.OnUpdateVehicleRideSharingNotify = e => {
     Log_1.Log.Debug("Vehicle", 50, "收到共乘玩法UpdateNotify", ["RoleId", e.Q6n], ["SeatId", e.fhl]);
   }
 };
+VehicleController.VehicleShareNotify = e => {
+  if (ModelManager_1.ModelManager.VehicleModel.GetPlayerVehicleData(e.W5n)) {
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSpecialVehicleShareNotify, e);
+  } else if (Log_1.Log.CheckError()) {
+    Log_1.Log.Error("Vehicle", 50, "[VehicleShareNotify] 无法找到对应的玩家载具信息", ["PlayerId", e.W5n]);
+  }
+};
+VehicleController.MotorOutlookChange = e => {
+  if (Log_1.Log.CheckDebug()) {
+    Log_1.Log.Debug("Motor", 6, "EquipMotor OnNotify", ["Id", e.F4n]);
+  }
+  var t = ModelManager_1.ModelManager.CreatureModel.GetEntity(MathUtils_1.MathUtils.LongToNumber(e.F4n))?.Entity?.GetComponent(269);
+  if (t) {
+    t.EquipMotor(e.E0f);
+  }
+};
 VehicleController.OnChangeRole = (e, t) => {
-  var o;
-  var r;
-  var a = e.Entity.GetComponent(0);
-  var i = ModelManager_1.ModelManager.VehicleModel.GetPlayerVehicleData(a.GetPlayerId());
-  if (i?.VehicleCreatureId) {
-    if (i.EntityCreatureId === a.GetCreatureDataId()) {
+  var o = e.Entity.GetComponent(0);
+  var r = ModelManager_1.ModelManager.VehicleModel.GetPlayerVehicleData(o.GetPlayerId());
+  if (r?.VehicleCreatureId) {
+    if (r.EntityCreatureId === o.GetCreatureDataId()) {
       if (t === undefined && (e.Entity.GetComponent(3)?.Actor.KuroSetMovementMode({
         Mode: 6,
         CustomMode: CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_RIDE,
         Context: "[VehicleController.OnChangeRole]"
-      }), Log_1.Log.CheckInfo())) {
-        Log_1.Log.Info("Vehicle", 50, "[VehicleController] 乘坐载具后角色上场，强制维持Ride移动状态", ["CreatureId", i.EntityCreatureId], ["PbDataId", a.GetPbDataId()]);
+      }), e.Entity.GetComponent(242)?.AttachAndSetPassengerTransform(), Log_1.Log.CheckInfo())) {
+        Log_1.Log.Info("Vehicle", 50, "[VehicleController] 乘坐载具后角色上场，强制维持Ride移动状态并ReAttach载具", ["CreatureId", r.EntityCreatureId], ["PbDataId", o.GetPbDataId()]);
       }
     } else {
-      t = i.DeepCopy();
-      o = i.DeepCopy();
-      r = _a.K6_(i.EntityCreatureId)?.Entity;
-      i = ModelManager_1.ModelManager.CreatureModel.GetEntity(i.VehicleCreatureId)?.Entity;
-      o.VehicleCreatureId = 0;
-      ModelManager_1.ModelManager.VehicleModel.UpdatePlayerVehicleData(o);
-      _a.W5_(r, i, -1, 1);
-      t.EntityCreatureId = a.GetCreatureDataId();
-      ModelManager_1.ModelManager.VehicleModel.UpdatePlayerVehicleData(t);
-      _a.W5_(e.Entity, i, t.Seat);
+      _a.ChangeRoleEntityOnVehicle(e);
     }
+  }
+};
+VehicleController.OnOtherChangeRole = (e, t) => {
+  var o = e.Entity.GetComponent(0);
+  var r = ModelManager_1.ModelManager.VehicleModel.GetPlayerVehicleData(o.GetPlayerId());
+  if (r?.VehicleCreatureId && r.EntityCreatureId !== o.GetCreatureDataId()) {
+    _a.ChangeRoleEntityOnVehicle(e);
+  }
+};
+VehicleController.lxf = (e, t) => {
+  if (e === 10098) {
+    if (!t) {
+      VehicleController.xtg("Motorcycle", "UpdateVehicleFunctionOpen");
+    }
+    _a.Nkf(t);
+  }
+};
+VehicleController.dxf = (e, t) => {
+  if (e === enableMotorcycleTagId) {
+    _a.Nkf(t);
+  }
+};
+VehicleController._xf = (e, t) => {
+  if (ModelManager_1.ModelManager.CreatureModel.GetPlayerId() === e) {
+    t.CheckGetComponent(210)?.AddTagAddOrRemoveListener(enableMotorcycleTagId, _a.dxf);
+  }
+};
+VehicleController.uxf = (e, t) => {
+  if (ModelManager_1.ModelManager.CreatureModel.GetPlayerId() === e) {
+    t.CheckGetComponent(210)?.RemoveTagAddOrRemoveListener(enableMotorcycleTagId, _a.dxf);
   }
 }; //# sourceMappingURL=VehicleController.js.map

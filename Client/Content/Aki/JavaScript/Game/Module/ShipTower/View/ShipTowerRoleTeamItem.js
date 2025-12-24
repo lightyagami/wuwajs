@@ -37,43 +37,44 @@ class ShipTowerRoleTeamItem extends GridProxyAbstract_1.GridProxyAbstract {
   qA_() {
     return this.GetExtendToggle(0);
   }
-  Refresh(o) {
-    this.fGt = o;
-    let h = true;
+  Refresh(s) {
+    this.fGt = s;
+    let o = true;
+    const h = s.GetRoleIdListWithTrial(false);
     this.Vlo.forEach((e, t) => {
       var i;
       var r;
-      var s = o.GetRoleIdList[t];
-      if (s) {
-        i = ModelManager_1.ModelManager.RoleModel.GetRoleDataById(s);
-        r = ModelManager_1.ModelManager.ShipTowerModel.GetAllTeamRoleData(s);
-        s = {
+      var t = h[t];
+      if (t) {
+        i = ModelManager_1.ModelManager.RoleModel.GetRoleDataById(t);
+        r = ModelManager_1.ModelManager.ShipTowerModel.GetAllTeamRoleData(t);
+        t = {
           Type: 2,
-          ItemConfigId: s,
-          SkinId: o.GetRoleDataByPosition(t + 1)?.RoleSkinId ?? 0,
+          ItemConfigId: t,
+          SkinId: s.GetRoleDataById(t)?.RoleSkinId ?? 0,
           BottomTextId: "Text_LevelShow_Text",
           BottomTextParameter: [i.GetLevelData().GetLevel()],
           ElementId: i.GetRoleConfig().ElementId,
           HalfAreaInfo: r,
           IsTrialRoleVisible: i.IsTrialRole()
         };
-        e.Apply(s);
+        e.Apply(t);
         if (!r) {
-          h = false;
+          o = false;
         }
       } else {
-        h = false;
+        o = false;
         e.Apply({
           Type: 6
         });
       }
     });
-    this.GetText(1).SetText(o.FormationId.toString());
-    if (h) {
-      const i = this.Vlo.map((e, t) => o.GetRoleIdList[t]);
-      h = this.StageData.TeamDataList.some(e => e.GetRoleIdListEdit().every((e, t) => e === i[t]));
+    this.GetText(1).SetText(s.FormationId.toString());
+    if (o) {
+      const i = this.Vlo.map((e, t) => s.GetRoleIdList[t]);
+      o = this.StageData.TeamDataList.some(e => e.GetRoleIdListEdit().every((e, t) => e === i[t]));
     }
-    this.GetSprite(5)?.SetUIActive(h);
+    this.GetSprite(5)?.SetUIActive(o);
   }
   OnSelected(e) {
     this.qA_()?.SetToggleStateForce(1);

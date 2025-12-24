@@ -136,7 +136,7 @@ class RoleAudioController extends ControllerBase_1.ControllerBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OpenTreasureBox, this.yir);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnUpdateSceneTeam, this.dLe);
     FormationAttributeController_1.FormationAttributeController.AddValueListener(1, this.Pni);
-    Net_1.Net.Register(25832, this.K0m);
+    Net_1.Net.Register(25832, this.ZEm);
     return true;
   }
   static OnTick() {
@@ -196,7 +196,7 @@ class RoleAudioController extends ControllerBase_1.ControllerBase {
   }
   static PlayRoleAudio(e, o, t) {
     var i = e?.GetComponent(3);
-    var r = e?.GetComponent(193);
+    var r = e?.GetComponent(199);
     var n = r?.GetAkComponent();
     if (e && i && r && n && r.Config) {
       return this.xzs(i.CreatureData.GetPbDataId(), e.Id, n, o, RoleAudioController.GetRoleAudioConfig(r.Config, o), t);
@@ -208,15 +208,15 @@ class RoleAudioController extends ControllerBase_1.ControllerBase {
     var a;
     var l = this.aca.get(0);
     if (l?.CheckCoolDownTime(e, o, false, false)) {
-      if (this.n$t?.Entity.GetComponent(45)?.IsInRoll()) {
+      if (this.n$t?.Entity.GetComponent(46)?.IsInRoll()) {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("Audio", 42, "[RoleAudio] PostEvent 特殊移动模式下不触发角色语音", ["RoleId", e], ["Event", r], ["Owner", t.GetOwner()?.GetName()], ["AudioType", RoleAudioController.GetRoleAudioTypeDesc(i)]);
         }
         return 0;
       } else if (a = this.aca.get(i)) {
-        if (a.GroupId & RoleAudioController.X0m) {
+        if (a.GroupId & RoleAudioController.eIm) {
           if (Log_1.Log.CheckDebug()) {
-            Log_1.Log.Debug("Audio", 42, "[RoleAudio] PlayRoleAudio语音类型当前被禁用", ["RoleId", e], ["AudioType", RoleAudioController.GetRoleAudioTypeDesc(i)], ["IgnoreGroup", a.GroupId], ["CurrentIgnoreType", RoleAudioController.X0m]);
+            Log_1.Log.Debug("Audio", 42, "[RoleAudio] PlayRoleAudio语音类型当前被禁用", ["RoleId", e], ["AudioType", RoleAudioController.GetRoleAudioTypeDesc(i)], ["IgnoreGroup", a.GroupId], ["CurrentIgnoreType", RoleAudioController.eIm]);
           }
           return 0;
         } else if (!r || r.length < 1) {
@@ -297,7 +297,7 @@ class RoleAudioController extends ControllerBase_1.ControllerBase {
   }
   static OnPlayerDies(e) {
     var o = e?.GetComponent(3);
-    var t = e?.GetComponent(193);
+    var t = e?.GetComponent(199);
     var i = t?.GetAkComponent();
     if (e && o && t && i && t.Config && e.Id === Global_1.Global.BaseCharacter?.EntityId && (AudioSystem_1.AudioSystem.PostEvent(t.Config.DeathEvent, i), Log_1.Log.CheckDebug())) {
       Log_1.Log.Debug("Audio", 42, "[RoleAudio] PostEvent 触发角色语音", ["RoleId", o.CreatureData.GetPbDataId()], ["Event", t.Config.DeathEvent], ["Owner", i.GetOwner()?.GetName()]);
@@ -321,7 +321,7 @@ class RoleAudioController extends ControllerBase_1.ControllerBase {
   }
   static Zsu(e, o) {
     var t;
-    if (this.iau !== 0 && this.iau === 0 && (t = o.GetComponent(104).PositionState, e !== CharacterUnifiedStateTypes_1.ECharMoveState.Sprint) && (AudioSystem_1.AudioSystem.ExecuteAction(this.iau, 0, {
+    if (this.iau !== 0 && this.iau === 0 && (t = o.GetComponent(109).PositionState, e !== CharacterUnifiedStateTypes_1.ECharMoveState.Sprint) && (AudioSystem_1.AudioSystem.ExecuteAction(this.iau, 0, {
       TransitionDuration: 1000
     }), this.iau = 0, Log_1.Log.CheckDebug())) {
       Log_1.Log.Debug("Audio", 42, "[RoleAudio] PostEvent 打断角色加速语音", ["RoleId", o?.GetComponent(3)?.CreatureData.GetPbDataId()], ["MoveState", e], ["PositionState", t]);
@@ -417,11 +417,11 @@ RoleAudioController.Pln = 0;
 RoleAudioController.OKa = false;
 RoleAudioController.BKa = false;
 RoleAudioController.qKa = false;
-RoleAudioController.X0m = 0;
-RoleAudioController.K0m = e => {
-  RoleAudioController.X0m = e.Pgm;
+RoleAudioController.eIm = 0;
+RoleAudioController.ZEm = e => {
+  RoleAudioController.eIm = e.lMm;
   if (Log_1.Log.CheckDebug()) {
-    Log_1.Log.Debug("Audio", 42, "[RoleAudio] OnUpdateAudioIgnoreNotify 变更语音忽略组", ["IgnoreType", RoleAudioController.X0m]);
+    Log_1.Log.Debug("Audio", 42, "[RoleAudio] OnUpdateAudioIgnoreNotify 变更语音忽略组", ["IgnoreType", RoleAudioController.eIm]);
   }
 };
 RoleAudioController.ero = (e, o, t) => {
@@ -440,7 +440,7 @@ RoleAudioController.dLe = () => {
   _a.grl.push(..._a.Crl);
   _a.Crl.length = 0;
   for (const o of ModelManager_1.ModelManager.SceneTeamModel.GetTeamEntities()) {
-    var e = o.Entity?.CheckGetComponent(193);
+    var e = o.Entity?.CheckGetComponent(199);
     if (e?.Config) {
       if (!_a.Crl.includes(e.Config.FootstepEvent)) {
         _a.Crl.push(e.Config.FootstepEvent);
@@ -463,7 +463,7 @@ RoleAudioController.dLe = () => {
 };
 RoleAudioController.xie = (e, o) => {
   _a.n$t = e.Entity?.CheckGetComponent(3);
-  _a.rau = e.Entity?.CheckGetComponent(193);
+  _a.rau = e.Entity?.CheckGetComponent(199);
   if (_a.rau?.Config) {
     AudioSystem_1.AudioSystem.SetState("role_name", _a.rau.Config.Name);
   }

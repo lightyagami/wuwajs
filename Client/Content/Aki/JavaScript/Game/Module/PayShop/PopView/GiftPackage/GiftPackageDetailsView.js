@@ -68,22 +68,22 @@ class GiftPackageDetailsView extends UiViewBase_1.UiViewBase {
       var e = this.Goods.GetExchangePopViewResellText();
       if (this.Goods.GetIfNeedExtraLimitText()) {
         if (i = this.Goods.GetExtraLimitText()) {
-          this.Xhm(true);
+          this.ndm(true);
           this.GetText(8).ShowTextNew(i);
         }
       } else if (this.Goods.GetPriceData().Enough) {
         if ((i = this.Goods.GetCountDownData())[0] !== 2) {
-          this.Xhm(false);
+          this.ndm(false);
           this.GetText(8).SetUIActive(false);
         } else {
-          this.Xhm(true);
+          this.ndm(true);
           if (!StringUtils_1.StringUtils.IsEmpty(e)) {
             this.GetText(8).ShowTextNew(e);
           }
           this.ResellTimerId = TimerSystem_1.RealTimeTimerSystem.Delay(this.P3i, i[2] * CommonDefine_1.MILLIONSECOND_PER_SECOND);
         }
       } else if (StringUtils_1.StringUtils.IsEmpty(e)) {
-        this.Xhm(true);
+        this.ndm(true);
         if (i = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(this.Goods.GetPriceData().CurrencyId)) {
           i = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(i.Name);
           LguiUtil_1.LguiUtil.SetLocalText(this.GetText(8), "CurrencyNotEnough", i);
@@ -247,11 +247,11 @@ class GiftPackageDetailsView extends UiViewBase_1.UiViewBase {
       this.ResellTimerId = undefined;
     }
   }
-  Xhm(i) {
+  ndm(i) {
     this.GetItem(7).SetUIActive(i);
-    this.Gzd(i);
+    this.vJd(i);
   }
-  Gzd(i) {
+  vJd(i) {
     var e = this.GoodsData?.DisclaimerText;
     var i = !StringUtils_1.StringUtils.IsEmpty(e) && !i;
     this.GetItem(13).SetUIActive(i);

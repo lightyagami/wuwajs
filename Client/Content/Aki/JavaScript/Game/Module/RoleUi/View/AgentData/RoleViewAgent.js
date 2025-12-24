@@ -7,6 +7,7 @@ exports.RoleViewAgent = undefined;
 const Log_1 = require("../../../../../Core/Common/Log");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const RoleUiDefine_1 = require("../../RoleUiDefine");
+const RoleUtils_1 = require("../../RoleUtils");
 class RoleViewAgent {
   constructor() {
     this.RoleIdList = [];
@@ -22,7 +23,7 @@ class RoleViewAgent {
   }
   GetRoleIdList() {
     if (this.RoleIdList.length <= 0) {
-      return ModelManager_1.ModelManager.RoleModel.GetRoleSystemRoleList();
+      return ModelManager_1.ModelManager.RoleModel.GetRoleSystemRoleList(true);
     } else {
       return this.RoleIdList;
     }
@@ -47,7 +48,7 @@ class RoleViewAgent {
       return this.RoleIdList[0];
     } else {
       e = ModelManager_1.ModelManager.RoleModel.GetBattleTeamFirstRoleId();
-      t = ModelManager_1.ModelManager.RoleModel.GetRoleSystemRoleList();
+      t = ModelManager_1.ModelManager.RoleModel.GetRoleSystemRoleList(true);
       if (e !== undefined && t.includes(e)) {
         return e;
       } else if (t.length <= 0) {
@@ -74,8 +75,13 @@ class RoleViewAgent {
     return this.RoleViewStateInternal;
   }
   GetRoleSystemMode() {
-    if (this.GetCurSelectRoleData().IsTrialRole()) {
-      return 0;
+    var e = this.GetCurSelectRoleData();
+    if (e.IsTrialRole()) {
+      if (RoleUtils_1.RoleUtils.IsSpecialTrialRole(e.GetDataId())) {
+        return 4;
+      } else {
+        return 0;
+      }
     } else {
       return 1;
     }

@@ -24,19 +24,19 @@ class PeriodicityChallengeView extends UiTabViewBase_1.UiTabViewBase {
     this.H6e = undefined;
     this.s8e = [];
     this.r8e = undefined;
-    this.Prm = undefined;
+    this.$am = undefined;
     this.l8e = undefined;
     this._8e = undefined;
-    this.Arm = () => {
+    this.Wam = () => {
       var e = new PeriodicityChallengeTypeItem_1.PeriodicityChallengeTypeItem();
-      e.BindOnToggleFunc(this.Drm);
-      e.BindCanToggleExecuteChange(this.Urm);
+      e.BindOnToggleFunc(this.Qam);
+      e.BindCanToggleExecuteChange(this.Kam);
       return e;
     };
-    this.xrm = () => {
+    this.Xam = () => {
       return new PeriodicityChallengeItem_1.PeriodicityChallengeItem();
     };
-    this.Drm = (e, i) => {
+    this.Qam = (e, i) => {
       this.a8e = e;
       this.H6e?.SetToggleState(0, false);
       this.H6e = i;
@@ -47,26 +47,26 @@ class PeriodicityChallengeView extends UiTabViewBase_1.UiTabViewBase {
       i = ConfigManager_1.ConfigManager.AdventureModuleConfig.GetSecondaryGuideDataConf(this.a8e);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.AdventureHelpBtn, i.HelpGroupId);
       e = ModelManager_1.ModelManager.AdventureGuideModel.GetCanShowDungeonRecordsByType(this.a8e)[1];
-      this.Prm?.RefreshByData(this.Dnm(e));
+      this.$am?.RefreshByData(this.e1m(e));
       if (this._8e?.GetCurrentSequence()) {
         this._8e?.ReplaySequenceByKey("Switch");
       } else {
         this._8e?.PlayLevelSequenceByName("Switch");
       }
     };
-    this.Urm = e => this.a8e !== e;
+    this.Kam = e => this.a8e !== e;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UILoopScrollViewComponent], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIScrollViewWithScrollbarComponent], [4, UE.UIItem], [5, UE.UIItem]];
   }
-  Dnm(e) {
+  e1m(e) {
     var i;
     var t = [];
     var r = new Map();
-    for (const o of e) {
-      let e = r.get(o.Conf.DetectionTitlePanel);
-      (e = e || []).push(o);
-      r.set(o.Conf.DetectionTitlePanel, e);
+    for (const l of e) {
+      let e = r.get(l.Conf.DetectionTitlePanel);
+      (e = e || []).push(l);
+      r.set(l.Conf.DetectionTitlePanel, e);
     }
     for ([, i] of r) {
       if (ModelManager_1.ModelManager.AdventureGuideModel.IsTowerType(i[0].Conf.PeriodicityChallengeType)) {
@@ -87,11 +87,22 @@ class PeriodicityChallengeView extends UiTabViewBase_1.UiTabViewBase {
         });
       }
       for (let e = 0; e < i.length; e++) {
-        var s = {
+        var s;
+        var o;
+        var n = {
           Data: i[e],
           Title: i[e].Conf.DetectionTitlePanel > 0 && e < 1
         };
-        t.push(s);
+        if (this.a8e === 29) {
+          s = (o = ModelManager_1.ModelManager.WeeklyRogueModel.ActivityDataNew).FreeCount;
+          o = o.FreeCountMax;
+          n.TopTips = {
+            TitleTips: "Text_WeeklyRogue_FreeTime_Title",
+            Args: [],
+            TxtNum: s + "/" + o
+          };
+        }
+        t.push(n);
       }
     }
     return t;
@@ -100,8 +111,8 @@ class PeriodicityChallengeView extends UiTabViewBase_1.UiTabViewBase {
     await ControllerHolder_1.ControllerHolder.TowerController.RefreshTower();
   }
   OnStart() {
-    this.Prm = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(3), this.xrm);
-    this.r8e = new LoopScrollView_1.LoopScrollView(this.GetLoopScrollViewComponent(0), this.GetItem(2).GetOwner(), this.Arm);
+    this.$am = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(3), this.Xam);
+    this.r8e = new LoopScrollView_1.LoopScrollView(this.GetLoopScrollViewComponent(0), this.GetItem(2).GetOwner(), this.Wam);
     var e = ModelManager_1.ModelManager.AdventureGuideModel.GetAllCanShowDungeonTypeList("PeriodicityChallengeView");
     this.s8e = e;
     this.l8e = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);

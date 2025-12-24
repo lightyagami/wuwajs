@@ -9,12 +9,31 @@ const MathUtils_1 = require("../../../../Core/Utils/MathUtils");
 exports.INVALID_SEAT = 999;
 class VehicleInfoDefines {
   static GetSeatSocketName(e) {
-    let s = this.Drl;
-    if (e < 10) {
-      s += "0";
+    let t = this.Drl;
+    if (e < 9) {
+      t += "0";
     }
-    s += (e + 1).toString();
-    return new UE.FName(s);
+    t += (e + 1).toString();
+    return new UE.FName(t);
+  }
+  static ConvertToVehicleTypeInt(e) {
+    switch (e) {
+      case "Gongduola":
+        return 1;
+      case "AutoMoveGongduola":
+        return 2;
+      case "NpcVehicle":
+        return 3;
+      case "FishingBoat":
+        return 4;
+      case "SceneItemAutoMoveVehicle":
+        return 5;
+      case "Motorcycle":
+        return 6;
+      case "CoBathingEmptyVehicle":
+        return 7;
+    }
+    return 0;
   }
 }
 (exports.VehicleInfoDefines = VehicleInfoDefines).Drl = "SeatProp";
@@ -77,11 +96,11 @@ class VehiclePassengerInfo {
     this.ExitType = 0;
   }
   IsRolePassenger(e = false) {
-    var s = this.PassengerEntity?.GetComponent(3);
+    var t = this.PassengerEntity?.GetComponent(3);
     if (e) {
-      return !!s?.IsRoleAndCtrlByMe;
+      return !!t?.IsRoleAndCtrlByMe;
     } else {
-      return !!s?.CreatureData.IsRole();
+      return !!t?.CreatureData.IsRole();
     }
   }
   IsNpcPassenger() {

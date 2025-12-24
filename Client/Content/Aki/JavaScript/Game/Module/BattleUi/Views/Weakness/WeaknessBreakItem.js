@@ -12,9 +12,9 @@ class WeaknessBreakItem extends UiPanelBase_1.UiPanelBase {
     super(...arguments);
     this.SPe = undefined;
     this.sye = false;
-    this.iym = undefined;
-    this.sym = () => {
-      this.iym = undefined;
+    this.SLm = undefined;
+    this.TLm = () => {
+      this.SLm = undefined;
       this.sye = false;
       this.Hide();
     };
@@ -33,19 +33,19 @@ class WeaknessBreakItem extends UiPanelBase_1.UiPanelBase {
   }
   OnAfterShow() {
     this.SPe?.PlayLevelSequenceByName("Start");
-    this.lym();
-    this.iym = TimerSystem_1.TimerSystem.Delay(this.sym, 2000);
+    this.wLm();
+    this.SLm = TimerSystem_1.TimerSystem.Delay(this.TLm, 2000);
   }
-  lym() {
-    if (this.iym) {
-      TimerSystem_1.TimerSystem.Remove(this.iym);
-      this.iym = undefined;
+  wLm() {
+    if (this.SLm) {
+      TimerSystem_1.TimerSystem.Remove(this.SLm);
+      this.SLm = undefined;
     }
   }
   OnBeforeHide() {
     this.SPe?.StopPlayingSequence();
     this.sye = false;
-    this.lym();
+    this.wLm();
   }
 }
 exports.WeaknessBreakItem = WeaknessBreakItem;

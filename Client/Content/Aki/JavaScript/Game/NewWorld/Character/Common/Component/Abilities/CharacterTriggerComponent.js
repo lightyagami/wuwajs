@@ -1,22 +1,22 @@
 "use strict";
 
-var __decorate = this && this.__decorate || function (e, r, t, o) {
-  var n;
-  var i = arguments.length;
-  var a = i < 3 ? r : o === null ? o = Object.getOwnPropertyDescriptor(r, t) : o;
+var __decorate = this && this.__decorate || function (e, t, r, n) {
+  var o;
+  var a = arguments.length;
+  var i = a < 3 ? t : n === null ? n = Object.getOwnPropertyDescriptor(t, r) : n;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    a = Reflect.decorate(e, r, t, o);
+    i = Reflect.decorate(e, t, r, n);
   } else {
     for (var g = e.length - 1; g >= 0; g--) {
-      if (n = e[g]) {
-        a = (i < 3 ? n(a) : i > 3 ? n(r, t, a) : n(r, t)) || a;
+      if (o = e[g]) {
+        i = (a < 3 ? o(i) : a > 3 ? o(t, r, i) : o(t, r)) || i;
       }
     }
   }
-  if (i > 3 && a) {
-    Object.defineProperty(r, t, a);
+  if (a > 3 && i) {
+    Object.defineProperty(t, r, i);
   }
-  return a;
+  return i;
 };
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -31,123 +31,144 @@ const ModelManager_1 = require("../../../../../Manager/ModelManager");
 const FormationAttributeController_1 = require("../../../../../Module/Abilities/FormationAttributeController");
 const Trigger_1 = require("./Trigger/Trigger");
 const TriggerType_1 = require("./Trigger/TriggerType");
-function checkRoleAttr(e, r, t, o) {
-  var n = e?.GetComponent(177)?.GetCurrentValue(t);
-  if (n) {
-    if (r === 0) {
-      if (n < o) {
+function checkRoleAttr(e, t, r, n) {
+  var o = e?.GetComponent(182)?.GetCurrentValue(r);
+  if (o) {
+    if (t === 0) {
+      if (o < n) {
         return 1;
       } else {
         return 0;
       }
-    } else if (r === 1) {
-      if (n === o) {
+    } else if (t === 1) {
+      if (o === n) {
         return 1;
       } else {
         return 0;
       }
-    } else if (r === 2 && o < n) {
+    } else if (t === 2 && n < o) {
       return 1;
     } else {
       return 0;
     }
   } else {
     if (Log_1.Log.CheckWarn()) {
-      Log_1.Log.Warn("Battle", 85, "被动获取不到属性", ["owner", e?.Id], ["attrId", t]);
+      Log_1.Log.Warn("Battle", 85, "被动获取不到属性", ["owner", e?.Id], ["attrId", r]);
     }
     return 0;
   }
 }
 const builtinFunc = {
   GetTags: e => {
-    var r = [];
-    for (const t of e.CheckGetComponent(209).TagContainer.GetAllExactTags() ?? []) {
-      r.push(GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(t));
+    var t = [];
+    for (const r of e.CheckGetComponent(215).TagContainer.GetAllExactTags() ?? []) {
+      t.push(GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(r));
     }
-    return r;
+    return t;
   },
-  GetAttributeByID(e, r) {
-    return e.CheckGetComponent(177).GetCurrentValue(r);
+  GetAttributeByID(e, t) {
+    return e.CheckGetComponent(182).GetCurrentValue(t);
   },
-  HasInt: (e, r) => !!r && r.length !== 0 && r.includes(e),
-  MatchAnyInt: (e, r) => !!e && !!r && e.length !== 0 && r.length !== 0 && e.some(e => r.includes(e)),
-  MatchAllInt: (e, r) => !!e && !!r && e.length !== 0 && r.length !== 0 && e.every(e => r.includes(e)),
-  MatchAnyTag: (e, r) => e.CheckGetComponent(209).HasAnyTag(r.map(e => GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e))),
-  MatchAllTags: (e, r) => e.CheckGetComponent(209).HasAllTag(r.map(e => GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e))),
-  GetShieldValue: e => e.CheckGetComponent(75)?.ShieldTotal ?? 0,
-  Distance: (e, r) => {
-    var t = ModelManager_1.ModelManager.CreatureModel;
-    var o = e?.GetComponent(0);
-    var n = r?.GetComponent(0);
-    var o = o?.IsRole() ? t.GetScenePlayerData(o.GetPlayerId())?.GetLocation() : e?.CheckGetComponent(3)?.ActorLocationProxy;
-    var e = n?.IsRole() ? t.GetScenePlayerData(n.GetPlayerId())?.GetLocation() : r?.CheckGetComponent(3)?.ActorLocationProxy;
-    if (o && e) {
-      return Vector_1.Vector.Dist(o, e);
+  HasInt: (e, t) => !!t && t.length !== 0 && t.includes(e),
+  MatchAnyInt: (e, t) => !!e && !!t && e.length !== 0 && t.length !== 0 && e.some(e => t.includes(e)),
+  MatchAllInt: (e, t) => !!e && !!t && e.length !== 0 && t.length !== 0 && e.every(e => t.includes(e)),
+  MatchAnyTag: (e, t) => e.CheckGetComponent(215).HasAnyTag(t.map(e => GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e))),
+  MatchAllTags: (e, t) => e.CheckGetComponent(215).HasAllTag(t.map(e => GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e))),
+  GetShieldValue: e => e.CheckGetComponent(78)?.ShieldTotal ?? 0,
+  Distance: (e, t) => {
+    var r = ModelManager_1.ModelManager.CreatureModel;
+    var n = e?.GetComponent(0);
+    var o = t?.GetComponent(0);
+    var n = n?.IsRole() ? r.GetScenePlayerData(n.GetPlayerId())?.GetLocation() : e?.CheckGetComponent(3)?.ActorLocationProxy;
+    var e = o?.IsRole() ? r.GetScenePlayerData(o.GetPlayerId())?.GetLocation() : t?.CheckGetComponent(3)?.ActorLocationProxy;
+    if (n && e) {
+      return Vector_1.Vector.Dist(n, e);
     } else {
       return Infinity;
     }
   },
-  Distance2D: (e, r) => {
-    var t = ModelManager_1.ModelManager.CreatureModel;
-    var o = e?.GetComponent(0);
-    var n = r?.GetComponent(0);
-    var o = o?.IsRole() ? t.GetScenePlayerData(o.GetPlayerId())?.GetLocation() : e?.CheckGetComponent(3)?.ActorLocationProxy;
-    var e = n?.IsRole() ? t.GetScenePlayerData(n.GetPlayerId())?.GetLocation() : r?.CheckGetComponent(3)?.ActorLocationProxy;
-    if (o && e) {
-      return Vector_1.Vector.Dist2D(o, e);
+  Distance2D: (e, t) => {
+    var r = ModelManager_1.ModelManager.CreatureModel;
+    var n = e?.GetComponent(0);
+    var o = t?.GetComponent(0);
+    var n = n?.IsRole() ? r.GetScenePlayerData(n.GetPlayerId())?.GetLocation() : e?.CheckGetComponent(3)?.ActorLocationProxy;
+    var e = o?.IsRole() ? r.GetScenePlayerData(o.GetPlayerId())?.GetLocation() : t?.CheckGetComponent(3)?.ActorLocationProxy;
+    if (n && e) {
+      return Vector_1.Vector.Dist2D(n, e);
     } else {
       return Infinity;
     }
   },
   GetBattleScore: () => ModelManager_1.ModelManager.BattleScoreModel.GetCurScore(),
-  GetBuffStack: (e, r) => {
-    var t = e.CheckGetComponent(194);
-    var r = Number(r);
-    if (t) {
-      return (t.GetFormationBuffComp()?.GetFormationBuffTotalStackById(r) ?? 0) + (t.GetBuffTotalStackById(r) ?? 0);
+  GetBuffStack: (e, t) => {
+    var r = e.CheckGetComponent(200);
+    var t = Number(t);
+    if (r) {
+      return (r.GetFormationBuffComp()?.GetFormationBuffTotalStackById(t) ?? 0) + (r.GetBuffTotalStackById(t) ?? 0);
     } else {
-      return e.CheckGetComponent(213)?.GetBuffTotalStackById(r) ?? 0;
+      return e.CheckGetComponent(220)?.GetBuffTotalStackById(t) ?? 0;
     }
   },
-  MatchAnyBattleFlags: (e, r) => !!e && !!r && e.length !== 0 && r.length !== 0 && e.some(e => r.includes(e)),
-  GetTagStackCount: (e, r) => e.GetComponent(209)?.GetTagCount(GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(r)) ?? 0,
-  MatchAnyBuff: (e, r) => {
-    const t = e?.GetComponent(213);
-    return !!t && !!r && r.length !== 0 && r.some(e => t.HasBuff(e));
+  MatchAnyBattleFlags: (e, t) => !!e && !!t && e.length !== 0 && t.length !== 0 && e.some(e => t.includes(e)),
+  GetTagStackCount: (e, t) => e.GetComponent(215)?.GetTagCount(GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(t)) ?? 0,
+  MatchAnyBuff: (e, t) => {
+    const r = e?.GetComponent(220);
+    return !!r && !!t && t.length !== 0 && t.some(e => r.HasBuff(e));
   },
-  MatchAllBuff: (e, r) => {
-    const t = e?.GetComponent(213);
-    return !!t && !!r && r.length !== 0 && r.every(e => t.HasBuff(e));
+  MatchAllBuff: (e, t) => {
+    const r = e?.GetComponent(220);
+    return !!r && !!t && t.length !== 0 && t.every(e => r.HasBuff(e));
   },
-  GetMaxTagCountIndex: (e, r) => {
-    let t = 0;
-    let o = 0;
-    const n = e.GetComponent(209);
-    if (n && r && r.length !== 0) {
-      r.forEach((e, r) => {
-        e = n.GetTagCount(GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e));
-        if (e > o) {
-          o = e;
-          t = r;
+  GetMaxTagCountIndex: (e, t) => {
+    let r = 0;
+    let n = 0;
+    const o = e.GetComponent(215);
+    if (o && t && t.length !== 0) {
+      t.forEach((e, t) => {
+        e = o.GetTagCount(GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e));
+        if (e > n) {
+          n = e;
+          r = t;
         }
       });
     }
-    return t;
+    return r;
   },
-  GetEntityCountCheckAttr: (e, r, t, o, n) => {
-    let i = 0;
-    if (r === 0) {
-      return checkRoleAttr(e, o, t, n);
+  GetEntityCountCheckAttr: (e, t, r, n, o) => {
+    let a = 0;
+    if (t === 0) {
+      return checkRoleAttr(e, n, r, o);
     }
-    var a = ModelManager_1.ModelManager.SceneTeamModel.GetTeamEntities();
+    var i = ModelManager_1.ModelManager.SceneTeamModel.GetTeamEntities();
     var g = e.GetComponent(0).GetPlayerId();
-    for (const l of a) {
-      if (r !== 1 || l.Entity?.GetComponent(0).GetPlayerId() === g) {
-        i += checkRoleAttr(l.Entity, o, t, n);
+    for (const l of i) {
+      if (t !== 1 || l.Entity?.GetComponent(0).GetPlayerId() === g) {
+        a += checkRoleAttr(l.Entity, n, r, o);
       }
     }
-    return i;
-  }
+    return a;
+  },
+  GetContainTagEntityCount: (e, t, r) => {
+    let n = 0;
+    if (t === 0) {
+      if (e.GetComponent(215)?.HasTag(GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(r))) {
+        return 1;
+      } else {
+        return 0;
+      }
+    }
+    var o = ModelManager_1.ModelManager.SceneTeamModel.GetTeamEntities();
+    var a = e.GetComponent(0).GetPlayerId();
+    for (const i of o) {
+      if (t !== 1 || i.Entity?.GetComponent(0).GetPlayerId() === a) {
+        if (i.Entity?.GetComponent(215)?.HasTag(GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(r))) {
+          n++;
+        }
+      }
+    }
+    return n;
+  },
+  GetArrayElement: (e, t) => t >= 0 && t < e.length ? e[t] : (Log_1.Log.CheckError() && Log_1.Log.Error("Battle", 85, "被动获取数组元素异常index不合法", ["index", t], ["array", e]), 0)
 };
 let triggerHandleCounter = 0;
 let CharacterTriggerComponent = class CharacterTriggerComponent extends EntityComponent_1.EntityComponent {
@@ -194,50 +215,50 @@ let CharacterTriggerComponent = class CharacterTriggerComponent extends EntityCo
     this.wkr.clear();
     return true;
   }
-  AddTrigger(r, e, t) {
-    if (!r) {
+  AddTrigger(t, e, r) {
+    if (!t) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Battle", 19, "添加Trigger失败，找不到对应配置", ["owner", this.Entity.Id]);
       }
       return TriggerType_1.INVALID_TRIGGER_HANDLE;
     }
-    var o = TriggerType_1.ETriggerEvent[r.Type];
-    var o = Trigger_1.Trigger.GetClass(o);
-    if (o === undefined) {
+    var n = TriggerType_1.ETriggerEvent[t.Type];
+    var n = Trigger_1.Trigger.GetClass(n);
+    if (n === undefined) {
       if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("Battle", 19, "添加Trigger失败, 找不到对应的Trigger类型或客户端未作实现", ["owner", this.Entity.Id], ["triggerType", r.Type]);
+        Log_1.Log.Error("Battle", 19, "添加Trigger失败, 找不到对应的Trigger类型或客户端未作实现", ["owner", this.Entity.Id], ["triggerType", t.Type]);
       }
       return TriggerType_1.INVALID_TRIGGER_HANDLE;
     }
-    var n = triggerHandleCounter++;
+    var o = triggerHandleCounter++;
     try {
-      var i = new o(r, n, this, this.Bkr, e, t);
-      i.OnInitParams(r.Preset);
-      this.wkr.set(n, i);
+      var a = new n(t, o, this, this.Bkr, e, r);
+      a.OnInitParams(t.Preset);
+      this.wkr.set(o, a);
     } catch (e) {
       if (e instanceof Error) {
         if (Log_1.Log.CheckError()) {
-          Log_1.Log.ErrorWithStack("Battle", 19, "创建Trigger实例失败", e, ["owner", this.Entity.Id], ["triggerType", r.Type], ["formula", r.Formula], ["error", e.message]);
+          Log_1.Log.ErrorWithStack("Battle", 19, "创建Trigger实例失败", e, ["owner", this.Entity.Id], ["triggerType", t.Type], ["formula", t.Formula], ["error", e.message]);
         }
       } else if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("Battle", 19, "创建Trigger实例失败", ["owner", this.Entity.Id], ["triggerType", r.Type], ["formula", r.Formula], ["error", e]);
+        Log_1.Log.Error("Battle", 19, "创建Trigger实例失败", ["owner", this.Entity.Id], ["triggerType", t.Type], ["formula", t.Formula], ["error", e]);
       }
       return TriggerType_1.INVALID_TRIGGER_HANDLE;
     }
-    return n;
+    return o;
   }
   GetTrigger(e) {
     return this.wkr.get(e);
   }
   RemoveTrigger(e) {
-    var r = this.wkr.get(e);
-    if (r) {
-      r.Destroy();
+    var t = this.wkr.get(e);
+    if (t) {
+      t.Destroy();
       this.wkr.delete(e);
     }
   }
-  SetTriggerActive(e, r) {
-    this.wkr.get(e)?.SetActive(r);
+  SetTriggerActive(e, t) {
+    this.wkr.get(e)?.SetActive(t);
   }
 };
 CharacterTriggerComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(28)], CharacterTriggerComponent);

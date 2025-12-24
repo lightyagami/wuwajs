@@ -11,43 +11,46 @@ const ModelManager_1 = require("../../../Manager/ModelManager");
 const LoopScrollMediumItemGrid_1 = require("../../Common/MediumItemGrid/LoopScrollMediumItemGrid");
 const UiNavigationNewController_1 = require("../../UiNavigation/New/UiNavigationNewController");
 const WeeklyRogueGridComponent_1 = require("./WeeklyRogueGridComponent");
+const RoguelikeDefine_1 = require("../../Roguelike/Define/RoguelikeDefine");
 class WeeklyRogueTokenGrid extends LoopScrollMediumItemGrid_1.LoopScrollMediumItemGrid {
   constructor() {
     super(...arguments);
     this.Data = undefined;
   }
-  OnRefresh(e, t, i) {
+  OnRefresh(e, i, t) {
     this.Data = e;
     var o = ConfigManager_1.ConfigManager.WeeklyRogueConfig.GetRogueWeeklyBuffPool(e.v9n);
     if (o) {
       var n = e.BN_;
       if (n === undefined) {
-        const a = {
+        const s = {
           Type: 4,
           Data: e,
           IconPath: o.BuffIcon,
           QualityId: o.Quality,
           QualityType: "MediumItemGridQualitySpritePath"
         };
-        this.Apply(a);
+        this.Apply(s);
       } else {
-        var r = n !== undefined && n.qN_ !== n.kN_;
-        var s = {
+        var r = ModelManager_1.ModelManager.InventoryModel?.GetItemCountByConfigId(RoguelikeDefine_1.INSIDE_CURRENCY_ID) ?? 0;
+        var a = n !== undefined && n.qN_ !== n.kN_;
+        var r = {
           CurPrice: n.qN_,
-          OriginalPrice: n.kN_
+          OriginalPrice: n.kN_,
+          CurrencyNotEnough: r < n.qN_
         };
-        const a = {
+        const s = {
           Type: 4,
           Data: e,
           IconPath: o.BuffIcon,
           QualityId: o.Quality,
           QualityType: "MediumItemGridQualitySpritePath",
           IsRogueFinish: n.O2s,
-          ItemPrice: s
+          ItemPrice: r
         };
-        this.Apply(a);
+        this.Apply(s);
         e = this.RefreshComponent(WeeklyRogueGridComponent_1.WeeklyRougeShopDiscountTag, true, n);
-        this.SetComponentVisible(e, r);
+        this.SetComponentVisible(e, a);
       }
     }
   }
@@ -76,7 +79,7 @@ class WeeklyRogueTokenInfoGrid extends LoopScrollMediumItemGrid_1.LoopScrollMedi
     this.Data = 0;
     this.OnSelectedChange = undefined;
   }
-  OnRefresh(e, t, i) {
+  OnRefresh(e, i, t) {
     if ((this.Data = e) === 0) {
       const n = {
         Type: 3,
@@ -114,7 +117,7 @@ class WeeklyRogueTokenInfoGrid extends LoopScrollMediumItemGrid_1.LoopScrollMedi
   OnDeselected(e) {
     this.SetSelected(false);
   }
-  GetKey(e, t) {
+  GetKey(e, i) {
     return this.Data;
   }
 }

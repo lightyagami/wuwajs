@@ -73,7 +73,7 @@ class CorniceMeetingEntrancePanel extends WorldMapSecondaryUiLayoutA_1.WorldMapS
     }
   }
   l_i() {
-    this.ConfirmButton.SetLocalTextNew("Text_TeleportFastMove_Text");
+    this.LayoutContext.SetConfirmBtnText("Text_TeleportFastMove_Text");
   }
 }
 exports.CorniceMeetingEntrancePanel = CorniceMeetingEntrancePanel;

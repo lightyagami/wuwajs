@@ -23,6 +23,7 @@ class CardSpineComponent extends CardComponentBase_1.CardComponentBase {
     var s = this.GetSpine(0);
     var n = s.GetOwner().GetComponentByClass(UE.UIItem.StaticClass());
     var t = e.CardSpineData;
+    this.GetOriginalItem().SetUIActive(e.ShowSpine);
     if (e.ShowSpine) {
       n.SetUIActive(false);
       await this.SetSpineAssetByPath(t.CardSpineAtlasPath, t.CardSpineSkeletonPath, s);

@@ -33,9 +33,9 @@ class MenuVersionCheckData extends MenuData_1.MenuData {
     return ControllerHolder_1.ControllerHolder.ParallelPackageController.CheckParallelPackage();
   }
   OnRefresh() {
-    this.KKd();
+    this.JKd();
   }
-  KKd() {
+  JKd() {
     if (ModelManager_1.ModelManager.RedDotModel?.GetRedDot("RedDotVersionCheck")?.IsRedDotActive()) {
       LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.VersionRedDotMap, UE.KuroLauncherLibrary.GetAppVersion());
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.VersionCheckRefresh);

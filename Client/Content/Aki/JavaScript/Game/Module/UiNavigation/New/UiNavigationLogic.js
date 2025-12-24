@@ -38,8 +38,8 @@ class UiNavigationLogic {
   static oj1(i, e) {
     return !!e && (!!e.SlideToRightOrDown && !!i || !!e.SlideToLeftOrTop && !i);
   }
-  static QMm(i, e, a) {
-    var t = i.ScrollView;
+  static FBm(i, e, a) {
+    var t = i.ScrollProxy?.ScrollView;
     var i = i.GetNavigationGroup();
     var n = a === 2 || a === 4;
     if (this.oj1(n, i) && this.efc(t, a)) {
@@ -56,19 +56,19 @@ class UiNavigationLogic {
       }
     }
   }
-  static KMm(i, e, a) {
+  static NBm(i, e, a) {
     var t = e.GetNavigationGroup();
-    var t = e.ScrollView.Horizontal ? t.HorizontalWrapMode : t.VerticalWrapMode;
-    var n = e.ScrollView;
+    var t = e.ScrollProxy?.ScrollView?.Horizontal ? t.HorizontalWrapMode : t.VerticalWrapMode;
+    var n = e.ScrollProxy?.ScrollView;
     var a = (a === 2 || a === 4) !== UiNavigationModeModule_1.UiNavigationModeModule.FindOppositeNavigationResult.IsOppositeNavigationPositive;
     n.NavigateScrollToUIItem(e?.GetRootComponent(), a, t);
   }
   static TBo(i, e, a) {
     if (i?.HasNormalScrollView()) {
-      UiNavigationLogic.QMm(i, e, a);
+      UiNavigationLogic.FBm(i, e, a);
     }
     if (e?.HasDynamicScrollView()) {
-      UiNavigationLogic.KMm(i, e, a);
+      UiNavigationLogic.NBm(i, e, a);
     }
   }
   static LBo(i) {

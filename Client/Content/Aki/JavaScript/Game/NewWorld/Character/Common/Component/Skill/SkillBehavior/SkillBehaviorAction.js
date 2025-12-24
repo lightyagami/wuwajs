@@ -146,7 +146,7 @@ class SkillBehaviorAction {
         }
         break;
       case 2:
-        c = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.GetComponent(32).GetCurrentTarget();
+        c = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.GetComponent(33).GetCurrentTarget();
         if (c) {
           [r, e] = (0, SkillBehaviorMisc_1.getLocationAndDirection)(c.Entity.GetComponent(1).Owner);
         }
@@ -169,7 +169,7 @@ class SkillBehaviorAction {
         o = ControllerHolder_1.ControllerHolder.BlackboardController.GetIntValueByEntity(i.Entity.Id, t.BlackboardKey);
         c = EntitySystem_1.EntitySystem.Get(o);
         if (c?.Valid) {
-          [r, e] = (0, SkillBehaviorMisc_1.getLocationAndDirection)(c.GetComponent(173).Owner);
+          [r, e] = (0, SkillBehaviorMisc_1.getLocationAndDirection)(c.GetComponent(178).Owner);
         }
         break;
       case 8:
@@ -204,7 +204,7 @@ class SkillBehaviorAction {
       case 4:
         (e = Global_1.Global.BaseCharacter.D_K2_GetActorLocation().op_Subtraction(r)).Set(e.X, e.Y, 0);
     }
-    if (t.BestSpot && t.Strategy === 4) {
+    if (t.BestSpot && t.Strategy === 5) {
       S = ModelManager_1.ModelManager.SceneTeamModel.GetTeamEntities();
       v = ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(i.Entity);
       if ((S = S.indexOf(v)) + 1 > t.AngleOffsets.Num()) {
@@ -241,13 +241,14 @@ class SkillBehaviorAction {
     }
     let h = Vector_1.Vector.Create(r);
     if (t.BestSpot) {
-      if (t.Strategy === 3) {
+      if (t.Strategy === 4) {
         l = Global_1.Global.BaseCharacter.D_K2_GetActorLocation();
       }
       if (!_.Equals(h)) {
         switch (t.Strategy) {
-          case 4:
+          case 5:
           case 0:
+          case 1:
             var u = (0, SkillBehaviorMisc_1.traceWall)(a, _, h, t.DebugTrace);
             if (!u) {
               SkillUtils_1.SkillUtils.Log(0, 1, i.Entity, "SkillBehaviorAction.SetLocation撞墙停止射线起点和终点位置相同，设置位置失败", ["技能Id", i.Skill.SkillId], ["技能名", i.Skill.SkillName]);
@@ -255,25 +256,25 @@ class SkillBehaviorAction {
             }
             h = u[1];
             break;
-          case 1:
           case 2:
           case 3:
+          case 4:
             {
               let e = false;
               var M = Vector_1.Vector.Create();
-              var B = Vector_1.Vector.Create();
+              var d = Vector_1.Vector.Create();
               h.Subtraction(_, M);
               for (const f of SkillBehaviorMisc_1.angles) {
-                M.RotateAngleAxis(f, Vector_1.Vector.UpVectorProxy, B);
-                _.Addition(B, h);
-                var d = (0, SkillBehaviorMisc_1.traceWall)(a, _, h, t.DebugTrace);
-                if (!d) {
+                M.RotateAngleAxis(f, Vector_1.Vector.UpVectorProxy, d);
+                _.Addition(d, h);
+                var m = (0, SkillBehaviorMisc_1.traceWall)(a, _, h, t.DebugTrace);
+                if (!m) {
                   SkillUtils_1.SkillUtils.Log(0, 1, i.Entity, "SkillBehaviorAction.SetLocation四向查询射线起点和终点位置相同，设置位置失败", ["技能Id", i.Skill.SkillId], ["技能名", i.Skill.SkillName]);
                   return l;
                 }
-                if (!d[0]) {
+                if (!m[0]) {
                   e = true;
-                  h = d[1];
+                  h = m[1];
                   break;
                 }
               }
@@ -287,21 +288,21 @@ class SkillBehaviorAction {
       }
       {
         let e = undefined;
-        if (t.Strategy === 2) {
+        if (t.Strategy === 3 || t.Strategy === 1) {
           if (t.LocationType !== 0) {
             e = Vector_1.Vector.Create(a.ActorLocation);
           }
-        } else if (t.Strategy === 3) {
+        } else if (t.Strategy === 4) {
           e = Vector_1.Vector.Create(Global_1.Global.BaseCharacter.D_K2_GetActorLocation());
         }
         if (e) {
           var v = Vector_1.Vector.Create(h);
-          var m = (0, SkillBehaviorMisc_1.traceWall)(a, e, v, t.DebugTrace);
-          if (!m) {
+          var B = (0, SkillBehaviorMisc_1.traceWall)(a, e, v, t.DebugTrace);
+          if (!B) {
             SkillUtils_1.SkillUtils.Log(0, 1, i.Entity, "SkillBehaviorAction.SetLocation检测空气墙射线起点和终点位置相同，设置位置失败", ["技能Id", i.Skill.SkillId], ["技能名", i.Skill.SkillName]);
             return l;
           }
-          var b = m[0];
+          var b = B[0];
           if (b) {
             var C = b.GetHitCount();
             for (let e = 0; e < C; e++) {
@@ -309,7 +310,7 @@ class SkillBehaviorAction {
               if (ObjectUtils_1.ObjectUtils.IsValid(p)) {
                 if (p.Tags.FindIndex(RefCompAirWallController_1.AIR_WALL) !== -1) {
                   SkillUtils_1.SkillUtils.Log(0, 1, i.Entity, "SkillBehaviorAction.SetLocation检测到空气墙", ["技能Id", i.Skill.SkillId], ["技能名", i.Skill.SkillName]);
-                  h = m[1];
+                  h = B[1];
                   break;
                 }
               }
@@ -329,7 +330,7 @@ class SkillBehaviorAction {
     r = h.ToUeVector();
     v = t.Navigation;
     if (v > 0) {
-      var S = i.Entity.GetComponent(182);
+      var S = i.Entity.GetComponent(187);
       var U = Vector_1.Vector.Create();
       S.GravityUp.Multiply(v, U);
       if (!UE.NavigationSystemV1.D_K2_ProjectPointToNavigation(GlobalData_1.GlobalData.World, r, undefined, undefined, undefined, U.ToUeVector(), v)) {
@@ -355,6 +356,7 @@ class SkillBehaviorAction {
   static CalculateRotation(e, t) {
     let i = undefined;
     let a = undefined;
+    let r = undefined;
     switch (e.RotationType) {
       case 0:
         a = t.SkillComponent.SkillTarget;
@@ -363,8 +365,8 @@ class SkillBehaviorAction {
         a = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
         break;
       case 2:
-        var r = t.Entity.GetComponent(0);
-        a = ModelManager_1.ModelManager.CreatureModel.GetEntity(r.GetSummonerId());
+        var l = t.Entity.GetComponent(0);
+        a = ModelManager_1.ModelManager.CreatureModel.GetEntity(l.GetSummonerId());
         break;
       case 3:
         (i = tmpVector).FromUeVector(ModelManager_1.ModelManager.CameraModel.FightCamera.GetComponent(4).CameraActor.D_K2_GetActorLocation());
@@ -378,18 +380,29 @@ class SkillBehaviorAction {
         break;
       case 5:
         break;
+      case 6:
+        {
+          const o = t.Entity.GetComponent(3);
+          if (!o.IsAutonomousProxy) {
+            break;
+          }
+          r = o.InputDirectProxy;
+          break;
+        }
       default:
         a = ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(t.Entity);
     }
     if (a && a.Entity !== t.Entity) {
       i = a.Entity.GetComponent(1).ActorLocationProxy;
     }
-    var l = t.Entity.GetComponent(3);
+    const o = t.Entity.GetComponent(3);
     if (i) {
-      i.Subtraction(l.ActorLocationProxy, tmpVector);
-      MathUtils_1.MathUtils.LookRotationUpFirst(tmpVector, l.MoveComp.GravityUp, tmpQuat);
+      i.Subtraction(o.ActorLocationProxy, tmpVector);
+      MathUtils_1.MathUtils.LookRotationUpFirst(tmpVector, o.MoveComp.GravityUp, tmpQuat);
+    } else if (r) {
+      MathUtils_1.MathUtils.LookRotationUpFirst(r, o.MoveComp.GravityUp, tmpQuat);
     } else {
-      tmpQuat.DeepCopy(l.ActorQuatProxy);
+      tmpQuat.DeepCopy(o.ActorQuatProxy);
     }
     if (e.DirectionOffset !== 0) {
       tmpRotator.Set(0, e.DirectionOffset, 0);
@@ -480,7 +493,7 @@ class SkillBehaviorAction {
   static hZo(e, t) {
     var i = PhantomUtil_1.PhantomUtil.GetSummonedEntity(t.Entity, Protocol_1.Aki.Protocol.Summon.x3s.Proto_ESummonTypeConcomitantCustom, e.FollowIndex);
     if (i) {
-      i = i.Entity.GetComponent(39);
+      i = i.Entity.GetComponent(40);
       if (e.StopSummonSkill) {
         (0, SkillBehaviorMisc_1.getEndSkillBehaviorParamList)(t.Skill).push({
           Entity: t.Entity,
@@ -499,10 +512,10 @@ class SkillBehaviorAction {
     let i = undefined;
     switch (e.BuffTarget) {
       case 0:
-        i = t.Entity.GetComponent(178);
+        i = t.Entity.GetComponent(183);
         break;
       case 1:
-        i = t.SkillComponent.SkillTarget?.Entity?.GetComponent(178);
+        i = t.SkillComponent.SkillTarget?.Entity?.GetComponent(183);
     }
     var a;
     if (i) {
@@ -520,7 +533,7 @@ class SkillBehaviorAction {
     }
   }
   static lZo(e, t) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t.Entity.Id, 209);
+    t = EntitySystem_1.EntitySystem.GetComponent(t.Entity.Id, 215);
     if (t?.Valid && e.Tag.TagName !== "None") {
       if (e.Add) {
         t.AddTag(e.Tag.TagId);
@@ -536,13 +549,13 @@ class SkillBehaviorAction {
     }
   }
   static Kpl(e, t) {
-    var i = EntitySystem_1.EntitySystem.GetComponent(t.Entity.Id, 39);
+    var i = EntitySystem_1.EntitySystem.GetComponent(t.Entity.Id, 40);
     if (i?.Valid) {
       i.PlaySkillMontageWithEndAbility(t.Skill, e.MontageIndex, e.StartSection, e.StartTime);
     }
   }
   static K4_(e, t) {
-    var i = EntitySystem_1.EntitySystem.GetComponent(t.Entity.Id, 286);
+    var i = EntitySystem_1.EntitySystem.GetComponent(t.Entity.Id, 305);
     if (i?.Valid) {
       var a = e.UpdateCustomValue.ValueName;
       var r = a.Num();

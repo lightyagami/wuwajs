@@ -13,10 +13,10 @@ class ForecastRoleDevSkillData extends RoleDevSkillViewItemDataBase_1.RoleDevSki
     this.Y1d = [];
     this.E1d = [];
     this.X1d = [];
-    this.PZd = undefined;
+    this.him = undefined;
   }
   InitByRoleType(e, t) {
-    this.PZd = t;
+    this.him = t;
     this.l9d(e);
   }
   l9d(t) {
@@ -75,7 +75,7 @@ class ForecastRoleDevSkillData extends RoleDevSkillViewItemDataBase_1.RoleDevSki
     return false;
   }
   GetIsPerfectPlan() {
-    return this.PZd?.GetRoleSkillPlanState(this.RoleId) ?? true;
+    return this.him?.GetRoleSkillPlanState(this.RoleId) ?? true;
   }
   GetIsNormalPlanFinished() {
     return false;

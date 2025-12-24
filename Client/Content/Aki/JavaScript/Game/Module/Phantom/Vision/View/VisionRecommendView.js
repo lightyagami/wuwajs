@@ -22,13 +22,14 @@ class VisionRecommendView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
     this.kEd = undefined;
+    this.Bjf = undefined;
     this.b9i = 0;
     this.zo_ = 0;
     this.Jo_ = undefined;
     this.eGe = undefined;
     this.OEd = false;
-    this.Ypm = undefined;
-    this.zpm = undefined;
+    this.jbm = undefined;
+    this.Hbm = undefined;
     this.sGe = () => {
       return new VisionFetterDescItem_1.VisionFetterDescItem();
     };
@@ -70,24 +71,25 @@ class VisionRecommendView extends UiViewBase_1.UiViewBase {
       var e;
       if (this.OEd && (e = ModelManager_1.ModelManager.VisionRecommendModel.GetRoleFetterRecommendInfo(this.zo_)) && e.length !== 0) {
         e = e[this.b9i];
-        this.Ypm?.(this.zo_, e.GetRecommendFetterGroupId());
+        this.jbm?.(this.zo_, e.GetRecommendFetterGroupId());
         this.CloseMe();
       }
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIVerticalLayout], [1, UE.UIItem], [2, UE.UIText], [3, UE.UIButtonComponent], [4, UE.UIVerticalLayout], [5, UE.UIItem], [6, UE.UIButtonComponent], [7, UE.UIItem]];
-    this.BtnBindInfo = [[3, this.OnClickGoFetterGroupDetailViewBtn], [6, this.OnClickConfirmBoxBtn]];
+    this.ComponentRegisterInfos = [[0, UE.UIVerticalLayout], [1, UE.UIItem], [2, UE.UIText], [3, UE.UIButtonComponent], [4, UE.UIVerticalLayout], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIItem]];
+    this.BtnBindInfo = [[3, this.OnClickGoFetterGroupDetailViewBtn]];
   }
   OnStart() {
     var e = this.OpenParam;
     this.zo_ = e.RoleId;
     this.OEd = e.IsFromRoleDev;
-    this.Ypm = e.SuccessCallBack;
-    this.zpm = e.GetSelectedFetterGroupIdCallBack;
+    this.jbm = e.SuccessCallBack;
+    this.Hbm = e.GetSelectedFetterGroupIdCallBack;
     this.Jo_ = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(0), this.W2e);
     this.eGe = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(4), this.sGe);
     this.FEd();
+    this.kjf();
     this.NEd();
   }
   FEd() {
@@ -95,14 +97,19 @@ class VisionRecommendView extends UiViewBase_1.UiViewBase {
     this.kEd.SetLocalTextNew("RoleProject_PhantomRecommend_Tips01");
     this.kEd.SetFunction(this.GEd);
   }
+  kjf() {
+    this.Bjf = new ButtonItem_1.ButtonItem(this.GetItem(6));
+    this.Bjf.SetLocalTextNew("PrefabTextItem_PhantomQuickEquip_Text");
+    this.Bjf.SetFunction(this.OnClickConfirmBoxBtn);
+  }
   NEd() {
-    var e = this.GetButton(6);
+    var e = this.GetItem(6);
     var t = this.GetItem(7);
     if (this.OEd) {
-      e?.RootUIComp.SetUIActive(false);
+      e?.SetUIActive(false);
       t?.SetUIActive(true);
     } else {
-      e?.RootUIComp.SetUIActive(true);
+      e?.SetUIActive(true);
       t?.SetUIActive(false);
     }
   }
@@ -133,14 +140,14 @@ class VisionRecommendView extends UiViewBase_1.UiViewBase {
     var t = ModelManager_1.ModelManager.VisionRecommendModel.GetRoleFetterRecommendInfo(this.zo_);
     t?.sort((e, t) => t.GetUsage() - e.GetUsage());
     var i = new Array();
-    var r = t ? t.length : 0;
-    for (let e = 0; e < r; e++) {
-      var s = new FetterGroupContentData();
-      s.Index = e;
-      s.CurrentSelectIndex = this.b9i;
-      s.VisionFetterRecommendInfo = t[e];
-      s.ClickCallBack = this.Zo_;
-      i.push(s);
+    var s = t ? t.length : 0;
+    for (let e = 0; e < s; e++) {
+      var r = new FetterGroupContentData();
+      r.Index = e;
+      r.CurrentSelectIndex = this.b9i;
+      r.VisionFetterRecommendInfo = t[e];
+      r.ClickCallBack = this.Zo_;
+      i.push(r);
     }
     this.Jo_?.RefreshByData(i);
   }
@@ -165,9 +172,9 @@ class VisionRecommendView extends UiViewBase_1.UiViewBase {
   }
   qEd() {
     var e;
-    if (this.OEd && this.zpm && (e = ModelManager_1.ModelManager.VisionRecommendModel.GetRoleFetterRecommendInfo(this.zo_)) && e.length !== 0) {
+    if (this.OEd && this.Hbm && (e = ModelManager_1.ModelManager.VisionRecommendModel.GetRoleFetterRecommendInfo(this.zo_)) && e.length !== 0) {
       e = e[this.b9i];
-      if (this.zpm(this.zo_) === e.GetRecommendFetterGroupId()) {
+      if (this.Hbm(this.zo_) === e.GetRecommendFetterGroupId()) {
         this.kEd.SetLocalTextNew("RoleProject_PhantomRecommend_Tips01");
         this.kEd.SetEnableClick(false);
       } else {

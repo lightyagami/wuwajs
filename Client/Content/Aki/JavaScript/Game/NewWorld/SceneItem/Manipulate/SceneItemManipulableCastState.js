@@ -67,7 +67,7 @@ class SceneItemManipulableCastState extends SceneItemManipulableBaseState_1.Scen
     if (!FNameUtil_1.FNameUtil.IsNothing(this.SceneItem.ManipulateBaseConfig.投掷状态碰撞预设)) {
       this.SceneItem.ActorComp.GetPrimitiveComponent().SetCollisionProfileName(this.SceneItem.ManipulateBaseConfig.投掷状态碰撞预设);
     }
-    if (this.SceneItem.ManipulateBaseConfig.投掷状态CueId && this.SceneItem.ManipulateBaseConfig.投掷状态CueId.Num() > 0 && (this.aeu = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint()?.GetComponent(229), this.aeu !== undefined)) {
+    if (this.SceneItem.ManipulateBaseConfig.投掷状态CueId && this.SceneItem.ManipulateBaseConfig.投掷状态CueId.Num() > 0 && (this.aeu = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint()?.GetComponent(238), this.aeu !== undefined)) {
       for (let t = 0; t < this.SceneItem.ManipulateBaseConfig.投掷状态CueId.Num(); t++) {
         var i = this.SceneItem.ManipulateBaseConfig.投掷状态CueId.GetKey(t);
         var e = this.SceneItem.ManipulateBaseConfig.投掷状态CueId.Get(i);

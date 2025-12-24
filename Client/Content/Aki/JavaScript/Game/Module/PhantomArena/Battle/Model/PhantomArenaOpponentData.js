@@ -6,10 +6,13 @@ Object.defineProperty(exports, "__esModule", {
 exports.PhantomArenaOpponentData = undefined;
 const CustomPromise_1 = require("../../../../../Core/Common/CustomPromise");
 const Log_1 = require("../../../../../Core/Common/Log");
+const Protocol_1 = require("../../../../../Core/Define/Net/Protocol");
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
 const PhantomArenaAiOperationFactory_1 = require("../Ai/PhantomArenaAiOperationFactory");
 const PhantomArenaCardTaskData_1 = require("./PhantomArenaCardTaskData");
+const PhantomArenaFieldData_1 = require("./PhantomArenaFieldData");
+const PhantomArenaRecycleData_1 = require("./PhantomArenaRecycleData");
 const PhantomCardData_1 = require("./PhantomCardData");
 class PhantomArenaOpponentData {
   constructor() {
@@ -22,10 +25,13 @@ class PhantomArenaOpponentData {
     this.You = new Map();
     this.CanEvolveNum = 0;
     this.TaskData = undefined;
+    this.FieldData = undefined;
+    this.RecycleData = undefined;
     this.InitPromise = undefined;
     this.pD1 = new Map();
     this.vD1 = new Map();
     this.yD1 = [];
+    this.IsFieldActive = false;
     this.PrevShowLifeInternal = 0;
   }
   CreateInitPromise() {
@@ -36,7 +42,7 @@ class PhantomArenaOpponentData {
     this.You.clear();
     this.RoleId = t.Ng1;
     this.HandCardNum = t.Hg1;
-    this.RefreshLibraryNum(t.jg1);
+    this.RefreshCardLibraryNum(t.jg1);
     this.RefreshCanEvolveNum(t.eC1);
     this.Vvu(t.Vg1);
   }
@@ -59,6 +65,7 @@ class PhantomArenaOpponentData {
       this.Wou(a.$ou);
       this.phu(a.Xau);
       this.Quu(a.xuu);
+      this.CHm(a.rHm);
     }
     this.InitPromise?.SetResult(undefined);
     this.InitPromise = undefined;
@@ -73,7 +80,7 @@ class PhantomArenaOpponentData {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OpponentHandCardChange);
     }
   }
-  RefreshLibraryNum(t) {
+  RefreshCardLibraryNum(t) {
     this.CardLibraryNum = t;
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OpponentCardLibraryChange);
   }
@@ -97,6 +104,12 @@ class PhantomArenaOpponentData {
     }
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OpponentBattleStatusChange, a);
   }
+  RefreshBattleHpStatus(t, a) {
+    this.Xou.set(Protocol_1.Aki.Protocol.qC1.Proto_PhantomBattleLife, t);
+    if (a) {
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OpponentBattleStatusChange, [Protocol_1.Aki.Protocol.qC1.Proto_PhantomBattleLife]);
+    }
+  }
   RefreshBattleAttr(t) {
     var a = [];
     for (const r of Object.keys(t)) {
@@ -109,11 +122,17 @@ class PhantomArenaOpponentData {
   GetBattleStatusValue(t) {
     return this.Xou.get(t) ?? 0;
   }
+  GetBattleBattleAttr(t) {
+    return this.You.get(t) ?? 0;
+  }
   RefreshCardAttr(t, a) {
     for (const e of this.pD1.values()) {
       if (e.FightId === t) {
         e.RefreshFightAttr(a);
       }
+    }
+    if (t === this.FieldData?.CardData?.FightId) {
+      this.FieldData?.CardData.RefreshFightAttr(a);
     }
   }
   RemoveBattleCardDataByIndex(t) {
@@ -131,6 +150,11 @@ class PhantomArenaOpponentData {
     this.RemoveBattleCardDataByIndex(a.Index);
     this.pD1.set(a.CardId, a);
     this.vD1.set(a.Index, a);
+  }
+  SetBattleCardDataList(t) {
+    for (const a of t) {
+      this.SetBattleCardData(a);
+    }
   }
   NotifyExchangeBattleCard(t) {
     var a;
@@ -165,15 +189,15 @@ class PhantomArenaOpponentData {
     }
   }
   BackToLibrary(t) {
-    this.RefreshLibraryNum(t.aE1);
-    this.RefreshHandCardNum(t.Hg1);
+    this.RefreshCardLibraryNum(t.aE1);
+    this.RefreshHandCardNum(t.Hg1, false);
   }
   BackSlotCardToLibrary(t, a) {
     this.RemoveBattleCardDataByIndex(t);
-    this.RefreshLibraryNum(a);
+    this.RefreshCardLibraryNum(a);
   }
   ReverseCard(t) {
-    this.RefreshLibraryNum(t.aE1);
+    this.RefreshCardLibraryNum(t.aE1);
     this.RefreshHandCardNum(t.Hg1);
   }
   GetBattleCardIndexByCardId(t) {
@@ -193,7 +217,7 @@ class PhantomArenaOpponentData {
     }
     return a;
   }
-  GetCardDataByCardId(t) {
+  GetBattleCardByCardId(t) {
     return this.pD1.get(t);
   }
   GetFightIdList(t) {
@@ -233,6 +257,22 @@ class PhantomArenaOpponentData {
       Log_1.Log.Error("PhantomArena", 10, "任务数据为空");
     }
   }
+  InitFieldData() {
+    this.FieldData = new PhantomArenaFieldData_1.PhantomArenaFieldData();
+  }
+  RefreshFieldLockData(t, a = true) {
+    if (this.FieldData && (this.FieldData.SetSealRemainRound(t), a)) {
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OpponentSealFieldChange, t);
+    }
+  }
+  InitRecycleData() {
+    this.RecycleData = new PhantomArenaRecycleData_1.PhantomArenaRecycleData();
+  }
+  RefreshRecycleLockData(t) {
+    if (this.RecycleData) {
+      this.RecycleData.SealRemainRound = t;
+    }
+  }
   CreatePhantomCardData(t, a) {
     var e = new PhantomCardData_1.PhantomCardData(true);
     e.InitDataByNpc(t, a);
@@ -248,6 +288,12 @@ class PhantomArenaOpponentData {
       }
     }
     return true;
+  }
+  RemoveFightCardListToRecycle(t) {
+    for (const e of t) {
+      var a = this.pD1.get(e);
+      this.UD1(a);
+    }
   }
   SD1(t) {
     if (t) {
@@ -342,6 +388,12 @@ class PhantomArenaOpponentData {
   Quu(t) {
     if (t) {
       t = PhantomArenaAiOperationFactory_1.PhantomArenaAiOperationFactory.GetAiOperation(15, t);
+      this.yD1.push(t);
+    }
+  }
+  CHm(t) {
+    if (t) {
+      t = PhantomArenaAiOperationFactory_1.PhantomArenaAiOperationFactory.GetAiOperation(16, t);
       this.yD1.push(t);
     }
   }

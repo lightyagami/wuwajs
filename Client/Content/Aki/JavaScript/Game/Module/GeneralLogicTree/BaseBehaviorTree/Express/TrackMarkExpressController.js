@@ -109,7 +109,17 @@ class TrackMarkExpressController {
   }
   SY1(e, t, i) {
     var r = this.GetNodeTrackMarkCreator(e);
-    return r || (r = new NodeTrackMark(t, t.TreeIncId, t.TreeConfigId, e, i), this.JQt.set(e, r), r);
+    if (r) {
+      return r;
+    }
+    let s = 0;
+    r = t.GetNode(e);
+    if (r?.NodeType === "ChildQuest" && r.CustomTrackIconId) {
+      s = r.CustomTrackIconId;
+    }
+    r = new NodeTrackMark(t, t.TreeIncId, t.TreeConfigId, e, s, i);
+    this.JQt.set(e, r);
+    return r;
   }
   yY1(e) {
     this.GetNodeTrackMarkCreator(e)?.Destroy();
@@ -118,11 +128,12 @@ class TrackMarkExpressController {
 }
 exports.TrackMarkExpressController = TrackMarkExpressController;
 class NodeTrackMark {
-  constructor(e, t, i, r, s) {
+  constructor(e, t, i, r, s, a) {
     this.eXt = e;
     this.$mt = t;
     this.Yut = i;
     this.Jut = r;
+    this._jf = s;
     this.MarkRange = 0;
     this.RangeMarkShowDis = 0;
     this.zQt = [];
@@ -170,27 +181,27 @@ class NodeTrackMark {
         }
       }
     };
-    switch (s.TrackType.Type) {
+    switch (a.TrackType.Type) {
       case "Locations":
-        for (const o of s.TrackType.Locations) {
+        for (const o of a.TrackType.Locations) {
           this.zQt.push(Vector_1.Vector.Create(o.X ?? 0, o.Y ?? 0, o.Z ?? 0));
         }
-        this.RDc = s.TrackType.GravityDirection;
+        this.RDc = a.TrackType.GravityDirection;
         break;
       case "Entities":
-        for (const n of s.TrackType.EntityIds) {
-          this.zQt.push(n);
+        for (const h of a.TrackType.EntityIds) {
+          this.zQt.push(h);
         }
         break;
       case "CaptureVisions":
-        for (const h of s.TrackType.VisionDropEntities) {
-          var a = new TrackVision();
-          a.VisionOwnerId = h;
-          this.zQt.push(a);
+        for (const _ of a.TrackType.VisionDropEntities) {
+          var n = new TrackVision();
+          n.VisionOwnerId = _;
+          this.zQt.push(n);
         }
     }
-    this.MarkRange = s.Range ?? 0;
-    this.RangeMarkShowDis = s.ViewRange || s.Range * 1.3;
+    this.MarkRange = a.Range ?? 0;
+    this.RangeMarkShowDis = a.ViewRange || a.Range * 1.3;
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TaskRangeTrackStateChange, this.egt);
   }
   get MarkType() {
@@ -330,11 +341,11 @@ class NodeTrackMark {
         }
         break;
       case "CaptureVisions":
-        var o;
+        var n;
         var a = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(t);
         if (a) {
-          o = r;
-          s = ModelManager_1.ModelManager.CreatureModel.GetEntityData(o.EntityId, a.MapConfigId)?.AreaId ?? 0;
+          n = r;
+          s = ModelManager_1.ModelManager.CreatureModel.GetEntityData(n.EntityId, a.MapConfigId)?.AreaId ?? 0;
         }
     }
     return s;
@@ -419,38 +430,33 @@ class NodeTrackMark {
       }
       return INVALID_MARKID;
     }
-    let s = this.eXt.TaskMarkTableId;
-    var a = this.eXt.GetNode(this.Jut);
-    if (a?.NodeType === "ChildQuest" && a.CustomTrackIconId) {
-      s = a.CustomTrackIconId;
+    var i = this.ynh(i, e, r, t);
+    var s = this.dXt(t);
+    let a = undefined;
+    if (typeof s == "number") {
+      a = s;
     }
-    var a = this.ynh(i, e, r, t);
-    var i = this.dXt(t);
-    let o = undefined;
-    if (typeof i == "number") {
-      o = i;
-    }
-    i = new MapDefine_1.QuestMarkCreateInfo({
-      TrackTarget: i,
-      MarkConfigId: s,
+    s = new MapDefine_1.QuestMarkCreateInfo({
+      TrackTarget: s,
+      MarkConfigId: this._jf !== 0 ? this._jf : this.eXt.TaskMarkTableId,
       MarkType: this.MarkType,
       MarkId: 0,
       TrackSource: this.TrackSource,
       TreeId: this.$mt,
       NodeId: this.Jut,
-      AreaId: a,
-      EntityConfigId: o,
+      AreaId: i,
+      EntityConfigId: a,
       Gravity: this.ADc(e),
       MapAndDungeonInfo: {
         DungeonId: e
       }
     });
-    a = ModelManager_1.ModelManager.MapModel.CreateMapMark(i);
-    this.oXt.set(r, a);
+    i = ModelManager_1.ModelManager.MapModel.CreateMapMark(s);
+    this.oXt.set(r, i);
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("Quest", 18, "行为树添加追踪标记", ["行为树Id", this.Yut], ["节点Id", this.Jut], ["追踪目标副本Id", e], ["追踪目标", t], ["标记Id", a]);
+      Log_1.Log.Info("Quest", 18, "行为树添加追踪标记", ["行为树Id", this.Yut], ["节点Id", this.Jut], ["追踪目标副本Id", e], ["追踪目标", t], ["标记Id", i]);
     }
-    return a;
+    return i;
   }
   dXt(e) {
     if (e instanceof TrackVision) {
@@ -525,19 +531,24 @@ class NodeTrackMark {
             if (a) {
               t = a.AutoHideTrackMark;
             }
-            var a = {
-              TrackSource: this.TrackSource,
-              Id: r,
-              MarkType: this.MarkType,
-              IconPath: ConfigManager_1.ConfigManager.MapConfig.GetTaskMarkConfig(s.MarkConfigId).MarkPic,
-              TrackTarget: this.dXt(i[1]),
-              TrackInstanceId: i[0],
-              ShowGroupId: e,
-              AutoHideTrack: t,
-              IsInTrackRange: this.eXt.ContainTag(13),
-              IsSubTrack: this.eXt.IsNeedScaledTrackMark(this.Jut)
-            };
-            TrackController_1.TrackController.StartTrack(a);
+            var a = ConfigManager_1.ConfigManager.MapConfig.GetTaskMarkConfig(s.MarkConfigId);
+            if (a) {
+              a = {
+                TrackSource: this.TrackSource,
+                Id: r,
+                MarkType: this.MarkType,
+                IconPath: a.MarkPic,
+                TrackTarget: this.dXt(i[1]),
+                TrackInstanceId: i[0],
+                ShowGroupId: e,
+                AutoHideTrack: t,
+                IsInTrackRange: this.eXt.ContainTag(13),
+                IsSubTrack: this.eXt.IsNeedScaledTrackMark(this.Jut),
+                TaskMarkConfigId: s.MarkConfigId,
+                WeakTrack: this._jf !== 0
+              };
+              TrackController_1.TrackController.StartTrack(a);
+            }
           }
         } else {
           TrackController_1.TrackController.EndTrack(this.TrackSource, r);
@@ -554,29 +565,22 @@ class NodeTrackMark {
     var s = ModelManager_1.ModelManager.CreatureModel.GetInstanceId();
     var a = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(s);
     if (a) {
-      var o = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(this.DungeonId);
-      if (o) {
+      var n = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(this.DungeonId);
+      if (n) {
         if (s === this.DungeonId) {
-          if (a.InstSubType !== 13 && i === 0) {
-            if ((n = a.EntranceEntities)?.length) {
-              return [n[0].DungeonId, n[0].EntranceEntityId];
-            } else {
-              return undefined;
-            }
-          } else {
-            return [s, r];
-          }
+          a.InstSubType;
+          return [s, r];
         }
-        var n = a.InstSubType;
-        var h = o.InstSubType;
+        var o = a.InstSubType;
+        var h = n.InstSubType;
         let e = undefined;
         let t = 0;
-        switch (n) {
+        switch (o) {
           case 13:
             if (h === 13) {
               e = r;
               t = this.DungeonId;
-            } else if ((_ = o.EntranceEntities)?.length) {
+            } else if ((_ = n.EntranceEntities)?.length) {
               e = _[0].EntranceEntityId;
               t = _[0].DungeonId;
             }
@@ -584,7 +588,7 @@ class NodeTrackMark {
           case 12:
             if (i === 0) {
               if (h !== 13) {
-                var _ = o.EntranceEntities;
+                var _ = n.EntranceEntities;
                 if (!_?.length) {
                   break;
                 }
@@ -608,7 +612,7 @@ class NodeTrackMark {
                 t = this.DungeonId;
                 e = r;
               } else {
-                _ = o.EntranceEntities;
+                _ = n.EntranceEntities;
                 if (!_?.length) {
                   break;
                 }

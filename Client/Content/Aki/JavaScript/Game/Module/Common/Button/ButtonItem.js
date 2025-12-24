@@ -15,9 +15,7 @@ class ButtonItem extends UiPanelBase_1.UiPanelBase {
     this.l4e = undefined;
     this.Gke = undefined;
     this.ije = () => {
-      if (this.Gke) {
-        this.Gke(this.Pe);
-      }
+      this.ExecuteButtonFunction();
     };
     if (t) {
       this.CreateThenShowByActor(t.GetOwner());
@@ -50,6 +48,9 @@ class ButtonItem extends UiPanelBase_1.UiPanelBase {
   }
   SetShowText(t) {
     this.GetText(1).ShowTextNew(t);
+  }
+  SetTextShowState(t) {
+    this.GetText(1).SetUIActive(t);
   }
   SetData(t) {
     this.Pe = t;
@@ -88,6 +89,11 @@ class ButtonItem extends UiPanelBase_1.UiPanelBase {
   }
   GetBtn() {
     return this.GetButton(0);
+  }
+  ExecuteButtonFunction() {
+    if (this.Gke) {
+      this.Gke(this.Pe);
+    }
   }
 }
 exports.ButtonItem = ButtonItem;

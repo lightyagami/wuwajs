@@ -25,7 +25,15 @@ class SpecialEnergyBarKeyItem extends UiPanelBase_1.UiPanelBase {
     await this.Qtt.CreateByActorAsync(this.GetItem(0).GetOwner());
   }
   OnStart() {
-    var e = this.Lo.KeyInfoList;
+    this.SwitchToKeyInfoListInner(this.Lo.KeyInfoList);
+  }
+  SwitchToDefault() {
+    this.SwitchToKeyInfoListInner(this.Lo.KeyInfoList);
+  }
+  SwitchToKeyInfoList(e) {
+    this.SwitchToKeyInfoListInner(e);
+  }
+  SwitchToKeyInfoListInner(e) {
     var t = e[0];
     var e = e[1];
     let i = "";

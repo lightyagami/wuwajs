@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.tempVector2 = exports.tempVector1 = exports.tempRotator = exports.stealthTag = exports.skillTag = exports.invincibleTag = exports.summonTag = exports.morphTag = exports.controlVisionEnergy = exports.VISION_END_BULLET = exports.EXPLORE_SKILL_ID = exports.VISION_HIDDEN_DELAY = exports.CHARACTER_HIDDEN_DELAY = exports.SUMMON_PARTICLE_CUE_ID = exports.MORPH_PARTICLE_CUE_ID = exports.MATERIAL_CUE_ID = exports.ROLE_APPEAR_CUE_ID = exports.ROLE_HIDE_CUE_ID = exports.ROLE_DODGE_FORBID_BUFF_ID = exports.VISION_APPEAR_BUFF_ID = exports.VISION_SUMMON_BUFF_ID = exports.ROLE_SUMMON_BUFF_ID = undefined;
+exports.newShowVisionTag = exports.newVisionInteractTag = exports.tempVector2 = exports.tempVector1 = exports.tempRotator = exports.stealthTag = exports.skillTag = exports.invincibleTag = exports.summonTag = exports.morphTag = exports.controlVisionEnergy = exports.VISION_END_BULLET = exports.EXPLORE_SKILL_ID = exports.VISION_HIDDEN_DELAY = exports.CHARACTER_HIDDEN_DELAY = exports.SUMMON_PARTICLE_CUE_ID = exports.MORPH_PARTICLE_CUE_ID = exports.MATERIAL_CUE_ID = exports.ROLE_APPEAR_CUE_ID = exports.ROLE_HIDE_CUE_ID = exports.ROLE_DODGE_FORBID_BUFF_ID = exports.VISION_APPEAR_BUFF_ID = exports.VISION_SUMMON_BUFF_ID = exports.ROLE_SUMMON_BUFF_ID = undefined;
 const Protocol_1 = require("../../../../../../../Core/Define/Net/Protocol");
 const Rotator_1 = require("../../../../../../../Core/Utils/Math/Rotator");
 const Vector_1 = require("../../../../../../../Core/Utils/Math/Vector");
@@ -29,4 +29,6 @@ exports.skillTag = -1371021686;
 exports.stealthTag = 85148660;
 exports.tempRotator = Rotator_1.Rotator.Create();
 exports.tempVector1 = Vector_1.Vector.Create();
-exports.tempVector2 = Vector_1.Vector.Create(); //# sourceMappingURL=GameplayAbilityVisionMisc.js.map
+exports.tempVector2 = Vector_1.Vector.Create();
+exports.newVisionInteractTag = -724261491;
+exports.newShowVisionTag = -511826156; //# sourceMappingURL=GameplayAbilityVisionMisc.js.map

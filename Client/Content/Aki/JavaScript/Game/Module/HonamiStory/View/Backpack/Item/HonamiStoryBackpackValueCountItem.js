@@ -14,41 +14,41 @@ const HonamiStoryUtil_1 = require("../../../HonamiStoryUtil");
 class HonamiStoryBackpackValueCountItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.vom = false;
-    this.yom = () => {
+    this.Vhm = false;
+    this.jhm = () => {
       ModelManager_1.ModelManager.HonamiStoryModel.GetBackpackLogic()?.SetLogicState(0);
     };
     this.EXu = () => {
       var t = this.GetExtendToggle(3).GetToggleState() === 1;
       ModelManager_1.ModelManager.HonamiStoryModel.GetBackpackLogic()?.DoSellToAll(t, 2);
     };
-    this.kwm = () => {
+    this.X_f = () => {
       var t = this.GetExtendToggle(5).GetToggleState() === 1;
       ModelManager_1.ModelManager.HonamiStoryModel.GetBackpackLogic()?.DoSellToAll(t, 1, 1);
     };
-    this.qwm = () => {
+    this.Y_f = () => {
       var t = this.GetExtendToggle(6).GetToggleState() === 1;
       ModelManager_1.ModelManager.HonamiStoryModel.GetBackpackLogic()?.DoSellToAll(t, 1, 2);
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UITexture], [2, UE.UIText], [3, UE.UIExtendToggle], [4, UE.UIText], [5, UE.UIExtendToggle], [6, UE.UIExtendToggle], [7, UE.UIItem]];
-    this.BtnBindInfo = [[0, this.yom], [3, this.EXu], [5, this.kwm], [6, this.qwm]];
+    this.BtnBindInfo = [[0, this.jhm], [3, this.EXu], [5, this.X_f], [6, this.Y_f]];
   }
   OnStart() {
-    this.vom = HonamiStoryUtil_1.HonamiStoryUtil.CheckInHonamiStoryDungeon();
+    this.Vhm = HonamiStoryUtil_1.HonamiStoryUtil.CheckInHonamiStoryDungeon();
     var t = ModelManager_1.ModelManager.HonamiStoryModel.ActivityId;
     var t = ConfigManager_1.ConfigManager.HonamiStoryConfig.GetHonamiStoryActivityConfig(t);
-    var t = this.vom ? t.InnerItemId : t.OutCoinItemId;
+    var t = this.Vhm ? t.InnerItemId : t.OutCoinItemId;
     this.SetItemIcon(this.GetTexture(1), t);
-    this.GetItem(7).SetUIActive(!this.vom);
-    this.GetButton(0).RootUIComp.SetUIActive(!this.vom);
-    var t = this.vom ? "HonamiStory_SellValue_Inner" : "HonamiStory_SellValue_Outer";
+    this.GetItem(7).SetUIActive(!this.Vhm);
+    this.GetButton(0).RootUIComp.SetUIActive(!this.Vhm);
+    var t = this.Vhm ? "HonamiStory_SellValue_Inner" : "HonamiStory_SellValue_Outer";
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), t);
   }
   SetVisible(t) {
     this.SetUiActive(t);
-    if (!this.vom && t) {
+    if (!this.Vhm && t) {
       this.GetExtendToggle(3).SetToggleState(0);
       this.GetExtendToggle(5).SetToggleState(0);
       this.GetExtendToggle(6).SetToggleState(0);
@@ -70,13 +70,13 @@ exports.HonamiStoryBackpackValueCountItem = HonamiStoryBackpackValueCountItem;
 class HonamiStoryBackpackInsteadItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.yom = () => {
+    this.jhm = () => {
       ModelManager_1.ModelManager.HonamiStoryModel.GetBackpackLogic()?.SetLogicState(0);
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UISprite], [2, UE.UITexture], [3, UE.UIText]];
-    this.BtnBindInfo = [[0, this.yom]];
+    this.BtnBindInfo = [[0, this.jhm]];
   }
   OnStart() {
     var t = this.GetText(3);

@@ -41,8 +41,12 @@ class OpenSystemInstanceEntrance extends OpenSystemBase_1.OpenSystemBase {
       } else {
         return "TowerVariationView";
       }
-    } else if (e !== 9 && e === 10) {
+    } else if (e === 9) {
+      return "InstanceDungeonEntranceView";
+    } else if (e === 10) {
       return "ActivityInstanceEntranceView";
+    } else if (e === 16) {
+      return "LordGymThirdBossSelectView";
     } else {
       return "InstanceDungeonEntranceView";
     }

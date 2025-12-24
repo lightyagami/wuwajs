@@ -11,15 +11,15 @@ const countDownTag = 868371950;
 class SpecialEnergyBarQiuYuan extends SpecialEnergyBarBase_1.SpecialEnergyBarBase {
   constructor() {
     super(...arguments);
-    this.WYd = 0;
+    this.bzd = 0;
     this.Rdt = undefined;
-    this.QYd = undefined;
-    this.KYd = 0;
+    this.Rzd = undefined;
+    this.wzd = 0;
     this.bst = undefined;
     this.p2a = 0;
-    this.XYd = false;
-    this.YYd = (t, i) => {
-      this.zYd(i);
+    this.Lzd = false;
+    this.Pzd = (t, i) => {
+      this.Azd(i);
     };
   }
   OnRegisterComponent() {
@@ -27,7 +27,7 @@ class SpecialEnergyBarQiuYuan extends SpecialEnergyBarBase_1.SpecialEnergyBarBas
   }
   OnInitData() {
     super.OnInitData();
-    this.ListenForTagAddOrRemoveChanged(countDownTag, this.YYd);
+    this.ListenForTagAddOrRemoveChanged(countDownTag, this.Pzd);
   }
   async OnBeforeStartAsync() {
     var t = [];
@@ -49,10 +49,10 @@ class SpecialEnergyBarQiuYuan extends SpecialEnergyBarBase_1.SpecialEnergyBarBas
     this.InitTweenAnim(10);
     this.InitTweenAnim(11);
     this.InitTweenAnim(12);
-    this.QYd = this.GetTexture(1);
+    this.Rzd = this.GetTexture(1);
     this.RefreshBarPercent(true);
-    this.zYd(this.TagComponent.HasTag(countDownTag), true);
-    this.JYd(0, true);
+    this.Azd(this.TagComponent.HasTag(countDownTag), true);
+    this.Dzd(0, true);
   }
   OnBarPercentChanged() {
     this.RefreshBarPercent();
@@ -60,58 +60,58 @@ class SpecialEnergyBarQiuYuan extends SpecialEnergyBarBase_1.SpecialEnergyBarBas
   RefreshBarPercent(t = false) {
     var i = this.PercentMachine.GetCurPercent();
     var i = Math.floor(i * 3);
-    this.ZYd(i, t);
+    this.Uzd(i, t);
   }
-  ZYd(t, i = false) {
-    if (t !== this.WYd || i) {
-      var s = this.WYd;
-      this.WYd = t;
-      if (s > this.WYd) {
-        for (let t = this.WYd; t < s; t++) {
+  Uzd(t, i = false) {
+    if (t !== this.bzd || i) {
+      var s = this.bzd;
+      this.bzd = t;
+      if (s > this.bzd) {
+        for (let t = this.bzd; t < s; t++) {
           this.StopTweenAnim(5 + t * 2);
           this.PlayTweenAnim(6 + t * 2);
         }
       } else {
-        for (let t = s; t < this.WYd; t++) {
+        for (let t = s; t < this.bzd; t++) {
           this.StopTweenAnim(6 + t * 2);
           this.PlayTweenAnim(5 + t * 2);
         }
       }
     }
   }
-  zYd(t, i = false) {
-    if (this.XYd !== t || !!i) {
-      this.XYd = t;
+  Azd(t, i = false) {
+    if (this.Lzd !== t || !!i) {
+      this.Lzd = t;
     }
   }
-  JYd(t = 0, i = false) {
+  Dzd(t = 0, i = false) {
     if (i) {
-      this.KYd = t;
-      this.QYd.SetFillAmount(t);
-    } else if (this.KYd !== t) {
-      this.QYd.SetFillAmount(t);
-      if (t <= 0 && this.KYd > 0) {
+      this.wzd = t;
+      this.Rzd.SetFillAmount(t);
+    } else if (this.wzd !== t) {
+      this.Rzd.SetFillAmount(t);
+      if (t <= 0 && this.wzd > 0) {
         this.StopTweenAnim(11);
         this.PlayTweenAnim(12);
-      } else if (t > 0 && this.KYd <= 0) {
+      } else if (t > 0 && this.wzd <= 0) {
         this.StopTweenAnim(12);
         this.PlayTweenAnim(11);
       }
-      this.KYd = t;
+      this.wzd = t;
     }
   }
   Tick(t) {
     super.Tick(t);
     this.Rdt?.Tick(t);
-    if (this.XYd) {
+    if (this.Lzd) {
       if (!this.bst || !this.BuffComponent?.GetBuffByHandle(this.p2a)) {
         this.tst();
       }
       if (this.bst) {
-        this.JYd(this.bst.GetRemainDuration() / this.bst.Duration);
+        this.Dzd(this.bst.GetRemainDuration() / this.bst.Duration);
       }
     } else {
-      this.JYd(0);
+      this.Dzd(0);
     }
   }
   tst() {

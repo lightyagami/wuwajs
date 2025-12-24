@@ -2,21 +2,21 @@
 
 var __decorate = this && this.__decorate || function (t, e, i, s) {
   var n;
-  var o = arguments.length;
-  var h = o < 3 ? e : s === null ? s = Object.getOwnPropertyDescriptor(e, i) : s;
+  var h = arguments.length;
+  var o = h < 3 ? e : s === null ? s = Object.getOwnPropertyDescriptor(e, i) : s;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    h = Reflect.decorate(t, e, i, s);
+    o = Reflect.decorate(t, e, i, s);
   } else {
     for (var r = t.length - 1; r >= 0; r--) {
       if (n = t[r]) {
-        h = (o < 3 ? n(h) : o > 3 ? n(e, i, h) : n(e, i)) || h;
+        o = (h < 3 ? n(o) : h > 3 ? n(e, i, o) : n(e, i)) || o;
       }
     }
   }
-  if (o > 3 && h) {
-    Object.defineProperty(e, i, h);
+  if (h > 3 && o) {
+    Object.defineProperty(e, i, o);
   }
-  return h;
+  return o;
 };
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -67,6 +67,7 @@ let PawnHeadInfoComponent = class PawnHeadInfoComponent extends EntityComponent_
     this.XMl = false;
     this.YMl = false;
     this.IsDialogIconInUse = false;
+    this.DialogWorldScale3D = 0.5;
     this.zMl = false;
     this.rF1 = false;
     this.qJr = false;
@@ -97,6 +98,7 @@ let PawnHeadInfoComponent = class PawnHeadInfoComponent extends EntityComponent_
       this.hor?.OnNpcWasRecentlyRenderedOnScreenChange(t);
     };
     this.Bm1 = () => {
+      this.ZMl();
       this.xJr?.UpdateNameAndHeadInfo();
       this.HJr();
       this.SetCharacterSecondName();
@@ -155,10 +157,10 @@ let PawnHeadInfoComponent = class PawnHeadInfoComponent extends EntityComponent_
     return [1, 0];
   }
   OnStart() {
-    this.xJr = this.Entity.GetComponent(121);
+    this.xJr = this.Entity.GetComponent(126);
     this.Hte = this.Entity.GetComponent(1);
-    this.wJr = this.Entity.GetComponent(123);
-    this.BJr = this.Entity.GetComponent(201);
+    this.wJr = this.Entity.GetComponent(128);
+    this.BJr = this.Entity.GetComponent(207);
     this.bJr = Vector_1.Vector.Create();
     this.pie();
     if (this.Hte instanceof CharacterActorComponent_1.CharacterActorComponent) {
@@ -175,6 +177,8 @@ let PawnHeadInfoComponent = class PawnHeadInfoComponent extends EntityComponent_
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnRemoveDynamicOption, this.WJr);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnQuestStateChange, this.WJr);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnInteractionSpotStateChange, this.L21);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TextLanguageChange, this.iZe);
+    EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnEntityNameChanged, this.Bm1);
     return true;
   }
   pie() {
@@ -246,16 +250,12 @@ let PawnHeadInfoComponent = class PawnHeadInfoComponent extends EntityComponent_
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("HudUnit", 50, "头顶组件销毁", ["PbDataId", t]);
       }
-      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TextLanguageChange, this.iZe);
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.DisActiveBattleView, this.jJr);
-      EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnEntityNameChanged, this.Bm1);
     }
   }
   async eSl() {
     await this.tSl();
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TextLanguageChange, this.iZe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.DisActiveBattleView, this.jJr);
-    EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnEntityNameChanged, this.Bm1);
   }
   async tSl() {
     var t = this.Entity.GetComponent(0).GetPbDataId();
@@ -296,6 +296,12 @@ let PawnHeadInfoComponent = class PawnHeadInfoComponent extends EntityComponent_
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnQuestStateChange, this.WJr);
     if (EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.OnInteractionSpotStateChange, this.L21)) {
       EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnInteractionSpotStateChange, this.L21);
+    }
+    if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.TextLanguageChange, this.iZe)) {
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TextLanguageChange, this.iZe);
+    }
+    if (EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.OnEntityNameChanged, this.Bm1)) {
+      EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnEntityNameChanged, this.Bm1);
     }
     return true;
   }
@@ -390,6 +396,15 @@ let PawnHeadInfoComponent = class PawnHeadInfoComponent extends EntityComponent_
   UpdateDialogUseState(t) {
     this.IsDialogIconInUse = t;
   }
+  UpdateDialogScale(t) {
+    if (!(t <= 0) && this.DialogWorldScale3D !== t) {
+      this.DialogWorldScale3D = t;
+      this.hor?.UpdateDialogWorldScale();
+    }
+  }
+  GetDialogWorldScale3D() {
+    return this.DialogWorldScale3D;
+  }
   HideDialogueText() {
     this.hor?.HideDialogueText();
   }
@@ -482,5 +497,5 @@ let PawnHeadInfoComponent = class PawnHeadInfoComponent extends EntityComponent_
     }
   }
 };
-PawnHeadInfoComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(82)], PawnHeadInfoComponent);
+PawnHeadInfoComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(85)], PawnHeadInfoComponent);
 exports.PawnHeadInfoComponent = PawnHeadInfoComponent; //# sourceMappingURL=PawnHeadInfoComponent.js.map

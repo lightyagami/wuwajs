@@ -26,16 +26,19 @@ class RoleDevDetailItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.z4d = false;
     this.Nhd = () => new RoleDevDetailSubItemList_1.RoleDevDetailSubItemList();
     this.OnBtnTrack = () => {
-      var e = ConfigManager_1.ConfigManager.RoleDevConfig?.GetItemJumpGroupConfig(this.Pe?.ItemGroup[0].ItemId ?? 0);
-      var t = e?.SpecialJumpGroup ?? 0;
-      if (t > 0 && ModelManager_1.ModelManager.AdventureGuideModel.GetIsDetectionPreOpenByPreOpenId(t)) {
-        this.oql(t);
+      var e = this.Pe?.ItemGroup[0].ItemId ?? 0;
+      var t = ConfigManager_1.ConfigManager.RoleDevConfig?.GetItemJumpGroupConfig(e);
+      var i = t?.SpecialJumpGroup ?? 0;
+      if (i > 0 && ModelManager_1.ModelManager.AdventureGuideModel.GetIsDetectionPreOpenByPreOpenId(i)) {
+        this.oql(i);
       } else {
-        t = e?.JumpGroup ?? [];
-        e = RoleDevUtils_1.RoleDevUtils.GetFirstUnlockedTeleportId(t);
-        this._xd(e);
-        t = this.Pe?.ButtonType ?? -1;
-        ControllerHolder_1.ControllerHolder.RoleDevController.LogRoleDevSubPageClick(this.Pe?.RoleId ?? 0, this.Pe?.MainPage ?? 0, t);
+        i = this.Pe?.ButtonType ?? -1;
+        ControllerHolder_1.ControllerHolder.RoleDevController.LogRoleDevSubPageClick(this.Pe?.RoleId ?? 0, this.Pe?.MainPage ?? 0, i);
+        if (i !== 22 || !this.oDf(e)) {
+          i = t?.JumpGroup ?? [];
+          e = RoleDevUtils_1.RoleDevUtils.GetFirstUnlockedTeleportId(i);
+          this._xd(e);
+        }
       }
     };
   }
@@ -63,9 +66,9 @@ class RoleDevDetailItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.DLu?.SetEnableClick(this.J4d());
     this.GetItem(5)?.SetUIActive(this.z4d);
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(7), "RoleProject_Access_None");
-    this.oKd(e);
+    this.hKd(e);
   }
-  oKd(e) {
+  hKd(e) {
     const t = ConfigManager_1.ConfigManager.RoleDevConfig;
     if (t) {
       const o = ConfigManager_1.ConfigManager.RoleDevConfig.GetRoleDevStaticConfig()?.UnknownItemId;
@@ -91,6 +94,29 @@ class RoleDevDetailItem extends GridProxyAbstract_1.GridProxyAbstract {
       return !this.Pe.ItemGroup.some(e => e.ItemId === t);
     }
     return true;
+  }
+  oDf(e) {
+    var t = ConfigManager_1.ConfigManager.RoleDevConfig?.GetItemJumpGroupConfig(e);
+    if (t) {
+      e = this.Pe?.RoleId;
+      e = ConfigManager_1.ConfigManager.RoleDevConfig?.GetRoleDevProjectConfig(e);
+      if (e && e.SkillItemJumpType) {
+        var i = t.JumpGroup ?? [];
+        for (const o of e.SkillItemJumpType) {
+          if (o && !(o.ArrayInt.length < 2)) {
+            var r = o.ArrayInt[0];
+            if (r === t.ItemType) {
+              r = i[o.ArrayInt[1]];
+              if (r && RoleDevUtils_1.RoleDevUtils.CheckAccessPathUnlocked(r)) {
+                this._xd(r);
+                return true;
+              }
+            }
+          }
+        }
+      }
+    }
+    return false;
   }
   _xd(e) {
     SkipTaskManager_1.SkipTaskManager.RunByConfigId(e, this.Pe?.ItemGroup[0].ItemId ?? 0);

@@ -15,12 +15,12 @@ class HonamiStoryLoadingView extends LoadingViewBase_1.LoadingViewBase {
   constructor() {
     super(...arguments);
     this.BGc = undefined;
-    this.Ibm = () => {
+    this._9m = () => {
       if (this.BGc && this.BGc.StartAudioEvent !== "") {
         AudioSystem_1.AudioSystem.PostEvent(this.BGc.StartAudioEvent);
       }
     };
-    this.Tbm = () => {
+    this.u9m = () => {
       if (this.BGc && this.BGc.EndAudioEvent !== "") {
         AudioSystem_1.AudioSystem.PostEvent(this.BGc.EndAudioEvent);
       }
@@ -45,21 +45,23 @@ class HonamiStoryLoadingView extends LoadingViewBase_1.LoadingViewBase {
           this.BGc = e[i];
         }
       }
-      this.UiViewSequence.AddSequenceStartEvent("Start", this.Ibm);
-      this.UiViewSequence.AddSequenceStartEvent("Close", this.Tbm);
-      this.Adm();
+      this.UiViewSequence.AddSequenceStartEvent("Start", this._9m);
+      this.UiViewSequence.AddSequenceStartEvent("Close", this.u9m);
+      this.upm();
     }
   }
   UpdateProgressRate(i) {}
   UpdateProgressValue(i) {
     this.SetTextProgressValue(1, i);
   }
-  Adm() {
+  upm() {
     if (this.BGc) {
       var i = this.BGc;
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), i.Title);
-      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(3), i.Tips);
       var e = !StringUtils_1.StringUtils.IsBlank(i.Tips);
+      if (e) {
+        LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(3), i.Tips);
+      }
       this.GetText(3).SetUIActive(e);
       this.GetItem(4).SetUIActive(false);
       this.GetItem(5).SetUIActive(false);

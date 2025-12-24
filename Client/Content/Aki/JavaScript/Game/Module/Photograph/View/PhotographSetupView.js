@@ -29,8 +29,8 @@ class PhotographSetupView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
     this.BIl = 0;
-    this.l_m = 1;
-    this.__m = 1;
+    this.Ifm = 1;
+    this.Tfm = 1;
     this.qKi = new Set();
     this.GKi = new Map();
     this.M1_ = new Map();
@@ -144,9 +144,9 @@ class PhotographSetupView extends UiViewBase_1.UiViewBase {
   async OnBeforeStartAsync() {
     var t = this.OpenParam;
     if (t) {
-      this.l_m = t.PhotoSetupMode;
+      this.Ifm = t.PhotoSetupMode;
       this.BIl = t.SkinId;
-      this.__m = t.RoleAnimType;
+      this.Tfm = t.RoleAnimType;
       this.tQi();
       await this.iQi();
       await this.oQi();
@@ -158,7 +158,7 @@ class PhotographSetupView extends UiViewBase_1.UiViewBase {
   }
   OnStart() {
     this.Xva = this.GetItem(3).GetOwner().GetComponentByClass(UE.UIInturnAnimController.StaticClass());
-    this.nQi(this.l_m, true, true);
+    this.nQi(this.Ifm, true, true);
     this.eQi();
     this.UiScrollView = this.GetScrollViewWithScrollbar(12);
   }
@@ -216,14 +216,14 @@ class PhotographSetupView extends UiViewBase_1.UiViewBase {
     }
   }
   lQi(t) {
-    this.l_m = t;
+    this.Ifm = t;
     this._Qi(t === 1);
     this.uQi(t === 0);
     this.cQi(t === 2);
     this.w1_(t === 3);
   }
   async iQi() {
-    var t = ConfigCommon_1.ConfigCommon.ToList(ConfigManager_1.ConfigManager.PhotographConfig.GetPhotoMontageConfigListBySkinIdAndMainAnim(this.BIl, this.__m));
+    var t = ConfigCommon_1.ConfigCommon.ToList(ConfigManager_1.ConfigManager.PhotographConfig.GetPhotoMontageConfigListBySkinIdAndMainAnim(this.BIl, this.Tfm));
     if (t) {
       t.sort((t, i) => t.Sort - i.Sort);
       var i = this.GetItem(4);
@@ -293,7 +293,7 @@ class PhotographSetupView extends UiViewBase_1.UiViewBase {
     }
   }
   async rQi() {
-    var t = ConfigCommon_1.ConfigCommon.ToList(ConfigManager_1.ConfigManager.PhotographConfig.GetPhotoMontageConfigListBySkinIdAndMainAnim(this.BIl, this.__m));
+    var t = ConfigCommon_1.ConfigCommon.ToList(ConfigManager_1.ConfigManager.PhotographConfig.GetPhotoMontageConfigListBySkinIdAndMainAnim(this.BIl, this.Tfm));
     if (t) {
       t.sort((t, i) => t.Sort - i.Sort);
       var i = this.GetItem(4);
@@ -374,7 +374,7 @@ class PhotographSetupView extends UiViewBase_1.UiViewBase {
     e.SetUIActive(true);
     var s = [];
     for (const h of t) {
-      if (h.ValueType !== 2 || this.__m === 0) {
+      if (h.ValueType !== 2 || this.Tfm === 0) {
         s.push(this.gQi(h.ValueType, h.Type));
       }
     }

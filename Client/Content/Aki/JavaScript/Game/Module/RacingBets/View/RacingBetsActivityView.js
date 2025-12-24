@@ -92,6 +92,7 @@ class RacingBetsActivityView extends ActivitySubViewBase_1.ActivitySubViewBase {
     var i;
     var e = this.Nxc.LocalConfig;
     if (e) {
+      this.gLt.SetActivityBaseData(this.Nxc);
       this.gLt.SetTitleByText(this.Nxc.GetTitle());
       i = e.DescTheme;
       t = !StringUtils_1.StringUtils.IsEmpty(i);

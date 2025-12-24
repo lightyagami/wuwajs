@@ -30,10 +30,11 @@ class SceneInteractionLevel {
     this.Active = true;
     this.TempForce = false;
     this.OnLevelStreamingShowCallback = undefined;
+    this.OnLevelStreamingLoadedCallback = undefined;
     this.OnLevelStreamingHideCallback = undefined;
     this.t_r = false;
   }
-  Init(t, e, i, s, h, o, r, n, a = false, c = 0) {
+  Init(t, e, i, s, h, o, n, r, a = false, c = 0, l) {
     this.LevelStreamingDynamic = t;
     this.LevelName = e;
     this.Location = i;
@@ -46,15 +47,19 @@ class SceneInteractionLevel {
     this.LevelStreamingDynamic.bInitiallyLoaded = true;
     this.LevelStreamingDynamic.bInitiallyVisible = true;
     this.LevelStreamingDynamic.SetShouldBeLoaded(true);
-    this.LevelStreamingDynamic.SetShouldBeVisible(n);
+    this.LevelStreamingDynamic.SetShouldBeVisible(r);
     this.LoadingLevelComplete = false;
     this.IsDestroyed = false;
-    this.OnLevelStreamingShowCallback = r;
+    this.OnLevelStreamingShowCallback = n;
+    this.OnLevelStreamingLoadedCallback = l;
     if (SceneInteractionLevel.Xt1 && Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("Interaction", 72, "[SceneInteractionLevel.Init]", ["HandleId", h], ["LevelName", e], ["IsInitShow", a], ["afterLoadVisible", n]);
+      Log_1.Log.Debug("Interaction", 72, "[SceneInteractionLevel.Init]", ["HandleId", h], ["LevelName", e], ["IsInitShow", a], ["afterLoadVisible", r]);
     }
     this.LevelStreamingDynamic.OnLevelShown.Add(() => {
       this.i_r("Init");
+    });
+    this.LevelStreamingDynamic.OnLevelLoaded.Add(() => {
+      this.Itg("Init");
     });
   }
   ToggleLevelVisible(t, e, i = undefined, s = "") {
@@ -119,6 +124,7 @@ class SceneInteractionLevel {
     }
     if (this.LevelStreamingDynamic) {
       this.LevelStreamingDynamic.OnLevelShown.Clear();
+      this.LevelStreamingDynamic.OnLevelLoaded.Clear();
       this.LevelStreamingDynamic.SetShouldBeLoaded(false);
     }
     this.LevelStreamingDynamic = undefined;
@@ -213,20 +219,20 @@ class SceneInteractionLevel {
         if (h.IsValid()) {
           var o = h.K2_GetComponentsByClass(UE.StaticMeshComponent.StaticClass());
           for (let t = 0; t < o.Num(); t++) {
-            var r = o.Get(e);
-            if (r.IsValid()) {
+            var n = o.Get(e);
+            if (n.IsValid()) {
               switch (i.CustomPrimitiveDataIndex0.length) {
                 case CommonDefine_1.ONE:
-                  r.SetCustomPrimitiveDataFloat(CommonDefine_1.ZERO, i.CustomPrimitiveDataIndex0[CommonDefine_1.ZERO]);
+                  n.SetCustomPrimitiveDataFloat(CommonDefine_1.ZERO, i.CustomPrimitiveDataIndex0[CommonDefine_1.ZERO]);
                   break;
                 case CommonDefine_1.TWO:
-                  r.SetCustomPrimitiveDataVector2(CommonDefine_1.ZERO, new UE.Vector2D(i.CustomPrimitiveDataIndex0[CommonDefine_1.ZERO], i.CustomPrimitiveDataIndex0[CommonDefine_1.ONE]));
+                  n.SetCustomPrimitiveDataVector2(CommonDefine_1.ZERO, new UE.Vector2D(i.CustomPrimitiveDataIndex0[CommonDefine_1.ZERO], i.CustomPrimitiveDataIndex0[CommonDefine_1.ONE]));
                   break;
                 case CommonDefine_1.THREE:
-                  r.SetCustomPrimitiveDataVector3(CommonDefine_1.ZERO, new UE.Vector(i.CustomPrimitiveDataIndex0[CommonDefine_1.ZERO], i.CustomPrimitiveDataIndex0[CommonDefine_1.ONE], i.CustomPrimitiveDataIndex0[CommonDefine_1.TWO]));
+                  n.SetCustomPrimitiveDataVector3(CommonDefine_1.ZERO, new UE.Vector(i.CustomPrimitiveDataIndex0[CommonDefine_1.ZERO], i.CustomPrimitiveDataIndex0[CommonDefine_1.ONE], i.CustomPrimitiveDataIndex0[CommonDefine_1.TWO]));
                   break;
                 case CommonDefine_1.FOUR:
-                  r.SetCustomPrimitiveDataVector4(CommonDefine_1.ZERO, new UE.Vector4(i.CustomPrimitiveDataIndex0[CommonDefine_1.ZERO], i.CustomPrimitiveDataIndex0[CommonDefine_1.ONE], i.CustomPrimitiveDataIndex0[CommonDefine_1.TWO], i.CustomPrimitiveDataIndex0[CommonDefine_1.THREE]));
+                  n.SetCustomPrimitiveDataVector4(CommonDefine_1.ZERO, new UE.Vector4(i.CustomPrimitiveDataIndex0[CommonDefine_1.ZERO], i.CustomPrimitiveDataIndex0[CommonDefine_1.ONE], i.CustomPrimitiveDataIndex0[CommonDefine_1.TWO], i.CustomPrimitiveDataIndex0[CommonDefine_1.THREE]));
                   break;
                 default:
                   if (Log_1.Log.CheckError()) {
@@ -240,6 +246,13 @@ class SceneInteractionLevel {
         }
       }
     }
+  }
+  Itg(t) {
+    if (SceneInteractionLevel.Xt1 && Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("Interaction", 18, "[SceneInteractionLevel.OnLevelLoaded]", ["HandleId", this.HandleId], ["Reason", t], ["LastWorldOrigin", this.LevelStreamingDynamic?.LoadedLevel?.LastWorldOrigin], ["LevelName", this.LevelName]);
+    }
+    this.OnLevelStreamingLoadedCallback?.();
+    this.OnLevelStreamingLoadedCallback = undefined;
   }
   i_r(t) {
     var e;
@@ -336,6 +349,13 @@ class SceneInteractionLevel {
       return undefined;
     }
   }
+  GetSkeletalMeshActor() {
+    if (this.InteractionActor?.IsValid() && this.InteractionActor.AllSkeletalMeshActors && this.InteractionActor.AllSkeletalMeshActors?.Num() > 0) {
+      return this.InteractionActor.AllSkeletalMeshActors.Get(0);
+    } else {
+      return undefined;
+    }
+  }
   GetPartCollisionActorTag(t) {
     if (this.InteractionActor?.IsValid()) {
       return this.InteractionActor.PartCollisionActorsAndCorrespondingTags?.Get(t);
@@ -379,6 +399,11 @@ class SceneInteractionLevel {
       this.InteractionActor.UpdateHitInfo(t.ToUeVector(), e);
     }
   }
+  UpdateRangeOverlapInfo(t, e) {
+    if (this.InteractionActor?.IsValid()) {
+      this.InteractionActor.UpdateRangeOverlapInfo(t, e);
+    }
+  }
   GetActiveTagSequencePlaybackProgress(t) {
     if (this.InteractionActor?.IsValid()) {
       return this.InteractionActor.GetActiveTagSequencePlaybackProgress(t);
@@ -417,6 +442,16 @@ class SceneInteractionLevel {
   PlayActiveTagSequenceTo(t, e, i = false) {
     if (this.InteractionActor?.IsValid()) {
       this.InteractionActor.PlayActiveTagSequenceTo(t, e, i);
+    }
+  }
+  SetOverrideSeqBindActor(t, e) {
+    if (this.InteractionActor?.IsValid()) {
+      this.InteractionActor.SetOverrideSeqBindActor(t, e);
+    }
+  }
+  UnsetOverrideSeqBindActor(t, e) {
+    if (this.InteractionActor?.IsValid()) {
+      this.InteractionActor.UnsetOverrideSeqBindActor(t, e);
     }
   }
   GetReceivingDecalsActors() {

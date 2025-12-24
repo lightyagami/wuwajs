@@ -5,70 +5,114 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.RouletteAssemblyGridItem = undefined;
 const ModelManager_1 = require("../../../Manager/ModelManager");
+const RedDotController_1 = require("../../../RedDot/RedDotController");
 const LoopScrollMediumItemGrid_1 = require("../../Common/MediumItemGrid/LoopScrollMediumItemGrid");
+const MediumItemGridRedDotComponent_1 = require("../../Common/MediumItemGrid/MediumItemGridComponent/MediumItemGridRedDotComponent");
+const gridRedDotInfoList = [{
+  Id: 1007,
+  RedDotName: "RedDotPhantomInteractRouletteGrid"
+}];
 class RouletteAssemblyGridItem extends LoopScrollMediumItemGrid_1.LoopScrollMediumItemGrid {
   constructor() {
     super(...arguments);
     this.Data = undefined;
+    this.CurrentRedDotName = undefined;
+    this.RedDotItem = undefined;
+    this.CurrentShowNew = false;
+    this.CurrentShowRedDot = false;
   }
-  OnRefresh(e, t, r) {
+  OnStart() {
+    this.SetUseFixedAsync(true);
+  }
+  OnRefresh(t, e, i) {
     var s = {
       Type: 4,
       QualityType: "MediumItemGridQualitySpritePath",
-      Data: e,
+      Data: t,
       IsOmitBottomText: false
     };
-    if (e.GridType === 2) {
-      s.QualityId = e.QualityId;
+    this.JLf(t.Id);
+    if (t.GridType === 2) {
+      s.QualityId = t.QualityId;
     } else {
       s.QualityId = 1;
     }
-    var i = e.RelativeIndex !== 0;
-    if (i) {
-      s.SortIndex = e.RelativeIndex;
+    var o = t.RelativeIndex !== 0;
+    if (o) {
+      s.SortIndex = t.RelativeIndex;
     }
-    switch (e.GridType) {
+    switch (t.GridType) {
       case 0:
-        var o = e;
-        s.SpriteIconPath = o.IconPath;
-        s.BottomTextId = o.Name;
-        s.IsNewVisible = o.HasRedDot;
+        var r = t;
+        s.SpriteIconPath = r.IconPath;
+        s.BottomTextId = r.Name;
+        s.IsNewVisible = r.HasNew;
+        this.CurrentShowNew = r.HasNew;
         break;
       case 1:
-        o = e;
-        if (o.IconPath.includes("Atlas")) {
-          s.SpriteIconPath = o.IconPath;
+        r = t;
+        if (r.IconPath.includes("Atlas")) {
+          s.SpriteIconPath = r.IconPath;
         } else {
-          s.IconPath = o.IconPath;
+          s.IconPath = r.IconPath;
         }
-        s.BottomTextId = e.Name;
+        s.BottomTextId = t.Name;
         break;
       case 2:
-        var o = e;
-        s.ItemConfigId = o.Id;
-        s.BottomText = o.ItemNum.toString();
-        var o = ModelManager_1.ModelManager.InventoryModel.GetCommonItemData(e.Id);
-        if (o) {
-          o = o.GetConfig();
-          s.BuffIconType = o.ItemBuffType;
+        var r = t;
+        s.ItemConfigId = r.Id;
+        s.BottomText = r.ItemNum.toString();
+        var r = ModelManager_1.ModelManager.InventoryModel.GetCommonItemData(t.Id);
+        if (r) {
+          r = r.GetConfig();
+          s.BuffIconType = r.ItemBuffType;
         }
     }
     this.Apply(s);
-    this.Data.Index = r;
-    this.SetSelected(t);
+    this.Data.Index = i;
+    this.SetSelected(e);
+    this.RefreshNewAndRedDot();
   }
-  RefreshRedDot() {
-    var e;
-    if (this.Data.GridType === 0) {
-      e = this.Data;
-      this.SetNewVisible(e.HasRedDot);
+  RefreshNewAndRedDot() {
+    var t;
+    if (this.Data.GridType === 0 && (t = this.Data, this.CurrentShowNew = t.HasNew, this.SetNewVisible(t.HasNew), this.RedDotItem?.SetUIActive(this.CurrentShowRedDot && !this.CurrentShowNew), t = t?.RelativeIndex) && t !== 0) {
+      if (this.CurrentShowRedDot) {
+        this.SetSortIndex(undefined);
+      } else {
+        this.SetSortIndex(t);
+      }
     }
   }
-  OnSelected(e) {
-    this.GetItemGridExtendToggle().SetToggleState(1, e);
+  OnSelected(t) {
+    this.GetItemGridExtendToggle().SetToggleState(1, t);
   }
-  OnDeselected(e) {
-    this.GetItemGridExtendToggle().SetToggleState(0, e);
+  OnDeselected(t) {
+    this.GetItemGridExtendToggle().SetToggleState(0, t);
+  }
+  async JLf(e) {
+    var t;
+    var i = gridRedDotInfoList.find(t => t.Id === e);
+    if (!!this.CurrentRedDotName && (!i || this.CurrentRedDotName !== i.RedDotName)) {
+      RedDotController_1.RedDotController.UnBindGivenUi(this.CurrentRedDotName, this.RedDotItem);
+      this.RedDotItem?.SetUIActive(false);
+      this.CurrentRedDotName = undefined;
+      this.CurrentShowRedDot = false;
+      this.RefreshNewAndRedDot();
+    }
+    if (i && this.CurrentRedDotName !== i?.RedDotName) {
+      this.CurrentRedDotName = i.RedDotName;
+      if (this.RedDotItem === undefined) {
+        this.SetUseFixedAsync(true);
+        this.SetRedDotVisible(true);
+        this.SetRedDotVisible(false);
+        t = await this.GetItemGridComponent(MediumItemGridRedDotComponent_1.MediumItemGridRedDotComponent)?.GetAsync();
+        this.RedDotItem = t?.GetRootItem();
+      }
+      RedDotController_1.RedDotController.BindRedDot(i.RedDotName, this.RedDotItem, t => {
+        this.CurrentShowRedDot = t;
+        this.RefreshNewAndRedDot();
+      });
+    }
   }
 }
 exports.RouletteAssemblyGridItem = RouletteAssemblyGridItem;

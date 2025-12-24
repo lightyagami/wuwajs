@@ -29,9 +29,9 @@ class GameplayCueSkillTargetBeam extends GameplayCueBase_1.GameplayCueBase {
     let e = undefined;
     let s = "";
     var h;
-    var a = this.EntityHandle.Entity.GetComponent(32);
+    var a = this.EntityHandle.Entity.GetComponent(33);
     var m = this.EntityHandle.Entity.GetComponent(3);
-    s = a && m?.IsAutonomousProxy ? (e = a.GetCurrentTarget(), a.GetCurrentTargetSocketName()) : (m = this.EntityHandle.Entity.GetComponent(40), e = m.SkillTarget, m.SkillTargetSocket);
+    s = a && m?.IsAutonomousProxy ? (e = a.GetCurrentTarget(), a.GetCurrentTargetSocketName()) : (m = this.EntityHandle.Entity.GetComponent(41), e = m.SkillTarget, m.SkillTargetSocket);
     if (e) {
       if (s) {
         m = (a = e.Entity.GetComponent(3)).Actor.Mesh.D_GetSocketLocation(FNameUtil_1.FNameUtil.GetDynamicFName(s));

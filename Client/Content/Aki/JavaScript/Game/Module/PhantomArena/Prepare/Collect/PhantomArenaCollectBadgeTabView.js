@@ -23,6 +23,7 @@ const CollectRewardPopup_1 = require("./CollectRewardPopup");
 class PhantomArenaCollectBadgeTabView extends UiTabViewBase_1.UiTabViewBase {
   constructor() {
     super(...arguments);
+    this.ActivityId = 0;
     this.gtu = 0;
     this.Gpo = undefined;
     this.jlo = undefined;
@@ -45,7 +46,7 @@ class PhantomArenaCollectBadgeTabView extends UiTabViewBase_1.UiTabViewBase {
       return new CollectBadgeSkillItem_1.CollectBadgeSkillItem();
     };
     this.cfu = () => {
-      var e = ModelManager_1.ModelManager.PhantomArenaModel.GetCollectBadgeGroupDataList()?.[0]?.BadgeIdList[0];
+      var e = ModelManager_1.ModelManager.PhantomArenaModel.GetCollectBadgeGroupDataList(this.ActivityId)?.[0]?.BadgeIdList[0];
       var t = this.Ctu.GetScrollItemByIndex(0);
       this.gtu = e;
       (this.Gpo = t).SetSelectByIndex(0);
@@ -84,6 +85,7 @@ class PhantomArenaCollectBadgeTabView extends UiTabViewBase_1.UiTabViewBase {
     this.ComponentRegisterInfos = [[0, UE.UIArtText], [1, UE.UISprite], [2, UE.UIHorizontalLayout], [3, UE.UIItem], [4, UE.UIScrollViewWithScrollbarComponent], [5, UE.UIItem], [6, UE.UIText], [7, UE.UISprite], [8, UE.UIVerticalLayout], [9, UE.UIVerticalLayout], [10, UE.UIText], [11, UE.UIItem], [12, UE.UIItem], [13, UE.UIText]];
   }
   async OnBeforeStartAsync() {
+    this.ActivityId = this.ExtraParams;
     this.S2t = new CollectRewardPopup_1.CollectRewardPopup();
     await this.S2t.CreateByResourceIdAsync("UiItem_SoundRemnantArenaRewardPopup", this.RootItem);
   }
@@ -106,7 +108,7 @@ class PhantomArenaCollectBadgeTabView extends UiTabViewBase_1.UiTabViewBase {
     this.UiViewSequence.PlaySequence("Start");
   }
   ytu() {
-    var e = ModelManager_1.ModelManager.PhantomArenaModel.GetCollectBadgeGroupDataList();
+    var e = ModelManager_1.ModelManager.PhantomArenaModel.GetCollectBadgeGroupDataList(this.ActivityId);
     this.Ctu.RefreshByData(e, this.cfu);
   }
   nOe() {
@@ -132,22 +134,22 @@ class PhantomArenaCollectBadgeTabView extends UiTabViewBase_1.UiTabViewBase {
     }
   }
   jqe() {
-    var e = ModelManager_1.ModelManager.PhantomArenaModel.GetBadgeRewardConfigList();
+    var e = ModelManager_1.ModelManager.PhantomArenaModel.GetBadgeRewardConfigList(this.ActivityId);
     this.H3e.RefreshByData(e);
-    var e = ModelManager_1.ModelManager.PhantomArenaModel.GetBadgeUnlockCount();
+    var e = ModelManager_1.ModelManager.PhantomArenaModel.GetBadgeUnlockCount(this.ActivityId);
     this.GetArtText(0).SetText(e.toString());
-    var e = ModelManager_1.ModelManager.PhantomArenaModel.GetBadgeRewardProgress();
+    var e = ModelManager_1.ModelManager.PhantomArenaModel.GetBadgeRewardProgress(this.ActivityId);
     this.GetSprite(1).SetFillAmount(e);
   }
   hOe() {
     var e = [];
-    for (const t of ModelManager_1.ModelManager.PhantomArenaModel.GetBadgeRewardConfigList()) {
+    for (const t of ModelManager_1.ModelManager.PhantomArenaModel.GetBadgeRewardConfigList(this.ActivityId)) {
       if (ModelManager_1.ModelManager.PhantomArenaModel.GetBadgeRewardStateById(t) === 2) {
         e.push(t);
       }
     }
     if (!(e.length <= 0)) {
-      PhantomArenaController_1.PhantomArenaController.BadgeRewardRequest(e);
+      PhantomArenaController_1.PhantomArenaController.BadgeRewardRequest(e, this.ActivityId);
     }
   }
 }

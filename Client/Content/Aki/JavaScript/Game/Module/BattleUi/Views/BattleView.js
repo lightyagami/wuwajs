@@ -11,6 +11,7 @@ const Log_1 = require("../../../../Core/Common/Log");
 const Stats_1 = require("../../../../Core/Common/Stats");
 const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
 const StringUtils_1 = require("../../../../Core/Utils/StringUtils");
+const EventCSharpBridge_1 = require("../../../Common/Event/EventCSharpBridge");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
@@ -271,7 +272,7 @@ class BattleView extends UiTickViewBase_1.UiTickViewBase {
       return this.ort(11)?.GetGuideUiItemAndUiItemForShowEx(t);
     };
     this.sCd = t => this.iNu?.GetWeeklyRogueButton()?.GetGuideUiItemAndUiItemForShowEx(t);
-    this.som = t => {
+    this.Lhm = t => {
       var e = this.iNu?.GetBattleTimeDilationButton()?.GetRootItem();
       if (e) {
         return [e, e];
@@ -279,16 +280,16 @@ class BattleView extends UiTickViewBase_1.UiTickViewBase {
         return undefined;
       }
     };
-    this.gcm = t => {
+    this.F0m = t => {
       return this.ort(5)?.GetGuideUiItemAndUiItemForShowEx(t);
     };
-    this.Ccm = t => {
+    this.N0m = t => {
       return this.ort(5)?.GetGuideUiItemAndUiItemForShowEx(t);
     };
-    this.pcm = t => {
+    this.V0m = t => {
       return this.ort(5)?.GetGuideUiItemAndUiItemForShowEx(t);
     };
-    this.Ula = new Map([["Execution", this.Tla], ["Skill", this.Lla], ["Default", this.Dla], ["Teammate", this.Ala], ["FishingViewBtn", this.MF_], ["DangoViewBtn", this.lB1], ["LinkBtn", this.Lq1], ["DangoMissionButton", this.IK1], ["MoraleTempExp", this.P3u], ["MoraleExp", this.x3u], ["ScorePanel", this.Idd], ["WeeklyRogueBtn", this.sCd], ["TimeDilationBtn", this.som], ["HonamiStoryPlayerLevel", this.gcm], ["HonamiStoryMapLevel", this.Ccm], ["HonamiStoryLeaveBtn", this.pcm]]);
+    this.Ula = new Map([["Execution", this.Tla], ["Skill", this.Lla], ["Default", this.Dla], ["Teammate", this.Ala], ["FishingViewBtn", this.MF_], ["DangoViewBtn", this.lB1], ["LinkBtn", this.Lq1], ["DangoMissionButton", this.IK1], ["MoraleTempExp", this.P3u], ["MoraleExp", this.x3u], ["ScorePanel", this.Idd], ["WeeklyRogueBtn", this.sCd], ["TimeDilationBtn", this.Lhm], ["HonamiStoryPlayerLevel", this.F0m], ["HonamiStoryMapLevel", this.N0m], ["HonamiStoryLeaveBtn", this.V0m]]);
     this.cah = (t, e, i, s) => {
       this.Hot?.RefreshFormationCooldownExternal(t, e, i, s);
       this.sza?.RefreshFormationCooldownExternal(t, e, i, s);
@@ -304,7 +305,8 @@ class BattleView extends UiTickViewBase_1.UiTickViewBase {
   }
   async OnBeforeStartAsync() {
     this.OpenParam = this.Proxy;
-    await Promise.all([this.uza(), this.art(), this.hrt(0, BossStatePanel_1.BossStatePanel, true, 13), this.hrt(5, TopPanel_1.TopPanel, true, 37), this.hrt(4, BottomPanel_1.BottomPanel, true, 11), this.hrt(1, MissionPanel_1.MissionPanel, true, 5), this.hrt(6, CenterPanel_1.CenterPanel, true, 37), this.hrt(7, ChatPanel_1.ChatPanel, false, 6), this.hrt(8, FullScreenPanel_1.FullScreenPanel, true, 23), this.hrt(9, PositionPanel_1.PositionPanel, true, 37), this.hrt(11, ScorePanel_1.ScorePanel, true, 24), this.xFc(), this.rNu(), this.qId()]);
+    this.Proxy.RegisterBattleView(this);
+    await Promise.all([this.uza(), this.art(), this.hrt(0, BossStatePanel_1.BossStatePanel, true, 13), this.hrt(5, TopPanel_1.TopPanel, true, 41), this.hrt(4, BottomPanel_1.BottomPanel, true, 11), this.hrt(1, MissionPanel_1.MissionPanel, true, 5), this.hrt(6, CenterPanel_1.CenterPanel, true, 41), this.hrt(7, ChatPanel_1.ChatPanel, false, 6), this.hrt(8, FullScreenPanel_1.FullScreenPanel, true, 23), this.hrt(9, PositionPanel_1.PositionPanel, true, 41), this.hrt(11, ScorePanel_1.ScorePanel, true, 24), this.xFc(), this.rNu(), this.qId()]);
     this.lrt();
     this._rt();
     this.iNu.Init(this.sza, this.Hot);
@@ -423,6 +425,7 @@ class BattleView extends UiTickViewBase_1.UiTickViewBase {
       t.TryBroadcastCacheRevive();
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BattleViewActiveSequenceFinish);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ActiveBattleView);
+      EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsActiveBattleView);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RedDotStart);
     }
   }
@@ -656,6 +659,12 @@ class BattleView extends UiTickViewBase_1.UiTickViewBase {
   async rNu() {
     this.iNu = new FormationUnitNodeHandle_1.FormationUnitNodeHandle();
     await this.iNu.InitializeAsync(this.RootItem);
+  }
+  GetTopPanelPhoneMsgButtonItem() {
+    return this.ort(5).GetPanelItem("PhoneMsgButton");
+  }
+  GetTopPanelPhoneMsgButton() {
+    return this.ort(5).GetPhoneMsgButton();
   }
 }
 (exports.BattleView = BattleView).vJe = Stats_1.Stat.Create("[BattleView]BattleViewTick");

@@ -18,7 +18,7 @@ class HonamiStoryLimitTaskScoreItem extends GridProxyAbstract_1.GridProxyAbstrac
     this.gOe = undefined;
     this.qsi = undefined;
     this.OnClickToGet = undefined;
-    this.vCm = undefined;
+    this.FIm = undefined;
     this.hJs = () => {
       if (this.Pe.State === 1) {
         this.OnClickToGet?.();
@@ -35,11 +35,11 @@ class HonamiStoryLimitTaskScoreItem extends GridProxyAbstract_1.GridProxyAbstrac
     this.gOe.Initialize(this.GetItem(0).GetOwner());
     this.gOe.BindOnCanExecuteChange(() => false);
     this.gOe.BindOnExtendToggleClicked(this.hJs);
-    this.vCm = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetRootItem());
+    this.FIm = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetRootItem());
   }
   OnBeforeDestroy() {
-    this.vCm?.Clear();
-    this.vCm = undefined;
+    this.FIm?.Clear();
+    this.FIm = undefined;
   }
   Refresh(e, i, t) {
     this.Pe = e;
@@ -53,7 +53,7 @@ class HonamiStoryLimitTaskScoreItem extends GridProxyAbstract_1.GridProxyAbstrac
     var e = e.State === 1;
     this.GetItem(2).SetUIActive(e);
     if (e) {
-      this.vCm?.PlayLevelSequenceByName("Loop");
+      this.FIm?.PlayLevelSequenceByName("Loop");
     }
     this.qsi = r[0];
     this.cNe();

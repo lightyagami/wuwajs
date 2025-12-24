@@ -33,7 +33,7 @@ class DetectorPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondaryUiLayo
     this.GetItem(6).SetUIActive(false);
     this.GetVerticalLayout(5).RootUIComp.SetUIActive(false);
     this.LayoutContext.DelButton.RootUIComp.SetUIActive(true);
-    this.LayoutContext.ConfirmButtonItem.SetUiActive(false);
+    this.LayoutContext.SetConfirmBtnActive(false);
   }
   OnShowWorldMapSecondaryUi(r) {
     this.u2o = r;

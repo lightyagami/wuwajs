@@ -42,12 +42,16 @@ class PhantomArenaEntranceGymTabView extends PhantomArenaChildViewBase_1.Phantom
       this.SetPosition(Vector2D_1.Vector2D.Create(e.X, e.Y), false);
     };
     this.Jj1 = e => {
-      var t = ModelManager_1.ModelManager.PhantomArenaModel.GetPhantomBattleGymConfigByLevel(e);
+      var t = ModelManager_1.ModelManager.PhantomArenaModel.GetPhantomBattleGymConfigByLevel(e, this.ActivityId);
       if (t) {
         if (t.IfRepeat) {
           this.ViewModel.SetTabView("PhantomArenaEntranceRepeatTabView");
         } else {
-          UiManager_1.UiManager.OpenView("PhantomArenaMatchView", e);
+          t = {
+            Level: e,
+            ActivityId: this.ActivityId
+          };
+          UiManager_1.UiManager.OpenView("PhantomArenaMatchView", t);
         }
       }
     };
@@ -72,19 +76,23 @@ class PhantomArenaEntranceGymTabView extends PhantomArenaChildViewBase_1.Phantom
       }
     };
     this.ZW1 = () => {
-      UiManager_1.UiManager.OpenView("PhantomArenaMainView", {
+      var e = {
         ChallengeId: 0,
-        OpenView: "PhantomArenaDeckOverviewTabView"
-      });
+        OpenView: "PhantomArenaDeckOverviewTabView",
+        ActivityId: this.ActivityId
+      };
+      UiManager_1.UiManager.OpenView("PhantomArenaMainView", e);
     };
     this.Ath = () => {
-      UiManager_1.UiManager.OpenView("PhantomArenaMainView", {
+      var e = {
         ChallengeId: 0,
-        OpenView: "PhantomArenaRoleSelectTabView"
-      });
+        OpenView: "PhantomArenaRoleSelectTabView",
+        ActivityId: this.ActivityId
+      };
+      UiManager_1.UiManager.OpenView("PhantomArenaMainView", e);
     };
     this.tQ1 = () => {
-      UiManager_1.UiManager.OpenView("PhantomArenaCollectView");
+      UiManager_1.UiManager.OpenView("PhantomArenaCollectView", this.ActivityId);
     };
     this.dTu = () => {
       this.r3o(true);
@@ -117,7 +125,7 @@ class PhantomArenaEntranceGymTabView extends PhantomArenaChildViewBase_1.Phantom
   }
   async OnBeforeStartAsync() {
     var t = [];
-    if (ModelManager_1.ModelManager.PhantomArenaModel.GetPhantomBattleGymLevelList().length !== PhantomArenaDefine_1.GYM_MAX_LEVEL) {
+    if (ModelManager_1.ModelManager.PhantomArenaModel.GetPhantomBattleGymLevelList(this.ActivityId).length !== PhantomArenaDefine_1.GYM_MAX_LEVEL) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("PhantomArena", 75, "配置的道馆数量与页面资源不符，请检查配表");
       }
@@ -125,6 +133,7 @@ class PhantomArenaEntranceGymTabView extends PhantomArenaChildViewBase_1.Phantom
       for (let e = 0; e < PhantomArenaDefine_1.GYM_MAX_LEVEL - 1; e++) {
         const i = new PhantomArenaEntranceGymItem_1.EntranceGymItem();
         i.Level = e + 1;
+        i.ActivityId = this.ActivityId;
         i.CallbackOnClick = this.Jj1;
         i.CallbackOnHover = this.YW1;
         i.CallbackOnFocus = this.IPu;
@@ -134,6 +143,7 @@ class PhantomArenaEntranceGymTabView extends PhantomArenaChildViewBase_1.Phantom
       }
       const i = new PhantomArenaEntranceGymItem_1.EntranceGymRepeatItem();
       i.Level = PhantomArenaDefine_1.GYM_MAX_LEVEL;
+      i.ActivityId = this.ActivityId;
       i.CallbackOnClick = this.Jj1;
       i.CallbackOnHover = this.YW1;
       i.CallbackOnFocus = this.IPu;
@@ -224,11 +234,11 @@ class PhantomArenaEntranceGymTabView extends PhantomArenaChildViewBase_1.Phantom
       e = this.n3o(t);
       var t = this.uTu.ToUeVector2D();
       var n = e.ToUeVector2D();
-      var a = this.Elh(this.uTu.X, n.X);
-      if (!i || a) {
+      var s = this.Elh(this.uTu.X, n.X);
+      if (!i || s) {
         i = e.ToUeVector2D();
-        a = Vector2D_1.Vector2D.Create(e.X * 0.85, e.Y).ToUeVector2D();
-        this.GetItem(14).SetAnchorOffset(a);
+        s = Vector2D_1.Vector2D.Create(e.X * 0.85, e.Y).ToUeVector2D();
+        this.GetItem(14).SetAnchorOffset(s);
         this.GetItem(13).SetAnchorOffset(i);
         this.uTu = e;
       } else {
@@ -258,8 +268,8 @@ class PhantomArenaEntranceGymTabView extends PhantomArenaChildViewBase_1.Phantom
   }
   K8e() {
     this.Ovt();
-    RedDotController_1.RedDotController.BindRedDot("RedDotPhantomArenaCollect", this.GetItem(18));
-    RedDotController_1.RedDotController.BindRedDot("RedDotPhantomArenaRole", this.GetItem(17));
+    RedDotController_1.RedDotController.BindRedDot("RedDotPhantomArenaCollect", this.GetItem(18), undefined, this.ActivityId);
+    RedDotController_1.RedDotController.BindRedDot("RedDotPhantomArenaRole", this.GetItem(17), undefined, this.ActivityId);
     this.GetItem(16).SetUIActive(false);
     for (const e of this.EPu.values()) {
       e.RefreshRedDot();

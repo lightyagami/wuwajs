@@ -35,6 +35,7 @@ const useNextSkillTagId = 718290459;
 let VisionSkillComponent = class VisionSkillComponent extends CharacterSkillComponent_1.CharacterSkillComponent {
   constructor() {
     super(...arguments);
+    this.Wpo = 0;
     this.fZo = undefined;
     this.vZo = undefined;
     this.EZo = undefined;
@@ -51,6 +52,11 @@ let VisionSkillComponent = class VisionSkillComponent extends CharacterSkillComp
         this.RZo();
       }
     };
+  }
+  OnStart() {
+    var t = this.Entity.GetComponent(0);
+    this.Wpo = t.GetCreatureDataId();
+    return super.OnStart();
   }
   InitVisionSkill(t, i = false) {
     if (this.vZo !== t) {
@@ -165,35 +171,38 @@ let VisionSkillComponent = class VisionSkillComponent extends CharacterSkillComp
     }
   }
   LZo(t, i) {
-    if ((t === InputEnums_1.EInputAction.幻象2 || t === InputEnums_1.EInputAction.攻击 && this.UGn) && !(this.SZo <= 0)) {
-      t = this.EZo.GetMultiSkillInfo(this.SZo);
-      if (t?.NextSkillId) {
-        var s = t.NextSkillId;
-        var e = this.GetSkill(s);
-        if (e) {
-          if (this.EZo.CanStartMultiSkill(e)) {
-            var h = this.vZo;
-            if (h?.Valid && this.yZo) {
-              CombatLog_1.CombatLog.Info("Skill", this.Entity, "使用幻象技能（输入触发下一段）", ["skillId", t.NextSkillId]);
-              this.AbilityComp.SendGameplayEventToActor(GameplayTagUtils_1.GameplayTagUtils.GetGameplayTagById(useNextSkillTagId));
-              h = h.Entity.CheckGetComponent(40);
-              if (!super.BeginSkill(s, {
-                Target: h.SkillTarget?.Entity,
-                SocketName: h.SkillTargetSocket,
-                Reason: "VisionSkill.OnCharInputPress"
-              })) {
-                CombatLog_1.CombatLog.Warn("Skill", this.Entity, "角色幻象变身中使用下一段技能失败", ["技能Id", e?.SkillId], ["技能名", e?.SkillName]);
-                return false;
-              }
-              CombatLog_1.CombatLog.Info("Skill", this.Entity, "角色幻象变身中使用下一段技能成功", ["skillId", t.NextSkillId]);
-              if (this.EZo.StartMultiSkill(e, true)) {
-                this.SZo = s;
-                return true;
+    if (t === InputEnums_1.EInputAction.幻象2 || t === InputEnums_1.EInputAction.攻击 && this.UGn) {
+      t = this.vZo.Entity.GetComponent(44);
+      if (this.Wpo === t?.GetVisionCreatureDataId() && !(this.SZo <= 0)) {
+        t = this.EZo.GetMultiSkillInfo(this.SZo);
+        if (t?.NextSkillId) {
+          var s = t.NextSkillId;
+          var e = this.GetSkill(s);
+          if (e) {
+            if (this.EZo.CanStartMultiSkill(e)) {
+              var h = this.vZo;
+              if (h?.Valid && this.yZo) {
+                CombatLog_1.CombatLog.Info("Skill", this.Entity, "使用幻象技能（输入触发下一段）", ["skillId", t.NextSkillId]);
+                this.AbilityComp.SendGameplayEventToActor(GameplayTagUtils_1.GameplayTagUtils.GetGameplayTagById(useNextSkillTagId));
+                h = h.Entity.CheckGetComponent(41);
+                if (!super.BeginSkill(s, {
+                  Target: h.SkillTarget?.Entity,
+                  SocketName: h.SkillTargetSocket,
+                  Reason: "VisionSkill.OnCharInputPress"
+                })) {
+                  CombatLog_1.CombatLog.Warn("Skill", this.Entity, "角色幻象变身中使用下一段技能失败", ["技能Id", e?.SkillId], ["技能名", e?.SkillName]);
+                  return false;
+                }
+                CombatLog_1.CombatLog.Info("Skill", this.Entity, "角色幻象变身中使用下一段技能成功", ["skillId", t.NextSkillId]);
+                if (this.EZo.StartMultiSkill(e, true)) {
+                  this.SZo = s;
+                  return true;
+                }
               }
             }
+          } else if (Log_1.Log.CheckError()) {
+            Log_1.Log.Error("Battle", 17, "幻象缺少技能", ["skillId", s]);
           }
-        } else if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("Battle", 17, "幻象缺少技能", ["skillId", s]);
         }
       }
     }
@@ -203,5 +212,5 @@ let VisionSkillComponent = class VisionSkillComponent extends CharacterSkillComp
     return !!this.Ghh && this.LZo(t, i);
   }
 };
-VisionSkillComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(42)], VisionSkillComponent);
+VisionSkillComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(43)], VisionSkillComponent);
 exports.VisionSkillComponent = VisionSkillComponent; //# sourceMappingURL=VisionSkillComponent.js.map

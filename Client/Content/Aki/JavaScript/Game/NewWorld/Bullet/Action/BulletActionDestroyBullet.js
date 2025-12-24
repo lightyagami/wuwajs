@@ -26,7 +26,7 @@ class BulletActionDestroyBullet extends BulletActionBase_1.BulletActionBase {
     if (t.DestroyReason === 1) {
       this.U5o();
     }
-    if (this.BulletInfo.AttackerHandle?.Valid && this.BulletInfo.AttackerActorComp?.Actor) {
+    if (this.BulletInfo.AttackerHandle?.Valid && this.BulletInfo.AttackerActorComp?.Owner) {
       BulletActionDestroyBullet.A5o.Start();
       this.P5o();
       BulletActionDestroyBullet.A5o.Stop();
@@ -47,7 +47,7 @@ class BulletActionDestroyBullet extends BulletActionBase_1.BulletActionBase {
     for ([e, l] of t.HitTimeScaleEntityMap.entries()) {
       var i = ModelManager_1.ModelManager.CharacterModel?.GetHandle(e);
       if (i?.Valid) {
-        i.Entity.GetComponent(126)?.RemoveTimeScale(l);
+        i.Entity.GetComponent(131)?.RemoveTimeScale(l);
       }
     }
     t.HitTimeScaleEntityMap.clear();
@@ -66,9 +66,9 @@ class BulletActionDestroyBullet extends BulletActionBase_1.BulletActionBase {
   x5o() {
     var t;
     var e;
-    if (this.BulletInfo.AttackerActorComp?.Actor?.IsValid() && (t = this.BulletInfo.BulletDataMain.Execution.SendGameplayEventTagToAttackerOnEnd, EventSystem_1.EventSystem.EmitWithTarget(this.BulletInfo.Attacker, EventDefine_1.EEventName.BulletDestroy, this.BulletInfo), t) && t.TagName !== StringUtils_1.NONE_STRING) {
+    if (this.BulletInfo.AttackerActorComp?.Owner?.IsValid() && (t = this.BulletInfo.BulletDataMain.Execution.SendGameplayEventTagToAttackerOnEnd, EventSystem_1.EventSystem.EmitWithTarget(this.BulletInfo.Attacker, EventDefine_1.EEventName.BulletDestroy, this.BulletInfo), t) && t.TagName !== StringUtils_1.NONE_STRING) {
       (e = new UE.GameplayEventData()).OptionalObject = this.BulletInfo.Actor;
-      UE.AbilitySystemBlueprintLibrary.SendGameplayEventToActor(this.BulletInfo.AttackerActorComp.Actor, t, e);
+      UE.AbilitySystemBlueprintLibrary.SendGameplayEventToActor(this.BulletInfo.AttackerActorComp.Owner, t, e);
     }
   }
   b5o() {
@@ -87,7 +87,7 @@ class BulletActionDestroyBullet extends BulletActionBase_1.BulletActionBase {
       if (s.Condition === 4 && this.BulletInfo.IsTimeNotEnough || s.Condition === 3 && e.IsNumberNotEnough || s.Condition === 0 && e.IsActiveSummonChildBullet) {
         o = Number(s.RowName);
         if (!isNaN(o) && !!o && !(s.Num < 1)) {
-          if (o = BulletController_1.BulletController.CreateBulletCustomTarget(this.BulletInfo.AttackerActorComp.Actor, s.RowName.toString(), this.BulletInfo.ActorComponent.ActorTransform, {
+          if (o = BulletController_1.BulletController.CreateBulletCustomTarget(this.BulletInfo.Attacker, s.RowName.toString(), this.BulletInfo.ActorComponent.ActorTransform, {
             SkillId: this.BulletInfo.BulletInitParams.SkillId,
             SkillContextId: this.BulletInfo.BulletInitParams.SkillContextId,
             ParentTargetId: this.BulletInfo.Target?.Id,

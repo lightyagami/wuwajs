@@ -14,7 +14,7 @@ class VisionInputLayer extends InputLayer_1.InputLayer {
     this.pZo = undefined;
   }
   Init(t) {
-    this.won = t.Entity?.GetComponent(43);
+    this.won = t.Entity?.GetComponent(44);
     this.pZo = t.Entity?.GetComponent(18);
   }
   Clear() {

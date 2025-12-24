@@ -10,9 +10,11 @@ const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
+const UiAsyncTask_1 = require("../../../Ui/Base/UiAsyncTask");
 const UiViewBase_1 = require("../../../Ui/Base/UiViewBase");
 const PopupCaptionItem_1 = require("../../../Ui/Common/PopupCaptionItem");
 const LevelSequencePlayer_1 = require("../../Common/LevelSequencePlayer");
+const LogReportDefine_1 = require("../../LogReport/LogReportDefine");
 const ScrollingTipsController_1 = require("../../ScrollingTips/ScrollingTipsController");
 const GenericLayout_1 = require("../../Util/Layout/GenericLayout");
 const LguiUtil_1 = require("../../Util/LguiUtil");
@@ -26,7 +28,8 @@ class PhonographView extends UiViewBase_1.UiViewBase {
     this.MusicMap = new Map();
     this.CaptionComponent = undefined;
     this.SequencePlayer = undefined;
-    this._zd = 0;
+    this.Hzd = 0;
+    this._Qf = 0;
     this.OnCreateAlbumItem = () => {
       var e = new PhonographAlbumItem_1.PhonographAlbumItem();
       e.OnClickAlbumItem = this.OnClickAlbumItem;
@@ -38,14 +41,15 @@ class PhonographView extends UiViewBase_1.UiViewBase {
       return e;
     };
     this.OnClickAlbumItem = (e, r) => {
-      this.AlbumGenericLayout.SelectGridProxy(r);
       var t;
-      var n = (this.MusicMap.get(e) ?? []).sort((e, r) => {
+      this._Qf = e;
+      this.AlbumGenericLayout.SelectGridProxy(r);
+      const i = (this.MusicMap.get(e) ?? []).sort((e, r) => {
         var t = ModelManager_1.ModelManager.PhonographModel.CurrentPlayMusicId === e;
-        var n = ModelManager_1.ModelManager.PhonographModel.CurrentPlayMusicId === r;
-        if (t && !n) {
+        var i = ModelManager_1.ModelManager.PhonographModel.CurrentPlayMusicId === r;
+        if (t && !i) {
           return -1;
-        } else if (!t && n) {
+        } else if (!t && i) {
           return 1;
         } else if (ModelManager_1.ModelManager.PhonographModel.IsNewMusic(e) && !ModelManager_1.ModelManager.PhonographModel.IsNewMusic(r)) {
           return -1;
@@ -59,40 +63,53 @@ class PhonographView extends UiViewBase_1.UiViewBase {
           return e - r;
         }
       });
-      let i = 0;
+      let n = 0;
       let o = -1;
-      for (const a of n) {
+      for (const a of i) {
         if (ModelManager_1.ModelManager.PhonographModel.IsUnlockMusic(a)) {
-          i++;
+          n++;
         }
         if (ModelManager_1.ModelManager.PhonographModel?.CurrentPlayMusicId === a && (t = ModelManager_1.ModelManager.PhonographModel?.CurrentPlayMusicId)) {
-          o = n.indexOf(t);
+          o = i.indexOf(t);
         }
       }
-      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(9), "PrefabTextItem_1090321532_Text", i, n.length);
-      ModelManager_1.ModelManager.PhonographModel.CurrentSelectMusicId = o !== -1 ? n[o] : 0;
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(9), "PrefabTextItem_1090321532_Text", n, i.length);
+      ModelManager_1.ModelManager.PhonographModel.CurrentSelectMusicId = o !== -1 ? i[o] : 0;
       this.RefreshSwitchBtn(ModelManager_1.ModelManager.PhonographModel.CurrentSelectMusicId);
       this.MusicGenericLayout?.GetUiAnimController()?.Stop();
-      this.MusicGenericLayout.RefreshByData(n, () => {
-        if (o !== -1) {
-          this.MusicGenericLayout.SelectGridProxy(o, false);
-          this.RefreshMusicInfo(ModelManager_1.ModelManager.PhonographModel.CurrentSelectMusicId);
-        }
-        this.GetScrollViewWithScrollbar(11)?.SetScrollProgress(0);
-      }, true);
+      r = new UiAsyncTask_1.UiAsyncTask("PhonographView.OnClickAlbumItem", async () => {
+        var e = i.map(async e => ModelManager_1.ModelManager.PhonographModel.GetMusicDuration(e));
+        const t = await Promise.all(e);
+        e = i.map((e, r) => ({
+          Id: e,
+          Duration: t[r]
+        }));
+        this.MusicGenericLayout.RefreshByData(e, () => {
+          if (o !== -1) {
+            this.MusicGenericLayout.SelectGridProxy(o, false);
+            this.RefreshMusicInfo(ModelManager_1.ModelManager.PhonographModel.CurrentSelectMusicId);
+          }
+          this.GetScrollViewWithScrollbar(11)?.SetScrollProgress(0);
+        }, true);
+      });
+      this.RunAsyncTask(r);
       this.SequencePlayer?.PlaySequencePurely("Album");
       this.RefreshAlbumInfo(e);
     };
     this.OnClickMusicItem = (e, r) => {
+      var t;
       ModelManager_1.ModelManager.PhonographModel.CurrentSelectMusicId = e;
       if (ModelManager_1.ModelManager.PhonographModel.IsUnlockMusic(e)) {
         this.MusicGenericLayout.SelectGridProxy(r);
-        this._zd = ControllerHolder_1.ControllerHolder.PhonographController.PlayMusic(e);
+        this.Hzd = ControllerHolder_1.ControllerHolder.PhonographController.PlayMusic(e);
         ModelManager_1.ModelManager.PhonographModel?.RemoveNewMusic(e);
         this.RefreshMusicInfo(e);
         this.SequencePlayer?.PlaySequencePurely("Single");
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPhonographRemoveNewTag);
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPhonographSwitchMusic);
+        (t = new LogReportDefine_1.PhonographPlayLogEvent()).i_item_id = e;
+        t.i_album_id = this._Qf;
+        ControllerHolder_1.ControllerHolder.LogReportController.LogReport(t);
       } else {
         this.RefreshMusicInfo(e);
         this.MusicGenericLayout.SelectGridProxy(r);
@@ -106,7 +123,7 @@ class PhonographView extends UiViewBase_1.UiViewBase {
       if (r === 0) {
         ModelManager_1.ModelManager.PhonographModel.RemovePlayIdRecord(t);
       } else {
-        ModelManager_1.ModelManager.PhonographModel.SetPlayIdRecord(t, this._zd);
+        ModelManager_1.ModelManager.PhonographModel.SetPlayIdRecord(t, this.Hzd);
       }
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPhonographSetBgm, r);
       this.RefreshSwitchBtn(e);
@@ -130,8 +147,8 @@ class PhonographView extends UiViewBase_1.UiViewBase {
     const r = new Set();
     var e = ConfigManager_1.ConfigManager.PhonographConfig?.GetMusicList() ?? [];
     const t = new Map();
-    for (const n of e) {
-      n.Album.forEach(e => {
+    for (const i of e) {
+      i.Album.forEach(e => {
         if (!r.has(e)) {
           r.add(e);
           t.set(e, ConfigManager_1.ConfigManager.PhonographConfig.GetMusicAlbumById(e));
@@ -139,7 +156,7 @@ class PhonographView extends UiViewBase_1.UiViewBase {
         if (!this.MusicMap.has(e)) {
           this.MusicMap.set(e, []);
         }
-        this.MusicMap.get(e).push(n.Id);
+        this.MusicMap.get(e).push(i.Id);
       });
     }
     await this.AlbumGenericLayout.RefreshByDataAsync(Array.from(r).sort((e, r) => {

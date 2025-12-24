@@ -103,8 +103,8 @@ function traceWater(e, r, t, o) {
   }
 }
 function traceGroundWithGravity(e, r, t, o = DELTA_HEIGHT) {
-  var n = e.Entity.GetComponent(182);
-  var a = e.Entity.GetComponent(77);
+  var n = e.Entity.GetComponent(187);
+  var a = e.Entity.GetComponent(80);
   var i = Vector_1.Vector.Create();
   var c = i;
   n.GravityUp.Multiply(o, c);

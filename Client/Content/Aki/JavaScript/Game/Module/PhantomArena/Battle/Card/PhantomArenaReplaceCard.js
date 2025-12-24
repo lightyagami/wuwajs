@@ -4,6 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.PhantomArenaReplaceCard = undefined;
+const ModelManager_1 = require("../../../../Manager/ModelManager");
 const GridProxyAbstract_1 = require("../../../Util/Grid/GridProxyAbstract");
 const PhantomArenaCard_1 = require("./PhantomArenaCard");
 class PhantomArenaReplaceCard extends GridProxyAbstract_1.GridProxyAbstract {
@@ -14,35 +15,36 @@ class PhantomArenaReplaceCard extends GridProxyAbstract_1.GridProxyAbstract {
   }
   async OnBeforeStartAsync() {
     this.Card = new PhantomArenaCard_1.PhantomArenaCard();
-    this.Card.AddComponentsRegisterInfoByResourceId([3, "PnlStateChange"]);
+    var e = ModelManager_1.ModelManager.PhantomArenaBattleModel.IsOldBvb ? "PnlStateChange" : "PnlStateChange_New";
+    this.Card.AddComponentsRegisterInfoByResourceId([5, e]);
     this.Card.SetCardProxy(this);
     await this.Card.CreateThenShowByActorAsync(this.GetRootActor());
   }
-  Refresh(t, e, r) {
-    this.Card.Refresh(t);
+  Refresh(e, t, r) {
+    this.Card.Refresh(e);
   }
   Oi1() {
-    this.Card.GetComponent(3)?.SetActive(true);
+    this.Card.GetComponent(5)?.SetActive(true);
   }
   qi1() {
-    this.Card.GetComponent(3)?.SetActive(false);
+    this.Card.GetComponent(5)?.SetActive(false);
   }
-  PointerClickCard(t, e) {
-    if (e === 1) {
+  PointerClickCard(e, t) {
+    if (t === 1) {
       this.Oi1();
-      this.ClickCallback?.(t, true);
+      this.ClickCallback?.(e, true);
     } else {
       this.qi1();
-      this.ClickCallback?.(t, false);
+      this.ClickCallback?.(e, false);
     }
   }
-  SetSelectState(t) {
-    this.Card.SetSelectedState(t);
+  SetSelectState(e) {
+    this.Card.SetSelectedState(e);
   }
-  PointerEnterCard(t) {}
-  PointerDownCard(t) {}
-  GetKey(t, e) {
-    return t.CardId;
+  PointerEnterCard(e) {}
+  PointerDownCard(e) {}
+  GetKey(e, t) {
+    return e.CardId;
   }
 }
 exports.PhantomArenaReplaceCard = PhantomArenaReplaceCard;

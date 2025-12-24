@@ -59,12 +59,12 @@ let UiModelFadeComponent = class UiModelFadeComponent extends UiModelComponentBa
       e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(e);
       this.hJ = ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.CurveFloat, e => {
         if (e) {
-          this.Tvm(t, i, s, e, o);
+          this.Uwm(t, i, s, e, o);
         }
       }, 100, "Ui.UiSceneModel");
     }
   }
-  Tvm(e, t, i, s, o) {
+  Uwm(e, t, i, s, o) {
     if (!this.APn) {
       this.FHt = e;
       this.zwr = t;

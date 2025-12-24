@@ -38,7 +38,7 @@ let AnimalDeathSyncComponent = class AnimalDeathSyncComponent extends BaseDeathC
     this.HBr = undefined;
     this.gne = e => {
       if (e.DamageId !== 0 && !this.Xte.HasTag(501201000) && !this.Xte.HasTag(1008164187)) {
-        this.Entity.GetComponent(47)?.DisableAi("动物死亡");
+        this.Entity.GetComponent(48)?.DisableAi("动物死亡");
         this.Xte?.AddTag(1008164187);
         ControllerHolder_1.ControllerHolder.CreatureController.AnimalDieRequest(this.Entity.GetComponent(0).GetCreatureDataId(), this.Entity.GetComponent(1).ActorLocationProxy);
       }
@@ -56,12 +56,12 @@ let AnimalDeathSyncComponent = class AnimalDeathSyncComponent extends BaseDeathC
     };
     this.OnDeathEnded = () => {
       this.Entity.Disable("[BaseAttributeComponent.DieAnimationFinished] 死亡动画播放完后隐藏");
-      this.Entity.GetComponent(44)?.CancelForceDisableAnimOptimization(6);
+      this.Entity.GetComponent(45)?.CancelForceDisableAnimOptimization(6);
       ControllerHolder_1.ControllerHolder.CreatureController.DelayRemoveEntityFinished(this.Entity);
     };
   }
   OnStart() {
-    return !!super.OnStart() && (this.Xte = this.Entity.CheckGetComponent(209), this.HBr = this.Entity.CheckGetComponent(104), EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharBeHitLocal, this.gne), this.Entity.CheckGetComponent(0).GetLivingStatus() === Protocol_1.Aki.Protocol.JEs.Proto_Dead && TimerSystem_1.TimerSystem.Next(() => {
+    return !!super.OnStart() && (this.Xte = this.Entity.CheckGetComponent(215), this.HBr = this.Entity.CheckGetComponent(109), EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharBeHitLocal, this.gne), this.Entity.CheckGetComponent(0).GetLivingStatus() === Protocol_1.Aki.Protocol.JEs.Proto_Dead && TimerSystem_1.TimerSystem.Next(() => {
       this.ExecuteDeath(undefined);
     }), true);
   }
@@ -73,5 +73,5 @@ let AnimalDeathSyncComponent = class AnimalDeathSyncComponent extends BaseDeathC
     return !!super.ExecuteDeath(e) && (this.Xte?.AddTag(1008164187), this.HBr?.ResetCharState(), this.PlayDieAnimation(), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.CharOnRoleDead, this.Entity.Id), EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.CharOnRoleDeadTargetSelf), true);
   }
 };
-AnimalDeathSyncComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(174)], AnimalDeathSyncComponent);
+AnimalDeathSyncComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(179)], AnimalDeathSyncComponent);
 exports.AnimalDeathSyncComponent = AnimalDeathSyncComponent; //# sourceMappingURL=AnimalDeathSyncComponent.js.map

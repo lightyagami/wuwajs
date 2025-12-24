@@ -21,7 +21,7 @@ class EvolveCardOperation extends NpcAiOperation_1.NpcAiOperation {
     o.RefreshCanEvolveNum(this.Info.eC1);
     o.SetBattleCardData(this.Info.cC1);
     o.RefreshHandCardNum(this.Info.Hg1);
-    o.RefreshLibraryNum(this.Info.jg1);
+    o.RefreshCardLibraryNum(this.Info.jg1);
     await e.OpponentArea.FunctionalArea.TryEvolveCard(r.$g1, r.Qg1);
   }
 }

@@ -4,16 +4,15 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.ActivitySubViewBase = undefined;
-const TimerSystem_1 = require("../../../../../Core/Timer/TimerSystem");
 const TimeUtil_1 = require("../../../../Common/TimeUtil");
 const LevelGeneralCommons_1 = require("../../../../LevelGamePlay/LevelGeneralCommons");
+const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const UiPanelBase_1 = require("../../../../Ui/Base/UiPanelBase");
 const LevelSequencePlayer_1 = require("../../../Common/LevelSequencePlayer");
 class ActivitySubViewBase extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.GOe = undefined;
     this.ActivityRemainTimeText = "";
     this.ActivityBaseData = undefined;
     this.LevelSequencePlayer = undefined;
@@ -30,7 +29,7 @@ class ActivitySubViewBase extends UiPanelBase_1.UiPanelBase {
   }
   OnBeforeShowImplement() {
     this.jm();
-    this.GOe = TimerSystem_1.GameplayTimerSystem.Forever(this.kOe, TimeUtil_1.TimeUtil.InverseMillisecond);
+    ControllerHolder_1.ControllerHolder.ActivityController.RegisterRefreshTimerDelegate(this.kOe);
     if (!this.LevelSequencePlayer) {
       this.LevelSequencePlayer = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
       this.LevelSequencePlayer.BindSequenceStartEvent(this.MBn);
@@ -46,10 +45,7 @@ class ActivitySubViewBase extends UiPanelBase_1.UiPanelBase {
     this.OnRemoveEventListener();
   }
   jm() {
-    if (TimerSystem_1.GameplayTimerSystem.Has(this.GOe)) {
-      TimerSystem_1.GameplayTimerSystem.Remove(this.GOe);
-      this.GOe = undefined;
-    }
+    ControllerHolder_1.ControllerHolder.ActivityController.UnregisterRefreshTimerDelegate(this.kOe);
   }
   SetData(e) {
     this.ActivityBaseData = e;
@@ -77,11 +73,11 @@ class ActivitySubViewBase extends UiPanelBase_1.UiPanelBase {
   OnRefreshView() {}
   async OnBeforeShowSelfAsync() {}
   async OnBeforeHideSelfAsync() {}
-  PlaySubViewSequence(e, i = false) {
+  PlaySubViewSequence(e, t = false) {
     if (this.LevelSequencePlayer.CheckSeqActorIsSeqPlaying(e)) {
       this.LevelSequencePlayer.ReplaySequenceByKey(e);
     } else {
-      this.LevelSequencePlayer.PlayLevelSequenceByName(e, i);
+      this.LevelSequencePlayer.PlayLevelSequenceByName(e, t);
     }
   }
   GetTimeVisibleAndRemainTime() {

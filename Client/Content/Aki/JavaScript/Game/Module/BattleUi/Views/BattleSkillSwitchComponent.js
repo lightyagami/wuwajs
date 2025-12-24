@@ -42,7 +42,7 @@ class BattleSkillSwitchComponent extends UiPanelBase_1.UiPanelBase {
   RefreshSwitch() {
     var t = () => {
       var t = ModelManager_1.ModelManager.RouletteModel.CurrentExploreSkillId;
-      var e = ModelManager_1.ModelManager.RouletteModel.ExploreSkillIdList.indexOf(t);
+      var e = ModelManager_1.ModelManager.RouletteModel.GetCurrentExploreRouletteListData().GetRouletteIdList().indexOf(t);
       if (t === 3002 || t === 3001) {
         this.UpdateSwitch(ITEM_ANGLE_INDEX);
       } else {

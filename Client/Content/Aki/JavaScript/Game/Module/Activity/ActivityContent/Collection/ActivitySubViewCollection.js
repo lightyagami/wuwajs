@@ -113,6 +113,7 @@ class ActivitySubViewCollection extends ActivitySubViewBase_1.ActivitySubViewBas
     this.LevelSequencePlayer = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetItem(5));
   }
   OnStart() {
+    this.LNe.SetActivityBaseData(this.ActivityBaseData);
     this.LNe.SetTitleByText(this.ActivityBaseData.GetTitle());
     this.DNe.SetUiActive(false);
     this.kNe();

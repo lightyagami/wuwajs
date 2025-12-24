@@ -5,11 +5,12 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.PhantomArenaAreaMonsterProxy = undefined;
 const Log_1 = require("../../../../../../Core/Common/Log");
-const Protocol_1 = require("../../../../../../Core/Define/Net/Protocol");
 const EventDefine_1 = require("../../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../../Common/Event/EventSystem");
 const ControllerHolder_1 = require("../../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../../Manager/ModelManager");
+const PhantomArenaLogicFactory_1 = require("../../Card/Logic/PhantomArenaLogicFactory");
+const PhantomArenaCard_1 = require("../../Card/PhantomArenaCard");
 const PhantomArenaAssetManager_1 = require("../../PhantomArenaAssetManager");
 const PhantomArenaDefine_1 = require("../../PhantomArenaDefine");
 const PhantomArenaAreaProxyBase_1 = require("./PhantomArenaAreaProxyBase");
@@ -22,30 +23,6 @@ class PhantomArenaAreaMonsterProxy extends PhantomArenaAreaProxyBase_1.PhantomAr
     this.WD_ = false;
     this.dXu = false;
     this.IsInSkillInteract = false;
-  }
-  cD1(t) {
-    if (t.Data.Index === PhantomArenaDefine_1.HAND_PHANTOMARENA_INDEX) {
-      if (ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.CanEvolveNum <= 0) {
-        return !(this.SettingFailReason = "PhantomBattle_1049");
-      }
-      t = this.Card.Data.IsOtherCardCanEvolve(t.Data);
-      if (!t[0]) {
-        this.SettingFailReason = t[1];
-        return false;
-      }
-    }
-    return !(this.SettingFailReason = "");
-  }
-  dD1(t) {
-    if (t.Data.Index === PhantomArenaDefine_1.HAND_PHANTOMARENA_INDEX) {
-      if (ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.BattleCardLength >= PhantomArenaDefine_1.LIMIT_BATTLE_CARD_NUM) {
-        return !(this.SettingFailReason = "PhantomBattle_1048");
-      }
-      if (t.Data.ConfigCost === PhantomArenaDefine_1.COST_THREE) {
-        return !(this.SettingFailReason = "PhantomBattle_1066");
-      }
-    }
-    return !(this.SettingFailReason = "");
   }
   CheckEvolveGuideCondition(t, e) {
     return e !== PhantomArenaDefine_1.HAND_PHANTOMARENA_INDEX || (e = ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.GetHandIndexByCardId(t), this.ParentArea.ParentArea.ViewProxy.GuideManager.CheckCanExecuteAndShowFailTips("BvbEvolution", e, this.Index));
@@ -61,19 +38,9 @@ class PhantomArenaAreaMonsterProxy extends PhantomArenaAreaProxyBase_1.PhantomAr
     }
   }
   CheckSettingCardCondition(t) {
-    if (t.Data.Index === PhantomArenaDefine_1.HAND_PHANTOMARENA_INDEX && ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.GetBattleStatusValue(Protocol_1.Aki.Protocol.qC1.Proto_PhantomBattleCostPoint) - t.Data.UseCost < 0) {
-      return !(this.SettingFailReason = "PhantomBattle_1051");
-    }
-    if (t.Data.CanUse) {
-      if (this.Card) {
-        return this.cD1(t);
-      } else {
-        return this.dD1(t);
-      }
-    } else {
-      this.SettingFailReason = "";
-      return false;
-    }
+    var [t, e] = t.CardLogic.CheckMonsterSettingCondition(this.Card);
+    this.SettingFailReason = e;
+    return t;
   }
   async OnHandleAreaByEvolve(t) {
     this.SetCardResetPosition(t);
@@ -109,18 +76,25 @@ class PhantomArenaAreaMonsterProxy extends PhantomArenaAreaProxyBase_1.PhantomAr
   }
   async SetCard(t) {
     var e = t?.Data.ConfigId;
-    var i = this.Card?.Data.ConfigId;
-    if (e !== i && (i && PhantomArenaAssetManager_1.PhantomArenaAssetManager.RemovePhantomArenaAssetByCardConfigId(i), e)) {
+    var r = this.Card?.Data.ConfigId;
+    if (e !== r && (r && this.Card?.Data.IsNormal && PhantomArenaAssetManager_1.PhantomArenaAssetManager.RemovePhantomArenaAssetByCardConfigId(r), e) && t?.Data.IsNormal) {
       PhantomArenaAssetManager_1.PhantomArenaAssetManager.PreloadPhantomArenaAssetByCardConfigId(e);
     }
     await super.SetCard(t);
   }
+  async CopyCard(t) {
+    var e = new PhantomArenaCard_1.PhantomArenaCard();
+    e.RegisterCardLogic(PhantomArenaLogicFactory_1.PhantomArenaLogicFactory.CreateLogic(e, t.GetCardType(), this.ParentArea.ParentArea.ViewProxy));
+    await e.InitializePhantomArenaCard(t, this.AreaItem.GetRootItem());
+    await this.SetCard(e);
+    await e.ShowCopyEffect();
+  }
   PointerClickCard(t, e) {
-    var i;
+    var r;
     if (this.x31) {
-      i = !this.dXu;
-      if (this.x31.ReceiveClickData(2, t, this.Index, i)) {
-        if (i) {
+      r = !this.dXu;
+      if (this.x31.ReceiveClickData(2, t, this.Index, r)) {
+        if (r) {
           this.dXu = true;
           this.Card?.PlaySequence("Point");
         } else {
@@ -131,16 +105,19 @@ class PhantomArenaAreaMonsterProxy extends PhantomArenaAreaProxyBase_1.PhantomAr
         this.Card?.SetToggleState(0, false);
       }
     } else if (this.Card) {
-      this.ParentArea.ParentArea.ViewProxy.ShowCardTips(this.Card.Data);
+      this.ParentArea.ParentArea.ViewProxy.ShowCardTips(this.Card.Data, true);
       this.ParentArea.ParentArea.ViewProxy.SetSelectedCardId(t, 2);
     }
   }
   PointerEnterCard() {}
   PointerDownCard(t, e) {
-    this.WD_ = this.ParentArea.ParentArea.IsCanDragCard();
+    this.WD_ = this.ieg(t);
     if (this.WD_) {
       this.Card?.RecordLastDragPos(e.pointerPosition);
     }
+  }
+  ieg(t) {
+    return !this.IsInCardTween && !ModelManager_1.ModelManager.PhantomArenaBattleModel.InWaitReconstructCardIdList(t) && this.ParentArea.ParentArea.IsCanDragCard(t);
   }
   PointerBeginDrag(t, e) {
     if (this.Card && this.WD_) {
@@ -190,6 +167,19 @@ class PhantomArenaAreaMonsterProxy extends PhantomArenaAreaProxyBase_1.PhantomAr
   }
   ReceiveUiInteract(t) {
     this.x31 = t;
+  }
+  async StartSkillInteract() {
+    await this.AreaItem.SetIncreaseActive(true);
+  }
+  CancelSkillInteract() {
+    this.AreaItem.SetIncreaseActive(false);
+  }
+  FinishSkillInteract() {
+    this.AreaItem.SetIncreaseActive(false);
+    this.Card?.CardLogic?.TryFinishCurrentGuide();
+  }
+  GetData() {
+    return ModelManager_1.ModelManager.PhantomArenaBattleModel.BuffEffectData.CardSkillTriggerInfo;
   }
 }
 exports.PhantomArenaAreaMonsterProxy = PhantomArenaAreaMonsterProxy;

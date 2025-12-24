@@ -146,6 +146,12 @@ class FormationPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
         this.jmc();
       }
     };
+    this.zAf = () => {
+      this.RefreshKeyItemEnableInMotorcycle();
+    };
+    this.sJm = () => {
+      this.RefreshKeyItemEnableInMotorcycle();
+    };
   }
   async InitializeAsync() {
     await this.Kze();
@@ -299,6 +305,10 @@ class FormationPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnOtherChangeRole, this.rZe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InputControllerChange, this.XBo);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RefreshGuest, this.jmc);
+    if (this.GetOperationType() === 2) {
+      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiPressMotorcycleCombineButtonChanged, this.zAf);
+      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiMotorcycleStateChanged, this.sJm);
+    }
   }
   RemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiCurRoleDataChanged, this.Vze);
@@ -317,6 +327,10 @@ class FormationPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnOtherChangeRole, this.rZe);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InputControllerChange, this.XBo);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RefreshGuest, this.jmc);
+    if (this.GetOperationType() === 2) {
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiPressMotorcycleCombineButtonChanged, this.zAf);
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiMotorcycleStateChanged, this.sJm);
+    }
   }
   jze(t, e) {
     var i = ModelManager_1.ModelManager.BattleUiModel.GetRoleData(t);
@@ -405,6 +419,26 @@ class FormationPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
       await this.Gmc.HideAsync();
       await this.Gmc.DestroyAsync();
       this.Gmc = undefined;
+    }
+  }
+  RefreshKeyItemEnableInMotorcycle() {
+    if (Info_1.Info.IsInGamepad()) {
+      if (ModelManager_1.ModelManager.BattleUiModel.MotorcycleData?.IsDriving) {
+        var t = ModelManager_1.ModelManager.SkillButtonUiModel.GetGamepadDataByType(1);
+        if (t?.GetIsPressCombineButton()) {
+          for (const e of this.Gze) {
+            e.SetInvisibleByKeyList(t.MusicSubKeyList);
+          }
+        } else {
+          for (const i of this.Gze) {
+            i.SetInvisibleByKeyList(undefined);
+          }
+        }
+      } else {
+        for (const s of this.Gze) {
+          s.SetInvisibleByKeyList(undefined);
+        }
+      }
     }
   }
   AddChildToRoleHeadPanel(t) {

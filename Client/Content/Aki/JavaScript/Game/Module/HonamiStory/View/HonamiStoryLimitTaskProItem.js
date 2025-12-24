@@ -14,7 +14,7 @@ class HonamiStoryLimitTaskProItem extends UiPanelBase_1.UiPanelBase {
     super(...arguments);
     this.ZGl = undefined;
     this.OnClickToGet = undefined;
-    this.iem = () => {
+    this.kim = () => {
       var e = new HonamiStoryLimitTaskScoreItem_1.HonamiStoryLimitTaskScoreItem();
       e.OnClickToGet = this.OnClickToGet;
       return e;
@@ -24,7 +24,7 @@ class HonamiStoryLimitTaskProItem extends UiPanelBase_1.UiPanelBase {
     this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UISprite], [2, UE.UIHorizontalLayout], [3, UE.UIItem]];
   }
   OnStart() {
-    this.ZGl = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(2), this.iem, this.GetItem(3).GetOwner());
+    this.ZGl = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(2), this.kim, this.GetItem(3).GetOwner());
   }
   async RefreshAsync(i, s) {
     this.GetText(0).SetText(i.toString());

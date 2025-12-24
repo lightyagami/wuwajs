@@ -28,8 +28,8 @@ class SpecialSkillKanteleila extends SpecialSkillBase_1.SpecialSkillBase {
     if (this.zcc) {
       t *= TimeUtil_1.TimeUtil.Millisecond;
       h = this.SpecialSkillComponent.Entity.GetComponent(3);
-      i = this.SpecialSkillComponent.Entity.GetComponent(45);
-      s = this.SpecialSkillComponent.Entity.GetComponent(62).GetMoveDirectionCache();
+      i = this.SpecialSkillComponent.Entity.GetComponent(46);
+      s = this.SpecialSkillComponent.Entity.GetComponent(65).GetMoveDirectionCache();
       if (!(h = this.e1c(h.InputDirectProxy, s, t)).IsNearlyZero()) {
         i?.MoveCharacter(h, t, "SpecialSkillKanteleila");
       }

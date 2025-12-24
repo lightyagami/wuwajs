@@ -29,7 +29,7 @@ class DamageAugment extends ExtraEffectBase_1.BuffEffect {
   }
   OnExecute() {
     var t = this.gXo;
-    var e = this.InstigatorEntity?.Entity?.CheckGetComponent(177);
+    var e = this.InstigatorEntity?.Entity?.CheckGetComponent(182);
     var r = this.fXo;
     var s = this.pXo;
     var r = r * CharacterAttributeTypes_1.DIVIDED_TEN_THOUSAND;

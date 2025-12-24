@@ -15,9 +15,9 @@ class HonamiStoryMainButtonItem extends UiPanelBase_1.UiPanelBase {
     super(...arguments);
     this.awi = 0;
     this.rMt = undefined;
-    this.hRm = undefined;
-    this.rSm = undefined;
-    this.Rzd = undefined;
+    this.M$m = undefined;
+    this.lDm = undefined;
+    this.aJd = undefined;
     this.SpecialParamName = undefined;
     this.SpecialSequenceName = undefined;
     this.SPe = undefined;
@@ -39,10 +39,10 @@ class HonamiStoryMainButtonItem extends UiPanelBase_1.UiPanelBase {
       this.awi = e.FunctionId;
     }
     if (e.SetTextCallback) {
-      this.rSm = e.SetTextCallback;
+      this.lDm = e.SetTextCallback;
     }
     if (e.ShowRedDot) {
-      this.Rzd = e.ShowRedDot;
+      this.aJd = e.ShowRedDot;
     }
     if (e.SpecialParamName) {
       this.SpecialParamName = e.SpecialParamName;
@@ -55,11 +55,11 @@ class HonamiStoryMainButtonItem extends UiPanelBase_1.UiPanelBase {
     this.rMt = e;
   }
   CheckIsSpecialSet() {
-    return (this.Rzd && this.Rzd() && this.SpecialSequenceName !== undefined) ?? false;
+    return (this.aJd && this.aJd() && this.SpecialSequenceName !== undefined) ?? false;
   }
   SetButtonState() {
     var e = ModelManager_1.ModelManager.FunctionModel.IsOpen(this.awi);
-    var t = !this.hRm || this.hRm();
+    var t = !this.M$m || this.M$m();
     if (e && t) {
       this.SetUiActive(true);
       if (!(e = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.HonamiStoryMainButtonUnlockSet) ?? new Set()).has(this.awi)) {
@@ -72,23 +72,23 @@ class HonamiStoryMainButtonItem extends UiPanelBase_1.UiPanelBase {
     }
   }
   SetText() {
-    if (this.rSm) {
-      this.rSm(this.GetText(1));
+    if (this.lDm) {
+      this.lDm(this.GetText(1));
     } else {
       this.GetText(1).SetText("");
     }
   }
   SetRedDot() {
-    if (this.Rzd) {
-      this.GetItem(2).SetUIActive(this.Rzd());
+    if (this.aJd) {
+      this.GetItem(2).SetUIActive(this.aJd());
     } else {
       this.GetItem(2).SetUIActive(false);
     }
   }
   Clear() {
     this.rMt = undefined;
-    this.rSm = undefined;
-    this.Rzd = undefined;
+    this.lDm = undefined;
+    this.aJd = undefined;
     this.SpecialParamName = undefined;
     this.SpecialSequenceName = undefined;
   }

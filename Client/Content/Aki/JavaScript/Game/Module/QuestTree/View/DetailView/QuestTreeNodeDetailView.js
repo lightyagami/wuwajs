@@ -30,7 +30,7 @@ class QuestTreeNodeDetailView extends UiViewBase_1.UiViewBase {
     this.KDd = undefined;
     this.XDd = undefined;
     this._U1 = undefined;
-    this.TCm = false;
+    this.$Im = false;
     this.YDd = () => {
       ControllerHolder_1.ControllerHolder.QuestTreeController.CancelTrackNode(this.Pe);
     };
@@ -47,7 +47,7 @@ class QuestTreeNodeDetailView extends UiViewBase_1.UiViewBase {
     };
     this.AOe = e => {
       if (e === this.Pe) {
-        this.bCm();
+        this.WIm();
       }
     };
   }
@@ -73,7 +73,7 @@ class QuestTreeNodeDetailView extends UiViewBase_1.UiViewBase {
     this.XDd.SetFunction(this.zDd);
     this._U1 = new QuestTreeNodeDetailTipsItem_1.QuestTreeNodeDetailTipsItem(this.Pe);
     e.push(this.K8u.CreateThenShowByActorAsync(this.GetItem(16).GetOwner()), this.KDd.CreateThenShowByActorAsync(this.GetItem(18).GetOwner()), this.XDd.CreateThenShowByActorAsync(this.GetItem(17).GetOwner()), this._U1.CreateThenShowByActorAsync(this.GetItem(21).GetOwner()));
-    this.Atm();
+    this.Xom();
     await Promise.all(e);
     await this.JDd();
   }
@@ -125,16 +125,16 @@ class QuestTreeNodeDetailView extends UiViewBase_1.UiViewBase {
     this.QDd.RefreshByData(this.Pe.RewardList);
     i = e?.IsSuspend() && e.GetSuspendType() === 2;
     this.GetItem(19).SetUIActive(this.Pe.State === 4);
-    this.GetItem(20).SetUIActive(this.Pe.State === 1 && !i && !this.RCm());
+    this.GetItem(20).SetUIActive(this.Pe.State === 1 && !i && !this.QIm());
     this.beu();
     this.GetItem(15).SetUIActive(this.Pe.IsTracking && !i);
-    this.KDd.SetActive(this.RCm());
+    this.KDd.SetActive(this.QIm());
     this.GetItem(5).SetUIActive(false);
     this._U1.SetActive(e?.IsSuspend() ?? false);
     this._U1.UpdateData(this.Pe);
     await Promise.all(t);
     this.K8u.SetLocalTextNew("QuestTree_Status_Ongoing_CancelTrack");
-    this.wCm();
+    this.KIm();
     this.XDd.SetLocalTextNew("QuestTree_Status_Ongoing_Track");
     if (this.Pe.State === 1) {
       this._U1.SetLocalText("QuestTree_Status_Locked");
@@ -148,24 +148,24 @@ class QuestTreeNodeDetailView extends UiViewBase_1.UiViewBase {
     }
     this._U1.SetBtnActive(!i);
   }
-  Dtm() {
+  Yom() {
     var e = this.GetRootItem();
     if (e) {
       return e.GetOwner().GetComponentByClass(UE.TsUiBlur_C.StaticClass());
     }
   }
-  Atm() {
+  Xom() {
     var e;
-    var t = this.Dtm();
+    var t = this.Yom();
     if (t && (e = ModelManager_1.ModelManager.QuestTreeModel.ViewModelChapter.View?.GetOverrideBlurItem()) && e.IsValid()) {
       t.OverrideItem = e.GetOwner();
     }
   }
-  RCm() {
+  QIm() {
     var e;
-    return !this.Pe.IsTracking && !!(e = ModelManager_1.ModelManager.QuestNewModel.GetQuest(this.Pe.QuestId)) && (!e.IsSuspend() || e.GetSuspendType() !== 2) && ((e = ModelManager_1.ModelManager.QuestNewModel.GetQuestSpecialState(e)) === 2 || e === 3 || e === 9 ? this.TCm = true : this.Pe.State === 2 || this.Pe.State === 3);
+    return !this.Pe.IsTracking && !!(e = ModelManager_1.ModelManager.QuestNewModel.GetQuest(this.Pe.QuestId)) && (!e.IsSuspend() || e.GetSuspendType() !== 2) && ((e = ModelManager_1.ModelManager.QuestNewModel.GetQuestSpecialState(e)) === 2 || e === 3 || e === 9 ? this.$Im = true : this.Pe.State === 2 || this.Pe.State === 3);
   }
-  wCm() {
+  KIm() {
     var e = ModelManager_1.ModelManager.QuestNewModel.GetQuest(this.Pe.QuestId);
     if (e) {
       switch (ModelManager_1.ModelManager.QuestNewModel.GetQuestSpecialState(e)) {
@@ -193,9 +193,9 @@ class QuestTreeNodeDetailView extends UiViewBase_1.UiViewBase {
       }
     }
   }
-  async bCm() {
-    if (this.TCm) {
-      this.TCm = false;
+  async WIm() {
+    if (this.$Im) {
+      this.$Im = false;
       await this.PlaySequenceAsync("Close");
       await this.JDd();
       await this.PlaySequenceAsync("Start");

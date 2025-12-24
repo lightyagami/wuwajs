@@ -88,7 +88,7 @@ class TrapDefenseResultView extends UiViewBase_1.UiViewBase {
         }, 500);
       }
     };
-    this.llm = () => {
+    this.gdm = () => {
       this.nsd();
     };
   }
@@ -98,13 +98,13 @@ class TrapDefenseResultView extends UiViewBase_1.UiViewBase {
   }
   OnAddEventListener() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.QCd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TrapDefenseOnSystemInfoNotify, this.llm);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TrapDefenseBdBuffAllUpdate, this.llm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TrapDefenseOnSystemInfoNotify, this.gdm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TrapDefenseBdBuffAllUpdate, this.gdm);
   }
   OnRemoveEventListener() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.QCd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TrapDefenseOnSystemInfoNotify, this.llm);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TrapDefenseBdBuffAllUpdate, this.llm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TrapDefenseOnSystemInfoNotify, this.gdm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TrapDefenseBdBuffAllUpdate, this.gdm);
   }
   async OnBeforeStartAsync() {
     var e = [];

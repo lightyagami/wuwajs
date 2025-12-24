@@ -97,10 +97,16 @@ class GenericLayoutNew {
   }
   ht() {
     for (let t = 0, i = this.yGo.length; t < i; ++t) {
-      this.yGo[t].GetOwner().K2_DestroyActor();
+      var e = this.yGo[t].GetOwner();
+      if (e?.IsValid()) {
+        e.K2_DestroyActor();
+      }
     }
     for (let t = 0, i = this.SGo.length; t < i; ++t) {
-      this.SGo[t].GetOwner().K2_DestroyActor();
+      var s = this.SGo[t].GetOwner();
+      if (s?.IsValid()) {
+        s.K2_DestroyActor();
+      }
     }
     this.yGo.length = 0;
     this.SGo.length = 0;

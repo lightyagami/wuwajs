@@ -24,52 +24,34 @@ class AdvanceNoticeNewRoleDetailItem extends UiPanelBase_1.UiPanelBase {
   Refresh(e) {
     e = ConfigManager_1.ConfigManager.AdvanceNoticeConfig.GetAdvertisingTabCharacterById(e);
     if (e.Type === 1) {
-      this.g0o(e.RoleOrWeaponId);
+      this.g0o(e);
     } else {
-      this.a8l(e.RoleOrWeaponId);
+      this.a8l(e);
     }
   }
   g0o(e) {
     this.GetTexture(3)?.SetUIActive(true);
     this.GetSprite(5)?.SetUIActive(false);
-    var i;
-    var t;
-    var a;
-    var e = ConfigManager_1.ConfigManager.GachaConfig.GetRoleInfoById(e);
-    if (e) {
-      this.GetText(0).ShowTextNew(e.Name);
-      i = ConfigManager_1.ConfigManager.CommonConfig.GetElementConfig(e.ElementId);
-      t = this.GetTexture(3);
-      a = this.GetSprite(4);
-      this.SetTextureByPath(i.Icon, t);
-      this.SetSpriteByPath(i.GachaElementBgSpritePath, a, false);
-      this.n4e(e.QualityId);
-    }
+    this.GetText(0).ShowTextNew(e.NameText);
+    var i = this.GetTexture(3);
+    var t = this.GetSprite(4);
+    this.SetTextureByPath(e.ElementIconPath, i);
+    this.SetSpriteByPath(e.ElementBgIconPath, t, false);
+    this.n4e(e.QualityId);
   }
   a8l(e) {
     this.GetTexture(3)?.SetUIActive(false);
     this.GetSprite(5)?.SetUIActive(true);
-    var i;
-    var e = ConfigManager_1.ConfigManager.WeaponConfig.GetWeaponConfigByItemId(e);
-    if (e) {
-      this.GetText(0).ShowTextNew(e.WeaponName);
-      i = AdvanceNoticeDefine_1.starToWeaponGachaBgResourceId[e.QualityId];
-      i = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(i);
-      this.SetSpriteByPath(i, this.GetSprite(4), false);
-      this.vWt(e.WeaponType);
-      this.n4e(e.QualityId);
-    }
+    this.GetText(0).ShowTextNew(e.NameText);
+    var i = e.QualityId;
+    var t = AdvanceNoticeDefine_1.starToWeaponGachaBgResourceId[i];
+    var t = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(t);
+    this.SetSpriteByPath(t, this.GetSprite(4), false);
+    this.SetSpriteByPath(e.WeaponTypeIconPath, this.GetSprite(5), false);
+    this.n4e(i);
   }
   n4e(e) {
     this.$be.RebuildLayout(e);
-  }
-  vWt(e) {
-    for (const i of ConfigManager_1.ConfigManager.MappingConfig.GetWeaponConfList()) {
-      if (e === i.Value) {
-        this.SetSpriteByPath(i.Icon, this.GetSprite(5), false);
-        break;
-      }
-    }
   }
 }
 exports.AdvanceNoticeNewRoleDetailItem = AdvanceNoticeNewRoleDetailItem;

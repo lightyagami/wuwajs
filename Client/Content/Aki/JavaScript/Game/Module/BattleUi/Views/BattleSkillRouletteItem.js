@@ -14,7 +14,6 @@ class BattleSkillRouletteItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.Qtt = undefined;
-    this._Ze = undefined;
     this.Aah = () => {
       this.RefreshKeyItem();
       this.RefreshVisible();
@@ -30,7 +29,6 @@ class BattleSkillRouletteItem extends UiPanelBase_1.UiPanelBase {
     var e = this.GetItem(0);
     this.Qtt = new InputMultiKeyItem_1.InputMultiKeyItem();
     await this.Qtt.CreateThenShowByActorAsync(e.GetOwner());
-    this._Ze = ModelManager_1.ModelManager.SkillButtonUiModel?.GamepadData;
     this.RefreshKeyItem();
     this.RefreshVisible();
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiRouletteKeyChanged, this.Aah);
@@ -41,7 +39,7 @@ class BattleSkillRouletteItem extends UiPanelBase_1.UiPanelBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InputControllerChange, this.XBo);
   }
   RefreshKeyItem() {
-    var e = this._Ze;
+    var e = ModelManager_1.ModelManager.SkillButtonUiModel.GamepadData;
     if (e.RouletteKey === "Gamepad_LeftShoulder") {
       this.Qtt.RefreshByKeyList({
         KeyName: "Gamepad_Right2D"
@@ -56,7 +54,7 @@ class BattleSkillRouletteItem extends UiPanelBase_1.UiPanelBase {
     }
   }
   RefreshVisible() {
-    var e = this._Ze;
+    var e = ModelManager_1.ModelManager.SkillButtonUiModel.GamepadData;
     if (e.GetIsPressCombineButton()) {
       e = e.RouletteKey === "Gamepad_LeftShoulder" || e.RouletteKey === undefined && e.RouletteSecondKey !== undefined;
       this.SetActive(e);

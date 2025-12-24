@@ -17,7 +17,7 @@ class TowerDefenseInputLayer extends InputLayer_1.InputLayer {
     this.qsd = false;
   }
   GetLayerType() {
-    return 6;
+    return 7;
   }
   HandlePress(e, r) {
     switch (e) {

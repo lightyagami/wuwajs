@@ -33,7 +33,7 @@ class CaveHoleSecondaryPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecond
     this.UpdateTopRightIconActive();
     this.UpdateRightDownIconActive();
     e = this.UpdateQuickGoto();
-    this.ConfirmButton.SetActive(!e);
+    this.LayoutContext?.SetConfirmBtnActive(!e);
   }
 }
 exports.CaveHoleSecondaryPanel = CaveHoleSecondaryPanel;

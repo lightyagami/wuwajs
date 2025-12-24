@@ -66,7 +66,7 @@ class MoonSignInDetailView extends UiViewBase_1.UiViewBase {
         this.nrd();
       }
     };
-    this.wJd = t => {
+    this.ZZd = t => {
       this.GetItem(10).SetUIActive(t);
       this.GetItem(11).SetUIActive(t);
       this.GetButton(6).RootUIComp.SetUIActive(t);
@@ -97,7 +97,7 @@ class MoonSignInDetailView extends UiViewBase_1.UiViewBase {
         this.GetButton(0).RootUIComp.SetUIActive(true);
       }
     });
-    this.Jid.SetNextAndBackBtnUiActive = this.wJd;
+    this.Jid.SetNextAndBackBtnUiActive = this.ZZd;
   }
   OnStart() {
     var t = this.OpenParam;

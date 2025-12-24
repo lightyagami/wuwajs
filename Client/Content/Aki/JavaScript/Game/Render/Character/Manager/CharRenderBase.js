@@ -4,9 +4,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.CharRenderBase = undefined;
+const Stats_1 = require("../../../../Core/Common/Stats");
 class CharRenderBase {
   constructor() {
     this.RenderComponent = undefined;
+    this.RenderStat = undefined;
     this.jlr = false;
   }
   GetIsInitSuc() {
@@ -18,8 +20,12 @@ class CharRenderBase {
   OnInitSuccess() {
     this.jlr = true;
   }
-  Awake(e) {
-    this.RenderComponent = e;
+  GetRenderStat() {
+    this.RenderStat ||= Stats_1.Stat.Create(this.GetStatName());
+    return this.RenderStat;
+  }
+  Awake(t) {
+    this.RenderComponent = t;
   }
   Start() {}
   Update() {}

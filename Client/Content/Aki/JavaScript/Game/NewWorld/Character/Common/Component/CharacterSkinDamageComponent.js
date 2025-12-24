@@ -1,21 +1,21 @@
 "use strict";
 
 var CharacterSkinDamageComponent_1;
-var __decorate = this && this.__decorate || function (t, e, i, s) {
+var __decorate = this && this.__decorate || function (e, t, i, s) {
   var n;
   var a = arguments.length;
-  var h = a < 3 ? e : s === null ? s = Object.getOwnPropertyDescriptor(e, i) : s;
+  var h = a < 3 ? t : s === null ? s = Object.getOwnPropertyDescriptor(t, i) : s;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    h = Reflect.decorate(t, e, i, s);
+    h = Reflect.decorate(e, t, i, s);
   } else {
-    for (var r = t.length - 1; r >= 0; r--) {
-      if (n = t[r]) {
-        h = (a < 3 ? n(h) : a > 3 ? n(e, i, h) : n(e, i)) || h;
+    for (var r = e.length - 1; r >= 0; r--) {
+      if (n = e[r]) {
+        h = (a < 3 ? n(h) : a > 3 ? n(t, i, h) : n(t, i)) || h;
       }
     }
   }
   if (a > 3 && h) {
-    Object.defineProperty(e, i, h);
+    Object.defineProperty(t, i, h);
   }
   return h;
 };
@@ -40,6 +40,9 @@ const CharacterNameDefines_1 = require("../CharacterNameDefines");
 const SKIN_DAMAGE_TIME = 20;
 const SKIN_DAMAGE_LEVEL1_COUNT = 7;
 const SKIN_DAMAGE_LEVEL2_COUNT = 14;
+const newDamageIntensityName = new UE.FName("DamageIntensity");
+const newDamageOnName = new UE.FName("NewDamageOn");
+const newDamageOffName = new UE.FName("NewDamageOff");
 const skinDamageTagMap = new Map([[0, -723474560], [1, -1450058230], [2, 430401293]]);
 let CharacterSkinDamageComponent = CharacterSkinDamageComponent_1 = class CharacterSkinDamageComponent extends EntityComponent_1.EntityComponent {
   constructor() {
@@ -56,9 +59,9 @@ let CharacterSkinDamageComponent = CharacterSkinDamageComponent_1 = class Charac
     this.eWr = undefined;
     this.CuePath = "";
     this.IsCueIgnoreEnableSetting = false;
-    this.Zpe = t => {
+    this.Zpe = e => {
       this.BCe();
-      if (t) {
+      if (e) {
         this.wNr = Time_1.Time.WorldTimeSeconds;
         this.zjr = 0;
       } else {
@@ -68,11 +71,11 @@ let CharacterSkinDamageComponent = CharacterSkinDamageComponent_1 = class Charac
       }
       this.Zjr = 0;
     };
-    this.gne = t => {
+    this.gne = e => {
       if (this.wNr !== 0) {
-        t = t.Attacker.GetComponent(3);
-        if (t) {
-          if (CampUtils_1.CampUtils.GetCampRelationship(t.Actor.Camp, this.Hte.Actor.Camp) !== 2) {
+        e = e.Attacker.GetComponent(3);
+        if (e) {
+          if (CampUtils_1.CampUtils.GetCampRelationship(e.Actor.Camp, this.Hte.Actor.Camp) !== 2) {
             return;
           }
         }
@@ -88,8 +91,8 @@ let CharacterSkinDamageComponent = CharacterSkinDamageComponent_1 = class Charac
     this.bpr = () => {
       this.ApplySkinDamageByType(0, false, "战损恢复（传送）");
     };
-    this.q2t = t => {
-      if (t === this.Entity.Id && this.zjr !== 0 && Time_1.Time.WorldTimeSeconds - this.zjr > SKIN_DAMAGE_TIME) {
+    this.q2t = e => {
+      if (e === this.Entity.Id && this.zjr !== 0 && Time_1.Time.WorldTimeSeconds - this.zjr > SKIN_DAMAGE_TIME) {
         this.ApplySkinDamageByType(0, false, "战损恢复（下场）");
       }
     };
@@ -110,7 +113,7 @@ let CharacterSkinDamageComponent = CharacterSkinDamageComponent_1 = class Charac
   OnStart() {
     this.EIe = this.Entity.CheckGetComponent(0);
     this.Hte = this.Entity.CheckGetComponent(3);
-    this.Lie = this.Entity.CheckGetComponent(209);
+    this.Lie = this.Entity.CheckGetComponent(215);
     this.SkinDamageType = 0;
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnBattleStateChanged, this.Zpe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRoleGoDown, this.q2t);
@@ -137,12 +140,12 @@ let CharacterSkinDamageComponent = CharacterSkinDamageComponent_1 = class Charac
     }
   }
   gRu() {
-    var t = Time_1.Time.WorldTimeSeconds - this.wNr;
-    if (t > SKIN_DAMAGE_TIME) {
+    var e = Time_1.Time.WorldTimeSeconds - this.wNr;
+    if (e > SKIN_DAMAGE_TIME) {
       if (this.Zjr > SKIN_DAMAGE_LEVEL2_COUNT) {
-        this.ApplySkinDamageByType(2, false, "加载2级战损贴图（受击）", ["battleStartDuration", t], ["BeHitCount", this.Zjr]);
+        this.ApplySkinDamageByType(2, false, "加载2级战损贴图（受击）", ["battleStartDuration", e], ["BeHitCount", this.Zjr]);
       } else if (this.Zjr > SKIN_DAMAGE_LEVEL1_COUNT) {
-        this.ApplySkinDamageByType(1, false, "加载1级战损贴图（受击）", ["battleStartDuration", t], ["BeHitCount", this.Zjr]);
+        this.ApplySkinDamageByType(1, false, "加载1级战损贴图（受击）", ["battleStartDuration", e], ["BeHitCount", this.Zjr]);
       }
     }
   }
@@ -160,53 +163,59 @@ let CharacterSkinDamageComponent = CharacterSkinDamageComponent_1 = class Charac
       }
     }, SKIN_DAMAGE_TIME);
   }
-  rWr(t) {
-    t = this.EIe.GetRoleConfig()?.SkinDamage[t];
-    let e = undefined;
-    return (e = t ? this.Hte.GetReplaceEffect(t) : e) || t;
+  rWr(e) {
+    e = this.EIe.GetRoleConfig()?.SkinDamage[e];
+    let t = undefined;
+    return (t = e ? this.Hte.GetReplaceEffect(e) : t) || e;
   }
-  ApplySkinDamageByType(t, e, i, ...s) {
-    if ((this.SkinDamageType !== t || !!e) && (!!CharacterSkinDamageComponent_1.EnableSkinDamage || !!e) && !(this.SkinDamageType = t, this.CuePath && !e)) {
-      if (t = this.rWr(t)) {
-        this.ApplySkinDamage(t, e, i, ...s);
+  ApplySkinDamageByType(e, t, i, ...s) {
+    if ((this.SkinDamageType !== e || !!t) && (!!CharacterSkinDamageComponent_1.EnableSkinDamage || !!t) && !(this.SkinDamageType = e, this.CuePath && !t)) {
+      if (e = this.rWr(e)) {
+        this.ApplySkinDamage(e, t, i, ...s);
       }
     }
   }
-  ApplySkinDamage(t, e, i, ...s) {
-    if ((CharacterSkinDamageComponent_1.EnableSkinDamage || e) && this.n8 !== t) {
-      this.n8 = t;
+  ApplySkinDamage(e, t, i, ...s) {
+    if ((CharacterSkinDamageComponent_1.EnableSkinDamage || t) && this.n8 !== e) {
+      this.n8 = e;
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Battle", 28, i, ...s);
       }
-      ResourceSystem_1.ResourceSystem.LoadAsync(t, UE.KuroChangeMaterialsTextures, (t, e) => {
-        if (this.Entity?.Valid && this.Hte.Actor?.IsValid() && e === this.n8) {
+      ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.KuroChangeMaterialsTextures, (e, t) => {
+        if (e && this.Entity?.Valid && this.Hte.Actor?.IsValid() && t === this.n8) {
           if (!this.Yjr?.IsValid()) {
             this.oWr();
           }
           if (Log_1.Log.CheckDebug()) {
-            Log_1.Log.Debug("Battle", 28, "战损贴图生效", ["EntityId", this.Entity.Id], ["path", e]);
+            Log_1.Log.Debug("Battle", 28, "战损贴图生效", ["EntityId", this.Entity.Id], ["path", t]);
           }
-          this.Yjr?.ChangeMaterialsWithDataAsset(t);
+          if (e.ParameterName.op_Equality(newDamageOnName)) {
+            this.Hte.Actor.CharRenderingComponent?.SetMaterialPropertyFloatV2(newDamageIntensityName, 1, 1, 2, 17);
+          } else if (e.ParameterName.op_Equality(newDamageOffName)) {
+            this.Hte.Actor.CharRenderingComponent?.SetMaterialPropertyFloatV2(newDamageIntensityName, 0, 1, 2, 17);
+          } else {
+            this.Yjr?.ChangeMaterialsWithDataAsset(e);
+          }
         }
       });
     }
   }
   ResetCueSkinDamage() {
-    var t;
+    var e;
     if (this.CuePath) {
       this.CuePath = "";
-      t = this.IsCueIgnoreEnableSetting;
+      e = this.IsCueIgnoreEnableSetting;
       this.IsCueIgnoreEnableSetting = false;
       if (CharacterSkinDamageComponent_1.EnableSkinDamage) {
-        this.ApplySkinDamageByType(this.SkinDamageType, t, "GameplayCueSkinDamage销毁");
+        this.ApplySkinDamageByType(this.SkinDamageType, e, "GameplayCueSkinDamage销毁");
       } else {
-        this.ApplySkinDamageByType(0, t, "GameplayCueSkinDamage销毁");
+        this.ApplySkinDamageByType(0, e, "GameplayCueSkinDamage销毁");
       }
     }
   }
-  set SkinDamageType(t) {
+  set SkinDamageType(e) {
     this.Lie.RemoveTag(skinDamageTagMap.get(this.tec));
-    this.tec = t;
+    this.tec = e;
     this.Lie.AddTag(skinDamageTagMap.get(this.tec));
   }
   get SkinDamageType() {
@@ -214,5 +223,5 @@ let CharacterSkinDamageComponent = CharacterSkinDamageComponent_1 = class Charac
   }
 };
 CharacterSkinDamageComponent.EnableSkinDamage = true;
-CharacterSkinDamageComponent = CharacterSkinDamageComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(214)], CharacterSkinDamageComponent);
+CharacterSkinDamageComponent = CharacterSkinDamageComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(221)], CharacterSkinDamageComponent);
 exports.CharacterSkinDamageComponent = CharacterSkinDamageComponent; //# sourceMappingURL=CharacterSkinDamageComponent.js.map

@@ -102,7 +102,7 @@ class PayShopGoodsData {
     this.StageImage = t._Bs;
     this.ShowStageImage = t.h2u;
     this.Show = t.mJc;
-    this.DisclaimerText = t.czd;
+    this.DisclaimerText = t.Wzd;
     this.MFi();
   }
   GetIfCanBuy() {

@@ -96,12 +96,12 @@ class PlotTextCommonLogic {
     this.meo = false;
     this.CurOption = new Array();
     this.QMa = undefined;
-    this.YSm = 0;
-    this.zSm = 0;
-    this.JSm = -1;
-    this.ZSm = false;
+    this.WUm = 0;
+    this.QUm = 0;
+    this.KUm = -1;
+    this.XUm = false;
     this.MuteTimeLimitedOption = false;
-    this.eMm = false;
+    this.YUm = false;
     this.TRn = () => {
       if (!this.meo) {
         this.ceo?.SetActive(false);
@@ -111,11 +111,11 @@ class PlotTextCommonLogic {
     this.beo = () => {
       var t = new PlotOptionItem_1.PlotOptionItem(this.Parent);
       t.BindOnHover(this.qeo);
-      t.BindOnUnHover(this.tMm);
+      t.BindOnUnHover(this.zUm);
       return t;
     };
-    this.tMm = t => {
-      if (!this.eMm) {
+    this.zUm = t => {
+      if (!this.YUm) {
         t.SetSelectedDisplay(false);
       }
     };
@@ -124,7 +124,7 @@ class PlotTextCommonLogic {
       (this.neo = t).SetSelectedDisplay(true);
     };
     this.Geo = () => {
-      if (this.eMm) {
+      if (this.YUm) {
         this.neo?.SetSelectedDisplay(false);
         var i = this.ceo.GetDisplayGridEndIndex();
         for (let t = 0; t <= i; t++) {
@@ -138,8 +138,8 @@ class PlotTextCommonLogic {
         }
       }
     };
-    this.iMm = () => {
-      this.rMm(false);
+    this.JUm = () => {
+      this.ZUm(false);
     };
     this.PlayDelayTime = undefined;
     this.K2n = undefined;
@@ -225,15 +225,17 @@ class PlotTextCommonLogic {
     this.mZi = this.PlotContent.GetOwner().GetComponentByClass(UE.UIEffectTextAnimation.StaticClass());
     this.$bn = LanguageSystem_1.LanguageSystem.PackageAudio;
     this.Nra = h?.GetRootComponent()?.GetHeight() ?? 174;
-    this.OptionItemBase.SetUIActive(false);
-    this.LayOutBase.RootUIComp.SetAlpha(1);
     this.meo = false;
     this.OptionLimitBar?.GetRootComponent().SetUIActive(false);
     this.BlockOption?.SetUIActive(false);
-    this.ceo = new GenericLayout_1.GenericLayout(this.LayOutBase, this.beo, this.OptionItemBase.GetOwner());
-    this.ceo.SetActive(false);
+    if (this.LayOutBase && this.OptionItemBase) {
+      this.OptionItemBase.SetUIActive(false);
+      this.LayOutBase.RootUIComp.SetAlpha(1);
+      this.ceo = new GenericLayout_1.GenericLayout(this.LayOutBase, this.beo, this.OptionItemBase.GetOwner());
+      this.ceo.SetActive(false);
+    }
     this.UiViewSequence?.AddSequenceFinishEvent("ChoiceClose", this.TRn);
-    this.eMm = this.Parent instanceof PlotView_1.PlotView;
+    this.YUm = this.Parent instanceof PlotView_1.PlotView;
   }
   get Options() {
     return this.ceo?.GetLayoutItemList();
@@ -273,7 +275,7 @@ class PlotTextCommonLogic {
       this.SetOptionsShow(true);
       this.CurOption = this.jeo(this.CurrentContent.Options);
       this.ceo.RefreshByData(this.CurOption, this.Geo);
-      this.oMm();
+      this.exm();
     }
   }
   ClearOptions() {
@@ -303,57 +305,57 @@ class PlotTextCommonLogic {
       }
     }
   }
-  jeo(t) {
-    var i = new Array();
-    for (const e of t) {
-      var s = ModelManager_1.ModelManager.PlotModel.CheckOptionCondition(e, this.CurrentContent);
-      if (s || e.OptionLockTip) {
-        s = {
+  jeo(i) {
+    var s = new Array();
+    for (let t = 0; t < i.length; t++) {
+      var e = i[t];
+      var o = ModelManager_1.ModelManager.PlotModel.CheckOptionCondition(e, t, this.CurrentContent);
+      if (o || e.OptionLockTip) {
+        s.push({
           Config: e,
-          ConditionCheck: s,
+          ConditionCheck: o,
           OnClick: () => {
-            this.iMm();
+            this.JUm();
           }
-        };
-        i.push(s);
+        });
       }
     }
-    return i;
+    return s;
   }
-  oMm() {
+  exm() {
     var t;
     if (this.CurOption && this.CurrentContent?.TimeLimitOptionGroup && this.CurrentContent.TimeLimitOptionGroup.Style.Type === "Default") {
       if ((t = this.CurrentContent.TimeLimitOptionGroup.Style).TimeLimit <= 0 || t.TimeoutOptionIndex >= this.CurrentContent.Options.length || t.TimeoutOptionIndex < 0) {
         ControllerHolder_1.ControllerHolder.FlowController.LogError("限时选项配置错误");
       } else {
-        this.JSm = t.TimeoutOptionIndex;
-        this.YSm = t.TimeLimit * CommonDefine_1.MILLIONSECOND_PER_SECOND;
-        this.zSm = 0;
+        this.KUm = t.TimeoutOptionIndex;
+        this.WUm = t.TimeLimit * CommonDefine_1.MILLIONSECOND_PER_SECOND;
+        this.QUm = 0;
         this.OptionLimitBar?.GetRootComponent().SetUIActive(true);
         this.OptionLimitBar?.SetValue(1);
-        this.ZSm = true;
+        this.XUm = true;
       }
     }
   }
-  rMm(t = false) {
+  ZUm(t = false) {
     var i;
-    if (this.ZSm) {
-      this.ZSm = false;
+    if (this.XUm) {
+      this.XUm = false;
       if (t) {
-        if (i = this.Options.find(t => t.OptionIndex === this.JSm)) {
+        if (i = this.Options.find(t => t.OptionIndex === this.KUm)) {
           i.OptionClick();
         } else {
-          ModelManager_1.ModelManager.PlotModel.MarkGrayOption(this.CurrentContent.Id, this.JSm);
-          i = this.CurrentContent.Options[this.JSm];
-          ControllerHolder_1.ControllerHolder.FlowController.FlowShowTalk.SelectOption(this.JSm, i.Actions);
+          ModelManager_1.ModelManager.PlotModel.MarkGrayOption(this.CurrentContent.Id, this.KUm);
+          i = this.CurrentContent.Options[this.KUm];
+          ControllerHolder_1.ControllerHolder.FlowController.FlowShowTalk.SelectOption(this.KUm, i.Actions);
         }
       }
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Plot", 26, "[Subtitle] 限时选项完成", ["id", this.CurrentContent.Id], ["bSelected", t]);
       }
-      this.YSm = 0;
-      this.zSm = 0;
-      this.JSm = -1;
+      this.WUm = 0;
+      this.QUm = 0;
+      this.KUm = -1;
     }
   }
   InitInteractOptions() {
@@ -787,8 +789,8 @@ class PlotTextCommonLogic {
     }
   }
   OnTick(t) {
-    if (this.ZSm && !this.MuteTimeLimitedOption && (this.zSm += t, this.OptionLimitBar?.SetValue(1 - this.zSm / this.YSm), this.zSm >= this.YSm)) {
-      this.rMm(true);
+    if (this.XUm && !this.MuteTimeLimitedOption && (this.QUm += t, this.OptionLimitBar?.SetValue(1 - this.QUm / this.WUm), this.QUm >= this.WUm)) {
+      this.ZUm(true);
     }
   }
 }

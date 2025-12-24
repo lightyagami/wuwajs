@@ -91,6 +91,7 @@ class MoonSignInSubView extends ActivitySubViewBase_1.ActivitySubViewBase {
     this.DNe.SetContentByTextId(i);
   }
   mGe() {
+    this.LNe.SetActivityBaseData(this.ActivityBaseData);
     this.LNe.SetTitleByText(this.ActivityBaseData.GetTitle());
     this.FNe();
   }

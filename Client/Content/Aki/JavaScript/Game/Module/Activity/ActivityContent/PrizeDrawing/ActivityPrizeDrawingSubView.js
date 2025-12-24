@@ -30,7 +30,7 @@ class ActivityPrizeDrawingSubView extends ActivitySubViewBase_1.ActivitySubViewB
     this.vKt = undefined;
     this.ZTn = undefined;
     this.H8d = false;
-    this.UKd = () => {
+    this.OKd = () => {
       this.OnRefreshView();
     };
     this.xJa = () => {
@@ -77,6 +77,7 @@ class ActivityPrizeDrawingSubView extends ActivitySubViewBase_1.ActivitySubViewB
   OnStart() {
     const i = this.ActivityBaseData;
     i.ReadRedDot();
+    this.LNe.SetActivityBaseData(i);
     this.LNe.SetTitleByText(i.GetTitle());
     this.DNe.SetContentByTextId(i.LocalConfig.Desc);
     var t = LevelGeneralCommons_1.LevelGeneralCommons.GetConditionGroupHintText(i.ConditionGroupId);
@@ -91,7 +92,7 @@ class ActivityPrizeDrawingSubView extends ActivitySubViewBase_1.ActivitySubViewB
   }
   OnRefreshView() {
     this.kNe();
-    this.XJd();
+    this.Mem();
     this.FNe();
     this.Nqe();
     this.hLn();
@@ -109,10 +110,10 @@ class ActivityPrizeDrawingSubView extends ActivitySubViewBase_1.ActivitySubViewB
     this.LevelSequencePlayer?.Clear();
   }
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPrizeDrawingQuestUpdated, this.UKd);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPrizeDrawingQuestUpdated, this.OKd);
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPrizeDrawingQuestUpdated, this.UKd);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPrizeDrawingQuestUpdated, this.OKd);
   }
   Nqe() {
     var i = this.ActivityBaseData;
@@ -150,7 +151,7 @@ class ActivityPrizeDrawingSubView extends ActivitySubViewBase_1.ActivitySubViewB
     this.UNe.InitGridLayout(this.UNe.InitCommonGridItem);
     this.UNe.RefreshItemLayout(i);
   }
-  XJd() {
+  Mem() {
     if (this.ActivityBaseData?.IsUnLock()) {
       if (this.ActivityBaseData.GetPreGuideQuestFinishState()) {
         if (this.ActivityBaseData?.IsAllFinished()) {

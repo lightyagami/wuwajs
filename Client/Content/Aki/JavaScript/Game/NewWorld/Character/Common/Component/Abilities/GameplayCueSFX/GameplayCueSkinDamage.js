@@ -8,7 +8,7 @@ const GameplayCueBase_1 = require("./GameplayCueBase");
 class GameplayCueSkinDamage extends GameplayCueBase_1.GameplayCueBase {
   OnCreate() {
     var e;
-    var a = this.EntityHandle.Entity?.GetComponent(214);
+    var a = this.EntityHandle.Entity?.GetComponent(221);
     if (a) {
       a.CuePath = this.GetPath();
       e = this.IsIgnoreEnableSetting();
@@ -17,7 +17,7 @@ class GameplayCueSkinDamage extends GameplayCueBase_1.GameplayCueBase {
     }
   }
   OnDestroy() {
-    var e = this.EntityHandle.Entity?.GetComponent(214);
+    var e = this.EntityHandle.Entity?.GetComponent(221);
     if (e) {
       e.ResetCueSkinDamage();
     }

@@ -70,7 +70,7 @@ class TsTaskLookForSceneItem extends TsTaskAbortImmediatelyBase_1.default {
               var n = l.GetBaseInfo()?.Category?.CollectType;
               var l = l.GetBaseInfo()?.Category?.MainType;
               let t = false;
-              if (!!(t = !(t = !(t = this.TsBotanyItem && n === "Botany" && _.Entity.GetComponent(201)?.IsOnlyCollectOption() ? true : t) && this.TsMineralItem && n === "Mineral" ? true : t) && this.TsDropItem && l === "Drop" ? true : t) && (!this.TsNavigationOn || !!AiContollerLibrary_1.AiControllerLibrary.NavigationFindPath(i, o.ToUeVector(), h.ToUeVector()))) {
+              if (!!(t = !(t = !(t = this.TsBotanyItem && n === "Botany" && _.Entity.GetComponent(207)?.IsOnlyCollectOption() ? true : t) && this.TsMineralItem && n === "Mineral" ? true : t) && this.TsDropItem && l === "Drop" ? true : t) && (!this.TsNavigationOn || !!AiContollerLibrary_1.AiControllerLibrary.NavigationFindPath(i, o.ToUeVector(), h.ToUeVector()))) {
                 s = a;
                 e = _;
               }

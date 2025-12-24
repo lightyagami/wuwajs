@@ -18,24 +18,24 @@ class SpecialEnergyBarJiaBeiLiNa extends SpecialEnergyBarBase_1.SpecialEnergyBar
   constructor() {
     super(...arguments);
     this.ps1 = undefined;
-    this.Yhm = undefined;
+    this.sdm = undefined;
     this.pMc = undefined;
     this.vs1 = undefined;
     this._ii = 0;
     this.bst = undefined;
     this.p2a = 0;
-    this.zhm = false;
-    this.Jhm = -1;
-    this.Zhm = [false, false];
+    this.adm = false;
+    this.hdm = -1;
+    this.ldm = [false, false];
     this.Ss1 = (i, t) => {
       this.Owt(t ? 1 : 0, false);
     };
-    this.elm = (i, t) => {
-      this.zhm = t;
+    this._dm = (i, t) => {
+      this.adm = t;
     };
-    this.tlm = (i, t) => {
+    this.udm = (i, t) => {
       t = t >= 1;
-      if (this.Zhm[i] !== t && (this.Zhm[i] = t)) {
+      if (this.ldm[i] !== t && (this.ldm[i] = t)) {
         this.PlayTweenAnim(i === 0 ? 9 : 10);
       }
     };
@@ -45,12 +45,12 @@ class SpecialEnergyBarJiaBeiLiNa extends SpecialEnergyBarBase_1.SpecialEnergyBar
   }
   OnInitData() {
     this.ps1 = ModelManager_1.ModelManager.BattleUiModel.SpecialEnergyBarData.GetSpecialEnergyBarInfo(MORPH_CONFIG_ID);
-    this.Yhm = ModelManager_1.ModelManager.BattleUiModel.SpecialEnergyBarData.GetSpecialEnergyBarInfo(SUB_CONFIG_ID);
+    this.sdm = ModelManager_1.ModelManager.BattleUiModel.SpecialEnergyBarData.GetSpecialEnergyBarInfo(SUB_CONFIG_ID);
   }
   AddEvents() {
     super.AddEvents();
     this.ListenForTagAddOrRemoveChanged(morphTagId, this.Ss1);
-    this.ListenForTagAddOrRemoveChanged(this.Yhm.KeyEnableTagId, this.elm);
+    this.ListenForTagAddOrRemoveChanged(this.sdm.KeyEnableTagId, this._dm);
   }
   async OnBeforeStartAsync() {
     var i = [];
@@ -61,7 +61,7 @@ class SpecialEnergyBarJiaBeiLiNa extends SpecialEnergyBarBase_1.SpecialEnergyBar
     this.pMc = new SpecialEnergyBarJiaBeiLiNaSlot_1.SpecialEnergyBarJiaBeiLiNaSlot();
     this.pMc.InitData(this.RoleData, this.Config);
     this.pMc.ForceHideBottomLine = true;
-    this.pMc.PercentCallback = this.tlm;
+    this.pMc.PercentCallback = this.udm;
     await this.pMc.InitByActorAsync(this.GetItem(5).GetOwner());
     this.vs1 = new SpecialEnergyBarJiaBeiLiNaMorphSlot_1.SpecialEnergyBarJiaBeiLiNaMorphSlot();
     this.vs1.InitData(this.RoleData, this.ps1, false);
@@ -75,23 +75,23 @@ class SpecialEnergyBarJiaBeiLiNa extends SpecialEnergyBarBase_1.SpecialEnergyBar
     this.InitTweenAnim(9);
     this.InitTweenAnim(10);
     this.PlayTweenAnim(8);
-    for (let i = 0; i < this.Zhm.length; i++) {
-      if (this.Zhm[i]) {
+    for (let i = 0; i < this.ldm.length; i++) {
+      if (this.ldm[i]) {
         this.PlayTweenAnim(i === 0 ? 9 : 10);
       }
     }
     this._Oe(true);
     this.OnBarPercentChanged();
-    this.ilm(true);
+    this.cdm(true);
   }
   OnBeforeShow() {
     super.OnBeforeShow();
     this.GetUiNiagara(13)?.SetUIActive(false);
   }
-  ilm(i = false) {
+  cdm(i = false) {
     let t = 0;
-    if ((t = this.zhm && (this.bst && this.BuffComponent?.GetBuffByHandle(this.p2a) || this.tst(), this.bst) ? this.bst.GetRemainDuration() / this.bst.Duration : t) !== this.Jhm || !!i) {
-      this.Jhm = t;
+    if ((t = this.adm && (this.bst && this.BuffComponent?.GetBuffByHandle(this.p2a) || this.tst(), this.bst) ? this.bst.GetRemainDuration() / this.bst.Duration : t) !== this.hdm || !!i) {
+      this.hdm = t;
       this.GetSprite(6)?.SetFillAmount(t);
       this.GetSprite(2)?.SetFillAmount(t);
       this.GetItem(7)?.SetAnchorOffsetX((t - 0.5) * 320);
@@ -104,7 +104,7 @@ class SpecialEnergyBarJiaBeiLiNa extends SpecialEnergyBarBase_1.SpecialEnergyBar
     } else {
       this.Owt(0, i);
     }
-    this.zhm = this.TagComponent?.HasTag(this.Yhm.KeyEnableTagId) ?? false;
+    this.adm = this.TagComponent?.HasTag(this.sdm.KeyEnableTagId) ?? false;
   }
   Owt(i, t = false) {
     if (i !== this._ii || t) {
@@ -131,12 +131,12 @@ class SpecialEnergyBarJiaBeiLiNa extends SpecialEnergyBarBase_1.SpecialEnergyBar
     super.Tick(i);
     this.pMc?.Tick(i);
     this.vs1?.Tick(i);
-    this.ilm();
+    this.cdm();
   }
   tst() {
-    if (this.Yhm?.BuffId) {
+    if (this.sdm?.BuffId) {
       this.bst = this.BuffComponent?.GetBuffById(EXTRA_SUB_BUFF_ID);
-      this.bst ||= this.BuffComponent?.GetBuffById(this.Yhm.BuffId);
+      this.bst ||= this.BuffComponent?.GetBuffById(this.sdm.BuffId);
       this.p2a = this.bst?.Handle ?? 0;
     } else {
       this.bst = undefined;

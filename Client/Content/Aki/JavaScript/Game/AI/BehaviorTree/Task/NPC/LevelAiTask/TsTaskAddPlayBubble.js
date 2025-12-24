@@ -96,7 +96,7 @@ class TsTaskAddPlayBubble extends TsTaskAbortImmediatelyBase_1.default {
       FlowId: this.TsFlowId,
       StateId: this.TsStateId
     };
-    var t = {
+    var o = {
       EntityIds: t,
       EnterRadius: this.TsEnterRadius,
       LeaveRadius: this.TsLeaveRadius,
@@ -104,7 +104,10 @@ class TsTaskAddPlayBubble extends TsTaskAbortImmediatelyBase_1.default {
       WaitTime: 0,
       RedDot: false
     };
-    e.BubbleData = t;
+    var s = new DynamicFlowController_1.DynamicFlowActorInfo();
+    s.PbDataId = t[0];
+    e.MasterInfo = s;
+    e.BubbleData = o;
     e.Type = 1;
     return e;
   }

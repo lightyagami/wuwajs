@@ -111,9 +111,9 @@ class GuideBaseView extends UiViewBase_1.UiViewBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnUiScreenRootVisibleChange, this.Mzt);
     this.OnGuideBaseViewRemoveEvent();
   }
-  HasConflictView() {
-    for (const i of guideConflictView) {
-      if (UiManager_1.UiManager.IsViewShow(i)) {
+  HasConflictView(i) {
+    for (const e of guideConflictView) {
+      if (UiManager_1.UiManager.IsViewShow(e) && e !== i) {
         return true;
       }
     }

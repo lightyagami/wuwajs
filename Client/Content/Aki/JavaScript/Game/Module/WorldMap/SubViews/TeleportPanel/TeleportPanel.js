@@ -46,7 +46,7 @@ class TeleportPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondaryUiLayo
     this.UpdateMultiMap();
     this.UpdateTopRightIconByTeleportState();
     e = this.UpdateQuickGoto();
-    this.ConfirmButton.SetActive(!e);
+    this.LayoutContext?.SetConfirmBtnActive(!e);
   }
 }
 exports.TeleportPanel = TeleportPanel;

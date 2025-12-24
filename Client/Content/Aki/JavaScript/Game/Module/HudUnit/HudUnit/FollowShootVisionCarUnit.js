@@ -19,7 +19,7 @@ class FollowShootVisionCarUnit extends HudUnitBase_1.HudUnitBase {
     this.kQ_ = false;
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem]];
   }
   OnStart() {
     this.Kti = this.GetItem(0);

@@ -79,7 +79,7 @@ class PhantomArenaRoleSelectTabView extends PhantomArenaChildViewBase_1.PhantomA
     this.BtnBindInfo = [[8, this.tWt]];
   }
   async OnBeforeStartAsync() {
-    for (const r of ModelManager_1.ModelManager.PhantomArenaModel.GetCardRoleList()) {
+    for (const r of ModelManager_1.ModelManager.PhantomArenaModel.GetCardRoleList(this.ActivityId)) {
       this._Iu.push(this.CreateCardRoleItemData(r));
     }
     this.aho = new MiniElementItem_1.MiniElementItem(0, undefined, this.GetItem(3).GetOwner());

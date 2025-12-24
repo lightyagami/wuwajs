@@ -189,6 +189,9 @@ class SimpleNpcFlowLogic {
   IsInHeadItemShowRange(t, i, s) {
     return t < i && s < t;
   }
+  GetDialogWorldScale3D() {
+    return 0.5;
+  }
 }
 exports.SimpleNpcFlowLogic = SimpleNpcFlowLogic;
 //# sourceMappingURL=SimpleNpcFlowLogic.js.map

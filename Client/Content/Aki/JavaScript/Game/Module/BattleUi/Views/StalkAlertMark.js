@@ -177,7 +177,7 @@ class StalkAlertMark extends EntityHeadIconItem_1.EntityHeadIconItem {
     var t;
     if (!this.bre) {
       t = ActorUtils_1.ActorUtils.GetEntityByActor(this.E$e);
-      this.bre = t.Entity.GetComponent(47);
+      this.bre = t.Entity.GetComponent(48);
     }
     return this.bre;
   }

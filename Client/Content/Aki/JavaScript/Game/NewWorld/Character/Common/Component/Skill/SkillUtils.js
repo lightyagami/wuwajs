@@ -6,12 +6,12 @@ Object.defineProperty(exports, "__esModule", {
 exports.SkillUtils = undefined;
 const UE = require("ue");
 const Info_1 = require("../../../../../../Core/Common/Info");
-const Time_1 = require("../../../../../../Core/Common/Time");
 const Protocol_1 = require("../../../../../../Core/Define/Net/Protocol");
 const QueryTypeDefine_1 = require("../../../../../../Core/Define/QueryTypeDefine");
 const EntitySystem_1 = require("../../../../../../Core/Entity/EntitySystem");
 const FNameUtil_1 = require("../../../../../../Core/Utils/FNameUtil");
 const Vector_1 = require("../../../../../../Core/Utils/Math/Vector");
+const MathUtils_1 = require("../../../../../../Core/Utils/MathUtils");
 const EventDefine_1 = require("../../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../../Common/Event/EventSystem");
 const TimeUtil_1 = require("../../../../../Common/TimeUtil");
@@ -20,69 +20,91 @@ const ControllerHolder_1 = require("../../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../../Manager/ModelManager");
 const CombatMessage_1 = require("../../../../../Module/CombatMessage/CombatMessage");
 const CombatLog_1 = require("../../../../../Utils/CombatLog");
+const GravityUtils_1 = require("../../../../../Utils/GravityUtils");
 const BlackboardController_1 = require("../../../../../World/Controller/BlackboardController");
 const CharacterUtils_1 = require("../../../CharacterUtils");
-const skillAbsoluteTimeStopSet = new Set();
-const skillTimeStopRequestSet = new Set();
 class SkillUtils {
-  static GetSkillRotateDirect(t, o, l) {
-    l.Reset();
-    if (t?.Valid && o) {
-      var e = t.Entity.GetComponent(1);
-      if (e?.Valid) {
-        var i = t.Entity.GetComponent(39);
-        if (i?.Valid) {
-          var r = e.ActorLocationProxy;
-          switch (o.Type) {
+  static GetSkillRotateDirect(t, i, e, r) {
+    r.Reset();
+    if (t?.Valid && i) {
+      var l = t.Entity.GetComponent(1);
+      if (l?.Valid) {
+        var o = t.Entity.GetComponent(40);
+        if (o?.Valid) {
+          var a;
+          var s;
+          var _ = l.ActorLocationProxy;
+          switch (i.Type) {
             case 0:
-              if (i.SkillTarget?.Valid) {
-                s = i.SkillTarget.Entity.CheckGetComponent(1);
-                s = i.GetCurrentSkillRotateTargetDirect(s, r);
-                l.DeepCopy(s);
+              if (o.SkillTarget?.Valid) {
+                n = o.SkillTarget.Entity.CheckGetComponent(1);
+                n = o.GetCurrentSkillRotateTargetDirect(n, _);
+                r.DeepCopy(n);
               }
               break;
             case 1:
-              var s = o.Target;
-              SkillUtils.Lz.DeepCopy(s);
-              SkillUtils.Lz.SubtractionEqual(r);
-              l.DeepCopy(SkillUtils.Lz);
+              var n = i.Target;
+              SkillUtils.Lz.DeepCopy(n);
+              SkillUtils.Lz.SubtractionEqual(_);
+              r.DeepCopy(SkillUtils.Lz);
               break;
             case 2:
-              s = o.Target;
-              l.DeepCopy(s);
+              n = i.Target;
+              r.DeepCopy(n);
               break;
             case 3:
             case 6:
               {
                 let e = undefined;
-                if (!(e = o.Type === 3 ? BlackboardController_1.BlackboardController.GetEntityIdByEntity(t.Entity.Id, o.Target) : BlackboardController_1.BlackboardController.GetIntValueByEntity(t.Entity.Id, o.Target))) {
+                if (!(e = i.Type === 3 ? BlackboardController_1.BlackboardController.GetEntityIdByEntity(t.Entity.Id, i.Target) : BlackboardController_1.BlackboardController.GetIntValueByEntity(t.Entity.Id, i.Target))) {
                   break;
                 }
-                s = EntitySystem_1.EntitySystem.Get(e)?.CheckGetComponent(1);
-                if (!s?.Valid) {
+                n = EntitySystem_1.EntitySystem.Get(e)?.CheckGetComponent(1);
+                if (!n?.Valid) {
                   break;
                 }
-                SkillUtils.Lz.DeepCopy(s.ActorLocationProxy);
-                SkillUtils.Lz.SubtractionEqual(r);
-                l.DeepCopy(SkillUtils.Lz);
+                SkillUtils.Lz.DeepCopy(n.ActorLocationProxy);
+                SkillUtils.Lz.SubtractionEqual(_);
+                r.DeepCopy(SkillUtils.Lz);
                 break;
               }
             case 4:
-              s = BlackboardController_1.BlackboardController.GetVectorValueByEntity(t.Entity.Id, o.Target);
-              if (s) {
-                SkillUtils.Lz.DeepCopy(s);
-                SkillUtils.Lz.SubtractionEqual(r);
-                l.DeepCopy(SkillUtils.Lz);
+              n = BlackboardController_1.BlackboardController.GetVectorValueByEntity(t.Entity.Id, i.Target);
+              if (n) {
+                SkillUtils.Lz.DeepCopy(n);
+                SkillUtils.Lz.SubtractionEqual(_);
+                r.DeepCopy(SkillUtils.Lz);
               }
               break;
             case 5:
-              s = BlackboardController_1.BlackboardController.GetVectorValueByEntity(t.Entity.Id, o.Target);
-              if (s) {
-                l.DeepCopy(s);
+              n = BlackboardController_1.BlackboardController.GetVectorValueByEntity(t.Entity.Id, i.Target);
+              if (n) {
+                r.DeepCopy(n);
               }
               break;
             case 7:
-              l.DeepCopy(e.ActorForwardProxy);
+              r.DeepCopy(l.ActorForwardProxy);
+          }
+          if (e) {
+            if (e.IsUseAnsRotateOffset && e.AnsRotateOffset !== 0) {
+              MathUtils_1.MathUtils.CommonTempRotator.Set(0, e.AnsRotateOffset, 0);
+              GravityUtils_1.GravityUtils.ConvertToPlanarVectorForActor(l, r);
+              GravityUtils_1.GravityUtils.RotateDirectInGravityForActor(l, MathUtils_1.MathUtils.CommonTempRotator, r);
+            }
+            a = l.ActorForwardProxy;
+            s = GravityUtils_1.GravityUtils.GetAngleOffsetInGravityAbsForActor(l, r, a);
+            if (e.IsPaused) {
+              if (e.ResumeRotateThreshold > 0) {
+                if (s < e.ResumeRotateThreshold) {
+                  r.DeepCopy(a);
+                } else {
+                  e.IsPaused = false;
+                }
+              }
+            } else if (e.PauseRotateThreshold > 0 && s < e.PauseRotateThreshold) {
+              e.IsPaused = true;
+              r.DeepCopy(a);
+            }
           }
         }
       }
@@ -100,20 +122,20 @@ class SkillUtils {
     this.uoe.ClearCacheData();
     return this.uoe;
   }
-  static GetTargetSocketTransform(e, t, o, l, i = 0) {
-    var r = e.GetComponent(3);
-    var s = r?.Actor;
-    if (s?.IsValid() && t) {
-      s = s.Mesh;
+  static GetTargetSocketTransform(e, t, i, r, l = 0) {
+    var o = e.GetComponent(3);
+    var a = o?.Actor;
+    if (a?.IsValid() && t) {
+      a = a.Mesh;
       t = FNameUtil_1.FNameUtil.GetDynamicFName(t);
-      if (s?.DoesSocketExist(t)) {
-        return s.D_GetSocketTransform(t, o);
+      if (a?.DoesSocketExist(t)) {
+        return a.D_GetSocketTransform(t, i);
       }
     }
-    if (i === 2) {
+    if (l === 2) {
       return e.GetComponent(1)?.ActorTransform;
-    } else if (i === 1) {
-      return r?.ActorTransform;
+    } else if (l === 1) {
+      return o?.ActorTransform;
     } else {
       return undefined;
     }
@@ -128,35 +150,33 @@ class SkillUtils {
       EventSystem_1.EventSystem.RemoveWithTarget(e, EventDefine_1.EEventName.RemoveEntity, this.zpe);
     }
   }
-  static BeginAbsoluteTimeStop(e, t, o) {
-    var l;
-    var i;
+  static BeginAbsoluteTimeStop(e, t, i) {
     var r;
+    var l;
+    var o;
     if (!ModelManager_1.ModelManager.GameModeModel?.IsMulti) {
-      if ((l = ModelManager_1.ModelManager.CharacterModel?.GetHandle(e))?.Valid && (i = l.Entity, CharacterUtils_1.CharacterUtils.CanCharacterMonsterOrSummonedDisplayEffect(l))) {
-        if (!!(r = i.GetComponent(0))?.IsRole() || !!r?.IsAutoRole()) {
-          if (skillAbsoluteTimeStopSet.has(e)) {
-            CombatLog_1.CombatLog.Error("Skill", i, "重复调用动画和子弹冻结功能，将不做处理");
-          } else {
-            this.Pbd(l);
-            skillAbsoluteTimeStopSet.add(e);
-            CombatLog_1.CombatLog.Info("Skill", i, "开启大招时停");
-            ControllerHolder_1.ControllerHolder.TimeController.AddLock(e, o);
-            (r = Protocol_1.Aki.Protocol.Qe_.create()).o5n = true;
-            r.n5n = t * TimeUtil_1.TimeUtil.InverseMillisecond;
-            CombatMessage_1.CombatNet.Send(16854, i, r);
+      if ((r = ModelManager_1.ModelManager.CharacterModel?.GetHandle(e))?.Valid && (l = r.Entity, CharacterUtils_1.CharacterUtils.CanCharacterMonsterOrSummonedDisplayEffect(r))) {
+        if (!!(o = l.GetComponent(0))?.IsRole() || !!o?.IsAutoRole()) {
+          if (ControllerHolder_1.ControllerHolder.TimeController.AddLock(e, i)) {
+            CombatLog_1.CombatLog.Info("Skill", l, "开启大招时停");
+            this.Pbd(r);
+            (o = Protocol_1.Aki.Protocol.Qe_.create()).o5n = true;
+            o.n5n = t * TimeUtil_1.TimeUtil.InverseMillisecond;
+            CombatMessage_1.CombatNet.Send(16854, l, o);
             EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnAbsoluteTimeStop, true, t);
-            EventSystem_1.EventSystem.EmitWithTarget(i, EventDefine_1.EEventName.OnAbsoluteTimeStop, true, t);
+            EventSystem_1.EventSystem.EmitWithTarget(l, EventDefine_1.EEventName.OnAbsoluteTimeStop, true, t);
+          } else {
+            CombatLog_1.CombatLog.Error("Skill", l, "重复调用动画和子弹冻结功能，将不做处理");
           }
         } else {
-          CombatLog_1.CombatLog.Error("Skill", i, "只有角色才能使用动画和子弹冻结功能");
+          CombatLog_1.CombatLog.Error("Skill", l, "只有角色才能使用动画和子弹冻结功能");
         }
       }
     }
   }
   static EndAbsoluteTimeStop(e) {
     var t;
-    if (skillAbsoluteTimeStopSet.has(e) && (skillAbsoluteTimeStopSet.delete(e), ControllerHolder_1.ControllerHolder.TimeController.RemoveLock(e), (e = ModelManager_1.ModelManager.CharacterModel?.GetHandle(e))?.Valid)) {
+    if (ControllerHolder_1.ControllerHolder.TimeController.RemoveLock(e) && (e = ModelManager_1.ModelManager.CharacterModel?.GetHandle(e))?.Valid) {
       t = e.Entity;
       CombatLog_1.CombatLog.Info("Skill", t, "结束大招时停");
       this.Abd(e);
@@ -168,95 +188,72 @@ class SkillUtils {
     }
   }
   static BeginTimeStopRequest(e, t) {
-    var o = ModelManager_1.ModelManager.CharacterModel?.GetHandle(e);
-    if (o?.Valid) {
-      var l = o.Entity;
+    var i;
+    var r = ModelManager_1.ModelManager.CharacterModel?.GetHandle(e);
+    if (r?.Valid) {
+      i = r.Entity;
       if (!ModelManager_1.ModelManager.GameModeModel?.IsMulti) {
-        if (Time_1.Time.FlowTimeDilation === 0) {
-          CombatLog_1.CombatLog.Error("Skill", l, "重复进入副本时停，将不做处理");
-        } else if (CharacterUtils_1.CharacterUtils.CanCharacterMonsterOrSummonedDisplayEffect(o)) {
-          if (skillTimeStopRequestSet.has(e)) {
-            CombatLog_1.CombatLog.Error("Skill", l, "重复调用时停请求，将不做处理");
-          } else {
-            skillTimeStopRequestSet.add(e);
-            this.Pbd(o);
-            CombatLog_1.CombatLog.Info("Skill", l, "开启副本时停");
-            Time_1.Time.SetFlowTimeDilation(0);
-            for (const i of ModelManager_1.ModelManager.CreatureModel?.GetAllEntities() ?? []) {
-              if (i.IsInit) {
-                i.Entity?.GetComponent(178)?.AddPauseLock("ANS AbsoluteTimeStop");
-                ControllerHolder_1.ControllerHolder.TimeController.TimeStopBuffEntitySet.add(i);
-              }
-            }
-            ControllerHolder_1.ControllerHolder.FormationAttributeController.AddPauseLock("ANS AbsoluteTimeStop");
-            ControllerHolder_1.ControllerHolder.SkillCdController.Pause(0, true);
-            e = Protocol_1.Aki.Protocol.Fe_.create();
-            e.o5n = true;
+        if (CharacterUtils_1.CharacterUtils.CanCharacterMonsterOrSummonedDisplayEffect(r)) {
+          if (ControllerHolder_1.ControllerHolder.TimeController.AddTimeStopRequestLock(e)) {
+            CombatLog_1.CombatLog.Info("Skill", i, "开启副本时停");
+            this.Pbd(r);
+            (e = Protocol_1.Aki.Protocol.Fe_.create()).o5n = true;
             e.n5n = t * TimeUtil_1.TimeUtil.InverseMillisecond;
-            CombatMessage_1.CombatNet.Send(27239, l, e);
+            CombatMessage_1.CombatNet.Send(27239, i, e);
             EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnTimeStopRequest, true, t);
-            EventSystem_1.EventSystem.EmitWithTarget(l, EventDefine_1.EEventName.OnTimeStopRequest, true, t);
+            EventSystem_1.EventSystem.EmitWithTarget(i, EventDefine_1.EEventName.OnTimeStopRequest, true, t);
+          } else {
+            CombatLog_1.CombatLog.Error("Skill", i, "重复进入副本时停，将不做处理");
           }
         }
       }
     }
   }
   static EndTimeStopRequest(e) {
-    if (skillTimeStopRequestSet.has(e)) {
-      skillTimeStopRequestSet.delete(e);
-      Time_1.Time.SetFlowTimeDilation(ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation);
-      for (const o of ControllerHolder_1.ControllerHolder.TimeController.TimeStopBuffEntitySet) {
-        o.Entity?.GetComponent(178)?.RemovePauseLock("ANS AbsoluteTimeStop");
-      }
-      ControllerHolder_1.ControllerHolder.TimeController.TimeStopBuffEntitySet.clear();
-      ControllerHolder_1.ControllerHolder.FormationAttributeController.RemovePauseLock("ANS AbsoluteTimeStop");
-      ControllerHolder_1.ControllerHolder.SkillCdController.Pause(0, false);
-      var t;
-      var e = ModelManager_1.ModelManager.CharacterModel?.GetHandle(e);
-      if (e?.Valid) {
-        t = e.Entity;
-        CombatLog_1.CombatLog.Info("Skill", t, "结束副本时停");
-        this.Abd(e);
-        (e = Protocol_1.Aki.Protocol.Fe_.create()).o5n = false;
-        e.n5n = 0;
-        CombatMessage_1.CombatNet.Send(27239, t, e);
-        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnTimeStopRequest, false, 0);
-        EventSystem_1.EventSystem.EmitWithTarget(t, EventDefine_1.EEventName.OnTimeStopRequest, false, 0);
-      }
+    var t;
+    if (ControllerHolder_1.ControllerHolder.TimeController.RemoveTimeStopRequestLock(e) && (e = ModelManager_1.ModelManager.CharacterModel?.GetHandle(e))?.Valid) {
+      t = e.Entity;
+      CombatLog_1.CombatLog.Info("Skill", t, "结束副本时停");
+      this.Abd(e);
+      (e = Protocol_1.Aki.Protocol.Fe_.create()).o5n = false;
+      e.n5n = 0;
+      CombatMessage_1.CombatNet.Send(27239, t, e);
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnTimeStopRequest, false, 0);
+      EventSystem_1.EventSystem.EmitWithTarget(t, EventDefine_1.EEventName.OnTimeStopRequest, false, 0);
     }
   }
   static IsTsActor(e) {
     e = e?.Entity?.GetComponent(0)?.GetEntityType();
     return e === Protocol_1.Aki.Protocol.kks.Proto_Player || e === Protocol_1.Aki.Protocol.kks.Proto_Npc || e === Protocol_1.Aki.Protocol.kks.Proto_Monster || e === Protocol_1.Aki.Protocol.kks.Proto_Vision;
   }
-  static Log(e, t, o, l, ...i) {
+  static Log(e, t, i, r, ...l) {
     if (Info_1.Info.IsPlayInEditor) {
-      var r = o.GetComponent(22);
-      if (r?.Valid) {
+      var o = i.GetComponent(22);
+      if (o?.Valid) {
         switch (t) {
           case 0:
-            r.AddSkillLogString(l, ...i);
+            o.AddSkillLogString(r, ...l);
             break;
           case 1:
-            r.AddSkillBehaviorLogString(l, ...i);
+            o.AddSkillBehaviorLogString(r, ...l);
             break;
           default:
-            CombatLog_1.CombatLog.Error("Skill", o, "未知技能日志类型", ["skillLogType", t]);
+            CombatLog_1.CombatLog.Error("Skill", i, "未知技能日志类型", ["skillLogType", t]);
             return;
         }
       }
     }
     switch (e) {
       case 0:
-        CombatLog_1.CombatLog.Info("Skill", o, l, ...i);
+        CombatLog_1.CombatLog.Info("Skill", i, r, ...l);
         break;
       case 1:
         break;
       case 2:
-        CombatLog_1.CombatLog.Warn("Skill", o, l, ...i);
+        CombatLog_1.CombatLog.Warn("Skill", i, r, ...l);
         break;
       case 3:
-        CombatLog_1.CombatLog.Error("Skill", o, l, ...i);
+        CombatLog_1.CombatLog.Error("Skill", i, r, ...l);
     }
   }
 }

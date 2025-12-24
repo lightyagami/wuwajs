@@ -32,6 +32,7 @@ class ActiveBuffInternal {
     this.DurationTimer = undefined;
     this.y6o = 1;
     this.nQo = Stats_1.Stat.Create("ActiveBuff.ResetDurationTimer");
+    this.Hnf = 0;
     this.CB = 0;
     this.sQo = 0;
     this.j4l = 1;
@@ -43,6 +44,7 @@ class ActiveBuffInternal {
     this.cQo = Stats_1.Stat.Create("ActiveBuff.ResetPeriodTimer");
     this.mQo = false;
     this.StackCountInternal = 0;
+    this.StackLimitCount = 0;
     this.jGi = 0;
     this.dQo = [];
     this.StateModifiers = [];
@@ -60,13 +62,13 @@ class ActiveBuffInternal {
       this.BuffPool.push(t);
     }
   }
-  AU(t, i, e, s, h, r, f, a, n, o, u) {
+  AU(t, i, e, s, h, r, f, a, n, u, o) {
     this.TAe = t;
     this.tQo = i;
     this.InstigatorIdInternal = e ?? ActiveBuffConfigs_1.NULL_INSTIGATOR_ID;
     this.oQo = s;
     this.iQo = s?.GetDebugName() ?? "unknown";
-    this.f5l = u === Protocol_1.Aki.Protocol.uFs.Proto_Common && s.NeedCheck(t);
+    this.f5l = o === Protocol_1.Aki.Protocol.uFs.Proto_Common && s.NeedCheck(t);
     this.rQo = h;
     this.MessageId = f ?? ModelManager_1.ModelManager.CombatMessageModel.GenMessageId();
     this.PreMessageId = r;
@@ -74,7 +76,9 @@ class ActiveBuffInternal {
     this.StackCountInternal = n;
     this.mQo = false;
     this.hQo = false;
-    this.SetDuration(o);
+    this.StackLimitCount = t.StackLimitCount;
+    this.Hnf = this.GetCurrentTime();
+    this.SetDuration(u);
     this.SetPeriod();
     if (this.IsInstantBuff()) {
       for (const l of this.Config.Modifiers) {
@@ -92,7 +96,7 @@ class ActiveBuffInternal {
   }
   Destroy() {
     if (this.IsActive()) {
-      const i = this.GetOwnerBuffComponent()?.GetExactEntity()?.CheckGetComponent(209);
+      const i = this.GetOwnerBuffComponent()?.GetExactEntity()?.CheckGetComponent(215);
       if (i?.Valid) {
         this.Config.GrantedTags?.forEach(t => {
           i.TagContainer.UpdateExactTag(2, t, -this.StackCount);
@@ -136,7 +140,7 @@ class ActiveBuffInternal {
   }
   GetInstigatorBuffComponent() {
     if (this.InstigatorId) {
-      return ModelManager_1.ModelManager.CreatureModel?.GetEntity(this.InstigatorId)?.Entity?.GetComponent(178);
+      return ModelManager_1.ModelManager.CreatureModel?.GetEntity(this.InstigatorId)?.Entity?.GetComponent(183);
     }
   }
   GetInstigatorActorComponent() {
@@ -146,11 +150,11 @@ class ActiveBuffInternal {
   }
   GetInstigatorAttributeSet() {
     if (this.InstigatorId) {
-      return ModelManager_1.ModelManager.CreatureModel?.GetEntity(this.InstigatorId)?.Entity?.GetComponent(177);
+      return ModelManager_1.ModelManager.CreatureModel?.GetEntity(this.InstigatorId)?.Entity?.GetComponent(182);
     }
   }
   GetOwnerAttributeSet() {
-    return this.oQo?.GetEntity()?.GetComponent(177);
+    return this.oQo?.GetEntity()?.GetComponent(182);
   }
   get Id() {
     return this.Config.Id ?? ActiveBuffConfigs_1.NULL_BUFF_ID;
@@ -212,6 +216,9 @@ class ActiveBuffInternal {
         this.DurationTimer = t >= TimerSystem_1.MIN_TIME ? TimerSystem_1.TimerSystem.Delay(this.DurationCallback.bind(this), t, i, undefined, false) : TimerSystem_1.TimerSystem.Next(this.DurationCallback.bind(this), i);
       }
     }
+  }
+  get CreateTimestamp() {
+    return this.Hnf;
   }
   GetCurrentTime() {
     return Time_1.Time.Now;
@@ -352,7 +359,7 @@ class ActiveBuffInternal {
       return false;
     }
     this.mQo = t;
-    const i = this.GetOwnerBuffComponent()?.GetExactEntity()?.CheckGetComponent(209);
+    const i = this.GetOwnerBuffComponent()?.GetExactEntity()?.CheckGetComponent(215);
     if (!i) {
       CombatLog_1.CombatLog.Error("Buff", this.GetOwner(), "buff更改激活状态时无法获取到持有者", ["handle", this.Handle], ["buffId", this.Id], ["持有者", this.oQo?.GetDebugName()]);
       return false;
@@ -394,7 +401,7 @@ class ActiveBuffInternal {
     var e = this.Config;
     const s = this.StackCountInternal;
     this.StackCountInternal = i;
-    const h = this.GetOwnerBuffComponent()?.GetExactEntity()?.CheckGetComponent(209);
+    const h = this.GetOwnerBuffComponent()?.GetExactEntity()?.CheckGetComponent(215);
     if (h) {
       if (t === 0 && e.StackPeriodResetPolicy === 0) {
         this.SetPeriod();
@@ -417,7 +424,7 @@ class ActiveBuffInternal {
   ClearModifiers() {
     ActiveBuffInternal.y__.Start();
     this.StateModifiers.length = 0;
-    var t = this.GetOwner()?.GetComponent(176);
+    var t = this.GetOwner()?.GetComponent(181);
     if (this.dQo.length > 0 && t) {
       for (const i of this.dQo) {
         t.RemoveModifier(i[0], i[1]);
@@ -463,7 +470,7 @@ class ActiveBuffInternal {
   p__(i) {
     ActiveBuffInternal.E__.Start();
     var e = this.StackCountInternal ?? 1;
-    var s = this.GetOwner()?.GetComponent(176);
+    var s = this.GetOwner()?.GetComponent(181);
     if (s) {
       let t = 0;
       var h = i.AttributeId;
@@ -481,10 +488,10 @@ class ActiveBuffInternal {
         case 2:
         case 4:
         case 9:
-          var [a, n, o, u, c, l, _, v] = i.CalculationPolicy;
-          var A = o === 1 ? this.GetInstigatorAttributeSet() : this.GetOwnerAttributeSet();
-          var o = o === 1 ? this.InstigatorId : 0;
-          if (!A || o === undefined) {
+          var [a, n, u, o, c, l, _, v] = i.CalculationPolicy;
+          var A = u === 1 ? this.GetInstigatorAttributeSet() : this.GetOwnerAttributeSet();
+          var u = u === 1 ? this.InstigatorId : 0;
+          if (!A || u === undefined) {
             CombatLog_1.CombatLog.Error("Buff", this.GetOwner(), "持续型buff设置属性modifier时缺少来源", ["buffId", this.Id], ["handle", this.Handle], ["持有者", this.oQo?.GetDebugName()], ["施加者", this.InstigatorId], ["attrId", h]);
             ActiveBuffInternal.E__.Stop();
             return;
@@ -493,10 +500,10 @@ class ActiveBuffInternal {
             Type: a,
             Value1: r * e,
             Value2: f * e,
-            SourceEntity: o,
+            SourceEntity: u,
             SourceAttributeId: n,
-            SourceCalculationType: u,
-            SnapshotSource: c ? AbilityUtils_1.AbilityUtils.GetAttrValue(A, n, u) : undefined,
+            SourceCalculationType: o,
+            SnapshotSource: c ? AbilityUtils_1.AbilityUtils.GetAttrValue(A, n, o) : undefined,
             Min: l,
             Ratio: _,
             Max: v
@@ -517,22 +524,22 @@ class ActiveBuffInternal {
     var a = i.AttributeId;
     if (CharacterAttributeTypes_1.stateAttributeIds.has(a)) {
       var n = AbilityUtils_1.AbilityUtils.GetLevelValue(i.Value1, s, 0);
-      var o = AbilityUtils_1.AbilityUtils.GetLevelValue(i.Value2, s, 0);
+      var u = AbilityUtils_1.AbilityUtils.GetLevelValue(i.Value2, s, 0);
       switch (i.CalculationPolicy[0]) {
         case 0:
           e.AddBaseValue(a, n * r);
           ActiveBuffInternal.I__.Stop();
           return;
         case 1:
-          var u = e.GetBaseValue(a);
+          var o = e.GetBaseValue(a);
           var c = n * CharacterAttributeTypes_1.DIVIDED_TEN_THOUSAND * r + 1;
-          e.SetBaseValue(a, u * c);
+          e.SetBaseValue(a, o * c);
           ActiveBuffInternal.I__.Stop();
           return;
         case 2:
         case 4:
         case 9:
-          var [u, c, l, _,, v, A, B] = i.CalculationPolicy;
+          var [o, c, l, _,, v, A, m] = i.CalculationPolicy;
           var l = l === 1 ? t : e;
           if (l) {
             let i = f ?? AbilityUtils_1.AbilityUtils.GetAttrValue(l, c, _);
@@ -540,15 +547,15 @@ class ActiveBuffInternal {
               if (A) {
                 i /= A;
               }
-              if (u === 9) {
+              if (o === 9) {
                 l = e.GetBaseValue(a);
                 e.AddBaseValue(a, n * CharacterAttributeTypes_1.DIVIDED_TEN_THOUSAND * i * CharacterAttributeTypes_1.DIVIDED_TEN_THOUSAND * l * r);
               } else {
-                let t = n * CharacterAttributeTypes_1.DIVIDED_TEN_THOUSAND * i + o;
-                if (B && t > B) {
-                  t = B;
+                let t = n * CharacterAttributeTypes_1.DIVIDED_TEN_THOUSAND * i + u;
+                if (m && t > m) {
+                  t = m;
                 }
-                if (u === 2) {
+                if (o === 2) {
                   e.AddBaseValue(a, t * r);
                 } else {
                   e.SetBaseValue(a, t);
@@ -571,7 +578,7 @@ class ActiveBuffInternal {
         case 6:
           var [, c] = i.CalculationPolicy;
           var _ = f ?? AbilityUtils_1.AbilityUtils.GetAttrValue(e, c, 0);
-          e.AddBaseValue(a, (n * CharacterAttributeTypes_1.DIVIDED_TEN_THOUSAND * _ + o) * h * r);
+          e.AddBaseValue(a, (n * CharacterAttributeTypes_1.DIVIDED_TEN_THOUSAND * _ + u) * h * r);
       }
     }
     ActiveBuffInternal.I__.Stop();

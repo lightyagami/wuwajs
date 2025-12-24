@@ -18,7 +18,7 @@ class KeySettingRowData {
     this.IsExpandDetail = false;
     this.bPi = "";
     this.qPi = "";
-    this.Hdm = new Set();
+    this.Ipm = new Set();
     this.IsActionOrAxis = true;
     this.ActionBinding = undefined;
     this.AxisBinding = undefined;
@@ -45,6 +45,7 @@ class KeySettingRowData {
     this.IsCheckSameKey = true;
     this.ButtonTextId = undefined;
     this.CanDisable = false;
+    this.BindingType = 0;
   }
   get KPi() {
     if (this.W_1 === "") {
@@ -99,6 +100,7 @@ class KeySettingRowData {
     this.W_1 = t.AllowKeysPool;
     this.Q_1 = t.AllowMainKeysPool;
     this.K_1 = t.AllowSecondKeysPool;
+    this.BindingType = InputSettingsManager_1.InputSettingsManager.GetBindTypeByExclusiveType(t.ExclusiveType);
     if (this.BothActionName && this.BothActionName.length === 2) {
       t = this.BothActionName[0];
       i = this.BothActionName[1];
@@ -110,15 +112,15 @@ class KeySettingRowData {
       this.CombinationAxisBinding = InputSettingsManager_1.InputSettingsManager.GetCombinationAxisBindingByAxisName(this.qPi);
       this.AxisBinding = InputSettingsManager_1.InputSettingsManager.GetAxisBinding(this.qPi);
     }
-    this.$dm();
+    this.Tpm();
   }
-  $dm() {
-    this.Hdm.clear();
+  Tpm() {
+    this.Ipm.clear();
     if (InputSettingsManager_1.InputSettingsManager.IsOriginalCombinationActionName(this.qPi, 1)) {
-      this.Hdm.add(1);
+      this.Ipm.add(1);
     }
     if (InputSettingsManager_1.InputSettingsManager.IsOriginalCombinationActionName(this.qPi, 2)) {
-      this.Hdm.add(2);
+      this.Ipm.add(2);
     }
   }
   FindCombinationActionBinding() {
@@ -152,8 +154,8 @@ class KeySettingRowData {
   }
   GetBothActionKeyName(t, i, s) {
     if (t && i) {
-      t.GetKeyNameList(t = []);
-      i.GetKeyNameList(i = []);
+      t.GetKeyNameListByBindingType(t = [], this.BindingType);
+      i.GetKeyNameListByBindingType(i = [], this.BindingType);
       return [t[this.GetKeyIndex(s)], i[this.GetKeyIndex(s)]];
     }
   }
@@ -215,7 +217,7 @@ class KeySettingRowData {
   }
   zPi(t) {
     var i;
-    return !!this.ActionBinding && (t = this.GetKeyIndex(t), this.ActionBinding.GetKeyNameList(i = []), !!(i = i[t])) && InputSettings_1.InputSettings.IsValidKey(i);
+    return !!this.ActionBinding && (t = this.GetKeyIndex(t), this.ActionBinding.GetKeyNameListByBindingType(i = [], this.BindingType), !!(i = i[t])) && InputSettings_1.InputSettings.IsValidKey(i);
   }
   IsCombination(t) {
     if (this.IsActionOrAxis) {
@@ -223,17 +225,17 @@ class KeySettingRowData {
       if ((i || this.zPi(t)) && i) {
         switch (t) {
           case 1:
-            return i.HasKeyboardCombinationAction();
+            return i.HasKeyboardCombinationAction(this.BindingType);
           case 2:
-            return i.HasGamepadCombinationAction();
+            return i.HasGamepadCombinationActionByBindingType(this.BindingType);
         }
       }
     } else if (this.CombinationAxisBinding) {
       switch (t) {
         case 1:
-          return this.CombinationAxisBinding.HasKeyboardCombinationAxis();
+          return this.CombinationAxisBinding.HasKeyboardCombinationAxis(this.BindingType);
         case 2:
-          return this.CombinationAxisBinding.HasGamepadCombinationAxis();
+          return this.CombinationAxisBinding.HasGamepadCombinationAxis(this.BindingType);
       }
     }
     return false;
@@ -245,10 +247,10 @@ class KeySettingRowData {
       var e = new Map();
       switch (t) {
         case 1:
-          this.FindCombinationActionBinding()?.GetPcKeyNameMap(e);
+          this.FindCombinationActionBinding()?.GetPcKeyNameMap(e, this.BindingType);
           break;
         case 2:
-          this.FindCombinationActionBinding()?.GetGamepadKeyNameMap(e);
+          this.FindCombinationActionBinding()?.GetGamepadKeyNameMapByBindingType(e, this.BindingType);
           break;
         default:
           return;
@@ -260,7 +262,7 @@ class KeySettingRowData {
       }
     } else if (this.ActionBinding) {
       var h = [];
-      this.ActionBinding?.GetKeyNameList(h);
+      this.ActionBinding?.GetKeyNameListByBindingType(h, this.BindingType);
       if (!(h.length <= 0)) {
         switch (t) {
           case 1:
@@ -280,10 +282,10 @@ class KeySettingRowData {
       var e = new Map();
       switch (t) {
         case 1:
-          this.CombinationAxisBinding?.GetPcKeyNameMap(e);
+          this.CombinationAxisBinding?.GetPcKeyNameMap(e, this.BindingType);
           break;
         case 2:
-          this.CombinationAxisBinding?.GetGamepadKeyNameMap(e);
+          this.CombinationAxisBinding?.GetGamepadKeyNameMap(e, this.BindingType);
           break;
         default:
           return;
@@ -301,7 +303,7 @@ class KeySettingRowData {
     }
   }
   yWa(t) {
-    var i = this.AxisBinding?.GetInputAxisKeyMap();
+    var i = this.AxisBinding?.GetInputAxisKeyMap(this.BindingType);
     if (i) {
       for (var [s, e] of i) {
         var h = e.GetKey();
@@ -328,12 +330,12 @@ class KeySettingRowData {
     var i;
     var s;
     var e;
-    if (this.OneActionBinding && this.TwoActionBinding && (s = [], this.OneActionBinding.GetKeyNameList(i = []), this.TwoActionBinding.GetKeyNameList(s), i) && s) {
+    if (this.OneActionBinding && this.TwoActionBinding && (s = [], this.OneActionBinding.GetKeyNameListByBindingType(i = [], this.BindingType), this.TwoActionBinding.GetKeyNameListByBindingType(s, this.BindingType), i) && s) {
       e = s[t = this.GetKeyIndex(t)];
       s[t] = i[t];
       i[t] = e;
-      this.OneActionBinding.SetKeys(i);
-      this.TwoActionBinding.SetKeys(s);
+      this.OneActionBinding.SetKeys(i, this.BindingType);
+      this.TwoActionBinding.SetKeys(s, this.BindingType);
     }
   }
   IsBothAction() {
@@ -342,9 +344,9 @@ class KeySettingRowData {
   ZPi(t, i) {
     var s;
     if (this.ActionBinding) {
-      this.ActionBinding.GetKeyNameList(s = []);
+      this.ActionBinding.GetKeyNameListByBindingType(s = [], this.BindingType);
       s[t] = this.EWa(i);
-      this.ActionBinding.SetKeys(s);
+      this.ActionBinding.SetKeys(s, this.BindingType);
     }
   }
   EWa(t) {
@@ -361,11 +363,11 @@ class KeySettingRowData {
     var i;
     var s;
     var e;
-    if (this.AxisBinding && this.AxisBinding.GetInputAxisKeyMap() && (e = this.yWa(t)) && (s = (i = this.GetAxisKeyScaleMap()).get(e)) !== undefined) {
+    if (this.AxisBinding && this.AxisBinding.GetInputAxisKeyMap(this.BindingType) && (e = this.yWa(t)) && (s = (i = this.GetAxisKeyScaleMap()).get(e)) !== undefined) {
       i.delete(e);
       e = this.EWa(t);
       i.set(e, s);
-      this.AxisBinding.SetKeys(i);
+      this.AxisBinding.SetKeys(i, this.BindingType);
     }
   }
   exi(i, s) {
@@ -389,6 +391,21 @@ class KeySettingRowData {
       }
     }
   }
+  ConvertKeyToActionOrAxis(t) {
+    if (this.IsActionOrAxis && t === "Gamepad_LeftTriggerAxis") {
+      return "Gamepad_LeftTrigger";
+    } else if (this.IsActionOrAxis && t === "Gamepad_RightTriggerAxis") {
+      return "Gamepad_RightTrigger";
+    } else if (this.IsActionOrAxis || t !== "Gamepad_LeftTrigger") {
+      if (this.IsActionOrAxis || t !== "Gamepad_RightTrigger") {
+        return t;
+      } else {
+        return "Gamepad_RightTriggerAxis";
+      }
+    } else {
+      return "Gamepad_LeftTriggerAxis";
+    }
+  }
   txi(t, i) {
     if (!t || t.length <= 0) {
       if (this.ActionBinding) {
@@ -400,24 +417,24 @@ class KeySettingRowData {
       var s = this.GetCurrentKeyName(i);
       if (!s || s[0] !== t[0] || s[1] !== t[1]) {
         if (s && s.length > 1) {
-          InputSettingsManager_1.InputSettingsManager.RemoveCombinationActionKeyMap(this.qPi, s[0], s[1]);
+          InputSettingsManager_1.InputSettingsManager.RemoveCombinationActionKeyMap(this.qPi, s[0], s[1], this.BindingType);
         }
         if (t.length !== 1 && this.CanCombination) {
           if (t.length > 1) {
-            InputSettingsManager_1.InputSettingsManager.AddCombinationActionKeyMap(this.qPi, t[0], t[1]);
+            InputSettingsManager_1.InputSettingsManager.AddCombinationActionKeyMap(this.qPi, this.ConvertKeyToActionOrAxis(t[0]), t[1], this.BindingType);
             s = this.GetKeyIndex(i);
             this.ZPi(s, i);
           }
         } else {
-          var s = t[0];
+          var s = this.ConvertKeyToActionOrAxis(t[0]);
           var e = this.GetKeyIndex(i);
           if (this.ActionBinding) {
             const t = [];
-            this.ActionBinding.GetKeyNameList(t);
+            this.ActionBinding.GetKeyNameListByBindingType(t, this.BindingType);
             if (t) {
               t[e] = s;
               this.exi(t, i);
-              this.ActionBinding.SetKeys(t);
+              this.ActionBinding.SetKeys(t, this.BindingType);
               return true;
             } else {
               return false;
@@ -432,7 +449,7 @@ class KeySettingRowData {
     var i;
     if (this.IsCombination(t)) {
       if ((i = this.GetCurrentKeyName(t)).length > 1) {
-        InputSettingsManager_1.InputSettingsManager.RemoveCombinationActionKeyMap(this.qPi, i[0], i[1]);
+        InputSettingsManager_1.InputSettingsManager.RemoveCombinationActionKeyMap(this.qPi, i[0], i[1], this.BindingType);
       }
     } else if (this.ActionBinding) {
       i = this.GetKeyIndex(t);
@@ -445,7 +462,7 @@ class KeySettingRowData {
     }
     if (!s && this.AxisBinding) {
       const a = new Map();
-      this.AxisBinding.SetKeys(a);
+      this.AxisBinding.SetKeys(a, this.BindingType);
     } else {
       let t = undefined;
       let i = undefined;
@@ -469,9 +486,9 @@ class KeySettingRowData {
         a.delete(t);
       }
       if (i && s) {
-        a.set(s, i);
+        a.set(this.ConvertKeyToActionOrAxis(s), i);
       }
-      this.AxisBinding.SetKeys(a);
+      this.AxisBinding.SetKeys(a, this.BindingType);
     }
     return true;
   }
@@ -480,13 +497,13 @@ class KeySettingRowData {
       this.IWa(t);
     }
   }
-  SetAxisBindingKeys(t) {
-    this.AxisBinding?.SetKeys(t);
+  SetAxisBindingKeys(t, i) {
+    this.AxisBinding?.SetKeys(t, i);
   }
   GetAxisKeyScaleMap() {
     var t = new Map();
     if (this.AxisBinding) {
-      var i = this.AxisBinding.GetInputAxisKeyMap();
+      var i = this.AxisBinding.GetInputAxisKeyMap(this.BindingType);
       if (i) {
         for (var [s, e] of i) {
           t.set(s, e.Scale);
@@ -526,28 +543,31 @@ class KeySettingRowData {
     let e = false;
     return e = !this.XPi || this.XPi.length <= 0 || this.XPi.includes(i);
   }
+  W5f(t, i) {
+    return !!t && !!i && (t === i || !!t.includes("Gamepad_LeftTrigger") && !!i.includes("Gamepad_LeftTrigger") || !!t.includes("Gamepad_RightTrigger") && !!i.includes("Gamepad_RightTrigger"));
+  }
   HasKey(t, i) {
     if (t.length > 1) {
       if (this.IsCombination(i)) {
         var s = this.FindCombinationActionBinding();
         if (s) {
-          return s.HasKey(t[0], t[1]);
+          return s.HasKey(t[0], t[1], this.BindingType);
         }
         if (this.CombinationAxisBinding) {
-          return this.CombinationAxisBinding.HasKey(t[0], t[1]);
+          return this.CombinationAxisBinding.HasKey(t[0], t[1], this.BindingType);
         }
       }
     } else {
       var e = t[0];
       if (this.ActionBinding) {
         s = this.GetKeyIndex(i);
-        this.ActionBinding.GetKeyNameList(t = []);
-        return t[s] === e;
+        this.ActionBinding.GetKeyNameListByBindingType(t = [], this.BindingType);
+        return this.W5f(t[s], e);
       }
       if (this.AxisBinding) {
         t = this.GetKeyScale(i);
-        for (const h of this.AxisBinding.GetKey(t)) {
-          if (h.KeyName === e) {
+        for (const h of this.AxisBinding.GetKey(t, this.BindingType)) {
+          if (this.W5f(h.KeyName, e)) {
             return true;
           }
         }
@@ -559,18 +579,22 @@ class KeySettingRowData {
     return this.qPi;
   }
   ResetKey(t) {
+    var i;
+    var s;
     if (this.qPi) {
       if (this.BothActionName && this.BothActionName.length === 2) {
-        InputSettingsManager_1.InputSettingsManager.ResetActionKeyByName(this.BothActionName[0]);
-        InputSettingsManager_1.InputSettingsManager.ResetActionKeyByName(this.BothActionName[1]);
-      } else if (this.IsCombination(t) || this.Hdm.has(t)) {
-        if (this.IsActionOrAxis) {
-          InputSettingsManager_1.InputSettingsManager.ResetCombinationActionKeyByName(this.qPi, t);
-        }
-      } else if (this.IsActionOrAxis) {
-        InputSettingsManager_1.InputSettingsManager.ResetActionKeyByName(this.qPi);
+        InputSettingsManager_1.InputSettingsManager.ResetActionKeyByName(this.BothActionName[0], this.BindingType);
+        InputSettingsManager_1.InputSettingsManager.ResetActionKeyByName(this.BothActionName[1], this.BindingType);
       } else {
-        InputSettingsManager_1.InputSettingsManager.ResetAxisKeyByName(this.qPi);
+        i = this.IsCombination(t);
+        s = this.Ipm.has(t);
+        if (!i && !s || !(this.IsActionOrAxis && InputSettingsManager_1.InputSettingsManager.ResetCombinationActionKeyByName(this.qPi, t, this.BindingType), i === s)) {
+          if (this.IsActionOrAxis) {
+            InputSettingsManager_1.InputSettingsManager.ResetActionKeyByName(this.qPi, this.BindingType);
+          } else {
+            InputSettingsManager_1.InputSettingsManager.ResetAxisKeyByName(this.qPi, this.BindingType);
+          }
+        }
       }
     }
   }

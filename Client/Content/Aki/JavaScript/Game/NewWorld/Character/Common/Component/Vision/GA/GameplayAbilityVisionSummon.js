@@ -10,6 +10,7 @@ const TimerSystem_1 = require("../../../../../../../Core/Timer/TimerSystem");
 const MathUtils_1 = require("../../../../../../../Core/Utils/MathUtils");
 const EventDefine_1 = require("../../../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../../../Common/Event/EventSystem");
+const ControllerHolder_1 = require("../../../../../../Manager/ControllerHolder");
 const PhantomUtil_1 = require("../../../../../../Module/Phantom/PhantomUtil");
 const BulletController_1 = require("../../../../../Bullet/BulletController");
 const RoleAudioController_1 = require("../../../../Role/RoleAudioController");
@@ -66,7 +67,7 @@ class GameplayAbilityVisionSummon extends GameplayAbilityVisionBase_1.GameplayAb
       });
     }
     let t = undefined;
-    var i = this.Entity.GetComponent(40);
+    var i = this.Entity.GetComponent(41);
     if (i?.Valid) {
       for (const s of i.GetAllActivatedSkill()) {
         if (s.SkillInfo?.SkillGenre === 9) {
@@ -87,7 +88,7 @@ class GameplayAbilityVisionSummon extends GameplayAbilityVisionBase_1.GameplayAb
   }
   HZo() {
     this.MZo = PhantomUtil_1.PhantomUtil.GetSummonedEntity(this.VisionComponent.Entity, Protocol_1.Aki.Protocol.Summon.x3s.Proto_ESummonTypeConcomitantVision);
-    return !!this.MZo.IsInit && !this.MZo.Entity.Active && (this.oMt = PhantomUtil_1.PhantomUtil.GetVisionData(this.VisionComponent.GetVisionId()), this.OZo = this.MZo.Entity.GetComponent(3), this.kZo = this.MZo.Entity.GetComponent(40), this.aer = this.MZo.Entity.GetComponent(209), this.KZo = this.MZo.Entity.GetComponent(178), this.fAr = this.MZo.Entity.GetComponent(21), true);
+    return !!this.MZo.IsInit && !this.MZo.Entity.Active && (this.oMt = PhantomUtil_1.PhantomUtil.GetVisionData(this.VisionComponent.GetVisionId()), this.OZo = this.MZo.Entity.GetComponent(3), this.kZo = this.MZo.Entity.GetComponent(41), this.aer = this.MZo.Entity.GetComponent(215), this.KZo = this.MZo.Entity.GetComponent(183), this.fAr = this.MZo.Entity.GetComponent(21), true);
   }
   her() {
     return this.oMt.空中能否释放 && this.GameplayTagComponent.HasTag(40422668);
@@ -97,7 +98,7 @@ class GameplayAbilityVisionSummon extends GameplayAbilityVisionBase_1.GameplayAb
     this.MoveComponent.GravityUp.Multiply(this.OZo.ScaledHalfHeight, t);
     this.OZo.SetActorLocationAndRotation(i.op_Addition(t.ToUeVector()), this.ActorComponent.ActorRotation, "召唤幻象生成位置");
     this.pAr = true;
-    PhantomUtil_1.PhantomUtil.SetVisionEnable(this.VisionComponent.Entity, true, "GameplayAbilityVisionSummon.SetVisionEnable");
+    this.SetVisionEnable(true);
     this.GameplayTagComponent.AddTag(GameplayAbilityVisionMisc_1.summonTag);
     this.MAr ||= this.GameplayTagComponent.ListenForTagAddOrRemove(GameplayAbilityVisionMisc_1.summonTag, (i, t) => {
       if (!t) {
@@ -159,10 +160,14 @@ class GameplayAbilityVisionSummon extends GameplayAbilityVisionBase_1.GameplayAb
     if (this.MZo?.Valid) {
       BulletController_1.BulletController.CreateBulletCustomTarget(this.MZo.Entity, GameplayAbilityVisionMisc_1.VISION_END_BULLET, undefined);
       this.pAr = false;
-      PhantomUtil_1.PhantomUtil.SetVisionEnable(this.VisionComponent.Entity, false, "GameplayAbilityVisionSummon.SetVisionEnable");
+      this.SetVisionEnable(false);
       this.fAr?.RemoveCueByHandle(this.kQo);
     }
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.EndVisionSkill, this.VisionComponent.GetVisionId());
+  }
+  SetVisionEnable(i) {
+    ControllerHolder_1.ControllerHolder.CreatureController.SetEntityEnable(this.MZo.Entity, i, "GameplayAbilityVisionSummon.SetVisionEnable", true);
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPhantomEnableStateChange, i);
   }
 }
 exports.GameplayAbilityVisionSummon = GameplayAbilityVisionSummon;

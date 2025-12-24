@@ -95,7 +95,7 @@ class BaseMoveCharacter {
   Init(t) {
     this.Jh = t;
     this.Hte = this.Jh.GetComponent(3);
-    this.rJo = this.Jh.GetComponent(104);
+    this.rJo = this.Jh.GetComponent(109);
     this.wDe = this.Hte.CreatureData.GetPbDataId();
     this.fJo = [];
     this.Ero = false;
@@ -364,7 +364,7 @@ class BaseMoveCharacter {
     }
   }
   BJo() {
-    var t = this.Hte.Entity.GetComponent(68);
+    var t = this.Hte.Entity.GetComponent(71);
     var i = t.GetCurrentMoveSample();
     i.P5n = this.Hte.ActorLocationProxy;
     t.PendingMoveInfos.push(i);
@@ -405,7 +405,7 @@ class BaseMoveCharacter {
   yJo() {
     var t;
     var i;
-    if (this.MJo.TargetPoint && (i = this.Jh.GetComponent(45))) {
+    if (this.MJo.TargetPoint && (i = this.Jh.GetComponent(46))) {
       t = this.MJo.TargetPoint.MoveSpeed;
       if (this.sJo) {
         this.Hte?.Actor.KuroSetMovementMode({
@@ -429,7 +429,7 @@ class BaseMoveCharacter {
     }
   }
   Iac(t) {
-    if (this.Hte?.IsRoleAndCtrlByMe && (0, RegisterComponent_1.isComponentInstance)(this.rJo, 179)) {
+    if (this.Hte?.IsRoleAndCtrlByMe && (0, RegisterComponent_1.isComponentInstance)(this.rJo, 184)) {
       this.rJo.MarkWalkOrRun(t === CharacterUnifiedStateTypes_1.ECharMoveState.Walk);
       this.Eac = t === CharacterUnifiedStateTypes_1.ECharMoveState.Walk;
     }

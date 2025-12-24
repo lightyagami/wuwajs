@@ -277,7 +277,7 @@ class BattleWeeklyRogueButton extends FormationExtraButton_1.FormationExtraButto
       this.mNu();
       this.uJu();
       if (t) {
-        ControllerHolder_1.ControllerHolder.HudUnitController.TryCreateHud(7);
+        ControllerHolder_1.ControllerHolder.HudUnitController.TryCreateHud(8);
       }
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WeeklyRogueBurstEnableChange, this.nNu);
     }

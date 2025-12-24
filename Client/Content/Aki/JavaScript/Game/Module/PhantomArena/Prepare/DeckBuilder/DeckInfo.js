@@ -13,155 +13,183 @@ class DeckInfo {
     this.eP1 = "";
     this.BV1 = false;
     this.zTu = 0;
+    this.sGm = undefined;
     this.tP1 = [];
     this.iP1 = new Map();
     this.kV1 = new Map();
     this.Mbu = new Map();
     this.rP1 = [];
     this.JTu = undefined;
+    this.zQm = undefined;
     this.Sbu = new Map();
     this.ZTu = 0;
+    this.aGm = 0;
+    this.JQm = 0;
     this.sP1 = 0;
     this.aP1 = 0;
     this.OV1 = 0;
     this.ebu = 0;
+    this.hGm = 0;
+    this.ZQm = 0;
     this.GV1 = 0;
     this.tbu = false;
+    this.eKm = 0;
+    this.tKm = 0;
   }
   DeepCopy() {
     var t;
-    var e;
-    var i = new DeckInfo();
-    i.L81 = this.L81;
-    i.w81 = this.w81;
-    i.eP1 = this.eP1;
-    i.BV1 = this.BV1;
-    i.OV1 = this.OV1;
-    i.ebu = this.ebu;
-    i.GV1 = this.GV1;
-    i.tbu = this.tbu;
-    i.zTu = this.zTu;
-    for ([t, e] of this.Sbu) {
-      i.Sbu.set(t, e);
+    var i;
+    var s = new DeckInfo();
+    s.L81 = this.L81;
+    s.w81 = this.w81;
+    s.eP1 = this.eP1;
+    s.BV1 = this.BV1;
+    s.sGm = this.sGm;
+    s.OV1 = this.OV1;
+    s.ebu = this.ebu;
+    s.hGm = this.hGm;
+    s.ZQm = this.ZQm;
+    s.GV1 = this.GV1;
+    s.tbu = this.tbu;
+    s.zTu = this.zTu;
+    for ([t, i] of this.Sbu) {
+      s.Sbu.set(t, i);
     }
     for (const r of this.tP1) {
-      var s = i.AddCard({
+      var e = s.AddCard({
         CardId: r.CardId,
         Cost: r.Cost,
         Element: r.Element,
         MaxCount: r.Count,
-        AddCount: r.Count
+        AddCount: r.Count,
+        CardType: r.CardType
       });
-      if (s !== 0 && Log_1.Log.CheckError()) {
-        Log_1.Log.Error("PhantomArena", 43, "卡组信息深拷贝失败", ["Result", s], ["CardId", r.CardId]);
+      if (e !== 0 && Log_1.Log.CheckError()) {
+        Log_1.Log.Error("PhantomArena", 43, "卡组信息深拷贝失败", ["Result", e], ["CardId", r.CardId]);
       }
     }
-    return i;
+    return s;
   }
   CheckCanAddCard(t) {
-    var e;
     var i;
-    var s = t.AddCount;
-    if (s === 0) {
-      return 9;
-    } else if ((i = t.Cost === this.zTu) && this.tbu) {
+    var s;
+    var e = t.AddCount;
+    if (e === 0) {
+      return 11;
+    } else if ((s = t.Cost === this.zTu) && this.tbu) {
       return 1;
-    } else if (i && s + this.ZTu > this.ebu) {
+    } else if (s && e + this.ZTu > this.ebu) {
       return 2;
-    } else if (!i && s + this.sP1 > this.OV1) {
+    } else if ((i = t.CardType === 3) && e + this.aGm > this.hGm) {
+      return 3;
+    } else if (t.CardType === 2 && e + this.JQm > this.ZQm) {
       return 4;
+    } else if (!s && !i && e + this.sP1 > this.OV1) {
+      return 6;
     } else if (this.CheckCanAddElement(t.Element)) {
-      e = (e = this.iP1.get(t.CardId)) ? e.Count : 0;
-      if (t.MaxCount < e + s) {
-        if (i) {
-          return 3;
-        } else {
+      i = (i = this.iP1.get(t.CardId)) ? i.Count : 0;
+      if (t.MaxCount < i + e) {
+        if (s) {
           return 5;
+        } else {
+          return 7;
         }
       } else {
-        e = this.GetCardMaxLimitByCost(t.Cost);
-        i = this.GetCardCountByCost(t.Cost);
-        if (e > 0 && e < i + s) {
+        i = this.GetCardMaxLimitByCost(t.Cost);
+        s = this.GetCardCountByCost(t.Cost);
+        if (i > 0 && i < s + e) {
           if (t.Cost === 3) {
-            return 7;
+            return 9;
           } else {
-            return 8;
+            return 10;
           }
         } else {
           return 0;
         }
       }
     } else {
-      return 6;
+      return 8;
     }
   }
-  AddCard(e) {
-    var t = this.CheckCanAddCard(e);
+  AddCard(i) {
+    var t = this.CheckCanAddCard(i);
     if (t === 0) {
-      var i;
-      var s = e.AddCount;
-      var r = e.Cost === this.zTu;
-      let t = this.iP1.get(e.CardId);
+      var s;
+      var e = i.AddCount;
+      var r = i.Cost === this.zTu;
+      var h = i.CardType === 3;
+      var o = i.CardType === 2;
+      let t = this.iP1.get(i.CardId);
       if (t) {
-        t.Count += s;
+        t.Count += e;
       } else {
-        i = e.CardId;
+        s = i.CardId;
         t = {
-          CardId: i,
-          Cost: e.Cost,
-          Count: s,
-          Element: e.Element
+          CardId: s,
+          Cost: i.Cost,
+          Count: e,
+          Element: i.Element,
+          CardType: i.CardType
         };
-        this.iP1.set(i, t);
+        this.iP1.set(s, t);
         this.tP1.push(t);
         if (r) {
           this.JTu = t;
+        } else if (h) {
+          this.zQm = t;
         } else {
           this.rP1.push(t);
         }
-        if (e.Element !== 0) {
-          (i = this.kV1.get(e.Element) ?? []).push(t);
-          this.kV1.set(e.Element, i);
+        if (i.Element !== 0) {
+          (s = this.kV1.get(i.Element) ?? []).push(t);
+          this.kV1.set(i.Element, s);
         }
       }
       if (r) {
-        this.ZTu += s;
+        this.ZTu += e;
+      } else if (h) {
+        this.aGm += e;
       } else {
-        this.sP1 += s;
+        if (o) {
+          this.JQm += e;
+        }
+        this.sP1 += e;
       }
-      this.Mbu.set(e.Cost, (this.Mbu.get(e.Cost) ?? 0) + s);
-      this.aP1 += s;
+      this.Mbu.set(i.Cost, (this.Mbu.get(i.Cost) ?? 0) + e);
+      this.aP1 += e;
     }
     return t;
   }
   RemoveCard(t) {
-    var e;
     var i;
-    var s = t.CardId;
+    var s;
+    var e;
+    var r;
+    var h = t.CardId;
     var t = t.RemoveCount;
-    var r = this.iP1.get(s);
-    return !!r && !(r.Count < t) && !(e = r.Cost === this.zTu, r.Count -= t, r.Count === 0 && (this.iP1.delete(s), this.tP1.splice(this.tP1.indexOf(r), 1), e ? this.JTu = undefined : this.rP1.splice(this.rP1.indexOf(r), 1), s = r.Element, i = this.kV1.get(s)) && (i.splice(i.indexOf(r), 1), i.length === 0) && this.kV1.delete(s), e ? this.ZTu -= t : this.sP1 -= t, this.Mbu.set(r.Cost, this.Mbu.get(r.Cost) - t), this.aP1 -= t, 0);
+    var o = this.iP1.get(h);
+    return !!o && !(o.Count < t) && !(i = o.Cost === this.zTu, s = o.CardType === 3, e = o.CardType === 2, o.Count -= t, o.Count === 0 && (this.iP1.delete(h), this.tP1.splice(this.tP1.indexOf(o), 1), i ? this.JTu = undefined : s ? this.zQm = undefined : this.rP1.splice(this.rP1.indexOf(o), 1), h = o.Element, r = this.kV1.get(h)) && (r.splice(r.indexOf(o), 1), r.length === 0) && this.kV1.delete(h), i ? this.ZTu -= t : s ? this.aGm -= t : (e && (this.JQm -= t), this.sP1 -= t), this.Mbu.set(o.Cost, this.Mbu.get(o.Cost) - t), this.aP1 -= t, 0);
   }
   RemoveAllCard() {
-    return this.aP1 !== 0 && (this.iP1.clear(), this.tP1.length = 0, this.kV1.clear(), this.rP1.length = 0, this.JTu = undefined, this.ZTu = 0, this.sP1 = 0, this.aP1 = 0, this.Mbu.clear(), true);
+    return this.aP1 !== 0 && (this.iP1.clear(), this.tP1.length = 0, this.kV1.clear(), this.rP1.length = 0, this.JTu = undefined, this.zQm = undefined, this.ZTu = 0, this.aGm = 0, this.JQm = 0, this.sP1 = 0, this.aP1 = 0, this.Mbu.clear(), true);
   }
   RemoveCardByElements(t) {
-    var e;
-    var i = [];
+    var i;
+    var s = [];
     for (const r of this.tP1) {
       if (t.has(r.Element)) {
-        e = {
+        i = {
           CardId: r.CardId,
           RemoveCount: r.Count
         };
-        i.push(e);
+        s.push(i);
       }
     }
-    let s = i.length > 0;
-    for (const h of i) {
-      s = s && this.RemoveCard(h);
+    let e = s.length > 0;
+    for (const h of s) {
+      e = e && this.RemoveCard(h);
     }
-    return s;
+    return e;
   }
   GetCardCount(t) {
     t = this.iP1.get(t);
@@ -174,6 +202,9 @@ class DeckInfo {
   GetCoreCardSlot() {
     return this.JTu;
   }
+  GetFieldCardSlot() {
+    return this.zQm;
+  }
   GetNormalCardSlotList() {
     return this.rP1;
   }
@@ -184,7 +215,7 @@ class DeckInfo {
     return this.eP1;
   }
   GetTotalCardCountLimit() {
-    return this.OV1 + this.ebu;
+    return this.OV1 + this.ebu + this.hGm;
   }
   SetNormalCardCountLimit(t) {
     if (!(t < this.sP1)) {
@@ -202,6 +233,22 @@ class DeckInfo {
   GetCoreCardCountLimit() {
     return this.ebu;
   }
+  SetFieldCardCountLimit(t) {
+    if (!(t < this.aGm)) {
+      this.hGm = t;
+    }
+  }
+  GetFieldCardCountLimit() {
+    return this.hGm;
+  }
+  SetItemCardCountLimit(t) {
+    if (!(t < this.JQm)) {
+      this.ZQm = t;
+    }
+  }
+  GetItemCardCountLimit() {
+    return this.ZQm;
+  }
   SetElementCountLimit(t) {
     if (!(t < this.GV1)) {
       this.GV1 = t;
@@ -217,8 +264,8 @@ class DeckInfo {
     return this.tbu;
   }
   SetCostToMaxCardLimitMap(t) {
-    for (var [e, i] of t) {
-      this.Sbu.set(e, i);
+    for (var [i, s] of t) {
+      this.Sbu.set(i, s);
     }
   }
   GetCostToMaxCardLimitMap() {
@@ -236,24 +283,27 @@ class DeckInfo {
   GetCoreCardCount() {
     return this.ZTu;
   }
+  GetFieldCardCount() {
+    return this.aGm;
+  }
   GetNormalCardCount() {
     return this.sP1;
   }
   GetElementList() {
     var t;
-    var e;
-    var i = [];
-    for ([t, e] of this.kV1) {
-      if (e.length > 0) {
-        i.push(t);
+    var i;
+    var s = [];
+    for ([t, i] of this.kV1) {
+      if (i.length > 0) {
+        s.push(t);
       }
     }
-    return i;
+    return s;
   }
   GetElementSetWithPhysical() {
     var t = new Set();
-    for (const e of this.tP1) {
-      t.add(e.Element);
+    for (const i of this.tP1) {
+      t.add(i.Element);
     }
     return t;
   }
@@ -300,14 +350,20 @@ class DeckInfo {
   GetDeckConfigId() {
     return this.w81;
   }
+  SetFieldCardSkillUnlockInfo(t) {
+    this.sGm = t;
+  }
+  GetFieldCardSkillUnlockInfo() {
+    return this.sGm;
+  }
   CoverToCardIdList() {
-    var e = [];
-    for (const i of this.tP1) {
-      for (let t = 0; t < i.Count; t++) {
-        e.push(i.CardId);
+    var i = [];
+    for (const s of this.tP1) {
+      for (let t = 0; t < s.Count; t++) {
+        i.push(s.CardId);
       }
     }
-    return e;
+    return i;
   }
   GetDeckFaceCardId() {
     if (this.JTu) {
@@ -321,8 +377,8 @@ class DeckInfo {
   }
   Record() {
     var t = new Map();
-    for (const e of this.tP1) {
-      t.set(e.CardId, e.Count);
+    for (const i of this.tP1) {
+      t.set(i.CardId, i.Count);
     }
     return {
       CardMap: t
@@ -332,8 +388,8 @@ class DeckInfo {
     if (this.tP1.length !== t.CardMap.size) {
       return true;
     }
-    for (const e of this.tP1) {
-      if ((t.CardMap.get(e.CardId) ?? 0) !== e.Count) {
+    for (const i of this.tP1) {
+      if ((t.CardMap.get(i.CardId) ?? 0) !== i.Count) {
         return true;
       }
     }
@@ -347,6 +403,25 @@ class DeckInfo {
   }
   GetCardCountByCost(t) {
     return this.Mbu.get(t) ?? 0;
+  }
+  GetCardIdList() {
+    var i = [];
+    for (const s of this.iP1.values()) {
+      for (let t = 0; t < s.Count; t++) {
+        i.push(s.CardId);
+      }
+    }
+    return i;
+  }
+  SetFieldCardConditionProgress(t, i) {
+    this.eKm = t;
+    this.tKm = i;
+  }
+  GetFieldCardConditionCurNum() {
+    return this.eKm;
+  }
+  GetFieldCardConditionTargetNum() {
+    return this.tKm;
   }
 }
 exports.DeckInfo = DeckInfo;

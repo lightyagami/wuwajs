@@ -43,13 +43,16 @@ let BulletActorComponent = class BulletActorComponent extends BaseActorComponent
     var o = t.BulletDataMain;
     this.bjo = o.Base.Shape;
     this.VBr = o.Move.IsLockScale;
-    var o = BulletActorPool_1.BulletActorPool.Get(this.bjo);
+    var e = BulletActorPool_1.BulletActorPool.Get(this.bjo);
     if (GlobalData_1.GlobalData.IsPlayInEditor) {
-      o.ActorLabel = `BulletActor_${this.bjo}_${t.BulletRowName}`;
+      e.ActorLabel = `BulletActor_${this.bjo}_${t.BulletRowName}`;
     }
-    o.EntityId = this.Entity.Id;
-    t.Actor = o;
+    e.EntityId = this.Entity.Id;
+    t.Actor = e;
     this.ActorInternal = t.Actor;
+    if (o.IsPerformance) {
+      this.ActorInternal.K2_SetDeferedConcurrentUpdateTransform(true);
+    }
     t.ActorComponent = this;
     return super.OnStart();
   }
@@ -70,6 +73,9 @@ let BulletActorComponent = class BulletActorComponent extends BaseActorComponent
         }
       }
       var t = this.Entity?.GetBulletInfo();
+      if (t.BulletDataMain.IsPerformance) {
+        this.ActorInternal.K2_SetDeferedConcurrentUpdateTransform(false);
+      }
       var o = t?.CollisionInfo?.CollisionComponent;
       if (o) {
         if (!t.IsCollisionRelativeLocationZero) {
@@ -111,5 +117,5 @@ let BulletActorComponent = class BulletActorComponent extends BaseActorComponent
     this.ActorInternal.CustomTimeDilation = t;
   }
 };
-BulletActorComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(173)], BulletActorComponent);
+BulletActorComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(178)], BulletActorComponent);
 exports.BulletActorComponent = BulletActorComponent; //# sourceMappingURL=BulletActorComponent.js.map

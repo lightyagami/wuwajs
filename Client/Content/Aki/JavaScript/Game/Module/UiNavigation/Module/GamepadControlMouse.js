@@ -30,8 +30,8 @@ class GamepadControlMouse {
     this.vIa = undefined;
     this.MIa = 0;
     this.SIa = 0;
-    this.wpm = 0;
-    this.Lpm = 0;
+    this.pbm = 0;
+    this.vbm = 0;
     this.EIa = 0;
     this.yIa = 0;
     this.IIa = false;
@@ -49,7 +49,7 @@ class GamepadControlMouse {
     this.TCa = undefined;
     this.uGo = undefined;
     this.DIa = Vector2D_1.Vector2D.Create();
-    this.y0m = Vector2D_1.Vector2D.Create();
+    this.gEm = Vector2D_1.Vector2D.Create();
     this.YFo = t => {
       this.DIa.Set(t.X, t.Y);
       this.Q_t.Set(this.DIa.X, this.DIa.Y);
@@ -73,8 +73,8 @@ class GamepadControlMouse {
     this.MIa = UiLayer_1.UiLayer.UiRootItem.GetWidth() / 2;
     this.SIa = UiLayer_1.UiLayer.UiRootItem.GetHeight() / 2;
     t = UiLayer_1.UiLayer.UiRootItem.GetRenderCanvas().GetViewportSize();
-    this.wpm = t.X;
-    this.Lpm = t.Y;
+    this.pbm = t.X;
+    this.vbm = t.Y;
     this.uGo = (0, puerts_1.toManualReleaseDelegate)(this.YFo);
   }
   get Q_t() {
@@ -104,20 +104,20 @@ class GamepadControlMouse {
     if (t.X > this.MIa) {
       i = t.X - this.MIa;
       t.X = this.MIa;
-      this.Q_t.X = MathUtils_1.MathUtils.Clamp(this.Q_t.X - this.yIa, 0, this.wpm);
+      this.Q_t.X = MathUtils_1.MathUtils.Clamp(this.Q_t.X - this.yIa, 0, this.pbm);
     } else if (t.X < -this.MIa) {
       i = t.X + this.MIa;
       t.X = -this.MIa;
-      this.Q_t.X = MathUtils_1.MathUtils.Clamp(this.Q_t.X - this.yIa, 0, this.wpm);
+      this.Q_t.X = MathUtils_1.MathUtils.Clamp(this.Q_t.X - this.yIa, 0, this.pbm);
     }
     if (t.Y > this.SIa) {
       e = t.Y - this.SIa;
       t.Y = this.SIa;
-      this.Q_t.Y = MathUtils_1.MathUtils.Clamp(this.Q_t.Y + this.EIa, 0, this.Lpm);
+      this.Q_t.Y = MathUtils_1.MathUtils.Clamp(this.Q_t.Y + this.EIa, 0, this.vbm);
     } else if (t.Y < -this.SIa) {
       e = t.Y + this.SIa;
       t.Y = -this.SIa;
-      this.Q_t.Y = MathUtils_1.MathUtils.Clamp(this.Q_t.Y + this.EIa, 0, this.Lpm);
+      this.Q_t.Y = MathUtils_1.MathUtils.Clamp(this.Q_t.Y + this.EIa, 0, this.vbm);
     }
     this.vIa.SetAnchorOffset(t.ToUeVector2D());
     LguiEventSystemManager_1.LguiEventSystemManager.LguiEventSystemActor?.OverrideMousePosition(this.Q_t.ToUeVector2D());
@@ -148,7 +148,7 @@ class GamepadControlMouse {
       LguiEventSystemManager_1.LguiEventSystemManager.LguiEventSystemActor?.SwitchToNavigationInputType();
     }
   }
-  ELm() {
+  bpf() {
     var t = LguiEventSystemManager_1.LguiEventSystemManager.GetNowHitComponent();
     let i = undefined;
     if (t &&= t.GetOwner()?.GetComponentByClass(TsUiNavigationBehaviorListener_1.default.StaticClass())) {
@@ -169,8 +169,8 @@ class GamepadControlMouse {
     var e = i.RootUIComp.GetPositionInViewportWithPivot(true, i.AdsorbedPivot);
     var s = this.fLt.ConvertPositionFromViewportToLGUICanvas(e);
     this.LIa.Set(e.X, e.Y);
-    this.y0m.Set(s.X, s.Y);
-    return !(Math.abs(this.y0m.X - t.X) > i.AdsorbedDistance) && !(Math.abs(this.y0m.Y - t.Y) > i.AdsorbedDistance) && !(Vector2D_1.Vector2D.Distance(this.y0m, t) > i.AdsorbedDistance);
+    this.gEm.Set(s.X, s.Y);
+    return !(Math.abs(this.gEm.X - t.X) > i.AdsorbedDistance) && !(Math.abs(this.gEm.Y - t.Y) > i.AdsorbedDistance) && !(Vector2D_1.Vector2D.Distance(this.gEm, t) > i.AdsorbedDistance);
   }
   wIa(t) {
     var i = Vector2D_1.Vector2D.Create(t);
@@ -182,7 +182,7 @@ class GamepadControlMouse {
       }
     }
   }
-  fLm(t) {
+  i0f(t) {
     if (t && t.IsUseDrag) {
       for (const i of this.TIa.GetPanelConfigMap().values()) {
         if (i.GetPanelHandle().GetListenerSet().has(t)) {
@@ -254,7 +254,7 @@ class GamepadControlMouse {
     this.GuideUiListener = undefined;
   }
   IsNearlyListenerUseDrag() {
-    return !this.LockUseDrag && !!this.fLm(this.HitListener);
+    return !this.LockUseDrag && !!this.i0f(this.HitListener);
   }
   SetLockUseDragState(t) {
     this.LockUseDrag = t;
@@ -292,7 +292,7 @@ class GamepadControlMouse {
       this.D9_(t);
       this.xIa();
       this.BIa();
-      this.ELm();
+      this.bpf();
     }
   }
 }

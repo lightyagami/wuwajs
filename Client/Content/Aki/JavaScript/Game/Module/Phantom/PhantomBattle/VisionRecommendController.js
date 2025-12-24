@@ -15,13 +15,13 @@ class VisionRecommendController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRoleChangeEnd, VisionRecommendController.Io_);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RoleInfoUpdate, VisionRecommendController.Io_);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ActiveRole, VisionRecommendController.To_);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRoleDevViewOpen, VisionRecommendController.TWd);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRoleDevViewOpen, VisionRecommendController.LWd);
   }
   static OnRemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRoleChangeEnd, VisionRecommendController.Io_);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RoleInfoUpdate, VisionRecommendController.Io_);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ActiveRole, VisionRecommendController.To_);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRoleDevViewOpen, VisionRecommendController.TWd);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRoleDevViewOpen, VisionRecommendController.LWd);
   }
   static RequestRoleVisionRecommendData(o) {
     var e = new Protocol_1.Aki.Protocol.Qv_();
@@ -38,9 +38,9 @@ class VisionRecommendController extends UiControllerBase_1.UiControllerBase {
     });
   }
   static RequestRoleVisionMainPhantom(o) {
-    var e = new Protocol_1.Aki.Protocol.Jim();
+    var e = new Protocol_1.Aki.Protocol.mam();
     e.Q6n = o;
-    Net_1.Net.Call(29139, Protocol_1.Aki.Protocol.Jim.create(e), e => {
+    Net_1.Net.Call(29139, Protocol_1.Aki.Protocol.mam.create(e), e => {
       ModelManager_1.ModelManager.VisionRecommendModel.OnRoleMainPhantomRecommendData(o, e);
     });
   }
@@ -52,7 +52,7 @@ class VisionRecommendController extends UiControllerBase_1.UiControllerBase {
     VisionRecommendController.RequestRoleVisionMainPhantom(e.GetRoleId());
   }
 };
-VisionRecommendController.TWd = () => {
+VisionRecommendController.LWd = () => {
   for (const e of ModelManager_1.ModelManager.RoleModel.GetAllConfigRoleIdList()) {
     VisionRecommendController.RequestRoleVisionRecommendData(e);
     VisionRecommendController.RequestRoleVisionRecommendAttr(e);

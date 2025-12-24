@@ -23,30 +23,42 @@ const LguiUtil_1 = require("../../Util/LguiUtil");
 const GenericScrollViewNew_1 = require("../../Util/ScrollView/GenericScrollViewNew");
 const AdventureDefine_1 = require("../AdventureDefine");
 const NewSoundDetectRewardItem_1 = require("./NewSoundDetectRewardItem");
+const PeriodicityChallengeItemTopTips_1 = require("./PeriodicityChallengeItemTopTips");
 class PeriodicityChallengeItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
     super(...arguments);
-    this.grm = undefined;
-    this.Crm = undefined;
+    this.Aam = undefined;
+    this.Dam = undefined;
+    this.Nbf = undefined;
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem]];
   }
   async OnBeforeStartAsync() {
-    this.grm = new PeriodicityChallengeTitleItem();
-    await this.grm.CreateByActorAsync(this.GetItem(0).GetOwner());
-    this.Crm = new PeriodicityChallengeDetectionItem();
-    await this.Crm.CreateByActorAsync(this.GetItem(2).GetOwner());
+    var e = [];
+    this.Aam = new PeriodicityChallengeTitleItem();
+    e.push(this.Aam.CreateByActorAsync(this.GetItem(0).GetOwner()));
+    this.Dam = new PeriodicityChallengeDetectionItem();
+    e.push(this.Dam.CreateByActorAsync(this.GetItem(2).GetOwner()));
+    this.Nbf = new PeriodicityChallengeItemTopTips_1.PeriodicityChallengeItemTopTips();
+    e.push(this.Nbf.CreateByActorAsync(this.GetItem(3).GetOwner()));
+    await Promise.all(e);
   }
   Refresh(e, i, t) {
     if (e.Title) {
-      this.grm.SetUiActive(true);
-      this.grm.RefreshItem(e.Data);
+      this.Aam.SetUiActive(true);
+      this.Aam.RefreshItem(e.Data);
     } else {
-      this.grm.SetUiActive(false);
+      this.Aam.SetUiActive(false);
     }
-    this.Crm?.SetUiActive(true);
-    this.Crm?.RefreshItem(e.Data);
+    if (e.TopTips) {
+      this.Nbf.SetUiActive(true);
+      this.Nbf.Refresh(e.TopTips);
+    } else {
+      this.Nbf.SetUiActive(false);
+    }
+    this.Dam?.SetUiActive(true);
+    this.Dam?.RefreshItem(e.Data);
   }
 }
 exports.PeriodicityChallengeItem = PeriodicityChallengeItem;
@@ -86,7 +98,7 @@ class PeriodicityChallengeTitleItem extends UiPanelBase_1.UiPanelBase {
   }
   h4i() {
     var t = ConfigManager_1.ConfigManager.AdventureModuleConfig.GetSecondaryGuideDataConf(this.Pe.Conf.Secondary);
-    if (t.TimeOutDay && this.yrm()) {
+    if (t.TimeOutDay && this.Bam()) {
       let e = undefined;
       let i = 0;
       if (this.E9 === 3) {
@@ -99,7 +111,7 @@ class PeriodicityChallengeTitleItem extends UiPanelBase_1.UiPanelBase {
       }
       if (this.E9 === 7) {
         e = ModelManager_1.ModelManager.WeeklyRogueModel.ActivityDataNew.GetCycleCountDownData();
-        i = MathUtils_1.MathUtils.LongToNumber(ModelManager_1.ModelManager.WeeklyRogueModel.ActivityDataNew.CycleEndTime) - TimeUtil_1.TimeUtil.GetServerTime();
+        i = ModelManager_1.ModelManager.WeeklyRogueModel.ActivityDataNew.EndShowTime - TimeUtil_1.TimeUtil.GetServerTime();
       }
       if (e) {
         t = i <= t.TimeOutDay * TimeUtil_1.TimeUtil.OneDaySeconds;
@@ -134,7 +146,7 @@ class PeriodicityChallengeTitleItem extends UiPanelBase_1.UiPanelBase {
       });
     }
   }
-  yrm() {
+  Bam() {
     return this.E9 === 3 || this.E9 === 6 || this.E9 === 7;
   }
 }
@@ -143,13 +155,13 @@ class PeriodicityChallengeDetectionItem extends UiPanelBase_1.UiPanelBase {
     super(...arguments);
     this.Pe = undefined;
     this.E9 = 0;
-    this.Erm = undefined;
-    this.Irm = undefined;
-    this.Trm = undefined;
-    this.brm = () => {
+    this.Oam = undefined;
+    this.Gam = undefined;
+    this.Fam = undefined;
+    this.Nam = () => {
       return new TowerItem();
     };
-    this.Rrm = () => {
+    this.Vam = () => {
       return new ShipTowerItem();
     };
     this.kQa = () => {
@@ -210,22 +222,22 @@ class PeriodicityChallengeDetectionItem extends UiPanelBase_1.UiPanelBase {
     this.BtnBindInfo = [[5, this.kQa], [17, this.ru_]];
   }
   async OnBeforeStartAsync() {
-    this.Trm = new ShipTowerItem();
-    await this.Trm.CreateByActorAsync(this.GetItem(16).GetOwner());
+    this.Fam = new ShipTowerItem();
+    await this.Fam.CreateByActorAsync(this.GetItem(16).GetOwner());
   }
   OnStart() {
     this.GetItem(4).SetUIActive(false);
     this.GetItem(8).SetUIActive(false);
     this.GetSprite(2).SetUIActive(false);
-    this.Erm = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(7), this.brm);
-    this.Irm = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(13), this.Rrm);
+    this.Oam = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(7), this.Nam);
+    this.Gam = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(13), this.Vam);
   }
   RefreshItem(e) {
     this.Pe = e;
     this.E9 = this.Pe.Conf.PeriodicityChallengeType;
     this.mGe();
-    this.wrm();
-    this.Lrm();
+    this.jam();
+    this.Ham();
   }
   mGe() {
     var e;
@@ -239,37 +251,37 @@ class PeriodicityChallengeDetectionItem extends UiPanelBase_1.UiPanelBase {
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(3), i.Name);
     }
   }
-  wrm() {
+  jam() {
     var e = ModelManager_1.ModelManager.AdventureGuideModel.GetIsDetectionPreOpenByData(this.Pe) || !this.Pe.IsLock;
     this.GetButton(5).RootUIComp.SetUIActive(e);
     this.GetItem(6).SetUIActive(!e);
   }
-  Lrm() {
+  Ham() {
     var e;
     var i = ModelManager_1.ModelManager.AdventureGuideModel.IsTowerType(this.E9);
     var t = ModelManager_1.ModelManager.AdventureGuideModel.IsShipTowerType(this.E9);
     var r = ModelManager_1.ModelManager.AdventureGuideModel.IsWeeklyRogueType(this.E9);
     this.GetVerticalLayout(7).RootUIComp.SetUIActive(i);
     this.GetScrollViewWithScrollbar(13).RootUIComp.SetUIActive(t);
-    this.Trm.SetUiActive(t);
+    this.Fam.SetUiActive(t);
     this.GetItem(9).SetUIActive(r);
     if (i) {
       i = AdventureDefine_1.periodicityChallengeTypeToTarget[this.E9];
       e = ModelManager_1.ModelManager.TowerModel.GetDifficultyAllAreaFirstFloor(i);
-      this.Erm.RefreshByData(e);
+      this.Oam.RefreshByData(e);
       e = ModelManager_1.ModelManager.TowerModel.GetMaxDifficulty();
       this.GetItem(4).SetUIActive(e === i);
     } else if (t) {
       e = ModelManager_1.ModelManager.AdventureGuideModel.GetShipTowerStateListByType(this.E9);
       if (this.E9 === 5) {
-        this.Trm.SetUiActive(false);
+        this.Fam.SetUiActive(false);
       } else {
         i = e.pop();
-        this.Trm.SetUiActive(true);
-        this.Trm.Refresh(i ?? 1);
+        this.Fam.SetUiActive(true);
+        this.Fam.Refresh(i ?? 1);
       }
-      this.Irm?.RefreshByData(e, () => {
-        var i = this.Irm.GetScrollItemList();
+      this.Gam?.RefreshByData(e, () => {
+        var i = this.Gam.GetScrollItemList();
         for (let e = i.length - 1; e >= 0; e--) {
           i[e].GetRootItem().SetHierarchyIndex(0);
         }

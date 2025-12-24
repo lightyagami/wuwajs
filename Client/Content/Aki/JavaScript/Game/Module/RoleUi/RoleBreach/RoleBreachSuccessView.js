@@ -14,12 +14,12 @@ class RoleBreachSuccessView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
     this.dFe = 0;
-    this.F0m = undefined;
+    this.OEm = undefined;
     this.SuccessStarItem = undefined;
     this.StarLayout = undefined;
     this.StarList = [];
     this.OnMaskClickInternal = () => {
-      this.F0m?.();
+      this.OEm?.();
     };
     this.vke = () => {
       return new StarItem_1.StarItem();
@@ -36,7 +36,7 @@ class RoleBreachSuccessView extends UiViewBase_1.UiViewBase {
     var r = this.OpenParam;
     if (r) {
       this.dFe = r.RoleDataId;
-      this.F0m = r.OnMaskClick;
+      this.OEm = r.OnMaskClick;
       e = (r = ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(this.dFe).GetLevelData()).GetBreachLevel();
       t = r.GetMaxBreachLevel();
       i = r.GetLevel();

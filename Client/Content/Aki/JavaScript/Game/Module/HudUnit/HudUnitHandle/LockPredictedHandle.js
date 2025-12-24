@@ -103,7 +103,7 @@ class LockPredictedHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
   GetTargetInfo() {
     var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
     if (e?.Valid) {
-      return e.Entity.CheckGetComponent(32).GetPredictedLockOnTarget();
+      return e.Entity.CheckGetComponent(33).GetPredictedLockOnTarget();
     }
   }
   GetWorldLocation(t) {

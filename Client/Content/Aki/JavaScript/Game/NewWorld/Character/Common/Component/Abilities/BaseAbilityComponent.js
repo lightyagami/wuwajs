@@ -49,22 +49,22 @@ let BaseAbilityComponent = BaseAbilityComponent_1 = class BaseAbilityComponent e
     };
     this.vVs = undefined;
     this.GameplayEventCallbacks = new Map();
-    this.SVs = t => {
-      var e = t?.TagId;
-      if (e !== undefined) {
-        t = this.GameplayEventCallbacks.get(e);
+    this.SVs = (t, e) => {
+      var i = t?.TagId;
+      if (i !== undefined) {
+        t = this.GameplayEventCallbacks.get(i);
         if (t) {
-          var i = GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(e);
-          for (const o of [...t]) {
+          var o = GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(i);
+          for (const n of [...t]) {
             try {
-              o(e);
+              n(i, e);
             } catch (t) {
               if (t instanceof Error) {
                 if (Log_1.Log.CheckError()) {
-                  Log_1.Log.ErrorWithStack("Event", 28, "gameplayEvent事件回调执行异常", t, ["gameplayEvent", i], ["error", t.message]);
+                  Log_1.Log.ErrorWithStack("Event", 28, "gameplayEvent事件回调执行异常", t, ["gameplayEvent", o], ["error", t.message]);
                 }
               } else if (Log_1.Log.CheckError()) {
-                Log_1.Log.Error("Event", 28, "gameplayEvent事件回调执行异常", ["gameplayEvent", i], ["error", t]);
+                Log_1.Log.Error("Event", 28, "gameplayEvent事件回调执行异常", ["gameplayEvent", o], ["error", t]);
               }
             }
           }
@@ -79,7 +79,7 @@ let BaseAbilityComponent = BaseAbilityComponent_1 = class BaseAbilityComponent e
       this.Pbr.SetComponentTickEnabled(false);
       this.RefreshMeshAnim();
       this.InitClass();
-      this.Xte = this.Entity.CheckGetComponent(209);
+      this.Xte = this.Entity.CheckGetComponent(215);
       this.vVs = this.CreateGameplayEventTask(this.SVs);
       EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnCharacterMorphTypeChanged, this._7_);
       return true;

@@ -57,6 +57,7 @@ class ActivitySubViewUniversal extends ActivitySubViewBase_1.ActivitySubViewBase
     if (t && e) {
       e = t.DescTheme;
       i = !StringUtils_1.StringUtils.IsEmpty(e);
+      this.LNe.SetActivityBaseData(this.ActivityBaseData);
       this.LNe.SetTitleByText(this.ActivityBaseData.GetTitle());
       this.LNe.SetSubTitleVisible(i);
       if (i) {

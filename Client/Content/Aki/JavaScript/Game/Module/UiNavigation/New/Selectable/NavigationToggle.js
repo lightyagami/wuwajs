@@ -49,9 +49,9 @@ class NavigationToggle extends NavigationSelectableBase_1.NavigationSelectableBa
   }
   OnToggleClick(e) {}
   ScrollToSelectableComponent(e) {
-    if (!this.Listener.HasDynamicScrollView()) {
-      if (this.Listener.ScrollView) {
-        this.Listener.ScrollView.ScrollToSelectableComponent(e);
+    if (!this.Listener.HasDynamicScrollView() && !this.Listener.HasMultiTemplateScrollView()) {
+      if (this.Listener.ScrollProxy?.ScrollView) {
+        this.Listener.ScrollProxy.ScrollView.ScrollToSelectableComponent(e);
       }
     }
   }

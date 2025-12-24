@@ -37,25 +37,25 @@ class DeckBuilderCardInfoView extends UiViewBase_1.UiViewBase {
     this.B7t = undefined;
     this.lqe = undefined;
     this.Hwn = () => new DeckBuilderCardInfoTabItem_1.DeckBuilderCardInfoTabItem();
-    this.XA1 = i => {
-      this.Qou(i, true);
+    this.XA1 = t => {
+      this.Qou(t, true);
     };
     this.YA1 = () => {};
     this.zA1 = () => {};
     this.JA1 = () => {
-      var i;
+      var t;
       if (this.Data && this.Data.CardList && this.Data.CurCardIndex !== undefined) {
-        i = this.Data.CurCardIndex === 0 ? this.Data.CardList.length - 1 : this.Data.CurCardIndex - 1;
-        this.Data.CurCardIndex = i;
+        t = this.Data.CurCardIndex === 0 ? this.Data.CardList.length - 1 : this.Data.CurCardIndex - 1;
+        this.Data.CurCardIndex = t;
         this.RefreshView();
         this.sFe();
       }
     };
     this.ZA1 = () => {
-      var i;
+      var t;
       if (this.Data && this.Data.CardList && this.Data.CurCardIndex !== undefined) {
-        i = this.Data.CurCardIndex === this.Data.CardList.length - 1 ? 0 : this.Data.CurCardIndex + 1;
-        this.Data.CurCardIndex = i;
+        t = this.Data.CurCardIndex === this.Data.CardList.length - 1 ? 0 : this.Data.CurCardIndex + 1;
+        this.Data.CurCardIndex = t;
         this.RefreshView();
         this.sFe();
       }
@@ -63,60 +63,73 @@ class DeckBuilderCardInfoView extends UiViewBase_1.UiViewBase {
     this.AMo = () => {
       this.CloseMe();
     };
-    this.PV1 = i => {
-      if (i === this.Data.CurCardId) {
+    this.PV1 = t => {
+      if (t === this.Data.CurCardId) {
         this.RefreshView();
       }
     };
-    this.xiu = i => {
-      if (i === this.Data.CurCardId) {
+    this.xiu = t => {
+      if (t === this.Data.CurCardId) {
         this.RefreshView();
       }
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UILayoutBase], [1, UE.UIItem], [2, UE.UIButtonComponent], [3, UE.UIButtonComponent], [4, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UILayoutBase], [1, UE.UIItem], [2, UE.UIButtonComponent], [3, UE.UIButtonComponent], [4, UE.UIItem], [5, UE.UIItem]];
     this.BtnBindInfo = [[2, this.JA1], [3, this.ZA1]];
   }
   async OnBeforeStartAsync() {
-    var i = this.OpenParam;
-    this.Data = i;
+    var t = this.OpenParam;
+    this.Data = t;
     this.lqe = new PopupCaptionItem_1.PopupCaptionItem();
     this.lqe.SetCloseCallBack(this.AMo);
+    var i = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardConfig(t.CurCardId).ActivityId;
+    var i = ModelManager_1.ModelManager.PhantomArenaModel.IsNewPhantomArenaActivity(i);
     this.cs1 = new DeckBuilderCardDetailPanel_1.DeckBuilderCardDetailPanel();
-    this.Piu = new DeckBuilderCardOutlookUnlockPanel_1.DeckBuilderCardOutlookUnlockPanel();
+    this.cs1.IsNewPhantomArenaActivity = i;
     this.B7t = new GenericLayout_1.GenericLayout(this.GetLayoutBase(0), this.Hwn);
     this.TabDataList = [];
-    var t = new TabData();
-    t.TabNameTextId = "PhantomBattle_1013";
-    t.Panel = this.cs1;
-    t.SequencePlayer = this.cs1;
-    t.OnShow = this.YA1;
-    this.TabDataList.push(t);
-    if (i.NeedOutlookTab) {
-      (t = new TabData()).TabNameTextId = "PhantomBattle_1014";
-      t.Panel = this.Piu;
-      t.SequencePlayer = this.Piu;
-      t.OnShow = this.zA1;
-      this.TabDataList.push(t);
+    var e = new TabData();
+    e.TabNameTextId = "PhantomBattle_1013";
+    e.Panel = this.cs1;
+    e.SequencePlayer = this.cs1;
+    e.OnShow = this.YA1;
+    this.TabDataList.push(e);
+    if (t.NeedOutlookTab) {
+      (e = new TabData()).TabNameTextId = "PhantomBattle_1014";
+      e.Panel = this.Piu;
+      e.SequencePlayer = this.Piu;
+      e.OnShow = this.zA1;
+      this.TabDataList.push(e);
     }
     this.TabItemDataList = new Array(this.TabDataList.length);
-    for (let i = 0; i < this.TabDataList.length; i++) {
-      var e = this.TabDataList[i];
-      e.TabIndex = i;
-      var s = new DeckBuilderCardInfoTabItem_1.DeckBuilderCardInfoTabItemData();
-      s.TabIndex = i;
-      s.TabNameTextId = e.TabNameTextId;
-      s.OnSelect = this.XA1;
-      this.TabItemDataList[i] = s;
+    for (let t = 0; t < this.TabDataList.length; t++) {
+      var s = this.TabDataList[t];
+      s.TabIndex = t;
+      var h = new DeckBuilderCardInfoTabItem_1.DeckBuilderCardInfoTabItemData();
+      h.TabIndex = t;
+      h.TabNameTextId = s.TabNameTextId;
+      h.OnSelect = this.XA1;
+      this.TabItemDataList[t] = h;
     }
-    await Promise.all([this.cs1.CreateByResourceIdAsync("UiItem_CardDetail", this.GetItem(4)), this.Piu.CreateByResourceIdAsync("UiItem_CardLevelUp", this.GetItem(4)), this.B7t.RefreshByDataAsync(this.TabItemDataList), this.lqe.CreateThenShowByActorAsync(this.GetItem(1).GetOwner())]);
-    if (i.CurrencyId) {
-      await this.lqe.SetCurrencyItemList([i.CurrencyId]);
+    e = [];
+    if (i) {
+      e.push(this.cs1.CreateByResourceIdAsync("UiItem_CardDetailNew", this.GetItem(4)));
+    } else {
+      this.Piu = new DeckBuilderCardOutlookUnlockPanel_1.DeckBuilderCardOutlookUnlockPanel();
+      e.push(this.cs1.CreateByResourceIdAsync("UiItem_CardDetail", this.GetItem(4)));
+      e.push(this.Piu.CreateByResourceIdAsync("UiItem_CardLevelUp", this.GetItem(4)));
     }
-    t = i.DeckInfo !== undefined;
-    this.GetButton(2).RootUIComp.SetUIActive(t);
-    this.GetButton(3).RootUIComp.SetUIActive(t);
+    e.push(this.B7t.RefreshByDataAsync(this.TabItemDataList));
+    e.push(this.lqe.CreateThenShowByActorAsync(this.GetItem(1).GetOwner()));
+    await Promise.all(e);
+    if (t.CurrencyId) {
+      await this.lqe.SetCurrencyItemList([t.CurrencyId]);
+    }
+    e = t.NeedOutlookTab;
+    this.GetButton(2).RootUIComp.SetUIActive(e);
+    this.GetButton(3).RootUIComp.SetUIActive(e);
+    this.GetItem(5)?.SetUIActive(!i);
   }
   OnStart() {
     this.RefreshView();
@@ -131,70 +144,67 @@ class DeckBuilderCardInfoView extends UiViewBase_1.UiViewBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPhantomArenaCardOutlookUnlock, this.xiu);
   }
   OnBeforeShow() {
-    var i = this.Data.SelectedTabIndex;
-    if (i !== undefined && i >= 0) {
-      this.TabDataList[i].SequencePlayer?.PlayShowSequence();
+    var t = this.Data.SelectedTabIndex;
+    if (t !== undefined && t >= 0) {
+      this.TabDataList[t].SequencePlayer?.PlayShowSequence();
     }
   }
   RefreshView() {
     if (this.Data) {
-      let i = 0;
-      let t = undefined;
+      let t = 0;
       if (this.Data.CardList && this.Data.CurCardIndex !== undefined) {
-        t = this.Data.CardList[this.Data.CurCardIndex];
-        i = t.CardId;
-        this.Data.CurCardId = i;
+        e = this.Data.CardList[this.Data.CurCardIndex];
+        t = e.CardId;
+        this.Data.CurCardId = t;
       } else {
-        i = this.Data.CurCardId;
+        t = this.Data.CurCardId;
       }
-      var e;
-      var s = {
+      var i;
+      var e = {
         DeckInfo: this.Data.DeckInfo,
-        CardItemData: ModelManager_1.ModelManager.PhantomArenaModel.GetDetailViewCardData(i),
-        EntryIdList: ModelManager_1.ModelManager.PhantomArenaModel.GetDetailViewEntryData(i),
-        DetailItemData: ModelManager_1.ModelManager.PhantomArenaModel.GetDetailViewDetailItemData(i),
-        IsCardUnlocked: ModelManager_1.ModelManager.PhantomArenaModel.IsCardUnlock(i)
+        CardItemData: ModelManager_1.ModelManager.PhantomArenaModel.GetDetailViewCardData(t),
+        EntryIdList: ModelManager_1.ModelManager.PhantomArenaModel.GetDetailViewEntryData(t),
+        DetailItemData: ModelManager_1.ModelManager.PhantomArenaModel.GetDetailViewDetailItemData(t, this.Data.DeckInfo),
+        IsCardUnlocked: ModelManager_1.ModelManager.PhantomArenaModel.IsCardUnlock(t)
       };
       if (this.Data.DeckInfo) {
-        e = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardConfig(i);
-        s.CurrencyId = e.UnlockConsumeItems[0].ItemId;
-        s.UnlockCost = e.UnlockConsumeItems[0].Count;
-        s.CardLimit = e.CardGroupNum;
+        i = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardConfig(t);
+        e.CurrencyId = i.UnlockConsumeItems[0].ItemId;
+        e.UnlockCost = i.UnlockConsumeItems[0].Count;
+        e.CardLimit = i.CardGroupNum;
       }
-      if (this.Data.AddCardToDeck && t) {
-        s.AddCardToDeck = () => {
-          if (t) {
-            this.Data?.AddCardToDeck?.(t, 1);
-          }
+      if (this.Data.AddCardToDeck) {
+        e.AddCardToDeck = () => {
+          this.Data?.AddCardToDeck?.(t, 1);
         };
       }
       if (this.Data.RemoveCardFromDeck) {
-        s.RemoveCardFromDeck = () => {
-          this.Data?.RemoveCardFromDeck?.(i, 1);
+        e.RemoveCardFromDeck = () => {
+          this.Data?.RemoveCardFromDeck?.(t, 1);
         };
       }
-      this.DetailPanelData = s;
-      this.cs1?.Refresh(s);
+      this.DetailPanelData = e;
+      this.cs1?.Refresh(e);
       if (this.Data.NeedOutlookTab) {
-        e = {
-          CardId: i
+        i = {
+          CardId: t
         };
-        this.OutlookUnlockPanelData = e;
-        this.Piu?.Refresh(e);
+        this.OutlookUnlockPanelData = i;
+        this.Piu?.Refresh(i);
       }
     }
   }
-  Qou(i, t) {
+  Qou(t, i) {
     var e = this.Data.SelectedTabIndex;
     if (e !== undefined && e >= 0) {
       this.TabDataList[e].Panel?.SetActive(false);
     }
-    this.Data.SelectedTabIndex = i;
-    this.B7t?.SelectGridProxy(i);
-    var e = this.TabDataList[i];
+    this.Data.SelectedTabIndex = t;
+    this.B7t?.SelectGridProxy(t);
+    var e = this.TabDataList[t];
     e.Panel.SetActive(true);
     e.OnShow?.();
-    if (t) {
+    if (i) {
       e.SequencePlayer?.PlayShowSequence();
     }
   }
@@ -203,9 +213,9 @@ class DeckBuilderCardInfoView extends UiViewBase_1.UiViewBase {
       this.TabDataList[this.Data.SelectedTabIndex].SequencePlayer?.PlaySwitchSequence();
     }
   }
-  GetGuideUiItemAndUiItemForShowEx(i) {
-    if (i && !(i.length <= 0) && i[0] === "UnlockCard") {
-      return this.cs1?.GetGuideUiItemAndUiItemForShowEx(i);
+  GetGuideUiItemAndUiItemForShowEx(t) {
+    if (t && !(t.length <= 0) && t[0] === "UnlockCard") {
+      return this.cs1?.GetGuideUiItemAndUiItemForShowEx(t);
     } else {
       return undefined;
     }

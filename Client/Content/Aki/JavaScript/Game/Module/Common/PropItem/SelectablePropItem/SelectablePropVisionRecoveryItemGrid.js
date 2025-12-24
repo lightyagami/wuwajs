@@ -34,6 +34,7 @@ class SelectablePropVisionRecoveryItemGrid extends SelectablePropMediumItemGrid_
         n = (o = ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomBattleData(t)).GetPhantomLevel();
         a = o.GetExp();
         e.ItemConfigId = o.GetConfigId(true);
+        e.QualityId = o.GetQuality();
         e.Level = o.GetCost();
         e.IsLevelTextUseChangeColor = true;
         e.BottomTextId = "VisionLevel";

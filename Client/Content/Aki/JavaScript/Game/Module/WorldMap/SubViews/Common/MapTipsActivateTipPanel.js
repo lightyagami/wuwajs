@@ -35,8 +35,11 @@ class MapTipsActivateTipPanel extends UiPanelBase_1.UiPanelBase {
     this.SetActivatedTip("QuickTravelOverDistance_Text");
     this.GetButton(2).RootUIComp.SetUIActive(true);
   }
-  SetActivatedTip(e) {
+  SetActivatedTip(e, i) {
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), e);
+    if (i !== undefined) {
+      this.GetButton(2).RootUIComp.SetUIActive(i);
+    }
   }
 }
 exports.MapTipsActivateTipPanel = MapTipsActivateTipPanel;

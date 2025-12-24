@@ -94,26 +94,26 @@ class SceneInteractionManager {
       this.xie();
     });
   }
-  CreateSceneInteractionLevel(e, t, i, r, n, s = true, o = false, c = 0) {
-    var a = GlobalData_1.GlobalData.World;
-    if (!a) {
+  CreateSceneInteractionLevel(e, t, i, r, n, s = true, o = false, c = 0, a) {
+    var h = GlobalData_1.GlobalData.World;
+    if (!h) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("RenderScene", 11, "错误，获取不到World");
       }
       return -1;
     }
-    let h = e;
+    let l = e;
     if (e.includes(".")) {
-      h = e.split(".")[0];
+      l = e.split(".")[0];
     }
     var e = this.UniqueLevelInstanceId;
-    var l = (0, puerts_1.$ref)(false);
-    var f = "KuroSceneInteraction_" + e;
-    var a = UE.LevelStreamingDynamic.LoadLevelInstance(a, h, i.op_ToVector(), r, l, f);
-    if ((0, puerts_1.$unref)(l) && a) {
-      (f = new SceneInteractionLevel_1.SceneInteractionLevel()).Init(a, h, i, r, e, t, n, s, o, c);
+    var f = (0, puerts_1.$ref)(false);
+    var u = "KuroSceneInteraction_" + e;
+    var h = UE.LevelStreamingDynamic.LoadLevelInstance(h, l, i.op_ToVector(), r, f, u);
+    if ((0, puerts_1.$unref)(f) && h) {
+      (u = new SceneInteractionLevel_1.SceneInteractionLevel()).Init(h, l, i, r, e, t, n, s, o, c, a);
       this.UniqueLevelInstanceId++;
-      this.AllSceneInteractionInfos.set(e, f);
+      this.AllSceneInteractionInfos.set(e, u);
       return e;
     } else {
       return -1;
@@ -258,6 +258,12 @@ class SceneInteractionManager {
       return e.GetMainCollisionActor();
     }
   }
+  GetSceneInteractionSkeletalMeshActor(e) {
+    e = this.AllSceneInteractionInfos.get(e);
+    if (e) {
+      return e.GetSkeletalMeshActor();
+    }
+  }
   GetPartCollisionActorTag(e, t) {
     e = this.AllSceneInteractionInfos.get(e);
     if (e) {
@@ -390,6 +396,24 @@ class SceneInteractionManager {
     e = this.AllSceneInteractionInfos.get(e);
     if (e) {
       e.UpdateHitInfo(t, i);
+    }
+  }
+  UpdateRangeOverlapInfo(e, t, i) {
+    e = this.AllSceneInteractionInfos.get(e);
+    if (e) {
+      e.UpdateRangeOverlapInfo(t, i);
+    }
+  }
+  SetOverrideSeqBindActor(e, t, i) {
+    e = this.AllSceneInteractionInfos.get(e);
+    if (e) {
+      e.SetOverrideSeqBindActor(t, i);
+    }
+  }
+  UnsetOverrideSeqBindActor(e, t, i) {
+    e = this.AllSceneInteractionInfos.get(e);
+    if (e) {
+      e.UnsetOverrideSeqBindActor(t, i);
     }
   }
   GetReceivingDecalsActors(e) {

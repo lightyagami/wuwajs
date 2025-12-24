@@ -37,7 +37,7 @@ class DamageTransferRecipients extends ExtraEffectBase_1.BuffEffect {
   }
   static ApplyEffects(e) {
     var t = new Set();
-    var r = e.GetComponent(178);
+    var r = e.GetComponent(183);
     var e = r?.BuffEffectManager;
     if (e) {
       for (const s of e.FilterById(77)) {

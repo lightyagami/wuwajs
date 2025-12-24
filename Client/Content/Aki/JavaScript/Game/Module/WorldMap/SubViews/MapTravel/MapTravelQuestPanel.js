@@ -42,7 +42,7 @@ class MapTravelQuestPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondary
     this.u2o = e;
     this.LayoutContext.MarkItem = e;
     this.Ieh.SetUiActive(false);
-    this.ConfirmButton.SetActive(false);
+    this.LayoutContext?.SetConfirmBtnActive(false);
     WorldMapSecondaryUiLayoutHelper_1.WorldMapSecondaryUiLayoutHelper.UpdateConfirmButtonTextWithTrackStyle(this.LayoutContext);
     WorldMapSecondaryUiLayoutHelper_1.WorldMapSecondaryUiLayoutHelper.UpdateTrackButtonTextWithTrackStyle(this.LayoutContext);
     WorldMapSecondaryUiLayoutHelper_1.WorldMapSecondaryUiLayoutHelper.UpdateIconAndTitle(this.LayoutContext);

@@ -16,7 +16,6 @@ class BattleSkillLeftRouletteItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.Qtt = undefined;
-    this._Ze = undefined;
     this.Aah = () => {
       this.RefreshKeyItem();
       this.RefreshVisible();
@@ -29,7 +28,6 @@ class BattleSkillLeftRouletteItem extends UiPanelBase_1.UiPanelBase {
     var e = this.GetItem(0);
     this.Qtt = new InputMultiKeyItem_1.InputMultiKeyItem();
     await this.Qtt.CreateThenShowByActorAsync(e.GetOwner());
-    this._Ze = ModelManager_1.ModelManager.SkillButtonUiModel?.GamepadData;
     this.RefreshKeyItem();
     this.RefreshVisible();
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiRouletteKeyChanged, this.Aah);
@@ -38,7 +36,7 @@ class BattleSkillLeftRouletteItem extends UiPanelBase_1.UiPanelBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiRouletteKeyChanged, this.Aah);
   }
   RefreshKeyItem() {
-    var e = this._Ze;
+    var e = ModelManager_1.ModelManager.SkillButtonUiModel.GamepadData;
     if (e.RouletteKey !== "Gamepad_LeftShoulder" && e.RouletteKey) {
       e = {
         ActionOrAxisName: InputMappingsDefine_1.actionMappings.幻象探索选择界面
@@ -50,7 +48,7 @@ class BattleSkillLeftRouletteItem extends UiPanelBase_1.UiPanelBase {
     var e;
     var t;
     if (!this.IsDestroyOrDestroying) {
-      if (ModelManager_1.ModelManager.DangoAbyssModel.CheckIfInSmallWorldInstance() || !Info_1.Info.IsInGamepad() || (t = this._Ze).GetIsPressCombineButton()) {
+      if (ModelManager_1.ModelManager.DangoAbyssModel.CheckIfInSmallWorldInstance() || !Info_1.Info.IsInGamepad() || (t = ModelManager_1.ModelManager.SkillButtonUiModel.GamepadData).GetIsPressCombineButton()) {
         this.SetActive(false);
       } else {
         e = ModelManager_1.ModelManager.LevelFuncFlagModel.GetFuncFlagEnable(1);

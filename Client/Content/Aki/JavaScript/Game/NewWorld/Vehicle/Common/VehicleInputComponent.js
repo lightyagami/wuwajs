@@ -1,23 +1,23 @@
 "use strict";
 
 var VehicleInputComponent_1;
-var __decorate = this && this.__decorate || function (t, s, e, i) {
-  var n;
+var __decorate = this && this.__decorate || function (t, e, i, n) {
+  var s;
   var h = arguments.length;
-  var u = h < 3 ? s : i === null ? i = Object.getOwnPropertyDescriptor(s, e) : i;
+  var o = h < 3 ? e : n === null ? n = Object.getOwnPropertyDescriptor(e, i) : n;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    u = Reflect.decorate(t, s, e, i);
+    o = Reflect.decorate(t, e, i, n);
   } else {
     for (var r = t.length - 1; r >= 0; r--) {
-      if (n = t[r]) {
-        u = (h < 3 ? n(u) : h > 3 ? n(s, e, u) : n(s, e)) || u;
+      if (s = t[r]) {
+        o = (h < 3 ? s(o) : h > 3 ? s(e, i, o) : s(e, i)) || o;
       }
     }
   }
-  if (h > 3 && u) {
-    Object.defineProperty(s, e, u);
+  if (h > 3 && o) {
+    Object.defineProperty(e, i, o);
   }
-  return u;
+  return o;
 };
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -30,7 +30,6 @@ const Time_1 = require("../../../../Core/Common/Time");
 const CommonParamById_1 = require("../../../../Core/Define/ConfigCommon/CommonParamById");
 const EntityComponent_1 = require("../../../../Core/Entity/EntityComponent");
 const RegisterComponent_1 = require("../../../../Core/Entity/RegisterComponent");
-const ResourceSystem_1 = require("../../../../Core/Resource/ResourceSystem");
 const Quat_1 = require("../../../../Core/Utils/Math/Quat");
 const Rotator_1 = require("../../../../Core/Utils/Math/Rotator");
 const Vector_1 = require("../../../../Core/Utils/Math/Vector");
@@ -45,6 +44,7 @@ const InputController_1 = require("../../../Input/InputController");
 const InputEnums_1 = require("../../../Input/InputEnums");
 const InputFilter_1 = require("../../../Input/InputFilter");
 const InputFilterManager_1 = require("../../../Input/InputFilterManager");
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const GravityUtils_1 = require("../../../Utils/GravityUtils");
 const CharacterInputComponent_1 = require("../../Character/Common/Component/CharacterInputComponent");
@@ -54,14 +54,13 @@ const INVALID_PRIORITY = -1;
 const INVALID_PRIORITY_INDEX = -1;
 const INVALID_INPUT_TIME = -1;
 const MOVE_VECTOR_CACHE_TIME = 100;
-const NPC_VEHICLE_INPUT_CLASS_PATH = "/Game/Aki/Character/NPC/BP_InputComponent_NpcVehicle.BP_InputComponent_NpcVehicle_C";
 let VehicleInputComponent = VehicleInputComponent_1 = class VehicleInputComponent extends EntityComponent_1.EntityComponent {
   constructor() {
     super(...arguments);
+    this.Bhh = undefined;
     this.ActorComp = undefined;
     this.PerformComp = undefined;
     this.TagComp = undefined;
-    this.BpInputComp = undefined;
     this.MoveDirectionDistanceMin = 0;
     this.MoveDirectionDistanceMax = 0;
     this.MovementDirectionAngleThreshold = 0;
@@ -84,9 +83,6 @@ let VehicleInputComponent = VehicleInputComponent_1 = class VehicleInputComponen
     this.TagEventVision1 = undefined;
     this.TagEventUltimateSkill = undefined;
     this.TagEventVision2 = undefined;
-    this.TagEventChangeRoll1 = undefined;
-    this.TagEventChangeRoll2 = undefined;
-    this.TagEventChangeRoll3 = undefined;
     this.TagEventLock = undefined;
     this.TagEventAim = undefined;
     this.TagEventMove = undefined;
@@ -99,17 +95,31 @@ let VehicleInputComponent = VehicleInputComponent_1 = class VehicleInputComponen
     this.IsEnableLongPressLeave = false;
     this.LongPressLeaveCondition = false;
     this.InvalidHoldTime = 0;
+    this.ForwardInputCurve = undefined;
+    this.vZf = 0;
+    this.WLm = t => {
+      if (this.IsEnableLongPressLeave) {
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SkillLongPressEnd, t);
+      }
+    };
+    this.QLm = t => {
+      if (this.IsEnableLongPressLeave && (this.LongPressLeaveCondition = true, this.InvalidHoldTime = 0, this.CheckIfCanLeave())) {
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SkillLongPressStart, t);
+      }
+    };
     this.W$a = new Set();
     this.OnEnterVehicle = t => {
+      var e;
       if (t.IsRolePassenger(true)) {
         this.RegisterInputHandler();
         this.SetVehicleRelatedInputEnable(t.PassengerEntity, false);
         this.SetVehicleType(t.VehicleType);
         if (!t.IsDriver) {
           this.SetVehicleRelatedInputEnable(this.Entity, false);
-          (t = this.Entity.GetComponent(209))?.RemoveTag(-469423249);
-          t?.RemoveTag(-1802431900);
+          (e = this.Entity.GetComponent(215))?.RemoveTag(-469423249);
+          e?.RemoveTag(-1802431900);
         }
+        this.OnEnterOrLeaveVehicle(t, true);
       }
     };
     this.OnLeaveVehicle = t => {
@@ -121,6 +131,7 @@ let VehicleInputComponent = VehicleInputComponent_1 = class VehicleInputComponen
         } else {
           this.SetVehicleRelatedInputEnable(this.Entity, true);
         }
+        this.OnEnterOrLeaveVehicle(t, false);
       }
     };
     this.TestInputEvent = [];
@@ -139,26 +150,19 @@ let VehicleInputComponent = VehicleInputComponent_1 = class VehicleInputComponen
     return true;
   }
   OnStart() {
-    this.PerformComp = this.Entity.GetComponent(237);
-    this.TagComp = this.Entity.GetComponent(209);
-    let t = undefined;
-    this.ActorComp = this.Entity.GetComponent(238);
-    if ((t = this.ActorComp ? this.ActorComp.Actor.InputComponentClass?.AssetPathName?.toString() : (this.ActorComp = this.Entity.GetComponent(3), NPC_VEHICLE_INPUT_CLASS_PATH)) && t !== "") {
-      ResourceSystem_1.ResourceSystem.LoadAsync(t, UE.Class, t => {
-        this.BpInputComp = this.ActorComp?.Actor.AddComponentByClass(t, false, MathUtils_1.MathUtils.DefaultTransform, false);
-        this.BpInputComp.OwnerActor = this.ActorComp?.Actor;
-      });
-      this.AddBlockEvents();
-      this.InitPassengerInputForbidTagInfo();
-      EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnVehicleBeenEntered, this.OnEnterVehicle);
-      EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnVehicleBeenLeaved, this.OnLeaveVehicle);
-      return true;
-    } else {
-      if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("Input", 6, "1060541 InputComponent init NoClass.", ["Vehicle", this.ActorComp?.Actor.GetName()]);
-      }
-      return false;
+    this.PerformComp = this.Entity.GetComponent(246);
+    this.TagComp = this.Entity.GetComponent(215);
+    this.ActorComp = this.Entity.CheckGetComponent(247) ?? this.Entity.CheckGetComponent(3);
+    this.KLm();
+    this.AddBlockEvents();
+    this.InitPassengerInputForbidTagInfo();
+    EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnVehicleBeenEntered, this.OnEnterVehicle);
+    EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnVehicleBeenLeaved, this.OnLeaveVehicle);
+    var t = this.Entity.GetComponent(246)?.Config?.Asset;
+    if (t) {
+      this.ForwardInputCurve = t.前后输入映射曲线;
     }
+    return true;
   }
   OnTick(t) {
     this.Mqu(t);
@@ -166,11 +170,35 @@ let VehicleInputComponent = VehicleInputComponent_1 = class VehicleInputComponen
       this.UpdateVehicleInputDirectAndFacing();
     }
   }
+  XLm() {
+    if (this.Bhh) {
+      EventSystem_1.EventSystem.RemoveWithTarget(this.Bhh, EventDefine_1.EEventName.VehicleInputLayerPress, this.QLm);
+      EventSystem_1.EventSystem.RemoveWithTarget(this.Bhh, EventDefine_1.EEventName.VehicleInputLayerRelease, this.WLm);
+      InputController_1.InputController.RemoveInputLayer(this.Bhh);
+      this.Bhh.Clear();
+      this.Bhh = undefined;
+    }
+  }
+  KLm() {
+    var t;
+    if (this.Bhh) {
+      this.XLm();
+    }
+    this.Bhh = InputController_1.InputController.CreateInputLayer(4);
+    if (this.Bhh) {
+      if (t = ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(this.Entity)) {
+        this.Bhh.Init(t);
+        InputController_1.InputController.AddInputLayer(this.Entity.Id, this.Bhh);
+      }
+      EventSystem_1.EventSystem.AddWithTarget(this.Bhh, EventDefine_1.EEventName.VehicleInputLayerPress, this.QLm);
+      EventSystem_1.EventSystem.AddWithTarget(this.Bhh, EventDefine_1.EEventName.VehicleInputLayerRelease, this.WLm);
+    }
+  }
   Mqu(t) {
     if (this.InputCaches.length !== 0) {
-      var s = t * TimeUtil_1.TimeUtil.Millisecond * (ModelManager_1.ModelManager.CharacterModel?.InverseSelfCenteredTimeDilation ?? 1);
-      for (const e of this.InputCaches) {
-        e.AccumulateTime += s;
+      var e = t * TimeUtil_1.TimeUtil.Millisecond * (ModelManager_1.ModelManager.CharacterModel?.InverseSelfCenteredTimeDilation ?? 1);
+      for (const i of this.InputCaches) {
+        i.AccumulateTime += e;
       }
     }
   }
@@ -185,58 +213,57 @@ let VehicleInputComponent = VehicleInputComponent_1 = class VehicleInputComponen
     EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnVehicleBeenLeaved, this.OnLeaveVehicle);
     return true;
   }
-  OnClear() {
-    return true;
-  }
-  OnDisable(t) {}
-  OnEnable() {}
   GetPriority() {
     return 1;
   }
   GetInputFilter() {
     return this.InputGroup;
   }
-  HandlePressEvent(t, s) {
+  HandlePressEvent(t, e) {
     if (ModelManager_1.ModelManager.BattleInputModel?.GetInputEnable(t)) {
-      this.InputEvents.push(new CharacterInputComponent_1.InputEvent(t, 1, s));
+      this.InputEvents.push(new CharacterInputComponent_1.InputEvent(t, 1, e, this.vZf++));
     } else if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Battle", 17, "该战斗输入被禁用，不执行按下操作", ["action", t]);
     }
   }
-  HandleReleaseEvent(t, s) {
+  HandleReleaseEvent(t, e) {
     if (ModelManager_1.ModelManager.BattleInputModel?.GetInputEnable(t)) {
-      this.InputEvents.push(new CharacterInputComponent_1.InputEvent(t, 2, s));
+      this.InputEvents.push(new CharacterInputComponent_1.InputEvent(t, 2, e, this.vZf++));
       VehicleInputComponent_1.HoldPressMap.set(t, false);
       VehicleInputComponent_1.HoldActionMap.delete(t);
     } else if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Battle", 17, "该战斗输入被禁用，不执行放开操作", ["action", t]);
     }
   }
-  HandleHoldEvent(t, s) {
-    this.InputEvents.push(new CharacterInputComponent_1.InputEvent(t, 3, s));
-    VehicleInputComponent_1.HoldActionMap.set(t, true);
+  HandleHoldEvent(t, e) {
+    if (ModelManager_1.ModelManager.BattleInputModel?.GetInputEnable(t)) {
+      this.InputEvents.push(new CharacterInputComponent_1.InputEvent(t, 3, e));
+      VehicleInputComponent_1.HoldActionMap.set(t, true);
+    } else if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("Battle", 72, "该战斗输入被禁用，不执行长按操作", ["action", t]);
+    }
   }
-  HandleInputAxis(t, s) {
-    let e = s;
+  HandleInputAxis(t, e) {
+    let i = e;
     if (Info_1.Info.IsInKeyBoard()) {
       switch (t) {
         case InputEnums_1.EInputAxis.LookUp:
         case InputEnums_1.EInputAxis.Turn:
         case InputEnums_1.EInputAxis.Zoom:
-          e /= Time_1.Time.DeltaTimeSeconds;
+          i /= Time_1.Time.DeltaTimeSeconds;
       }
     }
-    this.AxisValues.set(t, e);
+    this.AxisValues.set(t, i);
   }
-  PreProcessInput(t, s) {
+  PreProcessInput(t, e) {
     if (Info_1.Info.AxisInputOptimize) {
       if (this.NextFrameClear) {
         this.NextFrameClear = false;
         this.AxisValues.clear();
       }
-      for (const e of this.W$a) {
-        if (this.AxisValues.has(e)) {
-          this.AxisValues.delete(e);
+      for (const i of this.W$a) {
+        if (this.AxisValues.has(i)) {
+          this.AxisValues.delete(i);
         }
       }
       this.W$a.clear();
@@ -244,38 +271,48 @@ let VehicleInputComponent = VehicleInputComponent_1 = class VehicleInputComponen
       this.AxisValues.clear();
     }
   }
-  PostProcessInput(i, t) {
+  PostProcessInput(n, t) {
     this.UpdateMoveCache();
-    this.ValidateInputCaches();
-    const n = new Array();
-    this.InputEvents.forEach((t, s) => {
-      var e = this.GetCommand(i, t);
-      if (e && e.CommandType !== 0) {
-        n.push(new CharacterInputComponent_1.InputCommand(t.Action, t.State, t.Time, e, s));
+    let e = this.InputEvents;
+    let s = 0;
+    if (this.IsEnableInputCache() && this.InputCaches.length > 0 && (o = this.GetSpecificInputCaches()) && o.length > 0) {
+      e = [...o, ...this.InputEvents];
+      s = o.length;
+    }
+    const h = new Array();
+    e.forEach((t, e) => {
+      var i = this.R8r(n, t);
+      if (i && i.CommandType !== 0) {
+        e = e < s ? -1 : e;
+        h.push(new CharacterInputComponent_1.InputCommand(t.Action, t.State, t.Time, i, e, t.Id));
       }
     });
     if (this.TestInputEvent.length > 0) {
-      let t = this.InputEvents.length;
-      for (const h of this.TestInputEvent) {
-        var s = this.GetCommand(i, h);
-        if (s) {
-          n.push(new CharacterInputComponent_1.InputCommand(h.Action, h.State, h.Time, s, t));
+      let t = e.length;
+      for (const r of this.TestInputEvent) {
+        var i = this.R8r(n, r);
+        if (i) {
+          h.push(new CharacterInputComponent_1.InputCommand(r.Action, r.State, r.Time, i, t));
         }
         t++;
       }
       this.TestInputEvent.length = 0;
     }
-    var e = this.GetBestInputCommand(n);
-    this.CacheInputs(e);
-    this.InputEvents.length = 0;
-    if (e?.State === 3) {
-      VehicleInputComponent_1.HoldPressMap.set(e.Action, true);
+    var o = this.GetBestInputCommand(h);
+    if (o?.Index === -1) {
+      this.RemoveInputCache(o.Action, o.State);
     }
-    if (e !== undefined) {
-      if (ModelManager_1.ModelManager.SundryModel.SceneCheckOn && Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("Input", 6, "ReceiveInput", ["BestInputCommand", JSON.stringify(e)]);
+    this.ValidateInputCaches();
+    this.CacheInputs(o);
+    this.InputEvents.length = 0;
+    if (o?.State === 3) {
+      VehicleInputComponent_1.HoldPressMap.set(o.Action, true);
+    }
+    if (o !== undefined && (ModelManager_1.ModelManager.SundryModel.SceneCheckOn && Log_1.Log.CheckDebug() && Log_1.Log.Debug("Input", 6, "ReceiveInput", ["BestInputCommand", JSON.stringify(o)]), this.ExecuteInputCommand(o, "PostProcessInput"), this.IsEnableExecuteCommandImmediately()) && h.length > 1) {
+      if ((o = h.indexOf(o)) > -1) {
+        h.splice(o, 1);
       }
-      this.ExecuteInputCommand(e, "PostProcessInput");
+      this.ExecuteImmediateInputCommand(h);
     }
   }
   ClearInputAxis(t) {
@@ -286,9 +323,9 @@ let VehicleInputComponent = VehicleInputComponent_1 = class VehicleInputComponen
       this.NextFrameClear = t;
     }
   }
-  ClearSingleAxisInput(t, s) {
+  ClearSingleAxisInput(t, e) {
     if (Info_1.Info.AxisInputOptimize) {
-      if (s) {
+      if (e) {
         this.W$a.add(t);
       } else if (this.AxisValues.has(t)) {
         this.AxisValues.set(t, 0);
@@ -301,6 +338,7 @@ let VehicleInputComponent = VehicleInputComponent_1 = class VehicleInputComponen
   GetZoomInput() {
     return this.QueryInputAxis(InputEnums_1.EInputAxis.Zoom) ?? 0;
   }
+  OnEnterOrLeaveVehicle(t, e) {}
   RegisterInputHandler() {
     InputController_1.InputController.AddInputHandler(this);
   }
@@ -309,43 +347,47 @@ let VehicleInputComponent = VehicleInputComponent_1 = class VehicleInputComponen
     this.LastMovementInputTime = INVALID_INPUT_TIME;
     this.InputEvents.length = 0;
     this.InputCaches.length = 0;
+    this.vZf = 0;
     this.AxisValues.clear();
     this.LongPressLeaveCondition = false;
     VehicleInputComponent_1.HoldPressMap.clear();
     VehicleInputComponent_1.HoldActionMap.clear();
   }
-  SetVehicleRelatedInputEnable(t, s) {
-    const e = t?.GetComponent(209);
-    if (e) {
-      if (s) {
+  SetVehicleRelatedInputEnable(t, e) {
+    const i = t?.GetComponent(215);
+    if (i) {
+      if (e) {
         this.PassengerInputForbidTagArray.forEach(t => {
-          e.RemoveTag(t);
+          i.RemoveTag(t);
         });
       } else {
         this.PassengerInputForbidTagArray.forEach(t => {
-          e.AddTag(t);
+          i.AddTag(t);
         });
       }
     }
   }
   ValidateInputCaches() {
     for (let t = this.InputCaches.length - 1; t >= 0; t--) {
-      var s = this.InputCaches[t];
-      var e = this.GetCacheTime(s.Action, s.State);
-      if (s.AccumulateTime > e) {
+      var e = this.InputCaches[t];
+      var i = this.GetCacheTime(e.Action, e.State);
+      if (e.AccumulateTime > i) {
+        if (Log_1.Log.CheckDebug()) {
+          Log_1.Log.Debug("Input", 67, "[VehicleInputComponent.ValidateInputCaches]输入缓存已过期，移除输入缓存", ["action", e.Action], ["state", e.State], ["time", e.Time], ["worldTime", e.WorldTime], ["eventId", e.Id]);
+        }
         this.InputCaches.splice(t, 1);
       }
     }
   }
-  GetCacheTime(s, e) {
-    if (this.BpInputComp) {
+  GetCacheTime(e, i) {
+    if (this.GetBpInputComp()) {
       let t = undefined;
-      if (!this.CacheTimes.has(s)) {
-        t = this.BpInputComp.GetUnrealCacheConfig(s);
-        this.CacheTimes.set(s, t);
+      if (!this.CacheTimes.has(e)) {
+        t = this.GetBpInputComp().GetUnrealCacheConfig(e);
+        this.CacheTimes.set(e, t);
       }
-      if (t = t || this.CacheTimes.get(s)) {
-        switch (e) {
+      if (t = t || this.CacheTimes.get(e)) {
+        switch (i) {
           case 1:
             return t.按下;
           case 3:
@@ -354,300 +396,171 @@ let VehicleInputComponent = VehicleInputComponent_1 = class VehicleInputComponen
             return t.抬起;
         }
         if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("Character", 14, "错误的输入状态 ", ["state", e]);
+          Log_1.Log.Error("Character", 14, "错误的输入状态 ", ["state", i]);
         }
       }
     }
     return ZERO_TIME;
   }
-  GetCommand(t, s) {
-    let e = undefined;
-    switch (s.State) {
+  R8r(t, e) {
+    let i = undefined;
+    switch (e.State) {
       case 1:
-        this.DispatchPressEvent(s.Action, s.Time);
-        e = this.HandlePress(s.Action, s.Time);
+        this.DispatchPressEvent(e.Action, e.Time);
+        i = this.w8r(e.Action, e.Time, e.Id);
         break;
       case 2:
-        this.DispatchReleaseEvent(s.Action, s.Time);
-        e = this.HandleRelease(s.Action, s.Time);
+        this.DispatchReleaseEvent(e.Action, e.Time);
+        i = this.b8r(e.Action, e.Time, e.Id);
         break;
       case 3:
-        if (s.Action === InputEnums_1.EInputAction.跳跃 && this.IsEnableLongPressLeave) {
+        if (e.Action === InputEnums_1.EInputAction.跳跃 && this.IsEnableLongPressLeave) {
           if (!this.CheckIfCanLeave()) {
             this.LongPressLeaveCondition = false;
             return;
           }
           if (!this.LongPressLeaveCondition) {
-            this.InvalidHoldTime = s.Time;
-            EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SkillLongPressStart, s.Action);
+            this.InvalidHoldTime = e.Time;
+            EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SkillLongPressStart, e.Action);
           }
           this.LongPressLeaveCondition = true;
         }
-        if (!this.ShouldTriggerHoldEvent(s.Action, s.Time - this.InvalidHoldTime, t)) {
-          s.Action = InputEnums_1.EInputAction.None;
+        if (!this.ShouldTriggerHoldEvent(e.Action, e.Time - this.InvalidHoldTime, t)) {
+          e.Action = InputEnums_1.EInputAction.None;
           return;
         }
-        e = this.HandleHold(s.Action, s.Time);
+        i = this.HandleHold(e.Action, e.Time);
     }
-    return e;
+    return i;
   }
   GetBestInputCommand(t) {
     if (t.length !== 0) {
-      let e = INVALID_PRIORITY;
-      let i = INVALID_PRIORITY_INDEX;
-      t.forEach((t, s) => {
+      let i = INVALID_PRIORITY;
+      let n = INVALID_PRIORITY_INDEX;
+      t.forEach((t, e) => {
         t = this.QueryInputPriority(t.Command);
-        if (t > e) {
-          e = t;
-          i = s;
+        if (t > i) {
+          i = t;
+          n = e;
         }
       });
-      return t[i];
+      return t[n];
     }
   }
   CacheInputs(t) {
-    const e = this.GetWorldTime();
-    const i = t !== undefined ? t.Index : -1;
-    this.InputEvents.forEach((t, s) => {
-      if (s !== i && t.Action !== InputEnums_1.EInputAction.None && this.GetCacheTime(t.Action, t.State) !== ZERO_TIME) {
-        this.InputCaches.push(new CharacterInputComponent_1.InputCache(t.Action, t.State, t.Time, e, 0));
+    const i = this.GetWorldTime();
+    const n = t !== undefined ? t.Index : -1;
+    this.InputEvents.forEach((t, e) => {
+      if (e !== n && t.Action !== InputEnums_1.EInputAction.None && this.GetCacheTime(t.Action, t.State) !== ZERO_TIME) {
+        this.InputCaches.push(new CharacterInputComponent_1.InputCache(t.Action, t.State, t.Time, i, 0, t.Id));
       }
     });
   }
-  DispatchPressEvent(t, s) {
+  DispatchPressEvent(t, e) {
     if (this.ActorComp) {
-      if (this.BpInputComp) {
-        switch (t) {
-          case InputEnums_1.EInputAction.跳跃:
-            this.BpInputComp.跳跃按下事件(s);
-            if (this.IsEnableLongPressLeave && (this.LongPressLeaveCondition = true, this.InvalidHoldTime = 0, this.CheckIfCanLeave())) {
-              EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SkillLongPressStart, t);
+      var i = InputController_1.InputController.GetInputLayers(this.Entity.Id);
+      if (i) {
+        for (const n of i) {
+          n.DispatchPressEvent(t, e);
+        }
+      } else if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Input", 72, "[VehicleInputComponent.DispatchPressEvent]", ["EntityId", this.Entity.Id], ["InputLayers", i]);
+      }
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("Input", 6, "Entity Is End");
+    }
+  }
+  w8r(t, e, i = -1) {
+    if (this.ActorComp) {
+      var n = InputController_1.InputController.GetInputLayers(this.Entity.Id);
+      if (n) {
+        for (const h of n) {
+          var s = h.HandlePress(t, e);
+          if (s && s.CommandType !== 0) {
+            if (Log_1.Log.CheckDebug()) {
+              Log_1.Log.Debug("Input", 72, "[VehicleInputComponent.HandlePress]输入层级处理指令", ["layerType", h.GetLayerType()], ["action", t], ["commandType", s.CommandType], ["commandValue", s.IntValue], ["eventId", i]);
             }
-            break;
-          case InputEnums_1.EInputAction.攀爬:
-            this.BpInputComp.攀爬按下事件(s);
-            break;
-          case InputEnums_1.EInputAction.走跑切换:
-            this.BpInputComp.走跑切换按下事件(s);
-            break;
-          case InputEnums_1.EInputAction.攻击:
-            this.BpInputComp.攻击按下事件(s);
-            break;
-          case InputEnums_1.EInputAction.闪避:
-            this.BpInputComp.闪避按下事件(s);
-            break;
-          case InputEnums_1.EInputAction.技能1:
-            this.BpInputComp.技能1按下事件(s);
-            break;
-          case InputEnums_1.EInputAction.幻象1:
-            this.BpInputComp.幻象1按下事件(s);
-            break;
-          case InputEnums_1.EInputAction.大招:
-            this.BpInputComp.大招按下事件(s);
-            break;
-          case InputEnums_1.EInputAction.幻象2:
-            this.BpInputComp.幻象2按下事件(s);
-            break;
-          case InputEnums_1.EInputAction.切换角色1:
-            this.BpInputComp.切换角色1按下事件(s);
-            break;
-          case InputEnums_1.EInputAction.切换角色2:
-            this.BpInputComp.切换角色2按下事件(s);
-            break;
-          case InputEnums_1.EInputAction.切换角色3:
-            this.BpInputComp.切换角色3按下事件(s);
-            break;
-          case InputEnums_1.EInputAction.锁定目标:
-            this.BpInputComp.锁定目标按下事件(s);
-            break;
-          case InputEnums_1.EInputAction.瞄准:
-            this.BpInputComp.瞄准按下事件(s);
+            return s;
+          }
         }
+      } else if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Input", 72, "[VehicleInputComponent.HandlePress]输入层级为空", ["entityId", this.Entity.Id]);
       }
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("Input", 6, "Entity Is End");
     }
   }
-  HandlePress(t, s) {
+  DispatchReleaseEvent(t, e) {
     if (this.ActorComp) {
-      if (this.BpInputComp) {
-        switch (t) {
-          case InputEnums_1.EInputAction.跳跃:
-            return this.BpInputComp.跳跃按下(s);
-          case InputEnums_1.EInputAction.攀爬:
-            return this.BpInputComp.攀爬按下(s);
-          case InputEnums_1.EInputAction.走跑切换:
-            return this.BpInputComp.走跑切换按下(s);
-          case InputEnums_1.EInputAction.攻击:
-            return this.BpInputComp.攻击按下(s);
-          case InputEnums_1.EInputAction.闪避:
-            return this.BpInputComp.闪避按下(s);
-          case InputEnums_1.EInputAction.技能1:
-            return this.BpInputComp.技能1按下(s);
-          case InputEnums_1.EInputAction.幻象1:
-            return this.BpInputComp.幻象1按下(s);
-          case InputEnums_1.EInputAction.大招:
-            return this.BpInputComp.大招按下(s);
-          case InputEnums_1.EInputAction.幻象2:
-            return this.BpInputComp.幻象2按下(s);
-          case InputEnums_1.EInputAction.切换角色1:
-            return this.BpInputComp.切换角色1按下(s);
-          case InputEnums_1.EInputAction.切换角色2:
-            return this.BpInputComp.切换角色2按下(s);
-          case InputEnums_1.EInputAction.切换角色3:
-            return this.BpInputComp.切换角色3按下(s);
-          case InputEnums_1.EInputAction.瞄准:
-            return this.BpInputComp.瞄准按下(s);
-          case InputEnums_1.EInputAction.通用交互:
-            return this.BpInputComp.通用交互按下(s);
+      var i = InputController_1.InputController.GetInputLayers(this.Entity.Id);
+      if (i) {
+        for (const n of i) {
+          n.DispatchReleaseEvent(t, e);
         }
+      } else if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Input", 72, "[VehicleInputComponent.DispatchReleaseEvent]", ["EntityId", this.Entity.Id], ["InputLayers", i]);
       }
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("Input", 6, "Entity Is End");
     }
   }
-  DispatchReleaseEvent(t, s) {
+  b8r(t, e, i = -1) {
     if (this.ActorComp) {
-      if (this.BpInputComp) {
-        switch (t) {
-          case InputEnums_1.EInputAction.跳跃:
-            this.BpInputComp.跳跃抬起事件(s);
-            if (this.IsEnableLongPressLeave) {
-              EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SkillLongPressEnd, t);
+      var n = InputController_1.InputController.GetInputLayers(this.Entity.Id);
+      if (n) {
+        for (const h of n) {
+          var s = h.HandleRelease(t, e);
+          if (s && s.CommandType !== 0) {
+            if (Log_1.Log.CheckDebug()) {
+              Log_1.Log.Debug("Input", 72, "[VehicleInputComponent.HandleRelease]输入层级处理指令", ["layerType", h.GetLayerType()], ["action", t], ["commandType", s.CommandType], ["commandValue", s.IntValue], ["eventId", i]);
             }
-            break;
-          case InputEnums_1.EInputAction.攀爬:
-            this.BpInputComp.攀爬抬起事件(s);
-            break;
-          case InputEnums_1.EInputAction.走跑切换:
-            this.BpInputComp.走跑切换抬起事件(s);
-            break;
-          case InputEnums_1.EInputAction.攻击:
-            this.BpInputComp.攻击抬起事件(s);
-            break;
-          case InputEnums_1.EInputAction.闪避:
-            this.BpInputComp.闪避抬起事件(s);
-            break;
-          case InputEnums_1.EInputAction.技能1:
-            this.BpInputComp.技能1抬起事件(s);
-            break;
-          case InputEnums_1.EInputAction.幻象1:
-            this.BpInputComp.幻象1抬起事件(s);
-            break;
-          case InputEnums_1.EInputAction.大招:
-            this.BpInputComp.大招抬起事件(s);
-            break;
-          case InputEnums_1.EInputAction.幻象2:
-            this.BpInputComp.幻象2抬起事件(s);
-            break;
-          case InputEnums_1.EInputAction.切换角色1:
-            this.BpInputComp.切换角色1抬起事件(s);
-            break;
-          case InputEnums_1.EInputAction.切换角色2:
-            this.BpInputComp.切换角色2抬起事件(s);
-            break;
-          case InputEnums_1.EInputAction.切换角色3:
-            this.BpInputComp.切换角色3抬起事件(s);
-            break;
-          case InputEnums_1.EInputAction.锁定目标:
-            this.BpInputComp.锁定目标抬起事件(s);
-            break;
-          case InputEnums_1.EInputAction.瞄准:
-            this.BpInputComp.瞄准抬起事件(s);
+            return s;
+          }
         }
+      } else if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Input", 72, "[VehicleInputComponent.HandleRelease]输入层级为空", ["entityId", this.Entity.Id]);
       }
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("Input", 6, "Entity Is End");
     }
   }
-  HandleRelease(t, s) {
-    if (this.ActorComp) {
-      if (this.BpInputComp) {
-        switch (t) {
-          case InputEnums_1.EInputAction.跳跃:
-            return this.BpInputComp.跳跃抬起(s);
-          case InputEnums_1.EInputAction.攀爬:
-            return this.BpInputComp.攀爬抬起(s);
-          case InputEnums_1.EInputAction.走跑切换:
-            return this.BpInputComp.走跑切换抬起(s);
-          case InputEnums_1.EInputAction.攻击:
-            return this.BpInputComp.攻击抬起(s);
-          case InputEnums_1.EInputAction.闪避:
-            return this.BpInputComp.闪避抬起(s);
-          case InputEnums_1.EInputAction.技能1:
-            return this.BpInputComp.技能1抬起(s);
-          case InputEnums_1.EInputAction.幻象1:
-            return this.BpInputComp.幻象1抬起(s);
-          case InputEnums_1.EInputAction.大招:
-            return this.BpInputComp.大招抬起(s);
-          case InputEnums_1.EInputAction.幻象2:
-            return this.BpInputComp.幻象2抬起(s);
-          case InputEnums_1.EInputAction.切换角色1:
-            return this.BpInputComp.切换角色1抬起(s);
-          case InputEnums_1.EInputAction.切换角色2:
-            return this.BpInputComp.切换角色2抬起(s);
-          case InputEnums_1.EInputAction.切换角色3:
-            return this.BpInputComp.切换角色3抬起(s);
-          case InputEnums_1.EInputAction.瞄准:
-            return this.BpInputComp.瞄准抬起(s);
-        }
-      }
-    } else if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("Input", 6, "Entity Is End");
-    }
+  GetBpInputComp() {
+    return this.Bhh?.GetBpInputComp();
   }
-  ShouldTriggerHoldEvent(t, s, e) {
-    var [i, n] = this.GetHoldConfig(t);
-    return n !== NULL_CONFIG_TIME && !(s < n) && (!!i || (!VehicleInputComponent_1.HoldPressMap.has(t) || !VehicleInputComponent_1.HoldPressMap.get(t)) && !!(n < s - e * (ModelManager_1.ModelManager.CharacterModel?.InverseSelfCenteredTimeDilation ?? 1)));
+  ShouldTriggerHoldEvent(t, e, i) {
+    var [n, s] = this.GetHoldConfig(t);
+    return s !== NULL_CONFIG_TIME && !(e < s) && (!!n || (!VehicleInputComponent_1.HoldPressMap.has(t) || !VehicleInputComponent_1.HoldPressMap.get(t)) && !!(s < e - i * (ModelManager_1.ModelManager.CharacterModel?.InverseSelfCenteredTimeDilation ?? 1)));
   }
   GetHoldConfig(t) {
-    if (!this.BpInputComp) {
+    if (!this.GetBpInputComp()) {
       return [false, NULL_CONFIG_TIME];
     }
-    let s = undefined;
+    let e = undefined;
     if (!this.HoldConfigs.has(t)) {
-      s = this.BpInputComp.GetUnrealHoldConfig(t);
-      this.HoldConfigs.set(t, s);
+      e = this.GetBpInputComp().GetUnrealHoldConfig(t);
+      this.HoldConfigs.set(t, e);
     }
-    if (s = s || this.HoldConfigs.get(t)) {
-      return [s.连续触发, s.触发时间];
+    if (e = e || this.HoldConfigs.get(t)) {
+      return [e.连续触发, e.触发时间];
     } else {
       return [false, NULL_CONFIG_TIME];
     }
   }
-  HandleHold(t, s) {
+  HandleHold(t, e) {
     if (this.ActorComp) {
-      if (this.BpInputComp) {
-        switch (t) {
-          case InputEnums_1.EInputAction.跳跃:
-            return this.BpInputComp.跳跃长按(s);
-          case InputEnums_1.EInputAction.攀爬:
-            return this.BpInputComp.攀爬长按(s);
-          case InputEnums_1.EInputAction.走跑切换:
-            return this.BpInputComp.走跑切换长按(s);
-          case InputEnums_1.EInputAction.攻击:
-            return this.BpInputComp.攻击长按(s);
-          case InputEnums_1.EInputAction.闪避:
-            return this.BpInputComp.闪避长按(s);
-          case InputEnums_1.EInputAction.技能1:
-            return this.BpInputComp.技能1长按(s);
-          case InputEnums_1.EInputAction.幻象1:
-            return this.BpInputComp.幻象1长按(s);
-          case InputEnums_1.EInputAction.大招:
-            return this.BpInputComp.大招长按(s);
-          case InputEnums_1.EInputAction.幻象2:
-            return this.BpInputComp.幻象2长按(s);
-          case InputEnums_1.EInputAction.切换角色1:
-            return this.BpInputComp.切换角色1长按(s);
-          case InputEnums_1.EInputAction.切换角色2:
-            return this.BpInputComp.切换角色2长按(s);
-          case InputEnums_1.EInputAction.切换角色3:
-            return this.BpInputComp.切换角色3长按(s);
-          case InputEnums_1.EInputAction.锁定目标:
-            return this.BpInputComp.锁定目标长按(s);
-          case InputEnums_1.EInputAction.瞄准:
-            return this.BpInputComp.瞄准长按(s);
+      var i = InputController_1.InputController.GetInputLayers(this.Entity.Id);
+      if (i) {
+        for (const s of i) {
+          var n = s.HandleHold(t, e);
+          if (n && n.CommandType !== 0) {
+            if (Log_1.Log.CheckDebug()) {
+              Log_1.Log.Debug("Input", 72, "[VehicleInputComponent.HandleHold]输入层级处理指令", ["layerType", s.GetLayerType()], ["action", t], ["commandType", n.CommandType], ["commandValue", n.IntValue]);
+            }
+            return n;
+          }
         }
+      } else if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Input", 72, "[VehicleInputComponent.HandleHold]输入层级为空", ["entityId", this.Entity.Id]);
       }
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("Input", 6, "Entity Is End");
@@ -670,6 +583,9 @@ let VehicleInputComponent = VehicleInputComponent_1 = class VehicleInputComponen
     } else if (t) {
       this.ActorComp.SetInputFacing(this.ActorComp.ActorForwardProxy);
     }
+  }
+  GetMoveDirectionCache() {
+    return this.MoveDirectionCache;
   }
   GetWorldMoveDirectionCache() {
     if (this.ActorComp.IsAutonomousProxy) {
@@ -696,21 +612,21 @@ let VehicleInputComponent = VehicleInputComponent_1 = class VehicleInputComponen
       this.LastMovementInputTime = Time_1.Time.Now;
     }
   }
-  ExecuteInputCommand(t, s) {
-    var e = t.Command;
-    switch (e.CommandType) {
+  ExecuteInputCommand(t, e) {
+    var i = t.Command;
+    switch (i.CommandType) {
       case 4:
-        this.ExecuteSprint(e);
+        this.ExecuteSprint(i);
         break;
       case 2:
-        this.ExecuteJump(e);
+        this.ExecuteJump(i);
         break;
       case 1:
-        this.ExecuteSkill(e);
+        this.ExecuteSkill(i);
     }
   }
   ExecuteJump(t) {
-    this.Entity.GetComponent(237)?.TryLeave(Global_1.Global.BaseCharacter.CharacterActorComponent.Entity);
+    this.Entity.GetComponent(246)?.TryLeave(Global_1.Global.BaseCharacter.CharacterActorComponent.Entity);
   }
   ExecuteSprint(t) {}
   ExecuteSkill(t) {}
@@ -723,29 +639,27 @@ let VehicleInputComponent = VehicleInputComponent_1 = class VehicleInputComponen
     this.TagEventVision1 = this.AddBlockActionEvent(-1802431900, InputEnums_1.EInputAction.幻象1);
     this.TagEventUltimateSkill = this.AddBlockActionEvent(-732810197, InputEnums_1.EInputAction.大招);
     this.TagEventVision2 = this.AddBlockActionEvent(-1752099043, InputEnums_1.EInputAction.幻象2);
-    this.TagEventChangeRoll1 = this.AddBlockActionEvent(-1216591977, InputEnums_1.EInputAction.切换角色1);
-    this.TagEventChangeRoll2 = this.AddBlockActionEvent(-1199814358, InputEnums_1.EInputAction.切换角色2);
-    this.TagEventChangeRoll3 = this.AddBlockActionEvent(-1183036739, InputEnums_1.EInputAction.切换角色3);
     this.TagEventLock = this.AddBlockActionEvent(-2140742267, InputEnums_1.EInputAction.锁定目标);
     this.TagEventAim = this.AddBlockActionEvent(-1013832153, InputEnums_1.EInputAction.瞄准);
     this.TagEventMove = this.AddBlockAxisEvent(1616400338, [InputEnums_1.EInputAxis.MoveForward, InputEnums_1.EInputAxis.MoveRight]);
   }
-  AddBlockActionEvent(t, e) {
-    return this.TagComp.ListenForTagAddOrRemove(t, (t, s) => {
-      if (s) {
-        this.InputGroup.BlockActions.add(e);
+  AddBlockActionEvent(t, i) {
+    return this.TagComp.ListenForTagAddOrRemove(t, (t, e) => {
+      if (e) {
+        this.InputGroup.BlockActions.add(i);
+        this.OnAddBlockAction(i);
       } else {
-        this.InputGroup.BlockActions.delete(e);
+        this.InputGroup.BlockActions.delete(i);
       }
     });
   }
-  AddBlockAxisEvent(t, i) {
-    return this.TagComp.ListenForTagAddOrRemove(t, (t, s) => {
-      for (const e of i) {
-        if (s) {
-          this.InputGroup.BlockAxes.add(e);
+  AddBlockAxisEvent(t, n) {
+    return this.TagComp.ListenForTagAddOrRemove(t, (t, e) => {
+      for (const i of n) {
+        if (e) {
+          this.InputGroup.BlockAxes.add(i);
         } else {
-          this.InputGroup.BlockAxes.delete(e);
+          this.InputGroup.BlockAxes.delete(i);
         }
       }
     });
@@ -759,9 +673,6 @@ let VehicleInputComponent = VehicleInputComponent_1 = class VehicleInputComponen
     this.TagEventVision1.EndTask();
     this.TagEventUltimateSkill.EndTask();
     this.TagEventVision2.EndTask();
-    this.TagEventChangeRoll1.EndTask();
-    this.TagEventChangeRoll2.EndTask();
-    this.TagEventChangeRoll3.EndTask();
     this.TagEventLock.EndTask();
     this.TagEventAim.EndTask();
     this.TagEventMove.EndTask();
@@ -776,45 +687,49 @@ let VehicleInputComponent = VehicleInputComponent_1 = class VehicleInputComponen
     this.PassengerInputForbidTagArray.push(-1802431900);
     this.PassengerInputForbidTagArray.push(-1752099043);
     this.PassengerInputForbidTagArray.push(-732810197);
-    this.PassengerInputForbidTagArray.push(-1216591977);
-    this.PassengerInputForbidTagArray.push(-1199814358);
-    this.PassengerInputForbidTagArray.push(-1183036739);
     this.PassengerInputForbidTagArray.push(-2140742267);
     this.PassengerInputForbidTagArray.push(-1013832153);
   }
-  GetNewQuatInLockMode(t, s, e) {
-    CameraUtility_1.CameraUtility.GetSocketLocation(undefined, s, this.TempVector, t);
+  OnAddBlockAction(t) {}
+  GetNewQuatInLockMode(t, e, i) {
+    CameraUtility_1.CameraUtility.GetSocketLocation(undefined, e, this.TempVector, t);
     this.TempVector.SubtractionEqual(this.ActorComp.ActorLocationProxy);
-    var s = GravityUtils_1.GravityUtils.GetPlanarSizeSquared2dForActor(this.ActorComp, this.TempVector);
-    if (!(s < this.MoveDirectionDistanceMin * this.MoveDirectionDistanceMin) && !(e.Inverse(this.TempQuat), this.TempQuat.RotateVector(this.TempVector, this.TempVector), t = this.TempVector.HeadingAngle() * MathUtils_1.MathUtils.RadToDeg, Math.abs(t) > this.MovementDirectionAngleThreshold)) {
-      s = MathUtils_1.MathUtils.RangeClamp(Math.sqrt(s), this.MoveDirectionDistanceMin, this.MoveDirectionDistanceMax, 0, t);
-      this.TempRotator.Set(0, s, 0);
+    var e = GravityUtils_1.GravityUtils.GetPlanarSizeSquared2dForActor(this.ActorComp, this.TempVector);
+    if (!(e < this.MoveDirectionDistanceMin * this.MoveDirectionDistanceMin) && !(i.Inverse(this.TempQuat), this.TempQuat.RotateVector(this.TempVector, this.TempVector), t = this.TempVector.HeadingAngle() * MathUtils_1.MathUtils.RadToDeg, Math.abs(t) > this.MovementDirectionAngleThreshold)) {
+      e = MathUtils_1.MathUtils.RangeClamp(Math.sqrt(e), this.MoveDirectionDistanceMin, this.MoveDirectionDistanceMax, 0, t);
+      this.TempRotator.Set(0, e, 0);
       this.TempRotator.Quaternion(this.TempQuat);
-      e.Multiply(this.TempQuat, this.TempQuat2);
-      e.DeepCopy(this.TempQuat2);
+      i.Multiply(this.TempQuat, this.TempQuat2);
+      i.DeepCopy(this.TempQuat2);
     }
   }
   QueryInputAxis(t) {
     return this.AxisValues.get(t);
   }
   QueryInputPriority(t) {
-    let s = undefined;
+    let e = undefined;
     switch (t.CommandType) {
       case 0:
         break;
       case 1:
-        s = this.QuerySkillPriority(t.IntValue);
+        e = this.QuerySkillPriority(t.IntValue);
         break;
       default:
-        s = InputController_1.InputController.QueryCommandPriority(t.CommandType);
+        if ((e = this.QueryCommandPriority(t)) === undefined) {
+          e = InputController_1.InputController.QueryCommandPriority(t.CommandType);
+        }
     }
-    return s = s === undefined ? INVALID_PRIORITY : s;
+    return e = e === undefined ? INVALID_PRIORITY : e;
   }
   QuerySkillPriority(t) {
     return 0;
   }
+  QueryCommandPriority(t) {}
   GetMoveVector(t) {
     t.X = this.QueryInputAxis(InputEnums_1.EInputAxis.MoveForward) ?? 0;
+    if (this.ForwardInputCurve) {
+      t.X = this.ForwardInputCurve.GetFloatValue(t.X);
+    }
     t.Y = this.QueryInputAxis(InputEnums_1.EInputAxis.MoveRight) ?? 0;
     t.Z = 0;
   }
@@ -826,17 +741,58 @@ let VehicleInputComponent = VehicleInputComponent_1 = class VehicleInputComponen
   }
   SetVehicleType(t) {
     this.VehicleType = t;
-    this.IsEnableLongPressLeave = t === "Gongduola" || t === "AutoMoveGongduola" || t === "NpcVehicle";
+    this.IsEnableLongPressLeave = t === "Gongduola" || t === "AutoMoveGongduola" || this.IsActionShowLongPress(InputEnums_1.EInputAction.跳跃);
+  }
+  IsActionShowLongPress(t) {
+    var e = this.Entity.GetComponent(0)?.GetTemplateId();
+    if (e) {
+      e = ConfigManager_1.ConfigManager.SkillButtonConfig.GetAllSkillVehicleButtonConfig(e);
+      if (e) {
+        for (const i of e) {
+          if (i.ActionType === t && i.ShowLongPress) {
+            return true;
+          }
+        }
+      }
+    }
+    return false;
   }
   CheckIfCanLeave() {
-    return this.VehicleType !== "Gongduola" || !!this.Entity.GetComponent(241)?.CheckIfCanLeave();
+    return this.VehicleType !== "Gongduola" || !!this.Entity.GetComponent(250)?.CheckIfCanLeave();
   }
-  TestActionInput(t, s, e) {
-    t = new CharacterInputComponent_1.InputEvent(t, s, e);
+  IsEnableInputCache() {
+    return false;
+  }
+  GetSpecificInputCaches() {}
+  RemoveInputCache(e, i) {
+    for (let t = this.InputCaches.length - 1; t >= 0; t--) {
+      var n = this.InputCaches[t];
+      if (n.Action === e && n.State === i) {
+        if (Log_1.Log.CheckDebug()) {
+          Log_1.Log.Debug("Input", 67, "[VehicleInputComponent.RemoveInputCache]移除输入缓存", ["action", n.Action], ["state", n.State], ["time", n.Time], ["worldTime", n.WorldTime], ["eventId", n.Id]);
+        }
+        this.InputCaches.splice(t, 1);
+      }
+    }
+  }
+  IsEnableExecuteCommandImmediately() {
+    return false;
+  }
+  GetImmediateInputCommands(t) {}
+  ExecuteImmediateInputCommand(t) {
+    t = this.GetImmediateInputCommands(t);
+    if (t) {
+      for (const e of t) {
+        this.ExecuteInputCommand(e, "ExecuteImmediateInputCommand");
+      }
+    }
+  }
+  TestActionInput(t, e, i) {
+    t = new CharacterInputComponent_1.InputEvent(t, e, i);
     this.TestInputEvent.push(t);
   }
 };
 VehicleInputComponent.HoldPressMap = new Map();
 VehicleInputComponent.HoldActionMap = new Map();
-VehicleInputComponent = VehicleInputComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(244)], VehicleInputComponent);
+VehicleInputComponent = VehicleInputComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(253)], VehicleInputComponent);
 exports.VehicleInputComponent = VehicleInputComponent; //# sourceMappingURL=VehicleInputComponent.js.map

@@ -139,6 +139,9 @@ class CombineKeyItem extends KeyItemBase_1.KeyItemBase {
     var t = this.GetTexture(2);
     t.SetChangeColor(this.IsGray, t.changeColor);
   }
+  GetKeyName() {
+    return this.KeyName;
+  }
 }
 exports.CombineKeyItem = CombineKeyItem;
 //# sourceMappingURL=CombineKeyItem.js.map

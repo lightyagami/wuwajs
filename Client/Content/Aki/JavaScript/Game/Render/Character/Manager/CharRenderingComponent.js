@@ -11,6 +11,7 @@ const EffectEnvironment_1 = require("../../../../Core/Effect/EffectEnvironment")
 const ResourceSystem_1 = require("../../../../Core/Resource/ResourceSystem");
 const FNameUtil_1 = require("../../../../Core/Utils/FNameUtil");
 const Vector_1 = require("../../../../Core/Utils/Math/Vector");
+const MathUtils_1 = require("../../../../Core/Utils/MathUtils");
 const TsBaseCharacter_1 = require("../../../Character/TsBaseCharacter");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
@@ -21,6 +22,7 @@ const RenderConfig_1 = require("../../Config/RenderConfig");
 const RenderModuleConfig_1 = require("../../Manager/RenderModuleConfig");
 const RenderModuleController_1 = require("../../Manager/RenderModuleController");
 const RenderUtil_1 = require("../../Utils/RenderUtil");
+const CharBodyEffect_1 = require("../Components/Components/CharBodyEffect");
 const CharRuntimeMaterialControllerGroupInfo_1 = require("../Components/MaterialController/CharRuntimeMaterialControllerGroupInfo");
 class CharRenderingComponent extends UE.KuroCharRenderingComponent {
   constructor() {
@@ -48,9 +50,13 @@ class CharRenderingComponent extends UE.KuroCharRenderingComponent {
     this.MonsterUseBodyEffect = false;
     this.UseMaterialContainerV2 = true;
     this.CanUpdate = true;
-    this.IsYounuo = false;
-    this.ShadowProxy = undefined;
-    this.ShadowProxyRefs = new Array();
+    this.UseProxy = false;
+    this.ProxyMaterialsOverride = undefined;
+    this.ProxyRenderInMainPass = false;
+    this.ProxyRenderShadow = false;
+    this.ProxyRenderTrail = false;
+    this.Proxy = undefined;
+    this.DitherRemap = 0;
     this.DisableFightDither = false;
     this.FightDitherRateCache = 1;
     this.OnRoleGoDownFinishEventAdded = false;
@@ -79,9 +85,7 @@ class CharRenderingComponent extends UE.KuroCharRenderingComponent {
     this.IsUiUpdate = false;
     this.UseMaterialContainerV2 = true;
     this.CanUpdate = true;
-    this.IsYounuo = false;
-    this.ShadowProxy = undefined;
-    this.ShadowProxyRefs = new Array();
+    this.Proxy = undefined;
     this.DisableFightDither = false;
     this.FightDitherRateCache = 1;
     this.OnRoleGoDownFinishEventAdded = false;
@@ -183,7 +187,6 @@ class CharRenderingComponent extends UE.KuroCharRenderingComponent {
         this.TempRemoveList = [];
         this.SequenceHandleIds = [];
         this.IsDebug = false;
-        this.ShadowProxyRefs = [];
         for (const i of this.GetRenderComps()) {
           if (this.AllRenderCompsMap.has(i.GetComponentId())) {
             if (Log_1.Log.CheckError()) {
@@ -202,6 +205,34 @@ class CharRenderingComponent extends UE.KuroCharRenderingComponent {
         this.InvokeStart();
       }
       RenderModuleConfig_1.RenderStats.StatCharRenderingComponentInit?.Stop();
+    }
+  }
+  AddRenderCompDynamic(e) {
+    if (this.AllRenderCompsMap.has(e.GetComponentId())) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("RenderCharacter", 13, "错误:动态重复添加渲染模块 ID", ["Actor", this.CachedOwnerName], ["渲染模块ID", e.GetComponentId()]);
+      }
+    } else {
+      e.Awake(this);
+      this.AllRenderCompsMap.set(e.GetComponentId(), e);
+      this.AllRenderComps.push(e);
+      try {
+        e.Start();
+      } catch {
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("RenderCharacter", 25, "错误:动态添加组件初始化错误:", ["Actor", this.GetOwner().GetName()], ["组件ID", e.GetComponentId()]);
+        }
+        return;
+      }
+      if (e.GetIsInitSuc()) {
+        if (Log_1.Log.CheckDebug()) {
+          Log_1.Log.Debug("RenderCharacter", 25, "动态添加渲染模块 ID", ["Actor", this.CachedOwnerName], ["渲染模块ID", e.GetComponentId()]);
+        }
+        return e;
+      }
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("RenderCharacter", 25, "错误:动态添加组件初始化错误:", ["Actor", this.GetOwner().GetName()], ["组件ID", e.GetComponentId()]);
+      }
     }
   }
   SetLogicOwner(e) {
@@ -364,7 +395,7 @@ class CharRenderingComponent extends UE.KuroCharRenderingComponent {
           t = this.LogicOwner;
           e *= t.GetTimeScale();
         }
-      } else if ((t = this.CachedOwnerEntity?.GetComponent(183)) && (t = this.CachedOwnerEntity.TimeDilation * t.CurrentTimeScale) > 1) {
+      } else if ((t = this.CachedOwnerEntity?.GetComponent(188)) && (t = this.CachedOwnerEntity.TimeDilation * t.CurrentTimeScale) > 1) {
         e *= t;
       }
       return e;
@@ -372,6 +403,26 @@ class CharRenderingComponent extends UE.KuroCharRenderingComponent {
   }
   GetInWater(e = 2) {
     return this.GetComponent(RenderConfig_1.RenderConfig.IdSceneInteraction)?.GetInWater(e);
+  }
+  GetWaterHitLocationZ() {
+    var e = this.GetComponent(RenderConfig_1.RenderConfig.IdSceneInteraction);
+    if (e) {
+      return e.GetWaterHitLocationZ();
+    } else {
+      return 0;
+    }
+  }
+  GetInAudioShr() {
+    var e = this.GetComponent(RenderConfig_1.RenderConfig.IdSceneInteraction);
+    return !!e && e.GetInAudioShr();
+  }
+  GetAudioShrTag() {
+    var e = this.GetComponent(RenderConfig_1.RenderConfig.IdSceneInteraction);
+    if (e) {
+      return e.GetAudioShrTag();
+    } else {
+      return FNameUtil_1.FNameUtil.NONE;
+    }
   }
   GetRenderType() {
     return this.RenderType;
@@ -479,20 +530,11 @@ class CharRenderingComponent extends UE.KuroCharRenderingComponent {
         Log_1.Log.Debug("RenderCharacter", 25, "添加材质控制器", ["Actor", this.GetOwner().GetName()], ["材质控制器", e.GetName()], ["handle", r], ["CleanOriginEffect", e.CleanOriginEffect]);
       }
     }
-    if (this.IsYounuo && e.GetName().startsWith("DA_Fx_Younuo_MoonGod")) {
-      this.ShadowProxy?.SetVisibility(true);
-      this.ShadowProxyRefs.push(r);
-    }
     EventSystem_1.EventSystem.EmitWithTarget(this, EventDefine_1.EEventName.OnAddMaterialController, e, t, r);
     RenderModuleConfig_1.RenderStats.StatCharRenderingComponentAddData?.Stop();
     return r;
   }
-  OnRemoveMaterialController(t) {
-    var e;
-    if (this.IsYounuo && (e = this.ShadowProxyRefs.findIndex(e => e === t)) >= 0 && (this.ShadowProxyRefs.splice(e, 1), this.ShadowProxyRefs.length === 0)) {
-      this.ShadowProxy?.SetVisibility(false);
-    }
-  }
+  OnRemoveMaterialController(e) {}
   AddMaterialControllerDataInnerV2(e, t, i) {
     var r = this.GetComponent(RenderConfig_1.RenderConfig.IdMaterialControllerV2);
     if (r) {
@@ -518,6 +560,12 @@ class CharRenderingComponent extends UE.KuroCharRenderingComponent {
       }
     } else if (t = this.GetComponent(RenderConfig_1.RenderConfig.IdMaterialController)) {
       t.RemoveMaterialControllerData(e);
+    }
+  }
+  RemoveAllUnloopedEffects() {
+    var e = this.GetComponent(RenderConfig_1.RenderConfig.IdMaterialContainerV2);
+    if (e) {
+      e.RemoveAllUnloopedEffects();
     }
   }
   UpdateMaterialEffectsOnly() {
@@ -563,6 +611,7 @@ class CharRenderingComponent extends UE.KuroCharRenderingComponent {
         e = this.DisableFightDither ? 1 : t;
       }
       e = CharRenderingComponent.GlobalDisableDitherEffect ? 1 : e;
+      e = MathUtils_1.MathUtils.Clamp(e / (1 - this.DitherRemap), 0, 1);
       try {
         r.SetDitherEffect(e, i);
         this.SetBodyEffectOpacity(r.GetDitherRate());
@@ -595,6 +644,22 @@ class CharRenderingComponent extends UE.KuroCharRenderingComponent {
       e.SetDitherMask(RenderConfig_1.RenderConfig.MeshPartsHeadArray, true);
     }
   }
+  SetDitherUseHeadMaskHideEffect(e) {
+    var t = this.GetComponent(RenderConfig_1.RenderConfig.IdMaterialContainerV2);
+    if (t) {
+      t.EnableTickGetHeadPosInAllMeshes(e);
+      if (e) {
+        t.SetFloatUpdateParamPermanent(RenderConfig_1.RenderConfig.UseHeadMaskHideEffect, 1, 0, 0, 17);
+        t.SetFloatUpdateParamPermanent(RenderConfig_1.RenderConfig.DitherUseInRayTracing, 0, 0, 0, 17);
+        for (const i of RenderConfig_1.RenderConfig.MeshPartsHeadArray) {
+          t.SetFloatUpdateParamPermanent(RenderConfig_1.RenderConfig.UseHeadMaskHideEffect, 0, 0, 0, i);
+        }
+      } else {
+        t.RemoveFloatUpdateParamPermanent(RenderConfig_1.RenderConfig.UseHeadMaskHideEffect, 0, 0, 17);
+        t.RemoveFloatUpdateParamPermanent(RenderConfig_1.RenderConfig.DitherUseInRayTracing, 0, 0, 17);
+      }
+    }
+  }
   TempRemoveDither() {
     var e = this.GetComponent(RenderConfig_1.RenderConfig.IdDitherEffect);
     if (e) {
@@ -608,8 +673,8 @@ class CharRenderingComponent extends UE.KuroCharRenderingComponent {
     }
   }
   RegisterBodyEffect(e) {
-    var t = this.GetComponent(RenderConfig_1.RenderConfig.IdBodyEffect);
-    if (t) {
+    let t = this.GetComponent(RenderConfig_1.RenderConfig.IdBodyEffect);
+    if (t = t || this.AddRenderCompDynamic(new CharBodyEffect_1.CharBodyEffect())) {
       t.RegisterEffect(e);
     }
   }
@@ -789,16 +854,20 @@ class CharRenderingComponent extends UE.KuroCharRenderingComponent {
         RenderModuleConfig_1.RenderStats.StatCharRenderingComponentDataGroupBeforeUpdate?.Stop();
         RenderModuleConfig_1.RenderStats.StatCharRenderingComponentUpdateInner?.Start();
         for (const i of this.AllRenderComps) {
+          i.GetRenderStat().Start();
           if (i.GetIsInitSuc()) {
             i.Update();
           }
+          i.GetRenderStat().Stop();
         }
         RenderModuleConfig_1.RenderStats.StatCharRenderingComponentUpdateInner?.Stop();
         RenderModuleConfig_1.RenderStats.StatCharRenderingComponentLateUpdate?.Start();
         for (const r of this.AllRenderComps) {
+          r.GetRenderStat().Start();
           if (r.GetIsInitSuc()) {
             r.LateUpdate();
           }
+          r.GetRenderStat().Stop();
         }
         RenderModuleConfig_1.RenderStats.StatCharRenderingComponentLateUpdate?.Stop();
         RenderModuleConfig_1.RenderStats.StatCharRenderingComponentDataGroupAfterUpdate?.Start();
@@ -926,30 +995,24 @@ class CharRenderingComponent extends UE.KuroCharRenderingComponent {
       if (!this.IsRecord && Info_1.Info.IsGameRunning()) {
         RenderModuleController_1.RenderModuleController.AddCharRenderShell(this);
       }
-      if (this.CachedOwner instanceof TsBaseCharacter_1.default && this.CachedOwner.Mesh && (this.CachedOwner.Mesh.SkeletalMesh?.GetName() === "R2T1YounuoMd10011" && (this.IsYounuo = true), this.IsYounuo)) {
-        this.AddShadowProxy26(this.CachedOwner.Mesh);
+      if (this.UseProxy && this.CachedOwner instanceof TsBaseCharacter_1.default && this.CachedOwner.Mesh) {
+        this.AddProxy(this.CachedOwner.Mesh);
       }
     }
   }
-  AddShadowProxy26(e) {
+  AddProxy(e) {
     if (this.CachedOwner) {
-      this.ShadowProxy = this.CachedOwner.AddComponentByClass(UE.SkeletalMeshComponent.StaticClass(), false, undefined, false, new UE.FName("ShadowProxy"));
-      this.ShadowProxy.SetSkeletalMesh(e.SkeletalMesh);
-      this.ShadowProxy.SetMasterPoseComponent(e, false);
-      this.ShadowProxy.bUseBoundsFromMasterPoseComponent = true;
-      this.ShadowProxy.SetVisibility(false);
-      this.ShadowProxy.SetRenderInMainPass(false);
-      this.ShadowProxy.K2_AttachToComponent(e, undefined, 2, 2, 0, true);
-      ResourceSystem_1.ResourceSystem.LoadAsync("/Game/Aki/Render/Shaders/Character/M_ToonShadowProxy.M_ToonShadowProxy_R", UE.Material, e => {
-        this.ShadowProxy.SetMaterial(1, e);
-      });
-      ResourceSystem_1.ResourceSystem.LoadAsync("/Game/Aki/Render/Shaders/Character/MI_Empty.MI_Empty", UE.MaterialInstance, t => {
-        var i = this.ShadowProxy.GetNumMaterials();
-        for (let e = 2; e < i; ++e) {
-          this.ShadowProxy.SetMaterial(e, t);
-        }
-        this.ShadowProxy.SetMaterial(0, t);
-      });
+      this.Proxy = this.CachedOwner.AddComponentByClass(UE.SkeletalMeshComponent.StaticClass(), false, undefined, false, new UE.FName("Proxy"));
+      this.Proxy.SetSkeletalMesh(e.SkeletalMesh);
+      this.Proxy.SetMasterPoseComponent(e, false);
+      this.Proxy.bUseBoundsFromMasterPoseComponent = true;
+      this.Proxy.SetRenderInMainPass(this.ProxyRenderInMainPass);
+      this.Proxy.SetCastShadow(this.ProxyRenderShadow);
+      this.Proxy.SetRenderKuroTrail(this.ProxyRenderTrail);
+      this.Proxy.K2_AttachToComponent(e, undefined, 2, 2, 0, true);
+      for (let e = 0, t = this.ProxyMaterialsOverride.Num(); e < t; ++e) {
+        this.Proxy.SetMaterial(e, this.ProxyMaterialsOverride.Get(e));
+      }
     }
   }
   ShouldTickAfterGoDown() {

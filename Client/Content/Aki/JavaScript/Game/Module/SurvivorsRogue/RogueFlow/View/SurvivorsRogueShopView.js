@@ -27,7 +27,7 @@ class SurvivorsRogueShopView extends UiViewBase_1.UiViewBase {
     this.Qwd = undefined;
     this.Kwd = true;
     this.c6d = undefined;
-    this.fJd = 0;
+    this.aZd = 0;
     this.Xwd = e => {
       if (!this.Command.IsFinished) {
         this.Command.RequestCommand([e.VTd.w5n]);
@@ -83,7 +83,7 @@ class SurvivorsRogueShopView extends UiViewBase_1.UiViewBase {
       }
     };
     this.ITt = () => {
-      var e = ModelManager_1.ModelManager.SurvivorsRogueModel.BattleData.GetCurrencyCount() >= this.fJd;
+      var e = ModelManager_1.ModelManager.SurvivorsRogueModel.BattleData.GetCurrencyCount() >= this.aZd;
       var i = this.GetText(6);
       i.SetChangeColor(!e, i.changeColor);
     };
@@ -139,8 +139,8 @@ class SurvivorsRogueShopView extends UiViewBase_1.UiViewBase {
     var e;
     var i = this.Command.GetViewInfo();
     if (i) {
-      this.fJd = i.RefreshCost;
-      this.GetText(6).SetText(this.fJd.toString());
+      this.aZd = i.RefreshCost;
+      this.GetText(6).SetText(this.aZd.toString());
       this.ITt();
       this.Qwd.DeselectCurrentGridProxy();
       this.d6d(false);

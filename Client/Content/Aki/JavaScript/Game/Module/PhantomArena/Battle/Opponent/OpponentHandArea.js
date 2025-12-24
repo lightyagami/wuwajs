@@ -12,6 +12,7 @@ const UiAsyncTask_1 = require("../../../../Ui/Base/UiAsyncTask");
 const UiPanelBase_1 = require("../../../../Ui/Base/UiPanelBase");
 const PhantomArenaDefine_1 = require("../PhantomArenaDefine");
 const OpponentHandCardItem_1 = require("./OpponentHandCardItem");
+const WAIT_ADD_CARD_TIME = 40;
 class OpponentHandArea extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
@@ -34,7 +35,8 @@ class OpponentHandArea extends UiPanelBase_1.UiPanelBase {
     var a = new OpponentHandCardItem_1.OpponentHandCardItem();
     a.SetAreaItem(this.ParentArea);
     this.HandCardItemList.push(a);
-    await a.CreateThenShowByResourceIdAsync("PnlPlayerItem", this.Layout.RootUIComp);
+    var e = ModelManager_1.ModelManager.PhantomArenaBattleModel.IsOldBvb ? "PnlPlayerItem" : "PnlPlayerItemNew";
+    await a.CreateThenShowByResourceIdAsync(e, this.Layout.RootUIComp);
     await a.PlayMoveInSequence();
     this.GridWidth = a.GetRootItem().GetWidth();
   }
@@ -42,102 +44,102 @@ class OpponentHandArea extends UiPanelBase_1.UiPanelBase {
     this.TotalWidth = PhantomArenaDefine_1.HANDCARD_LIMIT * this.GridWidth + (PhantomArenaDefine_1.HANDCARD_LIMIT - 1) * this.OriginalSpace;
     this.TotalHeight = this.Layout.RootUIComp.GetHeight();
     let a = this.OriginalSpace;
-    var t;
+    var e;
     if (this.HandCardItemList.length > PhantomArenaDefine_1.HANDCARD_LIMIT) {
-      t = this.TotalWidth - this.HandCardItemList.length * this.GridWidth;
-      a = t / (this.HandCardItemList.length - 1);
+      e = this.TotalWidth - this.HandCardItemList.length * this.GridWidth;
+      a = e / (this.HandCardItemList.length - 1);
     }
     this.Layout.SetSpacing(a);
   }
   async Aiu() {
-    var t = ModelManager_1.ModelManager.PhantomArenaBattleModel.OpponentData.HasFourCostInHand() ? 1 : 0;
-    var e = ModelManager_1.ModelManager.PhantomArenaBattleModel.OpponentData.HandCardNum;
+    var e = ModelManager_1.ModelManager.PhantomArenaBattleModel.OpponentData.HasFourCostInHand() ? 1 : 0;
+    var t = ModelManager_1.ModelManager.PhantomArenaBattleModel.OpponentData.HandCardNum;
     var i = [];
-    for (let a = t; a < e; a++) {
+    for (let a = e; a < t; a++) {
       i.push(this.g0u());
     }
     await Promise.all(i);
     this.iu1();
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("PhantomArena", 10, "初始化Npc手牌", ["HandCardNum", e]);
+      Log_1.Log.Info("PhantomArena", 10, "初始化Npc手牌", ["HandCardNum", t]);
     }
   }
-  async PlayStartTimeDrawCardTween(t) {
-    var e = [];
+  async PlayStartTimeDrawCardTween(e) {
+    var t = [];
     var i = ModelManager_1.ModelManager.PhantomArenaBattleModel.OpponentData.HasFourCostInHand() ? 1 : 0;
     for (let a = i; a < this.HandCardItemList.length; a++) {
       var s = this.HandCardItemList[a];
       var r = (a - i + 1) * PhantomArenaDefine_1.PLAY_STARTTIME_CARD_TWEEN_DELAY;
-      e.push(s.PlayStartTimeLocationTween(t, r));
+      t.push(s.PlayStartTimeLocationTween(e, r));
     }
-    await Promise.all(e);
+    await Promise.all(t);
   }
-  async PlayEndTimeDiscardTween(t) {
-    var e = [];
+  async PlayEndTimeDiscardTween(e) {
+    var t = [];
     var i = ModelManager_1.ModelManager.PhantomArenaBattleModel.OpponentData.HasFourCostInHand() ? 1 : 0;
     for (let a = i; a < this.HandCardItemList.length; a++) {
       var s = this.HandCardItemList[a];
-      e.push(s.PlayEndTimeLocationTween(t, (a - i + 1) * PhantomArenaDefine_1.PLAY_STARTTIME_CARD_TWEEN_DELAY));
+      t.push(s.PlayEndTimeLocationTween(e, (a - i + 1) * PhantomArenaDefine_1.PLAY_STARTTIME_CARD_TWEEN_DELAY));
     }
-    await Promise.all(e);
+    await Promise.all(t);
     this.HandCardItemList.length = i;
   }
-  async PlayBackToRecycleTween(t, a) {
-    var e = this.HandCardItemList.length;
-    if (!(e < a)) {
+  async PlayBackToRecycleTween(e, a) {
+    var t = this.HandCardItemList.length;
+    if (!(t < a)) {
       var i = [];
-      var e = this.HandCardItemList.length - a;
-      for (let a = e; a < this.HandCardItemList.length; a++) {
+      var t = this.HandCardItemList.length - a;
+      for (let a = t; a < this.HandCardItemList.length; a++) {
         var s = this.HandCardItemList[a];
-        i.push(s.PlayBackToRecycleTween(t));
+        i.push(s.PlayBackToRecycleTween(e));
       }
       await Promise.all(i);
       this.iu1();
-      this.HandCardItemList.length = e;
+      this.HandCardItemList.length = t;
     }
   }
-  async PlayDiscardCardTween(t, a) {
-    var e = this.HandCardItemList.length;
-    if (!(e < a)) {
+  async PlayDiscardCardTween(e, a) {
+    var t = this.HandCardItemList.length;
+    if (!(t < a)) {
       var i = [];
-      var e = this.HandCardItemList.length - a;
-      for (let a = e; a < this.HandCardItemList.length; a++) {
+      var t = this.HandCardItemList.length - a;
+      for (let a = t; a < this.HandCardItemList.length; a++) {
         var s = this.HandCardItemList[a];
-        i.push(s.PlayBackToLibraryTween(t));
+        i.push(s.PlayBackToLibraryTween(e));
       }
       await Promise.all(i);
       this.iu1();
-      this.HandCardItemList.length = e;
+      this.HandCardItemList.length = t;
     }
   }
-  async PlayAddCardTween(t) {
-    var e = [];
-    var t = this.HandCardItemList.length - t;
+  async PlayAddCardTween(e) {
+    var t = [];
+    var e = this.HandCardItemList.length - e;
     var i = this.ParentArea.ViewProxy.GetOpponentCardLibraryItem();
-    for (let a = t; a < this.HandCardItemList.length; a++) {
+    for (let a = e; a < this.HandCardItemList.length; a++) {
       var s = this.HandCardItemList[a];
-      e.push(s.PlayAddCardTween(i));
+      t.push(s.PlayAddCardTween(i));
     }
-    await Promise.all(e);
+    await Promise.all(t);
   }
-  async AddCardList(t) {
-    var e = [];
-    for (let a = 0; a < t; a++) {
-      e.push(this.g0u());
+  async AddCardList(e) {
+    var t = [];
+    for (let a = 0; a < e; a++) {
+      t.push(this.g0u());
     }
-    await Promise.all(e);
+    await Promise.all(t);
     this.iu1();
   }
-  async DestroyCardList(t) {
-    var e = [];
-    var t = this.HandCardItemList.length - t;
-    for (let a = t; a < this.HandCardItemList.length; a++) {
+  async DestroyCardList(e) {
+    var t = [];
+    var e = this.HandCardItemList.length - e;
+    for (let a = e; a < this.HandCardItemList.length; a++) {
       var i = this.HandCardItemList[a];
-      e.push(i.PlayRemoveSequence());
+      t.push(i.PlayRemoveSequence());
     }
-    await Promise.all(e);
+    await Promise.all(t);
     this.iu1();
-    this.HandCardItemList.length = t;
+    this.HandCardItemList.length = e;
   }
   RegisterBattleArea(a) {
     this.ParentArea = a;
@@ -146,20 +148,20 @@ class OpponentHandArea extends UiPanelBase_1.UiPanelBase {
     return this.Layout.RootUIComp;
   }
   async RefreshHandCardNum(a) {
-    const t = this.HandCardItemList.length;
-    var e = new UiAsyncTask_1.UiAsyncTask("OpponentHandArea.RefreshHandCardNum", async () => {
-      if (a > t) {
-        await this.AddCardList(a - t);
-        await TimerSystem_1.GameplayTimerSystem.Wait(TimerSystem_1.MIN_TIME);
-        await this.PlayAddCardTween(a - t);
+    const e = this.HandCardItemList.length;
+    var t = new UiAsyncTask_1.UiAsyncTask("OpponentHandArea.RefreshHandCardNum", async () => {
+      if (a > e) {
+        await this.AddCardList(a - e);
+        await TimerSystem_1.GameplayTimerSystem.Wait(WAIT_ADD_CARD_TIME);
+        await this.PlayAddCardTween(a - e);
       } else {
-        await this.DestroyCardList(t - a);
+        await this.DestroyCardList(e - a);
       }
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("PhantomArena", 10, "刷新Npc手牌", ["HandCardNum", a]);
       }
     });
-    await this.RunAsyncTask(e);
+    await this.RunAsyncTask(t);
   }
   async StartTimeDrawCard(a) {
     await this.Aiu();
@@ -170,12 +172,12 @@ class OpponentHandArea extends UiPanelBase_1.UiPanelBase {
     await this.PlayEndTimeDiscardTween(a);
   }
   async BackToRecycle(a) {
-    var t = this.ParentArea.ViewProxy.CardRecycle.GetRootItem();
-    await this.PlayBackToRecycleTween(t, a);
+    var e = this.ParentArea.ViewProxy.CardRecycle.GetRootItem();
+    await this.PlayBackToRecycleTween(e, a);
   }
   async DiscardCard(a) {
-    var t = this.ParentArea.ViewProxy.GetOpponentCardLibraryItem();
-    await this.PlayDiscardCardTween(t, a);
+    var e = this.ParentArea.ViewProxy.GetOpponentCardLibraryItem();
+    await this.PlayDiscardCardTween(e, a);
   }
 }
 exports.OpponentHandArea = OpponentHandArea;

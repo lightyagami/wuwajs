@@ -12,7 +12,10 @@ class AiStateMachineConditionListenBeHit extends AiStateMachineCondition_1.AiSta
     this.dne = new Set();
     this.Cne = 0;
     this.gne = (t, i, s) => {
-      if (s > 0 && this.Cne === s) {
+      if (s > 0) {
+        if (this.Cne !== s) {
+          return;
+        }
         this.ResultSelf = true;
       }
       if (t) {

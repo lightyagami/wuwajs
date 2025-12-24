@@ -45,7 +45,8 @@ class PhantomArenaBattleTips extends UiPanelBase_1.UiPanelBase {
   OnBeforeDestroy() {
     this.Sequence.Clear();
   }
-  RefreshTips(t) {
+  RefreshTips(t, e) {
+    this.CardItem.SetUiActive(e);
     this.CardItem.Refresh(t);
     this.DetailsTipsItem.RefreshByCardData(t);
   }
@@ -71,7 +72,7 @@ class PhantomArenaBattleTips extends UiPanelBase_1.UiPanelBase {
   GetGuideUiItemAndUiItemForShowEx(t) {
     var e;
     if (t && !(t.length <= 0)) {
-      if ((e = t[0]) === "CardEffect" || e === "CardAttr") {
+      if ((e = t[0]) === "CardEffect" || e === "CardAttr" || e === "CardFullInfo") {
         return this.DetailsTipsItem?.GetGuideUiItemAndUiItemForShowEx(t);
       } else if (e === "DetailCard") {
         return this.CardItem?.GetGuideUiItemAndUiItemForShowEx(t);

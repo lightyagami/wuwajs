@@ -35,15 +35,15 @@ class HonamiStoryMainView extends UiViewBase_1.UiViewBase {
     super(...arguments);
     this.zJa = undefined;
     this.S9_ = undefined;
-    this.Uvm = undefined;
-    this.$0m = undefined;
+    this.Vwm = undefined;
+    this.YEm = undefined;
     this.$5d = new Map();
     this.W5d = [];
     this.TDe = undefined;
-    this.Mom = "";
-    this.Eom = 0;
-    this.dIm = false;
-    this.mIm = false;
+    this.$hm = "";
+    this.Whm = 0;
+    this.Kkm = false;
+    this.Xkm = false;
     this.$An = t => {
       for (const i of this.$5d.values()) {
         if (i.SpecialParamName === t) {
@@ -52,23 +52,23 @@ class HonamiStoryMainView extends UiViewBase_1.UiViewBase {
         }
       }
     };
-    this.NLm = () => {
-      this.gIm(true);
+    this.IMf = () => {
+      this.zkm(true);
     };
     this.l7i = t => {
       if (t.ViewName === "HonamiStoryMainView") {
-        this.Iom(false);
+        this.Qhm(false);
       }
     };
-    this.YIm = () => {
+    this.ZOm = () => {
       this.RefreshSpecialButtonsStates();
     };
-    this.Tom = () => {
+    this.Khm = () => {
       ScrollingTipsController_1.ScrollingTipsController.ShowTipsByText("剧情对话");
     };
-    this.fIm = () => {
-      this.mIm = !this.mIm;
-      this.gIm(!this.mIm);
+    this.Ykm = () => {
+      this.Xkm = !this.Xkm;
+      this.zkm(!this.Xkm);
     };
     this.Q5d = () => {
       UiManager_1.UiManager.OpenView("HonamiStoryTechnologyView");
@@ -117,33 +117,33 @@ class HonamiStoryMainView extends UiViewBase_1.UiViewBase {
       this.CloseMe();
       UiManager_1.UiManager.OpenView("HonamiStorySmallLoadingView");
     };
-    this.Ezd = () => {
+    this.rJd = () => {
       var t = ModelManager_1.ModelManager.HonamiStoryModel.GetActivityData();
       return !!t && (t.CanMascotCollectGetReward() || t.CanAreaCollectGetReward());
     };
-    this.mtm = () => {
+    this.Dom = () => {
       var t = ModelManager_1.ModelManager.HonamiStoryModel.GetActivityData();
       return !!t && t.IsPermanentTaskHasRedDot();
     };
-    this.ftm = () => {
+    this.Uom = () => {
       var t = ModelManager_1.ModelManager.HonamiStoryModel.GetActivityData();
       return !!t && t.IsLimitTaskHasRedDot();
     };
-    this.b0m = () => {
+    this.SEm = () => {
       var t = ModelManager_1.ModelManager.HonamiStoryModel.GetActivityData();
       return !!t && t.IsItemCollectionHasRedDot();
     };
-    this.W0m = () => ModelManager_1.ModelManager.HonamiStoryModel.CheckIsNewInInventory();
-    this.aLm = () => ModelManager_1.ModelManager.HonamiStoryModel.IsShopHasRedDot();
-    this.R0m = () => ModelManager_1.ModelManager.HonamiStoryModel.IsTechHasRedDot();
-    this.gtm = t => {
+    this.zEm = () => ModelManager_1.ModelManager.HonamiStoryModel.CheckIsNewInInventory();
+    this.jgf = () => ModelManager_1.ModelManager.HonamiStoryModel.IsShopHasRedDot();
+    this.MEm = () => ModelManager_1.ModelManager.HonamiStoryModel.IsTechHasRedDot();
+    this.xom = t => {
       var i = ModelManager_1.ModelManager.HonamiStoryModel.GetActivityData();
       if (i) {
         i = ModelManager_1.ModelManager.ActivityModel.GetRemainTimeText(i.EndRewardTime, "{0}") ?? "";
         t?.SetText(i);
       }
     };
-    this.Ctm = t => {
+    this.Bom = t => {
       var i;
       var e = ModelManager_1.ModelManager.HonamiStoryModel.GetActivityData();
       if (e) {
@@ -152,7 +152,7 @@ class HonamiStoryMainView extends UiViewBase_1.UiViewBase {
         t?.SetText(i + "/" + e);
       }
     };
-    this.iSm = t => {
+    this.hDm = t => {
       var i;
       var e;
       var n = ModelManager_1.ModelManager.HonamiStoryModel.GetBackPackData(1);
@@ -169,40 +169,40 @@ class HonamiStoryMainView extends UiViewBase_1.UiViewBase {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UIItem], [11, UE.UIItem], [12, UE.UIButtonComponent], [13, UE.UIItem], [14, UE.UIExtendToggle], [15, UE.UIItem], [16, UE.UIButtonComponent], [17, UE.UIItem], [18, UE.UIButtonComponent]];
-    this.BtnBindInfo = [[12, this.Tom], [14, this.fIm]];
+    this.BtnBindInfo = [[12, this.Khm], [14, this.Ykm]];
   }
   async OnBeforeStartAsync() {
     var t;
     if (this.OpenParam) {
       t = this.OpenParam;
-      this.Mom = t.UiCameraName;
-      this.Eom = t.TalkEntityId;
+      this.$hm = t.UiCameraName;
+      this.Whm = t.TalkEntityId;
     }
     await super.OnBeforeStartAsync();
     this.zJa = new PopupCaptionItem_1.PopupCaptionItem(this.GetItem(0));
     this.zJa.SetCloseCallBack(this.V2i);
     this.S9_ = new HonamiStoryQuestPanel_1.HonamiStoryQuestPanel();
     await this.S9_.CreateThenShowByActorAsync(this.GetItem(1).GetOwner());
-    this.Uvm = new HonamiStoryProfitPanel_1.HonamiStoryProfitPanel();
-    await this.Uvm.CreateThenShowByActorAsync(this.GetItem(13).GetOwner());
-    this.$0m = new HonamiStoryMainButtonGoItem();
-    this.$0m.SetOnBtnEnterCallback(() => {
-      this.zIm(this._eh);
+    this.Vwm = new HonamiStoryProfitPanel_1.HonamiStoryProfitPanel();
+    await this.Vwm.CreateThenShowByActorAsync(this.GetItem(13).GetOwner());
+    this.YEm = new HonamiStoryMainButtonGoItem();
+    this.YEm.SetOnBtnEnterCallback(() => {
+      this.eGm(this._eh);
     });
-    await this.$0m.CreateThenShowByActorAsync(this.GetItem(2).GetOwner());
-    this.JRm();
+    await this.YEm.CreateThenShowByActorAsync(this.GetItem(2).GetOwner());
+    this.CZm();
     this.HVd();
     await this.$Vd();
   }
   OnAddEventListener() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnUiBlendInTimeCameraFinished, this.l7i);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.$An);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnHonamiStorySetVisible, this.NLm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnHonamiStorySetVisible, this.IMf);
   }
   OnRemoveEventListener() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnUiBlendInTimeCameraFinished, this.l7i);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.$An);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnHonamiStorySetVisible, this.NLm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnHonamiStorySetVisible, this.IMf);
   }
   OnBeforeShow() {
     UiCameraAnimationManager_1.UiCameraAnimationManager.DisablePlayerActor();
@@ -212,29 +212,29 @@ class HonamiStoryMainView extends UiViewBase_1.UiViewBase {
         this.sSt();
       }, TimeUtil_1.TimeUtil.InverseMillisecond);
     }
-    var t = this.ZRm();
+    var t = this.pZm();
     if (t) {
       this.S9_.Refresh(false);
-      this.Uvm.Refresh();
+      this.Vwm.Refresh();
     }
     this.S9_.SetActive(t);
-    this.Uvm.SetActive(t);
-    this.JIm();
-    this.$0m.RefreshButtonState();
-    this.Iom(false);
-    this.tem();
-    this.mIm = false;
-    this.gIm(!this.mIm);
+    this.Vwm.SetActive(t);
+    this.tGm();
+    this.YEm.RefreshButtonState();
+    this.Qhm(false);
+    this.Bim();
+    this.Xkm = false;
+    this.zkm(!this.Xkm);
   }
   OnStart() {
-    this.UiViewSequence?.AddSequenceFinishEvent("ShowView", this.YIm);
+    this.UiViewSequence?.AddSequenceFinishEvent("ShowView", this.ZOm);
   }
   OnBeforeHide() {
     if (this.TDe) {
       TimerSystem_1.GameplayTimerSystem.Remove(this.TDe);
       this.TDe = undefined;
     }
-    this.pIm();
+    this.Zkm();
   }
   OnBeforeDestroy() {
     for (const t of this.$5d.values()) {
@@ -254,10 +254,10 @@ class HonamiStoryMainView extends UiViewBase_1.UiViewBase {
       }
     }
     if (ModelManager_1.ModelManager.HonamiStoryModel.LastRecordRevenue !== ModelManager_1.ModelManager.HonamiStoryModel.TotalRevenue) {
-      this.Uvm.PlayChangeSequence();
+      this.Vwm.PlayChangeSequence();
     }
   }
-  JIm() {
+  tGm() {
     for (const t of this.$5d.values()) {
       t.SetButtonState();
       t.SetText();
@@ -268,7 +268,7 @@ class HonamiStoryMainView extends UiViewBase_1.UiViewBase {
     var t = ModelManager_1.ModelManager.HonamiStoryModel.GetActivityData();
     if (t) {
       t = t.CheckIfInLimitTime();
-      this.GetItem(11).SetUIActive(t && !this.mIm);
+      this.GetItem(11).SetUIActive(t && !this.Xkm);
       if (!t && this.TDe) {
         TimerSystem_1.GameplayTimerSystem.Remove(this.TDe);
         this.TDe = undefined;
@@ -278,14 +278,14 @@ class HonamiStoryMainView extends UiViewBase_1.UiViewBase {
       }
     }
   }
-  Iom(t) {
+  Qhm(t) {
     var i;
     var e = this.GetButton(12);
     e.RootUIComp.SetUIActive(false);
     if (t) {
       t = undefined;
       i = new Array();
-      ModelManager_1.ModelManager.CreatureModel.GetEntitiesWithPbDataId(this.Eom, i);
+      ModelManager_1.ModelManager.CreatureModel.GetEntitiesWithPbDataId(this.Whm, i);
       if (t = i[0]?.Entity) {
         i = t.GetComponent(1).ActorLocation;
         t = new Vector2D_1.Vector2D();
@@ -297,7 +297,7 @@ class HonamiStoryMainView extends UiViewBase_1.UiViewBase {
       }
     }
   }
-  tem() {
+  Bim() {
     var t = this.$5d.get(6);
     if (t) {
       t.SetButtonState();
@@ -306,46 +306,46 @@ class HonamiStoryMainView extends UiViewBase_1.UiViewBase {
     }
   }
   PushCameraHandle(t, i, e) {
-    if (this.Mom.length > 0) {
-      UiCameraAnimationController_1.UiCameraAnimationController.PushCameraHandle(this.Mom, i, e);
+    if (this.$hm.length > 0) {
+      UiCameraAnimationController_1.UiCameraAnimationController.PushCameraHandle(this.$hm, i, e);
     }
   }
   PopCameraHandle(t, i, e, n) {
-    if (this.Mom.length > 0) {
-      UiCameraAnimationController_1.UiCameraAnimationController.PopCameraHandle(this.Mom, i, e, n);
+    if (this.$hm.length > 0) {
+      UiCameraAnimationController_1.UiCameraAnimationController.PopCameraHandle(this.$hm, i, e, n);
     }
   }
-  vIm() {
-    return !this.dIm;
+  eqm() {
+    return !this.Kkm;
   }
-  yIm() {
-    this.dIm = true;
+  tqm() {
+    this.Kkm = true;
   }
-  pIm() {
-    this.dIm = false;
+  Zkm() {
+    this.Kkm = false;
   }
-  CIm(t) {
-    if (this.vIm()) {
-      this.yIm();
+  Jkm(t) {
+    if (this.eqm()) {
+      this.tqm();
       t();
-      this.pIm();
+      this.Zkm();
     }
   }
-  async zIm(t) {
-    if (this.vIm()) {
-      this.yIm();
+  async eGm(t) {
+    if (this.eqm()) {
+      this.tqm();
       await t();
-      this.pIm();
+      this.Zkm();
     }
   }
-  gIm(t) {
+  zkm(t) {
     this.GetExtendToggle(14).SetToggleState(t ? 0 : 1);
     this.GetItem(15).SetUIActive(t);
     this.GetButton(16).RootUIComp.SetUIActive(t);
     var i = HonamiStoryUtil_1.HonamiStoryUtil.CheckInMainQuest();
     this.GetButton(18).RootUIComp.SetUIActive(!i && t);
-    this.S9_.SetActive(this.ZRm() && t);
-    this.Uvm.SetActive(this.ZRm() && t);
+    this.S9_.SetActive(this.pZm() && t);
+    this.Vwm.SetActive(this.pZm() && t);
     for (const e of this.$5d.values()) {
       if (t) {
         e.SetButtonState();
@@ -353,12 +353,12 @@ class HonamiStoryMainView extends UiViewBase_1.UiViewBase {
         e.SetUiActive(t);
       }
     }
-    this.$0m.SetUiActive(t);
+    this.YEm.SetUiActive(t);
   }
-  ZRm() {
+  pZm() {
     return !HonamiStoryUtil_1.HonamiStoryUtil.CheckInMainQuest();
   }
-  JRm() {
+  CZm() {
     for (let t = 5; t <= 11; t++) {
       var i = this.GetItem(t);
       if (i) {
@@ -373,13 +373,13 @@ class HonamiStoryMainView extends UiViewBase_1.UiViewBase {
         ComponentId: 5,
         FunctionId: 10107,
         OnClickCallback: this.Q5d,
-        ShowRedDot: this.R0m
+        ShowRedDot: this.MEm
       }, {
         Type: 2,
         ComponentId: 6,
         OnClickCallback: this.K5d,
-        SetTextCallback: this.iSm,
-        ShowRedDot: this.W0m,
+        SetTextCallback: this.hDm,
+        ShowRedDot: this.zEm,
         SpecialParamName: "Enter",
         SpecialSequenceName: "Acquire"
       }, {
@@ -387,31 +387,31 @@ class HonamiStoryMainView extends UiViewBase_1.UiViewBase {
         ComponentId: 7,
         FunctionId: 10117,
         OnClickCallback: this.X5d,
-        ShowRedDot: this.aLm
+        ShowRedDot: this.jgf
       }, {
         Type: 4,
         ComponentId: 8,
         FunctionId: 10116,
         OnClickCallback: this.Y5d,
-        ShowRedDot: this.Ezd
+        ShowRedDot: this.rJd
       }, {
         Type: 5,
         ComponentId: 9,
         FunctionId: 10118,
         OnClickCallback: this.z5d,
-        ShowRedDot: this.b0m
+        ShowRedDot: this.SEm
       }, {
         Type: 6,
         ComponentId: 10,
         OnClickCallback: this.J5d,
-        SetTextCallback: this.Ctm,
-        ShowRedDot: this.mtm
+        SetTextCallback: this.Bom,
+        ShowRedDot: this.Dom
       }, {
         Type: 7,
         ComponentId: 11,
         OnClickCallback: this.Z5d,
-        SetTextCallback: this.gtm,
-        ShowRedDot: this.ftm
+        SetTextCallback: this.xom,
+        ShowRedDot: this.Uom
       }];
     }
   }
@@ -419,11 +419,11 @@ class HonamiStoryMainView extends UiViewBase_1.UiViewBase {
     var t;
     var i = [];
     for (const e of this.W5d) {
-      if (!!this.Izd(e.Type) && !this.$5d.has(e.Type)) {
+      if (!!this.oJd(e.Type) && !this.$5d.has(e.Type)) {
         (t = new HonamiStoryMainButtonItem_1.HonamiStoryMainButtonItem()).SetConfigData(e);
         if (e.OnClickCallback !== undefined) {
           t.SetClickCallback(() => {
-            this.CIm(e.OnClickCallback);
+            this.Jkm(e.OnClickCallback);
           });
         }
         this.$5d.set(e.Type, t);
@@ -432,7 +432,7 @@ class HonamiStoryMainView extends UiViewBase_1.UiViewBase {
     }
     await Promise.all(i);
   }
-  Izd(t) {
+  oJd(t) {
     var i = HonamiStoryUtil_1.HonamiStoryUtil.CheckInMainQuest();
     return !i || showWhenMainTask.includes(t);
   }
@@ -441,9 +441,9 @@ exports.HonamiStoryMainView = HonamiStoryMainView;
 class HonamiStoryMainButtonGoItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.SIm = undefined;
+    this.iqm = undefined;
     this._eh = () => {
-      this.SIm?.();
+      this.iqm?.();
     };
   }
   OnRegisterComponent() {
@@ -463,7 +463,7 @@ class HonamiStoryMainButtonGoItem extends UiPanelBase_1.UiPanelBase {
     }
   }
   SetOnBtnEnterCallback(t) {
-    this.SIm = t;
+    this.iqm = t;
   }
 }
 //# sourceMappingURL=HonamiStoryMainView.js.map

@@ -5,148 +5,16 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.PhantomArenaOwnRolePanel = undefined;
 const UE = require("ue");
-const Log_1 = require("../../../../../../Core/Common/Log");
+const Info_1 = require("../../../../../../Core/Common/Info");
 const Protocol_1 = require("../../../../../../Core/Define/Net/Protocol");
 const TimerSystem_1 = require("../../../../../../Core/Timer/TimerSystem");
 const ConfigManager_1 = require("../../../../../Manager/ConfigManager");
-const ControllerHolder_1 = require("../../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../../Manager/ModelManager");
 const UiPanelBase_1 = require("../../../../../Ui/Base/UiPanelBase");
-const UiSequencePlayer_1 = require("../../../../../Ui/Base/UiSequencePlayer");
-const UiManager_1 = require("../../../../../Ui/UiManager");
-const ScrollingTipsController_1 = require("../../../../ScrollingTips/ScrollingTipsController");
 const PhantomArenaRoleHpTween_1 = require("../../Area/Hand/PhantomArenaRoleHpTween");
-const PhantomArenaSkillInteractFactory_1 = require("../../SkillInteract/PhantomArenaSkillInteractFactory");
+const PhantomArenaFieldItem_1 = require("../Field/PhantomArenaFieldItem");
 const PhantomArenaRoleItem_1 = require("./PhantomArenaRoleItem");
-class PhantomArenaSkill extends UiPanelBase_1.UiPanelBase {
-  constructor() {
-    super(...arguments);
-    this.Bmo = undefined;
-    this.zX1 = false;
-    this.ViewProxy = undefined;
-    this.Sequence = undefined;
-    this.btu = () => {
-      this.ViewProxy.ShowSkillTips(this.Bmo, this.GetItem(4));
-    };
-    this.Rtu = () => {
-      this.ViewProxy.HideSkillTips();
-    };
-    this.eTt = () => {
-      var e;
-      if (!this.ViewProxy.InCantDragState() && !this.Bmo.IsPassive && !this.ViewProxy.GuideManager.CheckInGuideAndShowTips()) {
-        e = ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.GetBattleStatusValue(Protocol_1.Aki.Protocol.qC1.Proto_PhantomBattleCostPoint);
-        if (ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleSkillConfig(this.Bmo.SkillId).CostConsume > e) {
-          ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("PhantomBattle_1063");
-        } else {
-          if (Log_1.Log.CheckInfo()) {
-            Log_1.Log.Info("PhantomArena", 10, "使用角色技能", ["技能", this.Bmo.SkillId]);
-          }
-          this.OnHandleRoleSkillClick();
-        }
-      }
-    };
-  }
-  OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UITexture], [1, UE.UIText], [2, UE.UIButtonComponent], [3, UE.UIItem], [4, UE.UIItem]];
-    this.BtnBindInfo = [[2, this.eTt]];
-  }
-  OnStart() {
-    this.Sequence = new UiSequencePlayer_1.UiSequencePlayer(this.RootItem);
-    this.GetButton(2).OnPointEnterCallBack.Bind(this.btu);
-    this.GetButton(2).OnPointExitCallBack.Bind(this.Rtu);
-    this.ViewProxy.BanButtonClickModule.RegisterButton(this.GetButton(2));
-  }
-  async OnHandleRoleSkillClick() {
-    this.ViewProxy.RegisterCantDragReason(5);
-    try {
-      var e;
-      if (await ControllerHolder_1.ControllerHolder.PhantomArenaBattleController.RequestPhantomBattleCardRoleTargetInfo(this.Bmo.SkillId)) {
-        e = {
-          SkillId: this.Bmo.SkillId,
-          CloseCallback: () => {
-            this.ExecuteBuffEffect().finally(() => {
-              this.ViewProxy.UnRegisterCantDragReason(5);
-            });
-          }
-        };
-        UiManager_1.UiManager.OpenView("PhantomArenaRoleCutInView", e);
-      } else {
-        this.ViewProxy.UnRegisterCantDragReason(5);
-      }
-    } catch {
-      this.ViewProxy.UnRegisterCantDragReason(5);
-      if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("PhantomArena", 10, "使用角色技能", ["技能", this.Bmo.SkillId]);
-      }
-    }
-  }
-  async ExecuteBuffEffect() {
-    var e = ModelManager_1.ModelManager.PhantomArenaBattleModel.BuffEffectData.RoleSkillTriggerInfo;
-    if (e) {
-      if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("PhantomArena", 10, "执行角色技能", ["技能", this.Bmo.SkillId]);
-      }
-      await PhantomArenaSkillInteractFactory_1.PhantomArenaSkillInteractFactory.GetSkillInteract(e.InteractType).Execute(this.ViewProxy, this);
-    } else if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("PhantomArena", 10, "角色技能触发信息不存在");
-    }
-  }
-  bwc() {
-    var e = ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.RoleId;
-    var e = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardRole(e);
-    this.GetText(1).SetUIActive(false);
-    this.GetItem(3).SetUIActive(false);
-    var t = e.PassiveSkillId.indexOf(this.Bmo.SkillId);
-    var e = e.PassiveSkillIconList[t];
-    this.SetTextureByPath(e, this.GetTexture(0));
-  }
-  pj1() {
-    var e = ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.RoleId;
-    var e = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardRole(e);
-    this.GetText(1).SetUIActive(true);
-    this.GetItem(3).SetUIActive(true);
-    var t = e.ActiveSkillId.indexOf(this.Bmo.SkillId);
-    var e = e.SkillIconList[t];
-    this.SetTextureByPath(e, this.GetTexture(0));
-    var t = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleSkillConfig(this.Bmo.SkillId);
-    this.GetText(1).SetText(t.CostConsume.toString());
-  }
-  Refresh(e) {
-    if ((this.Bmo = e).IsPassive) {
-      this.bwc();
-    } else {
-      this.pj1();
-    }
-    this.RefreshSkillEffect();
-  }
-  RefreshSkillEffect() {
-    var e;
-    if (this.Bmo && !this.Bmo.IsPassive && (e = ModelManager_1.ModelManager.PhantomArenaBattleModel.CheckSkillEnoughCost(this.Bmo.SkillId)) !== this.zX1) {
-      if (e) {
-        this.Sequence.StopSequenceByKey("Use", false, true);
-        this.Sequence.PlaySequencePurely("Activate");
-      } else {
-        this.Sequence.StopSequenceByKey("Activate", false, true);
-        this.Sequence.PlaySequencePurely("Use");
-      }
-      this.zX1 = e;
-    }
-  }
-  CheckCanvasSortOrder(e, t) {
-    return !!e.includes(2) && t.DataId === this.Bmo.SkillId;
-  }
-  HandleSortOrder() {
-    this.RootItem.GetRenderCanvas().SetSortOrderNew(2);
-  }
-  CancelSortOrder() {
-    this.RootItem.GetRenderCanvas().SetSortOrderNew(0);
-  }
-  CancelSkillInteract() {}
-  GetData() {
-    return ModelManager_1.ModelManager.PhantomArenaBattleModel.BuffEffectData.RoleSkillTriggerInfo;
-  }
-  FinishSkillInteract() {}
-}
+const PhantomArenaSkillItem_1 = require("./PhantomArenaSkillItem");
 class PhantomArenaOwnRolePanel extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
@@ -155,9 +23,25 @@ class PhantomArenaOwnRolePanel extends UiPanelBase_1.UiPanelBase {
     this.IsFourCostShowInFirstTime = false;
     this.RoleHpTween = undefined;
     this.SkillList = [];
+    this.GamepadFieldItem = undefined;
+    this.I9m = (e, t) => {
+      this.ParentArea.ViewProxy.FieldPointerEnter(e, t, true);
+    };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem]];
+  }
+  async InitGamepadFieldItem() {
+    if (ModelManager_1.ModelManager.PhantomArenaBattleModel.IsOldBvb || Info_1.Info.IsInTouch()) {
+      this.GetItem(3).SetUIActive(false);
+    } else {
+      this.GamepadFieldItem = new PhantomArenaFieldItem_1.PhantomArenaFieldItem();
+      this.GamepadFieldItem.SetInteractClickCallback(this.ParentArea.ViewProxy.FieldInteractClick);
+      this.GamepadFieldItem.SetFinishSkillInteractCallback(this.ParentArea.ViewProxy.FieldFinishSkillInteract);
+      this.GamepadFieldItem.SetPointerEnterCallback(this.I9m);
+      this.GamepadFieldItem.SetPointerExitCallback(this.ParentArea.ViewProxy.FieldPointerExit);
+      await this.GamepadFieldItem.CreateByActorAsync(this.GetItem(3).GetOwner());
+    }
   }
   async InitRoleHpTween() {
     this.RoleHpTween = new PhantomArenaRoleHpTween_1.PhantomArenaRoleHpTween();
@@ -173,7 +57,7 @@ class PhantomArenaOwnRolePanel extends UiPanelBase_1.UiPanelBase {
     this.RoleItem.RefreshHeadIcon(e.RoleHeadTexture);
   }
   async InitSkillItem(e, t) {
-    var i = new PhantomArenaSkill();
+    var i = new PhantomArenaSkillItem_1.PhantomArenaSkill();
     i.ViewProxy = this.ParentArea.ViewProxy;
     this.ParentArea.ViewProxy.CanvasManager.AddAreaCanvas(i);
     this.SkillList.push(i);
@@ -185,24 +69,46 @@ class PhantomArenaOwnRolePanel extends UiPanelBase_1.UiPanelBase {
   }
   async InitSkillList() {
     var e = ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.RoleId;
-    var e = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardRole(e);
-    var e = [...e.PassiveSkillId.map(e => ({
-      SkillId: e,
-      IsPassive: true
-    })), ...e.ActiveSkillId.map(e => ({
-      SkillId: e,
-      IsPassive: false
-    }))];
-    await Promise.all([this.InitSkillItem(this.GetItem(2), e.length > 0), this.InitSkillItem(this.GetItem(1), e.length > 1)]);
-    if (e.length > 0) {
-      this.SkillList[0].Refresh(e[0]);
+    var t = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardRole(e);
+    var i = [];
+    for (let e = 0; e < t.PassiveSkillId.length; e++) {
+      var a = {
+        IsOwn: true,
+        SkillId: t.PassiveSkillId[e],
+        IsPassive: true,
+        Icon: t.PassiveSkillIconList[e],
+        SkillName: t.PassiveSkillNameList[e],
+        SkillDesc: t.PassiveSkillDescList[e],
+        SkillDescParams: t.PassiveSkillDescParamsList[e]?.ArrayString ?? [],
+        CostConsume: 0
+      };
+      i.push(a);
     }
-    if (e.length > 1) {
-      this.SkillList[1].Refresh(e[1]);
+    for (let e = 0; e < t.ActiveSkillId.length; e++) {
+      var s = t.ActiveSkillId[e];
+      var o = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleSkillConfig(s);
+      var s = {
+        IsOwn: true,
+        SkillId: s,
+        IsPassive: false,
+        Icon: t.SkillIconList[e],
+        SkillName: t.SkillNameList[e],
+        SkillDesc: t.SkillDescList[e],
+        SkillDescParams: t.SkillDescParamsList[e]?.ArrayString ?? [],
+        CostConsume: o.CostConsume
+      };
+      i.push(s);
+    }
+    await Promise.all([this.InitSkillItem(this.GetItem(2), i.length > 0), this.InitSkillItem(this.GetItem(1), i.length > 1)]);
+    if (i.length > 0) {
+      this.SkillList[0].Refresh(i[0]);
+    }
+    if (i.length > 1) {
+      this.SkillList[1].Refresh(i[1]);
     }
   }
   async OnBeforeStartAsync() {
-    await Promise.all([this.InitRoleItem(), this.InitSkillList(), this.InitRoleHpTween()]);
+    await Promise.all([this.InitRoleItem(), this.InitSkillList(), this.InitRoleHpTween(), this.InitGamepadFieldItem()]);
   }
   OnStart() {
     this.RoleHpTween.SetRoleItem(this.RoleItem);
@@ -223,15 +129,20 @@ class PhantomArenaOwnRolePanel extends UiPanelBase_1.UiPanelBase {
     ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.SetPrevShowLife(e);
     this.RoleItem.RefreshLifeNum(e, t);
   }
-  RefreshAll() {
-    this.TryDoLifeChangeShow();
+  RefreshAll(e) {
+    if (e) {
+      this.R0u();
+    } else {
+      this.RefreshShieldNum();
+      this.TryDoLifeChangeShow();
+    }
     this.RefreshTask();
     this.RefreshSkillEffect();
   }
   RefreshLifeNumWithEffect() {
     var e = ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.GetBattleStatusValue(Protocol_1.Aki.Protocol.qC1.Proto_PhantomBattleLife);
     var t = ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.GetBattleStatusValue(Protocol_1.Aki.Protocol.qC1.Proto_PhantomBattleMaxLife);
-    this.RoleItem.PlayAddHpEffect(e);
+    this.RoleItem.PlayHpEffect(e);
     this.RoleItem.RefreshLifeNum(e, t);
   }
   TryDoLifeChangeShow() {
@@ -248,6 +159,20 @@ class PhantomArenaOwnRolePanel extends UiPanelBase_1.UiPanelBase {
       }, 300);
     }
   }
+  PlayHpTween() {
+    var e;
+    var t = ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.PrevShowLife;
+    var i = ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.GetBattleStatusValue(Protocol_1.Aki.Protocol.qC1.Proto_PhantomBattleLife);
+    if (t !== i) {
+      e = ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.GetBattleStatusValue(Protocol_1.Aki.Protocol.qC1.Proto_PhantomBattleMaxLife);
+      ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.SetPrevShowLife(i);
+      this.RoleHpTween.PlayHpTween(t, i, e);
+    }
+  }
+  RefreshShieldNum() {
+    var e = ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.GetBattleBattleAttr(Protocol_1.Aki.Protocol.GC1.Proto_Defence);
+    this.RoleItem.RefreshShieldNum(e);
+  }
   RefreshTask() {
     var e = ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.TaskData;
     if (!e || e.IsAllFinish) {
@@ -257,6 +182,10 @@ class PhantomArenaOwnRolePanel extends UiPanelBase_1.UiPanelBase {
       e = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardConfig(e.TaskCardConfigId);
       this.RoleItem.RefreshMonsterIcon(e.TaskBg);
     }
+  }
+  async PlayBeHitEffect(e) {
+    this.PlayHpTween();
+    await this.RoleItem.PlayBeHitEffect(e);
   }
   ActiveIsFourCostShowInFirstTime() {
     this.IsFourCostShowInFirstTime = true;
@@ -269,6 +198,15 @@ class PhantomArenaOwnRolePanel extends UiPanelBase_1.UiPanelBase {
   }
   RegisterBattleArea(e) {
     this.ParentArea = e;
+  }
+  SwitchFieldState(e) {
+    this.GamepadFieldItem?.SetFieldItemActive(e);
+  }
+  RefreshField() {
+    this.GamepadFieldItem?.Refresh(ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.FieldData);
+  }
+  GetRoleRootItem() {
+    return this.RoleItem.GetRootItem();
   }
   GetGuideUiItemAndUiItemForShowEx(e) {
     if (e && e.length !== 0 && e[0] === "Task") {

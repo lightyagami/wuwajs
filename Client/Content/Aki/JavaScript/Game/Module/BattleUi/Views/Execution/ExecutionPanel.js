@@ -43,7 +43,7 @@ class ExecutionPanel extends UiPanelBase_1.UiPanelBase {
       var t;
       if (this.sDe?.Valid) {
         this.lat?.OnInputAction();
-        if ((t = this.sDe.Entity.GetComponent(122))?.IsPawnInteractive()) {
+        if ((t = this.sDe.Entity.GetComponent(127))?.IsPawnInteractive()) {
           t.InteractPawn();
         }
       } else {
@@ -99,8 +99,6 @@ class ExecutionPanel extends UiPanelBase_1.UiPanelBase {
     t.RefreshKeyByActionName(InputMappingsDefine_1.actionMappings.通用交互);
     if (this.fzi === 1) {
       t.RefreshSkillIconByResId("SP_IconPutDeath");
-    } else if (this.fzi === 3) {
-      t.RefreshSkillIconByResId("T_MstSkil_1002_UI");
     }
     return true;
   }

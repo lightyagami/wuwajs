@@ -73,6 +73,9 @@ class MoveSkillItem extends BattleSkillItem_1.BattleSkillItem {
       return ConfigManager_1.ConfigManager.SkillButtonConfig.GetSkillButtonEffectConfig(this.hgu);
     }
   }
+  SetCustomSkillItemEnable(t) {
+    this.SetSkillItemEnable(t, true);
+  }
 }
 exports.MoveSkillItem = MoveSkillItem;
 //# sourceMappingURL=MoveSkillItem.js.map

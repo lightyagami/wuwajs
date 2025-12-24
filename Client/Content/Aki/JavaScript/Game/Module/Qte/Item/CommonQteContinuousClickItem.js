@@ -66,15 +66,15 @@ class CommonQteContinuousClickItem extends CommonQteItemBase_1.CommonQteItemBase
   }
   OnRegisterComponent() {
     super.OnRegisterComponent();
-    this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UITexture], [2, UE.UIText], [3, UE.UIItem], [4, UE.UISliderComponent]];
+    this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UITexture], [2, UE.UIText], [3, UE.UIItem], [4, UE.UISliderComponent], [5, UE.UIItem]];
     if (!Info_1.Info.IsInTouch()) {
-      this.ComponentRegisterInfos.push([5, UE.UIItem]);
       this.ComponentRegisterInfos.push([6, UE.UIItem]);
+      this.ComponentRegisterInfos.push([7, UE.UIItem]);
     }
   }
   async OnBeforeStartAsync() {
     var t;
-    if (!this.IsMobile && (this.Qtt = new InputMultiKeyItem_1.InputMultiKeyItem(), t = this.GetItem(6))) {
+    if (!this.IsMobile && (this.Qtt = new InputMultiKeyItem_1.InputMultiKeyItem(), t = this.GetItem(7))) {
       await this.Qtt?.CreateByActorAsync(t.GetOwner());
     }
   }
@@ -94,13 +94,13 @@ class CommonQteContinuousClickItem extends CommonQteItemBase_1.CommonQteItemBase
     if (this.Qtt) {
       this.Qtt?.Hide();
     } else {
-      this.GetItem(6)?.SetUIActive(false);
+      this.GetItem(7)?.SetUIActive(false);
     }
     this.SetUiActive(false);
     if (Info_1.Info.IsInTouch()) {
       this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
     } else {
-      t = this.GetItem(5);
+      t = this.GetItem(6);
       this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(t);
       this.SetAttachRootItem(t);
     }
@@ -134,8 +134,8 @@ class CommonQteContinuousClickItem extends CommonQteItemBase_1.CommonQteItemBase
         }
       }
       this.IsQteInteractive = false;
-      if (i = t.GetUiConfig()) {
-        this.IsQteInteractive = i.InteractiveTiming === 0;
+      if ((i = t.GetUiConfig()) && (this.IsQteInteractive = i.InteractiveTiming === 0, i.HideProgressBar)) {
+        this.GetItem(1).SetUIActive(false);
       }
       i = i?.UIConfig.TextId;
       s = this.GetText(2);

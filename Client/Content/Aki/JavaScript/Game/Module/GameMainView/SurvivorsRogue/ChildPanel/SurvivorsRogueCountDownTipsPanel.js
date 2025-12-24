@@ -20,10 +20,10 @@ class SurvivorsRogueCountDownTipsPanel extends SurvivorsRogueTipsPanelBase_1.Sur
     this.H6 = 0;
     this.HGe = undefined;
     this.AYt = undefined;
-    this.hKd = undefined;
+    this.cKd = undefined;
     this._fe = false;
-    this.zjd = false;
-    this.lKd = false;
+    this.tHd = false;
+    this.dKd = false;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UITexture], [1, UE.UIText], [2, UE.UIArtText], [3, UE.UIArtText], [4, UE.UIItem]];
@@ -33,7 +33,7 @@ class SurvivorsRogueCountDownTipsPanel extends SurvivorsRogueTipsPanelBase_1.Sur
     this.HGe = this.GetText(1);
     this.HGe.SetUIActive(false);
     this.AYt = this.GetArtText(2);
-    this.hKd = this.GetItem(4);
+    this.cKd = this.GetItem(4);
     var i = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("TextData_NumB1");
     ResourceSystem_1.ResourceSystem.LoadAsync(i, UE.LGUIArtTextData, (i, t) => {
       if (i && i.IsValid()) {
@@ -45,11 +45,11 @@ class SurvivorsRogueCountDownTipsPanel extends SurvivorsRogueTipsPanelBase_1.Sur
   }
   OnBeforeShow() {
     super.OnBeforeShow();
-    this.zjd = true;
+    this.tHd = true;
   }
   OnBeforeHide() {
     super.OnBeforeHide();
-    this.zjd = false;
+    this.tHd = false;
   }
   ShowTips() {
     this.Show();
@@ -60,20 +60,20 @@ class SurvivorsRogueCountDownTipsPanel extends SurvivorsRogueTipsPanelBase_1.Sur
     this.mNe = i;
     this.H6 = 0;
     this._fe = true;
-    this.lKd = t;
-    this.hKd.SetAnchorOffsetY(t ? ELAPSED_ANCHOR_OFFSET_Y : COUNT_DOWN_ANCHOR_OFFSET_Y);
+    this.dKd = t;
+    this.cKd.SetAnchorOffsetY(t ? ELAPSED_ANCHOR_OFFSET_Y : COUNT_DOWN_ANCHOR_OFFSET_Y);
     this.HGe.SetText("");
   }
   OnTick(i) {
-    if (this.zjd && this._fe) {
-      if (this.lKd) {
-        this.uKd(i);
+    if (this.tHd && this._fe) {
+      if (this.dKd) {
+        this.fKd(i);
       } else {
-        this.cKd(i);
+        this.gKd(i);
       }
     }
   }
-  uKd(i) {
+  fKd(i) {
     var t = this.H6;
     t += i * TimeUtil_1.TimeUtil.Millisecond;
     this.H6 = t;
@@ -84,7 +84,7 @@ class SurvivorsRogueCountDownTipsPanel extends SurvivorsRogueTipsPanelBase_1.Sur
     var t = Math.floor((t - Math.floor(t)) * ONE_HUNDRED);
     this.AYt.SetText(`${i}:${s}:${(t < 10 ? "0" : "") + t}`);
   }
-  cKd(i) {
+  gKd(i) {
     var t = this.mNe;
     if (t <= 0) {
       this.AYt.SetText("0s");

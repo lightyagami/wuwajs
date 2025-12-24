@@ -7,21 +7,28 @@ exports.NewSoundAreaView = undefined;
 const UE = require("ue");
 const Log_1 = require("../../../../Core/Common/Log");
 const DetectionTabTypeById_1 = require("../../../../Core/Define/ConfigQuery/DetectionTabTypeById");
+const MultiTextLang_1 = require("../../../../Core/Define/ConfigQuery/MultiTextLang");
+const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const LocalStorage_1 = require("../../../Common/LocalStorage");
 const LocalStorageDefine_1 = require("../../../Common/LocalStorageDefine");
+const TimeUtil_1 = require("../../../Common/TimeUtil");
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
+const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
 const UiTabViewBase_1 = require("../../../Ui/Base/UiTabViewBase");
 const UiManager_1 = require("../../../Ui/UiManager");
 const ActivityDoubleRewardController_1 = require("../../Activity/ActivityContent/DoubleReward/ActivityDoubleRewardController");
+const ActivityControllerHolder_1 = require("../../Activity/ActivityControllerHolder");
 const CommonDropDown_1 = require("../../Common/DropDown/CommonDropDown");
 const OneTextDropDownItem_1 = require("../../Common/DropDown/Item/OneText/OneTextDropDownItem");
 const OneTextTitleItem_1 = require("../../Common/DropDown/Item/OneText/OneTextTitleItem");
 const LevelSequencePlayer_1 = require("../../Common/LevelSequencePlayer");
 const RoguelikeDefine_1 = require("../../Roguelike/Define/RoguelikeDefine");
+const GridProxyAbstract_1 = require("../../Util/Grid/GridProxyAbstract");
+const GenericLayout_1 = require("../../Util/Layout/GenericLayout");
 const LguiUtil_1 = require("../../Util/LguiUtil");
 const GenericScrollViewNew_1 = require("../../Util/ScrollView/GenericScrollViewNew");
 const LoopScrollView_1 = require("../../Util/ScrollView/LoopScrollView");
@@ -51,6 +58,7 @@ class NewSoundAreaView extends UiTabViewBase_1.UiTabViewBase {
     this.t5e = 0;
     this.i7i = new Array();
     this.Anl = false;
+    this.p4f = undefined;
     this.si_ = i => {
       if (this.s8e) {
         for (let e = 0; e < this.s8e.length; e++) {
@@ -106,7 +114,7 @@ class NewSoundAreaView extends UiTabViewBase_1.UiTabViewBase {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UILoopScrollViewComponent], [2, UE.UIItem], [3, UE.UILoopScrollViewComponent], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIText], [7, UE.UIText], [8, UE.UIItem], [9, UE.UIText], [10, UE.UIText], [11, UE.UIItem], [12, UE.UIItem], [13, UE.UIText], [14, UE.UIItem], [15, UE.UIButtonComponent], [16, UE.UIItem], [17, UE.UIItem], [18, UE.UIItem], [19, UE.UIText], [20, UE.UIItem], [21, UE.UIItem], [22, UE.UIItem], [23, UE.UIText], [24, UE.UITexture], [25, UE.UIText], [26, UE.UIScrollViewWithScrollbarComponent], [27, UE.UIVerticalLayout], [28, UE.UIItem], [29, UE.UIItem], [30, UE.UIText]];
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UILoopScrollViewComponent], [2, UE.UIItem], [3, UE.UILoopScrollViewComponent], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIText], [7, UE.UIText], [8, UE.UIItem], [9, UE.UIText], [10, UE.UIText], [11, UE.UIItem], [12, UE.UIItem], [13, UE.UIText], [14, UE.UIItem], [15, UE.UIButtonComponent], [16, UE.UIItem], [17, UE.UIItem], [18, UE.UIItem], [19, UE.UIText], [20, UE.UIItem], [21, UE.UIItem], [22, UE.UIItem], [23, UE.UIText], [24, UE.UITexture], [25, UE.UIText], [26, UE.UIScrollViewWithScrollbarComponent], [27, UE.UIVerticalLayout], [28, UE.UIItem], [29, UE.UIItem], [30, UE.UIText], [31, UE.UIItem]];
     this.BtnBindInfo = [[15, this.f8e]];
   }
   AddEventListener() {
@@ -122,12 +130,18 @@ class NewSoundAreaView extends UiTabViewBase_1.UiTabViewBase {
     this.l8e = undefined;
     this._8e?.Clear();
     this._8e = undefined;
+    this.qDu?.Destroy();
+    this.ODu?.Destroy();
   }
   async OnBeforeStartAsync() {
+    var e = [];
     this.ODu = new CommonDropDown_1.CommonDropDown(this.GetItem(17), this.NDu, this.FDu);
-    await this.ODu.Init();
+    e.push(this.ODu.Init());
     this.qDu = new CommonDropDown_1.CommonDropDown(this.GetItem(29), this.jDu, this.VDu);
-    await this.qDu.Init();
+    e.push(this.qDu.Init());
+    this.p4f = new RegressPanel();
+    e.push(this.p4f.CreateByActorAsync(this.GetItem(31).GetOwner()));
+    await Promise.all(e);
   }
   OnStart() {
     const i = (e, i) => {
@@ -140,8 +154,10 @@ class NewSoundAreaView extends UiTabViewBase_1.UiTabViewBase {
         LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.RoleTutorialNew, t);
       }
       this.a8e = e;
-      var o;
       var s;
+      var o;
+      var r = AdventureGuideController_1.AdventureGuideController.GetPlayerType();
+      this.p4f?.SetUiActive((r.includes(2) || r.includes(1)) && this.a8e === 22);
       var r = ConfigManager_1.ConfigManager.AdventureModuleConfig.GetSecondaryGuideDataConf(e);
       this.GDu = r?.DropDownTypeId ?? 0;
       this.QDu();
@@ -178,10 +194,10 @@ class NewSoundAreaView extends UiTabViewBase_1.UiTabViewBase {
         LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(25), i[1] > 0 ? "Reward_doubling_tips" : "Reward_doubling_end_tips", i[1], i[2]);
         this.GetText(19).SetUIActive(false);
       } else {
-        [r, e, i, o, s] = ModelManager_1.ModelManager.ActivityRegressModel.GetDetectionDoubleDropTuple(this.a8e);
+        [r, e, i, s, o] = ModelManager_1.ModelManager.ActivityRegressModel.GetDetectionDoubleDropTuple(this.a8e);
         if (r) {
-          LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(19), o, e, i);
-          LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(25), s);
+          LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(19), s, e, i);
+          LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(25), o);
           this.GetText(19).SetUIActive(true);
         }
         this.GetItem(18).SetUIActive(r);
@@ -259,16 +275,16 @@ class NewSoundAreaView extends UiTabViewBase_1.UiTabViewBase {
           return 0;
         }
       });
-      var o = new Array();
-      var s = ModelManager_1.ModelManager.WeeklyRogueModel.CycleId;
+      var s = new Array();
+      var o = ModelManager_1.ModelManager.WeeklyRogueModel.CycleId;
       for (let e = 0; e < i; e++) {
-        if (r[e]?.Conf?.Secondary !== 29 || s !== 0) {
+        if (r[e]?.Conf?.Secondary !== 29 || o !== 0) {
           (t = new NewSoundDetectItem_1.NewSoundDetectItemData()).DetectRecordData = r[e];
           t.TracingList = n;
-          o.push(t);
+          s.push(t);
         }
       }
-      this.n8e.RefreshByData(o, false, () => {
+      this.n8e.RefreshByData(s, false, () => {
         this.n8e?.ScrollToGridIndex(0);
       });
     }
@@ -292,35 +308,39 @@ class NewSoundAreaView extends UiTabViewBase_1.UiTabViewBase {
       }
     });
     for (const n of e) {
-      var o = n.DungeonDetectionRecord ? n.DungeonDetectionRecord.Conf.DetectionTabType : n.SilentAreaDetectionRecord?.Conf.DetectionTabType ?? 0;
-      if (o) {
-        if (!i.has(o)) {
-          var s = DetectionTabTypeById_1.configDetectionTabTypeById.GetConfig(o);
-          if (!s) {
+      var s = n.DungeonDetectionRecord ? n.DungeonDetectionRecord.Conf.DetectionTabType : n.SilentAreaDetectionRecord?.Conf.DetectionTabType ?? 0;
+      if (s) {
+        if (!i.has(s)) {
+          var o = DetectionTabTypeById_1.configDetectionTabTypeById.GetConfig(s);
+          if (!o) {
             continue;
           }
-          s = {
-            Id: o,
-            TabTextId: s.Text,
-            IconPath: s.Icon,
-            Sort: s.Order,
+          o = {
+            Id: s,
+            TabTextId: o.Text,
+            IconPath: o.Icon,
+            Sort: o.Order,
             DungeonList: [],
             IsVisible: true
           };
-          i.set(o, s);
+          i.set(s, o);
         }
-        s = new NewSoundDetectItem_1.NewSoundDetectItemData();
-        s.DetectRecordData = n;
-        s.TracingList = t;
-        s.NightMareParam = r;
-        i.get(o).DungeonList.push(s);
+        o = new NewSoundDetectItem_1.NewSoundDetectItemData();
+        o.DetectRecordData = n;
+        o.TracingList = t;
+        o.NightMareParam = r;
+        i.get(s).DungeonList.push(o);
       }
     }
     e = Array.from(i.values()).sort((e, i) => i.Sort - e.Sort);
     this.hY1?.RefreshByData(e, () => {
       if (this.hY1?.GetItemByIndex(0)) {
         this.hY1?.BindLateUpdate(() => {
-          this.hY1?.ScrollToTop(0);
+          TimerSystem_1.GameplayTimerSystem.Next(() => {
+            if (this?.IsShowOrShowing) {
+              this.hY1?.ScrollToTop(0);
+            }
+          });
           this.hY1?.UnBindLateUpdate();
         });
       }
@@ -336,18 +356,18 @@ class NewSoundAreaView extends UiTabViewBase_1.UiTabViewBase {
     }
     var t = this.GetViewName();
     var r = this.s8e.length;
-    var o = new Array();
+    var s = new Array();
     for (let e = 0; e < r; e++) {
-      var s = ModelManager_1.ModelManager.WeeklyRogueModel.CycleId;
-      if (this.s8e[e] !== 29 || s !== 0) {
-        s = {
+      var o = ModelManager_1.ModelManager.WeeklyRogueModel.CycleId;
+      if (this.s8e[e] !== 29 || o !== 0) {
+        o = {
           FromTabViewName: t,
           TypeId: this.s8e[e]
         };
-        o.push(s);
+        s.push(o);
       }
     }
-    this.r8e.RefreshByData(o, undefined, () => {
+    this.r8e.RefreshByData(s, undefined, () => {
       this.r8e.SelectGridProxy(i, false);
       this.r8e.ScrollToGridIndex(i);
       this.r8e.UnsafeGetGridProxy(i)?.SetSelectToggle();
@@ -447,42 +467,42 @@ class NewSoundAreaView extends UiTabViewBase_1.UiTabViewBase {
     var r = this.GetText(9);
     if (this.a8e === 7) {
       r.SetUIActive(false);
-      var o = ModelManager_1.ModelManager.AdventureGuideModel.GetCanShowDungeonRecordsByType(this.a8e)[1];
+      var s = ModelManager_1.ModelManager.AdventureGuideModel.GetCanShowDungeonRecordsByType(this.a8e)[1];
       let e = 0;
-      if (o[0].Type === 1) {
-        var s = o[0].Conf.MarkId;
-        if (!s) {
+      if (s[0].Type === 1) {
+        var o = s[0].Conf.MarkId;
+        if (!o) {
           i.SetUIActive(false);
           return;
         }
-        e = ConfigManager_1.ConfigManager.MapConfig.GetConfigMark(s)?.Reward;
+        e = ConfigManager_1.ConfigManager.MapConfig.GetConfigMark(o)?.Reward;
       } else {
-        if (!o[0].Conf.DungeonId) {
+        if (!s[0].Conf.DungeonId) {
           i.SetUIActive(false);
           return;
         }
-        e = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(o[0].Conf.SubDungeonId)?.RewardId;
+        e = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(s[0].Conf.SubDungeonId)?.RewardId;
       }
       t.SetUIActive(true);
-      var s = ConfigManager_1.ConfigManager.ExchangeRewardConfig.GetExchangeRewardConfig(e)?.SharedId;
-      if (s) {
-        o = ConfigManager_1.ConfigManager.ExchangeRewardConfig.GetExchangeShareConfig(s);
-        s = ModelManager_1.ModelManager.ExchangeRewardModel.GetExchangeRewardShareCount(s);
-        s = (o = o.MaxCount) - s;
-        LguiUtil_1.LguiUtil.SetLocalText(t, AdventureGuideController_1.RECEIVED_COUNT, s + "/" + o);
+      var o = ConfigManager_1.ConfigManager.ExchangeRewardConfig.GetExchangeRewardConfig(e)?.SharedId;
+      if (o) {
+        s = ConfigManager_1.ConfigManager.ExchangeRewardConfig.GetExchangeShareConfig(o);
+        o = ModelManager_1.ModelManager.ExchangeRewardModel.GetExchangeRewardShareCount(o);
+        o = (s = s.MaxCount) - o;
+        LguiUtil_1.LguiUtil.SetLocalText(t, AdventureGuideController_1.RECEIVED_COUNT, o + "/" + s);
       } else {
         i.SetUIActive(false);
       }
     } else if (this.a8e === 5) {
       t?.SetUIActive(false);
       r.SetUIActive(true);
-      s = ModelManager_1.ModelManager.TowerModel.GetSeasonCountDownData().CountDownText;
-      r.SetText(s);
+      o = ModelManager_1.ModelManager.TowerModel.GetSeasonCountDownData().CountDownText;
+      r.SetText(o);
     } else if (this.a8e === 28) {
       t?.SetUIActive(false);
       r.SetUIActive(true);
-      o = ModelManager_1.ModelManager.ShipTowerModel.GetSeasonCountDownData().CountDownText;
-      r.SetText(o);
+      s = ModelManager_1.ModelManager.ShipTowerModel.GetSeasonCountDownData().CountDownText;
+      r.SetText(s);
     } else if (this.a8e === 29) {
       t?.SetUIActive(false);
       r.SetUIActive(true);
@@ -554,4 +574,64 @@ class NewSoundAreaView extends UiTabViewBase_1.UiTabViewBase {
   }
 }
 exports.NewSoundAreaView = NewSoundAreaView;
+class RegressPanel extends UiPanelBase_1.UiPanelBase {
+  constructor() {
+    super(...arguments);
+    this.Ftl = "";
+    this.tFe = undefined;
+    this.GOe = undefined;
+    this.CNe = undefined;
+    this.kOe = () => {
+      var e;
+      if (this.CNe && this.CNe.CheckIfInShowTime()) {
+        e = ModelManager_1.ModelManager.ActivityModel.GetRemainTimeText(this.CNe.EndShowTime, this.Ftl);
+        this.GetText(0).SetText(e);
+      }
+    };
+    this.nFe = () => {
+      return new RoleItem();
+    };
+    this.Wpa = () => {
+      var e = {
+        SubView: 3,
+        OpenType: ModelManager_1.ModelManager.ActivityRegressModel.CheckIfInShowTime ? 0 : 1
+      };
+      UiManager_1.UiManager.OpenView("ActivityRegressMainView", e);
+    };
+  }
+  OnRegisterComponent() {
+    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIHorizontalLayout], [2, UE.UIItem], [3, UE.UIButtonComponent]];
+    this.BtnBindInfo = [[3, this.Wpa]];
+  }
+  OnStart() {
+    this.Ftl = MultiTextLang_1.configMultiTextLang.GetLocalTextNew("ActivityRemainingTime");
+    this.tFe = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(1), this.nFe);
+    var e = ModelManager_1.ModelManager.ActivityRegressModel.GetGachaPoolUpRole();
+    this.tFe.RefreshByData(e);
+    var e = ModelManager_1.ModelManager.ActivityRegressModel.CheckIfInShowTime;
+    this.CNe = e ? this.CNe = ModelManager_1.ModelManager.ActivityRegressModel.ActivityData : ActivityControllerHolder_1.ActivityControllerHolder.ActivityNewPlayerSupportController.ActivityData;
+    this.GOe = TimerSystem_1.GameplayTimerSystem.Forever(this.kOe, TimeUtil_1.TimeUtil.InverseMillisecond);
+    this.kOe();
+  }
+  jm() {
+    if (TimerSystem_1.GameplayTimerSystem.Has(this.GOe)) {
+      TimerSystem_1.GameplayTimerSystem.Remove(this.GOe);
+      this.GOe = undefined;
+    }
+  }
+  OnBeforeDestroy() {
+    this.jm();
+  }
+}
+class RoleItem extends GridProxyAbstract_1.GridProxyAbstract {
+  OnRegisterComponent() {
+    this.ComponentRegisterInfos = [[0, UE.UITexture]];
+  }
+  Refresh(e, i, t) {
+    e = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(e);
+    if (e) {
+      this.SetTextureShowUntilLoaded(e.RoleHeadIcon, this.GetTexture(0));
+    }
+  }
+}
 //# sourceMappingURL=NewSoundAreaView.js.map

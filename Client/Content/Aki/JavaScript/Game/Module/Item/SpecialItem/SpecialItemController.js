@@ -52,18 +52,18 @@ class SpecialItemController extends UiControllerBase_1.UiControllerBase {
     if (!e.UseInMultiMode && ModelManager_1.ModelManager.GameModeModel.IsMulti) {
       return false;
     }
-    var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity.GetComponent(209);
+    var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity.GetComponent(215);
     if (!t) {
       return e.AllowTags.length === 0;
     }
-    for (const o of e.AllowTags) {
-      var r = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(o);
+    for (const n of e.AllowTags) {
+      var r = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(n);
       if (!r || !t.HasTag(r)) {
         return false;
       }
     }
-    for (const n of e.BanTags) {
-      var l = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(n);
+    for (const o of e.BanTags) {
+      var l = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(o);
       if (l && t.HasTag(l)) {
         return false;
       }
@@ -74,20 +74,20 @@ class SpecialItemController extends UiControllerBase_1.UiControllerBase {
     if (SpecialItemController.IsSpecialItem(e)) {
       var r = ConfigManager_1.ConfigManager.SpecialItemConfig.GetConfig(e);
       if (r) {
-        var l = t?.Entity?.GetComponent(209);
+        var l = t?.Entity?.GetComponent(215);
         SpecialItemController.StopListenSpecialItemRelatedTags();
         for (const a of r.AllowTags) {
-          var o = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(a);
-          if (o) {
-            l?.AddTagAddOrRemoveListener(o, SpecialItemController.egi);
-            ModelManager_1.ModelManager.SpecialItemModel.WatchedAllowTagIds.add(o);
+          var n = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(a);
+          if (n) {
+            l?.AddTagAddOrRemoveListener(n, SpecialItemController.egi);
+            ModelManager_1.ModelManager.SpecialItemModel.WatchedAllowTagIds.add(n);
           }
         }
         for (const i of r.BanTags) {
-          var n = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(i);
-          if (n) {
-            l?.AddTagAddOrRemoveListener(n, SpecialItemController.egi);
-            ModelManager_1.ModelManager.SpecialItemModel.WatchedBanTagIds.add(n);
+          var o = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(i);
+          if (o) {
+            l?.AddTagAddOrRemoveListener(o, SpecialItemController.egi);
+            ModelManager_1.ModelManager.SpecialItemModel.WatchedBanTagIds.add(o);
           }
         }
         ModelManager_1.ModelManager.SpecialItemModel.TagWatchedItemId = e;
@@ -96,7 +96,7 @@ class SpecialItemController extends UiControllerBase_1.UiControllerBase {
     }
   }
   static StopListenSpecialItemRelatedTags() {
-    var e = ModelManager_1.ModelManager.SpecialItemModel?.TagWatchedEntityHandle?.Entity?.GetComponent(209);
+    var e = ModelManager_1.ModelManager.SpecialItemModel?.TagWatchedEntityHandle?.Entity?.GetComponent(215);
     if (e) {
       for (const t of ModelManager_1.ModelManager.SpecialItemModel.WatchedAllowTagIds) {
         e.RemoveTagAddOrRemoveListener(t, SpecialItemController.egi);
@@ -112,17 +112,17 @@ class SpecialItemController extends UiControllerBase_1.UiControllerBase {
     ModelManager_1.ModelManager.SpecialItemModel.TagWatchedItemId = 0;
     ModelManager_1.ModelManager.SpecialItemModel.TagWatchedEntityHandle = undefined;
   }
-  static EquipSpecialItem(t, r = true, l = true, o = 0) {
+  static EquipSpecialItem(t, r = true, l = true, n = 0) {
     var e;
-    return !!ModelManager_1.ModelManager.RouletteModel.IsExploreRouletteOpen() && !((e = ConfigManager_1.ConfigManager.SpecialItemConfig.GetConfig(t)) ? e.SpecialItemType !== 0 ? (Log_1.Log.CheckInfo() && Log_1.Log.Info("Item", 37, "特殊道具配置类型无法装备", ["Id", t], ["SpecialItemType", e.SpecialItemType]), 1) : ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(t) <= 0 ? (Log_1.Log.CheckInfo() && Log_1.Log.Info("Item", 37, "背包中没有对应特殊道具,无法切换", ["Id", t]), 1) : (ModelManager_1.ModelManager.SpecialItemModel.GetEquipSpecialItemId() !== t ? RouletteController_1.RouletteController.SaveCurrentRouletteData(undefined, undefined, t, false, e => {
-      if (e && (r && RouletteController_1.RouletteController.EquipItemSetRequest(t, undefined, o), l)) {
+    return !!ModelManager_1.ModelManager.RouletteModel.IsExploreRouletteOpen() && !((e = ConfigManager_1.ConfigManager.SpecialItemConfig.GetConfig(t)) ? e.SpecialItemType !== 0 ? (Log_1.Log.CheckInfo() && Log_1.Log.Info("Item", 37, "特殊道具配置类型无法装备", ["Id", t], ["SpecialItemType", e.SpecialItemType]), 1) : ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(t) <= 0 ? (Log_1.Log.CheckInfo() && Log_1.Log.Info("Item", 37, "背包中没有对应特殊道具,无法切换", ["Id", t]), 1) : (ModelManager_1.ModelManager.SpecialItemModel.GetEquipSpecialItemId() !== t ? RouletteController_1.RouletteController.SaveExploreRouletteExtraItemId(t, e => {
+      if (e && (r && RouletteController_1.RouletteController.EquipItemSetRequest(t, undefined, n), l)) {
         ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("ItemEquiped");
       }
-    }) : r && RouletteController_1.RouletteController.EquipItemSetRequest(t, undefined, o), 0) : (Log_1.Log.CheckError() && Log_1.Log.Error("Item", 37, "特殊道具不存在,请检查是否配置t.特殊道具", ["Id", t]), 1));
+    }) : r && RouletteController_1.RouletteController.EquipItemSetRequest(t, undefined, n), 0) : (Log_1.Log.CheckError() && Log_1.Log.Error("Item", 37, "特殊道具不存在,请检查是否配置t.特殊道具", ["Id", t]), 1));
   }
   static UnEquipSpecialItem(e) {
     if (ModelManager_1.ModelManager.SpecialItemModel.GetEquipSpecialItemId() === e) {
-      RouletteController_1.RouletteController.SaveCurrentRouletteData(undefined, undefined, 0);
+      RouletteController_1.RouletteController.SaveExploreRouletteExtraItemId(0);
     }
   }
   static AutoEquipOrUnEquipSpecialItem(e) {
@@ -136,7 +136,7 @@ class SpecialItemController extends UiControllerBase_1.UiControllerBase {
   }
   static tgi(e, t, r) {
     var l = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity;
-    if (l?.Valid && (l = l.GetComponent(40)).Valid) {
+    if (l?.Valid && (l = l.GetComponent(41)).Valid) {
       l.BeginSkillAsync(r, {
         Reason: "Explore skill item: UseSkill"
       });

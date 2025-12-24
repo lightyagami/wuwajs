@@ -12,45 +12,52 @@ const RoleSkillTreeInfoItem_1 = require("./RoleSkillTreeInfoItem");
 class RoleSkillTreeInfoView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
-    this.UWd = undefined;
+    this.OWd = undefined;
     this.qdi = () => {
-      this.UWd?.OnCommonItemCountAnyChange();
+      this.OWd?.OnCommonItemCountAnyChange();
     };
     this.Qco = () => {
       this.CloseMe();
+    };
+    this.FFf = () => {
+      this.OWd?.OnRoleSkillBranchChanged();
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem]];
   }
   async OnBeforeStartAsync() {
-    this.UWd = new RoleSkillTreeInfoItem_1.RoleSkillTreeInfoItem();
-    await this.UWd.CreateThenShowByResourceIdAsync("UiItem_RoleSkillTreeDetail", this.GetItem(0), false);
-    this.UWd.OnBackBtnCallBack = () => {
+    var e = this.OpenParam.RoleViewAgent?.GetRoleSystemMode() !== 2;
+    this.OWd = new RoleSkillTreeInfoItem_1.RoleSkillTreeInfoItem();
+    this.OWd.SetSkillBranchEnable(e);
+    await this.OWd.CreateThenShowByResourceIdAsync("UiItem_RoleSkillTreeDetail", this.GetItem(0), false);
+    this.OWd.OnBackBtnCallBack = () => {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRoleInternalViewQuit);
     };
   }
   OnAddEventListener() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnCommonItemCountAnyChange, this.qdi);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRoleInternalViewQuit, this.Qco);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRoleSkillBranchChanged, this.FFf);
   }
   OnRemoveEventListener() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnCommonItemCountAnyChange, this.qdi);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRoleInternalViewQuit, this.Qco);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRoleSkillBranchChanged, this.FFf);
   }
   OnBeforeShow() {
     this.Refresh();
   }
   async OnPlayingStartSequenceAsync() {
-    await this.UWd?.PlayItemSequenceAsync("Start");
+    await this.OWd?.PlayItemSequenceAsync("Start");
   }
   async OnPlayingCloseSequenceAsync() {
-    await this.UWd?.PlayItemSequenceAsync("Close");
+    await this.OWd?.PlayItemSequenceAsync("Close");
   }
   Refresh() {
     var e = this.OpenParam;
-    this.UWd?.Update(e);
-    this.UWd?.ShowLeftPanelByTabType(this.UWd.GetCurSkillTabShowType());
+    this.OWd?.Update(e);
+    this.OWd?.ShowLeftPanelByTabType(this.OWd.GetCurSkillTabShowType());
   }
 }
 exports.RoleSkillTreeInfoView = RoleSkillTreeInfoView;

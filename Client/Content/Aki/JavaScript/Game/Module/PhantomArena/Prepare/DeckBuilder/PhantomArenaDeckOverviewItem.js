@@ -15,6 +15,7 @@ class PhantomArenaDeckOverviewItem extends GridProxyAbstract_1.GridProxyAbstract
   constructor() {
     super(...arguments);
     this.DeckInfo = undefined;
+    this.ActivityId = 0;
     this.ElementList = [];
     this.OnToggleSelect = undefined;
     this.DV1 = () => {
@@ -22,83 +23,93 @@ class PhantomArenaDeckOverviewItem extends GridProxyAbstract_1.GridProxyAbstract
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UIText], [2, UE.UITexture], [3, UE.UIText], [4, UE.UIText], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIText], [9, UE.UISprite], [10, UE.UIItem], [11, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UIText], [2, UE.UITexture], [3, UE.UIText], [4, UE.UIText], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIText], [9, UE.UISprite], [10, UE.UIItem], [11, UE.UIItem], [12, UE.UIItem], [13, UE.UIText], [14, UE.UISprite]];
     this.BtnBindInfo = [[0, this.DV1]];
   }
   async OnBeforeStartAsync() {
-    var t = [];
-    for (let e = 10; e <= 11; e++) {
+    var e = [];
+    for (let t = 10; t <= 11; t++) {
       var i = new CardElementItem_1.CardElementItem();
       this.ElementList.push(i);
-      t.push(i.CreateByActorAsync(this.GetItem(e).GetOwner()));
+      e.push(i.CreateByActorAsync(this.GetItem(t).GetOwner()));
     }
-    await Promise.all(t);
+    await Promise.all(e);
   }
-  Refresh(e, t, i) {
-    var r = (this.DeckInfo = e)?.GetElementList();
+  Refresh(t, e, i) {
+    var r = (this.DeckInfo = t)?.GetElementList();
     var s = r?.length ?? 0;
-    for (let e = 0; e < this.ElementList.length; e++) {
-      if (e >= s) {
-        this.ElementList[e].SetActive(false);
+    for (let t = 0; t < this.ElementList.length; t++) {
+      if (t >= s) {
+        this.ElementList[t].SetActive(false);
       } else {
-        this.ElementList[e].SetActive(true);
-        this.ElementList[e].RefreshElement(r[e]);
+        this.ElementList[t].SetActive(true);
+        this.ElementList[t].RefreshElement(r[t]);
       }
     }
-    this.GetExtendToggle(0).SetToggleState(t ? 1 : 0, false);
+    this.GetExtendToggle(0).SetToggleState(e ? 1 : 0, false);
     var a;
-    var n;
-    var t = this.GetText(4);
-    var h = this.GetText(8);
-    var o = this.GetTexture(2);
+    var e = this.GetText(4);
+    var n = this.GetText(8);
+    var h = this.GetTexture(2);
+    var o = this.GetItem(12);
     this.GetText(1).SetText((i + 1).toString());
-    if (e.GetDeckServerId() === PhantomArenaDefine_1.DECK_ID_EMPTY_TEMP) {
+    if (t.GetDeckServerId() === PhantomArenaDefine_1.DECK_ID_EMPTY_TEMP) {
       i = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetDeckDefaultName();
       this.GetText(3).SetText(i);
       this.GetItem(6).SetUIActive(true);
       this.GetItem(5).SetUIActive(false);
       this.GetItem(7).SetUIActive(false);
-      t.SetUIActive(false);
+      e.SetUIActive(false);
+      n.SetUIActive(false);
       h.SetUIActive(false);
       o.SetUIActive(false);
     } else {
-      this.GetText(3).SetText(e.GetName());
+      this.GetText(3).SetText(t.GetName());
       this.GetItem(6).SetUIActive(false);
-      i = ModelManager_1.ModelManager.PhantomArenaModel.GetLastUsedCardDeckServerId() === e.GetDeckServerId();
+      i = ModelManager_1.ModelManager.PhantomArenaModel.GetLastUsedCardDeckServerId(this.ActivityId) === t.GetDeckServerId();
       this.GetItem(7).SetUIActive(i);
-      t.SetUIActive(true);
-      h.SetUIActive(true);
-      i = e.CanDeckBeUsed();
+      e.SetUIActive(true);
+      n.SetUIActive(true);
+      o.SetUIActive(t.GetFieldCardCountLimit() !== 0);
+      i = t.CanDeckBeUsed();
       this.GetItem(5).SetUIActive(!i);
-      if ((a = e.GetNormalCardCount()) === (n = e.GetNormalCardCountLimit())) {
-        t.SetText(a + "/" + n);
+      if ((o = t.GetNormalCardCount()) === (a = t.GetNormalCardCountLimit())) {
+        e.SetText(o + "/" + a);
       } else {
-        LguiUtil_1.LguiUtil.SetLocalTextNew(t, "PhantomBattle_1042", a, n);
+        LguiUtil_1.LguiUtil.SetLocalTextNew(e, "PhantomBattle_1042", o, a);
       }
-      t = e.IsCoreCardSlotLocked();
-      this.GetSprite(9).SetIsGray(t);
-      h.SetChangeColor(t, h.changeColor);
-      if (t) {
-        LguiUtil_1.LguiUtil.SetLocalTextNew(h, "PhantomBattle_1039");
-      } else if ((a = e.GetCoreCardCount()) === (n = e.GetCoreCardCountLimit())) {
-        h.SetText(a + "/" + n);
+      e = t.IsCoreCardSlotLocked();
+      this.GetSprite(9).SetIsGray(e);
+      n.SetChangeColor(e, n.changeColor);
+      if (e) {
+        LguiUtil_1.LguiUtil.SetLocalTextNew(n, "PhantomBattle_1039");
+      } else if ((o = t.GetCoreCardCount()) === (a = t.GetCoreCardCountLimit())) {
+        n.SetText(o + "/" + a);
       } else {
-        LguiUtil_1.LguiUtil.SetLocalTextNew(h, "PhantomBattle_1042", a, n);
+        LguiUtil_1.LguiUtil.SetLocalTextNew(n, "PhantomBattle_1042", o, a);
       }
-      t = e.GetDeckFaceCardId();
-      o.SetUIActive(t > 0);
-      if (t > 0) {
-        h = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardConfig(t);
-        this.SetTextureByPath(h.DeckFaceTexture, o);
-        o.SetChangeColor(!i, o.changeColor);
+      e = this.GetText(13);
+      if ((n = t.GetFieldCardCount()) === (o = t.GetFieldCardCountLimit())) {
+        e.SetText(n + "/" + o);
+      } else {
+        LguiUtil_1.LguiUtil.SetLocalTextNew(e, "PhantomBattle_1042", n, o);
+      }
+      e = (a = t.GetFieldCardSlot()?.Element) !== undefined ? ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleElementConfig(a).FieldCardElementInDeck : ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("SP_IconSoundRemnantArenaField");
+      this.SetSpriteByPath(e, this.GetSprite(14), false);
+      n = t.GetDeckFaceCardId();
+      h.SetUIActive(n > 0);
+      if (n > 0) {
+        o = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardConfig(n);
+        this.SetTextureByPath(o.DeckFaceTexture, h);
+        h.SetChangeColor(!i, h.changeColor);
       }
     }
   }
-  OnSelected(e) {
-    this.GetExtendToggle(0).SetToggleState(1, e);
+  OnSelected(t) {
+    this.GetExtendToggle(0).SetToggleState(1, t);
   }
-  OnDeselected(e) {
-    this.GetExtendToggle(0).SetToggleState(0, e);
+  OnDeselected(t) {
+    this.GetExtendToggle(0).SetToggleState(0, t);
   }
 }
 exports.PhantomArenaDeckOverviewItem = PhantomArenaDeckOverviewItem;

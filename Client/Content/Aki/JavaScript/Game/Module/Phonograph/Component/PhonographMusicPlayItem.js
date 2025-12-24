@@ -91,19 +91,19 @@ class PhonographMusicPlayItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.GetSprite(2).SetFillAmount(ModelManager_1.ModelManager.PhonographModel.CurrentPlayMusicTime / this.TotalTime);
   }
   Refresh(e, t, i) {
-    this.MusicId = e;
+    this.MusicId = e.Id;
     var s;
-    var h = ConfigManager_1.ConfigManager.PhonographConfig?.GetMusicById(e);
+    var h = ConfigManager_1.ConfigManager.PhonographConfig?.GetMusicById(e.Id);
     if (h) {
-      this.GetItem(7).SetUIActive(ModelManager_1.ModelManager.PhonographModel.RecordMusicId === e);
-      this.TotalTime = Math.floor(h.Duration);
-      if (s = ModelManager_1.ModelManager.PhonographModel.CurrentPlayMusicId === e) {
+      this.GetItem(7).SetUIActive(ModelManager_1.ModelManager.PhonographModel.RecordMusicId === e.Id);
+      this.TotalTime = Math.floor(e.Duration);
+      if (s = ModelManager_1.ModelManager.PhonographModel.CurrentPlayMusicId === e.Id) {
         this.RefreshTime();
       } else {
         this.GetSprite(2).SetFillAmount(0);
         this.GetText(3).SetText(TimeUtil_1.TimeUtil.GetTimeString(this.TotalTime));
       }
-      if (ModelManager_1.ModelManager.PhonographModel.IsUnlockMusic(e)) {
+      if (ModelManager_1.ModelManager.PhonographModel.IsUnlockMusic(e.Id)) {
         this.LevelSequencePlayer.PlaySequencePurely("Unlock");
       } else {
         this.LevelSequencePlayer.PlaySequencePurely("Lock");
@@ -119,7 +119,7 @@ class PhonographMusicPlayItem extends GridProxyAbstract_1.GridProxyAbstract {
       this.GetExtendToggle(0).SetToggleState(s, false);
       this.GetExtendToggle(0).CanExecuteChange.Bind(() => ModelManager_1.ModelManager.PhonographModel?.CurrentPlayMusicId === this.MusicId && ModelManager_1.ModelManager.PhonographModel?.CurrentSelectMusicId !== this.MusicId || (ModelManager_1.ModelManager.PhonographModel?.CurrentPlayMusicId !== this.MusicId && ModelManager_1.ModelManager.PhonographModel?.CurrentSelectMusicId === this.MusicId ? (this.eTt(), false) : ModelManager_1.ModelManager.PhonographModel.CurrentSelectMusicId !== this.MusicId));
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), h.Title);
-      this.GetItem(4).SetUIActive(ModelManager_1.ModelManager.PhonographModel.IsNewMusic(e));
+      this.GetItem(4).SetUIActive(ModelManager_1.ModelManager.PhonographModel.IsNewMusic(e.Id));
     }
   }
   OnSelected(e) {

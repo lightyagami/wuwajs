@@ -23,7 +23,7 @@ class MonsterDeathEffectMachine {
   constructor() {
     this.Jh = undefined;
     this.eat = undefined;
-    this.jZd = undefined;
+    this.Mim = undefined;
     this.Nql = 0;
     this.Fql = -1;
     this.Vql = 0;
@@ -39,7 +39,7 @@ class MonsterDeathEffectMachine {
         if (e) {
           EffectSystem_1.EffectSystem.RemoveFinishCallback(t, this.Wql);
         }
-        this.jZd?.();
+        this.Mim?.();
         this.Qql();
         this.Nql = 0;
       }
@@ -49,7 +49,7 @@ class MonsterDeathEffectMachine {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("Battle", 67, "[MonsterDeathComponent]怪物特殊死亡材质播放结束, 继续执行死亡流程", ["materialId", t]);
         }
-        this.jZd?.();
+        this.Mim?.();
         this.$ql();
         this.Qql();
         this.Fql = -1;
@@ -60,13 +60,13 @@ class MonsterDeathEffectMachine {
   Init(t, e, i) {
     this.Jh = t;
     this.eat = e;
-    this.jZd = i;
+    this.Mim = i;
   }
   Clear() {
     this.Xql();
     this.Jh = undefined;
     this.eat = undefined;
-    this.jZd = undefined;
+    this.Mim = undefined;
   }
   Play() {
     var t;
@@ -90,7 +90,7 @@ class MonsterDeathEffectMachine {
       }
       this.J4l(e);
     } else {
-      this.jZd?.();
+      this.Mim?.();
     }
   }
   async J4l(t) {
@@ -120,7 +120,7 @@ class MonsterDeathEffectMachine {
       this.eGl();
       this.tGl();
     } else {
-      this.jZd?.();
+      this.Mim?.();
     }
   }
   async Yql(e) {
@@ -213,7 +213,7 @@ class MonsterDeathEffectMachine {
         Log_1.Log.Debug("Battle", 67, "[MonsterDeathComponent]怪物特殊死亡材质播放失败, 请检查资源类型", ["path", i], ["type", typeof s]);
       }
     } else {
-      this.jZd?.();
+      this.Mim?.();
     }
     return false;
   }
@@ -284,7 +284,7 @@ class MonsterDeathEffectMachine {
     this.Vql = 0;
   }
   eGl() {
-    this.Jh?.GetComponent(126)?.SetTimeScale(100, 0, undefined, DEATH_EFFECT_MAX_TIME, 12);
+    this.Jh?.GetComponent(131)?.SetTimeScale(100, 0, undefined, DEATH_EFFECT_MAX_TIME, 12);
   }
   tGl() {
     this.Qql();
@@ -298,7 +298,7 @@ class MonsterDeathEffectMachine {
       } else if (this.Fql !== -1) {
         this.Kql(this.Fql, true);
       } else {
-        this.jZd?.();
+        this.Mim?.();
       }
     }, DEATH_EFFECT_MAX_TIME);
   }

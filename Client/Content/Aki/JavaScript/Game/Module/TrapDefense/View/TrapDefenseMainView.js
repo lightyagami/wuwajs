@@ -81,6 +81,7 @@ class TrapDefenseMainView extends UiTickViewBase_1.UiTickViewBase {
     this.S$c.BindRedDot("TrapDefenseDevelopBranchAll");
   }
   OnBeforeShow() {
+    ControllerHolder_1.ControllerHolder.SplashScreenController.FinishCurTask();
     this.Og();
   }
   OnAddEventListener() {

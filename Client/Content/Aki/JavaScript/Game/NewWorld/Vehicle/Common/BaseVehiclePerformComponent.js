@@ -1,5 +1,6 @@
 "use strict";
 
+var BaseVehiclePerformComponent_1;
 var __decorate = this && this.__decorate || function (e, t, i, r) {
   var o;
   var s = arguments.length;
@@ -21,27 +22,31 @@ var __decorate = this && this.__decorate || function (e, t, i, r) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.BaseVehiclePerformComponent = undefined;
+exports.BaseVehiclePerformComponent = exports.ALWAYS_SUCCESS_VEHICLE_PREPERFORM_HANDLE = undefined;
 const UE = require("ue");
 const Log_1 = require("../../../../Core/Common/Log");
 const Protocol_1 = require("../../../../Core/Define/Net/Protocol");
 const EntityComponent_1 = require("../../../../Core/Entity/EntityComponent");
+const EntitySystem_1 = require("../../../../Core/Entity/EntitySystem");
 const RegisterComponent_1 = require("../../../../Core/Entity/RegisterComponent");
 const Net_1 = require("../../../../Core/Net/Net");
 const ResourceSystem_1 = require("../../../../Core/Resource/ResourceSystem");
 const Quat_1 = require("../../../../Core/Utils/Math/Quat");
 const Rotator_1 = require("../../../../Core/Utils/Math/Rotator");
+const Transform_1 = require("../../../../Core/Utils/Math/Transform");
 const Vector_1 = require("../../../../Core/Utils/Math/Vector");
 const MathUtils_1 = require("../../../../Core/Utils/MathUtils");
 const IComponent_1 = require("../../../../UniverseEditor/Interface/IComponent");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
-const VehicleController_1 = require("../Controller/VehicleController");
+const FormationAttributeController_1 = require("../../../Module/Abilities/FormationAttributeController");
 const VehicleConfig_1 = require("./VehicleConfig");
 const VehicleInfoDefines_1 = require("./VehicleInfoDefines");
-let BaseVehiclePerformComponent = class BaseVehiclePerformComponent extends EntityComponent_1.EntityComponent {
+exports.ALWAYS_SUCCESS_VEHICLE_PREPERFORM_HANDLE = 1;
+let BaseVehiclePerformComponent = BaseVehiclePerformComponent_1 = class BaseVehiclePerformComponent extends EntityComponent_1.EntityComponent {
   constructor() {
     super(...arguments);
     this.CreatureData = undefined;
@@ -52,33 +57,44 @@ let BaseVehiclePerformComponent = class BaseVehiclePerformComponent extends Enti
     this.Config = undefined;
     this.ConfigInternal = undefined;
     this.VehicleFeatures = new Set();
+    this.QJf = undefined;
     this.DriverInternal = undefined;
     this.PassengerInfoMap = new Map();
     this.SeatInfoMap = new Map();
     this.IsPendingDestroy = false;
+    this.f2f = undefined;
     this.EntityHandle = undefined;
     this.TmpVector1 = Vector_1.Vector.Create();
     this.TmpVector2 = Vector_1.Vector.Create();
     this.TmpVector3 = Vector_1.Vector.Create();
     this.TmpVector4 = Vector_1.Vector.Create();
+    this.TmpVector5 = Vector_1.Vector.Create();
     this.TmpRotator = Rotator_1.Rotator.Create();
     this.TmpQuat1 = Quat_1.Quat.Create();
     this.TmpQuat2 = Quat_1.Quat.Create();
+    this.TmpTrans1 = Transform_1.Transform.Create();
+    this.TmpTrans2 = Transform_1.Transform.Create();
     this.OnRemoveEntity = (e, t) => {
       EventSystem_1.EventSystem.RemoveWithTarget(this.EntityHandle, EventDefine_1.EEventName.RemoveEntity, this.OnRemoveEntity);
       this.EntityHandle = undefined;
       for (const i of this.PassengerInfoMap.values()) {
-        this.Leave(i.PassengerEntity);
+        if (i.PassengerEntity?.Valid) {
+          this.Leave(i.PassengerEntity);
+        }
       }
     };
+    this.g2f = "TrialAttributeModifier";
+  }
+  GetCurrentOrLastDriver() {
+    return this.Driver || (this.QJf !== undefined ? EntitySystem_1.EntitySystem.Get(this.QJf) : undefined);
   }
   get Driver() {
     return this.DriverInternal;
   }
   set Driver(e) {
-    if (this.DriverInternal !== e) {
-      this.DriverInternal = e;
-      this.OnSetDriver();
+    var t;
+    if (this.DriverInternal !== e && (t = this.DriverInternal, this.DriverInternal = e, EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnVehicleDriverChange, t, e), this.OnSetDriver(), e)) {
+      this.QJf = e.Id;
     }
   }
   OnSetDriver() {}
@@ -95,9 +111,8 @@ let BaseVehiclePerformComponent = class BaseVehiclePerformComponent extends Enti
       }
       this.VehicleType = i.Category.VehicleType;
       i = (0, IComponent_1.getComponent)(t.ComponentsData, "VehicleComponent");
-      if (i) {
-        this.MaxSeatCount = i.SeatCount;
-        this.DriverSeat = i.DriverSeat !== VehicleInfoDefines_1.INVALID_SEAT ? i.DriverSeat : -1;
+      if (i && (this.MaxSeatCount = i.SeatCount, this.DriverSeat = i.DriverSeat !== VehicleInfoDefines_1.INVALID_SEAT ? i.DriverSeat : -1, i.VehicleTypedConfig)) {
+        this.f2f = i.VehicleTypedConfig.TrialAttributeId;
       }
     }
     return true;
@@ -115,7 +130,12 @@ let BaseVehiclePerformComponent = class BaseVehiclePerformComponent extends Enti
     this.InitVehicleFeatures();
   }
   OnPostActivate() {
-    VehicleController_1.VehicleController.OnVehicleActivate(this.Entity);
+    if (this.Entity.Active) {
+      ControllerHolder_1.ControllerHolder.VehicleController.OnVehicleEnable(this.Entity);
+    }
+  }
+  OnEnable() {
+    ControllerHolder_1.ControllerHolder.VehicleController.OnVehicleEnable(this.Entity);
   }
   OnAfterTick(e) {
     for (const t of this.PassengerInfoMap.values()) {
@@ -173,10 +193,37 @@ let BaseVehiclePerformComponent = class BaseVehiclePerformComponent extends Enti
   InitVehicleMovementFeature(e) {}
   InitVehicleBattleFeature(e) {}
   TryEnter(e, t) {
-    var i;
+    return !!this.EnterConditionCheck(e, t) && (e.GetComponent(1).CreatureData?.IsRole() ? this.wzf(e, t, 0) : this.Pzf(e, t, 0), true);
+  }
+  TryEnterAtOnce(e, t, i = "") {
     var r;
     var o;
-    return !!this.EnterConditionCheck(e, t) && ((r = e.GetComponent(1))?.CreatureData?.IsRole() ? (i = this.Entity.GetComponent(0), r = ModelManager_1.ModelManager.GameModeModel.IsMulti ? ModelManager_1.ModelManager.OnlineModel.OwnerId : r.CreatureData.GetPlayerId(), (o = Protocol_1.Aki.Protocol.GC_.create()).F4n = MathUtils_1.MathUtils.NumberToLong(i.GetCreatureDataId()), o.ORs = r, o.phl = true, o.fhl = t, Net_1.Net.Call(22092, o, () => {})) : this.Enter(e, t), true);
+    var s;
+    var n;
+    if (this.EnterConditionCheck(e, t)) {
+      r = ++BaseVehiclePerformComponent_1.PrePerformHandleGenerator;
+      o = this.Entity.GetComponent(0);
+      s = e.GetComponent(1);
+      (n = new VehicleInfoDefines_1.ScenePlayerVehicleInfo()).EntityCreatureId = s.CreatureData.GetCreatureDataId();
+      n.VehicleCreatureId = o.GetCreatureDataId();
+      n.Seat = t;
+      n.ExitType = 1;
+      n.PlayerId = s.CreatureData.GetPlayerId();
+      if (s.CreatureData?.IsRole()) {
+        this.wzf(e, t, r, i);
+        ModelManager_1.ModelManager.VehicleModel.UpdatePlayerVehicleData(n);
+      } else {
+        this.Pzf(e, t, r, i);
+        ModelManager_1.ModelManager.VehicleModel.UpdateEntityVehicleData(n);
+      }
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Vehicle", 50, "[BaseVehicleComp] 预表现请求进入载具", ["V_PbDataId", this.CreatureData.GetPbDataId()], ["V_CreatureId", this.CreatureData.GetCreatureDataId()], ["P_PbDataId", e.GetComponent(0)?.GetPbDataId()], ["P_CreatureId", e.GetComponent(0)?.GetCreatureDataId()], ["P_PlayerId", e.GetComponent(0)?.GetPlayerId()], ["Seat", t], ["isDriver", this.DriverSeat === t], ["Reason", i]);
+      }
+      this.Enter(e, t);
+      return r;
+    } else {
+      return 0;
+    }
   }
   Enter(e, t) {
     var i = this.DriverSeat === t;
@@ -201,7 +248,7 @@ let BaseVehiclePerformComponent = class BaseVehiclePerformComponent extends Enti
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Vehicle", 50, "[BaseVehicleComp] 进入载具时目标位置已有实体", ["Vehicle", n], ["OldPassenger", o?.GetPbDataId()], ["NewPassenger", e.GetComponent(0)?.GetPbDataId()], ["Seat", t]);
       }
-      this.Leave(s.PassengerEntity);
+      this.Leave(s.PassengerEntity, 1);
     }
     this.PassengerInfoMap.set(e.Id, r);
     this.SeatInfoMap.set(t, r);
@@ -209,50 +256,55 @@ let BaseVehiclePerformComponent = class BaseVehiclePerformComponent extends Enti
       this.Driver = e;
     }
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("Vehicle", 50, "[BaseVehicleComp] 进入载具", ["V_PbDataId", n], ["V_CreatureId", this.CreatureData.GetCreatureDataId()], ["P_PbDataId", e.GetComponent(0)?.GetPbDataId()], ["P_PlayerId", e.GetComponent(0)?.GetPlayerId()], ["Seat", t], ["isDriver", i]);
+      Log_1.Log.Info("Vehicle", 50, "[BaseVehicleComp] 进入载具", ["V_PbDataId", n], ["V_CreatureId", this.CreatureData.GetCreatureDataId()], ["P_PbDataId", e.GetComponent(0)?.GetPbDataId()], ["P_CreatureId", e.GetComponent(0)?.GetCreatureDataId()], ["P_PlayerId", e.GetComponent(0)?.GetPlayerId()], ["Seat", t], ["isDriver", i]);
     }
+    this.AddTrialAttributeModifier(r);
     this.EnterVehiclePerform(r);
     EventSystem_1.EventSystem.EmitWithTarget(e, EventDefine_1.EEventName.OnEnterVehicle, r);
     EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnVehicleBeenEntered, r);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnEnterVehicle, r);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnVehicleBeenEntered, r);
-    this.OnEnter(e, i);
+    this.Entity.GetComponent(248)?.StartForceDisableAnimOptimization2(7);
   }
-  OnEnter(e, t) {}
   TryLeave(e, t = 0) {
-    var i;
+    return !!this.LeaveConditionCheck(e) && (e.GetComponent(1)?.CreatureData?.IsRole() ? this.Azf(e, t, 0) : this.Dzf(e, t, 0), true);
+  }
+  TryLeaveAtOnce(e, t = 0, i = "") {
     var r;
     var o;
-    var s;
-    var n;
-    return !!this.LeaveConditionCheck(e) && ((o = e.GetComponent(1))?.CreatureData?.IsRole() ? (i = this.Entity.GetComponent(0), r = this.PassengerInfoMap.get(e.Id), o = ModelManager_1.ModelManager.GameModeModel.IsMulti ? ModelManager_1.ModelManager.OnlineModel.OwnerId : o.CreatureData.GetPlayerId(), s = ControllerHolder_1.ControllerHolder.VehicleController.ToServerExitVehicleType(t), (n = Protocol_1.Aki.Protocol.GC_.create()).F4n = MathUtils_1.MathUtils.NumberToLong(i.GetCreatureDataId()), n.ORs = o, n.phl = false, n.fhl = r.Seat, n.bI_ = s, Net_1.Net.Call(22092, n, () => {})) : this.Leave(e, t), true);
-  }
-  Leave(e, t = 0) {
-    var i = this.Entity.GetComponent(1)?.CreatureData.GetPbDataId();
-    var r = this.PassengerInfoMap.get(e.Id);
-    if (r) {
-      r.ExitType = t;
-      if (r.ExitType !== 3) {
-        if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("Vehicle", 50, "[BaseVehicleComp] 退出载具", ["V_PbDataId", i], ["V_CreatureId", this.CreatureData.GetCreatureDataId()], ["P_PbDataId", e.GetComponent(0)?.GetPbDataId()], ["P_PlayerId", e.GetComponent(0)?.GetPlayerId()], ["Seat", r.Seat], ["isDriver", r.IsDriver], ["ExitType", r.ExitType]);
-        }
-        this.LeaveVehiclePerform(r);
-        EventSystem_1.EventSystem.EmitWithTarget(e, EventDefine_1.EEventName.OnLeaveVehicle, r);
-        EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnVehicleBeenLeaved, r);
-        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnLeaveVehicle, r);
-        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnVehicleBeenLeaved, r);
-        this.PassengerInfoMap.delete(e.Id);
-        this.SeatInfoMap.delete(r.Seat);
-        if (r = e === this.Driver) {
-          this.Driver = undefined;
-        }
-        this.OnLeave(e, r);
+    if (this.LeaveConditionCheck(e)) {
+      r = ++BaseVehiclePerformComponent_1.PrePerformHandleGenerator;
+      if (e.GetComponent(1)?.CreatureData?.IsRole()) {
+        this.Azf(e, t, r, i);
+      } else {
+        this.Dzf(e, t, r, i);
       }
-    } else if (Log_1.Log.CheckWarn()) {
-      Log_1.Log.Warn("Vehicle", 50, "[BaseVehicleComp] 重复退出载具", ["V_PbDataId", i], ["P_PbDataId", e.GetComponent(0)?.GetPbDataId()], ["P_PlayerId", e.GetComponent(0)?.GetPlayerId()], ["Type", t]);
+      o = this.PassengerInfoMap.get(e.Id);
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Vehicle", 50, "[BaseVehicleComp] 预表现请求退出载具", ["V_PbDataId", this.CreatureData?.GetPbDataId()], ["V_CreatureId", this.CreatureData?.GetCreatureDataId()], ["P_PbDataId", e.GetComponent(0)?.GetPbDataId()], ["P_CreatureId", e.GetComponent(0)?.GetCreatureDataId()], ["P_PlayerId", e.GetComponent(0)?.GetPlayerId()], ["Seat", o?.Seat], ["isDriver", o?.IsDriver], ["ExitType", o?.ExitType], ["Reason", i]);
+      }
+      this.Leave(e, t);
+      return r;
+    } else {
+      return 0;
     }
   }
-  OnLeave(e, t) {}
+  TryLeaveAll(e = 0) {
+    for (var [, t] of this.PassengerInfoMap) {
+      this.TryLeave(t.PassengerEntity, e);
+    }
+  }
+  TryLeaveAllAtOnce(e = 0, t = "") {
+    for (var [, i] of this.PassengerInfoMap) {
+      this.TryLeaveAtOnce(i.PassengerEntity, e, t);
+    }
+  }
+  Leave(e, t = 0) {
+    var i = this.PassengerInfoMap.get(e.Id);
+    if (i && (i.ExitType = t, i.ExitType !== 3) && (Log_1.Log.CheckInfo() && Log_1.Log.Info("Vehicle", 50, "[BaseVehicleComp] 退出载具", ["V_PbDataId", this.CreatureData?.GetPbDataId()], ["V_CreatureId", this.CreatureData?.GetCreatureDataId()], ["P_PbDataId", e.GetComponent(0)?.GetPbDataId()], ["P_CreatureId", e.GetComponent(0)?.GetCreatureDataId()], ["P_PlayerId", e.GetComponent(0)?.GetPlayerId()], ["Seat", i.Seat], ["isDriver", i.IsDriver], ["ExitType", i.ExitType]), this.LeaveVehiclePerform(i), this.RemoveTrialAttributeModifier(i), EventSystem_1.EventSystem.EmitWithTarget(e, EventDefine_1.EEventName.OnLeaveVehicle, i), EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnVehicleBeenLeaved, i), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnLeaveVehicle, i), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnVehicleBeenLeaved, i), this.PassengerInfoMap.delete(e.Id), this.SeatInfoMap.delete(i.Seat), e === this.Driver && (this.Driver = undefined), this.PassengerInfoMap.size === 0)) {
+      this.Entity.GetComponent(248)?.CancelForceDisableAnimOptimization(7);
+    }
+  }
   ResetVehicleConfig(e = false) {
     this.Config = this.ConfigInternal?.DeepCopy();
     if (e) {
@@ -261,11 +313,91 @@ let BaseVehiclePerformComponent = class BaseVehiclePerformComponent extends Enti
   }
   RefreshMoveConfigFromVehicleConfig() {}
   FixBornLocation(e = 0, t) {}
+  wzf(e, t, i, r = "") {
+    var e = e.GetComponent(0);
+    var o = this.Entity.GetComponent(0);
+    var e = ModelManager_1.ModelManager.GameModeModel.IsMulti ? ModelManager_1.ModelManager.OnlineModel.OwnerId : e.GetPlayerId();
+    var s = Protocol_1.Aki.Protocol.GC_.create();
+    s.F4n = MathUtils_1.MathUtils.NumberToLong(o.GetCreatureDataId());
+    s.ORs = e;
+    s.phl = true;
+    s.fhl = t;
+    s.CRf = !!i;
+    s.JJf = r;
+    Net_1.Net.Call(22092, s, e => {
+      if (i) {
+        e = e?.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs;
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnEnterVehicleAtOnceResponse, i, e);
+      }
+    });
+  }
+  Azf(e, t, i, r = "") {
+    var o = e.GetComponent(0);
+    var s = this.Entity.GetComponent(0);
+    var e = this.PassengerInfoMap.get(e.Id);
+    var o = ModelManager_1.ModelManager.GameModeModel.IsMulti ? ModelManager_1.ModelManager.OnlineModel.OwnerId : o.GetPlayerId();
+    var t = ControllerHolder_1.ControllerHolder.VehicleController.ToServerExitVehicleType(t);
+    var n = Protocol_1.Aki.Protocol.GC_.create();
+    n.F4n = MathUtils_1.MathUtils.NumberToLong(s.GetCreatureDataId());
+    n.ORs = o;
+    n.phl = false;
+    n.fhl = e.Seat;
+    n.bI_ = t;
+    n.CRf = !!i;
+    n.JJf = r;
+    Net_1.Net.Call(22092, n, e => {
+      if (i) {
+        e = e?.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs;
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnLeaveVehicleAtOnceResponse, i, e);
+      }
+    });
+  }
+  Pzf(e, t, i, r = "") {
+    var e = e.GetComponent(0);
+    var o = this.Entity.GetComponent(0);
+    var s = ModelManager_1.ModelManager.GameModeModel.IsMulti ? ModelManager_1.ModelManager.OnlineModel.OwnerId : e.GetPlayerId();
+    var n = Protocol_1.Aki.Protocol.g6f.create();
+    n.F4n = MathUtils_1.MathUtils.NumberToLong(e.GetCreatureDataId());
+    n.TI_ = MathUtils_1.MathUtils.NumberToLong(o.GetCreatureDataId());
+    n.ORs = s;
+    n.phl = true;
+    n.fhl = t;
+    n.CRf = !!i;
+    n.JJf = r;
+    Net_1.Net.Call(23707, n, e => {
+      if (i) {
+        e = e?.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs;
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnEnterVehicleAtOnceResponse, i, e);
+      }
+    });
+  }
+  Dzf(e, t, i, r = "") {
+    var o = e.GetComponent(0);
+    var s = this.Entity.GetComponent(0);
+    var e = this.PassengerInfoMap.get(e.Id);
+    var n = ModelManager_1.ModelManager.GameModeModel.IsMulti ? ModelManager_1.ModelManager.OnlineModel.OwnerId : o.GetPlayerId();
+    var t = ControllerHolder_1.ControllerHolder.VehicleController.ToServerExitVehicleType(t);
+    var h = Protocol_1.Aki.Protocol.g6f.create();
+    h.F4n = MathUtils_1.MathUtils.NumberToLong(o.GetCreatureDataId());
+    h.TI_ = MathUtils_1.MathUtils.NumberToLong(s.GetCreatureDataId());
+    h.ORs = n;
+    h.phl = false;
+    h.fhl = e.Seat;
+    h.bI_ = t;
+    h.CRf = !!i;
+    h.JJf = r;
+    Net_1.Net.Call(23707, h, e => {
+      if (i) {
+        e = e?.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs;
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnLeaveVehicleAtOnceResponse, i, e);
+      }
+    });
+  }
   HandlePendingDestroy() {
     ControllerHolder_1.ControllerHolder.CreatureController.DelayRemoveEntityFinished(this.Entity);
   }
   EnterConditionCheck(e, t) {
-    return !(t < 0) && !(t >= this.MaxSeatCount) && !this.SeatInfoMap.has(t) && (!!this.CanBeenManipulated || this.DriverSeat !== t) && !!(t = e.GetComponent(233)) && !t.IsOnVehicle;
+    return !(t < 0) && !(t >= this.MaxSeatCount) && !this.SeatInfoMap.has(t) && (!!this.CanBeenManipulated || this.DriverSeat !== t) && !!(t = e.GetComponent(242)) && !t.IsOnVehicle;
   }
   LeaveConditionCheck(e) {
     return !!this.PassengerInfoMap.has(e.Id);
@@ -296,6 +428,38 @@ let BaseVehiclePerformComponent = class BaseVehiclePerformComponent extends Enti
     }
   }
   GetVehicleVelocity(e) {}
+  QXf(e) {
+    var t;
+    return !!this.f2f && !!e.IsDriver && !!(t = e.PassengerEntity?.GetComponent(0)) && !!t.IsRole() && !!(t = e.PassengerEntity?.GetComponent(220)) && !!t.HasBuffAuthority();
+  }
+  AddTrialAttributeModifier(e) {
+    var t;
+    if (this.QXf(e)) {
+      if (e = ConfigManager_1.ConfigManager.MotorConfig.GetTrialMotorConfig(this.f2f)) {
+        if (e.Level !== 0) {
+          if (t = ConfigManager_1.ConfigManager.MotorConfig.GetMotorLevelConfig(e.Level)) {
+            if (Log_1.Log.CheckInfo()) {
+              Log_1.Log.Info("Vehicle", 85, "添加试用属性Modifier", ["Level", this.f2f]);
+            }
+            FormationAttributeController_1.FormationAttributeController.AddSpeedModifier(this.g2f, 14, 0, t.NitrogenRecoverRate, 1);
+          } else if (Log_1.Log.CheckError()) {
+            Log_1.Log.Error("Vehicle", 85, "无效的等级", ["Level", e.Level]);
+          }
+        }
+      } else if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Vehicle", 85, "无效的试用属性", ["Id", this.f2f]);
+      }
+    }
+  }
+  RemoveTrialAttributeModifier(e) {
+    if (this.QXf(e)) {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Vehicle", 85, "移除试用属性Modifier", ["Id", this.f2f]);
+      }
+      FormationAttributeController_1.FormationAttributeController.RemoveSpeedModifier(this.g2f, 14);
+    }
+  }
 };
-BaseVehiclePerformComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(237)], BaseVehiclePerformComponent);
+BaseVehiclePerformComponent.PrePerformHandleGenerator = exports.ALWAYS_SUCCESS_VEHICLE_PREPERFORM_HANDLE;
+BaseVehiclePerformComponent = BaseVehiclePerformComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(246)], BaseVehiclePerformComponent);
 exports.BaseVehiclePerformComponent = BaseVehiclePerformComponent; //# sourceMappingURL=BaseVehiclePerformComponent.js.map

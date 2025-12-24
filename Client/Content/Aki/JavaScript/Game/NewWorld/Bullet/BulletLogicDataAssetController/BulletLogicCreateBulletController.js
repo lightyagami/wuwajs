@@ -23,56 +23,54 @@ class BulletLogicCreateBulletController extends BulletLogicController_1.BulletLo
   }
   BulletLogicAction(e = undefined) {
     var r = this.h7o;
-    var i = r.CreateBulletRowName;
-    if (i !== StringUtils_1.NONE_STRING) {
-      var l = this.Bullet.GetBulletInfo();
+    var l = r.CreateBulletRowName;
+    if (l !== StringUtils_1.NONE_STRING) {
+      var i = this.Bullet.GetBulletInfo();
       let t = undefined;
       if (e && e instanceof BulletHitActorData_1.BulletHitActorData) {
         t = e.Entity;
       }
-      const n = r.FlashBulletRowName;
-      if (n !== StringUtils_1.NONE_STRING) {
-        e = ModelManager_1.ModelManager.BulletModel.GetBulletSetByAttacker(l.Attacker.Id);
-        let i = false;
+      const a = r.FlashBulletRowName;
+      if (a !== StringUtils_1.NONE_STRING) {
+        e = ModelManager_1.ModelManager.BulletModel.GetBulletSetByAttacker(i.Attacker.Id);
+        let l = false;
         var o = t.GetComponent(1);
         if (e && (0, RegisterComponent_1.isComponentInstance)(o, 3)) {
-          const a = o?.Actor;
-          if (a) {
+          const n = o?.Actor;
+          if (n) {
             e.forEach((t, e, r) => {
-              if (t.GetBulletInfo().BulletRowName === n && t.GetComponent(1).Owner.GetAttachParentActor() === a) {
+              if (t.GetBulletInfo().BulletRowName === a && t.GetComponent(1).Owner.GetAttachParentActor() === n) {
                 t.GetBulletInfo().GenerateTime = Time_1.Time.WorldTime;
-                i = true;
+                l = true;
               }
             });
           }
         }
-        if (i) {
+        if (l) {
           return;
         }
       }
       var o = this.Bullet.GetBulletInfo().ContextId;
       var e = this.l7o(r.BulletTransform, t);
-      var i = ControllerHolder_1.ControllerHolder.BulletController.CreateBulletCustomTarget(this.l7o(r.BulletOwner, t), i, e?.D_GetTransform() ?? MathUtils_1.MathUtils.DefaultTransform, {
-        SkillId: l.BulletInitParams.SkillId,
-        SkillContextId: l.BulletInitParams.SkillContextId,
+      var l = ControllerHolder_1.ControllerHolder.BulletController.CreateBulletCustomTarget(this.l7o(r.BulletOwner, t)?.Entity, l, e?.ActorTransform ?? MathUtils_1.MathUtils.DefaultTransformDouble, {
+        SkillId: i.BulletInitParams.SkillId,
+        SkillContextId: i.BulletInitParams.SkillContextId,
         ParentVictimId: t?.Id,
-        ParentTargetId: l.Target?.Id,
+        ParentTargetId: i.Target?.Id,
         ParentId: this.Bullet.Id,
-        DtType: l.BulletInitParams.DtType,
-        BattleFlags: l.BulletInitParams.BattleFlags,
+        DtType: i.BulletInitParams.DtType,
+        BattleFlags: i.BulletInitParams.BattleFlags,
         ParentIds: undefined
       }, o);
-      if (i) {
-        if ((e = i.GetBulletInfo()).BulletDataMain.Render.HandOverParentEffect) {
-          BulletStaticFunction_1.BulletStaticFunction.HandOverEffects(l, e);
+      if (l) {
+        if ((e = l.GetBulletInfo()).BulletDataMain.Render.HandOverParentEffect) {
+          BulletStaticFunction_1.BulletStaticFunction.HandOverEffects(i, e);
         } else {
           o = r.AttachToBoneName;
-          if ((l = this.l7o(r.AttachToActor, t)) && o !== StringUtils_1.NONE_STRING) {
+          if ((i = this.l7o(r.AttachToActor, t)) && o !== StringUtils_1.NONE_STRING) {
             e = FNameUtil_1.FNameUtil.GetDynamicFName(o);
-            r = i.GetComponent(173);
-            o = l.Mesh;
-            r.SetActorLocation(o.D_GetSocketLocation(e));
-            r.SetAttachToComponent(o, e, 1, 0, 0, false);
+            (r = l.GetComponent(178)).SetActorLocation(i.GetSocketLocation(e));
+            r.SetAttachToComponent(i.Owner.Mesh, e, 1, 0, 0, false);
             r.NeedDetach = true;
           }
         }
@@ -82,18 +80,16 @@ class BulletLogicCreateBulletController extends BulletLogicController_1.BulletLo
   l7o(t, e) {
     switch (t) {
       case 1:
-        return this.Bullet.GetBulletInfo().AttackerActorComp.Actor;
+        return this.Bullet.GetBulletInfo().AttackerActorComp;
       case 2:
-        var r = e.GetComponent(3);
-        if (r) {
-          r = r?.Actor;
-          if (r?.IsValid()) {
-            return r;
-          }
+        var r = e.GetComponent(1);
+        if (r?.Valid) {
+          return r;
+        } else {
+          return this.Bullet.GetBulletInfo().AttackerActorComp;
         }
-        return this.Bullet.GetBulletInfo().AttackerActorComp.Actor;
       default:
-        return this.Bullet.GetBulletInfo().AttackerActorComp.Actor;
+        return this.Bullet.GetBulletInfo().AttackerActorComp;
     }
   }
 }

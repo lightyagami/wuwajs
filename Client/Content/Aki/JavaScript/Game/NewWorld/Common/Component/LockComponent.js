@@ -33,7 +33,7 @@ let LockComponent = class LockComponent extends EntityComponent_1.EntityComponen
     this.onn = 0;
   }
   OnStart() {
-    this.inn = this.Entity.GetComponent(200);
+    this.inn = this.Entity.GetComponent(206);
     this.u1t = this.Entity.GetComponent(0);
     var t = this.u1t.GetEntityEnterComponentState();
     if (t !== undefined) {
@@ -61,5 +61,5 @@ let LockComponent = class LockComponent extends EntityComponent_1.EntityComponen
     this.inn.ChangeLocalLevelTag(this.onn, e);
   }
 };
-LockComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(107)], LockComponent);
+LockComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(112)], LockComponent);
 exports.LockComponent = LockComponent; //# sourceMappingURL=LockComponent.js.map

@@ -82,7 +82,7 @@ class TsTaskBattleWander extends TsTaskAbortImmediatelyBase_1.default {
     if (t instanceof TsAiController_1.default) {
       t = t.AiController;
       if (!this.TsWalkOff) {
-        t.CharActorComp.Entity.GetComponent(182)?.SetWalkOffLedgeRecord(false);
+        t.CharActorComp.Entity.GetComponent(187)?.SetWalkOffLedgeRecord(false);
       }
       if (t.AiWanderInfos?.AiBattleWanderGroups?.length) {
         this.EndTime = Time_1.Time.WorldTime + t.AiWanderInfos.RandomBattleWanderEndTime();
@@ -151,7 +151,7 @@ class TsTaskBattleWander extends TsTaskAbortImmediatelyBase_1.default {
   OnClear() {
     var t;
     if (this.AIOwner instanceof TsAiController_1.default) {
-      (t = this.AIOwner.AiController.CharActorComp.Entity.GetComponent(45))?.MoveController.StopMoveToLocation();
+      (t = this.AIOwner.AiController.CharActorComp.Entity.GetComponent(46))?.MoveController.StopMoveToLocation();
       this.LastDestination?.Reset();
       AiContollerLibrary_1.AiControllerLibrary.ClearInput(this.AIOwner);
       if (!this.TsWalkOff) {
@@ -178,7 +178,7 @@ class TsTaskBattleWander extends TsTaskAbortImmediatelyBase_1.default {
     this.DistanceIndex = this.FindDistanceIndexByDistance(i, e);
     this.FindDirectByWeights(i);
     this.CheckNavigationAndAllyBlock(t, this.TmpOffset, e);
-    var h = t.CharAiDesignComp.Entity.GetComponent(179);
+    var h = t.CharAiDesignComp.Entity.GetComponent(184);
     if (h.Valid) {
       switch (this.TsMoveState) {
         case 1:
@@ -251,8 +251,8 @@ class TsTaskBattleWander extends TsTaskAbortImmediatelyBase_1.default {
     if (this.DirectIndex !== 4 && AiContollerLibrary_1.AiControllerLibrary.NavigationBlockDirectionE(this.AIOwner, t.ActorLocationProxy, t.ActorForwardProxy, this.DirectIndex)) {
       this.DirectIndex = 4;
       t.ClearInput();
-    } else if (!(i = t.Entity.GetComponent(45)) || !i.MoveController.IsMovingToLocation()) {
-      if (t.Entity.GetComponent(104)?.MoveState !== CharacterUnifiedStateTypes_1.ECharMoveState.Walk) {
+    } else if (!(i = t.Entity.GetComponent(46)) || !i.MoveController.IsMovingToLocation()) {
+      if (t.Entity.GetComponent(109)?.MoveState !== CharacterUnifiedStateTypes_1.ECharMoveState.Walk) {
         AiContollerLibrary_1.AiControllerLibrary.TurnToDirect(t, this.TmpOffset, s);
         t.SetInputDirect(t.ActorForwardProxy);
       } else {
@@ -261,7 +261,7 @@ class TsTaskBattleWander extends TsTaskAbortImmediatelyBase_1.default {
     }
   }
   StopMoveToLocation(t) {
-    t = t.Entity.GetComponent(45);
+    t = t.Entity.GetComponent(46);
     if (t && t.MoveController.IsMovingToLocation()) {
       t?.MoveController.StopMoveToLocation();
     }
@@ -270,7 +270,7 @@ class TsTaskBattleWander extends TsTaskAbortImmediatelyBase_1.default {
   SetMoveToLocation(t, i, s, e) {
     this.TmpVector2.DeepCopy(t);
     this.TmpVector2.AdditionEqual(i.ActorLocationProxy);
-    t = i.Entity.GetComponent(45);
+    t = i.Entity.GetComponent(46);
     if (!t) {
       return false;
     }

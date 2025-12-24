@@ -9,39 +9,45 @@ const AdvanceNoticeThumbItem_1 = require("./AdvanceNoticeThumbItem");
 class AdvanceNoticeSwitchComponent {
   constructor() {
     this.yil = undefined;
-    this.Pfm = undefined;
-    this.Afm = undefined;
-    this.xfm = undefined;
-    this.Bfm = undefined;
-    this.kfm = undefined;
+    this.qym = undefined;
+    this.Oym = undefined;
+    this.Nym = undefined;
+    this.Vym = undefined;
+    this.jym = undefined;
     this.kPt = false;
-    this.qfm = () => {
+    this.Hym = () => {
       var t = new AdvanceNoticeThumbItem_1.AdvanceNoticeThumbItem();
-      t.OnItemToggleClickDelegate = this.Ofm;
-      t.CanItemToggleChangeDelegate = this.uym;
+      t.OnItemToggleClickDelegate = this.$ym;
+      t.CanItemToggleChangeDelegate = this.NLm;
       return t;
     };
-    this.Ofm = (t, i) => {
-      if (this.cym(t.TabId)) {
+    this.H0d = () => {
+      var t;
+      if (this.Nym?.IsValid() && this.yil && (t = this.jym?.GetScrollItemByIndex(this.yil.CurrentSubTabIndex))) {
+        this.jym?.LateScrollTo(t.GetRootItem());
+      }
+    };
+    this.$ym = (t, i) => {
+      if (this.VLm(t.TabId)) {
         this.SelectThumb(i);
       }
     };
-    this.uym = (t, i) => this.cym(t.TabId);
+    this.NLm = (t, i) => this.VLm(t.TabId);
   }
   Initialize(t, i, h, s) {
     if (!this.kPt) {
       this.kPt = true;
-      this.Pfm = t;
-      this.Afm = i;
-      this.xfm = h;
-      this.Bfm = s;
-      this.kfm = new GenericScrollViewNew_1.GenericScrollViewNew(this.xfm, this.qfm, this.Bfm.GetOwner());
+      this.qym = t;
+      this.Oym = i;
+      this.Nym = h;
+      this.Vym = s;
+      this.jym = new GenericScrollViewNew_1.GenericScrollViewNew(this.Nym, this.Hym, this.Vym.GetOwner());
     }
   }
   Refresh(t) {
     this.yil = t;
     this.DataCheck();
-    this.kfm?.RefreshByData(this.yil.AdvanceNoticeThumbItemDataList);
+    this.jym?.RefreshByData(this.yil.AdvanceNoticeThumbItemDataList, this.H0d);
     this.RefreshContent();
   }
   RefreshContent() {
@@ -55,19 +61,19 @@ class AdvanceNoticeSwitchComponent {
       }
     }
   }
-  cym(t) {
+  VLm(t) {
     return t === this.yil.TabId;
   }
   SelectThumb(t) {
     var i;
     if (this.yil && this.CheckIndexInRange(t) && this.yil.CurrentSubTabIndex !== t) {
-      if ((i = this.yil.CurrentSubTabIndex) !== -1 && (i = this.kfm?.GetScrollItemByIndex(i))) {
+      if ((i = this.yil.CurrentSubTabIndex) !== -1 && (i = this.jym?.GetScrollItemByIndex(i))) {
         i.RefreshToggleState(false);
       }
       this.yil.CurrentSubTabIndex = t;
-      if (i = this.kfm?.GetScrollItemByIndex(t)) {
+      if (i = this.jym?.GetScrollItemByIndex(t)) {
         i.RefreshToggleState(true);
-        this.kfm?.ScrollTo(i.GetRootItem());
+        this.Nym?.ScrollTo(i.GetRootItem(), true);
       }
       this.RefreshContent();
       this.yil.OnSwitchSubTab(t);
@@ -90,8 +96,8 @@ class AdvanceNoticeSwitchComponent {
     var t;
     if (this.yil) {
       t = this.yil.AdvanceNoticeThumbItemDataList.length;
-      this.Pfm.RootUIComp.SetUIActive(this.yil.CurrentSubTabIndex > 0);
-      this.Afm.RootUIComp.SetUIActive(this.yil.CurrentSubTabIndex < t - 1);
+      this.qym.RootUIComp.SetUIActive(this.yil.CurrentSubTabIndex > 0);
+      this.Oym.RootUIComp.SetUIActive(this.yil.CurrentSubTabIndex < t - 1);
     }
   }
 }

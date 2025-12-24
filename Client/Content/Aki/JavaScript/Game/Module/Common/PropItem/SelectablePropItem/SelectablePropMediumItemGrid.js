@@ -93,6 +93,7 @@ class SelectablePropMediumItemGrid extends LoopScrollMediumItemGrid_1.LoopScroll
         case 3:
           u = ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomBattleData(i);
           d.ItemConfigId = u.GetConfigId(true);
+          d.QualityId = u.GetQuality();
           d.Level = u.GetCost();
           d.IsLevelTextUseChangeColor = true;
           d.BottomTextId = "VisionLevel";

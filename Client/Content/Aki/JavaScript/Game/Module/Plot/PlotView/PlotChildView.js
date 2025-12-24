@@ -19,8 +19,8 @@ class PlotChildView extends UiPanelBase_1.UiPanelBase {
     this.LevelSequencePlayer = undefined;
     this.L0e = [];
     this.FiniteSpineEndCallback = undefined;
-    this.qom = new Map();
-    this.Oom = new Map();
+    this.nlm = new Map();
+    this.slm = new Map();
     this.PlaySpineAnimation = (t, i = true, s = false, o = 0) => {
       var e = (0, puerts_1.$ref)(undefined);
       if (!StringUtils_1.StringUtils.IsEmpty(t)) {
@@ -34,25 +34,25 @@ class PlotChildView extends UiPanelBase_1.UiPanelBase {
           if (n.IsA(UE.UISpineRenderable.StaticClass()) && ((n = (n.GetOwner()?.GetComponentByClass(UE.SpineSkeletonAnimationComponent.StaticClass())).SetAnimation(0, t, i))?.SetMixDuration(o), n?.isValidAnimation()) && !i) {
             if (s) {
               n.SetTimeScale(0);
-              this.qom.set(n, n.getAnimationDuration());
+              this.nlm.set(n, n.getAnimationDuration());
             }
-            (this.Oom.has(t) ? this.Oom : this.Oom.set(t, new Set())).get(t).add(n);
-            n.AnimationComplete.Add(this.Gom);
+            (this.slm.has(t) ? this.slm : this.slm.set(t, new Set())).get(t).add(n);
+            n.AnimationComplete.Add(this.alm);
           }
         }
       }
     };
-    this.Gom = t => {
+    this.alm = t => {
       if (t) {
         t.AnimationComplete.Clear();
         let e = undefined;
-        for (var [i, s] of this.Oom) {
+        for (var [i, s] of this.slm) {
           if (s.delete(t) && s.size === 0) {
             e = i;
           }
         }
         if (e) {
-          this.Oom.delete(e);
+          this.slm.delete(e);
           this.FiniteSpineEndCallback?.(e);
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.FiniteSpineEnd, e);
         }
@@ -64,11 +64,11 @@ class PlotChildView extends UiPanelBase_1.UiPanelBase {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Plot", 45, "Ui预览图:关闭Spine动画", ["spineName", t]);
         }
-        var s = this.Oom.get(t);
+        var s = this.slm.get(t);
         if (s && s.size > 0) {
           s?.forEach(e => {
             e.SetTimeScale(1);
-            this.qom.delete(e);
+            this.nlm.delete(e);
           });
         }
         this.RootItem?.GetAllAttachUIChildren(e);
@@ -90,8 +90,8 @@ class PlotChildView extends UiPanelBase_1.UiPanelBase {
   }
   OnBeforeDestroy() {
     this.L0e.length = 0;
-    this.Oom.clear();
-    this.qom.clear();
+    this.slm.clear();
+    this.nlm.clear();
     this.LevelSequencePlayer?.Clear();
   }
   async PreOpenAsync(e, t) {
@@ -155,7 +155,7 @@ class PlotChildView extends UiPanelBase_1.UiPanelBase {
     await this.DestroyAsync();
   }
   UpdateFrozenSpine(e) {
-    for (var [t, i] of this.qom) {
+    for (var [t, i] of this.nlm) {
       if (t.isValidAnimation()) {
         i = i * e;
         t?.SetTrackTime(i);
@@ -171,11 +171,11 @@ class PlotChildView extends UiPanelBase_1.UiPanelBase {
     }
   }
   RestoreFreezeSpine(e, t = false) {
-    var i = this.Oom.get(e);
+    var i = this.slm.get(e);
     if (i) {
       var s = new Set();
       for (const o of i) {
-        this.qom.delete(o);
+        this.nlm.delete(o);
         if (o.isValidAnimation()) {
           o.SetLoop(t);
           o.SetTimeScale(1);
@@ -187,7 +187,7 @@ class PlotChildView extends UiPanelBase_1.UiPanelBase {
         i.delete(r);
       }
       if (i.size === 0) {
-        this.Oom.delete(e);
+        this.slm.delete(e);
         this.FiniteSpineEndCallback?.(e);
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.FiniteSpineEnd, e);
       }

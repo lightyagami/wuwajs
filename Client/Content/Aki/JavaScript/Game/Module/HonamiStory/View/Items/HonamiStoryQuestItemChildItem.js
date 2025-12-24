@@ -24,7 +24,7 @@ class HonamiStoryQuestItemChildItem extends UiPanelBase_1.UiPanelBase {
       this.Z6c?.(this);
     };
     this.Yai = () => {
-      this.Shm();
+      this.lcm();
     };
   }
   OnRegisterComponent() {
@@ -43,11 +43,11 @@ class HonamiStoryQuestItemChildItem extends UiPanelBase_1.UiPanelBase {
   Refresh(t, i, e) {
     this.CNe ||= ModelManager_1.ModelManager.HonamiStoryModel.GetActivityData();
     this.sOn = t;
-    this.Shm();
+    this.lcm();
     this.GetText(3).SetUIActive(false);
     this.GetText(8).SetUIActive(false);
   }
-  Shm() {
+  lcm() {
     var t;
     var i = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(this.sOn.GetNameKey());
     var e = this.GetText(2);
@@ -69,11 +69,11 @@ class HonamiStoryQuestItemChildItem extends UiPanelBase_1.UiPanelBase {
   Clear() {}
   OnSelected() {
     this.GetExtendToggle(4).SetToggleState(1, false);
-    this.Shm();
+    this.lcm();
   }
   OnDeselected() {
     this.GetExtendToggle(4).SetToggleState(0, false);
-    this.Shm();
+    this.lcm();
   }
   GetKey(t, i) {
     return this.GridIndex;

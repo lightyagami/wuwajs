@@ -85,16 +85,13 @@ let CharacterBuffComponent = CharacterBuffComponent_1 = class CharacterBuffCompo
     return this.TagComponent;
   }
   GetSkillComponent() {
-    return this.Entity.GetComponent(39);
+    return this.Entity.GetComponent(40);
   }
   GetActorComponent() {
     return this.ActorComponent;
   }
   GetCueComponent() {
     return this.CueComponent;
-  }
-  get CreatureDataId() {
-    return this.CreatureDataComponent.GetCreatureDataId();
   }
   OnInitData() {
     this.BuffEffectManager = new ExtraEffectManager_1.ExtraEffectManager(this);
@@ -103,11 +100,11 @@ let CharacterBuffComponent = CharacterBuffComponent_1 = class CharacterBuffCompo
   OnInit() {
     super.OnInit();
     this.ActorComponent = this.Entity.CheckGetComponent(1);
-    this.AttributeComponent = this.Entity.CheckGetComponent(177);
-    this.TagComponent = this.Entity.CheckGetComponent(209);
+    this.AttributeComponent = this.Entity.CheckGetComponent(182);
+    this.TagComponent = this.Entity.CheckGetComponent(215);
     this.CueComponent = this.Entity.GetComponent(21);
     this.DeathComponent = this.Entity.GetComponent(15);
-    this.TimeScaleComponent = this.Entity.GetComponent(126);
+    this.TimeScaleComponent = this.Entity.GetComponent(131);
     return true;
   }
   OnStart() {
@@ -302,8 +299,8 @@ let CharacterBuffComponent = CharacterBuffComponent_1 = class CharacterBuffCompo
     }
   }
   GetBuffLevel(t) {
-    var e = this.Entity.GetComponent(98)?.GetSkillLevelByBuffId(t);
-    if (e !== undefined && e > 0 || (e = this.Entity.GetComponent(43)?.GetVisionLevelByBuffId(t)) !== undefined && e > 0) {
+    var e = this.Entity.GetComponent(101)?.GetSkillLevelByBuffId(t);
+    if (e !== undefined && e > 0 || (e = this.Entity.GetComponent(44)?.GetVisionLevelByBuffId(t)) !== undefined && e > 0) {
       return e;
     } else {
       return undefined;
@@ -334,7 +331,7 @@ let CharacterBuffComponent = CharacterBuffComponent_1 = class CharacterBuffCompo
     var a;
     var s;
     var n;
-    if (this.HasBuffAuthority() && (a = this.CreatureDataComponent?.GetSummonerId()) && t.Config?.FormationPolicy === 4 && (a = ModelManager_1.ModelManager.CreatureModel.GetEntity(a)?.Entity?.GetComponent(178))) {
+    if (this.HasBuffAuthority() && (a = this.CreatureDataComponent?.GetSummonerId()) && t.Config?.FormationPolicy === 4 && (a = ModelManager_1.ModelManager.CreatureModel.GetEntity(a)?.Entity?.GetComponent(183))) {
       s = t.Id;
       n = t.Handle;
       a.AddBuffLocal(s, {
@@ -608,5 +605,5 @@ CharacterBuffComponent.R__ = Stats_1.Stat.Create("CharacterBuffComponent.Broadca
 CharacterBuffComponent.Kbr = Stats_1.Stat.Create("AddBuff_SysGrow");
 CharacterBuffComponent.Qbr = Stats_1.Stat.Create("AddBuff_AttributeRateModifier");
 CharacterBuffComponent.Xbr = Stats_1.Stat.Create("AddBuff_AddTag");
-CharacterBuffComponent = CharacterBuffComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(178)], CharacterBuffComponent);
+CharacterBuffComponent = CharacterBuffComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(183)], CharacterBuffComponent);
 exports.CharacterBuffComponent = CharacterBuffComponent; //# sourceMappingURL=CharacterBuffComponent.js.map

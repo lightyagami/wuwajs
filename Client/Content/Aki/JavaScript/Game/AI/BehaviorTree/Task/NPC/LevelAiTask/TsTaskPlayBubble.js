@@ -37,22 +37,20 @@ class TsTaskPlayBubble extends TsTaskAbortImmediatelyBase_1.default {
     }
   }
   ReceiveExecuteAI(e, o) {
+    var t;
+    var r;
     this.InitTsVariables();
     if (e instanceof TsAiController_1.default) {
       if (this.TsFlowListName) {
-        var t = e.AiController.CharActorComp;
-        if (t) {
-          var r = {
+        if (r = e.AiController.CharActorComp) {
+          t = {
             FlowListName: this.TsFlowListName,
             FlowId: this.TsFlowId,
             StateId: this.TsStateId
           };
-          const s = t.CreatureData.GetPbDataId();
-          t = this.CreateCharacterFlowData(s, r);
-          t.Callback = () => {
-            ControllerHolder_1.ControllerHolder.DynamicFlowController.RemoveDynamicFlow(s);
-          };
-          ControllerHolder_1.ControllerHolder.DynamicFlowController.AddDynamicFlow(t);
+          r = r.CreatureData.GetCreatureDataId();
+          r = this.CreateCharacterFlowData(r, t);
+          ControllerHolder_1.ControllerHolder.DynamicFlowController.AddDynamicFlow(r);
         } else if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("BehaviorTree", 50, "[TsTaskPlayBubble]无效的ActorComp", ["Type", e.GetClass().GetName()]);
         }
@@ -66,15 +64,21 @@ class TsTaskPlayBubble extends TsTaskAbortImmediatelyBase_1.default {
   }
   CreateCharacterFlowData(e, o) {
     var t = new DynamicFlowController_1.CharacterDynamicFlowData();
-    var e = {
-      EntityIds: [e],
+    var o = {
+      EntityIds: [],
       EnterRadius: CharacterFlowComponent_1.DEFAULT_BUBBLE_ENTER_RANGE,
       LeaveRadius: CharacterFlowComponent_1.DEFAULT_BUBBLE_LEAVE_RANGE,
       Flow: o,
       WaitTime: 0,
       RedDot: false
     };
-    t.BubbleData = e;
+    const r = new DynamicFlowController_1.DynamicFlowActorInfo();
+    r.CreatureId = e;
+    t.MasterInfo = r;
+    t.BubbleData = o;
+    t.Callback = () => {
+      ControllerHolder_1.ControllerHolder.DynamicFlowController.RemoveDynamicFlow(r);
+    };
     return t;
   }
 }

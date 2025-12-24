@@ -12,6 +12,7 @@ class PhantomArenaBattleViewGamepadLogic {
     this.SlotIndex = PhantomArenaDefine_1.HAND_PHANTOMARENA_INDEX;
     this.HandIndex = -1;
     this.u3u = false;
+    this.OwnBattleShowTipsCard = undefined;
   }
   get IsInHandCardSelectState() {
     return this.SelectedCard !== undefined && this.SelectedCard.Data.Index === PhantomArenaDefine_1.HAND_PHANTOMARENA_INDEX;
@@ -46,6 +47,19 @@ class PhantomArenaBattleViewGamepadLogic {
   async I7c(t) {
     await this.Proxy.OwnArea.MoveFunctionalCardToRecycle(t, t.Data.Index, this.SlotIndex);
   }
+  fKf(t) {
+    if (t) {
+      (this.OwnBattleShowTipsCard = t).SetSelectedStateByGamepad(true);
+    } else {
+      this.gKf();
+    }
+  }
+  gKf() {
+    if (this.OwnBattleShowTipsCard) {
+      this.OwnBattleShowTipsCard.SetSelectedStateByGamepad(false);
+      this.OwnBattleShowTipsCard = undefined;
+    }
+  }
   CancelSelectedCard() {
     if (this.SelectedCard) {
       if (this.SelectedCard.Data.Index === PhantomArenaDefine_1.HAND_PHANTOMARENA_INDEX) {
@@ -58,6 +72,7 @@ class PhantomArenaBattleViewGamepadLogic {
   }
   ResetGamepadOperation() {
     this.CancelSelectedCard();
+    this.gKf();
   }
   SwitchCardLayoutHoist() {
     this.Proxy.OwnArea.HandArea.SwitchLayoutHoist();
@@ -78,7 +93,7 @@ class PhantomArenaBattleViewGamepadLogic {
   }
   async SelectBattleCard(t) {
     var i;
-    return !this.Proxy.InCantDragState() && !!(i = this.Proxy.OwnArea.FunctionalArea.GetCardProxyByIndex(t)) && !!i.Card && !(await this.M7c(i.Card, t), 0);
+    return !this.Proxy.InCantDragState() && !!(i = this.Proxy.OwnArea.FunctionalArea.GetCardProxyByIndex(t)) && !!i.Card && !(this.gKf(), await this.M7c(i.Card, t), 0);
   }
   async MoveHandCardToFunctional(t) {
     if (!!this.SelectedCard && this.SelectedCard.Data.Index === PhantomArenaDefine_1.HAND_PHANTOMARENA_INDEX && this.SlotIndex !== t && !this.u3u) {
@@ -109,9 +124,11 @@ class PhantomArenaBattleViewGamepadLogic {
     }
   }
   SwitchOwnBattleCardTips(t) {
-    t = this.Proxy.OwnArea.FunctionalArea.GetCardProxyByIndex(t);
+    var i;
+    var t = this.Proxy.OwnArea.FunctionalArea.GetCardProxyByIndex(t);
     if (t && t.Card) {
-      this.Proxy.SwitchCardTips(t.Card.Data);
+      i = this.Proxy.SwitchCardTips(t.Card.Data);
+      this.fKf(i ? t.Card : undefined);
     }
   }
   SwitchOpponentBattleCardTips(t) {
@@ -122,6 +139,7 @@ class PhantomArenaBattleViewGamepadLogic {
   }
   HideCardTips() {
     this.Proxy.HideCardTips();
+    this.gKf();
   }
   IsInSkillInteractByOpponentIndex(t) {
     t = this.Proxy.OpponentArea.FunctionalArea.GetCardProxyByIndex(t);

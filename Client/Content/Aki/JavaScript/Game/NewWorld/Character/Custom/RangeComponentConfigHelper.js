@@ -21,6 +21,22 @@ class RangeComponentConfigHelper {
       t = (0, IComponent_1.getComponent)(t.ComponentsData, "TriggerComponent");
       return !!t && (!t.Match.OnlyPlayer || !!t.ChangeRoleTrigger || !!t.Match.AllCharacter || !!t.Match.Categories?.length);
     };
+    this.Deg = t => {
+      t = (0, IComponent_1.getComponent)(t.ComponentsData, "ClientTriggerComponent");
+      if (!t) {
+        return false;
+      }
+      var o = t.TriggerMatch.EntityMatch;
+      switch (o.Type) {
+        case "AllCharacter":
+        case "DynamicEntityMatch":
+          return true;
+        case "Player":
+          return !!o.ChangeRoleTrigger;
+        default:
+          return false;
+      }
+    };
   }
   static get Instance() {
     if (this.cj === undefined) {
@@ -120,7 +136,7 @@ class RangeComponentConfigHelper {
     this.QKl("ProgressBarControlComponent", false, true);
     this.QKl("EntityStateAudioComponent", false, false);
     this.QKl("TriggerComponent", false, this.bql);
-    this.QKl("ClientTriggerComponent", false, true);
+    this.QKl("ClientTriggerComponent", false, this.Deg);
     this.QKl("AirPassageComponent", false, false);
     this.QKl("PortalComponent", false, false);
     this.QKl("LocationSafetyComponent", false, false);

@@ -12,44 +12,44 @@ const StateExtraItemBase_1 = require("../StateExtra/StateExtraItemBase");
 class HonamiStoryMonsterLevelItem extends StateExtraItemBase_1.StateExtraItemBase {
   constructor() {
     super(...arguments);
-    this.xim = 0;
+    this.$sm = 0;
     this.PGc = 0;
     this.Wft = 0;
     this.G2e = 0;
-    this.Bim = e => {
-      e = this.xim + e + ModelManager_1.ModelManager.HonamiStoryModel.MonsterBaseEnhanceLevel;
+    this.Wsm = e => {
+      e = this.$sm + e + ModelManager_1.ModelManager.HonamiStoryModel.MonsterBaseEnhanceLevel;
       this.pmt(e, this.PGc);
     };
-    this.kim = (e, t) => {
+    this.Qsm = (e, t) => {
       this.pmt(this.Wft, t);
     };
   }
   OnInitExtraParams(e) {
     var e = e.HonamiStoryLevel;
     var t = ModelManager_1.ModelManager.HonamiStoryModel.PlayerData.PowerLevel ?? 0;
-    this.xim = e;
+    this.$sm = e;
     var s = ModelManager_1.ModelManager.HonamiStoryModel.PollutionLevel;
     var e = e + (ModelManager_1.ModelManager.HonamiStoryModel.PollutionLevelMap?.get(s)?.MonsterEnhanceLevel ?? 0) + ModelManager_1.ModelManager.HonamiStoryModel.MonsterBaseEnhanceLevel;
     this.pmt(e, t, true);
-    if (!EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnHonamiStoryPowerLevelUpdate, this.kim)) {
-      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnHonamiStoryPowerLevelUpdate, this.kim);
+    if (!EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnHonamiStoryPowerLevelUpdate, this.Qsm)) {
+      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnHonamiStoryPowerLevelUpdate, this.Qsm);
     }
-    if (!EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnHonamiStoryPollutionUpdate, this.Bim)) {
-      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnHonamiStoryPollutionUpdate, this.Bim);
+    if (!EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnHonamiStoryPollutionUpdate, this.Wsm)) {
+      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnHonamiStoryPollutionUpdate, this.Wsm);
     }
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UISprite], [2, UE.UISprite], [3, UE.UISprite]];
   }
   OnBeforeDestroy() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnHonamiStoryPowerLevelUpdate, this.kim);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnHonamiStoryPollutionUpdate, this.Bim);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnHonamiStoryPowerLevelUpdate, this.Qsm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnHonamiStoryPollutionUpdate, this.Wsm);
   }
   pmt(e, t, s = false) {
     this.PGc = t;
-    t = this.qim(e, t);
+    t = this.Ksm(e, t);
     if (!!s || this.G2e !== t) {
-      this.Oim(t);
+      this.Xsm(t);
       this.G2e = t;
     }
     if (!!s || this.Wft !== e) {
@@ -57,7 +57,7 @@ class HonamiStoryMonsterLevelItem extends StateExtraItemBase_1.StateExtraItemBas
       this.Wft = e;
     }
   }
-  Oim(e) {
+  Xsm(e) {
     let t = "#a5f3cbff";
     let s = "#a5f3cb99";
     if (e === 1) {
@@ -73,7 +73,7 @@ class HonamiStoryMonsterLevelItem extends StateExtraItemBase_1.StateExtraItemBas
     this.GetSprite(2).SetColor(e);
     this.GetSprite(3).SetColor(e);
   }
-  qim(e, t) {
+  Ksm(e, t) {
     t -= e;
     if (t > ModelManager_1.ModelManager.HonamiStoryModel.MonsterLevelSafeOffset) {
       return 0;

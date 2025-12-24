@@ -183,7 +183,7 @@ class AlterMark extends UiPanelBase_1.UiPanelBase {
     return this.x$e.GetCameraRotation().VectorDouble();
   }
   N$e() {
-    var t = ActorUtils_1.ActorUtils.GetEntityByActor(this.E$e).Entity.GetComponent(47).AiController.AiAlert.AlertValue;
+    var t = ActorUtils_1.ActorUtils.GetEntityByActor(this.E$e).Entity.GetComponent(48).AiController.AiAlert.AlertValue;
     this.D$e.SetFillAmount(START_FILL_AMOUNT + t / MAX_ALERT / 2);
     this.L$e.SetFillAmount(START_FILL_AMOUNT + t / MAX_ALERT / 2);
     if (t < 50) {

@@ -62,6 +62,9 @@ class RegressTransitionStateMachine {
         case 0:
           e = new RegressTansitionStateDefine_1.RecallShowRewardState(this.Jda);
           break;
+        case 1:
+          e = new RegressTansitionStateDefine_1.RecallRequestRewardState(this.Jda);
+          break;
         case 2:
           e = new RegressTansitionStateDefine_1.RecallFinishState(this.Jda);
           break;

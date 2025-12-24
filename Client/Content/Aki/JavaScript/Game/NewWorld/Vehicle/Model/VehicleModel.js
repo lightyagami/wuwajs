@@ -3,13 +3,16 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.PlayDrivingSoundOnReachSpeed = exports.KeepDrivingDurationAtSpeed = exports.KeepDrivingInfo = exports.VehicleModel = exports.WaitEntityTaskContext = undefined;
+exports.PlayDrivingSoundOnReachSpeed = exports.KeepDrivingDurationAtSpeed = exports.KeepDrivingAtSpeedCondition = exports.KeepDrivingInfo = exports.VehicleModel = exports.WaitEntityTaskContext = undefined;
 const Log_1 = require("../../../../Core/Common/Log");
 const ModelBase_1 = require("../../../../Core/Framework/ModelBase");
 const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
 const MathUtils_1 = require("../../../../Core/Utils/MathUtils");
+const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const VehicleInfoDefines_1 = require("../Common/VehicleInfoDefines");
+const DAYTIME_HOUR_START = 360;
+const DAYTIME_HOUR_END = 1080;
 class WaitEntityTaskContext {
   constructor() {
     this.WaitTask = undefined;
@@ -27,17 +30,27 @@ class VehicleModel extends ModelBase_1.ModelBase {
     this.IsReadyRiderSharing = false;
     this.IsForbidRiderSharing = false;
     this.RideSharingInfoMap = new Map();
+    this.MaterialControllerHandles = new Set();
     this._A = 0;
     this.Jbl = undefined;
   }
-  Reset() {
+  OnChangeMode() {
+    for (const t of this.PlayerVehicleInfo.values()) {
+      var e = t.DeepCopy();
+      e.VehicleCreatureId = 0;
+      e.ExitType = 1;
+      ModelManager_1.ModelManager.VehicleModel.UpdatePlayerVehicleData(e);
+      this.PassengerVehicleMap.delete(e.EntityCreatureId);
+    }
     this.PlayerVehicleInfo.clear();
     this.VehiclePlayerInfo.clear();
-    this.PassengerVehicleMap.clear();
-    this.VehiclePassengerMap.clear();
     this.RideSharingInfoMap.clear();
     this.IsReadyRiderSharing = false;
-    this.IsForbidRiderSharing = false;
+    return !(this.IsForbidRiderSharing = false);
+  }
+  OnClear() {
+    this.MaterialControllerHandles.clear();
+    return true;
   }
   UpdateAllPlayerVehicleData(e) {
     this.PlayerVehicleInfo.clear();
@@ -138,48 +151,55 @@ class VehicleModel extends ModelBase_1.ModelBase {
   }
   UpdateEntityVehicleData(e) {
     var t = e.EntityCreatureId;
-    var i = e.VehicleCreatureId;
-    var s = this.PassengerVehicleMap.get(t);
-    if (s) {
-      var h = s.Context;
-      var r = h.VehicleCreatureId;
-      if (r === i && h.Seat === e.Seat) {
+    var t = this.PassengerVehicleMap.get(t);
+    if (e.Seat === -1) {
+      if (!t?.VehicleCreatureId) {
         return;
       }
-      if (s.WaitTask && (s.WaitTask.Cancel(), s.WaitTask = undefined, Log_1.Log.CheckInfo())) {
-        Log_1.Log.Info("Vehicle", 50, "[VehicleController] 由于载具数据更新取消之前的等待实体任务", ["OldEntityCreatureId", h.EntityCreatureId], ["OldVehicleCreatureId", h.VehicleCreatureId], ["OldSeat", h.Seat]);
-      }
-      this.VehiclePassengerMap.get(r)?.delete(t);
+      e.VehicleCreatureId = t.VehicleCreatureId;
     }
-    i = new WaitEntityTaskContext();
-    i.Context = e;
-    i.WaitTask = undefined;
-    this.UpdateVehicleEntityInfo(i);
-    this.UpdateEntityVehicleInfo(i);
+    this.UpdateVehicleEntityInfo(e);
+    this.UpdateEntityVehicleInfo(e);
   }
   UpdateEntityVehicleInfo(e) {
-    var t = e.Context;
-    this.PassengerVehicleMap.set(t.EntityCreatureId, e);
+    var t = e.Seat !== -1;
+    let i = this.PassengerVehicleMap.get(e.EntityCreatureId);
+    if (!i) {
+      i = new VehicleInfoDefines_1.EntityVehicleInfo();
+      this.PassengerVehicleMap.set(e.EntityCreatureId, i);
+    }
+    i.EntityCreatureId = e.EntityCreatureId;
+    i.VehicleCreatureId = t ? e.VehicleCreatureId : 0;
+    i.Seat = e.Seat;
+    i.ExitType = e.ExitType;
+    this.PassengerVehicleMap.set(e.EntityCreatureId, e);
   }
   UpdateVehicleEntityInfo(e) {
-    var t = e.Context;
-    let i = this.VehiclePassengerMap.get(t.VehicleCreatureId);
-    if (!i) {
-      i = new Map();
-      this.VehiclePassengerMap.set(t.VehicleCreatureId, i);
+    var t = e.Seat !== -1;
+    let i = this.VehiclePassengerMap.get(e.VehicleCreatureId);
+    if (t) {
+      if (!i) {
+        i = new Map();
+        this.VehiclePassengerMap.set(e.VehicleCreatureId, i);
+      }
+      i.set(e.EntityCreatureId, e);
+    } else {
+      i.delete(e.EntityCreatureId);
+      if (!i.size) {
+        this.VehiclePlayerInfo.delete(e.VehicleCreatureId);
+      }
     }
-    i.set(t.EntityCreatureId, e);
   }
   PostUpdateAllVehicleEntityData() {
     for (const e of this.PassengerVehicleMap.values()) {
-      this.PostUpdateVehicleEntityData(e.Context);
+      this.PostUpdateVehicleEntityData(e);
     }
   }
   PostUpdateVehicleEntityData(e) {
     var t;
     if (e.Seat === -1) {
-      (t = this.VehiclePassengerMap.get(e.VehicleCreatureId)).delete(e.EntityCreatureId);
-      if (!t.size) {
+      (t = this.VehiclePassengerMap.get(e.VehicleCreatureId))?.delete(e.EntityCreatureId);
+      if (!t?.size) {
         this.VehiclePassengerMap.delete(e.VehicleCreatureId);
       }
       this.PassengerVehicleMap.delete(e.EntityCreatureId);
@@ -198,8 +218,18 @@ class VehicleModel extends ModelBase_1.ModelBase {
   GetPlayerVehicleData(e) {
     return this.PlayerVehicleInfo.get(e);
   }
+  GetVehicleEntityData(e) {
+    var t = new Array();
+    var e = this.VehiclePassengerMap.get(e);
+    if (e) {
+      for (var [, i] of e) {
+        t.push(i);
+      }
+    }
+    return t;
+  }
   GetEntityVehicleData(e) {
-    return this.PassengerVehicleMap.get(e)?.Context;
+    return this.PassengerVehicleMap.get(e);
   }
   UpdateKeepDrivingInfo(e, t) {
     if (this.Jbl) {
@@ -237,8 +267,83 @@ class KeepDrivingInfo {
     this.RunAction = undefined;
   }
 }
-class KeepDrivingDurationAtSpeed extends (exports.KeepDrivingInfo = KeepDrivingInfo) {
-  constructor(e, t, i, s, h) {
+class KeepDrivingAtSpeedCondition extends (exports.KeepDrivingInfo = KeepDrivingInfo) {
+  constructor(e, t, i, s) {
+    super();
+    this.SpeedRange = [0, 0];
+    this.ConditionMap = new Map();
+    this.TriggeredList = [];
+    this.MeetConditionCallback = undefined;
+    this.CurrentDuration = 0;
+    this.CoolDown = 0;
+    this.LastTime = 0;
+    this.SpeedRange = e;
+    this.CoolDown = s ?? 0;
+    this.CheckCondition = t;
+    this.MeetConditionCallback = i;
+  }
+  AddCondition(e) {
+    this.ConditionMap.set(e.Id, e);
+  }
+  SetConditionTriggered(e) {
+    e = this.ConditionMap.get(e);
+    if (e) {
+      e.Triggered = true;
+    }
+  }
+  JYm() {
+    if (Math.abs(TimerSystem_1.TimerSystem.Now - this.LastTime) > this.CoolDown) {
+      this.LastTime = TimerSystem_1.TimerSystem.Now;
+    } else {
+      var e = ModelManager_1.ModelManager.WeatherModel;
+      if (e) {
+        for (const r of this.ConditionMap.values()) {
+          if (!r.Triggered) {
+            var t = r.Duration;
+            var i = r.Weather;
+            var s = r.Time;
+            if (this.CurrentDuration > t && (i.length === 0 || i.includes(e.CurrentWeatherId)) && (s.length === 0 || this.ZYm(s))) {
+              if (Log_1.Log.CheckDebug()) {
+                Log_1.Log.Debug("Vehicle", 42, "[VehicleModel] 达成持续驾驶条件", ["configId", r.Id], ["duration", t], ["weather", r.Weather], ["dayTime", s]);
+              }
+              return r.Id;
+            }
+          }
+        }
+      }
+    }
+    return 0;
+  }
+  UpdateDrivingInfo(e, t) {
+    if (MathUtils_1.MathUtils.InRangeArray(t.Speed, this.SpeedRange)) {
+      this.CurrentDuration += e;
+      t = this.JYm();
+      if (t) {
+        this.LastTime = TimerSystem_1.TimerSystem.Now;
+        this.MeetConditionCallback?.(t);
+        return true;
+      }
+    } else {
+      this.CurrentDuration = 0;
+    }
+    return false;
+  }
+  ToString() {
+    return `保持速度在区间[${this.SpeedRange[0]},${this.SpeedRange[1]}]内,满足指定条件,冷却时间${this.CoolDown}毫秒`;
+  }
+  ZYm(e) {
+    for (const i of e) {
+      let e = 0;
+      let t = 0;
+      t = i === "DayTime" ? (e = DAYTIME_HOUR_START, DAYTIME_HOUR_END) : (e = DAYTIME_HOUR_END, DAYTIME_HOUR_START);
+      return ControllerHolder_1.ControllerHolder.TimeOfDayController.CheckInMinuteSpan(e, t);
+    }
+    return e.length === 0;
+  }
+}
+exports.KeepDrivingAtSpeedCondition = KeepDrivingAtSpeedCondition;
+class KeepDrivingDurationAtSpeed extends KeepDrivingInfo {
+  constructor(e, t, i, s, r) {
     super();
     this.SpeedRange = [0, 0];
     this.Duration = 0;
@@ -247,7 +352,7 @@ class KeepDrivingDurationAtSpeed extends (exports.KeepDrivingInfo = KeepDrivingI
     this.LastTime = 0;
     this.SpeedRange = e;
     this.Duration = t;
-    this.CoolDown = h ?? 0;
+    this.CoolDown = r ?? 0;
     this.CheckCondition = i;
     this.RunAction = s;
   }

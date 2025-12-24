@@ -6,10 +6,13 @@ Object.defineProperty(exports, "__esModule", {
 exports.RefCompLevelSequenceController = undefined;
 const UE = require("ue");
 const Log_1 = require("../../../../Core/Common/Log");
+const Stats_1 = require("../../../../Core/Common/Stats");
 const Queue_1 = require("../../../../Core/Container/Queue");
 const ResourceSystem_1 = require("../../../../Core/Resource/ResourceSystem");
 const IAction_1 = require("../../../../UniverseEditor/Interface/IAction");
+const GlobalData_1 = require("../../../GlobalData");
 const SimpleLevelSequenceActor_1 = require("../../../LevelGamePlay/StaticScene/SimpleLevelSequenceActor");
+const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const RefCompControllerBase_1 = require("./RefCompControllerBase");
 const RefCompDefine_1 = require("./RefCompDefine");
 class ResourceLoadCallbackHandle {
@@ -31,7 +34,7 @@ class RefCompLevelSequenceController extends RefCompControllerBase_1.RefCompCont
     this.O2_ = undefined;
   }
   OnStart() {
-    this.aRl = this.Entity.GetComponent(168);
+    this.aRl = this.Entity.GetComponent(173);
   }
   OnEnd() {
     while (this.O2_ && !this.O2_.Empty) {
@@ -58,12 +61,12 @@ class RefCompLevelSequenceController extends RefCompControllerBase_1.RefCompCont
         Log_1.Log.Error("Interaction", 7, "LevelSequence");
       }
     }
-    const s = this.NextSequenceJumpToEnd;
+    const o = this.NextSequenceJumpToEnd;
     let e = undefined;
     let i = undefined;
-    let o = undefined;
+    let s = undefined;
     i = t.Intro ? t.Intro?.Type === 0 ? (e = t.Intro, new RefCompDefine_1.TransitStruct(0, e.Duration && e.Duration > 0 ? e.Duration : 0, 0, 0, true)) : (e = t.Intro, new RefCompDefine_1.TransitStruct(1, e.Duration && e.Duration > 0 ? e.Duration : 0, e.FadeIn && e.FadeIn.Duration > 0 ? e.FadeIn.Duration : 1, e.FadeOut && e.FadeOut.Duration > 0 ? e.FadeOut.Duration : 1, true, e.Mask)) : new RefCompDefine_1.TransitStruct(0, 0, 0, 0, false);
-    o = t.Outro ? t.Outro?.Type === 0 ? (e = t.Outro, new RefCompDefine_1.TransitStruct(0, e.Duration && e.Duration > 0 ? e.Duration : 0, 0, 0, true)) : (e = t.Outro, new RefCompDefine_1.TransitStruct(1, e.Duration && e.Duration > 0 ? e.Duration : 0, e.FadeIn && e.FadeIn.Duration > 0 ? e.FadeIn.Duration : 1, e.FadeOut && e.FadeOut.Duration > 0 ? e.FadeOut.Duration : 1, true, e.Mask)) : new RefCompDefine_1.TransitStruct(0, 0, 0, 0, false);
+    s = t.Outro ? t.Outro?.Type === 0 ? (e = t.Outro, new RefCompDefine_1.TransitStruct(0, e.Duration && e.Duration > 0 ? e.Duration : 0, 0, 0, true)) : (e = t.Outro, new RefCompDefine_1.TransitStruct(1, e.Duration && e.Duration > 0 ? e.Duration : 0, e.FadeIn && e.FadeIn.Duration > 0 ? e.FadeIn.Duration : 1, e.FadeOut && e.FadeOut.Duration > 0 ? e.FadeOut.Duration : 1, true, e.Mask)) : new RefCompDefine_1.TransitStruct(0, 0, 0, 0, false);
     const n = new RefCompDefine_1.PlayRateStruct(Math.abs(t.Rate ?? 1), 0, t.RateEase?.Duration);
     switch (t.RateEase?.Type) {
       case IAction_1.EEaseType.Transient:
@@ -93,43 +96,54 @@ class RefCompLevelSequenceController extends RefCompControllerBase_1.RefCompCont
           this.SimpleSequenceActor = new SimpleLevelSequenceActor_1.default(e);
         }
         this.SimpleSequenceActor.UpdateSettings(t.KeepUI);
+        if (t.IsEnableCenterOffset) {
+          this.SimpleSequenceActor.SetOriginTransform();
+        }
         if (t.Mark && t.Mark.length > 0) {
-          this.aRl?.OnSequencePlayToMark(t.Mark, this.SimpleSequenceActor.GetCurrentFrame(), s);
+          this.aRl?.OnSequencePlayToMark(t.Mark, this.SimpleSequenceActor.GetCurrentFrame(), o);
           this.SimpleSequenceActor.AddOnPauseCallback(this.aRl?.OnSequencePaused);
+        }
+        RefCompLevelSequenceController.MJ.Start();
+        if (RefCompDefine_1.PrePhysicsSequenceConfig.Check(t.LevelSequencePath)) {
+          UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "Animation.ForbiddenEvaluateTwice 0");
         }
         switch (t.PlayMode) {
           case "shortestPath":
-            this.SimpleSequenceActor.PlayToMarkByCheckWay(t.Mark, i, o, n, s);
+            this.SimpleSequenceActor.PlayToMarkByCheckWay(t.Mark, i, s, n, o);
             break;
           case "instant":
-            this.SimpleSequenceActor.PlayToMark(t.Mark, i, o, n, true);
+            this.SimpleSequenceActor.PlayToMark(t.Mark, i, s, n, true);
             break;
           case "loop":
             if (t.LoopRange) {
-              this.SimpleSequenceActor.PlayLoopBetweenMarks(t.LoopRange, (t.Rate ?? 1) < 0, i, o, n, s);
+              this.SimpleSequenceActor.PlayLoopBetweenMarks(t.LoopRange, (t.Rate ?? 1) < 0, i, s, n, o);
             } else {
-              this.SimpleSequenceActor.PlayLoop((t.Rate ?? 1) < 0, -1, i, o, n);
+              this.SimpleSequenceActor.PlayLoop((t.Rate ?? 1) < 0, -1, i, s, n);
             }
             break;
           default:
-            this.SimpleSequenceActor.PlayToMark(t.Mark, i, o, n, s);
+            this.SimpleSequenceActor.PlayToMark(t.Mark, i, s, n, o);
         }
+        if (RefCompDefine_1.PrePhysicsSequenceConfig.Check(t.LevelSequencePath)) {
+          UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "Animation.ForbiddenEvaluateTwice 1");
+        }
+        RefCompLevelSequenceController.MJ.Stop();
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("LevelEvent", 7, "此LevelEvent只能配置在SceneActorRefComponent中");
       }
     });
   }
-  G2_(e, t, s, i = 100) {
+  G2_(e, t, o, i = 100) {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("SceneItem", 39, "[SceneItemReference] 通过保序回调的方式异步加载资源：开始加载", ["PbDataId", this.PbDataId], ["Path", e]);
     }
     this.O2_ ||= new Queue_1.Queue();
-    const o = new ResourceLoadCallbackHandle(e, s);
-    this.O2_.Push(o);
-    o.ResourceSystemId = ResourceSystem_1.ResourceSystem.LoadAsync(e, t, e => {
-      this.F2_(o, e);
+    const s = new ResourceLoadCallbackHandle(e, o);
+    this.O2_.Push(s);
+    s.ResourceSystemId = ResourceSystem_1.ResourceSystem.LoadAsync(e, t, e => {
+      this.F2_(s, e);
     }, i);
-    return o.ResourceSystemId;
+    return s.ResourceSystemId;
   }
   F2_(e, t) {
     if (Log_1.Log.CheckDebug()) {
@@ -141,8 +155,14 @@ class RefCompLevelSequenceController extends RefCompControllerBase_1.RefCompCont
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("SceneItem", 39, "[SceneItemReference] 通过保序回调的方式异步加载资源：执行回调", ["PbDataId", this.PbDataId], ["Path", e.Path]);
       }
-      var s = this.O2_.Pop();
-      s?.Callback?.(s.Asset, s.Path);
+      const o = this.O2_.Pop();
+      if (RefCompDefine_1.PrePhysicsSequenceConfig.Check(o?.Path)) {
+        ControllerHolder_1.ControllerHolder.PlotController.NextAfterTick(() => {
+          o?.Callback?.(o.Asset, o.Path);
+        });
+      } else {
+        o?.Callback?.(o.Asset, o.Path);
+      }
     }
   }
   ForceSwitchSceneCamera(e) {
@@ -165,5 +185,5 @@ class RefCompLevelSequenceController extends RefCompControllerBase_1.RefCompCont
     return !!this.SimpleSequenceActor && (e = this.SimpleSequenceActor.GetMarkValue(e)) !== undefined && !this.IsPlaying() && this.SimpleSequenceActor.GetCurrentFrame() === e;
   }
 }
-exports.RefCompLevelSequenceController = RefCompLevelSequenceController;
+(exports.RefCompLevelSequenceController = RefCompLevelSequenceController).MJ = Stats_1.Stat.Create("RefCompLevelSequenceController");
 //# sourceMappingURL=RefCompLevelSequenceController.js.map

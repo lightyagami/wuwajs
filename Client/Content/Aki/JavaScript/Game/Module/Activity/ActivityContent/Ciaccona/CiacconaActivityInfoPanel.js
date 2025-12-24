@@ -72,6 +72,7 @@ class CiacconaActivityInfoPanel extends UiPanelBase_1.UiPanelBase {
     this.L4c?.SetTimeTextByText(i);
   }
   SetTitle(e) {
+    this.L4c?.SetActivityBaseData(this.b4c);
     this.L4c?.SetTitleByText(e);
   }
   SetSubTitle(e, i) {

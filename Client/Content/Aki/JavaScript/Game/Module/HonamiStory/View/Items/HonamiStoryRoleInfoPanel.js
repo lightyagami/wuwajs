@@ -15,20 +15,20 @@ class HonamiStoryRoleInfoPanel extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.dFe = 0;
-    this.Fnm = undefined;
-    this.Nnm = () => new HonamiStoryEquipItemInfoItem_1.HonamiStoryEquipItemInfoItem();
+    this._1m = undefined;
+    this.u1m = () => new HonamiStoryEquipItemInfoItem_1.HonamiStoryEquipItemInfoItem();
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIText], [2, UE.UIText], [3, UE.UIVerticalLayout], [4, UE.UIItem], [5, UE.UIItem]];
   }
   OnStart() {
-    this.Fnm = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(3), this.Nnm);
+    this._1m = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(3), this.u1m);
   }
   SetData(e) {
     this.dFe = e;
-    this.Vnm();
+    this.c1m();
   }
-  Vnm() {
+  c1m() {
     var e = ModelManager_1.ModelManager.HonamiStoryModel.GetRoleEquipDataByRoleId(this.dFe);
     if (e) {
       var i;
@@ -40,12 +40,12 @@ class HonamiStoryRoleInfoPanel extends UiPanelBase_1.UiPanelBase {
       }
       e = t.length > 0;
       if (e) {
-        this.Fnm?.RefreshByData(t);
+        this._1m?.RefreshByData(t);
       }
-      this.Fnm?.SetActive(e);
+      this._1m?.SetActive(e);
       this.GetItem(5).SetUIActive(e);
     } else {
-      this.Fnm?.SetActive(false);
+      this._1m?.SetActive(false);
       this.GetItem(5).SetUIActive(false);
     }
   }
@@ -53,7 +53,7 @@ class HonamiStoryRoleInfoPanel extends UiPanelBase_1.UiPanelBase {
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), e);
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), i, ...o);
     this.GetText(0)?.SetText(t);
-    this.Fnm?.RefreshWithoutDataSync();
+    this._1m?.RefreshWithoutDataSync();
   }
 }
 exports.HonamiStoryRoleInfoPanel = HonamiStoryRoleInfoPanel;

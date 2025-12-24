@@ -70,6 +70,7 @@ class ActivityRewardPopUpView extends UiViewBase_1.UiViewBase {
   }
   Refresh() {
     this.f4e();
+    this.mGe();
   }
   f4e() {
     if (this.Data.DataPageList.length !== 0) {
@@ -101,6 +102,13 @@ class ActivityRewardPopUpView extends UiViewBase_1.UiViewBase {
       this.GetText(6).SetText(i);
     }
     this.GetText(6).SetUIActive(t);
+  }
+  mGe() {
+    if (this.Data.TitleTextId) {
+      this.GetText(0).ShowTextNew(this.Data.TitleTextId);
+    } else {
+      this.GetText(0).ShowTextNew("PrefabTextItem_2743475244_Text");
+    }
   }
 }
 exports.ActivityRewardPopUpView = ActivityRewardPopUpView;

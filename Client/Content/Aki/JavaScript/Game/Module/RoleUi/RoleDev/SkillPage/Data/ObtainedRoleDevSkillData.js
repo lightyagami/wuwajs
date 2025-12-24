@@ -13,15 +13,15 @@ class ObtainedRoleDevSkillData extends RoleDevSkillViewItemDataBase_1.RoleDevSki
   constructor() {
     super(...arguments);
     this.Y1d = [];
-    this.Mgm = [];
-    this.Egm = [];
+    this.iMm = [];
+    this.rMm = [];
     this.E1d = [];
-    this.Igm = [];
+    this.oMm = [];
     this.X1d = [];
-    this.PZd = undefined;
+    this.him = undefined;
   }
   InitByRoleType(e, t) {
-    this.PZd = t;
+    this.him = t;
     this.l9d(e);
   }
   l9d(t) {
@@ -76,13 +76,13 @@ class ObtainedRoleDevSkillData extends RoleDevSkillViewItemDataBase_1.RoleDevSki
       var e = this.z1d(n, l, s, t);
       var M = this.z1d(n, l, o, t);
       this.Y1d = u;
-      this.Egm = s;
-      this.Igm = o;
+      this.rMm = s;
+      this.oMm = o;
       this.E1d = e;
       this.X1d = M;
-      this.Mgm = n;
-      if (!this.PZd?.CheckRoleIdIsCreated(t)) {
-        this.PZd?.SetRoleSkillPlanState(t, this.IsNormalPlanFinished);
+      this.iMm = n;
+      if (!this.him?.CheckRoleIdIsCreated(t)) {
+        this.him?.SetRoleSkillPlanState(t, this.IsNormalPlanFinished);
       }
     }
   }
@@ -90,19 +90,19 @@ class ObtainedRoleDevSkillData extends RoleDevSkillViewItemDataBase_1.RoleDevSki
     return true;
   }
   GetIsPerfectPlan() {
-    return this.PZd?.GetRoleSkillPlanState(this.RoleId) ?? false;
+    return this.him?.GetRoleSkillPlanState(this.RoleId) ?? false;
   }
   GetIsNormalPlanFinished() {
-    return this.ryd(this.Mgm.map(e => ModelManager_1.ModelManager.RoleModel.GetRoleSkillTreeNodeLevel(this.RoleId, e)), this.Egm);
+    return this.ryd(this.iMm.map(e => ModelManager_1.ModelManager.RoleModel.GetRoleSkillTreeNodeLevel(this.RoleId, e)), this.rMm);
   }
   GetIsPerfectPlanFinished() {
-    return this.ryd(this.Mgm.map(e => ModelManager_1.ModelManager.RoleModel.GetRoleSkillTreeNodeLevel(this.RoleId, e)), this.Igm);
+    return this.ryd(this.iMm.map(e => ModelManager_1.ModelManager.RoleModel.GetRoleSkillTreeNodeLevel(this.RoleId, e)), this.oMm);
   }
   GetSkillSlots() {
     return this.Y1d;
   }
   GetSkillGoalUpgradeLevel() {
-    return this.Egm;
+    return this.rMm;
   }
   GetNormalDetailItems() {
     return this.E1d;
@@ -113,10 +113,10 @@ class ObtainedRoleDevSkillData extends RoleDevSkillViewItemDataBase_1.RoleDevSki
   GetIsUnlockedPerfect() {
     var e = ModelManager_1.ModelManager.FunctionModel?.GetPlayerLevel();
     var t = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(this.RoleId).MaxLevel;
-    return this.Igm.length > 0 && e !== undefined && t !== undefined && t <= e;
+    return this.oMm.length > 0 && e !== undefined && t !== undefined && t <= e;
   }
   GetPerfectGoalUpgradeLevel() {
-    return this.Igm;
+    return this.oMm;
   }
   GetPerfectDetailItems() {
     return this.X1d;
@@ -126,7 +126,7 @@ class ObtainedRoleDevSkillData extends RoleDevSkillViewItemDataBase_1.RoleDevSki
   }
   GetIsBreakthroughLevelLow() {
     const r = ModelManager_1.ModelManager.RoleModel.GetRoleDataById(this.RoleId).GetLevelData().GetBreachLevel();
-    return this.Y1d.some((e, t) => e.CurrentLevel >= this.Egm[t] && r < 6);
+    return this.Y1d.some((e, t) => e.CurrentLevel >= this.rMm[t] && r < 6);
   }
   GetIsHideMaterialList() {
     return false;
@@ -139,13 +139,13 @@ class ObtainedRoleDevSkillData extends RoleDevSkillViewItemDataBase_1.RoleDevSki
   }
   SwitchPlan() {
     var e = this.GetIsPerfectPlan();
-    this.PZd?.SetRoleSkillPlanState(this.RoleId, !e);
+    this.him?.SetRoleSkillPlanState(this.RoleId, !e);
     this.oyd();
   }
   oyd() {
     for (const r of this.Y1d) {
-      var e = this.Egm[r.NodeIndex];
-      var t = this.Igm[r.NodeIndex];
+      var e = this.rMm[r.NodeIndex];
+      var t = this.oMm[r.NodeIndex];
       r.NormalTargetLevel = e;
       r.PerfectTargetLevel = t;
     }

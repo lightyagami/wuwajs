@@ -56,26 +56,35 @@ class CommonItemSmallItemGrid extends LoopScrollSmallItemGrid_1.LoopScrollSmallI
   }
   RefreshByConfigId(e, t, i, o = false) {
     this.ConfigId = e;
-    if (ConfigManager_1.ConfigManager.InventoryConfig.GetItemDataTypeByConfigId(this.ConfigId) === 1) {
-      e = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(this.ConfigId);
-      const s = {
+    e = ConfigManager_1.ConfigManager.InventoryConfig.GetItemDataTypeByConfigId(this.ConfigId);
+    if (e === 1) {
+      var s = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(this.ConfigId);
+      const l = {
         Data: i,
         Type: 2,
         ItemConfigId: this.ConfigId,
         BottomText: t && t > 0 ? "" + t : "",
-        QualityId: e.QualityId,
+        QualityId: s.QualityId,
         IsReceivedVisible: o
       };
-      this.Apply(s);
+      this.Apply(l);
+    } else if (e === 3) {
+      const l = {
+        Data: i,
+        Type: 3,
+        BottomText: t && t > 0 ? "" + t : "",
+        ItemConfigId: this.ConfigId
+      };
+      this.Apply(l);
     } else {
-      const s = {
+      const l = {
         Data: i,
         Type: 4,
         ItemConfigId: this.ConfigId,
         BottomText: t && t > 0 ? "" + t : "",
         IsReceivedVisible: o
       };
-      this.Apply(s);
+      this.Apply(l);
     }
   }
   OnCanExecuteChange() {

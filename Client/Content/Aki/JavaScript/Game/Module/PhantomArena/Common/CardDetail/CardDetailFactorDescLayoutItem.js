@@ -17,6 +17,9 @@ class CardDetailFactorDescLayoutItem extends UiPanelBase_1.UiPanelBase {
   Refresh(e) {
     this.CA1.RefreshByData(e);
   }
+  SetLayoutActive(e) {
+    this.CA1.GetRootUiItem()?.SetUIActive(e);
+  }
   GetGuideUiItemAndUiItemForShowEx(e) {
     if (e && !(e.length <= 1)) {
       e = Number(e[1]);

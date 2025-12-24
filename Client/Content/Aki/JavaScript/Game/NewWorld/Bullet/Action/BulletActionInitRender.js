@@ -27,7 +27,7 @@ class BulletActionInitRender extends BulletActionBase_1.BulletActionBase {
       SceneInteractionManager_1.SceneInteractionManager.Get().RegisterAirWallEffectObject(this.RKs);
     }
     var e = e.Render.AttackerCameraShakeOnStart;
-    if (this.BulletInfo.AttackerHandle?.Valid && CharacterUtils_1.CharacterUtils.CanCharacterMonsterOrSummonedDisplayEffect(this.BulletInfo.AttackerHandle) && this.BulletInfo.IsAutonomousProxy && BulletUtil_1.BulletUtil.IsPlayerOrSummons(this.BulletInfo) && e.length > 0) {
+    if (e.length > 0 && this.BulletInfo.AttackerHandle?.Valid && CharacterUtils_1.CharacterUtils.CanCharacterMonsterOrSummonedDisplayEffect(this.BulletInfo.AttackerHandle) && this.BulletInfo.IsAutonomousProxy && BulletUtil_1.BulletUtil.IsPlayerOrSummons(this.BulletInfo)) {
       ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.Class, e => {
         var t = Global_1.Global.CharacterCameraManager.D_GetCameraLocation();
         CameraController_1.CameraController.PlayWorldCameraShake(e, t, 0, CharacterHitComponent_1.OUTER_RADIUS, 1, false);

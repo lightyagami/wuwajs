@@ -86,5 +86,5 @@ let CharacterCombatMessageComponent = class CharacterCombatMessageComponent exte
     }
   }
 };
-CharacterCombatMessageComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(53)], CharacterCombatMessageComponent);
+CharacterCombatMessageComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(54)], CharacterCombatMessageComponent);
 exports.CharacterCombatMessageComponent = CharacterCombatMessageComponent; //# sourceMappingURL=CharacterCombatMessageComponent.js.map

@@ -18,9 +18,10 @@ const LguiUtil_1 = require("../../../Util/LguiUtil");
 const BattleUiControl_1 = require("../../BattleUiControl");
 const BattleUiDefine_1 = require("../../BattleUiDefine");
 const BattleChildViewPanel_1 = require("../BattleChildViewPanel/BattleChildViewPanel");
+const CommonBossStateDoubleView_1 = require("./CommonBossStateDoubleView");
 const CommonBossStateView_1 = require("./CommonBossStateView");
 const MergeMonsterHeadStateView_1 = require("./MergeMonsterHeadStateView");
-const bossStateViewMap = new Map([[1, CommonBossStateView_1.CommonBossStateView]]);
+const bossStateViewClassMap = new Map([[1, CommonBossStateView_1.CommonBossStateView], [2, CommonBossStateDoubleView_1.CommonBossStateDoubleView]]);
 class BossStatePanel extends BattleChildViewPanel_1.BattleChildViewPanel {
   constructor() {
     super(...arguments);
@@ -32,6 +33,7 @@ class BossStatePanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     this.Prt = undefined;
     this.xrt = 0;
     this.wrt = 0;
+    this.Svf = [];
     this.Brt = t => {
       if (t && this.brt(t)) {
         EventSystem_1.EventSystem.AddWithTargetUseHoldKey(this, t, EventDefine_1.EEventName.RemoveEntity, this.zpe);
@@ -39,18 +41,20 @@ class BossStatePanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     };
     this.zpe = (t, e) => {
       var i;
-      if (e?.Valid && (i = e.Entity.GetComponent(3)) && i.IsBoss && (i = e.Id, this.Drt.has(i)) && (this.Drt.delete(i), this.YQn.delete(i), EventSystem_1.EventSystem.RemoveWithTargetUseKey(this, e, EventDefine_1.EEventName.RemoveEntity, this.zpe), i === this.Rrt) && this.IsTargetBossExist()) {
+      var s;
+      if (e?.Valid && (i = e.Entity.GetComponent(3)) && i.IsBoss && (i = e.Id, this.Drt.has(i)) && (this.Drt.delete(i), this.YQn.delete(i), (s = this.Svf.indexOf(i)) > -1 && this.Svf.splice(s, 1), EventSystem_1.EventSystem.RemoveWithTargetUseKey(this, e, EventDefine_1.EEventName.RemoveEntity, this.zpe), i === this.Rrt) && this.IsTargetBossExist()) {
         this.qrt(false);
         this.Grt();
       }
     };
     this.AQe = (t, e, i, s) => {
-      if (this.Rrt === t && (e.CueType === 2 || e.CueType === 14)) {
-        this.Art?.ChangeBuff(e, i, s);
+      if ((this.Rrt === t || !!this.Mvf(this.Rrt, t)) && (e.CueType === 2 || e.CueType === 14)) {
+        this.Art?.ChangeBuff(e, i, s, t);
       }
     };
     this.Nrt = t => {
       var e;
+      ModelManager_1.ModelManager.BattleUiModel.UpdateBossStateArea(1, t.IsVisible);
       if (t.IsVisible) {
         if (this.Prt) {
           this.Prt.Refresh(t);
@@ -104,6 +108,8 @@ class BossStatePanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     this.Grt();
     this.Hrt();
     this.Art = undefined;
+    ModelManager_1.ModelManager.BattleUiModel.UpdateBossStateArea(0, false);
+    ModelManager_1.ModelManager.BattleUiModel.UpdateBossStateArea(1, false);
     super.Reset();
   }
   krt() {
@@ -122,10 +128,12 @@ class BossStatePanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     BattleUiDefine_1.bossStateViewResourceIdMap.forEach((t, e) => {
       var i = this.GetItem(0);
       var t = BattleUiControl_1.BattleUiControl.Pool.GetHeadStateView(t);
-      t.K2_AttachRootComponentTo(i);
-      i = new (bossStateViewMap.get(e))();
-      this.Urt.set(e, i);
-      s.push(i.NewByRootActorAsync(t));
+      if (t) {
+        t.K2_AttachRootComponentTo(i);
+        i = new (bossStateViewClassMap.get(e))();
+        this.Urt.set(e, i);
+        s.push(i.NewByRootActorAsync(t));
+      }
     });
     await Promise.all(s);
   }
@@ -135,11 +143,34 @@ class BossStatePanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     }
     this.Urt = undefined;
   }
-  jrt(t, e) {
+  async jrt(t, e, i) {
+    var s;
+    var n;
+    var a;
     if (!this.Art) {
       this.Art = this.Urt.get(e);
+      if (!this.Art) {
+        s = BattleUiDefine_1.bossStateViewResourceIdMap.get(e);
+        a = bossStateViewClassMap.get(e);
+        n = this.GetItem(0);
+        if (s && a && n) {
+          a = new a();
+          this.Urt.set(e, a);
+          await a.NewByResourceId(n, s);
+          this.Art = a;
+        }
+      }
+      if (!this.Art) {
+        if (Log_1.Log.CheckWarn()) {
+          Log_1.Log.Warn("Battle", 96, "显示Boss状态条时找不到对应View", ["type:", e]);
+        }
+      }
+      if (i) {
+        this.Art.UpdateStyle(i);
+      }
       this.Art.Activate(t);
       ModelManager_1.ModelManager.BattleUiModel.ExploreModeData.UpdateBossState(true);
+      ModelManager_1.ModelManager.BattleUiModel.UpdateBossStateArea(0, true);
     }
   }
   qrt(t = true) {
@@ -152,8 +183,13 @@ class BossStatePanel extends BattleChildViewPanel_1.BattleChildViewPanel {
       } else {
         this.Art.HideWithAnim();
       }
+      if (this.Art instanceof CommonBossStateDoubleView_1.CommonBossStateDoubleView) {
+        this.Svf.length = 0;
+        this.Urt.delete(2);
+      }
       this.Art = undefined;
       ModelManager_1.ModelManager.BattleUiModel.ExploreModeData.UpdateBossState(false);
+      ModelManager_1.ModelManager.BattleUiModel.UpdateBossStateArea(0, false);
     }
   }
   OnTickBattleChildViewPanel(t) {
@@ -169,11 +205,15 @@ class BossStatePanel extends BattleChildViewPanel_1.BattleChildViewPanel {
       this.Grt();
     }
     this.Rrt = t;
-    var e;
-    var t = this.Wrt()?.BossViewConfig?.BossStateViewType ?? 0;
-    if (bossStateViewMap.get(Number(t))) {
-      if (e = EntitySystem_1.EntitySystem.Get(this.Rrt)) {
-        this.jrt(e, t);
+    let e = this.Wrt()?.BossViewConfig?.BossStateViewType ?? 0;
+    var t = this.Wrt()?.BossViewConfig?.BossStateViewStyle ?? undefined;
+    if (t !== undefined) {
+      e = 2;
+    }
+    var i = bossStateViewClassMap.get(Number(e));
+    if (i) {
+      if (i = EntitySystem_1.EntitySystem.Get(this.Rrt)) {
+        this.jrt(i, e, t);
       } else if (Log_1.Log.CheckWarn()) {
         Log_1.Log.Warn("Battle", 17, "显示Boss状态条时找不到对应Boss实体");
       }
@@ -186,9 +226,30 @@ class BossStatePanel extends BattleChildViewPanel_1.BattleChildViewPanel {
         this.qrt(false);
         this.Grt();
       }
-    } else if (this.Rrt !== t) {
+    } else if (this.Rrt !== t && !this.Mvf(this.Rrt, t)) {
       this.OnChangeBoss(t);
     }
+  }
+  Mvf(t, e) {
+    if (this.Art instanceof CommonBossStateDoubleView_1.CommonBossStateDoubleView) {
+      if (this.Svf.includes(t) && this.Svf.includes(e)) {
+        return true;
+      }
+      var i = EntitySystem_1.EntitySystem.Get(t)?.GetComponent(0);
+      var s = EntitySystem_1.EntitySystem.Get(e)?.GetComponent(0);
+      var n = i?.GetSummonerId() ?? 0;
+      if (n > 0 && i && s?.CustomServerEntityIds.includes(i.GetCreatureDataId())) {
+        this.Svf.push(t, e);
+        return true;
+      }
+      n = s?.GetSummonerId() ?? 0;
+      if (n > 0 && s && i?.CustomServerEntityIds.includes(s.GetCreatureDataId())) {
+        this.Svf.push(t, e);
+        return true;
+      }
+      this.Svf.length = 0;
+    }
+    return false;
   }
   Grt() {
     this.Rrt = -1;
@@ -203,24 +264,24 @@ class BossStatePanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     }
     let e = -1;
     let i = MathUtils_1.MathUtils.Int32Max;
-    for (const h of this.Drt) {
+    for (const a of this.Drt) {
       var s;
-      var n = EntitySystem_1.EntitySystem.Get(h);
+      var n = EntitySystem_1.EntitySystem.Get(a);
       if (n &&= n.GetComponent(3)) {
         n = n.Owner.GetSquaredDistanceTo(t);
-        if (s = this.YQn.get(h)) {
+        if (s = this.YQn.get(a)) {
           if (n <= s && n < i) {
             i = n;
-            e = h;
+            e = a;
           }
         } else if (!(n > this.wrt)) {
           if (n <= this.xrt && n < i) {
             i = n;
-            e = h;
+            e = a;
           }
           if (n > this.xrt && n <= this.wrt && this.Rrt !== -1 && n < i) {
             i = n;
-            e = h;
+            e = a;
           }
         }
       }

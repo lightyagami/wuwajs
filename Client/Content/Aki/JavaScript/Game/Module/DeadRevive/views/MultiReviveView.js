@@ -145,22 +145,24 @@ class MultiReviveView extends UiTickViewBase_1.UiTickViewBase {
     if (e) {
       this.WFt = e.ReviveTimes;
     }
-    this.BUn = AUTO_REVIVE_TIME;
-    this.qUn = this.GetText(8);
-    LguiUtil_1.LguiUtil.SetLocalText(this.qUn, "ReviveItemTips", this.BUn);
-    this.bUn = TimerSystem_1.GameplayTimerSystem.Forever(() => {
-      if (this.BUn <= 0) {
-        ControllerHolder_1.ControllerHolder.ConfirmBoxController.CloseConfirmBoxView();
-        this.GUn();
-        if (this.bUn) {
-          TimerSystem_1.GameplayTimerSystem.Remove(this.bUn);
-          this.bUn = undefined;
+    if (!this.bUn) {
+      this.BUn = AUTO_REVIVE_TIME;
+      this.qUn = this.GetText(8);
+      LguiUtil_1.LguiUtil.SetLocalText(this.qUn, "ReviveItemTips", this.BUn);
+      this.bUn = TimerSystem_1.GameplayTimerSystem.Forever(() => {
+        if (this.BUn <= 0) {
+          ControllerHolder_1.ControllerHolder.ConfirmBoxController.CloseConfirmBoxView();
+          this.GUn();
+          if (this.bUn) {
+            TimerSystem_1.GameplayTimerSystem.Remove(this.bUn);
+            this.bUn = undefined;
+          }
+        } else {
+          --this.BUn;
+          LguiUtil_1.LguiUtil.SetLocalText(this.qUn, "ReviveItemTips", this.BUn);
         }
-      } else {
-        --this.BUn;
-        LguiUtil_1.LguiUtil.SetLocalText(this.qUn, "ReviveItemTips", this.BUn);
-      }
-    }, TIME_SECOND);
+      }, TIME_SECOND);
+    }
     let i = -1;
     var t;
     var n;

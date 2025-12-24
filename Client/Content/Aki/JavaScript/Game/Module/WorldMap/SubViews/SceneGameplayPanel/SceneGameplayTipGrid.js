@@ -3,8 +3,9 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.SceneGameplayTipGrid = undefined;
+exports.SceneGameplayTipGridMonster = exports.SceneGameplayTipGrid = undefined;
 const ue_1 = require("ue");
+const ConfigManager_1 = require("../../../../Manager/ConfigManager");
 const UiPanelBase_1 = require("../../../../Ui/Base/UiPanelBase");
 const CommonItemSmallItemGrid_1 = require("../../../Common/ItemGrid/CommonItemSmallItemGrid");
 const LguiUtil_1 = require("../../../Util/LguiUtil");
@@ -19,8 +20,8 @@ class SceneGameplayTipGrid extends UiPanelBase_1.UiPanelBase {
       this.OnClickPreviewCall?.();
     };
   }
-  Initialize(i) {
-    this.CreateThenShowByActor(i);
+  Initialize(e) {
+    this.CreateThenShowByActor(e);
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[1, ue_1.UIItem], [2, ue_1.UIItem], [0, ue_1.UIText], [3, ue_1.UIButtonComponent], [4, ue_1.UIItem]];
@@ -33,48 +34,62 @@ class SceneGameplayTipGrid extends UiPanelBase_1.UiPanelBase {
     this.h_i.length = 0;
     this.OnClickPreviewCall = undefined;
   }
-  Refresh(i, t, e = false, s = false, r = false) {
-    this.uFo = i;
-    if (e) {
-      this.cFo(t);
+  Refresh(e, i, t = false, s = false, r = false) {
+    this.uFo = e;
+    if (t) {
+      this.cFo(i);
     } else {
-      this.qEi(t);
+      this.qEi(i);
     }
     this.GetItem(4)?.SetUIActive(r);
     this.Yli(s);
   }
-  SetBtnPreviewVisible(i) {
-    this.GetButton(3).RootUIComp.SetUIActive(i);
+  SetBtnPreviewVisible(e) {
+    this.GetButton(3).RootUIComp.SetUIActive(e);
   }
-  Yli(e = false) {
+  Yli(t = false) {
     this.a_i = !!this.uFo && this.uFo.size > 0;
     let s = 0;
     if (this.a_i) {
       var r = this.GetItem(2).GetOwner();
-      var h = this.GetItem(1);
-      let t = 0;
-      for (const l of this.uFo) {
-        let i = this.h_i[t];
-        if (!i) {
-          (i = new CommonItemSmallItemGrid_1.CommonItemSmallItemGrid()).Initialize(LguiUtil_1.LguiUtil.DuplicateActor(r, h));
-          this.h_i.push(i);
+      var a = this.GetItem(1);
+      let i = 0;
+      for (const h of this.uFo) {
+        let e = this.h_i[i];
+        if (!e) {
+          (e = new CommonItemSmallItemGrid_1.CommonItemSmallItemGrid()).Initialize(LguiUtil_1.LguiUtil.DuplicateActor(r, a));
+          this.h_i.push(e);
         }
-        i.RefreshByConfigId(l[0], l[1], undefined, e);
-        i.SetActive(true);
-        t++;
+        this.OnRefreshItemGrid(e, h[0], h[1], t);
+        e.SetActive(true);
+        i++;
       }
       s = this.uFo.size;
     }
-    for (let i = s; i < this.h_i.length; ++i) {
-      this.h_i[i].SetActive(false);
+    for (let e = s; e < this.h_i.length; ++e) {
+      this.h_i[e].SetActive(false);
     }
   }
-  qEi(i) {
-    LguiUtil_1.LguiUtil.SetLocalText(this.GetText(0), i);
+  OnRefreshItemGrid(e, i, t, s = false) {
+    e.RefreshByConfigId(i, t, undefined, s);
   }
-  cFo(i) {
-    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), i);
+  qEi(e) {
+    LguiUtil_1.LguiUtil.SetLocalText(this.GetText(0), e);
+  }
+  cFo(e) {
+    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), e);
   }
 }
-exports.SceneGameplayTipGrid = SceneGameplayTipGrid;
+class SceneGameplayTipGridMonster extends (exports.SceneGameplayTipGrid = SceneGameplayTipGrid) {
+  OnRefreshItemGrid(e, i, t, s = 0) {
+    e.ApplyPropSmallItemGrid({
+      Data: i,
+      Type: 4,
+      IconPath: ConfigManager_1.ConfigManager.PhantomBattleConfig.GetPhantomItemById(i).Icon
+    });
+    e.SetAllowClickBack(false);
+    e.GetItemGridExtendToggle()?.SetToggleStateForce(2, false);
+  }
+}
+exports.SceneGameplayTipGridMonster = SceneGameplayTipGridMonster;
 //# sourceMappingURL=SceneGameplayTipGrid.js.map

@@ -127,9 +127,9 @@ class TowerFloorView extends UiViewBase_1.UiViewBase {
     if (ModelManager_1.ModelManager.TowerModel.NeedOpenConfirmView) {
       UiManager_1.UiManager.OpenView("TowerApplyFloorDataView");
     }
-    this.Pem();
+    this._rm();
   }
-  Pem() {
+  _rm() {
     this.UiBehaviourHomeBtn?.AddExtraAsyncCallback(async () => {
       if (ModelManager_1.ModelManager.TowerModel.CheckInTower()) {
         await TowerController_1.TowerController.LeaveTower();

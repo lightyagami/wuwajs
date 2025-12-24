@@ -21,7 +21,7 @@ class CooperationController {
       var r = o.GetCurrentTeamItem;
       var a = r?.EntityHandle;
       if (a && r.GetCreatureDataId() !== e) {
-        var a = a.Entity.CheckGetComponent(209);
+        var a = a.Entity.CheckGetComponent(215);
         var n = o.GetTeamItem(e, {
           ParamType: 3
         });
@@ -40,8 +40,7 @@ class CooperationController {
                   ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("CannotChangeRoleBeforeStartBattle");
                 }
               } else {
-                t = o.CurrentGroupType;
-                if (t !== -1 && t !== 3) {
+                if (o.CurrentGroupType === 1) {
                   if (n.IsDead()) {
                     if (ModelManager_1.ModelManager.SceneTeamModel.IsAllDid() || l) {
                       if (l) {
@@ -53,9 +52,9 @@ class CooperationController {
                       return;
                     }
                   } else {
-                    if ((o = n.CanGoBattle()) !== 0) {
+                    if ((t = n.CanGoBattle()) !== 0) {
                       if (Log_1.Log.CheckInfo()) {
-                        Log_1.Log.Info("SceneTeam", 48, "上场角色无法换人", ["Result", o], ["roleId", n.GetConfigId]);
+                        Log_1.Log.Info("SceneTeam", 48, "上场角色无法换人", ["Result", t], ["roleId", n.GetConfigId]);
                       }
                     } else {
                       this.n7a(r, n);
@@ -64,7 +63,7 @@ class CooperationController {
                   }
                 }
                 if (Log_1.Log.CheckInfo()) {
-                  Log_1.Log.Info("SceneTeam", 48, "当前正在幻象组或剧情组，不能切角色");
+                  Log_1.Log.Info("SceneTeam", 48, "当前正在非战斗编队组，不能切角色");
                 }
               }
             }

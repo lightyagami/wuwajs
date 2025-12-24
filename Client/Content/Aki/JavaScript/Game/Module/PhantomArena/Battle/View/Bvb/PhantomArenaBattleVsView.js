@@ -8,6 +8,7 @@ const AudioSystem_1 = require("../../../../../../Core/Audio/AudioSystem");
 const EventDefine_1 = require("../../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../../Common/Event/EventSystem");
 const ControllerHolder_1 = require("../../../../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../../../../Manager/ModelManager");
 const UiViewBase_1 = require("../../../../../Ui/Base/UiViewBase");
 const UiManager_1 = require("../../../../../Ui/UiManager");
 const LevelSequencePlayer_1 = require("../../../../Common/LevelSequencePlayer");
@@ -42,6 +43,13 @@ class PhantomArenaBattleVsView extends UiViewBase_1.UiViewBase {
   }
   OnRemoveEventListener() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPhantomArenaBattleLoadingHide, this.Acu);
+  }
+  OnGetLoopAudioEvent() {
+    if (ModelManager_1.ModelManager.PhantomArenaBattleModel.IsOldBvb) {
+      return this.Info.LoopAudioEvent;
+    } else {
+      return "play_ui_music_3_0_arena_card_battle";
+    }
   }
 }
 exports.PhantomArenaBattleVsView = PhantomArenaBattleVsView;

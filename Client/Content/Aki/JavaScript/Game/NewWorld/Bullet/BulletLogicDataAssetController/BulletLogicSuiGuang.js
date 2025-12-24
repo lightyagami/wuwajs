@@ -22,13 +22,13 @@ class BulletLogicSuiGuang extends BulletLogicController_1.BulletLogicController 
         if (t.Entity instanceof BulletEntity_1.BulletEntity && t.Entity.GetBulletInfo().HasTag(this.h7o.NeedTag)) {
           this.K7o(this.h7o.NewBulletId, t.Entity.Id);
         }
-      } else if (t.Entity?.GetComponent(0)?.IsRole() && t.Entity.GetComponent(209)?.HasTag(this.h7o.NeedTag.TagId)) {
+      } else if (t.Entity?.GetComponent(0)?.IsRole() && t.Entity.GetComponent(215)?.HasTag(this.h7o.NeedTag.TagId)) {
         this.K7o(this.h7o.NewBulletId, t.Entity.Id);
       }
     }
   }
   K7o(t, l) {
-    var e = this.Bullet.GetComponent(173).ActorTransform;
+    var e = this.Bullet.GetComponent(178).ActorTransform;
     BulletController_1.BulletController.CreateBulletCustomTarget(this.Bullet.GetBulletInfo().BulletInitParams.Owner, t, e ?? MathUtils_1.MathUtils.DefaultTransform, {
       SkillId: this.a7o.BulletInitParams.SkillId,
       SkillContextId: this.a7o.BulletInitParams.SkillContextId,

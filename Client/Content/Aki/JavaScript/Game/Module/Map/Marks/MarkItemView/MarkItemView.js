@@ -20,6 +20,7 @@ const ModelManager_1 = require("../../../../Manager/ModelManager");
 const LevelSequencePlayer_1 = require("../../../Common/LevelSequencePlayer");
 const WorldMapDefine_1 = require("../../../WorldMap/WorldMapDefine");
 const MarkSpritePool_1 = require("../../Container/MarkSpritePool");
+const MarkItemAutoPilotTrackHandle_1 = require("./Handles/MarkItemAutoPilotTrackHandle");
 const MarkItemChildIconHandle_1 = require("./Handles/MarkItemChildIconHandle");
 const MarkItemGravityReverseIconHandle_1 = require("./Handles/MarkItemGravityReverseIconHandle");
 const MarkItemNameHandle_1 = require("./Handles/MarkItemNameHandle");
@@ -107,6 +108,9 @@ class MarkItemView extends MarkPanelBase_1.MarkPanelBase {
   get MarkItemGravityReverseIconHandle() {
     return this.MarkItemComponentHandleMap.get(9);
   }
+  get MarkItemAutoPilotTrackHandle() {
+    return this.MarkItemComponentHandleMap.get(10);
+  }
   get IsSelected() {
     return this.Holder.MarkItemEntity.ViewLifeCircle.IsSelected;
   }
@@ -139,7 +143,7 @@ class MarkItemView extends MarkPanelBase_1.MarkPanelBase {
       this.RefreshActorLabel();
       this.RefreshParentSocketTransform();
       this.Xd();
-      this.nhm();
+      this.Wum();
       this.ApplyRootAnchorOffset();
       this.OnViewInitialize();
     }
@@ -272,6 +276,7 @@ class MarkItemView extends MarkPanelBase_1.MarkPanelBase {
     this.MarkItemTrackHandle?.SetVisible(this.Holder.IsTracked && !t);
     this.MarkItemSelectHandle?.SetVisible(this.IsSelected);
     this.MarkItemVerticalPointerHandle?.UpdateVerticalPointerType(this.Holder.WorldPosition, e);
+    this.MarkItemAutoPilotTrackHandle?.SetVisible(this.Holder.IsAutoPilotTracked);
     this.wh_();
   }
   OnSafeUpdate(e, t = 0, i) {}
@@ -391,9 +396,9 @@ class MarkItemView extends MarkPanelBase_1.MarkPanelBase {
   }
   CreateAndInitComponentHandles() {
     this.CreateComponentHandles();
-    this.nhm();
+    this.Wum();
   }
-  nhm() {
+  Wum() {
     for (const e of this.MarkItemComponentHandleMap.values()) {
       e.Init();
     }
@@ -420,6 +425,7 @@ class MarkItemView extends MarkPanelBase_1.MarkPanelBase {
     this.MarkItemComponentHandleMap.set(7, this.CreateChildIconHandle(this.MarkComponentContext));
     this.MarkItemComponentHandleMap.set(8, this.CreateVerticalPointerHandle(this.MarkComponentContext));
     this.MarkItemComponentHandleMap.set(9, this.CreateGravityReverseIconHandle(this.MarkComponentContext));
+    this.MarkItemComponentHandleMap.set(10, this.CreateAutoPilotTrackHandle(this.MarkComponentContext));
   }
   wh_() {
     for (const e of this.MarkItemComponentHandleMap.values()) {
@@ -469,6 +475,9 @@ class MarkItemView extends MarkPanelBase_1.MarkPanelBase {
   }
   CreateGravityReverseIconHandle(e) {
     return new MarkItemGravityReverseIconHandle_1.MarkItemGravityReverseIconHandle(e);
+  }
+  CreateAutoPilotTrackHandle(e) {
+    return new MarkItemAutoPilotTrackHandle_1.MarkItemAutoPilotTrackHandle(e);
   }
 }
 exports.MarkItemView = MarkItemView;

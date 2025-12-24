@@ -127,7 +127,7 @@ let PostProcessBridgeComponent = PostProcessBridgeComponent_1 = class PostProces
       this.Wnn.BlendWeight = this.znn;
       this.tsn();
       if (this.Knn) {
-        this.jnn = this.Entity.GetComponent(86);
+        this.jnn = this.Entity.GetComponent(89);
         if (!this.jnn) {
           this.gU = false;
           if (Log_1.Log.CheckError()) {
@@ -256,5 +256,5 @@ let PostProcessBridgeComponent = PostProcessBridgeComponent_1 = class PostProces
     return true;
   }
 };
-PostProcessBridgeComponent = PostProcessBridgeComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(109)], PostProcessBridgeComponent);
+PostProcessBridgeComponent = PostProcessBridgeComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(114)], PostProcessBridgeComponent);
 exports.PostProcessBridgeComponent = PostProcessBridgeComponent; //# sourceMappingURL=PostProcessBridgeComponent.js.map

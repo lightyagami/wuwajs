@@ -70,12 +70,12 @@ class MonsterNpcAttackHeadStateData extends HeadStateData_1.HeadStateData {
   }
   AddEntityEvents() {
     super.AddEntityEvents();
-    var t = this.Entity?.GetComponent(177);
+    var t = this.Entity?.GetComponent(182);
     if (t?.Valid) {
       t.AddListener(CharacterAttributeTypes_1.EAttributeId.Proto_SpecialEnergy4, this.JCd, "SpecialEnergy4.MonsterNpcAttackHeadState");
       t.AddListener(CharacterAttributeTypes_1.EAttributeId.Proto_SpecialEnergy4Max, this.JCd, "SpecialEnergy4Max.HeadState");
     }
-    var t = this.Entity?.GetComponent(209);
+    var t = this.Entity?.GetComponent(215);
     if (t?.Valid) {
       this.mpd = t.ListenForTagAddOrRemove(792676641, this.epd);
       this.fpd = t.ListenForTagAddOrRemove(-325960901, this.ipd);
@@ -87,7 +87,7 @@ class MonsterNpcAttackHeadStateData extends HeadStateData_1.HeadStateData {
   }
   RemoveEntityEvents() {
     super.RemoveEntityEvents();
-    var t = this.Entity?.GetComponent(177);
+    var t = this.Entity?.GetComponent(182);
     if (t?.Valid) {
       t.RemoveListener(CharacterAttributeTypes_1.EAttributeId.Proto_SpecialEnergy4, this.JCd);
       t.RemoveListener(CharacterAttributeTypes_1.EAttributeId.Proto_SpecialEnergy4Max, this.JCd);

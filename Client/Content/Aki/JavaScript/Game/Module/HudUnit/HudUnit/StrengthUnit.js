@@ -12,8 +12,9 @@ const MathUtils_1 = require("../../../../Core/Utils/MathUtils");
 const HudUnitBase_1 = require("../HudUnitBase");
 const HudUnitUtils_1 = require("../Utils/HudUnitUtils");
 const FlyStrengthItem_1 = require("./Strength/FlyStrengthItem");
+const MotorcycleStrengthItem_1 = require("./Strength/MotorcycleStrengthItem");
 const StrengthItem_1 = require("./Strength/StrengthItem");
-const strengthItemConfigMap = new Map([[1, StrengthItem_1.StrengthItem], [2, FlyStrengthItem_1.FlyStrengthItem]]);
+const strengthItemConfigMap = new Map([[1, StrengthItem_1.StrengthItem], [2, FlyStrengthItem_1.FlyStrengthItem], [3, MotorcycleStrengthItem_1.MotorcycleStrengthItem]]);
 const MAX_DELTA_TIME = 200;
 const MIN_DELTA_OFFSET = 0.5;
 const MAX_POS_OFFSET = 500;
@@ -59,35 +60,49 @@ class StrengthUnit extends HudUnitBase_1.HudUnitBase {
     if (this.Wst !== t) {
       if (this.Wst = t) {
         this.n$t = t.EntityHandle.Entity.GetComponent(3);
-        for (const i of this.NRl.values()) {
-          i.RefreshRoleData(t);
+        for (const e of this.NRl.values()) {
+          e.RefreshRoleData(t);
         }
       } else {
         this.n$t = undefined;
       }
     }
   }
-  AddStrengthItem(t, i) {
-    var s;
+  AddStrengthItem(t, e) {
     if (this.NRl.has(t)) {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("HudUnit", 17, "已经添加过该类型的体力条", ["strengthItemType", t]);
       }
-    } else if (i < 0 || i > 2) {
+    } else if (e < 0 || e > 2) {
       if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("HudUnit", 17, "体力条位置参数非法", ["index", i]);
+        Log_1.Log.Error("HudUnit", 17, "体力条位置参数非法", ["index", e]);
       }
-    } else if (this.VRl[i] !== 0) {
-      if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("HudUnit", 17, "该位置已有其他体力条", ["strengthItemType", t]);
+    } else {
+      if (this.VRl[e] !== 0) {
+        if (e === 0) {
+          if (Log_1.Log.CheckError()) {
+            Log_1.Log.Error("HudUnit", 17, "该位置已有其他体力条", ["oldStrengthItemType", this.VRl[e]], ["newStrengthItemType", t]);
+          }
+          return;
+        }
+        var i = this.NRl.get(this.VRl[e]);
+        if (i) {
+          if (Log_1.Log.CheckDebug()) {
+            Log_1.Log.Debug("HudUnit", 17, "该位置已有其他体力条, 销毁旧体力条", ["oldStrengthItemType", this.VRl[e]], ["newStrengthItemType", t]);
+          }
+          i.Destroy();
+          this.NRl.delete(this.VRl[e]);
+        }
       }
-    } else if (s = strengthItemConfigMap.get(t)) {
-      this.VRl[i] = t;
-      i = this.x5e[i];
-      (s = new s()).Init(i, this.Wst, this.HRl);
-      this.NRl.set(t, s);
-    } else if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("HudUnit", 17, "体力条类型没有对应的实现", ["strengthItemType", t]);
+      var i = strengthItemConfigMap.get(t);
+      if (i) {
+        this.VRl[e] = t;
+        e = this.x5e[e];
+        (i = new i()).Init(e, this.Wst, this.HRl);
+        this.NRl.set(t, i);
+      } else if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("HudUnit", 17, "体力条类型没有对应的实现", ["strengthItemType", t]);
+      }
     }
   }
   SwapPlace(t) {
@@ -98,8 +113,8 @@ class StrengthUnit extends HudUnitBase_1.HudUnitBase {
   }
   jRl() {
     let t = true;
-    for (const i of this.VRl) {
-      if (!this.NRl.get(i)?.GetUiVisible()) {
+    for (const e of this.VRl) {
+      if (!this.NRl.get(e)?.GetUiVisible()) {
         t = false;
       }
     }
@@ -113,51 +128,51 @@ class StrengthUnit extends HudUnitBase_1.HudUnitBase {
       }
     } else {
       let t = 0;
-      let i = true;
+      let e = true;
       for (const h of this.FRl ? swapIndex : normalIndex) {
-        var s = this.x5e[h];
-        var e = this.VRl[h];
-        if (this.NRl.get(e)?.GetUiVisible()) {
-          s.SetAnchorOffsetX(ITEM_OFFSET_X_BASE + ITEM_OFFSET_X_INTERVAL * t);
-          s.SetAlpha(i ? 1 : 0.3);
-          s.SetUIItemScale(Vector_1.Vector.OneVector);
+        var i = this.x5e[h];
+        var s = this.VRl[h];
+        if (this.NRl.get(s)?.GetUiVisible()) {
+          i.SetAnchorOffsetX(ITEM_OFFSET_X_BASE + ITEM_OFFSET_X_INTERVAL * t);
+          i.SetAlpha(e ? 1 : 0.3);
+          i.SetUIItemScale(Vector_1.Vector.OneVector);
           t++;
         }
-        i = false;
+        e = false;
       }
     }
   }
   Tick(t) {
     this.WRl(t);
-    for (const i of this.NRl.values()) {
-      i.Tick(t);
+    for (const e of this.NRl.values()) {
+      e.Tick(t);
     }
   }
   WRl(t) {
+    var e;
     var i;
-    var s;
-    if (this.GetActive() && this.n$t && this.n$t.Actor?.IsValid() && (i = this.n$t.ActorLocation, HudUnitUtils_1.HudUnitUtils.PositionUtil.ProjectWorldToScreen(i, this.jma))) {
-      i = this.jma.X;
-      s = this.jma.Y;
-      if (Math.abs(i - this.Rii) > MAX_POS_OFFSET || Math.abs(s - this.Uii) > MAX_POS_OFFSET) {
-        this.Rii = i;
-        this.Uii = s;
+    if (this.GetActive() && this.n$t && this.n$t.Actor?.IsValid() && (e = this.n$t.ActorLocation, HudUnitUtils_1.HudUnitUtils.PositionUtil.ProjectWorldToScreen(e, this.jma))) {
+      e = this.jma.X;
+      i = this.jma.Y;
+      if (Math.abs(e - this.Rii) > MAX_POS_OFFSET || Math.abs(i - this.Uii) > MAX_POS_OFFSET) {
+        this.Rii = e;
+        this.Uii = i;
         this.SetAnchorOffset(this.Rii, this.Uii);
       } else {
-        this.Aii = this.jii(t, i, this.Rii, this.Aii);
-        this.Pii = this.jii(t, s, this.Uii, this.Pii);
-        i = this.Aii * t;
-        s = this.Pii * t;
-        if (!(i < MIN_DELTA_OFFSET) || !(i > -MIN_DELTA_OFFSET) || !(s < MIN_DELTA_OFFSET) || !(s > -MIN_DELTA_OFFSET)) {
-          this.Rii += i;
-          this.Uii += s;
+        this.Aii = this.jii(t, e, this.Rii, this.Aii);
+        this.Pii = this.jii(t, i, this.Uii, this.Pii);
+        e = this.Aii * t;
+        i = this.Pii * t;
+        if (!(e < MIN_DELTA_OFFSET) || !(e > -MIN_DELTA_OFFSET) || !(i < MIN_DELTA_OFFSET) || !(i > -MIN_DELTA_OFFSET)) {
+          this.Rii += e;
+          this.Uii += i;
           this.SetAnchorOffset(this.Rii, this.Uii);
         }
       }
     }
   }
-  jii(t, i, s, e) {
-    let h = i - s;
+  jii(t, e, i, s) {
+    let h = e - i;
     let r = false;
     if (h < 0) {
       h = -h;
@@ -166,12 +181,12 @@ class StrengthUnit extends HudUnitBase_1.HudUnitBase {
     if (h < 1) {
       return 0;
     }
-    let _ = 0;
-    _ = t >= MAX_DELTA_TIME ? h / t : h / MAX_DELTA_TIME;
+    let o = 0;
+    o = t >= MAX_DELTA_TIME ? h / t : h / MAX_DELTA_TIME;
     if (r) {
-      _ = -_;
+      o = -o;
     }
-    return MathUtils_1.MathUtils.Lerp(e, _, 0.5);
+    return MathUtils_1.MathUtils.Lerp(s, o, 0.5);
   }
 }
 exports.StrengthUnit = StrengthUnit;

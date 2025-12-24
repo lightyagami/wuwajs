@@ -10,7 +10,17 @@ class InfoDisplayModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
     this.Fsi = 0;
+    this.CurrentShowAttachmentType = "Image";
     this.Vsi = "";
+    this.AnimName = "";
+    this.CurrentSpineAtlasPath = "";
+    this.CurrentSpineDataPath = "";
+  }
+  GetCurrentShowAttachmentType() {
+    return this.CurrentShowAttachmentType;
+  }
+  SetCurrentShowAttachmentType(e) {
+    this.CurrentShowAttachmentType = e;
   }
   CurrentInformationId() {
     return this.Fsi;
@@ -24,10 +34,28 @@ class InfoDisplayModel extends ModelBase_1.ModelBase {
   SetCurrentOpenInformationTexture(e) {
     this.Vsi = e;
   }
+  SetAnimName(e) {
+    this.AnimName = e;
+  }
+  GetAnimName() {
+    return this.AnimName;
+  }
+  GetCurrentShowSpineAtlasPath() {
+    return this.CurrentSpineAtlasPath;
+  }
+  SetCurrentShowSpineAtlasPath(e) {
+    this.CurrentSpineAtlasPath = e;
+  }
+  GetCurrentShowSpineDataPath() {
+    return this.CurrentSpineDataPath;
+  }
+  SetCurrentShowSpineDataPath(e) {
+    this.CurrentSpineDataPath = e;
+  }
   static ConvertToHourMinuteString(e) {
-    var r = Math.floor(e / TimeOfDayDefine_1.TOD_SECOND_PER_MINUTE);
-    var e = Math.floor(e - r * TimeOfDayDefine_1.TOD_SECOND_PER_MINUTE);
-    return ("0" + r).slice(-2) + ":" + ("0" + e).slice(-2);
+    var t = Math.floor(e / TimeOfDayDefine_1.TOD_SECOND_PER_MINUTE);
+    var e = Math.floor(e - t * TimeOfDayDefine_1.TOD_SECOND_PER_MINUTE);
+    return ("0" + t).slice(-2) + ":" + ("0" + e).slice(-2);
   }
 }
 exports.InfoDisplayModel = InfoDisplayModel;

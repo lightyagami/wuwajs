@@ -25,7 +25,7 @@ class MissionPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     super(...arguments);
     this.ILr = new Map();
     this.LU_ = new Map();
-    this.d_m = new Map();
+    this.wfm = new Map();
     this.PFc = undefined;
     this.wU_ = () => !this.GetActive();
     this.RU_ = async e => {
@@ -41,7 +41,7 @@ class MissionPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
             return this.LU_.get(s).StartShow(e.ProcessId, i, e.IsSkipAnim);
           case 1:
           case 2:
-            return this.m_m(s, e.ProcessId, i, e.IsSkipAnim);
+            return this.Lfm(s, e.ProcessId, i, e.IsSkipAnim);
         }
       }
       return true;
@@ -60,7 +60,7 @@ class MissionPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
       if (e.Id === i.ShowDataId) {
         return i.EndShow(e.ProcessId, e.IsSkipAnim, e.Reason);
       } else {
-        return !(await this.f_m(1, e)) || this.f_m(2, e);
+        return !(await this.Pfm(1, e)) || this.Pfm(2, e);
       }
     };
     this.xU_ = async e => this.UU_(1).ShowQuestUpdateTipsHandle(e);
@@ -90,7 +90,7 @@ class MissionPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
         Log_1.Log.Error("Quest", 18, "MissionPanel:任务更新提示结束动画开始时找不到当前正在处理的操作");
       }
     };
-    this.Ldm = () => {
+    this.lpm = () => {
       this.sY_();
     };
     this.FWe = () => {
@@ -103,13 +103,13 @@ class MissionPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
   async InitializeAsync() {
     await this.kU_();
     await Promise.all([this.xFc()]);
-    await this.g_m();
+    await this.Afm();
     this.sY_();
     this.RootItem.SetAnchorOffsetX(0);
     this.GetItem(1)?.SetUIActive(false);
     this.GetItem(2).SetUIActive(true);
   }
-  async g_m() {
+  async Afm() {
     var e = this.GetItem(0);
     var i = LguiUtil_1.LguiUtil.CopyItem(e, e.GetParentAsUIItem());
     var t = LguiUtil_1.LguiUtil.CopyItem(i, i.GetParentAsUIItem());
@@ -153,7 +153,7 @@ class MissionPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     return this.ILr.get(e);
   }
   Reset() {
-    this.d_m.clear();
+    this.wfm.clear();
     for (var [, e] of this.LU_) {
       e.Destroy();
     }
@@ -180,7 +180,7 @@ class MissionPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
       e.AddEvents();
     }
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.QuestUpdateTipsEndSequenceStart, this.BU_);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.MissionTrackRuleChange, this.Ldm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.MissionTrackRuleChange, this.lpm);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDoneAndCloseLoading, this.FWe);
   }
   RemoveEvents() {
@@ -188,7 +188,7 @@ class MissionPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
       e.RemoveEvents();
     }
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.QuestUpdateTipsEndSequenceStart, this.BU_);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.MissionTrackRuleChange, this.Ldm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.MissionTrackRuleChange, this.lpm);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDoneAndCloseLoading, this.FWe);
   }
   OnTickBattleChildViewPanel(e) {
@@ -208,35 +208,35 @@ class MissionPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
       }
     }
   }
-  async f_m(e, i) {
+  async Pfm(e, i) {
     var t;
     var s;
-    var n = this.C_m(e, i.Id);
-    return n < 0 || !(t = this.LU_.get(e)) || !(s = this.d_m.get(e)) || (s.splice(n, 1), await t.EndShow(i.ProcessId, i.IsSkipAnim), s.length === 0) || this.p_m(e, i.ProcessId, i.IsSkipAnim);
+    var n = this.Dfm(e, i.Id);
+    return n < 0 || !(t = this.LU_.get(e)) || !(s = this.wfm.get(e)) || (s.splice(n, 1), await t.EndShow(i.ProcessId, i.IsSkipAnim), s.length === 0) || this.Ufm(e, i.ProcessId, i.IsSkipAnim);
   }
   aet(e) {
-    for (var [i, t] of this.d_m) {
-      i = this.C_m(i, e.Id);
+    for (var [i, t] of this.wfm) {
+      i = this.Dfm(i, e.Id);
       if (i >= 1) {
         t[i] = e;
       }
     }
   }
-  C_m(e, i) {
-    e = this.d_m.get(e);
+  Dfm(e, i) {
+    e = this.wfm.get(e);
     if (e) {
       return e.findIndex(e => e.Id === i);
     } else {
       return -1;
     }
   }
-  async m_m(e, i, t, s) {
-    let n = this.d_m.get(e);
+  async Lfm(e, i, t, s) {
+    let n = this.wfm.get(e);
     if (!n) {
       n = [];
-      this.d_m.set(e, n);
+      this.wfm.set(e, n);
     }
-    var r = this.C_m(e, t.Id);
+    var r = this.Dfm(e, t.Id);
     if (r >= 0) {
       n[r] = t;
       if (this.LU_.get(1).ShowDataId !== t.Id) {
@@ -245,14 +245,14 @@ class MissionPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     } else {
       n.push(t);
     }
-    return this.p_m(e, i, s);
+    return this.Ufm(e, i, s);
   }
-  async p_m(e, i, t) {
+  async Ufm(e, i, t) {
     var s = this.LU_.get(e);
     if (!s) {
       return true;
     }
-    e = this.d_m.get(e);
+    e = this.wfm.get(e);
     if (!e) {
       return true;
     }

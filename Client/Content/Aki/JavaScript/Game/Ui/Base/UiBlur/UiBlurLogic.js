@@ -37,7 +37,7 @@ class UiBlurLogic {
     } else if (e.ChildPopView) {
       return e.ChildPopView.GetPopViewRootItem();
     } else {
-      return e.GetRootItem();
+      return e.GetBlurRootItem();
     }
   }
   static SetNormalUiRenderAfterBlur(e) {

@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.PersonalBirthAttachItem = undefined;
 const UE = require("ue");
 const MathUtils_1 = require("../../../../Core/Utils/MathUtils");
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const AutoAttachItem_1 = require("../../AutoAttach/AutoAttachItem");
 const MIN_ALPHA = 0.5;
 const MAX_ALPHA = 1;
@@ -15,6 +16,7 @@ class PersonalBirthAttachItem extends AutoAttachItem_1.AutoAttachItem {
     this.kG = new UE.Vector(0);
     this.wst = 0;
     this.q6e = undefined;
+    this.ekm = 0;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIText]];
@@ -24,7 +26,7 @@ class PersonalBirthAttachItem extends AutoAttachItem_1.AutoAttachItem {
   }
   OnRefreshItem(t) {
     this.wst = t;
-    this.GetText(0).SetText(String(this.wst));
+    this.GetText(0).SetText(ConfigManager_1.ConfigManager.PersonalConfig.GetBirthLocalText(t, this.ekm));
   }
   OnMoveItem() {
     var t = this.GetCurrentMovePercentage();
@@ -44,6 +46,9 @@ class PersonalBirthAttachItem extends AutoAttachItem_1.AutoAttachItem {
     }
   }
   OnUnSelect() {}
+  SetDateType(t) {
+    this.ekm = t;
+  }
 }
 exports.PersonalBirthAttachItem = PersonalBirthAttachItem;
 //# sourceMappingURL=PersonalBirthAttachItem.js.map

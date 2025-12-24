@@ -5,16 +5,24 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.CommonHeadState = undefined;
 const UE = require("ue");
+const Log_1 = require("../../../../../Core/Common/Log");
 const ConfigManager_1 = require("../../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const LguiUtil_1 = require("../../../Util/LguiUtil");
 const BuffItemContainer_1 = require("../BuffItemContainer");
+const HeadStateWeaknessItem_1 = require("../Weakness/HeadStateWeaknessItem");
 const HeadStateViewBase_1 = require("./HeadStateViewBase");
 class CommonHeadState extends HeadStateViewBase_1.HeadStateViewBase {
   constructor() {
     super(...arguments);
     this.mkn = new BuffItemContainer_1.BuffItemContainer();
     this.pnt = 0;
+    this.uUf = undefined;
+    this.Qti = undefined;
+    this.mLm = () => {
+      this.fLm();
+      this.gLm();
+    };
     this.OnAddOrRemoveBuff = (t, e, i, s) => {
       if (this.HeadStateData.GetEntityId() === t) {
         if (i) {
@@ -36,9 +44,15 @@ class CommonHeadState extends HeadStateViewBase_1.HeadStateViewBase {
     this.OnRoleLevelChange = (t, e, i) => {
       this.Olt();
     };
+    this.Hnt = new Map();
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UISprite], [1, UE.UISprite], [2, UE.UISprite], [3, UE.UIText], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UISprite], [7, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UISprite], [1, UE.UISprite], [2, UE.UISprite], [3, UE.UIText], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UISprite], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UISprite], [11, UE.UINiagara], [12, UE.UIItem], [13, UE.UIItem]];
+  }
+  async OnBeforeStartAsync() {
+    this.Qti = new HeadStateWeaknessItem_1.HeadStateWeaknessItem();
+    this.uUf = this.GetItem(8);
+    await this.Qti.InitializeAsync(this.uUf, 0.5);
   }
   ActiveBattleHeadState(t) {
     super.ActiveBattleHeadState(t);
@@ -49,10 +63,21 @@ class CommonHeadState extends HeadStateViewBase_1.HeadStateViewBase {
     this.Vlt();
     this.tst();
     this.Hlt();
+    this.CLm(true);
   }
   OnStart() {
+    this.Qnt();
     this.pnt = this.GetSprite(2).GetParentAsUIItem().GetWidth();
     this.mkn.Init(this.GetItem(5), undefined, true);
+  }
+  OnBeforeDestroy() {
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("Battle", 17, "[CommonHeadState]销毁血条");
+    }
+    if (this.Qti) {
+      this.Qti.Destroy();
+      this.Qti = undefined;
+    }
   }
   OnBeforeShow() {
     super.OnBeforeShow();
@@ -66,7 +91,37 @@ class CommonHeadState extends HeadStateViewBase_1.HeadStateViewBase {
   }
   ResetBattleHeadState() {
     this.mkn.ClearAll();
+    this.Qti?.Refresh(undefined);
     super.ResetBattleHeadState();
+  }
+  CLm(t = false) {
+    this.GetUiNiagara(11).SetUIActive(false);
+    if (this.Qti) {
+      this.Qti.Refresh(this.HeadStateData?.GetEntity());
+      this.fLm();
+      this.gLm(t);
+      this.Qti.SetStateChangeCallback(this.mLm);
+    }
+  }
+  fLm() {
+    if (this.Qti && this.Qti.IsFullState()) {
+      this.GetSprite(10).SetFillAmount(this.CurrentBarPercent);
+    }
+  }
+  gLm(t = false) {
+    if (this.Qti.IsInBreakAnim()) {
+      this.GetItem(9).SetUIActive(true);
+      if (!t) {
+        this.bnt(13);
+      }
+    } else if (this.Qti.IsFullState()) {
+      this.GetItem(9).SetUIActive(true);
+      if (!t) {
+        this.bnt(12);
+      }
+    } else {
+      this.GetItem(9).SetUIActive(false);
+    }
   }
   GetResourceId() {
     return "UiItem_LittleMonsterState_Prefab";
@@ -78,6 +133,7 @@ class CommonHeadState extends HeadStateViewBase_1.HeadStateViewBase {
       this.Flt();
       this.Vlt();
       this.jlt(i);
+      this.Qti?.Tick(i);
     }
   }
   tst() {
@@ -100,6 +156,7 @@ class CommonHeadState extends HeadStateViewBase_1.HeadStateViewBase {
     var t = this.IsDetailVisible();
     this.GetItem(4).SetUIActive(t);
     this.ExtraItem?.SetUiActive(t);
+    this.uUf.SetUIActive(t);
   }
   Flt() {
     var t = this.IsLevelTextVisible();
@@ -123,6 +180,7 @@ class CommonHeadState extends HeadStateViewBase_1.HeadStateViewBase {
     } else {
       this.StopBarLerpAnimation();
     }
+    this.fLm();
   }
   OnBeginBarAnimation(t) {
     this.ast(t);
@@ -174,6 +232,27 @@ class CommonHeadState extends HeadStateViewBase_1.HeadStateViewBase {
   RefreshOnCampChanged() {
     this.Olt();
     this.Hlt();
+  }
+  Qnt() {
+    this.Est(12);
+    this.Est(13);
+  }
+  Est(t) {
+    var e = [];
+    var i = this.GetItem(t).GetOwner().K2_GetComponentsByClass(UE.LGUIPlayTweenComponent.StaticClass());
+    var s = i.Num();
+    for (let t = 0; t < s; t++) {
+      e.push(i.Get(t));
+    }
+    this.Hnt.set(t, e);
+  }
+  bnt(t) {
+    t = this.Hnt.get(t);
+    if (t) {
+      for (const e of t) {
+        e.Play();
+      }
+    }
   }
 }
 exports.CommonHeadState = CommonHeadState;

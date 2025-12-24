@@ -78,7 +78,7 @@ class WeaponReplaceView extends UiViewBase_1.UiViewBase {
       var i = ModelManager_1.ModelManager.WeaponModel.GetWeaponDataByIncId(e);
       const r = t.GetRoleId();
       var o;
-      var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(209);
+      var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(215);
       if (ModelManager_1.ModelManager.SceneTeamModel.GetCurrentTeamItem?.GetConfigId === r && t?.Valid && t.HasTag(202314845)) {
         ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("TagCantSwitchWeapon");
       } else if (i.HasRole()) {

@@ -188,6 +188,9 @@ class BattlePassController extends UiControllerBase_1.UiControllerBase {
     BattlePassController.pki ||= TimerSystem_1.GameplayTimerSystem.Forever(() => {
       if (TimeUtil_1.TimeUtil.GetServerTime() >= ModelManager_1.ModelManager.BattlePassModel.GetBattlePassEndTime()) {
         ModelManager_1.ModelManager.BattlePassModel.SetInTimeRange(false);
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ReceiveBattlePassTaskEvent, false);
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ReceiveBattlePassDataEvent);
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BattlePassHadEnterUpdate);
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnBattlePassExpireEvent);
         this.cki();
       }

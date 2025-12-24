@@ -31,8 +31,8 @@ let MonsterFlowComponent = class MonsterFlowComponent extends CharacterFlowCompo
     this.I5r = undefined;
   }
   OnStart() {
-    this.I5r = this.Entity.GetComponent(179);
-    this.Stn = this.Entity.GetComponent(125);
+    this.I5r = this.Entity.GetComponent(184);
+    this.Stn = this.Entity.GetComponent(130);
     super.OnStart();
     return true;
   }
@@ -43,5 +43,5 @@ let MonsterFlowComponent = class MonsterFlowComponent extends CharacterFlowCompo
     return !!super.CheckCondition() && !!this.Stn && (this.Stn.IsInLogicRange && !this.I5r.IsInFightState() || (this.ForceStopFlow(), false));
   }
 };
-MonsterFlowComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(186)], MonsterFlowComponent);
+MonsterFlowComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(191)], MonsterFlowComponent);
 exports.MonsterFlowComponent = MonsterFlowComponent; //# sourceMappingURL=MonsterFlowComponent.js.map

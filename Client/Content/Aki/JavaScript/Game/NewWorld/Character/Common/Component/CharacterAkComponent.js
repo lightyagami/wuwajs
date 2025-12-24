@@ -94,7 +94,7 @@ let CharacterAkComponent = class CharacterAkComponent extends EntityComponent_1.
   }
   OnStart() {
     this.Ovr = this.Entity.GetComponent(0);
-    return !!this.Ovr && !(this.Hte = this.Entity.GetComponent(3), !this.Hte?.Actor) && !(this.Gce = this.Entity.GetComponent(45), !this.Gce) && !(this.jFr = false, this.VFr = true, AkComponentStatic.Load(), this.DynamicConditionProxy.Init(this.Hte, this.AkComponentConfig), 0);
+    return !!this.Ovr && !(this.Hte = this.Entity.GetComponent(3), !this.Hte?.Actor) && !(this.Gce = this.Entity.GetComponent(46), !this.Gce) && !(this.jFr = false, this.VFr = true, AkComponentStatic.Load(), this.DynamicConditionProxy.Init(this.Hte, this.AkComponentConfig), 0);
   }
   OnTick(t) {
     if (this.jFr) {
@@ -108,10 +108,10 @@ let CharacterAkComponent = class CharacterAkComponent extends EntityComponent_1.
     var t;
     this.IsRole = this.Ovr?.GetEntityType() === Protocol_1.Aki.Protocol.kks.Proto_Player;
     this.IsP1 = false;
-    if (this.IsRole && this.Hte?.IsAutonomousProxy || this.Ovr?.IsConcomitantEntity && (t = this.Ovr.GetSummonerId(), t = ModelManager_1.ModelManager.CreatureModel?.GetEntityId(t)) && EntitySystem_1.EntitySystem.GetComponent(t, 49)?.IsP1) {
+    if (this.IsRole && this.Hte?.IsAutonomousProxy || this.Ovr?.IsConcomitantEntity && (t = this.Ovr.GetSummonerId(), t = ModelManager_1.ModelManager.CreatureModel?.GetEntityId(t)) && EntitySystem_1.EntitySystem.GetComponent(t, 50)?.IsP1) {
       this.IsP1 = true;
     }
-    if (this.IsRole && (this.Lie = this.Entity.GetComponent(209), this.IsP1)) {
+    if (this.IsRole && (this.Lie = this.Entity.GetComponent(215), this.IsP1)) {
       this.WFr = new FoleySynthController_1.FoleySynthController(this.Hte, this, this.Lie);
       this.WFr.Init(this.HFr);
     }
@@ -303,7 +303,7 @@ let CharacterAkComponent = class CharacterAkComponent extends EntityComponent_1.
   }
   static SetGlobalCharacterFoleySynthFileDebug(t, o) {
     var e;
-    if (Global_1.Global.BaseCharacter && (e = Global_1.Global.BaseCharacter.CharacterActorComponent.Entity.GetComponent(49))) {
+    if (Global_1.Global.BaseCharacter && (e = Global_1.Global.BaseCharacter.CharacterActorComponent.Entity.GetComponent(50))) {
       if (o?.length > 0) {
         e.SetFoleySynthFileDebug(t, o);
       } else {
@@ -312,5 +312,5 @@ let CharacterAkComponent = class CharacterAkComponent extends EntityComponent_1.
     }
   }
 };
-CharacterAkComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(49)], CharacterAkComponent);
+CharacterAkComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(50)], CharacterAkComponent);
 exports.CharacterAkComponent = CharacterAkComponent; //# sourceMappingURL=CharacterAkComponent.js.map

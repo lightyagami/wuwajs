@@ -46,7 +46,6 @@ class Skill {
     this.Gzo = false;
     this.Nzo = undefined;
     this.kzo = [];
-    this.Fzo = false;
     this.Vzo = undefined;
     this.Hzo = undefined;
     this.jzo = undefined;
@@ -89,9 +88,6 @@ class Skill {
   get SkillTagIds() {
     return this.kzo;
   }
-  HasAnimTag() {
-    return this.Fzo;
-  }
   get AbilityClass() {
     return this.Vzo;
   }
@@ -117,11 +113,11 @@ class Skill {
   }
   Initialize(t, i, s) {
     this.cBe = s;
-    this.$zo = s.Entity.GetComponent(178);
-    this.Lie = s.Entity.GetComponent(209);
+    this.$zo = s.Entity.GetComponent(183);
+    this.Lie = s.Entity.GetComponent(215);
     this.Hte = s.Entity.GetComponent(3);
     this.C51 = s.Entity.GetComponent(25);
-    this.vHr = s.Entity.GetComponent(126);
+    this.vHr = s.Entity.GetComponent(131);
     this.bzo = t;
     this.Nzo = i;
     this.qzo = false;
@@ -130,9 +126,6 @@ class Skill {
     for (let t = i.SkillTag.Num() - 1; t >= 0; t--) {
       var e = i.SkillTag.Get(t);
       var e = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e?.TagName);
-      if (e === -897737980) {
-        this.Fzo = true;
-      }
       this.kzo.push(e);
     }
     if (i.SkillMode === 1) {

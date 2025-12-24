@@ -12,9 +12,9 @@ const HonamiStoryConfirmBoxAction_1 = require("./Action/HonamiStoryConfirmBoxAct
 const HonamiStoryLeaveTipAction_1 = require("./Action/HonamiStoryLeaveTipAction");
 class InteractConfirmController {
   static RegisterActions() {
-    this.otm(IAction_1.EInteractionConfirmBoxType.Common, CommonConfirmBoxAction_1.CommonConfirmBoxAction);
-    this.otm(IAction_1.EInteractionConfirmBoxType.HonamiStoryCorruptedChest, HonamiStoryConfirmBoxAction_1.HonamiStoryConfirmBoxAction);
-    this.otm(IAction_1.EInteractionConfirmBoxType.HonamiStoryEvacuateConfirm, HonamiStoryLeaveTipAction_1.HonamiStoryLeaveTipAction);
+    this.Som(IAction_1.EInteractionConfirmBoxType.Common, CommonConfirmBoxAction_1.CommonConfirmBoxAction);
+    this.Som(IAction_1.EInteractionConfirmBoxType.HonamiStoryCorruptedChest, HonamiStoryConfirmBoxAction_1.HonamiStoryConfirmBoxAction);
+    this.Som(IAction_1.EInteractionConfirmBoxType.HonamiStoryEvacuateConfirm, HonamiStoryLeaveTipAction_1.HonamiStoryLeaveTipAction);
   }
   static HandleAction(t, e) {
     if (!t || !t.ConfirmBox) {
@@ -27,8 +27,8 @@ class InteractConfirmController {
       }
       return 0;
     }
-    if (this.ntm) {
-      this.ntm[1].Cancel();
+    if (this.Mom) {
+      this.Mom[1].Cancel();
     }
     var n = this.hJ++;
     var t = LevelGeneralContextDefine_1.InteractSecondConfirmContext.Create(n, t);
@@ -38,24 +38,24 @@ class InteractConfirmController {
       }
       if (InteractConfirmController.CheckHandleValid(t)) {
         e(t, o, n);
-        this.ntm = undefined;
+        this.Mom = undefined;
       }
     };
     var t = o.Execute(t);
     if (t) {
-      this.ntm = [n, o];
+      this.Mom = [n, o];
       return n;
     } else {
       return 0;
     }
   }
   static CancelAction(t) {
-    if (this.ntm?.[0] === t) {
+    if (this.Mom?.[0] === t) {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Interaction", 93, "取消交互二次确认", ["Handle", t]);
       }
-      this.ntm[1].Cancel();
-      this.ntm = undefined;
+      this.Mom[1].Cancel();
+      this.Mom = undefined;
     }
   }
   static GetAction(t) {
@@ -70,20 +70,20 @@ class InteractConfirmController {
     }
   }
   static CheckHandleValid(t) {
-    return this.ntm?.[0] === t;
+    return this.Mom?.[0] === t;
   }
   static Clear() {
-    if (InteractConfirmController.ntm) {
-      InteractConfirmController.ntm[1].Cancel();
+    if (InteractConfirmController.Mom) {
+      InteractConfirmController.Mom[1].Cancel();
     }
-    InteractConfirmController.ntm = undefined;
+    InteractConfirmController.Mom = undefined;
     InteractConfirmController.dYu.clear();
   }
 }
 (exports.InteractConfirmController = InteractConfirmController).dYu = new Map();
 InteractConfirmController.hJ = 1;
-InteractConfirmController.ntm = undefined;
-InteractConfirmController.otm = (t, o) => {
+InteractConfirmController.Mom = undefined;
+InteractConfirmController.Som = (t, o) => {
   if (!InteractConfirmController.dYu.has(t)) {
     o = new o();
     InteractConfirmController.dYu.set(t, o);

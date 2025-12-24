@@ -79,7 +79,7 @@ let TemplateEntitySpawnerComponent = TemplateEntitySpawnerComponent_1 = class Te
     };
     this.MQ1 = () => {
       for (const t of this.vQ1) {
-        const e = t.GetComponent(209);
+        const e = t.GetComponent(215);
         if (e) {
           TimerSystem_1.TimerSystem.Next(() => {
             e.RemoveTag(1090344258);
@@ -127,9 +127,9 @@ let TemplateEntitySpawnerComponent = TemplateEntitySpawnerComponent_1 = class Te
   }
   SQ1() {
     for (const n of this.vQ1) {
-      var t = n.GetComponent(206);
+      var t = n.GetComponent(212);
       if (t) {
-        var e = n.GetComponent(209);
+        var e = n.GetComponent(215);
         if (e) {
           e.AddTag(1090344258);
           if (!t.GetIsSceneInteractionLoadCompleted()) {
@@ -151,5 +151,5 @@ let TemplateEntitySpawnerComponent = TemplateEntitySpawnerComponent_1 = class Te
     }
   }
 };
-TemplateEntitySpawnerComponent = TemplateEntitySpawnerComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(300)], TemplateEntitySpawnerComponent);
+TemplateEntitySpawnerComponent = TemplateEntitySpawnerComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(319)], TemplateEntitySpawnerComponent);
 exports.TemplateEntitySpawnerComponent = TemplateEntitySpawnerComponent; //# sourceMappingURL=TemplateEntitySpawnerComponent.js.map

@@ -15,6 +15,7 @@ class PhantomArenaChildViewBase extends UiPanelBase_1.UiPanelBase {
     this.RootView = undefined;
     this.ViewModel = undefined;
     this.ViewName = undefined;
+    this.ActivityId = 0;
     this.SequencePlayer = undefined;
     this.Hur = true;
     this.GetViewName = () => this.ViewName ?? "";
@@ -68,6 +69,9 @@ class PhantomArenaChildViewBase extends UiPanelBase_1.UiPanelBase {
   }
   CloseMe() {
     this.RootView.CloseCurChildView();
+  }
+  BackToLastView() {
+    this.RootView.Back();
   }
 }
 exports.PhantomArenaChildViewBase = PhantomArenaChildViewBase;

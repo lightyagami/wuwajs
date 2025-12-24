@@ -7,24 +7,13 @@ exports.SequenceQteContinuousClick = undefined;
 const MathUtils_1 = require("../../../../../Core/Utils/MathUtils");
 const SequenceQteHandleBase_1 = require("./SequenceQteHandleBase");
 class SequenceQteContinuousClick extends SequenceQteHandleBase_1.SequenceQteHandleBase {
-  constructor() {
-    super(...arguments);
-    this.J6 = 0;
-    this.mld = 200;
-  }
   OnBegin() {
     super.OnBegin();
     this.MarkSequenceQtePending = true;
+    this.TickInterval = 200;
   }
   OnReceiveTick(e) {
-    this.J6 += e;
-    if (!(this.J6 < this.mld)) {
-      this.J6 = 0;
-      this.Progress = MathUtils_1.MathUtils.Clamp(this.Context.CurrentEnergyPercent * SequenceQteHandleBase_1.PERCENT, 0, 1);
-    }
-  }
-  CanProgressFreeze() {
-    return this.Context.DeltaEnergyPercentPerMs < 0;
+    this.Progress = MathUtils_1.MathUtils.Clamp(this.Context.CurrentEnergyPercent * SequenceQteHandleBase_1.PERCENT, 0, 1);
   }
 }
 exports.SequenceQteContinuousClick = SequenceQteContinuousClick;

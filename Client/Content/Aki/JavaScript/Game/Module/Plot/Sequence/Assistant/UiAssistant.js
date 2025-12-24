@@ -89,6 +89,7 @@ class QteManger {
       o = t.Config?.BaseConfig.TimeDilation ?? 1;
       ModelManager_1.ModelManager.SequenceModel.CurLevelSeqActor?.SequencePlayer?.SetPlayRate(o);
       ControllerHolder_1.ControllerHolder.FlowController.EnableSkip(false);
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.EnableInteractPlot, false);
       this.fkl.set(t.HandleId, e.Id);
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Plot", 26, "[FlowSequence][PlotQte] Sequence Qte 开始", ["talkId", e.Id], ["QteId", r], ["handleId", t.HandleId]);
@@ -110,6 +111,7 @@ class QteManger {
     ModelManager_1.ModelManager.SequenceModel.CurLevelSeqActor?.SequencePlayer?.SetPlayRate(1);
     AudioSystem_1.AudioSystem.SetRtpcValue("plot_seq_qte_time_scale", 1);
     ControllerHolder_1.ControllerHolder.FlowController.EnableSkip(true);
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.EnableInteractPlot, true);
     this.fkl.delete(e.HandleId);
   }
 }
@@ -150,6 +152,9 @@ class UiAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
     await this.svc();
     if (this.Promise) {
       await this.Promise.Promise;
+    }
+    if (this.Model.IsSeamless) {
+      await ControllerHolder_1.ControllerHolder.PlotController.CreateAspectTransformView();
     }
     return UiManager_1.UiManager.IsViewShow("PlotSubtitleView");
   }
@@ -201,6 +206,9 @@ class UiAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
       this.Promise = undefined;
     }
     ControllerHolder_1.ControllerHolder.CommonQteController.ClearPreloadQteRes();
+    if (!this.Model.IsSeamless) {
+      ControllerHolder_1.ControllerHolder.PlotController.RemoveAspectTransformView();
+    }
   }
   Nio() {
     var e;

@@ -34,17 +34,17 @@ class CommonQteRightScreenDragItem extends CommonQteItemBase_1.CommonQteItemBase
     this.Wad = false;
     this.Qad = false;
     this.bzt = false;
-    this.Xom = false;
+    this.Clm = false;
     this.dbe = 0;
-    this.dgm = 0;
-    this.rgm = 0;
+    this.USm = 0;
+    this.ISm = 0;
     this.aXa = 0;
-    this.Yom = 0;
+    this.plm = 0;
     this.s7 = 0;
-    this.zom = Vector2D_1.Vector2D.Create();
-    this.Jom = Vector2D_1.Vector2D.Create();
-    this.Qom = Vector2D_1.Vector2D.Create();
-    this.EIm = false;
+    this.vlm = Vector2D_1.Vector2D.Create();
+    this.ylm = Vector2D_1.Vector2D.Create();
+    this.flm = Vector2D_1.Vector2D.Create();
+    this.oqm = false;
     this.$xt = t => {
       if (t === "Start") {
         if (!this.IsQteEnd && !(this.IsQteStart = true, this.IsQteInteractive = true, this.SPe?.PlayLevelSequenceByName("Loop"), this.IsMobile)) {
@@ -56,11 +56,11 @@ class CommonQteRightScreenDragItem extends CommonQteItemBase_1.CommonQteItemBase
     };
     this.lqt = (t, i) => {
       if (Info_1.Info.IsInGamepad()) {
-        this.dgm = 0;
-        this.Xom = false;
-        this.Jom.Reset();
+        this.USm = 0;
+        this.Clm = false;
+        this.ylm.Reset();
       } else {
-        this.Qom.Reset();
+        this.flm.Reset();
         this.Qad = false;
         this.Wad = false;
       }
@@ -69,41 +69,41 @@ class CommonQteRightScreenDragItem extends CommonQteItemBase_1.CommonQteItemBase
     this.BZu = (t, i) => {
       if (this.IsValidInput() && Info_1.Info.IsInGamepad()) {
         this.Wad = i !== 0;
-        this.Qom.X = i;
+        this.flm.X = i;
         this.Kad(this.Wad || this.Qad);
       }
     };
     this.kZu = (t, i) => {
       if (this.IsValidInput() && Info_1.Info.IsInGamepad()) {
         this.Qad = i !== 0;
-        this.Qom.Y = -i;
+        this.flm.Y = -i;
         this.Kad(this.Wad || this.Qad);
       }
     };
     this.JCo = t => {
-      this.dgm = this.rgm;
+      this.USm = this.ISm;
     };
-    this.hgm = t => {
-      this.dgm = 0;
+    this.LSm = t => {
+      this.USm = 0;
     };
     this.w8i = t => {
-      if (this.IsValidInput() && this.NQa && t && (this.Kad(true), t = t.pointerPosition, LguiUtil_1.LguiUtil.ConvertPointerPositionToLguiCenterPosition(t, this.zom), this.Jom.DeepCopy(this.zom), this.Xom = true, Log_1.Log.CheckDebug())) {
-        Log_1.Log.Debug("CommonQte", 26, "开始", ["pos", this.zom.Tuple]);
+      if (this.IsValidInput() && this.NQa && t && (this.Kad(true), t = t.pointerPosition, LguiUtil_1.LguiUtil.ConvertPointerPositionToLguiCenterPosition(t, this.vlm), this.ylm.DeepCopy(this.vlm), this.Clm = true, Log_1.Log.CheckDebug())) {
+        Log_1.Log.Debug("CommonQte", 26, "开始", ["pos", this.vlm.Tuple]);
       }
     };
     this.B8i = t => {
       if (this.IsValidInput() && this.NQa && this.bzt && t) {
         if (TouchFingerManager_1.TouchFingerManager.GetTouchFingerCount() > 1) {
           this.Kad(false);
-          this.Xom = false;
-        } else if (this.Xom) {
+          this.Clm = false;
+        } else if (this.Clm) {
           t = t.pointerPosition;
-          LguiUtil_1.LguiUtil.ConvertPointerPositionToLguiCenterPosition(t, this.Jom);
+          LguiUtil_1.LguiUtil.ConvertPointerPositionToLguiCenterPosition(t, this.ylm);
         }
       }
     };
     this.b8i = t => {
-      if (this.IsValidInput() && this.NQa && (this.Jom.Reset(), this.zom.Reset(), this.Xom = false, this.dbe = 0, this.Kad(false), Log_1.Log.CheckDebug())) {
+      if (this.IsValidInput() && this.NQa && (this.ylm.Reset(), this.vlm.Reset(), this.Clm = false, this.dbe = 0, this.Kad(false), Log_1.Log.CheckDebug())) {
         Log_1.Log.Debug("CommonQte", 26, "放手");
       }
     };
@@ -139,7 +139,7 @@ class CommonQteRightScreenDragItem extends CommonQteItemBase_1.CommonQteItemBase
     t.OnPointerDragCallBack.Bind(this.B8i);
     t.OnPointerEndDragCallBack.Bind(this.b8i);
     t.OnPointerDownCallBack.Bind(this.JCo);
-    t.OnPointerUpCallBack.Bind(this.hgm);
+    t.OnPointerUpCallBack.Bind(this.LSm);
   }
   OnBeforeDestroy() {
     super.OnBeforeDestroy();
@@ -160,10 +160,10 @@ class CommonQteRightScreenDragItem extends CommonQteItemBase_1.CommonQteItemBase
       this.IsQteInteractive = false;
       if (i = t.GetUiConfig()) {
         this.IsQteInteractive = i.InteractiveTiming === 0;
-        this.Yom = i.DragBounds;
+        this.plm = i.DragBounds;
         this.s7 = i.DragLength;
         this.aXa = i.LerpSpeed / this.s7 / CommonDefine_1.MILLIONSECOND_PER_SECOND;
-        this.EIm = i.CheckByRealTimeInput;
+        this.oqm = i.CheckByRealTimeInput;
       }
       this.SetQteActive(t);
     }
@@ -259,7 +259,7 @@ class CommonQteRightScreenDragItem extends CommonQteItemBase_1.CommonQteItemBase
         } else {
           this.fS1.UpdateTime(t);
           if (Info_1.Info.IsInGamepad()) {
-            if (MathUtils_1.MathUtils.IsNearlyZero(this.Qom.Size())) {
+            if (MathUtils_1.MathUtils.IsNearlyZero(this.flm.Size())) {
               this.dbe -= t * this.aXa;
             } else {
               var i = Vector2D_1.Vector2D.Create();
@@ -269,22 +269,22 @@ class CommonQteRightScreenDragItem extends CommonQteItemBase_1.CommonQteItemBase
               if (s === 0) {
                 return;
               }
-              var s = this.Qom.DotProduct(i) / s;
+              var s = this.flm.DotProduct(i) / s;
               this.dbe += s * i.X;
             }
-          } else if (this.Xom) {
-            this.dbe = (this.Jom.X - this.zom.X) / this.s7 + this.dgm;
-            s = (this.Jom.Y - this.zom.Y) / this.s7;
-            if (Math.abs(this.NHc.GetFloatValue(MathUtils_1.MathUtils.Clamp(this.dbe, 0, 1)) - s) * this.s7 > this.Yom && (this.Jom.Reset(), this.zom.Reset(), this.Xom = false, this.Kad(false), Log_1.Log.CheckDebug())) {
+          } else if (this.Clm) {
+            this.dbe = (this.ylm.X - this.vlm.X) / this.s7 + this.USm;
+            s = (this.ylm.Y - this.vlm.Y) / this.s7;
+            if (Math.abs(this.NHc.GetFloatValue(MathUtils_1.MathUtils.Clamp(this.dbe, 0, 1)) - s) * this.s7 > this.plm && (this.ylm.Reset(), this.vlm.Reset(), this.Clm = false, this.Kad(false), Log_1.Log.CheckDebug())) {
               Log_1.Log.Debug("CommonQte", 26, "出界");
             }
           } else {
-            this.dbe = this.dgm;
+            this.dbe = this.USm;
           }
           this.dbe = MathUtils_1.MathUtils.Clamp(this.dbe, 0, 1);
-          this.rgm = MathUtils_1.MathUtils.InterpConstantTo(this.rgm, this.dbe, t, this.aXa);
-          this.fS1.SetDraggingInfo(this.rgm, 0);
-          if (this.EIm && this.fS1.CheckDragComplete(this.dbe, 0)) {
+          this.ISm = MathUtils_1.MathUtils.InterpConstantTo(this.ISm, this.dbe, t, this.aXa);
+          this.fS1.SetDraggingInfo(this.ISm, 0);
+          if (this.oqm && this.fS1.CheckDragComplete(this.dbe, 0)) {
             this.fS1.IsPreSuccess = true;
           }
           if (ModelManager_1.ModelManager.CommonQteModel?.IsRefreshMode) {

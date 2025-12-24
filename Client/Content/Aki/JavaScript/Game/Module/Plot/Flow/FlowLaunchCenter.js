@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.FlowLaunchCenter = undefined;
 const Log_1 = require("../../../../Core/Common/Log");
 const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
+const Vector_1 = require("../../../../Core/Utils/Math/Vector");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const LevelGeneralContextDefine_1 = require("../../../LevelGamePlay/LevelGeneralContextDefine");
@@ -55,7 +56,31 @@ class FlowLaunchCenter extends ControllerAssistantBase_1.ControllerAssistantBase
         }
       }
       const o = UiModel_1.UiModel.GetTopView(UiLayerType_1.ELayerType.Plot)?.Info?.Name ?? UiModel_1.UiModel.GetTopView(UiLayerType_1.ELayerType.Normal)?.Info?.Name;
-      return !!o && (this.o$i.has(o) ? UiManager_1.UiManager.IsViewShow(o) : !!UiManager_1.UiManager.CheckIfCanShowPlotView() || !!ControllerHolder_1.ControllerHolder.BlackScreenFadeController.GetIsFadeIn() && !!ControllerHolder_1.ControllerHolder.BlackScreenFadeController.CheckIfInCommon() || !!ModelManager_1.ModelManager.ScreenEffectModel?.GetIsGeneralScreenEffectActive());
+      if (o) {
+        if (this.o$i.has(o)) {
+          if (!(_ = UiManager_1.UiManager.IsViewShow(o))) {
+            if (Log_1.Log.CheckDebug()) {
+              Log_1.Log.Debug("Plot", 26, "界面未显示", ["viewName", o]);
+            }
+          }
+          return _;
+        }
+        if (UiManager_1.UiManager.CheckIfCanShowPlotView()) {
+          return true;
+        }
+        if (ControllerHolder_1.ControllerHolder.BlackScreenFadeController.GetIsFadeIn() && ControllerHolder_1.ControllerHolder.BlackScreenFadeController.CheckIfInCommon()) {
+          return true;
+        }
+        if (ModelManager_1.ModelManager.ScreenEffectModel?.GetIsGeneralScreenEffectActive()) {
+          return true;
+        }
+        if (Log_1.Log.CheckDebug()) {
+          Log_1.Log.Debug("Plot", 26, "有别的界面", ["viewName", o]);
+        }
+      } else if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("Plot", 26, "viewName为空");
+      }
+      return false;
     };
     this.xxn = (e, _) => !ModelManager_1.ModelManager.TeleportModel.IsTeleport;
     this.Pxn = (e, _) => !!ModelManager_1.ModelManager.AutoRunModel.IsInLogicTreeGmMode() || !ModelManager_1.ModelManager.SceneTeamModel.IsAllDid();
@@ -65,12 +90,13 @@ class FlowLaunchCenter extends ControllerAssistantBase_1.ControllerAssistantBase
     };
     this.Bxn = (e, _) => !!ModelManager_1.ModelManager.AutoRunModel.IsInLogicTreeGmMode() || ModelManager_1.ModelManager.SceneTeamModel.IsTeamReady;
     this.bxn = (e, _) => {
-      return !!ModelManager_1.ModelManager.AutoRunModel?.IsInLogicTreeGmMode() || _.PlotLevel !== "LevelC" && !_.IsWaitAnim || !(this.i$i > ModelManager_1.ModelManager.PlotModel.PlotGlobalConfig.WaitCalmTime ? this.i$i = 0 : (_ = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.CheckGetComponent(209))?.Valid ? _.HasTag(-1371021686) ? (this.i$i += e, 1) : this.i$i = 0 : (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Plot", 26, "开始剧情检查人物站立时拿不到BaseTagComponent"), this.i$i = 0));
+      return !!ModelManager_1.ModelManager.AutoRunModel?.IsInLogicTreeGmMode() || _.PlotLevel !== "LevelC" && !_.IsWaitAnim || !(this.i$i > ModelManager_1.ModelManager.PlotModel.PlotGlobalConfig.WaitCalmTime ? this.i$i = 0 : (_ = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.CheckGetComponent(215))?.Valid ? _.HasTag(-1371021686) ? (this.i$i += e, 1) : this.i$i = 0 : (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Plot", 26, "开始剧情检查人物站立时拿不到BaseTagComponent"), this.i$i = 0));
     };
     this.eI1 = (e, _) => !_.CheckPreload || !ModelManager_1.ModelManager.PreloadModelNew.PlotAssetManager.CheckIsLoading(_.FormatId);
-    this.Agd = new Set(["剧情_2_6_狄斯台地主线_上半_1,25,1"]);
-    this.Jbm = new Set(["剧情_2_7_狄斯台地主线_上半_巡游天国,33,1", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,2", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,3", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,4", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,5", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,6", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,7", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,8", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,9", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,11", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,12", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,13", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,14", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,15", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,16", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,17", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,18", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,22", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,23", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,24", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,25", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,26", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,27"]);
-    this.Zbm = undefined;
+    this.Agd = new Set(["剧情_2_6_狄斯台地主线_上半_1,25,1", "剧情_2_0_黎那汐塔主线_第一幕,1,1"]);
+    this.jqf = new Map([["剧情_2_5_隐海试验场_声骸培养场,1,23", Vector_1.Vector.Create(194400, 155500, -165850)], ["剧情_2_5_隐海试验场_声骸培养场,1,9", Vector_1.Vector.Create(161705, 133164, -166068)], ["剧情_2_5_隐海试验场_声骸培养场,6,1", Vector_1.Vector.Create(345600, -6581, -165980)]]);
+    this.Qjm = new Set(["剧情_2_7_狄斯台地主线_上半_巡游天国,33,1", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,2", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,3", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,4", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,5", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,6", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,7", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,8", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,9", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,11", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,12", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,13", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,14", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,15", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,16", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,17", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,18", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,22", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,23", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,24", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,25", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,26", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,27", "剧情_2.8_穗波怪异物语（战中语音对话文本）,1,1", "剧情_2.8_穗波怪异物语（战中语音对话文本）,1,2", "剧情_2.8_穗波怪异物语（战中语音对话文本）,1,3", "剧情_2.8_穗波怪异物语（战中语音对话文本）,1,4", "剧情_2.8_穗波怪异物语（战中语音对话文本）,2,1", "剧情_2.8_穗波怪异物语（战中语音对话文本）,2,2", "剧情_2.8_穗波怪异物语（战中语音对话文本）,3,1", "剧情_2.8_穗波怪异物语（战中语音对话文本）,3,2", "剧情_2.8_穗波怪异物语（战中语音对话文本）,4,1", "剧情_2.8_穗波怪异物语（战中语音对话文本）,4,2", "剧情_2.8_穗波怪异物语（战中语音对话文本）,5,1", "剧情_2.8_穗波怪异物语（战中语音对话文本）,5,2", "剧情_2.8_穗波怪异物语（战中语音对话文本）,6,1", "剧情_2.8_穗波怪异物语（战中语音对话文本）,6,2", "剧情_2.8_穗波怪异物语（战中语音对话文本）,6,3", "剧情_2.8_穗波怪异物语（战中语音对话文本）,6,4", "剧情_2.8_穗波怪异物语（战中语音对话文本）,7,1", "剧情_2.8_穗波怪异物语（战中语音对话文本）,7,2", "剧情_2.8_穗波怪异物语（战中语音对话文本）,8,1", "剧情_2.8_穗波怪异物语（战中语音对话文本）,8,2", "剧情_2.8_穗波怪异物语（战中语音对话文本）,9,1", "剧情_2.8_穗波怪异物语（战中语音对话文本）,9,2"]);
+    this.Kjm = undefined;
   }
   OnDestroy() {}
   OnInit() {
@@ -88,29 +114,29 @@ class FlowLaunchCenter extends ControllerAssistantBase_1.ControllerAssistantBase
       }
     });
   }
-  StartFlow(e, _, o, t = undefined, r = FlowController_1.LOCAL_FLOWINCID, l = false, i = false, a, n = false, s = false, d) {
-    var g;
+  StartFlow(e, _, o, t = undefined, r = FlowController_1.LOCAL_FLOWINCID, l = false, i = false, a, n = false, s = false, g, d) {
     var M;
     var h;
-    var L = ConfigManager_1.ConfigManager.FlowConfig.GetFlowStateActions(e, _, o);
-    if (L) {
+    var L;
+    var C = ConfigManager_1.ConfigManager.FlowConfig.GetFlowStateActions(e, _, o);
+    if (C) {
       r = l ? r : FlowLaunchCenter.s$i--;
       t = t ? LevelGeneralContextDefine_1.GeneralContext.Copy(t) : undefined;
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Plot", 17, "StartFlow", ["FLowIncId", r], ["FlowListName", e], ["FlowId", _], ["StateId", o]);
       }
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnStartFlow);
-      g = ConfigManager_1.ConfigManager.FlowConfig.GetFlowStateKeepMusic(e, _, o);
-      if (M = ConfigManager_1.ConfigManager.FlowConfig.GetFlowNeedLoad(e, _, o)) {
+      M = ConfigManager_1.ConfigManager.FlowConfig.GetFlowStateKeepMusic(e, _, o);
+      if (h = ConfigManager_1.ConfigManager.FlowConfig.GetFlowNeedLoad(e, _, o)) {
         ControllerHolder_1.ControllerHolder.PreloadControllerNew.PreloadPlot(e, _, o, 999);
       }
-      (h = PlotData_1.PlotInfo.Create()).Init(l, r, e, _, o, L, g, t, i, a, n, s, d, M);
-      if (this.r$i(h)) {
-        this.n$i(h);
+      (L = PlotData_1.PlotInfo.Create()).Init(l, r, e, _, o, C, M, t, i, a, n, s, g, h, d);
+      if (this.r$i(L)) {
+        this.n$i(L);
       } else {
-        ModelManager_1.ModelManager.PlotModel.PendingPlot(h);
+        ModelManager_1.ModelManager.PlotModel.PendingPlot(L);
         this.t$i = true;
-        ControllerHolder_1.ControllerHolder.FlowController.CheckDisableInput(h.PlotLevel);
+        ControllerHolder_1.ControllerHolder.FlowController.CheckDisableInput(L.PlotLevel);
       }
       return r;
     } else {
@@ -176,11 +202,17 @@ class FlowLaunchCenter extends ControllerAssistantBase_1.ControllerAssistantBase
       if (this.Agd.has(o.FormatId)) {
         ControllerHolder_1.ControllerHolder.PlotController.TogglePlotStreamingSource(true);
       }
-      if (this.Jbm.has(o.FormatId)) {
+      if (this.jqf.has(o.FormatId) && (_ = this.jqf.get(o.FormatId))) {
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("Plot", 70, "使用独立流源Start", ["id", o.FormatId], ["pos", _]);
+        }
+        ControllerHolder_1.ControllerHolder.PlotController.TogglePlotIndependentStreaming(true, _);
+      }
+      if (this.Qjm.has(o.FormatId)) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Plot", 26, "DebugProtectedPlot", ["id", o.FormatId]);
         }
-        this.Zbm = TimerSystem_1.TimerSystem.Delay(() => {
+        this.Kjm = TimerSystem_1.TimerSystem.Delay(() => {
           ControllerHolder_1.ControllerHolder.PlotController.CloseAllUi();
           ControllerHolder_1.ControllerHolder.FlowController.BackgroundFlow("DebugProtectedPlot");
         }, 30000);
@@ -189,9 +221,15 @@ class FlowLaunchCenter extends ControllerAssistantBase_1.ControllerAssistantBase
         if (this.Agd.has(o.FormatId)) {
           ControllerHolder_1.ControllerHolder.PlotController.TogglePlotStreamingSource(false);
         }
-        this.Zbm?.Remove();
-        this.Zbm = undefined;
+        if (this.Agd.has(o.FormatId) && (ControllerHolder_1.ControllerHolder.PlotController.TogglePlotIndependentStreaming(false), Log_1.Log.CheckInfo())) {
+          Log_1.Log.Info("Plot", 70, "使用独立流源End", ["id", o.FormatId]);
+        }
+        this.Kjm?.Remove();
+        this.Kjm = undefined;
         ControllerHolder_1.ControllerHolder.PlotController.OnEndPlotNetwork();
+        if (o.Callback && (o.Callback(), o.Callback = undefined, Log_1.Log.CheckInfo())) {
+          Log_1.Log.Info("Plot", 45, "执行了flowContext的Callback", ["incId", o.FlowIncId], ["id", o.FormatId], ["IsSkip", o.IsBackground]);
+        }
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Plot", 26, "EndFlow", ["incId", o.FlowIncId], ["id", o.FormatId], ["IsSkip", o.IsBackground]);
         }

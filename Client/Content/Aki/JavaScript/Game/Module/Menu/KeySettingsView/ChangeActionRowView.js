@@ -27,9 +27,9 @@ class ChangeActionRowView extends UiPanelBase_1.UiPanelBase {
   OnBeforeDestroy() {
     this.uPi = undefined;
   }
-  Refresh(t, e, i) {
+  Refresh(t, i, e) {
     this.uPi = t;
-    this.IsRevert = i;
+    this.IsRevert = e;
     var t = this.uPi.BothActionName;
     var s = t[0];
     var t = t[1];
@@ -37,14 +37,14 @@ class ChangeActionRowView extends UiPanelBase_1.UiPanelBase {
     var t = InputSettingsManager_1.InputSettingsManager.GetActionBinding(t);
     var n = [];
     var h = [];
-    s.GetKeyNameList(n);
-    t.GetKeyNameList(h);
-    var s = n[this.uPi.GetKeyIndex(e)];
-    var t = h[this.uPi.GetKeyIndex(e)];
+    s.GetKeyNameListByBindingType(n, this.uPi.BindingType);
+    t.GetKeyNameListByBindingType(h, this.uPi.BindingType);
+    var s = n[this.uPi.GetKeyIndex(i)];
+    var t = h[this.uPi.GetKeyIndex(i)];
     var n = this.uPi.GetSettingName();
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), n);
-    var h = i ? [t, s] : [s, t];
-    var n = this.uPi.GetKeyNameRichTextByKeyNameList(e, h, "/");
+    var h = e ? [t, s] : [s, t];
+    var n = this.uPi.GetKeyNameRichTextByKeyNameList(i, h, "/");
     this.GetText(2)?.SetText(n);
   }
   BindOnSelected(t) {

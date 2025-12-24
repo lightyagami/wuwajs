@@ -11,6 +11,7 @@ const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
 const FNameUtil_1 = require("../../../../Core/Utils/FNameUtil");
 const MathUtils_1 = require("../../../../Core/Utils/MathUtils");
 const TimeUtil_1 = require("../../../Common/TimeUtil");
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const InputDistributeController_1 = require("../../../Ui/InputDistribute/InputDistributeController");
@@ -93,14 +94,14 @@ class CommonQteContinuousClickView extends CommonQteViewBase_1.CommonQteViewBase
   OnRegisterComponent() {
     super.OnRegisterComponent();
     if (this.IsMobile) {
-      this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIButtonComponent], [2, UE.UISprite], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIText]];
-    } else {
       this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIButtonComponent], [2, UE.UISprite], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIText], [6, UE.UIItem]];
+    } else {
+      this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIButtonComponent], [2, UE.UISprite], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIText], [6, UE.UIItem], [7, UE.UIItem]];
     }
   }
   async OnBeforeStartAsync() {
     var t;
-    if (!this.IsMobile && (this.Sq1 = new InputMultiKeyItem_1.InputMultiKeyItem(), t = this.GetItem(6))) {
+    if (!this.IsMobile && (this.Sq1 = new InputMultiKeyItem_1.InputMultiKeyItem(), t = this.GetItem(7))) {
       await this.Sq1?.CreateByActorAsync(t.GetOwner());
     }
   }
@@ -153,16 +154,8 @@ class CommonQteContinuousClickView extends CommonQteViewBase_1.CommonQteViewBase
       this.lS1 = true;
       this.IsQteInteractive = false;
       this._Mc = false;
-      if (i = t.GetUiConfig()) {
-        this.IsQteInteractive = i.InteractiveTiming === 0;
-        this._Mc = i.IsShowBorder;
-        this.dS1 = i.IsShowTip;
-        this.mS1 = i.TipTextId;
-        if (i.PerformInterpSpeedForEnergyPercent > 0) {
-          this.uS1 = i.PerformInterpSpeedForEnergyPercent / 100 / TimeUtil_1.TimeUtil.InverseMillisecond;
-        } else {
-          this.uS1 = -1;
-        }
+      if ((i = t.GetUiConfig()) && (this.IsQteInteractive = i.InteractiveTiming === 0, this._Mc = i.IsShowBorder, this.dS1 = i.IsShowTip, this.mS1 = i.TipTextId, i.PerformInterpSpeedForEnergyPercent > 0 ? this.uS1 = i.PerformInterpSpeedForEnergyPercent / 100 / TimeUtil_1.TimeUtil.InverseMillisecond : this.uS1 = -1, i.HideProgressBar)) {
+        this.GetItem(6).SetUIActive(false);
       }
       if (i = t.Resource?.Icon) {
         this.DOt?.SetSprite(i, false);
@@ -221,6 +214,7 @@ class CommonQteContinuousClickView extends CommonQteViewBase_1.CommonQteViewBase
     }
   }
   HQa() {
+    var t;
     if (!this.NQa && !(this.NQa = true, this.IsMobile)) {
       InputDistributeController_1.InputDistributeController.BindActionIgnoreLimit(this.FQa, this.BOi);
       if (Log_1.Log.CheckDebug()) {
@@ -228,6 +222,9 @@ class CommonQteContinuousClickView extends CommonQteViewBase_1.CommonQteViewBase
       }
       if (this.FQa === InputMappingsDefine_1.actionMappings.幻象1) {
         InputDistributeController_1.InputDistributeController.BindActionIgnoreLimit(InputMappingsDefine_1.actionMappings.通用交互, this.jj_);
+      }
+      if (Info_1.Info.IsInKeyBoard() && (t = ConfigManager_1.ConfigManager.InputSettingsConfig.GetActionMappingConfigByActionName(this.FQa)) && t.PcKeys.includes("LeftMouseButton")) {
+        this.d5l?.OnPointDownCallBack.Unbind();
       }
     }
   }

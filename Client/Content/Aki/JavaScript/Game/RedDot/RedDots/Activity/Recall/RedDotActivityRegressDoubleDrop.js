@@ -12,7 +12,7 @@ class RedDotActivityRegressDoubleDrop extends RedDotBase_1.RedDotBase {
     return [EventDefine_1.EEventName.RecallActivityInfoUpdate];
   }
   OnCheck(e) {
-    return ModelManager_1.ModelManager.ActivityRegressModel.ShouldShowDoubleDropRedDot();
+    return ModelManager_1.ModelManager.ActivityRegressModel.ActivityData.CheckDoubleDropRedDot();
   }
 }
 exports.RedDotActivityRegressDoubleDrop = RedDotActivityRegressDoubleDrop;

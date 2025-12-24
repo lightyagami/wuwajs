@@ -71,6 +71,7 @@ class ActivitySolarSpeedSubView extends ActivitySubViewBase_1.ActivitySubViewBas
   OnStart() {
     var i = this.ActivityBaseData.LocalConfig;
     var t = ModelManager_1.ModelManager.SolarSpeedModel.BuildActivitySubViewData();
+    this.LNe.SetActivityBaseData(this.ActivityBaseData);
     this.LNe.SetTitleByText(this.ActivityBaseData.GetTitle());
     this.LNe.SetSubTitleVisible(!StringUtils_1.StringUtils.IsEmpty(i?.DescTheme));
     if (i?.DescTheme) {

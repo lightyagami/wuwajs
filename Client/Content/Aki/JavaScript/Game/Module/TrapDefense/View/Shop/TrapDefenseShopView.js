@@ -31,7 +31,7 @@ class TrapDefenseShopView extends UiViewBase_1.UiViewBase {
     this.xqe = undefined;
     this.Ood = undefined;
     this.Lbd = undefined;
-    this.lzd = false;
+    this.jzd = false;
     this._Xc = e => {
       this.PZc(e);
     };
@@ -120,15 +120,15 @@ class TrapDefenseShopView extends UiViewBase_1.UiViewBase {
     ControllerHolder_1.ControllerHolder.TermExplanationController.RegisterTextHyperlinkByParam(e);
   }
   OnAfterShow() {
-    if (this.lzd) {
-      this.lzd = false;
+    if (this.jzd) {
+      this.jzd = false;
       this.BZc();
     } else if (this.Ood && !ModelManager_1.ModelManager.TrapDefenseModel.ViewModelShop.SelectedGoods) {
       ModelManager_1.ModelManager.TrapDefenseModel.ViewModelShop.SelectGoods(this.Ood);
     }
   }
   OnBeforeHide() {
-    this.lzd = true;
+    this.jzd = true;
   }
   OnAddEventListener() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TrapDefenseShopRefresh, this.BZc);
@@ -140,7 +140,7 @@ class TrapDefenseShopView extends UiViewBase_1.UiViewBase {
     ModelManager_1.ModelManager.TrapDefenseModel.ViewModelShop.RemoveOnSelectGoodsDelegate(this._Xc);
     ModelManager_1.ModelManager.TrapDefenseModel.ViewModelShop.OnViewClose();
     ControllerHolder_1.ControllerHolder.TermExplanationController.UnRegisterTextHyperlink(this.GetText(10));
-    this.lzd = false;
+    this.jzd = false;
   }
   async kZc() {
     var e = {

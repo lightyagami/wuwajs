@@ -8,21 +8,27 @@ const UE = require("ue");
 const Log_1 = require("../../../../../Core/Common/Log");
 const MultiTextLang_1 = require("../../../../../Core/Define/ConfigQuery/MultiTextLang");
 const Protocol_1 = require("../../../../../Core/Define/Net/Protocol");
+const TimerSystem_1 = require("../../../../../Core/Timer/TimerSystem");
+const Vector2D_1 = require("../../../../../Core/Utils/Math/Vector2D");
 const StringUtils_1 = require("../../../../../Core/Utils/StringUtils");
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
 const ConfigManager_1 = require("../../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
+const LguiEventSystemManager_1 = require("../../../../Ui/LguiEventSystem/LguiEventSystemManager");
+const UiLayer_1 = require("../../../../Ui/UiLayer");
 const UiManager_1 = require("../../../../Ui/UiManager");
 const CommonInputViewController_1 = require("../../../Common/InputView/Controller/CommonInputViewController");
 const ConfirmBoxDefine_1 = require("../../../ConfirmBox/ConfirmBoxDefine");
 const ScrollingTipsController_1 = require("../../../ScrollingTips/ScrollingTipsController");
 const GenericLayout_1 = require("../../../Util/Layout/GenericLayout");
+const LguiUtil_1 = require("../../../Util/LguiUtil");
 const LoopScrollView_1 = require("../../../Util/ScrollView/LoopScrollView");
 const DeckBuilderCardItem_1 = require("../../Common/CardItem/Item/DeckBuilderCardItem");
 const PhantomArenaController_1 = require("../../PhantomArenaController");
 const PhantomArenaDefine_1 = require("../../PhantomArenaDefine");
 const PhantomArenaChildViewBase_1 = require("../PhantomArenaChildViewBase");
+const DeckBuilderCardDetailTip_1 = require("./DeckBuilderCardDetailTip");
 const DeckBuilderDeckSlotsPanel_1 = require("./DeckBuilderDeckSlotsPanel");
 const DeckBuilderElementTabItem_1 = require("./DeckBuilderElementTabItem");
 const DeckBuilderSortFilterEntrance_1 = require("./DeckBuilderSortFilterEntrance");
@@ -51,6 +57,7 @@ class PhantomArenaDeckBuilderTabView extends PhantomArenaChildViewBase_1.Phantom
     this.SlotSortEntrance = undefined;
     this.CardFilterEntrance = undefined;
     this.DeckSlotsPanel = undefined;
+    this.imf = undefined;
     this.jV1 = e => {
       var t = {
         CurCardId: e,
@@ -59,48 +66,50 @@ class PhantomArenaDeckBuilderTabView extends PhantomArenaChildViewBase_1.Phantom
         AddCardToDeck: this.AddCardToDeck,
         RemoveCardFromDeck: this.RemoveCardSlotByCardId,
         CurCardIndex: this.AllPageCardDataList.findIndex(t => t.CardId === e),
-        CurrencyId: ModelManager_1.ModelManager.PhantomArenaModel.GetDustItemId(),
+        CurrencyId: ModelManager_1.ModelManager.PhantomArenaModel.GetDustItemId(this.ActivityId),
         SelectedTabIndex: 0,
         NeedOutlookTab: true
       };
       UiManager_1.UiManager.OpenView("DeckBuilderCardInfoView", t);
     };
-    this.AddCardToDeck = (t, e = 1) => {
+    this.AddCardToDeck = (e, t = 1) => {
       var i;
       var s;
       var h;
-      if (this.DeckInfo) {
-        if (t.IsLocked) {
+      var r;
+      if (this.DeckInfo && (i = this.AllPageCardDataList.find(t => t.CardId === e))) {
+        if (i.IsLocked) {
           ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("PhantomBattle_1071");
         } else {
-          h = this.DeckInfo.GetCardCount(t.CardId);
-          e = {
-            CardId: t.CardId,
-            Cost: t.Cost,
-            Element: t.Element,
-            MaxCount: t.MaxCount,
-            AddCount: e
+          r = this.DeckInfo.GetCardCount(i.CardId);
+          t = {
+            CardId: i.CardId,
+            Cost: i.Cost,
+            Element: i.Element,
+            MaxCount: i.MaxCount,
+            AddCount: t,
+            CardType: i.CardType
           };
-          if ((e = this.DeckInfo.AddCard(e)) === 0) {
-            i = this.LibraryCardDataMap.get(t.CardId);
-            s = this.DeckInfo.GetCardCount(t.CardId);
-            i.LeftCount = i.MaxCount - s;
-            this.CardLayout?.GetLayoutItemByKey(i.CardId)?.RefreshLeftCount();
-            s = h === 0 ? t.CardId : undefined;
-            if (i.Cost === ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomArenaCardCoreCost()) {
-              this.DeckSlotsPanel.RefreshCoreCardSlot(s);
+          if ((t = this.DeckInfo.AddCard(t)) === 0) {
+            PhantomArenaController_1.PhantomArenaController.RequestCheckCardSkillUnlock(this.DeckInfo, this.iKm);
+            s = this.LibraryCardDataMap.get(i.CardId);
+            h = this.DeckInfo.GetCardCount(i.CardId);
+            s.LeftCount = s.MaxCount - h;
+            this.CardLayout?.GetLayoutItemByKey(s.CardId)?.RefreshLeftCount();
+            h = r === 0 ? i.CardId : undefined;
+            if (s.Cost === ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomArenaCardCoreCost()) {
+              this.DeckSlotsPanel.RefreshCoreCardSlot(h);
               this.DeckSlotsPanel?.SwitchMaskState(1);
             } else {
-              this.DeckSlotsPanel.RefreshNormalCardSlot(s, true, t.CardId);
+              this.DeckSlotsPanel.RefreshNormalCardSlot(h, true, i.CardId);
               this.DeckSlotsPanel?.SwitchMaskState(2);
             }
             this.DeckSlotsPanel.RefreshCardSlotElements();
             this.Fau();
             this.RefreshElementTab();
-            this.RefreshDeckFullTip();
-            this.RefreshElementFullTip();
-          } else if (h = PhantomArenaDefine_1.addCardFailedResultToTipTextId[e]) {
-            ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId(h);
+            this.RefreshFullTip();
+          } else if (r = PhantomArenaDefine_1.addCardFailedResultToTipTextId[t]) {
+            ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId(r);
           }
         }
       }
@@ -111,20 +120,22 @@ class PhantomArenaDeckBuilderTabView extends PhantomArenaChildViewBase_1.Phantom
           CardId: t,
           RemoveCount: e
         })) {
+          PhantomArenaController_1.PhantomArenaController.RequestCheckCardSkillUnlock(this.DeckInfo, this.iKm);
           e = this.LibraryCardDataMap.get(t);
           t = this.DeckInfo.GetCardCount(t);
           e.LeftCount = e.MaxCount - t;
           this.CardLayout?.GetLayoutItemByKey(e.CardId)?.RefreshLeftCount();
           if (e.Cost === ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomArenaCardCoreCost()) {
             this.DeckSlotsPanel.RefreshCoreCardSlot();
+          } else if (e.CardType === 3) {
+            this.DeckSlotsPanel.RefreshFieldCardSlot();
           } else {
             this.DeckSlotsPanel.RefreshNormalCardSlot(undefined, true);
           }
           this.DeckSlotsPanel.RefreshCardSlotElements();
           this.RefreshElementTab();
           this.Fau();
-          this.RefreshDeckFullTip();
-          this.RefreshElementFullTip();
+          this.RefreshFullTip();
         } else if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("PhantomArena", 43, "移除卡牌异常");
         }
@@ -136,45 +147,56 @@ class PhantomArenaDeckBuilderTabView extends PhantomArenaChildViewBase_1.Phantom
       this.YV1();
       this.zV1();
       this.JV1();
-      this.RefreshElementFullTip();
+      this.RefreshFullTip();
+    };
+    this.iKm = t => {
+      this.DeckSlotsPanel?.RefreshFieldCardEffectUnlock(t);
     };
     this.ZV1 = () => {
       var t = new DeckBuilderElementTabItem_1.DeckBuilderElementTabItem();
       t.OnToggleSelect = this.QV1;
       return t;
     };
-    this.Y5i = () => new DeckBuilderCardItem_1.DeckBuilderCardItem();
+    this.Y5i = () => {
+      var t = new DeckBuilderCardItem_1.DeckBuilderCardItem();
+      t.IsNewPhantomArenaActivity = ModelManager_1.ModelManager.PhantomArenaModel.IsNewPhantomArenaActivity(this.ActivityId);
+      return t;
+    };
     this.t61 = t => {
       t = t.GetData();
       if (t) {
         this.RemoveCardSlotByCardId(t.CardId);
       }
     };
-    this.Vlu = t => {
+    this.bXm = t => {
       var t = t.GetData();
       if (t) {
         t = {
           CurCardId: t.CardId,
+          DeckInfo: this.DeckInfo,
+          AddCardToDeck: this.AddCardToDeck,
+          RemoveCardFromDeck: this.RemoveCardSlotByCardId,
+          CurrencyId: ModelManager_1.ModelManager.PhantomArenaModel.GetDustItemId(this.ActivityId),
           NeedOutlookTab: false
         };
         UiManager_1.UiManager.OpenView("DeckBuilderCardInfoView", t);
       }
     };
+    this.RXm = (t, e) => {
+      var i;
+      if (e === -1 || ((i = this.GetItem(17)).bIsUIActive || (this.T7i(), i.SetUIActive(true)), this.GetSprite(18)?.SetFillAmount(e), e >= 1)) {
+        this.bXm(t);
+      }
+    };
+    this.wXm = () => {
+      this.GetItem(17)?.SetUIActive(false);
+    };
     this.i61 = t => false;
+    this.XQm = t => false;
     this.ibu = t => {
       t = t.GetData();
       if (t) {
         this.RemoveCardSlotByCardId(t.CardId);
-      }
-    };
-    this.rbu = t => {
-      var t = t.GetData();
-      if (t) {
-        t = {
-          CurCardId: t.CardId,
-          NeedOutlookTab: false
-        };
-        UiManager_1.UiManager.OpenView("DeckBuilderCardInfoView", t);
       }
     };
     this.KTu = t => false;
@@ -267,24 +289,21 @@ class PhantomArenaDeckBuilderTabView extends PhantomArenaChildViewBase_1.Phantom
       var t;
       var e;
       if (this.DeckInfo) {
-        t = ModelManager_1.ModelManager.PhantomArenaModel.ActivityId;
         if (this.DeckInfo.GetDeckServerId() < 0) {
-          PhantomArenaController_1.PhantomArenaController.CardGroupAddRequest(this.DeckInfo.GetName(), this.DeckInfo.CoverToCardIdList(), t, t => {
+          PhantomArenaController_1.PhantomArenaController.CardGroupAddRequest(this.DeckInfo.GetName(), this.DeckInfo.CoverToCardIdList(), this.ActivityId, () => {
             this.ViewModel?.UpdateEditableDeckList();
-            t = ModelManager_1.ModelManager.PhantomArenaModel.GetDeckByDeckId(t);
-            if (t) {
-              this.ViewModel.ReportDeckCreate(t);
+            if (this.DeckInfo) {
+              this.ViewModel.ReportDeckCreate(this.DeckInfo);
             }
             this.CloseMe();
           });
         } else {
           t = this.DeckInfo.GetDeckServerId();
           e = this.DeckInfo.CoverToCardIdList();
-          PhantomArenaController_1.PhantomArenaController.CardGroupUpdateRequest(t, e, t => {
+          PhantomArenaController_1.PhantomArenaController.CardGroupUpdateRequest(t, e, this.ActivityId, () => {
             this.ViewModel?.UpdateEditableDeckList();
-            t = ModelManager_1.ModelManager.PhantomArenaModel.GetDeckByDeckId(t);
-            if (t) {
-              this.ViewModel.ReportDeckCover(t);
+            if (this.DeckInfo) {
+              this.ViewModel.ReportDeckCover(this.DeckInfo);
             }
             this.CloseMe();
           });
@@ -293,6 +312,7 @@ class PhantomArenaDeckBuilderTabView extends PhantomArenaChildViewBase_1.Phantom
     };
     this.AMo = () => {
       var t;
+      var e;
       if (this.ViewModel) {
         if (this.ViewModel?.CheckCurEditDeckHasChange()) {
           (t = new ConfirmBoxDefine_1.ConfirmBoxDataNew(314)).FunctionMap.set(1, () => {
@@ -302,7 +322,8 @@ class PhantomArenaDeckBuilderTabView extends PhantomArenaChildViewBase_1.Phantom
             this.A81();
           });
           t.IsEscViewTriggerCallBack = false;
-          PhantomArenaController_1.PhantomArenaController.OpenPhantomArenaConfirmBoxView(t);
+          e = ModelManager_1.ModelManager.PhantomArenaModel.IsNewPhantomArenaActivity(this.ActivityId);
+          PhantomArenaController_1.PhantomArenaController.OpenPhantomArenaConfirmBoxView(t, e);
         } else {
           this.CloseMe();
         }
@@ -311,24 +332,40 @@ class PhantomArenaDeckBuilderTabView extends PhantomArenaChildViewBase_1.Phantom
     this.TK1 = () => {
       var t = StringUtils_1.StringUtils.Format(MultiTextLang_1.configMultiTextLang.GetLocalTextNew("PhantomBattle_1077"));
       CommonInputViewController_1.CommonInputViewController.OpenSetPhantomArenaDeckName(t, async t => {
-        var e;
-        var i = this.DeckInfo?.GetDeckServerId() ?? -1;
-        if (i < 0) {
+        var e = this.DeckInfo?.GetDeckServerId() ?? -1;
+        if (e < 0) {
           this.DeckInfo?.SetDeckName(t);
           this.DeckSlotsPanel.RefreshNameText();
           return Protocol_1.Aki.Protocol.Q4n.KRs;
         } else {
-          e = ModelManager_1.ModelManager.PhantomArenaModel.ActivityId;
-          if ((i = await PhantomArenaController_1.PhantomArenaController.CardGroupNameRequest(t, i, e)) === Protocol_1.Aki.Protocol.Q4n.KRs) {
+          if ((e = await PhantomArenaController_1.PhantomArenaController.CardGroupNameRequest(t, e, this.ActivityId)) === Protocol_1.Aki.Protocol.Q4n.KRs) {
             this.DeckInfo?.SetDeckName(t);
             this.DeckSlotsPanel.RefreshNameText();
           }
-          return i;
+          return e;
         }
       }, this.DeckInfo?.GetName() ?? "");
     };
+    this.rmf = t => {
+      if (this.imf) {
+        this.imf.IsMouseInSlotItem = true;
+        this.imf.RefreshCard(t);
+        this.imf.SetUiActive(true);
+      }
+    };
+    this.omf = () => {
+      if (this.imf) {
+        this.imf.IsMouseInSlotItem = false;
+        TimerSystem_1.GameplayTimerSystem.Delay(() => {
+          if (this.imf) {
+            this.imf.AddTimer();
+          }
+        }, 500);
+      }
+    };
     this.RK1 = () => {
       var t = {
+        ActivityId: this.ActivityId,
         ConfirmCallback: t => {
           let e = false;
           for (const i of t.GetCardSlotList()) {
@@ -348,7 +385,7 @@ class PhantomArenaDeckBuilderTabView extends PhantomArenaChildViewBase_1.Phantom
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UILoopScrollViewComponent], [1, UE.UIItem], [2, UE.UILayoutBase], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIText], [7, UE.UIButtonComponent], [8, UE.UIButtonComponent], [9, UE.UIItem], [10, UE.UIButtonComponent], [11, UE.UIButtonComponent], [12, UE.UIItem], [13, UE.UIButtonComponent], [14, UE.UIButtonComponent], [15, UE.UIItem], [16, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UILoopScrollViewComponent], [1, UE.UIItem], [2, UE.UILayoutBase], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIText], [7, UE.UIButtonComponent], [8, UE.UIButtonComponent], [9, UE.UIItem], [10, UE.UIButtonComponent], [11, UE.UIButtonComponent], [12, UE.UIItem], [13, UE.UIButtonComponent], [14, UE.UIButtonComponent], [15, UE.UIText], [16, UE.UIItem], [17, UE.UIItem], [18, UE.UISprite], [19, UE.UIItem]];
     this.BtnBindInfo = [[7, this.s61], [8, this.a61], [10, this.RK1], [11, this.A81], [13, this.TK1], [14, this.h61]];
   }
   async OnBeforeStartAsync() {
@@ -360,7 +397,8 @@ class PhantomArenaDeckBuilderTabView extends PhantomArenaChildViewBase_1.Phantom
     this.CardFilterEntrance = new DeckBuilderSortFilterEntrance_1.DeckBuilderSortFilterEntrance(true);
     this.SlotSortEntrance = new DeckBuilderSortFilterEntrance_1.DeckBuilderSortFilterEntrance(false);
     this.DeckSlotsPanel = new DeckBuilderDeckSlotsPanel_1.DeckBuilderDeckSlotsPanel();
-    await Promise.all([this.NV1.RefreshByDataAsync(this.TabDataList), this.CardFilterEntrance.CreateThenShowByActorAsync(this.GetItem(4).GetOwner()), this.SlotSortEntrance.CreateThenShowByActorAsync(this.GetItem(9).GetOwner()), this.DeckSlotsPanel.CreateThenShowByActorAsync(this.GetItem(12).GetOwner())]);
+    this.imf = new DeckBuilderCardDetailTip_1.DeckBuilderCardDetailTip();
+    await Promise.all([this.NV1.RefreshByDataAsync(this.TabDataList), this.CardFilterEntrance.CreateThenShowByActorAsync(this.GetItem(4).GetOwner()), this.SlotSortEntrance.CreateThenShowByActorAsync(this.GetItem(9).GetOwner()), this.DeckSlotsPanel.CreateThenShowByActorAsync(this.GetItem(12).GetOwner()), this.imf.CreateByResourceIdAsync("NewPnlCardTips", this.GetItem(19))]);
     this.CardFilterEntrance.OnResultCallBack = this._61;
     this.SlotSortEntrance.OnResultCallBack = this.u61;
   }
@@ -396,8 +434,7 @@ class PhantomArenaDeckBuilderTabView extends PhantomArenaChildViewBase_1.Phantom
       await this.ABu(false);
       this.LK1();
       this.RefreshElementTab();
-      this.RefreshDeckFullTip();
-      this.RefreshElementFullTip();
+      this.RefreshFullTip();
       this.f61();
       this.g61();
     } else if (Log_1.Log.CheckError()) {
@@ -443,36 +480,43 @@ class PhantomArenaDeckBuilderTabView extends PhantomArenaChildViewBase_1.Phantom
     });
   }
   d61() {
+    var t;
+    var e;
+    var i;
+    var s;
+    var h;
     this.LibraryCardDataList.length = 0;
     this.LibraryCardDataMap.clear();
-    for (const r of ConfigManager_1.ConfigManager.PhantomArenaConfig.GetAllPhantomBattleCard()) {
-      var t = r.Id;
-      var e = r.Element;
-      var i = r.InitAttack;
-      var s = r.CardGroupNum;
-      var h = s - this.DeckInfo.GetCardCount(t);
-      var e = {
-        CardId: t,
-        CardFaceTexturePath: r.CardFaceTexture,
-        Cost: r.Cost,
-        Element: e,
-        Attack: i.get(Protocol_1.Aki.Protocol.GC1.Proto_AttackAbility) ?? 0,
-        Life: i.get(Protocol_1.Aki.Protocol.GC1.Proto_LifeAbility) ?? 0,
-        IsLocked: !ModelManager_1.ModelManager.PhantomArenaModel.IsCardUnlock(t),
-        LeftCount: h,
-        MaxCount: s,
-        AddCardToDeck: this.AddCardToDeck,
-        DeckInfo: this.DeckInfo,
-        OpenCardInfoView: this.jV1,
-        CardSpineData: ModelManager_1.ModelManager.PhantomArenaModel.CreateCardSpineData(t),
-        OutlookUnlocked: ModelManager_1.ModelManager.PhantomArenaModel.IsCardOutlookUnlock(t),
-        CardFaceType: ModelManager_1.ModelManager.PhantomArenaModel.GetCardFaceType(t),
-        Disabled: false,
-        IsAllInDeck: false
-      };
-      this.PBu(e);
-      this.LibraryCardDataList.push(e);
-      this.LibraryCardDataMap.set(t, e);
+    for (const r of ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardByActivityId(this.ActivityId)) {
+      if (!r.IsNpcCard) {
+        t = r.Id;
+        h = r.Element;
+        e = r.InitAttack;
+        s = (i = r.CardGroupNum) - this.DeckInfo.GetCardCount(t);
+        h = {
+          CardId: t,
+          CardFaceTexturePath: r.CardFaceTexture,
+          Cost: r.Cost,
+          Element: h,
+          Attack: e.get(Protocol_1.Aki.Protocol.GC1.Proto_AttackAbility) ?? 0,
+          Life: e.get(Protocol_1.Aki.Protocol.GC1.Proto_LifeAbility) ?? 0,
+          IsLocked: !ModelManager_1.ModelManager.PhantomArenaModel.IsCardUnlock(t),
+          LeftCount: s,
+          MaxCount: i,
+          AddCardToDeck: this.AddCardToDeck,
+          DeckInfo: this.DeckInfo,
+          OpenCardInfoView: this.jV1,
+          CardSpineData: ModelManager_1.ModelManager.PhantomArenaModel.CreateCardSpineData(t),
+          OutlookUnlocked: ModelManager_1.ModelManager.PhantomArenaModel.IsCardOutlookUnlock(t),
+          CardFaceType: ModelManager_1.ModelManager.PhantomArenaModel.GetCardFaceType(t),
+          Disabled: false,
+          IsAllInDeck: false,
+          CardType: r.Type
+        };
+        this.PBu(h);
+        this.LibraryCardDataList.push(h);
+        this.LibraryCardDataMap.set(t, h);
+      }
     }
     this.LibraryCardDataList.sort(PhantomArenaDefine_1.cardSlotDefaultSortFunc);
   }
@@ -517,7 +561,8 @@ class PhantomArenaDeckBuilderTabView extends PhantomArenaChildViewBase_1.Phantom
       Cost: t.Cost,
       Element: t.Element,
       MaxCount: t.MaxCount,
-      AddCount: 1
+      AddCount: 1,
+      CardType: t.CardType
     };
     t.Disabled = this.DeckInfo.CheckCanAddCard(e) !== 0;
   }
@@ -531,22 +576,29 @@ class PhantomArenaDeckBuilderTabView extends PhantomArenaChildViewBase_1.Phantom
       }
     }
   }
-  LK1() {
-    var t = {
+  LK1(t = true) {
+    t = {
       DeckInfo: this.DeckInfo,
-      SlotLongPressTime: ConfigManager_1.ConfigManager.PhantomArenaConfig.GetSlotLongPressTime(ModelManager_1.ModelManager.PhantomArenaModel.ActivityId),
+      SlotLongPressStartTime: ConfigManager_1.ConfigManager.PhantomArenaConfig.GetSlotLongPressStartTime(this.ActivityId),
+      SlotLongPressEndTime: ConfigManager_1.ConfigManager.PhantomArenaConfig.GetSlotLongPressEndTime(this.ActivityId),
       OnCoreSlotItemSortClick: this.ibu,
-      OnCoreSlotItemLongPress: this.rbu,
+      OnCoreSlotItemLongPress: this.RXm,
       CanCoreSlotItemToggleChange: this.KTu,
       OnNormalSlotItemSortClick: this.t61,
-      OnNormalSlotItemLongPress: this.Vlu,
+      OnNormalSlotItemLongPress: this.RXm,
       CanNormalSlotItemToggleChange: this.i61,
+      CanFieldSlotItemToggleChange: this.XQm,
+      OnSlotItemLongPressEnd: this.wXm,
+      OnSlotCardPointEnterCallback: this.rmf,
+      OnSlotCardPointExitCallback: this.omf,
       SortContext: {
         SortType: this.CurSlotSortType,
         IsAscending: this.IsAscending
       },
       ShowLocked: false,
-      ShowOutlook: true
+      ShowOutlook: true,
+      IsNeedFieldCard: false,
+      IsNeedRequestCheckCardSkillUnlock: t
     };
     this.DeckSlotsPanel?.RefreshByData(t);
   }
@@ -564,13 +616,14 @@ class PhantomArenaDeckBuilderTabView extends PhantomArenaChildViewBase_1.Phantom
     }
     this.NV1?.RefreshAllGridProxies();
   }
-  RefreshElementFullTip() {
+  RefreshFullTip() {
     var t = this.TabDataList[this.CurSelectedElementTabIndex].TabType;
     var t = PhantomArenaDefine_1.cardTabTypeToElementConfigId[t];
-    this.GetItem(16).SetUIActive(t !== undefined && !this.DeckInfo.CheckCanAddElement(t));
-  }
-  RefreshDeckFullTip() {
-    this.GetItem(15).SetUIActive(this.DeckInfo.IsDeckFull());
+    var e = this.DeckInfo.IsDeckFull();
+    var t = t !== undefined && !this.DeckInfo.CheckCanAddElement(t);
+    this.GetItem(16).SetUIActive(e || t);
+    var e = t ? "PrefabTextItem_3954833905_Text" : "PrefabTextItem_3799404500_Text";
+    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(15), e);
   }
   RemoveCardSlotByElements(t) {
     if (this.DeckInfo) {
@@ -580,8 +633,7 @@ class PhantomArenaDeckBuilderTabView extends PhantomArenaChildViewBase_1.Phantom
         this.DeckSlotsPanel.RefreshCardSlot();
         this.DeckSlotsPanel.RefreshCardSlotElements();
         this.RefreshElementTab();
-        this.RefreshDeckFullTip();
-        this.RefreshElementFullTip();
+        this.RefreshFullTip();
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("PhantomArena", 43, "移除卡牌异常");
       }
@@ -595,8 +647,7 @@ class PhantomArenaDeckBuilderTabView extends PhantomArenaChildViewBase_1.Phantom
         this.DeckSlotsPanel.RefreshCardSlot();
         this.DeckSlotsPanel.RefreshCardSlotElements();
         this.RefreshElementTab();
-        this.RefreshDeckFullTip();
-        this.RefreshElementFullTip();
+        this.RefreshFullTip();
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("PhantomArena", 43, "移除卡牌异常");
       }
@@ -605,6 +656,16 @@ class PhantomArenaDeckBuilderTabView extends PhantomArenaChildViewBase_1.Phantom
   KV1(t) {
     this.CurSelectedElementTabIndex = t;
     this.NV1?.SelectGridProxy(t);
+  }
+  T7i() {
+    var t = LguiEventSystemManager_1.LguiEventSystemManager.GetPointerEventDataPosition(0);
+    var t = Vector2D_1.Vector2D.Create(t.X, t.Y);
+    t.FromUeVector2D(UiLayer_1.UiLayer.UiRootItem.GetCanvasScaler().ConvertPositionFromViewportToLGUICanvas(t.ToUeVector2D(true)));
+    var e = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetCardSlotItemLongPressOffsetX();
+    var i = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetCardSlotItemLongPressOffsetY();
+    var e = t.X + e;
+    var t = t.Y + i;
+    this.GetItem(17).SetLGUISpaceAbsolutePosition(new UE.Vector(e, t, 0));
   }
   f61() {
     var t = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetAllPhantomBattleCardFilter();
@@ -655,17 +716,20 @@ class PhantomArenaDeckBuilderTabView extends PhantomArenaChildViewBase_1.Phantom
           Cost: i.Cost,
           Element: i.Element,
           MaxCount: i.Count,
-          AddCount: i.Count
+          AddCount: i.Count,
+          CardType: i.CardType
         };
         this.DeckInfo?.AddCard(e);
       }
     }
+    if (this.DeckInfo) {
+      PhantomArenaController_1.PhantomArenaController.RequestCheckCardSkillUnlock(this.DeckInfo, this.iKm);
+    }
     this.p61();
     this.Fau();
-    this.LK1();
+    this.LK1(false);
     this.RefreshElementTab();
-    this.RefreshDeckFullTip();
-    this.RefreshElementFullTip();
+    this.RefreshFullTip();
   }
   OnBeforeDestroy() {
     this.ViewModel?.EndEditDeck();

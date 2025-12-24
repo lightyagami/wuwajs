@@ -5,13 +5,14 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.PhantomArenaHeadItem = undefined;
 const UE = require("ue");
+const CustomPromise_1 = require("../../../../../../Core/Common/CustomPromise");
 const EventDefine_1 = require("../../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../../Common/Event/EventSystem");
 const UiPanelBase_1 = require("../../../../../Ui/Base/UiPanelBase");
 const UiSequencePlayer_1 = require("../../../../../Ui/Base/UiSequencePlayer");
 const LevelSequencePlayer_1 = require("../../../../Common/LevelSequencePlayer");
 const PhantomArenaDialogItem_1 = require("./PhantomArenaDialogItem");
-class AddHpItem extends UiPanelBase_1.UiPanelBase {
+class HpItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.Sequence = undefined;
@@ -33,13 +34,13 @@ class AddHpItem extends UiPanelBase_1.UiPanelBase {
   OnDestroy() {
     this.Sequence.Clear();
   }
-  RefreshAddHpNum(e) {
+  RefreshHpNum(e) {
     this.GetText(0).SetText(e.toString());
   }
-  PlayStart() {
+  async PlayStart() {
     this.SetActive(true);
     this.Sequence.StopPrevSequence(false, true);
-    this.Sequence.PlaySequencePurely("Start");
+    await this.Sequence.PlaySequenceAsync("Start", new CustomPromise_1.CustomPromise());
   }
   PlayClose() {
     this.Sequence.StopPrevSequence(false, true);
@@ -54,6 +55,7 @@ class PhantomArenaHeadItem extends UiPanelBase_1.UiPanelBase {
     this.NeedAddHpEffect = false;
     this.SequencePlayer = undefined;
     this.AddHpItem = undefined;
+    this.ReduceHpItem = undefined;
     this.Gcu = e => {
       if (e === "DamageAccumulate") {
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPhantomArenaBattleDamageAccumulateEnd);
@@ -65,8 +67,9 @@ class PhantomArenaHeadItem extends UiPanelBase_1.UiPanelBase {
   }
   async InitAddHpItem() {
     if (this.NeedAddHpEffect) {
-      this.AddHpItem = new AddHpItem();
-      await this.AddHpItem.CreateByResourceIdAsync("PnlRoleAddHp", this.GetItem(3));
+      this.AddHpItem = new HpItem();
+      this.ReduceHpItem = new HpItem();
+      await Promise.all([this.AddHpItem.CreateByResourceIdAsync("PnlRoleAddHp", this.GetItem(3)), this.ReduceHpItem.CreateByResourceIdAsync("PnlRoleHitHp", this.GetItem(3))]);
     }
   }
   OnStart() {
@@ -105,9 +108,13 @@ class PhantomArenaHeadItem extends UiPanelBase_1.UiPanelBase {
   PlayAccumulateDamage() {
     this.SequencePlayer?.PlayLevelSequenceByName("DamageAccumulate");
   }
-  PlayAddHpEffect(e) {
-    this.AddHpItem.RefreshAddHpNum(e);
-    this.AddHpItem.PlayStart();
+  async PlayAddHpEffect(e) {
+    this.AddHpItem.RefreshHpNum(e);
+    await this.AddHpItem.PlayStart();
+  }
+  async PlayReduceHpEffect(e) {
+    this.ReduceHpItem.RefreshHpNum(e);
+    await this.ReduceHpItem.PlayStart();
   }
 }
 exports.PhantomArenaHeadItem = PhantomArenaHeadItem;

@@ -25,6 +25,7 @@ const PhantomArenaMasterLevelItem_1 = require("./PhantomArenaMasterLevelItem");
 class PhantomArenaMasterInfoView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
+    this.ActivityId = 0;
     this.r71 = -1;
     this.Wnu = undefined;
     this.lqe = undefined;
@@ -34,6 +35,7 @@ class PhantomArenaMasterInfoView extends UiViewBase_1.UiViewBase {
       var r = new PhantomArenaMasterLevelItem_1.MasterLevelItem();
       r.CreateThenShowByActor(e);
       r.CallbackOnSelect = this.Qnu;
+      r.ActivityId = this.ActivityId;
       return r;
     };
     this.rOe = () => {
@@ -45,9 +47,9 @@ class PhantomArenaMasterInfoView extends UiViewBase_1.UiViewBase {
       return new MasterLevelDescItem();
     };
     this.Knu = () => {
-      var e = ModelManager_1.ModelManager.PhantomArenaModel.GetMasterLevelData().filter(e => ModelManager_1.ModelManager.PhantomArenaModel.GetMasterLevelRewardCanTake(e.Level)).map(e => e.Level);
+      var e = ModelManager_1.ModelManager.PhantomArenaModel.GetMasterLevelData(this.ActivityId).filter(e => ModelManager_1.ModelManager.PhantomArenaModel.GetMasterLevelRewardCanTake(e.Level, this.ActivityId)).map(e => e.Level);
       if (e.length > 0) {
-        PhantomArenaController_1.PhantomArenaController.MasterLevelMultiRewardRequest(e);
+        PhantomArenaController_1.PhantomArenaController.MasterLevelMultiRewardRequest(e, this.ActivityId);
       }
     };
     this.Qnu = (e, t) => {
@@ -69,7 +71,7 @@ class PhantomArenaMasterInfoView extends UiViewBase_1.UiViewBase {
       this.CloseMe();
     };
     this.L0u = () => {
-      return ModelManager_1.ModelManager.PhantomArenaModel.GetMasterLevelRewardIfTaken(this.r71);
+      return ModelManager_1.ModelManager.PhantomArenaModel.GetMasterLevelRewardIfTaken(this.r71, this.ActivityId);
     };
   }
   OnRegisterComponent() {
@@ -77,6 +79,7 @@ class PhantomArenaMasterInfoView extends UiViewBase_1.UiViewBase {
     this.BtnBindInfo = [[12, this.Knu]];
   }
   OnStart() {
+    this.ActivityId = this.OpenParam;
     this.lqe = new PopupCaptionItem_1.PopupCaptionItem(this.GetItem(13));
     this.lqe.SetHelpCallBack(this.fFo);
     this.lqe.SetCloseCallBack(this.I5t);
@@ -115,8 +118,8 @@ class PhantomArenaMasterInfoView extends UiViewBase_1.UiViewBase {
     this.jqe();
   }
   WLl(e) {
-    var t = ModelManager_1.ModelManager.PhantomArenaModel.GetMasterLevelData();
-    var i = ModelManager_1.ModelManager.PhantomArenaModel.GetMasterLevel();
+    var t = ModelManager_1.ModelManager.PhantomArenaModel.GetMasterLevelData(this.ActivityId);
+    var i = ModelManager_1.ModelManager.PhantomArenaModel.GetMasterLevel(this.ActivityId);
     if (e) {
       this.Wnu.ReloadView(t.length, t);
       this.Wnu.AttachToIndex(i - 1, true);
@@ -129,29 +132,29 @@ class PhantomArenaMasterInfoView extends UiViewBase_1.UiViewBase {
   }
   mGe() {
     var e = ModelManager_1.ModelManager.PhantomArenaModel;
-    var t = e.GetMasterLevel();
-    var t = e.GetMasterLevelConfig(t);
+    var t = e.GetMasterLevel(this.ActivityId);
+    var t = e.GetMasterLevelConfig(t, this.ActivityId);
     if (t) {
       t = t.TitleId;
       t = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleMasterTitleById(t);
       this.SetTextureByPath(t.Icon, this.GetTexture(3));
       this.SetTextureByPath(t.IconBg, this.GetTexture(4));
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(5), t.Name);
-      t = e.GetMasterExpNextNeed().toString();
-      e = e.GetMasterExpNow().toString();
+      t = e.GetMasterExpNextNeed(this.ActivityId).toString();
+      e = e.GetMasterExpNow(this.ActivityId).toString();
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), PhantomArenaDefine_1.ENTRANCE_MASTER_INFO_EXP_TEXT_ID, e, t);
     }
   }
   Pqe() {
-    var e = ModelManager_1.ModelManager.PhantomArenaModel.GetMasterLevelDescData(this.r71);
+    var e = ModelManager_1.ModelManager.PhantomArenaModel.GetMasterLevelDescData(this.r71, this.ActivityId);
     this.lsu?.RefreshByData(e);
   }
   jqe() {
-    var e = ModelManager_1.ModelManager.PhantomArenaModel.GetMasterLevelRewardList(this.r71);
+    var e = ModelManager_1.ModelManager.PhantomArenaModel.GetMasterLevelRewardList(this.r71, this.ActivityId);
     this.RewardLayout.RefreshByData(e);
     var e = e.length === 0;
-    var t = ModelManager_1.ModelManager.PhantomArenaModel.GetMasterLevelRewardIfTaken(this.r71);
-    var i = ModelManager_1.ModelManager.PhantomArenaModel.GetMasterLevelRewardCanTake(this.r71);
+    var t = ModelManager_1.ModelManager.PhantomArenaModel.GetMasterLevelRewardIfTaken(this.r71, this.ActivityId);
+    var i = ModelManager_1.ModelManager.PhantomArenaModel.GetMasterLevelRewardCanTake(this.r71, this.ActivityId);
     this.GetItem(10).SetUIActive(t && !e);
     this.GetItem(11).SetUIActive(!t && !i && !e);
     this.SetButtonUiActive(12, !t && i && !e);

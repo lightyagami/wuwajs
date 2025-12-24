@@ -15,24 +15,24 @@ class BattleHonamiStoryLeaveButton extends BattleEntranceButton_1.BattleEntrance
   constructor() {
     super(...arguments);
     this.$pt = undefined;
-    this.$Zd = () => {
-      if (this.Ehm()) {
+    this.Tim = () => {
+      if (this.ucm()) {
         this.$pt?.StopPrevSequence(false, true);
         this.$pt?.PlaySequencePurely("Sucs");
       }
     };
-    this.WZd = () => {
+    this.bim = () => {
       HonamiStoryController_1.HonamiStoryController.TryHonamiStoryInstLeave();
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIButtonComponent]];
-    this.BtnBindInfo = [[0, this.WZd]];
+    this.BtnBindInfo = [[0, this.bim]];
   }
   Initialize(e) {
     super.Initialize(e);
     this.InitChildType(3);
-    e = this.Ehm();
+    e = this.ucm();
     this.$pt = new UiSequencePlayer_1.UiSequencePlayer(this.RootItem);
     this.$pt.PlaySequencePurely(e ? "Sucs" : "Start");
     this.Ore();
@@ -44,12 +44,12 @@ class BattleHonamiStoryLeaveButton extends BattleEntranceButton_1.BattleEntrance
     super.Reset();
   }
   Ore() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnHonamiStoryLeaveButtonUpdate, this.$Zd);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnHonamiStoryLeaveButtonUpdate, this.Tim);
   }
   kre() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnHonamiStoryLeaveButtonUpdate, this.$Zd);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnHonamiStoryLeaveButtonUpdate, this.Tim);
   }
-  Ehm() {
+  ucm() {
     return ModelManager_1.ModelManager.HonamiStoryModel.CanSafeLeave;
   }
 }

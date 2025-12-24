@@ -3,6 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+const puerts_1 = require("puerts");
 const Log_1 = require("../../../../Core/Common/Log");
 const Time_1 = require("../../../../Core/Common/Time");
 const EntitySystem_1 = require("../../../../Core/Entity/EntitySystem");
@@ -24,6 +25,8 @@ class TsTaskMoveToActor extends TsTaskAbortImmediatelyBase_1.default {
     this.TurnSpeed = 0;
     this.FixPeriod = 0;
     this.WalkOff = false;
+    this.UseBounds = false;
+    this.EndDistanceAllPoints = false;
     this.IsInitTsVariables = false;
     this.TsMoveState = 0;
     this.TsNavigationOn = false;
@@ -32,6 +35,7 @@ class TsTaskMoveToActor extends TsTaskAbortImmediatelyBase_1.default {
     this.TsTurnSpeed = 0;
     this.TsFixPeriod = 0;
     this.TsWalkOff = false;
+    this.TsUseBounds = false;
     this.SelectedTargetLocation = undefined;
     this.FoundPath = false;
     this.NavigationPath = undefined;
@@ -49,6 +53,7 @@ class TsTaskMoveToActor extends TsTaskAbortImmediatelyBase_1.default {
     this.TsTurnSpeed = 0;
     this.TsFixPeriod = 0;
     this.TsWalkOff = false;
+    this.TsUseBounds = false;
     this.SelectedTargetLocation = undefined;
     this.FoundPath = false;
     this.NavigationPath = undefined;
@@ -66,6 +71,7 @@ class TsTaskMoveToActor extends TsTaskAbortImmediatelyBase_1.default {
       this.TsTurnSpeed = this.TurnSpeed;
       this.TsFixPeriod = this.FixPeriod;
       this.TsWalkOff = this.WalkOff;
+      this.TsUseBounds = this.UseBounds;
       this.CacheVector = Vector_1.Vector.Create();
     }
   }
@@ -75,13 +81,23 @@ class TsTaskMoveToActor extends TsTaskAbortImmediatelyBase_1.default {
     if (e) {
       var s = e.CharActorComp;
       if (!this.TsWalkOff) {
-        s.Entity.GetComponent(45)?.SetWalkOffLedgeRecord(false);
+        s.Entity.GetComponent(46)?.SetWalkOffLedgeRecord(false);
       }
       var r = ControllerHolder_1.ControllerHolder.BlackboardController.GetEntityIdByEntity(e.CharAiDesignComp.Entity.Id, this.TsBlackboardKeyActor);
       var h = EntitySystem_1.EntitySystem.Get(r);
       if (r && h?.Valid) {
         this.SelectedTargetLocation = AiContollerLibrary_1.AiControllerLibrary.GetLocationFromEntity(h);
-        var o = e.CharAiDesignComp?.Entity.GetComponent(179);
+        if (this.TsUseBounds) {
+          if ((r = h?.GetComponent(1))?.Valid && (h = r.Owner) && h?.IsValid()) {
+            r = (0, puerts_1.$ref)(undefined);
+            h.D_GetActorBounds(true, undefined, r, true);
+            h = (0, puerts_1.$unref)(r).Size();
+            this.TsEndDistance = h;
+          }
+        } else {
+          this.TsEndDistance = this.EndDistance + s.ScaledRadius;
+        }
+        var o = e.CharAiDesignComp?.Entity.GetComponent(184);
         if (o?.Valid && o.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Ground) {
           switch (this.TsMoveState) {
             case 1:
@@ -96,7 +112,7 @@ class TsTaskMoveToActor extends TsTaskAbortImmediatelyBase_1.default {
         }
         this.NextCheckTime = Time_1.Time.WorldTime + this.TsFixPeriod;
         this.CacheVector.DeepCopy(s.ActorLocation);
-        if (s.Entity.GetComponent(104)?.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Ground) {
+        if (s.Entity.GetComponent(109)?.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Ground) {
           this.CacheVector.Z -= s.HalfHeight;
         }
         this.FindNewPath(t, this.CacheVector.ToUeVector());
@@ -130,7 +146,7 @@ class TsTaskMoveToActor extends TsTaskAbortImmediatelyBase_1.default {
         if (Vector_1.Vector.Dist(o, this.SelectedTargetLocation) > NAVIGATION_COMPLETE_DISTANCE) {
           this.SelectedTargetLocation = o;
           this.CacheVector.DeepCopy(h);
-          if (r.Entity.GetComponent(104)?.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Ground) {
+          if (r.Entity.GetComponent(109)?.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Ground) {
             this.CacheVector.Z -= r.HalfHeight;
           }
           this.FindNewPath(t, this.CacheVector.ToUeVector());
@@ -142,16 +158,16 @@ class TsTaskMoveToActor extends TsTaskAbortImmediatelyBase_1.default {
         o.Subtraction(h, o);
         o.Z = 0;
         t = o.Size();
-        if ((!this.TsNavigationOn || this.CurrentNavigationIndex === this.NavigationPath.length - 1) && t < this.TsEndDistance) {
+        if ((!this.TsNavigationOn || this.CurrentNavigationIndex === this.NavigationPath.length - 1 || this.EndDistanceAllPoints) && t < this.TsEndDistance) {
           this.Finish(true);
         } else {
-          if (t < NAVIGATION_COMPLETE_DISTANCE) {
+          if (t < NAVIGATION_COMPLETE_DISTANCE + r.ScaledRadius) {
             this.CurrentNavigationIndex++;
           }
           AiContollerLibrary_1.AiControllerLibrary.TurnToTarget(r, a, this.TsTurnSpeed);
           o.DivisionEqual(t);
           r.SetInputDirect(o, true);
-          var l = s.CharAiDesignComp?.Entity.GetComponent(179);
+          var l = s.CharAiDesignComp?.Entity.GetComponent(184);
           if (l?.Valid) {
             switch (this.TsMoveState) {
               case 1:
@@ -185,7 +201,7 @@ class TsTaskMoveToActor extends TsTaskAbortImmediatelyBase_1.default {
     if (this.AIOwner instanceof TsAiController_1.default) {
       AiContollerLibrary_1.AiControllerLibrary.ClearInput(this.AIOwner);
       if (!this.TsWalkOff) {
-        this.AIOwner.AiController.CharActorComp.Entity.GetComponent(45)?.SetWalkOffLedgeRecord(true);
+        this.AIOwner.AiController.CharActorComp.Entity.GetComponent(46)?.SetWalkOffLedgeRecord(true);
       }
     }
   }

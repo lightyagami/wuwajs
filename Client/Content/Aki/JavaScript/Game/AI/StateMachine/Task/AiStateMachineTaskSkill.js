@@ -29,7 +29,7 @@ class AiStateMachineTaskSkill extends AiStateMachineTask_1.AiStateMachineTask {
     } else {
       if (t.TaskSkillByName) {
         this.SkillName = t.TaskSkillByName.SkillName;
-        i = this.Node.Entity.GetComponent(40).GetSkillIdByName(this.SkillName);
+        i = this.Node.Entity.GetComponent(41).GetSkillIdByName(this.SkillName);
         this.SkillId = i || 0;
         this.Node.SkillId = this.SkillId;
       } else if (t.TaskSkill) {

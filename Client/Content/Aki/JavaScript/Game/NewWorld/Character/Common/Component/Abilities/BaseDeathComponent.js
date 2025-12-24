@@ -39,7 +39,7 @@ let BaseDeathComponent = class BaseDeathComponent extends EntityComponent_1.Enti
   }
   OnStart() {
     this.MontageComponent = this.Entity.GetComponent(24);
-    this.TimeScaleComponent = this.Entity.GetComponent(126);
+    this.TimeScaleComponent = this.Entity.GetComponent(131);
     this.d2c();
     return true;
   }
@@ -91,7 +91,7 @@ let BaseDeathComponent = class BaseDeathComponent extends EntityComponent_1.Enti
       e?.(true);
     } else {
       if (a) {
-        this.Entity.GetComponent(44)?.StartForceDisableAnimOptimization(6, false);
+        this.Entity.GetComponent(45)?.StartForceDisableAnimOptimization(6, false);
       }
       this.MontageComponent?.PlayMontageTaskWhenReady(i, 0, o);
     }

@@ -6,15 +6,16 @@ Object.defineProperty(exports, "__esModule", {
 exports.RoleStateView = undefined;
 const UE = require("ue");
 const CommonParamById_1 = require("../../../../Core/Define/ConfigCommon/CommonParamById");
-const Protocol_1 = require("../../../../Core/Define/Net/Protocol");
 const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
 const MathUtils_1 = require("../../../../Core/Utils/MathUtils");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const CharacterAttributeTypes_1 = require("../../../NewWorld/Character/Common/Component/Abilities/CharacterAttributeTypes");
 const LevelSequencePlayer_1 = require("../../Common/LevelSequencePlayer");
 const LguiUtil_1 = require("../../Util/LguiUtil");
 const BattleVisibleChildView_1 = require("./BattleChildView/BattleVisibleChildView");
-var EAttributeId = Protocol_1.Aki.Protocol.Vks;
+const MotorcycleShieldItem_1 = require("./Motorcycle/MotorcycleShieldItem");
 const LOW_HP_PERCENT = 0.2;
 class RoleStateView extends BattleVisibleChildView_1.BattleVisibleChildView {
   constructor() {
@@ -34,6 +35,8 @@ class RoleStateView extends BattleVisibleChildView_1.BattleVisibleChildView {
     this.Cmt = 0;
     this.gmt = undefined;
     this.fmt = false;
+    this.oKu = 0;
+    this.Csf = undefined;
     this.u$e = t => {
       if (t === this.E0) {
         this.RefreshHpAndShield(true);
@@ -54,26 +57,32 @@ class RoleStateView extends BattleVisibleChildView_1.BattleVisibleChildView {
       this.pmt();
       this.RefreshHpAndShield();
     };
+    this.sJm = () => {
+      this.psf();
+    };
     this.pmt = () => {
       var t;
       var i;
       if (this.IsValid()) {
         t = this.GetText(2);
         if (this.Wst.RoleConfig?.RoleType !== 2 && (i = this.$te)) {
-          i = i.GetCurrentValue(EAttributeId.Proto_Lv);
+          i = i.GetCurrentValue(CharacterAttributeTypes_1.EAttributeId.Proto_Lv);
           LguiUtil_1.LguiUtil.SetLocalTextNew(t, "LevelShowNew", i);
         } else {
           t.SetText("");
         }
       }
     };
+    this.BSf = () => {
+      this.gst(this.oKu);
+    };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UISprite], [1, UE.UIText], [2, UE.UIText], [3, UE.UISprite], [4, UE.UISprite], [5, UE.UISprite], [6, UE.UINiagara], [7, UE.UIText], [8, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UISprite], [1, UE.UIText], [2, UE.UIText], [3, UE.UISprite], [4, UE.UISprite], [5, UE.UISprite], [6, UE.UINiagara], [7, UE.UIText], [8, UE.UIItem], [11, UE.UIItem]];
   }
   Initialize(t) {
     super.Initialize(t);
-    this.InitChildType(37);
+    this.InitChildType(41);
     this.Xrt = CommonParamById_1.configCommonParamById.GetIntConfig("PlayerHPAttenuateBufferSpeed");
     this.mmt = this.GetItem(8).GetOwner().GetComponentByClass(UE.LGUICanvas.StaticClass());
     this.Cmt = this.GetText(1).GetWidth();
@@ -82,6 +91,11 @@ class RoleStateView extends BattleVisibleChildView_1.BattleVisibleChildView {
   }
   OnBeforeDestroy() {
     this.Refresh(undefined);
+    if (this.Csf) {
+      this.Csf.ExistShieldChanged = undefined;
+      this.Csf.Destroy();
+      this.Csf = undefined;
+    }
   }
   Reset() {
     this.kre();
@@ -92,7 +106,7 @@ class RoleStateView extends BattleVisibleChildView_1.BattleVisibleChildView {
       this.Wst = t;
       this.E0 = t?.EntityHandle?.Id;
       this.$te = t.AttributeComponent;
-      this.l1t = t?.EntityHandle?.Entity?.GetComponent(75);
+      this.l1t = t?.EntityHandle?.Entity?.GetComponent(78);
       this.RefreshRoleState();
     } else {
       this.Wst = undefined;
@@ -113,15 +127,18 @@ class RoleStateView extends BattleVisibleChildView_1.BattleVisibleChildView {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiShieldChanged, this.u$e);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiLevelChanged, this.m2);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TextLanguageChange, this.vmt);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiMotorcycleStateChanged, this.sJm);
   }
   kre() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiHealthChanged, this.hXe);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiShieldChanged, this.u$e);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiLevelChanged, this.m2);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TextLanguageChange, this.vmt);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiMotorcycleStateChanged, this.sJm);
   }
   Tick(t) {
     this.nmt(t);
+    this.Csf?.Tick(t);
   }
   Mmt() {
     if (TimerSystem_1.TimerSystem.Has(this.cmt)) {
@@ -155,6 +172,7 @@ class RoleStateView extends BattleVisibleChildView_1.BattleVisibleChildView {
       this.ist();
       this.RefreshHpAndShield();
       this.pmt();
+      this.psf();
       this.SetVisible(1, true);
     }
   }
@@ -164,8 +182,8 @@ class RoleStateView extends BattleVisibleChildView_1.BattleVisibleChildView {
     var s;
     var h;
     if (this.IsValid() && (i = this.$te)) {
-      h = i.GetCurrentValue(EAttributeId.Proto_Life);
-      i = i.GetCurrentValue(EAttributeId.l5n);
+      h = i.GetCurrentValue(CharacterAttributeTypes_1.EAttributeId.Proto_Life);
+      i = i.GetCurrentValue(CharacterAttributeTypes_1.EAttributeId.l5n);
       s = this.l1t.ShieldTotal;
       e = h / i;
       s = Math.min(s / i, 1);
@@ -188,7 +206,7 @@ class RoleStateView extends BattleVisibleChildView_1.BattleVisibleChildView {
     var t;
     var i = this.$te;
     if (i) {
-      i = i.GetCurrentValue(EAttributeId.Proto_Life) / i.GetCurrentValue(EAttributeId.l5n);
+      i = i.GetCurrentValue(CharacterAttributeTypes_1.EAttributeId.Proto_Life) / i.GetCurrentValue(CharacterAttributeTypes_1.EAttributeId.l5n);
       if (!((t = this.snt) <= i)) {
         this.j1t = i;
         this.W1t = t;
@@ -230,14 +248,30 @@ class RoleStateView extends BattleVisibleChildView_1.BattleVisibleChildView {
     }
   }
   gst(t) {
+    this.oKu = t;
     var i = this.GetSprite(5);
-    var e = t > 0;
+    let e = false;
+    e = !this.Csf?.ExistShield && t > 0;
     i.SetUIActive(e);
     if (this.fmt !== e && (this.fmt = e)) {
       this.gmt.PlayLevelSequenceByName("Start");
     }
     if (e) {
       i.SetFillAmount(t);
+    }
+  }
+  psf() {
+    if (ModelManager_1.ModelManager.BattleUiModel.MotorcycleData.IsDriving) {
+      if (!this.Csf) {
+        this.Csf = new MotorcycleShieldItem_1.MotorcycleShieldItem();
+        this.Csf.ExistShieldChanged = this.BSf;
+        this.Csf.CreateThenShowByResourceIdAsync("UiItem_MotorcycleShieldBar", this.GetRootItem());
+      }
+    } else if (this.Csf) {
+      this.Csf.ExistShieldChanged = undefined;
+      this.Csf.Destroy();
+      this.Csf = undefined;
+      this.BSf();
     }
   }
 }

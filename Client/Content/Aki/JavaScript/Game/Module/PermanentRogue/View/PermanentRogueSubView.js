@@ -58,6 +58,7 @@ class RogueResActivitySubViewGeneralInfo extends UiPanelBase_1.UiPanelBase {
     if (e) {
       t = e.DescTheme;
       i = !StringUtils_1.StringUtils.IsEmpty(t);
+      this.LNe.SetActivityBaseData(this.ActivityBaseData);
       this.LNe.SetTitleByText(this.ActivityBaseData.GetTitle());
       this.LNe.SetSubTitleVisible(i);
       this.LNe.SetTimeTextVisible(false);

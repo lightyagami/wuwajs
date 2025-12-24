@@ -21,34 +21,34 @@ class RoleSkillTreeView extends UiTabViewBase_1.UiTabViewBase {
   constructor() {
     super(...arguments);
     this.d1o = undefined;
-    this.DWd = undefined;
+    this.kWd = undefined;
     this.dFe = 0;
-    this.Lcm = new RoleSkillDefine_1.RoleSkillTreeInfoViewData();
-    this.Pcm = -1;
+    this.Z0m = new RoleSkillDefine_1.RoleSkillTreeInfoViewData();
+    this.eCm = -1;
     this.Kco = e => {
-      this.DWd.PlayItemSequence("ChangeRole");
+      this.kWd.PlayItemSequence("ChangeRole");
       this.wdo(e);
     };
     this.Qco = () => {
-      this.DWd.PlayItemSequence("MoveLeft");
-      this.DWd.CancelToggleSelect();
+      this.kWd.PlayItemSequence("MoveLeft");
+      this.kWd.CancelToggleSelect();
       this.Ado(true);
-      this.Pcm = -1;
+      this.eCm = -1;
     };
     this.Pdo = () => {
-      this.DWd.PlayItemSequence("MoveLeft");
-      this.DWd.CancelToggleSelect();
+      this.kWd.PlayItemSequence("MoveLeft");
+      this.kWd.CancelToggleSelect();
       this.Ado(true);
     };
     this.Ldo = e => {
-      this.DWd?.OnAttributeNodeActive(e);
+      this.kWd?.OnAttributeNodeActive(e);
       if (this.d1o.RoleViewState === 1) {
         this.Rdo();
       }
     };
     this.Udo = e => {
       var t;
-      this.DWd?.OnSkillNodeLevelUp(e);
+      this.kWd?.OnSkillNodeLevelUp(e);
       if (this.d1o.RoleViewState === 1) {
         e = ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillTreeNode(e).SkillId;
         t = (t = ModelManager_1.ModelManager.RoleModel.GetUpgradeSkillIdIfUpgraded(e, this.dFe)) > 0 ? t : e;
@@ -56,32 +56,35 @@ class RoleSkillTreeView extends UiTabViewBase_1.UiTabViewBase {
       }
     };
     this.Ido = e => {
-      this.DWd?.SelectSkillItem(e);
+      this.kWd?.SelectSkillItem(e);
       this.Tdo();
     };
     this.TTt = () => {
-      this.DWd?.OnAddCommonItemList();
+      this.kWd?.OnAddCommonItemList();
     };
     this.wdo = e => {
       this.dFe = e;
       this.Refresh();
     };
     this.Rdo = () => {
-      this.Acm();
-      if (this.d1o.RoleViewState !== 0 && this.Pcm !== -1) {
-        UiManager_1.UiManager.GetView(this.Pcm)?.Refresh();
+      this.tCm();
+      if (this.d1o.RoleViewState !== 0 && this.eCm !== -1) {
+        UiManager_1.UiManager.GetView(this.eCm)?.Refresh();
       }
     };
     this.xdo = () => {
-      if (this.DWd?.GetCurrentSelectedSkillItem()) {
-        this.Acm();
-        UiManager_1.UiManager.OpenView("RoleSkillTreeInfoView", this.Lcm, (e, t) => {
-          this.Pcm = t;
+      if (this.kWd?.GetCurrentSelectedSkillItem()) {
+        this.tCm();
+        UiManager_1.UiManager.OpenView("RoleSkillTreeInfoView", this.Z0m, (e, t) => {
+          this.eCm = t;
         });
         this.Ado(false);
-        this.DWd.PlayItemSequence("MoveRight");
+        this.kWd.PlayItemSequence("MoveRight");
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRoleInternalViewEnter);
       }
+    };
+    this.FFf = () => {
+      this.kWd?.OnRoleSkillBranchChanged();
     };
   }
   OnRegisterComponent() {
@@ -90,8 +93,9 @@ class RoleSkillTreeView extends UiTabViewBase_1.UiTabViewBase {
   async OnBeforeStartAsync() {
     this.d1o = this.ExtraParams;
     if (this.d1o !== undefined) {
-      this.DWd = new RoleSkillTreeItem_1.RoleSkillTreeItem();
-      await this.DWd.CreateThenShowByResourceIdAsync("UiItem_RoleSkillTree", this.GetItem(0), false);
+      this.kWd = new RoleSkillTreeItem_1.RoleSkillTreeItem();
+      this.kWd.SetEnableSwitchBranch(this.d1o.GetRoleSystemMode() !== 2);
+      await this.kWd.CreateThenShowByResourceIdAsync("UiItem_RoleSkillTree", this.GetItem(0), false);
     }
   }
   AddEventListener() {
@@ -102,6 +106,7 @@ class RoleSkillTreeView extends UiTabViewBase_1.UiTabViewBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SkillTreeNodeActive, this.Ldo);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SkillTreeNodeLevelUp, this.Udo);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnAddCommonItemList, this.TTt);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRoleSkillBranchChanged, this.FFf);
   }
   RemoveEventListener() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RoleSystemChangeRole, this.Kco);
@@ -111,6 +116,7 @@ class RoleSkillTreeView extends UiTabViewBase_1.UiTabViewBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SkillTreeNodeActive, this.Ldo);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SkillTreeNodeLevelUp, this.Udo);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnAddCommonItemList, this.TTt);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRoleSkillBranchChanged, this.FFf);
   }
   OnBeforeShow() {
     RoleController_1.RoleController.PlayRoleMontage(5);
@@ -128,16 +134,16 @@ class RoleSkillTreeView extends UiTabViewBase_1.UiTabViewBase {
     LogReportController_1.LogReportController.LogReport(e);
   }
   OnShowUiTabViewFromToggle() {
-    this.DWd?.PlayItemSequence("Sle");
+    this.kWd?.PlayItemSequence("Sle");
   }
   OnShowUiTabViewFromView() {
-    this.DWd?.PlayItemSequence("Start");
+    this.kWd?.PlayItemSequence("Start");
   }
   Refresh() {
-    this.DWd?.UpdateRole(this.dFe);
+    this.kWd?.UpdateRole(this.dFe);
   }
   Tdo() {
-    var t = this.DWd?.GetCurrentSelectedSkillItem();
+    var t = this.kWd?.GetCurrentSelectedSkillItem();
     if (t) {
       var i = t.GetRoleId();
       var s = this.d1o.RoleViewState;
@@ -152,17 +158,22 @@ class RoleSkillTreeView extends UiTabViewBase_1.UiTabViewBase {
       }
     }
   }
-  Acm() {
-    var e = this.DWd?.GetCurrentSelectedSkillItem();
+  tCm() {
+    var e = this.kWd?.GetCurrentSelectedSkillItem();
     if (e) {
       e = e.GetSkillNodeId();
-      this.Lcm.RoleId = this.dFe;
-      this.Lcm.SkillNodeId = e;
-      this.Lcm.RoleViewAgent = this.d1o;
+      this.Z0m.RoleId = this.dFe;
+      this.Z0m.SkillNodeId = e;
+      this.Z0m.RoleViewAgent = this.d1o;
     }
   }
   Ado(e) {
-    this.DWd?.SetSkillInputButtonVisible(e);
+    this.kWd?.SetSkillInputButtonVisible(e);
+  }
+  GetGuideUiItemAndUiItemForShowEx(e) {
+    if (e[0] === "FirstDoubleTag") {
+      return this.kWd?.GetGuideUiItemAndUiItemForShowEx(e);
+    }
   }
 }
 exports.RoleSkillTreeView = RoleSkillTreeView;

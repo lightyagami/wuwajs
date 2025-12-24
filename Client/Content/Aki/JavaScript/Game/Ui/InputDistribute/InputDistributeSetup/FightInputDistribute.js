@@ -23,7 +23,7 @@ class FightInputDistribute extends InputDistributeSetup_1.InputDistributeSetup {
   OnRefresh() {
     var t;
     if (UiLayer_1.UiLayer.UiRootItem.IsUIActiveSelf() || UiLayer_1.UiLayer.WorldSpaceUiRootItem.IsUIActiveSelf()) {
-      if ((t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(62)) && t.IsOnlyAllowFightInput()) {
+      if ((t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(65)) && t.IsOnlyAllowFightInput()) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Input", 67, "[InputDistribute]当前角色处于只允许战斗输入的状态, 设置输入分发Tag为 FightInputRootTag");
         }

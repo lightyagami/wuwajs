@@ -181,6 +181,9 @@ class ConfigMarkItem extends MarkItem_1.MarkItem {
   GamePlayIsFinish() {
     return this.MarkItemEntity.GamePlay.IsFinish;
   }
+  IsGameplayHasReward() {
+    return this.MarkItemEntity.GamePlay.GameplayRewardIdList.length > 0;
+  }
   GamePlayIsDiscover() {
     var t = this.MarkConfig?.RelativeDungeonId ?? 0;
     var e = this.MarkConfig?.RelativeId ?? 0;
@@ -205,9 +208,12 @@ class ConfigMarkItem extends MarkItem_1.MarkItem {
   IsNightMareFlag() {
     return this.MarkConfig.RelativeSubType === 9;
   }
+  IsVisionSettlementFlag() {
+    return this.MarkConfig.RelativeSubType === 10;
+  }
   UpdateViewIcon() {
     var t;
-    if (this.InnerView && !this.IsDestroy && (t = this.InnerView)) {
+    if (this.InnerView && !this.IsDestroy && (t = this.InnerView).ViewInitialized) {
       t.UpdateIcon();
     }
   }

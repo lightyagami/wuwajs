@@ -117,7 +117,11 @@ class VisionRefineChoosePanel extends UiPanelBase_1.UiPanelBase {
   RefreshList(i) {
     this.Mpt.SetSortToggleState(false);
     this.vpt.UpdateData(this.FilterSortGroupId, i);
+    var e = this.vpt.GetUniqueIdByGroupId(this.FilterSortGroupId);
+    this.Mpt.SetFilterUniqueId(e);
     this.Mpt.UpdateData(this.FilterSortGroupId, i);
+    var e = this.Mpt.GetUniqueIdByGroupId(this.FilterSortGroupId);
+    this.vpt.SetSortUniqueId(e);
   }
   ShowTipsComponent(i) {
     if (i) {

@@ -44,7 +44,7 @@ class QuestTreeTextNodeItem extends QuestTreeNodeItemLoader_1.QuestTreeNodeItemB
         ControllerHolder_1.ControllerHolder.UiNavigationNewController.SetNavigationFocusForView(this.RootItem, true);
       }
     };
-    this.Vem = () => {
+    this.Brm = () => {
       if (this.Pe) {
         this.nOe(this.Pe);
       }
@@ -59,12 +59,12 @@ class QuestTreeTextNodeItem extends QuestTreeNodeItemLoader_1.QuestTreeNodeItemB
     this.GetItem(8).SetUIActive(false);
     ModelManager_1.ModelManager.QuestTreeModel.ViewModelChapter.AddOnSelectedDataChange(this.jDd);
     ModelManager_1.ModelManager.QuestTreeModel.ViewModelChapter.AddOnLocatingNode(this.HDd);
-    ModelManager_1.ModelManager.QuestTreeModel.ViewModelChapter.AddOnUpdateNode(this.Vem);
+    ModelManager_1.ModelManager.QuestTreeModel.ViewModelChapter.AddOnUpdateNode(this.Brm);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.QuestTreeNodeDataUpdate, this.AOe);
   }
   OnBeforeDestroy() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.QuestTreeNodeDataUpdate, this.AOe);
-    ModelManager_1.ModelManager.QuestTreeModel.ViewModelChapter.RemoveOnUpdateNode(this.Vem);
+    ModelManager_1.ModelManager.QuestTreeModel.ViewModelChapter.RemoveOnUpdateNode(this.Brm);
     ModelManager_1.ModelManager.QuestTreeModel.ViewModelChapter.RemoveOnLocatingNode(this.HDd);
     ModelManager_1.ModelManager.QuestTreeModel.ViewModelChapter.RemoveOnSelectedDataChange(this.jDd);
   }

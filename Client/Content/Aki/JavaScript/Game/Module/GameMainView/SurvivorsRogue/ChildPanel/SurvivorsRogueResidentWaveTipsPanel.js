@@ -12,11 +12,11 @@ const SurvivorsRogueTipsPanelBase_1 = require("./SurvivorsRogueTipsPanelBase");
 class SurvivorsRogueResidentWaveTipsPanel extends SurvivorsRogueTipsPanelBase_1.SurvivorsRogueTipsPanelBase {
   constructor() {
     super(...arguments);
-    this.mKd = undefined;
+    this.pKd = undefined;
     this.Xbd = undefined;
-    this.Clm = () => {
+    this.Ldm = () => {
       var e = ModelManager_1.ModelManager.SurvivorsRogueModel.IsEndlessWave;
-      LguiUtil_1.LguiUtil.SetLocalTextNew(this.mKd, e ? "SurvivorsCombat_EndlessMode" : "SurvivorsCombat_WavePeriod");
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.pKd, e ? "SurvivorsCombat_EndlessMode" : "SurvivorsCombat_WavePeriod");
       if (e) {
         this.Xbd.SetUIActive(false);
       } else {
@@ -30,20 +30,20 @@ class SurvivorsRogueResidentWaveTipsPanel extends SurvivorsRogueTipsPanelBase_1.
   }
   OnStart() {
     super.OnStart();
-    this.mKd = this.GetText(0);
+    this.pKd = this.GetText(0);
     this.Xbd = this.GetText(1);
   }
   OnAddEventListener() {
-    ModelManager_1.ModelManager.SurvivorsRogueModel.BattleData.BehaviorDelegate.AddTreeVarUpdateDelegate(IQuest_1.ESurvivorsRougeSystemVarType.Batch, this.Clm);
-    ModelManager_1.ModelManager.SurvivorsRogueModel.BattleData.BehaviorDelegate.AddTreeVarUpdateDelegate(IQuest_1.ESurvivorsRougeSystemVarType.EndlessBatchLimit, this.Clm);
+    ModelManager_1.ModelManager.SurvivorsRogueModel.BattleData.BehaviorDelegate.AddTreeVarUpdateDelegate(IQuest_1.ESurvivorsRougeSystemVarType.Batch, this.Ldm);
+    ModelManager_1.ModelManager.SurvivorsRogueModel.BattleData.BehaviorDelegate.AddTreeVarUpdateDelegate(IQuest_1.ESurvivorsRougeSystemVarType.EndlessBatchLimit, this.Ldm);
   }
   OnRemoveEventListener() {
-    ModelManager_1.ModelManager.SurvivorsRogueModel.BattleData.BehaviorDelegate.RemoveTreeVarUpdateDelegate(IQuest_1.ESurvivorsRougeSystemVarType.Batch, this.Clm);
-    ModelManager_1.ModelManager.SurvivorsRogueModel.BattleData.BehaviorDelegate.RemoveTreeVarUpdateDelegate(IQuest_1.ESurvivorsRougeSystemVarType.EndlessBatchLimit, this.Clm);
+    ModelManager_1.ModelManager.SurvivorsRogueModel.BattleData.BehaviorDelegate.RemoveTreeVarUpdateDelegate(IQuest_1.ESurvivorsRougeSystemVarType.Batch, this.Ldm);
+    ModelManager_1.ModelManager.SurvivorsRogueModel.BattleData.BehaviorDelegate.RemoveTreeVarUpdateDelegate(IQuest_1.ESurvivorsRougeSystemVarType.EndlessBatchLimit, this.Ldm);
   }
   OnBeforeShow() {
     super.OnBeforeShow();
-    this.Clm();
+    this.Ldm();
   }
 }
 exports.SurvivorsRogueResidentWaveTipsPanel = SurvivorsRogueResidentWaveTipsPanel;

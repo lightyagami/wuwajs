@@ -22,7 +22,7 @@ class RoleTriggerController extends ControllerBase_1.ControllerBase {
     return this.Lir;
   }
   static GetMyRolePhysicInteract() {
-    return this.UCm;
+    return this.hbm;
   }
   static GetMyRoleTriggerOrUndefined() {
     return this.Lir;
@@ -54,9 +54,9 @@ class RoleTriggerController extends ControllerBase_1.ControllerBase {
       this.Lir = undefined;
     }
     this.xir = undefined;
-    if (this.UCm?.IsValid()) {
-      ActorSystem_1.ActorSystem.Put("RoleTriggerController.ClearMyRoleTrigger", this.UCm);
-      this.UCm = undefined;
+    if (this.hbm?.IsValid()) {
+      ActorSystem_1.ActorSystem.Put("RoleTriggerController.ClearMyRoleTrigger", this.hbm);
+      this.hbm = undefined;
     }
   }
   static Koh() {
@@ -80,9 +80,9 @@ class RoleTriggerController extends ControllerBase_1.ControllerBase {
       RoleTriggerController.xir.SetCapsuleRadius(o + FIX_PHY_RADIUS, true);
       RoleTriggerController.xir.SetCollisionProfileName(CharacterNameDefines_1.CharacterNameDefines.ROLE_TRIGGER_NAME, false);
       if (Platform_1.Platform.IsPcPlatform()) {
-        RoleTriggerController.UCm = ActorSystem_1.ActorSystem.Get(UE.BP_PhysicInteractProxy_C.StaticClass(), e);
-        RoleTriggerController.UCm.SetActorHiddenInGame(true);
-        RoleTriggerController.UCm?.SetRadiusAndHeight(o + FIX_PHY_RADIUS, r);
+        RoleTriggerController.hbm = ActorSystem_1.ActorSystem.Get(UE.BP_PhysicInteractProxy_C.StaticClass(), e);
+        RoleTriggerController.hbm.SetActorHiddenInGame(true);
+        RoleTriggerController.hbm?.SetRadiusAndHeight(o + FIX_PHY_RADIUS, r);
       }
       RoleTriggerController.OnTick(0);
       ModelManager_1.ModelManager.GameModeModel?.AttachStreamingSourcesToActor(RoleTriggerController.Lir);
@@ -90,9 +90,7 @@ class RoleTriggerController extends ControllerBase_1.ControllerBase {
     }
   }
   static OnTick(e) {
-    if (this.IsInitTrigger && this.Lir?.IsValid() && Global_1.Global.BaseCharacter) {
-      this.UpdateTransform();
-    }
+    this.UpdateTransform();
   }
   static UpdateRoleTriggerHalfHeightAndRadius(e, r, o) {
     if (RoleTriggerController.sxl) {
@@ -103,7 +101,7 @@ class RoleTriggerController extends ControllerBase_1.ControllerBase {
         RoleTriggerController.xir.SetCapsuleRadius(e, o);
         RoleTriggerController.xir.SetCapsuleHalfHeight(r, o);
         if (Platform_1.Platform.IsPcPlatform()) {
-          RoleTriggerController.UCm?.SetRadiusAndHeight(e + FIX_PHY_RADIUS, r);
+          RoleTriggerController.hbm?.SetRadiusAndHeight(e + FIX_PHY_RADIUS, r);
         }
       } else {
         RoleTriggerController.Koh();
@@ -111,8 +109,8 @@ class RoleTriggerController extends ControllerBase_1.ControllerBase {
     }
   }
   static UpdateTransform() {
-    if (this.IsInitTrigger && this.Lir?.IsValid() && Global_1.Global.BaseCharacter && (this.Lir.D_K2_SetActorTransform(Global_1.Global.BaseCharacter.D_GetTransform(), false, undefined, true), Platform_1.Platform.IsPcPlatform()) && this.UCm?.IsValid()) {
-      this.UCm.D_K2_SetActorTransform(Global_1.Global.BaseCharacter.D_GetTransform(), false, undefined, false);
+    if (this.IsInitTrigger && this.Lir?.IsValid() && Global_1.Global.BaseCharacter && (this.Lir.D_K2_SetActorTransform(Global_1.Global.BaseCharacter.D_GetTransform(), false, undefined, true), Platform_1.Platform.IsPcPlatform()) && this.hbm?.IsValid()) {
+      this.hbm.D_K2_SetActorTransform(Global_1.Global.BaseCharacter.D_GetTransform(), false, undefined, false);
     }
   }
   static UpdateOverlaps() {
@@ -124,7 +122,7 @@ class RoleTriggerController extends ControllerBase_1.ControllerBase {
 (exports.RoleTriggerController = RoleTriggerController).IsInitTrigger = false;
 RoleTriggerController.Lir = undefined;
 RoleTriggerController.xir = undefined;
-RoleTriggerController.UCm = undefined;
+RoleTriggerController.hbm = undefined;
 RoleTriggerController.sxl = false;
 RoleTriggerController.uMe = () => {
   RoleTriggerController.Pir();
@@ -146,6 +144,6 @@ RoleTriggerController.T1u = (e, r, o, l) => {
 };
 RoleTriggerController.xie = (e, r) => {
   if (RoleTriggerController.sxl && (RoleTriggerController.xir && RoleTriggerController.xir.IsValid() || (RoleTriggerController.IsInitTrigger = false), RoleTriggerController.IsInitTrigger || RoleTriggerController.Koh(), e?.Valid) && (e = e.Entity.GetComponent(3)?.Actor)?.IsValid() && (RoleTriggerController.xir?.SetCapsuleHalfHeight(e.CapsuleComponent.CapsuleHalfHeight + TRIGGER_HALF_HEIGHT_DEVIATION, false), RoleTriggerController.xir?.SetCapsuleRadius(e.CapsuleComponent.CapsuleRadius, false), Platform_1.Platform.IsPcPlatform())) {
-    RoleTriggerController.UCm?.SetRadiusAndHeight(e.CapsuleComponent.CapsuleRadius + FIX_PHY_RADIUS, e.CapsuleComponent.CapsuleHalfHeight);
+    RoleTriggerController.hbm?.SetRadiusAndHeight(e.CapsuleComponent.CapsuleRadius + FIX_PHY_RADIUS, e.CapsuleComponent.CapsuleHalfHeight);
   }
 }; //# sourceMappingURL=RoleTriggerController.js.map

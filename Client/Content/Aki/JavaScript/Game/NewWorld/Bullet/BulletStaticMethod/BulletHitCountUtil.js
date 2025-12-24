@@ -13,7 +13,7 @@ class BulletHitCountUtil {
     if (!e) {
       return false;
     }
-    e = e.GetComponent(56)?.GetAttributeHolderExceptVisionSummon() ?? e;
+    e = e.GetComponent(59)?.GetAttributeHolderExceptVisionSummon() ?? e;
     i = t.BulletDataMain;
     if (i.Base.VictimCount >= 0 && t.EntityHitCount.size >= i.Base.VictimCount && !t.EntityHitCount.has(e.Id)) {
       return false;

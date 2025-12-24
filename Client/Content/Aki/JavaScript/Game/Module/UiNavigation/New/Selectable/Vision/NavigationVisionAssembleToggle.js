@@ -41,7 +41,7 @@ class NavigationVisionAssembleToggle extends NavigationToggle_1.NavigationToggle
   r4_() {
     for (const o of this.Listener.GetNavigationGroup().ActiveListenerList) {
       if (o.HasLoopScrollView()) {
-        o.ScrollView.ScrollToGridIndex(0);
+        (o.ScrollProxy?.ScrollView).ScrollToGridIndex(0);
         break;
       }
     }
@@ -55,7 +55,7 @@ class NavigationVisionAssembleToggle extends NavigationToggle_1.NavigationToggle
     var o = ModelManager_1.ModelManager.VisionEquipGroupModel.FilterDataLength;
     for (const e of this.Listener.GetNavigationGroup().ActiveListenerList) {
       if (e.HasLoopScrollView()) {
-        e.ScrollView.ScrollToGridIndex(o - 1);
+        (e.ScrollProxy?.ScrollView).ScrollToGridIndex(o - 1);
         break;
       }
     }

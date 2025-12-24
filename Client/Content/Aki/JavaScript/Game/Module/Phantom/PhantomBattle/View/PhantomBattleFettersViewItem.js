@@ -139,7 +139,11 @@ class PhantomBattleFettersViewItem extends UiPanelBase_1.UiPanelBase {
   h8i() {
     var e = ModelManager_1.ModelManager.CalabashModel.GetPhantomFetterGroupList();
     this.vpt.UpdateData(this.Z6i, e, this.dFe);
+    var t = this.vpt.GetUniqueIdByGroupId(this.Z6i);
+    this.Mpt.SetFilterUniqueId(t);
     this.Mpt.UpdateData(this.Z6i, e, this.dFe);
+    var t = this.Mpt.GetUniqueIdByGroupId(this.Z6i);
+    this.vpt.SetSortUniqueId(t);
   }
   s8i(e) {
     this.GetItem(8).SetUIActive(e.length > 0);
