@@ -33,5 +33,5 @@ let PawnInteractBaseComponent = class PawnInteractBaseComponent extends EntityCo
   }
   get OwnerActor() {}
 };
-PawnInteractBaseComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(127)], PawnInteractBaseComponent);
+PawnInteractBaseComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(129)], PawnInteractBaseComponent);
 exports.PawnInteractBaseComponent = PawnInteractBaseComponent; //# sourceMappingURL=PawnInteractBaseComponent.js.map

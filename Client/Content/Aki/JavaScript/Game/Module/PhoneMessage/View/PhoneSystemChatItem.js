@@ -7,15 +7,19 @@ exports.EndLineChatItem = exports.EndLineChatGridData = exports.RewardChatItem =
 const UE = require("ue");
 const CustomPromise_1 = require("../../../../Core/Common/CustomPromise");
 const Info_1 = require("../../../../Core/Common/Info");
+const Log_1 = require("../../../../Core/Common/Log");
 const BirthDayByItemId_1 = require("../../../../Core/Define/ConfigQuery/BirthDayByItemId");
 const PhoneMessageAttachmentById_1 = require("../../../../Core/Define/ConfigQuery/PhoneMessageAttachmentById");
+const ResourceSystem_1 = require("../../../../Core/Resource/ResourceSystem");
 const StringUtils_1 = require("../../../../Core/Utils/StringUtils");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const PublicUtil_1 = require("../../../Common/PublicUtil");
+const GlobalData_1 = require("../../../GlobalData");
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
+const UiAsyncTask_1 = require("../../../Ui/Base/UiAsyncTask");
 const UiManager_1 = require("../../../Ui/UiManager");
 const CommonItemSmallItemGrid_1 = require("../../Common/ItemGrid/CommonItemSmallItemGrid");
 const LevelSequencePlayer_1 = require("../../Common/LevelSequencePlayer");
@@ -45,14 +49,14 @@ class PhoneMsgSelfChatItem extends SyncGridProxyAbstract_1.SyncGridProxyAbstract
     super(...arguments);
     this.PhoneMsgChatData = undefined;
     this.LevelSequencePlayer = undefined;
-    this.G4f = [];
-    this.F4f = [];
-    this.Saf = undefined;
-    this.yaf = undefined;
-    this.vWf = 0;
-    this.yWf = 0;
-    this.SWf = 0;
-    this.MWf = 0;
+    this.cWf = [];
+    this.dWf = [];
+    this.Klf = undefined;
+    this.Qlf = undefined;
+    this.ung = 0;
+    this.cng = 0;
+    this.dng = 0;
+    this.mng = 0;
     this.OnOptionItemClickDelegate = undefined;
     this.RefreshChatDialogShow = () => {
       var t = ModelManager_1.ModelManager.PhoneMsgModel.CurrentUsingChatDialogId;
@@ -62,27 +66,27 @@ class PhoneMsgSelfChatItem extends SyncGridProxyAbstract_1.SyncGridProxyAbstract
         this.SetSpriteByPath(t, this.GetSprite(10), false);
       }
     };
-    this.geg = () => {
+    this.MTg = () => {
       var t = ModelManager_1.ModelManager.FunctionModel.GetPlayerName();
       if (t) {
         this.PhoneMsgChatData.SpeakerName = t;
         this.GetText(2).SetText(t);
       }
     };
-    this.N4f = () => {
+    this.mWf = () => {
       var t = new PhoneMsgEmojiItem_1.PhoneMsgEmojiItem();
-      t.OnClickDelegate = this.V4f;
+      t.OnClickDelegate = this.fWf;
       return t;
     };
-    this.H4f = () => {
+    this.gWf = () => {
       var t = new PhoneMsgPhraseItem_1.PhoneMsgPhraseItem();
-      t.OnClickDelegate = this.V4f;
+      t.OnClickDelegate = this.fWf;
       return t;
     };
-    this.V4f = t => {
+    this.fWf = t => {
       this.OnOptionItemClickDelegate?.(this.GridIndex, t);
     };
-    this.haf = () => {
+    this.Blf = () => {
       var t = this.PhoneMsgChatData?.ContentNum ?? 0;
       if (!(t <= 0)) {
         ControllerHolder_1.ControllerHolder.PhoneMsgController.OpenAttachmentImgView(t);
@@ -91,7 +95,7 @@ class PhoneMsgSelfChatItem extends SyncGridProxyAbstract_1.SyncGridProxyAbstract
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UITexture], [2, UE.UIText], [3, UE.UIItem], [4, UE.UIText], [5, UE.UIItem], [6, UE.UITexture], [7, UE.UIItem], [8, UE.UIButtonComponent], [9, UE.UITexture], [10, UE.UISprite], [11, UE.UIItem], [12, UE.UIScrollViewWithScrollbarComponent], [13, UE.UILayoutBase], [14, UE.UIItem], [15, UE.UIItem], [16, UE.UIScrollViewWithScrollbarComponent], [17, UE.UILayoutBase], [18, UE.UIItem], [19, UE.UIItem]];
-    this.BtnBindInfo = [[8, this.haf]];
+    this.BtnBindInfo = [[8, this.Blf]];
   }
   OnStart() {
     this.LevelSequencePlayer = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
@@ -101,20 +105,20 @@ class PhoneMsgSelfChatItem extends SyncGridProxyAbstract_1.SyncGridProxyAbstract
     t.richText = true;
     e.bGameRichText = true;
     e.richText = true;
-    this.yaf = new GenericLayout_1.GenericLayout(this.GetLayoutBase(17), this.N4f);
-    this.Saf = new GenericLayout_1.GenericLayout(this.GetLayoutBase(13), this.H4f);
+    this.Qlf = new GenericLayout_1.GenericLayout(this.GetLayoutBase(17), this.mWf);
+    this.Klf = new GenericLayout_1.GenericLayout(this.GetLayoutBase(13), this.gWf);
     var t = this.GetItem(19);
-    this.vWf = t.Alpha;
-    this.yWf = t.GetAnchorOffsetY();
+    this.ung = t.Alpha;
+    this.cng = t.GetAnchorOffsetY();
     var e = this.GetItem(15);
-    this.SWf = e.Alpha;
-    this.MWf = e.GetStretchBottom();
+    this.dng = e.Alpha;
+    this.mng = e.GetStretchBottom();
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPhoneMsgChatShowChange, this.RefreshChatDialogShow);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnNameChange, this.geg);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnNameChange, this.MTg);
   }
   OnBeforeDestroy() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPhoneMsgChatShowChange, this.RefreshChatDialogShow);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnNameChange, this.geg);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnNameChange, this.MTg);
   }
   Refresh(t) {
     this.PhoneMsgChatData = t;
@@ -130,15 +134,15 @@ class PhoneMsgSelfChatItem extends SyncGridProxyAbstract_1.SyncGridProxyAbstract
   UpdateOptionData() {
     var t = this.PhoneMsgChatData.TalkItem.Options;
     if (t && t.length !== 0) {
-      this.G4f.length = 0;
-      this.F4f.length = 0;
+      this.cWf.length = 0;
+      this.dWf.length = 0;
       for (const e of t) {
         if (e.TypeParams) {
           if (e.TypeParams.Type === "PhoneMessageEmoji") {
-            this.F4f.push(e.TypeParams.EmojiId ?? 0);
+            this.dWf.push(e.TypeParams.EmojiId ?? 0);
           }
         } else {
-          this.G4f.push(PublicUtil_1.PublicUtil.GetFlowConfigLocalText(e.TidTalkOption) ?? "");
+          this.cWf.push(PublicUtil_1.PublicUtil.GetFlowConfigLocalText(e.TidTalkOption) ?? "");
         }
       }
     }
@@ -177,10 +181,10 @@ class PhoneMsgSelfChatItem extends SyncGridProxyAbstract_1.SyncGridProxyAbstract
         this.SetTextureByPath(t.Thumbnail, this.GetTexture(9));
         break;
       case 8:
-        this.Saf.RefreshByData(this.G4f);
+        this.Klf.RefreshByData(this.cWf);
         break;
       case 9:
-        this.yaf.RefreshByData(this.F4f);
+        this.Qlf.RefreshByData(this.dWf);
     }
   }
   RefreshDisplayItem() {
@@ -223,17 +227,17 @@ class PhoneMsgSelfChatItem extends SyncGridProxyAbstract_1.SyncGridProxyAbstract
     await this.LevelSequencePlayer.PlaySequenceAsync(this.GetChatContentSequenceName(t), e);
     await this.PlayRedDotAnimationAsync();
     if (Info_1.Info.IsInGamepad() && !t) {
-      this.dYf();
+      this.Xug();
     }
   }
-  dYf() {
+  Xug() {
     var t;
     var e = this.PhoneMsgChatData.ContentType;
     if (e === 8) {
-      if ((t = this.Saf.GetLayoutItemList()[0]) && (t = t.GetRootItem(), t = ControllerHolder_1.ControllerHolder.UiNavigationNewController.GetNoneTagNavigateItemByUiItem(t))) {
+      if ((t = this.Klf.GetLayoutItemList()[0]) && (t = t.GetRootItem(), t = ControllerHolder_1.ControllerHolder.UiNavigationNewController.GetNoneTagNavigateItemByUiItem(t))) {
         ControllerHolder_1.ControllerHolder.UiNavigationNewController.SetNavigationFocusForView(t, true);
       }
-    } else if (e === 9 && (t = this.yaf.GetLayoutItemList()[0]) && (e = t.GetRootItem(), t = ControllerHolder_1.ControllerHolder.UiNavigationNewController.GetNoneTagNavigateItemByUiItem(e))) {
+    } else if (e === 9 && (t = this.Qlf.GetLayoutItemList()[0]) && (e = t.GetRootItem(), t = ControllerHolder_1.ControllerHolder.UiNavigationNewController.GetNoneTagNavigateItemByUiItem(e))) {
       ControllerHolder_1.ControllerHolder.UiNavigationNewController.SetNavigationFocusForView(t, true);
     }
   }
@@ -286,13 +290,13 @@ class PhoneMsgSelfChatItem extends SyncGridProxyAbstract_1.SyncGridProxyAbstract
   }
   ResetTextOptionAnimItem() {
     var t = this.GetItem(19);
-    t.SetAlpha(this.vWf);
-    t.SetAnchorOffsetY(this.yWf);
+    t.SetAlpha(this.ung);
+    t.SetAnchorOffsetY(this.cng);
   }
   ResetEmojiOptionAnimItem() {
     var t = this.GetItem(15);
-    t.SetAlpha(this.SWf);
-    t.SetStretchBottom(this.MWf);
+    t.SetAlpha(this.dng);
+    t.SetStretchBottom(this.mng);
   }
 }
 exports.PhoneMsgSelfChatItem = PhoneMsgSelfChatItem;
@@ -309,7 +313,7 @@ class PhoneMsgOtherChatItem extends SyncGridProxyAbstract_1.SyncGridProxyAbstrac
     super(...arguments);
     this.PhoneMsgChatData = undefined;
     this.LevelSequencePlayer = undefined;
-    this.haf = () => {
+    this.Blf = () => {
       var t = this.PhoneMsgChatData?.ContentNum ?? 0;
       if (!(t <= 0)) {
         ControllerHolder_1.ControllerHolder.PhoneMsgController.OpenAttachmentImgView(t);
@@ -318,7 +322,7 @@ class PhoneMsgOtherChatItem extends SyncGridProxyAbstract_1.SyncGridProxyAbstrac
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UITexture], [2, UE.UIText], [3, UE.UIItem], [4, UE.UIText], [5, UE.UIItem], [6, UE.UITexture], [7, UE.UIItem], [8, UE.UIButtonComponent], [9, UE.UITexture], [10, UE.UISprite]];
-    this.BtnBindInfo = [[8, this.haf]];
+    this.BtnBindInfo = [[8, this.Blf]];
   }
   OnStart() {
     this.LevelSequencePlayer = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
@@ -446,7 +450,7 @@ exports.TipsChatGridData = TipsChatGridData;
 class TipsChatItem extends SyncGridProxyAbstract_1.SyncGridProxyAbstract {
   constructor() {
     super(...arguments);
-    this.aaf = undefined;
+    this.xlf = undefined;
     this.SPe = undefined;
   }
   OnRegisterComponent() {
@@ -462,11 +466,11 @@ class TipsChatItem extends SyncGridProxyAbstract_1.SyncGridProxyAbstract {
     e.richText = true;
   }
   Refresh(t) {
-    this.aaf = t;
+    this.xlf = t;
     this.GetItem(0).SetUIActive(true);
     this.GetText(1).SetUIActive(true);
     this.GetText(2).SetUIActive(false);
-    this.GetText(1).SetText(this.aaf.ContentStr);
+    this.GetText(1).SetText(this.xlf.ContentStr);
   }
   async PlayTipsAnimationAsync() {
     var t = new CustomPromise_1.CustomPromise();
@@ -488,38 +492,38 @@ exports.TaskChatGridData = TaskChatGridData;
 class TaskChatItem extends SyncGridProxyAbstract_1.SyncGridProxyAbstract {
   constructor() {
     super(...arguments);
-    this.aaf = undefined;
-    this._af = undefined;
+    this.xlf = undefined;
+    this.qlf = undefined;
     this.SPe = undefined;
-    this.uaf = () => {
+    this.Olf = () => {
       var t;
       var e;
-      if (this._af && this.aaf) {
-        UiManager_1.UiManager.OpenView("QuestView", this._af.Id);
-        t = ConfigManager_1.ConfigManager.PhoneMsgConfig.GetPhoneMsgConfig(this.aaf.ShortMessageId);
-        (e = new LogReportDefine_1.OnJumpInShortMessageLogEvent()).i_id = this._af.Id;
-        e.i_type = this.aaf.IsGroupChat ? 1 : 2;
+      if (this.qlf && this.xlf) {
+        UiManager_1.UiManager.OpenView("QuestView", this.qlf.Id);
+        t = ConfigManager_1.ConfigManager.PhoneMsgConfig.GetPhoneMsgConfig(this.xlf.ShortMessageId);
+        (e = new LogReportDefine_1.OnJumpInShortMessageLogEvent()).i_id = this.qlf.Id;
+        e.i_type = this.xlf.IsGroupChat ? 1 : 2;
         e.i_role_id = t.WhichChat;
-        e.l_received_time = this.aaf.UnLockTime.low ?? 0;
+        e.l_received_time = this.xlf.UnLockTime.low ?? 0;
         e.i_trigger_type = 1;
-        e.i_config_id = this._af.Id;
+        e.i_config_id = this.qlf.Id;
         ControllerHolder_1.ControllerHolder.LogReportController.LogReport(e);
       }
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UISprite], [1, UE.UISprite], [2, UE.UIText], [3, UE.UIText], [4, UE.UIButtonComponent], [5, UE.UISprite]];
-    this.BtnBindInfo = [[4, this.uaf]];
+    this.BtnBindInfo = [[4, this.Olf]];
   }
   OnStart() {
     this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
   }
   Refresh(t) {
     var e;
-    this.aaf = t;
-    this._af = ModelManager_1.ModelManager.QuestNewModel.GetQuestConfig(t.QuestId);
-    if (this._af) {
-      this.caf();
+    this.xlf = t;
+    this.qlf = ModelManager_1.ModelManager.QuestNewModel.GetQuestConfig(t.QuestId);
+    if (this.qlf) {
+      this.Glf();
       e = (t = ModelManager_1.ModelManager.QuestNewModel.GetQuestState(t.QuestId)) === 3;
       t = t === 2;
       this.GetButton(4).SetSelfInteractive(t);
@@ -533,10 +537,10 @@ class TaskChatItem extends SyncGridProxyAbstract_1.SyncGridProxyAbstract {
       }
     }
   }
-  caf() {
+  Glf() {
     var t;
-    if (this._af && (LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(3), this._af.TidName), t = ConfigManager_1.ConfigManager.QuestNewConfig.GetQuestTypeConfig(this._af.Type))) {
-      t = QuestUtil_1.QuestUtil.GetQuestMarkId(t.MainId, this._af.Id) ?? 0;
+    if (this.qlf && (LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(3), this.qlf.TidName), t = ConfigManager_1.ConfigManager.QuestNewConfig.GetQuestTypeConfig(this.qlf.Type))) {
+      t = QuestUtil_1.QuestUtil.GetQuestMarkId(t.MainId, this.qlf.Id) ?? 0;
       t = ConfigManager_1.ConfigManager.QuestNewConfig.GetQuestTypeMark(t);
       this.SetSpriteByPath(t, this.GetSprite(1), false);
     }
@@ -561,18 +565,19 @@ exports.BirthdayChatGridData = BirthdayChatGridData;
 class BirthdayChatItem extends SyncGridProxyAbstract_1.SyncGridProxyAbstract {
   constructor() {
     super(...arguments);
-    this.aaf = undefined;
+    this.xlf = undefined;
     this.SPe = undefined;
-    this.uaf = () => {
+    this.oxg = new Map();
+    this.Olf = () => {
       var t;
-      var e = this.aaf.BirthdayCardItemId;
+      var e = this.xlf.BirthdayCardItemId;
       if (e) {
         ControllerHolder_1.ControllerHolder.BirthdayController.UseBirthdayItem(e);
-        e = ConfigManager_1.ConfigManager.PhoneMsgConfig.GetPhoneMsgConfig(this.aaf.ShortMessageId);
-        (t = new LogReportDefine_1.OnJumpInShortMessageLogEvent()).i_id = this.aaf.ShortMessageId;
-        t.i_type = this.aaf.IsGroupChat ? 1 : 2;
+        e = ConfigManager_1.ConfigManager.PhoneMsgConfig.GetPhoneMsgConfig(this.xlf.ShortMessageId);
+        (t = new LogReportDefine_1.OnJumpInShortMessageLogEvent()).i_id = this.xlf.ShortMessageId;
+        t.i_type = this.xlf.IsGroupChat ? 1 : 2;
         t.i_role_id = e.WhichChat;
-        t.l_received_time = ModelManager_1.ModelManager.PhoneMsgModel.GetPhoneMsgShortMsgDataByShortMsgId(this.aaf.ShortMessageId)?.UnLockTime.low ?? 0;
+        t.l_received_time = ModelManager_1.ModelManager.PhoneMsgModel.GetPhoneMsgShortMsgDataByShortMsgId(this.xlf.ShortMessageId)?.UnLockTime.low ?? 0;
         t.i_trigger_type = 2;
         ControllerHolder_1.ControllerHolder.LogReportController.LogReport(t);
       }
@@ -580,7 +585,7 @@ class BirthdayChatItem extends SyncGridProxyAbstract_1.SyncGridProxyAbstract {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UITexture], [1, UE.UIText], [2, UE.UIText], [3, UE.UIButtonComponent], [4, UE.UISprite], [5, UE.UITexture], [6, UE.UITextureTransitionComponent], [7, UE.UITextureTransitionComponent]];
-    this.BtnBindInfo = [[3, this.uaf]];
+    this.BtnBindInfo = [[3, this.Olf]];
   }
   OnStart() {
     this.GetSprite(4).SetUIActive(false);
@@ -588,23 +593,81 @@ class BirthdayChatItem extends SyncGridProxyAbstract_1.SyncGridProxyAbstract {
     this.GetButton(3).RootUIComp.SetUIActive(true);
   }
   Refresh(t) {
-    this.aaf = t;
     var e;
-    var i;
-    var t = BirthDayByItemId_1.configBirthDayByItemId.GetConfig(t.BirthdayCardItemId);
+    this.xlf = t;
+    if (BirthDayByItemId_1.configBirthDayByItemId.GetConfig(t.BirthdayCardItemId)) {
+      e = new UiAsyncTask_1.UiAsyncTask("BirthdayChatItem.UpdateBirthdayItemAs", async () => {
+        await this.nxg(t);
+      });
+      this.RunAsyncTask(e);
+    }
+  }
+  async nxg(t) {
+    t = BirthDayByItemId_1.configBirthDayByItemId.GetConfig(t.BirthdayCardItemId);
     if (t) {
-      e = this.GetUiTextureTransitionComponent(6);
-      i = this.GetUiTextureTransitionComponent(7);
-      this.SetTextureTransitionByPath(t.PhoneMsgCakeBg, e, 0);
-      this.SetTextureTransitionByPath(t.PhoneMsgCakeBg, e, 2);
-      this.SetTextureTransitionByPath(t.PhoneMsgCakeBg, e, 3);
-      this.SetTextureTransitionByPath(t.PhoneMsgHighLightCakeBg, e, 1);
-      this.SetTextureTransitionByPath(t.PhoneMsgCakeIcon, i, 0);
-      this.SetTextureTransitionByPath(t.PhoneMsgCakeIcon, i, 2);
-      this.SetTextureTransitionByPath(t.PhoneMsgCakeIcon, i, 3);
-      this.SetTextureTransitionByPath(t.PhoneMsgCakeIcon, i, 1);
-      this.SetTextureByPath(t.PhoneMsgCakeBg, this.GetTexture(5));
-      this.SetTextureByPath(t.PhoneMsgCakeIcon, this.GetTexture(0));
+      var e = this.GetUiTextureTransitionComponent(6);
+      var i = this.GetUiTextureTransitionComponent(7);
+      var s = new Set();
+      s.add(t.PhoneMsgCakeBg);
+      s.add(t.PhoneMsgHighLightCakeBg);
+      s.add(t.PhoneMsgCakeIcon);
+      const h = new Map();
+      var s = Array.from(s).map(async t => {
+        var e = await this.sxg(t);
+        if (e) {
+          h.set(t, e);
+        }
+      });
+      await Promise.all(s);
+      var s = h.get(t.PhoneMsgCakeBg);
+      var r = h.get(t.PhoneMsgHighLightCakeBg);
+      var t = h.get(t.PhoneMsgCakeIcon);
+      if (s && e.IsValid()) {
+        e.SetStateTexture(0, s);
+        e.SetStateTexture(2, s);
+        e.SetStateTexture(3, s);
+      }
+      if (r && e.IsValid()) {
+        e.SetStateTexture(1, r);
+      }
+      if (t && i.IsValid()) {
+        i.SetStateTexture(0, t);
+        i.SetStateTexture(2, t);
+        i.SetStateTexture(3, t);
+        i.SetStateTexture(1, t);
+      }
+      if (s) {
+        this.GetTexture(5).SetTexture(s);
+      }
+      if (t) {
+        this.GetTexture(0).SetTexture(t);
+      }
+    }
+  }
+  async sxg(s) {
+    var t;
+    if (GlobalData_1.GlobalData.World) {
+      if ((t = this.oxg.get(s)) !== undefined && t !== ResourceSystem_1.ResourceSystem.InvalidId) {
+        ResourceSystem_1.ResourceSystem.CancelAsyncLoad(t);
+      }
+      return new Promise(i => {
+        var t = ResourceSystem_1.ResourceSystem.LoadAsync(s, UE.Texture, (t, e) => {
+          this.oxg.delete(s);
+          if (t && t.IsValid()) {
+            i(t);
+          } else {
+            if (Log_1.Log.CheckError()) {
+              Log_1.Log.Error("UiImageSetting", 78, "加载Texture失败", ["图片路径", e]);
+            }
+            i(undefined);
+          }
+        }, 102);
+        if (t !== ResourceSystem_1.ResourceSystem.InvalidId) {
+          this.oxg.set(s, t);
+        } else {
+          i(undefined);
+        }
+      });
     }
   }
   async PlayBirthdayAnimationAsync() {
@@ -613,6 +676,14 @@ class BirthdayChatItem extends SyncGridProxyAbstract_1.SyncGridProxyAbstract {
   }
   StopBirthdayAnimation() {
     this.SPe.StopSequenceByKey("In", false, true);
+  }
+  OnBeforeDestroy() {
+    for (const t of this.oxg.values()) {
+      if (t !== ResourceSystem_1.ResourceSystem.InvalidId) {
+        ResourceSystem_1.ResourceSystem.CancelAsyncLoad(t);
+      }
+    }
+    this.oxg.clear();
   }
 }
 exports.BirthdayChatItem = BirthdayChatItem;
@@ -638,13 +709,13 @@ class RewardChatItem extends SyncGridProxyAbstract_1.SyncGridProxyAbstract {
     this.W2e = () => {
       return new CommonItemSmallItemGrid_1.CommonItemSmallItemGrid();
     };
-    this.maf = () => {
+    this.Nlf = () => {
       this.OnRewardClick?.();
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UISprite], [2, UE.UIScrollViewWithScrollbarComponent], [3, UE.UIItem], [4, UE.UIItem]];
-    this.BtnBindInfo = [[0, this.maf]];
+    this.BtnBindInfo = [[0, this.Nlf]];
   }
   OnStart() {
     this.T8e = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(2), this.W2e);
@@ -655,15 +726,15 @@ class RewardChatItem extends SyncGridProxyAbstract_1.SyncGridProxyAbstract {
     if (e) {
       var i;
       var s;
-      var h = [];
+      var r = [];
       for ([i, s] of e) {
-        var r = [{
+        var h = [{
           IncId: 0,
           ItemId: i
         }, s];
-        h.push(r);
+        r.push(h);
       }
-      this.T8e.RefreshByData(h);
+      this.T8e.RefreshByData(r);
       this.GetButton(0).RootUIComp.SetUIActive(!t.IsFinish);
       this.GetSprite(1).SetUIActive(t.IsFinish);
     }

@@ -7,6 +7,7 @@ exports.UiCameraAnimationConfig = undefined;
 const ChildUiCameraMappingAll_1 = require("../../../Core/Define/ConfigQuery/ChildUiCameraMappingAll");
 const ChildUiCameraMappingByViewName_1 = require("../../../Core/Define/ConfigQuery/ChildUiCameraMappingByViewName");
 const UiCameraMappingAll_1 = require("../../../Core/Define/ConfigQuery/UiCameraMappingAll");
+const UiCameraMappingById_1 = require("../../../Core/Define/ConfigQuery/UiCameraMappingById");
 const UiCameraMappingByViewName_1 = require("../../../Core/Define/ConfigQuery/UiCameraMappingByViewName");
 const UiShowByViewName_1 = require("../../../Core/Define/ConfigQuery/UiShowByViewName");
 const ConfigBase_1 = require("../../../Core/Framework/ConfigBase");
@@ -23,6 +24,9 @@ class UiCameraAnimationConfig extends ConfigBase_1.ConfigBase {
   }
   GetUiCameraMappingConfig(e) {
     return UiCameraMappingByViewName_1.configUiCameraMappingByViewName.GetConfig(e);
+  }
+  GetUiCameraMappingConfigById(e) {
+    return UiCameraMappingById_1.configUiCameraMappingById.GetConfig(e);
   }
   GetChildUiCameraMappingConfig(e) {
     return ChildUiCameraMappingByViewName_1.configChildUiCameraMappingByViewName.GetConfig(e);

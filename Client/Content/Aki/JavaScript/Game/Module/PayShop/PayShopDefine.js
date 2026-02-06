@@ -3,7 +3,8 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.giftBagShopSpecialTabList = exports.payShopTagTypeToResourceId = exports.skinTabView = exports.recommendTabView = exports.iosLimitModePayShopViewType = exports.payShopViewTabType = exports.payShopUpdateTypeTextId = exports.GOLD_QUALITY = exports.CARNIVAL_TABID = exports.LORD_GYM_THIRD_CURRENCY_ID = exports.LORD_GYM_CURRENCY_ID = exports.LORD_GYM_THIRD_TAB_INDEX = exports.NEW_LORD_GYM_TAB_INDEX = exports.LORD_GYM_TAB_INDEX = exports.MONTH_CARD_HELP_ID = exports.MONTH_CARD_CONFIG_ID = exports.BATTLE_PASS_PRIMARY_TO_HIGH_ID = exports.BATTLE_PASS_HIGH_ID = exports.BATTLE_PASS_PRIMARY_ID = exports.MONTH_CARD_SHOP_ID = exports.DISCOUNT_PERCENT = undefined;
+exports.giftBagShopSpecialTabList = exports.payShopTagTypeToExtraConstructor = exports.payShopTagTypeToResourceId = exports.payShopTagSortList = exports.skinTabView = exports.recommendTabView = exports.iosLimitModePayShopViewType = exports.payShopViewTabType = exports.payShopUpdateTypeTextId = exports.GOLD_QUALITY = exports.CARNIVAL_TABID = exports.LORD_GYM_THIRD_CURRENCY_ID = exports.LORD_GYM_CURRENCY_ID = exports.LORD_GYM_THIRD_TAB_INDEX = exports.NEW_LORD_GYM_TAB_INDEX = exports.LORD_GYM_TAB_INDEX = exports.MONTH_CARD_HELP_ID = exports.MONTH_CARD_CONFIG_ID = exports.BATTLE_PASS_PRIMARY_TO_HIGH_ID = exports.BATTLE_PASS_HIGH_ID = exports.BATTLE_PASS_PRIMARY_ID = exports.MONTH_CARD_SHOP_ID = exports.DISCOUNT_PERCENT = undefined;
+const TotalTopUpPayShopTagItem_1 = require("../Activity/ActivityContent/TotalTopUp/View/TotalTopUpPayShopTagItem");
 exports.DISCOUNT_PERCENT = 100;
 exports.MONTH_CARD_SHOP_ID = 42;
 exports.BATTLE_PASS_PRIMARY_ID = 43;
@@ -29,13 +30,16 @@ exports.payShopViewTabType = [1, 3, 4, 5, 9, 6];
 exports.iosLimitModePayShopViewType = [3, 5];
 exports.recommendTabView = {
   [2]: "MonthCardView",
-  3: "RoleSkinRecommendView"
+  3: "RoleSkinRecommendView",
+  4: "WeekCardView",
+  5: "MotorSkinRecommendView"
 };
 exports.skinTabView = {
   [1]: "RoleShopSkinTabView",
   2: "ShopFlySkinTabView",
   3: "MotorSkinTabView"
 };
+exports.payShopTagSortList = [12];
 exports.payShopTagTypeToResourceId = {
   [1]: "ShopLabelRes_1",
   2: "ShopLabelRes_1",
@@ -47,6 +51,8 @@ exports.payShopTagTypeToResourceId = {
   8: "RechargeItemSpecialTag",
   9: "ShopItemSoldOutPanel",
   10: "ShopItemLockPanel",
-  11: "ShopItemDiscountLabel"
+  11: "ShopItemDiscountLabel",
+  12: "UiItem_CumulativeRechargeScoreTag"
 };
+exports.payShopTagTypeToExtraConstructor = new Map([[12, TotalTopUpPayShopTagItem_1.TotalTopUpPayShopTagItem]]);
 exports.giftBagShopSpecialTabList = [exports.CARNIVAL_TABID]; //# sourceMappingURL=PayShopDefine.js.map

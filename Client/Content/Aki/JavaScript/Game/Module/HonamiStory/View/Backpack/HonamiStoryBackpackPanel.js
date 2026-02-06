@@ -47,7 +47,7 @@ class HonamiStoryBackpackPanel extends HonamiStoryBackpackPanelBase_1.HonamiStor
     this._s1 = undefined;
     this.kdm = false;
     this.qdm = 10;
-    this.Dpf = -1;
+    this.fSf = -1;
     this.iCm = new Set();
     this.rCm = undefined;
     this.Ga_ = t => {
@@ -70,7 +70,7 @@ class HonamiStoryBackpackPanel extends HonamiStoryBackpackPanelBase_1.HonamiStor
         });
       }
     };
-    this.pHm = () => {
+    this.Y$m = () => {
       this.xqe.StopMovement();
       this.xqe.ScrollToTop(undefined, this.yGe, true);
     };
@@ -116,7 +116,7 @@ class HonamiStoryBackpackPanel extends HonamiStoryBackpackPanelBase_1.HonamiStor
   dde() {
     this.xqe.OnScrollValueChange.Bind(this.Ga_);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnHonamiStoryBackpackUpdate, this.TQd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnHonamiStorySortSuccess, this.pHm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnHonamiStorySortSuccess, this.Y$m);
   }
   async Init(t) {
     var i = (this.RXl = t).BackpackType === 0;
@@ -542,7 +542,7 @@ class HonamiStoryBackpackPanel extends HonamiStoryBackpackPanelBase_1.HonamiStor
   Cde() {
     this.xqe.OnScrollValueChange.Unbind();
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnHonamiStoryBackpackUpdate, this.TQd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnHonamiStorySortSuccess, this.pHm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnHonamiStorySortSuccess, this.Y$m);
   }
   async RQd(t = false, i = undefined) {
     var s;
@@ -577,13 +577,13 @@ class HonamiStoryBackpackPanel extends HonamiStoryBackpackPanelBase_1.HonamiStor
     this.egd(undefined);
   }
   OnDragBegin(t, i) {
-    this.Dpf = i.GetData()?.GetIncId() ?? -1;
+    this.fSf = i.GetData()?.GetIncId() ?? -1;
     this.uGu(i.GetData());
     this.RefreshScrollMoveState(undefined);
     return super.OnDragBegin(t, i);
   }
   OnDrag(t, i) {
-    if (this.Dpf === (i.GetData()?.GetIncId() ?? -1)) {
+    if (this.fSf === (i.GetData()?.GetIncId() ?? -1)) {
       this.uGu(i.GetData());
     } else {
       this.uGu(undefined);
@@ -591,7 +591,7 @@ class HonamiStoryBackpackPanel extends HonamiStoryBackpackPanelBase_1.HonamiStor
     return super.OnDrag(t, i);
   }
   OnDragEnd(t, i) {
-    this.Dpf = -1;
+    this.fSf = -1;
     this.uGu(undefined);
     super.OnDragEnd(t, i);
     this.RefreshScrollMoveState(undefined);
@@ -856,7 +856,7 @@ class HonamiStoryBackpackPanel extends HonamiStoryBackpackPanelBase_1.HonamiStor
               return false;
             }
           }
-          if (!this._hf(i, e, r, f, h)) {
+          if (!this.w1f(i, e, r, f, h)) {
             return false;
           }
           n.add(f);
@@ -865,7 +865,7 @@ class HonamiStoryBackpackPanel extends HonamiStoryBackpackPanelBase_1.HonamiStor
     }
     return true;
   }
-  _hf(t, i, s, e, r) {
+  w1f(t, i, s, e, r) {
     var h = this.RXl.GetItemDataByInstanceId(s.GetIncId(), false);
     var a = this.RXl.GetItemDataByInstanceId(e.GetIncId(), false);
     if (h && a) {

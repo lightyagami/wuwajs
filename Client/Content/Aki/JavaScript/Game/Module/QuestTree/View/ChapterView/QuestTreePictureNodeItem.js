@@ -21,7 +21,7 @@ class QuestTreePictureNodeItem extends QuestTreeNodeItemLoader_1.QuestTreeNodeIt
     this.Loader = undefined;
     this.Pe = undefined;
     this.YRd = undefined;
-    this.wTm = undefined;
+    this.FTm = undefined;
     this.Hea = undefined;
     this.VDd = undefined;
     this.Type = 1;
@@ -79,7 +79,7 @@ class QuestTreePictureNodeItem extends QuestTreeNodeItemLoader_1.QuestTreeNodeIt
   OnStart() {
     this.Hea = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
     this.YRd = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(18), () => this.Loader.CreateLogicalNodeItem(4), undefined, true);
-    this.wTm = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(16), () => this.Loader.CreateLogicalNodeItem(4), undefined, true);
+    this.FTm = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(16), () => this.Loader.CreateLogicalNodeItem(4), undefined, true);
     this.OriginalTopHeight = this.GetUiSizeControlByOther(32).GetAdditionalHeight();
     this.OriginalBottomHeight = this.GetUiSizeControlByOther(33).GetAdditionalHeight();
     this.GetItem(9).SetUIActive(false);
@@ -165,7 +165,7 @@ class QuestTreePictureNodeItem extends QuestTreeNodeItemLoader_1.QuestTreeNodeIt
           this.GetItem(15).SetUIActive(r.Config.NodeType !== 1);
           this.GetItem(13).SetUIActive(true);
           this.GetVerticalLayout(16).GetRootComponent().SetUIActive(true);
-          await this.wTm.RefreshByDataAsync(h);
+          await this.FTm.RefreshByDataAsync(h);
         }
         if ((r = t.GetDirectChildrenGroupsInDownArea()).length > 0) {
           this.GetItem(17).SetUIActive(true);

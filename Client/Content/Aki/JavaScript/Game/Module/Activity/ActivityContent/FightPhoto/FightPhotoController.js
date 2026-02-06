@@ -65,12 +65,12 @@ class FightPhotoController extends ActivityControllerBase_1.ActivityControllerBa
     };
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(17737, this.MPd);
-    Net_1.Net.Register(22380, this.EPd);
+    Net_1.Net.Register(24335, this.MPd);
+    Net_1.Net.Register(15216, this.EPd);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(17737);
-    Net_1.Net.UnRegister(22380);
+    Net_1.Net.UnRegister(24335);
+    Net_1.Net.UnRegister(15216);
   }
   OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDone, this.nye);
@@ -140,10 +140,10 @@ class FightPhotoController extends ActivityControllerBase_1.ActivityControllerBa
     var o = new Protocol_1.Aki.Protocol.LLd();
     o.FLd = e;
     o.w6n = t.Id;
-    Net_1.Net.Call(23811, o, e => {
+    Net_1.Net.Call(28437, o, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20391);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23103);
         } else {
           t.UpdateTaskRewardStatus(e.kLd);
         }
@@ -152,9 +152,9 @@ class FightPhotoController extends ActivityControllerBase_1.ActivityControllerBa
   }
   RequestInstanceSettle() {
     var e = new Protocol_1.Aki.Protocol.ALd();
-    Net_1.Net.Call(20610, e, e => {
+    Net_1.Net.Call(17879, e, e => {
       if (e && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21480);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18152);
       }
     });
   }

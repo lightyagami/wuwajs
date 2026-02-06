@@ -37,7 +37,7 @@ class LoadingModel extends ModelBase_1.ModelBase {
     this.LoadingTexturePathOverride = undefined;
     this.Cla = undefined;
     this.gla = undefined;
-    this.nwm = [new HonamiStoryLoadingChecker_1.HonamiStoryLoadingChecker()];
+    this.gwm = [new HonamiStoryLoadingChecker_1.HonamiStoryLoadingChecker()];
     this.BGc = undefined;
     this.Fu1 = undefined;
     this.etd = undefined;
@@ -129,7 +129,7 @@ class LoadingModel extends ModelBase_1.ModelBase {
     }
   }
   mpm(e) {
-    for (const i of this.nwm) {
+    for (const i of this.gwm) {
       if (i.CanHandle(e)) {
         return i.GetLoadingViewName(e);
       }

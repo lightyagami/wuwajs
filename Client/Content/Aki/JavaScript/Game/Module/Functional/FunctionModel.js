@@ -29,7 +29,7 @@ class FunctionModel extends ModelBase_1.ModelBase {
     this.U7t = () => ChannelController_1.ChannelController.CheckKuroStreetOpen();
     this.Wtl = () => ModelManager_1.ModelManager.MailBindModel.CheckGlobalMailBindOpen();
     this.Nvu = () => ActivityDirectTrainHelper_1.ActivityDirectTrainHelper.IsProOpen;
-    this.Z2m = () => !FeatureRestrictionTemplate_1.FeatureRestrictionTemplate.TemplateForPioneerClient.Check();
+    this.mqm = () => !FeatureRestrictionTemplate_1.FeatureRestrictionTemplate.TemplateForPioneerClient.Check();
   }
   OnInit() {
     this.L7t.set(10053, this.D7t);
@@ -37,7 +37,7 @@ class FunctionModel extends ModelBase_1.ModelBase {
     this.L7t.set(10058, this.U7t);
     this.L7t.set(10072, this.Wtl);
     this.L7t.set(10095, this.Nvu);
-    this.L7t.set(10086, this.Z2m);
+    this.L7t.set(10086, this.mqm);
     return true;
   }
   SetFunctionOpenInfo(e) {

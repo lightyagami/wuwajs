@@ -32,6 +32,7 @@ const PhantomBattleCardSlotSortAll_1 = require("../../../Core/Define/ConfigQuery
 const PhantomBattleCardSlotSortById_1 = require("../../../Core/Define/ConfigQuery/PhantomBattleCardSlotSortById");
 const PhantomBattleChallengeByActivityGymId_1 = require("../../../Core/Define/ConfigQuery/PhantomBattleChallengeByActivityGymId");
 const PhantomBattleChallengeById_1 = require("../../../Core/Define/ConfigQuery/PhantomBattleChallengeById");
+const PhantomBattleChallengeByMapId_1 = require("../../../Core/Define/ConfigQuery/PhantomBattleChallengeByMapId");
 const PhantomBattleChallengeByMarkId_1 = require("../../../Core/Define/ConfigQuery/PhantomBattleChallengeByMarkId");
 const PhantomBattleDialogById_1 = require("../../../Core/Define/ConfigQuery/PhantomBattleDialogById");
 const PhantomBattleEntryById_1 = require("../../../Core/Define/ConfigQuery/PhantomBattleEntryById");
@@ -39,7 +40,9 @@ const PhantomBattleFactorAll_1 = require("../../../Core/Define/ConfigQuery/Phant
 const PhantomBattleFactorById_1 = require("../../../Core/Define/ConfigQuery/PhantomBattleFactorById");
 const PhantomBattleFourCTaskByCardId_1 = require("../../../Core/Define/ConfigQuery/PhantomBattleFourCTaskByCardId");
 const PhantomBattleGymByActivityId_1 = require("../../../Core/Define/ConfigQuery/PhantomBattleGymByActivityId");
-const PhantomBattleMapParamByMapId_1 = require("../../../Core/Define/ConfigQuery/PhantomBattleMapParamByMapId");
+const PhantomBattleMapParamAll_1 = require("../../../Core/Define/ConfigQuery/PhantomBattleMapParamAll");
+const PhantomBattleMapParamById_1 = require("../../../Core/Define/ConfigQuery/PhantomBattleMapParamById");
+const PhantomBattleMapParamByMapIdNew_1 = require("../../../Core/Define/ConfigQuery/PhantomBattleMapParamByMapIdNew");
 const PhantomBattleMasterLevelAll_1 = require("../../../Core/Define/ConfigQuery/PhantomBattleMasterLevelAll");
 const PhantomBattleMasterLevelById_1 = require("../../../Core/Define/ConfigQuery/PhantomBattleMasterLevelById");
 const PhantomBattleMasterTitleById_1 = require("../../../Core/Define/ConfigQuery/PhantomBattleMasterTitleById");
@@ -215,8 +218,8 @@ class PhantomArenaConfig extends ConfigBase_1.ConfigBase {
       return [];
     }
     var r = [];
-    for (const o of a) {
-      r.push(o.Id);
+    for (const n of a) {
+      r.push(n.Id);
     }
     return r;
   }
@@ -322,8 +325,17 @@ class PhantomArenaConfig extends ConfigBase_1.ConfigBase {
   GetPhantomBattleChallengeByMarkId(t) {
     return PhantomBattleChallengeByMarkId_1.configPhantomBattleChallengeByMarkId.GetConfig(t);
   }
+  GetPhantomBattleMapParamById(t) {
+    return PhantomBattleMapParamById_1.configPhantomBattleMapParamById.GetConfig(t);
+  }
+  GetAllPhantomBattleMapParams() {
+    return PhantomBattleMapParamAll_1.configPhantomBattleMapParamAll.GetConfigList();
+  }
   GetPhantomBattleMapParamByMapId(t) {
-    return PhantomBattleMapParamByMapId_1.configPhantomBattleMapParamByMapId.GetConfig(t);
+    return PhantomBattleMapParamByMapIdNew_1.configPhantomBattleMapParamByMapIdNew.GetConfigList(t);
+  }
+  GetPhantomBattleChallengeByMapId(t) {
+    return PhantomBattleChallengeByMapId_1.configPhantomBattleChallengeByMapId.GetConfigList(t);
   }
 }
 exports.PhantomArenaConfig = PhantomArenaConfig;

@@ -29,7 +29,7 @@ class ActivityNewPlayerSupportTaskItem extends GridProxyAbstract_1.GridProxyAbst
         UiManager_1.UiManager.OpenView("QuestView", t);
       }
     };
-    this.yDf = () => {
+    this.Zqf = () => {
       var t = this.Pe.TaskData;
       if (t.CanReceiveReward()) {
         ActivityControllerHolder_1.ActivityControllerHolder.ActivityNewPlayerSupportController?.RequestRewardTask(t.Id, true);
@@ -45,7 +45,7 @@ class ActivityNewPlayerSupportTaskItem extends GridProxyAbstract_1.GridProxyAbst
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIText], [4, UE.UITexture], [5, UE.UISprite], [6, UE.UIVerticalLayout], [7, UE.UIItem], [8, UE.UIButtonComponent], [9, UE.UIButtonComponent], [10, UE.UIItem], [11, UE.UIButtonComponent], [12, UE.UIItem], [13, UE.UIItem], [14, UE.UIItem], [15, UE.UIItem], [16, UE.UIItem], [17, UE.UIItem]];
-    this.BtnBindInfo = [[9, this.T2o], [8, this.yDf], [11, this.sa_]];
+    this.BtnBindInfo = [[9, this.T2o], [8, this.Zqf], [11, this.sa_]];
   }
   OnStart() {
     this.H3e = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(6), this.I_1);
@@ -53,7 +53,7 @@ class ActivityNewPlayerSupportTaskItem extends GridProxyAbstract_1.GridProxyAbst
   Refresh(t, e, i) {
     this.Pe = t;
     this.j6a();
-    this.SDf();
+    this.eOf();
   }
   j6a() {
     var t = this.Pe.TaskData;
@@ -71,7 +71,7 @@ class ActivityNewPlayerSupportTaskItem extends GridProxyAbstract_1.GridProxyAbst
       }
     });
   }
-  SDf() {
+  eOf() {
     var t = this.Pe.TaskData;
     var e = t.IsTaskReceived();
     var i = t.CanReceiveReward();

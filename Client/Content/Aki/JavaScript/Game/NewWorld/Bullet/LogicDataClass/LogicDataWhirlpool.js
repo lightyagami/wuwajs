@@ -9,6 +9,10 @@ class LogicDataWhirlpool extends LogicDataBase_1.default {
     super(...arguments);
     this.MoveTime = 0;
     this.WeightLimit = 0;
+    this.VelocityCurve = 0;
+    this.TagNeed = undefined;
+    this.AttackerSocketName = undefined;
+    this.CancelByHit = false;
   }
   Constructor() {
     super.Constructor();

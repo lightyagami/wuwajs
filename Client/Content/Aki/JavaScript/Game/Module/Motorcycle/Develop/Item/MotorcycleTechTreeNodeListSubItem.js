@@ -12,14 +12,14 @@ const MotorcycleTechTreeNodeItem_1 = require("./MotorcycleTechTreeNodeItem");
 class MotorcycleTechTreeNodeListSubItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.ccf = undefined;
+    this.lmf = undefined;
     this.sGe = () => new MotorcycleTechTreeNodeItem_1.MotorcycleTechTreeNodeItem();
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIVerticalLayout], [1, UE.UIItem], [2, UE.UIItem]];
   }
   OnStart() {
-    this.ccf = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(0), this.sGe, this.GetItem(2).GetOwner());
+    this.lmf = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(0), this.sGe, this.GetItem(2).GetOwner());
     this.GetItem(1).SetUIActive(false);
   }
   async RefreshAsync(e) {
@@ -30,10 +30,10 @@ class MotorcycleTechTreeNodeListSubItem extends UiPanelBase_1.UiPanelBase {
         r.push(e);
       }
     });
-    await this.ccf.RefreshByDataAsync(r);
+    await this.lmf.RefreshByDataAsync(r);
   }
   GetSubLayoutItemList() {
-    return this.ccf.GetLayoutItemList();
+    return this.lmf.GetLayoutItemList();
   }
 }
 exports.MotorcycleTechTreeNodeListSubItem = MotorcycleTechTreeNodeListSubItem;

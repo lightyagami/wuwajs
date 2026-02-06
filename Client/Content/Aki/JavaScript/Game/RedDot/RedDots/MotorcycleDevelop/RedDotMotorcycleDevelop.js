@@ -15,7 +15,7 @@ class RedDotMotorcycleDevelop extends RedDotBase_1.RedDotBase {
     return [EventDefine_1.EEventName.MotorDevelopInfoUpdate, EventDefine_1.EEventName.MotorDevelopTechTreeUpdate, EventDefine_1.EEventName.MotorDevelopTaskUpdate, EventDefine_1.EEventName.MotorDevelopTreeTypeRedDotUpdate, EventDefine_1.EEventName.MotorDiyInfoUpdate, EventDefine_1.EEventName.MotorDiyInfoRedDotUpdate];
   }
   OnCheck() {
-    return ModelManager_1.ModelManager.MotorcycleDevelopModel.RedDotHasLevelUpReward() || ModelManager_1.ModelManager.MotorcycleDevelopModel.RedDotHasAnyNewTechTree() || ModelManager_1.ModelManager.MotorcycleDevelopModel.RedDotHasUpgradableTechNode() || ModelManager_1.ModelManager.MotorcycleDevelopModel.RedDotCanGetTaskReward() || ModelManager_1.ModelManager.MotorcycleDiyModel.RedDotHasAnyNewItem();
+    return ModelManager_1.ModelManager.MotorcycleDevelopModel.RedDotHasLevelUpReward() || ModelManager_1.ModelManager.MotorcycleDevelopModel.RedDotHasAnyNewTechTree() || ModelManager_1.ModelManager.MotorcycleDevelopModel.RedDotHasUpgradableTechNode() || ModelManager_1.ModelManager.MotorcycleDevelopModel.RedDotCanGetAnyTaskReward() || ModelManager_1.ModelManager.MotorcycleDiyModel.RedDotHasAnyNewItem();
   }
 }
 exports.RedDotMotorcycleDevelop = RedDotMotorcycleDevelop;

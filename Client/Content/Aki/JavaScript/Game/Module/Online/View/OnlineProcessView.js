@@ -173,7 +173,7 @@ class OnlineProcessView extends UiViewBase_1.UiViewBase {
     var e = ModelManager_1.ModelManager.OnlineModel.CachePlayerData;
     this.gLt?.Refresh(e?.PlayerTitleId, e?.PlayerTitleStarLevel, e?.Sex);
   }
-  m$f() {
+  Arg() {
     var e = ModelManager_1.ModelManager.OnlineModel.CachePlayerData;
     if (e &&= BackgroundCardById_1.configBackgroundCardById.GetConfig(e.CurUsingCardId, false)) {
       this.SetTextureByPath(e.FunctionViewCardPath, this.GetTexture(17));
@@ -185,7 +185,7 @@ class OnlineProcessView extends UiViewBase_1.UiViewBase {
     this.r9t();
     this.Nxa();
     this.Gac();
-    this.m$f();
+    this.Arg();
     var e = ModelManager_1.ModelManager.FriendModel.IsMyFriend(e.PlayerId);
     this.Y8t.GetRootItem().SetUIActive(e);
     this.W8t.GetRootItem().SetUIActive(false);

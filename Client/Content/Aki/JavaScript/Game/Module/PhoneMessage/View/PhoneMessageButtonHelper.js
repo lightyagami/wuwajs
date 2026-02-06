@@ -12,37 +12,37 @@ class PhoneMessageButtonHelper {
     this.xTt = i;
     this.Lrc = t;
     this.rGi = e;
-    this.lYf = h;
-    this._Yf = s;
-    this.uYf = n;
-    this.zYf = o;
-    this.Bzf = a;
-    this.cYf = r;
+    this.$ug = h;
+    this.Wug = s;
+    this.Qug = n;
+    this.wfg = o;
+    this.wgg = a;
+    this.Kug = r;
     this.SPe = undefined;
-    this.UXf = 1;
-    this.xXf = 1;
-    this.BXf = undefined;
-    this.kXf = undefined;
+    this.W_g = 1;
+    this.Q_g = 1;
+    this.K_g = undefined;
+    this.X_g = undefined;
     this.JTt = i => {
       if (i === "Phone_Circle_In") {
-        if (!this.dKf()) {
+        if (!this.Hhg()) {
           this.HideHeadIcon();
           return;
         }
         this.PopShowHeadIcon();
       }
       if (i === "Phone_Icon_Out") {
-        if (!this.dKf()) {
+        if (!this.Hhg()) {
           this.HideHeadIcon();
           return;
         }
         this.PopShowHeadIcon();
       }
       if (i === "Phone_Icon_In") {
-        if (this.dKf()) {
-          this.P6f("Phone_Icon_Out");
+        if (this.Hhg()) {
+          this.Qzf("Phone_Icon_Out");
         } else {
-          this.u_f();
+          this.Ecf();
         }
       }
     };
@@ -56,21 +56,21 @@ class PhoneMessageButtonHelper {
     this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.xTt);
     this.SPe.BindSequenceCloseEvent(this.JTt);
     this.Lrc.OnSequencePlayEvent.Bind(this.Wpu);
-    this.UXf = this.rGi.GetAlpha();
-    this.BXf = this.rGi.GetRelativeTransform().GetScale3D();
-    this.xXf = this.lYf.GetAlpha();
-    this.kXf = this.lYf.GetRelativeTransform().GetScale3D();
+    this.W_g = this.rGi.GetAlpha();
+    this.K_g = this.rGi.GetRelativeTransform().GetScale3D();
+    this.Q_g = this.$ug.GetAlpha();
+    this.X_g = this.$ug.GetRelativeTransform().GetScale3D();
   }
   OnShowBattleChildView() {
     if (this.SPe?.GetCurrentSequence() !== "Phone_Icon_Out") {
       if (ModelManager_1.ModelManager.PhoneMsgModel.CurrentShowingMsgIdInSmallHead === 0) {
-        if (this.dKf()) {
+        if (this.Hhg()) {
           this.PopShowHeadIcon();
         } else {
           this.SPe?.StopCurrentSequence();
-          this._Yf.SetUIActive(false);
-          this.lYf.SetUIActive(true);
-          this.u_f();
+          this.Wug.SetUIActive(false);
+          this.$ug.SetUIActive(true);
+          this.Ecf();
         }
       } else {
         this.SPe?.ResumeSequence();
@@ -85,53 +85,53 @@ class PhoneMessageButtonHelper {
     this.SPe = undefined;
   }
   CheckAndPlayPhoneSequence() {
-    if (this.SPe?.GetCurrentSequence() === undefined && this.dKf()) {
-      this.P6f("Phone_Icon_Out");
+    if (this.SPe?.GetCurrentSequence() === undefined && this.Hhg()) {
+      this.Qzf("Phone_Icon_Out");
     }
   }
   PopShowHeadIcon() {
     var i;
     var t;
-    if (this.dKf()) {
+    if (this.Hhg()) {
       t = (i = ModelManager_1.ModelManager.PhoneMsgModel).CurrentToBeNotifiedMsgInSmallHeadQueue.shift();
       i.CurrentShowingMsgIdInSmallHead = t;
-      this.kzf(t);
+      this.Pgg(t);
     }
   }
-  kzf(i) {
+  Pgg(i) {
     i = ConfigManager_1.ConfigManager.PhoneMsgConfig.GetPhoneMsgConfig(i);
     i = ConfigManager_1.ConfigManager.PhoneMsgConfig.GetChatPartnerConfig(i.WhichChat).IconSmall;
-    this._Yf.SetUIActive(true);
-    this.zYf.SetUIActive(true);
-    this.cYf(i, this.uYf);
-    this.P6f("Phone_Circle_In");
+    this.Wug.SetUIActive(true);
+    this.wfg.SetUIActive(true);
+    this.Kug(i, this.Qug);
+    this.Qzf("Phone_Circle_In");
   }
   HideHeadIcon() {
-    this.P6f("Phone_Icon_In");
-    this.zYf.SetUIActive(false);
+    this.Qzf("Phone_Icon_In");
+    this.wfg.SetUIActive(false);
     ModelManager_1.ModelManager.PhoneMsgModel.CurrentShowingMsgIdInSmallHead = 0;
   }
-  u_f() {
-    this.lYf.SetUIActive(true);
-    this._Yf.SetUIActive(false);
-    this.Bzf.SetUIActive(false);
-    this.rGi.SetAlpha(this.UXf);
-    if (this.BXf) {
-      this.rGi.SetUIItemScale(this.BXf);
+  Ecf() {
+    this.$ug.SetUIActive(true);
+    this.Wug.SetUIActive(false);
+    this.wgg.SetUIActive(false);
+    this.rGi.SetAlpha(this.W_g);
+    if (this.K_g) {
+      this.rGi.SetUIItemScale(this.K_g);
     }
-    this.lYf.SetAlpha(this.xXf);
-    if (this.kXf) {
-      this.lYf.SetUIItemScale(this.kXf);
+    this.$ug.SetAlpha(this.Q_g);
+    if (this.X_g) {
+      this.$ug.SetUIItemScale(this.X_g);
     }
   }
-  P6f(i) {
+  Qzf(i) {
     if (this.SPe?.CheckSeqActorIsUnStopped(i)) {
       this.SPe?.ReplaySequenceByKey(i);
     } else {
       this.SPe?.PlaySequencePurely(i, false, undefined, undefined, undefined);
     }
   }
-  dKf() {
+  Hhg() {
     return ModelManager_1.ModelManager.PhoneMsgModel.CurrentToBeNotifiedMsgInSmallHeadQueue.length > 0;
   }
 }

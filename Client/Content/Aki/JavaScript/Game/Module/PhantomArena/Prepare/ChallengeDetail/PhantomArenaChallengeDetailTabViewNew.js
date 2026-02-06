@@ -26,7 +26,7 @@ class PhantomArenaChallengeDetailTabViewNew extends PhantomArenaChildViewBase_1.
     this.M81 = undefined;
     this.E81 = undefined;
     this.I81 = undefined;
-    this.jQm = undefined;
+    this.uYm = undefined;
     this.RewardLayout = undefined;
     this.pct = false;
     this.rOe = () => {
@@ -72,20 +72,20 @@ class PhantomArenaChallengeDetailTabViewNew extends PhantomArenaChildViewBase_1.
     };
     this.mxl = () => {
       var e;
-      var i = this.jQm;
+      var i = this.uYm;
       if (i) {
         i = {
           DeckInfo: i,
           ShowLocked: true,
           ActivityId: this.ActivityId,
           IsRecommend: true,
-          SaveRecommendDeckCallback: this.$Qm
+          SaveRecommendDeckCallback: this.cYm
         };
         e = ModelManager_1.ModelManager.PhantomArenaModel.IsNewPhantomArenaActivity(this.ActivityId) ? "PhantomArenaDeckDetailViewNew" : "PhantomArenaDeckDetailView";
         UiManager_1.UiManager.OpenView(e, i);
       }
     };
-    this.$Qm = e => {
+    this.cYm = e => {
       this.ViewModel.SelectedDeckIndex = this.ViewModel.UsedDeckIndex >= 0 ? this.ViewModel.UsedDeckIndex : 0;
       this.ViewModel.RecommendDeck = e;
       this.OpenChildView("PhantomArenaDeckOverviewTabView");
@@ -169,7 +169,7 @@ class PhantomArenaChallengeDetailTabViewNew extends PhantomArenaChildViewBase_1.
     var t = i.RecommendCardGroupId;
     if (ModelManager_1.ModelManager.FunctionModel.IsOpen(10139) && t !== 0) {
       this.GetButton(13)?.RootUIComp.SetUIActive(true);
-      this.jQm = ModelManager_1.ModelManager.PhantomArenaModel.CreateDeckInfoFromDeckConfigId(t);
+      this.uYm = ModelManager_1.ModelManager.PhantomArenaModel.CreateDeckInfoFromDeckConfigId(t);
     } else {
       this.GetButton(13)?.RootUIComp.SetUIActive(false);
     }

@@ -18,10 +18,10 @@ class HonamiStoryInteractController {
   constructor() {
     this.dCd = undefined;
     this.Ugo = undefined;
-    this.Upf = undefined;
-    this.xpf = undefined;
-    this.Bpf = undefined;
-    this.kpf = -1;
+    this.gSf = undefined;
+    this.CSf = undefined;
+    this.pSf = undefined;
+    this.vSf = -1;
     this.Xpt = undefined;
     this.PanelBaseList = [];
     this.BackpackView = undefined;
@@ -35,17 +35,17 @@ class HonamiStoryInteractController {
     this.Ugo = new HonamiStoryGridItemBase_1.HonamiStoryGridItemBase(false);
     this.Ugo.SetIsForDrag(true);
     i.push(this.Ugo.CreateByResourceIdAsync("UiItem_HonamiStoryGrid", this.dCd));
-    this.Upf = new UiPanelBase_1.UiPanelBase();
-    this.xpf = new UiPanelBase_1.UiPanelBase();
-    this.Bpf = new UiPanelBase_1.UiPanelBase();
-    i.push(this.Upf.CreateByResourceIdAsync("UiItem_HonamiStoryGridState", this.dCd));
-    i.push(this.xpf.CreateByResourceIdAsync("UiItem_HonamiStoryItemState", this.dCd));
-    i.push(this.Bpf.CreateByResourceIdAsync("UiItem_HonamiStoryItemState", this.dCd));
+    this.gSf = new UiPanelBase_1.UiPanelBase();
+    this.CSf = new UiPanelBase_1.UiPanelBase();
+    this.pSf = new UiPanelBase_1.UiPanelBase();
+    i.push(this.gSf.CreateByResourceIdAsync("UiItem_HonamiStoryGridState", this.dCd));
+    i.push(this.CSf.CreateByResourceIdAsync("UiItem_HonamiStoryItemState", this.dCd));
+    i.push(this.pSf.CreateByResourceIdAsync("UiItem_HonamiStoryItemState", this.dCd));
     await Promise.all(i);
     this.Ugo.SetUiActive(false);
-    this.Upf.SetUiActive(false);
-    this.xpf.SetUiActive(false);
-    this.Bpf.SetUiActive(false);
+    this.gSf.SetUiActive(false);
+    this.CSf.SetUiActive(false);
+    this.pSf.SetUiActive(false);
   }
   OnBeforeShow() {
     this.Ugo.GetRootItem().SetPivot(new UE.Vector2D(0.5, 0.5));
@@ -226,7 +226,7 @@ class HonamiStoryInteractController {
                   return;
                 }
               }
-              if (!this.Mdf(e)) {
+              if (!this.Sff(e)) {
                 ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("HonamiStory_TryDiscardLockItem");
                 return;
               }
@@ -249,7 +249,7 @@ class HonamiStoryInteractController {
       }
     }
   }
-  Mdf(t) {
+  Sff(t) {
     var i = this.Tgd.StartOperateBackpack.GetBackpackType() === 2;
     var e = this.Tgd.TargetOperateBackpack.GetBackpackType() === 2;
     if (i || e) {
@@ -270,31 +270,31 @@ class HonamiStoryInteractController {
   }
   OnHoverItem(t, i) {
     if (!HonamiStoryUtil_1.HonamiStoryUtil.IsMobileView() && (!this.Xpt || i !== this.Xpt.GetPanelForHover())) {
-      (t ? this.Upf : this.xpf).GetOriginalItem().SetUIParent(i);
-      this.Upf.SetUiActive(t);
-      this.xpf.SetUiActive(!t);
+      (t ? this.gSf : this.CSf).GetOriginalItem().SetUIParent(i);
+      this.gSf.SetUiActive(t);
+      this.CSf.SetUiActive(!t);
     }
   }
   OnUnHover() {
     if (!HonamiStoryUtil_1.HonamiStoryUtil.IsMobileView()) {
-      this.Upf.SetUiActive(false);
-      this.xpf.SetUiActive(false);
+      this.gSf.SetUiActive(false);
+      this.CSf.SetUiActive(false);
     }
   }
   OnClickedItem(t, i, e) {
-    this.kpf = i;
-    this.Bpf.SetUiActive(t);
+    this.vSf = i;
+    this.pSf.SetUiActive(t);
     this.Xpt = e;
     if (t && e) {
-      this.Bpf.GetOriginalItem().SetUIParent(e.GetPanelForHover());
+      this.pSf.GetOriginalItem().SetUIParent(e.GetPanelForHover());
     }
   }
   RefreshSelectedUiItem() {
     var t;
-    if (this.Xpt && this.Xpt.IsUiActiveInHierarchy() && !(this.kpf <= 0) && (t = this.Xpt.GetData())) {
-      this.Bpf.SetUiActive(t.GetIncId() === this.kpf);
+    if (this.Xpt && this.Xpt.IsUiActiveInHierarchy() && !(this.vSf <= 0) && (t = this.Xpt.GetData())) {
+      this.pSf.SetUiActive(t.GetIncId() === this.vSf);
     } else {
-      this.Bpf.SetUiActive(false);
+      this.pSf.SetUiActive(false);
     }
   }
 }

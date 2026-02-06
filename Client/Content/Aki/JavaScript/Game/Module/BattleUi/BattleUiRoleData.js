@@ -14,6 +14,10 @@ var EAttributeId = Protocol_1.Aki.Protocol.Vks;
 const Log_1 = require("../../../Core/Common/Log");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
+const BattleUiSpecialRoleDataAiMiSi_1 = require("./SpecialRoleData/BattleUiSpecialRoleDataAiMiSi");
+const BattleUiSpecialRoleDataFuLuoLuo_1 = require("./SpecialRoleData/BattleUiSpecialRoleDataFuLuoLuo");
+const BattleUiSpecialRoleDataLuPa_1 = require("./SpecialRoleData/BattleUiSpecialRoleDataLuPa");
+const specialRoleDataClassMap = new Map([[1207, BattleUiSpecialRoleDataLuPa_1.BattleUiSpecialRoleDataLuPa], [1608, BattleUiSpecialRoleDataFuLuoLuo_1.BattleUiSpecialRoleDataFuLuoLuo], [1210, BattleUiSpecialRoleDataAiMiSi_1.BattleUiSpecialRoleDataAiMiSi]]);
 class BattleUiRoleData {
   constructor() {
     this.IsCurEntity = false;
@@ -33,7 +37,7 @@ class BattleUiRoleData {
     this.ElementLinearColor = undefined;
     this.UltimateSkillColor = undefined;
     this.CreatureDataId = 0;
-    this.CreatureRoleId = undefined;
+    this.CreatureRoleId = 0;
     this.CreatureSkinId = undefined;
     this.RoleConfig = undefined;
     this.RoleBattleViewInfo = undefined;
@@ -46,17 +50,12 @@ class BattleUiRoleData {
     this.HasEnergyTag = false;
     this.CheckEnergyTag = false;
     this.i$e = [];
-    this.o$e = (t, i, s) => {
+    this.XDg = undefined;
+    this.o$e = (t, i, e) => {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BattleUiElementEnergyChanged, this.EntityHandle.Id);
     };
-    this.Trc = (t, i, s) => {
+    this.Trc = (t, i, e) => {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BattleUiEnergyChanged, this.EntityHandle.Id);
-    };
-    this.Dgd = (t, i) => {
-      if (this.HasEnergyTag !== i) {
-        this.HasEnergyTag = i;
-        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BattleUiEnergyChanged, this.EntityHandle.Id);
-      }
     };
     this.r$e = (t, i) => {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BattleUiElementHideTagChanged, this.EntityHandle.Id, t, i);
@@ -103,22 +102,22 @@ class BattleUiRoleData {
     this.qoa = () => {
       this.Goa();
     };
-    this.hXe = (t, i, s) => {
+    this.hXe = (t, i, e) => {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BattleUiHealthChanged, this.EntityHandle.Id);
     };
-    this.m2 = (t, i, s) => {
+    this.m2 = (t, i, e) => {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BattleUiLevelChanged, this.EntityHandle.Id);
     };
   }
   Init(t, i) {
     this.EntityHandle = t;
     this.IsCurEntity = i;
-    this.AttributeComponent = t.Entity.GetComponent(182);
-    this.GameplayTagComponent = t.Entity.GetComponent(215);
-    this.RoleElementComponent = t.Entity.GetComponent(97);
-    this.BuffComponent = t.Entity.GetComponent(183);
-    this.ShieldComponent = t.Entity.GetComponent(78);
-    this.RoleQteComponent = t.Entity.GetComponent(104);
+    this.AttributeComponent = t.Entity.GetComponent(184);
+    this.GameplayTagComponent = t.Entity.GetComponent(217);
+    this.RoleElementComponent = t.Entity.GetComponent(99);
+    this.BuffComponent = t.Entity.GetComponent(185);
+    this.ShieldComponent = t.Entity.GetComponent(80);
+    this.RoleQteComponent = t.Entity.GetComponent(106);
     this.CreatureDataComponent = t.Entity.GetComponent(0);
     this.BaseDeathComponent = t.Entity.GetComponent(15);
     this.ActorComp = t.Entity.GetComponent(3);
@@ -127,7 +126,7 @@ class BattleUiRoleData {
     this.ElementColor = UE.Color.FromHex(this.ElementConfig.ElementColor);
     this.ElementLinearColor = new UE.LinearColor(this.ElementColor);
     this.UltimateSkillColor = UE.Color.FromHex(this.ElementConfig.UltimateSkillColor);
-    this.CreatureRoleId = this.CreatureDataComponent?.GetRoleId();
+    this.CreatureRoleId = this.CreatureDataComponent?.GetRoleId() ?? 0;
     this.CreatureDataId = this.CreatureDataComponent?.GetCreatureDataId() ?? 0;
     this.CreatureSkinId = this.CreatureDataComponent?.GetSkinId();
     this.RoleConfig = this.CreatureDataComponent?.GetRoleConfig();
@@ -137,22 +136,22 @@ class BattleUiRoleData {
       }
       this.HeadIconEnergyBarConfig = ModelManager_1.ModelManager.BattleUiModel?.GetHeadIconEnergyBarConfig(this.RoleConfig.Id);
     }
-    if (this.ActorComp?.IsAutonomousProxy && this.CreatureRoleId === 1207) {
-      ControllerHolder_1.ControllerHolder.HudUnitController.TryCreateHud(7);
-    }
-    if (this.CreatureRoleId === 1608) {
-      this.CheckEnergyTag = true;
-      this.d$e(414280119, this.Dgd, true);
+    i = specialRoleDataClassMap.get(this.CreatureRoleId);
+    if (i) {
+      this.XDg = new i();
+      this.XDg.Init(this);
     }
     this.c$e();
   }
   OnChangeRole(t) {
     this.IsCurEntity = t;
+    this.XDg?.OnChangeRole(t);
   }
   Clear() {
     this.m$e();
-    if (this.ActorComp?.IsAutonomousProxy && this.CreatureRoleId === 1207) {
-      ControllerHolder_1.ControllerHolder.HudUnitController.TryDestroyHud(7);
+    if (this.XDg) {
+      this.XDg.Clear();
+      this.XDg = undefined;
     }
     if (this.IsCurEntity) {
       this.SpecialStateMap.clear();
@@ -173,7 +172,7 @@ class BattleUiRoleData {
     this.ElementLinearColor = undefined;
     this.UltimateSkillColor = undefined;
     this.CreatureDataId = 0;
-    this.CreatureRoleId = undefined;
+    this.CreatureRoleId = 0;
     this.RoleConfig = undefined;
     this.RoleBattleViewInfo = undefined;
     this.HeadIconEnergyBarConfig = undefined;
@@ -183,16 +182,16 @@ class BattleUiRoleData {
   }
   c$e() {
     for (const i of BattleUiRoleData.HideElementTagList) {
-      this.d$e(i, this.r$e);
+      this.ListenForTagSignificantChanged(i, this.r$e);
     }
-    this.d$e(1008164187, this.n$e);
-    this.d$e(166024319, this.s$e);
-    this.d$e(1674960297, this.h$e);
-    this.d$e(-426018619, this.l$e);
-    this.d$e(-640833006, this.wGa, true);
-    this.d$e(913890514, this.NQ_, true);
-    for (const s of BattleUiRoleData.SpecialStateTagMap.keys()) {
-      this.d$e(s, this.vJ1, true);
+    this.ListenForTagSignificantChanged(1008164187, this.n$e);
+    this.ListenForTagSignificantChanged(166024319, this.s$e);
+    this.ListenForTagSignificantChanged(1674960297, this.h$e);
+    this.ListenForTagSignificantChanged(-426018619, this.l$e);
+    this.ListenForTagSignificantChanged(-640833006, this.wGa, true);
+    this.ListenForTagSignificantChanged(913890514, this.NQ_, true);
+    for (const e of BattleUiRoleData.SpecialStateTagMap.keys()) {
+      this.ListenForTagSignificantChanged(e, this.vJ1, true);
     }
     EventSystem_1.EventSystem.AddWithTarget(this.EntityHandle.Entity, EventDefine_1.EEventName.CharOnDirectionStateChanged, this._$e);
     EventSystem_1.EventSystem.AddWithTarget(this.EntityHandle.Entity, EventDefine_1.EEventName.CharShieldChange, this.u$e);
@@ -230,13 +229,13 @@ class BattleUiRoleData {
       Log_1.Log.Info("Battle", 17, "BattelUi清理RoleData时，Entity不合法");
     }
   }
-  d$e(t, i, s = false) {
-    if (s && this.GameplayTagComponent?.HasTag(t)) {
+  ListenForTagSignificantChanged(t, i, e = false) {
+    if (e && this.GameplayTagComponent?.HasTag(t)) {
       i(t, true);
     }
-    s = this.GameplayTagComponent.ListenForTagAddOrRemove(t, i);
-    if (s) {
-      this.i$e.push(s);
+    e = this.GameplayTagComponent.ListenForTagAddOrRemove(t, i);
+    if (e) {
+      this.i$e.push(e);
     }
   }
   Goa() {
@@ -267,6 +266,12 @@ class BattleUiRoleData {
       return this.HasEnergyTag;
     } else {
       return !!(t = this.AttributeComponent) && (i = t.GetCurrentValue(EAttributeId.Proto_Energy), t.GetCurrentValue(EAttributeId.Proto_EnergyMax) <= i);
+    }
+  }
+  SetHasEnergyTag(t) {
+    if (this.HasEnergyTag !== t) {
+      this.HasEnergyTag = t;
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BattleUiEnergyChanged, this.EntityHandle.Id);
     }
   }
 }

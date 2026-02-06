@@ -83,12 +83,12 @@ class WorldMapView extends UiTickViewBase_1.UiTickViewBase {
     this.j3o = new Map();
     this.W3o = undefined;
     this.X3o = undefined;
-    this._Ym = new RegionalTerminalBarItem_1.RegionalTerminalBarItem();
+    this.DJm = new RegionalTerminalBarItem_1.RegionalTerminalBarItem();
     this.K3o = undefined;
     this.Q3o = undefined;
     this.Twl = 0;
-    this.dxm = false;
-    this.mxm = false;
+    this.Fxm = false;
+    this.Nxm = false;
     this.$Ya = 0;
     this.z3o = false;
     this.tKl = false;
@@ -97,11 +97,11 @@ class WorldMapView extends UiTickViewBase_1.UiTickViewBase {
       var t;
       if (!(this.Twl <= 0)) {
         this.Twl = 0;
-        this.dxm = false;
+        this.Fxm = false;
         if (t = this.v3o.SelfPlayerNode?.GetLGUISpaceAbsolutePosition()) {
           this.H3o?.SetLGUISpaceAbsolutePosition(t);
         }
-        this.H3o?.SetUIActive(!this.mxm);
+        this.H3o?.SetUIActive(!this.Nxm);
         this.Q3o?.PlayLevelSequenceByName("Start", true);
         this.v3o.HandleMapTileDelegate();
       }
@@ -147,7 +147,7 @@ class WorldMapView extends UiTickViewBase_1.UiTickViewBase {
         ControllerHolder_1.ControllerHolder.PowerController.OpenPowerView();
       });
     };
-    this._4o = () => {
+    this._4o = (t = false) => {
       this.v3o.SetClickRangeVisible(false);
       if (this.WorldMapUiEntity.ClickedItem) {
         this.WorldMapUiEntity.ClickedItem.IsIgnoreScaleShow = false;
@@ -157,7 +157,7 @@ class WorldMapView extends UiTickViewBase_1.UiTickViewBase {
       }
       this.WorldMapUiEntity.UpdateMarkItems();
       this.ZAd.SetMapNotesState(true);
-      if (!this.z3o) {
+      if (!this.z3o || !!t) {
         this.K3o.StopCurrentSequence();
         this.GetItem(14).SetUIActive(true);
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WorldMapPanelHudVisibleChanged, true);
@@ -547,10 +547,10 @@ class WorldMapView extends UiTickViewBase_1.UiTickViewBase {
       }
       this.WorldMapUiEntity.Map.SetDebugPath(e);
     };
-    this.Rof = t => {
+    this.Qsf = t => {
       this.AddChild(t);
     };
-    this.wof = () => {
+    this.Ksf = () => {
       if (!this.WorldMapUiEntity?.WorldMapExtraUiPanelComponent.IsExtraUiViewOpened) {
         this.ZAd.SetMapNotesState(true);
         this.K3o.StopCurrentSequence();
@@ -559,10 +559,10 @@ class WorldMapView extends UiTickViewBase_1.UiTickViewBase {
         this.K3o.PlayLevelSequenceByName("Show");
       }
     };
-    this.Lof = (t, e) => {
-      this.Pof(t, e);
+    this.Xsf = (t, e) => {
+      this.Ysf(t, e);
     };
-    this.xFf = t => {
+    this.h9f = t => {
       this.JAd.SetCursorActive(t);
     };
   }
@@ -592,7 +592,7 @@ class WorldMapView extends UiTickViewBase_1.UiTickViewBase {
     this.fea.SetWorldMapSelfShow(this.zAd);
     this.aMd.SetWorldMapSelfShow(this.zAd);
     this.ZAd.SetWorldMapSelfShow(this.zAd);
-    this._Ym.SetWorldMapSelfShow(this.zAd);
+    this.DJm.SetWorldMapSelfShow(this.zAd);
   }
   iZa() {
     var t;
@@ -634,7 +634,7 @@ class WorldMapView extends UiTickViewBase_1.UiTickViewBase {
   }
   async tDd() {
     await Promise.all([ControllerHolder_1.ControllerHolder.ExploreProgressController.AllExploreProgressAsyncRequest(), ControllerHolder_1.ControllerHolder.LordGymController.LordGymInfoRequest(), ControllerHolder_1.ControllerHolder.TowerController.RefreshTower(), ControllerHolder_1.ControllerHolder.MingSuController.SendDarkCoastDeliveryRequestAsync()]);
-    await Promise.all([this.Gkn(), this.Q4o(), this.X4o(), this.iDd(), this.rYs(), this.Y4o(), this.J4o(), this.rDd(), this.oDd(), this.eym(), this.uYm()]);
+    await Promise.all([this.Gkn(), this.Q4o(), this.X4o(), this.iDd(), this.rYs(), this.Y4o(), this.J4o(), this.rDd(), this.oDd(), this.eym(), this.UJm()]);
     this.z4o();
     this.nDd();
   }
@@ -691,8 +691,8 @@ class WorldMapView extends UiTickViewBase_1.UiTickViewBase {
   async J4o() {
     var t = this.OpenParam;
     this.Twl = t?.OpenFogId ?? 0;
-    this.dxm = t?.ShowFogEffectInstant ?? false;
-    this.mxm = t?.IsNotNeedUnLockEffect ?? false;
+    this.Fxm = t?.ShowFogEffectInstant ?? false;
+    this.Nxm = t?.IsNotNeedUnLockEffect ?? false;
     if (this.Twl > 0) {
       t = await LguiUtil_1.LguiUtil.LoadPrefabByResourceIdAsync("UiItem_MapUnlock", this.RootItem);
       this.H3o = t.GetComponentByClass(UE.UIItem.StaticClass());
@@ -728,9 +728,9 @@ class WorldMapView extends UiTickViewBase_1.UiTickViewBase {
       await this.Jvm.CreateThenShowByResourceIdAsync("UiItem_HonamiActiveExplore", this.GetItem(14));
     }
   }
-  async uYm() {
-    this._Ym.OpenParam = this.M3o?.RegionalTerminalBarItemParams;
-    await this._Ym.CreateByActorAsync(this.GetItem(24).GetOwner());
+  async UJm() {
+    this.DJm.OpenParam = this.M3o?.RegionalTerminalBarItemParams;
+    await this.DJm.CreateByActorAsync(this.GetItem(24).GetOwner());
   }
   OnAddEventListener() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.MarkMenuClickItem, this.f4o);
@@ -760,13 +760,13 @@ class WorldMapView extends UiTickViewBase_1.UiTickViewBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ToggleShowCompletedPlayMark, this.o2l);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.NavigateMarkAndShowRange, this.s2l);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OpenExploreAreaDetailViewFromMap, this.A8l);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OpenExtraUiFromMap, this.Lof);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OpenExtraUiFromMap, this.Xsf);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.MapOpenFogChange, this.Vhl);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldMapActivityListDataUpdate, this.hMd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SetWorldMapCursorButtonVisible, this.xFf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SetWorldMapCursorButtonVisible, this.h9f);
     if (!Info_1.Info.IsBuildShipping) {
       InputDistributeController_1.InputDistributeController.BindKey(InputMappingsDefine_1.keyMappings.C, this.V61);
-      Net_1.Net.Register(20699, this.F61);
+      Net_1.Net.Register(16558, this.F61);
     }
   }
   OnRemoveEventListener() {
@@ -797,13 +797,13 @@ class WorldMapView extends UiTickViewBase_1.UiTickViewBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ToggleShowCompletedPlayMark, this.o2l);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.NavigateMarkAndShowRange, this.s2l);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OpenExploreAreaDetailViewFromMap, this.A8l);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OpenExtraUiFromMap, this.Lof);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OpenExtraUiFromMap, this.Xsf);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.MapOpenFogChange, this.Vhl);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldMapActivityListDataUpdate, this.hMd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SetWorldMapCursorButtonVisible, this.xFf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SetWorldMapCursorButtonVisible, this.h9f);
     if (!Info_1.Info.IsBuildShipping) {
       InputDistributeController_1.InputDistributeController.UnBindKey(InputMappingsDefine_1.keyMappings.C, this.V61);
-      Net_1.Net.UnRegister(20699);
+      Net_1.Net.UnRegister(16558);
     }
   }
   OnStart() {
@@ -822,7 +822,7 @@ class WorldMapView extends UiTickViewBase_1.UiTickViewBase {
     this.fea?.RefreshWorldMapSelfShow(this.zAd);
     this.aMd?.RefreshWorldMapSelfShow(this.zAd);
     this.ZAd?.RefreshWorldMapSelfShow(this.zAd);
-    this._Ym?.RefreshWorldMapSelfShow(this.zAd);
+    this.DJm?.RefreshWorldMapSelfShow(this.zAd);
     this.GetButton(17).RootUIComp.SetUIActive(this.zAd === 1);
   }
   OnBeforeShow() {
@@ -840,7 +840,7 @@ class WorldMapView extends UiTickViewBase_1.UiTickViewBase {
     this.WorldMapUiEntity.UpdateMarkItems();
     var t;
     var e = this.M3o;
-    if (!e || !(e.SkipToExtraUiName && this.Pof(e.SkipToExtraUiName, e.SkipToExtraUiParam), (t = this.v3o.GetMarkItem(e.MarkType, e.MarkId)) && (MapHelper_1.MapHelper.CheckAndShowCrossMapTips(e.MarkId, e.MarkType, t.TrackAreaId, t.WorldPosition), this.WorldMapUiEntity.QuickNavigateComponent.NavigateTo(e.MarkId, e.MarkType, !e.IsNotFocal, !e.IsNotFocusTween)), e.FocusExplorePlayPoint && (t = e.FocusExplorePlayPoint[0], e = e.FocusExplorePlayPoint[1], ModelManager_1.ModelManager.ExploreProgressModel.SetTrackExploreAreaItemData(t, e), ModelManager_1.ModelManager.ExploreProgressModel.CheckTrackExploreAreaItemData()), this.M3o?.SkipToExploreAreaDetailView && (t = this.M3o.SkipToExploreAreaDetailView[0], e = this.M3o.SkipToExploreAreaDetailView[1], this.OpenMapExploreAreaDetailView(t, e)), !this.M3o?.NeedRefreshMultiFloor)) {
+    if (!e || !(e.SkipToExtraUiName && this.Ysf(e.SkipToExtraUiName, e.SkipToExtraUiParam), (t = this.v3o.GetMarkItem(e.MarkType, e.MarkId)) && (MapHelper_1.MapHelper.CheckAndShowCrossMapTips(e.MarkId, e.MarkType, t.TrackAreaId, t.WorldPosition), this.WorldMapUiEntity.QuickNavigateComponent.NavigateTo(e.MarkId, e.MarkType, !e.IsNotFocal, !e.IsNotFocusTween)), e.FocusExplorePlayPoint && (t = e.FocusExplorePlayPoint[0], e = e.FocusExplorePlayPoint[1], ModelManager_1.ModelManager.ExploreProgressModel.SetTrackExploreAreaItemData(t, e), ModelManager_1.ModelManager.ExploreProgressModel.CheckTrackExploreAreaItemData()), this.M3o?.SkipToExploreAreaDetailView && (t = this.M3o.SkipToExploreAreaDetailView[0], e = this.M3o.SkipToExploreAreaDetailView[1], this.OpenMapExploreAreaDetailView(t, e)), !this.M3o?.NeedRefreshMultiFloor)) {
       this.WorldMapUiEntity.MultiFloorComponent.InitMultiMap();
     }
     this.rKl();
@@ -848,8 +848,8 @@ class WorldMapView extends UiTickViewBase_1.UiTickViewBase {
     if (!this.tKl) {
       this.ZAd.UpdateNoteOrPlayProgress();
     }
-    if (this._Ym.IsAvailableShow()) {
-      this._Ym.BeforeShow();
+    if (this.DJm.IsAvailableShow()) {
+      this.DJm.BeforeShow();
     }
   }
   e5o() {
@@ -867,8 +867,9 @@ class WorldMapView extends UiTickViewBase_1.UiTickViewBase {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WorldMapViewOpened);
     this.M3o = undefined;
     this.W3o.OnWorldMapAfterShow();
+    this.WorldMapUiEntity.MultiFloorComponent.UpdateMultiMap();
     ModelManager_1.ModelManager.ExploreProgressModel.CheckTrackExploreAreaItemData();
-    if (this.dxm) {
+    if (this.Fxm) {
       this.e4o();
     }
   }
@@ -887,8 +888,8 @@ class WorldMapView extends UiTickViewBase_1.UiTickViewBase {
     }
   }
   OnBeforeHide() {
-    if (this._Ym.IsAvailableShow()) {
-      this._Ym.BeforeHide();
+    if (this.DJm.IsAvailableShow()) {
+      this.DJm.BeforeHide();
     }
     this.v3o.UnBindMapTileDelegate();
     this.M3o = undefined;
@@ -1069,8 +1070,8 @@ ${i}`;
     this.WorldMapUiEntity.WorldMapAlterMapComponent.WorldMapViewPlaySequenceFunction = t;
     this.WorldMapUiEntity.WorldMapAlterMapComponent.InverseTowerCtrlRoot = this.GetItem(20);
     this.WorldMapUiEntity.WorldMapAlterMapComponent.InverseTowerCtrlRoot.SetUIActive(false);
-    this.WorldMapUiEntity.WorldMapExtraUiPanelComponent.OnExtraUiViewOpened = this.Rof;
-    this.WorldMapUiEntity.WorldMapExtraUiPanelComponent.OnExtraUiViewClosed = this.wof;
+    this.WorldMapUiEntity.WorldMapExtraUiPanelComponent.OnExtraUiViewOpened = this.Qsf;
+    this.WorldMapUiEntity.WorldMapExtraUiPanelComponent.OnExtraUiViewClosed = this.Ksf;
   }
   h5o() {
     this.WorldMapUiEntity.Dispose();
@@ -1311,7 +1312,7 @@ ${i}`;
       }
     }
     if (i === "BarItem") {
-      return this._Ym?.GetGuideUiItemAndUiItemForShowEx(t);
+      return this.DJm?.GetGuideUiItemAndUiItemForShowEx(t);
     }
     if (t[0] === "PanelIndex") {
       var s = Number(t[1]);
@@ -1382,7 +1383,7 @@ ${i}`;
       UE.LGUIBPLibrary.ClipBoardCopy(`${Math.floor(t.X)},${Math.floor(t.Y)},${Math.floor(t.Z)},${ModelManager_1.ModelManager.WorldMapModel.CurrentWorldMapConfigId}`);
     }
   }
-  Pof(t, e) {
+  Ysf(t, e) {
     if (!this.WorldMapUiEntity?.WorldMapExtraUiPanelComponent.IsExtraUiViewOpened) {
       this.ZAd.SetMapNotesState(false);
       this.K3o.StopCurrentSequence();

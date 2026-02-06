@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.EEntityLogic = exports.EMotorParkourSystemVarType = exports.getNpcPerformStatesByType = exports.getNpcPerformStateTypes = exports.npcPerformStateConfig = undefined;
+exports.EEntityLogic = exports.ENightmareSettlementSystemVarType = exports.EMotorParkourSystemVarType = exports.getNpcPerformStatesByType = exports.getNpcPerformStateTypes = exports.npcPerformStateConfig = undefined;
 exports.npcPerformStateConfig = {
   幽灵态: ["常态", "幽灵"],
   禁锢态: ["常态", "禁锢"],
@@ -35,6 +35,7 @@ function getNpcPerformStatesByType(e) {
   }
 }
 var EMotorParkourSystemVarType;
+var ENightmareSettlementSystemVarType;
 var EEntityLogic;
 exports.getNpcPerformStateTypes = getNpcPerformStateTypes;
 exports.getNpcPerformStatesByType = getNpcPerformStatesByType;
@@ -45,6 +46,10 @@ exports.getNpcPerformStatesByType = getNpcPerformStatesByType;
   e.BestTime = "BestTime";
   e.CurCostTime = "CurCostTime";
 })(EMotorParkourSystemVarType = exports.EMotorParkourSystemVarType ||= {});
+(function (e) {
+  e.MonsterKilled = "MonsterKilled";
+  e.TotalMonsterPerDay = "TotalMonsterPerDay";
+})(ENightmareSettlementSystemVarType = exports.ENightmareSettlementSystemVarType ||= {});
 (function (e) {
   e.Item = "Item";
   e.Npc = "Npc";

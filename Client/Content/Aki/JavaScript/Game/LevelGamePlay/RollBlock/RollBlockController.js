@@ -55,23 +55,23 @@ class RollBlockGameplayInfo {
     this.InitState = "无";
     this.GroupId = o.S9n;
     this.Difficulty = o.ljn;
-    this.TotalDifficulty = o.wkf;
+    this.TotalDifficulty = o.I3f;
     this.IsMainController = o.htm;
     this.EntityIds = [];
-    if (o.wJf !== undefined) {
-      for (const t of o.wJf) {
+    if (o.jCg !== undefined) {
+      for (const t of o.jCg) {
         this.EntityIds.push(MathUtils_1.MathUtils.LongToNumber(t));
       }
     }
-    if (o.LJf !== undefined) {
-      for (const l of o.LJf) {
+    if (o.HCg !== undefined) {
+      for (const l of o.HCg) {
         this.InitVisibleEntityIds.push(MathUtils_1.MathUtils.LongToNumber(l));
       }
     }
-    this.Width = o.rdf ?? 0;
-    this.Height = o.odf ?? 0;
-    this.ShowTipsInputCount = o.ndf ?? 0;
-    this.CameraTag = o.LIf ?? undefined;
+    this.Width = o.eff ?? 0;
+    this.Height = o.tff ?? 0;
+    this.ShowTipsInputCount = o.rff ?? 0;
+    this.CameraTag = o.sRf ?? undefined;
     for (const e of o.VSm) {
       if (e.XDs?.Nfu !== undefined) {
         this.AvailableInputs.push(e.XDs?.Nfu);
@@ -96,7 +96,7 @@ class RollBlockController extends ControllerBase_1.ControllerBase {
     });
     ResourceSystem_1.ResourceSystem.LoadAsync(COMMON_FORCE_FEEDBACK_PATH, UE.KuroForceFeedbackEffect, o => {
       if (o) {
-        this.hXf = o;
+        this.f_g = o;
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("RollBlock", 31, "[RollBlockController] 通用震动配置加载失败", ["Path", COMMON_FORCE_FEEDBACK_PATH]);
       }
@@ -136,12 +136,17 @@ class RollBlockController extends ControllerBase_1.ControllerBase {
         if (this.Itm) {
           this.Ttm = l;
           if (!t) {
-            this.Kff = 0;
+            this.wCf = 0;
           }
-          this.Qff = 0;
-          this.gFf = false;
-          EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.GuideGroupOpening, this.IJt);
+          this.RCf = 0;
+          this.j7f = false;
+          EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OpenView, this.IJt);
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRollBlockDifficultyChanged, o.Difficulty);
+        } else {
+          if (!EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnLeaveOnlineWorld, this.ExitOnOnlineModeChange)) {
+            EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnLeaveOnlineWorld, this.ExitOnOnlineModeChange);
+          }
+          this.K8g = l;
         }
         if (this.Etm.size === 0) {
           EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.AddEntity, this.Ecu);
@@ -151,7 +156,7 @@ class RollBlockController extends ControllerBase_1.ControllerBase {
           Log_1.Log.Info("RollBlock", 31, "[EnterRollBlockGameplay] EnterRollBlockGameplay成功", ["IncId", l], ["GroupId", o.GroupId], ["Difficulty", o.Difficulty], ["IsMainController", o.IsMainController], ["EntityIds", o.EntityIds], ["InitVisibleEntityIds", o.InitVisibleEntityIds]);
         }
         t = ModelManager_1.ModelManager.CreatureModel.GetPlayerId();
-        t = ControllerHolder_1.ControllerHolder.FormationDataController.GetPlayerEntity(t)?.GetComponent(215);
+        t = ControllerHolder_1.ControllerHolder.FormationDataController.GetPlayerEntity(t)?.GetComponent(217);
         if (o.CameraTag !== 0) {
           t?.AddTag(o.CameraTag);
         }
@@ -169,17 +174,23 @@ class RollBlockController extends ControllerBase_1.ControllerBase {
   static ExitRollBlockGameplay(o, t = false) {
     var l = this.Etm.get(o);
     if (l === undefined) {
-      if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("RollBlock", 31, "[ExitRollBlockGameplay] IncId不存在", ["IncId", o]);
+      if (Log_1.Log.CheckWarn()) {
+        Log_1.Log.Warn("RollBlock", 31, "[ExitRollBlockGameplay] IncId不存在", ["IncId", o]);
       }
     } else {
       this.Etm.delete(o);
+      this.L9g.delete(o);
       if (l.IsMainController) {
         this.Itm = false;
         this.Ttm = undefined;
+      } else {
+        if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnLeaveOnlineWorld, this.ExitOnOnlineModeChange)) {
+          EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnLeaveOnlineWorld, this.ExitOnOnlineModeChange);
+        }
+        this.K8g = undefined;
       }
       var e = ModelManager_1.ModelManager.CreatureModel.GetPlayerId();
-      var e = ControllerHolder_1.ControllerHolder.FormationDataController.GetPlayerEntity(e)?.GetComponent(215);
+      var e = ControllerHolder_1.ControllerHolder.FormationDataController.GetPlayerEntity(e)?.GetComponent(217);
       if (l.CameraTag !== 0) {
         e?.RemoveTag(l.CameraTag);
       }
@@ -187,11 +198,11 @@ class RollBlockController extends ControllerBase_1.ControllerBase {
         UiManager_1.UiManager.CloseView("RollBlockView");
         e?.RemoveTag(698343876);
       }
-      if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.GuideGroupFinished, this.CFf)) {
-        EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.GuideGroupFinished, this.CFf);
+      if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.CloseView, this.$7f)) {
+        EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CloseView, this.$7f);
       }
-      if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.GuideGroupOpening, this.IJt)) {
-        EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.GuideGroupOpening, this.IJt);
+      if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OpenView, this.IJt)) {
+        EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OpenView, this.IJt);
       }
       if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.AddEntity, this.Ecu)) {
         EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.AddEntity, this.Ecu);
@@ -214,8 +225,8 @@ class RollBlockController extends ControllerBase_1.ControllerBase {
     } else {
       var l = this.Etm.get(t);
       if (l === undefined) {
-        if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("RollBlock", 31, "[UpdateCurRollBlockGameplayInfo] IncId不存在", ["IncId", t]);
+        if (Log_1.Log.CheckWarn()) {
+          Log_1.Log.Warn("RollBlock", 31, "[UpdateCurRollBlockGameplayInfo] IncId不存在", ["IncId", t]);
         }
       } else {
         var e = new RollBlockGameplayInfo(o);
@@ -228,37 +239,37 @@ class RollBlockController extends ControllerBase_1.ControllerBase {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("RollBlock", 31, "[UpdateCurRollBlockGameplayInfo] 更新玩法信息", ["IncId", t], ["Info", o]);
         }
-        for (const r of e.EntityIds) {
-          var i = ModelManager_1.ModelManager.CreatureModel.GetEntity(r)?.Entity;
+        for (const c of e.EntityIds) {
+          var i = ModelManager_1.ModelManager.CreatureModel.GetEntity(c)?.Entity;
           if (i === undefined) {
             if (Log_1.Log.CheckError()) {
-              Log_1.Log.Error("RollBlock", 31, "[UpdateCurRollBlockGameplayInfo] Entity不存在", ["IncId", t], ["EntityId", r]);
+              Log_1.Log.Error("RollBlock", 31, "[UpdateCurRollBlockGameplayInfo] Entity不存在", ["IncId", t], ["EntityId", c]);
             }
-          } else if (i.GetComponent(215) === undefined) {
+          } else if (i.GetComponent(217) === undefined) {
             if (Log_1.Log.CheckError()) {
-              Log_1.Log.Error("RollBlock", 31, "[UpdateCurRollBlockGameplayInfo] BaseTagComponent不存在", ["IncId", t], ["EntityId", r]);
+              Log_1.Log.Error("RollBlock", 31, "[UpdateCurRollBlockGameplayInfo] BaseTagComponent不存在", ["IncId", t], ["EntityId", c]);
             }
-          } else if ((i = i.GetComponent(328)) === undefined) {
+          } else if ((i = i.GetComponent(330)) === undefined) {
             if (Log_1.Log.CheckError()) {
-              Log_1.Log.Error("RollBlock", 31, "[UpdateCurRollBlockGameplayInfo] rbBaseComponent不存在", ["IncId", t], ["EntityId", r]);
+              Log_1.Log.Error("RollBlock", 31, "[UpdateCurRollBlockGameplayInfo] rbBaseComponent不存在", ["IncId", t], ["EntityId", c]);
             }
           } else {
             i.RegisterToGameplay(t);
           }
         }
-        for (const c of e.InitVisibleEntityIds) {
-          var n = ModelManager_1.ModelManager.CreatureModel.GetEntity(c)?.Entity;
+        for (const r of e.InitVisibleEntityIds) {
+          var n = ModelManager_1.ModelManager.CreatureModel.GetEntity(r)?.Entity;
           if (n === undefined) {
             if (Log_1.Log.CheckError()) {
-              Log_1.Log.Error("RollBlock", 31, "[UpdateCurRollBlockGameplayInfo] Entity不存在", ["IncId", t], ["EntityId", c]);
+              Log_1.Log.Error("RollBlock", 31, "[UpdateCurRollBlockGameplayInfo] Entity不存在", ["IncId", t], ["EntityId", r]);
             }
-          } else if (n.GetComponent(215) === undefined) {
+          } else if (n.GetComponent(217) === undefined) {
             if (Log_1.Log.CheckError()) {
-              Log_1.Log.Error("RollBlock", 31, "[UpdateCurRollBlockGameplayInfo] BaseTagComponent不存在", ["IncId", t], ["EntityId", c]);
+              Log_1.Log.Error("RollBlock", 31, "[UpdateCurRollBlockGameplayInfo] BaseTagComponent不存在", ["IncId", t], ["EntityId", r]);
             }
-          } else if ((n = n.GetComponent(328)) === undefined) {
+          } else if ((n = n.GetComponent(330)) === undefined) {
             if (Log_1.Log.CheckError()) {
-              Log_1.Log.Error("RollBlock", 31, "[UpdateCurRollBlockGameplayInfo] rbBaseComponent不存在", ["IncId", t], ["EntityId", c]);
+              Log_1.Log.Error("RollBlock", 31, "[UpdateCurRollBlockGameplayInfo] rbBaseComponent不存在", ["IncId", t], ["EntityId", r]);
             }
           } else {
             n.RegisterToGameplay(t);
@@ -267,10 +278,29 @@ class RollBlockController extends ControllerBase_1.ControllerBase {
       }
     }
   }
-  static OnClickMoveInput(o, t) {
-    var l;
-    if (!this.ydd && (l = this.Etm.get(this.Ttm), this.SSm(o, t), o === this.MSm && t === 0 || this.MSm !== undefined && l?.AvailableInputs.includes(RollBlockDefind_1.Input2RbGridDirection.get(this.MSm)) && t === 1)) {
-      this.xtm();
+  static OnClickMoveInput(t, l) {
+    if (!this.ydd) {
+      var e = this.Etm.get(this.Ttm);
+      if (e === undefined) {
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("RollBlock", 31, "[OnClickMoveInput] IncId不存在", ["IncId", this.Ttm]);
+        }
+      } else {
+        let o = false;
+        for (const i of e.RollBlockEntities) {
+          if (i.Valid && i.IsMainController) {
+            o = true;
+          }
+        }
+        if (o) {
+          this.SSm(t, l);
+          if (t === this.MSm && l === 0 || this.MSm !== undefined && e?.AvailableInputs.includes(RollBlockDefind_1.Input2RbGridDirection.get(this.MSm)) && l === 1) {
+            this.xtm();
+          }
+        } else if (Log_1.Log.CheckWarn()) {
+          Log_1.Log.Warn("RollBlock", 93, "[OnClickMoveInput] 没有主控制方块，拦截输入", ["IncId", this.Ttm]);
+        }
+      }
     }
   }
   static SSm(o, t) {
@@ -298,8 +328,8 @@ class RollBlockController extends ControllerBase_1.ControllerBase {
     var o;
     if (!this.ydd && !this.pct) {
       if ((o = this.Etm.get(this.Ttm)) === undefined) {
-        if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("RollBlock", 31, "[OnClickTip] IncId不存在", ["IncId", this.Ttm]);
+        if (Log_1.Log.CheckWarn()) {
+          Log_1.Log.Warn("RollBlock", 31, "[OnClickTip] IncId不存在", ["IncId", this.Ttm]);
         }
       } else if (o.HasTipActorNum > 0) {
         if (Log_1.Log.CheckInfo()) {
@@ -309,9 +339,9 @@ class RollBlockController extends ControllerBase_1.ControllerBase {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("RollBlock", 31, "[OnClickTip]");
         }
-        (o = Protocol_1.Aki.Protocol.iRm.create()).w5n = this.Ttm;
+        (o = Protocol_1.Aki.Protocol.aRm.create()).w5n = this.Ttm;
         o.Sps = true;
-        Net_1.Net.Call(23951, o, o => {
+        Net_1.Net.Call(21707, o, o => {
           this.pct = false;
           if (o !== undefined) {
             switch (o.Cvs) {
@@ -332,54 +362,70 @@ class RollBlockController extends ControllerBase_1.ControllerBase {
       }
     }
   }
-  static OnClickReset() {
-    var o;
-    if (!this.ydd && !this.pct) {
-      this.ydd = true;
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRollBlockReseting, "开始");
-      if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("RollBlock", 31, "[OnClickReset] 重置操作开始");
-      }
-      (o = Protocol_1.Aki.Protocol.Vem.create()).w5n = this.Ttm;
-      Net_1.Net.Call(20861, o, o => {
-        if (o !== undefined) {
-          if (o.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-            if (Log_1.Log.CheckWarn()) {
-              Log_1.Log.Warn("RollBlock", 31, "[OnClickReset] Proto_RollBlockResetGamePlayRequest失败", ["errorCode", o.Cvs]);
-            }
-            this.ydd = false;
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeScrollingTipsView(o.Cvs, []);
-            EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRollBlockReseting, "失败");
-          } else {
-            EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRollBlockReseting, "成功");
-            if (Log_1.Log.CheckInfo()) {
-              Log_1.Log.Info("RollBlock", 31, "[OnClickReset] Proto_RollBlockResetGamePlayRequest成功");
-            }
+  static OnClickReset(t = false, l = false) {
+    if (!this.ydd && !this.pct || l) {
+      l = this.Etm.get(this.Ttm);
+      if (l === undefined) {
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("RollBlock", 31, "[OnClickMoveInput] IncId不存在", ["IncId", this.Ttm]);
+        }
+      } else {
+        let o = false;
+        for (const e of l.RollBlockEntities) {
+          if (e.Valid && e.IsMainController) {
+            o = true;
           }
         }
-      });
+        if (o) {
+          this.ydd = true;
+          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRollBlockReseting, "开始");
+          if (t) {
+            TimerSystem_1.TimerSystem.Delay(this.j6g, this.GameplaySetting.BlockDestroyDelayResetTime);
+          } else {
+            this.j6g();
+          }
+        } else if (Log_1.Log.CheckWarn()) {
+          Log_1.Log.Warn("RollBlock", 93, "[OnClickReset] 没有主控制方块，拦截重置", ["IncId", this.Ttm]);
+        }
+      }
     }
   }
   static OnClickEsc() {
-    var o;
     if (!this.ydd && !this.pct) {
-      if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("RollBlock", 31, "[OnClickEsc]");
-      }
-      (o = Protocol_1.Aki.Protocol.eRm.create()).w5n = this.Ttm;
-      Net_1.Net.Call(24169, o, o => {
-        this.pct = false;
-        if (o !== undefined) {
-          if (o.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-            if (Log_1.Log.CheckError()) {
-              Log_1.Log.Error("RollBlock", 31, "[OnClickEsc] Proto_RollBlockExitGamePlayRequest失败", ["errorCode", o.Cvs]);
-            }
-          } else if (Log_1.Log.CheckInfo()) {
-            Log_1.Log.Info("RollBlock", 31, "[OnClickEsc] Proto_RollBlockExitGamePlayRequest成功");
+      var t = this.Etm.get(this.Ttm);
+      if (t === undefined) {
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("RollBlock", 31, "[OnClickMoveInput] IncId不存在", ["IncId", this.Ttm]);
+        }
+      } else {
+        let o = false;
+        for (const l of t.RollBlockEntities) {
+          if (l.Valid && l.IsMainController) {
+            o = true;
           }
         }
-      });
-      this.pct = true;
+        if (o) {
+          if (Log_1.Log.CheckInfo()) {
+            Log_1.Log.Info("RollBlock", 31, "[OnClickEsc]");
+          }
+          (t = Protocol_1.Aki.Protocol.nRm.create()).w5n = this.Ttm;
+          Net_1.Net.Call(27201, t, o => {
+            this.pct = false;
+            if (o !== undefined) {
+              if (o.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+                if (Log_1.Log.CheckError()) {
+                  Log_1.Log.Error("RollBlock", 31, "[OnClickEsc] Proto_RollBlockExitGamePlayRequest失败", ["errorCode", o.Cvs]);
+                }
+              } else if (Log_1.Log.CheckInfo()) {
+                Log_1.Log.Info("RollBlock", 31, "[OnClickEsc] Proto_RollBlockExitGamePlayRequest成功");
+              }
+            }
+          });
+          this.pct = true;
+        } else if (Log_1.Log.CheckWarn()) {
+          Log_1.Log.Warn("RollBlock", 93, "[OnClickEsc] 没有主控制方块，拦截退出", ["IncId", this.Ttm]);
+        }
+      }
     }
   }
   static OnClickSwitch() {
@@ -390,8 +436,8 @@ class RollBlockController extends ControllerBase_1.ControllerBase {
         Log_1.Log.Info("RollBlock", 31, "[OnClickSwitch]");
       }
       if (o = this.Etm.get(this.Ttm)?.MultiBlock) {
-        (t = Protocol_1.Aki.Protocol.oRm.create()).w5n = this.Ttm;
-        Net_1.Net.Call(21931, t, o => {
+        (t = Protocol_1.Aki.Protocol.lRm.create()).w5n = this.Ttm;
+        Net_1.Net.Call(18796, t, o => {
           var t;
           this.pct = false;
           if (o !== undefined) {
@@ -403,12 +449,12 @@ class RollBlockController extends ControllerBase_1.ControllerBase {
               if (Log_1.Log.CheckInfo()) {
                 Log_1.Log.Info("RollBlock", 31, "[OnClickSwitch] Proto_RollBlockSwitchControlBlockRequest成功");
               }
-              t = MathUtils_1.MathUtils.LongToNumber(o.aRm);
-              if ((t = ModelManager_1.ModelManager.CreatureModel.GetEntity(t)?.Entity?.GetComponent(328)) !== undefined) {
+              t = MathUtils_1.MathUtils.LongToNumber(o.cRm);
+              if ((t = ModelManager_1.ModelManager.CreatureModel.GetEntity(t)?.Entity?.GetComponent(330)) !== undefined) {
                 t.IsMainController = false;
               }
-              t = MathUtils_1.MathUtils.LongToNumber(o.hRm);
-              if ((o = ModelManager_1.ModelManager.CreatureModel.GetEntity(t)?.Entity?.GetComponent(328)) !== undefined) {
+              t = MathUtils_1.MathUtils.LongToNumber(o.dRm);
+              if ((o = ModelManager_1.ModelManager.CreatureModel.GetEntity(t)?.Entity?.GetComponent(330)) !== undefined) {
                 o.IsMainController = true;
               }
             }
@@ -447,8 +493,8 @@ class RollBlockController extends ControllerBase_1.ControllerBase {
           Log_1.Log.Info("RollBlock", 31, "[OnNotifyAvailableInputsChange] 可用输入", ["Direction", l.XDs.Nfu]);
         }
       }
-    } else if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("RollBlock", 31, "[OnNotifyAvailableInputsChange] IncId不存在", ["IncId", o.w5n]);
+    } else if (Log_1.Log.CheckWarn()) {
+      Log_1.Log.Warn("RollBlock", 31, "[OnNotifyAvailableInputsChange] IncId不存在", ["IncId", o.w5n]);
     }
   }
   static xtm() {
@@ -457,7 +503,7 @@ class RollBlockController extends ControllerBase_1.ControllerBase {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("RollBlock", 31, "[OnClickMove] InputDir未定义");
         }
-      } else if (this.Zbm()) {
+      } else if (this.vRm()) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("RollBlock", 31, "[OnClickMove] 方块正在移动，忽略此次输入", ["InputDir", this.Btm]);
         }
@@ -472,9 +518,9 @@ class RollBlockController extends ControllerBase_1.ControllerBase {
         o.BWn = {
           XDs: l
         };
-        Net_1.Net.Call(20805, o, o => {
+        Net_1.Net.Call(19590, o, o => {
           this.pct = false;
-          if (o !== undefined && (o.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs && (Log_1.Log.CheckError() && Log_1.Log.Error("RollBlock", 31, "[OnClickMove] Proto_RollBlockInputRequest失败", ["errorCode", o.Cvs]), o = RollBlockDefind_1.RbGridDirection2Input.get(l.Nfu)) && o === this.MSm && this.SSm(o, 1), Log_1.Log.CheckInfo() && Log_1.Log.Info("RollBlock", 31, "[OnClickMove] Proto_RollBlockInputRequest成功"), this.Qff = 0, this.Kff++, o = this.Etm.get(this.Ttm), this.Kff > o.ShowTipsInputCount) && !o.ShowedTips) {
+          if (o !== undefined && (o.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs && (Log_1.Log.CheckError() && Log_1.Log.Error("RollBlock", 31, "[OnClickMove] Proto_RollBlockInputRequest失败", ["errorCode", o.Cvs]), o = RollBlockDefind_1.RbGridDirection2Input.get(l.Nfu)) && o === this.MSm && this.SSm(o, 1), Log_1.Log.CheckInfo() && Log_1.Log.Info("RollBlock", 31, "[OnClickMove] Proto_RollBlockInputRequest成功"), this.RCf = 0, this.wCf++, o = this.Etm.get(this.Ttm), this.wCf > o.ShowTipsInputCount) && !o.ShowedTips) {
             EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ShowRollBlockTips);
             o.ShowedTips = true;
           }
@@ -484,30 +530,30 @@ class RollBlockController extends ControllerBase_1.ControllerBase {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("RollBlock", 31, "[OnClickMove] 当前方向不可用，忽略此次输入", ["InputDir", this.Btm]);
         }
-        this.Qff++;
-        if (this.hXf && Info_1.Info.IsInGamepad() && !ModelManager_1.ModelManager.ControlScreenModel?.IsTouching) {
-          ControllerHolder_1.ControllerHolder.GamepadController.PlayKuroForceFeedback(this.hXf, FNameUtil_1.FNameUtil.GetDynamicFName("RollBlock"), false, false, false, "RollBlockController");
+        this.RCf++;
+        if (this.f_g && Info_1.Info.IsInGamepad() && !ModelManager_1.ModelManager.ControlScreenModel?.IsTouching) {
+          ControllerHolder_1.ControllerHolder.GamepadController.PlayKuroForceFeedback(this.f_g, FNameUtil_1.FNameUtil.GetDynamicFName("RollBlock"), false, false, false, "RollBlockController");
         }
         for (const e of this.Etm.get(this.Ttm)?.RollBlockEntities ?? []) {
           if (e.IsMainController) {
-            var t = e.Entity.GetComponent(215);
+            var t = e.Entity.GetComponent(217);
             t?.RemoveTag(906967761);
             t?.AddTag(906967761);
             break;
           }
         }
-        if (this.Qff >= this.GameplaySetting.ShowMistakeTipsCount) {
+        if (this.RCf >= this.GameplaySetting.ShowMistakeTipsCount) {
           o = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(this.GameplaySetting.RollBlockErrorTipKey);
           ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByItsType(9, undefined, undefined, [o]);
         }
       }
     }
   }
-  static Zbm() {
+  static vRm() {
     var o = this.Etm.get(this.Ttm);
     if (o === undefined) {
-      if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("RollBlock", 31, "[IsBlockMoving] IncId不存在", ["IncId", this.Ttm]);
+      if (Log_1.Log.CheckWarn()) {
+        Log_1.Log.Warn("RollBlock", 31, "[IsBlockMoving] IncId不存在", ["IncId", this.Ttm]);
       }
     } else {
       for (const t of o.RollBlockEntities) {
@@ -533,7 +579,7 @@ class RollBlockController extends ControllerBase_1.ControllerBase {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("RollBlock", 31, "[StartRollBlockMovement] Entity不存在", ["EntityId", t]);
         }
-      } else if ((l = e.GetComponent(329)) === undefined) {
+      } else if ((l = e.GetComponent(331)) === undefined) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("RollBlock", 31, "[StartRollBlockMovement] RollBlockItemComponent不存在", ["EntityId", t]);
         }
@@ -554,118 +600,136 @@ class RollBlockController extends ControllerBase_1.ControllerBase {
   }
   static Rtm(t) {
     var o = this.Etm.get(t);
-    if (o === undefined && Log_1.Log.CheckError()) {
-      Log_1.Log.Error("RollBlock", 31, "[HandleGroupEntitiesCreate] IncId不存在", ["IncId", t]);
-    }
-    var l = o.EntityIds;
-    if (l.length === 0 && Log_1.Log.CheckError()) {
-      Log_1.Log.Error("RollBlock", 31, "[HandleGroupEntitiesCreate] EntityIds为空", ["IncId", t]);
-    }
-    if (this.kHa.has(t)) {
-      if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("RollBlock", 31, "[HandleGroupEntitiesCreate] WaitEntityTask已存在，将强行停止", ["IncId", t]);
+    if (o === undefined) {
+      if (Log_1.Log.CheckWarn()) {
+        Log_1.Log.Warn("RollBlock", 31, "[HandleGroupEntitiesCreate] IncId不存在", ["IncId", t]);
       }
-      const e = this.kHa.get(t);
-      e?.Cancel();
+    } else {
+      var l = o.EntityIds;
+      if (l.length === 0 && Log_1.Log.CheckError()) {
+        Log_1.Log.Error("RollBlock", 31, "[HandleGroupEntitiesCreate] EntityIds为空", ["IncId", t]);
+      }
+      if (this.kHa.has(t)) {
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("RollBlock", 31, "[HandleGroupEntitiesCreate] WaitEntityTask已存在，将强行停止", ["IncId", t]);
+        }
+        const e = this.kHa.get(t);
+        e?.Cancel();
+      }
+      const e = WaitEntityTask_1.WaitEntityTask.Create("[RollBlockController.HandleGroupEntitiesCreate]", l, o => {
+        this.cb1(o, t);
+      }, -1, false, true);
+      this.kHa.set(t, e);
+      o.InitState = "等待所有实体创建";
     }
-    const e = WaitEntityTask_1.WaitEntityTask.Create("[RollBlockController.HandleGroupEntitiesCreate]", l, o => {
-      this.cb1(o, t);
-    }, -1, false, true);
-    this.kHa.set(t, e);
-    o.InitState = "等待所有实体创建";
   }
-  static cb1(o, t) {
-    this.kHa.delete(t);
+  static cb1(o, l) {
+    this.kHa.delete(l);
     if (o) {
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("RollBlock", 31, "[OnAllEntityCreated] 生成实体成功", ["IncId", t]);
+        Log_1.Log.Info("RollBlock", 31, "[OnAllEntityCreated] 生成实体成功", ["IncId", l]);
       }
-      var o = this.Etm.get(t);
-      var l = o.EntityIds;
+      var o = this.Etm.get(l);
+      var t = o.EntityIds;
       o.InitState = "等待场景交互物加载完成";
-      if (l.length === 0) {
+      if (t.length === 0) {
         if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("RollBlock", 31, "[OnAllEntityCreated] EntityIds为空", ["IncId", t]);
+          Log_1.Log.Error("RollBlock", 31, "[OnAllEntityCreated] EntityIds为空", ["IncId", l]);
         }
       } else {
-        for (const n of l) {
-          const r = ModelManager_1.ModelManager.CreatureModel.GetEntity(n)?.Entity;
-          if (r === undefined) {
+        for (const n of t) {
+          const c = ModelManager_1.ModelManager.CreatureModel.GetEntity(n)?.Entity;
+          if (c === undefined) {
             if (Log_1.Log.CheckError()) {
-              Log_1.Log.Error("RollBlock", 31, "[OnAllEntityCreated] Entity不存在", ["IncId", t], ["EntityId", n]);
+              Log_1.Log.Error("RollBlock", 31, "[OnAllEntityCreated] Entity不存在", ["IncId", l], ["EntityId", n]);
             }
           } else {
-            var e = r.GetComponent(212);
+            var e = c.GetComponent(214);
             if (e === undefined) {
               if (Log_1.Log.CheckError()) {
-                Log_1.Log.Error("RollBlock", 31, "[OnAllEntityCreated] SceneItemActorComponent不存在", ["IncId", t], ["EntityId", n]);
+                Log_1.Log.Error("RollBlock", 31, "[OnAllEntityCreated] SceneItemActorComponent不存在", ["IncId", l], ["EntityId", n]);
               }
             } else {
-              var i = r.GetComponent(215);
+              var i = c.GetComponent(217);
               if (i === undefined) {
                 if (Log_1.Log.CheckError()) {
-                  Log_1.Log.Error("RollBlock", 31, "[OnAllEntityCreated] BaseTagComponent不存在", ["IncId", t], ["EntityId", n]);
+                  Log_1.Log.Error("RollBlock", 31, "[OnAllEntityCreated] BaseTagComponent不存在", ["IncId", l], ["EntityId", n]);
                 }
               } else {
                 i.AddTag(1090344258);
                 if (!e.GetIsSceneInteractionLoadCompleted()) {
-                  const c = this.yQ1.get(t) ?? new Map();
-                  this.yQ1.set(t, c);
+                  const s = this.yQ1.get(l) ?? new Map();
+                  this.yQ1.set(l, s);
                   if (Log_1.Log.CheckInfo()) {
-                    Log_1.Log.Info("RollBlock", 31, "[OnAllEntityCreated] 实体IsSceneInteractionLoadCompleted is false", ["IncId", t], ["EntityId", n]);
+                    Log_1.Log.Info("RollBlock", 31, "[OnAllEntityCreated] 实体IsSceneInteractionLoadCompleted is false", ["IncId", l], ["EntityId", n]);
                   }
-                  const s = () => {
-                    EventSystem_1.EventSystem.RemoveWithTarget(r, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted, s);
-                    c.delete(r);
-                    this.yQ1.set(t, c);
+                  const _ = () => {
+                    EventSystem_1.EventSystem.RemoveWithTarget(c, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted, _);
+                    s.delete(c);
+                    this.yQ1.set(l, s);
                     if (Log_1.Log.CheckInfo()) {
-                      Log_1.Log.Info("RollBlock", 31, "[OnAllEntityCreated] 实体IsSceneInteractionLoadCompleted is true", ["IncId", t], ["EntityId", n]);
+                      Log_1.Log.Info("RollBlock", 31, "[OnAllEntityCreated] 实体IsSceneInteractionLoadCompleted is true", ["IncId", l], ["EntityId", n]);
                     }
-                    if (c.size === 0) {
-                      this.MQ1(t);
+                    if (s.size === 0) {
+                      this.MQ1(l);
                     }
                   };
-                  EventSystem_1.EventSystem.AddWithTarget(r, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted, s);
-                  c.set(r, s);
+                  EventSystem_1.EventSystem.AddWithTarget(c, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted, _);
+                  s.set(c, _);
                 }
-                TickProcessSystem_1.TickProcessSystem.RegisterOnceTickProcess(5, true, () => {
-                  ControllerHolder_1.ControllerHolder.CreatureController?.SetEntityEnable(r, true, "RollBlockController");
-                });
+                const r = () => {
+                  if (Log_1.Log.CheckDebug()) {
+                    Log_1.Log.Debug("RollBlock", 31, "[OnAllEntityCreated] onSetEntityEnable 函数执行", ["IncId", l], ["EntityId", n]);
+                  }
+                  ControllerHolder_1.ControllerHolder.CreatureController?.SetEntityEnable(c, true, "RollBlockController");
+                  var o;
+                  var t = this.L9g.get(l);
+                  if (t && ((o = t.indexOf(r)) > -1 && (t.splice(o, 1), Log_1.Log.CheckDebug()) && Log_1.Log.Debug("RollBlock", 31, "[OnAllEntityCreated] 函数已从 Map 中移除", ["IncId", l], ["RemainingFunctions", t.length]), t.length === 0) && (this.L9g.delete(l), Log_1.Log.CheckDebug())) {
+                    Log_1.Log.Debug("RollBlock", 31, "[OnAllEntityCreated] incId 对应的函数列表已清空", ["IncId", l]);
+                  }
+                };
+                i = this.L9g.get(l) ?? [];
+                i.push(r);
+                this.L9g.set(l, i);
+                if (Log_1.Log.CheckDebug()) {
+                  Log_1.Log.Debug("RollBlock", 31, "[OnAllEntityCreated] onSetEntityEnable 函数已保存", ["IncId", l], ["EntityId", n], ["TotalFunctions", i.length]);
+                }
+                TickProcessSystem_1.TickProcessSystem.RegisterOnceTickProcess(5, true, r);
               }
             }
           }
         }
       }
     } else if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("RollBlock", 31, "[OnAllEntityCreated] 生成实体失败或者等待超时", ["IncId", t]);
+      Log_1.Log.Error("RollBlock", 31, "[OnAllEntityCreated] 生成实体失败或者等待超时", ["IncId", l]);
     }
   }
   static MQ1(t) {
     var l = this.Etm.get(t);
     if (l === undefined) {
-      if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("RollBlock", 31, "[OnAllSceneItemLoadCompleted] IncId不存在", ["IncId", t]);
+      if (Log_1.Log.CheckWarn()) {
+        Log_1.Log.Warn("RollBlock", 31, "[OnAllSceneItemLoadCompleted] IncId不存在", ["IncId", t]);
       }
     } else {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("RollBlock", 31, "[OnAllSceneItemLoadCompleted] 场景物件加载完成", ["IncId", t]);
       }
       let o = 0;
-      for (const c of l.EntityIds) {
-        var e = ModelManager_1.ModelManager.CreatureModel.GetEntity(c)?.Entity;
+      for (const r of l.EntityIds) {
+        var e = ModelManager_1.ModelManager.CreatureModel.GetEntity(r)?.Entity;
         if (e === undefined) {
           if (Log_1.Log.CheckError()) {
-            Log_1.Log.Error("RollBlock", 31, "[OnAllSceneItemLoadCompleted] Entity不存在", ["IncId", t], ["EntityId", c]);
+            Log_1.Log.Error("RollBlock", 31, "[OnAllSceneItemLoadCompleted] Entity不存在", ["IncId", t], ["EntityId", r]);
           }
-        } else if (e.GetComponent(215) === undefined) {
+        } else if (e.GetComponent(217) === undefined) {
           if (Log_1.Log.CheckError()) {
-            Log_1.Log.Error("RollBlock", 31, "[OnAllSceneItemLoadCompleted] BaseTagComponent不存在", ["IncId", t], ["EntityId", c]);
+            Log_1.Log.Error("RollBlock", 31, "[OnAllSceneItemLoadCompleted] BaseTagComponent不存在", ["IncId", t], ["EntityId", r]);
           }
         } else {
-          var i = e.GetComponent(328);
+          var i = e.GetComponent(330);
           if (i === undefined) {
             if (Log_1.Log.CheckError()) {
-              Log_1.Log.Error("RollBlock", 31, "[OnAllSceneItemLoadCompleted] rbBaseComponent不存在", ["IncId", t], ["EntityId", c]);
+              Log_1.Log.Error("RollBlock", 31, "[OnAllSceneItemLoadCompleted] rbBaseComponent不存在", ["IncId", t], ["EntityId", r]);
             }
           } else {
             i.RegisterToGameplay(t);
@@ -674,52 +738,52 @@ class RollBlockController extends ControllerBase_1.ControllerBase {
             }
             for (const s of i.OccupiedCellIndex) {
               var n = s.GetKey();
-              var r = l.IndexedEntityMap.get(n) ?? [];
-              r.push(i);
-              l.IndexedEntityMap.set(n, r);
+              var c = l.IndexedEntityMap.get(n) ?? [];
+              c.push(i);
+              l.IndexedEntityMap.set(n, c);
             }
           }
         }
       }
       l.MultiBlock = o > 1;
       TimerSystem_1.TimerSystem.Delay(() => {
-        this.Xff(t);
+        this.LCf(t);
       }, 100);
     }
   }
-  static Xff(o) {
+  static LCf(o) {
     var l = this.Etm.get(o);
     if (l === undefined) {
-      if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("RollBlock", 31, "[StartRollBlockBirthEffect] IncId不存在", ["IncId", o]);
+      if (Log_1.Log.CheckWarn()) {
+        Log_1.Log.Warn("RollBlock", 31, "[StartRollBlockBirthEffect] IncId不存在", ["IncId", o]);
       }
     } else {
       if (l.Width % 2 == 0) {
-        this.Yff = Vector2D_1.Vector2D.Create(l.Width / 2 - 1, l.Width / 2);
+        this.PCf = Vector2D_1.Vector2D.Create(l.Width / 2 - 1, l.Width / 2);
       } else {
-        this.Yff = Vector2D_1.Vector2D.Create(Math.floor(l.Width / 2), Math.floor(l.Width / 2));
+        this.PCf = Vector2D_1.Vector2D.Create(Math.floor(l.Width / 2), Math.floor(l.Width / 2));
       }
       if (l.Height % 2 == 0) {
-        this.zff = Vector2D_1.Vector2D.Create(l.Height / 2 - 1, l.Height / 2);
+        this.ACf = Vector2D_1.Vector2D.Create(l.Height / 2 - 1, l.Height / 2);
       } else {
-        this.zff = Vector2D_1.Vector2D.Create(Math.floor(l.Height / 2), Math.floor(l.Height / 2));
+        this.ACf = Vector2D_1.Vector2D.Create(Math.floor(l.Height / 2), Math.floor(l.Height / 2));
       }
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("RollBlock", 31, "[StartRollBlockBirthEffect] 出生表现开始", ["Width", this.Yff], ["Height", this.zff]);
+        Log_1.Log.Info("RollBlock", 31, "[StartRollBlockBirthEffect] 出生表现开始", ["Width", this.PCf], ["Height", this.ACf]);
       }
       l.InitState = "处理出生表现";
-      this.Jff.clear();
-      for (let t = this.Yff.X; t <= this.Yff.Y; t++) {
-        for (let o = this.zff.X; o <= this.zff.Y; o++) {
+      this.DCf.clear();
+      for (let t = this.PCf.X; t <= this.PCf.Y; t++) {
+        for (let o = this.ACf.X; o <= this.ACf.Y; o++) {
           var e = new SceneItemJigsawBaseComponent_1.JigsawIndex(t, o);
           l.IndexedEntityMap.get(e.GetKey())?.forEach(o => {
-            this.Jff.add(o);
+            this.DCf.add(o);
           });
         }
       }
-      for (const n of this.Jff) {
+      for (const n of this.DCf) {
         var t = n.Entity;
-        var i = t.GetComponent(215);
+        var i = t.GetComponent(217);
         if (i === undefined) {
           if (Log_1.Log.CheckError()) {
             Log_1.Log.Error("RollBlock", 31, "[StartRollBlockBirthEffect] BaseTagComponent不存在", ["IncId", o], ["EntityId", t.Id]);
@@ -728,18 +792,18 @@ class RollBlockController extends ControllerBase_1.ControllerBase {
           i.RemoveTag(1090344258);
         }
       }
-      this.aCf = o;
-      this.Zff = TimerSystem_1.TimerSystem.Forever(this.egf, this.GameplaySetting.ShowBlockInterval);
+      this.nyf = o;
+      this.UCf = TimerSystem_1.TimerSystem.Forever(this.xCf, this.GameplaySetting.ShowBlockInterval);
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("RollBlock", 31, "[StartRollBlockBirthEffect] 出生表现开始", ["HandleId", this.Zff?.Id]);
+        Log_1.Log.Info("RollBlock", 31, "[StartRollBlockBirthEffect] 出生表现开始", ["HandleId", this.UCf?.Id]);
       }
     }
   }
   static RegisterRollBlockToGameplay(o, t) {
     var l = this.Etm.get(t);
     if (l === undefined) {
-      if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("RollBlock", 31, "[RegisterRollBlockToGameplay] IncId不存在", ["IncId", t]);
+      if (Log_1.Log.CheckWarn()) {
+        Log_1.Log.Warn("RollBlock", 31, "[RegisterRollBlockToGameplay] IncId不存在", ["IncId", t]);
       }
     } else {
       l.RollBlockEntities.push(o);
@@ -748,8 +812,8 @@ class RollBlockController extends ControllerBase_1.ControllerBase {
   static RegisterVisionRollBlockToGameplay(o) {
     var t = this.Etm.get(o);
     if (t === undefined) {
-      if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("RollBlock", 31, "[RegisterTipActorCreated] IncId不存在", ["IncId", o]);
+      if (Log_1.Log.CheckWarn()) {
+        Log_1.Log.Warn("RollBlock", 31, "[RegisterTipActorCreated] IncId不存在", ["IncId", o]);
       }
     } else {
       t.HasTipActorNum++;
@@ -758,8 +822,8 @@ class RollBlockController extends ControllerBase_1.ControllerBase {
   static UnRegisterVisionRollBlockToGameplay(o) {
     var t = this.Etm.get(o);
     if (t === undefined) {
-      if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("RollBlock", 31, "[UnregisterTipActor] IncId不存在", ["IncId", o]);
+      if (Log_1.Log.CheckWarn()) {
+        Log_1.Log.Warn("RollBlock", 31, "[UnRegisterVisionRollBlockToGameplay] IncId不存在", ["IncId", o]);
       }
     } else {
       t.HasTipActorNum--;
@@ -770,8 +834,8 @@ class RollBlockController extends ControllerBase_1.ControllerBase {
     if (t !== undefined) {
       return t.Forward;
     }
-    if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("RollBlock", 31, "[GetFowardVector] IncId不存在", ["IncId", o]);
+    if (Log_1.Log.CheckWarn()) {
+      Log_1.Log.Warn("RollBlock", 31, "[GetFowardVector] IncId不存在", ["IncId", o]);
     }
   }
   static GetRightVector(o) {
@@ -779,15 +843,15 @@ class RollBlockController extends ControllerBase_1.ControllerBase {
     if (t !== undefined) {
       return t.Right;
     }
-    if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("RollBlock", 31, "[GetRightVector] IncId不存在", ["IncId", o]);
+    if (Log_1.Log.CheckWarn()) {
+      Log_1.Log.Warn("RollBlock", 31, "[GetRightVector] IncId不存在", ["IncId", o]);
     }
   }
   static GetIsMultiBlock() {
     var o = this.Etm.get(this.Ttm);
     if (o === undefined) {
-      if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("RollBlock", 31, "[GetIsMultiBlock] IncId不存在", ["IncId", this.Ttm]);
+      if (Log_1.Log.CheckWarn()) {
+        Log_1.Log.Warn("RollBlock", 31, "[GetIsMultiBlock] IncId不存在", ["IncId", this.Ttm]);
       }
       return false;
     } else {
@@ -800,8 +864,8 @@ class RollBlockController extends ControllerBase_1.ControllerBase {
   static GetCurrentDifficulty() {
     var o = this.Etm.get(this.Ttm);
     if (o === undefined) {
-      if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("RollBlock", 31, "[GetCurrentDifficulty] IncId不存在", ["IncId", this.Ttm]);
+      if (Log_1.Log.CheckWarn()) {
+        Log_1.Log.Warn("RollBlock", 31, "[GetCurrentDifficulty] IncId不存在", ["IncId", this.Ttm]);
       }
       return -1;
     } else {
@@ -811,25 +875,25 @@ class RollBlockController extends ControllerBase_1.ControllerBase {
   static GetTotalDifficulty() {
     var o = this.Etm.get(this.Ttm);
     if (o === undefined) {
-      if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("RollBlock", 31, "[GetTotalDifficulty] IncId不存在", ["IncId", this.Ttm]);
+      if (Log_1.Log.CheckWarn()) {
+        Log_1.Log.Warn("RollBlock", 31, "[GetTotalDifficulty] IncId不存在", ["IncId", this.Ttm]);
       }
       return -1;
     } else {
       return o.TotalDifficulty;
     }
   }
-  static XVf() {
+  static TYf() {
     const t = this.Etm.get(this.Ttm);
     var o;
     if (t === undefined) {
-      if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("RollBlock", 31, "[GetTotalDifficulty] IncId不存在", ["IncId", this.Ttm]);
+      if (Log_1.Log.CheckWarn()) {
+        Log_1.Log.Warn("RollBlock", 31, "[GetTotalDifficulty] IncId不存在", ["IncId", this.Ttm]);
       }
     } else {
-      (o = Protocol_1.Aki.Protocol.t5f.create()).w5n = this.Ttm;
+      (o = Protocol_1.Aki.Protocol.wWf.create()).w5n = this.Ttm;
       t.InitState = "等待玩法准备完毕";
-      Net_1.Net.Call(20020, o, o => {
+      Net_1.Net.Call(27786, o, o => {
         if (o !== undefined) {
           if (o.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
             if (Log_1.Log.CheckError()) {
@@ -839,7 +903,7 @@ class RollBlockController extends ControllerBase_1.ControllerBase {
             if (Log_1.Log.CheckInfo()) {
               Log_1.Log.Info("RollBlock", 93, "[GamePlayReadyRequest] Proto_RollBlockGamePlayReadyRequest成功");
             }
-            if (this.gFf) {
+            if (this.j7f) {
               if (Log_1.Log.CheckDebug()) {
                 Log_1.Log.Debug("RollBlock", 93, "[GamePlayReadyRequest] 引导中，等待引导结束再通知完成");
               }
@@ -865,6 +929,26 @@ class RollBlockController extends ControllerBase_1.ControllerBase {
       }
     }
   }
+  static UpdateRollBlockItem(o) {
+    var t;
+    var l = MathUtils_1.MathUtils.LongToNumber(o.F4n);
+    var e = ModelManager_1.ModelManager.CreatureModel.GetEntity(l);
+    if (e?.Valid) {
+      if (o.C3s) {
+        if ((t = e.Entity?.GetComponent(333)) === undefined) {
+          if (Log_1.Log.CheckError()) {
+            Log_1.Log.Error("RollBlock", 93, "[UpdateRollBlockItem] rbItemComponent", ["EntityId", e?.Entity?.Id]);
+          }
+        } else {
+          t.UpdateRollBlockItem(o.C3s);
+        }
+      } else if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("RollBlock", 93, "[UpdateRollBlockItem] 下发的组件信息不存在", ["EntityId", l]);
+      }
+    } else if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("RollBlock", 93, "[UpdateRollBlockItem] 下发的实体不存在", ["EntityId", l]);
+    }
+  }
 }
 exports.RollBlockController = RollBlockController;
 (_a = RollBlockController).Etm = new Map();
@@ -872,37 +956,62 @@ RollBlockController.kHa = new Map();
 RollBlockController.yQ1 = new Map();
 RollBlockController.Itm = false;
 RollBlockController.Ttm = undefined;
+RollBlockController.K8g = undefined;
 RollBlockController.ydd = false;
 RollBlockController.GameplaySetting = undefined;
 RollBlockController.MSm = undefined;
 RollBlockController.ESm = new Set();
 RollBlockController.pct = false;
-RollBlockController.Qff = 0;
-RollBlockController.Kff = 0;
-RollBlockController.gFf = false;
-RollBlockController.hXf = undefined;
-RollBlockController.Btm = undefined;
-RollBlockController.Yff = Vector2D_1.Vector2D.Create();
-RollBlockController.zff = Vector2D_1.Vector2D.Create();
-RollBlockController.Jff = new Set();
-RollBlockController.Zff = undefined;
-RollBlockController.aCf = 0;
-RollBlockController.egf = () => {
-  var t = _a.Etm.get(_a.aCf);
-  if (t === undefined) {
-    if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("RollBlock", 31, "[SliceBirthEffect] IncId不存在", ["IncId", _a.aCf]);
+RollBlockController.RCf = 0;
+RollBlockController.wCf = 0;
+RollBlockController.L9g = new Map();
+RollBlockController.j7f = false;
+RollBlockController.f_g = undefined;
+RollBlockController.j6g = () => {
+  if (Log_1.Log.CheckInfo()) {
+    Log_1.Log.Info("RollBlock", 31, "[OnClickReset] 重置操作开始");
+  }
+  var o = Protocol_1.Aki.Protocol.Vem.create();
+  o.w5n = _a.Ttm;
+  Net_1.Net.Call(19531, o, o => {
+    if (o !== undefined) {
+      if (o.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+        if (Log_1.Log.CheckWarn()) {
+          Log_1.Log.Warn("RollBlock", 31, "[OnClickReset] Proto_RollBlockResetGamePlayRequest失败", ["errorCode", o.Cvs]);
+        }
+        _a.ydd = false;
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRollBlockReseting, "失败");
+      } else {
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRollBlockReseting, "成功");
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("RollBlock", 31, "[OnClickReset] Proto_RollBlockResetGamePlayRequest成功");
+        }
+      }
     }
-    TimerSystem_1.TimerSystem.Remove(_a.Zff);
-  } else if (_a.Yff.X === 0 && _a.Yff.Y === t.Width - 1 && _a.zff.X === 0 && _a.zff.Y === t.Height - 1) {
-    TimerSystem_1.TimerSystem.Remove(_a.Zff);
+  });
+};
+RollBlockController.Btm = undefined;
+RollBlockController.PCf = Vector2D_1.Vector2D.Create();
+RollBlockController.ACf = Vector2D_1.Vector2D.Create();
+RollBlockController.DCf = new Set();
+RollBlockController.UCf = undefined;
+RollBlockController.nyf = 0;
+RollBlockController.xCf = () => {
+  var t = _a.Etm.get(_a.nyf);
+  if (t === undefined) {
+    if (Log_1.Log.CheckWarn()) {
+      Log_1.Log.Warn("RollBlock", 31, "[SliceBirthEffect] IncId不存在", ["IncId", _a.nyf]);
+    }
+    TimerSystem_1.TimerSystem.Remove(_a.UCf);
+  } else if (_a.PCf.X === 0 && _a.PCf.Y === t.Width - 1 && _a.ACf.X === 0 && _a.ACf.Y === t.Height - 1) {
+    TimerSystem_1.TimerSystem.Remove(_a.UCf);
     for (const i of t.EntityIds) {
       var o = ModelManager_1.ModelManager.CreatureModel.GetEntity(i)?.Entity;
       if (o === undefined) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("RollBlock", 31, "[OnAllSceneItemLoadCompleted] Entity不存在", ["IncId", _a.Ttm], ["EntityId", i]);
         }
-      } else if ((o = o.GetComponent(328)) === undefined) {
+      } else if ((o = o.GetComponent(330)) === undefined) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("RollBlock", 31, "[OnAllSceneItemLoadCompleted] rbBaseComponent不存在", ["IncId", _a.Ttm], ["EntityId", i]);
         }
@@ -913,55 +1022,55 @@ RollBlockController.egf = () => {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("RollBlock", 31, "[SliceBirthEffect] 出生表现完成, 进行玩法准备通知");
     }
-    _a.XVf();
+    _a.TYf();
   } else {
-    _a.Jff.clear();
-    _a.Yff.X = Math.max(0, _a.Yff.X - 1);
-    _a.Yff.Y = Math.min(t.Width - 1, _a.Yff.Y + 1);
-    _a.zff.X = Math.max(0, _a.zff.X - 1);
-    _a.zff.Y = Math.min(t.Height - 1, _a.zff.Y + 1);
+    _a.DCf.clear();
+    _a.PCf.X = Math.max(0, _a.PCf.X - 1);
+    _a.PCf.Y = Math.min(t.Width - 1, _a.PCf.Y + 1);
+    _a.ACf.X = Math.max(0, _a.ACf.X - 1);
+    _a.ACf.Y = Math.min(t.Height - 1, _a.ACf.Y + 1);
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("RollBlock", 31, "[SliceBirthEffect] 出生表现分帧", ["Width", _a.Yff], ["Height", _a.zff]);
+      Log_1.Log.Info("RollBlock", 31, "[SliceBirthEffect] 出生表现分帧", ["Width", _a.PCf], ["Height", _a.ACf]);
     }
-    for (let o = _a.Yff.X; o <= _a.Yff.Y; o++) {
-      const n = new SceneItemJigsawBaseComponent_1.JigsawIndex(o, _a.zff.X);
+    for (let o = _a.PCf.X; o <= _a.PCf.Y; o++) {
+      const n = new SceneItemJigsawBaseComponent_1.JigsawIndex(o, _a.ACf.X);
       t.IndexedEntityMap.get(n.GetKey())?.forEach(o => {
-        _a.Jff.add(o);
+        _a.DCf.add(o);
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("RollBlock", 31, "[SliceBirthEffect] 上边界", ["Index", n.GetKey()]);
         }
       });
     }
-    for (let o = _a.Yff.X; o <= _a.Yff.Y; o++) {
-      const r = new SceneItemJigsawBaseComponent_1.JigsawIndex(o, _a.zff.Y);
-      t.IndexedEntityMap.get(r.GetKey())?.forEach(o => {
-        _a.Jff.add(o);
-        if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("RollBlock", 31, "[SliceBirthEffect] 下边界", ["Index", r.GetKey()]);
-        }
-      });
-    }
-    for (let o = _a.zff.X + 1; o <= _a.zff.Y - 1; o++) {
-      const c = new SceneItemJigsawBaseComponent_1.JigsawIndex(_a.Yff.X, o);
+    for (let o = _a.PCf.X; o <= _a.PCf.Y; o++) {
+      const c = new SceneItemJigsawBaseComponent_1.JigsawIndex(o, _a.ACf.Y);
       t.IndexedEntityMap.get(c.GetKey())?.forEach(o => {
-        _a.Jff.add(o);
+        _a.DCf.add(o);
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("RollBlock", 31, "[SliceBirthEffect] 左边界", ["Index", c.GetKey()]);
+          Log_1.Log.Info("RollBlock", 31, "[SliceBirthEffect] 下边界", ["Index", c.GetKey()]);
         }
       });
     }
-    for (let o = _a.zff.X + 1; o <= _a.zff.Y - 1; o++) {
-      const s = new SceneItemJigsawBaseComponent_1.JigsawIndex(_a.Yff.Y, o);
+    for (let o = _a.ACf.X + 1; o <= _a.ACf.Y - 1; o++) {
+      const r = new SceneItemJigsawBaseComponent_1.JigsawIndex(_a.PCf.X, o);
+      t.IndexedEntityMap.get(r.GetKey())?.forEach(o => {
+        _a.DCf.add(o);
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("RollBlock", 31, "[SliceBirthEffect] 左边界", ["Index", r.GetKey()]);
+        }
+      });
+    }
+    for (let o = _a.ACf.X + 1; o <= _a.ACf.Y - 1; o++) {
+      const s = new SceneItemJigsawBaseComponent_1.JigsawIndex(_a.PCf.Y, o);
       t.IndexedEntityMap.get(s.GetKey())?.forEach(o => {
-        _a.Jff.add(o);
+        _a.DCf.add(o);
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("RollBlock", 31, "[SliceBirthEffect] 右边界", ["Index", s.GetKey()]);
         }
       });
     }
-    for (const a of _a.Jff) {
-      var l = a.Entity;
-      var e = l.GetComponent(215);
+    for (const _ of _a.DCf) {
+      var l = _.Entity;
+      var e = l.GetComponent(217);
       if (e === undefined) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("RollBlock", 31, "[StartRollBlockBirthEffect] BaseTagComponent不存在", ["IncId", _a.Ttm], ["EntityId", l.Id]);
@@ -981,7 +1090,7 @@ RollBlockController.Ecu = (o, t, l) => {
   } else {
     for (var [i, n] of _a.Etm) {
       if (n.EntityIds.includes(e) || n.InitVisibleEntityIds.includes(e)) {
-        n = t?.Entity?.GetComponent(328);
+        n = t?.Entity?.GetComponent(330);
         if (n === undefined) {
           if (Log_1.Log.CheckError()) {
             Log_1.Log.Error("RollBlock", 31, "[OnEntityCreated] rbBaseComponent不存在", ["EntityId", t?.Entity?.Id]);
@@ -992,27 +1101,55 @@ RollBlockController.Ecu = (o, t, l) => {
           Log_1.Log.Info("RollBlock", 31, "[OnEntityCreated] 实体创建, 注册到IncId", ["EntityId", t?.CreatureDataId], ["IncId", i]);
         }
         n.RegisterToGameplay(i);
+        if (n instanceof RbBlockComponent_1.RbBlockComponent && !n.IsVisionBlock) {
+          if (Log_1.Log.CheckDebug()) {
+            Log_1.Log.Debug("RollBlock", 93, "[OnEntityCreated] 监听主方块移除事件", ["EntityId", t?.CreatureDataId]);
+          }
+          EventSystem_1.EventSystem.AddWithTarget(t, EventDefine_1.EEventName.RemoveEntity, _a.Rkg);
+        }
       }
     }
   }
 };
-RollBlockController.IJt = o => {
-  if (_a.Etm.get(_a.Ttm)) {
-    _a.gFf = true;
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.GuideGroupFinished, _a.CFf);
-    if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("RollBlock", 93, "滚方块玩法途中触发引导", ["GroupId", o]);
-    }
-  } else {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.GuideGroupOpening, _a.IJt);
+RollBlockController.Rkg = (o, t) => {
+  if (Log_1.Log.CheckDebug()) {
+    Log_1.Log.Debug("RollBlock", 93, "[OnMainBlockEntityRemoved] 主方块移除", ["EntityId", t?.CreatureDataId], ["removeType", o]);
+  }
+  if (o === Protocol_1.Aki.Protocol.Fks.Proto_RbBlockDestroyed) {
+    _a.OnClickReset(true, true);
+  }
+  if (EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.RemoveEntity, _a.Rkg)) {
+    EventSystem_1.EventSystem.RemoveWithTarget(t, EventDefine_1.EEventName.RemoveEntity, _a.Rkg);
   }
 };
-RollBlockController.CFf = o => {
-  _a.gFf = false;
-  EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.GuideGroupFinished, _a.CFf);
-  EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.GuideGroupOpening, _a.IJt);
-  var t = _a.Etm.get(_a.Ttm);
-  if (t && (t.InitState !== "等待玩法准备完毕" && (Log_1.Log.CheckDebug() && Log_1.Log.Debug("RollBlock", 93, "引导结束，且不处于等待玩法准备完成通知，通知完成", ["GroupId", o]), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RollBlockAllCompleted)), t.InitState === "等待引导组完成")) {
-    t.InitState = "全部完成";
+RollBlockController.IJt = (o, t) => {
+  if (_a.Etm.get(_a.Ttm)) {
+    if (o === "GuideTutorialView" || o === "GuideTutorialPopView") {
+      _a.j7f = true;
+      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CloseView, _a.$7f);
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("RollBlock", 93, "滚方块玩法途中触发引导", ["viewName", o]);
+      }
+    }
+  } else {
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OpenView, _a.IJt);
+  }
+};
+RollBlockController.$7f = (o, t) => {
+  var l;
+  if (o === "GuideTutorialView" || o === "GuideTutorialPopView") {
+    _a.j7f = false;
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CloseView, _a.$7f);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OpenView, _a.IJt);
+    if ((l = _a.Etm.get(_a.Ttm)) && (l.InitState !== "等待玩法准备完毕" && (Log_1.Log.CheckDebug() && Log_1.Log.Debug("RollBlock", 93, "引导结束，且不处于等待玩法准备完成通知，通知完成", ["viewName", o]), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RollBlockAllCompleted)), l.InitState === "等待引导组完成")) {
+      l.InitState = "全部完成";
+    }
+  }
+};
+RollBlockController.ExitOnOnlineModeChange = () => {
+  if (_a.K8g !== undefined) {
+    _a.ExitRollBlockGameplay(_a.K8g, false);
+  } else {
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnLeaveOnlineWorld, _a.ExitOnOnlineModeChange);
   }
 }; //# sourceMappingURL=RollBlockController.js.map

@@ -65,7 +65,7 @@ class LevelFlowEnableSplineMoveModel extends LevelFlowActionBase_1.LevelFlowActi
         this.FinishExecute(false);
         return;
     }
-    var l = o?.GetComponent(115);
+    var l = o?.GetComponent(117);
     if (l?.Valid) {
       if (t.Type === "Open") {
         l.StartSplineMove(t.SplineEntityId, t.Pattern);

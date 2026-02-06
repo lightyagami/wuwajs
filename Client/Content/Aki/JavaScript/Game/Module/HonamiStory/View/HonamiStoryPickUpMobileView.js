@@ -24,7 +24,7 @@ const HonamiStorySkillDescToggle_1 = require("./Backpack/Item/HonamiStorySkillDe
 class HonamiStoryPickUpMobileView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
-    this.aIm = undefined;
+    this.EIm = undefined;
     this.CCd = undefined;
     this.mCd = undefined;
     this.fCd = new HonamiStoryInteractController_1.HonamiStoryInteractController();
@@ -33,7 +33,7 @@ class HonamiStoryPickUpMobileView extends UiViewBase_1.UiViewBase {
     this._U1 = undefined;
     this.Zmm = undefined;
     this.P0m = undefined;
-    this.ZNm = undefined;
+    this.p4m = undefined;
     this.C1m = undefined;
     this.D1c = () => {
       if (this.C1m) {
@@ -43,11 +43,11 @@ class HonamiStoryPickUpMobileView extends UiViewBase_1.UiViewBase {
     this.lyt = () => {
       this.CloseMe();
     };
-    this.hIm = () => {
-      this.aIm.OnClickedEquipToggle();
+    this.IIm = () => {
+      this.EIm.OnClickedEquipToggle();
     };
-    this.lIm = () => {
-      this.aIm.OnClickedBackpackToggle();
+    this.TIm = () => {
+      this.EIm.OnClickedBackpackToggle();
     };
     this.efm = (i, t) => {
       this.tfm(i, t);
@@ -62,7 +62,7 @@ class HonamiStoryPickUpMobileView extends UiViewBase_1.UiViewBase {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIButtonComponent], [6, UE.UIExtendToggle], [7, UE.UIExtendToggle], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UIItem], [11, UE.UIItem]];
-    this.BtnBindInfo = [[5, this.D1c], [6, this.hIm], [7, this.lIm]];
+    this.BtnBindInfo = [[5, this.D1c], [6, this.IIm], [7, this.TIm]];
   }
   async OnBeforeStartAsync() {
     ModelManager_1.ModelManager.HonamiStoryModel.SetBackpackLogic(this.dhm);
@@ -76,8 +76,8 @@ class HonamiStoryPickUpMobileView extends UiViewBase_1.UiViewBase {
     var i = ConfigManager_1.ConfigManager.HonamiStoryConfig.GetHonamiStoryActivityConfig(i);
     this.Zmm = new HonamiStoryItemTipsDetail_1.HonamiStoryItemTipsDetail();
     this.P0m = new HonamiStoryItemTipsAttrChange_1.HonamiStoryItemTipsAttrChange();
-    this.ZNm = new HonamiStorySkillDescToggle_1.HonamiStorySkillDescToggle();
-    await Promise.all([this.lqe.SetCurrencyItemList([i.InnerItemId]), this.fCd.Init(this.GetItem(2)), this.pCd(), this._Im(), this.gCd(), this.ZNm.CreateThenShowByActorAsync(this.GetItem(10).GetOwner()), this.Zmm.CreateByResourceIdAsync("UiItem_TipHonamiStoryItemDetail", this.GetItem(4)), this.P0m.CreateByResourceIdAsync("UiItem_TipHonamiStoryAttrChange", this.GetItem(4))]);
+    this.p4m = new HonamiStorySkillDescToggle_1.HonamiStorySkillDescToggle();
+    await Promise.all([this.lqe.SetCurrencyItemList([i.InnerItemId]), this.fCd.Init(this.GetItem(2)), this.pCd(), this.bIm(), this.gCd(), this.p4m.CreateThenShowByActorAsync(this.GetItem(10).GetOwner()), this.Zmm.CreateByResourceIdAsync("UiItem_TipHonamiStoryItemDetail", this.GetItem(4)), this.P0m.CreateByResourceIdAsync("UiItem_TipHonamiStoryAttrChange", this.GetItem(4))]);
     this.dhm.RegisterBackpackView(undefined);
     this.Zmm.SetUiActive(false);
     this.P0m.SetUiActive(false);
@@ -101,21 +101,21 @@ class HonamiStoryPickUpMobileView extends UiViewBase_1.UiViewBase {
     await this.CCd.CreateThenShowByActorAsync(this.GetItem(1).GetOwner());
     await this.CCd.Init(i);
   }
-  async _Im() {
-    this.aIm = new HonamiStoryMobileEquipPanel_1.HonamiStoryMobileEquipPanel();
-    this.aIm.ToggleA = this.GetExtendToggle(6);
-    this.aIm.ToggleB = this.GetExtendToggle(7);
-    this.aIm.MoveUpItem = this.GetItem(8);
-    this.aIm.MoveDownItem = this.GetItem(9);
-    this.aIm.OnEnterGridCb = this.efm;
-    this.aIm.OnExitGridCb = this.ifm;
-    this.aIm.OnDownGridCb = this.ifm;
-    this.aIm.OnClickedGridCb = this.jbe;
-    this.fCd.RegisterPanel(this.aIm);
-    this.dhm.RegisterPanel(this.aIm);
-    this.aIm.RegisterDragController(this.fCd);
-    await this.aIm.CreateThenShowByActorAsync(this.GetItem(0).GetOwner());
-    await this.aIm.Init();
+  async bIm() {
+    this.EIm = new HonamiStoryMobileEquipPanel_1.HonamiStoryMobileEquipPanel();
+    this.EIm.ToggleA = this.GetExtendToggle(6);
+    this.EIm.ToggleB = this.GetExtendToggle(7);
+    this.EIm.MoveUpItem = this.GetItem(8);
+    this.EIm.MoveDownItem = this.GetItem(9);
+    this.EIm.OnEnterGridCb = this.efm;
+    this.EIm.OnExitGridCb = this.ifm;
+    this.EIm.OnDownGridCb = this.ifm;
+    this.EIm.OnClickedGridCb = this.jbe;
+    this.fCd.RegisterPanel(this.EIm);
+    this.dhm.RegisterPanel(this.EIm);
+    this.EIm.RegisterDragController(this.fCd);
+    await this.EIm.CreateThenShowByActorAsync(this.GetItem(0).GetOwner());
+    await this.EIm.Init();
   }
   async gCd() {
     this.mCd = new HonamiStoryDiscardBackpackPanel_1.HonamiStoryDiscardBackpackPanel();
@@ -153,7 +153,7 @@ class HonamiStoryPickUpMobileView extends UiViewBase_1.UiViewBase {
   }
   OnBeforeShow() {
     this.fCd.OnBeforeShow();
-    this.ZNm?.RefreshState();
+    this.p4m?.RefreshState();
   }
   rfm() {
     this.Zmm.SetUiActive(false);

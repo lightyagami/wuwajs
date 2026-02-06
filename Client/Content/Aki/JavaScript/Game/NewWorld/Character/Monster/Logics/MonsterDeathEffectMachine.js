@@ -284,7 +284,7 @@ class MonsterDeathEffectMachine {
     this.Vql = 0;
   }
   eGl() {
-    this.Jh?.GetComponent(131)?.SetTimeScale(100, 0, undefined, DEATH_EFFECT_MAX_TIME, 12);
+    this.Jh?.GetComponent(133)?.SetTimeScale(100, 0, undefined, DEATH_EFFECT_MAX_TIME, 12);
   }
   tGl() {
     this.Qql();

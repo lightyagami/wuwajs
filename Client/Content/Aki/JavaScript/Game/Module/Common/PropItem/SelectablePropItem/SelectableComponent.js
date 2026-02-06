@@ -18,6 +18,7 @@ class SelectableComponentData {
     this.IsSingleSelected = false;
     this.IsNumSelectable = true;
     this.MaxSelectedGridNum = DEFAULT_MAX_SIZE;
+    this.OnlyGold = false;
     this.SuitActive = false;
     this.IsNeedSort = true;
     this.FirstOpenOperationData = undefined;
@@ -42,11 +43,13 @@ class SelectableComponent extends UiPanelBase_1.UiPanelBase {
     this.FirstOperationData = undefined;
     this.ExpData = undefined;
     this.LastSelectedIndex = 0;
+    this.OnlyGold = false;
     this.uBt = t => {
       var t = this.ItemDataList[t];
       var t = SelectablePropDataUtil_1.SelectablePropDataUtil.GetSelectablePropData(t);
-      var e = this.cBt(t);
-      t.SelectedCount = e;
+      var i = this.cBt(t);
+      t.SelectedCount = i;
+      t.OnlyGold = this.OnlyGold;
       return t;
     };
     this.InitItem = () => {
@@ -58,42 +61,42 @@ class SelectableComponent extends UiPanelBase_1.UiPanelBase {
       return t;
     };
     this.OnAfterApplyMediumItemGrid = t => {};
-    this.OnCanExecuteChange = (t, e, i) => {
+    this.OnCanExecuteChange = (t, i, e) => {
       return this.CanAddMaterial(t);
     };
-    this.CanItemLongPress = (t, e) => {
-      return this.CanAddMaterial(e, false);
+    this.CanItemLongPress = (t, i) => {
+      return this.CanAddMaterial(i, false);
     };
-    this.AddFunction = (t, e, i) => {
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSelectItemAdd, i.ItemId, i.IncId);
-      this.SetPrevPropItemSelectedState(i);
-      if (!this.CanAddMaterial(i, true)) {
+    this.AddFunction = (t, i, e) => {
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSelectItemAdd, e.ItemId, e.IncId);
+      this.SetPrevPropItemSelectedState(e);
+      if (!this.CanAddMaterial(e, true)) {
         return false;
       }
       if (this.Data.IsSingleSelected) {
-        this.DeleteLastData(i);
-        this.CancelPropItemSelected(i);
+        this.DeleteLastData(e);
+        this.CancelPropItemSelected(e);
       }
-      this.mBt(i);
-      this.AddData(i);
+      this.mBt(e);
+      this.AddData(e);
       this.UpdateExp();
       this.dBt();
-      var s = this.GetSelectedData(i);
-      i.SelectedCount = s.SelectedCount;
-      e.RefreshCostCount();
+      var s = this.GetSelectedData(e);
+      e.SelectedCount = s.SelectedCount;
+      i.RefreshCostCount();
       var s = {
-        IsVisible: i.SelectedCount > 0,
+        IsVisible: e.SelectedCount > 0,
         LongPressConfigId: 1
       };
       if (this.Data?.IsNumSelectable) {
-        e.SetReduceButton(s);
+        i.SetReduceButton(s);
       }
-      e.SetSelected(i.SelectedCount > 0, true);
+      i.SetSelected(e.SelectedCount > 0, true);
       return true;
     };
-    this.ReduceFunction = (t, e, i) => {
-      this.SetPrevPropItemSelectedState(i);
-      var s = this.GetSelectedData(i);
+    this.ReduceFunction = (t, i, e) => {
+      this.SetPrevPropItemSelectedState(e);
+      var s = this.GetSelectedData(e);
       if (!s) {
         return false;
       }
@@ -102,32 +105,32 @@ class SelectableComponent extends UiPanelBase_1.UiPanelBase {
         return false;
       }
       if (--r <= 0) {
-        this.CBt(i);
+        this.CBt(e);
       } else {
         s.SelectedCount = r;
       }
-      i.SelectedCount = r;
+      e.SelectedCount = r;
       if (this.Data.OtherFunction) {
         this.Data.OtherFunction();
       }
       this.UpdateExp();
       this.dBt();
-      s = e;
+      s = i;
       s.RefreshCostCount();
       s.SetSelected(r > 0, true);
-      e = {
-        IsVisible: i.SelectedCount > 0,
+      i = {
+        IsVisible: e.SelectedCount > 0,
         LongPressConfigId: 1
       };
       if (this.Data?.IsNumSelectable) {
-        s.SetReduceButton(e);
+        s.SetReduceButton(i);
       }
       return true;
     };
   }
-  InitLoopScroller(t, e, i) {
-    this.LoopScrollView = new LoopScrollView_1.LoopScrollView(t, e.GetOwner(), this.InitItem);
-    this.SetData(i);
+  InitLoopScroller(t, i, e) {
+    this.LoopScrollView = new LoopScrollView_1.LoopScrollView(t, i.GetOwner(), this.InitItem);
+    this.SetData(e);
   }
   SetData(t) {
     this.Data = t;
@@ -138,11 +141,14 @@ class SelectableComponent extends UiPanelBase_1.UiPanelBase {
   SetMaxSize(t) {
     this.MaxSize = t;
   }
-  UpdateComponent(t, e, i = undefined) {
-    this.gBt(e);
-    if (i) {
-      this.ExpData = i;
-      this.SetExpData(i);
+  SetOnlyGold(t) {
+    this.OnlyGold = t;
+  }
+  UpdateComponent(t, i, e = undefined) {
+    this.gBt(i);
+    if (e) {
+      this.ExpData = e;
+      this.SetExpData(e);
       this.UpdateExp();
     }
   }
@@ -168,16 +174,17 @@ class SelectableComponent extends UiPanelBase_1.UiPanelBase {
       this.LoopScrollView.ScrollToGridIndex(this.LastSelectedIndex);
     }
   }
-  RefreshByData(t, e = false, i) {
+  RefreshByData(t, i = false, e) {
     this.ItemDataList = t;
     var s = new Array();
     for (const a of this.ItemDataList) {
       var r = SelectablePropDataUtil_1.SelectablePropDataUtil.GetSelectablePropData(a);
       var h = this.cBt(r);
       r.SelectedCount = h;
+      r.OnlyGold = this.OnlyGold;
       s.push(r);
     }
-    this.LoopScrollView.RefreshByData(s, e, i);
+    this.LoopScrollView.RefreshByData(s, i, e);
   }
   UpdateChangeItemSelectList() {
     this.Data.OnChangeSelectedFunction?.(this.SelectedDataList, this.SelectableExpData);
@@ -196,32 +203,32 @@ class SelectableComponent extends UiPanelBase_1.UiPanelBase {
       }
     }
   }
-  CanAddMaterial(t, e = false) {
-    var i;
+  CanAddMaterial(t, i = false) {
+    var e;
     if (t.GetIsLock()) {
-      if (e) {
+      if (i) {
         ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("WeaponLockTipsText");
       }
       return false;
     } else if (this.SelectableExpData?.IsInMax()) {
-      if (e) {
+      if (i) {
         ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("WeaponAddExpTipsText");
       }
       return false;
     } else {
-      return (!(i = this.GetSelectedData(t))?.SelectedCount || i.SelectedCount !== t.Count) && !(!i && this.SelectedDataList.length >= this.MaxSize && !this.Data.IsSingleSelected ? (e && ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("WeaponFullMaterialText"), 1) : this.Data.CheckIfCanAddFunction && !this.Data.CheckIfCanAddFunction(this.SelectedDataList, t.IncId, t.ItemId, 1));
+      return (!(e = this.GetSelectedData(t))?.SelectedCount || e.SelectedCount !== t.Count) && !(!e && this.SelectedDataList.length >= this.MaxSize && !this.Data.IsSingleSelected ? (i && ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("WeaponFullMaterialText"), 1) : this.Data.CheckIfCanAddFunction && !this.Data.CheckIfCanAddFunction(this.SelectedDataList, t.IncId, t.ItemId, 1));
     }
   }
   fBt(t) {
-    var e;
-    return !!this.LastAddData && ((e = t.IncId) > 0 ? this.LastAddData.IncId === e : this.LastAddData.ItemId === t.ItemId);
+    var i;
+    return !!this.LastAddData && ((i = t.IncId) > 0 ? this.LastAddData.IncId === i : this.LastAddData.ItemId === t.ItemId);
   }
-  GetLoopScrollViewIndex(i, s) {
-    if (i > 0 || s > 0) {
-      for (let t = 0, e = this.ItemDataList.length; t < e; ++t) {
+  GetLoopScrollViewIndex(e, s) {
+    if (e > 0 || s > 0) {
+      for (let t = 0, i = this.ItemDataList.length; t < i; ++t) {
         var r = this.ItemDataList[t];
-        if (i > 0) {
-          if (r.GetUniqueId() === i) {
+        if (e > 0) {
+          if (r.GetUniqueId() === e) {
             return t;
           }
         } else if (r.GetConfigId() === s) {
@@ -237,30 +244,30 @@ class SelectableComponent extends UiPanelBase_1.UiPanelBase {
     }
   }
   CBt(t) {
-    var e;
+    var i;
     if (t) {
-      if ((e = t.IncId) > 0) {
-        this.RemoveSelectedDataByIncId(e);
+      if ((i = t.IncId) > 0) {
+        this.RemoveSelectedDataByIncId(i);
       } else {
         this.MBt(t.ItemId);
       }
     }
   }
-  RemoveSelectedDataByIncId(e) {
+  RemoveSelectedDataByIncId(i) {
     for (let t = 0; t < this.SelectedDataList.length; t++) {
-      var i = this.SelectedDataList[t];
-      if (i.IncId === e) {
-        i.SelectedCount = 0;
+      var e = this.SelectedDataList[t];
+      if (e.IncId === i) {
+        e.SelectedCount = 0;
         this.SelectedDataList.splice(t, 1);
         return;
       }
     }
   }
-  MBt(e) {
+  MBt(i) {
     for (let t = 0; t < this.SelectedDataList.length; t++) {
-      var i = this.SelectedDataList[t];
-      if (i.ItemId === e) {
-        i.SelectedCount = 0;
+      var e = this.SelectedDataList[t];
+      if (e.ItemId === i) {
+        e.SelectedCount = 0;
         this.SelectedDataList.splice(t, 1);
         return;
       }
@@ -279,9 +286,9 @@ class SelectableComponent extends UiPanelBase_1.UiPanelBase {
     this.LastAddData = t;
   }
   AddData(t) {
-    var e = this.GetSelectedData(t);
-    if (e) {
-      this.EBt(e);
+    var i = this.GetSelectedData(t);
+    if (i) {
+      this.EBt(i);
     } else {
       this.SelectedDataList.push(t);
       t.SelectedCount++;
@@ -290,31 +297,31 @@ class SelectableComponent extends UiPanelBase_1.UiPanelBase {
       this.Data.OtherFunction();
     }
   }
-  EBt(e) {
-    var i = this.SelectedDataList.length;
-    for (let t = 0; t < i; t++) {
+  EBt(i) {
+    var e = this.SelectedDataList.length;
+    for (let t = 0; t < e; t++) {
       var s = this.SelectedDataList[t];
-      if (s.IncId === 0 && s.ItemId === e.ItemId) {
+      if (s.IncId === 0 && s.ItemId === i.ItemId) {
         s.SelectedCount = s.SelectedCount + 1;
         return;
       }
     }
-    this.SelectedDataList.push(e);
+    this.SelectedDataList.push(i);
   }
   GetSelectedData(t) {
     if (t) {
-      var e = t.IncId;
-      if (e > 0) {
+      var i = t.IncId;
+      if (i > 0) {
         for (const t of this.SelectedDataList) {
-          if (t.IncId === e) {
+          if (t.IncId === i) {
             return t;
           }
         }
       } else {
-        var i = t.ItemId;
-        if (i > 0) {
+        var e = t.ItemId;
+        if (e > 0) {
           for (const t of this.SelectedDataList) {
-            if (t.ItemId === i) {
+            if (t.ItemId === e) {
               return t;
             }
           }
@@ -333,8 +340,8 @@ class SelectableComponent extends UiPanelBase_1.UiPanelBase {
   UpdateExp() {
     if (this.ExpData?.GetItemExpFunction) {
       let t = 0;
-      for (const e of this.SelectedDataList) {
-        t += this.ExpData.GetItemExpFunction(e) * e.SelectedCount;
+      for (const i of this.SelectedDataList) {
+        t += this.ExpData.GetItemExpFunction(i) * i.SelectedCount;
       }
       this.SelectableExpData.UpdateExp(t);
     }

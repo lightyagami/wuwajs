@@ -22,35 +22,36 @@ class NewSoundNormalItem extends UiPanelBase_1.UiPanelBase {
   OnStart() {
     this.B8e = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(3), this.b8e);
   }
-  Update(e) {
-    var t = e.DetectRecordData;
-    var i = this.GetText(0);
-    LguiUtil_1.LguiUtil.SetLocalTextNew(i, t.Conf.Name);
-    var i = this.GetTexture(1);
+  Update(t) {
+    var i = t.DetectRecordData;
+    var a = this.GetText(0);
+    LguiUtil_1.LguiUtil.SetLocalTextNew(a, i.Conf.Name);
+    var a = this.GetTexture(1);
     var r = this.GetText(2);
-    this.Co_(e);
-    if (t.Conf.Secondary === 63 || t.Conf.Secondary === 64) {
-      e = ModelManager_1.ModelManager.AdventureGuideModel.GetNightMareTarget(t.SilentAreaDetectionRecord?.Conf?.MapId, t.SilentAreaDetectionRecord?.Conf?.LevelPlayList?.[0]);
-      if (e[1] < 0) {
+    this.Co_(t);
+    if (i.Conf.Secondary === 63 || i.Conf.Secondary === 64) {
+      var t = ModelManager_1.ModelManager.AdventureGuideModel.GetIsDetectionPreOpenByRecord(i.SilentAreaDetectionRecord);
+      let e = [0, 0];
+      if ((e = t ? (t = ModelManager_1.ModelManager.AdventureGuideModel.GetPreOpenDetectionConf(i.Conf.Id, i.Type, i.Conf.PreOpenId), ModelManager_1.ModelManager.AdventureGuideModel.GetNightMarePreOpenTarget(t.InstanceID)) : ModelManager_1.ModelManager.AdventureGuideModel.GetNightMareTarget(i.SilentAreaDetectionRecord?.Conf?.MapId, i.SilentAreaDetectionRecord?.Conf?.LevelPlayList?.[0]))[1] < 0) {
         r?.SetText("");
       } else {
         LguiUtil_1.LguiUtil.SetLocalTextNew(r, "NightMareLeftTimes", e[0], e[1]);
       }
-      this.SetTextureShowUntilLoaded(t.Conf.BigIcon, i);
+      this.SetTextureShowUntilLoaded(i.Conf.BigIcon, a);
     } else {
-      e = ModelManager_1.ModelManager.AdventureGuideModel.GetIsDetectionPreOpenByData(t);
-      if (t.IsLock && !e) {
-        this.SetTextureShowUntilLoaded(t.Conf.LockBigIcon, i);
-        LguiUtil_1.LguiUtil.SetLocalTextNew(r, t.Conf.AttributesDescriptionUnlock);
+      t = ModelManager_1.ModelManager.AdventureGuideModel.GetIsDetectionPreOpenByData(i);
+      if (i.IsLock && !t) {
+        this.SetTextureShowUntilLoaded(i.Conf.LockBigIcon, a);
+        LguiUtil_1.LguiUtil.SetLocalTextNew(r, i.Conf.AttributesDescriptionUnlock);
         this.B8e?.SetActive(false);
         return;
       }
-      this.SetTextureShowUntilLoaded(t.Conf.BigIcon, i);
-      LguiUtil_1.LguiUtil.SetLocalTextNew(r, t.Conf.InstanceSubTypeDescription);
+      this.SetTextureShowUntilLoaded(i.Conf.BigIcon, a);
+      LguiUtil_1.LguiUtil.SetLocalTextNew(r, i.Conf.InstanceSubTypeDescription);
     }
-    if (t.Conf.Secondary === 22 && t.Conf.PhantomId && t.Conf.PhantomId.length !== 0) {
+    if (i.Conf.Secondary === 22 && i.Conf.PhantomId && i.Conf.PhantomId.length !== 0) {
       this.B8e?.SetActive(true);
-      this.B8e?.RefreshByData(t.Conf.PhantomId);
+      this.B8e?.RefreshByData(i.Conf.PhantomId);
     } else {
       this.B8e?.SetActive(false);
     }

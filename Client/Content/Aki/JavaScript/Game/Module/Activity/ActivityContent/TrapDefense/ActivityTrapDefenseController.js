@@ -60,43 +60,43 @@ class ActivityTrapDefenseController extends ActivityControllerBase_1.ActivityCon
     return this.Data;
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(17461, e => {
+    Net_1.Net.Register(15653, e => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("TowerDefenseEvent", 69, "A9c", ["", e]);
       }
       ModelManager_1.ModelManager.TrapDefenseModel?.ProtoChallengeUpdateNotify(e);
     });
-    Net_1.Net.Register(23734, e => {
+    Net_1.Net.Register(16545, e => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("TowerDefenseEvent", 69, "P9c", ["", e]);
       }
       ModelManager_1.ModelManager.TrapDefenseModel?.ProtoRewardUpdateNotify(e);
     });
-    Net_1.Net.Register(15617, e => {
+    Net_1.Net.Register(24259, e => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("TowerDefenseEvent", 69, "D9c", ["", e]);
       }
       ModelManager_1.ModelManager.TrapDefenseModel?.ProtoSpecialRewardUpdateNotify(e);
     });
-    Net_1.Net.Register(25489, e => {
+    Net_1.Net.Register(16394, e => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("TowerDefenseEvent", 69, "U9c", ["", e]);
       }
       ModelManager_1.ModelManager.TrapDefenseModel?.ProtoTechUpdateNotify(e);
     });
-    Net_1.Net.Register(27803, e => {
+    Net_1.Net.Register(19958, e => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("TowerDefenseEvent", 69, "lHc", ["", e]);
       }
       ModelManager_1.ModelManager.TrapDefenseModel?.ProtoBdUpdateNotify(e);
     });
-    Net_1.Net.Register(20060, e => {
+    Net_1.Net.Register(29542, e => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("TowerDefenseEvent", 69, "fbd", ["", e]);
       }
       ModelManager_1.ModelManager.TrapDefenseModel?.ProtoBdBuffUpdateNotify(e);
     });
-    Net_1.Net.Register(26099, e => {
+    Net_1.Net.Register(26453, e => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("TowerDefenseEvent", 69, "yKc", ["", e]);
       }
@@ -104,11 +104,11 @@ class ActivityTrapDefenseController extends ActivityControllerBase_1.ActivityCon
     });
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(17461);
-    Net_1.Net.UnRegister(23734);
-    Net_1.Net.UnRegister(15617);
-    Net_1.Net.UnRegister(25489);
-    Net_1.Net.UnRegister(27803);
+    Net_1.Net.UnRegister(15653);
+    Net_1.Net.UnRegister(16545);
+    Net_1.Net.UnRegister(24259);
+    Net_1.Net.UnRegister(16394);
+    Net_1.Net.UnRegister(19958);
   }
   RefreshActivityRedDot() {
     var e = this.Data?.Id;

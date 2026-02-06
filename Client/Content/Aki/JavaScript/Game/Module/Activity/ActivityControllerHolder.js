@@ -17,12 +17,18 @@ class ActivityControllerHolder {
     this.LineCrossActivityController = undefined;
     this.ActivityShipTowerController = undefined;
     this.FightPhotoController = undefined;
+    this.MotorFightController = undefined;
     this.PrizeDrawingController = undefined;
     this.ActivityPreWarmController = undefined;
     this.AdvanceNoticeController = undefined;
     this.ActivityMotorLinkageController = undefined;
     this.WheelTowerController = undefined;
     this.ActivityNewPlayerSupportController = undefined;
+    this.SpringManorController = undefined;
+    this.CommonH5Controller = undefined;
+    this.ActivityEncircleController = undefined;
+    this.TotalTopUpController = undefined;
+    this.ActivityMotorDevelopController = undefined;
   }
 }
 (exports.ActivityControllerHolder = ActivityControllerHolder).ActivitySolarSpeedController = undefined;
@@ -41,6 +47,12 @@ ActivityControllerHolder.PrizeDrawingController = undefined;
 ActivityControllerHolder.ActivityPreWarmController = undefined;
 ActivityControllerHolder.AdvanceNoticeController = undefined;
 ActivityControllerHolder.ActivityMotorLinkageController = undefined;
+ActivityControllerHolder.TotalTopUpController = undefined;
 ActivityControllerHolder.MotorParkourController = undefined;
+ActivityControllerHolder.MotorFightController = undefined;
 ActivityControllerHolder.WheelTowerController = undefined;
-ActivityControllerHolder.ActivityNewPlayerSupportController = undefined; //# sourceMappingURL=ActivityControllerHolder.js.map
+ActivityControllerHolder.CommonH5Controller = undefined;
+ActivityControllerHolder.SpringManorController = undefined;
+ActivityControllerHolder.ActivityNewPlayerSupportController = undefined;
+ActivityControllerHolder.ActivityEncircleController = undefined;
+ActivityControllerHolder.ActivityMotorDevelopController = undefined; //# sourceMappingURL=ActivityControllerHolder.js.map

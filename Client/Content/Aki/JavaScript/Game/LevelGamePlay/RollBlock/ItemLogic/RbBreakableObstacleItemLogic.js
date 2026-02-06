@@ -22,7 +22,7 @@ class RbBreakableObstacleItemLogic extends RbItemLogicBase_1.RbItemLogicBase {
   Start(e) {
     var t = this.Owner.ActorTransform.GetLocation();
     this.Ijc = UE.NewArray(UE.VectorDouble);
-    for (const s of e.aPm) {
+    for (const s of e.UPm) {
       this.Ijc.Add(new UE.VectorDouble(s.X ? s.X - t.X : 0, s.Y ? s.Y - t.Y : 0, s.Z ? s.Z - t.Z : 0));
     }
     e = ControllerHolder_1.ControllerHolder.RollBlockController.GameplaySetting?.BreakableObstacleLinkEffect.ToAssetPathName();

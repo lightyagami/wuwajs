@@ -64,8 +64,8 @@ exports.addCardFailedResultToTipTextId = {
   8: "PhantomBattle_1054",
   5: "PhantomBattle_1052",
   7: "PhantomBattle_1052",
-  9: "PhantomBattleGym_cost1_Limit",
-  10: "PhantomBattleGym_cost3_Limit"
+  9: "PhantomBattleGym_cost3_Limit",
+  10: "PhantomBattleGym_cost1_Limit"
 };
 exports.POINTS_NAME_TEXT = "PhantomBattle_1106";
 exports.ACTIVITY_SUBVIEW_TEXT_UNLOCK = "PhantomBattle_1103";

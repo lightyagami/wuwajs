@@ -91,7 +91,7 @@ class GameplayAbilityVisionControl extends GameplayAbilityVisionBase_1.GameplayA
     if (!i) {
       return false;
     }
-    i.Entity.CheckGetComponent(99)?.SetTeamTag(2);
+    i.Entity.CheckGetComponent(101)?.SetTeamTag(2);
     GameplayAbilityVisionControl.VisionControlHandle = i;
     this.GZo(i);
     this.BZo = ModelManager_1.ModelManager.SceneTeamModel.CurrentGroupType;
@@ -114,14 +114,14 @@ class GameplayAbilityVisionControl extends GameplayAbilityVisionBase_1.GameplayA
   bZo() {
     var i = ModelManager_1.ModelManager.CreatureModel.GetEntity(this.CreatureDataComponent.GetSummonerId());
     if (i?.Valid) {
-      i.Entity.GetComponent(44).EndAbilityVision(3);
+      i.Entity.GetComponent(46).EndAbilityVision(3);
     } else {
       GameplayAbilityVisionControl.VisionControlHandle = undefined;
     }
   }
   GZo(i) {
     if (i.Valid) {
-      (i = i.Entity.GetComponent(183)).AddBuff(CharacterBuffIds_1.buffId.VisionControl, {
+      (i = i.Entity.GetComponent(185)).AddBuff(CharacterBuffIds_1.buffId.VisionControl, {
         InstigatorId: i.CreatureDataId,
         Reason: "操控幻象回满能量"
       });

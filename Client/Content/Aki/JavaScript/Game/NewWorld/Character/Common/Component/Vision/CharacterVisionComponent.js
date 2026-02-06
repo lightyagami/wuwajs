@@ -21,7 +21,7 @@ var __decorate = this && this.__decorate || function (e, t, i, o) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.CharacterVisionComponent = undefined;
+exports.CharacterVisionComponent = exports.visionTriggerTag = undefined;
 const SummonCfgById_1 = require("../../../../../../Core/Define/ConfigQuery/SummonCfgById");
 const Protocol_1 = require("../../../../../../Core/Define/Net/Protocol");
 const EntityComponent_1 = require("../../../../../../Core/Entity/EntityComponent");
@@ -44,7 +44,7 @@ const GameplayAbilityVisionPresent_1 = require("./GA/GameplayAbilityVisionPresen
 const GameplayAbilityVisionShow_1 = require("./GA/GameplayAbilityVisionShow");
 const GameplayAbilityVisionShowNew_1 = require("./GA/GameplayAbilityVisionShowNew");
 const GameplayAbilityVisionSummon_1 = require("./GA/GameplayAbilityVisionSummon");
-const visionTriggerTag = -579527112;
+exports.visionTriggerTag = -579527112;
 const visionTypes = {
   [0]: GameplayAbilityVisionSummon_1.GameplayAbilityVisionSummon,
   1: GameplayAbilityVisionMorph_1.GameplayAbilityVisionMorph,
@@ -57,9 +57,9 @@ const visionTypes = {
 let CharacterVisionComponent = class CharacterVisionComponent extends EntityComponent_1.EntityComponent {
   constructor() {
     super(...arguments);
-    this.yYm = undefined;
+    this.VJm = undefined;
     this.aen = new Map();
-    this.SYm = [];
+    this.HJm = [];
     this.Bhh = undefined;
     this.YTc = undefined;
     this.cC = 0;
@@ -68,24 +68,26 @@ let CharacterVisionComponent = class CharacterVisionComponent extends EntityComp
         t.TeleportStart();
       }
       if (e) {
-        this.yYm?.forEach(e => {
+        this.VJm?.forEach(e => {
           e = e.Z5n;
           e = ModelManager_1.ModelManager.CreatureModel.GetEntity(MathUtils_1.MathUtils.LongToNumber(e));
-          ControllerHolder_1.ControllerHolder.CreatureController.SetEntityEnable(e.Entity, false, "OnTeleportStart.SetVisionEnable");
+          if (e?.Valid) {
+            ControllerHolder_1.ControllerHolder.CreatureController.SetEntityEnable(e.Entity, false, "OnTeleportStart.SetVisionEnable");
+          }
         });
       }
     };
     this.Ilt = () => {
-      this.yYm?.forEach(e => {
+      this.VJm?.forEach(e => {
         var t = e.r5n;
         var t = PhantomUtil_1.PhantomUtil.GetVisionData(t);
-        if (t && t.类型 === 4 && (t = e.Z5n, t = (e = ModelManager_1.ModelManager.CreatureModel.GetEntity(MathUtils_1.MathUtils.LongToNumber(t)))?.Entity?.GetComponent(0)) && SummonCfgById_1.configSummonCfgById.GetConfig(t.SummonCfgId)?.InitVisiable) {
+        if (t && t.类型 === 4 && (t = e.Z5n, (e = ModelManager_1.ModelManager.CreatureModel.GetEntity(MathUtils_1.MathUtils.LongToNumber(t)))?.Valid) && (t = e?.Entity?.GetComponent(0)) && SummonCfgById_1.configSummonCfgById.GetConfig(t.SummonCfgId)?.InitVisiable) {
           ControllerHolder_1.ControllerHolder.CreatureController.SetEntityEnable(e.Entity, true, "OnTeleportComplete.SetVisionEnable");
         }
       });
     };
     this.Nca = (e, t) => {
-      var i = PhantomUtil_1.PhantomUtil.GetSummonedEntity(this.Entity, Protocol_1.Aki.Protocol.Summon.x3s.Proto_ESummonTypeConcomitantVision)?.Entity?.GetComponent(41);
+      var i = PhantomUtil_1.PhantomUtil.GetSummonedEntity(this.Entity, Protocol_1.Aki.Protocol.Summon.x3s.Proto_ESummonTypeConcomitantVision)?.Entity?.GetComponent(43);
       if (i?.Valid) {
         i.SkillTarget = e;
         i.SkillTargetSocket = t;
@@ -94,11 +96,11 @@ let CharacterVisionComponent = class CharacterVisionComponent extends EntityComp
   }
   OnStart() {
     var e = this.Entity.GetComponent(0).ComponentDataMap.get("uys")?.uys?.CIs;
-    this.yYm ||= e ? [...e] : [];
-    this.MYm();
-    var e = this.Entity.GetComponent(215);
+    this.VJm ||= e ? [...e] : [];
+    this.jJm();
+    var e = this.Entity.GetComponent(217);
     if (e) {
-      this.YTc = e.ListenForTagAnyCountChanged(visionTriggerTag, (e, t, i, o) => {
+      this.YTc = e.ListenForTagAnyCountChanged(exports.visionTriggerTag, (e, t, i, o) => {
         if (o < e) {
           SceneTeamController_1.SceneTeamController.EmitEvent(this.Entity, EventDefine_1.EEventName.ActivateAbilityVision, i);
         }
@@ -135,14 +137,14 @@ let CharacterVisionComponent = class CharacterVisionComponent extends EntityComp
     }
   }
   SetVisionData(e) {
-    this.yYm = [...e.CIs];
-    this.MYm();
+    this.VJm = [...e.CIs];
+    this.jJm();
   }
   GetVisionLevel() {
-    return this.yYm[this.GetCurrentPosition()].ATs;
+    return this.VJm?.[this.GetCurrentPosition()]?.ATs ?? 0;
   }
   GetVisionLevelByBuffId(e) {
-    for (const t of this.yYm) {
+    for (const t of this.VJm ?? []) {
       if (t.ATs > 0) {
         if (PhantomUtil_1.PhantomUtil.GetSkillBuffIds(t.r5n).includes(e)) {
           return t.ATs;
@@ -152,7 +154,7 @@ let CharacterVisionComponent = class CharacterVisionComponent extends EntityComp
     return BaseAbilityComponent_1.DEFAULT_SOURCE_SKILL_LEVEL_NOT_FOUND;
   }
   GetVisionLevelByDamageId(e) {
-    for (const t of this.yYm) {
+    for (const t of this.VJm ?? []) {
       if (t.ATs > 0) {
         if (PhantomUtil_1.PhantomUtil.GetSkillSettleIds(t.r5n).includes(e)) {
           return t.ATs;
@@ -162,7 +164,7 @@ let CharacterVisionComponent = class CharacterVisionComponent extends EntityComp
     return BaseAbilityComponent_1.DEFAULT_SOURCE_SKILL_LEVEL_NOT_FOUND;
   }
   GetVisionData(e) {
-    if (this.SYm.includes(e)) {
+    if (this.HJm.includes(e)) {
       return PhantomUtil_1.PhantomUtil.GetVisionData(e);
     }
   }
@@ -178,7 +180,7 @@ let CharacterVisionComponent = class CharacterVisionComponent extends EntityComp
     return this.aen.get(e)?.EndAbility() ?? false;
   }
   GetVisionId(e) {
-    return this.SYm[e ?? this.GetCurrentPosition()] || 0;
+    return this.HJm[e ?? this.GetCurrentPosition()] || 0;
   }
   HandlePress(e, t) {
     for (const i of this.aen.values()) {
@@ -198,25 +200,29 @@ let CharacterVisionComponent = class CharacterVisionComponent extends EntityComp
     return this.cC;
   }
   GetVisionCreatureDataId() {
-    return MathUtils_1.MathUtils.LongToNumber(this.yYm[this.GetCurrentPosition()].Z5n);
+    return MathUtils_1.MathUtils.LongToNumber(this.VJm?.[this.GetCurrentPosition()]?.Z5n ?? 0);
   }
-  MYm() {
-    let e = false;
-    for (const i of this.yYm) {
-      if (i.c5n === 0) {
-        e = true;
-        break;
+  jJm() {
+    let t = undefined;
+    let i = -1;
+    if (this.VJm) {
+      for (let e = 0; e < this.VJm.length; e++) {
+        var o = this.VJm[e];
+        if (o.c5n === 0) {
+          t = o;
+          i = e;
+          break;
+        }
       }
+      this.HJm = this.VJm.map(e => e.r5n);
+    } else {
+      this.HJm = [];
     }
-    this.SYm = this.yYm.map(e => e.r5n);
-    if (e) {
-      this.SetCurrentPosition(0);
+    if (t) {
+      this.SetCurrentPosition(i);
+      this.Entity.GetComponent(220)?.ModifyCdInfo(PhantomUtil_1.PhantomUtil.GetSkillGroupId(t.r5n), PhantomUtil_1.PhantomUtil.GetSkillCd(t.r5n));
     } else {
       this.SetCurrentPosition(-1);
-    }
-    var t = this.Entity.GetComponent(218);
-    for (const o of this.yYm) {
-      t?.ModifyCdInfo(PhantomUtil_1.PhantomUtil.GetSkillGroupId(o.r5n), PhantomUtil_1.PhantomUtil.GetSkillCd(o.r5n));
     }
   }
   Fhh() {
@@ -237,7 +243,7 @@ let CharacterVisionComponent = class CharacterVisionComponent extends EntityComp
   fmm(e) {
     var t = Protocol_1.Aki.Protocol.Ddm.create();
     t.Udm = e;
-    CombatMessage_1.CombatNet.Send(18994, this.Entity, t);
+    CombatMessage_1.CombatNet.Send(19848, this.Entity, t);
   }
   static VisionTriggerNotify(e, t) {
     if (e) {
@@ -247,5 +253,5 @@ let CharacterVisionComponent = class CharacterVisionComponent extends EntityComp
   }
 };
 __decorate([CombatMessage_1.CombatNet.Listen("Adm", true)], CharacterVisionComponent, "VisionTriggerNotify", null);
-CharacterVisionComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(44)], CharacterVisionComponent);
+CharacterVisionComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(46)], CharacterVisionComponent);
 exports.CharacterVisionComponent = CharacterVisionComponent; //# sourceMappingURL=CharacterVisionComponent.js.map

@@ -242,7 +242,7 @@ class OperationRestrictUtils {
   static get sYc() {
     if (!this.aYc) {
       this.aYc = [];
-      for (let t = 0; t < 41; t++) {
+      for (let t = 0; t < 43; t++) {
         if (t !== 12 && t !== 18 && t !== 19 && t !== 9 && t !== 10 && t !== 38 && t !== 39) {
           this.aYc.push(t);
         }
@@ -346,7 +346,7 @@ class OperationRestrictUtils {
     ModelManager_1.ModelManager.LevelFuncFlagModel.SetFuncFlagEnable(1, true);
     ModelManager_1.ModelManager.ExploreSkillFlagModel.EnableAllExploreSkillFlag();
     ModelManager_1.ModelManager.LevelFuncFlagModel.SetFuncFlagEnable(0, true);
-    this.SetBattleUiRestrictByUiChildType(this.ZJf, undefined);
+    this.SetBattleUiRestrictByUiChildType(this.lvg, undefined);
     ModelManager_1.ModelManager.BattleInputModel.SetAllInputEnable(true, 0);
   }
   static SetSkillDisableAll() {
@@ -354,7 +354,7 @@ class OperationRestrictUtils {
     ModelManager_1.ModelManager.LevelFuncFlagModel.SetFuncFlagEnable(1, false);
     ModelManager_1.ModelManager.ExploreSkillFlagModel.DisableAllExploreSkillFlag();
     ModelManager_1.ModelManager.LevelFuncFlagModel.SetFuncFlagEnable(0, false);
-    this.SetBattleUiRestrictByUiChildType(undefined, this.ZJf);
+    this.SetBattleUiRestrictByUiChildType(undefined, this.lvg);
     ModelManager_1.ModelManager.BattleInputModel.SetAllInputEnable(false, 0);
   }
   static SetSkillRestrictByDisableSkillOption(t) {
@@ -363,13 +363,13 @@ class OperationRestrictUtils {
     ModelManager_1.ModelManager.ExploreSkillFlagModel.DisableAllExploreSkillFlag();
     ModelManager_1.ModelManager.LevelFuncFlagModel.SetFuncFlagEnable(0, false);
     if (t.DisplayMode === IAction_1.EDisplayModeInSkillOp.Hide) {
-      this.SetBattleUiRestrictByUiChildType(undefined, this.ZJf);
+      this.SetBattleUiRestrictByUiChildType(undefined, this.lvg);
       ModelManager_1.ModelManager.BattleInputModel.SetAllInputEnable(false, 0);
     } else if (t.DisplayMode === IAction_1.EDisplayModeInSkillOp.Ashen) {
-      this.SetBattleUiRestrictByUiChildType(this.ZJf, undefined);
+      this.SetBattleUiRestrictByUiChildType(this.lvg, undefined);
       ModelManager_1.ModelManager.BattleInputModel.SetAllInputEnable(false, 0);
     } else if (t.DisplayMode === undefined) {
-      this.SetBattleUiRestrictByUiChildType(this.ZJf, undefined);
+      this.SetBattleUiRestrictByUiChildType(this.lvg, undefined);
       ModelManager_1.ModelManager.BattleInputModel.SetAllInputEnable(true, 0);
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("LevelEvent", 39, "[OperationRestrictUtils.SetSkillRestrictByDisableSkillOption] 配置出错", ["SkillOption", t]);
@@ -389,7 +389,7 @@ class OperationRestrictUtils {
     ModelManager_1.ModelManager.LevelFuncFlagModel.SetFuncFlagEnable(0, a);
     var o = new Set();
     if (t.DisableBattleSkill?.IsDisableCharacterSkill) {
-      OperationRestrictUtils.Qwf({
+      OperationRestrictUtils.pUf({
         DisableJump: true,
         DisableShowClimb: true,
         DisableAttack: true,
@@ -407,10 +407,10 @@ class OperationRestrictUtils {
       o.add(InputEnums_1.EInputAction.幻象2);
     }
     if (t.DisableBattleSkill?.IsDisableCharacterSectionalSkill) {
-      OperationRestrictUtils.Qwf(t.DisableBattleSkill.IsDisableCharacterSectionalSkill, o);
+      OperationRestrictUtils.pUf(t.DisableBattleSkill.IsDisableCharacterSectionalSkill, o);
     }
     if (t.DisplayMode === undefined || t.DisplayMode === IAction_1.EDisplayModeInSkillOp.Disable) {
-      this.SetBattleUiRestrictByUiChildType(this.ZJf, undefined);
+      this.SetBattleUiRestrictByUiChildType(this.lvg, undefined);
       if (o.size <= 0) {
         ModelManager_1.ModelManager.BattleInputModel.SetAllInputEnable(true, 0);
       } else {
@@ -420,17 +420,17 @@ class OperationRestrictUtils {
       Log_1.Log.Error("LevelEvent", 39, "[OperationRestrictUtils.SetSkillRestrictByDisableSectionalSkillOption] 配置出错", ["SkillOption", t]);
     }
   }
-  static Qwf(t, e) {
-    for (const i of this.Kwf) {
+  static pUf(t, e) {
+    for (const i of this.vUf) {
       if (t[i.OptionKey]) {
         e.add(i.InputAction);
       }
     }
   }
 }
-(exports.OperationRestrictUtils = OperationRestrictUtils).ZJf = [9, 10, 38];
+(exports.OperationRestrictUtils = OperationRestrictUtils).lvg = [9, 10, 38];
 OperationRestrictUtils.aYc = undefined;
-OperationRestrictUtils.Kwf = [{
+OperationRestrictUtils.vUf = [{
   OptionKey: "DisableJump",
   InputAction: InputEnums_1.EInputAction.跳跃
 }, {

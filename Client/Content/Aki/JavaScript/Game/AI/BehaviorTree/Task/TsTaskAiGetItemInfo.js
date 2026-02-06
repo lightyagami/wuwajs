@@ -55,7 +55,7 @@ class TsTaskAiGetItemInfo extends TsTaskAbortImmediatelyBase_1.default {
         if (s === undefined || o.GetEntityType() !== Protocol_1.Aki.Protocol.kks.Proto_SceneItem) {
           this.FinishExecute(false);
         } else {
-          o = s.GetComponent(212).ActorLocation;
+          o = s.GetComponent(214).ActorLocation;
           if (this.VectorArray === undefined) {
             this.VectorArray = new Array();
           }

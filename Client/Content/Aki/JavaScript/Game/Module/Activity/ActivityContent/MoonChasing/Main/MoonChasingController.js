@@ -102,39 +102,39 @@ class MoonChasingController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PlotNetworkEnd, MoonChasingController.Mfa);
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(15255, MoonChasingController.pRn);
-    Net_1.Net.Register(22279, MoonChasingController.hOn);
-    Net_1.Net.Register(29821, MoonChasingController.T7s);
-    Net_1.Net.Register(25239, MoonChasingController.Wva);
-    Net_1.Net.Register(28242, MoonChasingController.$Aa);
+    Net_1.Net.Register(18167, MoonChasingController.pRn);
+    Net_1.Net.Register(15022, MoonChasingController.hOn);
+    Net_1.Net.Register(28593, MoonChasingController.T7s);
+    Net_1.Net.Register(22540, MoonChasingController.Wva);
+    Net_1.Net.Register(19971, MoonChasingController.$Aa);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(15255);
-    Net_1.Net.UnRegister(22279);
-    Net_1.Net.UnRegister(29821);
-    Net_1.Net.UnRegister(25239);
-    Net_1.Net.UnRegister(28242);
+    Net_1.Net.UnRegister(18167);
+    Net_1.Net.UnRegister(15022);
+    Net_1.Net.UnRegister(28593);
+    Net_1.Net.UnRegister(22540);
+    Net_1.Net.UnRegister(19971);
   }
   static async TrackMoonAllDataRequest() {
     await Promise.all([MoonChasingController.h2e(), MoonChasingController.l2e(), MoonChasingController._2e()]);
   }
   static async l2e() {
     var e = Protocol_1.Aki.Protocol.ifs.create();
-    var e = await Net_1.Net.CallAsync(23782, e);
+    var e = await Net_1.Net.CallAsync(28172, e);
     if (e) {
       ModelManager_1.ModelManager.MoonChasingBusinessModel.SetAllDelegationData(e.ZGs);
     }
   }
   static async h2e() {
     var e = Protocol_1.Aki.Protocol.hfs.create();
-    var e = await Net_1.Net.CallAsync(25351, e);
+    var e = await Net_1.Net.CallAsync(28012, e);
     if (e) {
       ModelManager_1.ModelManager.MoonChasingBuildingModel.SetAllBuildingData(e.tOs);
     }
   }
   static async _2e() {
     var e = Protocol_1.Aki.Protocol.ofs.create();
-    var e = await Net_1.Net.CallAsync(23345, e);
+    var e = await Net_1.Net.CallAsync(21481, e);
     if (e) {
       ModelManager_1.ModelManager.MoonChasingBusinessModel.SetAllEditTeamData(e.eOs);
     }
@@ -143,10 +143,10 @@ class MoonChasingController extends UiControllerBase_1.UiControllerBase {
     var e = Protocol_1.Aki.Protocol.Qgs.create();
     e.W6n = o;
     const n = ModelManager_1.ModelManager.MoonChasingModel.GetPopularityValue();
-    Net_1.Net.Call(26807, e, e => {
+    Net_1.Net.Call(25629, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19864);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24297);
         } else {
           ModelManager_1.ModelManager.MoonChasingBuildingModel.LevelUpBuildingData(e.HGs, n, e.XL_);
           MoonChasingController.OpenBuildingLevelUpView(true, o);
@@ -158,10 +158,10 @@ class MoonChasingController extends UiControllerBase_1.UiControllerBase {
     var e = Protocol_1.Aki.Protocol._fs.create();
     e.W6n = o;
     const n = ModelManager_1.ModelManager.MoonChasingModel.GetPopularityValue();
-    Net_1.Net.Call(15569, e, e => {
+    Net_1.Net.Call(26087, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21805);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19269);
         } else {
           ModelManager_1.ModelManager.MoonChasingBuildingModel.UnlockBuildingData(o, n, e.XL_);
           MoonChasingController.OpenBuildingLevelUpView(false, o);
@@ -172,11 +172,11 @@ class MoonChasingController extends UiControllerBase_1.UiControllerBase {
   static BuildingBuildFlowRequest(e, n) {
     var o = Protocol_1.Aki.Protocol.pm_.create();
     o.W6n = e;
-    Net_1.Net.Call(21457, o, o => {
+    Net_1.Net.Call(25639, o, o => {
       if (o) {
         let e = true;
         if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 21805);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 19269);
           e = false;
         }
         n(e);
@@ -194,12 +194,12 @@ class MoonChasingController extends UiControllerBase_1.UiControllerBase {
       var o = ModelManager_1.ModelManager.MoonChasingBusinessModel.GetEditTeamDataById(n);
       t.push(o.Level);
     }
-    Net_1.Net.Call(22218, e, e => {
+    Net_1.Net.Call(20421, e, e => {
       var o;
       var n;
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27534);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26673);
           ModelManager_1.ModelManager.MoonChasingBusinessModel.SetIsInDelegate(false);
         } else {
           n = (o = ModelManager_1.ModelManager.MoonChasingBusinessModel.GetDelegationData(a)).BestEvaluateLevel;
@@ -235,15 +235,15 @@ class MoonChasingController extends UiControllerBase_1.UiControllerBase {
     e.$6n = i;
     var o = ConfigManager_1.ConfigManager.BusinessConfig.GetCoinItemId();
     const s = ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(o);
-    Net_1.Net.Call(25472, e, e => {
+    Net_1.Net.Call(22902, e, e => {
       if (e) {
         if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_ErrTrackMoonTrigger) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 28674);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23169);
           ModelManager_1.ModelManager.MoonChasingBusinessModel.SetIsInDelegate(false);
           UiManager_1.UiManager.CloseView("BusinessTipsResultView");
           UiManager_1.UiManager.NormalResetToView("MoonChasingMainView");
         } else if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 28674);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23169);
         } else if (i === 0) {
           const n = ModelManager_1.ModelManager.MoonChasingBusinessModel.GetResultData();
           n.Ratio = r;
@@ -274,10 +274,10 @@ class MoonChasingController extends UiControllerBase_1.UiControllerBase {
     e.Y6n = n;
     var a = ModelManager_1.ModelManager.MoonChasingBusinessModel.GetEditTeamDataById(o);
     const i = ModelManager_1.ModelManager.MoonChasingBusinessModel.DeepCopyEditTeamData(a);
-    Net_1.Net.Call(20043, e, e => {
+    Net_1.Net.Call(24984, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24962);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17982);
         } else {
           e = {
             RoleId: o,
@@ -305,7 +305,7 @@ class MoonChasingController extends UiControllerBase_1.UiControllerBase {
   static TrackMoonHandbookRewardRequest(e) {
     var o = Protocol_1.Aki.Protocol.q7s.create();
     o.BVn = e;
-    Net_1.Net.Call(29394, o, e => {
+    Net_1.Net.Call(18194, o, e => {
       if (e) {
         for (const n of e.BVn) {
           var o = ModelManager_1.ModelManager.MoonChasingModel.GetHandbookRewardDataById(n);
@@ -319,10 +319,10 @@ class MoonChasingController extends UiControllerBase_1.UiControllerBase {
   }
   static async TrackMoonMemoryInfoRequest() {
     var e = Protocol_1.Aki.Protocol.b7s.create();
-    var e = await Net_1.Net.CallAsync(23955, e);
+    var e = await Net_1.Net.CallAsync(27152, e);
     if (e) {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17601);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22209);
         return [];
       } else {
         return ModelManager_1.ModelManager.MoonChasingModel.GetMemoryInfo(e);
@@ -390,10 +390,10 @@ MoonChasingController.$Aa = e => {
 MoonChasingController.TrackMoonTargetRewardRequest = o => {
   var e = Protocol_1.Aki.Protocol.Wfs.create();
   e.s5n = o;
-  Net_1.Net.Call(25966, e, e => {
+  Net_1.Net.Call(23712, e, e => {
     if (e) {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24962);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17982);
       } else {
         ModelManager_1.ModelManager.MoonChasingRewardModel.TakenRewardTargetData(o);
       }

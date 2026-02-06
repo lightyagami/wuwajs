@@ -39,7 +39,10 @@ class SceneCharacterFoliageEffect {
     this.MPCAsset = undefined;
     this.ConfigMap = new Map();
     this.WeightSpawnArray = new Array();
-    this.$Mf = (t, i, s) => {
+    this.kuroEnviInteractionSystem = undefined;
+    this.foliageNameArray = undefined;
+    this.TempColor = undefined;
+    this.abf = (t, i, e) => {
       this.WeaponPosition = t;
     };
     this.IsEnabled = false;
@@ -48,6 +51,7 @@ class SceneCharacterFoliageEffect {
     if (t && !(UE.KismetSystemLibrary.GetConsoleVariableFloatValue("r.Kuro.InteractionEffect.EnableFoliageEffect") <= 0)) {
       this.Owner = t;
       this.IsReady = true;
+      this.TempColor = new UE.LinearColor();
       ResourceSystem_1.ResourceSystem.LoadAsync(NDCAssetPathWeapon, UE.NiagaraDataChannelAsset, t => {
         if (t) {
           this.NDCAsset = t;
@@ -65,12 +69,14 @@ class SceneCharacterFoliageEffect {
       var i;
       var t = ResourceSystem_1.ResourceSystem.Load(ConfigPath, UE.DataTable);
       this.ConfigMap.clear();
+      this.foliageNameArray = UE.NewArray(UE.BuiltinString);
       var t = DataTableUtil_1.DataTableUtil.GetAllDataTableRowFromTableWithRowName(t);
       if (t?.length) {
-        for (const s of t) {
-          if (UE.KismetSystemLibrary.IsValidSoftObjectReference(s[1].FoliageMesh)) {
-            i = s[1].FoliageMesh.ToAssetPathName();
-            this.ConfigMap.set(i, s[1]);
+        for (const e of t) {
+          if (UE.KismetSystemLibrary.IsValidSoftObjectReference(e[1].FoliageMesh)) {
+            i = e[1].FoliageMesh.ToAssetPathName();
+            this.ConfigMap.set(i, e[1]);
+            this.foliageNameArray.Add(i);
           }
         }
       }
@@ -79,38 +85,41 @@ class SceneCharacterFoliageEffect {
   Enable() {
     if (this.IsReady) {
       this.IsEnabled = true;
-      GlobalData_1.GlobalData.BpEventManager.武器交互场景时.Remove(this.$Mf);
-      GlobalData_1.GlobalData.BpEventManager.武器交互场景时.Add(this.$Mf);
+      GlobalData_1.GlobalData.BpEventManager.武器交互场景时.Remove(this.abf);
+      GlobalData_1.GlobalData.BpEventManager.武器交互场景时.Add(this.abf);
       this.ActorComponent = this.Owner.CharacterActorComponent?.Entity?.GetComponent(3);
     }
   }
   Disable() {
     if (this.IsEnabled) {
       this.IsEnabled = false;
-      GlobalData_1.GlobalData.BpEventManager.武器交互场景时.Remove(this.$Mf);
+      GlobalData_1.GlobalData.BpEventManager.武器交互场景时.Remove(this.abf);
     }
   }
   Tick(t) {
     if (this.IsEnabled && this.Owner && this.ActorComponent?.IsAutonomousProxy && (this.Timer += 1, this.Timer >= 3)) {
-      this.Ybf();
-      this.QMf();
-      this.KMf();
-      this.SpawnCount = this.XMf();
-      this.WMf();
+      this.kuroEnviInteractionSystem = UE.KuroInteractionEffectSystem.GetKuroInteractionEffectSystem(this.Owner.GetWorld());
+      if (this.kuroEnviInteractionSystem) {
+        this.SDf();
+        this.lbf();
+        this._bf();
+        this.SpawnCount = this.ubf();
+        this.hbf();
+      }
       this.Timer = 0;
     }
   }
-  WMf() {
+  hbf() {
     var t;
     if (this.IsReady && this.Owner && this.NDCAsset) {
-      if (!(t = this.Owner.CharacterActorComponent?.Entity?.GetComponent(215))?.HasTag(1566606455) && !t?.HasTag(40422668)) {
-        if (UE.KuroInteractionEffectSystem.GetKuroInteractionEffectSystem(this.Owner.GetWorld()) && this.SpawnCount > 0) {
-          UE.NiagaraDataChannelLibrary.WriteToNiagaraDataChannel(this.Owner.GetWorld(), this.NDCAsset, new UE.NiagaraDataChannelSearchParameters(), this.SpawnCount, true, true, false, "TS FoliageEffect WriteToNDC");
+      if (!(t = this.Owner.CharacterActorComponent?.Entity?.GetComponent(217))?.HasTag(1566606455) && !t?.HasTag(40422668)) {
+        if (this.SpawnCount > 0) {
+          UE.NiagaraDataChannelLibrary.WriteToNiagaraDataChannel(this.Owner.GetWorld(), this.NDCAsset, SceneCharacterFoliageEffect.NDCSearchParam, this.SpawnCount, true, true, false, "TS FoliageEffect WriteToNDC");
         }
       }
     }
   }
-  QMf() {
+  lbf() {
     var t;
     if (this.IsReady) {
       this.WeaponSpeed = 0;
@@ -124,84 +133,110 @@ class SceneCharacterFoliageEffect {
         this.PlayerVelocity = this.Owner.D_K2_GetActorLocation().op_Subtraction(this.PrePlayerPosition).op_ToVector();
       }
       this.PrePlayerPosition = this.Owner.D_K2_GetActorLocation();
-      this.WeaponSpawn = this.zbf();
-      this.PlayerSpawn = this.Jbf();
+      this.WeaponSpawn = this.MDf();
+      this.PlayerSpawn = this.EDf();
     }
   }
-  KMf() {
-    if (this.Owner) {
+  _bf() {
+    if (this.Owner && this.kuroEnviInteractionSystem && this.foliageNameArray) {
       this.WeightSpawnArray.length = 0;
-      const i = UE.KuroInteractionEffectSystem.GetKuroInteractionEffectSystem(this.Owner.GetWorld());
-      if (i) {
-        for (const s of this.ConfigMap) {
-          const i = UE.KuroInteractionEffectSystem.GetKuroInteractionEffectSystem(this.Owner.GetWorld());
-          var t;
-          if (i && (t = s[0], (t = i.SearchInteractionFoliage(t) * s[1].SpawnNum) > 0)) {
-            this.WeightSpawnArray.push([t, s[1]]);
-          }
+      var i = this.kuroEnviInteractionSystem.SearchInteractionFoliageArray(this.foliageNameArray);
+      var e = i.Num();
+      for (let t = 0; t < e; ++t) {
+        var h;
+        var s = this.ConfigMap.get(this.foliageNameArray.Get(t));
+        if (s && (h = i.Get(t) * s.SpawnNum) > 0) {
+          this.WeightSpawnArray.push([h, s]);
         }
-        this.WeightSpawnArray.sort((t, i) => i[0] * i[1].Weight - t[0] * t[1].Weight);
       }
+      this.WeightSpawnArray.sort((t, i) => i[0] * i[1].Weight - t[0] * t[1].Weight);
     }
   }
-  YMf(t) {
+  cbf(t) {
     return !!this.IsReady && !!this.Owner && !!this.WeaponPosition && !!(this.WeaponPosition.Z - this.Owner.D_K2_GetActorLocation().Z <= t);
   }
-  XMf() {
+  ubf() {
     if (!this.MPCAsset) {
       return 0;
     }
-    var t;
-    var i;
-    var s;
-    var h;
-    var a;
-    var e;
-    var r;
-    var o = Math.min(4, this.WeightSpawnArray.length);
-    let l = 0;
-    for (let t = 0; t < o; ++t) {
-      l += this.WeightSpawnArray[t][0];
+    var i = Math.min(4, this.WeightSpawnArray.length);
+    let e = 0;
+    for (let t = 0; t < i; ++t) {
+      e += this.WeightSpawnArray[t][0];
     }
-    if (l <= 0) {
+    if (e <= 0) {
       return 0;
-    } else {
-      a = this.WeightSpawnArray[Math.min(0, o - 1)][0];
-      r = this.WeightSpawnArray[Math.min(1, o - 1)][0] + a;
-      t = this.WeightSpawnArray[Math.min(2, o - 1)][0] + r;
-      s = this.WeightSpawnArray[Math.min(0, o - 1)][1].TypeIndex;
-      h = this.WeightSpawnArray[Math.min(1, o - 1)][1].TypeIndex;
-      e = this.WeightSpawnArray[Math.min(2, o - 1)][1].TypeIndex;
-      i = this.WeightSpawnArray[Math.min(3, o - 1)][1].TypeIndex;
-      if (this.WeaponPosition) {
-        UE.KismetMaterialLibrary.SetVectorParameterValue(GlobalData_1.GlobalData.GameInstance.GetWorld(), this.MPCAsset, new UE.FName("NDC_LeaveSpawnPosition"), new UE.LinearColor(this.WeaponPosition.op_ToVector()));
-      }
-      UE.KismetMaterialLibrary.SetVectorParameterValue(GlobalData_1.GlobalData.GameInstance.GetWorld(), this.MPCAsset, new UE.FName("SpawnParam0"), new UE.LinearColor(s, 0, h, a));
-      UE.KismetMaterialLibrary.SetVectorParameterValue(GlobalData_1.GlobalData.GameInstance.GetWorld(), this.MPCAsset, new UE.FName("SpawnParam1"), new UE.LinearColor(e, r, i, t));
-      s = this.YMf(this.WeightSpawnArray[0][1].HeightClamp) ? Math.round(MathUtils_1.MathUtils.Clamp((this.PlayerSpawn + 0.001) / (this.WeaponSpawn + this.PlayerSpawn + 0.001), 0, 1) * 10) : 10;
-      h = this.YMf(this.WeightSpawnArray[Math.min(1, o - 1)][1].HeightClamp) ? Math.round(MathUtils_1.MathUtils.Clamp((this.PlayerSpawn + 0.001) / (this.WeaponSpawn + this.PlayerSpawn + 0.001), 0, 1) * 10) : 10;
-      a = this.YMf(this.WeightSpawnArray[Math.min(2, o - 1)][1].HeightClamp) ? Math.round(MathUtils_1.MathUtils.Clamp((this.PlayerSpawn + 0.001) / (this.WeaponSpawn + this.PlayerSpawn + 0.001), 0, 1) * 10) : 10;
-      e = this.YMf(this.WeightSpawnArray[Math.min(3, o - 1)][1].HeightClamp) ? Math.round(MathUtils_1.MathUtils.Clamp((this.PlayerSpawn + 0.001) / (this.WeaponSpawn + this.PlayerSpawn + 0.001), 0, 1) * 10) : 10;
-      if (this.Owner && (UE.KismetMaterialLibrary.SetScalarParameterValue(this.Owner.GetWorld(), this.MPCAsset, new UE.FName("SpawnNum"), l), UE.KismetMaterialLibrary.SetScalarParameterValue(this.Owner.GetWorld(), this.MPCAsset, new UE.FName("OnMotorcycle"), this.OnMotorcycle ? 1 : 0), UE.KismetMaterialLibrary.SetScalarParameterValue(this.Owner.GetWorld(), this.MPCAsset, new UE.FName("PlayerSpeed"), this.PlayerSpeed), this.PrePlayerPosition && (r = new UE.LinearColor(this.PrePlayerPosition.X, this.PrePlayerPosition.Y, this.PrePlayerPosition.Z, 0), this.OnMotorcycle && this.Owner.CharacterActorComponent && this.PlayerMotorcycleSpawnOffset && (r.R += this.PlayerMotorcycleSpawnOffset.X, r.G += this.PlayerMotorcycleSpawnOffset.Y, r.B += this.PlayerMotorcycleSpawnOffset.Z), UE.KismetMaterialLibrary.SetVectorParameterValue(GlobalData_1.GlobalData.GameInstance.GetWorld(), this.MPCAsset, new UE.FName("NDC_PlayerSpawnPosition"), r)), UE.KismetMaterialLibrary.SetVectorParameterValue(GlobalData_1.GlobalData.GameInstance.GetWorld(), this.MPCAsset, new UE.FName("PlayerSpawnOffset0"), new UE.LinearColor(this.WeightSpawnArray[0][1].PlayerSpawnOffset.X, this.WeightSpawnArray[0][1].PlayerSpawnOffset.Y, this.WeightSpawnArray[0][1].PlayerSpawnOffset.Z, 0)), UE.KismetMaterialLibrary.SetVectorParameterValue(GlobalData_1.GlobalData.GameInstance.GetWorld(), this.MPCAsset, new UE.FName("PlayerSpawnOffset1"), new UE.LinearColor(this.WeightSpawnArray[Math.min(1, o - 1)][1].PlayerSpawnOffset.X, this.WeightSpawnArray[Math.min(1, o - 1)][1].PlayerSpawnOffset.Y, this.WeightSpawnArray[Math.min(1, o - 1)][1].PlayerSpawnOffset.Z, 0)), UE.KismetMaterialLibrary.SetVectorParameterValue(GlobalData_1.GlobalData.GameInstance.GetWorld(), this.MPCAsset, new UE.FName("PlayerSpawnOffset2"), new UE.LinearColor(this.WeightSpawnArray[Math.min(2, o - 1)][1].PlayerSpawnOffset.X, this.WeightSpawnArray[Math.min(2, o - 1)][1].PlayerSpawnOffset.Y, this.WeightSpawnArray[Math.min(2, o - 1)][1].PlayerSpawnOffset.Z, 0)), UE.KismetMaterialLibrary.SetVectorParameterValue(GlobalData_1.GlobalData.GameInstance.GetWorld(), this.MPCAsset, new UE.FName("PlayerSpawnOffset3"), new UE.LinearColor(this.WeightSpawnArray[Math.min(3, o - 1)][1].PlayerSpawnOffset.X, this.WeightSpawnArray[Math.min(3, o - 1)][1].PlayerSpawnOffset.Y, this.WeightSpawnArray[Math.min(3, o - 1)][1].PlayerSpawnOffset.Z, 0)), UE.KismetMaterialLibrary.SetVectorParameterValue(GlobalData_1.GlobalData.GameInstance.GetWorld(), this.MPCAsset, new UE.FName("PlayerPercent0123"), new UE.LinearColor(s, h, a, e)), this.WeaponVelocity && UE.KismetMaterialLibrary.SetVectorParameterValue(GlobalData_1.GlobalData.GameInstance.GetWorld(), this.MPCAsset, new UE.FName("WeaponVelocity"), new UE.LinearColor(this.WeaponVelocity)), this.PlayerVelocity)) {
-        UE.KismetMaterialLibrary.SetVectorParameterValue(GlobalData_1.GlobalData.GameInstance.GetWorld(), this.MPCAsset, new UE.FName("PlayerVelocity"), new UE.LinearColor(this.PlayerVelocity));
-      }
-      return MathUtils_1.MathUtils.GetFloatPointCeil(l * (this.WeaponSpawn + this.PlayerSpawn));
     }
+    var t = this.WeightSpawnArray[Math.min(0, i - 1)][0];
+    var h = this.WeightSpawnArray[Math.min(1, i - 1)][0] + t;
+    var s = this.WeightSpawnArray[Math.min(2, i - 1)][0] + h;
+    var a = this.WeightSpawnArray[Math.min(0, i - 1)][1].TypeIndex;
+    var r = this.WeightSpawnArray[Math.min(1, i - 1)][1].TypeIndex;
+    var c = this.WeightSpawnArray[Math.min(2, i - 1)][1].TypeIndex;
+    var l = this.WeightSpawnArray[Math.min(3, i - 1)][1].TypeIndex;
+    if (this.WeaponPosition) {
+      this.Jlr(this.WeaponPosition.X, this.WeaponPosition.Y, this.WeaponPosition.Z, 0);
+      UE.KismetMaterialLibrary.SetVectorParameterValue(GlobalData_1.GlobalData.GameInstance.GetWorld(), this.MPCAsset, SceneCharacterFoliageEffect.MPC_LeaveSpawnPosition, this.TempColor);
+    }
+    this.Jlr(a, 0, r, t);
+    UE.KismetMaterialLibrary.SetVectorParameterValue(GlobalData_1.GlobalData.GameInstance.GetWorld(), this.MPCAsset, SceneCharacterFoliageEffect.MPC_SpawnParam0, this.TempColor);
+    this.Jlr(c, h, l, s);
+    UE.KismetMaterialLibrary.SetVectorParameterValue(GlobalData_1.GlobalData.GameInstance.GetWorld(), this.MPCAsset, SceneCharacterFoliageEffect.MPC_SpawnParam1, this.TempColor);
+    var a = this.cbf(this.WeightSpawnArray[0][1].HeightClamp) ? Math.round(MathUtils_1.MathUtils.Clamp((this.PlayerSpawn + 0.001) / (this.WeaponSpawn + this.PlayerSpawn + 0.001), 0, 1) * 10) : 10;
+    var r = this.cbf(this.WeightSpawnArray[Math.min(1, i - 1)][1].HeightClamp) ? Math.round(MathUtils_1.MathUtils.Clamp((this.PlayerSpawn + 0.001) / (this.WeaponSpawn + this.PlayerSpawn + 0.001), 0, 1) * 10) : 10;
+    var t = this.cbf(this.WeightSpawnArray[Math.min(2, i - 1)][1].HeightClamp) ? Math.round(MathUtils_1.MathUtils.Clamp((this.PlayerSpawn + 0.001) / (this.WeaponSpawn + this.PlayerSpawn + 0.001), 0, 1) * 10) : 10;
+    var c = this.cbf(this.WeightSpawnArray[Math.min(3, i - 1)][1].HeightClamp) ? Math.round(MathUtils_1.MathUtils.Clamp((this.PlayerSpawn + 0.001) / (this.WeaponSpawn + this.PlayerSpawn + 0.001), 0, 1) * 10) : 10;
+    if (this.Owner) {
+      UE.KismetMaterialLibrary.SetScalarParameterValue(this.Owner.GetWorld(), this.MPCAsset, SceneCharacterFoliageEffect.MPC_SpawnNum, e);
+      UE.KismetMaterialLibrary.SetScalarParameterValue(this.Owner.GetWorld(), this.MPCAsset, SceneCharacterFoliageEffect.MPC_OnMotorcycle, this.OnMotorcycle ? 1 : 0);
+      UE.KismetMaterialLibrary.SetScalarParameterValue(this.Owner.GetWorld(), this.MPCAsset, SceneCharacterFoliageEffect.MPC_PlayerSpeed, this.PlayerSpeed);
+      if (this.PrePlayerPosition) {
+        let t = this.PrePlayerPosition.X;
+        let i = this.PrePlayerPosition.Y;
+        let e = this.PrePlayerPosition.Z;
+        if (this.OnMotorcycle && this.Owner.CharacterActorComponent && this.PlayerMotorcycleSpawnOffset) {
+          t += this.PlayerMotorcycleSpawnOffset.X;
+          i += this.PlayerMotorcycleSpawnOffset.Y;
+          e += this.PlayerMotorcycleSpawnOffset.Z;
+        }
+        this.Jlr(t, i, e, 0);
+        UE.KismetMaterialLibrary.SetVectorParameterValue(GlobalData_1.GlobalData.GameInstance.GetWorld(), this.MPCAsset, SceneCharacterFoliageEffect.MPC_PlayerSpawnPosition, this.TempColor);
+      }
+      this.Jlr(this.WeightSpawnArray[0][1].PlayerSpawnOffset.X, this.WeightSpawnArray[0][1].PlayerSpawnOffset.Y, this.WeightSpawnArray[0][1].PlayerSpawnOffset.Z, 0);
+      UE.KismetMaterialLibrary.SetVectorParameterValue(GlobalData_1.GlobalData.GameInstance.GetWorld(), this.MPCAsset, SceneCharacterFoliageEffect.MPC_PlayerSpawnOffset0, this.TempColor);
+      this.Jlr(this.WeightSpawnArray[Math.min(1, i - 1)][1].PlayerSpawnOffset.X, this.WeightSpawnArray[Math.min(1, i - 1)][1].PlayerSpawnOffset.Y, this.WeightSpawnArray[Math.min(1, i - 1)][1].PlayerSpawnOffset.Z, 0);
+      UE.KismetMaterialLibrary.SetVectorParameterValue(GlobalData_1.GlobalData.GameInstance.GetWorld(), this.MPCAsset, SceneCharacterFoliageEffect.MPC_PlayerSpawnOffset1, this.TempColor);
+      this.Jlr(this.WeightSpawnArray[Math.min(2, i - 1)][1].PlayerSpawnOffset.X, this.WeightSpawnArray[Math.min(2, i - 1)][1].PlayerSpawnOffset.Y, this.WeightSpawnArray[Math.min(2, i - 1)][1].PlayerSpawnOffset.Z, 0);
+      UE.KismetMaterialLibrary.SetVectorParameterValue(GlobalData_1.GlobalData.GameInstance.GetWorld(), this.MPCAsset, SceneCharacterFoliageEffect.MPC_PlayerSpawnOffset2, this.TempColor);
+      this.Jlr(this.WeightSpawnArray[Math.min(3, i - 1)][1].PlayerSpawnOffset.X, this.WeightSpawnArray[Math.min(3, i - 1)][1].PlayerSpawnOffset.Y, this.WeightSpawnArray[Math.min(3, i - 1)][1].PlayerSpawnOffset.Z, 0);
+      UE.KismetMaterialLibrary.SetVectorParameterValue(GlobalData_1.GlobalData.GameInstance.GetWorld(), this.MPCAsset, SceneCharacterFoliageEffect.MPC_PlayerSpawnOffset3, this.TempColor);
+      this.Jlr(a, r, t, c);
+      UE.KismetMaterialLibrary.SetVectorParameterValue(GlobalData_1.GlobalData.GameInstance.GetWorld(), this.MPCAsset, SceneCharacterFoliageEffect.MPC_PlayerPercent0123, this.TempColor);
+      if (this.WeaponVelocity) {
+        this.Jlr(this.WeaponVelocity.X, this.WeaponVelocity.Y, this.WeaponVelocity.Z, 0);
+        UE.KismetMaterialLibrary.SetVectorParameterValue(GlobalData_1.GlobalData.GameInstance.GetWorld(), this.MPCAsset, SceneCharacterFoliageEffect.MPC_WeaponVelocity, this.TempColor);
+      }
+      if (this.PlayerVelocity) {
+        this.Jlr(this.PlayerVelocity.X, this.PlayerVelocity.Y, this.PlayerVelocity.Z, 0);
+        UE.KismetMaterialLibrary.SetVectorParameterValue(GlobalData_1.GlobalData.GameInstance.GetWorld(), this.MPCAsset, SceneCharacterFoliageEffect.MPC_PlayerVelocity, this.TempColor);
+      }
+    }
+    return MathUtils_1.MathUtils.GetFloatPointCeil(e * (this.WeaponSpawn + this.PlayerSpawn));
   }
-  zbf() {
+  MDf() {
     var t = MathUtils_1.MathUtils.Clamp(this.WeaponSpeed, 0, WEAPON_SPAWN_PARAM) / WEAPON_SPAWN_PARAM;
     return t * t * 0.5;
   }
-  Jbf() {
+  EDf() {
     var t = this.OnMotorcycle ? PLAYER_MOTORCYCLE_SPAWN_PARAM : PLAYER_SPAWN_PARAM;
     return MathUtils_1.MathUtils.Clamp(this.PlayerSpeed, 0, t) / t * this.PlayerMoveTypeParam;
   }
-  Ybf() {
+  SDf() {
     var t;
     var i;
     if (this.IsReady) {
       t = this.Owner.CharacterActorComponent?.ActorForward;
-      if ((i = this.Owner.CharacterActorComponent?.Entity?.GetComponent(215))?.HasTag(346080557)) {
+      if ((i = this.Owner.CharacterActorComponent?.Entity?.GetComponent(217))?.HasTag(346080557)) {
         this.PlayerMoveTypeParam = 1;
         this.OnMotorcycle = true;
         if (i?.HasTag(232903598)) {
@@ -221,6 +256,25 @@ class SceneCharacterFoliageEffect {
       }
     }
   }
+  Jlr(t, i, e, h) {
+    this.TempColor.R = t;
+    this.TempColor.G = i;
+    this.TempColor.B = e;
+    this.TempColor.A = h;
+  }
 }
-exports.SceneCharacterFoliageEffect = SceneCharacterFoliageEffect;
-//# sourceMappingURL=SceneCharacterFoliageEffect.js.map
+(exports.SceneCharacterFoliageEffect = SceneCharacterFoliageEffect).MPC_LeaveSpawnPosition = new UE.FName("NDC_LeaveSpawnPosition");
+SceneCharacterFoliageEffect.MPC_SpawnParam0 = new UE.FName("SpawnParam0");
+SceneCharacterFoliageEffect.MPC_SpawnParam1 = new UE.FName("SpawnParam1");
+SceneCharacterFoliageEffect.MPC_SpawnNum = new UE.FName("SpawnNum");
+SceneCharacterFoliageEffect.MPC_OnMotorcycle = new UE.FName("OnMotorcycle");
+SceneCharacterFoliageEffect.MPC_PlayerSpeed = new UE.FName("PlayerSpeed");
+SceneCharacterFoliageEffect.MPC_PlayerSpawnPosition = new UE.FName("NDC_PlayerSpawnPosition");
+SceneCharacterFoliageEffect.MPC_PlayerSpawnOffset0 = new UE.FName("PlayerSpawnOffset0");
+SceneCharacterFoliageEffect.MPC_PlayerSpawnOffset1 = new UE.FName("PlayerSpawnOffset1");
+SceneCharacterFoliageEffect.MPC_PlayerSpawnOffset2 = new UE.FName("PlayerSpawnOffset2");
+SceneCharacterFoliageEffect.MPC_PlayerSpawnOffset3 = new UE.FName("PlayerSpawnOffset3");
+SceneCharacterFoliageEffect.MPC_PlayerPercent0123 = new UE.FName("PlayerPercent0123");
+SceneCharacterFoliageEffect.MPC_WeaponVelocity = new UE.FName("WeaponVelocity");
+SceneCharacterFoliageEffect.MPC_PlayerVelocity = new UE.FName("PlayerVelocity");
+SceneCharacterFoliageEffect.NDCSearchParam = new UE.NiagaraDataChannelSearchParameters(); //# sourceMappingURL=SceneCharacterFoliageEffect.js.map

@@ -24,7 +24,7 @@ class PhantomArenaCardBattleLoadingView extends LoadingViewBase_1.LoadingViewBas
     this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UITexture], [2, UE.UIText], [3, UE.UIText], [4, UE.UITexture], [5, UE.UIText], [6, UE.UIText], [7, UE.UITexture], [8, UE.UITexture], [9, UE.UITexture], [10, UE.UITexture], [11, UE.UITexture]];
   }
   async OnBeforeStartAsync() {
-    await this.nGm();
+    await this.vFm();
   }
   OnStart() {
     super.OnStart();
@@ -43,7 +43,7 @@ class PhantomArenaCardBattleLoadingView extends LoadingViewBase_1.LoadingViewBas
   OnLevelSequencePlayerBandStateChange(e) {
     this.SequencePlayer?.PlayLevelSequenceByName("Start");
   }
-  async nGm() {
+  async vFm() {
     var e = ModelManager_1.ModelManager.PhantomArenaBattleModel.ChallengeId;
     var e = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleChallenge(e);
     var a = [];

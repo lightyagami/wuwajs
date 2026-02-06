@@ -57,7 +57,7 @@ class BulletCasterBase {
     this.OnStop();
   }
   SetTimeDilationRespectOwnerEntity() {
-    var t = this.OwnerEntity.GetComponent(131);
+    var t = this.OwnerEntity.GetComponent(133);
     var t = this.OwnerEntity.TimeDilation * (t?.CurrentTimeScale ?? 1);
     this.SetTimeDilation(t);
   }

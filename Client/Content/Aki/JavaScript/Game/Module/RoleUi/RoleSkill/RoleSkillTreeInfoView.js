@@ -19,7 +19,7 @@ class RoleSkillTreeInfoView extends UiViewBase_1.UiViewBase {
     this.Qco = () => {
       this.CloseMe();
     };
-    this.FFf = () => {
+    this.m9f = () => {
       this.OWd?.OnRoleSkillBranchChanged();
     };
   }
@@ -30,6 +30,7 @@ class RoleSkillTreeInfoView extends UiViewBase_1.UiViewBase {
     var e = this.OpenParam.RoleViewAgent?.GetRoleSystemMode() !== 2;
     this.OWd = new RoleSkillTreeInfoItem_1.RoleSkillTreeInfoItem();
     this.OWd.SetSkillBranchEnable(e);
+    this.OWd.SetParentView(this);
     await this.OWd.CreateThenShowByResourceIdAsync("UiItem_RoleSkillTreeDetail", this.GetItem(0), false);
     this.OWd.OnBackBtnCallBack = () => {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRoleInternalViewQuit);
@@ -38,12 +39,12 @@ class RoleSkillTreeInfoView extends UiViewBase_1.UiViewBase {
   OnAddEventListener() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnCommonItemCountAnyChange, this.qdi);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRoleInternalViewQuit, this.Qco);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRoleSkillBranchChanged, this.FFf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRoleSkillBranchChanged, this.m9f);
   }
   OnRemoveEventListener() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnCommonItemCountAnyChange, this.qdi);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRoleInternalViewQuit, this.Qco);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRoleSkillBranchChanged, this.FFf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRoleSkillBranchChanged, this.m9f);
   }
   OnBeforeShow() {
     this.Refresh();

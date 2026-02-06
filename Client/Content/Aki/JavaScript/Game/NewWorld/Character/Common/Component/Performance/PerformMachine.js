@@ -27,7 +27,7 @@ class PerformMachine {
       this.CurrentAction = undefined;
       this.bl();
     };
-    this.yKm = t => {
+    this.VYm = t => {
       if (t) {
         this.bl();
       }
@@ -38,7 +38,7 @@ class PerformMachine {
     this.Modes.set(2, new PerformMode_1.ActionMode(2, this.ph_, this));
     this.Modes.set(3, new PerformMode_1.EcologyMode(3, this.ph_, this));
     this.EntityHandle = ModelManager_1.ModelManager.CreatureModel.GetEntityById(this.ph_.Entity.Id);
-    EventSystem_1.EventSystem.AddWithTarget(this.ph_.Entity, EventDefine_1.EEventName.AnimCompActiveStateChange, this.yKm);
+    EventSystem_1.EventSystem.AddWithTarget(this.ph_.Entity, EventDefine_1.EEventName.AnimCompActiveStateChange, this.VYm);
   }
   Clear() {
     this.Modes.forEach(t => {
@@ -51,7 +51,7 @@ class PerformMachine {
     this.CurrentAction = undefined;
     this.jG1.clear();
     this.EntityHandle = undefined;
-    EventSystem_1.EventSystem.RemoveWithTarget(this.ph_.Entity, EventDefine_1.EEventName.AnimCompActiveStateChange, this.yKm);
+    EventSystem_1.EventSystem.RemoveWithTarget(this.ph_.Entity, EventDefine_1.EEventName.AnimCompActiveStateChange, this.VYm);
   }
   CleanAction() {
     if (this.CurrentAction) {
@@ -93,7 +93,7 @@ class PerformMachine {
   }
   bl() {
     var i;
-    if (!this.CurrentAction?.IsAtomic && this.ph_.Entity.GetComponent(45)?.Active) {
+    if (!this.CurrentAction?.IsAtomic && this.ph_.Entity.GetComponent(47)?.Active) {
       let t = true;
       if (this.bj_ !== 0 && this.Modes.get(this.bj_).CheckExit()) {
         if (Log_1.Log.CheckDebug()) {

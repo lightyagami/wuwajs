@@ -37,11 +37,11 @@ class TsAnimNotifyStateFoleyAudioEvent extends UE.KuroAnimNotifyState {
     if (!(t instanceof TsBaseCharacter_1.default)) {
       return false;
     }
-    if (t.GetEntityNoBlueprint()?.GetComponent(215)?.HasTag(1654452863)) {
+    if (t.GetEntityNoBlueprint()?.GetComponent(217)?.HasTag(1654452863)) {
       return false;
     }
     var i = t.CharacterActorComponent;
-    var t = t.GetEntityNoBlueprint()?.GetComponent(199);
+    var t = t.GetEntityNoBlueprint()?.GetComponent(201);
     if (!i || !t) {
       return false;
     }

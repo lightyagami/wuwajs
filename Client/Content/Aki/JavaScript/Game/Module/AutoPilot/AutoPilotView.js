@@ -26,54 +26,52 @@ const AutoPilotStateView_1 = require("./AutoPilotStateView");
 class AutoPilotView extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.x9f = undefined;
+    this.ZZf = undefined;
     this.sKe = TickSystem_1.TickSystem.InvalidId;
-    this.z8m = undefined;
+    this.i7m = undefined;
     this.vKt = undefined;
-    this.Z8m = undefined;
-    this.o6m = undefined;
-    this.n6m = undefined;
+    this.o7m = undefined;
+    this.s7m = undefined;
+    this.a7m = undefined;
     this.PhotoBtn = undefined;
     this.IsMovieModeHideUi = false;
-    this.ymf = undefined;
-    this.Smf = undefined;
     this.UiItemOffsetConfig = [];
-    this.GRf = false;
-    this.FRf = 0;
-    this.NRf = 0;
-    this.VRf = 0;
-    this.HRf = 0;
-    this._Pf = false;
-    this.vmf = false;
+    this.Yxf = false;
+    this.zxf = 0;
+    this.Jxf = 0;
+    this.Zxf = 0;
+    this.eBf = 0;
+    this.kkf = false;
+    this.Ogf = false;
     this.J_ = e => {
       if (ModelManager_1.ModelManager.AutoPilotModel?.GetIsCanShowSkipBtn()) {
-        this.uPf();
+        this.qkf();
       }
-      this.cPf();
-      this.XRf(e);
+      this.Okf();
+      this.sBf(e);
     };
     this.$Ht = () => {
       this.HandleClickSkipBtn();
     };
     this.DSi = () => {
-      this.NLf();
+      this.ekf();
     };
-    this.g6m = () => {
+    this.p7m = () => {
       this.EnterMovieMode();
     };
-    this.C6m = () => {
+    this.v7m = () => {
       if (!ModelManager_1.ModelManager.AutoPilotModel?.GetIsInMovieMode()) {
         this.ExitMovieMode();
       }
     };
-    this.$Rf = () => {
-      this.GRf = true;
+    this.iBf = () => {
+      this.Yxf = true;
     };
-    this.WRf = () => {
-      this.GRf = false;
+    this.rBf = () => {
+      this.Yxf = false;
     };
-    this.gNf = async () => {
-      if (ModelManager_1.ModelManager.ShipTogetherModel?.RiderSharingState && (this.ymf = new CustomPromise_1.CustomPromise(), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnMovieMotorRideSharingModeChangeRequest, false, false), await this.ymf.Promise)) {
+    this.eHf = async () => {
+      if (ModelManager_1.ModelManager.ShipTogetherModel?.RiderSharingState && (ModelManager_1.ModelManager.AutoPilotModel.ExitMovieModeWithRideShareQuitPromise = new CustomPromise_1.CustomPromise(), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnMovieMotorRideSharingModeChangeRequest, false, false), await ModelManager_1.ModelManager.AutoPilotModel.ExitMovieModeWithRideShareQuitPromise.Promise)) {
         await TimerSystem_1.GameplayTimerSystem.Wait(ModelManager_1.ModelManager.ShipTogetherModel.MotorSharingRideBlackScreenQuit * MathUtils_1.MathUtils.SecondToMillisecond);
       }
     };
@@ -88,26 +86,23 @@ class AutoPilotView extends UiPanelBase_1.UiPanelBase {
         RoleSkinData: undefined
       });
     };
-    this.S6m = (e, t) => !!ModelManager_1.ModelManager.AutoPilotModel.GetIsInMovieMode() || e !== InputMappingsDefine_1.actionMappings.地图;
-    this.M6m = (e, t) => {
+    this.E7m = (e, t) => !!ModelManager_1.ModelManager.AutoPilotModel.GetIsInMovieMode() || e !== InputMappingsDefine_1.actionMappings.地图;
+    this.I7m = (e, t) => {
       if (t !== 0) {
         ControllerHolder_1.ControllerHolder.AutoPilotController.ExitAutoPilot("ExitAutoPilotByInput");
       }
     };
-    this.Tmf = e => {
+    this.jgf = e => {
       if (!ModelManager_1.ModelManager.AutoPilotModel.GetIsInMovieMode()) {
-        this.QRf(e.Progress);
+        this.oBf(e.Progress);
         this.RootItem?.SetAlpha(1 - e.Progress);
         ModelManager_1.ModelManager.BattleUiModel.SetBattleUiAlpha(1 - e.Progress);
       }
     };
-    this.bmf = (e, t) => {
-      (e ? this.Smf : this.ymf)?.SetResult(t);
+    this.Wgf = e => {
+      this.Qgf(e);
     };
-    this.Rmf = e => {
-      this.wmf(e);
-    };
-    this.Omf = (t, i) => {
+    this.r0f = (t, i) => {
       this.UiItemOffsetConfig.forEach(e => {
         MovieModeUtil_1.MovieModeUtil.ApplyAspectOffsetToUi(e, t, i);
       });
@@ -122,26 +117,27 @@ class AutoPilotView extends UiPanelBase_1.UiPanelBase {
       }
     };
   }
-  set U6m(e) {
-    if (this._Pf !== e && (this._Pf = e, this.x6m(), e)) {
+  set B7m(e) {
+    if (this.kkf !== e && (this.kkf = e, this.k7m(), e)) {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnGuideTriggerEvent, "ShowAutoPilotMovieBtn");
     }
   }
-  get U6m() {
-    return this._Pf;
+  get B7m() {
+    return this.kkf;
   }
-  set Cmf(e) {
-    if (this.vmf !== e) {
-      this.vmf = e;
-      this.dPf();
+  set kgf(e) {
+    if (this.Ogf !== e) {
+      this.Ogf = e;
+      this.Gkf();
     }
   }
-  get Cmf() {
-    return this.vmf;
+  get kgf() {
+    return this.Ogf;
   }
   async OnBeforeStartAsync() {
-    this.x9f = new AutoPilotStateView_1.AutoPilotStateView();
-    await this.x9f.CreateThenShowByResourceIdAsync("UiItem_MotorAutoCruise", this.RootItem);
+    this.ZZf = new AutoPilotStateView_1.AutoPilotStateView();
+    await this.ZZf.CreateByResourceIdAsync("UiItem_MotorAutoCruise", this.RootItem);
+    this.AddChild(this.ZZf);
   }
   OnStart() {
     this.v0t();
@@ -152,39 +148,37 @@ class AutoPilotView extends UiPanelBase_1.UiPanelBase {
   }
   InitUiItemAspectOffsetConfig() {}
   InitUi() {
-    this.Lmf();
-    this.L6m();
-    this.P6m();
-    this.A6m();
-    this.D6m();
+    this.Kgf();
+    this.A7m();
+    this.D7m();
+    this.U7m();
+    this.x7m();
   }
   Ore() {
-    InputManager_1.InputManager.RegisterLockShortcutKeyReason("AutoPilotView", this.S6m);
+    InputManager_1.InputManager.RegisterLockShortcutKeyReason("AutoPilotView", this.E7m);
     if (ModelManager_1.ModelManager.AutoPilotModel.IsAllowExitByMove) {
-      ControllerHolder_1.ControllerHolder.InputDistributeController.BindAxis(InputMappingsDefine_1.axisMappings.MotorMoveForward, this.M6m);
-      ControllerHolder_1.ControllerHolder.InputDistributeController.BindAxis(InputMappingsDefine_1.axisMappings.MotorMoveRight, this.M6m);
+      ControllerHolder_1.ControllerHolder.InputDistributeController.BindAxis(InputMappingsDefine_1.axisMappings.MotorMoveForward, this.I7m);
+      ControllerHolder_1.ControllerHolder.InputDistributeController.BindAxis(InputMappingsDefine_1.axisMappings.MotorMoveRight, this.I7m);
     }
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.MovieModeAspectOffsetUpdate, this.Tmf);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnMovieMotorRideSharingModeChangeResponse, this.bmf);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.MovieModeHideUiChange, this.Rmf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.MovieModeAspectOffsetUpdate, this.jgf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.MovieModeHideUiChange, this.Wgf);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CloseView, this.$Ge);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.MovieModeAspectOffsetApply, this.Omf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.MovieModeAspectOffsetApply, this.r0f);
     InputExtraShowCursorCenter_1.InputExtraShowCursorCenter.RegisterExtraRefreshData("AutoPilotView", this);
   }
   kre() {
     InputManager_1.InputManager.RemoveLockShortcutKeyReason("AutoPilotView");
     if (ModelManager_1.ModelManager.AutoPilotModel.IsAllowExitByMove) {
-      ControllerHolder_1.ControllerHolder.InputDistributeController.UnBindAxis(InputMappingsDefine_1.axisMappings.MotorMoveForward, this.M6m);
-      ControllerHolder_1.ControllerHolder.InputDistributeController.UnBindAxis(InputMappingsDefine_1.axisMappings.MotorMoveRight, this.M6m);
+      ControllerHolder_1.ControllerHolder.InputDistributeController.UnBindAxis(InputMappingsDefine_1.axisMappings.MotorMoveForward, this.I7m);
+      ControllerHolder_1.ControllerHolder.InputDistributeController.UnBindAxis(InputMappingsDefine_1.axisMappings.MotorMoveRight, this.I7m);
     }
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.MovieModeAspectOffsetUpdate, this.Tmf);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnMovieMotorRideSharingModeChangeResponse, this.bmf);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.MovieModeHideUiChange, this.Rmf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.MovieModeAspectOffsetUpdate, this.jgf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.MovieModeHideUiChange, this.Wgf);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CloseView, this.$Ge);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.MovieModeAspectOffsetApply, this.Omf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.MovieModeAspectOffsetApply, this.r0f);
     InputExtraShowCursorCenter_1.InputExtraShowCursorCenter.UnRegisterExtraRefreshData("AutoPilotView");
   }
-  Lmf() {
+  Kgf() {
     this.vKt = this.GetButton(this.GetSkipBtnCompId());
     if (this.vKt) {
       if (ModelManager_1.ModelManager.AutoPilotModel.GetIsCanShowSkipBtn()) {
@@ -194,31 +188,31 @@ class AutoPilotView extends UiPanelBase_1.UiPanelBase {
       }
     }
   }
-  A6m() {
-    this.o6m = this.GetButton(this.GetRideShareBtnCompId());
-    this.o6m?.OnPointDownCallBack.Bind(this.$Rf);
-    this.o6m?.OnPointUpCallBack.Bind(this.WRf);
-    this.o6m?.OnPointExitCallBack.Bind(this.WRf);
-    this.NRf = CommonParamById_1.configCommonParamById.GetIntConfig("AutoPilotMovieModeRideShareLongPressTime") ?? 1;
-    this.NRf *= CommonDefine_1.MILLIONSECOND_PER_SECOND;
+  U7m() {
+    this.s7m = this.GetButton(this.GetRideShareBtnCompId());
+    this.s7m?.OnPointDownCallBack.Bind(this.iBf);
+    this.s7m?.OnPointUpCallBack.Bind(this.rBf);
+    this.s7m?.OnPointExitCallBack.Bind(this.rBf);
+    this.Jxf = CommonParamById_1.configCommonParamById.GetIntConfig("AutoPilotMovieModeRideShareLongPressTime") ?? 1;
+    this.Jxf *= CommonDefine_1.MILLIONSECOND_PER_SECOND;
   }
-  L6m() {
-    this.n6m = this.GetButton(this.GetExitBtnCompId());
-    if (this.n6m) {
-      this.n6m.OnClickCallBack.Bind(this.DSi);
+  A7m() {
+    this.a7m = this.GetButton(this.GetExitBtnCompId());
+    if (this.a7m) {
+      this.a7m.OnClickCallBack.Bind(this.DSi);
     }
   }
-  P6m() {
-    this.Z8m = this.GetButton(this.GetMovieBtnCompId());
-    this.Z8m?.OnPointDownCallBack.Bind(this.g6m);
-    this.Z8m?.OnPointUpCallBack.Bind(this.C6m);
-    this.Z8m?.OnPointExitCallBack.Bind(this.C6m);
-    this.z8m = this.GetTexture(this.GetMovieBtnProgressCompId());
-    this.QRf(0);
-    this.VRf = CommonParamById_1.configCommonParamById.GetIntConfig("EnterMovieModeTimeThreshold") ?? 1;
-    this.HRf = CommonParamById_1.configCommonParamById.GetIntConfig("ExitMovieModeTimeThreshold") ?? 1;
+  D7m() {
+    this.o7m = this.GetButton(this.GetMovieBtnCompId());
+    this.o7m?.OnPointDownCallBack.Bind(this.p7m);
+    this.o7m?.OnPointUpCallBack.Bind(this.v7m);
+    this.o7m?.OnPointExitCallBack.Bind(this.v7m);
+    this.i7m = this.GetTexture(this.GetMovieBtnProgressCompId());
+    this.oBf(0);
+    this.Zxf = CommonParamById_1.configCommonParamById.GetIntConfig("EnterMovieModeTimeThreshold") ?? 1;
+    this.eBf = CommonParamById_1.configCommonParamById.GetIntConfig("ExitMovieModeTimeThreshold") ?? 1;
   }
-  D6m() {
+  x7m() {
     this.PhotoBtn = this.GetButton(this.GetPhotoBtnCompId());
     this.PhotoBtn?.OnClickCallBack.Bind(this.OnClickPhotoBtn);
   }
@@ -236,38 +230,38 @@ class AutoPilotView extends UiPanelBase_1.UiPanelBase {
       TickSystem_1.TickSystem.Pause(this.sKe);
     }
   }
-  async NLf() {
+  async ekf() {
     if (ModelManager_1.ModelManager.AutoPilotModel?.GetIsInMovieMode()) {
       await this.ExitMovieMode();
     } else {
       ControllerHolder_1.ControllerHolder.AutoPilotController.ExitAutoPilot("OnClickExitBtn");
     }
   }
-  Imf() {
+  Hgf() {
     ControllerHolder_1.ControllerHolder.MovieModeController.ResetMovieModeHideUi(true);
     ModelManager_1.ModelManager.MovieModeModel?.FreezeUi("EnterRideShareMode");
     if (ModelManager_1.ModelManager.ShipTogetherModel.IsInMovieRideSharingMode) {
-      this.Amf();
+      this.Ygf();
     } else {
-      this.Dmf();
+      this.zgf();
     }
   }
-  async Dmf() {
+  async zgf() {
     await ControllerHolder_1.ControllerHolder.LevelLoadingController.WaitOpenLoading(0, 3, ModelManager_1.ModelManager.ShipTogetherModel?.MotorSharingRideBlackScreenLoad);
-    await this.xmf();
-    await this.Umf();
+    await this.Zgf();
+    await this.Jgf();
     await ControllerHolder_1.ControllerHolder.LevelLoadingController.WaitCloseLoading(0);
-    this.pXf();
+    this.L_g();
   }
-  async Amf() {
+  async Ygf() {
     if (!ControllerHolder_1.ControllerHolder.MovieModeController.IsPlayingSpecialMovieCamera(ModelManager_1.ModelManager.ShipTogetherModel.MotorSharingMovieCameraConfig)) {
       await ControllerHolder_1.ControllerHolder.LevelLoadingController.WaitOpenLoading(0, 3, ModelManager_1.ModelManager.ShipTogetherModel?.MotorSharingRideBlackScreenLoad);
-      await this.Umf();
+      await this.Jgf();
       await ControllerHolder_1.ControllerHolder.LevelLoadingController.WaitCloseLoading(0);
     }
-    this.pXf();
+    this.L_g();
   }
-  pXf() {
+  L_g() {
     UiManager_1.UiManager.OpenView("MotorcycleTogetherView", undefined, e => {
       if (!e) {
         ModelManager_1.ModelManager.MovieModeModel?.UnFreezeUi("EnterRideShareMode");
@@ -275,7 +269,7 @@ class AutoPilotView extends UiPanelBase_1.UiPanelBase {
       }
     });
   }
-  async Umf() {
+  async Jgf() {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("AutoPilot", 87, "播放共乘镜头（开始）");
     }
@@ -284,8 +278,8 @@ class AutoPilotView extends UiPanelBase_1.UiPanelBase {
       Log_1.Log.Info("AutoPilot", 87, "播放共乘镜头（结束）");
     }
   }
-  async xmf() {
-    if (ModelManager_1.ModelManager.ShipTogetherModel?.RiderSharingState && (this.Smf = new CustomPromise_1.CustomPromise(), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnMovieMotorRideSharingModeChangeRequest, true, false), await this.Smf.Promise)) {
+  async Zgf() {
+    if (ModelManager_1.ModelManager.ShipTogetherModel?.RiderSharingState && (ModelManager_1.ModelManager.AutoPilotModel.EnterRideSharePromise = new CustomPromise_1.CustomPromise(), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnMovieMotorRideSharingModeChangeRequest, true, false), await ModelManager_1.ModelManager.AutoPilotModel.EnterRideSharePromise.Promise)) {
       await TimerSystem_1.GameplayTimerSystem.Wait(ModelManager_1.ModelManager.ShipTogetherModel.MotorSharingRideBlackScreenQuit * MathUtils_1.MathUtils.SecondToMillisecond);
     }
   }
@@ -296,7 +290,7 @@ class AutoPilotView extends UiPanelBase_1.UiPanelBase {
       SpecElementIndex: ModelManager_1.ModelManager.AutoPilotModel?.AutoPilotMovieCameraInitialIndex
     };
     var e = {
-      BlendTime: this.VRf,
+      BlendTime: this.Zxf,
       MovieCameraConfig: {
         MovieCameraType: e
       },
@@ -314,13 +308,13 @@ class AutoPilotView extends UiPanelBase_1.UiPanelBase {
   }
   async ExitMovieMode(e) {
     e = {
-      BlendTime: e ?? this.HRf,
-      BlackFadeInTime: this.HRf
+      BlendTime: e ?? this.eBf,
+      BlackFadeInTime: this.eBf
     };
-    e.AfterBlackFadeInCallbackAsync = this.gNf;
+    e.AfterBlackFadeInCallbackAsync = this.eHf;
     await ControllerHolder_1.ControllerHolder.MovieModeController.ExitMovieMode(e, e => {
       if (e) {
-        this.QRf(0);
+        this.oBf(0);
         ModelManager_1.ModelManager.BattleUiModel?.ChildViewData?.SetChildrenVisible(15, [4, 17, 37, 40], true);
         ModelManager_1.ModelManager.AutoPilotModel?.SetIsInMovieMode(false);
         this.RefreshUiByIsInMovieMode();
@@ -328,72 +322,72 @@ class AutoPilotView extends UiPanelBase_1.UiPanelBase {
       }
     });
   }
-  cPf() {
+  Okf() {
     if (ModelManager_1.ModelManager.AutoPilotModel.GetAutoPilotTime() < ModelManager_1.ModelManager.AutoPilotModel.GetEnterMovieModeTimeThreshold()) {
-      this.U6m = false;
+      this.B7m = false;
     } else {
       var e = ModelManager_1.ModelManager.AutoPilotModel?.GetFindPathResult();
       if (e) {
         var t = ModelManager_1.ModelManager.AutoPilotModel.GetEnterMovieModeDistanceThreshold();
         if (e.GetDistSquaredPlayerToEndPoint() < t) {
-          this.U6m = false;
+          this.B7m = false;
           return;
         }
       }
-      this.U6m = true;
+      this.B7m = true;
     }
   }
-  uPf() {
+  qkf() {
     if (ModelManager_1.ModelManager.AutoPilotModel.GetAutoPilotTime() < ModelManager_1.ModelManager.AutoPilotModel.GetCanSkipTimeThreshold()) {
-      this.Cmf = false;
+      this.kgf = false;
     }
     var e;
     var t = ModelManager_1.ModelManager.AutoPilotModel?.GetFindPathResult();
     if (t && (e = ModelManager_1.ModelManager.AutoPilotModel.GetCanSkipDistanceThreshold(), t.GetDistSquaredPlayerToEndPoint() < e)) {
-      this.Cmf = false;
+      this.kgf = false;
     }
-    this.Cmf = true;
+    this.kgf = true;
   }
-  x6m() {
+  k7m() {
     var e = ModelManager_1.ModelManager.AutoPilotModel.GetIsInMovieMode();
-    this.Z8m?.RootUIComp?.SetUIActive(this.U6m && !e);
+    this.o7m?.RootUIComp?.SetUIActive(this.B7m && !e);
   }
-  dPf() {
-    this.vKt?.RootUIComp?.SetUIActive(!this.IsMovieModeHideUi && this.Cmf);
+  Gkf() {
+    this.vKt?.RootUIComp?.SetUIActive(!this.IsMovieModeHideUi && this.kgf);
   }
-  q6m() {
-    this.n6m?.RootUIComp?.SetUIActive(!this.IsMovieModeHideUi);
+  G7m() {
+    this.a7m?.RootUIComp?.SetUIActive(!this.IsMovieModeHideUi);
   }
   RefreshPhotoBtnVisible() {
     this.PhotoBtn?.RootUIComp?.SetUIActive(!this.IsMovieModeHideUi);
   }
-  kmf() {
+  t0f() {
     var e = ModelManager_1.ModelManager.AutoPilotModel.GetIsInMovieMode() && !this.IsMovieModeHideUi;
-    this.o6m?.RootUIComp?.SetUIActive(e);
+    this.s7m?.RootUIComp?.SetUIActive(e);
   }
-  B9f() {
+  eeg() {
     var e = ModelManager_1.ModelManager.AutoPilotModel.GetIsInMovieMode();
-    this.x9f?.SetUiActive(!e);
+    this.ZZf?.SetUiActive(!e);
   }
   RefreshUiVisible() {
-    this.kmf();
-    this.x6m();
-    this.dPf();
-    this.q6m();
+    this.t0f();
+    this.k7m();
+    this.Gkf();
+    this.G7m();
     this.RefreshPhotoBtnVisible();
   }
   RefreshUiByIsMovieModeHideUi() {
-    this.dPf();
-    this.q6m();
+    this.Gkf();
+    this.G7m();
     this.RefreshPhotoBtnVisible();
-    this.kmf();
+    this.t0f();
   }
   RefreshUiByIsInMovieMode() {
-    this.x6m();
-    this.kmf();
-    this.B9f();
+    this.k7m();
+    this.t0f();
+    this.eeg();
   }
-  async wmf(e) {
+  async Qgf(e) {
     var t;
     if (this.IsMovieModeHideUi !== e || !ModelManager_1.ModelManager.AutoPilotModel?.GetIsInMovieMode()) {
       this.IsMovieModeHideUi = e;
@@ -412,25 +406,25 @@ class AutoPilotView extends UiPanelBase_1.UiPanelBase {
       }
     }
   }
-  XRf(e) {
+  sBf(e) {
     if (ModelManager_1.ModelManager.AutoPilotModel.GetIsInMovieMode() && !this.IsMovieModeHideUi) {
-      if (this.FRf >= this.NRf) {
+      if (this.zxf >= this.Jxf) {
         if (ModelManager_1.ModelManager.ShipTogetherModel.CanEnterMotorcycleMovieRideSharingMode(true)) {
-          this.Imf();
+          this.Hgf();
         }
-        this.FRf = 0;
-        this.GRf = false;
+        this.zxf = 0;
+        this.Yxf = false;
         this.UpdateRideShareProgress(0);
       } else {
-        if (this.GRf) {
-          this.FRf = Math.min(this.FRf + e, this.NRf);
+        if (this.Yxf) {
+          this.zxf = Math.min(this.zxf + e, this.Jxf);
         } else {
-          if (!(this.FRf > 0)) {
+          if (!(this.zxf > 0)) {
             return;
           }
-          this.FRf = Math.max(this.FRf - e, 0);
+          this.zxf = Math.max(this.zxf - e, 0);
         }
-        e = this.FRf / this.NRf;
+        e = this.zxf / this.Jxf;
         this.UpdateRideShareProgress(e);
       }
     }
@@ -438,8 +432,8 @@ class AutoPilotView extends UiPanelBase_1.UiPanelBase {
   UpdateRideShareProgress(e) {
     ModelManager_1.ModelManager.AutoPilotModel.RideShareBtnProgress = e;
   }
-  QRf(e) {
-    this.z8m?.SetFillAmount(e);
+  oBf(e) {
+    this.i7m?.SetFillAmount(e);
   }
   IsShowCursor() {
     return ModelManager_1.ModelManager.InputDistributeModel.GetNotAllowFightInputViewNameSet().size > 0 || ModelManager_1.ModelManager.AutoPilotModel.GetIsInMovieMode() && !this.IsMovieModeHideUi;

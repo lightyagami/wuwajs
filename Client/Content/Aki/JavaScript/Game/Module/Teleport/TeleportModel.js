@@ -130,8 +130,8 @@ class TeleportContext {
   }
   static CreateContext(e) {
     e = new TeleportContext(e);
-    this.Axf += 1;
-    e.TeleportContextId = this.Axf;
+    this.vFf += 1;
+    e.TeleportContextId = this.vFf;
     return e;
   }
   InitSeamlessContext() {
@@ -150,76 +150,76 @@ class TeleportContext {
     this.KiteAppeared = new GameModePromise_1.GameModePromise();
   }
 }
-(exports.TeleportContext = TeleportContext).Axf = 0;
+(exports.TeleportContext = TeleportContext).vFf = 0;
 class TeleportModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
-    this.kxf = [];
-    this.Dxf = undefined;
-    this.Uxf = undefined;
-    this.atg = undefined;
-    this.xxf = undefined;
+    this.IFf = [];
+    this.yFf = undefined;
+    this.SFf = undefined;
+    this.yAg = undefined;
+    this.MFf = undefined;
     this.Bxe = undefined;
-    this.htg = undefined;
-    this.ltg = undefined;
-    this.Bxf = true;
+    this.SAg = undefined;
+    this.MAg = undefined;
+    this.EFf = true;
   }
   get TeleportContext() {
-    if (this.kxf.length !== 0) {
-      return this.kxf[this.kxf.length - 1];
+    if (this.IFf.length !== 0) {
+      return this.IFf[this.IFf.length - 1];
     }
   }
   get IsTeleport() {
-    return this.kxf.length > 0;
+    return this.IFf.length > 0;
   }
   get StartPosition() {
-    return this.Dxf;
+    return this.yFf;
   }
   get StartRotation() {
-    return this.Uxf;
+    return this.SFf;
   }
   get StartGravityDirect() {
-    return this.atg;
+    return this.yAg;
   }
   get TargetPosition() {
-    return this.xxf;
+    return this.MFf;
   }
   get TargetRotation() {
     return this.Bxe;
   }
   get TargetGravityDirect() {
-    return this.htg;
+    return this.SAg;
   }
   get CameraStartRotation() {
-    return this.ltg;
+    return this.MAg;
   }
   SetAllowTeleportByUi(e, t) {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Teleport", 79, "传送: 设置是否允许UI发起传送", ["AllowTeleport", e], ["Reason", t]);
     }
-    this.Bxf = e;
+    this.EFf = e;
   }
   get AllowTeleportByUi() {
-    return this.Bxf;
+    return this.EFf;
   }
   OnInit() {
-    this.Dxf = Vector_1.Vector.Create();
-    this.xxf = Vector_1.Vector.Create();
-    this.Uxf = Rotator_1.Rotator.Create();
-    this.ltg = Rotator_1.Rotator.Create();
+    this.yFf = Vector_1.Vector.Create();
+    this.MFf = Vector_1.Vector.Create();
+    this.SFf = Rotator_1.Rotator.Create();
+    this.MAg = Rotator_1.Rotator.Create();
     this.Bxe = Rotator_1.Rotator.Create();
-    this.atg = Vector_1.Vector.Create();
-    this.htg = Vector_1.Vector.Create();
+    this.yAg = Vector_1.Vector.Create();
+    this.SAg = Vector_1.Vector.Create();
     return true;
   }
   OnClear() {
-    this.Dxf = undefined;
-    this.xxf = undefined;
-    this.Uxf = undefined;
-    this.ltg = undefined;
+    this.yFf = undefined;
+    this.MFf = undefined;
+    this.SFf = undefined;
+    this.MAg = undefined;
     this.Bxe = undefined;
-    this.atg = undefined;
-    return !(this.htg = undefined);
+    this.yAg = undefined;
+    return !(this.SAg = undefined);
   }
   OnLeaveLevel() {
     this.SetAllowTeleportByUi(true, "OnLeaveLevel");
@@ -231,11 +231,11 @@ class TeleportModel extends ModelBase_1.ModelBase {
     return !!this.TeleportContext && !!this.TeleportContext.IsInSeamlessTeleport && !!this.TeleportContext.KeepMovementMode?.IsActive && (e = (t = Global_1.Global.BaseCharacter?.CharacterActorComponent?.MoveComp?.CharacterMovement)?.MovementMode, t = t?.CustomMovementMode, e !== undefined) && t !== undefined && this.TeleportContext.KeepMovementMode.TargetMovementMode === e && this.TeleportContext.KeepMovementMode.TargetCustomMode === t;
   }
   CreateContext(e) {
-    if (this.kxf.length > 0 && Log_1.Log.CheckError()) {
+    if (this.IFf.length > 0 && Log_1.Log.CheckError()) {
       Log_1.Log.Error("Teleport", 79, "传送: 尝试在传送过程中再次发起传送, 需要关注");
     }
     e = TeleportContext.CreateContext(e);
-    this.kxf.push(e);
+    this.IFf.push(e);
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Teleport", 79, "传送: 创建上下文", ["TeleportContextId", e.TeleportContextId], ["ClientReason", e.ClientReason], ["ServerReason", e.ServerReason]);
     }
@@ -245,9 +245,9 @@ class TeleportModel extends ModelBase_1.ModelBase {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Teleport", 79, "传送: 移除上下文", ["TeleportContextId", t.TeleportContextId]);
     }
-    for (let e = 0; e < this.kxf.length; e++) {
-      if (this.kxf[e] === t) {
-        this.kxf.splice(e);
+    for (let e = 0; e < this.IFf.length; e++) {
+      if (this.IFf[e] === t) {
+        this.IFf.splice(e);
         return;
       }
     }

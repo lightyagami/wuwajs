@@ -34,31 +34,31 @@ exports.GamepadMoveRightComponent = GamepadMoveRightComponent;
 class GamepadCheckComponent extends GamepadInteractComponentBase {
   constructor() {
     super(...arguments);
-    this.r0f = false;
+    this.spf = false;
   }
   OnPress(e) {
-    if (!ControllerHolder_1.ControllerHolder.UiNavigationNewController.IsNavigationMousePositionDragging() && this.r0f) {
-      this.r0f = false;
+    if (!ControllerHolder_1.ControllerHolder.UiNavigationNewController.IsNavigationMousePositionDragging() && this.spf) {
+      this.spf = false;
     }
-    if (this.r0f) {
-      this.r0f = false;
+    if (this.spf) {
+      this.spf = false;
     } else {
-      this.r0f = ControllerHolder_1.ControllerHolder.UiNavigationNewController.IsGamepadHitListenerUseDrag();
-      if (this.r0f) {
+      this.spf = ControllerHolder_1.ControllerHolder.UiNavigationNewController.IsGamepadHitListenerUseDrag();
+      if (this.spf) {
         ControllerHolder_1.ControllerHolder.UiNavigationNewController.NotifyNavigationMousePositionDragState(true);
       }
       ControllerHolder_1.ControllerHolder.UiNavigationNewController.SimulationPointerTrigger(true);
     }
   }
   OnRelease(e) {
-    if (!this.r0f) {
+    if (!this.spf) {
       ControllerHolder_1.ControllerHolder.UiNavigationNewController.SimulationPointerTrigger(false);
       ControllerHolder_1.ControllerHolder.UiNavigationNewController.NotifyNavigationMousePositionDragState(false);
     }
   }
   OnRefreshByControllerChange() {
-    if (this.r0f) {
-      this.r0f = false;
+    if (this.spf) {
+      this.spf = false;
       ControllerHolder_1.ControllerHolder.UiNavigationNewController.SimulationPointerTrigger(false);
       ControllerHolder_1.ControllerHolder.UiNavigationNewController.NotifyNavigationMousePositionDragState(false);
     }
@@ -68,25 +68,25 @@ exports.GamepadCheckComponent = GamepadCheckComponent;
 class GamepadCheckDragComponent extends GamepadInteractComponentBase {
   constructor() {
     super(...arguments);
-    this.r0f = false;
+    this.spf = false;
   }
   OnPress(e) {
-    if (this.r0f) {
-      this.r0f = false;
+    if (this.spf) {
+      this.spf = false;
     } else {
-      this.r0f = ControllerHolder_1.ControllerHolder.UiNavigationNewController.IsGamepadHitListenerUseDrag();
+      this.spf = ControllerHolder_1.ControllerHolder.UiNavigationNewController.IsGamepadHitListenerUseDrag();
       var t = UiNavigationViewManager_1.UiNavigationViewManager.GetCurrentViewHandle();
       let e = t.GetGuideUiListener();
       e = e || t.GetHitComponentListener();
       ControllerHolder_1.ControllerHolder.UiNavigationNewController.GamepadInteractSimulationPointer(e?.GetSelectableComponent(), true);
-      if (!ControllerHolder_1.ControllerHolder.UiNavigationNewController.IsNavigationMousePositionDragging() && this.r0f) {
-        this.r0f = false;
+      if (!ControllerHolder_1.ControllerHolder.UiNavigationNewController.IsNavigationMousePositionDragging() && this.spf) {
+        this.spf = false;
       }
     }
   }
   OnRelease(e) {
     var t;
-    if (!this.r0f) {
+    if (!this.spf) {
       if (!(t = UiNavigationViewManager_1.UiNavigationViewManager.GetCurrentViewHandle()).GetGuideUiListener()) {
         t.GetHitComponentListener();
       }
@@ -94,8 +94,8 @@ class GamepadCheckDragComponent extends GamepadInteractComponentBase {
     }
   }
   OnRefreshByControllerChange() {
-    if (this.r0f) {
-      this.r0f = false;
+    if (this.spf) {
+      this.spf = false;
       ControllerHolder_1.ControllerHolder.UiNavigationNewController.SimulationPointerTrigger(false);
       ControllerHolder_1.ControllerHolder.UiNavigationNewController.NotifyNavigationMousePositionDragState(false);
     }

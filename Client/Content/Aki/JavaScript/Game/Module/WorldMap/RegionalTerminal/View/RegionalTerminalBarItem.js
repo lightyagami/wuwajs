@@ -7,67 +7,74 @@ exports.RegionalTerminalBarItem = undefined;
 const UE = require("ue");
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
-const ConfigManager_1 = require("../../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const UiPanelBase_1 = require("../../../../Ui/Base/UiPanelBase");
 const LevelSequencePlayer_1 = require("../../../Common/LevelSequencePlayer");
-const MapUtil_1 = require("../../../Map/MapUtil");
 const GenericScrollViewNew_1 = require("../../../Util/ScrollView/GenericScrollViewNew");
 const RegionalTerminalBarGameplayItem_1 = require("./RegionalTerminalBarGameplayItem");
 class RegionalTerminalBarItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.SPe = undefined;
-    this.BXm = undefined;
-    this.kXm = false;
-    this.qXm = false;
-    this.OXm = false;
-    this.GXm = false;
+    this.rJm = undefined;
+    this.oJm = false;
+    this.nJm = false;
+    this.sJm = false;
+    this.aJm = false;
     this.U0n = false;
-    this.FXm = false;
+    this.hJm = false;
     this.ShowMode = 1;
     this.Dwn = [];
-    this.NXm = (e, t) => {
-      this.VXm();
+    this.lJm = () => {
+      this._Jm();
       this._Oe();
     };
-    this.Pgf = e => {
+    this.V1g = () => {
+      this._Jm();
+      this._Oe();
+      if (!this.sJm && this.hJm) {
+        this.SPe.StopSequenceByKey("Close", true);
+        this.U0n = true;
+        this.SPe.PlayOrReplaySequenceByName("Start");
+      }
+    };
+    this.bCf = e => {
       if (e === "Close") {
         this._Oe();
       }
       this.U0n = false;
     };
-    this.E5e = e => {
-      var t = this.BXm?.GetGenericLayout()?.GetUiAnimController();
-      if (t) {
-        t.AnimName = e;
-        t.Play();
+    this.Wpu = (e, t) => {
+      var i = this.rJm?.GetGenericLayout()?.GetUiAnimController();
+      if (i) {
+        i.AnimName = t;
+        i.Play();
       }
     };
-    this.HXm = () => {
+    this.uJm = () => {
       return new RegionalTerminalBarGameplayItem_1.RegionalTerminalBarGameplayItem();
     };
-    this.jXm = () => {
+    this.cJm = () => {
       if (!this.U0n) {
-        this.OXm = true;
-        ModelManager_1.ModelManager.RegionalTerminalModel.BarFoldState = this.OXm;
+        this.sJm = true;
+        ModelManager_1.ModelManager.RegionalTerminalModel.BarFoldState = this.sJm;
         this.SPe.StopSequenceByKey("Start", true);
         this.U0n = true;
         this.SPe.PlayOrReplaySequenceByName("Close");
       }
     };
-    this.$Xm = () => {
+    this.dJm = () => {
       var e;
-      if (this.GXm) {
+      if (this.aJm) {
         if (!this.U0n) {
-          this.OXm = false;
-          ModelManager_1.ModelManager.RegionalTerminalModel.BarFoldState = this.OXm;
+          this.sJm = false;
+          ModelManager_1.ModelManager.RegionalTerminalModel.BarFoldState = this.sJm;
           this._Oe();
           this.SPe.StopSequenceByKey("Close", true);
           this.U0n = true;
           this.SPe.PlayOrReplaySequenceByName("Start");
-          if ((e = this.BXm.GetScrollItemList()).length > 0) {
+          if ((e = this.rJm.GetScrollItemList()).length > 0) {
             ControllerHolder_1.ControllerHolder.UiNavigationNewController.SetNavigationFocusForView(e[0].GetRootItem());
           }
         }
@@ -75,7 +82,7 @@ class RegionalTerminalBarItem extends UiPanelBase_1.UiPanelBase {
         ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("Terminal_Area_UnlockTip");
       }
     };
-    this.WXm = () => {
+    this.mJm = () => {
       ControllerHolder_1.ControllerHolder.RegionalTerminalController.OpenTerminalOverviewView();
     };
     this.SetWorldMapSelfShow = e => {
@@ -87,69 +94,63 @@ class RegionalTerminalBarItem extends UiPanelBase_1.UiPanelBase {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIScrollViewWithScrollbarComponent], [1, UE.UIItem], [2, UE.UIButtonComponent], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIButtonComponent], [6, UE.UIItem], [7, UE.UIButtonComponent], [8, UE.UIItem], [9, UE.UIItem]];
-    this.BtnBindInfo = [[2, this.jXm], [7, this.$Xm], [5, this.WXm]];
+    this.BtnBindInfo = [[2, this.cJm], [7, this.dJm], [5, this.mJm]];
   }
   OnStart() {
     this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
-    this.SPe.BindSequenceCloseEvent(this.Pgf);
-    this.BXm = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(0), this.HXm);
-    this.VXm();
-    this.GetItem(8).SetUIActive(!this.GXm);
+    this.SPe.BindSequenceCloseEvent(this.bCf);
+    this.RootActor.OnSequencePlayEvent.Bind(this.Wpu);
+    this.rJm = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(0), this.uJm);
+    this._Jm();
+    this.GetItem(8).SetUIActive(!this.aJm);
     var e = this.OpenParam;
     if (e?.IsUnfold !== undefined) {
-      this.OXm = !this.GXm || !e.IsUnfold;
+      this.sJm = !this.aJm || !e.IsUnfold;
     } else {
-      this.OXm = !this.GXm || ModelManager_1.ModelManager.RegionalTerminalModel.BarFoldState;
+      this.sJm = !this.aJm || ModelManager_1.ModelManager.RegionalTerminalModel.BarFoldState;
     }
     this._Oe();
   }
   BeforeShow() {
-    this.VXm();
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RegionalTerminalGameplayPinUpdate, this.NXm);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PlaySequenceEventByStringParam, this.E5e);
+    this._Jm();
+    this._Oe();
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RegionalTerminalGameplayPinUpdate, this.lJm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.AreaMapGroupIdChanged, this.V1g);
   }
   BeforeHide() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RegionalTerminalGameplayPinUpdate, this.NXm);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PlaySequenceEventByStringParam, this.E5e);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RegionalTerminalGameplayPinUpdate, this.lJm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.AreaMapGroupIdChanged, this.V1g);
   }
-  VXm() {
-    let e = ModelManager_1.ModelManager.AreaModel.AreaInfo;
-    if (!e) {
-      var t = MapUtil_1.MapUtil.GetWorldMapLevelOneAreaId();
-      if (!(e = t ? ConfigManager_1.ConfigManager.AreaConfig.GetAreaInfo(t) : e)) {
-        return;
-      }
+  _Jm() {
+    this.Dwn = ModelManager_1.ModelManager.RegionalTerminalModel.GetGameplayDataList();
+    this.hJm = this.Dwn.length > 0;
+    if (this.hJm) {
+      this.aJm = true;
+      this.rJm.RefreshByData(this.Dwn);
     }
-    t = ModelManager_1.ModelManager.AreaModel.GetAllAreaIdInheritable(e);
-    this.Dwn = ModelManager_1.ModelManager.RegionalTerminalModel.GetGameplayDataList(t, e.CountryId);
-    this.FXm = this.Dwn.length > 0;
-    if (this.FXm) {
-      this.GXm = true;
-      this.BXm.RefreshByData(this.Dwn);
-    }
-    this.qXm = false;
-    this.kXm = false;
-    for (const i of ModelManager_1.ModelManager.RegionalTerminalModel.GameplayDataMap.values()) {
-      if (this.Dwn.includes(i)) {
-        if (i.GetRedDotState()) {
-          this.qXm = true;
+    this.nJm = false;
+    this.oJm = false;
+    for (const e of ModelManager_1.ModelManager.RegionalTerminalModel.GameplayDataMap.values()) {
+      if (this.Dwn.includes(e)) {
+        if (e.GetRedDotState()) {
+          this.nJm = true;
         }
-      } else if (i.GetShowState() && (this.GXm = true, i.GetRedDotState())) {
-        this.kXm = true;
+      } else if (e.GetShowState() && (this.aJm = true, e.GetRedDotState())) {
+        this.oJm = true;
         break;
       }
     }
     this.BNe();
   }
   _Oe() {
-    this.GetButton(2).RootUIComp.SetUIActive(!this.OXm);
-    this.GetButton(5).RootUIComp.SetUIActive(!this.OXm);
-    this.GetButton(7).RootUIComp.SetUIActive(this.OXm);
-    this.GetScrollViewWithScrollbar(0).RootUIComp.SetUIActive(this.FXm && !this.OXm);
+    this.GetButton(2).RootUIComp.SetUIActive(!this.sJm);
+    this.GetButton(5).RootUIComp.SetUIActive(!this.sJm);
+    this.GetButton(7).RootUIComp.SetUIActive(this.sJm);
+    this.GetScrollViewWithScrollbar(0).RootUIComp.SetUIActive(this.hJm && !this.sJm);
   }
   BNe() {
-    this.GetItem(6).SetUIActive(this.kXm);
-    this.GetItem(9).SetUIActive(this.qXm || this.kXm);
+    this.GetItem(6).SetUIActive(this.oJm);
+    this.GetItem(9).SetUIActive(this.nJm || this.oJm);
   }
   IsAvailableShow() {
     return this.ShowMode === 1;
@@ -160,7 +161,7 @@ class RegionalTerminalBarItem extends UiPanelBase_1.UiPanelBase {
       for (let e = 0; e < this.Dwn.length; e++) {
         var i = this.Dwn[e];
         if (i.Id === t) {
-          if (i = this.BXm?.GetGenericLayout()?.GetLayoutItemByIndex(e)?.GetRootItem()) {
+          if (i = this.rJm?.GetGenericLayout()?.GetLayoutItemByIndex(e)?.GetRootItem()) {
             return [i, i];
           } else {
             return undefined;

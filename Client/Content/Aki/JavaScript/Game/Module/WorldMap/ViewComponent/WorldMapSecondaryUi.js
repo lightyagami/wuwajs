@@ -77,14 +77,14 @@ class WorldMapSecondaryUi extends UiPanelBase_1.UiPanelBase {
       this.AddChild(this.UiBgItem);
     }
   }
-  Gh_() {
+  Gh_(e = false) {
     this.SetActive(false);
-    this.m2e();
+    this.m2e(e);
   }
-  m2e() {
+  m2e(e = false) {
     this.OnCloseWorldMapSecondaryUi();
     this.jHa = 2;
-    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WorldMapSecondaryUiClosed);
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WorldMapSecondaryUiClosed, e);
     if (this.h3o) {
       this.h3o();
     }
@@ -103,13 +103,19 @@ class WorldMapSecondaryUi extends UiPanelBase_1.UiPanelBase {
       this.Map = e;
       this.SetupWorldMapSecondaryUiLayout();
       await this.OnBeforeShowWorldMapSecondaryUiAsync(...t);
-      this.RootItem.SetAlpha(1);
-      this.SetActive(true);
-      this.OnShowWorldMapSecondaryUi(...t);
-      this.OnAfterShowWorldMapSecondaryUi();
-      this.SPe.PlayLevelSequenceByName("Start");
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WorldMapSecondaryUiOpened);
+      if (this.IsUiOpen) {
+        this.RootItem.SetAlpha(1);
+        this.SetActive(true);
+        this.OnShowWorldMapSecondaryUi(...t);
+        this.SPe.PlayLevelSequenceByName("Start");
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WorldMapSecondaryUiOpened);
+      } else {
+        this.Gh_(true);
+      }
     }
+  }
+  OnAfterShow() {
+    this.OnAfterShowWorldMapSecondaryUi();
   }
   UpdateMap(e) {
     this.Map = e;

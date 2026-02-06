@@ -22,14 +22,14 @@ class VisionRecommendView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
     this.kEd = undefined;
-    this.Bjf = undefined;
+    this.Zig = undefined;
     this.b9i = 0;
     this.zo_ = 0;
     this.Jo_ = undefined;
     this.eGe = undefined;
     this.OEd = false;
-    this.jbm = undefined;
-    this.Hbm = undefined;
+    this.eRm = undefined;
+    this.tRm = undefined;
     this.sGe = () => {
       return new VisionFetterDescItem_1.VisionFetterDescItem();
     };
@@ -52,10 +52,12 @@ class VisionRecommendView extends UiViewBase_1.UiViewBase {
     };
     this.OnClickGoFetterGroupDetailViewBtn = () => {
       this.CloseMe(() => {
-        var e = ModelManager_1.ModelManager.VisionRecommendModel.GetRoleFetterRecommendInfo(this.zo_);
-        if (e && e.length !== 0) {
-          e = e[this.b9i].GetRecommendFetterGroupId();
-          ControllerHolder_1.ControllerHolder.PhantomBattleController.OpenPhantomBattleFetterView(e, this.zo_);
+        var e;
+        var t = ModelManager_1.ModelManager.VisionRecommendModel.GetRoleFetterRecommendInfo(this.zo_);
+        if (t && t.length !== 0) {
+          e = ModelManager_1.ModelManager.RoleModel.IsRoleOwned(this.zo_);
+          t = t[this.b9i].GetRecommendFetterGroupId();
+          ControllerHolder_1.ControllerHolder.PhantomBattleController.OpenPhantomBattleFetterView(t, this.zo_, e);
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.HideVisionTabRole);
         }
       });
@@ -71,7 +73,7 @@ class VisionRecommendView extends UiViewBase_1.UiViewBase {
       var e;
       if (this.OEd && (e = ModelManager_1.ModelManager.VisionRecommendModel.GetRoleFetterRecommendInfo(this.zo_)) && e.length !== 0) {
         e = e[this.b9i];
-        this.jbm?.(this.zo_, e.GetRecommendFetterGroupId());
+        this.eRm?.(this.zo_, e.GetRecommendFetterGroupId());
         this.CloseMe();
       }
     };
@@ -84,12 +86,12 @@ class VisionRecommendView extends UiViewBase_1.UiViewBase {
     var e = this.OpenParam;
     this.zo_ = e.RoleId;
     this.OEd = e.IsFromRoleDev;
-    this.jbm = e.SuccessCallBack;
-    this.Hbm = e.GetSelectedFetterGroupIdCallBack;
+    this.eRm = e.SuccessCallBack;
+    this.tRm = e.GetSelectedFetterGroupIdCallBack;
     this.Jo_ = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(0), this.W2e);
     this.eGe = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(4), this.sGe);
     this.FEd();
-    this.kjf();
+    this.erg();
     this.NEd();
   }
   FEd() {
@@ -97,10 +99,10 @@ class VisionRecommendView extends UiViewBase_1.UiViewBase {
     this.kEd.SetLocalTextNew("RoleProject_PhantomRecommend_Tips01");
     this.kEd.SetFunction(this.GEd);
   }
-  kjf() {
-    this.Bjf = new ButtonItem_1.ButtonItem(this.GetItem(6));
-    this.Bjf.SetLocalTextNew("PrefabTextItem_PhantomQuickEquip_Text");
-    this.Bjf.SetFunction(this.OnClickConfirmBoxBtn);
+  erg() {
+    this.Zig = new ButtonItem_1.ButtonItem(this.GetItem(6));
+    this.Zig.SetLocalTextNew("PrefabTextItem_PhantomQuickEquip_Text");
+    this.Zig.SetFunction(this.OnClickConfirmBoxBtn);
   }
   NEd() {
     var e = this.GetItem(6);
@@ -172,9 +174,9 @@ class VisionRecommendView extends UiViewBase_1.UiViewBase {
   }
   qEd() {
     var e;
-    if (this.OEd && this.Hbm && (e = ModelManager_1.ModelManager.VisionRecommendModel.GetRoleFetterRecommendInfo(this.zo_)) && e.length !== 0) {
+    if (this.OEd && this.tRm && (e = ModelManager_1.ModelManager.VisionRecommendModel.GetRoleFetterRecommendInfo(this.zo_)) && e.length !== 0) {
       e = e[this.b9i];
-      if (this.Hbm(this.zo_) === e.GetRecommendFetterGroupId()) {
+      if (this.tRm(this.zo_) === e.GetRecommendFetterGroupId()) {
         this.kEd.SetLocalTextNew("RoleProject_PhantomRecommend_Tips01");
         this.kEd.SetEnableClick(false);
       } else {

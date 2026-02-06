@@ -54,20 +54,20 @@ let CharacterStateMachineNewComponent = class CharacterStateMachineNewComponent 
   }
   static ChangeStateNotify(t, e, a) {
     a = MathUtils_1.MathUtils.LongToBigInt(a.$8n);
-    t?.GetComponent(79)?.StateMachineGroup.HandleSwitch(e.$4n, e.J4n, e.z4n, a);
+    t?.GetComponent(81)?.StateMachineGroup.HandleSwitch(e.$4n, e.J4n, e.z4n, a);
   }
   static ChangeStateConfirmNotify(t, e) {
-    t?.GetComponent(79)?.StateMachineGroup.HandleChangeStateConfirm(e.$4n, e.Y4n);
+    t?.GetComponent(81)?.StateMachineGroup.HandleChangeStateConfirm(e.$4n, e.Y4n);
   }
   static FsmResetNotify(t, e, a) {
     a = MathUtils_1.MathUtils.LongToBigInt(a.$8n);
-    t?.GetComponent(79)?.StateMachineGroup.ResetStateMachine(e.Uys, a);
+    t?.GetComponent(81)?.StateMachineGroup.ResetStateMachine(e.Uys, a);
   }
   static FsmBlackboardNotify(t, e) {
-    t?.GetComponent(79)?.StateMachineGroup.HandleBlackboard(e);
+    t?.GetComponent(81)?.StateMachineGroup.HandleBlackboard(e);
   }
   static FsmCustomBlackboardNotify(t, e) {
-    t?.GetComponent(79)?.StateMachineGroup.HandleCustomBlackboard(e);
+    t?.GetComponent(81)?.StateMachineGroup.HandleCustomBlackboard(e);
   }
 };
 CharacterStateMachineNewComponent.EventDrivenOn = true;
@@ -76,5 +76,5 @@ __decorate([CombatMessage_1.CombatNet.Listen("t3n", true)], CharacterStateMachin
 __decorate([CombatMessage_1.CombatNet.Listen("n3n", true)], CharacterStateMachineNewComponent, "FsmResetNotify", null);
 __decorate([CombatMessage_1.CombatNet.Listen("h3n", true)], CharacterStateMachineNewComponent, "FsmBlackboardNotify", null);
 __decorate([CombatMessage_1.CombatNet.Listen("I3n", true)], CharacterStateMachineNewComponent, "FsmCustomBlackboardNotify", null);
-CharacterStateMachineNewComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(79)], CharacterStateMachineNewComponent);
+CharacterStateMachineNewComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(81)], CharacterStateMachineNewComponent);
 exports.CharacterStateMachineNewComponent = CharacterStateMachineNewComponent; //# sourceMappingURL=CharacterStateMachineNewComponent.js.map

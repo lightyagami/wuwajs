@@ -37,7 +37,7 @@ class MotorcycleStrengthItem extends StrengthItemBase_1.StrengthItemBase {
     this.Mni = 0;
     this.Sni = 0;
     this.gii = new UE.Rotator(0, 0, 0);
-    this.x2f = false;
+    this.l5f = false;
     this.xii = undefined;
     this.uAl = undefined;
     this.Pni = (t, i, s) => {
@@ -65,30 +65,30 @@ class MotorcycleStrengthItem extends StrengthItemBase_1.StrengthItemBase {
         this.Lri();
       }
     };
-    this.B2f = false;
-    this.k2f = false;
+    this._5f = false;
+    this.u5f = false;
     this.Ruc = undefined;
     this.Auc = 0;
-    this.CJm = undefined;
-    this.q2f = undefined;
-    this.O2f = false;
-    this.G2f = false;
+    this.rtf = undefined;
+    this.c5f = undefined;
+    this.d5f = false;
+    this.m5f = false;
     this.MotorcycleTagTaskList = [];
     this.Duc = t => {
       this.Uuc();
-      this.F2f();
+      this.f5f();
       this.Buc();
     };
-    this.sJm = t => {
-      this.F2f();
+    this.Wef = t => {
+      this.f5f();
       this.Buc();
     };
-    this.N2f = (t, i) => {
-      this.O2f = i;
+    this.g5f = (t, i) => {
+      this.d5f = i;
       this.Buc();
     };
-    this.V2f = (t, i) => {
-      this.G2f = i;
+    this.C5f = (t, i) => {
+      this.m5f = i;
       this.Buc();
     };
   }
@@ -112,10 +112,10 @@ class MotorcycleStrengthItem extends StrengthItemBase_1.StrengthItemBase {
     this.InitTweenAnim(7);
     this.InitTweenAnim(8);
     super.OnStart();
-    this.x2f = false;
+    this.l5f = false;
     this.GetItem(9).SetAlpha(0);
     this.Uuc(true);
-    this.F2f();
+    this.f5f();
     this.Buc(true);
     this.xni(true);
   }
@@ -139,7 +139,7 @@ class MotorcycleStrengthItem extends StrengthItemBase_1.StrengthItemBase {
   }
   OnBeforeDestroy() {
     this.Gii();
-    this.H2f();
+    this.p5f();
     super.OnBeforeDestroy();
   }
   OnAddEvents() {
@@ -147,14 +147,14 @@ class MotorcycleStrengthItem extends StrengthItemBase_1.StrengthItemBase {
     FormationAttributeController_1.FormationAttributeController.AddMaxListener(14, this.bni);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.MotorcycleAutoAcceleratorSettingChanged, this.Duc);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.MotorcycleAutoNitrogenSettingChanged, this.Duc);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiMotorcycleStateChanged, this.sJm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiMotorcycleStateChanged, this.Wef);
   }
   OnRemoveEvents() {
     FormationAttributeController_1.FormationAttributeController.RemoveValueListener(14, this.Pni);
     FormationAttributeController_1.FormationAttributeController.RemoveMaxListener(14, this.bni);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.MotorcycleAutoAcceleratorSettingChanged, this.Duc);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.MotorcycleAutoNitrogenSettingChanged, this.Duc);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiMotorcycleStateChanged, this.sJm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiMotorcycleStateChanged, this.Wef);
   }
   OnAddEntityEvents() {
     var t;
@@ -247,12 +247,12 @@ class MotorcycleStrengthItem extends StrengthItemBase_1.StrengthItemBase {
     var i = !this.bld && this.Ruc.GetTargetVisible();
     var i = t || i;
     this.SetActive(i);
-    if (this.x2f && !t) {
-      this.x2f = false;
+    if (this.l5f && !t) {
+      this.l5f = false;
       this.StopTweenAnim(7);
       this.PlayTweenAnim(8);
-    } else if (!this.x2f && t) {
-      this.x2f = true;
+    } else if (!this.l5f && t) {
+      this.l5f = true;
       this.StopTweenAnim(8);
       this.PlayTweenAnim(7);
     }
@@ -278,24 +278,24 @@ class MotorcycleStrengthItem extends StrengthItemBase_1.StrengthItemBase {
   }
   Uuc(t = false) {
     var i = ModelManager_1.ModelManager.BattleUiModel.MotorcycleData;
-    if ((this.B2f !== i.AutoAcceleratorSettingEnable || this.k2f !== i.AutoNitrogenSettingEnable) && !(this.B2f = i.AutoAcceleratorSettingEnable, this.k2f = i.AutoNitrogenSettingEnable, this.B2f) && !this.k2f) {
+    if ((this._5f !== i.AutoAcceleratorSettingEnable || this.u5f !== i.AutoNitrogenSettingEnable) && !(this._5f = i.AutoAcceleratorSettingEnable, this.u5f = i.AutoNitrogenSettingEnable, this._5f) && !this.u5f) {
       this.kuc(0, 0, t);
     }
   }
-  F2f() {
+  f5f() {
     var t;
-    this.CJm = undefined;
+    this.rtf = undefined;
     this.ClearMotorcycleTagTask();
-    if ((this.B2f || this.k2f) && (t = ModelManager_1.ModelManager.BattleUiModel.MotorcycleData).IsDriving) {
-      this.CJm = t.MotorcycleEntityHandle;
-      if (this.CJm?.Valid) {
-        this.q2f = this.CJm.Entity.GetComponent(215);
-        this.O2f = this.q2f?.HasTag(autoAcceleratorTagId) ?? false;
-        this.G2f = this.q2f?.HasTag(autoNitrogenTagId) ?? false;
-        this.ListenForMotorcycleTagAddOrRemove(this.q2f, autoAcceleratorTagId, this.N2f);
-        this.ListenForMotorcycleTagAddOrRemove(this.q2f, autoNitrogenTagId, this.V2f);
+    if ((this._5f || this.u5f) && (t = ModelManager_1.ModelManager.BattleUiModel.MotorcycleData).IsDriving) {
+      this.rtf = t.MotorcycleEntityHandle;
+      if (this.rtf?.Valid) {
+        this.c5f = this.rtf.Entity.GetComponent(217);
+        this.d5f = this.c5f?.HasTag(autoAcceleratorTagId) ?? false;
+        this.m5f = this.c5f?.HasTag(autoNitrogenTagId) ?? false;
+        this.ListenForMotorcycleTagAddOrRemove(this.c5f, autoAcceleratorTagId, this.g5f);
+        this.ListenForMotorcycleTagAddOrRemove(this.c5f, autoNitrogenTagId, this.C5f);
       } else {
-        this.q2f = undefined;
+        this.c5f = undefined;
       }
     }
   }
@@ -312,11 +312,11 @@ class MotorcycleStrengthItem extends StrengthItemBase_1.StrengthItemBase {
     this.MotorcycleTagTaskList.length = 0;
   }
   Buc(t = false) {
-    if (this.B2f || this.k2f) {
-      var i = this.CJm?.Entity?.GetComponent(264);
+    if (this._5f || this.u5f) {
+      var i = this.rtf?.Entity?.GetComponent(264);
       if (i) {
-        if (this.k2f) {
-          if (this.G2f) {
+        if (this.u5f) {
+          if (this.m5f) {
             this.kuc(4, 1, t);
             return;
           }
@@ -330,8 +330,8 @@ class MotorcycleStrengthItem extends StrengthItemBase_1.StrengthItemBase {
             }
           }
         }
-        if (this.B2f) {
-          if (this.O2f) {
+        if (this._5f) {
+          if (this.d5f) {
             this.kuc(2, 1, t);
             return;
           }
@@ -379,10 +379,10 @@ class MotorcycleStrengthItem extends StrengthItemBase_1.StrengthItemBase {
       }
     }
   }
-  H2f() {
+  p5f() {
     this.ClearMotorcycleTagTask();
-    this.CJm = undefined;
-    this.q2f = undefined;
+    this.rtf = undefined;
+    this.c5f = undefined;
   }
 }
 (exports.MotorcycleStrengthItem = MotorcycleStrengthItem).Xii = Stats_1.Stat.Create("MotorcycleStrengthCloseAnim");

@@ -8,10 +8,13 @@ const UE = require("ue");
 const Log_1 = require("../../../../Core/Common/Log");
 const ModelBase_1 = require("../../../../Core/Framework/ModelBase");
 const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
+const MathUtils_1 = require("../../../../Core/Utils/MathUtils");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const LocalStorage_1 = require("../../../Common/LocalStorage");
 const LocalStorageDefine_1 = require("../../../Common/LocalStorageDefine");
+const GameSettingsDeviceRender_1 = require("../../../GameSettings/GameSettingsDeviceRender");
+const Global_1 = require("../../../Global");
 const GlobalData_1 = require("../../../GlobalData");
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
@@ -26,23 +29,26 @@ class PhantomInteractModel extends ModelBase_1.ModelBase {
     super(...arguments);
     this.InteractInfoData = new PhantomInteractDefine_1.PhantomInteractInfoData();
     this.EditViewModel = new PhantomInteractViewModel_1.PhantomInteractEditViewModel();
-    this.ngf = 0;
-    this.BUf = 0;
-    this.kUf = 0;
-    this.lGf = 0;
-    this.sgf = e => {
+    this.$Sf = 0;
+    this.gGf = 0;
+    this.CGf = 0;
+    this.zRg = new Map();
+    this.uxg = new Set();
+    this.TDe = undefined;
+    this.z3g = false;
+    this.WSf = e => {
       var t = e.SelectedGridData;
       let o = 0;
-      var r = e.SelectedItemData?.MonsterId ?? 0;
-      var t = (o = t && t.MonsterId !== r ? t.MonsterId : o) <= 0 ? -1 : this.InteractInfoData.EquippedVisionData.findIndex(e => e.MonsterId === o);
-      if (r > 0 && t >= 0) {
-        this.SetEquippedPhantom(t, r);
+      var n = e.SelectedItemData?.MonsterId ?? 0;
+      var t = (o = t && t.MonsterId !== n ? t.MonsterId : o) <= 0 ? -1 : this.InteractInfoData.EquippedVisionData.findIndex(e => e.MonsterId === o);
+      if (n > 0 && t >= 0) {
+        this.SetEquippedPhantom(t, n);
       }
       this.SetEquippedPhantom(e.SelectedItemIndex, o);
       e.SelectItem(e.SelectedItemIndex);
       PhantomInteractController_1.PhantomInteractController.UpdateEquippedPhantom();
     };
-    this.fEf = e => {
+    this.Qbf = e => {
       const t = e.GetFilteredRecommendedIdList();
       var o;
       if (t.length !== 0) {
@@ -55,7 +61,7 @@ class PhantomInteractModel extends ModelBase_1.ModelBase {
         ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(o);
       }
     };
-    this.gEf = e => {
+    this.Kbf = e => {
       var t;
       if (e.SelectedGridData) {
         if ((e.SelectedGridData?.SkinIds.length ?? 0) > 1) {
@@ -74,55 +80,57 @@ class PhantomInteractModel extends ModelBase_1.ModelBase {
     };
   }
   get SummonMonsterId() {
-    return this.ngf;
+    return this.$Sf;
   }
   get OpenSkillInfo() {
-    return [this.kUf, this.BUf];
+    return [this.CGf, this.gGf];
   }
   SetSummonMonsterId(e) {
-    this.ngf = e;
+    this.$Sf = e;
   }
   InitEditViewModel(e) {
     this.EditViewModel = new PhantomInteractViewModel_1.PhantomInteractEditViewModel();
     this.EditViewModel.InitData(this.InteractInfoData, e);
-    this.EditViewModel.SetConfirmEquipHandler(this.sgf);
-    this.EditViewModel.SetEquipRecommendHandler(this.fEf);
-    this.EditViewModel.SetMoveNextSkinHandler(this.gEf);
+    this.EditViewModel.SetConfirmEquipHandler(this.WSf);
+    this.EditViewModel.SetEquipRecommendHandler(this.Qbf);
+    this.EditViewModel.SetMoveNextSkinHandler(this.Kbf);
   }
   CacheOpenSkillInfo(e, t) {
-    this.kUf = e;
-    this.BUf = t;
+    this.CGf = e;
+    this.gGf = t;
   }
   DisableAutoExposureOnViewOpen() {
-    this.lGf++;
-    UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Kuro.AutoExposure 0");
-  }
-  ReEnableAutoExposureOnViewClose() {
-    var e = this.lGf;
-    this._Gf(e);
-  }
-  async _Gf(e) {
-    await TimerSystem_1.GameplayTimerSystem.Wait(REOPEN_AUTO_EXPOSURE_DELAY);
-    if (this.lGf === e) {
-      UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Kuro.AutoExposure 1");
+    this._1o();
+    if (GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsAutoExposureOn()) {
+      this.z3g = true;
+      UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Kuro.AutoExposure 0");
     }
   }
-  CEf(e) {
+  ReEnableAutoExposureOnViewClose() {
+    if (this.z3g) {
+      this.TDe = TimerSystem_1.GameplayTimerSystem.Delay(() => {
+        UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Kuro.AutoExposure 1");
+        this.TDe = undefined;
+        this.z3g = false;
+      }, REOPEN_AUTO_EXPOSURE_DELAY);
+    }
+  }
+  Xbf(e) {
     var t = this.InteractInfoData.EquippedVisionData[e];
     var o = t.MonsterId;
     this.InteractInfoData.EquippedMonsterIdMap.delete(o);
-    var r = this.InteractInfoData.GridItemDataMap.get(o);
-    if (r) {
-      r.InSlotIndex = -1;
+    var n = this.InteractInfoData.GridItemDataMap.get(o);
+    if (n) {
+      n.InSlotIndex = -1;
     }
     this.InteractInfoData.EquippedMonsterIdMap.delete(o);
     t.LoadEmpty(e);
   }
-  pEf(e, t) {
+  Ybf(e, t) {
     var o = this.InteractInfoData.EquippedVisionData[e];
-    var r = ConfigManager_1.ConfigManager.PhantomBattleConfig.GetPhantomItemByMonsterId(t);
-    if (r && r[0] && (o.LoadData(e, t), this.InteractInfoData.EquippedMonsterIdMap.set(t, e), r = this.InteractInfoData.GridItemDataMap.get(t))) {
-      r.InSlotIndex = e;
+    var n = ConfigManager_1.ConfigManager.PhantomBattleConfig.GetPhantomItemByMonsterId(t);
+    if (n && n[0] && (o.LoadData(e, t), this.InteractInfoData.EquippedMonsterIdMap.set(t, e), n = this.InteractInfoData.GridItemDataMap.get(t))) {
+      n.InSlotIndex = e;
     }
   }
   SetEquippedPhantom(e, t) {
@@ -132,23 +140,23 @@ class PhantomInteractModel extends ModelBase_1.ModelBase {
     }
     if (o && t !== o.MonsterId) {
       if ((o = this.InteractInfoData.EquippedVisionData.findIndex(e => e.MonsterId === t)) >= 0) {
-        this.CEf(o);
+        this.Xbf(o);
       }
-      this.CEf(e);
+      this.Xbf(e);
       if (!(t <= 0)) {
-        this.pEf(e, t);
+        this.Ybf(e, t);
       }
     }
   }
   FullReplaceEquippedPhantoms(o) {
-    let r = 0;
+    let n = 0;
     for (let t = 0; t < this.InteractInfoData.EquippedVisionData.length; t++) {
       let e = 0;
-      for (; r < o.length; r++) {
-        e = o[r];
+      for (; n < o.length; n++) {
+        e = o[n];
         if (this.InteractInfoData.GridItemDataMap.get(e)) {
           if (Log_1.Log.CheckDebug()) {
-            Log_1.Log.Debug("PhantomInteraction", 95, "声骸装配推荐替换", ["input id", o[r]]);
+            Log_1.Log.Debug("PhantomInteraction", 95, "声骸装配推荐替换", ["input id", o[n]]);
           }
           break;
         }
@@ -158,7 +166,7 @@ class PhantomInteractModel extends ModelBase_1.ModelBase {
         e = 0;
       }
       this.SetEquippedPhantom(t, e);
-      r++;
+      n++;
       PhantomInteractModel.SetPhantomInteractUnlockRedDot(e, false);
     }
   }
@@ -204,6 +212,61 @@ class PhantomInteractModel extends ModelBase_1.ModelBase {
   }
   static CheckIsPhantomInteractExploreTool(e) {
     return phantomInteractExploreIdSet.has(e);
+  }
+  _1o() {
+    if (this.TDe) {
+      TimerSystem_1.GameplayTimerSystem.Remove(this.TDe);
+      this.TDe = undefined;
+    }
+  }
+  OnClear() {
+    this._1o();
+    return true;
+  }
+  AddVisionDisplayTargetPoint(e, t) {
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("PhantomInteraction", 93, "增加挂点记录", ["entityId", e], ["pointLocation", t]);
+    }
+    this.zRg.set(e, t);
+  }
+  RemoveVisionDisplayTargetPoint(e) {
+    if (this.zRg.has(e)) {
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("PhantomInteraction", 93, "移除挂点记录", ["entityId", e]);
+      }
+      this.zRg.delete(e);
+    }
+  }
+  GetClosetVisionDisplayTargetPoint() {
+    var e = Global_1.Global.BaseCharacter.CharacterActorComponent.ActorLocationProxy;
+    let t = undefined;
+    let o = 0;
+    for (const i of this.zRg.values()) {
+      var n = MathUtils_1.MathUtils.VectorDistance(e, i);
+      if (t === undefined || n < o) {
+        t = i;
+        o = n;
+      }
+    }
+    if (t && Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("PhantomInteraction", 93, "获取最近挂点", ["playerLocation", e], ["point", t], ["distance", o]);
+    }
+    return t;
+  }
+  AddVisionDisplayHighlightExploreType(e) {
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("PhantomInteraction", 93, "记录高亮声骸显像类型", ["type", e]);
+    }
+    this.uxg.add(e);
+  }
+  RemoveVisionDisplayHighlightExploreType(e) {
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("PhantomInteraction", 93, "移除高亮声骸显像类型", ["type", e]);
+    }
+    this.uxg.delete(e);
+  }
+  GetVisionDisplayHighlightExploreTypes() {
+    return Array.from(this.uxg);
   }
 }
 exports.PhantomInteractModel = PhantomInteractModel;

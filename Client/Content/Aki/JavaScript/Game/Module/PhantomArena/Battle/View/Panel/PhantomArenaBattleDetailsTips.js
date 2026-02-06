@@ -122,7 +122,7 @@ class PhantomArenaBattleDetailsTips extends UiPanelBase_1.UiPanelBase {
     this.DetailItem.Refresh(a);
     this.EntryDescLayoutItem.RefreshByCardConfig(i);
   }
-  S3m(t) {
+  F4m(t) {
     if (t.IsTool) {
       return [];
     }
@@ -141,7 +141,7 @@ class PhantomArenaBattleDetailsTips extends UiPanelBase_1.UiPanelBase {
     }
     return i;
   }
-  ZBm(t) {
+  ikm(t) {
     var i;
     var e;
     if (!t.IsTool) {
@@ -154,7 +154,7 @@ class PhantomArenaBattleDetailsTips extends UiPanelBase_1.UiPanelBase {
       };
     }
   }
-  M3m(t) {
+  N4m(t) {
     if (!t.IsTool) {
       return {
         Description: (t = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardConfig(t.ConfigId)).CardEffectDescription,
@@ -162,14 +162,14 @@ class PhantomArenaBattleDetailsTips extends UiPanelBase_1.UiPanelBase {
       };
     }
   }
-  E3m(t) {
+  V4m(t) {
     if (t.HasDurability) {
       return {
         DurationDesc: t.Durable + "/" + t.DurableMax
       };
     }
   }
-  I3m(t) {
+  j4m(t) {
     if (t.HasClickActiveSkill) {
       return {
         Desc: (t = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardConfig(t.ConfigId)).DurableSkillDescription,
@@ -177,7 +177,7 @@ class PhantomArenaBattleDetailsTips extends UiPanelBase_1.UiPanelBase {
       };
     }
   }
-  T3m(t) {
+  H4m(t) {
     var i;
     var e;
     var a;
@@ -201,7 +201,7 @@ class PhantomArenaBattleDetailsTips extends UiPanelBase_1.UiPanelBase {
       };
     }
   }
-  b3m(t) {
+  $4m(t) {
     var i;
     if (t.HasCountSkill) {
       i = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardConfig(t.ConfigId);
@@ -216,21 +216,21 @@ class PhantomArenaBattleDetailsTips extends UiPanelBase_1.UiPanelBase {
       };
     }
   }
-  xQm(t) {
+  tYm(t) {
     if (t.IsCopy) {
       return {
         RemainRound: 1
       };
     }
   }
-  B7m(t) {
-    var i = this.S3m(t);
-    var e = this.ZBm(t);
-    var a = this.M3m(t);
-    var s = this.E3m(t);
-    var r = this.I3m(t);
-    var h = this.b3m(t);
-    var o = this.xQm(t);
+  gjm(t) {
+    var i = this.F4m(t);
+    var e = this.ikm(t);
+    var a = this.N4m(t);
+    var s = this.V4m(t);
+    var r = this.j4m(t);
+    var h = this.$4m(t);
+    var o = this.tYm(t);
     var t = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardConfig(t.ConfigId);
     var e = {
       Name: t.Name,
@@ -245,9 +245,9 @@ class PhantomArenaBattleDetailsTips extends UiPanelBase_1.UiPanelBase {
     this.DetailItem.Refresh(e);
     this.EntryDescLayoutItem.RefreshByCardConfig(t);
   }
-  k7m(t) {
-    var i = this.I3m(t);
-    var e = this.T3m(t);
+  Cjm(t) {
+    var i = this.j4m(t);
+    var e = this.H4m(t);
     var t = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardConfig(t.ConfigId);
     var i = {
       Name: t.Name,
@@ -257,7 +257,7 @@ class PhantomArenaBattleDetailsTips extends UiPanelBase_1.UiPanelBase {
     this.DetailItem.Refresh(i);
     this.EntryDescLayoutItem.RefreshByCardConfig(t);
   }
-  QWm(t) {
+  NKm(t) {
     if (t) {
       this.TempWorldPos.FromUeVector(t.D_K2_GetComponentLocation());
       this.ItemWorldTrans.FromUeTransform(this.ParentUiItem.K2_GetComponentToWorld());
@@ -265,7 +265,7 @@ class PhantomArenaBattleDetailsTips extends UiPanelBase_1.UiPanelBase {
       this.GetOriginalItem()?.SetUIRelativeLocation(this.TempWorldPos.ToUeVectorOld());
     }
   }
-  KWm(t) {
+  VKm(t) {
     this.ShowType = t.ShowType;
     if (t.PositionType === 0) {
       this.GetItem(0).SetHierarchyIndex(0);
@@ -281,10 +281,10 @@ class PhantomArenaBattleDetailsTips extends UiPanelBase_1.UiPanelBase {
       this.SetPivotAndResetOffset(1, 0);
     }
   }
-  cGf() {
+  b6f() {
     this.FBd();
     this.TimerHandle = TimerSystem_1.GameplayTimerSystem.Forever(() => {
-      this.tmf();
+      this.ygf();
     }, 100);
   }
   FBd() {
@@ -305,7 +305,7 @@ class PhantomArenaBattleDetailsTips extends UiPanelBase_1.UiPanelBase {
     this.Sequence.PlaySequence("Close");
     this.ShowType = 0;
   }
-  tmf() {
+  ygf() {
     if (this.RootItem) {
       if (!LguiEventSystemManager_1.LguiEventSystemManager.GetPointerEventData(0, true).enterComponentStack.Contains(this.RootItem)) {
         this.dbu();
@@ -316,18 +316,18 @@ class PhantomArenaBattleDetailsTips extends UiPanelBase_1.UiPanelBase {
   }
   RefreshByCardData(t) {
     if (t.IsField) {
-      this.k7m(t);
+      this.Cjm(t);
     } else {
-      this.B7m(t);
+      this.gjm(t);
     }
   }
   SetTipsPositionByAttachItem(t) {
     this.GetOriginalItem()?.SetUIParent(t.AttachItem);
-    this.KWm(t);
+    this.VKm(t);
   }
   SetTipsPositionByTriggerItem(t) {
-    this.KWm(t);
-    this.QWm(t.TriggerItem);
+    this.VKm(t);
+    this.NKm(t.TriggerItem);
   }
   SetTipsActive(t) {
     var i = t === 2 || t === 3;
@@ -340,7 +340,7 @@ class PhantomArenaBattleDetailsTips extends UiPanelBase_1.UiPanelBase {
       } else if (i === 2) {
         this.dbu();
       } else if (i === 3) {
-        this.cGf();
+        this.b6f();
       }
     }
   }

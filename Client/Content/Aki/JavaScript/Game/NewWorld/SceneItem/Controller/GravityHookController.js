@@ -18,7 +18,7 @@ class GravityHookController {
     var l;
     var _;
     var e = ModelManager_1.ModelManager.CreatureModel.GetEntityById(e);
-    if (e?.Valid && (a = (e = e.Entity).GetComponent(187))?.Valid && (e = e.GetComponent(105))?.Valid && (e = e.GetCurrentTarget())?.Valid && (l = e.GetHookInteractConfig()) && l.Type === "GravityHook") {
+    if (e?.Valid && (a = (e = e.Entity).GetComponent(189))?.Valid && (e = e.GetComponent(57))?.Valid && (e = e.InteractingTarget)?.Valid && (l = e.GetHookInteractConfig()) && l.Type === "GravityHook") {
       _ = a.GravityDirect;
       e = e.Entity.GetComponent(1);
       l = GravityUtils_1.GravityUtils.GetGravityDirectionByConfigAndActor(l.GravityDirection, e);
@@ -28,8 +28,8 @@ class GravityHookController {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("LevelPlay", 48, "重力钩锁 更新重力方向", ["GravityDirect", l], ["SmoothSecond", _]);
       }
-      (t = new Protocol_1.Aki.Protocol.CSf()).F4n = MathUtils_1.MathUtils.NumberToLong(e.CreatureData.GetCreatureDataId());
-      Net_1.Net.Call(18866, t, e => {
+      (t = new Protocol_1.Aki.Protocol.nIf()).F4n = MathUtils_1.MathUtils.NumberToLong(e.CreatureData.GetCreatureDataId());
+      Net_1.Net.Call(27553, t, e => {
         if (!e || e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
           if (Log_1.Log.CheckError()) {
             Log_1.Log.Error("LevelPlay", 48, "重力钩锁 请求更新重力方向失败");
@@ -53,7 +53,7 @@ class GravityHookController {
   static NQd(e) {
     e = ModelManager_1.ModelManager.CreatureModel.GetEntityById(e);
     if (e?.Valid) {
-      e = e.Entity.GetComponent(105);
+      e = e.Entity.GetComponent(107);
       if (e?.Valid) {
         e = e.GetCurrentTarget();
         if (e?.Valid) {

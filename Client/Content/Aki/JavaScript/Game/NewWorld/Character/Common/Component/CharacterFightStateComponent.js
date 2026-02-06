@@ -38,7 +38,7 @@ let CharacterFightStateComponent = class CharacterFightStateComponent extends En
     this.CurrentHandle = 0;
   }
   OnStart() {
-    this.rJo = this.Entity.GetComponent(184);
+    this.rJo = this.Entity.GetComponent(186);
     return true;
   }
   PreSwitchRemoteFightState(t) {
@@ -240,5 +240,5 @@ let CharacterFightStateComponent = class CharacterFightStateComponent extends En
     return i;
   }
 };
-CharacterFightStateComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(58)], CharacterFightStateComponent);
+CharacterFightStateComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(60)], CharacterFightStateComponent);
 exports.CharacterFightStateComponent = CharacterFightStateComponent; //# sourceMappingURL=CharacterFightStateComponent.js.map

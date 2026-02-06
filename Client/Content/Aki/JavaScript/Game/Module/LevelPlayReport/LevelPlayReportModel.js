@@ -22,8 +22,8 @@ class LevelPlayReportModel extends ModelBase_1.ModelBase {
     this.Ox_ = new Map();
     this.Op1 = new Map();
     this.WSd = new Map();
-    this.X2f = new Map();
-    this.Y2f = new Map();
+    this.U5f = new Map();
+    this.x5f = new Map();
   }
   HasRequestDetail(e, t) {
     e = this.vLl(e, t);
@@ -59,8 +59,8 @@ class LevelPlayReportModel extends ModelBase_1.ModelBase {
         this.Ox_.delete(i);
         this.Op1.delete(i);
         this.WSd.delete(i);
-        this.X2f.delete(i);
-        this.Y2f.delete(i);
+        this.U5f.delete(i);
+        this.x5f.delete(i);
       }
     }
     for (const u of t) {
@@ -68,7 +68,7 @@ class LevelPlayReportModel extends ModelBase_1.ModelBase {
       var a = u.Ob_;
       var o = u.X4_;
       var n = u.ASd;
-      var h = u.Ukf;
+      var h = u.U3f;
       for (const f of new Set(Array.from(Object.keys(r).concat(Object.keys(a)).concat(Object.keys(o)).concat(Object.keys(n)).concat(Object.keys(h))))) {
         var l = Number(f);
         var v = o[l] ? 5 : r[l];
@@ -90,11 +90,11 @@ class LevelPlayReportModel extends ModelBase_1.ModelBase {
           this.WSd.delete(M);
         }
         if (h[l] !== undefined) {
-          this.X2f.set(M, h[l].jdf);
-          this.Y2f.set(M, h[l].$df);
+          this.U5f.set(M, h[l].Hff);
+          this.x5f.set(M, h[l].jff);
         } else {
-          this.X2f.delete(M);
-          this.Y2f.delete(M);
+          this.U5f.delete(M);
+          this.x5f.delete(M);
         }
       }
     }
@@ -102,14 +102,14 @@ class LevelPlayReportModel extends ModelBase_1.ModelBase {
   }
   UpdateLevelPlayRewardsMsg(e, t, s, i) {
     e = this.vLl(e, t);
-    this.X2f.set(e, s);
-    this.Y2f.set(e, i);
+    this.U5f.set(e, s);
+    this.x5f.set(e, i);
   }
   UpdateLevelPlayRewardMsgByNotify(e) {
-    for (var [t, s] of Object.entries(e.Ukf)) {
+    for (var [t, s] of Object.entries(e.U3f)) {
       var i = ModelManager_1.ModelManager.LevelPlayModel.GetLevelPlayConfig(Number(t));
       if (i !== undefined) {
-        this.UpdateLevelPlayRewardsMsg(i.LevelId, Number(t), s.jdf, s.$df);
+        this.UpdateLevelPlayRewardsMsg(i.LevelId, Number(t), s.Hff, s.jff);
       }
     }
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.LevelPlayRewardDetailUpdate);
@@ -221,11 +221,11 @@ class LevelPlayReportModel extends ModelBase_1.ModelBase {
   }
   GetLevelPlayRewardNodeIds(e, t) {
     e = this.vLl(e, t);
-    return this.X2f.get(e) ?? [];
+    return this.U5f.get(e) ?? [];
   }
   GetLevelPlayRewardTreasureBoxIds(e, t) {
     e = this.vLl(e, t);
-    return this.Y2f.get(e) ?? [];
+    return this.x5f.get(e) ?? [];
   }
 }
 exports.LevelPlayReportModel = LevelPlayReportModel;

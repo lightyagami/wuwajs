@@ -19,6 +19,9 @@ class SkillButtonCustomHandleFactory {
           for (const u of t.BuffIds) {
             o.BuffIds.push(u);
           }
+          for (const n of t.Params) {
+            o.Params.push(n);
+          }
         }
         return o;
       }
@@ -31,5 +34,5 @@ class SkillButtonCustomHandleFactory {
     }
   }
 }
-(exports.SkillButtonCustomHandleFactory = SkillButtonCustomHandleFactory).Map = new Map([[1, SkillButtonCustomHandle_1.SkillButtonCustomHandleKeLaiTaUltimate], [2, SkillButtonCustomHandle_1.SkillButtonCustomHandleHackFollowAttach], [3, SkillButtonCustomHandle_1.SkillButtonCustomHandleZanNiUltimate]]);
+(exports.SkillButtonCustomHandleFactory = SkillButtonCustomHandleFactory).Map = new Map([[1, SkillButtonCustomHandle_1.SkillButtonCustomHandleKeLaiTaUltimate], [2, SkillButtonCustomHandle_1.SkillButtonCustomHandleHackFollowAttach], [3, SkillButtonCustomHandle_1.SkillButtonCustomHandleZanNiUltimate], [4, SkillButtonCustomHandle_1.SkillButtonCustomHandleAimisiMobileUpDown], [5, SkillButtonCustomHandle_1.SkillButtonCustomHandleDotIndicator]]);
 //# sourceMappingURL=SkillButtonCustomHandleFactory.js.map

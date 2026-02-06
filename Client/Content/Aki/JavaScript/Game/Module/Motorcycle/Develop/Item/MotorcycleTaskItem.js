@@ -17,35 +17,35 @@ const MotorcycleTaskTagItem_1 = require("./MotorcycleTaskTagItem");
 class MotorcycleTaskItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
     super(...arguments);
-    this.rcf = 0;
+    this.emf = 0;
     this.Uou = 0;
     this.TDe = undefined;
     this.It_ = undefined;
     this.Pe = undefined;
-    this.vjf = () => {
+    this.qig = () => {
       if (this.Pe && this.Pe.Type === 2) {
-        this.yjf();
-        this.TDe = TimerSystem_1.TimerSystem.Forever(this.Sjf, TimeUtil_1.TimeUtil.InverseMillisecond);
+        this.Oig();
+        this.TDe = TimerSystem_1.TimerSystem.Forever(this.Gig, TimeUtil_1.TimeUtil.InverseMillisecond);
       }
     };
-    this.Sjf = t => {
+    this.Gig = t => {
       if (this.Pe.EndTime - TimeUtil_1.TimeUtil.GetServerTime() <= 0) {
         this.It_.SetUiActive(false);
-        this.yjf();
+        this.Oig();
       } else {
         this.It_.SetUiActive(true);
         this.It_.Refresh(this.Pe);
       }
     };
-    this.ocf = () => {
-      var t = ConfigManager_1.ConfigManager.MotorConfig.GetMotorTechTreeConfig(this.rcf).TpItemId;
+    this.tmf = () => {
+      var t = ConfigManager_1.ConfigManager.MotorConfig.GetMotorTechTreeConfig(this.emf).TpItemId;
       ControllerHolder_1.ControllerHolder.ItemController.OpenItemTipsByItemId(t);
     };
-    this.ncf = () => {
-      var t = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetWaitRewardTaskIds(this.rcf);
+    this.imf = () => {
+      var t = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetWaitRewardTaskIds(this.emf);
       ControllerHolder_1.ControllerHolder.MotorcycleDevelopController.RequestMotorTechTaskOneKeyReward(t);
     };
-    this.scf = () => {
+    this.rmf = () => {
       if (!(this.Uou <= 0)) {
         SkipTaskManager_1.SkipTaskManager.RunByConfigId(this.Uou);
       }
@@ -53,7 +53,7 @@ class MotorcycleTaskItem extends GridProxyAbstract_1.GridProxyAbstract {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIText], [2, UE.UIItem], [3, UE.UIItem], [7, UE.UIItem], [4, UE.UIButtonComponent], [5, UE.UIButtonComponent], [6, UE.UIButtonComponent], [8, UE.UIText], [9, UE.UITexture], [10, UE.UIItem], [11, UE.UIItem]];
-    this.BtnBindInfo = [[4, this.ocf], [6, this.ncf], [5, this.scf]];
+    this.BtnBindInfo = [[4, this.tmf], [6, this.imf], [5, this.rmf]];
   }
   async OnBeforeStartAsync() {
     this.It_ = new MotorcycleTaskTagItem_1.MotorcycleTaskTagItem();
@@ -61,13 +61,13 @@ class MotorcycleTaskItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.It_.SetUiActive(false);
   }
   OnBeforeDestroy() {
-    this.yjf();
+    this.Oig();
   }
   Refresh(i, t, e) {
     this.Pe = i;
-    this.rcf = i.TreeType;
+    this.emf = i.TreeType;
     var s = ConfigManager_1.ConfigManager.MotorConfig.GetMotorTaskConfig(i.TaskId);
-    var r = ConfigManager_1.ConfigManager.MotorConfig.GetMotorTechTreeConfig(this.rcf);
+    var r = ConfigManager_1.ConfigManager.MotorConfig.GetMotorTechTreeConfig(this.emf);
     if (s && r) {
       this.Uou = s.JumpId;
       var h = i.ProcessInfo.Current;
@@ -112,10 +112,10 @@ class MotorcycleTaskItem extends GridProxyAbstract_1.GridProxyAbstract {
       if (t) {
         this.It_.Refresh(i);
       }
-      this.vjf();
+      this.qig();
     }
   }
-  yjf() {
+  Oig() {
     if (this.TDe) {
       TimerSystem_1.TimerSystem.Remove(this.TDe);
       this.TDe = undefined;

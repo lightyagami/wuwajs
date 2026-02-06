@@ -41,12 +41,12 @@ class FloroRanchController extends ActivityControllerBase_1.ActivityControllerBa
     UiManager_1.UiManager.OpenView("FloroRanchUnlockTipView");
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(17779, FloroRanchController.bnu);
-    Net_1.Net.Register(23967, FloroRanchController.MVu);
+    Net_1.Net.Register(26646, FloroRanchController.bnu);
+    Net_1.Net.Register(26010, FloroRanchController.MVu);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(17779);
-    Net_1.Net.UnRegister(23967);
+    Net_1.Net.UnRegister(26646);
+    Net_1.Net.UnRegister(26010);
   }
   OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnCommonItemCountAnyChange, FloroRanchController.qdi);
@@ -62,10 +62,10 @@ class FloroRanchController extends ActivityControllerBase_1.ActivityControllerBa
       a.Jru = o;
       a.r5n = r;
     }
-    Net_1.Net.Call(23970, a, o => {
+    Net_1.Net.Call(19081, a, o => {
       if (o) {
         if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 17083);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 17238);
           l?.(undefined);
         } else {
           if (Log_1.Log.CheckInfo()) {
@@ -85,10 +85,10 @@ class FloroRanchController extends ActivityControllerBase_1.ActivityControllerBa
     var r = Protocol_1.Aki.Protocol.Yiu.create();
     r.w6n = o;
     r.vru = e;
-    Net_1.Net.Call(27486, r, o => {
+    Net_1.Net.Call(16933, r, o => {
       if (o) {
         if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 18691);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 27947);
           t(undefined);
         } else {
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnFloroRanchNextDayTaskRefresh, o.vlu);
@@ -105,10 +105,10 @@ class FloroRanchController extends ActivityControllerBase_1.ActivityControllerBa
     a.vru = e;
     a.J7n = t;
     a.w5n = r;
-    Net_1.Net.Call(27615, a, o => {
+    Net_1.Net.Call(28952, a, o => {
       if (o) {
         if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 27397);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 15977);
           l(undefined);
         } else {
           FloroRanchEntityActionSystem_1.FloroRanchEntityActionSystem.AddEntities(o.b6s).then(() => {
@@ -125,10 +125,10 @@ class FloroRanchController extends ActivityControllerBase_1.ActivityControllerBa
     l.w6n = o;
     l.vru = e;
     l.w5n = t;
-    Net_1.Net.Call(18039, l, o => {
+    Net_1.Net.Call(26814, l, o => {
       if (o) {
         if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 25817);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 25106);
           r(undefined);
         } else {
           ModelManager_1.ModelManager.FloroRanchGamePlayModel.OnCurrencyChange(Number(MathUtils_1.MathUtils.LongToBigInt(o.nlu)), Number(MathUtils_1.MathUtils.LongToBigInt(o.slu)));
@@ -147,10 +147,10 @@ class FloroRanchController extends ActivityControllerBase_1.ActivityControllerBa
     _.h5n = l;
     _.w5n = t;
     _.Xxs = a;
-    Net_1.Net.Call(15767, _, o => {
+    Net_1.Net.Call(18856, _, o => {
       if (o) {
         if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 27623);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 21134);
           n(undefined);
         } else {
           ModelManager_1.ModelManager.FloroRanchGamePlayModel.OnShopItemPurchased(o);
@@ -166,10 +166,10 @@ class FloroRanchController extends ActivityControllerBase_1.ActivityControllerBa
     l.w6n = o;
     l.vru = e;
     l.w5n = t;
-    Net_1.Net.Call(25423, l, o => {
+    Net_1.Net.Call(19643, l, o => {
       if (o) {
         if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 22413);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 22337);
           r(undefined);
         } else {
           ModelManager_1.ModelManager.FloroRanchGamePlayModel.OnCurrencyChange(Number(MathUtils_1.MathUtils.LongToBigInt(o.nlu)), Number(MathUtils_1.MathUtils.LongToBigInt(o.slu)));
@@ -185,10 +185,10 @@ class FloroRanchController extends ActivityControllerBase_1.ActivityControllerBa
     l.w6n = o;
     l.vru = e;
     l.J7n = t;
-    Net_1.Net.Call(18574, l, o => {
+    Net_1.Net.Call(21786, l, o => {
       if (o) {
         if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 27135);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 16048);
           r(undefined);
         } else {
           FloroRanchEntityActionSystem_1.FloroRanchEntityActionSystem.AddEntities(o.vdu).then(() => {
@@ -202,10 +202,10 @@ class FloroRanchController extends ActivityControllerBase_1.ActivityControllerBa
     var r = Protocol_1.Aki.Protocol.W2u.create();
     r.w6n = o;
     r.vru = e;
-    Net_1.Net.Call(22564, r, o => {
+    Net_1.Net.Call(19780, r, o => {
       if (o) {
         if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 26012);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 24287);
           t(false);
         } else {
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnFloroRanchNextDayTaskRefresh, o.vlu);
@@ -222,10 +222,10 @@ class FloroRanchController extends ActivityControllerBase_1.ActivityControllerBa
     a.vru = e;
     a.J2s = t;
     a.l4c = r;
-    Net_1.Net.Call(17085, a, o => {
+    Net_1.Net.Call(15239, a, o => {
       if (o) {
         if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 19829);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 24695);
           l(undefined);
         } else {
           l(o);
@@ -239,10 +239,10 @@ class FloroRanchController extends ActivityControllerBase_1.ActivityControllerBa
     var r = Protocol_1.Aki.Protocol.oru.create();
     r.w6n = o;
     r.vru = e;
-    Net_1.Net.Call(20822, r, o => {
+    Net_1.Net.Call(25273, r, o => {
       if (o) {
         if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 17215);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 23981);
           t(undefined);
         } else {
           ModelManager_1.ModelManager.FloroRanchGamePlayModel.OnTributeResult(o);
@@ -258,10 +258,10 @@ class FloroRanchController extends ActivityControllerBase_1.ActivityControllerBa
     var r = Protocol_1.Aki.Protocol.sru.create();
     r.w6n = o;
     r.vru = e;
-    Net_1.Net.Call(18665, r, o => {
+    Net_1.Net.Call(26263, r, o => {
       if (o) {
         if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 25129);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 15588);
           t?.(undefined);
         } else {
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnFloroRanchInsertTask, o.vlu);
@@ -280,10 +280,10 @@ class FloroRanchController extends ActivityControllerBase_1.ActivityControllerBa
     l.w6n = o;
     l.vru = e;
     l.Slu = t;
-    Net_1.Net.Call(28935, l, o => {
+    Net_1.Net.Call(20796, l, o => {
       if (o) {
         if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 17335);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 25626);
           r(undefined);
         } else {
           FloroRanchEntityActionSystem_1.FloroRanchEntityActionSystem.RemoveEntity(t).then(() => {
@@ -301,10 +301,10 @@ class FloroRanchController extends ActivityControllerBase_1.ActivityControllerBa
     var r = Protocol_1.Aki.Protocol.N4u.create();
     r.w6n = o;
     r.vru = e;
-    Net_1.Net.Call(24906, r, o => {
+    Net_1.Net.Call(15092, r, o => {
       if (o) {
         if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 21838);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 25251);
           t(undefined);
         } else {
           t(o);
@@ -319,11 +319,11 @@ class FloroRanchController extends ActivityControllerBase_1.ActivityControllerBa
     l.w6n = o;
     l.vru = t;
     l.eou = e;
-    Net_1.Net.Call(20329, l, o => {
+    Net_1.Net.Call(19474, l, o => {
       var e;
       if (o) {
         if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 28583);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 27986);
           r(undefined);
         } else {
           if (Log_1.Log.CheckInfo()) {
@@ -348,10 +348,10 @@ class FloroRanchController extends ActivityControllerBase_1.ActivityControllerBa
     a.w6n = o;
     a.vru = e;
     a.eou = true;
-    var a = await Net_1.Net.CallAsync(20329, a);
+    var a = await Net_1.Net.CallAsync(19474, a);
     if (a) {
       if (a.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(a.Q4n, 28583);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(a.Q4n, 27986);
       } else {
         l = ModelManager_1.ModelManager.FloroRanchModel.GetActivityData();
         if (a.ulu) {
@@ -369,10 +369,10 @@ class FloroRanchController extends ActivityControllerBase_1.ActivityControllerBa
     l.w6n = o;
     l.vru = e;
     l.PCd = t;
-    Net_1.Net.Call(27765, l, o => {
+    Net_1.Net.Call(20991, l, o => {
       if (o) {
         if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 20186);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 19558);
           r?.(undefined);
         } else {
           r?.(o);
@@ -387,10 +387,10 @@ class FloroRanchController extends ActivityControllerBase_1.ActivityControllerBa
     var o = new Protocol_1.Aki.Protocol.Niu();
     o.B6n = e;
     o.w6n = t.Id;
-    Net_1.Net.Call(19622, o, o => {
+    Net_1.Net.Call(19522, o, o => {
       if (o) {
         if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 16205);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 19937);
         } else {
           t.UpdateTaskRewardStatus(e);
         }
@@ -402,10 +402,10 @@ class FloroRanchController extends ActivityControllerBase_1.ActivityControllerBa
     var o = Protocol_1.Aki.Protocol.jiu.create();
     o.w6n = t.Id;
     o.Iru = e;
-    Net_1.Net.Call(17459, o, o => {
+    Net_1.Net.Call(19950, o, o => {
       if (o) {
         if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 22043);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 25732);
         }
         t.UpdateFloroRanchMilestoneDataList(e);
       }
@@ -416,10 +416,10 @@ class FloroRanchController extends ActivityControllerBase_1.ActivityControllerBa
     var o = Protocol_1.Aki.Protocol.Giu.create();
     o.w6n = r.Id;
     o.Eru = e;
-    Net_1.Net.Call(28814, o, o => {
+    Net_1.Net.Call(19375, o, o => {
       if (o) {
         if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 20620);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 16947);
         } else {
           r.UpdateFloroRanchTechnologyData(e);
           t(o);
@@ -432,10 +432,10 @@ class FloroRanchController extends ActivityControllerBase_1.ActivityControllerBa
     var o;
     if (!e.GetIsReadComic()) {
       (o = new Protocol_1.Aki.Protocol.jZu()).w6n = e.Id;
-      Net_1.Net.Call(17848, o, o => {
+      Net_1.Net.Call(25355, o, o => {
         if (o) {
           if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 15937);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 25977);
           } else {
             e.ReadComic();
           }
@@ -448,10 +448,10 @@ class FloroRanchController extends ActivityControllerBase_1.ActivityControllerBa
     var o = new Protocol_1.Aki.Protocol.NZu();
     o.w6n = t.Id;
     o.vru = e;
-    Net_1.Net.Call(15055, o, o => {
+    Net_1.Net.Call(29896, o, o => {
       if (o) {
         if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 23382);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 19125);
         } else {
           t.UpdateFloroRanchSubDungeonRedDot([e]);
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, t.Id);

@@ -103,7 +103,7 @@ class InstanceDungeonInfoItem extends UiPanelBase_1.UiPanelBase {
       }
       this.zth.RefreshItem(e.OnlineType);
       this.Egl(e);
-      this.eih(e.MonsterTips, e.MonsterPreview.length > 0);
+      this.eih(e, e.MonsterTips, e.MonsterPreview.length > 0);
       this.tih(e.InstSubType);
       this.oD_(e.InstSubType);
       this.qnc(t);
@@ -122,15 +122,16 @@ class InstanceDungeonInfoItem extends UiPanelBase_1.UiPanelBase {
       this.ct_ = [];
     }
   }
-  eih(t, e) {
-    if (t !== "" || e) {
+  eih(t, e, n) {
+    if (e !== "" || n) {
+      const i = t.InstSubType === 4 ? 1 : 0;
       if (this.Kth) {
         this.Kth?.SetActive(true);
-        this.Kth?.RefreshItem(t, e);
+        this.Kth?.RefreshItem(e, n, i);
       } else {
         this.Kth = new InstanceDungeonBuffItem_1.InstanceDungeonBuffItem();
         this.ct_.push(async () => this.Kth.CreateThenShowByResourceIdAsync("UiItem_InstanceDungeon_Buff", this.GetItem(0)).then(() => {
-          this.Kth?.RefreshItem(t, e);
+          this.Kth?.RefreshItem(e, n, i);
         }));
       }
     } else {

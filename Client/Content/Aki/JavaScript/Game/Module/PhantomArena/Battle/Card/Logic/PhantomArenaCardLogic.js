@@ -13,7 +13,7 @@ class PhantomArenaCardLogic {
     this.Card = undefined;
     this.ViewProxy = undefined;
     this.SkillBtnClick = () => {
-      this.tkm();
+      this.gqm();
     };
     this.Card = t;
     this.ViewProxy = e;
@@ -52,7 +52,7 @@ class PhantomArenaCardLogic {
   async OnRefreshEffect(t) {
     return Promise.resolve();
   }
-  async tkm() {
+  async gqm() {
     var t;
     var e;
     var r;

@@ -25,7 +25,7 @@ class MotorcycleCountDownView extends UiViewBase_1.UiViewBase {
         i = TimeUtil_1.TimeUtil.GetRemainTimeDataFormat5(e);
         this.AYt?.SetText(i);
         if (e < this.Rki) {
-          this.Qdf();
+          this.Xff();
         }
       }
     };
@@ -58,7 +58,7 @@ class MotorcycleCountDownView extends UiViewBase_1.UiViewBase {
       }
     });
   }
-  Qdf() {
+  Xff() {
     if (!this.dJu) {
       this.dJu = true;
       this.UiViewSequence?.PlaySequence("Loop");

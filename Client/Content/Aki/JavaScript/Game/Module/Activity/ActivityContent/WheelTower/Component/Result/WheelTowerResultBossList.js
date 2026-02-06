@@ -15,13 +15,13 @@ class WheelTowerResultBossList extends UiPanelBase_1.UiPanelBase {
     super(...arguments);
     this.Tei = undefined;
     this.ujr = undefined;
-    this.stf = () => new BossSmallItem();
+    this.drf = () => new BossSmallItem();
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIGridLayout], [2, UE.UIItem]];
   }
   OnStart() {
-    this.Tei = new GenericLayout_1.GenericLayout(this.GetGridLayout(1), this.stf, undefined);
+    this.Tei = new GenericLayout_1.GenericLayout(this.GetGridLayout(1), this.drf, undefined);
     this.ujr = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
   }
   OnBeforeDestroy() {
@@ -37,18 +37,18 @@ exports.WheelTowerResultBossList = WheelTowerResultBossList;
 class BossSmallItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
     super(...arguments);
-    this.atf = undefined;
+    this.mrf = undefined;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIText]];
   }
   async OnBeforeStartAsync() {
-    this.atf = new WheelTowerBossItem_1.WheelTowerBossItem();
-    await this.atf.CreateThenShowByActorAsync(this.GetItem(0).GetOwner());
+    this.mrf = new WheelTowerBossItem_1.WheelTowerBossItem();
+    await this.mrf.CreateThenShowByActorAsync(this.GetItem(0).GetOwner());
   }
   Refresh(e, s, t) {
-    this.atf?.Refresh(e, s, t);
-    this.atf?.SetTagVisible(false);
+    this.mrf?.Refresh(e, s, t);
+    this.mrf?.SetTagVisible(false);
   }
 }
 //# sourceMappingURL=WheelTowerResultBossList.js.map

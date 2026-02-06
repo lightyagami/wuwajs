@@ -53,11 +53,11 @@ class MoonSignInController extends ActivityControllerBase_1.ActivityControllerBa
   }
   static MoonPhaseRandomRequest(t) {
     var e = Protocol_1.Aki.Protocol.eid.create();
-    Net_1.Net.Call(16500, e, e => {
+    Net_1.Net.Call(21356, e, e => {
       var n;
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29044);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15854);
         } else {
           n = this.GetData();
           if (e.j7n && n) {
@@ -77,10 +77,10 @@ class MoonSignInController extends ActivityControllerBase_1.ActivityControllerBa
   }
   static MoonPhaseRewardRequest(n) {
     var e = Protocol_1.Aki.Protocol.iid.create();
-    Net_1.Net.Call(28076, e, e => {
+    Net_1.Net.Call(29908, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22730);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21587);
         }
         if (e = MoonSignInController.GetData()) {
           e.MoonGrandReward = true;

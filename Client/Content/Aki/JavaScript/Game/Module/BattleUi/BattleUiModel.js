@@ -36,6 +36,7 @@ const BattleUiMergeHeadStateData_1 = require("./BattleUiMergeHeadStateData");
 const BattleUiMotorcycleData_1 = require("./BattleUiMotorcycleData");
 const BattleUiPureModeData_1 = require("./BattleUiPureModeData");
 const BattleUiRoleData_1 = require("./BattleUiRoleData");
+const BattleUiSlideControlData_1 = require("./BattleUiSlideControlData");
 const BattleUiSpecialEnergyBarData_1 = require("./BattleUiSpecialEnergyBarData");
 const FullScreenEffectHandle_1 = require("./FullScreenEffectHandle");
 const LevelUpCacheData_1 = require("./LevelUpCacheData");
@@ -57,6 +58,7 @@ class BattleUiModel extends ModelBase_1.ModelBase {
     this.FormationPanelData = undefined;
     this.PureModeData = undefined;
     this.MotorcycleData = undefined;
+    this.SlideControlData = new BattleUiSlideControlData_1.BattleUiSlideControlData();
     this.MXe = [];
     this.EXe = [];
     this.SXe = true;
@@ -104,13 +106,13 @@ class BattleUiModel extends ModelBase_1.ModelBase {
     this.Hn1 = new Map();
     this.BossStateAreaList = [];
     this.wXe = undefined;
-    this.lxm = false;
+    this.kxm = false;
     this.BXe = false;
     this.bXe = undefined;
     this.qXe = undefined;
     this.GXe = () => {
-      if (this.lxm) {
-        this.lxm = false;
+      if (this.kxm) {
+        this.kxm = false;
         this.wXe = TimerSystem_1.TimerSystem.Next(this.GXe, BattleUiModel.jXe);
       } else {
         this.wXe = undefined;
@@ -152,7 +154,7 @@ class BattleUiModel extends ModelBase_1.ModelBase {
         }
       }
     };
-    this.vKf = (t, e) => {
+    this.flg = (t, e) => {
       if (t === 0) {
         this.MotorcycleData?.SetNeedCacheUi(e);
       }
@@ -216,7 +218,7 @@ class BattleUiModel extends ModelBase_1.ModelBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.GeneralLogicTreeEndShowTrackText, this.JZe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.GeneralLogicTreeStartShowTrackText, this.eet);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnGeneralLogicTreeRemove, this.HQe);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSetBattleUiChildCacheStateNotify, this.vKf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSetBattleUiChildCacheStateNotify, this.flg);
     return true;
   }
   async Preload() {
@@ -283,7 +285,7 @@ class BattleUiModel extends ModelBase_1.ModelBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.GeneralLogicTreeEndShowTrackText, this.JZe);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.GeneralLogicTreeStartShowTrackText, this.eet);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnGeneralLogicTreeRemove, this.HQe);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSetBattleUiChildCacheStateNotify, this.vKf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSetBattleUiChildCacheStateNotify, this.flg);
     return true;
   }
   OnWorldDone() {
@@ -400,7 +402,7 @@ class BattleUiModel extends ModelBase_1.ModelBase {
     this.bXe = t?.Id;
     this.qXe = e?.Id;
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BattleUiCurRoleDataChanged, this.bXe, this.qXe ?? 0);
-    this.lxm = true;
+    this.kxm = true;
     this.VXe();
     this.RefreshAllRoleSpecialState();
   }
@@ -471,7 +473,7 @@ class BattleUiModel extends ModelBase_1.ModelBase {
         TimerSystem_1.TimerSystem.Remove(this.wXe);
       }
       this.wXe = undefined;
-      this.lxm = false;
+      this.kxm = false;
       this.BXe = false;
       this.bXe = undefined;
       this.qXe = undefined;

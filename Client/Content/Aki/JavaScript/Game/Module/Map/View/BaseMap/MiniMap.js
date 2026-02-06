@@ -33,13 +33,13 @@ class MiniMap extends UiPanelBase_1.UiPanelBase {
     this.dAi = 1;
     this.lUi = 1;
     this.Lfc = undefined;
-    this.Y6m = undefined;
-    this.d5f = undefined;
+    this.J7m = undefined;
+    this.HWf = undefined;
     this.MAi = () => {
       this.MapTileMgr.OnMapSetUp();
       this.MapTileMgr.LoadMapBorder();
       this.CAi.OnMapSetup();
-      this.d5f?.OnMapSetup();
+      this.HWf?.OnMapSetup();
       this.RootItem.SetUIActive(true);
     };
     this.MapType = t;
@@ -73,10 +73,10 @@ class MiniMap extends UiPanelBase_1.UiPanelBase {
     this.ODl = undefined;
     this.Lfc?.Destroy();
     this.Lfc = undefined;
-    this.Y6m?.Destroy();
-    this.Y6m = undefined;
-    this.d5f?.Dispose();
-    this.d5f = undefined;
+    this.J7m?.Destroy();
+    this.J7m = undefined;
+    this.HWf?.Dispose();
+    this.HWf = undefined;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [2, UE.UITexture], [1, UE.UIItem], [3, UE.UIItem], [4, UE.UITexture], [5, UE.UIItem], [6, UE.UITexture], [7, UE.UIItem]];
@@ -89,12 +89,8 @@ class MiniMap extends UiPanelBase_1.UiPanelBase {
     this.RootItem.SetHierarchyIndex(0);
     this.Lfc = new MapRangePanel_1.MapRangePanel(this);
     this.Lfc.CheckExploreMarkRangeInfo();
-    this.Y6m = new AutoPilotLine_1.AutoPilotLine(this);
-    this.Y6m?.CheckAutoPilotLineInfo();
-    this.d5f = new MapRoadWaysMgr_1.MapRoadWaysMgr({
-      MapId: this.MapId,
-      Container: this.GetItem(7)
-    });
+    this.J7m = new AutoPilotLine_1.AutoPilotLine(this);
+    this.J7m?.CheckAutoPilotLineInfo();
   }
   F$t(t) {
     var i = this.GetItem(0);
@@ -132,6 +128,10 @@ class MiniMap extends UiPanelBase_1.UiPanelBase {
     this.MapTileMgr = new MapTileMgr_1.MapTileMgr(t);
     this.MapTileMgr.Initialize();
     this.ODl = new MapSoundBoxSfxMgr_1.MapSoundBoxSfxMgr();
+    this.HWf = new MapRoadWaysMgr_1.MapRoadWaysMgr({
+      MapId: this.MapId,
+      Container: this.GetItem(7)
+    });
   }
   yWe() {
     if (ModelManager_1.ModelManager.GameModeModel.WorldDone) {
@@ -193,7 +193,7 @@ class MiniMap extends UiPanelBase_1.UiPanelBase {
   }
   Tick() {
     this.CAi?.Tick();
-    this.Y6m?.OnMiniMapTick();
+    this.J7m?.OnMiniMapTick();
   }
   UpdateMinimapTiles(t) {
     this.MapTileMgr.UpdateMinimapTiles(t);
@@ -213,13 +213,13 @@ class MiniMap extends UiPanelBase_1.UiPanelBase {
         if (!this.WaitToDestroy) {
           this.Lfc?.Destroy();
           this.Lfc = new MapRangePanel_1.MapRangePanel(this);
-          this.Y6m?.Destroy();
-          this.Y6m = new AutoPilotLine_1.AutoPilotLine(this);
+          this.J7m?.Destroy();
+          this.J7m = new AutoPilotLine_1.AutoPilotLine(this);
           await this.MapTileMgr.OnChangeTilesAsync(this.Z3_, this.e4_, this.MapGravity);
           this.Lfc.CheckExploreMarkRangeInfo();
-          this.Y6m?.CheckAutoPilotLineInfo();
+          this.J7m?.CheckAutoPilotLineInfo();
           this.CAi.OnChangeWorldMap(this.Z3_, this.e4_, this.MapGravity);
-          this.d5f?.OnChangeWorldMap(this.Z3_);
+          this.HWf?.OnChangeWorldMap(this.Z3_);
         }
       });
       await this.RunAsyncTask(t);

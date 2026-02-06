@@ -19,7 +19,7 @@ class LevelEventPlayBubble extends LevelGeneralBase_1.LevelEventBase {
         if (t?.Type === 6) {
           ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(t.TreeIncId)?.AddDynamicFlowNpc(o.EntityId);
         }
-        r = this.ejf(o.EntityId, o.Flow);
+        r = this.fig(o.EntityId, o.Flow);
       } else {
         let e = 0;
         if (t?.Type === 1) {
@@ -29,7 +29,7 @@ class LevelEventPlayBubble extends LevelGeneralBase_1.LevelEventBase {
         }
         var l = EntitySystem_1.EntitySystem.Get(e ?? 0)?.GetComponent(1)?.CreatureData.GetCreatureDataId();
         if (l) {
-          r = this.tjf(l, o.Flow);
+          r = this.gig(l, o.Flow);
         }
       }
       if (r) {
@@ -45,7 +45,7 @@ class LevelEventPlayBubble extends LevelGeneralBase_1.LevelEventBase {
       this.FinishExecute(false);
     }
   }
-  ejf(e, r) {
+  fig(e, r) {
     var o = new DynamicFlowController_1.CharacterDynamicFlowData();
     var r = {
       EntityIds: [e],
@@ -64,7 +64,7 @@ class LevelEventPlayBubble extends LevelGeneralBase_1.LevelEventBase {
     };
     return o;
   }
-  tjf(e, r) {
+  gig(e, r) {
     var o = new DynamicFlowController_1.CharacterDynamicFlowData();
     var r = {
       EntityIds: [],

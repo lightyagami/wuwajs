@@ -12,7 +12,7 @@ class RedDotVisionRecovery extends RedDotBase_1.RedDotBase {
     return [EventDefine_1.EEventName.OnVisionRecoveryStorage];
   }
   OnCheck() {
-    return ModelManager_1.ModelManager.PhantomBattleModel.GetVisionRecoveryBatchRedDot();
+    return ModelManager_1.ModelManager.PhantomBattleModel.GetVisionRecoveryBatchRedDot() || ModelManager_1.ModelManager.PhantomBattleModel.GetVisionRecoveryBatchAimRedDot();
   }
 }
 exports.RedDotVisionRecovery = RedDotVisionRecovery;

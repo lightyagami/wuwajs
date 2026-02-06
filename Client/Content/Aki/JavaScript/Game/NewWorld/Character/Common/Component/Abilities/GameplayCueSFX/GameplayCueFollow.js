@@ -48,7 +48,7 @@ class GameplayCueFollow extends GameplayCueEffect_1.GameplayCueEffect {
     this.P$o = !t.IsZero();
     t.Rotation(this.x$o);
     this.JHa = this.CueConfig.LockCamera;
-    this.Gce = this.EntityHandle?.Entity?.GetComponent(46);
+    this.Gce = this.EntityHandle?.Entity?.GetComponent(48);
   }
   OnTick(t) {
     super.OnTick(t);

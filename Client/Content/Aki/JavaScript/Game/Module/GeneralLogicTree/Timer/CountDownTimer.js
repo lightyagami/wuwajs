@@ -35,7 +35,7 @@ class CountDownTimer extends LogicTreeTimerBase_1.LogicTreeTimerBase {
       if (e && e === this.TreeId && this.InnerTimerType === i) {
         var n = r * 1000;
         switch (t) {
-          case Protocol_1.Aki.Protocol.s3s.TNm:
+          case Protocol_1.Aki.Protocol.s3s.H3m:
             this.MYt += n;
             break;
           case Protocol_1.Aki.Protocol.s3s.Proto_Sub:
@@ -140,7 +140,7 @@ class CountDownTimer extends LogicTreeTimerBase_1.LogicTreeTimerBase {
           this.HWc(e);
           break;
         case 5:
-          this.Wdf(e);
+          this.Kff(e);
       }
     }
   }
@@ -183,7 +183,7 @@ class CountDownTimer extends LogicTreeTimerBase_1.LogicTreeTimerBase {
     }
     this.LYt(e);
   }
-  Wdf(e) {
+  Kff(e) {
     if (!UiManager_1.UiManager.GetViewByName("MotorcycleCountDownView") || !!ModelManager_1.ModelManager.GeneralLogicTreeModel.CountDownViewClosing) {
       UiManager_1.UiManager.OpenView("MotorcycleCountDownView");
     }

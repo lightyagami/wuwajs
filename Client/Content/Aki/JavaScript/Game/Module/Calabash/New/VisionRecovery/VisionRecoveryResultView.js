@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.VisionRecoveryResultView = undefined;
 const UE = require("ue");
 const Log_1 = require("../../../../../Core/Common/Log");
+const Protocol_1 = require("../../../../../Core/Define/Net/Protocol");
 const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const UiViewBase_1 = require("../../../../Ui/Base/UiViewBase");
@@ -45,8 +46,12 @@ class VisionRecoveryResultView extends UiViewBase_1.UiViewBase {
       await this.$vt.CreateThenShowByActorAsync(this.GetItem(1).GetOwner());
       this.Zvt(e.OBs);
       this.eMt(e.bMs);
-      await this.tMt(e.GBs);
-      this.iMt(e.GBs);
+      if (e instanceof Protocol_1.Aki.Protocol.Ols) {
+        await this.tMt(e.GBs);
+        this.iMt(e.GBs);
+      } else {
+        this.GetItem(2).SetUIActive(false);
+      }
     }
   }
   Zvt(e) {
@@ -76,20 +81,20 @@ class VisionRecoveryResultView extends UiViewBase_1.UiViewBase {
         i.SetUIActive(false);
       } else {
         i.SetUIActive(true);
-        const r = this.GetItem(3);
-        const s = this.GetItem(4);
-        const o = new Array();
+        const o = this.GetItem(3);
+        const r = this.GetItem(4);
+        const s = new Array();
         t.forEach(() => {
           var e = new VisionRecoverySlotItem_1.VisionRecoverySlotItem(this.zvt, false);
-          var i = LguiUtil_1.LguiUtil.CopyItem(s, r);
-          o.push(e.CreateThenShowByActorAsync(i.GetOwner()));
+          var i = LguiUtil_1.LguiUtil.CopyItem(r, o);
+          s.push(e.CreateThenShowByActorAsync(i.GetOwner()));
           this.Yvt.push(e);
         });
-        await Promise.all(o);
+        await Promise.all(s);
         this.Yvt.forEach((e, i) => {
           e.RefreshUi(t[i]);
         });
-        s.SetUIActive(false);
+        r.SetUIActive(false);
       }
     }
   }

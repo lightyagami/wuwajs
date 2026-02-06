@@ -22,52 +22,56 @@ class MotorcycleTaskTabView extends UiTabViewBase_1.UiTabViewBase {
   constructor() {
     super(...arguments);
     this.Ivt = undefined;
-    this.qcf = undefined;
-    this.rcf = 0;
-    this.Ocf = () => {
+    this.xmf = undefined;
+    this.emf = 0;
+    this.Bmf = () => {
       new UiAsyncTask_1.UiAsyncTask("TabUpdate", async () => {
-        await this.Gcf();
+        await this.kmf();
       }).Run();
     };
     this.pqe = e => {
       var t = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetActivatedTreeTypeList();
-      this.rcf = t[e];
+      this.emf = t[e];
+      ModelManager_1.ModelManager.MotorcycleDevelopModel.UpdateSelectedTreeType(this.emf);
       this._Xa();
       this.OZs();
-      var t = ModelManager_1.ModelManager.MotorcycleDevelopModel.RedDotHasNewTechTree(this.rcf);
+      var t = ModelManager_1.ModelManager.MotorcycleDevelopModel.RedDotHasNewTechTree(this.emf);
       if (t) {
-        ModelManager_1.ModelManager.MotorcycleDevelopModel.UpdateTechTreeNewUnlocked(this.rcf, false);
+        ModelManager_1.ModelManager.MotorcycleDevelopModel.UpdateTechTreeNewUnlocked(this.emf, false);
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.MotorDevelopTreeTypeRedDotUpdate);
       }
     };
-    this.Fcf = (e, t) => new MotorcycleTreeTypeTabItem_1.MotorcycleTreeTypeTabItem();
+    this.qmf = (e, t) => new MotorcycleTreeTypeTabItem_1.MotorcycleTreeTypeTabItem();
     this.ou_ = () => new MotorcycleTaskItem_1.MotorcycleTaskItem();
-    this.Ojm = () => {
+    this.kWm = () => {
       ControllerHolder_1.ControllerHolder.HelpController.OpenHelpById(MotorcycleDevelopDefine_1.MOTORCYCLE_DEVELOP_HELP_TASK);
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UILoopScrollViewComponent], [1, UE.UIItem], [2, UE.UIText], [3, UE.UIText], [4, UE.UIButtonComponent], [5, UE.UISprite], [6, UE.UIHorizontalLayout], [7, UE.UIItem], [8, UE.UITexture]];
-    this.BtnBindInfo = [[4, this.Ojm]];
+    this.BtnBindInfo = [[4, this.kWm]];
   }
   OnStart() {
-    this.Ivt = new TabComponent_1.TabComponent(this.GetHorizontalLayout(6).RootUIComp, this.Fcf, this.pqe, this.GetItem(7));
+    this.Ivt = new TabComponent_1.TabComponent(this.GetHorizontalLayout(6).RootUIComp, this.qmf, this.pqe, this.GetItem(7));
     var e = this.GetLoopScrollViewComponent(0);
     var t = this.GetItem(1).GetOwner();
-    this.qcf = new LoopScrollView_1.LoopScrollView(e, t, this.ou_, true);
-    this.rcf = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetCurTreeType();
+    this.xmf = new LoopScrollView_1.LoopScrollView(e, t, this.ou_, true);
   }
   OnBeforeShow() {
     this.GetLoopScrollViewComponent(0).Content.GetComponentByClass(UE.UIInturnAnimController.StaticClass())?.Play();
-    this.Gcf();
+    this.emf = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetSelectedTreeType();
+    if (this.emf === 0) {
+      this.emf = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetCurTreeType();
+    }
+    this.kmf();
   }
   AddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.MotorDevelopTaskUpdate, this.Ocf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.MotorDevelopTaskUpdate, this.Bmf);
   }
   RemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.MotorDevelopTaskUpdate, this.Ocf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.MotorDevelopTaskUpdate, this.Bmf);
   }
-  async Gcf() {
+  async kmf() {
     var e;
     var t;
     var i = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetActivatedTreeTypeList();
@@ -84,7 +88,7 @@ class MotorcycleTaskTabView extends UiTabViewBase_1.UiTabViewBase {
     }
     let o = 0;
     for (let e = 0; e < r.length; e++) {
-      if (r[e].TreeType === this.rcf) {
+      if (r[e].TreeType === this.emf) {
         o = e;
         break;
       }
@@ -92,9 +96,9 @@ class MotorcycleTaskTabView extends UiTabViewBase_1.UiTabViewBase {
     this.Ivt.SelectToggleByIndex(o, true);
   }
   _Xa() {
-    const e = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetTaskListByTree(this.rcf);
+    const e = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetTaskListByTree(this.emf);
     new UiAsyncTask_1.UiAsyncTask("TaskListUpdate", async () => {
-      await this.qcf.RefreshByDataAsync(e, false);
+      await this.xmf.RefreshByDataAsync(e, false);
     }).Run();
   }
   OZs() {
@@ -102,9 +106,9 @@ class MotorcycleTaskTabView extends UiTabViewBase_1.UiTabViewBase {
     var t;
     var i;
     var r;
-    var o = ConfigManager_1.ConfigManager.MotorConfig.GetMotorTechTreeConfig(this.rcf);
+    var o = ConfigManager_1.ConfigManager.MotorConfig.GetMotorTechTreeConfig(this.emf);
     if (o) {
-      r = (i = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetCostPointByTree(this.rcf) + (e = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetFreePointByTree(this.rcf))) / (t = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetTotalPointByTree(this.rcf));
+      r = (i = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetCostPointByTree(this.emf) + (e = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetFreePointByTree(this.emf))) / (t = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetTotalPointByTree(this.emf));
       o = ConfigManager_1.ConfigManager.ItemConfig.GetConfig(o.TpItemId).Icon;
       this.GetSprite(5).SetFillAmount(r);
       this.GetText(2).SetText(i + "/" + t);
@@ -117,7 +121,7 @@ class MotorcycleTaskTabView extends UiTabViewBase_1.UiTabViewBase {
     var i;
     if (e[0].includes("Reward")) {
       e = Number(e[1]);
-      t = (e = this.qcf?.UnsafeGetGridProxy(e))?.GetBtnGet();
+      t = (e = this.xmf?.UnsafeGetGridProxy(e))?.GetBtnGet();
       i = e?.GetNavigationItem();
       if (e) {
         return [t, i];

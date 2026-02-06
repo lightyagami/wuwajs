@@ -112,8 +112,8 @@ class TowerDefenseEventController extends ControllerBase_1.ControllerBase {
   }
   static InitMap() {
     this.Tju();
-    Net_1.Net.Register(25112, TowerDefenseEventController.bJu);
-    Net_1.Net.Register(15809, TowerDefenseEventController.Ded);
+    Net_1.Net.Register(16241, TowerDefenseEventController.bJu);
+    Net_1.Net.Register(17403, TowerDefenseEventController.Ded);
   }
   static OnWorldDone() {
     this.IsWorldInit = true;
@@ -122,8 +122,8 @@ class TowerDefenseEventController extends ControllerBase_1.ControllerBase {
   static OnWorldReset() {
     if (this.IsWorldInit) {
       this.IsWorldInit = false;
-      Net_1.Net.UnRegister(25112);
-      Net_1.Net.UnRegister(15809);
+      Net_1.Net.UnRegister(16241);
+      Net_1.Net.UnRegister(17403);
       this.nHu();
     }
   }
@@ -330,7 +330,7 @@ class TowerDefenseEventController extends ControllerBase_1.ControllerBase {
     if (this.IsInPreview()) {
       if (TrapDefenseBattleGuideManager_1.TrapDefenseBattleGuideManager.CheckCanExecuteAndShowFailTips("SpawnMonster")) {
         var e = Protocol_1.Aki.Protocol.cFu.create();
-        var e = await Net_1.Net.CallAsync(28404, e);
+        var e = await Net_1.Net.CallAsync(28045, e);
         if (e && e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
           return true;
         }
@@ -419,7 +419,7 @@ class TowerDefenseEventController extends ControllerBase_1.ControllerBase {
     r.rPs = e.Coords.Y;
     r.Nfu = TowerDefenseEventUtility_1.TowerDefenseEventUtility.ConvertDegree2Direction(e.Degree);
     t.Vfu = r;
-    var r = await Net_1.Net.CallAsync(16486, t);
+    var r = await Net_1.Net.CallAsync(22415, t);
     if (r && r.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
       e.Uid = MathUtils_1.MathUtils.LongToNumber(r.s5n);
     }
@@ -433,7 +433,7 @@ class TowerDefenseEventController extends ControllerBase_1.ControllerBase {
   static async Sku(e) {
     var t = Protocol_1.Aki.Protocol.kfu.create();
     t.s5n = e.Uid;
-    var e = await Net_1.Net.CallAsync(20223, t);
+    var e = await Net_1.Net.CallAsync(29880, t);
     return e?.Q4n;
   }
   static rPd() {

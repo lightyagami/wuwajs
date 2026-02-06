@@ -30,7 +30,7 @@ class WaitSceneReferenceEntityPlaySequenceNode extends TickBehaviorNode_1.TickBe
     var t;
     if (!this.YJc) {
       if ((t = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(this.wDe))?.Entity?.Valid && t.Entity.IsInit) {
-        if (t = t.Entity.GetComponent(172)) {
+        if (t = t.Entity.GetComponent(174)) {
           if (t.IsPlayToMarkFinished(this.$Pe)) {
             this.SubmitNode();
           }

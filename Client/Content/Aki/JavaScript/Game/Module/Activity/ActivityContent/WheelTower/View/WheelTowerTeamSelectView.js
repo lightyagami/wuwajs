@@ -18,9 +18,9 @@ class WheelTowerTeamSelectView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
     this.Qyi = undefined;
-    this.aif = undefined;
+    this.mof = undefined;
     this.LSc = undefined;
-    this.Kuf = undefined;
+    this.$df = undefined;
     this.Hea = undefined;
     this._a_ = e => {
       const t = ModelManager_1.ModelManager.WheelTowerModel.GetRealRoleId(e);
@@ -29,7 +29,7 @@ class WheelTowerTeamSelectView extends UiViewBase_1.UiViewBase {
         (i = new ConfirmBoxDefine_1.ConfirmBoxDataNew(407)).FunctionMap.set(2, () => {
           ModelManager_1.ModelManager.WheelTowerModel.TryAddOrDeleteRole(t);
           ModelManager_1.ModelManager.WheelTowerModel.TryAddOrDeleteRole(e);
-          this.aif?.RefreshPanel();
+          this.mof?.RefreshPanel();
         });
         ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(i);
       } else {
@@ -38,9 +38,9 @@ class WheelTowerTeamSelectView extends UiViewBase_1.UiViewBase {
         }
         ModelManager_1.ModelManager.WheelTowerModel.TryAddOrDeleteRole(e);
       }
-      this.L5m(e);
+      this.KVm(e);
     };
-    this.Utf = e => {
+    this.Frf = e => {
       const t = [];
       for (let e = 0; e < ModelManager_1.ModelManager.WheelTowerModel.GetTeamMaxRoleCount(); e++) {
         t.push(0);
@@ -52,12 +52,12 @@ class WheelTowerTeamSelectView extends UiViewBase_1.UiViewBase {
         i++;
       });
       ModelManager_1.ModelManager.WheelTowerModel.SetTmpSelectRoleList(t.filter(e => e > 0));
-      this.Kuf?.Refresh();
+      this.$df?.Refresh();
     };
-    this.hif = (e, t) => {
-      this.L5m(t, true);
-      this.Kuf?.Refresh();
-      this.Kuf?.SetUiActive(e === 1);
+    this.fof = (e, t) => {
+      this.KVm(t, true);
+      this.$df?.Refresh();
+      this.$df?.SetUiActive(e === 1);
       this.LSc?.SetUiActive(e !== 1);
     };
     this.p5t = () => {
@@ -72,33 +72,33 @@ class WheelTowerTeamSelectView extends UiViewBase_1.UiViewBase {
     var e = [];
     this.Qyi = new PopupCaptionItem_1.PopupCaptionItem();
     e.push(this.Qyi.CreateThenShowByActorAsync(this.GetItem(0).GetOwner()));
-    this.aif = new WheelTowerTeamSelectMainPanel_1.WheelTowerTeamSelectMainPanel();
-    e.push(this.aif.CreateThenShowByActorAsync(this.GetItem(2).GetOwner()));
+    this.mof = new WheelTowerTeamSelectMainPanel_1.WheelTowerTeamSelectMainPanel();
+    e.push(this.mof.CreateThenShowByActorAsync(this.GetItem(2).GetOwner()));
     this.LSc = new WheelTowerRoleInfoPanel_1.WheelTowerRoleInfoPanel();
     e.push(this.LSc.CreateThenShowByActorAsync(this.GetItem(3).GetOwner()));
-    this.Kuf = new WheelTowerStrShowPanel_1.WheelTowerStrShowPanel();
-    e.push(this.Kuf.CreateThenShowByActorAsync(this.GetItem(4).GetOwner()));
+    this.$df = new WheelTowerStrShowPanel_1.WheelTowerStrShowPanel();
+    e.push(this.$df.CreateThenShowByActorAsync(this.GetItem(4).GetOwner()));
     await Promise.all(e);
   }
   OnStart() {
     this.Qyi?.SetCloseCallBack(() => {
       this.CloseMe();
     });
-    this.aif.OnRoleSelect = this._a_;
-    this.aif.OnTeamSelect = this.Utf;
-    this.aif.OnSelectModeChange = this.hif;
+    this.mof.OnRoleSelect = this._a_;
+    this.mof.OnTeamSelect = this.Frf;
+    this.mof.OnSelectModeChange = this.fof;
     this.LSc.OnClickConfirm = this.p5t;
-    this.Kuf.OnClickConfirm = this.p5t;
+    this.$df.OnClickConfirm = this.p5t;
     ModelManager_1.ModelManager.WheelTowerModel.SelectToTmp();
     this.Hea = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
   }
   OnBeforeShow() {
-    this.aif?.RefreshPanel();
+    this.mof?.RefreshPanel();
   }
   OnBeforeDestroy() {
     this.Hea?.Clear();
   }
-  L5m(e, t = false) {
+  KVm(e, t = false) {
     if (e !== ModelManager_1.ModelManager.WheelTowerModel.TmpSelectRoleId && e > 0 || t) {
       this.Hea?.PlayOrReplaySequenceByName("Switch");
       this.LSc?.Refresh(e);
@@ -107,7 +107,7 @@ class WheelTowerTeamSelectView extends UiViewBase_1.UiViewBase {
   GetGuideUiItemAndUiItemForShowEx(e) {
     if (e[0] === "RoleTab") {
       e = Number(e[1]);
-      if (e = this.aif?.GetTabItem(e)) {
+      if (e = this.mof?.GetTabItem(e)) {
         return [e, e];
       } else {
         return undefined;

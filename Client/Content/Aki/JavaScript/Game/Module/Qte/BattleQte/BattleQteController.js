@@ -28,7 +28,7 @@ class BattleQteController extends ControllerBase_1.ControllerBase {
       if (n && n.Valid && _) {
         if (a?.IsDead()) {
           l = "当前角色已死亡, 不能触发战斗Qte";
-        } else if (_.GetComponent(131)?.HasPauseLock()) {
+        } else if (_.GetComponent(133)?.HasPauseLock()) {
           l = "当前角色大招时停中, 不能触发战斗Qte";
         }
       } else {

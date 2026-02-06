@@ -38,18 +38,18 @@ class VehicleTeamMember extends StateMachineContainer_1.StateMachineContainer {
       var d = (0, puerts_1.$ref)(UE.NewArray(UE.BuiltinInt));
       var g = l.GetIntersectionId(M.Id);
       l.GetRoadwaysAtSameIntersection(g, d);
-      var v = (0, puerts_1.$unref)(d);
-      _.AddIntersection(g, v);
+      var C = (0, puerts_1.$unref)(d);
+      _.AddIntersection(g, C);
       l.GetCrossingRoads(M.Id, d);
       var g = (0, puerts_1.$unref)(d);
       _.RecordCrossingRoadways(M.Id, g);
     }
-    var C = Vector_1.Vector.Create();
-    C.DeepCopy(u.RoadStartPoint);
-    var p = Vector_1.Vector.Create();
-    p.DeepCopy(u.RoadEndPoint);
-    var B = ModelManager_1.ModelManager.CreatureModel.GetEntity(i).Entity.GetComponent(338);
-    this.eXt = new VehicleSmBlackBoard_1.VehicleSmBlackBoard(t, e, i, r, a, s, h, S, C, p, n, o, B, c, this.p5r);
+    var v = Vector_1.Vector.Create();
+    v.DeepCopy(u.RoadStartPoint);
+    var D = Vector_1.Vector.Create();
+    D.DeepCopy(u.RoadEndPoint);
+    var V = ModelManager_1.ModelManager.CreatureModel.GetEntity(i).Entity.GetComponent(340);
+    this.eXt = new VehicleSmBlackBoard_1.VehicleSmBlackBoard(t, e, i, r, a, s, h, S, v, D, n, o, V, c, this.p5r);
   }
   get Type() {
     return 0;
@@ -86,6 +86,10 @@ class VehicleTeamMember extends StateMachineContainer_1.StateMachineContainer {
   }
   Destroy() {
     this.Lle.Destroy();
+    var t = this.eXt.CurrentRoadway;
+    if (t) {
+      ModelManager_1.ModelManager.VehicleStreamModel.ExitRoadway(t.Id, this.eXt.CreatureDataId);
+    }
   }
   OnForceTick(e) {
     this.eXt.TickNum++;
@@ -105,7 +109,7 @@ class VehicleTeamMember extends StateMachineContainer_1.StateMachineContainer {
       var i = this.Lle.GetCurrentState();
       if (i) {
         e = e.GetModelBufferTime().toFixed(2);
-        UE.KismetSystemLibrary.D_DrawDebugString(GlobalData_1.GlobalData.World, t, `${i.toString()}_${e}_${this.eXt?.WaitingModelBuffer}`, undefined, r);
+        UE.KismetSystemLibrary.D_DrawDebugString(GlobalData_1.GlobalData.World, t, `${i.toString()}_${e}_${this.eXt?.WaitingModelBuffer}_${this.eXt.RoadNetworkNavigationComponent.IsModelBufferCompTickEnabled()}`, undefined, r);
       }
     }
   }
@@ -113,29 +117,33 @@ class VehicleTeamMember extends StateMachineContainer_1.StateMachineContainer {
     if (this.eXt.LastTickNum !== this.eXt.TickNum) {
       this.eXt.TimeSinceLastTick = 0;
       this.eXt.UpdateMoved = false;
-      this.uvf();
+      this.yMf();
       this.Lle.Update(e);
       if (this.eXt.UpdateMoved) {
-        this.AUm(t, e, i);
+        this.oxm(t, e, i);
       }
       this.eXt.LastTickNum = this.eXt.TickNum;
     }
   }
   OnEnterPlayerRange() {
-    this.eXt.EnableAudio = true;
-    this.eXt.EnableTrace = true;
+    this.eXt.IsInPlayerRange = true;
     this.Lle.OnEnterPlayerRange();
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("VehicleStream", 18, "进入玩家感知范围", ["CreatureDataId", this.eXt.CreatureDataId]);
+    }
   }
   OnLeavePlayerRange() {
-    this.eXt.EnableAudio = false;
-    this.eXt.EnableTrace = false;
+    this.eXt.IsInPlayerRange = false;
     this.Lle.OnLeavePlayerRange();
     for (const t of this.eXt.AudioHandleSet) {
       this.eXt.StopAudio(t, false);
     }
     this.eXt.AudioHandleSet.clear();
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("VehicleStream", 18, "离开玩家感知范围", ["CreatureDataId", this.eXt.CreatureDataId]);
+    }
   }
-  uvf() {
+  yMf() {
     var t = this.eXt.RoadNetworkNavigationComponent;
     if (this.eXt.WaitingModelBuffer && t.HasModelBuffer()) {
       return true;
@@ -148,7 +156,7 @@ class VehicleTeamMember extends StateMachineContainer_1.StateMachineContainer {
     this.eXt.LastRenderOnScreen = e;
     return this.eXt.WaitingModelBuffer;
   }
-  AUm(t, e, i) {
+  oxm(t, e, i) {
     this.eXt.RoadNetworkNavigationComponent.SetLocationAndRotation(this.eXt.DesireLocation.ToUeVector(), this.eXt.DesireRotator.ToUeRotator(), t, e, i);
   }
   GetCurrentRootDistance() {

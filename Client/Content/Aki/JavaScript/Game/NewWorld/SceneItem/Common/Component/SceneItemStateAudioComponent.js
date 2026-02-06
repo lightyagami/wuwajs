@@ -52,7 +52,7 @@ let SceneItemStateAudioComponent = SceneItemStateAudioComponent_1 = class SceneI
     this.O1n = undefined;
     this.k1n = undefined;
     this.fd1 = undefined;
-    this.W0f = undefined;
+    this.Lvf = undefined;
     this.V1n = undefined;
     this.H1n = undefined;
     this.j1n = undefined;
@@ -64,7 +64,7 @@ let SceneItemStateAudioComponent = SceneItemStateAudioComponent_1 = class SceneI
         if (i) {
           this.X1n(i, 0);
         }
-        if (this.W0f.get(this.W1n)) {
+        if (this.Lvf.get(this.W1n)) {
           ControllerHolder_1.ControllerHolder.MotorcycleMusicPlayerController.PushAreaDisableCount();
         }
       } else if (this.b1n && !t) {
@@ -81,7 +81,7 @@ let SceneItemStateAudioComponent = SceneItemStateAudioComponent_1 = class SceneI
         if (i) {
           this.$1n(i);
         }
-        if (this.W0f.get(this.W1n)) {
+        if (this.Lvf.get(this.W1n)) {
           ControllerHolder_1.ControllerHolder.MotorcycleMusicPlayerController.PopAreaDisableCount();
         }
       }
@@ -136,7 +136,7 @@ let SceneItemStateAudioComponent = SceneItemStateAudioComponent_1 = class SceneI
     };
   }
   static get Dependencies() {
-    return [212, 0];
+    return [214, 0];
   }
   OnInitData(t) {
     var t = t.GetParam(SceneItemStateAudioComponent_1)[0];
@@ -148,7 +148,7 @@ let SceneItemStateAudioComponent = SceneItemStateAudioComponent_1 = class SceneI
   }
   OnStart() {
     var t;
-    this.cen = this.Entity.GetComponent(142);
+    this.cen = this.Entity.GetComponent(144);
     if (!this.cen) {
       t = this.EIe.GetPbDataId();
       if (Log_1.Log.CheckError()) {
@@ -171,7 +171,7 @@ let SceneItemStateAudioComponent = SceneItemStateAudioComponent_1 = class SceneI
         this.Z1n(true);
         break;
       case IComponent_1.EAudioRangeType.SceneActorRefComp:
-        this.Men = this.Entity.GetComponent(172);
+        this.Men = this.Entity.GetComponent(174);
         if (!this.Men) {
           if (Log_1.Log.CheckError()) {
             Log_1.Log.Error("Entity", 39, "SceneItemReferenceComponent不存在", ["entityConfigId", this.EIe.GetPbDataId()]);
@@ -219,7 +219,7 @@ let SceneItemStateAudioComponent = SceneItemStateAudioComponent_1 = class SceneI
     this.O1n = new Map();
     this.k1n = new Map();
     this.fd1 = new Map();
-    this.W0f = new Map();
+    this.Lvf = new Map();
     for (const i of this.q1n.Config ?? []) {
       var t = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(i.State);
       if (t) {
@@ -232,7 +232,7 @@ let SceneItemStateAudioComponent = SceneItemStateAudioComponent_1 = class SceneI
         if (i.AudioFade) {
           this.fd1.set(t, i.AudioFade);
         }
-        this.W0f.set(t, !!i.IsBanVehicleRadio);
+        this.Lvf.set(t, !!i.IsBanVehicleRadio);
       }
     }
   }
@@ -270,7 +270,7 @@ let SceneItemStateAudioComponent = SceneItemStateAudioComponent_1 = class SceneI
   o_n(t, i) {
     var e;
     if (this.N1n.Type === IComponent_1.EAkEventType.Default && t) {
-      if ((e = this.Entity?.GetComponent(212)?.Owner)?.IsValid()) {
+      if ((e = this.Entity?.GetComponent(214)?.Owner)?.IsValid()) {
         t = (0, AudioSystem_1.parseAudioEventPath)(t);
         t = AudioSystem_1.AudioSystem.PostEvent(t, e);
         if (i !== 1) {
@@ -369,7 +369,7 @@ let SceneItemStateAudioComponent = SceneItemStateAudioComponent_1 = class SceneI
       if (i) {
         this.X1n(i, 0);
       }
-      if (this.W0f.get(this.W1n)) {
+      if (this.Lvf.get(this.W1n)) {
         ControllerHolder_1.ControllerHolder.MotorcycleMusicPlayerController.PushAreaDisableCount();
       }
     } else {
@@ -386,7 +386,7 @@ let SceneItemStateAudioComponent = SceneItemStateAudioComponent_1 = class SceneI
       if (i) {
         this.$1n(i);
       }
-      if (this.W0f.get(this.W1n)) {
+      if (this.Lvf.get(this.W1n)) {
         ControllerHolder_1.ControllerHolder.MotorcycleMusicPlayerController.PopAreaDisableCount();
       }
     }
@@ -430,5 +430,5 @@ let SceneItemStateAudioComponent = SceneItemStateAudioComponent_1 = class SceneI
     }
   }
 };
-SceneItemStateAudioComponent = SceneItemStateAudioComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(140)], SceneItemStateAudioComponent);
+SceneItemStateAudioComponent = SceneItemStateAudioComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(142)], SceneItemStateAudioComponent);
 exports.SceneItemStateAudioComponent = SceneItemStateAudioComponent; //# sourceMappingURL=SceneItemStateAudioComponent.js.map

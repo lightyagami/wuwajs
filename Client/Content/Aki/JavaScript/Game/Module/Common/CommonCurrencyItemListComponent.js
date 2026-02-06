@@ -10,31 +10,34 @@ const CommonCurrencyItem_1 = require("./CommonCurrencyItem");
 class CommonCurrencyItemListComponent {
   constructor(e) {
     this.PTt = undefined;
+    this.nGe = [];
     this.xTt = undefined;
     this.xTt = e;
   }
   qXs(e) {
     return new (ModelManager_1.ModelManager.PowerModel.CheckItemIfPowerItem(e) ? PowerCurrencyItem_1.PowerCurrencyItem : CommonCurrencyItem_1.CommonCurrencyItem)();
   }
-  async SetCurrencyItemList(r) {
-    this.PTt ||= new Array();
-    let t = undefined;
-    var o = [];
-    for (let e = this.PTt.length; e < r.length; e++) {
-      const t = this.qXs(r[e]);
-      this.PTt.push(t);
-      var n = t.CreateThenShowByResourceIdAsync("UIItem_CommonCurrencyItem", this.xTt);
-      o.push(n);
+  async SetCurrencyItemList(t) {
+    if (!this.PTt) {
+      this.PTt = new Array();
+      this.nGe = [];
     }
-    await Promise.all(o);
-    for (let e = 0; e < r.length; e++) {
-      const t = this.PTt[e];
-      t.RefreshTemp(r[e]);
-      t.SetActive(true);
-      t.RefreshAddButtonActive();
+    let r = undefined;
+    for (let e = this.PTt.length; e < t.length; e++) {
+      const r = this.qXs(t[e]);
+      this.PTt.push(r);
+      var o = r.CreateThenShowByResourceIdAsync("UIItem_CommonCurrencyItem", this.xTt);
+      this.nGe.push(o);
     }
-    for (let e = r.length; e < this.PTt.length; e++) {
-      (t = this.PTt[e]).SetActive(false);
+    await Promise.all(this.nGe);
+    for (let e = 0; e < t.length; e++) {
+      const r = this.PTt[e];
+      r.RefreshTemp(t[e]);
+      r.SetActive(true);
+      r.RefreshAddButtonActive();
+    }
+    for (let e = t.length; e < this.PTt.length; e++) {
+      (r = this.PTt[e]).SetActive(false);
     }
   }
   GetCurrencyItemList() {

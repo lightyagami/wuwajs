@@ -1,22 +1,22 @@
 "use strict";
 
 var __decorate = this && this.__decorate || function (e, t, i, o) {
-  var f;
-  var s = arguments.length;
-  var r = s < 3 ? t : o === null ? o = Object.getOwnPropertyDescriptor(t, i) : o;
+  var s;
+  var r = arguments.length;
+  var f = r < 3 ? t : o === null ? o = Object.getOwnPropertyDescriptor(t, i) : o;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    r = Reflect.decorate(e, t, i, o);
+    f = Reflect.decorate(e, t, i, o);
   } else {
     for (var n = e.length - 1; n >= 0; n--) {
-      if (f = e[n]) {
-        r = (s < 3 ? f(r) : s > 3 ? f(t, i, r) : f(t, i)) || r;
+      if (s = e[n]) {
+        f = (r < 3 ? s(f) : r > 3 ? s(t, i, f) : s(t, i)) || f;
       }
     }
   }
-  if (s > 3 && r) {
-    Object.defineProperty(t, i, r);
+  if (r > 3 && f) {
+    Object.defineProperty(t, i, f);
   }
-  return r;
+  return f;
 };
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -24,19 +24,30 @@ Object.defineProperty(exports, "__esModule", {
 exports.UiModelBuffComponent = undefined;
 const BuffById_1 = require("../../../../../Core/Define/ConfigQuery/BuffById");
 const GameplayCueById_1 = require("../../../../../Core/Define/ConfigQuery/GameplayCueById");
+const TimerSystem_1 = require("../../../../../Core/Timer/TimerSystem");
 const FNameUtil_1 = require("../../../../../Core/Utils/FNameUtil");
 const Rotator_1 = require("../../../../../Core/Utils/Math/Rotator");
 const Transform_1 = require("../../../../../Core/Utils/Math/Transform");
 const Vector_1 = require("../../../../../Core/Utils/Math/Vector");
+const StringUtils_1 = require("../../../../../Core/Utils/StringUtils");
+const TimeUtil_1 = require("../../../../Common/TimeUtil");
+const EffectSystem_1 = require("../../../../Effect/EffectSystem");
 const UiModelComponentDefine_1 = require("../../Define/UiModelComponentDefine");
 const UiModelComponentBase_1 = require("../UiModelComponentBase");
 const UiModelEffectComponent_1 = require("./UiModelEffectComponent");
+class BuffHandle {
+  constructor() {
+    this.EffectHandleSet = new Set();
+    this.MaterialHandleSet = new Set();
+  }
+}
 let UiModelBuffComponent = class UiModelBuffComponent extends UiModelComponentBase_1.UiModelComponentBase {
   constructor() {
     super(...arguments);
     this.n$t = undefined;
     this.D_r = undefined;
-    this.BuffToEffectsMap = new Map();
+    this.dGg = undefined;
+    this.BuffToHandlesMap = new Map();
     this.CacheEffectContext = new UiModelEffectComponent_1.UiModelEffectPlayContext();
     this.CacheLocation = Vector_1.Vector.Create();
     this.CacheRotator = Rotator_1.Rotator.Create();
@@ -46,67 +57,122 @@ let UiModelBuffComponent = class UiModelBuffComponent extends UiModelComponentBa
   OnInit() {
     this.n$t = this.Owner.CheckGetComponent(1);
     this.D_r = this.Owner.CheckGetComponent(4);
+    this.dGg = this.Owner.CheckGetComponent(5);
   }
   OnEnd() {
     this.RemoveAllBuffId();
   }
-  AddBuffByBuffId(t) {
-    if (!this.BuffToEffectsMap.has(t)) {
-      var e = BuffById_1.configBuffById.GetConfig(t);
-      if (e) {
-        e = e.GameplayCueIds;
-        if (e && e.length !== 0) {
-          for (const o of e) {
-            var i = GameplayCueById_1.configGameplayCueById.GetConfig(o);
-            if (i) {
-              i = this.PlayEffectByCueConfig(i);
-              let e = this.BuffToEffectsMap.get(t);
-              if (!e) {
-                e = new Set();
-                this.BuffToEffectsMap.set(t, e);
-              }
-              e.add(i);
+  AddBuffByBuffId(e) {
+    if (!this.BuffToHandlesMap.has(e)) {
+      var t = BuffById_1.configBuffById.GetConfig(e);
+      if (t) {
+        var i = t.GameplayCueIds;
+        if (i && i.length !== 0) {
+          var o = new BuffHandle();
+          for (const r of i) {
+            var s = GameplayCueById_1.configGameplayCueById.GetConfig(r);
+            if (s) {
+              this.z5g(t, s, o);
             }
           }
+          this.BuffToHandlesMap.set(e, o);
         }
       }
     }
   }
-  PlayEffectByCueConfig(e) {
-    var t = this.CacheEffectContext;
-    t.Reset();
-    t.EffectPath = e.Path;
-    t.AttachTargetComponent = this.n$t.MainMeshComponent;
-    t.LocationRule = e.LocRule;
-    t.RotationRule = e.RotaRule;
-    t.ScaleRule = e.SclRule;
-    var i = e.Location;
-    this.CacheLocation.Set(i.X, i.Y, i.Z);
+  z5g(e, t, i) {
+    var o;
+    switch (t.CueType) {
+      case 0:
+        if ((o = this.PlayEffectByConfig(e, t)) > 0) {
+          i.EffectHandleSet.add(o);
+        }
+        break;
+      case 1:
+        if ((o = this.AddMaterialControllerByCueConfig(t)) > 0) {
+          i.MaterialHandleSet.add(o);
+        }
+    }
+  }
+  AddMaterialControllerByCueConfig(e) {
+    e = e.Path;
+    if (StringUtils_1.StringUtils.IsBlank(e)) {
+      return 0;
+    } else {
+      return this.dGg.AddRenderingMaterialByPath(e);
+    }
+  }
+  PlayEffectByConfig(e, i) {
+    let o = 0;
+    if (e.DurationPolicy === 2) {
+      o = e.DurationMagnitude[0];
+    }
+    var e = this.CacheEffectContext;
+    e.Reset();
+    e.EffectPath = i.Path;
+    e.AttachTargetComponent = this.n$t.MainMeshComponent;
+    e.LocationRule = i.LocRule;
+    e.RotationRule = i.RotaRule;
+    e.ScaleRule = i.SclRule;
+    var t = i.Location;
+    this.CacheLocation.Set(t.X, t.Y, t.Z);
     this.CacheTransform.SetLocation(this.CacheLocation);
-    var i = e.Rotation;
-    this.CacheRotator.Set(i.X, i.Y, i.Z);
+    var t = i.Rotation;
+    this.CacheRotator.Set(t.X, t.Y, t.Z);
     this.CacheTransform.SetRotation(this.CacheRotator.Quaternion());
-    var i = e.Scale;
-    this.CacheScale.Set(i.X, i.Y, i.Z);
+    var t = i.Scale;
+    this.CacheScale.Set(t.X, t.Y, t.Z);
     this.CacheTransform.SetScale3D(this.CacheScale);
-    t.Transform = this.CacheTransform.ToUeTransform();
-    t.SocketName = FNameUtil_1.FNameUtil.GetDynamicFName(e.Socket) ?? FNameUtil_1.FNameUtil.EMPTY;
-    return this.D_r.PlayEffectByContext(t);
+    e.Transform = this.CacheTransform.ToUeTransform();
+    e.SocketName = FNameUtil_1.FNameUtil.GetDynamicFName(i.Socket) ?? FNameUtil_1.FNameUtil.EMPTY;
+    if (o > 0) {
+      e.Callback = (e, t) => {
+        if (e === 5) {
+          TimerSystem_1.GameplayTimerSystem.Delay(() => {
+            this.StopEffectByCueEndRule(t, i.EndRule);
+          }, o * TimeUtil_1.TimeUtil.InverseMillisecond);
+        }
+      };
+    }
+    return this.D_r.PlayEffectByContext(e);
+  }
+  StopEffectByCueEndRule(e, t) {
+    let i = false;
+    if (EffectSystem_1.EffectSystem.IsValid(e)) {
+      switch (t) {
+        case 0:
+          i = true;
+          break;
+        case 1:
+          i = false;
+          break;
+        case 2:
+          EffectSystem_1.EffectSystem.FreezeHandle(e, false);
+          i = false;
+      }
+      this.D_r.StopEffect(e, i);
+    }
   }
   RemoveBuffByBuffId(e) {
-    e = this.BuffToEffectsMap.get(e);
-    if (e) {
-      for (const t of e) {
-        this.D_r.StopEffect(t);
+    var t = this.BuffToHandlesMap.get(e);
+    if (t) {
+      for (const i of t.EffectHandleSet) {
+        this.D_r.StopEffect(i);
       }
+      t.EffectHandleSet.clear();
+      for (const o of t.MaterialHandleSet) {
+        this.dGg.RemoveRenderingMaterial(o);
+      }
+      t.MaterialHandleSet.clear();
+      this.BuffToHandlesMap.delete(e);
     }
   }
   RemoveAllBuffId() {
-    if (this.BuffToEffectsMap.size !== 0) {
-      for (const e of this.BuffToEffectsMap.keys()) {
+    if (this.BuffToHandlesMap.size !== 0) {
+      for (const e of this.BuffToHandlesMap.keys()) {
         this.RemoveBuffByBuffId(e);
       }
-      this.BuffToEffectsMap.clear();
+      this.BuffToHandlesMap.clear();
     }
   }
 };

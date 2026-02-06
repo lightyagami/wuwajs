@@ -51,8 +51,8 @@ class RoleDevUtils {
         }
         var r = e.SpecialGachaId;
         for (const a of r) {
-          if (ModelManager_1.ModelManager.GachaModel.CheckGachaValidByGachaId(a.Item2)) {
-            t.push(a.Item2);
+          if (ModelManager_1.ModelManager.GachaModel.CheckGachaValidByGachaId(a.GachaId)) {
+            t.push(a.GachaId);
           }
         }
       }
@@ -225,7 +225,7 @@ class RoleDevUtils {
       var o = ConfigManager_1.ConfigManager.RoleDevConfig?.GetTypeManageConfig(l)?.TypeDescribe ?? "";
       var i = t.find(e => e.Type === l)?.Materials ?? [];
       var i = this.Zzd(i);
-      var n = this._Bm(r, l);
+      var n = this.qBm(r, l);
       a.push({
         RoleId: e,
         MainPage: r,
@@ -237,7 +237,7 @@ class RoleDevUtils {
     }
     return a;
   }
-  static _Bm(e, t) {
+  static qBm(e, t) {
     let r = undefined;
     switch (e) {
       case 1:

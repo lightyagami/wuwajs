@@ -10,6 +10,7 @@ const Log_1 = require("../../../../../Core/Common/Log");
 const CommonParamById_1 = require("../../../../../Core/Define/ConfigCommon/CommonParamById");
 const Protocol_1 = require("../../../../../Core/Define/Net/Protocol");
 const Net_1 = require("../../../../../Core/Net/Net");
+const MathUtils_1 = require("../../../../../Core/Utils/MathUtils");
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
 const PublicUtil_1 = require("../../../../Common/PublicUtil");
@@ -36,14 +37,20 @@ class ActivityRegressController extends ActivityControllerBase_1.ActivityControl
   constructor() {
     super(...arguments);
     this.Jca = new Map();
-    this.v5f = e => {
-      for (const r of e.Ogf) {
-        this.gBf(r);
+    this.ZWf = e => {
+      var r = e.HCf;
+      var t = e.h_g;
+      for (const a of r) {
+        if (t && t.Q6n === a) {
+          this._Nf(a, t);
+        } else {
+          this._Nf(a);
+        }
       }
     };
-    this.VVf = e => {
+    this.WXf = e => {
       for (const r of e.Q6n) {
-        this.gBf(r);
+        this._Nf(r);
       }
     };
     this.nye = () => {
@@ -102,12 +109,12 @@ class ActivityRegressController extends ActivityControllerBase_1.ActivityControl
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPayItemSuccess, this.USe);
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(26686, this.v5f);
-    Net_1.Net.Register(25252, this.VVf);
+    Net_1.Net.Register(19365, this.ZWf);
+    Net_1.Net.Register(26115, this.WXf);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(26686);
-    Net_1.Net.UnRegister(25252);
+    Net_1.Net.UnRegister(19365);
+    Net_1.Net.UnRegister(26115);
   }
   OnClear() {
     this.Jca.clear();
@@ -124,6 +131,11 @@ class ActivityRegressController extends ActivityControllerBase_1.ActivityControl
     return new ActivityRegress30MainView_1.ActivityRegress30MainView();
   }
   OnGetIsOpeningActivityRelativeView() {
+    for (const e of ["ActivityNewPlayerSupportTrialRoleView"]) {
+      if (UiManager_1.UiManager.IsViewOpen(e)) {
+        return true;
+      }
+    }
     return false;
   }
   RequestClaimSignReward(e) {
@@ -138,10 +150,10 @@ class ActivityRegressController extends ActivityControllerBase_1.ActivityControl
     var t = Protocol_1.Aki.Protocol.Xh1.create();
     t.BVn = r;
     t.w6n = e;
-    Net_1.Net.Call(27055, t, e => {
+    Net_1.Net.Call(16345, t, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 28620);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29881);
         } else {
           ModelManager_1.ModelManager.ActivityRegressModel.ActivityData.SetRegressScoreRewardReached(r);
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RecallActivityInfoUpdate);
@@ -159,10 +171,10 @@ class ActivityRegressController extends ActivityControllerBase_1.ActivityControl
     a.w6n = t;
     a.k6n = r;
     a.gps = e;
-    Net_1.Net.Call(21233, a, e => {
+    Net_1.Net.Call(24428, a, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 28352);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27125);
         }
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RecallActivityInfoUpdate);
       }
@@ -181,12 +193,12 @@ class ActivityRegressController extends ActivityControllerBase_1.ActivityControl
     }
     if (a.length !== 0) {
       r = ModelManager_1.ModelManager.ActivityRegressModel.ActivityId;
-      (t = Protocol_1.Aki.Protocol.iDf.create()).w6n = r;
+      (t = Protocol_1.Aki.Protocol.kqf.create()).w6n = r;
       t.gps = a;
-      Net_1.Net.Call(22329, t, e => {
+      Net_1.Net.Call(29753, t, e => {
         if (e) {
           if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25158);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24507);
           }
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RecallActivityInfoUpdate);
         }
@@ -196,10 +208,10 @@ class ActivityRegressController extends ActivityControllerBase_1.ActivityControl
   async RequestGachaInfo() {
     var e = Protocol_1.Aki.Protocol.Xrs.create();
     e.r9n = LanguageSystem_1.LanguageSystem.GetLanguageDefineByCode(LanguageSystem_1.LanguageSystem.PackageLanguage).LanguageType;
-    var e = await Net_1.Net.CallAsync(24476, e);
+    var e = await Net_1.Net.CallAsync(16989, e);
     if (e) {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17163);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16411);
       } else {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("Gacha", 63, "抽卡服务端数据:", ["Result", JSON.stringify(e)]);
@@ -212,34 +224,35 @@ class ActivityRegressController extends ActivityControllerBase_1.ActivityControl
       Log_1.Log.Error("ActivityRecall", 63, "回流活动->ActivityRegressController.RequestGachaInfo 请求抽卡数据失败");
     }
   }
-  RegressSetCurUseTrialRoleRequest(e) {
-    var r = Protocol_1.Aki.Protocol.nxf.create();
-    r.Ogf = e;
-    Net_1.Net.Call(18117, r, e => {
+  RegressSetCurUseTrialRoleRequest(e, r) {
+    var t = Protocol_1.Aki.Protocol.KGf.create();
+    t.HCf = e;
+    Net_1.Net.Call(26736, t, e => {
       if (e) {
         if (e.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 25158);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 24507);
         }
         ModelManager_1.ModelManager.ActivityRegressModel.ActivityData.CurrentUseTrialRole = e.Q6n;
-        ModelManager_1.ModelManager.TrialRoleModel.SetCurUseTrialRole(e.Q6n, e.oXf);
+        ModelManager_1.ModelManager.TrialRoleModel.SetCurUseTrialRole(e.Q6n, e.h_g);
+        r?.(e.Q6n);
       }
     });
   }
-  gBf(e) {
-    var r = ConfigManager_1.ConfigManager.TrialRoleConfig?.GetTrialRoleGroupId(e);
-    if (ModelManager_1.ModelManager.TrialRoleModel.GetDataByGroupId(r).IsLocked()) {
+  _Nf(e, r) {
+    var t = ConfigManager_1.ConfigManager.TrialRoleConfig?.GetTrialRoleGroupId(e);
+    if (ModelManager_1.ModelManager.TrialRoleModel.GetDataByGroupId(t).IsLocked()) {
       ModelManager_1.ModelManager.ActivityRegressModel.ActivityData?.SetTrialRoleRedDotChecked(false);
     }
-    ModelManager_1.ModelManager.TrialRoleModel.SetGroupTrialRoleId(e);
+    ModelManager_1.ModelManager.TrialRoleModel.SetGroupTrialRoleId(e, r);
   }
   RegressTrialRoleLvUpRequest(e) {
-    var r = Protocol_1.Aki.Protocol.kyf.create();
-    r.Ogf = e;
-    Net_1.Net.Call(16141, r, e => {
+    var r = Protocol_1.Aki.Protocol.zIf.create();
+    r.HCf = e;
+    Net_1.Net.Call(15727, r, e => {
       if (e.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 28041);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 20413);
       } else {
-        this.gBf(e.Q6n);
+        this._Nf(e.Q6n, e.h_g);
       }
     });
   }
@@ -284,16 +297,31 @@ class ActivityRegressController extends ActivityControllerBase_1.ActivityControl
     const r = ConfigManager_1.ConfigManager.ActivityRegressConfig.GetRegressQuestionnaireConfig(e);
     e = Protocol_1.Aki.Protocol.pI1.create();
     e.SI1 = r.Id;
-    Net_1.Net.Call(17125, e, e => {
+    Net_1.Net.Call(28602, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24687);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23212);
         }
         ModelManager_1.ModelManager.ActivityRegressModel.ActivityData.SetQuestionnaireReached(r.Id);
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RecallActivityInfoUpdate);
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, ModelManager_1.ModelManager.ActivityRegressModel.ActivityId);
       }
     });
+  }
+  async NewTrialRoleGetNightmarePhantomInstInfoRequest() {
+    var e = Protocol_1.Aki.Protocol.QBg.create();
+    var e = await Net_1.Net.CallAsync(22786, e);
+    if (e) {
+      if (e.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 28947);
+      } else {
+        ModelManager_1.ModelManager.ActivityRegressModel.SaveInsIdList = e.YBg;
+        ModelManager_1.ModelManager.ActivityRegressModel.NightmarePhantomInstInfoMap.clear();
+        for (const r of e.XBg) {
+          ModelManager_1.ModelManager.ActivityRegressModel.NightmarePhantomInstInfoMap.set(r.aAu, MathUtils_1.MathUtils.LongToNumber(r.JBg));
+        }
+      }
+    }
   }
   GetQuestionnaireUrl(e) {
     var e = ConfigManager_1.ConfigManager.ActivityRegressConfig.GetRegressQuestionnaireConfig(e);
@@ -431,11 +459,11 @@ class ActivityRegressController extends ActivityControllerBase_1.ActivityControl
     }
   }
   RegressDisposableRewardRequest() {
-    var e = Protocol_1.Aki.Protocol.Uyf.create();
-    Net_1.Net.Call(25143, e, e => {
+    var e = Protocol_1.Aki.Protocol.KIf.create();
+    Net_1.Net.Call(20518, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24114);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 28087);
         } else {
           ModelManager_1.ModelManager.ActivityRegressModel.ActivityData.DisposableReward = true;
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RecallActivityInfoUpdate);
@@ -501,9 +529,9 @@ class ActivityRegressController extends ActivityControllerBase_1.ActivityControl
     return new RewardData_1.RewardData(o);
   }
   RequestBuyBattlePassLevel(e) {
-    var r = Protocol_1.Aki.Protocol.hUf.create();
-    r.axf = e;
-    Net_1.Net.Call(21401, r, () => EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RecallActivityInfoUpdate));
+    var r = Protocol_1.Aki.Protocol.jOf.create();
+    r.YGf = e;
+    Net_1.Net.Call(25347, r, () => EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RecallActivityInfoUpdate));
   }
   static OpenGameIntroductionByRoleId(e) {
     let r = ModelManager_1.ModelManager.ChannelModel.GameIntroductionUrl;
@@ -520,8 +548,8 @@ class ActivityRegressController extends ActivityControllerBase_1.ActivityControl
     e.SetRequestTrialRoleLvUpFunc(e => {
       this.RegressTrialRoleLvUpRequest(e);
     });
-    e.SetRequestSetCurUseTrialRoleFunc(e => {
-      this.RegressSetCurUseTrialRoleRequest(e);
+    e.SetRequestSetCurUseTrialRoleFunc((e, r) => {
+      this.RegressSetCurUseTrialRoleRequest(e, r);
     });
     var r = ConfigManager_1.ConfigManager.ActivityRegressConfig.GetTrialRoleUnlockDesc();
     e.SetTrialRoleGroupUnlockDesc(r);

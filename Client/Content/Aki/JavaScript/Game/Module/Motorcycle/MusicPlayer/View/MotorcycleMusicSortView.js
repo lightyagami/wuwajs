@@ -17,17 +17,17 @@ class MotorcycleMusicSortView extends UiViewBase_1.UiViewBase {
     super(...arguments);
     this.xqe = undefined;
     this.G6e = undefined;
-    this.DUf = () => {
+    this.dGf = () => {
       if (this.xqe?.IsDragging()) {
         this.xqe.CancelDrag();
       } else {
         this.CloseMe();
       }
     };
-    this.UUf = () => {
+    this.mGf = () => {
       this.GetItem(0)?.SetUIActive(false);
     };
-    this.xUf = () => {
+    this.fGf = () => {
       this.GetItem(0)?.SetUIActive(true);
     };
     this.Bqe = () => {
@@ -38,10 +38,10 @@ class MotorcycleMusicSortView extends UiViewBase_1.UiViewBase {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIScrollViewWithScrollbarComponent], [3, UE.UIVerticalLayout], [4, UE.UIItem]];
   }
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnMotorMusicSortDragCancel, this.DUf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnMotorMusicSortDragCancel, this.dGf);
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnMotorMusicSortDragCancel, this.DUf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnMotorMusicSortDragCancel, this.dGf);
   }
   async OnBeforeStartAsync() {
     new PopupCaptionItem_1.PopupCaptionItem(this.GetItem(0)).SetCloseCallBack(this.CloseMe.bind(this));
@@ -50,8 +50,8 @@ class MotorcycleMusicSortView extends UiViewBase_1.UiViewBase {
     this.G6e = e.OnCallback;
     await this.xqe.RefreshByDataAsync(e.MusicList);
     if (this.xqe) {
-      this.xqe.OnItemPointerDownCallback = this.UUf;
-      this.xqe.OnItemPointerUpCallback = this.xUf;
+      this.xqe.OnItemPointerDownCallback = this.mGf;
+      this.xqe.OnItemPointerUpCallback = this.fGf;
     }
   }
   OnBeforeShowImplementImplement() {

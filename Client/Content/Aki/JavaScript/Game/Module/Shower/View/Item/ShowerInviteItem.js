@@ -33,10 +33,9 @@ class ShowerInviteItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.H5e?.OnStateChange.Add(this.kqe);
   }
   Refresh(t, i, s) {
-    this.aCo = t;
-    this.dFe = this.aCo.GetRoleId();
-    t = ModelManager_1.ModelManager.EditFormationModel.GetCurrentFormationData?.GetRoleIdList ?? [];
-    this._n_ = t.includes(this.dFe);
+    this.aCo = t.RoleInstance;
+    this.dFe = t.RoleInstance.GetRoleId();
+    this._n_ = t.IsInFormation;
     this._Oe();
     t = {
       Data: this.aCo,

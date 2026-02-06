@@ -35,13 +35,13 @@ class TimeOfDayController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.LoginSuccess, this.gSe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BeforeLoadMap, this.SYi);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDone, this.FWe);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestSyncTsTimeModelParam, this.zwm);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestAdjustTime, this.Jwm);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestSetTimeScale, this.Zwm);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestLockTimeRunStateClient, this.eLm);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestLockTimeSyncLockStateClient, this.tLm);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestTimeCanOpenViewState, this.iLm);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestSyncServerGameTime, this.rLm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestSyncTsTimeModelParam, this.SLm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestAdjustTime, this.MLm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestSetTimeScale, this.ELm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestLockTimeRunStateClient, this.ILm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestLockTimeSyncLockStateClient, this.TLm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestTimeCanOpenViewState, this.bLm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestSyncServerGameTime, this.RLm);
   }
   static OnRemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.EnterGameSuccess, this.nTo);
@@ -49,25 +49,25 @@ class TimeOfDayController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.LoginSuccess, this.gSe);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BeforeLoadMap, this.SYi);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDone, this.FWe);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestSyncTsTimeModelParam, this.zwm);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestAdjustTime, this.Jwm);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestSetTimeScale, this.Zwm);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestLockTimeRunStateClient, this.eLm);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestLockTimeSyncLockStateClient, this.tLm);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestTimeCanOpenViewState, this.iLm);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestSyncServerGameTime, this.rLm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestSyncTsTimeModelParam, this.SLm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestAdjustTime, this.MLm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestSetTimeScale, this.ELm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestLockTimeRunStateClient, this.ILm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestLockTimeSyncLockStateClient, this.TLm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestTimeCanOpenViewState, this.bLm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestSyncServerGameTime, this.RLm);
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(20510, TimeOfDayController.sTo);
-    Net_1.Net.Register(20598, TimeOfDayController.aTo);
-    Net_1.Net.Register(18985, TimeOfDayController.hTo);
-    Net_1.Net.Register(15912, TimeOfDayController.Awa);
+    Net_1.Net.Register(25807, TimeOfDayController.sTo);
+    Net_1.Net.Register(20327, TimeOfDayController.aTo);
+    Net_1.Net.Register(18769, TimeOfDayController.hTo);
+    Net_1.Net.Register(22445, TimeOfDayController.Awa);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(20510);
-    Net_1.Net.UnRegister(20598);
-    Net_1.Net.UnRegister(18985);
-    Net_1.Net.UnRegister(15912);
+    Net_1.Net.UnRegister(25807);
+    Net_1.Net.UnRegister(20327);
+    Net_1.Net.UnRegister(18769);
+    Net_1.Net.UnRegister(22445);
   }
   static OnTick(e) {
     if (!!TimeOfDayController.lTo && !!TimeOfDayController._To && !TimeOfDayController.uTo && !TimeOfDayController.cTo && !ModelManager_1.ModelManager.TimeOfDayModel.TimeRunLockState) {
@@ -103,7 +103,7 @@ class TimeOfDayController extends UiControllerBase_1.UiControllerBase {
       return false;
     }
     for (const e of ConfigManager_1.ConfigManager.TimeOfDayConfig.GetBanGamePlayTags()) {
-      if (e && Global_1.Global.BaseCharacter.CharacterActorComponent?.Entity?.GetComponent(215)?.HasTag(e.TagId)) {
+      if (e && Global_1.Global.BaseCharacter.CharacterActorComponent?.Entity?.GetComponent(217)?.HasTag(e.TagId)) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("TimeOfDay", 27, "时间在BanTag");
         }
@@ -250,10 +250,10 @@ class TimeOfDayController extends UiControllerBase_1.UiControllerBase {
       n.ojn = i;
       n.x9n = a;
       n.njn = e;
-      Net_1.Net.Call(15890, n, e => {
+      Net_1.Net.Call(28312, n, e => {
         if (e) {
           if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25511);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 28166);
           } else {
             ModelManager_1.ModelManager.TimeOfDayModel.SetCurrentDay(e.aDs);
             EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsResponseSyncServerGameTime, e.aDs);
@@ -361,7 +361,7 @@ TimeOfDayController.Awa = e => {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.CrossDayZone);
   }
 };
-TimeOfDayController.zwm = () => {
+TimeOfDayController.SLm = () => {
   var e = ModelManager_1.ModelManager.TimeOfDayModel.FreezeTimeScale;
   var t = ModelManager_1.ModelManager.TimeOfDayModel.TimeRunLockStateClient;
   var i = ModelManager_1.ModelManager.TimeOfDayModel.TimeRunLockStateServer;
@@ -369,23 +369,23 @@ TimeOfDayController.zwm = () => {
   var n = ModelManager_1.ModelManager.TimeOfDayModel.TimeSyncLockStateServer;
   EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsResponseSyncToCsTimeModelParam, e, t, i, a, n);
 };
-TimeOfDayController.Jwm = (e, t, i) => {
+TimeOfDayController.MLm = (e, t, i) => {
   _a.AdjustTime(e, t, i);
 };
-TimeOfDayController.Zwm = e => {
+TimeOfDayController.ELm = e => {
   ModelManager_1.ModelManager.TimeOfDayModel.SetTimeScale(e, false);
 };
-TimeOfDayController.eLm = e => {
+TimeOfDayController.ILm = e => {
   ModelManager_1.ModelManager.TimeOfDayModel.SetTimeRunLockStateClient(e, false);
 };
-TimeOfDayController.tLm = e => {
+TimeOfDayController.TLm = e => {
   ModelManager_1.ModelManager.TimeOfDayModel.SetTimeSyncLockStateClient(e, false);
 };
-TimeOfDayController.iLm = () => {
+TimeOfDayController.bLm = () => {
   var e = _a.gTo();
   EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsResponseTimeCanOpenViewState, e);
 };
-TimeOfDayController.rLm = (e, t, i, a) => {
+TimeOfDayController.RLm = (e, t, i, a) => {
   _a.RecordLastHour(t);
   _a.yTo(e, t, i, a);
 }; //# sourceMappingURL=TimeOfDayController.js.map

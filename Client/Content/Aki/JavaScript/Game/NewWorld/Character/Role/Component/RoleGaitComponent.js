@@ -84,9 +84,10 @@ let RoleGaitComponent = class RoleGaitComponent extends EntityComponent_1.Entity
       }
       this.$in();
     };
+    this.sng = true;
   }
   static get Dependencies() {
-    return [3, 187];
+    return [3, 189];
   }
   OnInitData() {
     this.RoleForbidMovementHelper = new RoleForbidMovementHelper_1.RoleForbidMovementHelper();
@@ -94,11 +95,11 @@ let RoleGaitComponent = class RoleGaitComponent extends EntityComponent_1.Entity
   }
   OnStart() {
     this.Hte = this.Entity.CheckGetComponent(3);
-    this.Gce = this.Entity.CheckGetComponent(187);
-    this.HBr = this.Entity.CheckGetComponent(184);
-    this.Xte = this.Entity.CheckGetComponent(215);
-    this.Nce = this.Entity.CheckGetComponent(65);
-    this.$zo = this.Entity.CheckGetComponent(183);
+    this.Gce = this.Entity.CheckGetComponent(189);
+    this.HBr = this.Entity.CheckGetComponent(186);
+    this.Xte = this.Entity.CheckGetComponent(217);
+    this.Nce = this.Entity.CheckGetComponent(67);
+    this.$zo = this.Entity.CheckGetComponent(185);
     RoleGaitStatic_1.RoleGaitStatic.Init();
     this.InitRoleForbidMovementHelper();
     return true;
@@ -107,7 +108,7 @@ let RoleGaitComponent = class RoleGaitComponent extends EntityComponent_1.Entity
     this.RoleGaitUnEnableState.set(2, new Set());
     this.RoleGaitUnEnableState.set(1, new Set());
     this.RoleGaitUnEnableState.set(3, new Set());
-    this.RoleForbidMovementHelper.TagComp = this.Entity.CheckGetComponent(215);
+    this.RoleForbidMovementHelper.TagComp = this.Entity.CheckGetComponent(217);
     this.RoleForbidMovementHelper.CreateTagHandler(-63548288, 1, this.Xin);
     this.RoleForbidMovementHelper.CreateTagHandler(229513169, 1, this.Yin);
     this.RoleForbidMovementHelper.CreateTagHandler(930178923, 0, this.Jin);
@@ -258,7 +259,15 @@ let RoleGaitComponent = class RoleGaitComponent extends EntityComponent_1.Entity
     }
   }
   Zin() {
-    if (!Info_1.Info.IsInKeyBoard()) {
+    if (Info_1.Info.IsInKeyBoard()) {
+      if (!this.sng) {
+        if (this.HBr.MarkWalkOrRun(false, false)) {
+          this.HBr.WalkPress();
+        }
+      }
+      this.sng = true;
+    } else {
+      this.sng = false;
       if (Info_1.Info.IsInGamepad()) {
         this.eon();
       } else if (Info_1.Info.IsInTouch()) {
@@ -267,11 +276,12 @@ let RoleGaitComponent = class RoleGaitComponent extends EntityComponent_1.Entity
     }
   }
   eon() {
-    if (this.Nce.GetMoveVectorCache().SizeSquared() > MathUtils_1.MathUtils.Square(RoleGaitStatic_1.RoleGaitStatic.GetWalkOrRunRate())) {
-      if (this.HBr.MoveState === CharacterUnifiedStateTypes_1.ECharMoveState.Walk) {
+    var t = this.Nce.GetMoveVectorCache().SizeSquared();
+    if (MathUtils_1.MathUtils.IsNearlyZero(t) || t > MathUtils_1.MathUtils.Square(RoleGaitStatic_1.RoleGaitStatic.GetWalkOrRunRate())) {
+      if (this.HBr.MarkWalkOrRun(false, false)) {
         this.HBr.WalkPress();
       }
-    } else if (this.HBr.MoveState === CharacterUnifiedStateTypes_1.ECharMoveState.Run) {
+    } else if (this.HBr.MarkWalkOrRun(true, false)) {
       this.HBr.WalkPress();
     }
   }
@@ -285,5 +295,5 @@ let RoleGaitComponent = class RoleGaitComponent extends EntityComponent_1.Entity
     }
   }
 };
-RoleGaitComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(100)], RoleGaitComponent);
+RoleGaitComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(102)], RoleGaitComponent);
 exports.RoleGaitComponent = RoleGaitComponent; //# sourceMappingURL=RoleGaitComponent.js.map

@@ -61,20 +61,20 @@ class PhantomInteractGridData {
   LoadData(t) {
     var a = t.TIs;
     let i = a;
-    if (t.gff > 0) {
-      i = t.gff;
+    if (t.jpf > 0) {
+      i = t.jpf;
     }
     var s = ConfigManager_1.ConfigManager.CalabashConfig.GetCalabashDevelopRewardByMonsterId(i);
     var h = ConfigManager_1.ConfigManager.PhantomBattleConfig?.GetPhantomItemByMonsterId(a);
     if (!!h && !(h.length <= 0)) {
       h = h[0];
       this.IsUnlocked = true;
-      this.HasSkin = PhantomInteractGridData.Swf(t.TIs);
+      this.HasSkin = PhantomInteractGridData.$Df(t.TIs);
       this.MonsterId = a;
       this.SkinIds = [0, ...t.bBs];
       this.GetWayConfigId = s?.ItemAccess ?? 0;
       this.SortId = s?.SortId ?? 0;
-      this.LoadSkinId(t.gff);
+      this.LoadSkinId(t.jpf);
       this.IsSpecial = s.IsWorldInteractable;
       this.InteractAreaId = s.InteractAreaId;
       a = h.Rarity;
@@ -104,7 +104,7 @@ class PhantomInteractGridData {
       this.HasSkin = false;
     }
   }
-  static Swf(t) {
+  static $Df(t) {
     t = ConfigManager_1.ConfigManager.PhantomBattleConfig?.GetPhantomItemByParentMonsterId(t);
     return !!t && !(t.length <= 0);
   }
@@ -116,14 +116,14 @@ class PhantomInteractInfoData {
     this.EquippedVisionData = [];
     this.GridItemDataList = [];
     this.GridItemDataMap = new Map();
-    this.iYf = (t, a) => t.SortId - a.SortId;
+    this.Oug = (t, a) => t.SortId - a.SortId;
   }
   LoadFromProto(t) {
     this.EquippedMonsterIdMap.clear();
     this.GridItemDataMap.clear();
     this.EquippedVisionData.length = 0;
     let a = void (this.GridItemDataList.length = 0);
-    for (const r of a = !(a = t.vff) || a.length <= 0 ? [0, 0, 0, 0, 0, 0, 0, 0] : a) {
+    for (const r of a = !(a = t.Qpf) || a.length <= 0 ? [0, 0, 0, 0, 0, 0, 0, 0] : a) {
       var i;
       var s;
       if (r <= 0) {
@@ -137,7 +137,7 @@ class PhantomInteractInfoData {
         this.EquippedMonsterIdMap.set(r, s);
       }
     }
-    for (const e of t.pff) {
+    for (const e of t.Wpf) {
       var h = new PhantomInteractGridData();
       var o = e.TIs;
       var n = this.EquippedMonsterIdMap.get(o) ?? -1;
@@ -150,7 +150,7 @@ class PhantomInteractInfoData {
   UpdateFromProto(t) {
     var a;
     var i;
-    var t = t.yff;
+    var t = t.Kpf;
     if (!!t && !(a = t.TIs, i = this.GridItemDataMap.get(a))) {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("PhantomInteraction", 95, "新解锁声骸交互数据", ["MonsterId", a]);
@@ -158,7 +158,7 @@ class PhantomInteractInfoData {
       (i = new PhantomInteractGridData()).LoadData(t);
       this.GridItemDataMap.set(a, i);
       this.GridItemDataList.push(i);
-      this.GridItemDataList.sort(this.iYf);
+      this.GridItemDataList.sort(this.Oug);
     }
   }
 }

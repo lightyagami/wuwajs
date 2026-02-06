@@ -271,7 +271,7 @@ class UiNavigationViewManager {
   static CanFocusViewHandle(i) {
     return !this.Xbo?.HasGamepadControlMouse() || this.Xbo === i;
   }
-  static b2m(i, a = false) {
+  static Lkm(i, a = false) {
     if (!Info_1.Info.IsInTouch()) {
       if (i?.IsValid()) {
         ControllerHolder_1.ControllerHolder.UiNavigationNewController.SetNavigationFocusForView(i, a);
@@ -304,7 +304,7 @@ UiNavigationViewManager.l4_ = i => {
   UiNavigationViewManager.$bo();
   UiNavigationViewManager.eqo();
   UiNavigationViewManager.tqo();
-  UiNavigationViewManager.b2m(_a.CacheUiItem, _a.CacheCheckDirty);
+  UiNavigationViewManager.Lkm(_a.CacheUiItem, _a.CacheCheckDirty);
 };
 UiNavigationViewManager.Bbo = (i, a) => {
   a = a.GetComponentByClass(UE.TsUiNavigationPanelConfig_C.StaticClass());

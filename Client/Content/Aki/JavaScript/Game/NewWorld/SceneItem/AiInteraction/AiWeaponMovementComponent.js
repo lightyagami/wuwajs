@@ -63,7 +63,7 @@ let AiWeaponMovementComponent = class AiWeaponMovementComponent extends EntityCo
     return !(this.jhn = 0);
   }
   OnStart() {
-    this.Hte = this.Entity.GetComponent(212);
+    this.Hte = this.Entity.GetComponent(214);
     return true;
   }
   OnTick(t) {
@@ -99,7 +99,7 @@ let AiWeaponMovementComponent = class AiWeaponMovementComponent extends EntityCo
       this.jhn = 2;
       this.Yhn();
       if (!ModelManager_1.ModelManager.GameModeModel.IsMulti) {
-        this.Entity.GetComponent(167)?.CollectSampleAndSend(true);
+        this.Entity.GetComponent(169)?.CollectSampleAndSend(true);
       }
     }
   }
@@ -172,5 +172,5 @@ let AiWeaponMovementComponent = class AiWeaponMovementComponent extends EntityCo
     return !!(this.Hte.StaticMesh.GetComponentVelocity().Z <= 0) && !!this.zhn(-ON_WATER_MAX_DIST);
   }
 };
-AiWeaponMovementComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(132)], AiWeaponMovementComponent);
+AiWeaponMovementComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(134)], AiWeaponMovementComponent);
 exports.AiWeaponMovementComponent = AiWeaponMovementComponent; //# sourceMappingURL=AiWeaponMovementComponent.js.map

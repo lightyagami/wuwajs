@@ -121,7 +121,7 @@ class KuroEffectSystem {
     }
     this.rmc.length = 0;
     this.omc.length = 0;
-    return !!cpp_1.FEffectSystem.Initialize(GlobalData_1.GlobalData.GameInstance, t, Info_1.Info.IsGameRunning(), 0.1, 0.3, 0.3, true, UE.BP_EffectPreview_C.StaticClass(), r) && (cpp_1.FEffectSystem.InitStaticGlobalData(EffectEnvironment_1.EffectEnvironment.UseLog, Info_1.Info.IsInEditorTick(), PublicUtil_1.PublicUtil.UseDbConfig()), cpp_1.FEffectSystem.RegisterJsFunction(KuroEffectSystem.lmc, KuroEffectSystem._mc, KuroEffectSystem.cmc, KuroEffectSystem.umc, KuroEffectSystem.dmc, KuroEffectSystem.mmc, KuroEffectSystem.fmc, KuroEffectSystem.gmc, KuroEffectSystem.Cmc, KuroEffectSystem.pmc, KuroEffectSystem.vmc, KuroEffectSystem.ymc, KuroEffectSystem.Smc, KuroEffectSystem.Mmc, KuroEffectSystem.Emc, KuroEffectSystem.Imc, KuroEffectSystem.Tmc, KuroEffectSystem.bmc, KuroEffectSystem.Lmc, KuroEffectSystem.wmc, KuroEffectSystem.Rmc, KuroEffectSystem.Amc, KuroEffectSystem.Pmc, KuroEffectSystem.xmc, KuroEffectSystem.Umc, KuroEffectSystem.Dmc, KuroEffectSystem.j2c, KuroEffectSystem.H2c, KuroEffectSystem.$2c), true);
+    return !!cpp_1.FEffectSystem.Initialize(GlobalData_1.GlobalData.GameInstance, t, Info_1.Info.IsGameRunning(), 0.1, 0.3, 0.3, true, UE.BP_EffectPreview_C.StaticClass(), r) && (cpp_1.FEffectSystem.InitStaticGlobalData(EffectEnvironment_1.EffectEnvironment.UseLog, Info_1.Info.IsInEditorTick(), PublicUtil_1.PublicUtil.UseDbConfig()), cpp_1.FEffectSystem.RegisterJsFunction(KuroEffectSystem.lmc, KuroEffectSystem.bFg, KuroEffectSystem._mc, KuroEffectSystem.cmc, KuroEffectSystem.umc, KuroEffectSystem.dmc, KuroEffectSystem.mmc, KuroEffectSystem.fmc, KuroEffectSystem.gmc, KuroEffectSystem.Cmc, KuroEffectSystem.pmc, KuroEffectSystem.vmc, KuroEffectSystem.ymc, KuroEffectSystem.Smc, KuroEffectSystem.Mmc, KuroEffectSystem.Emc, KuroEffectSystem.Imc, KuroEffectSystem.Tmc, KuroEffectSystem.bmc, KuroEffectSystem.Lmc, KuroEffectSystem.wmc, KuroEffectSystem.Rmc, KuroEffectSystem.Amc, KuroEffectSystem.Pmc, KuroEffectSystem.xmc, KuroEffectSystem.Umc, KuroEffectSystem.Dmc, KuroEffectSystem.j2c, KuroEffectSystem.H2c, KuroEffectSystem.$2c), true);
   }
   Clear() {
     this.Zdc = false;
@@ -595,6 +595,20 @@ class KuroEffectSystem {
       o.SetDitherEffect(1, 1);
     }
     return o;
+  }
+  static bFg(e, t, r) {
+    let i = e;
+    if (!(i = i || r.GetComponentByClass(UE.CharRenderingComponent_C.StaticClass()))) {
+      i = r.AddComponentByClass(UE.CharRenderingComponent_C.StaticClass(), false, new UE.Transform(), false);
+      if (GlobalData_1.GlobalData.IsUiSceneOpen) {
+        i.Init(5);
+      } else {
+        i.Init(7);
+      }
+      i.SetLogicOwner(r);
+      i.AddComponentByCase(0, t);
+    }
+    return i;
   }
   static _mc(e, t) {
     let r = t;

@@ -10,7 +10,7 @@ const StringUtils_1 = require("../../../Core/Utils/StringUtils");
 const EffectSystem_1 = require("../../Effect/EffectSystem");
 const UiPanelBase_1 = require("../../Ui/Base/UiPanelBase");
 const UiLayer_1 = require("../../Ui/UiLayer");
-const LevelSequencePlayer_1 = require("../Common/LevelSequencePlayer");
+const BattleUiTweenAnimPlayer_1 = require("../BattleUi/Views/BattleUiTweenAnimPlayer");
 class NpcIconComponentView extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
@@ -26,6 +26,7 @@ class NpcIconComponentView extends UiPanelBase_1.UiPanelBase {
     this.X1l = false;
     this.Y1l = false;
     this.I91 = undefined;
+    this.NGe = undefined;
     this.Jqi = undefined;
     this.zqi = undefined;
     this.eGi = new UE.VectorDouble(1, 1, 1);
@@ -38,19 +39,10 @@ class NpcIconComponentView extends UiPanelBase_1.UiPanelBase {
     this.sGi = 0;
     this.aGi = undefined;
     this.ymt = 0;
-    this.CRi = undefined;
     this.lGi = undefined;
     this._Gi = false;
-    this.uGi = undefined;
     this.Ueu = false;
-    this.cGi = t => {
-      if (t === "DialogueClose") {
-        this.uGi();
-      } else if (t === "NameClose" && this.Ueu && (this.Ueu = false, this.iGi.SetUIActive(false), this.I91 !== undefined)) {
-        this.SetQuestTrackCellState(this.I91);
-        this.I91 = undefined;
-      }
-    };
+    this.Eah = undefined;
   }
   get ForceHideRootItem() {
     return this.cdl;
@@ -73,15 +65,17 @@ class NpcIconComponentView extends UiPanelBase_1.UiPanelBase {
     }
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIText], [2, UE.UIItem], [3, UE.UIText], [4, UE.UITexture], [5, UE.UIItem], [6, UE.UIItem], [8, UE.UIItem], [10, UE.UIItem], [11, UE.UISprite]];
+    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIText], [2, UE.UIItem], [3, UE.UIText], [4, UE.UITexture], [5, UE.UIItem], [6, UE.UIItem], [8, UE.UIItem], [10, UE.UIItem], [11, UE.UISprite], [12, UE.UIItem], [13, UE.UIItem], [14, UE.UIItem], [15, UE.UIItem], [16, UE.UIItem], [17, UE.UIItem], [18, UE.UIItem]];
   }
   OnStart() {
+    this.Est();
     this.RootActorRotation = this.RootActor.K2_GetActorRotation();
     this.jqi = new UE.VectorDouble(0, 0, 0);
     this.iGi = this.GetItem(6);
     this.tGi = this.iGi.D_K2_GetComponentScale().X;
     this.aGi = this.GetItem(2);
     this.sGi = this.aGi.D_K2_GetComponentScale().X;
+    this.NGe = this.GetText(0);
     this.Jqi = this.GetItem(5);
     this.zqi = this.GetTexture(4);
     this.rGi = this.GetItem(8);
@@ -94,15 +88,27 @@ class NpcIconComponentView extends UiPanelBase_1.UiPanelBase {
     this._Gi = this.oGi.bIsUIActive;
     this.Y1l = false;
     this.X1l = false;
-    this.mGi();
     this.SetDialogueActive(false);
-    this.uGi = () => {
-      this.aGi.SetUIActive(false);
-    };
+    this.SetPlayerInfoItemState(false);
   }
-  mGi() {
-    this.CRi = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
-    this.CRi.BindSequenceCloseEvent(this.cGi);
+  Est() {
+    this.Eah = new BattleUiTweenAnimPlayer_1.BattleUiTweenAnimPlayer();
+    this.Eah.InitTweenAnim(12, this.GetItem(12));
+    this.Eah.InitTweenAnim(13, this.GetItem(13));
+    this.Eah.InitTweenAnim(14, this.GetItem(14));
+    this.Eah.InitTweenAnim(17, this.GetItem(17));
+    this.Eah.InitTweenAnim(18, this.GetItem(18));
+    this.Eah.InitTweenAnim(15, this.GetItem(15));
+    this.Eah.InitTweenAnim(16, this.GetItem(16));
+    this.Eah.RegisterOnComplete(14, () => {
+      this.aGi.SetUIActive(false);
+    });
+    this.Eah.RegisterOnComplete(18, () => {
+      if (this.Ueu && (this.Ueu = false, this.iGi.SetUIActive(false), this.I91 !== undefined)) {
+        this.SetQuestTrackCellState(this.I91);
+        this.I91 = undefined;
+      }
+    });
   }
   SetNpcName(t) {
     var i = this.GetText(0);
@@ -134,25 +140,16 @@ class NpcIconComponentView extends UiPanelBase_1.UiPanelBase {
     } else if (t !== this.Yqi || !!s) {
       if (this.Yqi = t) {
         this.aGi.SetUIActive(true);
-        this.gGi("DialogueStart");
+        this.Eah.PlayTweenAnim(13);
         this.rGi.SetUIActive(i);
         this.X1l = i;
-      } else if (!this.gGi("DialogueClose")) {
-        this.uGi?.();
+      } else {
+        this.Eah.PlayTweenAnim(14);
       }
     }
   }
   GetDialogueActive() {
     return this.Yqi;
-  }
-  gGi(t) {
-    if (this.CRi.GetCurrentSequence() === t) {
-      this.CRi.ReplaySequenceByKey(t);
-    } else {
-      this.CRi.StopCurrentSequence(false, true);
-      this.CRi.PlayLevelSequenceByName(t);
-    }
-    return true;
   }
   SetDialogueText(t) {
     this.GetText(3).SetText(t);
@@ -162,20 +159,20 @@ class NpcIconComponentView extends UiPanelBase_1.UiPanelBase {
       if (this.Qqi = t) {
         this.iGi.SetUIActive(true);
         if (this.Ueu) {
-          this.CRi.StopPlayingSequence();
+          this.Eah.StopAll();
           this.Ueu = false;
         }
-        this.CRi.PlayLevelSequenceByName("NameStart");
+        this.Eah.PlayTweenAnim(17);
         if (this.$qi) {
           if (this.lGi === 0) {
-            this.fGi();
+            this.Eah.PlayTweenAnim(12);
           } else if (this.lGi === 1) {
-            this.CRi.PlayLevelSequenceByName("IconStart");
+            this.Eah.PlayTweenAnim(15);
           }
         }
       } else {
-        this.CRi.PlayLevelSequenceByName("IconClose");
-        this.CRi.PlayLevelSequenceByName("NameClose");
+        this.Eah.PlayTweenAnim(18);
+        this.Eah.PlayTweenAnim(16);
         this.Ueu = true;
       }
     }
@@ -188,7 +185,7 @@ class NpcIconComponentView extends UiPanelBase_1.UiPanelBase {
   }
   SetQuestTrackCellState(t) {
     if (this._Gi !== t) {
-      if (this.CRi?.IsPlayingSequence("NameClose")) {
+      if (this.Eah?.CheckIsPlaying(18)) {
         this.I91 = t;
       } else {
         this._Gi = t;
@@ -198,6 +195,9 @@ class NpcIconComponentView extends UiPanelBase_1.UiPanelBase {
   }
   SetPlayerInfoItemState(t) {
     this.iF1.SetUIActive(t);
+  }
+  SetNameTextItemState(t) {
+    this.NGe.SetUIActive(t);
   }
   SetRootItemState(t, i = false) {
     if (this.ForceHideRootItem) {
@@ -282,9 +282,6 @@ class NpcIconComponentView extends UiPanelBase_1.UiPanelBase {
       this.aGi.D_SetWorldScale3D(this.nGi);
     }
   }
-  fGi() {
-    this.CRi.PlayLevelSequenceByName("FirstStart");
-  }
   CGi(t) {
     if (t !== this.$qi) {
       this.$qi = t;
@@ -296,7 +293,7 @@ class NpcIconComponentView extends UiPanelBase_1.UiPanelBase {
       EffectSystem_1.EffectSystem.StopEffectById(this.ymt, "[NpcIconComponentView.OnBeforeDestroy]", true);
       this.ymt = 0;
     }
-    this.CRi?.Clear();
+    this.Eah?.Clear();
   }
 }
 exports.NpcIconComponentView = NpcIconComponentView;

@@ -35,7 +35,10 @@ class LevelSequencePlayer {
     this.Xxt = e;
     this.Qxt = e.GetOwner();
   }
-  BindSequenceCloseEvent(e) {
+  BindSequenceCloseEvent(e, t = false) {
+    if (t && this.$xt) {
+      this.$xt.length = 0;
+    }
     this.$xt ||= new Array();
     this.$xt.push(e);
   }
@@ -185,11 +188,11 @@ class LevelSequencePlayer {
   PlayLevelSequenceByName(e, t = false, i = undefined, s = false) {
     this.PlaySequencePurely(e, t, undefined, undefined, i, s);
   }
-  async PlaySequenceAsync(e, t, i = false, s = false, r = undefined, h = false) {
-    this.PlaySequencePurely(e, i, s, t, r, h);
+  async PlaySequenceAsync(e, t, i = false, s = false, h = undefined, r = false) {
+    this.PlaySequencePurely(e, i, s, t, h, r);
     await t?.Promise;
   }
-  PlaySequencePurely(e, t = false, i = false, s = undefined, r = undefined, h = false) {
+  PlaySequencePurely(e, t = false, i = false, s = undefined, h = undefined, r = false) {
     var n = this.GetSequencePlayContext(e);
     var o = this.Xxt.displayName;
     if (Log_1.Log.CheckDebug()) {
@@ -204,10 +207,10 @@ class LevelSequencePlayer {
       this.vxe(e);
     } else if (n) {
       n.bReverse = i;
-      if (r !== undefined) {
-        n.PlayInfo.PlaySetting.PlayRate = r;
+      if (h !== undefined) {
+        n.PlayInfo.PlaySetting.PlayRate = h;
       }
-      n.bJumpToLastFrame = h;
+      n.bJumpToLastFrame = r;
       n.ExecutePlay();
       this.owt(e);
     } else {

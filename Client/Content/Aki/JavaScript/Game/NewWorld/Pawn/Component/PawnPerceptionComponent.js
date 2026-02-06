@@ -44,7 +44,7 @@ let PawnPerceptionComponent = class PawnPerceptionComponent extends EntityCompon
     this.rzr = undefined;
     this.ConfigId = -0;
     this.Ihn = undefined;
-    this.Kkf = new Map();
+    this.H3f = new Map();
     this.iOu = new Map();
     this.rOu = new Set();
     this.Thn = undefined;
@@ -94,8 +94,8 @@ let PawnPerceptionComponent = class PawnPerceptionComponent extends EntityCompon
   }
   SetInteractRangeWithTags(t, e, i = 0, n = undefined, s = undefined, h = undefined) {
     this.rzr.SetLogicRange(Math.max(e + INTERACT_LOGIC_OFFSET, i) + (n ? n.Size() : 0));
-    if (this.Kkf.has(t)) {
-      const o = this.Kkf.get(t);
+    if (this.H3f.has(t)) {
+      const o = this.H3f.get(t);
       o.UpdateDistance(e, i === 0 ? e : i);
     } else {
       const o = this.rzr.CreatePerceptionEvent(e, this.Entity?.GameBudgetManagedToken, () => {
@@ -113,7 +113,7 @@ let PawnPerceptionComponent = class PawnPerceptionComponent extends EntityCompon
           h();
         }
       }, undefined, undefined, i, n);
-      this.Kkf.set(t, o);
+      this.H3f.set(t, o);
     }
   }
   SetOffsetOptionInteractRange(t, e, i = 0, n = undefined, s = undefined, h = undefined) {
@@ -171,7 +171,7 @@ let PawnPerceptionComponent = class PawnPerceptionComponent extends EntityCompon
     return true;
   }
   OnInit() {
-    this.rzr = this.Entity.GetComponent(130);
+    this.rzr = this.Entity.GetComponent(132);
     return true;
   }
   OnStart() {
@@ -192,7 +192,7 @@ let PawnPerceptionComponent = class PawnPerceptionComponent extends EntityCompon
   OnActivate() {
     var t;
     var e;
-    var i = this.Entity.GetComponent(169);
+    var i = this.Entity.GetComponent(171);
     if (i) {
       t = i.ShowRange;
       e = i.HideRange;
@@ -219,7 +219,7 @@ let PawnPerceptionComponent = class PawnPerceptionComponent extends EntityCompon
     this.Ihn = undefined;
     this.Thn = undefined;
     this.Lhn = undefined;
-    this.Kkf.clear();
+    this.H3f.clear();
     this.yhn.Empty();
     return true;
   }
@@ -240,5 +240,5 @@ InteractRangeInfo:
     return t;
   }
 };
-PawnPerceptionComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(128)], PawnPerceptionComponent);
+PawnPerceptionComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(130)], PawnPerceptionComponent);
 exports.PawnPerceptionComponent = PawnPerceptionComponent; //# sourceMappingURL=PawnPerceptionComponent.js.map

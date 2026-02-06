@@ -63,7 +63,7 @@ class GameBudgetAllocatorConfigPcCreator {
     return {
       Default: new GameBudgetAllocatorConfig_1.TsGameBudgetAllocatorTickIntervalDetailConfig(0, 0, 20, 1000, 200),
       Normal_Render: undefined,
-      Normal_NotRendered: undefined,
+      Normal_NotRendered: new GameBudgetAllocatorConfig_1.TsGameBudgetAllocatorTickIntervalDetailConfig(0, 1, 60, 500, 30),
       Normal_Fighting: undefined,
       Fighting_Rendered: undefined,
       Fighting_NotRendered: undefined,
@@ -156,6 +156,19 @@ class GameBudgetAllocatorConfigPcCreator {
       Cutscene_NotRendered: undefined
     };
   }
+  CreateNormalEntityAlwaysTickWithoutNotRenderedConfig() {
+    return {
+      Default: new GameBudgetAllocatorConfig_1.TsGameBudgetAllocatorTickIntervalDetailConfig(0, 0, 1, 1, 1),
+      Normal_Render: undefined,
+      Normal_NotRendered: new GameBudgetAllocatorConfig_1.TsGameBudgetAllocatorTickIntervalDetailConfig(0, 1, 1000, 500, 10),
+      Normal_Fighting: undefined,
+      Fighting_Rendered: undefined,
+      Fighting_NotRendered: undefined,
+      Fighting_Fighting: undefined,
+      Cutscene_Rendered: undefined,
+      Cutscene_NotRendered: undefined
+    };
+  }
   CreateAlwaysTickConfig() {
     return new GameBudgetAllocatorConfig_1.TsGameBudgetAllocatorTickIntervalDetailConfig(0, 0, 1, 1, 1);
   }
@@ -228,8 +241,8 @@ class GameBudgetAllocatorConfigPcCreator {
   }
   CreateFarBlueprintActorConfig() {
     return {
-      Default: new GameBudgetAllocatorConfig_1.TsGameBudgetAllocatorTickIntervalDetailConfig(0, 0, 20, 8000, 1000),
-      Normal_Render: new GameBudgetAllocatorConfig_1.TsGameBudgetAllocatorTickIntervalDetailConfig(0, 0, 20, 8000, 1000),
+      Default: new GameBudgetAllocatorConfig_1.TsGameBudgetAllocatorTickIntervalDetailConfig(0, 0, 20, 8000, 1000, 0.2, 0.005),
+      Normal_Render: new GameBudgetAllocatorConfig_1.TsGameBudgetAllocatorTickIntervalDetailConfig(0, 0, 20, 8000, 1000, 0.2, 0.005),
       Normal_NotRendered: new GameBudgetAllocatorConfig_1.TsGameBudgetAllocatorTickIntervalDetailConfig(0, 1, 120, 2000, 200),
       Normal_Fighting: undefined,
       Fighting_Rendered: undefined,
@@ -241,8 +254,8 @@ class GameBudgetAllocatorConfigPcCreator {
   }
   CreateSuperFarBlueprintActorConfig() {
     return {
-      Default: new GameBudgetAllocatorConfig_1.TsGameBudgetAllocatorTickIntervalDetailConfig(0, 0, 20, 50000, 30000),
-      Normal_Render: new GameBudgetAllocatorConfig_1.TsGameBudgetAllocatorTickIntervalDetailConfig(0, 0, 20, 50000, 30000),
+      Default: new GameBudgetAllocatorConfig_1.TsGameBudgetAllocatorTickIntervalDetailConfig(0, 0, 20, 50000, 30000, 0.2, 0.008),
+      Normal_Render: new GameBudgetAllocatorConfig_1.TsGameBudgetAllocatorTickIntervalDetailConfig(0, 0, 20, 50000, 30000, 0.2, 0.008),
       Normal_NotRendered: new GameBudgetAllocatorConfig_1.TsGameBudgetAllocatorTickIntervalDetailConfig(0, 1, 60, 5000, 5000),
       Normal_Fighting: undefined,
       Fighting_Rendered: undefined,

@@ -16,24 +16,24 @@ class TsAnimNotifyStateWeaponHangWithTag extends UE.KuroAnimNotifyState {
     this.ActivateTag = new UE.GameplayTag();
   }
   Constructor() {}
-  K2_NotifyBegin(t, s, e) {
-    var i;
+  K2_NotifyBegin(t, i, e) {
+    var s;
     var t = t.GetOwner();
-    return t instanceof TsBaseCharacter_1.default && !!(i = t?.CharacterActorComponent?.Entity?.GetComponent(215)) && !!i.HasTag(this.ActivateTag.TagId) && !(t?.CharacterActorComponent?.Entity?.GetComponent(84)?.ChangeWeaponHangState(this.Id, this.新的挂载点名, this.挂载相对位置, this.缓冲时间), 0);
+    return t instanceof TsBaseCharacter_1.default && !!(s = t?.CharacterActorComponent?.Entity?.GetComponent(217)) && !!s.HasTag(this.ActivateTag.TagId) && !(t?.CharacterActorComponent?.Entity?.GetComponent(86)?.ChangeWeaponHangState(this.Id, this.新的挂载点名, this.挂载相对位置, this.缓冲时间, "TsAnimNotifyStateWeaponHangWithTag.NotifyBegin"), 0);
   }
-  K2_NotifyEnd(t, s) {
+  K2_NotifyEnd(t, i) {
     t = t.GetOwner();
     if (t instanceof TsBaseCharacter_1.default) {
-      var e = t?.CharacterActorComponent?.Entity?.GetComponent(215);
+      var e = t?.CharacterActorComponent?.Entity?.GetComponent(217);
       if (!e || !e.HasTag(this.ActivateTag.TagId)) {
         return false;
       }
-      e = t?.CharacterActorComponent?.Entity?.GetComponent(84);
+      e = t?.CharacterActorComponent?.Entity?.GetComponent(86);
       if (!e?.Valid) {
         return false;
       }
       if (e._Pr === this.Id) {
-        return (this.结束后状态 === 0 || this.结束后状态 === 1) && (e.ChangeWeaponHangState(this.结束后状态, UE.NewArray(UE.BuiltinName), UE.NewArray(UE.Transform), this.缓冲时间), true);
+        return (this.结束后状态 === 0 || this.结束后状态 === 1) && (e.ChangeWeaponHangState(this.结束后状态, UE.NewArray(UE.BuiltinName), UE.NewArray(UE.Transform), this.缓冲时间, "TsAnimNotifyStateWeaponHangWithTag.NotifyEnd"), true);
       }
     }
     return false;

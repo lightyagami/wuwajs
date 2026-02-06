@@ -13,6 +13,7 @@ const MathCommon_1 = require("../../../../Core/Utils/Math/MathCommon");
 const Rotator_1 = require("../../../../Core/Utils/Math/Rotator");
 const Vector_1 = require("../../../../Core/Utils/Math/Vector");
 const Vector2D_1 = require("../../../../Core/Utils/Math/Vector2D");
+const MathUtils_1 = require("../../../../Core/Utils/MathUtils");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const TimeUtil_1 = require("../../../Common/TimeUtil");
@@ -61,6 +62,8 @@ class Joystick extends BattleChildView_1.BattleChildView {
     this.DTa = false;
     this.JoystickVisible = false;
     this.Luc = WALK_TO_RUN_RATE;
+    this.p8g = 90;
+    this.v8g = 145;
     this.hut = t => {
       if (this.lut(t) && this.IsDynamicJoystick && this.tut && InputDistributeController_1.InputDistributeController.IsAllowFightMoveInput()) {
         if (ModelManager_1.ModelManager.BattleUiModel.IsOpenJoystickLog && Log_1.Log.CheckInfo()) {
@@ -105,15 +108,7 @@ class Joystick extends BattleChildView_1.BattleChildView {
       this.dut();
     };
     this.OnDynamicChanged = t => {
-      this.IsDynamicJoystick = t;
-      if (!this.IsDynamicJoystick) {
-        this.J_t.Set(0, 0, 0);
-        this.Q_t.Set(this.J_t.X, this.J_t.Y);
-        t = this.Q_t.ToUeVector2D();
-        this.WalkBgItem.SetAnchorOffset(t);
-        this.RunBgItem.SetAnchorOffset(t);
-        this.K_t.SetAnchorOffset(t);
-      }
+      this.y8g(true);
     };
     this.UTa = () => {
       this.UpdateJoystickVisible();
@@ -132,8 +127,10 @@ class Joystick extends BattleChildView_1.BattleChildView {
     this.R$e = Global_1.Global.CharacterController;
     this.iut = CommonParamById_1.configCommonParamById.GetIntConfig("DodgeMinLength");
     this.out = CommonParamById_1.configCommonParamById.GetIntConfig("DodgeJoystickSlideMinTime");
-    this.IsDynamicJoystick = ModelManager_1.ModelManager.BattleUiModel.GetIsDynamicJoystick();
+    this.y8g();
     this.LTa = CommonParamById_1.configCommonParamById.GetFloatConfig("MaskAreaEnableRootX");
+    this.p8g = CommonParamById_1.configCommonParamById.GetFloatConfig("MotorJoyStickAngle1");
+    this.v8g = CommonParamById_1.configCommonParamById.GetFloatConfig("MotorJoyStickAngle2");
   }
   ShowBattleVisibleChildView() {
     var t;
@@ -189,6 +186,7 @@ class Joystick extends BattleChildView_1.BattleChildView {
       this.mut();
     });
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSetJoystickMode, this.OnDynamicChanged);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSetMotorcycleJoystickMode, this.OnDynamicChanged);
     ModelManager_1.ModelManager.BattleUiModel.ChildViewData.AddCallback(12, this.UTa);
   }
   kre() {
@@ -199,6 +197,7 @@ class Joystick extends BattleChildView_1.BattleChildView {
     t.OnPointerEndDragCallBack.Unbind();
     t.OnPointerUpCallBack.Unbind();
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSetJoystickMode, this.OnDynamicChanged);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSetMotorcycleJoystickMode, this.OnDynamicChanged);
     ModelManager_1.ModelManager.BattleUiModel.ChildViewData.RemoveCallback(12, this.UTa);
   }
   Tick(t) {
@@ -318,25 +317,12 @@ class Joystick extends BattleChildView_1.BattleChildView {
     }
   }
   SetInputAxis(t, i) {
-    var s;
     if (this.JoystickVisible && i && !t.Equality(Vector_1.Vector.ZeroVectorProxy)) {
-      this.Q_t.X = t.X / JOYSTICK_RADIU;
-      this.Q_t.Y = t.Y / JOYSTICK_RADIU;
-      if (this.Q_t.SizeSquared() > 1) {
-        this.Q_t.Normalize();
-      }
-      t = this.Q_t.X;
-      s = this.Q_t.Y;
-      if (Math.max(Math.abs(t), Math.abs(s)) > this.Luc) {
-        this.OnRun();
+      if (ModelManager_1.ModelManager.BattleUiModel.MotorcycleData.IsDriving) {
+        this.SetMotorcycleInputAxis(t);
       } else {
-        this.OnWalk();
+        this.SetNormalInputAxis(t);
       }
-      if (ModelManager_1.ModelManager.BattleUiModel.IsOpenJoystickLog && Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("Battle", 10, "[CharacterInput]开始进行调用InputController输入逻辑", ["resultX", t], ["resultY", s]);
-      }
-      InputController_1.InputController.InputAxis(InputEnums_1.EInputAxis.MoveRight, t);
-      InputController_1.InputController.InputAxis(InputEnums_1.EInputAxis.MoveForward, s);
     } else {
       if (i) {
         this.OnStandInTouch();
@@ -349,6 +335,49 @@ class Joystick extends BattleChildView_1.BattleChildView {
       InputController_1.InputController.InputAxis(InputEnums_1.EInputAxis.MoveRight, 0);
       InputController_1.InputController.InputAxis(InputEnums_1.EInputAxis.MoveForward, 0);
     }
+  }
+  SetNormalInputAxis(t) {
+    this.Q_t.X = t.X / JOYSTICK_RADIU;
+    this.Q_t.Y = t.Y / JOYSTICK_RADIU;
+    if (this.Q_t.SizeSquared() > 1) {
+      this.Q_t.Normalize();
+    }
+    var t = this.Q_t.X;
+    var i = this.Q_t.Y;
+    if (Math.max(Math.abs(t), Math.abs(i)) > this.Luc) {
+      this.OnRun();
+    } else {
+      this.OnWalk();
+    }
+    if (ModelManager_1.ModelManager.BattleUiModel.IsOpenJoystickLog && Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("Battle", 10, "[CharacterInput]开始进行调用InputController输入逻辑", ["resultX", t], ["resultY", i]);
+    }
+    InputController_1.InputController.InputAxis(InputEnums_1.EInputAxis.MoveRight, t);
+    InputController_1.InputController.InputAxis(InputEnums_1.EInputAxis.MoveForward, i);
+  }
+  SetMotorcycleInputAxis(t) {
+    this.Q_t.X = t.X / JOYSTICK_RADIU;
+    this.Q_t.Y = t.Y / JOYSTICK_RADIU;
+    let i = 0;
+    let s = 0;
+    var t = this.Q_t.Size();
+    var e = Math.acos(MathCommon_1.MathCommon.Clamp(this.Q_t.Y / t, -1, 1)) * MathUtils_1.MathUtils.RadToDeg;
+    s = t > 1 ? 1 : t;
+    if (e < this.v8g) {
+      i = e < this.p8g ? e / this.p8g : 1;
+    } else {
+      i = (180 - e) / (180 - this.v8g);
+      s = -t;
+    }
+    if (this.Q_t.X < 0) {
+      i = -i;
+    }
+    if (ModelManager_1.ModelManager.BattleUiModel.IsOpenJoystickLog && Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("Battle", 17, "[摩托车]Joystick输入", ["resultX", i.toFixed(2)], ["resultY", s.toFixed(2)]);
+    }
+    this.OnRun();
+    InputController_1.InputController.InputAxis(InputEnums_1.EInputAxis.MoveRight, i);
+    InputController_1.InputController.InputAxis(InputEnums_1.EInputAxis.MoveForward, s);
   }
   OnWalk() {
     if (this.CurrentJoystickType !== 2) {
@@ -396,6 +425,19 @@ class Joystick extends BattleChildView_1.BattleChildView {
       this.CurrentJoystickType = 1;
     }
   }
+  y8g(t = false) {
+    var i = ModelManager_1.ModelManager.BattleUiModel.MotorcycleData;
+    let s = false;
+    s = (i.IsDriving && i.GetIsRoundJoystick() ? i : ModelManager_1.ModelManager.BattleUiModel).GetIsDynamicJoystick();
+    if (this.IsDynamicJoystick !== s && (this.IsDynamicJoystick = s, this.JoystickTouchId >= 0 && this.dut(), t) && !this.IsDynamicJoystick) {
+      this.J_t.Set(0, 0, 0);
+      this.Q_t.Set(this.J_t.X, this.J_t.Y);
+      i = this.Q_t.ToUeVector2D();
+      this.WalkBgItem.SetAnchorOffset(i);
+      this.RunBgItem.SetAnchorOffset(i);
+      this.K_t.SetAnchorOffset(i);
+    }
+  }
   UpdateJoystickVisible() {
     this.JoystickVisible = ModelManager_1.ModelManager.BattleUiModel?.ChildViewData?.GetChildVisible(12) ?? false;
     this.ITa?.SetUIActive(this.JoystickVisible);
@@ -405,6 +447,9 @@ class Joystick extends BattleChildView_1.BattleChildView {
   }
   SetEnable(t) {
     this.SetActive(t);
+    if (t) {
+      this.y8g(true);
+    }
   }
   SetForbidMove(t) {}
 }

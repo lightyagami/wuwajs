@@ -115,7 +115,7 @@ class LevelEventAddTrialCharacter extends LevelGeneralBase_1.LevelEventBase {
     }
     if (i !== this.LMd.length) {
       for (const l of n) {
-        if (l.GetComponent(89)?.IsOverlappingPlayer()) {
+        if (l.GetComponent(91)?.IsOverlappingPlayer()) {
           return false;
         }
       }

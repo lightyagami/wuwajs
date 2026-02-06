@@ -49,42 +49,42 @@ let SceneItemSunSpiritGearComponent = SceneItemSunSpiritGearComponent_1 = class 
     this.EIe = undefined;
     this.Hte = undefined;
     this.Lie = undefined;
-    this.lHf = undefined;
+    this.Stg = undefined;
     this.Ssm = undefined;
     this.Msm = undefined;
     this.wzi = Vector_1.Vector.Create(Vector_1.Vector.OneVectorProxy);
     this.X1t = Vector_1.Vector.Create(Vector_1.Vector.OneVectorProxy);
-    this.Zlf = Transform_1.Transform.Create();
-    this.e1f = Vector_1.Vector.Create();
+    this.Y0f = Transform_1.Transform.Create();
+    this.z0f = Vector_1.Vector.Create();
     this.Esm = () => {
       if (!this.EIe?.GetRemoveState() && this.Hte?.GetIsSceneInteractionLoadCompleted()) {
         if (this.Msm) {
           for (var [t, i] of this.Msm) {
-            this.G0f(t, i);
+            this.Mvf(t, i);
           }
         }
-        this.t1f(true);
+        this.J0f(true);
       }
     };
-    this.F0f = () => {
-      this.N0f("SceneItemSunSpiritGearComponent.OnSceneInteractionHide");
+    this.Evf = () => {
+      this.Ivf("SceneItemSunSpiritGearComponent.OnSceneInteractionHide");
       this.wzi.DeepCopy(Vector_1.Vector.OneVectorProxy);
     };
-    this.Y9f = undefined;
-    this.z9f = t => {
+    this.veg = undefined;
+    this.yeg = t => {
       if (!this.EIe?.GetRemoveState()) {
         if (this.Hte?.GetIsSceneInteractionLoadCompleted()) {
-          this.J9f(t);
+          this.Seg(t);
         }
       }
     };
-    this.V0f = undefined;
-    this._Hf = t => {
-      if (this.V0f?.IsValid()) {
-        this.V0f.KuroTickActorOutside(t);
+    this.Tvf = undefined;
+    this.Mtg = t => {
+      if (this.Tvf?.IsValid()) {
+        this.Tvf.KuroTickActorOutside(t);
       }
     };
-    this.Z9f = 0;
+    this.Meg = 0;
   }
   OnInitData(t) {
     t = t.GetParam(SceneItemSunSpiritGearComponent_1)[0];
@@ -109,17 +109,17 @@ let SceneItemSunSpiritGearComponent = SceneItemSunSpiritGearComponent_1 = class 
     return true;
   }
   OnInit() {
-    this.Hte = this.Entity.GetComponent(212);
-    this.Lie = this.Entity.GetComponent(215);
-    this.lHf = this.Entity.GetComponent(148);
+    this.Hte = this.Entity.GetComponent(214);
+    this.Lie = this.Entity.GetComponent(217);
+    this.Stg = this.Entity.GetComponent(150);
     return true;
   }
   OnActivate() {
     if (!EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionShowCompleted, this.Esm)) {
       EventSystem_1.EventSystem.AddWithTargetUseHoldKey(this, this.Entity, EventDefine_1.EEventName.OnSceneInteractionShowCompleted, this.Esm);
     }
-    if (!EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionHideCompleted, this.F0f)) {
-      EventSystem_1.EventSystem.AddWithTargetUseHoldKey(this, this.Entity, EventDefine_1.EEventName.OnSceneInteractionHideCompleted, this.F0f);
+    if (!EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionHideCompleted, this.Evf)) {
+      EventSystem_1.EventSystem.AddWithTargetUseHoldKey(this, this.Entity, EventDefine_1.EEventName.OnSceneInteractionHideCompleted, this.Evf);
     }
     if (this.Hte?.GetIsSceneInteractionLoadCompleted()) {
       this.Esm();
@@ -127,31 +127,31 @@ let SceneItemSunSpiritGearComponent = SceneItemSunSpiritGearComponent_1 = class 
   }
   OnEnd() {
     EventSystem_1.EventSystem.RemoveAllTargetUseKey(this);
-    this.N0f("SceneItemSunSpiritGearComponent.OnEnd");
+    this.Ivf("SceneItemSunSpiritGearComponent.OnEnd");
     return true;
   }
   OnClear() {
     return true;
   }
-  eHf() {
-    this.tHf();
-    this.Y9f = TimerSystem_1.GameplayTimerSystem.Forever(this.z9f, MANUAL_TICK_INTERVAL);
+  Eeg() {
+    this.Ieg();
+    this.veg = TimerSystem_1.GameplayTimerSystem.Forever(this.yeg, MANUAL_TICK_INTERVAL);
   }
-  tHf() {
-    if (this.Y9f?.Valid()) {
-      this.Y9f.Remove();
+  Ieg() {
+    if (this.veg?.Valid()) {
+      this.veg.Remove();
     }
-    this.Y9f = undefined;
+    this.veg = undefined;
   }
-  G0f(t, i) {
+  Mvf(t, i) {
     var e;
     var r;
     var s;
     if (this.GetSunSpiritPerformType() === "ToGearRelativePos" && !this.EIe?.GetRemoveState()) {
       if (this.Hte?.GetIsSceneInteractionLoadCompleted()) {
         if (s = ModelManager_1.ModelManager.SunSpiritModel?.GetSunSpiritDataById(t)) {
-          if (e = this.H0f()) {
-            if (r = this.j0f(i)) {
+          if (e = this.bvf()) {
+            if (r = this.wvf(i)) {
               if ((s = s.GetSunSpiritPerform()) instanceof SunSpiritCrowdPerform_1.SunSpiritCrowdPerform) {
                 if (s = s.GetCrowdAiBoidId()) {
                   e.AddRoute(r, s);
@@ -173,13 +173,13 @@ let SceneItemSunSpiritGearComponent = SceneItemSunSpiritGearComponent_1 = class 
       }
     }
   }
-  $0f(t, i) {
+  Rvf(t, i) {
     var e;
     var r;
     if (this.GetSunSpiritPerformType() === "ToGearRelativePos" && !this.EIe?.GetRemoveState()) {
       if (this.Hte?.GetIsSceneInteractionLoadCompleted()) {
-        if (e = this.H0f(false)) {
-          if (r = this.j0f(i)) {
+        if (e = this.bvf(false)) {
+          if (r = this.wvf(i)) {
             e.RemoveRouteByProxyActor(r);
           } else {
             if (Log_1.Log.CheckWarn()) {
@@ -197,39 +197,39 @@ let SceneItemSunSpiritGearComponent = SceneItemSunSpiritGearComponent_1 = class 
       }
     }
   }
-  H0f(t = true) {
-    if (!this.V0f?.IsValid()) {
-      this.V0f = undefined;
+  bvf(t = true) {
+    if (!this.Tvf?.IsValid()) {
+      this.Tvf = undefined;
       if (t) {
         t = ActorSystem_1.ActorSystem.Get(UE.KuroCrowdAiBoidInstanceSequenceProxyRouter.StaticClass(), MathUtils_1.MathUtils.DefaultTransformDouble);
-        this.V0f = t?.IsValid() ? t : undefined;
+        this.Tvf = t?.IsValid() ? t : undefined;
       }
-      if (this.V0f) {
-        if (this.uHf() && this.lHf) {
-          this.V0f.SetKuroOnlyTickOutside(true);
-          this.V0f.SetActorTickEnabled(false);
-          this.lHf.RegisterAfterElevatorTickHandler(this, this._Hf);
+      if (this.Tvf) {
+        if (this.Etg() && this.Stg) {
+          this.Tvf.SetKuroOnlyTickOutside(true);
+          this.Tvf.SetActorTickEnabled(false);
+          this.Stg.RegisterAfterElevatorTickHandler(this, this.Mtg);
         } else {
-          this.V0f.SetKuroOnlyTickOutside(false);
-          this.V0f.SetActorTickEnabled(true);
+          this.Tvf.SetKuroOnlyTickOutside(false);
+          this.Tvf.SetActorTickEnabled(true);
         }
       }
     }
-    return this.V0f;
+    return this.Tvf;
   }
-  N0f(t) {
-    if (this.V0f?.IsValid()) {
-      this.V0f.ClearRoute();
-      this.V0f.SetActorTickEnabled(false);
-      this.V0f.SetKuroOnlyTickOutside(false);
-      ActorSystem_1.ActorSystem.Put(t, this.V0f);
+  Ivf(t) {
+    if (this.Tvf?.IsValid()) {
+      this.Tvf.ClearRoute();
+      this.Tvf.SetActorTickEnabled(false);
+      this.Tvf.SetKuroOnlyTickOutside(false);
+      ActorSystem_1.ActorSystem.Put(t, this.Tvf);
     }
-    this.V0f = undefined;
-    if (this.uHf() && this.lHf) {
-      this.lHf.UnRegisterAfterElevatorTickHandlers(this);
+    this.Tvf = undefined;
+    if (this.Etg() && this.Stg) {
+      this.Stg.UnRegisterAfterElevatorTickHandlers(this);
     }
   }
-  j0f(t) {
+  wvf(t) {
     if (this.Hte?.GetIsSceneInteractionLoadCompleted()) {
       t = this.Hte.GetReferenceActor("SunSpiritProxy" + t);
       if (t?.IsValid() && t instanceof UE.KuroCrowdAiBoidInstanceSequenceProxy) {
@@ -237,7 +237,7 @@ let SceneItemSunSpiritGearComponent = SceneItemSunSpiritGearComponent_1 = class 
       }
     }
   }
-  uHf() {
+  Etg() {
     var t = this.EIe?.GetPbEntityInitData();
     return !!t && !!(0, IComponent_1.getComponent)(t.ComponentsData, "LiftComponent");
   }
@@ -245,7 +245,7 @@ let SceneItemSunSpiritGearComponent = SceneItemSunSpiritGearComponent_1 = class 
     return this.Ssm?.Type;
   }
   GetSunSpiritSocketLocAndRot(t, i, e) {
-    return !!this.EIe && !!this.Hte && !(this.Ssm?.Type === "ToGearRelativePos" && (t = this.j0f(t)) ? (i?.FromUeVector(t.D_K2_GetActorLocation()), e?.FromUeQuat(t.K2_GetActorQuaternion())) : (i?.DeepCopy(this.Hte.ActorLocationProxy), e?.DeepCopy(this.Hte.ActorQuatProxy)), 0);
+    return !!this.EIe && !!this.Hte && !(this.Ssm?.Type === "ToGearRelativePos" && (t = this.wvf(t)) ? (i?.FromUeVector(t.D_K2_GetActorLocation()), e?.FromUeQuat(t.K2_GetActorQuaternion())) : (i?.DeepCopy(this.Hte.ActorLocationProxy), e?.DeepCopy(this.Hte.ActorQuatProxy)), 0);
   }
   GetSunSpiritSocketTransform(t, i) {
     if (!this.EIe || !this.Hte) {
@@ -253,7 +253,7 @@ let SceneItemSunSpiritGearComponent = SceneItemSunSpiritGearComponent_1 = class 
     }
     switch (this.Ssm?.Type) {
       case "ToGearRelativePos":
-        var e = this.j0f(t);
+        var e = this.wvf(t);
         if (e) {
           i.FromUeTransform(e.D_GetTransform());
         } else {
@@ -280,8 +280,8 @@ let SceneItemSunSpiritGearComponent = SceneItemSunSpiritGearComponent_1 = class 
       }
       this.Msm ||= new Map();
       this.Msm.set(t.SunSpiritId, i);
-      this.G0f(t.SunSpiritId, i);
-      this.t1f(false);
+      this.Mvf(t.SunSpiritId, i);
+      this.J0f(false);
     }
   }
   OnSunSpiritRelease(t, i) {
@@ -290,21 +290,21 @@ let SceneItemSunSpiritGearComponent = SceneItemSunSpiritGearComponent_1 = class 
         Log_1.Log.Info("SunSpirit", 39, "日灵: 机关释放日灵", ["GearConfigId", this.EIe?.GetPbDataId()], ["GearIndex", i], ["SunSpiritConfigId", t.ConfigId], ["SunSpiritId", t.SunSpiritId]);
       }
       this.Msm?.delete(t.SunSpiritId);
-      this.$0f(t.SunSpiritId, i);
-      this.t1f(false);
+      this.Rvf(t.SunSpiritId, i);
+      this.J0f(false);
       if (!this.Msm.size) {
-        this.N0f("SceneItemSunSpiritGearComponent.OnSunSpiritRelease 机关持有日灵数量为空");
+        this.Ivf("SceneItemSunSpiritGearComponent.OnSunSpiritRelease 机关持有日灵数量为空");
       }
     }
   }
-  t1f(t) {
+  J0f(t) {
     if (!this.EIe?.GetRemoveState()) {
       if (this.Hte?.GetIsSceneInteractionLoadCompleted() && this.Ssm?.Type === "ScaleUp") {
-        this.i1f(t);
+        this.Z0f(t);
       }
     }
   }
-  r1f(t) {
+  eCf(t) {
     var i;
     var e;
     if (this.Ssm?.Type === "ScaleUp") {
@@ -318,28 +318,28 @@ let SceneItemSunSpiritGearComponent = SceneItemSunSpiritGearComponent_1 = class 
       t.AdditionEqual(e);
     }
   }
-  i1f(t) {
+  Z0f(t) {
     var i;
     var e;
-    if (this.Ssm?.Type === "ScaleUp" && this.Hte && (this.e1f.DeepCopy(this.wzi), this.r1f(this.wzi), Log_1.Log.CheckInfo() && Log_1.Log.Info("SunSpirit", 39, "日灵: 机关缩放", ["GearConfigId", this.EIe?.GetPbDataId()], ["OldScale", this.e1f], ["NewScale", this.wzi], ["bInit", t]), i = this.Z9f, e = this.GetNumOfSunSpiritOccupiedByMe(), this.Z9f = e, t ? this.J9f(0) : this.eHf(), t && this.Ssm.ScaleUpPerformConfig?.IsInitHide && e === 0 ? this.Hte.SetSceneItemActorHide(true) : this.Hte.SetSceneItemActorHide(false), this.Zlf.FromUeTransform(this.Hte.ActorTransform), this.Zlf.SetScale3D(Vector_1.Vector.OneVectorProxy), i < e) && (i === 0 ? this.Ssm.ScaleUpPerformConfig?.AppearEffectDa && EffectSystem_1.EffectSystem.SpawnUnloopedEffect(GlobalData_1.GlobalData.World, this.Zlf.ToUeTransform(), this.Ssm.ScaleUpPerformConfig.AppearEffectDa, "[SceneItemSunSpiritGearComponent] PlayAppearEffect") : this.Ssm.ScaleUpPerformConfig?.ScaleUpEffectDa && EffectSystem_1.EffectSystem.SpawnUnloopedEffect(GlobalData_1.GlobalData.World, this.Zlf.ToUeTransform(), this.Ssm.ScaleUpPerformConfig.ScaleUpEffectDa, "[SceneItemSunSpiritGearComponent] PlayScaleUpEffect"), this.Ssm.ScaleUpPerformConfig?.ScaleUpPerformTag)) {
+    if (this.Ssm?.Type === "ScaleUp" && this.Hte && (this.z0f.DeepCopy(this.wzi), this.eCf(this.wzi), Log_1.Log.CheckInfo() && Log_1.Log.Info("SunSpirit", 39, "日灵: 机关缩放", ["GearConfigId", this.EIe?.GetPbDataId()], ["OldScale", this.z0f], ["NewScale", this.wzi], ["bInit", t]), i = this.Meg, e = this.GetNumOfSunSpiritOccupiedByMe(), this.Meg = e, t ? this.Seg(0) : this.Eeg(), t && this.Ssm.ScaleUpPerformConfig?.IsInitHide && e === 0 ? this.Hte.SetSceneItemActorHide(true) : this.Hte.SetSceneItemActorHide(false), this.Y0f.FromUeTransform(this.Hte.ActorTransform), this.Y0f.SetScale3D(Vector_1.Vector.OneVectorProxy), i < e) && (i === 0 ? this.Ssm.ScaleUpPerformConfig?.AppearEffectDa && EffectSystem_1.EffectSystem.SpawnUnloopedEffect(GlobalData_1.GlobalData.World, this.Y0f.ToUeTransform(), this.Ssm.ScaleUpPerformConfig.AppearEffectDa, "[SceneItemSunSpiritGearComponent] PlayAppearEffect") : this.Ssm.ScaleUpPerformConfig?.ScaleUpEffectDa && EffectSystem_1.EffectSystem.SpawnUnloopedEffect(GlobalData_1.GlobalData.World, this.Y0f.ToUeTransform(), this.Ssm.ScaleUpPerformConfig.ScaleUpEffectDa, "[SceneItemSunSpiritGearComponent] PlayScaleUpEffect"), this.Ssm.ScaleUpPerformConfig?.ScaleUpPerformTag)) {
       if (this.Lie?.HasTag(this.Ssm.ScaleUpPerformConfig.ScaleUpPerformTag)) {
         this.Lie.RemoveTag(this.Ssm.ScaleUpPerformConfig.ScaleUpPerformTag);
       }
       this.Lie?.AddTag(this.Ssm.ScaleUpPerformConfig.ScaleUpPerformTag);
     }
   }
-  J9f(i) {
+  Seg(i) {
     if (!this.EIe?.GetRemoveState()) {
       var t = this.Hte?.GetInteractionMainActor();
       if (t?.IsValid()) {
         if (i <= 0) {
           this.X1t.DeepCopy(this.wzi);
-          this.tHf();
+          this.Ieg();
         } else {
           var e = this.wzi.X - this.X1t.X;
           let t = 1;
           if (MathUtils_1.MathUtils.IsNearlyZero(e)) {
-            this.tHf();
+            this.Ieg();
             return;
           }
           t = MathUtils_1.MathUtils.Clamp(Math.abs(SCALE_SPEED * i / e), 0, 1);
@@ -363,5 +363,5 @@ let SceneItemSunSpiritGearComponent = SceneItemSunSpiritGearComponent_1 = class 
     return t;
   }
 };
-SceneItemSunSpiritGearComponent = SceneItemSunSpiritGearComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(334)], SceneItemSunSpiritGearComponent);
+SceneItemSunSpiritGearComponent = SceneItemSunSpiritGearComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(336)], SceneItemSunSpiritGearComponent);
 exports.SceneItemSunSpiritGearComponent = SceneItemSunSpiritGearComponent; //# sourceMappingURL=SceneItemSunSpiritGearComponent.js.map

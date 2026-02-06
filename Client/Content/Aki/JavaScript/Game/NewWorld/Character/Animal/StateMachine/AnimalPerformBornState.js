@@ -114,9 +114,9 @@ class AnimalPerformBornState extends AnimalPerformStateBase_1.AnimalPerformState
     };
   }
   OnStart() {
-    this.PerformComp = this.Owner?.GetComponent(47);
-    this.TagComp = this.Owner?.GetComponent(215);
-    this.AnimComp = this.Owner?.GetComponent(186);
+    this.PerformComp = this.Owner?.GetComponent(49);
+    this.TagComp = this.Owner?.GetComponent(217);
+    this.AnimComp = this.Owner?.GetComponent(188);
     this.CreatureData = this.Owner?.GetComponent(0);
     if (this.PerformComp && this.TagComp) {
       this.TagComp.AddTag(1713932038);

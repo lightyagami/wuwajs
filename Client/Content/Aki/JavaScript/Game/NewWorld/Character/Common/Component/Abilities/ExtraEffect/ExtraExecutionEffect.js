@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.BuffMapper = exports.ModifyTeamMemberBuff = exports.RemoveBuffByFilter = exports.ModifySlotSpecialEnergy = exports.ModifyFuLuoLuoSpecialEnergy = exports.ChangeBuffStackCount = exports.StartBattleQte = exports.InvokePeriod = exports.ConvertBuffToAnother = exports.PeriodAddBuffToAdjacentEntity = exports.QteExecution = exports.ExecuteAddBulletByTagStackCount = exports.ExecuteAddBulletByStackCount = exports.ExecuteAddBuffByStackCount = exports.ExecuteBulletOrBuff = exports.PhantomAssistExecution = exports.AddBuffToAdjacentRoleExecution = exports.ExtendBuffDurationExecution = exports.CdReduceExecution = exports.DamageExecution = exports.AddEnergyExecution = exports.ModifyFormationAttributeExecution = exports.ReviveExecution = exports.InitExecution = exports.PeriodExecution = exports.BuffExecution = undefined;
+exports.AdjacentBuffStackToAttribute = exports.BuffMapper = exports.ModifyTeamMemberBuff = exports.RemoveBuffByFilter = exports.ModifySlotSpecialEnergy = exports.ModifyFuLuoLuoSpecialEnergy = exports.ChangeBuffStackCount = exports.StartBattleQte = exports.InvokePeriod = exports.ConvertBuffToAnother = exports.PeriodAddBuffToAdjacentEntity = exports.QteExecution = exports.ExecuteAddBulletByTagStackCount = exports.ExecuteAddBulletByStackCount = exports.ExecuteAddBuffByStackCount = exports.ExecuteBulletOrBuff = exports.PhantomAssistExecution = exports.AddBuffToAdjacentRoleExecution = exports.ExtendBuffDurationExecution = exports.CdReduceExecution = exports.DamageExecution = exports.AddEnergyExecution = exports.ModifyFormationAttributeExecution = exports.ReviveExecution = exports.InitExecution = exports.PeriodExecution = exports.BuffExecution = undefined;
 const Log_1 = require("../../../../../../../Core/Common/Log");
 const Time_1 = require("../../../../../../../Core/Common/Time");
 const Protocol_1 = require("../../../../../../../Core/Define/Net/Protocol");
@@ -93,7 +93,7 @@ class BuffExecution extends ExtraEffectBase_1.BuffEffectBase {
     if (e) {
       (t = Protocol_1.Aki.Protocol.Vzd.create()).cVn = this.Buff.Handle;
       t.c5n = this.Index;
-      CombatMessage_1.CombatNet.Send(15781, e, t);
+      CombatMessage_1.CombatNet.Send(25690, e, t);
     } else {
       CombatLog_1.CombatLog.Warn("Buff", undefined, "[Buff]EffectExecutePush失败", ["buffId", this.BuffId]);
     }
@@ -125,7 +125,7 @@ class ReviveExecution extends PeriodExecution {
     var t = this.OwnerBuffComponent?.GetEntity();
     var e = t?.GetComponent(0).GetPlayerId() ?? 0;
     if (ModelManager_1.ModelManager.SceneTeamModel.GetCurrentGroupLivingState(e) !== 2) {
-      t?.CheckGetComponent(201)?.ExecuteRevive();
+      t?.CheckGetComponent(203)?.ExecuteRevive();
     }
   }
 }
@@ -170,11 +170,11 @@ class AddEnergyExecution extends PeriodExecution {
       var i = this.AddValue;
       const u = i * h;
       t.AddBaseValue(e, u);
-      if (t.Entity?.CheckGetComponent(184)?.IsInGame) {
+      if (t.Entity?.CheckGetComponent(186)?.IsInGame) {
         var s = CharacterDamageCalculations_1.ENERGY_SHARE_RATE / CharacterAttributeTypes_1.PER_TEN_THOUSAND;
         for (const a of ModelManager_1.ModelManager.SceneTeamModel.GetTeamEntities(true)) {
-          var r = a?.Entity?.CheckGetComponent(184);
-          var o = a?.Entity?.CheckGetComponent(182);
+          var r = a?.Entity?.CheckGetComponent(186);
+          var o = a?.Entity?.CheckGetComponent(184);
           if (r && !r.IsInGame && o) {
             const h = o.GetCurrentValue(CharacterAttributeTypes_1.EAttributeId.Proto_EnergyEfficiency) / CharacterAttributeTypes_1.PER_TEN_THOUSAND;
             const u = i * h;
@@ -243,7 +243,7 @@ class CdReduceExecution extends PeriodExecution {
     this.$Xo = t.ExtraEffectGrowParameters2;
   }
   OnExecute() {
-    var t = this.OwnerBuffComponent?.GetEntity()?.GetComponent(218);
+    var t = this.OwnerBuffComponent?.GetEntity()?.GetComponent(220);
     if (t) {
       var e = AbilityUtils_1.AbilityUtils.GetLevelValue(this.XXo, this.Level, 0) * CharacterAttributeTypes_1.DIVIDED_TEN_THOUSAND;
       var i = AbilityUtils_1.AbilityUtils.GetLevelValue(this.$Xo, this.Level, 0);
@@ -325,7 +325,7 @@ class AddBuffToAdjacentRoleExecution extends InitExecution {
             var s = r.EntityHandle;
             if (s && s.Entity.GetComponent(0).IsRole() && s.Id !== e.Id) {
               for (const o of this.ApplyBuffId) {
-                s.Entity.GetComponent(183).AddIterativeBuff(o, this.Buff, undefined, false, `Buff${this.BuffId}的额外效果导致的共享添加`);
+                s.Entity.GetComponent(185).AddIterativeBuff(o, this.Buff, undefined, false, `Buff${this.BuffId}的额外效果导致的共享添加`);
               }
             }
           }
@@ -357,7 +357,7 @@ class PhantomAssistExecution extends InitExecution {
     var e = this.OwnerBuffComponent.GetEntity();
     var e = e ? PhantomUtil_1.PhantomUtil.GetSummonedEntity(e, this.ZXo, this.e$o) : undefined;
     if (e) {
-      e.Entity.GetComponent(41).BeginSkillAsync(this.wmo, {
+      e.Entity.GetComponent(43).BeginSkillAsync(this.wmo, {
         Target: this.i$o()?.Entity,
         Reason: "PhantomAssistExecution.OnExecute"
       });
@@ -371,7 +371,7 @@ class PhantomAssistExecution extends InitExecution {
         t = e?.SkillTarget;
         break;
       case 1:
-        t = this.OwnerBuffComponent?.GetEntity()?.GetComponent(33)?.GetCurrentTarget();
+        t = this.OwnerBuffComponent?.GetEntity()?.GetComponent(34)?.GetCurrentTarget();
         break;
       case 2:
         t = ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(this.OwnerBuffComponent?.GetEntity());
@@ -447,9 +447,9 @@ class ExecuteBulletOrBuff extends PeriodExecution {
     }
   }
   GetBuffHolderSkillTarget() {
-    var t = this.OwnerBuffComponent?.GetEntity()?.CheckGetComponent(41)?.SkillTarget;
+    var t = this.OwnerBuffComponent?.GetEntity()?.CheckGetComponent(43)?.SkillTarget;
     if (t) {
-      return t.Entity.CheckGetComponent(220);
+      return t.Entity.CheckGetComponent(222);
     } else {
       return this.OwnerBuffComponent;
     }
@@ -457,7 +457,7 @@ class ExecuteBulletOrBuff extends PeriodExecution {
   ExecutePerId(i) {
     for (let e = 0; e < this.Ids.length; e++) {
       let t = this.GetEffectTarget();
-      if (t = (0, RegisterComponent_1.isComponentInstance)(t, 209) ? t.GetCurrentBuffComponent() : t) {
+      if (t = (0, RegisterComponent_1.isComponentInstance)(t, 211) ? t.GetCurrentBuffComponent() : t) {
         i(this.Ids[e], this.n$o(e), t);
       }
     }
@@ -550,9 +550,9 @@ class ExecuteAddBulletByStackCount extends PeriodExecution {
     }
   }
   GetBuffHolderSkillTarget() {
-    var t = this.OwnerBuffComponent?.GetEntity()?.CheckGetComponent(41)?.SkillTarget;
+    var t = this.OwnerBuffComponent?.GetEntity()?.CheckGetComponent(43)?.SkillTarget;
     if (t) {
-      return t.Entity.CheckGetComponent(220);
+      return t.Entity.CheckGetComponent(222);
     } else {
       return this.OwnerBuffComponent;
     }
@@ -584,7 +584,7 @@ class ExecuteAddBulletByTagStackCount extends PeriodExecution {
     }
   }
   OnExecute() {
-    var t = this.OwnerEntity?.GetComponent(215)?.GetTagCount(this.TagIdGetStackCount);
+    var t = this.OwnerEntity?.GetComponent(217)?.GetTagCount(this.TagIdGetStackCount);
     if (!t || t < 0) {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("BuffItem", 20, "ExecuteAddBulletByTagStackCount指定的Tag在持有者身上不存在", ["BuffId", this.BuffId], ["持有者", this.Buff.GetOwnerDebugName()], ["Tag", GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(this.TagIdGetStackCount)], ["StackCount", t]);
@@ -647,9 +647,9 @@ class ExecuteAddBulletByTagStackCount extends PeriodExecution {
     }
   }
   GetBuffHolderSkillTarget() {
-    var t = this.OwnerBuffComponent?.GetEntity()?.CheckGetComponent(41)?.SkillTarget;
+    var t = this.OwnerBuffComponent?.GetEntity()?.CheckGetComponent(43)?.SkillTarget;
     if (t) {
-      return t.Entity.CheckGetComponent(220);
+      return t.Entity.CheckGetComponent(222);
     } else {
       return this.OwnerBuffComponent;
     }
@@ -679,11 +679,11 @@ class QteExecution extends InitExecution {
         var r = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity;
         if (r?.Valid && r?.IsInit) {
           if (i !== r.Id) {
-            i = e.GetComponent(104)?.GetQteTagData();
+            i = e.GetComponent(106)?.GetQteTagData();
             if (i) {
               if (this.xtc || !i.ChangeRole && !i.ChangeRoleOnQte) {
                 e = this.$fa > 0;
-                i = r.GetComponent(215);
+                i = r.GetComponent(217);
                 if (!e) {
                   i.TagContainer.UpdateExactTag(2, 2014048239, 1);
                 }
@@ -726,6 +726,7 @@ class PeriodAddBuffToAdjacentEntity extends PeriodExecution {
     this.eue = [];
     this.lxl = "";
     this.hxl = false;
+    this.tlg = false;
   }
   InitParameters(t) {
     t = t.ExtraEffectParameters;
@@ -733,6 +734,7 @@ class PeriodAddBuffToAdjacentEntity extends PeriodExecution {
       this.nJo = Number(t[0]);
       this.jQo = t[1].split("#").map(t => Number(t.trim()));
       this.axl = t[2] ? t[2].split("#").map(t => Number(t.trim())) : [0, 2];
+      this.tlg = Number(t[3] ?? 0) === 1;
       this.hxl = this.axl.some(t => t === 0 || t === 3 || t === 2);
       this.lxl = `Buff${this.BuffId}的光环额外效果导致的共享添加`;
     }
@@ -756,23 +758,24 @@ class PeriodAddBuffToAdjacentEntity extends PeriodExecution {
         var o = r?.GetEntityCamp();
         ModelManager_1.ModelManager.CreatureModel.GetEntitiesInRangeWithLocation(t, this.nJo, 248, this.eue);
         var h = i.GetEntityCamp();
-        for (const c of this.eue) {
+        for (const l of this.eue) {
           let t = false;
-          var u = c.Entity;
+          var u = l.Entity;
           if (u && u.Valid && u.IsInit) {
             var a = u?.GetComponent(0);
-            var n = u?.GetComponent(183);
+            var n = u?.GetComponent(185);
             if (u && a && n) {
               var f = a.GetEntityType() === Protocol_1.Aki.Protocol.kks.Proto_Player ? 0 : a.GetEntityCamp();
-              for (const l of this.axl) {
-                if (this.CheckCamp(l, u.Id, f, s?.Id, o, e.Id, h)) {
+              for (const d of this.axl) {
+                if (this.CheckCamp(d, u.Id, f, s?.Id, o, e.Id, h)) {
                   t = true;
                   break;
                 }
               }
               if (t) {
-                for (const d of this.jQo) {
-                  n.AddIterativeBuff(d, this.Buff, undefined, false, this.lxl);
+                var c = this.tlg ? this.Buff?.StackCount : undefined;
+                for (const x of this.jQo) {
+                  n.AddIterativeBuff(x, this.Buff, c, false, this.lxl);
                 }
               }
             }
@@ -817,7 +820,8 @@ class PeriodAddBuffToAdjacentEntity extends PeriodExecution {
           return "Unknown";
       }
     });
-    return `为${(this.nJo / 100).toFixed(1)}m内的${t.join("、")}附加Buff${this.jQo.join(",")}`;
+    var e = this.tlg ? "（传递层数）" : "";
+    return `为${(this.nJo / 100).toFixed(1)}m内的${t.join("、")}附加Buff${this.jQo.join(",")}${e}`;
   }
 }
 exports.PeriodAddBuffToAdjacentEntity = PeriodAddBuffToAdjacentEntity;
@@ -826,11 +830,13 @@ class ConvertBuffToAnother extends PeriodExecution {
     super(...arguments);
     this.sK_ = [];
     this.aK_ = 0;
+    this.tNg = false;
   }
   InitParameters(t) {
     t = t.ExtraEffectParameters ?? [];
     this.sK_ = t[0]?.split("#").map(t => Number(t)) ?? [];
     this.aK_ = Number(t[1] ?? 0);
+    this.tNg = Number(t[2] ?? 0) === 1;
   }
   OnExecute() {
     var e = this.OwnerBuffComponent;
@@ -839,8 +845,10 @@ class ConvertBuffToAnother extends PeriodExecution {
       for (const i of this.sK_) {
         t += e.GetBuffTotalStackById(i);
       }
-      for (const s of this.sK_) {
-        e.RemoveBuff(s, -1, "Buff转换效果");
+      if (!this.tNg) {
+        for (const s of this.sK_) {
+          e.RemoveBuff(s, -1, "Buff转换效果");
+        }
       }
       if (t !== 0 && this.aK_ > 0) {
         e.AddIterativeBuff(this.aK_, this.Buff, t, true, "Buff转换效果");
@@ -951,7 +959,7 @@ class ModifySlotSpecialEnergy extends PeriodExecution {
   OnExecute() {
     var t;
     if (!!this.OwnerEntity && (t = this.mwu[0]) !== undefined && !(t <= -1) && !(t >= 1)) {
-      if (t = this.OwnerEntity.GetComponent(278)?.SpecialSkill) {
+      if (t = this.OwnerEntity.GetComponent(280)?.SpecialSkill) {
         t.ModifySlotSpecialEnergy?.(this.mwu);
       }
     }
@@ -994,46 +1002,46 @@ exports.RemoveBuffByFilter = RemoveBuffByFilter;
 class ModifyTeamMemberBuff extends PeriodExecution {
   constructor() {
     super(...arguments);
-    this.M_f = 0;
+    this.xcf = 0;
     this.NEn = true;
     this.jQo = undefined;
   }
   InitParameters(t) {
-    this.M_f = Number(t.ExtraEffectParameters[0]);
+    this.xcf = Number(t.ExtraEffectParameters[0]);
     this.NEn = Number(t.ExtraEffectParameters[1]) === 0;
     this.jQo = t.ExtraEffectParameters[2].split("#").map(t => Number(t));
   }
   OnExecute() {
-    switch (this.M_f) {
+    switch (this.xcf) {
       case 0:
-        this.E_f(this.OwnerEntity);
+        this.Bcf(this.OwnerEntity);
         break;
       case 1:
       case 2:
-        var t = this.M_f === 1;
+        var t = this.xcf === 1;
         for (const e of ModelManager_1.ModelManager.SceneTeamModel.GetTeamEntities(t)) {
-          this.E_f(e.Entity);
+          this.Bcf(e.Entity);
         }
     }
   }
-  E_f(t) {
+  Bcf(t) {
     if (t) {
       if (this.NEn) {
         for (const e of this.jQo) {
-          t.GetComponent(220)?.AddIterativeBuff(e, this.Buff, undefined, true, `Buff${this.BuffId}的额外效果ModifyTeamMemberBuff导致的添加`);
+          t.GetComponent(222)?.AddIterativeBuff(e, this.Buff, undefined, true, `Buff${this.BuffId}的额外效果ModifyTeamMemberBuff导致的添加`);
         }
       } else {
         for (const i of this.jQo) {
-          t.GetComponent(220)?.RemoveBuff(i, -1, `Buff${this.BuffId}的额外效果ModifyTeamMemberBuff`);
+          t.GetComponent(222)?.RemoveBuff(i, -1, `Buff${this.BuffId}的额外效果ModifyTeamMemberBuff`);
         }
       }
     }
   }
   GetDebugEffectString() {
     let t = "自己";
-    if (this.M_f === 1) {
+    if (this.xcf === 1) {
       t = "小队";
-    } else if (this.M_f === 2) {
+    } else if (this.xcf === 2) {
       t = "队伍";
     }
     return `buff${this.BuffId} ${this.NEn ? "添加" : "移除"}${t}的buff${this.jQo}`;
@@ -1043,27 +1051,27 @@ exports.ModifyTeamMemberBuff = ModifyTeamMemberBuff;
 class BuffMapper extends PeriodExecution {
   constructor() {
     super(...arguments);
-    this.I_f = undefined;
-    this.T_f = undefined;
-    this.b_f = undefined;
-    this.R_f = undefined;
+    this.kcf = undefined;
+    this.qcf = undefined;
+    this.Ocf = undefined;
+    this.Gcf = undefined;
   }
   InitParameters(t) {
-    this.I_f = t.ExtraEffectParameters[0].split("#").map(t => Number(t));
-    this.T_f = t.ExtraEffectParameters[1].split("#").map(t => Number(t));
-    this.b_f = t.ExtraEffectParameters[2].split("#").map(t => Number(t));
-    this.R_f = Number(t.ExtraEffectParameters[3]);
+    this.kcf = t.ExtraEffectParameters[0].split("#").map(t => Number(t));
+    this.qcf = t.ExtraEffectParameters[1].split("#").map(t => Number(t));
+    this.Ocf = t.ExtraEffectParameters[2].split("#").map(t => Number(t));
+    this.Gcf = Number(t.ExtraEffectParameters[3]);
   }
   OnExecute() {
     if (this.OwnerBuffComponent) {
       let t = false;
-      for (var [e, i] of this.I_f.entries()) {
+      for (var [e, i] of this.kcf.entries()) {
         if (this.OwnerBuffComponent.HasBuff(i)) {
-          i = this.T_f[e];
+          i = this.qcf[e];
           if (i && i > 0) {
             this.OwnerBuffComponent.RemoveBuff(i, -1, this.BuffId + "BuffMapper");
           }
-          i = this.b_f[e];
+          i = this.Ocf[e];
           if (i && i > 0) {
             this.OwnerBuffComponent.AddIterativeBuff(i, this.Buff, undefined, true, `Buff${this.BuffId}的额外效果BuffMapper导致的添加`);
           }
@@ -1071,16 +1079,132 @@ class BuffMapper extends PeriodExecution {
           break;
         }
       }
-      if (!t && this.R_f && this.R_f > 0) {
-        this.OwnerBuffComponent.AddIterativeBuff(this.R_f, this.Buff, undefined, true, `Buff${this.BuffId}的额外效果BuffMapper导致的添加`);
+      if (!t && this.Gcf && this.Gcf > 0) {
+        this.OwnerBuffComponent.AddIterativeBuff(this.Gcf, this.Buff, undefined, true, `Buff${this.BuffId}的额外效果BuffMapper导致的添加`);
       }
     } else {
       CombatLog_1.CombatLog.Error("Buff", this.OwnerEntity, "buff:BuffMapper失败");
     }
   }
   GetDebugEffectString() {
-    return `buff${this.BuffId} buff映射 检查buff${this.I_f} 移除buff${this.T_f} 添加buff${this.b_f} 默认buff${this.R_f}`;
+    return `buff${this.BuffId} buff映射 检查buff${this.kcf} 移除buff${this.qcf} 添加buff${this.Ocf} 默认buff${this.Gcf}`;
   }
 }
 exports.BuffMapper = BuffMapper;
+class AdjacentBuffStackToAttribute extends PeriodExecution {
+  constructor() {
+    super(...arguments);
+    this.nJo = 0;
+    this.axl = [];
+    this.jQo = [];
+    this.ine = 0;
+    this.ilg = 0;
+    this.otc = false;
+    this.eue = [];
+    this.hxl = false;
+  }
+  InitParameters(t) {
+    t = t.ExtraEffectParameters;
+    if (!!t && !(t.length < 5)) {
+      this.nJo = Number(t[0]);
+      this.axl = t[1] ? t[1].split("#").map(t => Number(t.trim())) : [5];
+      this.jQo = t[2] ? t[2].split("#").map(t => Number(t.trim())) : [];
+      this.ine = Number(t[3]);
+      this.ilg = Number(t[4]);
+      this.hxl = this.axl.some(t => t === 0 || t === 3 || t === 2);
+    }
+  }
+  CheckExecutable() {
+    return !ModelManager_1.ModelManager.GameModeModel?.IsMulti || !!this.OwnerBuffComponent?.HasBuffAuthority();
+  }
+  OnExecute() {
+    var i = this.OwnerEntity;
+    var t = i?.GetComponent(1)?.ActorLocationProxy;
+    var s = i?.GetComponent(0);
+    var r = this.OwnerBuffComponent?.GetAttributeComponent();
+    if (t && s && r) {
+      var o = this.InstigatorEntity?.Entity;
+      var h = o?.CheckGetComponent(0);
+      if (this.hxl && !h) {
+        if (!this.otc) {
+          CombatLog_1.CombatLog.Warn("Buff", i, "范围buff层数转属性效果指定了施加者阵营判断，但施加者不合法", ["handle", this.Buff?.Handle], ["buffId", this.BuffId]);
+          this.otc = true;
+        }
+      } else {
+        var u = h?.GetEntityCamp();
+        ModelManager_1.ModelManager.CreatureModel.GetEntitiesInRangeWithLocation(t, this.nJo, 248, this.eue);
+        var a = s.GetEntityCamp();
+        let e = 0;
+        for (const x of this.eue) {
+          let t = false;
+          var n = x.Entity;
+          if (n && n.Valid && n.IsInit) {
+            var f = n?.GetComponent(0);
+            var c = n?.GetComponent(185);
+            if (n && f && c) {
+              var l = f.GetEntityType() === Protocol_1.Aki.Protocol.kks.Proto_Player ? 0 : f.GetEntityCamp();
+              for (const b of this.axl) {
+                if (this.CheckCamp(b, n.Id, l, o?.Id, u, i.Id, a)) {
+                  t = true;
+                  break;
+                }
+              }
+              if (t) {
+                for (const m of this.jQo) {
+                  var d = c.GetBuffById(m);
+                  if (d) {
+                    e += d.StackCount;
+                  }
+                }
+              }
+            }
+          }
+        }
+        if (e > 0) {
+          h = this.ilg * CharacterAttributeTypes_1.DIVIDED_TEN_THOUSAND * e;
+          r.AddBaseValue(this.ine, h);
+        }
+      }
+    }
+  }
+  CheckCamp(t, e, i, s, r, o, h) {
+    switch (t) {
+      case 0:
+        return e === s;
+      case 1:
+        return e === o;
+      case 2:
+        return e !== s && CampUtils_1.CampUtils.GetCampRelationship(r, i) === 1;
+      case 3:
+        return CampUtils_1.CampUtils.GetCampRelationship(r, i) === 2;
+      case 4:
+        return e !== o && CampUtils_1.CampUtils.GetCampRelationship(h, i) === 1;
+      case 5:
+        return CampUtils_1.CampUtils.GetCampRelationship(h, i) === 2;
+    }
+    return false;
+  }
+  GetDebugEffectString() {
+    var t = this.axl.map(t => {
+      switch (t) {
+        case 0:
+          return "施加者";
+        case 1:
+          return "持有者";
+        case 2:
+          return "施加者的友方";
+        case 3:
+          return "施加者的敌方";
+        case 4:
+          return "持有者的友方";
+        case 5:
+          return "持有者的敌方";
+        default:
+          return "Unknown";
+      }
+    });
+    return `根据${(this.nJo / 100).toFixed(1)}m内的${t.join("、")}的Buff${this.jQo.join(",")}层数总和，以万分之${this.ilg}比例提升属性${this.ine}`;
+  }
+}
+exports.AdjacentBuffStackToAttribute = AdjacentBuffStackToAttribute;
 //# sourceMappingURL=ExtraExecutionEffect.js.map

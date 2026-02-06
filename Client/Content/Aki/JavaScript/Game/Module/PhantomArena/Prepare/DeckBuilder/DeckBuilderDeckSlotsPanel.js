@@ -24,14 +24,14 @@ class DeckBuilderDeckSlotsPanel extends UiPanelBase_1.UiPanelBase {
     this.CurFieldSlotData = undefined;
     this.CurNormalSlotDataList = [];
     this.WTu = undefined;
-    this.WQm = undefined;
+    this.dYm = undefined;
     this.NormalSlotScrollLayout = undefined;
     this.CoreElementLayout = undefined;
     this.NormalElementLayout = undefined;
     this.ZX1 = 0;
     this.keu = 0;
     this.Oeu = new Map();
-    this.QQm = t => {
+    this.mYm = t => {
       this.RefreshFieldCardEffectUnlock(t);
     };
     this.e61 = () => {
@@ -82,9 +82,9 @@ class DeckBuilderDeckSlotsPanel extends UiPanelBase_1.UiPanelBase {
       return t;
     };
     this.KTu = t => this.Data.CanCoreSlotItemToggleChange(t);
-    this.KQm = () => {
+    this.fYm = () => {
       var t = new DeckBuilderCardSlotItem_1.DeckBuilderCardSlotItem();
-      t.CanToggleChange = this.XQm;
+      t.CanToggleChange = this.gYm;
       t.ShortClickCallback = t => {
         this.Data?.OnCoreSlotItemSortClick?.(t);
       };
@@ -105,7 +105,7 @@ class DeckBuilderDeckSlotsPanel extends UiPanelBase_1.UiPanelBase {
       };
       return t;
     };
-    this.XQm = t => this.Data.CanFieldSlotItemToggleChange(t);
+    this.gYm = t => this.Data.CanFieldSlotItemToggleChange(t);
     this.jli = () => new CardElementItem_1.CardElementItem();
     this.qeu = t => {
       if (t === 1) {
@@ -128,9 +128,9 @@ class DeckBuilderDeckSlotsPanel extends UiPanelBase_1.UiPanelBase {
     this.NormalElementLayout = new GenericLayout_1.GenericLayout(this.GetLayoutBase(11), this.jli);
     var t = [];
     if (this.GetItem(16)) {
-      this.WQm = new DeckBuilderFieldCardItem_1.DeckBuilderFieldCardItem();
-      this.WQm.FieldSlotItem = this.KQm();
-      t.push(this.WQm.CreateThenShowByActorAsync(this.GetItem(16).GetOwner()));
+      this.dYm = new DeckBuilderFieldCardItem_1.DeckBuilderFieldCardItem();
+      this.dYm.FieldSlotItem = this.fYm();
+      t.push(this.dYm.CreateThenShowByActorAsync(this.GetItem(16).GetOwner()));
     }
     t.push(this.WTu.CreateThenShowByActorAsync(this.GetItem(7).GetOwner()));
     await Promise.all(t);
@@ -155,17 +155,17 @@ class DeckBuilderDeckSlotsPanel extends UiPanelBase_1.UiPanelBase {
   }
   RefreshByData(t) {
     this.Data = t;
-    if (this.WQm) {
-      this.WQm.OnEffectBtnClickCallback = this.Data.OnFieldCardItemEffectBtnClick;
-      this.WQm.FieldSlotItem.LongPressStartTime = this.Data?.SlotLongPressStartTime ?? 0;
-      this.WQm.FieldSlotItem.LongPressEndTime = this.Data?.SlotLongPressEndTime ?? 0;
+    if (this.dYm) {
+      this.dYm.OnEffectBtnClickCallback = this.Data.OnFieldCardItemEffectBtnClick;
+      this.dYm.FieldSlotItem.LongPressStartTime = this.Data?.SlotLongPressStartTime ?? 0;
+      this.dYm.FieldSlotItem.LongPressEndTime = this.Data?.SlotLongPressEndTime ?? 0;
     }
     if (this.WTu) {
       this.WTu.LongPressStartTime = this.Data?.SlotLongPressStartTime ?? 0;
       this.WTu.LongPressEndTime = this.Data?.SlotLongPressEndTime ?? 0;
     }
     if (t.IsNeedRequestCheckCardSkillUnlock) {
-      PhantomArenaController_1.PhantomArenaController.RequestCheckCardSkillUnlock(t.DeckInfo, this.QQm);
+      PhantomArenaController_1.PhantomArenaController.RequestCheckCardSkillUnlock(t.DeckInfo, this.mYm);
     }
     this.RefreshCardSlot();
     this.RefreshCardSlotElements();
@@ -209,18 +209,18 @@ class DeckBuilderDeckSlotsPanel extends UiPanelBase_1.UiPanelBase {
   RefreshFieldCardSlot(t) {
     var i;
     if (this.Data.IsNeedFieldCard) {
-      this.WQm?.SetUiActive(true);
+      this.dYm?.SetUiActive(true);
       i = this.Data.DeckInfo;
-      this.WQm?.RefreshItem(i, t);
+      this.dYm?.RefreshItem(i, t);
       if (i = i.GetFieldCardSlot()) {
         i = this.Diu(i);
         if (t && t === i.SlotInfo.CardId) {
           i.NeedPlayAddAnim = true;
         }
-        this.WQm?.RefreshSlotItem(i);
+        this.dYm?.RefreshSlotItem(i);
       }
     } else {
-      this.WQm?.SetUiActive(false);
+      this.dYm?.SetUiActive(false);
     }
   }
   RefreshNormalCardSlot(t, i = 0, e = 0) {
@@ -251,16 +251,16 @@ class DeckBuilderDeckSlotsPanel extends UiPanelBase_1.UiPanelBase {
   RefreshFieldCardEffectUnlock(t) {
     var i;
     var e = this.Data.DeckInfo.GetFieldCardSlot();
-    if (e && this.WQm) {
+    if (e && this.dYm) {
       e = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardConfig(e.CardId);
-      i = t.Vqm >= t.Nqm ? e.FieldConditionDesc : e.FieldUnlockConditionDesc;
+      i = t.cGm >= t.uGm ? e.FieldConditionDesc : e.FieldUnlockConditionDesc;
       t = {
-        CurrentProgress: t.Vqm,
-        MaxProgress: t.Nqm,
+        CurrentProgress: t.cGm,
+        MaxProgress: t.uGm,
         Icon: e.FieldConditionIcon,
         ConditionDesc: i
       };
-      this.WQm?.RefreshEffectUnlock(t);
+      this.dYm?.RefreshEffectUnlock(t);
     }
   }
   RefreshCardSlotElements() {
@@ -291,11 +291,11 @@ class DeckBuilderDeckSlotsPanel extends UiPanelBase_1.UiPanelBase {
   }
   SelectCoreCardSlot() {
     var t = this.Data.DeckInfo.GetCoreCardSlot();
-    return t !== undefined && (this.NormalSlotScrollLayout?.SelectGridProxy(), this.WQm?.FieldSlotItem?.OnDeselected(false), this.WTu.OnSelected(false), this.ZX1 = t.CardId, true);
+    return t !== undefined && (this.NormalSlotScrollLayout?.SelectGridProxy(), this.dYm?.FieldSlotItem?.OnDeselected(false), this.WTu.OnSelected(false), this.ZX1 = t.CardId, true);
   }
   SelectNormalCardSlotByIndex(t) {
     this.WTu.OnDeselected(false);
-    this.WQm?.FieldSlotItem?.OnDeselected(false);
+    this.dYm?.FieldSlotItem?.OnDeselected(false);
     this.NormalSlotScrollLayout.SelectGridProxy(t);
     if (t < 0 || t >= this.CurNormalSlotDataList.length) {
       if (Log_1.Log.CheckError()) {

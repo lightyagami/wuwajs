@@ -72,7 +72,8 @@ class NewSoundDetectItem extends GridProxyAbstract_1.GridProxyAbstract {
             };
             ModelManager_1.ModelManager.InstanceDungeonModel.InstanceEnterContentText.Vah = e;
             InstanceDungeonController_1.InstanceDungeonController.PrewarTeamFightRequest(o, t, 0, 0);
-            if (this.Pe.Conf.Secondary === 6) {
+            e = this.Pe.Conf.Secondary;
+            if (e === 6 || e === 62) {
               ModelManager_1.ModelManager.AdventureGuideModel.SetRoleTutorialNew(this.Pe.Conf.Id);
             }
           } else if (Log_1.Log.CheckError()) {
@@ -166,6 +167,23 @@ class NewSoundDetectItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.Z4_ = new NewSoundWeeklyRogueItem_1.NewSoundWeeklyRogueItem();
     await Promise.all([this.D8e.CreateByActorAsync(this.GetItem(2).GetOwner()), this.R8e.CreateByActorAsync(this.GetItem(5).GetOwner()), this.U8e.CreateByActorAsync(this.GetItem(4).GetOwner()), this.A8e.CreateByActorAsync(this.GetItem(3).GetOwner()), this.Z4_.CreateByActorAsync(this.GetItem(10).GetOwner())]);
   }
+  SyncStart() {
+    this.ZAt = new ButtonItem_1.ButtonItem();
+    this.ZAt.CreateThenShowByActor(this.GetItem(1).GetOwner());
+    this.ZAt.SetFunction(this.P8e);
+    this.oO_ = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
+    this.T8e = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(0), this.YVe);
+    this.D8e = new NewSoundLordItem_1.NewSoundLordItem();
+    this.R8e = new NewSoundNormalItem_1.NewSoundNormalItem();
+    this.U8e = new NewSoundTeachItem_1.NewSoundTeachItem();
+    this.A8e = new NewSoundTowerItem_1.NewSoundTowerItem();
+    this.Z4_ = new NewSoundWeeklyRogueItem_1.NewSoundWeeklyRogueItem();
+    this.D8e.CreateByActor(this.GetItem(2).GetOwner());
+    this.R8e.CreateByActor(this.GetItem(5).GetOwner());
+    this.U8e.CreateByActor(this.GetItem(4).GetOwner());
+    this.A8e.CreateByActor(this.GetItem(3).GetOwner());
+    this.Z4_.CreateByActor(this.GetItem(10).GetOwner());
+  }
   OnStart() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.NewSoundAreaRefreshReward, this.x8e);
   }
@@ -214,7 +232,7 @@ class NewSoundDetectItem extends GridProxyAbstract_1.GridProxyAbstract {
       this.GetItem(6).SetUIActive(!s);
       this.GetItem(11).SetUIActive(false);
     }
-    if (r === 6) {
+    if (r === 6 || r === 62) {
       s = ModelManager_1.ModelManager.AdventureGuideModel.IsRoleTutorialNew(o.Conf.Id) && !ModelManager_1.ModelManager.AdventureGuideModel.IsDetectionFinished(this.Pe);
       this.GetItem(9).SetUIActive(s);
     } else {
@@ -243,12 +261,12 @@ class NewSoundDetectItem extends GridProxyAbstract_1.GridProxyAbstract {
     if (d) {
       var _ = ModelManager_1.ModelManager.AdventureGuideModel.IsDetectionFinished(this.Pe);
       var u = new Array();
-      for (const g of d.keys()) {
+      for (const c of d.keys()) {
         const o = {
           ItemData: [{
             IncId: 0,
-            ItemId: g
-          }, d.get(g)],
+            ItemId: c
+          }, d.get(c)],
           HaveFinish: _
         };
         u.push(o);

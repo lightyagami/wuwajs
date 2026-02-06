@@ -21,7 +21,7 @@ class TsAnimNotifyStateBonesShowControl extends UE.KuroAnimNotifyState {
       }
       if (!t.IsBoneHiddenByName(this.BoneName)) {
         t.HideBoneByName(this.BoneName, 0);
-        s.GetComponent(84)?.HideWeaponsWhenHideBones(true, this.BoneName);
+        s.GetComponent(86)?.HideWeaponsWhenHideBones(true, this.BoneName);
       }
     }
     return false;
@@ -35,7 +35,7 @@ class TsAnimNotifyStateBonesShowControl extends UE.KuroAnimNotifyState {
       }
       if (t.IsBoneHiddenByName(this.BoneName)) {
         t.UnHideBoneByName(this.BoneName);
-        r.GetComponent(84)?.HideWeaponsWhenHideBones(false, this.BoneName);
+        r.GetComponent(86)?.HideWeaponsWhenHideBones(false, this.BoneName);
       }
     }
     return false;

@@ -16,7 +16,7 @@ class PersonalBirthAttachItem extends AutoAttachItem_1.AutoAttachItem {
     this.kG = new UE.Vector(0);
     this.wst = 0;
     this.q6e = undefined;
-    this.ekm = 0;
+    this.fqm = 0;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIText]];
@@ -26,7 +26,7 @@ class PersonalBirthAttachItem extends AutoAttachItem_1.AutoAttachItem {
   }
   OnRefreshItem(t) {
     this.wst = t;
-    this.GetText(0).SetText(ConfigManager_1.ConfigManager.PersonalConfig.GetBirthLocalText(t, this.ekm));
+    this.GetText(0).SetText(ConfigManager_1.ConfigManager.PersonalConfig.GetBirthLocalText(t, this.fqm));
   }
   OnMoveItem() {
     var t = this.GetCurrentMovePercentage();
@@ -47,7 +47,7 @@ class PersonalBirthAttachItem extends AutoAttachItem_1.AutoAttachItem {
   }
   OnUnSelect() {}
   SetDateType(t) {
-    this.ekm = t;
+    this.fqm = t;
   }
 }
 exports.PersonalBirthAttachItem = PersonalBirthAttachItem;

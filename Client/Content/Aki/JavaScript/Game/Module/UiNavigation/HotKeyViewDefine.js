@@ -18,5 +18,6 @@ exports.logicModeLogString = {
   16: "控制器屏蔽",
   32: "文本屏蔽",
   64: "表格配置操作类型屏蔽",
-  65: "None"
+  128: "业务自定义屏蔽",
+  129: "None"
 }; //# sourceMappingURL=HotKeyViewDefine.js.map

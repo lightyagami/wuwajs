@@ -11,6 +11,7 @@ const Info_1 = require("../Core/Common/Info");
 const Log_1 = require("../Core/Common/Log");
 const LogAnalyzer_1 = require("../Core/Common/LogAnalyzer");
 const Stats_1 = require("../Core/Common/Stats");
+const LoadModeManager_1 = require("../Core/Performance/LoadMode/LoadModeManager");
 const ResourceSystem_1 = require("../Core/Resource/ResourceSystem");
 const TickProcessSystem_1 = require("../Core/Tick/TickProcessSystem");
 const BaseConfigController_1 = require("../Launcher/BaseConfig/BaseConfigController");
@@ -74,7 +75,7 @@ class GameProcedure {
   }
   static async Mve(e) {
     Stats_1.Stat.CreateInstantStat("GameProcedure_OnStart:Start");
-    ResourceSystem_1.ResourceSystem.SetLoadModeInLoading(GlobalData_1.GlobalData.World, "GameProcedure.OnStart");
+    LoadModeManager_1.LoadModeManager.SetLoadModeByReason("Loading", "GameProcedureOnStart");
     UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "kuro.MaxTimeForFinishDestroy 7257600");
     if (Info_1.Info.IsPlayInEditor) {
       UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "s.KuroSkipMissingPackageEnabled 0");
@@ -154,7 +155,7 @@ class GameProcedure {
       }
       e.OpenLoginView();
     }
-    ResourceSystem_1.ResourceSystem.SetLoadModeInGame(GlobalData_1.GlobalData.World, "GameProcedure.OnStart");
+    LoadModeManager_1.LoadModeManager.ResetLoadModeByReason("GameProcedureOnStart");
     r.Remove(a);
     Stats_1.Stat.CreateInstantStat("GameProcedure_OnStart:End");
   }

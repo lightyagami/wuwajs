@@ -12,6 +12,17 @@ class PerformModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
     this.iX_ = new Map();
+    this.uXf = undefined;
+    this.HidePlayerHandle = 0;
+  }
+  set PlayerSightTarget(e) {
+    this.uXf = e;
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("BasePerform", 26, "设置主角看向", ["target", e]);
+    }
+  }
+  get PlayerSightTarget() {
+    return this.uXf;
   }
   SetSightTarget(e) {
     var r = e.s6n;
@@ -52,25 +63,25 @@ class PerformModel extends ModelBase_1.ModelBase {
   GetSightTarget(e) {
     var e = ModelManager_1.ModelManager.CreatureModel.GetEntityById(e);
     var r = this.iX_.get(e.PbDataId);
-    let a = undefined;
+    let t = undefined;
     switch (r.Type) {
       case 2:
-        a = r.Pos;
+        t = r.Pos;
         break;
       case 1:
-        var t = r;
-        var t = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t.EntityId)?.Entity?.GetComponent(1);
-        if (t?.Valid) {
-          a = t.GetWatchedPoint();
+        var a = r;
+        var a = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(a.EntityId)?.Entity?.GetComponent(1);
+        if (a?.Valid) {
+          t = a.GetWatchedPoint();
         }
         break;
       case 3:
-        t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(1);
-        if (t?.Valid) {
-          a = t.GetWatchedPoint();
+        a = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(1);
+        if (a?.Valid) {
+          t = a.GetWatchedPoint();
         }
     }
-    return a;
+    return t;
   }
 }
 exports.PerformModel = PerformModel;

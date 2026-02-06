@@ -20,13 +20,10 @@ class RoleDevViewModel {
     this._ud = undefined;
     this.uud = undefined;
     this.cud = undefined;
-    this.HEd = {
-      DevPropsList: []
-    };
     this.sMm = new Set();
-    this.yMm = new Map();
-    this.SMm = new Map();
-    this.Qbm = new Map();
+    this.EMm = new Map();
+    this.IMm = new Map();
+    this.oRm = new Map();
   }
   InitHotRoleDataList() {
     this.byd.length = 0;
@@ -67,7 +64,7 @@ class RoleDevViewModel {
     this.sMm.add(e);
   }
   GetRoleSkillPlanState(e) {
-    var t = this.yMm.get(e);
+    var t = this.EMm.get(e);
     if (t === undefined) {
       return RoleDevUtils_1.RoleDevUtils.GetDefaultSkillPlanByRoleId(e);
     } else {
@@ -75,10 +72,10 @@ class RoleDevViewModel {
     }
   }
   SetRoleSkillPlanState(e, t) {
-    this.yMm.set(e, t);
+    this.EMm.set(e, t);
   }
   GetRoleWeaponTabType(e) {
-    e = this.SMm.get(e);
+    e = this.IMm.get(e);
     if (e === undefined) {
       return 0;
     } else {
@@ -86,10 +83,10 @@ class RoleDevViewModel {
     }
   }
   SetRoleWeaponTabType(e, t) {
-    this.SMm.set(e, t);
+    this.IMm.set(e, t);
   }
   GetRoleRecommendFetterGroupId(e) {
-    e = this.Qbm.get(e);
+    e = this.oRm.get(e);
     if (e === undefined) {
       return 0;
     } else {
@@ -97,13 +94,7 @@ class RoleDevViewModel {
     }
   }
   SetRoleRecommendFetterGroupId(e, t) {
-    this.Qbm.set(e, t);
-  }
-  InitRoleDevelopConfigData(e) {
-    this.HEd = e;
-  }
-  get DevPropsList() {
-    return this.HEd.DevPropsList;
+    this.oRm.set(e, t);
   }
   get RoleDataList() {
     return this.nud;

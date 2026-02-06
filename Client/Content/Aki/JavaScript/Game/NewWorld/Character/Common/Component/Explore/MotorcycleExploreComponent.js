@@ -1,21 +1,21 @@
 "use strict";
 
 var MotorcycleExploreComponent_1;
-var __decorate = this && this.__decorate || function (e, t, i, o) {
-  var n;
-  var s = arguments.length;
-  var r = s < 3 ? t : o === null ? o = Object.getOwnPropertyDescriptor(t, i) : o;
+var __decorate = this && this.__decorate || function (t, e, i, o) {
+  var s;
+  var n = arguments.length;
+  var r = n < 3 ? e : o === null ? o = Object.getOwnPropertyDescriptor(e, i) : o;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    r = Reflect.decorate(e, t, i, o);
+    r = Reflect.decorate(t, e, i, o);
   } else {
-    for (var h = e.length - 1; h >= 0; h--) {
-      if (n = e[h]) {
-        r = (s < 3 ? n(r) : s > 3 ? n(t, i, r) : n(t, i)) || r;
+    for (var h = t.length - 1; h >= 0; h--) {
+      if (s = t[h]) {
+        r = (n < 3 ? s(r) : n > 3 ? s(e, i, r) : s(e, i)) || r;
       }
     }
   }
-  if (s > 3 && r) {
-    Object.defineProperty(t, i, r);
+  if (n > 3 && r) {
+    Object.defineProperty(e, i, r);
   }
   return r;
 };
@@ -24,120 +24,136 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.MotorcycleExploreComponent = undefined;
 const Log_1 = require("../../../../../../Core/Common/Log");
+const Time_1 = require("../../../../../../Core/Common/Time");
 const CommonParamById_1 = require("../../../../../../Core/Define/ConfigCommon/CommonParamById");
 const Protocol_1 = require("../../../../../../Core/Define/Net/Protocol");
 const RegisterComponent_1 = require("../../../../../../Core/Entity/RegisterComponent");
 const Net_1 = require("../../../../../../Core/Net/Net");
+const GameplayTagUtils_1 = require("../../../../../../Core/Utils/GameplayTagUtils");
 const MathUtils_1 = require("../../../../../../Core/Utils/MathUtils");
+const StringUtils_1 = require("../../../../../../Core/Utils/StringUtils");
 const EventDefine_1 = require("../../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../../Common/Event/EventSystem");
+const EffectContext_1 = require("../../../../../Effect/EffectContext/EffectContext");
+const EffectSystem_1 = require("../../../../../Effect/EffectSystem");
+const LevelGeneralCommons_1 = require("../../../../../LevelGamePlay/LevelGeneralCommons");
 const ControllerHolder_1 = require("../../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../../Manager/ModelManager");
+const RoleSceneInteractController_1 = require("../../../../../Module/CombatMessage/RoleSceneInteractController");
+const FollowUtils_1 = require("../Abilities/Follow/FollowUtils");
 const InputDefine_1 = require("../Input/InputLayerFunction/InputDefine");
 const BaseExploreComponent_1 = require("./BaseExploreComponent");
 const InteractionTargetSelector_1 = require("./InteractionTargetSelector");
 const BATCH_PULL_COLLECTION_MAX_RADIUS = 5000;
-const BATCH_PULL_COLLECTION_MAX_NUM = 15;
+const BATCH_PULL_COLLECTION_MAX_COUNT = 15;
 let MotorcycleExploreComponent = MotorcycleExploreComponent_1 = class MotorcycleExploreComponent extends BaseExploreComponent_1.BaseExploreComponent {
   constructor() {
     super(...arguments);
     this.VehiclePerformComponent = undefined;
-    this.M7f = new InteractionTargetSelector_1.InteractionTargetSelector();
+    this.itg = new InteractionTargetSelector_1.InteractionTargetSelector();
     this.Ioe = [];
-    this.VKf = false;
-    this.JKf = undefined;
+    this.Wlg = false;
+    this.R_g = undefined;
     this.DetectedTargetLegalOnceFlag = true;
-    this.HXf = true;
-    this.MJf = new Set();
-    this.zJf = 0;
-    this.Atg = undefined;
+    this.Tug = true;
+    this.gCg = new Set();
+    this.Zpg = 0;
+    this.j8 = 0;
+    this.cDg = undefined;
     this.PullingTargetEntityId = undefined;
-    this.h5r = e => {
+    this.SimulatePullingTarget = undefined;
+    this.E4g = undefined;
+    this.Jjg = undefined;
+    this.AutoDetectDistance = 0;
+    this.AutoDetectInterval = 0.5;
+    this.DisableAutoDetectTags = [];
+    this.LastAutoDetectTimeStamp = 0;
+    this.h5r = t => {
       this.DetectedTargetLegalOnceFlag = false;
     };
-    this.fyf = e => {
-      if (this.ActorComponent?.IsAutonomousProxy && MotorcycleExploreComponent_1.EJf.has(e)) {
+    this.wEf = t => {
+      if (this.ActorComponent?.IsAutonomousProxy && MotorcycleExploreComponent_1.CCg.has(t)) {
         if (this.FocusTarget?.Valid) {
           this.IsHookEndByInterrupt = false;
-          const i = this.FocusTarget;
-          i.BeHooked(e);
-          if (e === InputDefine_1.SKILL_ID_MOTORCYCLE_PULL_COLLECTION) {
-            this.PullingTarget = i;
+          const e = this.FocusTarget;
+          e.BeHooked(t);
+          if (t === InputDefine_1.SKILL_ID_MOTORCYCLE_PULL_COLLECTION) {
+            this.PullingTarget = e;
+            this.mkg();
           } else {
-            this.InteractingTarget = i;
+            this.InteractingTarget = e;
+            this.SendFixHookPush();
             this.SendHookTargetRequest(() => {
-              var e = this.Entity.GetComponent(42);
               this.IsHookEndByInterrupt = true;
-              for (const t of MotorcycleExploreComponent_1.EJf) {
-                e.EndSkill(t, "(摩托车)探索组件请求服务器返回错误码");
+              for (const t of MotorcycleExploreComponent_1.CCg) {
+                this.SkillComponent?.EndSkill(t, "(摩托车)探索组件请求服务器返回错误码");
               }
               if (Log_1.Log.CheckError()) {
-                Log_1.Log.Error("Vehicle", 79, "(摩托车)探索组件请求服务器返回错误码", ["PbDataId", i.EntityConfigId]);
+                Log_1.Log.Error("Vehicle", 79, "(摩托车)探索组件请求服务器返回错误码", ["PbDataId", e.EntityConfigId]);
               }
             });
           }
-          this.HXf = false;
-          this.MJf.add(e);
+          this.Tug = false;
+          this.gCg.add(t);
           if (!EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.RemoveEntity, this.Fm)) {
             if (Log_1.Log.CheckInfo()) {
-              Log_1.Log.Info("Vehicle", 79, "(摩托车)探索组件添加RemoveEntity事件监听", ["SkillId", e]);
+              Log_1.Log.Info("Vehicle", 79, "(摩托车)探索组件添加RemoveEntity事件监听", ["SkillId", t]);
             }
             EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RemoveEntity, this.Fm);
           }
         } else if (Log_1.Log.CheckWarn()) {
-          Log_1.Log.Warn("Vehicle", 79, "使用探索技能时(摩托车)探索组件当前目标为空, 请检查技能Id配置", ["SkillId", e]);
+          Log_1.Log.Warn("Vehicle", 79, "使用探索技能时(摩托车)探索组件当前目标为空, 请检查技能Id配置", ["SkillId", t]);
         }
       }
     };
-    this.bJe = (e, t) => {
-      if (this.ActorComponent?.IsAutonomousProxy && MotorcycleExploreComponent_1.EJf.has(t)) {
-        if (t === InputDefine_1.SKILL_ID_MOTORCYCLE_PULL_COLLECTION) {
+    this.bJe = (t, e) => {
+      if (this.ActorComponent?.IsAutonomousProxy && MotorcycleExploreComponent_1.CCg.has(e)) {
+        if (e === InputDefine_1.SKILL_ID_MOTORCYCLE_PULL_COLLECTION) {
           if (!this.PullingTarget) {
             if (Log_1.Log.CheckWarn()) {
-              Log_1.Log.Warn("Vehicle", 79, "使用探索技能时(摩托车)探索组件当前目标为空, 请检查技能Id配置", ["SkillId", t]);
+              Log_1.Log.Warn("Vehicle", 79, "使用探索技能时(摩托车)探索组件当前目标为空, 请检查技能Id配置", ["SkillId", e]);
             }
             return;
           }
         } else if (!this.InteractingTarget) {
           if (Log_1.Log.CheckWarn()) {
-            Log_1.Log.Warn("Vehicle", 79, "使用探索技能时(摩托车)探索组件当前目标为空, 请检查技能Id配置", ["SkillId", t]);
+            Log_1.Log.Warn("Vehicle", 79, "使用探索技能时(摩托车)探索组件当前目标为空, 请检查技能Id配置", ["SkillId", e]);
           }
           return;
         }
-        this.jXf(t, "OnSkillEnd");
+        this.bug(e, "OnSkillEnd");
       }
     };
-    this.vgl = (e, t) => {
-      if (e === this.Entity.Id && MotorcycleExploreComponent_1.EJf.has(t)) {
+    this.vgl = (t, e) => {
+      if (t === this.Entity.Id && MotorcycleExploreComponent_1.CCg.has(e)) {
         this.IsHookEndByInterrupt = true;
       }
     };
-    this.Fm = (e, t) => {
-      if (this.InteractingTargetEntityId === t.Id) {
+    this.Fm = (t, e) => {
+      if (this.InteractingTargetEntityId === e.Id) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Vehicle", 79, "(摩托车)探索组件当前交互目标实体被移除");
         }
         this.InteractingTarget = undefined;
-        var i = this.Entity.GetComponent(40);
         this.IsHookEndByInterrupt = true;
-        for (const o of this.MJf) {
-          if (o !== InputDefine_1.SKILL_ID_MOTORCYCLE_PULL_COLLECTION && (i.EndSkill(o, "(摩托车)探索组件当前交互目标实体被移除"), Log_1.Log.CheckError())) {
-            Log_1.Log.Error("Vehicle", 79, "(摩托车)探索组件当前交互目标点在技能释放过程中被删除，请检查配置", ["EntityConfigId", t.Entity.GetComponent(0)?.GetPbDataId()], ["SkillId", o]);
+        for (const i of this.gCg) {
+          if (i !== InputDefine_1.SKILL_ID_MOTORCYCLE_PULL_COLLECTION && (this.SkillComponent?.EndSkill(i, "(摩托车)探索组件当前交互目标实体被移除"), Log_1.Log.CheckError())) {
+            Log_1.Log.Error("Vehicle", 79, "(摩托车)探索组件当前交互目标点在技能释放过程中被删除，请检查配置", ["EntityConfigId", e.Entity.GetComponent(0)?.GetPbDataId()], ["SkillId", i]);
           }
         }
       }
     };
-    this.I7f = e => {
-      if (e.IsDriver && e.PassengerEntity && e.IsRolePassenger(true)) {
-        this.zJf = e.PassengerEntity.Id;
+    this.otg = t => {
+      if (t.IsDriver && t.PassengerEntity && t.IsRolePassenger(true)) {
+        this.Zpg = t.PassengerEntity.Id;
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Vehicle", 79, "主控角色进入摩托车激活(摩托车)探索组件");
         }
         this.OnExploreComponentEnable("OnVehicleBeenEntered");
       }
     };
-    this.mOf = e => {
-      if (e.IsDriver && this.zJf === e.PassengerEntity?.Id) {
+    this.E8f = t => {
+      if (t.IsDriver && this.Zpg === t.PassengerEntity?.Id) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Vehicle", 79, "主控角色离开摩托车关闭(摩托车)探索组件");
         }
@@ -146,22 +162,41 @@ let MotorcycleExploreComponent = MotorcycleExploreComponent_1 = class Motorcycle
     };
   }
   get PullingTarget() {
-    return this.Atg;
-  }
-  set PullingTarget(e) {
-    if (this.Atg?.Valid && e !== this.Atg) {
-      this.Atg.ChangeHookPointState(0);
+    if (this.ActorComponent?.IsAutonomousProxy) {
+      return this.cDg;
+    } else {
+      return this.SimulatePullingTarget;
     }
-    this.Atg = e;
-    this.PullingTargetEntityId = e?.Entity.Id;
+  }
+  set PullingTarget(t) {
+    if (this.cDg?.Valid && t !== this.cDg) {
+      this.cDg.ChangeHookPointState(0);
+    }
+    this.cDg = t;
+    this.PullingTargetEntityId = t?.Entity.Id;
+  }
+  static get Dependencies() {
+    return [...super.Dependencies, 246];
+  }
+  OnInitData() {
+    super.OnInitData();
+    this.AutoDetectDistance = CommonParamById_1.configCommonParamById.GetIntConfig("MotorcycleAutoDetectDistance") ?? 0;
+    this.AutoDetectInterval = CommonParamById_1.configCommonParamById.GetFloatConfig("MotorcycleAutoDetectInterval") ?? 0.5;
+    var t = CommonParamById_1.configCommonParamById.GetStringArrayConfig("DisableFollowShooterAutoDetectedAwakeTags");
+    if (t && t.length > 0) {
+      this.DisableAutoDetectTags = t.map(t => GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(t));
+    }
+    this.j8 = this.Entity.CheckGetComponent(0)?.GetPlayerId() ?? 0;
+    this.Jjg = CommonParamById_1.configCommonParamById.GetStringConfig("MotorcycleBatchPullRangeEffectPath");
+    return true;
   }
   OnStart() {
     super.OnStart();
     this.LogKey = "(摩托车)探索组件";
-    this.M7f.InitForMotorcycle(this);
-    this.JKf = ModelManager_1.ModelManager.RouletteModel.RouletteListDataMap.get(3);
-    EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnVehicleBeenEntered, this.I7f);
-    EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnVehicleBeenLeaved, this.mOf);
+    this.itg.InitForMotorcycle(this);
+    this.R_g = ModelManager_1.ModelManager.RouletteModel.RouletteListDataMap.get(3);
+    EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnVehicleBeenEntered, this.otg);
+    EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnVehicleBeenLeaved, this.E8f);
     this.VehiclePerformComponent = this.Entity.GetComponent(246);
     if (this.VehiclePerformComponent.Driver && this.VehiclePerformComponent.Driver === ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity) {
       this.OnExploreComponentEnable("(摩托车)探索组件OnStart时驾驶位为主控角色");
@@ -170,45 +205,45 @@ let MotorcycleExploreComponent = MotorcycleExploreComponent_1 = class Motorcycle
   }
   OnEnd() {
     super.OnEnd();
-    this.T7f();
-    EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnVehicleBeenEntered, this.I7f);
-    EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnVehicleBeenLeaved, this.mOf);
+    this.ntg();
+    EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnVehicleBeenEntered, this.otg);
+    EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnVehicleBeenLeaved, this.E8f);
     this.OnExploreComponentDisable("OnEnd");
-    var e = this.Entity.GetComponent(42);
-    for (const t of this.MJf) {
-      e.EndSkill(t, "(摩托车)探索组件OnEnd");
+    for (const t of this.gCg) {
+      this.SkillComponent?.EndSkill(t, "(摩托车)探索组件OnEnd");
     }
     return true;
   }
-  OnExploreComponentEnable(e) {
-    return !!super.OnExploreComponentEnable(e) && (EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ChangeVisionSkillByTab, this.h5r), EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharBeforeSkillWithTarget, this.fyf), EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSkillEnd, this.bJe), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CharInterruptSkill, this.vgl), this.JKf?.ChangeRouletteActivateStatus(true), true);
+  OnExploreComponentEnable(t) {
+    return !!super.OnExploreComponentEnable(t) && (EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ChangeVisionSkillByTab, this.h5r), EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharBeforeSkillWithTarget, this.wEf), EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSkillEnd, this.bJe), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CharInterruptSkill, this.vgl), this.R_g?.ChangeRouletteActivateStatus(true), true);
   }
-  OnExploreComponentDisable(e) {
-    return !!super.OnExploreComponentDisable(e) && (this.T7f(), EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ChangeVisionSkillByTab, this.h5r), EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CharBeforeSkillWithTarget, this.fyf), EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnSkillEnd, this.bJe), EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CharInterruptSkill, this.vgl), this.JKf?.ChangeRouletteActivateStatus(false), true);
+  OnExploreComponentDisable(t) {
+    return !!super.OnExploreComponentDisable(t) && (this.ntg(), EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ChangeVisionSkillByTab, this.h5r), EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CharBeforeSkillWithTarget, this.wEf), EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnSkillEnd, this.bJe), EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CharInterruptSkill, this.vgl), this.R_g?.ChangeRouletteActivateStatus(false), true);
   }
-  OnExploreComponentTick() {
-    this.b7f();
-    if (this.IsLockingTarget && !this.FocusTargetInternal?.Valid) {
+  OnExploreComponentTick(t) {
+    this.pHg();
+    this.stg();
+    if (this.IsLockingTarget && !this.FocusTarget?.Valid) {
       this.CancelLockTarget("FocusTarget is Invalid", true);
     }
   }
   CheckAllowLevelEventHighlightSkill() {
     return !this.IsLockingTarget;
   }
-  OnLevelEventHighlightSkillUpdate(e) {
-    this.VKf = e;
-    var t = this.CurrentIconTagId;
+  OnLevelEventHighlightSkillUpdate(t) {
+    this.Wlg = t;
+    var e = this.CurrentIconTagId;
     var i = this.CurrentIconHighlightTagId;
-    if (e) {
-      if (t && this.TagComponent.HasTag(t)) {
-        this.TagComponent.RemoveTag(t);
+    if (t) {
+      if (e && this.TagComponent.HasTag(e)) {
+        this.TagComponent.RemoveTag(e);
       }
       if (i && this.TagComponent.HasTag(i)) {
         this.TagComponent.RemoveTag(i);
       }
     } else {
-      if (t && !this.TagComponent.HasTag(t)) {
-        this.TagComponent.AddTag(t);
+      if (e && !this.TagComponent.HasTag(e)) {
+        this.TagComponent.AddTag(e);
       }
       if (i && !this.TagComponent.HasTag(i)) {
         this.TagComponent.AddTag(i);
@@ -216,119 +251,179 @@ let MotorcycleExploreComponent = MotorcycleExploreComponent_1 = class Motorcycle
     }
   }
   GetSkillIdByCurrentTarget() {
-    let e = this.HighlightLogic.GetHighlightSkillId();
-    if (e === 0 && this.FocusTargetLegal && this.FocusTargetInternal) {
-      switch (this.FocusTargetInternal?.GetHookInteractConfig()?.Type) {
+    let t = this.HighlightLogic.GetHighlightSkillId();
+    if (t === 0 && this.FocusTargetLegal && this.FocusTarget) {
+      switch (this.FocusTarget?.GetHookInteractConfig()?.Type) {
         case "FollowerShoot":
-          e = InputDefine_1.SKILL_ID_MOTORCYCLE_DRONE_SHOOT;
+          t = InputDefine_1.SKILL_ID_MOTORCYCLE_DRONE_SHOOT;
           break;
         case "MotorPullInteract":
-          e = InputDefine_1.SKILL_ID_MOTORCYCLE_PULL_COLLECTION;
+          t = InputDefine_1.SKILL_ID_MOTORCYCLE_PULL_COLLECTION;
           break;
         case "PilotThrow":
-          e = InputDefine_1.SKILL_ID_MOTORCYCLE_PILOT_THROW;
+          t = InputDefine_1.SKILL_ID_MOTORCYCLE_PILOT_THROW;
           break;
         case "CableWay":
-          e = InputDefine_1.SKILL_ID_MOTORCYCLE_CABLE_WAY;
+          t = InputDefine_1.SKILL_ID_MOTORCYCLE_CABLE_WAY;
           break;
         default:
-          e = InputDefine_1.SKILL_ID_MOTORCYCLE_FIX_HOOK;
+          t = InputDefine_1.SKILL_ID_MOTORCYCLE_FIX_HOOK;
       }
     }
-    return e;
+    return t;
   }
   TryPullCollection() {
-    var e = this.PullingTarget;
-    return !!e?.Valid && this.G_f(e);
+    var t = this.PullingTarget;
+    return !!t?.Valid && this.mgf(t);
   }
-  G_f(e) {
-    var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity;
-    var i = new Protocol_1.Aki.Protocol.bZm();
-    i.r6n = ModelManager_1.ModelManager.CreatureModel.GetInstanceId();
-    i.F4n = MathUtils_1.MathUtils.NumberToLong(e.ServerEntityId);
-    var o = [];
-    i.LZm = o;
-    var n = CommonParamById_1.configCommonParamById.GetFloatConfig("MotorcycleBatchPullCollectionRadius") ?? BATCH_PULL_COLLECTION_MAX_RADIUS;
-    if (n > BATCH_PULL_COLLECTION_MAX_RADIUS && Log_1.Log.CheckError()) {
-      Log_1.Log.Error("Vehicle", 79, "(摩托车)探索组件批量拉取采集物范围超过最大限制, 检查配置", ["Radius", n]);
-    }
-    var s = CommonParamById_1.configCommonParamById.GetIntConfig("MotorcycleBatchPullCollectionCount") ?? BATCH_PULL_COLLECTION_MAX_NUM;
-    if (s > BATCH_PULL_COLLECTION_MAX_NUM && Log_1.Log.CheckError()) {
-      Log_1.Log.Error("Vehicle", 79, "(摩托车)探索组件批量拉取采集物数量超过最大限制, 检查配置", ["Count", s]);
-    }
-    ModelManager_1.ModelManager.CreatureModel?.GetEntitiesInRangeWithLocation(e.HookLocation, n, 7, this.Ioe);
-    for (const h of this.Ioe) {
-      var r = h.Entity.GetComponent(88);
-      if (h.Id === e.Entity.Id) {
-        if (r && !r.PullCollectionWithProgress) {
-          ControllerHolder_1.ControllerHolder.BulletController.CreateBulletCustomTarget(t, "200300046", e.HookTransform);
-        }
-      } else if (r && r.EntityType !== "HookSoundBox") {
-        if (!(o.length < s)) {
-          if (Log_1.Log.CheckError()) {
-            Log_1.Log.Error("Vehicle", 79, "(摩托车)探索组件拉取采集物失败, 数量超过限制");
+  mgf(t) {
+    const e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity;
+    let i = undefined;
+    if (t.AllowBatchCollect) {
+      i = [];
+      var o = CommonParamById_1.configCommonParamById.GetFloatConfig("MotorcycleBatchPullCollectionRadius") ?? BATCH_PULL_COLLECTION_MAX_RADIUS;
+      if (o > BATCH_PULL_COLLECTION_MAX_RADIUS && Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Vehicle", 79, "(摩托车)探索组件批量拉取采集物范围超过最大限制, 检查配置", ["Radius", o]);
+      }
+      var s = CommonParamById_1.configCommonParamById.GetIntConfig("MotorcycleBatchPullCollectionCount") ?? BATCH_PULL_COLLECTION_MAX_COUNT;
+      if (s > BATCH_PULL_COLLECTION_MAX_COUNT && Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Vehicle", 79, "(摩托车)探索组件批量拉取采集物数量超过最大限制, 检查配置", ["MaxCount", s]);
+      }
+      ModelManager_1.ModelManager.CreatureModel?.GetEntitiesInRangeWithLocation(t.HookLocation, o, 7, this.Ioe);
+      for (const l of this.Ioe) {
+        var n = l.Entity.GetComponent(90);
+        if (n?.HookInteractType === "MotorPullInteract" && l.Id !== t.Entity.Id && n && !n.PullCollectionWithProgress) {
+          if (!(i.length < s)) {
+            if (Log_1.Log.CheckError()) {
+              Log_1.Log.Error("Vehicle", 79, "(摩托车)探索组件拉取采集物失败, 数量超过限制");
+            }
+            break;
           }
-          break;
+          i.push(MathUtils_1.MathUtils.NumberToLong(n.ServerEntityId));
+          ControllerHolder_1.ControllerHolder.BulletController.CreateBulletCustomTarget(e, "200300046", n.HookTransform);
         }
-        o.push(MathUtils_1.MathUtils.NumberToLong(r.ServerEntityId));
-        ControllerHolder_1.ControllerHolder.BulletController.CreateBulletCustomTarget(t, "200300046", r.HookTransform);
       }
     }
-    Net_1.Net.Call(29187, i, e => {
-      if (e && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22068);
+    const r = ModelManager_1.ModelManager.CreatureModel.GetInstanceId();
+    function h() {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Vehicle", 79, "(摩托车)探索组件拉取采集物失败, 回退采集客户端预表现的隐藏实体操作", ["EntityConfigId", t?.EntityConfigId], ["ServerEntityId", t?.ServerEntityId]);
+      }
+      t.StopPullMove();
+      LevelGeneralCommons_1.LevelGeneralCommons.ChangeToDestroyState(t.EntityConfigId);
+    }
+    if (t.PullCollectionWithProgress) {
+      if (i) {
+        this.I4g(r, MathUtils_1.MathUtils.NumberToLong(0), i);
+      }
+      return t.StartPullMove(() => {
+        this.I4g(r, MathUtils_1.MathUtils.NumberToLong(t.ServerEntityId), undefined, h);
+        ControllerHolder_1.ControllerHolder.BulletController.CreateBulletCustomTarget(e, "200300046", t.HookTransform);
+      });
+    } else {
+      this.I4g(r, MathUtils_1.MathUtils.NumberToLong(t.ServerEntityId), i);
+      return true;
+    }
+  }
+  I4g(t, e, i, o) {
+    var s = new Protocol_1.Aki.Protocol.snf();
+    s.r6n = t;
+    s.F4n = e;
+    if (i) {
+      s.lnf = i;
+    }
+    Net_1.Net.Call(28631, s, t => {
+      if (t && t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("Character", 79, "RequestBatchCollect失败", ["Q4n", t.Q4n]);
+        }
+        o?.();
       }
     });
-    return e.StartPulledMove();
   }
-  T7f() {
+  ntg() {
     if (this.PullingTarget?.GetHookInteractType() === "MotorPullInteract") {
-      this.PullingTarget.StopPulledMove();
+      this.PullingTarget.StopPullMove();
     }
     this.PullingTarget = undefined;
   }
-  b7f() {
-    var e;
+  stg() {
     var t;
+    var e;
     if (ModelManager_1.ModelManager.CameraModel && !this.IsLockingTarget) {
-      if (this.VKf) {
+      if (this.Wlg) {
         this.SetFocusTarget(undefined);
       } else {
-        this.M7f.TraceDebugEnabled = MotorcycleExploreComponent_1.TraceDebug;
-        this.M7f.DetectBestTargetForMotorcycle();
-        e = this.M7f.DetectedTargetLegal && this.DetectedTargetLegalOnceFlag;
-        t = this.M7f.DetectedTarget;
-        if (this.FocusTargetInternal !== t) {
+        this.itg.TraceDebugEnabled = MotorcycleExploreComponent_1.TraceDebug;
+        this.itg.DetectBestTargetForMotorcycle();
+        t = this.itg.DetectedTargetLegal && this.DetectedTargetLegalOnceFlag;
+        e = this.itg.DetectedTarget;
+        if (this.FocusTarget !== e) {
           this.DetectedTargetLegalOnceFlag = true;
         }
-        if (this.FocusTargetInternal !== t || this.FocusTargetLegal !== e) {
-          this.SetFocusTarget(t, e);
+        if (this.FocusTarget !== e || this.FocusTargetLegal !== t) {
+          this.SetFocusTarget(e, t);
           if (Log_1.Log.CheckInfo()) {
-            Log_1.Log.Info("Vehicle", 79, "(摩托车)探索组件锁定钩锁点", ["PbDataId", t?.Entity.GetComponent(0)?.GetPbDataId()]);
+            Log_1.Log.Info("Vehicle", 79, "(摩托车)探索组件锁定钩锁点", ["PbDataId", e?.Entity.GetComponent(0)?.GetPbDataId()]);
           }
         }
       }
     }
   }
-  OnDetectedTargetChanged() {
-    if (this.FocusTargetInternal !== undefined && this.FocusTargetLegal) {
-      if (this.FocusTargetLegal) {
-        this.HandleSkillIconLogic(true, this.FocusTargetInternal.GetTagId(), "(摩托车)探索组件当前选中的钩锁点有效, 且不需要切换技能");
-      } else {
-        this.HandleSkillIconLogic(false, undefined, "(摩托车)探索组件当前选中的钩锁点无效，且不需要切换技能");
+  pHg() {
+    if (!(Time_1.Time.WorldTimeSeconds - this.LastAutoDetectTimeStamp < this.AutoDetectInterval)) {
+      this.LastAutoDetectTimeStamp = Time_1.Time.WorldTimeSeconds;
+      let t = false;
+      if (!this.TagComponent?.HasAnyTag(this.DisableAutoDetectTags)) {
+        var e = FollowUtils_1.FollowUtils.GetPlayerFollowShooter(this.j8)?.Entity?.CheckGetComponent(235)?.FollowShooterConfig?.LockOnConfig.AutoDetectEnableTagContainer;
+        if (!e || e.GameplayTags.Num() === 0) {
+          return;
+        }
+        t = !!this.itg.DetectEntityByRestrictTags(this.AutoDetectDistance, 255, e);
       }
-    } else {
-      this.HandleSkillIconLogic(false, undefined, "(摩托车)探索组件当前未选中点，且不需要切换技能");
+      e = this.Entity.CheckGetComponent(0);
+      if (e) {
+        FollowUtils_1.FollowUtils.SetPlayerFollowShooterEnable(e.GetPlayerId(), t, 2);
+      }
     }
   }
-  jXf(e, t) {
-    if (!this.HXf) {
-      if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("Vehicle", 79, "(摩托车)探索组件技能结束", ["SkillId", e], ["Reason", t]);
+  OnDetectedTargetChanged(t, e) {
+    if (this.FocusTarget !== t || e !== this.FocusTargetLegal) {
+      if (t?.Valid && t !== this.FocusTarget) {
+        t.ChangeHookPointState(0);
       }
-      this.HXf = true;
-      this.MJf.delete(e);
-      if (e === InputDefine_1.SKILL_ID_MOTORCYCLE_PULL_COLLECTION) {
+      if (this.FocusTarget?.Valid) {
+        this.FocusTarget.ChangeHookPointState(this.FocusTargetLegal ? 1 : 2);
+      }
+      if (this.FocusTarget !== undefined && this.FocusTargetLegal) {
+        this.HandleSkillIconLogic(true, "(摩托车)探索组件当前选中的钩锁点有效");
+        this.T4g(this.FocusTarget);
+      } else {
+        this.HandleSkillIconLogic(false, "(摩托车)探索组件当前未选中点或者选中的点无效");
+        this.b4g("(摩托车)探索组件当前未选中点或者选中的点无效");
+      }
+    }
+  }
+  T4g(t) {
+    this.b4g("(摩托车)探索组件选中新目标时尝试移除旧目标的特效");
+    if (t.HookInteractType === "MotorPullInteract" && !StringUtils_1.StringUtils.IsEmpty(this.Jjg)) {
+      this.E4g = EffectSystem_1.EffectSystem.SpawnEffect(t.ActorComp.Owner, t.ActorComp.ActorTransform, this.Jjg, "[MotorcycleExploreComponent.OnDetectedTargetChanged]", new EffectContext_1.EffectContext(t.Entity.Id));
+    }
+  }
+  b4g(t) {
+    if (this.E4g) {
+      EffectSystem_1.EffectSystem.StopEffectById(this.E4g, t, true);
+      this.E4g = undefined;
+    }
+  }
+  bug(t, e) {
+    if (!this.Tug) {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Vehicle", 79, "(摩托车)探索组件技能结束", ["SkillId", t], ["Reason", e]);
+      }
+      this.Tug = true;
+      this.gCg.delete(t);
+      if (t === InputDefine_1.SKILL_ID_MOTORCYCLE_PULL_COLLECTION) {
         if (this.PullingTarget?.Valid) {
           this.PullingTarget.OnFixHookSkillEnd();
         }
@@ -341,16 +436,22 @@ let MotorcycleExploreComponent = MotorcycleExploreComponent_1 = class Motorcycle
         this.InteractingTarget = undefined;
       }
       this.CancelLockTarget("DoSkillEnd", false);
-      if (this.MJf.size === 0 && EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.RemoveEntity, this.Fm)) {
+      if (this.gCg.size === 0 && EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.RemoveEntity, this.Fm)) {
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("Vehicle", 79, "(摩托车)探索组件移除RemoveEntity事件监听", ["SkillId", e]);
+          Log_1.Log.Info("Vehicle", 79, "(摩托车)探索组件移除RemoveEntity事件监听", ["SkillId", t]);
         }
         EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RemoveEntity, this.Fm);
       }
     }
   }
+  mkg() {
+    var t = this.PullingTarget;
+    if (t?.Valid && this.ActorComponent?.IsAutonomousProxy) {
+      RoleSceneInteractController_1.RoleSceneInteractController.SendPullCollectionPush(this.Entity, t);
+    }
+  }
 };
 MotorcycleExploreComponent.TraceDebug = false;
-MotorcycleExploreComponent.EJf = new Set([InputDefine_1.SKILL_ID_MOTORCYCLE_FIX_HOOK, InputDefine_1.SKILL_ID_MOTORCYCLE_CABLE_WAY, InputDefine_1.SKILL_ID_MOTORCYCLE_PILOT_THROW, InputDefine_1.SKILL_ID_MOTORCYCLE_PULL_COLLECTION]);
-MotorcycleExploreComponent = MotorcycleExploreComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(57)], MotorcycleExploreComponent);
+MotorcycleExploreComponent.CCg = new Set([InputDefine_1.SKILL_ID_MOTORCYCLE_FIX_HOOK, InputDefine_1.SKILL_ID_MOTORCYCLE_CABLE_WAY, InputDefine_1.SKILL_ID_MOTORCYCLE_PILOT_THROW, InputDefine_1.SKILL_ID_MOTORCYCLE_PULL_COLLECTION]);
+MotorcycleExploreComponent = MotorcycleExploreComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(59)], MotorcycleExploreComponent);
 exports.MotorcycleExploreComponent = MotorcycleExploreComponent; //# sourceMappingURL=MotorcycleExploreComponent.js.map

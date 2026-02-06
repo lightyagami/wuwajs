@@ -40,12 +40,12 @@ class NpcPerformBornState extends NpcPerformBaseState_1.NpcPerformBaseState {
     this.x21 = t?.ShowOnAwake?.MaterialDa;
   }
   OnStart() {
-    this.Owner.Entity.GetComponent(197)?.PauseAi("NpcPerformBornState");
+    this.Owner.Entity.GetComponent(199)?.PauseAi("NpcPerformBornState");
     this.k21();
   }
   OnExit(t) {
     this.ClearState();
-    this.Owner.Entity.GetComponent(197)?.ResumeAi("NpcPerformBornState");
+    this.Owner.Entity.GetComponent(199)?.ResumeAi("NpcPerformBornState");
   }
   OnDestroy() {
     this.ClearState();

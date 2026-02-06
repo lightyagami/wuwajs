@@ -11,6 +11,7 @@ const Log_1 = require("../../../../../Core/Common/Log");
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
 const Global_1 = require("../../../../Global");
+const ModelManager_1 = require("../../../../Manager/ModelManager");
 const UiPanelBase_1 = require("../../../../Ui/Base/UiPanelBase");
 const InputMappingsDefine_1 = require("../../../../Ui/InputDistribute/InputMappingsDefine");
 const UiLayer_1 = require("../../../../Ui/UiLayer");
@@ -22,9 +23,12 @@ class GrapplingHookPoint extends UiPanelBase_1.UiPanelBase {
     this.Due = new UE.VectorDouble();
     this.S$e = (0, puerts_1.$ref)(undefined);
     this.R$e = undefined;
-    this.BKf = true;
+    this.Glg = true;
     this.SPe = undefined;
     this.Qtt = undefined;
+    this.Wef = e => {
+      this.xHg();
+    };
     this.Xht = e => {
       if (e && e.PlotLevel !== "LevelD" && e.PlotLevel !== "Prompt") {
         this.DisableMarker();
@@ -52,7 +56,6 @@ class GrapplingHookPoint extends UiPanelBase_1.UiPanelBase {
       this.Qtt = new CombineKeyItem_1.CombineKeyItem();
       this.Qtt.SkipDestroyActor = true;
       await this.Qtt.CreateByActorAsync(e.GetOwner());
-      this.Qtt.RefreshAction(InputMappingsDefine_1.actionMappings.幻象1);
     }
   }
   OnStart() {
@@ -60,18 +63,20 @@ class GrapplingHookPoint extends UiPanelBase_1.UiPanelBase {
     this.GetItem(0).SetUIActive(false);
     this.GetItem(1).SetUIActive(false);
     this.GetItem(2).SetUIActive(false);
-    if (this.BKf) {
+    if (this.Glg) {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Battle", 79, "钩锁点可用状态变化, 显示交互提示");
       }
       this.Qtt?.GetRootItem().SetUIActive(true);
     }
+    this.xHg();
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiMotorcycleStateChanged, this.Wef);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PlotNetworkStart, this.Xht);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PlotNetworkEnd, this.Yht);
   }
   EnableMarker() {
-    if (!this.BKf) {
-      this.BKf = true;
+    if (!this.Glg) {
+      this.Glg = true;
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Battle", 79, "钩锁点可用状态变化, 显示交互提示");
       }
@@ -79,8 +84,8 @@ class GrapplingHookPoint extends UiPanelBase_1.UiPanelBase {
     }
   }
   DisableMarker() {
-    if (this.BKf) {
-      this.BKf = false;
+    if (this.Glg) {
+      this.Glg = false;
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Battle", 79, "钩锁点可用状态变化, 隐藏交互提示");
       }
@@ -99,6 +104,9 @@ class GrapplingHookPoint extends UiPanelBase_1.UiPanelBase {
       this.Qtt.Destroy();
       this.Qtt = undefined;
     }
+    if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.BattleUiMotorcycleStateChanged, this.Wef)) {
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiMotorcycleStateChanged, this.Wef);
+    }
     if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.PlotNetworkStart, this.Xht)) {
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PlotNetworkStart, this.Xht);
     }
@@ -108,7 +116,7 @@ class GrapplingHookPoint extends UiPanelBase_1.UiPanelBase {
   }
   AfterTick() {
     var e;
-    if (this.BKf && (e = this.elt(this.Due))) {
+    if (this.Glg && (e = this.elt(this.Due))) {
       this.Ad(e);
     }
   }
@@ -119,6 +127,15 @@ class GrapplingHookPoint extends UiPanelBase_1.UiPanelBase {
     if (UE.GameplayStatics.D_ProjectWorldToScreen(this.R$e, e, this.S$e)) {
       e = (0, puerts_1.$unref)(this.S$e);
       return UiLayer_1.UiLayer.UiRootItem.GetCanvasScaler().ConvertPositionFromViewportToLGUICanvas(e);
+    }
+  }
+  xHg() {
+    if (this.Qtt) {
+      if (ModelManager_1.ModelManager.BattleUiModel.MotorcycleData.IsDriving) {
+        this.Qtt.RefreshAction(InputMappingsDefine_1.actionMappings.载具探索工具);
+      } else {
+        this.Qtt.RefreshAction(InputMappingsDefine_1.actionMappings.幻象1);
+      }
     }
   }
 }

@@ -14,22 +14,22 @@ const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
 class PlotAspectTransformView extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.HIf = false;
+    this.URf = false;
     this.Rld = undefined;
     this.wld = undefined;
-    this.jIf = 0;
-    this.$If = 0;
+    this.xRf = 0;
+    this.BRf = 0;
     this.cwr = 0;
     this.r1t = 0;
     this.Ist = 0;
     this.qte = 0;
     this.Pld = false;
-    this.LDe = -1;
-    this.WIf = false;
+    this.LDe = undefined;
+    this.kRf = false;
     this.B7 = undefined;
     this.J_ = t => {
       if (this.r1t > this.cwr) {
-        if (this.WIf) {
+        if (this.kRf) {
           ControllerHolder_1.ControllerHolder.PlotController.RemoveAspectTransformView();
         } else {
           this.Hide();
@@ -50,14 +50,14 @@ class PlotAspectTransformView extends UiPanelBase_1.UiPanelBase {
         }
       }
     };
-    this.QIf = () => {
+    this.qRf = () => {
       var t;
       var i;
-      if (this.HIf) {
+      if (this.URf) {
         t = this.RootItem.GetWidth();
         i = this.RootItem.GetHeight();
-        this.$If = t / i;
-        this.HIf = false;
+        this.BRf = t / i;
+        this.URf = false;
         this.Ald();
       }
     };
@@ -74,10 +74,10 @@ class PlotAspectTransformView extends UiPanelBase_1.UiPanelBase {
     this.wld?.SetAlpha(1);
     this.GetRootItem().GetRenderCanvas().bPostTickUpdate = true;
     this.GetRootItem().SetRaycastTarget(false);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.UIViewPortSizeChanged, this.QIf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.UIViewPortSizeChanged, this.qRf);
   }
   OnBeforeDestroy() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.UIViewPortSizeChanged, this.QIf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.UIViewPortSizeChanged, this.qRf);
   }
   OnBeforeShow() {}
   OnAfterShow() {
@@ -86,20 +86,22 @@ class PlotAspectTransformView extends UiPanelBase_1.UiPanelBase {
     }
   }
   OnBeforeHide() {
-    TickSystem_1.TickSystem.Remove(this.LDe);
-    this.LDe = -1;
+    if (this.LDe) {
+      TickSystem_1.TickSystem.Remove(this.LDe.Id);
+      this.LDe = undefined;
+    }
   }
   EnableAutoBlendOut(t) {
     this.cwr = t;
-    this.jIf = this.RootItem.GetWidth() / this.RootItem.GetHeight();
-    this.HIf = true;
+    this.xRf = this.RootItem.GetWidth() / this.RootItem.GetHeight();
+    this.URf = true;
   }
   ManualBlendOut(t, i, s, h = true) {
     this.cwr = t;
     this.B7 = s;
-    this.WIf = h;
-    this.jIf = i;
-    this.$If = this.RootItem.GetWidth() / this.RootItem.GetHeight();
+    this.kRf = h;
+    this.xRf = i;
+    this.BRf = this.RootItem.GetWidth() / this.RootItem.GetHeight();
     this.Ald();
   }
   SetAspectRatio(t) {
@@ -142,25 +144,25 @@ class PlotAspectTransformView extends UiPanelBase_1.UiPanelBase {
     var i;
     var s = this.RootItem.GetWidth();
     var h = this.RootItem.GetHeight();
-    if (this.jIf < this.$If) {
+    if (this.xRf < this.BRf) {
       this.Pld = true;
-      t = h * this.jIf;
+      t = h * this.xRf;
       this.Rld?.SetStretchRight(i = s / 2 + t / 2);
       this.wld?.SetStretchLeft(i);
       this.Ist = (s - t) / 2 / this.cwr;
       this.qte = i;
     } else {
       this.Pld = false;
-      t = s / this.jIf;
+      t = s / this.xRf;
       this.Rld?.SetStretchTop(i = h / 2 + t / 2);
       this.wld?.SetStretchBottom(i);
       this.Ist = (h - t) / 2 / this.cwr;
       this.qte = i;
     }
     if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("Plot", 26, "[Aspect] 过渡宽高比", ["BeforeRatio", this.jIf], ["AfterRatio", this.$If]);
+      Log_1.Log.Debug("Plot", 26, "[Aspect] 过渡宽高比", ["BeforeRatio", this.xRf], ["AfterRatio", this.BRf]);
     }
-    this.LDe = TickSystem_1.TickSystem.Add(this.J_, "PlotAspectTransformView").Id;
+    this.LDe = TickSystem_1.TickSystem.Add(this.J_, "PlotAspectTransformView");
   }
 }
 exports.PlotAspectTransformView = PlotAspectTransformView;

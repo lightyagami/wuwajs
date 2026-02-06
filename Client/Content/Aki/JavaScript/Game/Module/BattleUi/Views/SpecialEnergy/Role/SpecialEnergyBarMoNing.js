@@ -14,8 +14,8 @@ const DOMAIN_CONFIG = 120901;
 class SpecialEnergyBarMoNing extends SpecialEnergyBarBase_1.SpecialEnergyBarBase {
   constructor() {
     super(...arguments);
-    this.fHf = undefined;
-    this.gHf = undefined;
+    this.Rtg = undefined;
+    this.Ltg = undefined;
     this._ii = 0;
     this.rdt = -1;
     this.UWi = (t, i) => {
@@ -39,17 +39,17 @@ class SpecialEnergyBarMoNing extends SpecialEnergyBarBase_1.SpecialEnergyBarBase
     await Promise.all(t);
   }
   async InitBarItem1() {
-    this.fHf = new SpecialEnergyBarMoNingSlot_1.SpecialEnergyBarMoNingSlot();
-    this.fHf.InitData(this.RoleData, this.Config);
-    this.fHf.ForceHideBottomLine = true;
-    await this.fHf.InitByActorAsync(this.GetItem(0).GetOwner());
+    this.Rtg = new SpecialEnergyBarMoNingSlot_1.SpecialEnergyBarMoNingSlot();
+    this.Rtg.InitData(this.RoleData, this.Config);
+    this.Rtg.ForceHideBottomLine = true;
+    await this.Rtg.InitByActorAsync(this.GetItem(0).GetOwner());
   }
   async InitBarItem2() {
-    this.gHf = new SpecialEnergyBarMoNingSlot_1.SpecialEnergyBarMoNingSlot();
+    this.Ltg = new SpecialEnergyBarMoNingSlot_1.SpecialEnergyBarMoNingSlot();
     var t = ModelManager_1.ModelManager.BattleUiModel.SpecialEnergyBarData.GetSpecialEnergyBarInfo(DOMAIN_CONFIG);
-    this.gHf.InitData(this.RoleData, t);
-    this.gHf.ForceHideBottomLine = true;
-    await this.gHf.InitByActorAsync(this.GetItem(11).GetOwner());
+    this.Ltg.InitData(this.RoleData, t);
+    this.Ltg.ForceHideBottomLine = true;
+    await this.Ltg.InitByActorAsync(this.GetItem(11).GetOwner());
   }
   OnStart() {
     this.InitTweenAnim(5);
@@ -123,8 +123,8 @@ class SpecialEnergyBarMoNing extends SpecialEnergyBarBase_1.SpecialEnergyBarBase
   }
   Tick(t) {
     super.Tick(t);
-    this.fHf?.Tick(t);
-    this.gHf?.Tick(t);
+    this.Rtg?.Tick(t);
+    this.Ltg?.Tick(t);
   }
 }
 exports.SpecialEnergyBarMoNing = SpecialEnergyBarMoNing;

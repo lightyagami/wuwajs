@@ -27,7 +27,7 @@ class TsAnimNotifyStateIgnoreLockOnTarget extends UE.KuroAnimNotifyState {
   }
   ForceIgnore(e, r) {
     var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
-    return !!t && (e = ActorUtils_1.ActorUtils.GetEntityByActor(e), !!(t = t?.Entity?.GetComponent(33))) && (t.ForceIgnore(new BaseLockOnComponent_1.LockOnInfo(e, this.IgnoreSocket), r), true);
+    return !!t && (e = ActorUtils_1.ActorUtils.GetEntityByActor(e), !!(t = t?.Entity?.GetComponent(34))) && (t.ForceIgnore(new BaseLockOnComponent_1.LockOnInfo(e, this.IgnoreSocket), r), true);
   }
 }
 exports.default = TsAnimNotifyStateIgnoreLockOnTarget;

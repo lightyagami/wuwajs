@@ -70,13 +70,13 @@ class LevelEventVehicleMoveWithPathLine extends LevelGeneralBase_1.LevelEventBas
       switch (this.OPt.ControlType.Type) {
         case "EnterPathMoving":
           var e = this.OPt.SplineEntityId;
-          var t = this.Jh.GetComponent(117);
+          var t = this.Jh.GetComponent(119);
           t?.SetExtraMoveParams(this.OPt.ControlType.ControlParams);
           t?.StartSplineMove(e, this.OPt.ControlType.Pattern);
           break;
         case "ExitPathMoving":
           t = this.OPt.SplineEntityId;
-          e = this.Jh.GetComponent(117);
+          e = this.Jh.GetComponent(119);
           e?.ResetExtraMoveParams();
           e?.EndSplineMove(t);
       }

@@ -11,13 +11,13 @@ const UiTickViewBase_1 = require("../../../Ui/Base/UiTickViewBase");
 const GenericLayout_1 = require("../../Util/Layout/GenericLayout");
 const AchievementCompleteTipsStarItem_1 = require("./AchievementCompleteTipsStarItem");
 const CLOSE_TIME = 4000;
-const CLOSE_LESS_TIME = 500;
+const CLOSE_LESS_TIME = 1500;
 class AchievementCompleteTipsView extends UiTickViewBase_1.UiTickViewBase {
   constructor() {
     super(...arguments);
     this.$be = undefined;
     this.Ybe = 0;
-    this.uKf = true;
+    this.hhg = true;
     this.vNi = false;
     this.zbe = () => new AchievementCompleteTipsStarItem_1.AchievementCompleteTipsStarItem();
   }
@@ -39,11 +39,11 @@ class AchievementCompleteTipsView extends UiTickViewBase_1.UiTickViewBase {
     }
   }
   OnBeforeShow() {
-    if (this.Ybe < CLOSE_LESS_TIME && !this.uKf) {
+    if (this.Ybe < CLOSE_LESS_TIME && !this.hhg) {
       this.Ybe = 0;
       this.UiViewSequence.PlaySequence("Start");
     }
-    this.uKf = false;
+    this.hhg = false;
   }
   OnTick(e) {
     if (!this.vNi) {

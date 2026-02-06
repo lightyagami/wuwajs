@@ -63,8 +63,8 @@ class MoveToLocation {
   Init(t) {
     this.Jh = t;
     this.Hte = this.Jh.GetComponent(3);
-    this.mBe = this.Jh.GetComponent(109);
-    this.oRe = this.Jh.GetComponent(186);
+    this.mBe = this.Jh.GetComponent(111);
+    this.oRe = this.Jh.GetComponent(188);
     this.wDe = this.Hte.CreatureData.GetPbDataId();
   }
   SetMoveToLocation(t) {
@@ -187,7 +187,7 @@ class MoveToLocation {
   }
   yJo() {
     var t;
-    var i = this.Jh.GetComponent(46);
+    var i = this.Jh.GetComponent(48);
     if (i) {
       t = this.hqn.MoveSpeed;
       if (this.hqn.IsFly) {

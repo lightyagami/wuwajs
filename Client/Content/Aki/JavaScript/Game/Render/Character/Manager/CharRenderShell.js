@@ -30,21 +30,21 @@ class CharRenderShell {
     this.veh = false;
     this.hen = 0;
     this.sva = undefined;
-    this.hKf = false;
+    this.ohg = false;
     this.M6l = e => {
       if (CharRenderShell.CharRenderShellGameBudgetOptimize && e.VehicleType === "Motorcycle" && e.IsRolePassenger(true)) {
-        this.lKf(GameBudgetAllocatorConfigCreator_1.GameBudgetAllocatorConfigCreator.TsMoveSceneItemEntityConfig);
+        this.nhg(GameBudgetAllocatorConfigCreator_1.GameBudgetAllocatorConfigCreator.TsMoveSceneItemEntityConfig);
       }
     };
     this.E6l = e => {
       if (CharRenderShell.CharRenderShellGameBudgetOptimize && this.RenderingComponent && e.VehicleType === "Motorcycle" && e.IsRolePassenger(true)) {
-        this.lKf(GameBudgetAllocatorConfigCreator_1.GameBudgetAllocatorConfigCreator.TsCharacterRenderConfig);
+        this.nhg(GameBudgetAllocatorConfigCreator_1.GameBudgetAllocatorConfigCreator.TsCharacterRenderConfig);
       }
     };
     this.tXd = e => {
       var t;
       var i;
-      if (this.hen === 0 && ((t = (i = this.RenderingComponent?.GetCachedOwnerEntity())?.GetComponent(59)?.GetAttributeHolder()) !== i && (i = t?.CheckGetComponent(44)) && (this.hen = i.GetVisionId()), this.hen === 0)) {
+      if (this.hen === 0 && ((t = (i = this.RenderingComponent?.GetCachedOwnerEntity())?.GetComponent(61)?.GetAttributeHolder()) !== i && (i = t?.CheckGetComponent(46)) && (this.hen = i.GetVisionId()), this.hen === 0)) {
         EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.EndVisionSkill, this.tXd);
       }
       if (this.hen === e) {
@@ -156,15 +156,15 @@ class CharRenderShell {
       if (o?.GetEntityType() === Protocol_1.Aki.Protocol.kks.Proto_Vision) {
         EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.EndVisionSkill, this.tXd);
       } else if (o?.GetEntityType() === Protocol_1.Aki.Protocol.kks.Proto_Monster && Info_1.Info.IsPcOrGamepadPlatform() && o.GetMonsterMatchType() === 1) {
-        this.hKf = true;
+        this.ohg = true;
         EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnEnterVehicle, this.M6l);
         EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnLeaveVehicle, this.E6l);
       }
-      this.sva = e?.GetComponent(196);
+      this.sva = e?.GetComponent(198);
       this.A4i();
     }
   }
-  lKf(e) {
+  nhg(e) {
     if (this.RenderingComponent) {
       if (this.yW) {
         GameBudgetInterfaceController_1.GameBudgetInterfaceController.UnregisterTick(this);
@@ -194,7 +194,7 @@ class CharRenderShell {
       }
       this.OtherRoleEntityId = 0;
     }
-    if (this.hKf) {
+    if (this.ohg) {
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnEnterVehicle, this.M6l);
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnLeaveVehicle, this.E6l);
     }
@@ -217,7 +217,7 @@ class CharRenderShell {
       }
       this.r3a = Time_1.Time.WorldTimeSeconds;
       let t = GameBudgetAllocatorConfigCreator_1.GameBudgetAllocatorConfigCreator.TsCharacterRenderConfig;
-      if (this.hKf) {
+      if (this.ohg) {
         if (Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity.GetComponent(242)?.VehicleType === "Motorcycle") {
           t = GameBudgetAllocatorConfigCreator_1.GameBudgetAllocatorConfigCreator.TsMoveSceneItemEntityConfig;
         }

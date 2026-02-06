@@ -19,9 +19,10 @@ const GravityUtils_1 = require("../../../Utils/GravityUtils");
 const GameplayCueController_1 = require("../../Character/Common/Component/Abilities/GameplayCueSFX/Controller/GameplayCueController");
 const SceneItemManipulableBaseState_1 = require("./SceneItemManipulableBaseState");
 class SceneItemManipulableCastState extends SceneItemManipulableBaseState_1.SceneItemManipulableBaseState {
-  constructor(t, i) {
+  constructor(t, i, e) {
     super(t);
     this.pYi = undefined;
+    this.e0g = undefined;
     this.CastDuration = -0;
     this.CastRotAxis = undefined;
     this.StartLoc = undefined;
@@ -42,6 +43,7 @@ class SceneItemManipulableCastState extends SceneItemManipulableBaseState_1.Scen
       this.AfterHit = true;
     };
     this.pYi = i;
+    this.e0g = e;
   }
   SetFinishCallback(t) {
     this.FinishCallback = t;
@@ -54,6 +56,7 @@ class SceneItemManipulableCastState extends SceneItemManipulableBaseState_1.Scen
   }
   OnEnter() {
     this.StartCameraShake(this.pYi);
+    this.StartGamepadShake(this.e0g);
     this.Timer = 0;
     this.AfterHit = false;
     this.SceneItem.ActorComp.Owner.OnActorHit.Clear();
@@ -95,6 +98,7 @@ class SceneItemManipulableCastState extends SceneItemManipulableBaseState_1.Scen
   }
   OnExit() {
     this.StopCameraShake();
+    this.StopGamepadShake(this.e0g);
     this.SceneItem.TryRemoveTagById(1488763518);
     this.NeedResetPhysicsMode = true;
     this.NeedNotifyServer = true;

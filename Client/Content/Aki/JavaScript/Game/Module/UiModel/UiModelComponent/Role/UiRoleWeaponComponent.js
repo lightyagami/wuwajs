@@ -1,19 +1,19 @@
 "use strict";
 
 var __decorate = this && this.__decorate || function (e, t, i, s) {
-  var n;
-  var o = arguments.length;
-  var h = o < 3 ? t : s === null ? s = Object.getOwnPropertyDescriptor(t, i) : s;
+  var o;
+  var n = arguments.length;
+  var h = n < 3 ? t : s === null ? s = Object.getOwnPropertyDescriptor(t, i) : s;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
     h = Reflect.decorate(e, t, i, s);
   } else {
     for (var a = e.length - 1; a >= 0; a--) {
-      if (n = e[a]) {
-        h = (o < 3 ? n(h) : o > 3 ? n(t, i, h) : n(t, i)) || h;
+      if (o = e[a]) {
+        h = (n < 3 ? o(h) : n > 3 ? o(t, i, h) : o(t, i)) || h;
       }
     }
   }
-  if (o > 3 && h) {
+  if (n > 3 && h) {
     Object.defineProperty(t, i, h);
   }
   return h;
@@ -35,6 +35,7 @@ const WeaponSkinDefine_1 = require("../../../Skin/Tab/Weapon/WeaponSkinDefine");
 const UiModelComponentDefine_1 = require("../../Define/UiModelComponentDefine");
 const UiModelUtil_1 = require("../../UiModelUtil");
 const UiModelComponentBase_1 = require("../UiModelComponentBase");
+const UiModelComponentInterface_1 = require("../UiModelComponentInterface");
 let UiRoleWeaponComponent = class UiRoleWeaponComponent extends UiModelComponentBase_1.UiModelComponentBase {
   constructor() {
     super(...arguments);
@@ -48,19 +49,7 @@ let UiRoleWeaponComponent = class UiRoleWeaponComponent extends UiModelComponent
     this.TBr = 0;
     this.LBr = new Array();
     this.DBr = new Array();
-    this.NFm = new Array();
-    this.Dwr = e => {
-      this.SetDitherEffect(e);
-    };
-    this.Twr = t => {
-      for (let e = 0; e < this.NFm.length; e++) {
-        if (this.NFm[e] && t) {
-          this.ShowWeaponByIndex(e);
-        } else {
-          this.HideWeaponByIndex(e);
-        }
-      }
-    };
+    this.s3m = new Array();
     this.OnRoleIdChange = () => {
       this.RefreshWeaponCase();
       this.HideAllWeapon();
@@ -83,8 +72,8 @@ let UiRoleWeaponComponent = class UiRoleWeaponComponent extends UiModelComponent
     };
     this.OnAnsBegin = e => {
       var t = e.Index;
-      if (t >= 0 && t < this.NFm.length) {
-        this.NFm[t] = true;
+      if (t >= 0 && t < this.s3m.length) {
+        this.s3m[t] = true;
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Weapon", 43, "武器Ans索引错误", ["index", t]);
       }
@@ -98,8 +87,8 @@ let UiRoleWeaponComponent = class UiRoleWeaponComponent extends UiModelComponent
     };
     this.OnAnsEnd = e => {
       var t = e.Index;
-      if (t >= 0 && t < this.NFm.length) {
-        this.NFm[t] = false;
+      if (t >= 0 && t < this.s3m.length) {
+        this.s3m[t] = false;
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Weapon", 43, "武器Ans索引错误", ["index", t]);
       }
@@ -119,18 +108,26 @@ let UiRoleWeaponComponent = class UiRoleWeaponComponent extends UiModelComponent
     EventSystem_1.EventSystem.AddWithTarget(this.Owner, EventDefine_1.EEventName.OnUiModelLoadComplete, this.OnRoleMeshLoadComplete);
     EventSystem_1.EventSystem.AddWithTarget(this.Owner, EventDefine_1.EEventName.OnUiModelSetMorphTypeComplete, this.OnRoleMeshLoadComplete);
     EventSystem_1.EventSystem.AddWithTarget(this.Owner, EventDefine_1.EEventName.OnUiModelRoleDataIdChange, this.OnRoleIdChange);
-    EventSystem_1.EventSystem.AddWithTarget(this.Owner, EventDefine_1.EEventName.OnUiModelSetDitherEffect, this.Dwr);
-    EventSystem_1.EventSystem.AddWithTarget(this.Owner, EventDefine_1.EEventName.OnUiModelVisibleChange, this.Twr);
     this.Jwr?.RegisterAnsTrigger("UiWeaponAnsContext", this.OnAnsBegin, this.OnAnsEnd);
   }
   OnEnd() {
     EventSystem_1.EventSystem.RemoveWithTarget(this.Owner, EventDefine_1.EEventName.OnUiModelLoadComplete, this.OnRoleMeshLoadComplete);
     EventSystem_1.EventSystem.RemoveWithTarget(this.Owner, EventDefine_1.EEventName.OnUiModelSetMorphTypeComplete, this.OnRoleMeshLoadComplete);
     EventSystem_1.EventSystem.RemoveWithTarget(this.Owner, EventDefine_1.EEventName.OnUiModelRoleDataIdChange, this.OnRoleIdChange);
-    EventSystem_1.EventSystem.RemoveWithTarget(this.Owner, EventDefine_1.EEventName.OnUiModelSetDitherEffect, this.Dwr);
-    EventSystem_1.EventSystem.RemoveWithTarget(this.Owner, EventDefine_1.EEventName.OnUiModelVisibleChange, this.Twr);
     for (const e of this.IBr) {
       SkeletalObserverManager_1.SkeletalObserverManager.DestroySkeletalObserver(e);
+    }
+  }
+  OnModelDitherEffectChange(e) {
+    this.SetDitherEffect(e);
+  }
+  OnModelVisibleChange(t) {
+    for (let e = 0; e < this.s3m.length; e++) {
+      if (this.s3m[e] && t) {
+        this.ShowWeaponByIndex(e);
+      } else {
+        this.HideWeaponByIndex(e);
+      }
     }
   }
   Refresh() {
@@ -140,7 +137,7 @@ let UiRoleWeaponComponent = class UiRoleWeaponComponent extends UiModelComponent
       var i = SkeletalObserverManager_1.SkeletalObserverManager.NewSkeletalObserver(2);
       this.IBr.push(i);
       this.DBr.push(0);
-      this.NFm.push(false);
+      this.s3m.push(false);
       this.HideWeaponByIndex(e);
     }
     for (let e = 0; e < this.TBr; e++) {
@@ -174,8 +171,8 @@ let UiRoleWeaponComponent = class UiRoleWeaponComponent extends UiModelComponent
     }
   }
   ResetWeaponStatesOnRole() {
-    for (let e = 0; e < this.NFm.length; e++) {
-      this.NFm[e] = false;
+    for (let e = 0; e < this.s3m.length; e++) {
+      this.s3m[e] = false;
     }
   }
   ShowWeaponByIndex(e, t = false) {
@@ -257,19 +254,19 @@ let UiRoleWeaponComponent = class UiRoleWeaponComponent extends UiModelComponent
       var i = SkeletalObserverManager_1.SkeletalObserverManager.NewSkeletalObserver(2);
       this.IBr.push(i);
       this.DBr.push(0);
-      this.NFm.push(false);
+      this.s3m.push(false);
       this.HideWeaponByIndex(e);
     }
     let s = 0;
-    var n = () => {
+    var o = () => {
       if (++s >= this.TBr) {
         e?.();
       }
     };
     for (let e = 0; e < this.TBr; e++) {
-      var o = this.IBr[e].Model;
-      if (o.CheckGetComponent(0)?.ModelConfigId !== t[e]) {
-        o.CheckGetComponent(2)?.LoadModelByModelId(t[e], false, n);
+      var n = this.IBr[e].Model;
+      if (n.CheckGetComponent(0)?.ModelConfigId !== t[e]) {
+        n.CheckGetComponent(2)?.LoadModelByModelId(t[e], false, o);
       }
     }
   }
@@ -294,5 +291,5 @@ let UiRoleWeaponComponent = class UiRoleWeaponComponent extends UiModelComponent
     return this.TBr;
   }
 };
-UiRoleWeaponComponent = __decorate([(0, UiModelComponentDefine_1.RegisterUiModelComponent)(17)], UiRoleWeaponComponent);
+UiRoleWeaponComponent = __decorate([(0, UiModelComponentInterface_1.RegisterUiModelComponentImplements)(0, 1), (0, UiModelComponentDefine_1.RegisterUiModelComponent)(17)], UiRoleWeaponComponent);
 exports.UiRoleWeaponComponent = UiRoleWeaponComponent; //# sourceMappingURL=UiRoleWeaponComponent.js.map

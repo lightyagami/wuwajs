@@ -1,19 +1,19 @@
 "use strict";
 
 var __decorate = this && this.__decorate || function (t, e, i, s) {
-  var r;
-  var o = arguments.length;
-  var h = o < 3 ? e : s === null ? s = Object.getOwnPropertyDescriptor(e, i) : s;
+  var o;
+  var r = arguments.length;
+  var h = r < 3 ? e : s === null ? s = Object.getOwnPropertyDescriptor(e, i) : s;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
     h = Reflect.decorate(t, e, i, s);
   } else {
     for (var n = t.length - 1; n >= 0; n--) {
-      if (r = t[n]) {
-        h = (o < 3 ? r(h) : o > 3 ? r(e, i, h) : r(e, i)) || h;
+      if (o = t[n]) {
+        h = (r < 3 ? o(h) : r > 3 ? o(e, i, h) : o(e, i)) || h;
       }
     }
   }
-  if (o > 3 && h) {
+  if (r > 3 && h) {
     Object.defineProperty(e, i, h);
   }
   return h;
@@ -38,6 +38,7 @@ const MathUtils_1 = require("../../../../Core/Utils/MathUtils");
 const TraceElementCommon_1 = require("../../../../Core/Utils/TraceElementCommon");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const LogReportController_1 = require("../../../Module/LogReport/LogReportController");
 const LogReportDefine_1 = require("../../../Module/LogReport/LogReportDefine");
@@ -61,26 +62,28 @@ let MotorcycleMoveComponent = class MotorcycleMoveComponent extends VehicleMoveC
     super(...arguments);
     this.Nce = undefined;
     this.$zo = undefined;
+    this.ph_ = undefined;
     this.Ydl = Vector_1.Vector.Create();
-    this.oVf = Transform_1.Transform.Create();
-    this.VHf = (0, puerts_1.$ref)(undefined);
-    this.HHf = new Set();
-    this.jHf = new Set();
+    this.KQf = Transform_1.Transform.Create();
+    this.tig = (0, puerts_1.$ref)(undefined);
+    this.iig = new Set();
+    this.rig = new Set();
     this.iCu = 0;
     this.rCu = false;
-    this.uAf = false;
-    this.yLf = 0;
-    this.SLf = 0;
-    this.MLf = Vector_1.Vector.Create();
-    this.cAf = false;
-    this.dAf = false;
+    this.y2f = false;
+    this.ABf = 0;
+    this.DBf = 0;
+    this.UBf = Vector_1.Vector.Create();
+    this.S2f = false;
+    this.M2f = false;
     this.Aom = 1;
-    this.bnf = 0;
-    this.Rnf = 0;
-    this.wnf = false;
-    this.Lnf = new Array();
-    this.Pnf = new Array();
-    this.Anf = 0;
+    this.Waf = 0;
+    this.Qaf = 0;
+    this.Kaf = false;
+    this.Xaf = new Array();
+    this.Yaf = new Array();
+    this.zaf = 0;
+    this.vvg = undefined;
     this.OnSkill = t => {
       var e;
       if (this.ActorComp?.IsAutonomousProxy) {
@@ -88,11 +91,20 @@ let MotorcycleMoveComponent = class MotorcycleMoveComponent extends VehicleMoveC
         LogReportController_1.LogReportController.LogReport(e);
       }
     };
+    this.OnSprintTagChange = (t, e) => {
+      if (e && this.ph_?.Driver?.GetComponent(3)?.IsRoleAndCtrlByMe) {
+        if (this.TagComponent?.HasTag(-1636232993)) {
+          ControllerHolder_1.ControllerHolder.CameraController.PlayForceFeedbackFromCameraShake(this.vvg);
+        } else {
+          ControllerHolder_1.ControllerHolder.CameraController.PlayCameraShake(this.vvg, undefined, undefined, undefined, true);
+        }
+      }
+    };
     this.qz = Stats_1.Stat.Create("BackingMotor");
     this.wz = Stats_1.Stat.Create("super.OnTick");
     this.Bz = Stats_1.Stat.Create("UpdateMoveState");
     this.bz = Stats_1.Stat.Create("UpdateMoveBuff");
-    this.$Hf = Stats_1.Stat.Create("UpdateBaseMovement");
+    this.oig = Stats_1.Stat.Create("UpdateBaseMovement");
   }
   get BackBraking() {
     return this.rCu;
@@ -101,38 +113,38 @@ let MotorcycleMoveComponent = class MotorcycleMoveComponent extends VehicleMoveC
     this.rCu = t;
   }
   get DriftingState() {
-    return this.uAf;
+    return this.y2f;
   }
   set DriftingState(t) {
-    if (this.uAf !== t) {
-      if (this.uAf = t) {
-        this.SLf = Time_1.Time.NowSeconds;
-        this.yLf = 0;
-        this.MLf.DeepCopy(this.ActorComp.ActorLocationProxy);
+    if (this.y2f !== t) {
+      if (this.y2f = t) {
+        this.DBf = Time_1.Time.NowSeconds;
+        this.ABf = 0;
+        this.UBf.DeepCopy(this.ActorComp.ActorLocationProxy);
         this.TagComponent?.AddTag(312204375);
-        if (this.bnf > 0) {
-          this.$zo?.AddBuff(this.bnf, {
+        if (this.Waf > 0) {
+          this.$zo?.AddBuff(this.Waf, {
             InstigatorId: this.$zo.CreatureDataId,
             Reason: "漂移buff"
           });
         }
       } else {
-        (t = new LogReportDefine_1.MotorDriftLogEvent()).i_drift_distance = Math.round(this.yLf / 100);
-        t.i_drift_time = Math.round(Time_1.Time.NowSeconds - this.SLf);
+        (t = new LogReportDefine_1.MotorDriftLogEvent()).i_drift_distance = Math.round(this.ABf / 100);
+        t.i_drift_time = Math.round(Time_1.Time.NowSeconds - this.DBf);
         LogReportController_1.LogReportController.LogReport(t);
         this.TagComponent?.RemoveTag(312204375);
-        if (this.bnf > 0) {
-          this.$zo?.RemoveBuff(this.bnf, -1, "漂移buff");
+        if (this.Waf > 0) {
+          this.$zo?.RemoveBuff(this.Waf, -1, "漂移buff");
         }
       }
     }
   }
   get FrontBrakingState() {
-    return this.cAf;
+    return this.S2f;
   }
   set FrontBrakingState(t) {
-    if (this.cAf !== t) {
-      if (this.cAf = t) {
+    if (this.S2f !== t) {
+      if (this.S2f = t) {
         this.TagComponent?.AddTag(-1797666683);
       } else {
         this.TagComponent?.RemoveTag(-1797666683);
@@ -140,11 +152,11 @@ let MotorcycleMoveComponent = class MotorcycleMoveComponent extends VehicleMoveC
     }
   }
   get BackBrakingState() {
-    return this.dAf;
+    return this.M2f;
   }
   set BackBrakingState(t) {
-    if (this.dAf !== t) {
-      if (this.dAf = t) {
+    if (this.M2f !== t) {
+      if (this.M2f = t) {
         this.TagComponent?.AddTag(399362418);
       } else {
         this.TagComponent?.RemoveTag(399362418);
@@ -166,30 +178,30 @@ let MotorcycleMoveComponent = class MotorcycleMoveComponent extends VehicleMoveC
       this.Aom = t;
     }
   }
-  get Dnf() {
-    return this.wnf;
+  get Jaf() {
+    return this.Kaf;
   }
-  set Dnf(t) {
-    if (this.wnf !== t && (this.wnf = t, this.Rnf > 0)) {
-      if (this.wnf) {
-        this.$zo?.AddBuff(this.Rnf, {
+  set Jaf(t) {
+    if (this.Kaf !== t && (this.Kaf = t, this.Qaf > 0)) {
+      if (this.Kaf) {
+        this.$zo?.AddBuff(this.Qaf, {
           InstigatorId: this.$zo.CreatureDataId,
           Reason: "倒车buff"
         });
       } else {
-        this.$zo?.RemoveBuff(this.Rnf, -1, "倒车buff");
+        this.$zo?.RemoveBuff(this.Qaf, -1, "倒车buff");
       }
     }
   }
   get CurrentMoveBuff() {
-    return this.Anf;
+    return this.zaf;
   }
   set CurrentMoveBuff(t) {
-    if (this.Anf !== t && (this.Anf > 0 && (this.$zo?.RemoveBuff(this.Anf, -1, "摩托移动buff"), Log_1.Log.CheckWarn()) && Log_1.Log.Warn("Test", 6, "MotorMoveBuff RemoveBuff " + this.Anf), this.Anf = t, this.Anf > 0) && (this.$zo?.AddBuff(this.Anf, {
+    if (this.zaf !== t && (this.zaf > 0 && (this.$zo?.RemoveBuff(this.zaf, -1, "摩托移动buff"), Log_1.Log.CheckWarn()) && Log_1.Log.Warn("Test", 6, "MotorMoveBuff RemoveBuff " + this.zaf), this.zaf = t, this.zaf > 0) && (this.$zo?.AddBuff(this.zaf, {
       InstigatorId: this.$zo.CreatureDataId,
       Reason: "摩托移动buff"
     }), Log_1.Log.CheckWarn())) {
-      Log_1.Log.Warn("Test", 6, "MotorMoveBuff AddBuff " + this.Anf);
+      Log_1.Log.Warn("Test", 6, "MotorMoveBuff AddBuff " + this.zaf);
     }
   }
   OnStart() {
@@ -201,41 +213,49 @@ let MotorcycleMoveComponent = class MotorcycleMoveComponent extends VehicleMoveC
       Log_1.Log.Info("Movement", 6, "Motorcycle Move OnStart", ["Result", t]);
     }
     this.TagComponent.AddTag(-1024257441);
-    var i = this.Entity.GetComponent(246)?.Config?.Asset;
+    this.ph_ = this.Entity.GetComponent(246);
+    var i = this.ph_?.Config?.Asset;
     if (i) {
       let e = i.非加速状态buff.Num();
-      for (let t = this.Lnf.length = 0; t < e; ++t) {
+      for (let t = this.Xaf.length = 0; t < e; ++t) {
         var s = i.非加速状态buff.Get(t);
-        this.Lnf.push([s.Threshold, Number(s.BuffId)]);
+        this.Xaf.push([s.Threshold, Number(s.BuffId)]);
       }
       e = i.加速状态buff.Num();
-      for (let t = this.Pnf.length = 0; t < e; ++t) {
-        var r = i.加速状态buff.Get(t);
-        this.Pnf.push([r.Threshold, Number(r.BuffId)]);
+      for (let t = this.Yaf.length = 0; t < e; ++t) {
+        var o = i.加速状态buff.Get(t);
+        this.Yaf.push([o.Threshold, Number(o.BuffId)]);
       }
-      this.bnf = Number(i.漂移buff);
-      this.Rnf = Number(i.倒车buff);
-      this.nVf();
+      this.Waf = Number(i.漂移buff);
+      this.Qaf = Number(i.倒车buff);
+      this.vvg = i.冲刺震屏;
+      this.XQf();
       EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharBeforeSkillWithTarget, this.OnSkill);
+      if (this.vvg) {
+        this.TagComponent?.AddTagAddOrRemoveListener(-595765206, this.OnSprintTagChange);
+      }
     }
     return t;
   }
   OnEnd() {
     var t = super.OnEnd();
     EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CharBeforeSkillWithTarget, this.OnSkill);
-    this.TKf();
+    if (this.vvg) {
+      this.TagComponent?.RemoveTagAddOrRemoveListener(-595765206, this.OnSprintTagChange);
+    }
+    this.Slg();
     return t;
   }
   OnDisable(t) {
     super.OnDisable(t);
-    this.TKf();
+    this.Slg();
   }
-  TKf() {
-    this.Dnf = false;
+  Slg() {
+    this.Jaf = false;
     this.DriftingState = false;
-    if ((this.CurrentMoveBuff = 0) < this.HHf.size) {
-      this.HHf.clear();
-      EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.MotorcycleBaseMovementChanged, this.HHf);
+    if ((this.CurrentMoveBuff = 0) < this.iig.size) {
+      this.iig.clear();
+      EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.MotorcycleBaseMovementChanged, this.iig);
     }
   }
   SetInputOrder() {
@@ -247,7 +267,7 @@ let MotorcycleMoveComponent = class MotorcycleMoveComponent extends VehicleMoveC
       if (this.TagComponent?.HasTag(-595765206)) {
         this.Ydl.X = 1;
       }
-      if (this.Ydl.X < 0 && !this.Dnf) {
+      if (this.Ydl.X < 0 && !this.Jaf) {
         t = -this.Ydl.X;
         this.Ydl.X = 0;
       }
@@ -277,7 +297,7 @@ let MotorcycleMoveComponent = class MotorcycleMoveComponent extends VehicleMoveC
     this.Ydl.DeepCopy(this.ActorComp.InputDirectProxy);
     if (this.Ydl.X >= 0 || this.BackBraking) {
       this.iCu = 0;
-      this.Dnf = false;
+      this.Jaf = false;
     } else if (this.iCu < BACK_TIME_THRESHOLD) {
       e = this.ActorComp.ActorVelocityProxy.DotProduct(this.ActorComp.ActorForwardProxy);
       i = this.ActorComp.ActorVelocityProxy.DotProduct(this.ActorComp.ActorRightProxy);
@@ -286,9 +306,9 @@ let MotorcycleMoveComponent = class MotorcycleMoveComponent extends VehicleMoveC
       } else {
         this.iCu += Time_1.Time.DeltaTime;
       }
-      this.Dnf = this.iCu >= BACK_TIME_THRESHOLD;
+      this.Jaf = this.iCu >= BACK_TIME_THRESHOLD;
     } else {
-      this.Dnf = true;
+      this.Jaf = true;
     }
     this.qz.Stop();
     this.wz.Start();
@@ -300,9 +320,9 @@ let MotorcycleMoveComponent = class MotorcycleMoveComponent extends VehicleMoveC
     this.bz.Start();
     this.UpdateMoveBuff();
     this.bz.Stop();
-    this.$Hf.Start();
-    this.WHf();
-    this.$Hf.Stop();
+    this.oig.Start();
+    this.nig();
+    this.oig.Stop();
   }
   MoveAlongPath(e) {
     const i = VehiclePathMoveController_1.VehiclePathMoveController.CreateMotorcycleMoveTaskFromSplineId(this.Entity, e.SplineId);
@@ -366,15 +386,15 @@ let MotorcycleMoveComponent = class MotorcycleMoveComponent extends VehicleMoveC
     var e;
     var i = this.VehicleMovement.MotorAccelConfig.MaxSpeed;
     var s = this.ActorComp.ActorVelocityProxy.DotProduct(this.ActorComp.ActorForwardProxy) / i;
-    let r = false;
-    for ([t, e] of this.TagComponent?.HasTag(-595765206) ? this.Pnf : this.Lnf) {
+    let o = false;
+    for ([t, e] of this.TagComponent?.HasTag(-595765206) ? this.Yaf : this.Xaf) {
       if (s < t) {
         this.CurrentMoveBuff = e;
-        r = true;
+        o = true;
         break;
       }
     }
-    if (!r) {
+    if (!o) {
       this.CurrentMoveBuff = 0;
     }
   }
@@ -382,39 +402,39 @@ let MotorcycleMoveComponent = class MotorcycleMoveComponent extends VehicleMoveC
     this.MotorSubState = this.VehicleMovement.MotorSubState;
     this.DriftingState = this.BackBraking && this.ActorComp.InputDirectProxy.X > DRIFT_INPUT_X_THRESHOLD && Math.abs(this.ActorComp.InputDirectProxy.Y) > DRIFT_INPUT_Y_THRESHOLD && this.Speed > DRIFT_SPEED_THRESHOLD && this.MotorSubState === 1;
     if (this.DriftingState) {
-      this.yLf += Vector_1.Vector.Dist(this.ActorComp.ActorLocationProxy, this.MLf);
-      this.MLf.DeepCopy(this.ActorComp.ActorLocationProxy);
+      this.ABf += Vector_1.Vector.Dist(this.ActorComp.ActorLocationProxy, this.UBf);
+      this.UBf.DeepCopy(this.ActorComp.ActorLocationProxy);
     }
     var t = this.ActorComp.ActorVelocityProxy.DotProduct(this.ActorComp.ActorForwardProxy);
     if (this.DriftingState || t < BRAKE_FORWARD_SPEED_THRESHOLD || this.TagComponent?.HasTag(1325228559) || this.MotorSubState !== 1 && this.MotorSubState !== 2) {
       this.FrontBrakingState = false;
       this.BackBrakingState = false;
     } else {
-      this.FrontBrakingState = !this.Dnf && this.ActorComp.InputDirectProxy.X < 0;
+      this.FrontBrakingState = !this.Jaf && this.ActorComp.InputDirectProxy.X < 0;
       this.BackBrakingState = this.BackBraking;
     }
   }
-  WHf() {
-    this.VehicleMovement?.GetBaseMovement(this.VHf);
+  nig() {
+    this.VehicleMovement?.GetBaseMovement(this.tig);
     var t;
-    var e = (0, puerts_1.$unref)(this.VHf);
+    var e = (0, puerts_1.$unref)(this.tig);
     var i = e.Num();
     let s = true;
-    this.jHf.clear();
+    this.rig.clear();
     for (let t = 0; t < i; ++t) {
-      var r = e.Get(t);
-      this.jHf.add(r);
-      s &&= this.HHf.has(r);
+      var o = e.Get(t);
+      this.rig.add(o);
+      s &&= this.iig.has(o);
     }
-    if (!(s &&= this.HHf.size === this.jHf.size)) {
-      t = this.HHf;
-      this.HHf = this.jHf;
-      this.jHf = t;
-      this.jHf.clear();
-      EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.MotorcycleBaseMovementChanged, this.HHf);
+    if (!(s &&= this.iig.size === this.rig.size)) {
+      t = this.iig;
+      this.iig = this.rig;
+      this.rig = t;
+      this.rig.clear();
+      EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.MotorcycleBaseMovementChanged, this.iig);
     }
   }
-  nVf() {
+  XQf() {
     var t;
     var e;
     var i = CommonParamById_1.configCommonParamById.GetFloatArrayConfig("MotorGetOnSeatTrans");
@@ -422,15 +442,15 @@ let MotorcycleMoveComponent = class MotorcycleMoveComponent extends VehicleMoveC
       t = Vector_1.Vector.Create(i[0], i[1], i[2]);
       e = Rotator_1.Rotator.Create(i[3], i[4], i[5]);
       i = Vector_1.Vector.Create(i[6], i[7], i[8]);
-      this.oVf.SetLocation(t);
-      this.oVf.SetRotation(e.Quaternion());
-      this.oVf.SetScale3D(i);
+      this.KQf.SetLocation(t);
+      this.KQf.SetRotation(e.Quaternion());
+      this.KQf.SetScale3D(i);
     }
   }
   GetMotorcycleSummonTrans(t, e) {
     var i = EntitySystem_1.EntitySystem.GetComponent(t, 3);
     if (i) {
-      e = e || this.oVf.ToUeTransformOld();
+      e = e || this.KQf.ToUeTransformOld();
       tmpTrans.FromUeTransform(e);
       leftTurn90.Multiply(tmpTrans.GetRotation(), tmpQuat2);
       tmpQuat2.Inverse(tmpQuat);
@@ -463,7 +483,7 @@ let MotorcycleMoveComponent = class MotorcycleMoveComponent extends VehicleMoveC
     }
   }
   UpdateUeMovementDisableState(t) {
-    if (this.HHf.size > 0) {
+    if (this.iig.size > 0) {
       this.StopMoveContinuousTime = 0;
       this.EnableUeMovementTick("CurrentBaseMovement不为空");
     } else {

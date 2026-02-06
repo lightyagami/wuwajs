@@ -27,9 +27,9 @@ class GongduolaSummonController extends ControllerBase_1.ControllerBase {
         if (this.xlc) {
           this.Dlc = n.GetComponent(249);
           if (this.Dlc) {
-            this.PIc = n.GetComponent(123);
+            this.PIc = n.GetComponent(125);
             if (this.PIc) {
-              this.Qd1 = n.GetComponent(215);
+              this.Qd1 = n.GetComponent(217);
               if (this.Qd1) {
                 this.xlc.StartForceDisableAnimOptimization(3, false);
                 this.PIc.StartForceDisableAnimDelay(0);
@@ -75,9 +75,9 @@ class GongduolaSummonController extends ControllerBase_1.ControllerBase {
           if (this.Dlc) {
             this.klc = n.GetComponent(1);
             if (this.klc) {
-              this.PIc = n.GetComponent(123);
+              this.PIc = n.GetComponent(125);
               if (this.PIc) {
-                this.Qd1 = n.GetComponent(215);
+                this.Qd1 = n.GetComponent(217);
                 if (this.Qd1) {
                   this.Dlc.IsSummoningPerform = true;
                   this.PIc.StartForceDisableAnimDelay(0);

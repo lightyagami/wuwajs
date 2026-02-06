@@ -120,7 +120,7 @@ class XiaKongQteView extends UiTickViewBase_1.UiTickViewBase {
       this.CloseMe();
     } else {
       this.Wst = t;
-      t = this.Wst.EntityHandle?.Entity?.GetComponent(278);
+      t = this.Wst.EntityHandle?.Entity?.GetComponent(280);
       this.hBa = t?.SpecialSkill;
       if (this.hBa.GetIsUltraSkillState()) {
         this.ehr(true);

@@ -9,6 +9,7 @@ const ModelBase_1 = require("../../../Core/Framework/ModelBase");
 const InputSettingsManager_1 = require("../../InputSettings/InputSettingsManager");
 const CursorData_1 = require("./Data/CursorData");
 const UiNavigationGlobalData_1 = require("./New/UiNavigationGlobalData");
+const UiNavigationViewManager_1 = require("./New/UiNavigationViewManager");
 class UiNavigationModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
@@ -26,13 +27,33 @@ class UiNavigationModel extends ModelBase_1.ModelBase {
       }
     }
     for (const i of this.Oqo.values()) {
-      for (const r of i) {
-        r.RefreshMode();
+      for (const o of i) {
+        o.RefreshMode();
       }
     }
-    for (const o of this.kqo) {
-      o.ChangeAlpha();
+    for (const r of this.kqo) {
+      r.ChangeAlpha();
     }
+  }
+  CustomShieldHotKeyComponent(t, e) {
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("UiNavigation", 10, "业务触发自定义屏蔽热键组件", ["excludeHotKeyIndexSet", t], ["bActive", e]);
+    }
+    for (const i of this.Nqo.values()) {
+      for (const o of i) {
+        if (!t.has(o.GetHotKeyMapIndex())) {
+          o.OnlySetVisibleMode(128, e);
+        }
+      }
+    }
+    for (const r of this.Oqo.values()) {
+      for (const n of r) {
+        if (!t.has(n.GetHotKeyMapIndex())) {
+          n.OnlySetVisibleMode(128, e);
+        }
+      }
+    }
+    UiNavigationViewManager_1.UiNavigationViewManager.RefreshCurrentHotKey();
   }
   OnClear() {
     this.ClearCursor();
@@ -94,19 +115,19 @@ class UiNavigationModel extends ModelBase_1.ModelBase {
       e = e[1];
       if (e === t[1]) {
         if (e) {
-          var r = new Set();
-          for (const o of t[0]) {
-            if (i.has(o)) {
-              r.add(o);
+          var o = new Set();
+          for (const r of t[0]) {
+            if (i.has(r)) {
+              o.add(r);
             }
           }
-          if (r.size === i.size) {
-            return Array.from(r);
+          if (o.size === i.size) {
+            return Array.from(o);
           }
         } else {
-          for (const s of t[0]) {
-            if (i.has(s)) {
-              return [s];
+          for (const n of t[0]) {
+            if (i.has(n)) {
+              return [n];
             }
           }
         }
@@ -151,14 +172,14 @@ class UiNavigationModel extends ModelBase_1.ModelBase {
   CheckActionNameListInNavigation(t) {
     var e = this.lWd(t);
     if (e) {
-      for (var [i, r] of this.Nqo) {
+      for (var [i, o] of this.Nqo) {
         if (t !== i) {
-          var o = this.Vqo(i, e);
-          if (o) {
-            for (const s of r) {
-              if (s.IsHotKeyActive() && s.IsOccupancyFightInput()) {
+          var r = this.Vqo(i, e);
+          if (r) {
+            for (const n of o) {
+              if (n.IsHotKeyActive() && n.IsOccupancyFightInput()) {
                 if (Log_1.Log.CheckDebug()) {
-                  Log_1.Log.Debug("UiNavigation", 10, "非导航输入被导航输入占用", ["非导航输入", t], ["导航输入", i], ["交集的KeyName", o]);
+                  Log_1.Log.Debug("UiNavigation", 10, "非导航输入被导航输入占用", ["非导航输入", t], ["导航输入", i], ["交集的KeyName", r]);
                 }
                 return true;
               }
@@ -173,13 +194,13 @@ class UiNavigationModel extends ModelBase_1.ModelBase {
     var e = this.oNa(t);
     if (e) {
       var i;
-      var r;
-      var o = new Set(e);
-      for ([i, r] of this.Oqo) {
+      var o;
+      var r = new Set(e);
+      for ([i, o] of this.Oqo) {
         if (t !== i) {
-          if (this.rNa(i, o)) {
-            for (const s of r) {
-              if (s.IsHotKeyActive() && s.GetHotKeyFunctionType() !== "ShowOnly") {
+          if (this.rNa(i, r)) {
+            for (const n of o) {
+              if (n.IsHotKeyActive() && n.GetHotKeyFunctionType() !== "ShowOnly") {
                 return true;
               }
             }

@@ -10,6 +10,7 @@ const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiViewBase_1 = require("../../../Ui/Base/UiViewBase");
 const UiInteractLogReport_1 = require("../../../Ui/LogReport/UiInteractLogReport");
+const FurnitureDetailTipItem_1 = require("../../ActivityGamePlay/Furniture/View/FurnitureDetailTipItem");
 const ItemTipsComponent_1 = require("../../Common/ItemTips/ItemTipsComponent");
 const ItemTipsUtilTool_1 = require("../../Common/ItemTips/ItemTipsUtilTool");
 const HonamiStoryItemTipsComponent_1 = require("../../HonamiStory/View/Backpack/Item/HonamiStoryItemTipsComponent");
@@ -24,7 +25,7 @@ class ItemTipsView extends UiViewBase_1.UiViewBase {
     this.ExtraParam = undefined;
     this.UiTipsType = "ItemTipsComponent";
     this.TipsProxy = undefined;
-    this.f7d = () => {
+    this.Jvt = () => {
       UiInteractLogReport_1.UiInteractLogReport.ReportSpaceKeyInteract(11);
       this.DoCloseMe();
     };
@@ -33,8 +34,8 @@ class ItemTipsView extends UiViewBase_1.UiViewBase {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIItem]];
-    this.BtnBindInfo = [[0, this.f7d]];
+    this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIItem], [2, UE.UIButtonComponent]];
+    this.BtnBindInfo = [[0, this.Jvt], [2, this.Jvt]];
   }
   async OnBeforeStartAsync() {
     let e = undefined;
@@ -47,56 +48,74 @@ class ItemTipsView extends UiViewBase_1.UiViewBase {
     this.IncId = e?.ItemUid;
     this.ConfigId = e.ItemId;
     this.ExtraParam = e.ExtraParam;
+    this.GetButton(0).RootUIComp.SetUIActive(true);
+    this.GetButton(2).RootUIComp.SetUIActive(false);
     if (this.ExtraParam === "OpenTitlePreviewView") {
+      this.GetButton(0).RootUIComp.SetUIActive(false);
+      this.GetButton(2).RootUIComp.SetUIActive(true);
       await this.pVd(e.ItemId);
     } else {
-      var t = ItemTipsUtilTool_1.ItemTipsComponentUtilTool.GetTipsDataByPram(e);
-      if (t) {
-        this.UiTipsType = ItemTipsUtilTool_1.ItemTipsComponentUtilTool.GetTipsUiType(t.ItemType);
+      var i = ItemTipsUtilTool_1.ItemTipsComponentUtilTool.GetTipsDataByPram(e);
+      if (i) {
+        this.UiTipsType = ItemTipsUtilTool_1.ItemTipsComponentUtilTool.GetTipsUiType(i.ItemType);
         switch (this.UiTipsType) {
           case "ItemTipsComponent":
-            await this.DDl(t);
+            await this.DDl(i);
             break;
           case "PowerTipsItem":
-            await this.ADl(t);
+            await this.ADl(i);
             break;
           case "PersonalCardPreviewComponent":
-            await this.xDl(t);
+            this.GetButton(0).RootUIComp.SetUIActive(false);
+            this.GetButton(2).RootUIComp.SetUIActive(true);
+            await this.xDl(i);
             break;
           case "HonamiStoryTipsItem":
-            await this.bhm(t);
+            await this.bhm(i);
+            break;
+          case "FurnitureTipsItem":
+            await this.Fcg(i);
         }
       }
     }
   }
   async DDl(e) {
-    var t = new ItemTipsComponent_1.ItemTipsComponent();
-    await t.CreateByResourceIdAsync("UiItem_TipsScreenTips", this.GetItem(1));
-    (this.TipsProxy = t).Refresh(e);
+    var i = new ItemTipsComponent_1.ItemTipsComponent();
+    await i.CreateByResourceIdAsync("UiItem_TipsScreenTips", this.GetItem(1));
+    (this.TipsProxy = i).Refresh(e);
     if (this.IncId === undefined) {
-      t.SetTipsComponentLockButton(false);
+      i.SetTipsComponentLockButton(false);
     }
   }
   async ADl(e) {
-    var t = new PowerTipsItem_1.PowerTipsItem();
-    await t.CreateByResourceIdAsync("UiItem_ItemTips1", this.GetItem(1));
-    (this.TipsProxy = t).SetBackBackCallBack(this.DoCloseMe);
-    t.Refresh(e);
+    var i = new PowerTipsItem_1.PowerTipsItem();
+    await i.CreateByResourceIdAsync("UiItem_ItemTips1", this.GetItem(1));
+    (this.TipsProxy = i).SetBackBackCallBack(this.DoCloseMe);
+    i.Refresh(e);
   }
   async xDl(e) {
-    var t = new PersonalCardPreviewComponent_1.PersonalCardPreviewComponent();
-    await t.CreateByResourceIdAsync("UiView_CardPreview", this.GetItem(1));
-    (this.TipsProxy = t).Refresh(e);
+    var i = new PersonalCardPreviewComponent_1.PersonalCardPreviewComponent();
+    await i.CreateByResourceIdAsync("UiView_CardPreview", this.GetItem(1));
+    (this.TipsProxy = i).Refresh(e);
   }
   async bhm(e) {
-    var t = new HonamiStoryItemTipsComponent_1.HonamiStoryItemTipsComponent();
-    await t.CreateByResourceIdAsync("UiItem_TipHonamiStoryItem", this.GetItem(1));
-    (this.TipsProxy = t).Refresh(e);
+    var i = new HonamiStoryItemTipsComponent_1.HonamiStoryItemTipsComponent();
+    await i.CreateByResourceIdAsync("UiItem_TipHonamiStoryItem", this.GetItem(1));
+    (this.TipsProxy = i).Refresh(e);
   }
   async pVd(e) {
-    var t = new PersonalPlayerTitlePreviewComponent_1.PersonalPlayerTitlePreviewComponent();
-    await t.CreateByResourceIdAsync("UiItem_TitlesPreview", this.GetItem(1));
-    (this.TipsProxy = t).Refresh(e);
+    var i = new PersonalPlayerTitlePreviewComponent_1.PersonalPlayerTitlePreviewComponent();
+    await i.CreateByResourceIdAsync("UiItem_TitlesPreview", this.GetItem(1));
+    (this.TipsProxy = i).Refresh(e);
+  }
+  async Fcg(e) {
+    var i = new FurnitureDetailTipItem_1.FurnitureDetailTipItem();
+    await i.CreateByResourceIdAsync("UiItem_FurnitureTips", this.GetItem(1));
+    i.GetRootItem().SetAnchorOffsetX(0);
+    i.TipViewCloseDelegate = () => {
+      this.CloseMe();
+    };
+    (this.TipsProxy = i).Refresh(e);
   }
   OnBeforeShow() {
     this.TipsProxy?.SetActive(true);

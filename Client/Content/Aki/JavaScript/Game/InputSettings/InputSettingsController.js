@@ -19,17 +19,18 @@ const GameSettingsUtils_1 = require("../GameSettings/GameSettingsUtils");
 const ConfigManager_1 = require("../Manager/ConfigManager");
 const ControllerHolder_1 = require("../Manager/ControllerHolder");
 const ModelManager_1 = require("../Manager/ModelManager");
+const InputBindingDefine_1 = require("./Binding/InputBindingDefine");
 const InputSettings_1 = require("./InputSettings");
 const InputSettingsManager_1 = require("./InputSettingsManager");
 const LanguageKeyTransUtils_1 = require("./LanguageKeyTrans/LanguageKeyTransUtils");
 class InputSettingsController extends ControllerBase_1.ControllerBase {
   static OnInit() {
-    Net_1.Net.Register(27225, InputSettingsController.zih);
+    Net_1.Net.Register(25855, InputSettingsController.zih);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnGetPlayerBasicInfo, this.Wvi);
     return true;
   }
   static OnClear() {
-    Net_1.Net.UnRegister(27225);
+    Net_1.Net.UnRegister(25855);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnGetPlayerBasicInfo, this.Wvi);
     return true;
   }
@@ -47,15 +48,15 @@ class InputSettingsController extends ControllerBase_1.ControllerBase {
   }
   static InputSettingRequest() {
     var t = new Protocol_1.Aki.Protocol.jf_();
-    Net_1.Net.Call(20959, Protocol_1.Aki.Protocol.jf_.create(t), this.Jih);
+    Net_1.Net.Call(21390, Protocol_1.Aki.Protocol.jf_.create(t), this.Jih);
   }
   static InputSettingUpdateRequest(t) {
     var e = new Protocol_1.Aki.Protocol.$f_();
     e.Zih = this.Ttl(t);
-    Net_1.Net.Call(29543, Protocol_1.Aki.Protocol.$f_.create(e), this.erh);
+    Net_1.Net.Call(16757, Protocol_1.Aki.Protocol.$f_.create(e), this.erh);
   }
-  static nlf(t) {
-    for (var [e, n] of this.slf) {
+  static E_f(t) {
+    for (var [e, n] of this.I_f) {
       if (n === t) {
         return e;
       }
@@ -75,7 +76,7 @@ class InputSettingsController extends ControllerBase_1.ControllerBase {
           var i = InputSettingsManager_1.InputSettingsManager.GetActionBinding(r);
           var g = [];
           var s = new Map();
-          var _ = InputSettingsController.nlf(u.ExclusiveType);
+          var _ = InputSettingsManager_1.InputSettingsManager.GetBindTypeByExclusiveType(u.ExclusiveType);
           switch (u.InputControllerType) {
             case 1:
               o.GetPcKeyNameList(g);
@@ -102,6 +103,24 @@ class InputSettingsController extends ControllerBase_1.ControllerBase {
       }
     }
   }
+  static HandleBothActionSyncAllExclusiveKey() {
+    for (const n of KeySettingAll_1.configKeySettingAll.GetConfigList()) {
+      if (n.BothActionName.length === 2 && n.BothActionSyncAllExclusive) {
+        for (const o of n.BothActionName) {
+          var t = InputSettingsManager_1.InputSettingsManager.GetActionBinding(o);
+          if (t) {
+            var e = [];
+            t.GetKeyNameListByBindingType(e, 0);
+            for (const a of InputBindingDefine_1.inputBindingTypesArray) {
+              if (a !== 0) {
+                t.SetKeys(e, a);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
   static RefreshInputSettingsFromProtoData(n) {
     if (!n || !n.trh || n.trh.length <= 0) {
       if (Log_1.Log.CheckInfo()) {
@@ -119,7 +138,7 @@ class InputSettingsController extends ControllerBase_1.ControllerBase {
           t = InputSettingsManager_1.InputSettingsManager.DeviceLang;
           InputSettingsManager_1.InputSettingsManager.DeviceLang = r.grh;
         }
-        var a = this.rrh(r.nhf, o);
+        var a = this.rrh(r.E1f, o);
         e = e || a;
         var a = this.orh(r.zR_, o);
         e = e || a;
@@ -127,6 +146,7 @@ class InputSettingsController extends ControllerBase_1.ControllerBase {
         e = e || a;
       }
       this.aY1();
+      this.HandleBothActionSyncAllExclusiveKey();
       if (Platform_1.Platform.IsPcPlatform()) {
         InputSettingsManager_1.InputSettingsManager.ChangeActionAndAxisPcKeys(t);
       }
@@ -153,7 +173,7 @@ class InputSettingsController extends ControllerBase_1.ControllerBase {
       var r = InputSettingsManager_1.InputSettingsManager.GetActionBinding(a);
       if (r) {
         var i = P.K7n;
-        var g = InputSettingsManager_1.InputSettingsManager.GetExclusiveTypeByBindingType(InputSettingsController.nlf(P.ohf));
+        var g = InputSettingsManager_1.InputSettingsManager.GetExclusiveTypeByBindingType(InputSettingsController.E_f(P.M1f));
         switch (e) {
           case Protocol_1.Aki.Protocol.ZR_.Proto_Mouse:
             var s = r.GetKeyboardVersion(g);
@@ -165,7 +185,7 @@ class InputSettingsController extends ControllerBase_1.ControllerBase {
               }
               let t = [];
               t = InputSettingsManager_1.InputSettingsManager.CheckUseFrenchKeyboard ? s.FrancePcKeys : LanguageKeyTransUtils_1.LanguageKeyTransUtils.GetKeyTrans(InputSettingsManager_1.InputSettingsManager.CurrentDeviceLang).GetActionPcKeys(s);
-              var _ = InputSettingsController.nlf(P.ohf);
+              var _ = InputSettingsController.E_f(P.M1f);
               r.SetKeyboardKeys(t, _);
               var s = InputSettingsManager_1.InputSettingsManager.GetCombinationActionBindingByActionName(a);
               if (s) {
@@ -182,7 +202,7 @@ class InputSettingsController extends ControllerBase_1.ControllerBase {
               }
             } else {
               s = P.srh;
-              l = InputSettingsController.nlf(P.ohf);
+              l = InputSettingsController.E_f(P.M1f);
               r.SetKeyboardKeys(s, l);
               r.SetKeyboardVersion(i, g);
               if (Log_1.Log.CheckDebug()) {
@@ -199,32 +219,32 @@ class InputSettingsController extends ControllerBase_1.ControllerBase {
                 continue;
               }
               var S = S.GamepadKeys;
-              var I = InputSettingsController.nlf(P.ohf);
+              var I = InputSettingsController.E_f(P.M1f);
               r.SetGamepadKeys(S, I);
-              var c = InputSettingsManager_1.InputSettingsManager.GetCombinationActionBindingByActionName(a);
-              if (c) {
-                var f;
+              var f = InputSettingsManager_1.InputSettingsManager.GetCombinationActionBindingByActionName(a);
+              if (f) {
+                var c;
                 var M;
                 var v = new Map();
-                c.GetGamepadKeyNameMapByBindingType(v, I);
-                for ([f, M] of v) {
-                  InputSettingsManager_1.InputSettingsManager.RemoveCombinationActionKeyMap(a, f, M, I);
+                f.GetGamepadKeyNameMapByBindingType(v, I);
+                for ([c, M] of v) {
+                  InputSettingsManager_1.InputSettingsManager.RemoveCombinationActionKeyMap(a, c, M, I);
                 }
               }
               if (Log_1.Log.CheckDebug()) {
                 Log_1.Log.Debug("InputSettings", 10, "从Proto_InputSettingData刷新Action输入时，手柄配置版本号大于服务端手柄版本号，手柄使用默认配置", ["actionName", a], ["keyNameList", S]);
               }
             } else {
-              var c = P.srh;
-              var L = InputSettingsController.nlf(P.ohf);
-              r.SetGamepadKeys(c, L);
+              var f = P.srh;
+              var L = InputSettingsController.E_f(P.M1f);
+              r.SetGamepadKeys(f, L);
               r.SetGamepadVersion(i, g);
               if (Log_1.Log.CheckDebug()) {
-                Log_1.Log.Debug("InputSettings", 10, "从Proto_InputSettingData刷新Action输入时，更新手柄输入按键", ["actionName", a], ["keyNameList", c]);
+                Log_1.Log.Debug("InputSettings", 10, "从Proto_InputSettingData刷新Action输入时，更新手柄输入按键", ["actionName", a], ["keyNameList", f]);
               }
-              if (c.length > 0 && c[0] !== "Gamepad_Invalid") {
+              if (f.length > 0 && f[0] !== "Gamepad_Invalid") {
                 if (Log_1.Log.CheckDebug()) {
-                  Log_1.Log.Debug("InputSettings", 10, "Proto_InputSettingData服务器发现有单键配置,尝试删除本地组合键配置", ["actionName", a], ["keyNameList", c]);
+                  Log_1.Log.Debug("InputSettings", 10, "Proto_InputSettingData服务器发现有单键配置,尝试删除本地组合键配置", ["actionName", a], ["keyNameList", f]);
                 }
                 v = InputSettingsManager_1.InputSettingsManager.GetCombinationActionBindingByActionName(a);
                 if (v) {
@@ -258,7 +278,7 @@ class InputSettingsController extends ControllerBase_1.ControllerBase {
       var r = InputSettingsManager_1.InputSettingsManager.GetAxisBinding(a);
       if (r) {
         var i = M.K7n;
-        var g = InputSettingsManager_1.InputSettingsManager.GetExclusiveTypeByBindingType(InputSettingsController.nlf(M.ohf));
+        var g = InputSettingsManager_1.InputSettingsManager.GetExclusiveTypeByBindingType(InputSettingsController.E_f(M.M1f));
         switch (e) {
           case Protocol_1.Aki.Protocol.ZR_.Proto_Mouse:
             var s = r.GetKeyboardVersion(g);
@@ -270,7 +290,7 @@ class InputSettingsController extends ControllerBase_1.ControllerBase {
               }
               let t = new Map();
               t = InputSettingsManager_1.InputSettingsManager.CheckUseFrenchKeyboard ? s.FrancePcKeys : LanguageKeyTransUtils_1.LanguageKeyTransUtils.GetKeyTrans(InputSettingsManager_1.InputSettingsManager.CurrentDeviceLang).GetAxisPcKeys(s);
-              s = InputSettingsController.nlf(M.ohf);
+              s = InputSettingsController.E_f(M.M1f);
               r.SetKeyboardKeys(t, s);
               if (Log_1.Log.CheckDebug()) {
                 Log_1.Log.Debug("InputSettings", 10, "从Proto_InputSettingData刷新Axis输入时，键鼠配置版本号大于服务端版本号，键鼠使用默认配置", ["axisName", a], ["keyboardKeyScaleMap", t]);
@@ -282,7 +302,7 @@ class InputSettingsController extends ControllerBase_1.ControllerBase {
                 var p = u[v];
                 _.set(v, p / 1000);
               }
-              s = InputSettingsController.nlf(M.ohf);
+              s = InputSettingsController.E_f(M.M1f);
               r.SetKeyboardKeys(_, s);
               r.SetKeyboardVersion(i, g);
               if (Log_1.Log.CheckDebug()) {
@@ -299,19 +319,19 @@ class InputSettingsController extends ControllerBase_1.ControllerBase {
                 continue;
               }
               var l = l.GamepadKeys;
-              var S = InputSettingsController.nlf(M.ohf);
+              var S = InputSettingsController.E_f(M.M1f);
               r.SetGamepadKeys(l, S);
               if (Log_1.Log.CheckDebug()) {
                 Log_1.Log.Debug("InputSettings", 10, "从Proto_InputSettingData刷新Axis输入时，手柄配置版本号大于服务端版本号，手柄使用默认配置", ["axisName", a], ["gamepadKeyScaleMap", l]);
               }
             } else {
               var I = new Map();
-              var c = M.vL_;
-              for (const L of Object.keys(c)) {
-                var f = c[L];
-                I.set(L, f / 1000);
+              var f = M.vL_;
+              for (const L of Object.keys(f)) {
+                var c = f[L];
+                I.set(L, c / 1000);
               }
-              S = InputSettingsController.nlf(M.ohf);
+              S = InputSettingsController.E_f(M.M1f);
               r.SetGamepadKeys(I, S);
               r.SetGamepadVersion(i, g);
               if (Log_1.Log.CheckDebug()) {
@@ -338,7 +358,7 @@ class InputSettingsController extends ControllerBase_1.ControllerBase {
       var r = InputSettingsManager_1.InputSettingsManager.TryGetCombinationActionBinding(a);
       if (r) {
         var i = S.K7n;
-        var g = InputSettingsManager_1.InputSettingsManager.GetExclusiveTypeByBindingType(InputSettingsController.nlf(S.ohf));
+        var g = InputSettingsManager_1.InputSettingsManager.GetExclusiveTypeByBindingType(InputSettingsController.E_f(S.M1f));
         switch (e) {
           case Protocol_1.Aki.Protocol.ZR_.Proto_Mouse:
             var s = r.GetKeyboardVersion(g);
@@ -350,7 +370,7 @@ class InputSettingsController extends ControllerBase_1.ControllerBase {
               }
               let t = new Map();
               t = InputSettingsManager_1.InputSettingsManager.CheckUseFrenchKeyboard ? s.FrancePcKeys : LanguageKeyTransUtils_1.LanguageKeyTransUtils.GetKeyTrans(InputSettingsManager_1.InputSettingsManager.CurrentDeviceLang).GetCombinationActionPcKeys(s);
-              s = InputSettingsController.nlf(S.ohf);
+              s = InputSettingsController.E_f(S.M1f);
               InputSettingsManager_1.InputSettingsManager.SetCombinationActionKeyboardKeys(a, t, s);
               if (Log_1.Log.CheckDebug()) {
                 Log_1.Log.Debug("InputSettings", 10, "从Proto_InputSettingData刷新CombinationAction输入时，键鼠配置版本号大于服务端版本号，键鼠使用默认配置", ["actionName", a], ["keyboardKeys", t]);
@@ -360,7 +380,7 @@ class InputSettingsController extends ControllerBase_1.ControllerBase {
               for (const I of S.yL_) {
                 _.set(I.srh[0], I.srh[1]);
               }
-              s = InputSettingsController.nlf(S.ohf);
+              s = InputSettingsController.E_f(S.M1f);
               InputSettingsManager_1.InputSettingsManager.SetCombinationActionKeyboardKeys(a, _, s);
               r.SetKeyboardVersion(i, g);
               if (Log_1.Log.CheckDebug()) {
@@ -377,17 +397,17 @@ class InputSettingsController extends ControllerBase_1.ControllerBase {
                 continue;
               }
               var u = u.GamepadKeys;
-              var p = InputSettingsController.nlf(S.ohf);
+              var p = InputSettingsController.E_f(S.M1f);
               InputSettingsManager_1.InputSettingsManager.SetCombinationActionGamepadKeys(a, u, p);
               if (Log_1.Log.CheckDebug()) {
                 Log_1.Log.Debug("InputSettings", 10, "从Proto_InputSettingData刷新Action输入时，手柄配置版本号大于服务端手柄版本号，手柄使用默认配置", ["actionName", a], ["gamepadKeys", u]);
               }
             } else {
               var l = new Map();
-              for (const c of S.yL_) {
-                l.set(c.srh[0], c.srh[1]);
+              for (const f of S.yL_) {
+                l.set(f.srh[0], f.srh[1]);
               }
-              p = InputSettingsController.nlf(S.ohf);
+              p = InputSettingsController.E_f(S.M1f);
               InputSettingsManager_1.InputSettingsManager.SetCombinationActionGamepadKeys(a, l, p);
               r.SetGamepadVersion(i, g);
               if (Log_1.Log.CheckDebug()) {
@@ -406,14 +426,14 @@ class InputSettingsController extends ControllerBase_1.ControllerBase {
     n.irh = Protocol_1.Aki.Protocol.ZR_.Proto_Mouse;
     n.grh = InputSettingsManager_1.InputSettingsManager.DeviceLang;
     o.irh = Protocol_1.Aki.Protocol.ZR_.uVn;
-    InputSettingsController.alf(t, n, o);
-    InputSettingsController.hlf(t, n, o);
-    InputSettingsController.llf(t, n, o);
-    InputSettingsController._lf(t, n, o);
+    InputSettingsController.T_f(t, n, o);
+    InputSettingsController.b_f(t, n, o);
+    InputSettingsController.R_f(t, n, o);
+    InputSettingsController.w_f(t, n, o);
     e.trh = [n, o];
     return e;
   }
-  static alf(t, e, n) {
+  static T_f(t, e, n) {
     var o;
     var a;
     for ([o, a] of InputSettingsManager_1.InputSettingsManager.GetActionBindingMap()) {
@@ -437,7 +457,7 @@ class InputSettingsController extends ControllerBase_1.ControllerBase {
       }
     }
   }
-  static hlf(t, e, n) {
+  static b_f(t, e, n) {
     var o;
     var a;
     for ([o, a] of InputSettingsManager_1.InputSettingsManager.GetAxisBindingMap()) {
@@ -461,7 +481,7 @@ class InputSettingsController extends ControllerBase_1.ControllerBase {
       }
     }
   }
-  static llf(t, e, n) {
+  static R_f(t, e, n) {
     var o;
     var a;
     for ([o, a] of InputSettingsManager_1.InputSettingsManager.GetCombinationActionBindingMap()) {
@@ -485,7 +505,7 @@ class InputSettingsController extends ControllerBase_1.ControllerBase {
       }
     }
   }
-  static _lf(t, e, n) {
+  static w_f(t, e, n) {
     var o;
     var a;
     for ([o, a] of InputSettingsManager_1.InputSettingsManager.GetCombinationAxisBindingMap()) {
@@ -510,22 +530,22 @@ class InputSettingsController extends ControllerBase_1.ControllerBase {
     }
   }
   static arh(t, e, n, o, a) {
-    var a = InputSettingsController.slf.get(a);
+    var a = InputSettingsController.I_f.get(a);
     var r = new Protocol_1.Aki.Protocol.zR_();
     r.urh = t;
     r.K7n = o;
-    r.ohf = a;
+    r.M1f = a;
     r.srh = n;
     e.zR_.push(r);
   }
   static hrh(t, e, n, o, a) {
     var r;
     var i;
-    var a = InputSettingsController.slf.get(a);
+    var a = InputSettingsController.I_f.get(a);
     var g = new Protocol_1.Aki.Protocol.JR_();
     g.crh = t;
     g.K7n = o;
-    g.ohf = a;
+    g.M1f = a;
     for ([r, i] of n) {
       var s = Math.round(i * 1000);
       g.vL_[r] = s;
@@ -535,36 +555,36 @@ class InputSettingsController extends ControllerBase_1.ControllerBase {
   static lrh(t, e, n, o, a) {
     var r;
     var i;
-    var a = InputSettingsController.slf.get(a);
+    var a = InputSettingsController.I_f.get(a);
     var g = new Protocol_1.Aki.Protocol.EL_();
     g.urh = t;
     g.K7n = o;
-    g.ohf = a;
+    g.M1f = a;
     for ([r, i] of n) {
       var s = new Protocol_1.Aki.Protocol.YR_();
       s.srh = [r, i];
       g.yL_.push(s);
     }
-    e.nhf.push(g);
+    e.E1f.push(g);
   }
   static _rh(t, e, n, o, a) {
     var r;
     var i;
-    var a = InputSettingsController.slf.get(a);
+    var a = InputSettingsController.I_f.get(a);
     var g = new Protocol_1.Aki.Protocol.IL_();
     g.crh = t;
     g.K7n = o;
-    g.ohf = a;
+    g.M1f = a;
     for ([r, i] of n) {
       var s = new Protocol_1.Aki.Protocol.YR_();
       s.srh = [r, i];
       g.yL_.push(s);
     }
-    e.shf.push(g);
+    e.I1f.push(g);
   }
 }
 exports.InputSettingsController = InputSettingsController;
-(_a = InputSettingsController).slf = new Map([[0, Protocol_1.Aki.Protocol.ahf.Proto_Normal], [1, Protocol_1.Aki.Protocol.ahf.Proto_Motorcycle]]);
+(_a = InputSettingsController).I_f = new Map([[0, Protocol_1.Aki.Protocol.T1f.Proto_Normal], [1, Protocol_1.Aki.Protocol.T1f.Proto_Motorcycle]]);
 InputSettingsController.Wvi = () => {
   if (Log_1.Log.CheckInfo()) {
     Log_1.Log.Info("InputSettings", 10, "登录直接请求服务端输入数据");
@@ -597,6 +617,6 @@ InputSettingsController.Jih = t => {
 };
 InputSettingsController.erh = t => {
   if (t && t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-    ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 26345);
+    ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 21389);
   }
 }; //# sourceMappingURL=InputSettingsController.js.map

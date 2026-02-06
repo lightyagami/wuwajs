@@ -17,7 +17,7 @@ class StackableChessManager {
     if (e === 0) {
       e = s?.Entity;
       if (e?.Valid) {
-        return e.GetComponent(309);
+        return e.GetComponent(311);
       }
     }
   }

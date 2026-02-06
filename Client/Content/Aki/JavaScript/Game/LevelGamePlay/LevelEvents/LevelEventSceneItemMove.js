@@ -61,6 +61,18 @@ class LevelEventSceneItemMove extends LevelGeneralBase_1.LevelEventBase {
                 MathUtils_1.MathUtils.CommonTempQuat.RotateVector(r, r);
                 MathUtils_1.MathUtils.CommonTempVector.Addition(r, r);
                 break;
+              case IAction_1.EMoveSceneItemType.MoveToEntity:
+                var a = s.MoveConfig.EntityId;
+                var _ = ModelManager_1.ModelManager.CreatureModel.GetEntityData(a)?.Transform;
+                if (!_) {
+                  if (Log_1.Log.CheckError()) {
+                    Log_1.Log.Error("Event", 48, "找不到EntityData配置的Transform", ["PbDataId", a]);
+                  }
+                  this.FinishExecute(false);
+                  return;
+                }
+                r.FromConfigVector(_.Pos);
+                break;
               case IAction_1.EMoveSceneItemType.CycleMoveToPoints:
                 this.ExecuteNew(e, t);
                 return;
@@ -93,7 +105,7 @@ class LevelEventSceneItemMove extends LevelGeneralBase_1.LevelEventBase {
       var e = this.OPt.EntityId;
       var t = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e);
       if (t?.Valid) {
-        var i = t.Entity.GetComponent(137);
+        var i = t.Entity.GetComponent(139);
         this.CRe = i;
         switch (this.OPt.MoveConfig.Type) {
           case IAction_1.EMoveSceneItemType.MoveToPoint:
@@ -104,6 +116,9 @@ class LevelEventSceneItemMove extends LevelGeneralBase_1.LevelEventBase {
             break;
           case IAction_1.EMoveSceneItemType.CycleMoveToPoints:
             this.aIn(this.OPt, t);
+            break;
+          case IAction_1.EMoveSceneItemType.MoveToEntity:
+            this.Bhf(this.OPt, t);
         }
       } else {
         if (Log_1.Log.CheckError()) {
@@ -114,78 +129,31 @@ class LevelEventSceneItemMove extends LevelGeneralBase_1.LevelEventBase {
     }
   }
   sIn(e, t) {
-    var i;
-    var s = e.MoveConfig;
-    if (s) {
-      if (this.CRe?.Valid) {
-        if (e.StopBeforeMove) {
-          this.CRe.StopMove();
-        }
-        i = [Vector_1.Vector.Create(t.Entity.GetComponent(1).ActorLocationProxy), s.Point];
-        s = s.MoveMotion ?? {
-          Type: IAction_1.EMoveMotion.UniformMotion,
-          Time: 0
-        };
-        ControllerHolder_1.ControllerHolder.SceneItemMoveController.AddSceneItemMove(t.Entity, i, false, s, 0);
-        if (this.IsAsync) {
-          this.FinishExecute(true);
-        } else {
-          EventSystem_1.EventSystem.AddWithTarget(t.Entity, EventDefine_1.EEventName.OnSceneItemMoveBroken, this.nIn);
-          this.CRe.ClearStopMoveCallbacksWithEntity();
-          this.CRe.AddStopMoveCallbackWithEntity(this.nIn);
-        }
-      } else {
-        if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("Event", 31, "Entity找不到SceneItemMoveComponent", ["entityId", e.EntityId]);
-        }
-        this.FinishExecute(false);
-      }
+    var i = e.MoveConfig;
+    if (i) {
+      this.khf(e, i.Point, i.MoveMotion, t);
     }
   }
   k4l(e, t) {
     var i;
     var s;
-    var n;
-    var o = e.MoveConfig;
-    if (o) {
-      if (this.CRe?.Valid) {
-        if (n = ModelManager_1.ModelManager.CreatureModel?.GetEntityData(e.EntityId)?.Transform) {
-          if (e.StopBeforeMove) {
-            this.CRe.StopMove();
-          }
-          s = Transform_1.Transform.Create();
-          MathUtils_1.MathUtils.CommonTempVector.Set(n.Pos.X ?? 0, n.Pos.Y ?? 0, n.Pos.Z ?? 0);
-          s.SetLocation(MathUtils_1.MathUtils.CommonTempVector);
-          MathUtils_1.MathUtils.CommonTempRotator.Set(n.Rot?.Y ?? 0, n.Rot?.Z ?? 0, n.Rot?.X ?? 0);
-          s.SetRotation(MathUtils_1.MathUtils.CommonTempRotator.Quaternion());
-          MathUtils_1.MathUtils.CommonTempVector.Set(n.Scale?.X ?? 1, n.Scale?.Y ?? 1, n.Scale?.Z ?? 1);
-          s.SetScale3D(MathUtils_1.MathUtils.CommonTempVector);
-          n = Vector_1.Vector.Create(t.Entity.GetComponent(1).ActorLocationProxy);
-          i = Vector_1.Vector.Create();
-          MathUtils_1.MathUtils.CommonTempVector.Set(o.Point.X ?? 0, o.Point.Y ?? 0, o.Point.Z ?? 0);
-          s.TransformPositionNoScale(MathUtils_1.MathUtils.CommonTempVector, i);
-          s = [n, i];
-          n = o.MoveMotion ?? {
-            Type: IAction_1.EMoveMotion.UniformMotion,
-            Time: 0
-          };
-          ControllerHolder_1.ControllerHolder.SceneItemMoveController.AddSceneItemMove(t.Entity, s, false, n, 0);
-          if (this.IsAsync) {
-            this.FinishExecute(true);
-          } else {
-            EventSystem_1.EventSystem.AddWithTarget(t.Entity, EventDefine_1.EEventName.OnSceneItemMoveBroken, this.nIn);
-            this.CRe.ClearStopMoveCallbacksWithEntity();
-            this.CRe.AddStopMoveCallbackWithEntity(this.nIn);
-          }
-        } else {
-          if (Log_1.Log.CheckError()) {
-            Log_1.Log.Error("Event", 39, "Entity找不到EntityData配置的Transform", ["PbDataId", e.EntityId]);
-          }
-          this.FinishExecute(false);
-        }
+    var n = e.MoveConfig;
+    if (n) {
+      if (s = ModelManager_1.ModelManager.CreatureModel?.GetEntityData(e.EntityId)?.Transform) {
+        i = Transform_1.Transform.Create();
+        MathUtils_1.MathUtils.CommonTempVector.Set(s.Pos.X ?? 0, s.Pos.Y ?? 0, s.Pos.Z ?? 0);
+        i.SetLocation(MathUtils_1.MathUtils.CommonTempVector);
+        MathUtils_1.MathUtils.CommonTempRotator.Set(s.Rot?.Y ?? 0, s.Rot?.Z ?? 0, s.Rot?.X ?? 0);
+        i.SetRotation(MathUtils_1.MathUtils.CommonTempRotator.Quaternion());
+        MathUtils_1.MathUtils.CommonTempVector.Set(s.Scale?.X ?? 1, s.Scale?.Y ?? 1, s.Scale?.Z ?? 1);
+        i.SetScale3D(MathUtils_1.MathUtils.CommonTempVector);
+        s = Vector_1.Vector.Create();
+        MathUtils_1.MathUtils.CommonTempVector.Set(n.Point.X ?? 0, n.Point.Y ?? 0, n.Point.Z ?? 0);
+        i.TransformPositionNoScale(MathUtils_1.MathUtils.CommonTempVector, s);
+        this.khf(e, s, n.MoveMotion, t);
       } else {
         if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("Event", 31, "Entity找不到SceneItemMoveComponent", ["PbDataId", e.EntityId]);
+          Log_1.Log.Error("Event", 39, "Entity找不到EntityData配置的Transform", ["PbDataId", e.EntityId]);
         }
         this.FinishExecute(false);
       }
@@ -212,6 +180,47 @@ class LevelEventSceneItemMove extends LevelGeneralBase_1.LevelEventBase {
         }
         this.FinishExecute(false);
       }
+    }
+  }
+  Bhf(e, t) {
+    var i;
+    var s;
+    var n = e.MoveConfig;
+    if (n) {
+      i = n.EntityId;
+      if (s = ModelManager_1.ModelManager.CreatureModel.GetEntityData(i)?.Transform) {
+        this.khf(e, s.Pos, n.MoveMotion, t);
+      } else {
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("Event", 48, "找不到EntityData配置的Transform", ["PbDataId", i]);
+        }
+        this.FinishExecute(false);
+      }
+    }
+  }
+  khf(e, t, i, s) {
+    if (this.CRe?.Valid) {
+      if (e.StopBeforeMove) {
+        this.CRe.StopMove();
+      }
+      t = [Vector_1.Vector.Create(s.Entity.GetComponent(1).ActorLocationProxy), t];
+      i = i ?? {
+        Type: IAction_1.EMoveMotion.UniformMotion,
+        Time: 0
+      };
+      ControllerHolder_1.ControllerHolder.SceneItemMoveController.AddSceneItemMove(s.Entity, t, false, i, 0);
+      if (this.IsAsync) {
+        this.FinishExecute(true);
+      } else {
+        EventSystem_1.EventSystem.AddWithTarget(s.Entity, EventDefine_1.EEventName.OnSceneItemMoveBroken, this.nIn);
+        this.CRe.ClearStopMoveCallbacksWithEntity();
+        this.CRe.AddStopMoveCallbackWithEntity(this.nIn);
+      }
+    } else {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Event", 31, "Entity找不到SceneItemMoveComponent", ["entityId", e.EntityId]);
+      }
+      this.FinishExecute(false);
     }
   }
   OnReset() {

@@ -49,16 +49,16 @@ class LevelAiTaskSitDown extends LevelAiTask_1.LevelAiTask {
     }
   }
   T0m(e) {
-    ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e.TargetNpcId)?.Entity?.GetComponent(325)?.StartSwing(e.SwingDa, e.EntityId, e.SkipSitDown);
+    ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e.TargetNpcId)?.Entity?.GetComponent(327)?.StartSwing(e.SwingDa, e.EntityId, e.SkipSitDown);
   }
   b0m(e) {
-    ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e.TargetNpcId)?.Entity?.GetComponent(325)?.ExitLoopSwing();
+    ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e.TargetNpcId)?.Entity?.GetComponent(327)?.ExitLoopSwing();
   }
   I0m(e) {
     var i = e.PosEntityId;
     this.jTe = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(i);
     if (this.jTe) {
-      var t = this.jTe.Entity.GetComponent(207);
+      var t = this.jTe.Entity.GetComponent(209);
       if (t) {
         var t = t.GetSubEntityInteractLogicController();
         var s = this.CreatureDataComponent.Entity.GetComponent(1);

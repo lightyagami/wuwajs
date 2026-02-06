@@ -26,7 +26,7 @@ class NpcPerformRideVehicleState extends NpcPerformBaseState_1.NpcPerformBaseSta
         Log_1.Log.Info("NPC", 50, "[NpcPerformRideVehicleState.OnLoopMontageEndForTurning][交互转身] Montage播放完毕", ["PbDataID", this.ConfigId]);
       }
       this.AnimComp?.MainAnimInstance?.OnAllMontageInstancesEnded.Remove(this.OnLoopMontageEndForTurning);
-      if (this.Owner.Entity.GetComponent(197)?.GetCurrentState() !== 9) {
+      if (this.Owner.Entity.GetComponent(199)?.GetCurrentState() !== 9) {
         this.TurnActionController.TurnToInteractTarget();
       }
     };
@@ -91,8 +91,8 @@ class NpcPerformRideVehicleState extends NpcPerformBaseState_1.NpcPerformBaseSta
       Log_1.Log.Info("NPC", 50, "[NpcPerformRideVehicleState.OnPlayerInteractTurnActionStart] 开始执行交互转身", ["PbDataID", this.ConfigId]);
     }
     this.InteractRequestWaiting = true;
-    this.Owner?.Entity?.GetComponent(215)?.AddTag(170413930);
-    var t = this.Owner?.Entity?.GetComponent(45);
+    this.Owner?.Entity?.GetComponent(217)?.AddTag(170413930);
+    var t = this.Owner?.Entity?.GetComponent(47);
     if (t?.MainAnimInstance?.IsAnyMontagePlaying() && this.TurnActionController.NeedTurn) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("NPC", 50, "[NpcPerformRideVehicleState.OnPlayerInteractTurnActionStart][交互转身] 停止播放Montage", ["PbDataID", this.ConfigId], ["CurrentMontage", t?.MainAnimInstance?.GetCurrentActiveMontage()?.GetName()]);
@@ -104,7 +104,7 @@ class NpcPerformRideVehicleState extends NpcPerformBaseState_1.NpcPerformBaseSta
     }
   }
   OnPlayerInteractTurnActionEnd() {
-    var t = this.Owner.Entity.GetComponent(45);
+    var t = this.Owner.Entity.GetComponent(47);
     if (t.MainAnimInstance.IsAnyMontagePlaying() && this.TurnActionController.NeedTurn) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("NPC", 50, "[NpcPerformRideVehicleState.OnPlayerInteractTurnActionEnd][结束交互转身] 停止播放Montage", ["PbDataID", this.ConfigId], ["CurrentMontage", t?.MainAnimInstance?.GetCurrentActiveMontage()?.GetName()]);
@@ -119,7 +119,7 @@ class NpcPerformRideVehicleState extends NpcPerformBaseState_1.NpcPerformBaseSta
         if (this?.Owner?.Valid) {
           this.TurnActionController.NeedTurn = false;
           e?.AttachAndSetPassengerTransform();
-          this.Owner?.Entity?.GetComponent(215)?.RemoveTag(170413930);
+          this.Owner?.Entity?.GetComponent(217)?.RemoveTag(170413930);
         }
       };
       this.TurnActionController.TurnToDefaultForward();

@@ -22,6 +22,7 @@ class CommonQteSingleClickContext extends CommonQteContextBase_1.CommonQteContex
     if (this.Config) {
       if (this.IsPending() || this.IsPendingSuccess()) {
         if (this.IsPending()) {
+          ControllerHolder_1.ControllerHolder.CommonQteController.PlayGamepadShake();
           this.ResponseCount += 1;
         }
         this.CheckQteConditionAndDoSuccess();

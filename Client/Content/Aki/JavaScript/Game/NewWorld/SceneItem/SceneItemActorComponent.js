@@ -360,7 +360,7 @@ let SceneItemActorComponent = SceneItemActorComponent_1 = class SceneItemActorCo
   }
   OnStart() {
     var t;
-    if ((this.Entity.GetComponent(165) !== undefined || this.Entity.GetComponent(232) !== undefined) && (this.OverrideStaticMeshFromSceneInteraction(), this.PhysicsMode = 0, (t = this.GetPrimitiveComponent()).SetCollisionEnabled(3), t = t?.BodyInstance)) {
+    if ((this.Entity.GetComponent(167) !== undefined || this.Entity.GetComponent(234) !== undefined) && (this.OverrideStaticMeshFromSceneInteraction(), this.PhysicsMode = 0, (t = this.GetPrimitiveComponent()).SetCollisionEnabled(3), t = t?.BodyInstance)) {
       t.bLockXRotation = false;
       t.bLockYRotation = false;
       t.bLockZRotation = false;
@@ -558,9 +558,11 @@ let SceneItemActorComponent = SceneItemActorComponent_1 = class SceneItemActorCo
         this.lua();
       }
       this.fmn();
-      this.RefreshShowActor();
+      TimerSystem_1.TimerSystem.Delay(() => {
+        this.RefreshShowActor();
+      }, 250);
       this.kMl();
-      e = this.Entity.TimeDilation * (ModelManager_1.ModelManager.CharacterModel?.SelfCenteredTimeDilation ?? 1) * (this.Entity.GetComponent(214)?.CurrentTimeScale ?? 1);
+      e = this.Entity.TimeDilation * (ModelManager_1.ModelManager.CharacterModel?.SelfCenteredTimeDilation ?? 1) * (this.Entity.GetComponent(216)?.CurrentTimeScale ?? 1);
       this.UpdateAkFinalTimeScale(e, true);
       EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted);
       EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionShowCompleted);
@@ -915,7 +917,7 @@ let SceneItemActorComponent = SceneItemActorComponent_1 = class SceneItemActorCo
     }
   }
   OnChangeTimeDilation(t) {
-    var t = t * (this.Entity.GetComponent(131)?.CurrentTimeScale ?? 1);
+    var t = t * (this.Entity.GetComponent(133)?.CurrentTimeScale ?? 1);
     this.ActorInternal.CustomTimeDilation = t;
     var e = this.GetInteractionMainActor();
     if (e?.IsValid()) {
@@ -1005,5 +1007,5 @@ let SceneItemActorComponent = SceneItemActorComponent_1 = class SceneItemActorCo
   }
 };
 SceneItemActorComponent.Zsh = undefined;
-SceneItemActorComponent = SceneItemActorComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(212)], SceneItemActorComponent);
+SceneItemActorComponent = SceneItemActorComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(214)], SceneItemActorComponent);
 exports.SceneItemActorComponent = SceneItemActorComponent; //# sourceMappingURL=SceneItemActorComponent.js.map

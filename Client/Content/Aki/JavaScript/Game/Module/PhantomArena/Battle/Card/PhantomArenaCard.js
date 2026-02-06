@@ -122,7 +122,7 @@ class PhantomArenaCard extends CommonBaseCardItem_1.CommonBaseCardItem {
     }
   }
   async OnBeforeChildStartAsync() {
-    var t = this.ikm();
+    var t = this.Cqm();
     if (this.Data) {
       t.SetCardData(this.Data);
       await t.InitSpine();
@@ -132,7 +132,8 @@ class PhantomArenaCard extends CommonBaseCardItem_1.CommonBaseCardItem {
   OnStart() {
     this.Sequence = new UiSequencePlayer_1.UiSequencePlayer(this.GetCardRootItem());
     this.Sequence.BindOnEndSequenceEvent(this.vK1);
-    var t = this.ikm();
+    var t = this.Cqm();
+    t.RootUiSequencePlayer = this.Sequence;
     t.CardClickCallback = this.Ui1;
     var t = t.GetCardToggle();
     t.OnPointEnterCallBack.Bind(this.ki1);
@@ -168,14 +169,14 @@ class PhantomArenaCard extends CommonBaseCardItem_1.CommonBaseCardItem {
       this.wut = t;
     }
   }
-  ikm() {
+  Cqm() {
     if (ModelManager_1.ModelManager.PhantomArenaBattleModel.IsOldBvb) {
       return this.GetComponent(3);
     } else {
       return this.GetComponent(4);
     }
   }
-  rkm(t) {
+  pqm(t) {
     this.Data = t;
   }
   Bi1() {
@@ -185,7 +186,7 @@ class PhantomArenaCard extends CommonBaseCardItem_1.CommonBaseCardItem {
     this.rh1 = false;
   }
   async InitializePhantomArenaCard(t, i) {
-    this.rkm(t);
+    this.pqm(t);
     t = ModelManager_1.ModelManager.PhantomArenaBattleModel.IsOldBvb ? "UiItem_SoundRemnantItem" : "UiItem_SoundRemnantItemNew";
     await this.CreateByResourceIdAsync(t, i);
     await this.RefreshSelfAsync();
@@ -197,12 +198,12 @@ class PhantomArenaCard extends CommonBaseCardItem_1.CommonBaseCardItem {
     this.RefreshAsync(t);
   }
   async RefreshAsync(t) {
-    this.rkm(t);
+    this.pqm(t);
     await this.RefreshSelfAsync();
   }
   async RefreshSelfAsync() {
     this.CardLogic?.Refresh(this.Data);
-    await this.ikm()?.RefreshAsync(this.Data);
+    await this.Cqm()?.RefreshAsync(this.Data);
   }
   RegisterCardLogic(t) {
     this.CardLogic = t;
@@ -249,13 +250,13 @@ class PhantomArenaCard extends CommonBaseCardItem_1.CommonBaseCardItem {
     return this.QTc;
   }
   SetToggleState(t, i = true) {
-    this.ikm().GetCardToggle().SetToggleState(t, i);
+    this.Cqm().GetCardToggle().SetToggleState(t, i);
   }
   GetToggleState() {
-    return this.ikm().GetCardToggle().GetToggleState();
+    return this.Cqm().GetCardToggle().GetToggleState();
   }
   RefreshDebugText() {
-    this.ikm()?.SetDebugText();
+    this.Cqm()?.SetDebugText();
   }
   OverrideCanvasSortOrder(t) {
     var i = this.GetOriginalItem()?.GetRenderCanvas();
@@ -284,7 +285,7 @@ class PhantomArenaCard extends CommonBaseCardItem_1.CommonBaseCardItem {
     }
   }
   PlayStateSequence(t) {
-    this.ikm()?.PlaySequence(t);
+    this.Cqm()?.PlaySequence(t);
   }
   PlayLocationByItem(t, i, e) {
     this.TweenLogic.PlayLocationByItem(t, i, e);
@@ -304,7 +305,7 @@ class PhantomArenaCard extends CommonBaseCardItem_1.CommonBaseCardItem {
     await this.Sequence.PlaySequenceAsync(t, i);
   }
   PlaySpineAnimAndEffect(t, i) {
-    var e = this.ikm();
+    var e = this.Cqm();
     e?.PlaySpineAnim(t, i);
     e?.PlayEffect();
   }
@@ -328,7 +329,7 @@ class PhantomArenaCard extends CommonBaseCardItem_1.CommonBaseCardItem {
   }
   async PlayHitEffect(t) {
     AudioSystem_1.AudioSystem.PostEvent(PhantomArenaDefine_1.HIT_AUDIO);
-    await Promise.all([this.PlaySequenceAsync("CardHit"), this.ikm()?.PlayHitEffect?.(t)]);
+    await Promise.all([this.PlaySequenceAsync("CardHit"), this.Cqm()?.PlayHitEffect?.(t)]);
   }
   GetPhantomArenaCardRootItem() {
     return this.GetCardRootItem();
@@ -347,7 +348,7 @@ class PhantomArenaCard extends CommonBaseCardItem_1.CommonBaseCardItem {
         } else {
           return undefined;
         }
-      } else if (i = this.ikm()?.GetRootItem()) {
+      } else if (i = this.Cqm()?.GetRootItem()) {
         return [i, i];
       } else {
         return undefined;

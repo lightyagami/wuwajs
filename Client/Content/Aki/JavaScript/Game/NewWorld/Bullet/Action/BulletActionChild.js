@@ -59,7 +59,7 @@ class BulletActionChild extends BulletActionBase_1.BulletActionBase {
           ParentTargetId: this.BulletInfo.Target?.Id,
           ParentId: this.BulletInfo.Entity.Id,
           DtType: this.BulletInfo.BulletInitParams.DtType,
-          BattleFlags: this.BulletInfo.BulletInitParams.BattleFlags,
+          BattleContext: this.BulletInfo.BulletInitParams.BattleContext,
           ParentIds: undefined
         }, this.BulletInfo.ContextId);
         if (l) {

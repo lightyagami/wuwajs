@@ -123,7 +123,7 @@ class TeleportTransitionHelper extends TeleportContextHolder_1.TeleportContextHo
           if (Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("Teleport", 50, "TransitionType.Seamless开始");
           }
-          this.TeleportContext.TeleportSeamlessHelper?.SeamlessTeleportPreStart();
+          await this.TeleportContext.TeleportSeamlessHelper?.SeamlessTeleportPreStart();
           break;
         case Protocol_1.Aki.Protocol.p5n.Proto_FadeInScreen:
           await TeleportTransitionHelper.PlayTransitionFadeInScreen(o.EIl);
@@ -226,7 +226,7 @@ class TeleportTransitionHelper extends TeleportContextHolder_1.TeleportContextHo
     await LevelLoadingController_1.LevelLoadingController.WaitOpenLoading(18, 5, e.y5n, () => {
       var o = Protocol_1.Aki.Protocol.D$_.create();
       o.x$_ = e.y5n;
-      Net_1.Net.Call(17997, o, o => {
+      Net_1.Net.Call(25201, o, o => {
         if (!o || o.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
           if (Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("Teleport", 45, "播放CG完成请求失败", ["ErrorCode", o.Cvs]);
@@ -377,6 +377,9 @@ class TeleportTransitionHelper extends TeleportContextHolder_1.TeleportContextHo
     }
     if (e.CustomShowUi) {
       o.Lxd.Uxd = Protocol_1.Aki.Protocol.Uxd.create();
+    }
+    if (e.StartAkEvent) {
+      o.Lxd.AWf = e.StartAkEvent;
     }
   }
   static fpm(o, e) {

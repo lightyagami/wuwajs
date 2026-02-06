@@ -9,47 +9,47 @@ const UiViewBase_1 = require("../../../../Ui/Base/UiViewBase");
 class ArtemisActivityCertificationView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
-    this.g5f = false;
-    this.wQf = false;
+    this.YWf = false;
+    this.iag = false;
     this.HDe = () => {};
-    this.LSf = (i, t) => {
+    this.CIf = (i, t) => {
       if (t === "Sequence_Bottom_In") {
-        this.wQf = true;
+        this.iag = true;
       }
     };
-    this.gzm = () => {
-      if (this.wQf) {
+    this.ZZm = () => {
+      if (this.iag) {
         this.HDe?.();
       }
     };
-    this.C5f = () => {
+    this.zWf = () => {
       this.HDe?.();
       this.CloseMe();
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UITexture], [2, UE.UIArtText], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIText], [6, UE.UIText], [7, UE.UIText]];
-    this.BtnBindInfo = [[0, this.gzm]];
+    this.BtnBindInfo = [[0, this.ZZm]];
   }
   OnStart() {
-    this.RootActor?.OnSequencePlayEvent.Bind(this.LSf);
+    this.RootActor?.OnSequencePlayEvent.Bind(this.CIf);
     this.GetText(6)?.ShowTextNew("Activity_ArtemisChatFixTips_1");
     this.GetText(5)?.ShowTextNew("Activity_ArtemisChatFixTips_2");
     this.GetText(7)?.ShowTextNew("Activity_ArtemisChatFixTips_3");
     this.GetArtText(2)?.SetText("100");
   }
   OnAddEventListener() {
-    this.UiViewSequence?.AddSequenceFinishEvent("Fix_Done_02", this.C5f);
+    this.UiViewSequence?.AddSequenceFinishEvent("Fix_Done_02", this.zWf);
   }
   OnRemoveEventListener() {
-    this.UiViewSequence.RemoveSequenceFinishEvent("Fix_Done_02", this.C5f);
+    this.UiViewSequence.RemoveSequenceFinishEvent("Fix_Done_02", this.zWf);
   }
   OnBeforeShow() {
     var i = this.OpenParam;
-    this.wQf = false;
-    this.g5f = i?.IsPlayFixedDone;
+    this.iag = false;
+    this.YWf = i?.IsPlayFixedDone;
     this.HDe = i?.CallBack;
-    if (this.g5f) {
+    if (this.YWf) {
       this.UiViewSequence?.PlaySequence("Fix_Done_02", true);
     } else {
       this.UiViewSequence?.PlaySequence("Wanring", true);

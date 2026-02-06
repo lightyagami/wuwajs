@@ -23,7 +23,7 @@ class InfrRoadMarkItem extends ConfigMarkItem_1.ConfigMarkItem {
   }
   GamePlayIsFinish() {
     var e = ConfigManager_1.ConfigManager.InfrastructureConfig.GetRoadConfigByMarkId(this.MarkId);
-    return ModelManager_1.ModelManager.InfrastructureModel.GetRoadDataByRoadId(e.Id)?.Status === Protocol_1.Aki.Protocol.zNm.Proto_InfrStatusComplete;
+    return ModelManager_1.ModelManager.InfrastructureModel.GetRoadDataByRoadId(e.Id)?.Status === Protocol_1.Aki.Protocol.g4m.Proto_InfrStatusComplete;
   }
   UpdateGamePlayState() {
     this.MarkItemEntity.GamePlay.GamePlayState = this.GamePlayIsFinish() ? 2 : 1;

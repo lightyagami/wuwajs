@@ -15,7 +15,7 @@ class RedDotMotorcycleDiyStickerTab extends RedDotBase_1.RedDotBase {
     return [EventDefine_1.EEventName.MotorDiyInfoUpdate, EventDefine_1.EEventName.MotorDiyInfoRedDotUpdate];
   }
   OnCheck() {
-    return ModelManager_1.ModelManager.MotorcycleDiyModel.RedDotHasNewStickerByAnyPart();
+    return !ModelManager_1.ModelManager.MotorcycleDiyModel.RedDotIsPreviewInAnyPart(2) && ModelManager_1.ModelManager.MotorcycleDiyModel.RedDotHasNewStickerByAnyPart();
   }
 }
 exports.RedDotMotorcycleDiyStickerTab = RedDotMotorcycleDiyStickerTab;

@@ -11,7 +11,6 @@ const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const UiTickViewBase_1 = require("../../../../Ui/Base/UiTickViewBase");
 const PopupCaptionItem_1 = require("../../../../Ui/Common/PopupCaptionItem");
-const UiManager_1 = require("../../../../Ui/UiManager");
 const HelpController_1 = require("../../../Help/HelpController");
 const InstanceDungeonDefine_1 = require("../../../InstanceDungeon/Define/InstanceDungeonDefine");
 const DynScrollView_1 = require("../../../Util/ScrollView/DynScrollView");
@@ -31,9 +30,6 @@ class ActivityInstanceEntranceView extends UiTickViewBase_1.UiTickViewBase {
     this.Cli = undefined;
     this.Lli = (t, e, i) => {
       return new ActivityInstanceEntranceScrollItem_1.ActivityInstanceEntranceScrollItem();
-    };
-    this.yli = () => {
-      UiManager_1.UiManager.CloseView(this.Info.Name);
     };
     this.vMl = () => {
       this.OBl?.RefreshDropDownItem(this.C0t);
@@ -57,7 +53,7 @@ class ActivityInstanceEntranceView extends UiTickViewBase_1.UiTickViewBase {
       HelpController_1.HelpController.OpenHelpById(InstanceDungeonDefine_1.DUNGEON_ARCHIVE_HELP_ID);
     };
     this.xli = () => {
-      this.UiViewSequence.PlaySequencePurely("Close01", true);
+      this.CloseMe();
     };
   }
   OnRegisterComponent() {
@@ -83,9 +79,6 @@ class ActivityInstanceEntranceView extends UiTickViewBase_1.UiTickViewBase {
     this.OBl.RefreshView(this.C0t);
     this.QBl(this.C0t.GetActivityEntrancePointData());
     this.Fth(this.C0t);
-  }
-  OnStart() {
-    this.UiViewSequence.AddSequenceFinishEvent("Close01", this.yli);
   }
   OnAddEventListener() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RefreshActivityEntranceScroller, this.jBl);

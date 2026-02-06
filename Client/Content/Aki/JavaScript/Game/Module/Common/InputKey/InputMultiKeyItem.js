@@ -19,12 +19,12 @@ class InputMultiKeyItem extends UiPanelBase_1.UiPanelBase {
     this.uAt = undefined;
     this.cAt = undefined;
     this.mAt = undefined;
-    this.jBf = false;
+    this.xNf = false;
     this.vq = false;
     this.dAt = true;
     this.CAt = true;
     this.wTt = undefined;
-    this.YJm = 0;
+    this.ktf = 0;
     this.XBo = () => {
       if (this.mAt) {
         this.gAt(this.mAt);
@@ -89,7 +89,7 @@ class InputMultiKeyItem extends UiPanelBase_1.UiPanelBase {
     if (e) {
       this._At?.Refresh(e);
       this._At?.SetActive(true);
-      this.YJm = 1;
+      this.ktf = 1;
     }
     e = this.GetText(0);
     if (s) {
@@ -97,7 +97,7 @@ class InputMultiKeyItem extends UiPanelBase_1.UiPanelBase {
       this.uAt?.SetActive(true);
       e.SetText(t ?? "+");
       e.SetUIActive(true);
-      this.YJm = 2;
+      this.ktf = 2;
     } else {
       e.SetUIActive(false);
       this.uAt?.SetActive(false);
@@ -111,11 +111,11 @@ class InputMultiKeyItem extends UiPanelBase_1.UiPanelBase {
     this._At?.Refresh(e);
     this.GetText(0)?.SetUIActive(false);
     this.uAt?.SetActive(false);
-    this.YJm = 1;
+    this.ktf = 1;
   }
   RefreshByActionOrAxis(e, s = false) {
     this.mAt = e;
-    this.jBf = s;
+    this.xNf = s;
     this.gAt(e, s);
   }
   gAt(s, e = 0) {
@@ -124,14 +124,14 @@ class InputMultiKeyItem extends UiPanelBase_1.UiPanelBase {
       var i = s.ActionOrAxisName;
       this.cAt.Reset();
       let e = InputSettingsManager_1.InputSettingsManager.GetActionKeyDisplayData(this.cAt, i);
-      if (!(e = e || InputSettingsManager_1.InputSettingsManager.GetAxisKeyDisplayData(this.cAt, i)) || (i = s.Index ?? 0, !(i = this.cAt.GetDisplayKeyNameList(i))) || i.length <= 0 || this.jBf && i.length === 1) {
+      if (!(e = e || InputSettingsManager_1.InputSettingsManager.GetAxisKeyDisplayData(this.cAt, i)) || (i = s.Index ?? 0, !(i = this.cAt.GetDisplayKeyNameList(i))) || i.length <= 0 || this.xNf && i.length === 1) {
         this._At?.SetActive(false);
         this.uAt?.SetActive(false);
         this.GetText(0)?.SetUIActive(false);
-        this.YJm = 0;
+        this.ktf = 0;
       } else {
         if (i.length === 1) {
-          this.YJm = 1;
+          this.ktf = 1;
           t = {
             KeyName: i[0],
             IsLongPressDisable: s.IsLongPressDisable,
@@ -150,7 +150,7 @@ class InputMultiKeyItem extends UiPanelBase_1.UiPanelBase {
           this.fAt(t);
         }
         if (i.length === 2) {
-          this.YJm = 2;
+          this.ktf = 2;
           t = {
             KeyName: i[0]
           };
@@ -167,7 +167,7 @@ class InputMultiKeyItem extends UiPanelBase_1.UiPanelBase {
             IsShowTextArrowWhenRelease: s.IsShowTextArrowWhenRelease,
             DescriptionId: s.DescriptionId
           };
-          if (this.jBf) {
+          if (this.xNf) {
             this.fAt(i);
           } else {
             this.fAt(t, i, s.LinkString);
@@ -206,14 +206,14 @@ class InputMultiKeyItem extends UiPanelBase_1.UiPanelBase {
   }
   SetDisableBySingleKeyList(e) {
     var s;
-    if (this.YJm === 1 && (s = this._At?.GetKeyName())) {
+    if (this.ktf === 1 && (s = this._At?.GetKeyName())) {
       this.SetEnable(!e.includes(s));
     } else {
       this.SetEnable(true);
     }
   }
   GetKeyLength() {
-    return this.YJm;
+    return this.ktf;
   }
 }
 exports.InputMultiKeyItem = InputMultiKeyItem;

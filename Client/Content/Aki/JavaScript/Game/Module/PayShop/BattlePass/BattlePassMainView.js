@@ -11,6 +11,7 @@ const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const TimeUtil_1 = require("../../../Common/TimeUtil");
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiViewBase_1 = require("../../../Ui/Base/UiViewBase");
 const UiLayerType_1 = require("../../../Ui/Define/UiLayerType");
@@ -22,6 +23,7 @@ const CommonTabTitleData_1 = require("../../Common/TabComponent/CommonTabTitleDa
 const TabComponentWithCaptionItem_1 = require("../../Common/TabComponent/TabComponentWithCaptionItem");
 const CommonTabItem_1 = require("../../Common/TabComponent/TabItem/CommonTabItem");
 const TabViewComponent_1 = require("../../Common/TabComponent/TabViewComponent");
+const LogReportDefine_1 = require("../../LogReport/LogReportDefine");
 const SkipTaskManager_1 = require("../../SkipInterface/SkipTaskManager");
 const UiSceneManager_1 = require("../../UiComponent/UiSceneManager");
 const LguiUtil_1 = require("../../Util/LguiUtil");
@@ -41,8 +43,8 @@ class BattlePassMainView extends UiViewBase_1.UiViewBase {
     this.pqe = e => {
       var t = this.TabDataList[e];
       var i = t.ChildViewName;
-      var e = this.TabComponent.GetTabItemByIndex(e);
-      this.TabViewComponent.ToggleCallBack(t, i, e, this.yki);
+      var a = this.TabComponent.GetTabItemByIndex(e);
+      this.TabViewComponent.ToggleCallBack(t, i, a, this.yki);
       this.q8a();
       this.GetItem(2).SetUIActive(i !== "BattlePassWeaponView");
       this.GetItem(4).SetUIActive(i !== "BattlePassWeaponView");
@@ -50,6 +52,9 @@ class BattlePassMainView extends UiViewBase_1.UiViewBase {
       this.GetItem(6).SetUIActive(i !== "BattlePassWeaponView");
       this.TabComponent?.SetPopupToggleVisible(i === "BattlePassWeaponView");
       ModelManager_1.ModelManager.AdventureGuideModel.CurrentGuideTabName = i;
+      var t = new LogReportDefine_1.OnClickBattlePassTabViewLogEvent();
+      t.i_tabIndex = e;
+      ControllerHolder_1.ControllerHolder.LogReportController.LogReport(t);
     };
     this.yqe = e => {
       e = this.TabDataList[e];

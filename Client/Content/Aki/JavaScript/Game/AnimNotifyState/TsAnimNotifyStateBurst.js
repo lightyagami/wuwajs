@@ -19,7 +19,7 @@ class TsAnimNotifyStateBurst extends UE.KuroAnimNotifyState {
     if (t instanceof TsBaseCharacter_1.default) {
       var s = t.CharacterActorComponent?.Entity;
       if (s) {
-        if ((s = s.GetComponent(215)) && (this.不能切人 && s.TagContainer.UpdateExactTag(2, -1697149502, 1), this.是否无敌)) {
+        if ((s = s.GetComponent(217)) && (this.不能切人 && s.TagContainer.UpdateExactTag(2, -1697149502, 1), this.是否无敌)) {
           s.TagContainer.UpdateExactTag(2, 501201000, 1);
         }
         t.CharacterMovement.HitPriority = this.HitPriority;
@@ -36,10 +36,10 @@ class TsAnimNotifyStateBurst extends UE.KuroAnimNotifyState {
     if (t instanceof TsBaseCharacter_1.default) {
       var r = t.CharacterActorComponent?.Entity;
       if (r) {
-        if ((r = r.GetComponent(215)) && (this.不能切人 && r.TagContainer.UpdateExactTag(2, -1697149502, -1), this.是否无敌)) {
+        if ((r = r.GetComponent(217)) && (this.不能切人 && r.TagContainer.UpdateExactTag(2, -1697149502, -1), this.是否无敌)) {
           r.TagContainer.UpdateExactTag(2, 501201000, -1);
         }
-        t.GetEntityNoBlueprint().GetComponent(187).ResetHitPriorityAndGoThrough();
+        t.GetEntityNoBlueprint().GetComponent(189).ResetHitPriorityAndGoThrough();
         return true;
       }
       if (Log_1.Log.CheckWarn()) {

@@ -90,7 +90,7 @@ class TsTaskFollowPlayerHardMode extends TsTaskAbortImmediatelyBase_1.default {
       var h = s.CharActorComp;
       if (h?.Valid) {
         this.InitTsVariables();
-        this.MoveComp = h.Entity?.GetComponent(46);
+        this.MoveComp = h.Entity?.GetComponent(48);
         s.CharActorComp?.Actor.KuroSetMovementMode({
           Mode: 5,
           Context: "[TsTaskFollowPlayerHardMode.ReceiveExecuteAI]"
@@ -134,6 +134,12 @@ class TsTaskFollowPlayerHardMode extends TsTaskAbortImmediatelyBase_1.default {
     if (r) {
       r = r.CharActorComp;
       if ((e = Global_1.Global.BaseCharacter?.CharacterActorComponent)?.Valid && r?.Valid) {
+        if (this.MoveComp && this.MoveComp.CharacterMovement.MovementMode !== 5) {
+          r.Actor.KuroSetMovementMode({
+            Mode: 5,
+            Context: "[TsTaskFollowPlayerHardMode.ReceiveTickAI]"
+          });
+        }
         s = s * r.Actor.CustomTimeDilation;
         o = e.ActorLocationProxy;
         h = r.ActorLocationProxy;
@@ -170,7 +176,7 @@ class TsTaskFollowPlayerHardMode extends TsTaskAbortImmediatelyBase_1.default {
             this.TempMoveVector.Normalize();
             this.TempMoveVector.MultiplyEqual(o);
           }
-          this.MoveComp?.MoveCharacter(this.TempMoveVector, 0, "FollowPlayerHardMode");
+          this.MoveComp?.MoveCharacter(this.TempMoveVector, 1, "FollowPlayerHardMode");
         }
       } else {
         this.FinishExecute(false);

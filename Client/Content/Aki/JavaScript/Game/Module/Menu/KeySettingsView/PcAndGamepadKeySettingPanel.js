@@ -59,7 +59,7 @@ class PcAndGamepadKeySettingPanel extends UiPanelBase_1.UiPanelBase {
     super(...arguments);
     this.axi = undefined;
     this.hxi = undefined;
-    this.a_f = [];
+    this.vcf = [];
     this.Lkn = new Map();
     this.wd1 = new Map();
     this.oxi = 0;
@@ -74,10 +74,10 @@ class PcAndGamepadKeySettingPanel extends UiPanelBase_1.UiPanelBase {
     this.GamepadItem = undefined;
     this.Mxi = undefined;
     this.m2n = undefined;
-    this.h_f = undefined;
-    this.l_f = 0;
-    this.__f = 0;
-    this.u_f = undefined;
+    this.ycf = undefined;
+    this.Scf = 0;
+    this.Mcf = 0;
+    this.Ecf = undefined;
     this.Exi = () => {
       let t = this.oxi;
       t = this.gxi === 1 ? this.Sxi(2) : this.Sxi(1);
@@ -92,7 +92,7 @@ class PcAndGamepadKeySettingPanel extends UiPanelBase_1.UiPanelBase {
     };
     this.Ixi = () => {
       var t = new ConfirmBoxDefine_1.ConfirmBoxDataNew(446);
-      var e = resetBtnTextMap?.at(this.oxi)?.at(this.l_f);
+      var e = resetBtnTextMap?.at(this.oxi)?.at(this.Scf);
       if (e) {
         e = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(e);
         t.SetTextArgs(e);
@@ -100,7 +100,7 @@ class PcAndGamepadKeySettingPanel extends UiPanelBase_1.UiPanelBase {
       t.FunctionMap.set(2, () => {
         keySettingRowDataHiddenTypeList.forEach(i => {
           keySettingRowDataControllerTypeList.forEach(t => {
-            for (const e of this.c_f(t, this.l_f, i)) {
+            for (const e of this.Icf(t, this.Scf, i)) {
               e.ResetKey(t);
             }
           });
@@ -113,9 +113,9 @@ class PcAndGamepadKeySettingPanel extends UiPanelBase_1.UiPanelBase {
     this.Prh = () => {
       UiManager_1.UiManager.OpenView("OperationPreferencesView");
     };
-    this.d_f = () => new KeySettingExclusiveTypeTabItem_1.KeySettingExclusiveTypeTabItem();
-    this.m_f = t => {
-      this.f_f(t);
+    this.Tcf = () => new KeySettingExclusiveTypeTabItem_1.KeySettingExclusiveTypeTabItem();
+    this.bcf = t => {
+      this.Rcf(t);
     };
     this.Txi = (t, e, i) => {
       this.axi?.SelectKeySettingRow(i);
@@ -248,9 +248,9 @@ class PcAndGamepadKeySettingPanel extends UiPanelBase_1.UiPanelBase {
                 return;
               }
             }
-            let t = this.c_f(2, this.l_f, 0);
+            let t = this.Icf(2, this.Scf, 0);
             if (InputSettings_1.InputSettings.IsKeyboardKey(i) || InputSettings_1.InputSettings.IsMouseButton(i)) {
-              t = this.c_f(1, this.l_f, 0);
+              t = this.Icf(1, this.Scf, 0);
             }
             const o = this.Bxi(t, this.fxi, this.cxi);
             if (o && o.IsCheckSameKey) {
@@ -355,25 +355,25 @@ class PcAndGamepadKeySettingPanel extends UiPanelBase_1.UiPanelBase {
     this.vxi = new PsGamepadItem_1.PsGamepadItem();
     var s = this.vxi.CreateByResourceIdAsync("UiItem_HandleSetPs", this.GetItem(10));
     this.m2n = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetItem(7));
-    this.u_f = new KeySettingPanelResetButton_1.KeySettingPanelResetButton();
-    var n = this.u_f.CreateByActorAsync(this.GetButton(9).GetOwner());
-    var r = this.g_f();
+    this.Ecf = new KeySettingPanelResetButton_1.KeySettingPanelResetButton();
+    var n = this.Ecf.CreateByActorAsync(this.GetButton(9).GetOwner());
+    var r = this.wcf();
     await Promise.all([t, e, i, s, n, r]);
   }
-  async g_f() {
+  async wcf() {
     var t = [];
-    this.h_f = new TabComponent_1.TabComponent(this.GetItem(17), this.d_f, this.m_f, undefined);
-    var e = this.C_f();
-    t.push(this.h_f.RefreshTabItemAsync(e));
+    this.ycf = new TabComponent_1.TabComponent(this.GetItem(17), this.Tcf, this.bcf, undefined);
+    var e = this.Lcf();
+    t.push(this.ycf.RefreshTabItemAsync(e));
     await Promise.all(t);
   }
-  f_f(t) {
+  Rcf(t) {
     var e = KeySettingDefine_1.menuKeySettingExclusiveTypeList[t];
-    if (e !== this.l_f && (this.l_f = e, this.__f = t, this.Refresh(this.oxi), Log_1.Log.CheckDebug())) {
+    if (e !== this.Scf && (this.Scf = e, this.Mcf = t, this.Refresh(this.oxi), Log_1.Log.CheckDebug())) {
       Log_1.Log.Debug("Menu", 95, "[KeySetting] 切换独占类型页签", ["index", t]);
     }
   }
-  C_f() {
+  Lcf() {
     var t = [];
     for (const s of KeySettingDefine_1.menuKeySettingExclusiveTypeList) {
       var e;
@@ -387,32 +387,32 @@ class PcAndGamepadKeySettingPanel extends UiPanelBase_1.UiPanelBase {
     }
     return t;
   }
-  p_f(t) {
+  Pcf(t) {
     if (t) {
-      this.h_f.GetTabItemMap().forEach(t => {
+      this.ycf.GetTabItemMap().forEach(t => {
         t.SetForceSwitch(0, false);
       });
-      this.h_f.SelectToggleByIndex(this.__f, true, true);
+      this.ycf.SelectToggleByIndex(this.Mcf, true, true);
     } else {
-      this.h_f.ResetSelectIndex();
-      this.h_f.GetTabItemMap().forEach(t => {
+      this.ycf.ResetSelectIndex();
+      this.ycf.GetTabItemMap().forEach(t => {
         t.SetForceSwitch(2, false);
       });
     }
   }
-  P4f() {
+  rWf() {
     let t = undefined;
     if (ModelManager_1.ModelManager.BattleUiModel?.MotorcycleData?.IsDriving) {
       t = 2;
     }
     return KeySettingDefine_1.menuKeySettingExclusiveTypeList.indexOf(t ?? 0);
   }
-  v_f(t) {
+  Acf(t) {
     for (const s of keySettingRowDataControllerTypeList) {
       for (const n of KeySettingDefine_1.menuKeySettingExclusiveTypeList) {
-        var e = this.c_f(s, n, 0);
-        var i = this.c_f(s, n, 1);
-        this.y_f(e, i, t, s, n);
+        var e = this.Icf(s, n, 0);
+        var i = this.Icf(s, n, 1);
+        this.Dcf(e, i, t, s, n);
       }
     }
   }
@@ -422,12 +422,12 @@ class PcAndGamepadKeySettingPanel extends UiPanelBase_1.UiPanelBase {
       this.Lkn.clear();
       this.wd1.clear();
       this.Gxi();
-      this.v_f(t);
+      this.Acf(t);
       this.Rka();
       this.Fxi();
       this.Ore();
-      t = this.P4f();
-      this.h_f.SelectToggleByIndex(t, true);
+      t = this.rWf();
+      this.ycf.SelectToggleByIndex(t, true);
     }
   }
   OnBeforeDestroy() {
@@ -489,11 +489,11 @@ class PcAndGamepadKeySettingPanel extends UiPanelBase_1.UiPanelBase {
       NameTextId: "Text_Handle_Text"
     });
   }
-  c_f(t, e, i) {
-    let s = this.a_f[t];
+  Icf(t, e, i) {
+    let s = this.vcf[t];
     if (!s) {
       s = [];
-      this.a_f[t] = s;
+      this.vcf[t] = s;
     }
     let n = s[e];
     if (!n) {
@@ -507,7 +507,7 @@ class PcAndGamepadKeySettingPanel extends UiPanelBase_1.UiPanelBase {
     }
     return r;
   }
-  y_f(e, i, t, s, n) {
+  Dcf(e, i, t, s, n) {
     e.length = 0;
     i.length = 0;
     var r = ConfigManager_1.ConfigManager.MenuBaseConfig;
@@ -551,9 +551,9 @@ class PcAndGamepadKeySettingPanel extends UiPanelBase_1.UiPanelBase {
     this.oxi = t;
     var e = this.Hxi(t);
     this.jxi(e);
-    this.Wxi(t, this.l_f);
+    this.Wxi(t, this.Scf);
     this.Kxi(t);
-    this.S_f(t);
+    this.Ucf(t);
   }
   jxi(t) {
     this.gxi = t;
@@ -571,7 +571,7 @@ class PcAndGamepadKeySettingPanel extends UiPanelBase_1.UiPanelBase {
     }
   }
   Pn1(t, e) {
-    this.axi?.Refresh(this.c_f(1, e, 0), t);
+    this.axi?.Refresh(this.Icf(1, e, 0), t);
     this.axi?.SetActive(true);
     this.hxi?.SetActive(false);
     this.GetItem(4)?.SetUIActive(true);
@@ -579,7 +579,7 @@ class PcAndGamepadKeySettingPanel extends UiPanelBase_1.UiPanelBase {
     this.cGu(t);
   }
   xn1(t, e) {
-    this.hxi?.Refresh(this.c_f(2, e, 0), t);
+    this.hxi?.Refresh(this.Icf(2, e, 0), t);
     this.hxi?.SetActive(true);
     this.axi?.SetActive(false);
     this.GetItem(4)?.SetUIActive(false);
@@ -616,11 +616,11 @@ class PcAndGamepadKeySettingPanel extends UiPanelBase_1.UiPanelBase {
   Kxi(t) {
     (t === 2 ? (t = InputKeyUtils_1.InputKeyUtils.GetLastGamepadEnum(), Info_1.Info.CheckIsPsGamepad(t) ? (this.GamepadItem = this.vxi, this.vxi?.SetActive(true), this.pxi) : (this.GamepadItem = this.pxi, this.pxi?.SetActive(true), this.vxi)) : (this.GamepadItem = undefined, this.vxi?.SetActive(false), this.pxi))?.SetActive(false);
   }
-  S_f(t) {
+  Ucf(t) {
     if (t === 1) {
-      this.u_f?.SetConfirmText("PlayerController_ResetButton");
+      this.Ecf?.SetConfirmText("PlayerController_ResetButton");
     } else if (t === 2) {
-      this.u_f?.SetConfirmText("PlayerController_ResetButton_Controller");
+      this.Ecf?.SetConfirmText("PlayerController_ResetButton_Controller");
     }
   }
   Hxi(t) {
@@ -651,7 +651,7 @@ class PcAndGamepadKeySettingPanel extends UiPanelBase_1.UiPanelBase {
   Rxi() {
     this.axi?.StopScroll();
     this.hxi?.StopScroll();
-    this.p_f(false);
+    this.Pcf(false);
     this.GetButton(9)?.RootUIComp.SetUIActive(false);
     this.dxi = TimerSystem_1.GameplayTimerSystem.Next(() => {
       if (Log_1.Log.CheckInfo()) {
@@ -663,7 +663,7 @@ class PcAndGamepadKeySettingPanel extends UiPanelBase_1.UiPanelBase {
       this.qxi(true);
       this.Fxi("EditKey_Text");
     });
-    this.h_f.GetTabItemMap().forEach(t => {
+    this.ycf.GetTabItemMap().forEach(t => {
       t.SetForceSwitch(2, false);
     });
   }
@@ -676,7 +676,7 @@ class PcAndGamepadKeySettingPanel extends UiPanelBase_1.UiPanelBase {
     this.Fxi();
     this.bxi()?.SelectKeySettingRow(undefined);
     UiLayer_1.UiLayer.SetShowMaskLayer("KeySettingMask", false);
-    this.p_f(true);
+    this.Pcf(true);
     this.cGu(this.oxi);
   }
   xxi(t) {

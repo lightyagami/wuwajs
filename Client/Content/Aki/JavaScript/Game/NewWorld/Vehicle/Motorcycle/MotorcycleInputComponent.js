@@ -43,14 +43,14 @@ class AssistedInputInfo {
     this.LastState = false;
     this.CurrentTime = 0;
     this.hCc = false;
-    this.Z$f = false;
+    this.Bog = false;
     this.Duration = MathUtils_1.MathUtils.MaxFloat;
     this.TagList = [];
     this.SkillList = [];
     this.DebugText = "";
     this.TagComp = undefined;
-    this.xNf = undefined;
-    this.xNf = i;
+    this.pHf = undefined;
+    this.pHf = i;
     this.TagComp = t;
   }
   InitConfig(t) {}
@@ -63,7 +63,7 @@ class AssistedInputInfo {
     }
   }
   AddTimeAccumulation(t) {
-    if (this.BNf()) {
+    if (this.vHf()) {
       this.CurrentTime += t;
     } else {
       this.ClearTimeAccumulation();
@@ -88,7 +88,7 @@ class AssistedInputInfo {
   GetDuration() {
     return this.Duration;
   }
-  BNf() {
+  vHf() {
     if (this.TagList && this.TagList.length > 0) {
       for (const t of this.TagList) {
         if (this.TagComp?.HasTag(t)) {
@@ -108,20 +108,20 @@ class AssistedInputInfo {
     this.hCc = t;
   }
   IsIgnoreInput() {
-    return this.Z$f;
+    return this.Bog;
   }
   SetIgnoreInput(t) {
-    this.Z$f = t;
+    this.Bog = t;
   }
   CheckGameplayTag() {
-    return (this.TagComp?.HasTag(this.xNf) ?? false) && this.BNf();
+    return (this.TagComp?.HasTag(this.pHf) ?? false) && this.vHf();
   }
   UpdateAutoTag(t) {
-    if (t && !this.TagComp?.HasTag(this.xNf)) {
-      this.TagComp?.AddTag(this.xNf);
+    if (t && !this.TagComp?.HasTag(this.pHf)) {
+      this.TagComp?.AddTag(this.pHf);
     }
-    if (!t && this.TagComp?.HasTag(this.xNf)) {
-      this.TagComp?.RemoveTag(this.xNf);
+    if (!t && this.TagComp?.HasTag(this.pHf)) {
+      this.TagComp?.RemoveTag(this.pHf);
     }
   }
 }
@@ -129,7 +129,7 @@ class NitroBoostInfo extends AssistedInputInfo {
   constructor() {
     super(...arguments);
     this.DebugText = "氮气维持";
-    this.kNf = false;
+    this.yHf = false;
   }
   UpdateAutoState() {
     var t = this.GetSettingEnable() && this.CheckGameplayTag();
@@ -139,11 +139,11 @@ class NitroBoostInfo extends AssistedInputInfo {
     return t;
   }
   GetSettingEnable() {
-    return ModelManager_1.ModelManager.BattleUiModel.MotorcycleData.AutoNitrogenSettingEnable || this.kNf;
+    return ModelManager_1.ModelManager.BattleUiModel.MotorcycleData.AutoNitrogenSettingEnable || this.yHf;
   }
   InitConfig(i) {
     this.Duration = i.NitroBoostTime;
-    this.kNf = i.DebugNitroBoost;
+    this.yHf = i.DebugNitroBoost;
     for (let t = 0; t < i.ForbidNitroBoostTag.GameplayTags.Num(); t++) {
       this.TagList.push(i.ForbidNitroBoostTag.GameplayTags.Get(t).TagId);
     }
@@ -156,7 +156,7 @@ class HoldThrottleInfo extends AssistedInputInfo {
   constructor() {
     super(...arguments);
     this.DebugText = "油门维持";
-    this.kNf = false;
+    this.yHf = false;
   }
   UpdateAutoState() {
     var t = this.GetSettingEnable() && this.CheckGameplayTag();
@@ -166,11 +166,11 @@ class HoldThrottleInfo extends AssistedInputInfo {
     return t;
   }
   GetSettingEnable() {
-    return ModelManager_1.ModelManager.BattleUiModel.MotorcycleData.AutoAcceleratorSettingEnable || this.kNf;
+    return ModelManager_1.ModelManager.BattleUiModel.MotorcycleData.AutoAcceleratorSettingEnable || this.yHf;
   }
   InitConfig(i) {
     this.Duration = i.HoldThrottleTime;
-    this.kNf = i.DebugHoldThrottle;
+    this.yHf = i.DebugHoldThrottle;
     for (let t = 0; t < i.ForbidHoldThrottleTag.GameplayTags.Num(); t++) {
       this.TagList.push(i.ForbidHoldThrottleTag.GameplayTags.Get(t).TagId);
     }
@@ -183,9 +183,9 @@ let MotorcycleInputComponent = class MotorcycleInputComponent extends VehicleInp
   constructor() {
     super(...arguments);
     this.Rhm = false;
-    this.qNf = Vector_1.Vector.Create();
-    this.ONf = undefined;
-    this.GNf = undefined;
+    this.SHf = Vector_1.Vector.Create();
+    this.MHf = undefined;
+    this.EHf = undefined;
     this.MoveComp = undefined;
     this.AudioComp = undefined;
     this.LastInputSeconds = 0;
@@ -196,50 +196,50 @@ let MotorcycleInputComponent = class MotorcycleInputComponent extends VehicleInp
     this.InSprintInternal = false;
     this.Mrm = false;
     this.BanSprint = (t, i) => {
-      var s = this.PerformComp?.Driver?.GetComponent(215);
+      var s = this.PerformComp?.Driver?.GetComponent(217);
       this.Mrm = s?.HasTag(1664561458) || (this.TagComp?.HasTag(-9258219) ?? false);
       this.RefreshSprint();
     };
     this.InBackBrakingInternal = false;
     this.Erm = false;
     this.BanDrift = (t, i) => {
-      var s = this.PerformComp?.Driver?.GetComponent(215);
+      var s = this.PerformComp?.Driver?.GetComponent(217);
       this.Erm = s?.HasTag(952008256) || (this.TagComp?.HasTag(823224219) ?? false);
       this.RefreshBackBraking();
     };
     this.AirRotateInput = 0;
-    this.yZf = new Map();
-    this.SZf = new Map();
-    this.MZf = new Map();
-    this.FNf = false;
-    this.NNf = (t, i) => {};
+    this.pyg = new Map();
+    this.vyg = new Map();
+    this.yyg = new Map();
+    this.IHf = false;
+    this.THf = (t, i) => {};
     this.NitroBoostChange = (t, i) => {
       this.RefreshSprint();
     };
     this.BJe = (t, i, s) => {
-      if (!this.ONf?.CheckPermitSkill(i)) {
-        this.VNf("氮气维持，使用了技能" + i, true, false);
+      if (!this.MHf?.CheckPermitSkill(i)) {
+        this.bHf("氮气维持，使用了技能" + i, true, false);
       }
-      if (!this.GNf?.CheckPermitSkill(i)) {
-        this.VNf("油门维持，使用了技能" + i, false, true);
+      if (!this.EHf?.CheckPermitSkill(i)) {
+        this.bHf("油门维持，使用了技能" + i, false, true);
       }
     };
     this.Jze = () => {
-      this.VNf("角色死亡");
+      this.bHf("角色死亡");
     };
     this.PMe = t => {
       var i;
-      if (this.PressingSprint && (i = this.MZf.get(4))) {
+      if (this.PressingSprint && (i = this.yyg.get(4))) {
         ControllerHolder_1.ControllerHolder.InputDistributeController?.InputAction(i, false);
       }
-      if (this.PressingBackBraking && (i = this.MZf.get(2))) {
+      if (this.PressingBackBraking && (i = this.yyg.get(2))) {
         ControllerHolder_1.ControllerHolder.InputDistributeController?.InputAction(i, false);
       }
     };
     this.YC1 = t => {
       var i = ConfigManager_1.ConfigManager.UiViewConfig.GetUiShowConfig(t);
       if (i && !i.AllowAutoMotor) {
-        this.VNf("打开了UI" + t);
+        this.bHf("打开了UI" + t);
       }
     };
   }
@@ -256,11 +256,9 @@ let MotorcycleInputComponent = class MotorcycleInputComponent extends VehicleInp
     }
   }
   RefreshSprint() {
-    var t = this.q8f();
+    var t = this.QYf();
     var i = (this.PressingSprint || t) && !this.Mrm && !this.InBackBraking;
-    if (this.InSprint !== i && this.Mrm) {
-      this.AudioComp?.MotorNitroAccelerationFailure();
-    }
+    this.AudioComp?.MotorNitroAccelerationFailure(this.Mrm, i, this.PressingSprint);
     if (this.InSprint !== i && Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Vehicle", 6, "1176311 Sprint", ["NewState", i], ["Pr", this.PressingSprint], ["As", t], ["Ban", this.Mrm], ["Bck", this.InBackBraking]);
     }
@@ -284,18 +282,18 @@ let MotorcycleInputComponent = class MotorcycleInputComponent extends VehicleInp
     super.OnEnterOrLeaveVehicle(t, i);
     if (t.IsDriver) {
       this.Rhm = i;
-      s = t.PassengerEntity?.GetComponent(215);
+      s = t.PassengerEntity?.GetComponent(217);
       if (i) {
         this.O5a(t);
       } else {
-        this.HNf(t);
+        this.RHf(t);
       }
       this.Mrm = s?.HasTag(1664561458) || (this.TagComp?.HasTag(-9258219) ?? false);
       this.Erm = s?.HasTag(952008256) || (this.TagComp?.HasTag(823224219) ?? false);
     }
   }
   O5a(t) {
-    t = t.PassengerEntity?.GetComponent(215);
+    t = t.PassengerEntity?.GetComponent(217);
     t?.ListenForTagAddOrRemove(1664561458, this.BanSprint);
     t?.ListenForTagAddOrRemove(952008256, this.BanDrift);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharUseSkill, this.BJe);
@@ -305,15 +303,14 @@ let MotorcycleInputComponent = class MotorcycleInputComponent extends VehicleInp
     }
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ForceReleaseInput, this.PMe);
   }
-  HNf(t) {
-    t = t.PassengerEntity?.GetComponent(215);
+  RHf(t) {
+    t = t.PassengerEntity?.GetComponent(217);
     this.PressingBackBraking = false;
     this.PressingSprint = false;
     this.InSprint = false;
     this.InBackBraking = false;
     t?.RemoveTagAddOrRemoveListener(1664561458, this.BanSprint);
     t?.RemoveTagAddOrRemoveListener(952008256, this.BanDrift);
-    this.VNf("角色离开载具");
     EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CharUseSkill, this.BJe);
     if (t) {
       EventSystem_1.EventSystem.RemoveWithTarget(t.Entity, EventDefine_1.EEventName.CharUseSkill, this.BJe);
@@ -324,21 +321,21 @@ let MotorcycleInputComponent = class MotorcycleInputComponent extends VehicleInp
   OnStart() {
     super.OnStart();
     this.MoveComp = this.Entity.GetComponent(265);
-    this.AudioComp = this.Entity.GetComponent(297);
+    this.AudioComp = this.Entity.GetComponent(299);
     this.TagComp?.ListenForTagAddOrRemove(-9258219, this.BanSprint);
     this.TagComp?.ListenForTagAddOrRemove(823224219, this.BanDrift);
-    this.TagComp?.ListenForTagAddOrRemove(285518931, this.NNf);
+    this.TagComp?.ListenForTagAddOrRemove(285518931, this.THf);
     this.TagComp?.ListenForTagAddOrRemove(-904464547, this.NitroBoostChange);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OpenView, this.YC1);
-    this.jNf();
-    this.EZf();
+    this.LHf();
+    this.Syg();
     return true;
   }
   OnEnd() {
     super.OnEnd();
     this.TagComp?.RemoveTagAddOrRemoveListener(-9258219, this.BanSprint);
     this.TagComp?.RemoveTagAddOrRemoveListener(823224219, this.BanDrift);
-    this.TagComp?.RemoveTagAddOrRemoveListener(285518931, this.NNf);
+    this.TagComp?.RemoveTagAddOrRemoveListener(285518931, this.THf);
     this.TagComp?.RemoveTagAddOrRemoveListener(-904464547, this.NitroBoostChange);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OpenView, this.YC1);
     return true;
@@ -351,7 +348,7 @@ let MotorcycleInputComponent = class MotorcycleInputComponent extends VehicleInp
     if (!this.MoveVectorCache.IsNearlyZero() || !!this.InSprint || !!this.InBackBraking) {
       this.LastInputSeconds = Time_1.Time.NowSeconds;
     }
-    this.$Nf(t);
+    this.wHf(t);
   }
   UpdateVehicleInputDirectAndFacing() {
     if (Info_1.Info.IsInTouch()) {
@@ -362,11 +359,11 @@ let MotorcycleInputComponent = class MotorcycleInputComponent extends VehicleInp
       this.MotorInputCache.X = MathUtils_1.MathUtils.Clamp(this.MotorInputCache.X, -1, 1);
       this.MotorInputCache.Y = MathUtils_1.MathUtils.Clamp(this.MotorInputCache.Y, -1, 1);
     }
-    this.qNf.DeepCopy(this.MotorInputCache);
-    if (this.GNf?.UpdateAutoState() || this.ONf?.UpdateAutoState()) {
+    this.SHf.DeepCopy(this.MotorInputCache);
+    if (this.EHf?.UpdateAutoState() || this.MHf?.UpdateAutoState()) {
       this.MotorInputCache.X = 1;
     }
-    if (this.WNf() && (this.PressingBackBraking || this.MoveComp?.DriftingState)) {
+    if (this.PHf() && (this.PressingBackBraking || this.MoveComp?.DriftingState)) {
       this.MotorInputCache.X = 1;
     }
     this.ActorComp.SetInputDirect(this.MotorInputCache);
@@ -377,7 +374,7 @@ let MotorcycleInputComponent = class MotorcycleInputComponent extends VehicleInp
   }
   InputAdjusted(t) {
     this.TmpVector1.DeepCopy(this.MoveVectorCache);
-    if (this.PerformComp?.Driver?.GetComponent(215)?.HasTag(275316259) || this.TagComp?.HasTag(-1203255164)) {
+    if (this.PerformComp?.Driver?.GetComponent(217)?.HasTag(275316259) || this.TagComp?.HasTag(-1203255164)) {
       this.TmpVector1.X = Math.max(0, this.TmpVector1.X);
     }
     var i = this.TmpVector1.Size();
@@ -427,16 +424,10 @@ let MotorcycleInputComponent = class MotorcycleInputComponent extends VehicleInp
   }
   ExecuteSwitchWalk(t) {
     this.AirRotateInput = t.IntValue ? 1 : 0;
-    if (Log_1.Log.CheckWarn()) {
-      Log_1.Log.Warn("Test", 6, "ExecuteSwitchWalk", ["AirRotateInput", this.AirRotateInput]);
-    }
   }
   WZo(t) {
-    if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("Test", 6, "Motor BeginSkill", ["SkillId", t]);
-    }
-    this.Entity.GetComponent(40).BeginSkill(t, {
-      Reason: "FishingBoatInputComponent.ExecuteSkill"
+    this.Entity.GetComponent(42).BeginSkill(t, {
+      Reason: "MotorInputComponent.ExecuteSkill"
     });
   }
   ForceRefreshBraking() {
@@ -460,23 +451,23 @@ let MotorcycleInputComponent = class MotorcycleInputComponent extends VehicleInp
   }
   GetImmediateInputCommands(i) {
     if (i.length !== 0) {
-      this.yZf.clear();
-      this.SZf.clear();
+      this.pyg.clear();
+      this.vyg.clear();
       var s = [];
       let t = -1;
       for (const r of i) {
         var e;
         var h = r.Command.CommandType;
-        var n = this.yZf.get(h);
+        var n = this.pyg.get(h);
         if (n !== undefined) {
-          if ((e = this.QueryCommandPriority(r.Command) ?? -1) > (this.SZf.get(h) ?? -1)) {
+          if ((e = this.QueryCommandPriority(r.Command) ?? -1) > (this.vyg.get(h) ?? -1)) {
             s[n] = r;
-            this.SZf.set(h, e);
+            this.vyg.set(h, e);
           }
         } else if ((n = this.QueryCommandPriority(r.Command) ?? -1) > -1) {
           s.push(r);
-          this.yZf.set(h, ++t);
-          this.SZf.set(h, n);
+          this.pyg.set(h, ++t);
+          this.vyg.set(h, n);
         }
       }
       return s;
@@ -486,7 +477,7 @@ let MotorcycleInputComponent = class MotorcycleInputComponent extends VehicleInp
     return 2;
   }
   QueryCommandPriority(t) {
-    var i = this.MZf.get(t.CommandType);
+    var i = this.yyg.get(t.CommandType);
     if (i !== undefined) {
       var i = ModelManager_1.ModelManager.InputModel?.GetInputData(3).GetActionNameByInputAction(i);
       if (i) {
@@ -499,126 +490,134 @@ let MotorcycleInputComponent = class MotorcycleInputComponent extends VehicleInp
       }
     }
   }
-  EZf() {
-    this.MZf.set(2, InputEnums_1.EInputAction.跳跃);
-    this.MZf.set(4, InputEnums_1.EInputAction.闪避);
-    this.MZf.set(8, InputEnums_1.EInputAction.走跑切换);
+  Syg() {
+    this.yyg.set(2, InputEnums_1.EInputAction.跳跃);
+    this.yyg.set(4, InputEnums_1.EInputAction.闪避);
+    this.yyg.set(8, InputEnums_1.EInputAction.走跑切换);
   }
-  jNf() {
+  LHf() {
     ResourceSystem_1.ResourceSystem.LoadTypeAsync("BP_MotorAssistInputConfig_C", () => {
       ResourceSystem_1.ResourceSystem.LoadAsync(ASSIST_INPUT_DATA_ASSET_PATH, UE.BP_MotorAssistInputConfig_C, t => {
         if (t && this.TagComp) {
-          this.FNf = t.DebugAssistDrift;
-          this.GNf = new HoldThrottleInfo(this.TagComp, 285518931);
-          this.GNf.InitConfig(t);
-          this.ONf = new NitroBoostInfo(this.TagComp, -904464547);
-          this.ONf.InitConfig(t);
+          this.IHf = t.DebugAssistDrift;
+          this.EHf = new HoldThrottleInfo(this.TagComp, 285518931);
+          this.EHf.InitConfig(t);
+          this.MHf = new NitroBoostInfo(this.TagComp, -904464547);
+          this.MHf.InitConfig(t);
         }
       });
     });
   }
-  WNf() {
-    return ModelManager_1.ModelManager.BattleUiModel.MotorcycleData.DriftAcceleratorSettingEnable || this.FNf;
+  PHf() {
+    return ModelManager_1.ModelManager.BattleUiModel.MotorcycleData.DriftAcceleratorSettingEnable || this.IHf;
   }
-  VNf(t, i = true, s = true) {
+  bHf(t, i = true, s = true) {
     if (i) {
-      if (this.ONf?.UpdateAutoState()) {
-        this.ONf?.ResetAutoState(t);
+      if (this.MHf?.UpdateAutoState()) {
+        this.MHf?.ResetAutoState(t);
       } else {
-        this.ONf?.ClearTimeAccumulation();
+        this.MHf?.ClearTimeAccumulation();
       }
     }
     if (s) {
-      if (this.GNf?.UpdateAutoState()) {
-        this.GNf?.ResetAutoState(t);
+      if (this.EHf?.UpdateAutoState()) {
+        this.EHf?.ResetAutoState(t);
       } else {
-        this.GNf?.ClearTimeAccumulation();
+        this.EHf?.ClearTimeAccumulation();
       }
     }
   }
-  $Nf(t) {
-    this.QNf(t);
-    this.KNf(t);
+  wHf(t) {
+    if (this.Rhm) {
+      this.AHf(t);
+      this.DHf(t);
+    } else {
+      this.bHf("角色离开载具");
+    }
   }
-  QNf(t) {
-    var i = this.ONf?.GetSettingEnable();
+  AHf(t) {
+    var i = this.MHf?.GetSettingEnable();
     var s = !this.Mrm && !this.InBackBraking;
-    var e = this.qNf.X >= 0;
+    var e = this.SHf.X >= 0;
     var i = i && s && e && this.Rhm;
-    if (this.ONf?.UpdateAutoState()) {
+    if (this.MHf?.UpdateAutoState()) {
       if (!i) {
-        this.VNf("氮气维持，不在冲刺或刹车", true, false);
+        this.bHf("氮气维持，不在冲刺或刹车", true, false);
       }
     } else {
-      s = this.ONf?.IsIgnoreInput();
+      s = this.MHf?.IsIgnoreInput();
       if (this.InSprint && i && !s) {
-        this.ONf?.AddTimeAccumulation(t);
-        if (this.ONf?.CheckTimeDuration()) {
-          this.ONf?.SetStartEnter(true);
-          this.ONf?.SetAutoState(true);
+        this.MHf?.AddTimeAccumulation(t);
+        if (this.MHf?.CheckTimeDuration()) {
+          this.MHf?.SetStartEnter(true);
+          this.MHf?.SetAutoState(true);
         }
       } else {
         if (!this.PressingSprint && s) {
-          this.ONf?.SetIgnoreInput(false);
+          this.MHf?.SetIgnoreInput(false);
         }
-        this.ONf?.ClearTimeAccumulation();
+        this.MHf?.ClearTimeAccumulation();
       }
     }
   }
-  KNf(t) {
-    var i = this.GNf?.GetSettingEnable();
+  DHf(t) {
+    var i = this.EHf?.GetSettingEnable();
     var s = this.MoveComp.Speed > 0;
-    var e = this.qNf.X > 0;
+    var e = this.SHf.X > 0;
     var i = i && s && e && this.Rhm;
-    if (this.GNf?.UpdateAutoState()) {
-      s = this.GNf?.IsStartEnter();
-      if (this.qNf.X < 0) {
-        this.VNf("油门维持，不在移动或刹车");
+    var s = ModelManager_1.ModelManager.BattleUiModel.MotorcycleData.GetIsRoundJoystick();
+    if (this.EHf?.UpdateAutoState()) {
+      h = this.EHf?.IsStartEnter();
+      if (this.SHf.X < 0) {
+        this.bHf("油门维持，不在移动或刹车");
         return;
-      } else if (this.qNf.X === 0 && s) {
-        this.GNf?.SetStartEnter(false);
+      } else if (this.SHf.X === 0 && h) {
+        this.EHf?.SetStartEnter(false);
         return;
       } else {
-        if (!s && e) {
-          this.VNf("给了新的油门，退出油门维持");
-          this.GNf?.SetIgnoreInput(true);
+        if (!h && !!e && !s) {
+          this.bHf("给了新的油门，退出油门维持");
+          this.EHf?.SetIgnoreInput(true);
         }
         return;
       }
     }
-    s = this.GNf?.IsIgnoreInput();
-    if (i && !s) {
-      this.GNf?.AddTimeAccumulation(t);
-      if (this.GNf?.CheckTimeDuration()) {
-        this.GNf?.SetStartEnter(true);
-        this.GNf?.SetAutoState(true);
+    var h = this.EHf?.IsIgnoreInput();
+    if (i && !h) {
+      this.EHf?.AddTimeAccumulation(t);
+      if (this.EHf?.CheckTimeDuration()) {
+        this.EHf?.SetStartEnter(true);
+        this.EHf?.SetAutoState(true);
       }
     } else {
-      if (!e && s) {
-        this.GNf?.SetIgnoreInput(false);
+      if (!e && h) {
+        this.EHf?.SetIgnoreInput(false);
       }
-      this.GNf?.ClearTimeAccumulation();
+      this.EHf?.ClearTimeAccumulation();
     }
   }
-  q8f() {
-    var t = this.ONf?.UpdateAutoState() ?? false;
+  QYf() {
+    var t = this.MHf?.UpdateAutoState() ?? false;
     if (t) {
-      if (this.PressingSprint && !this.ONf?.IsStartEnter()) {
-        this.VNf("氮气维持被新输入打断", true, false);
-        this.ONf?.SetIgnoreInput(true);
+      if (this.PressingSprint && !this.MHf?.IsStartEnter()) {
+        this.bHf("氮气维持被新输入打断", true, false);
+        this.MHf?.SetIgnoreInput(true);
         return false;
       }
       if (!this.PressingSprint) {
-        this.ONf?.SetStartEnter(false);
+        this.MHf?.SetStartEnter(false);
       }
     }
     return t;
   }
   GetNitroBoostInfo() {
-    return this.ONf;
+    return this.MHf;
   }
   GetHoldThrottleInfo() {
-    return this.GNf;
+    return this.EHf;
+  }
+  ExternalResetAssistInput(t, i = true, s = true) {
+    this.bHf(t, i, s);
   }
 };
 MotorcycleInputComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(264)], MotorcycleInputComponent);

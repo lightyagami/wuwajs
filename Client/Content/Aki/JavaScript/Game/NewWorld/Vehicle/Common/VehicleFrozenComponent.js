@@ -31,16 +31,16 @@ let VehicleFrozenComponent = class VehicleFrozenComponent extends MonsterFrozenC
   constructor() {
     super(...arguments);
     this.VehiclePerformComponent = undefined;
-    this.JOm = (e, t) => {
-      if (e && EventSystem_1.EventSystem.HasWithTarget(e, EventDefine_1.EEventName.CharAfterFrozenChange, this.gKm)) {
-        EventSystem_1.EventSystem.RemoveWithTarget(e, EventDefine_1.EEventName.CharAfterFrozenChange, this.gKm);
+    this.cFm = (e, t) => {
+      if (e && EventSystem_1.EventSystem.HasWithTarget(e, EventDefine_1.EEventName.CharAfterFrozenChange, this.OYm)) {
+        EventSystem_1.EventSystem.RemoveWithTarget(e, EventDefine_1.EEventName.CharAfterFrozenChange, this.OYm);
       }
-      if (t && !EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.CharAfterFrozenChange, this.gKm)) {
-        EventSystem_1.EventSystem.AddWithTarget(t, EventDefine_1.EEventName.CharAfterFrozenChange, this.gKm);
+      if (t && !EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.CharAfterFrozenChange, this.OYm)) {
+        EventSystem_1.EventSystem.AddWithTarget(t, EventDefine_1.EEventName.CharAfterFrozenChange, this.OYm);
       }
       this.RefreshFrozen();
     };
-    this.gKm = () => {
+    this.OYm = () => {
       this.RefreshFrozen();
     };
   }
@@ -56,13 +56,13 @@ let VehicleFrozenComponent = class VehicleFrozenComponent extends MonsterFrozenC
     return true;
   }
   mSe() {
-    if (!EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.OnVehicleDriverChange, this.JOm)) {
-      EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnVehicleDriverChange, this.JOm);
+    if (!EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.OnVehicleDriverChange, this.cFm)) {
+      EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnVehicleDriverChange, this.cFm);
     }
   }
   dSe() {
-    if (EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.OnVehicleDriverChange, this.JOm)) {
-      EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnVehicleDriverChange, this.JOm);
+    if (EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.OnVehicleDriverChange, this.cFm)) {
+      EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnVehicleDriverChange, this.cFm);
     }
   }
   RefreshFrozen() {
@@ -73,5 +73,5 @@ let VehicleFrozenComponent = class VehicleFrozenComponent extends MonsterFrozenC
     }
   }
 };
-VehicleFrozenComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(339)], VehicleFrozenComponent);
+VehicleFrozenComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(341)], VehicleFrozenComponent);
 exports.VehicleFrozenComponent = VehicleFrozenComponent; //# sourceMappingURL=VehicleFrozenComponent.js.map

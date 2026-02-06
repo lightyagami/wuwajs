@@ -51,7 +51,7 @@ class RouletteModel extends ModelBase_1.ModelBase {
     };
   }
   IsExploreRouletteOpen(e = false) {
-    if (!ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(215)?.HasAnyTag(this.GetExploreRouletteBanTagIds()) && ModelManager_1.ModelManager.LevelFuncFlagModel.GetFuncFlagEnable(1)) {
+    if (!ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(217)?.HasAnyTag(this.GetExploreRouletteBanTagIds()) && ModelManager_1.ModelManager.LevelFuncFlagModel.GetFuncFlagEnable(1)) {
       return ModelManager_1.ModelManager.FunctionModel.IsOpen(10026);
     } else {
       if (e) {
@@ -64,13 +64,13 @@ class RouletteModel extends ModelBase_1.ModelBase {
     return ModelManager_1.ModelManager.FunctionModel.IsOpen(10056);
   }
   OnInit() {
-    this.VOm();
+    this.iFm();
     this.Y0o();
     this.AddEvents();
     return !(this.OnSettingExploreSkillIdList.length = 0);
   }
   OnClear() {
-    this.jOm();
+    this.rFm();
     this.RemoveEvents();
     return true;
   }
@@ -113,7 +113,7 @@ class RouletteModel extends ModelBase_1.ModelBase {
   GetCurrentFunctionRouletteListData() {
     return this.RouletteListDataMap.get(1);
   }
-  VOm() {
+  iFm() {
     this.RouletteListDataMap.clear();
     var e = new RouletteListDataExplore_1.RouletteListDataExplore();
     this.RouletteListDataMap.set(0, e);
@@ -125,7 +125,7 @@ class RouletteModel extends ModelBase_1.ModelBase {
       t.Init();
     }
   }
-  jOm() {
+  rFm() {
     for (const e of this.RouletteListDataMap.values()) {
       e.Clear();
     }
@@ -350,7 +350,7 @@ class RouletteModel extends ModelBase_1.ModelBase {
         }
       }
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRouletteSaveDataChange);
-      this.HOm();
+      this.oFm();
     }
   }
   UpdateRouletteDataByType(e, t) {
@@ -359,9 +359,9 @@ class RouletteModel extends ModelBase_1.ModelBase {
       Log_1.Log.Info("Phantom", 37, "轮盘列表数据", ["Type", e], ["List", o.RouletteIdListServer], ["ItemId", o.ExtraItemIdServer], ["EquipId", o.EquipExploreSkillIdServer]);
     }
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRouletteSaveDataChange);
-    this.HOm();
+    this.oFm();
   }
-  HOm() {
+  oFm() {
     var e = this.GetCurrentExploreRouletteListData();
     var t = e.GetEquipExploreSkillId();
     if (t !== 0 && t !== this.CurrentExploreSkillId) {

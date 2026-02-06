@@ -37,6 +37,9 @@ class KscEnv {
         this.OAd = KscEnv.KscSubsystem?.GetKSCWorld();
         KscEnv.R8d();
       }
+      UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "log LogKSC Verbose");
+      UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "bullet.kfc.enable 1");
+      UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "ksc.entity.kfc.enable 1");
       this.Mve();
       if (this.P0d) {
         this.KscWorld?.SetWorldAttr(1, this.P0d);

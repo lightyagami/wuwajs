@@ -1,21 +1,21 @@
 "use strict";
 
 var CharacterMorphComponent_1;
-var __decorate = this && this.__decorate || function (t, e, i, o) {
+var __decorate = this && this.__decorate || function (t, e, o, i) {
   var r;
   var h = arguments.length;
-  var s = h < 3 ? e : o === null ? o = Object.getOwnPropertyDescriptor(e, i) : o;
+  var s = h < 3 ? e : i === null ? i = Object.getOwnPropertyDescriptor(e, o) : i;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    s = Reflect.decorate(t, e, i, o);
+    s = Reflect.decorate(t, e, o, i);
   } else {
     for (var a = t.length - 1; a >= 0; a--) {
       if (r = t[a]) {
-        s = (h < 3 ? r(s) : h > 3 ? r(e, i, s) : r(e, i)) || s;
+        s = (h < 3 ? r(s) : h > 3 ? r(e, o, s) : r(e, o)) || s;
       }
     }
   }
   if (h > 3 && s) {
-    Object.defineProperty(e, i, s);
+    Object.defineProperty(e, o, s);
   }
   return s;
 };
@@ -39,6 +39,7 @@ const EventSystem_1 = require("../../../../../Common/Event/EventSystem");
 const ControllerHolder_1 = require("../../../../../Manager/ControllerHolder");
 const CombatLog_1 = require("../../../../../Utils/CombatLog");
 const CharacterNameDefines_1 = require("../../CharacterNameDefines");
+const CustomMovementDefine_1 = require("../Move/CustomMovementDefine");
 const CAPSULE_COMPONENT = "胶囊体组件";
 const CAPSULE_HALF_HEIGHT = "胶囊体半高";
 const CAPSULE_RADIUS = "胶囊体半径";
@@ -62,13 +63,14 @@ let CharacterMorphComponent = CharacterMorphComponent_1 = class CharacterMorphCo
     this.CRc = undefined;
     this.pRc = undefined;
     this.vRc = undefined;
-    this.cKm = undefined;
+    this.xYm = undefined;
     this.EIe = undefined;
     this.C6_ = undefined;
     this.Hte = undefined;
     this.Gce = undefined;
     this.Lie = undefined;
-    this.$if = undefined;
+    this.nnf = undefined;
+    this.CBg = undefined;
     this.HIu = undefined;
     this.$Iu = false;
     this.WIu = undefined;
@@ -90,11 +92,12 @@ let CharacterMorphComponent = CharacterMorphComponent_1 = class CharacterMorphCo
   }
   OnStart() {
     this.EIe = this.Entity.GetComponent(0);
-    this.C6_ = this.Entity.GetComponent(230);
+    this.C6_ = this.Entity.GetComponent(232);
     this.Hte = this.Entity.GetComponent(3);
-    this.Gce = this.Entity.GetComponent(187);
-    this.Lie = this.Entity.GetComponent(215);
-    this.$if = this.Entity.GetComponent(186);
+    this.Gce = this.Entity.GetComponent(189);
+    this.Lie = this.Entity.GetComponent(217);
+    this.nnf = this.Entity.GetComponent(188);
+    this.CBg = this.Entity.GetComponent(39);
     this.p6_();
     if (this.qQ_) {
       if (this.Lie) {
@@ -133,8 +136,8 @@ let CharacterMorphComponent = CharacterMorphComponent_1 = class CharacterMorphCo
     if (this.g6_) {
       var t;
       var e;
-      var i;
       var o;
+      var i;
       var r;
       var h = this.C6_?.GetFightInfo()?.MorphModelInfoMap;
       var s = new Map();
@@ -147,30 +150,30 @@ let CharacterMorphComponent = CharacterMorphComponent_1 = class CharacterMorphCo
             ModelId: 0
           });
         } else {
-          i = ModelUtil_1.ModelUtil.GetModelConfig(e);
-          o = h?.Get(t);
+          o = ModelUtil_1.ModelUtil.GetModelConfig(e);
+          i = h?.Get(t);
           r = {
             ModelId: e,
-            SkeletalMesh: ResourceSystem_1.ResourceSystem.GetLoadedAsset(i.网格体.ToAssetPathName(), UE.SkeletalMesh),
-            AnimClass: ResourceSystem_1.ResourceSystem.GetLoadedAsset(i.动画蓝图.ToAssetPathName(), UE.Class),
+            SkeletalMesh: ResourceSystem_1.ResourceSystem.GetLoadedAsset(o.网格体.ToAssetPathName(), UE.SkeletalMesh),
+            AnimClass: ResourceSystem_1.ResourceSystem.GetLoadedAsset(o.动画蓝图.ToAssetPathName(), UE.Class),
             ComponentFloatParams: new Map(),
             ComponentVectorParams: new Map()
           };
           if (t === 1) {
-            r.DtBaseMovementSetting = o?.DtBaseMovementSetting;
-            r.DtCameraConfig = o?.DtCameraConfig;
-            r.InputComponentClass = o?.InputComponentClass;
-            this.mZ_(r, o?.ComponentFloatParams);
-            this.fZ_(r, o?.ComponentVectorParams);
+            r.DtBaseMovementSetting = i?.DtBaseMovementSetting;
+            r.DtCameraConfig = i?.DtCameraConfig;
+            r.InputComponentClass = i?.InputComponentClass;
+            this.mZ_(r, i?.ComponentFloatParams);
+            this.fZ_(r, i?.ComponentVectorParams);
           }
           if (!r.SkeletalMesh) {
             if (Log_1.Log.CheckError()) {
-              Log_1.Log.Error("Battle", 67, "[CharacterMorphComponent]初始化资源有误", ["ModelId", e], ["MorphType", t], ["SkeletalMeshPath", i.网格体.ToAssetPathName()]);
+              Log_1.Log.Error("Battle", 67, "[CharacterMorphComponent]初始化资源有误", ["ModelId", e], ["MorphType", t], ["SkeletalMeshPath", o.网格体.ToAssetPathName()]);
             }
           }
           if (!r.AnimClass) {
             if (Log_1.Log.CheckError()) {
-              Log_1.Log.Error("Battle", 67, "[CharacterMorphComponent]初始化资源有误", ["ModelId", e], ["MorphType", t], ["AnimClassPath", i.动画蓝图.ToAssetPathName()]);
+              Log_1.Log.Error("Battle", 67, "[CharacterMorphComponent]初始化资源有误", ["ModelId", e], ["MorphType", t], ["AnimClassPath", o.动画蓝图.ToAssetPathName()]);
             }
           }
           s.set(t, r);
@@ -185,67 +188,67 @@ let CharacterMorphComponent = CharacterMorphComponent_1 = class CharacterMorphCo
       var e = this.C6_?.GetFightInfo()?.MorphModelInfoMap;
       if (e && e.Num() > 0) {
         var t;
-        var i = new Map();
+        var o = new Map();
         for (let t = 0; t < e.Num(); t++) {
-          var o;
+          var i;
           var r = e.GetKey(t);
           if (r === 0) {
             if (Log_1.Log.CheckDebug()) {
               Log_1.Log.Debug("Battle", 67, "[CharacterMorphComponent]不需要配置默认形态");
             }
-          } else if (o = e.Get(r)) {
-            if (o.ModelId !== 0) {
-              i.set(r, o.ModelId);
+          } else if (i = e.Get(r)) {
+            if (i.ModelId !== 0) {
+              o.set(r, i.ModelId);
             } else if (Log_1.Log.CheckDebug()) {
               Log_1.Log.Debug("Battle", 67, "[CharacterMorphComponent]多形态配置的模型Id为0", ["MorphType", r]);
             }
           }
         }
-        if (i.size > 0 && (t = this.EIe?.GetModelId() ?? 0) !== 0) {
-          i.set(0, t);
-          this.g6_ = i;
+        if (o.size > 0 && (t = this.EIe?.GetModelId() ?? 0) !== 0) {
+          o.set(0, t);
+          this.g6_ = o;
         }
       }
     }
   }
   mZ_(t, e) {
     if (e) {
-      var i = t.ComponentFloatParams;
+      var o = t.ComponentFloatParams;
       for (let t = 0; t < e.Num(); t++) {
-        var o = e.GetKey(t);
-        var r = e.Get(o);
-        var o = o.split(".");
-        if (r !== undefined && !(o.length < 2)) {
-          var h = o[0];
-          var o = o[1];
-          let t = i.get(h);
+        var i = e.GetKey(t);
+        var r = e.Get(i);
+        var i = i.split(".");
+        if (r !== undefined && !(i.length < 2)) {
+          var h = i[0];
+          var i = i[1];
+          let t = o.get(h);
           if (!t) {
             t = new Map();
-            i.set(h, t);
+            o.set(h, t);
           }
-          t.set(o, r);
+          t.set(i, r);
         }
       }
     }
   }
   fZ_(t, e) {
     if (e) {
-      var i = t.ComponentVectorParams;
+      var o = t.ComponentVectorParams;
       for (let t = 0; t < e.Num(); t++) {
-        var o = e.GetKey(t);
-        var r = e.Get(o);
-        var o = o.split(".");
-        if (r !== undefined && !(o.length < 2)) {
-          var h = o[0];
-          var o = o[1];
-          let t = i.get(h);
+        var i = e.GetKey(t);
+        var r = e.Get(i);
+        var i = i.split(".");
+        if (r !== undefined && !(i.length < 2)) {
+          var h = i[0];
+          var i = i[1];
+          let t = o.get(h);
           if (!t) {
             t = new Map();
-            i.set(h, t);
+            o.set(h, t);
           }
           h = Vector_1.Vector.Create();
           h.FromUeVector(r);
-          t.set(o, h);
+          t.set(i, h);
         }
       }
     }
@@ -280,36 +283,36 @@ let CharacterMorphComponent = CharacterMorphComponent_1 = class CharacterMorphCo
   IsMorphing() {
     return this.m6_ !== 0;
   }
-  HasComponentFloatParam(t, e, i) {
+  HasComponentFloatParam(t, e, o) {
     t = this.GetMorphData(t);
-    return !!t && t.ComponentFloatParams?.get(e)?.get(i) !== undefined;
+    return !!t && t.ComponentFloatParams?.get(e)?.get(o) !== undefined;
   }
-  SetComponentFloatParam(e, i, o, r) {
+  SetComponentFloatParam(e, o, i, r) {
     e = this.GetMorphData(e);
     if (e) {
       e = e.ComponentFloatParams;
-      let t = e?.get(i);
+      let t = e?.get(o);
       if (t === undefined) {
         t = new Map();
-        e?.set(i, t);
+        e?.set(o, t);
       }
-      t.set(o, r);
+      t.set(i, r);
     }
   }
-  HasComponentVectorParam(t, e, i) {
+  HasComponentVectorParam(t, e, o) {
     t = this.GetMorphData(t);
-    return !!t && t.ComponentVectorParams?.get(e)?.get(i) !== undefined;
+    return !!t && t.ComponentVectorParams?.get(e)?.get(o) !== undefined;
   }
-  SetComponentVectorParam(e, i, o, r) {
+  SetComponentVectorParam(e, o, i, r) {
     e = this.GetMorphData(e);
     if (e) {
       e = e.ComponentVectorParams;
-      let t = e?.get(i);
+      let t = e?.get(o);
       if (t === undefined) {
         t = new Map();
-        e?.set(i, t);
+        e?.set(o, t);
       }
-      t.set(o, r);
+      t.set(i, r);
     }
   }
   SetAssetElement(t, e) {
@@ -318,7 +321,7 @@ let CharacterMorphComponent = CharacterMorphComponent_1 = class CharacterMorphCo
     }
     this.gRc.set(t, e);
   }
-  AddMontage(i, o, r) {
+  AddMontage(o, i, r) {
     var h = this.vRc?.get(r);
     if (h) {
       if (this.CRc === undefined) {
@@ -329,7 +332,7 @@ let CharacterMorphComponent = CharacterMorphComponent_1 = class CharacterMorphCo
         t = new Map();
         this.CRc.set(h, t);
       }
-      t.set(i, o);
+      t.set(o, i);
       if (this.pRc === undefined) {
         this.pRc = new Map();
       }
@@ -338,7 +341,7 @@ let CharacterMorphComponent = CharacterMorphComponent_1 = class CharacterMorphCo
         e = new Map();
         this.pRc.set(h, e);
       }
-      e.set(i, r);
+      e.set(o, r);
     }
   }
   AddMorphMontagePath(t, e) {
@@ -348,14 +351,14 @@ let CharacterMorphComponent = CharacterMorphComponent_1 = class CharacterMorphCo
     this.vRc.set(t, e);
   }
   SetMontageSubPathMorphType(t, e) {
-    this.cKm ||= new Map();
-    this.cKm.set(t, e);
+    this.xYm ||= new Map();
+    this.xYm.set(t, e);
   }
   GetMontagePathMorphType(t) {
-    if (this.cKm) {
-      for (var [e, i] of this.cKm.entries()) {
+    if (this.xYm) {
+      for (var [e, o] of this.xYm.entries()) {
         if (t.includes(e)) {
-          return i;
+          return o;
         }
       }
     }
@@ -374,7 +377,7 @@ let CharacterMorphComponent = CharacterMorphComponent_1 = class CharacterMorphCo
   }
   SetMorphType(t) {
     var e;
-    var i;
+    var o;
     if (t !== this.m6_) {
       if (this.v6_(t)) {
         if (e = this.f6_?.get(t)) {
@@ -382,20 +385,26 @@ let CharacterMorphComponent = CharacterMorphComponent_1 = class CharacterMorphCo
             CharacterMorphComponent_1.KIu.Start();
             this.XIu();
             CombatLog_1.CombatLog.Info("Skill", this.Entity, "设置形态成功, 开始切换", ["MorphType", t]);
-            i = this.m6_;
+            o = this.m6_;
             this.m6_ = t;
             this.CW_ = e;
-            EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnBeforeCharacterMorphTypeChanged, this.Entity, t, i);
+            EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnBeforeCharacterMorphTypeChanged, this.Entity, t, o);
+            CharacterMorphComponent_1.A4g.Start();
             this.Hte?.ChangeMeshAnim(e.SkeletalMesh, e.AnimClass);
             this.EIe?.SetModelConfig(e.ModelId);
             this.Hte?.UpdateModelResPath();
+            CharacterMorphComponent_1.A4g.Stop();
+            CharacterMorphComponent_1.D4g.Start();
             this.pW_();
             this.YIu();
+            CharacterMorphComponent_1.D4g.Stop();
+            CharacterMorphComponent_1.U4g.Start();
             this.vW_();
             this.OQ_();
             this.gZ_();
-            EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnCharacterMorphTypeChanged, this.Entity, t, i);
-            EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnCharacterMorphTypeChanged, this.Entity, t, i);
+            CharacterMorphComponent_1.U4g.Stop();
+            EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnCharacterMorphTypeChanged, this.Entity, t, o);
+            EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnCharacterMorphTypeChanged, this.Entity, t, o);
             CharacterMorphComponent_1.KIu.Stop();
           } else if (Log_1.Log.CheckWarn()) {
             Log_1.Log.Warn("Battle", 67, "[CharacterMorphComponent]设置形态失败, 对应形态数据有误", ["MorphType", t], ["SkeletalMesh", e.SkeletalMesh], ["AnimClass", e.AnimClass]);
@@ -420,25 +429,25 @@ let CharacterMorphComponent = CharacterMorphComponent_1 = class CharacterMorphCo
   YIu() {
     var t;
     var e;
-    var i;
     var o;
+    var i;
     var r = this.Gce;
-    if (r && (o = (i = this.CW_?.ComponentFloatParams?.get(MOVE_COMPONENT))?.get(MOVE_MAX_STEP_HEIGHT), t = i?.get(MOVE_WALKABLE_FLOOR_ANGLE), e = i?.get(MOVE_MAINTAIN_HORIZONTAL_GROUND_VELOCITY), i = i?.get(MOVE_DEFAULT_WATER_MOVEMENT_MODE), this.m6_ !== 0 ? (o !== undefined && r.SetStepHeight(o), t !== undefined && r.SetWalkableFloorAngle(t)) : (r.ResetStepHeight(), r.ResetWalkableFloorAngle()), o = r.CharacterMovement) && (e !== undefined && (o.bMaintainHorizontalGroundVelocity = Boolean(e)), i !== undefined)) {
-      o.DefaultWaterMovementMode = i;
+    if (r && (i = (o = this.CW_?.ComponentFloatParams?.get(MOVE_COMPONENT))?.get(MOVE_MAX_STEP_HEIGHT), t = o?.get(MOVE_WALKABLE_FLOOR_ANGLE), e = o?.get(MOVE_MAINTAIN_HORIZONTAL_GROUND_VELOCITY), o = o?.get(MOVE_DEFAULT_WATER_MOVEMENT_MODE), this.m6_ !== 0 ? (i !== undefined && r.SetStepHeight(i), t !== undefined && r.SetWalkableFloorAngle(t)) : (r.ResetStepHeight(), r.ResetWalkableFloorAngle()), i = r.CharacterMovement) && (e !== undefined && (i.bMaintainHorizontalGroundVelocity = Boolean(e)), o !== undefined)) {
+      i.DefaultWaterMovementMode = o;
     }
   }
   gZ_() {
     var t;
     if (this.Hte?.Actor.Mesh && (t = this.CW_?.ComponentVectorParams?.get(MESH_COMPONENT)?.get(MESH_LOCATION))) {
-      this.$if?.SetOriginLocation(t);
+      this.nnf?.SetOriginLocation(t);
     }
   }
   vW_() {
     var e = this.Hte;
     if (e) {
       let t = 0;
-      var i;
       var o;
+      var i;
       var r;
       var h;
       var s = e.IsRoleAndCtrlByMe;
@@ -454,34 +463,34 @@ let CharacterMorphComponent = CharacterMorphComponent_1 = class CharacterMorphCo
           ControllerHolder_1.ControllerHolder.GameBudgetCenterRoleController.SetCenterOffset(Vector_1.Vector.ZeroVectorDouble);
         }
       } else {
-        o = (r = this.CW_?.ComponentFloatParams?.get(CAPSULE_COMPONENT))?.get(CAPSULE_HALF_HEIGHT);
-        r = r?.get(CAPSULE_RADIUS);
-        if (o !== undefined || r !== undefined) {
+        o = (h = this.CW_?.ComponentFloatParams?.get(CAPSULE_COMPONENT))?.get(CAPSULE_HALF_HEIGHT);
+        h = h?.get(CAPSULE_RADIUS);
+        if (o !== undefined || h !== undefined) {
           o = o ?? e.HalfHeight;
-          r = r ?? e.Radius;
-          if (o > 0 && r > 0) {
+          h = h ?? e.Radius;
+          if (o > 0 && h > 0) {
             if (IS_ENABLE_OPTIMIZE) {
-              e.SetRadiusAndHalfHeight(r, o, false, false);
+              e.SetRadiusAndHalfHeight(h, o, false, false);
               t = o - e.DefaultHalfHeight;
             } else {
-              e.SetRadiusAndHalfHeight(r, o, true, true);
+              e.SetRadiusAndHalfHeight(h, o, true, true);
             }
-            if (s && (h = e.DefaultHalfHeight, i = e.DefaultRadius, h > 0) && i > 0) {
-              this.WIu ||= Vector_1.Vector.Create(0, 0, -(o + r - h - i));
+            if (s && (i = e.DefaultHalfHeight, r = e.DefaultRadius, i > 0) && r > 0) {
+              this.WIu ||= Vector_1.Vector.Create(0, 0, -(o + h - i - r));
               ControllerHolder_1.ControllerHolder.GameBudgetCenterRoleController.SetCenterOffset(this.WIu.ToUeVector());
             }
             this.U3u = e.DefaultHalfHeight;
             this.D3u = e.DefaultRadius;
-            e.SetDefaultRadiusAndHalfHeight(r, o);
+            e.SetDefaultRadiusAndHalfHeight(h, o);
           } else if (Log_1.Log.CheckDebug()) {
-            Log_1.Log.Debug("Battle", 67, "[CharacterMorphComponent]更新胶囊体失败, 参数非法", ["Radius", r], ["HalfHeight", o]);
+            Log_1.Log.Debug("Battle", 67, "[CharacterMorphComponent]更新胶囊体失败, 参数非法", ["Radius", h], ["HalfHeight", o]);
           }
         }
       }
-      if (IS_ENABLE_OPTIMIZE && s && t !== 0 && ((h = e.Actor.CharacterMovement?.MovementMode) === 1 || h === 2 || h === 0)) {
+      if (IS_ENABLE_OPTIMIZE && s && (i = this.CBg.IsNearGround ? t - this.CBg.NearGroundDist : t) !== 0 && (r = e.Actor.CharacterMovement?.MovementMode, h = e.Actor.CharacterMovement?.CustomMovementMode, r === 1 || r === 2 || r === 0 || h === CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_FLOATING && this.CBg.IsNearGround)) {
         this.cz ||= Vector_1.Vector.Create();
         this.cz.FromUeVector(e.ActorLocation);
-        this.cz.Z += t;
+        this.cz.Z += i;
         e.SetActorLocation(this.cz.ToUeVector(), "角色形态改变修改胶囊体的位置修正优化");
       }
     }
@@ -520,7 +529,7 @@ let CharacterMorphComponent = CharacterMorphComponent_1 = class CharacterMorphCo
         this.JFu = true;
         ResourceSystem_1.ResourceSystem.LoadAsync(t, UE.Class, t => {
           var e = this.Hte?.Actor;
-          if (e && ((t = e.AddComponentByClass(t, false, MathUtils_1.MathUtils.DefaultTransform, false)).OwnerActor = e, this.Aia = t, this.m6_ === 1) && this.Entity.GetComponent(65)) {
+          if (e && ((t = e.AddComponentByClass(t, false, MathUtils_1.MathUtils.DefaultTransform, false)).OwnerActor = e, this.Aia = t, this.m6_ === 1) && this.Entity.GetComponent(67)) {
             ControllerHolder_1.ControllerHolder.InputController.GetInputLayer(this.Entity.Id, 1)?.SetBpInputComp(t);
           }
           this.JFu = false;
@@ -530,5 +539,8 @@ let CharacterMorphComponent = CharacterMorphComponent_1 = class CharacterMorphCo
   }
 };
 CharacterMorphComponent.KIu = Stats_1.Stat.Create("[CharacterMorphComponent]SetMorphType");
-CharacterMorphComponent = CharacterMorphComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(306)], CharacterMorphComponent);
+CharacterMorphComponent.A4g = Stats_1.Stat.Create("[CharacterMorphComponent]UpdateModel");
+CharacterMorphComponent.D4g = Stats_1.Stat.Create("[CharacterMorphComponent]UpdateMovement");
+CharacterMorphComponent.U4g = Stats_1.Stat.Create("[CharacterMorphComponent]UpdateComponents");
+CharacterMorphComponent = CharacterMorphComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(308)], CharacterMorphComponent);
 exports.CharacterMorphComponent = CharacterMorphComponent; //# sourceMappingURL=CharacterMorphComponent.js.map

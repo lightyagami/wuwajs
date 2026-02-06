@@ -15,30 +15,30 @@ const RegionalTerminalGameplayData_1 = require("./RegionalTerminalGameplayData")
 class RegionalTerminalFunctionData extends RegionalTerminalGameplayData_1.RegionalTerminalGameplayData {
   constructor() {
     super(...arguments);
-    this.XBf = () => {
+    this.GNf = () => {
       var a = [];
-      const r = ConfigManager_1.ConfigManager.FunctionConfig.GetFunctionCondition(this.GameplayId).OpenConditionId;
-      var e = ConfigManager_1.ConfigManager.ConditionConfig.GetGroupConditionIds(r);
-      for (const r of e) {
-        var t;
-        var n = ConfigManager_1.ConfigManager.ConditionConfig.GetConditionConfig(r);
+      const n = ConfigManager_1.ConfigManager.FunctionConfig.GetFunctionCondition(this.GameplayId).OpenConditionId;
+      var e = ConfigManager_1.ConfigManager.ConditionConfig.GetGroupConditionIds(n);
+      for (const n of e) {
+        var r;
+        var t = ConfigManager_1.ConfigManager.ConditionConfig.GetConditionConfig(n);
         let e = -1;
-        if (!StringUtils_1.StringUtils.IsEmpty(n.Description)) {
-          if (n.AccessId) {
-            t = ConfigManager_1.ConfigManager.GetWayConfig.GetConfigById(n.AccessId);
-            e = t.SkipName;
+        if (!StringUtils_1.StringUtils.IsEmpty(t.Description)) {
+          if (t.AccessId) {
+            r = ConfigManager_1.ConfigManager.GetWayConfig.GetConfigById(t.AccessId);
+            e = r.SkipName;
           }
           const o = {
-            ConditionId: r,
-            ConditionTextId: n.Description,
-            IsFinished: ModelManager_1.ModelManager.RegionalTerminalModel.GetFuncIdConditionFinishedState(this.GameplayId, r),
-            AccessId: n.AccessId,
+            ConditionId: n,
+            ConditionTextId: t.Description,
+            IsFinished: ModelManager_1.ModelManager.RegionalTerminalModel.GetFuncIdConditionFinishedState(this.GameplayId, n),
+            AccessId: t.AccessId,
             AccessType: e
           };
           a.push(o);
         }
       }
-      const o = new ConditionGroupData_1.ConditionGroupData(r, a);
+      const o = new ConditionGroupData_1.ConditionGroupData(n, a);
       UiManager_1.UiManager.OpenView("CommonConditionView", o);
     };
   }
@@ -47,11 +47,8 @@ class RegionalTerminalFunctionData extends RegionalTerminalGameplayData_1.Region
     e?.(true);
   }
   BarFunction() {
-    var e;
     if (this.GetLockState()) {
       ControllerHolder_1.ControllerHolder.RegionalTerminalController.OpenTerminalOverviewView(this.Id);
-    } else if ((e = this.GetGameplayConfig()).AreaForbiddenTips && !ModelManager_1.ModelManager.RegionalTerminalModel.CheckGameplayAreaAvailable(this.Id)) {
-      ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId(e.AreaForbiddenTips);
     } else {
       this.TerminalFunction();
     }
@@ -80,7 +77,7 @@ class RegionalTerminalFunctionData extends RegionalTerminalGameplayData_1.Region
     return {
       ShowLockPanel: a,
       ShowButton: !a,
-      LockClickFunc: this.XBf,
+      LockClickFunc: this.GNf,
       LockTxtId: e.OpenConditionId > 0 ? LevelGeneralCommons_1.LevelGeneralCommons.GetConditionGroupHintText(e.OpenConditionId) ?? "" : "",
       ButtonTxtId: this.GetGameplayConfig().UnlockButtonText
     };

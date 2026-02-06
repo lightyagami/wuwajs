@@ -23,8 +23,8 @@ class PhoneMsgModel extends ModelBase_1.ModelBase {
     this.IsChatShowInitDone = false;
     this.CurrentUsingChatDialogId = 0;
     this.CurrentUsingChatBgId = 0;
-    this.JTf = new Set();
-    this.ZTf = new Set();
+    this.LAf = new Set();
+    this.PAf = new Set();
     this.CurrentToBeNotifiedMsgArray = new Array();
     this.CurrentToBeNotifiedMsgInSmallHeadQueue = [];
     this.CurrentShowingMsgIdInSmallHead = 0;
@@ -44,27 +44,27 @@ class PhoneMsgModel extends ModelBase_1.ModelBase {
   }
   SetUnLockChatDialogIds(e) {
     for (const t of e) {
-      this.JTf.add(t);
+      this.LAf.add(t);
     }
   }
   SetUnLockChatBgIds(e) {
     for (const t of e) {
-      this.ZTf.add(t);
+      this.PAf.add(t);
     }
   }
   OnPhoneMsgDialogAndBgAddNotify(e) {
-    if (e.snf) {
-      this.SetUnLockChatDialogIds(e.snf);
+    if (e.baf) {
+      this.SetUnLockChatDialogIds(e.baf);
     }
-    if (e.hnf) {
-      this.SetUnLockChatBgIds(e.hnf);
+    if (e.waf) {
+      this.SetUnLockChatBgIds(e.waf);
     }
   }
   IsChatDialogUnlocked(e) {
-    return this.JTf.has(e);
+    return this.LAf.has(e);
   }
   IsChatBgUnlocked(e) {
-    return this.ZTf.has(e);
+    return this.PAf.has(e);
   }
   OnPhoneMsgUpdateNotify(e) {
     var t = e.x9n;
@@ -93,8 +93,8 @@ class PhoneMsgModel extends ModelBase_1.ModelBase {
         var n = new PhoneSystemDefine_1.PhoneMsgShortMsgData(a);
         this.Id2ShortMessagesDict.set(a, n);
         n.IsRead = g.qSs;
-        n.IsReceived = g.onf;
-        n.LatestProgress = g.rnf;
+        n.IsReceived = g.Iaf;
+        n.LatestProgress = g.Eaf;
         n.UnLockTime = g.yzs;
         var o = g.to1;
         for (const l of Object.keys(o)) {
@@ -115,14 +115,14 @@ class PhoneMsgModel extends ModelBase_1.ModelBase {
         }
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPhoneMsgAdd, a);
         switch (t) {
-          case Protocol_1.Aki.Protocol.cnf.Proto_None:
+          case Protocol_1.Aki.Protocol.Daf.Proto_None:
             if (Log_1.Log.CheckError()) {
               Log_1.Log.Error("PhoneSystem", 43, "短信通知原因为Proto_None, 请联系后端");
             }
             i = false;
             break;
-          case Protocol_1.Aki.Protocol.cnf.Proto_QuestFix:
-          case Protocol_1.Aki.Protocol.cnf.Proto_ActionRevert:
+          case Protocol_1.Aki.Protocol.Daf.Proto_QuestFix:
+          case Protocol_1.Aki.Protocol.Daf.Proto_ActionRevert:
             i = false;
         }
         if (i && s.TipType) {
@@ -199,7 +199,7 @@ class PhoneMsgModel extends ModelBase_1.ModelBase {
           for (const s of e) {
             if (s.Name === "ShowTalk") {
               for (const n of s.Params.TalkItems) {
-                if (!this.rbf(n)) {
+                if (!this.xAf(n)) {
                   var t = n.WhoId ? SpeakerById_1.configSpeakerById.GetConfig(n.WhoId) : undefined;
                   if (!t) {
                     return;
@@ -316,12 +316,12 @@ class PhoneMsgModel extends ModelBase_1.ModelBase {
     if (r) {
       if (t = r.find(e => e.Name === "SetPlotMode")) {
         t = t.Params;
-        this.mPf(t, i);
+        this.Zkf(t, i);
       }
       if (t = r.find(e => e.Name === "ShowTalk")) {
         r = t.Params;
         i.InitTalkItemData(r);
-        this.fPf(r, e, i);
+        this.e2f(r, e, i);
       }
       if (i.IsJumpToFirstOption && i.OptionSelectedMap.size === 0) {
         i.ReadIndex = i.ChatDataList.length - 1;
@@ -347,14 +347,14 @@ class PhoneMsgModel extends ModelBase_1.ModelBase {
     let a = "";
     for (let e = t.ReadIndex; e >= 0; e--) {
       var s = r[e];
-      if (s && s.ChatContentType !== 2 && (i = s, (a = this.kQf(i, t)) !== "")) {
+      if (s && s.ChatContentType !== 2 && (i = s, (a = this.lag(i, t)) !== "")) {
         break;
       }
     }
     if (a === "") {
       if (t.ReadIndex < 0) {
         for (const e of r) {
-          if (e && e.ChatContentType !== 2 && (i = e, (a = this.kQf(i, t)) !== "")) {
+          if (e && e.ChatContentType !== 2 && (i = e, (a = this.lag(i, t)) !== "")) {
             break;
           }
         }
@@ -364,7 +364,7 @@ class PhoneMsgModel extends ModelBase_1.ModelBase {
     }
     return a;
   }
-  kQf(e, t) {
+  lag(e, t) {
     let r = "";
     if (!e) {
       if (t = ModelManager_1.ModelManager.PhoneMsgModel.GetFirstMsgDataByShortMsgId(t.ShortMsgId)) {
@@ -388,31 +388,31 @@ class PhoneMsgModel extends ModelBase_1.ModelBase {
     }
     return r;
   }
-  mPf(e, t) {
+  Zkf(e, t) {
     e = e.PhoneMessageConfig;
     t.IsJumpToFirstOption = e?.IsJumpToFirstOption ?? false;
   }
-  fPf(e, t, r, i = 0) {
+  e2f(e, t, r, i = 0) {
     var a = e.TalkItems;
     let s = i;
     while (s >= 0 && s < a.length) {
-      s = this.ebf(e, t, r, s);
+      s = this.AAf(e, t, r, s);
     }
     if (!r.IsLastOption()) {
-      this.tbf(t, r);
+      this.DAf(t, r);
     }
   }
-  ebf(e, t, r, i = 0) {
+  AAf(e, t, r, i = 0) {
     var e = e.TalkItems;
     var a = e[i];
     let s = undefined;
     let n = -1;
     let o = false;
-    if (this.rbf(a)) {
+    if (this.xAf(a)) {
       s = this.CreateSystemTipChatData(a);
-    } else if (this.nDf(a)) {
+    } else if (this.Oqf(a)) {
       if (r.OptionSelectedMap.has(i)) {
-        n = this.ibf(e, i, r);
+        n = this.UAf(e, i, r);
       } else {
         s = this.CreateSelfPhoneMsgChatData(a, true);
         o = true;
@@ -435,13 +435,13 @@ class PhoneMsgModel extends ModelBase_1.ModelBase {
         case "FinishTalk":
           return -1;
         case "JumpTalk":
-          return this.B4f(h, r);
+          return this.hWf(h, r);
       }
     }
     var _ = a.Options;
     if (_ && _.length > 0) {
       if (r.OptionSelectedMap.has(i)) {
-        return this.ibf(e, i, r);
+        return this.UAf(e, i, r);
       }
       _ = this.CreateSelfPhoneMsgChatData(a, true);
       if (_) {
@@ -451,7 +451,7 @@ class PhoneMsgModel extends ModelBase_1.ModelBase {
     }
     return i + 1;
   }
-  ibf(e, t, r) {
+  UAf(e, t, r) {
     var i = t;
     var e = e[t].Options;
     if (!e) {
@@ -469,7 +469,7 @@ class PhoneMsgModel extends ModelBase_1.ModelBase {
       }
       t = e.Actions.find(e => e.Name === "JumpTalk");
       if (t) {
-        return this.B4f(t, r);
+        return this.hWf(t, r);
       }
       i = ConfigManager_1.ConfigManager.PhoneMsgConfig.GetPhoneMsgConfig(r.ShortMsgId);
       if (Log_1.Log.CheckError()) {
@@ -478,13 +478,13 @@ class PhoneMsgModel extends ModelBase_1.ModelBase {
     }
     return -1;
   }
-  tbf(e, t) {
-    e = this.obf(e, t);
+  DAf(e, t) {
+    e = this.BAf(e, t);
     if (e) {
       t.ChatDataList.push(e);
     }
   }
-  B4f(e, t) {
+  hWf(e, t) {
     e = t.IdToIndexMap.get(e.Params.TalkId);
     if (e === undefined) {
       if (Log_1.Log.CheckError()) {
@@ -501,40 +501,40 @@ class PhoneMsgModel extends ModelBase_1.ModelBase {
     if (!(t < 0)) {
       if (r = e.ShowTalkConfig) {
         e.ChatDataList.splice(e.ChatDataList.length - 1, 1);
-        if (!((t = this.ibf(r.TalkItems, t, e)) < 0)) {
+        if (!((t = this.UAf(r.TalkItems, t, e)) < 0)) {
           i = ConfigManager_1.ConfigManager.PhoneMsgConfig.GetPhoneMsgConfig(e.ShortMsgId);
-          this.fPf(r, i, e, t);
+          this.e2f(r, i, e, t);
         }
       }
     }
   }
-  rbf(e) {
+  xAf(e) {
     return e.Type === "PhoneMessage" && e.MessageType.Type === "SystemTip";
   }
-  nDf(e) {
+  Oqf(e) {
     return e.Type === "Option" || e.Type === "SystemOption";
   }
-  Uaf(e) {
+  s1f(e) {
     if (e = e && (e ? SpeakerById_1.configSpeakerById.GetConfig(e) : undefined)) {
       return [PublicUtil_1.PublicUtil.GetConfigTextByTable(0, e.Id) ?? "", e.HeadIconAsset];
     } else {
       return ["", ""];
     }
   }
-  nbf(e, t, r = false) {
+  kAf(e, t, r = false) {
     if (r) {
-      this.k4f(e, t);
+      this.lWf(e, t);
     } else {
       switch (t.Type) {
         case "Talk":
-          this.q4f(e, t);
+          this._Wf(e, t);
           break;
         case "PhoneMessage":
-          this.O4f(e, t);
+          this.uWf(e, t);
       }
     }
   }
-  k4f(t, r) {
+  lWf(t, r) {
     r = r.Options;
     if (r && r.length !== 0) {
       r = r[0];
@@ -555,12 +555,12 @@ class PhoneMsgModel extends ModelBase_1.ModelBase {
       Log_1.Log.Error("PhoneSystem", 43, "[短信剧本配置ERROR] 选项配置中找不到选项");
     }
   }
-  q4f(e, t) {
+  _Wf(e, t) {
     e.IsSendError = t.Style?.Type === "PhoneSendError";
     e.ContentStr = PublicUtil_1.PublicUtil.GetFlowConfigLocalText(t.TidTalk) ?? "";
     this.SetDialogChatData(e, t);
   }
-  O4f(e, t) {
+  uWf(e, t) {
     var r = t;
     e.IsSendError = r.Style?.Type === "PhoneSendError";
     switch (r.MessageType.Type) {
@@ -574,10 +574,10 @@ class PhoneMsgModel extends ModelBase_1.ModelBase {
   CreateOtherPhoneMsgChatData(e) {
     var t = new PhoneSystemDefine_1.PhoneMsgChatData(0);
     t.TalkItem = e;
-    var r = this.Uaf(e.WhoId);
+    var r = this.s1f(e.WhoId);
     t.SpeakerName = r[0];
     t.SpeakerHeadIconPath = r[1];
-    this.nbf(t, e);
+    this.kAf(t, e);
     return t;
   }
   CreateSelfPhoneMsgChatData(e, t = false) {
@@ -588,7 +588,7 @@ class PhoneMsgModel extends ModelBase_1.ModelBase {
     var i = ConfigManager_1.ConfigManager.SkinConfig.GetRoleSkinConfig(i);
     r.SpeakerHeadIconPath = i.RoleHeadIconCircle;
     r.SpeakerName = ModelManager_1.ModelManager.FunctionModel.GetPlayerName();
-    this.nbf(r, e, t);
+    this.kAf(r, e, t);
     return r;
   }
   CreateSystemTipChatData(e) {
@@ -618,7 +618,7 @@ class PhoneMsgModel extends ModelBase_1.ModelBase {
       e.ContentNum = t.AttachmentId;
     }
   }
-  obf(e, t) {
+  BAf(e, t) {
     if (e.FinallPopType) {
       var r = new PhoneSystemDefine_1.PhoneMsgChatData(2);
       switch (e.FinallPopType) {

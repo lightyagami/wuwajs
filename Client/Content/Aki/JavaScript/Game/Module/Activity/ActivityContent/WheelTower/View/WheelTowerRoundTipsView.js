@@ -11,7 +11,7 @@ class WheelTowerRoundTipsView extends UiTickViewBase_1.UiTickViewBase {
   constructor() {
     super(...arguments);
     this.mNe = 0;
-    this.n9f = false;
+    this.hZf = false;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIArtText], [1, UE.UIItem], [2, UE.UIText], [3, UE.UIText]];
@@ -25,10 +25,10 @@ class WheelTowerRoundTipsView extends UiTickViewBase_1.UiTickViewBase {
     this.mNe = SHOW_TIME_MS;
   }
   OnTick(e) {
-    if (!this.n9f) {
+    if (!this.hZf) {
       this.mNe -= e;
       if (this.mNe <= 0) {
-        this.n9f = true;
+        this.hZf = true;
         this.CloseMe();
       }
     }

@@ -30,10 +30,10 @@ class WeeklyRoguePhantomRewardView extends UiViewBase_1.UiViewBase {
     this.InfoData = undefined;
     this.gal = undefined;
     this.pal = undefined;
-    this.Hbf = -1;
+    this.mDf = -1;
     this.jWt = () => {
       var e = new WeeklyRoguePhantomRewardItem_1.WeeklyRoguePhantomRewardItem();
-      e.IsSelectOnCb = this.jbf;
+      e.IsSelectOnCb = this.fDf;
       e.OnToggleStateChangeFunction = this.Yai;
       return e;
     };
@@ -44,9 +44,9 @@ class WeeklyRoguePhantomRewardView extends UiViewBase_1.UiViewBase {
     this.lil = () => {
       HelpController_1.HelpController.OpenHelpById(HELP_ID);
     };
-    this.jbf = e => this.Hbf === e;
+    this.fDf = e => this.mDf === e;
     this.Yai = (e, t, i, r) => {
-      this.Hbf = r ? i : -1;
+      this.mDf = r ? i : -1;
       this.RefreshState();
     };
   }
@@ -110,7 +110,7 @@ class WeeklyRoguePhantomRewardView extends UiViewBase_1.UiViewBase {
   }
   val(e) {
     var t;
-    return this.Hbf !== -1 && (t = e * this.InfoData.SinglePowerCost, ModelManager_1.ModelManager.PowerModel.IsPowerEnough(t) ? (this.InfoData.RewardCallBack(e, this.Hbf), this.CloseMe(), true) : (e = ConfigManager_1.ConfigManager.TextConfig.GetTextById("ReceiveLevelPlayPowerNotEnough"), ScrollingTipsController_1.ScrollingTipsController.ShowTipsByText(e), ControllerHolder_1.ControllerHolder.PowerController.OpenPowerView(2, ModelManager_1.ModelManager.PowerModel.GetCurrentNeedPower(t)), false));
+    return this.mDf !== -1 && (t = e * this.InfoData.SinglePowerCost, ModelManager_1.ModelManager.PowerModel.IsPowerEnough(t) ? (this.InfoData.RewardCallBack(e, this.mDf), this.CloseMe(), true) : (e = ConfigManager_1.ConfigManager.TextConfig.GetTextById("ReceiveLevelPlayPowerNotEnough"), ScrollingTipsController_1.ScrollingTipsController.ShowTipsByText(e), ControllerHolder_1.ControllerHolder.PowerController.OpenPowerView(2, ModelManager_1.ModelManager.PowerModel.GetCurrentNeedPower(t)), false));
   }
   async fal() {
     this.fea = new PowerCurrencyItem_1.PowerCurrencyItem();
@@ -136,13 +136,13 @@ class WeeklyRoguePhantomRewardView extends UiViewBase_1.UiViewBase {
   }
   RefreshState() {
     this.RefreshStateTxt();
-    var e = this.Hbf !== -1;
+    var e = this.mDf !== -1;
     this.gal?.SetIsEnable(e);
     this.pal?.SetIsEnable(e);
     this.PhantomLoopScrollView.RefreshAllGridProxies();
   }
   RefreshStateTxt() {
-    var e = [1, this.Hbf === -1 ? 0 : 1, 1];
+    var e = [1, this.mDf === -1 ? 0 : 1, 1];
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(3), "Text_SelectRewardFromPool_Text", ...e);
   }
 }

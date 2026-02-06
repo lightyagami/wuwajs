@@ -38,7 +38,7 @@ class InventoryModel extends ModelBase_1.ModelBase {
     this.dWt = new Map();
     this.$ci = new Map();
     this.TBd = new Map();
-    this.z5f = new Map();
+    this.NQf = new Map();
     this.Yci = new Map();
     this.Jci = new Map();
     this.Zci = undefined;
@@ -169,24 +169,24 @@ class InventoryModel extends ModelBase_1.ModelBase {
   ami(e) {
     this.Jci.delete(e);
   }
-  J5f(e) {
+  VQf(e) {
     var t = e.GetType();
-    let a = this.z5f.get(t);
+    let a = this.NQf.get(t);
     if (!a) {
       a = new Set();
-      this.z5f.set(t, a);
+      this.NQf.set(t, a);
     }
     a.add(e);
   }
-  Z5f(e) {
+  HQf(e) {
     var t = e.GetType();
-    var t = this.z5f.get(t);
+    var t = this.NQf.get(t);
     if (t) {
       t.delete(e);
     }
   }
-  eVf(e) {
-    this.z5f.delete(e);
+  jQf(e) {
+    this.NQf.delete(e);
   }
   NewCommonItemData(e, t, a = 0, r) {
     t = new CommonItemData_1.CommonItemData(e, a, t, 0, r);
@@ -194,7 +194,7 @@ class InventoryModel extends ModelBase_1.ModelBase {
     if (!(n = n || new Map()).get(a)) {
       n.set(a, t);
       this.Xci.set(e, n);
-      this.J5f(t);
+      this.VQf(t);
       this.imi(t);
       this.nmi(t);
       this.hmi(t);
@@ -210,7 +210,7 @@ class InventoryModel extends ModelBase_1.ModelBase {
       }
       this.omi(a);
       this.smi(a);
-      this.Z5f(a);
+      this.HQf(a);
     }
   }
   RemoveCommonItemDataAndSaveNewList(e) {
@@ -396,7 +396,7 @@ class InventoryModel extends ModelBase_1.ModelBase {
         var t = r.GetType();
         this.ami(e);
         this.rmi(t);
-        this.eVf(t);
+        this.jQf(t);
       }
     }
     this.Xci.clear();
@@ -435,7 +435,7 @@ class InventoryModel extends ModelBase_1.ModelBase {
     this.ClearCalabashSkinItemData();
     this.Yci.clear();
     this.Jci.clear();
-    this.z5f.clear();
+    this.NQf.clear();
   }
   GetAttributeItemData(e) {
     let t = this.GetWeaponItemData(e);
@@ -509,7 +509,7 @@ class InventoryModel extends ModelBase_1.ModelBase {
     return e;
   }
   GetCommonItemByItemType(e) {
-    e = this.z5f.get(e);
+    e = this.NQf.get(e);
     if (e) {
       return Array.from(e);
     } else {
@@ -657,7 +657,9 @@ class InventoryModel extends ModelBase_1.ModelBase {
       case 18:
         return this.bBd(e);
       case 21:
-        return this.Ekf(e);
+        return this.p3f(e);
+      case 24:
+        return this.S1g(e);
       default:
         return this.GetCommonItemCount(e, t);
     }
@@ -718,7 +720,7 @@ class InventoryModel extends ModelBase_1.ModelBase {
   dGc(e) {
     return ModelManager_1.ModelManager.FlySkinModel?.GetFlySkinItemCount(e) ?? 0;
   }
-  Ekf(e) {
+  p3f(e) {
     e = ModelManager_1.ModelManager.MotorcycleDiyModel.GetStickerState(e);
     if (e === 1 || e === 2) {
       return 1;
@@ -763,6 +765,13 @@ class InventoryModel extends ModelBase_1.ModelBase {
       }
     }
     return 0;
+  }
+  S1g(e) {
+    if (ModelManager_1.ModelManager.FurnitureModel.GetIsFurnitureUnlockById(e)) {
+      return 1;
+    } else {
+      return 0;
+    }
   }
   TryAddNewCommonItem(e, t = 0) {
     if (t !== 0) {

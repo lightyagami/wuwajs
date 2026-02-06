@@ -63,6 +63,9 @@ class WeaponConf {
   get BreachId() {
     return this.breachid();
   }
+  get StandAnim() {
+    return GameUtils_1.GameUtils.ConvertToArray(this.standanimLength(), this.standanim, this);
+  }
   get Desc() {
     return this.desc();
   }
@@ -304,8 +307,27 @@ class WeaponConf {
       return 0;
     }
   }
+  GetStandanimAt(t) {
+    return this.standanim(t);
+  }
+  standanim(t, i) {
+    var s = this.J7.__offset(this.z7, 38);
+    var s = s ? this.J7.__string(this.J7.__vector(this.z7 + s) + t * 4, i) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
+    }
+    return s;
+  }
+  standanimLength() {
+    var t = this.J7.__offset(this.z7, 38);
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
   desc(t) {
-    var i = this.J7.__offset(this.z7, 38);
+    var i = this.J7.__offset(this.z7, 40);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -316,7 +338,7 @@ class WeaponConf {
     return this.descparams(t);
   }
   descparams(t, i) {
-    var s = this.J7.__offset(this.z7, 40);
+    var s = this.J7.__offset(this.z7, 42);
     if (s) {
       return (i || new StringArray_1.StringArray()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
     } else {
@@ -324,7 +346,7 @@ class WeaponConf {
     }
   }
   descparamsLength() {
-    var t = this.J7.__offset(this.z7, 40);
+    var t = this.J7.__offset(this.z7, 42);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -332,14 +354,6 @@ class WeaponConf {
     }
   }
   typedescription(t) {
-    var i = this.J7.__offset(this.z7, 42);
-    var i = i ? this.J7.__string(this.z7 + i, t) : null;
-    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(i);
-    }
-    return i;
-  }
-  attributesdescription(t) {
     var i = this.J7.__offset(this.z7, 44);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -347,7 +361,7 @@ class WeaponConf {
     }
     return i;
   }
-  bgdescription(t) {
+  attributesdescription(t) {
     var i = this.J7.__offset(this.z7, 46);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -355,7 +369,7 @@ class WeaponConf {
     }
     return i;
   }
-  icon(t) {
+  bgdescription(t) {
     var i = this.J7.__offset(this.z7, 48);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -363,7 +377,7 @@ class WeaponConf {
     }
     return i;
   }
-  iconmiddle(t) {
+  icon(t) {
     var i = this.J7.__offset(this.z7, 50);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -371,7 +385,7 @@ class WeaponConf {
     }
     return i;
   }
-  iconsmall(t) {
+  iconmiddle(t) {
     var i = this.J7.__offset(this.z7, 52);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -379,7 +393,7 @@ class WeaponConf {
     }
     return i;
   }
-  mesh(t) {
+  iconsmall(t) {
     var i = this.J7.__offset(this.z7, 54);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -387,8 +401,16 @@ class WeaponConf {
     }
     return i;
   }
+  mesh(t) {
+    var i = this.J7.__offset(this.z7, 56);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
   maxcapcity() {
-    var t = this.J7.__offset(this.z7, 56);
+    var t = this.J7.__offset(this.z7, 58);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -399,7 +421,7 @@ class WeaponConf {
     return this.itemaccess(t);
   }
   itemaccess(t) {
-    var i = this.J7.__offset(this.z7, 58);
+    var i = this.J7.__offset(this.z7, 60);
     if (i) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
@@ -407,7 +429,7 @@ class WeaponConf {
     }
   }
   itemaccessLength() {
-    var t = this.J7.__offset(this.z7, 58);
+    var t = this.J7.__offset(this.z7, 60);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -415,7 +437,7 @@ class WeaponConf {
     }
   }
   itemaccessArray() {
-    var t = this.J7.__offset(this.z7, 58);
+    var t = this.J7.__offset(this.z7, 60);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -423,7 +445,7 @@ class WeaponConf {
     }
   }
   obtainedshow() {
-    var t = this.J7.__offset(this.z7, 60);
+    var t = this.J7.__offset(this.z7, 62);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -431,7 +453,7 @@ class WeaponConf {
     }
   }
   obtainedshowdescription(t) {
-    var i = this.J7.__offset(this.z7, 62);
+    var i = this.J7.__offset(this.z7, 64);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -439,7 +461,7 @@ class WeaponConf {
     return i;
   }
   numlimit() {
-    var t = this.J7.__offset(this.z7, 64);
+    var t = this.J7.__offset(this.z7, 66);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -447,11 +469,11 @@ class WeaponConf {
     }
   }
   showinbag() {
-    var t = this.J7.__offset(this.z7, 66);
+    var t = this.J7.__offset(this.z7, 68);
     return !t || !!this.J7.readInt8(this.z7 + t);
   }
   sortindex() {
-    var t = this.J7.__offset(this.z7, 68);
+    var t = this.J7.__offset(this.z7, 70);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -459,7 +481,7 @@ class WeaponConf {
     }
   }
   resonanceicon(t) {
-    var i = this.J7.__offset(this.z7, 70);
+    var i = this.J7.__offset(this.z7, 72);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -467,7 +489,7 @@ class WeaponConf {
     return i;
   }
   hiddentime() {
-    var t = this.J7.__offset(this.z7, 72);
+    var t = this.J7.__offset(this.z7, 74);
     if (t) {
       return this.J7.readFloat32(this.z7 + t);
     } else {
@@ -475,11 +497,11 @@ class WeaponConf {
     }
   }
   destructible() {
-    var t = this.J7.__offset(this.z7, 74);
+    var t = this.J7.__offset(this.z7, 76);
     return !!t && !!this.J7.readInt8(this.z7 + t);
   }
   reddotdisablerule() {
-    var t = this.J7.__offset(this.z7, 76);
+    var t = this.J7.__offset(this.z7, 78);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -487,7 +509,7 @@ class WeaponConf {
     }
   }
   handbooktrialid() {
-    var t = this.J7.__offset(this.z7, 78);
+    var t = this.J7.__offset(this.z7, 80);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {

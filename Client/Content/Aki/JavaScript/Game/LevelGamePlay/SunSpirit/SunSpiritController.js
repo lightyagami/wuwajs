@@ -18,11 +18,14 @@ const EventSystem_1 = require("../../Common/Event/EventSystem");
 const Global_1 = require("../../Global");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
-const UiManager_1 = require("../../Ui/UiManager");
+const UiLayerType_1 = require("../../Ui/Define/UiLayerType");
+const UiLayer_1 = require("../../Ui/UiLayer");
 const WaitEntityTask_1 = require("../../World/Define/WaitEntityTask");
 const SunSpiritCrowdPerform_1 = require("./SunSpiritPerform/SunSpiritCrowdPerform");
 const SunSpiritFlyingToGearState_1 = require("./SunSpiritState/SunSpiritFlyingToGearState");
 const SunSpiritFlyingToPlayerState_1 = require("./SunSpiritState/SunSpiritFlyingToPlayerState");
+const SunSpiritHintView_1 = require("./View/SunSpiritHintView");
+const SunSpiritLauncherHintView_1 = require("./View/SunSpiritLauncherHintView");
 const DEBUG_KEY = "SunSpirit";
 const TICK_INTERVAL = 33;
 const ENABLE_TAGS = [1802753086];
@@ -31,10 +34,10 @@ class SunSpiritController extends ControllerBase_1.ControllerBase {
     return !!ModelManager_1.ModelManager.SundryModel?.GetModuleDebugLevel(DEBUG_KEY);
   }
   static OnInit() {
-    Net_1.Net.Register(24472, this.Xnm);
-    Net_1.Net.Register(29036, this.Ynm);
-    Net_1.Net.Register(28576, this.znm);
-    Net_1.Net.Register(20576, this.Jnm);
+    Net_1.Net.Register(19989, this.Xnm);
+    Net_1.Net.Register(28132, this.Ynm);
+    Net_1.Net.Register(28229, this.znm);
+    Net_1.Net.Register(17440, this.Jnm);
     if (Info_1.Info.IsBuildDevelopmentOrDebug) {
       ModelManager_1.ModelManager.SundryModel?.ChangeModuleDebugLevel(DEBUG_KEY, 1);
     }
@@ -44,97 +47,112 @@ class SunSpiritController extends ControllerBase_1.ControllerBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnBattleStateChanged, this.Zpe);
     return true;
   }
-  static I$m() {
-    var e;
-    var t = ModelManager_1.ModelManager.SunSpiritModel.GetIsSunSpiritEnable();
-    if (t) {
-      if (e = ModelManager_1.ModelManager.SunSpiritModel?.GetSunSpiritConfig().CrowdAiConfig) {
-        ControllerHolder_1.ControllerHolder.CrowdAiController.EnableCrowdAiSystemByConfigAsset(e);
-      } else {
-        if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("SunSpirit", 39, "日灵: 集群启用失败，日灵集群配置获取不到");
+  static SQm() {
+    const i = ModelManager_1.ModelManager.SunSpiritModel.GetIsSunSpiritEnable();
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("SunSpirit", 39, "日灵系统开启状态更新", ["NewEnable", i]);
+    }
+    if (i) {
+      ModelManager_1.ModelManager.SunSpiritModel.LoadAndInitSunSpiritConfig(false, e => {
+        if (e) {
+          if (e = ModelManager_1.ModelManager.SunSpiritModel?.GetSunSpiritConfig().CrowdAiConfig) {
+            ControllerHolder_1.ControllerHolder.CrowdAiController.EnableCrowdAiSystemByConfigAsset(e);
+          } else {
+            if (Log_1.Log.CheckError()) {
+              Log_1.Log.Error("SunSpirit", 39, "日灵: 集群启用失败，日灵集群配置获取不到");
+            }
+            ControllerHolder_1.ControllerHolder.CrowdAiController.EnableCrowdAiSystemByConfigPath();
+          }
+          this.MQm(true);
+          this.w0f();
+          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSunSpiritEnableUpdated, i);
+        } else if (Log_1.Log.CheckWarn()) {
+          Log_1.Log.Warn("SunSpirit", 39, "日灵系统开启失败，加载并初始化SunSpiritConfig时被中断");
         }
-        ControllerHolder_1.ControllerHolder.CrowdAiController.EnableCrowdAiSystemByConfigPath();
-      }
+      });
     } else {
       ControllerHolder_1.ControllerHolder.CrowdAiController.DisableCrowdAiSystem();
-    }
-    this.T$m(true);
-    if (t) {
-      this.AZm();
-    } else {
-      this.DZm();
-    }
-    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSunSpiritEnableUpdated, t);
-  }
-  static AZm() {
-    if (!UiManager_1.UiManager.IsViewOpen("SunSpiritHintView")) {
-      UiManager_1.UiManager.OpenView("SunSpiritHintView");
-    }
-    if (!UiManager_1.UiManager.IsViewOpen("SunSpiritLauncherHintView")) {
-      UiManager_1.UiManager.OpenView("SunSpiritLauncherHintView");
+      ModelManager_1.ModelManager.SunSpiritModel?.ClearAndReleaseSunSpiritConfig();
+      this.MQm(true);
+      this.L0f();
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSunSpiritEnableUpdated, i);
     }
   }
-  static DZm() {
-    if (UiManager_1.UiManager.IsViewOpen("SunSpiritHintView")) {
-      UiManager_1.UiManager.CloseView("SunSpiritHintView");
+  static w0f() {
+    if (!this.CNg) {
+      this.CNg = new SunSpiritHintView_1.SunSpiritHintView();
+      this.CNg.CreateByResourceIdAsync("UiItem_LaHaiLuoRiLing", UiLayer_1.UiLayer.GetLayerRootUiItem(UiLayerType_1.ELayerType.HUD));
     }
-    if (UiManager_1.UiManager.IsViewOpen("SunSpiritLauncherHintView")) {
-      UiManager_1.UiManager.CloseView("SunSpiritLauncherHintView");
+    if (!this.pNg) {
+      this.pNg = new SunSpiritLauncherHintView_1.SunSpiritLauncherHintView();
+      this.pNg.CreateByResourceIdAsync("UiItem_LaHaiLuoRiLing", UiLayer_1.UiLayer.GetLayerRootUiItem(UiLayerType_1.ELayerType.HUD));
     }
   }
-  static b$m() {
-    var t = ModelManager_1.ModelManager.CreatureModel?.GetPlayerId();
-    if (t) {
+  static L0f() {
+    if (this.CNg) {
+      this.CNg.Destroy();
+      this.CNg = undefined;
+    }
+    if (this.pNg) {
+      this.pNg.Destroy();
+      this.pNg = undefined;
+    }
+  }
+  static EQm() {
+    var i = ModelManager_1.ModelManager.CreatureModel?.GetPlayerId();
+    if (i) {
       let e = false;
-      for (const o of ENABLE_TAGS) {
-        if (e ||= ControllerHolder_1.ControllerHolder.FormationDataController.HasPlayerTag(t, o, true)) {
+      for (const t of ENABLE_TAGS) {
+        if (e ||= ControllerHolder_1.ControllerHolder.FormationDataController.HasPlayerTag(i, t, true)) {
           break;
         }
       }
-      var i = ModelManager_1.ModelManager.SunSpiritModel.GetIsSunSpiritEnable();
-      if (i !== e) {
-        ModelManager_1.ModelManager.SunSpiritModel.SetIsSunSpiritEnable(e);
-      }
-      var r = ModelManager_1.ModelManager.SunSpiritModel.GetIsSunSpiritEnable();
-      if (i !== r) {
-        this.I$m();
-      }
+      this.SetSunSpiritEnable(e);
+    }
+  }
+  static SetSunSpiritEnable(e) {
+    var i = ModelManager_1.ModelManager.SunSpiritModel.GetIsSunSpiritEnable();
+    if (i !== e) {
+      ModelManager_1.ModelManager.SunSpiritModel.SetIsSunSpiritEnable(e);
+    }
+    var e = ModelManager_1.ModelManager.SunSpiritModel.GetIsSunSpiritEnable();
+    if (i !== e) {
+      this.SQm();
     }
   }
   static SetGmOverrideSunSpiritEnable(e) {
-    var t = ModelManager_1.ModelManager.SunSpiritModel.GetIsSunSpiritEnable();
+    var i = ModelManager_1.ModelManager.SunSpiritModel.GetIsSunSpiritEnable();
     ModelManager_1.ModelManager.SunSpiritModel.GmOverrideIsSunSpiritEnable = e;
     ModelManager_1.ModelManager.SunSpiritModel.IsUsingGmOverrideSunSpiritEnable = true;
     var e = ModelManager_1.ModelManager.SunSpiritModel.GetIsSunSpiritEnable();
-    if (t !== e) {
-      this.I$m();
+    if (i !== e) {
+      this.SQm();
     }
   }
   static ClearGmOverrideSunSpiritEnable() {
     var e = ModelManager_1.ModelManager.SunSpiritModel.GetIsSunSpiritEnable();
     ModelManager_1.ModelManager.SunSpiritModel.GmOverrideIsSunSpiritEnable = false;
     ModelManager_1.ModelManager.SunSpiritModel.IsUsingGmOverrideSunSpiritEnable = false;
-    var t = ModelManager_1.ModelManager.SunSpiritModel.GetIsSunSpiritEnable();
-    if (e !== t) {
-      this.I$m();
+    var i = ModelManager_1.ModelManager.SunSpiritModel.GetIsSunSpiritEnable();
+    if (e !== i) {
+      this.SQm();
     }
   }
-  static T$m(e) {
-    this.R$m.length = 0;
-    ModelManager_1.ModelManager.SunSpiritModel?.GetAllSunSpiritDataByPlayerIdAndAreaId(ModelManager_1.ModelManager.CreatureModel?.GetPlayerId(), ModelManager_1.ModelManager.AreaModel?.AreaInfo?.AreaId, true, undefined, this.R$m);
-    for (const t of this.R$m) {
-      t.RefreshSunSpiritStateByCachedProto(e);
+  static MQm(e) {
+    this.IQm.length = 0;
+    ModelManager_1.ModelManager.SunSpiritModel?.GetAllSunSpiritDataByPlayerIdAndAreaId(ModelManager_1.ModelManager.CreatureModel?.GetPlayerId(), ModelManager_1.ModelManager.AreaModel?.AreaInfo?.AreaId, true, undefined, this.IQm);
+    for (const i of this.IQm) {
+      i.RefreshSunSpiritStateByCachedProto(e);
     }
-    this.R$m.length = 0;
+    this.IQm.length = 0;
   }
   static OnClear() {
-    Net_1.Net.UnRegister(24472);
-    Net_1.Net.UnRegister(29036);
-    Net_1.Net.UnRegister(28576);
-    Net_1.Net.UnRegister(20576);
-    this.DZm();
-    this.R$m.length = 0;
+    Net_1.Net.UnRegister(19989);
+    Net_1.Net.UnRegister(28132);
+    Net_1.Net.UnRegister(28229);
+    Net_1.Net.UnRegister(17440);
+    this.L0f();
+    this.IQm.length = 0;
     if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.WorldDone, this.nye)) {
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDone, this.nye);
     }
@@ -146,18 +164,27 @@ class SunSpiritController extends ControllerBase_1.ControllerBase {
   }
   static OnTick(e) {
     this.tsm(e);
+    this.vNg(e);
+  }
+  static vNg(e) {
+    if (this.CNg) {
+      this.CNg.Tick(e);
+    }
+    if (this.pNg) {
+      this.pNg.Tick(e);
+    }
   }
   static tsm(e) {
     this.esm += e;
     if (!(this.esm < TICK_INTERVAL)) {
-      var t = this.esm * CommonDefine_1.SECOND_PER_MILLIONSECOND;
+      var i = this.esm * CommonDefine_1.SECOND_PER_MILLIONSECOND;
       this.esm = 0;
-      this.R$m.length = 0;
-      ModelManager_1.ModelManager.SunSpiritModel?.GetAllSunSpiritDataByPlayerIdAndAreaId(ModelManager_1.ModelManager.CreatureModel?.GetPlayerId(), ModelManager_1.ModelManager.AreaModel?.AreaInfo?.AreaId, true, undefined, this.R$m);
-      for (const i of this.R$m) {
-        i.TickState(t);
+      this.IQm.length = 0;
+      ModelManager_1.ModelManager.SunSpiritModel?.GetAllSunSpiritDataByPlayerIdAndAreaId(ModelManager_1.ModelManager.CreatureModel?.GetPlayerId(), ModelManager_1.ModelManager.AreaModel?.AreaInfo?.AreaId, true, undefined, this.IQm);
+      for (const t of this.IQm) {
+        t.TickState(i);
       }
-      this.R$m.length = 0;
+      this.IQm.length = 0;
     }
   }
   static OnEntityInitSetSunSpirit(e) {
@@ -168,178 +195,179 @@ class SunSpiritController extends ControllerBase_1.ControllerBase {
     } else if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("SunSpirit", 39, "日灵: 列表更新(实体添加)");
     }
-    for (const t of e) {
-      ModelManager_1.ModelManager.SunSpiritModel?.AddOrUpdateSunSpiritDataByPb(t);
+    for (const i of e) {
+      ModelManager_1.ModelManager.SunSpiritModel?.AddOrUpdateSunSpiritDataByPb(i, true);
     }
   }
-  static C8f(f) {
-    if (f.aom === Protocol_1.Aki.Protocol.lom.Proto_Fly) {
-      const d = ModelManager_1.ModelManager.SunSpiritModel?.GetSunSpiritConfig();
-      if (d) {
+  static RYf(d) {
+    if (d.aom === Protocol_1.Aki.Protocol.lom.Proto_Fly) {
+      const M = ModelManager_1.ModelManager.SunSpiritModel?.GetSunSpiritConfig();
+      if (M) {
         const c = [];
-        for (const t of f.nom) {
-          var e = t.oom?.rom;
+        for (const i of d.nom) {
+          var e = i.oom?.rom;
           if (e) {
             c.push(e);
           }
+          ModelManager_1.ModelManager.SunSpiritModel?.AddOrUpdateSunSpiritDataByPb(i, false);
         }
         WaitEntityTask_1.WaitEntityTask.CreateWithPbDataId("HandleSunSpiritActionOperationNotifyFly", c, () => {
-          let e = d.FlyFromPlayerToGearDefaultDuration;
-          var t = ModelManager_1.ModelManager.CreatureModel?.GetEntityByPbDataId(c[0]);
-          var i = Vector_1.Vector.Create();
+          let e = M.FlyFromPlayerToGearDefaultDuration;
+          var i = ModelManager_1.ModelManager.CreatureModel?.GetEntityByPbDataId(c[0]);
+          var t = Vector_1.Vector.Create();
           let r = false;
-          if (t?.Valid) {
-            r = !!t.Entity?.GetComponent(334)?.GetSunSpiritSocketLocAndRot(0, i, undefined);
+          if (i?.Valid) {
+            r = !!i.Entity?.GetComponent(336)?.GetSunSpiritSocketLocAndRot(0, t, undefined);
           }
-          const o = e = r && (t = Global_1.Global.BaseCharacter?.CharacterActorComponent?.ActorLocationProxy) && (i = Vector_1.Vector.Dist(i, t), (t = d.FlyFromPlayerToGearSpeedForCalc) > 0) ? i / t : e;
+          const o = e = r && (i = Global_1.Global.BaseCharacter?.CharacterActorComponent?.ActorLocationProxy) && (t = Vector_1.Vector.Dist(t, i), (i = M.FlyFromPlayerToGearSpeedForCalc) > 0) ? t / i : e;
           var n = new Map();
           var a = [];
-          for (const s of f.nom) {
-            if (s.oom) {
-              var _ = s.oom.rom;
+          for (const l of d.nom) {
+            if (l.oom) {
+              var _ = l.oom.rom;
               let e = n.get(_);
               if (!e) {
                 e = [];
                 n.set(_, e);
               }
-              e.push(s);
+              e.push(l);
             } else {
-              a.push(s);
+              a.push(l);
             }
           }
           for (const p of n.values()) {
-            p.sort((e, t) => d.FlyFromPlayerToGearInOrderFromMinToMax ? e.oom.c5n - t.oom.c5n : t.oom.c5n - e.oom.c5n);
+            p.sort((e, i) => M.FlyFromPlayerToGearInOrderFromMinToMax ? e.oom.c5n - i.oom.c5n : i.oom.c5n - e.oom.c5n);
           }
-          var S = d.FlyFromPlayerToGearDelayInterval * CommonDefine_1.MILLIONSECOND_PER_SECOND;
-          const l = d.FlyFromPlayerToGearWaitTimeBeforeFly;
+          var S = M.FlyFromPlayerToGearDelayInterval * CommonDefine_1.MILLIONSECOND_PER_SECOND;
+          const s = M.FlyFromPlayerToGearWaitTimeBeforeFly;
           for (const g of n.values()) {
             let e = 0;
             for (const u of g) {
               if (e < TimerSystem_1.MIN_TIME) {
-                this.p8f(f, u, l, o);
+                this.LYf(d, u, s, o);
               } else {
                 TimerSystem_1.TimerSystem.Delay(() => {
-                  this.p8f(f, u, l, o);
+                  this.LYf(d, u, s, o);
                 }, Math.min(e, TimerSystem_1.MAX_TIME));
               }
               e += S;
             }
           }
-          for (const M of a) {
-            this.p8f(f, M, l, o);
+          for (const f of a) {
+            this.LYf(d, f, s, o);
           }
         });
       }
     }
   }
-  static v8f(f) {
-    if (f.aom === Protocol_1.Aki.Protocol.lom.Proto_Back) {
-      const d = ModelManager_1.ModelManager.SunSpiritModel?.GetSunSpiritConfig();
-      if (d) {
+  static wYf(d) {
+    if (d.aom === Protocol_1.Aki.Protocol.lom.Proto_Back) {
+      const M = ModelManager_1.ModelManager.SunSpiritModel?.GetSunSpiritConfig();
+      if (M) {
         const c = [];
-        for (const t of f.nom) {
-          var e = t.oom?.rom;
+        for (const i of d.nom) {
+          var e = i.oom?.rom;
           if (e) {
             c.push(e);
           }
         }
         WaitEntityTask_1.WaitEntityTask.CreateWithPbDataId("HandleSunSpiritActionOperationNotifyBack", c, () => {
-          let e = d.FlyFromGearToPlayerDefaultDuration;
-          var t = ModelManager_1.ModelManager.CreatureModel?.GetEntityByPbDataId(c[0]);
-          var i = Vector_1.Vector.Create();
+          let e = M.FlyFromGearToPlayerDefaultDuration;
+          var i = ModelManager_1.ModelManager.CreatureModel?.GetEntityByPbDataId(c[0]);
+          var t = Vector_1.Vector.Create();
           let r = false;
-          if (t?.Valid) {
-            r = !!t.Entity?.GetComponent(334)?.GetSunSpiritSocketLocAndRot(0, i, undefined);
+          if (i?.Valid) {
+            r = !!i.Entity?.GetComponent(336)?.GetSunSpiritSocketLocAndRot(0, t, undefined);
           }
-          const o = e = r && (t = Global_1.Global.BaseCharacter?.CharacterActorComponent?.ActorLocationProxy) && (i = Vector_1.Vector.Dist(i, t), (t = d.FlyFromGearToPlayerSpeedForCalc) > 0) ? i / t : e;
+          const o = e = r && (i = Global_1.Global.BaseCharacter?.CharacterActorComponent?.ActorLocationProxy) && (t = Vector_1.Vector.Dist(t, i), (i = M.FlyFromGearToPlayerSpeedForCalc) > 0) ? t / i : e;
           var n = new Map();
           var a = [];
-          for (const s of f.nom) {
-            if (s.oom) {
-              var _ = s.oom.rom;
+          for (const l of d.nom) {
+            if (l.oom) {
+              var _ = l.oom.rom;
               let e = n.get(_);
               if (!e) {
                 e = [];
                 n.set(_, e);
               }
-              e.push(s);
+              e.push(l);
             } else {
-              a.push(s);
+              a.push(l);
             }
           }
           for (const p of n.values()) {
-            p.sort((e, t) => d.FlyFromGearToPlayerInOrderFromMinToMax ? e.oom.c5n - t.oom.c5n : t.oom.c5n - e.oom.c5n);
+            p.sort((e, i) => M.FlyFromGearToPlayerInOrderFromMinToMax ? e.oom.c5n - i.oom.c5n : i.oom.c5n - e.oom.c5n);
           }
-          var S = d.FlyFromGearToPlayerDelayInterval * CommonDefine_1.MILLIONSECOND_PER_SECOND;
-          const l = d.FlyFromGearToPlayerWaitTimeBeforeFly;
+          var S = M.FlyFromGearToPlayerDelayInterval * CommonDefine_1.MILLIONSECOND_PER_SECOND;
+          const s = M.FlyFromGearToPlayerWaitTimeBeforeFly;
           for (const g of n.values()) {
             let e = 0;
             for (const u of g) {
               if (e < TimerSystem_1.MIN_TIME) {
-                this.y8f(f, u, l, o);
+                this.PYf(d, u, s, o);
               } else {
                 TimerSystem_1.TimerSystem.Delay(() => {
-                  this.y8f(f, u, l, o);
+                  this.PYf(d, u, s, o);
                 }, Math.min(e, TimerSystem_1.MAX_TIME));
               }
               e += S;
             }
           }
-          for (const M of a) {
-            this.y8f(f, M, l, o);
+          for (const f of a) {
+            this.PYf(d, f, s, o);
           }
         });
       }
     }
   }
-  static p8f(e, t, i, r) {
+  static LYf(e, i, t, r) {
     var o;
     var n;
-    var a = ModelManager_1.ModelManager.SunSpiritModel?.GetSunSpiritDataByPlayerIdAndConfigId(ModelManager_1.ModelManager.CreatureModel.GetPlayerId(), t.r6n, t.A5n);
+    var a = ModelManager_1.ModelManager.SunSpiritModel?.GetSunSpiritDataByPlayerIdAndConfigId(ModelManager_1.ModelManager.CreatureModel.GetPlayerId(), i.r6n, i.A5n);
     if (a) {
-      if (t.oom) {
-        o = t.oom.rom;
-        n = t.oom.c5n;
-        i = new SunSpiritFlyingToGearState_1.SunSpiritFlyingToGearState(a, i, r, o, n, () => {
-          this.w$m(e, t);
+      if (i.oom) {
+        o = i.oom.rom;
+        n = i.oom.c5n;
+        t = new SunSpiritFlyingToGearState_1.SunSpiritFlyingToGearState(a, t, r, o, n, () => {
+          this.TQm(e, i);
         });
-        a.StopAllAndSetNextSunSpiritState(i);
+        a.StopAllAndSetNextSunSpiritState(t);
       } else {
         if (Log_1.Log.CheckWarn()) {
-          Log_1.Log.Warn("SunSpirit", 39, "日灵: 操作协议内容有误", ["SpiritConfigId", t.A5n]);
+          Log_1.Log.Warn("SunSpirit", 39, "日灵: 操作协议内容有误", ["SpiritConfigId", i.A5n]);
         }
-        this.w$m(e, t);
+        this.TQm(e, i);
       }
     } else {
       if (Log_1.Log.CheckWarn()) {
-        Log_1.Log.Warn("SunSpirit", 39, "日灵: 执行操作，未找到日灵数据", ["SpiritConfigId", t.A5n]);
+        Log_1.Log.Warn("SunSpirit", 39, "日灵: 执行操作，未找到日灵数据", ["SpiritConfigId", i.A5n]);
       }
-      this.w$m(e, t);
+      this.TQm(e, i);
     }
   }
-  static y8f(e, t, i, r) {
+  static PYf(e, i, t, r) {
     var o;
     var n;
-    var a = ModelManager_1.ModelManager.SunSpiritModel?.GetSunSpiritDataByPlayerIdAndConfigId(ModelManager_1.ModelManager.CreatureModel.GetPlayerId(), t.r6n, t.A5n);
+    var a = ModelManager_1.ModelManager.SunSpiritModel?.GetSunSpiritDataByPlayerIdAndConfigId(ModelManager_1.ModelManager.CreatureModel.GetPlayerId(), i.r6n, i.A5n);
     if (a) {
-      if (t.oom) {
-        o = t.oom.rom;
-        n = t.oom.c5n;
-        i = new SunSpiritFlyingToPlayerState_1.SunSpiritFlyingToPlayerState(a, i, r, o, n, () => {
-          this.w$m(e, t);
+      if (i.oom) {
+        o = i.oom.rom;
+        n = i.oom.c5n;
+        t = new SunSpiritFlyingToPlayerState_1.SunSpiritFlyingToPlayerState(a, t, r, o, n, () => {
+          this.TQm(e, i);
         });
-        a.StopAllAndSetNextSunSpiritState(i);
+        a.StopAllAndSetNextSunSpiritState(t);
       } else {
         if (Log_1.Log.CheckWarn()) {
-          Log_1.Log.Warn("SunSpirit", 39, "日灵: 操作协议内容有误", ["SpiritConfigId", t.A5n]);
+          Log_1.Log.Warn("SunSpirit", 39, "日灵: 操作协议内容有误", ["SpiritConfigId", i.A5n]);
         }
-        this.w$m(e, t);
+        this.TQm(e, i);
       }
     } else {
       if (Log_1.Log.CheckWarn()) {
-        Log_1.Log.Warn("SunSpirit", 39, "日灵: 执行操作，未找到日灵数据", ["SpiritConfigId", t.A5n]);
+        Log_1.Log.Warn("SunSpirit", 39, "日灵: 执行操作，未找到日灵数据", ["SpiritConfigId", i.A5n]);
       }
-      this.w$m(e, t);
+      this.TQm(e, i);
     }
   }
   static ism(e) {
@@ -350,29 +378,34 @@ class SunSpiritController extends ControllerBase_1.ControllerBase {
     } else if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("SunSpirit", 39, "日灵: 执行操作完成", ["OperationType", e.aom]);
     }
-    var t = Protocol_1.Aki.Protocol.eom.create();
-    t.w5n = e.w5n;
-    t.c5n = e.c5n;
-    t.W5n = e.W5n;
-    Net_1.Net.Send(24694, t);
+    var i = Protocol_1.Aki.Protocol.eom.create();
+    i.w5n = e.w5n;
+    i.c5n = e.c5n;
+    i.W5n = e.W5n;
+    Net_1.Net.Send(29686, i);
   }
-  static w$m(e, t) {
-    var i = this.L$m.get(e);
-    if (i) {
-      if (i.has(t)) {
+  static TQm(e, i) {
+    var t = this.bQm.get(e);
+    if (t) {
+      if (t.has(i)) {
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("SunSpirit", 39, "日灵: 执行操作，单个日灵执行操作完成", ["RelatedSceneItemId", e.F4n], ["OperationType", e.aom], ["SunSpiritConfigId", t.A5n]);
+          Log_1.Log.Info("SunSpirit", 39, "日灵: 执行操作，单个日灵执行操作完成", ["RelatedSceneItemId", e.F4n], ["OperationType", e.aom], ["SunSpiritConfigId", i.A5n]);
         }
-        i.delete(t);
-        if (i.size === 0) {
-          this.L$m.delete(e);
+        t.delete(i);
+        if (t.size === 0) {
+          this.bQm.delete(e);
+          if (e.aom === Protocol_1.Aki.Protocol.lom.Proto_Fly) {
+            for (const r of e.nom) {
+              ModelManager_1.ModelManager.SunSpiritModel?.AddOrUpdateSunSpiritDataByPb(r, true);
+            }
+          }
           this.ism(e);
         }
       } else if (Log_1.Log.CheckWarn()) {
-        Log_1.Log.Warn("SunSpirit", 39, "日灵: 执行操作，单个日灵执行操作完成回调时，发现所执行的操作已非活跃", ["RelatedSceneItemId", e.F4n], ["OperationType", e.aom], ["SunSpiritConfigId", t.A5n]);
+        Log_1.Log.Warn("SunSpirit", 39, "日灵: 执行操作，单个日灵执行操作完成回调时，发现所执行的操作已非活跃", ["RelatedSceneItemId", e.F4n], ["OperationType", e.aom], ["SunSpiritConfigId", i.A5n]);
       }
     } else if (Log_1.Log.CheckWarn()) {
-      Log_1.Log.Warn("SunSpirit", 39, "日灵: 执行操作，单个日灵执行操作完成回调时，发现所属的操作列表已非活跃", ["RelatedSceneItemId", e.F4n], ["OperationType", e.aom], ["SunSpiritConfigId", t.A5n]);
+      Log_1.Log.Warn("SunSpirit", 39, "日灵: 执行操作，单个日灵执行操作完成回调时，发现所属的操作列表已非活跃", ["RelatedSceneItemId", e.F4n], ["OperationType", e.aom], ["SunSpiritConfigId", i.A5n]);
     }
   }
 }
@@ -380,24 +413,26 @@ exports.SunSpiritController = SunSpiritController;
 (_a = SunSpiritController).nye = () => {
   var e = ModelManager_1.ModelManager.CreatureModel?.GetPlayerId();
   if (e) {
-    var t = ControllerHolder_1.ControllerHolder.FormationDataController.GetPlayerEntity(e)?.GetComponent(215);
-    if (t) {
+    var i = ControllerHolder_1.ControllerHolder.FormationDataController.GetPlayerEntity(e)?.GetComponent(217);
+    if (i) {
       for (const r of ENABLE_TAGS) {
-        var i = t.ListenForTagAddOrRemove(r, _a.P$m);
-        if (i) {
-          _a.Cer.push(i);
+        var t = i.ListenForTagAddOrRemove(r, _a.RQm);
+        if (t) {
+          _a.Cer.push(t);
         }
       }
-      _a.b$m();
+      _a.EQm();
     }
   }
 };
+SunSpiritController.CNg = undefined;
+SunSpiritController.pNg = undefined;
 SunSpiritController.Cer = [];
-SunSpiritController.P$m = () => {
-  _a.b$m();
+SunSpiritController.RQm = () => {
+  _a.EQm();
 };
 SunSpiritController.esm = 0;
-SunSpiritController.R$m = [];
+SunSpiritController.IQm = [];
 SunSpiritController.Xnm = e => {
   if (_a.Knm) {
     if (Log_1.Log.CheckInfo()) {
@@ -406,8 +441,8 @@ SunSpiritController.Xnm = e => {
   } else if (Log_1.Log.CheckInfo()) {
     Log_1.Log.Info("SunSpirit", 39, "日灵: 列表初始化");
   }
-  for (const t of e.som) {
-    ModelManager_1.ModelManager.SunSpiritModel?.AddOrUpdateSunSpiritDataByPb(t);
+  for (const i of e.som) {
+    ModelManager_1.ModelManager.SunSpiritModel?.AddOrUpdateSunSpiritDataByPb(i, true);
   }
 };
 SunSpiritController.Ynm = e => {
@@ -416,7 +451,7 @@ SunSpiritController.Ynm = e => {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("SunSpirit", 39, "日灵: 收集", ["SpiritConfigId", e.A5n]);
     }
-    ModelManager_1.ModelManager.SunSpiritModel?.AddOrUpdateSunSpiritDataByPb(e);
+    ModelManager_1.ModelManager.SunSpiritModel?.AddOrUpdateSunSpiritDataByPb(e, true);
   }
 };
 SunSpiritController.znm = e => {
@@ -427,8 +462,8 @@ SunSpiritController.znm = e => {
   } else if (Log_1.Log.CheckInfo()) {
     Log_1.Log.Info("SunSpirit", 39, "日灵: 列表更新");
   }
-  for (const t of e.som) {
-    ModelManager_1.ModelManager.SunSpiritModel?.AddOrUpdateSunSpiritDataByPb(t);
+  for (const i of e.som) {
+    ModelManager_1.ModelManager.SunSpiritModel?.AddOrUpdateSunSpiritDataByPb(i, true);
   }
 };
 SunSpiritController.Jnm = e => {
@@ -439,22 +474,22 @@ SunSpiritController.Jnm = e => {
   } else if (Log_1.Log.CheckInfo()) {
     Log_1.Log.Info("SunSpirit", 39, "日灵: 执行操作", ["OperationType", e.aom]);
   }
-  _a.L$m.set(e, new Set(e.nom));
+  _a.bQm.set(e, new Set(e.nom));
   switch (e.aom) {
     case Protocol_1.Aki.Protocol.lom.Proto_Fly:
-      _a.C8f(e);
+      _a.RYf(e);
       break;
     case Protocol_1.Aki.Protocol.lom.Proto_Back:
-      _a.v8f(e);
+      _a.wYf(e);
   }
 };
-SunSpiritController.L$m = new Map();
+SunSpiritController.bQm = new Map();
 SunSpiritController.Zpe = e => {
-  ModelManager_1.ModelManager.SunSpiritModel?.GetAllSunSpiritDataByPlayerIdAndAreaId(ModelManager_1.ModelManager.CreatureModel?.GetPlayerId(), ModelManager_1.ModelManager.AreaModel?.AreaInfo?.AreaId, true, undefined, _a.R$m);
-  for (const i of _a.R$m) {
-    var t;
-    if (i.GetSunSpiritState().StateType === 4 && (t = i.GetSunSpiritPerform()) instanceof SunSpiritCrowdPerform_1.SunSpiritCrowdPerform) {
-      t.OnBattleStateChanged(e);
+  ModelManager_1.ModelManager.SunSpiritModel?.GetAllSunSpiritDataByPlayerIdAndAreaId(ModelManager_1.ModelManager.CreatureModel?.GetPlayerId(), ModelManager_1.ModelManager.AreaModel?.AreaInfo?.AreaId, true, undefined, _a.IQm);
+  for (const t of _a.IQm) {
+    var i;
+    if (t.GetSunSpiritState().StateType === 4 && (i = t.GetSunSpiritPerform()) instanceof SunSpiritCrowdPerform_1.SunSpiritCrowdPerform) {
+      i.OnBattleStateChanged(e);
     }
   }
 }; //# sourceMappingURL=SunSpiritController.js.map

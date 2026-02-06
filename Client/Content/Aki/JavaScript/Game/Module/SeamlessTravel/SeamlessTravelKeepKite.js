@@ -15,6 +15,7 @@ const Vector_1 = require("../../../Core/Utils/Math/Vector");
 const MathUtils_1 = require("../../../Core/Utils/MathUtils");
 const Global_1 = require("../../Global");
 const GlobalData_1 = require("../../GlobalData");
+const InputDefine_1 = require("../../NewWorld/Character/Common/Component/Input/InputLayerFunction/InputDefine");
 const DEFAULT_KITE_SKELETAL_MESH_PATH = "/Game/Aki/Character/NPC/AlienNPC/Level_C/SC1Fengzheng/Model/SC1Fengzheng.SC1Fengzheng";
 const DEFAULT_KITE_ANIM_PATH = "/Game/Aki/Character/NPC/AlienNPC/Level_C/SC1Fengzheng/CommonAnim/SC1Fengzheng_State03_Montage.SC1Fengzheng_State03_Montage";
 const KITE_HOOK_BEAM_EFFECT_PATH = "/Game/Aki/Effect/Niagara/NI_Common/NS_Fx_Hook_Beam1.NS_Fx_Hook_Beam1";
@@ -219,11 +220,16 @@ class SeamlessTravelKeepKite {
           Log_1.Log.Info("Teleport", 39, "[无缝传送KeepKite] 显示效果");
         }
         this.mQo = true;
+        if ((i = this.Hte.Entity.GetComponent(107))?.GetIsHooking() && i.GetCurrentTarget()?.GetHookInteractType() === "KiteHook") {
+          i.GetCurrentTargetEntity().Entity?.Disable("[无缝传送KeepKite] 隐藏风筝声骸");
+          i.SetIsHookEndByInterrupt(true);
+          this.Hte.Entity?.GetComponent(43)?.EndSkill(InputDefine_1.SKILL_ID_XA_KITE, "[无缝传送KeepKite] 停止勾风筝技能");
+        }
         this.u41.SetActorHiddenInGame(false);
         this.f41?.SetActorHiddenInGame(false);
         this.g41?.SetActorHiddenInGame(false);
         i = this.Hte.SkeletalMesh;
-        s = this.Hte.Entity.GetComponent(84)?.Hulu;
+        s = this.Hte.Entity.GetComponent(86)?.Hulu;
         e = this.u41.SkeletalMeshComponent;
         if (i?.IsValid()) {
           this.PWu = i.bCastHiddenShadow;
@@ -255,7 +261,7 @@ class SeamlessTravelKeepKite {
     var s;
     var e;
     if (this.IsInit) {
-      if (this.IsActive && (Log_1.Log.CheckInfo() && Log_1.Log.Info("Teleport", 39, "[无缝传送KeepKite] 隐藏效果"), this.mQo = false, this.u41?.SetActorHiddenInGame(true), this.f41?.SetActorHiddenInGame(true), this.g41?.SetActorHiddenInGame(true), i = this.Hte?.SkeletalMesh, s = this.Hte?.Entity.GetComponent(84)?.Hulu, e = this.u41?.SkeletalMeshComponent, i?.IsValid() && this.PWu !== undefined && (i.bCastHiddenShadow = this.PWu), s?.IsValid() && this.xWu !== undefined && (s.bCastHiddenShadow = this.xWu), e?.IsValid() && (e.bCastHiddenShadow = false), this.C41?.IsValid() && (this.C41.bCastHiddenShadow = false), this.AWu?.IsValid())) {
+      if (this.IsActive && (Log_1.Log.CheckInfo() && Log_1.Log.Info("Teleport", 39, "[无缝传送KeepKite] 隐藏效果"), this.mQo = false, this.u41?.SetActorHiddenInGame(true), this.f41?.SetActorHiddenInGame(true), this.g41?.SetActorHiddenInGame(true), i = this.Hte?.SkeletalMesh, s = this.Hte?.Entity.GetComponent(86)?.Hulu, e = this.u41?.SkeletalMeshComponent, i?.IsValid() && this.PWu !== undefined && (i.bCastHiddenShadow = this.PWu), s?.IsValid() && this.xWu !== undefined && (s.bCastHiddenShadow = this.xWu), e?.IsValid() && (e.bCastHiddenShadow = false), this.C41?.IsValid() && (this.C41.bCastHiddenShadow = false), this.AWu?.IsValid())) {
         this.AWu.bCastHiddenShadow = false;
       }
       t?.(true);
@@ -264,7 +270,7 @@ class SeamlessTravelKeepKite {
     }
   }
   SetInitData(t, i) {
-    var t = t.GetComponent(212);
+    var t = t.GetComponent(214);
     var s = t.GetActorInSceneInteraction(KITE_ACTOR_REF_NAME);
     var t = t.Owner?.D_GetTransform() ?? t.ActorTransform;
     var e = s?.D_GetTransform() ?? t;

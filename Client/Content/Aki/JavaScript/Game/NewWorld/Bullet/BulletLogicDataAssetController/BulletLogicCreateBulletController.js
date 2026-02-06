@@ -30,16 +30,16 @@ class BulletLogicCreateBulletController extends BulletLogicController_1.BulletLo
       if (e && e instanceof BulletHitActorData_1.BulletHitActorData) {
         t = e.Entity;
       }
-      const a = r.FlashBulletRowName;
-      if (a !== StringUtils_1.NONE_STRING) {
+      const n = r.FlashBulletRowName;
+      if (n !== StringUtils_1.NONE_STRING) {
         e = ModelManager_1.ModelManager.BulletModel.GetBulletSetByAttacker(i.Attacker.Id);
         let l = false;
         var o = t.GetComponent(1);
         if (e && (0, RegisterComponent_1.isComponentInstance)(o, 3)) {
-          const n = o?.Actor;
-          if (n) {
+          const a = o?.Actor;
+          if (a) {
             e.forEach((t, e, r) => {
-              if (t.GetBulletInfo().BulletRowName === a && t.GetComponent(1).Owner.GetAttachParentActor() === n) {
+              if (t.GetBulletInfo().BulletRowName === n && t.GetComponent(1).Owner.GetAttachParentActor() === a) {
                 t.GetBulletInfo().GenerateTime = Time_1.Time.WorldTime;
                 l = true;
               }
@@ -59,7 +59,7 @@ class BulletLogicCreateBulletController extends BulletLogicController_1.BulletLo
         ParentTargetId: i.Target?.Id,
         ParentId: this.Bullet.Id,
         DtType: i.BulletInitParams.DtType,
-        BattleFlags: i.BulletInitParams.BattleFlags,
+        BattleContext: i.BulletInitParams.BattleContext,
         ParentIds: undefined
       }, o);
       if (l) {
@@ -69,7 +69,7 @@ class BulletLogicCreateBulletController extends BulletLogicController_1.BulletLo
           o = r.AttachToBoneName;
           if ((i = this.l7o(r.AttachToActor, t)) && o !== StringUtils_1.NONE_STRING) {
             e = FNameUtil_1.FNameUtil.GetDynamicFName(o);
-            (r = l.GetComponent(178)).SetActorLocation(i.GetSocketLocation(e));
+            (r = l.GetComponent(180)).SetActorLocation(i.GetSocketLocation(e));
             r.SetAttachToComponent(i.Owner.Mesh, e, 1, 0, 0, false);
             r.NeedDetach = true;
           }

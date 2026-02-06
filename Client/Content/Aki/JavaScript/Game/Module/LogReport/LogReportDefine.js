@@ -2,28 +2,28 @@
 
 var __decorate = this && this.__decorate || function (t, e, o, s) {
   var i;
-  var r = arguments.length;
-  var a = r < 3 ? e : s === null ? s = Object.getOwnPropertyDescriptor(e, o) : s;
+  var n = arguments.length;
+  var r = n < 3 ? e : s === null ? s = Object.getOwnPropertyDescriptor(e, o) : s;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    a = Reflect.decorate(t, e, o, s);
+    r = Reflect.decorate(t, e, o, s);
   } else {
-    for (var n = t.length - 1; n >= 0; n--) {
-      if (i = t[n]) {
-        a = (r < 3 ? i(a) : r > 3 ? i(e, o, a) : i(e, o)) || a;
+    for (var a = t.length - 1; a >= 0; a--) {
+      if (i = t[a]) {
+        r = (n < 3 ? i(r) : n > 3 ? i(e, o, r) : i(e, o)) || r;
       }
     }
   }
-  if (r > 3 && a) {
-    Object.defineProperty(e, o, a);
+  if (n > 3 && r) {
+    Object.defineProperty(e, o, r);
   }
-  return a;
+  return r;
 };
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.ActivityRecallLogData = exports.ActivityLockConditionClickLogData = exports.ActivityViewJumpClickLogData = exports.ActivityTabViewOpenLogData = exports.ActivityViewOpenLogData = exports.ExploreToolGeneralUseLogData = exports.FollowShooterUseLogData = exports.ScanSkillUseLogData = exports.ManipulateSkillUseLogData = exports.HookSkillUseLogData = exports.ExploreToolItemUseLogData = exports.ExploreToolEquipLogData = exports.ExploreToolSwitchLogData = exports.ExploreToolUseLogData = exports.ExploreToolAssemblyLogData = exports.SettingMenuLogData = exports.PlayFlowLogData = exports.DefaultFilterLogEvent = exports.SettingMenuLogEvent = exports.PhotographerLogData = exports.AdviceWatchLogData = exports.QuestDiscoverLogData = exports.ReconvProcessLink = exports.LoginProcessLink = exports.DeathRecord = exports.ElevatorUsedRecord = exports.TriggerBuffDamageRecord = exports.InstMonsterSkillReportLog = exports.InstReactionLogRecord = exports.InstRoleSkillReportLog = exports.InstMonsterStateRecord = exports.InstRoleStateRecord = exports.InstFightEndRecord = exports.InstFightStartRecord = exports.ReactionRecord = exports.ReactionLogRecord = exports.MonsterSkillRecord = exports.MonsterSkillReportLog = exports.RoleSkillRecord = exports.RoleSkillReportLog = exports.MonsterStateRecord = exports.RoleStateRecord = exports.BattleEndLogData = exports.MonsterInfoLogData = exports.TeamCharacterLogData = exports.BattleStartLogData = exports.HangUpTimeLogData = exports.AssemblyLogData = exports.PlayerCommonLogData = exports.CommonLogData = undefined;
-exports.RoleSkillTreeLogEvent = exports.RoleDevLogEvent = exports.UiInteractChatLogEvent = exports.UiInteractRouletteLogEvent = exports.UiInteractSpaceKeyLogEvent = exports.ParallelDownloadConfirmBoxOperation = exports.AutoShowParallelDownloadConfirmBox = exports.MotorDriftLogEvent = exports.MotorFirstSightLogEvent = exports.MotorSkillLogEvent = exports.HoldHandSitDownLogEvent = exports.HoldHandExitLogEvent = exports.HoldHandEnterLogEvent = exports.ShipTowerSwitch = exports.KingShipLogEvent = exports.LifePointDrawLogEvent = exports.ClickTermExplanationEvent = exports.EnterViewWithTermsEvent = exports.PhantomArenaDeckUpdateEvent = exports.GachaRecordClickLogEvent = exports.NoticeClickLogEvent = exports.GameInformationClickLogEvent = exports.SubPackageClearSpaceFinishLogEvent = exports.SubPackageClearSpaceLogEvent = exports.SubPackageOutOfSpaceLogEvent = exports.SubPackageDownLoadLogEvent = exports.SubPackageKeySubPackageLogEvent = exports.DownloadVideoResNotEnoughSpaceLogData = exports.DownloadVideoResLogData = exports.CiacconaEnterMainViewLogEvent = exports.PreDownloadDownloadNoSpaceBeforeStartRecord = exports.PreDownloadDownloadModeSuccessRecord = exports.PreDownloadPauseRecord = exports.PreDownloadDownloadModeSwitchRecord = exports.PreDownloadEntranceRecord = exports.BirthdayRepeatEnterEvent = exports.BirthdaySelectRoleEvent = exports.LinkageClickGoEvent = exports.LinkageSwitchModuleEvent = exports.SdkStartReview = exports.ShareEvent = exports.MailBindJumpToWebViewEvent = exports.MailBindClickEvent = exports.GamepadActiveEvent = exports.SdkPayGetServerBillEvent = exports.FailSdkPayEvent = exports.SuccessSdkPayEvent = exports.StartSdkPayEvent = exports.ActivityPreheatLogData = exports.ActivityRegressLogData = undefined;
-exports.ExploreEntityLogEvent = exports.MotorcycleMusicPlayLogEvent = exports.PhonographPlayLogEvent = exports.OnClickActivityCategorytab = exports.OnJumpInShortMessageLogEvent = exports.OnSelectShortMessageLogEvent = exports.OnOpenPhoneViewLogEvent = exports.ArtemisLevelUnlockLogEvent = exports.NextVersionContentLogEvent = exports.ActivityPreWarmStayLogEvent = exports.ActivityPreWarmOpenLogEvent = exports.CustomServiceLogEvent = exports.QuestTreeEnterLogEvent = exports.QuestViewEnterLogEvent = exports.FightPhotoTimeDilationLogEvent = exports.FightPhotoTakePhotoLogEvent = exports.RoleSkillInputLogEvent = undefined;
+exports.ActivityLockConditionClickLogData = exports.ActivityViewJumpClickLogData = exports.ActivityTabViewOpenLogData = exports.ActivityViewOpenLogData = exports.ExploreToolGeneralUseLogData = exports.FollowShooterUseLogData = exports.ScanSkillUseLogData = exports.ManipulateSkillUseLogData = exports.HookSkillUseLogData = exports.ExploreToolItemUseLogData = exports.ExploreToolEquipLogData = exports.ExploreToolSwitchLogData = exports.ExploreToolUseLogData = exports.ExploreToolAssemblyLogData = exports.SettingMenuLogData = exports.PlayFlowLogData = exports.DefaultFilterLogEvent = exports.SettingMenuLogEvent = exports.PhotographerLogData = exports.AdviceWatchLogData = exports.QuestDiscoverLogData = exports.ReconvProcessLink = exports.LoginProcessLink = exports.DeathRecord = exports.ElevatorUsedRecord = exports.TriggerBuffDamageRecord = exports.InstMonsterSkillReportLog = exports.InstReactionLogRecord = exports.InstRoleSkillReportLog = exports.InstMonsterStateRecord = exports.InstRoleStateRecord = exports.InstFightEndRecord = exports.InstFightStartRecord = exports.ReactionRecord = exports.ReactionLogRecord = exports.MonsterSkillRecord = exports.MonsterSkillReportLog = exports.RoleSkillRecord = exports.RoleSkillReportLog = exports.MonsterStateRecord = exports.RoleStateRecord = exports.BattleEndLogData = exports.MonsterInfoLogData = exports.TeamCharacterLogData = exports.BattleStartLogData = exports.HangUpTimeLogData = exports.AssemblyLogData = exports.PlayerCommonLogData = exports.CommonLogData = exports.PresetProperties = undefined;
+exports.UiInteractChatLogEvent = exports.UiInteractRouletteLogEvent = exports.UiInteractSpaceKeyLogEvent = exports.ParallelDownloadConfirmBoxOperation = exports.AutoShowParallelDownloadConfirmBox = exports.MotorSummonGetOnLogEvent = exports.MotorDriftLogEvent = exports.MotorFirstSightLogEvent = exports.MotorSkillLogEvent = exports.HoldHandSitDownLogEvent = exports.HoldHandExitLogEvent = exports.HoldHandEnterLogEvent = exports.ShipTowerSwitch = exports.KingShipLogEvent = exports.LifePointDrawLogEvent = exports.ClickTermExplanationEvent = exports.EnterViewWithTermsEvent = exports.PhantomArenaDeckUpdateEvent = exports.GachaRecordClickLogEvent = exports.NoticeClickLogEvent = exports.GameInformationClickLogEvent = exports.SubPackageClearSpaceFinishLogEvent = exports.SubPackageClearSpaceLogEvent = exports.SubPackageOutOfSpaceLogEvent = exports.SubPackageDownLoadLogEvent = exports.SubPackageKeySubPackageLogEvent = exports.DownloadVideoResNotEnoughSpaceLogData = exports.DownloadVideoResLogData = exports.CiacconaEnterMainViewLogEvent = exports.PreDownloadDownloadNoSpaceBeforeStartRecord = exports.PreDownloadDownloadModeSuccessRecord = exports.PreDownloadPauseRecord = exports.PreDownloadDownloadModeSwitchRecord = exports.PreDownloadEntranceRecord = exports.BirthdayRepeatEnterEvent = exports.BirthdaySelectRoleEvent = exports.LinkageClickGoEvent = exports.LinkageSwitchModuleEvent = exports.SdkStartReview = exports.ShareEvent = exports.MailBindJumpToWebViewEvent = exports.MailBindClickEvent = exports.GamepadActiveEvent = exports.SdkPayGetServerBillEvent = exports.FailSdkPayEvent = exports.SuccessSdkPayEvent = exports.StartSdkPayEvent = exports.ActivityPreheatLogData = exports.ActivityRegressLogData = exports.ActivityRecallLogData = undefined;
+exports.GuessJokerExitSaveReport = exports.FurnitureSaveLogEvent = exports.FurniturePlaceDiffLogData = exports.FurniturePlaceLogData = exports.FurnitureDesignLogEvent = exports.DrinksGameplayResultLogEvent = exports.DrinksGameplayInviteLogEvent = exports.OnBattlePassOperationLogEvent = exports.OnClickBattlePassTabViewLogEvent = exports.OnClickRechargeItemLogEvent = exports.OnClickPayShopItemLogEvent = exports.OnOpenGiftPackageDetailsViewLogEvent = exports.OnClickRecommendSkinButtonLogEvent = exports.OnClickPayShopTabLogEvent = exports.OnClickFunctionViewButtonLogEvent = exports.OnClickGachaTryRoleLogEvent = exports.OnClickGachaOperationLogEvent = exports.OnClickGachaScrollLogEvent = exports.OnClickAddCurrencyLogEvent = exports.FindSunSpiritFinishLogEvent = exports.FindSunSpiritStartLogEvent = exports.ExploreEntityLogEvent = exports.MotorcycleMusicPlayLogEvent = exports.PhonographPlayLogEvent = exports.OnClickActivityCategorytab = exports.OnJumpInShortMessageLogEvent = exports.OnSelectShortMessageLogEvent = exports.OnOpenPhoneViewLogEvent = exports.ArtemisLevelUnlockLogEvent = exports.NextVersionContentLogEvent = exports.ActivityPreWarmStayLogEvent = exports.ActivityPreWarmOpenLogEvent = exports.CustomServiceLogEvent = exports.QuestTreeEnterLogEvent = exports.QuestViewEnterLogEvent = exports.FightPhotoTimeDilationLogEvent = exports.FightPhotoTakePhotoLogEvent = exports.RoleSkillInputLogEvent = exports.RoleSkillTreeLogEvent = exports.RoleDevLogEvent = undefined;
 const UE = require("ue");
 const Json_1 = require("../../../Core/Common/Json");
 const Log_1 = require("../../../Core/Common/Log");
@@ -48,6 +48,17 @@ function CheckEventIdUnique(...s) {
     return t;
   };
 }
+class PresetProperties extends Json_1.JsonObjBase {
+  constructor() {
+    super(...arguments);
+    this.system_language = "";
+    this.os_version = "";
+    this.device_id = "";
+    this.screen_height = "";
+    this.screen_width = "";
+  }
+}
+exports.PresetProperties = PresetProperties;
 class CommonLogData extends Json_1.JsonObjBase {
   constructor() {
     super();
@@ -678,6 +689,20 @@ let SettingMenuLogEvent = class SettingMenuLogEvent extends PlayerCommonLogData 
     this.i_image_mode = 0;
     this.eyeprotect_mode = 0;
     this.eyeprotect_list = "";
+    this.i_crowd_density = 0;
+    this.i_hit_material_effects = 0;
+    this.i_auto_adjust = 0;
+    this.i_damage_numbers = 0;
+    this.i_fluttering_animation = 0;
+    this.i_cinematic_quality = 0;
+    this.i_teammate_effects = 0;
+    this.i_injury_effects = 0;
+    this.i_environment_interaction = 0;
+    this.i_foliage_blur = 0;
+    this.i_auto_exposure = 0;
+    this.i_hdr = 0;
+    this.i_ui_Brightness = 0;
+    this.i_peak_Brightness = 0;
   }
 };
 SettingMenuLogEvent = __decorate([CheckEventIdUnique("1017")], SettingMenuLogEvent);
@@ -1328,31 +1353,43 @@ exports.HoldHandSitDownLogEvent = HoldHandSitDownLogEvent;
 let MotorSkillLogEvent = class MotorSkillLogEvent extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
-    this.event_id = "160811";
+    this.event_id = "2000";
     this.i_skill_id = "";
   }
 };
-MotorSkillLogEvent = __decorate([CheckEventIdUnique("160811")], MotorSkillLogEvent);
+MotorSkillLogEvent = __decorate([CheckEventIdUnique("2000")], MotorSkillLogEvent);
 exports.MotorSkillLogEvent = MotorSkillLogEvent;
 let MotorFirstSightLogEvent = class MotorFirstSightLogEvent extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
-    this.event_id = "160812";
+    this.event_id = "2001";
     this.i_view_switching = 0;
   }
 };
-MotorFirstSightLogEvent = __decorate([CheckEventIdUnique("160812")], MotorFirstSightLogEvent);
+MotorFirstSightLogEvent = __decorate([CheckEventIdUnique("2001")], MotorFirstSightLogEvent);
 exports.MotorFirstSightLogEvent = MotorFirstSightLogEvent;
 let MotorDriftLogEvent = class MotorDriftLogEvent extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
-    this.event_id = "160813";
+    this.event_id = "2002";
     this.i_drift_distance = 0;
     this.i_drift_time = 0;
   }
 };
-MotorDriftLogEvent = __decorate([CheckEventIdUnique("160813")], MotorDriftLogEvent);
+MotorDriftLogEvent = __decorate([CheckEventIdUnique("2002")], MotorDriftLogEvent);
 exports.MotorDriftLogEvent = MotorDriftLogEvent;
+let MotorSummonGetOnLogEvent = class MotorSummonGetOnLogEvent extends PlayerCommonLogData {
+  constructor() {
+    super(...arguments);
+    this.event_id = "2003";
+    this.pos_x = 0;
+    this.pos_y = 0;
+    this.pos_z = 0;
+    this.operation_type = 0;
+  }
+};
+MotorSummonGetOnLogEvent = __decorate([CheckEventIdUnique("2003")], MotorSummonGetOnLogEvent);
+exports.MotorSummonGetOnLogEvent = MotorSummonGetOnLogEvent;
 let AutoShowParallelDownloadConfirmBox = class AutoShowParallelDownloadConfirmBox extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
@@ -1610,4 +1647,246 @@ let ExploreEntityLogEvent = class ExploreEntityLogEvent extends PlayerCommonLogD
   }
 };
 ExploreEntityLogEvent = __decorate([CheckEventIdUnique("1172")], ExploreEntityLogEvent);
-exports.ExploreEntityLogEvent = ExploreEntityLogEvent; //# sourceMappingURL=LogReportDefine.js.map
+exports.ExploreEntityLogEvent = ExploreEntityLogEvent;
+let FindSunSpiritStartLogEvent = class FindSunSpiritStartLogEvent extends PlayerCommonLogData {
+  constructor() {
+    super(...arguments);
+    this.event_id = "1819";
+    this.i_config_id = 0;
+    this.i_id = 0;
+    this.s_type_name = "";
+    this.i_paint_count = 0;
+  }
+};
+FindSunSpiritStartLogEvent = __decorate([CheckEventIdUnique("1819")], FindSunSpiritStartLogEvent);
+exports.FindSunSpiritStartLogEvent = FindSunSpiritStartLogEvent;
+let FindSunSpiritFinishLogEvent = class FindSunSpiritFinishLogEvent extends PlayerCommonLogData {
+  constructor() {
+    super(...arguments);
+    this.event_id = "1820";
+    this.i_config_id = 0;
+    this.i_id = 0;
+    this.s_type_name = "";
+    this.i_paint_count = 0;
+    this.i_count = 0;
+  }
+};
+FindSunSpiritFinishLogEvent = __decorate([CheckEventIdUnique("1820")], FindSunSpiritFinishLogEvent);
+exports.FindSunSpiritFinishLogEvent = FindSunSpiritFinishLogEvent;
+let OnClickAddCurrencyLogEvent = class OnClickAddCurrencyLogEvent extends PlayerCommonLogData {
+  constructor() {
+    super(...arguments);
+    this.event_id = "1821";
+    this.i_id = 0;
+  }
+};
+OnClickAddCurrencyLogEvent = __decorate([CheckEventIdUnique("1821")], OnClickAddCurrencyLogEvent);
+exports.OnClickAddCurrencyLogEvent = OnClickAddCurrencyLogEvent;
+let OnClickGachaScrollLogEvent = class OnClickGachaScrollLogEvent extends PlayerCommonLogData {
+  constructor() {
+    super(...arguments);
+    this.event_id = "1822";
+    this.i_gacha_id = 0;
+  }
+};
+OnClickGachaScrollLogEvent = __decorate([CheckEventIdUnique("1822")], OnClickGachaScrollLogEvent);
+exports.OnClickGachaScrollLogEvent = OnClickGachaScrollLogEvent;
+let OnClickGachaOperationLogEvent = class OnClickGachaOperationLogEvent extends PlayerCommonLogData {
+  constructor() {
+    super(...arguments);
+    this.event_id = "1823";
+    this.i_gacha_id = 0;
+    this.i_operation_type = 0;
+  }
+};
+OnClickGachaOperationLogEvent = __decorate([CheckEventIdUnique("1823")], OnClickGachaOperationLogEvent);
+exports.OnClickGachaOperationLogEvent = OnClickGachaOperationLogEvent;
+let OnClickGachaTryRoleLogEvent = class OnClickGachaTryRoleLogEvent extends PlayerCommonLogData {
+  constructor() {
+    super(...arguments);
+    this.event_id = "1824";
+    this.i_gacha_id = 0;
+    this.i_role_id = 0;
+  }
+};
+OnClickGachaTryRoleLogEvent = __decorate([CheckEventIdUnique("1824")], OnClickGachaTryRoleLogEvent);
+exports.OnClickGachaTryRoleLogEvent = OnClickGachaTryRoleLogEvent;
+let OnClickFunctionViewButtonLogEvent = class OnClickFunctionViewButtonLogEvent extends PlayerCommonLogData {
+  constructor() {
+    super(...arguments);
+    this.event_id = "1825";
+    this.i_id = 0;
+  }
+};
+OnClickFunctionViewButtonLogEvent = __decorate([CheckEventIdUnique("1825")], OnClickFunctionViewButtonLogEvent);
+exports.OnClickFunctionViewButtonLogEvent = OnClickFunctionViewButtonLogEvent;
+let OnClickPayShopTabLogEvent = class OnClickPayShopTabLogEvent extends PlayerCommonLogData {
+  constructor() {
+    super(...arguments);
+    this.event_id = "1826";
+    this.i_shop_id = 0;
+    this.i_tab_id = 0;
+  }
+};
+OnClickPayShopTabLogEvent = __decorate([CheckEventIdUnique("1826")], OnClickPayShopTabLogEvent);
+exports.OnClickPayShopTabLogEvent = OnClickPayShopTabLogEvent;
+let OnClickRecommendSkinButtonLogEvent = class OnClickRecommendSkinButtonLogEvent extends PlayerCommonLogData {
+  constructor() {
+    super(...arguments);
+    this.event_id = "1827";
+    this.i_operation_type = 0;
+    this.i_item_id = 0;
+  }
+};
+OnClickRecommendSkinButtonLogEvent = __decorate([CheckEventIdUnique("1827")], OnClickRecommendSkinButtonLogEvent);
+exports.OnClickRecommendSkinButtonLogEvent = OnClickRecommendSkinButtonLogEvent;
+let OnOpenGiftPackageDetailsViewLogEvent = class OnOpenGiftPackageDetailsViewLogEvent extends PlayerCommonLogData {
+  constructor() {
+    super(...arguments);
+    this.event_id = "1828";
+    this.i_id = 0;
+    this.i_shop_id = 0;
+    this.i_tab_id = 0;
+    this.i_buy_through_third_party = 0;
+  }
+};
+OnOpenGiftPackageDetailsViewLogEvent = __decorate([CheckEventIdUnique("1828")], OnOpenGiftPackageDetailsViewLogEvent);
+exports.OnOpenGiftPackageDetailsViewLogEvent = OnOpenGiftPackageDetailsViewLogEvent;
+let OnClickPayShopItemLogEvent = class OnClickPayShopItemLogEvent extends PlayerCommonLogData {
+  constructor() {
+    super(...arguments);
+    this.event_id = "1829";
+    this.i_id = 0;
+    this.i_shop_id = 0;
+    this.i_tab_id = 0;
+  }
+};
+OnClickPayShopItemLogEvent = __decorate([CheckEventIdUnique("1829")], OnClickPayShopItemLogEvent);
+exports.OnClickPayShopItemLogEvent = OnClickPayShopItemLogEvent;
+let OnClickRechargeItemLogEvent = class OnClickRechargeItemLogEvent extends PlayerCommonLogData {
+  constructor() {
+    super(...arguments);
+    this.event_id = "1830";
+    this.i_id = 0;
+    this.i_shop_id = 0;
+  }
+};
+OnClickRechargeItemLogEvent = __decorate([CheckEventIdUnique("1830")], OnClickRechargeItemLogEvent);
+exports.OnClickRechargeItemLogEvent = OnClickRechargeItemLogEvent;
+let OnClickBattlePassTabViewLogEvent = class OnClickBattlePassTabViewLogEvent extends PlayerCommonLogData {
+  constructor() {
+    super(...arguments);
+    this.event_id = "1831";
+    this.i_tabIndex = 0;
+  }
+};
+OnClickBattlePassTabViewLogEvent = __decorate([CheckEventIdUnique("1831")], OnClickBattlePassTabViewLogEvent);
+exports.OnClickBattlePassTabViewLogEvent = OnClickBattlePassTabViewLogEvent;
+let OnBattlePassOperationLogEvent = class OnBattlePassOperationLogEvent extends PlayerCommonLogData {
+  constructor() {
+    super(...arguments);
+    this.event_id = "1832";
+    this.i_operation_type = 0;
+  }
+};
+OnBattlePassOperationLogEvent = __decorate([CheckEventIdUnique("1832")], OnBattlePassOperationLogEvent);
+exports.OnBattlePassOperationLogEvent = OnBattlePassOperationLogEvent;
+let DrinksGameplayInviteLogEvent = class DrinksGameplayInviteLogEvent extends PlayerCommonLogData {
+  constructor() {
+    super(...arguments);
+    this.event_id = "1833";
+    this.i_activity_id = 0;
+    this.i_role_id = 0;
+    this.i_inst_id = 0;
+    this.i_first_pass = 0;
+    this.s_trace_id = "";
+  }
+};
+DrinksGameplayInviteLogEvent = __decorate([CheckEventIdUnique("1833")], DrinksGameplayInviteLogEvent);
+exports.DrinksGameplayInviteLogEvent = DrinksGameplayInviteLogEvent;
+let DrinksGameplayResultLogEvent = class DrinksGameplayResultLogEvent extends PlayerCommonLogData {
+  constructor() {
+    super(...arguments);
+    this.event_id = "1834";
+    this.i_activity_id = 0;
+    this.i_role_id = 0;
+    this.i_inst_id = 0;
+    this.i_first_pass = 0;
+    this.i_result = 0;
+    this.i_first_tab = 0;
+    this.i_first_count = 0;
+    this.i_second_tab = 0;
+    this.i_second_count = 0;
+    this.i_third_tab = -1;
+    this.i_fourth_tab = -1;
+    this.i_fifth_tab = -1;
+    this.i_cost_time = 0;
+    this.i_require_id = 0;
+    this.o_score_buff = [];
+    this.s_trace_id = "";
+  }
+};
+DrinksGameplayResultLogEvent = __decorate([CheckEventIdUnique("1834")], DrinksGameplayResultLogEvent);
+exports.DrinksGameplayResultLogEvent = DrinksGameplayResultLogEvent;
+let FurnitureDesignLogEvent = class FurnitureDesignLogEvent extends PlayerCommonLogData {
+  constructor() {
+    super(...arguments);
+    this.event_id = "1835";
+    this.i_area_id = 0;
+    this.i_slot_id = 0;
+    this.i_sub_slot_index = 0;
+    this.i_new_furniture_id = 0;
+    this.i_old_furniture_id = 0;
+    this.i_type = 0;
+    this.i_if_finish = 0;
+    this.s_trace_id = "";
+  }
+};
+FurnitureDesignLogEvent = __decorate([CheckEventIdUnique("1835")], FurnitureDesignLogEvent);
+exports.FurnitureDesignLogEvent = FurnitureDesignLogEvent;
+class FurniturePlaceLogData {
+  constructor() {
+    this.i_slot_id = 0;
+    this.i_sub_slot_index = 0;
+    this.i_furniture_id = 0;
+  }
+}
+exports.FurniturePlaceLogData = FurniturePlaceLogData;
+class FurniturePlaceDiffLogData {
+  constructor() {
+    this.i_slot_id = 0;
+    this.i_sub_slot_index = 0;
+    this.i_new_furniture_id = 0;
+    this.i_old_furniture_id = 0;
+  }
+}
+exports.FurniturePlaceDiffLogData = FurniturePlaceDiffLogData;
+let FurnitureSaveLogEvent = class FurnitureSaveLogEvent extends PlayerCommonLogData {
+  constructor() {
+    super(...arguments);
+    this.event_id = "1836";
+    this.i_area_id = 0;
+    this.o_old_place = undefined;
+    this.o_new_place = undefined;
+    this.o_diff = undefined;
+    this.i_old_atmosphere = 0;
+    this.i_new_atmosphere = 0;
+    this.i_is_save = 0;
+    this.s_trace_id = "";
+  }
+};
+FurnitureSaveLogEvent = __decorate([CheckEventIdUnique("1836")], FurnitureSaveLogEvent);
+exports.FurnitureSaveLogEvent = FurnitureSaveLogEvent;
+let GuessJokerExitSaveReport = class GuessJokerExitSaveReport extends PlayerCommonLogData {
+  constructor() {
+    super(...arguments);
+    this.event_id = "1837";
+    this.i_level_id = 0;
+    this.s_trace_id = "";
+    this.i_turn_id = 0;
+    this.i_role_hp = 0;
+    this.i_enemy_hp = 0;
+  }
+};
+GuessJokerExitSaveReport = __decorate([CheckEventIdUnique("1837")], GuessJokerExitSaveReport);
+exports.GuessJokerExitSaveReport = GuessJokerExitSaveReport; //# sourceMappingURL=LogReportDefine.js.map

@@ -22,12 +22,14 @@ class TsGameBudgetGroupConfigCache {
 }
 exports.TsGameBudgetGroupConfigCache = TsGameBudgetGroupConfigCache;
 class TsGameBudgetAllocatorTickIntervalDetailConfig {
-  constructor(t, s, o, i, e) {
+  constructor(t, s, o, i, e, r = 0, h = 0) {
     this.GlobalMode = t;
     this.ActorMode = s;
     this.MaxInterval = o;
     this.TickReductionStartSize = i;
     this.TickReductionIntervalSize = e;
+    this.TickReductionStartScreenRatio = r;
+    this.TickReductionIntervalScreenRatio = h;
   }
 }
 exports.TsGameBudgetAllocatorTickIntervalDetailConfig = TsGameBudgetAllocatorTickIntervalDetailConfig;

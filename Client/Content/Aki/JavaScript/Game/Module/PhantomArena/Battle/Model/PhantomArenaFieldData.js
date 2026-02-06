@@ -8,7 +8,7 @@ const ConfigManager_1 = require("../../../../Manager/ConfigManager");
 class PhantomArenaFieldData {
   constructor() {
     this.CardData = undefined;
-    this.Z$m = 0;
+    this.QQm = 0;
   }
   get CardConfigId() {
     return this.CardData?.ConfigId ?? 0;
@@ -253,14 +253,14 @@ class PhantomArenaFieldData {
     return this.CurrentCd > 0;
   }
   get SealRemainRound() {
-    return this.Z$m;
+    return this.QQm;
   }
   get IsInSeal() {
-    return this.Z$m > 0;
+    return this.QQm > 0;
   }
   SetSealRemainRound(e) {
     if (this.CardData !== undefined) {
-      this.Z$m = e;
+      this.QQm = e;
     }
   }
   SetCardData(e) {

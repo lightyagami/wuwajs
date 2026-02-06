@@ -39,7 +39,7 @@ let NpcDriveVehicleComponent = class NpcDriveVehicleComponent extends CharacterD
     this.AnimComp = undefined;
   }
   OnStart() {
-    return !!super.OnStart() && (this.NpcPerformComp = this.Entity.GetComponent(197), this.AnimComp = this.Entity.GetComponent(186), true);
+    return !!super.OnStart() && (this.NpcPerformComp = this.Entity.GetComponent(199), this.AnimComp = this.Entity.GetComponent(188), true);
   }
   OnActivate() {
     if (!this.NpcPerformComp?.IsBaseRoleNpc) {
@@ -67,7 +67,7 @@ let NpcDriveVehicleComponent = class NpcDriveVehicleComponent extends CharacterD
   RegisterExtraFollow(e) {
     var t;
     var r;
-    if (this.VehicleType === "Motorcycle" && (this.MoveComp.IsRegionMoveMode = true, t = this.Entity.GetComponent(108))) {
+    if (this.VehicleType === "Motorcycle" && (this.MoveComp.IsRegionMoveMode = true, t = this.Entity.GetComponent(110))) {
       t.SyncLinkGameplayAnimBlueprint(1);
       if ((t = this.ActorComp?.Actor?.Mesh?.GetLinkedAnimGraphInstanceByTag(CharacterNameDefines_1.CharacterNameDefines.ABP_GAMEPLAY))?.IsA(UE.KuroAnimInstance.StaticClass())) {
         r = e.VehicleEntity?.GetComponent(248)?.MainAnimInstance;
@@ -81,7 +81,7 @@ let NpcDriveVehicleComponent = class NpcDriveVehicleComponent extends CharacterD
   }
   UnregisterExtraFollow(e) {
     var t;
-    if (this.VehicleType === "Motorcycle" && (this.MoveComp.IsRegionMoveMode = false, (t = this.ActorComp?.Actor?.Mesh?.GetLinkedAnimGraphInstanceByTag(CharacterNameDefines_1.CharacterNameDefines.ABP_GAMEPLAY))?.IsA(UE.KuroAnimInstance.StaticClass())) && (t?.IsValid() && t.RegisterExtraFollowOwnerAnimInstance(undefined), t = this.Entity.GetComponent(108))) {
+    if (this.VehicleType === "Motorcycle" && (this.MoveComp.IsRegionMoveMode = false, (t = this.ActorComp?.Actor?.Mesh?.GetLinkedAnimGraphInstanceByTag(CharacterNameDefines_1.CharacterNameDefines.ABP_GAMEPLAY))?.IsA(UE.KuroAnimInstance.StaticClass())) && (t?.IsValid() && t.RegisterExtraFollowOwnerAnimInstance(undefined), t = this.Entity.GetComponent(110))) {
       t.SyncLinkGameplayAnimBlueprint(0);
     }
   }

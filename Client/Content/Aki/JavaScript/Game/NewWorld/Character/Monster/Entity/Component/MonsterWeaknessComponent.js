@@ -31,25 +31,25 @@ let MonsterWeaknessComponent = class MonsterWeaknessComponent extends EntityComp
     super(...arguments);
     this.vzi = undefined;
     this.Itn = 0;
-    this.yYf = "";
-    this.SYf = 0;
-    this.MYf = 0;
-    this.EYf = 0;
+    this.adg = "";
+    this.hdg = 0;
+    this.ldg = 0;
+    this._dg = 0;
   }
   get TargetSocket() {
-    return this.yYf;
+    return this.adg;
   }
   get HorizontalDistance() {
-    return this.SYf;
+    return this.hdg;
   }
   get UpDistance() {
-    return this.MYf;
+    return this.ldg;
   }
   get DownDistance() {
-    return this.EYf;
+    return this._dg;
   }
   OnStart() {
-    this.vzi = this.Entity.GetComponent(207)?.GetInteractController();
+    this.vzi = this.Entity.GetComponent(209)?.GetInteractController();
     return true;
   }
   OnEnd() {
@@ -57,15 +57,15 @@ let MonsterWeaknessComponent = class MonsterWeaknessComponent extends EntityComp
   }
   ShowWeaknessButton(t, e, s, i) {
     CombatLog_1.CombatLog.Info("Skill", this.Entity, "激活破弱按钮", ["socket", t]);
-    this.yYf = t;
-    this.SYf = e;
-    this.MYf = s;
-    this.EYf = i;
+    this.adg = t;
+    this.hdg = e;
+    this.ldg = s;
+    this._dg = i;
     this.Itn = this.vzi?.AddClientInteractOption(new LevelGameplayActionsDefine_1.BreakWeakness(), undefined, "Direct", Number.MAX_SAFE_INTEGER, undefined, 3) ?? 0;
   }
   UpdateTargetSocket(t) {
-    if (this.Itn && this.yYf !== t) {
-      this.yYf = t;
+    if (this.Itn && this.adg !== t) {
+      this.adg = t;
       CombatLog_1.CombatLog.Info("Skill", this.Entity, "更新破弱按钮Socket", ["socket", t]);
     }
   }
@@ -74,12 +74,12 @@ let MonsterWeaknessComponent = class MonsterWeaknessComponent extends EntityComp
       CombatLog_1.CombatLog.Info("Skill", this.Entity, "移除破弱按钮");
       this.vzi?.RemoveClientInteractOption(this.Itn);
       this.Itn = 0;
-      this.yYf = "";
-      this.SYf = 0;
-      this.MYf = 0;
-      this.EYf = 0;
+      this.adg = "";
+      this.hdg = 0;
+      this.ldg = 0;
+      this._dg = 0;
     }
   }
 };
-MonsterWeaknessComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(92)], MonsterWeaknessComponent);
+MonsterWeaknessComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(94)], MonsterWeaknessComponent);
 exports.MonsterWeaknessComponent = MonsterWeaknessComponent; //# sourceMappingURL=MonsterWeaknessComponent.js.map

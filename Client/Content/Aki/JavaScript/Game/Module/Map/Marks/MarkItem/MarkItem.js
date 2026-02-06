@@ -224,13 +224,13 @@ class MarkItem {
       } else {
         this.InnerView = this.CreateView();
         t = this.InnerView;
-        this.hZm(t);
+        this.Wtf(t);
       }
     } else {
       this.UYc();
     }
   }
-  async hZm(t) {
+  async Wtf(t) {
     await this.InnerView.InitializeMarkItemViewNewAsync(() => {
       if (this.InnerView === t) {
         this.UYc();

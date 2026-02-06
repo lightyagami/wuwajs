@@ -56,9 +56,9 @@ class SkillTriggerGameplayTagHandle extends SkillTriggerBase_1.SkillTriggerBaseH
     };
   }
   Create() {
-    this.cBe = this.Entity.CheckGetComponent(40);
+    this.cBe = this.Entity.CheckGetComponent(42);
     this.pZo = this.Entity.CheckGetComponent(17);
-    this.Xte = this.Entity.CheckGetComponent(215);
+    this.Xte = this.Entity.CheckGetComponent(217);
   }
   Destroy() {
     if (this.vVs) {

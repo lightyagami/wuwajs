@@ -10,7 +10,11 @@ var EEnableSystemType;
 var EGradingSystemVarType;
 var ETrapDefenseSystemVarType;
 var ESurvivorsRougeSystemVarType;
+var EKurotatoSystemVarType;
+var EMotorFightSystemVar;
+var EFlagChallengeSystemVarType;
 var ELogicProgramSpecialProcess;
+var ESystemPromptType;
 var EQuestScheduleUiType;
 var EQuestScheduleType;
 var EProgressBarLeftType;
@@ -30,6 +34,8 @@ var ESpecialProcess;
 var ETrapDefenseConditionStep;
 var ECheckTrapDefenseEvent;
 var ESurvivorsRougeConditionStep;
+var EKurotatoConditionStep;
+var ERhythmSpaceshipConditionStep;
 var ERollBlockInteractType;
 var ERollBlockLaunchMethod;
 var EAtomicProcess;
@@ -37,8 +43,8 @@ var EUseWeatherSwitchCheckType;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.questRegionCNMapper = exports.defaultQuestRegion = exports.questTypeToCnName = exports.questCnNameToType = exports.questTypeCNMapper = exports.defaultQuestType = exports.questSubTypeBinding = exports.questSubTypeCnMapper = exports.questFailedConfigs = exports.EUseWeatherSwitchCheckType = exports.EAtomicProcess = exports.ERollBlockLaunchMethod = exports.ERollBlockInteractType = exports.ESurvivorsRougeConditionStep = exports.ECheckTrapDefenseEvent = exports.ETrapDefenseConditionStep = exports.ESpecialProcess = exports.EOperation = exports.EAttributeToTarget = exports.ETargetBattleAttribute = exports.combatStateConfig = exports.EUseSkillCheckType = exports.elementGenreCnMap = exports.skillTypeCnMap = exports.skillGenreCnMap = exports.ESkillCategory = exports.ESkillType = exports.EPhoneMessageProgressType = exports.childQuestsForTest = exports.childQuestConfigs = exports.childQuestForLevelPlay = exports.childQuestForQuest = exports.EChildQuest = exports.EPlayerDamageInfoType = exports.EPlayerHitStatisticsType = exports.EStatisticsEventType = exports.EBindingProgressType = exports.EProgressBarLeftType = exports.EQuestScheduleType = exports.EQuestScheduleUiType = exports.ELogicProgramSpecialProcess = exports.ESurvivorsRougeSystemVarType = exports.ETrapDefenseSystemVarType = exports.EGradingSystemVarType = exports.EEnableSystemType = exports.ESpecialGamePlayConfigType = exports.EInformationBoardType = exports.EInformationViewType = exports.getTipsByNodeType = exports.nodeTips = undefined;
-exports.repeatBanList = exports.getSkillTypeFromCnName = exports.getSkillTypesCn = exports.flatBehaviorTree = exports.questRegionToCnName = exports.questCnNameToRegion = undefined;
+exports.questSubTypeBinding = exports.questSubTypeCnMapper = exports.questFailedConfigs = exports.EUseWeatherSwitchCheckType = exports.EAtomicProcess = exports.ERollBlockLaunchMethod = exports.ERollBlockInteractType = exports.ERhythmSpaceshipConditionStep = exports.EKurotatoConditionStep = exports.ESurvivorsRougeConditionStep = exports.ECheckTrapDefenseEvent = exports.ETrapDefenseConditionStep = exports.ESpecialProcess = exports.EOperation = exports.EAttributeToTarget = exports.ETargetBattleAttribute = exports.combatStateConfig = exports.EUseSkillCheckType = exports.elementGenreCnMap = exports.skillTypeCnMap = exports.skillGenreCnMap = exports.ESkillCategory = exports.ESkillType = exports.EPhoneMessageProgressType = exports.childQuestsForTest = exports.childQuestConfigs = exports.childQuestForLevelPlay = exports.childQuestForQuest = exports.EChildQuest = exports.EPlayerDamageInfoType = exports.EPlayerHitStatisticsType = exports.EStatisticsEventType = exports.EBindingProgressType = exports.EProgressBarLeftType = exports.EQuestScheduleType = exports.EQuestScheduleUiType = exports.ESystemPromptType = exports.ELogicProgramSpecialProcess = exports.EFlagChallengeSystemVarType = exports.EMotorFightSystemVar = exports.EKurotatoSystemVarType = exports.ESurvivorsRougeSystemVarType = exports.ETrapDefenseSystemVarType = exports.EGradingSystemVarType = exports.EEnableSystemType = exports.ESpecialGamePlayConfigType = exports.EInformationBoardType = exports.EInformationViewType = exports.getTipsByNodeType = exports.nodeTips = undefined;
+exports.repeatBanList = exports.getSkillTypeFromCnName = exports.getSkillTypesCn = exports.flatBehaviorTree = exports.questRegionToCnName = exports.questCnNameToRegion = exports.questRegionCNMapper = exports.defaultQuestRegion = exports.questTypeToCnName = exports.questCnNameToType = exports.questTypeCNMapper = exports.defaultQuestType = undefined;
 exports.nodeTips = {
   Start: "",
   QuestSucceed: "任务完成，终止行为树",
@@ -70,6 +76,10 @@ exports.getTipsByNodeType = getTipsByNodeType;
   e.GameDifficulty = "GameDifficulty";
   e.LinkSystem = "LinkSystem";
   e.MotorRacing = "MotorRacing";
+  e.NightmareSettlement = "NightmareSettlement";
+  e.MotorFight = "MotorFight";
+  e.Kurotato = "Kurotato";
+  e.FlagChallenge = "FlagChallenge";
 })(EEnableSystemType = exports.EEnableSystemType ||= {});
 (function (e) {
   e.Score = "Score";
@@ -99,7 +109,29 @@ exports.getTipsByNodeType = getTipsByNodeType;
   e.LoopCountOfBatch = "LoopCountOfBatch";
   e.CurLoopOfCurBatch = "CurLoopOfCurBatch";
 })(ESurvivorsRougeSystemVarType = exports.ESurvivorsRougeSystemVarType ||= {});
+(function (e) {
+  e.Gold = "Gold";
+  e.RoleLevel = "RoleLevel";
+  e.TotalRoleExp = "TotalRoleExp";
+  e.Batch = "Batch";
+  e.BatchType = "BatchType";
+  e.BatchConfigId = "BatchConfigId";
+  e.MaxBatch = "MaxBatch";
+  e.TreasureBoxCount = "TreasureBoxCount";
+  e.UpgradeCount = "UpgradeCount";
+  e.ConsecutiveKillCount = "ConsecutiveKillCount";
+  e.GoldGainEfficiency = "GoldGainEfficiency";
+})(EKurotatoSystemVarType = exports.EKurotatoSystemVarType ||= {});
+(function (e) {
+  e.LevelProgress = "LevelProgress";
+  e.SubLevel = "SubLevel";
+  e.OpenCollectionSelectViewCount = "OpenCollectionSelectViewCount";
+  e.SpawnEliteCount = "SpawnEliteCount";
+  e.SpawnBossCount = "SpawnBossCount";
+})(EMotorFightSystemVar = exports.EMotorFightSystemVar ||= {});
+(EFlagChallengeSystemVarType = exports.EFlagChallengeSystemVarType ||= {}).IsCompleted = "IsCompleted";
 (ELogicProgramSpecialProcess = exports.ELogicProgramSpecialProcess ||= {}).DisableURO = "DisableURO";
+(ESystemPromptType = exports.ESystemPromptType ||= {}).AreaName = "AreaName";
 (function (e) {
   e.Task = "Task";
   e.LevelPlay = "LevelPlay";
@@ -194,6 +226,9 @@ exports.getTipsByNodeType = getTipsByNodeType;
   e.ListenToEvent = "ListenToEvent";
   e.AtomicProcess = "AtomicProcess";
   e.UseWeatherSwitch = "UseWeatherSwitch";
+  e.FinishRhythmSpaceship = "FinishRhythmSpaceship";
+  e.FinishKurotato = "FinishKurotato";
+  e.CheckSpringFestivalGameplayCompleted = "CheckSpringFestivalGameplayCompleted";
 })(EChildQuest = exports.EChildQuest ||= {});
 const childQuestAll = Object.values(EChildQuest);
 function createQuestTypeCnNameMap() {
@@ -263,7 +298,10 @@ exports.childQuestConfigs = {
   ReadPhoneMessage: {},
   ListenToEvent: {},
   AtomicProcess: {},
-  UseWeatherSwitch: {}
+  UseWeatherSwitch: {},
+  FinishKurotato: {},
+  FinishRhythmSpaceship: {},
+  CheckSpringFestivalGameplayCompleted: {}
 };
 exports.childQuestsForTest = [];
 (EPhoneMessageProgressType = exports.EPhoneMessageProgressType ||= {}).CompleteMessage = "CompleteMessage";
@@ -373,6 +411,14 @@ exports.combatStateConfig = {
   e.Shopping = "Shopping";
 })(ESurvivorsRougeConditionStep = exports.ESurvivorsRougeConditionStep ||= {});
 (function (e) {
+  e.Battle = "Battle";
+  e.ChestReward = "ChestReward";
+  e.UpgradeReward = "UpgradeReward";
+  e.Shopping = "Shopping";
+  e.UpdateBatch = "UpdateBatch";
+})(EKurotatoConditionStep = exports.EKurotatoConditionStep ||= {});
+(ERhythmSpaceshipConditionStep = exports.ERhythmSpaceshipConditionStep ||= {}).Interact = "Interact";
+(function (e) {
   e.Normal = "Normal";
   e.Attack = "Attack";
   e.Trigger = "Trigger";
@@ -435,7 +481,8 @@ exports.questTypeCNMapper = {
   9: "POI",
   10: "活动",
   11: "隐藏任务",
-  12: "2.3团子活动任务"
+  12: "2.3团子活动",
+  14: "3.1春节邀约"
 };
 const questTypeCnNameMap = createQuestTypeCnNameMap();
 function questCnNameToType(e) {
@@ -482,7 +529,8 @@ exports.questRegionCNMapper = {
   23: "阿维纽林",
   24: "七丘",
   25: "隐海试验场",
-  26: "拉海洛"
+  26: "拉海洛",
+  27: "无尽宴会"
 };
 const questRegionCnNameMap = createQuestRegionCnNameMap();
 function questCnNameToRegion(e) {

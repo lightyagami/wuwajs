@@ -31,6 +31,9 @@ class MapBorder {
   get PrefabPath() {
     return this.prefabpath();
   }
+  get PrefabPaths() {
+    return GameUtils_1.GameUtils.ConvertToArray(this.prefabpathsLength(), this.prefabpaths, this);
+  }
   __init(t, i) {
     this.z7 = t;
     this.J7 = i;
@@ -94,6 +97,25 @@ class MapBorder {
       GameUtils_1.GameUtils.InternalizedString(i);
     }
     return i;
+  }
+  GetPrefabpathsAt(t) {
+    return this.prefabpaths(t);
+  }
+  prefabpaths(t, i) {
+    var s = this.J7.__offset(this.z7, 18);
+    var s = s ? this.J7.__string(this.J7.__vector(this.z7 + s) + t * 4, i) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
+    }
+    return s;
+  }
+  prefabpathsLength() {
+    var t = this.J7.__offset(this.z7, 18);
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
 }
 exports.MapBorder = MapBorder;

@@ -1,21 +1,20 @@
 "use strict";
 
-var BaseExploreComponent_1;
-var __decorate = this && this.__decorate || function (t, e, o, i) {
+var __decorate = this && this.__decorate || function (t, e, i, o) {
   var s;
   var r = arguments.length;
-  var h = r < 3 ? e : i === null ? i = Object.getOwnPropertyDescriptor(e, o) : i;
+  var h = r < 3 ? e : o === null ? o = Object.getOwnPropertyDescriptor(e, i) : o;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    h = Reflect.decorate(t, e, o, i);
+    h = Reflect.decorate(t, e, i, o);
   } else {
     for (var n = t.length - 1; n >= 0; n--) {
       if (s = t[n]) {
-        h = (r < 3 ? s(h) : r > 3 ? s(e, o, h) : s(e, o)) || h;
+        h = (r < 3 ? s(h) : r > 3 ? s(e, i, h) : s(e, i)) || h;
       }
     }
   }
   if (r > 3 && h) {
-    Object.defineProperty(e, o, h);
+    Object.defineProperty(e, i, h);
   }
   return h;
 };
@@ -34,8 +33,10 @@ const EventDefine_1 = require("../../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../../Common/Event/EventSystem");
 const ControllerHolder_1 = require("../../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../../Manager/ModelManager");
+const RoleSceneInteractController_1 = require("../../../../../Module/CombatMessage/RoleSceneInteractController");
+const FixHookClientLevelEventExecutor_1 = require("./FixHookClientLevelEventExecutor");
 const HighlightExploreSkillLogic_1 = require("./HighlightExploreSkillLogic");
-let BaseExploreComponent = BaseExploreComponent_1 = class BaseExploreComponent extends EntityComponent_1.EntityComponent {
+let BaseExploreComponent = class BaseExploreComponent extends EntityComponent_1.EntityComponent {
   constructor() {
     super(...arguments);
     this.ActorComponent = undefined;
@@ -45,11 +46,14 @@ let BaseExploreComponent = BaseExploreComponent_1 = class BaseExploreComponent e
     this.CurrentIconTagId = undefined;
     this.CurrentIconHighlightTagId = undefined;
     this.LevelEventLightingSkill = false;
-    this.VXf = undefined;
+    this.Iug = undefined;
     this.InteractingTargetEntityId = undefined;
     this.FocusTargetInternal = undefined;
+    this.FocusTargetLegalExceptSkill = false;
     this.FocusTargetLegalInternal = false;
-    this.NextLegalExceptSkill = false;
+    this.SimulateInteractingTarget = undefined;
+    this.SimulateInteractingTargetLocation = undefined;
+    this.SyncEnabled = true;
     this.IsHookEndByInterrupt = false;
     this.LogKey = "";
     this.ExploreComponentEnabled = false;
@@ -57,17 +61,20 @@ let BaseExploreComponent = BaseExploreComponent_1 = class BaseExploreComponent e
     this.IsLockingTarget = false;
   }
   get InteractingTarget() {
-    return this.VXf;
+    return this.Iug;
   }
   set InteractingTarget(t) {
-    if (this.VXf?.Valid && t !== this.VXf) {
-      this.VXf.ChangeHookPointState(0);
+    if (this.Iug?.Valid && t !== this.Iug) {
+      this.Iug.ChangeHookPointState(0);
     }
-    this.VXf = t;
+    this.Iug = t;
     this.InteractingTargetEntityId = t?.Entity.Id;
   }
   get FocusTarget() {
     return this.FocusTargetInternal;
+  }
+  set FocusTarget(t) {
+    this.FocusTargetInternal = t;
   }
   get FocusTargetLegal() {
     return this.FocusTargetLegalInternal;
@@ -75,18 +82,32 @@ let BaseExploreComponent = BaseExploreComponent_1 = class BaseExploreComponent e
   set FocusTargetLegal(t) {
     this.FocusTargetLegalInternal = t;
   }
+  static get Dependencies() {
+    return [1, 42, 217];
+  }
   OnStart() {
     this.ActorComponent = this.Entity.GetComponent(1);
-    this.SkillComponent = this.Entity.GetComponent(41);
-    this.TagComponent = this.Entity.GetComponent(215);
-    this.HighlightLogic = new HighlightExploreSkillLogic_1.HighlightExploreSkillLogic();
-    this.HighlightLogic.Init(this);
-    this.PendingHighlightSkill?.();
-    return !(this.PendingHighlightSkill = undefined);
+    this.SkillComponent = this.Entity.GetComponent(42);
+    this.TagComponent = this.Entity.GetComponent(217);
+    if (this.CheckDisableComponent()) {
+      this.Disable("CheckDisableComponent");
+    } else {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Character", 79, this.LogKey + "OnExploreComponentStart", ["EntityId", this.Entity.Id], ["PendingHighlightSkill", !!this.PendingHighlightSkill]);
+      }
+      this.InitHighlightHandle();
+    }
+    return true;
+  }
+  CheckDisableComponent() {
+    return false;
   }
   OnEnd() {
-    this.HighlightLogic?.Dispose();
-    return !(this.HighlightLogic = undefined);
+    if (!this.CheckDisableComponent()) {
+      this.HighlightLogic?.Dispose();
+      this.HighlightLogic = undefined;
+    }
+    return true;
   }
   OnTick(t) {
     if (this.ExploreComponentEnabled) {
@@ -106,7 +127,7 @@ let BaseExploreComponent = BaseExploreComponent_1 = class BaseExploreComponent e
     return !!this.ExploreComponentEnabled && !(this.SendHookEndRequest(), this.InteractingTarget = undefined, this.CancelLockTarget("OnExploreComponentDisable", true), ModelManager_1.ModelManager.ExploreModel.UnregisterExploreComponent(this), this.ExploreComponentEnabled = false);
   }
   OnExploreComponentTick(t) {}
-  OnDetectedTargetChanged() {}
+  OnDetectedTargetChanged(t, e) {}
   ForceLockTarget(t, e) {
     if (t?.Valid) {
       if (t === this.InteractingTarget) {
@@ -119,7 +140,7 @@ let BaseExploreComponent = BaseExploreComponent_1 = class BaseExploreComponent e
           Log_1.Log.Info("Character", 79, this.LogKey + "锁定目标", ["TargetEntityConfigId", t?.EntityConfigId], ["Reason", e]);
         }
         this.IsLockingTarget = true;
-        this.NextLegalExceptSkill = true;
+        this.FocusTargetLegalExceptSkill = true;
         this.SetFocusTarget(t, true);
         return true;
       }
@@ -140,32 +161,47 @@ let BaseExploreComponent = BaseExploreComponent_1 = class BaseExploreComponent e
     }
   }
   SetFocusTarget(t, e = true) {
-    if (this.FocusTargetInternal?.Valid) {
-      this.FocusTargetInternal.ChangeHookPointState(0);
-    }
-    if (t?.Valid) {
-      t.ChangeHookPointState(e ? 1 : 2);
-    }
-    this.FocusTargetLegalInternal = !!t?.Valid && e;
-    this.FocusTargetInternal = t;
+    var i = this.FocusTarget;
+    var o = this.FocusTargetLegal;
+    this.FocusTargetLegal = !!t?.Valid && e;
+    this.FocusTarget = t;
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Character", 79, this.LogKey + "设置当前交互目标", ["TargetEntityConfigId", t?.EntityConfigId], ["TargetLegal", !!t?.Valid && e]);
     }
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ExploreComponentTargetChanged);
-    this.OnDetectedTargetChanged();
+    this.OnDetectedTargetChanged(i, o);
   }
-  ShowHighlightExploreSkill(t, e, o, i, s, r) {
+  GetInteractingTargetLocation() {
+    if (this.ActorComponent?.IsAutonomousProxy) {
+      return this.InteractingTarget?.HookLocation;
+    } else {
+      return this.SimulateInteractingTarget?.HookLocation ?? this.SimulateInteractingTargetLocation;
+    }
+  }
+  InitHighlightHandle() {
     if (this.HighlightLogic) {
-      this.HighlightLogic.ShowHighlightExploreSkill(t, e, o, i, s, r);
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Character", 79, this.LogKey + "高亮模块已经完成初始化", ["ClientEntityId", this.Entity.Id]);
+      }
+    } else {
+      this.HighlightLogic = new HighlightExploreSkillLogic_1.HighlightExploreSkillLogic();
+      this.HighlightLogic.Init(this);
+      this.PendingHighlightSkill?.();
+      this.PendingHighlightSkill = undefined;
+    }
+  }
+  ShowHighlightExploreSkill(t, e, i, o, s, r) {
+    if (this.HighlightLogic) {
+      this.HighlightLogic.ShowHighlightExploreSkill(t, e, i, o, s, r);
     } else {
       if (Log_1.Log.CheckWarn()) {
-        Log_1.Log.Warn("Character", 79, this.LogKey + "尝试高亮探索技能时, 组件还未初始化完成, 缓存高亮操作, 考虑修改配置", ["ExploreToolId", t], ["Duration", e]);
+        Log_1.Log.Warn("Character", 79, this.LogKey + "尝试高亮探索技能时, 组件还未初始化完成, 缓存高亮操作, 考虑修改配置", ["ClientEntityId", this.Entity.Id], ["ExploreToolId", t], ["Duration", e]);
       }
       this.PendingHighlightSkill = () => {
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("Character", 79, this.LogKey + "执行缓存的高亮操作", ["ExploreToolId", t], ["Duration", e]);
+          Log_1.Log.Info("Character", 79, this.LogKey + "执行缓存的高亮操作", ["ClientEntityId", this.Entity.Id], ["ExploreToolId", t], ["Duration", e]);
         }
-        this.ShowHighlightExploreSkill(t, e, o, i, s, r);
+        this.ShowHighlightExploreSkill(t, e, i, o, s, r);
       };
     }
   }
@@ -174,61 +210,81 @@ let BaseExploreComponent = BaseExploreComponent_1 = class BaseExploreComponent e
       this.HighlightLogic.HideHighlightExploreSkill();
     } else {
       if (Log_1.Log.CheckWarn()) {
-        Log_1.Log.Warn("Character", 79, this.LogKey + "尝试取消探索技能高亮时, 组件还未初始化完成, 考虑修改配置", ["PendingHighlightSkill", this.PendingHighlightSkill !== undefined]);
+        Log_1.Log.Warn("Character", 79, this.LogKey + "尝试取消探索技能高亮时, 组件还未初始化完成, 考虑修改配置", ["ClientEntityId", this.Entity.Id], ["PendingHighlightSkill", this.PendingHighlightSkill !== undefined]);
       }
       this.PendingHighlightSkill = undefined;
     }
   }
-  HandleSkillIconLogic(t, e, o) {
+  GetHighlightSkillId() {
+    return this.HighlightLogic?.GetHighlightSkillId();
+  }
+  GetHighlightExploreToolId() {
+    return this.HighlightLogic?.GetHighlightExploreToolId();
+  }
+  HandleSkillIconLogic(t, e) {
+    var i = this.FocusTarget?.GetTagId();
+    var o = this.FocusTarget?.GetHighlightTagId();
     if (this.LevelEventLightingSkill) {
-      this.CurrentIconTagId = e;
-      this.CurrentIconHighlightTagId = BaseExploreComponent_1.kKf;
+      this.CurrentIconTagId = i;
+      this.CurrentIconHighlightTagId = o;
     } else {
-      this.UpdateHookIconTag(t, e, o);
-      this.UpdateHookIconHighlightTag(t);
+      this.UpdateHookIconTag(t, i, e);
+      this.UpdateHookIconHighlightTag(t, o);
     }
   }
   CheckAllowLevelEventHighlightSkill() {
     return true;
   }
   OnLevelEventHighlightSkillUpdate(t) {}
-  UpdateHookIconTag(t, e, o) {
-    var i = this.CurrentIconTagId;
+  UpdateHookIconTag(t, e, i) {
+    var o = this.CurrentIconTagId;
     if (t) {
-      if (i && e !== i && this.TagComponent.HasTag(i) && (this.TagComponent.RemoveTag(i), Log_1.Log.CheckInfo())) {
-        Log_1.Log.Info("Character", 79, this.LogKey + "添加定点钩索可用标签时删除旧的定点钩索标签", ["Reason", o], ["EntityId", this.Entity.Id], ["OldTag", GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(i)]);
+      if (o && e !== o && this.TagComponent.HasTag(o) && (this.TagComponent.RemoveTag(o), Log_1.Log.CheckInfo())) {
+        Log_1.Log.Info("Character", 79, this.LogKey + "添加定点钩索可用标签时删除旧的定点钩索标签", ["Reason", i], ["EntityId", this.Entity.Id], ["OldTag", GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(o)]);
       }
       if (e && !this.TagComponent.HasTag(e) && (this.TagComponent.AddTag(e), this.CurrentIconTagId = e, Log_1.Log.CheckInfo())) {
-        Log_1.Log.Info("Character", 79, this.LogKey + "添加定点钩索可用标签", ["Reason", o], ["EntityId", this.Entity.Id], ["Tag", GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(e)]);
+        Log_1.Log.Info("Character", 79, this.LogKey + "添加定点钩索可用标签", ["Reason", i], ["EntityId", this.Entity.Id], ["Tag", GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(e)]);
       }
     } else if (this.CurrentIconTagId && this.TagComponent.HasTag(this.CurrentIconTagId) && (this.TagComponent.RemoveTag(this.CurrentIconTagId), this.CurrentIconTagId = undefined, Log_1.Log.CheckInfo())) {
-      Log_1.Log.Info("Character", 79, this.LogKey + "删除定点钩索可用标签", ["Reason", o], ["EntityId", this.Entity.Id], ["OldTag", GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(i)]);
+      Log_1.Log.Info("Character", 79, this.LogKey + "删除定点钩索可用标签", ["Reason", i], ["EntityId", this.Entity.Id], ["OldTag", GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(o)]);
     }
   }
-  UpdateHookIconHighlightTag(t) {
-    var e = BaseExploreComponent_1.kKf;
+  UpdateHookIconHighlightTag(t, e) {
+    var i = this.CurrentIconHighlightTagId;
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("Character", 79, this.LogKey + "更新按钮高亮Tag", ["Add", t], ["EntityId", this.Entity.Id], ["CurrentIconHighlightTagId", this.CurrentIconHighlightTagId], ["TryAddTagId", e], ["HasTag", this.TagComponent.HasTag(e)]);
+      Log_1.Log.Info("Character", 79, this.LogKey + "更新按钮高亮Tag", ["Add", t], ["EntityId", this.Entity.Id], ["CurrentIconHighlightTagId", this.CurrentIconHighlightTagId], ["TryAddTagId", e], ["HasTag", e && this.TagComponent.HasTag(e)]);
     }
-    if (t) {
-      if (!this.CurrentIconHighlightTagId && !this.TagComponent.HasTag(e)) {
-        this.TagComponent.AddTag(e);
-        this.CurrentIconHighlightTagId = e;
+    if (i !== 0) {
+      if (t) {
+        if (i && e !== i && this.TagComponent.HasTag(i)) {
+          this.TagComponent.RemoveTag(i);
+        }
+        if (e && !this.TagComponent.HasTag(e)) {
+          this.TagComponent.AddTag(e);
+          this.CurrentIconHighlightTagId = e;
+        }
+      } else if (this.CurrentIconHighlightTagId && this.TagComponent.HasTag(this.CurrentIconHighlightTagId)) {
+        this.TagComponent.RemoveTag(this.CurrentIconHighlightTagId);
+        this.CurrentIconHighlightTagId = undefined;
       }
-    } else if (this.CurrentIconHighlightTagId && this.TagComponent.HasTag(e)) {
-      this.TagComponent.RemoveTag(e);
-      this.CurrentIconHighlightTagId = undefined;
+    }
+  }
+  SendFixHookPush() {
+    var t = this.InteractingTarget;
+    if (t?.Valid && this.ActorComponent.IsAutonomousProxy) {
+      RoleSceneInteractController_1.RoleSceneInteractController.SendHookMovePush(this.Entity, t);
     }
   }
   SendHookTargetRequest(e) {
-    const o = this.InteractingTarget;
+    const i = this.InteractingTarget;
     var t;
-    if (o?.Valid && this.ActorComponent.IsAutonomousProxy) {
-      (t = Protocol_1.Aki.Protocol.dms.create()).F4n = MathUtils_1.MathUtils.NumberToLong(o.Entity.GetComponent(0).GetCreatureDataId());
+    if (i?.Valid && this.ActorComponent.IsAutonomousProxy) {
+      (t = Protocol_1.Aki.Protocol.dms.create()).F4n = MathUtils_1.MathUtils.NumberToLong(i.Entity.GetComponent(0).GetCreatureDataId());
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("Character", 79, this.LogKey + "SendHookTargetRequest", ["EntityConfigId", o.EntityConfigId]);
+        Log_1.Log.Info("Character", 79, this.LogKey + "SendHookTargetRequest", ["EntityConfigId", i.EntityConfigId]);
       }
-      Net_1.Net.Call(19182, t, t => {
+      FixHookClientLevelEventExecutor_1.FixHookClientLevelEventExecutor.ExecuteHookActions(0, i);
+      Net_1.Net.Call(23844, t, t => {
         switch (t.Q4n) {
           case Protocol_1.Aki.Protocol.Q4n.KRs:
           case Protocol_1.Aki.Protocol.Q4n.Proto_HookLockPointLocked:
@@ -236,11 +292,13 @@ let BaseExploreComponent = BaseExploreComponent_1 = class BaseExploreComponent e
             break;
           case Protocol_1.Aki.Protocol.Q4n.Proto_ErrSceneEntityNotExist:
             if (Log_1.Log.CheckError()) {
-              Log_1.Log.Error("Character", 79, "钩锁点不存在", ["EntityConfigId", o?.EntityConfigId]);
+              Log_1.Log.Error("Character", 79, "SendHookTargetRequest错误, 钩锁点不存在", ["EntityConfigId", i?.EntityConfigId], ["ServerEntityId", i?.ServerEntityId]);
             }
             break;
           default:
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 25582);
+            if (Log_1.Log.CheckError()) {
+              Log_1.Log.Error("Character", 79, "SendHookTargetRequest错误", ["EntityConfigId", i?.EntityConfigId], ["ServerEntityId", i?.ServerEntityId], ["Q4n", t.Q4n]);
+            }
         }
         if (t?.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
           e?.();
@@ -255,20 +313,20 @@ let BaseExploreComponent = BaseExploreComponent_1 = class BaseExploreComponent e
         Log_1.Log.Info("Character", 79, this.LogKey + "SendHookEndRequest", ["EntityConfigId", t.EntityConfigId]);
       }
       var e = t.Entity.GetComponent(0).GetCreatureDataId();
-      const o = Protocol_1.Aki.Protocol.DC_.create();
-      o.F4n = MathUtils_1.MathUtils.NumberToLong(e);
-      o.Zlh = this.IsHookEndByInterrupt ? Protocol_1.Aki.Protocol.Zlh.Proto_Midway : Protocol_1.Aki.Protocol.Zlh.Proto_Endpoint;
-      Net_1.Net.Call(29303, o, t => {});
+      const i = Protocol_1.Aki.Protocol.DC_.create();
+      i.F4n = MathUtils_1.MathUtils.NumberToLong(e);
+      i.Zlh = this.IsHookEndByInterrupt ? Protocol_1.Aki.Protocol.Zlh.Proto_Midway : Protocol_1.Aki.Protocol.Zlh.Proto_Endpoint;
+      FixHookClientLevelEventExecutor_1.FixHookClientLevelEventExecutor.ExecuteHookActions(this.IsHookEndByInterrupt ? 1 : 2, t);
+      Net_1.Net.Call(16335, i, t => {});
       if (t?.WillBeDestroyedAfterHook) {
-        const o = Protocol_1.Aki.Protocol.Wgs.create();
-        o.F4n = MathUtils_1.MathUtils.NumberToLong(e);
-        Net_1.Net.Call(20887, o, t => {});
+        const i = Protocol_1.Aki.Protocol.Wgs.create();
+        i.F4n = MathUtils_1.MathUtils.NumberToLong(e);
+        Net_1.Net.Call(23757, i, t => {});
       } else if (t?.WillBeHideAfterHook) {
         ControllerHolder_1.ControllerHolder.CreatureController.SetEntityEnable(t.Entity, false, this.LogKey + "SendHookEndRequest", true);
       }
     }
   }
 };
-BaseExploreComponent.kKf = 1628786673;
-BaseExploreComponent = BaseExploreComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(55)], BaseExploreComponent);
+BaseExploreComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(57)], BaseExploreComponent);
 exports.BaseExploreComponent = BaseExploreComponent; //# sourceMappingURL=BaseExploreComponent.js.map

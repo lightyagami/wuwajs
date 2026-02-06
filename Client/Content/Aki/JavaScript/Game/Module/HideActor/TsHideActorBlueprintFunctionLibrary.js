@@ -31,6 +31,12 @@ class TsHideActorBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   static ShowNpcEffect() {
     HideActorController_1.HideActorController.ShowNpcEffect();
   }
+  static SetHideParameter(t, e) {
+    HideActorController_1.HideActorController.SetHideParameter(t, e);
+  }
+  static ResetHideParameter() {
+    HideActorController_1.HideActorController.ResetHideParameter();
+  }
 }
 exports.default = TsHideActorBlueprintFunctionLibrary;
 //# sourceMappingURL=TsHideActorBlueprintFunctionLibrary.js.map

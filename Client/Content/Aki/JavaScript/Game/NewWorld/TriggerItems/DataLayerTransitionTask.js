@@ -8,6 +8,7 @@ const puerts_1 = require("puerts");
 const UE = require("ue");
 const Log_1 = require("../../../Core/Common/Log");
 const CommonDefine_1 = require("../../../Core/Define/CommonDefine");
+const LoadModeManager_1 = require("../../../Core/Performance/LoadMode/LoadModeManager");
 const ResourceSystem_1 = require("../../../Core/Resource/ResourceSystem");
 const TimerSystem_1 = require("../../../Core/Timer/TimerSystem");
 const GlobalData_1 = require("../../GlobalData");
@@ -36,51 +37,51 @@ class DataLayersTransitionTask {
     this.MaxTimeForWaitDataLayerActivateFinish = 0;
     this.ShouldModifyBudgetDuringWaitDataLayerActivateFinish = true;
     this.TaskFinishCallback = undefined;
-    this.srf = undefined;
-    this.mkf = undefined;
-    this.fkf = undefined;
-    this.gkf = undefined;
-    this.Ckf = undefined;
-    this.MGf = false;
-    this.esf = undefined;
-    this.MAf = 0;
-    this.EAf = () => {
-      this.MAf++;
-      switch (this.MAf) {
+    this.Tnf = undefined;
+    this.n3f = undefined;
+    this.s3f = undefined;
+    this.a3f = undefined;
+    this.h3f = undefined;
+    this.k6f = false;
+    this.vhf = undefined;
+    this.eqf = 0;
+    this.tqf = () => {
+      this.eqf++;
+      switch (this.eqf) {
         case 1:
-          this.IAf(this.EAf);
+          this.iqf(this.tqf);
           break;
         case 2:
-          this.TAf(this.EAf);
+          this.rqf(this.tqf);
           break;
         case 3:
-          this.bAf(this.EAf);
+          this.oqf(this.tqf);
           break;
         case 4:
-          this.RAf(this.EAf);
+          this.nqf(this.tqf);
           break;
         case 5:
-          this.LAf(this.EAf);
+          this.sqf(this.tqf);
           break;
         case 6:
-          this.wAf(this.EAf);
+          this.aqf(this.tqf);
           break;
         case 7:
           this.StopTask(true);
       }
     };
     this.vrl = undefined;
-    this.gZf = undefined;
-    this.BOe = ++DataLayersTransitionTask.EGf;
+    this.ayg = undefined;
+    this.BOe = ++DataLayersTransitionTask.q6f;
   }
-  tsf() {
-    if (!this.esf?.IsValid() && !(this.esf = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetSubsystem(GlobalData_1.GlobalData.World, UE.KuroSceneModifierSubsystem.StaticClass()), this.esf?.IsValid())) {
+  yhf() {
+    if (!this.vhf?.IsValid() && !(this.vhf = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetSubsystem(GlobalData_1.GlobalData.World, UE.KuroSceneModifierSubsystem.StaticClass()), this.vhf?.IsValid())) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Level", 39, "[DataLayersTransitionTask] 获取KuroSceneModifierSubsystem失败", ["TaskId", this.BOe]);
       }
-      this.esf = undefined;
+      this.vhf = undefined;
     }
-    return this.esf;
+    return this.vhf;
   }
   StartTask() {
     if (Log_1.Log.CheckInfo()) {
@@ -92,7 +93,7 @@ class DataLayersTransitionTask {
           ResourceSystem_1.ResourceSystem.LoadAsync(this.MatPathForActivating, UE.KuroSceneMatModifyDataAsset, t => {
             this.MatDataForActivatingLoaded = true;
             this.MatDataForActivating = t;
-            this.isf();
+            this.Shf();
           });
         } else {
           this.MatDataForActivatingLoaded = true;
@@ -103,7 +104,7 @@ class DataLayersTransitionTask {
           ResourceSystem_1.ResourceSystem.LoadAsync(this.MatPathForDeactivating, UE.KuroSceneMatModifyDataAsset, t => {
             this.MatDataForDeactivatingLoaded = true;
             this.MatDataForDeactivating = t;
-            this.isf();
+            this.Shf();
           });
         } else {
           this.MatDataForDeactivatingLoaded = true;
@@ -114,65 +115,65 @@ class DataLayersTransitionTask {
           ResourceSystem_1.ResourceSystem.LoadAsync(this.SeqPath, UE.LevelSequence, t => {
             this.SeqDataLoaded = true;
             this.SeqData = t;
-            this.isf();
+            this.Shf();
           });
         } else {
           this.SeqDataLoaded = true;
         }
       }
-      this.isf();
+      this.Shf();
     } else {
       this.StopTask(true);
     }
   }
-  pkf(t, a) {
-    for (const e of t) {
-      var i = (0, puerts_1.$ref)(undefined);
-      UE.KuroRenderingRuntimeBPPluginBPLibrary.GetWorldPartitionDataLayerNameByLabel(GlobalData_1.GlobalData.World, e, i);
-      var i = (0, puerts_1.$unref)(i);
-      if (i) {
-        a.add(i);
-      }
-    }
-  }
-  vkf(t, a) {
-    a.Empty();
+  l3f(t, a) {
     for (const i of t) {
-      a.Add(i);
-    }
-  }
-  osf(t, a) {
-    for (const e of t) {
-      var i = e.toString();
-      if (RenderModuleController_1.RenderModuleController.IsWorldPartitionDataLayerEnable(i) !== a) {
-        RenderModuleController_1.RenderModuleController.SetWorldPartitionDataLayerState(i, a, true);
+      var e = (0, puerts_1.$ref)(undefined);
+      UE.KuroRenderingRuntimeBPPluginBPLibrary.GetWorldPartitionDataLayerNameByLabel(GlobalData_1.GlobalData.World, i, e);
+      var e = (0, puerts_1.$unref)(e);
+      if (e) {
+        a.add(e);
       }
     }
   }
-  isf() {
+  _3f(t, a) {
+    a.Empty();
+    for (const e of t) {
+      a.Add(e);
+    }
+  }
+  Ehf(t, a) {
+    for (const i of t) {
+      var e = i.toString();
+      if (RenderModuleController_1.RenderModuleController.IsWorldPartitionDataLayerEnable(e) !== a) {
+        RenderModuleController_1.RenderModuleController.SetWorldPartitionDataLayerState(e, a, false);
+      }
+    }
+  }
+  Shf() {
     if (this.MatDataForActivatingLoaded && this.MatDataForDeactivatingLoaded && this.SeqDataLoaded) {
-      if (!this.MGf) {
+      if (!this.k6f) {
         this.vKi();
       }
     }
   }
   vKi() {
-    this.MGf = true;
+    this.k6f = true;
     if (this.ToActivateDataLayerLabels) {
-      this.mkf = new Set();
-      this.pkf(this.ToActivateDataLayerLabels, this.mkf);
-      this.gkf = UE.NewSet(UE.BuiltinName);
-      this.vkf(this.mkf, this.gkf);
+      this.n3f = new Set();
+      this.l3f(this.ToActivateDataLayerLabels, this.n3f);
+      this.a3f = UE.NewSet(UE.BuiltinName);
+      this._3f(this.n3f, this.a3f);
     }
     if (this.ToDeactivateDataLayerLabels) {
-      this.fkf = new Set();
-      this.pkf(this.ToDeactivateDataLayerLabels, this.fkf);
-      this.Ckf = UE.NewSet(UE.BuiltinName);
-      this.vkf(this.fkf, this.Ckf);
+      this.s3f = new Set();
+      this.l3f(this.ToDeactivateDataLayerLabels, this.s3f);
+      this.h3f = UE.NewSet(UE.BuiltinName);
+      this._3f(this.s3f, this.h3f);
     }
     if (this.ToActivateDataLayerLabels?.size || this.ToDeactivateDataLayerLabels?.size) {
-      this.nsf();
-      this.EAf();
+      this.Ihf();
+      this.tqf();
     } else {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Level", 39, "[DataLayersTransitionTask] 没有实际需要操作的DataLayer", ["TaskId", this.BOe], ["ToActivateDataLayerLabels", this.ToActivateDataLayerLabels], ["ToDeactivateDataLayerLabels", this.ToDeactivateDataLayerLabels]);
@@ -180,70 +181,70 @@ class DataLayersTransitionTask {
       this.StopTask(true);
     }
   }
-  nsf() {
-    if (this.mkf?.size && this.fkf?.size && this.MatDataForActivating && this.MatDataForDeactivating && this.SeqData && Log_1.Log.CheckWarn()) {
+  Ihf() {
+    if (this.n3f?.size && this.s3f?.size && this.MatDataForActivating && this.MatDataForDeactivating && this.SeqData && Log_1.Log.CheckWarn()) {
       Log_1.Log.Warn("Level", 39, "[DataLayersTransitionTask] 同时控制DataLayer显示的过渡和DataLayer隐藏的过渡，可能导致表现问题", ["TaskId", this.BOe], ["ToActivateDataLayerLabels", this.ToActivateDataLayerLabels], ["ToDeactivateDataLayerLabels", this.ToDeactivateDataLayerLabels]);
     }
-    if ((this.mkf?.size && this.MatDataForActivating || this.fkf?.size && this.MatDataForDeactivating) && !this.SeqData && Log_1.Log.CheckWarn()) {
+    if ((this.n3f?.size && this.MatDataForActivating || this.s3f?.size && this.MatDataForDeactivating) && !this.SeqData && Log_1.Log.CheckWarn()) {
       Log_1.Log.Warn("Level", 39, "[DataLayersTransitionTask] 要处理的DataLayer和过渡材质DA, 但是没有过渡Seq, 可能导致表现问题", ["TaskId", this.BOe], ["ToActivateDataLayerLabels", this.ToActivateDataLayerLabels], ["ToDeactivateDataLayerLabels", this.ToDeactivateDataLayerLabels]);
     }
   }
-  IAf(t) {
-    if ((Log_1.Log.CheckDebug() && Log_1.Log.Debug("Level", 39, "[DataLayersTransitionTask] TransitionPartPlaySeqToBeforeModifyMatMark", ["TaskId", this.BOe], ["SeqData", this.SeqData ? UE.KismetSystemLibrary.GetPathName(this.SeqData) : undefined], ["SeqMarkBeforeModifyMat", this.SeqMarkBeforeModifyMat]), this.SeqData?.IsValid() && ModelManager_1.ModelManager.GameModeModel && ModelManager_1.ModelManager.TeleportModel && !ModelManager_1.ModelManager.TeleportModel.IsTeleport && !ModelManager_1.ModelManager.GameModeModel.Loading) && (this.srf ||= new SimpleLevelSequenceActor_1.default(this.SeqData), this.SeqMarkBeforeModifyMat?.length)) {
-      this.srf.AddOnPauseCallback(() => {
-        this.srf?.ClearOnPausedCallback();
+  iqf(t) {
+    if ((Log_1.Log.CheckDebug() && Log_1.Log.Debug("Level", 39, "[DataLayersTransitionTask] TransitionPartPlaySeqToBeforeModifyMatMark", ["TaskId", this.BOe], ["SeqData", this.SeqData ? UE.KismetSystemLibrary.GetPathName(this.SeqData) : undefined], ["SeqMarkBeforeModifyMat", this.SeqMarkBeforeModifyMat]), this.SeqData?.IsValid() && ModelManager_1.ModelManager.GameModeModel && ModelManager_1.ModelManager.TeleportModel && !ModelManager_1.ModelManager.TeleportModel.IsTeleport && !ModelManager_1.ModelManager.GameModeModel.Loading) && (this.Tnf ||= new SimpleLevelSequenceActor_1.default(this.SeqData), this.SeqMarkBeforeModifyMat?.length)) {
+      this.Tnf.AddOnPauseCallback(() => {
+        this.Tnf?.ClearOnPausedCallback();
         TimerSystem_1.TimerSystem.Next(() => {
           t();
         });
       });
-      this.srf.PlayToMark(this.SeqMarkBeforeModifyMat, undefined, undefined, new RefCompDefine_1.PlayRateStruct(), false);
+      this.Tnf.PlayToMark(this.SeqMarkBeforeModifyMat, undefined, undefined, new RefCompDefine_1.PlayRateStruct(), false);
       return;
     }
     t();
   }
-  TAf(t) {
+  rqf(t) {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Level", 39, "[DataLayersTransitionTask] TransitionPartModifyMat", ["TaskId", this.BOe], ["ToActivateDataLayerLabels", this.ToActivateDataLayerLabels], ["ToDeactivateDataLayerLabels", this.ToDeactivateDataLayerLabels], ["MatDataForActivating", UE.KismetSystemLibrary.GetPathName(this.MatDataForActivating)], ["MatDataForDeactivating", UE.KismetSystemLibrary.GetPathName(this.MatDataForDeactivating)]);
     }
     if (this.MatDataForActivating?.IsValid()) {
-      this.tsf()?.ModifyMaterialsByDataLayer(this.gkf, this.MatDataForActivating, false);
+      this.yhf()?.ModifyMaterialsByDataLayer(this.a3f, this.MatDataForActivating, false);
     }
     if (this.MatDataForDeactivating?.IsValid()) {
-      this.tsf()?.ModifyMaterialsByDataLayer(this.Ckf, this.MatDataForDeactivating, true);
+      this.yhf()?.ModifyMaterialsByDataLayer(this.h3f, this.MatDataForDeactivating, true);
     }
     t();
   }
-  bAf(t) {
+  oqf(t) {
     if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("Level", 39, "[DataLayersTransitionTask] TransitionPartLoadDataLayer", ["TaskId", this.BOe], ["ToActivateDataLayerLabels", this.ToActivateDataLayerLabels], ["ToActivateDataLayerNames", this.mkf]);
+      Log_1.Log.Debug("Level", 39, "[DataLayersTransitionTask] TransitionPartLoadDataLayer", ["TaskId", this.BOe], ["ToActivateDataLayerLabels", this.ToActivateDataLayerLabels], ["ToActivateDataLayerNames", this.n3f]);
     }
-    if (this.ToActivateDataLayerLabels?.size && this.mkf?.size) {
-      this.osf(this.ToActivateDataLayerLabels, true);
-      this.CZf(t);
+    if (this.ToActivateDataLayerLabels?.size && this.n3f?.size) {
+      this.Ehf(this.ToActivateDataLayerLabels, true);
+      this.hyg(t);
     } else {
       t();
     }
   }
-  CZf(t) {
-    this.pZf();
-    if (this.ShouldWaitDataLayersActivateFinish && ModelManager_1.ModelManager.GameModeModel?.UseWorldPartition && this.mkf?.size) {
-      const i = ModelManager_1.ModelManager.GameModeModel?.StreamingSource?.GetComponentByClass(UE.WorldPartitionStreamingSourceComponent.StaticClass());
-      if (i) {
-        const e = UE.NewArray(UE.BuiltinName);
-        this.vkf(this.mkf, e);
+  hyg(t) {
+    this.lyg();
+    if (this.ShouldWaitDataLayersActivateFinish && ModelManager_1.ModelManager.GameModeModel?.UseWorldPartition && this.n3f?.size) {
+      const e = ModelManager_1.ModelManager.GameModeModel?.StreamingSource?.GetComponentByClass(UE.WorldPartitionStreamingSourceComponent.StaticClass());
+      if (e) {
+        const i = UE.NewArray(UE.BuiltinName);
+        this._3f(this.n3f, i);
         if (this.ShouldModifyBudgetDuringWaitDataLayerActivateFinish) {
-          ResourceSystem_1.ResourceSystem.SetLoadModeInDataLayerTransition(GlobalData_1.GlobalData.World, true);
+          LoadModeManager_1.LoadModeManager.SetLoadModeByReason("InGameLoading", "DataLayerTransition");
         }
         const s = () => {
           if (this.ShouldModifyBudgetDuringWaitDataLayerActivateFinish) {
-            ResourceSystem_1.ResourceSystem.SetLoadModeInDataLayerTransition(GlobalData_1.GlobalData.World, false);
+            LoadModeManager_1.LoadModeManager.ResetLoadModeByReason("DataLayerTransition");
           }
-          this.pZf();
+          this.lyg();
           t();
         };
         var a;
         this.vrl = TimerSystem_1.TimerSystem.Forever(() => {
-          if (i.IsStreamingCompletedForLayers(e, false, this.WaitDataLayerStreamingRadius, false, undefined, false)) {
+          if (e.IsStreamingCompletedForLayers(i, false, this.WaitDataLayerStreamingRadius, false, undefined, false)) {
             s();
           }
         }, 100);
@@ -258,13 +259,13 @@ class DataLayersTransitionTask {
             }
             s();
           } else {
-            this.gZf = TimerSystem_1.TimerSystem.Delay(() => {
+            this.ayg = TimerSystem_1.TimerSystem.Delay(() => {
               if (Log_1.Log.CheckWarn()) {
                 Log_1.Log.Warn("Level", 39, "[DataLayersTransitionTask] 等待DataLayer加载超时，强行结束", ["TaskId", this.BOe], ["ToActivateDataLayerLabels", this.ToActivateDataLayerLabels], ["WaitDataLayerStreamingMaxTime", this.MaxTimeForWaitDataLayerActivateFinish]);
               }
               s();
             }, a);
-            if (!this.gZf) {
+            if (!this.ayg) {
               if (Log_1.Log.CheckError()) {
                 Log_1.Log.Error("Level", 39, "[DataLayersTransitionTask] 设置等待DataLayer加载超时的延迟计时器时出错，强行结束", ["TaskId", this.BOe], ["ToActivateDataLayerLabels", this.ToActivateDataLayerLabels]);
               }
@@ -290,46 +291,46 @@ class DataLayersTransitionTask {
       t();
     }
   }
-  pZf() {
+  lyg() {
     if (this.vrl && TimerSystem_1.TimerSystem.Has(this.vrl)) {
       TimerSystem_1.TimerSystem.Remove(this.vrl);
     }
     this.vrl = undefined;
-    if (this.gZf && TimerSystem_1.TimerSystem.Has(this.gZf)) {
-      TimerSystem_1.TimerSystem.Remove(this.gZf);
+    if (this.ayg && TimerSystem_1.TimerSystem.Has(this.ayg)) {
+      TimerSystem_1.TimerSystem.Remove(this.ayg);
     }
-    this.gZf = undefined;
+    this.ayg = undefined;
   }
-  LAf(t) {
+  sqf(t) {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Level", 39, "[DataLayersTransitionTask] TransitionPartUnloadDataLayer", ["TaskId", this.BOe], ["ToDeactivateDataLayerLabels", this.ToDeactivateDataLayerLabels]);
     }
     if (this.ToDeactivateDataLayerLabels?.size) {
-      this.osf(this.ToDeactivateDataLayerLabels, false);
+      this.Ehf(this.ToDeactivateDataLayerLabels, false);
     }
     t();
   }
-  wAf(t) {
+  aqf(t) {
     if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("Level", 39, "[DataLayersTransitionTask] TransitionPartResetMat", ["TaskId", this.BOe], ["ToActivateDataLayerLabels", this.ToActivateDataLayerLabels], ["ToActivateDataLayerNames", this.mkf]);
+      Log_1.Log.Debug("Level", 39, "[DataLayersTransitionTask] TransitionPartResetMat", ["TaskId", this.BOe], ["ToActivateDataLayerLabels", this.ToActivateDataLayerLabels], ["ToActivateDataLayerNames", this.n3f]);
     }
-    this.tsf()?.ResetMaterialsByDataLayer(this.gkf);
-    this.tsf()?.ResetMaterialsByDataLayer(this.Ckf);
+    this.yhf()?.ResetMaterialsByDataLayer(this.a3f);
+    this.yhf()?.ResetMaterialsByDataLayer(this.h3f);
     t();
   }
-  RAf(t) {
+  nqf(t) {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Level", 39, "[DataLayersTransitionTask] TransitionPartPlaySeqToEnd", ["TaskId", this.BOe], ["SeqData", this.SeqData]);
     }
     if (this.SeqData?.IsValid() && ModelManager_1.ModelManager.GameModeModel && ModelManager_1.ModelManager.TeleportModel && !ModelManager_1.ModelManager.TeleportModel.IsTeleport && !ModelManager_1.ModelManager.GameModeModel.Loading) {
-      this.srf ||= new SimpleLevelSequenceActor_1.default(this.SeqData);
-      this.srf.AddOnStopCallback(() => {
-        this.srf?.ClearOnStopCallback();
+      this.Tnf ||= new SimpleLevelSequenceActor_1.default(this.SeqData);
+      this.Tnf.AddOnStopCallback(() => {
+        this.Tnf?.ClearOnStopCallback();
         TimerSystem_1.TimerSystem.Next(() => {
           t();
         });
       });
-      this.srf.PlayLoop(false, 0, undefined, undefined, new RefCompDefine_1.PlayRateStruct());
+      this.Tnf.PlayLoop(false, 0, undefined, undefined, new RefCompDefine_1.PlayRateStruct());
     } else {
       t();
     }
@@ -338,10 +339,10 @@ class DataLayersTransitionTask {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Level", 39, "[DataLayersTransitionTask] DataLayer过渡结束", ["TaskId", this.BOe], ["ToActivateDataLayerLabels", this.ToActivateDataLayerLabels], ["ToDeactivateDataLayerLabels", this.ToDeactivateDataLayerLabels]);
     }
-    this.srf?.Clear();
-    this.srf = undefined;
+    this.Tnf?.Clear();
+    this.Tnf = undefined;
     this.TaskFinishCallback?.(this, t);
   }
 }
-(exports.DataLayersTransitionTask = DataLayersTransitionTask).EGf = 0;
+(exports.DataLayersTransitionTask = DataLayersTransitionTask).q6f = 0;
 //# sourceMappingURL=DataLayerTransitionTask.js.map

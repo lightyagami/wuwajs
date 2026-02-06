@@ -8,6 +8,7 @@ const UE = require("ue");
 const Info_1 = require("../../../../../../Core/Common/Info");
 const Time_1 = require("../../../../../../Core/Common/Time");
 const CommonParamById_1 = require("../../../../../../Core/Define/ConfigCommon/CommonParamById");
+const TimerSystem_1 = require("../../../../../../Core/Timer/TimerSystem");
 const FNameUtil_1 = require("../../../../../../Core/Utils/FNameUtil");
 const EventDefine_1 = require("../../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../../Common/Event/EventSystem");
@@ -27,7 +28,6 @@ const UiCameraAnimationManager_1 = require("../../../../UiCameraAnimation/UiCame
 const MotorcycleTabItem_1 = require("../../../Develop/TabItem/MotorcycleTabItem");
 const MotorcycleUiModelUtil_1 = require("../../../Model/MotorcycleUiModelUtil");
 const MotorcycleDiyDefine_1 = require("../../MotorcycleDiyDefine");
-const TimerSystem_1 = require("../../../../../../Core/Timer/TimerSystem");
 class MotorcycleDiyRootView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
@@ -35,15 +35,29 @@ class MotorcycleDiyRootView extends UiViewBase_1.UiViewBase {
     this.Ivt = undefined;
     this.Tvt = undefined;
     this.L6e = undefined;
-    this.rmo = undefined;
-    this.npf = undefined;
-    this.CameraInputComponent = new UiCameraInputComponent_1.UiCameraInputComponent();
     this.TDe = undefined;
-    this.Yyf = true;
-    this.zyf = true;
-    this.zFf = 0;
+    this.Vyf = undefined;
+    this.CameraInputComponent = new UiCameraInputComponent_1.UiCameraInputComponent();
+    this.ZEf = true;
+    this.eIf = true;
+    this.rmo = undefined;
+    this.hIg = 0;
+    this.lIg = 0;
+    this.q6g = false;
+    this.N9g = false;
     this.R6e = (e, t) => {
-      return new MotorcycleTabItem_1.MotorcycleTabItem();
+      var i = new MotorcycleTabItem_1.MotorcycleTabItem();
+      i.OnRegisterViewCallback = e => {
+        if (e) {
+          e.OnTabCameraClick = this.sPg;
+        }
+      };
+      return i;
+    };
+    this.sPg = e => {
+      this.hIg = e;
+      this.tIf(e);
+      this.Mzf();
     };
     this.Bpt = e => {
       var t;
@@ -54,82 +68,108 @@ class MotorcycleDiyRootView extends UiViewBase_1.UiViewBase {
       var t = this.yvt[e];
       var i = t.ChildViewName;
       var e = this.Ivt.GetTabItemByIndex(e);
-      this.Tvt.ToggleCallBack(t, i, e);
+      if (this.lIg > 0) {
+        this.Tvt.ToggleCallBack(t, i, e, this.lIg);
+        this.lIg = 0;
+      } else {
+        this.Tvt.ToggleCallBack(t, i, e);
+      }
       this.rmo = i;
     };
     this.yqe = e => {
       e = this.yvt[e];
       return new CommonTabData_1.CommonTabData(e.Icon, new CommonTabTitleData_1.CommonTabTitleData(e.TabName));
     };
-    this.kcf = () => {
-      this.npf.SetEnableClick(false);
+    this.Umf = () => {
+      this.Vyf.SetEnableClick(false);
     };
-    this.PVi = (e, t) => {
-      if (this.zFf !== e) {
-        this.zFf = e;
-        this.spf(e, t);
-        this.Jyf(e);
-        this.m6f();
-      }
+    this.PVi = (e, t, i) => {
+      this.Hyf(e, t, i);
     };
-    this.Zyf = () => {
-      this.zyf = !this.zyf;
-      this.Jyf(3);
-      this.m6f();
+    this.iIf = () => {
+      this.eIf = !this.eIf;
+      this.tIf(3);
+      this.Mzf();
     };
-    this.hpf = () => {
+    this.$yf = () => {
       var e = ModelManager_1.ModelManager.MotorcycleDiyModel.GetSelectedStickerIdList();
       ControllerHolder_1.ControllerHolder.MotorcycleDiyController.EquipMotorStickerRequest(e);
     };
-    this.rpf = () => {
-      this.Yyf = !this.Yyf;
-      const e = this.Yyf;
+    this.Fyf = () => {
+      this.ZEf = !this.ZEf;
+      const e = this.ZEf;
       if (e) {
         this.GetItem(0).SetUIActive(e);
         this.PlaySequence("UiIn", () => {}, true);
+        this.CameraInputComponent.End();
       } else {
         this.PlaySequence("UiOut", () => {
           this.GetItem(0).SetUIActive(e);
         }, true);
+        this.CameraInputComponent.Start();
+        this.CameraInputComponent.TryActivate();
       }
-      this.Jyf(this.zFf);
+      this.tIf(this.hIg);
     };
     this.CloseClick = () => {
-      ModelManager_1.ModelManager.MotorcycleDiyModel.ResetSelectStickerInfo();
-      this.CloseMe();
+      if (this.q6g) {
+        ModelManager_1.ModelManager.MotorcycleDiyModel.ResetSelectedItemInfo();
+        MotorcycleUiModelUtil_1.MotorcycleUiModelUtil.LoadEquippedMotor(() => {
+          this.CloseMe();
+        });
+      } else {
+        this.CloseMe();
+      }
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIExtendToggle], [4, UE.UIButtonComponent], [5, UE.UIExtendToggle], [6, UE.UIDraggableComponent]];
-    this.BtnBindInfo = [[3, this.Zyf], [5, this.rpf]];
+    this.BtnBindInfo = [[3, this.iIf], [5, this.Fyf]];
   }
   async OnBeforeStartAsync() {
+    var e = this.OpenParam;
+    if (e) {
+      this.rmo = e.OpenTabView;
+      this.lIg = e.PartTabIndex ?? 0;
+      this.q6g = e.IsNeedResetMotor ?? false;
+    }
     this.InitTabComponent();
-    this.npf = new ButtonItem_1.ButtonItem();
-    await Promise.all([this.npf.CreateThenShowByActorAsync(this.GetButton(4).RootUIComp.GetOwner()), this.RefreshTabListAsync()]);
-    this.npf.SetFunction(this.hpf);
-    this.npf.SetUiActive(false);
+    this.Vyf = new ButtonItem_1.ButtonItem();
+    await Promise.all([this.Vyf.CreateThenShowByActorAsync(this.GetButton(4).RootUIComp.GetOwner()), this.RefreshTabListAsync()]);
+    this.Vyf.SetFunction(this.$yf);
+    this.Vyf.SetUiActive(false);
   }
   OnHandleLoadScene() {
-    var e = ModelManager_1.ModelManager.MotorcycleDiyModel.CurSkinId;
+    var e = ModelManager_1.ModelManager.MotorcycleDiyModel.GetSelectedFrameId();
     var t = ModelManager_1.ModelManager.MotorcycleDiyModel.GetSelectedStickerIdList(false);
+    var i = ModelManager_1.ModelManager.MotorcycleDiyModel.GetSelectedDecorationIdList(false);
     MotorcycleUiModelUtil_1.MotorcycleUiModelUtil.CreateMotor();
-    MotorcycleUiModelUtil_1.MotorcycleUiModelUtil.LoadMotorByParam(e, t);
+    var e = {
+      FrameId: e,
+      StickerIds: t,
+      DecorationIds: i
+    };
+    MotorcycleUiModelUtil_1.MotorcycleUiModelUtil.LoadMotorByParam(e);
   }
   OnBeforeShow() {
-    this.jkf();
+    var e;
+    this.G3f();
     MotorcycleUiModelUtil_1.MotorcycleUiModelUtil.ShowMotor(true);
-    if (this.zFf !== 0 && (this.Jyf(this.zFf), this.m6f(), this.Tvt) && this.Tvt.GetCurrentTabViewName() === "MotorcycleDiyStickerTabView") {
-      this.Tvt.GetCurrentTabView()?.RefreshPartScrollView();
+    if (this.Tvt && (e = this.Tvt.GetCurrentTabView())) {
+      e.RefreshItemScrollView();
+      e.OnTabCameraClick?.(this.hIg);
     }
-  }
-  OnAfterShow() {
-    this.CameraInputComponent.Start();
-    this.CameraInputComponent.TryActivate();
+    if (MotorcycleUiModelUtil_1.MotorcycleUiModelUtil.IsMotorCreated()) {
+      e = {
+        FrameId: ModelManager_1.ModelManager.MotorcycleDiyModel.GetSelectedFrameId(),
+        StickerIds: ModelManager_1.ModelManager.MotorcycleDiyModel.GetSelectedStickerIdList(false),
+        DecorationIds: ModelManager_1.ModelManager.MotorcycleDiyModel.GetSelectedDecorationIdList(false)
+      };
+      MotorcycleUiModelUtil_1.MotorcycleUiModelUtil.LoadMotorByParam(e);
+    }
   }
   OnBeforeHide() {
     MotorcycleUiModelUtil_1.MotorcycleUiModelUtil.ShowMotor(false);
-    this.CameraInputComponent.End();
   }
   OnHandleReleaseScene() {
     MotorcycleUiModelUtil_1.MotorcycleUiModelUtil.DestroyMotor();
@@ -145,11 +185,11 @@ class MotorcycleDiyRootView extends UiViewBase_1.UiViewBase {
     }
   }
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.MotorDiyInfoUpdate, this.kcf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.MotorDiyInfoUpdate, this.Umf);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.MotorDiyOnSelectToggleClick, this.PVi);
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.MotorDiyInfoUpdate, this.kcf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.MotorDiyInfoUpdate, this.Umf);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.MotorDiyOnSelectToggleClick, this.PVi);
   }
   InitTabComponent() {
@@ -157,34 +197,47 @@ class MotorcycleDiyRootView extends UiViewBase_1.UiViewBase {
     this.Ivt = new TabComponentWithCaptionItem_1.TabComponentWithCaptionItem(this.GetItem(1), e, this.CloseClick);
     this.L6e = undefined;
     this.Ivt.SetCanChange(this.Bpt);
-    this.Ivt.SetTabComponentShowState(false);
     this.Tvt = new TabViewComponent_1.TabViewComponent(this.GetItem(2));
   }
-  jkf() {
-    var e = ConfigManager_1.ConfigManager.UiRoleCameraConfig.GetRoleCameraConfig(MotorcycleDiyDefine_1.MOTORCYCLE_DIY_ROOT_VIEW_CAMERA_CONFIG_ID);
-    var t = UE.KuroCollectActorComponent.GetActorWithTag(FNameUtil_1.FNameUtil.GetDynamicFName("RoleCase"), 1).D_K2_GetActorLocation();
-    var e = {
-      DragComponent: this.GetDraggable(6),
-      CameraSettingConfig: e,
-      SourceLocation: t
-    };
-    this.CameraInputComponent.InitData(e);
+  G3f() {
+    var e;
+    var t;
+    if (!this.N9g) {
+      t = ConfigManager_1.ConfigManager.UiRoleCameraConfig.GetRoleCameraConfig(MotorcycleDiyDefine_1.MOTORCYCLE_DIY_ROOT_VIEW_CAMERA_CONFIG_ID);
+      e = UE.KuroCollectActorComponent.GetActorWithTag(FNameUtil_1.FNameUtil.GetDynamicFName("RoleCase"), 1).D_K2_GetActorLocation();
+      t = {
+        DragComponent: this.GetDraggable(6),
+        CameraSettingConfig: t,
+        SourceLocation: e
+      };
+      this.CameraInputComponent.InitData(t);
+      this.N9g = true;
+    }
   }
   async RefreshTabListAsync() {
     UiLayer_1.UiLayer.SetShowMaskLayer("RefreshTabListAsync", true);
-    var e = ModelManager_1.ModelManager.MotorcycleDiyModel.GetMotorDiyTabList();
-    var t = this.yvt.toString() !== e.toString();
-    this.yvt = e;
-    var i = this.yvt.length;
-    var o = this.Ivt.CreateTabItemDataByLength(i);
-    for (let e = 0; e < i; e++) {
+    var e;
+    var t;
+    var i = ModelManager_1.ModelManager.MotorcycleDiyModel.GetMotorDiyTabList();
+    var o = this.yvt.toString() !== i.toString();
+    this.yvt = i;
+    var r = this.yvt.length;
+    var a = this.Ivt.CreateTabItemDataByLength(r);
+    for (let e = 0; e < r; e++) {
       var n = this.yvt[e].ChildViewName;
-      o[e].RedDotName = this.GetRedDotName(n);
+      a[e].RedDotName = this.GetRedDotName(n);
     }
-    await this.Ivt.RefreshTabItemAsync(o, t).finally(() => {
+    await this.Ivt.RefreshTabItemAsync(a, o).finally(() => {
       UiLayer_1.UiLayer.SetShowMaskLayer("RefreshTabListAsync", false);
     });
-    if (t) {
+    for ([e, t] of this.Ivt.GetTabItemMap()) {
+      var s = this.yvt[e].ChildViewName;
+      var s = this.GetPreviewRedDotName(s);
+      if (s) {
+        t.BindPreviewRedDot(s);
+      }
+    }
+    if (o) {
       let t = 0;
       for (let e = 0; e < this.yvt.length; e++) {
         if (this.yvt[e].ChildViewName === this.rmo) {
@@ -198,12 +251,33 @@ class MotorcycleDiyRootView extends UiViewBase_1.UiViewBase {
     }
   }
   GetRedDotName(e) {
-    if (e === "MotorcycleDiyStickerTabView") {
+    if (e === "MotorcycleDiyFrameTabView") {
+      return "MotorcycleDiyFrameTab";
+    } else if (e === "MotorcycleDiyStickerTabView") {
       return "MotorcycleDiyStickerTab";
+    } else if (e === "MotorcycleDiyDecorationTabView") {
+      return "MotorcycleDiyDecorationTab";
+    } else {
+      return undefined;
     }
   }
-  spf(e, t) {
-    this.GetExtendToggle(3).RootUIComp.SetUIActive(e === 3);
+  GetPreviewRedDotName(e) {
+    if (e === "MotorcycleDiyFrameTabView") {
+      return "MotorcycleDiyFramePreTab";
+    } else if (e === "MotorcycleDiyStickerTabView") {
+      return "MotorcycleDiyStickerPreTab";
+    } else if (e === "MotorcycleDiyDecorationTabView") {
+      return "MotorcycleDiyDecorationPreTab";
+    } else {
+      return undefined;
+    }
+  }
+  Hyf(e, t, i) {
+    if (e === 3 || e === 1) {
+      this.GetExtendToggle(3).RootUIComp.SetUIActive(false);
+    } else {
+      this.GetExtendToggle(3).RootUIComp.SetUIActive(t === 3);
+    }
   }
   n8_() {
     if (this.TDe) {
@@ -211,7 +285,7 @@ class MotorcycleDiyRootView extends UiViewBase_1.UiViewBase {
       this.TDe = undefined;
     }
   }
-  m6f() {
+  Mzf() {
     this.n8_();
     var e = CommonParamById_1.configCommonParamById.GetFloatConfig("MotorDiyChangeBPartDelay");
     if (e !== undefined) {
@@ -222,18 +296,27 @@ class MotorcycleDiyRootView extends UiViewBase_1.UiViewBase {
       }, e * 1000);
     }
   }
-  Jyf(t) {
-    var i = ConfigManager_1.ConfigManager.MotorDiyConfig.GetMotorStickerPartConfig(t);
+  tIf(t) {
+    let i = undefined;
+    if (this.rmo === "MotorcycleDiyFrameTabView") {
+      i = ConfigManager_1.ConfigManager.MotorDiyConfig.GetMotorFramePartConfig();
+    } else if (this.rmo === "MotorcycleDiyStickerTabView") {
+      if (t > 0) {
+        i = ConfigManager_1.ConfigManager.MotorDiyConfig.GetMotorStickerPartConfig(t);
+      }
+    } else if (this.rmo === "MotorcycleDiyDecorationTabView" && t > 0) {
+      i = ConfigManager_1.ConfigManager.MotorDiyConfig.GetMotorDecorationPartConfig(t);
+    }
     if (i && !(i.CameraIds.length <= 0)) {
       const o = [];
-      (this.Yyf ? i.CameraIds : i.DetailCameraIds).forEach((e, t) => {
+      (this.ZEf ? i.CameraIds : i.DetailCameraIds).forEach((e, t) => {
         o.push(e);
       });
       let e = o[0];
       if (t === 3) {
-        e = this.zyf ? o[0] : o[1];
+        e = this.eIf ? o[0] : o[1];
       }
-      this.CameraInputComponent.CanCameraInput = !this.Yyf;
+      this.CameraInputComponent.CanCameraInput = !this.ZEf;
       UiCameraAnimationManager_1.UiCameraAnimationManager.PushCameraHandleByHandleName(e, true, true, "1001");
     }
   }

@@ -95,8 +95,8 @@ class RenderModuleModel extends ModelBase_1.ModelBase {
         }, 500);
       }
     };
-    this.peg = new Set();
-    this.nzf = new Set();
+    this.ITg = new Set();
+    this.xfg = new Set();
   }
   GetCurrentKeyState(e) {
     if (e === this.j1r) {
@@ -412,11 +412,11 @@ class RenderModuleModel extends ModelBase_1.ModelBase {
     return true;
   }
   OnLeaveLevel() {
-    this.peg.clear();
-    for (const e of this.nzf) {
-      this.peg.add(e);
+    this.ITg.clear();
+    for (const e of this.xfg) {
+      this.ITg.add(e);
     }
-    this.nzf.clear();
+    this.xfg.clear();
     this.J1r();
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("RenderBattle", 11, "BOSS战渲染模块离开关卡");
@@ -456,20 +456,20 @@ class RenderModuleModel extends ModelBase_1.ModelBase {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("World", 39, "DependenciesNotMatchDataLayerSet添加DataLayer", ["path", e]);
     }
-    this.nzf.add(e);
+    this.xfg.add(e);
   }
   IsDependenciesNotMatchDataLayer(e) {
-    return this.nzf.has(e);
+    return this.xfg.has(e);
   }
   RemoveDependenciesNotMatchDataLayer(e) {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("World", 39, "DependenciesNotMatchDataLayerSet移除DataLayer", ["path", e]);
     }
-    this.nzf.delete(e);
+    this.xfg.delete(e);
   }
   FlushTempDependenciesNotMatchDataLayers() {
-    for (const e of this.nzf) {
-      this.nzf.add(e);
+    for (const e of this.ITg) {
+      this.xfg.add(e);
     }
   }
 }

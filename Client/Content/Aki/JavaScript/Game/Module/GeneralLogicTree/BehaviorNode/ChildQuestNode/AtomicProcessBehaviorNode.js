@@ -16,7 +16,7 @@ const ChildQuestNodeBase_1 = require("./ChildQuestNodeBase");
 class AtomicProcessBehaviorNode extends ChildQuestNodeBase_1.ChildQuestNodeBase {
   constructor() {
     super(...arguments);
-    this.gqm = () => {
+    this.DOm = () => {
       this.SubmitNode();
     };
   }
@@ -25,18 +25,18 @@ class AtomicProcessBehaviorNode extends ChildQuestNodeBase_1.ChildQuestNodeBase 
     return !!super.OnCreate(e) && e.Condition.Type === IQuest_1.EChildQuest.AtomicProcess;
   }
   OnStart(e) {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnLevelFlowFinished, this.gqm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnLevelFlowFinished, this.DOm);
     ControllerHolder_1.ControllerHolder.LevelFlowController.InitTaskTreeInfo(this.TreeIncId, this.NodeId);
     ControllerHolder_1.ControllerHolder.LevelFlowController.StartLevelFlow();
   }
   OnEnd(e) {
     if (e) {
-      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnLevelFlowFinished, this.gqm);
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnLevelFlowFinished, this.DOm);
     } else {
-      this.uZf();
+      this.Nvg();
     }
   }
-  uZf() {
+  Nvg() {
     var e;
     if (!ModelManager_1.ModelManager.LevelFlowModel.IsEnd) {
       e = new AsyncTask_1.AsyncTask("LevelFlowPrepareRollback", async () => {

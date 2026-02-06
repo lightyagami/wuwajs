@@ -30,7 +30,7 @@ class PhantomArenaFieldItem extends UiPanelBase_1.UiPanelBase {
     this.ki1 = () => {
       this.PointerEnterCallback?.(this.FieldData, this.GetItem(16));
     };
-    this.T9m = () => {
+    this.sHm = () => {
       this.PointerExitCallback?.();
     };
     this.$xt = t => {
@@ -52,10 +52,10 @@ class PhantomArenaFieldItem extends UiPanelBase_1.UiPanelBase {
   OnStart() {
     this.Sequence = new UiSequencePlayer_1.UiSequencePlayer(this.RootItem);
     this.Sequence.BindOnEndSequenceEvent(this.$xt);
-    this.OLf(false);
+    this.YBf(false);
     var t = this.GetButton(0);
     t.OnPointEnterCallBack.Bind(this.ki1);
-    t.OnPointExitCallBack.Bind(this.T9m);
+    t.OnPointExitCallBack.Bind(this.sHm);
   }
   OnBeforeDestroy() {
     this.Sequence.Clear();
@@ -84,16 +84,16 @@ class PhantomArenaFieldItem extends UiPanelBase_1.UiPanelBase {
     }
     this.IsLastInSkillCd = this.FieldData.IsInSkillCd;
   }
-  Ijm() {
+  M$m() {
     if (!this.IsLastCanInteract && this.FieldData.IsCanInteractive) {
       this.Sequence.PlaySequence("Activate");
-      this.OLf(true);
+      this.YBf(true);
     } else if (this.IsLastCanInteract && !this.FieldData.IsCanInteractive) {
-      this.OLf(false);
+      this.YBf(false);
     }
     this.IsLastCanInteract = this.FieldData.IsCanInteractive;
   }
-  d1f() {
+  guf() {
     var t;
     if (this.FieldData.CardData && !StringUtils_1.StringUtils.IsBlank(this.FieldData.FieldButtonColor)) {
       t = UE.Color.FromHex(this.FieldData.FieldButtonColor);
@@ -101,7 +101,7 @@ class PhantomArenaFieldItem extends UiPanelBase_1.UiPanelBase {
       this.GetTexture(12).SetColor(t);
     }
   }
-  u1f() {
+  muf() {
     var t;
     var i;
     if (this.FieldData.CardData) {
@@ -130,7 +130,7 @@ class PhantomArenaFieldItem extends UiPanelBase_1.UiPanelBase {
       await Promise.all([this.SetTextureAsync(this.FieldData.FieldIcon, t), this.SetTextureAsync(this.FieldData.FieldActivateIcon, i), this.SetTextureAsync(this.FieldData.FieldRing, s), this.SetTextureAsync(this.FieldData.FieldActivateRing, e)]);
     }
   }
-  async m1f() {
+  async Cuf() {
     var t;
     if (this.FieldData.CardData) {
       t = this.GetUiNiagara(14);
@@ -144,7 +144,7 @@ class PhantomArenaFieldItem extends UiPanelBase_1.UiPanelBase {
       await this.SealItem.HideSeal();
     }
   }
-  OLf(t) {
+  YBf(t) {
     this.GetItem(4).SetUIActive(t);
     this.GetItem(1).SetUIActive(!t);
   }
@@ -155,10 +155,10 @@ class PhantomArenaFieldItem extends UiPanelBase_1.UiPanelBase {
   async RefreshSelf() {
     this.d7s();
     this.iEc();
-    this.Ijm();
-    this.d1f();
-    this.u1f();
-    await Promise.all([this.m1f(), this.wke(), this.Kbe()]);
+    this.M$m();
+    this.guf();
+    this.muf();
+    await Promise.all([this.Cuf(), this.wke(), this.Kbe()]);
   }
   UseSkill() {
     this.Sequence.PlaySequence("Use");
@@ -202,6 +202,9 @@ class PhantomArenaFieldItem extends UiPanelBase_1.UiPanelBase {
   }
   FinishSkillInteract() {
     this.FinishSkillInteractClickCallback?.(this.FieldData);
+  }
+  CancelSkillInteract() {
+    this.Sequence.PlaySequencePurely("UnUse");
   }
 }
 exports.PhantomArenaFieldItem = PhantomArenaFieldItem;

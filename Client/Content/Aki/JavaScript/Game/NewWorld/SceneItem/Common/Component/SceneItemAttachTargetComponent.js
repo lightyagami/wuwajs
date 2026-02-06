@@ -41,7 +41,7 @@ let SceneItemAttachTargetComponent = SceneItemAttachTargetComponent_1 = class Sc
     this.zOc = undefined;
   }
   static get Dependencies() {
-    return [212, 0];
+    return [214, 0];
   }
   OnInitData(t) {
     t = t.GetParam(SceneItemAttachTargetComponent_1)[0];
@@ -100,7 +100,7 @@ let SceneItemAttachTargetComponent = SceneItemAttachTargetComponent_1 = class Sc
     return true;
   }
   OnStart() {
-    this.zOc = this.Entity.GetComponent(134);
+    this.zOc = this.Entity.GetComponent(136);
     return !!this.zOc || (Log_1.Log.CheckError() && Log_1.Log.Error("SceneItem", 7, "[SceneItemAttachTargetComponent] Invalid DynamicAttachComp", ["PbDataId:", this.EIe?.GetPbDataId()]), false);
   }
   OnActivate() {
@@ -128,5 +128,5 @@ let SceneItemAttachTargetComponent = SceneItemAttachTargetComponent_1 = class Sc
     }
   }
 };
-SceneItemAttachTargetComponent = SceneItemAttachTargetComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(133)], SceneItemAttachTargetComponent);
+SceneItemAttachTargetComponent = SceneItemAttachTargetComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(135)], SceneItemAttachTargetComponent);
 exports.SceneItemAttachTargetComponent = SceneItemAttachTargetComponent; //# sourceMappingURL=SceneItemAttachTargetComponent.js.map

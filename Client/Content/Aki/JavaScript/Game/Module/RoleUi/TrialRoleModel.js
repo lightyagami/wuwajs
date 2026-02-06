@@ -20,11 +20,11 @@ const TrialRoleGroupData_1 = require("./TrialRoleGroupData");
 class TrialRoleModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
-    this.EBf = [];
-    this.IBf = new Map();
-    this.TBf = new Map();
-    this.bBf = new Map();
-    this.fJf = new Set();
+    this.CNf = [];
+    this.pNf = new Map();
+    this.vNf = new Map();
+    this.yNf = new Map();
+    this.lCg = new Set();
     this.o5t = "TrialRoleOperateForbidState";
   }
   AddTrialRoles(e) {
@@ -37,26 +37,26 @@ class TrialRoleModel extends ModelBase_1.ModelBase {
     var t = e.TrialRoleId;
     if (RoleUtils_1.RoleUtils.IsSpecialTrialRole(t)) {
       r = ConfigManager_1.ConfigManager.TrialRoleConfig?.GetTrialRoleGroupId(t);
-      if (!this.IBf.get(r)) {
+      if (!this.pNf.get(r)) {
         (r = new TrialRoleGroupData_1.TrialRoleGroupData(t)).SetIsUnlocked(e.IsUnlocked);
-        this.EBf.push(r);
-        this.IBf.set(r.TrialRoleGroupId, r);
+        this.CNf.push(r);
+        this.pNf.set(r.TrialRoleGroupId, r);
         t = r.TrialRoleType;
-        if (!this.TBf.get(t)) {
-          this.TBf.set(t, []);
+        if (!this.vNf.get(t)) {
+          this.vNf.set(t, []);
         }
-        this.TBf.get(t).push(r);
+        this.vNf.get(t).push(r);
       }
     }
   }
   GetDataListByType(e) {
-    return this.TBf.get(e) ?? [];
+    return this.vNf.get(e) ?? [];
   }
   GetDataByGroupId(e) {
-    return this.IBf.get(e);
+    return this.pNf.get(e);
   }
   GetCurUseTrialRole(e) {
-    return this.bBf.get(e);
+    return this.yNf.get(e);
   }
   SetCurUseTrialRole(e, r) {
     var t;
@@ -68,37 +68,39 @@ class TrialRoleModel extends ModelBase_1.ModelBase {
   SetCurUseTrialRoleByGroupId(e) {
     var r;
     var t;
-    var e = this.IBf.get(e);
+    var e = this.pNf.get(e);
     if (e) {
       r = e.TrialRoleType;
-      (t = this.bBf.get(r))?.TrialRoleData?.SetIsVisibleInFormation(false);
+      (t = this.yNf.get(r))?.TrialRoleData?.SetIsVisibleInFormation(false);
       t?.TrialRoleData?.SetIsVisibleInRoleSystem(false);
-      this.bBf.set(r, e);
+      this.yNf.set(r, e);
       e.TrialRoleData.SetIsVisibleInFormation(true);
       e.TrialRoleData.SetIsVisibleInRoleSystem(true);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnCurTrialRoleGroupChanged, t?.TrialRoleGroupId, e.TrialRoleGroupId);
     }
   }
-  SetGroupTrialRoleId(e) {
-    var r;
+  SetGroupTrialRoleId(e, r) {
     var t;
     var o;
     var i;
     var a = ConfigManager_1.ConfigManager.TrialRoleConfig?.GetTrialRoleGroupId(e);
-    if (a && (r = this.IBf.get(a))) {
-      if (r.IsLocked()) {
-        this.SaveTrialRoleUnlockRedDotById(r.TrialRoleGroupId, true);
+    if (a && (t = this.pNf.get(a))) {
+      if (t.IsLocked()) {
+        this.SaveTrialRoleUnlockRedDotById(t.TrialRoleGroupId, true);
       }
-      t = r.TrialRoleId;
-      r.SetActivatedTrialRoleId(e);
-      r.SetIsUnlocked(true);
-      o = this.GetCurUseTrialRole(r.TrialRoleType) === r;
-      r.SetIsVisibleInFormation(o);
-      r.SetIsVisibleInRoleSystem(o);
-      if ((ModelManager_1.ModelManager.EditFormationModel.GetCurrentFormationData?.GetRoleIdList ?? []).includes(e) && (o = ConfigManager_1.ConfigManager.TrialRoleConfig?.GetTrialRoleConfig(t), i = ConfigManager_1.ConfigManager.TrialRoleConfig?.GetTrialRoleConfig(e), o) && i && i.Level > o.Level) {
-        this.fJf.add(a);
+      o = t.TrialRoleId;
+      t.SetActivatedTrialRoleId(e);
+      t.SetIsUnlocked(true);
+      i = this.GetCurUseTrialRole(t.TrialRoleType) === t;
+      t.SetIsVisibleInFormation(i);
+      t.SetIsVisibleInRoleSystem(i);
+      if (r) {
+        t.SetActivatedRoleAttr(r.bws, r.Bws);
       }
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnGroupTrialRoleChanged, t, e, r.TrialRoleGroupId);
+      if ((ModelManager_1.ModelManager.EditFormationModel.GetCurrentFormationData?.GetRoleIdList ?? []).includes(e) && (i = ConfigManager_1.ConfigManager.TrialRoleConfig?.GetTrialRoleConfig(o), r = ConfigManager_1.ConfigManager.TrialRoleConfig?.GetTrialRoleConfig(e), i) && r && r.Level > i.Level) {
+        this.lCg.add(a);
+      }
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnGroupTrialRoleChanged, o, e, t.TrialRoleGroupId);
     }
   }
   SaveTrialRoleUnlockRedDotById(e, r) {
@@ -136,7 +138,7 @@ class TrialRoleModel extends ModelBase_1.ModelBase {
     }
     var r = ModelManager_1.ModelManager.SceneTeamModel;
     if (r.IsPhantomTeam) {
-      e.ShowTipsById("PhantomFormationEnterFormationTip");
+      e.ShowTipsById(this.o5t);
       return false;
     }
     var t = r.GetCurrentEntity;
@@ -147,11 +149,11 @@ class TrialRoleModel extends ModelBase_1.ModelBase {
     if (r.GetCurrentGroupLivingState(o) === 2) {
       return false;
     }
-    o = t.Entity.GetComponent(215);
+    o = t.Entity.GetComponent(217);
     if (!o?.Valid) {
       return false;
     }
-    var i = t.Entity.GetComponent(183);
+    var i = t.Entity.GetComponent(185);
     if (!i?.Valid) {
       return false;
     }
@@ -190,12 +192,12 @@ class TrialRoleModel extends ModelBase_1.ModelBase {
     }
     if (o.HasTag(-2100129479)) {
       var o = PhantomUtil_1.PhantomUtil.GetSummonedEntity(t.Entity, Protocol_1.Aki.Protocol.Summon.x3s.Proto_ESummonTypeConcomitantVision);
-      if (o && o.Entity.GetComponent(215)?.HasTag(40422668)) {
+      if (o && o.Entity.GetComponent(217)?.HasTag(40422668)) {
         e.ShowTipsById(this.o5t);
         return false;
       }
     }
-    if (i.GetBuffTotalStackById(90003001) > 0 || (o = t.Entity.GetComponent(82)) && o.WalkOnWaterStage > 0) {
+    if (i.GetBuffTotalStackById(90003001) > 0 || (o = t.Entity.GetComponent(84)) && o.WalkOnWaterStage > 0) {
       e.ShowTipsById(this.o5t);
       return false;
     } else {

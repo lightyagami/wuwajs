@@ -14,9 +14,9 @@ const PhantomInteractListItemSlotIndexPanel_1 = require("./PhantomInteractListIt
 class PhantomInteractListItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.Mgf = undefined;
+    this.aMf = undefined;
     this.fGt = undefined;
-    this.bwf = undefined;
+    this.YDf = undefined;
     this.V1i = undefined;
     this.Hea = undefined;
     this.OnClickCb = undefined;
@@ -44,12 +44,12 @@ class PhantomInteractListItem extends UiPanelBase_1.UiPanelBase {
   async OnBeforeStartAsync() {
     var t = [];
     var e = this.GetItem(2);
-    this.Mgf = new PhantomInteractListItemSlotIndexPanel_1.PhantomInteractListItemSlotIndexPanel();
-    var e = this.Mgf.CreateByResourceIdAsync("UiItem_ItemBSortNumA", e);
+    this.aMf = new PhantomInteractListItemSlotIndexPanel_1.PhantomInteractListItemSlotIndexPanel();
+    var e = this.aMf.CreateByResourceIdAsync("UiItem_ItemBSortNumA", e);
     t.push(e);
     var e = this.GetItem(3);
-    this.bwf = new PhantomInteractListItemSkillTagPanel_1.PhantomInteractListItemSkillTagPanel();
-    var e = this.bwf.CreateByResourceIdAsync("UiItem_VisionTag", e);
+    this.YDf = new PhantomInteractListItemSkillTagPanel_1.PhantomInteractListItemSkillTagPanel();
+    var e = this.YDf.CreateByResourceIdAsync("UiItem_VisionTag", e);
     var i = this.GetExtendToggle(0);
     i?.OnHover.Add(() => {
       if (this.OnHoverCb && this.fGt) {
@@ -73,7 +73,7 @@ class PhantomInteractListItem extends UiPanelBase_1.UiPanelBase {
     });
     t.push(e);
     await Promise.all(t);
-    this.bwf?.SetUiActive(true);
+    this.YDf?.SetUiActive(true);
     this.Hea = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
   }
   OnStart() {
@@ -95,11 +95,11 @@ class PhantomInteractListItem extends UiPanelBase_1.UiPanelBase {
       if (s && s.IsSpecial) {
         t = s.IsInArea ? 1 : 2;
       }
-      this.bwf?.Refresh(t);
+      this.YDf?.Refresh(t);
       (e.MonsterId === 0 ? (this.GetTexture(1).SetUIActive(false), this.GetItem(4)) : (this.GetItem(4).SetUIActive(false), h = this.GetTexture(1), s && s.IconPath !== undefined || Log_1.Log.CheckDebug() && Log_1.Log.Debug("PhantomInteraction", 95, "声骸列表刷新找不到图标数据", ["MonsterId", e.MonsterId]), await this.SetTextureAsync(s.IconPath, h), this.GetTexture(1))).SetUIActive(true);
-      this.Mgf?.SetUiActive(i);
+      this.aMf?.SetUiActive(i);
       if (i) {
-        this.Mgf?.SetIndex(e.ItemIndex + 1);
+        this.aMf?.SetIndex(e.ItemIndex + 1);
       }
     }
   }

@@ -18,20 +18,20 @@ const PhotographController_1 = require("../Photograph/PhotographController");
 class MovieModeUiView extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.n6m = undefined;
-    this.s6m = undefined;
-    this.a6m = undefined;
+    this.a7m = undefined;
+    this.h7m = undefined;
+    this.l7m = undefined;
     this.LDe = -1;
-    this.Phf = 0;
-    this.Ahf = false;
-    this.c6m = true;
+    this.K1f = 0;
+    this.X1f = false;
+    this.m7m = true;
     this.TDe = undefined;
-    this.Hxf = false;
+    this.UFf = false;
     this.aRo = () => {
       ControllerHolder_1.ControllerHolder.MovieModeController.ResetMovieModeHideUi(false);
     };
-    this.Rmf = e => {
-      this.wmf(e);
+    this.Wgf = e => {
+      this.Qgf(e);
     };
     this.DSi = () => {
       var e = {
@@ -51,16 +51,16 @@ class MovieModeUiView extends UiPanelBase_1.UiPanelBase {
       });
     };
     this.OnTick = e => {
-      this.Dhf(e);
+      this.Y1f(e);
     };
     this.rAt = (e, t) => {
       if (e) {
         this.t91();
-        this.Hxf = true;
+        this.UFf = true;
         ControllerHolder_1.ControllerHolder.MovieModeController.ResetMovieModeHideUi(false);
-      } else if (this.Hxf) {
+      } else if (this.UFf) {
         this.ActivateTimer();
-        this.Hxf = false;
+        this.UFf = false;
       }
     };
   }
@@ -69,46 +69,46 @@ class MovieModeUiView extends UiPanelBase_1.UiPanelBase {
   }
   OnStart() {
     this.Ore();
-    this.Uhf();
-    this.b6m();
-    this.L6m();
-    this.xhf();
-    this.Bhf();
+    this.z1f();
+    this.w7m();
+    this.A7m();
+    this.J1f();
+    this.Z1f();
     this.v0t();
   }
-  Uhf() {
+  z1f() {
     var e = this.OpenParam;
-    this.Phf = e.DelayDuration ?? 0;
-    this.Phf *= CommonDefine_1.MILLIONSECOND_PER_SECOND;
-    this.Ahf = this.Phf === 0;
+    this.K1f = e.DelayDuration ?? 0;
+    this.K1f *= CommonDefine_1.MILLIONSECOND_PER_SECOND;
+    this.X1f = this.K1f === 0;
   }
-  b6m() {
-    this.a6m = this.GetButton(0);
-    this.a6m?.OnClickCallBack.Bind(this.aRo);
+  w7m() {
+    this.l7m = this.GetButton(0);
+    this.l7m?.OnClickCallBack.Bind(this.aRo);
   }
-  wmf(e) {
-    if (this.c6m !== e) {
-      this.c6m = e;
-      this.y6m();
+  Qgf(e) {
+    if (this.m7m !== e) {
+      this.m7m = e;
+      this.M7m();
     }
   }
-  L6m() {
-    this.n6m = this.GetButton(1);
-    this.n6m?.OnClickCallBack.Bind(this.DSi);
+  A7m() {
+    this.a7m = this.GetButton(1);
+    this.a7m?.OnClickCallBack.Bind(this.DSi);
   }
-  xhf() {
+  J1f() {
     this.GetItem(4).GetAnchorOffset();
-    this.D6m();
+    this.x7m();
   }
-  D6m() {
-    this.s6m = this.GetButton(2);
-    this.s6m?.OnClickCallBack.Bind(this.NI1);
+  x7m() {
+    this.h7m = this.GetButton(2);
+    this.h7m?.OnClickCallBack.Bind(this.NI1);
   }
-  Dhf(e) {
-    if (!this.Ahf) {
-      this.Phf -= e;
-      if (this.Phf <= 0) {
-        this.Ahf = true;
+  Y1f(e) {
+    if (!this.X1f) {
+      this.K1f -= e;
+      if (this.K1f <= 0) {
+        this.X1f = true;
         ControllerHolder_1.ControllerHolder.MovieModeController.ResetMovieModeHideUi(false);
       }
     }
@@ -120,7 +120,7 @@ class MovieModeUiView extends UiPanelBase_1.UiPanelBase {
     ControllerHolder_1.ControllerHolder.MovieModeController.RemoveTick(this.LDe);
     this.LDe = -1;
   }
-  Bhf() {
+  Z1f() {
     var e;
     var t;
     var i = ControllerHolder_1.ControllerHolder.MovieModeController.GetAspectOffset();
@@ -138,23 +138,23 @@ class MovieModeUiView extends UiPanelBase_1.UiPanelBase {
       Log_1.Log.Error("MovieMode", 87, "MovieModeUiView:MovieModeController.GetAspectOffset is undefined");
     }
   }
-  y6m() {
-    this.q6m();
-    this.O6m();
-    this.Wmf();
+  M7m() {
+    this.G7m();
+    this.F7m();
+    this.u0f();
   }
-  q6m() {
+  G7m() {
     var e = this.OpenParam.IsEnableEsc ?? false;
-    this.n6m?.RootUIComp?.SetUIActive(!this.c6m && e && this.Ahf);
+    this.a7m?.RootUIComp?.SetUIActive(!this.m7m && e && this.X1f);
   }
-  O6m() {
+  F7m() {
     var e = this.OpenParam.IsEnablePhoto ?? false;
-    this.s6m?.RootUIComp?.SetUIActive(!this.c6m && e && this.Ahf);
+    this.h7m?.RootUIComp?.SetUIActive(!this.m7m && e && this.X1f);
   }
-  Wmf() {
-    this.a6m?.RootUIComp.SetUIActive(this.c6m);
+  u0f() {
+    this.l7m?.RootUIComp.SetUIActive(this.m7m);
   }
-  jxf() {
+  xFf() {
     this.TDe = TimerSystem_1.GameplayTimerSystem.Delay(() => {
       ControllerHolder_1.ControllerHolder.MovieModeController.ResetMovieModeHideUi(true);
       this.t91();
@@ -168,15 +168,15 @@ class MovieModeUiView extends UiPanelBase_1.UiPanelBase {
   }
   Ore() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnInputAnyKey, this.rAt);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.MovieModeHideUiChange, this.Rmf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.MovieModeHideUiChange, this.Wgf);
   }
   ActivateTimer() {
     this.t91();
-    this.jxf();
+    this.xFf();
   }
   kre() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnInputAnyKey, this.rAt);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.MovieModeHideUiChange, this.Rmf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.MovieModeHideUiChange, this.Wgf);
   }
   OnBeforeDestroy() {
     this.S0t();

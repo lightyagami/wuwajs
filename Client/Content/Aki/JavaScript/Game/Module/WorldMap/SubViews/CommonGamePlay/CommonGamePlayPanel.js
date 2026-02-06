@@ -71,7 +71,7 @@ class CommonGamePlayPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondary
       this.UpdateMoraleFlagReward(e);
     }
     if (e.MarkConfig.RelativeType === 1) {
-      this.Dkf(e);
+      this.R3f(e);
     }
   }
   UpdateMoraleFlagReward(e) {
@@ -183,7 +183,7 @@ class CommonGamePlayPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondary
       await this.RewardsView.CreateThenShowByActorAsync(e);
     }
   }
-  Dkf(i) {
+  R3f(i) {
     var t = i.MarkConfig.RelativeId;
     if (ModelManager_1.ModelManager.LevelPlayModel.GetLevelPlayConfig(t)) {
       t = i.MarkItemEntity.GamePlay.GameplayDropPreviewItemList;

@@ -63,8 +63,8 @@ let NpcPasserbyComponent = class NpcPasserbyComponent extends EntityComponent_1.
   OnCreate(t) {
     this.lf1 = false;
     this.Hte = this.Entity.CheckGetComponent(2);
-    this.oRe = this.Entity.GetComponent(186);
-    this.Gce = this.Entity.GetComponent(46);
+    this.oRe = this.Entity.GetComponent(188);
+    this.Gce = this.Entity.GetComponent(48);
     return !!this.Hte && !!this.Gce;
   }
   OnStart() {
@@ -198,9 +198,9 @@ let NpcPasserbyComponent = class NpcPasserbyComponent extends EntityComponent_1.
     if (!this.cf1) {
       this.cf1 = true;
       (t = Protocol_1.Aki.Protocol.Zes.create()).F4n = MathUtils_1.MathUtils.NumberToLong(this.Hte.CreatureData.GetCreatureDataId());
-      Net_1.Net.Call(22398, t, t => {
+      Net_1.Net.Call(23198, t, t => {
         if (t && t.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Cvs, 19959);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Cvs, 19646);
         }
       });
     }
@@ -212,7 +212,7 @@ let NpcPasserbyComponent = class NpcPasserbyComponent extends EntityComponent_1.
   }
   InitMatFromGenerator() {
     if (this.SBu) {
-      this.Entity.GetComponent(196)?.MaterialController?.ApplyMaterialEffect(this.SBu);
+      this.Entity.GetComponent(198)?.MaterialController?.ApplyMaterialEffect(this.SBu);
     }
   }
   TryEnableIK() {
@@ -224,5 +224,5 @@ let NpcPasserbyComponent = class NpcPasserbyComponent extends EntityComponent_1.
     }
   }
 };
-NpcPasserbyComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(95)], NpcPasserbyComponent);
+NpcPasserbyComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(97)], NpcPasserbyComponent);
 exports.NpcPasserbyComponent = NpcPasserbyComponent; //# sourceMappingURL=NpcPasserbyComponent.js.map

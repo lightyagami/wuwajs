@@ -321,31 +321,34 @@ class MontageManager {
       ResourceSystem_1.ResourceSystem.CancelAsyncLoad(this.j7l);
     }
     const i = this.sj_;
+    var s = !this.sj_ && !this.aj_;
     this.j7l = ResourceSystem_1.ResourceSystem.InvalidId;
     this.r1t = 0;
     this.sj_ = undefined;
     this.aj_ = undefined;
-    const s = this.nj_;
-    const h = this.ej_;
+    const h = this.nj_;
+    const a = this.ej_;
     this.nj_ = undefined;
     this.ej_ = undefined;
-    if (!i) {
+    if (!s) {
+      if (!i) {
+        if (this.hj_) {
+          this.lj_.Push(() => {
+            h?.(undefined);
+          });
+        } else {
+          h?.(undefined);
+        }
+      }
       if (this.hj_) {
         this.lj_.Push(() => {
-          s?.(undefined);
+          a?.(i, t);
+          EventSystem_1.EventSystem.EmitWithTarget(this.sDe, EventDefine_1.EEventName.PerformMontageStop, e);
         });
       } else {
-        s?.(undefined);
-      }
-    }
-    if (this.hj_) {
-      this.lj_.Push(() => {
-        h?.(i, t);
+        a?.(i, t);
         EventSystem_1.EventSystem.EmitWithTarget(this.sDe, EventDefine_1.EEventName.PerformMontageStop, e);
-      });
-    } else {
-      h?.(i, t);
-      EventSystem_1.EventSystem.EmitWithTarget(this.sDe, EventDefine_1.EEventName.PerformMontageStop, e);
+      }
     }
   }
   dj_(e) {
@@ -376,6 +379,13 @@ class MontageManager {
       return 0;
     } else {
       return this.r1t;
+    }
+  }
+  GetCurrentMontage() {
+    if (ObjectUtils_1.ObjectUtils.IsValid(this.sj_)) {
+      return this.sj_;
+    } else {
+      return undefined;
     }
   }
 }

@@ -48,7 +48,7 @@ class SpecialSkillXiaKongSummoned {
   Init(t) {
     if (t?.Valid && t.Entity !== undefined) {
       this.EntityHandle = t;
-      this.AnimComp = t.Entity.GetComponent(186);
+      this.AnimComp = t.Entity.GetComponent(188);
       EventSystem_1.EventSystem.AddWithTarget(this.EntityHandle, EventDefine_1.EEventName.RemoveEntity, this.zpe);
     }
   }
@@ -109,7 +109,7 @@ class SpecialSkillXiaKong extends SpecialSkillBase_1.SpecialSkillBase {
         if (i) {
           for (const e of this.ok1) {
             if (e?.Valid && (t = e.Entity?.GetComponent(1))?.DisableActorHandle.Empty && Vector_1.Vector.DistSquared(t.ActorLocationProxy, i) > MAX_DISTANCE_SQUARED) {
-              e.Entity.GetComponent(41)?.StopAllSkills("幻影距离主体过远");
+              e.Entity.GetComponent(43)?.StopAllSkills("幻影距离主体过远");
             }
           }
         }
@@ -154,7 +154,7 @@ class SpecialSkillXiaKong extends SpecialSkillBase_1.SpecialSkillBase {
       if (i === LOOP_SKILL_ID && !(s < LOOP_END_TIME)) {
         i = LOOP_END_TIME - LOOP_START_TIME;
         i = s - Math.floor((s - LOOP_START_TIME) / i) * i;
-        if ((h = EntitySystem_1.EntitySystem.GetComponent(t, 186))?.Valid) {
+        if ((h = EntitySystem_1.EntitySystem.GetComponent(t, 188))?.Valid) {
           h.MontageSetPosition(i);
         }
         if (Log_1.Log.CheckDebug()) {
@@ -185,11 +185,11 @@ class SpecialSkillXiaKong extends SpecialSkillBase_1.SpecialSkillBase {
     this.E0 = this.Jh.Id;
     var t = this.Jh.GetComponent(0);
     this.Wpo = t.GetCreatureDataId();
-    this.TSo = this.Jh.GetComponent(41);
-    this.a1c = this.Jh.GetComponent(188);
-    this.Xte = this.Jh.GetComponent(203);
-    this.Wwc = this.Jh.GetComponent(181);
-    this.m1t = this.Jh.GetComponent(200);
+    this.TSo = this.Jh.GetComponent(43);
+    this.a1c = this.Jh.GetComponent(190);
+    this.Xte = this.Jh.GetComponent(205);
+    this.Wwc = this.Jh.GetComponent(183);
+    this.m1t = this.Jh.GetComponent(202);
     this.bx1 = [undefined, undefined, undefined, undefined];
     this.aO1 = ModelManager_1.ModelManager.CreatureModel.GetPlayerId() === t.GetPlayerId();
     if (this.aO1) {
@@ -280,7 +280,7 @@ class SpecialSkillXiaKong extends SpecialSkillBase_1.SpecialSkillBase {
           if (!e?.Valid) {
             return;
           }
-          if (t = e.Entity?.GetComponent(188)) {
+          if (t = e.Entity?.GetComponent(190)) {
             this.bx1[i] = t;
           }
         }
@@ -341,7 +341,7 @@ class SpecialSkillXiaKong extends SpecialSkillBase_1.SpecialSkillBase {
       if ((t = this.GetNextEndCircleAttrValue()) >= SUCC_MIN_ATTR_VALUE && t < SUCC_MAX_ATTR_VALUE) {
         this.rRc(true);
       }
-      this.Jh?.GetComponent(99)?.DisableRoleWithoutEffect();
+      this.Jh?.GetComponent(101)?.DisableRoleWithoutEffect();
     }
   }
   u1c() {

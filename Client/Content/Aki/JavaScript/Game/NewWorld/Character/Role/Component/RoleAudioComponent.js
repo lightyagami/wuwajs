@@ -41,7 +41,7 @@ const CharacterAttributeTypes_1 = require("../../Common/Component/Abilities/Char
 const CharacterUnifiedStateTypes_1 = require("../../Common/Component/Abilities/CharacterUnifiedStateTypes");
 const CharacterAudioComponent_1 = require("../../Common/Component/CharacterAudioComponent");
 const CustomMovementDefine_1 = require("../../Common/Component/Move/CustomMovementDefine");
-const hookSkillEventMap = new Map([[100020, "play_role_commonskl_gousuo_target_start"], [100021, "play_role_commonskl_gousuo_target_start"], [100022, "play_amb_interact_suiguang_gousuo_target_start"], [100024, "play_role_commonskl_gousuo_target_start"], [210130, "play_role_commonskl_gousuo_target_start"], [210032, "play_role_commonskl_gousuo_target_start"], [210033, "play_role_commonskl_gousuo_target_type2_start"]]);
+const hookSkillEventMap = new Map([[100020, "play_role_commonskl_gousuo_target_start"], [100021, "play_role_commonskl_gousuo_target_start"], [100022, "play_amb_interact_suiguang_gousuo_target_start"], [100024, "play_role_commonskl_gousuo_target_start"], [210130, "play_role_commonskl_gousuo_target_start"], [210032, "play_role_commonskl_gousuo_target_start"], [210033, "play_role_commonskl_gousuo_target_type2_start"], [210044, "play_role_commonskl_gousuo_target_start"]]);
 const footstepVariantMap = new Map([[0, "land"], [1, "run"], [2, "runstop"], [3, "sprint"], [4, "sprintstop"], [5, "walk"], [6, "walkstop"], [7, "turnback"]]);
 const foleyVariantMap = new Map([[0, "bodyfall"], [1, "fly"], [2, "run"], [3, "sprint"], [4, "hard"], [5, "hardfast"], [6, "weak"], [7, "weakfast"]]);
 const ROLE_GO_DOWN_FINISH_EVENT = "scene_role_switched_behind";
@@ -66,6 +66,7 @@ let RoleAudioComponent = RoleAudioComponent_1 = class RoleAudioComponent extends
     this.$te = undefined;
     this.IsInAudioShrubOverride = false;
     this.AudioShrubTagNameOverride = undefined;
+    this.fsl = 0;
     this.A$_ = e => {
       if (e === this.CreatureData?.GetPbDataId()) {
         if (Log_1.Log.CheckDebug()) {
@@ -192,8 +193,8 @@ let RoleAudioComponent = RoleAudioComponent_1 = class RoleAudioComponent extends
   OnInit() {
     super.OnInit();
     this.lUr();
-    this.mBe = this.Entity.CheckGetComponent(184);
-    this.$te = this.Entity.CheckGetComponent(182);
+    this.mBe = this.Entity.CheckGetComponent(186);
+    this.$te = this.Entity.CheckGetComponent(184);
     if (this.Config && (EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRoleSkinChange, this.A$_), EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharBeDamage, this.Dca), EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharUseSkill, this.ero), EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnRoleGoDownFinish, this.M9s), EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharPossessed, this.PPr), EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharUnpossessed, this.xPr), EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnInteractionWaterTypeChange, this.sk_), EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharMovementModeChanged, this.Hqr), this.Config.Id === SPECIAL_JINXI_OPEN_BOX_ROLE_ID)) {
       this.Xvl = new StateRef_1.StateRef("patch_jinxi_openbox_state", "none");
       this.Hje();
@@ -268,6 +269,7 @@ let RoleAudioComponent = RoleAudioComponent_1 = class RoleAudioComponent extends
     if (this.CreatureData?.Valid && ModelManager_1.ModelManager.RoleModel) {
       var i = this.CreatureData.GetPbDataId();
       var e = ConfigManager_1.ConfigManager.RoleConfig.GetBaseRoleId(i);
+      this.fsl = e;
       let t = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(e);
       if (t && t.RoleType !== 1 && t.ParentId) {
         e = t.ParentId;
@@ -320,8 +322,11 @@ let RoleAudioComponent = RoleAudioComponent_1 = class RoleAudioComponent extends
   }
   PostFootstepAudio(e) {
     this.ChangeFootstepTexture(e);
-    var e = this.GetAkComponent();
-    var t = this.Config?.FootstepEvent;
+    e = this.GetAkComponent();
+    let t = this.Config?.FootstepEvent;
+    if (this.fsl === 5701 || this.fsl === 5702) {
+      t = "play_role_footstep_mech";
+    }
     if (e && t) {
       AudioSystem_1.AudioSystem.PostEvent(t, e);
     }
@@ -343,5 +348,5 @@ let RoleAudioComponent = RoleAudioComponent_1 = class RoleAudioComponent extends
 };
 RoleAudioComponent.IYt = 0;
 RoleAudioComponent.LHo = Vector_1.Vector.Create();
-RoleAudioComponent = RoleAudioComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(199)], RoleAudioComponent);
+RoleAudioComponent = RoleAudioComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(201)], RoleAudioComponent);
 exports.RoleAudioComponent = RoleAudioComponent; //# sourceMappingURL=RoleAudioComponent.js.map

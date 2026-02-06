@@ -17,13 +17,13 @@ const HonamiStoryController_1 = require("../HonamiStoryController");
 class HonamiStorySellConfirmBoxView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
-    this.NIm = [];
+    this.ZIm = [];
     this.LDu = () => {};
     this.ZAt = undefined;
     this.hRa = undefined;
     this.vVt = undefined;
     this.sOt = () => {
-      HonamiStoryController_1.HonamiStoryController.RequestHonamiStorySellItem(this.NIm).then(t => {
+      HonamiStoryController_1.HonamiStoryController.RequestHonamiStorySellItem(this.ZIm).then(t => {
         this.LDu();
         this.CloseMe();
       });
@@ -51,7 +51,7 @@ class HonamiStorySellConfirmBoxView extends UiViewBase_1.UiViewBase {
   }
   OnStart() {
     var t = this.OpenParam;
-    this.NIm = t.SellItemList;
+    this.ZIm = t.SellItemList;
     this.LDu = t.SellCallback;
   }
   OnBeforeShow() {
@@ -63,7 +63,7 @@ class HonamiStorySellConfirmBoxView extends UiViewBase_1.UiViewBase {
     var e;
     var r;
     var o = new Map();
-    for (const n of this.NIm) {
+    for (const n of this.ZIm) {
       var s = n.ItemData;
       if (o.has(s)) {
         o.set(s, o.get(s) + 1);

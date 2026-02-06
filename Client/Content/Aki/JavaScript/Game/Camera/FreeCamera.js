@@ -32,9 +32,9 @@ class FreeCamera extends Entity_1.Entity {
     return !!this.AddComponent(FreeCameraLogicComponent_1.FreeCameraLogicComponent) && !!this.AddComponent(FreeCameraDisplayComponent_1.FreeCameraDisplayComponent) && !!this.AddComponent(FreeCameraInputComponent_1.FreeCameraInputComponent) && !(this.RegisterToGameBudgetController(undefined), 0);
   }
   OnStart() {
-    this.Zhe = this.GetComponent(316);
-    this.ele = this.GetComponent(315);
-    this.yB1 = this.GetComponent(317);
+    this.Zhe = this.GetComponent(318);
+    this.ele = this.GetComponent(317);
+    this.yB1 = this.GetComponent(319);
     return true;
   }
   OnClear() {

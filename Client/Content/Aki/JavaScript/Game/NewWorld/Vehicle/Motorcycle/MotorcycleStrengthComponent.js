@@ -48,7 +48,7 @@ let MotorcycleStrengthComponent = class MotorcycleStrengthComponent extends Enti
   }
   OnStart() {
     var t;
-    this.TagComp = this.Entity.GetComponent(215);
+    this.TagComp = this.Entity.GetComponent(217);
     return !!this.TagComp && (t = this.Entity.GetComponent(0), this.IsCtrlByMe = ModelManager_1.ModelManager.CreatureModel.GetPlayerId() === t?.GetPlayerId(), this.IsCtrlByMe && FormationAttributeController_1.FormationAttributeController.AddValueListener(14, this.Pni), true);
   }
   OnEnd() {
@@ -58,5 +58,5 @@ let MotorcycleStrengthComponent = class MotorcycleStrengthComponent extends Enti
     return true;
   }
 };
-MotorcycleStrengthComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(273)], MotorcycleStrengthComponent);
+MotorcycleStrengthComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(274)], MotorcycleStrengthComponent);
 exports.MotorcycleStrengthComponent = MotorcycleStrengthComponent; //# sourceMappingURL=MotorcycleStrengthComponent.js.map

@@ -62,11 +62,11 @@ class ActivityPreWarmMainView extends UiViewBase_1.UiViewBase {
       this.Rmm(false);
     };
     this.Ko1 = () => {
-      this.ewm();
+      this.uwm();
       this.Tmm(-1);
     };
     this.Xo1 = () => {
-      this.ewm();
+      this.uwm();
       this.Tmm(1);
     };
   }
@@ -201,9 +201,9 @@ class ActivityPreWarmMainView extends UiViewBase_1.UiViewBase {
     }
     (0, puerts_1.releaseManualReleaseDelegate)(this.Do1);
     this.GZi = undefined;
-    this.ewm();
+    this.uwm();
   }
-  ewm() {
+  uwm() {
     var i;
     var t;
     if (this.Pln !== 0 && !((i = Time_1.Time.Now - this.Pln) <= STAYTIMETHRESHOLD)) {

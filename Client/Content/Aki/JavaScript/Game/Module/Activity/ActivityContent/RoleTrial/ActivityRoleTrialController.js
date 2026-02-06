@@ -36,7 +36,7 @@ class ActivityRoleTrialController extends ActivityControllerBase_1.ActivityContr
     };
     this.z2e = e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26075);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22232);
         e = {
           ButtonTextId: "ConfirmBox_250_ButtonText_0",
           DescriptionTextId: undefined,
@@ -51,10 +51,10 @@ class ActivityRoleTrialController extends ActivityControllerBase_1.ActivityContr
     };
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(26075, this.z2e);
+    Net_1.Net.Register(22232, this.z2e);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(26075);
+    Net_1.Net.UnRegister(22232);
   }
   OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RoleSystemChangeRole, this.Y2e);
@@ -89,8 +89,8 @@ class ActivityRoleTrialController extends ActivityControllerBase_1.ActivityContr
   static RequestRoleInstanceReward(t) {
     var e = new Protocol_1.Aki.Protocol.xus();
     e.Q6n = t;
-    Net_1.Net.Call(19752, e, e => {
-      if (e && (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24138), e = this.J2e())) {
+    Net_1.Net.Call(18427, e, e => {
+      if (e && (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25572), e = this.J2e())) {
         e.SetRewardStateByRoleId(t, 2);
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Activity", 37, "[角色试用活动]试用副本奖励领取成功", ["RoleId", t]);
@@ -109,7 +109,7 @@ class ActivityRoleTrialController extends ActivityControllerBase_1.ActivityContr
   }
   static PushRoleIntroductionViewDone() {
     var e = Protocol_1.Aki.Protocol.Wp_.create();
-    Net_1.Net.Send(20531, e);
+    Net_1.Net.Send(24074, e);
   }
 }
 (exports.ActivityRoleTrialController = ActivityRoleTrialController).CurrentActivityId = 0;

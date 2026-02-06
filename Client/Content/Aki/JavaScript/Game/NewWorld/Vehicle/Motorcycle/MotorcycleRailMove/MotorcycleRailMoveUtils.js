@@ -109,7 +109,7 @@ class MotorcycleRailMoveUtils {
   static GetRailRelativeSideOfTarget(t, e) {
     var o = this.dHo;
     var r = this.Tz;
-    var i = this.KKf;
+    var i = this.H1g;
     if (e(o, i)) {
       e = t.D_FindInputKeyClosestToWorldLocation(o.ToUeVector());
       r.FromUeVector(t.D_GetLocationAtSplineInputKey(e, 1));
@@ -143,7 +143,7 @@ MotorcycleRailMoveUtils.Tz = Vector_1.Vector.Create();
 MotorcycleRailMoveUtils.fHo = Vector_1.Vector.Create();
 MotorcycleRailMoveUtils.pHo = Vector_1.Vector.Create();
 MotorcycleRailMoveUtils.vHo = Vector_1.Vector.Create();
-MotorcycleRailMoveUtils.KKf = Rotator_1.Rotator.Create();
+MotorcycleRailMoveUtils.H1g = Rotator_1.Rotator.Create();
 MotorcycleRailMoveUtils.RailMoveCheckerCheckRelativeLocation = (t, e) => {
   if (!e) {
     return false;

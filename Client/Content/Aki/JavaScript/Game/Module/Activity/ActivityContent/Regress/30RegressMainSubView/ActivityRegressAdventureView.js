@@ -12,12 +12,15 @@ const ConfigManager_1 = require("../../../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../../Manager/ModelManager");
 const UiPanelBase_1 = require("../../../../../Ui/Base/UiPanelBase");
+const UiManager_1 = require("../../../../../Ui/UiManager");
 const AdventureDefine_1 = require("../../../../AdventureGuide/AdventureDefine");
 const NewSoundDetectRewardItem_1 = require("../../../../AdventureGuide/Views/NewSoundDetectRewardItem");
 const ConfirmBoxDefine_1 = require("../../../../ConfirmBox/ConfirmBoxDefine");
 const GridProxyAbstract_1 = require("../../../../Util/Grid/GridProxyAbstract");
 const GenericLayout_1 = require("../../../../Util/Layout/GenericLayout");
 const LguiUtil_1 = require("../../../../Util/LguiUtil");
+const ActivityControllerHolder_1 = require("../../../ActivityControllerHolder");
+const ConditionGroupData_1 = require("../../../ConditionGroupData");
 const ActivityRegressMainSubViewBase_1 = require("../Base/ActivityRegressMainSubViewBase");
 class ActivityRegressAdventureView extends ActivityRegressMainSubViewBase_1.ActivityRegressMainSubViewBase {
   constructor() {
@@ -25,17 +28,37 @@ class ActivityRegressAdventureView extends ActivityRegressMainSubViewBase_1.Acti
     this.zo_ = 0;
     this.ebl = undefined;
     this.tFe = undefined;
-    this.R3f = undefined;
-    this.L3f = undefined;
+    this.Gjf = undefined;
+    this.Fjf = undefined;
+    this.RFg = () => {
+      const t = ModelManager_1.ModelManager.ActivityRegressModel.GetGachaPoolUpRole();
+      var e = t.length > 0;
+      this.GetItem(5).SetUIActive(e);
+      this.GetItem(6).SetUIActive(!e);
+      if (e) {
+        this.tFe?.RefreshByData(t, () => {
+          var e = this.zo_ ? t.indexOf(this.zo_) : 0;
+          this.tFe?.GetLayoutItemByIndex(e >= 0 ? e : 0)?.SelectToggle();
+        });
+      } else {
+        this.zo_ = 0;
+        this.ebl = undefined;
+        this.Gjf?.RefreshByData([], undefined, true);
+        this.Fjf?.RefreshByData([], undefined, true);
+      }
+    };
     this.nFe = () => {
       var e = new ActivityRegressAdventureRoleItem();
-      e.OnClickToggleCallBack = this.w3f;
+      e.OnClickToggleCallBack = this.Njf;
       return e;
     };
-    this.P3f = () => {
-      return new ActivityRegressAdventureAdventureItem();
+    this.Vjf = () => {
+      var e = new ActivityRegressAdventureAdventureItem();
+      e.OnClickJumpToCallBack = this.RFg;
+      return e;
     };
-    this.w3f = (e, t) => {
+    this.Njf = (e, t) => {
+      this.RFg();
       if (this.zo_ !== e) {
         this.zo_ = e;
         this.ebl?.SetToggleState(0);
@@ -50,13 +73,13 @@ class ActivityRegressAdventureView extends ActivityRegressMainSubViewBase_1.Acti
             r.push(n.Id);
           }
         }
-        this.R3f?.RefreshByData(i, undefined, true);
-        this.L3f?.RefreshByData(r, undefined, true);
+        this.Gjf?.RefreshByData(i, undefined, true);
+        this.Fjf?.RefreshByData(r, undefined, true);
       }
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIHorizontalLayout], [1, UE.UIItem], [2, UE.UIVerticalLayout], [3, UE.UIItem], [4, UE.UIVerticalLayout]];
+    this.ComponentRegisterInfos = [[0, UE.UIHorizontalLayout], [1, UE.UIItem], [2, UE.UIVerticalLayout], [3, UE.UIItem], [4, UE.UIVerticalLayout], [5, UE.UIItem], [6, UE.UIItem]];
   }
   async OnBeforeStartAsync() {
     var e;
@@ -69,17 +92,15 @@ class ActivityRegressAdventureView extends ActivityRegressMainSubViewBase_1.Acti
         i.push(ControllerHolder_1.ControllerHolder.AdventureGuideController.RequestLevelPlayVarAsync(e, t));
       }
     }
+    i.push(ActivityControllerHolder_1.ActivityControllerHolder.ActivityRegressController.NewTrialRoleGetNightmarePhantomInstInfoRequest());
     await Promise.all(i);
   }
   OnStart() {
     super.OnStart();
     this.tFe = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(0), this.nFe);
-    this.R3f = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(2), this.P3f, this.GetItem(3).GetOwner());
-    this.L3f = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(4), this.P3f, this.GetItem(3).GetOwner());
-    var e = ModelManager_1.ModelManager.ActivityRegressModel.GetGachaPoolUpRole();
-    this.tFe.RefreshByData(e, () => {
-      this.tFe?.GetLayoutItemByIndex(0)?.SelectToggle();
-    });
+    this.Gjf = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(2), this.Vjf, this.GetItem(3).GetOwner());
+    this.Fjf = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(4), this.Vjf, this.GetItem(3).GetOwner());
+    this.RFg();
   }
 }
 exports.ActivityRegressAdventureView = ActivityRegressAdventureView;
@@ -111,15 +132,42 @@ class ActivityRegressAdventureAdventureItem extends GridProxyAbstract_1.GridProx
   constructor() {
     super(...arguments);
     this.Pe = undefined;
-    this.A3f = 0;
+    this.Hjf = 0;
     this.H3e = undefined;
-    this.D3f = undefined;
+    this.jjf = undefined;
+    this.OnClickJumpToCallBack = undefined;
     this.jWt = () => {
       return new NewSoundDetectRewardItem_1.NewSoundDetectRewardItem();
+    };
+    this.ru_ = () => {
+      var e = this.Pe?.Conf?.Secondary;
+      var e = e !== undefined ? ConfigManager_1.ConfigManager.AdventureModuleConfig?.GetSecondaryGuideDataConf(e)?.ConditionGroupId ?? 0 : 0;
+      if (this.Pe && !(e <= 0)) {
+        var t = [];
+        for (const n of ConfigManager_1.ConfigManager.ConditionConfig.GetGroupConditionIds(e)) {
+          var i = ConfigManager_1.ConfigManager.ConditionConfig.GetConditionConfig(n);
+          let e = -1;
+          if (i?.AccessId) {
+            r = ConfigManager_1.ConfigManager.GetWayConfig.GetConfigById(i.AccessId);
+            e = r.SkipName;
+          }
+          var r = {
+            ConditionId: n,
+            ConditionTextId: i.Description,
+            IsFinished: false,
+            AccessId: i.AccessId ?? 0,
+            AccessType: e
+          };
+          t.push(r);
+        }
+        e = new ConditionGroupData_1.ConditionGroupData(e, t);
+        UiManager_1.UiManager.OpenView("CommonConditionView", e);
+      }
     };
     this.Ykt = () => {
       var e;
       var t;
+      this.OnClickJumpToCallBack?.();
       if (ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance()) {
         ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("DungeonDetection");
       } else {
@@ -136,12 +184,12 @@ class ActivityRegressAdventureAdventureItem extends GridProxyAbstract_1.GridProx
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UITexture], [1, UE.UIText], [2, UE.UIText], [3, UE.UIHorizontalLayout], [4, UE.UIItem], [5, UE.UIButtonComponent], [6, UE.UIItem]];
-    this.BtnBindInfo = [[5, this.Ykt]];
+    this.ComponentRegisterInfos = [[0, UE.UITexture], [1, UE.UIText], [2, UE.UIText], [3, UE.UIHorizontalLayout], [4, UE.UIItem], [5, UE.UIButtonComponent], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIButtonComponent]];
+    this.BtnBindInfo = [[5, this.Ykt], [8, this.ru_]];
   }
   async OnBeforeStartAsync() {
-    this.D3f = new AdventureTag();
-    await this.D3f.CreateByActorAsync(this.GetItem(6).GetOwner());
+    this.jjf = new AdventureTag();
+    await this.jjf.CreateByActorAsync(this.GetItem(6).GetOwner());
   }
   OnStart() {
     this.H3e = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(3), this.jWt);
@@ -149,45 +197,50 @@ class ActivityRegressAdventureAdventureItem extends GridProxyAbstract_1.GridProx
   Refresh(e, t, i) {
     var r;
     var n;
-    var s = ConfigManager_1.ConfigManager.ActivityRegressConfig.GetGachaRoleDevelopIns(e);
-    if (s) {
-      this.A3f = e;
-      e = ModelManager_1.ModelManager.AdventureGuideModel.GetRecordById(s.AdventureGuide);
+    var o;
+    var s;
+    var a = ConfigManager_1.ConfigManager.ActivityRegressConfig.GetGachaRoleDevelopIns(e);
+    if (a) {
+      this.Hjf = e;
+      e = ModelManager_1.ModelManager.AdventureGuideModel.GetRecordById(a.AdventureGuide);
       this.Pe = e;
       if (this.Pe.Conf.Secondary === 22) {
-        s = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(s.DungeonDetection)?.MapName ?? "";
-        LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), s);
+        r = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(a.DungeonDetection)?.MapName ?? "";
+        LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), r);
       } else {
         LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), e.Conf.Name);
       }
-      s = this.GetTexture(0);
-      r = this.GetText(2);
+      r = this.GetTexture(0);
+      s = this.GetText(2);
+      n = ModelManager_1.ModelManager.AdventureGuideModel.GetIsDetectionPreOpenByRecord(this.Pe);
+      o = (o = this.Pe?.Conf?.Secondary) !== undefined && (ModelManager_1.ModelManager.AdventureGuideModel.CheckTargetDungeonTypeCanShow(o) ?? false);
+      this.SetButtonUiActive(5, o);
+      this.GetItem(7).SetUIActive(!o);
       if (e instanceof AdventureDefine_1.SilentAreaDetectionRecord && (e.Conf.Secondary === 63 || e.Conf.Secondary === 64)) {
-        if ((n = ModelManager_1.ModelManager.AdventureGuideModel.GetNightMareTarget(e.Conf?.MapId, e.Conf?.LevelPlayList?.[0]))[1] < 0) {
-          r?.SetUIActive(false);
+        if ((o = n ? ModelManager_1.ModelManager.AdventureGuideModel.GetNightMarePreOpenTarget(a.DungeonDetection) : ModelManager_1.ModelManager.AdventureGuideModel.GetNightMareTarget(e.Conf?.MapId, e.Conf?.LevelPlayList?.[0]))[1] < 0) {
+          s?.SetUIActive(false);
         } else {
-          r?.SetUIActive(true);
-          LguiUtil_1.LguiUtil.SetLocalTextNew(r, "NightMareLeftTimes", n[0], n[1]);
+          s?.SetUIActive(true);
+          LguiUtil_1.LguiUtil.SetLocalTextNew(s, "NightMareLeftTimes", o[0], o[1]);
         }
       } else {
-        n = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(e.Conf.InstanceSubTypeDescription) ?? "";
-        if (StringUtils_1.StringUtils.IsEmpty(n)) {
-          r?.SetUIActive(false);
+        a = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(e.Conf.InstanceSubTypeDescription) ?? "";
+        if (StringUtils_1.StringUtils.IsEmpty(a)) {
+          s?.SetUIActive(false);
         } else {
-          r?.SetUIActive(true);
-          r?.SetText(n);
+          s?.SetUIActive(true);
+          s?.SetText(a);
         }
       }
-      this.SetTextureShowUntilLoaded(e.Conf.BigIcon, s);
+      this.SetTextureShowUntilLoaded(e.Conf.BigIcon, r);
       if (this.Pe.Conf.Secondary === 22) {
-        r = ModelManager_1.ModelManager.AdventureGuideModel.GetSilentAreaDetectData(this.Pe.Conf.Id);
-        n = ModelManager_1.ModelManager.MapModel.MapMarkIsCanTeleport(r.Conf.MarkId);
-        this.GetItem(6).SetUIActive(!n);
-        this.D3f?.RefreshItem(true);
+        o = ModelManager_1.ModelManager.AdventureGuideModel.GetSilentAreaDetectData(this.Pe.Conf.Id);
+        s = ModelManager_1.ModelManager.MapModel.MapMarkIsCanTeleport(o.Conf.MarkId);
+        this.GetItem(6).SetUIActive(!s);
+        this.jjf?.RefreshItem(true);
       } else {
-        s = ModelManager_1.ModelManager.AdventureGuideModel.GetIsDetectionPreOpenByRecord(this.Pe);
-        this.GetItem(6).SetUIActive(s);
-        this.D3f?.RefreshItem(false);
+        this.GetItem(6).SetUIActive(n);
+        this.jjf?.RefreshItem(false);
       }
       this.Z3e(e);
     }
@@ -197,27 +250,27 @@ class ActivityRegressAdventureAdventureItem extends GridProxyAbstract_1.GridProx
     var i = ModelManager_1.ModelManager.AdventureGuideModel.IsDetectionFinished(e);
     let r = undefined;
     if (e.Conf.Secondary === 22) {
-      var n = ConfigManager_1.ConfigManager.ActivityRegressConfig.GetGachaRoleDevelopIns(this.A3f);
+      var n = ConfigManager_1.ConfigManager.ActivityRegressConfig.GetGachaRoleDevelopIns(this.Hjf);
       var n = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetInstanceRewardId(n.DungeonDetection);
       var n = ConfigManager_1.ConfigManager.ExchangeRewardConfig.GetExchangeRewardPreviewRewardList(n);
       const a = new Array();
-      for (const l of n) {
-        var s = {
-          ItemData: l,
+      for (const h of n) {
+        var o = {
+          ItemData: h,
           HaveFinish: i
         };
-        a.push(s);
+        a.push(o);
       }
       this.H3e.RefreshByData(a);
     } else if (r = e.Conf.Secondary === 63 || e.Conf.Secondary === 64 ? ConfigManager_1.ConfigManager.AdventureModuleConfig.GetNightMareShowReward(e.Conf.ShowRewardMapCalabash) : ConfigManager_1.ConfigManager.AdventureModuleConfig.GetShowReward(e.Conf.ShowRewardMap, t)) {
       const a = new Array();
-      for (const h of r.keys()) {
-        var o = [{
+      for (const l of r.keys()) {
+        var s = [{
           IncId: 0,
-          ItemId: h
-        }, r.get(h)];
+          ItemId: l
+        }, r.get(l)];
         a.push({
-          ItemData: o,
+          ItemData: s,
           HaveFinish: i
         });
       }
@@ -238,7 +291,7 @@ class ActivityRegressAdventureAdventureItem extends GridProxyAbstract_1.GridProx
         ModelManager_1.ModelManager.AdventureGuideModel.SetFromManualDetect(true);
         ControllerHolder_1.ControllerHolder.AdventureGuideController.RequestForDetection(e.Conf.Secondary !== 2 ? Protocol_1.Aki.Protocol.r8n.sxu : Protocol_1.Aki.Protocol.r8n.Proto_SilentArea, [e.Conf.DungeonId], this.Pe.Conf.Id);
       } else {
-        ControllerHolder_1.ControllerHolder.AdventureGuideController.HandleRegressDetection(this.A3f);
+        ControllerHolder_1.ControllerHolder.AdventureGuideController.HandleRegressDetection(this.Hjf);
       }
     }
   }
@@ -254,7 +307,7 @@ class ActivityRegressAdventureAdventureItem extends GridProxyAbstract_1.GridProx
           ControllerHolder_1.ControllerHolder.AdventureGuideController.RequestForDetection(Protocol_1.Aki.Protocol.r8n.Proto_SilentArea, e.Conf.LevelPlayList, this.Pe.Conf.Id);
         }
       } else {
-        ControllerHolder_1.ControllerHolder.AdventureGuideController.HandleRegressDetection(this.A3f);
+        ControllerHolder_1.ControllerHolder.AdventureGuideController.HandleRegressDetection(this.Hjf);
       }
     }
   }

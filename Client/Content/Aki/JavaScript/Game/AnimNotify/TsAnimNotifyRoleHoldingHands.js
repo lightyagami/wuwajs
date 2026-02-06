@@ -19,7 +19,7 @@ class TsAnimNotifyRoleHoldingHands extends UE.KuroAnimNotify {
       if (!e?.Valid) {
         return false;
       }
-      e = e.GetComponent(321);
+      e = e.GetComponent(323);
       if (this.InvitationAccept) {
         e?.FollowerAccept();
       }

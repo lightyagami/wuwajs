@@ -20,29 +20,29 @@ class SkipTaskManager {
     return this.EIo.has(e);
   }
   static RunByConfigId(i, a) {
-    var t = ConfigManager_1.ConfigManager.SkipInterfaceConfig.GetAccessPathConfig(i);
-    if (t) {
-      var r = t.SkipName;
-      if (r === undefined) {
+    var r = ConfigManager_1.ConfigManager.SkipInterfaceConfig.GetAccessPathConfig(i);
+    if (r) {
+      var t = r.SkipName;
+      if (t === undefined) {
         if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("SkipInterface", 10, "开始跳转任务时,没有在ESkipName中找到对应枚举", ["skipTaskName", r]);
+          Log_1.Log.Error("SkipInterface", 10, "开始跳转任务时,没有在ESkipName中找到对应枚举", ["skipTaskName", t]);
         }
-      } else if (r !== -1) {
+      } else if (t !== -1) {
         var n;
         var o;
         var s = ModelManager_1.ModelManager.FunctionModel;
-        for ([n, o] of t.FunctionOpenCheckMap) {
+        for ([n, o] of r.FunctionOpenCheckMap) {
           if (!s.IsOpen(n)) {
             if (Log_1.Log.CheckInfo()) {
-              Log_1.Log.Info("SkipInterface", 10, "开始跳转任务时,对应功能未开启，不会跳转", ["skipTaskName", r], ["functionId", n]);
+              Log_1.Log.Info("SkipInterface", 10, "开始跳转任务时,对应功能未开启，不会跳转", ["skipTaskName", t], ["functionId", n]);
             }
             ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode(o);
             return;
           }
         }
-        let e = this.SIo(r);
-        if (e = e || this.yIo(r)) {
-          e.Run(t.Val1, t.Val2, t.Val3, a);
+        let e = this.SIo(t);
+        if (e = e || this.yIo(t)) {
+          e.Run(r.Val1, r.Val2, r.Val3, a);
         } else if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("SkipInterface", 10, "开始跳转任务时,没有配对应的跳转任务", ["途径表Id", i]);
         }
@@ -95,4 +95,4 @@ class SkipTaskManager {
   }
 }
 (exports.SkipTaskManager = SkipTaskManager).IIo = new Map();
-SkipTaskManager.EIo = new Set(["RoleRootView", "CalabashRootView", "SkinBuyDetailView", "FlySkinBuyDetailView", "SkinRootView"]); //# sourceMappingURL=SkipTaskManager.js.map
+SkipTaskManager.EIo = new Set(["RoleRootView", "CalabashRootView", "SkinBuyDetailView", "FlySkinBuyDetailView", "SkinRootView", "MotorcycleRootView", "Spring26AtmosphereLevelView", "FurnitureAreaSelectView"]); //# sourceMappingURL=SkipTaskManager.js.map

@@ -34,7 +34,7 @@ let RoleInheritComponent = class RoleInheritComponent extends EntityComponent_1.
     this.m1t = undefined;
   }
   OnStart() {
-    this.m1t = this.Entity.CheckGetComponent(183);
+    this.m1t = this.Entity.CheckGetComponent(185);
     return true;
   }
   static StateInherit(e, t, o, n) {
@@ -48,7 +48,7 @@ let RoleInheritComponent = class RoleInheritComponent extends EntityComponent_1.
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Battle", 19, "换人进入RoleOnStateInherit");
       }
-      EventSystem_1.EventSystem.EmitWithTarget(t.Entity, EventDefine_1.EEventName.RoleOnStateInherit, e.Entity, o === 1 || n || (t.Entity.GetComponent(215)?.HasAnyTag([-1388400236, 1144073280]) ?? false));
+      EventSystem_1.EventSystem.EmitWithTarget(t.Entity, EventDefine_1.EEventName.RoleOnStateInherit, e.Entity, o === 1 || n || (t.Entity.GetComponent(217)?.HasAnyTag([-1388400236, 1144073280]) ?? false));
     }
   }
   static non(t, o) {
@@ -81,5 +81,5 @@ let RoleInheritComponent = class RoleInheritComponent extends EntityComponent_1.
     }
   }
 };
-RoleInheritComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(102)], RoleInheritComponent);
+RoleInheritComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(104)], RoleInheritComponent);
 exports.RoleInheritComponent = RoleInheritComponent; //# sourceMappingURL=RoleInheritComponent.js.map

@@ -20,8 +20,8 @@ class MultiTemplateScrollView {
   constructor(e) {
     this.ScrollView = e;
     this.DataList = [];
-    this.mCf = new Map();
-    this.f9f = undefined;
+    this.Yvf = new Map();
+    this.fZf = undefined;
     this.LSi = (e, t) => {
       var i;
       var l;
@@ -31,14 +31,14 @@ class MultiTemplateScrollView {
             Log_1.Log.Error("MultiTemplateScrollView", 43, "[MultiTemplateScrollView] [OnItemCreate] 无效的gridIndex", ["gridIndex", e]);
           }
         } else if ((i = t.GetUIItem()) && i.IsValid()) {
-          if (this.mCf.get(i)) {
+          if (this.Yvf.get(i)) {
             if (Log_1.Log.CheckError()) {
               Log_1.Log.Error("MultiTemplateScrollView", 43, "[MultiTemplateScrollView] [OnItemCreate] 重复触发Proxy的创建", ["gridIndex", e]);
             }
           } else {
             (l = this.DataList[e].CreateProxy()).GridIndex = e;
             l.CreateThenShowByActor(t);
-            this.mCf.set(i, l);
+            this.Yvf.set(i, l);
           }
         } else if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("MultiTemplateScrollView", 43, "[MultiTemplateScrollView] [OnItemCreate] 无效的item", ["gridIndex", e]);
@@ -51,7 +51,7 @@ class MultiTemplateScrollView {
       var i;
       if (t && t.IsValid()) {
         if ((t = t.GetUIItem()) && t.IsValid()) {
-          if (t = this.mCf.get(t)) {
+          if (t = this.Yvf.get(t)) {
             i = this.DataList[e];
             t.GridIndex = e;
             t.Refresh(i.Data);
@@ -68,7 +68,7 @@ class MultiTemplateScrollView {
     this.rNo = (e, t) => {
       if (t && t.IsValid()) {
         if ((t = t.GetUIItem()) && t.IsValid()) {
-          if (t = this.mCf.get(t)) {
+          if (t = this.Yvf.get(t)) {
             t.GridIndex = e;
             t.Clear();
           } else if (Log_1.Log.CheckError()) {
@@ -86,7 +86,7 @@ class MultiTemplateScrollView {
     this.ScrollView.OnItemClear.Bind(this.rNo);
     e = this.ScrollView.Content;
     if (e && e.IsValid()) {
-      this.f9f = e.GetComponentByClass(UE.UIInturnAnimController.StaticClass());
+      this.fZf = e.GetComponentByClass(UE.UIInturnAnimController.StaticClass());
     }
   }
   RefreshByData(e) {
@@ -104,7 +104,7 @@ class MultiTemplateScrollView {
   GetProxyByGridIndex(e) {
     e = this.ScrollView.GetGridItem(e);
     if (e && e.IsValid()) {
-      return this.mCf.get(e);
+      return this.Yvf.get(e);
     }
   }
   RefreshProxyDirectly(e) {
@@ -116,8 +116,8 @@ class MultiTemplateScrollView {
     return !!i && (this.DataList[e] = t, i.Refresh(t.Data), true);
   }
   PlayGridAnim(e) {
-    if (this.f9f) {
-      this.f9f.Play(e, -1, true);
+    if (this.fZf) {
+      this.fZf.Play(e, -1, true);
     }
   }
 }

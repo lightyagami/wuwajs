@@ -3,45 +3,80 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.NewSoundDetectTabItem = undefined;
+exports.NewSoundDetectTabItemDungeonItem = exports.NewSoundDetectTabItemDungeonData = exports.NewSoundDetectTabItemTitleItem = exports.NewSoundDetectTabItemTitleData = undefined;
 const UE = require("ue");
 const StringUtils_1 = require("../../../../Core/Utils/StringUtils");
-const GridProxyAbstract_1 = require("../../Util/Grid/GridProxyAbstract");
-const GenericLayout_1 = require("../../Util/Layout/GenericLayout");
+const SyncGridProxyAbstract_1 = require("../../Util/Grid/SyncGridProxyAbstract");
 const LguiUtil_1 = require("../../Util/LguiUtil");
 const NewSoundDetectItem_1 = require("./NewSoundDetectItem");
-class NewSoundDetectTabItem extends GridProxyAbstract_1.GridProxyAbstract {
+class NewSoundDetectTabItemTitleData {
+  constructor(t) {
+    this.Data = t;
+    this.GetTemplateIndex = () => 0;
+    this.OnClickCallBack = undefined;
+    this.CreateProxy = () => {
+      var t = new NewSoundDetectTabItemTitleItem();
+      t.OnClickCallBack = this.OnClickCallBack;
+      return t;
+    };
+  }
+}
+exports.NewSoundDetectTabItemTitleData = NewSoundDetectTabItemTitleData;
+class NewSoundDetectTabItemTitleItem extends SyncGridProxyAbstract_1.SyncGridProxyAbstract {
   constructor() {
     super(...arguments);
-    this.Pe = undefined;
-    this.n8e = undefined;
+    this.s7g = 0;
+    this.Lrt = false;
+    this.OnClickCallBack = undefined;
     this.Yai = t => {
-      t = t === 1;
-      this.GetVerticalLayout(0)?.RootUIComp.SetUIActive(t);
-      this.Pe.IsVisible = t;
+      this.OnClickCallBack?.(this.s7g, !this.Lrt);
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIVerticalLayout], [1, UE.UIItem], [2, UE.UIExtendToggle], [3, UE.UIText], [4, UE.UISprite], [5, UE.UIItem], [6, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UIText], [2, UE.UISprite], [3, UE.UIItem], [4, UE.UIItem]];
+    this.BtnBindInfo = [[0, this.Yai]];
   }
-  OnStart() {
-    this.n8e = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(0), () => new NewSoundDetectItem_1.NewSoundDetectItem());
-    this.GetExtendToggle(2)?.OnStateChange.Add(this.Yai);
-  }
-  Refresh(t, i, e) {
-    this.Pe = t;
-    this.n8e?.RefreshByData(this.Pe.DungeonList);
-    var s = t.IsVisible ? 1 : 0;
-    this.GetExtendToggle(2)?.SetToggleState(s);
-    this.Yai(s);
-    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(3), t.TabTextId);
+  OnStart() {}
+  Refresh(t) {
+    this.s7g = t.Area;
+    this.Lrt = t.IsVisible;
+    var e = t.IsVisible ? 1 : 0;
+    this.GetExtendToggle(0)?.SetToggleState(e, false);
+    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), t.TabTextId);
     if (t.IconPath) {
-      this.SetSpriteByPath(t.IconPath, this.GetSprite(4), false);
+      this.SetSpriteByPath(t.IconPath, this.GetSprite(2), false);
     }
-    this.GetSprite(4)?.SetUIActive(t.IconPath !== undefined && !StringUtils_1.StringUtils.IsBlank(t.IconPath));
-    this.GetItem(5)?.SetUIActive(t.IconPath !== undefined && !StringUtils_1.StringUtils.IsBlank(t.IconPath));
-    this.GetItem(6)?.SetUIActive(t.IconPath === undefined || StringUtils_1.StringUtils.IsBlank(t.IconPath));
+    this.GetSprite(2)?.SetUIActive(t.IconPath !== undefined && !StringUtils_1.StringUtils.IsBlank(t.IconPath));
+    this.GetItem(3)?.SetUIActive(t.IconPath !== undefined && !StringUtils_1.StringUtils.IsBlank(t.IconPath));
+    this.GetItem(4)?.SetUIActive(t.IconPath === undefined || StringUtils_1.StringUtils.IsBlank(t.IconPath));
   }
 }
-exports.NewSoundDetectTabItem = NewSoundDetectTabItem;
+exports.NewSoundDetectTabItemTitleItem = NewSoundDetectTabItemTitleItem;
+class NewSoundDetectTabItemDungeonData {
+  constructor(t) {
+    this.Data = t;
+    this.GetTemplateIndex = () => 1;
+    this.CreateProxy = () => {
+      return new NewSoundDetectTabItemDungeonItem();
+    };
+  }
+}
+exports.NewSoundDetectTabItemDungeonData = NewSoundDetectTabItemDungeonData;
+class NewSoundDetectTabItemDungeonItem extends SyncGridProxyAbstract_1.SyncGridProxyAbstract {
+  constructor() {
+    super(...arguments);
+    this.a7g = undefined;
+  }
+  OnStart() {
+    this.a7g = new NewSoundDetectItem_1.NewSoundDetectItem();
+    this.a7g.CreateThenShowByActor(this.RootItem.GetOwner());
+    this.a7g.SyncStart();
+  }
+  Refresh(t) {
+    if (t.Dungeon) {
+      this.a7g?.Refresh(t.Dungeon, false, 0);
+    }
+  }
+}
+exports.NewSoundDetectTabItemDungeonItem = NewSoundDetectTabItemDungeonItem;
 //# sourceMappingURL=NewSoundDetectTabItem.js.map

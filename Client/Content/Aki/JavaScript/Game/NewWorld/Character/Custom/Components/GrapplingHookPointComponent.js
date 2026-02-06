@@ -22,7 +22,7 @@ var __decorate = this && this.__decorate || function (t, e, i, o) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.GrapplingHookPointComponent = undefined;
+exports.GrapplingHookPointComponent = exports.PULL_COLLECTION_MOVE_MAX_SPEED = exports.PULL_COLLECTION_ACCELERATION = exports.CAPTURE_LENGTH_SQUARE = undefined;
 const puerts_1 = require("puerts");
 const UE = require("ue");
 const Log_1 = require("../../../../../Core/Common/Log");
@@ -43,20 +43,22 @@ const EffectSystem_1 = require("../../../../Effect/EffectSystem");
 const TsEffectActor_1 = require("../../../../Effect/TsEffectActor");
 const Global_1 = require("../../../../Global");
 const LevelGamePlayController_1 = require("../../../../LevelGamePlay/LevelGamePlayController");
+const LevelGeneralCommons_1 = require("../../../../LevelGamePlay/LevelGeneralCommons");
 const LevelGeneralContextDefine_1 = require("../../../../LevelGamePlay/LevelGeneralContextDefine");
 const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const CharacterNameDefines_1 = require("../../Common/CharacterNameDefines");
 const GrapplingHookPointDefine_1 = require("./Define/GrapplingHookPointDefine");
 const OVERWRITE_HOOK_LOCATION_KEY = "OverwriteLocation";
-const CAPTURE_LENGTH_SQUARE = 10000;
-const CAPTURE_DECAY_LENGTH_SQUARE = 40000;
-const CAPTURE_LENGTH_LIMIT_SQUARE = 100000000;
+const CAPTURE_LENGTH = 150;
+exports.CAPTURE_LENGTH_SQUARE = CAPTURE_LENGTH * CAPTURE_LENGTH;
+const CAPTURE_LENGTH_LIMIT = 10000;
+const CAPTURE_LENGTH_LIMIT_SQUARE = CAPTURE_LENGTH_LIMIT * CAPTURE_LENGTH_LIMIT;
 const NORMALIZE = 0.01;
 const PULL_COLLECTION_MOVE_SPEED = 4000;
-const PULL_COLLECTION_MOVE_ACC = 500;
-const PULL_COLLECTION_MOVE_MAX_SPEED = 6000;
-const PULL_COLLECTION_MOVE_MIN_SPEED = 3000;
+exports.PULL_COLLECTION_ACCELERATION = 500;
+exports.PULL_COLLECTION_MOVE_MAX_SPEED = 6000;
+const defaultStateTagId = -1152559349;
 const PULL_COLLECTION_MOVE_DURATION = 500;
 const slashLeftQteTag = 898914517;
 const slashRightQteTag = 2102950531;
@@ -68,19 +70,17 @@ let GrapplingHookPointComponent = GrapplingHookPointComponent_1 = class Grapplin
     this.ActorComp = undefined;
     this.Lie = undefined;
     this.EIe = undefined;
+    this.i4o = undefined;
     this.cql = -1;
     this.mql = undefined;
     this.dql = false;
     this.Ihu = undefined;
     this.mjl = false;
     this.Lo = undefined;
-    this.NormalHookMinRadiusSquared = 0;
+    this.NormalHookMinRadiusSquared = undefined;
     this.MotorcycleHookMinRadiusSquared = 0;
     this.NormalHookMaxRadiusSquared = 0;
     this.MotorcycleHookMaxRadiusSquared = 0;
-    this.B_f = 0;
-    this.Dtg = 0;
-    this.Utg = 0;
     this.ac = 4;
     this.N1_ = [];
     this.Hfn = undefined;
@@ -88,12 +88,15 @@ let GrapplingHookPointComponent = GrapplingHookPointComponent_1 = class Grapplin
     this.d6o = undefined;
     this.Ful = 0;
     this.ggl = 0;
-    this.x_f = undefined;
+    this.igf = undefined;
     this.Lz = undefined;
-    this.k_f = false;
-    this.Wuf = 0;
-    this.q_f = true;
-    this.mHf = undefined;
+    this.rgf = 0;
+    this.mDg = 0;
+    this.ogf = false;
+    this.ngf = 0;
+    this.sgf = true;
+    this.btg = undefined;
+    this.R4g = undefined;
     this.Rnn = () => {
       var t = this.ActorComp?.GetActorInSceneInteraction(OVERWRITE_HOOK_LOCATION_KEY)?.D_K2_GetActorLocation();
       this.dql = !!t;
@@ -183,7 +186,7 @@ let GrapplingHookPointComponent = GrapplingHookPointComponent_1 = class Grapplin
   }
   get IsNormalHookPoint() {
     var t = this.Lo?.HookInteractConfig?.Type;
-    return t === undefined || t === "FixedPointHook" || t === "PilotThrow" || t === "MotorPullInteract";
+    return t === undefined || t === "FixedPointHook" || t === "PilotThrow" || t === "MotorPullInteract" || t === "SpaceStationEnergyCore";
   }
   get IsGravityHookPoint() {
     return this.Lo?.HookInteractConfig?.Type === "GravityHook";
@@ -206,6 +209,16 @@ let GrapplingHookPointComponent = GrapplingHookPointComponent_1 = class Grapplin
   get MotorInteractConstraintAngle() {
     return this.Lo?.MotorHookConfig?.InteractConstraint?.Angle ?? 180;
   }
+  get HookOverrideSpeed() {
+    var t = this.Lo?.HookInteractConfig;
+    var e = t?.Type;
+    let i = -1;
+    if ((i = e === "SpaceStationEnergyCore" ? t.HookSpeed ?? -1 : i) > GrapplingHookPointDefine_1.HOOK_MAX_SPEED) {
+      return GrapplingHookPointDefine_1.HOOK_MAX_SPEED;
+    } else {
+      return i;
+    }
+  }
   get SplineMoveEndCount() {
     return this.Ful;
   }
@@ -213,37 +226,34 @@ let GrapplingHookPointComponent = GrapplingHookPointComponent_1 = class Grapplin
     return this.ggl;
   }
   get EntityType() {
-    return this.x_f;
+    return this.igf;
   }
   get PullCollectionWithProgress() {
     return this.Lo?.HookInteractConfig?.Type === "MotorPullInteract" && (this.Lo.HookInteractConfig.IsPlayPullProgress ?? false);
   }
+  get AllowBatchCollect() {
+    return this.Lo?.HookInteractConfig?.Type === "MotorPullInteract" && !this.Lo.HookInteractConfig.DisableAreaEffect;
+  }
   get MoveFinish() {
-    return this.q_f;
+    return this.sgf;
   }
   get PlayerDetectable() {
     return this.Lo?.HookInteractConfig?.Type !== "MotorPullInteract" || (this.Lo.HookInteractConfig.IsFixedWhenNotRide ?? false);
   }
   get MotorcycleDetectable() {
     var t;
-    if (this.mHf !== undefined) {
-      return this.mHf;
+    if (this.btg !== undefined) {
+      return this.btg;
     } else if ((t = this.Lo?.HookInteractConfig?.Type) && GrapplingHookPointDefine_1.motorcycleDetectableHookType.has(t)) {
-      return this.mHf = true;
-    } else if (this.mHf || this.Lo?.MotorHookConfig === undefined) {
-      return this.mHf = false;
+      return this.btg = true;
+    } else if (this.btg || this.Lo?.MotorHookConfig === undefined) {
+      return this.btg = false;
     } else {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("SceneItem", 79, "钩锁类型不在MotorcycleDetectableHookType里, 但是又包含了MotorHookConfig配置", ["EHookInteractType", t]);
       }
-      return this.mHf = true;
+      return this.btg = true;
     }
-  }
-  get AllowPull() {
-    return this.Lo?.HookInteractConfig?.Type === "MotorPullInteract";
-  }
-  get IsMoving() {
-    return this.k_f;
   }
   OnInitData(t) {
     var e = this.Entity.GetComponent(0);
@@ -257,19 +267,21 @@ let GrapplingHookPointComponent = GrapplingHookPointComponent_1 = class Grapplin
     var i = (0, IComponent_1.getComponent)(i.ComponentsData, "HookLockPoint");
     this.Lo = i;
     this.Lz = Vector_1.Vector.Create(0, 0, 0);
-    this.ActorComp = this.Entity.GetComponent(212);
-    this.Lie = this.Entity.GetComponent(206);
+    this.ActorComp = this.Entity.GetComponent(214);
+    this.Lie = this.Entity.GetComponent(208);
     this.EIe = this.Entity.GetComponent(0);
-    this.NormalHookMinRadiusSquared = MathUtils_1.MathUtils.Square(this.Lo?.NonInteractiveInnerRadius ?? 0);
+    this.i4o = this.Entity.GetComponent(209);
+    if (this.Lo?.NonInteractiveInnerRadius !== undefined) {
+      this.NormalHookMinRadiusSquared = MathUtils_1.MathUtils.Square(this.Lo.NonInteractiveInnerRadius);
+    }
     this.MotorcycleHookMinRadiusSquared = MathUtils_1.MathUtils.Square(this.Lo?.MotorHookConfig?.NonInteractiveInnerRadius ?? 0);
     this.NormalHookMaxRadiusSquared = MathUtils_1.MathUtils.Square(this.Lo?.Range.Radius ?? 0);
     this.MotorcycleHookMaxRadiusSquared = MathUtils_1.MathUtils.Square(this.Lo?.MotorHookConfig?.Radius ?? 0);
     if (this.Lo?.HookInteractConfig?.Type === "MotorPullInteract") {
-      this.B_f = this.Lo.HookInteractConfig.PullMoveSpeed ?? PULL_COLLECTION_MOVE_SPEED;
-      this.Dtg = PULL_COLLECTION_MOVE_ACC;
-      this.Utg = this.B_f;
+      this.rgf = this.Lo.HookInteractConfig.PullMoveSpeed ?? PULL_COLLECTION_MOVE_SPEED;
+      this.mDg = this.rgf;
     }
-    this.x_f = e.GetPbModelConfig()?.EntityType;
+    this.igf = e.GetPbModelConfig()?.EntityType;
     this.mjl = e.PbHookLockPointDisabled;
     this.Hfn = e.GetBaseInfo()?.OnlineInteractType;
     this.N1_.length = 0;
@@ -345,50 +357,36 @@ let GrapplingHookPointComponent = GrapplingHookPointComponent_1 = class Grapplin
     return true;
   }
   OnTick(t) {
-    this.O_f(t);
+    this.agf(t);
   }
-  O_f(t) {
+  agf(t) {
     var e;
-    var i;
-    if (this.k_f) {
+    if (this.ogf) {
       if (this.PullCollectionWithProgress) {
         if ((e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity.GetComponent(3)) && this.ActorComp) {
           this.Lz.DeepCopy(e.ActorLocationProxy);
-          if ((i = this.Lz.SubtractionEqual(this.ActorComp.ActorLocationProxy).SizeSquared()) < CAPTURE_LENGTH_SQUARE) {
+          if ((e = this.Lz.SubtractionEqual(this.ActorComp.ActorLocationProxy).SizeSquared()) < exports.CAPTURE_LENGTH_SQUARE || e > CAPTURE_LENGTH_LIMIT_SQUARE) {
             if (Log_1.Log.CheckInfo()) {
-              Log_1.Log.Info("SceneItem", 79, "摩托车拉取采集物被捕获");
+              Log_1.Log.Info("SceneItem", 79, "摩托车拉取采集物被捕获", ["LengthSquared", e], ["超出最大距离被捕获", e > CAPTURE_LENGTH_LIMIT_SQUARE]);
             }
-            this.k_f = false;
-            this.q_f = true;
+            this.ogf = false;
+            this.sgf = true;
+            this.R4g?.();
+            this.R4g = undefined;
+            LevelGeneralCommons_1.LevelGeneralCommons.RollbackDestroyState(this.EntityConfigId, defaultStateTagId);
           } else {
-            if (i > CAPTURE_LENGTH_LIMIT_SQUARE) {
-              if (Log_1.Log.CheckInfo()) {
-                Log_1.Log.Info("SceneItem", 79, "摩托车拉取采集物超出距离限制, 重置状态");
-              }
-              this.StopPulledMove();
-            }
             this.Lz.Normalize(NORMALIZE);
-            if (i < CAPTURE_DECAY_LENGTH_SQUARE) {
-              this.Utg = Math.min(this.Utg - this.Dtg, PULL_COLLECTION_MOVE_MIN_SPEED);
-            } else {
-              this.Utg = Math.max(this.Utg + this.Dtg, PULL_COLLECTION_MOVE_MAX_SPEED);
-            }
-            this.Lz.MultiplyEqual(this.Utg * t * MathUtils_1.MathUtils.MillisecondToSecond).AdditionEqual(this.ActorComp.ActorLocationProxy);
+            this.mDg = Math.min(this.mDg + exports.PULL_COLLECTION_ACCELERATION, exports.PULL_COLLECTION_MOVE_MAX_SPEED);
+            this.Lz.MultiplyEqual(this.mDg * t * MathUtils_1.MathUtils.MillisecondToSecond).AdditionEqual(this.ActorComp.ActorLocationProxy);
             this.ActorComp.SetActorLocation(this.Lz.ToUeVector());
-            if (Log_1.Log.CheckInfo()) {
-              Log_1.Log.Info("SceneItem", 79, "MoveTick(WithPullProgress)", ["LengthSquared", i], ["CurrentLocation", this.ActorComp.ActorLocationProxy], ["TargetLocation", e.ActorLocationProxy], ["Speed", this.Utg], ["MinSpeed", PULL_COLLECTION_MOVE_MIN_SPEED], ["MaxSpeed", PULL_COLLECTION_MOVE_MAX_SPEED], ["Direction", this.Lz]);
-            }
           }
         }
       } else {
-        if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("SceneItem", 79, "MoveTick(NoPullProgress)", ["delta", t], ["MovePassedTime", this.Wuf]);
-        }
-        this.Wuf += t;
-        if (this.Wuf > PULL_COLLECTION_MOVE_DURATION) {
-          this.k_f = false;
-          this.q_f = true;
-          this.Wuf = 0;
+        this.ngf += t;
+        if (this.ngf > PULL_COLLECTION_MOVE_DURATION) {
+          this.ogf = false;
+          this.sgf = true;
+          this.ngf = 0;
         }
       }
     }
@@ -397,7 +395,7 @@ let GrapplingHookPointComponent = GrapplingHookPointComponent_1 = class Grapplin
     this.mjl = t.UI_;
   }
   IsMovable() {
-    return !!this.Entity.GetComponent(70) || this.GetHookInteractType() === "SuiGuangHook" || this.GetHookInteractType() === "FlyingFeather" || this.GetHookInteractType() === "PilotThrow";
+    return !!this.Entity.GetComponent(72) || this.GetHookInteractType() === "SuiGuangHook" || this.GetHookInteractType() === "FlyingFeather" || this.GetHookInteractType() === "PilotThrow";
   }
   OnFixHookSkillEnd() {
     this.ChangeHookPointState(0);
@@ -406,7 +404,7 @@ let GrapplingHookPointComponent = GrapplingHookPointComponent_1 = class Grapplin
     if (this.ac !== t) {
       this.Lie.RemoveTag(GrapplingHookPointDefine_1.hookPointStateToTagMap.get(this.ac));
       if (this.ac === 1) {
-        this.Entity.GetComponent(212).PlaySceneInteractionEndEffect(0);
+        this.Entity.GetComponent(214).PlaySceneInteractionEndEffect(0);
       }
       this.ac = t;
       this.Lie.AddTag(GrapplingHookPointDefine_1.hookPointStateToTagMap.get(this.ac));
@@ -441,7 +439,7 @@ let GrapplingHookPointComponent = GrapplingHookPointComponent_1 = class Grapplin
     var e = this.Lo?.HookInteractConfig;
     var i = e.SlashAngleType;
     var e = e.DefaultSlashDir;
-    var o = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint()?.GetComponent(215);
+    var o = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint()?.GetComponent(217);
     if (o) {
       switch (i) {
         case "Slash30":
@@ -499,6 +497,14 @@ let GrapplingHookPointComponent = GrapplingHookPointComponent_1 = class Grapplin
       }
     } else {
       return this.d6o;
+    }
+  }
+  GetHighlightTagId() {
+    var t = this.GetHookInteractType();
+    if (t) {
+      return GrapplingHookPointComponent_1.zjg.get(t) ?? GrapplingHookPointComponent_1.Zjg;
+    } else {
+      return GrapplingHookPointComponent_1.Zjg;
     }
   }
   GetHookInteractType() {
@@ -610,28 +616,33 @@ let GrapplingHookPointComponent = GrapplingHookPointComponent_1 = class Grapplin
       }
     }
   }
-  StartPulledMove() {
-    this.q_f = false;
-    if (this.k_f || this.q_f) {
+  StartPullMove(t) {
+    this.sgf = false;
+    if (this.ogf || this.sgf) {
       if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("SceneItem", 79, "钩锁点已经在拉取中或已拉取完成", ["MoveFinishInternal", this.q_f]);
+        Log_1.Log.Error("SceneItem", 79, "钩锁点已经在拉取中或已拉取完成", ["MoveFinishInternal", this.sgf]);
       }
-      return this.k_f = false;
+      return this.ogf = false;
     } else {
-      return this.k_f = true;
+      this.ogf = true;
+      this.i4o?.SetInteractionState(false, "摩托车采集物移动时关闭交互组件");
+      this.R4g = t;
+      return true;
     }
   }
-  StopPulledMove() {
-    if (this.k_f) {
-      this.k_f = false;
-      if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("SceneItem", 79, "停止拉取采集物并还原位置", ["EntityConfigId", this.EIe?.GetPbDataId()], ["Location", this.EIe.GetPbLocation()]);
-      }
-      this.ActorComp.SetActorLocation(this.EIe.GetPbLocation());
+  StopPullMove() {
+    this.ogf = false;
+    this.i4o?.SetInteractionState(true, "摩托车采集物停止移动打开交互组件");
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("SceneItem", 79, "停止拉取采集物并还原位置", ["EntityConfigId", this.EIe?.GetPbDataId()], ["Location", this.EIe.GetPbLocation()]);
     }
+    this.ActorComp.SetActorLocation(this.EIe.GetPbLocation());
+    this.R4g = undefined;
   }
 };
 GrapplingHookPointComponent.PlayerDetectableHookPoints = [];
 GrapplingHookPointComponent.MotorcycleDetectableHookPoints = [];
-GrapplingHookPointComponent = GrapplingHookPointComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(88)], GrapplingHookPointComponent);
+GrapplingHookPointComponent.Zjg = 1628786673;
+GrapplingHookPointComponent.zjg = new Map([["SpaceStationEnergyCore", 0]]);
+GrapplingHookPointComponent = GrapplingHookPointComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(90)], GrapplingHookPointComponent);
 exports.GrapplingHookPointComponent = GrapplingHookPointComponent; //# sourceMappingURL=GrapplingHookPointComponent.js.map

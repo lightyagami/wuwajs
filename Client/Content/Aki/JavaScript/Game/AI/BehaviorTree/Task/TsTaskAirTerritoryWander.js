@@ -89,7 +89,7 @@ class TsTaskAirTerritoryWander extends TsTaskAbortImmediatelyBase_1.default {
     var s = t.AiController;
     if (s) {
       this.ActorComp = s.CharActorComp;
-      if (this.ActorComp?.Valid && (s = this.ActorComp.Entity, this.MoveComp = s.GetComponent(187), this.InitRangeEntity(s), this.RangeInfo)) {
+      if (this.ActorComp?.Valid && (s = this.ActorComp.Entity, this.MoveComp = s.GetComponent(189), this.InitRangeEntity(s), this.RangeInfo)) {
         this.CacheVector ||= Vector_1.Vector.Create();
         this.FindWanderLocation();
         this.NavigationEndTime = Time_1.Time.WorldTime + NAVIGATION_END_TIME;

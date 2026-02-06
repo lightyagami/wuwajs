@@ -15,7 +15,7 @@ class SceneItemBuffController extends ControllerBase_1.ControllerBase {
     var o = Protocol_1.Aki.Protocol.ces.create();
     o.oKn = MathUtils_1.MathUtils.NumberToLong(e);
     o.nKn = r;
-    Net_1.Net.Call(16989, o, e => {
+    Net_1.Net.Call(18646, o, e => {
       let r = false;
       if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
         r = true;

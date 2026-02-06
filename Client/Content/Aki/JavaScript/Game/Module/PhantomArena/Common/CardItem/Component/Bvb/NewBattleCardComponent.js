@@ -26,6 +26,7 @@ class NewBattleCardComponent extends CardComponentBase_1.CardComponentBase {
     this.CardClickCallback = undefined;
     this.aho = undefined;
     this.Sequence = undefined;
+    this.RootUiSequencePlayer = undefined;
     this.Data = undefined;
     this.LoopEffectItem = undefined;
     this.EffectItem = undefined;
@@ -55,12 +56,12 @@ class NewBattleCardComponent extends CardComponentBase_1.CardComponentBase {
     this.EffectItem.SetCardConfigId(this.Data.ConfigId);
     await this.EffectItem.CreateByResourceIdAsync("UiItem_SoundRemnantItemEffect", this.GetItem(13));
   }
-  async gYm() {
+  async OJm() {
     var t = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("Curve_CardHitX");
     var t = new LoadAsyncPromise_1.LoadAsyncPromise(t, UE.CurveFloat, 102);
     this.HitLocationCurveX = await t.Promise;
   }
-  async CYm() {
+  async GJm() {
     var t = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("Curve_CardHitY");
     var t = new LoadAsyncPromise_1.LoadAsyncPromise(t, UE.CurveFloat, 102);
     this.HitLocationCurveY = await t.Promise;
@@ -79,28 +80,33 @@ class NewBattleCardComponent extends CardComponentBase_1.CardComponentBase {
     this.Sequence.Clear();
     this.TweenLogic.Destroy();
   }
-  Phu(t, e) {
-    var i = this.Data.GetFightValueByAttr(t);
+  Phu(t, e, i) {
+    var s = this.Data.GetFightValueByAttr(t);
     var t = this.Data.ValueChangeTypeByBuff(t);
     if (t === 0) {
-      e.SetText(i.toString());
-    } else if (t === 1) {
-      LguiUtil_1.LguiUtil.SetLocalTextNew(e, "PhantomBattle_1101", i);
+      e.SetText(s.toString());
     } else {
-      LguiUtil_1.LguiUtil.SetLocalTextNew(e, "PhantomBattle_1102", i);
+      if (i) {
+        this.RootUiSequencePlayer.PlaySequence(i);
+      }
+      if (t === 1) {
+        LguiUtil_1.LguiUtil.SetLocalTextNew(e, "PhantomBattle_1101", s);
+      } else {
+        LguiUtil_1.LguiUtil.SetLocalTextNew(e, "PhantomBattle_1102", s);
+      }
     }
   }
   mU1() {
     var t = this.GetText(1);
-    this.Phu(Protocol_1.Aki.Protocol.GC1.Proto_AttackAbility, t);
+    this.Phu(Protocol_1.Aki.Protocol.GC1.Proto_AttackAbility, t, "NumUpChange");
   }
   fU1() {
     var t = this.GetText(3);
-    this.Phu(Protocol_1.Aki.Protocol.GC1.Proto_LifeAbility, t);
+    this.Phu(Protocol_1.Aki.Protocol.GC1.Proto_LifeAbility, t, "NumDownChange");
   }
   RGt() {
     var t = this.GetText(4);
-    this.Phu(Protocol_1.Aki.Protocol.GC1.Proto_CostAbility, t);
+    this.Phu(Protocol_1.Aki.Protocol.GC1.Proto_CostAbility, t, "NumDamageChange");
   }
   Hxt() {
     var t;
@@ -136,11 +142,11 @@ class NewBattleCardComponent extends CardComponentBase_1.CardComponentBase {
       this.RGt();
     }
   }
-  akm() {
+  Mqm() {
     var t = this.Data.IsField;
     this.GetItem(19)?.SetUIActive(t);
   }
-  hkm() {
+  Eqm() {
     var t = this.Data.IsTool;
     this.GetItem(20)?.SetUIActive(t);
     if (t) {
@@ -170,7 +176,7 @@ class NewBattleCardComponent extends CardComponentBase_1.CardComponentBase {
     if (this.Data.IsFourCost) {
       await Promise.all([this.Vxu(), this.jxu()]);
     }
-    await Promise.all([this.gYm(), this.CYm()]);
+    await Promise.all([this.OJm(), this.GJm()]);
   }
   async InitSpine() {
     var t = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardConfig(this.Data.ConfigId);
@@ -211,8 +217,8 @@ class NewBattleCardComponent extends CardComponentBase_1.CardComponentBase {
     this.SetDebugText();
     this.sqi();
     this.hPu();
-    this.akm();
-    this.hkm();
+    this.Mqm();
+    this.Eqm();
     this.hdu();
     await Promise.all([this.u_u(), this.LoopEffectItem?.RefreshEffectById(t.ConfigId), this.EffectItem?.RefreshEffectById(t.ConfigId)]);
   }

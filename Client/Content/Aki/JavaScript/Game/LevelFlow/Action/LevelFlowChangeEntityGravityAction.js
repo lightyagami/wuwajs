@@ -27,7 +27,7 @@ class LevelFlowChangeEntityGravityAction extends LevelFlowActionBase_1.LevelFlow
         if (e.GetEntityType() === Protocol_1.Aki.Protocol.kks.HI_) {
           t.Entity.GetComponent(250)?.SetGravityDirectForVehicle(this.Axa);
         } else {
-          t.Entity.GetComponent(46)?.SetGravityDirectWithoutRotate(this.Axa);
+          t.Entity.GetComponent(48)?.SetGravityDirectWithoutRotate(this.Axa);
         }
         this.FinishExecute(true);
       } else {

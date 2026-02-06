@@ -31,13 +31,16 @@ class HelpText {
   get Style() {
     return this.style();
   }
-  __init(t, e) {
+  get TimeDilation() {
+    return this.timedilation();
+  }
+  __init(t, i) {
     this.z7 = t;
-    this.J7 = e;
+    this.J7 = i;
     return this;
   }
-  static getRootAsHelpText(t, e) {
-    return (e || new HelpText()).__init(t.readInt32(t.position()) + t.position(), t);
+  static getRootAsHelpText(t, i) {
+    return (i || new HelpText()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   id() {
     var t = this.J7.__offset(this.z7, 4);
@@ -56,28 +59,28 @@ class HelpText {
     }
   }
   title(t) {
-    var e = this.J7.__offset(this.z7, 8);
-    var e = e ? this.J7.__string(this.z7 + e, t) : null;
-    if (typeof e == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(e);
+    var i = this.J7.__offset(this.z7, 8);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
     }
-    return e;
+    return i;
   }
   picture(t) {
-    var e = this.J7.__offset(this.z7, 10);
-    var e = e ? this.J7.__string(this.z7 + e, t) : null;
-    if (typeof e == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(e);
+    var i = this.J7.__offset(this.z7, 10);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
     }
-    return e;
+    return i;
   }
   content(t) {
-    var e = this.J7.__offset(this.z7, 12);
-    var e = e ? this.J7.__string(this.z7 + e, t) : null;
-    if (typeof e == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(e);
+    var i = this.J7.__offset(this.z7, 12);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
     }
-    return e;
+    return i;
   }
   type() {
     var t = this.J7.__offset(this.z7, 14);
@@ -93,6 +96,14 @@ class HelpText {
       return this.J7.readInt32(this.z7 + t);
     } else {
       return 0;
+    }
+  }
+  timedilation() {
+    var t = this.J7.__offset(this.z7, 18);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 1;
     }
   }
 }

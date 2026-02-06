@@ -9,47 +9,47 @@ const ControllerBase_1 = require("../../../../../../Core/Framework/ControllerBas
 const TimerSystem_1 = require("../../../../../../Core/Timer/TimerSystem");
 class PassiveSkillPlayerQueue {
   constructor() {
-    this.Gbm = new Queue_1.Queue();
-    this.w_f = undefined;
+    this.Vwm = new Queue_1.Queue();
+    this.Fcf = undefined;
   }
   DoActionCheckCd(e) {
-    if (this.w_f) {
-      this.Gbm.Push(e);
+    if (this.Fcf) {
+      this.Vwm.Push(e);
       return false;
     } else {
-      this.L_f(e);
+      this.Ncf(e);
       return true;
     }
   }
   jm() {
-    if (this.w_f !== undefined) {
-      if (TimerSystem_1.TimerSystem.Has(this.w_f)) {
-        TimerSystem_1.TimerSystem.Remove(this.w_f);
+    if (this.Fcf !== undefined) {
+      if (TimerSystem_1.TimerSystem.Has(this.Fcf)) {
+        TimerSystem_1.TimerSystem.Remove(this.Fcf);
       }
-      this.w_f = undefined;
+      this.Fcf = undefined;
     }
   }
-  P_f() {
+  Vcf() {
     var e;
     this.jm();
-    if (!this.Gbm.Empty) {
-      if (e = this.Gbm.Pop()) {
-        this.L_f(e);
+    if (!this.Vwm.Empty) {
+      if (e = this.Vwm.Pop()) {
+        this.Ncf(e);
       }
     }
   }
-  L_f(e) {
+  Ncf(e) {
     this.jm();
     e = e();
     if (e > TimerSystem_1.MIN_TIME) {
-      this.w_f = TimerSystem_1.TimerSystem.Delay(this.P_f.bind(this), e);
+      this.Fcf = TimerSystem_1.TimerSystem.Delay(this.Vcf.bind(this), e);
     } else {
-      this.w_f = TimerSystem_1.TimerSystem.Next(this.P_f.bind(this));
+      this.Fcf = TimerSystem_1.TimerSystem.Next(this.Vcf.bind(this));
     }
   }
   Clear() {
     this.jm();
-    this.Gbm.Clear();
+    this.Vwm.Clear();
   }
 }
 exports.PassiveSkillPlayerQueue = PassiveSkillPlayerQueue;

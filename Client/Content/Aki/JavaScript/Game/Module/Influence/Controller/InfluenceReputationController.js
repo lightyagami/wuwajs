@@ -22,17 +22,17 @@ class InfluenceReputationController extends UiControllerBase_1.UiControllerBase 
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnLoadingNetDataDone, InfluenceReputationController.RequestInfluenceInfo);
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(15402, InfluenceReputationController.jni);
+    Net_1.Net.Register(21316, InfluenceReputationController.jni);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(15402);
+    Net_1.Net.UnRegister(21316);
   }
   static RequestInfluenceReward(e) {
     var t = Protocol_1.Aki.Protocol.wos.create();
     t.y9n = e;
-    Net_1.Net.Call(26479, t, e => {
+    Net_1.Net.Call(15234, t, e => {
       if (e.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 21298);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 26996);
       } else if (ModelManager_1.ModelManager.InfluenceReputationModel.UpdateInfluenceRewardIndex(e.y9n, e.I9n)) {
         InfluenceReputationController.Wni(e.gws);
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ReceiveReputationReward);
@@ -62,7 +62,7 @@ class InfluenceReputationController extends UiControllerBase_1.UiControllerBase 
 };
 InfluenceReputationController.RequestInfluenceInfo = () => {
   var e = Protocol_1.Aki.Protocol.Dos.create();
-  Net_1.Net.Call(26441, e, e => {
+  Net_1.Net.Call(23287, e, e => {
     e = e.mws;
     ModelManager_1.ModelManager.InfluenceReputationModel.SetInfluenceInfoList(e);
   });

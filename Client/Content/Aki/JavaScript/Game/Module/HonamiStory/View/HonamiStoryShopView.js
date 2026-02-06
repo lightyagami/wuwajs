@@ -27,7 +27,7 @@ class HonamiStoryShopView extends UiViewBase_1.UiViewBase {
     this.PopupCaption = undefined;
     this.c6c = undefined;
     this.kom = new Map();
-    this.CVm = () => {
+    this.k6m = () => {
       var e = this.CNe.ShopId;
       this.c6c.Refresh(e);
     };
@@ -69,17 +69,17 @@ class HonamiStoryShopView extends UiViewBase_1.UiViewBase {
       ControllerHolder_1.ControllerHolder.PayShopController.SendRequestPayShopUpdate(i, false);
     }
     this.qom(9);
-    this.eWm();
+    this.KQm();
   }
   OnBeforeHide() {
-    this.tWm();
+    this.XQm();
   }
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RefreshPayShop, this.CVm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RefreshPayShop, this.k6m);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PayShopGoodsBuy, this.Hh_);
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RefreshPayShop, this.CVm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RefreshPayShop, this.k6m);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PayShopGoodsBuy, this.Hh_);
   }
   qom(i) {
@@ -105,8 +105,8 @@ class HonamiStoryShopView extends UiViewBase_1.UiViewBase {
     if (!(t <= 0)) {
       t = ModelManager_1.ModelManager.CreatureModel.GetEntityIdByPbDataId(t);
       if (t = ModelManager_1.ModelManager.CreatureModel.GetEntityById(t)) {
-        i = t?.Entity?.GetComponent(196);
-        t = t?.Entity?.GetComponent(45);
+        i = t?.Entity?.GetComponent(198);
+        t = t?.Entity?.GetComponent(47);
         i?.PlayPerformMontage(2, {
           MontagePath: t?.GetMontageResPathByName(e.MontagePath)
         });
@@ -118,13 +118,13 @@ class HonamiStoryShopView extends UiViewBase_1.UiViewBase {
       AudioSystem_1.AudioSystem.PostEvent(e.AudioEvent);
     }
   }
-  eWm() {
+  KQm() {
     var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
     if (e) {
       ControllerHolder_1.ControllerHolder.CreatureController.SetActorVisible(e.Entity, false, true, true, "HonamiStoryShopView");
     }
   }
-  tWm() {
+  XQm() {
     var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
     if (e) {
       ControllerHolder_1.ControllerHolder.CreatureController.SetActorVisible(e.Entity, true, true, true, "HonamiStoryShopView");

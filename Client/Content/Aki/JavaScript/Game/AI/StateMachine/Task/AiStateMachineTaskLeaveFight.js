@@ -99,7 +99,7 @@ class AiStateMachineTaskLeaveFight extends AiStateMachineTask_1.AiStateMachineTa
             ReturnFalseWhenNavigationFailed: true
           };
           this.Node.MoveComponent.MoveAlongPath(s);
-          var h = a.Entity.CheckGetComponent(109);
+          var h = a.Entity.CheckGetComponent(111);
           if (h.Valid) {
             switch (this.Hne) {
               case 1:

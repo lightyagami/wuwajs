@@ -16,9 +16,9 @@ class InfrMaterialsDeliveryLockItemBase extends UiPanelBase_1.UiPanelBase {
 class InfrMaterialsDeliveryLockItem extends (exports.InfrMaterialsDeliveryLockItemBase = InfrMaterialsDeliveryLockItemBase) {
   constructor() {
     super(...arguments);
-    this.T5m = undefined;
+    this.HVm = undefined;
     this.GGt = () => {
-      this.T5m?.();
+      this.HVm?.();
     };
   }
   OnRegisterComponent() {
@@ -26,7 +26,7 @@ class InfrMaterialsDeliveryLockItem extends (exports.InfrMaterialsDeliveryLockIt
     this.BtnBindInfo = [[2, this.GGt]];
   }
   SetOnClickFunction(e) {
-    this.T5m = e;
+    this.HVm = e;
   }
 }
 exports.InfrMaterialsDeliveryLockItem = InfrMaterialsDeliveryLockItem;

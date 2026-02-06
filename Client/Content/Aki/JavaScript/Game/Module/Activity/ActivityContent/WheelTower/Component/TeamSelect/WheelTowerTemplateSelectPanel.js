@@ -16,8 +16,8 @@ class WheelTowerTemplateSelectPanel extends UiPanelBase_1.UiPanelBase {
     this.OnTemplateSelect = undefined;
     this.xqe = undefined;
     this.adi = undefined;
-    this.ECf = 0;
-    this.Rtf = () => {
+    this.syf = 0;
+    this.xrf = () => {
       var e = new WheelTowerRoleGridItem_1.WheelTowerRoleGridItem();
       e.SetToggleClickCallback(this.N8e);
       return e;
@@ -48,7 +48,7 @@ class WheelTowerTemplateSelectPanel extends UiPanelBase_1.UiPanelBase {
       e = t.length > 0;
       this.xqe?.ContentItem?.SetUIActive(e);
       if (e) {
-        this.ECf = t[0];
+        this.syf = t[0];
         this.xqe.RefreshByData(t);
       }
     };
@@ -57,7 +57,7 @@ class WheelTowerTemplateSelectPanel extends UiPanelBase_1.UiPanelBase {
     this.ComponentRegisterInfos = [[0, UE.UIScrollViewWithScrollbarComponent], [1, UE.UIItem]];
   }
   OnStart() {
-    this.xqe = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(0), this.Rtf);
+    this.xqe = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(0), this.xrf);
     var e = this.GetItem(1);
     this.adi = new FilterSortEntrance_1.FilterSortEntrance(e, this.Hlo);
   }
@@ -66,7 +66,7 @@ class WheelTowerTemplateSelectPanel extends UiPanelBase_1.UiPanelBase {
     this.adi?.UpdateData(5, e);
   }
   GetFirstRoleId() {
-    return this.ECf;
+    return this.syf;
   }
   OnlyRefreshScroll() {
     this.xqe.GetGenericLayout()?.RefreshWithoutDataSync();

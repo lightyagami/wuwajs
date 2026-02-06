@@ -22,69 +22,69 @@ class VehicleStreamModel extends ModelBase_1.ModelBase {
     this.BasisUpVector = Vector_1.Vector.Create();
     this.BasisRightVector = Vector_1.Vector.Create();
     this.CacheVector = Vector_1.Vector.Create();
-    this.kUm = new Map();
-    this.qUm = new Map();
-    this.OUm = new Map();
-    this._Bf = new Map();
-    this.GUm = new Map();
-    this.FUm = new Map();
-    this.dvf = new Map();
+    this.lxm = new Map();
+    this._xm = new Map();
+    this.uxm = new Map();
+    this.eNf = new Map();
+    this.cxm = new Map();
+    this.dxm = new Map();
+    this.MMf = new Map();
   }
   OnLeaveLevel() {
     this.TransportSystemInitDone = false;
-    this.OUm.clear();
-    this._Bf.clear();
-    this.GUm.clear();
-    this.FUm.clear();
-    this.dvf.clear();
+    this.uxm.clear();
+    this.eNf.clear();
+    this.cxm.clear();
+    this.dxm.clear();
+    this.MMf.clear();
     return true;
   }
   GetAllVehicleTeam() {
-    return this.kUm;
+    return this.lxm;
   }
   GetVehicleTeam(e) {
-    return this.kUm.get(e);
+    return this.lxm.get(e);
   }
   AddVehicleTeam(e, t) {
-    this.kUm.set(e, t);
+    this.lxm.set(e, t);
   }
   RemoveTeamMember(e) {
     var t = this.GetVehicleTeamMember(e);
-    if (t) {
-      this.GetVehicleTeam(t.TeamId)?.RemoveVehicleMember(e);
-      t.Destroy();
-    }
+    return !!t && (this.GetVehicleTeam(t.TeamId)?.RemoveVehicleMember(e), t.Destroy(), true);
   }
   GetVehicleTeamMember(e) {
-    return this.qUm.get(e);
+    return this._xm.get(e);
   }
   OnAddVehicleTeamMember(e, t) {
-    if (this.qUm.get(e)) {
+    if (this._xm.get(e)) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("VehicleStream", 18, "[VehicleStream]VehicleStreamModel.OnAddVehicleTeamMember:同一个载具重复添加", ["vehicleCreatureDataId", e]);
       }
     } else {
-      this.qUm.set(e, t);
+      this._xm.set(e, t);
     }
   }
   OnRemoveVehicleTeamMember(e) {
-    this.qUm.delete(e);
+    this._xm.delete(e);
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("VehicleStream", 18, "[VehicleStream]载具移除", ["vehicleCreatureDataId", e]);
+    }
   }
   AddIntersection(t, r) {
-    if (this.OUm.get(t)) {
+    if (this.uxm.get(t)) {
       return false;
     }
     var i = [];
     for (let e = 0; e < r.Num(); e++) {
       var a = r.Get(e);
-      this._Bf.set(a, t);
+      this.eNf.set(a, t);
       i.push(a);
     }
-    this.OUm.set(t, i);
+    this.uxm.set(t, i);
     return true;
   }
   RecordCrossingRoadways(e, t) {
-    if (this.GUm.get(e)) {
+    if (this.cxm.get(e)) {
       return false;
     }
     var r = [];
@@ -92,7 +92,7 @@ class VehicleStreamModel extends ModelBase_1.ModelBase {
       var i = t.Get(e);
       r.push(i);
     }
-    this.GUm.set(e, r);
+    this.cxm.set(e, r);
     return true;
   }
   GetRelativePosition(e, t) {
@@ -107,10 +107,10 @@ class VehicleStreamModel extends ModelBase_1.ModelBase {
     }
   }
   EnterRoadway(e, t) {
-    let r = this.FUm.get(e);
+    let r = this.dxm.get(e);
     if (!r) {
       r = new Set();
-      this.FUm.set(e, r);
+      this.dxm.set(e, r);
     }
     r.add(t);
     if (Log_1.Log.CheckDebug()) {
@@ -118,23 +118,23 @@ class VehicleStreamModel extends ModelBase_1.ModelBase {
     }
   }
   ExitRoadway(e, t) {
-    var r = this.FUm.get(e);
+    var r = this.dxm.get(e);
     if (r && r.size !== 0 && (r.delete(t), Log_1.Log.CheckDebug())) {
       Log_1.Log.Debug("VehicleStream", 18, "ExitRoadway", ["CreatureDataId", t], ["roadwayId", e]);
     }
   }
   GetAllVehicleInRoadway(e) {
-    return this.FUm.get(e);
+    return this.dxm.get(e);
   }
   CheckIntersectionRoadwayOccupied(e) {
-    if (this.EnableInteractionSinglePass && this.FUm.get(e)?.size) {
+    if (this.EnableInteractionSinglePass && this.dxm.get(e)?.size) {
       return true;
     }
     var t = this.GetIntersectionId(e);
-    var t = this.OUm.get(t);
+    var t = this.uxm.get(t);
     if (t) {
       for (const r of t) {
-        if (r !== e && this.FUm.get(r)?.size) {
+        if (r !== e && this.dxm.get(r)?.size) {
           return true;
         }
       }
@@ -142,13 +142,13 @@ class VehicleStreamModel extends ModelBase_1.ModelBase {
     return false;
   }
   AddWaitTransportInitVehicle(e, t) {
-    this.dvf.set(e, t);
+    this.MMf.set(e, t);
   }
   GetWaitTransportInitVehicles() {
-    return this.dvf;
+    return this.MMf;
   }
   GetIntersectionId(e) {
-    return this._Bf.get(e) ?? 0;
+    return this.eNf.get(e) ?? 0;
   }
 }
 exports.VehicleStreamModel = VehicleStreamModel;

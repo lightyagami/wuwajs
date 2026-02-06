@@ -8,7 +8,7 @@ const Log_1 = require("../../../Core/Common/Log");
 const StringUtils_1 = require("../../../Core/Utils/StringUtils");
 const Global_1 = require("../../Global");
 const ModelManager_1 = require("../../Manager/ModelManager");
-const FollowFunctionLibrary_1 = require("../../NewWorld/Character/Common/Component/Abilities/Follow/FollowFunctionLibrary");
+const FollowUtils_1 = require("../../NewWorld/Character/Common/Component/Abilities/Follow/FollowUtils");
 const LevelFlowActionBase_1 = require("./LevelFlowActionBase");
 class LevelFlowFollowShooterReloadConfig extends LevelFlowActionBase_1.LevelFlowActionBase {
   constructor() {
@@ -23,7 +23,7 @@ class LevelFlowFollowShooterReloadConfig extends LevelFlowActionBase_1.LevelFlow
     var o = Global_1.Global.BaseCharacter.CharacterActorComponent.Entity;
     var e = o.GetComponent(242);
     if (e && e.VehicleEntity) {
-      if (e = FollowFunctionLibrary_1.FollowFunctionLibrary.GetPlayerFollowShooter(ModelManager_1.ModelManager.CreatureModel.GetPlayerId())?.Entity?.GetComponent(234)) {
+      if (e = FollowUtils_1.FollowUtils.GetPlayerFollowShooter(ModelManager_1.ModelManager.CreatureModel.GetPlayerId())?.Entity?.GetComponent(235)) {
         e.AsyncReloadConfig(this.Ueh);
         this.FinishExecute(true);
       } else {

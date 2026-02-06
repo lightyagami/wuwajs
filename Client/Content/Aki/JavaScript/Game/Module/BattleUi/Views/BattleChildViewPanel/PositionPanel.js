@@ -4,6 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.PositionPanel = undefined;
+const cpp_1 = require("cpp");
 const puerts_1 = require("puerts");
 const UE = require("ue");
 const ActorSystem_1 = require("../../../../../Core/Actor/ActorSystem");
@@ -13,8 +14,8 @@ const Time_1 = require("../../../../../Core/Common/Time");
 const Protocol_1 = require("../../../../../Core/Define/Net/Protocol");
 const GameBudgetInterfaceController_1 = require("../../../../../Core/GameBudgetAllocator/GameBudgetInterfaceController");
 const Net_1 = require("../../../../../Core/Net/Net");
+const LoadModeManager_1 = require("../../../../../Core/Performance/LoadMode/LoadModeManager");
 const Macro_1 = require("../../../../../Core/Preprocessor/Macro");
-const ResourceSystem_1 = require("../../../../../Core/Resource/ResourceSystem");
 const BaseConfigController_1 = require("../../../../../Launcher/BaseConfig/BaseConfigController");
 const Platform_1 = require("../../../../../Launcher/Platform/Platform");
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
@@ -39,7 +40,6 @@ const MID_SCORE_COLOR = "orange";
 const HIGH_SCORE_COLOR = "purple";
 const WARNING_COLOR = "red";
 const budgetName = ["Normal", "Fighting", "Cutscene"];
-const loadModeName = ["None", "InLoading", "InGame"];
 class PositionPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
   constructor() {
     super(...arguments);
@@ -143,17 +143,17 @@ class PositionPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     var t = TimeUtil_1.TimeUtil.DateFormat8(this.Lac, this.Hwu);
     this.bac.SetText(t);
   }
-  Iet(e, i) {
-    var t = e.X.toFixed(0);
-    var r = e.Y.toFixed(0);
-    var e = e.Z.toFixed(0);
+  Iet(t, i) {
+    var r = t.X.toFixed(0);
+    var o = t.Y.toFixed(0);
+    var t = t.Z.toFixed(0);
     this.eMa += this.rMa;
     this.tMa++;
     var s = TimeUtil_1.TimeUtil.DateFormat2(new Date());
-    var o = TimeUtil_1.TimeUtil.DateFormat2(new Date(TimeUtil_1.TimeUtil.GetServerTimeStamp()));
-    var a = Net_1.Net.GetUnVerifiedMessageCount();
-    var a = a > 10 ? `
-协议缓存队列长度:${a}` : "";
+    var a = TimeUtil_1.TimeUtil.DateFormat2(new Date(TimeUtil_1.TimeUtil.GetServerTimeStamp()));
+    var e = Net_1.Net.GetUnVerifiedMessageCount();
+    var e = e > 10 ? `
+协议缓存队列长度:${e}` : "";
     var l = (1000 / i).toFixed(0);
     var n = ActorSystem_1.ActorSystem.Size;
     var h = ActorSystem_1.ActorSystem.Capacity;
@@ -166,30 +166,65 @@ class PositionPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
       this.oMa();
     }
     var i = [];
-    i.push(`Fps:${l} Pos: (${t},${r},${e})`);
+    i.push(`Fps:${l} Pos: (${r},${o},${t})`);
     if (!this.ola && this.SH.size > 0) {
       i.push("  " + this.Zva);
     }
     i.push(` 
 CTime:${s}${this.Hwu}
-STime:${o}
+STime:${a}
 GTime:${ModelManager_1.ModelManager.TimeOfDayModel.GameTime.HourMinuteString}`);
     if (!this.ola) {
-      if (l = Global_1.Global.BaseCharacter?.CharacterActorComponent?.MoveComp) {
+      var l = Global_1.Global.BaseCharacter?.CharacterActorComponent?.MoveComp;
+      if (l) {
         i.push("  Gravity:" + l.GravityDirect.ToString());
       }
+      var r = UE.CSharpBlueprintFunctionLibrary.HasSharpherealModuleGreyBoxHit();
+      var o = UE.CSharpBlueprintFunctionLibrary.HasCSharpEnvironmentInitialized();
+      i.push(`
+C# Inited:${o} Hit:${r}`);
+      let e = "";
+      var t = ModelManager_1.ModelManager.GameModeModel;
+      if (t) {
+        if ((s = t.MapPath) && (a = s.split(/[\\/]/).filter(e => e.length > 0)).length > 0) {
+          l = a[a.length - 1];
+          e = l.replace(/\.[^/.]+$/, "");
+        }
+        if (!e) {
+          if (o = t.MapConfig) {
+            e = o.MapId.toString();
+          }
+        }
+      }
+      var r = BaseConfigController_1.BaseConfigController.GetPackageConfigOrDefault("PatchVersion");
+      var s = BaseConfigController_1.BaseConfigController.GetPackageConfigOrDefault("Changelist", "");
+      var a = BaseConfigController_1.BaseConfigController.GetPublicValue("AppTag");
+      var l = cpp_1.KuroApplication.IsWithEditor();
+      i.push(`
+Editor: ${l}`);
+      i.push(" Branch: " + _);
+      if (!l) {
+        i.push(`
+PatchVer: ${r}`);
+        i.push(" Changelist: " + s);
+        i.push(" Tag: " + a);
+      }
+      if (t?.UseWorldPartition && (o = ModelManager_1.ModelManager.AreaModel.GetCurrentAreaId(2)) > 0) {
+        l = ModelManager_1.ModelManager.AreaModel.GetArea(o);
+        i.push(`
+Second Map Name: ${l?.ActorLabel}`);
+      }
+      e = e || "Unknown";
+      i.push(`
+Map Name: ${e}`);
     }
-    var t = UE.CSharpBlueprintFunctionLibrary.HasSharpherealModuleGreyBoxHit();
-    var r = UE.CSharpBlueprintFunctionLibrary.HasCSharpEnvironmentInitialized();
-    i.push(`
-C# Inited:${r} Hit:${t}`);
     if (!this.ola) {
-      e = KscEnv_1.KscEnv.KscWorld?.Entities_.Num() ?? 0;
+      r = KscEnv_1.KscEnv.KscWorld?.Entities_.Num() ?? 0;
       s = ControllerHolder_1.ControllerHolder.BulletController.KuroBulletWorld?.BulletEntityMap.Num() ?? 0;
-      o = e > 0 || s > 0 ? `
-Ksc:Entity${e},Bullet${s}` : "";
-      i.push(` ServerIp:${ModelManager_1.ModelManager.LoginModel.Platform}${a}${o}${this.Eet}  Bullet:${c}
-Actor:${n}/${h} (${_}) Load:${loadModeName[ResourceSystem_1.ResourceSystem.GetLoadMode()]} Budge:${budgetName[GameBudgetInterfaceController_1.GameBudgetInterfaceController.CurrentGlobalMode]}`);
+      a = r > 0 || s > 0 ? `
+Ksc:Entity${r},Bullet${s}` : "";
+      i.push(` ServerIp:${ModelManager_1.ModelManager.LoginModel.Platform}${e}${a}${this.Eet}  Bullet:${c}
+Actor:${n}/${h} (${_}) Load:${LoadModeManager_1.LoadModeManager.GetLoadMode()} Budge:${budgetName[GameBudgetInterfaceController_1.GameBudgetInterfaceController.CurrentGlobalMode]}`);
     }
     if (UE.KuroRenderingRuntimeBPPluginBPLibrary.GetRayTracingSupportedType() === 0 && UE.KismetSystemLibrary.GetConsoleVariableIntValue("r.RayTracing.Enable")) {
       let e = "";
@@ -218,21 +253,21 @@ Actor:${n}/${h} (${_}) Load:${loadModeName[ResourceSystem_1.ResourceSystem.GetLo
       i.push(`
  RayTracing Feature: <color=green>${e}</color>`);
     }
-    var l = UE.KismetSystemLibrary.GetConsoleVariableIntValue("r.Streaming.DetailPanel");
-    var r = UE.StreamableRenderAsset.GetStreamingBudgetInfo();
-    if (l > 0 && (r.X > 0 || r.Z > 0) && (t = r.X < r.Y ? "green" : "#ff0000ff", e = r.Z < r.W ? "green" : "#ff0000ff", s = l > 1, a = l < 3 ? 6 : (l - 1) * 6, o = r.X < r.Y ? 0 : a, c = r.Z < r.W ? 0 : a, i.push(`
-StreamingPool: `), n = s ? "Require " : "", h = s ? "Budget " : "", r.W > 0 ? (r.X > 0 && i.push(`<color=${t}><size=+${o}> Texture ${n}${r.X}/${h}${r.Y}, </size></color>`), r.Z > 0 && i.push(`<color=${e}><size=+${c}> Mesh ${n}${r.Z}/${h}${r.W}</size></color>`)) : r.X > 0 && i.push(`<color=${t}><size=+${o}> Texture + Mesh ${n}${r.X}/${h}${r.Y}</size></color>`), s)) {
+    t = UE.KismetSystemLibrary.GetConsoleVariableIntValue("r.Streaming.DetailPanel");
+    o = UE.StreamableRenderAsset.GetStreamingBudgetInfo();
+    if (t > 0 && (o.X > 0 || o.Z > 0) && (l = o.X < o.Y ? "green" : "#ff0000ff", r = o.Z < o.W ? "green" : "#ff0000ff", s = t > 1, e = t < 3 ? 6 : (t - 1) * 6, a = o.X < o.Y ? 0 : e, c = o.Z < o.W ? 0 : e, i.push(`
+StreamingPool: `), n = s ? "Require " : "", h = s ? "Budget " : "", o.W > 0 ? (o.X > 0 && i.push(`<color=${l}><size=+${a}> Texture ${n}${o.X}/${h}${o.Y}, </size></color>`), o.Z > 0 && i.push(`<color=${r}><size=+${c}> Mesh ${n}${o.Z}/${h}${o.W}</size></color>`)) : o.X > 0 && i.push(`<color=${l}><size=+${a}> Texture + Mesh ${n}${o.X}/${h}${o.Y}</size></color>`), s)) {
       _ = UE.StreamableRenderAsset.GetStreamingRenderAssetsInfo();
       i.push(`
 RenderAssetNum: Texture ${_.X} Mesh ${_.Y}`);
       i.push(`
 CurrentTextureMem:${_.Z} RTMem:${_.W}`);
-      l = UE.StreamableRenderAsset.GetStreamingPoolInfo();
+      t = UE.StreamableRenderAsset.GetStreamingPoolInfo();
       i.push(`
-TextureStreamingPoolSize:${l.X} NonStreaming:${l.Y}`);
-      if (l.Z > 0) {
+TextureStreamingPoolSize:${t.X} NonStreaming:${t.Y}`);
+      if (t.Z > 0) {
         i.push(`
-AvailableStreamingVRAM:${l.Z} UsableVRAM:${l.W})`);
+AvailableStreamingVRAM:${t.Z} UsableVRAM:${t.W})`);
       }
       i.push(`
 
@@ -245,8 +280,8 @@ AvailableStreamingVRAM:${l.Z} UsableVRAM:${l.W})`);
     let t = false;
     var i = UE.NiagaraFunctionLibrary.GetGlobalInfo();
     var r = i.GlobalTotalActive;
-    var s = i.GlobalTotalScalability;
-    var o = i.GlobalTotalParticles;
+    var o = i.GlobalTotalScalability;
+    var s = i.GlobalTotalParticles;
     var i = i.GlobalTotalEmitters;
     let a = 1;
     let l = 1;
@@ -258,13 +293,13 @@ AvailableStreamingVRAM:${l.Z} UsableVRAM:${l.W})`);
 `;
       t = true;
     }
-    if (s > l) {
-      e += ` TotalScalability超标,当前值是:${s}
+    if (o > l) {
+      e += ` TotalScalability超标,当前值是:${o}
 `;
       t = true;
     }
-    if (o > n) {
-      e += ` TotalParticles超标,当前值是:${o}
+    if (s > n) {
+      e += ` TotalParticles超标,当前值是:${s}
 `;
       t = true;
     }
@@ -293,12 +328,12 @@ AvailableStreamingVRAM:${l.Z} UsableVRAM:${l.W})`);
     var t = EffectSystem_1.EffectSystem.GetActiveEffectCount();
     var i = EffectSystem_1.EffectSystem.GetEffectLruSize();
     var r = EffectSystem_1.EffectSystem.GetEffectLruCapacity();
-    var s = EffectSystem_1.EffectSystem.GetPlayerEffectLruSize(0);
-    var o = EffectSystem_1.EffectSystem.GetPlayerEffectLruSize(1);
+    var o = EffectSystem_1.EffectSystem.GetPlayerEffectLruSize(0);
+    var s = EffectSystem_1.EffectSystem.GetPlayerEffectLruSize(1);
     var a = EffectSystem_1.EffectSystem.GetPlayerEffectLruSize(2);
     var l = EffectSystem_1.EffectSystem.GetPlayerEffectLruSize(3);
     this.Eet = `
-Effect: ${e}(${t}) Pool:${i}/${r}(${s})(${o})(${a})(${l})`;
+Effect: ${e}(${t}) Pool:${i}/${r}(${o})(${s})(${a})(${l})`;
   }
   oMa() {
     if (this.SH.size !== 0) {

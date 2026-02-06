@@ -128,7 +128,7 @@ class IkTarget {
     this.Location = Vector_1.Vector.Create();
     this.Rotation = Quat_1.Quat.Create();
     this.Alpha = 0;
-    this.Wxf = new UE.IKTarget();
+    this.kFf = new UE.IKTarget();
     this.Location = t ?? Vector_1.Vector.Create(0, 0, 0);
     this.Rotation = i ?? Quat_1.Quat.Create(0, 0, 0, 1);
     this.Alpha = s ?? 0;
@@ -150,7 +150,7 @@ class IkTarget {
     }
   }
   ToUeIkTarget() {
-    var t = this.Wxf;
+    var t = this.kFf;
     t.Location = this.Location.ToUeVectorOld();
     t.Rotation = this.Rotation.ToUeQuat();
     t.Alpha = this.Alpha;

@@ -20,10 +20,10 @@ const UiManager_1 = require("../../Ui/UiManager");
 const LogReportDefine_1 = require("../LogReport/LogReportDefine");
 class ChannelController extends UiControllerBase_1.UiControllerBase {
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(24800, this.dEt);
+    Net_1.Net.Register(29170, this.dEt);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(24800);
+    Net_1.Net.UnRegister(29170);
   }
   static OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnShareResult, this.CEt);
@@ -62,7 +62,7 @@ class ChannelController extends UiControllerBase_1.UiControllerBase {
   static RequestFirstShareReward(r) {
     var e = new Protocol_1.Aki.Protocol.BCs();
     e.x8n = r;
-    Net_1.Net.Call(28082, e, e => {
+    Net_1.Net.Call(19038, e, e => {
       if (e && e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
         ModelManager_1.ModelManager.ChannelModel.MarkActionShared(r);
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnFirstShare);

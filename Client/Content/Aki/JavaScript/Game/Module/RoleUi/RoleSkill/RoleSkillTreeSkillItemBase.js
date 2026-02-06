@@ -17,9 +17,9 @@ class RoleSkillTreeSkillItemBase extends UiPanelBase_1.UiPanelBase {
     super(...arguments);
     this.pdo = undefined;
     this.ac = undefined;
-    this.cXf = undefined;
-    this.dXf = undefined;
-    this.T4f = false;
+    this.v_g = undefined;
+    this.y_g = undefined;
+    this.q$f = false;
     this.N8e = () => {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSkillTreeNodeToggleClick, this);
     };
@@ -32,11 +32,11 @@ class RoleSkillTreeSkillItemBase extends UiPanelBase_1.UiPanelBase {
   InitBranchSequencePlayer() {
     var e = this.GetLeftBranchItem();
     if (e) {
-      this.cXf = new LevelSequencePlayer_1.LevelSequencePlayer(e);
+      this.v_g = new LevelSequencePlayer_1.LevelSequencePlayer(e);
     }
     var e = this.GetRightBranchItem();
     if (e) {
-      this.dXf = new LevelSequencePlayer_1.LevelSequencePlayer(e);
+      this.y_g = new LevelSequencePlayer_1.LevelSequencePlayer(e);
     }
   }
   Update(e, t) {
@@ -161,18 +161,19 @@ class RoleSkillTreeSkillItemBase extends UiPanelBase_1.UiPanelBase {
     var s;
     var h = this.GetLeftBranchItem();
     var r = this.GetRightBranchItem();
-    if (this.GXf()) {
+    if (this.Sug()) {
       s = this.GetRoleId();
       t = this.GetSkillNodeId();
       i = ModelManager_1.ModelManager.RoleModel.GetRoleCurrentBranchIndex(s);
-      if (e && this.cXf && this.dXf) {
+      if (e && this.v_g && this.y_g) {
         h?.SetUIActive(true);
         r?.SetUIActive(true);
-        this.cXf.StopCurrentSequence(false, true);
-        this.dXf.StopCurrentSequence(false, true);
-        this.cXf.PlayLevelSequenceByName(i === 0 ? "Start" : "Close", true);
-        this.dXf.PlayLevelSequenceByName(i !== 0 ? "Start" : "Close", true);
+        this.v_g.StopCurrentSequence(false, true);
+        this.y_g.StopCurrentSequence(false, true);
+        this.v_g.PlayLevelSequenceByName(i === 0 ? "Start" : "Close", true);
+        this.y_g.PlayLevelSequenceByName(i !== 0 ? "Start" : "Close", true);
       } else {
+        this.B7g();
         h?.SetUIActive(i === 0);
         r?.SetUIActive(i !== 0);
       }
@@ -186,18 +187,24 @@ class RoleSkillTreeSkillItemBase extends UiPanelBase_1.UiPanelBase {
       r?.SetUIActive(false);
     }
   }
-  GXf() {
+  B7g() {
+    this.v_g?.PlayLevelSequenceByName("Start");
+    this.v_g?.EndSequenceLastFrame("Start");
+    this.y_g?.PlayLevelSequenceByName("Start");
+    this.y_g?.EndSequenceLastFrame("Start");
+  }
+  Sug() {
     var e = this.GetRoleId();
     var t = this.GetSkillNodeId();
-    return e !== 0 && t !== 0 && this.T4f && ModelManager_1.ModelManager.RoleModel.IsRoleHasBranch(e) && ModelManager_1.ModelManager.RoleModel.IsSkillNodeHasBranch(t);
+    return e !== 0 && t !== 0 && this.q$f && ModelManager_1.ModelManager.RoleModel.IsRoleHasBranch(e) && ModelManager_1.ModelManager.RoleModel.IsSkillNodeHasBranch(t);
   }
   OnSkillBranchChanged() {
-    if (this.GXf()) {
+    if (this.Sug()) {
       this.RefreshSkillBranch(true);
     }
   }
   SetSkillBranchEnable(e) {
-    this.T4f = e;
+    this.q$f = e;
   }
 }
 exports.RoleSkillTreeSkillItemBase = RoleSkillTreeSkillItemBase;

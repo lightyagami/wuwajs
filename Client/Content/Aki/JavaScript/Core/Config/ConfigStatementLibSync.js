@@ -7,7 +7,7 @@ exports.ConfigStatementLibSync = undefined;
 const UE = require("ue");
 class ConfigStatementLibSync {
   static CreateStatement(t, e) {
-    if (ConfigStatementLibSync.EEm) {
+    if (ConfigStatementLibSync.BEm) {
       return UE.KuroPrepareStatementLib.GetOrCreateStatement(t, e);
     } else {
       return UE.KuroPrepareStatementLib.CreateStatement(t, e);
@@ -17,5 +17,5 @@ class ConfigStatementLibSync {
     UE.KuroPrepareStatementLib.CloseAllConnection();
   }
 }
-(exports.ConfigStatementLibSync = ConfigStatementLibSync).EEm = true;
+(exports.ConfigStatementLibSync = ConfigStatementLibSync).BEm = true;
 //# sourceMappingURL=ConfigStatementLibSync.js.map

@@ -220,7 +220,7 @@ class PhantomArenaBattleDetailsMonsterItem extends GridProxyAbstract_1.GridProxy
     this.EntityId = t;
     this.GU1();
     var i = ModelManager_1.ModelManager.CreatureModel.GetEntity(t);
-    this.AttributeComp = i?.Entity?.GetComponent(181);
+    this.AttributeComp = i?.Entity?.GetComponent(183);
     this.NU1();
     const s = ModelManager_1.ModelManager.PhantomArenaBattleModel.BattleData.GetCardDataByEntityId(t);
     i = s.GetFightValueByAttr(Protocol_1.Aki.Protocol.GC1.Proto_CostAbility);
@@ -233,7 +233,7 @@ class PhantomArenaBattleDetailsMonsterItem extends GridProxyAbstract_1.GridProxy
   }
   Lcu() {
     if (!(this.CurShowTime + FACTOR_INTERVAL > Time_1.Time.Now)) {
-      var t = ModelManager_1.ModelManager.CreatureModel.GetEntity(this.EntityId)?.Entity?.GetComponent(215);
+      var t = ModelManager_1.ModelManager.CreatureModel.GetEntity(this.EntityId)?.Entity?.GetComponent(217);
       if (t) {
         var i = [];
         for (const s of ModelManager_1.ModelManager.PhantomArenaBattleModel.GetPhantomTagMap()) {

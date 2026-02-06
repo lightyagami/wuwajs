@@ -32,6 +32,7 @@ const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const FormationDataController_1 = require("../../../../Module/Abilities/FormationDataController");
 const CombatMessage_1 = require("../../../../Module/CombatMessage/CombatMessage");
+const SceneTeamController_1 = require("../../../../Module/SceneTeam/SceneTeamController");
 const TeleportController_1 = require("../../../../Module/Teleport/TeleportController");
 const BaseDeathComponent_1 = require("../../Common/Component/Abilities/BaseDeathComponent");
 const CharacterAttributeTypes_1 = require("../../Common/Component/Abilities/CharacterAttributeTypes");
@@ -58,7 +59,7 @@ let RoleDeathComponent = class RoleDeathComponent extends BaseDeathComponent_1.B
         this.m1t.TriggerEvents(14, this.m1t, {});
         for (const i of e.values()) {
           if (this.Entity.Id !== i.Id && i.Valid) {
-            if (!(t = i.Entity.GetComponent(201)).IsDead()) {
+            if (!(t = i.Entity.GetComponent(203)).IsDead()) {
               t.m1t?.TriggerEvents(15, this.m1t, {});
             }
           }
@@ -99,7 +100,7 @@ let RoleDeathComponent = class RoleDeathComponent extends BaseDeathComponent_1.B
             i.Z = t.Z;
             e.rdu = i;
           }
-          CombatMessage_1.CombatNet.Send(16972, this.Entity, e);
+          CombatMessage_1.CombatNet.Send(16552, this.Entity, e);
         } else if (t) {
           TeleportController_1.TeleportController.TeleportToPositionNoLoading(t.ToUeVector(), undefined, "DrowningPunishment").finally(this.qin);
         }
@@ -107,7 +108,7 @@ let RoleDeathComponent = class RoleDeathComponent extends BaseDeathComponent_1.B
       this.HBr.ResetCharState();
       var t;
       var e;
-      var i = this.Entity.CheckGetComponent(201);
+      var i = this.Entity.CheckGetComponent(203);
       if (i.IsDead()) {
         i.OnDeathEnded();
       }
@@ -116,12 +117,12 @@ let RoleDeathComponent = class RoleDeathComponent extends BaseDeathComponent_1.B
   OnInit() {
     this.n$t = this.Entity.GetComponent(3);
     this.u1t = this.Entity.CheckGetComponent(0);
-    this.Xte = this.Entity.GetComponent(215);
-    this.tRr = this.Entity.GetComponent(41);
-    this.m1t = this.Entity.GetComponent(183);
-    this.HBr = this.Entity.GetComponent(184);
-    this.$te = this.Entity.GetComponent(182);
-    this.aTu = this.Entity.GetComponent(306);
+    this.Xte = this.Entity.GetComponent(217);
+    this.tRr = this.Entity.GetComponent(43);
+    this.m1t = this.Entity.GetComponent(185);
+    this.HBr = this.Entity.GetComponent(186);
+    this.$te = this.Entity.GetComponent(184);
+    this.aTu = this.Entity.GetComponent(308);
     return true;
   }
   OnStart() {
@@ -139,6 +140,7 @@ let RoleDeathComponent = class RoleDeathComponent extends BaseDeathComponent_1.B
     if (!super.ExecuteDeath(t)) {
       return false;
     }
+    SceneTeamController_1.SceneTeamController.EmitEvent(this.Entity, EventDefine_1.EEventName.CharOnRoleDeadBefore);
     this.m1t?.RemoveBuffByEffectType(36, "实体死亡移除冰冻buff");
     this.Xte?.AddTag(1008164187);
     this.tRr?.StopAllSkills("RoleDeathComponent.ExecuteDeath");
@@ -148,9 +150,9 @@ let RoleDeathComponent = class RoleDeathComponent extends BaseDeathComponent_1.B
         case CharacterUnifiedStateTypes_1.ECharPositionState.Air:
           var e = this.HBr.MoveState;
           if (e === CharacterUnifiedStateTypes_1.ECharMoveState.Glide) {
-            this.Entity.GetComponent(62)?.ExitGlideState("Death");
+            this.Entity.GetComponent(64)?.ExitGlideState("Death");
           } else if (e === CharacterUnifiedStateTypes_1.ECharMoveState.Soar) {
-            this.Entity.GetComponent(62)?.ExitSoarState(3, "Death");
+            this.Entity.GetComponent(64)?.ExitSoarState(3, "Death");
           }
           break;
         case CharacterUnifiedStateTypes_1.ECharPositionState.Climb:
@@ -226,7 +228,7 @@ let RoleDeathComponent = class RoleDeathComponent extends BaseDeathComponent_1.B
     }
   }
   static DrownNotify(t, e) {
-    t = t?.CheckGetComponent(201);
+    t = t?.CheckGetComponent(203);
     if (t && (t.PlayDeathMontageWithType(1), t.m1t?.HasBuffAuthority())) {
       t.m1t.RemoveBuffByEffectType(36, "溺水移除冰冻buff");
     }
@@ -235,8 +237,8 @@ let RoleDeathComponent = class RoleDeathComponent extends BaseDeathComponent_1.B
     var t;
     var e;
     if (!this.IsDrowning()) {
-      this.Entity.CheckGetComponent(215).AddTag(191377386);
-      t = (e = this.Entity.CheckGetComponent(182)).GetCurrentValue(CharacterAttributeTypes_1.EAttributeId.Proto_Life);
+      this.Entity.CheckGetComponent(217).AddTag(191377386);
+      t = (e = this.Entity.CheckGetComponent(184)).GetCurrentValue(CharacterAttributeTypes_1.EAttributeId.Proto_Life);
       this.m1t.AddBuff(CharacterBuffIds_1.buffId.DrownPunishment, {
         InstigatorId: this.m1t.CreatureDataId,
         Reason: "溺水流程添加"
@@ -249,12 +251,12 @@ let RoleDeathComponent = class RoleDeathComponent extends BaseDeathComponent_1.B
       EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.CharOnRoleDrownInjure, t > 0 && e <= 0);
     }
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.CharOnRoleDrown, true);
-    CombatMessage_1.CombatNet.Send(28721, this.Entity, {});
+    CombatMessage_1.CombatNet.Send(16754, this.Entity, {});
   }
   IsDrowning() {
     return this.Xte?.HasTag(191377386) ?? false;
   }
 };
 __decorate([CombatMessage_1.CombatNet.Listen("VFn", true)], RoleDeathComponent, "DrownNotify", null);
-RoleDeathComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(201)], RoleDeathComponent);
+RoleDeathComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(203)], RoleDeathComponent);
 exports.RoleDeathComponent = RoleDeathComponent; //# sourceMappingURL=RoleDeathComponent.js.map

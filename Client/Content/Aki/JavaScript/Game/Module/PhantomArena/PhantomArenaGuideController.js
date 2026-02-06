@@ -28,11 +28,11 @@ class PhantomArenaGuideController extends ActivityControllerBase_1.ActivityContr
     throw new Error("Method not implemented.");
   }
   static RequestReward(t) {
-    var e = new Protocol_1.Aki.Protocol.zjm();
-    Net_1.Net.Call(23736, e, e => {
+    var e = new Protocol_1.Aki.Protocol.XWm();
+    Net_1.Net.Call(20725, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21965);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18341);
         } else {
           ModelManager_1.ModelManager.ActivityModel.GetActivityById(t)?.UpdateReceiveState(true);
         }

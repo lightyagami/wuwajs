@@ -21,12 +21,12 @@ class KscEntityHandle {
   }
   eWu() {
     var t;
-    return !!this.CreatureDataId && !!(t = ModelManager_1.ModelManager.CreatureModel?.GetEntity(this.CreatureDataId)) && !!t.Entity && !!this.Valid && !!t.Entity.GetComponent(3)?.Actor?.D_GetTransform();
+    return !!this.CreatureDataId && !!(t = ModelManager_1.ModelManager.CreatureModel?.GetEntity(this.CreatureDataId)) && !!t.Entity && !!this.Valid && !!t.Entity.GetComponent(1)?.Owner?.D_GetTransform();
   }
   SyncEntityLocation() {
     var t;
     if (this.eWu()) {
-      t = ModelManager_1.ModelManager.CreatureModel.GetEntity(this.CreatureDataId).Entity.GetComponent(3).Actor.D_GetTransform();
+      t = ModelManager_1.ModelManager.CreatureModel.GetEntity(this.CreatureDataId).Entity.GetComponent(1).Owner.D_GetTransform();
       this.KscEntity.SetTransformByWorld(t);
     }
   }

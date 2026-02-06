@@ -17,7 +17,7 @@ class TsBaseItem extends UE.Actor {
   }
   ReceiveBeginPlay() {
     this.EntityHandle = ActorUtils_1.ActorUtils.GetEntityByActor(this);
-    this.DebugComp = this.EntityHandle.Entity.GetComponent(135);
+    this.DebugComp = this.EntityHandle.Entity.GetComponent(137);
   }
   GetTagDebugStrings() {
     return this.DebugComp.GetTagDebugStrings();

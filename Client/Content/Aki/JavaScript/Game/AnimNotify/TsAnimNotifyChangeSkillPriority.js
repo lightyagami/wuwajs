@@ -14,7 +14,7 @@ class TsAnimNotifyChangeSkillPriority extends UE.KuroAnimNotify {
   Constructor() {}
   K2_Notify(e, r) {
     var e = e.GetOwner();
-    if (e instanceof TsBaseCharacter_1.default && (e = e?.CharacterActorComponent?.Entity?.GetComponent(41)) && !e.IsSkillMontageInvalid(r.GetName())) {
+    if (e instanceof TsBaseCharacter_1.default && (e = e?.CharacterActorComponent?.Entity?.GetComponent(43)) && !e.IsSkillMontageInvalid(r.GetName())) {
       e.SetSkillPriority(e.GetSkillIdWithGroupId(BaseSkillComponent_1.SKILL_GROUP_MAIN), this.Priority);
     }
     return true;

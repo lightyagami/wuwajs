@@ -24,6 +24,9 @@ class PhantomBattleChallenge {
   get MarkId() {
     return this.markid();
   }
+  get MapId() {
+    return this.mapid();
+  }
   get IsRecord() {
     return this.isrecord();
   }
@@ -229,16 +232,24 @@ class PhantomBattleChallenge {
       return 0;
     }
   }
-  isrecord() {
+  mapid() {
     var t = this.J7.__offset(this.z7, 12);
-    return !!t && !!this.J7.readInt8(this.z7 + t);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
-  enableskip() {
+  isrecord() {
     var t = this.J7.__offset(this.z7, 14);
     return !!t && !!this.J7.readInt8(this.z7 + t);
   }
-  questid() {
+  enableskip() {
     var t = this.J7.__offset(this.z7, 16);
+    return !!t && !!this.J7.readInt8(this.z7 + t);
+  }
+  questid() {
+    var t = this.J7.__offset(this.z7, 18);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -246,7 +257,7 @@ class PhantomBattleChallenge {
     }
   }
   instid() {
-    var t = this.J7.__offset(this.z7, 18);
+    var t = this.J7.__offset(this.z7, 20);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -257,7 +268,7 @@ class PhantomBattleChallenge {
     return this.dialogmap(t);
   }
   dialogmap(t, i) {
-    var s = this.J7.__offset(this.z7, 20);
+    var s = this.J7.__offset(this.z7, 22);
     if (s) {
       return (i || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
     } else {
@@ -265,7 +276,7 @@ class PhantomBattleChallenge {
     }
   }
   dialogmapLength() {
-    var t = this.J7.__offset(this.z7, 20);
+    var t = this.J7.__offset(this.z7, 22);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -273,14 +284,6 @@ class PhantomBattleChallenge {
     }
   }
   openconditiongroupid() {
-    var t = this.J7.__offset(this.z7, 22);
-    if (t) {
-      return this.J7.readInt32(this.z7 + t);
-    } else {
-      return 0;
-    }
-  }
-  showconditiongroupid() {
     var t = this.J7.__offset(this.z7, 24);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
@@ -288,7 +291,7 @@ class PhantomBattleChallenge {
       return 0;
     }
   }
-  uncoverconditiongroupid() {
+  showconditiongroupid() {
     var t = this.J7.__offset(this.z7, 26);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
@@ -296,8 +299,16 @@ class PhantomBattleChallenge {
       return 0;
     }
   }
-  firstpassdropid() {
+  uncoverconditiongroupid() {
     var t = this.J7.__offset(this.z7, 28);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  firstpassdropid() {
+    var t = this.J7.__offset(this.z7, 30);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -308,7 +319,7 @@ class PhantomBattleChallenge {
     return this.passdropid(t);
   }
   passdropid(t, i) {
-    var s = this.J7.__offset(this.z7, 30);
+    var s = this.J7.__offset(this.z7, 32);
     if (s) {
       return (i || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
     } else {
@@ -316,7 +327,7 @@ class PhantomBattleChallenge {
     }
   }
   passdropidLength() {
-    var t = this.J7.__offset(this.z7, 30);
+    var t = this.J7.__offset(this.z7, 32);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -324,14 +335,6 @@ class PhantomBattleChallenge {
     }
   }
   cardroleid() {
-    var t = this.J7.__offset(this.z7, 32);
-    if (t) {
-      return this.J7.readInt32(this.z7 + t);
-    } else {
-      return 0;
-    }
-  }
-  cardgroupid() {
     var t = this.J7.__offset(this.z7, 34);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
@@ -339,23 +342,23 @@ class PhantomBattleChallenge {
       return 0;
     }
   }
-  isrechallenge() {
+  cardgroupid() {
     var t = this.J7.__offset(this.z7, 36);
-    return !!t && !!this.J7.readInt8(this.z7 + t);
-  }
-  enablecheckrechallengefunc() {
-    var t = this.J7.__offset(this.z7, 38);
-    return !t || !!this.J7.readInt8(this.z7 + t);
-  }
-  difficult() {
-    var t = this.J7.__offset(this.z7, 40);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
       return 0;
     }
   }
-  npcgroupid() {
+  isrechallenge() {
+    var t = this.J7.__offset(this.z7, 38);
+    return !!t && !!this.J7.readInt8(this.z7 + t);
+  }
+  enablecheckrechallengefunc() {
+    var t = this.J7.__offset(this.z7, 40);
+    return !t || !!this.J7.readInt8(this.z7 + t);
+  }
+  difficult() {
     var t = this.J7.__offset(this.z7, 42);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
@@ -363,7 +366,7 @@ class PhantomBattleChallenge {
       return 0;
     }
   }
-  maxroundnum() {
+  npcgroupid() {
     var t = this.J7.__offset(this.z7, 44);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
@@ -371,8 +374,16 @@ class PhantomBattleChallenge {
       return 0;
     }
   }
-  recovercostpoint() {
+  maxroundnum() {
     var t = this.J7.__offset(this.z7, 46);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  recovercostpoint() {
+    var t = this.J7.__offset(this.z7, 48);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -383,7 +394,7 @@ class PhantomBattleChallenge {
     return this.npcchallengeskillid(t);
   }
   npcchallengeskillid(t) {
-    var i = this.J7.__offset(this.z7, 48);
+    var i = this.J7.__offset(this.z7, 50);
     if (i) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
@@ -391,7 +402,7 @@ class PhantomBattleChallenge {
     }
   }
   npcchallengeskillidLength() {
-    var t = this.J7.__offset(this.z7, 48);
+    var t = this.J7.__offset(this.z7, 50);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -399,7 +410,7 @@ class PhantomBattleChallenge {
     }
   }
   npcchallengeskillidArray() {
-    var t = this.J7.__offset(this.z7, 48);
+    var t = this.J7.__offset(this.z7, 50);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -410,7 +421,7 @@ class PhantomBattleChallenge {
     return this.npcskilliconlist(t);
   }
   npcskilliconlist(t, i) {
-    var s = this.J7.__offset(this.z7, 50);
+    var s = this.J7.__offset(this.z7, 52);
     var s = s ? this.J7.__string(this.J7.__vector(this.z7 + s) + t * 4, i) : null;
     if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(s);
@@ -418,7 +429,7 @@ class PhantomBattleChallenge {
     return s;
   }
   npcskilliconlistLength() {
-    var t = this.J7.__offset(this.z7, 50);
+    var t = this.J7.__offset(this.z7, 52);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -429,7 +440,7 @@ class PhantomBattleChallenge {
     return this.npcskillnamelist(t);
   }
   npcskillnamelist(t, i) {
-    var s = this.J7.__offset(this.z7, 52);
+    var s = this.J7.__offset(this.z7, 54);
     var s = s ? this.J7.__string(this.J7.__vector(this.z7 + s) + t * 4, i) : null;
     if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(s);
@@ -437,7 +448,7 @@ class PhantomBattleChallenge {
     return s;
   }
   npcskillnamelistLength() {
-    var t = this.J7.__offset(this.z7, 52);
+    var t = this.J7.__offset(this.z7, 54);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -448,7 +459,7 @@ class PhantomBattleChallenge {
     return this.npcskilldesclist(t);
   }
   npcskilldesclist(t, i) {
-    var s = this.J7.__offset(this.z7, 54);
+    var s = this.J7.__offset(this.z7, 56);
     var s = s ? this.J7.__string(this.J7.__vector(this.z7 + s) + t * 4, i) : null;
     if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(s);
@@ -456,7 +467,7 @@ class PhantomBattleChallenge {
     return s;
   }
   npcskilldesclistLength() {
-    var t = this.J7.__offset(this.z7, 54);
+    var t = this.J7.__offset(this.z7, 56);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -467,7 +478,7 @@ class PhantomBattleChallenge {
     return this.npcskilldescparamslist(t);
   }
   npcskilldescparamslist(t, i) {
-    var s = this.J7.__offset(this.z7, 56);
+    var s = this.J7.__offset(this.z7, 58);
     if (s) {
       return (i || new StringArray_1.StringArray()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
     } else {
@@ -475,7 +486,7 @@ class PhantomBattleChallenge {
     }
   }
   npcskilldescparamslistLength() {
-    var t = this.J7.__offset(this.z7, 56);
+    var t = this.J7.__offset(this.z7, 58);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -483,7 +494,7 @@ class PhantomBattleChallenge {
     }
   }
   challengename(t) {
-    var i = this.J7.__offset(this.z7, 58);
+    var i = this.J7.__offset(this.z7, 60);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -491,7 +502,7 @@ class PhantomBattleChallenge {
     return i;
   }
   npcname(t) {
-    var i = this.J7.__offset(this.z7, 60);
+    var i = this.J7.__offset(this.z7, 62);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -502,7 +513,7 @@ class PhantomBattleChallenge {
     return this.elements(t);
   }
   elements(t) {
-    var i = this.J7.__offset(this.z7, 62);
+    var i = this.J7.__offset(this.z7, 64);
     if (i) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
@@ -510,7 +521,7 @@ class PhantomBattleChallenge {
     }
   }
   elementsLength() {
-    var t = this.J7.__offset(this.z7, 62);
+    var t = this.J7.__offset(this.z7, 64);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -518,7 +529,7 @@ class PhantomBattleChallenge {
     }
   }
   elementsArray() {
-    var t = this.J7.__offset(this.z7, 62);
+    var t = this.J7.__offset(this.z7, 64);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -526,7 +537,7 @@ class PhantomBattleChallenge {
     }
   }
   npctitle(t) {
-    var i = this.J7.__offset(this.z7, 64);
+    var i = this.J7.__offset(this.z7, 66);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -534,7 +545,7 @@ class PhantomBattleChallenge {
     return i;
   }
   npclevel() {
-    var t = this.J7.__offset(this.z7, 66);
+    var t = this.J7.__offset(this.z7, 68);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -542,14 +553,6 @@ class PhantomBattleChallenge {
     }
   }
   npcchallengeicon(t) {
-    var i = this.J7.__offset(this.z7, 68);
-    var i = i ? this.J7.__string(this.z7 + i, t) : null;
-    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(i);
-    }
-    return i;
-  }
-  npclevelicon(t) {
     var i = this.J7.__offset(this.z7, 70);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -557,7 +560,7 @@ class PhantomBattleChallenge {
     }
     return i;
   }
-  npclevelbgicon(t) {
+  npclevelicon(t) {
     var i = this.J7.__offset(this.z7, 72);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -565,7 +568,7 @@ class PhantomBattleChallenge {
     }
     return i;
   }
-  npcdesc(t) {
+  npclevelbgicon(t) {
     var i = this.J7.__offset(this.z7, 74);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -573,7 +576,7 @@ class PhantomBattleChallenge {
     }
     return i;
   }
-  npcicon(t) {
+  npcdesc(t) {
     var i = this.J7.__offset(this.z7, 76);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -581,7 +584,7 @@ class PhantomBattleChallenge {
     }
     return i;
   }
-  npchead(t) {
+  npcicon(t) {
     var i = this.J7.__offset(this.z7, 78);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -589,7 +592,7 @@ class PhantomBattleChallenge {
     }
     return i;
   }
-  npcnumber(t) {
+  npchead(t) {
     var i = this.J7.__offset(this.z7, 80);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -597,8 +600,16 @@ class PhantomBattleChallenge {
     }
     return i;
   }
+  npcnumber(t) {
+    var i = this.J7.__offset(this.z7, 82);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
   teleporterid() {
-    var t = this.J7.__offset(this.z7, 82);
+    var t = this.J7.__offset(this.z7, 84);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -606,7 +617,7 @@ class PhantomBattleChallenge {
     }
   }
   passconditiondesc(t) {
-    var i = this.J7.__offset(this.z7, 84);
+    var i = this.J7.__offset(this.z7, 86);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -614,18 +625,10 @@ class PhantomBattleChallenge {
     return i;
   }
   deckcorecardlocked() {
-    var t = this.J7.__offset(this.z7, 86);
+    var t = this.J7.__offset(this.z7, 88);
     return !t || !!this.J7.readInt8(this.z7 + t);
   }
   bvbbattleloadingbg(t) {
-    var i = this.J7.__offset(this.z7, 88);
-    var i = i ? this.J7.__string(this.z7 + i, t) : null;
-    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(i);
-    }
-    return i;
-  }
-  bvbloadingbg(t) {
     var i = this.J7.__offset(this.z7, 90);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -633,7 +636,7 @@ class PhantomBattleChallenge {
     }
     return i;
   }
-  bvbloadingtrianglebg(t) {
+  bvbloadingbg(t) {
     var i = this.J7.__offset(this.z7, 92);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -641,7 +644,7 @@ class PhantomBattleChallenge {
     }
     return i;
   }
-  bvbloadinglefthand(t) {
+  bvbloadingtrianglebg(t) {
     var i = this.J7.__offset(this.z7, 94);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -649,7 +652,7 @@ class PhantomBattleChallenge {
     }
     return i;
   }
-  bvbloadingrighthand(t) {
+  bvbloadinglefthand(t) {
     var i = this.J7.__offset(this.z7, 96);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -657,7 +660,7 @@ class PhantomBattleChallenge {
     }
     return i;
   }
-  bvbloadinghandshadow(t) {
+  bvbloadingrighthand(t) {
     var i = this.J7.__offset(this.z7, 98);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -665,7 +668,7 @@ class PhantomBattleChallenge {
     }
     return i;
   }
-  fieldinfodesc(t) {
+  bvbloadinghandshadow(t) {
     var i = this.J7.__offset(this.z7, 100);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -673,8 +676,16 @@ class PhantomBattleChallenge {
     }
     return i;
   }
+  fieldinfodesc(t) {
+    var i = this.J7.__offset(this.z7, 102);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
   recommendcardgroupid() {
-    var t = this.J7.__offset(this.z7, 102);
+    var t = this.J7.__offset(this.z7, 104);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -682,11 +693,11 @@ class PhantomBattleChallenge {
     }
   }
   isshowentrance() {
-    var t = this.J7.__offset(this.z7, 104);
+    var t = this.J7.__offset(this.z7, 106);
     return !!t && !!this.J7.readInt8(this.z7 + t);
   }
   rechallengequestid() {
-    var t = this.J7.__offset(this.z7, 106);
+    var t = this.J7.__offset(this.z7, 108);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -694,7 +705,7 @@ class PhantomBattleChallenge {
     }
   }
   npcmaphead(t) {
-    var i = this.J7.__offset(this.z7, 108);
+    var i = this.J7.__offset(this.z7, 110);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -705,7 +716,7 @@ class PhantomBattleChallenge {
     return this.preguidequest(t);
   }
   preguidequest(t) {
-    var i = this.J7.__offset(this.z7, 110);
+    var i = this.J7.__offset(this.z7, 112);
     if (i) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
@@ -713,7 +724,7 @@ class PhantomBattleChallenge {
     }
   }
   preguidequestLength() {
-    var t = this.J7.__offset(this.z7, 110);
+    var t = this.J7.__offset(this.z7, 112);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -721,7 +732,7 @@ class PhantomBattleChallenge {
     }
   }
   preguidequestArray() {
-    var t = this.J7.__offset(this.z7, 110);
+    var t = this.J7.__offset(this.z7, 112);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -729,7 +740,7 @@ class PhantomBattleChallenge {
     }
   }
   isworldmapshowmark() {
-    var t = this.J7.__offset(this.z7, 112);
+    var t = this.J7.__offset(this.z7, 114);
     return !t || !!this.J7.readInt8(this.z7 + t);
   }
 }

@@ -7,9 +7,10 @@ exports.AudioFilterController = undefined;
 const Log_1 = require("../Common/Log");
 const PriorityQueue_1 = require("../Container/PriorityQueue");
 const AudioSystem_1 = require("./AudioSystem");
+const NONE_STATE = "none";
 class AudioFilterState {
   constructor(t, e, i) {
-    this.State = "none";
+    this.State = NONE_STATE;
     this.Priority = 0;
     this.Uid = 0;
     this.Uid = t;
@@ -18,11 +19,8 @@ class AudioFilterState {
   }
 }
 AudioFilterState.Compare = (t, e) => {
-  let i = e.Priority - t.Priority;
-  if (i === 0) {
-    i--;
-  }
-  return i;
+  var i = e.Priority - t.Priority;
+  return i = i == 0 ? e.Uid - t.Uid : i;
 };
 class AudioFilterController {
   static set zyi(t) {
@@ -46,7 +44,7 @@ class AudioFilterController {
     return this.I$_;
   }
   static T$_() {
-    if (this.b$_.Empty || this.b$_.Top.State === "none") {
+    if (this.b$_.Empty || this.b$_.Top.State === NONE_STATE) {
       if (this.L$_.Empty) {
         this.zyi = AudioFilterController.E$_;
       } else {
@@ -114,5 +112,5 @@ class AudioFilterController {
 AudioFilterController.w$_ = new Map();
 AudioFilterController.b$_ = new PriorityQueue_1.PriorityQueue(AudioFilterState.Compare);
 AudioFilterController.L$_ = new PriorityQueue_1.PriorityQueue(AudioFilterState.Compare);
-AudioFilterController.E$_ = new AudioFilterState(0, "none");
+AudioFilterController.E$_ = new AudioFilterState(0, NONE_STATE);
 AudioFilterController.I$_ = AudioFilterController.E$_; //# sourceMappingURL=AudioFilterController.js.map

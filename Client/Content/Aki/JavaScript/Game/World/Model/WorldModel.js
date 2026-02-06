@@ -5,7 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.WorldModel = exports.WorldEnvironmentInfo = exports.MOBILE_CSM_DISTANCE_OUTCAVE = exports.MOBILE_CSM_DISTANCE_INCAVE = undefined;
 const cpp_1 = require("cpp");
-const UE = require("ue");
 const Time_1 = require("../../../Core/Common/Time");
 const Queue_1 = require("../../../Core/Container/Queue");
 const Protocol_1 = require("../../../Core/Define/Net/Protocol");
@@ -50,10 +49,10 @@ class WorldEnvironmentInfo {
     var e;
     if (this.UTl !== this.ServerCaveMode && !(Time_1.Time.Now - this.pk < VOXEL_ENV_REQUEST_INTERVAL)) {
       (e = Protocol_1.Aki.Protocol.Rp_.create()).DTl = this.UTl;
-      Net_1.Net.Call(15862, e, e => {
+      Net_1.Net.Call(29226, e, e => {
         if (e) {
           if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25288);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24952);
           } else {
             this.ServerCaveMode = e.DTl;
           }
@@ -100,10 +99,9 @@ class WorldEnvironmentInfo {
     var t;
     var r = GlobalData_1.GlobalData.World;
     if (r?.IsValid()) {
-      UE.KuroRenderingRuntimeBPPluginBPLibrary.WpCancelAdjustLoadRange(r);
       e = FNameUtil_1.FNameUtil.GetDynamicFName("DataLayerRuntime_EncloseSpace");
       t = FNameUtil_1.FNameUtil.GetDynamicFName("DataLayerRuntime_EncloseSpaceSub");
-      UE.KuroRenderingRuntimeBPPluginBPLibrary.WpBeginLeaveCaveOrRoom(r, e, t);
+      ControllerHolder_1.ControllerHolder.WorldController.ChangeCaveOrRoomDatalayer(r, e, t, false);
     }
   }
 }

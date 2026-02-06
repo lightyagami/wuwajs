@@ -27,12 +27,12 @@ class InfrActivityMainView extends ActivitySubViewBase_1.ActivitySubViewBase {
     this.tWt = () => {
       InfrastructureController_1.InfrastructureController.OpenInfrastructureMainView();
     };
-    this.c4m = () => {
+    this.A5m = () => {
       UiManager_1.UiManager.OpenView("InfrastructureShopMainView", {
         OpenSource: 0
       });
     };
-    this.d4m = () => {
+    this.D5m = () => {
       UiManager_1.UiManager.OpenView("InfrLimitTaskMainView", {
         OpenSource: 0
       });
@@ -40,41 +40,40 @@ class InfrActivityMainView extends ActivitySubViewBase_1.ActivitySubViewBase {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [2, UE.UIButtonComponent], [1, UE.UIButtonComponent], [3, UE.UIItem], [4, UE.UISprite], [5, UE.UIHorizontalLayout], [6, UE.UIItem], [7, UE.UIArtText], [8, UE.UIArtText], [9, UE.UIText], [10, UE.UIText], [11, UE.UITexture]];
-    this.BtnBindInfo = [[2, this.c4m], [1, this.d4m]];
+    this.BtnBindInfo = [[2, this.A5m], [1, this.D5m]];
   }
   async OnBeforeStartAsync() {
     this.CommonInfoPanel.SetData(this.ActivityBaseData);
     this.ZGl = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(5), () => new InfrActivityProgressItem_1.InfrActivityProgressItem());
-    await Promise.all([this.CommonInfoPanel.CreateThenShowByActorAsync(this.GetItem(0).GetOwner()), this.s$m(), this.a$m()]);
+    await Promise.all([this.CommonInfoPanel.CreateThenShowByActorAsync(this.GetItem(0).GetOwner()), this.oQm(), this.nQm()]);
   }
-  async s$m() {
+  async oQm() {
     await this.fs1.CreateThenShowByActorAsync(this.GetButton(2).GetOwner());
-    this.fs1.SetFunction(this.d4m);
+    this.fs1.SetFunction(this.D5m);
   }
-  async a$m() {
+  async nQm() {
     await this.Zmu.CreateThenShowByActorAsync(this.GetButton(1).GetOwner());
-    this.Zmu.SetFunction(this.c4m);
+    this.Zmu.SetFunction(this.A5m);
   }
   OnStart() {
-    this.c$m();
-    this.XYm();
+    this._Qm();
+    this.IZm();
     this.Nqe();
     this.G_l();
-    this.rXf();
+    this.a_g();
   }
   OnRefreshView() {
-    this.c$m();
-    this.XYm();
+    this._Qm();
+    this.IZm();
     this.Nqe();
     this.G_l();
-    this.rXf();
+    this.a_g();
   }
-  XYm() {
+  IZm() {
     var t;
     var e;
     if (ModelManager_1.ModelManager.FunctionModel.IsOpen(10131)) {
-      this.fs1.SetFunction(this.d4m);
-      this.fs1.SetUiActive(this.ActivityBaseData.CheckIfInLimitTime());
+      this.fs1.SetFunction(this.D5m);
       this.fs1.BindRedDot("InfrLimitedTask");
       e = (t = ModelManager_1.ModelManager.InfrastructureModel.GetActivityData()?.GetActivityTaskDataList() ?? []).filter(t => t.Status === Protocol_1.Aki.Protocol.I$s.Proto_ActivityTaskTaken).length;
       this.fs1.SetText(e + "/" + t.length);
@@ -82,7 +81,7 @@ class InfrActivityMainView extends ActivitySubViewBase_1.ActivitySubViewBase {
       this.fs1.SetUiActive(false);
     }
   }
-  c$m() {
+  _Qm() {
     var t;
     var e;
     if (ModelManager_1.ModelManager.FunctionModel.IsOpen(10131)) {
@@ -129,7 +128,7 @@ class InfrActivityMainView extends ActivitySubViewBase_1.ActivitySubViewBase {
     };
     t.RefreshGeneralPerformance(e);
   }
-  rXf() {
+  a_g() {
     if (ModelManager_1.ModelManager.PlayerInfoModel.GetPlayerGender() === 1) {
       this.SetTextureByPath(InfrastructureDefine_1.INFR_ACTIVITY_MALE_TEXTURE, this.GetTexture(11));
     } else {

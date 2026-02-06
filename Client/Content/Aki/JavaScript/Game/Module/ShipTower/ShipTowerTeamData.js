@@ -244,7 +244,16 @@ class ShipTowerTeamData {
     return ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(e ?? this.InstId);
   }
   GetShipTowerStageCfg() {
-    return ConfigManager_1.ConfigManager.ShipTowerConfig.GetStageInfoCfgByInstId(this.InstId);
+    var e = ModelManager_1.ModelManager.ShipTowerModel.CurSeason;
+    let t = undefined;
+    let i = 0;
+    for (const o of ConfigManager_1.ConfigManager.ShipTowerConfig.GetStageInfoCfgByInstId(this.InstId)) {
+      if (e >= o.SeasonVersion && o.SeasonVersion >= i) {
+        i = o.SeasonVersion;
+        t = o;
+      }
+    }
+    return t;
   }
   GetInfoAttr() {
     var e = this.GetInstanceDungeonCfg();

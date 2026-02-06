@@ -65,7 +65,7 @@ class PhantomArenaOpponentData {
       this.Wou(a.$ou);
       this.phu(a.Xau);
       this.Quu(a.xuu);
-      this.CHm(a.rHm);
+      this.X$m(a.B$m);
     }
     this.InitPromise?.SetResult(undefined);
     this.InitPromise = undefined;
@@ -391,7 +391,7 @@ class PhantomArenaOpponentData {
       this.yD1.push(t);
     }
   }
-  CHm(t) {
+  X$m(t) {
     if (t) {
       t = PhantomArenaAiOperationFactory_1.PhantomArenaAiOperationFactory.GetAiOperation(16, t);
       this.yD1.push(t);

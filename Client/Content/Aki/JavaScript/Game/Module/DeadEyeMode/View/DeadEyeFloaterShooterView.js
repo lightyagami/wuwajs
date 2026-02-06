@@ -19,19 +19,19 @@ class DeadEyeFloaterShooterView extends UiTickViewBase_1.UiTickViewBase {
     super(...arguments);
     this.UZd = undefined;
     this.Kti = [];
-    this.TKm = 0;
-    this.GSf = 0;
-    this.R8f = undefined;
-    this.aXf = 0;
-    this.bKm = () => {
-      if (!(this.TKm >= this.Kti.length)) {
-        this.RKm().then(this.bKm);
+    this.QYm = 0;
+    this.wIf = 0;
+    this.qYf = undefined;
+    this.m_g = 0;
+    this.KYm = () => {
+      if (!(this.QYm >= this.Kti.length)) {
+        this.XYm().then(this.KYm);
       }
     };
-    this.FSf = () => {
-      if (ModelManager_1.ModelManager.DeadEyeModeModel.CurrentEnergy === 0 || this.GSf !== 0) {
+    this.RIf = () => {
+      if (ModelManager_1.ModelManager.DeadEyeModeModel.CurrentEnergy === 0 || this.wIf !== 0) {
         if (ModelManager_1.ModelManager.DeadEyeModeModel.CurDeadEyeModeStage !== 3) {
-          this.L8f().then(() => {
+          this.OYf().then(() => {
             this.CloseMe();
           });
         }
@@ -40,11 +40,11 @@ class DeadEyeFloaterShooterView extends UiTickViewBase_1.UiTickViewBase {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIButtonComponent]];
-    this.BtnBindInfo = [[2, this.FSf]];
+    this.BtnBindInfo = [[2, this.RIf]];
   }
   async OnBeforeStartAsync() {
     var e = this.GetButton(2);
-    this.R8f = new LevelSequencePlayer_1.LevelSequencePlayer(e.RootUIComp);
+    this.qYf = new LevelSequencePlayer_1.LevelSequencePlayer(e.RootUIComp);
     var e = ModelManager_1.ModelManager.DeadEyeModeModel;
     var t = e.GetFocusEntities();
     var e = e.GetTargetLocations();
@@ -55,18 +55,18 @@ class DeadEyeFloaterShooterView extends UiTickViewBase_1.UiTickViewBase {
     this.UZd?.ShowAsync();
   }
   OnTick(e) {
-    this.GSf = 0;
-    this.aXf += e;
+    this.wIf = 0;
+    this.m_g += e;
     for (const i of this.Kti) {
       i.OnTick(e);
       if (i.IsLocked) {
-        this.GSf++;
+        this.wIf++;
       }
     }
-    var t = this.GSf === this.Kti.length;
+    var t = this.wIf === this.Kti.length;
     this.GetButton(2)?.RootUIComp.SetUIActive(t);
-    if (this.aXf * TimeUtil_1.TimeUtil.Millisecond * ModelManager_1.ModelManager.DeadEyeModeModel.TimeConsumption >= ModelManager_1.ModelManager.DeadEyeModeModel.MaxEnergy) {
-      this.FSf();
+    if (this.m_g * TimeUtil_1.TimeUtil.Millisecond * ModelManager_1.ModelManager.DeadEyeModeModel.TimeConsumption >= ModelManager_1.ModelManager.DeadEyeModeModel.MaxEnergy) {
+      this.RIf();
     }
   }
   async $Zd() {
@@ -92,16 +92,16 @@ class DeadEyeFloaterShooterView extends UiTickViewBase_1.UiTickViewBase {
     }
     await Promise.all(r);
   }
-  async RKm() {
-    this.Kti[this.TKm].ShowAsync();
+  async XYm() {
+    this.Kti[this.QYm].ShowAsync();
     await TimerSystem_1.GameplayTimerSystem.Wait(200);
-    this.TKm++;
+    this.QYm++;
   }
   OnAfterDestroy() {
     AudioSystem_1.AudioSystem.PostEvent(END_AUDIO_NAME);
     ModelManager_1.ModelManager.DeadEyeModeModel.EnterNextStage();
   }
-  async L8f() {
+  async OYf() {
     var e = [];
     for (const t of this.Kti) {
       if (!t.IsLocked) {
@@ -109,7 +109,7 @@ class DeadEyeFloaterShooterView extends UiTickViewBase_1.UiTickViewBase {
       }
     }
     e.push(this.UZd?.HideAsync());
-    this.R8f?.PlayLevelSequenceByName("Close");
+    this.qYf?.PlayLevelSequenceByName("Close");
     ModelManager_1.ModelManager.DeadEyeModeModel.EnterNextStage();
     await Promise.all(e);
   }

@@ -13,7 +13,7 @@ const CardElementItem_1 = require("../../Common/CardItem/Item/CardElementItem");
 class DeckBuilderFieldCardItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.Qpf = false;
+    this.PSf = false;
     this.FieldSlotItem = undefined;
     this.FieldElementLayout = undefined;
     this.SPe = undefined;
@@ -35,7 +35,7 @@ class DeckBuilderFieldCardItem extends UiPanelBase_1.UiPanelBase {
     this.GetItem(7).SetUIActive(s);
     this.GetItem(8).SetUIActive(!s);
     if (!s) {
-      this.Qpf = false;
+      this.PSf = false;
     }
     var s = i?.Count ?? 0;
     var e = e.GetFieldCardCountLimit();
@@ -58,16 +58,16 @@ class DeckBuilderFieldCardItem extends UiPanelBase_1.UiPanelBase {
     if (e.Icon) {
       this.SetSpriteByPath(e.Icon, this.GetSprite(10), false);
     }
-    if (t !== this.Qpf) {
-      this.Kpf(t);
-      this.Qpf = t;
+    if (t !== this.PSf) {
+      this.ASf(t);
+      this.PSf = t;
     }
   }
   OnBeforeDestroy() {
     this.SPe.Clear();
     this.SPe = undefined;
   }
-  Kpf(e) {
+  ASf(e) {
     this.SPe?.PlayLevelSequenceByName(e ? "Activate" : "InActivate", false);
   }
 }

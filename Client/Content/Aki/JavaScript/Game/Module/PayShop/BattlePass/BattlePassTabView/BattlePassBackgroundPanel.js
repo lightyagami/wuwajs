@@ -10,11 +10,13 @@ const ResourceSystem_1 = require("../../../../../Core/Resource/ResourceSystem");
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
 const ConfigManager_1 = require("../../../../Manager/ConfigManager");
+const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const RedDotController_1 = require("../../../../RedDot/RedDotController");
 const UiPanelBase_1 = require("../../../../Ui/Base/UiPanelBase");
 const UiManager_1 = require("../../../../Ui/UiManager");
 const ButtonItem_1 = require("../../../Common/Button/ButtonItem");
+const LogReportDefine_1 = require("../../../LogReport/LogReportDefine");
 const LguiUtil_1 = require("../../../Util/LguiUtil");
 const BattlePassController_1 = require("../BattlePassController");
 class BattlePassBackgroundPanelParam {
@@ -33,11 +35,17 @@ class BattlePassBackgroundPanel extends UiPanelBase_1.UiPanelBase {
     this.a2i = undefined;
     this.h2i = () => {
       UiManager_1.UiManager.OpenView("BattlePassBuyLevelView");
+      var e = new LogReportDefine_1.OnBattlePassOperationLogEvent();
+      e.i_operation_type = 0;
+      ControllerHolder_1.ControllerHolder.LogReportController.LogReport(e);
     };
     this.l2i = () => {
       var e = this.OpenParam;
       ModelManager_1.ModelManager.BattlePassModel.PayButtonRedDotState = false;
       UiManager_1.UiManager.OpenView("BattlePassPayView", e.WeaponObservers);
+      var e = new LogReportDefine_1.OnBattlePassOperationLogEvent();
+      e.i_operation_type = 1;
+      ControllerHolder_1.ControllerHolder.LogReportController.LogReport(e);
     };
     this._2i = () => {
       if (this.n2i) {

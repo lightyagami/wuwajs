@@ -124,7 +124,7 @@ let SimpleNpcActorComponent = class SimpleNpcActorComponent extends BaseCharacte
     super.OnStart();
     var t;
     var e = this.Actor;
-    this.DebugMovementComp = this.Entity.GetComponent(30);
+    this.DebugMovementComp = this.Entity.GetComponent(31);
     if (e) {
       GlobalData_1.GlobalData.BpFightManager.添加Debug的对象(this.Actor);
       e.SetPrimitiveEntityType(RenderConfig_1.RenderConfig.GetEntityRenderPriority(false, Protocol_1.Aki.Protocol.kks.Proto_Npc));
@@ -176,7 +176,7 @@ let SimpleNpcActorComponent = class SimpleNpcActorComponent extends BaseCharacte
     this.OnSetActorActive(false, t);
   }
   OnChangeTimeDilation(t) {
-    var e = this.Entity.GetComponent(131)?.CurrentTimeScale ?? 1;
+    var e = this.Entity.GetComponent(133)?.CurrentTimeScale ?? 1;
     this.ActorInternal.CustomTimeDilation = t * e;
   }
   OnSetActorActive(e, t) {
@@ -212,5 +212,5 @@ let SimpleNpcActorComponent = class SimpleNpcActorComponent extends BaseCharacte
     BlackboardController_1.BlackboardController.SetVectorValueByEntity(this.Entity.Id, INIT_LOCATION_KEY, t.X, t.Y, t.Z);
   }
 };
-SimpleNpcActorComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(204)], SimpleNpcActorComponent);
+SimpleNpcActorComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(206)], SimpleNpcActorComponent);
 exports.SimpleNpcActorComponent = SimpleNpcActorComponent; //# sourceMappingURL=SimpleNpcActorComponent.js.map

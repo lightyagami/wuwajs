@@ -122,7 +122,7 @@ class HonamiStoryQuestView extends UiViewBase_1.UiViewBase {
     if (this.s1m) {
       if (t = this.s1m.Data) {
         i = t.IsInDungeon;
-        this.Cef(t);
+        this.bif(t);
         this.GetText(8).SetText(t.GetDesc());
         if ((s = t.GetRewardId()) === 0) {
           this.H3e.SetActive(false);
@@ -156,7 +156,7 @@ class HonamiStoryQuestView extends UiViewBase_1.UiViewBase {
       Log_1.Log.Error("HonamiStory", 78, "HonamiStoryQuestView 没有当前选中任务item");
     }
   }
-  Cef(t) {
+  bif(t) {
     var i = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(t.GetNameKey());
     var e = this.GetText(3);
     let s = "";

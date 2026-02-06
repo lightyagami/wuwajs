@@ -37,7 +37,7 @@ class AimPart {
     this.GamePadCorrect = t.GamePadCorrect;
   }
   InitSceneItem(t) {
-    this.SceneItemHit = this.OwnerBase.Entity.GetComponent(163);
+    this.SceneItemHit = this.OwnerBase.Entity.GetComponent(165);
     this.BoneNameString = t.BoneName ?? "";
     this.Offset.X = t.Offset.X ?? 0;
     this.Offset.Y = t.Offset.Y ?? 0;

@@ -54,7 +54,7 @@ let CharacterLockOnComponent = class CharacterLockOnComponent extends BaseLockOn
     this.RSo = undefined;
     this.m1t = undefined;
     this.I3r = t => {
-      t = t.GetComponent(33);
+      t = t.GetComponent(34);
       this.IsLookAt = t.IsLookAt;
       this.IgnoreInfos = t.IgnoreInfos.slice();
       this.SetCurrentInfo(t.GetCurrentInfo);
@@ -98,7 +98,7 @@ let CharacterLockOnComponent = class CharacterLockOnComponent extends BaseLockOn
     this.CCa = undefined;
   }
   static get Dependencies() {
-    return [184];
+    return [186];
   }
   OnTargetDeadOrRemoved() {
     if (this.IsLookAt) {
@@ -115,9 +115,9 @@ let CharacterLockOnComponent = class CharacterLockOnComponent extends BaseLockOn
     this.Hte = this.Entity.GetComponent(3);
     this.CreatureComp = this.Entity.GetComponent(0);
     this.SetLockOnConfig(this.CreatureComp.GetRoleConfig()?.LockOnDefaultId ?? 0, this.CreatureComp.GetRoleConfig()?.LockOnLookOnId ?? 0);
-    this.HBr = this.Entity.GetComponent(184);
-    this.RSo = this.Entity.GetComponent(65);
-    this.m1t = this.Entity.GetComponent(183);
+    this.HBr = this.Entity.GetComponent(186);
+    this.RSo = this.Entity.GetComponent(67);
+    this.m1t = this.Entity.GetComponent(185);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnBattleStateChanged, this.Zpe);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.RoleOnStateInherit, this.I3r);
     this.TagComponent.ListenForTagAddOrRemove(483118073, this.a$r);
@@ -346,7 +346,7 @@ let CharacterLockOnComponent = class CharacterLockOnComponent extends BaseLockOn
       for (var i = this.DetectAlternativeTargets(this.HardLockConfig, true); i.length && i.every(t => this.SVarHardLockedQueue.Has(t));) {
         this.SVarHardLockedQueue.Pop();
       }
-      t = this.FindTheBest(this.GetVipList(i, true), 4, true, this.HardLockConfig.ToleranceAngle);
+      t = this.FindTheBest(this.GetVipList(i, true), 4, true, this.HardLockConfig.ToleranceAngle, 0);
       this.SetCurrentInfo(t);
       if (t) {
         this.SVarHardLockedQueue.Push(t);
@@ -367,7 +367,7 @@ let CharacterLockOnComponent = class CharacterLockOnComponent extends BaseLockOn
   g$r() {
     var t = this.IsHardLock;
     if (this.l$r !== t) {
-      CombatMessage_1.CombatNet.Send(t ? 18965 : 22051, this.Entity, (t ? Protocol_1.Aki.Protocol.Ue_ : Protocol_1.Aki.Protocol.De_).create());
+      CombatMessage_1.CombatNet.Send(t ? 29003 : 28226, this.Entity, (t ? Protocol_1.Aki.Protocol.Ue_ : Protocol_1.Aki.Protocol.De_).create());
       this.l$r = t;
     }
   }
@@ -383,7 +383,7 @@ let CharacterLockOnComponent = class CharacterLockOnComponent extends BaseLockOn
     }
   }
   SpeedUpCleanTarget() {
-    var t = this.Entity.GetComponent(187);
+    var t = this.Entity.GetComponent(189);
     return !!t?.Valid && !!(t.Speed > FightCameraLogicComponent_1.CLEAN_TARGET_SPEED_THRESHOLD) && !this.TagComponent.HasTag(-1371021686);
   }
   ResetTarget() {
@@ -428,5 +428,5 @@ let CharacterLockOnComponent = class CharacterLockOnComponent extends BaseLockOn
     this.CCa = t;
   }
 };
-CharacterLockOnComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(33)], CharacterLockOnComponent);
+CharacterLockOnComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(34)], CharacterLockOnComponent);
 exports.CharacterLockOnComponent = CharacterLockOnComponent; //# sourceMappingURL=CharacterLockOnComponent.js.map

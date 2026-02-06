@@ -447,7 +447,7 @@ class TsPhotographer extends UE.Actor {
     this.CameraLocation.Addition(this.TmpVector, this.CameraCollisionLocation);
   }
   IsCharacterIgnoreNpcDither(t) {
-    return !!t.GetEntityNoBlueprint()?.GetComponent(215)?.HasTag(-1151151013);
+    return !!t.GetEntityNoBlueprint()?.GetComponent(217)?.HasTag(-1151151013);
   }
   UpdateDitheredNpcDistance(i) {
     var h = i.GetHitCount();

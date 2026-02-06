@@ -26,7 +26,7 @@ class TsAnimNotifyStatePositionTarget extends UE.KuroAnimNotifyState {
     this.Init();
     var r;
     var t = t.GetOwner();
-    return t instanceof TsBaseCharacter_1.default && !!(r = t.CharacterActorComponent.Entity)?.Valid && !!(r = r.GetComponent(41))?.Valid && !!(r = r?.GetSkillTargetForAns()?.Entity?.GetComponent(1)?.Owner)?.IsValid() && !(t = Vector_1.Vector.Create(t.D_K2_GetActorLocation()), Vector_1.Vector.Create(r.D_K2_GetActorLocation()).Subtraction(t, this.速度), this.速度.DivisionEqual(s), 0);
+    return t instanceof TsBaseCharacter_1.default && !!(r = t.CharacterActorComponent.Entity)?.Valid && !!(r = r.GetComponent(43))?.Valid && !!(r = r?.GetSkillTargetForAns()?.Entity?.GetComponent(1)?.Owner)?.IsValid() && !(t = Vector_1.Vector.Create(t.D_K2_GetActorLocation()), Vector_1.Vector.Create(r.D_K2_GetActorLocation()).Subtraction(t, this.速度), this.速度.DivisionEqual(s), 0);
   }
   K2_NotifyTick(t, i, s) {
     if (this.终止逻辑) {
@@ -41,7 +41,7 @@ class TsAnimNotifyStatePositionTarget extends UE.KuroAnimNotifyState {
     if (!r?.Valid) {
       return false;
     }
-    var e = r.GetComponent(41);
+    var e = r.GetComponent(43);
     if (!e?.Valid) {
       return false;
     }
@@ -60,7 +60,7 @@ class TsAnimNotifyStatePositionTarget extends UE.KuroAnimNotifyState {
     this.速度.Multiply(t, this.TmpVector);
     this.TmpVector.GetClampedToMaxSize(this.最大速度, this.TmpVector);
     this.TmpVector.MultiplyEqual(s);
-    r.GetComponent(46)?.SetAddMoveOffset(this.TmpVector.ToUeVector());
+    r.GetComponent(48)?.SetAddMoveOffset(this.TmpVector.ToUeVector());
     return true;
   }
   K2_NotifyEnd(t, i) {

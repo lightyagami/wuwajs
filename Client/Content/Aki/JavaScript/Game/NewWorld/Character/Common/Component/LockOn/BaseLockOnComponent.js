@@ -25,6 +25,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.BaseLockOnComponent = exports.CustomizedLockedQueue = exports.LockOnInfo = exports.ShowTargetInfo = exports.lockOnEnhancedTags = undefined;
 const UE = require("ue");
 const Stats_1 = require("../../../../../../Core/Common/Stats");
+const Time_1 = require("../../../../../../Core/Common/Time");
 const CommonParamById_1 = require("../../../../../../Core/Define/ConfigCommon/CommonParamById");
 const Protocol_1 = require("../../../../../../Core/Define/Net/Protocol");
 const QueryTypeDefine_1 = require("../../../../../../Core/Define/QueryTypeDefine");
@@ -124,7 +125,7 @@ let BaseLockOnComponent = BaseLockOnComponent_1 = class BaseLockOnComponent exte
     this.eva = Stats_1.Stat.Create("BaseLockOnComponent.FindTheBest.Calculation");
     this.tva = Stats_1.Stat.Create("BaseLockOnComponent.GetSkillBoneLocation");
     this.ISa = Stats_1.Stat.Create("BaseLockOnComponent.StatLockOnDebugTick");
-    this.eLf = undefined;
+    this.cBf = undefined;
     this.CreatureComp = undefined;
     this.GXr = undefined;
     this.s3u = undefined;
@@ -135,6 +136,7 @@ let BaseLockOnComponent = BaseLockOnComponent_1 = class BaseLockOnComponent exte
     this.IgnoreInfos = [];
     this.OldInfoAtRemoveDisableHardLockTag = undefined;
     this.ShowTargetSetTime = 0;
+    this.LastSkillTargetSetTime = 0;
     this.TagComponent = undefined;
     this.SoftLockConfig = undefined;
     this.CurSoftLockConfig = undefined;
@@ -168,21 +170,24 @@ let BaseLockOnComponent = BaseLockOnComponent_1 = class BaseLockOnComponent exte
     this.HasChangeInput = false;
   }
   get ActorLocationProxy() {
-    return this.s3u || this.eLf.ActorLocationProxy;
+    return this.s3u || this.cBf.ActorLocationProxy;
   }
   get l3u() {
-    return this.a3u || this.eLf.ActorForwardProxy;
+    return this.a3u || this.cBf.ActorForwardProxy;
   }
   get GetCurrentInfo() {
     return this.GXr;
   }
   get SVarHardLockedQueue() {
-    return BaseLockOnComponent_1.tLf;
+    return BaseLockOnComponent_1.dBf;
   }
   SetCurrentInfo(t) {
     var e = this.GXr;
     this.GXr = t;
     if (e?.EntityHandle !== t?.EntityHandle || e?.SocketName !== t?.SocketName) {
+      if (t?.EntityHandle) {
+        this.LastSkillTargetSetTime = Time_1.Time.NowSeconds;
+      }
       if (e && e.EntityHandle && EventSystem_1.EventSystem.HasWithTarget(e.EntityHandle, EventDefine_1.EEventName.RemoveEntity, this.zpe)) {
         EventSystem_1.EventSystem.RemoveWithTarget(e.EntityHandle, EventDefine_1.EEventName.RemoveEntity, this.zpe);
       }
@@ -231,8 +236,8 @@ let BaseLockOnComponent = BaseLockOnComponent_1 = class BaseLockOnComponent exte
     return true;
   }
   OnStart() {
-    this.eLf = this.Entity.GetComponent(1);
-    this.TagComponent = this.Entity.GetComponent(215);
+    this.cBf = this.Entity.GetComponent(1);
+    this.TagComponent = this.Entity.GetComponent(217);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CharOnRoleDead, this.ZXr);
     this.koe();
     return true;
@@ -244,7 +249,7 @@ let BaseLockOnComponent = BaseLockOnComponent_1 = class BaseLockOnComponent exte
   }
   koe() {
     this.uoe = UE.NewObject(UE.TraceLineElement.StaticClass());
-    this.uoe.WorldContextObject = this.eLf.Owner;
+    this.uoe.WorldContextObject = this.cBf.Owner;
     this.uoe.bIsSingle = true;
     this.uoe.bIgnoreSelf = true;
     this.uoe.SetTraceTypeQuery(QueryTypeDefine_1.KuroTraceTypeQuery.IkGround);
@@ -299,8 +304,8 @@ let BaseLockOnComponent = BaseLockOnComponent_1 = class BaseLockOnComponent exte
       this.TimeElapsedSinceLastLock += t;
       if (!(this.TimeElapsedSinceLastLock < RESET_TARGETS_ISLOCK_TIME)) {
         this.TimeElapsedSinceLastLock = 0;
-        BaseLockOnComponent_1.tLf.Clear();
-        BaseLockOnComponent_1.tLf.Push(this.GXr);
+        BaseLockOnComponent_1.dBf.Clear();
+        BaseLockOnComponent_1.dBf.Push(this.GXr);
       }
     }
   }
@@ -321,10 +326,11 @@ let BaseLockOnComponent = BaseLockOnComponent_1 = class BaseLockOnComponent exte
     SkillTargetPriority: i = 8,
     ShowTarget: s = false,
     GlobalTarget: o = false,
-    BlackboardKey: r = ""
+    BlackboardKey: r = "",
+    SkillTargetRemainTime: n = 0
   }, t = true) {
     if (o) {
-      o = ModelManager_1.ModelManager.SceneTeamModel?.GetCurrentEntity?.Entity?.GetComponent(33);
+      o = ModelManager_1.ModelManager.SceneTeamModel?.GetCurrentEntity?.Entity?.GetComponent(34);
       this.SetCurrentInfo(o?.GXr);
     } else if (!this.IsHardLock && !this.IsLookAt) {
       this._3u(r);
@@ -335,7 +341,7 @@ let BaseLockOnComponent = BaseLockOnComponent_1 = class BaseLockOnComponent exte
         }
         if (this.CurSoftLockConfig = t) {
           o = this.DetectAlternativeTargets(t, false);
-          r = this.FindTheBest(this.GetVipList(o, false), i, false, t.ToleranceAngle);
+          r = this.FindTheBest(this.GetVipList(o, false), i, false, t.ToleranceAngle, n);
           this.SetAndShowTarget(r, s);
         }
       } else if (!this.GXr) {
@@ -348,7 +354,7 @@ let BaseLockOnComponent = BaseLockOnComponent_1 = class BaseLockOnComponent exte
   SetShowTarget(t, e = 0, i) {
     return false;
   }
-  FindTheBest(t, e, i, s) {
+  FindTheBest(t, e, i, s, o) {
     this.zfa.Start();
     this.Zfa.Start();
     if (e === 8) {
@@ -363,81 +369,84 @@ let BaseLockOnComponent = BaseLockOnComponent_1 = class BaseLockOnComponent exte
           e = 3;
       }
     }
-    let o = undefined;
-    let r = false;
+    let r = undefined;
+    let n = false;
     switch (e) {
       case 0:
       case 5:
-        r = !this.HasChangeInput && !this.s3u;
+        n = !this.HasChangeInput && !this.s3u;
         this.HasChangeInput = false;
-        o = this.InputDirect.IsNearlyZero() ? this.E$r() : this.InputDirect;
+        r = this.InputDirect.IsNearlyZero() ? this.E$r() : this.InputDirect;
         break;
       case 1:
       case 7:
-        o = this.l3u;
+        r = this.l3u;
         break;
       case 2:
-        o = this.E$r();
-        r = true;
+        r = this.E$r();
+        n = true;
+        if (o > 0 && o < Time_1.Time.NowSeconds - this.LastSkillTargetSetTime) {
+          n = false;
+        }
         break;
       case 3:
         break;
       case 4:
       case 6:
-        o = this.E$r();
+        r = this.E$r();
     }
     this.Zfa.Stop();
-    var n = [5, 7, 6].includes(e);
-    var h = CommonParamById_1.configCommonParamById.GetIntConfig("LockOnOffset");
-    let a = undefined;
-    let c = Number.MAX_VALUE;
-    let _ = undefined;
-    let l = Number.MAX_VALUE;
-    for (const m of t) {
+    var h = [5, 7, 6].includes(e);
+    var a = CommonParamById_1.configCommonParamById.GetIntConfig("LockOnOffset");
+    let c = undefined;
+    let _ = Number.MAX_VALUE;
+    let l = undefined;
+    let C = Number.MAX_VALUE;
+    for (const f of t) {
       this.eva.Start();
-      switch (this.S$r(m, i, r)) {
+      switch (this.S$r(f, i, n)) {
         case 0:
           this.eva.Stop();
           continue;
         case 1:
           break;
         case 2:
-          LockOnDebug_1.LockOnDebug.SetDebugString(m, 0, 0, this.InputDirect, o);
+          LockOnDebug_1.LockOnDebug.SetDebugString(f, 0, 0, this.InputDirect, r);
           this.eva.Stop();
           this.zfa.Stop();
-          return m;
+          return f;
       }
-      this.GetSkillBoneLocation(m.EntityHandle, m.SocketName, this.TmpVector1);
-      var C = this.ActorLocationProxy;
-      var u = Vector_1.Vector.Dist(C, this.TmpVector1);
+      this.GetSkillBoneLocation(f.EntityHandle, f.SocketName, this.TmpVector1);
+      var u = this.ActorLocationProxy;
+      var m = Vector_1.Vector.Dist(u, this.TmpVector1);
       let t = 0;
-      if (o) {
-        this.TmpVector2.DeepCopy(o);
+      if (r) {
+        this.TmpVector2.DeepCopy(r);
         this.TmpVector2.Normalize();
-        this.TmpVector2.Multiply(n ? 0 : h, this.TmpVector2);
-        C.Subtraction(this.TmpVector2, this.TmpVector2);
+        this.TmpVector2.Multiply(h ? 0 : a, this.TmpVector2);
+        u.Subtraction(this.TmpVector2, this.TmpVector2);
         this.TmpVector1.Subtraction(this.TmpVector2, this.TmpVector1);
-        t = this.y$r(o, this.TmpVector1);
+        t = this.y$r(r, this.TmpVector1);
       }
       if (t < s) {
-        if (!a || u < c) {
-          a = m;
-          c = u;
-        }
-      } else if (!n) {
-        if (!_ || u < l) {
+        if (!c || m < _) {
+          c = f;
           _ = m;
-          l = u;
+        }
+      } else if (!h) {
+        if (!l || m < C) {
+          l = f;
+          C = m;
         }
       }
-      LockOnDebug_1.LockOnDebug.SetDebugString(m, t, u, this.InputDirect, o);
+      LockOnDebug_1.LockOnDebug.SetDebugString(f, t, m, this.InputDirect, r);
       this.eva.Stop();
     }
     this.zfa.Stop();
-    return a || _;
+    return c || l;
   }
   S$r(e, t, i) {
-    if (t && BaseLockOnComponent_1.tLf.Has(e) || this.IgnoreInfos.some(t => !t.Different(e))) {
+    if (t && BaseLockOnComponent_1.dBf.Has(e) || this.IgnoreInfos.some(t => !t.Different(e))) {
       return 0;
     } else if (i && LockOnUtils_1.LockOnUtils.IsValidLockOnTarget(this.GXr?.EntityHandle) && this.GXr?.Equal(e)) {
       return 2;
@@ -512,7 +521,7 @@ let BaseLockOnComponent = BaseLockOnComponent_1 = class BaseLockOnComponent exte
     return !!TraceElementCommon_1.TraceElementCommon.LineTrace(this.uoe, PROFILE_KEY) && !!this.uoe.HitResult.bBlockingHit && (t = this.uoe.HitResult.Actors.Get(0), e = ModelManager_1.ModelManager.CreatureModel.GetEntityActorByChildActor(t), i !== t) && i !== e;
   }
   GetSelfCamp() {
-    return this.eLf.Owner?.Camp ?? -1;
+    return this.cBf.Owner?.Camp ?? -1;
   }
   DetectAlternativeTargets(e, t) {
     this.Hfa.Start();
@@ -528,7 +537,7 @@ let BaseLockOnComponent = BaseLockOnComponent_1 = class BaseLockOnComponent exte
           var o = u.Entity.GetComponent(0)?.GetEntityType();
           var r = ControllerHolder_1.ControllerHolder.CharacterController.GetActor(u);
           if (r?.IsValid()) {
-            var n = u.Entity.GetComponent(126)?.LockControl;
+            var n = u.Entity.GetComponent(128)?.LockControl;
             if (!n || n.EnableCondition && ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckConditionNew(n.EnableCondition, r) || !n.DisableCondition || !ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckConditionNew(n.DisableCondition, r)) {
               var h;
               var n = r;
@@ -556,7 +565,7 @@ let BaseLockOnComponent = BaseLockOnComponent_1 = class BaseLockOnComponent exte
                   this.jfa.Stop();
                   continue;
                 }
-                n = u.Entity.GetComponent(126)?.LockRange;
+                n = u.Entity.GetComponent(128)?.LockRange;
                 if (!n || n <= 0) {
                   this.jfa.Stop();
                   continue;
@@ -597,8 +606,8 @@ let BaseLockOnComponent = BaseLockOnComponent_1 = class BaseLockOnComponent exte
                   r = u.Entity.GetComponent(3);
                   if (r?.LockOnParts.size) {
                     var c;
-                    var _ = u.Entity.GetComponent(72);
-                    var l = u.Entity.GetComponent(41);
+                    var _ = u.Entity.GetComponent(74);
+                    var l = u.Entity.GetComponent(43);
                     for ([, c] of r.LockOnParts) {
                       if ((t ? c.HardLockValid : c.SoftLockValid) && (!l || !l.IgnoreSocketName.has(c.BoneNameString))) {
                         if (_ && c.EnablePartName) {
@@ -655,9 +664,9 @@ let BaseLockOnComponent = BaseLockOnComponent_1 = class BaseLockOnComponent exte
     return i;
   }
   GetVipList(t, e) {
-    var i = t.filter(t => t.EntityHandle?.Entity?.GetComponent(215)?.HasTag(1659143519));
+    var i = t.filter(t => t.EntityHandle?.Entity?.GetComponent(217)?.HasTag(1659143519));
     if (e) {
-      if (i.every(t => BaseLockOnComponent_1.tLf.Has(t))) {
+      if (i.every(t => BaseLockOnComponent_1.dBf.Has(t))) {
         return t;
       } else {
         return i;
@@ -669,15 +678,15 @@ let BaseLockOnComponent = BaseLockOnComponent_1 = class BaseLockOnComponent exte
     }
   }
   IsEntityContainsDisableHardLockTag(t) {
-    t = t.Entity?.GetComponent(215);
+    t = t.Entity?.GetComponent(217);
     return !!t?.Valid && (t.HasAnyTag([-1243968098, -620990172]) || this.TagComponent.HasAnyTag([-620990172, 63495198]));
   }
   IsEntityContainsDisableSoftLockTag(t) {
-    t = t.Entity?.GetComponent(215);
+    t = t.Entity?.GetComponent(217);
     return !!t?.Valid && (t.HasAnyTag([-1243968098, -1092371289]) || this.TagComponent.HasAnyTag([-1092371289, 63495198]));
   }
   IsEntityDetectableByMe(t) {
-    var e = (t.Entity?.GetComponent(215)).HasTag(-504316709);
+    var e = (t.Entity?.GetComponent(217)).HasTag(-504316709);
     var t = t.Entity?.GetComponent(0);
     return !e || t.GetSummonerId() === this.CreatureComp.GetCreatureDataId();
   }
@@ -695,7 +704,7 @@ let BaseLockOnComponent = BaseLockOnComponent_1 = class BaseLockOnComponent exte
     if (Vector_1.Vector.DistSquared(e, i) <= t.Distance * t.Distance) {
       return true;
     }
-    s = this.eLf.Owner?.Controller;
+    s = this.cBf.Owner?.Controller;
     if (!s) {
       return false;
     }
@@ -710,13 +719,13 @@ let BaseLockOnComponent = BaseLockOnComponent_1 = class BaseLockOnComponent exte
   }
   A$r(t, e, i) {
     var s;
-    return !!t.Entity?.GetComponent(215)?.HasAnyTag(exports.lockOnEnhancedTags) && !!(t = t.Entity.GetComponent(3))?.LockOnConfig && !((s = e.Z - i.Z) < -t.LockOnConfig.UpDistance) && !(s > t.LockOnConfig.DownDistance) && !(Vector_1.Vector.DistSquared(e, i) > t.LockOnConfig.Distance * t.LockOnConfig.Distance);
+    return !!t.Entity?.GetComponent(217)?.HasAnyTag(exports.lockOnEnhancedTags) && !!(t = t.Entity.GetComponent(3))?.LockOnConfig && !((s = e.Z - i.Z) < -t.LockOnConfig.UpDistance) && !(s > t.LockOnConfig.DownDistance) && !(Vector_1.Vector.DistSquared(e, i) > t.LockOnConfig.Distance * t.LockOnConfig.Distance);
   }
   get IsHardLock() {
     return this.TagComponent.HasTag(-1150819426);
   }
 };
-BaseLockOnComponent.tLf = new CustomizedLockedQueue();
+BaseLockOnComponent.dBf = new CustomizedLockedQueue();
 BaseLockOnComponent.EnhancedEntityIds = new Set();
-BaseLockOnComponent = BaseLockOnComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(32)], BaseLockOnComponent);
+BaseLockOnComponent = BaseLockOnComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(33)], BaseLockOnComponent);
 exports.BaseLockOnComponent = BaseLockOnComponent; //# sourceMappingURL=BaseLockOnComponent.js.map

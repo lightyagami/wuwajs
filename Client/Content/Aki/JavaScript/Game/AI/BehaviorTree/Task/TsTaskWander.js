@@ -150,7 +150,7 @@ class TsTaskWander extends TsTaskAbortImmediatelyBase_1.default {
         case 1:
         case 2:
           this.NavigationPath ||= new Array();
-          if (r.Entity.GetComponent(109)?.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Ground) {
+          if (r.Entity.GetComponent(111)?.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Ground) {
             this.CacheVector.DeepCopy(r.FloorLocation);
           } else {
             this.CacheVector.DeepCopy(r.ActorLocationProxy);
@@ -170,7 +170,7 @@ class TsTaskWander extends TsTaskAbortImmediatelyBase_1.default {
           }
           this.CurrentNavigationIndex = 1;
           this.NavigationEndTime = Time_1.Time.WorldTime + this.TsMaxNavigationMillisecond;
-          var a = r.Entity.CheckGetComponent(109);
+          var a = r.Entity.CheckGetComponent(111);
           if (a.Valid) {
             switch (this.MoveStateActural) {
               case 1:
@@ -370,7 +370,7 @@ class TsTaskWander extends TsTaskAbortImmediatelyBase_1.default {
     return !!this.InBlink && (this.InBlink = false, t.Actor.bActorEnableCollision || Log_1.Log.CheckError() && Log_1.Log.Error("BehaviorTree", 57, "[TsTaskWander]AiWander[BlinkMoveEnd]怪物闪烁此刻Actor碰撞不应该为False,查看[BlinkMoveTick]是否置为True", ["Actor:", t.Actor.GetName()]), this.ShowMaterialData && this.ShowMaterialData >= 0 && (t.Actor.CharRenderingComponent.RemoveMaterialControllerData(this.ShowMaterialData), this.ShowMaterialData = undefined), t.Actor.CharRenderingComponent.ResetAllRenderingState(), this.Finish(true), true);
   }
   UseSkill(t, i) {
-    var t = t.Entity.GetComponent(41);
+    var t = t.Entity.GetComponent(43);
     if (t.Valid) {
       t = t.BeginSkill(i.MoveStateGA, {
         Reason: "TsTaskWander.UseSkill"

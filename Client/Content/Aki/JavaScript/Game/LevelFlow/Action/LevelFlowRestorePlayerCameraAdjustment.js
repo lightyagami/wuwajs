@@ -31,7 +31,7 @@ class LevelFlowRestorePlayerCameraAdjustment extends LevelFlowActionBase_1.Level
     if (r && this.OPt?.ResetFocus) {
       e = this.OPt.ResetFocus.FadeInTime;
       t = ConfigCurveUtils_1.ConfigCurveUtils.CreateCurveByBaseCurve(this.OPt.ResetFocus.FadeInCurve);
-      r.GetEntityNoBlueprint().GetComponent(33).ResetPitch(e, t);
+      r.GetEntityNoBlueprint().GetComponent(34).ResetPitch(e, t);
     }
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("LevelFlow", 38, "离开相机调整");

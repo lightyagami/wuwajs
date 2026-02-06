@@ -34,8 +34,8 @@ class TsAnimNotifyStateRotateMesh extends UE.KuroAnimNotifyState {
       if (!e?.Valid) {
         return false;
       }
-      var r = e.GetComponent(41);
-      var e = e.GetComponent(46);
+      var r = e.GetComponent(43);
+      var e = e.GetComponent(48);
       if (!r?.Valid || !e?.Valid) {
         return false;
       }

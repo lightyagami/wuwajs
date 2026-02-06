@@ -1,5 +1,23 @@
 "use strict";
 
+var __decorate = this && this.__decorate || function (t, e, i, r) {
+  var o;
+  var n = arguments.length;
+  var a = n < 3 ? e : r === null ? r = Object.getOwnPropertyDescriptor(e, i) : r;
+  if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
+    a = Reflect.decorate(t, e, i, r);
+  } else {
+    for (var s = t.length - 1; s >= 0; s--) {
+      if (o = t[s]) {
+        a = (n < 3 ? o(a) : n > 3 ? o(e, i, a) : o(e, i)) || a;
+      }
+    }
+  }
+  if (n > 3 && a) {
+    Object.defineProperty(e, i, a);
+  }
+  return a;
+};
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -23,6 +41,7 @@ const ModelManager_1 = require("../../Manager/ModelManager");
 const InputDistributeController_1 = require("../../Ui/InputDistribute/InputDistributeController");
 const InteractConfirmController_1 = require("./SecondConfirm/InteractConfirmController");
 const TsInteractionUtils_1 = require("./TsInteractionUtils");
+const Descriptors_1 = require("../../../Core/CrossDataSource/Descriptors");
 const DEFAULT_CD = 0.5;
 exports.UNLOCK_TEXTURE = "/Game/Aki/UI/UIResources/Common/Image/InteractionIcon/T_InteractionIcon11.T_InteractionIcon11";
 exports.LOCK_TEXTURE = "/Game/Aki/UI/UIResources/Common/Image/InteractionIcon/T_InteractionIcon12.T_InteractionIcon12";
@@ -35,9 +54,10 @@ class SameTipInteract {
     this.CurrentDistance = 0;
   }
 }
-class InteractionModel extends ModelBase_1.ModelBase {
+let InteractionModel = class InteractionModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
+    this.uid = 9999;
     this.E_i = undefined;
     this.S_i = false;
     this.y_i = undefined;
@@ -47,8 +67,8 @@ class InteractionModel extends ModelBase_1.ModelBase {
     this.D_i = new Array();
     this.R_i = new Array();
     this.U_i = new Map();
-    this.A_i = 0;
-    this.P_i = 0;
+    this.CurrentInteractEntityIdInternal = 0;
+    this.InterctCreatureDataIdInternal = 0;
     this.IsInteractionTurning = false;
     this.LockInteractionEntity = undefined;
     this.InteractingEntity = undefined;
@@ -151,7 +171,7 @@ class InteractionModel extends ModelBase_1.ModelBase {
           if (SceneItemCaptureComponent_1.VISION_CAPTURE_WITH_RANGE) {
             let t = false;
             for (const n of e) {
-              if (n.GetComponent(126)?.GetPawnNameKey() === SceneItemCaptureComponent_1.ABSORB_PAWN_NAME_KEY) {
+              if (n.GetComponent(128)?.GetPawnNameKey() === SceneItemCaptureComponent_1.ABSORB_PAWN_NAME_KEY) {
                 t = true;
               }
             }
@@ -178,8 +198,8 @@ class InteractionModel extends ModelBase_1.ModelBase {
     }
     this.x_i = e.length;
     e.sort((t, e) => {
-      t = t.GetComponent(207);
-      e = e.GetComponent(207);
+      t = t.GetComponent(209);
+      e = e.GetComponent(209);
       t = t.GetInteractController().InteractEntity.Priority;
       return e.GetInteractController().InteractEntity.Priority - t;
     });
@@ -190,7 +210,7 @@ class InteractionModel extends ModelBase_1.ModelBase {
   }
   CanAutoPickUp(t) {
     var e;
-    return !!t?.Valid && !t.GetComponent(276)?.GetIsDisableOneClickCollection() && !!(e = t.GetComponent(207))?.IsPawnInteractive() && (!!t.GetComponent(126)?.IsDropItem() || !!e.IsCollection() || !!e.IsAnimationItem() && !!(e = t.GetComponent(0))?.Valid && !!(t = e.GetPbEntityInitData()) && !!(e = t.ComponentsData) && !e.CollectComponent.Disabled);
+    return !!t?.Valid && !t.GetComponent(278)?.GetIsDisableOneClickCollection() && !!(e = t.GetComponent(209))?.IsPawnInteractive() && (!!t.GetComponent(128)?.IsDropItem() || !!e.IsCollection() || !!e.IsAnimationItem() && !!(e = t.GetComponent(0))?.Valid && !!(t = e.GetPbEntityInitData()) && !!(e = t.ComponentsData) && !e.CollectComponent.Disabled);
   }
   GetOptionInstanceIdByIndex(t) {
     let e = t;
@@ -333,15 +353,15 @@ class InteractionModel extends ModelBase_1.ModelBase {
   }
   GetInteractController(t) {
     if (t) {
-      t = t.GetComponent(207);
+      t = t.GetComponent(209);
       if (t) {
         return t.GetInteractController();
       }
     }
   }
   SetInteractTarget(t) {
-    if (this.A_i !== t) {
-      this.A_i = t;
+    if (this.CurrentInteractEntityIdInternal !== t) {
+      this.CurrentInteractEntityIdInternal = t;
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Interaction", 36, "切换交互目标", ["entityId", t]);
       }
@@ -349,22 +369,22 @@ class InteractionModel extends ModelBase_1.ModelBase {
     }
   }
   get CurrentInteractEntityId() {
-    return this.A_i;
+    return this.CurrentInteractEntityIdInternal;
   }
   SetInterctCreatureDataId(t) {
-    this.P_i = t;
+    this.InterctCreatureDataIdInternal = t;
   }
   get InteractCreatureDataId() {
-    return this.P_i;
+    return this.InterctCreatureDataIdInternal;
   }
   get InteractCreatureDataLongId() {
-    if (this.P_i !== undefined) {
-      return MathUtils_1.MathUtils.NumberToLong(this.P_i);
+    if (this.InterctCreatureDataIdInternal !== undefined) {
+      return MathUtils_1.MathUtils.NumberToLong(this.InterctCreatureDataIdInternal);
     }
   }
   get CurrentInteractUeActor() {
-    if (this.A_i) {
-      var t = EntitySystem_1.EntitySystem.Get(this.A_i);
+    if (this.CurrentInteractEntityIdInternal) {
+      var t = EntitySystem_1.EntitySystem.Get(this.CurrentInteractEntityIdInternal);
       if (t) {
         return t.GetComponent(1)?.Owner;
       }
@@ -435,7 +455,7 @@ class InteractionModel extends ModelBase_1.ModelBase {
     return this.L_i;
   }
   LockInteraction(t, e) {
-    t = t?.GetComponent(207);
+    t = t?.GetComponent(209);
     if (t && t.Valid) {
       t.SetServerLockInteract(e, "Interacting Notify");
     }
@@ -459,13 +479,16 @@ class InteractionModel extends ModelBase_1.ModelBase {
   RecoverInteractFromLock() {
     var t;
     if (this.LockInteractionEntity) {
-      t = EntitySystem_1.EntitySystem.GetComponent(this.LockInteractionEntity, 207);
+      t = EntitySystem_1.EntitySystem.GetComponent(this.LockInteractionEntity, 209);
       this.LockInteractionEntity = undefined;
       ModelManager_1.ModelManager.BattleUiModel.ChildViewData.ShowBattleView(1);
       t?.AfterUnlockInteractionEntity();
       InputDistributeController_1.InputDistributeController.RefreshInputTag();
     }
   }
-}
-exports.InteractionModel = InteractionModel;
-//# sourceMappingURL=InteractionModel.js.map
+};
+__decorate([(0, Descriptors_1.CSharpDataUid)()], InteractionModel.prototype, "uid", undefined);
+__decorate([(0, Descriptors_1.CSharpField)("CurrentInteractEntityId")], InteractionModel.prototype, "CurrentInteractEntityIdInternal", undefined);
+__decorate([(0, Descriptors_1.CSharpField)("InteractCreatureDataId")], InteractionModel.prototype, "InterctCreatureDataIdInternal", undefined);
+InteractionModel = __decorate([(0, Descriptors_1.CSharpDataProxy)("CSharpScript.Game.Module.Interaction", "InteractionCrossData")], InteractionModel);
+exports.InteractionModel = InteractionModel; //# sourceMappingURL=InteractionModel.js.map

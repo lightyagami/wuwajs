@@ -29,8 +29,8 @@ class SurvivorsRogueBattleSkillData extends BattleSkillDataBase_1.BattleSkillDat
       this.sDe = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
       if (this.sDe) {
         t = this.sDe.Entity;
-        this.LSo = t.GetComponent(218);
-        this.TSo = t.GetComponent(41);
+        this.LSo = t.GetComponent(220);
+        this.TSo = t.GetComponent(43);
       }
       if (this.GetActionName() === InputMappingsDefine_1.actionMappings.闪避) {
         this.NUd = false;

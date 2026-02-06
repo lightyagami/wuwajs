@@ -124,7 +124,7 @@ class RoleLevelUpSuccessAttributeView extends UiViewBase_1.UiViewBase {
   }
   Huo() {
     if (this.Pe.AttributeInfo === undefined || this.Pe.AttributeInfo.length === 0) {
-      this.GetLoopScrollViewComponent(6).RootUIComp.SetUIActive(false);
+      this.GetUIDynScrollViewComponent(6).RootUIComp.SetUIActive(false);
     } else {
       this.h_d.RefreshByData(this.Pe.AttributeInfo);
     }

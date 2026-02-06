@@ -168,10 +168,10 @@ class HonamiStoryItemSweepItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.SPe = undefined;
-    this.zTm = undefined;
+    this.ZTm = undefined;
     this.Dlu = e => {
-      this.zTm?.(e);
-      this.f$m(false);
+      this.ZTm?.(e);
+      this.cQm(false);
     };
   }
   OnRegisterComponent() {
@@ -182,7 +182,7 @@ class HonamiStoryItemSweepItem extends UiPanelBase_1.UiPanelBase {
     this.SPe.BindSequenceCloseEvent(this.Dlu);
   }
   BindSeqEndCb(e) {
-    this.zTm = e;
+    this.ZTm = e;
   }
   SetData(i, s) {
     if (i) {
@@ -198,26 +198,26 @@ class HonamiStoryItemSweepItem extends UiPanelBase_1.UiPanelBase {
     }
   }
   PlaySequenceByNamePurely(e) {
-    this.f$m(true);
+    this.cQm(true);
     this.SPe?.PlaySequencePurely(e);
   }
   ClearSequence() {
     this.SPe?.StopCurrentSequence(false, true);
-    this.f$m(false);
-    this.g$m(false);
+    this.cQm(false);
+    this.dQm(false);
   }
-  f$m(e) {
+  cQm(e) {
     this.GetTexture(0)?.SetUIActive(e);
     this.GetTexture(1)?.SetUIActive(e);
   }
-  g$m(e) {
+  dQm(e) {
     this.GetTexture(2)?.SetUIActive(e);
   }
   OnBeforeShow() {
-    this.f$m(false);
+    this.cQm(false);
   }
   OnBeforeHide() {
-    this.f$m(false);
+    this.cQm(false);
   }
 }
 exports.HonamiStoryItemSweepItem = HonamiStoryItemSweepItem;

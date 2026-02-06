@@ -58,8 +58,8 @@ class PhantomSort extends CommonSort_1.CommonSort {
         n = i.GetExp();
       } else {
         var m = ConfigManager_1.ConfigManager.PhantomBattleConfig.GetPhantomExpItemList();
-        var f = m.length;
-        for (let t = 0; t < f; t++) {
+        var _ = m.length;
+        for (let t = 0; t < _; t++) {
           if (m[t].ItemId === a.GetConfigId()) {
             n = m[t].Exp;
             break;
@@ -624,8 +624,8 @@ class PhantomSort extends CommonSort_1.CommonSort {
         n = i.GetEatFullExp();
       } else {
         var m = ConfigManager_1.ConfigManager.PhantomBattleConfig.GetPhantomExpItemList();
-        var f = m.length;
-        for (let t = 0; t < f; t++) {
+        var _ = m.length;
+        for (let t = 0; t < _; t++) {
           if (m[t].ItemId === a.GetConfigId()) {
             n = m[t].Exp;
             break;
@@ -636,6 +636,30 @@ class PhantomSort extends CommonSort_1.CommonSort {
         return (n - h) * (s ? -1 : 1);
       } else {
         return 0;
+      }
+    };
+    this.cAg = (t, i, s) => {
+      t = ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomDataBase(t.GetUniqueId());
+      i = ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomDataBase(i.GetUniqueId());
+      t = t.GetCurrentIdentifyNum() - i.GetCurrentIdentifyNum();
+      if (s) {
+        return t;
+      } else {
+        return -t;
+      }
+    };
+    this.dAg = (t, i, s) => this.cAg(t, i, false);
+    this.mAg = (t, i, s) => {
+      t = ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomDataBase(t.GetUniqueId());
+      i = ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomDataBase(i.GetUniqueId());
+      t = t.GetEquipRoleId();
+      i = i.GetEquipRoleId();
+      if (t === 0 && i === 0 || t !== 0 && i !== 0) {
+        return 0;
+      } else if (t === 0) {
+        return -1;
+      } else {
+        return 1;
       }
     };
   }
@@ -707,6 +731,8 @@ class PhantomSort extends CommonSort_1.CommonSort {
     this.SortMap.set(53, this.Tw1);
     this.SortMap.set(54, this.bw1);
     this.SortMap.set(55, this.jIc);
+    this.SortMap.set(56, this.dAg);
+    this.SortMap.set(57, this.mAg);
   }
 }
 exports.PhantomSort = PhantomSort;

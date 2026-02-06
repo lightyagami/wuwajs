@@ -23,40 +23,40 @@ class ActivityRegress30MainView extends ActivitySubViewBase_1.ActivitySubViewBas
   constructor() {
     super(...arguments);
     this.LNe = undefined;
-    this.r9f = undefined;
-    this.a4f = undefined;
-    this.h4f = () => {
+    this.sZf = undefined;
+    this.v$f = undefined;
+    this.y$f = () => {
       UiManager_1.UiManager.OpenView("ActivityRegressMainView", {
         SubView: 0,
         OpenType: 0
       });
     };
-    this.l4f = () => {
+    this.S$f = () => {
       ActivityControllerHolder_1.ActivityControllerHolder.ActivityRegressController.OpenTrialRoleView();
       ModelManager_1.ModelManager.ActivityRegressModel.ActivityData.SetTrialRoleRedDotChecked(true);
     };
-    this._4f = () => {
+    this.M$f = () => {
       UiManager_1.UiManager.OpenView("ActivityRegressMainView", {
         SubView: 6,
         OpenType: 0
       });
     };
-    this.u4f = () => {
+    this.E$f = () => {
       UiManager_1.UiManager.OpenView("ActivityRegressNewVersionMainView");
     };
-    this.c4f = () => {
+    this.I$f = () => {
       UiManager_1.UiManager.OpenView("ActivityRegressMainView", {
         SubView: 3,
         OpenType: 0
       });
     };
-    this.d4f = () => {
+    this.T$f = () => {
       UiManager_1.UiManager.OpenView("ActivityRegressStartupView", true);
     };
-    this.m4f = () => {
+    this.b$f = () => {
       UiManager_1.UiManager.OpenView("ActivityRegressQuestionnaireView");
     };
-    this.f4f = () => {
+    this.R$f = () => {
       SkipTaskManager_1.SkipTaskManager.RunByConfigId(RegressDefine_1.REGRESS_SKIP_SHOPID);
       ActivityRegressHelper_1.ActivityRegressHelper.ReportRegressLog1060();
       ModelManager_1.ModelManager.ActivityRegressModel.ActivityData.SetShopRedDotChecked();
@@ -64,15 +64,15 @@ class ActivityRegress30MainView extends ActivitySubViewBase_1.ActivitySubViewBas
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIButtonComponent], [5, UE.UIButtonComponent], [2, UE.UIButtonComponent], [4, UE.UIButtonComponent], [3, UE.UIButtonComponent], [6, UE.UIButtonComponent], [7, UE.UIButtonComponent], [8, UE.UIButtonComponent], [9, UE.UIItem], [10, UE.UIText], [11, UE.UIText], [12, UE.UIItem], [15, UE.UIItem], [13, UE.UIItem], [14, UE.UIItem], [16, UE.UIItem], [17, UE.UIItem]];
-    this.BtnBindInfo = [[1, this.h4f], [5, this.l4f], [2, this._4f], [4, this.u4f], [3, this.c4f], [6, this.d4f], [7, this.m4f], [8, this.f4f]];
+    this.BtnBindInfo = [[1, this.y$f], [5, this.S$f], [2, this.M$f], [4, this.E$f], [3, this.I$f], [6, this.T$f], [7, this.b$f], [8, this.R$f]];
   }
   async OnBeforeStartAsync() {
-    this.a4f = new ActivityRegressRoleItem();
-    await this.a4f.CreateThenShowByActorAsync(this.GetItem(9).GetOwner());
+    this.v$f = new ActivityRegressRoleItem();
+    await this.v$f.CreateThenShowByActorAsync(this.GetItem(9).GetOwner());
     this.LNe = new ActivityTitleTypeA_1.ActivityTitleTypeA();
     await this.LNe.CreateThenShowByActorAsync(this.GetItem(0).GetOwner());
-    this.r9f = new SignItem();
-    await this.r9f.CreateThenShowByActorAsync(this.GetButton(2).RootUIComp.GetOwner());
+    this.sZf = new SignItem();
+    await this.sZf.CreateThenShowByActorAsync(this.GetButton(2).RootUIComp.GetOwner());
   }
   OnTimer(e) {
     this.mGe();
@@ -88,7 +88,7 @@ class ActivityRegress30MainView extends ActivitySubViewBase_1.ActivitySubViewBas
   }
   OnRefreshView() {
     var e = this.ActivityBaseData.CurrentUseTrialRole;
-    this.a4f?.RefreshItem(e);
+    this.v$f?.RefreshItem(e);
     var e = this.ActivityBaseData.LocalConfig;
     var e = e.DescTheme;
     var i = !StringUtils_1.StringUtils.IsEmpty(e);
@@ -106,7 +106,7 @@ class ActivityRegress30MainView extends ActivitySubViewBase_1.ActivitySubViewBas
     var i = ModelManager_1.ModelManager.ActivityRegressModel.ActivityData.GetCurLevelProgressData();
     this.GetText(10).SetText("Lv." + i.Level);
     this.GetText(11).SetText("/" + i.MaxLevel);
-    this.r9f?.RefreshSignItem(ModelManager_1.ModelManager.ActivityRegressModel.Grade === 2, ModelManager_1.ModelManager.ActivityRegressModel.HasSignRewardCanClaimed());
+    this.sZf?.RefreshSignItem(ModelManager_1.ModelManager.ActivityRegressModel.Grade === 2, ModelManager_1.ModelManager.ActivityRegressModel.HasSignRewardCanClaimed());
   }
   OnStart() {
     RedDotController_1.RedDotController.BindRedDot("ActivityRegressQuestionnaire", this.GetItem(16));

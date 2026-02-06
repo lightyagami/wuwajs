@@ -8,18 +8,18 @@ const ModelManager_1 = require("../../../Manager/ModelManager");
 class HonamiStoryTechNodeData {
   constructor(t) {
     this.Lo = undefined;
-    this.CEm = 0;
+    this.LEm = 0;
     this.Lo = t;
   }
   SetNodeStatus(t) {
     if (t === 1) {
-      this.CEm = 1;
+      this.LEm = 1;
     } else if (t === 2) {
-      this.CEm = 2;
+      this.LEm = 2;
     }
   }
   get GetNodeStatus() {
-    return this.CEm;
+    return this.LEm;
   }
   get PreNodeIsActive() {
     for (const t of this.Lo.PreId) {

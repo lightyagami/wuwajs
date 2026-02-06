@@ -25,6 +25,7 @@ const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const GeneralLogicTreeConfigUtil_1 = require("../../GeneralLogicTree/GeneralLogicTreeConfigUtil");
+const QuestController_1 = require("../Controller/QuestController");
 const QuestDefine_1 = require("../QuestDefine");
 const QuestTypeDefine_1 = require("./Quest/QuestTypeDefine");
 class QuestNewModel extends ModelBase_1.ModelBase {
@@ -76,7 +77,7 @@ class QuestNewModel extends ModelBase_1.ModelBase {
         return e.Id - t.Id;
       }
     };
-    this.jWm = new Map();
+    this.OKm = new Map();
   }
   OnInit() {
     this.eno = new Map();
@@ -194,16 +195,16 @@ class QuestNewModel extends ModelBase_1.ModelBase {
   }
   AddLackResourceQuest(e) {
     this.OF1.set(e, true);
-    e = this.AddQuest(e);
-    if (e) {
-      e.LockByLackResource = true;
+    var t = this.AddQuest(e);
+    if (t && (t.LockByLackResource = true, this.GetQuestState(e) === 1)) {
+      QuestController_1.QuestNewController.RedDotRequest(e, 0);
     }
   }
   RemoveLackResourceQuest(e) {
     this.OF1.delete(e);
-    e = this.GetQuest(e);
-    if (e) {
-      e.LockByLackResource = false;
+    var t = this.GetQuest(e);
+    if (t && (t.LockByLackResource = false, this.GetQuestState(e) === 1)) {
+      QuestController_1.QuestNewController.RedDotRequest(e, 1);
     }
   }
   IsTrackingQuest(e) {
@@ -301,9 +302,12 @@ class QuestNewModel extends ModelBase_1.ModelBase {
   }
   AddPendingAcceptQuestOnFocusMode(e) {
     this.TH1.set(e, true);
-    e = this.AddQuest(e);
-    if (e) {
-      e.LockByFocusMode = true;
+    var t = this.AddQuest(e);
+    if (t) {
+      t.LockByFocusMode = true;
+      if (this.GetQuestState(e) === 1 && !t.LockByLackResource) {
+        QuestController_1.QuestNewController.RedDotRequest(e, 1);
+      }
     }
   }
   RemovePendingAcceptQuestOnFocusMode(e) {
@@ -525,7 +529,7 @@ class QuestNewModel extends ModelBase_1.ModelBase {
       return 7;
     }
     if (t.LockByLackResource) {
-      if (!this.$Wm(t.Id)) {
+      if (!this.GKm(t.Id)) {
         return 2;
       }
       if (!t.SuspendByOnline) {
@@ -746,31 +750,31 @@ class QuestNewModel extends ModelBase_1.ModelBase {
   GetAllLockQuests() {
     return this.j7u;
   }
-  $Wm(e) {
+  GKm(e) {
     if (!ResourceUpdateManager_1.ResourceDiffUpdaterManager.IsGrayBoxHit()) {
       return true;
     }
-    let t = this.jWm.get(e);
+    let t = this.OKm.get(e);
     if (!t) {
       var [i, r] = ControllerHolder_1.ControllerHolder.ResourceManagerController.GetQuestRefRes(e);
       for (const n of i) {
         var s = ModelManager_1.ModelManager.SubPackageDownLoadModel.GetBlockBelongToSubPackage(n);
         if (ModelManager_1.ModelManager.SubPackageDownLoadModel.GetSubPackageDownLoadItemStateById(s) !== 5) {
           t = false;
-          this.jWm.set(e, t);
+          this.OKm.set(e, t);
           return t;
         }
       }
-      for (const a of r) {
-        var o = ModelManager_1.ModelManager.SubPackageDownLoadModel.GetVideoBelongToSubPackage(a);
+      for (const u of r) {
+        var o = ModelManager_1.ModelManager.SubPackageDownLoadModel.GetVideoBelongToSubPackage(u);
         if (o > 0 && ModelManager_1.ModelManager.SubPackageDownLoadModel.GetSubPackageDownLoadItemStateById(o) !== 5) {
           t = false;
-          this.jWm.set(e, t);
+          this.OKm.set(e, t);
           return t;
         }
       }
       t = true;
-      this.jWm.set(e, t);
+      this.OKm.set(e, t);
     }
     return t;
   }

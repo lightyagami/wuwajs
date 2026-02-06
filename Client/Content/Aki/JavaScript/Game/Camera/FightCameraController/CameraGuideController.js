@@ -14,6 +14,7 @@ const CameraUtility_1 = require("../CameraUtility");
 const CameraControllerBase_1 = require("./CameraControllerBase");
 const IS_DEBUG = false;
 const DEFAULT_VALUE = -1;
+const cameraGuideTag = 2123690177;
 class CameraGuideController extends CameraControllerBase_1.CameraControllerBase {
   constructor() {
     super(...arguments);
@@ -57,7 +58,7 @@ class CameraGuideController extends CameraControllerBase_1.CameraControllerBase 
     this.H6 = 0;
     this.p_e = 0;
     this.FN1 = false;
-    this.BEm = false;
+    this.QEm = false;
     this.v_e = Vector_1.Vector.Create();
     this.Ldc = Vector_1.Vector.Create();
     this.M_e = DEFAULT_VALUE;
@@ -65,15 +66,15 @@ class CameraGuideController extends CameraControllerBase_1.CameraControllerBase 
     this.S_e = false;
     this.Lz = Vector_1.Vector.Create();
     this.Ctc = true;
-    this.EVm = undefined;
-    this.IVm = true;
-    this.Uzf = false;
+    this.V6m = undefined;
+    this.j6m = true;
+    this.Rgg = false;
   }
   get IsBlending() {
     return this.f_e !== 0;
   }
   get ForceUsingCameraGuideParameters() {
-    return this.Uzf;
+    return this.Rgg;
   }
   Name() {
     return "GuideController";
@@ -125,7 +126,7 @@ class CameraGuideController extends CameraControllerBase_1.CameraControllerBase 
       this.W1e = h;
       this.m_e = a;
       this.FN1 = _;
-      this.Uzf = C;
+      this.Rgg = C;
       this.I_e(l);
       t = this.Camera.PlayerLocation;
       i = this.Camera.CurrentCamera.ArmRotation;
@@ -188,8 +189,8 @@ class CameraGuideController extends CameraControllerBase_1.CameraControllerBase 
         this.IsCameraSpecificArmLengthEnabled = false;
       }
       this.GN1.DeepCopy(t);
-      this.BEm = n;
-      if (this.BEm) {
+      this.QEm = n;
+      if (this.QEm) {
         this.g_e.Reset();
       } else if (e) {
         this.g_e.DeepCopy(e);
@@ -210,16 +211,20 @@ class CameraGuideController extends CameraControllerBase_1.CameraControllerBase 
         _ = MathUtils_1.MathUtils.Clamp(_, -this.CameraArmOffsetVerticalLengthMax, this.CameraArmOffsetVerticalLengthMax);
         CameraUtility_1.CameraUtility.SetZnInGravity(this.g_e, _, this.g_e);
       }
+      this.Camera.AddPlayerTag(cameraGuideTag);
       this.E_e = this.Camera.CurrentCamera.Fov;
       this.M_e = r !== undefined && r > 0 && r !== this.M_e ? r : DEFAULT_VALUE;
       if (m) {
-        if (this.EVm) {
-          this.EVm();
+        if (this.V6m) {
+          this.V6m();
         }
-        this.EVm = m;
-        this.IVm = false;
+        this.V6m = m;
+        this.j6m = false;
       } else {
-        this.IVm = true;
+        this.j6m = true;
+      }
+      if ((a = GlobalData_1.GlobalData.BpEventManager)?.IsValid()) {
+        a.当触发相机注视时.Broadcast();
       }
     } else if (this.Ctc) {
       if (Log_1.Log.CheckInfo()) {
@@ -248,7 +253,7 @@ class CameraGuideController extends CameraControllerBase_1.CameraControllerBase 
       this.CurrentCameraArmLengthAddition = MathUtils_1.MathUtils.LerpSin(this.d_e, this.C_e, t);
     }
     Vector_1.Vector.LerpSin(this.B1e, this.g_e, t, this.CurrentCameraArmOffset);
-    if (this.FN1 && !this.BEm) {
+    if (this.FN1 && !this.QEm) {
       this.Lz.DeepCopy(this.Camera.PlayerLocation);
       this.Lz.SubtractionEqual(this.GN1);
       this.CurrentCameraArmOffset.SubtractionEqual(this.Lz);
@@ -269,7 +274,7 @@ class CameraGuideController extends CameraControllerBase_1.CameraControllerBase 
       this.CurrentCameraArmLengthAddition = MathUtils_1.MathUtils.LerpSin(this.d_e, 0, t);
     }
     this.Lz.DeepCopy(this.B1e);
-    if (this.FN1 && !this.BEm) {
+    if (this.FN1 && !this.QEm) {
       this.Lz.AdditionEqual(this.GN1);
       this.Lz.SubtractionEqual(this.Camera.PlayerLocation);
     }
@@ -295,13 +300,13 @@ class CameraGuideController extends CameraControllerBase_1.CameraControllerBase 
         }
         break;
       case 2:
-        if (this.FN1 && !this.BEm) {
+        if (this.FN1 && !this.QEm) {
           this.Lz.DeepCopy(this.Camera.PlayerLocation);
           this.Lz.SubtractionEqual(this.GN1);
           this.CurrentCameraArmOffset.DeepCopy(this.g_e);
           this.CurrentCameraArmOffset.SubtractionEqual(this.Lz);
         }
-        if (this.c_e >= 0 && this.H6 > this.j1e + this.c_e && (this.EVm && (Log_1.Log.CheckInfo() && Log_1.Log.Info("Camera", 45, "[CameraLookAt] EBlendState.Staying结束时先执行Callback"), this.EVm(), this.EVm = undefined), this.IVm)) {
+        if (this.c_e >= 0 && this.H6 > this.j1e + this.c_e && (this.V6m && (Log_1.Log.CheckInfo() && Log_1.Log.Info("Camera", 45, "[CameraLookAt] EBlendState.Staying结束时先执行Callback"), this.V6m(), this.V6m = undefined), this.j6m)) {
           if (this.Ctc && Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("Camera", 57, "[CameraLookAt] OnExitGuide EBlendState.Staying");
           }
@@ -316,6 +321,7 @@ class CameraGuideController extends CameraControllerBase_1.CameraControllerBase 
         if (this.p_e > this.W1e) {
           this.f_e = 0;
           this.IsCameraSpecificArmLengthEnabled = false;
+          this.Camera.RemovePlayerTag(cameraGuideTag);
         }
     }
   }
@@ -329,6 +335,7 @@ class CameraGuideController extends CameraControllerBase_1.CameraControllerBase 
     if (this.f_e === 3 && (this.p_e += t, t = this.W1e > 0 ? this.p_e / this.W1e : 1, t = MathUtils_1.MathUtils.Clamp(t, 0, 1), this.D_e(t), this.p_e > this.W1e)) {
       this.f_e = 0;
       this.IsCameraSpecificArmLengthEnabled = false;
+      this.Camera.RemovePlayerTag(cameraGuideTag);
     }
   }
   I_e(t) {
@@ -371,9 +378,10 @@ class CameraGuideController extends CameraControllerBase_1.CameraControllerBase 
       }
     }
     this.Camera.CameraRotationZone.Unlock(this);
-    this.IVm = true;
-    this.Uzf = false;
-    this.EVm = undefined;
+    this.j6m = true;
+    this.Rgg = false;
+    this.V6m = undefined;
+    this.Camera.RemovePlayerTag(cameraGuideTag);
   }
   nWc() {
     if (this.f_e === 1 || this.f_e === 2) {
@@ -394,19 +402,20 @@ class CameraGuideController extends CameraControllerBase_1.CameraControllerBase 
     this.D_e(1);
     this.f_e = 0;
     this.IsCameraSpecificArmLengthEnabled = false;
-    this.Uzf = false;
-    this.IVm = true;
-    this.EVm = undefined;
+    this.Rgg = false;
+    this.j6m = true;
+    this.V6m = undefined;
+    this.Camera.RemovePlayerTag(cameraGuideTag);
   }
   IsLockCameraInput() {
     return this.m_e;
   }
   Hqc() {
     var t;
-    return !!this.Camera.CharacterEntityHandle?.Valid && !!(t = this.Camera.CharacterEntityHandle.Entity.GetComponent(65))?.Valid && t.HasCameraInput();
+    return !!this.Camera.CharacterEntityHandle?.Valid && !!(t = this.Camera.CharacterEntityHandle.Entity.GetComponent(67))?.Valid && t.HasCameraInput();
   }
   CameraGuideFinishStaying() {
-    this.IVm = true;
+    this.j6m = true;
   }
   IsCameraGuideAvailable() {
     return this.IsActivate && this.S_e;

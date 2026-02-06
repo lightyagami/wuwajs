@@ -174,10 +174,12 @@ let GongduolaPerformComponent = class GongduolaPerformComponent extends VehicleP
     }
   }
   EnterConditionCheck(t, i) {
-    return !!super.EnterConditionCheck(t, i) && !this.IsWaterfallMove;
+    var e = t.GetComponent(0);
+    return !!super.EnterConditionCheck(t, i) && (!this.IsWaterfallMove || !(Log_1.Log.CheckError() && Log_1.Log.Error("Vehicle", 50, "[EnterConditionCheck] 攀瀑期间无法主动进入载具", ["P_PbDataId", e?.GetPbDataId()], ["V_PbDataId", this.CreatureData?.GetPbDataId()], ["Seat", i]), 1));
   }
   LeaveConditionCheck(t) {
-    return !!super.LeaveConditionCheck(t) && !this.TagComp?.HasTag(653152204) && !this.IsWaterfallMove;
+    var i = t.GetComponent(0);
+    return !!super.LeaveConditionCheck(t) && !(this.TagComp?.HasTag(653152204) ? (Log_1.Log.CheckError() && Log_1.Log.Error("Vehicle", 50, "[LeaveConditionCheck] 冲刺开始动作期间无法触发离开", ["P_PbDataId", i?.GetPbDataId()], ["V_PbDataId", this.CreatureData?.GetPbDataId()]), 1) : this.IsWaterfallMove && (Log_1.Log.CheckError() && Log_1.Log.Error("Vehicle", 50, "[LeaveConditionCheck] 攀瀑期间无法主动离开", ["P_PbDataId", i?.GetPbDataId()], ["V_PbDataId", this.CreatureData?.GetPbDataId()]), 1));
   }
   CheckIfCanLeave() {
     var t = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity;

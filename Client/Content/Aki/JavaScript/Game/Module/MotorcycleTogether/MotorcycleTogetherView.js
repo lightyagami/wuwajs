@@ -24,18 +24,18 @@ class MotorcycleTogetherView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
     this.lqe = undefined;
-    this.qof = undefined;
+    this.raf = undefined;
     this.Flo = undefined;
     this.DLu = undefined;
     this.zo_ = 0;
-    this.Nmf = undefined;
-    this.Oof = e => {
+    this.s0f = undefined;
+    this.oaf = e => {
       this.HLu(e);
     };
     this.I2i = () => {
       var e = new MotorcycleTogetherRoleItem_1.MotorcycleTogetherRoleItem();
       e.OnClickToggleCallBack = this.tbl;
-      e.IsToggleSelectOn = this.Gof;
+      e.IsToggleSelectOn = this.naf;
       return e;
     };
     this.tbl = (e, t, i) => {
@@ -46,9 +46,9 @@ class MotorcycleTogetherView extends UiViewBase_1.UiViewBase {
       } else {
         this.zo_ = 0;
       }
-      this.Fof();
+      this.saf();
     };
-    this.Gof = e => this.zo_ === e;
+    this.naf = e => this.zo_ === e;
     this.L3e = () => {
       var e;
       if (ModelManager_1.ModelManager.ShipTogetherModel.IsInMovieRideSharingMode) {
@@ -62,13 +62,13 @@ class MotorcycleTogetherView extends UiViewBase_1.UiViewBase {
       }
     };
     this.DSi = () => {
-      if (ModelManager_1.ModelManager.ShipTogetherModel?.RiderSharingState && ModelManager_1.ModelManager.ShipTogetherModel.IsInMovieRideSharingMode && this.Nmf === undefined) {
-        this.Vmf();
+      if (ModelManager_1.ModelManager.ShipTogetherModel?.RiderSharingState && ModelManager_1.ModelManager.ShipTogetherModel.IsInMovieRideSharingMode && this.s0f === undefined) {
+        this.a0f();
       }
     };
-    this.bmf = (e, t) => {
-      this.Nmf?.SetResult();
-      this.Nmf = undefined;
+    this.$gf = (e, t) => {
+      this.s0f?.SetResult();
+      this.s0f = undefined;
       if (!e) {
         this.CloseMe();
       }
@@ -85,9 +85,9 @@ class MotorcycleTogetherView extends UiViewBase_1.UiViewBase {
       this.CloseMe();
     });
     this.Flo = new LoopScrollView_1.LoopScrollView(this.GetLoopScrollViewComponent(2), this.GetItem(3).GetOwner(), this.I2i, true);
-    this.qof = new AreaSwitchGroupItem_1.AreaSwitchGroupItem();
-    this.qof.OnSwitchCallBack = this.Oof;
-    await this.qof.CreateThenShowByActorAsync(this.GetItem(1).GetOwner());
+    this.raf = new AreaSwitchGroupItem_1.AreaSwitchGroupItem();
+    this.raf.OnSwitchCallBack = this.oaf;
+    await this.raf.CreateThenShowByActorAsync(this.GetItem(1).GetOwner());
     this.DLu = new ButtonItem_1.ButtonItem();
     await this.DLu.CreateThenShowByActorAsync(this.GetButton(4).GetOwner());
     this.DLu.SetFunction(this.L3e);
@@ -101,14 +101,14 @@ class MotorcycleTogetherView extends UiViewBase_1.UiViewBase {
     if (this.zo_ !== 0 && (e = VehicleRidingRolesById_1.configVehicleRidingRolesById.GetConfig(this.zo_))) {
       i = e.RegionId;
     }
-    this.qof.RefreshAreaList(t, i);
+    this.raf.RefreshAreaList(t, i);
   }
   OnBeforeShow() {}
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnMovieMotorRideSharingModeChangeResponse, this.bmf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnMovieMotorRideSharingModeChangeResponse, this.$gf);
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnMovieMotorRideSharingModeChangeResponse, this.bmf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnMovieMotorRideSharingModeChangeResponse, this.$gf);
   }
   HLu(e) {
     var t;
@@ -147,18 +147,18 @@ class MotorcycleTogetherView extends UiViewBase_1.UiViewBase {
         }
       }, true);
     }
-    this.Fof();
+    this.saf();
   }
-  Fof() {
+  saf() {
     var e = this.zo_ !== 0;
     this.DLu.SetLocalTextNew(e ? "MotorSharingRide_Button01" : "MotorSharingRide_Button02");
   }
-  async Vmf() {
+  async a0f() {
     await ControllerHolder_1.ControllerHolder.LevelLoadingController.WaitOpenLoading(0, 3, ModelManager_1.ModelManager.ShipTogetherModel?.MotorSharingRideBlackScreenLoad);
     if (ModelManager_1.ModelManager.ShipTogetherModel?.RiderSharingState) {
-      this.Nmf = new CustomPromise_1.CustomPromise();
+      this.s0f = new CustomPromise_1.CustomPromise();
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnMovieMotorRideSharingModeChangeRequest, false, false);
-      await this.Nmf.Promise;
+      await this.s0f.Promise;
       await TimerSystem_1.GameplayTimerSystem.Wait(ModelManager_1.ModelManager.ShipTogetherModel.MotorSharingRideBlackScreenQuit * MathUtils_1.MathUtils.SecondToMillisecond);
     }
     ControllerHolder_1.ControllerHolder.LevelLoadingController.CloseLoading(0);

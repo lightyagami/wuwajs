@@ -37,7 +37,6 @@ const Vector_1 = require("../../../../Core/Utils/Math/Vector");
 const MathUtils_1 = require("../../../../Core/Utils/MathUtils");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
-const GlobalData_1 = require("../../../GlobalData");
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
@@ -67,7 +66,6 @@ let VehicleActorComponent = VehicleActorComponent_1 = class VehicleActorComponen
     this.j2r = Vector_1.Vector.Create(1, 0, 0);
     this.NewestInputFacingType = 0;
     this.OverrideTurnSpeed = 0;
-    this.W2r = Vector_1.Vector.Create(0, 0, 0);
     this.OnActorDestroy = () => {
       if (!this.CreatureDataInternal.GetRemoveState()) {
         if (Log_1.Log.CheckError()) {
@@ -82,6 +80,9 @@ let VehicleActorComponent = VehicleActorComponent_1 = class VehicleActorComponen
   get Actor() {
     return this.ActorInternal;
   }
+  get VehicleOwner() {
+    return this.ActorInternal;
+  }
   get SkeletalMesh() {
     return this.Actor.Mesh;
   }
@@ -93,16 +94,6 @@ let VehicleActorComponent = VehicleActorComponent_1 = class VehicleActorComponen
   }
   get InputDirect() {
     return this.V2r.ToUeVectorOld();
-  }
-  get ActorVelocityProxy() {
-    if (this.CachedVelocityTime < Time_1.Time.Frame) {
-      this.CachedVelocityTime = Time_1.Time.Frame;
-      this.W2r.DeepCopy(this.Actor.D_GetVelocity());
-    }
-    return this.W2r;
-  }
-  get ActorVelocity() {
-    return this.ActorVelocityProxy.ToUeVectorOld();
   }
   get InputRotatorProxy() {
     if (this.NewestInputFacingType === 2) {
@@ -162,14 +153,15 @@ let VehicleActorComponent = VehicleActorComponent_1 = class VehicleActorComponen
   }
   OnInit(t) {
     super.OnInit();
-    var e = this.CreatureDataInternal.GetPbModelConfig()?.ModelId;
+    var e = this.CreatureDataInternal.GetModelId();
     if (!e) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Character", 3, "[SceneItemActorComponent.OnInit] 加载actor失败，无法找到modelId", ["CreatureDataId", this.CreatureDataInternal.GetCreatureDataId()], ["PbDataId", this.CreatureData.GetPbDataId()]);
       }
       return false;
     }
-    this.ActorInternal = this.LoadSkeletalMeshAndAnimBlueprint(e);
+    var i = this.InitActorNew(e);
+    this.ActorInternal = i;
     if (!this.ActorInternal || !this.ActorInternal.IsValid()) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Character", 3, "[VehicleActorComponent.OnInit] 加载actor失败。", ["CreatureDataId", this.CreatureDataInternal.GetCreatureDataId()], ["PbDataId", this.CreatureData.GetPbDataId()]);
@@ -185,9 +177,9 @@ let VehicleActorComponent = VehicleActorComponent_1 = class VehicleActorComponen
     if (this.ActorInternal) {
       this.ActorInternal.OnDestroyed.Add(this.OnActorDestroy);
     }
-    e = this.ActorInternal;
-    e.VehicleActorComponent = this;
-    e.SetEntityId(this.Entity.Id);
+    i = this.ActorInternal;
+    i.VehicleActorComponent = this;
+    i.SetEntityId(this.Entity.Id);
     this.InitSizeInternal();
     this.InitDefaultController(this.ActorInternal);
     this.SetInputFacing(this.ActorForwardProxy);
@@ -195,7 +187,7 @@ let VehicleActorComponent = VehicleActorComponent_1 = class VehicleActorComponen
     this.SetCollisionEnable(false, "[VehicleActorComponent.OnInit] 默认关闭碰撞");
     this.SetTickEnable(false, "[VehicleActorComponent.OnInit] 默认关闭Tick");
     this.cFr();
-    e.CharRenderingComponent.Init(e.RenderType);
+    i.CharRenderingComponent.Init(i.RenderType);
     this.ActorInternal.SetPrimitiveBlueprintTypeName(new UE.FName(this.CreatureDataInternal.EntityPbModelConfigId));
     if (GameBudgetInterfaceController_1.GameBudgetInterfaceController.IsOpen) {
       if (this.Entity.GameBudgetManagedToken !== undefined) {
@@ -208,7 +200,7 @@ let VehicleActorComponent = VehicleActorComponent_1 = class VehicleActorComponen
     return true;
   }
   OnStart() {
-    return !!super.OnStart() && (this.InputComp = this.Entity.GetComponent(253), this.VehicleMoveComp = this.Entity.GetComponent(249), this.DebugMovementComp = this.Entity.GetComponent(30), true);
+    return !!super.OnStart() && (this.InputComp = this.Entity.GetComponent(253), this.VehicleMoveComp = this.Entity.GetComponent(249), this.DebugMovementComp = this.Entity.GetComponent(31), true);
   }
   OnActivate() {
     super.OnActivate();
@@ -238,8 +230,25 @@ let VehicleActorComponent = VehicleActorComponent_1 = class VehicleActorComponen
     this.OnSetActorActive(true);
     this.ResetAllCachedTime();
   }
+  InitActorNew(t) {
+    var e = this.CreatureDataInternal;
+    var i = e.D_GetTransform();
+    var o = undefined;
+    this.CreatureDataInternal.SetModelConfig(t);
+    var r = this.CreatureDataInternal.GetModelConfig();
+    if (r) {
+      if ((o = ActorUtils_1.ActorUtils.LoadActorByModelConfig(r, i))?.IsValid()) {
+        if (o instanceof TsBaseVehicle_1.default) {
+          ActorUtils_1.ActorUtils.LoadAndChangeMeshAnim(o.Mesh, r.网格体, r.动画蓝图);
+        }
+        return o;
+      }
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("Character", 7, "[CharacterActorComponent.OnInit] 缺少ModelConfig配置", ["CreatureDataId", e.GetCreatureDataId()], ["ModelId", t]);
+    }
+  }
   OnChangeTimeDilation(t) {
-    var e = this.Entity.GetComponent(131)?.CurrentTimeScale ?? 1;
+    var e = this.Entity.GetComponent(133)?.CurrentTimeScale ?? 1;
     this.ActorInternal.CustomTimeDilation = t * e;
   }
   SetMoveAutonomous(t, e = "") {
@@ -249,24 +258,6 @@ let VehicleActorComponent = VehicleActorComponent_1 = class VehicleActorComponen
     if (e) {
       e.MainAnimInstance?.SetStateMachineNetMode(!t);
       e.SpecialAnimInstance?.SetStateMachineNetMode(!t);
-    }
-  }
-  LoadSkeletalMeshAndAnimBlueprint(t) {
-    var e = undefined;
-    this.CreatureDataInternal.SetModelConfig(t);
-    var i = this.CreatureDataInternal;
-    var o = i.D_GetTransform();
-    var r = this.CreatureDataInternal.GetModelConfig();
-    if (r) {
-      if ((e = ActorUtils_1.ActorUtils.LoadActorByModelConfig(r, o))?.IsValid()) {
-        ActorUtils_1.ActorUtils.LoadAndChangeMeshAnim(e.Mesh, r.网格体, r.动画蓝图);
-        if (GlobalData_1.GlobalData.IsPlayInEditor && (o = this.CreatureDataInternal.GetPbDataId())) {
-          e.Tags.Add(new UE.FName("PbDataId:" + o));
-        }
-        return e;
-      }
-    } else if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("Character", 7, "[VehicleActorComponent.OnInit] 缺少ModelConfig配置", ["CreatureDataId", i.GetCreatureDataId()], ["ModelId", t]);
     }
   }
   cFr() {
@@ -478,7 +469,7 @@ let VehicleActorComponent = VehicleActorComponent_1 = class VehicleActorComponen
         if (this.Actor.VehicleMovementComponent) {
           this.Actor.VehicleMovementComponent.Velocity = e;
         }
-        this.W2r.DeepCopy(t);
+        this.CachedActorVelocity.DeepCopy(t);
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Movement", 6, "Set Invalid Velocity", ["v", t]);
       }

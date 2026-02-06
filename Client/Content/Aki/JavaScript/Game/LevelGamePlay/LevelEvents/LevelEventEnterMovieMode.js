@@ -25,9 +25,9 @@ class LevelEventEnterMovieMode extends LevelGeneralBase_1.LevelEventBase {
       IsAutoExitInFlowSequence: e.AutoExitInFlow,
       IsBanAdaptation: !GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.FlowAdaptation)
     };
-    this.uhf(i, e.DurationType);
+    this.L1f(i, e.DurationType);
   }
-  async uhf(e, t) {
+  async L1f(e, t) {
     const i = new CustomPromise_1.CustomPromise();
     ControllerHolder_1.ControllerHolder.MovieModeController.EnterMovieMode(e, e => {
       i.SetResult();

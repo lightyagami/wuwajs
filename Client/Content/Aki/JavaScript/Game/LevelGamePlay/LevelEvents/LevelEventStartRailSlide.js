@@ -12,7 +12,7 @@ class LevelEventStartRailSlide extends LevelGeneralBase_1.LevelEventBase {
     var t;
     if (e) {
       if (t = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint()) {
-        t.GetComponent(37)?.StartRailSlide(e.RailEntityId, e.SlidePerformDaPath);
+        t.GetComponent(38)?.StartRailSlide(e.RailEntityId, e.SlidePerformDaPath);
       }
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("Event", 42, "LevelEventStartRailSlide 参数配置错误");

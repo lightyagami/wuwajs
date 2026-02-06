@@ -163,21 +163,21 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
     this.QMa = undefined;
     this.hTl = undefined;
     this.SVu = undefined;
-    this.hxm = undefined;
-    this.WUm = 0;
-    this.QUm = 0;
-    this.KUm = -1;
-    this.XUm = false;
+    this.Bxm = undefined;
+    this.vxm = 0;
+    this.yxm = 0;
+    this.Sxm = -1;
+    this.Mxm = false;
     this.YZt = new PlotTextLogic_1.PlotAudioDelegate();
     this.Lvo = undefined;
     this.Qsu = undefined;
     this.Nra = 0;
     this.HasChildViewPreloaded = false;
-    this.Hzm = false;
+    this.Lef = false;
     this.TRn = () => {
       if (!this.meo) {
         this.ceo.SetActive(false);
-        this.hxm.GetRootComponent().SetUIActive(false);
+        this.Bxm.GetRootComponent().SetUIActive(false);
       }
     };
     this.beo = () => {
@@ -189,7 +189,7 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
       this.neo?.SetSelectedDisplay(false);
       (this.neo = t).SetSelectedDisplay(true);
     };
-    this.x2m = (t, i = true) => {
+    this.Xkm = (t, i = true) => {
       this.HQc(!t);
       this.GetExtendToggle(0).RootUIComp.SetUIActive(t);
       this.GetButton(16).RootUIComp.SetUIActive(t);
@@ -296,8 +296,8 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
         this.pha();
       }
     };
-    this.JUm = () => {
-      this.ZUm(false);
+    this.Txm = () => {
+      this.bxm(false);
     };
     this.Geo = () => {
       this.neo?.SetSelectedDisplay(false);
@@ -624,8 +624,8 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
     this.mZi = this.GetItem(8).GetOwner().GetComponentByClass(UE.UIEffectTextAnimation.StaticClass());
     this.GetItem(6).SetUIActive(false);
     this.GetItem(22).SetUIActive(false);
-    this.hxm = this.GetSlider(32);
-    this.hxm.GetRootComponent().SetUIActive(false);
+    this.Bxm = this.GetSlider(32);
+    this.Bxm.GetRootComponent().SetUIActive(false);
     this.Tvo = false;
     this.GetSprite(9).SetUIActive(false);
     this._eo = this.GetItem(17);
@@ -776,7 +776,7 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTermExplanationViewOpening, this.tu1);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTermExplanationViewClosed, this.EI1);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PlotSequencePlay, this.owt);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.EnableInteractPlot, this.x2m);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.EnableInteractPlot, this.Xkm);
     SequenceController_1.SequenceController.Event.Add(UiAssistant_1.ESequenceEventName.UpdateSeqSubtitle, this.keo);
     SequenceController_1.SequenceController.Event.Add(UiAssistant_1.ESequenceEventName.HandlePlotOptionSelected, this.Gvo);
     SequenceController_1.SequenceController.Event.Add(UiAssistant_1.ESequenceEventName.HandleSeqSubtitleEnd, this.Ovo);
@@ -800,7 +800,7 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTermExplanationViewOpening, this.tu1);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTermExplanationViewClosed, this.EI1);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PlotSequencePlay, this.owt);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.EnableInteractPlot, this.x2m);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.EnableInteractPlot, this.Xkm);
     SequenceController_1.SequenceController.Event.Remove(UiAssistant_1.ESequenceEventName.UpdateSeqSubtitle, this.keo);
     SequenceController_1.SequenceController.Event.Remove(UiAssistant_1.ESequenceEventName.HandlePlotOptionSelected, this.Gvo);
     SequenceController_1.SequenceController.Event.Remove(UiAssistant_1.ESequenceEventName.HandleSeqSubtitleEnd, this.Ovo);
@@ -812,11 +812,11 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
   }
   HQc(t) {
     if (t) {
-      this.Hzm = true;
+      this.Lef = true;
       ModelManager_1.ModelManager.PlotModel.PlotConfig.IsAutoPlay = false;
       this.Oeo();
     } else {
-      this.Hzm = false;
+      this.Lef = false;
       (t = ModelManager_1.ModelManager.PlotModel.PlotConfig).IsAutoPlay = t.IsAutoPlayCache;
       this.Oeo();
       if (t.IsAutoPlay && ModelManager_1.ModelManager.SequenceModel.IsPlaying && ModelManager_1.ModelManager.SequenceModel.IsPaused) {
@@ -904,7 +904,7 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
         this.CurOption = this.jeo(this.CurrentSubtitle.Options);
         this.ceo.RefreshByData(this.CurOption, this.Geo);
         this.zvo();
-        this.exm();
+        this.Rxm();
       }
     }
   }
@@ -917,46 +917,46 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
         s = {
           Config: s,
           ConditionCheck: h,
-          OnClick: this.JUm
+          OnClick: this.Txm
         };
         e.push(s);
       }
     }
     return e;
   }
-  exm() {
+  Rxm() {
     var t;
     if (this.CurOption && this.CurrentSubtitle?.TimeLimitOptionGroup && this.CurrentSubtitle.TimeLimitOptionGroup.Style.Type === "Default") {
       if ((t = this.CurrentSubtitle.TimeLimitOptionGroup.Style).TimeLimit <= 0 || t.TimeoutOptionIndex >= this.CurrentSubtitle.Options.length || t.TimeoutOptionIndex < 0) {
         ControllerHolder_1.ControllerHolder.FlowController.LogError("限时选项配置错误");
       } else {
-        this.KUm = t.TimeoutOptionIndex;
-        this.WUm = t.TimeLimit * CommonDefine_1.MILLIONSECOND_PER_SECOND;
-        this.QUm = 0;
-        this.hxm.GetRootComponent().SetUIActive(true);
-        this.hxm.SetValue(1);
-        this.XUm = true;
+        this.Sxm = t.TimeoutOptionIndex;
+        this.vxm = t.TimeLimit * CommonDefine_1.MILLIONSECOND_PER_SECOND;
+        this.yxm = 0;
+        this.Bxm.GetRootComponent().SetUIActive(true);
+        this.Bxm.SetValue(1);
+        this.Mxm = true;
       }
     }
   }
-  ZUm(t = false) {
+  bxm(t = false) {
     var i;
-    if (this.XUm) {
-      this.XUm = false;
+    if (this.Mxm) {
+      this.Mxm = false;
       if (t) {
-        if (i = this.Options.find(t => t.OptionIndex === this.KUm)) {
+        if (i = this.Options.find(t => t.OptionIndex === this.Sxm)) {
           i.OptionClick();
         } else {
-          ModelManager_1.ModelManager.PlotModel.MarkGrayOption(this.CurrentSubtitle.Id, this.KUm);
-          ControllerHolder_1.ControllerHolder.SequenceController.SelectOption(this.KUm, this.CurrentSubtitle.Id);
+          ModelManager_1.ModelManager.PlotModel.MarkGrayOption(this.CurrentSubtitle.Id, this.Sxm);
+          ControllerHolder_1.ControllerHolder.SequenceController.SelectOption(this.Sxm, this.CurrentSubtitle.Id);
         }
       }
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Plot", 26, "[Subtitle] 限时选项完成", ["id", this.CurrentSubtitle.Id], ["bSelected", t]);
       }
-      this.WUm = 0;
-      this.QUm = 0;
-      this.KUm = -1;
+      this.vxm = 0;
+      this.yxm = 0;
+      this.Sxm = -1;
     }
   }
   eMo() {
@@ -1291,8 +1291,8 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
       this.Eeo.SetAlpha(this.SNc.Icon透明度);
       this.Seo.SetAlpha(this.SNc.Icon遮罩透明度);
     }
-    if (this.XUm && !this.Hzm && (this.QUm += t, this.hxm.SetValue(1 - this.QUm / this.WUm), this.QUm >= this.WUm)) {
-      this.ZUm(true);
+    if (this.Mxm && !this.Lef && (this.yxm += t, this.Bxm.SetValue(1 - this.yxm / this.vxm), this.yxm >= this.vxm)) {
+      this.bxm(true);
     }
   }
   SimulateClickSubtitle() {

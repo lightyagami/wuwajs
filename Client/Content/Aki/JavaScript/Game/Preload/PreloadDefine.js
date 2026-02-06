@@ -900,9 +900,8 @@ class PlotAssetManager {
     }), this.Sy1.delete(t), true);
   }
   AddPath(t, s) {
-    if (t.AddOther(s)) {
-      t = this.rI1++;
-      this.iI1.set(s, t);
+    if (t.AddOther(s) && (t = this.rI1++, this.iI1.set(s, t), Log_1.Log.CheckDebug())) {
+      Log_1.Log.Debug("Preload", 26, "[预加载][Plot] 添加需要加载的资产", ["path", s]);
     }
   }
   RemoveAllPreload() {
@@ -945,6 +944,20 @@ class PlotAssetManager {
       Log_1.Log.Debug("Preload", 26, "[预加载][Plot] 需要加载的资产", ["path", t]);
     }
     return ResourceSystem_1.ResourceSystem.LoadAsync(t, s, e);
+  }
+  GetAllLoadedAssets(t) {
+    var s;
+    var e = [];
+    var t = this.Sy1.get(t);
+    if (t) {
+      for (const i of t.LoadedSet) {
+        const t = this.iI1.get(i);
+        if (t && (s = this.Mfe?.EntityAssetMap.Get(t)) && s.Assets.Num() > 0) {
+          e.push(s.Assets.Get(0));
+        }
+      }
+    }
+    return e;
   }
   DebugLog() {}
 }

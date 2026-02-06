@@ -23,201 +23,201 @@ const AutoPilotUtil_1 = require("./AutoPilotUtil");
 class AutoPilotLine {
   constructor(t) {
     this.Map = t;
-    this.h8m = undefined;
-    this.ENf = undefined;
+    this.d8m = undefined;
+    this.aHf = undefined;
     this.CTn = Vector2D_1.Vector2D.Create();
-    this.l8m = Vector2D_1.Vector2D.Create();
-    this._8m = Vector2D_1.Vector2D.Create();
-    this.u8m = Vector2D_1.Vector2D.Create();
-    this.c8m = Vector2D_1.Vector2D.Create();
-    this.d8m = Rotator_1.Rotator.Create();
-    this.m8m = Rotator_1.Rotator.Create();
-    this.f8m = Rotator_1.Rotator.Create();
-    this.g8m = 1;
+    this.m8m = Vector2D_1.Vector2D.Create();
+    this.f8m = Vector2D_1.Vector2D.Create();
+    this.g8m = Vector2D_1.Vector2D.Create();
+    this.C8m = Vector2D_1.Vector2D.Create();
+    this.p8m = Rotator_1.Rotator.Create();
+    this.v8m = Rotator_1.Rotator.Create();
+    this.y8m = Rotator_1.Rotator.Create();
+    this.S8m = 1;
     this.nz = Vector_1.Vector.Create();
-    this.LXf = Stats_1.Stat.Create("DrawFindPathHighLightLine");
-    this.INf = () => {
+    this.O_g = Stats_1.Stat.Create("DrawFindPathHighLightLine");
+    this.hHf = () => {
       this.CheckAutoPilotLineInfo();
     };
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnUpdateAutoPilotLine, this.INf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnUpdateAutoPilotLine, this.hHf);
   }
-  Kzf() {
+  Vgg() {
     var t = this.Map.MapTileMgr?.TotalTileSize;
     if (t) {
-      this.h8m?.GetRootItem()?.SetWidth(t.X);
-      this.h8m?.GetRootItem()?.SetHeight(t.Y);
+      this.d8m?.GetRootItem()?.SetWidth(t.X);
+      this.d8m?.GetRootItem()?.SetHeight(t.Y);
     }
   }
-  async C8m() {
-    if (!this.h8m) {
-      this.h8m = new AutoPilotLineComponent();
-      this.ENf = this.h8m.CreateThenShowByResourceIdAsync("UiItem_AutoPilot_Line", this.Map.GetRootItem());
+  async M8m() {
+    if (!this.d8m) {
+      this.d8m = new AutoPilotLineComponent();
+      this.aHf = this.d8m.CreateThenShowByResourceIdAsync("UiItem_AutoPilot_Line", this.Map.GetRootItem());
     }
-    await this.ENf;
+    await this.aHf;
   }
   CheckAutoPilotLineInfo() {
-    this.TNf();
+    this.lHf();
   }
-  async TNf() {
-    await this.C8m();
-    this.Kzf();
+  async lHf() {
+    await this.M8m();
+    this.Vgg();
     this.RefreshFindPathLine();
-    this.cmf();
-    this.bNf();
+    this.Agf();
+    this._Hf();
   }
   Destroy() {
-    if (this.h8m) {
-      this.h8m.SkipDestroyActor = false;
-      this.h8m.Destroy();
-      this.h8m = undefined;
+    if (this.d8m) {
+      this.d8m.SkipDestroyActor = false;
+      this.d8m.Destroy();
+      this.d8m = undefined;
     }
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnUpdateAutoPilotLine, this.INf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnUpdateAutoPilotLine, this.hHf);
   }
   RefreshFindPathLine() {
     var t = ModelManager_1.ModelManager.AutoPilotModel?.GetFindPathResult();
     if (!t || t.MapId !== this.Map.MapId && t.MapId !== 105) {
-      this.h8m?.FindPathRoot?.SetUIActive(false);
+      this.d8m?.FindPathRoot?.SetUIActive(false);
     } else {
-      this.h8m?.FindPathRoot?.SetUIActive(true);
+      this.d8m?.FindPathRoot?.SetUIActive(true);
       this.SetScale();
-      this.y8m(t);
-      this.S8m(t);
-      this.M8m(t);
-      this.E8m(t);
-      this.I8m(t);
-      this.dmf(t);
+      this.T8m(t);
+      this.b8m(t);
+      this.R8m(t);
+      this.w8m(t);
+      this.L8m(t);
+      this.Dgf(t);
     }
   }
-  y8m(t) {
+  T8m(t) {
     var i = ModelManager_1.ModelManager.WorldMapModel.MapScale <= ModelManager_1.ModelManager.WorldMapModel.MapScaleMin && this.Map.MapType === 2;
     if (!t.GetIsShowStartPoint() || i) {
-      this.h8m?.StartPoint?.SetUIActive(false);
+      this.d8m?.StartPoint?.SetUIActive(false);
     } else {
-      this.h8m?.StartPoint?.SetUIActive(true);
+      this.d8m?.StartPoint?.SetUIActive(true);
       this.CTn.Set(t.StartPoint.X, t.StartPoint.Y);
-      MapUtil_1.MapUtil.WorldPosition2UiPosition2D(this.CTn, this.l8m);
-      this.h8m?.StartPoint?.SetAnchorOffset(this.l8m.ToUeVector2D(true));
-      this.h8m?.StartPoint?.SetUIItemScale(this.nz.ToUeVectorOld(true));
+      MapUtil_1.MapUtil.WorldPosition2UiPosition2D(this.CTn, this.m8m);
+      this.d8m?.StartPoint?.SetAnchorOffset(this.m8m.ToUeVector2D(true));
+      this.d8m?.StartPoint?.SetUIItemScale(this.nz.ToUeVectorOld(true));
     }
   }
-  S8m(t) {
+  b8m(t) {
     var i = ModelManager_1.ModelManager.WorldMapModel.MapScale <= ModelManager_1.ModelManager.WorldMapModel.MapScaleMin && this.Map.MapType === 2;
     if (!t.GetIsShowEndPoint() || i) {
-      this.h8m?.EndPoint?.SetUIActive(false);
+      this.d8m?.EndPoint?.SetUIActive(false);
     } else {
-      this.h8m?.EndPoint?.SetUIActive(true);
+      this.d8m?.EndPoint?.SetUIActive(true);
       this.CTn.Set(t.EndPoint.X, t.EndPoint.Y);
-      MapUtil_1.MapUtil.WorldPosition2UiPosition2D(this.CTn, this.c8m);
-      this.h8m?.EndPoint?.SetAnchorOffset(this.c8m.ToUeVector2D(true));
-      this.h8m?.EndPoint?.SetUIItemScale(this.nz.ToUeVectorOld(true));
+      MapUtil_1.MapUtil.WorldPosition2UiPosition2D(this.CTn, this.C8m);
+      this.d8m?.EndPoint?.SetAnchorOffset(this.C8m.ToUeVector2D(true));
+      this.d8m?.EndPoint?.SetUIItemScale(this.nz.ToUeVectorOld(true));
     }
   }
-  M8m(t) {
+  R8m(t) {
     if (t.GetIsShowPlayerToStartLine()) {
-      this.h8m?.PlayerToStartLine?.SetUIActive(true);
+      this.d8m?.PlayerToStartLine?.SetUIActive(true);
       this.CTn.Set(t.PlayerPoint.X, t.PlayerPoint.Y);
-      MapUtil_1.MapUtil.WorldPosition2UiPosition2D(this.CTn, this._8m);
-      this.h8m?.PlayerToStartLine?.SetAnchorOffset(this._8m.ToUeVector2D(true));
+      MapUtil_1.MapUtil.WorldPosition2UiPosition2D(this.CTn, this.f8m);
+      this.d8m?.PlayerToStartLine?.SetAnchorOffset(this.f8m.ToUeVector2D(true));
       this.CTn.Set(t.StartPoint.X, t.StartPoint.Y);
-      MapUtil_1.MapUtil.WorldPosition2UiPosition2D(this.CTn, this.l8m);
-      t = Vector2D_1.Vector2D.Distance(this._8m, this.l8m);
-      t *= this.g8m;
-      this.h8m?.PlayerToStartLine?.SetHeight(t);
-      this.h8m?.PlayerToStartLine?.SetUIItemScale(this.nz.ToUeVectorOld(true));
-      this.d8m.Yaw = Math.atan2(this.l8m.Y - this._8m.Y, this.l8m.X - this._8m.X) * MathUtils_1.MathUtils.RadToDeg - 90;
-      this.h8m?.PlayerToStartLine?.SetUIRelativeRotation(this.d8m.ToUeRotator());
+      MapUtil_1.MapUtil.WorldPosition2UiPosition2D(this.CTn, this.m8m);
+      t = Vector2D_1.Vector2D.Distance(this.f8m, this.m8m);
+      t *= this.S8m;
+      this.d8m?.PlayerToStartLine?.SetHeight(t);
+      this.d8m?.PlayerToStartLine?.SetUIItemScale(this.nz.ToUeVectorOld(true));
+      this.p8m.Yaw = Math.atan2(this.m8m.Y - this.f8m.Y, this.m8m.X - this.f8m.X) * MathUtils_1.MathUtils.RadToDeg - 90;
+      this.d8m?.PlayerToStartLine?.SetUIRelativeRotation(this.p8m.ToUeRotator());
     } else {
-      this.h8m?.PlayerToStartLine?.SetUIActive(false);
+      this.d8m?.PlayerToStartLine?.SetUIActive(false);
     }
   }
-  E8m(t) {
+  w8m(t) {
     if (t.GetIsShowEndToTargetLine()) {
-      this.h8m?.EndToTargetLine?.SetUIActive(true);
+      this.d8m?.EndToTargetLine?.SetUIActive(true);
       this.CTn.Set(t.EndPoint.X, t.EndPoint.Y);
-      MapUtil_1.MapUtil.WorldPosition2UiPosition2D(this.CTn, this.c8m);
-      this.h8m?.EndToTargetLine?.SetAnchorOffset(this.c8m.ToUeVector2D(true));
+      MapUtil_1.MapUtil.WorldPosition2UiPosition2D(this.CTn, this.C8m);
+      this.d8m?.EndToTargetLine?.SetAnchorOffset(this.C8m.ToUeVector2D(true));
       this.CTn.Set(t.TargetPoint.X, t.TargetPoint.Y);
-      MapUtil_1.MapUtil.WorldPosition2UiPosition2D(this.CTn, this.u8m);
-      t = Vector2D_1.Vector2D.Distance(this.c8m, this.u8m);
-      t *= this.g8m;
-      this.h8m?.EndToTargetLine?.SetHeight(t);
-      this.h8m?.EndToTargetLine?.SetUIItemScale(this.nz.ToUeVectorOld(true));
-      this.m8m.Yaw = Math.atan2(this.u8m.Y - this.c8m.Y, this.u8m.X - this.c8m.X) * MathUtils_1.MathUtils.RadToDeg - 90;
-      this.h8m?.EndToTargetLine?.SetUIRelativeRotation(this.m8m.ToUeRotator());
+      MapUtil_1.MapUtil.WorldPosition2UiPosition2D(this.CTn, this.g8m);
+      t = Vector2D_1.Vector2D.Distance(this.C8m, this.g8m);
+      t *= this.S8m;
+      this.d8m?.EndToTargetLine?.SetHeight(t);
+      this.d8m?.EndToTargetLine?.SetUIItemScale(this.nz.ToUeVectorOld(true));
+      this.v8m.Yaw = Math.atan2(this.g8m.Y - this.C8m.Y, this.g8m.X - this.C8m.X) * MathUtils_1.MathUtils.RadToDeg - 90;
+      this.d8m?.EndToTargetLine?.SetUIRelativeRotation(this.v8m.ToUeRotator());
     } else {
-      this.h8m?.EndToTargetLine?.SetUIActive(false);
+      this.d8m?.EndToTargetLine?.SetUIActive(false);
     }
   }
-  I8m(t) {
+  L8m(t) {
     if (t.GetIsShowPlayerToTargetLine()) {
-      this.h8m?.PlayerToTargetLine?.SetUIActive(true);
+      this.d8m?.PlayerToTargetLine?.SetUIActive(true);
       this.CTn.Set(t.PlayerPoint.X, t.PlayerPoint.Y);
-      MapUtil_1.MapUtil.WorldPosition2UiPosition2D(this.CTn, this._8m);
-      this.h8m?.PlayerToTargetLine?.SetAnchorOffset(this._8m.ToUeVector2D(true));
+      MapUtil_1.MapUtil.WorldPosition2UiPosition2D(this.CTn, this.f8m);
+      this.d8m?.PlayerToTargetLine?.SetAnchorOffset(this.f8m.ToUeVector2D(true));
       this.CTn.Set(t.TargetPoint.X, t.TargetPoint.Y);
-      MapUtil_1.MapUtil.WorldPosition2UiPosition2D(this.CTn, this.u8m);
-      t = Vector2D_1.Vector2D.Distance(this._8m, this.u8m);
-      t *= this.g8m;
-      this.h8m?.PlayerToTargetLine?.SetHeight(t);
-      this.h8m?.PlayerToTargetLine?.SetUIItemScale(this.nz.ToUeVectorOld(true));
-      this.f8m.Yaw = Math.atan2(this.u8m.Y - this._8m.Y, this.u8m.X - this._8m.X) * MathUtils_1.MathUtils.RadToDeg - 90;
-      this.h8m?.PlayerToTargetLine?.SetUIRelativeRotation(this.f8m.ToUeRotator());
+      MapUtil_1.MapUtil.WorldPosition2UiPosition2D(this.CTn, this.g8m);
+      t = Vector2D_1.Vector2D.Distance(this.f8m, this.g8m);
+      t *= this.S8m;
+      this.d8m?.PlayerToTargetLine?.SetHeight(t);
+      this.d8m?.PlayerToTargetLine?.SetUIItemScale(this.nz.ToUeVectorOld(true));
+      this.y8m.Yaw = Math.atan2(this.g8m.Y - this.f8m.Y, this.g8m.X - this.f8m.X) * MathUtils_1.MathUtils.RadToDeg - 90;
+      this.d8m?.PlayerToTargetLine?.SetUIRelativeRotation(this.y8m.ToUeRotator());
     } else {
-      this.h8m?.PlayerToTargetLine?.SetUIActive(false);
+      this.d8m?.PlayerToTargetLine?.SetUIActive(false);
     }
   }
-  dmf(t) {
+  Dgf(t) {
     if (t.GetIsShowHighLightLine()) {
-      this.LXf.Start();
-      this.h8m?.FindPathHighLightLine?.SetUIActive(true);
-      this.h8m?.FindPathHighLightLine?.SetPoints(t.SplinePoints);
-      this.LXf.Stop();
+      this.O_g.Start();
+      this.d8m?.FindPathHighLightLine?.SetUIActive(true);
+      this.d8m?.FindPathHighLightLine?.SetPoints(t.SplinePoints);
+      this.O_g.Stop();
     } else {
-      this.h8m?.FindPathHighLightLine?.SetUIActive(false);
+      this.d8m?.FindPathHighLightLine?.SetUIActive(false);
     }
   }
   SetScale() {
     var t = this.Map.MapType === 1;
     var i = t ? 1 : ModelManager_1.ModelManager.WorldMapModel.MapScale;
     var t = t ? this.Map?.GetRootItem()?.RelativeScale3D.X ?? 1 : 1;
-    this.g8m = i * t;
-    var i = 1 / this.g8m;
+    this.S8m = i * t;
+    var i = 1 / this.S8m;
     this.nz.Set(i, i, i);
   }
-  cmf() {
+  Agf() {
     var t = ModelManager_1.ModelManager.AutoPilotModel?.GetCirclePathResult();
     if (!t || t.MapId !== this.Map.MapId && t.MapId !== 105) {
-      this.h8m?.CirclePathRoot?.SetUIActive(false);
-      this.h8m?.ResetCircleId();
+      this.d8m?.CirclePathRoot?.SetUIActive(false);
+      this.d8m?.ResetCircleId();
     } else {
-      this.h8m?.CirclePathRoot?.SetUIActive(true);
-      this.mmf(t);
-      this.MIf(t);
+      this.d8m?.CirclePathRoot?.SetUIActive(true);
+      this.Ugf(t);
+      this.Zwf(t);
     }
   }
-  mmf(t) {
-    this.h8m?.LoadCirclePathHighLightLine(t.CircleId);
+  Ugf(t) {
+    this.d8m?.LoadCirclePathHighLightLine(t.CircleId);
   }
-  MIf(t) {
+  Zwf(t) {
     if (!t || t.GetIsInCircle()) {
-      this.h8m?.PathToCircleHighLightLine?.SetUIActive(false);
+      this.d8m?.PathToCircleHighLightLine?.SetUIActive(false);
     } else {
-      this.h8m?.PathToCircleHighLightLine?.SetUIActive(true);
-      this.h8m?.PathToCircleHighLightLine?.SetPoints(t.PathToCircleSplinePoints);
+      this.d8m?.PathToCircleHighLightLine?.SetUIActive(true);
+      this.d8m?.PathToCircleHighLightLine?.SetPoints(t.PathToCircleSplinePoints);
     }
   }
   OnMiniMapTick() {
     this.CheckAutoPilotLineInfo();
   }
   DrawDebugLine(t) {
-    this.h8m?.RecycleDebugLine();
+    this.d8m?.RecycleDebugLine();
     for (const h of t) {
       var i;
       var s = TransportNetworkController_1.TransportNetworkController.GetTransportSystem().GetRoadWay(h);
       if (s && s.RoadSpline) {
         i = UE.NewArray(UE.Vector2D);
         AutoPilotUtil_1.AutoPilotUtil.GenerateSingleSplinePoints(s.RoadSpline, i);
-        this.h8m?.CreateDebugRoadLine(i);
+        this.d8m?.CreateDebugRoadLine(i);
       }
     }
   }
@@ -231,9 +231,9 @@ class AutoPilotLine {
     }
     t = UE.NewArray(UE.Vector2D);
     AutoPilotUtil_1.AutoPilotUtil.GenerateAllSplinePoints(i, t);
-    this.h8m?.CreateDebugRoadLine(t);
+    this.d8m?.CreateDebugRoadLine(t);
   }
-  bNf() {
+  _Hf() {
     if (this.Map.MapType === 2) {
       let t = undefined;
       if (ModelManager_1.ModelManager.AutoPilotModel.DebugCircleId !== 0) {
@@ -264,13 +264,13 @@ class AutoPilotLineComponent extends UiPanelBase_1.UiPanelBase {
     this.FindPathHighLightLine = undefined;
     this.FindPathRoot = undefined;
     this.CirclePathRoot = undefined;
-    this.DXf = new Map();
+    this.V_g = new Map();
     this.PathToCircleHighLightLine = undefined;
     this.DebugPathRoot = undefined;
-    this.RNf = "/Game/Aki/UI/UIResources/UiWorldMap/Prefabs/UiItem_DebugHighLightLine.UiItem_DebugHighLightLine";
-    this.LNf = [];
-    this.wNf = [];
-    this.LXf = Stats_1.Stat.Create("LoadCirclePathHighLightLine");
+    this.uHf = "/Game/Aki/UI/UIResources/UiWorldMap/Prefabs/UiItem_DebugHighLightLine.UiItem_DebugHighLightLine";
+    this.cHf = [];
+    this.dHf = [];
+    this.O_g = Stats_1.Stat.Create("LoadCirclePathHighLightLine");
     this.CurrentCircleId = 0;
   }
   OnRegisterComponent() {
@@ -289,43 +289,43 @@ class AutoPilotLineComponent extends UiPanelBase_1.UiPanelBase {
     this.DebugPathRoot = this.GetItem(9);
   }
   async CreateDebugRoadLine(t) {
-    let i = this.LNf.shift();
+    let i = this.cHf.shift();
     var s;
     if (!i) {
-      s = await LguiUtil_1.LguiUtil.LoadPrefabByAsync(this.RNf, this.DebugPathRoot);
+      s = await LguiUtil_1.LguiUtil.LoadPrefabByAsync(this.uHf, this.DebugPathRoot);
       i = s?.GetComponentByClass(UE.UI2DLineRaw.StaticClass());
     }
     i.SetUIActive(true);
     i?.SetPoints(t);
   }
   RecycleDebugLine() {
-    for (const t of this.wNf) {
+    for (const t of this.dHf) {
       t.SetUIActive(false);
-      this.LNf.push(t);
+      this.cHf.push(t);
     }
-    this.wNf.length = 0;
+    this.dHf.length = 0;
   }
   async LoadCirclePathHighLightLine(i) {
     if (this.CurrentCircleId !== i) {
       this.CurrentCircleId = i;
-      for (const t of this.DXf.values()) {
+      for (const t of this.V_g.values()) {
         t.SetUIActive(false);
       }
-      let t = this.DXf.get(i);
+      let t = this.V_g.get(i);
       if (!t) {
         var s = InfrAutoPilotCircleByAutoPilotCirclePathId_1.configInfrAutoPilotCircleByAutoPilotCirclePathId.GetConfig(i);
         if (!s) {
           return;
         }
-        this.LXf.Start();
+        this.O_g.Start();
         s = await LguiUtil_1.LguiUtil.LoadPrefabByAsync(s.PrefabPath, this.CirclePathRoot);
-        this.LXf.Stop();
+        this.O_g.Stop();
         if (this.IsDestroy) {
           s?.K2_DestroyActor();
           return;
         }
         t = s?.GetComponentByClass(UE.UIItem.StaticClass());
-        this.DXf.set(i, t);
+        this.V_g.set(i, t);
       }
       t.SetUIActive(true);
     }
@@ -334,18 +334,18 @@ class AutoPilotLineComponent extends UiPanelBase_1.UiPanelBase {
     this.CurrentCircleId = 0;
   }
   OnBeforeDestroy() {
-    for (const t of this.wNf) {
+    for (const t of this.dHf) {
       UE.LGUIBPLibrary.DestroyActorWithHierarchy(t.GetOwner());
     }
-    for (const i of this.LNf) {
+    for (const i of this.cHf) {
       UE.LGUIBPLibrary.DestroyActorWithHierarchy(i.GetOwner());
     }
-    for (const s of this.DXf.values()) {
+    for (const s of this.V_g.values()) {
       UE.LGUIBPLibrary.DestroyActorWithHierarchy(s.GetOwner());
     }
-    this.LNf.length = 0;
-    this.wNf.length = 0;
-    this.DXf.clear();
+    this.cHf.length = 0;
+    this.dHf.length = 0;
+    this.V_g.clear();
     this.ResetCircleId();
   }
 }

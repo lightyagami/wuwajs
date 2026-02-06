@@ -17,17 +17,21 @@ class SkillButtonIndexData {
     this.ButtonIndexTagIdSet = new Set();
     this.ButtonIndexTypeList = [];
     this.ButtonTypeTagMap = new Map();
+    this.MotorPadButtonTypeList = [];
+    this.IsRoundJoystick = false;
+    this.MotorPadButtonTypeTagMap = new Map();
+    this.MotorJoystickPadButtonTypeTagMap = new Map();
   }
   RefreshSkillButtonIndex(t) {
     this.IsNormalButtonTypeList = false;
     var i;
     var s;
-    var h = t.Entity.GetComponent(215);
+    var h = t.Entity.GetComponent(217);
     let o = 0;
     for (const e of this.ButtonIndexTagIdList) {
       let t = true;
-      for (const a of e) {
-        if (!h.HasTag(a)) {
+      for (const r of e) {
+        if (!h.HasTag(r)) {
           t = false;
           break;
         }
@@ -59,15 +63,15 @@ class SkillButtonIndexData {
   }
   UpdateSkillButtonIndexConfig(t, i) {
     if ((this.ButtonIndexConfigId !== t?.Id || this.ButtonIndexIsDesktop !== i) && (this.ButtonIndexConfig = t, this.ButtonIndexConfigId = this.ButtonIndexConfig?.Id ?? -1, this.ButtonIndexIsDesktop = i, this.ButtonIndexTagIdList.length = 0, this.ButtonIndexTagIdSet.clear(), this.ButtonIndexTypeList.length = 0, t)) {
-      for (const a of t.TagList) {
+      for (const r of t.TagList) {
         var s = [];
-        for (const r of a.ArrayString) {
-          var h = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(r);
+        for (const a of r.ArrayString) {
+          var h = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(a);
           if (h) {
             s.push(h);
             this.ButtonIndexTagIdSet.add(h);
           } else if (Log_1.Log.CheckError()) {
-            Log_1.Log.Error("Battle", 17, "技能按钮索引配置了不存在的Tag", ["tag", r], ["Id", this.ButtonIndexConfigId]);
+            Log_1.Log.Error("Battle", 17, "技能按钮索引配置了不存在的Tag", ["tag", a], ["Id", this.ButtonIndexConfigId]);
           }
         }
         if (s.length === 0) {
@@ -89,6 +93,30 @@ class SkillButtonIndexData {
       this.ButtonTypeTagMap.clear();
       for ([o, e] of i ? t.DesktopButtonTypeMap : t.PadButtonTypeMap) {
         this.ButtonTypeTagMap.set(o, e.ArrayInt);
+      }
+    }
+  }
+  RefreshMotorPadSkillButtonIndex(t, i) {
+    this.IsRoundJoystick = i;
+    var s;
+    var h;
+    var o = t.Entity.GetComponent(217);
+    for ([s, h] of this.IsRoundJoystick ? this.MotorJoystickPadButtonTypeTagMap : this.MotorPadButtonTypeTagMap) {
+      if (o.HasTag(s)) {
+        this.MotorPadButtonTypeList = h;
+        return;
+      }
+    }
+  }
+  InitMotorPadSkillButtonIndexConfig() {
+    if (this.ButtonIndexConfig) {
+      this.MotorPadButtonTypeTagMap.clear();
+      this.MotorJoystickPadButtonTypeTagMap.clear();
+      for (var [t, i] of this.ButtonIndexConfig.MotorPadButtonTypeMap) {
+        this.MotorPadButtonTypeTagMap.set(t, i.ArrayInt);
+      }
+      for (var [s, h] of this.ButtonIndexConfig.MotorJoystickPadButtonTypeMap) {
+        this.MotorJoystickPadButtonTypeTagMap.set(s, h.ArrayInt);
       }
     }
   }

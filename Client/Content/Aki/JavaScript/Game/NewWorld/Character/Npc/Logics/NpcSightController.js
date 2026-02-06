@@ -59,8 +59,8 @@ class NpcSightController {
     this.DisableSightTarget = false;
     this.Entity = t;
     this.ActorComp = this.Entity.GetComponent(2);
-    this.AnimComp = this.Entity.GetComponent(45);
-    this.PerformComp = this.Entity.GetComponent(197);
+    this.AnimComp = this.Entity.GetComponent(47);
+    this.PerformComp = this.Entity.GetComponent(199);
   }
   Init() {
     this.PerformComp?.HandleCachedStareAction();

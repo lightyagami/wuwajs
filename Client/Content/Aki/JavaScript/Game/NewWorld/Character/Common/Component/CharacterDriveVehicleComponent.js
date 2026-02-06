@@ -34,6 +34,7 @@ const Rotator_1 = require("../../../../../Core/Utils/Math/Rotator");
 const Transform_1 = require("../../../../../Core/Utils/Math/Transform");
 const Vector_1 = require("../../../../../Core/Utils/Math/Vector");
 const MathUtils_1 = require("../../../../../Core/Utils/MathUtils");
+const Platform_1 = require("../../../../../Launcher/Platform/Platform");
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
 const EffectContext_1 = require("../../../../Effect/EffectContext/EffectContext");
@@ -47,7 +48,6 @@ const GameModePromise_1 = require("../../../../World/Define/GameModePromise");
 const VehicleInfoDefines_1 = require("../../../Vehicle/Common/VehicleInfoDefines");
 const CharacterUnifiedStateTypes_1 = require("./Abilities/CharacterUnifiedStateTypes");
 const CustomMovementDefine_1 = require("./Move/CustomMovementDefine");
-const Platform_1 = require("../../../../../Launcher/Platform/Platform");
 exports.DEFAULT_SITTING_HEIGHT = 45;
 const VEHICLE_DISABLE_TIME_LENGTH_THRESHOLD = 1000;
 const gongduolaTypes = new Set(["AutoMoveGongduola", "FishingBoat", "Gongduola"]);
@@ -76,7 +76,7 @@ let CharacterDriveVehicleComponent = class CharacterDriveVehicleComponent extend
     this.BuffComp = undefined;
     this.UeMovementComp = undefined;
     this.VehicleInfo = undefined;
-    this.zxf = undefined;
+    this.NFf = undefined;
     this.AttachOffset = Vector_1.Vector.Create();
     this.SeatReletiveTrans = Transform_1.Transform.Create();
     this.HasWaterEffect = true;
@@ -95,7 +95,7 @@ let CharacterDriveVehicleComponent = class CharacterDriveVehicleComponent extend
     this.TmpTrans3 = Transform_1.Transform.Create();
     this.CacheHandIk = [new HoldingHandsUtils_1.IkTarget(), new HoldingHandsUtils_1.IkTarget()];
     this.IsAttachToMoveSceneItem = false;
-    this.aGf = 0;
+    this.p6f = 0;
     this.OnEnterVehicleWrapper = e => {
       this.OnEnterVehicle(e);
     };
@@ -137,7 +137,7 @@ let CharacterDriveVehicleComponent = class CharacterDriveVehicleComponent extend
         }
       }
     };
-    this.iVf = (e, t) => {
+    this.WQf = (e, t) => {
       this.EnableUeMovementComp(t, "OnEnableUeMovementTagChanged");
     };
   }
@@ -176,11 +176,11 @@ let CharacterDriveVehicleComponent = class CharacterDriveVehicleComponent extend
   }
   OnStart() {
     this.ActorComp = this.Entity.GetComponent(3);
-    this.MoveComp = this.Entity.GetComponent(46);
-    this.UnifiedStateComp = this.Entity.GetComponent(109);
-    this.TagComp = this.Entity.GetComponent(215);
-    this.BuffComp = this.Entity.GetComponent(220);
-    this.UeMovementComp = this.Entity.GetComponent(122);
+    this.MoveComp = this.Entity.GetComponent(48);
+    this.UnifiedStateComp = this.Entity.GetComponent(111);
+    this.TagComp = this.Entity.GetComponent(217);
+    this.BuffComp = this.Entity.GetComponent(222);
+    this.UeMovementComp = this.Entity.GetComponent(124);
     this.EntityHandle = ModelManager_1.ModelManager.CreatureModel.GetEntityById(this.Entity.Id);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CustomMoveRide, this.OnMoveRide);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.TeleportChangeLocation, this.OnTeleportChangleLocation);
@@ -194,7 +194,7 @@ let CharacterDriveVehicleComponent = class CharacterDriveVehicleComponent extend
     ControllerHolder_1.ControllerHolder.VehicleController.OnCharacterEnable(this.Entity);
   }
   OnEnd() {
-    this.zxf = undefined;
+    this.NFf = undefined;
     EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CustomMoveRide, this.OnMoveRide);
     EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.TeleportChangeLocation, this.OnTeleportChangleLocation);
     EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnEnterVehicle, this.OnEnterVehicleWrapper);
@@ -208,10 +208,10 @@ let CharacterDriveVehicleComponent = class CharacterDriveVehicleComponent extend
   OnTick(e) {
     if (this.VehicleInfo) {
       if (this.VehicleEntity?.Active) {
-        this.aGf = 0;
+        this.p6f = 0;
       } else {
-        this.aGf += e;
-        if (this.aGf > VEHICLE_DISABLE_TIME_LENGTH_THRESHOLD) {
+        this.p6f += e;
+        if (this.p6f > VEHICLE_DISABLE_TIME_LENGTH_THRESHOLD) {
           if (Log_1.Log.CheckWarn()) {
             Log_1.Log.Warn("Vehicle", 6, "座驾长时间处于非激活状态，脱离乘坐", ["Actor", this.ActorComp?.Actor.GetName()], ["Vehicle", this.VehicleEntity?.GetComponent(247)?.Actor.GetName()]);
           }
@@ -248,13 +248,13 @@ let CharacterDriveVehicleComponent = class CharacterDriveVehicleComponent extend
     }
     if (e.VehicleType === "Motorcycle" && this.IsDriver) {
       e = this.ActorComp.CreatureData.GetRoleConfig()?.RoleBody;
-      this.zxf = e ? motorHandIkConfigsForRoleTypes.get(e) : undefined;
+      this.NFf = e ? motorHandIkConfigsForRoleTypes.get(e) : undefined;
     } else {
-      this.zxf = undefined;
+      this.NFf = undefined;
     }
   }
   async OnLeaveVehicle(e) {
-    this.zxf = undefined;
+    this.NFf = undefined;
     this.UnregisterExtraFollow(e);
     if (this.VehicleType === "Gongduola" || this.VehicleType === "AutoMoveGongduola") {
       if (e.IsRolePassenger(true)) {
@@ -318,7 +318,7 @@ let CharacterDriveVehicleComponent = class CharacterDriveVehicleComponent extend
     if (!this.TagComp?.HasTag(-648310348)) {
       this.ActorComp.Actor.K2_DetachFromActor(1, 1, 1);
     }
-    if (this.IsAttachToMoveSceneItem && (e = e.VehicleEntity?.GetComponent(212)?.Owner)) {
+    if (this.IsAttachToMoveSceneItem && (e = e.VehicleEntity?.GetComponent(214)?.Owner)) {
       this.ActorComp.Actor.K2_AttachToActor(e, undefined, 1, 1, 1, true);
     }
     this.SeatReletiveTrans.Reset();
@@ -332,9 +332,9 @@ let CharacterDriveVehicleComponent = class CharacterDriveVehicleComponent extend
     this.MoveComp.StopMoveNew();
     EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnBeforeAttachVehicle);
     if (this.ShouldDisableMoveSync()) {
-      this.Entity.GetComponent(70)?.SetEnableMovementSync(false, "CharDriveVehicleComp.ChangeCurrentState");
+      this.Entity.GetComponent(72)?.SetEnableMovementSync(false, "CharDriveVehicleComp.ChangeCurrentState");
     }
-    this.Entity.GetComponent(186)?.ConsumeRootMotion();
+    this.Entity.GetComponent(188)?.ConsumeRootMotion();
     this.ActorComp.Actor.KuroSetMovementMode({
       Mode: 6,
       CustomMode: CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_RIDE,
@@ -350,7 +350,7 @@ let CharacterDriveVehicleComponent = class CharacterDriveVehicleComponent extend
       switch (this.VehicleInfo.VehicleType) {
         case "SceneItemAutoMoveVehicle":
         case "CoBathingEmptyVehicle":
-          t.GetComponent(212).Owner?.IgnoreActorWhenMoving(this.ActorComp.Actor, e, true);
+          t.GetComponent(214).Owner?.IgnoreActorWhenMoving(this.ActorComp.Actor, e, true);
           break;
         case "NpcVehicle":
           t.GetComponent(3).Actor.IgnoreActorWhenMoving(this.ActorComp.Actor, e, true);
@@ -364,7 +364,7 @@ let CharacterDriveVehicleComponent = class CharacterDriveVehicleComponent extend
   }
   RestoreState() {
     if (this.ShouldDisableMoveSync()) {
-      this.Entity.GetComponent(70)?.SetEnableMovementSync(true, "CharDriveVehicleComp.RestoreState");
+      this.Entity.GetComponent(72)?.SetEnableMovementSync(true, "CharDriveVehicleComp.RestoreState");
     }
     EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CharMovementModeChanged, this.Ejr);
     this.ActorComp.Actor.KuroSetMovementMode({
@@ -419,7 +419,7 @@ let CharacterDriveVehicleComponent = class CharacterDriveVehicleComponent extend
           break;
         case "SceneItemAutoMoveVehicle":
         case "CoBathingEmptyVehicle":
-          var s = this.VehicleInfo.VehicleEntity.GetComponent(298);
+          var s = this.VehicleInfo.VehicleEntity.GetComponent(300);
           if (s && !(e = s?.SkeletonMeshComponent)) {
             const h = VehicleInfoDefines_1.VehicleInfoDefines.GetSeatSocketName(this.VehicleInfo.Seat);
             e = s?.GetStaticMeshVehicleSeats(h.toString());
@@ -440,14 +440,9 @@ let CharacterDriveVehicleComponent = class CharacterDriveVehicleComponent extend
         }
         this.ActorComp.Actor.K2_AttachToComponent(e, h, 0, 2, 1, false);
         this.ActorComp.SetForbidSettingLocAndRot(false, 0);
-        this.TmpVector1.Set(0, 0, this.ActorComp.HalfHeight - exports.DEFAULT_SITTING_HEIGHT);
-        this.TmpVector1.AdditionEqual(this.AttachOffset);
-        if (this.VehicleType === "Motorcycle") {
-          this.TmpVector1.Z /= e.GetSocketTransform(h).GetScale3D().Z;
-        }
-        this.ActorComp.Actor.D_K2_SetActorRelativeLocation(this.TmpVector1.ToUeVector(), false, undefined, false);
+        this.SetRelativeTransform(e, h);
         this.ActorComp.ResetAllCachedTime();
-        this.Entity.GetComponent(30)?.MarkDebugRecord("Attach到载具", undefined, true);
+        this.Entity.GetComponent(31)?.MarkDebugRecord("Attach到载具", undefined, true);
         this.ActorComp.SetForbidSettingLocAndRot(true, 0);
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Test", 50, "DriverTransformInfo", ["Actor", this.ActorComp?.Actor.GetName()], ["PbDataId", this.ActorComp?.CreatureData.GetPbDataId()], ["CreatureId", this.ActorComp?.CreatureData.GetCreatureDataId()], ["Transform", this.ActorComp?.ActorTransform], ["RelativeTrans", this.ActorComp?.Actor.RootComponent?.GetRelativeTransform()]);
@@ -455,6 +450,39 @@ let CharacterDriveVehicleComponent = class CharacterDriveVehicleComponent extend
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Vehicle", 50, "进入载具设置位置时找不到载具的ActorComp或Mesh", ["VehiclePbId", i?.CreatureData.GetPbDataId()], ["VehicleType", this.VehicleInfo.VehicleType]);
       }
+    }
+  }
+  SetRelativeTransform(e, t, i = false) {
+    this.TmpVector1.Set(0, 0, this.ActorComp.HalfHeight - exports.DEFAULT_SITTING_HEIGHT);
+    this.TmpVector1.AdditionEqual(this.AttachOffset);
+    this.TmpTrans.SetLocation(this.TmpVector1);
+    this.TmpTrans.SetRotation(Quat_1.Quat.IdentityProxy);
+    this.TmpTrans.SetScale3D(Vector_1.Vector.OneVector);
+    this.TmpTrans2.FromUeTransform(this.ActorComp.Actor.RootComponent.D_GetRelativeTransform());
+    var s = this.TmpTrans.GetLocation().Equals(this.TmpTrans2.GetLocation(), 1) && this.TmpTrans.GetRotation().Equals(this.TmpTrans2.GetRotation(), 0.01);
+    if (!s) {
+      if (i && Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Vehicle", 6, "Vehicle.SetRelativeTransform Seat RelativePosError", ["Passenger", this.ActorComp?.Actor.GetName()], ["ErrorTrans", this.TmpTrans2], ["Seat", t.toString()]);
+      }
+      this.ActorComp.Actor.D_K2_SetActorRelativeTransform(this.TmpTrans.ToUeTransform(), false, undefined, false);
+    }
+    return s;
+  }
+  MotorCheckAndResetRelativeTransform() {
+    var e;
+    var t;
+    if (!this.MoveComp?.CharacterMovement || this.MoveComp.CharacterMovement.MovementMode === 6 && this.MoveComp.CharacterMovement.CustomMovementMode === CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_RIDE) {
+      return !!this.VehicleInfo?.VehicleEntity && !!(e = this.VehicleInfo.VehicleEntity.GetComponent(247)?.Actor?.Mesh) && (t = VehicleInfoDefines_1.VehicleInfoDefines.GetSeatSocketName(this.VehicleInfo.Seat), this.Entity.GetComponent(188)?.CheckAndResetModel(), this.SetRelativeTransform(e, t, true));
+    } else {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Vehicle", 6, "Vehicle.MotorCheckAndResetRelativeTransform", ["Passenger", this.ActorComp?.Actor.GetName()], ["Mode", this.MoveComp.CharacterMovement.MovementMode], ["Custom", this.MoveComp.CharacterMovement.CustomMovementMode]);
+      }
+      this.ActorComp.Actor.KuroSetMovementMode({
+        Mode: 6,
+        CustomMode: CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_RIDE,
+        Context: "[CharacterDriveVehicleComponent.ClearCurrentState]"
+      });
+      return false;
     }
   }
   GetSeatTransform(e) {
@@ -476,25 +504,25 @@ let CharacterDriveVehicleComponent = class CharacterDriveVehicleComponent extend
     return this.VehicleInfo?.ExitType === 3 || this.VehicleType === "NpcVehicle";
   }
   ReplaceExploreSkillForGongduola() {
-    if (ModelManager_1.ModelManager.ExploreModel.CheckNeedChangeSkill(1009, 1)) {
+    if (ModelManager_1.ModelManager.ExploreModel.CheckNeedChangeSkill(1009, 2)) {
       ControllerHolder_1.ControllerHolder.RouletteController.ExploreSkillSetRequest(1009, undefined, true);
     }
-    ModelManager_1.ModelManager.ExploreModel.SetExploreSkillId(1009, 1, "贡多拉拍照");
+    ModelManager_1.ModelManager.ExploreModel.SetExploreSkillId(1009, 2, "贡多拉拍照");
   }
   ResetExploreSkillForGongduola() {
-    ModelManager_1.ModelManager.ExploreModel.ResetExplodeSkillId(1, "ResetExploreSkillForGongduola");
+    ModelManager_1.ModelManager.ExploreModel.ResetExplodeSkillId(2, "ResetExploreSkillForGongduola");
     var e = ModelManager_1.ModelManager.ExploreModel.GetTopLayerExplodeSkillId();
     ControllerHolder_1.ControllerHolder.RouletteController.ExploreSkillSetRequest(e, undefined, true);
   }
   GetHandIkTarget() {
     var t = [undefined, undefined];
-    if (this.zxf) {
+    if (this.NFf) {
       var e = this.ActorComp?.Actor.Mesh;
       var i = this.VehicleEntity?.GetComponent(247)?.Actor.Mesh;
       if (e && i) {
         this.TmpTrans3.FromUeTransform(e.D_K2_GetComponentToWorld());
         for (let e = 0; e < 2; ++e) {
-          var s = this.zxf[e];
+          var s = this.NFf[e];
           var o = this.CacheHandIk[e];
           this.TmpTrans.FromUeTransform(i.D_GetSocketTransform(s.MotorBone, 0));
           s.HandTrans.ComposeTransforms(this.TmpTrans, this.TmpTrans2);
@@ -509,7 +537,7 @@ let CharacterDriveVehicleComponent = class CharacterDriveVehicleComponent extend
     return t;
   }
   GetHandIkTargetUe() {
-    if (this.zxf) {
+    if (this.NFf) {
       return [this.CacheHandIk[0].ToUeIkTarget(), this.CacheHandIk[1].ToUeIkTarget()];
     } else {
       return [undefined, undefined];
@@ -518,7 +546,7 @@ let CharacterDriveVehicleComponent = class CharacterDriveVehicleComponent extend
   TryDisableUeMovementComp() {
     var e;
     if (this.UeMovementComp) {
-      this.TagComp?.AddTagAddOrRemoveListener(e = 170413930, this.iVf);
+      this.TagComp?.AddTagAddOrRemoveListener(e = 170413930, this.WQf);
       if (!this.TagComp?.HasTag(e)) {
         this.EnableUeMovementComp(false, "OnEnterVehicle");
       }
@@ -526,7 +554,7 @@ let CharacterDriveVehicleComponent = class CharacterDriveVehicleComponent extend
   }
   TryEnableUeMovementComp() {
     if (this.UeMovementComp) {
-      this.TagComp?.RemoveTagAddOrRemoveListener(170413930, this.iVf);
+      this.TagComp?.RemoveTagAddOrRemoveListener(170413930, this.WQf);
       this.EnableUeMovementComp(true, "OnLeaveVehicle");
     }
   }
@@ -535,7 +563,7 @@ let CharacterDriveVehicleComponent = class CharacterDriveVehicleComponent extend
       if (e && this.UeMovementCompDisableHandle) {
         this.UeMovementComp.Enable(this.UeMovementCompDisableHandle, t);
         this.UeMovementCompDisableHandle = 0;
-        this.Entity.GetComponent(186)?.ConsumeRootMotion();
+        this.Entity.GetComponent(188)?.ConsumeRootMotion();
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Vehicle", 50, "开启乘客移动组件", ["PbDataId", this.ActorComp?.CreatureData.GetPbDataId()], ["Reason", t]);
         }

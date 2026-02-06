@@ -721,7 +721,7 @@ class HonamiStoryMobileBagInfoPanel extends HonamiStoryBackpackPanelBase_1.Honam
               return false;
             }
           }
-          if (!this._hf(i, e, r, f, h)) {
+          if (!this.w1f(i, e, r, f, h)) {
             return false;
           }
           n.add(f);
@@ -730,7 +730,7 @@ class HonamiStoryMobileBagInfoPanel extends HonamiStoryBackpackPanelBase_1.Honam
     }
     return true;
   }
-  _hf(t, i, s, e, r) {
+  w1f(t, i, s, e, r) {
     var h = this.RXl.GetItemDataByInstanceId(s.GetIncId(), false);
     var a = this.RXl.GetItemDataByInstanceId(e.GetIncId(), false);
     if (h && a) {

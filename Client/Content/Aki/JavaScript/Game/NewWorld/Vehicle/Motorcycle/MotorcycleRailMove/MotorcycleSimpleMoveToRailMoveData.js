@@ -8,6 +8,7 @@ const Log_1 = require("../../../../../Core/Common/Log");
 const Quat_1 = require("../../../../../Core/Utils/Math/Quat");
 const Rotator_1 = require("../../../../../Core/Utils/Math/Rotator");
 const Vector_1 = require("../../../../../Core/Utils/Math/Vector");
+const Transform_1 = require("../../../../../Core/Utils/Math/Transform");
 const MathUtils_1 = require("../../../../../Core/Utils/MathUtils");
 const MotorcycleRailMoveConfigs_1 = require("./MotorcycleRailMoveConfigs");
 const MotorcycleRailMoveDataBase_1 = require("./MotorcycleRailMoveDataBase");
@@ -23,26 +24,29 @@ class MotorcycleSimpleMoveToRailMoveData extends MotorcycleRailMoveDataBase_1.Mo
     this._ae = Vector_1.Vector.Create();
     this.Due = Vector_1.Vector.Create();
     this.Anr = Vector_1.Vector.Create();
-    this.JRm = Quat_1.Quat.Create();
-    this.ZRm = Quat_1.Quat.Create();
+    this.lwm = Quat_1.Quat.Create();
+    this._wm = Quat_1.Quat.Create();
     this.Ql = 0;
     this.Cce = 0;
-    this.AJf = new MotorcycleRailMoveDefine_1.RailMoveContext();
+    this.I1e = Vector_1.Vector.Create();
+    this.cce = Rotator_1.Rotator.Create();
+    this.FCg = new MotorcycleRailMoveDefine_1.RailMoveContext();
     this.dHo = Vector_1.Vector.Create();
-    this.KKf = Rotator_1.Rotator.Create();
-    this.ayf = false;
-    this.fqf = 0;
+    this.H1g = Rotator_1.Rotator.Create();
+    this.sBg = Transform_1.Transform.Create();
+    this.vEf = false;
+    this.EVf = 0;
   }
-  get sTf() {
+  get YRf() {
     return this.MoveConfig.DirectlyEnterRailConfig;
   }
-  get iTf() {
+  get WRf() {
     return this.MoveConfig.DirectlyEnterRailConfig.LinearMoveConfig;
   }
   get ojo() {
     return this.MoveConfig.DirectlyEnterRailConfig.CommonConfig;
   }
-  get gqf() {
+  get IVf() {
     return this.MoveConfig.BasicRailMoveConfig;
   }
   OnEnter(i) {
@@ -52,32 +56,32 @@ class MotorcycleSimpleMoveToRailMoveData extends MotorcycleRailMoveDataBase_1.Mo
       }
       return false;
     }
-    var o = this.KKf;
+    var o = this.H1g;
     if (!this.MoveGetter?.(this._ae, o)) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("MotorRailMove", 39, "[MotorcycleSimpleMoveToRailMoveData] OnEnter Failed: 拿不到位置旋转", ["SplineId", this.RelatedRail?.GetRailSplineId()]);
       }
       return false;
     }
-    o.Quaternion(this.JRm);
-    this.AJf.SourceLoc.FromUeVector(this._ae);
-    this.JRm.Rotator(this.AJf.SourceRot);
-    this.AJf.RailSpline = this.TargetSpline;
-    if (!i?.GetVelocity(this.AJf.SourceVel) && !this.MoveGetter(undefined, undefined, this.AJf.SourceVel)) {
+    o.Quaternion(this.lwm);
+    this.FCg.SourceLoc.FromUeVector(this._ae);
+    this.lwm.Rotator(this.FCg.SourceRot);
+    this.FCg.RailSpline = this.TargetSpline;
+    if (!i?.GetVelocity(this.FCg.SourceVel) && !this.MoveGetter(undefined, undefined, this.FCg.SourceVel)) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("MotorRailMove", 39, "[MotorcycleSimpleMoveToRailMoveData] OnEnter Failed: 拿不到速度", ["SplineId", this.RelatedRail?.GetRailSplineId()]);
       }
       return false;
     }
-    if (this.AJf.SourceVel.IsNearlyZero(1)) {
-      this.AJf.SourceVel.Reset();
+    if (this.FCg.SourceVel.IsNearlyZero(1)) {
+      this.FCg.SourceVel.Reset();
     }
     let t = true;
     o = [MotorcycleRailMoveUtils_1.MotorcycleRailMoveUtils.RailMoveCheckerCheckVehicleNotReverseMove, MotorcycleRailMoveUtils_1.MotorcycleRailMoveUtils.RailMoveCheckerCheckAngleBetweenVehicleUpAndRailUp, MotorcycleRailMoveUtils_1.MotorcycleRailMoveUtils.RailMoveCheckerCheckAngleBetweenVehicleForwardAndRailTangent, MotorcycleRailMoveUtils_1.MotorcycleRailMoveUtils.RailMoveCheckerCheckAngleBetweenVehicleVelocityAndRailTangent, MotorcycleRailMoveUtils_1.MotorcycleRailMoveUtils.RailMoveCheckerCheckRailLenLeft, MotorcycleRailMoveUtils_1.MotorcycleRailMoveUtils.RailMoveCheckerCheckRelativeLocation];
-    this.AJf.IsForward = true;
-    if (!(t = (t = MotorcycleRailMoveUtils_1.MotorcycleRailMoveUtils.CalcRailMoveTargetNotAdvanceBySpeed(this.AJf, this.sTf.LinearMoveConfig.MinSpeed, this.sTf.LinearMoveConfig.MaxSpeed)) && MotorcycleRailMoveUtils_1.MotorcycleRailMoveUtils.ExecCheckList(this.AJf, this.sTf.EnterRailCondition, o, true, this.constructor.name))) {
-      this.AJf.IsForward = false;
-      t = (t = MotorcycleRailMoveUtils_1.MotorcycleRailMoveUtils.CalcRailMoveTargetNotAdvanceBySpeed(this.AJf, this.sTf.LinearMoveConfig.MinSpeed, this.sTf.LinearMoveConfig.MaxSpeed)) && MotorcycleRailMoveUtils_1.MotorcycleRailMoveUtils.ExecCheckList(this.AJf, this.sTf.EnterRailCondition, o, true, this.constructor.name);
+    this.FCg.IsForward = true;
+    if (!(t = (t = MotorcycleRailMoveUtils_1.MotorcycleRailMoveUtils.CalcRailMoveTargetNotAdvanceBySpeed(this.FCg, this.YRf.LinearMoveConfig.MinSpeed, this.YRf.LinearMoveConfig.MaxSpeed)) && MotorcycleRailMoveUtils_1.MotorcycleRailMoveUtils.ExecCheckList(this.FCg, this.YRf.EnterRailCondition, o, true, this.constructor.name))) {
+      this.FCg.IsForward = false;
+      t = (t = MotorcycleRailMoveUtils_1.MotorcycleRailMoveUtils.CalcRailMoveTargetNotAdvanceBySpeed(this.FCg, this.YRf.LinearMoveConfig.MinSpeed, this.YRf.LinearMoveConfig.MaxSpeed)) && MotorcycleRailMoveUtils_1.MotorcycleRailMoveUtils.ExecCheckList(this.FCg, this.YRf.EnterRailCondition, o, true, this.constructor.name);
     }
     if (!t) {
       if (Log_1.Log.CheckWarn()) {
@@ -85,25 +89,25 @@ class MotorcycleSimpleMoveToRailMoveData extends MotorcycleRailMoveDataBase_1.Mo
       }
       return false;
     }
-    this.Due.FromUeVector(this.AJf.RailMoveTarget.TargetLoc);
-    this.AJf.RailMoveTarget.TargetRot.Quaternion(this.ZRm);
+    this.Due.FromUeVector(this.FCg.RailMoveTarget.TargetLoc);
+    this.FCg.RailMoveTarget.TargetRot.Quaternion(this._wm);
     {
       i = this.dHo;
       this.Due.Subtraction(this._ae, i);
       o = i.Size();
       i.Normalize();
-      let t = this.AJf.SourceVel.DotProduct(i);
+      let t = this.FCg.SourceVel.DotProduct(i);
       if (MathUtils_1.MathUtils.IsNearlyZero(t) || t < 0) {
-        t = this.gqf.DefaultMoveSpeed;
+        t = this.IVf.DefaultMoveSpeed;
       }
-      t = MathUtils_1.MathUtils.Clamp(t, this.iTf.MinSpeed, this.iTf.MaxSpeed);
+      t = MathUtils_1.MathUtils.Clamp(t, this.WRf.MinSpeed, this.WRf.MaxSpeed);
       i.Multiply(t, this.Anr);
       this.Ql = o / t;
     }
     var e;
     var s;
-    var h = this.OwnerEntity.GetComponent(215);
-    for ([e, s] of this.sTf.CommonConfig.ModifyVehicleTagsOnEnter) {
+    var h = this.OwnerEntity.GetComponent(217);
+    for ([e, s] of this.YRf.CommonConfig.ModifyVehicleTagsOnEnter) {
       if (s) {
         h?.AddTag(e);
       } else {
@@ -115,8 +119,8 @@ class MotorcycleSimpleMoveToRailMoveData extends MotorcycleRailMoveDataBase_1.Mo
   OnExit() {
     var t;
     var i;
-    var o = this.OwnerEntity.GetComponent(215);
-    for ([t, i] of this.sTf.CommonConfig.ModifyVehicleTagsOnExit) {
+    var o = this.OwnerEntity.GetComponent(217);
+    for ([t, i] of this.YRf.CommonConfig.ModifyVehicleTagsOnExit) {
       if (i) {
         o?.AddTag(t);
       } else {
@@ -126,48 +130,61 @@ class MotorcycleSimpleMoveToRailMoveData extends MotorcycleRailMoveDataBase_1.Mo
   }
   OnTick(t) {
     this.TickUpdateMove(t);
-    this.Cqf(t);
-    this.LRm();
+    this.TVf(t);
+    this.aBg();
+    this.FRm();
   }
   GetVelocity(t) {
     t.DeepCopy(this.Anr);
     return true;
   }
   TickUpdateMove(t) {
-    t = Math.min(this.Ql - this.Cce, t, this.gqf.MaxDeltaTimeForMoveUpdate);
+    t = Math.min(this.Ql - this.Cce, t, this.IVf.MaxDeltaTimeForMoveUpdate);
     this.Cce += t;
-    t = this.dHo;
-    this.Anr.Multiply(this.Cce, t);
-    t.AdditionEqual(this._ae);
-    Quat_1.Quat.Slerp(this.JRm, this.ZRm, this.Cce / this.Ql, MathUtils_1.MathUtils.CommonTempQuat);
-    this.MoveUpdater?.(t, MathUtils_1.MathUtils.CommonTempQuat.Rotator(), this.Anr);
+    this.Anr.Multiply(this.Cce, this.I1e);
+    this.I1e.AdditionEqual(this._ae);
+    Quat_1.Quat.Slerp(this.lwm, this._wm, this.Cce / this.Ql, MathUtils_1.MathUtils.CommonTempQuat);
+    MathUtils_1.MathUtils.CommonTempQuat.Rotator(this.cce);
   }
-  LRm() {
-    if (this.ojo.EnableBlockingCheck && this.ayf && this.fqf > this.ojo.MaxBlockingTimeOut) {
+  aBg() {
+    var t;
+    var i;
+    if (this.ojo.EnableBlockingCheck && this.vEf) {
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("MotorRailMove", 39, "[MotorcycleSimpleMoveToRailMoveData] 检测到阻挡，不应用位移更新", ["BlockingTime", this.EVf], ["CurrentLocation", this.I1e]);
+      }
+    } else {
+      t = this.dHo;
+      i = this.GetVelocity(t);
+      this.MoveUpdater?.(this.I1e, this.cce, i ? t : undefined, this.ojo.EnableBlockingCheck);
+    }
+  }
+  FRm() {
+    if (this.ojo.EnableBlockingCheck && this.vEf && this.EVf > this.ojo.MaxBlockingTimeOut) {
       this.IsFinishMove = true;
       this.IsFinishMoveOnFailure = true;
       if (Log_1.Log.CheckWarn()) {
-        Log_1.Log.Warn("MotorRailMove", 39, "[MotorcycleSimpleMoveToRailMoveData] Finish move on blocking", ["BlockingTime", this.fqf]);
+        Log_1.Log.Warn("MotorRailMove", 39, "[MotorcycleSimpleMoveToRailMoveData] Finish move on blocking", ["BlockingTime", this.EVf]);
       }
     } else {
       this.IsFinishMove = this.Cce >= this.Ql;
     }
   }
-  Cqf(t) {
+  TVf(t) {
     var i;
     var o;
-    var e;
-    if (this.ojo.EnableBlockingCheck && !this.IsFinishMove && (i = this.OwnerEntity.GetComponent(247), e = this.OwnerEntity.GetComponent(249), i && e && e.VehicleMovement)) {
-      o = this.ayf;
-      this.ayf = !e.VehicleMovement.IsValidTransform(i.ActorTransform, undefined);
-      if (this.ayf) {
-        e = o ? Math.min(t, this.gqf.MaxDeltaTimeForMoveUpdate) : 0;
-        this.fqf += e;
+    if (this.ojo.EnableBlockingCheck && !this.IsFinishMove && (i = this.OwnerEntity.GetComponent(247), o = this.OwnerEntity.GetComponent(249), i && o && o.VehicleMovement)) {
+      i = this.vEf;
+      this.sBg.Set(this.I1e, this.cce.Quaternion(), Vector_1.Vector.OneVectorProxy);
+      this.vEf = !o.VehicleMovement.IsValidTransform(this.sBg.ToUeTransform(), undefined);
+      if (this.vEf) {
+        o = i ? Math.min(t, this.IVf.MaxDeltaTimeForMoveUpdate) : 0;
+        this.EVf += o;
         if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("MotorRailMove", 39, "[MotorcycleSimpleMoveToRailMoveData] Blocked", ["BlockingTime", this.fqf]);
+          Log_1.Log.Debug("MotorRailMove", 39, "[MotorcycleSimpleMoveToRailMoveData] Blocked", ["BlockingTime", this.EVf]);
         }
       } else {
-        this.fqf = 0;
+        this.EVf = 0;
       }
     }
   }

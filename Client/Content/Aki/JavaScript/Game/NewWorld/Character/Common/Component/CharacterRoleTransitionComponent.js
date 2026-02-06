@@ -92,5 +92,5 @@ let CharacterRoleTransitionComponent = class CharacterRoleTransitionComponent ex
     ControllerHolder_1.ControllerHolder.CreatureController.ChangeEntityRoleRequest(e, t);
   }
 };
-CharacterRoleTransitionComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(77)], CharacterRoleTransitionComponent);
+CharacterRoleTransitionComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(79)], CharacterRoleTransitionComponent);
 exports.CharacterRoleTransitionComponent = CharacterRoleTransitionComponent; //# sourceMappingURL=CharacterRoleTransitionComponent.js.map

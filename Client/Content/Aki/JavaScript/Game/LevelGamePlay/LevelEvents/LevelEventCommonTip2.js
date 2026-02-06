@@ -23,39 +23,32 @@ class LevelEventCommonTip2 extends LevelGeneralBase_1.LevelEventBase {
     };
   }
   ExecuteNew(e, t) {
-    if (e) {
-      e = e.TipOption;
-      if (e.Type === IAction_1.ECommonTip2Type.PrepareCountdown) {
-        this.Zkl = e.IsBlockPlayer ?? false;
-        if (this.Zkl) {
-          if (LevelEventLockInputState_1.LevelEventLockInputState.IsLockInput()) {
-            LevelEventLockInputState_1.LevelEventLockInputState.InputTagNames.push(BLOCK_INPUTTAG);
-            ControllerHolder_1.ControllerHolder.InputDistributeController.RefreshInputTag();
-          } else {
-            ModelManager_1.ModelManager.InputDistributeModel.SetInputDistributeTag(BLOCK_INPUTTAG);
-            LevelEventLockInputState_1.LevelEventLockInputState.Lock([BLOCK_INPUTTAG]);
-          }
-        }
-        switch (e.UiStyle) {
-          case "Common":
-            this.WDe = "LevelGamePlayPrepareCountDown";
-            break;
-          case "MotorRacing":
-            this.WDe = "LevelGamePlayMotorPrepareCountDown";
-            break;
-          default:
-            this.WDe = "LevelGamePlayPrepareCountDown";
-        }
-        e = {
-          CountDownNum: e.CountDownNum,
-          TidText: e.TidCountDownTxt
-        };
-        UiManager_1.UiManager.OpenView(this.WDe, e);
-        if (this.IsAsync) {
-          this.FinishExecute(true);
+    if (e && (e = e.TipOption).Type === IAction_1.ECommonTip2Type.PrepareCountdown) {
+      this.Zkl = e.IsBlockPlayer ?? false;
+      if (this.Zkl) {
+        if (LevelEventLockInputState_1.LevelEventLockInputState.IsLockInput()) {
+          LevelEventLockInputState_1.LevelEventLockInputState.InputTagNames.push(BLOCK_INPUTTAG);
+          ControllerHolder_1.ControllerHolder.InputDistributeController.RefreshInputTag();
         } else {
-          EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.LevelGamePlayPrepareCountDownEnd, this.Z4l);
+          ModelManager_1.ModelManager.InputDistributeModel.SetInputDistributeTag(BLOCK_INPUTTAG);
+          LevelEventLockInputState_1.LevelEventLockInputState.Lock([BLOCK_INPUTTAG]);
         }
+      }
+      if (e.UiStyle === "Common") {
+        this.WDe = "LevelGamePlayPrepareCountDown";
+      } else {
+        this.WDe = "LevelGamePlayMotorPrepareCountDown";
+      }
+      e = {
+        CountDownNum: e.CountDownNum,
+        TidText: e.TidCountDownTxt,
+        UiStyle: e.UiStyle
+      };
+      UiManager_1.UiManager.OpenView(this.WDe, e);
+      if (this.IsAsync) {
+        this.FinishExecute(true);
+      } else {
+        EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.LevelGamePlayPrepareCountDownEnd, this.Z4l);
       }
     }
   }

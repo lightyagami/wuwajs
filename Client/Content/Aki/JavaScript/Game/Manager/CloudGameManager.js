@@ -10,7 +10,7 @@ const CustomPromise_1 = require("../../Core/Common/CustomPromise");
 const Info_1 = require("../../Core/Common/Info");
 const Json_1 = require("../../Core/Common/Json");
 const Log_1 = require("../../Core/Common/Log");
-const ResourceSystem_1 = require("../../Core/Resource/ResourceSystem");
+const LoadModeManager_1 = require("../../Core/Performance/LoadMode/LoadModeManager");
 const TimerSystem_1 = require("../../Core/Timer/TimerSystem");
 const StringUtils_1 = require("../../Core/Utils/StringUtils");
 const CloudGameManagerLauncher_1 = require("../../Launcher/Platform/CloudGameManagerLauncher");
@@ -159,7 +159,7 @@ class CloudGameManager {
       this.HLc = new CustomPromise_1.CustomPromise();
     }
     ue_1.KuroStaticLibrary.SaveStringToFile("OnWaitingForUser", this.$Lc);
-    ResourceSystem_1.ResourceSystem.SetLoadModeInGame(GlobalData_1.GlobalData.World, "GameProcedure.OnStart");
+    LoadModeManager_1.LoadModeManager.ResetLoadModeByReason("GameProcedureOnStart");
     CloudGameManager.SendData("RequestLoginPreLaunch");
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("CloudGame", 16, "OnWaitingForUser save file", ["WaitingForDbFlagFilePath", this.$Lc]);
@@ -328,7 +328,7 @@ CloudGameManager.OnUserLoginPreLaunch = e => {
         ue_1.KuroLauncherLibrary.DeleteFile(CloudGameManager.$Lc);
       }
       ResetTimeController_1.ResetTimeController.ResetTime();
-      ResourceSystem_1.ResourceSystem.SetLoadModeInLoading(GlobalData_1.GlobalData.World, "GameProcedure.OnStart");
+      LoadModeManager_1.LoadModeManager.SetLoadModeByReason("Loading", "GameProcedureOnStart");
       let a = 0;
       CloudGameManager.sRr = TimerSystem_1.GameplayTimerSystem.Forever(() => {
         a++;

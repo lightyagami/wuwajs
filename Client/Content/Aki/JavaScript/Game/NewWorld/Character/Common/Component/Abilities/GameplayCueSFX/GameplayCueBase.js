@@ -9,15 +9,15 @@ const Protocol_1 = require("../../../../../../../Core/Define/Net/Protocol");
 const EventDefine_1 = require("../../../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../../../Common/Event/EventSystem");
 class GameplayCueBase {
-  constructor(t, e, i, s, h, n, o, a) {
+  constructor(t, e, s, i, h, n, a, o) {
     this.CueConfig = t;
     this.EntityHandle = e;
-    this.ActorInternal = i;
-    this.CueComp = s;
+    this.ActorInternal = s;
+    this.CueComp = i;
     this.IsInstant = h;
     this.BeginCallback = n;
-    this.EndCallback = o;
-    this.Instigator = a;
+    this.EndCallback = a;
+    this.Instigator = o;
     this.BuffId = undefined;
     this.BuffHandleId = 0;
     this.CueHandleIds = new Set();
@@ -34,7 +34,7 @@ class GameplayCueBase {
     this.EntityHandle = t;
     this.ActorInternal = t.Entity.GetComponent(3).Actor;
     if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("Battle", 28, "Cue特效换人", ["CueType", this.CueConfig.CueType], ["CueId", this.CueConfig.Id], ["BuffId", this.BuffId], ["BuffHandleID", this.BuffHandleId], ["EntityId", this.EntityHandle.Id], ["Name", this.ActorInternal.GetName()]);
+      Log_1.Log.Debug("Battle", 28, "GameplayCueBase.Cue特效换人", ["CueType", this.CueConfig.CueType], ["CueId", this.CueConfig.Id], ["BuffId", this.BuffId], ["BuffHandleID", this.BuffHandleId], ["EntityId", this.EntityHandle.Id], ["Name", this.ActorInternal.GetName()], ["Path", this.GetPath()]);
     }
   }
   static IsSingleInstance() {
@@ -53,7 +53,7 @@ class GameplayCueBase {
   Ofe() {
     if (!this.IsActive) {
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("Battle", 28, "Cue特效开始", ["CueType", this.CueConfig.CueType], ["CueId", this.CueConfig.Id], ["BuffId", this.BuffId], ["BuffHandleID", this.BuffHandleId], ["EntityId", this.EntityHandle.Id], ["Name", this.ActorInternal.GetName()]);
+        Log_1.Log.Debug("Battle", 28, "GameplayCueBase.Cue特效开始", ["CueType", this.CueConfig.CueType], ["CueId", this.CueConfig.Id], ["BuffId", this.BuffId], ["BuffHandleID", this.BuffHandleId], ["EntityId", this.EntityHandle.Id], ["Name", this.ActorInternal.GetName()], ["Path", this.GetPath()]);
       }
       this.IsActive = true;
       this.OnCreate();
@@ -63,7 +63,7 @@ class GameplayCueBase {
   Destroy() {
     if (this.IsActive) {
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("Battle", 28, "Cue特效结束", ["CueType", this.CueConfig.CueType], ["CueId", this.CueConfig.Id], ["BuffId", this.BuffId], ["BuffHandleID", this.BuffHandleId], ["EntityId", this.EntityHandle.Id], ["Name", this.ActorInternal.GetName()]);
+        Log_1.Log.Debug("Battle", 28, "GameplayCueBase.Cue特效结束", ["CueType", this.CueConfig.CueType], ["CueId", this.CueConfig.Id], ["BuffId", this.BuffId], ["BuffHandleID", this.BuffHandleId], ["EntityId", this.EntityHandle.Id], ["Name", this.ActorInternal.GetName()], ["Path", this.GetPath()]);
       }
       this.IsActive = false;
       this.OnDestroy();
@@ -87,14 +87,14 @@ class GameplayCueBase {
       e = this.BuffHandleId;
       this.BuffHandleId = t;
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("Battle", 85, "特效BuffHandle修改", ["CueType", this.CueConfig.CueType], ["CueId", this.CueConfig.Id], ["BuffId", this.BuffId], ["preHandle", e], ["BuffHandleID", this.BuffHandleId], ["EntityId", this.EntityHandle.Id], ["Name", this.ActorInternal.GetName()]);
+        Log_1.Log.Debug("Battle", 85, "GameplayCueBase.Cue特效BuffHandle修改", ["CueType", this.CueConfig.CueType], ["CueId", this.CueConfig.Id], ["BuffId", this.BuffId], ["preHandle", e], ["BuffHandleID", this.BuffHandleId], ["EntityId", this.EntityHandle.Id], ["Name", this.ActorInternal.GetName()], ["Path", this.GetPath()]);
       }
       this.OnChangeBuffHandle(e, t);
     }
   }
   GetPath() {
     let t = undefined;
-    var e = this.EntityHandle.Entity.GetComponent(3);
+    var e = this.EntityHandle.Entity?.GetComponent(1);
     return (t = e ? e.GetReplaceEffect(this.CueConfig.Path) : t) || this.CueConfig.Path;
   }
   GetActorComponent() {

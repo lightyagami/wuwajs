@@ -5,27 +5,28 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.FeatureRestrictionTemplate = undefined;
 const ConfigManager_1 = require("../../Manager/ConfigManager");
+const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 class FeatureRestrictionTemplate {
-  constructor(t, e = 0) {
+  constructor(e, t = 0) {
     this.lNn = 0;
     this._Nn = 0;
     this.uNn = 2;
     this.cNn = 0;
-    this.uNn = t;
-    this.cNn = e;
+    this.uNn = e;
+    this.cNn = t;
   }
-  mNn(t) {
-    this.lNn = this.lNn | t;
+  mNn(e) {
+    this.lNn = this.lNn | e;
   }
-  dNn(t, e) {
-    return (t & e) === e;
+  dNn(e, t) {
+    return (e & t) === t;
   }
   CNn() {
-    let t = 0;
-    if (ConfigManager_1.ConfigManager.CommonConfig?.GetPioneerFlag()) {
-      t |= 8;
+    let e = 0;
+    if (ConfigManager_1.ConfigManager.CommonConfig?.GetPioneerFlag() || ControllerHolder_1.ControllerHolder.KuroSdkController.CheckIfPioneer()) {
+      e |= 8;
     }
-    return t;
+    return e;
   }
   gNn() {
     return 0;
@@ -49,8 +50,8 @@ class FeatureRestrictionTemplate {
     }
   }
   static get TemplateForPioneerClient() {
-    var t;
-    return FeatureRestrictionTemplate.fNn || ((t = new FeatureRestrictionTemplate(0)).mNn(8), FeatureRestrictionTemplate.fNn = t);
+    var e;
+    return FeatureRestrictionTemplate.fNn || ((e = new FeatureRestrictionTemplate(0)).mNn(8), FeatureRestrictionTemplate.fNn = e);
   }
 }
 (exports.FeatureRestrictionTemplate = FeatureRestrictionTemplate).fNn = undefined;

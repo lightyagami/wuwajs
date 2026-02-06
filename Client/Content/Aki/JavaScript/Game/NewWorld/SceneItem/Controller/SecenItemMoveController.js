@@ -69,7 +69,7 @@ class SceneItemMoveController extends ControllerBase_1.ControllerBase {
   static mIn(e, o = 1) {
     var t = this._In.get(e);
     if (t) {
-      var n = e.GetComponent(137);
+      var n = e.GetComponent(139);
       if (n) {
         e = t.Points.slice();
         e.reverse();
@@ -98,7 +98,7 @@ class SceneItemMoveController extends ControllerBase_1.ControllerBase {
   static cIn(e, t = 1) {
     var n = this._In.get(e);
     if (n) {
-      var r = e.GetComponent(137);
+      var r = e.GetComponent(139);
       if (r) {
         e = n.Points.slice();
         if (t > 0) {
@@ -133,7 +133,7 @@ class SceneItemMoveController extends ControllerBase_1.ControllerBase {
 exports.SceneItemMoveController = SceneItemMoveController;
 (_a = SceneItemMoveController)._In = new Map();
 SceneItemMoveController.CIn = e => {
-  var o = e.GetComponent(137);
+  var o = e.GetComponent(139);
   if (o) {
     o?.RemoveStopMoveCallbackWithEntity(_a.CIn);
     if (Log_1.Log.CheckInfo()) {
@@ -143,7 +143,7 @@ SceneItemMoveController.CIn = e => {
   }
 };
 SceneItemMoveController.dIn = e => {
-  var o = e.GetComponent(137);
+  var o = e.GetComponent(139);
   if (o) {
     o?.RemoveStopMoveCallbackWithEntity(_a.dIn);
     if (Log_1.Log.CheckInfo()) {
@@ -153,7 +153,7 @@ SceneItemMoveController.dIn = e => {
   }
 };
 SceneItemMoveController.OnStopCallback = e => {
-  var o = e.GetComponent(137);
+  var o = e.GetComponent(139);
   if (o) {
     o?.RemoveStopMoveCallbackWithEntity(_a.OnStopCallback);
     if (EventSystem_1.EventSystem.HasWithTarget(e, EventDefine_1.EEventName.OnSceneItemMoveBroken, _a.OnStopCallback)) {

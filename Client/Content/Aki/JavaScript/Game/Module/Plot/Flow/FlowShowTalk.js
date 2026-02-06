@@ -6,9 +6,11 @@ Object.defineProperty(exports, "__esModule", {
 exports.FlowShowTalk = undefined;
 const CustomPromise_1 = require("../../../../Core/Common/CustomPromise");
 const Log_1 = require("../../../../Core/Common/Log");
+const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
 const CameraController_1 = require("../../../Camera/CameraController");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const Global_1 = require("../../../Global");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiManager_1 = require("../../../Ui/UiManager");
@@ -27,6 +29,8 @@ class FlowShowTalk {
     this.dbn = false;
     this.gjs = false;
     this.fjs = false;
+    this.Nkg = undefined;
+    this.Vkg = undefined;
     this.F$i = t => {
       var e;
       if (t) {
@@ -90,6 +94,12 @@ class FlowShowTalk {
     if (this.B8 && this.CheckPlotLevelInAbc()) {
       CameraController_1.CameraController.FightCamera.LogicComponent.ExitCameraGuideAtOnce();
     }
+    if (TimerSystem_1.TimerSystem.Has(this.Vkg)) {
+      TimerSystem_1.TimerSystem.Remove(this.Vkg);
+    }
+    if (this.Nkg && (Global_1.Global.CharacterController.StopKuroForceFeedback(this.Nkg.GamepadShakeAsset, this.Nkg.Tag), this.Nkg?.FeedbackComponent?.IsValid())) {
+      this.Nkg.FeedbackComponent.Stop();
+    }
     this.B8 = undefined;
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PlotEndShowTalk);
     ControllerHolder_1.ControllerHolder.FlowController.RunNextAction();
@@ -131,10 +141,10 @@ class FlowShowTalk {
   SwitchTalkItem(e) {
     var i = this.CurShowTalk.TalkItems.length;
     for (let t = 0; t < i; t++) {
-      var o = this.CurShowTalk.TalkItems[t];
-      if (o.Id === e) {
+      var s = this.CurShowTalk.TalkItems[t];
+      if (s.Id === e) {
         this.CurTalkItemIndex = t;
-        this.j$i(o);
+        this.j$i(s);
         return;
       }
     }
@@ -157,6 +167,7 @@ class FlowShowTalk {
     this.dbn = true;
     this.Fc();
     this.vbn();
+    this.KCg(t.GamepadShake);
     if (this.Context.IsBackground) {
       this.mbn();
     }
@@ -217,36 +228,44 @@ class FlowShowTalk {
       ModelManager_1.ModelManager.PlotModel.HandlePlayMontage(this.S$i.Montage);
     }
   }
+  KCg(t) {
+    if (!this.Context?.IsBackground && t && this.B8 === "LevelC") {
+      this.Vkg = TimerSystem_1.TimerSystem.Delay(() => {
+        this.Nkg = {};
+        ControllerHolder_1.ControllerHolder.GamepadController.TriggerGamepadShakeEvent(t.Options, this.Nkg);
+      }, t.DelayTime * 1000);
+    }
+  }
   async Cbn() {
     var t = this.S$i?.BackgroundConfig;
     var e = UiManager_1.UiManager.GetViewByName("PlotView");
     if (t && this.B8 === "LevelC" && !this.Context.IsBackground && e) {
-      const s = new CustomPromise_1.CustomPromise();
+      const o = new CustomPromise_1.CustomPromise();
       var i = () => {
-        s.SetResult();
+        o.SetResult();
       };
       switch (t.Type) {
         case "Clean":
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PlotViewBgFadePhoto, false, true, undefined, i);
-          if (!s.IsFulfilled()) {
-            await s.Promise;
+          if (!o.IsFulfilled()) {
+            await o.Promise;
           }
           await e.CloseChildView();
           break;
         case "Image":
-          var o = t;
+          var s = t;
           PlotController_1.PlotController.UpdateViewControl(false);
-          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PlotViewBgFadePhoto, true, true, o?.ImageAsset, i);
-          if (!s.IsFulfilled()) {
-            await s.Promise;
+          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PlotViewBgFadePhoto, true, true, s?.ImageAsset, i);
+          if (!o.IsFulfilled()) {
+            await o.Promise;
           }
           break;
         case "Icon":
-          o = t;
+          s = t;
           PlotController_1.PlotController.UpdateViewControl(false);
-          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PlotViewBgFadePhoto, true, false, o?.ImageAsset, i);
-          if (!s.IsFulfilled()) {
-            await s.Promise;
+          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PlotViewBgFadePhoto, true, false, s?.ImageAsset, i);
+          if (!o.IsFulfilled()) {
+            await o.Promise;
           }
           break;
         case "ImageByMcGender":
@@ -256,8 +275,8 @@ class FlowShowTalk {
           } else if (ModelManager_1.ModelManager.PlayerInfoModel.GetPlayerGender() === 0) {
             EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PlotViewBgFadePhoto, true, true, t.ImageAssetFemale, i);
           }
-          if (!s.IsFulfilled()) {
-            await s.Promise;
+          if (!o.IsFulfilled()) {
+            await o.Promise;
           }
           break;
         case "SpineImage":

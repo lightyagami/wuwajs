@@ -44,7 +44,7 @@ class TsTaskTurnToPosition extends TsTaskAbortImmediatelyBase_1.default {
       s = (e = e.CharAiDesignComp.Entity).GetComponent(0);
       if (e?.Valid) {
         this.Character = e.GetComponent(3);
-        if ((e = e.GetComponent(46)?.CharacterMovement)?.IsValid()) {
+        if ((e = e.GetComponent(48)?.CharacterMovement)?.IsValid()) {
           this.MovementMode = e.MovementMode;
           e.MovementMode = 1;
           AiContollerLibrary_1.AiControllerLibrary.TurnToTarget(this.Character, this.TsTargetPos, this.TsTurnSpeed);
@@ -69,7 +69,7 @@ class TsTaskTurnToPosition extends TsTaskAbortImmediatelyBase_1.default {
   }
   ReceiveTickAI(t, i, s) {
     if (GravityUtils_1.GravityUtils.GetAngleOffsetFromCurrentToInputAbs(this.Character) < TOLERANCE) {
-      this.Character.Entity.GetComponent(46).CharacterMovement.MovementMode = this.MovementMode;
+      this.Character.Entity.GetComponent(48).CharacterMovement.MovementMode = this.MovementMode;
       this.Finish(true);
     }
   }

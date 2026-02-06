@@ -14,6 +14,7 @@ const ChannelController_1 = require("../../Channel/ChannelController");
 const ButtonItem_1 = require("../../Common/Button/ButtonItem");
 const LguiUtil_1 = require("../../Util/LguiUtil");
 const MenuController_1 = require("../MenuController");
+const MenuDefine_1 = require("../MenuDefine");
 const MenuScrollSettingBaseItem_1 = require("./MenuScrollSettingBaseItem");
 class MenuScrollSettingButtonItem extends MenuScrollSettingBaseItem_1.MenuScrollSettingBaseItem {
   constructor() {
@@ -49,7 +50,7 @@ class MenuScrollSettingButtonItem extends MenuScrollSettingBaseItem_1.MenuScroll
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIItem], [2, UE.UIText], [3, UE.UIItem], [4, UE.UIText], [5, UE.UISprite]];
+    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIItem], [2, UE.UIText], [3, UE.UIItem], [4, UE.UIText], [5, UE.UISprite], [6, UE.UIExtendToggleSpriteTransition]];
   }
   OnStart() {
     this.p4e = new ButtonItem_1.ButtonItem(this.GetItem(1));
@@ -65,6 +66,7 @@ class MenuScrollSettingButtonItem extends MenuScrollSettingBaseItem_1.MenuScroll
     this.ZGe();
     this.sxi();
     this.cHa();
+    this.RefreshDetailSprite();
     this.SetInteractionActive(t.GetEnable());
     this.Data.OnRefresh();
     this.BNe();
@@ -95,6 +97,13 @@ class MenuScrollSettingButtonItem extends MenuScrollSettingBaseItem_1.MenuScroll
       this.GetSprite(5)?.SetUIActive(this.Data.HasDetailText());
     }
   }
+  async RefreshDetailSprite() {
+    var t;
+    if (this.Data) {
+      t = this.Data.CanClickWhenDisable ? MenuDefine_1.DETAIL_SPRITE_PATH : MenuDefine_1.LOCK_SPRITE_PATH;
+      await Promise.all([this.SetExtendToggleSpriteTransitionByPath(t, this.GetUiExtendToggleSpriteTransition(6), 6), this.SetExtendToggleSpriteTransitionByPath(t, this.GetUiExtendToggleSpriteTransition(6), 7), this.SetExtendToggleSpriteTransitionByPath(t, this.GetUiExtendToggleSpriteTransition(6), 8)]);
+    }
+  }
   XBi(t, e = false) {
     let i = "";
     var s = MenuController_1.MenuController.GetTargetConfig(GameSettingsDefine_1.EFunction.DISPLAYMODE);
@@ -106,11 +115,11 @@ class MenuScrollSettingButtonItem extends MenuScrollSettingBaseItem_1.MenuScroll
   }
   SetButtonText(t, e, i = false) {
     var s = this.Data.ButtonTextId;
-    var r = this.GetText(2);
+    var n = this.GetText(2);
     if (s) {
-      r.ShowTextNew(s);
+      n.ShowTextNew(s);
     } else {
-      r.ShowTextNew(t ?? "");
+      n.ShowTextNew(t ?? "");
     }
     if (i) {
       this.FireSaveMenuChange(e);
@@ -121,6 +130,13 @@ class MenuScrollSettingButtonItem extends MenuScrollSettingBaseItem_1.MenuScroll
   }
   OnSetDetailVisible(t) {
     this.GetItem(3)?.SetUIActive(t);
+    if (this.Data && this.Data.CanClickWhenDisable && !this.Data.GetEnable()) {
+      t = t ? UE.Color.FromHex(MenuDefine_1.DETAIL_SPRITE_VISIBLE_COLOR_SRGB) : UE.Color.FromHex("FFFFFFFF");
+      this.GetSprite(5).SetColor(t);
+      this.GetUiExtendToggleSpriteTransition(6).TransitionState.UnDetermineUnHoverState.Color = t;
+      this.GetUiExtendToggleSpriteTransition(6).TransitionState.UnDetermineHoverState.Color = t;
+      this.GetUiExtendToggleSpriteTransition(6).TransitionState.UnDeterminePressedState.Color = t;
+    }
   }
   BNe() {
     this.p4e?.SetRedDotVisible(this.Data.EnableRedDot);

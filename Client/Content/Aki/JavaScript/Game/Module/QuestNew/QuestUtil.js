@@ -27,21 +27,21 @@ class QuestUtil {
     if (!a) {
       return false;
     }
-    let i = 0;
-    i = r instanceof Vector_1.Vector ? Vector_1.Vector.Dist(r, a) * MapDefine_1.FLOAT_0_01 : ue_1.Vector.Dist(r, a.ToUeVectorOld()) * MapDefine_1.FLOAT_0_01;
-    i = Math.round(i);
+    let t = 0;
+    t = r instanceof Vector_1.Vector ? Vector_1.Vector.Dist(r, a) * MapDefine_1.FLOAT_0_01 : ue_1.Vector.Dist(r, a.ToUeVectorOld()) * MapDefine_1.FLOAT_0_01;
+    t = Math.round(t);
     var r = r.Z - a.Z;
-    var a = i.toString();
+    var a = t.toString();
     LguiUtil_1.LguiUtil.SetLocalText(e, "Meter", a);
-    let t = e.GetText();
+    let i = e.GetText();
     if (r > 300) {
       a = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("T_YellowArrowUp");
-      t += `<texture=${a}/>`;
+      i += `<texture=${a}/>`;
     } else if (r < -300) {
       a = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("T_YellowArrowDown");
-      t += `<texture=${a}/>`;
+      i += `<texture=${a}/>`;
     }
-    e.SetText(t);
+    e.SetText(i);
     return true;
   }
   static GetQuestMarkId(e, r) {
@@ -53,13 +53,23 @@ class QuestUtil {
     }
     return ConfigManager_1.ConfigManager.QuestNewConfig.GetQuestTypeMarkId(e);
   }
+  static GetQuestMarkIconPathByQuestId(e) {
+    var r = ModelManager_1.ModelManager.QuestNewModel.GetQuestConfig(e);
+    var r = ConfigManager_1.ConfigManager.QuestNewConfig.GetQuestTypeConfig(r?.Type ?? 0);
+    if (r) {
+      r = this.GetQuestMarkId(r.MainId, e) ?? 0;
+      return ConfigManager_1.ConfigManager.QuestNewConfig.GetQuestTypeMark(r);
+    } else {
+      return "";
+    }
+  }
   static HandleTrackCustomBoard(e, r = false) {
     return !!e && (!r || !!InputManager_1.InputManager.IsAllowOpenViewByShortcutKey()) && !!e.TrackPhoneMessageBoard && !(r = e.TrackPhoneMessageBoard.PhoneMessageId ?? 0, (e = ConfigManager_1.ConfigManager.PhoneMsgConfig.GetPhoneMsgConfig(r)) ? ModelManager_1.ModelManager.PhoneMsgModel.IsPhoneMsgUnlock(r) ? (UiManager_1.UiManager.IsViewOpen("PhoneMsgPanelViewBig") || UiManager_1.UiManager.IsViewOpen("PhoneMsgPanelViewSmall") ? Log_1.Log.CheckInfo() && Log_1.Log.Info("Quest", 74, "手机短信界面已打开，无需重复打开") : (e = {
       ShortMessage: e,
       NeedShowTips: false,
       OpenWay: 3,
       ViewType: 1
-    }, UiManager_1.UiManager.OpenView("PhoneMsgPanelViewBig", e)), 0) : (Log_1.Log.CheckError() && Log_1.Log.Error("Quest", 74, "短信未解锁，无法追踪", ["短信ID", r]), 1) : (Log_1.Log.CheckError() && Log_1.Log.Error("Quest", 74, "找不到对应的短信配置", ["短信ID", r]), 1));
+    }, UiManager_1.UiManager.OpenView("PhoneMsgPanelViewBig", e)), 0) : (Log_1.Log.CheckWarn() && Log_1.Log.Warn("Quest", 74, "短信未解锁，无法追踪", ["短信ID", r]), 1) : (Log_1.Log.CheckError() && Log_1.Log.Error("Quest", 74, "找不到对应的短信配置", ["短信ID", r]), 1));
   }
 }
 exports.QuestUtil = QuestUtil;

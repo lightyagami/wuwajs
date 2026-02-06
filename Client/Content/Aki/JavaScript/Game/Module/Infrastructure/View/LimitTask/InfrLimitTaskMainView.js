@@ -26,7 +26,7 @@ class InfrLimitTaskMainView extends UiViewBase_1.UiViewBase {
       e.SetOnClickRewardCb(this.qim);
       return e;
     };
-    this.f4m = () => {
+    this.x5m = () => {
       var e = ModelManager_1.ModelManager.InfrastructureModel.GetActivityData();
       if (e) {
         this.OOe.RefreshByData(e.GetActivityTaskDataList());
@@ -51,15 +51,15 @@ class InfrLimitTaskMainView extends UiViewBase_1.UiViewBase {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIText], [2, UE.UIText], [3, UE.UILoopScrollViewComponent], [4, UE.UIItem], [5, UE.UIText], [6, UE.UIItem]];
   }
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InfrastructureActivityTaskDataUpdate, this.f4m);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InfrastructureActivityTaskDataUpdate, this.x5m);
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InfrastructureActivityTaskDataUpdate, this.f4m);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InfrastructureActivityTaskDataUpdate, this.x5m);
   }
   async OnBeforeStartAsync() {
-    await Promise.all([this.lqe.CreateThenShowByActorAsync(this.GetItem(0).GetOwner()), this.ajm()]);
+    await Promise.all([this.lqe.CreateThenShowByActorAsync(this.GetItem(0).GetOwner()), this.pHm()]);
   }
-  async ajm() {
+  async pHm() {
     this.OOe = new LoopScrollView_1.LoopScrollView(this.GetLoopScrollViewComponent(3), this.GetItem(4).GetOwner(), this.VOe);
     var e = ModelManager_1.ModelManager.InfrastructureModel.GetActivityData()?.GetActivityTaskDataList() ?? [];
     await this.OOe.RefreshByDataAsync(e, false, true);

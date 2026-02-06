@@ -180,7 +180,7 @@ let SceneItemTrackGuideComponent = SceneItemTrackGuideComponent_1 = class SceneI
     this.uEn = Vector_1.Vector.Create();
     this.MEn = Vector_1.Vector.Create();
     this.CEn = 0;
-    this.rzr = this.Entity.GetComponent(130);
+    this.rzr = this.Entity.GetComponent(132);
     this.rzr.SetLogicRange(i.Range);
     this.Ore();
     return true;
@@ -204,7 +204,7 @@ let SceneItemTrackGuideComponent = SceneItemTrackGuideComponent_1 = class SceneI
   OnStart() {
     var t;
     var i;
-    this.Hte = this.Entity.GetComponent(212);
+    this.Hte = this.Entity.GetComponent(214);
     if (this.Hte) {
       if (i = (t = this.Hte.CreatureData).GetBaseInfo()) {
         this.w0n = i.OnlineInteractType ?? 2;
@@ -214,10 +214,10 @@ let SceneItemTrackGuideComponent = SceneItemTrackGuideComponent_1 = class SceneI
           }
           this.w0n = 0;
         }
-        this.oEn = this.Entity.GetComponent(113);
-        this.Oln = this.Entity.GetComponent(139);
-        this.Nln = this.Entity.GetComponent(167);
-        this.Gce = this.Entity.GetComponent(137);
+        this.oEn = this.Entity.GetComponent(115);
+        this.Oln = this.Entity.GetComponent(141);
+        this.Nln = this.Entity.GetComponent(169);
+        this.Gce = this.Entity.GetComponent(139);
         if (ModelManager_1.ModelManager.GameModeModel.IsMulti && !LevelGamePlayController_1.LevelGamePlayController.MultiplayerLimitTypeCheck(this.w0n, false)) {
           this.Rne = this.Disable("[SceneItemTrackGuideComponent.OnStart] 联机停止交互");
         } else {
@@ -467,7 +467,7 @@ let SceneItemTrackGuideComponent = SceneItemTrackGuideComponent_1 = class SceneI
     }
   }
 };
-SceneItemTrackGuideComponent = SceneItemTrackGuideComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(177)], SceneItemTrackGuideComponent);
+SceneItemTrackGuideComponent = SceneItemTrackGuideComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(179)], SceneItemTrackGuideComponent);
 exports.SceneItemTrackGuideComponent = SceneItemTrackGuideComponent;
 class ButterflyTriggerData extends LogReportDefine_1.PlayerCommonLogData {
   constructor() {

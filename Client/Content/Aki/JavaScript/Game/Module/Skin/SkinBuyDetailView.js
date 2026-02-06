@@ -13,6 +13,7 @@ const TimeUtil_1 = require("../../Common/TimeUtil");
 const InputSettings_1 = require("../../InputSettings/InputSettings");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
+const RenderUtil_1 = require("../../Render/Utils/RenderUtil");
 const UiTickViewBase_1 = require("../../Ui/Base/UiTickViewBase");
 const PopupCaptionItem_1 = require("../../Ui/Common/PopupCaptionItem");
 const InputDistributeController_1 = require("../../Ui/InputDistribute/InputDistributeController");
@@ -30,7 +31,6 @@ const UiModelUtil_1 = require("../UiModel/UiModelUtil");
 const GenericLayout_1 = require("../Util/Layout/GenericLayout");
 const LguiUtil_1 = require("../Util/LguiUtil");
 const SkinDefine_1 = require("./SkinDefine");
-const RenderUtil_1 = require("../../Render/Utils/RenderUtil");
 const SkinRewardItemGrid_1 = require("./SkinRewardItemGrid");
 class SkinBuyDetailView extends UiTickViewBase_1.UiTickViewBase {
   constructor() {
@@ -132,6 +132,22 @@ class SkinBuyDetailView extends UiTickViewBase_1.UiTickViewBase {
     this.mmo = i => {
       this.Tyl();
     };
+    this.B1g = i => {
+      if (i === 1 && this.C0t) {
+        this.C0t.SwitchToNextSkinData();
+        this.Uyl();
+        this.Og();
+        this.Iyl();
+      }
+    };
+    this.k1g = i => {
+      if (i === 1 && this.C0t) {
+        this.C0t.SwitchToNextSkinData();
+        this.Uyl();
+        this.Og();
+        this.Iyl();
+      }
+    };
     this.Lyl = () => {
       const i = this.GetItem(28).bIsUIActive;
       if (i) {
@@ -188,8 +204,8 @@ class SkinBuyDetailView extends UiTickViewBase_1.UiTickViewBase {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIExtendToggle], [2, UE.UIButtonComponent], [3, UE.UIButtonComponent], [4, UE.UIButtonComponent], [5, UE.UIText], [6, UE.UIText], [7, UE.UIItem], [8, UE.UIExtendToggle], [9, UE.UIItem], [10, UE.UIHorizontalLayout], [11, UE.UIItem], [14, UE.UITexture], [12, UE.UIText], [13, UE.UIItem], [15, UE.UIText], [16, UE.UIText], [17, UE.UIButtonComponent], [18, UE.UIItem], [19, UE.UIText], [20, UE.UIItem], [21, UE.UIText], [22, UE.UITexture], [23, UE.UITexture], [24, UE.UITexture], [25, UE.UIItem], [26, UE.UITexture], [27, UE.UIItem], [28, UE.UIItem], [29, UE.UIDraggableComponent], [30, UE.UITexture], [31, UE.UIExtendToggle], [32, UE.UIItem], [33, UE.UIItem], [34, UE.UITexture], [35, UE.UIText], [36, UE.UITexture], [37, UE.UIText], [38, UE.UIItem], [39, UE.UIItem], [40, UE.UIText], [43, UE.UITexture], [42, UE.UIText], [41, UE.UITexture], [44, UE.UIText], [45, UE.UIItem], [46, UE.UIItem]];
-    this.BtnBindInfo = [[2, this.Dyl], [3, this.tNe], [4, this.iNe], [17, this.zSl], [8, this.D5l], [31, this.U5l], [1, this.Lyl]];
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIExtendToggle], [2, UE.UIButtonComponent], [3, UE.UIButtonComponent], [4, UE.UIButtonComponent], [5, UE.UIText], [6, UE.UIText], [7, UE.UIItem], [8, UE.UIExtendToggle], [9, UE.UIItem], [10, UE.UIHorizontalLayout], [11, UE.UIItem], [14, UE.UITexture], [12, UE.UIText], [13, UE.UIItem], [15, UE.UIText], [16, UE.UIText], [17, UE.UIButtonComponent], [18, UE.UIItem], [19, UE.UIText], [20, UE.UIItem], [21, UE.UIText], [22, UE.UITexture], [23, UE.UITexture], [24, UE.UITexture], [25, UE.UIItem], [26, UE.UITexture], [27, UE.UIItem], [28, UE.UIItem], [29, UE.UIDraggableComponent], [30, UE.UITexture], [31, UE.UIExtendToggle], [32, UE.UIItem], [33, UE.UIItem], [34, UE.UITexture], [35, UE.UIText], [36, UE.UITexture], [37, UE.UIText], [38, UE.UIItem], [39, UE.UIItem], [40, UE.UIText], [43, UE.UITexture], [42, UE.UIText], [41, UE.UITexture], [44, UE.UIText], [45, UE.UIItem], [46, UE.UIItem], [47, UE.UIItem], [48, UE.UIExtendToggle], [49, UE.UIExtendToggle], [50, UE.UIText]];
+    this.BtnBindInfo = [[2, this.Dyl], [3, this.tNe], [4, this.iNe], [17, this.zSl], [8, this.D5l], [31, this.U5l], [1, this.Lyl], [48, this.B1g], [49, this.k1g]];
   }
   OnAddEventListener() {
     var i = this.GetDraggable(29);
@@ -348,13 +364,7 @@ class SkinBuyDetailView extends UiTickViewBase_1.UiTickViewBase {
     }
   }
   Ryl() {
-    var i;
-    if (this.C0t.GetIfDirect()) {
-      i = this.C0t.GetCurrentGoodsData().GetCurrentGoodsData().GetGoodsData().Id;
-      ControllerHolder_1.ControllerHolder.PayGiftController.SdkPay(i);
-    } else {
-      ControllerHolder_1.ControllerHolder.PayShopController.OpenBuyViewByGoodsId(this.C0t.GetCurrentGoodsData().GetCurrentGoodsData());
-    }
+    ControllerHolder_1.ControllerHolder.PayShopController.OpenBuySkinDetailView(this.C0t.GetCurrentGoodsData().GetCurrentGoodsData());
   }
   Uyl() {
     this.Syl = 0;
@@ -363,6 +373,7 @@ class SkinBuyDetailView extends UiTickViewBase_1.UiTickViewBase {
     this.C0t?.GetCurrentGoodsData()?.GetCurrentGoodsData().SaveRemindState(TimeUtil_1.TimeUtil.GetServerTime());
     this.wyl(this.C0t);
     this.Byl(this.C0t);
+    this.q1g(this.C0t);
     this.Nft(this.C0t);
     this.Myl(this.C0t);
     this.Iwn(this.C0t);
@@ -558,25 +569,43 @@ class SkinBuyDetailView extends UiTickViewBase_1.UiTickViewBase {
     }
   }
   KWt(i) {
-    if (i && i.GetCurrentGoodsData()) {
-      var t = [];
-      for (const s of i.GetCurrentGoodsData().GetOtherReward()) {
-        var e = new SkinRewardItemGrid_1.SkinRewardData();
-        e.ItemData = s;
-        e.FinishState = !i.GetCurrentGoodsData().GetIfCanBuy();
-        t.push(e);
+    if (i) {
+      if (i.GetIsActivityReward()) {
+        var t = [];
+        for (const r of i.GetConnectOtherReward()) {
+          var e = new SkinRewardItemGrid_1.SkinRewardData();
+          e.ItemData = r;
+          e.FinishState = i.GetCurrentSkinData().GetItemCount() >= 1;
+          t.push(e);
+        }
+        this.s4e?.SetActive(t.length !== 0);
+        this.s4e?.RefreshByData(t);
+      } else if (i.GetCurrentGoodsData()) {
+        var s = [];
+        for (const n of i.GetCurrentGoodsData().GetOtherReward()) {
+          var h = new SkinRewardItemGrid_1.SkinRewardData();
+          h.ItemData = n;
+          h.FinishState = !i.GetCurrentGoodsData().GetIfCanBuy();
+          s.push(h);
+        }
+        this.s4e?.SetActive(s.length !== 0);
+        this.s4e?.RefreshByData(s);
+      } else {
+        this.s4e?.SetActive(false);
       }
-      this.s4e?.SetActive(t.length !== 0);
-      this.s4e?.RefreshByData(t);
-    } else {
-      this.s4e?.SetActive(false);
     }
   }
   jQl(i) {
-    if (i && i.GetCurrentGoodsData()) {
-      this.GetItem(9).SetUIActive(true);
-    } else {
-      this.GetItem(9).SetUIActive(false);
+    if (i) {
+      if (i.GetIsActivityReward()) {
+        this.GetItem(9).SetUIActive(true);
+        LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(50), "RoverSkinEvent_ExtraReward");
+      } else if (i.GetCurrentGoodsData()) {
+        this.GetItem(9).SetUIActive(true);
+        LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(50), "PrefabTextitem_RoleSkinExtraAcquisition_Text");
+      } else {
+        this.GetItem(9).SetUIActive(false);
+      }
     }
   }
   f7l(i) {
@@ -607,6 +636,18 @@ class SkinBuyDetailView extends UiTickViewBase_1.UiTickViewBase {
           this.SetItemIcon(this.GetTexture(43), e.CurrencyId);
         }
       }
+    }
+  }
+  q1g(i) {
+    var t;
+    if (i) {
+      t = i.GetIsActivityReward();
+      this.GetItem(47)?.SetUIActive(t);
+      this.lqe.SetHelpBtnActive(!t);
+      this.GetExtendToggle(48)?.SetToggleState(i.GetIndex() === 0 ? 1 : 0);
+      this.GetExtendToggle(49)?.SetToggleStateForce(i.GetIndex() === 1 ? 1 : 0);
+    } else {
+      this.GetItem(47)?.SetUIActive(false);
     }
   }
   OnTick(i) {

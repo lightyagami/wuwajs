@@ -16,7 +16,7 @@ class RoleSkillBranchTipsItem extends UiPanelBase_1.UiPanelBase {
     super(...arguments);
     this.AZs = undefined;
     this.SPe = undefined;
-    this.uXf = false;
+    this.p_g = false;
     this.Bqe = () => new RoleSkillBranchTipsContentItem_1.RoleSkillBranchTipsContentItem();
     this.owt = e => {
       if (e === "Start") {
@@ -30,7 +30,7 @@ class RoleSkillBranchTipsItem extends UiPanelBase_1.UiPanelBase {
     };
   }
   get IsTipsVisible() {
-    return this.uXf;
+    return this.p_g;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIVerticalLayout], [2, UE.UIItem]];
@@ -56,7 +56,7 @@ class RoleSkillBranchTipsItem extends UiPanelBase_1.UiPanelBase {
     this.AZs.RefreshByData(s);
   }
   SetTipsVisible(e, i = true) {
-    this.uXf = e;
+    this.p_g = e;
     if (i) {
       this.SPe.StopCurrentSequence(false, true);
       if (e) {

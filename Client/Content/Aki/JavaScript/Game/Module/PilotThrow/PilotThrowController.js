@@ -28,58 +28,63 @@ const UiManager_1 = require("../../Ui/UiManager");
 const PILOT_AUTO_THROW_SKILL_ID = 210043;
 class PilotThrowController extends ControllerBase_1.ControllerBase {
   static EnterInteractHookPoint(t, e, o) {
-    let r = true;
+    this.NeedKeepCameraAndUi = true;
     ModelManager_1.ModelManager.PilotThrowModel.InitInteractInfo(t, e, o);
     e = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t)?.Entity;
     if (e) {
-      o = e.GetComponent(88)?.GetHookInteractConfig();
+      o = e.GetComponent(90)?.GetHookInteractConfig();
       if (o) {
         var t = o.AutoThrowType;
-        var i = o.TargetList;
-        if (t && i.length === 1) {
-          var i = Vector_1.Vector.Create(i[0].Position.X ?? 0, i[0].Position.Y ?? 0, i[0].Position.Z ?? 0);
+        var r = o.TargetList;
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("PilotThrow", 31, "[PilotThrowController] EnterInteractHookPoint ", ["autoLaunchType", t], ["targetList.length", r.length]);
+        }
+        if (t && r.length === 1) {
+          var r = Vector_1.Vector.Create(r[0].Position.X ?? 0, r[0].Position.Y ?? 0, r[0].Position.Z ?? 0);
           var e = Vector_1.Vector.Create(e.GetComponent(1)?.ActorLocationProxy);
-          var l = o?.FlySpeed ?? ModelManager_1.ModelManager.PilotThrowModel.Setting.初速度;
-          var a = o?.Gravity ?? ModelManager_1.ModelManager.PilotThrowModel.Setting.重力加速度;
-          var t = this.Fxf(e, i, a, l, t);
+          var i = o?.FlySpeed ?? ModelManager_1.ModelManager.PilotThrowModel.Setting.初速度;
+          var l = o?.Gravity ?? ModelManager_1.ModelManager.PilotThrowModel.Setting.重力加速度;
+          var t = this.LFf(e, r, l, i, t);
           if (t) {
             ModelManager_1.ModelManager.PilotThrowModel.LaunchDirection.DeepCopy(t);
-            ModelManager_1.ModelManager.PilotThrowModel.LaunchSpeed = l;
-            ModelManager_1.ModelManager.PilotThrowModel.LaunchGravity = a;
+            ModelManager_1.ModelManager.PilotThrowModel.LaunchSpeed = i;
+            ModelManager_1.ModelManager.PilotThrowModel.LaunchGravity = l;
             ModelManager_1.ModelManager.PilotThrowModel.NeedMotorRide = o.IsAutoRide ?? false;
             ModelManager_1.ModelManager.PilotThrowModel.DisableInterrupt = o.DisableInterrupt ?? false;
             t = Vector_1.Vector.Create();
-            t.DeepCopy(i);
+            t.DeepCopy(r);
             t.SubtractionEqual(e);
             t.Normalize();
             ModelManager_1.ModelManager.PilotThrowModel.ForceLookDir = t;
-            l = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
-            if (!l || !l.Entity) {
+            i = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
+            if (!i || !i.Entity) {
               if (Log_1.Log.CheckError()) {
                 Log_1.Log.Error("PilotThrow", 31, "PilotThrowController.EnterInteractHookPoint:当前编队实体为空");
               }
               return;
             }
-            l.Entity.GetComponent(41).BeginSkillAsync(PILOT_AUTO_THROW_SKILL_ID);
+            i.Entity.GetComponent(43).BeginSkillAsync(PILOT_AUTO_THROW_SKILL_ID);
             TimerSystem_1.TimerSystem.Delay(() => {
               this.RequestChangePilotState(true);
             }, ModelManager_1.ModelManager.PilotThrowModel.Setting.自动投掷转状态延迟 * TimeUtil_1.TimeUtil.InverseMillisecond);
-            r = false;
+            this.NeedKeepCameraAndUi = false;
           } else if (Log_1.Log.CheckError()) {
             Log_1.Log.Error("PilotThrow", 31, "[PilotThrowController] EnterInteractHookPoint CalculateLaunchAngle result is null");
           }
-        } else if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("PilotThrow", 31, "[PilotThrowController] EnterInteractHookPoint hookPointConfig is null");
         }
       }
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("PilotThrow", 31, "[PilotThrowController] EnterInteractHookPoint hookPointConfig is null");
     }
-    if (r) {
+    ModelManager_1.ModelManager.PilotThrowModel.CurrentInRangePoint = undefined;
+    if (this.NeedKeepCameraAndUi) {
       TimerSystem_1.TimerSystem.Delay(() => {
         UiManager_1.UiManager.OpenView("PilotThrowView");
       }, 1000);
     }
+  }
+  static get ProjectileSpline() {
+    return this.msr;
   }
   static GenerateProjectilePoints() {
     this.hsr ||= UE.NewArray(UE.VectorDouble);
@@ -93,7 +98,7 @@ class PilotThrowController extends ControllerBase_1.ControllerBase {
           this.csr = e.SplineActor;
           this.msr = e.SplineComp;
           this.dsr = EffectSystem_1.EffectSystem.SpawnEffect(GlobalData_1.GlobalData.World, MathUtils_1.MathUtils.DefaultTransformDouble, o.终点特效.ToAssetPathName(), "[PilotThrowController] FinalDestinationEffectHandle", new EffectContext_1.EffectContext(t.Entity.Id));
-          e = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(ModelManager_1.ModelManager.PilotThrowModel.GetCurrentInteractHookPoint())?.Entity?.GetComponent(88)?.GetHookInteractConfig();
+          e = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(ModelManager_1.ModelManager.PilotThrowModel.GetCurrentInteractHookPoint())?.Entity?.GetComponent(90)?.GetHookInteractConfig();
           ModelManager_1.ModelManager.PilotThrowModel.LaunchSpeed = e?.FlySpeed ?? o.初速度;
           ModelManager_1.ModelManager.PilotThrowModel.LaunchGravity = e?.Gravity ?? o.重力加速度;
           ModelManager_1.ModelManager.PilotThrowModel.NeedMotorRide = e?.IsAutoRide ?? false;
@@ -134,7 +139,7 @@ class PilotThrowController extends ControllerBase_1.ControllerBase {
           e = e.Entity.GetComponent(3);
           if (e && e.Owner && e.Owner.IsValid()) {
             var o = ModelManager_1.ModelManager.PilotThrowModel.GetCurrentInteractHookPoint();
-            var o = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(o)?.Entity?.GetComponent(88)?.GetHookInteractConfig();
+            var o = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(o)?.Entity?.GetComponent(90)?.GetHookInteractConfig();
             if (o) {
               var r = o.Gravity ?? t.重力加速度;
               var o = o.FlySpeed ?? t.初速度;
@@ -142,39 +147,39 @@ class PilotThrowController extends ControllerBase_1.ControllerBase {
               var l = Vector_1.Vector.Create();
               l.FromUeVector(e.ActorTransform.TransformVector(t.抛物线起点偏移));
               i.AdditionEqual(l);
-              this.kWm.Set(0, 0, 0);
-              this.qWm.DeepCopy(ControllerHolder_1.ControllerHolder.CameraController.CameraRotator);
-              this.OWm ||= Rotator_1.Rotator.Create(t.初速度仰角, 0, 0);
-              MathUtils_1.MathUtils.ComposeRotator(this.OWm, this.qWm, MathUtils_1.MathUtils.CommonTempRotator);
-              MathUtils_1.MathUtils.CommonTempRotator.Vector(this.kWm);
-              this.kWm.Normalize();
-              ModelManager_1.ModelManager.PilotThrowModel.LaunchDirection.DeepCopy(this.kWm);
-              this.kWm.MultiplyEqual(o);
-              if (!this.GWm) {
-                this.GWm = UE.NewArray(UE.BuiltinByte);
-                this.GWm.Add(QueryTypeDefine_1.KuroObjectTypeQuery.WorldStatic);
-                this.GWm.Add(QueryTypeDefine_1.KuroObjectTypeQuery.Destructible);
-                this.GWm.Add(QueryTypeDefine_1.KuroObjectTypeQuery.WorldStaticIgnoreBullet);
+              this.PKm.Set(0, 0, 0);
+              this.AKm.DeepCopy(ControllerHolder_1.ControllerHolder.CameraController.CameraRotator);
+              this.DKm ||= Rotator_1.Rotator.Create(t.初速度仰角, 0, 0);
+              MathUtils_1.MathUtils.ComposeRotator(this.DKm, this.AKm, MathUtils_1.MathUtils.CommonTempRotator);
+              MathUtils_1.MathUtils.CommonTempRotator.Vector(this.PKm);
+              this.PKm.Normalize();
+              ModelManager_1.ModelManager.PilotThrowModel.LaunchDirection.DeepCopy(this.PKm);
+              this.PKm.MultiplyEqual(o);
+              if (!this.UKm) {
+                this.UKm = UE.NewArray(UE.BuiltinByte);
+                this.UKm.Add(QueryTypeDefine_1.KuroObjectTypeQuery.WorldStatic);
+                this.UKm.Add(QueryTypeDefine_1.KuroObjectTypeQuery.Destructible);
+                this.UKm.Add(QueryTypeDefine_1.KuroObjectTypeQuery.WorldStaticIgnoreBullet);
               }
-              this.FWm ||= new UE.PredictProjectilePathParams();
+              this.xKm ||= new UE.PredictProjectilePathParams();
               var l = UE.KismetMathLibrary.WD_WorldToLocal(GlobalData_1.GlobalData.World, i.ToUeVector());
-              this.FWm.StartLocation = l;
-              this.FWm.LaunchVelocity = this.kWm.ToUeVectorOld();
-              this.FWm.bTraceWithCollision = true;
-              this.FWm.ProjectileRadius = t.射线检测半径;
-              this.FWm.ObjectTypes = this.GWm;
-              this.FWm.bTraceComplex = false;
-              this.FWm.DrawDebugType = t.DebugMode ? 2 : 0;
-              this.FWm.DrawDebugTime = 0.1;
-              this.FWm.MaxSimTime = 40;
-              this.FWm.SimFrequency = 3;
-              this.FWm.OverrideGravityZ = r;
+              this.xKm.StartLocation = l;
+              this.xKm.LaunchVelocity = this.PKm.ToUeVectorOld();
+              this.xKm.bTraceWithCollision = true;
+              this.xKm.ProjectileRadius = t.射线检测半径;
+              this.xKm.ObjectTypes = this.UKm;
+              this.xKm.bTraceComplex = false;
+              this.xKm.DrawDebugType = t.DebugMode ? 2 : 0;
+              this.xKm.DrawDebugTime = 0.1;
+              this.xKm.MaxSimTime = 40;
+              this.xKm.SimFrequency = 3;
+              this.xKm.OverrideGravityZ = r;
               var o = UE.NewArray(UE.Actor);
               o.Add(e.Owner);
-              this.FWm.ActorsToIgnore = o;
-              this.NWm ||= (0, puerts_1.$ref)(new UE.PredictProjectilePathResult());
-              var r = UE.GameplayStatics.Blueprint_PredictProjectilePath_Advanced(GlobalData_1.GlobalData.World, this.FWm, this.NWm);
-              var a = (0, puerts_1.$unref)(this.NWm).PathData;
+              this.xKm.ActorsToIgnore = o;
+              this.BKm ||= (0, puerts_1.$ref)(new UE.PredictProjectilePathResult());
+              var r = UE.GameplayStatics.Blueprint_PredictProjectilePath_Advanced(GlobalData_1.GlobalData.World, this.xKm, this.BKm);
+              var a = (0, puerts_1.$unref)(this.BKm).PathData;
               if (this.hsr) {
                 this.hsr.Empty();
               } else {
@@ -223,7 +228,7 @@ class PilotThrowController extends ControllerBase_1.ControllerBase {
     this.PauseTick();
     return true;
   }
-  static Fxf(t, e, o, r, i) {
+  static LFf(t, e, o, r, i) {
     var l;
     var a;
     var n = Vector_1.Vector.Create();
@@ -270,19 +275,20 @@ class PilotThrowController extends ControllerBase_1.ControllerBase {
     }
   }
   static RequestChangePilotState(t) {
-    var e = Protocol_1.Aki.Protocol.jzm.create();
-    e.nKn = t ? Protocol_1.Aki.Protocol.Wzm.Proto_PTOThrow : Protocol_1.Aki.Protocol.Wzm.Proto_PTOCancel;
-    Net_1.Net.Call(28549, e, () => {});
+    var e = Protocol_1.Aki.Protocol.cif.create();
+    e.nKn = t ? Protocol_1.Aki.Protocol.mif.Proto_PTOThrow : Protocol_1.Aki.Protocol.mif.Proto_PTOCancel;
+    Net_1.Net.Call(25999, e, () => {});
   }
 }
-(exports.PilotThrowController = PilotThrowController).hsr = undefined;
+(exports.PilotThrowController = PilotThrowController).NeedKeepCameraAndUi = true;
+PilotThrowController.hsr = undefined;
 PilotThrowController.usr = undefined;
 PilotThrowController.csr = undefined;
 PilotThrowController.msr = undefined;
 PilotThrowController.dsr = undefined;
-PilotThrowController.GWm = undefined;
-PilotThrowController.FWm = undefined;
-PilotThrowController.NWm = undefined;
-PilotThrowController.kWm = Vector_1.Vector.Create();
-PilotThrowController.qWm = Rotator_1.Rotator.Create();
-PilotThrowController.OWm = undefined; //# sourceMappingURL=PilotThrowController.js.map
+PilotThrowController.UKm = undefined;
+PilotThrowController.xKm = undefined;
+PilotThrowController.BKm = undefined;
+PilotThrowController.PKm = Vector_1.Vector.Create();
+PilotThrowController.AKm = Rotator_1.Rotator.Create();
+PilotThrowController.DKm = undefined; //# sourceMappingURL=PilotThrowController.js.map

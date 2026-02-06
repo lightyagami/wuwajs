@@ -34,7 +34,7 @@ class MechanismTimelineController extends ControllerBase_1.ControllerBase {
       kXc: r,
       OXc: t
     });
-    Net_1.Net.Call(25302, e, e => {
+    Net_1.Net.Call(22513, e, e => {
       if (e && e.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs && Log_1.Log.CheckError()) {
         Log_1.Log.Error("SceneItem", 18, "MechanismTimelineController.RequestSceneItemSequenceFrameStart", ["ErrorCode", e.Cvs]);
       }
@@ -47,7 +47,7 @@ class MechanismTimelineController extends ControllerBase_1.ControllerBase {
       kXc: r,
       OXc: t
     });
-    Net_1.Net.Call(19564, e, e => {
+    Net_1.Net.Call(25600, e, e => {
       if (e && e.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs && Log_1.Log.CheckError()) {
         Log_1.Log.Error("SceneItem", 18, "MechanismTimelineController.RequestSceneItemSequenceFrameEnd", ["ErrorCode", e.Cvs]);
       }
@@ -60,7 +60,7 @@ class MechanismTimelineController extends ControllerBase_1.ControllerBase {
   if (l) {
     if (l.ContextType === 1) {
       if ((a = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(l.PbDataId))?.IsInit) {
-        if (a = a.Entity?.GetComponent(324)) {
+        if (a = a.Entity?.GetComponent(326)) {
           a.ExecuteEvent(t, e.toString(), o.toString(), r, l);
         } else if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("LevelPlay", 18, "MechanismTimelineController.OnTriggerMechanismEvent:找不到SceneItemEventListenerComponent组件", ["eventName", o], ["executeType", r], ["sectionId", n], ["pbDataId", l.PbDataId]);

@@ -7,6 +7,7 @@ exports.MotorcycleJumpToRailMoveData = undefined;
 const Log_1 = require("../../../../../Core/Common/Log");
 const Rotator_1 = require("../../../../../Core/Utils/Math/Rotator");
 const Vector_1 = require("../../../../../Core/Utils/Math/Vector");
+const Transform_1 = require("../../../../../Core/Utils/Math/Transform");
 const MotorcycleRailMoveConfigs_1 = require("./MotorcycleRailMoveConfigs");
 const MotorcycleRailMoveDataBase_1 = require("./MotorcycleRailMoveDataBase");
 const MotorcycleRailMoveDefine_1 = require("./MotorcycleRailMoveDefine");
@@ -21,37 +22,39 @@ class MotorcycleJumpToRailMoveData extends MotorcycleRailMoveDataBase_1.Motorcyc
     this.MoveGetter = undefined;
     this._ae = Vector_1.Vector.Create();
     this.uae = Vector_1.Vector.Create();
-    this.PRm = Rotator_1.Rotator.Create();
-    this.ARm = Rotator_1.Rotator.Create();
-    this.DRm = Vector_1.Vector.Create();
-    this.URm = Vector_1.Vector.Create();
+    this.NRm = Rotator_1.Rotator.Create();
+    this.VRm = Rotator_1.Rotator.Create();
+    this.jRm = Vector_1.Vector.Create();
+    this.HRm = Vector_1.Vector.Create();
     this.I1e = Vector_1.Vector.Create();
     this.cce = Rotator_1.Rotator.Create();
-    this.xRm = 0;
-    this.AJf = new MotorcycleRailMoveDefine_1.RailMoveContext();
+    this.$Rm = 0;
+    this.FCg = new MotorcycleRailMoveDefine_1.RailMoveContext();
     this.dHo = Vector_1.Vector.Create();
     this.Tz = Vector_1.Vector.Create();
     this.fHo = Vector_1.Vector.Create();
     this.pHo = Vector_1.Vector.Create();
-    this.ayf = false;
-    this.fqf = 0;
+    this.sBg = Transform_1.Transform.Create();
+    this.vEf = false;
+    this.EVf = 0;
   }
-  get nTf() {
+  get XRf() {
     return this.MoveConfig.JumpToRailConfig;
   }
-  get oTf() {
+  get KRf() {
     return this.MoveConfig.JumpToRailConfig.ParabolaMoveConfig;
   }
   get ojo() {
     return this.MoveConfig.JumpToRailConfig.CommonConfig;
   }
-  get gqf() {
+  get IVf() {
     return this.MoveConfig.BasicRailMoveConfig;
   }
   OnTick(t) {
     this.TickUpdateMove(t);
-    this.Cqf(t);
-    this.LRm();
+    this.TVf(t);
+    this.aBg();
+    this.FRm();
   }
   OnEnter(t) {
     if (!this.TargetSpline) {
@@ -60,38 +63,38 @@ class MotorcycleJumpToRailMoveData extends MotorcycleRailMoveDataBase_1.Motorcyc
       }
       return false;
     }
-    if (this.oTf.Duration <= 0) {
+    if (this.KRf.Duration <= 0) {
       if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("MotorRailMove", 39, "[MotorcycleJumpToRailMoveData] OnEnter Failed: Duration有误", ["SplineId", this.RelatedRail?.GetRailSplineId()], ["Duration", this.oTf.Duration]);
+        Log_1.Log.Error("MotorRailMove", 39, "[MotorcycleJumpToRailMoveData] OnEnter Failed: Duration有误", ["SplineId", this.RelatedRail?.GetRailSplineId()], ["Duration", this.KRf.Duration]);
       }
       return false;
     }
-    if (!this.MoveGetter?.(this._ae, this.PRm)) {
+    if (!this.MoveGetter?.(this._ae, this.NRm)) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("MotorRailMove", 39, "[MotorcycleJumpToRailMoveData] OnEnter Failed: 拿不到位置旋转", ["SplineId", this.RelatedRail?.GetRailSplineId()]);
       }
       return false;
     }
     this.I1e.FromUeVector(this._ae);
-    this.cce.FromUeRotator(this.PRm);
-    this.AJf.SourceLoc.FromUeVector(this._ae);
-    this.AJf.SourceRot.FromUeRotator(this.PRm);
-    this.AJf.RailSpline = this.TargetSpline;
-    if (!t?.GetVelocity(this.AJf.SourceVel) && !this.MoveGetter(undefined, undefined, this.AJf.SourceVel)) {
+    this.cce.FromUeRotator(this.NRm);
+    this.FCg.SourceLoc.FromUeVector(this._ae);
+    this.FCg.SourceRot.FromUeRotator(this.NRm);
+    this.FCg.RailSpline = this.TargetSpline;
+    if (!t?.GetVelocity(this.FCg.SourceVel) && !this.MoveGetter(undefined, undefined, this.FCg.SourceVel)) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("MotorRailMove", 39, "[MotorcycleJumpToRailMoveData] OnEnter Failed: 拿不到速度", ["SplineId", this.RelatedRail?.GetRailSplineId()]);
       }
       return false;
     }
-    if (this.AJf.SourceVel.IsNearlyZero(1)) {
-      this.AJf.SourceVel.Reset();
+    if (this.FCg.SourceVel.IsNearlyZero(1)) {
+      this.FCg.SourceVel.Reset();
     }
     let i = true;
     t = [MotorcycleRailMoveUtils_1.MotorcycleRailMoveUtils.RailMoveCheckerCheckVehicleNotReverseMove, MotorcycleRailMoveUtils_1.MotorcycleRailMoveUtils.RailMoveCheckerCheckAngleBetweenVehicleUpAndRailUp, MotorcycleRailMoveUtils_1.MotorcycleRailMoveUtils.RailMoveCheckerCheckAngleBetweenVehicleForwardAndRailTangent, MotorcycleRailMoveUtils_1.MotorcycleRailMoveUtils.RailMoveCheckerCheckAngleBetweenVehicleVelocityAndRailTangent, MotorcycleRailMoveUtils_1.MotorcycleRailMoveUtils.RailMoveCheckerCheckRailLenLeft, MotorcycleRailMoveUtils_1.MotorcycleRailMoveUtils.RailMoveCheckerCheckRelativeLocation];
-    this.AJf.IsForward = true;
-    if (!(i = (i = MotorcycleRailMoveUtils_1.MotorcycleRailMoveUtils.CalcRailMoveTargetNotAdvanceBySpeed(this.AJf, this.oTf.MinSpeedAlongRail, this.oTf.MaxSpeedAlongRail)) && MotorcycleRailMoveUtils_1.MotorcycleRailMoveUtils.ExecCheckList(this.AJf, this.nTf.EnterRailCondition, t, true, this.constructor.name))) {
-      this.AJf.IsForward = false;
-      i = (i = MotorcycleRailMoveUtils_1.MotorcycleRailMoveUtils.CalcRailMoveTargetNotAdvanceBySpeed(this.AJf, this.oTf.MinSpeedAlongRail, this.oTf.MaxSpeedAlongRail)) && MotorcycleRailMoveUtils_1.MotorcycleRailMoveUtils.ExecCheckList(this.AJf, this.nTf.EnterRailCondition, t, true, this.constructor.name);
+    this.FCg.IsForward = true;
+    if (!(i = (i = MotorcycleRailMoveUtils_1.MotorcycleRailMoveUtils.CalcRailMoveTargetNotAdvanceBySpeed(this.FCg, this.KRf.MinSpeedAlongRail, this.KRf.MaxSpeedAlongRail)) && MotorcycleRailMoveUtils_1.MotorcycleRailMoveUtils.ExecCheckList(this.FCg, this.XRf.EnterRailCondition, t, true, this.constructor.name))) {
+      this.FCg.IsForward = false;
+      i = (i = MotorcycleRailMoveUtils_1.MotorcycleRailMoveUtils.CalcRailMoveTargetNotAdvanceBySpeed(this.FCg, this.KRf.MinSpeedAlongRail, this.KRf.MaxSpeedAlongRail)) && MotorcycleRailMoveUtils_1.MotorcycleRailMoveUtils.ExecCheckList(this.FCg, this.XRf.EnterRailCondition, t, true, this.constructor.name);
     }
     if (!i) {
       if (Log_1.Log.CheckWarn()) {
@@ -99,8 +102,8 @@ class MotorcycleJumpToRailMoveData extends MotorcycleRailMoveDataBase_1.Motorcyc
       }
       return false;
     }
-    this.uae.FromUeVector(this.AJf.RailMoveTarget.TargetLoc);
-    this.ARm.FromUeRotator(this.AJf.RailMoveTarget.TargetRot);
+    this.uae.FromUeVector(this.FCg.RailMoveTarget.TargetLoc);
+    this.VRm.FromUeRotator(this.FCg.RailMoveTarget.TargetRot);
     var o;
     var s;
     var t = this.dHo;
@@ -108,19 +111,19 @@ class MotorcycleJumpToRailMoveData extends MotorcycleRailMoveDataBase_1.Motorcyc
     var h = this.fHo;
     var r = this.pHo;
     this.uae.Subtraction(this._ae, t);
-    var l = Vector_1.Vector.DotProduct(t, this.GravityDir);
-    this.GravityDir.Multiply(l, e);
+    var a = Vector_1.Vector.DotProduct(t, this.GravityDir);
+    this.GravityDir.Multiply(a, e);
     t.Subtraction(e, h);
-    h.Division(this.oTf.Duration, this.DRm);
-    this.GravityDir.Multiply(this.oTf.GravityAccelerationAbs, r);
-    e.Addition(r.MultiplyEqual(this.oTf.Duration * -0.5 * this.oTf.Duration), this.URm);
-    this.URm.DivisionEqual(this.oTf.Duration);
-    var a = this.OwnerEntity.GetComponent(215);
+    h.Division(this.KRf.Duration, this.jRm);
+    this.GravityDir.Multiply(this.KRf.GravityAccelerationAbs, r);
+    e.Addition(r.MultiplyEqual(this.KRf.Duration * -0.5 * this.KRf.Duration), this.HRm);
+    this.HRm.DivisionEqual(this.KRf.Duration);
+    var l = this.OwnerEntity.GetComponent(217);
     for ([o, s] of this.ojo.ModifyVehicleTagsOnEnter) {
       if (s) {
-        a?.AddTag(o);
+        l?.AddTag(o);
       } else {
-        a?.RemoveTag(o);
+        l?.RemoveTag(o);
       }
     }
     return true;
@@ -128,7 +131,7 @@ class MotorcycleJumpToRailMoveData extends MotorcycleRailMoveDataBase_1.Motorcyc
   OnExit() {
     var t;
     var i;
-    var o = this.OwnerEntity.GetComponent(215);
+    var o = this.OwnerEntity.GetComponent(217);
     for ([t, i] of this.ojo.ModifyVehicleTagsOnExit) {
       if (i) {
         o?.AddTag(t);
@@ -138,54 +141,64 @@ class MotorcycleJumpToRailMoveData extends MotorcycleRailMoveDataBase_1.Motorcyc
     }
   }
   GetVelocity(t) {
-    this.URm.Addition(this.DRm, t);
+    this.HRm.Addition(this.jRm, t);
     return true;
   }
   TickUpdateMove(t) {
-    var t = Math.min(this.oTf.Duration - this.xRm, t, this.gqf.MaxDeltaTimeForMoveUpdate);
-    this.xRm += t;
+    var t = Math.min(this.KRf.Duration - this.$Rm, t, this.IVf.MaxDeltaTimeForMoveUpdate);
+    this.$Rm += t;
     var i = this.dHo;
     var o = this.Tz;
     var s = this.fHo;
-    this.DRm.Addition(this.URm, o);
+    this.jRm.Addition(this.HRm, o);
     o.Multiply(t, s);
-    this.GravityDir.Multiply(this.oTf.GravityAccelerationAbs * 0.5 * t * t, i);
+    this.GravityDir.Multiply(this.KRf.GravityAccelerationAbs * 0.5 * t * t, i);
     s.AdditionEqual(i);
     this.I1e.AdditionEqual(s);
     var o = this.dHo;
-    this.GravityDir.Multiply(this.oTf.GravityAccelerationAbs * t, o);
-    this.URm.AdditionEqual(o);
-    Rotator_1.Rotator.Lerp(this.PRm, this.ARm, this.xRm / this.oTf.Duration, this.cce);
-    var i = this.dHo;
-    var s = this.GetVelocity(i);
-    this.MoveUpdater?.(this.I1e, this.cce, s ? i : undefined);
+    this.GravityDir.Multiply(this.KRf.GravityAccelerationAbs * t, o);
+    this.HRm.AdditionEqual(o);
+    Rotator_1.Rotator.Lerp(this.NRm, this.VRm, this.$Rm / this.KRf.Duration, this.cce);
   }
-  LRm() {
-    if (this.ojo.EnableBlockingCheck && this.ayf && this.fqf > this.ojo.MaxBlockingTimeOut) {
+  aBg() {
+    var t;
+    var i;
+    if (this.ojo.EnableBlockingCheck && this.vEf) {
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("MotorRailMove", 39, "[MotorcycleJumpToRailMoveData] 检测到阻挡，不应用位移更新", ["BlockingTime", this.EVf], ["CurrentLocation", this.I1e]);
+      }
+    } else {
+      t = this.dHo;
+      i = this.GetVelocity(t);
+      this.MoveUpdater?.(this.I1e, this.cce, i ? t : undefined, this.ojo.EnableBlockingCheck);
+    }
+  }
+  FRm() {
+    if (this.ojo.EnableBlockingCheck && this.vEf && this.EVf > this.ojo.MaxBlockingTimeOut) {
       this.IsFinishMove = true;
       this.IsFinishMoveOnFailure = true;
       if (Log_1.Log.CheckWarn()) {
-        Log_1.Log.Warn("MotorRailMove", 39, "[MotorcycleJumpToRailMoveData] Finish move on blocking", ["BlockingTime", this.fqf], ["CurrentLocation", this.I1e]);
+        Log_1.Log.Warn("MotorRailMove", 39, "[MotorcycleJumpToRailMoveData] Finish move on blocking", ["BlockingTime", this.EVf], ["CurrentLocation", this.I1e]);
       }
     } else {
-      this.IsFinishMove = this.xRm >= this.oTf.Duration;
+      this.IsFinishMove = this.$Rm >= this.KRf.Duration;
     }
   }
-  Cqf(t) {
+  TVf(t) {
     var i;
     var o;
-    var s;
-    if (this.ojo.EnableBlockingCheck && !this.IsFinishMove && (i = this.OwnerEntity.GetComponent(247), s = this.OwnerEntity.GetComponent(249), i && s && s.VehicleMovement)) {
-      o = this.ayf;
-      this.ayf = !s.VehicleMovement.IsValidTransform(i.ActorTransform, undefined);
-      if (this.ayf) {
-        s = o ? Math.min(t, this.gqf.MaxDeltaTimeForMoveUpdate) : 0;
-        this.fqf += s;
+    if (this.ojo.EnableBlockingCheck && !this.IsFinishMove && (i = this.OwnerEntity.GetComponent(247), o = this.OwnerEntity.GetComponent(249), i && o && o.VehicleMovement)) {
+      i = this.vEf;
+      this.sBg.Set(this.I1e, this.cce.Quaternion(), Vector_1.Vector.OneVectorProxy);
+      this.vEf = !o.VehicleMovement.IsValidTransform(this.sBg.ToUeTransform(), undefined);
+      if (this.vEf) {
+        o = i ? Math.min(t, this.IVf.MaxDeltaTimeForMoveUpdate) : 0;
+        this.EVf += o;
         if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("MotorRailMove", 39, "[MotorcycleJumpToRailMoveData] Blocked", ["BlockingTime", this.fqf], ["CurrentLocation", this.I1e]);
+          Log_1.Log.Debug("MotorRailMove", 39, "[MotorcycleJumpToRailMoveData] Blocked", ["BlockingTime", this.EVf], ["CurrentLocation", this.I1e]);
         }
       } else {
-        this.fqf = 0;
+        this.EVf = 0;
       }
     }
   }

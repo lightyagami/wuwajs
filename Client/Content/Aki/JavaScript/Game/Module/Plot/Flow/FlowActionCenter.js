@@ -123,6 +123,7 @@ class FlowActionCenter extends ControllerAssistantBase_1.ControllerAssistantBase
     this.SXi("TrapDefenseChangeMiniMap", FlowActionChangeTrapDefenseMiniMap_1.FlowActionChangeTrapDefenseMiniMap, true);
     this.SXi("ClientPreEnableSubLevels", FlowActionPreEnableSubLevel_1.FlowActionPreEnableSubLevel);
     this.SXi("NpcLeisureInteract", FlowActionNpcLeisureInteract_1.FlowActionNpcLeisureInteract, true);
+    this.SXi("TriggerGamepadShake", FlowActionLevelSyncAction_1.FlowActionLevelSyncAction, true);
   }
   SXi(t, o, e = false) {
     var i;

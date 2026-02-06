@@ -46,26 +46,26 @@ class UiCameraHandleData {
   ToString() {
     return `UniqueId:${this.DPo},HandleName:${this.PPo},ViewName:${this.RPo}`;
   }
-  static NewByHandleName(t, e) {
-    var i = UiCameraAnimationManager_1.UiCameraAnimationManager.GenerateHandleDataUniqueId();
+  static NewByHandleName(t, i) {
+    var e = UiCameraAnimationManager_1.UiCameraAnimationManager.GenerateHandleDataUniqueId();
     var r = new UiCameraHandleData();
-    r.UniqueId = i;
+    r.UniqueId = e;
     r.HandleName = t;
-    if (e?.IsValid()) {
-      r.APo = e;
+    if (i?.IsValid()) {
+      r.APo = i;
     }
     r.Refresh();
     return r;
   }
-  static NewByView(t, e, i) {
+  static NewByView(t, i, e) {
     var r;
     var a = UiCameraAnimationManager_1.UiCameraAnimationManager.GetCameraMappingData(t);
     if (a) {
-      (r = new UiCameraHandleData()).UniqueId = e || UiCameraAnimationManager_1.UiCameraAnimationManager.GenerateHandleDataUniqueId();
+      (r = new UiCameraHandleData()).UniqueId = i || UiCameraAnimationManager_1.UiCameraAnimationManager.GenerateHandleDataUniqueId();
       r.HandleName = a.GetSourceHandleName();
       r.ViewName = t;
       r.UiCameraMappingConfig = a.GetUiCameraMappingConfig();
-      r.APo = i;
+      r.APo = e;
       r.Refresh();
       return r;
     }
@@ -90,8 +90,8 @@ class UiCameraHandleData {
     if (this.XAo) {
       t = this.XAo.TargetType;
       this.IsEmptyState = this.XAo.IsEmptyState;
-      this.FPo = UiCameraAnimationManager_1.UiCameraAnimationManager.GetTargetActor(t);
-      this.VPo = UiCameraAnimationManager_1.UiCameraAnimationManager.GetTargetActorSkeletalMesh(t);
+      this.FPo = UiCameraAnimationManager_1.UiCameraAnimationManager.GetTargetActor(t, this.XAo);
+      this.VPo = UiCameraAnimationManager_1.UiCameraAnimationManager.GetTargetActorSkeletalMesh(t, this.XAo);
       this.ReplaceCameraTag = this.XAo.ReplaceCameraTag;
       this.bPo = this.vDc(this.ReplaceCameraTag);
       this.qPo = this.bPo?.GetCineCameraComponent();
@@ -151,21 +151,21 @@ class UiCameraHandleData {
   GetTargetSkeletalMeshSocketTransform() {
     var t = this.GetUiCameraAnimationConfig();
     var t = FNameUtil_1.FNameUtil.GetDynamicFName(t.SocketName);
-    var e = this.GetTargetSkeletalMesh();
-    if (e) {
-      return e.D_GetSocketTransform(t);
+    var i = this.GetTargetSkeletalMesh();
+    if (i) {
+      return i.D_GetSocketTransform(t);
     }
   }
   GetTargetArmLength() {
     var t;
-    var e;
+    var i;
     if (ModelManager_1.ModelManager.CameraModel.GetSavedSeqCameraThings()) {
       return 0;
     } else if (this.bPo?.IsValid()) {
       if ((t = this.GetTargetActor())?.IsValid() && this.XAo.bTargetActorAsCenter) {
         t = Vector_1.Vector.Create(t.D_K2_GetActorLocation());
-        e = Vector_1.Vector.Create(this.bPo.D_K2_GetActorLocation());
-        return Vector_1.Vector.Dist2D(t, e);
+        i = Vector_1.Vector.Create(this.bPo.D_K2_GetActorLocation());
+        return Vector_1.Vector.Dist2D(t, i);
       } else {
         return 0;
       }
@@ -212,12 +212,12 @@ class UiCameraHandleData {
       return this.GetUiCameraAnimationConfig().CameraFieldOfView;
     }
   }
-  yDc(t, e) {
-    var i = UiLayer_1.UiLayer.GetViewportSize();
+  yDc(t, i) {
+    var e = UiLayer_1.UiLayer.GetViewportSize();
     var t = MathCommon_1.MathCommon.DegreeToRadian(t);
-    var i = i.X / i.Y;
-    var e = Math.atan(e / i * Math.tan(t / 2)) * 2;
-    return MathCommon_1.MathCommon.RadianToDegree(e);
+    var e = e.X / e.Y;
+    var i = Math.atan(i / e * Math.tan(t / 2)) * 2;
+    return MathCommon_1.MathCommon.RadianToDegree(i);
   }
   GetTargetFocalDistance() {
     var t = ModelManager_1.ModelManager.CameraModel.GetSavedSeqCameraThings();
@@ -254,30 +254,30 @@ class UiCameraHandleData {
     }
     var t = this.GetUiCameraAnimationConfig();
     if (t) {
-      var e = t.TargetType;
-      if (e !== 3 && e !== 4 && e !== 5) {
-        const i = UE.KismetMathLibrary.Conv_VectorToVectorDouble(t.Location);
-        return i;
-      }
-      if (RenderModuleController_1.RenderModuleController.DebugNewUiSceneWorkflow && RenderModuleController_1.RenderModuleController.DebugInUiSceneRendering) {
-        (e = new UE.VectorDouble()).X = t.Location.X + RenderModuleController_1.RenderModuleController.DebugUiSceneLoadOffset.X;
-        e.Y = t.Location.Y + RenderModuleController_1.RenderModuleController.DebugUiSceneLoadOffset.Y;
-        e.Z = t.Location.Z + RenderModuleController_1.RenderModuleController.DebugUiSceneLoadOffset.Z;
+      var i = t.TargetType;
+      if (i !== 3 && i !== 4 && i !== 5) {
+        const e = UE.KismetMathLibrary.Conv_VectorToVectorDouble(t.Location);
         return e;
       }
-      const i = UE.KismetMathLibrary.Conv_VectorToVectorDouble(t.Location);
-      return i;
+      if (RenderModuleController_1.RenderModuleController.DebugNewUiSceneWorkflow && RenderModuleController_1.RenderModuleController.DebugInUiSceneRendering) {
+        (i = new UE.VectorDouble()).X = t.Location.X + RenderModuleController_1.RenderModuleController.DebugUiSceneLoadOffset.X;
+        i.Y = t.Location.Y + RenderModuleController_1.RenderModuleController.DebugUiSceneLoadOffset.Y;
+        i.Z = t.Location.Z + RenderModuleController_1.RenderModuleController.DebugUiSceneLoadOffset.Z;
+        return i;
+      }
+      const e = UE.KismetMathLibrary.Conv_VectorToVectorDouble(t.Location);
+      return e;
     }
   }
-  HPo(t, e, i) {
+  HPo(t, i, e) {
     this.NPo.DeepCopy(t);
-    this.OPo.DeepCopy(e);
+    this.OPo.DeepCopy(i);
     t = Vector_1.Vector.Dist2D(this.NPo, this.OPo);
-    e = i.Pitch;
-    i = MathCommon_1.MathCommon.WrapAngle(e);
-    e = MathCommon_1.MathCommon.DegreeToRadian(i);
-    i = t * Math.tan(e) + this.OPo.Z;
-    this.kPo.Set(this.NPo.X, this.NPo.Y, i);
+    i = e.Pitch;
+    e = MathCommon_1.MathCommon.WrapAngle(i);
+    i = MathCommon_1.MathCommon.DegreeToRadian(e);
+    e = t * Math.tan(i) + this.OPo.Z;
+    this.kPo.Set(this.NPo.X, this.NPo.Y, e);
     return this.kPo.ToUeVector();
   }
   GetTargetLocation() {
@@ -289,11 +289,11 @@ class UiCameraHandleData {
       return this.ExternalTransform.GetLocation();
     }
     var t = this.XAo.LocationType;
-    var e = this.XAo?.ReplaceCameraTag;
-    if (!StringUtils_1.StringUtils.IsEmpty(e)) {
+    var i = this.XAo?.ReplaceCameraTag;
+    if (!StringUtils_1.StringUtils.IsEmpty(i)) {
       if (this.bPo?.IsValid()) {
-        if ((e = this.GetTargetActor())?.IsValid() && this.XAo.bTargetActorAsCenter) {
-          return this.HPo(e.D_K2_GetActorLocation(), this.bPo.D_K2_GetActorLocation(), this.bPo.K2_GetActorRotation());
+        if ((i = this.GetTargetActor())?.IsValid() && this.XAo.bTargetActorAsCenter) {
+          return this.HPo(i.D_K2_GetActorLocation(), this.bPo.D_K2_GetActorLocation(), this.bPo.K2_GetActorRotation());
         } else {
           return this.bPo.D_K2_GetActorLocation();
         }
@@ -301,19 +301,19 @@ class UiCameraHandleData {
         return undefined;
       }
     }
-    var i = this.GetDefaultLocation();
+    var e = this.GetDefaultLocation();
     switch (t) {
       case 0:
-        return i;
+        return e;
       case 1:
         var r;
         var a = this.GetTargetSkeletalMeshTransform();
         if (a) {
           if ((s = (r = this.GetTargetSkeletalMesh()).GetOwner())?.IsValid()) {
             if (s.D_K2_GetActorLocation().Equals(r.D_K2_GetComponentLocation(), MathUtils_1.MathUtils.SmallNumber)) {
-              return i;
+              return e;
             } else {
-              return UE.KismetMathLibrary.D_TransformLocation(a, i);
+              return UE.KismetMathLibrary.D_TransformLocation(a, e);
             }
           } else {
             return undefined;
@@ -327,7 +327,7 @@ class UiCameraHandleData {
       case 2:
         var s = this.GetTargetSkeletalMeshSocketTransform();
         if (s) {
-          return UE.KismetMathLibrary.D_TransformLocation(s, i);
+          return UE.KismetMathLibrary.D_TransformLocation(s, e);
         } else {
           if (Log_1.Log.CheckError()) {
             Log_1.Log.Error("CameraAnimation", 58, "播放Ui镜头获得对应相机位置时，拿不到对应的Actor骨骼，不播放镜头动画");
@@ -349,26 +349,26 @@ class UiCameraHandleData {
       if (!t.IsTrack) {
         return t.Rotation;
       }
-      var e = CameraController_1.CameraController.CameraLocation;
+      var i = CameraController_1.CameraController.CameraLocation;
       if (t.IsTrackWorldLocation) {
-        var i = t.TrackLocation;
-        const a = UE.KismetMathLibrary.FindLookAtRotation(e.ToUeVectorOld(), i);
+        var e = t.TrackLocation;
+        const a = UE.KismetMathLibrary.FindLookAtRotation(i.ToUeVectorOld(), e);
         if (t.bOverrideTrackPitch) {
           a.Pitch = t.TrackPitchOverride;
         }
         return a;
       }
-      i = this.GetTargetActor();
-      if (!i) {
+      e = this.GetTargetActor();
+      if (!e) {
         return t.Rotation;
       }
       if (this.xPo) {
         var r = t.TrackLocation;
-        var i = i.D_K2_GetActorLocation();
-        this.xPo.X = i.X + r.X;
-        this.xPo.Y = i.Y + r.Y;
-        this.xPo.Z = i.Z + r.Z;
-        const a = UE.KismetMathLibrary.FindLookAtRotation(e.ToUeVectorOld(), this.xPo);
+        var e = e.D_K2_GetActorLocation();
+        this.xPo.X = e.X + r.X;
+        this.xPo.Y = e.Y + r.Y;
+        this.xPo.Z = e.Z + r.Z;
+        const a = UE.KismetMathLibrary.FindLookAtRotation(i.ToUeVectorOld(), this.xPo);
         if (t.bOverrideTrackPitch) {
           a.Pitch = t.TrackPitchOverride;
         }
@@ -397,32 +397,32 @@ class UiCameraHandleData {
         return undefined;
       }
     }
-    var e = this.GetDefaultRotation();
+    var i = this.GetDefaultRotation();
     switch (this.XAo.RotationType) {
       case 0:
-        return e;
+        return i;
       case 2:
-        var i = this.GetTargetActor();
-        if (i) {
-          i = i.D_GetTransform();
-          r = Rotator_1.Rotator.Create(0, e.Yaw, 0);
-          return UE.KismetMathLibrary.D_TransformRotation(i, r.ToUeRotator());
+        var e = this.GetTargetActor();
+        if (e) {
+          e = e.D_GetTransform();
+          r = Rotator_1.Rotator.Create(0, i.Yaw, 0);
+          return UE.KismetMathLibrary.D_TransformRotation(e, r.ToUeRotator());
         } else {
-          return e;
+          return i;
         }
       case 1:
-        var i = CameraController_1.CameraController.FightCamera.GetComponent(5).CameraRotationInGravity.Yaw;
-        var r = Rotator_1.Rotator.Create(0, i, 0);
+        var e = CameraController_1.CameraController.FightCamera.GetComponent(5).CameraRotationInGravity.Yaw;
+        var r = Rotator_1.Rotator.Create(0, e, 0);
         CameraUtility_1.CameraUtility.GetRotatorInNormal(r, r);
         return r.ToUeRotator();
       case 3:
-        var i = this.GetTargetActor();
-        if (i) {
-          r = i.D_GetTransform();
-          if (i = this.GetTargetSkeletalMesh()) {
-            i = i.RelativeRotation;
-            i = Rotator_1.Rotator.Create(i.Pitch + e.Pitch, i.Yaw + e.Yaw, i.Roll + e.Roll);
-            return UE.KismetMathLibrary.D_TransformRotation(r, i.ToUeRotator());
+        var e = this.GetTargetActor();
+        if (e) {
+          r = e.D_GetTransform();
+          if (e = this.GetTargetSkeletalMesh()) {
+            e = e.RelativeRotation;
+            e = Rotator_1.Rotator.Create(e.Pitch + i.Pitch, e.Yaw + i.Yaw, e.Roll + i.Roll);
+            return UE.KismetMathLibrary.D_TransformRotation(r, e.ToUeRotator());
           } else {
             if (Log_1.Log.CheckError()) {
               Log_1.Log.Error("CameraAnimation", 58, "播放Ui镜头获得对应相机旋转时，拿不到对应的Actor骨骼，不播放镜头动画");
@@ -443,9 +443,9 @@ class UiCameraHandleData {
   vDc(t) {
     if (!StringUtils_1.StringUtils.IsEmpty(t)) {
       var t = FNameUtil_1.FNameUtil.GetDynamicFName(this.ReplaceCameraTag);
-      var e = (0, puerts_1.$ref)(this.BPo);
-      UE.GameplayStatics.GetAllActorsOfClassWithTag(GlobalData_1.GlobalData.World, UE.CineCameraActor.StaticClass(), t, e);
-      var t = (0, puerts_1.$unref)(e);
+      var i = (0, puerts_1.$ref)(this.BPo);
+      UE.GameplayStatics.GetAllActorsOfClassWithTag(GlobalData_1.GlobalData.World, UE.CineCameraActor.StaticClass(), t, i);
+      var t = (0, puerts_1.$unref)(i);
       if (t && !(t.Num() < 1)) {
         return t.Get(0);
       }
@@ -462,18 +462,18 @@ class UiCameraHandleData {
     if (!t) {
       return false;
     }
-    var e = t.TargetType;
-    var i = FNameUtil_1.FNameUtil.GetDynamicFName(t.SocketName);
+    var i = t.TargetType;
+    var e = FNameUtil_1.FNameUtil.GetDynamicFName(t.SocketName);
     var t = t.LocationType === 2;
-    if (e === 2 || e === 1) {
+    if (i === 2 || i === 1) {
       if (!this.VPo) {
         return false;
       }
       if (t) {
-        if (FNameUtil_1.FNameUtil.IsEmpty(i)) {
+        if (FNameUtil_1.FNameUtil.IsEmpty(e)) {
           return false;
         }
-        if (!this.VPo.DoesSocketExist(i)) {
+        if (!this.VPo.DoesSocketExist(e)) {
           return false;
         }
       }

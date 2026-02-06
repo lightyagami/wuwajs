@@ -11,7 +11,7 @@ const LevelSequencePlayer_1 = require("../../Common/LevelSequencePlayer");
 class PhoneMsgTipViewA extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.Fsf = undefined;
+    this.dlf = undefined;
     this.Hea = undefined;
   }
   OnRegisterComponent() {
@@ -25,10 +25,10 @@ class PhoneMsgTipViewA extends UiPanelBase_1.UiPanelBase {
     }
   }
   OnRefreshByData(e) {
-    this.Fsf = e;
+    this.dlf = e;
     var s;
-    var e = ConfigManager_1.ConfigManager.PhoneMsgConfig.GetChatPartnerConfig(this.Fsf.WhichChat);
-    if (this.Fsf && e) {
+    var e = ConfigManager_1.ConfigManager.PhoneMsgConfig.GetChatPartnerConfig(this.dlf.WhichChat);
+    if (this.dlf && e) {
       (s = this.GetText(6)).bGameRichText = true;
       s.richText = true;
       s = e.Icon;
@@ -41,7 +41,7 @@ class PhoneMsgTipViewA extends UiPanelBase_1.UiPanelBase {
     this.RootActor.OnSequencePlayEvent.Unbind();
   }
   GetMessageDataId() {
-    return this.Fsf?.Id;
+    return this.dlf?.Id;
   }
 }
 exports.PhoneMsgTipViewA = PhoneMsgTipViewA;

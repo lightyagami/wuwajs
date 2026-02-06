@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.EntityHandleParameterContext = exports.PlayerFollowerSwallowHandler = exports.EPlayerFollowerHandlerType = exports.PlayerFollowerInfo = exports.WAIT_FOLLOWER_TIME = exports.PRIORITY_VEHICLE = exports.playerFollowerPriority = undefined;
 const Protocol_1 = require("../../../../../../../Core/Define/Net/Protocol");
 const GameCommand_1 = require("../../../../../../Utils/Command/GameCommand");
-exports.playerFollowerPriority = new Map([[Protocol_1.Aki.Protocol.Summon.tJs.Proto_EPlayerFollowerExploreSkill, 100], [Protocol_1.Aki.Protocol.Summon.tJs.Proto_EPlayerFollowerAuxiliary, 98], [Protocol_1.Aki.Protocol.Summon.tJs.Proto_EPlayerFollowerSpecialItem, 99], [Protocol_1.Aki.Protocol.Summon.tJs.Proto_EPlayerFollowerMotor, 99999]]);
+exports.playerFollowerPriority = new Map([[Protocol_1.Aki.Protocol.Summon.tJs.Proto_EPlayerFollowerExploreSkill, 100], [Protocol_1.Aki.Protocol.Summon.tJs.Proto_EPlayerFollowerAuxiliary, 98], [Protocol_1.Aki.Protocol.Summon.tJs.Proto_EPlayerFollowerSpecialItem, 99], [666, 97], [Protocol_1.Aki.Protocol.Summon.tJs.Proto_EPlayerFollowerMotor, 99999]]);
 exports.PRIORITY_VEHICLE = 103;
 exports.WAIT_FOLLOWER_TIME = 90000;
 class PlayerFollowerInfo {

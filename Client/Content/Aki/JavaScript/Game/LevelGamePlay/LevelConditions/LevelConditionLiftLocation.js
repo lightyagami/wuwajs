@@ -20,7 +20,7 @@ class LevelConditionLiftLocation extends LevelGeneralBase_1.LevelConditionBase {
     } else {
       t = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e.EntityId);
     }
-    return !!t?.Valid && !!(r = t.Entity.GetComponent(148)) && (r = r.CurLiftFloor === e.Location, e.Compare === "Eq" ? r : !r);
+    return !!t?.Valid && !!(r = t.Entity.GetComponent(150)) && (r = r.CurLiftFloor === e.Location, e.Compare === "Eq" ? r : !r);
   }
 }
 exports.LevelConditionLiftLocation = LevelConditionLiftLocation;

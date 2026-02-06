@@ -29,16 +29,16 @@ class HonamiStoryTechnologyView extends UiViewBase_1.UiViewBase {
     this.ebl = undefined;
     this.Him = undefined;
     this.$im = false;
-    this.mEf = -1;
+    this.Wbf = -1;
     this.gVd = e => {
       if (e) {
         e.OnClickToggleBack ||= this.jbe;
         if (!this.$im) {
-          if (this.mEf === this.Nim.GetNodeDataConfig().Id) {
+          if (this.Wbf === this.Nim.GetNodeDataConfig().Id) {
             this.Nim.SelectNode();
             ControllerHolder_1.ControllerHolder.UiNavigationNewController.SetNavigationFocusForView(this.Nim.ToggleItem.RootUIComp, true, true);
             this.$im = true;
-          } else if (this.mEf === e.GetNodeDataConfig().Id) {
+          } else if (this.Wbf === e.GetNodeDataConfig().Id) {
             e.SelectNode();
             ControllerHolder_1.ControllerHolder.UiNavigationNewController.SetNavigationFocusForView(e.ToggleItem.RootUIComp, true, true);
             if (e = this.Vim.GetItemByIndex(e.GetNodeDataConfig().Area - 1)) {
@@ -97,7 +97,7 @@ class HonamiStoryTechnologyView extends UiViewBase_1.UiViewBase {
     this.lqe.SetCloseCallBack(this.Jvt);
     this.Nim.OnClickToggleBack = this.jbe;
     ModelManager_1.ModelManager.HonamiStoryModel.CheckCurrentTalentTreeNode();
-    this.mEf = ModelManager_1.ModelManager.HonamiStoryModel.CurrentSelectNode?.GetConfig.Id ?? -1;
+    this.Wbf = ModelManager_1.ModelManager.HonamiStoryModel.CurrentSelectNode?.GetConfig.Id ?? -1;
     await this.Nim.RefreshNodeAsyncByData(ModelManager_1.ModelManager.HonamiStoryModel.GetFirstTechnologyNode());
     var e = [this.lqe.SetCurrencyItemList([COST_ITEM_ID]), this.Vim.RefreshByDataAsync(ModelManager_1.ModelManager.HonamiStoryModel.GetTechAreaDataList)];
     await Promise.all(e);

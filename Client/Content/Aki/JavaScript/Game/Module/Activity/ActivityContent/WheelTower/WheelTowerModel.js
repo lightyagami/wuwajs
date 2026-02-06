@@ -18,23 +18,23 @@ const displaySkillTypes = [11, 2, 3, 6];
 class WheelTowerModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
-    this.dif = -1;
-    this.mif = undefined;
-    this.fif = -1;
+    this.yof = -1;
+    this.Sof = undefined;
+    this.Mof = -1;
     this.EndlessMode = false;
     this.SelectedRound = -1;
     this.SelectedBuff = -1;
     this.SelectedRoleList = [];
     this.SelectedEnergyInfo = undefined;
     this.TmpSelectedRoleMap = new Map();
-    this.hff = new Map();
+    this.T0f = new Map();
     this.BlockEndlessUnlockTips = true;
-    this.s9f = false;
+    this.lZf = false;
     this.CachedRoundInProgress = -1;
     this.IsTimeStopBanned = false;
-    this.pif = new Map();
-    this.vif = new Map();
-    this.yif = new Set();
+    this.Tof = new Map();
+    this.bof = new Map();
+    this.Rof = new Set();
     this.TmpSelectRoleId = 0;
   }
   OnInit() {
@@ -42,14 +42,14 @@ class WheelTowerModel extends ModelBase_1.ModelBase {
     return true;
   }
   OnClear() {
-    this.Sif();
+    this.wof();
     return true;
   }
   SetActivityId(e) {
-    this.dif = e;
+    this.yof = e;
   }
   get ActivityData() {
-    return ModelManager_1.ModelManager.ActivityModel.GetActivityById(this.dif);
+    return ModelManager_1.ModelManager.ActivityModel.GetActivityById(this.yof);
   }
   GetTowerConfig() {
     return ConfigManager_1.ConfigManager.WheelTowerConfig.GetTowerConfig(this.ActivityData.CycleId);
@@ -58,14 +58,14 @@ class WheelTowerModel extends ModelBase_1.ModelBase {
     return this.GetTowerConfig().RoleCount;
   }
   GetRoleCost(e) {
-    if (!this.mif) {
-      this.mif = new Map();
+    if (!this.Sof) {
+      this.Sof = new Map();
       this.GetTowerConfig().CostEnergy.forEach((e, t) => {
-        this.mif.set(t, e);
+        this.Sof.set(t, e);
       });
-      this.fif = this.GetTowerConfig().DefaultCostEnergy;
+      this.Mof = this.GetTowerConfig().DefaultCostEnergy;
     }
-    return this.mif.get(e) ?? this.fif;
+    return this.Sof.get(e) ?? this.Mof;
   }
   GetSeasonCountDownData() {
     var e = this.ActivityData.EndOpenTime;
@@ -92,10 +92,10 @@ class WheelTowerModel extends ModelBase_1.ModelBase {
     return ConfigManager_1.ConfigManager.WheelTowerConfig.GetLevelConfigById(e).NewTowerBuffCount;
   }
   IsLevelCompleted(e) {
-    return !e && !!(e = this.ActivityData.GetLevelRecord(false).kef) && !(this.GetBossHpPercentage(e) > 0);
+    return !e && !!(e = this.ActivityData.GetLevelRecord(false).Hif) && !(this.GetBossHpPercentage(e) > 0);
   }
   GetLastChallengeRound() {
-    return this.GetCurrentLevelRecord().qef.length - 1;
+    return this.GetCurrentLevelRecord().jif.length - 1;
   }
   IsRoundChallenged(e) {
     return e <= this.GetLastChallengeRound();
@@ -123,17 +123,17 @@ class WheelTowerModel extends ModelBase_1.ModelBase {
     let t = undefined;
     var r = this.GetCurrentLevelRecord();
     var i = this.IsRoundChallenged(e);
-    return (t = i ? r.qef[e].Hef : r.kef).UJ_;
+    return (t = i ? r.jif[e].Yif : r.Hif).UJ_;
   }
   GetRoundBossInfo(e) {
     let t = undefined;
     var r = this.GetCurrentLevelRecord();
     var i = this.IsRoundChallenged(e);
-    const s = (t = i ? r.qef[e].Hef : r.kef).Gef;
-    const n = t.UJ_;
+    const n = (t = i ? r.jif[e].Yif : r.Hif).Wif;
+    const s = t.UJ_;
     const o = this.GetBossHpPercentage(t);
-    i = this.GetWaveBatch(r.gG_, s);
-    const h = i.findIndex(e => e === s);
+    i = this.GetWaveBatch(r.gG_, n);
+    const h = i.findIndex(e => e === n);
     const a = [];
     i.forEach((e, t) => {
       let r = 0;
@@ -144,7 +144,7 @@ class WheelTowerModel extends ModelBase_1.ModelBase {
       }
       a.push({
         WaveConfigId: e,
-        Round: n,
+        Round: s,
         HpPercentage: r
       });
     });
@@ -168,11 +168,11 @@ class WheelTowerModel extends ModelBase_1.ModelBase {
     return t;
   }
   GetRecordPrevBossHpPercentage(t, r, i) {
-    var s = this.GetCurrentLevelRecord();
-    for (let e = Math.min(t, s.qef.length); e >= 0; e--) {
-      var n = s.qef[e].Hef;
-      if (n?.Gef === r && n?.UJ_ === i) {
-        return this.GetBossHpPercentage(n);
+    var n = this.GetCurrentLevelRecord();
+    for (let e = Math.min(t, n.jif.length); e >= 0; e--) {
+      var s = n.jif[e].Yif;
+      if (s?.Wif === r && s?.UJ_ === i) {
+        return this.GetBossHpPercentage(s);
       }
     }
     return 100;
@@ -181,7 +181,7 @@ class WheelTowerModel extends ModelBase_1.ModelBase {
     if (e.$7s) {
       return 0;
     } else {
-      e = e.Fef;
+      e = e.Qif;
       return MathUtils_1.MathUtils.Clamp(e / 100, 0.01, 100);
     }
   }
@@ -190,14 +190,14 @@ class WheelTowerModel extends ModelBase_1.ModelBase {
     var r = WheelTowerDefine_1.LEVEL_BOSS_NUM;
     var t = Math.floor((t - 1) / r) * r + 1;
     var i = t + r - 1;
-    var s = [];
+    var n = [];
     for (let e = t; e <= i; e++) {
-      s.push(e);
+      n.push(e);
     }
-    const n = ConfigManager_1.ConfigManager.WheelTowerConfig.GetWaveConfigListByLevelId(e);
+    const s = ConfigManager_1.ConfigManager.WheelTowerConfig.GetWaveConfigListByLevelId(e);
     const o = [];
-    s.forEach(e => {
-      for (const t of n) {
+    n.forEach(e => {
+      for (const t of s) {
         if (t.Wave === e) {
           o.push(t.Id);
           break;
@@ -207,10 +207,10 @@ class WheelTowerModel extends ModelBase_1.ModelBase {
     return o;
   }
   GetRoundSelectBuffList(e) {
-    return this.GetCurrentLevelRecord().qef[e].$As;
+    return this.GetCurrentLevelRecord().jif[e].$As;
   }
   GetRoundSelectRoleIdList(e) {
-    return this.GetCurrentLevelRecord().qef[e].Vef.map(e => e.Q6n);
+    return this.GetCurrentLevelRecord().jif[e].Xif.map(e => e.Q6n);
   }
   GetRoundScore(e) {
     return this.ActivityData.GetRoundScore(this.EndlessMode, e);
@@ -275,18 +275,18 @@ class WheelTowerModel extends ModelBase_1.ModelBase {
       if (!r) {
         var i = this.SelectedEnergyInfo;
         var r = this.GetRoleInfo(t);
-        var s = !i.GetWeaponCanUse(r.Weapon, t);
+        var n = !i.GetWeaponCanUse(r.Weapon, t);
         let e = false;
-        for (const n of r.Phantom) {
-          if (!i.GetPhantomCanUse(n, t)) {
+        for (const s of r.Phantom) {
+          if (!i.GetPhantomCanUse(s, t)) {
             e = true;
             break;
           }
         }
-        if (s || e) {
+        if (n || e) {
           return {
             RoleId: t,
-            WeaponConflict: s,
+            WeaponConflict: n,
             PhantomConflict: e
           };
         } else {
@@ -328,7 +328,7 @@ class WheelTowerModel extends ModelBase_1.ModelBase {
     var t;
     var r = this.GetRoleSlot(e);
     if (r === -1) {
-      if ((t = this.Mif()) >= 0) {
+      if ((t = this.Lof()) >= 0) {
         this.TmpSelectedRoleMap.set(t, e);
       } else {
         ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("WheelTower_TeamSelectFullTips");
@@ -351,9 +351,9 @@ class WheelTowerModel extends ModelBase_1.ModelBase {
     return this.GetRoleSlot(e) >= 0;
   }
   IsTempHasAnyEmptySlot() {
-    return this.Mif() >= 0;
+    return this.Lof() >= 0;
   }
-  Mif() {
+  Lof() {
     for (let e = 0; e < this.GetTeamMaxRoleCount(); e++) {
       if (!this.TmpSelectedRoleMap.has(e)) {
         return e;
@@ -362,13 +362,13 @@ class WheelTowerModel extends ModelBase_1.ModelBase {
     return -1;
   }
   GetRecordPopupData() {
-    return this.hff.get(this.EndlessMode);
+    return this.T0f.get(this.EndlessMode);
   }
   SetRecordPopupData(e) {
-    this.hff.set(this.EndlessMode, e);
+    this.T0f.set(this.EndlessMode, e);
   }
   DeleteRecordPopupData() {
-    this.hff.delete(this.EndlessMode);
+    this.T0f.delete(this.EndlessMode);
   }
   GetScoreResourceIdByLevel(e) {
     return WheelTowerDefine_1.levelItemMappingTable.get(e) ?? "";
@@ -380,49 +380,62 @@ class WheelTowerModel extends ModelBase_1.ModelBase {
     var t;
     var r;
     var i = this.GetCurrentLevelRecord().gG_;
-    let s = 0;
+    let n = 0;
     for ([t, r] of ConfigManager_1.ConfigManager.WheelTowerConfig.GetLevelConfigById(i).ScoreLevelRule) {
       if (!(e >= r)) {
         break;
       }
-      s = t;
+      n = t;
     }
-    return s;
+    return n;
   }
   CheckInInstanceDungeon() {
     var e;
     return !!ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance() && (e = ModelManager_1.ModelManager.CreatureModel.GetInstanceId(), ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(e)?.InstSubType === 47);
   }
   GetIsEndlessUnlockedInInstance() {
-    return !!this.s9f && !(this.s9f = false);
+    return !!this.lZf && !(this.lZf = false);
   }
   SetIsEndlessUnlockedInInstance(e) {
-    this.s9f = e;
+    this.lZf = e;
+  }
+  GetNextCycleRemainTime() {
+    var e;
+    var t = this.ActivityData.CycleBeginTime;
+    if (t !== -1) {
+      e = TimeUtil_1.TimeUtil.GetServerTime();
+      return this.F0g(t - e);
+    }
+  }
+  F0g(e) {
+    var t = (e = e <= 1 ? 1 : e) >= CommonDefine_1.SECOND_PER_DAY ? 3 : e >= CommonDefine_1.SECOND_PER_HOUR ? 2 : 1;
+    var r = e >= CommonDefine_1.SECOND_PER_DAY ? 2 : e >= CommonDefine_1.SECOND_PER_HOUR ? 1 : 0;
+    return TimeUtil_1.TimeUtil.GetCountDownDataFormat2(e, t, r).CountDownText;
   }
   $Nr() {
     ConfigManager_1.ConfigManager.WheelTowerConfig.GetRoleConfigList()?.forEach(e => {
       if (e.AddBuffs.length > 0) {
-        this.yif.add(e.Id);
+        this.Rof.add(e.Id);
       }
       if (e.TemplateRoleId !== 0) {
-        this.pif.set(e.Id, e.TemplateRoleId);
-        this.vif.set(e.TemplateRoleId, e.Id);
+        this.Tof.set(e.Id, e.TemplateRoleId);
+        this.bof.set(e.TemplateRoleId, e.Id);
       }
     });
   }
-  Sif() {
-    this.pif.clear();
-    this.vif.clear();
-    this.yif.clear();
+  wof() {
+    this.Tof.clear();
+    this.bof.clear();
+    this.Rof.clear();
   }
   IsTemplateRole(e) {
-    return this.vif.has(e);
+    return this.bof.has(e);
   }
   GetTemplateRoleId(e) {
-    return this.pif.get(e) ?? 0;
+    return this.Tof.get(e) ?? 0;
   }
   GetRealRoleId(e) {
-    return this.vif.get(e) ?? 0;
+    return this.bof.get(e) ?? 0;
   }
   TryGetRealRoleId(e) {
     if (this.IsTemplateRole(e)) {
@@ -437,7 +450,7 @@ class WheelTowerModel extends ModelBase_1.ModelBase {
   }
   IsEnhanceRole(e) {
     e = this.TryGetRealRoleId(e);
-    return this.yif.has(e);
+    return this.Rof.has(e);
   }
   GetRoleEnhanceDesc(e) {
     const r = ConfigManager_1.ConfigManager.WheelTowerConfig.GetRoleConfigByRoleId(e);
@@ -446,12 +459,12 @@ class WheelTowerModel extends ModelBase_1.ModelBase {
       var t = r.EnhanceSkillDesc.get(e);
       var e = r.EnhanceSkillDescParam.get(e);
       if (t !== undefined && e !== undefined) {
-        i.push(this.Yuf(t, e.ArrayString));
+        i.push(this.Qdf(t, e.ArrayString));
       }
     });
     return i;
   }
-  Yuf(e, t) {
+  Qdf(e, t) {
     e = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(e);
     return StringUtils_1.StringUtils.Format(e, ...t);
   }

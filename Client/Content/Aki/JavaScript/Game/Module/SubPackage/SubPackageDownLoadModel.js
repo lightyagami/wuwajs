@@ -26,11 +26,11 @@ const MB_BYTES = 1048576;
 class SubPackageDownLoadModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
-    this.wGm = new Map();
-    this.LGm = new Map();
-    this.PGm = new Map();
-    this.wQm = new Map();
-    this.AGm = new Map();
+    this.VFm = new Map();
+    this.jFm = new Map();
+    this.HFm = new Map();
+    this.XXm = new Map();
+    this.$Fm = new Map();
     this.KeyPackageState = 4;
     this.KeyPackageStateId = 1;
     this.DownLoadingSubPackageId = 0;
@@ -38,24 +38,31 @@ class SubPackageDownLoadModel extends ModelBase_1.ModelBase {
     this.SubPackageDownLoadList = [];
     this.KeyIncludeSubPackageList = [];
     this.HaveTipsOutOfSpaceList = [];
-    this.UGm = false;
+    this.QFm = false;
     this.OnDownloadFinish = (e, r) => {
-      var a = ModelManager_1.ModelManager.SubPackageDownLoadModel.DownLoadingSubPackageId;
+      var a;
+      var o = ModelManager_1.ModelManager.SubPackageDownLoadModel.DownLoadingSubPackageId;
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("SubPackageDownLoad", 5, "SubPackage-OnDownloadFinish", ["state", e], ["updater", r.Name], ["downLoadingId", a]);
+        Log_1.Log.Info("SubPackageDownLoad", 5, "SubPackage-OnDownloadFinish", ["state", e], ["updater", r.Name], ["downLoadingId", o]);
       }
-      if (a) {
+      if (o) {
         if (e !== 4) {
           r.CalculateSizeInfo();
-          if (r.ViewInfo?.NotEnoughSpace && !UiManager_1.UiManager.IsViewOpen("SubPackageDownLoadFreeSpaceTipsView")) {
-            UiManager_1.UiManager.OpenView("SubPackageDownLoadFreeSpaceTipsView", a);
+          if ((a = r.ViewInfo?.NotEnoughSpace) && !UiManager_1.UiManager.IsViewOpen("SubPackageDownLoadFreeSpaceTipsView")) {
+            UiManager_1.UiManager.OpenView("SubPackageDownLoadFreeSpaceTipsView", o);
           }
           if (e !== 2) {
-            ControllerHolder_1.ControllerHolder.SubPackageController.StopSubPackageDownLoading(a);
+            ControllerHolder_1.ControllerHolder.SubPackageController.StopSubPackageDownLoading(o);
+          }
+          if (!a && !ControllerHolder_1.ControllerHolder.ConfirmBoxController.CheckIsConfirmBoxOpen() && !!UiManager_1.UiManager.IsViewOpen("LoginView")) {
+            if (Log_1.Log.CheckInfo()) {
+              Log_1.Log.Info("SubPackageDownLoad", 5, "在登录界面下载资源失败，原因不为空间不足，且没有打开其他确认框，打开保底确认框");
+            }
+            ControllerHolder_1.ControllerHolder.SubPackageController.ShowDownloadSubPackageNetFailedConfirm(o);
           }
         } else {
-          ControllerHolder_1.ControllerHolder.SubPackageController.ReportSubPackageDownLoadLogEvent(a, 2, r);
-          if (a === SubPackageDefine_1.KEY_SUBPACKAGE_ID) {
+          ControllerHolder_1.ControllerHolder.SubPackageController.ReportSubPackageDownLoadLogEvent(o, 2, r);
+          if (o === SubPackageDefine_1.KEY_SUBPACKAGE_ID) {
             ControllerHolder_1.ControllerHolder.SubPackageController.ReportSubPackageKeySubPackageLogEvent(r.SpendTime, 2);
           }
           ControllerHolder_1.ControllerHolder.SubPackageController.DownLoadFinish();
@@ -63,61 +70,61 @@ class SubPackageDownLoadModel extends ModelBase_1.ModelBase {
       }
     };
     this.kso = undefined;
-    this.vpf = 0;
+    this.iSf = 0;
   }
   OnInit() {
     this.KeyIncludeSubPackageList = [];
     this.HaveTipsOutOfSpaceList = [];
     for (const r of ConfigManager_1.ConfigManager.SubPackageConfig.GetDownLoadSubPackageList() ?? []) {
-      this.wGm.set(r.Id, 4);
+      this.VFm.set(r.Id, 4);
       if (r.Type === 1) {
         this.KeyPackageStateId = r.Id;
       }
       if (r.Type === 2) {
-        this.PGm.set(r.Id, r.Area);
+        this.HFm.set(r.Id, r.Area);
         for (const a of r.Area) {
-          this.wQm.set(a, r.Id);
+          this.XXm.set(a, r.Id);
         }
       }
       if (r.Type === 3) {
         var e = [];
-        for (const t of ConfigManager_1.ConfigManager.SubPackageConfig.GetVideoDataByBranch(r.BelongBranch) ?? []) {
-          e.push(t.CgId);
+        for (const o of ConfigManager_1.ConfigManager.SubPackageConfig.GetVideoDataByBranch(r.BelongBranch) ?? []) {
+          e.push(o.CgId);
         }
-        this.AGm.set(r.Id, e);
+        this.$Fm.set(r.Id, e);
       }
     }
     this.KeyPackageState = 4;
     this.DownLoadingSubPackageId = 0;
     this.SubPackageDownLoadList = [];
-    return !(this.UGm = false);
+    return !(this.QFm = false);
   }
   async InitSubPackageDownLoadItemUpdater() {
-    if (!this.UGm && ResourceUpdateManager_1.ResourceDiffUpdaterManager.IsGrayBoxHit()) {
-      this.gMf();
-      this.UGm = true;
+    if (!this.QFm && ResourceUpdateManager_1.ResourceDiffUpdaterManager.IsGrayBoxHit()) {
+      this.DTf();
+      this.QFm = true;
       var n = [];
-      let t = [];
       let o = [];
-      for (const g of ConfigManager_1.ConfigManager.SubPackageConfig.GetDownLoadSubPackageList() ?? []) {
-        var i = g.Id;
+      let t = [];
+      for (const f of ConfigManager_1.ConfigManager.SubPackageConfig.GetDownLoadSubPackageList() ?? []) {
+        var i = f.Id;
         let e = [];
-        if (this.LGm.has(i)) {
-          e = this.LGm.get(i);
+        if (this.jFm.has(i)) {
+          e = this.jFm.get(i);
           return;
         }
         let r = false;
         var s = ConfigManager_1.ConfigManager.SubPackageConfig.GetDownLoadSubPackageById(i);
         switch (s.Type) {
           case 1:
-            [e, t, o] = await ResUpdateFactory_1.ResourceDiffUpdaterFactory.CreateLoginPrepareUpdaters();
-            this.LGm.set(i, e);
+            [e, o, t] = await ResUpdateFactory_1.ResourceDiffUpdaterFactory.CreateLoginPrepareUpdaters();
+            this.jFm.set(i, e);
             break;
           case 2:
             e.push(await ResUpdateFactory_1.ResourceDiffUpdaterFactory.CreateMapBlockUpdater(i.toString(), s.Area, i));
-            this.LGm.set(i, e);
+            this.jFm.set(i, e);
             for (const c of s.Area) {
-              if (t.includes(c)) {
+              if (o.includes(c)) {
                 r = true;
                 break;
               }
@@ -127,7 +134,7 @@ class SubPackageDownLoadModel extends ModelBase_1.ModelBase {
             if (VideoResUpdate_1.VideoResUpdate.GetIsSeparateVideo()) {
               var u = [];
               for (const d of ConfigManager_1.ConfigManager.SubPackageConfig.GetVideoDataByBranch(s.BelongBranch) ?? []) {
-                if (!o.includes(d.CgId)) {
+                if (!t.includes(d.CgId)) {
                   u.push(d.CgId);
                 }
               }
@@ -135,7 +142,7 @@ class SubPackageDownLoadModel extends ModelBase_1.ModelBase {
                 r = true;
               }
               e.push(await ResUpdateFactory_1.ResourceDiffUpdaterFactory.CreateVideoUpdater(i.toString(), i, 6, u));
-              this.LGm.set(i, e);
+              this.jFm.set(i, e);
             }
             break;
           case 4:
@@ -146,7 +153,7 @@ class SubPackageDownLoadModel extends ModelBase_1.ModelBase {
               } else {
                 e.push(await ResUpdateFactory_1.ResourceDiffUpdaterFactory.CreateVideoUpdater(i.toString(), i, 4, []));
               }
-              this.LGm.set(i, e);
+              this.jFm.set(i, e);
             }
             break;
           default:
@@ -162,17 +169,17 @@ class SubPackageDownLoadModel extends ModelBase_1.ModelBase {
             break;
           }
         }
-        var f = r || a ? 5 : 4;
+        var g = r || a ? 5 : 4;
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("SubPackageDownLoad", 5, "SubPackage-InitSubPackageDownLoadItemUpdater", ["Id", s?.Id], ["isFinish", a], ["isKeyHave", r], ["state", f]);
+          Log_1.Log.Info("SubPackageDownLoad", 5, "SubPackage-InitSubPackageDownLoadItemUpdater", ["Id", s?.Id], ["isFinish", a], ["isKeyHave", r], ["state", g]);
         }
         if (s.Type === 1 && (a || r)) {
-          this.KeyPackageState = f;
+          this.KeyPackageState = g;
           n.push(...s.Area);
         } else if (s.Type === 2 && (a || r)) {
           n.push(...s.Area);
         }
-        this.SetSubPackageDownLoadItemStateMap(i, f);
+        this.SetSubPackageDownLoadItemStateMap(i, g);
         if (r) {
           this.KeyIncludeSubPackageList.push(s.Id);
         }
@@ -180,9 +187,9 @@ class SubPackageDownLoadModel extends ModelBase_1.ModelBase {
       ControllerHolder_1.ControllerHolder.SubPackageController.SceneBlockSplitClientLoginPush(n);
     }
   }
-  gMf() {
+  DTf() {
     this.KeyIncludeSubPackageList = [];
-    this.LGm.clear();
+    this.jFm.clear();
   }
   async InitGameCoreUpdater() {
     var e = await ResUpdateFactory_1.ResourceDiffUpdaterFactory.CreateCoreUpdaters();
@@ -196,27 +203,27 @@ class SubPackageDownLoadModel extends ModelBase_1.ModelBase {
         break;
       }
     }
-    this.LGm.set(SubPackageDefine_1.KEY_SUBPACKAGE_ID, e);
+    this.jFm.set(SubPackageDefine_1.KEY_SUBPACKAGE_ID, e);
     this.KeyPackageState = r ? 5 : 4;
     this.SetSubPackageDownLoadItemStateMap(SubPackageDefine_1.KEY_SUBPACKAGE_ID, this.KeyPackageState);
   }
   GetSubPackageDownLoadItemUpdater(e) {
-    var r = this.LGm.get(e);
+    var r = this.jFm.get(e);
     return r || (Log_1.Log.CheckInfo() && Log_1.Log.Info("SubPackageDownLoad", 5, "获取分包下载器失败", ["id", e]), []);
   }
   GetSubPackageDownLoadItemStateById(r) {
-    let a = this.wGm.get(r);
+    let a = this.VFm.get(r);
     if (!a) {
-      var t = this.GetSubPackageDownLoadItemUpdater(r);
-      if (!t || t.length <= 0) {
+      var o = this.GetSubPackageDownLoadItemUpdater(r);
+      if (!o || o.length <= 0) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("SubPackageDownLoad", 5, "获取分包下载状态失败", ["id", r]);
         }
         return 4;
       }
       let e = true;
-      for (const o of t) {
-        if (o.ViewInfo.SavedSize !== o.ViewInfo.TotalSize) {
+      for (const t of o) {
+        if (t.ViewInfo.SavedSize !== t.ViewInfo.TotalSize) {
           e = false;
           break;
         }
@@ -229,21 +236,21 @@ class SubPackageDownLoadModel extends ModelBase_1.ModelBase {
   GetSubPackageDownLoadVersionStateById(e) {
     let r = true;
     let a = false;
-    let t = false;
+    let o = false;
     for (const n of ConfigManager_1.ConfigManager.SubPackageConfig.GetDownLoadSubPackageListByVersion(e) ?? []) {
-      var o = this.wGm.get(n.Id);
-      if (o === 1) {
+      var t = this.VFm.get(n.Id);
+      if (t === 1) {
         return 1;
       }
-      r = r && o === 5;
-      a = a || o === 2;
-      t = !a && (t || o === 3);
+      r = r && t === 5;
+      a = a || t === 2;
+      o = !a && (o || t === 3);
     }
     if (r) {
       return 5;
     } else if (a) {
       return 2;
-    } else if (t) {
+    } else if (o) {
       return 3;
     } else {
       return 4;
@@ -281,9 +288,9 @@ class SubPackageDownLoadModel extends ModelBase_1.ModelBase {
     r.Type = 2;
     e.push(r);
     var r = ConfigManager_1.ConfigManager.SubPackageConfig.GetDownLoadVersionByType(2) ?? [];
-    for (const t of r) {
+    for (const o of r) {
       var a = new SubPackageDefine_1.SubPackageDownLoadDynamicData();
-      a.VersionId = t.Version;
+      a.VersionId = o.Version;
       e.push(a);
     }
     return e;
@@ -294,15 +301,15 @@ class SubPackageDownLoadModel extends ModelBase_1.ModelBase {
     r.Type = 3;
     e.push(r);
     var r = ConfigManager_1.ConfigManager.SubPackageConfig.GetDownLoadVersionByType(3) ?? [];
-    for (const t of r) {
+    for (const o of r) {
       var a = new SubPackageDefine_1.SubPackageDownLoadDynamicData();
-      a.VersionId = t.Version;
+      a.VersionId = o.Version;
       e.push(a);
     }
     return e;
   }
   SetSubPackageDownLoadItemStateMap(e, r) {
-    if (e && (this.wGm.set(e, r), e === this.KeyPackageStateId && (this.KeyPackageState = r), r === 1 && (this.DownLoadingSubPackageId = e), r === 2)) {
+    if (e && (this.VFm.set(e, r), e === this.KeyPackageStateId && (this.KeyPackageState = r), r === 1 && (this.DownLoadingSubPackageId = e), r === 2)) {
       this.PauseSubPackageId = e;
     }
   }
@@ -335,14 +342,14 @@ class SubPackageDownLoadModel extends ModelBase_1.ModelBase {
     }
     let a = BigInt(0);
     if (this.GetSubPackageDownLoadItemStateById(e) === 5) {
-      for (const t of r) {
-        a += t.ViewInfo.SavedSize;
-      }
-    } else {
       for (const o of r) {
         a += o.ViewInfo.SavedSize;
+      }
+    } else {
+      for (const t of r) {
+        a += t.ViewInfo.SavedSize;
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("SubPackageDownLoad", 5, "获取SubPackage对应包已下载大小", ["id", e], ["TotalSize", o.ViewInfo.TotalSize], ["SavedSize", o.ViewInfo.SavedSize], ["updater", o.Name]);
+          Log_1.Log.Info("SubPackageDownLoad", 5, "获取SubPackage对应包已下载大小", ["id", e], ["TotalSize", t.ViewInfo.TotalSize], ["SavedSize", t.ViewInfo.SavedSize], ["updater", t.Name]);
         }
       }
     }
@@ -355,12 +362,12 @@ class SubPackageDownLoadModel extends ModelBase_1.ModelBase {
     }
     let a = BigInt(0);
     if (this.GetSubPackageDownLoadItemStateById(e) === 5) {
-      for (const t of r) {
-        a += t.ViewInfo.CurProgress;
-      }
-    } else {
       for (const o of r) {
         a += o.ViewInfo.CurProgress;
+      }
+    } else {
+      for (const t of r) {
+        a += t.ViewInfo.CurProgress;
       }
     }
     return a;
@@ -421,30 +428,30 @@ class SubPackageDownLoadModel extends ModelBase_1.ModelBase {
   }
   OpenSubPackageDownLoadConfirm(e, n, i, s) {
     var r;
-    if (s && s > 0 && this.vpf > TimeUtil_1.TimeUtil.GetServerTimeStamp()) {
+    if (s && s > 0 && this.iSf > TimeUtil_1.TimeUtil.GetServerTimeStamp()) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("SubPackageDownLoad", 5, "分包下载确认框CD时间未到");
       }
     } else {
-      this.vpf = TimeUtil_1.TimeUtil.GetServerTimeStamp() + (s ?? 0);
+      this.iSf = TimeUtil_1.TimeUtil.GetServerTimeStamp() + (s ?? 0);
       (r = new ConfirmBoxDefine_1.ConfirmBoxDataNew(399)).FunctionMap.set(1, () => {
-        this.vpf = TimeUtil_1.TimeUtil.GetServerTimeStamp() + (s ?? 0);
+        this.iSf = TimeUtil_1.TimeUtil.GetServerTimeStamp() + (s ?? 0);
         ControllerHolder_1.ControllerHolder.ConfirmBoxController.CloseConfirmBoxView();
       });
       r.FunctionMap.set(2, () => {
-        this.vpf = TimeUtil_1.TimeUtil.GetServerTimeStamp() + (s ?? 0);
+        this.iSf = TimeUtil_1.TimeUtil.GetServerTimeStamp() + (s ?? 0);
         var e;
         var r = [];
         if (i) {
-          for (var [a, t] of this.wGm) {
-            if (t !== 5 && (t = ConfigManager_1.ConfigManager.SubPackageConfig.GetDownLoadSubPackageById(a)) && t.Type === 2) {
+          for (var [a, o] of this.VFm) {
+            if (o !== 5 && (o = ConfigManager_1.ConfigManager.SubPackageConfig.GetDownLoadSubPackageById(a)) && o.Type === 2) {
               r.push(a);
             }
           }
         } else if (n) {
-          for (const o of n) {
-            if (!(o <= 0)) {
-              e = this.GetBlockBelongToSubPackage(o);
+          for (const t of n) {
+            if (!(t <= 0)) {
+              e = this.GetBlockBelongToSubPackage(t);
               r.push(e);
             }
           }
@@ -457,7 +464,7 @@ class SubPackageDownLoadModel extends ModelBase_1.ModelBase {
     }
   }
   GetBlockBelongToSubPackage(e) {
-    for (var [r, a] of this.PGm) {
+    for (var [r, a] of this.HFm) {
       if (a.includes(e)) {
         return r;
       }
@@ -465,9 +472,9 @@ class SubPackageDownLoadModel extends ModelBase_1.ModelBase {
     return 0;
   }
   GetBlockBelongToBlockGroup(e) {
-    var r = this.wQm.get(e);
+    var r = this.XXm.get(e);
     if (r) {
-      r = this.PGm.get(r);
+      r = this.HFm.get(r);
       if (r) {
         return r;
       }
@@ -475,7 +482,7 @@ class SubPackageDownLoadModel extends ModelBase_1.ModelBase {
     return [e];
   }
   GetVideoBelongToSubPackage(e) {
-    for (var [r, a] of this.AGm) {
+    for (var [r, a] of this.$Fm) {
       if (a.includes(e)) {
         return r;
       }
@@ -506,7 +513,7 @@ class SubPackageDownLoadModel extends ModelBase_1.ModelBase {
   }
   CheckOnlineHaveSubPackage() {
     if (ResourceUpdateManager_1.ResourceDiffUpdaterManager.IsGrayBoxHit()) {
-      for (var [e, r] of this.wGm) {
+      for (var [e, r] of this.VFm) {
         if (ConfigManager_1.ConfigManager.SubPackageConfig.GetDownLoadSubPackageById(e).Type === 2 && r !== 5) {
           this.OpenSubPackageDownLoadConfirm("SubPackageDownLoad_OnlineLock_Confirm", undefined, true);
           return false;
@@ -522,17 +529,17 @@ class SubPackageDownLoadModel extends ModelBase_1.ModelBase {
     var e;
     var r;
     var a;
-    var t = [];
-    for ([e, r] of this.wGm) {
+    var o = [];
+    for ([e, r] of this.VFm) {
       if (r !== 5 && (a = ConfigManager_1.ConfigManager.SubPackageConfig.GetDownLoadSubPackageById(e)) && a.Type === 4) {
-        t.push(e);
+        o.push(e);
       }
     }
-    var o = t.length < 1;
-    if (!o) {
-      this.OpenSubPackageDownLoadConfirmByExpend("SubPackageDownLoad_GenderLock_Confirm", t);
+    var t = o.length < 1;
+    if (!t) {
+      this.OpenSubPackageDownLoadConfirmByExpend("SubPackageDownLoad_GenderLock_Confirm", o);
     }
-    return o;
+    return t;
   }
   OpenSubPackageDownLoadConfirmByExpend(e, r) {
     var a = new ConfirmBoxDefine_1.ConfirmBoxDataNew(399);
@@ -550,15 +557,15 @@ class SubPackageDownLoadModel extends ModelBase_1.ModelBase {
     var [e, r] = ControllerHolder_1.ControllerHolder.ResourceManagerController.GetQuestRefRes(e);
     var a = [];
     for (const n of e) {
-      var t = this.GetBlockBelongToSubPackage(n);
-      if (t > 0 && !a.includes(t)) {
-        a.push(t);
+      var o = this.GetBlockBelongToSubPackage(n);
+      if (o > 0 && !a.includes(o)) {
+        a.push(o);
       }
     }
     for (const i of r) {
-      var o = this.GetVideoBelongToSubPackage(i);
-      if (o > 0 && !a.includes(o)) {
-        a.push(o);
+      var t = this.GetVideoBelongToSubPackage(i);
+      if (t > 0 && !a.includes(t)) {
+        a.push(t);
       }
     }
     ControllerHolder_1.ControllerHolder.SubPackageController.PrioritySubPackageDownLoading(a);
@@ -575,23 +582,23 @@ class SubPackageDownLoadModel extends ModelBase_1.ModelBase {
     return false;
   }
   UpdaterDownLoadSize() {
-    for (var [, e] of this.LGm) {
-      for (const t of e) {
+    for (var [, e] of this.jFm) {
+      for (const o of e) {
         var r;
         var a;
-        if (t instanceof VideoUpdateWrapper_1.VideoUpdateWrapper && (r = t) && r.VideoIds !== undefined) {
+        if (o instanceof VideoUpdateWrapper_1.VideoUpdateWrapper && (r = o) && r.VideoIds !== undefined) {
           a = ModelManager_1.ModelManager.QuestResourceModel.FilterVideoByFinishedQuest(r.VideoIds);
           r.SetDownloadVideos(a, ModelManager_1.ModelManager.PlayerInfoModel.GetPlayerGender());
         }
-        t.CalculateSizeInfo();
+        o.CalculateSizeInfo();
       }
     }
   }
   UpdaterFinishState() {
-    for (var [r, a] of this.LGm) {
+    for (var [r, a] of this.jFm) {
       let e = true;
-      for (const t of a) {
-        if (!t.IsCompleteDownloaded()) {
+      for (const o of a) {
+        if (!o.IsCompleteDownloaded()) {
           e = false;
           break;
         }

@@ -25,10 +25,10 @@ class FishingStateView extends BattleVisibleChildView_1.BattleVisibleChildView {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem]];
   }
   OnStart() {
-    this.InitChildType(41);
+    this.InitChildType(43);
     this.GetItem(1).SetUIActive(false);
     var t = ModelManager_1.ModelManager.FishingModel.GetShipData();
-    this.osn = t.GetEntityHandle()?.Entity?.GetComponent(181);
+    this.osn = t.GetEntityHandle()?.Entity?.GetComponent(183);
     this.Ore();
     this.bNe();
   }

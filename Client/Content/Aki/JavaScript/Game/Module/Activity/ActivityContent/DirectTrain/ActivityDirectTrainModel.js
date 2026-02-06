@@ -15,7 +15,7 @@ class ActivityDirectTrainModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
     this.aU_ = 0;
-    this.f9m = new Map();
+    this.Yjm = new Map();
     this.ActivityDataList = [];
     this.ForceRemindIndex = undefined;
     this.HasValidDirectTrainProData = false;
@@ -27,19 +27,19 @@ class ActivityDirectTrainModel extends ModelBase_1.ModelBase {
   }
   LoadDataFromInfoProto(t) {
     this.P4l = true;
-    this.f9m.clear();
+    this.Yjm.clear();
     this.ActivityDataList.length = 0;
     this.HasValidDirectTrainProData = false;
     if (t) {
-      var e = t.t9m;
+      var e = t.kjm;
       if (!e || e.length <= 0) {
         if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("ActivityDirectTrain", 95, "[剧情直通车]ActivityDirectTrainModel.LoadDataFromProto()->活动数据为空", ["proto.Proto_Activitys", t.t9m]);
+          Log_1.Log.Debug("ActivityDirectTrain", 95, "[剧情直通车]ActivityDirectTrainModel.LoadDataFromProto()->活动数据为空", ["proto.Proto_Activitys", t.kjm]);
         }
       } else {
         for (const o of e) {
           var i = ActivityController_1.ActivityController.CreateActivityData(o);
-          this.f9m.set(i.Id, i);
+          this.Yjm.set(i.Id, i);
           this.ActivityDataList.push(i);
         }
         this.HasValidDirectTrainProData = this.ActivityDataList.length > 0;
@@ -90,7 +90,7 @@ class ActivityDirectTrainModel extends ModelBase_1.ModelBase {
     return ConfigManager_1.ConfigManager.ActivityDirectTrainConfig.GetDirectTrainActivityConfById(t).SkipQuestId;
   }
   CheckDirectTrainProRedDotById(t) {
-    t = this.f9m.get(t);
+    t = this.Yjm.get(t);
     return !!t && !!t.IsUnLock() && !t.FinishShowState && t.IsShowRedDot();
   }
   CheckDirectTrainProEntryRedDot() {

@@ -20,6 +20,9 @@ class NewTowerParam {
   get TimerId() {
     return this.timerid();
   }
+  get ShowTimerId() {
+    return this.showtimerid();
+  }
   get RoleCount() {
     return this.rolecount();
   }
@@ -67,8 +70,16 @@ class NewTowerParam {
       return 0;
     }
   }
-  rolecount() {
+  showtimerid() {
     var t = this.J7.__offset(this.z7, 10);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  rolecount() {
+    var t = this.J7.__offset(this.z7, 12);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -76,7 +87,7 @@ class NewTowerParam {
     }
   }
   defaultcostenergy() {
-    var t = this.J7.__offset(this.z7, 12);
+    var t = this.J7.__offset(this.z7, 14);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -87,7 +98,7 @@ class NewTowerParam {
     return this.costenergy(t);
   }
   costenergy(t, e) {
-    var r = this.J7.__offset(this.z7, 14);
+    var r = this.J7.__offset(this.z7, 16);
     if (r) {
       return (e || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + r) + t * 4), this.J7);
     } else {
@@ -95,7 +106,7 @@ class NewTowerParam {
     }
   }
   costenergyLength() {
-    var t = this.J7.__offset(this.z7, 14);
+    var t = this.J7.__offset(this.z7, 16);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {

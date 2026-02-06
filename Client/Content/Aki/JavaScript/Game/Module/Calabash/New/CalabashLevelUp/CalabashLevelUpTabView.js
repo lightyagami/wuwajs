@@ -78,9 +78,9 @@ class CalabashGrid extends AutoAttachItem_1.AutoAttachItem {
     var i = this.GetCurrentSelectedState();
     this.SetSelectState(i);
     this.Olt(a, e);
-    this.jBm(a, e);
+    this.W2m(a, e);
   }
-  jBm(t, e) {
+  W2m(t, e) {
     var i = ConfigManager_1.ConfigManager.CalabashConfig.GetCalabashConfigByLevel(e);
     if (i && (t = e <= t && e >= CalabashDefine_1.CALABASH_SPECIALUI_LEVEL, this.GetItem(13)?.SetUIActive(t), t)) {
       if (!StringUtils_1.StringUtils.IsEmpty(i.TexPatternStatePath)) {
@@ -186,7 +186,7 @@ class CalabashAttributeItem extends GridProxyAbstract_1.GridProxyAbstract {
     e.push(i);
     this.gNe?.RefreshByData(e);
   }
-  HBm(t) {
+  Q2m(t) {
     this.GetItem(3)?.SetUIActive(false);
     var e = this.GetText(2);
     e?.SetUIActive(true);
@@ -246,7 +246,7 @@ class CalabashAttributeItem extends GridProxyAbstract_1.GridProxyAbstract {
     LguiUtil_1.LguiUtil.TrySetLocalTextNew(this.GetText(1), t.Name);
     this.GetItem(5)?.SetUIActive(t.Type === 3 && t.IsUp);
     this.tvt();
-    this.$Bm(t.IsToggleRaycast);
+    this.K2m(t.IsToggleRaycast);
     switch (t.Type) {
       case 0:
         this.Jpt(t);
@@ -255,7 +255,7 @@ class CalabashAttributeItem extends GridProxyAbstract_1.GridProxyAbstract {
         this.zpt(t);
         break;
       case 2:
-        this.HBm(t);
+        this.Q2m(t);
         break;
       case 4:
         this.Zpt(t);
@@ -268,7 +268,7 @@ class CalabashAttributeItem extends GridProxyAbstract_1.GridProxyAbstract {
       this.ivt(this.Ypt);
     }
   }
-  $Bm(t) {
+  K2m(t) {
     this.GetExtendToggle(0)?.RootUIComp.SetRaycastTarget(t);
   }
   ivt(t) {
@@ -316,7 +316,7 @@ class CalabashLevelUpTabView extends UiTabViewBase_1.UiTabViewBase {
     this.rvt = undefined;
     this.nvt = undefined;
     this.svt = [];
-    this.WBm = [];
+    this.X2m = [];
     this.H3e = undefined;
     this.xsm = 0;
     this.avt = [];
@@ -457,7 +457,7 @@ class CalabashLevelUpTabView extends UiTabViewBase_1.UiTabViewBase {
     var e = ModelManager_1.ModelManager.CalabashModel.GetCalabashAllSchedule();
     var i = ModelManager_1.ModelManager.CalabashModel.GetCalabashOwnSchedule();
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(11), "Phanton_CollectNum", i, e);
-    this.lsf(t);
+    this.Phf(t);
   }
   jqe() {
     var t = ConfigManager_1.ConfigManager.CalabashConfig.GetCalabashConfigByLevel(this.lvt).RewardId;
@@ -524,12 +524,12 @@ class CalabashLevelUpTabView extends UiTabViewBase_1.UiTabViewBase {
     }
   }
   fvt() {
-    this.QBm();
-    this.KBm();
-    this.XBm();
-    this.YBm();
-    this.zBm();
-    this.JBm();
+    this.Y2m();
+    this.z2m();
+    this.J2m();
+    this.Z2m();
+    this.ekm();
+    this.tkm();
     this.svt.forEach(t => {
       t.ClickCallBack = this.gvt;
       t.CurrentSelect = this._vt === t.Type;
@@ -537,10 +537,10 @@ class CalabashLevelUpTabView extends UiTabViewBase_1.UiTabViewBase {
     });
     this.nvt?.RefreshByData(this.svt);
   }
-  KBm() {
+  z2m() {
     var t = ModelManager_1.ModelManager.CalabashModel.GetCalabashLevel();
     var e = t >= this.lvt;
-    var i = this.ZBm();
+    var i = this.ikm();
     i.Type = 0;
     i.Name = "PrefabTextItem_1948060625_Text";
     i.IsCost = false;
@@ -553,7 +553,7 @@ class CalabashLevelUpTabView extends UiTabViewBase_1.UiTabViewBase {
       i.IsUp = e < a;
     }
   }
-  XBm() {
+  J2m() {
     var t;
     var e;
     var i;
@@ -564,7 +564,7 @@ class CalabashLevelUpTabView extends UiTabViewBase_1.UiTabViewBase {
       i = ConfigManager_1.ConfigManager.CalabashConfig?.GetCalabashConfigByLevel(this.lvt);
       t = r >= this.lvt;
       if (i) {
-        (e = this.ZBm()).Type = 1;
+        (e = this.ikm()).Type = 1;
         e.Name = "UpAbsorptionTarget_Advanced";
         e.IsCost = false;
         e.IsUp = false;
@@ -586,12 +586,12 @@ class CalabashLevelUpTabView extends UiTabViewBase_1.UiTabViewBase {
       Log_1.Log.Error("Calabash", 87, "找不到对应等级的配置信息", ["curLevel", r]);
     }
   }
-  YBm() {
+  Z2m() {
     var t;
     var e = ConfigManager_1.ConfigManager.CalabashConfig?.GetCalabashConfigByLevel(this.lvt);
     if (e) {
       if ((e = e.LowCostTempCatchGain) > 0) {
-        (t = this.ZBm()).Type = 2;
+        (t = this.ikm()).Type = 2;
         t.Name = "UpAbsorptionTarget_Junior";
         t.IsCost = false;
         t.IsUp = false;
@@ -602,7 +602,7 @@ class CalabashLevelUpTabView extends UiTabViewBase_1.UiTabViewBase {
       Log_1.Log.Error("Calabash", 87, "找不到对应等级的配置信息", ["CurrentSelectedLevel", this.lvt]);
     }
   }
-  zBm() {
+  ekm() {
     var t;
     var e;
     var i;
@@ -612,7 +612,7 @@ class CalabashLevelUpTabView extends UiTabViewBase_1.UiTabViewBase {
       e = ConfigManager_1.ConfigManager.CalabashConfig?.GetCalabashConfigByLevel(this.lvt);
       i = a >= this.lvt;
       if (e) {
-        (t = this.ZBm()).Type = 3;
+        (t = this.ikm()).Type = 3;
         t.Name = "PrefabTextItem_3681645418_Text";
         t.IsCost = false;
         t.IsUp = false;
@@ -630,7 +630,7 @@ class CalabashLevelUpTabView extends UiTabViewBase_1.UiTabViewBase {
       Log_1.Log.Error("Calabash", 87, "找不到对应等级的配置信息", ["curLevel", a]);
     }
   }
-  JBm() {
+  tkm() {
     var t;
     var e;
     var i;
@@ -640,7 +640,7 @@ class CalabashLevelUpTabView extends UiTabViewBase_1.UiTabViewBase {
       e = ConfigManager_1.ConfigManager.CalabashConfig?.GetCalabashConfigByLevel(this.lvt);
       i = a >= this.lvt;
       if (e) {
-        (t = this.ZBm()).Type = 4;
+        (t = this.ikm()).Type = 4;
         t.Name = "PrefabTextItem_HuluCostLimit_Text";
         t.IsCost = true;
         t.IsUp = false;
@@ -658,14 +658,14 @@ class CalabashLevelUpTabView extends UiTabViewBase_1.UiTabViewBase {
       Log_1.Log.Error("Calabash", 87, "找不到对应等级的配置信息", ["curLevel", a]);
     }
   }
-  QBm() {
+  Y2m() {
     for (const t of this.svt) {
-      this.WBm.push(t);
+      this.X2m.push(t);
     }
     this.svt.length = 0;
   }
-  ZBm() {
-    let t = this.WBm.shift();
+  ikm() {
+    let t = this.X2m.shift();
     t = t || new CalabashAttributeData();
     this.svt.push(t);
     return t;
@@ -728,7 +728,7 @@ class CalabashLevelUpTabView extends UiTabViewBase_1.UiTabViewBase {
       }
     }
   }
-  lsf(t) {
+  Phf(t) {
     var e;
     if (ModelManager_1.ModelManager.CalabashModel.GetCalabashMaxLevel() <= t) {
       LguiUtil_1.LguiUtil.TrySetLocalTextNew(this.GetText(3), "DataBankLevelTips_Max");

@@ -100,9 +100,9 @@ let CharacterSwingComponent = CharacterSwingComponent_1 = class CharacterSwingCo
   }
   OnStart() {
     this.Hte = this.Entity.GetComponent(3);
-    this.Gce = this.Entity.GetComponent(46);
-    this.oRe = this.Entity.GetComponent(186);
-    this.Lie = this.Entity.GetComponent(215);
+    this.Gce = this.Entity.GetComponent(48);
+    this.oRe = this.Entity.GetComponent(188);
+    this.Lie = this.Entity.GetComponent(217);
     return true;
   }
   OnTick(t) {
@@ -209,8 +209,8 @@ let CharacterSwingComponent = CharacterSwingComponent_1 = class CharacterSwingCo
   }
   $rm(t) {
     var i = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t)?.Entity;
-    var e = i?.GetComponent(207);
-    var r = i?.GetComponent(212);
+    var e = i?.GetComponent(209);
+    var r = i?.GetComponent(214);
     if (i && e && r) {
       this.Man = e.GetSubEntityInteractLogicController();
       this.Man.Possess(this.Entity);
@@ -222,12 +222,12 @@ let CharacterSwingComponent = CharacterSwingComponent_1 = class CharacterSwingCo
       e.Rotation(this.cie);
       this.Hte?.SetActorLocationAndRotation(this.jrm.ToUeVector(), this.cie.ToUeRotator(), "[CharacterSwingComponent] SitOnChair", false);
       this.Hte?.ClearInput();
-      i = this.Entity.GetComponent(186)?.GetMeshTransform();
+      i = this.Entity.GetComponent(188)?.GetMeshTransform();
       this.Qrm(r);
       if (i) {
-        this.Entity.GetComponent(186)?.SetModelBuffer(i, this.Hrm.SitOnModelBufferTime);
+        this.Entity.GetComponent(188)?.SetModelBuffer(i, this.Hrm.SitOnModelBufferTime);
       }
-      this.f7f(true);
+      this.qJf(true);
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("Character", 42, "[CharacterSwing] 椅子Entity无效", ["PbDataId", t]);
     }
@@ -239,16 +239,16 @@ let CharacterSwingComponent = CharacterSwingComponent_1 = class CharacterSwingCo
       this.VTe(this.Man.Entity);
     }
     this.Krm();
-    var t = this.Entity.GetComponent(186)?.GetMeshTransform();
+    var t = this.Entity.GetComponent(188)?.GetMeshTransform();
     this.Hte?.SetActorLocation(this.jrm.ToUeVector(), "[CharacterSwingComponent] SitOnChair", false);
     if (t) {
-      this.Entity.GetComponent(186)?.SetModelBuffer(t, this.Hrm.StandUpModelBufferTime);
+      this.Entity.GetComponent(188)?.SetModelBuffer(t, this.Hrm.StandUpModelBufferTime);
     }
     TimerSystem_1.TimerSystem.Delay(() => {
-      this.f7f(false);
+      this.qJf(false);
     }, SWING_INTERVAL_TIME);
   }
-  f7f(t) {
+  qJf(t) {
     if (t && !this.Lie?.HasTag(1453459227)) {
       this.Lie?.AddTag(1453459227);
     }
@@ -290,7 +290,7 @@ let CharacterSwingComponent = CharacterSwingComponent_1 = class CharacterSwingCo
     });
   }
   FTe(t) {
-    t = t.GetComponent(212);
+    t = t.GetComponent(214);
     if (t && t.Entity) {
       this.HTe(t, true);
     }
@@ -298,7 +298,7 @@ let CharacterSwingComponent = CharacterSwingComponent_1 = class CharacterSwingCo
   }
   VTe(t) {
     this.Hte.Actor.CapsuleComponent.SetCollisionResponseToChannel(2, 2);
-    if ((t &&= t.GetComponent(212)) && t.Entity) {
+    if ((t &&= t.GetComponent(214)) && t.Entity) {
       this.HTe(t, false);
     }
   }
@@ -306,7 +306,7 @@ let CharacterSwingComponent = CharacterSwingComponent_1 = class CharacterSwingCo
     var e = t.Entity.GetComponent(0)?.GetPbDataId() ?? 0;
     var e = ModelManager_1.ModelManager.CreatureModel.GetOwnerEntity(e);
     let r = undefined;
-    r = e && (e = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e))?.Valid ? e.Entity.GetComponent(212) : t;
+    r = e && (e = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e))?.Valid ? e.Entity.GetComponent(214) : t;
     var e = (0, puerts_1.$ref)(undefined);
     r.Owner.GetAttachedActors(e);
     var s = (0, puerts_1.$unref)(e);
@@ -395,5 +395,5 @@ let CharacterSwingComponent = CharacterSwingComponent_1 = class CharacterSwingCo
     return "";
   }
 };
-CharacterSwingComponent = CharacterSwingComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(325)], CharacterSwingComponent);
+CharacterSwingComponent = CharacterSwingComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(327)], CharacterSwingComponent);
 exports.CharacterSwingComponent = CharacterSwingComponent; //# sourceMappingURL=CharacterSwingComponent.js.map

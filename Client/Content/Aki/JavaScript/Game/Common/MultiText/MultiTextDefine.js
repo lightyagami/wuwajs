@@ -12,5 +12,7 @@ exports.tableTextMap = {
   1: ["Speaker_", "_Title"],
   2: ["MonsterDisplay_", "_Name"],
   3: ["MonsterDisplay_", "_Introduce"],
-  4: ["OccupationConfig_", "_Name"]
+  4: ["OccupationConfig_", "_Name"],
+  5: ["LyricsText_", "_Original"],
+  6: ["LyricsText_", "_Translation"]
 }; //# sourceMappingURL=MultiTextDefine.js.map

@@ -14,35 +14,35 @@ const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const Global_1 = require("../../../Global");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiSequencePlayer_1 = require("../../../Ui/Base/UiSequencePlayer");
-const UiTickViewBase_1 = require("../../../Ui/Base/UiTickViewBase");
+const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
 const SunSpiritOccupiedByPlayerState_1 = require("../SunSpiritState/SunSpiritOccupiedByPlayerState");
 const MAX_DELTA_TIME = 200;
 const MIN_DELTA_OFFSET = 0.5;
 const MAX_POS_OFFSET = 500;
-class SunSpiritHintView extends UiTickViewBase_1.UiTickViewBase {
+class SunSpiritHintView extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.$pt = undefined;
     this.vK1 = t => {
       if (t === "Start") {
-        this.btg(true);
+        this.aDg(true);
       } else if (t === "Close") {
         this.SetUiActive(false);
       }
     };
-    this.NZm = () => {
+    this.P0f = () => {
       var t = ModelManager_1.ModelManager.SunSpiritModel?.GetSunSpiritConfig().CharacterHintUiShowDurationWhenUpdate;
       if (t) {
-        this.VZm(t * CommonDefine_1.MILLIONSECOND_PER_SECOND);
+        this.A0f(t * CommonDefine_1.MILLIONSECOND_PER_SECOND);
       }
-      this.kZm();
+      this.D0f();
     };
-    this.Nlf = () => {
-      this.Vlf();
+    this.U0f = () => {
+      this.x0f();
     };
-    this.Hlf = 0;
-    this.qZm = (0, puerts_1.$ref)(undefined);
-    this.X9f = Vector2D_1.Vector2D.Create();
+    this.B0f = 0;
+    this.k0f = (0, puerts_1.$ref)(undefined);
+    this.peg = Vector2D_1.Vector2D.Create();
     this.Hzu = Vector2D_1.Vector2D.Create();
     this.lLo = Vector2D_1.Vector2D.Create();
   }
@@ -59,51 +59,52 @@ class SunSpiritHintView extends UiTickViewBase_1.UiTickViewBase {
     this.GetItem(4)?.SetUIActive(false);
     this.GetText(5)?.SetUIActive(false);
     this.SetUiActive(false);
+    this.Ore();
   }
-  OnAddEventListener() {
-    if (!EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnSunSpiritOccupiedByPlayerChanged, this.NZm)) {
-      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSunSpiritOccupiedByPlayerChanged, this.NZm);
-    }
-    if (!EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnSunSpiritLauncherWatchSelectedChanged, this.Nlf)) {
-      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSunSpiritLauncherWatchSelectedChanged, this.Nlf);
-    }
+  OnBeforeDestroy() {
+    this.kre();
   }
-  OnRemoveEventListener() {
-    if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnSunSpiritOccupiedByPlayerChanged, this.NZm)) {
-      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSunSpiritOccupiedByPlayerChanged, this.NZm);
+  Ore() {
+    if (!EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnSunSpiritOccupiedByPlayerChanged, this.P0f)) {
+      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSunSpiritOccupiedByPlayerChanged, this.P0f);
     }
-    if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnSunSpiritLauncherWatchSelectedChanged, this.Nlf)) {
-      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSunSpiritLauncherWatchSelectedChanged, this.Nlf);
+    if (!EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnSunSpiritLauncherWatchSelectedChanged, this.U0f)) {
+      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSunSpiritLauncherWatchSelectedChanged, this.U0f);
     }
   }
-  OnAfterShow() {
-    this.kZm();
+  kre() {
+    if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnSunSpiritOccupiedByPlayerChanged, this.P0f)) {
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSunSpiritOccupiedByPlayerChanged, this.P0f);
+    }
+    if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnSunSpiritLauncherWatchSelectedChanged, this.U0f)) {
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSunSpiritLauncherWatchSelectedChanged, this.U0f);
+    }
   }
-  OnTick(t) {
-    this.Hlf -= t;
-    this.Vlf();
+  Tick(t) {
+    this.B0f -= t;
+    this.x0f();
     this.Swr(t);
   }
-  jlf() {
+  q0f() {
     var t = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint();
     if (t?.Valid) {
-      return t?.GetComponent(105)?.GetSunSpiritLauncherUiTarget();
+      return t?.GetComponent(107)?.GetSunSpiritLauncherUiTarget();
     }
   }
-  Vlf() {
-    if (this.Hlf <= 0) {
-      this.Hlf = 0;
+  x0f() {
+    if (this.B0f <= 0) {
+      this.B0f = 0;
     }
-    if (this.Hlf > 0 || this.jlf()) {
+    if (this.B0f > 0 || this.q0f()) {
       if (!this.RootItem?.IsUIActiveSelf()) {
-        this.Rtg();
-        this.kZm();
+        this.hDg();
+        this.D0f();
       }
     } else if (this.RootItem?.IsUIActiveSelf()) {
-      this.Ltg();
+      this.lDg();
     }
   }
-  Rtg() {
+  hDg() {
     this.SetUiActive(true);
     if (this.$pt) {
       if (this.$pt.IsSequenceFinish("Start")) {
@@ -113,17 +114,17 @@ class SunSpiritHintView extends UiTickViewBase_1.UiTickViewBase {
       this.vK1("Start");
     }
   }
-  Ltg() {
+  lDg() {
     if (this.$pt) {
       if (this.$pt.IsSequenceFinish("Close")) {
-        this.btg(false);
+        this.aDg(false);
         this.$pt.PlaySequence("Close");
       }
     } else {
       this.vK1("Close");
     }
   }
-  btg(t) {
+  aDg(t) {
     if (this.$pt) {
       if (this.$pt.IsSequenceFinish("Loop")) {
         if (t) {
@@ -134,21 +135,23 @@ class SunSpiritHintView extends UiTickViewBase_1.UiTickViewBase {
       }
     }
   }
-  VZm(t) {
+  A0f(t) {
     if (!(t <= 0)) {
-      this.Rtg();
-      this.Hlf = t;
+      if (!this.RootItem?.IsUIActiveSelf()) {
+        this.hDg();
+      }
+      this.B0f = t;
     }
   }
-  kZm() {
+  D0f() {
     var t = ModelManager_1.ModelManager.SunSpiritModel?.GetSunSpiritNumByPlayerIdAndAreaId(ModelManager_1.ModelManager.CreatureModel?.GetPlayerId(), ModelManager_1.ModelManager.AreaModel?.GetCurrentAreaId(), true, t => {
       t = t.GetSunSpiritState();
       return t instanceof SunSpiritOccupiedByPlayerState_1.SunSpiritOccupiedByPlayerState && !t.IsFinished;
     }) ?? 0;
-    this.FZm(t);
+    this.O0f(t);
     this.Swr(0);
   }
-  FZm(t) {
+  O0f(t) {
     this.GetText(0)?.SetText(t.toString(), true);
   }
   Swr(t) {
@@ -156,14 +159,14 @@ class SunSpiritHintView extends UiTickViewBase_1.UiTickViewBase {
     var i;
     var s;
     var h = Global_1.Global.BaseCharacter?.D_K2_GetActorLocation();
-    if (h && (s = Global_1.Global.CharacterController) && (e = ModelManager_1.ModelManager.BattleUiModel) && (i = ModelManager_1.ModelManager.SunSpiritModel?.GetSunSpiritConfig()) && UE.GameplayStatics.D_ProjectWorldToScreen(s, h, this.qZm) && (this.X9f.FromUeVector2D((0, puerts_1.$unref)(this.qZm)), this.X9f.MultiplyEqual(e.ScreenPositionScale).AdditionEqual(e.ScreenPositionOffset), this.X9f.Y *= -1, this.X9f.AdditionEqual(i.CharacterHintUiAnchorOffset), this.RootItem)) {
-      if (Math.abs(this.X9f.X - this.Hzu.X) > MAX_POS_OFFSET || Math.abs(this.X9f.Y - this.Hzu.Y) > MAX_POS_OFFSET) {
-        this.Hzu.X = this.X9f.X;
-        this.Hzu.Y = this.X9f.Y;
+    if (h && (s = Global_1.Global.CharacterController) && (e = ModelManager_1.ModelManager.BattleUiModel) && (i = ModelManager_1.ModelManager.SunSpiritModel?.GetSunSpiritConfig()) && UE.GameplayStatics.D_ProjectWorldToScreen(s, h, this.k0f) && (this.peg.FromUeVector2D((0, puerts_1.$unref)(this.k0f)), this.peg.MultiplyEqual(e.ScreenPositionScale).AdditionEqual(e.ScreenPositionOffset), this.peg.Y *= -1, this.peg.AdditionEqual(i.CharacterHintUiAnchorOffset), this.RootItem)) {
+      if (Math.abs(this.peg.X - this.Hzu.X) > MAX_POS_OFFSET || Math.abs(this.peg.Y - this.Hzu.Y) > MAX_POS_OFFSET) {
+        this.Hzu.X = this.peg.X;
+        this.Hzu.Y = this.peg.Y;
         this.RootItem?.SetAnchorOffset(this.Hzu.ToUeVector2D());
       } else {
-        this.lLo.X = this.jii(t, this.X9f.X, this.Hzu.X, this.lLo.X);
-        this.lLo.Y = this.jii(t, this.X9f.Y, this.Hzu.Y, this.lLo.Y);
+        this.lLo.X = this.jii(t, this.peg.X, this.Hzu.X, this.lLo.X);
+        this.lLo.Y = this.jii(t, this.peg.Y, this.Hzu.Y, this.lLo.Y);
         s = this.lLo.X * t;
         h = this.lLo.Y * t;
         if (!(Math.abs(s) < MIN_DELTA_OFFSET) || !(Math.abs(h) < MIN_DELTA_OFFSET)) {
@@ -184,12 +187,12 @@ class SunSpiritHintView extends UiTickViewBase_1.UiTickViewBase {
     if (h < 1) {
       return 0;
     }
-    let n = 0;
-    n = t >= MAX_DELTA_TIME ? h / t : h / MAX_DELTA_TIME;
+    let _ = 0;
+    _ = t >= MAX_DELTA_TIME ? h / t : h / MAX_DELTA_TIME;
     if (r) {
-      n = -n;
+      _ = -_;
     }
-    return MathUtils_1.MathUtils.Lerp(s, n, 0.5);
+    return MathUtils_1.MathUtils.Lerp(s, _, 0.5);
   }
 }
 exports.SunSpiritHintView = SunSpiritHintView;

@@ -31,41 +31,41 @@ class MotorcycleLevelInfoTabView extends UiTabViewBase_1.UiTabViewBase {
     this.Wnu = undefined;
     this.R0m = undefined;
     this.s4e = undefined;
-    this.Mcf = undefined;
+    this.vmf = undefined;
     this.scc = undefined;
     this.acc = undefined;
-    this.wVf = undefined;
+    this.PXf = undefined;
     this.Hea = undefined;
-    this.Ecf = [];
-    this.qzf = undefined;
+    this.ymf = [];
+    this.Agg = undefined;
     this.qVl = -1;
     this.UQ = 1;
-    this.PVf = false;
-    this.cKf = () => {
+    this.AXf = false;
+    this.Vhg = () => {
       var e;
       if (this.Wnu && (e = this.Wnu.FindNearestMiddleItem())) {
         e = e.GetCurrentPosition();
         this.GetSprite(1).SetAnchorOffsetX(-e);
       }
     };
-    this.Icf = e => {
-      this.Ozf();
-      this.PVf = true;
+    this.Smf = e => {
+      this.Dgg();
+      this.AXf = true;
       this.Wnu.AttachToIndex(e.GetCurrentShowItemIndex());
     };
-    this.bcf = e => {
+    this.Emf = e => {
       this.qVl = e.GetCurrentShowItemIndex() + 1;
-      this.nqf();
+      this.mVf();
     };
     this.RHl = e => !this.Wnu.MovingState() && e?.Level !== this.qVl;
-    this.Gzf = () => this.qzf === undefined;
-    this.Rcf = (e, t, i) => {
+    this.Ugg = () => this.Agg === undefined;
+    this.Imf = (e, t, i) => {
       var s = new MotorcycleLevelAttachItem_1.MotorcycleLevelAttachItem();
       s.CreateByActorAsync(e);
-      s.OnClickAttachItem = this.Icf;
-      s.OnSelectAttachItem = this.bcf;
+      s.OnClickAttachItem = this.Smf;
+      s.OnSelectAttachItem = this.Emf;
       s.CheckToggleCanClick = this.RHl;
-      s.GetSelectAnimEnable = this.Gzf;
+      s.GetSelectAnimEnable = this.Ugg;
       return s;
     };
     this.W2e = () => {
@@ -74,14 +74,13 @@ class MotorcycleLevelInfoTabView extends UiTabViewBase_1.UiTabViewBase {
       return e;
     };
     this.OWe = () => new MotorcycleLevelAttrItem_1.MotorcycleLevelAttrItem();
-    this.wcf = () => {
+    this.Tmf = () => {
       var e = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetCurLevel();
       this.qVl = e;
-      this.Mcf.SetUiActive(ModelManager_1.ModelManager.MotorcycleDevelopModel.GetCurTreeType() !== 0);
-      this.Mcf.Refresh();
-      this.Tcf();
+      this.rVg();
+      this.Mmf();
     };
-    this.Ojm = () => {
+    this.kWm = () => {
       var e = [];
       for (const r of ConfigManager_1.ConfigManager.MotorConfig.GetAllMotorLevelHintList()) {
         var t;
@@ -95,7 +94,7 @@ class MotorcycleLevelInfoTabView extends UiTabViewBase_1.UiTabViewBase {
           RecommendQuestId: 0
         };
         if (r.Type === 1) {
-          t = this.gTf(r.JumpTaskList);
+          t = this.rPf(r.JumpTaskList);
           i = ModelManager_1.ModelManager.QuestNewModel.GetQuestState(t) === 3;
           s.RecommendQuestId = t;
           s.IsFinished = i;
@@ -104,35 +103,35 @@ class MotorcycleLevelInfoTabView extends UiTabViewBase_1.UiTabViewBase {
       }
       UiManager_1.UiManager.OpenView("MotorcycleConditionView", e);
     };
-    this.Gjm = () => {
-      this.Ozf();
-      this.PVf = true;
+    this.qWm = () => {
+      this.Dgg();
+      this.AXf = true;
       this.Wnu.AttachToNextItem(-1);
     };
-    this.Fjm = () => {
-      this.Ozf();
-      this.PVf = true;
+    this.OWm = () => {
+      this.Dgg();
+      this.AXf = true;
       this.Wnu.AttachToNextItem(1);
     };
     this.hcc = () => {
-      this.Ozf();
-      this.PVf = true;
+      this.Dgg();
+      this.AXf = true;
       this.Wnu.AttachToNextItem(-1);
     };
     this._o = () => {
-      this.Ozf();
-      this.PVf = true;
+      this.Dgg();
+      this.AXf = true;
       this.Wnu.AttachToNextItem(1);
     };
-    this.Lcf = () => {
-      var e = this.Pcf(false);
+    this.bmf = () => {
+      var e = this.Rmf(false);
       UiManager_1.UiManager.OpenView("MotorcycleLevelAttrDetailView", e);
     };
-    this.Vjm = () => {
+    this.FWm = () => {
       var e = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetAllPreviewReward();
       UiManager_1.UiManager.OpenView("MotorcycleRewardPreviewView", e);
     };
-    this.Acf = () => {
+    this.wmf = () => {
       ControllerHolder_1.ControllerHolder.MotorcycleDevelopController.RequestMotorLevelOneKeyReward();
     };
     this.tmu = e => {
@@ -142,39 +141,40 @@ class MotorcycleLevelInfoTabView extends UiTabViewBase_1.UiTabViewBase {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UISprite], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIText], [5, UE.UIButtonComponent], [6, UE.UIButtonComponent], [7, UE.UIButtonComponent], [8, UE.UIVerticalLayout], [9, UE.UIItem], [10, UE.UIButtonComponent], [11, UE.UIButtonComponent], [12, UE.UIHorizontalLayout], [13, UE.UIItem], [14, UE.UIButtonComponent], [15, UE.UIItem], [16, UE.UIItem], [17, UE.UIItem], [21, UE.UIItem]];
-    this.BtnBindInfo = [[5, this.Ojm], [6, this.Gjm], [7, this.Fjm], [10, this.Lcf], [11, this.Vjm]];
+    this.BtnBindInfo = [[5, this.kWm], [6, this.qWm], [7, this.OWm], [10, this.bmf], [11, this.FWm]];
   }
   async OnBeforeStartAsync() {
     this.Hea = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
     this.scc = new LongPressButtonItem_1.LongPressButtonItem(this.GetButton(7), 1, this._o);
     this.acc = new LongPressButtonItem_1.LongPressButtonItem(this.GetButton(6), 1, this.hcc);
-    this.wVf = new ButtonItem_1.ButtonItem();
+    this.PXf = new ButtonItem_1.ButtonItem();
     this.scc.ShouldPlayLongPressSound = true;
     this.acc.ShouldPlayLongPressSound = true;
     this.Wnu = new NoCircleAttachView_1.NoCircleAttachView(this.GetItem(2).GetOwner(), true);
-    this.Wnu.SetMoveItemsCallback(this.cKf);
+    this.Wnu.SetMoveItemsCallback(this.Vhg);
     this.GetItem(3).SetUIActive(false);
-    this.Wnu.CreateItems(this.GetItem(3).GetOwner(), SHOW_GAP, this.Rcf, 0);
+    this.Wnu.CreateItems(this.GetItem(3).GetOwner(), SHOW_GAP, this.Imf, 0);
     this.s4e = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(12), this.W2e);
     this.R0m = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(8), this.OWe, this.GetItem(9).GetOwner());
-    this.Mcf = new MotorcycleLevelActiveTreeItem_1.MotorcycleLevelActiveTreeItem();
-    await Promise.all([this.wVf.CreateThenShowByActorAsync(this.GetButton(14).GetOwner()), this.Mcf.CreateThenShowByActorAsync(this.GetItem(17).GetOwner())]);
-    this.Dcf();
+    this.vmf = new MotorcycleLevelActiveTreeItem_1.MotorcycleLevelActiveTreeItem();
+    await Promise.all([this.PXf.CreateThenShowByActorAsync(this.GetButton(14).GetOwner()), this.vmf.CreateThenShowByActorAsync(this.GetItem(17).GetOwner())]);
+    this.Lmf();
     const t = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetCurLevel();
-    var e = this.Ecf.findIndex(e => e.Level === t);
-    this.Wnu.ReloadView(this.Ecf.length, this.Ecf, e);
-    this.wVf.SetFunction(this.Acf);
+    var e = this.ymf.findIndex(e => e.Level === t);
+    this.Wnu.ReloadView(this.ymf.length, this.ymf, e);
+    this.PXf.SetFunction(this.wmf);
     this.qVl = t;
-    this.Mcf.SetUiActive(ModelManager_1.ModelManager.MotorcycleDevelopModel.GetCurTreeType() !== 0);
-    this.Mcf.Refresh();
+  }
+  OnBeforeShow() {
+    this.rVg();
   }
   AddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.MotorDevelopInfoUpdate, this.wcf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.MotorDevelopInfoUpdate, this.Tmf);
   }
   RemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.MotorDevelopInfoUpdate, this.wcf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.MotorDevelopInfoUpdate, this.Tmf);
   }
-  Dcf() {
+  Lmf() {
     var e = ConfigManager_1.ConfigManager.MotorConfig.GetAllMotorLevelList();
     this.UQ = e.length;
     var t = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetNextLevelExp();
@@ -183,42 +183,42 @@ class MotorcycleLevelInfoTabView extends UiTabViewBase_1.UiTabViewBase {
         Level: s.Level,
         Exp: t
       };
-      this.Ecf.push(i);
+      this.ymf.push(i);
     }
   }
-  Fzf() {
-    if (this.qzf) {
-      TimerSystem_1.TimerSystem.Remove(this.qzf);
-      this.qzf = undefined;
+  xgg() {
+    if (this.Agg) {
+      TimerSystem_1.TimerSystem.Remove(this.Agg);
+      this.Agg = undefined;
     }
   }
-  Ozf() {
+  Dgg() {
     if (this.Wnu?.GetItems()) {
-      this.Fzf();
-      this.qzf = TimerSystem_1.TimerSystem.Delay(() => {
+      this.xgg();
+      this.Agg = TimerSystem_1.TimerSystem.Delay(() => {
         var e = this.Wnu?.GetItemByShowIndex(this.qVl - 1);
         if (e && e instanceof MotorcycleLevelAttachItem_1.MotorcycleLevelAttachItem && e.GetSelectedState()) {
           e.PlaySelectTween();
         }
-        this.Fzf();
+        this.xgg();
       }, 420);
     }
   }
-  nqf() {
+  mVf() {
     new UiAsyncTask_1.UiAsyncTask("RefreshSkillInfo", async () => {
-      await this.Tcf();
-      if (this.PVf) {
+      await this.Mmf();
+      if (this.AXf) {
         this.Hea.StopSequenceByKey("Change");
         this.Hea.PlayLevelSequenceByName("Change");
       }
     }).Run();
   }
-  async Tcf() {
-    this.Ucf();
-    this.Bcf();
-    await Promise.all([this.sqf(), this.aqf()]);
+  async Mmf() {
+    this.Pmf();
+    this.Dmf();
+    await Promise.all([this.fVf(), this.gVf()]);
   }
-  Pcf(e) {
+  Rmf(e) {
     var t = [];
     for (const r of ConfigManager_1.ConfigManager.MotorConfig.GetAllMotorAttrList()) {
       if (e && r.ShowMain === 1) {
@@ -245,7 +245,11 @@ class MotorcycleLevelInfoTabView extends UiTabViewBase_1.UiTabViewBase {
     }
     return i;
   }
-  Ucf() {
+  rVg() {
+    this.vmf.SetUiActive(ModelManager_1.ModelManager.MotorcycleDevelopModel.GetCurTreeType() !== 0);
+    this.vmf.Refresh();
+  }
+  Pmf() {
     var e = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetCurLevel();
     var t = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetCurExp();
     var i = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetNextLevelExp();
@@ -258,15 +262,15 @@ class MotorcycleLevelInfoTabView extends UiTabViewBase_1.UiTabViewBase {
       this.GetText(4).SetText("--/--");
     }
   }
-  async sqf() {
-    var e = this.Pcf(true);
+  async fVf() {
+    var e = this.Rmf(true);
     await this.R0m.RefreshByDataAsync(e);
   }
-  async aqf() {
+  async gVf() {
     var e = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetPreviewRewardByLevel(this.qVl);
     await this.s4e.RefreshByDataAsync(e);
   }
-  Bcf() {
+  Dmf() {
     var e = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetCurLevel();
     var t = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetCurRewardedMaxLv();
     var i = this.qVl > e;
@@ -274,10 +278,10 @@ class MotorcycleLevelInfoTabView extends UiTabViewBase_1.UiTabViewBase {
     var e = this.qVl <= e && !t;
     this.GetItem(15).SetUIActive(i);
     this.GetItem(16).SetUIActive(t);
-    this.wVf.SetActive(e);
-    this.wVf.SetRedDotVisible(e);
+    this.PXf.SetActive(e);
+    this.PXf.SetRedDotVisible(e);
   }
-  gTf(t) {
+  rPf(t) {
     for (let e = t.length - 1; e >= 0; --e) {
       var i = t[e];
       var s = ModelManager_1.ModelManager.QuestNewModel.GetQuest(i);

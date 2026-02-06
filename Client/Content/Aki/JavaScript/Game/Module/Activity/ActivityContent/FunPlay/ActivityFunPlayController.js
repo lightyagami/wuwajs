@@ -42,18 +42,18 @@ class ActivityFunPlayController extends ActivityControllerBase_1.ActivityControl
     return this.Data;
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(27727, this.dsd);
+    Net_1.Net.Register(29041, this.dsd);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(27727);
+    Net_1.Net.UnRegister(29041);
   }
   ChallengeAwardRequest(e) {
     var t = new Protocol_1.Aki.Protocol.W$c();
     t.e8n = e;
-    Net_1.Net.Call(27622, t, e => {
+    Net_1.Net.Call(27982, t, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27622);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27982);
         }
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("ActivityFunPlay", 87, "领取奖励回包为空");

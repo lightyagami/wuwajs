@@ -23,7 +23,7 @@ class PerformPlayMontage extends PerformActionBase_1.PerformActionBase {
     };
   }
   OnExecute() {
-    var e = this.PerformComp.Entity.GetComponent(45);
+    var e = this.PerformComp.Entity.GetComponent(47);
     if (e && (this.yj_ = e.MontageManager.PlayMontage(this.Param), this.yj_ > 0)) {
       this.sDe = ModelManager_1.ModelManager.CreatureModel.GetEntityById(this.PerformComp.Entity.Id);
       if (this.sDe) {
@@ -34,7 +34,7 @@ class PerformPlayMontage extends PerformActionBase_1.PerformActionBase {
     }
   }
   OnInterrupt() {
-    var e = this.PerformComp.Entity.GetComponent(45).MontageManager.GetRemainDuration(this.yj_);
+    var e = this.PerformComp.Entity.GetComponent(47).MontageManager.GetRemainDuration(this.yj_);
     this.Param.Duration = e;
     this.yj_ = 0;
     if (EventSystem_1.EventSystem.HasWithTarget(this.sDe, EventDefine_1.EEventName.PerformMontageStop, this._j_)) {

@@ -67,6 +67,18 @@ class UiModel {
       return this.ShowViewMap.get(e);
     }
   }
+  static PeekNormalView(i = 0) {
+    if (!(UiModel.NormalStack.Size <= i)) {
+      var o = UiModel.NormalStack.Size - 1 - i;
+      let e = 0;
+      for (const t of UiModel.NormalStack) {
+        if (e === o) {
+          return t;
+        }
+        e++;
+      }
+    }
+  }
 }
 (exports.UiModel = UiModel).HudMap = new Map();
 UiModel.NormalStack = new Stack_1.Stack();
@@ -85,4 +97,4 @@ UiModel.IsInMainView = false;
 UiModel.InNormalQueue = false;
 UiModel.SeamlessStackWhileList = new Set(["BattleView"]);
 UiModel.MainViewName = "BattleView";
-UiModel.CanShowPlotViewWhiteList = new Set(["BattleView", "CommonGameMainView", "DangoAbyssWorldView", "PhantomArenaBattleDetailsView", "HonamiStoryTechnologyView", "LaHaiLuoCollectView", "LaHaiLuoCollectView"]); //# sourceMappingURL=UiModel.js.map
+UiModel.CanShowPlotViewWhiteList = new Set(["BattleView", "CommonGameMainView", "DangoAbyssWorldView", "PhantomArenaBattleDetailsView", "HonamiStoryTechnologyView", "LaHaiLuoCollectView", "LaHaiLuoCollectView", "DrinksSelectRoleView", "DrinksGameplayView", "DrinksShowView", "GuessJokerSelectRoleView"]); //# sourceMappingURL=UiModel.js.map

@@ -8,6 +8,7 @@ const UE = require("ue");
 const StringUtils_1 = require("../../../../../../Core/Utils/StringUtils");
 const TimeUtil_1 = require("../../../../../Common/TimeUtil");
 const ConfigManager_1 = require("../../../../../Manager/ConfigManager");
+const ControllerHolder_1 = require("../../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../../Manager/ModelManager");
 const UiManager_1 = require("../../../../../Ui/UiManager");
 const RoleDescribeComponent_1 = require("../../../../Gacha/GachaMainView/RoleDescribeComponent");
@@ -22,33 +23,33 @@ const POOL_ITEM_PADDING = 15;
 class ActivityRegressNewVersionRoleView extends ActivityRegressMainSubViewBase_1.ActivityRegressMainSubViewBase {
   constructor() {
     super(...arguments);
-    this.e4f = undefined;
+    this.c$f = undefined;
     this.j2e = undefined;
-    this.t4f = undefined;
-    this.i4f = [];
+    this.d$f = undefined;
+    this.m$f = [];
     this.ebl = undefined;
-    this.wDf = new Map();
-    this.PDf = undefined;
-    this.LDf = undefined;
+    this.hOf = new Map();
+    this.lOf = undefined;
+    this.aOf = undefined;
     this.wqo = () => {
       var i = new PoolScrollItem();
-      i.OnClickToggleCallBack = this.r4f;
+      i.OnClickToggleCallBack = this.f$f;
       return i;
     };
-    this.r4f = (i, e) => {
-      if (i && this.t4f !== i) {
-        this.t4f = i;
+    this.f$f = (i, e) => {
+      if (i && this.d$f !== i) {
+        this.d$f = i;
         this.ebl?.SetToggleState(0);
         this.ebl = e;
         this.Og();
       }
     };
-    this.o4f = () => {
-      ActivityRegressController_1.ActivityRegressController.OpenGameIntroductionByRoleId(this.t4f.PreviewIdList[0]);
+    this.g$f = () => {
+      ActivityRegressController_1.ActivityRegressController.OpenGameIntroductionByRoleId(this.d$f.PreviewIdList[0]);
     };
     this.Wpa = () => {
       var i;
-      var e = ConfigManager_1.ConfigManager.GachaConfig.GetGachaPoolConfig(this.t4f.Id);
+      var e = ConfigManager_1.ConfigManager.GachaConfig.GetGachaPoolConfig(this.d$f.Id);
       var e = ModelManager_1.ModelManager.GachaModel.GetGachaInfo(e.GachaId);
       if (e) {
         i = UiManager_1.UiManager.IsViewOpen("ActivityRegressNewVersionMainView");
@@ -61,103 +62,104 @@ class ActivityRegressNewVersionRoleView extends ActivityRegressMainSubViewBase_1
     };
     this.wwe = () => {
       var i;
-      if (!!this.t4f && !((i = this.i4f.indexOf(this.t4f)) <= 0)) {
-        this.e4f?.GetScrollItemByIndex(--i)?.SelectedToggle();
+      if (!!this.d$f && !((i = this.m$f.indexOf(this.d$f)) <= 0)) {
+        this.c$f?.GetScrollItemByIndex(--i)?.SelectedToggle();
       }
     };
     this.Pwe = () => {
       var i;
-      if (!!this.t4f && !((i = this.i4f.indexOf(this.t4f)) >= this.i4f.length - 1)) {
-        this.e4f?.GetScrollItemByIndex(++i)?.SelectedToggle();
+      if (!!this.d$f && !((i = this.m$f.indexOf(this.d$f)) >= this.m$f.length - 1)) {
+        this.c$f?.GetScrollItemByIndex(++i)?.SelectedToggle();
       }
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIItem], [2, UE.UIScrollViewWithScrollbarComponent], [3, UE.UIButtonComponent], [4, UE.UIButtonComponent], [5, UE.UIButtonComponent], [6, UE.UIButtonComponent], [7, UE.UITexture], [8, UE.UIItem], [9, UE.UIText], [10, UE.UIText]];
-    this.BtnBindInfo = [[5, this.o4f], [6, this.Wpa], [3, this.wwe], [4, this.Pwe]];
+    this.BtnBindInfo = [[5, this.g$f], [6, this.Wpa], [3, this.wwe], [4, this.Pwe]];
   }
   async OnBeforeStartAsync() {
     this.j2e = new RoleDescribeComponent_1.RoleDescribeComponent();
     var i = this.GetItem(1);
     await this.j2e.CreateThenShowByActorAsync(i.GetOwner());
+    await ControllerHolder_1.ControllerHolder.GachaController.GachaInfoRequestAsync();
   }
   OnStart() {
     super.OnStart();
-    this.e4f = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(2), this.wqo);
-    this.i4f = ModelManager_1.ModelManager.ActivityRegressModel.GetGachaPoolUpPool();
-    this.e4f.RefreshByData(this.i4f, () => {
-      this.e4f?.GetScrollItemByIndex(0)?.SelectedToggle();
+    this.c$f = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(2), this.wqo);
+    this.m$f = ModelManager_1.ModelManager.ActivityRegressModel.GetGachaPoolUpPool();
+    this.c$f.RefreshByData(this.m$f, () => {
+      this.c$f?.GetScrollItemByIndex(0)?.SelectedToggle();
     });
-    var i = this.e4f.ContentItem;
+    var i = this.c$f.ContentItem;
     var e = i.Width;
     var t = i.GetChildComponent(0).GetOwner().GetComponentByClass(UE.UIItem.StaticClass()).GetWidth() + POOL_ITEM_PADDING;
-    if (e <= t * this.i4f.length) {
+    if (e <= t * this.m$f.length) {
       i.SetAnchorAlign(1, 2);
-      i.SetWidth(t * this.i4f.length);
+      i.SetWidth(t * this.m$f.length);
     }
   }
   Og() {
     var i;
     var e;
-    if (this.t4f && (this.j2e?.Update(this.t4f.PreviewIdList[0]), i = ConfigManager_1.ConfigManager.GachaConfig.GetGachaViewInfo(this.t4f.Id)) && (this.SetTextureByPath(i.UnderBgTexturePath, this.GetTexture(7)), e = this.t4f.UiType) && (e = ConfigManager_1.ConfigManager.GachaConfig.GetGachaViewTypeConfig(e))) {
+    if (this.d$f && (this.j2e?.Update(this.d$f.PreviewIdList[0]), i = ConfigManager_1.ConfigManager.GachaConfig.GetGachaViewInfo(this.d$f.Id)) && (this.SetTextureByPath(i.UnderBgTexturePath, this.GetTexture(7)), e = this.d$f.UiType) && (e = ConfigManager_1.ConfigManager.GachaConfig.GetGachaViewTypeConfig(e))) {
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(10), e.TypeText);
-      this.GetText(9).SetText(this.t4f.Title);
-      e = ConfigManager_1.ConfigManager.GachaConfig.GetGachaPoolConfig(this.t4f.Id);
+      this.GetText(9).SetText(this.d$f.Title);
+      e = ConfigManager_1.ConfigManager.GachaConfig.GetGachaPoolConfig(this.d$f.Id);
       if (e = ModelManager_1.ModelManager.GachaModel.GetGachaInfo(e.GachaId)) {
-        if ((e = e.GetPoolEndTimeByPoolInfo(this.t4f)) !== 0) {
+        if ((e = e.GetPoolEndTimeByPoolInfo(this.d$f)) !== 0) {
           e = e - TimeUtil_1.TimeUtil.GetServerTime();
           e = TimeUtil_1.TimeUtil.GetRemainTimeDataFormat(e);
           LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), "Text_GachaRemainingTime_Text", e.CountDownText);
-          this.n4f();
-          this.UDf(i.SpinePrefabResource, i.TrialRoleId > 0 ? i.TrialRoleId : i.Id);
+          this.C$f();
+          this.cOf(i.SpinePrefabResource, i.TrialRoleId > 0 ? i.TrialRoleId : i.Id);
         }
       } else {
         this.$Oe();
       }
     }
   }
-  async UDf(i, e) {
+  async cOf(i, e) {
     if (StringUtils_1.StringUtils.IsBlank(i)) {
-      await this.HDf();
+      await this.MOf();
     } else {
-      await this.jDf(i, e);
+      await this.EOf(i, e);
     }
-    for (var [t, s] of this.wDf) {
+    for (var [t, s] of this.hOf) {
       s.SetUiActive(t === e);
     }
-    this.PDf?.UpdateByRoleId(e);
+    this.lOf?.UpdateByRoleId(e);
   }
-  async jDf(i, e) {
-    let t = this.wDf.get(e);
+  async EOf(i, e) {
+    let t = this.hOf.get(e);
     var s;
     if (!t) {
       t = new NewPlayerSupportRoleSpineItem_1.NewPlayerSupportRoleSpineItem();
       s = this.GetItem(8);
       await t.CreateThenShowByResourceIdAsync(i, s);
-      this.wDf.set(e, t);
+      this.hOf.set(e, t);
     }
-    this.PDf = t;
+    this.lOf = t;
   }
-  async HDf() {
+  async MOf() {
     var i;
     var e;
-    if (!this.LDf) {
+    if (!this.aOf) {
       i = new NewPlayerSupportRoleCommonItem_1.NewPlayerSupportRoleCommonItem();
       e = this.GetItem(8);
       await i.CreateThenShowByResourceIdAsync("UiItem_BaseGachaPool", e);
-      this.LDf = i;
+      this.aOf = i;
     }
-    this.PDf = this.LDf;
+    this.lOf = this.aOf;
   }
-  n4f() {
+  C$f() {
     var i;
-    if (this.t4f) {
-      if ((i = this.i4f.indexOf(this.t4f)) <= 0) {
+    if (this.d$f) {
+      if ((i = this.m$f.indexOf(this.d$f)) <= 0) {
         this.GetButton(3).RootUIComp.SetUIActive(false);
       } else {
         this.GetButton(3).RootUIComp.SetUIActive(true);
       }
-      if (i >= this.i4f.length - 1) {
+      if (i >= this.m$f.length - 1) {
         this.GetButton(4).RootUIComp.SetUIActive(false);
       } else {
         this.GetButton(4).RootUIComp.SetUIActive(true);
@@ -177,10 +179,10 @@ exports.ActivityRegressNewVersionRoleView = ActivityRegressNewVersionRoleView;
 class PoolScrollItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
     super(...arguments);
-    this.s4f = undefined;
+    this.p$f = undefined;
     this.OnClickToggleCallBack = undefined;
     this.kqe = () => {
-      this.OnClickToggleCallBack?.(this.s4f, this.GetExtendToggle(0));
+      this.OnClickToggleCallBack?.(this.p$f, this.GetExtendToggle(0));
     };
   }
   OnRegisterComponent() {
@@ -190,7 +192,7 @@ class PoolScrollItem extends GridProxyAbstract_1.GridProxyAbstract {
   Refresh(i, e, t) {
     var s = ConfigManager_1.ConfigManager.GachaConfig.GetGachaViewInfo(i.Id);
     if (s) {
-      this.s4f = i;
+      this.p$f = i;
       this.SetSpriteByPath(s.TagNotSelectedSpritePath, this.GetSprite(1), true);
       this.GetText(2).SetText(i.Title);
     }

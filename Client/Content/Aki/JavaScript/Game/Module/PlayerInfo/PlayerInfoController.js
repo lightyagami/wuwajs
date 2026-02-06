@@ -22,12 +22,12 @@ const LoginController_1 = require("../Login/LoginController");
 const WorldLevelController_1 = require("../WorldLevel/WorldLevelController");
 class PlayerInfoController extends UiControllerBase_1.UiControllerBase {
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(19211, PlayerInfoController.dXi);
-    Net_1.Net.Register(28064, PlayerInfoController.CXi);
+    Net_1.Net.Register(25556, PlayerInfoController.dXi);
+    Net_1.Net.Register(27819, PlayerInfoController.CXi);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(19211);
-    Net_1.Net.UnRegister(28064);
+    Net_1.Net.UnRegister(25556);
+    Net_1.Net.UnRegister(27819);
   }
   static gXi() {
     var e = ModelManager_1.ModelManager.PlayerInfoModel.GetNumberPropById(9);

@@ -27,6 +27,13 @@ class EntityMarkItem extends ConfigMarkItem_1.ConfigMarkItem {
   CheckCanShowView() {
     return (typeof this.TrackTarget != "number" || !!ModelManager_1.ModelManager.CreatureModel.CheckEntityVisible(this.TrackTarget)) && super.CheckCanShowView();
   }
+  get MapId() {
+    if (this.MarkType === 16) {
+      return ModelManager_1.ModelManager.MapModel.CurrentMapConfigId;
+    } else {
+      return this.MarkConfig.MapId;
+    }
+  }
 }
 exports.EntityMarkItem = EntityMarkItem;
 //# sourceMappingURL=EntityMarkItem.js.map

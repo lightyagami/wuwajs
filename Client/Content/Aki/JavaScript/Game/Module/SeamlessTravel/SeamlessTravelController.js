@@ -8,7 +8,7 @@ const UE = require("ue");
 const Log_1 = require("../../../Core/Common/Log");
 const Protocol_1 = require("../../../Core/Define/Net/Protocol");
 const ControllerBase_1 = require("../../../Core/Framework/ControllerBase");
-const ResourceSystem_1 = require("../../../Core/Resource/ResourceSystem");
+const LoadModeManager_1 = require("../../../Core/Performance/LoadMode/LoadModeManager");
 const TimerSystem_1 = require("../../../Core/Timer/TimerSystem");
 const Rotator_1 = require("../../../Core/Utils/Math/Rotator");
 const Vector_1 = require("../../../Core/Utils/Math/Vector");
@@ -19,7 +19,6 @@ const EventSystem_1 = require("../../Common/Event/EventSystem");
 const Global_1 = require("../../Global");
 const GlobalData_1 = require("../../GlobalData");
 const ModelManager_1 = require("../../Manager/ModelManager");
-const InputDefine_1 = require("../../NewWorld/Character/Common/Component/Input/InputLayerFunction/InputDefine");
 const CustomMovementDefine_1 = require("../../NewWorld/Character/Common/Component/Move/CustomMovementDefine");
 const InputDistributeController_1 = require("../../Ui/InputDistribute/InputDistributeController");
 const InputDistributeDefine_1 = require("../../Ui/InputDistribute/InputDistributeDefine");
@@ -63,7 +62,7 @@ class SeamlessTravelController extends ControllerBase_1.ControllerBase {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("SeamlessTravel", 29, "[无缝加载:开始]");
         }
-        ResourceSystem_1.ResourceSystem.SetForceLoadModeInGame(GlobalData_1.GlobalData.World, true);
+        LoadModeManager_1.LoadModeManager.SetLoadModeByReason("ForceInGame", "SeamlessTravel");
         ModelManager_1.ModelManager.SeamlessTravelModel.InSeamlessTraveling = true;
         if (ModelManager_1.ModelManager.SeamlessTravelModel.SeamlessEndHandle) {
           TimerSystem_1.TimerSystem.Remove(ModelManager_1.ModelManager.SeamlessTravelModel.SeamlessEndHandle);
@@ -84,7 +83,7 @@ class SeamlessTravelController extends ControllerBase_1.ControllerBase {
       return false;
     }
   }
-  static EnableSeamlessTravel(e, a = false) {
+  static async EnableSeamlessTravel(e, a = false) {
     var r = Global_1.Global.CharacterController;
     if (!r?.IsValid()) {
       if (Log_1.Log.CheckError()) {
@@ -92,172 +91,174 @@ class SeamlessTravelController extends ControllerBase_1.ControllerBase {
       }
       return false;
     }
-    const s = ModelManager_1.ModelManager.SeamlessTravelModel;
+    if (ModelManager_1.ModelManager.SceneTeamModel.LoadTeamPromise && (Log_1.Log.CheckInfo() && Log_1.Log.Info("SeamlessTravel", 39, "[无缝加载:等待当前正在加载的编队(开始)]"), await ModelManager_1.ModelManager.SceneTeamModel.LoadTeamPromise.Promise, Log_1.Log.CheckInfo())) {
+      Log_1.Log.Info("SeamlessTravel", 39, "[无缝加载:等待当前正在加载的编队(完成)]");
+    }
+    const l = ModelManager_1.ModelManager.SeamlessTravelModel;
     if (a) {
-      s.HasPreEnableSeamlessTravel = true;
-    } else if (s.HasPreEnableSeamlessTravel) {
+      l.HasPreEnableSeamlessTravel = true;
+    } else if (l.HasPreEnableSeamlessTravel) {
       return true;
     }
-    s.Config = e;
-    s.CreatePromise();
-    s.IsSeamlessTravel = true;
-    s.SeamlessTravelPlayerEntityHandle = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
+    l.Config = e;
+    l.CreatePromise();
+    l.IsSeamlessTravel = true;
+    l.SeamlessTravelPlayerEntityHandle = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
     for (const i of ModelManager_1.ModelManager.SceneTeamModel.GetTeamEntities()) {
       this.HMl(i);
-      var l = i.Entity.GetComponent(0);
-      l.VisionServerEntityIds.forEach(e => {
+      var o = i.Entity.GetComponent(0);
+      o.VisionServerEntityIds.forEach(e => {
         e = ModelManager_1.ModelManager.CreatureModel.GetEntity(e);
         if (e) {
           this.HMl(e);
         }
       });
-      var o = l.CustomServerEntityIds;
-      if (o.length > 0) {
-        o.forEach(e => {
+      var s = o.CustomServerEntityIds;
+      if (s.length > 0) {
+        s.forEach(e => {
           e = ModelManager_1.ModelManager.CreatureModel.GetEntity(e);
           if (e) {
             this.HMl(e);
           }
         });
       }
-      if (l.VisionControlCreatureDataId && (o = ModelManager_1.ModelManager.CreatureModel.GetEntity(l.VisionControlCreatureDataId))) {
-        this.HMl(o);
+      if (o.VisionControlCreatureDataId && (s = ModelManager_1.ModelManager.CreatureModel.GetEntity(o.VisionControlCreatureDataId))) {
+        this.HMl(s);
       }
     }
-    s.SeamlessTravelController = r;
+    l.SeamlessTravelController = r;
     var a = CameraController_1.CameraController.FightCamera.LogicComponent.CameraActor;
     r.bUseSeamlessCameraActor = true;
     r.SeamlessCameraActor = a;
     SeamlessTravelController.AddSeamlessTravelActor(a);
-    s.SeamlessTravelCamera = a;
-    s.SeamlessTravelInputDistributeTags.length = 0;
+    l.SeamlessTravelCamera = a;
+    l.SeamlessTravelInputDistributeTags.length = 0;
     var r = ModelManager_1.ModelManager.InputDistributeModel?.IsAllowFightMoveInput();
     var a = ModelManager_1.ModelManager.InputDistributeModel?.IsAllowFightCameraRotationInput();
     var t = ModelManager_1.ModelManager.InputDistributeModel?.IsAllowFightCameraZoomInput();
     if (r || a || t) {
       if (r) {
-        s.SeamlessTravelInputDistributeTags.push(InputDistributeDefine_1.inputDistributeTagDefine.FightInputRoot.AxisInput.MoveInputTag);
+        l.SeamlessTravelInputDistributeTags.push(InputDistributeDefine_1.inputDistributeTagDefine.FightInputRoot.AxisInput.MoveInputTag);
       }
       if (a) {
-        s.SeamlessTravelInputDistributeTags.push(InputDistributeDefine_1.inputDistributeTagDefine.FightInputRoot.AxisInput.CameraInput.CameraRotationTag);
+        l.SeamlessTravelInputDistributeTags.push(InputDistributeDefine_1.inputDistributeTagDefine.FightInputRoot.AxisInput.CameraInput.CameraRotationTag);
       }
       if (t) {
-        s.SeamlessTravelInputDistributeTags.push(InputDistributeDefine_1.inputDistributeTagDefine.FightInputRoot.AxisInput.CameraInput.CameraZoomTag);
+        l.SeamlessTravelInputDistributeTags.push(InputDistributeDefine_1.inputDistributeTagDefine.FightInputRoot.AxisInput.CameraInput.CameraZoomTag);
       }
     } else {
-      s.SeamlessTravelInputDistributeTags.push(InputDistributeDefine_1.inputDistributeTagDefine.UiInputRoot.MouseInputTag, InputDistributeDefine_1.inputDistributeTagDefine.UiInputRoot.NavigationTag);
+      l.SeamlessTravelInputDistributeTags.push(InputDistributeDefine_1.inputDistributeTagDefine.UiInputRoot.MouseInputTag, InputDistributeDefine_1.inputDistributeTagDefine.UiInputRoot.NavigationTag);
     }
-    var r = s.SeamlessTravelPlayerEntityHandle.Entity;
-    s.UseTreadmill = true;
-    s.UseKeepKite = false;
-    s.UseKeepMovementMode = false;
+    var r = l.SeamlessTravelPlayerEntityHandle?.Entity;
+    l.UseTreadmill = false;
+    l.UseKeepKite = false;
+    l.UseKeepMovementMode = false;
     let _ = undefined;
     let n = undefined;
-    if (e.KeepMovementStateFeatures?.KeepKite && (a = r?.GetComponent(105))?.GetIsHooking() && a.GetCurrentTarget()?.GetHookInteractType() === "KiteHook") {
-      s.UseTreadmill = false;
-      s.UseKeepKite = true;
-      s.UseKeepMovementMode = true;
-      _ = 6;
-      n = CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_KITE;
-    }
-    if (!s.UseKeepMovementMode) {
-      if (t = SeamlessTravelKeepMovementMode_1.SeamlessTravelKeepMovementMode.GetCurrentKeepableMovementMode(e)) {
-        s.UseTreadmill = false;
-        s.UseKeepMovementMode = true;
+    if (r?.Valid) {
+      if (e.KeepMovementStateFeatures?.KeepKite && (a = r?.GetComponent(107))?.GetIsHooking() && a.GetCurrentTarget()?.GetHookInteractType() === "KiteHook") {
+        l.UseKeepKite = true;
+      }
+      if (l.UseKeepKite) {
+        l.UseKeepMovementMode = true;
+        _ = 6;
+        n = CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_KITE;
+      } else if (e.KeepMovementStateFeatures && (t = SeamlessTravelKeepMovementMode_1.SeamlessTravelKeepMovementMode.GetCurrentKeepableMovementMode(e))) {
+        l.UseKeepMovementMode = true;
         _ = t[0];
         n = t[1];
       }
+      if (l.UseKeepMovementMode) {
+        l.UseTreadmill = false;
+      } else {
+        l.UseTreadmill = true;
+      }
     }
-    if (s.UseTreadmill) {
-      s.SeamlessTravelTreadmill = new SeamlessTravelTreadmill_1.SeamlessTravelTreadmill();
-      s.SeamlessTravelTreadmill.Init(e, e => {
-        s.MeshAssetLoadedPromise?.SetResult(e);
+    if (l.UseTreadmill) {
+      l.SeamlessTravelTreadmill = new SeamlessTravelTreadmill_1.SeamlessTravelTreadmill();
+      l.SeamlessTravelTreadmill.Init(e, e => {
+        l.MeshAssetLoadedPromise?.SetResult(e);
       });
     }
-    if (s.UseKeepMovementMode) {
-      s.SeamlessTravelKeepMovementMode = new SeamlessTravelKeepMovementMode_1.SeamlessTravelKeepMovementMode();
-      s.SeamlessTravelKeepMovementMode.SetInitDataWithTargetMode(_, n);
-      s.SeamlessTravelKeepMovementMode?.Init(e, e => {
+    if (l.UseKeepMovementMode) {
+      l.SeamlessTravelKeepMovementMode = new SeamlessTravelKeepMovementMode_1.SeamlessTravelKeepMovementMode();
+      l.SeamlessTravelKeepMovementMode.SetInitDataWithTargetMode(_, n);
+      l.SeamlessTravelKeepMovementMode?.Init(e, e => {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("SeamlessTravel", 50, "[无缝加载:保持运动状态开始]");
         }
-        s.SeamlessTravelKeepMovementMode?.AppearEffect();
+        l.SeamlessTravelKeepMovementMode?.AppearEffect();
       });
     }
-    if (s.UseKeepKite) {
-      a = r.GetComponent(105).GetCurrentTargetEntity().Entity;
-      s.SeamlessTravelKeepKite = new SeamlessTravelKeepKite_1.SeamlessTravelKeepKite();
-      s.SeamlessTravelKeepKite.SetInitData(a, r);
-      if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("SeamlessTravel", 39, "[无缝加载:风筝资产加载(开始)]");
-      }
-      s.SeamlessTravelKeepKite.Init(e, e => {
+    if (l.UseKeepKite) {
+      if ((a = r?.GetComponent(107)?.GetCurrentTargetEntity()?.Entity)?.Valid && r?.Valid) {
+        l.SeamlessTravelKeepKite = new SeamlessTravelKeepKite_1.SeamlessTravelKeepKite();
+        l.SeamlessTravelKeepKite.SetInitData(a, r);
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("SeamlessTravel", 39, "[无缝加载:风筝资产加载(完成)]");
+          Log_1.Log.Info("SeamlessTravel", 39, "[无缝加载:风筝资产加载(开始)]");
         }
-        var a = [];
-        s.SeamlessTravelKeepKite.GetSeamlessTravelActors(a);
-        for (const o of a) {
-          SeamlessTravelController.AddSeamlessTravelActor(o);
-        }
-        var r;
-        var a = s.SeamlessTravelPlayerEntityHandle.Entity;
-        var l = a?.GetComponent(105);
-        if (l?.GetIsHooking() && l.GetCurrentTarget()?.GetHookInteractType() === "KiteHook") {
-          l.GetCurrentTargetEntity().Entity?.Disable("[无缝加载]隐藏风筝声骸");
-          l.SetIsHookEndByInterrupt(true);
-          if ((r = (l = a?.GetComponent(41))?.CurrentSkill) && r.MNc && r.SkillId === InputDefine_1.SKILL_ID_XA_KITE) {
-            a?.GetComponent(200)?.SetSeamlessTravelBuffPreMessageId(r.MNc);
+        l.SeamlessTravelKeepKite.Init(e, e => {
+          if (Log_1.Log.CheckInfo()) {
+            Log_1.Log.Info("SeamlessTravel", 39, "[无缝加载:风筝资产加载(完成)]");
           }
-          l?.EndSkill(InputDefine_1.SKILL_ID_XA_KITE, "[无缝加载]停止勾风筝技能");
-          s.SeamlessTravelKeepMovementMode?.CheckAndKeepMoveState();
-        }
+          var a = [];
+          l.SeamlessTravelKeepKite.GetSeamlessTravelActors(a);
+          for (const r of a) {
+            SeamlessTravelController.AddSeamlessTravelActor(r);
+          }
+          if (Log_1.Log.CheckInfo()) {
+            Log_1.Log.Info("SeamlessTravel", 50, "[无缝加载]伪风筝显形");
+          }
+          l.SeamlessTravelKeepKite?.AppearEffect();
+          l.SeamlessTravelKeepMovementMode?.CheckAndKeepMoveState();
+          l.KiteInitPromise?.SetResult(e);
+        });
+      } else {
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("SeamlessTravel", 50, "[无缝加载:伪风筝显形]");
+          Log_1.Log.Info("SeamlessTravel", 39, "风筝表现失败，关联实体出错", ["HookTargetEntityValid", !!a?.Valid], ["TargetEntityValid", !!r?.Valid]);
         }
-        s.SeamlessTravelKeepKite?.AppearEffect();
-        s.KiteInitPromise?.SetResult(e);
-      });
+        l.UseKeepKite = false;
+      }
     }
     if (e?.EffectPath) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("SeamlessTravel", 39, "[无缝加载:屏幕特效资产加载(开始)]");
       }
-      s.SeamlessTravelScreenEffect = new SeamlessTravelScreenEffect_1.SeamlessTravelScreenEffect();
-      s.SeamlessTravelScreenEffect.Init(e, e => {
+      l.SeamlessTravelScreenEffect = new SeamlessTravelScreenEffect_1.SeamlessTravelScreenEffect();
+      l.SeamlessTravelScreenEffect.Init(e, e => {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("SeamlessTravel", 39, "[无缝加载:屏幕特效资产加载(完成)]");
         }
-        s.EffectAssetLoadedPromise?.SetResult(e);
+        l.EffectAssetLoadedPromise?.SetResult(e);
       });
     }
-    if (s.Config?.TransitionWeatherDaPath) {
-      s.SeamlessTravelPostProcess = new SeamlessTravelPostProcess_1.SeamlessTravelPostProcess();
+    if (l.Config?.TransitionWeatherDaPath) {
+      l.SeamlessTravelPostProcess = new SeamlessTravelPostProcess_1.SeamlessTravelPostProcess();
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("SeamlessTravel", 39, "[无缝加载:后处理资产加载(开始)]");
       }
-      s.SeamlessTravelPostProcess.Init(s.Config, e => {
+      l.SeamlessTravelPostProcess.Init(l.Config, e => {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("SeamlessTravel", 39, "[无缝加载:后处理资产加载(完成)]");
         }
         var a = [];
-        s.SeamlessTravelPostProcess.GetSeamlessTravelActors(a);
+        l.SeamlessTravelPostProcess.GetSeamlessTravelActors(a);
         for (const r of a) {
           SeamlessTravelController.AddSeamlessTravelActor(r);
         }
-        s.PostProcessAssetLoadedPromise?.SetResult(e);
+        l.PostProcessAssetLoadedPromise?.SetResult(e);
       });
     }
-    if (s.Config?.SceneEffectDaPath) {
-      s.SeamlessTravelSceneEffect = new SeamlessTravelSceneEffect_1.SeamlessTravelSceneEffect();
+    if (l.Config?.SceneEffectDaPath) {
+      l.SeamlessTravelSceneEffect = new SeamlessTravelSceneEffect_1.SeamlessTravelSceneEffect();
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("SeamlessTravel", 39, "[无缝加载:场景特效资产加载(开始)]");
       }
-      s.SeamlessTravelSceneEffect.Init(s.Config, e => {
+      l.SeamlessTravelSceneEffect.Init(l.Config, e => {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("SeamlessTravel", 39, "[无缝加载:场景特效资产加载(完成)]");
         }
-        s.SceneEffectAssetLoadedPromise?.SetResult(e);
+        l.SceneEffectAssetLoadedPromise?.SetResult(e);
       });
     }
     ModelManager_1.ModelManager.BattleUiModel.ChildViewData.HideBattleView(4, [12, 23]);
@@ -287,7 +288,7 @@ class SeamlessTravelController extends ControllerBase_1.ControllerBase {
       var r = r?.CreatureData.GetEntityType();
       if (r !== Protocol_1.Aki.Protocol.kks.Proto_SceneItem) {
         if (r === Protocol_1.Aki.Protocol.kks.Proto_Monster) {
-          r = e.Entity.GetComponent(48);
+          r = e.Entity.GetComponent(50);
           a.SeamlessTravelTeamDefaultController.push(r.TsAiController);
           SeamlessTravelController.AddSeamlessTravelActor(r.TsAiController);
         } else {
@@ -302,33 +303,31 @@ class SeamlessTravelController extends ControllerBase_1.ControllerBase {
     ModelManager_1.ModelManager.SeamlessTravelModel.AddSeamlessTravelActor(e);
   }
   static async PreLeaveLevel() {
-    if (ModelManager_1.ModelManager.SeamlessTravelModel.IsSeamlessTravel) {
-      const r = ModelManager_1.ModelManager.SeamlessTravelModel;
-      var e;
-      var a;
-      if (r?.IsSeamlessTravel && (r.Config?.EffectPath && (Log_1.Log.CheckInfo() && Log_1.Log.Info("SeamlessTravel", 39, "[无缝加载:等待屏幕特效资产加载(开始)]"), await r.EffectAssetLoadedPromise.Promise, Log_1.Log.CheckInfo() && Log_1.Log.Info("SeamlessTravel", 39, "[无缝加载:等待屏幕特效资产加载(完成)]"), Log_1.Log.CheckInfo() && Log_1.Log.Info("SeamlessTravel", 50, "[无缝加载:屏幕特效展开(开始)]"), r.SeamlessTravelScreenEffect?.AppearEffect(e => {
-        if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("SeamlessTravel", 50, "[无缝加载:屏幕特效展开(完成)]");
-        }
-        r.ScreenEffectStartedPromise?.SetResult(e);
-      })), r.Config?.TransitionWeatherDaPath && (Log_1.Log.CheckInfo() && Log_1.Log.Info("SeamlessTravel", 39, "[无缝加载:等待后处理资产加载(开始)]"), await r.PostProcessAssetLoadedPromise.Promise, Log_1.Log.CheckInfo() && Log_1.Log.Info("SeamlessTravel", 39, "[无缝加载:等待后处理资产加载(完成)]"), Log_1.Log.CheckInfo() && Log_1.Log.Info("SeamlessTravel", 39, "[无缝加载:后处理混入(开始)]"), r.SeamlessTravelPostProcess?.AppearEffect(e => {
-        if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("SeamlessTravel", 39, "[无缝加载:后处理混入(完成)]");
-        }
-        r.PostProcessBlendedInPromise?.SetResult(e);
-      })), r.UseTreadmill && (Log_1.Log.CheckInfo() && Log_1.Log.Info("SeamlessTravel", 50, "[无缝加载:等待地板资产加载(开始)]"), await r.MeshAssetLoadedPromise.Promise, Log_1.Log.CheckInfo() && Log_1.Log.Info("SeamlessTravel", 50, "[无缝加载:等待地板资产加载(完成)]"), SeamlessTravelController.AddSeamlessTravelActor(r.SeamlessTravelTreadmill.GetFloorActor()), e = r.SeamlessTravelPlayerEntityHandle.Entity.GetComponent(3), (a = MathUtils_1.MathUtils.CommonTempVector).DeepCopy(e.ActorLocationProxy), r.Config?.IsTeleportInPlace || (a.Z += SeamlessTravelTreadmill_1.DEFAULT_SEAMLESS_TRANSITION_HEIGHT), r.SeamlessTravelTreadmill.ResetLockOnLocation(a), e.TeleportAndFindStandLocation(a), CameraController_1.CameraController.FightCamera.LogicComponent.ResetFightCameraLogic(false, true), Log_1.Log.CheckInfo() && Log_1.Log.Info("SeamlessTravel", 50, "[无缝加载:地板显形(开始)]"), r.SeamlessTravelTreadmill.AppearEffect(() => {
-        if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("SeamlessTravel", 50, "[无缝加载:地板显形(完成)]");
-        }
-        r.TransitionFloorLoadedPromise.SetResult(true);
-      })), r.UseKeepKite && (Log_1.Log.CheckInfo() && Log_1.Log.Info("SeamlessTravel", 39, "[无缝加载:等待风筝初始化(开始)]"), await r.KiteInitPromise.Promise, Log_1.Log.CheckInfo()) && Log_1.Log.Info("SeamlessTravel", 39, "[无缝加载:等待风筝初始化(完成)]"), r.Config?.SceneEffectDaPath && (Log_1.Log.CheckInfo() && Log_1.Log.Info("SeamlessTravel", 39, "[无缝加载:等待场景特效资产加载(开始)]"), await r.SceneEffectAssetLoadedPromise.Promise, Log_1.Log.CheckInfo() && Log_1.Log.Info("SeamlessTravel", 39, "[无缝加载:等待场景特效资产加载(完成)]"), Log_1.Log.CheckInfo() && Log_1.Log.Info("SeamlessTravel", 39, "[无缝加载:场景特效Start(开始)]"), r.SeamlessTravelSceneEffect?.AppearEffect(e => {
-        if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("SeamlessTravel", 39, "[无缝加载:场景特效Start(完成)]");
-        }
-        r.SceneEffectStartedPromise?.SetResult(e);
-      })), await this.PreLeaveLevelWaitEnd(), Log_1.Log.CheckInfo())) {
-        Log_1.Log.Info("SeamlessTravel", 29, "[无缝加载:PreLeaveLevel完成]");
+    const a = ModelManager_1.ModelManager.SeamlessTravelModel;
+    var e;
+    var r;
+    if (a?.IsSeamlessTravel && (a.Config?.EffectPath && (Log_1.Log.CheckInfo() && Log_1.Log.Info("SeamlessTravel", 39, "[无缝加载:等待屏幕特效资产加载(开始)]"), await a.EffectAssetLoadedPromise.Promise, Log_1.Log.CheckInfo() && Log_1.Log.Info("SeamlessTravel", 39, "[无缝加载:等待屏幕特效资产加载(完成)]"), Log_1.Log.CheckInfo() && Log_1.Log.Info("SeamlessTravel", 50, "[无缝加载:屏幕特效展开(开始)]"), a.SeamlessTravelScreenEffect?.AppearEffect(e => {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("SeamlessTravel", 50, "[无缝加载:屏幕特效展开(完成)]");
       }
+      a.ScreenEffectStartedPromise?.SetResult(e);
+    })), a.Config?.TransitionWeatherDaPath && (Log_1.Log.CheckInfo() && Log_1.Log.Info("SeamlessTravel", 39, "[无缝加载:等待后处理资产加载(开始)]"), await a.PostProcessAssetLoadedPromise.Promise, Log_1.Log.CheckInfo() && Log_1.Log.Info("SeamlessTravel", 39, "[无缝加载:等待后处理资产加载(完成)]"), Log_1.Log.CheckInfo() && Log_1.Log.Info("SeamlessTravel", 39, "[无缝加载:后处理混入(开始)]"), a.SeamlessTravelPostProcess?.AppearEffect(e => {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("SeamlessTravel", 39, "[无缝加载:后处理混入(完成)]");
+      }
+      a.PostProcessBlendedInPromise?.SetResult(e);
+    })), a.UseTreadmill && (Log_1.Log.CheckInfo() && Log_1.Log.Info("SeamlessTravel", 50, "[无缝加载:等待地板资产加载(开始)]"), await a.MeshAssetLoadedPromise.Promise, Log_1.Log.CheckInfo() && Log_1.Log.Info("SeamlessTravel", 50, "[无缝加载:等待地板资产加载(完成)]"), SeamlessTravelController.AddSeamlessTravelActor(a.SeamlessTravelTreadmill.GetFloorActor()), e = a.SeamlessTravelPlayerEntityHandle.Entity.GetComponent(3), (r = MathUtils_1.MathUtils.CommonTempVector).DeepCopy(e.ActorLocationProxy), a.Config?.IsTeleportInPlace || (r.Z += SeamlessTravelTreadmill_1.DEFAULT_SEAMLESS_TRANSITION_HEIGHT), a.SeamlessTravelTreadmill.ResetLockOnLocation(r), e.TeleportAndFindStandLocation(r), CameraController_1.CameraController.FightCamera.LogicComponent.ResetFightCameraLogic(false, true), Log_1.Log.CheckInfo() && Log_1.Log.Info("SeamlessTravel", 50, "[无缝加载:地板显形(开始)]"), a.SeamlessTravelTreadmill.AppearEffect(() => {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("SeamlessTravel", 50, "[无缝加载:地板显形(完成)]");
+      }
+      a.TransitionFloorLoadedPromise.SetResult(true);
+    })), a.UseKeepKite && (Log_1.Log.CheckInfo() && Log_1.Log.Info("SeamlessTravel", 39, "[无缝加载:等待风筝初始化(开始)]"), await a.KiteInitPromise.Promise, Log_1.Log.CheckInfo()) && Log_1.Log.Info("SeamlessTravel", 39, "[无缝加载:等待风筝初始化(完成)]"), a.Config?.SceneEffectDaPath && (Log_1.Log.CheckInfo() && Log_1.Log.Info("SeamlessTravel", 39, "[无缝加载:等待场景特效资产加载(开始)]"), await a.SceneEffectAssetLoadedPromise.Promise, Log_1.Log.CheckInfo() && Log_1.Log.Info("SeamlessTravel", 39, "[无缝加载:等待场景特效资产加载(完成)]"), Log_1.Log.CheckInfo() && Log_1.Log.Info("SeamlessTravel", 39, "[无缝加载:场景特效Start(开始)]"), a.SeamlessTravelSceneEffect?.AppearEffect(e => {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("SeamlessTravel", 39, "[无缝加载:场景特效Start(完成)]");
+      }
+      a.SceneEffectStartedPromise?.SetResult(e);
+    })), await this.PreLeaveLevelWaitEnd(), Log_1.Log.CheckInfo())) {
+      Log_1.Log.Info("SeamlessTravel", 29, "[无缝加载:PreLeaveLevel完成]");
     }
   }
   static async PreLeaveLevelWaitEnd() {
@@ -403,7 +402,7 @@ class SeamlessTravelController extends ControllerBase_1.ControllerBase {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("SeamlessTravel", 50, "[无缝加载:开始结束]");
       }
-      ResourceSystem_1.ResourceSystem.SetForceLoadModeInGame(GlobalData_1.GlobalData.World, false);
+      LoadModeManager_1.LoadModeManager.ResetLoadModeByReason("SeamlessTravel");
       if (a.Config?.EffectPath) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("SeamlessTravel", 50, "[无缝加载]屏幕特效结束(开始)");
@@ -537,8 +536,8 @@ class SeamlessTravelController extends ControllerBase_1.ControllerBase {
     return false;
   }
   static SeamlessTravelingRefreshData(e) {
-    e.GetComponent(182)?.SeamlessTravelingRefresh();
-    e.GetComponent(220)?.SeamlessTravelingRefresh();
+    e.GetComponent(184)?.SeamlessTravelingRefresh();
+    e.GetComponent(222)?.SeamlessTravelingRefresh();
   }
 }
 (exports.SeamlessTravelController = SeamlessTravelController).qea = () => {

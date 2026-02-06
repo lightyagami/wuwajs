@@ -42,9 +42,9 @@ class ChatController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ResetModuleByResetToBattleView, this.REt);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnGetFriendInitData, this.UEt);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnWorldTeamPlayerInfoChanged, this.AEt);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestAddMutePlayer, this.zMf);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestRemoveMutePlayer, this.JMf);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestChatOption, this.ZMf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestAddMutePlayer, this.Lbf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestRemoveMutePlayer, this.Pbf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestChatOption, this.Abf);
   }
   static OnRemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSelectChatFriend, this.LEt);
@@ -57,27 +57,27 @@ class ChatController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ResetModuleByResetToBattleView, this.REt);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnGetFriendInitData, this.UEt);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnWorldTeamPlayerInfoChanged, this.AEt);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestAddMutePlayer, this.zMf);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestRemoveMutePlayer, this.JMf);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestChatOption, this.ZMf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestAddMutePlayer, this.Lbf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestRemoveMutePlayer, this.Pbf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestChatOption, this.Abf);
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(15585, this.PEt);
-    Net_1.Net.Register(24562, this.xEt);
-    Net_1.Net.Register(19817, this.wEt);
-    Net_1.Net.Register(21473, this.BEt);
-    Net_1.Net.Register(23455, this.bEt);
-    Net_1.Net.Register(22002, this.qEt);
-    Net_1.Net.Register(19277, this.Dhl);
+    Net_1.Net.Register(18700, this.PEt);
+    Net_1.Net.Register(28669, this.xEt);
+    Net_1.Net.Register(27652, this.wEt);
+    Net_1.Net.Register(20708, this.BEt);
+    Net_1.Net.Register(28294, this.bEt);
+    Net_1.Net.Register(17586, this.qEt);
+    Net_1.Net.Register(20942, this.Dhl);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(15585);
-    Net_1.Net.UnRegister(24562);
-    Net_1.Net.UnRegister(19817);
-    Net_1.Net.UnRegister(21473);
-    Net_1.Net.UnRegister(23455);
-    Net_1.Net.UnRegister(22002);
-    Net_1.Net.UnRegister(19277);
+    Net_1.Net.UnRegister(18700);
+    Net_1.Net.UnRegister(28669);
+    Net_1.Net.UnRegister(27652);
+    Net_1.Net.UnRegister(20708);
+    Net_1.Net.UnRegister(28294);
+    Net_1.Net.UnRegister(17586);
+    Net_1.Net.UnRegister(20942);
   }
   static PrivateChatRequest(l, t, a) {
     PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk().GetCommunicationRestricted(ModelManager_1.ModelManager.PlayerInfoModel.GetThirdPartyAccountId(), e => {
@@ -99,7 +99,7 @@ class ChatController extends UiControllerBase_1.UiControllerBase {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Chat", 5, "PrivateChatRequest 客户端请求私聊聊天", ["request", e]);
         }
-        Net_1.Net.Call(29037, Protocol_1.Aki.Protocol.$zn.create(e), e => {
+        Net_1.Net.Call(15975, Protocol_1.Aki.Protocol.$zn.create(e), e => {
           var t;
           var a;
           var o;
@@ -108,7 +108,7 @@ class ChatController extends UiControllerBase_1.UiControllerBase {
           var i = e.B8n;
           var _ = e.Q4n;
           if (_ !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(_, 25842);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(_, 16005);
           } else {
             _ = e.O8n;
             t = e.ALs;
@@ -148,9 +148,9 @@ class ChatController extends UiControllerBase_1.UiControllerBase {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Chat", 5, "ChannelChatRequest 客户端请求队伍聊天", ["request", e]);
         }
-        Net_1.Net.Call(19255, Protocol_1.Aki.Protocol.iZn.create(e), e => {
+        Net_1.Net.Call(29742, Protocol_1.Aki.Protocol.iZn.create(e), e => {
           if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 28142);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17150);
           } else if (Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("Chat", 5, "ChannelChatRequest 队伍聊天服务端回应", ["response", e]);
           }
@@ -229,7 +229,7 @@ class ChatController extends UiControllerBase_1.UiControllerBase {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Chat", 5, "PrivateChatHistoryRequest 客户端请求最近的私聊记录", ["request", e]);
         }
-        Net_1.Net.Call(20405, Protocol_1.Aki.Protocol.Wzn.create(e), e => {
+        Net_1.Net.Call(17531, Protocol_1.Aki.Protocol.Wzn.create(e), e => {
           var t;
           var a;
           if (Log_1.Log.CheckInfo()) {
@@ -357,7 +357,7 @@ class ChatController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Chat", 5, "ChatMutePlayerRequest 客户端请求屏蔽", ["request", a]);
     }
-    Net_1.Net.Call(20527, Protocol_1.Aki.Protocol.Jzn.create(a), this.NEt);
+    Net_1.Net.Call(23328, Protocol_1.Aki.Protocol.Jzn.create(a), this.NEt);
     if (t) {
       ModelManager_1.ModelManager.ChatModel.AddMutePlayer(e);
       EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsSyncAddMutePlayer, e);
@@ -374,7 +374,7 @@ class ChatController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Chat", 5, "PrivateChatOperateRequest 客户端请求聊天操作", ["request", a]);
     }
-    Net_1.Net.Call(17589, Protocol_1.Aki.Protocol.Zzn.create(a), this.OEt);
+    Net_1.Net.Call(27091, Protocol_1.Aki.Protocol.Zzn.create(a), this.OEt);
     if (e === Protocol_1.Aki.Protocol.xFs.Proto_CloseChat) {
       ModelManager_1.ModelManager.ChatModel.ClosePrivateChatRoom(t);
     }
@@ -391,7 +391,7 @@ class ChatController extends UiControllerBase_1.UiControllerBase {
   }
   static S5a() {
     var e = new Protocol_1.Aki.Protocol.Xzn();
-    Net_1.Net.Call(17219, e, e => {
+    Net_1.Net.Call(29408, e, e => {
       if (!e.XI_ && (!this.M5a || !TimerSystem_1.GameplayTimerSystem.Has(this.M5a))) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Chat", 5, "PrivateChatDataResponse 服务端加载聊天数据失败，等待一段时间后重新请求", ["DelayTime", ChatDefine_1.DELAY_PRIVATE_CHAT_DATA_REQUEST_TIME]);
@@ -596,12 +596,12 @@ ChatController.AEt = e => {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnChatPlayerInfoChanged, t);
   }
 };
-ChatController.zMf = e => {
+ChatController.Lbf = e => {
   ModelManager_1.ModelManager.ChatModel.AddMutePlayer(e);
 };
-ChatController.JMf = e => {
+ChatController.Pbf = e => {
   ModelManager_1.ModelManager.ChatModel.RemoveMutePlayer(e);
 };
-ChatController.ZMf = e => {
+ChatController.Abf = e => {
   ChatController.RequestChatOption(e);
 }; //# sourceMappingURL=ChatController.js.map

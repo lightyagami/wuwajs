@@ -126,7 +126,10 @@ exports.getPreChildQuests = getPreChildQuests;
   e.InfrastructureStage = "InfrastructureStage";
   e.RoadBuildState = "RoadBuildState";
   e.InfrActivityExp = "InfrActivityExp";
+  e.EncircleLevelComplete = "EncircleLevelComplete";
   e.CoopRoleCoopLevel = "CoopRoleCoopLevel";
+  e.SpringFestivalAtmosphereLevel = "SpringFestivalAtmosphereLevel";
+  e.SunSpiritDeliveryLevel = "SunSpiritDeliveryLevel";
 })(ECheckSystemStateType = exports.ECheckSystemStateType ||= {});
 (EShopType = exports.EShopType ||= {}).ChengXiaoShan = "ChengXiaoShan";
 (function (e) {

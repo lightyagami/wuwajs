@@ -78,10 +78,11 @@ class DockyardWareHouseView extends UiTickViewBase_1.UiTickViewBase {
     var t;
     if (this.oec) {
       if (this.vQ_ === 0) {
-        t = this.HLn.GetItemBlockData(this.nec);
-        this.WXl.Refresh(t);
-        this.WXl.SetPanelVisible(true);
-        this.MQ_().SetPanelVisible(false);
+        if (t = this.HLn.GetItemBlockData(this.nec)) {
+          this.WXl.Refresh(t);
+          this.WXl.SetPanelVisible(true);
+          this.MQ_().SetPanelVisible(false);
+        }
       } else if (this.vQ_ === 1) {
         this.WXl.SetPanelVisible(false);
         this.MQ_().SetPanelVisible(true);

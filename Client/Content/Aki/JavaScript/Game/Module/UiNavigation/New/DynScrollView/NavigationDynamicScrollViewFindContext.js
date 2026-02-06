@@ -21,6 +21,8 @@ class NavigationDynamicScrollViewFindContext {
     this.NextType = 0;
     this.NeedWaitScroll = false;
     this.IsScrollToEdge = false;
+    this.VerticalScrollValue = 0;
+    this.HorizontalScrollValue = 0;
   }
 }
 exports.NavigationDynamicScrollViewFindContext = NavigationDynamicScrollViewFindContext;

@@ -12,9 +12,9 @@ const VehicleStateBase_1 = require("./VehicleStateBase");
 class BornState extends VehicleStateBase_1.VehicleStateBase {
   OnEnter() {
     this.EnterNextRoadway();
-    this.pUm();
-    this.vUm();
-    var t = this.UFm(this.BlackBoard.CurrentRootDistance);
+    this.$Um();
+    this.WUm();
+    var t = this.JNm(this.BlackBoard.CurrentRootDistance);
     if (t?.length !== 0 && Log_1.Log.CheckError()) {
       Log_1.Log.Error("VehicleStream", 18, "载具出生时与其他载具重叠", ["selfCreatureDataId", this.BlackBoard.CreatureDataId], ["重叠载具", t]);
     }
@@ -26,14 +26,14 @@ class BornState extends VehicleStateBase_1.VehicleStateBase {
     var e;
     var i = this.CheckGetNextState();
     if (i) {
-      if ((e = this.UFm(this.BlackBoard.CurrentRootDistance))?.length !== 0 && Log_1.Log.CheckError()) {
+      if ((e = this.JNm(this.BlackBoard.CurrentRootDistance))?.length !== 0 && Log_1.Log.CheckError()) {
         Log_1.Log.Error("VehicleStream", 18, "载具启动时与其他载具重叠", ["selfCreatureDataId", this.BlackBoard.CreatureDataId], ["重叠载具", e]);
       }
       this.BlackBoard.SwitchState(i);
     }
   }
   OnExit(t) {
-    this.rAf();
+    this.c2f();
   }
   CheckGetNextState() {
     if (this.BlackBoard.IsLaunch) {
@@ -42,7 +42,7 @@ class BornState extends VehicleStateBase_1.VehicleStateBase {
       return 0;
     }
   }
-  UFm(t) {
+  JNm(t) {
     var e = this.BlackBoard.CurrentRoadway;
     if (e) {
       var i = ModelManager_1.ModelManager.VehicleStreamModel;
@@ -69,7 +69,7 @@ class BornState extends VehicleStateBase_1.VehicleStateBase {
       }
     }
   }
-  pUm() {
+  $Um() {
     var t;
     var e;
     var i = this.BlackBoard.StartRoadway;
@@ -77,14 +77,14 @@ class BornState extends VehicleStateBase_1.VehicleStateBase {
       t = i.RoadSpline.D_FindInputKeyClosestToWorldLocation(this.BlackBoard.StartActorLocation.ToUeVector());
       e = i.RoadSpline.D_GetTransformAtSplineInputKey(t, 0).InverseTransformPosition(this.BlackBoard.StartActorLocation.ToUeVector());
       this.BlackBoard.RelativeLocationToStart.DeepCopy(e);
-      this.xFm(this.BlackBoard.RelativeLocationToStart);
+      this.ZNm(this.BlackBoard.RelativeLocationToStart);
       this.BlackBoard.RelativeLocationToStartWithoutX.DeepCopy(this.BlackBoard.RelativeLocationToStart);
       this.BlackBoard.RelativeLocationToStartWithoutX.X = 0;
       this.BlackBoard.CurrentSplineLength = i.RoadSpline.GetSplineLength();
       this.BlackBoard.CurrentRootDistance = i.RoadSpline.GetDistanceAlongSplineAtSplineInputKey(t);
     }
   }
-  vUm() {
+  WUm() {
     var t;
     var e = this.BlackBoard.EndRoadway;
     if (e?.RoadSpline) {
@@ -92,16 +92,16 @@ class BornState extends VehicleStateBase_1.VehicleStateBase {
       this.BlackBoard.EndPointInSplineDistance = e.RoadSpline.GetDistanceAlongSplineAtSplineInputKey(t);
     }
   }
-  rAf() {
+  c2f() {
     var t = this.BlackBoard.RoadNetworkNavigationComponent.Entity;
-    if (t && t.Valid && (t = t.GetComponent(141)) && (t = t.GetAudioControlConfig()) && t.Type === "Traffic") {
+    if (t && t.Valid && (t = t.GetComponent(143)) && (t = t.GetAudioControlConfig()) && t.Type === "Traffic") {
       this.BlackBoard.HornAudio = (0, AudioSystem_1.parseAudioEventPath)(t.HornAudio);
       this.BlackBoard.BrakingAudio = (0, AudioSystem_1.parseAudioEventPath)(t.BrakingAudio);
       this.BlackBoard.BrakingShortAudio = (0, AudioSystem_1.parseAudioEventPath)(t.BrakingShortAudio);
       this.BlackBoard.EngineAudio = (0, AudioSystem_1.parseAudioEventPath)(t.EngineAudio);
     }
   }
-  xFm(t) {
+  ZNm(t) {
     if (Math.abs(t.X) < MathCommon_1.MathCommon.KindaSmallNumber) {
       t.X = 0;
     }

@@ -63,7 +63,7 @@ class BulletConfig extends ConfigBase_1.ConfigBase {
     BulletConfig.N9o.clear();
   }
   GetBulletData(t, e, l = true, o = -1) {
-    var a = t.GetComponent(40);
+    var a = t.GetComponent(42);
     var i = t.Id;
     let n = BulletConfig.N9o.get(i);
     let r = true;
@@ -109,7 +109,7 @@ class BulletConfig extends ConfigBase_1.ConfigBase {
       }
     }
     if (B) {
-      const s = new BulletDataMain_1.BulletDataMain(B, e, BulletConfig.PQf(n, e));
+      const s = new BulletDataMain_1.BulletDataMain(B, e, BulletConfig.rag(n, e));
       if (s.CheckValid()) {
         if (!GlobalData_1.GlobalData.IsPlayInEditor && !(u || ((u = new BulletDataCacheInfo()).DataTable = C, u.DataTableExtraList = g, u.EntityCount = 0, BulletConfig.O9o.set(n, u)), u.BulletDataMap.set(e, s), r)) {
           BulletConfig.N9o.set(i, n);
@@ -128,8 +128,8 @@ class BulletConfig extends ConfigBase_1.ConfigBase {
       Log_1.Log.Error("Bullet", 17, "子弹数据未找到!", ["角色:", f?.GetName()], ["子弹名称:", e], ["dtType", o]);
     }
   }
-  static PQf(t, e) {
-    return t === BulletConfig.AQf && BulletConfig.DQf.has(e);
+  static rag(t, e) {
+    return t === BulletConfig.oag && BulletConfig.nag.has(e);
   }
   F9o(t, e) {
     if (t === -1) {
@@ -157,7 +157,7 @@ class BulletConfig extends ConfigBase_1.ConfigBase {
         const i = DataTableUtil_1.DataTableUtil.GetDataTableRow(a.DataTable, e);
         var o;
         if (i) {
-          if ((o = new BulletDataMain_1.BulletDataMain(i, e, BulletConfig.PQf(l, e))).CheckValid()) {
+          if ((o = new BulletDataMain_1.BulletDataMain(i, e, BulletConfig.rag(l, e))).CheckValid()) {
             if (!GlobalData_1.GlobalData.IsPlayInEditor) {
               a.BulletDataMap.set(e, o);
             }
@@ -173,7 +173,7 @@ class BulletConfig extends ConfigBase_1.ConfigBase {
       if (a) {
         const i = DataTableUtil_1.DataTableUtil.GetDataTableRow(a.DataTable, e);
         if (i) {
-          if ((t = new BulletDataMain_1.BulletDataMain(i, e, BulletConfig.PQf(l, e))).CheckValid()) {
+          if ((t = new BulletDataMain_1.BulletDataMain(i, e, BulletConfig.rag(l, e))).CheckValid()) {
             if (!GlobalData_1.GlobalData.IsPlayInEditor) {
               a.BulletDataMap.set(e, t);
             }
@@ -190,7 +190,7 @@ class BulletConfig extends ConfigBase_1.ConfigBase {
   }
   GetBulletHitData(e, l) {
     if (!FNameUtil_1.FNameUtil.IsNothing(l)) {
-      var e = e.GetComponent(40);
+      var e = e.GetComponent(42);
       var o = l.toString();
       let t = undefined;
       if (e && !(t = DataTableUtil_1.DataTableUtil.GetDataTableRow(e.DtHitEffect, o)) && e.DtHitEffectExtraList) {
@@ -234,7 +234,7 @@ class BulletConfig extends ConfigBase_1.ConfigBase {
     var l;
     if (t?.GetComponent(0)?.IsRole()) {
       BulletConfig.j9o.Start();
-      e = t.CheckGetComponent(40);
+      e = t.CheckGetComponent(42);
       l = t.CheckGetComponent(0).GetModelId();
       this.W9o(e.DtBulletInfo, e.DtBulletInfoExtraList, l, t.Id);
       BulletConfig.j9o.Stop();
@@ -295,7 +295,7 @@ class BulletConfig extends ConfigBase_1.ConfigBase {
       if (l) {
         t = this.G9o.RowNames[this.G9o.CurIndex];
         if (e = DataTableUtil_1.DataTableUtil.GetDataTableRow(this.G9o.DataTable, t)) {
-          if ((e = new BulletDataMain_1.BulletDataMain(e, t, BulletConfig.PQf(this.G9o.ModelId, t))).CheckValid()) {
+          if ((e = new BulletDataMain_1.BulletDataMain(e, t, BulletConfig.rag(this.G9o.ModelId, t))).CheckValid()) {
             e.Preload();
             l.BulletDataMap.set(t, e);
           } else {
@@ -321,5 +321,5 @@ BulletConfig.K9o = Stats_1.Stat.Create("BulletConfigTickPreload");
 BulletConfig.O9o = new Map();
 BulletConfig.k9o = new Map();
 BulletConfig.N9o = new Map();
-BulletConfig.AQf = 391336;
-BulletConfig.DQf = new Set(["80037001002", "80037103005", "80037103006", "80037103007", "80037103008", "80037103009", "80037103010", "80037103011", "80037103012", "80037103013", "80037103014", "80037103015", "80037103016", "80037103017", "80037103018", "80037103019", "80037103020", "80037103021", "80037103022", "80037103023", "80037103024", "80037103025", "80037103026", "80037103027", "80037103028", "80037103029", "80037103030", "80037103031", "80037103032", "80037103033", "80037103034", "80037103035", "80037103036", "80037103037", "80037103038", "80037103039", "80037103040", "80037103041", "80037103042", "80037103043", "80037103044", "80037001001", "80037001103"]); //# sourceMappingURL=BulletConfig.js.map
+BulletConfig.oag = 391336;
+BulletConfig.nag = new Set(["80037001002", "80037103005", "80037103006", "80037103007", "80037103008", "80037103009", "80037103010", "80037103011", "80037103012", "80037103013", "80037103014", "80037103015", "80037103016", "80037103017", "80037103018", "80037103019", "80037103020", "80037103021", "80037103022", "80037103023", "80037103024", "80037103025", "80037103026", "80037103027", "80037103028", "80037103029", "80037103030", "80037103031", "80037103032", "80037103033", "80037103034", "80037103035", "80037103036", "80037103037", "80037103038", "80037103039", "80037103040", "80037103041", "80037103042", "80037103043", "80037103044", "80037001001", "80037001103"]); //# sourceMappingURL=BulletConfig.js.map

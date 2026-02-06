@@ -35,12 +35,12 @@ class ActivityRegressMainView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
     this.CNe = undefined;
-    this.HVf = 0;
+    this.QXf = 0;
     this.GOe = undefined;
     this._da = new Map();
     this.uda = undefined;
     this.cda = undefined;
-    this.z3f = [];
+    this.l$f = [];
     this.lBa = false;
     this.Ftl = "";
     this.kOe = () => {
@@ -63,13 +63,13 @@ class ActivityRegressMainView extends UiViewBase_1.UiViewBase {
         this.lBa = false;
       } else {
         this.L6e = Time_1.Time.Now;
-        this.mda(this.z3f[e]);
+        this.mda(this.l$f[e]);
       }
     };
     this.yqe = e => {
-      var e = this.z3f[e];
-      var i = this.J3f(e) ?? "";
-      var e = this.Z3f(e);
+      var e = this.l$f[e];
+      var i = this._$f(e) ?? "";
+      var e = this.u$f(e);
       var e = e !== undefined ? ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(e) : "";
       return new CommonTabData_1.CommonTabData(e, new CommonTabTitleData_1.CommonTabTitleData(i));
     };
@@ -86,7 +86,7 @@ class ActivityRegressMainView extends UiViewBase_1.UiViewBase {
     this.Ftl = MultiTextLang_1.configMultiTextLang.GetLocalTextNew("ActivityRemainingTime");
     var e = this.OpenParam;
     var i = e.SubView;
-    this.HVf = e.OpenType;
+    this.QXf = e.OpenType;
     switch (e.OpenType) {
       case 0:
         this.CNe = ModelManager_1.ModelManager.ActivityRegressModel.ActivityData;
@@ -97,7 +97,7 @@ class ActivityRegressMainView extends UiViewBase_1.UiViewBase {
         this.SetTextureByPath(t, this.GetTexture(1));
     }
     await this.sso();
-    this.cda.SelectToggleByIndex(this.z3f.indexOf(i) ?? 0, true, true);
+    this.cda.SelectToggleByIndex(this.l$f.indexOf(i) ?? 0, true, true);
     this.cda.SetPnlListUiActive(i !== 6);
     this.cda.BindCanExecuteChange(this.CanToggleChange);
   }
@@ -181,13 +181,13 @@ class ActivityRegressMainView extends UiViewBase_1.UiViewBase {
         await (i = new RegressBpMainView_1.RegressBpMainView()).CreateThenShowByResourceIdAsync("UiItem_CircumfluenceBPRoot", t);
         break;
       case 1:
-        await (i = new ActivityRegressRecommendView_1.ActivityRegressRecommendView()).CreateThenShowByResourceIdAsync(this.HVf === 1 ? "UiItem_BeginnerSupportRecommend" : "UiItem_CircumfluenceRecommend30", t);
+        await (i = new ActivityRegressRecommendView_1.ActivityRegressRecommendView()).CreateThenShowByResourceIdAsync(this.QXf === 1 ? "UiItem_BeginnerSupportRecommend" : "UiItem_CircumfluenceRecommend30", t);
         break;
       case 2:
         await (i = new ActivityRegressDoubleDropView_1.ActivityRegressDoubleDropView()).CreateThenShowByResourceIdAsync("UiItem_CircumfluenceChallenge", t);
         break;
       case 3:
-        await (i = new ActivityRegressAdventureView_1.ActivityRegressAdventureView()).CreateThenShowByResourceIdAsync(this.HVf === 1 ? "UiItem_BeginnerSupportRoleDevelop" : "UiItem_CircumfluenceRoleDevelop30", t);
+        await (i = new ActivityRegressAdventureView_1.ActivityRegressAdventureView()).CreateThenShowByResourceIdAsync(this.QXf === 1 ? "UiItem_BeginnerSupportRoleDevelop" : "UiItem_CircumfluenceRoleDevelop30", t);
         break;
       case 4:
         await (i = new ActivityRegressNewVersionRoleView_1.ActivityRegressNewVersionRoleView()).CreateThenShowByResourceIdAsync("UiItem_InvocationGuide", t);
@@ -234,7 +234,7 @@ class ActivityRegressMainView extends UiViewBase_1.UiViewBase {
     }
     this.GetItem(4).SetUIActive(this.uda !== 6);
   }
-  Z3f(e) {
+  u$f(e) {
     switch (e) {
       case 0:
         return "SP_IconCircumfluence1";
@@ -252,7 +252,7 @@ class ActivityRegressMainView extends UiViewBase_1.UiViewBase {
         return "SP_FuncIconRenwu";
     }
   }
-  J3f(e) {
+  _$f(e) {
     switch (e) {
       case 0:
         return "Regress_BattlePass_Title";
@@ -306,20 +306,20 @@ class ActivityRegressMainView extends UiViewBase_1.UiViewBase {
     });
   }
   async Tfa() {
-    this.z3f = ModelManager_1.ModelManager.ActivityRegressModel.GetNewRegressSubView(this.OpenParam.SubView === 6, this.HVf);
+    this.l$f = ModelManager_1.ModelManager.ActivityRegressModel.GetNewRegressSubView(this.OpenParam.SubView === 6, this.QXf);
     var i = new Array();
-    for (let e = 0; e < this.z3f.length; e++) {
+    for (let e = 0; e < this.l$f.length; e++) {
       var t = new CommonTabItemBase_1.CommonTabItemData();
       t.Index = e;
       t.Data = this.cda.GetTabComponentData(e);
       i.push(t);
-      if (this.z3f[e] === 1) {
+      if (this.l$f[e] === 1) {
         t.RedDotName = "ActivityRegressRecommend";
       }
-      if (this.z3f[e] === 2) {
+      if (this.l$f[e] === 2) {
         t.RedDotName = "ActivityRegressDoubleDrop";
       }
-      if (this.z3f[e] === 3) {
+      if (this.l$f[e] === 3) {
         t.RedDotName = "ActivityRegressAdventure";
       }
     }

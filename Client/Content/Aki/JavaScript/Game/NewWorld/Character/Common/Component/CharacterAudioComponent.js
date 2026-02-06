@@ -34,13 +34,13 @@ let CharacterAudioComponent = class CharacterAudioComponent extends BaseAudioCom
     this.SummonerId = 0;
     this.ActorComp = undefined;
     this.CurrentPriority = 0;
-    this.BWf = undefined;
-    this.kWf = 0;
-    this.qWf = (t, e) => {
+    this.Ung = undefined;
+    this.xng = 0;
+    this.Bng = (t, e) => {
       if (e) {
-        if (this.kWf === 3 || this.kWf === 2) {
+        if (this.xng === 3 || this.xng === 2) {
           AudioSystem_1.AudioSystem.PostEvent("play_role_ui_execute_state_full_boss");
-        } else if (this.kWf === 1) {
+        } else if (this.xng === 1) {
           AudioSystem_1.AudioSystem.PostEvent("play_role_ui_execute_state_full_elite", this.ActorComp?.Owner);
         } else {
           BulletStaticFunction_1.HitStaticFunction.PlayHitAudioByActor(this.ActorComp?.Owner, "play_role_ui_execute_state_full_ordinary", this.CurrentPriority);
@@ -58,12 +58,12 @@ let CharacterAudioComponent = class CharacterAudioComponent extends BaseAudioCom
     if (this.SummonerId !== 0) {
       GameAudioController_1.GameAudioController.RemoveRolePrioritySummon(this.SummonerId, this.Entity.Id);
     }
-    this.OWf();
+    this.kng();
     return true;
   }
   OnStart() {
     super.OnStart();
-    return !!this.ActorComp?.Valid && !!this.ActorComp.Owner && !(this.Rvl(), this.GWf(), 0);
+    return !!this.ActorComp?.Valid && !!this.ActorComp.Owner && !(this.Rvl(), this.qng(), 0);
   }
   OnAkComponentCreated() {
     super.OnAkComponentCreated();
@@ -97,20 +97,20 @@ let CharacterAudioComponent = class CharacterAudioComponent extends BaseAudioCom
       }
     }
   }
-  GWf() {
+  qng() {
     var t = this.Entity.GetComponent(0);
     if (t?.IsMonster()) {
-      this.kWf = t?.GetMonsterMatchType() ?? 0;
-      t = this.Entity.GetComponent(215);
-      this.BWf = t?.ListenForTagAddOrRemove(1100879485, this.qWf);
+      this.xng = t?.GetMonsterMatchType() ?? 0;
+      t = this.Entity.GetComponent(217);
+      this.Ung = t?.ListenForTagAddOrRemove(1100879485, this.Bng);
     }
   }
-  OWf() {
-    if (this.BWf) {
-      this.BWf.EndTask();
-      this.BWf = undefined;
+  kng() {
+    if (this.Ung) {
+      this.Ung.EndTask();
+      this.Ung = undefined;
     }
   }
 };
-CharacterAudioComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(52)], CharacterAudioComponent);
+CharacterAudioComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(54)], CharacterAudioComponent);
 exports.CharacterAudioComponent = CharacterAudioComponent; //# sourceMappingURL=CharacterAudioComponent.js.map

@@ -46,23 +46,23 @@ class ActivityRoadBookData extends ActivityData_1.ActivityBaseData {
     this.oVl();
     this.nVl();
     this.aVl();
-    this.L9m();
-    t = t.K7m;
+    this.DHm();
+    t = t.Ljm;
     if (t) {
-      this.TravelLevel = t.X7m;
-      this.tVl = t.X7m;
+      this.TravelLevel = t.Pjm;
+      this.tVl = t.Pjm;
       this.rVl = this.GetCurrentExp();
       this.iVl = this.GetExpItemCount();
     }
   }
   PhraseEx(t) {
-    t = t.K7m;
+    t = t.Ljm;
     if (t) {
       this.RefreshRoadBookData(t);
     }
   }
   RefreshRoadBookData(t) {
-    this.TravelLevel = t.X7m;
+    this.TravelLevel = t.Pjm;
     for (const e of t.CE_) {
       this.UnlockAreaData(e);
     }
@@ -341,7 +341,7 @@ class ActivityRoadBookData extends ActivityData_1.ActivityBaseData {
   GetPhantomNewUnlockState(t) {
     return ModelManager_1.ModelManager.ActivityModel.GetActivityCacheData(this.Id, 0, 4, t, 0) === 0;
   }
-  L9m() {
+  DHm() {
     this.MotorChallengeRewardDataMap.clear();
     let e = 0;
     for (const i of ConfigManager_1.ConfigManager.ActivityRoadBookConfig.GetAllMotorChallengeConfig()) {
@@ -365,7 +365,7 @@ class ActivityRoadBookData extends ActivityData_1.ActivityBaseData {
     }
   }
   RefreshMotorChallengePlayData(t) {
-    var e = this.MotorChallengePlayDataMap.get(t.z7m);
+    var e = this.MotorChallengePlayDataMap.get(t.Djm);
     if (e) {
       e.HighestPoint = t.vE_;
       for (const i of e.RewardIds) {

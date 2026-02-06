@@ -28,7 +28,7 @@ class BattleUiFormationData {
     this.gU = false;
     this.ORn = undefined;
     this.doh = 0;
-    this.z$f = "";
+    this.Aog = "";
     this.Coh = false;
     this.buc = false;
     this.$C1 = false;
@@ -73,11 +73,11 @@ class BattleUiFormationData {
   AddFollower(t) {
     if (t !== this.ORn) {
       this.FRn();
-      var o = (this.ORn = t).Entity.GetComponent(234);
+      var o = (this.ORn = t).Entity.GetComponent(235);
       let e = o?.FollowShooterConfig?.AimType;
       e = e || (followerMap.get(t.PbDataId) ?? 0);
       this.doh = e;
-      this.z$f = o?.FollowShooterConfig?.SightResId ?? "";
+      this.Aog = o?.FollowShooterConfig?.SightResId ?? "";
       this.goh(o?.GetEnable() ?? false);
     }
   }
@@ -107,7 +107,7 @@ class BattleUiFormationData {
     return this.doh;
   }
   GetSightResId() {
-    return this.z$f;
+    return this.Aog;
   }
   GetFollowerAiming() {
     return this.Coh && this.doh !== 2;

@@ -33,7 +33,7 @@ let MotorcycleAnimationComponent = class MotorcycleAnimationComponent extends Ve
     } else if (this.Mesh.DoesSocketExist(VehicleAnimationComponent_1.VehicleAnimationComponent.SeatProp01)) {
       this.CameraPositionOffset.FromUeVector(this.Mesh.GetRefBoneComponentPosition(this.Mesh.GetSocketBoneName(VehicleAnimationComponent_1.VehicleAnimationComponent.SeatProp01)));
     }
-    return true;
+    return this.Mesh.bUpdateChildTransInDelayComplete = true;
   }
   GetCameraPosition(t, e = FNameUtil_1.FNameUtil.EMPTY) {
     if (FNameUtil_1.FNameUtil.IsEmpty(e)) {
@@ -54,5 +54,5 @@ let MotorcycleAnimationComponent = class MotorcycleAnimationComponent extends Ve
     }
   }
 };
-MotorcycleAnimationComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(271)], MotorcycleAnimationComponent);
+MotorcycleAnimationComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(272)], MotorcycleAnimationComponent);
 exports.MotorcycleAnimationComponent = MotorcycleAnimationComponent; //# sourceMappingURL=MotorcycleAnimationComponent.js.map

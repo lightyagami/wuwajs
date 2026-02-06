@@ -9,7 +9,7 @@ const InputFunctionCommon_1 = require("./InputFunctionCommon");
 function attackFunction(t, n) {
   var o;
   var e = Global_1.Global.BaseCharacter;
-  if ((e = e && e.CharacterActorComponent?.Entity) && (o = e.GetComponent(215)) && o.Valid && (o = (n.通用_攻击按下 = false, InputFunctionCommon_1.createInputCommandFromDataTable)(e.Id, 4, 1))) {
+  if ((e = e && e.CharacterActorComponent?.Entity) && (o = e.GetComponent(217)) && o.Valid && (o = (n.通用_攻击按下 = false, InputFunctionCommon_1.createInputCommandFromDataTable)(e.Id, 4, 1))) {
     n.通用_攻击按下 = true;
     return o;
   } else {

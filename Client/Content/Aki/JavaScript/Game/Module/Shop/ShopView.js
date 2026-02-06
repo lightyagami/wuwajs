@@ -33,7 +33,7 @@ class ShopView extends UiTickViewBase_1.UiTickViewBase {
     this.PTt = [];
     this.CMo = undefined;
     this.gMo = undefined;
-    this.gAf = undefined;
+    this.V2f = undefined;
     this.Jgt = e => {
       e = e.Data;
       e = this.CMo.indexOf(e);
@@ -127,10 +127,10 @@ class ShopView extends UiTickViewBase_1.UiTickViewBase {
     var s = this.OpenParam;
     let r = "";
     r = s.UiCameraName && s.UiCameraName !== "" ? s.UiCameraName : ConfigManager_1.ConfigManager.ShopConfig.GetShopInfoConfig(s.ShopId).UiCamera;
-    this.gAf = UiCameraAnimationManager_1.UiCameraAnimationManager.PushCameraHandleByHandleName(r, true, true);
+    this.V2f = UiCameraAnimationManager_1.UiCameraAnimationManager.PushCameraHandleByHandleName(r, true, true);
   }
   PopCameraHandle(e, t, i, s) {
-    UiCameraAnimationManager_1.UiCameraAnimationManager.PopCameraHandle(this.gAf);
+    UiCameraAnimationManager_1.UiCameraAnimationManager.PopCameraHandle(this.V2f);
   }
   OnBeforeCreate() {
     var e = "ShopView" + (10000 + this.OpenParam.ShopId);
@@ -163,7 +163,7 @@ class ShopView extends UiTickViewBase_1.UiTickViewBase {
     let t = "";
     var i = EntitySystem_1.EntitySystem.Get(ModelManager_1.ModelManager.ShopModel.InteractTarget);
     if (i) {
-      t = i.GetComponent(126)?.PawnName ?? "";
+      t = i.GetComponent(128)?.PawnName ?? "";
     }
     this.GetText(2).SetText(t);
   }

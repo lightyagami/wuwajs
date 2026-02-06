@@ -54,10 +54,10 @@ class SpecialSkillAogusita extends SpecialSkillBase_1.SpecialSkillBase {
     var e;
     var t = this.SpecialSkillComponent.Entity;
     this.Hte = t.GetComponent(3);
-    this.cBe = t.GetComponent(40);
+    this.cBe = t.GetComponent(42);
     if (this.Hte?.IsRoleAndCtrlByMe) {
-      this.Nce = t.GetComponent(65);
-      e = t.GetComponent(215);
+      this.Nce = t.GetComponent(67);
+      e = t.GetComponent(217);
       this.SMd = e?.ListenForTagAddOrRemove(1519720150, this.IMd);
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnChangeRole, this.xie);
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CommonQteStart, this.qsm);

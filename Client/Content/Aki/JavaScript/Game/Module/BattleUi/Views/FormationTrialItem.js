@@ -19,11 +19,11 @@ class FormationTrialItem extends UiPanelBase_1.UiPanelBase {
   OnStart() {
     this.GetText(0).Clear();
     if (this.fht) {
-      this.y4f(this.fht);
+      this.D$f(this.fht);
     }
     this.fht = undefined;
     if (this.Ddt) {
-      this.YDf(this.Ddt);
+      this.wOf(this.Ddt);
     }
     this.Ddt = undefined;
   }
@@ -31,22 +31,22 @@ class FormationTrialItem extends UiPanelBase_1.UiPanelBase {
     if (this.InAsyncLoading()) {
       this.fht = t;
     } else {
-      this.y4f(t);
+      this.D$f(t);
     }
   }
   SetTrialIcon(t) {
     if (this.InAsyncLoading()) {
       this.Ddt = t;
     } else {
-      this.YDf(t);
+      this.wOf(t);
     }
   }
-  y4f(t) {
+  D$f(t) {
     var e = this.GetText(0);
     e.Clear();
     e.SetText(t);
   }
-  YDf(t) {
+  wOf(t) {
     t = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(t);
     this.SetSpriteByPath(t, this.GetSprite(1), false);
   }

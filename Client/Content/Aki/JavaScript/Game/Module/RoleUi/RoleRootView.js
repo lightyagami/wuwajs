@@ -113,7 +113,11 @@ class RoleRootView extends UiViewBase_1.UiViewBase {
       var t = this.TabDataList[e];
       var i = t.ChildViewName;
       var s = this.TabComponent.GetTabItemByIndex(e);
+      if (this.rmo) {
+        this.d1o.SetPreSelectTabName(this.rmo);
+      }
       this.TabViewComponent.ToggleCallBack(t, i, s, this.d1o);
+      this.d1o.SetCurSelectTabName(i);
       this.I6e = e;
       this.rmo = i;
       this.lmo(e, this.nmo);
@@ -300,7 +304,7 @@ class RoleRootView extends UiViewBase_1.UiViewBase {
       this.RoleBackgroundMusicSwitchItem = new RoleBackgroundMusicSwitchItem_1.RoleBackgroundMusicSwitchItem();
       RenderUtil_1.RenderUtil.BeginPSOSyncMode();
       this.RoleListComponent = new RoleListComponent_1.RoleListComponent();
-      await Promise.all([this.RoleListComponent.CreateThenShowByActorAsync(this.GetItem(3).GetOwner(), this.d1o), this.RoleBackgroundMusicSwitchItem.CreateByActorAsync(this.GetItem(9).GetOwner()), this.mYf()]);
+      await Promise.all([this.RoleListComponent.CreateThenShowByActorAsync(this.GetItem(3).GetOwner(), this.d1o), this.RoleBackgroundMusicSwitchItem.CreateByActorAsync(this.GetItem(9).GetOwner()), this.Yug()]);
       this.InitTabComponent();
       this.d1o.RoleViewState = 0;
       this.dmo = UiSceneManager_1.UiSceneManager.InitRoleSystemRoleActor(1);
@@ -309,7 +313,7 @@ class RoleRootView extends UiViewBase_1.UiViewBase {
       this.RefreshRoleSystemModeUiParam();
     }
   }
-  async mYf() {
+  async Yug() {
     if (this.d1o.GetRoleSystemMode() === 1) {
       var e = [];
       for (const t of this.d1o.GetRoleIdList()) {
@@ -354,9 +358,9 @@ class RoleRootView extends UiViewBase_1.UiViewBase {
     }
   }
   async RefreshRoleListAsync() {
-    await this.oQm(this.d1o.GetCurSelectRoleId());
+    await this.JKm(this.d1o.GetCurSelectRoleId());
   }
-  async oQm(i) {
+  async JKm(i) {
     UiLayer_1.UiLayer.SetShowMaskLayer("RefreshRoleListAsync", true);
     const s = this.d1o.GetRoleIdList();
     await this.RoleListComponent.UpdateComponent(s).finally(() => {
@@ -439,7 +443,7 @@ class RoleRootView extends UiViewBase_1.UiViewBase {
   }
   async SelectRoleOutside(e) {
     if (e && e !== this.d1o.GetCurSelectRoleId()) {
-      await this.oQm(e);
+      await this.JKm(e);
     }
   }
   InitTabComponent() {

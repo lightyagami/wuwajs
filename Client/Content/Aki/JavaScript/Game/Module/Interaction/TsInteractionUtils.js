@@ -26,7 +26,6 @@ const InputDistributeController_1 = require("../../Ui/InputDistribute/InputDistr
 const UiManager_1 = require("../../Ui/UiManager");
 const WaitEntityTask_1 = require("../../World/Define/WaitEntityTask");
 const ConfirmBoxDefine_1 = require("../ConfirmBox/ConfirmBoxDefine");
-const FlowController_1 = require("../Plot/Flow/FlowController");
 const ReconnectDefine_1 = require("../ReConnect/ReconnectDefine");
 const ResourceManagerController_1 = require("../ResManager/ResourceManagerController");
 const InteractConfirmController_1 = require("./SecondConfirm/InteractConfirmController");
@@ -56,7 +55,7 @@ class TsInteractionUtils {
     } else {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.DynamicInteractServerResponse, t.Guid);
       if (t.OptionType !== 3) {
-        Global_1.Global.BaseCharacter.CharacterActorComponent?.Entity?.GetComponent(71)?.CollectSampleAndSend(true);
+        Global_1.Global.BaseCharacter.CharacterActorComponent?.Entity?.GetComponent(73)?.CollectSampleAndSend(true);
       }
       switch (t.DelayRemove ? 3 : t.OptionType) {
         case 0:
@@ -92,7 +91,7 @@ class TsInteractionUtils {
             var e = t.Type;
             var i = LevelGeneralContextDefine_1.EntityContext.Create(n.EntityId);
             if (e) {
-              FlowController_1.FlowController.StartFlow(e.Flow.FlowListName, e.Flow.FlowId, e.Flow.StateId, i);
+              ControllerHolder_1.ControllerHolder.FlowController.StartFlow(e.Flow.FlowListName, e.Flow.FlowId, e.Flow.StateId, i);
             }
             if (n?.OnInteractActionEnd) {
               n.OnInteractActionEnd();
@@ -239,7 +238,7 @@ class TsInteractionUtils {
       if (t) {
         t = ModelManager_1.ModelManager.CreatureModel.GetEntity(o);
         if (t) {
-          t = t.Entity.GetComponent(207);
+          t = t.Entity.GetComponent(209);
           if (t) {
             t = t.GetInteractController();
             if (t) {
@@ -330,11 +329,11 @@ class TsInteractionUtils {
         for (const _ of t) {
           if (r === _.OptionIndex && o === _.CurInstConfigId) {
             var a = Vector_1.Vector.Create(_.TargetPosition[0], _.TargetPosition[1], _.TargetPosition[2]);
-            var [l, s] = ResourceManagerController_1.ResourceManagerController.IsBlockResourceDownloaded(_.TargetMapConfigId, a);
+            var [s, l] = ResourceManagerController_1.ResourceManagerController.IsBlockResourceDownloaded(_.TargetMapConfigId, a);
             if (Log_1.Log.CheckDebug()) {
-              Log_1.Log.Debug("Interaction", 93, "交互实体确认需要进行拦截检测", ["EntityId", n?.Id], ["PdDataId", i.GetPbDataId()], ["OptionIndex", r], ["CurDungeonId", o], ["TargetDungeonId", _.TargetMapConfigId], ["TargetPosition", a], ["Result", l], ["needReLogin", s]);
+              Log_1.Log.Debug("Interaction", 93, "交互实体确认需要进行拦截检测", ["EntityId", n?.Id], ["PdDataId", i.GetPbDataId()], ["OptionIndex", r], ["CurDungeonId", o], ["TargetDungeonId", _.TargetMapConfigId], ["TargetPosition", a], ["Result", s], ["needReLogin", l]);
             }
-            if (!l) {
+            if (!s) {
               (a = new ConfirmBoxDefine_1.ConfirmBoxDataNew(405)).FunctionMap.set(1, () => {
                 ControllerHolder_1.ControllerHolder.ConfirmBoxController.CloseConfirmBoxView();
                 ControllerHolder_1.ControllerHolder.ReConnectController.Logout(ReconnectDefine_1.ELogoutReason.InvalidTeleportPosition);
@@ -342,7 +341,7 @@ class TsInteractionUtils {
               ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowNetWorkConfirmBoxView(a);
               return true;
             }
-            if (s) {
+            if (l) {
               ModelManager_1.ModelManager.SubPackageDownLoadModel.OpenBlockNeedReLoginConfirm();
               return true;
             }

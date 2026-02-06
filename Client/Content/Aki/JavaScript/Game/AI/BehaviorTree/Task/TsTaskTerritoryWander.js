@@ -93,8 +93,8 @@ class TsTaskTerritoryWander extends TsTaskAbortImmediatelyBase_1.default {
       if (this.ActorComp?.Valid) {
         var s = this.ActorComp.Entity;
         var h = s.GetComponent(0);
-        this.MoveComp = s.GetComponent(187);
-        this.UnifiedStateComp = s.GetComponent(109);
+        this.MoveComp = s.GetComponent(189);
+        this.UnifiedStateComp = s.GetComponent(111);
         if (!this.RangeCenter) {
           if (this.TsRangeCenterKey) {
             s = s.Id;

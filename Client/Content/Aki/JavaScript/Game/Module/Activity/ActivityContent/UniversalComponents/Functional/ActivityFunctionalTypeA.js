@@ -117,16 +117,16 @@ class ActivityFunctionalTypeA extends UiPanelBase_1.UiPanelBase {
   RefreshGeneralPerformance(t) {
     var e;
     var i;
-    var s;
+    var n;
     if (this.Data) {
       e = this.Data.IsUnLock();
       i = this.Data.CanPreOpen();
-      s = this.Data.HasPreOpenCondition();
+      n = this.Data.HasPreOpenCondition();
       if (e) {
         if (t) {
           this.SetGeneralUnlockPerformance(t);
         }
-      } else if (s) {
+      } else if (n) {
         if (i) {
           this.SetPanelTipByTextId("ActivityPreOpenTip");
           this.SetPanelTipVisible(true);
@@ -198,6 +198,9 @@ class ActivityFunctionalTypeA extends UiPanelBase_1.UiPanelBase {
       }
       ModelManager_1.ModelManager.SubPackageDownLoadModel.OpenSubPackageDownLoadConfirm(e, i);
     };
+  }
+  GetFunctionButtonItem() {
+    return this.GetItem(1);
   }
 }
 exports.ActivityFunctionalTypeA = ActivityFunctionalTypeA;

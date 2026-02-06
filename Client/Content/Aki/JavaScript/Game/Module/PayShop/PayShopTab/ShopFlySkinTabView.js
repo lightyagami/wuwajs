@@ -14,6 +14,8 @@ const ShopFlySkinData_1 = require("../../Skin/Data/ShopFlySkinData");
 const GridProxyAbstract_1 = require("../../Util/Grid/GridProxyAbstract");
 const GenericLayout_1 = require("../../Util/Layout/GenericLayout");
 const LguiUtil_1 = require("../../Util/LguiUtil");
+const LogReportDefine_1 = require("../../LogReport/LogReportDefine");
+const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 class ShopFlySkinTabView extends UiTabViewBase_1.UiTabViewBase {
   constructor() {
     super(...arguments);
@@ -34,18 +36,18 @@ class ShopFlySkinTabView extends UiTabViewBase_1.UiTabViewBase {
     this.v4e();
   }
   v4e() {
-    var t = ModelManager_1.ModelManager.PayShopModel.GetPayShopTabData(this._3i, this.bD);
-    var e = new Array();
-    for (const r of t) {
+    var e = ModelManager_1.ModelManager.PayShopModel.GetPayShopTabData(this._3i, this.bD);
+    var t = new Array();
+    for (const s of e) {
       var i = new FlySkinItemContentData();
-      var s = ShopFlySkinData_1.ShopFlySkinData.Create(r);
-      i.ShopFlySkinData = s;
-      i.AllData = t;
-      e.push(i);
+      var r = ShopFlySkinData_1.ShopFlySkinData.Create(s);
+      i.ShopFlySkinData = r;
+      i.AllData = e;
+      t.push(i);
     }
-    this.eGe.RefreshByData(e, undefined, true);
+    this.eGe.RefreshByData(t, undefined, true);
   }
-  RefreshView(t) {}
+  RefreshView(e) {}
 }
 exports.ShopFlySkinTabView = ShopFlySkinTabView;
 class FlySkinItemContentData {
@@ -60,71 +62,77 @@ class FlySkinItemContent extends GridProxyAbstract_1.GridProxyAbstract {
     this.g31 = undefined;
     this.NOe = 0;
     this.zSl = () => {
-      var t = this.g31.AllData;
-      var e = new Array();
-      for (const s of t) {
-        var i = ShopFlySkinData_1.ShopFlySkinData.Create(s);
-        e.push(i);
+      var e = this.g31.AllData;
+      var t = new Array();
+      for (const h of e) {
+        var i = ShopFlySkinData_1.ShopFlySkinData.Create(h);
+        t.push(i);
       }
-      t = FlySkinBuyDetailViewData_1.FlySkinBuyDetailViewData.Create(e);
-      t.SetIndex(this.NOe);
-      t.SetPreviewTitle("FlySkinShopTitle_Text");
-      UiManager_1.UiManager.OpenView("FlySkinBuyDetailView", t);
+      var e = FlySkinBuyDetailViewData_1.FlySkinBuyDetailViewData.Create(t);
+      e.SetIndex(this.NOe);
+      e.SetPreviewTitle("FlySkinShopTitle_Text");
+      var r = t[this.NOe].GetPayShopGoods();
+      var s = new LogReportDefine_1.OnClickPayShopItemLogEvent();
+      s.i_id = r.GetGoodsId();
+      s.i_shop_id = r.PayShopId;
+      s.i_tab_id = r.GetGoodsData().TabId;
+      ControllerHolder_1.ControllerHolder.LogReportController.LogReport(s);
+      UiManager_1.UiManager.OpenView("FlySkinBuyDetailView", e);
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UITexture], [2, UE.UITexture], [3, UE.UIText], [4, UE.UIText], [5, UE.UIText], [6, UE.UIText], [7, UE.UIItem], [8, UE.UIText], [9, UE.UIText], [10, UE.UITexture], [11, UE.UIItem], [12, UE.UIItem], [13, UE.UIItem], [14, UE.UITexture], [15, UE.UITexture], [16, UE.UIItem], [17, UE.UIItem]];
     this.BtnBindInfo = [[0, this.zSl]];
   }
-  Refresh(t, e, i) {
-    var s = t.ShopFlySkinData;
-    this.g31 = t;
+  Refresh(e, t, i) {
+    var r = e.ShopFlySkinData;
+    this.g31 = e;
     this.NOe = i;
-    this.Zke(s);
+    this.Zke(r);
     this.ZSl();
-    this.eyl(s);
-    this.tyl(s);
-    this.iyl(s);
-    this.ryl(s);
-    this.oyl(s);
-    this.nyl(s);
-    this.syl(s);
-    this.FEl(s);
-    this.VEl(s);
-    this.HEl(s);
-    this.JSl(s);
-    this.nbl(s);
-    this.f7l(s);
+    this.eyl(r);
+    this.tyl(r);
+    this.iyl(r);
+    this.ryl(r);
+    this.oyl(r);
+    this.nyl(r);
+    this.syl(r);
+    this.FEl(r);
+    this.VEl(r);
+    this.HEl(r);
+    this.JSl(r);
+    this.nbl(r);
+    this.f7l(r);
   }
-  f7l(t) {
-    t = t.GetFlySkinData().GetSkinGrade() === 1;
-    this.GetItem(17).SetUIActive(t);
-    this.GetItem(16).SetUIActive(t);
+  f7l(e) {
+    e = e.GetFlySkinData().GetSkinGrade() === 1;
+    this.GetItem(17).SetUIActive(e);
+    this.GetItem(16).SetUIActive(e);
   }
-  HEl(t) {
-    t = t.GetCurrentGoodsData().GetIfNeedRemind();
-    this.GetItem(13).SetUIActive(t);
+  HEl(e) {
+    e = e.GetCurrentGoodsData().GetIfNeedRemind();
+    this.GetItem(13).SetUIActive(e);
   }
-  FEl(t) {
-    t = t.GetIfCanBuy();
-    this.GetItem(11).SetUIActive(t);
+  FEl(e) {
+    e = e.GetIfCanBuy();
+    this.GetItem(11).SetUIActive(e);
   }
-  VEl(t) {
-    t = !t.GetIfCanBuy();
-    this.GetItem(12).SetUIActive(t);
+  VEl(e) {
+    e = !e.GetIfCanBuy();
+    this.GetItem(12).SetUIActive(e);
   }
-  Zke(t) {
-    t = t.GetPreviewTextureInPayShop();
-    this.SetTextureByPath(t, this.GetTexture(1));
+  Zke(e) {
+    e = e.GetPreviewTextureInPayShop();
+    this.SetTextureByPath(e, this.GetTexture(1));
   }
   ZSl() {
     this.GetTexture(2)?.SetUIActive(false);
   }
-  ryl(t) {
-    if (t) {
-      if (!t.GetIfDirect() && (t = t.GetPriceData().OriginalPrice)) {
+  ryl(e) {
+    if (e) {
+      if (!e.GetIfDirect() && (e = e.GetPriceData().OriginalPrice)) {
         this.GetText(6).SetUIActive(true);
-        this.GetText(6).SetText(`<s>${t.toString()}</s>`);
+        this.GetText(6).SetText(`<s>${e.toString()}</s>`);
       } else {
         this.GetText(6).SetUIActive(false);
       }
@@ -132,78 +140,78 @@ class FlySkinItemContent extends GridProxyAbstract_1.GridProxyAbstract {
       this.GetText(6).SetText("");
     }
   }
-  iyl(t) {
-    var e;
-    if (t) {
-      if (t.GetIfDirect()) {
-        e = t.GetDirectPriceText();
-        this.GetText(5).SetText(e);
+  iyl(e) {
+    var t;
+    if (e) {
+      if (e.GetIfDirect()) {
+        t = e.GetDirectPriceText();
+        this.GetText(5).SetText(t);
       } else {
-        e = t.GetPriceData().NowPrice;
-        this.GetText(5).SetText(e.toString());
+        t = e.GetPriceData().NowPrice;
+        this.GetText(5).SetText(t.toString());
       }
     } else {
       this.GetText(5).SetText("");
     }
   }
-  syl(t) {
-    var e;
-    if (t) {
-      e = t.GetIfDirect();
-      this.GetTexture(10).SetUIActive(!e);
-      if (!e) {
-        e = t.GetPriceData();
-        this.SetItemIcon(this.GetTexture(10), e.CurrencyId);
+  syl(e) {
+    var t;
+    if (e) {
+      t = e.GetIfDirect();
+      this.GetTexture(10).SetUIActive(!t);
+      if (!t) {
+        t = e.GetPriceData();
+        this.SetItemIcon(this.GetTexture(10), t.CurrencyId);
       }
     } else {
       this.GetTexture(10).SetUIActive(false);
     }
   }
-  eyl(t) {
-    t = t.GetPayShopGoods().GetShopTipsText();
-    this.GetText(3).SetText(t);
+  eyl(e) {
+    e = e.GetPayShopGoods().GetShopTipsText();
+    this.GetText(3).SetText(e);
   }
-  tyl(t) {
-    t = t.GetPayShopGoods().GetItemData().Name;
-    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), t);
+  tyl(e) {
+    e = e.GetPayShopGoods().GetItemData().Name;
+    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), e);
   }
-  oyl(t) {
-    var e;
-    if (t = t && t.GetDiscountTimeData()) {
+  oyl(e) {
+    var t;
+    if (e = e && e.GetDiscountTimeData()) {
       this.GetItem(7).SetUIActive(true);
-      e = this.GetText(9);
-      if (typeof t == "string") {
-        e.SetText(t);
+      t = this.GetText(9);
+      if (typeof e == "string") {
+        t.SetText(e);
       } else {
-        LguiUtil_1.LguiUtil.SetLocalText(e, t.TextId, t.TimeValue);
+        LguiUtil_1.LguiUtil.SetLocalText(t, e.TextId, e.TimeValue);
       }
     } else {
       this.GetItem(7).SetUIActive(false);
     }
   }
-  nyl(t) {
-    if (t) {
-      t = t.GetDiscountText();
-      this.GetItem(7).SetUIActive(t !== "");
-      this.GetText(8).SetText(t);
+  nyl(e) {
+    if (e) {
+      e = e.GetDiscountText();
+      this.GetItem(7).SetUIActive(e !== "");
+      this.GetText(8).SetText(e);
     } else {
       this.GetItem(7).SetUIActive(false);
     }
   }
-  JSl(t) {
-    if (t) {
-      t = t.GetFlySkinData().GetSkinGrade() === 1 ? "T_ShopRoleItemBg1" : "T_ShopRoleItemBg";
-      t = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(t);
-      this.SetTextureByPath(t, this.GetTexture(14));
+  JSl(e) {
+    if (e) {
+      e = e.GetFlySkinData().GetSkinGrade() === 1 ? "T_ShopRoleItemBg1" : "T_ShopRoleItemBg";
+      e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(e);
+      this.SetTextureByPath(e, this.GetTexture(14));
     } else {
       this.GetTexture(14).SetUIActive(false);
     }
   }
-  nbl(t) {
-    if (t) {
-      t = t.GetFlySkinData().GetSkinGrade() === 1 ? "T_ShopRoleItemTopBg1" : "T_ShopRoleItemTopBg";
-      t = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(t);
-      this.SetTextureByPath(t, this.GetTexture(15));
+  nbl(e) {
+    if (e) {
+      e = e.GetFlySkinData().GetSkinGrade() === 1 ? "T_ShopRoleItemTopBg1" : "T_ShopRoleItemTopBg";
+      e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(e);
+      this.SetTextureByPath(e, this.GetTexture(15));
     } else {
       this.GetTexture(15).SetUIActive(false);
     }

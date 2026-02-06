@@ -17,9 +17,9 @@ class PerformSwitchState extends PerformActionBase_1.PerformActionBase {
     this.Jh = undefined;
     this.Sj_ = undefined;
     this.Mj_ = undefined;
-    this.fKm = () => {
+    this.qYm = () => {
       this.Mj_ = undefined;
-      this.Jh.GetComponent(196)?.SwitchAnimState(this.Param);
+      this.Jh.GetComponent(198)?.SwitchAnimState(this.Param);
     };
     this.$rr = () => {
       EventSystem_1.EventSystem.RemoveWithTarget(this.Jh, EventDefine_1.EEventName.CharTurnEnd, this.$rr);
@@ -42,14 +42,14 @@ class PerformSwitchState extends PerformActionBase_1.PerformActionBase {
   }
   OnExecute() {
     var t;
-    if (this.PerformComp.Entity.GetComponent(2) && this.PerformComp.Entity.GetComponent(196)?.CanSwitchAnimState(this.Param.TargetStateName)) {
+    if (this.PerformComp.Entity.GetComponent(2) && this.PerformComp.Entity.GetComponent(198)?.CanSwitchAnimState(this.Param.TargetStateName)) {
       this.Jh = this.PerformComp.Entity;
-      if ((t = this.Jh.GetComponent(45)).MontageManager.IsMontagePlaying()) {
+      if ((t = this.Jh.GetComponent(47)).MontageManager.IsMontagePlaying()) {
         t.MontageManager.StopMontage({
           Method: 0,
           BlendOutTime: 0.5
         });
-        this.Mj_ = TimerSystem_1.TimerSystem.Delay(this.fKm, 250);
+        this.Mj_ = TimerSystem_1.TimerSystem.Delay(this.qYm, 250);
       } else {
         this.Lmu();
       }
@@ -60,11 +60,11 @@ class PerformSwitchState extends PerformActionBase_1.PerformActionBase {
     }
   }
   Lmu() {
-    if (this.PerformComp?.Entity.GetComponent(190)?.IsTurning) {
+    if (this.PerformComp?.Entity.GetComponent(192)?.IsTurning) {
       EventSystem_1.EventSystem.AddWithTarget(this.Jh, EventDefine_1.EEventName.CharTurnEnd, this.$rr);
     } else {
       TimerSystem_1.TimerSystem.Delay(() => {
-        this.PerformComp?.Entity.GetComponent(196)?.SwitchAnimState(this.Param);
+        this.PerformComp?.Entity.GetComponent(198)?.SwitchAnimState(this.Param);
       }, FORCE_DELAY_UPDATE_TIME);
     }
   }

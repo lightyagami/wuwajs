@@ -16,6 +16,7 @@ class SelectablePropData {
     this.ResonanceLevel = 0;
     this.LevelText = "";
     this.ChipPath = "";
+    this.OnlyGold = false;
   }
   GetIsLock() {
     var t;

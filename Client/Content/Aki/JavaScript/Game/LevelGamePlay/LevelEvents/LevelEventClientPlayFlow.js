@@ -12,11 +12,11 @@ const LevelGeneralBase_1 = require("../LevelGeneralBase");
 class LevelEventClientPlayFlow extends LevelGeneralBase_1.LevelEventBase {
   constructor() {
     super(...arguments);
-    this.dqm = undefined;
+    this.LOm = undefined;
     this.SXd = undefined;
     this.hWe = e => {
-      if (this.dqm && this.SXd !== undefined) {
-        if (e.FlowIncId === this.SXd && e.FlowListName === this.dqm.FlowListName && e.StateId === this.dqm.StateId && e.FlowId === this.dqm.FlowId) {
+      if (this.LOm && this.SXd !== undefined) {
+        if (e.FlowIncId === this.SXd && e.FlowListName === this.LOm.FlowListName && e.StateId === this.LOm.StateId && e.FlowId === this.LOm.FlowId) {
           EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PlotNetworkEnd, this.hWe);
           this.FinishExecute(true);
         }
@@ -26,15 +26,15 @@ class LevelEventClientPlayFlow extends LevelGeneralBase_1.LevelEventBase {
     };
   }
   ExecuteNew(e, t) {
-    this.dqm = e;
-    if (this.dqm) {
+    this.LOm = e;
+    if (this.LOm) {
       if (t.Type === 5) {
         if (t.IsClientTrigger) {
           if (this.IsAsync) {
-            FlowController_1.FlowController.StartFlow(this.dqm.FlowListName, this.dqm.FlowId, this.dqm.StateId, t);
+            FlowController_1.FlowController.StartFlow(this.LOm.FlowListName, this.LOm.FlowId, this.LOm.StateId, t);
             this.FinishExecute(true);
           } else {
-            this.SXd = FlowController_1.FlowController.StartFlow(this.dqm.FlowListName, this.dqm.FlowId, this.dqm.StateId, t);
+            this.SXd = FlowController_1.FlowController.StartFlow(this.LOm.FlowListName, this.LOm.FlowId, this.LOm.StateId, t);
             EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PlotNetworkEnd, this.hWe);
           }
         } else {
@@ -54,7 +54,7 @@ class LevelEventClientPlayFlow extends LevelGeneralBase_1.LevelEventBase {
     }
   }
   OnReset() {
-    this.dqm = undefined;
+    this.LOm = undefined;
     this.SXd = undefined;
     if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.PlotNetworkEnd, this.hWe)) {
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PlotNetworkEnd, this.hWe);

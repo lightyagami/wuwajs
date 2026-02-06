@@ -23,7 +23,7 @@ class HonamiScanMachinePanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecond
   }
   OnShowWorldMapSecondaryUi(r) {
     this.LayoutContext.MarkItem = r;
-    this.cxm();
+    this.Gxm();
     WorldMapSecondaryUiLayoutHelper_1.WorldMapSecondaryUiLayoutHelper.UpdateConfirmButtonTextWithFastMoveStyle(this.LayoutContext);
     WorldMapSecondaryUiLayoutHelper_1.WorldMapSecondaryUiLayoutHelper.UpdateTrackButtonTextWithTrackStyle(this.LayoutContext);
     WorldMapSecondaryUiLayoutHelper_1.WorldMapSecondaryUiLayoutHelper.UpdateIconAndTitle(this.LayoutContext);
@@ -34,7 +34,7 @@ class HonamiScanMachinePanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecond
     r = this.UpdateQuickGoto();
     this.LayoutContext.SetConfirmBtnActive(!r);
   }
-  cxm() {
+  Gxm() {
     var r = this.LayoutContext.MarkItem;
     this.LayoutContext.SetConfirmBtnEnableClick(!r.IsLocked);
   }

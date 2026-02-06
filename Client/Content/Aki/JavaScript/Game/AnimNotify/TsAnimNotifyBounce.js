@@ -17,7 +17,7 @@ class TsAnimNotifyBounce extends UE.KuroAnimNotify {
     var s;
     var r;
     var e = e.GetOwner();
-    if (e instanceof TsBaseCharacter_1.default && (s = (e = e.CharacterActorComponent?.Entity)?.GetComponent(29), e = e?.GetComponent(34), s) && e) {
+    if (e instanceof TsBaseCharacter_1.default && (s = (e = e.CharacterActorComponent?.Entity)?.GetComponent(29), e = e?.GetComponent(35), s) && e) {
       r = this.MotionCurve?.ToAssetPathName() ?? "";
       s.StartBounceFromAns(this.Time, this.Height, r);
       e.StartCatapult();

@@ -81,7 +81,7 @@ class NpcShopPerformParams {
 class NpcPerformSystemUiState extends NpcPerformBaseState_1.NpcPerformBaseState {
   constructor() {
     super(...arguments);
-    this.HGf = undefined;
+    this.r7f = undefined;
     this.Htr = IComponent_1.ENpcUiInteractType.AntiqueShop;
     this.uKo = undefined;
     this._Ko = false;
@@ -101,7 +101,7 @@ class NpcPerformSystemUiState extends NpcPerformBaseState_1.NpcPerformBaseState 
         if (this.uKo === t) {
           this._Ko = true;
           EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OpenView, this.FQe);
-          this.jGf();
+          this.o7f();
         }
       } else {
         EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OpenView, this.FQe);
@@ -132,30 +132,30 @@ class NpcPerformSystemUiState extends NpcPerformBaseState_1.NpcPerformBaseState 
           if (Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("NPC", 36, "[NpcPerformSystemUiState]当购买成功时播放提交成功动作 ShopSuccessMontage", ["EntityId", this.Owner.Id], ["worldTime", t], ["BuySuccessNpcDialogueTimeInterval", this.rHs], ["CanPlayBuySuccessTimeStamp", this.oHs]);
           }
-          this._ir(this.HGf?.ShopSuccessFlow, this.uKo, true);
+          this._ir(this.r7f?.ShopSuccessFlow, this.uKo, true);
           this.uir();
         }
       }
     };
     this.UPl = () => {
-      if (this.Htr === IComponent_1.ENpcUiInteractType.Gramophone && !!this.HGf?.SwitchMusicMontageInfo?.Asset?.IsValid() && !(Time_1.Time.WorldTime - this.pd_ < SWITCH_MONATGE_CD)) {
+      if (this.Htr === IComponent_1.ENpcUiInteractType.Gramophone && !!this.r7f?.SwitchMusicMontageInfo?.Asset?.IsValid() && !(Time_1.Time.WorldTime - this.pd_ < SWITCH_MONATGE_CD)) {
         this.pd_ = Time_1.Time.WorldTime;
         this.Qtr = Time_1.Time.WorldTimeSeconds;
-        this.Ktr = this.HGf.SwitchMusicMontageInfo.Asset.SequenceLength - 0.1;
+        this.Ktr = this.r7f.SwitchMusicMontageInfo.Asset.SequenceLength - 0.1;
         this.PlayMontage({
-          MontageAsset: this.HGf.SwitchMusicMontageInfo.Asset,
+          MontageAsset: this.r7f.SwitchMusicMontageInfo.Asset,
           IsLoop: false,
-          AnimStateParam: this.HGf.SwitchMusicMontageInfo.State
+          AnimStateParam: this.r7f.SwitchMusicMontageInfo.State
         });
       }
     };
     this.APl = () => {
       if (this.Htr === IComponent_1.ENpcUiInteractType.Gramophone || this.Htr === IComponent_1.ENpcUiInteractType.SunSpirit || this.Htr === IComponent_1.ENpcUiInteractType.SoundBox3) {
-        if (this.HGf?.ExitMontageInfo?.Asset?.IsValid()) {
+        if (this.r7f?.ExitMontageInfo?.Asset?.IsValid()) {
           this.PlayMontage({
-            MontageAsset: this.HGf.ExitMontageInfo.Asset,
+            MontageAsset: this.r7f.ExitMontageInfo.Asset,
             IsLoop: false,
-            AnimStateParam: this.HGf.ExitMontageInfo.State
+            AnimStateParam: this.r7f.ExitMontageInfo.State
           });
         }
       }
@@ -163,18 +163,18 @@ class NpcPerformSystemUiState extends NpcPerformBaseState_1.NpcPerformBaseState 
     this.cir = () => {
       if (this.uKo) {
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("NPC", 36, "[CollectionItemDisplay]当提交物品成功时,播放提交成功剧情 EnterFlow,播放提交成功动作 ShopSuccessMontage", ["EntityId", this.Owner.Id], ["FlowId", this.HGf?.ShopSuccessFlow?.FlowId]);
+          Log_1.Log.Info("NPC", 36, "[CollectionItemDisplay]当提交物品成功时,播放提交成功剧情 EnterFlow,播放提交成功动作 ShopSuccessMontage", ["EntityId", this.Owner.Id], ["FlowId", this.r7f?.ShopSuccessFlow?.FlowId]);
         }
-        this._ir(this.HGf?.ShopSuccessFlow, this.uKo, true);
+        this._ir(this.r7f?.ShopSuccessFlow, this.uKo, true);
         this.uir();
       }
     };
     this.mir = () => {
       if (this.uKo) {
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("NPC", 36, "[CollectionItemDisplay]当提交物品失败时,播放提交物品失败剧情 ShopFailedFlow", ["EntityId", this.Owner.Id], ["FlowId", this.HGf?.ShopFailedFlow?.FlowId]);
+          Log_1.Log.Info("NPC", 36, "[CollectionItemDisplay]当提交物品失败时,播放提交物品失败剧情 ShopFailedFlow", ["EntityId", this.Owner.Id], ["FlowId", this.r7f?.ShopFailedFlow?.FlowId]);
         }
-        this._ir(this.HGf?.ShopFailedFlow, this.uKo, true);
+        this._ir(this.r7f?.ShopFailedFlow, this.uKo, true);
       }
     };
     this.Ybi = () => {
@@ -182,16 +182,16 @@ class NpcPerformSystemUiState extends NpcPerformBaseState_1.NpcPerformBaseState 
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("NPC", 36, "[CollectionItemDisplay]当提交物品升级成功时,Npc类型不是ChengXiaoShanShop或AntiqueShop,播放失败", ["NpcUiInteractType", this.Htr]);
         }
-      } else if (this.HGf) {
-        if (this.HGf.UpgradeFlow) {
-          ControllerHolder_1.ControllerHolder.FlowController.StartFlow(this.HGf.UpgradeFlow.FlowListName, this.HGf.UpgradeFlow.FlowId, this.HGf.UpgradeFlow.StateId);
+      } else if (this.r7f) {
+        if (this.r7f.UpgradeFlow) {
+          ControllerHolder_1.ControllerHolder.FlowController.StartFlow(this.r7f.UpgradeFlow.FlowListName, this.r7f.UpgradeFlow.FlowId, this.r7f.UpgradeFlow.StateId);
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnAntiqueShopUpgradeSequenceFinished);
-        } else if (MontageInfo.IsPathValid(this.HGf.UpgradeSequencePath) && MontageInfo.IsPathValid(this.HGf.StandByMontageInfo?.Path)) {
+        } else if (MontageInfo.IsPathValid(this.r7f.UpgradeSequencePath) && MontageInfo.IsPathValid(this.r7f.StandByMontageInfo?.Path)) {
           this.jtr ||= new NpcPerformSequence_1.NpcPerformSequence();
           if (Log_1.Log.CheckInfo()) {
-            Log_1.Log.Info("NPC", 36, "[CollectionItemDisplay]当提交物品升级成功时,开始加载对应Sequence", ["NpcUiInteractType", this.Htr], ["UpgradeSequencePath", this.HGf.UpgradeSequencePath]);
+            Log_1.Log.Info("NPC", 36, "[CollectionItemDisplay]当提交物品升级成功时,开始加载对应Sequence", ["NpcUiInteractType", this.Htr], ["UpgradeSequencePath", this.r7f.UpgradeSequencePath]);
           }
-          this.jtr.Load(this.HGf.UpgradeSequencePath, this.$Gf);
+          this.jtr.Load(this.r7f.UpgradeSequencePath, this.n7f);
         } else {
           if (Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("NPC", 36, "[CollectionItemDisplay]当提交物品升级成功时,UpgradeSequencePath为空或者StandByMontagePath为“Empth”,播放失败", ["NpcUiInteractType", this.Htr]);
@@ -202,19 +202,19 @@ class NpcPerformSystemUiState extends NpcPerformBaseState_1.NpcPerformBaseState 
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnAntiqueShopUpgradeSequenceFinished);
       }
     };
-    this.$Gf = () => {
-      if (this.Owner?.Valid && this.HGf) {
+    this.n7f = () => {
+      if (this.Owner?.Valid && this.r7f) {
         if (this.jtr) {
           if (Log_1.Log.CheckInfo()) {
-            Log_1.Log.Info("NPC", 36, "[CollectionItemDisplay]当提交物品升级成功时,开始播放对应Sequence", ["NpcUiInteractType", this.Htr], ["FinishDeliverySequence", this.HGf.UpgradeSequencePath], ["ShowNpcWhilePlayingSequence", this.HGf.ShowNpcWhilePlayingSequence]);
+            Log_1.Log.Info("NPC", 36, "[CollectionItemDisplay]当提交物品升级成功时,开始播放对应Sequence", ["NpcUiInteractType", this.Htr], ["FinishDeliverySequence", this.r7f.UpgradeSequencePath], ["ShowNpcWhilePlayingSequence", this.r7f.ShowNpcWhilePlayingSequence]);
           }
-          if (!this.HGf.ShowNpcWhilePlayingSequence) {
+          if (!this.r7f.ShowNpcWhilePlayingSequence) {
             this.Cir();
           }
-          this.jtr.Play(this.WGf);
+          this.jtr.Play(this.s7f);
         } else {
           if (Log_1.Log.CheckError()) {
-            Log_1.Log.Error("UiCore", 50, "交付道具播放Sequence时Npc已销毁", ["PbDataId", this.ConfigId], ["Path", this.HGf.UpgradeSequencePath]);
+            Log_1.Log.Error("UiCore", 50, "交付道具播放Sequence时Npc已销毁", ["PbDataId", this.ConfigId], ["Path", this.r7f.UpgradeSequencePath]);
           }
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnAntiqueShopUpgradeSequenceFinished);
         }
@@ -222,20 +222,20 @@ class NpcPerformSystemUiState extends NpcPerformBaseState_1.NpcPerformBaseState 
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnAntiqueShopUpgradeSequenceFinished);
       }
     };
-    this.WGf = () => {
-      if (this.Owner?.Valid && this.HGf) {
+    this.s7f = () => {
+      if (this.Owner?.Valid && this.r7f) {
         if (this.jtr) {
           if (Log_1.Log.CheckInfo()) {
-            Log_1.Log.Info("NPC", 36, "[CollectionItemDisplay]当提交物品升级成功时,Sequence播放完成", ["NpcUiInteractType", this.Htr], ["FinishDeliverySequence", this.HGf.UpgradeSequencePath]);
+            Log_1.Log.Info("NPC", 36, "[CollectionItemDisplay]当提交物品升级成功时,Sequence播放完成", ["NpcUiInteractType", this.Htr], ["FinishDeliverySequence", this.r7f.UpgradeSequencePath]);
           }
           this.PlayMontage({
-            MontageAsset: this.HGf.EnterMontageInfo?.Asset,
+            MontageAsset: this.r7f.EnterMontageInfo?.Asset,
             InSectionToStartMontageAt: CharacterNameDefines_1.CharacterNameDefines.LOOP_SECTION,
-            AnimStateParam: this.HGf.EnterMontageInfo?.State
+            AnimStateParam: this.r7f.EnterMontageInfo?.State
           });
           this.SetNpcAndChildEnable();
         } else if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("UiCore", 50, "交付道具播放Sequence时Npc已销毁", ["PbDataId", this.ConfigId], ["Path", this.HGf.UpgradeSequencePath]);
+          Log_1.Log.Error("UiCore", 50, "交付道具播放Sequence时Npc已销毁", ["PbDataId", this.ConfigId], ["Path", this.r7f.UpgradeSequencePath]);
         }
       }
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnAntiqueShopUpgradeSequenceFinished);
@@ -246,21 +246,21 @@ class NpcPerformSystemUiState extends NpcPerformBaseState_1.NpcPerformBaseState 
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("NPC", 36, "[CollectionItemDisplay]当提交物品等级升至满级时,Npc类型不是ChengXiaoShanShop,播放失败", ["NpcUiInteractType", this.Htr]);
         }
-      } else if (this.HGf) {
-        if (this.HGf.UpgradeFlow) {
-          ControllerHolder_1.ControllerHolder.FlowController.StartFlow(this.HGf.UpgradeFlow.FlowListName, this.HGf.UpgradeFlow.FlowId, this.HGf.UpgradeFlow.StateId);
+      } else if (this.r7f) {
+        if (this.r7f.UpgradeFlow) {
+          ControllerHolder_1.ControllerHolder.FlowController.StartFlow(this.r7f.UpgradeFlow.FlowListName, this.r7f.UpgradeFlow.FlowId, this.r7f.UpgradeFlow.StateId);
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnAntiqueShopUpgradeSequenceFinished);
         } else {
-          t = this.Htr === IComponent_1.ENpcUiInteractType.ChengXiaoShanShop ? this.HGf.FinishDeliverySequence : this.HGf.UpgradeSequencePath;
-          if (MontageInfo.IsPathValid(t) && MontageInfo.IsPathValid(this.HGf.StandByMontageInfo?.Path)) {
+          t = this.Htr === IComponent_1.ENpcUiInteractType.ChengXiaoShanShop ? this.r7f.FinishDeliverySequence : this.r7f.UpgradeSequencePath;
+          if (MontageInfo.IsPathValid(t) && MontageInfo.IsPathValid(this.r7f.StandByMontageInfo?.Path)) {
             this.jtr ||= new NpcPerformSequence_1.NpcPerformSequence();
             if (Log_1.Log.CheckInfo()) {
-              Log_1.Log.Info("NPC", 36, "[CollectionItemDisplay]当提交物品等级升至满级时,开始加载对应Sequence", ["NpcUiInteractType", this.Htr], ["FinishDeliverySequence", t], ["ShowNpcWhilePlayingSequence", this.HGf.ShowNpcWhilePlayingSequence]);
+              Log_1.Log.Info("NPC", 36, "[CollectionItemDisplay]当提交物品等级升至满级时,开始加载对应Sequence", ["NpcUiInteractType", this.Htr], ["FinishDeliverySequence", t], ["ShowNpcWhilePlayingSequence", this.r7f.ShowNpcWhilePlayingSequence]);
             }
-            this.jtr.Load(t, this.QGf);
+            this.jtr.Load(t, this.a7f);
           } else {
             if (Log_1.Log.CheckInfo()) {
-              Log_1.Log.Info("NPC", 36, "[CollectionItemDisplay]当提交物品等级升至满级时,FinishDeliverySequence为空或者StandByMontagePath为“Empth”,播放失败", ["NpcUiInteractType", this.Htr], ["FinishDeliverySequence", t], ["StandByMontagePath", this.HGf.StandByMontageInfo?.Path]);
+              Log_1.Log.Info("NPC", 36, "[CollectionItemDisplay]当提交物品等级升至满级时,FinishDeliverySequence为空或者StandByMontagePath为“Empth”,播放失败", ["NpcUiInteractType", this.Htr], ["FinishDeliverySequence", t], ["StandByMontagePath", this.r7f.StandByMontageInfo?.Path]);
             }
             EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnAntiqueShopUpgradeSequencePlayFail);
           }
@@ -269,18 +269,18 @@ class NpcPerformSystemUiState extends NpcPerformBaseState_1.NpcPerformBaseState 
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnAntiqueShopUpgradeSequenceFinished);
       }
     };
-    this.QGf = () => {
+    this.a7f = () => {
       var t;
-      if (this.Owner?.Valid && this.HGf) {
-        t = this.Htr === IComponent_1.ENpcUiInteractType.ChengXiaoShanShop ? this.HGf.FinishDeliverySequence : this.HGf.UpgradeSequencePath;
+      if (this.Owner?.Valid && this.r7f) {
+        t = this.Htr === IComponent_1.ENpcUiInteractType.ChengXiaoShanShop ? this.r7f.FinishDeliverySequence : this.r7f.UpgradeSequencePath;
         if (this.jtr) {
           if (Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("NPC", 36, "[CollectionItemDisplay]当提交物品等级升至满级时,开始播放对应Sequence", ["NpcUiInteractType", this.Htr], ["FinishDeliverySequence", t]);
           }
-          if (!this.HGf.ShowNpcWhilePlayingSequence) {
+          if (!this.r7f.ShowNpcWhilePlayingSequence) {
             this.Cir();
           }
-          this.jtr.Play(this.KGf);
+          this.jtr.Play(this.h7f);
         } else {
           if (Log_1.Log.CheckError()) {
             Log_1.Log.Error("UiCore", 50, "交付道具播放Sequence时Npc已销毁", ["PbDataId", this.ConfigId], ["Path", t]);
@@ -291,22 +291,22 @@ class NpcPerformSystemUiState extends NpcPerformBaseState_1.NpcPerformBaseState 
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnAntiqueShopUpgradeSequenceFinished);
       }
     };
-    this.KGf = () => {
+    this.h7f = () => {
       var t;
-      if (this.Owner?.Valid && this.HGf) {
-        t = this.Htr === IComponent_1.ENpcUiInteractType.ChengXiaoShanShop ? this.HGf.FinishDeliverySequence : this.HGf.UpgradeSequencePath;
+      if (this.Owner?.Valid && this.r7f) {
+        t = this.Htr === IComponent_1.ENpcUiInteractType.ChengXiaoShanShop ? this.r7f.FinishDeliverySequence : this.r7f.UpgradeSequencePath;
         if (this.jtr) {
           if (Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("NPC", 36, "[CollectionItemDisplay]当提交物品等级升至满级时,Sequence播放完成", ["NpcUiInteractType", this.Htr], ["FinishDeliverySequence", t]);
           }
           this.PlayMontage({
-            MontageAsset: this.HGf.EnterMontageInfo?.Asset,
+            MontageAsset: this.r7f.EnterMontageInfo?.Asset,
             InSectionToStartMontageAt: CharacterNameDefines_1.CharacterNameDefines.LOOP_SECTION,
-            AnimStateParam: this.HGf.EnterMontageInfo?.State
+            AnimStateParam: this.r7f.EnterMontageInfo?.State
           });
           this.SetNpcAndChildEnable();
         } else if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("UiCore", 50, "交付道具播放Sequence时Npc已销毁", ["PbDataId", this.ConfigId], ["Path", this.HGf.UpgradeSequencePath]);
+          Log_1.Log.Error("UiCore", 50, "交付道具播放Sequence时Npc已销毁", ["PbDataId", this.ConfigId], ["Path", this.r7f.UpgradeSequencePath]);
         }
       }
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnAntiqueShopUpgradeSequenceFinished);
@@ -327,14 +327,14 @@ class NpcPerformSystemUiState extends NpcPerformBaseState_1.NpcPerformBaseState 
   OnCreate(t) {
     super.OnCreate(t);
     if (t?.ShowOnUiInteract) {
-      this.XGf(t.ShowOnUiInteract);
+      this.l7f(t.ShowOnUiInteract);
       this.nir.set("MingSuView", 3);
     }
   }
   OnEnter(t) {
     this.PerformComp?.SightTarget(ControllerHolder_1.ControllerHolder.CameraController.WidgetCamera.DisplayComponent.CineCamera, 4);
     if (this.uKo && this.uKo !== "ForgingRootView") {
-      this.HGf?.TryLoadAllMontage();
+      this.r7f?.TryLoadAllMontage();
       if (UiManager_1.UiManager.IsViewShow(this.uKo)) {
         this._Ko = true;
       } else {
@@ -343,9 +343,9 @@ class NpcPerformSystemUiState extends NpcPerformBaseState_1.NpcPerformBaseState 
       }
       this.Ore();
       this.gir(true);
-      this.jGf();
-      this.YGf();
-      this.zGf();
+      this.o7f();
+      this._7f();
+      this.u7f();
     }
   }
   OnUpdate(t) {
@@ -368,82 +368,82 @@ class NpcPerformSystemUiState extends NpcPerformBaseState_1.NpcPerformBaseState 
   CanChangeFrom(t) {
     return t !== 9;
   }
-  XGf(t) {
+  l7f(t) {
     this.Htr = t.Type;
-    this.HGf = new NpcShopPerformParams();
+    this.r7f = new NpcShopPerformParams();
     switch (t?.Type) {
       case IComponent_1.ENpcUiInteractType.Shop:
       case IComponent_1.ENpcUiInteractType.ShopNew:
-        this.HGf.EnterMontageInfo = new MontageInfo(t.EnterMontage);
-        this.HGf.StandByMontageInfo = new MontageInfo(t.StandByMontage);
-        this.HGf.ShopSuccessMontageInfo = new MontageInfo(t.ShopSuccessMontage);
-        this.HGf.EnterFlow = t.EnterFlow;
-        this.HGf.ShopSuccessFlow = t.ShopSuccessFlow;
-        this.HGf.ShopFailedFlow = t.ShopFailedFlow;
-        this.HGf.ShowNpcWhilePlayingSequence = false;
+        this.r7f.EnterMontageInfo = new MontageInfo(t.EnterMontage);
+        this.r7f.StandByMontageInfo = new MontageInfo(t.StandByMontage);
+        this.r7f.ShopSuccessMontageInfo = new MontageInfo(t.ShopSuccessMontage);
+        this.r7f.EnterFlow = t.EnterFlow;
+        this.r7f.ShopSuccessFlow = t.ShopSuccessFlow;
+        this.r7f.ShopFailedFlow = t.ShopFailedFlow;
+        this.r7f.ShowNpcWhilePlayingSequence = false;
         break;
       case IComponent_1.ENpcUiInteractType.AntiqueShop:
-        this.HGf.EnterMontageInfo = new MontageInfo(t.EnterMontage);
-        this.HGf.StandByMontageInfo = new MontageInfo(t.StandByMontage);
-        this.HGf.ShopSuccessMontageInfo = new MontageInfo(t.ShopSuccessMontage);
-        this.HGf.EnterFlow = t.EnterFlow;
-        this.HGf.ShopSuccessFlow = t.ShopSuccessFlow;
-        this.HGf.ShopFailedFlow = t.ShopFailedFlow;
-        this.HGf.UpgradeSequencePath = t.UpgradeSequence;
-        this.HGf.ShowNpcWhilePlayingSequence = false;
+        this.r7f.EnterMontageInfo = new MontageInfo(t.EnterMontage);
+        this.r7f.StandByMontageInfo = new MontageInfo(t.StandByMontage);
+        this.r7f.ShopSuccessMontageInfo = new MontageInfo(t.ShopSuccessMontage);
+        this.r7f.EnterFlow = t.EnterFlow;
+        this.r7f.ShopSuccessFlow = t.ShopSuccessFlow;
+        this.r7f.ShopFailedFlow = t.ShopFailedFlow;
+        this.r7f.UpgradeSequencePath = t.UpgradeSequence;
+        this.r7f.ShowNpcWhilePlayingSequence = false;
         break;
       case IComponent_1.ENpcUiInteractType.ChengXiaoShanShop:
-        this.HGf.EnterMontageInfo = new MontageInfo(t.EnterMontage);
-        this.HGf.StandByMontageInfo = new MontageInfo(t.StandByMontage);
-        this.HGf.ShopSuccessMontageInfo = new MontageInfo(t.ShopSuccessMontage);
-        this.HGf.EnterFlow = t.EnterFlow;
-        this.HGf.ShopSuccessFlow = t.ShopSuccessFlow;
-        this.HGf.ShopFailedFlow = t.ShopFailedFlow;
-        this.HGf.UpgradeSequencePath = t.UpgradeSequence;
-        this.HGf.FinishDeliverySequence = t.FinishDeliverySequence;
-        this.HGf.ShowNpcWhilePlayingSequence = t.ShowNpcWhilePlayingSequence ?? false;
+        this.r7f.EnterMontageInfo = new MontageInfo(t.EnterMontage);
+        this.r7f.StandByMontageInfo = new MontageInfo(t.StandByMontage);
+        this.r7f.ShopSuccessMontageInfo = new MontageInfo(t.ShopSuccessMontage);
+        this.r7f.EnterFlow = t.EnterFlow;
+        this.r7f.ShopSuccessFlow = t.ShopSuccessFlow;
+        this.r7f.ShopFailedFlow = t.ShopFailedFlow;
+        this.r7f.UpgradeSequencePath = t.UpgradeSequence;
+        this.r7f.FinishDeliverySequence = t.FinishDeliverySequence;
+        this.r7f.ShowNpcWhilePlayingSequence = t.ShowNpcWhilePlayingSequence ?? false;
         break;
       case IComponent_1.ENpcUiInteractType.Gramophone:
-        this.HGf.EnterMontageInfo = new MontageInfo(t.EnterMontage);
-        this.HGf.StandByMontageInfo = new MontageInfo(t.StandByMontage);
-        this.HGf.SwitchMusicMontageInfo = new MontageInfo(t.SwitchMusicMontage);
-        this.HGf.ExitMontageInfo = new MontageInfo(t.ExitMontage);
-        this.HGf.EnterFlow = t.EnterFlow;
-        this.HGf.ShopSuccessFlow = t.SuccessFlow;
-        this.HGf.ShopFailedFlow = t.FailedFlow;
+        this.r7f.EnterMontageInfo = new MontageInfo(t.EnterMontage);
+        this.r7f.StandByMontageInfo = new MontageInfo(t.StandByMontage);
+        this.r7f.SwitchMusicMontageInfo = new MontageInfo(t.SwitchMusicMontage);
+        this.r7f.ExitMontageInfo = new MontageInfo(t.ExitMontage);
+        this.r7f.EnterFlow = t.EnterFlow;
+        this.r7f.ShopSuccessFlow = t.SuccessFlow;
+        this.r7f.ShopFailedFlow = t.FailedFlow;
         break;
       case IComponent_1.ENpcUiInteractType.SoundBox3:
       case IComponent_1.ENpcUiInteractType.SunSpirit:
-        this.HGf.EnterMontageInfo = new MontageInfo(t.EnterMontage);
-        this.HGf.StandByMontageInfo = new MontageInfo(t.StandByMontage);
-        this.HGf.ShopSuccessMontageInfo = new MontageInfo(t.ShopSuccessMontage);
-        this.HGf.EnterFlow = t.EnterFlow;
-        this.HGf.ShopSuccessFlow = t.ShopSuccessFlow;
-        this.HGf.ShopFailedFlow = t.ShopFailedFlow;
-        this.HGf.UpgradeFlow = t.UpgradeFlow;
-        this.HGf.UpgradeSequencePath = t.UpgradeSequence;
-        this.HGf.ShowNpcWhilePlayingSequence = false;
+        this.r7f.EnterMontageInfo = new MontageInfo(t.EnterMontage);
+        this.r7f.StandByMontageInfo = new MontageInfo(t.StandByMontage);
+        this.r7f.ShopSuccessMontageInfo = new MontageInfo(t.ShopSuccessMontage);
+        this.r7f.EnterFlow = t.EnterFlow;
+        this.r7f.ShopSuccessFlow = t.ShopSuccessFlow;
+        this.r7f.ShopFailedFlow = t.ShopFailedFlow;
+        this.r7f.UpgradeFlow = t.UpgradeFlow;
+        this.r7f.UpgradeSequencePath = t.UpgradeSequence;
+        this.r7f.ShowNpcWhilePlayingSequence = false;
         if (t.ExitMontage?.Type === "Asset") {
-          this.HGf.ExitMontageInfo = new MontageInfo(t.ExitMontage.Asset);
+          this.r7f.ExitMontageInfo = new MontageInfo(t.ExitMontage.Asset);
         }
     }
   }
-  jGf() {
+  o7f() {
     var t;
-    if (this.HGf?.EnterMontageInfo && this.uKo && this._Ko) {
+    if (this.r7f?.EnterMontageInfo && this.uKo && this._Ko) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("NPC", 36, "[NpcPerformSystemUiState]当打开界面时,播放进入界面的动作 EnterMontage", ["EntityId", this.Owner.Id], ["ViewName", this.uKo]);
       }
       t = (this.Htr === IComponent_1.ENpcUiInteractType.AntiqueShop || this.Htr === IComponent_1.ENpcUiInteractType.ChengXiaoShanShop) && undefined;
       this.PlayMontage({
-        MontagePath: this.HGf.EnterMontageInfo.Path,
+        MontagePath: this.r7f.EnterMontageInfo.Path,
         IsLoop: t,
-        AnimStateParam: this.HGf.EnterMontageInfo.State,
+        AnimStateParam: this.r7f.EnterMontageInfo.State,
         OnPlayCallback: t => {
           if (!this._Ko) {
-            if (this.HGf?.EnterMontageInfo?.Asset?.IsValid()) {
+            if (this.r7f?.EnterMontageInfo?.Asset?.IsValid()) {
               this.StopMontage({
-                Montage: this.HGf.EnterMontageInfo.Asset
+                Montage: this.r7f.EnterMontageInfo.Asset
               });
             }
           }
@@ -451,22 +451,22 @@ class NpcPerformSystemUiState extends NpcPerformBaseState_1.NpcPerformBaseState 
       });
     }
   }
-  YGf() {
-    if (this.HGf?.EnterFlow && this.uKo) {
+  _7f() {
+    if (this.r7f?.EnterFlow && this.uKo) {
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("NPC", 36, "[NpcPerformSystemUiState]当打开界面时,播放进入界面的D级剧情 EnterFlow", ["EntityId", this.Owner.Id], ["ViewName", this.uKo], ["FlowId", this.HGf.EnterFlow.FlowId]);
+        Log_1.Log.Info("NPC", 36, "[NpcPerformSystemUiState]当打开界面时,播放进入界面的D级剧情 EnterFlow", ["EntityId", this.Owner.Id], ["ViewName", this.uKo], ["FlowId", this.r7f.EnterFlow.FlowId]);
       }
-      this._ir(this.HGf.EnterFlow, this.uKo, false);
+      this._ir(this.r7f.EnterFlow, this.uKo, false);
     }
   }
-  zGf() {
+  u7f() {
     this.rHs = CommonParamById_1.configCommonParamById.GetIntConfig("BuySuccessNpcDialogueTimeInterval") ?? 0;
     this.Qtr = Time_1.Time.WorldTimeSeconds;
     this.Ktr = UiManager_1.UiManager.IsViewOpen("PupuVillageItemView") || UiManager_1.UiManager.IsViewOpen("PhonographView") ? 1 : STAND_BY_MONTAGE_CD;
     this.$tr = Time_1.Time.WorldTimeSeconds;
     this.Xtr = 0;
   }
-  JGf() {
+  c7f() {
     this.pd_ = 0;
     this.Qtr = 0;
     this.Ktr = 0;
@@ -474,17 +474,17 @@ class NpcPerformSystemUiState extends NpcPerformBaseState_1.NpcPerformBaseState 
     this.$tr = 0;
   }
   sir() {
-    if ((this.Htr === IComponent_1.ENpcUiInteractType.AntiqueShop || this.Htr === IComponent_1.ENpcUiInteractType.ChengXiaoShanShop) && !!this.HGf?.EnterMontageInfo?.Asset?.IsValid()) {
+    if ((this.Htr === IComponent_1.ENpcUiInteractType.AntiqueShop || this.Htr === IComponent_1.ENpcUiInteractType.ChengXiaoShanShop) && !!this.r7f?.EnterMontageInfo?.Asset?.IsValid()) {
       this.PlayMontage({
-        MontageAsset: this.HGf.EnterMontageInfo.Asset,
+        MontageAsset: this.r7f.EnterMontageInfo.Asset,
         InSectionToStartMontageAt: CharacterNameDefines_1.CharacterNameDefines.END_SECTION,
-        AnimStateParam: this.HGf.EnterMontageInfo.State
+        AnimStateParam: this.r7f.EnterMontageInfo.State
       });
     }
     this.SetNpcAndChildEnable();
     this._Ko = false;
     this.uKo = undefined;
-    this.JGf();
+    this.c7f();
     this.kre();
   }
   Ore() {
@@ -556,9 +556,9 @@ class NpcPerformSystemUiState extends NpcPerformBaseState_1.NpcPerformBaseState 
     }
   }
   fir() {
-    if (this.HGf?.StandByMontageInfo?.Asset?.IsValid() && this.Qtr && Time_1.Time.WorldTimeSeconds > this.Qtr + this.Ktr) {
+    if (this.r7f?.StandByMontageInfo?.Asset?.IsValid() && this.Qtr && Time_1.Time.WorldTimeSeconds > this.Qtr + this.Ktr) {
       let e = false;
-      var i = this.HGf.StandByMontageInfo.Asset;
+      var i = this.r7f.StandByMontageInfo.Asset;
       for (let t = 0; t < i.CompositeSections.Num(); t++) {
         var s = i.CompositeSections.Get(t);
         if (s && s.SectionName.op_Equality(CharacterNameDefines_1.CharacterNameDefines.LOOP_SECTION)) {
@@ -570,13 +570,13 @@ class NpcPerformSystemUiState extends NpcPerformBaseState_1.NpcPerformBaseState 
         this.PlayMontage({
           MontageAsset: i,
           InSectionToStartMontageAt: CharacterNameDefines_1.CharacterNameDefines.LOOP_SECTION,
-          AnimStateParam: this.HGf.StandByMontageInfo.State
+          AnimStateParam: this.r7f.StandByMontageInfo.State
         });
         this.Qtr = Time_1.Time.WorldTimeSeconds;
       } else {
         this.PlayMontage({
           MontageAsset: i,
-          AnimStateParam: this.HGf.StandByMontageInfo.State
+          AnimStateParam: this.r7f.StandByMontageInfo.State
         });
         this.Qtr = Time_1.Time.WorldTimeSeconds;
         this.Ktr = i.SequenceLength + STAND_BY_MONTAGE_CD;
@@ -584,13 +584,13 @@ class NpcPerformSystemUiState extends NpcPerformBaseState_1.NpcPerformBaseState 
     }
   }
   uir() {
-    var t = this.HGf?.EnterMontageInfo?.Asset;
+    var t = this.r7f?.EnterMontageInfo?.Asset;
     if (!t?.IsValid() || !this.Owner?.Valid || !this.AnimComp?.MainAnimInstance?.Montage_IsPlaying(t)) {
-      if ((t = this.HGf?.ShopSuccessMontageInfo?.Asset)?.IsValid() && this._Ko && Time_1.Time.WorldTimeSeconds > this.$tr + this.Xtr) {
+      if ((t = this.r7f?.ShopSuccessMontageInfo?.Asset)?.IsValid() && this._Ko && Time_1.Time.WorldTimeSeconds > this.$tr + this.Xtr) {
         this.PlayMontage({
           MontageAsset: t,
           IsLoop: false,
-          AnimStateParam: this.HGf?.ShopSuccessMontageInfo?.State
+          AnimStateParam: this.r7f?.ShopSuccessMontageInfo?.State
         });
         this.$tr = Time_1.Time.WorldTimeSeconds;
         this.Xtr = t.SequenceLength;

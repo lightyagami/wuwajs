@@ -394,7 +394,7 @@ class SkillButtonUiGamepadData extends SkillButtonUiGamepadDataBase_1.SkillButto
   rIo() {
     var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
     if (t?.Valid) {
-      var i = t.Entity.CheckGetComponent(215);
+      var i = t.Entity.CheckGetComponent(217);
       this.Climbing = i.HasTag(504239013);
       this.CurStateTagId = 0;
       this.StateButtonTypeList = undefined;
@@ -434,6 +434,7 @@ class SkillButtonUiGamepadData extends SkillButtonUiGamepadDataBase_1.SkillButto
       this.vEa();
       this.ChangeSkillOnAimStateChange();
       this.RefreshButtonData();
+      this.RefreshInteractBehaviorData();
     }
   }
   mHs() {
@@ -445,6 +446,7 @@ class SkillButtonUiGamepadData extends SkillButtonUiGamepadDataBase_1.SkillButto
     }
   }
   RefreshAimState() {
+    this.vEa();
     return !!this.ChangeSkillOnAimStateChange() && (this.RefreshButtonData(), true);
   }
   vEa() {

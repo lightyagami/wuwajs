@@ -8,6 +8,7 @@ const UE = require("ue");
 const MathUtils_1 = require("../../../../Core/Utils/MathUtils");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const LguiUtil_1 = require("../../Util/LguiUtil");
+const MenuDefine_1 = require("../MenuDefine");
 const MenuTool_1 = require("../MenuTool");
 const MenuScrollSettingBaseItem_1 = require("./MenuScrollSettingBaseItem");
 class MenuScrollSettingSliderItem extends MenuScrollSettingBaseItem_1.MenuScrollSettingBaseItem {
@@ -36,7 +37,7 @@ class MenuScrollSettingSliderItem extends MenuScrollSettingBaseItem_1.MenuScroll
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UISliderComponent], [2, UE.UIText], [3, UE.UIItem], [4, UE.UIText], [5, UE.UISprite]];
+    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UISliderComponent], [2, UE.UIText], [3, UE.UIItem], [4, UE.UIText], [5, UE.UISprite], [6, UE.UIExtendToggleSpriteTransition]];
   }
   OnStart() {
     this.GetSlider(1).SetCanClickWhenDisable(true);
@@ -55,6 +56,7 @@ class MenuScrollSettingSliderItem extends MenuScrollSettingBaseItem_1.MenuScroll
     }
     this.sxi();
     this.cHa();
+    this.RefreshDetailSprite();
   }
   mGe() {
     this.GetText(0).ShowTextNew(this.Data.FunctionName ?? "");
@@ -90,6 +92,13 @@ class MenuScrollSettingSliderItem extends MenuScrollSettingBaseItem_1.MenuScroll
   }
   OnSetDetailVisible(t) {
     this.GetItem(3)?.SetUIActive(t);
+    if (this.Data && this.Data.CanClickWhenDisable && !this.Data.GetEnable()) {
+      t = t ? UE.Color.FromHex(MenuDefine_1.DETAIL_SPRITE_VISIBLE_COLOR_SRGB) : UE.Color.FromHex("FFFFFFFF");
+      this.GetSprite(5).SetColor(t);
+      this.GetUiExtendToggleSpriteTransition(6).TransitionState.UnDetermineUnHoverState.Color = t;
+      this.GetUiExtendToggleSpriteTransition(6).TransitionState.UnDetermineHoverState.Color = t;
+      this.GetUiExtendToggleSpriteTransition(6).TransitionState.UnDeterminePressedState.Color = t;
+    }
   }
   sxi() {
     var t;
@@ -103,6 +112,13 @@ class MenuScrollSettingSliderItem extends MenuScrollSettingBaseItem_1.MenuScroll
   cHa() {
     if (this.Data) {
       this.GetSprite(5)?.SetUIActive(this.Data.HasDetailText());
+    }
+  }
+  async RefreshDetailSprite() {
+    var t;
+    if (this.Data) {
+      t = this.Data.CanClickWhenDisable ? MenuDefine_1.DETAIL_SPRITE_PATH : MenuDefine_1.LOCK_SPRITE_PATH;
+      await Promise.all([this.SetExtendToggleSpriteTransitionByPath(t, this.GetUiExtendToggleSpriteTransition(6), 6), this.SetExtendToggleSpriteTransitionByPath(t, this.GetUiExtendToggleSpriteTransition(6), 7), this.SetExtendToggleSpriteTransitionByPath(t, this.GetUiExtendToggleSpriteTransition(6), 8)]);
     }
   }
 }

@@ -75,11 +75,11 @@ class HonamiStoryEquipGridItem extends HonamiStoryGridItemBase_1.HonamiStoryGrid
           this.ItemGridItem.Refresh(t, i !== -1);
           this.SetSpriteByPath(e.GridBg, this.SpriteBg, false);
           this.PlayNewlyPickedUpSweepAnimation(t);
-          this.Fwm(r);
+          this.uLm(r);
         } else {
           this.InitItemGridItem(t, -1).then(() => {
             this.PlayNewlyPickedUpSweepAnimation(t);
-            this.Fwm(r);
+            this.uLm(r);
           });
         }
       } else if (Log_1.Log.CheckError()) {
@@ -87,7 +87,7 @@ class HonamiStoryEquipGridItem extends HonamiStoryGridItemBase_1.HonamiStoryGrid
       }
     }
   }
-  Fwm(t) {
+  uLm(t) {
     if (t) {
       this.PlaySequenceByName("Activate");
     } else {

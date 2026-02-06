@@ -185,7 +185,7 @@ GeneralLogicTreeController.mYt = e => {
       o = s.IId.ups;
       break;
     case Protocol_1.Aki.Protocol.TOs.Proto_RollBlockGamePlayActionCtx:
-      o = s.xvf.ups;
+      o = s.WMf.ups;
   }
   if (o) {
     t = MathUtils_1.MathUtils.LongToBigInt(o.w5n);

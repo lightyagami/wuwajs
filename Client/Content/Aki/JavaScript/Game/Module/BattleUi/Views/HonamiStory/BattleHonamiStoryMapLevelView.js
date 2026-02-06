@@ -28,7 +28,7 @@ class BattleHonamiStoryMapLevelView extends BattleVisibleChildView_1.BattleVisib
     this.Oml = undefined;
     this.qbi = 0;
     this.f_a = undefined;
-    this.wHm = () => {
+    this.sWm = () => {
       this.rnm(true);
     };
     this.inm = () => {
@@ -44,7 +44,7 @@ class BattleHonamiStoryMapLevelView extends BattleVisibleChildView_1.BattleVisib
     this.kqe = e => {
       this.f_a?.SetActive(e);
     };
-    this.rqm = () => {
+    this.vOm = () => {
       var e = this.GetExtendToggle(9);
       if (e) {
         if (e.GetToggleState() === 1) {
@@ -61,7 +61,7 @@ class BattleHonamiStoryMapLevelView extends BattleVisibleChildView_1.BattleVisib
   }
   async OnBeforeStartAsync() {
     this.f_a = new BattleHonamiStoryMapLevelHoverItem_1.BattleHonamiStoryMapLevelHoverItem();
-    this.f_a.RegisterOnAutoClose(this.rqm);
+    this.f_a.RegisterOnAutoClose(this.vOm);
     await this.f_a.CreateByResourceIdAsync("UiItem_HoverTipsC", this.GetItem(8));
   }
   Initialize(e) {
@@ -70,7 +70,7 @@ class BattleHonamiStoryMapLevelView extends BattleVisibleChildView_1.BattleVisib
     this.Oml = new BattleUiTweenAnimPlayer_1.BattleUiTweenAnimPlayer();
     this.Oml.InitTweenAnim(6, this.GetItem(6));
     this.Oml.InitTweenAnim(7, this.GetItem(7));
-    this.wHm();
+    this.sWm();
     this.Ore();
     if (!ModelManager_1.ModelManager.FunctionModel.IsOpen(10114)) {
       this.SetVisible(1, false);
@@ -87,11 +87,11 @@ class BattleHonamiStoryMapLevelView extends BattleVisibleChildView_1.BattleVisib
     super.Reset();
   }
   Ore() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnHonamiStoryInstInfoUpdate, this.wHm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnHonamiStoryInstInfoUpdate, this.sWm);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnHonamiStoryPollutionUpdate, this.inm);
   }
   kre() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnHonamiStoryInstInfoUpdate, this.wHm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnHonamiStoryInstInfoUpdate, this.sWm);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnHonamiStoryPollutionUpdate, this.inm);
     this.avm();
   }

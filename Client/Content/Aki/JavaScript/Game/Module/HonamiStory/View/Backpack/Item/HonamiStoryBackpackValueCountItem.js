@@ -22,18 +22,18 @@ class HonamiStoryBackpackValueCountItem extends UiPanelBase_1.UiPanelBase {
       var t = this.GetExtendToggle(3).GetToggleState() === 1;
       ModelManager_1.ModelManager.HonamiStoryModel.GetBackpackLogic()?.DoSellToAll(t, 2);
     };
-    this.X_f = () => {
+    this.Qcf = () => {
       var t = this.GetExtendToggle(5).GetToggleState() === 1;
       ModelManager_1.ModelManager.HonamiStoryModel.GetBackpackLogic()?.DoSellToAll(t, 1, 1);
     };
-    this.Y_f = () => {
+    this.Kcf = () => {
       var t = this.GetExtendToggle(6).GetToggleState() === 1;
       ModelManager_1.ModelManager.HonamiStoryModel.GetBackpackLogic()?.DoSellToAll(t, 1, 2);
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UITexture], [2, UE.UIText], [3, UE.UIExtendToggle], [4, UE.UIText], [5, UE.UIExtendToggle], [6, UE.UIExtendToggle], [7, UE.UIItem]];
-    this.BtnBindInfo = [[0, this.jhm], [3, this.EXu], [5, this.X_f], [6, this.Y_f]];
+    this.BtnBindInfo = [[0, this.jhm], [3, this.EXu], [5, this.Qcf], [6, this.Kcf]];
   }
   OnStart() {
     this.Vhm = HonamiStoryUtil_1.HonamiStoryUtil.CheckInHonamiStoryDungeon();

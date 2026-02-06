@@ -15,16 +15,16 @@ class AttributeSelectPanel extends UiPanelBase_1.UiPanelBase {
     this.eGe = undefined;
     this.CallBackClick = undefined;
     this.G1o = () => {
-      var e = new AttributeSelectGrid_1.AttributeSelectGrid();
-      e.OnClickToggleCallBack = this.y1c;
-      return e;
+      var t = new AttributeSelectGrid_1.AttributeSelectGrid();
+      t.OnClickToggleCallBack = this.y1c;
+      return t;
     };
-    this.y1c = (e, t) => {
+    this.y1c = (t, e) => {
       if (this.CallBackClick) {
-        this.CallBackClick(e);
+        this.CallBackClick(t);
       }
       this.eGe.DeselectCurrentGridProxy();
-      this.eGe.SelectGridProxy(t);
+      this.eGe.SelectGridProxy(e);
     };
   }
   OnRegisterComponent() {
@@ -34,8 +34,14 @@ class AttributeSelectPanel extends UiPanelBase_1.UiPanelBase {
     LguiUtil_1.LguiUtil.TrySetLocalTextNew(this.GetText(2), "VisionRefineAttributeSelect");
     this.eGe = new GenericLayout_1.GenericLayout(this.GetGridLayout(0), this.G1o, this.GetItem(1).GetOwner());
   }
-  RefreshByData(e) {
-    this.eGe.RefreshByData(e);
+  RefreshByData(t, e = undefined) {
+    this.eRg(t, e);
+  }
+  async eRg(t, e = undefined) {
+    await this.eGe.RefreshByDataAsync(t);
+    if (e !== undefined) {
+      this.eGe.SelectGridProxy(e);
+    }
   }
 }
 exports.AttributeSelectPanel = AttributeSelectPanel;

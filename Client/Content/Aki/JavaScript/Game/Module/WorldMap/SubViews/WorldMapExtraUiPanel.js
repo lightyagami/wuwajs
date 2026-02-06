@@ -27,16 +27,16 @@ class WorldMapExtraUiPanel extends UiPanelBase_1.UiPanelBase {
   CloseMe() {
     this.ExtraUiPanelComponent.CloseUi(this);
   }
-  GetDefaultMapScale(e) {
+  GetDefaultMapScale() {
     return 0;
   }
-  GetMaxMapScale(e) {
+  GetMaxMapScale() {
     return 0;
   }
-  GetMinMapScale(e) {
+  GetMinMapScale() {
     return 0;
   }
-  GetTileNum(e) {}
+  GetTileNum() {}
   GetIsShowPlayerMark() {
     return false;
   }

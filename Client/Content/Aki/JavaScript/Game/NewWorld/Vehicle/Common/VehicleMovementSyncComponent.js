@@ -78,7 +78,7 @@ let VehicleMovementSyncComponent = VehicleMovementSyncComponent_1 = class Vehicl
         };
         CombatLog_1.CombatLog.Info("Move", this.Entity, "SendSplineMove", ["Ratio", o.State.PathRatio]);
         this.Li_ = Time_1.Time.NowSeconds;
-        Net_1.Net.Call(21895, t, () => {});
+        Net_1.Net.Call(25211, t, () => {});
       }
     } else {
       super.CustomAfterTickInternal(e);

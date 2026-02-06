@@ -15,9 +15,11 @@ const TsEffectActor_1 = require("../../../Effect/TsEffectActor");
 const GlobalData_1 = require("../../../GlobalData");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiEffectAnsContext_1 = require("../../../Module/UiModel/UiModelComponent/Common/UiModelAns/UiAnimNotifyStateContext/UiEffectAnsContext");
+const UiModelUtil_1 = require("../../../Module/UiModel/UiModelUtil");
 const TsBaseVehicle_1 = require("../../../NewWorld/Vehicle/TsBaseVehicle");
 const ActorUtils_1 = require("../../../Utils/ActorUtils");
 const EffectUtil_1 = require("../../../Utils/EffectUtil");
+const TsAnimNotifyUtils_1 = require("../../../Utils/TsAnimNotifyUtils");
 const RenderConfig_1 = require("../../Config/RenderConfig");
 class AnimNotifyStateEffectParams {
   constructor(t, e, i, s) {
@@ -32,6 +34,7 @@ class AnimNotifyStateEffect extends UE.KuroEffectMakerANS {
     super(...arguments);
     this.NeedAnyTag = false;
     this.PlayNeedTags = undefined;
+    this.TagCheckWithOwner = false;
     this.EffectDataAssetRef = undefined;
     this.EffectSlotName = undefined;
     this.AutoDetachTime = -0;
@@ -47,6 +50,7 @@ class AnimNotifyStateEffect extends UE.KuroEffectMakerANS {
     this.AlwaysLoop = false;
     this.PlayOnEnd = false;
     this.SyncEventTimeToEffectTime = false;
+    this.SyncEventTimeContinuous = false;
     this.WithOutTag = undefined;
     this.IgnoreWhenInvisible = false;
     this.IgnoreWhenEntityNotInit = false;
@@ -55,11 +59,13 @@ class AnimNotifyStateEffect extends UE.KuroEffectMakerANS {
     this.IsInited = false;
     this.LastMeshComp = undefined;
     this.NotRealAttach = false;
+    this.IsUiModelTagChecked = false;
   }
   Constructor() {
     this.ParamsMap = new Map();
     this.IsInited = false;
     this.LastMeshComp = undefined;
+    this.IsUiModelTagChecked = false;
   }
   K2_ValidateAssets() {
     return true;
@@ -88,36 +94,47 @@ class AnimNotifyStateEffect extends UE.KuroEffectMakerANS {
     if (Info_1.Info.IsPlayInEditor) {
       this.LastMeshComp = e;
     }
-    s = e.GetOwner();
-    if (s?.IsA(UE.TsUiSceneRoleActor_C.StaticClass()) || s?.IsA(UE.TsSkeletalObserver_C.StaticClass())) {
+    const f = e.GetOwner();
+    var s = f?.IsA(UE.TsUiSceneRoleActor_C.StaticClass());
+    var r = f?.IsA(UE.TsSkeletalObserver_C.StaticClass());
+    if (s || r) {
+      this.IsUiModelTagChecked = false;
       if (e.IsComponentTickEnabled()) {
-        var f = new SkeletalMeshEffectContext_1.SkeletalMeshEffectContext(undefined);
-        f.SkeletalMeshComp = e;
-        f.SourceObject = s;
-        f.CreateFromType = 1;
-        f.AnsSlotName = this.EffectSlotName;
-        var r = UE.KismetMathLibrary.Conv_VectorToVectorDouble(this.Location);
-        var r = new UiEffectAnsContext_1.UiEffectAnsContext(this.EffectDataAssetRef.ToAssetPathName(), e, this.SocketName, this.Attached, this.AttachLocationOnly, r, this.Rotation, new UE.VectorDouble(this.Scale), this.PlayOnEnd, this.FasterStop, f, (t, e) => {
-          if (EffectSystem_1.EffectSystem.IsValid(e) && this.ParamsMap.has(t)) {
-            if (this.SyncEventTimeToEffectTime) {
-              EffectSystem_1.EffectSystem.FreezeHandle(e, true, true);
+        const f = e.GetOwner();
+        if (this.UiModelTagsCheck(f)) {
+          s = new SkeletalMeshEffectContext_1.SkeletalMeshEffectContext(undefined);
+          s.SkeletalMeshComp = e;
+          s.SourceObject = f;
+          s.CreateFromType = 1;
+          s.AnsSlotName = this.EffectSlotName;
+          r = UE.KismetMathLibrary.Conv_VectorToVectorDouble(this.Location);
+          r = new UiEffectAnsContext_1.UiEffectAnsContext(this.EffectDataAssetRef.ToAssetPathName(), e, this.SocketName, this.Attached, this.AttachLocationOnly, r, this.Rotation, new UE.VectorDouble(this.Scale), this.PlayOnEnd, this.FasterStop, s, (t, e) => {
+            if (EffectSystem_1.EffectSystem.IsValid(e) && this.ParamsMap.has(t)) {
+              if (this.SyncEventTimeToEffectTime) {
+                EffectSystem_1.EffectSystem.FreezeHandle(e, true, true);
+              }
+              this.ParamsMap.get(t).EffectHandle = e;
             }
-            this.ParamsMap.get(t).EffectHandle = e;
+          });
+          let t = undefined;
+          (t = f.Model.CheckGetComponent(6)).AddAns("UiEffectAnsContext", r);
+          this.ParamsMap.set(e, new AnimNotifyStateEffectParams(undefined, r, false, false));
+        } else {
+          this.IsUiModelTagChecked = true;
+          if (Log_1.Log.CheckDebug()) {
+            Log_1.Log.Debug("RenderEffect", 97, "AnimNotifyStateEffect：UI模型特效Tag检查失败", ["meshComp", e?.GetName()], ["outer", e.GetOwner()?.GetName()], ["animation", i?.GetName()]);
           }
-        });
-        let t = undefined;
-        (s.IsA(UE.TsUiSceneRoleActor_C.StaticClass()), t = s.Model.CheckGetComponent(6)).AddAns("UiEffectAnsContext", r);
-        this.ParamsMap.set(e, new AnimNotifyStateEffectParams(undefined, r, false, false));
+        }
       }
     } else if (!this.PlayOnEnd) {
       if (this.ParamsMap.has(e)) {
         return false;
       }
-      if (this.DisableOnVehicle && s instanceof TsBaseCharacter_1.default) {
-        f = s.GetEntityNoBlueprint()?.GetComponent(242);
-        if (f?.IsOnVehicle && f.VehicleType === "Motorcycle") {
+      if (this.DisableOnVehicle && f instanceof TsBaseCharacter_1.default) {
+        s = f.GetEntityNoBlueprint()?.GetComponent(242);
+        if (s?.IsOnVehicle && s.VehicleType === "Motorcycle") {
           if (Log_1.Log.CheckInfo()) {
-            Log_1.Log.Info("RenderEffect", 50, "AnimNotifyEffect: 特效不在骑乘摩托情况下播放", ["meshComp", e?.GetName()], ["outer", s?.GetName()], ["animation", i?.GetName()]);
+            Log_1.Log.Info("RenderEffect", 50, "AnimNotifyEffect: 特效不在骑乘摩托情况下播放", ["meshComp", e?.GetName()], ["outer", f?.GetName()], ["animation", i?.GetName()]);
           }
           return false;
         }
@@ -126,7 +143,7 @@ class AnimNotifyStateEffect extends UE.KuroEffectMakerANS {
       if (!r) {
         return false;
       }
-      let t = false;
+      let t = this.SyncEventTimeContinuous;
       if (this.SyncEventTimeToEffectTime && (EffectSystem_1.EffectSystem.FreezeHandle(r, true, true), e.bEnableUpdateRateOptimizations) && e.VisibilityBasedAnimTickOption > 1) {
         t = true;
       }
@@ -167,7 +184,7 @@ class AnimNotifyStateEffect extends UE.KuroEffectMakerANS {
     }
     if (GlobalData_1.GlobalData.IsUiSceneOpen || s.Tags.Contains(RenderConfig_1.RenderConfig.UIName)) {
       r = 1;
-    } else if (s instanceof TsBaseCharacter_1.default && s.CharacterActorComponent?.Entity?.GetComponent(40) || s instanceof TsEffectActor_1.default && s.GetEffectType() === 0 || s?.IsA(UE.EffectSystemActor.StaticClass()) && s.GetEffectType() === 0) {
+    } else if (s instanceof TsBaseCharacter_1.default && s.CharacterActorComponent?.Entity?.GetComponent(42) || s instanceof TsEffectActor_1.default && s.GetEffectType() === 0 || s?.IsA(UE.EffectSystemActor.StaticClass()) && s.GetEffectType() === 0) {
       r = 0;
     }
     EffectSystem_1.EffectSystem.InitializeWithPreview(false);
@@ -176,6 +193,8 @@ class AnimNotifyStateEffect extends UE.KuroEffectMakerANS {
     if (Info_1.Info.IsGameRunning()) {
       if (s instanceof TsBaseCharacter_1.default) {
         h = s.CharacterActorComponent?.GetReplaceEffect(e);
+      } else if (s instanceof TsBaseVehicle_1.default) {
+        h = s.VehicleActorComponent?.GetReplaceEffect(e);
       }
     } else {
       h = EffectUtil_1.EffectUtil.GetPreviewReplaceEffectPath(e);
@@ -196,7 +215,7 @@ class AnimNotifyStateEffect extends UE.KuroEffectMakerANS {
   }
   AttachEffectToSkill(e, i) {
     if (e instanceof TsBaseCharacter_1.default) {
-      e = e.CharacterActorComponent?.Entity?.GetComponent(40);
+      e = e.CharacterActorComponent?.Entity?.GetComponent(42);
       if (e) {
         let t = 0;
         if (!!this.DetachWhenSkillEnd || this.WhenSkillEnd !== 0) {
@@ -225,8 +244,8 @@ class AnimNotifyStateEffect extends UE.KuroEffectMakerANS {
   AttachEffectToSelfCentered(t, e) {
     var i;
     if (t instanceof TsBaseCharacter_1.default) {
-      if (!(i = t.CharacterActorComponent?.Entity?.GetComponent(40)) || !i.CurrentSkill) {
-        if ((i = t.CharacterActorComponent?.Entity?.GetComponent(312))?.Valid) {
+      if (!(i = t.CharacterActorComponent?.Entity?.GetComponent(42)) || !i.CurrentSkill) {
+        if ((i = t.CharacterActorComponent?.Entity?.GetComponent(314))?.Valid) {
           i.AddEffect(e);
         }
       }
@@ -234,7 +253,7 @@ class AnimNotifyStateEffect extends UE.KuroEffectMakerANS {
   }
   AttachEffectToWeapon(t, e, i) {
     if (this.IsWeaponEffect && e instanceof TsBaseCharacter_1.default) {
-      e = e.CharacterActorComponent?.Entity?.GetComponent(84);
+      e = e.CharacterActorComponent?.Entity?.GetComponent(86);
       if (e?.Valid) {
         for (const s of e.GetWeaponMesh().CharacterWeapons) {
           if (s.Mesh === t) {
@@ -288,8 +307,10 @@ class AnimNotifyStateEffect extends UE.KuroEffectMakerANS {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("RenderEffect", 25, "AnimNotifyStateEffect未成对，model为空");
         }
-      } else if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("RenderEffect", 43, "AnimNotifyStateEffect未成对，UiEffectAnsContext为空");
+      } else if (!this.IsUiModelTagChecked) {
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("RenderEffect", 43, "AnimNotifyStateEffect未成对，UiEffectAnsContext为空");
+        }
       }
       return false;
     }
@@ -306,7 +327,7 @@ class AnimNotifyStateEffect extends UE.KuroEffectMakerANS {
       if (!(i instanceof TsBaseCharacter_1.default)) {
         return this.SpawnEffectInternal(t, e, true) !== 0;
       }
-      if (!i.CharacterActorComponent?.Entity?.GetComponent(215)?.HasAnyTag(GameplayTagUtils_1.GameplayTagUtils.ConvertFromUeContainer(this.WithOutTag))) {
+      if (!i.CharacterActorComponent?.Entity?.GetComponent(217)?.HasAnyTag(GameplayTagUtils_1.GameplayTagUtils.ConvertFromUeContainer(this.WithOutTag))) {
         return this.SpawnEffectInternal(t, e, true) !== 0;
       }
     }
@@ -317,28 +338,8 @@ class AnimNotifyStateEffect extends UE.KuroEffectMakerANS {
     return !!s && (this.ParamsMap.delete(t), s.EffectHandle && (s.HasSeekTo && EffectSystem_1.EffectSystem.FreezeHandle(s.EffectHandle, false, true), EffectSystem_1.EffectSystem.StopEffectById(s.EffectHandle, i, this.FasterStop)), true);
   }
   GameplayTagsCheck(t) {
-    var e = t.GetEntityNoBlueprint()?.GetComponent(215);
-    if (e) {
-      var i = this.PlayNeedTags.Num();
-      if (this.NeedAnyTag) {
-        for (let t = 0; t < i; t++) {
-          var s = this.PlayNeedTags.GetKey(t);
-          var f = this.PlayNeedTags.Get(s);
-          if (e.HasTag(s.TagId) === f) {
-            return true;
-          }
-        }
-        return false;
-      }
-      for (let t = 0; t < i; t++) {
-        var r = this.PlayNeedTags.GetKey(t);
-        var h = this.PlayNeedTags.Get(r);
-        if (e.HasTag(r.TagId) !== h) {
-          return false;
-        }
-      }
-    }
-    return true;
+    const e = t.GetEntityNoBlueprint()?.GetComponent(217);
+    return !e || TsAnimNotifyUtils_1.TsAnimNotifyUtils.CheckTags(this.NeedAnyTag, this.PlayNeedTags, t => e.HasTag(t));
   }
   K2_PostChangeProperty(t) {
     if (t.op_Equality(RenderConfig_1.RenderConfig.UseSocketTransform2)) {
@@ -412,6 +413,10 @@ class AnimNotifyStateEffect extends UE.KuroEffectMakerANS {
       e = UE.KismetMathLibrary.Conv_VectorToVectorDouble(this.Scale);
       t.D_SetActorScale3D(e);
     }
+  }
+  UiModelTagsCheck(t) {
+    t = UiModelUtil_1.UiModelUtil.GetSelfAndOwnerComponents(t, 7, this.TagCheckWithOwner);
+    return t.length === 0 || t.some(t => TsAnimNotifyUtils_1.TsAnimNotifyUtils.CheckTags(this.NeedAnyTag, this.PlayNeedTags, t.ContainsTagById.bind(t)));
   }
 }
 AnimNotifyStateEffect.NameNone = new UE.FName("None");

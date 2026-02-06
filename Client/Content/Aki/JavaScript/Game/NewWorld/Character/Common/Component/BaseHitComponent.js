@@ -240,6 +240,7 @@ let BaseHitComponent = class BaseHitComponent extends EntityComponent_1.EntityCo
     var e = t.GetBulletInfo();
     m.r5n = e.BulletInitParams.SkillId;
     m.IWn = e.BulletInitParams.Source;
+    m.t8f = e.BulletInitParams.BattleContext?.VisionId ?? 0;
     if (h !== undefined) {
       m.mVn = h;
     }
@@ -249,7 +250,7 @@ let BaseHitComponent = class BaseHitComponent extends EntityComponent_1.EntityCo
       o.ptc = MathUtils_1.MathUtils.BigIntToLong(e.BulletInitParams.SkillContextId);
     }
     this.lra(o);
-    CombatMessage_1.CombatNet.Call(17149, this.Entity, o, t => {
+    CombatMessage_1.CombatNet.Call(29178, this.Entity, o, t => {
       _?.(t);
     }, t?.GetBulletInfo().ContextId);
   }
@@ -271,10 +272,10 @@ let BaseHitComponent = class BaseHitComponent extends EntityComponent_1.EntityCo
   }
   static HitEndRequest(t) {
     var e = Protocol_1.Aki.Protocol.oe_.create();
-    CombatMessage_1.CombatNet.Send(23508, t, e);
+    CombatMessage_1.CombatNet.Send(20202, t, e);
   }
   static PreHitNotify(t, e) {
-    if (e.TWn?.SWn && !e.TWn.gWn && (t = t.GetComponent(58)) && !t.PreSwitchRemoteFightState(e.TWn.mVn)) {
+    if (e.TWn?.SWn && !e.TWn.gWn && (t = t.GetComponent(60)) && !t.PreSwitchRemoteFightState(e.TWn.mVn)) {
       e.TWn.gWn = true;
       e.TWn.mVn = 0;
     }
@@ -301,7 +302,7 @@ let BaseHitComponent = class BaseHitComponent extends EntityComponent_1.EntityCo
           o.HitPart = FNameUtil_1.FNameUtil.GetDynamicFName(e.TWn.EWn);
         }
         s = WorldGlobal_1.WorldGlobal.ToUeRotator(e.TWn.MWn);
-        (t = t?.GetComponent(63))?.ReceiveOnHit(o, a, e.TWn.SWn ?? false, e.TWn.yWn ?? false, e.TWn.gWn ?? false, e.TWn.fWn ?? false, e.TWn.pWn ?? false, e.TWn.vWn ?? false, s, e.TWn.mVn, e.TWn.CWn);
+        (t = t?.GetComponent(65))?.ReceiveOnHit(o, a, e.TWn.SWn ?? false, e.TWn.yWn ?? false, e.TWn.gWn ?? false, e.TWn.fWn ?? false, e.TWn.pWn ?? false, e.TWn.vWn ?? false, s, e.TWn.mVn, e.TWn.CWn);
         t?.BroadcastRemoteEvent(a, e.TWn);
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("World", 14, `[ControllerHolder.CreatureController.HitNotify] 子弹数据不存在;${i}。`);
@@ -316,7 +317,7 @@ let BaseHitComponent = class BaseHitComponent extends EntityComponent_1.EntityCo
     var i = EntitySystem_1.EntitySystem.Get(t.BulletEntityId).GetBulletInfo();
     var o = Number(i.BulletInitParams.SkillId);
     var s = i.BulletInitParams.SkillContextId;
-    var r = e?.GetComponent(40);
+    var r = e?.GetComponent(42);
     var s = {
       Attacker: e,
       Target: this.Entity,
@@ -329,7 +330,7 @@ let BaseHitComponent = class BaseHitComponent extends EntityComponent_1.EntityCo
       SkillHitCount: ModelManager_1.ModelManager.CombatMessageModel?.AddSkillHitCount(s),
       BulletHitCount: i.HitNumberAll,
       SkillGenre: r?.GetSkillInfo(o)?.SkillGenre ?? -1,
-      BattleFlags: r?.GetSkill(o)?.BattleFlags ?? []
+      BattleFlags: r?.GetSkill(o)?.BattleContext?.BattleFlags ?? []
     };
     if (e) {
       SceneTeamController_1.SceneTeamController.EmitEvent(e, EventDefine_1.EEventName.CharHitLocal, t, s);
@@ -341,7 +342,7 @@ let BaseHitComponent = class BaseHitComponent extends EntityComponent_1.EntityCo
     var o;
     if (t && e && t) {
       i = MathUtils_1.MathUtils.LongToNumber(e.r5n);
-      o = t.GetComponent(40);
+      o = t.GetComponent(42);
       e = {
         Attacker: t,
         Target: this.Entity,
@@ -354,7 +355,7 @@ let BaseHitComponent = class BaseHitComponent extends EntityComponent_1.EntityCo
         SkillHitCount: undefined,
         BulletHitCount: undefined,
         SkillGenre: o?.GetSkillInfo(i)?.SkillGenre ?? -1,
-        BattleFlags: o?.GetSkill(i)?.BattleFlags ?? []
+        BattleFlags: o?.GetSkill(i)?.BattleContext?.BattleFlags ?? []
       };
       SceneTeamController_1.SceneTeamController.EmitEvent(t, EventDefine_1.EEventName.CharHitRemote, e);
       SceneTeamController_1.SceneTeamController.EmitEvent(this.Entity, EventDefine_1.EEventName.CharBeHitRemote, e);
@@ -363,5 +364,5 @@ let BaseHitComponent = class BaseHitComponent extends EntityComponent_1.EntityCo
 };
 __decorate([CombatMessage_1.CombatNet.Preprocess("TFn")], BaseHitComponent, "PreHitNotify", null);
 __decorate([CombatMessage_1.CombatNet.Listen("TFn", true)], BaseHitComponent, "HitNotify", null);
-BaseHitComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(63)], BaseHitComponent);
+BaseHitComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(65)], BaseHitComponent);
 exports.BaseHitComponent = BaseHitComponent; //# sourceMappingURL=BaseHitComponent.js.map

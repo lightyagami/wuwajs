@@ -128,7 +128,7 @@ class QuestView extends UiTickViewBase_1.UiTickViewBase {
         this.zno(0);
       }
     };
-    this.rFm = () => {
+    this.CNm = () => {
       if (this.kno > 0) {
         this.Xno(this.kno, false);
       }
@@ -261,9 +261,15 @@ class QuestView extends UiTickViewBase_1.UiTickViewBase {
             ModelManager_1.ModelManager.SubPackageDownLoadModel.OpenSubPackageByQuest(this.kno);
             break;
           case 3:
-            QuestController_1.QuestNewController.ConfirmQuestResourceRequest(t.Id, () => {
-              this.qF1(t.Id);
-            });
+            if (t.DungeonId !== ModelManager_1.ModelManager.CreatureModel.GetInstanceId() && t.Type === 11) {
+              s = "LockTask_InDifferentMap_Tips";
+              s = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(s) ?? s;
+              ScrollingTipsController_1.ScrollingTipsController.ShowTipsByText(s);
+            } else {
+              QuestController_1.QuestNewController.ConfirmQuestResourceRequest(t.Id, () => {
+                this.qF1(t.Id);
+              });
+            }
             break;
           case 4:
             if (e.IsInFocusMode() && !e.IsInFocusOnQuest(this.kno)) {
@@ -393,8 +399,8 @@ class QuestView extends UiTickViewBase_1.UiTickViewBase {
               return true;
             }
           }
-          if (Log_1.Log.CheckError()) {
-            Log_1.Log.Error("Quest", 18, "QuestView.点击Go按钮时:找不到任务标记id", ["任务Id", this.kno]);
+          if (Log_1.Log.CheckDebug()) {
+            Log_1.Log.Debug("Quest", 18, "QuestView.点击Go按钮时:找不到任务标记id", ["任务Id", this.kno]);
           }
         } else if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("Quest", 18, "QuestView.点击Go按钮时:找不到任务节点", ["任务Id", this.kno]);
@@ -594,7 +600,7 @@ class QuestView extends UiTickViewBase_1.UiTickViewBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.GeneralLogicTreeCancelSuspend, this.Qno);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnNavigationQuest, this.$no);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ActivityQuestCountdownEnd, this.OGn);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRefreshSubPackageDownLoadByPriority, this.rFm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRefreshSubPackageDownLoadByPriority, this.CNm);
     this.GetText(8).OnSelfLanguageChange.Bind(this.QuestDescChangeLang);
     ControllerHolder_1.ControllerHolder.TermExplanationController.RegisterTextHyperlink(this.GetText(8), 1, 3, 1);
   }
@@ -605,7 +611,7 @@ class QuestView extends UiTickViewBase_1.UiTickViewBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.GeneralLogicTreeCancelSuspend, this.Qno);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnNavigationQuest, this.$no);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ActivityQuestCountdownEnd, this.OGn);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRefreshSubPackageDownLoadByPriority, this.rFm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRefreshSubPackageDownLoadByPriority, this.CNm);
     this.GetText(8).OnSelfLanguageChange.Unbind();
     ControllerHolder_1.ControllerHolder.TermExplanationController.UnRegisterTextHyperlink(this.GetText(8));
   }

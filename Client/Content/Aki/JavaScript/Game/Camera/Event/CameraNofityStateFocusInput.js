@@ -36,7 +36,7 @@ class CameraNofityStateFocusInput extends UE.KuroAnimNotifyState {
         if (s < this.MinDistance || s > this.MaxDistance) {
           return false;
         }
-        n = o?.Entity?.GetComponent(33);
+        n = o?.Entity?.GetComponent(34);
         if (n) {
           (s = new BaseLockOnComponent_1.LockOnInfo()).EntityHandle = a;
           s.SocketName = this.LockOnPart === "None" ? "" : this.LockOnPart;
@@ -51,7 +51,7 @@ class CameraNofityStateFocusInput extends UE.KuroAnimNotifyState {
     var r;
     var a;
     var e = e?.GetOwner();
-    return e instanceof TsBaseCharacter_1.default && !!(r = this.LockOnMap.get(e.EntityId)) && !!e?.IsValid() && !!(a = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity) && !((a = a.Entity?.GetComponent(33)) && a.ForceLookAt(r, false), this.LockOnMap.delete(e.EntityId), 0);
+    return e instanceof TsBaseCharacter_1.default && !!(r = this.LockOnMap.get(e.EntityId)) && !!e?.IsValid() && !!(a = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity) && !((a = a.Entity?.GetComponent(34)) && a.ForceLookAt(r, false), this.LockOnMap.delete(e.EntityId), 0);
   }
   GetNotifyName() {
     return "强制锁定目标";

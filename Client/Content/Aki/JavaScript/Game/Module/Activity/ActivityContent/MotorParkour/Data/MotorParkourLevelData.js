@@ -18,8 +18,8 @@ class MotorParkourLevelData {
     this.PreMotorParkourLevelData = undefined;
     this.TaskList = [];
     this.RecordList = [];
-    this.wMf = undefined;
-    this.RMf = 0;
+    this.HTf = undefined;
+    this.jTf = 0;
     this.NAu = 0;
     for (const i of (this.Lo = t).RewardIds) {
       var e = new MotorParkourTaskData_1.MotorParkourTaskData(i);
@@ -50,16 +50,16 @@ class MotorParkourLevelData {
     return (!this.PreMotorParkourLevelData || !!this.PreMotorParkourLevelData.IsPass) && this.IsReachUnlockTime();
   }
   get BestRecordTime() {
-    return this.RMf;
+    return this.jTf;
   }
   set BestRecordTime(t) {
     var e;
-    if ((this.RMf = t) !== 0) {
-      if (this.wMf) {
-        this.wMf.Time = t;
+    if ((this.jTf = t) !== 0) {
+      if (this.HTf) {
+        this.HTf.Time = t;
       } else {
         e = ModelManager_1.ModelManager.FunctionModel.GetPlayerName();
-        this.wMf = new MotorParkourRankData_1.MotorParkourRankData(e, t, [], true);
+        this.HTf = new MotorParkourRankData_1.MotorParkourRankData(e, t, [], true);
       }
     }
   }
@@ -83,8 +83,8 @@ class MotorParkourLevelData {
   }
   get HistoryRankList() {
     var t = [...this.RecordList];
-    if (this.wMf) {
-      t.push(this.wMf);
+    if (this.HTf) {
+      t.push(this.HTf);
     }
     t.sort((t, e) => t.Time - e.Time);
     var t = t.slice(0, 3);

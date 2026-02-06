@@ -95,13 +95,13 @@ class CommonQteModel extends ModelBase_1.ModelBase {
       m.ExtraParams = r;
       for (let e = 0; e < i.CommonQteIdSet.Num(); e++) {
         var s = i.CommonQteIdSet.Get(e);
-        var C = this.CreateQteContext(s, undefined, m.OnContextFail, n, r);
-        if (C) {
-          C.QteGroupId = t;
-          C.GroupHandleId = m.HandleId;
-          C.GroupContext = m;
-          C.SetGroupConfig(i);
-          m.AddContext(s, C, s === i.MainQteId);
+        var a = this.CreateQteContext(s, undefined, m.OnContextFail, n, r);
+        if (a) {
+          a.QteGroupId = t;
+          a.GroupHandleId = m.HandleId;
+          a.GroupContext = m;
+          a.SetGroupConfig(i);
+          m.AddContext(s, a, s === i.MainQteId);
         }
       }
       return m;
@@ -300,6 +300,9 @@ class CommonQteModel extends ModelBase_1.ModelBase {
       if (o = this.GetQteCameraShakePath(e)) {
         t.push(this.kod(e, o));
       }
+      if (o = this.GetQteGamepadShakePath(e)) {
+        t.push(this.XCg(e, o));
+      }
       if (o = this.GetQteScaleCurvePath(e)) {
         t.push(this.s3d(e, o));
       }
@@ -335,6 +338,14 @@ class CommonQteModel extends ModelBase_1.ModelBase {
   GetQteCameraShakePath(e) {
     var e = this.GetCommonQteConfig(e);
     if ((e = e && e.ExtraConfig.CameraShake.ToAssetPathName()) && e !== "None") {
+      return e;
+    } else {
+      return undefined;
+    }
+  }
+  GetQteGamepadShakePath(e) {
+    var e = this.GetCommonQteConfig(e);
+    if ((e = e && e.ExtraConfig.GamepadShake.ToAssetPathName()) && e !== "None") {
       return e;
     } else {
       return undefined;
@@ -416,6 +427,24 @@ class CommonQteModel extends ModelBase_1.ModelBase {
       } else {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("CommonQte", 67, "QTE震屏效果加载失败", ["path", n]);
+        }
+        r.SetResult(false);
+      }
+    }, 100);
+    return r.Promise;
+  }
+  async XCg(o, n) {
+    const r = new CustomPromise_1.CustomPromise();
+    ResourceSystem_1.ResourceSystem.LoadAsync(n, UE.KuroForceFeedbackEffect, e => {
+      var t;
+      if (e) {
+        if (t = this.GetQteResource(o, true)) {
+          t.GamepadShake = e;
+        }
+        r.SetResult(true);
+      } else {
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("CommonQte", 18, "QTE手柄震动效果加载失败", ["path", n]);
         }
         r.SetResult(false);
       }

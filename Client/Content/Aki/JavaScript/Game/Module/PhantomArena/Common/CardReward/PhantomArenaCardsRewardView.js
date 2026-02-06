@@ -22,10 +22,10 @@ class PhantomArenaCardsRewardView extends UiViewBase_1.UiViewBase {
     this.kau = undefined;
     this.Vnu = undefined;
     this.kRu = [];
-    this.OQm = false;
+    this.nYm = false;
     this.Y5i = () => {
       var e = new RewardGridCardItem();
-      e.IsNewPhantomArenaActivity = this.OQm;
+      e.IsNewPhantomArenaActivity = this.nYm;
       return e;
     };
     this.C0u = e => {
@@ -50,11 +50,11 @@ class PhantomArenaCardsRewardView extends UiViewBase_1.UiViewBase {
     this.Vnu = e.CallbackOnClose;
     this.kRu = e.CardIdList;
     var e = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardConfig(this.kRu[0]).ActivityId;
-    this.OQm = ModelManager_1.ModelManager.PhantomArenaModel.IsNewPhantomArenaActivity(e);
+    this.nYm = ModelManager_1.ModelManager.PhantomArenaModel.IsNewPhantomArenaActivity(e);
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), "PhantomBattle_1089");
     this.kau = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(4), this.Y5i);
     this.eVi = new RewardGridCardItem();
-    this.eVi.IsNewPhantomArenaActivity = this.OQm;
+    this.eVi.IsNewPhantomArenaActivity = this.nYm;
     await this.eVi.CreateByActorAsync(this.GetItem(2).GetOwner());
     await this.RefreshCardList();
   }

@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.mapLoadDirectlyConfigMarkSet = exports.addMarkFilterInTeamModeSet = exports.serverMarkIgnoreReadConfigSet = exports.Circle = exports.FishingPointMarkCreateInfo = exports.FishingShipMarkCreateInfo = exports.FISHING_SHIP_MARK_ID = exports.PlayerMarkCreateInfo = exports.QuestMarkCreateInfo = exports.DynamicMarkCreateInfo = exports.ConfigMarkCreateInfo = exports.MarkCreateInfo = exports.canDisableGameplayFinishMarkType = exports.hasSingleComponentMarkType = exports.HONAMI_MAP_ID = exports.WORLD_MAP_MAX_SCALE = exports.DEFAULT_MAP_BORDER_ID = exports.DETAIL_TILE_SPACE = exports.HHA_BIG_WORLD_MAP_ID = exports.BIG_WORLD_MAP_ID = exports.MARK_WORLD_TO_HASH_SCALE = exports.MARK_HASH_XY_PANDING = exports.MARK_SCOPE = exports.UNIT = exports.MINI_MAP_UPDATE_GAP = exports.MINI_MAP_RADIUS = exports.DETAIL_TILE_REALSIZE = exports.worldToScreenScale = exports.world2UiUnit = exports.FLOAT_0_01 = undefined;
+exports.mapLoadDirectlyConfigMarkSet = exports.addMarkFilterInTeamModeSet = exports.serverMarkIgnoreReadConfigSet = exports.Circle = exports.FishingPointMarkCreateInfo = exports.FishingShipMarkCreateInfo = exports.FISHING_SHIP_MARK_ID = exports.PlayerMarkCreateInfo = exports.QuestMarkCreateInfo = exports.DynamicMarkCreateInfo = exports.ConfigMarkCreateInfo = exports.MarkCreateInfo = exports.canDisableGameplayFinishMarkType = exports.hasSingleComponentMarkType = exports.HONAMI_MAP_ID = exports.WORLD_MAP_MAX_SCALE = exports.DEFAULT_MAP_BORDER_ID = exports.DETAIL_TILE_SPACE = exports.HHA_BIG_WORLD_MAP_ID = exports.BIG_WORLD_MAP_ID = exports.MARK_WORLD_TO_HASH_SCALE = exports.MARK_HASH_XY_PANDING = exports.MARK_SCOPE = exports.UNIT = exports.MINI_MAP_DEFAULT_SCALE = exports.MINI_MAP_UPDATE_GAP = exports.MINI_MAP_RADIUS = exports.DETAIL_TILE_REALSIZE = exports.worldToScreenScale = exports.world2UiUnit = exports.FLOAT_0_01 = undefined;
 const Protocol_1 = require("../../../Core/Define/Net/Protocol");
 const Vector_1 = require("../../../Core/Utils/Math/Vector");
 const Vector2D_1 = require("../../../Core/Utils/Math/Vector2D");
@@ -15,6 +15,7 @@ exports.worldToScreenScale = Vector2D_1.Vector2D.Create(exports.FLOAT_0_01, -exp
 exports.DETAIL_TILE_REALSIZE = 850;
 exports.MINI_MAP_RADIUS = 200;
 exports.MINI_MAP_UPDATE_GAP = 20;
+exports.MINI_MAP_DEFAULT_SCALE = 150;
 exports.UNIT = 100;
 exports.MARK_SCOPE = 50;
 exports.MARK_HASH_XY_PANDING = 100000;
@@ -137,6 +138,9 @@ class QuestMarkCreateInfo extends (exports.DynamicMarkCreateInfo = DynamicMarkCr
   }
   get NodeId() {
     return this.CreateParams.NodeId;
+  }
+  get IsBoundToParentQuest() {
+    return this.CreateParams.IsBoundToParentQuest ?? false;
   }
   constructor(t) {
     if (t.MapAndDungeonInfo !== undefined) {

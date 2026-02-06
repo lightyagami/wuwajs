@@ -412,6 +412,12 @@ class PayShopModel extends ModelBase_1.ModelBase {
     }
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshGoods, e, o.PayShopId, o.GetTabId());
   }
+  UpdateActivityPayShopGoodsCount(e, t) {
+    e = this.uFi.get(e);
+    if (e.IsLimitGoods()) {
+      e.AddBoughtCount(t);
+    }
+  }
   GetNeedCheckGoods(e) {
     var t = [];
     for (const o of this.GetPayShopGoodsByTabType(e)) {
@@ -433,7 +439,7 @@ class PayShopModel extends ModelBase_1.ModelBase {
   }
   CheckPayShopHasRedDot(e) {
     if (e === 1) {
-      return ModelManager_1.ModelManager.MonthCardModel.GetPayButtonRedDotState();
+      return ModelManager_1.ModelManager.MonthCardModel.GetPayButtonRedDotState() || ModelManager_1.ModelManager.WeekCardModel.GetWeekCardRedDotState();
     }
     if (e === 100) {
       return !LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.PayShopRechargeRedDot, false) && ModelManager_1.ModelManager.PayItemModel.HasBonusData();
@@ -467,7 +473,7 @@ class PayShopModel extends ModelBase_1.ModelBase {
     return false;
   }
   Hzl(e, t = 1) {
-    return !!this.GetPayShopTabIdList(e, false).includes(t) && this.GetRecommendDataById(t).RecommendType === 1 && ModelManager_1.ModelManager.MonthCardModel.GetPayButtonRedDotState();
+    return !!this.GetPayShopTabIdList(e, false).includes(t) && ((e = this.GetRecommendDataById(t)).RecommendType === 1 ? ModelManager_1.ModelManager.MonthCardModel.GetPayButtonRedDotState() : e.RecommendType === 3 && ModelManager_1.ModelManager.WeekCardModel.GetWeekCardRedDotState());
   }
   ReadShopItemCheckFlag(e, t = 1) {
     let o = [];

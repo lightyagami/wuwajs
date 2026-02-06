@@ -130,7 +130,7 @@ class WeeklyRogueEntrancePanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSeco
     this.jqe();
     this.h4i();
     this.hea();
-    this.Kbf();
+    this.vDf();
     if (this.IRe) {
       TimerSystem_1.GameplayTimerSystem.Remove(this.IRe);
     }
@@ -168,7 +168,7 @@ class WeeklyRogueEntrancePanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSeco
       e.SetHelpButtonVisible(false);
     }
   }
-  Kbf() {
+  vDf() {
     var e;
     var i;
     var t = ModelManager_1.ModelManager.WeeklyRogueModel?.ActivityData;

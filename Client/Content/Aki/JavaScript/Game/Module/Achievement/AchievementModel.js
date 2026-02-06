@@ -375,6 +375,15 @@ class AchievementModel extends ModelBase_1.ModelBase {
   GmClearData() {
     this.CurrentFinishAchievementArray.length = 0;
   }
+  GetCategoryIdList() {
+    return this.Sbe.map(e => e.GetId());
+  }
+  GetGroupDataList() {
+    return Array.from(this.Tbe.keys());
+  }
+  GetAchievementDataList() {
+    return Array.from(this.Ibe.keys());
+  }
 }
 (exports.AchievementModel = AchievementModel).SortByTabIndex = (e, t) => t.GetFinishSort() - e.GetFinishSort();
 //# sourceMappingURL=AchievementModel.js.map

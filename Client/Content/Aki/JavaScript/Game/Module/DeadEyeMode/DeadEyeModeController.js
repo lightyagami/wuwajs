@@ -27,8 +27,8 @@ const GlobalData_1 = require("../../GlobalData");
 const LevelGeneralNetworks_1 = require("../../LevelGamePlay/LevelGeneralNetworks");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
-const FollowFunctionLibrary_1 = require("../../NewWorld/Character/Common/Component/Abilities/Follow/FollowFunctionLibrary");
 const FollowShooterDrone_1 = require("../../NewWorld/Character/Common/Component/Abilities/Follow/FollowShooterDrone");
+const FollowUtils_1 = require("../../NewWorld/Character/Common/Component/Abilities/Follow/FollowUtils");
 const UiLayerType_1 = require("../../Ui/Define/UiLayerType");
 const InputManager_1 = require("../../Ui/Input/InputManager");
 const UiLayer_1 = require("../../Ui/UiLayer");
@@ -44,8 +44,8 @@ class DeadEyeModeController extends ControllerBase_1.ControllerBase {
     return super.Clear();
   }
   static OnLeaveLevel() {
-    if (TimerSystem_1.GameplayTimerSystem.Has(DeadEyeModeController.swm)) {
-      TimerSystem_1.GameplayTimerSystem.Remove(DeadEyeModeController.swm);
+    if (TimerSystem_1.GameplayTimerSystem.Has(DeadEyeModeController.vwm)) {
+      TimerSystem_1.GameplayTimerSystem.Remove(DeadEyeModeController.vwm);
     }
     return true;
   }
@@ -63,15 +63,15 @@ class DeadEyeModeController extends ControllerBase_1.ControllerBase {
     }
     var r = ModelManager_1.ModelManager.DeadEyeModeModel;
     if (!r.HighlightDataLockedAsset && e.EffectConfig?.TargetLockedMaterialDa) {
-      r.HighlightDataLockedAsset = await this.kSf(e.EffectConfig?.TargetLockedMaterialDa);
+      r.HighlightDataLockedAsset = await this.IIf(e.EffectConfig?.TargetLockedMaterialDa);
     }
     if (!r.HighlightDataNotLockAsset && e.EffectConfig?.TargetIdleMaterialDa) {
-      r.HighlightDataNotLockAsset = await this.kSf(e.EffectConfig?.TargetIdleMaterialDa);
+      r.HighlightDataNotLockAsset = await this.IIf(e.EffectConfig?.TargetIdleMaterialDa);
     }
-    var t = await DeadEyeModeController.Trf(10001017);
-    this.Rrf = new CustomPromise_1.CustomPromise();
-    EventSystem_1.EventSystem.OnceWithCondition(EventDefine_1.EEventName.OnDeadEyeModeTrigger, DeadEyeModeController.wrf, t);
-    await this.Rrf.Promise;
+    var t = await DeadEyeModeController.jnf(10001017);
+    this.Wnf = new CustomPromise_1.CustomPromise();
+    EventSystem_1.EventSystem.OnceWithCondition(EventDefine_1.EEventName.OnDeadEyeModeTrigger, DeadEyeModeController.Qnf, t);
+    await this.Wnf.Promise;
     var t = e.DefaultLookAt?.TransitionTime ?? 0.4;
     var a = e.TimeScaleTransitionTime ?? 0.4;
     let l = e.EnergyConfig?.MaxEnergy ?? 0;
@@ -94,15 +94,15 @@ class DeadEyeModeController extends ControllerBase_1.ControllerBase {
         ModelManager_1.ModelManager.DeadEyeModeModel.EnterNextStage();
       });
       EffectSystem_1.EffectSystem.SetAdditionTimeScaleEnable(16, true);
-      DeadEyeModeController.swm = TimerSystem_1.GameplayTimerSystem.Forever(DeadEyeModeController.awm, TimerSystem_1.MIN_TIME);
+      DeadEyeModeController.vwm = TimerSystem_1.GameplayTimerSystem.Forever(DeadEyeModeController.ywm, TimerSystem_1.MIN_TIME);
       o = Vector_1.Vector.Create();
       i = e.DefaultLookAt?.LookAtPointId;
       if (DeadEyeModeController.dA1(i, o)) {
-        DeadEyeModeController.Lrf(o, t, r.SubCameraTag);
+        DeadEyeModeController.Knf(o, t, r.SubCameraTag);
       }
       TimerSystem_1.GameplayTimerSystem.Delay(() => {
-        if (TimerSystem_1.GameplayTimerSystem.Has(DeadEyeModeController.swm)) {
-          TimerSystem_1.GameplayTimerSystem.Remove(DeadEyeModeController.swm);
+        if (TimerSystem_1.GameplayTimerSystem.Has(DeadEyeModeController.vwm)) {
+          TimerSystem_1.GameplayTimerSystem.Remove(DeadEyeModeController.vwm);
         }
       }, a * TimeUtil_1.TimeUtil.InverseMillisecond);
     }
@@ -123,23 +123,23 @@ class DeadEyeModeController extends ControllerBase_1.ControllerBase {
       ModelManager_1.ModelManager.DeadEyeModeModel.AddTargetLocation(l);
     }
     EffectSystem_1.EffectSystem.SetAdditionTimeScaleEnable(16, true);
-    ModelManager_1.ModelManager.CharacterModel.AddExtraEntityToEnterSelfCenteredState(this.oBf());
-    DeadEyeModeController.swm = TimerSystem_1.GameplayTimerSystem.Forever(DeadEyeModeController.awm, TimerSystem_1.MIN_TIME);
+    ModelManager_1.ModelManager.CharacterModel.AddExtraEntityToEnterSelfCenteredState(this.KFf());
+    DeadEyeModeController.vwm = TimerSystem_1.GameplayTimerSystem.Forever(DeadEyeModeController.ywm, TimerSystem_1.MIN_TIME);
     var i = e.DefaultLookAt?.LookAtPosition;
     if (i) {
       i = Vector_1.Vector.Create(i?.X ?? 0, i?.Y ?? 0, i?.Z ?? 0);
-      DeadEyeModeController.Lrf(i, o, t.SubCameraTag);
+      DeadEyeModeController.Knf(i, o, t.SubCameraTag);
     }
     const n = new CustomPromise_1.CustomPromise();
     TimerSystem_1.GameplayTimerSystem.Delay(() => {
       n.SetResult();
     }, r * TimeUtil_1.TimeUtil.InverseMillisecond);
     await n.Promise;
-    if (TimerSystem_1.GameplayTimerSystem.Has(DeadEyeModeController.swm)) {
-      TimerSystem_1.GameplayTimerSystem.Remove(DeadEyeModeController.swm);
+    if (TimerSystem_1.GameplayTimerSystem.Has(DeadEyeModeController.vwm)) {
+      TimerSystem_1.GameplayTimerSystem.Remove(DeadEyeModeController.vwm);
     }
     if (e.FollowShooterConfig) {
-      ModelManager_1.ModelManager.DeadEyeModeModel.DeadEyeFollowShooterConfig = await this.ALm(e.FollowShooterConfig.DeadeyeShooterDa);
+      ModelManager_1.ModelManager.DeadEyeModeModel.DeadEyeFollowShooterConfig = await this.tPm(e.FollowShooterConfig.DeadeyeShooterDa);
     }
     await UiManager_1.UiManager.OpenViewAsync("DeadEyeFloaterShooterView");
     ModelManager_1.ModelManager.DeadEyeModeModel.EnterNextStage();
@@ -170,49 +170,49 @@ class DeadEyeModeController extends ControllerBase_1.ControllerBase {
               o = new Map();
               r.RevertMaterialComponentsMaps.set(n, o);
             }
-            var d = n.GetMaterials();
+            var s = n.GetMaterials();
             for (let e = 0; e < _; e++) {
-              o?.set(e, d.Get(e));
+              o?.set(e, s.Get(e));
               n.SetMaterial(e, i);
             }
           } else {
-            var s = r.RevertMaterialComponentsMaps?.get(n);
+            var d = r.RevertMaterialComponentsMaps?.get(n);
             for (let e = 0; e < _; e++) {
-              n.SetMaterial(e, s?.get(e));
+              n.SetMaterial(e, d?.get(e));
             }
           }
         }
       }
-      var y = UE.LGUIBPLibrary.GetComponentsInChildren(o.Owner, UE.SkeletalMeshComponent.StaticClass(), true);
-      if (y.Num()) {
+      var M = UE.LGUIBPLibrary.GetComponentsInChildren(o.Owner, UE.SkeletalMeshComponent.StaticClass(), true);
+      if (M.Num()) {
         if (t) {
           if (r.CharRenderingComponents.size) {
-            for (var [M, m] of r.CharRenderingComponents) {
-              M.RemoveMaterialControllerData(m);
+            for (var [y, m] of r.CharRenderingComponents) {
+              y.RemoveMaterialControllerData(m);
             }
             r.CharRenderingComponents.clear();
           }
-          for (let e = 0; e < y.Num(); e++) {
-            var E = y.Get(e);
-            var c = E?.GetOwner();
-            if (c && c.IsValid()) {
-              let e = c.GetComponentByClass(UE.CharRenderingComponent_C.StaticClass());
-              (e = e || c.AddComponentByClass(UE.CharRenderingComponent_C.StaticClass(), false, MathUtils_1.MathUtils.DefaultTransform, false)).Init(2);
+          for (let e = 0; e < M.Num(); e++) {
+            var E = M.Get(e);
+            var C = E?.GetOwner();
+            if (C && C.IsValid()) {
+              let e = C.GetComponentByClass(UE.CharRenderingComponent_C.StaticClass());
+              (e = e || C.AddComponentByClass(UE.CharRenderingComponent_C.StaticClass(), false, MathUtils_1.MathUtils.DefaultTransform, false)).Init(2);
               e.AddComponentByCase(0, E);
-              c = e.AddMaterialControllerData(t);
-              r.CharRenderingComponents.set(e, c);
+              C = e.AddMaterialControllerData(t);
+              r.CharRenderingComponents.set(e, C);
             }
           }
         } else if (r.CharRenderingComponents.size) {
-          for (var [C, f] of r.CharRenderingComponents) {
-            C.RemoveMaterialControllerData(f);
+          for (var [c, f] of r.CharRenderingComponents) {
+            c.RemoveMaterialControllerData(f);
           }
           r.CharRenderingComponents.clear();
         }
       }
     }
   }
-  static async LLm() {
+  static async ZLm() {
     var e;
     var o = ModelManager_1.ModelManager.DeadEyeModeModel;
     var r = o.SubCameraTag;
@@ -233,17 +233,17 @@ class DeadEyeModeController extends ControllerBase_1.ControllerBase {
       t.push(...a);
     }
     if (o.Type !== 0) {
-      await DeadEyeModeController.PLm(t);
+      await DeadEyeModeController.ePm(t);
     }
     if (r.length > 0) {
       var l = [];
       for (const n of r) {
         l.push(n.CreatureDataId);
       }
-      DeadEyeModeController.$Lm(l);
+      DeadEyeModeController.fPm(l);
     }
   }
-  static async ALm(e) {
+  static async tPm(e) {
     const o = new CustomPromise_1.CustomPromise();
     ResourceSystem_1.ResourceSystem.LoadTypeAsync("BP_FollowShooterDeadEyeConfig_C", () => {
       o.SetResult();
@@ -257,7 +257,7 @@ class DeadEyeModeController extends ControllerBase_1.ControllerBase {
       return await r.Promise;
     }
   }
-  static async kSf(e) {
+  static async IIf(e) {
     const o = new CustomPromise_1.CustomPromise();
     ResourceSystem_1.ResourceSystem.LoadTypeAsync("PD_CharacterControllerData_C", () => {
       o.SetResult();
@@ -271,12 +271,12 @@ class DeadEyeModeController extends ControllerBase_1.ControllerBase {
       return await r.Promise;
     }
   }
-  static async Trf(e) {
+  static async jnf(e) {
     var o;
     var r = Global_1.Global.BaseCharacter.CharacterActorComponent.Entity;
     if (r) {
       if ((r = r.GetComponent(242)) && r.VehicleEntity) {
-        if (o = r.VehicleEntity.GetComponent(42)) {
+        if (o = r.VehicleEntity.GetComponent(44)) {
           await o.BeginSkillAsync(e);
           return r.VehicleEntity.Id;
         } else {
@@ -298,7 +298,7 @@ class DeadEyeModeController extends ControllerBase_1.ControllerBase {
       return 0;
     }
   }
-  static Lrf(e, o, r) {
+  static Knf(e, o, r) {
     if (r) {
       DeadEyeModeController.Ecm(r, true);
     }
@@ -307,7 +307,7 @@ class DeadEyeModeController extends ControllerBase_1.ControllerBase {
     }
   }
   static Ecm(e, o) {
-    var r = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint()?.GetComponent(215);
+    var r = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint()?.GetComponent(217);
     if (r) {
       if (o) {
         r.AddTag(e);
@@ -354,7 +354,7 @@ class DeadEyeModeController extends ControllerBase_1.ControllerBase {
     if (e?.Valid) {
       var t = e.Entity;
       if (t?.IsInit) {
-        var a = t.GetComponent(206);
+        var a = t.GetComponent(208);
         if (a && !a.HasTag(-662723379)) {
           t = t.GetComponent(1)?.ActorLocationProxy;
           if (t) {
@@ -377,31 +377,31 @@ class DeadEyeModeController extends ControllerBase_1.ControllerBase {
       }
     }
   }
-  static OSf(e) {
+  static bIf(e) {
     for (const o of ModelManager_1.ModelManager.DeadEyeModeModel.GetFocusEntities()) {
       DeadEyeModeController.EnableSingleEntityHighlight(o, e);
     }
   }
-  static oBf() {
-    return FollowFunctionLibrary_1.FollowFunctionLibrary.GetPlayerFollowShooter(ModelManager_1.ModelManager.CreatureModel.GetPlayerId());
+  static KFf() {
+    return FollowUtils_1.FollowUtils.GetPlayerFollowShooter(ModelManager_1.ModelManager.CreatureModel.GetPlayerId());
   }
-  static async PLm(e) {
+  static async ePm(e) {
     var o;
     var r = ModelManager_1.ModelManager.DeadEyeModeModel;
-    var t = this.oBf();
-    if (t?.Valid && t.Entity?.Valid && (o = t.Entity.CheckGetComponent(234)) && o.FollowShooterConfig) {
+    var t = this.KFf();
+    if (t?.Valid && t.Entity?.Valid && (o = t.Entity.CheckGetComponent(235)) && o.FollowShooterConfig) {
       await FollowShooterDrone_1.FollowShooterDrone.AsyncStartShootAtTargets(t.Entity.Id, o.FollowShooterConfig, e, r.DeadEyeFollowShooterConfig, ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation);
       r.DeadEyeFollowShooterConfig = undefined;
     }
   }
-  static $Lm(e) {
-    e = Protocol_1.Aki.Protocol.Lwm.create({
+  static fPm(e) {
+    e = Protocol_1.Aki.Protocol.eLm.create({
       r6n: ModelManager_1.ModelManager.CreatureModel.GetInstanceId(),
       PSs: e
     });
-    Net_1.Net.Call(15696, e, e => {
+    Net_1.Net.Call(21252, e, e => {
       if (e.G9n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 23910);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 16774);
       }
     });
   }
@@ -412,11 +412,11 @@ class DeadEyeModeController extends ControllerBase_1.ControllerBase {
   }
 }
 exports.DeadEyeModeController = DeadEyeModeController;
-(_a = DeadEyeModeController).swm = undefined;
-DeadEyeModeController.Rrf = undefined;
+(_a = DeadEyeModeController).vwm = undefined;
+DeadEyeModeController.Wnf = undefined;
 DeadEyeModeController.Lod = 0;
-DeadEyeModeController.wrf = () => {
-  _a.Rrf?.SetResult();
+DeadEyeModeController.Qnf = () => {
+  _a.Wnf?.SetResult();
 };
 DeadEyeModeController.Mcm = () => {
   const e = ModelManager_1.ModelManager.DeadEyeModeModel;
@@ -431,7 +431,7 @@ DeadEyeModeController.Mcm = () => {
       InputManager_1.InputManager.RemoveLockShortcutKeyReason(o);
       ModelManager_1.ModelManager.InputDistributeModel.RefreshInputDistributeTag();
       if (e.Type === 0) {
-        DeadEyeModeController.OSf(1);
+        DeadEyeModeController.bIf(1);
       }
       break;
     case 3:
@@ -439,16 +439,16 @@ DeadEyeModeController.Mcm = () => {
       if (EffectSystem_1.EffectSystem.IsValid(_a.Lod) && (EffectSystem_1.EffectSystem.StopEffectById(_a.Lod, "[DeadEyeModeController.停止特效]", false), _a.Lod = 0, Log_1.Log.CheckDebug())) {
         Log_1.Log.Debug("DeadEye", 18, "DeadEyeModeController.关闭ScreenEffect");
       }
-      DeadEyeModeController.OSf(0);
+      DeadEyeModeController.bIf(0);
       EffectSystem_1.EffectSystem.SetAdditionTimeScaleEnable(16, false);
       ControllerHolder_1.ControllerHolder.CharacterController.ExitSelfCenteredMode(2);
       ModelManager_1.ModelManager.CharacterModel.ClearExtraEntitiesToEnterSelfCenteredState();
       if (e.HideFollowShooterWhenFinish) {
-        DeadEyeModeController.Trf(100010102);
+        DeadEyeModeController.jnf(100010102);
       }
       break;
     case 4:
-      _a.LLm().then(() => {
+      _a.ZLm().then(() => {
         if (e.FinishEvent) {
           LevelGeneralNetworks_1.LevelGeneralNetworks.RequestEntitySendEvent(e.TriggerEntityCreatureDataId, e.FinishEvent);
         }
@@ -461,9 +461,9 @@ DeadEyeModeController.Mcm = () => {
   }
 };
 DeadEyeModeController.OnDeadEyeModeShowShooter = () => {
-  DeadEyeModeController.Trf(100010101);
+  DeadEyeModeController.jnf(100010101);
 };
-DeadEyeModeController.awm = e => {
+DeadEyeModeController.ywm = e => {
   var o = ModelManager_1.ModelManager.DeadEyeModeModel;
   o.LerpElapsedTime += e;
   var e = MathCommon_1.MathCommon.Clamp(o.LerpElapsedTime / o.TimeScaleTransitionTime, 0, 1);

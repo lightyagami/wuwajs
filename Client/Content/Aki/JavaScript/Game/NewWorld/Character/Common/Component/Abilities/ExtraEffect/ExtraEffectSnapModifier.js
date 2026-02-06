@@ -79,9 +79,9 @@ class SnapModifyBuffEffect extends ExtraEffectBase_1.BuffEffect {
   WXo(t, s) {
     switch (s) {
       case 1:
-        return this.OwnerEntity?.CheckGetComponent(182);
+        return this.OwnerEntity?.CheckGetComponent(184);
       case 0:
-        return this.InstigatorEntity?.Entity?.CheckGetComponent(182);
+        return this.InstigatorEntity?.Entity?.CheckGetComponent(184);
       case 2:
         return t.AttackerSnapshot;
       case 3:
@@ -104,7 +104,7 @@ class ModifierCalculator extends SnapModifyBuffEffect {
     this.RefParam1 = 0;
     this.RefParam2 = 0;
   }
-  mRf(t, s, i, e) {
+  Txf(t, s, i, e) {
     var r;
     if (this.AttributeThreshold > 0) {
       r = this.GetAttrValue(t, s, i, e) - this.AttributeThreshold;
@@ -130,11 +130,11 @@ class ModifierCalculator extends SnapModifyBuffEffect {
         break;
       case 1:
         var h = s * CharacterAttributeTypes_1.DIVIDED_TEN_THOUSAND;
-        r = this.mRf(t, this.RefAttrId, this.RefValueType, this.RefTargetType) * h;
+        r = this.Txf(t, this.RefAttrId, this.RefValueType, this.RefTargetType) * h;
         break;
       case 2:
         h = s * CharacterAttributeTypes_1.DIVIDED_TEN_THOUSAND;
-        r = this.mRf(t, this.RefAttrId, this.RefValueType, this.RefTargetType) * h + e;
+        r = this.Txf(t, this.RefAttrId, this.RefValueType, this.RefTargetType) * h + e;
     }
     return r = this.ModifierMax > 0 && r > this.ModifierMax ? this.ModifierMax : r;
   }
@@ -217,7 +217,7 @@ class ShieldSnapshotModify extends SnapModifyBuffEffect {
     var h = this.BuffHolderType ? this.InstigatorEntity?.Entity : this.OwnerEntity;
     if (h) {
       var a;
-      var h = h.CheckGetComponent(78)?.GetShieldValue(this.ShieldId) ?? 0;
+      var h = h.CheckGetComponent(80)?.GetShieldValue(this.ShieldId) ?? 0;
       let t = h >= this.ConvertThreshold;
       let s = h;
       if (this.ConvertLimit > 0) {

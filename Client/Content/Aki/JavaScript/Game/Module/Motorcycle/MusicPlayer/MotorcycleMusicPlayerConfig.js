@@ -21,6 +21,17 @@ class MotorcycleMusicPlayerConfig extends ConfigBase_1.ConfigBase {
   GetAlbumVelocity() {
     return CommonParamById_1.configCommonParamById.GetFloatConfig("MotorMusicUIVelocity") ?? 1;
   }
+  GetDragSwapSpeed() {
+    return CommonParamById_1.configCommonParamById.GetFloatConfig("MotorMusicDragSwapSpeed") ?? 10;
+  }
+  GetDragScrollSpeedRange() {
+    var e = CommonParamById_1.configCommonParamById.GetFloatArrayConfig("MotorMusicDragScrollSpeed");
+    if (e && e.length >= 2) {
+      return [e[0], e[1]];
+    } else {
+      return [0.001, 0.01];
+    }
+  }
   GetStartDelay() {
     return Math.round((CommonParamById_1.configCommonParamById.GetFloatConfig("MotorMusicStartDelay") ?? 1) * CommonDefine_1.MILLIONSECOND_PER_SECOND);
   }

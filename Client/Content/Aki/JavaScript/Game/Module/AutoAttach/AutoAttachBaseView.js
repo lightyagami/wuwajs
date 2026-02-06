@@ -65,7 +65,7 @@ class AutoAttachBaseView {
     this._Ke = false;
     this.cW1 = false;
     this.uKe = undefined;
-    this.xff = undefined;
+    this.cCf = undefined;
     this.v9e = () => {
       this.Clear();
     };
@@ -209,7 +209,7 @@ class AutoAttachBaseView {
     this.uKe = t;
   }
   SetMoveItemsCallback(t) {
-    this.xff = t;
+    this.cCf = t;
   }
   SetAudioEvent(t) {
     this.hKe = t;
@@ -544,7 +544,7 @@ class AutoAttachBaseView {
         AudioSystem_1.AudioSystem.PostEvent(this.hKe);
       }
     }
-    this.xff?.();
+    this.cCf?.();
   }
   Clear() {
     this.Items.forEach(t => {

@@ -137,7 +137,7 @@ let SceneItemRotatorComponent = SceneItemRotatorComponent_1 = class SceneItemRot
     return true;
   }
   OnStart() {
-    this.Hte = this.Entity.GetComponent(212);
+    this.Hte = this.Entity.GetComponent(214);
     if (!this.Hte) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("SceneItem", 39, "[SceneItemRotatorComponent] 实体缺少SceneItemActorComponent", ["PbDataId", this.EIe?.GetPbDataId()]);
@@ -168,11 +168,11 @@ let SceneItemRotatorComponent = SceneItemRotatorComponent_1 = class SceneItemRot
         this.wMn.SetKuroOnlyTickOutside(true);
       }
     }
-    this.mBe = this.Entity.GetComponent(142);
+    this.mBe = this.Entity.GetComponent(144);
     if (this.mBe) {
-      this.Lie = this.Entity.GetComponent(206);
+      this.Lie = this.Entity.GetComponent(208);
       if (this.Lie) {
-        this.B4u = this.Entity.GetComponent(322);
+        this.B4u = this.Entity.GetComponent(324);
         return !!this.B4u || (Log_1.Log.CheckError() && Log_1.Log.Error("SceneItem", 39, "[SceneItemRotatorComponent] 实体缺少UeSceneItemMoveTickManagerComponent", ["PbDataId", this.EIe?.GetPbDataId()]), false);
       } else {
         if (Log_1.Log.CheckError()) {
@@ -372,5 +372,5 @@ let SceneItemRotatorComponent = SceneItemRotatorComponent_1 = class SceneItemRot
     }
   }
 };
-SceneItemRotatorComponent = SceneItemRotatorComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(176)], SceneItemRotatorComponent);
+SceneItemRotatorComponent = SceneItemRotatorComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(178)], SceneItemRotatorComponent);
 exports.SceneItemRotatorComponent = SceneItemRotatorComponent; //# sourceMappingURL=SceneItemRotatorComponent.js.map

@@ -511,13 +511,15 @@ class ChatView extends UiTickViewBase_1.UiTickViewBase {
     }
     this.EOd = t;
     this.SOd?.RefreshByData(i, true, true);
-    if (e && !Info_1.Info.IsInTouch()) {
+    if (e && Info_1.Info.IsInGamepad()) {
       this.SOd?.BindLateUpdate(() => {
         this.SOd?.ScrollToItemIndex(i.length - 1).then(() => {
-          for (const t of this.SOd?.GetScrollItemItems() ?? []) {
-            if (t.Data.ChatContentData.TimeStamp === i[i.length - 1].ChatContentData.TimeStamp) {
-              ControllerHolder_1.ControllerHolder.UiNavigationNewController.SetNavigationFocusForView(t.GetInteractItem(), true, true);
-              break;
+          if (!this.GetInputText(2).IsInputActive()) {
+            for (const t of this.SOd?.GetScrollItemItems() ?? []) {
+              if (t.Data.ChatContentData.TimeStamp === i[i.length - 1].ChatContentData.TimeStamp) {
+                ControllerHolder_1.ControllerHolder.UiNavigationNewController.SetNavigationFocusForView(t.GetInteractItem(), true, true);
+                break;
+              }
             }
           }
         });

@@ -16,10 +16,10 @@ class FlowActionNpcLeisureInteract extends FlowActionBase_1.FlowActionBase {
         case IAction_1.ENpcLeisureInteract.SitDown:
           break;
         case IAction_1.ENpcLeisureInteract.SwingGetUp:
-          ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e.Option.TargetNpcId)?.Entity?.GetComponent(325)?.ExitLoopSwing();
+          ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e.Option.TargetNpcId)?.Entity?.GetComponent(327)?.ExitLoopSwing();
           break;
         case IAction_1.ENpcLeisureInteract.Swing:
-          ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e.Option.TargetNpcId)?.Entity?.GetComponent(325)?.StartSwing(e.Option.SwingDa, e.Option.EntityId, e.Option.SkipSitDown);
+          ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e.Option.TargetNpcId)?.Entity?.GetComponent(327)?.StartSwing(e.Option.SwingDa, e.Option.EntityId, e.Option.SkipSitDown);
       }
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("LevelEvent", 42, " LevelEventNpcLeisureInteract, 坐下参数为空");

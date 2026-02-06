@@ -22,7 +22,7 @@ class RegionalTerminalGameplayItem extends GridProxyAbstract_1.GridProxyAbstract
     this.OnClickToggleCallBack = undefined;
     this.IsToggleSelectOn = undefined;
     this.kqe = t => {
-      this.qhf(t === 1);
+      this.t_f(t === 1);
       this.OnClickToggleCallBack?.(t === 1, this.Pe);
     };
   }
@@ -93,14 +93,14 @@ class RegionalTerminalGameplayItem extends GridProxyAbstract_1.GridProxyAbstract
       this.GetItem(7).SetUIActive(this.Pe.GetRedDotState());
     }
   }
-  qhf(t) {
+  t_f(t) {
     t = !t && this.Pe.GetLockState() ? LOCK_TEXT_ALPHA : NORMAL_TEXT_ALPHA;
     this.GetItem(8).SetAlpha(t);
   }
   EUt(t) {
     var i = t ? 1 : 0;
     this.GetExtendToggle(0)?.SetToggleState(i);
-    this.qhf(t);
+    this.t_f(t);
   }
   OnSelected(t) {
     this.EUt(true);

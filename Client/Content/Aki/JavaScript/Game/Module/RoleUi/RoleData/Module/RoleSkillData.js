@@ -26,7 +26,7 @@ class RoleSkillData extends RoleModuleDataBase_1.RoleModuleDataBase {
     this.RoleSkillMap = new Map();
     this.RoleUpgradeSkillMap = new Map();
     this.RoleSkillReferenceMap = new Map();
-    this.SkillNodeState = [];
+    this.SkillNodeDataMap = new Map();
     this.z1o = new Map();
     this.Z1o = [];
   }
@@ -134,11 +134,11 @@ class RoleSkillData extends RoleModuleDataBase_1.RoleModuleDataBase {
     }
   }
   SetSkillNodeStateData(e) {
-    this.SkillNodeState = e;
+    this.SkillNodeDataMap = e;
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SkillTreeRefresh);
   }
   GetSkillNodeStateData() {
-    return this.SkillNodeState;
+    return this.SkillNodeDataMap;
   }
   GetSkillTreeNodeState(e, r) {
     var t = e.SkillId;
@@ -189,18 +189,9 @@ class RoleSkillData extends RoleModuleDataBase_1.RoleModuleDataBase {
       return e.UnLockCondition;
     }
   }
-  IsSkillTreeNodeActive(r) {
-    let t = false;
-    var i = this.GetSkillNodeStateData();
-    var l = i.length;
-    for (let e = 0; e < l; e++) {
-      var n = i[e];
-      if (n.SkillNodeId === r && n.IsActive) {
-        t = true;
-        break;
-      }
-    }
-    return t;
+  IsSkillTreeNodeActive(e) {
+    e = this.GetSkillNodeStateData().get(e);
+    return !!e && e.IsActive;
   }
   GetSkillTreeUnsatisfiedCondition(r) {
     var t = r.Condition;

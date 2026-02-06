@@ -212,7 +212,7 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
     };
     this.rCd = new Array();
     this.BCd = new Array();
-    this.fZm = new Array();
+    this.tif = new Array();
     this.Fqr = new Array();
     this.Vqr = new Array();
     this.Hqr = (t, e, r, a, i) => {
@@ -257,7 +257,7 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
             if (i !== Protocol_1.Aki.Protocol.kks.HI_) {
               return;
             }
-            if (!CharacterGasDebugComponent_1.lXf(e)) {
+            if (!CharacterGasDebugComponent_1.g_g(e)) {
               return;
             }
             o = PublicUtil_1.PublicUtil.GetConfigTextByKey(a.GetEntityTidName() ?? "");
@@ -271,7 +271,7 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
           r.push(t.CollisionInfo.DamageId.toString());
           a = t.BulletInitParams.SkillId;
           r.push(a ? a.toFixed() : "");
-          o = e.GetComponent(40);
+          o = e.GetComponent(42);
           i = a ? o.GetSkillInfo(a) : undefined;
           r.push(i ? ESkillGenreName[i.SkillGenre] : "");
           e = t.Entity.Id;
@@ -288,7 +288,7 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
         a = this.Entity;
         (i = new Array()).push(CharacterGasDebugComponent_1.SecondsSinceStartup());
         i.push(CharacterGasDebugComponent_1.Jqr(Date.now()));
-        if (a?.GetComponent(101)) {
+        if (a?.GetComponent(103)) {
           i.push("角色");
         } else {
           i.push("怪物");
@@ -299,7 +299,7 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
         i.push(o);
         i.push(e.toString());
         i.push(ESkillGenreName[r]);
-        o = a.GetComponent(182);
+        o = a.GetComponent(184);
         i.push(o.GetCurrentValue(EAttributeId.Proto_Atk).toFixed());
         i.push(o.GetCurrentValue(EAttributeId.Proto_Crit).toFixed());
         i.push(o.GetCurrentValue(EAttributeId.Proto_CritDamage).toFixed());
@@ -313,7 +313,7 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
     this.RecordInpuuAction = (e, r, a) => {
       if (CharacterGasDebugComponent_1.$qr && ESkillNeedRecordName[e] !== undefined && this.Yqr(this.Entity) && this.Entity?.GetComponent(3).Active) {
         var i = this.Entity;
-        if (i?.GetComponent(101)) {
+        if (i?.GetComponent(103)) {
           var o = CharacterGasDebugComponent_1.LGr(i)?.Name ?? "unknown";
           var i = i.GetComponent(1);
           let t = new UE.Vector(0, 0, 0);
@@ -339,7 +339,7 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
     this.er1 = new Map();
     this.tr1 = 0;
     this.oGr = (t, e) => {
-      var e = this.Entity.GetComponent(40)?.GetSkillInfo(e);
+      var e = this.Entity.GetComponent(42)?.GetSkillInfo(e);
       CharacterGasDebugComponent_1.rGr ||= new Map();
       var r = this.Entity.Id;
       if (e.SkillGenre === 4) {
@@ -408,7 +408,7 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
     return this.iCd.join(" ");
   }
   GetTagDebugStrings() {
-    return this.Entity.GetComponent(215)?.TagContainer.GetDebugString() ?? "找不到tag组件";
+    return this.Entity.GetComponent(217)?.TagContainer.GetDebugString() ?? "找不到tag组件";
   }
   AddSkillLogString(t, ...e) {
     if (this.rCd.length >= MAX_DEBUG_STRING_NUMS) {
@@ -468,8 +468,8 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
     this.BCd.length = 0;
   }
   AddBulletDebugLogString(t, ...e) {
-    if (this.fZm.length >= MAX_DEBUG_STRING_NUMS) {
-      this.fZm.shift();
+    if (this.tif.length >= MAX_DEBUG_STRING_NUMS) {
+      this.tif.shift();
     }
     let r = "#";
     r += t;
@@ -479,12 +479,12 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
         r += `[${a[0]}: ${a[1]}]`;
       }
     }
-    this.fZm.push(r);
+    this.tif.push(r);
   }
   GetBulletLogString(t) {
     var e = [...t.matchAll(/[0-9]+/g)].map(t => t[0] ?? "");
     var r = [];
-    for (const a of this.fZm) {
+    for (const a of this.tif) {
       if (!(e.length > 0) || !!e.some(t => a.includes(t))) {
         r.push(a);
       }
@@ -492,7 +492,7 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
     return r.join("\n");
   }
   ClearBulletLogString() {
-    this.fZm.length = 0;
+    this.tif.length = 0;
   }
   GetTagContainerDebugString(e) {
     var r = e.GameplayTags?.Num() ?? 0;
@@ -507,7 +507,7 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
   }
   GetBuffEffectDebugString(t) {
     let e = "";
-    for (const r of this.Entity.GetComponent(183).BuffEffectManager.GetAllEffects()) {
+    for (const r of this.Entity.GetComponent(185).BuffEffectManager.GetAllEffects()) {
       if (this.cGr(t, String(r.BuffId))) {
         e += `${r.constructor.name} buffId:${r.BuffId} handle:${r.ActiveHandleId}\n`;
       }
@@ -520,7 +520,7 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
     var r;
     var a;
     var i = [...t.matchAll(/[0-9]+/g)].map(t => t[0] ?? "");
-    var t = this.Entity.GetComponent(78);
+    var t = this.Entity.GetComponent(80);
     if (t) {
       for (const [, o] of t.GetDebugShieldInfo()) {
         if (!(i.length > 0) || !!i.some(t => String(o.TemplateId).startsWith(t))) {
@@ -531,11 +531,11 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
         }
       }
     }
-    t = this.Entity.GetComponent(182)?.GetLockDebugString(i) ?? "";
+    t = this.Entity.GetComponent(184)?.GetLockDebugString(i) ?? "";
     return "\n\nShields:\n" + this.Fqr.join("\n") + t;
   }
   GetAttributeDebugStrings() {
-    var e = this.Entity.GetComponent(182);
+    var e = this.Entity.GetComponent(184);
     if (!e) {
       return "Invalid";
     }
@@ -557,7 +557,7 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
   }
   GetAllAttributeDebugStrings() {
     this.Vqr.length = 0;
-    var e = this.Entity.GetComponent(182);
+    var e = this.Entity.GetComponent(184);
     for (let t = 1; t < CharacterAttributeTypes_1.ATTRIBUTE_ID_MAX; t++) {
       var r = e.GetBaseValue(t);
       var a = e.GetCurrentValue(t);
@@ -582,7 +582,7 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
     return t;
   }
   GetAllAttributeDebugInfo() {
-    var a = this.Entity.GetComponent(182);
+    var a = this.Entity.GetComponent(184);
     if (!a) {
       return "Invalid";
     }
@@ -661,7 +661,7 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
   }
   DebugResetBaseValue(t, e) {
     if (t >= EAttributeId.Proto_Lv && t < CharacterAttributeTypes_1.ATTRIBUTE_ID_MAX) {
-      this.Entity.GetComponent(182).SetBaseValue(t, e);
+      this.Entity.GetComponent(184).SetBaseValue(t, e);
     }
   }
   static get IsServerLogOff() {
@@ -681,7 +681,7 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Battle", 19, "[CharacterDamageComponent]Request Buff Mode", ["isClientControl", t]);
     }
-    Net_1.Net.Call(23803, e, t => {
+    Net_1.Net.Call(18647, e, t => {
       this.ReceiveSwitchServerLogMode(t.Jjn);
     });
   }
@@ -736,7 +736,7 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
     UE.KuroStaticLibrary.SaveStringToFile(r + i.join("\n"), UE.BlueprintPathsLibrary.ProjectSavedDir() + this.Pt + "BulletRecord.csv", true);
     r = "X秒,当前时间,对象,对象ID,对象名称,伤害来源,结算ID,子弹名称,伤害值,技能ID,技能名称,唯一ID,Config ID,攻击,暴击,爆伤,生命,防御,伤害加成\n";
     UE.KuroStaticLibrary.SaveStringToFile(r + this.vGr.join("\n"), UE.BlueprintPathsLibrary.ProjectSavedDir() + this.Pt + "DamageRecord.csv", true);
-    r = "X秒,当前时间,对象,对象ID,对象名称,伤害来源,结算ID,子弹名称,伤害值,技能ID,技能名称,是否暴击,唯一ID,协奏能量,基础攻击,倍率系数,当前生效增伤,伤害加深,防御承伤系数,抗性承伤系数,实际生效防御值,共鸣能量变动,实时暴击率,是否弱点伤害类型,弱点伤害增幅系数,怪物类型系数,受击方通用伤害减免,受击方属性伤害减免,偏谐值,实时当前生命值,实时生命值上限,实时攻击,暴击,实时暴击伤害,实时防御,实时共鸣效率,实时共鸣能量上限,实时共鸣能量,实时普攻速度,实时重击速度,实时共鸣技能伤害加成,实时通用伤害加成,实时声骸技能伤害加成,实时普攻伤害加成,实时蓄力攻击伤害加成,实时共鸣解放伤害加成,实时连携技能伤害加成,实时物理伤害加成,实时冷凝伤害加成,实时热熔伤害加成,实时导电伤害加成,实时气动伤害加成,实时衍射伤害加成,实时解离伤害加成,实时物理伤害抗性,实时冷凝伤害抗性,实时热熔伤害抗性,实时导电伤害抗性,实时气动伤害抗性,实时衍射伤害抗性,实时解离伤害抗性,实时治疗效果加成,实时受治疗效果加成,实时通用受伤减免,实时物理伤害减免,实时冷凝伤害减免,实时热熔伤害减免,实时导电伤害减免,实时气动伤害减免,实时衍射伤害减免,实时解离伤害减免,实时韧性上限,实时韧性,实时韧性恢复速度,实时削韧倍率,实时被削韧倍率,实时狂暴上限,实时狂暴,实时狂暴恢复,实时空狂暴惩罚时间,实时破狂暴倍率,实时被破狂暴倍率,实时共振度上限,实时共振度上限,实时共振度恢复速度,实时空共振度惩罚时间,实时破共振度倍率,实时被破共振度倍率,实时弱点击破速率,实时弱点增幅,当前生命值,生命值上限,攻击,暴击,暴击伤害,防御,共鸣效率,共鸣能量上限,共鸣能量,普攻速度,重击速度,共鸣技能伤害加成,通用伤害加成,声骸技能伤害加成,普攻伤害加成,蓄力攻击伤害加成,共鸣解放伤害加成,连携技能伤害加成,物理伤害加成,冷凝伤害加成,热熔伤害加成,导电伤害加成,气动伤害加成,衍射伤害加成,解离伤害加成,物理伤害抗性,冷凝伤害抗性,热熔伤害抗性,导电伤害抗性,气动伤害抗性,衍射伤害抗性,解离伤害抗性,治疗效果加成,受治疗效果加成,通用受伤减免,物理伤害减免,冷凝伤害减免,热熔伤害减免,导电伤害减免,气动伤害减免,衍射伤害减免,解离伤害减免,韧性上限,韧性,韧性恢复速度,削韧倍率,被削韧倍率,狂暴上限,狂暴,狂暴恢复,空狂暴惩罚时间,破狂暴倍率,被破狂暴倍率,共振度上限,共振度上限,共振度恢复速度,空共振度惩罚时间,破共振度倍率,被破共振度倍率,弱点击破速率,弱点增幅,被击者实时当前生命值,被击者实时生命值上限,被击者实时攻击,被击者实时暴击,被击者实时暴击伤害,被击者实时防御,被击者实时共鸣效率,被击者实时共鸣能量上限,被击者实时共鸣能量,被击者实时普攻速度,被击者实时重击速度,被击者实时共鸣技能伤害加成,被击者实时通用伤害加成,被击者实时声骸技能伤害加成,被击者实时普攻伤害加成,被击者实时蓄力攻击伤害加成,被击者实时共鸣解放伤害加成,被击者实时连携技能伤害加成,被击者实时物理伤害加成,被击者实时冷凝伤害加成,被击者实时热熔伤害加成,被击者实时导电伤害加成,被击者实时气动伤害加成,被击者实时衍射伤害加成,被击者实时解离伤害加成,被击者实时物理伤害抗性,被击者实时冷凝伤害抗性,被击者实时热熔伤害抗性,被击者实时导电伤害抗性,被击者实时气动伤害抗性,被击者实时衍射伤害抗性,被击者实时解离伤害抗性,被击者实时治疗效果加成,被击者实时受治疗效果加成,被击者实时通用受伤减免,被击者实时物理伤害减免,被击者实时冷凝伤害减免,被击者实时热熔伤害减免,被击者实时导电伤害减免,被击者实时气动伤害减免,被击者实时衍射伤害减免,被击者实时解离伤害减免,被击者实时韧性上限,被击者实时韧性,被击者实时韧性恢复速度,被击者实时削韧倍率,被击者实时被削韧倍率,被击者实时狂暴上限,被击者实时狂暴,被击者实时狂暴恢复,被击者实时空狂暴惩罚时间,被击者实时破狂暴倍率,被击者实时被破狂暴倍率,被击者实时共振度上限,被击者实时共振度上限,被击者实时共振度恢复速度,被击者实时空共振度惩罚时间,被击者实时破共振度倍率,被击者实时被破共振度倍率,被击者实时弱点击破速率,被击者实时弱点增幅,被击者当前生命值,被击者生命值上限,被击者攻击,被击者暴击,被击者暴击伤害,被击者防御,被击者共鸣效率,被击者共鸣能量上限,被击者共鸣能量,被击者普攻速度,被击者重击速度,被击者共鸣技能伤害加成,被击者通用伤害加成,被击者声骸技能伤害加成,被击者普攻伤害加成,被击者蓄力攻击伤害加成,被击者共鸣解放伤害加成,被击者连携技能伤害加成,被击者物理伤害加成,被击者冷凝伤害加成,被击者热熔伤害加成,被击者导电伤害加成,被击者气动伤害加成,被击者衍射伤害加成,被击者解离伤害加成,被击者物理伤害抗性,被击者冷凝伤害抗性,被击者热熔伤害抗性,被击者导电伤害抗性,被击者气动伤害抗性,被击者衍射伤害抗性,被击者解离伤害抗性,被击者治疗效果加成,被击者受治疗效果加成,被击者通用受伤减免,被击者物理伤害减免,被击者冷凝伤害减免,被击者热熔伤害减免,被击者导电伤害减免,被击者气动伤害减免,被击者衍射伤害减免,被击者解离伤害减免,被击者韧性上限,被击者韧性,被击者韧性恢复速度,被击者削韧倍率,被击者被削韧倍率,被击者狂暴上限,被击者狂暴,被击者狂暴恢复,被击者空狂暴惩罚时间,被击者破狂暴倍率,被击者被破狂暴倍率,被击者共振度上限,被击者共振度上限,被击者共振度恢复速度,被击者空共振度惩罚时间,被击者破共振度倍率,被击者被破共振度倍率,被击者弱点击破速率,被击者弱点增幅,结算表HardnessLv,结算表Percent0,结算表Percent1,结算表ToughLv,结算表Energy,结算表ElementPowerType,结算表ElementPower,攻击者BuffID,攻击者Buff名称,受击者存在的BuffID,受击者存在的Buff名称\n";
+    r = "X秒,当前时间,对象,对象ID,对象名称,伤害来源,结算ID,子弹名称,伤害值,技能ID,技能名称,是否暴击,唯一ID,协奏能量,基础攻击,倍率系数,当前生效增伤,伤害总深,伤害加深,受击者集协buff层数,集协乘区伤害提升,防御承伤系数,抗性承伤系数,实际生效防御值,共鸣能量变动,实时暴击率,是否弱点伤害类型,弱点伤害增幅系数,怪物类型系数,受击方通用伤害减免,受击方属性伤害减免,偏谐值,实时当前生命值,实时生命值上限,实时攻击,暴击,实时暴击伤害,实时防御,实时共鸣效率,实时共鸣能量上限,实时共鸣能量,实时普攻速度,实时重击速度,实时共鸣技能伤害加成,实时通用伤害加成,实时声骸技能伤害加成,实时普攻伤害加成,实时蓄力攻击伤害加成,实时共鸣解放伤害加成,实时连携技能伤害加成,实时物理伤害加成,实时冷凝伤害加成,实时热熔伤害加成,实时导电伤害加成,实时气动伤害加成,实时衍射伤害加成,实时解离伤害加成,实时物理伤害抗性,实时冷凝伤害抗性,实时热熔伤害抗性,实时导电伤害抗性,实时气动伤害抗性,实时衍射伤害抗性,实时解离伤害抗性,实时治疗效果加成,实时受治疗效果加成,实时通用受伤减免,实时物理伤害减免,实时冷凝伤害减免,实时热熔伤害减免,实时导电伤害减免,实时气动伤害减免,实时衍射伤害减免,实时解离伤害减免,实时韧性上限,实时韧性,实时韧性恢复速度,实时削韧倍率,实时被削韧倍率,实时狂暴上限,实时狂暴,实时狂暴恢复,实时空狂暴惩罚时间,实时破狂暴倍率,实时被破狂暴倍率,实时共振度上限,实时共振度上限,实时共振度恢复速度,实时空共振度惩罚时间,实时破共振度倍率,实时被破共振度倍率,实时弱点击破速率,实时弱点增幅,当前生命值,生命值上限,攻击,暴击,暴击伤害,防御,共鸣效率,共鸣能量上限,共鸣能量,普攻速度,重击速度,共鸣技能伤害加成,通用伤害加成,声骸技能伤害加成,普攻伤害加成,蓄力攻击伤害加成,共鸣解放伤害加成,连携技能伤害加成,物理伤害加成,冷凝伤害加成,热熔伤害加成,导电伤害加成,气动伤害加成,衍射伤害加成,解离伤害加成,物理伤害抗性,冷凝伤害抗性,热熔伤害抗性,导电伤害抗性,气动伤害抗性,衍射伤害抗性,解离伤害抗性,治疗效果加成,受治疗效果加成,通用受伤减免,物理伤害减免,冷凝伤害减免,热熔伤害减免,导电伤害减免,气动伤害减免,衍射伤害减免,解离伤害减免,韧性上限,韧性,韧性恢复速度,削韧倍率,被削韧倍率,狂暴上限,狂暴,狂暴恢复,空狂暴惩罚时间,破狂暴倍率,被破狂暴倍率,共振度上限,共振度上限,共振度恢复速度,空共振度惩罚时间,破共振度倍率,被破共振度倍率,弱点击破速率,弱点增幅,被击者实时当前生命值,被击者实时生命值上限,被击者实时攻击,被击者实时暴击,被击者实时暴击伤害,被击者实时防御,被击者实时共鸣效率,被击者实时共鸣能量上限,被击者实时共鸣能量,被击者实时普攻速度,被击者实时重击速度,被击者实时共鸣技能伤害加成,被击者实时通用伤害加成,被击者实时声骸技能伤害加成,被击者实时普攻伤害加成,被击者实时蓄力攻击伤害加成,被击者实时共鸣解放伤害加成,被击者实时连携技能伤害加成,被击者实时物理伤害加成,被击者实时冷凝伤害加成,被击者实时热熔伤害加成,被击者实时导电伤害加成,被击者实时气动伤害加成,被击者实时衍射伤害加成,被击者实时解离伤害加成,被击者实时物理伤害抗性,被击者实时冷凝伤害抗性,被击者实时热熔伤害抗性,被击者实时导电伤害抗性,被击者实时气动伤害抗性,被击者实时衍射伤害抗性,被击者实时解离伤害抗性,被击者实时治疗效果加成,被击者实时受治疗效果加成,被击者实时通用受伤减免,被击者实时物理伤害减免,被击者实时冷凝伤害减免,被击者实时热熔伤害减免,被击者实时导电伤害减免,被击者实时气动伤害减免,被击者实时衍射伤害减免,被击者实时解离伤害减免,被击者实时韧性上限,被击者实时韧性,被击者实时韧性恢复速度,被击者实时削韧倍率,被击者实时被削韧倍率,被击者实时狂暴上限,被击者实时狂暴,被击者实时狂暴恢复,被击者实时空狂暴惩罚时间,被击者实时破狂暴倍率,被击者实时被破狂暴倍率,被击者实时共振度上限,被击者实时共振度上限,被击者实时共振度恢复速度,被击者实时空共振度惩罚时间,被击者实时破共振度倍率,被击者实时被破共振度倍率,被击者实时弱点击破速率,被击者实时弱点增幅,被击者当前生命值,被击者生命值上限,被击者攻击,被击者暴击,被击者暴击伤害,被击者防御,被击者共鸣效率,被击者共鸣能量上限,被击者共鸣能量,被击者普攻速度,被击者重击速度,被击者共鸣技能伤害加成,被击者通用伤害加成,被击者声骸技能伤害加成,被击者普攻伤害加成,被击者蓄力攻击伤害加成,被击者共鸣解放伤害加成,被击者连携技能伤害加成,被击者物理伤害加成,被击者冷凝伤害加成,被击者热熔伤害加成,被击者导电伤害加成,被击者气动伤害加成,被击者衍射伤害加成,被击者解离伤害加成,被击者物理伤害抗性,被击者冷凝伤害抗性,被击者热熔伤害抗性,被击者导电伤害抗性,被击者气动伤害抗性,被击者衍射伤害抗性,被击者解离伤害抗性,被击者治疗效果加成,被击者受治疗效果加成,被击者通用受伤减免,被击者物理伤害减免,被击者冷凝伤害减免,被击者热熔伤害减免,被击者导电伤害减免,被击者气动伤害减免,被击者衍射伤害减免,被击者解离伤害减免,被击者韧性上限,被击者韧性,被击者韧性恢复速度,被击者削韧倍率,被击者被削韧倍率,被击者狂暴上限,被击者狂暴,被击者狂暴恢复,被击者空狂暴惩罚时间,被击者破狂暴倍率,被击者被破狂暴倍率,被击者共振度上限,被击者共振度上限,被击者共振度恢复速度,被击者空共振度惩罚时间,被击者破共振度倍率,被击者被破共振度倍率,被击者弱点击破速率,被击者弱点增幅,结算表HardnessLv,结算表Percent0,结算表Percent1,结算表ToughLv,结算表Energy,结算表ElementPowerType,结算表ElementPower,攻击者BuffID,攻击者Buff名称,受击者存在的BuffID,受击者存在的Buff名称\n";
     UE.KuroStaticLibrary.SaveStringToFile(r + this.MGr.join("\n"), UE.BlueprintPathsLibrary.ProjectSavedDir() + this.Pt + "DamageRecord_Attr.csv", true);
     r = "X秒,当前时间,对象,对象ID,对象名称,伤害来源,结算ID,子弹名称,伤害值,技能ID,技能名称,唯一ID,是否暴击,当前生命值,生命值上限,攻击,暴击,暴击伤害,防御,共鸣效率,共鸣能量上限,共鸣能量,普攻速度,重击速度,共鸣技能伤害加成,通用伤害加成,声骸技能伤害加成,普攻伤害加成,蓄力攻击伤害加成,共鸣解放伤害加成,连携技能伤害加成,物理伤害加成,冷凝伤害加成,热熔伤害加成,导电伤害加成,气动伤害加成,衍射伤害加成,解离伤害加成,物理伤害抗性,冷凝伤害抗性,热熔伤害抗性,导电伤害抗性,气动伤害抗性,衍射伤害抗性,解离伤害抗性,治疗效果加成,受治疗效果加成,通用受伤减免,物理伤害减免,冷凝伤害减免,热熔伤害减免,导电伤害减免,气动伤害减免,衍射伤害减免,解离伤害减免,韧性上限,韧性,韧性恢复速度,削韧倍率,被削韧倍率,狂暴上限,狂暴,狂暴恢复,空狂暴惩罚时间,破狂暴倍率,被破狂暴倍率,共振度上限,共振度上限,共振度恢复速度,空共振度惩罚时间,破共振度倍率,被破共振度倍率,弱点击破速率,弱点增幅,当前生命值,生命值上限,攻击,暴击,暴击伤害,防御,共鸣效率,共鸣能量上限,共鸣能量,普攻速度,重击速度,共鸣技能伤害加成,通用伤害加成,声骸技能伤害加成,普攻伤害加成,蓄力攻击伤害加成,共鸣解放伤害加成,连携技能伤害加成,物理伤害加成,冷凝伤害加成,热熔伤害加成,导电伤害加成,气动伤害加成,衍射伤害加成,解离伤害加成,物理伤害抗性,冷凝伤害抗性,热熔伤害抗性,导电伤害抗性,气动伤害抗性,衍射伤害抗性,解离伤害抗性,治疗效果加成,受治疗效果加成,通用受伤减免,物理伤害减免,冷凝伤害减免,热熔伤害减免,导电伤害减免,气动伤害减免,衍射伤害减免,解离伤害减免,韧性上限,韧性,韧性恢复速度,削韧倍率,被削韧倍率,狂暴上限,狂暴,狂暴恢复,空狂暴惩罚时间,破狂暴倍率,被破狂暴倍率,共振度上限,共振度上限,共振度恢复速度,空共振度惩罚时间,破共振度倍率,被破共振度倍率,弱点击破速率,弱点增幅,削刃,大招能量,元素能量类型,元素能量,存在的BuffID,存在的Buff名称,存在的BuffID,存在的Buff名称\n";
     UE.KuroStaticLibrary.SaveStringToFile(r + this.EGr.join("\n"), UE.BlueprintPathsLibrary.ProjectSavedDir() + this.Pt + "DamageRecord_Snipeshot.csv", true);
@@ -939,7 +939,7 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
       s.push(o.Type);
       s.push(o.ConfigId);
       s.push(o.Name);
-      if (a.GetComponent(101)) {
+      if (a.GetComponent(103)) {
         s.push("角色");
       } else if (a.GetComponent(0)?.GetEntityType() === Protocol_1.Aki.Protocol.kks.Proto_SceneEntity) {
         s.push("场景伤害");
@@ -959,8 +959,8 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
       s.push(t?.BulletName ?? "");
       s.push(i.QAs.toFixed());
       s.push(o.toFixed());
-      let r = a.GetComponent(40)?.GetSkillInfo(o);
-      r = r || e?.GetComponent(40)?.GetSkillInfo(o);
+      let r = a.GetComponent(42)?.GetSkillInfo(o);
+      r = r || e?.GetComponent(42)?.GetSkillInfo(o);
       s.push(r?.SkillName?.toString());
       s.push(MathUtils_1.MathUtils.LongToBigInt(i.Zjn.F4n).toString());
       var n = a?.CheckGetComponent(0).GetPbDataId().toFixed();
@@ -989,7 +989,7 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
   }
   static DGr(t, e, r, a) {
     let i = this.IGr;
-    if (!t?.GetComponent(101)) {
+    if (!t?.GetComponent(103)) {
       i = this.TGr;
     }
     var o;
@@ -1160,7 +1160,7 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
   }
   GetCltBuffHandleSet() {
     const e = new Set();
-    this.Entity.GetComponent(220)?.GetAllBuffs()?.forEach(t => e.add(t.Handle));
+    this.Entity.GetComponent(222)?.GetAllBuffs()?.forEach(t => e.add(t.Handle));
     return e;
   }
   Union(e, t) {
@@ -1174,7 +1174,7 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
     this.er1.set(e, r);
     var t = Protocol_1.Aki.Protocol.Uis.create();
     t.F4n = MathUtils_1.MathUtils.NumberToLong(ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(this.Entity.Id));
-    Net_1.Net.Call(22908, t, t => {
+    Net_1.Net.Call(17817, t, t => {
       if (this.er1.has(e)) {
         this.Union(this.Zi1, this.er1.get(e));
         this.er1.delete(e);
@@ -1242,7 +1242,7 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
         ConfigId: e.GetPbDataId().toFixed()
       };
     }
-    if (a === Protocol_1.Aki.Protocol.kks.HI_ && CharacterGasDebugComponent_1.lXf(t)) {
+    if (a === Protocol_1.Aki.Protocol.kks.HI_ && CharacterGasDebugComponent_1.g_g(t)) {
       const e = t.GetComponent(0);
       if (e) {
         return {
@@ -1256,7 +1256,7 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
   static SetDamageRecord(t) {
     var e = Protocol_1.Aki.Protocol.Debug.GZn.create();
     e.tWn = t;
-    Net_1.Net.Call(20911, e, t => {
+    Net_1.Net.Call(17258, e, t => {
       if (t && Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("CombatInfo", 20, "", ["Response", t]);
       }
@@ -1273,7 +1273,7 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
     var t;
     var a;
     var i = EntitySystem_1.EntitySystem.Get(ModelManager_1.ModelManager.CreatureModel.GetEntityId(MathUtils_1.MathUtils.LongToNumber(r.Zjn.F4n)));
-    if (i.GetComponent(0)?.GetEntityType() === Protocol_1.Aki.Protocol.kks.Proto_SceneEntity || i.GetComponent(0)?.GetEntityType() === Protocol_1.Aki.Protocol.kks.HI_ && CharacterGasDebugComponent_1.lXf(i) || i.GetComponent(27)?.GetStatisticsEnable()) {
+    if (i.GetComponent(0)?.GetEntityType() === Protocol_1.Aki.Protocol.kks.Proto_SceneEntity || i.GetComponent(0)?.GetEntityType() === Protocol_1.Aki.Protocol.kks.HI_ && CharacterGasDebugComponent_1.g_g(i) || i.GetComponent(27)?.GetStatisticsEnable()) {
       t = ((MathUtils_1.MathUtils.LongToNumber(r.WAs) - CharacterGasDebugComponent_1.CGr) * 0.001 - CharacterGasDebugComponent_1.sGr).toFixed(2);
       a = this.Jqr(r.WAs);
       this.RecordDamage(i, r, t, a);
@@ -1282,8 +1282,8 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
       this.xGr(i, r);
     }
   }
-  static lXf(t) {
-    return !!t.GetComponent(267);
+  static g_g(t) {
+    return !!t.GetComponent(268);
   }
   static xGr(e, r) {
     var a = e.GetComponent(0);
@@ -1335,8 +1335,8 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
         h.push(i.QAs.toFixed());
         o = MathUtils_1.MathUtils.LongToNumber(i.r5n);
         h.push(o.toFixed());
-        let r = a.GetComponent(40)?.GetSkillInfo(o)?.SkillName;
-        r = r || e?.GetComponent(40)?.GetSkillInfo(o)?.SkillName;
+        let r = a.GetComponent(42)?.GetSkillInfo(o)?.SkillName;
+        r = r || e?.GetComponent(42)?.GetSkillInfo(o)?.SkillName;
         h.push(r?.toString() ?? "");
         h.push(MathUtils_1.MathUtils.LongToBigInt(i.Zjn.F4n).toString());
         h.push(i.YAs ? "1" : "0");
@@ -1420,8 +1420,8 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
         u.push(o.QAs.toFixed());
         n = MathUtils_1.MathUtils.LongToNumber(o.r5n);
         u.push(n.toString());
-        let r = i.GetComponent(40)?.GetSkillInfo(n)?.SkillName;
-        r = r || e?.GetComponent(40)?.GetSkillInfo(n)?.SkillName;
+        let r = i.GetComponent(42)?.GetSkillInfo(n)?.SkillName;
+        r = r || e?.GetComponent(42)?.GetSkillInfo(n)?.SkillName;
         u.push(r?.toString() ?? "");
         u.push(o.YAs ? "1" : "0");
         u.push(MathUtils_1.MathUtils.LongToBigInt(o.Zjn.F4n).toString());
@@ -1437,17 +1437,20 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
         u.push(s.toFixed(2));
         u.push(o?.QKd?.jKd?.toString() ?? "0");
         u.push(o?.QKd?.HKd?.toString() ?? "0");
+        u.push(o?.QKd?.PFg?.toString() ?? "0");
+        u.push(o?.QKd?.wFg?.toString() ?? "0");
+        u.push(o?.QKd?.AFg?.toString() ?? "0");
         u.push(o?.QKd?.$Kd?.toString() ?? "0");
         u.push(o?.QKd?.WKd?.toString() ?? "0");
         u.push(o?.QKd?.NKd?.toString() ?? "0");
         u.push(MathUtils_1.MathUtils.LongToBigInt(o?.QKd?.FKd ?? 0).toString());
-        u.push(o?.QKd?.pYm ? MathUtils_1.MathUtils.LongToNumber(o.QKd.pYm).toString() : "0");
-        u.push(o?.zHf ? "1" : "0");
-        u.push((o?.QKd?.QHf ?? 0).toString());
-        u.push((o?.QKd?.KHf ?? 0).toString());
-        u.push((o?.QKd?.XHf ?? 0).toString());
-        u.push((o?.QKd?.YHf ?? 0).toString());
-        u.push((o?.QKd?.KJf ?? 0).toString());
+        u.push(o?.QKd?.FJm ? MathUtils_1.MathUtils.LongToNumber(o.QKd.FJm).toString() : "0");
+        u.push(o?._ig ? "1" : "0");
+        u.push((o?.QKd?.sig ?? 0).toString());
+        u.push((o?.QKd?.aig ?? 0).toString());
+        u.push((o?.QKd?.hig ?? 0).toString());
+        u.push((o?.QKd?.lig ?? 0).toString());
+        u.push((o?.QKd?.Ypg ?? 0).toString());
         a = u.length;
         var n = attributeIdArray.length;
         CharacterGasDebugComponent_1.BGr(o.Zjn.HAs, u, a, a + n);

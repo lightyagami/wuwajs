@@ -12,7 +12,7 @@ class PhantomInteractGridMediumItemGrid extends MediumItemGrid_1.MediumItemGrid 
     this.Nji = undefined;
     this.NOe = -1;
     this.$8i = undefined;
-    this.Twf = false;
+    this.XDf = false;
     this.RFe = t => {
       if (t.State !== 1) {
         this.GetItemGridExtendToggle().SetToggleState(1, false);
@@ -27,7 +27,7 @@ class PhantomInteractGridMediumItemGrid extends MediumItemGrid_1.MediumItemGrid 
     if ((this.$8i = t).IsSpecial) {
       s = t.IsInArea ? 1 : 2;
     }
-    this.Twf = PhantomInteractModel_1.PhantomInteractModel.CheckPhantomInteractUnlockRedDot(t.MonsterId) && t.InSlotIndex < 0;
+    this.XDf = PhantomInteractModel_1.PhantomInteractModel.CheckPhantomInteractUnlockRedDot(t.MonsterId) && t.InSlotIndex < 0;
     i = {
       Type: 3,
       Data: t,
@@ -38,7 +38,7 @@ class PhantomInteractGridMediumItemGrid extends MediumItemGrid_1.MediumItemGrid 
       SpecialSkill: s,
       IsDisable: !t.IsUnlocked,
       SortNum: t.InSlotIndex + 1,
-      IsRedDotVisible: this.Twf,
+      IsRedDotVisible: this.XDf,
       QualityId: 1
     };
     this.SetUseFixedAsync(true);

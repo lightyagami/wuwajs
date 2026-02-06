@@ -777,41 +777,8 @@ class PlatformSdkBase {
     }
     ue_1.KuroSDKManager.QueryExternalAchievements();
   }
-  UnlockSdkTrophy(e) {
-    this.UpdateExternalAchievementProgress(e.toString(), 100);
-  }
-  UpdateExternalAchievementProgress(e, o) {
-    var r;
-    if (!!this.ExternalLoginState && !((this.AchievementMap.get(e) ? this.AchievementMap.get(e).Progress : 0) >= 100)) {
-      if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("KuroSdk", 27, "UpdateExternalAchievementProgress", ["achievementName", e]);
-      }
-      (r = new KuroSdkData_1.AchievementContentData()).AchievementId = e;
-      r.Progress = o;
-      (e = new KuroSdkData_1.AchievementData()).Achievements = new Array();
-      e.Achievements.push(r);
-      o = Json_1.Json.Stringify(e);
-      ue_1.KuroSDKManager.WriteExternalAchievements(o);
-    }
-  }
-  BindExternalEvent() {
-    this.KuroBindExternalLoginResult();
-    this.KuroBindExternalAchievementWriteResult();
-    this.KuroBindExternalAchievementQueryResult();
-  }
-  KuroBindExternalLoginResult() {
-    UE.KuroSDKManager.Get().ExternalLoginCallBack.Clear();
-    UE.KuroSDKManager.Get().ExternalLoginCallBack.Add(e => {
-      if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("KuroSdk", 27, "ShowExternalLoginUI", ["result", e]);
-      }
-      if (e) {
-        this.ExternalLoginState = true;
-        this.QueryExternalAchievement();
-      }
-      this.ExternalLoginState = e;
-    });
-  }
+  UnlockSdkTrophy(e) {}
+  BindExternalEvent() {}
   KuroBindExternalAchievementQueryResult() {
     UE.KuroSDKManager.Get().ExternalQueryAchievementsDelegate.Clear();
     UE.KuroSDKManager.Get().ExternalQueryAchievementsDelegate.Add((e, o) => {

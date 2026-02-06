@@ -181,12 +181,12 @@ class BulletStaticFunction {
       l.DisablePostProcess = o.EffectInfo.DisablePostProcess;
     }
     let r = undefined;
-    var s = o.BulletInitParams.Owner.GetComponent(3);
+    var s = o.BulletInitParams.Owner.GetComponent(1);
     if (s) {
       r = s.GetReplaceEffect(e);
     }
     var s = EffectSystem_1.EffectSystem.SpawnEffect(t, i, r || e, a, l, 0);
-    EffectSystem_1.EffectSystem.SetAdditionTimeScale(14, s, o.Attacker?.GetComponent(131)?.GetTopForeverTimeScale(0) ?? ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation);
+    EffectSystem_1.EffectSystem.SetAdditionTimeScale(14, s, o.Attacker?.GetComponent(133)?.GetTopForeverTimeScale(0) ?? ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation);
     var t = EffectSystem_1.EffectSystem.GetNiagaraComponent(s);
     if (o.AttackerActorComp?.Valid && (i = o.AttackerActorComp.Owner, e = o.Attacker ? o.Attacker.Id : undefined, i) && e && (a = i.GetComponentByClass(UE.KuroEnviInteractionComponent.StaticClass())) && a.IsValid() && a.bUseSPModelShiftColor) {
       if (t instanceof UE.NiagaraComponent) {
@@ -209,7 +209,7 @@ class BulletStaticFunction {
         if (o.IsFinishAuto) {
           if (e) {
             EffectSystem_1.EffectSystem.SetTimeScale(o.Effect, 1);
-            i = t.Attacker?.GetComponent(131)?.GetTopForeverTimeScale(0) ?? ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation;
+            i = t.Attacker?.GetComponent(133)?.GetTopForeverTimeScale(0) ?? ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation;
             EffectSystem_1.EffectSystem.SetAdditionTimeScale(14, o.Effect, i);
           }
           EffectSystem_1.EffectSystem.StopEffectById(o.Effect, "[BulletStaticFunction.DestroyEffect] IsFinishAuto=true", false);
@@ -280,7 +280,7 @@ class HitStaticFunction {
   static CreateEffectContext(e, i) {
     if (e) {
       var o;
-      var a = e.GetComponent(52);
+      var a = e.GetComponent(54);
       var l = e.GetComponent(1);
       let t = undefined;
       if (l?.Valid) {

@@ -33,22 +33,22 @@ class DeadReviveController extends UiControllerBase_1.UiControllerBase {
     return true;
   }
   static OnAddEvents() {
-    Net_1.Net.Register(17798, e => {
+    Net_1.Net.Register(23452, e => {
       DeadReviveController.r0a(e);
     });
-    Net_1.Net.Register(20498, e => {
+    Net_1.Net.Register(20057, e => {
       DeadReviveController.o0a(e);
     });
-    Net_1.Net.Register(18168, DeadReviveController.PLc);
-    Net_1.Net.Register(17707, DeadReviveController.RBc);
+    Net_1.Net.Register(21779, DeadReviveController.PLc);
+    Net_1.Net.Register(15353, DeadReviveController.RBc);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PlotNetworkEnd, DeadReviveController.hWe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRevive, DeadReviveController.g7r);
   }
   static OnRemoveEvents() {
-    Net_1.Net.UnRegister(17798);
-    Net_1.Net.UnRegister(20498);
-    Net_1.Net.UnRegister(18168);
-    Net_1.Net.UnRegister(17707);
+    Net_1.Net.UnRegister(23452);
+    Net_1.Net.UnRegister(20057);
+    Net_1.Net.UnRegister(21779);
+    Net_1.Net.UnRegister(15353);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PlotNetworkEnd, DeadReviveController.hWe);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRevive, DeadReviveController.g7r);
   }
@@ -57,11 +57,11 @@ class DeadReviveController extends UiControllerBase_1.UiControllerBase {
     if (!DeadReviveController.n0a) {
       (o = new Protocol_1.Aki.Protocol.z1s()).bVn = e;
       DeadReviveController.n0a = true;
-      Net_1.Net.Call(17060, o, e => {
+      Net_1.Net.Call(20066, o, e => {
         DeadReviveController.n0a = false;
         if (e) {
           if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20168);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26018);
             r?.(false);
           } else {
             r?.(true);
@@ -212,7 +212,7 @@ class DeadReviveController extends UiControllerBase_1.UiControllerBase {
     }
     let r = false;
     for (const o of ModelManager_1.ModelManager.SceneTeamModel.GetTeamEntities(true)) {
-      if (o.Entity?.GetComponent(215)?.HasTag(-58810558)) {
+      if (o.Entity?.GetComponent(217)?.HasTag(-58810558)) {
         r = true;
         break;
       }
@@ -228,7 +228,7 @@ class DeadReviveController extends UiControllerBase_1.UiControllerBase {
           var t = a.Entity.GetComponent(3);
           t.SetInputRotator(o);
           t.SetActorLocationAndRotation(r, o, "复活流程.复活其他角色", false);
-          a.Entity.GetComponent(71)?.ClearReplaySamples();
+          a.Entity.GetComponent(73)?.ClearReplaySamples();
         } else {
           t = a.Entity.GetComponent(0);
           t?.SetLivingStatus(Protocol_1.Aki.Protocol.JEs.Proto_Alive);
@@ -307,7 +307,7 @@ class DeadReviveController extends UiControllerBase_1.UiControllerBase {
     }).finally(() => {
       SceneTeamController_1.SceneTeamController.ShowControlledRole(ModelManager_1.ModelManager.PlayerInfoModel.GetId());
       var e = new Protocol_1.Aki.Protocol.pCs();
-      Net_1.Net.Call(21130, e, () => {});
+      Net_1.Net.Call(18760, e, () => {});
       var e = ModelManager_1.ModelManager.DeadReviveModel.ChangeRoleIdAfterRevive;
       if (e && (e = ModelManager_1.ModelManager.SceneTeamModel.GetTeamItem(e, {
         ParamType: 0,
@@ -345,7 +345,7 @@ class DeadReviveController extends UiControllerBase_1.UiControllerBase {
   static DLc(e) {
     var r = new Protocol_1.Aki.Protocol.Cec();
     r.Q6n = e;
-    Net_1.Net.Call(16833, r, () => {});
+    Net_1.Net.Call(26430, r, () => {});
   }
 }
 (exports.DeadReviveController = DeadReviveController).n0a = false;

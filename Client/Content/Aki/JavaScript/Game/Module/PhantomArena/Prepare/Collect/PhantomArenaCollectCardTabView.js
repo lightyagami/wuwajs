@@ -29,6 +29,7 @@ class PhantomArenaCollectCardTabView extends UiTabViewBase_1.UiTabViewBase {
     this.Mli = undefined;
     this.S2t = undefined;
     this.MPu = undefined;
+    this.Bvg = -1;
     this.hoc = (e, t) => {
       if (ModelManager_1.ModelManager.PhantomArenaModel.GetCardRewardStateById(e) === 2) {
         this.hOe();
@@ -53,7 +54,8 @@ class PhantomArenaCollectCardTabView extends UiTabViewBase_1.UiTabViewBase {
       this.jqe();
     };
     this.Hgu = e => {
-      this.cHt();
+      this.cHt(true);
+      this.Hxt();
       this.jqe();
     };
     this.jgu = e => {};
@@ -69,7 +71,13 @@ class PhantomArenaCollectCardTabView extends UiTabViewBase_1.UiTabViewBase {
       return e;
     };
     this.jli = () => {
-      return new CardElementCountItem_1.CardElementCountItem();
+      var e = new CardElementCountItem_1.CardElementCountItem();
+      e.SelectCallBack = this.kvg;
+      return e;
+    };
+    this.kvg = e => {
+      this.Bvg = e;
+      this.cHt(false);
     };
   }
   OnRegisterComponent() {
@@ -87,7 +95,8 @@ class PhantomArenaCollectCardTabView extends UiTabViewBase_1.UiTabViewBase {
     this.MPu = this.GetLoopScrollViewComponent(4).GetContent().GetComponentByClass(UE.UIInturnAnimController.StaticClass());
   }
   OnBeforeShow() {
-    this.cHt();
+    this.cHt(true);
+    this.Hxt();
     this.jqe();
   }
   OnAfterShow() {
@@ -104,16 +113,26 @@ class PhantomArenaCollectCardTabView extends UiTabViewBase_1.UiTabViewBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPhantomArenaCardUnlock, this.Hgu);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPhantomArenaCardOutlookUnlock, this.Hgu);
   }
-  cHt() {
-    var e = ModelManager_1.ModelManager.PhantomArenaModel.GetCollectCardDataList(this.ActivityId);
-    this.CardScrollView.RefreshByData(e, true);
-    var e = ModelManager_1.ModelManager.PhantomArenaModel.GetCollectCardElementDataList(this.ActivityId);
-    this.Mli.RefreshByData(e);
-    var e = ConfigManager_1.ConfigManager.TextConfig.GetMultiTextByKey(PhantomArenaDefine_1.COLLECT_ELEMENT_PHYSICAL_NAME, "");
-    var t = ModelManager_1.ModelManager.PhantomArenaModel.GetCollectCardElementCount(this.ActivityId).get(0);
-    var i = t?.[0] ?? 0;
-    var t = t?.[1] ?? 0;
-    this.GetText(7).SetText(StringUtils_1.StringUtils.Format("{0} {1}/{2}", e, i.toString(), t.toString()));
+  cHt(e) {
+    var t = ModelManager_1.ModelManager.PhantomArenaModel.GetCollectCardDataList(this.ActivityId, this.Bvg);
+    this.CardScrollView.RefreshByData(t, e);
+  }
+  Hxt() {
+    var e;
+    var t;
+    var i = ModelManager_1.ModelManager.PhantomArenaModel.GetCollectCardElementDataList(this.ActivityId);
+    this.Mli.RefreshByData(i, () => {
+      this.Mli?.SelectGridProxyByKey(this.Bvg, false);
+    });
+    if (ModelManager_1.ModelManager.PhantomArenaModel.IsNewPhantomArenaActivity(this.ActivityId)) {
+      this.GetText(7)?.SetUIActive(false);
+    } else {
+      this.GetText(7)?.SetUIActive(true);
+      i = ConfigManager_1.ConfigManager.TextConfig.GetMultiTextByKey(PhantomArenaDefine_1.COLLECT_ELEMENT_PHYSICAL_NAME, "");
+      e = (t = ModelManager_1.ModelManager.PhantomArenaModel.GetCollectCardElementCount(this.ActivityId).get(0))?.[0] ?? 0;
+      t = t?.[1] ?? 0;
+      this.GetText(7).SetText(StringUtils_1.StringUtils.Format("{0} {1}/{2}", i, e.toString(), t.toString()));
+    }
   }
   jqe() {
     var e = ModelManager_1.ModelManager.PhantomArenaModel.GetCardRewardConfigList(this.ActivityId);

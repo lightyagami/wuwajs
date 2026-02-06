@@ -19,7 +19,7 @@ class LevelFlowUseSkillAction extends LevelFlowActionBase_1.LevelFlowActionBase 
     return this;
   }
   OnExecute() {
-    var e = EntitySystem_1.EntitySystem.GetComponent(this.E0, 40);
+    var e = EntitySystem_1.EntitySystem.GetComponent(this.E0, 42);
     if (e) {
       e.BeginSkillAsync(this.wmo, {
         Reason: "LevelFlowUseSkillAction"

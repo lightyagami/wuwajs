@@ -29,7 +29,7 @@ class HandBookController extends UiControllerBase_1.UiControllerBase {
     }
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(21693, e => {
+    Net_1.Net.Register(21806, e => {
       ModelManager_1.ModelManager.HandBookModel.UpdateHandBookActiveStateMap(e.h5n, e.cws);
       if (e.dws && (this.Aei(e.h5n, e.cws), e.h5n === ModelManager_1.ModelManager.HandBookModel.GetServerHandBookType(2))) {
         if ((e = ConfigManager_1.ConfigManager.HandBookConfig.GetGeographyHandBookConfig(e.cws.s5n))?.GeographyTabType === 2) {
@@ -80,7 +80,7 @@ class HandBookController extends UiControllerBase_1.UiControllerBase {
   }
   static async SendIllustratedRedDotRequest() {
     var e = Protocol_1.Aki.Protocol.pos.create();
-    var e = await Net_1.Net.CallAsync(29427, e);
+    var e = await Net_1.Net.CallAsync(17314, e);
     if (e) {
       ModelManager_1.ModelManager.HandBookModel.InitHandBookRedDotList(e._ws);
     }
@@ -88,7 +88,7 @@ class HandBookController extends UiControllerBase_1.UiControllerBase {
   static async SendIllustratedInfoRequestAsync(e) {
     var t = Protocol_1.Aki.Protocol.Sos.create();
     t.E9n = ModelManager_1.ModelManager.HandBookModel.GetServerHandBookTypeList(e);
-    var a = await Net_1.Net.CallAsync(16357, t);
+    var a = await Net_1.Net.CallAsync(24610, t);
     if (a) {
       ModelManager_1.ModelManager.HandBookModel.ClearHandBookActiveStateMap();
       var o = a.uws.length;
@@ -102,7 +102,7 @@ class HandBookController extends UiControllerBase_1.UiControllerBase {
   static async SendIllustratedInfoRequest(e) {
     var t = Protocol_1.Aki.Protocol.Sos.create();
     t.E9n = ModelManager_1.ModelManager.HandBookModel.GetServerHandBookTypeList(e);
-    var a = await Net_1.Net.CallAsync(16357, t);
+    var a = await Net_1.Net.CallAsync(24610, t);
     if (a) {
       ModelManager_1.ModelManager.HandBookModel.ClearHandBookActiveStateMap();
       var o = a.uws.length;
@@ -116,10 +116,10 @@ class HandBookController extends UiControllerBase_1.UiControllerBase {
     const a = Protocol_1.Aki.Protocol.Los.create();
     a.h5n = ModelManager_1.ModelManager.HandBookModel.GetServerHandBookType(t);
     a.s5n = e;
-    Net_1.Net.Call(18465, a, e => {
+    Net_1.Net.Call(25601, a, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17286, e.lvs);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25707, e.lvs);
         } else {
           ModelManager_1.ModelManager.HandBookModel.UpdateRedDot(t, a.s5n);
         }
@@ -130,9 +130,9 @@ class HandBookController extends UiControllerBase_1.UiControllerBase {
     var a = Protocol_1.Aki.Protocol.yos.create();
     a.h5n = ModelManager_1.ModelManager.HandBookModel.GetServerHandBookType(e);
     a.s5n = t;
-    Net_1.Net.Call(29853, a, e => {
+    Net_1.Net.Call(26347, a, e => {
       if (e && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 28542, e.lvs);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20791, e.lvs);
       }
     });
   }
@@ -201,7 +201,7 @@ class HandBookController extends UiControllerBase_1.UiControllerBase {
   }
   static async RoleIllustratedInfoRequest() {
     var e = Protocol_1.Aki.Protocol.Xad.create();
-    var e = await Net_1.Net.CallAsync(27633, e);
+    var e = await Net_1.Net.CallAsync(23046, e);
     if (e) {
       ModelManager_1.ModelManager.HandBookModel.RefreshRoleHandBookOpenTime(e.zad);
       ModelManager_1.ModelManager.HandBookModel.RefreshWeaponHandBookOpenTime(e.Jad);

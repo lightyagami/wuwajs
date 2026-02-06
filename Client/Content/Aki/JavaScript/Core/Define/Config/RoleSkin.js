@@ -16,6 +16,9 @@ class RoleSkin {
   get RoleId() {
     return this.roleid();
   }
+  get GroupId() {
+    return this.groupid();
+  }
   get SuitWeaponSkinId() {
     return this.suitweaponskinid();
   }
@@ -193,7 +196,7 @@ class RoleSkin {
       return 0;
     }
   }
-  suitweaponskinid() {
+  groupid() {
     var t = this.J7.__offset(this.z7, 8);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
@@ -201,7 +204,7 @@ class RoleSkin {
       return 0;
     }
   }
-  headid() {
+  suitweaponskinid() {
     var t = this.J7.__offset(this.z7, 10);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
@@ -209,7 +212,7 @@ class RoleSkin {
       return 0;
     }
   }
-  qualityid() {
+  headid() {
     var t = this.J7.__offset(this.z7, 12);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
@@ -217,15 +220,15 @@ class RoleSkin {
       return 0;
     }
   }
-  name(t) {
-    var i = this.J7.__offset(this.z7, 14);
-    var i = i ? this.J7.__string(this.z7 + i, t) : null;
-    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(i);
+  qualityid() {
+    var t = this.J7.__offset(this.z7, 14);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
     }
-    return i;
   }
-  titlename(t) {
+  name(t) {
     var i = this.J7.__offset(this.z7, 16);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -233,7 +236,7 @@ class RoleSkin {
     }
     return i;
   }
-  subdecname(t) {
+  titlename(t) {
     var i = this.J7.__offset(this.z7, 18);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -241,7 +244,7 @@ class RoleSkin {
     }
     return i;
   }
-  typedescription(t) {
+  subdecname(t) {
     var i = this.J7.__offset(this.z7, 20);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -249,7 +252,7 @@ class RoleSkin {
     }
     return i;
   }
-  attributesdescription(t) {
+  typedescription(t) {
     var i = this.J7.__offset(this.z7, 22);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -257,7 +260,7 @@ class RoleSkin {
     }
     return i;
   }
-  bgdescription(t) {
+  attributesdescription(t) {
     var i = this.J7.__offset(this.z7, 24);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -265,7 +268,7 @@ class RoleSkin {
     }
     return i;
   }
-  iconmiddle(t) {
+  bgdescription(t) {
     var i = this.J7.__offset(this.z7, 26);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -273,8 +276,16 @@ class RoleSkin {
     }
     return i;
   }
-  iconsmall(t) {
+  iconmiddle(t) {
     var i = this.J7.__offset(this.z7, 28);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
+  iconsmall(t) {
+    var i = this.J7.__offset(this.z7, 30);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -285,7 +296,7 @@ class RoleSkin {
     return this.itemaccess(t);
   }
   itemaccess(t) {
-    var i = this.J7.__offset(this.z7, 30);
+    var i = this.J7.__offset(this.z7, 32);
     if (i) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
@@ -293,7 +304,7 @@ class RoleSkin {
     }
   }
   itemaccessLength() {
-    var t = this.J7.__offset(this.z7, 30);
+    var t = this.J7.__offset(this.z7, 32);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -301,7 +312,7 @@ class RoleSkin {
     }
   }
   itemaccessArray() {
-    var t = this.J7.__offset(this.z7, 30);
+    var t = this.J7.__offset(this.z7, 32);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -309,14 +320,6 @@ class RoleSkin {
     }
   }
   sortindex() {
-    var t = this.J7.__offset(this.z7, 32);
-    if (t) {
-      return this.J7.readInt32(this.z7 + t);
-    } else {
-      return 0;
-    }
-  }
-  reddotdisablerule() {
     var t = this.J7.__offset(this.z7, 34);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
@@ -324,19 +327,19 @@ class RoleSkin {
       return 0;
     }
   }
-  showinbag() {
+  reddotdisablerule() {
     var t = this.J7.__offset(this.z7, 36);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  showinbag() {
+    var t = this.J7.__offset(this.z7, 38);
     return !t || !!this.J7.readInt8(this.z7 + t);
   }
   obtainedshowdescription(t) {
-    var i = this.J7.__offset(this.z7, 38);
-    var i = i ? this.J7.__string(this.z7 + i, t) : null;
-    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(i);
-    }
-    return i;
-  }
-  icon(t) {
     var i = this.J7.__offset(this.z7, 40);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -344,7 +347,7 @@ class RoleSkin {
     }
     return i;
   }
-  functiondesc(t) {
+  icon(t) {
     var i = this.J7.__offset(this.z7, 42);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -352,7 +355,7 @@ class RoleSkin {
     }
     return i;
   }
-  firstobtaindesc(t) {
+  functiondesc(t) {
     var i = this.J7.__offset(this.z7, 44);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -360,8 +363,16 @@ class RoleSkin {
     }
     return i;
   }
+  firstobtaindesc(t) {
+    var i = this.J7.__offset(this.z7, 46);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
   quality() {
-    var t = this.J7.__offset(this.z7, 46);
+    var t = this.J7.__offset(this.z7, 48);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -369,14 +380,6 @@ class RoleSkin {
     }
   }
   tag(t) {
-    var i = this.J7.__offset(this.z7, 48);
-    var i = i ? this.J7.__string(this.z7 + i, t) : null;
-    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(i);
-    }
-    return i;
-  }
-  roleheadiconcircle(t) {
     var i = this.J7.__offset(this.z7, 50);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -384,7 +387,7 @@ class RoleSkin {
     }
     return i;
   }
-  roleheadiconlarge(t) {
+  roleheadiconcircle(t) {
     var i = this.J7.__offset(this.z7, 52);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -392,7 +395,7 @@ class RoleSkin {
     }
     return i;
   }
-  roleheadiconbig(t) {
+  roleheadiconlarge(t) {
     var i = this.J7.__offset(this.z7, 54);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -400,7 +403,7 @@ class RoleSkin {
     }
     return i;
   }
-  card(t) {
+  roleheadiconbig(t) {
     var i = this.J7.__offset(this.z7, 56);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -408,7 +411,7 @@ class RoleSkin {
     }
     return i;
   }
-  roleheadicon(t) {
+  card(t) {
     var i = this.J7.__offset(this.z7, 58);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -416,7 +419,7 @@ class RoleSkin {
     }
     return i;
   }
-  previewrolecard(t) {
+  roleheadicon(t) {
     var i = this.J7.__offset(this.z7, 60);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -424,7 +427,7 @@ class RoleSkin {
     }
     return i;
   }
-  buyshoppreviewrolecard(t) {
+  previewrolecard(t) {
     var i = this.J7.__offset(this.z7, 62);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -432,7 +435,7 @@ class RoleSkin {
     }
     return i;
   }
-  formationrolecard(t) {
+  buyshoppreviewrolecard(t) {
     var i = this.J7.__offset(this.z7, 64);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -440,7 +443,7 @@ class RoleSkin {
     }
     return i;
   }
-  rolestand(t) {
+  formationrolecard(t) {
     var i = this.J7.__offset(this.z7, 66);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -448,7 +451,7 @@ class RoleSkin {
     }
     return i;
   }
-  suitweaponskincolor(t) {
+  rolestand(t) {
     var i = this.J7.__offset(this.z7, 68);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -456,7 +459,7 @@ class RoleSkin {
     }
     return i;
   }
-  roleobtaincolor1(t) {
+  suitweaponskincolor(t) {
     var i = this.J7.__offset(this.z7, 70);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -464,7 +467,7 @@ class RoleSkin {
     }
     return i;
   }
-  roleobtaincolor2(t) {
+  roleobtaincolor1(t) {
     var i = this.J7.__offset(this.z7, 72);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -472,7 +475,7 @@ class RoleSkin {
     }
     return i;
   }
-  roleportrait(t) {
+  roleobtaincolor2(t) {
     var i = this.J7.__offset(this.z7, 74);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -480,15 +483,15 @@ class RoleSkin {
     }
     return i;
   }
-  meshid() {
-    var t = this.J7.__offset(this.z7, 76);
-    if (t) {
-      return this.J7.readInt32(this.z7 + t);
-    } else {
-      return 0;
+  roleportrait(t) {
+    var i = this.J7.__offset(this.z7, 76);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
     }
+    return i;
   }
-  uimeshid() {
+  meshid() {
     var t = this.J7.__offset(this.z7, 78);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
@@ -496,15 +499,15 @@ class RoleSkin {
       return 0;
     }
   }
-  rolebody(t) {
-    var i = this.J7.__offset(this.z7, 80);
-    var i = i ? this.J7.__string(this.z7 + i, t) : null;
-    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(i);
+  uimeshid() {
+    var t = this.J7.__offset(this.z7, 80);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
     }
-    return i;
   }
-  uisceneperformanceabp(t) {
+  rolebody(t) {
     var i = this.J7.__offset(this.z7, 82);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -512,7 +515,7 @@ class RoleSkin {
     }
     return i;
   }
-  footstepstate(t) {
+  uisceneperformanceabp(t) {
     var i = this.J7.__offset(this.z7, 84);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -520,7 +523,7 @@ class RoleSkin {
     }
     return i;
   }
-  payshoppreviewroletexturepath(t) {
+  footstepstate(t) {
     var i = this.J7.__offset(this.z7, 86);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -528,7 +531,7 @@ class RoleSkin {
     }
     return i;
   }
-  payshoppreviewroletexturebgpath(t) {
+  payshoppreviewroletexturepath(t) {
     var i = this.J7.__offset(this.z7, 88);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -536,7 +539,7 @@ class RoleSkin {
     }
     return i;
   }
-  payshoppreviewweapontexturepath(t) {
+  payshoppreviewroletexturebgpath(t) {
     var i = this.J7.__offset(this.z7, 90);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -544,7 +547,7 @@ class RoleSkin {
     }
     return i;
   }
-  payshoppreviewbuyroletexturepath(t) {
+  payshoppreviewweapontexturepath(t) {
     var i = this.J7.__offset(this.z7, 92);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -552,7 +555,7 @@ class RoleSkin {
     }
     return i;
   }
-  payshoppreviewbuyrolesuitweapontexturepath(t) {
+  payshoppreviewbuyroletexturepath(t) {
     var i = this.J7.__offset(this.z7, 94);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -560,7 +563,7 @@ class RoleSkin {
     }
     return i;
   }
-  sharetexturepath(t) {
+  payshoppreviewbuyrolesuitweapontexturepath(t) {
     var i = this.J7.__offset(this.z7, 96);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -568,7 +571,7 @@ class RoleSkin {
     }
     return i;
   }
-  spineskeletondata(t) {
+  sharetexturepath(t) {
     var i = this.J7.__offset(this.z7, 98);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -576,8 +579,16 @@ class RoleSkin {
     }
     return i;
   }
-  smallspineatlas(t) {
+  spineskeletondata(t) {
     var i = this.J7.__offset(this.z7, 100);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
+  smallspineatlas(t) {
+    var i = this.J7.__offset(this.z7, 102);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -588,7 +599,7 @@ class RoleSkin {
     return this.skinbuff(t);
   }
   skinbuff(t) {
-    var i = this.J7.__offset(this.z7, 102);
+    var i = this.J7.__offset(this.z7, 104);
     if (i) {
       return this.J7.readFloat64(this.J7.__vector(this.z7 + i) + t * 8);
     } else {
@@ -596,7 +607,7 @@ class RoleSkin {
     }
   }
   skinbuffLength() {
-    var t = this.J7.__offset(this.z7, 102);
+    var t = this.J7.__offset(this.z7, 104);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -604,7 +615,7 @@ class RoleSkin {
     }
   }
   skinbuffArray() {
-    var t = this.J7.__offset(this.z7, 102);
+    var t = this.J7.__offset(this.z7, 104);
     if (t) {
       return new Float64Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -612,7 +623,7 @@ class RoleSkin {
     }
   }
   formationspineskeletondata(t) {
-    var i = this.J7.__offset(this.z7, 104);
+    var i = this.J7.__offset(this.z7, 106);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -620,7 +631,7 @@ class RoleSkin {
     return i;
   }
   formationspineatlas(t) {
-    var i = this.J7.__offset(this.z7, 106);
+    var i = this.J7.__offset(this.z7, 108);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -631,7 +642,7 @@ class RoleSkin {
     return this.spineparam(t);
   }
   spineparam(t) {
-    var i = this.J7.__offset(this.z7, 108);
+    var i = this.J7.__offset(this.z7, 110);
     if (i) {
       return this.J7.readFloat32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
@@ -639,7 +650,7 @@ class RoleSkin {
     }
   }
   spineparamLength() {
-    var t = this.J7.__offset(this.z7, 108);
+    var t = this.J7.__offset(this.z7, 110);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -647,7 +658,7 @@ class RoleSkin {
     }
   }
   spineparamArray() {
-    var t = this.J7.__offset(this.z7, 108);
+    var t = this.J7.__offset(this.z7, 110);
     if (t) {
       return new Float32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {

@@ -92,7 +92,7 @@ class LevelEventMoveWithSpline extends LevelGeneralBase_1.LevelEventBase {
       EventSystem_1.EventSystem.AddWithTarget(this.sDe, EventDefine_1.EEventName.RemoveEntity, this.zpe);
     }
     if (this.sDe?.IsInit) {
-      e = this.sDe.Entity.GetComponent(48);
+      e = this.sDe.Entity.GetComponent(50);
       i = this.sDe.Entity.GetComponent(1);
       if (e?.IsAiDriver) {
         if (Log_1.Log.CheckWarn()) {
@@ -163,7 +163,7 @@ class LevelEventMoveWithSpline extends LevelGeneralBase_1.LevelEventBase {
     }, (o = new LevelGameplayActionsDefine_1.CommonActionInfo()).Name = "SetPlayerPos", o.Params = i, Log_1.Log.CheckInfo())) {
       Log_1.Log.Info("Level", 31, "[LevelEventMoveWithSpline.SetMoveAction] SetPlayerPos已为服务端行为，无法执行", ["ActionInfo", o]);
     }
-    if (this.YLe && (this.sDe.Entity.GetComponent(3).ClearInput(), (i = this.sDe.Entity.GetComponent(65)).ClearMoveVectorCache(), i.SetActive(false), o = this.sDe.Entity.GetComponent(41))) {
+    if (this.YLe && (this.sDe.Entity.GetComponent(3).ClearInput(), (i = this.sDe.Entity.GetComponent(67)).ClearMoveVectorCache(), i.SetActive(false), o = this.sDe.Entity.GetComponent(43))) {
       o.EndOwnerAndFollowSkills();
     }
     this.ODe(t, e);
@@ -181,7 +181,7 @@ class LevelEventMoveWithSpline extends LevelGeneralBase_1.LevelEventBase {
     }
   }
   SceneItemMoveAlongPath(e, t) {
-    var i = this.sDe?.Entity?.GetComponent(137);
+    var i = this.sDe?.Entity?.GetComponent(139);
     if (i) {
       switch (t?.Type) {
         case IComponent_1.ESplineType.Patrol:
@@ -278,9 +278,9 @@ class LevelEventMoveWithSpline extends LevelGeneralBase_1.LevelEventBase {
     var t = ModelManager_1.ModelManager.CreatureModel.GetCreatureDataIdByPbDataId(this.E0);
     if (!this.YLe && t) {
       (e = Protocol_1.Aki.Protocol.f1s.create()).F4n = MathUtils_1.MathUtils.NumberToLong(t);
-      Net_1.Net.Call(29589, e, e => {
+      Net_1.Net.Call(22395, e, e => {
         if (e && e.BEs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.BEs, 27365);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.BEs, 21000);
         }
       });
     }

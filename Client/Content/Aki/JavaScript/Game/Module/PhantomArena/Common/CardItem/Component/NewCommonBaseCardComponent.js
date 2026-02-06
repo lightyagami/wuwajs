@@ -16,7 +16,7 @@ class NewCommonBaseCardComponent extends CardComponentBase_1.CardComponentBase {
     super(...arguments);
     this.Data = undefined;
     this.aho = undefined;
-    this.$km = undefined;
+    this.aOm = undefined;
     this.GFo = () => {
       this.Data?.OnPointerUp?.();
     };
@@ -50,24 +50,24 @@ class NewCommonBaseCardComponent extends CardComponentBase_1.CardComponentBase {
   }
   async RefreshAsync(e) {
     this.Data = e;
-    this.nkm();
+    this.yqm();
     this.RefreshElementIcon();
     this.RefreshElementFrame();
     this.RefreshToggleState();
     this.RefreshLightItem();
     this.hPu();
-    this.akm();
-    this.hkm();
+    this.Mqm();
+    this.Eqm();
     await this.RefreshCardFaceAsync();
   }
-  nkm() {
+  yqm() {
     var e = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardConfig(this.Data.CardId);
-    this.$km = e.Type;
+    this.aOm = e.Type;
   }
   mU1() {
     this.GetText(1).SetText(this.Data.Attack.toString());
   }
-  Wkm() {
+  hOm() {
     this.GetText(3).SetText(this.Data.Life.toString());
   }
   RGt() {
@@ -96,20 +96,20 @@ class NewCommonBaseCardComponent extends CardComponentBase_1.CardComponentBase {
     }
   }
   hPu() {
-    var e = this.$km === 1;
+    var e = this.aOm === 1;
     this.GetItem(12)?.SetUIActive(e);
     if (e) {
       this.mU1();
-      this.Wkm();
+      this.hOm();
       this.RGt();
     }
   }
-  akm() {
-    var e = this.$km === 3;
+  Mqm() {
+    var e = this.aOm === 3;
     this.GetItem(14)?.SetUIActive(e);
   }
-  hkm() {
-    var e = this.$km === 2;
+  Eqm() {
+    var e = this.aOm === 2;
     this.GetItem(15)?.SetUIActive(e);
     if (e) {
       e = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardConfig(this.Data.CardId).InitAttack.get(Protocol_1.Aki.Protocol.GC1.Proto_DurableMax);

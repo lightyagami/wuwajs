@@ -14,7 +14,7 @@ class InfrastructureShopItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
     super(...arguments);
     this.Pe = undefined;
-    this.uVm = () => {
+    this.P6m = () => {
       if (this.Pe.IfCanBuy()) {
         ControllerHolder_1.ControllerHolder.PayShopController.OpenBuyViewByGoodsId(this.Pe);
       } else {
@@ -22,12 +22,12 @@ class InfrastructureShopItem extends GridProxyAbstract_1.GridProxyAbstract {
       }
     };
   }
-  get cVm() {
+  get A6m() {
     return this.Pe?.ConvertToPayShopBaseSt();
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UITexture], [2, UE.UISprite], [3, UE.UIItem], [4, UE.UIText], [5, UE.UITexture], [6, UE.UIText], [7, UE.UIItem], [8, UE.UIText], [9, UE.UIItem], [10, UE.UIText], [11, UE.UIText]];
-    this.BtnBindInfo = [[0, this.uVm]];
+    this.BtnBindInfo = [[0, this.P6m]];
   }
   Refresh(e) {
     this.Pe = e;
@@ -49,17 +49,17 @@ class InfrastructureShopItem extends GridProxyAbstract_1.GridProxyAbstract {
     }
   }
   k3i() {
-    var e = ConfigManager_1.ConfigManager.InfrastructureConfig.GetItemQualityColor(this.cVm.Quality);
+    var e = ConfigManager_1.ConfigManager.InfrastructureConfig.GetItemQualityColor(this.A6m.Quality);
     this.GetSprite(2).SetColor(UE.Color.FromHex(e));
   }
   F3i() {
-    this.GetText(4).SetText(this.cVm.ItemName);
+    this.GetText(4).SetText(this.A6m.ItemName);
   }
   iFi() {
     var e;
     var r;
     var t = this.GetTexture(5);
-    if (this.cVm.IsDirect || (e = this.cVm.PriceData).NowPrice === 0) {
+    if (this.A6m.IsDirect || (e = this.A6m.PriceData).NowPrice === 0) {
       t.SetUIActive(false);
     } else {
       t.SetUIActive(true);

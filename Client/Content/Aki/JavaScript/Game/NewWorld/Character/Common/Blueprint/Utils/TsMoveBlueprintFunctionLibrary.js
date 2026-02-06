@@ -115,60 +115,60 @@ class TsMoveBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     }
   }
   static SetHiddenMovementMode(t, e) {
-    EntitySystem_1.EntitySystem.GetComponent(t, 46)?.SetHiddenMovementMode(e);
+    EntitySystem_1.EntitySystem.GetComponent(t, 48)?.SetHiddenMovementMode(e);
   }
   static CanResponseInput(t) {
-    return EntitySystem_1.EntitySystem.GetComponent(t, 46)?.CanResponseInput() ?? false;
+    return EntitySystem_1.EntitySystem.GetComponent(t, 48)?.CanResponseInput() ?? false;
   }
   static CanJumpPress(t) {
-    return EntitySystem_1.EntitySystem.GetComponent(t, 46)?.CanJumpPress() ?? false;
+    return EntitySystem_1.EntitySystem.GetComponent(t, 48)?.CanJumpPress() ?? false;
   }
   static CanWalkPress(t) {
-    return EntitySystem_1.EntitySystem.GetComponent(t, 46)?.CanWalkPress() ?? false;
+    return EntitySystem_1.EntitySystem.GetComponent(t, 48)?.CanWalkPress() ?? false;
   }
   static GetHeightAboveGround(t, e) {
-    return EntitySystem_1.EntitySystem.GetComponent(t, 46)?.GetHeightAboveGround(e > 500 ? e : undefined);
+    return EntitySystem_1.EntitySystem.GetComponent(t, 48)?.GetHeightAboveGround(e > 500 ? e : undefined);
   }
   static GetAcceleration(t) {
-    return EntitySystem_1.EntitySystem.GetComponent(t, 46)?.Acceleration.ToUeVectorOld();
+    return EntitySystem_1.EntitySystem.GetComponent(t, 48)?.Acceleration.ToUeVectorOld();
   }
   static GetAimYawRate(t) {
-    return EntitySystem_1.EntitySystem.GetComponent(t, 46)?.AimYawRate;
+    return EntitySystem_1.EntitySystem.GetComponent(t, 48)?.AimYawRate;
   }
   static GetMovementData(t) {
-    return EntitySystem_1.EntitySystem.GetComponent(t, 46)?.MovementData;
+    return EntitySystem_1.EntitySystem.GetComponent(t, 48)?.MovementData;
   }
   static SmoothCharacterRotation(t, e, i, n) {
-    EntitySystem_1.EntitySystem.GetComponent(t, 46)?.SmoothCharacterRotation(e, i, Time_1.Time.DeltaTimeSeconds, false, n);
+    EntitySystem_1.EntitySystem.GetComponent(t, 48)?.SmoothCharacterRotation(e, i, Time_1.Time.DeltaTimeSeconds, false, n);
   }
   static HasMoveInput(t) {
-    return EntitySystem_1.EntitySystem.GetComponent(t, 46)?.HasMoveInput ?? false;
+    return EntitySystem_1.EntitySystem.GetComponent(t, 48)?.HasMoveInput ?? false;
   }
   static HasMoveInputOrTickIntervalAndModelBuffer(t) {
     var e;
-    return !!EntitySystem_1.EntitySystem.GetComponent(t, 46)?.HasMoveInput || !!(e = EntitySystem_1.EntitySystem.Get(t)) && !(e.GetTickInterval() <= 1) && (EntitySystem_1.EntitySystem.GetComponent(t, 186)?.HasLocationModelBuffer() ?? false);
+    return !!EntitySystem_1.EntitySystem.GetComponent(t, 48)?.HasMoveInput || !!(e = EntitySystem_1.EntitySystem.Get(t)) && !(e.GetTickInterval() <= 1) && (EntitySystem_1.EntitySystem.GetComponent(t, 188)?.HasLocationModelBuffer() ?? false);
   }
   static HasRotatorInput(t) {
     t = EntitySystem_1.EntitySystem.GetComponent(t, 3);
     return GravityUtils_1.GravityUtils.GetAngleOffsetFromCurrentToInputAbs(t) > MIN_ROTATOR_ANGLE;
   }
   static IsMoving(t) {
-    return EntitySystem_1.EntitySystem.GetComponent(t, 46)?.IsMoving ?? false;
+    return EntitySystem_1.EntitySystem.GetComponent(t, 48)?.IsMoving ?? false;
   }
   static IsJump(t) {
-    return EntitySystem_1.EntitySystem.GetComponent(t, 46)?.IsJump ?? false;
+    return EntitySystem_1.EntitySystem.GetComponent(t, 48)?.IsJump ?? false;
   }
   static GetSpeed(t) {
-    return EntitySystem_1.EntitySystem.GetComponent(t, 46)?.Speed;
+    return EntitySystem_1.EntitySystem.GetComponent(t, 48)?.Speed;
   }
   static GetGroundedTime(t) {
-    return EntitySystem_1.EntitySystem.GetComponent(t, 46)?.GroundedTimeUe;
+    return EntitySystem_1.EntitySystem.GetComponent(t, 48)?.GroundedTimeUe;
   }
   static IsFallingIntoWater(t) {
-    return EntitySystem_1.EntitySystem.GetComponent(t, 46)?.IsFallingIntoWater ?? false;
+    return EntitySystem_1.EntitySystem.GetComponent(t, 48)?.IsFallingIntoWater ?? false;
   }
   static SetForceSpeed(t, e) {
-    var i = EntitySystem_1.EntitySystem.GetComponent(t, 46);
+    var i = EntitySystem_1.EntitySystem.GetComponent(t, 48);
     if (i) {
       i.SetForceSpeed(e);
     } else {
@@ -176,10 +176,10 @@ class TsMoveBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     }
   }
   static SetAddMove(t, e, i, n, r) {
-    EntitySystem_1.EntitySystem.GetComponent(t, 46)?.SetAddMoveWithMesh(e, i, n, r);
+    EntitySystem_1.EntitySystem.GetComponent(t, 48)?.SetAddMoveWithMesh(e, i, n, r);
   }
   static StopAddMove(t, e) {
-    EntitySystem_1.EntitySystem.GetComponent(t, 46)?.StopAddMoveWithMesh(e);
+    EntitySystem_1.EntitySystem.GetComponent(t, 48)?.StopAddMoveWithMesh(e);
   }
   static FixActorLocation(t, e, i) {
     var t = EntitySystem_1.EntitySystem.GetComponent(t, 3);
@@ -198,100 +198,100 @@ class TsMoveBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     return n;
   }
   static StopAllAddMove(t) {
-    EntitySystem_1.EntitySystem.GetComponent(t, 46)?.StopAllAddMove();
+    EntitySystem_1.EntitySystem.GetComponent(t, 48)?.StopAllAddMove();
   }
   static SetAddMoveWorld(t, e, i, n, r) {
-    EntitySystem_1.EntitySystem.GetComponent(t, 46)?.SetAddMoveWorldWithMesh(e, i, n, r);
+    EntitySystem_1.EntitySystem.GetComponent(t, 48)?.SetAddMoveWorldWithMesh(e, i, n, r);
   }
   static SetAddMoveWorldSpeed(t, e, i) {
-    EntitySystem_1.EntitySystem.GetComponent(t, 46)?.SetAddMoveWorldSpeedWithMesh(e, i);
+    EntitySystem_1.EntitySystem.GetComponent(t, 48)?.SetAddMoveWorldSpeedWithMesh(e, i);
   }
   static SetAddMoveOffset(t, e) {
-    EntitySystem_1.EntitySystem.GetComponent(t, 46)?.SetAddMoveOffset(e);
+    EntitySystem_1.EntitySystem.GetComponent(t, 48)?.SetAddMoveOffset(e);
   }
   static SetAddMoveRotation(t, e) {
-    EntitySystem_1.EntitySystem.GetComponent(t, 46)?.SetAddMoveRotation(e);
+    EntitySystem_1.EntitySystem.GetComponent(t, 48)?.SetAddMoveRotation(e);
   }
   static SetEnterWaterState(t, e) {
-    EntitySystem_1.EntitySystem.GetComponent(t, 80)?.SetEnterWaterState(e);
+    EntitySystem_1.EntitySystem.GetComponent(t, 82)?.SetEnterWaterState(e);
   }
   static GetClimbState(t) {
-    return EntitySystem_1.EntitySystem.GetComponent(t, 35)?.GetClimbState();
+    return EntitySystem_1.EntitySystem.GetComponent(t, 36)?.GetClimbState();
   }
   static GetClimbRadius(t) {
-    return EntitySystem_1.EntitySystem.GetComponent(t, 35)?.GetClimbRadius();
+    return EntitySystem_1.EntitySystem.GetComponent(t, 36)?.GetClimbRadius();
   }
   static GetClimbInfo(t) {
-    return EntitySystem_1.EntitySystem.GetComponent(t, 35)?.GetClimbInfo();
+    return EntitySystem_1.EntitySystem.GetComponent(t, 36)?.GetClimbInfo();
   }
   static KickExitCheck(t) {
-    EntitySystem_1.EntitySystem.GetComponent(t, 35)?.KickExitCheck();
+    EntitySystem_1.EntitySystem.GetComponent(t, 36)?.KickExitCheck();
   }
   static CanClimbPress(t) {
-    return EntitySystem_1.EntitySystem.GetComponent(t, 35)?.CanClimbPress() ?? false;
+    return EntitySystem_1.EntitySystem.GetComponent(t, 36)?.CanClimbPress() ?? false;
   }
   static OnEnterClimb(t) {
-    EntitySystem_1.EntitySystem.GetComponent(t, 35)?.OnEnterClimb();
+    EntitySystem_1.EntitySystem.GetComponent(t, 36)?.OnEnterClimb();
   }
   static OnExitClimb(t) {
-    EntitySystem_1.EntitySystem.GetComponent(t, 35)?.OnExitClimb();
+    EntitySystem_1.EntitySystem.GetComponent(t, 36)?.OnExitClimb();
   }
   static DealClimbUpStart(t) {
-    EntitySystem_1.EntitySystem.GetComponent(t, 35)?.DealClimbUpStart();
+    EntitySystem_1.EntitySystem.GetComponent(t, 36)?.DealClimbUpStart();
   }
   static FinishClimbDown(t) {
-    EntitySystem_1.EntitySystem.GetComponent(t, 35)?.FinishClimbDown();
+    EntitySystem_1.EntitySystem.GetComponent(t, 36)?.FinishClimbDown();
   }
   static DealClimbUpFinish(t) {
-    EntitySystem_1.EntitySystem.GetComponent(t, 35)?.DealClimbUpFinish();
+    EntitySystem_1.EntitySystem.GetComponent(t, 36)?.DealClimbUpFinish();
   }
   static SetClimbState(t, e) {
-    EntitySystem_1.EntitySystem.GetComponent(t, 35)?.SetClimbState(e);
+    EntitySystem_1.EntitySystem.GetComponent(t, 36)?.SetClimbState(e);
   }
   static SetEnterClimbType(t, e) {
-    EntitySystem_1.EntitySystem.GetComponent(t, 35)?.SetEnterClimbType(e);
+    EntitySystem_1.EntitySystem.GetComponent(t, 36)?.SetEnterClimbType(e);
   }
   static SetExitClimbType(t, e) {
-    EntitySystem_1.EntitySystem.GetComponent(t, 35)?.SetExitClimbType(e);
+    EntitySystem_1.EntitySystem.GetComponent(t, 36)?.SetExitClimbType(e);
   }
   static GetSwimLocation(t) {
-    return EntitySystem_1.EntitySystem.GetComponent(t, 80)?.GetSwimLocation();
+    return EntitySystem_1.EntitySystem.GetComponent(t, 82)?.GetSwimLocation();
   }
   static GetWaterLocation(t) {
-    return EntitySystem_1.EntitySystem.GetComponent(t, 80)?.GetWaterLocation();
+    return EntitySystem_1.EntitySystem.GetComponent(t, 82)?.GetWaterLocation();
   }
   static GetWaterVolume(t) {
-    return EntitySystem_1.EntitySystem.GetComponent(t, 80)?.GetWaterVolume() ?? false;
+    return EntitySystem_1.EntitySystem.GetComponent(t, 82)?.GetWaterVolume() ?? false;
   }
   static GetClimbOnWallAngle(t) {
-    return EntitySystem_1.EntitySystem.GetComponent(t, 35)?.GetOnWallAngle();
+    return EntitySystem_1.EntitySystem.GetComponent(t, 36)?.GetOnWallAngle();
   }
   static SetUseDebugMovementSetting(t, e) {
-    EntitySystem_1.EntitySystem.GetComponent(t, 46)?.SetUseDebugMovementSetting(e);
+    EntitySystem_1.EntitySystem.GetComponent(t, 48)?.SetUseDebugMovementSetting(e);
   }
   static SetDebugMovementSetting(t, e) {
-    EntitySystem_1.EntitySystem.GetComponent(t, 46)?.SetDebugMovementSetting(e);
+    EntitySystem_1.EntitySystem.GetComponent(t, 48)?.SetDebugMovementSetting(e);
   }
   static SetLockedRotation(t, e) {
-    EntitySystem_1.EntitySystem.GetComponent(t, 46)?.SetLockedRotation(e);
+    EntitySystem_1.EntitySystem.GetComponent(t, 48)?.SetLockedRotation(e);
   }
   static GetLockedRotation(t) {
-    return EntitySystem_1.EntitySystem.GetComponent(t, 46)?.LockedRotation ?? false;
+    return EntitySystem_1.EntitySystem.GetComponent(t, 48)?.LockedRotation ?? false;
   }
   static SetFallingHorizontalMaxSpeed(t, e) {
-    EntitySystem_1.EntitySystem.GetComponent(t, 46)?.SetFallingHorizontalMaxSpeed(e);
+    EntitySystem_1.EntitySystem.GetComponent(t, 48)?.SetFallingHorizontalMaxSpeed(e);
   }
   static ClearFallingHorizontalMaxSpeed(t) {
-    EntitySystem_1.EntitySystem.GetComponent(t, 46)?.ClearFallingHorizontalMaxSpeed();
+    EntitySystem_1.EntitySystem.GetComponent(t, 48)?.ClearFallingHorizontalMaxSpeed();
   }
   static DetectClimbWithDirect(t, e, i) {
-    return EntitySystem_1.EntitySystem.GetComponent(t, 35)?.DetectClimbWithDirect(e, i) ?? false;
+    return EntitySystem_1.EntitySystem.GetComponent(t, 36)?.DetectClimbWithDirect(e, i) ?? false;
   }
   static TurnToTarget(t, e, i) {
     var n;
     var r = EntitySystem_1.EntitySystem.GetComponent(t, 3);
     if (r && e instanceof TsBaseCharacter_1.default) {
-      if (n = EntitySystem_1.EntitySystem.GetComponent(t, 186)) {
+      if (n = EntitySystem_1.EntitySystem.GetComponent(t, 188)) {
         n.MontageManager.StopMontage({
           Method: 0,
           BlendOutTime: 0
@@ -302,7 +302,7 @@ class TsMoveBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
       e = MathUtils_1.MathUtils.CommonTempVector;
       r.Subtraction(n, e);
       r = MathUtils_1.MathUtils.CommonTempRotator;
-      n = EntitySystem_1.EntitySystem.GetComponent(t, 46);
+      n = EntitySystem_1.EntitySystem.GetComponent(t, 48);
       e.ToOrientationRotator(r);
       n?.SmoothCharacterRotation(r, i, Time_1.Time.DeltaTimeSeconds, false);
     }
@@ -336,28 +336,28 @@ class TsMoveBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     }
   }
   static GetRacingRightSpeed(t) {
-    return EntitySystem_1.EntitySystem.GetComponent(t, 116)?.LastRightSpeed ?? 0;
+    return EntitySystem_1.EntitySystem.GetComponent(t, 118)?.LastRightSpeed ?? 0;
   }
   static SetPendulumData(t, e, i, n, r, o, a, s, m, y, c, _) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 74);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 76);
     if (t?.Valid) {
       t.SetPendulumData(e, i, n, r, o, a, s, m, y, c, _);
     }
   }
   static Reset(t) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 74);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 76);
     if (t?.Valid) {
       t.Reset();
     }
   }
   static SetGrabPoint(t, e) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 74);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 76);
     if (t?.Valid) {
       t.GrabPoint = e;
     }
   }
   static GetGrabPoint(t) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 74);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 76);
     if (t?.Valid) {
       return t.GrabPoint;
     } else {
@@ -365,29 +365,29 @@ class TsMoveBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     }
   }
   static SetHooked(t, e) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 74);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 76);
     if (t?.Valid) {
       t.Hooked = e;
     }
   }
   static GetHooked(t) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 74);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 76);
     return !!t?.Valid && t.Hooked;
   }
   static SetSocketName(t, e) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 74);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 76);
     if (t?.Valid) {
       t.SocketName = e;
     }
   }
   static SetRopeForce(t, e) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 74);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 76);
     if (t?.Valid) {
       t.RopeForce = e;
     }
   }
   static GetRopeForce(t) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 74);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 76);
     if (t?.Valid) {
       return t.RopeForce;
     } else {
@@ -395,13 +395,13 @@ class TsMoveBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     }
   }
   static SetDistanceRopeToActor(t, e) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 74);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 76);
     if (t?.Valid) {
       t.DistanceRopeToActor = e;
     }
   }
   static GetDistanceRopeToActor(t) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 74);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 76);
     if (t?.Valid) {
       return t.DistanceRopeToActor;
     } else {
@@ -409,13 +409,13 @@ class TsMoveBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     }
   }
   static SetAirControl(t, e) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 74);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 76);
     if (t?.Valid) {
       t.AirControl = e;
     }
   }
   static GetAirControl(t) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 74);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 76);
     if (t?.Valid) {
       return t.AirControl;
     } else {
@@ -423,13 +423,13 @@ class TsMoveBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     }
   }
   static SetUpLength(t, e) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 74);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 76);
     if (t?.Valid) {
       t.UpLength = e;
     }
   }
   static SetCanMoveFromInput(t, e) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 46);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 48);
     if (t?.Valid) {
       t.CanMoveFromInput = e;
     }
@@ -437,16 +437,16 @@ class TsMoveBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   static UpdateAnimInfoMove(t, e) {
     var i;
     var n;
-    var r = EntitySystem_1.EntitySystem.GetComponent(t, 186);
-    if (r?.Valid && (e = e, r = r.AnimLogicParamsSetter, (i = EntitySystem_1.EntitySystem.GetComponent(t, 3))?.Valid && (n = i.InputDirectProxy, r.InputDirect.Equals(n) || (r.InputDirect.DeepCopy(n), e.InputDirectRef = n.ToUeVectorOld()), n = i.InputRotatorProxy, r.InputRotator.Equals(n) || (r.InputRotator.DeepCopy(n), e.InputRotatorRef = n.ToUeRotator())), (i = EntitySystem_1.EntitySystem.GetComponent(t, 46))?.Valid && (n = i.Acceleration, r.Acceleration.Equals(n) || (r.Acceleration.DeepCopy(n), e.AccelerationRef = n.ToUeVectorOld()), n = i.IsMoving, r.IsMoving !== n && (r.IsMoving = n, e.IsMovingRef = n), n = i.HasMoveInput, r.HasMoveInput !== n && (r.HasMoveInput = n, e.HasMoveInputRef = n), n = i.Speed, r.Speed !== n && (r.Speed = n, e.SpeedRef = n), n = i.IsJump, r.IsJump !== n && (r.IsJump = n, e.IsJumpRef = n), n = i.GroundedTimeUe, r.GroundedTime !== n && (r.GroundedTime = n, e.GroundedTimeRef = n), n = i.IsFallingIntoWater, r.IsFallingIntoWater !== n && (r.IsFallingIntoWater = n, e.IsFallingIntoWaterRef = n), n = i.JumpUpRate, r.JumpUpRate !== n) && (r.JumpUpRate = n, e.JumpUpRateRef = n), (i = EntitySystem_1.EntitySystem.GetComponent(t, 35))?.Valid && (n = i.GetTsClimbInfo(), r.ClimbInfo.Equals(n) || (r.ClimbInfo.DeepCopy(n), e.ClimbInfoRef = i.GetClimbInfo()), n = i.GetTsClimbState(), r.ClimbState.Equals(n) || (r.ClimbState.DeepCopy(n), e.ClimbStateRef = i.GetClimbState()), n = i.GetClimbRadius(), r.ClimbRadius !== n && (r.ClimbRadius = n, e.ClimbRadiusRef = n), n = i.GetOnWallAngle(), r.ClimbOnWallAngle !== n) && (r.ClimbOnWallAngle = n, e.ClimbOnWallAngleRef = n), (i = EntitySystem_1.EntitySystem.GetComponent(t, 80))?.Valid && (n = i.SprintSwimOffset, r.SprintSwimOffset !== n && (r.SprintSwimOffset = n, e.SprintSwimOffsetRef = n), n = i.SprintSwimOffsetLerpSpeed, r.SprintSwimOffsetLerpSpeed !== n) && (r.SprintSwimOffsetLerpSpeed = n, e.SprintSwimOffsetLerpSpeedRef = n), (i = EntitySystem_1.EntitySystem.GetComponent(t, 36))?.Valid) && (n = i.SlideForward, r.SlideForward.Equals(n) || (r.SlideForward.DeepCopy(n), e.SlideForwardRef = n.ToUeVectorOld()), t = i.SlideSwitchThisFrame, r.SlideSwitchThisFrame !== t && (r.SlideSwitchThisFrame = t, e.SlideSwitchThisFrameRef = t), n = i.StandMode, r.SlideStandMode !== n)) {
+    var r = EntitySystem_1.EntitySystem.GetComponent(t, 188);
+    if (r?.Valid && (e = e, r = r.AnimLogicParamsSetter, (i = EntitySystem_1.EntitySystem.GetComponent(t, 3))?.Valid && (n = i.InputDirectProxy, r.InputDirect.Equals(n) || (r.InputDirect.DeepCopy(n), e.InputDirectRef = n.ToUeVectorOld()), n = i.InputRotatorProxy, r.InputRotator.Equals(n) || (r.InputRotator.DeepCopy(n), e.InputRotatorRef = n.ToUeRotator())), (i = EntitySystem_1.EntitySystem.GetComponent(t, 48))?.Valid && (n = i.Acceleration, r.Acceleration.Equals(n) || (r.Acceleration.DeepCopy(n), e.AccelerationRef = n.ToUeVectorOld()), n = i.IsMoving, r.IsMoving !== n && (r.IsMoving = n, e.IsMovingRef = n), n = i.HasMoveInput, r.HasMoveInput !== n && (r.HasMoveInput = n, e.HasMoveInputRef = n), n = i.Speed, r.Speed !== n && (r.Speed = n, e.SpeedRef = n), n = i.IsJump, r.IsJump !== n && (r.IsJump = n, e.IsJumpRef = n), n = i.GroundedTimeUe, r.GroundedTime !== n && (r.GroundedTime = n, e.GroundedTimeRef = n), n = i.IsFallingIntoWater, r.IsFallingIntoWater !== n && (r.IsFallingIntoWater = n, e.IsFallingIntoWaterRef = n), n = i.JumpUpRate, r.JumpUpRate !== n) && (r.JumpUpRate = n, e.JumpUpRateRef = n), (i = EntitySystem_1.EntitySystem.GetComponent(t, 36))?.Valid && (n = i.GetTsClimbInfo(), r.ClimbInfo.Equals(n) || (r.ClimbInfo.DeepCopy(n), e.ClimbInfoRef = i.GetClimbInfo()), n = i.GetTsClimbState(), r.ClimbState.Equals(n) || (r.ClimbState.DeepCopy(n), e.ClimbStateRef = i.GetClimbState()), n = i.GetClimbRadius(), r.ClimbRadius !== n && (r.ClimbRadius = n, e.ClimbRadiusRef = n), n = i.GetOnWallAngle(), r.ClimbOnWallAngle !== n) && (r.ClimbOnWallAngle = n, e.ClimbOnWallAngleRef = n), (i = EntitySystem_1.EntitySystem.GetComponent(t, 82))?.Valid && (n = i.SprintSwimOffset, r.SprintSwimOffset !== n && (r.SprintSwimOffset = n, e.SprintSwimOffsetRef = n), n = i.SprintSwimOffsetLerpSpeed, r.SprintSwimOffsetLerpSpeed !== n) && (r.SprintSwimOffsetLerpSpeed = n, e.SprintSwimOffsetLerpSpeedRef = n), (i = EntitySystem_1.EntitySystem.GetComponent(t, 37))?.Valid) && (n = i.SlideForward, r.SlideForward.Equals(n) || (r.SlideForward.DeepCopy(n), e.SlideForwardRef = n.ToUeVectorOld()), t = i.SlideSwitchThisFrame, r.SlideSwitchThisFrame !== t && (r.SlideSwitchThisFrame = t, e.SlideSwitchThisFrameRef = t), n = i.StandMode, r.SlideStandMode !== n)) {
       r.SlideStandMode = n;
       e.SlideStandModeRef = n;
     }
   }
   static UpdateAnimInfoMoveMonster(t, e) {
     var i;
-    var n = EntitySystem_1.EntitySystem.GetComponent(t, 186);
-    if (n?.Valid && (e = e, n = n.AnimLogicParamsSetter, (i = EntitySystem_1.EntitySystem.GetComponent(t, 3))?.Valid && (i = i.InputDirectProxy, n.InputDirect.Equals(i) || (n.InputDirect.DeepCopy(i), e.InputDirectRef = i.ToUeVectorOld())), (i = EntitySystem_1.EntitySystem.GetComponent(t, 46))?.Valid) && (t = i.IsMoving, n.IsMoving !== t && (n.IsMoving = t, e.IsMovingRef = t), t = i.HasMoveInput, n.HasMoveInput !== t)) {
+    var n = EntitySystem_1.EntitySystem.GetComponent(t, 188);
+    if (n?.Valid && (e = e, n = n.AnimLogicParamsSetter, (i = EntitySystem_1.EntitySystem.GetComponent(t, 3))?.Valid && (i = i.InputDirectProxy, n.InputDirect.Equals(i) || (n.InputDirect.DeepCopy(i), e.InputDirectRef = i.ToUeVectorOld())), (i = EntitySystem_1.EntitySystem.GetComponent(t, 48))?.Valid) && (t = i.IsMoving, n.IsMoving !== t && (n.IsMoving = t, e.IsMovingRef = t), t = i.HasMoveInput, n.HasMoveInput !== t)) {
       n.HasMoveInput = t;
       e.HasMoveInputRef = t;
     }
@@ -454,32 +454,32 @@ class TsMoveBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   static UpdateAnimInfoMoveRoleNpc(t, e) {
     var i;
     var n;
-    var r = EntitySystem_1.EntitySystem.GetComponent(t, 186);
-    if (r?.Valid && (e = e, r = r.AnimLogicParamsSetter, (i = EntitySystem_1.EntitySystem.GetComponent(t, 3))?.Valid && (i = i.InputDirectProxy, r.InputDirect.Equals(i) || (r.InputDirect.DeepCopy(i), e.InputDirectRef = i.ToUeVectorOld())), (i = EntitySystem_1.EntitySystem.GetComponent(t, 46))?.Valid && (n = i.Acceleration, r.Acceleration.Equals(n) || (r.Acceleration.DeepCopy(n), e.AccelerationRef = n.ToUeVectorOld()), n = i.IsMoving, r.IsMoving !== n && (r.IsMoving = n, e.IsMovingRef = n), n = i.HasMoveInput, r.HasMoveInput !== n && (r.HasMoveInput = n, e.HasMoveInputRef = n), n = i.Speed, r.Speed !== n && (r.Speed = n, e.SpeedRef = n), n = i.IsRegionMoveMode, r.IsRegionMoveMode !== n) && (r.IsRegionMoveMode = n, e.IsRegionMoveModeRef = n), (i = EntitySystem_1.EntitySystem.GetComponent(t, 242))?.Valid) && (n = i.IsOnVehicle, r.IsOnVehicle !== n && (r.IsOnVehicle = n, e.IsOnVehicle = n), t = i.VehicleTypeInt, r.VehicleType !== t)) {
+    var r = EntitySystem_1.EntitySystem.GetComponent(t, 188);
+    if (r?.Valid && (e = e, r = r.AnimLogicParamsSetter, (i = EntitySystem_1.EntitySystem.GetComponent(t, 3))?.Valid && (i = i.InputDirectProxy, r.InputDirect.Equals(i) || (r.InputDirect.DeepCopy(i), e.InputDirectRef = i.ToUeVectorOld())), (i = EntitySystem_1.EntitySystem.GetComponent(t, 48))?.Valid && (n = i.Acceleration, r.Acceleration.Equals(n) || (r.Acceleration.DeepCopy(n), e.AccelerationRef = n.ToUeVectorOld()), n = i.IsMoving, r.IsMoving !== n && (r.IsMoving = n, e.IsMovingRef = n), n = i.HasMoveInput, r.HasMoveInput !== n && (r.HasMoveInput = n, e.HasMoveInputRef = n), n = i.Speed, r.Speed !== n && (r.Speed = n, e.SpeedRef = n), n = i.IsRegionMoveMode, r.IsRegionMoveMode !== n) && (r.IsRegionMoveMode = n, e.IsRegionMoveModeRef = n), (i = EntitySystem_1.EntitySystem.GetComponent(t, 242))?.Valid) && (n = i.IsOnVehicle, r.IsOnVehicle !== n && (r.IsOnVehicle = n, e.IsOnVehicle = n), t = i.VehicleTypeInt, r.VehicleType !== t)) {
       r.VehicleType = t;
       e.VehicleType = t;
     }
   }
   static TurnOnAutomaticFlightMode(t, e) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 65);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 67);
     if (t?.Valid) {
       t.TurnOnAutomaticFlightMode(e);
     }
   }
   static TurnOffAutomaticFlightMode(t) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 65);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 67);
     if (t?.Valid) {
       t.TurnOffAutomaticFlightMode();
     }
   }
   static TurnOnCameraDrivenAutoFlightMode(t, e) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 65);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 67);
     if (t?.Valid) {
       t.TurnOnCameraDrivenAutoFlightMode(e);
     }
   }
   static TurnOffCameraDrivenAutoFlightMode(t) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 65);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 67);
     if (t?.Valid) {
       t.TurnOffCameraDrivenAutoFlightMode();
     }
@@ -544,7 +544,7 @@ class TsMoveBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
         return Vector_1.Vector.ZeroVectorDouble;
       }
     }
-    i = t.Entity.GetComponent(46);
+    i = t.Entity.GetComponent(48);
     tmpVector.FromUeVector(n);
     r = GravityUtils_1.GravityUtils.GetZnInGravityForActor(t, tmpVector);
     let a = r;
@@ -567,14 +567,14 @@ class TsMoveBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     return tmpVector2.ToUeVector();
   }
   static EnterRoll(t, e, i, n, r, o, a) {
-    EntitySystem_1.EntitySystem.GetComponent(t, 38)?.EnterRoll(e, i, n, r, o, a);
+    EntitySystem_1.EntitySystem.GetComponent(t, 40)?.EnterRoll(e, i, n, r, o, a);
   }
   static LeaveRoll(t) {
-    EntitySystem_1.EntitySystem.GetComponent(t, 38)?.LeaveRoll();
+    EntitySystem_1.EntitySystem.GetComponent(t, 40)?.LeaveRoll();
   }
   static EnterKite(t) {
-    var e = EntitySystem_1.EntitySystem.GetComponent(t, 39);
-    var t = EntitySystem_1.EntitySystem.GetComponent(t, 105);
+    var e = EntitySystem_1.EntitySystem.GetComponent(t, 41);
+    var t = EntitySystem_1.EntitySystem.GetComponent(t, 107);
     return !!e?.Valid && !!t?.Valid && e.EnterKite(t.GetCurrentTarget());
   }
   static LerpVelocityBlend(t, e, i) {
@@ -611,7 +611,7 @@ class TsMoveBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     }
   }
   static MoveCharacter(t, e, i, n) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 187);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 189);
     if (t?.ActorComp) {
       MathUtils_1.MathUtils.CommonTempVector.DeepCopy(e);
       MathUtils_1.MathUtils.CommonTempVector.SubtractionEqual(t.ActorComp.ActorLocationProxy);
@@ -633,16 +633,29 @@ class TsMoveBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     return true;
   }
   static LeftStartSwing(t) {
-    EntitySystem_1.EntitySystem.GetComponent(t, 325)?.LeftStartSwing();
+    EntitySystem_1.EntitySystem.GetComponent(t, 327)?.LeftStartSwing();
   }
   static LeftLoopSwing(t) {
-    EntitySystem_1.EntitySystem.GetComponent(t, 325)?.LeftLoopSwing();
+    EntitySystem_1.EntitySystem.GetComponent(t, 327)?.LeftLoopSwing();
   }
   static LeftEndSwing(t) {
-    EntitySystem_1.EntitySystem.GetComponent(t, 325)?.LeftEndSwing();
+    EntitySystem_1.EntitySystem.GetComponent(t, 327)?.LeftEndSwing();
   }
   static ResetClimbConfig(t, e) {
-    EntitySystem_1.EntitySystem.GetComponent(t, 35)?.ResetClimbObjectConfig(e);
+    EntitySystem_1.EntitySystem.GetComponent(t, 36)?.ResetClimbObjectConfig(e);
+  }
+  static EnableGoThrough(t, e) {
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 48);
+    if (t?.CharacterMovement && (t.CharacterMovement.GoThroughLower = true, e >= 0)) {
+      t.CharacterMovement.GoThroughPriority = e;
+    }
+  }
+  static DisableGoThrough(t) {
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 48);
+    if (t?.CharacterMovement) {
+      t.CharacterMovement.GoThroughLower = false;
+      t.ResetHitPriorityAndGoThrough();
+    }
   }
 }
 TsMoveBlueprintFunctionLibrary.WaterTraceInternal = undefined;

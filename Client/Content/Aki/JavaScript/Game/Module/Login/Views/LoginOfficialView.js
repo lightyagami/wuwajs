@@ -44,10 +44,10 @@ class LoginOfficialView extends UiTickViewBase_1.UiTickViewBase {
     this.VEi = false;
     this.Ws1 = undefined;
     this.jeu = false;
-    this.rFm = () => {
+    this.CNm = () => {
       this.RefreshDownLoadState();
     };
-    this.fMf = false;
+    this.ATf = false;
     this.OnClickQRCodeLoginBtn = () => {
       if (ControllerHolder_1.ControllerHolder.KuroSdkController.GetIfCanQRCodeLogin()) {
         ControllerHolder_1.ControllerHolder.KuroSdkController.DoQRCodeLogin();
@@ -171,6 +171,7 @@ class LoginOfficialView extends UiTickViewBase_1.UiTickViewBase {
               Log_1.Log.Info("Login", 10, "登录请求成功,进入游戏");
             }
             ModelManager_1.ModelManager.LoginModel.FinishLoginPromise();
+            ControllerHolder_1.ControllerHolder.BlackScreenController.AddBlackScreen("None", "LoginFinish");
           });
         }
       }
@@ -187,7 +188,7 @@ class LoginOfficialView extends UiTickViewBase_1.UiTickViewBase {
         }
         this.Krc();
         if (ControllerHolder_1.ControllerHolder.KuroSdkController.CanUseSdk() && !this.fSi()) {
-          this.fUf().then(() => {
+          this.KOf().then(() => {
             if (ResourceUpdateManager_1.ResourceDiffUpdaterManager.IsGrayBoxHit() && !ModelManager_1.ModelManager.SubPackageDownLoadModel.IsKeyPackageDownLoadingFinish()) {
               if (Log_1.Log.CheckInfo()) {
                 Log_1.Log.Info("Login", 5, "SdkLogin登录成功-需要下载核心包，自动开始下载");
@@ -195,11 +196,11 @@ class LoginOfficialView extends UiTickViewBase_1.UiTickViewBase {
               ControllerHolder_1.ControllerHolder.SubPackageController.AutoDownLoadKeySubPackage();
               this.RefreshDownLoadState();
             } else {
-              this.gUf();
+              this.XOf();
             }
           });
         } else {
-          this.gUf();
+          this.XOf();
         }
       } else {
         this.iSi(false);
@@ -215,8 +216,8 @@ class LoginOfficialView extends UiTickViewBase_1.UiTickViewBase {
     this.$Oe = e => {
       if (e === "LoginServerView") {
         if (ControllerHolder_1.ControllerHolder.KuroSdkController.CanUseSdk()) {
-          this.wtg();
-          this.fUf().then(() => {
+          this._Dg();
+          this.KOf().then(() => {
             if (ResourceUpdateManager_1.ResourceDiffUpdaterManager.IsGrayBoxHit() && !ModelManager_1.ModelManager.SubPackageDownLoadModel.IsKeyPackageDownLoadingFinish()) {
               if (Log_1.Log.CheckInfo()) {
                 Log_1.Log.Info("Login", 5, "SdkLogin-选服后 -需要下载核心包，自动开始下载");
@@ -224,11 +225,11 @@ class LoginOfficialView extends UiTickViewBase_1.UiTickViewBase {
               ControllerHolder_1.ControllerHolder.SubPackageController.AutoDownLoadKeySubPackage();
               this.RefreshDownLoadState();
             } else {
-              this.gUf();
+              this.XOf();
             }
           });
         } else {
-          this.gUf();
+          this.XOf();
         }
       }
     };
@@ -274,6 +275,7 @@ class LoginOfficialView extends UiTickViewBase_1.UiTickViewBase {
     await this.Ws1.CreateThenShowByActorAsync(this.GetItem(19).GetOwner());
   }
   OnStart() {
+    ControllerHolder_1.ControllerHolder.ResourceManagerController.ChangeHttpTickFrequency();
     ControllerHolder_1.ControllerHolder.LoginController.LogLoginProcessLink(LoginDefine_1.ELoginStatus.LoginViewOpen);
     ModelManager_1.ModelManager.LoginModel.FixLoginFailInfo();
     this.GetButton(14).RootUIComp.SetUIActive(false);
@@ -297,6 +299,9 @@ class LoginOfficialView extends UiTickViewBase_1.UiTickViewBase {
     if (!UiManager_1.UiManager.IsViewShow("LoginOfficialStatusView")) {
       UiManager_1.UiManager.OpenView("LoginOfficialStatusView");
     }
+  }
+  OnBeforeDestroy() {
+    ControllerHolder_1.ControllerHolder.ResourceManagerController.RestoreHttpTickFrequency();
   }
   Pfa() {
     var e;
@@ -342,30 +347,30 @@ class LoginOfficialView extends UiTickViewBase_1.UiTickViewBase {
     var e;
     if (ResourceUpdateManager_1.ResourceDiffUpdaterManager.IsGrayBoxHit()) {
       e = !ModelManager_1.ModelManager.SubPackageDownLoadModel.IsKeyPackageDownLoadingFinish();
-      this.fMf = e && this.jeu;
-      this.GetItem(22).SetUIActive(this.fMf);
-      this.GetItem(18).SetUIActive(!this.fMf);
-      this.GetButton(0).RootUIComp.SetUIActive(!this.fMf);
-      this.GetButton(4).RootUIComp.SetUIActive(!ControllerHolder_1.ControllerHolder.LoginController.IsGlobalSdkLoginMode() && !this.fMf);
-      this.GetButton(2).SetSelfInteractive(!this.fMf);
-      this.GetButton(1).SetSelfInteractive(!this.fMf);
-      if (this.fMf) {
+      this.ATf = e && this.jeu;
+      this.GetItem(22).SetUIActive(this.ATf);
+      this.GetItem(18).SetUIActive(!this.ATf);
+      this.GetButton(0).RootUIComp.SetUIActive(!this.ATf);
+      this.GetButton(4).RootUIComp.SetUIActive(!ControllerHolder_1.ControllerHolder.LoginController.IsGlobalSdkLoginMode() && !this.ATf);
+      this.GetButton(2).SetSelfInteractive(!this.ATf);
+      this.GetButton(1).SetSelfInteractive(!this.ATf);
+      if (this.ATf) {
         this.GetButton(2).RootUIComp.SetAlpha(0.5);
         this.GetButton(1).RootUIComp.SetAlpha(0.5);
       }
-      this.GetButton(14).RootUIComp.SetUIActive(ControllerHolder_1.ControllerHolder.LoginController.IsGlobalSdkLoginMode() && !this.fMf);
+      this.GetButton(14).RootUIComp.SetUIActive(ControllerHolder_1.ControllerHolder.LoginController.IsGlobalSdkLoginMode() && !this.ATf);
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("Login", 5, "SdkLogin-刷新下载状态", ["this.NeedTickDownLoad", this.fMf]);
+        Log_1.Log.Info("Login", 5, "SdkLogin-刷新下载状态", ["this.NeedTickDownLoad", this.ATf]);
       }
-      if (!this.fMf) {
-        this.gUf();
+      if (!this.ATf) {
+        this.XOf();
       }
     }
   }
   OnTick(e) {
     var o;
     var r;
-    if (this.fMf) {
+    if (this.ATf) {
       r = ModelManager_1.ModelManager.SubPackageDownLoadModel.GetSubPackageCurrentHaveDownLoadSpace(SubPackageDefine_1.KEY_SUBPACKAGE_ID);
       o = ModelManager_1.ModelManager.SubPackageDownLoadModel.GetSubPackageCurrentTotalSpace(SubPackageDefine_1.KEY_SUBPACKAGE_ID);
       r = Number(r) / Number(o);
@@ -391,7 +396,7 @@ class LoginOfficialView extends UiTickViewBase_1.UiTickViewBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CloseView, this.$Oe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PlayStationJoinSessionEvent, this.V5a);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPreDownloadAvailableUpdate, this.Veu);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRefreshSubPackageDownLoadByPriority, this.rFm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRefreshSubPackageDownLoadByPriority, this.CNm);
   }
   OnRemoveEventListener() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.LoginRequestResult, this.Ckt);
@@ -402,7 +407,7 @@ class LoginOfficialView extends UiTickViewBase_1.UiTickViewBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CloseView, this.$Oe);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PlayStationJoinSessionEvent, this.V5a);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPreDownloadAvailableUpdate, this.Veu);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRefreshSubPackageDownLoadByPriority, this.rFm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRefreshSubPackageDownLoadByPriority, this.CNm);
   }
   OnBeforeShow() {
     if (ControllerHolder_1.ControllerHolder.KuroSdkController.CanUseSdk()) {
@@ -495,7 +500,7 @@ class LoginOfficialView extends UiTickViewBase_1.UiTickViewBase {
       ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("AgreementTips");
     }
   }
-  async fUf() {
+  async KOf() {
     if (ResourceUpdateManager_1.ResourceDiffUpdaterManager.IsGrayBoxHit()) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Login", 5, "SdkLogin登录成功-获取HTTP");
@@ -536,7 +541,7 @@ class LoginOfficialView extends UiTickViewBase_1.UiTickViewBase {
       this.GetButton(14).RootUIComp.SetUIActive(false);
     }
   }
-  gUf() {
+  XOf() {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Login", 5, "SdkLogin登录成功-最后刷新登录成功表现");
     }
@@ -550,7 +555,7 @@ class LoginOfficialView extends UiTickViewBase_1.UiTickViewBase {
     this.GetButton(1).RootUIComp.SetAlpha(1);
     this.GetButton(14).RootUIComp.SetUIActive(ControllerHolder_1.ControllerHolder.LoginController.IsGlobalSdkLoginMode());
   }
-  wtg() {
+  _Dg() {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Login", 5, "LoginOfficialView-DisableDownLoadAbout");
     }

@@ -11,7 +11,7 @@ const ModelManager_1 = require("../../../../../../Manager/ModelManager");
 class InputLayerHelper {
   constructor() {
     this.Bhh = undefined;
-    this.Gnf = 0;
+    this.nhf = 0;
     this.vq = false;
     this.xie = () => {
       this._rl();
@@ -57,12 +57,17 @@ class InputLayerHelper {
     return this.Bhh;
   }
   _rl() {
-    if (this.Bhh && this.vq) {
-      var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
-      let e = t?.Id;
-      t = t?.Entity?.CheckGetComponent(242);
-      if ((e = (e = t && t.VehicleEntity?.Valid ? t.VehicleEntity?.Id : e) ?? 0) !== this.Gnf && (this.Gnf = e, ControllerHolder_1.ControllerHolder.InputController.RemoveInputLayer(this.Bhh), e)) {
-        ControllerHolder_1.ControllerHolder.InputController.AddInputLayer(e, this.Bhh);
+    if (this.Bhh) {
+      if (this.vq) {
+        var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
+        let e = t?.Id;
+        t = t?.Entity?.CheckGetComponent(242);
+        if ((e = (e = t && t.VehicleEntity?.Valid ? t.VehicleEntity?.Id : e) ?? 0) !== this.nhf && (this.nhf = e, ControllerHolder_1.ControllerHolder.InputController.RemoveInputLayer(this.Bhh), e)) {
+          ControllerHolder_1.ControllerHolder.InputController.AddInputLayer(e, this.Bhh);
+        }
+      } else if (this.nhf !== 0) {
+        this.nhf = 0;
+        ControllerHolder_1.ControllerHolder.InputController.RemoveInputLayer(this.Bhh);
       }
     }
   }

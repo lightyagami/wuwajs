@@ -39,15 +39,15 @@ class BaseMap extends UiPanelBase_1.UiPanelBase {
     this.Z3_ = 0;
     this.e4_ = 0;
     this.bfc = undefined;
-    this.X6m = undefined;
+    this.z7m = undefined;
     this.kGc = undefined;
     this.uBc = undefined;
-    this.d5f = undefined;
+    this.HWf = undefined;
     this.MAi = () => {
       this.MapTileMgr.OnMapSetUp();
       this.MapTileMgr.LoadMapBorder();
       this.CAi.OnMapSetup();
-      this.d5f?.OnMapSetup();
+      this.HWf?.OnMapSetup();
       this.RootItem.SetUIActive(true);
     };
     this.e4_ = t.InstanceId;
@@ -69,7 +69,7 @@ class BaseMap extends UiPanelBase_1.UiPanelBase {
     return this.bfc;
   }
   get AutoPilotLine() {
-    return this.X6m;
+    return this.z7m;
   }
   get MapRootItem() {
     return this.RootItem;
@@ -91,13 +91,13 @@ class BaseMap extends UiPanelBase_1.UiPanelBase {
         if (!this.WaitToDestroy) {
           this.bfc?.Destroy();
           this.bfc = new MapRangePanel_1.MapRangePanel(this);
-          this.X6m?.Destroy();
-          this.X6m = new AutoPilotLine_1.AutoPilotLine(this);
+          this.z7m?.Destroy();
+          this.z7m = new AutoPilotLine_1.AutoPilotLine(this);
           await this.MapTileMgr.OnChangeTilesAsync(this.Z3_, this.e4_, this.kGc);
           this.MapRangePanel.CheckExploreMarkRangeInfo();
           this.AutoPilotLine?.CheckAutoPilotLineInfo();
           this.CAi.OnChangeWorldMap(this.Z3_, this.e4_, this.kGc);
-          this.d5f?.OnChangeWorldMap(this.Z3_);
+          this.HWf?.OnChangeWorldMap(this.Z3_);
         }
       });
       await this.RunAsyncTask(i);
@@ -115,10 +115,10 @@ class BaseMap extends UiPanelBase_1.UiPanelBase {
     this.MapTileMgr = undefined;
     this.bfc?.Destroy();
     this.bfc = undefined;
-    this.X6m?.Destroy();
-    this.X6m = undefined;
-    this.d5f?.Dispose();
-    this.d5f = undefined;
+    this.z7m?.Destroy();
+    this.z7m = undefined;
+    this.HWf?.Dispose();
+    this.HWf = undefined;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UITexture], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UITexture], [9, UE.UITexture], [10, UE.UIItem], [11, UE.UIItem], [12, UE.UIItem], [13, UE.UIItem]];
@@ -150,8 +150,8 @@ class BaseMap extends UiPanelBase_1.UiPanelBase {
     this.vAi = new LevelSequencePlayer_1.LevelSequencePlayer(t);
     this.bfc = new MapRangePanel_1.MapRangePanel(this);
     this.bfc.CheckExploreMarkRangeInfo();
-    this.X6m = new AutoPilotLine_1.AutoPilotLine(this);
-    this.X6m.CheckAutoPilotLineInfo();
+    this.z7m = new AutoPilotLine_1.AutoPilotLine(this);
+    this.z7m.CheckAutoPilotLineInfo();
   }
   F$t(t) {
     var e = this.GetItem(3);
@@ -189,7 +189,7 @@ class BaseMap extends UiPanelBase_1.UiPanelBase {
     };
     this.MapTileMgr = new MapTileMgr_1.MapTileMgr(e);
     this.MapTileMgr.Initialize();
-    this.d5f = new MapRoadWaysMgr_1.MapRoadWaysMgr({
+    this.HWf = new MapRoadWaysMgr_1.MapRoadWaysMgr({
       MapId: this.MapId,
       Container: this.GetItem(13)
     });
@@ -218,7 +218,7 @@ class BaseMap extends UiPanelBase_1.UiPanelBase {
     this.MapTileMgr.OnMapSetUp();
     await this.MapTileMgr.LoadMapBorder();
     this.CAi.OnMapSetup();
-    this.d5f?.OnMapSetup();
+    this.HWf?.OnMapSetup();
     this.RootItem.SetUIActive(true);
   }
   GetAllMarkItems() {
@@ -260,11 +260,25 @@ class BaseMap extends UiPanelBase_1.UiPanelBase {
   GetAllMapTileItems() {
     return this.MapTileMgr.GetMapTileItems();
   }
-  GetWorldMapCenterAreaId() {
-    return this.MapTileMgr.GetWorldMapCenterAreaId();
+  GetWorldMapCenterPosition() {
+    return this.MapTileMgr.GetWorldMapCenterPosition();
   }
-  GetSubMapGroupIdByPosition() {
-    return this.MapTileMgr.GetSubMapGroupByRootItemPosition();
+  GetMultiMapAreaIdByPosition(t) {
+    return this.MapTileMgr.GetMultiMapAreaIdByPosition(t);
+  }
+  GetSubMapGroupByPosition(t) {
+    return this.MapTileMgr.GetSubMapGroupByPosition(t);
+  }
+  GetWorldMapCenterAreaId() {
+    var t = this.MapTileMgr.GetWorldMapCenterPosition();
+    if (t) {
+      return this.MapTileMgr.GetMultiMapAreaIdByPosition(t);
+    } else {
+      return 0;
+    }
+  }
+  UpdateCurrentAreaMapGroupId(t) {
+    this.MapTileMgr.UpdateCurrentAreaMapGroupId(t);
   }
   SetMapScale(t) {
     this.RootItem.SetUIRelativeScale3D(new UE.Vector(t, t, t));

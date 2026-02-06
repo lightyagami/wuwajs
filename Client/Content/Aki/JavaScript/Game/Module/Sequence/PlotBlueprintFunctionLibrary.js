@@ -55,7 +55,7 @@ class PlotBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   static ExecuteEntitySequenceEvents(e, t) {
     var r = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t);
     if (r?.IsInit) {
-      r.Entity?.GetComponent(173)?.ExecuteEvent(e);
+      r.Entity?.GetComponent(175)?.ExecuteEvent(e);
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("LevelPlay", 26, "场景引用Sequence帧事件找不到实体", ["key", e], ["id", t]);
     }
@@ -151,7 +151,7 @@ class PlotBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     ModelManager_1.ModelManager.GravityFlipModel.GravityFlipComp?.RemoveInteractTag();
   }
   static TriggerTagToInteractingGravityMachine(e) {
-    var t = ModelManager_1.ModelManager.GravityFlipModel.GravityFlipEntity?.GetComponent(215);
+    var t = ModelManager_1.ModelManager.GravityFlipModel.GravityFlipEntity?.GetComponent(217);
     var e = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e.TagName);
     if (t?.HasTag(e)) {
       t?.RemoveTag(e);

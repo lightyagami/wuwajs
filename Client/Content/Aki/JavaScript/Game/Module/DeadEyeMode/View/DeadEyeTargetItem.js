@@ -21,29 +21,29 @@ class DeadEyeTargetItem extends CommonMarkItem_1.CommonMarkItem {
     this.AimRange = t;
     this.TargetEntity = i;
     this.cie = Rotator_1.Rotator.Create();
-    this.OKm = false;
+    this.szm = false;
     this.Ocm = false;
-    this.D5f = undefined;
-    this.U5f = undefined;
-    this.NKm = undefined;
+    this.MQf = undefined;
+    this.EQf = undefined;
+    this.lzm = undefined;
   }
   get IsLocked() {
     return this.Ocm;
   }
   set IsLocked(e) {
     this.Ocm = e;
-    this.Esf(e);
+    this.Yhf(e);
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem]];
   }
   OnStart() {
     var e = this.GetItem(1);
-    this.U5f = new LevelSequencePlayer_1.LevelSequencePlayer(e);
+    this.EQf = new LevelSequencePlayer_1.LevelSequencePlayer(e);
     var e = this.GetItem(2);
-    this.D5f = new LevelSequencePlayer_1.LevelSequencePlayer(e);
+    this.MQf = new LevelSequencePlayer_1.LevelSequencePlayer(e);
     var e = this.GetItem(4);
-    this.NKm = new LevelSequencePlayer_1.LevelSequencePlayer(e);
+    this.lzm = new LevelSequencePlayer_1.LevelSequencePlayer(e);
     this.UpdatePositionAndRotation();
     this.IsLocked = false;
   }
@@ -53,20 +53,20 @@ class DeadEyeTargetItem extends CommonMarkItem_1.CommonMarkItem {
   async OnBeforeHideAsync() {
     var e = new CustomPromise_1.CustomPromise();
     if (this.IsLocked) {
-      await this.D5f?.PlaySequenceAsync("Close", e);
+      await this.MQf?.PlaySequenceAsync("Close", e);
     } else {
-      await this.U5f?.PlaySequenceAsync("Close", e);
+      await this.EQf?.PlaySequenceAsync("Close", e);
     }
   }
   OnBeforeDestroy() {}
   OnTick(e) {
-    if (this.RootItem && this.GetActive() && ModelManager_1.ModelManager.DeadEyeModeModel.ViewStartSequenceFinish && (super.OnTick(e), e = this.RootItem.GetAnchorOffset(), (e = this.KKm(e)) !== this.OKm)) {
-      this.XKm(e);
+    if (this.RootItem && this.GetActive() && ModelManager_1.ModelManager.DeadEyeModeModel.ViewStartSequenceFinish && (super.OnTick(e), e = this.RootItem.GetAnchorOffset(), (e = this.gzm(e)) !== this.szm)) {
+      this.Czm(e);
     }
   }
   async PlayClickSequence() {
     var e = new CustomPromise_1.CustomPromise();
-    await this.D5f?.PlaySequenceAsync("Click", e);
+    await this.MQf?.PlaySequenceAsync("Click", e);
   }
   OnScreenPositionChanged(e) {
     var t = this.GetItem(4);
@@ -84,23 +84,23 @@ class DeadEyeTargetItem extends CommonMarkItem_1.CommonMarkItem {
     if (this.GetActive() && !this.IsHideOrHiding) {
       if (e) {
         if (this.IsLocked) {
-          this.D5f?.PlayLevelSequenceByName(t ? "Start" : "ShowView");
+          this.MQf?.PlayLevelSequenceByName(t ? "Start" : "ShowView");
         } else {
-          this.U5f?.PlayLevelSequenceByName("Start");
+          this.EQf?.PlayLevelSequenceByName("Start");
         }
-        this.NKm?.PlayLevelSequenceByName("Close");
+        this.lzm?.PlayLevelSequenceByName("Close");
       } else {
-        (this.IsLocked ? this.D5f : this.U5f)?.PlayLevelSequenceByName("Close");
-        this.NKm?.PlayLevelSequenceByName("Start");
+        (this.IsLocked ? this.MQf : this.EQf)?.PlayLevelSequenceByName("Close");
+        this.lzm?.PlayLevelSequenceByName("Start");
       }
     }
   }
-  XKm(e) {
-    this.OKm = e;
-    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.DeadEyeModeTargetPointCanLockStateChange, this.OKm);
+  Czm(e) {
+    this.szm = e;
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.DeadEyeModeTargetPointCanLockStateChange, this.szm);
     this.m7c();
   }
-  KKm(e) {
+  gzm(e) {
     var t = this.AimRange.X * 0.5;
     var i = this.AimRange.Y * 0.5;
     return e.X >= -t && e.X <= t && e.Y >= -i && e.Y <= i;
@@ -116,13 +116,13 @@ class DeadEyeTargetItem extends CommonMarkItem_1.CommonMarkItem {
           Log_1.Log.Debug("UiCommon", 18, "死眼跳台目标被锁定");
         }
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.DeadEyeModeTargetPointLocked);
-        this.D5f?.PlayLevelSequenceByName("Start");
+        this.MQf?.PlayLevelSequenceByName("Start");
       } else if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("UiCommon", 18, "当前能量不足以再射一发子弹");
       }
     }
   }
-  Esf(e) {
+  Yhf(e) {
     this.GetItem(1)?.SetUIActive(!e);
     this.GetItem(2)?.SetUIActive(e);
     this.GetItem(6)?.SetUIActive(e);

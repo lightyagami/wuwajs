@@ -2,21 +2,21 @@
 
 var __decorate = this && this.__decorate || function (e, t, i, s) {
   var n;
-  var h = arguments.length;
-  var o = h < 3 ? t : s === null ? s = Object.getOwnPropertyDescriptor(t, i) : s;
+  var o = arguments.length;
+  var h = o < 3 ? t : s === null ? s = Object.getOwnPropertyDescriptor(t, i) : s;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    o = Reflect.decorate(e, t, i, s);
+    h = Reflect.decorate(e, t, i, s);
   } else {
     for (var r = e.length - 1; r >= 0; r--) {
       if (n = e[r]) {
-        o = (h < 3 ? n(o) : h > 3 ? n(t, i, o) : n(t, i)) || o;
+        h = (o < 3 ? n(h) : o > 3 ? n(t, i, h) : n(t, i)) || h;
       }
     }
   }
-  if (h > 3 && o) {
-    Object.defineProperty(t, i, o);
+  if (o > 3 && h) {
+    Object.defineProperty(t, i, h);
   }
-  return o;
+  return h;
 };
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -30,6 +30,7 @@ const CharacterNameDefines_1 = require("../../../../NewWorld/Character/Common/Ch
 const SkeletalObserverManager_1 = require("../../../SkeletalObserver/SkeletalObserverManager");
 const UiModelComponentDefine_1 = require("../../Define/UiModelComponentDefine");
 const UiModelComponentBase_1 = require("../UiModelComponentBase");
+const UiModelComponentInterface_1 = require("../UiModelComponentInterface");
 let UiRoleHuluComponent = class UiRoleHuluComponent extends UiModelComponentBase_1.UiModelComponentBase {
   constructor() {
     super(...arguments);
@@ -41,17 +42,8 @@ let UiRoleHuluComponent = class UiRoleHuluComponent extends UiModelComponentBase
     this.g1t = CharacterNameDefines_1.CharacterNameDefines.HULU_SOCKET_NAME;
     this._ii = 0;
     this.D4a = undefined;
-    this.Twr = e => {
-      if (!e && this._ii === 2) {
-        this.SetActive(false);
-      }
-      this.D4a = e;
-    };
     this.Ktc = () => {
       this.Refresh();
-    };
-    this.Dwr = e => {
-      this.dBr?.Model?.CheckGetComponent(0)?.SetDitherEffect(e);
     };
     this.OnRoleMeshLoadComplete = () => {
       this.gBr();
@@ -84,19 +76,24 @@ let UiRoleHuluComponent = class UiRoleHuluComponent extends UiModelComponentBase
   OnStart() {
     EventSystem_1.EventSystem.AddWithTarget(this.Owner, EventDefine_1.EEventName.OnUiModelLoadComplete, this.OnRoleMeshLoadComplete);
     EventSystem_1.EventSystem.AddWithTarget(this.Owner, EventDefine_1.EEventName.BeforeUiModelLoadStart, this.Ktc);
-    EventSystem_1.EventSystem.AddWithTarget(this.Owner, EventDefine_1.EEventName.OnUiModelVisibleChange, this.Twr);
-    EventSystem_1.EventSystem.AddWithTarget(this.Owner, EventDefine_1.EEventName.OnUiModelSetDitherEffect, this.Dwr);
     this.Jwr?.RegisterAnsTrigger("UiCalabashAnsContext", this.OnAnsBegin, this.OnAnsEnd);
   }
   OnEnd() {
     EventSystem_1.EventSystem.RemoveWithTarget(this.Owner, EventDefine_1.EEventName.OnUiModelLoadComplete, this.OnRoleMeshLoadComplete);
     EventSystem_1.EventSystem.RemoveWithTarget(this.Owner, EventDefine_1.EEventName.BeforeUiModelLoadStart, this.Ktc);
-    EventSystem_1.EventSystem.RemoveWithTarget(this.Owner, EventDefine_1.EEventName.OnUiModelVisibleChange, this.Twr);
-    EventSystem_1.EventSystem.RemoveWithTarget(this.Owner, EventDefine_1.EEventName.OnUiModelSetDitherEffect, this.Dwr);
     SkeletalObserverManager_1.SkeletalObserverManager.DestroySkeletalObserver(this.dBr);
   }
   GetHuluHandle() {
     return this.dBr;
+  }
+  OnModelVisibleChange(e) {
+    if (!e && this._ii === 2) {
+      this.SetActive(false);
+    }
+    this.D4a = e;
+  }
+  OnModelDitherEffectChange(e) {
+    this.dBr?.Model?.CheckGetComponent(0)?.SetDitherEffect(e);
   }
   Refresh() {
     var e = this.dBr.Model;
@@ -136,5 +133,5 @@ let UiRoleHuluComponent = class UiRoleHuluComponent extends UiModelComponentBase
     }
   }
 };
-UiRoleHuluComponent = __decorate([(0, UiModelComponentDefine_1.RegisterUiModelComponent)(18)], UiRoleHuluComponent);
+UiRoleHuluComponent = __decorate([(0, UiModelComponentInterface_1.RegisterUiModelComponentImplements)(0, 1), (0, UiModelComponentDefine_1.RegisterUiModelComponent)(18)], UiRoleHuluComponent);
 exports.UiRoleHuluComponent = UiRoleHuluComponent; //# sourceMappingURL=UiRoleHuluComponent.js.map

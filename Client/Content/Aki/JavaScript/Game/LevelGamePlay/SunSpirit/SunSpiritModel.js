@@ -57,12 +57,12 @@ class TripleKeyIndexMap extends Map {
       n = new Map();
       this.set(e, n);
     }
-    let a = n.get(i);
-    if (!a) {
-      a = new Map();
-      n.set(i, a);
+    let o = n.get(i);
+    if (!o) {
+      o = new Map();
+      n.set(i, o);
     }
-    a.set(t, r);
+    o.set(t, r);
   }
   DelVal(e, i, t) {
     var r;
@@ -81,26 +81,27 @@ class TripleKeyIndexMap extends Map {
 class SunSpiritModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
-    this.k$m = false;
+    this.UQm = false;
     this.GmOverrideIsSunSpiritEnable = false;
     this.IsUsingGmOverrideSunSpiritEnable = false;
     this._sm = new Map();
     this.csm = new DoubleKeyIndexSet();
-    this.q$m = new TripleKeyIndexMap();
+    this.xQm = new TripleKeyIndexMap();
     this.msm = [];
     this.fsm = 0;
-    this.O9f = ResourceSystem_1.ResourceSystem.InvalidId;
-    this.G9f = undefined;
+    this.oeg = ResourceSystem_1.ResourceSystem.InvalidId;
+    this.seg = undefined;
+    this.qHg = new Set();
   }
   GetIsSunSpiritEnable() {
     if (!Info_1.Info.IsBuildShipping && this.IsUsingGmOverrideSunSpiritEnable) {
       return this.GmOverrideIsSunSpiritEnable;
     } else {
-      return this.k$m;
+      return this.UQm;
     }
   }
   SetIsSunSpiritEnable(e) {
-    this.k$m = e;
+    this.UQm = e;
   }
   gsm() {
     if (this.msm.length > 0) {
@@ -109,40 +110,39 @@ class SunSpiritModel extends ModelBase_1.ModelBase {
       return ++this.fsm;
     }
   }
-  OnInit() {
-    this.LoadAndInitSunSpiritConfig(true);
-    return true;
-  }
   OnClear() {
     this._sm.clear();
-    this.q$m.clear();
+    this.xQm.clear();
     this.csm.clear();
-    if (this.O9f !== ResourceSystem_1.ResourceSystem.InvalidId) {
-      ResourceSystem_1.ResourceSystem.CancelAsyncLoad(this.O9f);
-      this.O9f = ResourceSystem_1.ResourceSystem.InvalidId;
+    if (this.oeg !== ResourceSystem_1.ResourceSystem.InvalidId) {
+      ResourceSystem_1.ResourceSystem.CancelAsyncLoad(this.oeg);
+      this.oeg = ResourceSystem_1.ResourceSystem.InvalidId;
+      this.OHg(false);
     }
     return true;
   }
-  AddOrUpdateSunSpiritDataByPb(e) {
-    let i = this.GetSunSpiritDataByPlayerIdAndConfigId(ModelManager_1.ModelManager.CreatureModel.GetPlayerId(), e.r6n, e.A5n);
+  AddOrUpdateSunSpiritDataByPb(e, i = true) {
+    let t = this.GetSunSpiritDataByPlayerIdAndConfigId(ModelManager_1.ModelManager.CreatureModel.GetPlayerId(), e.r6n, e.A5n);
+    if (t) {
+      this.csm.DeleteValFromSet(t.PlayerId, t.AreaId, t.SunSpiritId);
+      this.xQm.DelVal(t.PlayerId, t.InstId, t.ConfigId);
+    }
+    if (!t) {
+      t = new SunSpiritData_1.SunSpiritData(this.gsm());
+      this._sm.set(t.SunSpiritId, t);
+    }
+    t.SetOrUpdateSunSpiritBasicDataByProto(e);
+    this.xQm.SetVal(t.PlayerId, t.InstId, t.ConfigId, t.SunSpiritId);
+    this.csm.AddValToSet(t.PlayerId, t.AreaId, t.SunSpiritId);
     if (i) {
-      this.csm.DeleteValFromSet(i.PlayerId, i.AreaId, i.SunSpiritId);
-      this.q$m.DelVal(i.PlayerId, i.InstId, i.ConfigId);
+      t.RefreshSunSpiritStateByCachedProto(false);
     }
-    if (!i) {
-      i = new SunSpiritData_1.SunSpiritData(this.gsm());
-      this._sm.set(i.SunSpiritId, i);
-    }
-    i.SetOrUpdateSunSpiritBasicDataByProto(e);
-    this.q$m.SetVal(i.PlayerId, i.InstId, i.ConfigId, i.SunSpiritId);
-    this.csm.AddValToSet(i.PlayerId, i.AreaId, i.SunSpiritId);
-    i.RefreshSunSpiritStateByCachedProto(false);
   }
   RemoveSunSpirit(e) {
     var i = this._sm.get(e);
     if (i) {
       this.csm.DeleteValFromSet(i.PlayerId, i.AreaId, e);
-      this.q$m.DelVal(i.PlayerId, i.InstId, i.ConfigId);
+      this.xQm.DelVal(i.PlayerId, i.InstId, i.ConfigId);
       this._sm.delete(e);
       this.msm.push(e);
     }
@@ -151,7 +151,7 @@ class SunSpiritModel extends ModelBase_1.ModelBase {
     return this._sm.get(e);
   }
   GetSunSpiritDataByPlayerIdAndConfigId(e, i, t) {
-    e = this.q$m.GetVal(e, i, t);
+    e = this.xQm.GetVal(e, i, t);
     if (e) {
       return this.GetSunSpiritDataById(e);
     }
@@ -183,33 +183,33 @@ class SunSpiritModel extends ModelBase_1.ModelBase {
           r = r.NpcPerformState?.Configs;
           if (r) {
             let e = undefined;
-            for (const _ of r) {
-              if (_.State === "常态") {
-                e = _.MaterialDa;
+            for (const u of r) {
+              if (u.State === "常态") {
+                e = u.MaterialDa;
                 break;
               }
             }
             if (e && e !== "") {
               var n = ResourceSystem_1.ResourceSystem.Load(e, UE.PD_CharacterControllerData_C);
               if (n?.IsValid()) {
-                var a = new Array();
+                var o = new Array();
                 for (let e = 0; e < appearanceConfigMap.size; ++e) {
-                  a.push(0);
+                  o.push(0);
                 }
-                var o = n.CustomFloatParameters.Num();
-                for (let e = 0; e < o; ++e) {
+                var a = n.CustomFloatParameters.Num();
+                for (let e = 0; e < a; ++e) {
                   var s = n.CustomFloatParameters.Get(e);
                   var S = s.ParameterName.toString();
                   var s = s.ParameterValue.Loop.Constant;
                   if (appearanceConfigMap.has(S)) {
-                    a[appearanceConfigMap.get(S)] = s;
+                    o[appearanceConfigMap.get(S)] = s;
                   }
                 }
-                var u = UE.NewArray(UE.BuiltinFloat);
-                for (const p of a) {
-                  u.Add(p);
+                var _ = UE.NewArray(UE.BuiltinFloat);
+                for (const h of o) {
+                  _.Add(h);
                 }
-                return u;
+                return _;
               }
               if (Log_1.Log.CheckError()) {
                 Log_1.Log.Error("SunSpirit", 50, "加载日灵外观DA失败", ["InstId", i], ["ConfigId", t], ["Path", e]);
@@ -222,12 +222,12 @@ class SunSpiritModel extends ModelBase_1.ModelBase {
   }
   GetAllSunSpiritDataByPlayerIdAndAreaId(e = ModelManager_1.ModelManager.CreatureModel?.GetPlayerId() ?? 0, i = ModelManager_1.ModelManager.AreaModel?.AreaInfo?.AreaId ?? 0, t = false, r, n = []) {
     for (const s of t ? ModelManager_1.ModelManager.AreaModel?.GetAllAreaIdInheritableById(i) ?? [] : [i]) {
-      var a = this.csm.GetSet(e, s);
-      if (a?.size) {
-        for (const S of a) {
-          var o = this._sm.get(S);
-          if (!!o && (!r || !!r(o))) {
-            n.push(o);
+      var o = this.csm.GetSet(e, s);
+      if (o?.size) {
+        for (const S of o) {
+          var a = this._sm.get(S);
+          if (!!a && (!r || !!r(a))) {
+            n.push(a);
           }
         }
       }
@@ -242,57 +242,93 @@ class SunSpiritModel extends ModelBase_1.ModelBase {
         n.push(e);
       }
     }
-    let a = 0;
+    let o = 0;
     for (const S of n) {
-      var o = this.csm.GetSet(e, S);
-      if (o?.size) {
+      var a = this.csm.GetSet(e, S);
+      if (a?.size) {
         if (r) {
-          for (const u of o) {
-            var s = this._sm.get(u);
+          for (const _ of a) {
+            var s = this._sm.get(_);
             if (s && r(s)) {
-              ++a;
+              ++o;
             }
           }
         } else {
-          a += o.size;
+          o += a.size;
         }
       }
     }
-    return a;
+    return o;
   }
   GetSunSpiritConfig() {
-    if (!this.G9f) {
+    if (!this.seg) {
       if (Log_1.Log.CheckWarn()) {
         Log_1.Log.Warn("SunSpirit", 39, "日灵: 获取配置时配置异步加载尚未完成，触发同步加载兜底，需要关注加载性能");
       }
-      this.G9f = new SunSpiritConfig_1.SunSpiritConfig();
+      this.seg = new SunSpiritConfig_1.SunSpiritConfig();
       this.LoadAndInitSunSpiritConfig(false);
     }
-    return this.G9f;
+    return this.seg;
   }
-  LoadAndInitSunSpiritConfig(e = true, i = SUN_SPIRIT_CONFIG_DA_PATH) {
-    if (this.O9f !== ResourceSystem_1.ResourceSystem.InvalidId) {
-      ResourceSystem_1.ResourceSystem.CancelAsyncLoad(this.O9f);
-      this.O9f = ResourceSystem_1.ResourceSystem.InvalidId;
+  OHg(e) {
+    var i = this.qHg;
+    this.qHg = new Set();
+    for (const t of i) {
+      t(e);
     }
+  }
+  LoadAndInitSunSpiritConfig(e = true, i) {
+    if (i && !this.qHg.has(i)) {
+      this.qHg.add(i);
+    }
+    i = SUN_SPIRIT_CONFIG_DA_PATH;
     if (e) {
-      let t = false;
-      e = ResourceSystem_1.ResourceSystem.LoadAsync(i, UE.BP_SunSpiritConfig_C, (e, i) => {
-        t = true;
-        this.OnLoadSunSpiritConfig(e, i);
-      });
-      if (!t) {
-        this.O9f = e;
+      if (this.oeg !== ResourceSystem_1.ResourceSystem.InvalidId) {
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("SunSpirit", 39, "加载配置: 异步加载中，不重复加载", ["Path", i]);
+        }
+      } else {
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("SunSpirit", 39, "加载配置: 异步加载", ["Path", i]);
+        }
+        let t = false;
+        e = ResourceSystem_1.ResourceSystem.LoadAsync(i, UE.BP_SunSpiritConfig_C, (e, i) => {
+          t = true;
+          this.OnLoadSunSpiritConfig(e, i);
+          this.OHg(true);
+        });
+        if (!t) {
+          this.oeg = e;
+        }
       }
     } else {
+      if (this.oeg !== ResourceSystem_1.ResourceSystem.InvalidId) {
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("SunSpirit", 39, "加载配置: 异步加载中，取消并改为同步加载", ["Path", i]);
+        }
+        ResourceSystem_1.ResourceSystem.CancelAsyncLoad(this.oeg);
+        this.oeg = ResourceSystem_1.ResourceSystem.InvalidId;
+      }
       this.OnLoadSunSpiritConfig(ResourceSystem_1.ResourceSystem.Load(i, UE.BP_SunSpiritConfig_C), i);
+      this.OHg(true);
     }
   }
+  ClearAndReleaseSunSpiritConfig() {
+    if (this.oeg !== ResourceSystem_1.ResourceSystem.InvalidId) {
+      ResourceSystem_1.ResourceSystem.CancelAsyncLoad(this.oeg);
+      this.oeg = ResourceSystem_1.ResourceSystem.InvalidId;
+      this.OHg(false);
+    }
+    this.seg = undefined;
+  }
   OnLoadSunSpiritConfig(e, i) {
-    this.O9f = ResourceSystem_1.ResourceSystem.InvalidId;
+    this.oeg = ResourceSystem_1.ResourceSystem.InvalidId;
     if (e?.IsValid()) {
-      this.G9f ||= new SunSpiritConfig_1.SunSpiritConfig();
-      this.G9f.UpdateFromUeData(e);
+      this.seg ||= new SunSpiritConfig_1.SunSpiritConfig();
+      this.seg.UpdateFromUeData(e);
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("SunSpirit", 39, "初始化日灵配置成功", ["Path", i]);
+      }
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("SunSpirit", 39, "加载日灵配置DA失败", ["Path", i]);
     }

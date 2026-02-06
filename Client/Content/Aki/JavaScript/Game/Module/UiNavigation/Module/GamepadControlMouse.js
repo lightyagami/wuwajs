@@ -30,8 +30,8 @@ class GamepadControlMouse {
     this.vIa = undefined;
     this.MIa = 0;
     this.SIa = 0;
-    this.pbm = 0;
-    this.vbm = 0;
+    this.Pbm = 0;
+    this.Abm = 0;
     this.EIa = 0;
     this.yIa = 0;
     this.IIa = false;
@@ -59,6 +59,7 @@ class GamepadControlMouse {
       var t = Info_1.Info.IsInGamepad();
       LguiEventSystemManager_1.LguiEventSystemManager.LguiEventSystemActor?.SetIsOverrideMousePosition(t);
       this.vIa.SetAlpha(t ? 1 : 0);
+      this._$g();
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("UiNavigation", 10, "UiNavigation:GamepadControlMouse 输入类型方式变化", ["是否开启", t], ["当前操作类型", Info_1.Info.InputControllerType]);
       }
@@ -73,8 +74,8 @@ class GamepadControlMouse {
     this.MIa = UiLayer_1.UiLayer.UiRootItem.GetWidth() / 2;
     this.SIa = UiLayer_1.UiLayer.UiRootItem.GetHeight() / 2;
     t = UiLayer_1.UiLayer.UiRootItem.GetRenderCanvas().GetViewportSize();
-    this.pbm = t.X;
-    this.vbm = t.Y;
+    this.Pbm = t.X;
+    this.Abm = t.Y;
     this.uGo = (0, puerts_1.toManualReleaseDelegate)(this.YFo);
   }
   get Q_t() {
@@ -104,20 +105,20 @@ class GamepadControlMouse {
     if (t.X > this.MIa) {
       i = t.X - this.MIa;
       t.X = this.MIa;
-      this.Q_t.X = MathUtils_1.MathUtils.Clamp(this.Q_t.X - this.yIa, 0, this.pbm);
+      this.Q_t.X = MathUtils_1.MathUtils.Clamp(this.Q_t.X - this.yIa, 0, this.Pbm);
     } else if (t.X < -this.MIa) {
       i = t.X + this.MIa;
       t.X = -this.MIa;
-      this.Q_t.X = MathUtils_1.MathUtils.Clamp(this.Q_t.X - this.yIa, 0, this.pbm);
+      this.Q_t.X = MathUtils_1.MathUtils.Clamp(this.Q_t.X - this.yIa, 0, this.Pbm);
     }
     if (t.Y > this.SIa) {
       e = t.Y - this.SIa;
       t.Y = this.SIa;
-      this.Q_t.Y = MathUtils_1.MathUtils.Clamp(this.Q_t.Y + this.EIa, 0, this.vbm);
+      this.Q_t.Y = MathUtils_1.MathUtils.Clamp(this.Q_t.Y + this.EIa, 0, this.Abm);
     } else if (t.Y < -this.SIa) {
       e = t.Y + this.SIa;
       t.Y = -this.SIa;
-      this.Q_t.Y = MathUtils_1.MathUtils.Clamp(this.Q_t.Y + this.EIa, 0, this.vbm);
+      this.Q_t.Y = MathUtils_1.MathUtils.Clamp(this.Q_t.Y + this.EIa, 0, this.Abm);
     }
     this.vIa.SetAnchorOffset(t.ToUeVector2D());
     LguiEventSystemManager_1.LguiEventSystemManager.LguiEventSystemActor?.OverrideMousePosition(this.Q_t.ToUeVector2D());
@@ -148,7 +149,14 @@ class GamepadControlMouse {
       LguiEventSystemManager_1.LguiEventSystemManager.LguiEventSystemActor?.SwitchToNavigationInputType();
     }
   }
-  bpf() {
+  _$g() {
+    var t = this.pIa?.pointerPosition ?? Vector2D_1.Vector2D.Create();
+    this.Q_t.Set(t.X, t.Y);
+    this.xCa();
+    this.RIa();
+    LguiEventSystemManager_1.LguiEventSystemManager.LguiEventSystemActor?.SwitchToNavigationInputType();
+  }
+  lSf() {
     var t = LguiEventSystemManager_1.LguiEventSystemManager.GetNowHitComponent();
     let i = undefined;
     if (t &&= t.GetOwner()?.GetComponentByClass(TsUiNavigationBehaviorListener_1.default.StaticClass())) {
@@ -182,7 +190,7 @@ class GamepadControlMouse {
       }
     }
   }
-  i0f(t) {
+  npf(t) {
     if (t && t.IsUseDrag) {
       for (const i of this.TIa.GetPanelConfigMap().values()) {
         if (i.GetPanelHandle().GetListenerSet().has(t)) {
@@ -254,7 +262,7 @@ class GamepadControlMouse {
     this.GuideUiListener = undefined;
   }
   IsNearlyListenerUseDrag() {
-    return !this.LockUseDrag && !!this.i0f(this.HitListener);
+    return !this.LockUseDrag && !!this.npf(this.HitListener);
   }
   SetLockUseDragState(t) {
     this.LockUseDrag = t;
@@ -292,7 +300,7 @@ class GamepadControlMouse {
       this.D9_(t);
       this.xIa();
       this.BIa();
-      this.bpf();
+      this.lSf();
     }
   }
 }

@@ -21,6 +21,7 @@ const BaseSkillComponent_1 = require("./BaseSkillComponent");
 const EndSkillInfo_1 = require("./EndSkillInfo");
 var EAttributeId = Protocol_1.Aki.Protocol.Vks;
 const EffectUtil_1 = require("../../../../../Utils/EffectUtil");
+const CharacterVisionComponent_1 = require("../Vision/CharacterVisionComponent");
 exports.MONTAGE_INVALID_INDEX = -1;
 exports.MONTAGE_DEFAULT_INDEX = 0;
 const MONTAGE_BLEND_TIME = 0.2;
@@ -38,7 +39,7 @@ class Skill {
     this.MontageContextId = undefined;
     this.PreContextId = undefined;
     this.ANc = undefined;
-    this.BattleFlags = [];
+    this.BattleContext = undefined;
     this.SkillBehaviorAnimNotifyMessageId = undefined;
     this.FightStateHandle = 0;
     this.bzo = 0;
@@ -46,6 +47,7 @@ class Skill {
     this.Gzo = false;
     this.Nzo = undefined;
     this.kzo = [];
+    this.gIg = 0;
     this.Vzo = undefined;
     this.Hzo = undefined;
     this.jzo = undefined;
@@ -69,6 +71,7 @@ class Skill {
   set MNc(t) {
     this.ANc = t;
     ExtraEffectAddBattleFlag_1.AddBattleFlag.ApplyEffects(this.cBe.Entity, this);
+    this.BattleContext.VisionId = this.CIg();
   }
   get SkillId() {
     return this.bzo;
@@ -113,19 +116,23 @@ class Skill {
   }
   Initialize(t, i, s) {
     this.cBe = s;
-    this.$zo = s.Entity.GetComponent(183);
-    this.Lie = s.Entity.GetComponent(215);
+    this.$zo = s.Entity.GetComponent(185);
+    this.Lie = s.Entity.GetComponent(217);
     this.Hte = s.Entity.GetComponent(3);
     this.C51 = s.Entity.GetComponent(25);
-    this.vHr = s.Entity.GetComponent(131);
+    this.vHr = s.Entity.GetComponent(133);
     this.bzo = t;
     this.Nzo = i;
     this.qzo = false;
     this.EndSkillInfo = new EndSkillInfo_1.EndSkillInfo();
     this.oGl = i.InterruptLevel;
+    this.gIg = 0;
     for (let t = i.SkillTag.Num() - 1; t >= 0; t--) {
       var e = i.SkillTag.Get(t);
       var e = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e?.TagName);
+      if (GameplayTagUtils_1.GameplayTagUtils.IsChildTag(e, CharacterVisionComponent_1.visionTriggerTag)) {
+        this.gIg = e;
+      }
       this.kzo.push(e);
     }
     if (i.SkillMode === 1) {
@@ -413,7 +420,7 @@ class Skill {
   PlayMontage(t, i, s, e, h, r) {
     var a = this.GetMontageByIndex(t);
     if (!a?.IsValid()) {
-      CombatLog_1.CombatLog.Error("Skill", this.cBe.Entity, "PlaySkillMontage 播放的蒙太奇索引不存在", ["技能id:", this.SkillId], ["MontageIndex", t]);
+      CombatLog_1.CombatLog.Error("Skill", this.cBe.Entity, "PlaySkillMontage 播放的蒙太奇索引不存在", ["技能id:", this.SkillId], ["技能名:", this.SkillName], ["MontageIndex", t]);
       return false;
     }
     this.CurrentMontageIndex = t;
@@ -475,6 +482,20 @@ class Skill {
       }
     }
     CombatLog_1.CombatLog.Error("Skill", this.cBe.Entity, "未找到服务器对应被动ga技能的上下文，检查该技能是否有导出给服务器", ["技能Id", this.SkillId]);
+  }
+  CIg() {
+    if (this.gIg !== 0) {
+      return this.gIg;
+    }
+    var t = this.cBe.Entity.GetComponent(0);
+    var i = t?.GetSummonerId();
+    if (i && i !== 0) {
+      i = ModelManager_1.ModelManager.CreatureModel?.GetEntity(i)?.Entity;
+      if (i?.GetComponent(0)?.VisionServerEntityIds?.includes(t.GetCreatureDataId())) {
+        return i?.GetComponent(46)?.GetVisionId(0) ?? 0;
+      }
+    }
+    return 0;
   }
 }
 exports.Skill = Skill;

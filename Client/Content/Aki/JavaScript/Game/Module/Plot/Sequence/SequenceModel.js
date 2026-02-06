@@ -4,13 +4,13 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.SequenceModel = undefined;
+const UE = require("ue");
 const Log_1 = require("../../../../Core/Common/Log");
 const Queue_1 = require("../../../../Core/Container/Queue");
 const ModelBase_1 = require("../../../../Core/Framework/ModelBase");
-const DataTableUtil_1 = require("../../../../Core/Utils/DataTableUtil");
 const Transform_1 = require("../../../../Core/Utils/Math/Transform");
+const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
-const LoginDefine_1 = require("../../Login/Data/LoginDefine");
 const FlowSequence_1 = require("../Flow/FlowSequence");
 const SequenceDefine_1 = require("./SequenceDefine");
 class SequenceModel extends ModelBase_1.ModelBase {
@@ -63,7 +63,6 @@ class SequenceModel extends ModelBase_1.ModelBase {
     this.CurSubtitle = new SequenceDefine_1.PlotSubtitleConfig();
     this.NeedJumpWhenResume = false;
     this.QteKeyFrames = [];
-    this._Du = undefined;
     this.IsSubtitleConfigInit = false;
     this.DefaultGuardTime = 0;
     this.DefaultAudioDelay = 0;
@@ -75,6 +74,7 @@ class SequenceModel extends ModelBase_1.ModelBase {
     this.PoseSwitched = false;
     this.MuteQteList = new Set();
     this.IsMuteAllQte = false;
+    this.HidePos = new UE.VectorDouble(0, 0, -999999);
     this.DisableMotionBlurFrame = 0;
     this.BeginSwitchFrame = 0;
     this.TwiceAnimFlag = false;
@@ -83,18 +83,6 @@ class SequenceModel extends ModelBase_1.ModelBase {
     this.NpcRelationMap = new Map();
     this.NeedHideNpcSet = new Set();
     this.PlotBindingVehicle = undefined;
-  }
-  get SeqMainCharacterModelConfig() {
-    if (!this._Du) {
-      var t = ModelManager_1.ModelManager.PlayerInfoModel.GetNumberPropById(9);
-      let i = SequenceDefine_1.FEMALE_SEQ_MODEL_ID;
-      if (t === LoginDefine_1.ELoginSex.Boy) {
-        i = SequenceDefine_1.MALE_SEQ_MODEL_ID;
-      }
-      t = DataTableUtil_1.DataTableUtil.GetDataTableRowFromName(0, i.toString());
-      this._Du = t;
-    }
-    return this._Du;
   }
   Reset() {
     this.IsPaused = undefined;
@@ -214,6 +202,19 @@ class SequenceModel extends ModelBase_1.ModelBase {
       this.CurFinalPos.push(t);
     } else {
       this.CurFinalPos.push(i);
+    }
+  }
+  GetPlayerBpClass() {
+    var i = ModelManager_1.ModelManager.PlayerInfoModel?.GetPlayerGender() === 1 ? this.SequenceData.GeneratedData?.MalePlayerBP : this.SequenceData.GeneratedData?.FemalePlayerBP;
+    if (i) {
+      return i.ToAssetPathName();
+    } else {
+      ControllerHolder_1.ControllerHolder.FlowController.LogError("GeneratedDA不存在，联系演出刷DA");
+      if (ModelManager_1.ModelManager.PlayerInfoModel?.GetPlayerGender() === 1) {
+        return SequenceDefine_1.MALE_DEFAULT;
+      } else {
+        return SequenceDefine_1.FEMALE_DEFAULT;
+      }
     }
   }
 }

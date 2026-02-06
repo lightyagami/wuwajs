@@ -70,8 +70,8 @@ let ActorDebugMovementComponent = class ActorDebugMovementComponent extends Enti
     }
   }
   static StaticMarkDebugRecord(t, e, o = 15, i = Vector_1.Vector.ZeroVector) {
-    t.GetComponent(30).MarkDebugRecord(e, o);
+    t.GetComponent(31).MarkDebugRecord(e, o);
   }
 };
-ActorDebugMovementComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(30)], ActorDebugMovementComponent);
+ActorDebugMovementComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(31)], ActorDebugMovementComponent);
 exports.ActorDebugMovementComponent = ActorDebugMovementComponent; //# sourceMappingURL=ActorDebugMovementComponent.js.map

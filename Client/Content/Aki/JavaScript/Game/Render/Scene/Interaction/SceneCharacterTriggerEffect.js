@@ -63,7 +63,7 @@ class SceneCharacterTriggerEffect {
     }
   }
   Enable() {
-    if (this.IsReady && (this.OwnerStateComponent = this.Owner.CharacterActorComponent?.Entity?.GetComponent(184), this.IsEnabled = true, Log_1.Log.CheckInfo())) {
+    if (this.IsReady && (this.OwnerStateComponent = this.Owner.CharacterActorComponent?.Entity?.GetComponent(186), this.IsEnabled = true, Log_1.Log.CheckInfo())) {
       Log_1.Log.Info("RenderEffect", 83, "TriggerEffect Enabled", ["Owner", this.Owner.GetName()]);
     }
   }
@@ -86,7 +86,7 @@ class SceneCharacterTriggerEffect {
       return false;
     }
     let t = Vector_1.Vector.Create(0, 0, -1);
-    var e = this.Owner.CharacterActorComponent?.Entity?.GetComponent(187);
+    var e = this.Owner.CharacterActorComponent?.Entity?.GetComponent(189);
     if (e) {
       t = e.GravityDirect;
     }
@@ -101,7 +101,7 @@ class SceneCharacterTriggerEffect {
           EffectSystem_1.EffectSystem.GetEffectModel(this.BushEffectHandle);
           var i = new UE.VectorDouble(this.Owner.D_K2_GetActorLocation().X, this.Owner.D_K2_GetActorLocation().Y, this.Data.TriggerHitPoint.Z);
           e.D_K2_SetActorLocation(i, false, undefined, true);
-          var i = this.Owner.CharacterActorComponent?.Entity?.GetComponent(187);
+          var i = this.Owner.CharacterActorComponent?.Entity?.GetComponent(189);
           if (!i) {
             return;
           }
@@ -128,7 +128,7 @@ class SceneCharacterTriggerEffect {
         this.EmptyUeTransform.SetLocation(s);
         this.EmptyUeTransform.SetRotation(this.CurrentVelocity.ToOrientationQuat());
         h = EffectSystem_1.EffectSystem.SpawnUnloopedEffect(this.Owner, this.EmptyUeTransform, BUSH_OUT_EFFCT, "[SceneCharacterFootprintEffect.SpawnRainFootEffect]");
-        i = this.Owner.CharacterActorComponent?.Entity?.GetComponent(187);
+        i = this.Owner.CharacterActorComponent?.Entity?.GetComponent(189);
         if (i) {
           e = Vector_1.Vector.Create(-i.GravityDirect.X, -i.GravityDirect.Y, -i.GravityDirect.Z);
           s = this.CurrentVelocity.GetSafeNormal(MathCommon_1.MathCommon.SmallNumber);
@@ -164,7 +164,7 @@ class SceneCharacterTriggerEffect {
           i.D_K2_SetActorRelativeTransform(MathUtils_1.MathUtils.DefaultTransformDouble, false, undefined, true);
         }
         let t = 1;
-        h = this.Owner.CharacterActorComponent?.Entity?.GetComponent(183);
+        h = this.Owner.CharacterActorComponent?.Entity?.GetComponent(185);
         if (h && h.HasBuff(640018019)) {
           t = 3;
         }
@@ -189,7 +189,7 @@ class SceneCharacterTriggerEffect {
       var h = new UE.VectorDouble(this.Owner.D_K2_GetActorLocation().X, this.Owner.D_K2_GetActorLocation().Y, this.Owner.D_K2_GetActorLocation().Z);
       this.EmptyUeTransform.SetLocation(h);
       this.EmptyUeTransform.SetRotation(this.CurrentVelocity.ToOrientationQuat());
-      var h = this.Owner.CharacterActorComponent?.Entity?.GetComponent(187);
+      var h = this.Owner.CharacterActorComponent?.Entity?.GetComponent(189);
       if (h) {
         let t = 0;
         let e = 0;

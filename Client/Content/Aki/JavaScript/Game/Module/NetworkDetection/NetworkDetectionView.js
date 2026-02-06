@@ -10,7 +10,6 @@ const Log_1 = require("../../../Core/Common/Log");
 const HotPatchLogReport_1 = require("../../../Launcher/HotPatchLogReport");
 const LauncherLogUploadHandle_1 = require("../../../Launcher/LogUpload/LauncherLogUploadHandle");
 const LauncherNetworkDetectionController_1 = require("../../../Launcher/NetworkDetection/LauncherNetworkDetectionController");
-const LauncherNetworkDetectionDefine_1 = require("../../../Launcher/NetworkDetection/LauncherNetworkDetectionDefine");
 const LauncherNetworkDetectionModel_1 = require("../../../Launcher/NetworkDetection/LauncherNetworkDetectionModel");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
@@ -173,7 +172,7 @@ ${e}`;
   }
   GetNetworkDetectionLayoutItemData() {
     var e = [];
-    for (const i of LauncherNetworkDetectionDefine_1.networkDetectionEntries) {
+    for (const i of LauncherNetworkDetectionModel_1.LauncherNetworkDetectionModel.GetDetectionDataList()) {
       var t = {
         EntryData: i,
         Proceed: false

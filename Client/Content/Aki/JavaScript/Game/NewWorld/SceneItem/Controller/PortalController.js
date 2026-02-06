@@ -35,8 +35,8 @@ class PortalController extends ControllerBase_1.ControllerBase {
     var h;
     var l;
     if (!ModelManager_1.ModelManager.PortalModel?.GetPortal(t) && (!r || !this.mBn)) {
-      i = ModelManager_1.ModelManager.CreatureModel?.GetEntity(t)?.Entity?.GetComponent(226);
-      s = ModelManager_1.ModelManager.CreatureModel?.GetEntity(i?.GetPairCreatureDataId() ?? 0)?.Entity?.GetComponent(226);
+      i = ModelManager_1.ModelManager.CreatureModel?.GetEntity(t)?.Entity?.GetComponent(228);
+      s = ModelManager_1.ModelManager.CreatureModel?.GetEntity(i?.GetPairCreatureDataId() ?? 0)?.Entity?.GetComponent(228);
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("SceneItem", 39, "传送门: RegisterPair", ["EntityId", t], ["IsDynamic", r], ["IsAddToCache", a], ["CreatureDataIdA", i?.GetCreatureDataId()], ["CreatureDataIdB", s?.GetCreatureDataId()], ["PbDataIdA", i?.GetPbDataId()], ["PbDataIdB", s?.GetPbDataId()], ["OwnerCreatureDataIdA", i?.GetDynamicPortalCreatorCreatureDataId()], ["OwnerCreatureDataIdB", s?.GetDynamicPortalCreatorCreatureDataId()], ["PortalBoundsA", e.PortalBounds], ["PortalBoundsB", e.PairPortalBounds], ["PortalTransA", e.Trans], ["PortalTransB", e.PairTrans], ["PairMaxViewDisA", i?.GetPairCaptureMaxViewDistance()], ["PairMaxViewDisB", s?.GetPairCaptureMaxViewDistance()]);
       }
@@ -93,23 +93,23 @@ class PortalController extends ControllerBase_1.ControllerBase {
     var s;
     var o;
     var n = ModelManager_1.ModelManager.PortalModel?.GetPortal(t);
-    if (n && (i = ModelManager_1.ModelManager.CreatureModel?.GetEntity(t)?.Entity?.GetComponent(226), s = ModelManager_1.ModelManager.CreatureModel?.GetEntity(i?.GetPairCreatureDataId() ?? 0)?.Entity?.GetComponent(226), Log_1.Log.CheckDebug() && Log_1.Log.Debug("SceneItem", 39, "传送门: UnRegisterPair", ["EntityId", t], ["IsDynamic", e], ["IsRemoveFromCache", r], ["RegisterNewFromCache", a], ["CreatureDataIdA", i?.GetCreatureDataId()], ["CreatureDataIdB", s?.GetCreatureDataId()], ["PbDataIdA", i?.GetPbDataId()], ["PbDataIdB", s?.GetPbDataId()], ["OwnerCreatureDataIdA", i?.GetDynamicPortalCreatorCreatureDataId()], ["OwnerCreatureDataIdB", s?.GetDynamicPortalCreatorCreatureDataId()]), n.DisablePortal1Rendering(), n.DisablePortal2Rendering(), o = UE.NewArray(UE.Actor), n.SetCaptureShowingActors(true, (0, puerts_1.$ref)(o), (0, puerts_1.$ref)(o)), n.SetCaptureShowingActors(false, (0, puerts_1.$ref)(o), (0, puerts_1.$ref)(o)), n.SetCaptureMaxViewDistance(true, 0), n.SetCaptureMaxViewDistance(false, 0), ModelManager_1.ModelManager.PortalModel?.RemovePortalPair(t), i?.PortalCapture?.SetPair(undefined), s?.PortalCapture?.SetPair(undefined), i?.AfterUnRegisterPair(), s?.AfterUnRegisterPair(), e && (this.mBn = false), this.Hla = undefined, r && !e && (this.CBn.delete(t), this.Vla.Delete(t)), a) && (o = this.Vla.Peek()) && (n = this.CBn.get(o))) {
+    if (n && (i = ModelManager_1.ModelManager.CreatureModel?.GetEntity(t)?.Entity?.GetComponent(228), s = ModelManager_1.ModelManager.CreatureModel?.GetEntity(i?.GetPairCreatureDataId() ?? 0)?.Entity?.GetComponent(228), Log_1.Log.CheckDebug() && Log_1.Log.Debug("SceneItem", 39, "传送门: UnRegisterPair", ["EntityId", t], ["IsDynamic", e], ["IsRemoveFromCache", r], ["RegisterNewFromCache", a], ["CreatureDataIdA", i?.GetCreatureDataId()], ["CreatureDataIdB", s?.GetCreatureDataId()], ["PbDataIdA", i?.GetPbDataId()], ["PbDataIdB", s?.GetPbDataId()], ["OwnerCreatureDataIdA", i?.GetDynamicPortalCreatorCreatureDataId()], ["OwnerCreatureDataIdB", s?.GetDynamicPortalCreatorCreatureDataId()]), n.DisablePortal1Rendering(), n.DisablePortal2Rendering(), o = UE.NewArray(UE.Actor), n.SetCaptureShowingActors(true, (0, puerts_1.$ref)(o), (0, puerts_1.$ref)(o)), n.SetCaptureShowingActors(false, (0, puerts_1.$ref)(o), (0, puerts_1.$ref)(o)), n.SetCaptureMaxViewDistance(true, 0), n.SetCaptureMaxViewDistance(false, 0), ModelManager_1.ModelManager.PortalModel?.RemovePortalPair(t), i?.PortalCapture?.SetPair(undefined), s?.PortalCapture?.SetPair(undefined), i?.AfterUnRegisterPair(), s?.AfterUnRegisterPair(), e && (this.mBn = false), this.Hla = undefined, r && !e && (this.CBn.delete(t), this.Vla.Delete(t)), a) && (o = this.Vla.Peek()) && (n = this.CBn.get(o))) {
       this.RegisterPair(o, n, false, false);
     }
   }
   static RegisterDynamicPortals() {
     if (this.GSa[0] && this.GSa[1]) {
       if (this.mBn && this.Hla) {
-        var t = ModelManager_1.ModelManager.CreatureModel?.GetEntity(this.Hla)?.Entity?.GetComponent(226);
+        var t = ModelManager_1.ModelManager.CreatureModel?.GetEntity(this.Hla)?.Entity?.GetComponent(228);
         if (this.Hla === this.GSa[0] && t?.GetPairCreatureDataId() === this.GSa[1]) {
           return;
         }
         this.UnRegisterDynamicPortals(false);
       }
       var t = ModelManager_1.ModelManager.CreatureModel?.GetEntity(this.GSa[0])?.Entity;
-      var e = t?.GetComponent(226);
+      var e = t?.GetComponent(228);
       var r = ModelManager_1.ModelManager.CreatureModel?.GetEntity(this.GSa[1])?.Entity;
-      var a = r?.GetComponent(226);
+      var a = r?.GetComponent(228);
       if (e?.CanRegisterPortal() && a?.CanRegisterPortal()) {
         t = new PortalPairParams(e.PortalCapture.Plane.D_K2_GetComponentToWorld(), a.PortalCapture.Plane.D_K2_GetComponentToWorld(), t.GetComponent(1).Owner, r.GetComponent(1).Owner, e.PortalBounds, a.PortalBounds);
         e?.SetPairCreatureDataId(this.GSa[1]);
@@ -124,8 +124,8 @@ class PortalController extends ControllerBase_1.ControllerBase {
     var a;
     if (this.mBn && this.Hla) {
       e = this.Hla;
-      r = ModelManager_1.ModelManager.CreatureModel?.GetEntity(e)?.Entity?.GetComponent(226);
-      a = ModelManager_1.ModelManager.CreatureModel?.GetEntity(r?.GetPairCreatureDataId() ?? 0)?.Entity?.GetComponent(226);
+      r = ModelManager_1.ModelManager.CreatureModel?.GetEntity(e)?.Entity?.GetComponent(228);
+      a = ModelManager_1.ModelManager.CreatureModel?.GetEntity(r?.GetPairCreatureDataId() ?? 0)?.Entity?.GetComponent(228);
       this.UnRegisterPair(e, true, false, t);
       r?.SetPairCreatureDataId(0);
       a?.SetPairCreatureDataId(0);
@@ -136,12 +136,12 @@ class PortalController extends ControllerBase_1.ControllerBase {
     switch (t.GetPortalModel()) {
       case "A":
         if (this.GSa[0] === e && this.GSa[1]) {
-          return ModelManager_1.ModelManager.CreatureModel?.GetEntity(this.GSa[1])?.Entity?.GetComponent(226);
+          return ModelManager_1.ModelManager.CreatureModel?.GetEntity(this.GSa[1])?.Entity?.GetComponent(228);
         }
         break;
       case "B":
         if (this.GSa[1] === e && this.GSa[0]) {
-          return ModelManager_1.ModelManager.CreatureModel?.GetEntity(this.GSa[0])?.Entity?.GetComponent(226);
+          return ModelManager_1.ModelManager.CreatureModel?.GetEntity(this.GSa[0])?.Entity?.GetComponent(228);
         }
     }
   }

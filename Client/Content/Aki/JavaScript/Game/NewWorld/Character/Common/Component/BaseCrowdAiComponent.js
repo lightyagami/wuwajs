@@ -113,7 +113,7 @@ let BaseCrowdAiComponent = class BaseCrowdAiComponent extends EntityComponent_1.
     } else if (t?.IsSceneItem()) {
       var o = t.GetPbEntityInitData();
       var t = (0, IComponent_1.getComponent)(o.ComponentsData, "ExtraRangeComponent");
-      var n = this.Entity.GetComponent(212);
+      var n = this.Entity.GetComponent(214);
       let e = DEFAULT_MIN_RADIUS;
       let i = DEFAULT_MIN_RADIUS;
       this.BoidComponent.Radius = DEFAULT_MIN_RADIUS;
@@ -169,5 +169,5 @@ let BaseCrowdAiComponent = class BaseCrowdAiComponent extends EntityComponent_1.
     }
   }
 };
-BaseCrowdAiComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(332)], BaseCrowdAiComponent);
+BaseCrowdAiComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(334)], BaseCrowdAiComponent);
 exports.BaseCrowdAiComponent = BaseCrowdAiComponent; //# sourceMappingURL=BaseCrowdAiComponent.js.map

@@ -51,7 +51,7 @@ class WeaponLevelUpView extends UiTabViewBase_1.UiTabViewBase {
     this.nvt = undefined;
     this.N2i = undefined;
     this.O2i = undefined;
-    this.qdi = () => {
+    this.Boo = () => {
       this.FOo();
     };
     this.xOo = () => {
@@ -242,12 +242,12 @@ class WeaponLevelUpView extends UiTabViewBase_1.UiTabViewBase {
   AddEventListener() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WeaponLevelUp, this.xOo);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WeaponLevelUpReceiveItem, this.wOo);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnCommonItemCountAnyChange, this.qdi);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPlayerCurrencyChange, this.Boo);
   }
   RemoveEventListener() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WeaponLevelUp, this.xOo);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WeaponLevelUpReceiveItem, this.wOo);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnCommonItemCountAnyChange, this.qdi);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPlayerCurrencyChange, this.Boo);
   }
   OnHideUiTabViewBase(e) {
     if (e) {

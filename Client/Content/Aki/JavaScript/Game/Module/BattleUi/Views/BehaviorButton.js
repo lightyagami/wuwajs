@@ -32,7 +32,7 @@ class BehaviorButton extends BattleChildView_1.BattleChildView {
     this.qit = 1;
     this.Git = 1;
     this.Fnm = undefined;
-    this.fWm = undefined;
+    this.lKm = undefined;
     this.Ert = () => {
       var t;
       if (this.qit !== 0) {
@@ -63,7 +63,7 @@ class BehaviorButton extends BattleChildView_1.BattleChildView {
     t = this.GetSprite(1);
     this.prt = t.GetOwner().GetComponentByClass(UE.UISpriteTransition.StaticClass());
     this.vrt = new BattleUiNiagaraItem_1.BattleUiNiagaraItem(this.GetUiNiagara(2));
-    this.fWm = new BattleSkillItemDynamicEffect_1.BattleSkillItemDynamicEffect(this.GetUiNiagara(3));
+    this.lKm = new BattleSkillItemDynamicEffect_1.BattleSkillItemDynamicEffect(this.GetUiNiagara(3));
   }
   async InitializeAsync() {
     var t;
@@ -82,8 +82,8 @@ class BehaviorButton extends BattleChildView_1.BattleChildView {
       ResourceSystem_1.ResourceSystem.CancelAsyncLoad(this.frt);
       this.frt = undefined;
     }
-    this.fWm?.Reset();
-    this.fWm = undefined;
+    this.lKm?.Reset();
+    this.lKm = undefined;
     this.kre();
     this.Mrt = undefined;
     this.Fnm = undefined;
@@ -203,7 +203,7 @@ class BehaviorButton extends BattleChildView_1.BattleChildView {
   }
   RefreshDynamicEffect() {
     var t = this.GetDynamicEffectConfig();
-    this.fWm?.RefreshDynamicEffect(t);
+    this.lKm?.RefreshDynamicEffect(t);
   }
   GetDynamicEffectConfig() {
     if (this.tit) {

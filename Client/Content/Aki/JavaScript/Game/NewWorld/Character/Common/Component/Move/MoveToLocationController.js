@@ -32,14 +32,14 @@ class MoveToLocationController {
       t.P5n = this.Hte.ActorLocationProxy;
       t.g8n = undefined;
       o.iVn = [t];
-      Net_1.Net.Send(27928, o);
+      Net_1.Net.Send(27349, o);
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("AI", 42, "向服务器同步NPC位置", ["EntityId", this.Jh.Id], ["PbDataId", this.Hte?.CreatureData.GetPbDataId()], ["X", t.P5n.X], ["Y", t.P5n.Y], ["Z", t.P5n.Z]);
       }
     };
     this.Jh = o;
     this.Hte = o.GetComponent(3);
-    this.mBe = o.GetComponent(109);
+    this.mBe = o.GetComponent(111);
   }
   get oqn() {
     if (!this.c6u) {

@@ -28,7 +28,7 @@ class LevelConditionCompareEntityState extends LevelGeneralBase_1.LevelCondition
       o = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t.EntityId);
     }
     if (o?.Valid) {
-      if ((a = o.Entity?.GetComponent(215))?.Valid) {
+      if ((a = o.Entity?.GetComponent(217))?.Valid) {
         e = a.HasTag(GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(i));
         if (l === "Eq") {
           return e;

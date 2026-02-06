@@ -18,14 +18,14 @@ class AdvanceNoticeThumbItem extends GridProxyAbstract_1.GridProxyAbstract {
         this.OnItemToggleClickDelegate?.(this.Pe, this.GridIndex);
       }
     };
-    this.jLm = () => !!this.Pe && (this.CanItemToggleChangeDelegate?.(this.Pe, this.GridIndex) ?? true);
+    this.aPm = () => !!this.Pe && (this.CanItemToggleChangeDelegate?.(this.Pe, this.GridIndex) ?? true);
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UITexture], [2, UE.UIText], [3, UE.UIItem], [4, UE.UISprite], [5, UE.UISprite]];
     this.BtnBindInfo = [[0, this.SV1]];
   }
   OnStart() {
-    this.GetExtendToggle(0).CanExecuteChange.Bind(this.jLm);
+    this.GetExtendToggle(0).CanExecuteChange.Bind(this.aPm);
   }
   Refresh(t, i, s) {
     this.Pe = t;

@@ -41,9 +41,16 @@ class PhantomArenaOwnData {
   }
   UD1(t) {
     var e = this.pD1.delete(t.CardId);
-    var t = this.vD1.delete(t.Index);
+    let a = false;
+    var r = this.vD1.get(t.Index);
+    if (r) {
+      if (r.CardId === t.CardId) {
+        this.vD1.delete(t.Index);
+      }
+      a = true;
+    }
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshBattleCardNum);
-    return e && t;
+    return e && a;
   }
   BD1(t) {
     var e = new PhantomCardData_1.PhantomCardData();
@@ -236,6 +243,9 @@ class PhantomArenaOwnData {
   GetBattleCardByCardId(t) {
     return this.pD1.get(t);
   }
+  HasBattleCardByCardId(t) {
+    return this.pD1.has(t);
+  }
   GetBattleCardDataList() {
     return Array.from(this.pD1.values());
   }
@@ -293,7 +303,7 @@ class PhantomArenaOwnData {
   HandCardToRecycle(t) {
     this.RemoveHandCardByCardId(t);
   }
-  iBm(t) {
+  LBm(t) {
     for (const a of t) {
       var e = this.GetHandCardDataByCardId(a.kg1);
       if (e) {
@@ -309,10 +319,10 @@ class PhantomArenaOwnData {
     }
   }
   CallCardListToFight(t, e) {
-    if (e === Protocol_1.Aki.Protocol.Qxm.Proto_Heap) {
+    if (e === Protocol_1.Aki.Protocol.yBm.Proto_Heap) {
       this.AddCardListToFight(t);
     } else {
-      this.iBm(t);
+      this.LBm(t);
     }
   }
   HandleFunctionalAreaCard(t) {

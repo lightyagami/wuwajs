@@ -43,5 +43,5 @@ let CharacterThrowComponent = class CharacterThrowComponent extends EntityCompon
     this.ProjectilePathTracer?.SetVisible(t);
   }
 };
-CharacterThrowComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(81)], CharacterThrowComponent);
+CharacterThrowComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(83)], CharacterThrowComponent);
 exports.CharacterThrowComponent = CharacterThrowComponent; //# sourceMappingURL=CharacterThrowComponent.js.map

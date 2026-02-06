@@ -50,7 +50,7 @@ class ComposePopupGridItem extends GridProxyAbstract_1.GridProxyAbstract {
               ControllerHolder_1.ControllerHolder.ComposeController.SendSynthesisItemRequestNew(this.bdm.Item.ItemId, e, t, () => {
                 ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("AutoSynthesis_PurificationFinish_Tips");
               });
-              this.XAm();
+              this.fAm();
               break;
             }
           case 1:
@@ -64,7 +64,7 @@ class ComposePopupGridItem extends GridProxyAbstract_1.GridProxyAbstract {
             ControllerHolder_1.ControllerHolder.ComposeController.SendExchangeRequest(this.bdm.Item.ItemId, e.ItemId, e.Count, () => {
               ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("AutoSynthesis_SynthesizeFinish_Tips");
             });
-            this.XAm();
+            this.fAm();
             break;
           case 3:
             if (this.rgm === 0) {
@@ -206,7 +206,7 @@ class ComposePopupGridItem extends GridProxyAbstract_1.GridProxyAbstract {
     ModelManager_1.ModelManager.ComposeModel.ComposeSkipSourceView = this.BelongView;
     ModelManager_1.ModelManager.InventoryModel.SetItemNeedCount(e.Count - e.SelectedCount);
   }
-  XAm() {
+  fAm() {
     this.GetUiNiagara(14)?.SetUIActive(true);
   }
   StopNiagara() {

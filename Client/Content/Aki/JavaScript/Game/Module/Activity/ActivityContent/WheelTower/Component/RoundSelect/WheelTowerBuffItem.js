@@ -12,16 +12,16 @@ const LguiUtil_1 = require("../../../../../Util/LguiUtil");
 class WheelTowerBuffItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.dtf = () => {
-      this.mtf();
+    this.yrf = () => {
+      this.Srf();
     };
     this.s8c = () => {
-      this.mtf();
+      this.Srf();
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIButtonComponent], [2, UE.UITexture], [3, UE.UIText], [4, UE.UIText], [5, UE.UIItem], [6, UE.UIItem]];
-    this.BtnBindInfo = [[0, this.dtf], [1, this.s8c]];
+    this.BtnBindInfo = [[0, this.yrf], [1, this.s8c]];
   }
   Refresh(e) {
     var i = e > 0;
@@ -34,7 +34,7 @@ class WheelTowerBuffItem extends UiPanelBase_1.UiPanelBase {
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), i.Desc, ...i.DescParam);
     }
   }
-  mtf() {
+  Srf() {
     UiManager_1.UiManager.OpenView("WheelTowerBuffSelectView");
   }
 }

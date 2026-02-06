@@ -18,6 +18,7 @@ class SpecialEnergyBarLinNaiSlot extends SpecialEnergyBarSlot_1.SpecialEnergyBar
   SwitchKeyItem(e, t = false) {
     if (e) {
       this.Config = e;
+      this.KeyItem?.SetConfig(e);
       this.KeyItem?.SwitchToKeyInfoList(this.Config.KeyInfoList);
     }
     if (t) {

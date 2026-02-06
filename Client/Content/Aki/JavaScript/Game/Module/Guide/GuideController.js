@@ -18,10 +18,10 @@ const UiManager_1 = require("../../Ui/UiManager");
 const GuidePrefabDefine_1 = require("./Views/GuidePrefabDefine");
 class GuideController extends UiControllerBase_1.UiControllerBase {
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(26419, this.vJt);
+    Net_1.Net.Register(19160, this.vJt);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(26419);
+    Net_1.Net.UnRegister(19160);
   }
   static MJt() {
     for (const i of ConfigManager_1.ConfigManager.GuideConfig.GetAllGroup()) {
@@ -56,6 +56,7 @@ class GuideController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnBlackFadeScreenFinish, this.LJt);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleSettlementStateChanged, this.LJt);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnCameraSequenceSetUiVisible, this.ndd);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.NotifyGuideBreakFocus, this.F7g);
   }
   static OnRemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.GuideGroupOpening, this.IJt);
@@ -67,6 +68,7 @@ class GuideController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnBlackFadeScreenFinish, this.LJt);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleSettlementStateChanged, this.LJt);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnCameraSequenceSetUiVisible, this.ndd);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.NotifyGuideBreakFocus, this.F7g);
     this.yJt();
   }
   static OnAddOpenViewCheckFunction() {
@@ -101,7 +103,7 @@ class GuideController extends UiControllerBase_1.UiControllerBase {
       GuideController.RJt(t);
     } else {
       (e = Protocol_1.Aki.Protocol.uos.create()).S9n = t;
-      Net_1.Net.Call(19952, e, e => {
+      Net_1.Net.Call(21659, e, e => {
         if (e?.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && Log_1.Log.CheckError()) {
           Log_1.Log.Error("Guide", 16, "引导请求服务端完成失败", ["组Id", t]);
         }
@@ -230,16 +232,18 @@ class GuideController extends UiControllerBase_1.UiControllerBase {
 };
 GuideController.EJt = new Map();
 GuideController.SJt = e => {
-  GuideController.TryStartGuide(e[0]);
+  if (!GuideController.TryStartGuide(e[0])) {
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnGuideTriggerEvent, "");
+  }
 };
 GuideController.DJt = () => !ModelManager_1.ModelManager.BattleUiModel.IsInBattleSettlement;
 GuideController.IJt = (t, o) => {
   var e = Protocol_1.Aki.Protocol.los.create();
   e.S9n = t;
-  Net_1.Net.Call(24061, e, e => {
+  Net_1.Net.Call(15132, e, e => {
     if (e?.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
       ModelManager_1.ModelManager.GuideModel.SwitchGroupState(t, 0);
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20047, e.lvs);
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19870, e.lvs);
     } else if (!o) {
       ModelManager_1.ModelManager.GuideModel.SwitchGroupState(t, 2);
     }
@@ -269,7 +273,7 @@ GuideController.FWe = () => {
 };
 GuideController.TJt = () => {
   var e = Protocol_1.Aki.Protocol.aos.create();
-  Net_1.Net.Call(26708, e, e => {
+  Net_1.Net.Call(23839, e, e => {
     if (e) {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Guide", 16, "初始化GuideInfoNotify发来的数据", ["FinishedList", e.sws]);
@@ -291,5 +295,11 @@ GuideController.XBo = () => {
 };
 GuideController.ndd = e => {
   ModelManager_1.ModelManager.GuideModel.ShouldBlockGuideBecauseUiNotRender = !e;
+};
+GuideController.F7g = () => {
+  if (Log_1.Log.CheckDebug()) {
+    Log_1.Log.Debug("Guide", 95, "外部Notify中断当前引导的聚焦引导");
+  }
+  ModelManager_1.ModelManager.GuideModel.BreakTypeViewStep(4);
 };
 GuideController.Asu = true; //# sourceMappingURL=GuideController.js.map

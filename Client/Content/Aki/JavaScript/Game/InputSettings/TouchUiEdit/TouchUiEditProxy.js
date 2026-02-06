@@ -28,11 +28,18 @@ class TouchUiEditProxy {
     this.RQu = 0;
     this.H$u = () => {
       var i = [];
-      for (const e of this.j$u.values()) {
-        i.push(e.Data);
+      for (const t of this.j$u.values()) {
+        i.push(t.Data);
       }
       this.N$u.SaveData(i);
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnTouchUiEditSave);
+      var e = this.N$u?.GetGroupConfig()?.Id ?? 0;
+      if (e === 0) {
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("TouchUiEdit", 95, "保存改键数据出错，分组Id无效");
+        }
+      } else {
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnTouchUiEditSave, e);
+      }
     };
     this.Eqt = (i, e) => {
       var e = e.TouchType;
@@ -70,18 +77,18 @@ class TouchUiEditProxy {
       var t;
       var n = ConfigManager_1.ConfigManager.CommonTouchUiEditConfig.GetConfigListByPanelResId(h);
       if (n) {
-        for (const p of n) {
+        for (const u of n) {
           var s;
-          var r = p.ItemIndex;
-          var o = p.SubPanelIndex;
+          var r = u.ItemIndex;
+          var o = u.SubPanelIndex;
           var o = this.ERi.GetItem(h, r, o);
           if (o && (e.add(o), s = this.N$u.GetData(h, r), (o = this.V$u(o, s)).SetData(s), (s = this.N$u.GetStorageId(h, r)) && this.j$u.set(s, o), this.p5l.push(o), o.Data?.DefaultSelect && TouchUiEditViewModel_1.TouchUiEditViewModel.SetCurrentSelectedItem(o), Log_1.Log.CheckDebug())) {
             Log_1.Log.Debug("TouchUiEdit", 95, "创建初始改键数据", ["configId", s], ["resId", h], ["itemIndex", r]);
           }
         }
-        for (const u of this.ERi.GetRegistryItemList(h)) {
-          if (!e.has(u)) {
-            t = this.V$u(u, undefined);
+        for (const p of this.ERi.GetRegistryItemList(h)) {
+          if (!e.has(p)) {
+            t = this.V$u(p, undefined);
             this.p5l.push(t);
           }
         }

@@ -282,7 +282,7 @@ let CharacterGlideComponent = CharacterGlideComponent_1 = class CharacterGlideCo
       }
     };
     this.OnStateInherit = (t, e) => {
-      if (t?.Valid && (t = t.GetComponent(62))?.Valid && !e) {
+      if (t?.Valid && (t = t.GetComponent(64))?.Valid && !e) {
         this.K5r.DeepCopy(t.K5r);
         this.Q5r.DeepCopy(t.Q5r);
         this.Ioh = t.Ioh;
@@ -302,7 +302,7 @@ let CharacterGlideComponent = CharacterGlideComponent_1 = class CharacterGlideCo
     };
     this.KQc = () => {
       var t = ModelManager_1.ModelManager.RouletteModel.CurrentExploreSkillId === 1015;
-      var e = this.Entity.GetComponent(184).PositionState;
+      var e = this.Entity.GetComponent(186).PositionState;
       if (t && e === CharacterUnifiedStateTypes_1.ECharPositionState.Ground) {
         if (!this.Xte?.HasTag(1340982160)) {
           this.Xte?.AddTag(1340982160);
@@ -363,10 +363,10 @@ let CharacterGlideComponent = CharacterGlideComponent_1 = class CharacterGlideCo
     if (this.b6l !== t) {
       if (this.b6l = t) {
         if (t = ResourceSystem_1.ResourceSystem.GetLoadedAsset(exports.SOAR_AUTO_FLIGHT_PATH, UE.BP_CameraDrivenAutoFlightData_C)) {
-          this.Entity.GetComponent(65)?.TurnOnCameraDrivenAutoFlightMode(t);
+          this.Entity.GetComponent(67)?.TurnOnCameraDrivenAutoFlightMode(t);
         }
       } else {
-        this.Entity.GetComponent(65)?.TurnOffCameraDrivenAutoFlightMode();
+        this.Entity.GetComponent(67)?.TurnOffCameraDrivenAutoFlightMode();
       }
     }
   }
@@ -446,11 +446,11 @@ let CharacterGlideComponent = CharacterGlideComponent_1 = class CharacterGlideCo
   }
   OnStart() {
     this.Hte = this.Entity.CheckGetComponent(3);
-    this.o4o = this.Entity.CheckGetComponent(187);
-    this.H5r = this.Entity.CheckGetComponent(84);
-    this.Xte = this.Entity.CheckGetComponent(215);
-    this.oRe = this.Entity.CheckGetComponent(186);
-    this.Xdl = this.Entity.GetComponent(116);
+    this.o4o = this.Entity.CheckGetComponent(189);
+    this.H5r = this.Entity.CheckGetComponent(86);
+    this.Xte = this.Entity.CheckGetComponent(217);
+    this.oRe = this.Entity.CheckGetComponent(188);
+    this.Xdl = this.Entity.GetComponent(118);
     this.Hkl = SoarConfigParams.SoarConfigBase;
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharOnUnifiedMoveStateChanged, this.hUe);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharOnPositionStateChanged, this.DVr);
@@ -675,6 +675,11 @@ let CharacterGlideComponent = CharacterGlideComponent_1 = class CharacterGlideCo
     const a = i.ActorVelocityProxy;
     var r = a.Size();
     var n = h.CurrentSplineMoveParams;
+    if (!n.Spline?.IsValid()) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Movement", 50, "[CharGlideComp][Soar] 无法获取风道轨道组件", ["EntityId", this.Entity.Id], ["SplineId", n.Id], ["LeaveTime", n.EarliestLeaveTime], ["NowTime", Time_1.Time.NowSeconds]);
+      }
+    }
     if (s || !o) {
       var s = h.CurrentSplineMoveParams?.OnlyForward || h.SplineDirection.DotProduct(a) > 0;
       var o = n.Spline.GetDistanceAlongSplineAtSplineInputKey(h.SplineTimeKey);
@@ -756,8 +761,8 @@ let CharacterGlideComponent = CharacterGlideComponent_1 = class CharacterGlideCo
   }
   $7c() {
     var t = this.Hte?.CreatureData.GetPbDataId();
-    var e = this.Entity.GetComponent(183);
-    if (this.Entity.GetComponent(184)?.MoveState === CharacterUnifiedStateTypes_1.ECharMoveState.Soar && this.CurrentSoarType === 1) {
+    var e = this.Entity.GetComponent(185);
+    if (this.Entity.GetComponent(186)?.MoveState === CharacterUnifiedStateTypes_1.ECharMoveState.Soar && this.CurrentSoarType === 1) {
       this.Xte?.AddTag(1850415886);
       e?.AddBuff(ROAM_EFFECT_BUFF_ID, {
         InstigatorId: e.CreatureDataId,
@@ -780,5 +785,5 @@ CharacterGlideComponent.Tz = Vector_1.Vector.Create();
 CharacterGlideComponent.Gue = Rotator_1.Rotator.Create();
 CharacterGlideComponent.az = Quat_1.Quat.Create();
 CharacterGlideComponent.KJ = Quat_1.Quat.Create();
-CharacterGlideComponent = CharacterGlideComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(62)], CharacterGlideComponent);
+CharacterGlideComponent = CharacterGlideComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(64)], CharacterGlideComponent);
 exports.CharacterGlideComponent = CharacterGlideComponent; //# sourceMappingURL=CharacterGlideComponent.js.map

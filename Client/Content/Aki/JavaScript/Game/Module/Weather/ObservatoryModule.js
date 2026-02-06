@@ -16,33 +16,33 @@ const GlobalData_1 = require("../../GlobalData");
 const SimpleLevelSequenceActor_1 = require("../../LevelGamePlay/StaticScene/SimpleLevelSequenceActor");
 const ModelManager_1 = require("../../Manager/ModelManager");
 const RefCompDefine_1 = require("../../NewWorld/SceneItem/RefCompController/RefCompDefine");
-const FlowController_1 = require("../Plot/Flow/FlowController");
 const TimeOfDayController_1 = require("../TimeOfDay/TimeOfDayController");
 const TimeOfDayModel_1 = require("../TimeOfDay/TimeOfDayModel");
+const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 class ObservatoryModule {
   constructor() {
-    this.BIf = false;
-    this.kIf = undefined;
+    this.TRf = false;
+    this.bRf = undefined;
     this.$vn = undefined;
-    this.qIf = 0;
-    this.OIf = 0;
+    this.wRf = 0;
+    this.RRf = 0;
     this.QEr = undefined;
-    this.tGf = undefined;
-    this.GIf = () => {
-      this.FIf(this.qIf);
+    this._6f = undefined;
+    this.LRf = () => {
+      this.PRf(this.wRf);
     };
     this.Yht = () => {
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("Weather", 79, "[天文台]监听到Sequence停止事件, 恢复正常时间流逝", ["AccelerationPassedTime", this.OIf], ["AccelerationDuration", this.qIf]);
+        Log_1.Log.Info("Weather", 79, "[天文台]监听到Sequence停止事件, 恢复正常时间流逝", ["AccelerationPassedTime", this.RRf], ["AccelerationDuration", this.wRf]);
       }
-      this.NIf();
+      this.ARf();
     };
     this.uwa = () => {
       this.QEr?.();
     };
   }
-  AccelerateTime(e, t, i, o) {
-    var r;
+  AccelerateTime(e, t, i, r) {
+    var o;
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Weather", 79, "[天文台]加速时间流逝", ["AreaId", e]);
     }
@@ -52,8 +52,8 @@ class ObservatoryModule {
       }
       return false;
     } else {
-      return !this.BIf && ((r = ObservatoryByAreaId_1.configObservatoryByAreaId.GetConfig(e)) ? (this.BIf = true, this.qIf = t, this.OIf = 0, this.tGf = o, TimeOfDayController_1.TimeOfDayController.PauseTime(), EventSystem_1.EventSystem.Once(EventDefine_1.EEventName.PlotSequenceStarted, this.GIf), EventSystem_1.EventSystem.Once(EventDefine_1.EEventName.PlotSequenceEnd, this.Yht), FlowController_1.FlowController.StartFlowForCallback(r.FlowListName, r.FlowId, r.StateId, () => {
-        this.BIf = false;
+      return !this.TRf && ((o = ObservatoryByAreaId_1.configObservatoryByAreaId.GetConfig(e)) ? (this.TRf = true, this.wRf = t, this.RRf = 0, this._6f = r, TimeOfDayController_1.TimeOfDayController.PauseTime(), EventSystem_1.EventSystem.Once(EventDefine_1.EEventName.PlotSequenceStarted, this.LRf), EventSystem_1.EventSystem.Once(EventDefine_1.EEventName.PlotSequenceEnd, this.Yht), ControllerHolder_1.ControllerHolder.FlowController.StartFlowForCallback(o.FlowListName, o.FlowId, o.StateId, () => {
+        this.TRf = false;
         TimeOfDayController_1.TimeOfDayController.ResumeTimeScale();
         this.PlayWeatherControlSequence(i);
       }), true) : (Log_1.Log.CheckError() && Log_1.Log.Error("Weather", 79, "[天文台]天气剧情配置不存在", ["AreaId", e]), false));
@@ -63,12 +63,12 @@ class ObservatoryModule {
     this.QEr = e;
     this.lwr("/Game/Aki/Scene/InteractionLevel/Animation/3_0/TianQiKongZhiQi/TianQiKongZhiQi.TianQiKongZhiQi");
   }
-  FIf(e) {
-    if (this.BIf) {
-      const r = ModelManager_1.ModelManager.TimeOfDayModel;
+  PRf(e) {
+    if (this.TRf) {
+      const o = ModelManager_1.ModelManager.TimeOfDayModel;
       var t = ModelManager_1.ModelManager.SequenceModel.CurLevelSeqActor.SequencePlayer;
-      var o = t.GetFrameRate();
-      var t = t.GetFrameDuration() / (o.Numerator / o.Denominator);
+      var r = t.GetFrameRate();
+      var t = t.GetFrameDuration() / (r.Numerator / r.Denominator);
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Weather", 79, "[天文台]计算Sequence播放时长(秒)", ["Duration", t]);
       }
@@ -76,48 +76,48 @@ class ObservatoryModule {
       if (t != 0) {
         i = e / TimeOfDayModel_1.TodDayTime.ConvertFromRealTimeSecond(t);
       }
-      if (this.kIf) {
-        TimerSystem_1.TimerSystem.Remove(this.kIf);
+      if (this.bRf) {
+        TimerSystem_1.TimerSystem.Remove(this.bRf);
       }
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Weather", 79, "[天文台]加速时间", ["TODDuration", e], ["SequenceDuration", t], ["AccelerationFactor", i]);
       }
-      this.VIf(i);
-      this.kIf = TimerSystem_1.TimerSystem.Forever(e => {
+      this.DRf(i);
+      this.bRf = TimerSystem_1.TimerSystem.Forever(e => {
         var e = TimeOfDayModel_1.TodDayTime.ConvertFromRealTimeSecond(e * TimeUtil_1.TimeUtil.Millisecond) * i;
-        var t = r.GameTime.Second + e;
-        r.GameTime.Second = t;
+        var t = o.GameTime.Second + e;
+        o.GameTime.Second = t;
         UE.KuroRenderingRuntimeBPPluginBPLibrary.SetGlobalGITime(GlobalData_1.GlobalData.World, TimeOfDayModel_1.TodDayTime.ConvertToHour(t));
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("Weather", 79, "[天文台]加速时间", ["TODCurSecond", r.GameTime.Second], ["PassedTime", this.OIf], ["AccelerationDuration", this.qIf], ["TODDeltaTime", e]);
+          Log_1.Log.Info("Weather", 79, "[天文台]加速时间", ["TODCurSecond", o.GameTime.Second], ["PassedTime", this.RRf], ["AccelerationDuration", this.wRf], ["TODDeltaTime", e]);
         }
-        this.OIf += e;
-        if (this.OIf > this.qIf) {
+        this.RRf += e;
+        if (this.RRf > this.wRf) {
           if (Log_1.Log.CheckInfo()) {
-            Log_1.Log.Info("Weather", 79, "[天文台]加速时间流逝结束, 恢复正常时间流逝", ["TODCurSecond", r.GameTime.Second], ["PassedTime", this.OIf], ["AccelerationDuration", this.qIf]);
+            Log_1.Log.Info("Weather", 79, "[天文台]加速时间流逝结束, 恢复正常时间流逝", ["TODCurSecond", o.GameTime.Second], ["PassedTime", this.RRf], ["AccelerationDuration", this.wRf]);
           }
-          this.NIf();
+          this.ARf();
         }
       }, 100);
-    } else if (this.kIf) {
-      TimerSystem_1.TimerSystem.Remove(this.kIf);
-      this.kIf = undefined;
+    } else if (this.bRf) {
+      TimerSystem_1.TimerSystem.Remove(this.bRf);
+      this.bRf = undefined;
     }
   }
-  NIf() {
-    if (this.kIf) {
-      TimerSystem_1.TimerSystem.Remove(this.kIf);
+  ARf() {
+    if (this.bRf) {
+      TimerSystem_1.TimerSystem.Remove(this.bRf);
     }
     this.$vn?.Clear();
     this.$vn = undefined;
-    this.kIf = undefined;
-    this.BIf = false;
-    this.qIf = 0;
-    this.OIf = 0;
-    this.VIf(1);
-    this.tGf?.();
+    this.bRf = undefined;
+    this.TRf = false;
+    this.wRf = 0;
+    this.RRf = 0;
+    this.DRf(1);
+    this._6f?.();
   }
-  VIf(e) {
+  DRf(e) {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Weather", 79, "[天文台]尝试设置体积云流速", ["Speed", e]);
     }

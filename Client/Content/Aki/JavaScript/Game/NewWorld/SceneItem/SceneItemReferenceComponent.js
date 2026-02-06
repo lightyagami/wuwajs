@@ -41,6 +41,7 @@ const ReferenceTriggerVolumeLogic_1 = require("../TriggerItems/ReferenceTriggerV
 const RefCompAirWallController_1 = require("./RefCompController/RefCompAirWallController");
 const RefCompLevelSequenceController_1 = require("./RefCompController/RefCompLevelSequenceController");
 const RefCompModifyActorMaterial_1 = require("./RefCompController/RefCompModifyActorMaterial");
+const RefCompModifyActorMedia_1 = require("./RefCompController/RefCompModifyActorMedia");
 const DEBUG_DETAIL_KEY_PREFIX = "SceneItemReferenceComponent";
 let SceneItemReferenceComponent = SceneItemReferenceComponent_1 = class SceneItemReferenceComponent extends EntityComponent_1.EntityComponent {
   constructor() {
@@ -156,19 +157,19 @@ let SceneItemReferenceComponent = SceneItemReferenceComponent_1 = class SceneIte
     return this.MTd.length === 0;
   }
   static get Dependencies() {
-    return [212, 206];
+    return [214, 208];
   }
   OnInitData(e) {
     e = e.GetParam(SceneItemReferenceComponent_1)[0];
     this.Lo = e;
-    this.mBe = this.Entity.CheckGetComponent(142);
+    this.mBe = this.Entity.CheckGetComponent(144);
     this.BWa = this.mBe.StateTagId;
     return true;
   }
   OnStart() {
     this.aln = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetSubsystem(GlobalData_1.GlobalData.World, UE.KuroActorSubsystem.StaticClass());
-    this.Hte = this.Entity.GetComponent(212);
-    this.Xte = this.Entity.GetComponent(206);
+    this.Hte = this.Entity.GetComponent(214);
+    this.Xte = this.Entity.GetComponent(208);
     this.EIe = this.Entity.GetComponent(0);
     this.wWa = this.mBe.StateTagId === this.BWa;
     this.VQc();
@@ -207,6 +208,11 @@ let SceneItemReferenceComponent = SceneItemReferenceComponent_1 = class SceneIte
     }
     return true;
   }
+  OnTick(e) {
+    for (const t of this.ILr.values()) {
+      t.TickController(e);
+    }
+  }
   VQc() {
     this.ILr.clear();
     var e = this.EIe.GetPbDataId();
@@ -217,6 +223,8 @@ let SceneItemReferenceComponent = SceneItemReferenceComponent_1 = class SceneIte
     this.ILr.set(1, i);
     var i = new RefCompModifyActorMaterial_1.RefCompModifyActorMaterial(this.Entity, t, e);
     this.ILr.set(2, i);
+    var i = new RefCompModifyActorMedia_1.RefCompModifyActorMedia(this.Entity, t, e);
+    this.ILr.set(3, i);
     if (this.Lo.VolumesRef?.length) {
       this.rMn = new ReferenceTriggerVolumeLogic_1.ReferenceTriggerVolumeLogic(this.Lo.VolumesRef);
     }
@@ -361,6 +369,12 @@ let SceneItemReferenceComponent = SceneItemReferenceComponent_1 = class SceneIte
   HandleActorMaterial(e) {
     this.UU_(2).HandleActorMaterial(e);
   }
+  HandleModifyActorMaterialParamBySplineProgress(e) {
+    this.UU_(2).HandleModifyActorMaterialParamBySplineProgress(e);
+  }
+  HandleActorMedia(e) {
+    this.UU_(3).HandleActorMedia(e);
+  }
   GetRefVolumes() {
     return this.rMn?.GetVolumes();
   }
@@ -374,12 +388,12 @@ let SceneItemReferenceComponent = SceneItemReferenceComponent_1 = class SceneIte
     return !!this.rMn?.IsPlayerOverlapped();
   }
   OnChangeTimeDilation(e) {
-    e *= this.Entity.GetComponent(131)?.CurrentTimeScale ?? 1;
+    e *= this.Entity.GetComponent(133)?.CurrentTimeScale ?? 1;
     this.UU_(0).OnChangeTimeDilation(e);
   }
   IsValidPlatFormPath(e) {
     return this.Xvn.has(e);
   }
 };
-SceneItemReferenceComponent = SceneItemReferenceComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(172)], SceneItemReferenceComponent);
+SceneItemReferenceComponent = SceneItemReferenceComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(174)], SceneItemReferenceComponent);
 exports.SceneItemReferenceComponent = SceneItemReferenceComponent; //# sourceMappingURL=SceneItemReferenceComponent.js.map

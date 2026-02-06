@@ -483,13 +483,13 @@ class UiBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.UiRoleSequenceEndKeyFrame);
   }
   static GetUiWeaponBreachLevel() {
-    return ModelManager_1.ModelManager.WeaponModel.BlueprintWeaponBreachLevel;
+    return ModelManager_1.ModelManager.WeaponModel?.BlueprintWeaponBreachLevel ?? 0;
   }
   static GetUiWeaponEquippedRoleId() {
-    return ModelManager_1.ModelManager.WeaponModel.BlueprintWeaponEquippedRoleId;
+    return ModelManager_1.ModelManager.WeaponModel?.BlueprintWeaponEquippedRoleId ?? 0;
   }
   static GetWeaponViewName() {
-    return ModelManager_1.ModelManager.WeaponModel.GetCurSelectViewName();
+    return ModelManager_1.ModelManager.WeaponModel?.GetCurSelectViewName() ?? 0;
   }
   static IsGamepadNow() {
     return Info_1.Info.IsInGamepad();

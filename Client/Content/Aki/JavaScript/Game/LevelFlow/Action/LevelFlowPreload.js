@@ -16,15 +16,15 @@ const WAITE_ENTITY_PRELOAD_TIME = 60000;
 class LevelFlowPreload extends LevelFlowActionBase_1.LevelFlowActionBase {
   constructor() {
     super(...arguments);
-    this.oGf = undefined;
+    this.f6f = undefined;
   }
   Init(e) {
-    this.oGf = e;
+    this.f6f = e;
     return this;
   }
   OnExecute() {
     var e;
-    var o = this.oGf;
+    var o = this.f6f;
     if (o.PreloadObjectType.Type === "PreloadFlows") {
       e = o.PreloadObjectType.FlowData;
       ControllerHolder_1.ControllerHolder.PreloadControllerNew.PreloadPlot(e.FlowListName, e.FlowId, e.StateId);

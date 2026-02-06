@@ -125,7 +125,7 @@ class BattleUiExploreModeData {
     }
   }
   oXe(e) {
-    return e.EntityHandle.Entity.GetComponent(184).DirectionState === CharacterUnifiedStateTypes_1.ECharDirectionState.AimDirection;
+    return e.EntityHandle.Entity.GetComponent(186).DirectionState === CharacterUnifiedStateTypes_1.ECharDirectionState.AimDirection;
   }
   rXe() {
     var e = ModelManager_1.ModelManager.InstanceDungeonEntranceModel.InstanceId;

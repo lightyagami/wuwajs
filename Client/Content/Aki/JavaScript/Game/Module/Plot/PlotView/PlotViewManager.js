@@ -204,7 +204,7 @@ class PlotViewManager {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Plot", 26, "[PlotView] 打开", ["open", e]);
       }
-      if (e === "PlotViewHUD") {
+      if (["PlotViewHUD", "ActivityGamePlayPlotView"].includes(e)) {
         UiManager_1.UiManager.OpenView(e, t);
       } else {
         UiManager_1.UiManager.OpenViewByPlot(e, t);

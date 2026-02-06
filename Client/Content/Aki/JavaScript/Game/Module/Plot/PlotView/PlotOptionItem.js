@@ -22,6 +22,7 @@ const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const InputMappingsDefine_1 = require("../../../Ui/InputDistribute/InputMappingsDefine");
+const ActivityGamePlayPlotView_1 = require("../../ActivityGamePlay/ActivityGamePlayPlotView");
 const InputMultiKeyItem_1 = require("../../Common/InputKey/InputMultiKeyItem");
 const ToggleActionItem_1 = require("../../Common/Toggle/ToggleActionItem");
 const InteractionModel_1 = require("../../Interaction/InteractionModel");
@@ -92,7 +93,7 @@ class PlotOptionItem extends GridProxyAbstract_1.GridProxyAbstract {
               break;
             case 1:
               ModelManager_1.ModelManager.PlotModel.MarkGrayOption(this.Ezi, this.OptionIndex);
-              if (this.yzi instanceof PlotView_1.PlotView || this.yzi instanceof PlotViewHud_1.PlotViewHud) {
+              if (this.yzi instanceof PlotView_1.PlotView || this.yzi instanceof PlotViewHud_1.PlotViewHud || this.yzi instanceof ActivityGamePlayPlotView_1.ActivityGamePlayPlotView) {
                 ControllerHolder_1.ControllerHolder.FlowController.FlowShowTalk.SelectOption(this.OptionIndex, this.Option.Config.Actions);
               } else {
                 SequenceController_1.SequenceController.SelectOption(this.OptionIndex, this.Ezi);
@@ -291,11 +292,27 @@ class PlotOptionItem extends GridProxyAbstract_1.GridProxyAbstract {
           break;
         }
       case 1:
-        if (this.Option && (e = this.Option.Config.Icon || 1, e = TalkOptionIconById_1.configTalkOptionIconById.GetConfig(e))) {
-          i = e.Icon;
+        e = this.Llg();
+        if (e) {
+          i = e;
         }
     }
     return i ?? "";
+  }
+  Llg() {
+    if (this.Option) {
+      let t = false;
+      let i = 1;
+      if (t = this.Option.Config.ChangeIcon && ((e = this.Option.Config.ChangeIcon.ChangeWhenMatchConditions) && (t = t || ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckConditionNew(e, undefined)), this.Option.Config.ChangeIcon.ChangeWhenSelectedInCurrentTalk) ? t || ModelManager_1.ModelManager.PlotModel.IsOptionGray(this.Ezi, this.OptionIndex) : t) {
+        i = this.Option.Config.ChangeIcon.Icon;
+      } else if (this.Option.Config.Icon) {
+        i = this.Option.Config.Icon;
+      }
+      var e = TalkOptionIconById_1.configTalkOptionIconById.GetConfig(i);
+      if (e) {
+        return e.Icon;
+      }
+    }
   }
   Lzi(t, i) {
     let e = i;
@@ -331,7 +348,7 @@ class PlotOptionItem extends GridProxyAbstract_1.GridProxyAbstract {
     return this.Szi;
   }
   CheckToggleGray() {
-    return !this.Szi && (this.Mzi ? !this.Mzi.ConditionCheck : !this.Option?.ConditionCheck || !!this.Option?.Config.ReadMarkEnabled && ModelManager_1.ModelManager.PlotModel.IsOptionGray(this.Ezi, this.OptionIndex));
+    return !this.Szi && (this.Mzi ? !this.Mzi.ConditionCheck : !this.Option?.ConditionCheck || !!this.Option?.Config.ReadMarkEnabled && !this.Option.Config.ChangeIcon && ModelManager_1.ModelManager.PlotModel.IsOptionGray(this.Ezi, this.OptionIndex));
   }
   Refresh(t, i, e) {
     this.Mzi = undefined;

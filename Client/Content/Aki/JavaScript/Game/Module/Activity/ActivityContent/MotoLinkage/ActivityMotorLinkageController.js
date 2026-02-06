@@ -40,18 +40,18 @@ class ActivityMotorLinkageController extends ActivityControllerBase_1.ActivityCo
     return ModelManager_1.ModelManager.ActivityModel?.GetActivityById(this.xe);
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(26825, this.g5c);
+    Net_1.Net.Register(21867, this.g5c);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(26825);
+    Net_1.Net.UnRegister(21867);
   }
   async ReceiveAllRewardRequest(e) {
-    var t = new Protocol_1.Aki.Protocol.oLm();
-    t.hLm = e;
-    var e = await Net_1.Net.CallAsync(17786, t);
+    var t = new Protocol_1.Aki.Protocol.ULm();
+    t.qLm = e;
+    var e = await Net_1.Net.CallAsync(29613, t);
     if (e !== undefined) {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20179);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27837);
       } else {
         this.ActivityData?.OnRewardReceiveNotify(e.BVn);
       }

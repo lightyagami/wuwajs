@@ -25,25 +25,25 @@ class ShopController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CrossDay, this._Mo);
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(21521, e => {
+    Net_1.Net.Register(16995, e => {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Shop", 18, "Receive ShopInfoNotify");
       }
       ModelManager_1.ModelManager.ShopModel.VersionId = e.ejn;
       ModelManager_1.ModelManager.ShopModel.UpdateShopListData(e.tGs);
     });
-    Net_1.Net.Register(23373, e => {
+    Net_1.Net.Register(27500, e => {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Shop", 18, "Receive ShopUnlockNotify", ["unlockList", e.ABs]);
       }
       this.OnShopUnlockNotify(e);
     });
-    Net_1.Net.Register(17237, this.OnShopInfoUpdateNotify);
+    Net_1.Net.Register(25258, this.OnShopInfoUpdateNotify);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(21521);
-    Net_1.Net.UnRegister(23373);
-    Net_1.Net.UnRegister(17237);
+    Net_1.Net.UnRegister(16995);
+    Net_1.Net.UnRegister(27500);
+    Net_1.Net.UnRegister(25258);
   }
   static OpenShop(e, o, t) {
     if (ModelManager_1.ModelManager.ShopModel.IsOpen(e)) {
@@ -69,7 +69,7 @@ class ShopController extends UiControllerBase_1.UiControllerBase {
       D8n: r,
       AVn: ModelManager_1.ModelManager.ShopModel.CurrentInteractCreatureDataLongId ?? 0
     });
-    Net_1.Net.Call(26317, e, e => {
+    Net_1.Net.Call(28245, e, e => {
       if (e) {
         if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
           ModelManager_1.ModelManager.ShopModel.UpdateItemData(e);
@@ -92,19 +92,19 @@ class ShopController extends UiControllerBase_1.UiControllerBase {
     e = Protocol_1.Aki.Protocol.kms.create({
       ejn: e
     });
-    e = await Net_1.Net.CallAsync(20074, e);
-    return !!e && (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs ? (ModelManager_1.ModelManager.ShopModel.VersionId = e.ejn, ModelManager_1.ModelManager.ShopModel.UpdateShopListData(e.tGs), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnShopInfoResponded)) : ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23356), true);
+    e = await Net_1.Net.CallAsync(24446, e);
+    return !!e && (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs ? (ModelManager_1.ModelManager.ShopModel.VersionId = e.ejn, ModelManager_1.ModelManager.ShopModel.UpdateShopListData(e.tGs), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnShopInfoResponded)) : ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23012), true);
   }
   static async SendShopUpdateRequestAsync(e) {
     e = Protocol_1.Aki.Protocol.Hms.create({
       tjn: e
     });
-    e = await Net_1.Net.CallAsync(23059, e);
+    e = await Net_1.Net.CallAsync(29552, e);
     if (e) {
       if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
         ModelManager_1.ModelManager.ShopModel.UpdateShopData(e.YVn);
       } else {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19810);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21218);
       }
     }
   }
@@ -112,12 +112,12 @@ class ShopController extends UiControllerBase_1.UiControllerBase {
     e = Protocol_1.Aki.Protocol.Hms.create({
       tjn: e
     });
-    Net_1.Net.Call(23059, e, e => {
+    Net_1.Net.Call(29552, e, e => {
       if (e) {
         if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
           ModelManager_1.ModelManager.ShopModel.UpdateShopData(e.YVn);
         } else {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19810);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21218);
         }
       }
     });

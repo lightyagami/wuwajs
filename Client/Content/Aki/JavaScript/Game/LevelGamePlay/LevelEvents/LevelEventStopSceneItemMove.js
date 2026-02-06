@@ -42,7 +42,7 @@ class LevelEventStopSceneItemMove extends LevelGeneralBase_1.LevelEventBase {
         var n = Protocol_1.Aki.Protocol.Sta.create();
         var i = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(v);
         if (i?.Valid) {
-          var l = i.Entity.GetComponent(137);
+          var l = i.Entity.GetComponent(139);
           if (l?.Valid) {
             let e = undefined;
             if (r) {
@@ -73,13 +73,13 @@ class LevelEventStopSceneItemMove extends LevelGeneralBase_1.LevelEventBase {
           Log_1.Log.Error("Event", 31, "实体不合法", ["entityId", v]);
         }
       }
-      Net_1.Net.Call(23742, t, e => {
+      Net_1.Net.Call(20752, t, e => {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16562);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29945);
         }
       });
       for (const M of o) {
-        var _ = M.Entity.GetComponent(137);
+        var _ = M.Entity.GetComponent(139);
         _.StopMove();
         var a = Vector_1.Vector.Create(M.Entity.GetComponent(1)?.ActorLocationProxy);
         if (M.Velocity) {

@@ -91,9 +91,9 @@ class TsTaskSkillWander extends TsTaskAbortImmediatelyBase_1.default {
     t = t.AiController;
     if (t) {
       if (!this.TsWalkOff) {
-        t.CharActorComp.Entity.GetComponent(187)?.SetWalkOffLedgeRecord(false);
+        t.CharActorComp.Entity.GetComponent(189)?.SetWalkOffLedgeRecord(false);
       }
-      t.CharActorComp.Entity.CheckGetComponent(184)?.SetMoveState(this.TsMoveState);
+      t.CharActorComp.Entity.CheckGetComponent(186)?.SetMoveState(this.TsMoveState);
     }
   }
   ReceiveTickAI(t, i, s) {
@@ -130,7 +130,7 @@ class TsTaskSkillWander extends TsTaskAbortImmediatelyBase_1.default {
         } else {
           var a = s.AiWanderInfos.GetCurrentBattleWander();
           var s = this.PreForward ? this.SelectedSkillPrecondition.DistanceRange.Min * OTHER_THRESHOLD_RATE + this.SelectedSkillPrecondition.DistanceRange.Max * THRESHOLD_RATE : this.SelectedSkillPrecondition.DistanceRange.Min * THRESHOLD_RATE + this.SelectedSkillPrecondition.DistanceRange.Max * OTHER_THRESHOLD_RATE;
-          var l = h.Entity.GetComponent(109);
+          var l = h.Entity.GetComponent(111);
           let t = this.TsMoveState;
           if (r && !o || _ < s) {
             t = CharacterUnifiedStateTypes_1.ECharMoveState.Walk;
@@ -159,7 +159,7 @@ class TsTaskSkillWander extends TsTaskAbortImmediatelyBase_1.default {
             }
             this.StopMoveToLocation(h);
           }
-          o = h.Entity.GetComponent(46);
+          o = h.Entity.GetComponent(48);
           if (!o || !o.MoveController.IsMovingToLocation()) {
             if (l?.MoveState !== CharacterUnifiedStateTypes_1.ECharMoveState.Walk) {
               AiContollerLibrary_1.AiControllerLibrary.TurnToDirect(h, this.TmpVector, i);
@@ -180,7 +180,7 @@ class TsTaskSkillWander extends TsTaskAbortImmediatelyBase_1.default {
     }
   }
   StopMoveToLocation(t) {
-    t = t.Entity.GetComponent(46);
+    t = t.Entity.GetComponent(48);
     if (t && t.MoveController.IsMovingToLocation()) {
       t?.MoveController.StopMoveToLocation();
     }
@@ -189,7 +189,7 @@ class TsTaskSkillWander extends TsTaskAbortImmediatelyBase_1.default {
   SetMoveToLocation(t, i, s, e) {
     this.TmpVector2.DeepCopy(t);
     this.TmpVector2.AdditionEqual(i.ActorLocationProxy);
-    t = i.Entity.GetComponent(46);
+    t = i.Entity.GetComponent(48);
     return !!t && ((!this.LastDestination.IsNearlyZero() || Vector_1.Vector.Dist(this.LastDestination, this.TmpVector2) < 100) && t.MoveController.IsMovingToLocation() ? (this.LastDestination.DeepCopy(this.TmpVector2), true) : (this.LastDestination.DeepCopy(this.TmpVector2), t.MoveController.NavigateMoveToLocation({
       Position: this.TmpVector2,
       TurnSpeed: s,
@@ -199,8 +199,8 @@ class TsTaskSkillWander extends TsTaskAbortImmediatelyBase_1.default {
     }, true, false)));
   }
   FindArea(t, i, s, e, h) {
-    var r = t.CharAiDesignComp.Entity.CheckGetComponent(41);
-    var o = r.Entity.GetComponent(215);
+    var r = t.CharAiDesignComp.Entity.CheckGetComponent(43);
+    var o = r.Entity.GetComponent(217);
     this.TmpForward.DeepCopy(h);
     GravityUtils_1.GravityUtils.ConvertToPlanarVectorForActor(t.CharActorComp, this.TmpForward);
     this.TmpForward.Normalize();
@@ -282,7 +282,7 @@ class TsTaskSkillWander extends TsTaskAbortImmediatelyBase_1.default {
   OnClear() {
     var t;
     if (this.AIOwner instanceof TsAiController_1.default) {
-      (t = this.AIOwner.AiController.CharActorComp.Entity.GetComponent(46))?.MoveController.StopMoveToLocation();
+      (t = this.AIOwner.AiController.CharActorComp.Entity.GetComponent(48))?.MoveController.StopMoveToLocation();
       this.LastDestination?.Reset();
       AiContollerLibrary_1.AiControllerLibrary.ClearInput(this.AIOwner);
       if (!this.TsWalkOff) {

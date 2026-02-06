@@ -77,7 +77,7 @@ class SkillBehaviorCondition {
         break;
       case 8:
         r = "是否有摇杆输入";
-        e = this.Cxm(t, i);
+        e = this.Hxm(t, i);
     }
     SkillUtils_1.SkillUtils.Log(1, 1, i.Entity, "SkillBehaviorCondition.Satisfy技能行为条件判断", ["技能Id", i.Skill.SkillId], ["技能名", i.Skill.SkillName], ["条件", r], ["结果", e]);
     return e;
@@ -129,7 +129,7 @@ class SkillBehaviorCondition {
     }
   }
   static dZo(t, i) {
-    i = i.Entity.GetComponent(215);
+    i = i.Entity.GetComponent(217);
     i = t.AnyTag ? i.HasAnyTag(GameplayTagUtils_1.GameplayTagUtils.ConvertFromUeContainer(t.TagToCheck)) : i.HasAllTag(GameplayTagUtils_1.GameplayTagUtils.ConvertFromUeContainer(t.TagToCheck));
     if (t.Reverse) {
       return !i;
@@ -138,7 +138,7 @@ class SkillBehaviorCondition {
     }
   }
   static CZo(t, i) {
-    var i = i.Entity.GetComponent(182);
+    var i = i.Entity.GetComponent(184);
     var e = i.GetCurrentValue(t.AttributeId1);
     var i = t.AttributeId2 > 0 ? i.GetCurrentValue(t.AttributeId2) : 0;
     var e = (0, SkillBehaviorMisc_1.compare)(t.ComparisonLogic, e, t.Value + i * t.AttributeRate * CharacterAttributeTypes_1.DIVIDED_TEN_THOUSAND, t.RangeL, t.RangeR);
@@ -149,7 +149,7 @@ class SkillBehaviorCondition {
     }
   }
   static $Bd(t, i) {
-    i = i.Entity.GetComponent(187).GetHeightAboveGround();
+    i = i.Entity.GetComponent(189).GetHeightAboveGround();
     i = (0, SkillBehaviorMisc_1.compare)(t.ComparisonLogic, i, t.Value, t.RangeL, t.RangeR);
     if (t.Reverse) {
       return !i;
@@ -183,7 +183,7 @@ class SkillBehaviorCondition {
       return e;
     }
   }
-  static Cxm(t, i) {
+  static Hxm(t, i) {
     let e = false;
     var r = ModelManager_1.ModelManager.InputModel?.GetAxisValues();
     if (r && (r.get(InputEnums_1.EInputAxis.MoveForward) || r.get(InputEnums_1.EInputAxis.MoveRight))) {

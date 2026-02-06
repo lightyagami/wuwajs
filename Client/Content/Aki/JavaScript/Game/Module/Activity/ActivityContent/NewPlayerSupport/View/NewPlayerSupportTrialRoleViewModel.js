@@ -7,34 +7,34 @@ exports.NewPlayerSupportTrialRoleViewModel = undefined;
 const ModelManager_1 = require("../../../../../Manager/ModelManager");
 class NewPlayerSupportTrialRoleViewModel {
   constructor(e, t, r, i, s = undefined) {
-    this.v3f = 0;
-    this.y3f = "";
-    this.S3f = "";
-    this.M3f = undefined;
-    this.E3f = 0;
-    this.I3f = new Map();
-    this.T3f = undefined;
-    this.b3f = undefined;
-    this.v3f = e;
-    this.y3f = t;
-    this.S3f = r;
-    this.E3f = i;
-    this.M3f = s;
+    this.Ajf = 0;
+    this.Djf = "";
+    this.Ujf = "";
+    this.xjf = undefined;
+    this.Bjf = 0;
+    this.kjf = new Map();
+    this.qjf = undefined;
+    this.Ojf = undefined;
+    this.Ajf = e;
+    this.Djf = t;
+    this.Ujf = r;
+    this.Bjf = i;
+    this.xjf = s;
   }
   get TrialRoleType() {
-    return this.v3f;
+    return this.Ajf;
   }
   get CaptionIcon() {
-    return this.y3f;
+    return this.Djf;
   }
   get CaptionText() {
-    return this.S3f;
+    return this.Ujf;
   }
   get SelectedGroupId() {
-    return this.M3f;
+    return this.xjf;
   }
   get HelpId() {
-    return this.E3f;
+    return this.Bjf;
   }
   GetCurUseTrialRoleId() {
     return ModelManager_1.ModelManager.TrialRoleModel.GetCurUseTrialRole(this.TrialRoleType)?.TrialRoleId;
@@ -49,22 +49,22 @@ class NewPlayerSupportTrialRoleViewModel {
     return ModelManager_1.ModelManager.TrialRoleModel.GetDataListByType(this.TrialRoleType);
   }
   SetRequestTrialRoleLvUpFunc(e) {
-    this.T3f = e;
+    this.qjf = e;
   }
   GetRequestTrialRoleLvUpFunc() {
-    return this.T3f;
+    return this.qjf;
   }
   SetRequestSetCurUseTrialRoleFunc(e) {
-    this.b3f = e;
+    this.Ojf = e;
   }
   GetRequestSetCurUseTrialRoleFunc() {
-    return this.b3f;
+    return this.Ojf;
   }
   SetTrialRoleGroupUnlockDesc(e) {
-    this.I3f = e;
+    this.kjf = e;
   }
   GetTrialRoleGroupUnlockDesc(e) {
-    return this.I3f.get(e);
+    return this.kjf.get(e);
   }
 }
 exports.NewPlayerSupportTrialRoleViewModel = NewPlayerSupportTrialRoleViewModel;

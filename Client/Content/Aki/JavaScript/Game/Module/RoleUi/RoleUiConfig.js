@@ -11,6 +11,7 @@ const MainRoleConfigByGender_1 = require("../../../Core/Define/ConfigQuery/MainR
 const MainRoleConfigById_1 = require("../../../Core/Define/ConfigQuery/MainRoleConfigById");
 const MultiTextLang_1 = require("../../../Core/Define/ConfigQuery/MultiTextLang");
 const RoleAnimAudioByRoleId_1 = require("../../../Core/Define/ConfigQuery/RoleAnimAudioByRoleId");
+const RoleBodyById_1 = require("../../../Core/Define/ConfigQuery/RoleBodyById");
 const RoleBreachByBreachGroupId_1 = require("../../../Core/Define/ConfigQuery/RoleBreachByBreachGroupId");
 const RoleBreachByBreachGroupIdAndBreachLevel_1 = require("../../../Core/Define/ConfigQuery/RoleBreachByBreachGroupIdAndBreachLevel");
 const RoleExpItemAll_1 = require("../../../Core/Define/ConfigQuery/RoleExpItemAll");
@@ -296,6 +297,10 @@ class RoleConfig extends ConfigBase_1.ConfigBase {
     } else {
       return -1;
     }
+  }
+  GetRoleBodyConfig(e) {
+    e = this.GetRoleConfig(e);
+    return RoleBodyById_1.configRoleBodyById.GetConfig(e.RoleBody);
   }
 }
 exports.RoleConfig = RoleConfig;

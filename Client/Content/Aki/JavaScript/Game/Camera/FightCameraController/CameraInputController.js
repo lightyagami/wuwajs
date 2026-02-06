@@ -124,7 +124,7 @@ class CameraInputController extends CameraControllerBase_1.CameraControllerBase 
     this.SpecificCameraBasePitchSensitivity = -1;
     this.SpecificCameraAimingYawSensitivity = -1;
     this.SpecificCameraAimingPitchSensitivity = -1;
-    this.Akm = true;
+    this.Wqm = true;
   }
   get IsAiming() {
     if (ModelManager_1.ModelManager.DeadEyeModeModel.IsInDeadEyeMode) {
@@ -228,7 +228,7 @@ class CameraInputController extends CameraControllerBase_1.CameraControllerBase 
           this.gUa = false;
           this.fUa = false;
           var e = this.Camera.CurrentCamera.ArmRotation;
-          let [t, i] = h.Entity.GetComponent(65).GetCameraInput();
+          let [t, i] = h.Entity.GetComponent(67).GetCameraInput();
           if (this.Nlh()) {
             t *= this.GamepadInputRate;
             i *= this.GamepadInputRate;
@@ -321,7 +321,7 @@ class CameraInputController extends CameraControllerBase_1.CameraControllerBase 
     var i = this.Camera.CharacterEntityHandle;
     if (i && i.IsInit) {
       if (!!this.N_e.Active && !(this.F_e.size > 0) && !this.Camera.IsModifiedArmLength && !this.Camera.IsModifiedZoomModifier) {
-        if (i = -i.Entity.GetComponent(65).GetZoomInput() * t) {
+        if (i = -i.Entity.GetComponent(67).GetZoomInput() * t) {
           t = i * (Info_1.Info.IsInGamepad() ? this.GamePadZoomSpeed : this.ZoomSpeed) / (this.Camera.DesiredCamera.MaxArmLength - this.Camera.DesiredCamera.MinArmLength);
           this.aue(this.Camera.DesiredCamera.ZoomModifier + t);
           this.Camera.IsModifiedArmLength = true;
@@ -343,7 +343,7 @@ class CameraInputController extends CameraControllerBase_1.CameraControllerBase 
   aue(t) {
     var i = this.Camera.GetArmLengthWithSetting(this.Camera.CurrentCamera);
     this.Camera.DesiredCamera.ZoomModifier = MathUtils_1.MathUtils.Clamp(t * i, this.Camera.CurrentCamera.MinArmLength, this.Camera.CurrentCamera.MaxArmLength) / i;
-    if (this.Camera.DesiredCamera.ZoomModifier <= MathUtils_1.MathUtils.SmallNumber && this.Akm && (this.Akm = false, Log_1.Log.CheckInfo())) {
+    if (this.Camera.DesiredCamera.ZoomModifier <= MathUtils_1.MathUtils.SmallNumber && this.Wqm && (this.Wqm = false, Log_1.Log.CheckInfo())) {
       Log_1.Log.Info("Camera", 57, "[DebugZoomModifier ClampZoomModifier]", ["DesiredCamera.ZoomModifier", this.Camera.DesiredCamera.ZoomModifier], ["zoomModifier", t], ["currentArmLength", i], ["MinArmLength", this.Camera.CurrentCamera.MinArmLength], ["MaxArmLength", this.Camera.CurrentCamera.MaxArmLength], ["CameraConfigTags", this.Camera.CameraConfigController.GetCameraConfigTagsContent()]);
     }
     this.mae = this.Camera.CurrentCamera.ArmLength;
@@ -431,7 +431,7 @@ class CameraInputController extends CameraControllerBase_1.CameraControllerBase 
                   this.ega(n, s, e);
                 }
               }
-              o = l.Entity.GetComponent(163);
+              o = l.Entity.GetComponent(165);
               if (o) {
                 for (const M of o.AimParts) {
                   this.ega(M, s, e);

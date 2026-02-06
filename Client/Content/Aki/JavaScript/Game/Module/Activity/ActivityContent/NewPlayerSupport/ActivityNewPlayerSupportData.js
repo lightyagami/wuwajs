@@ -19,14 +19,15 @@ class ActivityNewPlayerSupportData extends ActivityData_1.ActivityBaseData {
     super(...arguments);
     this.qkt = [];
     this.UOt = false;
-    this.Djf = false;
+    this.Yig = false;
+    this.HaveFinishCarnivalRole = 0;
     this.lVl = (e, t) => e.Id - t.Id;
   }
   get AlreadyStartView() {
-    return this.Djf;
+    return this.Yig;
   }
   set AlreadyStartView(e) {
-    this.Djf = e;
+    this.Yig = e;
   }
   get IsActivityFirstShow() {
     return this.UOt;
@@ -41,31 +42,32 @@ class ActivityNewPlayerSupportData extends ActivityData_1.ActivityBaseData {
     this.UOt = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.ActivityNewPlayerSupportFirstShow) ?? false;
   }
   PhraseEx(e) {
-    e = e.kgf;
+    e = e.NCf;
     if (e) {
-      this._Df(e.lTf);
-      this.uDf(e.nAu);
-      this.cDf(e.RIf, e.oXf);
-      this.q6f();
+      this.Hqf(e.YLf);
+      this.jqf(e.nAu);
+      this.$qf(e.nRf, e.h_g);
+      this.HaveFinishCarnivalRole = e.aVg;
+      this.eJf();
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnActivityNewPlayerSupportInfoUpdate);
     }
   }
-  cDf(e, t) {
+  $qf(e, t) {
     if (RoleUtils_1.RoleUtils.IsTrialRole(e)) {
       ModelManager_1.ModelManager.TrialRoleModel.SetCurUseTrialRole(e, t);
     }
   }
-  _Df(e) {
+  Hqf(e) {
     var t;
     var r;
     var a = [];
     var i = new Set();
     for (const n of e) {
       a.push({
-        TrialRoleId: n.Ogf,
+        TrialRoleId: n.HCf,
         IsUnlocked: true
       });
-      var o = ConfigManager_1.ConfigManager.TrialRoleConfig?.GetTrialRoleGroupId(n.Ogf);
+      var o = ConfigManager_1.ConfigManager.TrialRoleConfig?.GetTrialRoleGroupId(n.HCf);
       i.add(o);
     }
     for ([t, r] of ConfigManager_1.ConfigManager.TrialRoleConfig?.GetTrialRoleAllConfigByType(2)) {
@@ -78,11 +80,11 @@ class ActivityNewPlayerSupportData extends ActivityData_1.ActivityBaseData {
     }
     ModelManager_1.ModelManager.TrialRoleModel.AddTrialRoles(a);
   }
-  uDf(e) {
+  jqf(e) {
     this.qkt = [];
     this.UpdateTaskData(e);
   }
-  dDf(e) {
+  Wqf(e) {
     let t = this.GetTaskData(e);
     if (!t) {
       t = new ActivityNewPlayerSupportTaskData_1.ActivityNewPlayerSupportTaskData(e);
@@ -117,12 +119,12 @@ class ActivityNewPlayerSupportData extends ActivityData_1.ActivityBaseData {
   }
   UpdateTaskData(e) {
     for (const t of e) {
-      const e = this.dDf(t.s5n);
+      const e = this.Wqf(t.s5n);
       e.Refresh(t);
     }
   }
-  UpdateActivatedTrialRole(e) {
-    ModelManager_1.ModelManager.TrialRoleModel.SetGroupTrialRoleId(e);
+  UpdateActivatedTrialRole(e, t) {
+    ModelManager_1.ModelManager.TrialRoleModel.SetGroupTrialRoleId(e, t);
   }
   GetDesc() {
     return MultiTextLang_1.configMultiTextLang.GetLocalTextNew(this.LocalConfig.Desc);
@@ -168,7 +170,7 @@ class ActivityNewPlayerSupportData extends ActivityData_1.ActivityBaseData {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnActivityNewPlayerSupportEntranceRedDotUpdate);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.Id);
   }
-  q6f() {
+  eJf() {
     if (LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.ActivityNewPlayerSupportFirstShow) === undefined) {
       LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.ActivityNewPlayerSupportFirstShow, true);
     }

@@ -44,13 +44,13 @@ class TrackTextExpressController {
   }
   StartTextExpress(e = 0) {
     this.vXt.set(e, true);
-    if (!this.Yre.IsOccupied) {
+    if (!this.Yre.IsOccupied && !this.Yre.IsTrackBoundToParent) {
       this.SXt(e);
     }
   }
   SXt(e) {
     var t;
-    if (!this.EXt) {
+    if (!this.Yre?.IsTrackBoundToParent && !this.EXt) {
       t = this.Yre.ContainTag(16) || ModelManager_1.ModelManager.AutoRunModel.GetAutoRunMode() !== "Disabled";
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.GeneralLogicTreeStartShowTrackText, this.Yre.CreateShowData(), e, t);
       this.EXt = true;
@@ -100,16 +100,20 @@ class TrackTextExpressController {
   }
   yXt(e) {
     var t;
-    if (this.EXt && (t = this.Yre.ContainTag(16) || ModelManager_1.ModelManager.AutoRunModel.GetAutoRunMode() !== "Disabled", EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.GeneralLogicTreeEndShowTrackText, this.Yre.TreeIncId, e, t), GeneralLogicTreeController_1.GeneralLogicTreeController.TryReleaseExpressionOccupation(this.Yre.TreeIncId), this.EXt = false, TimerSystem_1.TimerSystem.Has(this.aec))) {
-      TimerSystem_1.TimerSystem.Remove(this.aec);
+    if (!this.Yre?.IsTrackBoundToParent) {
+      if (this.EXt && (t = this.Yre.ContainTag(16) || ModelManager_1.ModelManager.AutoRunModel.GetAutoRunMode() !== "Disabled", EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.GeneralLogicTreeEndShowTrackText, this.Yre.TreeIncId, e, t), GeneralLogicTreeController_1.GeneralLogicTreeController.TryReleaseExpressionOccupation(this.Yre.TreeIncId), this.EXt = false, TimerSystem_1.TimerSystem.Has(this.aec))) {
+        TimerSystem_1.TimerSystem.Remove(this.aec);
+      }
     }
   }
   HJ1(e) {
-    if (this.EXt && !e) {
-      if (TimerSystem_1.TimerSystem.Has(this.aec)) {
-        TimerSystem_1.TimerSystem.Remove(this.aec);
+    if (!this.Yre?.IsTrackBoundToParent) {
+      if (this.EXt && !e) {
+        if (TimerSystem_1.TimerSystem.Has(this.aec)) {
+          TimerSystem_1.TimerSystem.Remove(this.aec);
+        }
+        this.aec = this.hec();
       }
-      this.aec = this.hec();
     }
   }
   hec() {

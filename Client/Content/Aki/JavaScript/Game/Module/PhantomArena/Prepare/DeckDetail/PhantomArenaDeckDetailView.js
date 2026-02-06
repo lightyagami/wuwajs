@@ -42,12 +42,12 @@ class PhantomArenaDeckDetailView extends UiViewBase_1.UiViewBase {
       }
     };
     this.KTu = t => true;
-    this.nKm = (t, e) => {
+    this.bYm = (t, e) => {
       if (e === 1) {
         this.SelectFieldCardSlot();
       }
     };
-    this.XQm = t => true;
+    this.gYm = t => true;
     this.aOu = (t, e) => {
       if (e === 1) {
         this.SelectNormalCardSlotByIndex(t.GridIndex);
@@ -155,8 +155,8 @@ class PhantomArenaDeckDetailView extends UiViewBase_1.UiViewBase {
       CanCoreSlotItemToggleChange: this.KTu,
       OnNormalSlotItemToggleStateChange: this.aOu,
       CanNormalSlotItemToggleChange: this.i61,
-      OnFieldSlotItemToggleStateChange: this.nKm,
-      CanFieldSlotItemToggleChange: this.XQm,
+      OnFieldSlotItemToggleStateChange: this.bYm,
+      CanFieldSlotItemToggleChange: this.gYm,
       SortContext: {
         SortType: 1,
         IsAscending: true

@@ -62,10 +62,10 @@ class SpecialSkillFuLuoLuo extends SpecialSkillBase_1.SpecialSkillBase {
   }
   OnStart() {
     this.Jh = this.SpecialSkillComponent.Entity;
-    this.$te = this.Jh.GetComponent(181);
-    this.Xte = this.Jh.GetComponent(203);
+    this.$te = this.Jh.GetComponent(183);
+    this.Xte = this.Jh.GetComponent(205);
     this.n$t = this.Jh.CheckGetComponent(3);
-    this.Jh.GetComponent(98)?.SetEnableRefreshStarScarByEnergy(false);
+    this.Jh.GetComponent(100)?.SetEnableRefreshStarScarByEnergy(false);
     var t = this.Jh.GetComponent(0);
     this.aO1 = ModelManager_1.ModelManager.CreatureModel.GetPlayerId() === t.GetPlayerId();
     this.fwu();
@@ -160,13 +160,13 @@ class SpecialSkillFuLuoLuo extends SpecialSkillBase_1.SpecialSkillBase {
       this.Lz.Y = e.Y;
       this.Lz.Z = e.Z - DISTANCE_Z_DELTA;
       i?.SetActorLocation(this.Lz.ToUeVector(), "弗洛洛大招Z超范围", false);
-      this.Gin.GetComponent(41)?.BeginSkill(RESET_SKILL);
+      this.Gin.GetComponent(43)?.BeginSkill(RESET_SKILL);
     }
   }
   QQu(t) {
     var e = PhantomUtil_1.PhantomUtil.GetSummonedEntity(this.Jh, Protocol_1.Aki.Protocol.Summon.x3s.Proto_ESummonTypeConcomitantCustom, 2)?.Entity;
     if (e) {
-      (this.Gin = e)?.GetComponent(187)?.SetWalkOffLedgeRecord(!t);
+      (this.Gin = e)?.GetComponent(189)?.SetWalkOffLedgeRecord(!t);
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Movement", 35, "弗洛洛大招边缘保护", ["开关", t]);
       }
@@ -186,7 +186,7 @@ class SpecialSkillFuLuoLuo extends SpecialSkillBase_1.SpecialSkillBase {
   }
   _F1(t) {
     if (this.pKu && t?.Entity === this.Jh) {
-      this.Jh?.GetComponent(99)?.DisableRoleWithoutEffect();
+      this.Jh?.GetComponent(101)?.DisableRoleWithoutEffect();
     }
   }
 }

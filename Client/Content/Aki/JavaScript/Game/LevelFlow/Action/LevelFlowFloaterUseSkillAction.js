@@ -7,7 +7,7 @@ exports.LevelFlowFloaterUseSkillAction = undefined;
 const Log_1 = require("../../../Core/Common/Log");
 const Global_1 = require("../../Global");
 const ModelManager_1 = require("../../Manager/ModelManager");
-const FollowFunctionLibrary_1 = require("../../NewWorld/Character/Common/Component/Abilities/Follow/FollowFunctionLibrary");
+const FollowUtils_1 = require("../../NewWorld/Character/Common/Component/Abilities/Follow/FollowUtils");
 const LevelFlowActionBase_1 = require("./LevelFlowActionBase");
 class LevelFlowFloaterUseSkillAction extends LevelFlowActionBase_1.LevelFlowActionBase {
   constructor() {
@@ -24,8 +24,8 @@ class LevelFlowFloaterUseSkillAction extends LevelFlowActionBase_1.LevelFlowActi
     var l = Global_1.Global.BaseCharacter.CharacterActorComponent.Entity;
     var t = l.GetComponent(242);
     if (t && t.VehicleEntity) {
-      if ((e = FollowFunctionLibrary_1.FollowFunctionLibrary.GetPlayerFollowShooter(ModelManager_1.ModelManager.CreatureModel.GetPlayerId())) && e.Entity) {
-        if (o = e.Entity.GetComponent(40)) {
+      if ((e = FollowUtils_1.FollowUtils.GetPlayerFollowShooter(ModelManager_1.ModelManager.CreatureModel.GetPlayerId())) && e.Entity) {
+        if (o = e.Entity.GetComponent(42)) {
           o.BeginSkillAsync(this.wmo, {
             Reason: "LevelFlowUseSkillAction"
           });

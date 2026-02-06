@@ -19,6 +19,7 @@ const CipherModel_1 = require("../LevelGamePlay/Cipher/CipherModel");
 const GameSplineModel_1 = require("../LevelGamePlay/Common/GameSplineModel");
 const LevelPrefabConfigModel_1 = require("../LevelGamePlay/Common/LevelPrefabConfigModel");
 const DigitalScreenModel_1 = require("../LevelGamePlay/DigitalScreen/DigitalScreenModel");
+const FindSunSpiritModel_1 = require("../LevelGamePlay/FindSunSprite/FindSunSpiritModel");
 const FishingQteModel_1 = require("../LevelGamePlay/FishingQte/FishingQteModel");
 const GongduolaSummonModel_1 = require("../LevelGamePlay/GongduolaSummon/GongduolaSummonModel");
 const GravityFlipModel_1 = require("../LevelGamePlay/GravityFlip/GravityFlipModel");
@@ -27,6 +28,7 @@ const LevelGamePlayModel_1 = require("../LevelGamePlay/LevelGamePlayModel");
 const LevelGeneralModel_1 = require("../LevelGamePlay/LevelGeneralModel");
 const LifePointModel_1 = require("../LevelGamePlay/LifePoint/LifePointModel");
 const ParkourModel_1 = require("../LevelGamePlay/Parkour/ParkourModel");
+const ResetPlayerModel_1 = require("../LevelGamePlay/ResetPlayer/ResetPlayerModel");
 const SeekTraceModel_1 = require("../LevelGamePlay/SeekTrace/SeekTraceModel");
 const SignalDeviceModel_1 = require("../LevelGamePlay/SignalDeviceControl/SignalDeviceModel");
 const StaticSceneModel_1 = require("../LevelGamePlay/StaticScene/StaticSceneModel");
@@ -43,6 +45,7 @@ const AvignonModel_1 = require("../Module/Activity/ActivityContent/Avignon/Avign
 const BabelTowerModel_1 = require("../Module/Activity/ActivityContent/BabelTower/BabelTowerModel");
 const BossRushModel_1 = require("../Module/Activity/ActivityContent/BossRush/BossRushModel");
 const ChessModel_1 = require("../Module/Activity/ActivityContent/ChessGameplay/ChessModel");
+const CommonH5Model_1 = require("../Module/Activity/ActivityContent/CommonH5/CommonH5Model");
 const ActivityDirectTrainModel_1 = require("../Module/Activity/ActivityContent/DirectTrain/ActivityDirectTrainModel");
 const DockyardModel_1 = require("../Module/Activity/ActivityContent/Fishing/Dockyard/DockyardModel");
 const FishingModel_1 = require("../Module/Activity/ActivityContent/Fishing/FishingModel");
@@ -65,9 +68,13 @@ const ActivityRunModel_1 = require("../Module/Activity/ActivityContent/Run/Activ
 const ActivityScratchTicketModel_1 = require("../Module/Activity/ActivityContent/ScratchTicket/ActivityScratchTicketModel");
 const SolarSpeedModel_1 = require("../Module/Activity/ActivityContent/SolarisSpeed/Model/SolarSpeedModel");
 const Spring25Model_1 = require("../Module/Activity/ActivityContent/Spring25/Model/Spring25Model");
+const SpringManorModel_1 = require("../Module/Activity/ActivityContent/SpringManor/SpringManorModel");
 const VersionPreheatModel_1 = require("../Module/Activity/ActivityContent/VersionPreheat/Model/VersionPreheatModel");
 const WheelTowerModel_1 = require("../Module/Activity/ActivityContent/WheelTower/WheelTowerModel");
 const ActivityModel_1 = require("../Module/Activity/ActivityModel");
+const DrinksModel_1 = require("../Module/ActivityGamePlay/Drinks/DrinksModel");
+const FurnitureModel_1 = require("../Module/ActivityGamePlay/Furniture/FurnitureModel");
+const GuessJokerGamePlayModel_1 = require("../Module/ActivityGamePlay/GuessJokerCard/GuessJokerGamePlayModel");
 const AdventureGuideModel_1 = require("../Module/AdventureGuide/AdventureGuideModel");
 const AdviceModel_1 = require("../Module/Advice/AdviceModel");
 const AiWeaponModel_1 = require("../Module/AiInteraction/AiWeapon/AiWeaponModel");
@@ -113,6 +120,7 @@ const EffectSaveModel_1 = require("../Module/EffectSave/EffectSaveModel");
 const ExploreLevelModel_1 = require("../Module/ExploreLevel/ExploreLevelModel");
 const ExploreProgressModel_1 = require("../Module/ExploreProgress/ExploreProgressModel");
 const ExploreResultModel_1 = require("../Module/ExploreUi/ExploreResultModel");
+const FeedbackRewardModel_1 = require("../Module/FeedbackReward/FeedbackRewardModel");
 const FloroRanchGamePlayModel_1 = require("../Module/FloroBranch/FloroRanchGamePlayModel");
 const FloroRanchModel_1 = require("../Module/FloroBranch/FloroRanchModel");
 const FragmentMemoryModel_1 = require("../Module/FragmentMemory/FragmentMemoryModel");
@@ -162,7 +170,6 @@ const ComposeModel_1 = require("../Module/Manufacture/Compose/ComposeModel");
 const ComposePopupModel_1 = require("../Module/Manufacture/Compose/QuicklyPopup/ComposePopupModel");
 const ForgingModel_1 = require("../Module/Manufacture/Forging/ForgingModel");
 const MapModel_1 = require("../Module/Map/MapModel");
-const MovieModeModel_1 = require("../Module/MovieMode/MovieModeModel");
 const MapExploreToolModel_1 = require("../Module/MapExploreTool/MapExploreToolModel");
 const MapRogueModel_1 = require("../Module/MapRogue/MapRogueModel");
 const MarqueeModel_1 = require("../Module/Marquee/MarqueeModel");
@@ -177,6 +184,7 @@ const MotorcycleDevelopModel_1 = require("../Module/Motorcycle/Develop/Motorcycl
 const MotorcycleDiyModel_1 = require("../Module/Motorcycle/DIY/MotorcycleDiyModel");
 const MotorcycleMusicPlayerModel_1 = require("../Module/Motorcycle/MusicPlayer/MotorcycleMusicPlayerModel");
 const AvoidanceModel_1 = require("../Module/Movement/Model/AvoidanceModel");
+const MovieModeModel_1 = require("../Module/MovieMode/MovieModeModel");
 const NetworkDetectionModel_1 = require("../Module/NetworkDetection/NetworkDetectionModel");
 const NewFlagModel_1 = require("../Module/NewFlag/NewFlagModel");
 const OnlineModel_1 = require("../Module/Online/OnlineModel");
@@ -187,6 +195,7 @@ const BattlePassModel_1 = require("../Module/PayShop/BattlePass/BattlePassModel"
 const MonthCardModel_1 = require("../Module/PayShop/MonthCard/MonthCardModel");
 const PayGiftModel_1 = require("../Module/PayShop/PayGiftModel");
 const PayShopModel_1 = require("../Module/PayShop/PayShopModel");
+const WeekCardModel_1 = require("../Module/PayShop/WeekCard/WeekCardModel");
 const ActivityPermanentRogueModel_1 = require("../Module/PermanentRogue/ActivityPermanentRogueModel");
 const PersonalModel_1 = require("../Module/Personal/Model/PersonalModel");
 const PhantomBattleModel_1 = require("../Module/Phantom/PhantomBattle/PhantomBattleModel");
@@ -533,6 +542,8 @@ class ModelManagerCreator {
     ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.InfluenceModel);
     ModelManager_1.ModelManager.MonthCardModel = new MonthCardModel_1.MonthCardModel();
     ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.MonthCardModel);
+    ModelManager_1.ModelManager.WeekCardModel = new WeekCardModel_1.WeekCardModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.WeekCardModel);
     ModelManager_1.ModelManager.RangeItemModel = new RangeItemModel_1.RangeItemModel();
     ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.RangeItemModel);
     ModelManager_1.ModelManager.CookModel = new CookModel_1.CookModel();
@@ -841,6 +852,8 @@ class ModelManagerCreator {
     ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.TowerDefenseEventModel);
     ModelManager_1.ModelManager.ExpressionModel = new ExpressionTreeModel_1.ExpressionTreeModel();
     ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ExpressionModel);
+    ModelManager_1.ModelManager.GuessJokerGamePlayModel = new GuessJokerGamePlayModel_1.GuessJokerGamePlayModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.GuessJokerGamePlayModel);
     ModelManager_1.ModelManager.LevelRangeDebugDrawModel = new LevelRangeDebugDrawModel_1.LevelRangeDebugDrawModel();
     ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.LevelRangeDebugDrawModel);
     ModelManager_1.ModelManager.HoldingHandsModel = new HoldingHandsModel_1.HoldingHandsModel();
@@ -909,6 +922,8 @@ class ModelManagerCreator {
     ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.MotorcycleMusicPlayerModel);
     ModelManager_1.ModelManager.RegionalTerminalModel = new RegionalTerminalModel_1.RegionalTerminalModel();
     ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.RegionalTerminalModel);
+    ModelManager_1.ModelManager.FurnitureModel = new FurnitureModel_1.FurnitureModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.FurnitureModel);
     ModelManager_1.ModelManager.WheelTowerModel = new WheelTowerModel_1.WheelTowerModel();
     ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.WheelTowerModel);
     ModelManager_1.ModelManager.MotorParkourMapModel = new MotorParkourMapModel_1.MotorParkourMapModel();
@@ -919,6 +934,18 @@ class ModelManagerCreator {
     ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.TrialRoleModel);
     ModelManager_1.ModelManager.EffectSaveModel = new EffectSaveModel_1.EffectSaveModel();
     ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.EffectSaveModel);
+    ModelManager_1.ModelManager.ResetPlayerModel = new ResetPlayerModel_1.ResetPlayerModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ResetPlayerModel);
+    ModelManager_1.ModelManager.FindSunSpiritModel = new FindSunSpiritModel_1.FindSunSpiritModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.FindSunSpiritModel);
+    ModelManager_1.ModelManager.DrinksModel = new DrinksModel_1.DrinksModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.DrinksModel);
+    ModelManager_1.ModelManager.CommonH5Model = new CommonH5Model_1.CommonH5Model();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.CommonH5Model);
+    ModelManager_1.ModelManager.SpringManorModel = new SpringManorModel_1.SpringManorModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.SpringManorModel);
+    ModelManager_1.ModelManager.FeedbackRewardModel = new FeedbackRewardModel_1.FeedbackRewardModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.FeedbackRewardModel);
     ModelManager_1.ModelManager.Init();
     if (Info_1.Info.IsPlayInEditor) {
       TestModuleBridge_1.TestModuleBridge.TryGetTestModuleExports().then(e => {
@@ -1134,10 +1161,13 @@ class ModelManagerCreator {
     ModelManager_1.ModelManager.PhoneMsgModel = undefined;
     ModelManager_1.ModelManager.PanoramicModel = undefined;
     ModelManager_1.ModelManager.MotorcycleMusicPlayerModel = undefined;
+    ModelManager_1.ModelManager.ResetPlayerModel = undefined;
+    ModelManager_1.ModelManager.FindSunSpiritModel = undefined;
     ModelManager_1.ModelManager.WheelTowerModel = undefined;
     ModelManager_1.ModelManager.MotorParkourMapModel = undefined;
     ModelManager_1.ModelManager.TrialRoleModel = undefined;
-    return !(ModelManager_1.ModelManager.PhantomInteractModel = undefined);
+    ModelManager_1.ModelManager.PhantomInteractModel = undefined;
+    return !(ModelManager_1.ModelManager.SpringManorModel = undefined);
   }
 }
 exports.ModelManagerCreator = ModelManagerCreator;

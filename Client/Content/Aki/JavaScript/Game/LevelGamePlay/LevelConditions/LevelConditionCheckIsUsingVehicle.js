@@ -102,7 +102,7 @@ class LevelConditionCheckIsUsingVehicle extends LevelGeneralBase_1.LevelConditio
       }
       return false;
     }
-    var r = EntitySystem_1.EntitySystem.GetComponent(t.TriggerEntityId, 89)?.GetRangeActor();
+    var r = EntitySystem_1.EntitySystem.GetComponent(t.TriggerEntityId, 91)?.GetRangeActor();
     if (!r) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("LevelCondition", 6, "缺失TriggerActor");

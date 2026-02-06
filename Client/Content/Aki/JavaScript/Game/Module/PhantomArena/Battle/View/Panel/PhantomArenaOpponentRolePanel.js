@@ -24,7 +24,7 @@ class PhantomArenaOpponentRolePanel extends UiPanelBase_1.UiPanelBase {
     this.GamepadSkillItem = undefined;
     this.GamepadFieldItem = undefined;
     this.RoleHpTween = undefined;
-    this.I9m = (e, t) => {
+    this.nHm = (e, t) => {
       this.ParentArea.ViewProxy.FieldPointerEnter(e, t, true);
     };
   }
@@ -36,7 +36,7 @@ class PhantomArenaOpponentRolePanel extends UiPanelBase_1.UiPanelBase {
       this.GetItem(2).SetUIActive(false);
     } else {
       this.GamepadFieldItem = new PhantomArenaFieldItem_1.PhantomArenaFieldItem();
-      this.GamepadFieldItem.SetPointerEnterCallback(this.I9m);
+      this.GamepadFieldItem.SetPointerEnterCallback(this.nHm);
       this.GamepadFieldItem.SetPointerExitCallback(this.ParentArea.ViewProxy.FieldPointerExit);
       await this.GamepadFieldItem.CreateByActorAsync(this.GetItem(2).GetOwner());
     }

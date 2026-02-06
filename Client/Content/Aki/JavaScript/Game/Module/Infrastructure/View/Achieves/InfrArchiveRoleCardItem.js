@@ -13,7 +13,7 @@ class InfrArchiveRoleCardItem extends GridProxyAbstract_1.GridProxyAbstract {
     super(...arguments);
     this.xe = 0;
     this.SelectedCallBack = undefined;
-    this.Y3m = () => {
+    this.f5m = () => {
       this.SelectedCallBack?.(this.GridIndex);
     };
   }
@@ -22,13 +22,13 @@ class InfrArchiveRoleCardItem extends GridProxyAbstract_1.GridProxyAbstract {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIItem], [2, UE.UIText], [3, UE.UIItem], [4, UE.UITexture], [5, UE.UIText]];
-    this.BtnBindInfo = [[0, this.Y3m]];
+    this.BtnBindInfo = [[0, this.f5m]];
   }
   Refresh(e) {
     this.xe = e;
-    this.J3m();
+    this.C5m();
   }
-  J3m() {
+  C5m() {
     var e = ConfigManager_1.ConfigManager.InfrastructureConfig.GetInfrPhoneMessageConfigById(this.xe);
     var r = ModelManager_1.ModelManager.PhoneMsgModel.IsPhoneMsgUnlock(this.xe);
     this.GetItem(1).SetUIActive(!r);

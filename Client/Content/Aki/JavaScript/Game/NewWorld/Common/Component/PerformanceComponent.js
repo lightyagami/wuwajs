@@ -63,13 +63,13 @@ let PerformanceComponent = PerformanceComponent_1 = class PerformanceComponent e
       this.vnn();
       this.Mnn(t, e);
       this.Enn(t, e);
-      if ((0, RegisterComponent_1.isComponentInstance)(this.n$t, 212)) {
+      if ((0, RegisterComponent_1.isComponentInstance)(this.n$t, 214)) {
         this.n$t.TryRefreshShowActor();
       }
     };
     this.Snn = t => {
       var e;
-      return !this.rnn.has(t) && (e = GameplayTagUtils_1.GameplayTagUtils.GetGameplayTagById(t), (e = this.nXr.场景交互物特效列表.Get(e)) !== undefined) && !!(0, RegisterComponent_1.isComponentInstance)(this.n$t, 212) && (this.n$t.PlaySceneInteractionEffect(e), this.rnn.set(t, e), true);
+      return !this.rnn.has(t) && (e = GameplayTagUtils_1.GameplayTagUtils.GetGameplayTagById(t), (e = this.nXr.场景交互物特效列表.Get(e)) !== undefined) && !!(0, RegisterComponent_1.isComponentInstance)(this.n$t, 214) && (this.n$t.PlaySceneInteractionEffect(e), this.rnn.set(t, e), true);
     };
     this.ynn = t => {
       var e;
@@ -99,7 +99,7 @@ let PerformanceComponent = PerformanceComponent_1 = class PerformanceComponent e
   }
   OnStart() {
     this.mnn = undefined;
-    this.inn = this.Entity.CheckGetComponent(206);
+    this.inn = this.Entity.CheckGetComponent(208);
     this.n$t = this.Entity.GetComponent(1);
     this.nXr = this.n$t.CreatureData.GetModelConfig();
     return !(this.dnn = false);
@@ -110,7 +110,7 @@ let PerformanceComponent = PerformanceComponent_1 = class PerformanceComponent e
     }
     this.xnn();
     this.rnn = new Map();
-    if ((0, RegisterComponent_1.isComponentInstance)(this.n$t, 212) && !this.n$t.GetIsSceneInteractionLoadCompleted()) {
+    if ((0, RegisterComponent_1.isComponentInstance)(this.n$t, 214) && !this.n$t.GetIsSceneInteractionLoadCompleted()) {
       EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted, this.Rnn);
     }
     this.eve();
@@ -125,7 +125,7 @@ let PerformanceComponent = PerformanceComponent_1 = class PerformanceComponent e
     if (EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.OnLevelTagChanged, this.Cnn)) {
       EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnLevelTagChanged, this.Cnn);
     }
-    if ((0, RegisterComponent_1.isComponentInstance)(this.n$t, 212) && EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted, this.Rnn)) {
+    if ((0, RegisterComponent_1.isComponentInstance)(this.n$t, 214) && EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted, this.Rnn)) {
       EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted, this.Rnn);
     }
     return true;
@@ -165,7 +165,7 @@ let PerformanceComponent = PerformanceComponent_1 = class PerformanceComponent e
     this.SetPerformanceVisible(false);
   }
   OnChangeTimeDilation(t) {
-    var e = t * (this.Entity.GetComponent(131)?.CurrentTimeScale ?? 1);
+    var e = t * (this.Entity.GetComponent(133)?.CurrentTimeScale ?? 1);
     if (EffectSystem_1.EffectSystem.IsValid(this.Uei)) {
       EffectSystem_1.EffectSystem.SetTimeScale(this.Uei, e);
     }
@@ -197,14 +197,14 @@ let PerformanceComponent = PerformanceComponent_1 = class PerformanceComponent e
       var e = -821437887;
       var i = GameplayTagUtils_1.GameplayTagUtils.GetGameplayTagById(e);
       if (e === this.nnn || this.nXr.场景交互物状态列表.Get(i) === undefined) {
-        if ((0, RegisterComponent_1.isComponentInstance)(this.n$t, 212) && this.n$t.GetSceneInteractionLevelHandleId() === -1) {
+        if ((0, RegisterComponent_1.isComponentInstance)(this.n$t, 214) && this.n$t.GetSceneInteractionLevelHandleId() === -1) {
           this.n$t.SetIsSceneInteractionLoadCompleted();
         }
         return;
       }
       this.nnn = e;
     }
-    if ((0, RegisterComponent_1.isComponentInstance)(this.n$t, 212)) {
+    if ((0, RegisterComponent_1.isComponentInstance)(this.n$t, 214)) {
       let e = undefined;
       e = this.nnn === 1227933697 ? 20 : (i = GameplayTagUtils_1.GameplayTagUtils.GetGameplayTagById(this.nnn), this.nXr.场景交互物状态列表.Get(i));
       if (t) {
@@ -220,7 +220,7 @@ let PerformanceComponent = PerformanceComponent_1 = class PerformanceComponent e
   }
   Unn() {
     if (this.inn) {
-      if ((0, RegisterComponent_1.isComponentInstance)(this.n$t, 212) && this.rnn && this.rnn.size > 0) {
+      if ((0, RegisterComponent_1.isComponentInstance)(this.n$t, 214) && this.rnn && this.rnn.size > 0) {
         for (var [, t] of this.rnn) {
           this.n$t?.EndSceneInteractionEffect(t);
           this.n$t?.PlaySceneInteractionEndEffect(t);
@@ -238,7 +238,7 @@ let PerformanceComponent = PerformanceComponent_1 = class PerformanceComponent e
     if (this.inn) {
       for (const e of this.inn.GetTagIds()) {
         var t = GameplayTagUtils_1.GameplayTagUtils.GetGameplayTagById(e);
-        if ((0, RegisterComponent_1.isComponentInstance)(this.n$t, 212) && t !== undefined) {
+        if ((0, RegisterComponent_1.isComponentInstance)(this.n$t, 214) && t !== undefined) {
           this.n$t.PlayExtraEffect(t);
         }
       }
@@ -247,7 +247,7 @@ let PerformanceComponent = PerformanceComponent_1 = class PerformanceComponent e
   Mnn(t, e) {
     for (const s of e) {
       var i;
-      if (this.rnn.has(s) && (i = this.rnn.get(s), this.rnn.delete(s), (0, RegisterComponent_1.isComponentInstance)(this.n$t, 212)) && i !== undefined) {
+      if (this.rnn.has(s) && (i = this.rnn.get(s), this.rnn.delete(s), (0, RegisterComponent_1.isComponentInstance)(this.n$t, 214)) && i !== undefined) {
         this.n$t.EndSceneInteractionEffect(i);
         this.n$t.PlaySceneInteractionEndEffect(i);
       }
@@ -259,13 +259,13 @@ let PerformanceComponent = PerformanceComponent_1 = class PerformanceComponent e
   Enn(t, e) {
     for (const h of e) {
       var i = GameplayTagUtils_1.GameplayTagUtils.GetGameplayTagById(h);
-      if ((0, RegisterComponent_1.isComponentInstance)(this.n$t, 212) && i !== undefined) {
+      if ((0, RegisterComponent_1.isComponentInstance)(this.n$t, 214) && i !== undefined) {
         this.n$t.StopExtraEffect(i);
       }
     }
     for (const n of t) {
       var s = GameplayTagUtils_1.GameplayTagUtils.GetGameplayTagById(n);
-      if ((0, RegisterComponent_1.isComponentInstance)(this.n$t, 212) && s !== undefined) {
+      if ((0, RegisterComponent_1.isComponentInstance)(this.n$t, 214) && s !== undefined) {
         this.n$t.PlayExtraEffect(s, false);
       }
     }
@@ -286,7 +286,7 @@ let PerformanceComponent = PerformanceComponent_1 = class PerformanceComponent e
         }
         this.snn = t;
       }
-      if ((0, RegisterComponent_1.isComponentInstance)(this.n$t, 212)) {
+      if ((0, RegisterComponent_1.isComponentInstance)(this.n$t, 214)) {
         e = GameplayTagUtils_1.GameplayTagUtils.GetGameplayTagById(this.snn);
         this.n$t.LoadAndChangeStaticMesh(e);
       }
@@ -414,5 +414,5 @@ let PerformanceComponent = PerformanceComponent_1 = class PerformanceComponent e
   }
 };
 PerformanceComponent.Onn = 1227933697;
-PerformanceComponent = PerformanceComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(113)], PerformanceComponent);
+PerformanceComponent = PerformanceComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(115)], PerformanceComponent);
 exports.PerformanceComponent = PerformanceComponent; //# sourceMappingURL=PerformanceComponent.js.map

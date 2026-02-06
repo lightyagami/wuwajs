@@ -35,11 +35,21 @@ class GameplayCueEffect extends GameplayCueMagnitude_1.GameplayCueMagnitude {
     this.SocketTransform = Transform_1.Transform.Create();
     this.TargetTransform = Transform_1.Transform.Create();
     this.EffectTimeScaleType = 0;
+    this.IsInitScaleEffect = false;
+    this.OriginScale = undefined;
+    this.IsListenScaleChanged = false;
+    this.IsForceRecycle = false;
     this.mmd = t => {
       if (this.TargetMesh?.GetName() === t) {
         this.SetTargetMeshAndSocket();
         this.AttachEffect(true);
         this.fmd();
+      }
+    };
+    this._7_ = (t, e, i) => {
+      var s = EffectSystem_1.EffectSystem.GetEffectActor(this.EffectViewHandle);
+      if (s) {
+        this.T$o(s);
       }
     };
   }
@@ -50,8 +60,8 @@ class GameplayCueEffect extends GameplayCueMagnitude_1.GameplayCueMagnitude {
     }
     var t = Vector_1.Vector.Create(this.CueConfig.Location.X, this.CueConfig.Location.Y, this.CueConfig.Location.Z);
     var e = Rotator_1.Rotator.Create(this.CueConfig.Rotation.X, this.CueConfig.Rotation.Y, this.CueConfig.Rotation.Z);
-    var s = Vector_1.Vector.Create(this.CueConfig.Scale.X, this.CueConfig.Scale.Y, this.CueConfig.Scale.Z);
-    this.RelativeTransform = Transform_1.Transform.Create(e.Quaternion(), t, s);
+    var i = Vector_1.Vector.Create(this.CueConfig.Scale.X, this.CueConfig.Scale.Y, this.CueConfig.Scale.Z);
+    this.RelativeTransform = Transform_1.Transform.Create(e.Quaternion(), t, i);
     if (this.CueConfig.Parameters.length === 0 || this.CueConfig.Parameters[0] !== "0") {
       this.IsSeekNeedProcess = true;
     } else {
@@ -87,21 +97,24 @@ class GameplayCueEffect extends GameplayCueMagnitude_1.GameplayCueMagnitude {
           break;
         case 1:
           this.kBu();
-          EffectSystem_1.EffectSystem.StopEffectById(this.EffectViewHandle, "[GameplayCueEffect.OnDestroy]", false);
+          EffectSystem_1.EffectSystem.StopEffectById(this.EffectViewHandle, "[GameplayCueEffect.OnDestroy]", this.IsForceRecycle);
           break;
         case 2:
           EffectSystem_1.EffectSystem.FreezeHandle(this.EffectViewHandle, false);
           this.kBu();
-          EffectSystem_1.EffectSystem.StopEffectById(this.EffectViewHandle, "[GameplayCueEffect.OnDestroy]", false);
+          EffectSystem_1.EffectSystem.StopEffectById(this.EffectViewHandle, "[GameplayCueEffect.OnDestroy]", this.IsForceRecycle);
       }
     }
     if (this.CueConfig.Comp === 2) {
       this.gRa?.RemoveBuffEffect(this.EffectViewHandle);
       this.fmd();
     }
+    if (this.IsListenScaleChanged) {
+      this.N7g();
+    }
   }
   kBu() {
-    var t = this.EntityHandle.Entity?.GetComponent(131);
+    var t = this.EntityHandle.Entity?.GetComponent(133);
     if (t && this.EffectTimeScaleType === 0) {
       EffectUtil_1.EffectUtil.ListenForeverTimeScale(this.EffectViewHandle, t);
     }
@@ -157,9 +170,9 @@ class GameplayCueEffect extends GameplayCueMagnitude_1.GameplayCueMagnitude {
       }
       var e = this.ActorInternal.K2_GetComponentsByClass(UE.MeshComponent.StaticClass());
       for (let t = 0; t < e.Num(); t++) {
-        var s = e.Get(t);
-        if (s instanceof UE.SkeletalMeshComponent && s.GetName() === this.CueConfig.CompName) {
-          return s;
+        var i = e.Get(t);
+        if (i instanceof UE.SkeletalMeshComponent && i.GetName() === this.CueConfig.CompName) {
+          return i;
         }
       }
       if (Log_1.Log.CheckError()) {
@@ -169,7 +182,7 @@ class GameplayCueEffect extends GameplayCueMagnitude_1.GameplayCueMagnitude {
   }
   M$o() {
     var t;
-    if (this.ActorInternal?.IsValid() && this.CueConfig.Comp === 2 && (t = this.EntityHandle.Entity?.GetComponent(84))?.Valid) {
+    if (this.ActorInternal?.IsValid() && this.CueConfig.Comp === 2 && (t = this.EntityHandle.Entity?.GetComponent(86))?.Valid) {
       return t;
     } else {
       return undefined;
@@ -191,14 +204,22 @@ class GameplayCueEffect extends GameplayCueMagnitude_1.GameplayCueMagnitude {
   }
   T$o(t) {
     var e;
-    var s = this.CueConfig.TargetScaleUp[0];
-    var i = this.CueConfig.TargetScaleUp[1];
-    if (!(i <= s)) {
+    var i = this.CueConfig.TargetScaleUp[0];
+    var s = this.CueConfig.TargetScaleUp[1];
+    if (!(s <= i)) {
+      if (!this.IsInitScaleEffect) {
+        this.IsInitScaleEffect = true;
+        this.OriginScale = Vector_1.Vector.Create(t.D_GetActorScale3D());
+        if (this.EntityHandle.Entity?.GetComponent(308)?.IsEnableMorph()) {
+          this.IsListenScaleChanged = true;
+          this.V7g();
+        }
+      }
       e = (0, puerts_1.$ref)(new UE.Vector());
       UE.KismetSystemLibrary.GetComponentBounds(this.TargetMesh, (0, puerts_1.$ref)(new UE.Vector()), e, (0, puerts_1.$ref)(0));
       e = (e = (0, puerts_1.$unref)(e)).X / RATE * e.Y / RATE * e.Z / RATE;
-      e = ((e = MathUtils_1.MathUtils.Clamp(e, VOLUME_MIN, VOLUME_MAX)) - VOLUME_MIN) / (VOLUME_MAX - VOLUME_MIN) * (i - s) + s;
-      t.D_SetActorScale3D(t.D_GetActorScale3D().op_Multiply(e));
+      e = ((e = MathUtils_1.MathUtils.Clamp(e, VOLUME_MIN, VOLUME_MAX)) - VOLUME_MIN) / (VOLUME_MAX - VOLUME_MIN) * (s - i) + i;
+      t.D_SetActorScale3D(this.OriginScale.ToUeVector().op_Multiply(e));
     }
   }
   y$o() {
@@ -220,7 +241,7 @@ class GameplayCueEffect extends GameplayCueMagnitude_1.GameplayCueMagnitude {
   }
   D9u() {
     var t;
-    if (this.BuffHandleId > 0 && (t = this.EntityHandle.Entity?.GetComponent(220)?.GetBuffByHandle(this.BuffHandleId)) && t.GetInstigator()?.GetComponent(0)?.IsRole()) {
+    if (this.BuffHandleId > 0 && (t = this.EntityHandle.Entity?.GetComponent(222)?.GetBuffByHandle(this.BuffHandleId)) && t.GetInstigator()?.GetComponent(0)?.IsRole()) {
       return 1;
     } else {
       return 0;
@@ -236,6 +257,18 @@ class GameplayCueEffect extends GameplayCueMagnitude_1.GameplayCueMagnitude {
     var t = this.EntityHandle.Entity;
     if (t && EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.CharacterWeaponLoaded, this.mmd)) {
       EventSystem_1.EventSystem.RemoveWithTarget(t, EventDefine_1.EEventName.CharacterWeaponLoaded, this.mmd);
+    }
+  }
+  V7g() {
+    var t;
+    if (!this.IsInstant && !!(t = this.EntityHandle.Entity)?.Valid && !EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.OnCharacterMorphTypeChanged, this._7_)) {
+      EventSystem_1.EventSystem.AddWithTarget(t, EventDefine_1.EEventName.OnCharacterMorphTypeChanged, this._7_);
+    }
+  }
+  N7g() {
+    var t = this.EntityHandle.Entity;
+    if (t && EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.OnCharacterMorphTypeChanged, this._7_)) {
+      EventSystem_1.EventSystem.RemoveWithTarget(t, EventDefine_1.EEventName.OnCharacterMorphTypeChanged, this._7_);
     }
   }
 }

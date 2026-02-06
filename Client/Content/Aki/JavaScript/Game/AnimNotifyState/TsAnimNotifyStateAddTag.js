@@ -29,7 +29,7 @@ class TsAnimNotifyStateAddTag extends UE.KuroAnimNotifyState {
         e = ModelManager_1.ModelManager.CreatureModel.GetEntity(r)?.Entity;
       }
       if (e) {
-        var r = e.GetComponent(215);
+        var r = e.GetComponent(217);
         if (r) {
           r.TagContainer.UpdateExactTag(4, i, 1);
           return true;
@@ -53,7 +53,7 @@ class TsAnimNotifyStateAddTag extends UE.KuroAnimNotifyState {
         e = ModelManager_1.ModelManager.CreatureModel.GetEntity(i)?.Entity;
       }
       if (e) {
-        var i = e.GetComponent(215);
+        var i = e.GetComponent(217);
         if (i) {
           i.TagContainer.UpdateExactTag(4, o, -1);
           return true;

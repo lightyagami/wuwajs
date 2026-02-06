@@ -15,28 +15,28 @@ const InfoDisplayController_1 = require("../../../InfoDisplay/InfoDisplayControl
 class ArtemisChatLeftItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.ysf = undefined;
+    this.Qhf = undefined;
     this.SPe = undefined;
-    this.LSf = (e, t) => {
+    this.CIf = (e, t) => {
       if (t === "Dele_M") {
-        this.bSf(false);
-        this.v1f(this.ysf, false);
+        this.mIf(false);
+        this.Muf(this.Qhf, false);
       }
     };
-    this.Ssf = () => {
-      if (this.ysf) {
-        ModelManager_1.ModelManager.InfoDisplayModel.SetCurrentOpenInformationTexture(this.ysf);
+    this.Khf = () => {
+      if (this.Qhf) {
+        ModelManager_1.ModelManager.InfoDisplayModel.SetCurrentOpenInformationTexture(this.Qhf);
         InfoDisplayController_1.InfoDisplayController.OpenInfoDisplayImgView();
       }
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UITexture], [2, UE.UIText], [3, UE.UISizeControlByOther], [4, UE.UIText], [5, UE.UISprite], [6, UE.UITexture], [7, UE.UIItem], [8, UE.UIButtonComponent], [9, UE.UITexture], [10, UE.UISprite]];
-    this.BtnBindInfo = [[8, this.Ssf]];
+    this.BtnBindInfo = [[8, this.Khf]];
   }
   OnStart() {
     this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
-    this.RootActor?.OnSequencePlayEvent.Bind(this.LSf);
+    this.RootActor?.OnSequencePlayEvent.Bind(this.CIf);
     this.GetText(0)?.SetUIActive(false);
     this.GetSprite(5)?.SetUIActive(false);
     this.GetItem(7)?.SetUIActive(false);
@@ -49,21 +49,21 @@ class ArtemisChatLeftItem extends UiPanelBase_1.UiPanelBase {
   }
   SetContent(e) {
     var t;
-    if (e && (t = CommonParamById_1.configCommonParamById.GetStringConfig("ArtemisChatHeadIconPath"), this.JNf(t, 1), (t = CommonParamById_1.configCommonParamById.GetStringConfig("ArtemisChatHeadName")) && t?.length > 0 && this.GetText(2)?.ShowTextNew(t), this.GetUiSizeControlByOther(3).GetRootComponent().SetUIActive(e.Content?.length > 0), this.wYf(e.Content), this.ysf = e.PicturePath, t = !!e.PicturePath && !!(e.PicturePath?.length > 0), this.GetButton(8)?.RootUIComp.SetUIActive(t), e.IsLock && this.SPe?.PlayLevelSequenceByName("Start"), this.bSf(e.IsLock), this.GetSprite(10)?.SetAlpha(e.IsShowEffect ? 1 : 0), t)) {
-      this.v1f(this.ysf, e.IsShowEffect);
+    if (e && (t = CommonParamById_1.configCommonParamById.GetStringConfig("ArtemisChatHeadIconPath"), this.NHf(t, 1), (t = CommonParamById_1.configCommonParamById.GetStringConfig("ArtemisChatHeadName")) && t?.length > 0 && this.GetText(2)?.ShowTextNew(t), this.GetUiSizeControlByOther(3).GetRootComponent().SetUIActive(e.Content?.length > 0), this.Edg(e.Content), this.Qhf = e.PicturePath, t = !!e.PicturePath && !!(e.PicturePath?.length > 0), this.GetButton(8)?.RootUIComp.SetUIActive(t), e.IsLock && this.SPe?.PlayLevelSequenceByName("Start"), this.mIf(e.IsLock), this.GetSprite(10)?.SetAlpha(e.IsShowEffect ? 1 : 0), t)) {
+      this.Muf(this.Qhf, e.IsShowEffect);
     }
   }
-  wYf(e) {
+  Edg(e) {
     if (e && e?.length > 0) {
       this.GetText(4)?.ShowTextNew(e);
       this.GetText(4)?.SetAlpha(1);
     }
   }
-  JNf(e, t) {
+  NHf(e, t) {
     e = e && e?.length > 0 ? e : undefined;
     this.TrySetTextureByPath(e, this.GetTexture(t));
   }
-  async v1f(e, t) {
+  async Muf(e, t) {
     if (t) {
       if (t = ConfigManager_1.ConfigManager.UiResourceConfig?.GetResourcePath("MI_GlitchAimisPhoto")) {
         await this.SetTextureCustomMaterialAsync(t, this.GetTexture(9));
@@ -71,9 +71,9 @@ class ArtemisChatLeftItem extends UiPanelBase_1.UiPanelBase {
     } else {
       this.GetTexture(9)?.SetCustomUIMaterial(undefined);
     }
-    this.JNf(e, 9);
+    this.NHf(e, 9);
   }
-  bSf(e) {
+  mIf(e) {
     if (e) {
       if (e = ConfigManager_1.ConfigManager.UiResourceConfig?.GetResourcePath("MI_GlitchAimisText")) {
         ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.MaterialInterface, e => {

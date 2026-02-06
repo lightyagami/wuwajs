@@ -4,84 +4,122 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.BattleUiTweenAnimPlayer = undefined;
+const puerts_1 = require("puerts");
 const UE = require("ue");
 const Log_1 = require("../../../../Core/Common/Log");
+const GlobalData_1 = require("../../../GlobalData");
 class BattleUiTweenAnimPlayer {
   constructor() {
     this.TweenAnimMap = new Map();
+    this.TweenCallbackMap = new Map();
+    this.TweenDelegateWrapperMap = new Map();
+    this.Wqg = false;
   }
-  Clear(e = false) {
-    if (e) {
+  Clear(t = false) {
+    if (t) {
       this.StopAll();
     }
     this.TweenAnimMap.clear();
+    for (var [e, i] of this.TweenDelegateWrapperMap) {
+      e.UnregisterOnComplete(i);
+    }
+    this.TweenDelegateWrapperMap.clear();
+    for (var [, o] of this.TweenCallbackMap) {
+      (0, puerts_1.releaseManualReleaseDelegate)(o);
+    }
+    this.TweenCallbackMap.clear();
   }
-  InitTweenAnim(e, t, i = false) {
-    if (t) {
+  InitTweenAnim(t, e, i = false) {
+    if (e) {
       var o = [];
-      var s = t.GetOwner().K2_GetComponentsByClass(UE.LGUIPlayTweenComponent.StaticClass());
-      var n = s.Num();
-      for (let e = 0; e < n; e++) {
-        o.push(s.Get(e));
+      var s = e.GetOwner().K2_GetComponentsByClass(UE.LGUIPlayTweenComponent.StaticClass());
+      var r = s.Num();
+      for (let t = 0; t < r; t++) {
+        o.push(s.Get(t));
       }
       this.TweenAnimMap ||= new Map();
-      this.TweenAnimMap.set(e, o);
+      this.TweenAnimMap.set(t, o);
       if (i) {
-        this.StopTweenAnim(e);
+        this.StopTweenAnim(t);
       }
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("Battle", 17, "BattleUiTweenAnimPlayer.InitTweenAnim : 参数item不能为空");
     }
   }
-  PlayTweenAnim(e) {
-    e = this.TweenAnimMap.get(e);
-    if (e) {
-      for (const t of e) {
-        t.Play();
+  PlayTweenAnim(t) {
+    var e;
+    var i = this.TweenAnimMap.get(t);
+    if (i && i.length > 0) {
+      for (const o of i) {
+        o.Play();
+      }
+      if (this.Wqg && (e = (i = i[0]?.GetOwner())?.GetComponentByClass(UE.UIItem.StaticClass())?.GetDisplayName(), Log_1.Log.CheckDebug())) {
+        Log_1.Log.Debug("Battle", 96, `PlayTweenAnim [${i?.GetName()}][${e}][${t}]`);
       }
     }
   }
-  StopTweenAnim(e) {
-    e = this.TweenAnimMap.get(e);
-    if (e) {
-      for (const t of e) {
-        t.Stop();
+  StopTweenAnim(t) {
+    t = this.TweenAnimMap.get(t);
+    if (t) {
+      for (const e of t) {
+        e.Stop();
       }
     }
   }
   StopAll() {
-    for (var [, e] of this.TweenAnimMap) {
-      for (const t of e) {
-        t.Stop();
+    for (var [, t] of this.TweenAnimMap) {
+      for (const e of t) {
+        e.Stop();
       }
     }
   }
-  Active(e, t) {
-    if (t) {
-      this.PlayTweenAnim(e);
+  Active(t, e) {
+    if (e) {
+      this.PlayTweenAnim(t);
     } else {
-      this.StopTweenAnim(e);
+      this.StopTweenAnim(t);
     }
   }
-  GetDuration(e) {
-    let t = 0;
-    e = this.TweenAnimMap.get(e);
-    if (e) {
-      for (const i of e) {
-        t = Math.max(i.playTween?.duration ?? 0, t);
-      }
-    }
-    return t;
-  }
-  SetTweenTimeScale(e, t) {
-    e = this.TweenAnimMap.get(e);
-    if (e) {
-      for (const o of e) {
-        var i = o.GetPlayTween()?.GetTweener();
-        if (i) {
-          i.SetSpeed(t);
+  CheckIsPlaying(t) {
+    t = this.TweenAnimMap.get(t);
+    if (t) {
+      for (const e of t) {
+        if (UE.LTweenBPLibrary.IsTweening(GlobalData_1.GlobalData.World, e.GetPlayTween()?.GetTweener())) {
+          return true;
         }
       }
+    }
+    return false;
+  }
+  GetDuration(t) {
+    let e = 0;
+    t = this.TweenAnimMap.get(t);
+    if (t) {
+      for (const i of t) {
+        e = Math.max(i.playTween?.duration ?? 0, e);
+      }
+    }
+    return e;
+  }
+  SetTweenTimeScale(t, e) {
+    t = this.TweenAnimMap.get(t);
+    if (t) {
+      for (const o of t) {
+        var i = o.GetPlayTween()?.GetTweener();
+        if (i) {
+          i.SetSpeed(e);
+        }
+      }
+    }
+  }
+  RegisterOnComplete(t, e) {
+    var i;
+    var o = this.TweenAnimMap.get(t);
+    if (o &&= o[0].GetPlayTween()) {
+      i = (0, puerts_1.toManualReleaseDelegate)(e);
+      i = o.RegisterOnComplete(i);
+      this.TweenCallbackMap.set(t, e);
+      this.TweenDelegateWrapperMap.set(o, i);
     }
   }
 }

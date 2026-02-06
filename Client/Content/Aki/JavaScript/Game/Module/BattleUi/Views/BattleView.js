@@ -219,17 +219,17 @@ class BattleView extends UiTickViewBase_1.UiTickViewBase {
         if (StringUtils_1.StringUtils.IsEmpty(t)) {
           t = s;
         }
-        e = i.GuideHookComponents.Get(t);
-        if (!e) {
+        s = i.GuideHookComponents.Get(t);
+        if (!s) {
           if (Log_1.Log.CheckError()) {
             Log_1.Log.Error("Guide", 16, "战斗界面挂接组件(GuideHookRegistry)不存在该挂接点（展示用）名称，请检查聚焦引导配置或挂接组件");
           }
         }
-        s = e.GetUIItem();
-        return [n, s];
+        i = s.GetUIItem();
+        return [n, i];
       }
       if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("Guide", 16, "战斗界面挂接组件(GuideHookRegistry)缺失");
+        Log_1.Log.Error("Guide", 16, "战斗界面挂接组件(GuideHookRegistry)缺失", ["步骤参数", e]);
       }
     };
     this.Ala = () => {
@@ -289,7 +289,10 @@ class BattleView extends UiTickViewBase_1.UiTickViewBase {
     this.V0m = t => {
       return this.ort(5)?.GetGuideUiItemAndUiItemForShowEx(t);
     };
-    this.Ula = new Map([["Execution", this.Tla], ["Skill", this.Lla], ["Default", this.Dla], ["Teammate", this.Ala], ["FishingViewBtn", this.MF_], ["DangoViewBtn", this.lB1], ["LinkBtn", this.Lq1], ["DangoMissionButton", this.IK1], ["MoraleTempExp", this.P3u], ["MoraleExp", this.x3u], ["ScorePanel", this.Idd], ["WeeklyRogueBtn", this.sCd], ["TimeDilationBtn", this.Lhm], ["HonamiStoryPlayerLevel", this.F0m], ["HonamiStoryMapLevel", this.N0m], ["HonamiStoryLeaveBtn", this.V0m]]);
+    this.BDg = t => {
+      return this.ort(6)?.GetGuideUiItemAndUiItemForShowEx(t);
+    };
+    this.Ula = new Map([["Execution", this.Tla], ["Skill", this.Lla], ["Default", this.Dla], ["Teammate", this.Ala], ["FishingViewBtn", this.MF_], ["DangoViewBtn", this.lB1], ["LinkBtn", this.Lq1], ["DangoMissionButton", this.IK1], ["MoraleTempExp", this.P3u], ["MoraleExp", this.x3u], ["ScorePanel", this.Idd], ["WeeklyRogueBtn", this.sCd], ["TimeDilationBtn", this.Lhm], ["HonamiStoryPlayerLevel", this.F0m], ["HonamiStoryMapLevel", this.N0m], ["HonamiStoryLeaveBtn", this.V0m], ["MotorMobile", this.BDg]]);
     this.cah = (t, e, i, s) => {
       this.Hot?.RefreshFormationCooldownExternal(t, e, i, s);
       this.sza?.RefreshFormationCooldownExternal(t, e, i, s);
@@ -306,7 +309,7 @@ class BattleView extends UiTickViewBase_1.UiTickViewBase {
   async OnBeforeStartAsync() {
     this.OpenParam = this.Proxy;
     this.Proxy.RegisterBattleView(this);
-    await Promise.all([this.uza(), this.art(), this.hrt(0, BossStatePanel_1.BossStatePanel, true, 13), this.hrt(5, TopPanel_1.TopPanel, true, 41), this.hrt(4, BottomPanel_1.BottomPanel, true, 11), this.hrt(1, MissionPanel_1.MissionPanel, true, 5), this.hrt(6, CenterPanel_1.CenterPanel, true, 41), this.hrt(7, ChatPanel_1.ChatPanel, false, 6), this.hrt(8, FullScreenPanel_1.FullScreenPanel, true, 23), this.hrt(9, PositionPanel_1.PositionPanel, true, 41), this.hrt(11, ScorePanel_1.ScorePanel, true, 24), this.xFc(), this.rNu(), this.qId()]);
+    await Promise.all([this.uza(), this.art(), this.hrt(0, BossStatePanel_1.BossStatePanel, true, 13), this.hrt(5, TopPanel_1.TopPanel, true, 43), this.hrt(4, BottomPanel_1.BottomPanel, true, 11), this.hrt(1, MissionPanel_1.MissionPanel, true, 5), this.hrt(6, CenterPanel_1.CenterPanel, true, 43), this.hrt(7, ChatPanel_1.ChatPanel, false, 6), this.hrt(8, FullScreenPanel_1.FullScreenPanel, true, 23), this.hrt(9, PositionPanel_1.PositionPanel, true, 43), this.hrt(11, ScorePanel_1.ScorePanel, true, 24), this.xFc(), this.rNu(), this.qId()]);
     this.lrt();
     this._rt();
     this.iNu.Init(this.sza, this.Hot);

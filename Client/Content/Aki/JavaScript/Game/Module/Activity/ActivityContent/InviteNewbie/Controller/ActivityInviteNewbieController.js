@@ -60,14 +60,14 @@ class ActivityInviteNewbieController extends ActivityControllerBase_1.ActivityCo
     return false;
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(21990, this.g5c);
+    Net_1.Net.Register(18375, this.g5c);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(21990);
+    Net_1.Net.UnRegister(18375);
   }
-  o1f() {
-    var e = new Protocol_1.Aki.Protocol.ehf();
-    Net_1.Net.Call(16100, e, e => {});
+  uuf() {
+    var e = new Protocol_1.Aki.Protocol.p1f();
+    Net_1.Net.Call(22129, e, e => {});
   }
   mIi() {
     let e = undefined;
@@ -83,7 +83,7 @@ class ActivityInviteNewbieController extends ActivityControllerBase_1.ActivityCo
       }
       if (e !== undefined) {
         ModelManager_1.ModelManager.InviteNewbieModel.SaveClickState();
-        this.o1f();
+        this.uuf();
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.InviteNewbieEntered);
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, ModelManager_1.ModelManager.InviteNewbieModel.CurrentActivityId);
         if (ModelManager_1.ModelManager.InviteNewbieModel.IsInternalBrowser) {

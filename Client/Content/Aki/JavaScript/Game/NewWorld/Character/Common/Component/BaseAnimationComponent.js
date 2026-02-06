@@ -322,18 +322,20 @@ let BaseAnimationComponent = class BaseAnimationComponent extends EntityComponen
     }
   }
   RefreshAnimOptimization() {
-    var t = this.Entity.GetComponent(184)?.IsInFighting ?? false;
-    var e = this.ForceDisableAnimOptimizationSet.size > 0;
-    var i = e || t;
-    var s = this.Actor.K2_GetComponentsByClass(UE.SkeletalMeshComponent.StaticClass());
-    var a = this.RefreshVisibilityBasedAnimTickOption(e, t);
-    for (let t = 0; t < s.Num(); t++) {
-      var r = s.Get(t);
-      r.bEnableUpdateRateOptimizations = !i;
-      if (this.NoUpdateMeshes?.has(r)) {
-        r.VisibilityBasedAnimTickOption = 3;
-      } else {
-        r.VisibilityBasedAnimTickOption = a;
+    if (this.Actor) {
+      var t = this.Entity.GetComponent(186)?.IsInFighting ?? false;
+      var e = this.ForceDisableAnimOptimizationSet.size > 0;
+      var i = e || t;
+      var s = this.Actor.K2_GetComponentsByClass(UE.SkeletalMeshComponent.StaticClass());
+      var a = this.RefreshVisibilityBasedAnimTickOption(e, t);
+      for (let t = 0; t < s.Num(); t++) {
+        var r = s.Get(t);
+        r.bEnableUpdateRateOptimizations = !i;
+        if (this.NoUpdateMeshes?.has(r)) {
+          r.VisibilityBasedAnimTickOption = 3;
+        } else {
+          r.VisibilityBasedAnimTickOption = a;
+        }
       }
     }
   }
@@ -412,5 +414,5 @@ let BaseAnimationComponent = class BaseAnimationComponent extends EntityComponen
     this.MontageManager.OnTick(t);
   }
 };
-BaseAnimationComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(45)], BaseAnimationComponent);
+BaseAnimationComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(47)], BaseAnimationComponent);
 exports.BaseAnimationComponent = BaseAnimationComponent; //# sourceMappingURL=BaseAnimationComponent.js.map

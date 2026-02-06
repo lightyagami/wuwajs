@@ -13,12 +13,16 @@ const AccessPathById_1 = require("../../../Core/Define/ConfigQuery/AccessPathByI
 const BackgroundCardById_1 = require("../../../Core/Define/ConfigQuery/BackgroundCardById");
 const CalabashSkinById_1 = require("../../../Core/Define/ConfigQuery/CalabashSkinById");
 const FlySkinConfigById_1 = require("../../../Core/Define/ConfigQuery/FlySkinConfigById");
+const FurnitureById_1 = require("../../../Core/Define/ConfigQuery/FurnitureById");
 const HonamiStoryItemById_1 = require("../../../Core/Define/ConfigQuery/HonamiStoryItemById");
 const HonamiStoryWeaponById_1 = require("../../../Core/Define/ConfigQuery/HonamiStoryWeaponById");
 const ItemInfoById_1 = require("../../../Core/Define/ConfigQuery/ItemInfoById");
 const ItemMainTypeAll_1 = require("../../../Core/Define/ConfigQuery/ItemMainTypeAll");
 const ItemMainTypeById_1 = require("../../../Core/Define/ConfigQuery/ItemMainTypeById");
 const ItemShowTypeById_1 = require("../../../Core/Define/ConfigQuery/ItemShowTypeById");
+const MotorDecorationsById_1 = require("../../../Core/Define/ConfigQuery/MotorDecorationsById");
+const MotorFrameById_1 = require("../../../Core/Define/ConfigQuery/MotorFrameById");
+const MotorSkinById_1 = require("../../../Core/Define/ConfigQuery/MotorSkinById");
 const MotorStickerById_1 = require("../../../Core/Define/ConfigQuery/MotorStickerById");
 const PackageCapacityAll_1 = require("../../../Core/Define/ConfigQuery/PackageCapacityAll");
 const PackageCapacityByPackageId_1 = require("../../../Core/Define/ConfigQuery/PackageCapacityByPackageId");
@@ -84,8 +88,8 @@ class InventoryConfig extends ConfigBase_1.ConfigBase {
   jBa(e) {
     let n = undefined;
     var r;
-    var t = this.GetItemDataTypeByConfigId(e);
-    switch (t) {
+    var o = this.GetItemDataTypeByConfigId(e);
+    switch (o) {
       case 2:
         n = this.GetWeaponItemConfig(e);
         break;
@@ -150,11 +154,23 @@ class InventoryConfig extends ConfigBase_1.ConfigBase {
       case 20:
         n = this.GetItemConfig(e);
         break;
+      case 25:
+        n = MotorFrameById_1.configMotorFrameById.GetConfig(e);
+        break;
       case 21:
         n = MotorStickerById_1.configMotorStickerById.GetConfig(e);
+        break;
+      case 26:
+        n = MotorDecorationsById_1.configMotorDecorationsById.GetConfig(e);
+        break;
+      case 27:
+        n = MotorSkinById_1.configMotorSkinById.GetConfig(e);
+        break;
+      case 24:
+        n = FurnitureById_1.configFurnitureById.GetConfig(e);
     }
     if (n) {
-      (r = new ItemConfig_1.ItemConfig()).Refresh(n, t);
+      (r = new ItemConfig_1.ItemConfig()).Refresh(n, o, e);
       return r;
     }
   }
@@ -204,12 +220,20 @@ class InventoryConfig extends ConfigBase_1.ConfigBase {
       return 18;
     } else if (e >= InventoryDefine_1.InfrastructureItemRange[0] && e < InventoryDefine_1.InfrastructureItemRange[1]) {
       return 20;
+    } else if (e >= InventoryDefine_1.MotorFrameItemRange[0] && e < InventoryDefine_1.MotorFrameItemRange[1]) {
+      return 25;
     } else if (e >= InventoryDefine_1.MotorStickerItemRange[0] && e < InventoryDefine_1.MotorStickerItemRange[1]) {
       return 21;
+    } else if (e >= InventoryDefine_1.MotorDecorationItemRange[0] && e < InventoryDefine_1.MotorDecorationItemRange[1]) {
+      return 26;
+    } else if (e >= InventoryDefine_1.MotorSkinItemRange[0] && e < InventoryDefine_1.MotorSkinItemRange[1]) {
+      return 27;
     } else if (e >= InventoryDefine_1.PhoneChatDialogItemRange[0] && e < InventoryDefine_1.PhoneChatDialogItemRange[1]) {
       return 22;
     } else if (e >= InventoryDefine_1.PhoneChatBackGroundItemRange[0] && e < InventoryDefine_1.PhoneChatBackGroundItemRange[1]) {
       return 23;
+    } else if (e >= InventoryDefine_1.FurnitureItemRange[0] && e < InventoryDefine_1.FurnitureItemRange[1]) {
+      return 24;
     } else {
       return 0;
     }

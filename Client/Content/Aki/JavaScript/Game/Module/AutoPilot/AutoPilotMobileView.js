@@ -14,10 +14,10 @@ const AutoPilotView_1 = require("./AutoPilotView");
 class AutoPilotMobileView extends AutoPilotView_1.AutoPilotView {
   constructor() {
     super(...arguments);
-    this.ORf = undefined;
-    this.wIf = true;
+    this.Xxf = undefined;
+    this.oRf = true;
     this.Cke = e => {
-      this.wIf = !e;
+      this.oRf = !e;
     };
   }
   OnRegisterComponent() {
@@ -43,7 +43,7 @@ class AutoPilotMobileView extends AutoPilotView_1.AutoPilotView {
   }
   InitUi() {
     super.InitUi();
-    this.aPf();
+    this.Ukf();
   }
   InitUiItemAspectOffsetConfig() {
     var e = this.GetButton(0);
@@ -81,7 +81,7 @@ class AutoPilotMobileView extends AutoPilotView_1.AutoPilotView {
       e.ToggleText = ConfigManager_1.ConfigManager.TextConfig.GetTextById("PlotSkipConfirmToggle");
       e.SetToggleFunction(this.Cke);
       e.FunctionMap.set(2, () => {
-        ModelManager_1.ModelManager.AutoPilotModel.IsSkipConfirmBoxShow = this.wIf;
+        ModelManager_1.ModelManager.AutoPilotModel.IsSkipConfirmBoxShow = this.oRf;
         ControllerHolder_1.ControllerHolder.AutoPilotController.SkipToTarget();
       });
       ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(e);
@@ -89,11 +89,11 @@ class AutoPilotMobileView extends AutoPilotView_1.AutoPilotView {
       ControllerHolder_1.ControllerHolder.AutoPilotController.SkipToTarget();
     }
   }
-  aPf() {
-    this.ORf = this.GetTexture(8);
+  Ukf() {
+    this.Xxf = this.GetTexture(8);
   }
   UpdateRideShareProgress(e) {
-    this.ORf?.SetFillAmount(e);
+    this.Xxf?.SetFillAmount(e);
   }
 }
 exports.AutoPilotMobileView = AutoPilotMobileView;

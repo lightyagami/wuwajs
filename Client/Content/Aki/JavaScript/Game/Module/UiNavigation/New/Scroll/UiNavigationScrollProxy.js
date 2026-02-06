@@ -12,7 +12,7 @@ class UiNavigationScrollProxy {
     this.ScrollView = undefined;
     this.RootUiComp = undefined;
   }
-  rRf(t) {
+  wUf(t) {
     var i;
     var r = this.RootUiComp.RelativeScale3D;
     let s = MathUtils_1.MathUtils.KindaSmallNumber * 2;
@@ -92,7 +92,7 @@ class UiNavigationScrollProxy {
     var i = this.ScrollView;
     var r = (0, puerts_1.$ref)(3);
     var s = (0, puerts_1.$ref)(3);
-    var e = this.rRf(i.Vertical);
+    var e = this.wUf(i.Vertical);
     let o = undefined;
     o = t ? t.GetUIItem() : this.RootUiComp;
     i.GetOutOfBottomBoundsType(o, r, s, e);
@@ -108,7 +108,7 @@ class UiNavigationScrollProxy {
     }
     var i = (0, puerts_1.$ref)(3);
     var r = (0, puerts_1.$ref)(3);
-    var s = this.rRf(this.ScrollView.Vertical);
+    var s = this.wUf(this.ScrollView.Vertical);
     let e = undefined;
     e = t ? t.GetUIItem() : this.RootUiComp;
     this.ScrollView.GetOutOfBottomBoundsType(e, i, r, s);
@@ -149,7 +149,7 @@ class UiNavigationScrollProxy {
     var i = this.ScrollView;
     var r = (0, puerts_1.$ref)(3);
     var s = (0, puerts_1.$ref)(3);
-    var e = this.rRf(i.Vertical);
+    var e = this.wUf(i.Vertical);
     let o = undefined;
     o = t ? t.GetUIItem() : this.RootUiComp;
     i.GetOutOfBottomBoundsType(o, r, s, e);

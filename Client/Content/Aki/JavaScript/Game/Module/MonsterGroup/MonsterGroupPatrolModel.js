@@ -120,7 +120,7 @@ class MonsterPatrolInfo {
     this.EntityId = o.Entity.Id;
     this.EntityType = o.CreatureData.GetEntityType();
     this.ActorComp = o;
-    this.MoveComp = this.ActorComp.Entity.GetComponent(46);
+    this.MoveComp = this.ActorComp.Entity.GetComponent(48);
     this.Group = e;
   }
   get GroupPatrolState() {
@@ -147,7 +147,7 @@ class MonsterPatrolInfo {
   }
   SetIsCaptain() {
     this.IsCaptain = true;
-    this.PatrolComp = this.ActorComp.Entity.GetComponent(49);
+    this.PatrolComp = this.ActorComp.Entity.GetComponent(51);
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("AI", 42, "[GroupAi.Patrol] 更新群组队长", ["PbDataId", this.ActorComp?.CreatureData?.GetPbDataId()], ["EntityId", this.ActorComp?.Entity?.Id]);
     }
@@ -315,7 +315,7 @@ class MonsterGroupInfo {
       ModelManager_1.ModelManager.CreatureModel.GetEntitiesWithPbDataId(s, o);
       var e = o[0]?.Entity;
       var r = e?.GetComponent(3);
-      var i = e?.GetComponent(46);
+      var i = e?.GetComponent(48);
       if (e && r) {
         if (i) {
           i = new MonsterPatrolInfo(s, r, this);
@@ -514,7 +514,7 @@ class MonsterGroupInfo {
       o = ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(this._Dt);
       (e = Protocol_1.Aki.Protocol.Kes.create()).F4n = MathUtils_1.MathUtils.NumberToLong(o);
       e.V4n = t;
-      Net_1.Net.Call(22211, e, () => {});
+      Net_1.Net.Call(18670, e, () => {});
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("AI", 42, "[GroupAi.Patrol] 开始群组巡逻，通知服务器", ["管理器PbDataId", this._Dt], ["巡逻方向", t ? "正" : "逆"]);
       }
@@ -523,14 +523,14 @@ class MonsterGroupInfo {
   PKl() {
     var t;
     var o;
-    if (this.xKl && (this.xKl = false, t = ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(this._Dt), (o = Protocol_1.Aki.Protocol.Xes.create()).F4n = MathUtils_1.MathUtils.NumberToLong(t), Net_1.Net.Call(21531, o, () => {}), Log_1.Log.CheckDebug())) {
+    if (this.xKl && (this.xKl = false, t = ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(this._Dt), (o = Protocol_1.Aki.Protocol.Xes.create()).F4n = MathUtils_1.MathUtils.NumberToLong(t), Net_1.Net.Call(15120, o, () => {}), Log_1.Log.CheckDebug())) {
       Log_1.Log.Debug("AI", 42, "[GroupAi.Patrol] 中止群组巡逻，通知服务器", ["管理器PbDataId", this._Dt]);
     }
   }
   DKl(t) {
     var o;
     var e;
-    if (this.xKl && t !== this.wKl && (this.wKl = t, o = ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(this._Dt), (e = Protocol_1.Aki.Protocol.Jes.create()).F4n = MathUtils_1.MathUtils.NumberToLong(o), e.V4n = t, Net_1.Net.Call(23106, e, () => {}), Log_1.Log.CheckDebug())) {
+    if (this.xKl && t !== this.wKl && (this.wKl = t, o = ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(this._Dt), (e = Protocol_1.Aki.Protocol.Jes.create()).F4n = MathUtils_1.MathUtils.NumberToLong(o), e.V4n = t, Net_1.Net.Call(16567, e, () => {}), Log_1.Log.CheckDebug())) {
       Log_1.Log.Debug("AI", 42, "[GroupAi.Patrol] 切换群组巡逻方向，通知服务器", ["管理器PbDataId", this._Dt], ["巡逻方向", t ? "正" : "逆"]);
     }
   }
@@ -546,10 +546,10 @@ class MonsterGroupInfo {
           if (Log_1.Log.CheckDebug()) {
             Log_1.Log.Debug("AI", 42, "[GroupAi.Patrol] 设置群组AI管理器位置到队长位置", ["EntityId", this._Dt], ["ActorLocation", r.ActorComp.ActorLocation]);
           }
-        } else if (r.MoveComp?.MoveController && r.IsMonster() && ((t = (o = r.ActorComp.Entity.GetComponent(71)).GetCurrentMoveSample()).P5n = r.ActorComp.ActorLocationProxy, o.PendingMoveInfos.push(t), (e = Protocol_1.Aki.Protocol.Yus.create()).uhh = ModelManager_1.ModelManager.GameModeModel.IsMulti ? ModelManager_1.ModelManager.OnlineModel.OwnerId : ModelManager_1.ModelManager.CreatureModel.GetPlayerId(), e.WRs.push(o.CollectPendingMoveInfos()), Net_1.Net.Send(18891, e), Info_1.Info.IsBuildDevelopmentOrDebug && (o = {
+        } else if (r.MoveComp?.MoveController && r.IsMonster() && ((t = (o = r.ActorComp.Entity.GetComponent(73)).GetCurrentMoveSample()).P5n = r.ActorComp.ActorLocationProxy, o.PendingMoveInfos.push(t), (e = Protocol_1.Aki.Protocol.Yus.create()).uhh = ModelManager_1.ModelManager.GameModeModel.IsMulti ? ModelManager_1.ModelManager.OnlineModel.OwnerId : ModelManager_1.ModelManager.CreatureModel.GetPlayerId(), e.WRs.push(o.CollectPendingMoveInfos()), Net_1.Net.Send(16626, e), Info_1.Info.IsBuildDevelopmentOrDebug && (o = {
           scene_id: ModelManager_1.ModelManager.CreatureModel.GetSceneId(),
           instance_id: ModelManager_1.ModelManager.CreatureModel.GetInstanceId(),
-          msg_id: 18891,
+          msg_id: 16626,
           immediately: true,
           sub_count: e.WRs.length,
           is_multi: ModelManager_1.ModelManager.GameModeModel.IsMulti,

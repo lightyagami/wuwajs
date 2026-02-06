@@ -45,7 +45,7 @@ let BasePerformComponent = class BasePerformComponent extends EntityComponent_1.
     return this.IsInPlotInternal;
   }
   OnStart() {
-    this.AnimComp = this.Entity.GetComponent(45);
+    this.AnimComp = this.Entity.GetComponent(47);
     this.gj_ = new PerformMachine_1.PerformMachine(this);
     this.gj_.Init();
     return true;
@@ -169,5 +169,5 @@ let BasePerformComponent = class BasePerformComponent extends EntityComponent_1.
     this.gj_?.CleanAction();
   }
 };
-BasePerformComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(47)], BasePerformComponent);
+BasePerformComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(49)], BasePerformComponent);
 exports.BasePerformComponent = BasePerformComponent; //# sourceMappingURL=BasePerformComponent.js.map

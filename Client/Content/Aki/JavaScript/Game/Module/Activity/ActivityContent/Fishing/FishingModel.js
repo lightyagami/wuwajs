@@ -257,7 +257,7 @@ class FishingModel extends ModelBase_1.ModelBase {
   Qn_(e, t) {
     e = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e);
     if (e?.Valid) {
-      e.Entity.GetComponent(300)?.RefreshFishingPoint(t);
+      e.Entity.GetComponent(302)?.RefreshFishingPoint(t);
     }
   }
   GetFishingPointDataById(e) {

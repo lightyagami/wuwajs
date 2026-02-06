@@ -16,21 +16,21 @@ class SpecialEnergyBarQianXiao extends SpecialEnergyBarBase_1.SpecialEnergyBarBa
     super(...arguments);
     this.Rdt = undefined;
     this._ii = 0;
-    this.pOm = false;
+    this.DGm = false;
     this.Nml = false;
-    this.pqm = 0.5;
-    this.vqm = -1373839165;
-    this.yqm = -1284882786;
-    this.Sqm = 1812379303;
-    this.ppf = new UE.Color(255, 133, 246, 255);
-    this.Mqm = (t, i) => {
+    this.xOm = 0.5;
+    this.BOm = -1373839165;
+    this.kOm = -1284882786;
+    this.qOm = 1812379303;
+    this.tSf = new UE.Color(255, 133, 246, 255);
+    this.OOm = (t, i) => {
       this.Owt(i ? 1 : 0, false);
     };
-    this.Eqm = (t, i) => {
+    this.GOm = (t, i) => {
       this.Owt(i ? 2 : 0, false);
     };
-    this.Iqm = (t, i) => {
-      this.Tqm(i);
+    this.FOm = (t, i) => {
+      this.NOm(i);
     };
   }
   OnRegisterComponent() {
@@ -41,14 +41,14 @@ class SpecialEnergyBarQianXiao extends SpecialEnergyBarBase_1.SpecialEnergyBarBa
     this.MaxAttributeId = 63;
     var t = this.Config?.ExtraFloatParams[0];
     if (t) {
-      this.pqm = t;
+      this.xOm = t;
     }
   }
   AddEvents() {
     super.AddEvents();
-    this.ListenForTagAddOrRemoveChanged(this.vqm, this.Mqm);
-    this.ListenForTagAddOrRemoveChanged(this.yqm, this.Eqm);
-    this.ListenForTagAddOrRemoveChanged(this.Sqm, this.Iqm);
+    this.ListenForTagAddOrRemoveChanged(this.BOm, this.OOm);
+    this.ListenForTagAddOrRemoveChanged(this.kOm, this.GOm);
+    this.ListenForTagAddOrRemoveChanged(this.qOm, this.FOm);
   }
   async OnBeforeStartAsync() {
     var t = [];
@@ -103,15 +103,15 @@ class SpecialEnergyBarQianXiao extends SpecialEnergyBarBase_1.SpecialEnergyBarBa
     this.Rdt?.StopCoolDownState();
   }
   _Oe(t = false) {
-    if (this.TagComponent?.HasTag(this.yqm)) {
+    if (this.TagComponent?.HasTag(this.kOm)) {
       this.Owt(2, t);
-    } else if (this.TagComponent?.HasTag(this.vqm)) {
+    } else if (this.TagComponent?.HasTag(this.BOm)) {
       this.Owt(1, t);
     } else {
       this.Owt(0, t);
     }
-    if (t && this.TagComponent?.HasTag(this.Sqm)) {
-      this.Tqm(true);
+    if (t && this.TagComponent?.HasTag(this.qOm)) {
+      this.NOm(true);
     }
   }
   Owt(t, i = false) {
@@ -125,7 +125,7 @@ class SpecialEnergyBarQianXiao extends SpecialEnergyBarBase_1.SpecialEnergyBarBa
         this.StopTweenAnim(20);
         this.PlayTweenAnim(18);
         this.Rdt?.SetState(2);
-        this.Tqm(false);
+        this.NOm(false);
       }
       switch (this._ii) {
         case 0:
@@ -151,14 +151,14 @@ class SpecialEnergyBarQianXiao extends SpecialEnergyBarBase_1.SpecialEnergyBarBa
       this.OnBarPercentChanged();
     }
   }
-  Tqm(t) {
-    if (this.pOm !== t) {
+  NOm(t) {
+    if (this.DGm !== t) {
       if (t && !this.Rdt?.IsInSlotState(2)) {
-        this.pOm = true;
+        this.DGm = true;
         this.Rdt?.SetFullEffectEnable(true);
         this.PlayTweenAnim(13);
       } else if (!t && this._ii !== 2) {
-        this.pOm = false;
+        this.DGm = false;
         this.Rdt?.SetFullEffectEnable(false);
         this.PlayTweenAnim(14);
       }
@@ -167,7 +167,7 @@ class SpecialEnergyBarQianXiao extends SpecialEnergyBarBase_1.SpecialEnergyBarBa
   Tick(t) {
     super.Tick(t);
     this.Rdt?.Tick(t);
-    if (this._ii === 1 && this.PercentMachine.GetCurPercent() < this.pqm) {
+    if (this._ii === 1 && this.PercentMachine.GetCurPercent() < this.xOm) {
       this.bMc(true);
     } else {
       this.bMc(false);
@@ -179,7 +179,7 @@ class SpecialEnergyBarQianXiao extends SpecialEnergyBarBase_1.SpecialEnergyBarBa
         this.PlayTweenAnim(19);
       } else {
         this.StopTweenAnim(19);
-        this.GetTexture(6)?.SetColor(this.ppf);
+        this.GetTexture(6)?.SetColor(this.tSf);
         this.GetTexture(24)?.SetAlpha(1);
       }
     }

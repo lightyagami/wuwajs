@@ -17,11 +17,11 @@ class CommonHeadState extends HeadStateViewBase_1.HeadStateViewBase {
     super(...arguments);
     this.mkn = new BuffItemContainer_1.BuffItemContainer();
     this.pnt = 0;
-    this.uUf = undefined;
+    this.FOf = undefined;
     this.Qti = undefined;
-    this.mLm = () => {
-      this.fLm();
-      this.gLm();
+    this.OLm = () => {
+      this.GLm();
+      this.FLm();
     };
     this.OnAddOrRemoveBuff = (t, e, i, s) => {
       if (this.HeadStateData.GetEntityId() === t) {
@@ -51,8 +51,8 @@ class CommonHeadState extends HeadStateViewBase_1.HeadStateViewBase {
   }
   async OnBeforeStartAsync() {
     this.Qti = new HeadStateWeaknessItem_1.HeadStateWeaknessItem();
-    this.uUf = this.GetItem(8);
-    await this.Qti.InitializeAsync(this.uUf, 0.5);
+    this.FOf = this.GetItem(8);
+    await this.Qti.InitializeAsync(this.FOf, 0.5);
   }
   ActiveBattleHeadState(t) {
     super.ActiveBattleHeadState(t);
@@ -63,7 +63,7 @@ class CommonHeadState extends HeadStateViewBase_1.HeadStateViewBase {
     this.Vlt();
     this.tst();
     this.Hlt();
-    this.CLm(true);
+    this.NLm(true);
   }
   OnStart() {
     this.Qnt();
@@ -94,21 +94,21 @@ class CommonHeadState extends HeadStateViewBase_1.HeadStateViewBase {
     this.Qti?.Refresh(undefined);
     super.ResetBattleHeadState();
   }
-  CLm(t = false) {
+  NLm(t = false) {
     this.GetUiNiagara(11).SetUIActive(false);
     if (this.Qti) {
       this.Qti.Refresh(this.HeadStateData?.GetEntity());
-      this.fLm();
-      this.gLm(t);
-      this.Qti.SetStateChangeCallback(this.mLm);
+      this.GLm();
+      this.FLm(t);
+      this.Qti.SetStateChangeCallback(this.OLm);
     }
   }
-  fLm() {
+  GLm() {
     if (this.Qti && this.Qti.IsFullState()) {
       this.GetSprite(10).SetFillAmount(this.CurrentBarPercent);
     }
   }
-  gLm(t = false) {
+  FLm(t = false) {
     if (this.Qti.IsInBreakAnim()) {
       this.GetItem(9).SetUIActive(true);
       if (!t) {
@@ -156,7 +156,7 @@ class CommonHeadState extends HeadStateViewBase_1.HeadStateViewBase {
     var t = this.IsDetailVisible();
     this.GetItem(4).SetUIActive(t);
     this.ExtraItem?.SetUiActive(t);
-    this.uUf.SetUIActive(t);
+    this.FOf.SetUIActive(t);
   }
   Flt() {
     var t = this.IsLevelTextVisible();
@@ -180,7 +180,7 @@ class CommonHeadState extends HeadStateViewBase_1.HeadStateViewBase {
     } else {
       this.StopBarLerpAnimation();
     }
-    this.fLm();
+    this.GLm();
   }
   OnBeginBarAnimation(t) {
     this.ast(t);

@@ -23,42 +23,42 @@ const CLOSE_LOCKED_ANIM_TIME = 167;
 class CommonBossStateDoubleView extends BossStateViewBase_1.BossStateViewBase {
   constructor() {
     super(...arguments);
-    this.Evf = undefined;
-    this.Ivf = undefined;
-    this.dLf = undefined;
-    this.mLf = undefined;
-    this.Rqf = undefined;
-    this.Lqf = undefined;
-    this.wqf = undefined;
-    this.Pqf = undefined;
-    this.Aqf = undefined;
-    this.Tvf = true;
-    this.bvf = true;
-    this.wvf = false;
+    this.xMf = undefined;
+    this.BMf = undefined;
+    this.IBf = undefined;
+    this.TBf = undefined;
+    this.xVf = undefined;
+    this.BVf = undefined;
+    this.kVf = undefined;
+    this.qVf = undefined;
+    this.OVf = undefined;
+    this.kMf = true;
+    this.qMf = true;
+    this.OMf = false;
     this.Ecu = (e, t, i) => {
       var s;
       var h = this.GetEntity()?.GetComponent(0);
       if (h && t) {
         if (t.Id === h.GetSummonerId() || !!h.CustomServerEntityIds.indexOf(t.Id)) {
-          [h, t] = this.Rvf();
+          [h, t] = this.GMf();
           if (h && t) {
             EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.AddEntity, this.Ecu);
           }
-          if ((s = this.Tvf && this.bvf || !this.Tvf && !this.bvf) && t) {
-            this.Ivf?.Activate(t);
+          if ((s = this.kMf && this.qMf || !this.kMf && !this.qMf) && t) {
+            this.BMf?.Activate(t);
             this.Dst();
           } else if (!s && h) {
-            this.Evf?.Activate(h);
+            this.xMf?.Activate(h);
             this.Dst();
           }
         }
       }
     };
     this.OnCharSetShowTarget = (e, t, i) => {
-      var s = e === this.Evf?.GetEntityId();
-      var e = e === this.Ivf?.GetEntityId() && !s;
-      this.Pqf?.SetVisible(s, s ? SHOW_LOCKED_ANIM_TIME : CLOSE_LOCKED_ANIM_TIME);
-      this.Aqf?.SetVisible(e, e ? SHOW_LOCKED_ANIM_TIME : CLOSE_LOCKED_ANIM_TIME);
+      var s = e === this.xMf?.GetEntityId();
+      var e = e === this.BMf?.GetEntityId() && !s;
+      this.qVf?.SetVisible(s, s ? SHOW_LOCKED_ANIM_TIME : CLOSE_LOCKED_ANIM_TIME);
+      this.OVf?.SetVisible(e, e ? SHOW_LOCKED_ANIM_TIME : CLOSE_LOCKED_ANIM_TIME);
     };
   }
   OnRegisterComponent() {
@@ -68,57 +68,57 @@ class CommonBossStateDoubleView extends BossStateViewBase_1.BossStateViewBase {
     let t = this.GetItem(0);
     var i = t.GetOwner();
     if (i) {
-      this.Evf = new CommonBossStateView_1.CommonBossStateView();
-      this.Evf.SkipDestroyActor = true;
-      await this.Evf.NewByRootActorAsync(i);
-      this.Evf?.Initialize(i);
+      this.xMf = new CommonBossStateView_1.CommonBossStateView();
+      this.xMf.SkipDestroyActor = true;
+      await this.xMf.NewByRootActorAsync(i);
+      this.xMf?.Initialize(i);
     }
     if (i = (t = this.GetItem(1)).GetOwner()) {
-      this.Ivf = new CommonBossStateView_1.CommonBossStateView();
-      this.Ivf.SkipDestroyActor = true;
-      await this.Ivf.NewByRootActorAsync(i);
-      this.Ivf?.Initialize(i);
+      this.BMf = new CommonBossStateView_1.CommonBossStateView();
+      this.BMf.SkipDestroyActor = true;
+      await this.BMf.NewByRootActorAsync(i);
+      this.BMf?.Initialize(i);
     }
-    this.Rqf = new BattleUiTweenAnimPlayer_1.BattleUiTweenAnimPlayer();
-    this.Rqf.InitTweenAnim(4, this.GetItem(4), true);
-    this.Rqf.InitTweenAnim(5, this.GetItem(5), true);
-    this.dLf = this.GetItem(2);
-    this.mLf = this.GetItem(3);
-    this.dLf.SetVisibility(false);
-    this.mLf.SetVisibility(false);
-    this.Lqf = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
-    this.wqf = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
-    this.Pqf = new VisibleAnimMachine_1.VisibleAnimMachine();
-    this.Pqf.InitCallback(e => {
-      this.Rqf.Active(4, e);
-      this.dLf?.SetUIActive(e);
+    this.xVf = new BattleUiTweenAnimPlayer_1.BattleUiTweenAnimPlayer();
+    this.xVf.InitTweenAnim(4, this.GetItem(4), true);
+    this.xVf.InitTweenAnim(5, this.GetItem(5), true);
+    this.IBf = this.GetItem(2);
+    this.TBf = this.GetItem(3);
+    this.IBf.SetVisibility(false);
+    this.TBf.SetVisibility(false);
+    this.BVf = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
+    this.kVf = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
+    this.qVf = new VisibleAnimMachine_1.VisibleAnimMachine();
+    this.qVf.InitCallback(e => {
+      this.xVf.Active(4, e);
+      this.IBf?.SetUIActive(e);
     }, e => {
-      this.Lqf.PlaySequencePurely(e ? "SleL" : "UnSleL");
+      this.BVf.PlaySequencePurely(e ? "SleL" : "UnSleL");
     }, e => {});
-    this.Aqf = new VisibleAnimMachine_1.VisibleAnimMachine();
-    this.Aqf.InitCallback(e => {
-      this.Rqf.Active(5, e);
-      this.mLf?.SetUIActive(e);
+    this.OVf = new VisibleAnimMachine_1.VisibleAnimMachine();
+    this.OVf.InitCallback(e => {
+      this.xVf.Active(5, e);
+      this.TBf?.SetUIActive(e);
     }, e => {
-      this.wqf.PlaySequencePurely(e ? "SleR" : "UnSleR");
+      this.kVf.PlaySequencePurely(e ? "SleR" : "UnSleR");
     }, e => {});
-    this.Pqf.InitVisible(false);
-    this.Aqf.InitVisible(false);
-    this.dLf?.SetUIActive(false);
-    this.mLf?.SetUIActive(false);
+    this.qVf.InitVisible(false);
+    this.OVf.InitVisible(false);
+    this.IBf?.SetUIActive(false);
+    this.TBf?.SetUIActive(false);
   }
-  Rvf() {
+  GMf() {
     let e = undefined;
     let t = undefined;
     var i = this.GetEntity();
     var s = i?.GetComponent(0);
     var h = s?.GetSummonerId() ?? 0;
     if (h > 0) {
-      this.Tvf = false;
+      this.kMf = false;
       e = ModelManager_1.ModelManager.CreatureModel.GetEntity(h)?.Entity;
       t = i;
     } else {
-      this.Tvf = true;
+      this.kMf = true;
       e = i;
       h = s?.CustomServerEntityIds;
       if (h && h.length > 0) {
@@ -132,51 +132,51 @@ class CommonBossStateDoubleView extends BossStateViewBase_1.BossStateViewBase {
       }
     }
     if (!e || !t) {
-      if (!this.wvf && !EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.AddEntity, this.Ecu)) {
+      if (!this.OMf && !EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.AddEntity, this.Ecu)) {
         EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.AddEntity, this.Ecu);
       }
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Battle", 96, "Boss双血条 不足两怪物", ["id", i?.Id]);
       }
     }
-    if (this.Tvf && this.bvf || !this.Tvf && !this.bvf) {
+    if (this.kMf && this.qMf || !this.kMf && !this.qMf) {
       return [e, t];
     } else {
       return [t, e];
     }
   }
   UpdateStyle(e) {
-    this.bvf = !e || e.Slot === 0;
+    this.qMf = !e || e.Slot === 0;
   }
   OnActivate() {
     super.OnActivate();
     if (!EventSystem_1.EventSystem.HasWithTarget(SceneTeamEvent_1.SceneTeam.Local, EventDefine_1.EEventName.CharSetShowTarget, this.OnCharSetShowTarget)) {
       EventSystem_1.EventSystem.AddWithTarget(SceneTeamEvent_1.SceneTeam.Local, EventDefine_1.EEventName.CharSetShowTarget, this.OnCharSetShowTarget);
     }
-    var [e, t] = this.Rvf();
+    var [e, t] = this.GMf();
     if (e) {
-      this.Evf?.Activate(e);
+      this.xMf?.Activate(e);
     }
     if (t) {
-      this.Ivf?.Activate(t);
+      this.BMf?.Activate(t);
     }
     this.Dst();
   }
   OnDeactivate() {
-    this.wvf = true;
+    this.OMf = true;
     super.OnDeactivate();
     if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.AddEntity, this.Ecu)) {
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.AddEntity, this.Ecu);
     }
-    var [e, t] = this.Rvf();
+    var [e, t] = this.GMf();
     if (e) {
-      this.Evf?.Deactivate(e);
+      this.xMf?.Deactivate(e);
     }
     if (t) {
-      this.Ivf?.Deactivate(t);
+      this.BMf?.Deactivate(t);
     }
     this.Destroy();
-    this.wvf = false;
+    this.OMf = false;
   }
   Reset() {}
   OnBeforeDestroy() {
@@ -184,16 +184,16 @@ class CommonBossStateDoubleView extends BossStateViewBase_1.BossStateViewBase {
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.AddEntity, this.Ecu);
     }
     EventSystem_1.EventSystem.RemoveWithTarget(SceneTeamEvent_1.SceneTeam.Local, EventDefine_1.EEventName.CharSetShowTarget, this.OnCharSetShowTarget);
-    this.Rqf?.Clear(true);
-    this.Rqf = undefined;
-    this.Lqf.Clear();
-    this.Lqf = undefined;
-    this.wqf.Clear();
-    this.wqf = undefined;
-    this.Pqf.Reset();
-    this.Pqf = undefined;
-    this.Aqf.Reset();
-    this.Aqf = undefined;
+    this.xVf?.Clear(true);
+    this.xVf = undefined;
+    this.BVf.Clear();
+    this.BVf = undefined;
+    this.kVf.Clear();
+    this.kVf = undefined;
+    this.qVf.Reset();
+    this.qVf = undefined;
+    this.OVf.Reset();
+    this.OVf = undefined;
   }
   DestroyOverride() {
     return false;
@@ -219,29 +219,29 @@ class CommonBossStateDoubleView extends BossStateViewBase_1.BossStateViewBase {
         return "";
       }
     };
-    let s = t(this.Evf);
-    let h = t(this.Ivf);
+    let s = t(this.xMf);
+    let h = t(this.BMf);
     if (!s && !h) {
-      s = i(this.Evf);
-      h = i(this.Ivf);
+      s = i(this.xMf);
+      h = i(this.BMf);
     }
-    this.Ivf?.SetNameAndLevel(s, h, e);
+    this.BMf?.SetNameAndLevel(s, h, e);
   }
   Tick(e) {
-    this.Evf?.Tick(e);
-    this.Ivf?.Tick(e);
+    this.xMf?.Tick(e);
+    this.BMf?.Tick(e);
     super.Tick(e);
   }
   ChangeBuff(e, t, i, s = 0) {
-    if (s === this.Evf?.GetEntityId()) {
-      this.Evf.ChangeBuff(e, t, i);
-    } else if (s === this.Ivf?.GetEntityId()) {
-      this.Ivf.ChangeBuff(e, t, i);
+    if (s === this.xMf?.GetEntityId()) {
+      this.xMf.ChangeBuff(e, t, i);
+    } else if (s === this.BMf?.GetEntityId()) {
+      this.BMf.ChangeBuff(e, t, i);
     }
   }
   HideBossName(e) {
-    this.Evf?.HideBossName(e);
-    this.Ivf?.HideBossName(e);
+    this.xMf?.HideBossName(e);
+    this.BMf?.HideBossName(e);
   }
   GetResourceId() {
     return "UiItem_BossStateDouble_Prefab";

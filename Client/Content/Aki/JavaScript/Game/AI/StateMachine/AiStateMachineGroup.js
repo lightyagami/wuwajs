@@ -199,7 +199,7 @@ class AiStateMachineGroup {
     }
     if (i && (t = AiStateMachineConfigById_1.configAiStateMachineConfigById.GetConfig(i))?.StateMachineJson) {
       e = JSON.parse(t.StateMachineJson);
-      (t = this.Entity.GetComponent(79)).StateMachineName = i;
+      (t = this.Entity.GetComponent(81)).StateMachineName = i;
       t.StateMachineJsonObject = e;
     }
     return true;
@@ -439,7 +439,7 @@ class AiStateMachineGroup {
   }
   RequestServerDebugInfo() {
     if (!(Time_1.Time.NowSeconds < this.tne + 1)) {
-      Net_1.Net.Call(19535, Protocol_1.Aki.Protocol.tes.create({
+      Net_1.Net.Call(29844, Protocol_1.Aki.Protocol.tes.create({
         F4n: this.ActorComp.CreatureData.GetCreatureDataId()
       }), t => {
         this.HandleEntityFsmGroupInfo(t);
@@ -511,7 +511,7 @@ ${this.ErrorMessage.ToString()}
         if (this.ActorComp.IsAutonomousProxy) {
           (s = Protocol_1.Aki.Protocol.xe_.create()).$4n = t;
           s.Y4n = i;
-          CombatMessage_1.CombatNet.Send(29644, this.Entity, s);
+          CombatMessage_1.CombatNet.Send(25497, this.Entity, s);
         }
       }
     } else {
@@ -540,7 +540,7 @@ ${this.ErrorMessage.ToString()}
         if (this.ActorComp.IsAutonomousProxy) {
           (s = Protocol_1.Aki.Protocol.xe_.create()).$4n = t;
           s.Y4n = e;
-          CombatMessage_1.CombatNet.Send(29644, this.Entity, s);
+          CombatMessage_1.CombatNet.Send(25497, this.Entity, s);
         }
       }
     } else {

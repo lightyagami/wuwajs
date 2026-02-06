@@ -34,21 +34,21 @@ class CameraRotationZone {
     this.r1h = 0;
     this.$hl = 0;
     this.Xhl = 0;
-    this.OAf = 0;
-    this.GAf = 0;
-    this.FAf = 0;
-    this.NAf = 0;
+    this.gqf = 0;
+    this.Cqf = 0;
+    this.pqf = 0;
+    this.vqf = 0;
     this.Yhl = 0;
     this.zhl = 0;
-    this.VAf = 0;
-    this.HAf = 0;
-    this.jAf = 0;
-    this.$Af = 0;
+    this.yqf = 0;
+    this.Sqf = 0;
+    this.Mqf = 0;
+    this.Eqf = 0;
     this.glm = Vector_1.Vector.Create();
     this.Lz = Vector_1.Vector.Create();
     this.az = Quat_1.Quat.Create();
     this.Gue = Rotator_1.Rotator.Create();
-    this.KKf = Rotator_1.Rotator.Create();
+    this.H1g = Rotator_1.Rotator.Create();
     this.c1e = new Set();
     this.m6c = false;
   }
@@ -57,7 +57,7 @@ class CameraRotationZone {
   }
   SetCharacter(t) {
     this.e1h = t;
-    if (this.e1h?.Valid && (this.t1h = this.e1h.Entity.GetComponent(65), this.i1h = this.e1h.Entity.GetComponent(3), this.Whl = this.e1h.Entity.GetComponent(62), this.Qhl = this.e1h.Entity.GetComponent(186), Log_1.Log.CheckDebug())) {
+    if (this.e1h?.Valid && (this.t1h = this.e1h.Entity.GetComponent(67), this.i1h = this.e1h.Entity.GetComponent(3), this.Whl = this.e1h.Entity.GetComponent(64), this.Qhl = this.e1h.Entity.GetComponent(188), Log_1.Log.CheckDebug())) {
       Log_1.Log.Debug("Camera", 57, "CameraRotationZone init Character");
     }
   }
@@ -103,8 +103,8 @@ class CameraRotationZone {
     }
   }
   UpdatePitchZone(i) {
-    if (this.o1h() && this.Hh.CameraZoneMode !== 0) {
-      this.WAf();
+    if (this.o1h() && this.uug()) {
+      this.Iqf();
       let t = this.Hh.PlayerRotatorInGravity.Pitch;
       if (this.Hh.CameraZoneMode === 1) {
         s = this.i1h.ActorVelocityProxy;
@@ -125,17 +125,17 @@ class CameraRotationZone {
       CameraUtility_1.CameraUtility.SetPitchInGravity(this.Hh.DesiredCamera.ArmRotation, s, this.Hh.DesiredCamera.ArmRotation);
     }
   }
-  WAf() {
-    this.VAf = this.Hh.PitchSoftZoneMin;
-    this.HAf = this.Hh.PitchSoftZoneMax;
-    this.jAf = this.Hh.PitchDeadZoneMin;
-    this.$Af = this.Hh.PitchDeadZoneMax;
+  Iqf() {
+    this.yqf = this.Hh.PitchSoftZoneMin;
+    this.Sqf = this.Hh.PitchSoftZoneMax;
+    this.Mqf = this.Hh.PitchDeadZoneMin;
+    this.Eqf = this.Hh.PitchDeadZoneMax;
     if (this.Hh.CameraZoneMode === 3) {
-      this.VAf += Math.max(0, this.Hh.PlayerRotatorInGravity.Pitch);
+      this.yqf += Math.max(0, this.Hh.PlayerRotatorInGravity.Pitch);
     }
   }
   Jhl(t, i) {
-    if (t >= this.VAf && t <= this.HAf) {
+    if (t >= this.yqf && t <= this.Sqf) {
       this.Khl = 2;
     }
     if (this.e1l()) {
@@ -154,39 +154,39 @@ class CameraRotationZone {
     }
   }
   Zhl(t, i, s, h) {
-    if (this.Khl === 0 && this.QAf()) {
+    if (this.Khl === 0 && this.Tqf()) {
       return i;
     }
-    var a = MathUtils_1.MathUtils.Lerp(this.Hh.PitchZoneSpeedMin, this.Hh.PitchZoneSpeedMax, MathUtils_1.MathUtils.Clamp(Math.abs(s) / this.HAf, 0, 1));
+    var a = MathUtils_1.MathUtils.Lerp(this.Hh.PitchZoneSpeedMin, this.Hh.PitchZoneSpeedMax, MathUtils_1.MathUtils.Clamp(Math.abs(s) / this.Sqf, 0, 1));
     var h = h * a;
     let e = i;
-    if (this.Khl !== 0 && this.Khl !== 1 && (e = this.pQl(i, t, h, s), (i = MathUtils_1.MathUtils.WrapAngle(t - e)) >= this.VAf) && i <= this.HAf) {
+    if (this.Khl !== 0 && this.Khl !== 1 && (e = this.pQl(i, t, h, s), (i = MathUtils_1.MathUtils.WrapAngle(t - e)) >= this.yqf) && i <= this.Sqf) {
       this.Khl = 2;
     }
     if (this.m6c && Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Camera", 57, "[PitchZone stage2]", ["State", this.Khl], ["actorPitch", t.toFixed(2)], ["targetPitch", e.toFixed(2)], ["speed", a.toFixed(2)], ["deltaPitch", s.toFixed(2)], ["targetDeltaPitch", h.toFixed(2)]);
     }
-    return e = this.Hh.CameraZoneMode === 1 || this.Hh.CameraZoneMode === 2 ? this.vQl(this.Khl === 2, t, e, this.VAf, this.HAf, this.jAf, this.$Af) : this.XKf(this.Khl === 2, t, e, this.VAf, this.HAf, this.jAf, this.$Af);
+    return e = this.Hh.CameraZoneMode === 1 || this.Hh.CameraZoneMode === 2 ? this.vQl(this.Khl === 2, t, e, this.yqf, this.Sqf, this.Mqf, this.Eqf) : this.j1g(this.Khl === 2, t, e, this.yqf, this.Sqf, this.Mqf, this.Eqf);
   }
   UpdateYawZone(t) {
-    if (this.o1h() && this.Hh.CameraZoneMode !== 0) {
-      this.KAf();
+    if (this.o1h() && this.cug()) {
+      this.bqf();
       this.n1h();
       t = this.s1h(t);
       CameraUtility_1.CameraUtility.SetYawInGravity(this.Hh.DesiredCamera.ArmRotation, t, this.Hh.DesiredCamera.ArmRotation);
     }
   }
-  KAf() {
-    this.OAf = this.Hh.YawSoftZoneMin;
-    this.GAf = this.Hh.YawSoftZoneMax;
-    this.FAf = this.Hh.YawDeadZoneMin;
-    this.NAf = this.Hh.YawDeadZoneMax;
+  bqf() {
+    this.gqf = this.Hh.YawSoftZoneMin;
+    this.Cqf = this.Hh.YawSoftZoneMax;
+    this.pqf = this.Hh.YawDeadZoneMin;
+    this.vqf = this.Hh.YawDeadZoneMax;
   }
   n1h() {
     var t = this.Hh.PlayerRotatorInGravity.Yaw;
     var i = CameraUtility_1.CameraUtility.GetYawInGravity(this.Hh.DesiredCamera.ArmRotation);
     var t = MathUtils_1.MathUtils.WrapAngle(t - i);
-    if (t >= this.OAf && t <= this.GAf) {
+    if (t >= this.gqf && t <= this.Cqf) {
       this.r1h = 2;
     }
     if (this.o1l()) {
@@ -209,7 +209,7 @@ class CameraRotationZone {
     }
   }
   s1h(t) {
-    if (this.r1h === 0 && this.XAf()) {
+    if (this.r1h === 0 && this.Rqf()) {
       return CameraUtility_1.CameraUtility.GetYawInGravity(this.Hh.DesiredCamera.ArmRotation);
     }
     var i;
@@ -223,21 +223,21 @@ class CameraRotationZone {
       r = this.u1h(a, t);
     } else if (this.r1h === 3) {
       r = this.c1h(a, t, e, r);
-      i = this.m1h() ? this.OAf : this.GAf;
+      i = this.m1h() ? this.gqf : this.Cqf;
       s = MathUtils_1.MathUtils.WrapAngle(h - r);
       if (e < 0 && i < s || e > 0 && s < i) {
         this.r1h = 2;
       }
     } else if (this.r1h === 4 || this.r1h === 5) {
       r = this.d1h(a, h, t, e);
-      if ((s = MathUtils_1.MathUtils.WrapAngle(h - r)) >= this.OAf && s <= this.GAf) {
+      if ((s = MathUtils_1.MathUtils.WrapAngle(h - r)) >= this.gqf && s <= this.Cqf) {
         this.r1h = 2;
       }
     }
     if (this.m6c && Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Camera", 57, "[YawZone stage2]", ["State", this.r1h], ["actorYaw", h.toFixed(2)], ["targetYaw", r.toFixed(2)], ["deltaYaw", e.toFixed(2)]);
     }
-    r = this.vQl(this.r1h === 2 || this.r1h === 5, h, r, this.OAf, this.GAf, this.FAf, this.NAf);
+    r = this.vQl(this.r1h === 2 || this.r1h === 5, h, r, this.gqf, this.Cqf, this.pqf, this.vqf);
     if (this.m6c && Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Camera", 57, "[YawZone stage3]", ["State", this.r1h], ["targetYaw", r.toFixed(2)]);
     }
@@ -311,25 +311,25 @@ class CameraRotationZone {
       return s;
     }
   }
-  XKf(t, i, s, h, a, e, r) {
+  j1g(t, i, s, h, a, e, r) {
     var o = this.Gue;
     var _ = this.Lz;
     CameraUtility_1.CameraUtility.GetRotatorInGravity(this.Hh.DesiredCamera.ArmRotation, this.Gue);
     o.Pitch = s;
     o.Vector(_);
-    var s = this.KKf;
+    var s = this.H1g;
     s.DeepCopy(this.Hh.PlayerRotatorInGravity);
     s.Roll = 0;
     s.Quaternion(this.az);
     this.az.UnRotateVector(_, _);
     _.Rotation(o);
-    o.Pitch = this.YKf(t, i, o.Pitch, h, a, e, r);
+    o.Pitch = this.$1g(t, i, o.Pitch, h, a, e, r);
     o.Vector(_);
     this.az.RotateVector(_, _);
     _.Rotation(o);
     return o.Pitch;
   }
-  YKf(t, i, s, h, a, e, r) {
+  $1g(t, i, s, h, a, e, r) {
     h = t ? h : e;
     e = t ? a : r;
     if (s < -e) {
@@ -339,6 +339,12 @@ class CameraRotationZone {
     } else {
       return s;
     }
+  }
+  uug() {
+    return this.Hh.CameraZoneMode !== 0 && this.Hh.CameraZoneMode !== 4;
+  }
+  cug() {
+    return this.Hh.CameraZoneMode !== 0 && this.Hh.CameraZoneMode !== 4;
   }
   o1l() {
     return !(this.c1e.size > 0) && (this.Hh.CameraZoneMode === 1 ? this.Hh.CharacterMoveEnterState === CharacterUnifiedStateTypes_1.ECharMoveState.Soar || this.Qhl.HasKuroRootMotion || this.t1h.IsInCameraDrivenAutoFlightMode() || this.$hl > 0 && this.Xhl > 0 && !this.IsYawRollback() : this.Hh.CameraZoneMode === 2 ? this.$hl > 0 && this.Xhl > 0 && !this.IsYawRollback() : this.Hh.CameraZoneMode === 3 && (this.Fgm.HasAnyTag(vehicleStandbyZone) || this.Ggm.ActorVelocityProxy.Size() <= 5 || this.$hl > 0 && this.Xhl > 0 && !this.IsYawRollback()));
@@ -398,12 +404,12 @@ class CameraRotationZone {
     var t = this.Hh.PlayerRotatorInGravity.Yaw;
     var i = CameraUtility_1.CameraUtility.GetYawInGravity(this.Hh.DesiredCamera.ArmRotation);
     var t = MathUtils_1.MathUtils.WrapAngle(t - i);
-    return MathUtils_1.MathUtils.Lerp(this.Hh.YawZoneSpeedMin, this.Hh.YawZoneSpeedMax, MathUtils_1.MathUtils.Clamp(Math.abs(t) / this.NAf, 0, 1));
+    return MathUtils_1.MathUtils.Lerp(this.Hh.YawZoneSpeedMin, this.Hh.YawZoneSpeedMax, MathUtils_1.MathUtils.Clamp(Math.abs(t) / this.vqf, 0, 1));
   }
-  QAf() {
+  Tqf() {
     return this.Hh.CameraZoneMode !== 3;
   }
-  XAf() {
+  Rqf() {
     return this.Hh.CameraZoneMode !== 3;
   }
   o1h() {

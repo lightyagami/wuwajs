@@ -17,13 +17,13 @@ class MotorcycleTechTreeComNodeItem extends UiPanelBase_1.UiPanelBase {
     this.GLl = undefined;
     this.OnClickToggleBack = undefined;
     this.j1a = () => new MotorcycleTechTreeLevelItem_1.MotorcycleTechTreeLevelItem();
-    this.acf = () => {
+    this.omf = () => {
       this.OnClickToggleBack?.(this.Node, this.GetExtendToggle(0));
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UIItem], [9, UE.UISprite], [3, UE.UIItem], [2, UE.UITexture], [4, UE.UITexture], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIHorizontalLayout], [8, UE.UIItem], [10, UE.UIItem]];
-    this.BtnBindInfo = [[0, this.acf]];
+    this.BtnBindInfo = [[0, this.omf]];
   }
   OnStart() {
     this.GLl = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(7), this.j1a);
@@ -46,6 +46,7 @@ class MotorcycleTechTreeComNodeItem extends UiPanelBase_1.UiPanelBase {
       var c = this.GetItem(6);
       o.SetUIActive(false);
       h.SetUIActive(false);
+      n.SetChangeColor(false, n.changeColor);
       c.SetUIActive(false);
       this.GetItem(10).SetUIActive(s);
       this.GetItem(5).SetUIActive(s);
@@ -58,8 +59,8 @@ class MotorcycleTechTreeComNodeItem extends UiPanelBase_1.UiPanelBase {
         i = e.NodeLevel >= t.TechLv.length;
         o.SetUIActive(true);
         h.SetUIActive(true);
-        c.SetUIActive(!i && s);
         n.SetChangeColor(true, n.changeColor);
+        c.SetUIActive(!i && s);
       }
       var l = e.NodeLevel;
       var M = [];
@@ -75,7 +76,7 @@ class MotorcycleTechTreeComNodeItem extends UiPanelBase_1.UiPanelBase {
     }
   }
   SelectNode() {
-    this.acf();
+    this.omf();
   }
 }
 exports.MotorcycleTechTreeComNodeItem = MotorcycleTechTreeComNodeItem;

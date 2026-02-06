@@ -16,6 +16,7 @@ const EventSystem_1 = require("../../../../Common/Event/EventSystem");
 const TimeUtil_1 = require("../../../../Common/TimeUtil");
 const Global_1 = require("../../../../Global");
 const GlobalData_1 = require("../../../../GlobalData");
+const InputEnums_1 = require("../../../../Input/InputEnums");
 const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const LevelSequencePlayer_1 = require("../../../Common/LevelSequencePlayer");
@@ -51,241 +52,250 @@ class MotorcycleControlHudPanel extends BattleVisibleChildView_1.BattleVisibleCh
   constructor() {
     super(...arguments);
     this.SPe = undefined;
-    this._kf = undefined;
-    this.ukf = undefined;
-    this.CJm = undefined;
+    this.t3f = undefined;
+    this.i3f = undefined;
+    this.rtf = undefined;
     this.Ggm = undefined;
-    this.yJm = 0;
-    this.vNf = false;
-    this.JFf = 0;
-    this.ZFf = 0;
-    this.eNf = 300;
-    this.tNf = 0;
-    this.iNf = false;
-    this.rNf = new MotorcyclePercentMachine_1.MotorcyclePercentMachine();
-    this.xGf = 0;
-    this.v9f = undefined;
-    this.y9f = [];
-    this.UGf = t => {
+    this.stf = 0;
+    this.rHf = false;
+    this.k9f = 0;
+    this.q9f = 0;
+    this.O9f = 300;
+    this.G9f = 0;
+    this.F9f = false;
+    this.N9f = new MotorcyclePercentMachine_1.MotorcyclePercentMachine();
+    this.K6f = 0;
+    this.yZf = undefined;
+    this.SZf = [];
+    this.aSg = undefined;
+    this.hSg = 0;
+    this.lSg = 0;
+    this.Pnr = 0;
+    this._Sg = 0;
+    this.uSg = 0;
+    this.cSg = 0;
+    this.dSg = 0;
+    this.Gue = new UE.Rotator(0, 0, 0);
+    this.Q6f = t => {
       this.SetVisible(1, t);
     };
-    this.qGf = t => {
-      if (this.xGf === 0 && t !== 0) {
+    this.z6f = t => {
+      if (this.K6f === 0 && t !== 0) {
         if (this.SPe?.IsPlayingSequence("BoostOut")) {
           this.SPe?.StopSequenceByKey("BoostOut");
         }
         this.SPe?.PlayLevelSequenceByName("BoostIn");
-      } else if (this.xGf !== 0 && t === 0) {
+      } else if (this.K6f !== 0 && t === 0) {
         if (this.SPe?.IsPlayingSequence("BoostIn")) {
           this.SPe?.StopSequenceByKey("BoostIn");
         }
         this.SPe?.PlayLevelSequenceByName("BoostOut");
       }
-      this.OGf(t);
+      this.J6f(t);
     };
-    this.S9f = t => {
-      if (this.v9f) {
-        UE.KismetMaterialLibrary.SetVectorParameterValue(GlobalData_1.GlobalData.World, this.v9f, FNameUtil_1.FNameUtil.GetDynamicFName("MainColor"), t);
+    this.MZf = t => {
+      if (this.yZf) {
+        UE.KismetMaterialLibrary.SetVectorParameterValue(GlobalData_1.GlobalData.World, this.yZf, FNameUtil_1.FNameUtil.GetDynamicFName("MainColor"), t);
       }
-      this._kf?.SetMainColor(t);
-      this.ukf?.SetMainColor(t);
+      this.t3f?.SetMainColor(t);
+      this.i3f?.SetMainColor(t);
     };
-    this.M9f = t => {
-      if (this.v9f) {
-        UE.KismetMaterialLibrary.SetVectorParameterValue(GlobalData_1.GlobalData.World, this.v9f, FNameUtil_1.FNameUtil.GetDynamicFName("ColorA"), t);
-      }
-    };
-    this.E9f = t => {
-      if (this.v9f) {
-        UE.KismetMaterialLibrary.SetVectorParameterValue(GlobalData_1.GlobalData.World, this.v9f, FNameUtil_1.FNameUtil.GetDynamicFName("ColorB"), t);
+    this.EZf = t => {
+      if (this.yZf) {
+        UE.KismetMaterialLibrary.SetVectorParameterValue(GlobalData_1.GlobalData.World, this.yZf, FNameUtil_1.FNameUtil.GetDynamicFName("ColorA"), t);
       }
     };
-    this.I9f = t => {
-      this._kf?.SetPointerColor(t);
-      this.ukf?.SetPointerColor(t);
+    this.IZf = t => {
+      if (this.yZf) {
+        UE.KismetMaterialLibrary.SetVectorParameterValue(GlobalData_1.GlobalData.World, this.yZf, FNameUtil_1.FNameUtil.GetDynamicFName("ColorB"), t);
+      }
+    };
+    this.TZf = t => {
+      this.t3f?.SetPointerColor(t);
+      this.i3f?.SetPointerColor(t);
+    };
+    this.h4g = t => {
+      this.t3f?.SetNumTextColor(t);
+    };
+    this.l4g = t => {
+      this.t3f?.SetNumTextStrokeColor(t);
+    };
+    this._4g = t => {
+      this.t3f?.SetNumTextGlowColor(t);
     };
   }
-  async Init(t, e) {
-    await this.CreateByResourceIdAsync(e, t);
+  async Init(t, i) {
+    await this.CreateByResourceIdAsync(i, t);
     this.Initialize();
     await this.InitializeAsync();
-    this.oNf();
-    await this.T9f();
-    this.b9f();
+    this.V9f();
+    await this.bZf();
+    this.RZf();
     if (ModelManager_1.ModelManager.BattleUiModel.MotorcycleData.IsDriving) {
       this.ShowBattleVisibleChildView();
     }
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem]];
   }
   async OnBeforeStartAsync() {
-    this._kf = new MotorcycleHudSpeedItem_1.MotorcycleHudSpeedItem();
-    this._kf.IsLeft = true;
-    await this._kf.CreateThenShowByActorAsync(this.GetItem(0).GetOwner());
-    this.ukf = new MotorcycleHudSpeedItem_1.MotorcycleHudSpeedItem();
-    await this.ukf.CreateThenShowByActorAsync(this.GetItem(1).GetOwner());
+    this.t3f = new MotorcycleHudSpeedItem_1.MotorcycleHudSpeedItem();
+    this.t3f.IsLeft = true;
+    await this.t3f.CreateThenShowByActorAsync(this.GetItem(0).GetOwner());
+    this.i3f = new MotorcycleHudSpeedItem_1.MotorcycleHudSpeedItem();
+    await this.i3f.CreateThenShowByActorAsync(this.GetItem(1).GetOwner());
   }
   OnStart() {
     this.InitChildType(40);
+    this._Sg = CommonParamById_1.configCommonParamById.GetFloatConfig("MotorHudRotateYaw");
+    this.uSg = CommonParamById_1.configCommonParamById.GetFloatConfig("MotorHudRotateSpeed");
+    this.cSg = CommonParamById_1.configCommonParamById.GetFloatConfig("MotorHudRotateBackSpeed");
+    this.dSg = CommonParamById_1.configCommonParamById.GetFloatConfig("MotorHudRotateOutSpeed");
     this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
+    this.aSg = this.GetItem(2);
     this.Ore();
-    this.NJm(true);
+    this.Rtf(true);
     this.SetVisible(1, ModelManager_1.ModelManager.BattleUiModel.MotorcycleData.GetHudVisible());
   }
   OnShowBattleChildViewPanel() {}
   OnHideBattleChildViewPanel() {}
   OnBeforeShow() {
     super.OnBeforeShow();
-    this.NJm(true);
+    this.Rtf(true);
   }
   OnAfterHide() {
     super.OnAfterHide();
-    this.CJm = undefined;
+    this.rtf = undefined;
     this.Ggm = undefined;
   }
   OnAfterShow() {
-    this.GGf(0, true);
-    this.iNf = true;
+    this.Z6f(0, true);
+    this.F9f = true;
     this.SPe?.PlayLevelSequenceByName("Start");
-    if (this.vNf) {
-      this.vNf = false;
-      this.SPe?.PlayLevelSequenceByName("FPVOut");
-    }
   }
   async OnBeforeHideAsync() {
-    this.iNf = false;
+    this.F9f = false;
     var t = [];
-    var e = new CustomPromise_1.CustomPromise();
-    t.push(e);
-    this.SPe?.PlaySequenceAsync("Close", e);
-    if (ModelManager_1.ModelManager.BattleUiModel.MotorcycleData.IsInFirstPersonMode()) {
-      this.vNf = true;
-      e = new CustomPromise_1.CustomPromise();
-      t.push(e);
-      this.SPe?.PlaySequenceAsync("FPVIn", e);
-    } else if (this.vNf) {
-      this.vNf = false;
-      e = new CustomPromise_1.CustomPromise();
-      t.push(e);
-      this.SPe?.PlaySequenceAsync("FPVOut", e);
-    }
+    var i = new CustomPromise_1.CustomPromise();
+    t.push(i);
+    this.SPe?.PlaySequenceAsync("Close", i);
     await Promise.all(t);
   }
   OnBeforeDestroy() {
     this.Reset();
     this.kre();
-    this.v9f = undefined;
-    for (const t of this.y9f) {
+    this.yZf = undefined;
+    for (const t of this.SZf) {
       t.Clear();
     }
-    this.y9f.length = 0;
+    this.SZf.length = 0;
   }
   Ore() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiMotorcycleHudVisibleChanged, this.UGf);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiMotorcycleHudColorStateChanged, this.qGf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiMotorcycleHudVisibleChanged, this.Q6f);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiMotorcycleHudColorStateChanged, this.z6f);
   }
   kre() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiMotorcycleHudVisibleChanged, this.UGf);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiMotorcycleHudColorStateChanged, this.qGf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiMotorcycleHudVisibleChanged, this.Q6f);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiMotorcycleHudColorStateChanged, this.z6f);
   }
-  NJm(t) {
-    this.yJm = TICK_INTERVAL;
-    if (!this.CJm?.Valid) {
-      this.VJm();
+  Rtf(t) {
+    this.stf = TICK_INTERVAL;
+    if (!this.rtf?.Valid) {
+      this.wtf();
     }
     if (this.Ggm) {
-      var e = this.Ggm.VehicleMoveComp?.VehicleMovement;
-      if (e) {
-        var i = e.WheelDisplayInfosObj?.DisplayInfos;
+      var i = this.Ggm.VehicleMoveComp?.VehicleMovement;
+      if (i) {
+        var e = i.WheelDisplayInfosObj?.DisplayInfos;
         let t = 0;
-        if (i && i.Num() >= 2 && (o = e.MotorShapeConfig, t = Math.max(Math.abs(i.Get(0).WheelSpeed * o.FrontWheelShape.Radius), Math.abs(i.Get(1).WheelSpeed * o.BackWheelShape.Radius)), ModelManager_1.ModelManager.BattleUiModel.MotorcycleData.DebugLog) && Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("Battle", 17, "MotorcycleControlHud WheelInfo", ["speed0", i.Get(0).WheelSpeed.toFixed(2)], ["speed1", i.Get(1).WheelSpeed.toFixed(2)], ["radius0", o.FrontWheelShape.Radius.toFixed(2)], ["radius1", o.BackWheelShape.Radius.toFixed(2)]);
+        if (e && e.Num() >= 2 && (o = i.MotorShapeConfig, t = Math.max(Math.abs(e.Get(0).WheelSpeed * o.FrontWheelShape.Radius), Math.abs(e.Get(1).WheelSpeed * o.BackWheelShape.Radius)), ModelManager_1.ModelManager.BattleUiModel.MotorcycleData.DebugLog) && Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("Battle", 17, "MotorcycleControlHud WheelInfo", ["speed0", e.Get(0).WheelSpeed.toFixed(2)], ["speed1", e.Get(1).WheelSpeed.toFixed(2)], ["radius0", o.FrontWheelShape.Radius.toFixed(2)], ["radius1", o.BackWheelShape.Radius.toFixed(2)]);
         }
-        var i = e.MotorAccelConfig.MaxSpeed;
-        this._kf.SetSpeed(t, i);
-        var o = e.MotorAccelConfig.PowerAccel.ToMax;
-        var e = e.GetCurrentMotorPower();
-        this.ukf.SetSpeed(e, o);
+        var e = i.MotorAccelConfig.MaxSpeed;
+        this.t3f.SetSpeed(t, e);
+        var o = i.MotorAccelConfig.PowerAccel.ToMax;
+        var i = i.GetCurrentMotorPower();
+        this.i3f.SetSpeed(i, o);
         if (ModelManager_1.ModelManager.BattleUiModel.MotorcycleData.DebugLog && Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("Battle", 17, "MotorcycleControlHud", ["speed", t], ["mSpeed", i], ["acc", e], ["mAcc", o]);
+          Log_1.Log.Info("Battle", 17, "MotorcycleControlHud", ["speed", t], ["mSpeed", e], ["acc", i], ["mAcc", o]);
         }
       }
     }
   }
-  VJm() {
+  wtf() {
     var t = ModelManager_1.ModelManager.BattleUiModel.MotorcycleData;
-    this.CJm = t.MotorcycleEntityHandle;
-    if (this.CJm?.Valid) {
-      this.Ggm = this.CJm.Entity.GetComponent(247);
+    this.rtf = t.MotorcycleEntityHandle;
+    if (this.rtf?.Valid) {
+      this.Ggm = this.rtf.Entity.GetComponent(247);
     } else {
       this.Ggm = undefined;
     }
   }
   Tick(t) {
     if (this.IsShowOrShowing) {
-      this.yJm -= t;
-      if (this.yJm <= 0) {
-        this.NJm(false);
+      this.stf -= t;
+      if (this.stf <= 0) {
+        this.Rtf(false);
       }
-      this._kf.Tick(t);
-      this.ukf.Tick(t);
-      if (this.iNf) {
-        this.GGf(t);
+      this.t3f.Tick(t);
+      this.i3f.Tick(t);
+      if (this.F9f) {
+        this.Z6f(t);
       }
-      for (const e of this.y9f) {
-        e.Update(t);
+      for (const i of this.SZf) {
+        i.Update(t);
       }
+      this.mSg(t);
     }
   }
-  GGf(t, e = false) {
-    var i = Global_1.Global.BaseCharacter?.CharacterActorComponent;
-    if (i && (i = ControllerHolder_1.ControllerHolder.CameraController.CameraRotator.Yaw * MathCommon_1.MathCommon.DegToRad - i.ActorForwardProxy.HeadingAngle(), Math.abs(i) < this.ZFf ? this.nNf(0, e) : this.nNf(1, e), e || this.rNf.Update(t))) {
-      this.GetRootItem().SetAlpha(this.rNf.GetCurPercent());
+  Z6f(t, i = false) {
+    var e = Global_1.Global.BaseCharacter?.CharacterActorComponent;
+    if (e && (e = ControllerHolder_1.ControllerHolder.CameraController.CameraRotator.Yaw * MathCommon_1.MathCommon.DegToRad - e.ActorForwardProxy.HeadingAngle(), Math.abs(e) < this.q9f ? this.H9f(0, i) : this.H9f(1, i), i || this.N9f.Update(t))) {
+      this.GetRootItem().SetAlpha(this.N9f.GetCurPercent());
     }
   }
-  nNf(t, e = false) {
-    if (t !== this.JFf || !!e) {
-      t = (this.JFf = t) === 0 ? 1 : this.tNf;
-      if (e) {
-        this.rNf.Init(t, this.eNf);
+  H9f(t, i = false) {
+    if (t !== this.k9f || !!i) {
+      t = (this.k9f = t) === 0 ? 1 : this.G9f;
+      if (i) {
+        this.N9f.Init(t, this.O9f);
       } else {
-        this.rNf.SetTargetPercent(t);
+        this.N9f.SetTargetPercent(t);
       }
     }
   }
-  oNf() {
+  V9f() {
     var t = CommonParamById_1.configCommonParamById.GetFloatArrayConfig("MotorHudAlphaParams");
-    if (t && (t.length > 0 && (this.ZFf = t[0] * 0.5 * MathCommon_1.MathCommon.DegToRad), t.length > 1 && (this.tNf = t[1]), t.length > 2)) {
-      this.eNf = t[2] * TimeUtil_1.TimeUtil.InverseMillisecond;
+    if (t && (t.length > 0 && (this.q9f = t[0] * 0.5 * MathCommon_1.MathCommon.DegToRad), t.length > 1 && (this.G9f = t[1]), t.length > 2)) {
+      this.O9f = t[2] * TimeUtil_1.TimeUtil.InverseMillisecond;
     }
   }
-  OGf(t) {
-    if (this.xGf !== t) {
-      this.xGf = t;
-      for (const i of this.y9f) {
-        var e = i.ColorMap.get(t);
-        if (e) {
-          i.ColorMachine.SetTargetColor(e);
+  J6f(t) {
+    if (this.K6f !== t) {
+      this.K6f = t;
+      for (const e of this.SZf) {
+        var i = e.ColorMap.get(t);
+        if (i) {
+          e.ColorMachine.SetTargetColor(i);
         }
       }
     }
   }
-  async T9f() {
-    const e = new CustomPromise_1.CustomPromise();
+  async bZf() {
+    const i = new CustomPromise_1.CustomPromise();
     ResourceSystem_1.ResourceSystem.LoadAsync(SPEED_COLOR_MPC_PATH, UE.MaterialParameterCollection, t => {
-      this.v9f = t;
-      e.SetResult(true);
+      this.yZf = t;
+      i.SetResult(true);
     });
-    return e.Promise;
+    return i.Promise;
   }
-  b9f() {
-    var e = ["MotorHudMainColor", "MotorHudColorA", "MotorHudColorB", "MotorHudPointerColor"];
-    var i = [this.S9f, this.M9f, this.E9f, this.I9f];
-    for (let t = 0; t < 4; t++) {
+  RZf() {
+    var i = ["MotorHudMainColor", "MotorHudColorA", "MotorHudColorB", "MotorHudPointerColor", "MotorHudTextColor", "MotorHudTextStrokeColor", "MotorHudTextGlowColor"];
+    var e = [this.MZf, this.EZf, this.IZf, this.TZf, this.h4g, this.l4g, this._4g];
+    for (let t = 0; t < i.length; t++) {
       var o = new SpeedColorObj();
-      o.UpdateFunc = i[t];
-      var s = CommonParamById_1.configCommonParamById.GetStringArrayConfig(e[t]);
+      o.UpdateFunc = e[t];
+      var s = CommonParamById_1.configCommonParamById.GetStringArrayConfig(i[t]);
       if (s) {
         for (let t = 0; t < 3; t++) {
           if (s[t]) {
@@ -294,7 +304,40 @@ class MotorcycleControlHudPanel extends BattleVisibleChildView_1.BattleVisibleCh
         }
       }
       o.Init();
-      this.y9f.push(o);
+      this.SZf.push(o);
+    }
+  }
+  mSg(t) {
+    var i = ModelManager_1.ModelManager.BattleUiModel.MotorcycleData.IsInFirstPersonMode();
+    if (this.rHf !== i) {
+      if (this.rHf = i) {
+        this.SPe?.PlaySequencePurely("FPVIn");
+      } else {
+        this.SPe?.PlaySequencePurely("FPVOut");
+      }
+    }
+    if (i) {
+      if ((i = ModelManager_1.ModelManager.InputModel.GetAxisValues().get(InputEnums_1.EInputAxis.MoveRight) ?? 0) === 0) {
+        this.hSg = 0;
+        this.Pnr = this.cSg;
+      } else {
+        this.hSg = i > 0 ? -this._Sg : this._Sg;
+        this.Pnr = this.uSg;
+      }
+    } else {
+      this.hSg = 0;
+      this.Pnr = this.dSg;
+    }
+    if (this.lSg !== this.hSg) {
+      if (this.lSg < this.hSg) {
+        this.lSg += this.Pnr * t;
+        this.lSg = Math.min(this.lSg, this.hSg);
+      } else {
+        this.lSg -= this.Pnr * t;
+        this.lSg = Math.max(this.lSg, this.hSg);
+      }
+      this.Gue.Yaw = this.lSg;
+      this.aSg?.SetUIRelativeRotation(this.Gue);
     }
   }
 }

@@ -10,10 +10,12 @@ const Log_1 = require("../../../../Core/Common/Log");
 const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiViewBase_1 = require("../../../Ui/Base/UiViewBase");
 const PopupCaptionItem_1 = require("../../../Ui/Common/PopupCaptionItem");
 const UiManager_1 = require("../../../Ui/UiManager");
+const RoleDefine_1 = require("../../RoleUi/RoleDefine");
 const LguiUtil_1 = require("../../Util/LguiUtil");
 const LoopScrollView_1 = require("../../Util/ScrollView/LoopScrollView");
 const ShowerInviteItem_1 = require("./Item/ShowerInviteItem");
@@ -23,7 +25,7 @@ class ShowerInviteView extends UiViewBase_1.UiViewBase {
     super(...arguments);
     this.AW1 = undefined;
     this.lqe = undefined;
-    this.Vlo = [];
+    this.m0o = [];
     this.PW1 = [];
     this.xW1 = 0;
     this.l7i = e => {
@@ -103,11 +105,29 @@ class ShowerInviteView extends UiViewBase_1.UiViewBase {
     ModelManager_1.ModelManager.ShowerModel.SetShowerSeatConfigIds(e);
   }
   OnBeforeShow() {
-    var e = ModelManager_1.ModelManager.RoleModel.GetRoleListWithoutMainRole();
+    var e;
+    var i = ModelManager_1.ModelManager.RoleModel.GetRoleList();
     const o = ModelManager_1.ModelManager.EditFormationModel.GetCurrentFormationData?.GetRoleIdList ?? [];
-    e.sort((e, i) => {
-      var t = o.includes(e.GetRoleId());
-      var r = o.includes(i.GetRoleId());
+    const s = [];
+    for (const t of o) {
+      if (t > RoleDefine_1.ROBOT_DATA_MIN_ID) {
+        s.push(ConfigManager_1.ConfigManager.RoleConfig.GetTrialRoleConfig(t)?.ParentId ?? 0);
+      }
+    }
+    for (const r of i) {
+      if (!ModelManager_1.ModelManager.RoleModel.IsMainRole(r.GetRoleId())) {
+        e = {
+          RoleInstance: r,
+          IsInFormation: o.includes(r.GetRoleId()) || s.includes(r.GetRoleId())
+        };
+        this.m0o.push(e);
+      }
+    }
+    this.m0o.sort((e, i) => {
+      var e = e.RoleInstance;
+      var i = i.RoleInstance;
+      var t = o.includes(e.GetRoleId()) || s.includes(e.GetRoleId());
+      var r = o.includes(i.GetRoleId()) || s.includes(i.GetRoleId());
       if (t || r) {
         if (t && r) {
           return 0;
@@ -122,9 +142,8 @@ class ShowerInviteView extends UiViewBase_1.UiViewBase {
         return i.GetRoleCreateTime() - e.GetRoleCreateTime();
       }
     });
-    this.Vlo = e;
-    for (const i of this.PW1) {
-      i.SetUiActive(false);
+    for (const a of this.PW1) {
+      a.SetUiActive(false);
     }
     ModelManager_1.ModelManager.ShowerModel.ResetCurInviteRoles();
     this.kW1(ModelManager_1.ModelManager.ShowerModel.CurSelectPosIndex);
@@ -162,14 +181,14 @@ class ShowerInviteView extends UiViewBase_1.UiViewBase {
   Og() {
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(8), "ShowerInvitePos", ModelManager_1.ModelManager.ShowerModel.CurSelectPosIndex + 1);
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(5), "ShowerInviteNumber", ModelManager_1.ModelManager.ShowerModel.GetInviteNumString());
-    this.AW1?.RefreshByData(this.Vlo);
+    this.AW1?.RefreshByData(this.m0o);
     this.FW1();
   }
   wIi() {
     var i = ModelManager_1.ModelManager.ShowerModel.GetRoleInstanceByPos(ModelManager_1.ModelManager.ShowerModel.CurSelectPosIndex);
     if (i) {
       let e = 0;
-      for (this.AW1.DeselectCurrentGridProxy(); e < this.Vlo.length && i.GetRoleId() !== this.Vlo[e].GetRoleId(); e++);
+      for (this.AW1.DeselectCurrentGridProxy(); e < this.m0o.length && i.GetRoleId() !== this.m0o[e].RoleInstance.GetRoleId(); e++);
       this.AW1.ScrollToGridIndex(e);
       this.AW1.SelectGridProxy(e);
     }

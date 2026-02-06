@@ -85,9 +85,9 @@ let CharacterFootEffectComponent = CharacterFootEffectComponent_1 = class Charac
     this.fHo = Vector_1.Vector.Create();
     this.Gue = Rotator_1.Rotator.Create();
     this.XQc = Vector_1.Vector.Create();
-    this.g9f = Stats_1.Stat.Create("CharacterFootEffectComponent.AsyncTraceDelegate");
-    this.C9f = Stats_1.Stat.Create("CharacterFootEffectComponent.GetFootTexture");
-    this.p9f = Stats_1.Stat.Create("CharacterFootEffectComponent.PostFootStepAudio");
+    this.Qrg = Stats_1.Stat.Create("CharacterFootEffectComponent.AsyncTraceDelegate");
+    this.Krg = Stats_1.Stat.Create("CharacterFootEffectComponent.GetFootTexture");
+    this.Xrg = Stats_1.Stat.Create("CharacterFootEffectComponent.PostFootStepAudio");
     this.w5r = new Map();
     this.vzd = new Map();
     this.B5r = 0;
@@ -132,7 +132,7 @@ let CharacterFootEffectComponent = CharacterFootEffectComponent_1 = class Charac
     };
     this.i0u = undefined;
     this.r0u = (t, e, i, r) => {
-      this.g9f.Start();
+      this.Qrg.Start();
       if (this.i0u && i < this.i0u.Frame || this.i0u && i === this.i0u.Frame && r < this.i0u.Index) {
         this.o0u();
       } else if (t) {
@@ -141,11 +141,11 @@ let CharacterFootEffectComponent = CharacterFootEffectComponent_1 = class Charac
       } else if (Log_1.Log.CheckWarn()) {
         Log_1.Log.Warn("Test", 6, "Detect Footprint Failed", ["location", this.Hte?.ActorLocationProxy], ["start", this._ae], ["end", this.uae]);
       }
-      this.g9f.Stop();
+      this.Qrg.Stop();
     };
   }
   static get Dependencies() {
-    return [3, 52, 186, 184, 0];
+    return [3, 54, 188, 186, 0];
   }
   OnInit(t) {
     super.OnInit(t);
@@ -157,16 +157,16 @@ let CharacterFootEffectComponent = CharacterFootEffectComponent_1 = class Charac
     if (!t?.Valid) {
       return false;
     }
-    if (!this.Entity.GetComponent(186)?.Valid) {
+    if (!this.Entity.GetComponent(188)?.Valid) {
       return false;
     }
-    if (!this.Entity.GetComponent(52)?.Valid) {
+    if (!this.Entity.GetComponent(54)?.Valid) {
       return false;
     }
     if (!this.Entity.GetComponent(0)?.Valid) {
       return false;
     }
-    var e = this.Entity.GetComponent(184);
+    var e = this.Entity.GetComponent(186);
     if (!e?.Valid) {
       return false;
     }
@@ -297,7 +297,7 @@ let CharacterFootEffectComponent = CharacterFootEffectComponent_1 = class Charac
     }
   }
   Mzd() {
-    var i = this.Entity?.GetComponent(215);
+    var i = this.Entity?.GetComponent(217);
     if (i) {
       let t = undefined;
       let e = Number.MIN_SAFE_INTEGER;
@@ -398,12 +398,12 @@ let CharacterFootEffectComponent = CharacterFootEffectComponent_1 = class Charac
     }
   }
   o0u() {
-    this.C9f.Start();
+    this.Krg.Start();
     var t = this.n0u();
-    this.C9f.Stop();
-    this.p9f.Start();
-    this.Entity.GetComponent(199)?.PostFootstepAudio(t);
-    this.p9f.Stop();
+    this.Krg.Stop();
+    this.Xrg.Start();
+    this.Entity.GetComponent(201)?.PostFootstepAudio(t);
+    this.Xrg.Stop();
   }
   k5r() {
     if (!ModelManager_1.ModelManager.TeleportModel.IsTeleport && this.Hte.EnableVoxelDetection && this.Hte && this.I5r && this.I5r.MoveState !== CharacterUnifiedStateTypes_1.ECharMoveState.Stand) {
@@ -427,5 +427,5 @@ let CharacterFootEffectComponent = CharacterFootEffectComponent_1 = class Charac
 };
 CharacterFootEffectComponent.LeftFootSocketName = new UE.FName("Bip001LFoot");
 CharacterFootEffectComponent.RightFootSocketName = new UE.FName("Bip001RFoot");
-CharacterFootEffectComponent = CharacterFootEffectComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(60)], CharacterFootEffectComponent);
+CharacterFootEffectComponent = CharacterFootEffectComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(62)], CharacterFootEffectComponent);
 exports.CharacterFootEffectComponent = CharacterFootEffectComponent; //# sourceMappingURL=CharacterFootEffectComponent.js.map

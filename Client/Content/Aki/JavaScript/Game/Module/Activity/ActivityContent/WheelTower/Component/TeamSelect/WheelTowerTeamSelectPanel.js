@@ -17,13 +17,13 @@ class WheelTowerTeamSelectPanel extends UiPanelBase_1.UiPanelBase {
     super(...arguments);
     this.OnTeamSelectCallback = undefined;
     this.xqe = undefined;
-    this.yvf = [];
-    this.Dtf = () => {
+    this.AMf = [];
+    this.Grf = () => {
       var e = new WheelTowerTeamItem();
-      e.OnToggleClickCallback = this.Utf;
+      e.OnToggleClickCallback = this.Frf;
       return e;
     };
-    this.Utf = (e, t) => {
+    this.Frf = (e, t) => {
       this.OnTeamSelectCallback?.(e);
       this.xqe?.GetGenericLayout()?.RefreshWithoutDataSync();
       this.xqe?.SelectGridProxy(t);
@@ -37,16 +37,16 @@ class WheelTowerTeamSelectPanel extends UiPanelBase_1.UiPanelBase {
     this.BtnBindInfo = [[2, this.eje]];
   }
   OnStart() {
-    this.xqe = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(0), this.Dtf);
+    this.xqe = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(0), this.Grf);
     for (let e = 1; e <= EditFormationDefine_1.MAX_FORMATION_ID; e++) {
-      this.yvf.push(e);
+      this.AMf.push(e);
     }
-    this.xqe?.RefreshByData(this.yvf);
+    this.xqe?.RefreshByData(this.AMf);
   }
   Refresh() {
     var e = this.xqe.GetSelectedIndex();
     this.xqe?.GetScrollItemByIndex(e)?.SetToggleForce(false, true);
-    this.xqe?.RefreshByData(this.yvf);
+    this.xqe?.RefreshByData(this.AMf);
   }
 }
 exports.WheelTowerTeamSelectPanel = WheelTowerTeamSelectPanel;
@@ -54,10 +54,10 @@ class WheelTowerTeamItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
     super(...arguments);
     this.OnToggleClickCallback = undefined;
-    this.xtf = -1;
-    this.Btf = [];
+    this.Nrf = -1;
+    this.Vrf = [];
     this.N8e = () => {
-      this.OnToggleClickCallback?.(this.xtf, this.GridIndex);
+      this.OnToggleClickCallback?.(this.Nrf, this.GridIndex);
     };
   }
   OnRegisterComponent() {
@@ -67,13 +67,13 @@ class WheelTowerTeamItem extends GridProxyAbstract_1.GridProxyAbstract {
   async OnBeforeStartAsync() {
     var e = [];
     var t = new WheelTowerRoleGridItem_1.WheelTowerRoleGridItem();
-    this.Btf.push(t);
+    this.Vrf.push(t);
     e.push(t.CreateThenShowByActorAsync(this.GetItem(2).GetOwner()));
     var t = new WheelTowerRoleGridItem_1.WheelTowerRoleGridItem();
-    this.Btf.push(t);
+    this.Vrf.push(t);
     e.push(t.CreateThenShowByActorAsync(this.GetItem(3).GetOwner()));
     var t = new WheelTowerRoleGridItem_1.WheelTowerRoleGridItem();
-    this.Btf.push(t);
+    this.Vrf.push(t);
     e.push(t.CreateThenShowByActorAsync(this.GetItem(4).GetOwner()));
     await Promise.all(e);
   }
@@ -82,7 +82,7 @@ class WheelTowerTeamItem extends GridProxyAbstract_1.GridProxyAbstract {
     e?.CanExecuteChange.Bind(() => e.ToggleState === 0);
   }
   Refresh(e, t, i) {
-    this.xtf = e;
+    this.Nrf = e;
     const r = [];
     for (let e = 0; e < ModelManager_1.ModelManager.WheelTowerModel.GetTeamMaxRoleCount(); e++) {
       r.push(0);
@@ -94,7 +94,7 @@ class WheelTowerTeamItem extends GridProxyAbstract_1.GridProxyAbstract {
       o++;
     });
     r.forEach((e, t) => {
-      this.Btf[t].Refresh(e, false, t);
+      this.Vrf[t].Refresh(e, false, t);
     });
     let h = "";
     h = e > 9 ? e.toString() : "0" + e;

@@ -35,7 +35,7 @@ class LevelAiTaskTurnAndPlayMontage extends LevelAiTask_1.LevelAiTask {
         break;
       case 2:
         if (GravityUtils_1.GravityUtils.GetAngleOffsetFromCurrentToInputAbs(this.Tae) < TOLERANCE) {
-          this.Tae.Entity.GetComponent(46).CharacterMovement.MovementMode = this.WTe;
+          this.Tae.Entity.GetComponent(48).CharacterMovement.MovementMode = this.WTe;
           this.KTe = 3;
         }
         break;
@@ -55,7 +55,7 @@ class LevelAiTaskTurnAndPlayMontage extends LevelAiTask_1.LevelAiTask {
     if (this.KTe < 3) {
       this.Tae?.ClearInput();
     } else {
-      this.CreatureDataComponent.Entity.GetComponent(47).VolatileMontageStopByLoad(3, this.bTe, 0);
+      this.CreatureDataComponent.Entity.GetComponent(49).VolatileMontageStopByLoad(3, this.bTe, 0);
     }
     return 2;
   }
@@ -69,7 +69,7 @@ class LevelAiTaskTurnAndPlayMontage extends LevelAiTask_1.LevelAiTask {
     if (e) {
       if (t = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e.EntityId)) {
         this.Tae = t.Entity.GetComponent(3);
-        if ((t = t.Entity.GetComponent(46)?.CharacterMovement)?.IsValid()) {
+        if ((t = t.Entity.GetComponent(48)?.CharacterMovement)?.IsValid()) {
           this.WTe = t.MovementMode;
           t.MovementMode = 1;
           t = Vector_1.Vector.Create(e.Pos.X ?? 0, e.Pos.Y ?? 0, e.Pos.Z ?? 0);
@@ -94,7 +94,7 @@ class LevelAiTaskTurnAndPlayMontage extends LevelAiTask_1.LevelAiTask {
     if (i) {
       this.NTe = i.LoopDuration ?? 0;
       this.OTe = i.RepeatTimes ?? 0;
-      t = this.CreatureDataComponent.Entity.GetComponent(47);
+      t = this.CreatureDataComponent.Entity.GetComponent(49);
       i = {
         IsAbp: i.IsAbpMontage,
         MontageId: i.MontageId

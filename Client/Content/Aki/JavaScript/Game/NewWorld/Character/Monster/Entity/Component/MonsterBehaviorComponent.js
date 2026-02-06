@@ -56,7 +56,7 @@ let MonsterBehaviorComponent = class MonsterBehaviorComponent extends EntityComp
       if (e === CharacterUnifiedStateTypes_1.ECharPositionState.Water && !this.Xte.HasTag(-1714966381)) {
         e = this.Hte.ActorLocationProxy;
         (i = Protocol_1.Aki.Protocol.Ve_.create()).l8n = e;
-        CombatMessage_1.CombatNet.Send(27582, this.Entity, i);
+        CombatMessage_1.CombatNet.Send(23878, this.Entity, i);
       }
     };
     this.qtn = () => {
@@ -100,8 +100,8 @@ let MonsterBehaviorComponent = class MonsterBehaviorComponent extends EntityComp
   }
   OnStart() {
     this.Hte = this.Entity.CheckGetComponent(3);
-    this.Xte = this.Entity.CheckGetComponent(215);
-    this.tVr = this.Entity.CheckGetComponent(71);
+    this.Xte = this.Entity.CheckGetComponent(217);
+    this.tVr = this.Entity.CheckGetComponent(73);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharOnPositionStateChanged, this.Kqr);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.AiTaskWanderForResetEnd, this.qtn);
     this.N1t = this.Xte.ListenForTagAddOrRemove(1996802261, this.Ntn);
@@ -116,7 +116,7 @@ let MonsterBehaviorComponent = class MonsterBehaviorComponent extends EntityComp
     return true;
   }
   OnActivate() {
-    var t = !!this.Entity.GetComponent(234);
+    var t = !!this.Entity.GetComponent(235);
     if (!ModelManager_1.ModelManager.GameModeModel.IsMulti && !t) {
       this.tVr?.SetEnableMovementSync(false, "MonsterBehaviorComponent OnActivate");
     }
@@ -127,7 +127,7 @@ let MonsterBehaviorComponent = class MonsterBehaviorComponent extends EntityComp
         Context: "怪物固定位置"
       });
       this.Hte.SetActorLocation(MathUtils_1.MathUtils.CommonTempVector.ToUeVector(), "怪物固定位置", false);
-      this.Entity.GetComponent(122)?.Disable("怪物固定位置");
+      this.Entity.GetComponent(124)?.Disable("怪物固定位置");
     }
   }
   OnEnd() {
@@ -148,5 +148,5 @@ let MonsterBehaviorComponent = class MonsterBehaviorComponent extends EntityComp
     return true;
   }
 };
-MonsterBehaviorComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(94)], MonsterBehaviorComponent);
+MonsterBehaviorComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(96)], MonsterBehaviorComponent);
 exports.MonsterBehaviorComponent = MonsterBehaviorComponent; //# sourceMappingURL=MonsterBehaviorComponent.js.map

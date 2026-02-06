@@ -16,26 +16,26 @@ const InfrastructureLimitTaskData_1 = require("./InfrastructureLimitTaskData");
 class InfrastructureActivityData extends ActivityData_1.ActivityBaseData {
   constructor() {
     super(...arguments);
-    this.L3m = new Map();
+    this.K4m = new Map();
   }
   OnInit(t) {
-    t = t.yNm;
+    t = t.G3m;
     if (t === undefined) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Infrastructure", 86, "InfrastructureActivityData初始化 无效activityInfo");
       }
     } else {
-      this.JHf(t.L$s);
+      this.uig(t.L$s);
     }
   }
   PhraseEx(t) {
-    t = t.yNm;
+    t = t.G3m;
     if (t === undefined) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Infrastructure", 86, "InfrastructureActivityDataPhrase 无效activityInfo");
       }
     } else {
-      this.JHf(t.L$s);
+      this.uig(t.L$s);
     }
   }
   GetExDataRedPointShowState() {
@@ -45,7 +45,7 @@ class InfrastructureActivityData extends ActivityData_1.ActivityBaseData {
     return !!this.IsUnLock() && (this.GetLimitedTaskReadDot() || this.GetShopHasNewRedDot() || ModelManager_1.ModelManager.InfrastructureModel.GetArchiveRedDot());
   }
   GetLimitedTaskReadDot() {
-    for (const t of this.L3m.values()) {
+    for (const t of this.K4m.values()) {
       if (t.Status === Protocol_1.Aki.Protocol.I$s.Proto_ActivityTaskFinish) {
         return true;
       }
@@ -67,31 +67,31 @@ class InfrastructureActivityData extends ActivityData_1.ActivityBaseData {
     var r = t >= CommonDefine_1.SECOND_PER_DAY ? 2 : t >= CommonDefine_1.SECOND_PER_HOUR ? 1 : 0;
     return TimeUtil_1.TimeUtil.GetCountDownDataFormat2(t, e, r);
   }
-  JHf(t) {
-    this.L3m.clear();
+  uig(t) {
+    this.K4m.clear();
     for (const r of t?.E$s ?? []) {
       var e = new InfrastructureLimitTaskData_1.InfrastructureLimitTaskData(r.s5n);
       e.UpdateData(r);
-      this.L3m.set(r.s5n, e);
+      this.K4m.set(r.s5n, e);
     }
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.InfrastructureActivityTaskDataUpdate);
   }
   UpdateActivityTaskData(t) {
-    var e = this.L3m.get(t.s5n);
+    var e = this.K4m.get(t.s5n);
     if (e !== undefined) {
       e.UpdateData(t);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.InfrastructureActivityTaskDataUpdate);
     }
   }
   GetActivityTaskDataList() {
-    var e = Array.from(this.L3m.values());
-    e.sort((t, e) => t.Status !== e.Status ? this.A3m(t.Status) - this.A3m(e.Status) : t.ConfigId - e.ConfigId);
+    var e = Array.from(this.K4m.values());
+    e.sort((t, e) => t.Status !== e.Status ? this.Y4m(t.Status) - this.Y4m(e.Status) : t.ConfigId - e.ConfigId);
     for (let t = 0; t < e.length; t++) {
       e[t].Index = t + 1;
     }
     return e;
   }
-  A3m(t) {
+  Y4m(t) {
     switch (t) {
       case Protocol_1.Aki.Protocol.I$s.Proto_ActivityTaskFinish:
         return 1;
@@ -104,25 +104,25 @@ class InfrastructureActivityData extends ActivityData_1.ActivityBaseData {
     }
   }
   GetActivityTaskDataById(t) {
-    return this.L3m.get(t);
+    return this.K4m.get(t);
   }
   GetActivityTaskDataListByStatus(e) {
-    return Array.from(this.L3m.values()).filter(t => t.Status === e);
+    return Array.from(this.K4m.values()).filter(t => t.Status === e);
   }
   GetExDataFinishShowState() {
-    for (const e of this.L3m.values()) {
+    for (const e of this.K4m.values()) {
       if (e.Status !== Protocol_1.Aki.Protocol.I$s.Proto_ActivityTaskTaken) {
         return false;
       }
     }
     var t = ModelManager_1.ModelManager.InfrastructureModel;
     for (const r of t.GetLibraryTaskData()) {
-      if (r.Status !== Protocol_1.Aki.Protocol.YNm.Proto_InfrTaskTaken) {
+      if (r.Status !== Protocol_1.Aki.Protocol.f4m.Proto_InfrTaskTaken) {
         return false;
       }
     }
     for (const i of t.GetPhoneTaskData()) {
-      if (i.Status !== Protocol_1.Aki.Protocol.YNm.Proto_InfrTaskTaken) {
+      if (i.Status !== Protocol_1.Aki.Protocol.f4m.Proto_InfrTaskTaken) {
         return false;
       }
     }

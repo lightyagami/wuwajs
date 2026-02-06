@@ -28,14 +28,14 @@ class CalabashSkinController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnLoadingNetDataDone, this.Q5e);
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(19839, e => {
+    Net_1.Net.Register(25052, e => {
       ModelManager_1.ModelManager.CalabashSkinModel.NotifyAddUnlockSkinData(e.bBs);
       ControllerHolder_1.ControllerHolder.InventoryController.AddCalabashSkinItemData(e.bBs);
     });
-    Net_1.Net.Register(18310, e => {
+    Net_1.Net.Register(28082, e => {
       ModelManager_1.ModelManager.CalabashSkinModel.NotifyCurrentEquippedSkinId(e.Z7n);
     });
-    Net_1.Net.Register(28765, e => {
+    Net_1.Net.Register(26946, e => {
       var r = MathUtils_1.MathUtils.LongToNumber(e.F4n);
       var t = e.dUd?.cUd ?? 0;
       if (Log_1.Log.CheckInfo()) {
@@ -46,23 +46,23 @@ class CalabashSkinController extends UiControllerBase_1.UiControllerBase {
       if (r?.Valid) {
         r.HuluSkinId = t;
       }
-      var r = e?.Entity.GetComponent(84);
+      var r = e?.Entity.GetComponent(86);
       if (r?.Valid) {
         r.OnEntityHuluSkinChangeNotify(t);
       }
     });
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(19839);
-    Net_1.Net.UnRegister(18310);
-    Net_1.Net.UnRegister(28765);
+    Net_1.Net.UnRegister(25052);
+    Net_1.Net.UnRegister(28082);
+    Net_1.Net.UnRegister(26946);
   }
   static RBd() {
     var e = Protocol_1.Aki.Protocol.aUd.create();
-    Net_1.Net.Call(16689, e, e => {
+    Net_1.Net.Call(19745, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15017);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18602);
         } else {
           ModelManager_1.ModelManager.CalabashSkinModel.NotifyCalabashSkinData(e.mUd, e.fUd);
           ControllerHolder_1.ControllerHolder.InventoryController.InitCalabashSkinItemData(e.fUd);
@@ -74,10 +74,10 @@ class CalabashSkinController extends UiControllerBase_1.UiControllerBase {
     const r = new CustomPromise_1.CustomPromise();
     var t = Protocol_1.Aki.Protocol.nUd.create();
     t.Z7n = e;
-    Net_1.Net.Call(17363, t, e => {
+    Net_1.Net.Call(26192, t, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17292);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21702);
           r.SetResult(false);
         } else {
           ModelManager_1.ModelManager.CalabashSkinModel.NotifyCurrentEquippedSkinId(e.Z7n);

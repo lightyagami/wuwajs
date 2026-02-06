@@ -23,6 +23,7 @@ const BattleChildViewPanel_1 = require("./BattleChildViewPanel");
 class MissionPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
   constructor() {
     super(...arguments);
+    this.gvg = true;
     this.ILr = new Map();
     this.LU_ = new Map();
     this.wfm = new Map();
@@ -48,7 +49,7 @@ class MissionPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     };
     this.AU_ = async e => {
       for (var [, i] of this.LU_) {
-        if (i.ShowDataId === e.ShowData.Id) {
+        if (i.ShowDataId === e.ShowData.Id || i.ShowDataId === e.ShowData.ParentId && e.ShowData.ParentId !== undefined || i.ShowData?.ParentId === e.ShowData.ParentId && e.ShowData.ParentId !== undefined) {
           return i.OnLogicTreeUpdateShow(e.ProcessId, e.ShowData, e.IsSkipAnim);
         }
       }
@@ -57,7 +58,8 @@ class MissionPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     };
     this.PU_ = async e => {
       var i = this.LU_.get(0);
-      if (e.Id === i.ShowDataId) {
+      var t = e.Id;
+      if (t === i.ShowDataId || t === i.ShowData?.ParentId) {
         return i.EndShow(e.ProcessId, e.IsSkipAnim, e.Reason);
       } else {
         return !(await this.Pfm(1, e)) || this.Pfm(2, e);
@@ -104,7 +106,9 @@ class MissionPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     await this.kU_();
     await Promise.all([this.xFc()]);
     await this.Afm();
-    this.sY_();
+    if (this.gvg) {
+      this.sY_();
+    }
     this.RootItem.SetAnchorOffsetX(0);
     this.GetItem(1)?.SetUIActive(false);
     this.GetItem(2).SetUIActive(true);
@@ -139,6 +143,9 @@ class MissionPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
         }
       }
     }
+  }
+  SetRestoreWhenInit(e) {
+    this.gvg = e;
   }
   async kU_() {
     var e = new PendingProcessController_1.PendingProcessController(this.wU_, this.RU_, this.PU_, this.AU_, this.xU_, this.$fc);

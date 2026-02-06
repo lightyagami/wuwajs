@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.DangoActivityQuest = exports.HiddenQuest = exports.ActivityQuest = exports.PoiQuest = exports.GuideQuest = exports.RoleQuest = exports.TestQuest = exports.BranchQuest = exports.MainQuest = exports.createQuestObj = undefined;
+exports.SpringFestivalInvitationQuest = exports.DangoActivityQuest = exports.HiddenQuest = exports.ActivityQuest = exports.PoiQuest = exports.GuideQuest = exports.RoleQuest = exports.TestQuest = exports.BranchQuest = exports.MainQuest = exports.createQuestObj = undefined;
 const DailyQuest_1 = require("./DailyQuest");
 const Quest_1 = require("./Quest");
 function createQuestObj(s) {
@@ -40,6 +40,9 @@ function createQuestObj(s) {
       case 12:
         e = new DangoActivityQuest(12, s);
         break;
+      case 14:
+        e = new SpringFestivalInvitationQuest(14, s);
+        break;
       default:
         e = new Quest_1.Quest(s.Type, s);
     }
@@ -70,4 +73,6 @@ class HiddenQuest extends Quest_1.Quest {}
 exports.HiddenQuest = HiddenQuest;
 class DangoActivityQuest extends Quest_1.Quest {}
 exports.DangoActivityQuest = DangoActivityQuest;
+class SpringFestivalInvitationQuest extends Quest_1.Quest {}
+exports.SpringFestivalInvitationQuest = SpringFestivalInvitationQuest;
 //# sourceMappingURL=QuestTypeDefine.js.map

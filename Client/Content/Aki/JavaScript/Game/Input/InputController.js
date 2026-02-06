@@ -70,7 +70,7 @@ class InputController extends ControllerBase_1.ControllerBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ForceReleaseInput, this.PMe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnInputDistributeTagChanged, this.xMe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnInstanceChange, this.jUc);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RefreshInputData, this.nzm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RefreshInputData, this.VZm);
   }
   static kre() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnCloseLoadingView, this.jJa);
@@ -78,7 +78,7 @@ class InputController extends ControllerBase_1.ControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnInputDistributeTagChanged, this.xMe);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ForceReleaseInput, this.PMe);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnInstanceChange, this.jUc);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RefreshInputData, this.nzm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RefreshInputData, this.VZm);
   }
   static BindInputActions(t) {
     ControllerHolder_1.ControllerHolder.InputDistributeController.BindActions(t, this.bMe);
@@ -92,8 +92,8 @@ class InputController extends ControllerBase_1.ControllerBase {
   static UnBindInputMoveAxes(t) {
     ControllerHolder_1.ControllerHolder.InputDistributeController.UnBindAxes(t, this.BMe);
   }
-  static szm() {
-    InputController.uzf.Start();
+  static HZm() {
+    InputController.egg.Start();
     var t;
     var e;
     var n;
@@ -101,36 +101,36 @@ class InputController extends ControllerBase_1.ControllerBase {
     if (r && (t = r.GetActionNameList(), e = r.GetMoveAxisList(), n = r.GetCameraAxisList(), ControllerHolder_1.ControllerHolder.InputDistributeController.UnBindActions(t, this.bMe), ControllerHolder_1.ControllerHolder.InputDistributeController.UnBindAxes(e, this.BMe), ControllerHolder_1.ControllerHolder.InputDistributeController.UnBindAxes(n, this.wMe), InputManager_1.InputManager.RemoveViewHotKeyActionByType(r.Type), Log_1.Log.CheckInfo())) {
       Log_1.Log.Info("Input", 10, "InstanceChange解除绑定", ["输入数据类型", r.Type], ["actionNameList", t], ["moveAxisNameList", e], ["cameraAxisNameList", n]);
     }
-    InputController.uzf.Stop();
+    InputController.egg.Stop();
   }
-  static Nhf(t) {
-    InputController.czf.Start();
+  static n_f(t) {
+    InputController.tgg.Start();
     InputController.Model.SetCurrentInputDataType(t);
     var e;
     var n;
     var r;
     var t = InputController.Model.GetCurrentInputData();
-    if (t && (e = t.GetActionNameList(), n = t.GetMoveAxisList(), r = t.GetCameraAxisList(), ControllerHolder_1.ControllerHolder.InputDistributeController.BindActions(e, this.bMe), ControllerHolder_1.ControllerHolder.InputDistributeController.BindAxes(n, this.BMe), ControllerHolder_1.ControllerHolder.InputDistributeController.BindAxes(r, this.wMe), InputController.dzf.Start(), InputManager_1.InputManager.AddViewHotKeyActionByType(t.Type), InputController.dzf.Stop(), InputController.mzf.Start(), InputSettingsManager_1.InputSettingsManager.SwitchKeysByBindingType(t.KeyBindingType), InputController.mzf.Stop(), Log_1.Log.CheckInfo())) {
+    if (t && (e = t.GetActionNameList(), n = t.GetMoveAxisList(), r = t.GetCameraAxisList(), ControllerHolder_1.ControllerHolder.InputDistributeController.BindActions(e, this.bMe), ControllerHolder_1.ControllerHolder.InputDistributeController.BindAxes(n, this.BMe), ControllerHolder_1.ControllerHolder.InputDistributeController.BindAxes(r, this.wMe), InputController.igg.Start(), InputManager_1.InputManager.AddViewHotKeyActionByType(t.Type), InputController.igg.Stop(), InputController.rgg.Start(), InputSettingsManager_1.InputSettingsManager.SwitchKeysByBindingType(t.KeyBindingType), InputController.rgg.Stop(), Log_1.Log.CheckInfo())) {
       Log_1.Log.Info("Input", 10, "InstanceChange绑定输入", ["输入数据类型", t.Type], ["actionNameList", e], ["moveAxisNameList", n], ["cameraAxisNameList", r]);
     }
-    InputController.czf.Stop();
+    InputController.tgg.Stop();
   }
-  static azm(t) {
-    InputController.fzf.Start();
+  static jZm(t) {
+    InputController.ogg.Start();
     var t = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(t);
     if (t) {
-      t = InputDataTypeCreatorFactory_1.InputDataTypeCreatorFactory.GetInputDataCreator(t.InstSubType).GetInputDataType();
-      InputController.Nhf(t);
-      InputController.fzf.Stop();
+      t = InputDataTypeCreatorFactory_1.InputDataTypeCreatorFactory.GetInputDataCreator(t.InstSubType, t.WorldDungeonSubType).GetInputDataType();
+      InputController.n_f(t);
+      InputController.ogg.Stop();
     }
   }
-  static hzm(t) {
-    InputController.szm();
-    InputController.azm(t);
+  static $Zm(t) {
+    InputController.HZm();
+    InputController.jZm(t);
   }
   static GmSwitchBattleInputData(t) {
-    InputController.szm();
-    InputController.Nhf(t);
+    InputController.HZm();
+    InputController.n_f(t);
   }
   static AddInputHandler(t) {
     this.Model.AddInputHandler(t);
@@ -393,11 +393,11 @@ exports.InputController = InputController;
 (_a = InputController).HMe = Stats_1.Stat.Create("InputController.PostProcessInput");
 InputController.FMe = Stats_1.Stat.Create("InputController.HandleInputAxis");
 InputController.VMe = Stats_1.Stat.Create("InputController.HandleHold");
-InputController.uzf = Stats_1.Stat.Create("InputController.UnBindInputData");
-InputController.czf = Stats_1.Stat.Create("InputController.HandleBindInputData");
-InputController.fzf = Stats_1.Stat.Create("InputController.BindInputData");
-InputController.dzf = Stats_1.Stat.Create("InputController.AddViewHotKeyActionByType");
-InputController.mzf = Stats_1.Stat.Create("InputController.SwitchKeysByBindingType");
+InputController.egg = Stats_1.Stat.Create("InputController.UnBindInputData");
+InputController.tgg = Stats_1.Stat.Create("InputController.HandleBindInputData");
+InputController.ogg = Stats_1.Stat.Create("InputController.BindInputData");
+InputController.igg = Stats_1.Stat.Create("InputController.AddViewHotKeyActionByType");
+InputController.rgg = Stats_1.Stat.Create("InputController.SwitchKeysByBindingType");
 InputController.GMe = true;
 InputController.NMe = true;
 InputController.OMe = true;
@@ -458,14 +458,14 @@ InputController.PMe = t => {
   }
 };
 InputController.jUc = (t, e) => {
-  InputController.hzm(e);
+  InputController.$Zm(e);
 };
-InputController.nzm = t => {
+InputController.VZm = t => {
   var e = ModelManager_1.ModelManager.CreatureModel.GetInstanceId();
   if (Log_1.Log.CheckInfo()) {
     Log_1.Log.Info("Input", 10, "刷新当前绑定输入", ["原因", t], ["当前副本id", e]);
   }
-  InputController.hzm(e);
+  InputController.$Zm(e);
 };
 InputController.xMe = t => {
   var e;

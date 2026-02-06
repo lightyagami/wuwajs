@@ -60,6 +60,7 @@ let NpcPerformComponent = class NpcPerformComponent extends BasePerformComponent
     this.IsNpcOutShowRangeInternal = false;
     this.IsNpcVisible = true;
     this.IsNpcFirstVisible = true;
+    this.IsNpcIgnoreCameraHideInternal = false;
     this.CueHandles = new Set();
     this.MaterialController = undefined;
     this.IsPendingDestroy = false;
@@ -71,6 +72,9 @@ let NpcPerformComponent = class NpcPerformComponent extends BasePerformComponent
       }
     };
   }
+  get IsNpcIgnoreCameraHide() {
+    return this.IsNpcIgnoreCameraHideInternal;
+  }
   get IsNpcOutShowRange() {
     return this.IsNpcOutShowRangeInternal;
   }
@@ -80,7 +84,7 @@ let NpcPerformComponent = class NpcPerformComponent extends BasePerformComponent
   OnStart() {
     super.OnStart();
     this.ActorComp = this.Entity.GetComponent(2);
-    this.AnimComp = this.Entity.GetComponent(45);
+    this.AnimComp = this.Entity.GetComponent(47);
     this.Owner = this.ActorComp.Owner;
     this.InitFromEntityData();
     this.MaterialController = new NpcMaterialController_1.NpcMaterialController(this.Entity);
@@ -127,13 +131,13 @@ let NpcPerformComponent = class NpcPerformComponent extends BasePerformComponent
           Log_1.Log.Debug("NPC", 50, "[NpcPerformComp] NPC显示", ["PbDataId", this.ActorComp?.CreatureData.GetPbDataId()], ["CreatureData", this.ActorComp?.CreatureData.GetCreatureDataId()], ["Reason", e]);
         }
         i.EnterAppearEffect(1, 1, false);
-        this.Entity.GetComponent(85)?.EnableHeadInfo(true);
+        this.Entity.GetComponent(87)?.EnableHeadInfo(true);
       } else {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("NPC", 50, "[NpcPerformComp] NPC隐藏", ["PbDataId", this.ActorComp?.CreatureData.GetPbDataId()], ["CreatureData", this.ActorComp?.CreatureData.GetCreatureDataId()], ["Reason", e]);
         }
         i.EnterDisappearEffect(1, 1, false);
-        this.Entity.GetComponent(85)?.EnableHeadInfo(false);
+        this.Entity.GetComponent(87)?.EnableHeadInfo(false);
       }
     }
   }
@@ -196,8 +200,8 @@ let NpcPerformComponent = class NpcPerformComponent extends BasePerformComponent
       Context: "[NpcPerformComponent.FixNpcOnInitLocation]"
     });
     this.ActorComp.SetActorLocation(MathUtils_1.MathUtils.CommonTempVector.ToUeVector(), "NPC待机表演使用固定位置", false);
-    var t = this.Entity.GetComponent(190);
-    var e = this.Entity.GetComponent(122);
+    var t = this.Entity.GetComponent(192);
+    var e = this.Entity.GetComponent(124);
     t?.Disable("NPC待机表演使用固定位置");
     e?.Disable("NPC待机表演使用固定位置");
   }
@@ -270,8 +274,15 @@ let NpcPerformComponent = class NpcPerformComponent extends BasePerformComponent
           this.CueHandles.add(i.AddCue(r));
         }
       }
+      if (e?.NpcSpecialMarks) {
+        for (const o of e.NpcSpecialMarks) {
+          if (o.Type === IComponent_1.ESpecialNpcMarkType.IgnoreCameraHideNpc) {
+            this.IsNpcIgnoreCameraHideInternal = true;
+          }
+        }
+      }
     }
   }
 };
-NpcPerformComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(196)], NpcPerformComponent);
+NpcPerformComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(198)], NpcPerformComponent);
 exports.NpcPerformComponent = NpcPerformComponent; //# sourceMappingURL=NpcPerformComponent.js.map

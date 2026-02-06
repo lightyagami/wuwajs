@@ -10,6 +10,7 @@ const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
 const PublicUtil_1 = require("../../../../Common/PublicUtil");
 const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../../../Manager/ModelManager");
 const BehaviorNodeBase_1 = require("../BehaviorNodeBase");
 class ChildQuestNodeBase extends BehaviorNodeBase_1.BehaviorNodeBase {
   constructor(t) {
@@ -30,6 +31,11 @@ class ChildQuestNodeBase extends BehaviorNodeBase_1.BehaviorNodeBase {
   }
   get IsFinished() {
     return this.ChildQuestStatus === Protocol_1.Aki.Protocol.FNs.Proto_CQNS_Finished;
+  }
+  get TrackLevelPlay() {
+    if (this.TrackTarget?.TrackType.Type === "LevelPlay") {
+      return this.TrackTarget.TrackType;
+    }
   }
   Init(t, e, i, s, h) {
     if (s.Type === "ChildQuest" && (super.Init(t, e, i, s, h), this.ChildQuestStatus = Protocol_1.Aki.Protocol.FNs.Proto_CQNS_NotActive, this.CustomTrackIconId = s.CustomIcon ?? 0, i.nEs)) {
@@ -58,6 +64,10 @@ class ChildQuestNodeBase extends BehaviorNodeBase_1.BehaviorNodeBase {
     if (this.ModifyTrackAreaTextConfig) {
       this.Blackboard?.AddModifyTrackAreaConfig(this.NodeId, this.ModifyTrackAreaTextConfig);
     }
+    if (this.TrackLevelPlay) {
+      ModelManager_1.ModelManager.GeneralLogicTreeModel.AddLevelPlayTrackBinding(this.NodeId, this.TreeIncId, this.TrackLevelPlay.LevelPlayId);
+      this.Blackboard?.AddTag(17, this.NodeId.toString());
+    }
   }
   il(t) {
     this.AddEventsOnChildQuestStart();
@@ -74,6 +84,10 @@ class ChildQuestNodeBase extends BehaviorNodeBase_1.BehaviorNodeBase {
     }
     if (this.ModifyTrackAreaTextConfig) {
       this.Blackboard?.RemoveModifyTrackAreaConfig(this.NodeId);
+    }
+    if (this.TrackLevelPlay) {
+      ModelManager_1.ModelManager.GeneralLogicTreeModel.RemoveLevelPlayTrackBinding(this.TreeIncId, this.TrackLevelPlay.LevelPlayId);
+      this.Blackboard?.RemoveTag(17, this.NodeId.toString());
     }
   }
   wXt(t) {

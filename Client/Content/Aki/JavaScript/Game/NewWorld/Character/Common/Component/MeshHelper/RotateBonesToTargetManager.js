@@ -76,7 +76,7 @@ class RotateBonesToTargetManager {
     this.aXa = 100;
     this.hXa = 100;
     this.lle = Vector_1.Vector.Create();
-    this.cBe = this.ActorComp.Entity.GetComponent(41);
+    this.cBe = this.ActorComp.Entity.GetComponent(43);
   }
   ClearObject() {
     this.OPt.RemoveAllNodeWithoutHead();

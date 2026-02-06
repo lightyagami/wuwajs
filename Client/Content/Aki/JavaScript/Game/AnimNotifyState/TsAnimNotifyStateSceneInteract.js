@@ -67,7 +67,7 @@ class TsAnimNotifyStateSceneInteract extends UE.KuroAnimNotifyState {
           if (this.ShieldWaterMoveEffect) {
             e = r.GetEntityNoBlueprint();
             if (e?.Valid) {
-              a = e.GetComponent(215);
+              a = e.GetComponent(217);
               if (a) {
                 a.TagContainer.UpdateExactTag(4, -1921814084, 1);
               }
@@ -92,7 +92,7 @@ class TsAnimNotifyStateSceneInteract extends UE.KuroAnimNotifyState {
           if (this.ShieldWaterMoveEffect) {
             r = i.CharacterActorComponent?.Entity;
             if (r?.Valid) {
-              e = r.GetComponent(215);
+              e = r.GetComponent(217);
               if (e) {
                 e.TagContainer.UpdateExactTag(4, -1921814084, -1);
               }

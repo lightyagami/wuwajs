@@ -16,6 +16,9 @@ class SlashAndTowerCfg {
   get Season() {
     return this.season();
   }
+  get SeasonVersion() {
+    return this.seasonversion();
+  }
   get EndLess() {
     return this.endless();
   }
@@ -73,15 +76,23 @@ class SlashAndTowerCfg {
       return 0;
     }
   }
-  endless() {
+  seasonversion() {
     var t = this.J7.__offset(this.z7, 8);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  endless() {
+    var t = this.J7.__offset(this.z7, 10);
     return !!t && !!this.J7.readInt8(this.z7 + t);
   }
   GetInstidsAt(t) {
     return this.instids(t);
   }
   instids(t) {
-    var s = this.J7.__offset(this.z7, 10);
+    var s = this.J7.__offset(this.z7, 12);
     if (s) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + s) + t * 4);
     } else {
@@ -89,7 +100,7 @@ class SlashAndTowerCfg {
     }
   }
   instidsLength() {
-    var t = this.J7.__offset(this.z7, 10);
+    var t = this.J7.__offset(this.z7, 12);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -97,7 +108,7 @@ class SlashAndTowerCfg {
     }
   }
   instidsArray() {
-    var t = this.J7.__offset(this.z7, 10);
+    var t = this.J7.__offset(this.z7, 12);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -108,7 +119,7 @@ class SlashAndTowerCfg {
     return this.prelevel(t);
   }
   prelevel(t) {
-    var s = this.J7.__offset(this.z7, 12);
+    var s = this.J7.__offset(this.z7, 14);
     if (s) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + s) + t * 4);
     } else {
@@ -116,7 +127,7 @@ class SlashAndTowerCfg {
     }
   }
   prelevelLength() {
-    var t = this.J7.__offset(this.z7, 12);
+    var t = this.J7.__offset(this.z7, 14);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -124,7 +135,7 @@ class SlashAndTowerCfg {
     }
   }
   prelevelArray() {
-    var t = this.J7.__offset(this.z7, 12);
+    var t = this.J7.__offset(this.z7, 14);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -132,14 +143,6 @@ class SlashAndTowerCfg {
     }
   }
   passscore() {
-    var t = this.J7.__offset(this.z7, 14);
-    if (t) {
-      return this.J7.readInt32(this.z7 + t);
-    } else {
-      return 0;
-    }
-  }
-  levelpassreward() {
     var t = this.J7.__offset(this.z7, 16);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
@@ -147,8 +150,16 @@ class SlashAndTowerCfg {
       return 0;
     }
   }
+  levelpassreward() {
+    var t = this.J7.__offset(this.z7, 18);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
   title(t) {
-    var s = this.J7.__offset(this.z7, 18);
+    var s = this.J7.__offset(this.z7, 20);
     var s = s ? this.J7.__string(this.z7 + s, t) : null;
     if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(s);
@@ -156,7 +167,7 @@ class SlashAndTowerCfg {
     return s;
   }
   desc(t) {
-    var s = this.J7.__offset(this.z7, 20);
+    var s = this.J7.__offset(this.z7, 22);
     var s = s ? this.J7.__string(this.z7 + s, t) : null;
     if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(s);
@@ -167,7 +178,7 @@ class SlashAndTowerCfg {
     return this.targetscore(t);
   }
   targetscore(t) {
-    var s = this.J7.__offset(this.z7, 22);
+    var s = this.J7.__offset(this.z7, 24);
     if (s) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + s) + t * 4);
     } else {
@@ -175,7 +186,7 @@ class SlashAndTowerCfg {
     }
   }
   targetscoreLength() {
-    var t = this.J7.__offset(this.z7, 22);
+    var t = this.J7.__offset(this.z7, 24);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -183,7 +194,7 @@ class SlashAndTowerCfg {
     }
   }
   targetscoreArray() {
-    var t = this.J7.__offset(this.z7, 22);
+    var t = this.J7.__offset(this.z7, 24);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -194,7 +205,7 @@ class SlashAndTowerCfg {
     return this.scorestage(t);
   }
   scorestage(t, s) {
-    var i = this.J7.__offset(this.z7, 24);
+    var i = this.J7.__offset(this.z7, 26);
     var i = i ? this.J7.__string(this.J7.__vector(this.z7 + i) + t * 4, s) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -202,7 +213,7 @@ class SlashAndTowerCfg {
     return i;
   }
   scorestageLength() {
-    var t = this.J7.__offset(this.z7, 24);
+    var t = this.J7.__offset(this.z7, 26);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -210,11 +221,11 @@ class SlashAndTowerCfg {
     }
   }
   ishavebattlescore() {
-    var t = this.J7.__offset(this.z7, 26);
+    var t = this.J7.__offset(this.z7, 28);
     return !!t && !!this.J7.readInt8(this.z7 + t);
   }
   orderindex() {
-    var t = this.J7.__offset(this.z7, 28);
+    var t = this.J7.__offset(this.z7, 30);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {

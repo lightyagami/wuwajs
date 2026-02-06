@@ -11,40 +11,40 @@ const MarkItemSelectHandle_1 = require("./MarkItemSelectHandle");
 class PhantomArenaNpcMarkItemSelectHandle extends MarkItemSelectHandle_1.MarkItemSelectHandle {
   constructor() {
     super(...arguments);
-    this.PFf = undefined;
-    this.AFf = undefined;
+    this.o9f = undefined;
+    this.n9f = undefined;
   }
   async LoadComponentAsync() {
     if (ModelManager_1.ModelManager.MapModel?.IsExtraUiMarkTypeVisible(2, 45)) {
-      if (this.AFf === undefined) {
-        this.AFf = new PhantomArenaNpcMarkSelectComponent_1.PhantomArenaNpcMarkSelectComponent();
-        await this.AFf?.CreateByPoolResourceIdAsync("UiItem_SoundRemnantArenaNpc_Select", this.Context.MarkRootItem);
+      if (this.n9f === undefined) {
+        this.n9f = new PhantomArenaNpcMarkSelectComponent_1.PhantomArenaNpcMarkSelectComponent();
+        await this.n9f?.CreateByPoolResourceIdAsync("UiItem_SoundRemnantArenaNpc_Select", this.Context.MarkRootItem);
       }
-      this.ComponentInternal = this.AFf;
+      this.ComponentInternal = this.n9f;
     } else {
-      if (this.PFf === undefined) {
-        this.PFf = new MarkSelectComponent_1.MarkSelectComponent();
-        await this.PFf.CreateByPoolResourceIdAsync("UiItem_MarkChoose_Prefab", this.Context.MarkComponentContainer);
+      if (this.o9f === undefined) {
+        this.o9f = new MarkSelectComponent_1.MarkSelectComponent();
+        await this.o9f.CreateByPoolResourceIdAsync("UiItem_MarkChoose_Prefab", this.Context.MarkComponentContainer);
       }
-      this.ComponentInternal = this.PFf;
+      this.ComponentInternal = this.o9f;
     }
     return this.ComponentInternal;
   }
   GetOrCreateComponent() {
     if (ModelManager_1.ModelManager.MapModel?.IsExtraUiMarkTypeVisible(2, 45)) {
-      if (this.AFf === undefined) {
+      if (this.n9f === undefined) {
         this.LoadComponentAsync().then(() => {
           this.ApplyModified();
         });
       }
-      this.ComponentInternal = this.AFf;
+      this.ComponentInternal = this.n9f;
     } else {
-      if (this.PFf === undefined) {
+      if (this.o9f === undefined) {
         this.LoadComponentAsync().then(() => {
           this.ApplyModified();
         });
       }
-      this.ComponentInternal = this.PFf;
+      this.ComponentInternal = this.o9f;
     }
     return this.ComponentInternal;
   }

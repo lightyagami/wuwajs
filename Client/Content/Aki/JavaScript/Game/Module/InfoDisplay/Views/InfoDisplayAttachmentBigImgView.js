@@ -12,7 +12,7 @@ const UiViewBase_1 = require("../../../Ui/Base/UiViewBase");
 class InfoDisplayAttachmentBigImgView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
-    this.QKf = "Image";
+    this.E1g = "Image";
     this.Jvt = () => {
       this.CloseMe();
     };
@@ -22,11 +22,11 @@ class InfoDisplayAttachmentBigImgView extends UiViewBase_1.UiViewBase {
     this.BtnBindInfo = [[1, this.Jvt]];
   }
   async OnBeforeStartAsync() {
-    this.QKf = ModelManager_1.ModelManager.InfoDisplayModel.GetCurrentShowAttachmentType();
+    this.E1g = ModelManager_1.ModelManager.InfoDisplayModel.GetCurrentShowAttachmentType();
     this.GetTexture(0).SetUIActive(false);
     this.GetItem(3).SetUIActive(false);
     this.GetTexture(4).SetUIActive(false);
-    switch (this.QKf) {
+    switch (this.E1g) {
       case "Image":
         this.GetTexture(0).SetUIActive(true);
         this.GetTexture(4).SetUIActive(true);

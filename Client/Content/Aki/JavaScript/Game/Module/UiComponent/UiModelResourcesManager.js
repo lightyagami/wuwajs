@@ -6,12 +6,11 @@ Object.defineProperty(exports, "__esModule", {
 exports.UiModelResourcesManager = undefined;
 const UE = require("ue");
 const Log_1 = require("../../../Core/Common/Log");
+const LoadModeManager_1 = require("../../../Core/Performance/LoadMode/LoadModeManager");
 const ResourceSystem_1 = require("../../../Core/Resource/ResourceSystem");
 const ModelUtil_1 = require("../../../Core/Utils/ModelUtil");
-const GlobalData_1 = require("../../GlobalData");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
 const EffectUtil_1 = require("../../Utils/EffectUtil");
-const LOADMODE_REASON_STRING = "UiModelResourcesManager.LoadUiModelResources";
 class UiModelResourcesManager {
   static get cxo() {
     return UiModelResourcesManager.mxo++;
@@ -25,27 +24,27 @@ class UiModelResourcesManager {
       return 0;
     }
     const s = [];
-    const t = [];
-    const l = UiModelResourcesManager.cxo;
-    const i = new Map();
-    ResourceSystem_1.ResourceSystem.SetLoadModeInLoading(GlobalData_1.GlobalData.World, LOADMODE_REASON_STRING);
-    UiModelResourcesManager.dxo.set(l, []);
+    const M = [];
+    const i = UiModelResourcesManager.cxo;
+    const t = new Map();
+    LoadModeManager_1.LoadModeManager.SetLoadModeByReason("Loading", "LoadUiModelResources");
+    UiModelResourcesManager.dxo.set(i, []);
     for (const o of r) {
       var e = ResourceSystem_1.ResourceSystem.LoadAsync(o, UE.Object, (e, o) => {
         if (e) {
           s.push(o);
-          i.set(o, e);
+          t.set(o, e);
         }
-        t.push(o);
-        if (t.length === r.length && (UiModelResourcesManager.dxo.delete(l), s.length !== t.length ? a?.(3) : a?.(2, i), ResourceSystem_1.ResourceSystem.IsLoadingReasonNotEmpty(LOADMODE_REASON_STRING))) {
-          ResourceSystem_1.ResourceSystem.SetLoadModeInGame(GlobalData_1.GlobalData.World, LOADMODE_REASON_STRING);
+        M.push(o);
+        if (M.length === r.length && (UiModelResourcesManager.dxo.delete(i), s.length !== M.length ? a?.(3) : a?.(2, t), LoadModeManager_1.LoadModeManager.IsReasonTargetNotDefault("LoadUiModelResources"))) {
+          LoadModeManager_1.LoadModeManager.ResetLoadModeByReason("LoadUiModelResources");
         }
       }, 100, "Ui.UiSceneModel");
-      if (UiModelResourcesManager.dxo.has(l)) {
-        UiModelResourcesManager.dxo.get(l).push(e);
+      if (UiModelResourcesManager.dxo.has(i)) {
+        UiModelResourcesManager.dxo.get(i).push(e);
       }
     }
-    return l;
+    return i;
   }
   static LoadUiRoleAllResourceByRoleConfigId(e, o) {
     var r = [];
@@ -60,8 +59,8 @@ class UiModelResourcesManager {
         for (const e of o) {
           ResourceSystem_1.ResourceSystem.CancelAsyncLoad(e);
         }
-        if (ResourceSystem_1.ResourceSystem.IsLoadingReasonNotEmpty(LOADMODE_REASON_STRING)) {
-          ResourceSystem_1.ResourceSystem.SetLoadModeInGame(GlobalData_1.GlobalData.World, LOADMODE_REASON_STRING);
+        if (LoadModeManager_1.LoadModeManager.IsReasonTargetNotDefault("LoadUiModelResources")) {
+          LoadModeManager_1.LoadModeManager.ResetLoadModeByReason("LoadUiModelResources");
         }
       }
     }

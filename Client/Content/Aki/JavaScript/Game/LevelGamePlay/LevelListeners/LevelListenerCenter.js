@@ -8,6 +8,7 @@ const Log_1 = require("../../../Core/Common/Log");
 const LevelConditionListenerCheckClientEvent_1 = require("./LevelConditionListenerCheckClientEvent");
 const LevelConditionListenerCheckEntitiesExist_1 = require("./LevelConditionListenerCheckEntitiesExist");
 const LevelConditionListenerCheckEntityHasSceneItemAttributeTag_1 = require("./LevelConditionListenerCheckEntityHasSceneItemAttributeTag");
+const LevelConditionListenerCheckFollowShooterActive_1 = require("./LevelConditionListenerCheckFollowShooterActive");
 const LevelConditionListenerCheckMusicBeatsEvent_1 = require("./LevelConditionListenerCheckMusicBeatsEvent");
 const LevelConditionListenerCheckSceneItemDirection_1 = require("./LevelConditionListenerCheckSceneItemDirection");
 const LevelConditionListenerCompareEntityState_1 = require("./LevelConditionListenerCompareEntityState");
@@ -48,6 +49,7 @@ class LevelListenerCenter {
     this.cqd(4, LevelConditionListenerCompareVar_1.LevelConditionListenerCompareVar);
     this.cqd(5, LevelConditionListenerCheckEntitiesExist_1.LevelConditionListenerCheckEntitiesExist);
     this.cqd(6, LevelConditionListenerCheckEntityHasSceneItemAttributeTag_1.LevelConditionListenerCheckEntityHasSceneItemAttributeTag);
+    this.cqd(7, LevelConditionListenerCheckFollowShooterActive_1.LevelConditionListenerCheckFollowShooterActive);
     this.dqd("CheckClientEvent", 0);
     this.dqd("CheckMusicBeatsEvent", 1);
     this.dqd("CheckSceneItemDirection", 2);
@@ -56,6 +58,7 @@ class LevelListenerCenter {
     this.dqd("CompareVar", 4);
     this.dqd("CheckEntitesExist", 5);
     this.dqd("CheckEntityHasSceneItemAttributeTag", 6);
+    this.dqd("CheckFollowShooterActive", 7);
   }
   static cqd(e, t) {
     if (this.nqd && this.aqd) {

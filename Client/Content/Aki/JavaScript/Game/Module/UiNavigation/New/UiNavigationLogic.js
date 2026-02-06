@@ -38,7 +38,7 @@ class UiNavigationLogic {
   static oj1(i, e) {
     return !!e && (!!e.SlideToRightOrDown && !!i || !!e.SlideToLeftOrTop && !i);
   }
-  static FBm(i, e, a) {
+  static j2m(i, e, a) {
     var t = i.ScrollProxy?.ScrollView;
     var i = i.GetNavigationGroup();
     var n = a === 2 || a === 4;
@@ -56,7 +56,7 @@ class UiNavigationLogic {
       }
     }
   }
-  static NBm(i, e, a) {
+  static H2m(i, e, a) {
     var t = e.GetNavigationGroup();
     var t = e.ScrollProxy?.ScrollView?.Horizontal ? t.HorizontalWrapMode : t.VerticalWrapMode;
     var n = e.ScrollProxy?.ScrollView;
@@ -65,10 +65,10 @@ class UiNavigationLogic {
   }
   static TBo(i, e, a) {
     if (i?.HasNormalScrollView()) {
-      UiNavigationLogic.FBm(i, e, a);
+      UiNavigationLogic.j2m(i, e, a);
     }
     if (e?.HasDynamicScrollView()) {
-      UiNavigationLogic.NBm(i, e, a);
+      UiNavigationLogic.H2m(i, e, a);
     }
   }
   static LBo(i) {

@@ -17,14 +17,14 @@ const ActivitySubViewRoadBook_1 = require("./View/ActivitySubViewRoadBook");
 class ActivityRoadBookController extends ActivityControllerBase_1.ActivityControllerBase {
   constructor() {
     super(...arguments);
-    this.w9m = e => {
+    this.AHm = e => {
       var t = ActivityRoadBookController.GetRoadBookData();
       if (t) {
         if (e.T$s) {
           t.RefreshTravelTaskData(e.T$s);
         }
-        if (e.J7m) {
-          t.RefreshMotorChallengePlayData(e.J7m);
+        if (e.Ujm) {
+          t.RefreshMotorChallengePlayData(e.Ujm);
         }
         if (e.ME_) {
           t.UnlockAreaData(e.ME_);
@@ -38,10 +38,10 @@ class ActivityRoadBookController extends ActivityControllerBase_1.ActivityContro
   }
   OnOpenView(e) {}
   OnRegisterNetEvent() {
-    Net_1.Net.Register(15845, this.w9m);
+    Net_1.Net.Register(28238, this.AHm);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(15845);
+    Net_1.Net.UnRegister(28238);
   }
   OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnCommonItemCountAnyChange, ActivityRoadBookController.qdi);
@@ -67,11 +67,11 @@ class ActivityRoadBookController extends ActivityControllerBase_1.ActivityContro
     return t = e ? e[0] : t;
   }
   static RequestRoadBookLevelUp(t) {
-    var e = Protocol_1.Aki.Protocol.V7m.create();
-    Net_1.Net.Call(21018, e, e => {
+    var e = Protocol_1.Aki.Protocol.Ejm.create();
+    Net_1.Net.Call(22215, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26469);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29529);
           t?.(false);
         } else if (e = ActivityRoadBookController.GetRoadBookData()) {
           e.TravelLevel++;
@@ -89,11 +89,11 @@ class ActivityRoadBookController extends ActivityControllerBase_1.ActivityContro
   static RequestMultiRoadBookTaskReward(o) {
     var e;
     if (o && o.length !== 0) {
-      (e = Protocol_1.Aki.Protocol.H7m.create()).B6n = o;
-      Net_1.Net.Call(20237, e, e => {
+      (e = Protocol_1.Aki.Protocol.Tjm.create()).B6n = o;
+      Net_1.Net.Call(17004, e, e => {
         if (e) {
           if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16940);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17437);
           } else {
             const t = ActivityRoadBookController.GetRoadBookData();
             if (t) {
@@ -109,11 +109,11 @@ class ActivityRoadBookController extends ActivityControllerBase_1.ActivityContro
     }
   }
   static RequestTakeTaskFinalReward() {
-    var e = Protocol_1.Aki.Protocol.F7m.create();
-    Net_1.Net.Call(23917, e, e => {
+    var e = Protocol_1.Aki.Protocol.Sjm.create();
+    Net_1.Net.Call(19993, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17890);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24503);
         } else if (e = ActivityRoadBookController.GetRoadBookData()) {
           e.TaskFinalRewardData.IsReceived = true;
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, e.Id);
@@ -125,11 +125,11 @@ class ActivityRoadBookController extends ActivityControllerBase_1.ActivityContro
   static RequestMultiTakeMotorChallengeReward(o) {
     var e;
     if (o && o.length !== 0) {
-      (e = Protocol_1.Aki.Protocol.W7m.create()).B6n = o;
-      Net_1.Net.Call(24341, e, e => {
+      (e = Protocol_1.Aki.Protocol.Rjm.create()).B6n = o;
+      Net_1.Net.Call(27457, e, e => {
         if (e) {
           if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20465);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25435);
           } else {
             const t = ActivityRoadBookController.GetRoadBookData();
             if (t) {

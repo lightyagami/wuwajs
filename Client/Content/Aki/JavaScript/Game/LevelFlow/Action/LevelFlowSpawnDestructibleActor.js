@@ -14,19 +14,19 @@ const LevelFlowActionBase_1 = require("./LevelFlowActionBase");
 class LevelFlowSpawnDestructibleActor extends LevelFlowActionBase_1.LevelFlowActionBase {
   constructor() {
     super(...arguments);
-    this.hHm = [];
-    this.eTm = false;
+    this.F$m = [];
+    this.cTm = false;
     this.E0 = 0;
   }
   Init(e, t, o) {
-    this.hHm = e;
-    this.eTm = t;
+    this.F$m = e;
+    this.cTm = t;
     this.E0 = o;
     return this;
   }
   OnExecute() {
-    if (this.eTm) {
-      for (const a of this.hHm) {
+    if (this.cTm) {
+      for (const a of this.F$m) {
         LevelFlowResourceManager_1.LevelFlowResourceManager.ReleaseDestructibleActor(a);
       }
       this.FinishExecute(true);
@@ -35,7 +35,7 @@ class LevelFlowSpawnDestructibleActor extends LevelFlowActionBase_1.LevelFlowAct
       if (e) {
         var t = e.Entity.GetComponent(1);
         if (t) {
-          for (const s of this.hHm) {
+          for (const s of this.F$m) {
             var o = DataTableUtil_1.DataTableUtil.GetDataTableRowFromName(27, s.toString());
             if (o === undefined) {
               if (Log_1.Log.CheckError()) {
@@ -90,7 +90,7 @@ class LevelFlowSpawnDestructibleActor extends LevelFlowActionBase_1.LevelFlowAct
   }
   LogExecuteInfo() {
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("LevelFlow", 58, "执行行为", ["ActionId", this.ActionId], ["ActionName", this.constructor.name], ["EntityId", this.E0], ["DestructibleIdList", this.hHm.toString()]);
+      Log_1.Log.Info("LevelFlow", 58, "执行行为", ["ActionId", this.ActionId], ["ActionName", this.constructor.name], ["EntityId", this.E0], ["DestructibleIdList", this.F$m.toString()]);
     }
   }
 }

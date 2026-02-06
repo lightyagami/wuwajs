@@ -13,7 +13,7 @@ class MotorRouletteMainViewProxy extends RouletteMainViewProxyBase_1.RouletteMai
     super(...arguments);
     this.Cpo = undefined;
     this.gpo = undefined;
-    this.sGf = [3, 1];
+    this.C6f = [3, 1];
   }
   OnGetRouletteComponent() {
     if (this.RouletteType === 3) {
@@ -34,7 +34,7 @@ class MotorRouletteMainViewProxy extends RouletteMainViewProxyBase_1.RouletteMai
   }
   OnCanOpenView() {
     if (Info_1.Info.IsInGamepad()) {
-      return this.sGf.some(e => ModelManager_1.ModelManager.RouletteModel.RouletteListDataMap.get(e).IsMainRouletteCanOpenView(true));
+      return this.C6f.some(e => ModelManager_1.ModelManager.RouletteModel.RouletteListDataMap.get(e).IsMainRouletteCanOpenView(true));
     }
     let e = ModelManager_1.ModelManager.RouletteModel.GetRouletteActionOpenConfig(this.ActionType);
     if (e === 0) {
@@ -60,10 +60,10 @@ class MotorRouletteMainViewProxy extends RouletteMainViewProxyBase_1.RouletteMai
     }
   }
   OnGetCanSwitchType() {
-    return !!Info_1.Info.IsInGamepad() && this.sGf.every(e => ModelManager_1.ModelManager.RouletteModel.RouletteListDataMap.get(e).IsMainRouletteCanOpenView(false));
+    return !!Info_1.Info.IsInGamepad() && this.C6f.every(e => ModelManager_1.ModelManager.RouletteModel.RouletteListDataMap.get(e).IsMainRouletteCanOpenView(false));
   }
   OnGetPanelSwitchOpen() {
-    return !!Info_1.Info.IsInGamepad() && this.sGf.every(e => ModelManager_1.ModelManager.RouletteModel.RouletteListDataMap.get(e).IsRouletteOpen());
+    return !!Info_1.Info.IsInGamepad() && this.C6f.every(e => ModelManager_1.ModelManager.RouletteModel.RouletteListDataMap.get(e).IsRouletteOpen());
   }
   OnRouletteTypeSwitch() {
     var e = this.RouletteType === 3;

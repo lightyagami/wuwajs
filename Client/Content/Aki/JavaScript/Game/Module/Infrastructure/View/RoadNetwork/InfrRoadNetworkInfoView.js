@@ -13,40 +13,40 @@ class InfrRoadNetworkInfoView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
     this.LSc = new InfrMaterialsDeliveryInfoPanel_1.InfrMaterialsDeliveryInfoPanel();
-    this.$vf = undefined;
-    this.q5m = e => {
-      this.dTf(e);
+    this.rEf = undefined;
+    this.i6m = e => {
+      this.ePf(e);
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem]];
   }
   async OnBeforeStartAsync() {
-    await this.w5m();
+    await this.QVm();
   }
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InfrastructureSelectRoadNetworkMark, this.q5m);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InfrastructureSelectRoadNetworkMark, this.i6m);
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InfrastructureSelectRoadNetworkMark, this.q5m);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InfrastructureSelectRoadNetworkMark, this.i6m);
   }
-  async w5m() {
+  async QVm() {
     await this.LSc.CreateThenShowByActorAsync(this.GetItem(0).GetOwner(), this.OpenParam.InfoParam);
   }
   OnStart() {
-    this.dTf(this.OpenParam);
+    this.ePf(this.OpenParam);
   }
-  dTf(e) {
-    this.$vf = e.CloseCb;
+  ePf(e) {
+    this.rEf = e.CloseCb;
     this.LSc.SetClickBtnBuildCb(e.BuildCb);
     this.LSc.SetClickCaptionCloseBtnCb(() => {
-      this.Wvf();
+      this.oEf();
     });
     this.LSc.Refresh(e.InfoParam);
   }
-  async Wvf() {
+  async oEf() {
     await this.CloseMeAsync();
-    this.$vf?.();
+    this.rEf?.();
   }
 }
 exports.InfrRoadNetworkInfoView = InfrRoadNetworkInfoView;

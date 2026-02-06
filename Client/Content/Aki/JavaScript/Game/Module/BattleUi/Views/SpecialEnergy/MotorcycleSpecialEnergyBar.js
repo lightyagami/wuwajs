@@ -12,91 +12,91 @@ class MotorcycleSpecialEnergyBar {
   constructor() {
     this.sit = undefined;
     this.EntityId = 0;
-    this.TLf = undefined;
-    this.CJm = undefined;
-    this.bLf = undefined;
-    this.RLf = undefined;
-    this.LLf = () => {
-      this.wLf();
+    this.kBf = undefined;
+    this.rtf = undefined;
+    this.qBf = undefined;
+    this.OBf = undefined;
+    this.GBf = () => {
+      this.FBf();
     };
-    this.PLf = (t, e) => {
+    this.NBf = (t, e) => {
       var i = this.IsEnable();
       if (e) {
-        this.ALf();
+        this.VBf();
       } else {
-        this.DLf();
+        this.HBf();
       }
       if (i !== this.IsEnable()) {
-        this.RLf?.();
+        this.OBf?.();
       }
     };
   }
   Init(t, e) {
     this.sit = t;
-    this.RLf = e;
-    this.wLf();
+    this.OBf = e;
+    this.FBf();
   }
   IsEnable() {
-    return this.TLf !== undefined;
+    return this.kBf !== undefined;
   }
   Destroy() {
-    this.ULf();
-    this.DLf();
-    this.CJm = undefined;
+    this.jBf();
+    this.HBf();
+    this.rtf = undefined;
   }
   Tick(t) {
-    this.TLf?.Tick(t);
+    this.kBf?.Tick(t);
   }
   AddEvents() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiMotorcycleStateChanged, this.LLf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiMotorcycleStateChanged, this.GBf);
   }
   RemoveEvents() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiMotorcycleStateChanged, this.LLf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiMotorcycleStateChanged, this.GBf);
   }
-  wLf() {
+  FBf() {
     var t = this.IsEnable();
     if (ModelManager_1.ModelManager.BattleUiModel.MotorcycleData.IsDriving) {
-      this.CJm = ModelManager_1.ModelManager.BattleUiModel.MotorcycleData.MotorcycleEntityHandle;
-      this.xLf(this.CJm.Entity);
+      this.rtf = ModelManager_1.ModelManager.BattleUiModel.MotorcycleData.MotorcycleEntityHandle;
+      this.$Bf(this.rtf.Entity);
     } else {
-      this.ULf();
-      this.DLf();
-      this.CJm = undefined;
+      this.jBf();
+      this.HBf();
+      this.rtf = undefined;
     }
     if (t !== this.IsEnable()) {
-      this.RLf?.();
+      this.OBf?.();
     }
   }
-  xLf(t) {
-    t = t.GetComponent(215);
-    this.bLf = t.ListenForTagAddOrRemove(923901365, this.PLf);
+  $Bf(t) {
+    t = t.GetComponent(217);
+    this.qBf = t.ListenForTagAddOrRemove(923901365, this.NBf);
     if (t.HasTag(923901365)) {
-      this.ALf();
+      this.VBf();
     }
   }
-  ULf() {
-    this.bLf?.EndTask();
-    this.bLf = undefined;
+  jBf() {
+    this.qBf?.EndTask();
+    this.qBf = undefined;
   }
-  ALf() {
-    if (this.TLf) {
-      this.DLf();
+  VBf() {
+    if (this.kBf) {
+      this.HBf();
     }
-    this.BLf(this.CJm);
+    this.WBf(this.rtf);
   }
-  async BLf(t) {
+  async WBf(t) {
     this.EntityId = t.Id;
     var e = ModelManager_1.ModelManager.BattleUiModel.SpecialEnergyBarData.GetSpecialEnergyBarInfo(101);
     if (e) {
-      this.TLf = new SpecialEnergyBarMotorcycle_1.SpecialEnergyBarMotorcycle();
-      this.TLf.InitMotorcycleData(t, e);
-      await this.TLf.InitByPathAsync(this.sit, e.PrefabPath);
+      this.kBf = new SpecialEnergyBarMotorcycle_1.SpecialEnergyBarMotorcycle();
+      this.kBf.InitMotorcycleData(t, e);
+      await this.kBf.InitByPathAsync(this.sit, e.PrefabPath);
     }
   }
-  DLf() {
-    if (this.TLf) {
-      this.TLf.Destroy();
-      this.TLf = undefined;
+  HBf() {
+    if (this.kBf) {
+      this.kBf.Destroy();
+      this.kBf = undefined;
     }
   }
 }

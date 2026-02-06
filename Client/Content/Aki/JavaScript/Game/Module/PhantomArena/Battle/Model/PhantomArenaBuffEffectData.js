@@ -16,14 +16,14 @@ class PhantomArenaBuffEffectData {
   }
   k31(t, e) {
     t = this.NewBuffEffectData(t, e);
-    this.Neg(t);
+    this.VPg(t);
   }
-  Neg(t) {
+  VPg(t) {
     this.B31.push(t);
-    this.Veg(t);
+    this.HPg(t);
   }
-  Veg(t) {
-    if (t.Effect?.Bif && (t = t.Effect.Bif).nys === Protocol_1.Aki.Protocol.$xm.Proto_GamerFighterPlayer) {
+  HPg(t) {
+    if (t.Effect?.Xof && (t = t.Effect.Xof).nys === Protocol_1.Aki.Protocol.pBm.Proto_GamerFighterPlayer) {
       ModelManager_1.ModelManager.PhantomArenaBattleModel.AddWaitReconstructCardIdList(t.$g1);
     }
   }
@@ -37,7 +37,7 @@ class PhantomArenaBuffEffectData {
     this.k31(t);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PhantomArenaTriggerSkillEffect);
   }
-  tBm(t, e) {
+  wBm(t, e) {
     t = {
       SourceFightId: t.sC1,
       SkillId: t._C1,
@@ -45,11 +45,11 @@ class PhantomArenaBuffEffectData {
       Effect: t.lC1,
       NotifyId: e
     };
-    this.Neg(t);
+    this.VPg(t);
   }
   PushBuffEffectDataByEffectList(t, e) {
     for (const f of t) {
-      this.tBm(f, e);
+      this.wBm(f, e);
     }
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PhantomArenaTriggerSkillEffect);
   }
@@ -61,7 +61,7 @@ class PhantomArenaBuffEffectData {
       Effect: e.lC1,
       NotifyId: f
     };
-    this.Neg(t);
+    this.VPg(t);
     if (i) {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PhantomArenaTriggerSkillEffect);
     }

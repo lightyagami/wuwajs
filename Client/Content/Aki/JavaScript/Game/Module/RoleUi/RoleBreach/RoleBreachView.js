@@ -40,7 +40,7 @@ class RoleBreachView extends UiViewBase_1.UiViewBase {
     this.b1o = undefined;
     this.q1o = undefined;
     this.yil = undefined;
-    this.pef = undefined;
+    this.Rif = undefined;
     this.CloseClick = () => {
       UiInteractLogReport_1.UiInteractLogReport.ReportSpaceKeyInteract(3);
       UiManager_1.UiManager.CloseView("RoleLevelUpView");
@@ -84,7 +84,7 @@ class RoleBreachView extends UiViewBase_1.UiViewBase {
     this.vke = () => {
       return new StarItem_1.StarItem();
     };
-    this.GEm = () => {
+    this.oIm = () => {
       var e;
       if (ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(this.dFe).GetLevelData().GetRoleIsMaxLevel()) {
         this.CloseMe();
@@ -179,7 +179,7 @@ class RoleBreachView extends UiViewBase_1.UiViewBase {
     this.yil.HandleReleaseScene();
   }
   Rgm() {
-    return this.pef ?? [];
+    return this.Rif ?? [];
   }
   OnAddEventListener() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RoleBreakUp, this.N1o);
@@ -213,11 +213,11 @@ class RoleBreachView extends UiViewBase_1.UiViewBase {
         }
       }
     }
-    this.pef = o.map(e => ({
+    this.Rif = o.map(e => ({
       ...e
     }));
     if (r > 0) {
-      this.pef.push({
+      this.Rif.push({
         ItemId: ItemDefines_1.EItemId.Gold,
         IncId: 0,
         Count: r,
@@ -281,7 +281,7 @@ class RoleBreachView extends UiViewBase_1.UiViewBase {
     this.StarLayout.RefreshByData(r);
   }
   O1o() {
-    var e = new RoleBreachSuccessViewData_1.RoleBreachSuccessViewData(this.dFe, this.GEm);
+    var e = new RoleBreachSuccessViewData_1.RoleBreachSuccessViewData(this.dFe, this.oIm);
     UiManager_1.UiManager.OpenView("RoleBreachSuccessView", e);
   }
 }

@@ -313,6 +313,13 @@ class TimeUtil {
     e.Append(i.toString().padStart(2, "0"));
     return e.ToString();
   }
+  static GetTimeDataFormatWithHour(t) {
+    var t = Math.max(0, t);
+    var e = Math.floor(t / TimeUtil.Hour);
+    var i = Math.floor(t % TimeUtil.Hour / TimeUtil.Minute);
+    var t = Math.floor(t % TimeUtil.Minute);
+    return `${e.toString().padStart(2, "0")}:${i.toString().padStart(2, "0")}:${t.toString().padStart(2, "0")}`;
+  }
   static GetTimeZoneOffset() {
     const t = UE.KismetMathLibrary.UtcNow();
     const e = UE.KismetMathLibrary.Now();

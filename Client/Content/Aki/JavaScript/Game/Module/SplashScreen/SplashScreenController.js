@@ -53,7 +53,7 @@ class SplashScreenController extends ControllerBase_1.ControllerBase {
         if (UiManager_1.UiManager.IsViewShow("BattleView")) {
           if (UiManager_1.UiManager.IsNormalContainerEmpty()) {
             if (e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity) {
-              if ((e = e.GetComponent(215)).HasTag(-1371021686) || e.HasTag(1996802261)) {
+              if ((e = e.GetComponent(217)).HasTag(-1371021686) || e.HasTag(1996802261)) {
                 if (Log_1.Log.CheckInfo()) {
                   Log_1.Log.Info("SplashScreenTask", 71, "处于战斗中，不运行开屏动画任务");
                 }

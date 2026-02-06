@@ -9,6 +9,7 @@ const Log_1 = require("../../../../Core/Common/Log");
 const CommonDefine_1 = require("../../../../Core/Define/CommonDefine");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiViewBase_1 = require("../../../Ui/Base/UiViewBase");
 const CommonTabComponentData_1 = require("../../Common/TabComponent/CommonTabComponentData");
@@ -18,11 +19,13 @@ const TabComponentWithCaptionItem_1 = require("../../Common/TabComponent/TabComp
 const TabViewComponent_1 = require("../../Common/TabComponent/TabViewComponent");
 const HandBookController_1 = require("../../HandBook/HandBookController");
 const HelpController_1 = require("../../Help/HelpController");
+const InventoryDefine_1 = require("../../Inventory/InventoryDefine");
 const CalabashTabItem_1 = require("./CalabashTabItem");
 const CALABASH_LEVEL_UP_HELP_ID = 48;
 const CALABASH_COLLECT_HELP_ID = 47;
 const VISION_RECOVERY_HELP_ID = 70;
-const viewHelpId = new Map([["CalabashLevelUpTabView", CALABASH_LEVEL_UP_HELP_ID], ["CalabashCollectTabView", CALABASH_COLLECT_HELP_ID], ["VisionRecoveryTabView", VISION_RECOVERY_HELP_ID]]);
+const VISION_REFINE_HELP_ID = 512;
+const viewHelpId = new Map([["CalabashLevelUpTabView", CALABASH_LEVEL_UP_HELP_ID], ["CalabashCollectTabView", CALABASH_COLLECT_HELP_ID], ["VisionRecoveryTabView", VISION_RECOVERY_HELP_ID], ["PhantomManageConfigView", InventoryDefine_1.MANAGE_CONFIG_HELP_ID], ["VisionRefineTabView", VISION_REFINE_HELP_ID]]);
 class CalabashRootView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
@@ -42,6 +45,9 @@ class CalabashRootView extends UiViewBase_1.UiViewBase {
     };
     this.Uvt = e => {
       var t = this.yvt.findIndex(e => e.ChildViewName === "CalabashCollectTabView");
+      var e = {
+        MonsterId: e
+      };
       if (this.Lvt) {
         this.Lvt.TabViewName = "CalabashCollectTabView";
         this.Lvt.Param = e;
@@ -71,8 +77,8 @@ class CalabashRootView extends UiViewBase_1.UiViewBase {
       var t = this.yvt[e];
       var i = t.ChildViewName;
       var e = this.Ivt.GetTabItemByIndex(e);
-      var a = i === this.Lvt?.TabViewName ? this.Lvt?.Param : undefined;
-      this.Tvt.ToggleCallBack(t, i, e, a);
+      var n = i === this.Lvt?.TabViewName ? this.Lvt?.Param : undefined;
+      this.Tvt.ToggleCallBack(t, i, e, n);
       if (this.Lvt) {
         this.Lvt.Param = undefined;
       }
@@ -130,6 +136,14 @@ class CalabashRootView extends UiViewBase_1.UiViewBase {
     await this.qvt();
     this.Gvt();
   }
+  OnStart() {
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnVisionRefineSubNeedAck);
+    var e = this.Lvt?.TabViewName;
+    var t = this.Lvt?.Param;
+    if (e === "CalabashCollectTabView" && t?.OnlyShow) {
+      ControllerHolder_1.ControllerHolder.BlackScreenController.AddBlackScreen("None", "CalabashCollectOnlyShow");
+    }
+  }
   bvt() {
     this.yvt = ModelManager_1.ModelManager.CalabashModel?.GetViewTabList();
   }
@@ -156,13 +170,13 @@ class CalabashRootView extends UiViewBase_1.UiViewBase {
     this.p1c("VisionRefineTabView", "VisionRefine", true);
   }
   p1c(t, e, i) {
-    var a = this.yvt.findIndex(e => e.ChildViewName === t);
-    if (a >= 0) {
-      a = this.Ivt.GetTabItemByIndex(a);
+    var n = this.yvt.findIndex(e => e.ChildViewName === t);
+    if (n >= 0) {
+      n = this.Ivt.GetTabItemByIndex(n);
       if (i) {
-        a?.BindRedDot(e);
+        n?.BindRedDot(e);
       } else {
-        a?.UnBindRedDot();
+        n?.UnBindRedDot();
       }
     }
   }
@@ -209,6 +223,10 @@ class CalabashRootView extends UiViewBase_1.UiViewBase {
       return this.Tvt.GetCurrentTabView()?.OnClickCloseRoot();
     }
     return false;
+  }
+  GetIsVisionRecoveryTabViewOpen() {
+    var e = this.Tvt.GetTabViewByTabKey("VisionRecoveryTabView");
+    return e !== undefined && e.GetRootItem().IsUIActiveSelf();
   }
 }
 exports.CalabashRootView = CalabashRootView;

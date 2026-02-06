@@ -25,9 +25,9 @@ class RoleSkillInputPanel extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.dFe = 0;
-    this.kEm = 0;
+    this.tIm = 0;
     this.iUd = undefined;
-    this.qEm = false;
+    this.iIm = false;
     this.iV1 = () => new RoleSkillInputDescItem_1.RoleSkillInputDescItem();
     this.Lmo = () => {
       if (ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance()) {
@@ -72,7 +72,7 @@ class RoleSkillInputPanel extends UiPanelBase_1.UiPanelBase {
   }
   OnStart() {
     this.iUd = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(1), this.iV1);
-    this.kEm = this.GetItem(13).Height;
+    this.tIm = this.GetItem(13).Height;
   }
   Refresh(e, i, r = false) {
     var t = new UiAsyncTask_1.UiAsyncTask("Refresh", async () => {
@@ -81,7 +81,7 @@ class RoleSkillInputPanel extends UiPanelBase_1.UiPanelBase {
     this.RunAsyncTask(t);
   }
   async RefreshUiAsync(e, i, r = false) {
-    if (!this.qEm) {
+    if (!this.iIm) {
       this.dFe = e;
       var t = ConfigManager_1.ConfigManager.RoleSkillConfig.GetRoleSkillInputConfigById(e);
       if (t) {
@@ -156,7 +156,7 @@ class RoleSkillInputPanel extends UiPanelBase_1.UiPanelBase {
           } else {
             this.GetItem(8).SetUIActive(false);
           }
-          this.qEm = true;
+          this.iIm = true;
         }
       }
     }
@@ -173,7 +173,7 @@ class RoleSkillInputPanel extends UiPanelBase_1.UiPanelBase {
     if (e) {
       this.iUd.BindLateUpdate(() => {
         var e = this.GetRootItem().Height - this.GetItem(0).Height - this.GetVerticalLayout(1).RootUIComp.Height;
-        if (e < this.kEm) {
+        if (e < this.tIm) {
           this.GetItem(13).SetUIActive(false);
         } else {
           this.GetItem(13).SetHeight(e);

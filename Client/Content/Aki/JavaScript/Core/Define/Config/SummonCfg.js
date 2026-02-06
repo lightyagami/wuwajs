@@ -59,6 +59,9 @@ class SummonCfg {
   get BornSelectDamageAttributeTargetBuff() {
     return GameUtils_1.GameUtils.ConvertToArray(this.bornselectdamageattributetargetbuffLength(), this.bornselectdamageattributetargetbuff, this);
   }
+  get ShowWeaponSubMesh() {
+    return GameUtils_1.GameUtils.ConvertToArray(this.showweaponsubmeshLength(), this.showweaponsubmesh, this);
+  }
   __init(t, i) {
     this.z7 = t;
     this.J7 = i;
@@ -256,6 +259,25 @@ class SummonCfg {
       return new Float64Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
       return null;
+    }
+  }
+  GetShowweaponsubmeshAt(t) {
+    return this.showweaponsubmesh(t);
+  }
+  showweaponsubmesh(t, i) {
+    var r = this.J7.__offset(this.z7, 32);
+    var r = r ? this.J7.__string(this.J7.__vector(this.z7 + r) + t * 4, i) : null;
+    if (typeof r == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(r);
+    }
+    return r;
+  }
+  showweaponsubmeshLength() {
+    var t = this.J7.__offset(this.z7, 32);
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
     }
   }
 }

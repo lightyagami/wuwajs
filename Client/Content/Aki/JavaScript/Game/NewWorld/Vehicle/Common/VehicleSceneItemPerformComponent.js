@@ -45,7 +45,7 @@ let VehicleSceneItemPerformComponent = class VehicleSceneItemPerformComponent ex
     this.ActorComp = this.Entity.GetComponent(1);
     this.AnimComp = this.Entity.GetComponent(248);
     this.MoveComp = this.Entity.GetComponent(249);
-    this.TagComp = this.Entity.GetComponent(215);
+    this.TagComp = this.Entity.GetComponent(217);
     var e = this.CreatureData?.GetPbEntityInitData();
     return !!e?.ComponentsData && !!(0, IComponent_1.getComponent)(e.ComponentsData, "VehicleComponent") && !!this.InitVehicleConfig();
   }
@@ -125,19 +125,19 @@ let VehicleSceneItemPerformComponent = class VehicleSceneItemPerformComponent ex
   }
   AddTagForPassenger(e, t, i) {
     if (e && this.PassengerTagMap.has(e)) {
-      e.GetComponent(215)?.TagContainer.AddExactTag(t, i);
+      e.GetComponent(217)?.TagContainer.AddExactTag(t, i);
       this.PassengerTagMap.get(e).add(i);
     }
   }
   RemoveTagForPassenger(e, t, i) {
     if (e && this.PassengerTagMap.get(e)?.has(i)) {
-      e.GetComponent(215)?.TagContainer.RemoveExactTag(t, i);
+      e.GetComponent(217)?.TagContainer.RemoveExactTag(t, i);
       this.PassengerTagMap.get(e).delete(i);
     }
   }
   RemoveAllTagsForPassenger(e) {
     if (e) {
-      const i = e.GetComponent(215);
+      const i = e.GetComponent(217);
       var t = this.PassengerTagMap.get(e);
       if (t && i) {
         t.forEach(e => {

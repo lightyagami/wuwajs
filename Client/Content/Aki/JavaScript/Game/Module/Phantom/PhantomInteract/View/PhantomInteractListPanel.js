@@ -19,16 +19,16 @@ const allTogItems = [0, 1, 2, 3, 4, 5, 6, 7];
 class LongPressContext {
   constructor(t) {
     this.Param = t;
-    this.wwf = 0;
-    this.Rwf = false;
-    this.Lwf = false;
+    this.zDf = 0;
+    this.JDf = false;
+    this.ZDf = false;
     this.j9i = 0;
     this.W9i = 0;
   }
   Reset() {
-    this.wwf = 0;
-    this.Lwf = false;
-    this.Rwf = false;
+    this.zDf = 0;
+    this.ZDf = false;
+    this.JDf = false;
   }
   Start() {
     var t = LguiEventSystemManager_1.LguiEventSystemManager.GetPointerEventData(0).GetWorldPointInPlane();
@@ -42,26 +42,26 @@ class LongPressContext {
     return Math.abs(s) + Math.abs(t) > this.Param.InvalidMoveDistance;
   }
   Update(t) {
-    this.wwf += t;
+    this.zDf += t;
     t = [false, false];
-    if (!this.Rwf && this.wwf >= this.Param.BeforeLongPressThreshold) {
-      this.Rwf = true;
+    if (!this.JDf && this.zDf >= this.Param.BeforeLongPressThreshold) {
+      this.JDf = true;
       t[0] = true;
     }
-    if (!this.Lwf && this.LongPressProgress >= 1) {
-      this.Lwf = true;
+    if (!this.ZDf && this.LongPressProgress >= 1) {
+      this.ZDf = true;
       t[1] = true;
     }
     return [t[0], t[1]];
   }
   IsBeforeLongPressThreshold() {
-    return this.wwf < this.Param.BeforeLongPressThreshold;
+    return this.zDf < this.Param.BeforeLongPressThreshold;
   }
   IsLongPressing() {
-    return this.wwf >= this.Param.BeforeLongPressThreshold;
+    return this.zDf >= this.Param.BeforeLongPressThreshold;
   }
   get LongPressProgress() {
-    var t = this.wwf - this.Param.BeforeLongPressThreshold;
+    var t = this.zDf - this.Param.BeforeLongPressThreshold;
     var s = Math.max(this.Param.LongPressThreshold, 0.01);
     return Math.max(Math.min(t / s, 1), 0);
   }
@@ -70,20 +70,20 @@ class PhantomInteractListPanel extends UiPanelBase_1.UiPanelBase {
   constructor(t) {
     super();
     this.UseLongPress = t;
-    this.Egf = [];
-    this.Igf = undefined;
-    this.Pwf = undefined;
-    this.Awf = undefined;
-    this.Dwf = TickSystem_1.TickSystem.InvalidId;
-    this.Uwf = undefined;
+    this.hMf = [];
+    this.lMf = undefined;
+    this.eUf = undefined;
+    this.tUf = undefined;
+    this.iUf = TickSystem_1.TickSystem.InvalidId;
+    this.rUf = undefined;
     this.OnClickCb = undefined;
     this.OnHoverCb = undefined;
     this.HRu = -1;
-    this.xwf = () => {
-      var [t, s] = this.Awf.Update(Time_1.Time.DeltaTime);
-      if (!this.Awf.IsBeforeLongPressThreshold()) {
-        if (this.Awf.CheckIsMoved()) {
-          this.Bwf(this.Uwf);
+    this.oUf = () => {
+      var [t, s] = this.tUf.Update(Time_1.Time.DeltaTime);
+      if (!this.tUf.IsBeforeLongPressThreshold()) {
+        if (this.tUf.CheckIsMoved()) {
+          this.nUf(this.rUf);
           if (Log_1.Log.CheckDebug()) {
             Log_1.Log.Debug("PhantomInteraction", 95, "Long press cancelled due to movement");
           }
@@ -91,40 +91,40 @@ class PhantomInteractListPanel extends UiPanelBase_1.UiPanelBase {
           if (t) {
             this.T7i();
           }
-          if (this.Awf.LongPressProgress < 1) {
-            this.Igf?.SetUiActive(true);
-            this.Igf?.SetFillProgress(this.Awf.LongPressProgress);
+          if (this.tUf.LongPressProgress < 1) {
+            this.lMf?.SetUiActive(true);
+            this.lMf?.SetFillProgress(this.tUf.LongPressProgress);
           } else {
-            this.Igf?.SetUiActive(false);
+            this.lMf?.SetUiActive(false);
           }
-          if (s && this.OnHoverCb && this.Uwf) {
-            this.OnHoverCb(this.Uwf, true);
+          if (s && this.OnHoverCb && this.rUf) {
+            this.OnHoverCb(this.rUf, true);
           }
         }
       }
     };
-    this.pgf = t => {
+    this.rMf = t => {
       if (this.OnClickCb) {
         this.OnClickCb(t);
       }
     };
-    this.Tgf = (t, s) => {
+    this._Mf = (t, s) => {
       if (this.OnHoverCb) {
         this.OnHoverCb(t, s);
       }
     };
-    this.kwf = t => {
+    this.sUf = t => {
       if (!(t.MonsterId <= 0)) {
         this.Gtd();
-        this.Uwf = t;
-        this.Dwf = TickSystem_1.TickSystem.Add(this.xwf, "PhantomInteractDetailPressTick", 0, true, undefined, true).Id;
-        this.Awf?.Reset();
-        this.Awf?.Start();
-        this.Igf?.SetFillProgress(0);
+        this.rUf = t;
+        this.iUf = TickSystem_1.TickSystem.Add(this.oUf, "PhantomInteractDetailPressTick", 0, true, undefined, true).Id;
+        this.tUf?.Reset();
+        this.tUf?.Start();
+        this.lMf?.SetFillProgress(0);
       }
     };
-    this.Bwf = t => {
-      if (this.Awf.IsBeforeLongPressThreshold()) {
+    this.nUf = t => {
+      if (this.tUf.IsBeforeLongPressThreshold()) {
         if (this.OnClickCb) {
           this.OnClickCb(t);
         }
@@ -132,11 +132,11 @@ class PhantomInteractListPanel extends UiPanelBase_1.UiPanelBase {
         this.OnHoverCb(t, false);
       }
       this.Gtd();
-      this.Uwf = undefined;
-      this.Igf?.SetUiActive(false);
-      this.Awf.Reset();
+      this.rUf = undefined;
+      this.lMf?.SetUiActive(false);
+      this.tUf.Reset();
     };
-    this.sQf = (t, s, e) => {
+    this.bsg = (t, s, e) => {
       s = s.ItemIndex === this.HRu;
       if (e !== s) {
         t.SetSelected(s);
@@ -151,60 +151,60 @@ class PhantomInteractListPanel extends UiPanelBase_1.UiPanelBase {
     for (const h of allTogItems) {
       var s = this.GetItem(h);
       var e = new PhantomInteractListItem_1.PhantomInteractListItem();
-      this.Egf.push(e);
+      this.hMf.push(e);
       t.push(e.CreateByActorAsync(s.GetOwner()));
     }
-    this.Igf = new PhantomInteractListLongPressPanel_1.PhantomInteractListLongPressPanel();
-    t.push(this.Igf.CreateByActorAsync(this.GetItem(8).GetOwner()));
+    this.lMf = new PhantomInteractListLongPressPanel_1.PhantomInteractListLongPressPanel();
+    t.push(this.lMf.CreateByActorAsync(this.GetItem(8).GetOwner()));
     await Promise.all(t);
-    for (const r of this.Egf) {
+    for (const r of this.hMf) {
       r.SetUiActive(true);
       if (this.UseLongPress) {
-        r.OnPointerDownCb = this.kwf;
-        r.OnPointerUpCb = this.Bwf;
+        r.OnPointerDownCb = this.sUf;
+        r.OnPointerUpCb = this.nUf;
       } else {
-        r.OnClickCb = this.pgf;
-        r.OnHoverCb = this.Tgf;
+        r.OnClickCb = this.rMf;
+        r.OnHoverCb = this._Mf;
       }
-      r.OnToggleStateChangeCb = this.sQf;
+      r.OnToggleStateChangeCb = this.bsg;
     }
-    this.Igf.SetUiActive(false);
-    var i = PhantomInteractListPanel.qwf();
-    this.Pwf = i;
-    this.Awf = new LongPressContext(i);
+    this.lMf.SetUiActive(false);
+    var i = PhantomInteractListPanel.aUf();
+    this.eUf = i;
+    this.tUf = new LongPressContext(i);
   }
   T7i() {
     var t = LguiEventSystemManager_1.LguiEventSystemManager.GetPointerEventDataPosition(0);
     var t = Vector2D_1.Vector2D.Create(t.X, t.Y);
     t.FromUeVector2D(UiLayer_1.UiLayer.UiRootItem.GetCanvasScaler().ConvertPositionFromViewportToLGUICanvas(t.ToUeVector2D(true)));
-    var s = this.Pwf.OffsetX;
-    var e = this.Pwf.OffsetY;
+    var s = this.eUf.OffsetX;
+    var e = this.eUf.OffsetY;
     var s = t.X + s;
     var t = t.Y + e;
     this.GetItem(8).SetLGUISpaceAbsolutePosition(new UE.Vector(s, t, 0));
   }
   Gtd() {
-    if (this.Dwf !== TickSystem_1.TickSystem.InvalidId) {
-      TickSystem_1.TickSystem.Remove(this.Dwf);
-      this.Dwf = TickSystem_1.TickSystem.InvalidId;
+    if (this.iUf !== TickSystem_1.TickSystem.InvalidId) {
+      TickSystem_1.TickSystem.Remove(this.iUf);
+      this.iUf = TickSystem_1.TickSystem.InvalidId;
     }
   }
   OnBeforeDestroy() {
     this.Gtd();
   }
   Refresh(s, e, i = true) {
-    for (let t = 0; t < this.Egf.length; t++) {
+    for (let t = 0; t < this.hMf.length; t++) {
       var h = s[t];
-      this.Egf[t].Refresh(h, e, i);
+      this.hMf[t].Refresh(h, e, i);
     }
   }
   SetSelectedItem(t) {
     this.HRu = t;
-    for (const s of this.Egf) {
+    for (const s of this.hMf) {
       s.SetSelected(t === s.ItemIndex);
     }
   }
-  static qwf() {
+  static aUf() {
     return {
       BeforeLongPressThreshold: CommonParamById_1.configCommonParamById.GetIntConfig("PhantomInteractBeforeLongPressTime") ?? 0,
       LongPressThreshold: CommonParamById_1.configCommonParamById.GetIntConfig("PhantomInteractLongPressTime") ?? 0,

@@ -160,6 +160,9 @@ class PeriodicityChallengeTypeItem extends GridProxyAbstract_1.GridProxyAbstract
     this.GetExtendToggle(0).SetToggleStateForce(e, false, true);
     this.G8e(this.q8e, this.H5e);
   }
+  OnlySetSelectToggle(e = 1) {
+    this.GetExtendToggle(0).SetToggleStateForce(e, false, true);
+  }
   GetSelfToggle() {
     return this.GetExtendToggle(0);
   }

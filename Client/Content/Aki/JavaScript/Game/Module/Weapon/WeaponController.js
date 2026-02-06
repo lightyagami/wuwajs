@@ -39,22 +39,22 @@ class WeaponController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRemoveWeaponItem, this.Gdi);
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(28769, e => {
+    Net_1.Net.Register(29685, e => {
       if (e) {
         ModelManager_1.ModelManager.WeaponModel.WeaponRoleLoadEquip(e.Gxs);
       }
     });
-    Net_1.Net.Register(23037, e => {
+    Net_1.Net.Register(17041, e => {
       var o = MathUtils_1.MathUtils.LongToNumber(e.F4n);
-      var o = ModelManager_1.ModelManager.CreatureModel.GetEntity(o).Entity.GetComponent(84);
+      var o = ModelManager_1.ModelManager.CreatureModel.GetEntity(o).Entity.GetComponent(86);
       if (o) {
         o.OnEquipWeaponForRoleNotify(e);
       }
     });
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(28769);
-    Net_1.Net.UnRegister(23037);
+    Net_1.Net.UnRegister(29685);
+    Net_1.Net.UnRegister(17041);
   }
   static SendPbWeaponLevelUpRequest(e, o) {
     var t = Protocol_1.Aki.Protocol.R0s.create();
@@ -66,12 +66,12 @@ class WeaponController extends UiControllerBase_1.UiControllerBase {
       r.L8n = a.ItemId;
       t.tHn.push(r);
     }
-    Net_1.Net.Call(21426, t, e => {
+    Net_1.Net.Call(26462, t, e => {
       if (e) {
         if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
           ModelManager_1.ModelManager.WeaponModel.WeaponLevelUpResponse(e);
         } else {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20426);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18378);
         }
       }
     });
@@ -79,7 +79,7 @@ class WeaponController extends UiControllerBase_1.UiControllerBase {
   static SendPbWeaponBreachRequest(t, r) {
     var e = Protocol_1.Aki.Protocol.A0s.create();
     e.w5n = t;
-    Net_1.Net.Call(29485, e, e => {
+    Net_1.Net.Call(29023, e, e => {
       var o;
       if (e) {
         if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
@@ -89,7 +89,7 @@ class WeaponController extends UiControllerBase_1.UiControllerBase {
           UiManager_1.UiManager.OpenView("WeaponBreachSuccessView", t);
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WeaponBreakUp);
         } else {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18231);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20968);
         }
       }
     });
@@ -100,13 +100,13 @@ class WeaponController extends UiControllerBase_1.UiControllerBase {
       t.w5n = o;
       t.cjn = e;
       const r = ModelManager_1.ModelManager.WeaponModel.GetWeaponDataByIncId(o).GetResonanceLevel();
-      Net_1.Net.Call(27515, t, e => {
+      Net_1.Net.Call(19304, t, e => {
         if (e) {
           if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
             ModelManager_1.ModelManager.WeaponModel.SetWeaponResonanceData(e.w5n, e.hOs);
             EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WeaponResonanceSuccess, o, r);
           } else {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24253);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24591);
           }
         }
       });
@@ -119,12 +119,12 @@ class WeaponController extends UiControllerBase_1.UiControllerBase {
       r.R5n.mjn = e;
       r.R5n.l8n = o;
       r.R5n.djn = t;
-      Net_1.Net.Call(19665, r, e => {
+      Net_1.Net.Call(16497, r, e => {
         if (e) {
           if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
             ModelManager_1.ModelManager.WeaponModel.WeaponRoleLoadEquip(e.Gxs);
           } else {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20521);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21525);
           }
         }
       });

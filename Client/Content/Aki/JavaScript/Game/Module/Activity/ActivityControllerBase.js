@@ -28,8 +28,8 @@ class ActivityControllerBase {
   OpenView(e) {
     this.OnOpenView(e);
   }
-  async OpenViewByViewName(e) {
-    return await this.OnOpenSubView(e);
+  async OpenViewByViewName(e, t = 0) {
+    return await this.OnOpenSubView(e, t);
   }
   CreateActivityData(e) {
     var t = this.OnCreateActivityData(e);
@@ -49,7 +49,7 @@ class ActivityControllerBase {
   OnClear() {
     return true;
   }
-  async OnOpenSubView(e) {
+  async OnOpenSubView(e, t = 0) {
     return Promise.resolve(false);
   }
   GetActivityLevelUnlockState(e) {

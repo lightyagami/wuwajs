@@ -36,6 +36,7 @@ class AiStateMachineBase extends StateMachineCommon_1.StateMachineCommon {
     this.MoveComponent = undefined;
     this.FightStateComponent = undefined;
     this.UnifiedStateComponent = undefined;
+    this.FloatingComponent = undefined;
     this.AbilityComponent = undefined;
     this.AiController = undefined;
     this.SummonerAiController = undefined;
@@ -69,8 +70,8 @@ class AiStateMachineBase extends StateMachineCommon_1.StateMachineCommon {
     this.RemoteSwitchMessageId = undefined;
     this.jqn = undefined;
     this.Wqn = undefined;
-    if (i.Entity && (this.Entity = i.Entity, this.AiComponent = this.Entity.GetComponent(48), this.TagComponent = this.Entity.GetComponent(215), this.AttributeComponent = this.Entity.GetComponent(182), this.SkillComponent = this.Entity.GetComponent(41), this.BuffComponent = this.Entity.GetComponent(183), this.ActorComponent = this.Entity.GetComponent(3), this.MontageComponent = this.Entity.GetComponent(25), this.DeathComponent = this.Entity.GetComponent(15), this.AnimationComponent = this.Entity.GetComponent(186), this.HitComponent = this.Entity.GetComponent(64), this.TimeScaleComponent = this.Entity.GetComponent(131), this.GameplayCueComponent = this.Entity.GetComponent(21), this.MoveComponent = this.Entity.GetComponent(187), this.FightStateComponent = this.Entity.GetComponent(58), this.UnifiedStateComponent = this.Entity.GetComponent(184), this.AbilityComponent = this.Entity.GetComponent(17), this.AiController = this.AiComponent.AiController, s = this.Entity.GetComponent(0).GetSummonerId())) {
-      s = ModelManager_1.ModelManager.CreatureModel.GetEntity(s)?.Entity.GetComponent(48);
+    if (i.Entity && (this.Entity = i.Entity, this.AiComponent = this.Entity.GetComponent(50), this.TagComponent = this.Entity.GetComponent(217), this.AttributeComponent = this.Entity.GetComponent(184), this.SkillComponent = this.Entity.GetComponent(43), this.BuffComponent = this.Entity.GetComponent(185), this.ActorComponent = this.Entity.GetComponent(3), this.MontageComponent = this.Entity.GetComponent(25), this.DeathComponent = this.Entity.GetComponent(15), this.AnimationComponent = this.Entity.GetComponent(188), this.HitComponent = this.Entity.GetComponent(66), this.TimeScaleComponent = this.Entity.GetComponent(133), this.GameplayCueComponent = this.Entity.GetComponent(21), this.MoveComponent = this.Entity.GetComponent(189), this.FightStateComponent = this.Entity.GetComponent(60), this.UnifiedStateComponent = this.Entity.GetComponent(186), this.FloatingComponent = this.Entity.GetComponent(39), this.AbilityComponent = this.Entity.GetComponent(17), this.AiController = this.AiComponent.AiController, s = this.Entity.GetComponent(0).GetSummonerId())) {
+      s = ModelManager_1.ModelManager.CreatureModel.GetEntity(s)?.Entity.GetComponent(50);
       this.SummonerAiController = s?.AiController;
     }
     this.Uuid = h.Uuid;
@@ -317,7 +318,7 @@ class AiStateMachineBase extends StateMachineCommon_1.StateMachineCommon {
         (i = Protocol_1.Aki.Protocol.x4n.create()).X4n = Protocol_1.Aki.Protocol.IFs.Proto_BT_Task;
         i.$4n = s;
         i.Y4n = this.Uuid;
-        s = CombatMessage_1.CombatNet.Call(26745, this.Entity, i, t => {
+        s = CombatMessage_1.CombatNet.Call(28830, this.Entity, i, t => {
           if (t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
             CombatLog_1.CombatLog.Warn("StateMachineNew", this.Entity, `FsmStateBehaviorRequest 节点Task行为失败 [${this.Name}|${this.Uuid}]`, ["ErrorCode", t.Q4n]);
           }
@@ -444,7 +445,7 @@ class AiStateMachineBase extends StateMachineCommon_1.StateMachineCommon {
     this.Owner.AnyChange = true;
     const o = ModelManager_1.ModelManager.CombatMessageModel.GenMessageId();
     this.RootNode.WaitSwitchStateSet.add(o);
-    this.RootNode.CurrentMessageIdCache = CombatMessage_1.CombatNet.Call(18010, this.Entity, t, t => {
+    this.RootNode.CurrentMessageIdCache = CombatMessage_1.CombatNet.Call(24518, this.Entity, t, t => {
       if (this.Owner?.Entity) {
         if (this.RootNode.WaitSwitchStateSet.has(o)) {
           if (t.fMs.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs || this.RootNode.IsAnimStateMachine) {
@@ -464,7 +465,7 @@ class AiStateMachineBase extends StateMachineCommon_1.StateMachineCommon {
               if (this.ActorComponent.IsAutonomousProxy) {
                 (i = Protocol_1.Aki.Protocol.xe_.create()).$4n = this.RootNode.Uuid;
                 i.Y4n = s;
-                CombatMessage_1.CombatNet.Send(29644, this.Entity, i);
+                CombatMessage_1.CombatNet.Send(25497, this.Entity, i);
               }
             } else {
               if (t.OTs <= 0) {

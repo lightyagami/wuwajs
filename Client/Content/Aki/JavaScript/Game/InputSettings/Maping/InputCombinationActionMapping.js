@@ -19,11 +19,11 @@ class InputCombinationActionMapping {
     this.JEe.clear();
     this.zEe.clear();
   }
-  NewCombinationActionBinding(i, n) {
-    var t = new InputCombinationActionBinding_1.InputCombinationActionBinding();
-    t.Initialize(i, n);
-    this.YEe.set(i, t);
-    return t;
+  NewCombinationActionBinding(i, n, t) {
+    var o = new InputCombinationActionBinding_1.InputCombinationActionBinding();
+    o.Initialize(i, n, t);
+    this.YEe.set(i, o);
+    return o;
   }
   AddKey(i, n, t, o) {
     i.AddKey(n, t, o);
@@ -41,21 +41,21 @@ class InputCombinationActionMapping {
     this.zEe.add(n);
   }
   RemoveKey(i, n, t, o) {
-    var o = i.RemoveKey(n, o);
-    var e = i.GetActionName();
-    var s = this.JEe.get(n);
-    if (s) {
-      var r = s.get(t);
-      if (!r) {
+    i.RemoveKey(n, o);
+    var o = i.GetActionName();
+    var e = this.JEe.get(n);
+    if (e) {
+      var s = e.get(t);
+      if (!s) {
         return;
       }
-      if (o) {
-        r.delete(e);
-      }
-      if (r.size <= 0) {
-        s.delete(t);
+      if (!i.HasKeyByAll(n, t)) {
+        s.delete(o);
       }
       if (s.size <= 0) {
+        e.delete(t);
+      }
+      if (e.size <= 0) {
         this.JEe.delete(n);
         this.zEe.delete(n);
       }
@@ -63,7 +63,7 @@ class InputCombinationActionMapping {
       this.zEe.delete(n);
     }
     if (!i.HasAnyKey()) {
-      this.YEe.delete(e);
+      this.YEe.delete(o);
     }
   }
   GetCombinationActionBindingByKeyName(i, n) {

@@ -10,9 +10,9 @@ const MotorSkinData_1 = require("./MotorSkinData");
 class ShopMotorSkinData {
   constructor() {
     this.vFi = undefined;
-    this.nFf = new Map();
-    this.sFf = 0;
-    this.aFf = undefined;
+    this.q7f = new Map();
+    this.O7f = 0;
+    this.G7f = undefined;
   }
   static Create(t) {
     var r = new ShopMotorSkinData();
@@ -21,21 +21,21 @@ class ShopMotorSkinData {
   }
   InitData(t) {
     this.vFi = t;
-    this.nFf.clear();
+    this.q7f.clear();
     var r = ConfigManager_1.ConfigManager.GiftPackageConfig.GetGiftPackageConfig(t.GetPackageRewardId());
     if (r) {
-      this.sFf = t.GetPackageRewardId();
-      var e = ConfigManager_1.ConfigManager.SkinConfig.GetMotorSkinShowConfig(this.sFf);
+      this.O7f = t.GetPackageRewardId();
+      var e = ConfigManager_1.ConfigManager.SkinConfig.GetMotorSkinShowConfig(this.O7f);
       if (e) {
         for (const a of r.Content) {
           var i = a[0];
           if (i === e.FreeItem) {
-            this.aFf = {
+            this.G7f = {
               ItemId: i,
               Count: a[1]
             };
           } else {
-            this.nFf.set(i, a[1]);
+            this.q7f.set(i, a[1]);
           }
         }
       }
@@ -53,11 +53,11 @@ class ShopMotorSkinData {
   GetAllReward() {
     var t = [];
     t.push(...this.GetMainReward());
-    if (this.aFf) {
+    if (this.G7f) {
       t.push([{
-        ItemId: this.aFf.ItemId,
+        ItemId: this.G7f.ItemId,
         IncId: 0
-      }, this.aFf.Count]);
+      }, this.G7f.Count]);
     }
     return t;
   }
@@ -65,7 +65,7 @@ class ShopMotorSkinData {
     var t;
     var r;
     var e = [];
-    for ([t, r] of this.nFf) {
+    for ([t, r] of this.q7f) {
       var i = [{
         IncId: 0,
         ItemId: t
@@ -75,11 +75,11 @@ class ShopMotorSkinData {
     return e;
   }
   GetOtherReward() {
-    if (this.aFf) {
+    if (this.G7f) {
       return [{
-        ItemId: this.aFf.ItemId,
+        ItemId: this.G7f.ItemId,
         IncId: 0
-      }, this.aFf.Count];
+      }, this.G7f.Count];
     }
   }
   GetPayShopGoods() {
@@ -111,7 +111,7 @@ class ShopMotorSkinData {
     return this.GetCurrentGoodsData().GetDirectPriceText();
   }
   GetMotorSkinData() {
-    return new MotorSkinData_1.MotorSkinData(this.sFf);
+    return new MotorSkinData_1.MotorSkinData(this.O7f);
   }
 }
 exports.ShopMotorSkinData = ShopMotorSkinData;

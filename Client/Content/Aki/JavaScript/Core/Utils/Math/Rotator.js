@@ -85,6 +85,14 @@ class Rotator {
     }
     return o;
   }
+  Normalize(t) {
+    var o = this.Tuple;
+    var a = t.Tuple;
+    a[0] = Rotator.NormalizeAxis(o[0]);
+    a[1] = Rotator.NormalizeAxis(o[1]);
+    a[2] = Rotator.NormalizeAxis(o[2]);
+    return t;
+  }
   static ClampAxis(t) {
     let o = t % MathCommon_1.MathCommon.RoundAngle;
     if (o < 0) {

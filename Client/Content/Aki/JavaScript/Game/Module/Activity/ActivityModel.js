@@ -42,7 +42,7 @@ class ActivityModel extends ModelBase_1.ModelBase {
     this.G5e = "";
     this.N5e = "";
     this.O5e = "";
-    this.ykf = "";
+    this.f3f = "";
     this.KPd = ActivityCommonDefine_1.ACTIVITY_FILTER_ALL_ID;
     this.vdm = false;
     this.OnLanguageChange = () => {
@@ -50,7 +50,7 @@ class ActivityModel extends ModelBase_1.ModelBase {
       this.G5e = "";
       this.N5e = "";
       this.O5e = "";
-      this.ykf = "";
+      this.f3f = "";
       this.Lma();
     };
     this.W4e = new Map();
@@ -114,8 +114,8 @@ class ActivityModel extends ModelBase_1.ModelBase {
     if (StringUtils_1.StringUtils.IsEmpty(this.O5e)) {
       this.O5e = MultiTextLang_1.configMultiTextLang.GetLocalTextNew("ActivityRemainingTime");
     }
-    if (StringUtils_1.StringUtils.IsEmpty(this.ykf)) {
-      this.ykf = MultiTextLang_1.configMultiTextLang.GetLocalTextNew("ActivityRemainingTime_Reward_Text");
+    if (StringUtils_1.StringUtils.IsEmpty(this.f3f)) {
+      this.f3f = MultiTextLang_1.configMultiTextLang.GetLocalTextNew("ActivityRemainingTime_Reward_Text");
     }
   }
   OnReceiveMessageData(t) {
@@ -287,7 +287,11 @@ class ActivityModel extends ModelBase_1.ModelBase {
     return r;
   }
   GetCurrentShowingActivities() {
-    return Array.from(this.W4e.values()).sort(ActivityModel.SortFunc);
+    var t = Array.from(this.W4e.values());
+    t.forEach(t => {
+      t.UpdateImportantBubble();
+    });
+    return t.sort(ActivityModel.SortFunc);
   }
   IsHasShowingRecommendRecActivity() {
     for (const t of this.hMc()) {
@@ -435,40 +439,40 @@ class ActivityModel extends ModelBase_1.ModelBase {
     t = ActivityManager_1.ActivityManager.GetActivityController(t);
     return !!t && t.GetActivityMapMarkState(e);
   }
-  GetTimeVisibleAndRemainTime(t) {
-    var e = t.CheckIfInShowTime();
-    var i = t.CheckIfInOpenTime();
-    if (!i && !e) {
-      r = ConfigManager_1.ConfigManager.TextConfig.GetTextContentIdById("ActiveClose");
-      return [false, MultiTextLang_1.configMultiTextLang.GetLocalTextNew(r), -1];
+  GetTimeVisibleAndRemainTime(t, e) {
+    var i = t.CheckIfInShowTime();
+    var r = t.CheckIfInOpenTime();
+    if (!r && !i) {
+      n = ConfigManager_1.ConfigManager.TextConfig.GetTextContentIdById("ActiveClose");
+      return [false, MultiTextLang_1.configMultiTextLang.GetLocalTextNew(n), -1];
     }
-    var r = t.EndOpenTime;
-    var n = t.EndShowTime;
-    var o = t.EndLimitTime;
-    let s = "";
-    let a = true;
+    var n = t.EndOpenTime;
+    var o = t.EndShowTime;
+    var s = t.EndLimitTime;
+    let a = "";
+    let v = true;
     let h = 0;
-    var v = t.LocalConfig;
-    var _ = v ? v.TimeIsDisplay : 0;
-    if (v?.OpenType === Protocol_1.Aki.Protocol.OS_.Proto_LimitToPermanent) {
+    var _ = t.LocalConfig;
+    var c = _ ? _.TimeIsDisplay : 0;
+    if (_?.OpenType === Protocol_1.Aki.Protocol.OS_.Proto_LimitToPermanent) {
       t = t.CheckIfInLimitTime();
-      if (a = e && t) {
-        if (_ === 1) {
+      if (v = i && t) {
+        if (c === 1) {
           h = 0;
-          s = this.q5e;
-        } else if (_ === 0) {
-          h = o;
-          s = this.ykf;
+          a = this.q5e;
+        } else if (c === 0) {
+          h = s;
+          a = this.f3f;
         }
       }
-    } else if (v?.OpenType === Protocol_1.Aki.Protocol.OS_.Proto_Permanent || v?.OpenType === Protocol_1.Aki.Protocol.OS_.Proto_TimeLimited && (r !== 0 && n !== 0 && (a = true, h = i ? r : n, s = i ? this.O5e : this.N5e), r === 0 && n !== 0 && (a = true, h = n, s = this.N5e), r === 0) && n === 0) {
-      a = _ === 1;
-      s = this.q5e;
+    } else if (_?.OpenType === Protocol_1.Aki.Protocol.OS_.Proto_Permanent || _?.OpenType === Protocol_1.Aki.Protocol.OS_.Proto_TimeLimited && (n !== 0 && o !== 0 && (v = true, h = r ? n : o, a = r ? this.O5e : this.N5e), n === 0 && o !== 0 && (v = true, h = o, a = this.N5e), n === 0) && o === 0) {
+      v = c === 1;
+      a = this.q5e;
     }
-    if (a && h > 0) {
-      s = this.GetRemainTimeText(h, s) ?? "";
+    if (v && h > 0) {
+      a = this.GetRemainTimeText(h, e ?? a) ?? "";
     }
-    return [a, s, h];
+    return [v, a, h];
   }
   GetRemainTimeText(t, e) {
     var i = TimeUtil_1.TimeUtil.GetServerTime();
@@ -517,15 +521,15 @@ class ActivityModel extends ModelBase_1.ModelBase {
   SetBubbleHasClicked(t, e) {
     this.SaveActivityData(t, ActivityDefine_1.ACTIVITY_BUBBLE_CACHE_KEY, e, 0, 1);
   }
-  e6m(t, e) {
+  Kkm(t, e) {
     return t !== undefined && e >= t[0] && e < t[1];
   }
   GetBubbleTypeByTimeInterval(t, e) {
-    if (this.e6m(t.WhiteInterval, e)) {
+    if (this.Kkm(t.WhiteInterval, e)) {
       return 1;
-    } else if (this.e6m(t.YellowInterval, e)) {
+    } else if (this.Kkm(t.YellowInterval, e)) {
       return 2;
-    } else if (this.e6m(t.RedInterval, e)) {
+    } else if (this.Kkm(t.RedInterval, e)) {
       return 3;
     } else {
       return 0;
@@ -556,5 +560,34 @@ class ActivityModel extends ModelBase_1.ModelBase {
     return this.vdm;
   }
 }
-(exports.ActivityModel = ActivityModel).SortFunc = (t, e) => t.FinishSinkState !== e.FinishSinkState ? t.FinishSinkState ? 1 : -1 : t.Sort !== e.Sort ? t.Sort - e.Sort : t.BeginOpenTime !== e.BeginOpenTime ? t.BeginOpenTime - e.BeginOpenTime : t.Id - e.Id;
+(exports.ActivityModel = ActivityModel).SortFunc = (t, e) => {
+  if (t.FinishSinkState !== e.FinishSinkState) {
+    if (t.FinishSinkState) {
+      return 1;
+    } else {
+      return -1;
+    }
+  }
+  if (t.IsShowImportantBubble !== e.IsShowImportantBubble) {
+    if (t.IsShowImportantBubble) {
+      return -1;
+    } else {
+      return 1;
+    }
+  }
+  if (t.IsShowImportantBubble && e.IsShowImportantBubble) {
+    var i = t.BubbleEndShowTime;
+    var r = e.BubbleEndShowTime;
+    if (i > 0 && r > 0 && i !== r) {
+      return i - r;
+    }
+  }
+  if (t.Sort !== e.Sort) {
+    return t.Sort - e.Sort;
+  } else if (t.BeginOpenTime !== e.BeginOpenTime) {
+    return t.BeginOpenTime - e.BeginOpenTime;
+  } else {
+    return t.Id - e.Id;
+  }
+};
 //# sourceMappingURL=ActivityModel.js.map

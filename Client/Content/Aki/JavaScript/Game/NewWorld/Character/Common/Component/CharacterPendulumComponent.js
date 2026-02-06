@@ -100,7 +100,7 @@ let CharacterPendulumComponent = CharacterPendulumComponent_1 = class CharacterP
     this.ujr = t.Actor;
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CustomMovePendulum, this.Mjr);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharMovementModeChanged, this.Ejr);
-    var t = this.Entity.GetComponent(187).CharacterMovement;
+    var t = this.Entity.GetComponent(189).CharacterMovement;
     this.vjr = t.AirControl;
     return true;
   }
@@ -147,7 +147,7 @@ let CharacterPendulumComponent = CharacterPendulumComponent_1 = class CharacterP
       this.Anr.FromUeVector(this.ujr.D_GetVelocity());
       e = 1;
       if (t > LIMIT_FRAME_TIME && (i = t > LIMIT_FRAME_TIME2 ? t / LIMIT_FRAME_TIME2 : t / LIMIT_FRAME_TIME, (e = this.Anr.Size() / i) > 1) && this.Anr.Z < 0) {
-        i = this.Entity.GetComponent(187);
+        i = this.Entity.GetComponent(189);
         n = t > LIMIT_FRAME_TIME2 ? UPDATE_UP_Z2 : UPDATE_UP_Z;
         CharacterPendulumComponent_1.TmpVector.Set(0, 0, Math.abs(this.Anr.Z) / e * n);
         i.MoveCharacter(CharacterPendulumComponent_1.TmpVector, t * MathUtils_1.MathUtils.MillisecondToSecond, "钩锁.ThrowRopeAndSwing");
@@ -158,7 +158,7 @@ let CharacterPendulumComponent = CharacterPendulumComponent_1 = class CharacterP
       i = Vector_1.Vector.Create();
       e.Multiply(n, i);
       i.Multiply(this.RopeForce, i);
-      t = this.Entity.GetComponent(187).CharacterMovement;
+      t = this.Entity.GetComponent(189).CharacterMovement;
       if (i.Size() > LIMIT_FORCE) {
         i.Normalize();
         i.Multiply(LIMIT_FORCE, i);
@@ -169,7 +169,7 @@ let CharacterPendulumComponent = CharacterPendulumComponent_1 = class CharacterP
   }
   Sjr() {
     this.cjr = false;
-    this.Entity.GetComponent(187).CharacterMovement.AirControl = this.vjr;
+    this.Entity.GetComponent(189).CharacterMovement.AirControl = this.vjr;
   }
   SetPendulumData(t, e, n, i, r, s, o, h, _, a, E) {
     this.cjr = true;
@@ -181,5 +181,5 @@ let CharacterPendulumComponent = CharacterPendulumComponent_1 = class CharacterP
   }
 };
 CharacterPendulumComponent.TmpVector = Vector_1.Vector.Create();
-CharacterPendulumComponent = CharacterPendulumComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(74)], CharacterPendulumComponent);
+CharacterPendulumComponent = CharacterPendulumComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(76)], CharacterPendulumComponent);
 exports.CharacterPendulumComponent = CharacterPendulumComponent; //# sourceMappingURL=CharacterPendulumComponent.js.map

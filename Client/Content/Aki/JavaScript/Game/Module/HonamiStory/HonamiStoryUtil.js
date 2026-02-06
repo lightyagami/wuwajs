@@ -119,7 +119,7 @@ class HonamiStoryUtil {
     ControllerHolder_1.ControllerHolder.WorldController.GetEntitiesInRange(e, 7, o, true, false);
     var n = new Set();
     for (const i of o) {
-      var t = i.Entity.CheckGetComponent(207);
+      var t = i.Entity.CheckGetComponent(209);
       if (!t || !!t.GetClientCanInteraction() || !ModelManager_1.ModelManager.HonamiStoryModel.PickedEntityId.has(i.Entity.Id)) {
         t = i.Entity.GetComponent(0);
         if (!n.has(t) && t && t.HonamiStoryItemInfo) {

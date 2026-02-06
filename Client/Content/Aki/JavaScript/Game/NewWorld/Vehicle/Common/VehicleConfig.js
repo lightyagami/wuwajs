@@ -129,7 +129,7 @@ class VehicleConfig {
     this.AddOrRemoveTags(t, this.BornTagList, s);
   }
   AddOrRemoveTags(t, s, e) {
-    var i = t.GetComponent(215);
+    var i = t.GetComponent(217);
     if (i) {
       if (e) {
         for (const r of s) {

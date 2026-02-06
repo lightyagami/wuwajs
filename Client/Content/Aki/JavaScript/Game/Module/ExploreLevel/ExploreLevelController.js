@@ -13,10 +13,10 @@ const ModelManager_1 = require("../../Manager/ModelManager");
 const UiControllerBase_1 = require("../../Ui/Base/UiControllerBase");
 class ExploreLevelController extends UiControllerBase_1.UiControllerBase {
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(18679, ExploreLevelController.lVt);
+    Net_1.Net.Register(26622, ExploreLevelController.lVt);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(18679);
+    Net_1.Net.UnRegister(26622);
   }
   static MultiExploreScoreRewardRequest(e) {
     var o = new Protocol_1.Aki.Protocol.v8u();
@@ -24,7 +24,7 @@ class ExploreLevelController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("ExploreLevel", 63, "客户端请求请求探索进度评分奖励 ExploreScoreRewardRequest", ["request", o]);
     }
-    Net_1.Net.Call(15898, o, this.G8u);
+    Net_1.Net.Call(21186, o, this.G8u);
   }
   static CountryExploreScoreInfoRequest(l, s) {
     var e = new Protocol_1.Aki.Protocol.lts();
@@ -32,7 +32,7 @@ class ExploreLevelController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("ExploreLevel", 63, "客户端请求国家探索评分信息 CountryExploreScoreInfoRequest", ["request", e]);
     }
-    Net_1.Net.Call(16426, e, e => {
+    Net_1.Net.Call(28912, e, e => {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("ExploreLevel", 63, "服务端返回国家探索评分信息 CountryExploreScoreInfoResponse", ["response", e]);
       }
@@ -56,7 +56,7 @@ class ExploreLevelController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("ExploreLevel", 63, "客户端请求国家探索评分信息 CountryExploreScoreInfoRequest", ["request", o]);
     }
-    var o = await Net_1.Net.CallAsync(16426, o);
+    var o = await Net_1.Net.CallAsync(28912, o);
     if (o) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("ExploreLevel", 63, "服务端返回国家探索评分信息 CountryExploreScoreInfoResponse", ["response", o]);

@@ -92,15 +92,13 @@ class CrowdAiController extends ControllerBase_1.ControllerBase {
       return false;
     }
     this.TmpVector1.Set(DEFAULT_ACTOR_SYSTEM_BOUNDS, DEFAULT_ACTOR_SYSTEM_BOUNDS, DEFAULT_ACTOR_SYSTEM_BOUNDS);
-    var i = ActorSystem_1.ActorSystem.Get(UE.BP_CrowdAiBoidActorSystemBase_C.StaticClass(), MathUtils_1.MathUtils.DefaultTransformDouble);
-    i.SetActorTickEnabled(false);
-    i.BakedBoneMeshComp?.SetComponentTickEnabled(false);
-    i.BakedBoneMeshComp?.SetCustomBounds(new UE.BoxSphereBounds(this.BoundsOrigin.ToUeVectorOld(), this.TmpVector1.ToUeVectorOld(), DEFAULT_ACTOR_SYSTEM_BOUNDS));
-    if (this.InitBoidActorSystem(i, t)) {
-      this.BoidActorSystemPool.push(i);
+    var i = this.DelayRemovedItemSet.size;
+    var s = this.GetNewActorSystem();
+    if (this.DelayRemovedItemSet.size !== i || (s.SetActorTickEnabled(false), s.BakedBoneMeshComp?.SetComponentTickEnabled(false), s.BakedBoneMeshComp?.SetCustomBounds(new UE.BoxSphereBounds(this.BoundsOrigin.ToUeVectorOld(), this.TmpVector1.ToUeVectorOld(), DEFAULT_ACTOR_SYSTEM_BOUNDS)), this.InitBoidActorSystem(s, t))) {
+      this.BoidActorSystemPool.push(s);
       return true;
     } else {
-      ActorSystem_1.ActorSystem.Put("CreateBoidActorSystemFromConfig初始化错误", i);
+      ActorSystem_1.ActorSystem.Put("CreateBoidActorSystemFromConfig初始化错误", s);
       return false;
     }
   }
@@ -238,7 +236,7 @@ class CrowdAiController extends ControllerBase_1.ControllerBase {
   static SpawnCrowdAiBoid(t, i, s = true) {
     if (this.IsCrowdAiEnable && !(t >= this.BoidActorSystemPool.length) && (t = this.BoidActorSystemPool[t].SpawnBoidActor(i.ToUeTransformOld(), s) ?? 0)) {
       this.CrowdAiBoidIdSet.add(t);
-      if (Global_1.Global.BaseCharacter?.IsValid() && (s = (i = Global_1.Global.BaseCharacter.CharacterActorComponent)?.Entity.GetComponent(333)?.BoidComponent?.BoidId ?? 0)) {
+      if (Global_1.Global.BaseCharacter?.IsValid() && (s = (i = Global_1.Global.BaseCharacter.CharacterActorComponent)?.Entity.GetComponent(335)?.BoidComponent?.BoidId ?? 0)) {
         this.CurPlayerEntityId = i.Entity.Id;
         this.CrowdAiSubsystem?.SetWatchingBoidAndJoinGroup(t, s);
       }
@@ -329,6 +327,18 @@ class CrowdAiController extends ControllerBase_1.ControllerBase {
       return ActorSystem_1.ActorSystem.Get(UE.KuroCrowdAiManagerProxyActor.StaticClass(), MathUtils_1.MathUtils.DefaultTransformDouble);
     }
   }
+  static GetNewActorSystem() {
+    var t = this.DelayRemovedProxyActorInfo ? 2 : 1;
+    if (this.DelayRemovedItemSet.size >= t) {
+      for (const i of this.DelayRemovedItemSet) {
+        if (i !== this.DelayRemovedProxyActorInfo && i.Actor?.IsValid() && i.Actor?.IsA(UE.BP_CrowdAiBoidActorSystemBase_C.StaticClass())) {
+          this.DelayRemovedItemSet.delete(i);
+          return i.Actor;
+        }
+      }
+    }
+    return ActorSystem_1.ActorSystem.Get(UE.BP_CrowdAiBoidActorSystemBase_C.StaticClass(), MathUtils_1.MathUtils.DefaultTransformDouble);
+  }
   static HandleDelayRemoveActors(t) {
     if (this.DelayRemovedItemSet.size) {
       var i = [];
@@ -367,7 +377,7 @@ CrowdAiController.DelayRemovedItemSet = new Set();
 CrowdAiController.TmpVector1 = Vector_1.Vector.Create();
 CrowdAiController.OnChangeRole = (t, i) => {
   if (_a.IsCrowdAiEnable && _a.CrowdAiBoidIdSet.size) {
-    var s = t.Entity?.GetComponent(333)?.BoidComponent;
+    var s = t.Entity?.GetComponent(335)?.BoidComponent;
     if (s) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("NPC", 50, "[KuroCrowdAi] 切换玩家实体，更换跟随对象", ["oldEntityId", i?.Id], ["newEntityId", t.Id]);

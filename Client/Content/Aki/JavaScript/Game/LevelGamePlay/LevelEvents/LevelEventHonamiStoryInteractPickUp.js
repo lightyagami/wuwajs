@@ -16,7 +16,7 @@ class LevelEventHonamiStoryInteractPickUp extends LevelGeneralBase_1.LevelEventB
       if (t = EntitySystem_1.EntitySystem.Get(t.EntityId)) {
         if ((o = t.CheckGetComponent(0)).HonamiStoryItemInfo) {
           if (ModelManager_1.ModelManager.HonamiStoryModel.GetBackPackData(2) && !ModelManager_1.ModelManager.HonamiStoryModel.IsPickUpViewOpened()) {
-            if (n = t.CheckGetComponent(207)) {
+            if (n = t.CheckGetComponent(209)) {
               n.SetInteractionState(false, "HonamiStoryPickUp");
             }
             n = ModelManager_1.ModelManager.HonamiStoryModel.CreateHonamiStoryItemData(o.HonamiStoryItemInfo);

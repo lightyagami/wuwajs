@@ -16,6 +16,7 @@ const MediumItemGridCheckTickComponent_1 = require("./MediumItemGridComponent/Me
 const MediumItemGridComposeTag_1 = require("./MediumItemGridComponent/MediumItemGridComposeTag");
 const MediumItemGridCoolDownComponent_1 = require("./MediumItemGridComponent/MediumItemGridCoolDownComponent");
 const MediumItemGridCostComponent_1 = require("./MediumItemGridComponent/MediumItemGridCostComponent");
+const MediumItemGridCurTagComponent_1 = require("./MediumItemGridComponent/MediumItemGridCurTagComponent");
 const MediumItemGridDangoPluginIconComponent_1 = require("./MediumItemGridComponent/MediumItemGridDangoPluginIconComponent");
 const MediumItemGridDangoRoleHeadComponent_1 = require("./MediumItemGridComponent/MediumItemGridDangoRoleHeadComponent");
 const MediumItemGridDevelopRewardComponent_1 = require("./MediumItemGridComponent/MediumItemGridDevelopRewardComponent");
@@ -61,6 +62,7 @@ const MediumItemGridVisionFetterComponent_1 = require("./MediumItemGridComponent
 const MediumItemGridVisionGreenSelectComponent_1 = require("./MediumItemGridComponent/MediumItemGridVisionGreenSelectComponent");
 const MediumItemGridVisionRoleHeadComponent_1 = require("./MediumItemGridComponent/MediumItemGridVisionRoleHeadComponent");
 const MediumItemGridVisionSlotComponent_1 = require("./MediumItemGridComponent/MediumItemGridVisionSlotComponent");
+const MediumItemGridVisionWarningComponent_1 = require("./MediumItemGridComponent/MediumItemGridVisionWarningComponent");
 const MediumItemGridWarningTipsComponent_1 = require("./MediumItemGridComponent/MediumItemGridWarningTipsComponent");
 const MediumItemGridWeeklyRogueTagComponent_1 = require("./MediumItemGridComponent/MediumItemGridWeeklyRogueTagComponent");
 const TRIAL_ROLE_ID = 10000;
@@ -173,52 +175,59 @@ class MediumItemGrid extends ItemGridBase_1.ItemGridBase {
     var p = e.IsProhibit;
     var I = e.ReduceButtonInfo;
     var a = e.IsGreenSelected;
-    var C = e.IsCheckTick;
-    var M = e.IsTimeFlagVisible;
-    var G = e.IsReceivedFlagVisible;
-    var l = e.RoleHeadInfo;
-    var _ = e.SortIndex;
-    var g = e.IsDisable;
-    var S = e.IsMainVisionVisible;
-    var v = e.VisionFetterGroupId;
-    var c = e.VisionRoleHeadInfo;
-    var R = e.DangoRoleHeadInfo;
-    var T = e.ComposeIconTag;
-    var q = e.ChangeAble;
-    var U = e.IsUpGrade;
-    var k = e.TagPathList;
-    var y = e.SubIconPath;
+    var C = e.IsWarning;
+    var M = e.IsCheckTick;
+    var G = e.IsTimeFlagVisible;
+    var l = e.IsReceivedFlagVisible;
+    var _ = e.RoleHeadInfo;
+    var g = e.SortIndex;
+    var S = e.IsDisable;
+    var v = e.IsMainVisionVisible;
+    var c = e.VisionFetterGroupId;
+    var R = e.VisionRoleHeadInfo;
+    var T = e.DangoRoleHeadInfo;
+    var q = e.ComposeIconTag;
+    var U = e.ChangeAble;
+    var k = e.IsUpGrade;
+    var y = e.TagPathList;
+    var D = e.SubIconPath;
     var B = e.RightTopValue;
-    var D = ConfigManager_1.ConfigManager.InventoryConfig.GetItemDataTypeByConfigId(e.ItemConfigId) === 3;
+    var V = ConfigManager_1.ConfigManager.InventoryConfig.GetItemDataTypeByConfigId(e.ItemConfigId) === 3;
     var b = e.IsBranchUpgrade;
     var f = e.IsRecommendVisible;
     this.SetStartLevel(i);
     this.SetBuffSprite(m);
-    this.SetRedDotVisible(o);
-    this.SetLevelAndLock(r, n, s, D, d);
+    this.SetLevelAndLock(r, n, s, V, d);
     this.SetRecommendVisible(f);
     this.SetItemPrice(e.ItemPrice);
     this.SetCoolDown(u, h);
     this.SetIsProhibit(p);
     this.SetReduceButton(I);
     this.SetGreenSelected(a);
-    this.SetCheckTickVisible(C);
-    this.SetTimeFlagVisible(M);
-    this.SetReceivedFlagVisible(G);
-    this.SetRoleHead(l);
-    this.SetSortIndex(_);
-    this.SetIsDisable(g);
+    this.SetWarningIcon(C);
+    this.SetCheckTickVisible(M);
+    this.SetTimeFlagVisible(G);
+    this.SetReceivedFlagVisible(l);
+    this.SetRoleHead(_);
+    this.SetSortIndex(g);
+    this.SetIsDisable(S);
     this.SetRogueFinish(e.IsRogueFinish);
-    this.SetIsMainVision(S);
-    this.SetNewVisible(!o && t);
-    this.SetVisionFetterGroup(v);
-    this.SetVisionRoleHead(c);
-    this.SetComposeIcon(T);
-    this.SetComposeChangeAble(q);
-    this.SetDangoRoleHead(R);
-    this.SetUpGradeVisible(U);
-    this.SetTagsInfo(k);
-    this.SetSubIconPath(y);
+    this.SetIsMainVision(v);
+    if (e.IsNewOverRedDot) {
+      this.SetNewVisible(t);
+      this.SetRedDotVisible(!t && o);
+    } else {
+      this.SetRedDotVisible(o);
+      this.SetNewVisible(!o && t);
+    }
+    this.SetVisionFetterGroup(c);
+    this.SetVisionRoleHead(R);
+    this.SetComposeIcon(q);
+    this.SetComposeChangeAble(U);
+    this.SetDangoRoleHead(T);
+    this.SetUpGradeVisible(k);
+    this.SetTagsInfo(y);
+    this.SetSubIconPath(D);
     this.SetRightTopValueInfo(B);
     this.SetIsBranchUpgrade(b);
     this.ApplyPropBaseDisplay(e);
@@ -300,6 +309,9 @@ class MediumItemGrid extends ItemGridBase_1.ItemGridBase {
   }
   SetGreenSelected(e) {
     this.RefreshComponent(MediumItemGridVisionGreenSelectComponent_1.MediumItemGridVisionGreenSelectComponent, e, e);
+  }
+  SetWarningIcon(e) {
+    this.RefreshComponent(MediumItemGridVisionWarningComponent_1.MediumItemGridVisionWarningComponent, e, e);
   }
   SetDangoRoleHead(e) {
     var i = this.RefreshComponent(MediumItemGridDangoRoleHeadComponent_1.MediumItemGridDangoRoleHeadComponent, e !== undefined && e.DangoConfigId > 0, e);
@@ -526,7 +538,7 @@ class MediumItemGrid extends ItemGridBase_1.ItemGridBase {
     } else if (r === 13) {
       this.eV1(i);
     } else if (r === 21) {
-      this.cJf(i);
+      this.sCg(i);
     } else {
       this.UTt(i);
     }
@@ -534,13 +546,7 @@ class MediumItemGrid extends ItemGridBase_1.ItemGridBase {
       this.SetSkinIcon(i);
     }
     this.SetIconSprite(n);
-    if (e.QualityId) {
-      this.SetQualityIconById(this.GetSprite(0), e.QualityId, undefined, e.QualityType);
-    } else if (e.QualityIcon) {
-      this.Bjc(e.QualityIcon);
-    } else {
-      this.dwt(i);
-    }
+    this.v5g(e);
     var d = !StringUtils_1.StringUtils.IsEmpty(t) || !StringUtils_1.StringUtils.IsEmpty(m);
     this.SetBottomTextVisible(d);
     if (d) {
@@ -556,20 +562,13 @@ class MediumItemGrid extends ItemGridBase_1.ItemGridBase {
     var m = e.BottomText;
     var o = e.BottomTextParameter;
     var n = e.MonsterId;
-    var d = e.QualityIconResourceId;
     this.Data = e.Data;
     if (n) {
       this.pwt(n);
     } else {
       this.UTt(i);
     }
-    if (d !== undefined) {
-      this.vwt(d);
-    } else if (e.QualityId) {
-      this.SetQualityIconById(this.GetSprite(0), e.QualityId, undefined, e.QualityType);
-    } else {
-      this.dwt(i);
-    }
+    this.Wtd(e.IsQualityHidden, e.QualityId, e.ItemConfigId, e.QualityIcon, e.QualityType);
     var n = !StringUtils_1.StringUtils.IsEmpty(t) || !StringUtils_1.StringUtils.IsEmpty(m);
     this.SetBottomTextVisible(n);
     if (n) {
@@ -587,20 +586,20 @@ class MediumItemGrid extends ItemGridBase_1.ItemGridBase {
     var n = e.BottomTextParameter;
     var d = e.SkinId;
     this.Data = e.Data;
-    var e = this.GetTexture(1);
+    var r = this.GetTexture(1);
     if (i > TRIAL_ROLE_ID) {
       t = ConfigManager_1.ConfigManager.RoleConfig.GetTrialRoleConfig(i);
       i = t.ParentId;
     }
     if (d) {
       t = ConfigManager_1.ConfigManager.SkinConfig.GetRoleSkinConfig(d).RoleHeadIconLarge;
-      this.SetRoleSkinIcon(t, e, d);
+      this.SetRoleSkinIcon(t, r, d);
     } else {
       t = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(i).RoleHeadIconBig;
-      this.SetRoleIcon(t, e, i);
+      this.SetRoleIcon(t, r, i);
     }
-    this.dwt(i);
-    e?.SetUIActive(true);
+    r?.SetUIActive(true);
+    this.Wtd(e.IsQualityHidden, e.QualityId, i, e.QualityIcon, e.QualityType);
     var d = !StringUtils_1.StringUtils.IsEmpty(m) || !StringUtils_1.StringUtils.IsEmpty(o);
     this.SetBottomTextVisible(d);
     if (d) {
@@ -645,7 +644,7 @@ class MediumItemGrid extends ItemGridBase_1.ItemGridBase {
     });
     this.GetTexture(1)?.SetUIActive(false);
   }
-  cJf(e) {
+  sCg(e) {
     var i = this.GetTexture(1);
     if (e !== undefined && (e = ConfigManager_1.ConfigManager.MotorDiyConfig.GetMotorStickerConfig(e)?.IconMiddle)) {
       this.SetTextureByPath(e, i);
@@ -664,67 +663,103 @@ class MediumItemGrid extends ItemGridBase_1.ItemGridBase {
       i.SetUIActive(true);
     }
   }
+  v5g(e) {
+    var i = e.ItemConfigId;
+    var t = e.IsQualityHidden;
+    var m = e.QualityId;
+    var o = e.QualityIcon;
+    var n = e.QualityType;
+    var d = this.GetSprite(0);
+    if (t) {
+      d.SetUIActive(false);
+    } else if (StringUtils_1.StringUtils.IsEmpty(o)) {
+      if (m !== undefined && m > 0) {
+        this.SetQualityIconById(d, m, undefined, n ?? "MediumItemGridQualitySpritePath");
+        d.SetUIActive(true);
+        this.nwt = i || 0;
+      } else {
+        switch (ConfigManager_1.ConfigManager.InventoryConfig?.GetItemDataTypeByConfigId(e.ItemConfigId)) {
+          case 13:
+            this.JO1(e.ItemConfigId);
+            break;
+          case 10:
+            this.SetSkinQuality(e.ItemConfigId);
+            break;
+          default:
+            this.SetSkinQuality(undefined);
+            this.dwt(i);
+        }
+      }
+    } else {
+      this.Bjc(o);
+      this.nwt = i || 0;
+    }
+  }
+  Wtd(e, i, t, m, o) {
+    var n = this.GetSprite(0);
+    if (e) {
+      n.SetUIActive(false);
+    } else if (StringUtils_1.StringUtils.IsEmpty(m)) {
+      if (i !== undefined && i > 0) {
+        this.SetQualityIconById(n, i, undefined, o ?? "MediumItemGridQualitySpritePath");
+        n.SetUIActive(true);
+        this.nwt = t || 0;
+      } else {
+        this.dwt(t);
+      }
+    } else {
+      this.Bjc(m);
+      this.nwt = t || 0;
+    }
+  }
   dwt(e) {
     var i = this.GetSprite(0);
     if (e === undefined) {
       i.SetUIActive(false);
     } else if (this.nwt === e) {
-      if (ConfigManager_1.ConfigManager.InventoryConfig?.GetItemDataTypeByConfigId(e) !== 10) {
-        i.SetUIActive(true);
-      }
-    } else {
       i.SetUIActive(true);
-      this.zO1(e);
+    } else {
+      this.SetItemQualityIcon(i, e, undefined, "MediumItemGridQualitySpritePath");
+      i.SetUIActive(true);
       this.nwt = e;
     }
   }
-  zO1(e) {
-    var i = this.GetSprite(0);
-    var t = ConfigManager_1.ConfigManager.InventoryConfig?.GetItemDataTypeByConfigId(e);
-    if (t === 13) {
-      this.JO1(e);
-    } else if (t === 10) {
-      this.SetSkinQuality(e);
-    } else {
-      this.GetSprite(8)?.SetUIActive(false);
-      this.SetItemQualityIcon(i, e, undefined, "MediumItemGridQualitySpritePath");
-    }
-  }
   JO1(e) {
-    var i = this.GetSprite(0);
-    var e = ConfigManager_1.ConfigManager.DangoAbyssConfig.GetAbyssQualityByPluginItemId(e);
-    this.SetSpriteByPath(e.MediumItemGridQualitySpritePath, i, true);
-  }
-  vwt(e) {
-    var i = this.GetSprite(0);
-    if (e === undefined || (e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(e), StringUtils_1.StringUtils.IsEmpty(e))) {
-      i.SetUIActive(false);
+    var i;
+    var t = this.GetSprite(0);
+    if (e === undefined) {
+      t.SetUIActive(false);
+    } else if (this.nwt === e) {
+      t.SetUIActive(true);
     } else {
-      this.SetSpriteByPath(e, i, true);
-      i.SetUIActive(true);
+      i = ConfigManager_1.ConfigManager.DangoAbyssConfig.GetAbyssQualityByPluginItemId(e);
+      this.SetSpriteByPath(i.MediumItemGridQualitySpritePath, t, true);
+      t.SetUIActive(true);
+      this.nwt = e;
     }
   }
   Bjc(e) {
     var i = this.GetSprite(0);
     var t = !!e;
-    i.SetUIActive(t);
     if (t) {
       this.SetSpriteByPath(e, i, false);
     }
+    i.SetUIActive(t);
   }
   SetSkinQuality(e) {
-    var i = this.GetSprite(8);
+    var i;
+    var t = this.GetSprite(8);
     if (e === undefined) {
-      i.SetUIActive(false);
+      t.SetUIActive(false);
+    } else if (this.nwt === e) {
+      t.SetUIActive(true);
     } else {
-      if (this.nwt !== e) {
-        this.GetSprite(0)?.SetUIActive(false);
-        this.nwt = e;
-        e = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(e);
-        e = ConfigManager_1.ConfigManager.CommonConfig.GetItemQualityById(e.QualityId);
-        this.SetSpriteByPath(e.SkinQualityItemA, i, false);
-      }
-      i.SetUIActive(true);
+      this.GetSprite(0)?.SetUIActive(false);
+      i = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(e);
+      i = ConfigManager_1.ConfigManager.CommonConfig.GetItemQualityById(i.QualityId);
+      this.SetSpriteByPath(i.SkinQualityItemA, t, false);
+      t.SetUIActive(true);
+      this.nwt = e;
     }
   }
   SetBottomTextVisible(e) {
@@ -805,6 +840,9 @@ class MediumItemGrid extends ItemGridBase_1.ItemGridBase {
   }
   SetTemplateIcon(e) {
     this.RefreshComponent(MediumItemGridTemplateIconComponent_1.MediumItemGridTemplateIconComponent, e, e);
+  }
+  SetCurTagIcon(e) {
+    this.RefreshComponent(MediumItemGridCurTagComponent_1.MediumItemGridCurTagComponent, e, e);
   }
 }
 exports.MediumItemGrid = MediumItemGrid;

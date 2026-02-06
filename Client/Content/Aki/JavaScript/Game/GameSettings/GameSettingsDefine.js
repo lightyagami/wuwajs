@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.gameSettingsInitSourceTypePriority = exports.MAIN_TYPE_OF_KEY_SETTING = exports.RENDER_QUALITY_SUIBO_INDEX_END = exports.RENDER_QUALITY_SUIBO_INDEX_START = exports.HEAVY_SCENEVULUME_INDEX_END = exports.HEAVY_SCENEVULUME_INDEX_START = exports.NPC_DENSITY_PC_THRESHOLD = exports.NPC_DENSITY_THRESHOLD = exports.WINDOWS_RESOLUTION_INDEX = exports.function2GameSettings = exports.EFunction = undefined;
+exports.gameSettingsInitSourceTypePriority = exports.MAIN_TYPE_OF_KEY_SETTING = exports.HEAVY_SCENEVULUME_INDEX_END = exports.HEAVY_SCENEVULUME_INDEX_START = exports.NPC_DENSITY_PC_THRESHOLD = exports.NPC_DENSITY_THRESHOLD = exports.WINDOWS_RESOLUTION_INDEX = exports.function2GameSettings = exports.EFunction = undefined;
 const AudioDefine_1 = require("../../Core/Audio/AudioDefine");
 const Info_1 = require("../../Core/Common/Info");
 const EffectEnvironment_1 = require("../../Core/Effect/EffectEnvironment");
@@ -62,6 +62,7 @@ var EFunction;
   e[e.PCVSYNC = 66] = "PCVSYNC";
   e[e.MOBILERESOLUTION = 67] = "MOBILERESOLUTION";
   e[e.SUPERRESOLUTION = 68] = "SUPERRESOLUTION";
+  e[e.LOADINGRANGESCALELEVEL = 20611] = "LOADINGRANGESCALELEVEL";
   e[e.TEXTLANGUAGE = 51] = "TEXTLANGUAGE";
   e[e.VOICELANGUAGE = 52] = "VOICELANGUAGE";
   e[e.VOICEPACKMANAGER = 53] = "VOICEPACKMANAGER";
@@ -148,10 +149,14 @@ var EFunction;
   e[e.AdjustiveGamePadTrigger = 60210] = "AdjustiveGamePadTrigger";
   e[e.MotorMobileButtonCustom = 30201] = "MotorMobileButtonCustom";
   e[e.MotorIsDynamicJoystick = 30202] = "MotorIsDynamicJoystick";
+  e[e.MotorMobileButtonLayout = 30200] = "MotorMobileButtonLayout";
   e[e.MotorAutoAcceleratorSettingEnable = 60301] = "MotorAutoAcceleratorSettingEnable";
   e[e.MotorAutoLongPressSpeedUp = 60302] = "MotorAutoLongPressSpeedUp";
   e[e.MotorDriftAcceleratorSettingEnable = 60303] = "MotorDriftAcceleratorSettingEnable";
   e[e.MotorHudVisible = 51103] = "MotorHudVisible";
+  e[e.DeviceInfo = 201006] = "DeviceInfo";
+  e[e.UiBrightness = 20306] = "UiBrightness";
+  e[e.PeakBrightness = 20307] = "PeakBrightness";
 })(EFunction = exports.EFunction ||= {});
 const masterVolume = {
   GameSettingId: EFunction.MASTERVOLUMEFUNCTION,
@@ -207,6 +212,12 @@ const imageQuality = {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SetImageQuality);
   },
   DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpImageQuality()
+};
+const loadingRangeScaleLevel = {
+  GameSettingId: EFunction.LOADINGRANGESCALELEVEL,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.LoadingRangeScaleLevel,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyLoadingRangeScaleLevel(e),
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpLoadingRangeScaleLevel()
 };
 const displayMode = {
   GameSettingId: EFunction.DISPLAYMODE,
@@ -1084,6 +1095,39 @@ const motorMobileButtonCustom = {
   GetCallbackOrGlobalKey: () => 0,
   DumpCallback: () => "[motorMobileButtonCustom]this is just a switch entry"
 };
+const motorMobileButtonLayout = {
+  GameSettingId: EFunction.MotorMobileButtonLayout,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.MotorMobileButtonLayout,
+  ApplyCallback: (e, t) => {
+    e = e === 0;
+    ModelManager_1.ModelManager.BattleUiModel.MotorcycleData.SetIsRoundJoystick(e);
+    return true;
+  },
+  DumpCallback: () => "[MotorMobileButtonLayout]same to getter"
+};
+const deviceInfo = {
+  GameSettingId: EFunction.DeviceInfo,
+  GetCallbackOrGlobalKey: () => 0,
+  DumpCallback: () => ""
+};
+const uiBrightness = {
+  GameSettingId: EFunction.UiBrightness,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.UiBrightness,
+  ApplyCallback: (e, t) => {
+    GameSettingsUtils_1.GameSettingsUtils.ApplyUiBrightness(e);
+    return true;
+  },
+  DumpCallback: () => "[UiBrightness]same to getter"
+};
+const peakBrightness = {
+  GameSettingId: EFunction.PeakBrightness,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.PeakBrightness,
+  ApplyCallback: (e, t) => {
+    GameSettingsUtils_1.GameSettingsUtils.ApplyPeakBrightness(e);
+    return true;
+  },
+  DumpCallback: () => "[PeakBrightness]same to getter"
+};
 exports.function2GameSettings = {
   [EFunction.MASTERVOLUMEFUNCTION]: masterVolume,
   [EFunction.VOICEVOLUMEFUNCTION]: voiceVolume,
@@ -1216,14 +1260,17 @@ exports.function2GameSettings = {
   [EFunction.MotorDriftAcceleratorSettingEnable]: motorDriftAcceleratorSettingEnable,
   [EFunction.MotorHudVisible]: motorHudVisible,
   [EFunction.MotorIsDynamicJoystick]: motorTouchFixedPosition,
-  [EFunction.MotorMobileButtonCustom]: motorMobileButtonCustom
+  [EFunction.MotorMobileButtonCustom]: motorMobileButtonCustom,
+  [EFunction.MotorMobileButtonLayout]: motorMobileButtonLayout,
+  [EFunction.DeviceInfo]: deviceInfo,
+  [EFunction.UiBrightness]: uiBrightness,
+  [EFunction.PeakBrightness]: peakBrightness,
+  [EFunction.LOADINGRANGESCALELEVEL]: loadingRangeScaleLevel
 };
 exports.WINDOWS_RESOLUTION_INDEX = 2;
 exports.NPC_DENSITY_THRESHOLD = 1;
 exports.NPC_DENSITY_PC_THRESHOLD = 1;
 exports.HEAVY_SCENEVULUME_INDEX_START = 30;
 exports.HEAVY_SCENEVULUME_INDEX_END = 39;
-exports.RENDER_QUALITY_SUIBO_INDEX_START = 60;
-exports.RENDER_QUALITY_SUIBO_INDEX_END = 69;
 exports.MAIN_TYPE_OF_KEY_SETTING = 3;
 exports.gameSettingsInitSourceTypePriority = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 10]; //# sourceMappingURL=GameSettingsDefine.js.map

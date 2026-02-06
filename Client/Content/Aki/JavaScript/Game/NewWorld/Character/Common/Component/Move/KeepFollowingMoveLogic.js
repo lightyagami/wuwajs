@@ -186,9 +186,9 @@ class KeepFollowingMoveLogic {
   Init(t) {
     this.Jh = t;
     this.Hte = this.Jh.GetComponent(3);
-    this.rJo = this.Jh.GetComponent(109);
-    this.Gce = this.Jh.GetComponent(46);
-    this.oRe = this.Jh.GetComponent(186);
+    this.rJo = this.Jh.GetComponent(111);
+    this.Gce = this.Jh.GetComponent(48);
+    this.oRe = this.Jh.GetComponent(188);
     t = this.Hte?.CreatureData.GetEntityType();
     this.aO1 = t === Protocol_1.Aki.Protocol.kks.Proto_Player || t === Protocol_1.Aki.Protocol.kks.Proto_Npc;
     this.CapsuleHeight = (this.Hte.ScaledHalfHeight - this.Hte.ScaledRadius) * 2;
@@ -371,7 +371,7 @@ class KeepFollowingMoveLogic {
               return;
             }
           }
-          var h = s.Entity.GetComponent(109)?.MoveState;
+          var h = s.Entity.GetComponent(111)?.MoveState;
           var E = this.rJo?.MoveState;
           var g = h === CharacterUnifiedStateTypes_1.ECharMoveState.Stand || T < c;
           var C = Vector_1.Vector.Dist(this.pz, this.fz);

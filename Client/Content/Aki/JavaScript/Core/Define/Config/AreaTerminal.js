@@ -46,6 +46,9 @@ class AreaTerminal {
   get AreaForbiddenTips() {
     return this.areaforbiddentips();
   }
+  get AreaMapGroup() {
+    return GameUtils_1.GameUtils.ConvertToArray(this.areamapgroupLength(), this.areamapgroup, this);
+  }
   get UnlockButtonText() {
     return this.unlockbuttontext();
   }
@@ -178,8 +181,35 @@ class AreaTerminal {
     }
     return i;
   }
-  unlockbuttontext(t) {
+  GetAreamapgroupAt(t) {
+    return this.areamapgroup(t);
+  }
+  areamapgroup(t) {
     var i = this.J7.__offset(this.z7, 28);
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
+    } else {
+      return 0;
+    }
+  }
+  areamapgroupLength() {
+    var t = this.J7.__offset(this.z7, 28);
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  areamapgroupArray() {
+    var t = this.J7.__offset(this.z7, 28);
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
+  }
+  unlockbuttontext(t) {
+    var i = this.J7.__offset(this.z7, 30);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -187,7 +217,7 @@ class AreaTerminal {
     return i;
   }
   gameplaytype() {
-    var t = this.J7.__offset(this.z7, 30);
+    var t = this.J7.__offset(this.z7, 32);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -195,7 +225,7 @@ class AreaTerminal {
     }
   }
   gameplayid() {
-    var t = this.J7.__offset(this.z7, 32);
+    var t = this.J7.__offset(this.z7, 34);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {

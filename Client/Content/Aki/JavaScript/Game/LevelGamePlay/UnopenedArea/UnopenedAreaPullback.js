@@ -44,7 +44,7 @@ class UnopenedAreaPullback {
     this.xie = (t, e) => {
       if (this.hBe && (this.CBe(t), this.sBe)) {
         if (e?.Valid) {
-          e.Entity.GetComponent(187).StopMoveToLocation();
+          e.Entity.GetComponent(189).StopMoveToLocation();
           this.gBe(e, false);
         }
         this.gBe(t, true);
@@ -57,9 +57,9 @@ class UnopenedAreaPullback {
     var i;
     if (this.hBe && this.dBe?.Valid) {
       if (ModelManager_1.ModelManager.TeleportModel.IsTeleport || ModelManager_1.ModelManager.PlotModel.IsInPlot) {
-        this.wBm(true);
+        this.t2m(true);
       } else {
-        this.wBm(false);
+        this.t2m(false);
         e = Vector_1.Vector.Dist2D(this._Be, this.Hte.ActorLocationProxy);
         if (this.aBe) {
           i = MathUtils_1.MathUtils.SafeDivide(e, this.rBe);
@@ -126,7 +126,7 @@ class UnopenedAreaPullback {
   }
   fBe(t) {
     this.DBe(t);
-    var t = t.Entity.GetComponent(187);
+    var t = t.Entity.GetComponent(189);
     var e = {
       Index: 0,
       Position: this._Be
@@ -147,8 +147,8 @@ class UnopenedAreaPullback {
     });
   }
   DBe(t) {
-    if (t.Entity?.CheckGetComponent(184)?.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Climb) {
-      t.Entity?.GetComponent(35)?.ClimbPress(true);
+    if (t.Entity?.CheckGetComponent(186)?.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Climb) {
+      t.Entity?.GetComponent(36)?.ClimbPress(true);
     }
   }
   RBe() {
@@ -163,17 +163,17 @@ class UnopenedAreaPullback {
     }
   }
   UBe() {
-    Net_1.Net.Call(16437, Protocol_1.Aki.Protocol.ECs.create(), t => {
+    Net_1.Net.Call(28285, Protocol_1.Aki.Protocol.ECs.create(), t => {
       if (t.Q4n !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrPlayerIsTeleportCanNotDoTeleport && t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 26433);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 21146);
       }
     });
   }
   TBe(t) {
-    var e = t.Entity.GetComponent(187);
+    var e = t.Entity.GetComponent(189);
     e.StopMove(false);
     e.MoveToLocationEnd(1);
-    var e = t.Entity.GetComponent(65);
+    var e = t.Entity.GetComponent(67);
     e.ClearMoveVectorCache();
     e.SetActive(true);
     this.gBe(t, false);
@@ -191,7 +191,7 @@ class UnopenedAreaPullback {
       this.ABe(0, 0);
     }
     this.Hte.ClearInput();
-    var t = this.dBe.Entity.GetComponent(65);
+    var t = this.dBe.Entity.GetComponent(67);
     t.ClearMoveVectorCache();
     t.SetActive(false);
     this.gBe(this.dBe, true);
@@ -204,11 +204,11 @@ class UnopenedAreaPullback {
       this.dBe = ModelManager_1.ModelManager.CreatureModel.GetEntityById(Global_1.Global.BaseCharacter.EntityId);
     }
     this.Hte = this.dBe.Entity.GetComponent(3);
-    this.cBe = this.dBe.Entity.GetComponent(41);
-    this.mBe = this.dBe.Entity.GetComponent(184);
+    this.cBe = this.dBe.Entity.GetComponent(43);
+    this.mBe = this.dBe.Entity.GetComponent(186);
   }
   ABe(t, e) {
-    var i = this.Hte.Entity.GetComponent(215);
+    var i = this.Hte.Entity.GetComponent(217);
     if (t === 0 || i?.HasTag(-2100129479)) {
       this.Hte.Actor.KuroSetMovementMode({
         Mode: 1,
@@ -260,7 +260,7 @@ class UnopenedAreaPullback {
       this.lBe = undefined;
     }
   }
-  wBm(t) {
+  t2m(t) {
     if (this.lBe && TimerSystem_1.TimerSystem.Has(this.lBe)) {
       if (t) {
         if (!this.lBe.IsPause()) {
@@ -281,12 +281,12 @@ class UnopenedAreaPullback {
     var i;
     if (t && t.Valid) {
       if (e) {
-        (i = t.Entity.GetComponent(215))?.AddTag(-1697149502);
+        (i = t.Entity.GetComponent(217))?.AddTag(-1697149502);
         i?.AddTag(-541178966);
         i?.AddTag(-542518289);
       }
       if (!e) {
-        (i = t.Entity.GetComponent(215))?.RemoveTag(-1697149502);
+        (i = t.Entity.GetComponent(217))?.RemoveTag(-1697149502);
         i?.RemoveTag(-541178966);
         i?.RemoveTag(-542518289);
       }

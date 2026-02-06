@@ -114,8 +114,8 @@ let InteractionSpotComponent = InteractionSpotComponent_1 = class InteractionSpo
   }
   OnStart() {
     this.Hte = this.Entity.GetComponent(1);
-    this.xJr = this.Entity.GetComponent(126);
-    this.BJr = this.Entity.GetComponent(207);
+    this.xJr = this.Entity.GetComponent(128);
+    this.BJr = this.Entity.GetComponent(209);
     var t;
     var e;
     var i = this.Hte?.CreatureData?.GetPbEntityInitData();
@@ -324,5 +324,5 @@ let InteractionSpotComponent = InteractionSpotComponent_1 = class InteractionSpo
   }
 };
 InteractionSpotComponent.uoe = undefined;
-InteractionSpotComponent = InteractionSpotComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(320)], InteractionSpotComponent);
+InteractionSpotComponent = InteractionSpotComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(322)], InteractionSpotComponent);
 exports.InteractionSpotComponent = InteractionSpotComponent; //# sourceMappingURL=InteractionSpotComponent.js.map

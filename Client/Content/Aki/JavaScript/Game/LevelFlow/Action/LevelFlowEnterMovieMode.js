@@ -32,10 +32,10 @@ class LevelFlowEnterMovieMode extends LevelFlowActionBase_1.LevelFlowActionBase 
         IsEnablePhoto: this.OPt.EnableFuncConfig?.IsEnablePhoto,
         IsAutoExitInFlowSequence: this.OPt.AutoExitInFlow
       };
-      this.uhf(e, this.OPt.DurationType);
+      this.L1f(e, this.OPt.DurationType);
     }
   }
-  async uhf(e, o) {
+  async L1f(e, o) {
     const i = new CustomPromise_1.CustomPromise();
     ControllerHolder_1.ControllerHolder.MovieModeController.EnterMovieMode(e, e => {
       i.SetResult();

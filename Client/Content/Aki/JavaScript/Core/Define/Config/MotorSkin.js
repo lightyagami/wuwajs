@@ -22,6 +22,15 @@ class MotorSkin {
   get Editable() {
     return this.editable();
   }
+  get BindSticker() {
+    return GameUtils_1.GameUtils.ConvertToArray(this.bindstickerLength(), this.bindsticker, this);
+  }
+  get BindFrame() {
+    return this.bindframe();
+  }
+  get BindDecorations() {
+    return GameUtils_1.GameUtils.ConvertToArray(this.binddecorationsLength(), this.binddecorations, this);
+  }
   get ModelId() {
     return this.modelid();
   }
@@ -96,8 +105,70 @@ class MotorSkin {
     var t = this.J7.__offset(this.z7, 10);
     return !!t && !!this.J7.readInt8(this.z7 + t);
   }
-  modelid() {
+  GetBindstickerAt(t) {
+    return this.bindsticker(t);
+  }
+  bindsticker(t) {
+    var i = this.J7.__offset(this.z7, 12);
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
+    } else {
+      return 0;
+    }
+  }
+  bindstickerLength() {
     var t = this.J7.__offset(this.z7, 12);
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  bindstickerArray() {
+    var t = this.J7.__offset(this.z7, 12);
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
+  }
+  bindframe() {
+    var t = this.J7.__offset(this.z7, 14);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  GetBinddecorationsAt(t) {
+    return this.binddecorations(t);
+  }
+  binddecorations(t) {
+    var i = this.J7.__offset(this.z7, 16);
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
+    } else {
+      return 0;
+    }
+  }
+  binddecorationsLength() {
+    var t = this.J7.__offset(this.z7, 16);
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  binddecorationsArray() {
+    var t = this.J7.__offset(this.z7, 16);
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
+  }
+  modelid() {
+    var t = this.J7.__offset(this.z7, 18);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -105,30 +176,6 @@ class MotorSkin {
     }
   }
   standanim(t) {
-    var i = this.J7.__offset(this.z7, 14);
-    var i = i ? this.J7.__string(this.z7 + i, t) : null;
-    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(i);
-    }
-    return i;
-  }
-  qualityid() {
-    var t = this.J7.__offset(this.z7, 16);
-    if (t) {
-      return this.J7.readInt32(this.z7 + t);
-    } else {
-      return 5;
-    }
-  }
-  name(t) {
-    var i = this.J7.__offset(this.z7, 18);
-    var i = i ? this.J7.__string(this.z7 + i, t) : null;
-    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(i);
-    }
-    return i;
-  }
-  typedescription(t) {
     var i = this.J7.__offset(this.z7, 20);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -136,8 +183,32 @@ class MotorSkin {
     }
     return i;
   }
+  qualityid() {
+    var t = this.J7.__offset(this.z7, 22);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 5;
+    }
+  }
+  name(t) {
+    var i = this.J7.__offset(this.z7, 24);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
+  typedescription(t) {
+    var i = this.J7.__offset(this.z7, 26);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
   attributesdescription(t) {
-    var i = this.J7.__offset(this.z7, 22);
+    var i = this.J7.__offset(this.z7, 28);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -145,7 +216,7 @@ class MotorSkin {
     return i;
   }
   bgdescription(t) {
-    var i = this.J7.__offset(this.z7, 24);
+    var i = this.J7.__offset(this.z7, 30);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -156,7 +227,7 @@ class MotorSkin {
     return this.itemaccess(t);
   }
   itemaccess(t) {
-    var i = this.J7.__offset(this.z7, 26);
+    var i = this.J7.__offset(this.z7, 32);
     if (i) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
@@ -164,7 +235,7 @@ class MotorSkin {
     }
   }
   itemaccessLength() {
-    var t = this.J7.__offset(this.z7, 26);
+    var t = this.J7.__offset(this.z7, 32);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -172,7 +243,7 @@ class MotorSkin {
     }
   }
   itemaccessArray() {
-    var t = this.J7.__offset(this.z7, 26);
+    var t = this.J7.__offset(this.z7, 32);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -180,30 +251,6 @@ class MotorSkin {
     }
   }
   icon(t) {
-    var i = this.J7.__offset(this.z7, 28);
-    var i = i ? this.J7.__string(this.z7 + i, t) : null;
-    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(i);
-    }
-    return i;
-  }
-  iconmiddle(t) {
-    var i = this.J7.__offset(this.z7, 30);
-    var i = i ? this.J7.__string(this.z7 + i, t) : null;
-    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(i);
-    }
-    return i;
-  }
-  iconsmall(t) {
-    var i = this.J7.__offset(this.z7, 32);
-    var i = i ? this.J7.__string(this.z7 + i, t) : null;
-    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(i);
-    }
-    return i;
-  }
-  mesh(t) {
     var i = this.J7.__offset(this.z7, 34);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -211,7 +258,7 @@ class MotorSkin {
     }
     return i;
   }
-  obtainedshowdescription(t) {
+  iconmiddle(t) {
     var i = this.J7.__offset(this.z7, 36);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -219,8 +266,32 @@ class MotorSkin {
     }
     return i;
   }
+  iconsmall(t) {
+    var i = this.J7.__offset(this.z7, 38);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
+  mesh(t) {
+    var i = this.J7.__offset(this.z7, 40);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
+  obtainedshowdescription(t) {
+    var i = this.J7.__offset(this.z7, 42);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
   showinbag() {
-    var t = this.J7.__offset(this.z7, 38);
+    var t = this.J7.__offset(this.z7, 44);
     return !!t && !!this.J7.readInt8(this.z7 + t);
   }
 }

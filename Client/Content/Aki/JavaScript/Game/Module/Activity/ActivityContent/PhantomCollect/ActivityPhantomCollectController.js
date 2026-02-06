@@ -34,10 +34,10 @@ class ActivityPhantomCollectController extends ActivityControllerBase_1.Activity
     };
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(16267, this.OnPhantomCollectUpdateNotify);
+    Net_1.Net.Register(19635, this.OnPhantomCollectUpdateNotify);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(16267);
+    Net_1.Net.UnRegister(19635);
   }
   OnGetActivityResource(t) {
     return "UiItem_ActivityPhantomCollect";
@@ -63,10 +63,10 @@ class ActivityPhantomCollectController extends ActivityControllerBase_1.Activity
     var e = new Protocol_1.Aki.Protocol.k$n();
     e.h5n = t;
     e.w6n = ActivityPhantomCollectController.ActivityId;
-    var e = await Net_1.Net.CallAsync(29618, e);
+    var e = await Net_1.Net.CallAsync(25478, e);
     if (e) {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29618);
+        ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25478);
       } else {
         e = ActivityPhantomCollectController.GetCurrentActivityDataById();
         if (e) {

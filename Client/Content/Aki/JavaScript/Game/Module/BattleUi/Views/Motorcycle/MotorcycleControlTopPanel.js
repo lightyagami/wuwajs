@@ -29,41 +29,42 @@ class MotorcycleControlTopPanel extends BattleVisibleChildView_1.BattleVisibleCh
     super(...arguments);
     this.Eah = new BattleUiTweenAnimPlayer_1.BattleUiTweenAnimPlayer();
     this.SPe = undefined;
-    this.pJm = false;
-    this.EJm = undefined;
-    this.IJm = 0;
-    this.TJm = 0;
-    this.bJm = 0;
-    this.RJm = 0;
-    this.wJm = 0.1;
-    this.LJm = 1000;
-    this.PJm = 1000;
-    this.AJm = 0;
-    this.qmf = undefined;
+    this.otf = false;
+    this.ltf = undefined;
+    this._tf = 0;
+    this.utf = 0;
+    this.ctf = 0;
+    this.dtf = 0;
+    this.mtf = 0.1;
+    this.ftf = 1000;
+    this.gtf = 1000;
+    this.Ctf = 0;
+    this.i0f = undefined;
     this.dJs = [];
-    this.xGf = 0;
-    this.BGf = -1;
+    this.K6f = 0;
+    this.X6f = -1;
     this.eut = false;
+    this.T0g = false;
     this.q$i = undefined;
-    this.DJm = () => {
-      this.kGf();
+    this.ptf = () => {
+      this.Y6f();
       ControllerHolder_1.ControllerHolder.MotorcycleMusicPlayerController.OpenMusicPlayerView();
     };
-    this.UJm = () => {
-      this.kGf();
+    this.vtf = () => {
+      this.Y6f();
       ControllerHolder_1.ControllerHolder.MotorcycleMusicPlayerController.QuickPlayMusic(false);
     };
-    this.xJm = () => {
-      this.kGf();
+    this.ytf = () => {
+      this.Y6f();
       ControllerHolder_1.ControllerHolder.MotorcycleMusicPlayerController.QuickPlayMusic(true);
     };
-    this.BJm = e => {
-      this.kGf();
+    this.Stf = t => {
+      this.Y6f();
       if (ControllerHolder_1.ControllerHolder.MotorcycleMusicPlayerController.CheckIsEnable()) {
-        e = e === 1;
+        t = t === 1;
         if (ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.GetCurPlayMusicId() > 0) {
-          if (!ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.GetIsPause() != e) {
-            if (e) {
+          if (!ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.GetIsPause() != t) {
+            if (t) {
               ControllerHolder_1.ControllerHolder.MotorcycleMusicPlayerController.ResumeMusic();
             } else {
               ControllerHolder_1.ControllerHolder.MotorcycleMusicPlayerController.PauseMusic();
@@ -72,57 +73,60 @@ class MotorcycleControlTopPanel extends BattleVisibleChildView_1.BattleVisibleCh
         } else {
           ControllerHolder_1.ControllerHolder.MotorcycleMusicPlayerController.QuickPlayMusic(true);
         }
+        this.b0g(t);
       } else {
-        this.FJm();
+        this.btf();
       }
     };
-    this.kJm = (e, t) => {
-      this.J_f();
+    this.Mtf = (t, e) => {
+      this.Ycf();
     };
-    this.Bff = e => {
-      this.FJm();
-      this.$5f();
+    this.dCf = t => {
+      this.btf();
+      this.yQf();
     };
-    this.JPm = () => {
-      this.qJm();
-      this.FJm();
+    this.CUm = () => {
+      this.Etf();
+      this.btf();
     };
     this.lqt = () => {
-      this.ZAf();
+      this.Dqf();
     };
-    this.RZe = e => {
-      this.ZAf();
+    this.RZe = t => {
+      this.Dqf();
     };
-    this.bMe = (e, t) => {
-      if (ModelManager_1.ModelManager.BattleUiModel.MotorcycleData.IsDriving && ControllerHolder_1.ControllerHolder.MotorcycleMusicPlayerController.CheckIsEnable() && t === 0) {
-        if (e === InputMappingsDefine_1.actionMappings.载具音乐上一首) {
-          this.UJm();
-        } else if (e === InputMappingsDefine_1.actionMappings.载具音乐下一首) {
-          this.xJm();
-        } else if (e === InputMappingsDefine_1.actionMappings.载具音乐播放暂停) {
-          if ((t = this.GetExtendToggle(4)).GetToggleState() === 1) {
-            t.SetToggleState(0, true);
+    this.bMe = (t, e) => {
+      if (ModelManager_1.ModelManager.BattleUiModel.MotorcycleData.IsDriving && ControllerHolder_1.ControllerHolder.MotorcycleMusicPlayerController.CheckIsEnable() && e === 0) {
+        if (t === InputMappingsDefine_1.actionMappings.载具音乐上一首) {
+          this.vtf();
+        } else if (t === InputMappingsDefine_1.actionMappings.载具音乐下一首) {
+          this.ytf();
+        } else if (t === InputMappingsDefine_1.actionMappings.载具音乐播放暂停) {
+          if ((e = this.GetExtendToggle(4)).GetToggleState() === 1) {
+            e.SetToggleState(0, true);
           } else {
-            t.SetToggleState(1, true);
+            e.SetToggleState(1, true);
           }
         }
       }
     };
-    this.Omf = (e, t) => {
-      if (this.qmf) {
-        MovieModeUtil_1.MovieModeUtil.ApplyAspectOffsetToUi(this.qmf, e, t);
+    this.r0f = (t, e) => {
+      if (this.i0f) {
+        MovieModeUtil_1.MovieModeUtil.ApplyAspectOffsetToUi(this.i0f, t, e);
       }
     };
-    this.qGf = e => {
-      this.OGf(e);
+    this.z6f = t => {
+      this.J6f(t);
     };
-    this.FXf = () => {
-      this.RCd();
+    this.Mug = t => {
+      if (t === 2) {
+        this.RCd();
+      }
     };
   }
-  async Init(e, t) {
+  async Init(t, e) {
     this.InitChildType(37);
-    await this.CreateByResourceIdAsync(t, e);
+    await this.CreateByResourceIdAsync(e, t);
     this.Initialize();
     await this.InitializeAsync();
     if (ModelManager_1.ModelManager.BattleUiModel.MotorcycleData.IsDriving) {
@@ -137,46 +141,46 @@ class MotorcycleControlTopPanel extends BattleVisibleChildView_1.BattleVisibleCh
       this.ComponentRegisterInfos.push([12, UE.UIItem]);
       this.ComponentRegisterInfos.push([13, UE.UIItem]);
     }
-    this.BtnBindInfo = [[0, this.DJm], [3, this.UJm], [5, this.xJm]];
+    this.BtnBindInfo = [[0, this.ptf], [3, this.vtf], [5, this.ytf]];
   }
   async OnBeforeStartAsync() {
-    var e;
+    var t;
     if (!this.eut) {
-      (e = []).push(this.VBf(this.GetItem(11)));
-      e.push(this.VBf(this.GetItem(12)));
-      e.push(this.VBf(this.GetItem(13)));
-      await Promise.all(e);
+      (t = []).push(this.DNf(this.GetItem(11)));
+      t.push(this.DNf(this.GetItem(12)));
+      t.push(this.DNf(this.GetItem(13)));
+      await Promise.all(t);
     }
   }
-  async VBf(e) {
-    var t = new InputMultiKeyItem_1.InputMultiKeyItem(true);
-    this.dJs.push(t);
-    await t.CreateThenShowByActorAsync(e.GetOwner());
+  async DNf(t) {
+    var e = new InputMultiKeyItem_1.InputMultiKeyItem(true);
+    this.dJs.push(e);
+    await e.CreateThenShowByActorAsync(t.GetOwner());
   }
   OnStart() {
-    this.Fmf();
+    this.n0f();
     this.Eah.InitTweenAnim(8, this.GetItem(8));
     this.Eah.InitTweenAnim(9, this.GetItem(9));
     this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
-    this.EJm = this.GetText(2);
-    this.IJm = this.GetItem(1).GetWidth();
-    this.wJm = CommonParamById_1.configCommonParamById.GetFloatConfig("MusicTitleScrollSpeed");
-    this.LJm = CommonParamById_1.configCommonParamById.GetFloatConfig("MusicTitleScrollSpeed");
-    this.PJm = CommonParamById_1.configCommonParamById.GetFloatConfig("MusicTitleScrollEndTime");
-    this.GetUiNiagara(10).SetUIActive(false);
-    this.qJm();
-    this.FJm();
-    this.$5f();
-    this.J_f();
-    this.ZAf();
-    this.OGf(ModelManager_1.ModelManager.BattleUiModel.MotorcycleData.HudColorState);
+    this.ltf = this.GetText(2);
+    this._tf = this.GetItem(1).GetWidth();
+    this.mtf = CommonParamById_1.configCommonParamById.GetFloatConfig("MusicTitleScrollSpeed");
+    this.ftf = CommonParamById_1.configCommonParamById.GetFloatConfig("MusicTitleScrollBeginTime");
+    this.gtf = CommonParamById_1.configCommonParamById.GetFloatConfig("MusicTitleScrollEndTime");
+    this.Etf();
+    this.btf();
+    this.yQf();
+    this.Ycf();
+    this.Dqf();
+    this.UNf();
+    this.J6f(ModelManager_1.ModelManager.BattleUiModel.MotorcycleData.HudColorState);
     if (this.eut) {
       this.RCd();
     }
     this.Ore();
   }
   OnShowBattleChildViewPanel() {
-    this.pJm = true;
+    this.otf = true;
   }
   OnHideBattleChildViewPanel() {}
   OnBeforeShow() {
@@ -184,18 +188,18 @@ class MotorcycleControlTopPanel extends BattleVisibleChildView_1.BattleVisibleCh
     ModelManager_1.ModelManager.BattleUiModel.UpdateBossStateArea(2, true);
   }
   OnAfterShow() {
-    var e = ModelManager_1.ModelManager.AutoPilotModel?.GetIsInMovieMode() ? "MovieIn" : "Start";
-    this.SPe?.PlayLevelSequenceByName(e);
+    var t = ModelManager_1.ModelManager.AutoPilotModel?.GetIsInMovieMode() ? "MovieIn" : "Start";
+    this.SPe?.PlayLevelSequenceByName(t);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnMotorMusicPlayerShow);
-    this.kGf();
+    this.Y6f();
   }
   async OnBeforeHideAsync() {
-    var e;
+    var t;
     ModelManager_1.ModelManager.BattleUiModel.UpdateBossStateArea(2, false);
     if (!(ModelManager_1.ModelManager.BattleUiModel.GetBattleUiAlpha() <= 0)) {
-      e = ModelManager_1.ModelManager.AutoPilotModel?.GetIsInMovieMode();
+      t = ModelManager_1.ModelManager.AutoPilotModel?.GetIsInMovieMode();
       this.q$i = new CustomPromise_1.CustomPromise();
-      this.SPe?.PlaySequencePurely(e ? "MovieOut" : "Close", false, false, this.q$i);
+      this.SPe?.PlaySequencePurely(t ? "MovieOut" : "Close", false, false, this.q$i);
       await this.q$i.Promise;
       this.q$i = undefined;
     }
@@ -216,144 +220,153 @@ class MotorcycleControlTopPanel extends BattleVisibleChildView_1.BattleVisibleCh
     this.kre();
   }
   Ore() {
-    this.GetExtendToggle(4).OnStateChange.Add(this.BJm);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiBossStateAreaChanged, this.kJm);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnMotorSwitchMusic, this.JPm);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnMotorMusicEnableStateChanged, this.Bff);
+    this.GetExtendToggle(4).OnStateChange.Add(this.Stf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiBossStateAreaChanged, this.Mtf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnMotorSwitchMusic, this.CUm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnMotorMusicEnableStateChanged, this.dCf);
     if (this.eut) {
-      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTouchUiEditSave, this.FXf);
+      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTouchUiEditSave, this.Mug);
     } else {
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InputControllerChange, this.lqt);
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiPressMotorcycleCombineButtonChanged, this.RZe);
       InputDistributeController_1.InputDistributeController.BindActions(actionNameList, this.bMe);
     }
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.MovieModeAspectOffsetApply, this.Omf);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiMotorcycleHudColorStateChanged, this.qGf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.MovieModeAspectOffsetApply, this.r0f);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiMotorcycleHudColorStateChanged, this.z6f);
   }
   kre() {
-    this.GetExtendToggle(4).OnStateChange.Remove(this.BJm);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiBossStateAreaChanged, this.kJm);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnMotorSwitchMusic, this.JPm);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnMotorMusicEnableStateChanged, this.Bff);
+    this.GetExtendToggle(4).OnStateChange.Remove(this.Stf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiBossStateAreaChanged, this.Mtf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnMotorSwitchMusic, this.CUm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnMotorMusicEnableStateChanged, this.dCf);
     if (this.eut) {
-      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTouchUiEditSave, this.FXf);
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTouchUiEditSave, this.Mug);
     } else {
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InputControllerChange, this.lqt);
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiPressMotorcycleCombineButtonChanged, this.RZe);
       InputDistributeController_1.InputDistributeController.UnBindActions(actionNameList, this.bMe);
     }
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.MovieModeAspectOffsetApply, this.Omf);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiMotorcycleHudColorStateChanged, this.qGf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.MovieModeAspectOffsetApply, this.r0f);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiMotorcycleHudColorStateChanged, this.z6f);
   }
-  $5f() {
+  yQf() {
     this.SetVisible(2, ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.IsEnable);
   }
-  ZAf() {
-    var e;
+  Dqf() {
+    var t;
     if (Info_1.Info.IsInGamepad()) {
-      e = ModelManager_1.ModelManager.SkillButtonUiModel.GetGamepadDataByType(1)?.GetIsPressCombineButton() ?? false;
-      this.GetItem(6).SetUIActive(e);
+      t = ModelManager_1.ModelManager.SkillButtonUiModel.GetGamepadDataByType(1)?.GetIsPressCombineButton() ?? false;
+      this.GetItem(6).SetUIActive(t);
     } else {
-      Info_1.Info.IsInKeyBoard();
       this.GetItem(6).SetUIActive(false);
     }
-    this.HBf();
   }
-  qJm() {
-    var e = ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.GetCurPlayMusicId();
-    if (e > 0) {
-      e = ConfigManager_1.ConfigManager.PhonographConfig.GetMusicById(e).Title;
-      this.GetText(2).ShowTextNew(e);
+  Etf() {
+    var t = ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.GetCurPlayMusicId();
+    if (t > 0) {
+      t = ConfigManager_1.ConfigManager.PhonographConfig.GetMusicById(t).Title;
+      this.GetText(2).ShowTextNew(t);
     } else {
       this.GetText(2).SetText("");
     }
-    this.jJm();
+    this.Ptf();
   }
-  FJm() {
-    let e = false;
+  btf() {
+    let t = false;
     if (ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.GetCurPlayMusicId() > 0) {
-      e = !ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.GetIsPause() && ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.IsEnable;
+      t = !ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.GetIsPause() && ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.IsEnable;
     }
-    this.GetExtendToggle(4).SetToggleState(e ? 1 : 0);
-    this.pJm = false;
+    this.GetExtendToggle(4).SetToggleState(t ? 1 : 0);
+    this.b0g(t);
+    this.otf = false;
   }
-  jJm() {
-    this.bJm = 1;
-    this.EJm.SetAnchorOffsetX(0);
+  b0g(t) {
+    if (this.T0g !== t) {
+      this.T0g = t;
+      this.GetUiNiagara(10).SetUIActive(t);
+      if (t) {
+        this.SPe?.PlaySequencePurely("Loop");
+      } else {
+        this.SPe?.StopSequenceByKey("Loop");
+      }
+    }
+  }
+  Ptf() {
+    this.ctf = 1;
+    this.ltf.SetAnchorOffsetX(0);
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Battle", 17, "MotorcycleSpeedUI ResetMusicTitleScroll");
     }
   }
-  J_f() {
-    var e = ModelManager_1.ModelManager.BattleUiModel.GetBossStateAreaType() >= 2;
-    this.SetVisible(1, e);
+  Ycf() {
+    var t = ModelManager_1.ModelManager.BattleUiModel.GetBossStateAreaType() >= 2;
+    this.SetVisible(1, t);
   }
-  HBf() {
+  UNf() {
     if (!this.eut) {
-      var t = Info_1.Info.IsInGamepad();
-      for (let e = 0; e < this.dJs.length; e++) {
-        var i = this.dJs[e];
-        var s = actionNameList[e];
-        i.RefreshByActionOrAxis({
-          ActionOrAxisName: s
-        }, t);
+      for (let t = 0; t < this.dJs.length; t++) {
+        var e = this.dJs[t];
+        var i = actionNameList[t];
+        e.RefreshByActionOrAxis({
+          ActionOrAxisName: i
+        }, true);
       }
     }
   }
-  Tick(e) {
+  Tick(t) {
     if (this.IsShowOrShowing) {
-      if (this.pJm) {
-        this.FJm();
+      if (this.otf) {
+        this.btf();
       }
-      switch (this.bJm) {
+      switch (this.ctf) {
         case 1:
-          this.RJm -= e;
-          if (this.RJm <= 0) {
-            this.RJm = this.PJm;
-            this.TJm = this.EJm.GetWidth();
-            if (this.TJm > this.IJm) {
-              this.bJm = 2;
-              this.AJm = 0;
+          this.dtf -= t;
+          if (this.dtf <= 0) {
+            this.dtf = this.gtf;
+            this.utf = this.ltf.GetWidth();
+            if (this.utf > this._tf) {
+              this.ctf = 2;
+              this.Ctf = 0;
             } else {
-              this.bJm = 0;
+              this.ctf = 0;
             }
           }
           break;
         case 2:
-          this.AJm -= e * this.wJm;
-          var t = this.IJm - this.TJm;
-          if (this.AJm <= t) {
-            this.AJm = t;
-            this.bJm = 3;
+          this.Ctf -= t * this.mtf;
+          var e = this._tf - this.utf;
+          if (this.Ctf <= e) {
+            this.Ctf = e;
+            this.ctf = 3;
           }
-          this.EJm.SetAnchorOffsetX(this.AJm);
+          this.ltf.SetAnchorOffsetX(this.Ctf);
           break;
         case 3:
-          this.RJm -= e;
-          if (this.RJm <= 0) {
-            this.RJm = this.LJm;
-            this.bJm = 1;
-            this.EJm.SetAnchorOffsetX(0);
+          this.dtf -= t;
+          if (this.dtf <= 0) {
+            this.dtf = this.ftf;
+            this.ctf = 1;
+            this.ltf.SetAnchorOffsetX(0);
           }
       }
-      this.GGf(e);
+      this.Z6f(t);
     }
   }
-  Fmf() {
-    var e = this.GetItem(7);
-    if (e) {
-      this.qmf = {
-        UiItem: e,
-        OriginalOffset: Vector2D_1.Vector2D.Create(e.GetAnchorOffsetX(), e.GetAnchorOffsetY()),
+  n0f() {
+    var t = this.GetItem(7);
+    if (t) {
+      this.i0f = {
+        UiItem: t,
+        OriginalOffset: Vector2D_1.Vector2D.Create(t.GetAnchorOffsetX(), t.GetAnchorOffsetY()),
         OffsetWidthDirection: 0,
         OffsetHeightDirection: -1
       };
-      this.Omf(ModelManager_1.ModelManager.AutoPilotModel.GetIsInMovieMode(), ControllerHolder_1.ControllerHolder.MovieModeController.GetAspectOffset());
+      this.r0f(ModelManager_1.ModelManager.AutoPilotModel.GetIsInMovieMode(), ControllerHolder_1.ControllerHolder.MovieModeController.GetAspectOffset());
     }
   }
-  OGf(e) {
-    if (e !== 2 && this.xGf !== e) {
-      if ((this.xGf = e) === 1) {
+  J6f(t) {
+    if (t !== 2 && this.K6f !== t) {
+      if ((this.K6f = t) === 1) {
         this.SPe?.StopSequenceByKey("TurnBlue");
         this.SPe?.PlaySequencePurely("TurnGreen");
       } else {
@@ -362,22 +375,22 @@ class MotorcycleControlTopPanel extends BattleVisibleChildView_1.BattleVisibleCh
       }
     }
   }
-  GGf(e) {
-    if (!(this.BGf < 0)) {
-      this.BGf -= e;
-      if (this.BGf <= 0) {
-        this.BGf = -1;
+  Z6f(t) {
+    if (!(this.X6f < 0)) {
+      this.X6f -= t;
+      if (this.X6f <= 0) {
+        this.X6f = -1;
         this.Eah.StopTweenAnim(9);
         this.Eah.PlayTweenAnim(8);
       }
     }
   }
-  kGf() {
-    if (this.BGf === -1) {
+  Y6f() {
+    if (this.X6f === -1) {
       this.Eah.StopTweenAnim(8);
       this.Eah.PlayTweenAnim(9);
     }
-    this.BGf = 5000;
+    this.X6f = 5000;
   }
   RCd() {
     TouchUiEditApplyHelper_1.TouchUiEditApplyHelper.ApplyCommonTouchUiEditData(2, this, "UiItem_MotorcycleControlTopEdit");

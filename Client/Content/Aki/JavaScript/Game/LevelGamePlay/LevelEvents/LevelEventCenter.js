@@ -47,6 +47,7 @@ const LevelEventCompleteGuide_1 = require("./LevelEventCompleteGuide");
 const LevelEventDeliverQuestBehavior_1 = require("./LevelEventDeliverQuestBehavior");
 const LevelEventDestroySelf_1 = require("./LevelEventDestroySelf");
 const LevelEventDisableEntityLookAt_1 = require("./LevelEventDisableEntityLookAt");
+const LevelEventDrinksRollRoleRequirement_1 = require("./LevelEventDrinksRollRoleRequirement");
 const LevelEventDriveMotorInSpecConfig_1 = require("./LevelEventDriveMotorInSpecConfig");
 const LevelEventEnableAi_1 = require("./LevelEventEnableAi");
 const LevelEventEnableEntityLookAt_1 = require("./LevelEventEnableEntityLookAt");
@@ -83,6 +84,7 @@ const LevelEventLeisureInteract_1 = require("./LevelEventLeisureInteract");
 const LevelEventLockEntity_1 = require("./LevelEventLockEntity");
 const LevelEventLog_1 = require("./LevelEventLog");
 const LevelEventModifyActorMaterial_1 = require("./LevelEventModifyActorMaterial");
+const LevelEventModifyActorMedia_1 = require("./LevelEventModifyActorMedia");
 const LevelEventMoveJigsawItem_1 = require("./LevelEventMoveJigsawItem");
 const LevelEventMoveWithSpline_1 = require("./LevelEventMoveWithSpline");
 const LevelEventNpcLeisureInteract_1 = require("./LevelEventNpcLeisureInteract");
@@ -95,6 +97,7 @@ const LevelEventPickupDropItem_1 = require("./LevelEventPickupDropItem");
 const LevelEventPlayBubble_1 = require("./LevelEventPlayBubble");
 const LevelEventPlayDynamicSettlement_1 = require("./LevelEventPlayDynamicSettlement");
 const LevelEventPlayerLoockAt_1 = require("./LevelEventPlayerLoockAt");
+const LevelEventPlayerLookTowards_1 = require("./LevelEventPlayerLookTowards");
 const LevelEventPlayGuestAnimation_1 = require("./LevelEventPlayGuestAnimation");
 const LevelEventPlayLevelSequence_1 = require("./LevelEventPlayLevelSequence");
 const LevelEventPlayMontage_1 = require("./LevelEventPlayMontage");
@@ -141,6 +144,7 @@ const LevelEventSetupSeqCamera_1 = require("./LevelEventSetupSeqCamera");
 const LevelEventSetWuYinQuState_1 = require("./LevelEventSetWuYinQuState");
 const LevelEventShowPlotPhoto_1 = require("./LevelEventShowPlotPhoto");
 const LevelEventShowTargetRange_1 = require("./LevelEventShowTargetRange");
+const LevelEventSlidePerformStart_1 = require("./LevelEventSlidePerformStart");
 const LevelEventSpawnBlueprintActor_1 = require("./LevelEventSpawnBlueprintActor");
 const LevelEventSpawnDestructibleActorWithTrackCapability_1 = require("./LevelEventSpawnDestructibleActorWithTrackCapability");
 const LevelEventSpawnEffect_1 = require("./LevelEventSpawnEffect");
@@ -165,6 +169,7 @@ const LevelEventTrapDefenseChangeMiniMap_1 = require("./LevelEventTrapDefenseCha
 const LevelEventTrapDefensePlayerOperationConstraint_1 = require("./LevelEventTrapDefensePlayerOperationConstraint");
 const LevelEventTriggerCameraShake_1 = require("./LevelEventTriggerCameraShake");
 const LevelEventTriggerDeadEyeMode_1 = require("./LevelEventTriggerDeadEyeMode");
+const LevelEventTriggerGamepadShake_1 = require("./LevelEventTriggerGamepadShake");
 const LevelEventTriggerSpecificScanEffect_1 = require("./LevelEventTriggerSpecificScanEffect");
 const LevelEventTriggerSystemRandomPlot_1 = require("./LevelEventTriggerSystemRandomPlot");
 const LevelEventUnlockDungeonEntry_1 = require("./LevelEventUnlockDungeonEntry");
@@ -176,6 +181,8 @@ const LevelEventVehicleSprint_1 = require("./LevelEventVehicleSprint");
 const LevelEventVehicleWaterfallMove_1 = require("./LevelEventVehicleWaterfallMove");
 const LevelEventWaitSceneRefEntityPlaySequence_1 = require("./LevelEventWaitSceneRefEntityPlaySequence");
 const LevelEventWaitTime_1 = require("./LevelEventWaitTime");
+const LevelEventModifyActorMaterialParamBySplineProgress_1 = require("./SceneActorRef/LevelEventModifyActorMaterialParamBySplineProgress");
+const LevelEventVehicleSetSpeedImmediately_1 = require("./Vehicle/LevelEventVehicleSetSpeedImmediately");
 const DEFAULT = 1;
 const LEVEL_1 = 4;
 const LEVEL_2 = 8;
@@ -261,6 +268,8 @@ class LevelEventCenter {
     e("EnableActor", LevelEventSetActorVisible_1.LevelEventSetActorVisible);
     e("PlayLevelSequence", LevelEventPlayLevelSequence_1.LevelEventPlayLevelSequence);
     e("ModifyActorMaterial", LevelEventModifyActorMaterial_1.LevelEventModifyActorMaterial);
+    e("SpecialOpModifyActorMaterialParamBySplineProgress", LevelEventModifyActorMaterialParamBySplineProgress_1.LevelEventModifyActorMaterialParamBySplineProgress);
+    e("ModifyActorMedia", LevelEventModifyActorMedia_1.LevelEventModifyActorMedia);
     e("EnableAI", LevelEventEnableAi_1.LevelEventEnableAi);
     e("SetExploreState", LevelEventSetExploreState_1.LevelEventSetExploreState);
     e("ToggleAirWall", LevelEventToggleAirWall_1.LevelEventToggleAirWall);
@@ -304,6 +313,7 @@ class LevelEventCenter {
     e("DestroySelf", LevelEventDestroySelf_1.LevelEventDestroySelf);
     e("PlayerInput", LevelEventFakePlayerInput_1.LevelEventFakePlayerInput);
     e("SlideRailStart", LevelEventStartRailSlide_1.LevelEventStartRailSlide);
+    e("SlidePerformStart", LevelEventSlidePerformStart_1.LevelEventSlidePerformStart);
     e("ClientChangeTeamPosition", LevelEventClientChangeTeamPosition_1.LevelEventClientChangeTeamPosition, LEVEL_1);
     e("OverrideAiBehaviorTree", LevelEventSetAiBehaviorTree_1.LevelEventSetAiBehaviorTree);
     e("RestoreAiBehaviorTree", LevelEventResetAiBehaviorTree_1.LevelEventResetAiBehaviorTree);
@@ -320,6 +330,7 @@ class LevelEventCenter {
     e("WaitUntilLevelSequenceReachMark", LevelEventWaitSceneRefEntityPlaySequence_1.LevelEventWaitSceneRefEntityPlaySequence, LEVEL_1);
     e("TriggerDeadeyeMode", LevelEventTriggerDeadEyeMode_1.LevelEventTriggerDeadEyeMode);
     e("SendClientEvent", LevelEventSendClientEvent_1.LevelEventSendClientEvent);
+    e("PlayerLookTowards", LevelEventPlayerLookTowards_1.LevelEventPlayerLookTowards);
     e(LevelGameplayActionsDefine_1.ActionSetNpcPosition.name, LevelEventSetNpcPosition_1.LevelEventSetNpcPosition);
     e(LevelGameplayActionsDefine_1.ActionPlotInterludeAction.name, LevelEventPlotInterludeAction_1.LevelEventPlotInterludeAction, LEVEL_1);
     e(LevelGameplayActionsDefine_1.ActionSetSeqCameraTransform.name, LevelEventSetupSeqCamera_1.LevelEventSetupSeqCamera);
@@ -340,6 +351,7 @@ class LevelEventCenter {
     e("VehicleMoveWithPathLine", LevelEventVehicleMoveWithPathLine_1.LevelEventVehicleMoveWithPathLine);
     e("VehicleSprint", LevelEventVehicleSprint_1.LevelEventVehicleSprint);
     e("DriveMotorInSpecConfig", LevelEventDriveMotorInSpecConfig_1.LevelEventDriveMotorInSpecConfig, LEVEL_1);
+    e("VehicleSetSpeedImmediately", LevelEventVehicleSetSpeedImmediately_1.LevelEventVehicleSetSpeedImmediately);
     if (Info_1.Info.IsPlayInEditor) {
       e("SetActorVar", LevelEventSetDemoActorVar_1.LevelEventSetDemoActorVar);
       e("RunActorCustomEvent", LevelEventRunDemoActorCustomEvent_1.LevelEventRunDemoActorCustomEvent);
@@ -362,6 +374,8 @@ class LevelEventCenter {
     e("StartMotorCruise", LevelEventStartMotorCruise_1.LevelEventStartMotorCruise, LEVEL_1);
     e("StopMotorCruise", LevelEventStopMotorCruise_1.LevelEventStopMotorCruise, LEVEL_1);
     e("SendSceneActorsEvent", LevelEventSendSceneActorsEvent_1.LevelEventSendSceneActorsEvent, LEVEL_2, true);
+    e("DrinksRollRoleRequirement", LevelEventDrinksRollRoleRequirement_1.LevelEventDrinksRollRoleRequirement);
+    e("TriggerGamepadShake", LevelEventTriggerGamepadShake_1.LevelEventTriggerGamepadShake);
     e("ClientUnlockAchievementSystemItem", LevelEventClientUnlockAchievement_1.LevelEventClientUnlockAchievement);
   }
   static GetEvent(t) {

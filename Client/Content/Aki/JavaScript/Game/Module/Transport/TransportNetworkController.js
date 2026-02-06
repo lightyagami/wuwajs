@@ -25,15 +25,15 @@ class TransportNetworkController extends ControllerBase_1.ControllerBase {
     return UE.KuroRenderingRuntimeBPPluginBPLibrary.GetSubsystem(GlobalData_1.GlobalData.World, UE.KuroTransportNetworkSubsystem.StaticClass());
   }
   static OnInit() {
-    Net_1.Net.Register(16842, TransportNetworkController.nhm);
-    Net_1.Net.Register(21755, TransportNetworkController.shm);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InitStaticEntity, this.YVf);
+    Net_1.Net.Register(27271, TransportNetworkController.nhm);
+    Net_1.Net.Register(21292, TransportNetworkController.shm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InitStaticEntity, this.bYf);
     return true;
   }
   static OnClear() {
-    Net_1.Net.UnRegister(16842);
-    Net_1.Net.UnRegister(21755);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InitStaticEntity, this.YVf);
+    Net_1.Net.UnRegister(27271);
+    Net_1.Net.UnRegister(21292);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InitStaticEntity, this.bYf);
     return true;
   }
   static OnLeaveLevel() {
@@ -201,7 +201,7 @@ exports.TransportNetworkController = TransportNetworkController;
 (_a = TransportNetworkController).IsLoadRoadway = false;
 TransportNetworkController.RoadwayEnableCache = [];
 TransportNetworkController.EntityLevelIds = [];
-TransportNetworkController.YVf = r => {
+TransportNetworkController.bYf = r => {
   var r = InstanceDungeonById_1.configInstanceDungeonById.GetConfig(r.d5n);
   if (r && r.MapConfigId && (_a.EntityLevelIds = r.EntityLevelIds, (r = (0, TransportDefine_1.getRoadZoneData)(r.MapConfigId)).length >= 1)) {
     TransportNetworkController.SetKuroRoadwayEnable(r, false);

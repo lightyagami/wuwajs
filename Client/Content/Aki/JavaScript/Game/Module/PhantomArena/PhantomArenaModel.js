@@ -29,9 +29,30 @@ class PhantomArenaModel extends ModelBase_1.ModelBase {
     this.CardUnlockQueue = [];
     this.CardOutlookUnlockQueue = [];
     this.EntranceOpenQueue = false;
-    this.Krf = undefined;
+    this.msf = undefined;
     this.itu = (e, t) => {
-      return e.ElementId - t.ElementId;
+      e = e.ElementId;
+      t = t.ElementId;
+      if (e === 0 && t !== 0) {
+        return 1;
+      } else if (t === 0 && e !== 0) {
+        return -1;
+      } else {
+        return e - t;
+      }
+    };
+    this.xvg = (e, t) => {
+      var r = e.Element;
+      var a = t.Element;
+      if (r === 0 && a !== 0) {
+        return 1;
+      } else if (a === 0 && r !== 0) {
+        return -1;
+      } else if (r === a) {
+        return t.Cost - e.Cost;
+      } else {
+        return r - a;
+      }
     };
     this.XOu = (e, t) => {
       e = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleBadgeById(e);
@@ -40,15 +61,15 @@ class PhantomArenaModel extends ModelBase_1.ModelBase {
     };
   }
   GetPermanentPhantomArenaActivityData() {
-    if (!this.Krf) {
+    if (!this.msf) {
       for (const e of ModelManager_1.ModelManager.ActivityModel.GetAllActivityMap().values()) {
         if (e.Type === Protocol_1.Aki.Protocol.uks.Proto_PhantomBattleRecord) {
-          this.Krf = ModelManager_1.ModelManager.PhantomArenaModel.GetPhantomArenaActivityData(e.Id);
+          this.msf = ModelManager_1.ModelManager.PhantomArenaModel.GetPhantomArenaActivityData(e.Id);
           break;
         }
       }
     }
-    return this.Krf;
+    return this.msf;
   }
   GetPhantomArenaActivityData(e) {
     return ModelManager_1.ModelManager.ActivityModel.GetActivityById(e);
@@ -391,8 +412,8 @@ class PhantomArenaModel extends ModelBase_1.ModelBase {
   GetFinishedChallengeCount(e) {
     return this.GetPhantomArenaActivityData(e).GetFinishedChallengeCount();
   }
-  GetPermanentFinishedChallengeCount() {
-    var e = this.GetPermanentPhantomArenaActivityData()?.GetDifficultChallengeIdsMap();
+  GetPermanentFinishedChallengeCount(e) {
+    e = this.GetPermanentPhantomArenaActivityData()?.GetDifficultChallengeIdsMap(e);
     if (e === undefined) {
       return 0;
     }
@@ -406,14 +427,30 @@ class PhantomArenaModel extends ModelBase_1.ModelBase {
     }
     return t;
   }
-  GetPermanentAllChallengeCount() {
-    var e = this.GetPermanentPhantomArenaActivityData()?.GetDifficultChallengeIdsMap();
+  GetPermanentAllChallengeCount(e) {
+    e = this.GetPermanentPhantomArenaActivityData()?.GetDifficultChallengeIdsMap(e);
     if (e === undefined) {
       return 0;
     }
     let t = 0;
     for (const r of e.values()) {
       t += r.length;
+    }
+    return t;
+  }
+  GetMapUnlock(e) {
+    e = this.GetPermanentPhantomArenaActivityData()?.GetDifficultChallengeIdsMap(e);
+    if (!e) {
+      return false;
+    }
+    let t = false;
+    for (const r of e.values()) {
+      for (const a of r) {
+        if (this.GetPermanentChallengeStateById(a) !== 0) {
+          t = true;
+          break;
+        }
+      }
     }
     return t;
   }
@@ -551,48 +588,70 @@ class PhantomArenaModel extends ModelBase_1.ModelBase {
     var t = this.GetPointsItemId(t);
     return e === r || e === t;
   }
-  GetPermanentIsDifficultCompleted(e) {
-    e = this.GetPermanentPhantomArenaActivityData()?.GetDifficultChallengeIdsMap().get(e);
+  GetPermanentIsDifficultCompleted(e, t) {
+    e = this.GetPermanentPhantomArenaActivityData()?.GetDifficultChallengeIdsMap(e)?.get(t);
     if (!e) {
       return false;
     }
-    for (const t of e) {
-      if (this.GetPermanentChallengeStateById(t) !== 2) {
+    for (const r of e) {
+      if (this.GetPermanentChallengeStateById(r) !== 2) {
         return false;
       }
     }
     return true;
   }
-  GetPermanentDefaultChallengeIdAndMarkId() {
-    var t = this.GetPermanentPhantomArenaActivityData()?.GetDifficultChallengeIdsMap();
+  GetPermanentDefaultChallengeIdAndMarkId(t) {
+    if (t !== undefined) {
+      return this.rPg(t);
+    }
+    t = ModelManager_1.ModelManager.WorldMapModel?.WorldMapId;
+    if (t) {
+      t = ConfigManager_1.ConfigManager.PhantomArenaConfig?.GetPhantomBattleMapParamByMapId(t);
+      if (t) {
+        for (const e of t) {
+          const a = this.rPg(e.Id);
+          if (a) {
+            return a;
+          }
+        }
+      }
+    }
+    t = this.GetPermanentPhantomArenaActivityData()?.GetAllChallengeIds();
     if (t) {
       let e = undefined;
-      for (const n of t.values()) {
-        for (const o of n) {
-          var r = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleChallenge(o).MarkId;
-          var a = this.GetPermanentChallengeStateById(o);
-          if (a === 0) {
-            break;
-          }
-          if (a === 1) {
-            return {
-              ChallengeId: o,
-              MarkId: r
-            };
-          }
-          if (a === 2) {
-            e = {
-              ChallengeId: o,
-              MarkId: r
-            };
-          }
+      for (const n of t) {
+        e = {
+          ChallengeId: n,
+          MarkId: ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleChallenge(n).MarkId
+        };
+        var r = this.GetPermanentChallengeStateById(n);
+        if (r === 1 || r === 0) {
+          return e;
         }
       }
       return e;
     }
   }
-  GetPermanentSortedDifficultList() {
-    var e = this.GetPermanentPhantomArenaActivityData()?.GetDifficultChallengeIdsMap();
+  rPg(e) {
+    let t = undefined;
+    e = ConfigManager_1.ConfigManager.PhantomArenaConfig?.GetPhantomBattleChallengeByMapId(e);
+    if (e) {
+      for (const a of e) {
+        var r = a.MarkId;
+        t = {
+          ChallengeId: a.Id,
+          MarkId: r
+        };
+        var r = this.GetPermanentChallengeStateById(a.Id);
+        if (r === 0 || r === 1) {
+          break;
+        }
+      }
+      return t;
+    }
+  }
+  GetPermanentSortedDifficultList(e) {
+    var e = this.GetPermanentPhantomArenaActivityData()?.GetDifficultChallengeIdsMap(e);
     if (e) {
       (e = Array.from(e.keys())).sort((e, t) => e - t);
       return e;
@@ -650,33 +709,34 @@ class PhantomArenaModel extends ModelBase_1.ModelBase {
     }
     return t;
   }
-  GetCollectCardDataList(e, t = false) {
-    var r;
+  GetCollectCardDataList(e, t = -1, r = false) {
     var a;
     var n;
-    var o = [];
-    for (const i of ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardByActivityId(e)) {
-      if (i.ActivityId === e && (!i.IsNpcCard || !!t)) {
-        r = i.Id;
-        n = i.InitAttack;
-        a = this.IsCardOutlookUnlock(r);
-        n = {
-          CardId: r,
-          CardFaceTexturePath: i.CardFaceTexture,
-          Cost: i.Cost,
-          Element: i.Element,
-          Attack: n.get(Protocol_1.Aki.Protocol.GC1.Proto_AttackAbility) ?? 0,
-          Life: n.get(Protocol_1.Aki.Protocol.GC1.Proto_LifeAbility) ?? 0,
-          IsLocked: !this.IsCardUnlock(r),
-          CardSpineData: this.CreateCardSpineData(r),
-          CardFaceType: this.GetCardFaceType(r),
-          OutlookUnlocked: a,
-          CardType: i.Type
+    var o;
+    var i = [];
+    for (const s of ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardByActivityId(e)) {
+      if (s.ActivityId === e && (!s.IsNpcCard || !!r) && (t === -1 || s.Element === t)) {
+        a = s.Id;
+        o = s.InitAttack;
+        n = this.IsCardOutlookUnlock(a);
+        o = {
+          CardId: a,
+          CardFaceTexturePath: s.CardFaceTexture,
+          Cost: s.Cost,
+          Element: s.Element,
+          Attack: o.get(Protocol_1.Aki.Protocol.GC1.Proto_AttackAbility) ?? 0,
+          Life: o.get(Protocol_1.Aki.Protocol.GC1.Proto_LifeAbility) ?? 0,
+          IsLocked: !this.IsCardUnlock(a),
+          CardSpineData: this.CreateCardSpineData(a),
+          CardFaceType: this.GetCardFaceType(a),
+          OutlookUnlocked: n,
+          CardType: s.Type
         };
-        o.push(n);
+        i.push(o);
       }
     }
-    return o;
+    i.sort(this.xvg);
+    return i;
   }
   GetCollectCardElementCount(e) {
     var e = this.GetCollectCardDataList(e);
@@ -692,19 +752,32 @@ class PhantomArenaModel extends ModelBase_1.ModelBase {
     var t;
     var r;
     var a;
-    var n = [];
-    for ([t, r] of this.GetCollectCardElementCount(e)) {
-      if (t !== 0) {
-        a = {
-          ElementId: t,
-          Count: r[0],
-          All: r[1]
-        };
-        n.push(a);
+    var n = this.GetCollectCardElementCount(e);
+    var o = [];
+    var i = this.IsNewPhantomArenaActivity(e);
+    let s = undefined;
+    if (i) {
+      s = {
+        ElementId: -1,
+        Count: 0,
+        All: 0
+      };
+    }
+    for ([t, r] of n) {
+      if ((t !== 0 || i) && (a = {
+        ElementId: t,
+        Count: r[0],
+        All: r[1]
+      }, o.push(a), s)) {
+        s.Count += r[0];
+        s.All += r[1];
       }
     }
-    n.sort(this.itu);
-    return n;
+    o.sort(this.itu);
+    if (s) {
+      o.unshift(s);
+    }
+    return o;
   }
   GetCollectBadgeIdList(e) {
     var t;
@@ -902,7 +975,7 @@ class PhantomArenaModel extends ModelBase_1.ModelBase {
       return this.GetNormalCardDetailItemData(e);
     }
   }
-  I3m(e) {
+  j4m(e) {
     if (e.DurableSkillId > 0) {
       return {
         Desc: e.DurableSkillDescription,
@@ -934,14 +1007,14 @@ class PhantomArenaModel extends ModelBase_1.ModelBase {
       },
       EffectCountData: t
     };
-    var a = this.I3m(e);
+    var a = this.j4m(e);
     return {
       Name: e.Name,
       ActiveSkillData: e.DurableSkillId > 0 ? a : undefined,
       PassiveSkillData: r
     };
   }
-  b3m(e) {
+  $4m(e) {
     var t;
     if (e.CountSkill > 0) {
       t = e.InitAttack.get(Protocol_1.Aki.Protocol.GC1.Proto_MaxEffectCount) ?? 0;
@@ -955,7 +1028,7 @@ class PhantomArenaModel extends ModelBase_1.ModelBase {
       };
     }
   }
-  E3m(e) {
+  V4m(e) {
     e = e.InitAttack.get(Protocol_1.Aki.Protocol.GC1.Proto_DurableMax) ?? 0;
     if (e > 0) {
       return {
@@ -981,9 +1054,9 @@ class PhantomArenaModel extends ModelBase_1.ModelBase {
       Description: e.CardEffectDescription,
       DescriptionParams: e.CardEffectDescriptionParams
     };
-    var o = this.E3m(e);
-    var i = this.I3m(e);
-    var s = this.b3m(e);
+    var o = this.V4m(e);
+    var i = this.j4m(e);
+    var s = this.$4m(e);
     var f = e.Type === 2;
     return {
       Name: e.Name,
@@ -1251,17 +1324,15 @@ class PhantomArenaModel extends ModelBase_1.ModelBase {
     return this.GetMasterLevelRewardRedDot(e) || this.CheckTaskRedDot(e) || this.CheckShopRedDot(e) || this.GetRoleRewardRedDot(e) || this.GetCardRewardRedDot(e) || this.GetBadgeRewardRedDot(e) || this.GetGymRedDot(e);
   }
   GetPermanentPhantomArenaActivityRedDot(e) {
-    return this.CheckTaskRedDot(e) || this.GetRoleRewardRedDot(e) || this.GetCardRewardRedDot(e) || this.GetChallengeUnlockRedDot(e);
+    return this.CheckTaskRedDot(e) || this.GetRoleRewardRedDot(e) || this.GetCardRewardRedDot(e) || this.GetChallengeUnlockRedDot(e) || this.GetMapUnlockRedDot();
   }
   GetChallengeUnlockRedDot(e) {
     if (this.GetActivityUnlock(e)) {
-      e = this.GetPermanentPhantomArenaActivityData()?.GetDifficultChallengeIdsMap();
+      e = this.GetPermanentPhantomArenaActivityData()?.GetAllChallengeIds();
       if (e) {
-        for (const t of e.values()) {
-          for (const r of t) {
-            if (this.GetChallengeUnlockRedDotById(r)) {
-              return true;
-            }
+        for (const t of e) {
+          if (this.GetChallengeUnlockRedDotById(t)) {
+            return true;
           }
         }
       }
@@ -1272,10 +1343,40 @@ class PhantomArenaModel extends ModelBase_1.ModelBase {
     var t;
     return this.GetPermanentChallengeStateById(e) !== 0 && !!(t = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.PhantomArenaChallengeUnlockRedDotCheck)) && !!t.has(e) && !t.get(e);
   }
+  GetMapUnlockRedDot() {
+    var e = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.PhantomArenaMapUnlockRedDotCheck);
+    if (e) {
+      for (const t of e.values()) {
+        if (t) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+  GetMapUnlockRedDotById(e) {
+    return LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.PhantomArenaMapUnlockRedDotCheck)?.get(e) ?? false;
+  }
   SaveChallengeUnlockRedDotById(e, t) {
     let r = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.PhantomArenaChallengeUnlockRedDotCheck);
     (r = r || new Map()).set(e, t);
     LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.PhantomArenaChallengeUnlockRedDotCheck, r);
+  }
+  SaveMapUnlockRedDotById(e, t) {
+    var r;
+    if (e !== 1) {
+      r = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.PhantomArenaMapUnlockRedDotCheck) ?? new Map();
+      if (t) {
+        if (!r.has(e)) {
+          r.set(e, true);
+          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPhantomArenaMapUnlockUpdate, e);
+        }
+      } else if (r?.has(e)) {
+        r.set(e, false);
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPhantomArenaMapUnlockUpdate, e);
+      }
+      LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.PhantomArenaMapUnlockRedDotCheck, r);
+    }
   }
   R8u(e) {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, e);

@@ -87,7 +87,7 @@ class FlowActionSetEntityVisible extends FlowActionServerAction_1.FlowActionServ
       ControllerHolder_1.ControllerHolder.CreatureController.SetEntityEnable(o, true, "FlowActionSetEntityVisible.OnEntityReady");
     } else {
       var i = o.GetComponent(0).GetPbEntityInitData();
-      var l = o.GetComponent(142);
+      var l = o.GetComponent(144);
       let e = false;
       if (n && i) {
         n = (0, IComponent_1.getComponent)(i?.ComponentsData, "SceneItemLifeCycleComponent");

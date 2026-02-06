@@ -12,17 +12,17 @@ const ModelManager_1 = require("../../Manager/ModelManager");
 const UiControllerBase_1 = require("../../Ui/Base/UiControllerBase");
 class LevelPlayReportController extends UiControllerBase_1.UiControllerBase {
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(28349, LevelPlayReportController.Nzf);
+    Net_1.Net.Register(17152, LevelPlayReportController.Bgg);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(28349);
+    Net_1.Net.UnRegister(17152);
   }
   static async RequestSimpleTrackReportAsync() {
     var e = Protocol_1.Aki.Protocol.Lp_.create();
-    var e = await Net_1.Net.CallAsync(19720, e);
+    var e = await Net_1.Net.CallAsync(20280, e);
     if (e) {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27467);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26040);
       } else {
         ModelManager_1.ModelManager.LevelPlayReportModel.UpdateSimpleReportMsg(e.Gb_);
       }
@@ -37,11 +37,11 @@ class LevelPlayReportController extends UiControllerBase_1.UiControllerBase {
     var t = Protocol_1.Aki.Protocol.Gp_.create();
     t.r6n = e;
     t._ps = o;
-    var t = await Net_1.Net.CallAsync(28285, t);
+    var t = await Net_1.Net.CallAsync(22459, t);
     if (t) {
       ModelManager_1.ModelManager.LevelPlayReportModel.SetRequestDetailFlag(e, o);
       if (t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 16969);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 21222);
       } else {
         ModelManager_1.ModelManager.LevelPlayReportModel.UpdateDetailReportMsg(e, o, t.hEs);
       }
@@ -57,13 +57,13 @@ class LevelPlayReportController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Map", 69, "y0_", ["", t]);
     }
-    var o = await Net_1.Net.CallAsync(20710, t);
+    var o = await Net_1.Net.CallAsync(26352, t);
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Map", 69, "S0_", ["", o]);
     }
     if (o) {
       if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 25501);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 25175);
       } else {
         ModelManager_1.ModelManager.ExploreProgressModel.UpdatePlayPointState(e, o.qb_);
       }
@@ -78,7 +78,7 @@ class LevelPlayReportController extends UiControllerBase_1.UiControllerBase {
   static async RequestLevelPlayStateListAsync(e) {
     var o = Protocol_1.Aki.Protocol.Av_.create();
     o._Wl = e;
-    var o = await Net_1.Net.CallAsync(26311, o);
+    var o = await Net_1.Net.CallAsync(25300, o);
     if (o) {
       if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
         if (Log_1.Log.CheckError()) {
@@ -90,22 +90,22 @@ class LevelPlayReportController extends UiControllerBase_1.UiControllerBase {
     }
   }
   static async RequestLevelPlayRewardsAsync(e, o) {
-    var t = Protocol_1.Aki.Protocol.Ndf.create();
+    var t = Protocol_1.Aki.Protocol.Fff.create();
     t.r6n = e;
     t._ps = o;
-    var t = await Net_1.Net.CallAsync(16546, t);
+    var t = await Net_1.Net.CallAsync(25305, t);
     if (t) {
       if (t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("LevelPlayReport", 86, "请求玩法点奖励返回失败:", ["ErrorCode:", t.Q4n]);
         }
       } else {
-        ModelManager_1.ModelManager.LevelPlayReportModel.UpdateLevelPlayRewardsMsg(e, o, t.jdf, t.$df);
+        ModelManager_1.ModelManager.LevelPlayReportModel.UpdateLevelPlayRewardsMsg(e, o, t.Hff, t.jff);
       }
     }
   }
 }
-(exports.LevelPlayReportController = LevelPlayReportController).Nzf = e => {
+(exports.LevelPlayReportController = LevelPlayReportController).Bgg = e => {
   ModelManager_1.ModelManager.LevelPlayReportModel.UpdateLevelPlayRewardMsgByNotify(e);
 };
 //# sourceMappingURL=LevelPlayReportController.js.map

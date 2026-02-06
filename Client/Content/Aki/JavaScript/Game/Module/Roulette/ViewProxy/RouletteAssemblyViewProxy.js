@@ -10,7 +10,7 @@ const ModelManager_1 = require("../../../Manager/ModelManager");
 const RouletteComponentAssembly_1 = require("../RouletteComponent/RouletteComponentAssembly");
 class RouletteAssemblyViewProxy {
   constructor() {
-    this.WOm = new Map();
+    this.sFm = new Map();
     this.View = undefined;
     this.OpenParam = undefined;
     this.TypeList = [];
@@ -26,7 +26,7 @@ class RouletteAssemblyViewProxy {
     this.View = t;
   }
   async OnBeforeStartAsync() {
-    this.TypeList = this.QOm();
+    this.TypeList = this.aFm();
     this.CurrentRouletteType = this.OpenParam.RouletteType ?? this.TypeList[0];
     if (!this.TypeList.includes(this.CurrentRouletteType)) {
       this.CurrentRouletteType = this.TypeList[0];
@@ -35,7 +35,7 @@ class RouletteAssemblyViewProxy {
       var t = new RouletteComponentAssembly_1.RouletteComponentAssembly();
       t.RegisterViewProxy(this);
       t.SetRootActor(this.View.RouletteUiItem.GetOwner(), true);
-      this.WOm.set(e, t);
+      this.sFm.set(e, t);
     }
   }
   Start() {}
@@ -43,7 +43,7 @@ class RouletteAssemblyViewProxy {
   OnRouletteTypeSwitch(t) {
     this.CurrentRouletteType = t;
     this.AssemblyGridDataMap = this.CurrentRouletteDataList.CreateAssemblyGridData();
-    for (var [e, s] of this.WOm.entries()) {
+    for (var [e, s] of this.sFm.entries()) {
       if (e !== this.CurrentRouletteType) {
         s.DeactivateGridToggleChangeEvent();
       }
@@ -51,7 +51,7 @@ class RouletteAssemblyViewProxy {
     this.CurrentRouletteListSaveData = this.CurrentRouletteDataList.GetRouletteListSaveData();
   }
   GetRouletteComponent() {
-    return this.WOm.get(this.CurrentRouletteType);
+    return this.sFm.get(this.CurrentRouletteType);
   }
   GetRouletteDataMap() {
     return this.CurrentRouletteDataList.GetRouletteDataMap();
@@ -60,15 +60,15 @@ class RouletteAssemblyViewProxy {
     return this.CurrentRouletteDataList.GetRouletteGridId(t, e, false);
   }
   Destroy() {
-    for (const t of this.WOm.values()) {
+    for (const t of this.sFm.values()) {
       t.Destroy();
     }
-    this.WOm.clear();
+    this.sFm.clear();
   }
   CanOpenView() {
-    return this.QOm().length > 0;
+    return this.aFm().length > 0;
   }
-  QOm() {
+  aFm() {
     var t;
     var e;
     var s;

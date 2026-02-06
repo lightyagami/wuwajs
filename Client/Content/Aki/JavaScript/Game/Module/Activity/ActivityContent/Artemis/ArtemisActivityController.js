@@ -16,21 +16,21 @@ const ArtemisSubView_1 = require("./ArtemisSubView");
 class ArtemisActivityController extends ActivityControllerBase_1.ActivityControllerBase {
   constructor() {
     super(...arguments);
-    this.pzm = e => {
+    this.tef = e => {
       var t;
       if (e) {
-        (t = ModelManager_1.ModelManager.ActivityModel?.GetActivityById(e.w6n))?.SetUnlockIndex(e.Xgf);
-        t?.SetRewardedIndex(e.Ygf);
+        (t = ModelManager_1.ModelManager.ActivityModel?.GetActivityById(e.w6n))?.SetUnlockIndex(e.TMf);
+        t?.SetRewardedIndex(e.bMf);
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, e.w6n);
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnArtemisStateRefresh);
       }
     };
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(15875, this.pzm);
+    Net_1.Net.Register(29927, this.tef);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(15875);
+    Net_1.Net.UnRegister(29927);
   }
   OnOpenView(e) {}
   OnGetActivityResource(e) {
@@ -46,10 +46,10 @@ class ArtemisActivityController extends ActivityControllerBase_1.ActivityControl
     return false;
   }
   static RequestArtemisStatus(t, r, i) {
-    var e = Protocol_1.Aki.Protocol.HEm.create();
+    var e = Protocol_1.Aki.Protocol.XEm.create();
     e.w6n = t.GetCacheActivityId;
     e.c5n = r;
-    Net_1.Net.Call(25159, e, e => {
+    Net_1.Net.Call(19528, e, e => {
       if (i) {
         i(e === undefined || e.fMs !== Protocol_1.Aki.Protocol.Q4n.KRs);
       }
@@ -59,7 +59,7 @@ class ArtemisActivityController extends ActivityControllerBase_1.ActivityControl
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, t.GetCacheActivityId);
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnArtemisStateRefresh);
         } else {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.fMs, 24042);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.fMs, 19661);
         }
       }
     });

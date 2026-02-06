@@ -25,7 +25,7 @@ class RoleBuffView extends BattleVisibleChildView_1.BattleVisibleChildView {
   }
   OnStart() {
     super.OnStart();
-    this.InitChildType(41);
+    this.InitChildType(43);
     this.E4u();
     var e = CommonParamById_1.configCommonParamById.GetIntConfig("RoleBuffItemCount");
     this.mkn.Init(this.GetItem(1), e, false, true, false, this.S4u.GetRootItem());

@@ -20,6 +20,7 @@ class RbRollState extends RbBaseMoveState_1.RbBaseMoveState {
     this.gSm = 0;
     this.CSm = Vector_1.Vector.Create();
     this.pSm = Vector_1.Vector.Create();
+    this.$6g = 0;
     this.vSm = undefined;
     this.GameplaySetting = undefined;
     this.Gtm = t => {
@@ -46,13 +47,14 @@ class RbRollState extends RbBaseMoveState_1.RbBaseMoveState {
       this.pSm.CrossProductEqual(Vector_1.Vector.Create(0, 0, 1));
       this.CSm = this.Owner.CalculateRotationCenter(RollBlockDefind_1.RB_HALF_HEIGHT, this.fSm);
       this.IsFinishedInternal = false;
+      this.$6g = this.Owner.IsMainController ? this.GameplaySetting.BlockRollTime : this.GameplaySetting.VisionBlockRollTime;
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("RollBlock", 31, "RbIdleState Enter without MovingState info");
     }
   }
   Update(t) {
-    if (!(this.gSm >= this.GameplaySetting.BlockRollTime)) {
-      if (this.Info && this.fSm && this.vSm && this.GameplaySetting && this.Owner && (this.gSm += t / TimeUtil_1.TimeUtil.InverseMillisecond, t = MathUtils_1.MathUtils.Clamp(this.gSm / this.GameplaySetting.BlockRollTime, 0, 1), t = this.ySm(t), this.Owner.SetActorTransform(t), this.gSm >= this.GameplaySetting.BlockRollTime)) {
+    if (!(this.gSm >= this.$6g)) {
+      if (this.Info && this.fSm && this.vSm && this.GameplaySetting && this.Owner && (this.gSm += t / TimeUtil_1.TimeUtil.InverseMillisecond, t = MathUtils_1.MathUtils.Clamp(this.gSm / this.$6g, 0, 1), t = this.ySm(t), this.Owner.SetActorTransform(t), this.gSm >= this.$6g)) {
         this.Gtm(this.Owner.Entity);
       }
     }

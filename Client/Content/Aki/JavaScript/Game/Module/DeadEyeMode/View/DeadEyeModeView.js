@@ -21,33 +21,33 @@ class DeadEyeModeView extends UiTickViewBase_1.UiTickViewBase {
     this.UZd = undefined;
     this.Acm = undefined;
     this.Kti = [];
-    this.TKm = 0;
-    this.GSf = 0;
-    this.R8f = undefined;
+    this.QYm = 0;
+    this.wIf = 0;
+    this.qYf = undefined;
     this.m2n = undefined;
-    this.AYf = () => {
-      this.GSf = 0;
+    this.Rdg = () => {
+      this.wIf = 0;
       for (const t of this.Kti) {
         if (t.IsLocked) {
-          this.GSf++;
+          this.wIf++;
         }
       }
-      var e = this.GSf === this.Kti.length;
-      this.GetButton(5)?.SetEnable(this.GSf > 0);
+      var e = this.wIf === this.Kti.length;
+      this.GetButton(5)?.SetEnable(this.wIf > 0);
       if (e && ModelManager_1.ModelManager.DeadEyeModeModel.CurDeadEyeModeStage === 2) {
         this.GetItem(4)?.SetUIActive(true);
         this.m2n?.PlayLevelSequenceByName("Start");
       }
     };
-    this.bKm = () => {
-      if (!(this.TKm >= this.Kti.length)) {
-        this.RKm().then(this.bKm);
+    this.KYm = () => {
+      if (!(this.QYm >= this.Kti.length)) {
+        this.XYm().then(this.KYm);
       }
     };
-    this.FSf = () => {
-      if (ModelManager_1.ModelManager.DeadEyeModeModel.CurrentEnergy === 0 || this.GSf !== 0) {
+    this.RIf = () => {
+      if (ModelManager_1.ModelManager.DeadEyeModeModel.CurrentEnergy === 0 || this.wIf !== 0) {
         if (ModelManager_1.ModelManager.DeadEyeModeModel.CurDeadEyeModeStage !== 3) {
-          this.L8f().then(() => {
+          this.OYf().then(() => {
             this.CloseMe();
           });
         }
@@ -56,31 +56,31 @@ class DeadEyeModeView extends UiTickViewBase_1.UiTickViewBase {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIButtonComponent]];
-    this.BtnBindInfo = [[5, this.FSf]];
+    this.BtnBindInfo = [[5, this.RIf]];
   }
   async OnBeforeStartAsync() {
     var e = this.GetItem(4);
     this.m2n = new LevelSequencePlayer_1.LevelSequencePlayer(e);
     e?.SetUIActive(false);
     var e = this.GetButton(5);
-    this.R8f = new LevelSequencePlayer_1.LevelSequencePlayer(e.RootUIComp);
+    this.qYf = new LevelSequencePlayer_1.LevelSequencePlayer(e.RootUIComp);
     var e = ModelManager_1.ModelManager.DeadEyeModeModel;
     var t = e.GetFocusEntities();
     var e = e.GetTargetLocations();
     await this.$Zd();
     await this.yfl();
     await this.WZd(t, e);
-    this.GSf = 0;
+    this.wIf = 0;
     this.GetButton(5)?.SetEnable(false);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.DeadEyeModeTargetPointLocked, this.AYf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.DeadEyeModeTargetPointLocked, this.Rdg);
   }
   OnAfterShow() {
-    this.wKm();
+    this.YYm();
     this.Acm?.Show();
     this.UZd?.ShowAsync();
   }
   OnAfterDestroy() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.DeadEyeModeTargetPointLocked, this.AYf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.DeadEyeModeTargetPointLocked, this.Rdg);
     ModelManager_1.ModelManager.DeadEyeModeModel.EnterNextStage();
   }
   OnTick(e) {
@@ -89,7 +89,7 @@ class DeadEyeModeView extends UiTickViewBase_1.UiTickViewBase {
     }
     this.Acm?.OnTick(e);
     if (ModelManager_1.ModelManager.DeadEyeModeModel.CurrentEnergy === 0) {
-      this.FSf();
+      this.RIf();
     }
   }
   async $Zd() {
@@ -125,19 +125,19 @@ class DeadEyeModeView extends UiTickViewBase_1.UiTickViewBase {
     }
     await Promise.all(a);
   }
-  wKm() {
+  YYm() {
     this.Kti.sort((e, t) => e.GetScreenPositionWithoutClamp().X - t.GetScreenPositionWithoutClamp().X);
-    this.TKm = 0;
+    this.QYm = 0;
     if (this.Kti.length) {
-      this.bKm();
+      this.KYm();
     }
   }
-  async RKm() {
-    this.Kti[this.TKm].ShowAsync();
+  async XYm() {
+    this.Kti[this.QYm].ShowAsync();
     await TimerSystem_1.GameplayTimerSystem.Wait(200);
-    this.TKm++;
+    this.QYm++;
   }
-  async L8f() {
+  async OYf() {
     var e = [];
     for (const i of this.Kti) {
       if (i.IsLocked) {
@@ -148,7 +148,7 @@ class DeadEyeModeView extends UiTickViewBase_1.UiTickViewBase {
     }
     e.push(this.UZd?.HideAsync());
     e.push(this.Acm?.HideAsync());
-    this.R8f?.PlayLevelSequenceByName("Close");
+    this.qYf?.PlayLevelSequenceByName("Close");
     var t = new CustomPromise_1.CustomPromise();
     this.m2n?.PlaySequenceAsync("Close", t);
     e.push(t);

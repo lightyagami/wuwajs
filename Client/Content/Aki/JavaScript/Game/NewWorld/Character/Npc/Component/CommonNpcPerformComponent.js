@@ -65,7 +65,7 @@ let CommonNpcPerformComponent = CommonNpcPerformComponent_1 = class CommonNpcPer
     this.Mne = 0;
     this.Lo = undefined;
     this.KBr = false;
-    this.Ewm = false;
+    this.xwm = false;
     this.jBr = undefined;
     this.Y8e = undefined;
     this.Lie = undefined;
@@ -134,13 +134,14 @@ let CommonNpcPerformComponent = CommonNpcPerformComponent_1 = class CommonNpcPer
     this.OnStartMoveWithSpline = (t, e, i) => {
       this.ATl = true;
       this.bTl = i;
-      var s = {
+      e = {
         DebugMode: false,
         ReturnFalseWhenNavigationFailed: false,
         UseNearestPoint: true,
         IsFollowStrictly: t.IsFollowStrictly,
         StartPointIndex: t.StartPointIndex,
         EndPointIndex: t.EndPointIndex,
+        NoSyncPoint: e,
         OnArrivePointHandle: undefined,
         OnPatrolEndHandle: t => {
           if (t === 1) {
@@ -153,7 +154,7 @@ let CommonNpcPerformComponent = CommonNpcPerformComponent_1 = class CommonNpcPer
           this.ATl = false;
         }
       };
-      this.zLn?.StartPatrol(t.SplineEntityId, s);
+      this.zLn?.StartPatrol(t.SplineEntityId, e);
       this.zun = t.SplineEntityId;
       this.BTl = t;
       this.qTl(t);
@@ -196,7 +197,7 @@ let CommonNpcPerformComponent = CommonNpcPerformComponent_1 = class CommonNpcPer
       }
     };
     this.OnChangeRole = (t, e) => {
-      if (this.Ewm && (t = t.Entity?.GetComponent(3))) {
+      if (this.xwm && (t = t.Entity?.GetComponent(3))) {
         this.SightTarget(t, 1);
       }
     };
@@ -217,8 +218,8 @@ let CommonNpcPerformComponent = CommonNpcPerformComponent_1 = class CommonNpcPer
     this.IsBaseRoleNpc = t.SpecialNpcPerformConfig?.Type === IComponent_1.ESpecialNpcType.BaseRoleNpc;
     var e = this.Entity.GetComponent(0);
     this.Mne = e.GetPbDataId();
-    this.Y8e = this.Entity.GetComponent(127);
-    this.Lie = this.Entity.GetComponent(206);
+    this.Y8e = this.Entity.GetComponent(129);
+    this.Lie = this.Entity.GetComponent(208);
     this.Lo = t;
     return true;
   }
@@ -236,13 +237,13 @@ let CommonNpcPerformComponent = CommonNpcPerformComponent_1 = class CommonNpcPer
       if (this.Owner.IsA(UE.BP_BaseNPC_C.StaticClass()) && ((t = this.Owner).CanPlayerImpact = this.Lo.IsShowStrike, t.CanLookAtPlayer = this.Lo.IsStare, this.KBr = t.CanLookAtPlayer, this.Lo.NpcHitShow ? t.CanPlayerAttack = true : t.CanPlayerAttack = false, this.oin) && (this.Lo.IsShowStrike || this.Lo.NpcHitShow)) {
         t.HitCollision.OnComponentBeginOverlap.Add(this.rin);
       }
-      this.jBr = this.Entity.GetComponent(128);
+      this.jBr = this.Entity.GetComponent(130);
       if (this.jBr) {
         this.jBr.SetSightRange(DEFAULT_SIGHT_RANGE);
       }
       this.Ore();
-      this.zLn = this.Entity.GetComponent(49);
-      this.rzr = this.Entity.GetComponent(130);
+      this.zLn = this.Entity.GetComponent(51);
+      this.rzr = this.Entity.GetComponent(132);
     }
     return true;
   }
@@ -264,7 +265,7 @@ let CommonNpcPerformComponent = CommonNpcPerformComponent_1 = class CommonNpcPer
     this.TurnActionController?.Dispose();
     this.ExpressionController?.Dispose();
     super.OnEnd();
-    this.YAf();
+    this.Lqf();
     if (this.oin) {
       this.fin();
       this.kre();
@@ -330,13 +331,13 @@ let CommonNpcPerformComponent = CommonNpcPerformComponent_1 = class CommonNpcPer
       this.$Br = false;
     }
   }
-  YAf() {
+  Lqf() {
     if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnChangeRole, this.OnChangeRole)) {
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnChangeRole, this.OnChangeRole);
     }
   }
   Cin() {
-    this.IdleState.NpcMoveComp = this.Entity.GetComponent(46);
+    this.IdleState.NpcMoveComp = this.Entity.GetComponent(48);
     this.UnderAttackState.SetDefaultDirect(this.ActorComp.ActorForwardProxy);
   }
   OnMonsterNearby() {
@@ -348,12 +349,12 @@ let CommonNpcPerformComponent = CommonNpcPerformComponent_1 = class CommonNpcPer
       e.Init(this.Lo.NpcMonsterClosePerform.Range);
       e.OnEnterSensoryRange = t => this.OnMonsterNearby();
       e.OnExitSensoryRange = t => !!e.CheckInRange() || this.StateMachine.CurrentState !== 7 || this.StateMachine.Switch(1);
-      this.Ztn = this.Entity.GetComponent(129).AddSensoryInfo(e);
+      this.Ztn = this.Entity.GetComponent(131).AddSensoryInfo(e);
     }
   }
   fin() {
     if (this.Ztn >= 0) {
-      this.Entity.GetComponent(129).RemoveSensoryInfo(this.Ztn);
+      this.Entity.GetComponent(131).RemoveSensoryInfo(this.Ztn);
       this.Ztn = -1;
     }
   }
@@ -433,10 +434,10 @@ let CommonNpcPerformComponent = CommonNpcPerformComponent_1 = class CommonNpcPer
   OnTick(t) {
     if (this.AnimComp && (this.PerformGroupController?.Tick(t), this.InterestEventController?.Tick(t), this.oin)) {
       this.StateMachine.Update(t);
-      this.Iwm(t);
+      this.Bwm(t);
     }
   }
-  Iwm(t) {
+  Bwm(t) {
     if (this.KBr) {
       if (this.jBr.IsInSightRange && this.lbr()) {
         this.EnableLookAtPlayer(true);
@@ -490,7 +491,7 @@ let CommonNpcPerformComponent = CommonNpcPerformComponent_1 = class CommonNpcPer
           var s = ModelManager_1.ModelManager.CreatureModel;
           for (const r of i) {
             var h = s.GetEntityByPbDataId(r);
-            if (h?.Valid && (h = h.Entity.GetComponent(197))?.Valid) {
+            if (h?.Valid && (h = h.Entity.GetComponent(199))?.Valid) {
               h.SetUiOpenPerformance(t, e);
             }
           }
@@ -521,7 +522,7 @@ let CommonNpcPerformComponent = CommonNpcPerformComponent_1 = class CommonNpcPer
     }
   }
   nin() {
-    var t = Global_1.Global.BaseCharacter.CharacterActorComponent.Entity.GetComponent(215);
+    var t = Global_1.Global.BaseCharacter.CharacterActorComponent.Entity.GetComponent(217);
     return !!t && (t.HasTag(1408042260) || t.HasTag(64219164) || t.HasTag(1733479717));
   }
   Ein() {
@@ -573,23 +574,23 @@ let CommonNpcPerformComponent = CommonNpcPerformComponent_1 = class CommonNpcPer
   }
   ResumeAi(t) {
     if (this._in === 2) {
-      this.Entity.GetComponent(76).Resume(t);
+      this.Entity.GetComponent(78).Resume(t);
     } else if (this._in === 1) {
-      this.Entity.GetComponent(48).EnableAi(t);
+      this.Entity.GetComponent(50).EnableAi(t);
     }
     this.cin = false;
   }
   PauseAi(t) {
     if (this._in === 2) {
-      this.Entity.GetComponent(76).Pause(t);
+      this.Entity.GetComponent(78).Pause(t);
     } else if (this._in === 1) {
-      this.Entity.GetComponent(48).DisableAi(t);
+      this.Entity.GetComponent(50).DisableAi(t);
     }
     this.cin = true;
   }
   InitAiControllerType() {
-    var t = this.Entity.GetComponent(48);
-    var e = this.Entity.GetComponent(76);
+    var t = this.Entity.GetComponent(50);
+    var e = this.Entity.GetComponent(78);
     if (t && e?.IsNeedPlan) {
       this._in = BehaviorTreeDefines_1.BehaviorTreeDefines.CanUseLevelAiBehaviorTree(this.Entity) ? 1 : 2;
     } else if (t) {
@@ -651,8 +652,8 @@ let CommonNpcPerformComponent = CommonNpcPerformComponent_1 = class CommonNpcPer
     }, undefined, undefined, t.NpcFollow.PerformerWhenExit.Range);
   }
   EnableLookAtPlayer(t) {
-    if (this.Ewm !== t) {
-      if (this.Ewm = t) {
+    if (this.xwm !== t) {
+      if (this.xwm = t) {
         this.SightTarget(Global_1.Global.BaseCharacter.CharacterActorComponent, 1);
         EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnChangeRole, this.OnChangeRole);
       } else {
@@ -662,5 +663,5 @@ let CommonNpcPerformComponent = CommonNpcPerformComponent_1 = class CommonNpcPer
     }
   }
 };
-CommonNpcPerformComponent = CommonNpcPerformComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(197)], CommonNpcPerformComponent);
+CommonNpcPerformComponent = CommonNpcPerformComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(199)], CommonNpcPerformComponent);
 exports.CommonNpcPerformComponent = CommonNpcPerformComponent; //# sourceMappingURL=CommonNpcPerformComponent.js.map

@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.CameraModel = exports.CameraSpecificLocLocation = exports.CameraSpecificLockEntity = exports.CameraSpecificLockTarget = exports.SeqCameraThings = exports.cameraModeFree = exports.cameraModeOrbital = exports.cameraModeScene = exports.cameraModeSequence = exports.cameraModeWidget = exports.cameraModeLockOn = exports.cameraModeDefault = exports.CAMER_DEFAULT_NEAR_CLIP = undefined;
+exports.CameraModel = exports.CameraSpecificLocLocation = exports.CameraSpecificLockEntity = exports.CameraSpecificLockTarget = exports.SeqCameraThings = exports.cameraModeFree = exports.cameraModeOrbital = exports.cameraModeScene = exports.cameraModeSequence = exports.cameraModeWidget = exports.cameraModeLockOn = exports.cameraModeDefault = exports.EHideHeadDisabledEnum = exports.CAMER_DEFAULT_NEAR_CLIP = undefined;
 const UE = require("ue");
 const Log_1 = require("../../Core/Common/Log");
 const Time_1 = require("../../Core/Common/Time");
@@ -47,7 +47,9 @@ const CAMERA_ADDITION_ARM_LENGTH_VALUE_DEFAULT = 50;
 const CAMERA_ADDITION_ARM_LENGTH_VALUE_MIN = 0;
 const CAMERA_SHAKE_MODIFIER_MIN = 0;
 const CAMERA_SHAKE_MODIFIER_MAX = 2;
+var EHideHeadDisabledEnum;
 exports.CAMER_DEFAULT_NEAR_CLIP = 10;
+(EHideHeadDisabledEnum = exports.EHideHeadDisabledEnum ||= {}).UI = "UI";
 exports.cameraModeDefault = new UE.FName("KuroDefault");
 exports.cameraModeLockOn = new UE.FName("KuroLockOn");
 exports.cameraModeWidget = new UE.FName("KuroWidget");
@@ -171,13 +173,14 @@ class CameraModel extends ModelBase_1.ModelBase {
     this.GQd = new PriorityQueue_1.PriorityQueue(CameraModel.CompareCameraSpecificLockIdPriority);
     this.DitherEntityGroups = new DisjointSet_1.DisjointSet();
     this.sZc = new Set();
-    this.CHf = new Set();
+    this.wtg = new Set();
+    this.OQf = -1;
     this.OnCameraViewTargetChanged = () => {
       if (this.LogicHideHeadEnabled) {
         if (this.CameraMode === 2) {
-          this.SetHideHeadDisabled(true, 0);
+          this.SetHideHeadDisabled(true, EHideHeadDisabledEnum.UI);
         } else {
-          this.SetHideHeadDisabled(false, 0);
+          this.SetHideHeadDisabled(false, EHideHeadDisabledEnum.UI);
         }
         this.FightCamera?.LogicComponent?.ForceTickOutSide();
         this.FightCamera?.LogicComponent?.Character?.CharRenderingComponent?.UpdateMaterialEffectsOnly();
@@ -317,7 +320,7 @@ class CameraModel extends ModelBase_1.ModelBase {
     return this.FightCamera?.LogicComponent?.FinalCameraDistance ?? 0;
   }
   get ViewHideHeadEnabled() {
-    return this.CHf.size <= 0 && this.sZc.size > 0;
+    return this.wtg.size <= 0 && this.sZc.size > 0;
   }
   get LogicHideHeadEnabled() {
     return this.sZc.size > 0;
@@ -329,32 +332,55 @@ class CameraModel extends ModelBase_1.ModelBase {
         this.sZc.add(e);
       } else {
         this.sZc.delete(e);
+        Object.values(EHideHeadDisabledEnum).forEach(t => {
+          this.SetHideHeadDisabled(false, t);
+        });
       }
-      this.pHf();
+      this.Ptg();
     }
   }
   SetHideHeadDisabled(t, e) {
-    var i = this.CHf.has(e);
+    var i = this.wtg.has(e);
     if ((!t || !i) && (!!t || !!i)) {
       if (t) {
-        this.CHf.add(e);
+        this.wtg.add(e);
       } else {
-        this.CHf.delete(e);
+        this.wtg.delete(e);
       }
-      this.pHf();
+      this.Ptg();
     }
   }
-  pHf() {
+  Ptg() {
     if (this.ViewHideHeadEnabled) {
-      this.FightCamera?.LogicComponent?.Character?.CharRenderingComponent?.SetDitherUseHeadMaskHideEffect(true);
+      if (this.FightCamera?.LogicComponent?.ContainsTag(1325052483)) {
+        this.FightCamera?.LogicComponent?.Character?.CharRenderingComponent?.SetDitherUseHeadMaskHideEffect(true);
+      } else {
+        this.FightCamera?.LogicComponent?.Character?.CharRenderingComponent?.SetDitherApplyHeadsOnly();
+      }
       this.FightCamera?.LogicComponent?.Character?.CharRenderingComponent?.SetDitherEffect(0, 1);
       this.FightCamera?.LogicComponent?.Character?.CharRenderingComponent?.UpdateMaterialEffectsOnly();
       this.FightCamera?.LogicComponent?.VehicleActorComponent?.EnterFirstPersonMode();
     } else {
-      this.FightCamera?.LogicComponent?.Character?.CharRenderingComponent?.SetDitherUseHeadMaskHideEffect(false);
+      if (this.FightCamera?.LogicComponent?.ContainsTag(1325052483)) {
+        this.FightCamera?.LogicComponent?.Character?.CharRenderingComponent?.SetDitherUseHeadMaskHideEffect(false);
+      } else {
+        this.FightCamera?.LogicComponent?.Character?.CharRenderingComponent?.SetDitherApplyAll();
+      }
       this.FightCamera?.LogicComponent?.Character?.CharRenderingComponent?.SetDitherEffect(1, 1);
       this.FightCamera?.LogicComponent?.Character?.CharRenderingComponent?.UpdateMaterialEffectsOnly();
       this.FightCamera?.LogicComponent?.VehicleActorComponent?.ExitFirstPersonMode();
+    }
+  }
+  SetHidePlayer(t) {
+    var e = Global_1.Global.BaseCharacter?.CharacterActorComponent;
+    if (e?.Valid) {
+      if (t) {
+        this.OQf = e.DisableActor("LevelEventAdjustPlayerCamera.HidePlayer");
+      } else if (this.OQf !== -1) {
+        e.EnableActor(this.OQf);
+      }
+    } else {
+      this.OQf = -1;
     }
   }
   SetCameraShakeModify(t) {
@@ -535,6 +561,13 @@ class CameraModel extends ModelBase_1.ModelBase {
     if (this.CameraMovieModeController) {
       this.CameraMovieModeController.StopMovieCamera(t, e);
     }
+  }
+  HasLockTarget() {
+    return !!this.FightCamera?.LogicComponent && !!this.FightCamera.LogicComponent.TargetEntity?.Valid && this.FightCamera.LogicComponent.IsTargetLocationValid;
+  }
+  GetLockTargetLocation(t) {
+    t.Reset();
+    return !!this.HasLockTarget() && (t.DeepCopy(this.FightCamera.LogicComponent.TargetLocation), true);
   }
   OnInit() {
     this.Che = EntitySystem_1.EntitySystem.Create(SequenceCamera_1.SequenceCamera, CAMERA_TICK_PRIORITY);

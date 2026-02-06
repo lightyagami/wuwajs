@@ -26,11 +26,12 @@ class PilotThrowView extends UiTickViewBase_1.UiTickViewBase {
       ControllerHolder_1.ControllerHolder.LevelPlayController.LogReportMotorcycleLevelPlay(ModelManager_1.ModelManager.PilotThrowModel.GetCurrentInteractHookPoint(), 4, undefined, 1);
       var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
       if (e && e.Entity) {
-        e.Entity.GetComponent(41)?.StopAllSkills("铁驭中断,停止技能");
+        e.Entity.GetComponent(43)?.StopAllSkills("铁驭中断,停止技能");
       }
       for (const t of this.Kti) {
         t.Close();
       }
+      this.Kti.length = 0;
       this.CloseMe();
     };
     this.jZd = () => {
@@ -39,15 +40,17 @@ class PilotThrowView extends UiTickViewBase_1.UiTickViewBase {
       for (const e of this.Kti) {
         e.Close();
       }
+      this.Kti.length = 0;
       this.CloseMeAsync();
     };
     this.bpr = () => {
       for (const e of this.Kti) {
         e.Close();
       }
+      this.Kti.length = 0;
       this.CloseMeAsync();
     };
-    this.JJm = e => {
+    this.Fef = e => {
       this.$pt?.StopSequenceByKey("Ready_In");
       this.$pt?.StopSequenceByKey("Ready_Out");
       this.$pt?.PlayLevelSequenceByName(e ? "Ready_In" : "Ready_Out");
@@ -71,7 +74,6 @@ class PilotThrowView extends UiTickViewBase_1.UiTickViewBase {
   OnBeforeShow() {
     super.OnBeforeShow();
     ControllerHolder_1.ControllerHolder.PilotThrowController.GenerateProjectilePoints();
-    ControllerHolder_1.ControllerHolder.CameraController.FightCamera.LogicComponent.EnterSpecialGameplayCamera(1);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TeleportStart, this.bpr);
   }
   OnBeforeHide() {
@@ -91,7 +93,7 @@ class PilotThrowView extends UiTickViewBase_1.UiTickViewBase {
     var t = [];
     for (const r of e) {
       var i = new PilotThrowTargetItem_1.PilotThrowTargetItem(r);
-      i.OnTargetInOutRange = this.JJm;
+      i.OnTargetInOutRange = this.Fef;
       t.push(i.CreateThenShowByResourceIdAsync("UiItem_IronCrossbowPoint", UiLayer_1.UiLayer.WorldSpaceUiRootItem));
       this.Kti.push(i);
     }

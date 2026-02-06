@@ -98,15 +98,15 @@ class LevelEventPlayMontage extends LevelGeneralBase_1.LevelEventBase {
     var i;
     this.sDe = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(this.E0);
     if (this.sDe?.Valid) {
-      if (this.sDe.Entity.GetComponent(48)?.IsAiDriver) {
+      if (this.sDe.Entity.GetComponent(50)?.IsAiDriver) {
         e = this.sDe.Entity.GetComponent(1);
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("LevelEvent", 7, "当前实体正在由行为树AI驱动，请检查需求设计是否合理（播放蒙太奇动画）", ["PbDataId", this.E0], ["Name", e.Owner.GetName()]);
         }
         this.FinishExecute(true);
       } else {
-        e = this.sDe.Entity?.GetComponent(47);
-        t = this.sDe.Entity?.GetComponent(45);
+        e = this.sDe.Entity?.GetComponent(49);
+        t = this.sDe.Entity?.GetComponent(47);
         if (e || t) {
           i = this.gLe.Duration === undefined || this.gLe.Duration >= 0 && this.gLe.Duration < TimerSystem_1.MIN_TIME;
           if (this.IsAsync) {

@@ -21,23 +21,23 @@ const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
 class AoiController extends ControllerBase_1.ControllerBase {
   static OnInit() {
-    Net_1.Net.Register(17992, AoiController.Jgr);
-    Net_1.Net.Register(19063, AoiController.zgr);
-    Net_1.Net.Register(16951, AoiController.Zgr);
-    Net_1.Net.Register(21938, AoiController.e0r);
-    Net_1.Net.Register(29745, AoiController.t0r);
-    Net_1.Net.Register(16817, AoiController.i0r);
-    Net_1.Net.Register(24033, AoiController.o0r);
+    Net_1.Net.Register(29856, AoiController.Jgr);
+    Net_1.Net.Register(21061, AoiController.zgr);
+    Net_1.Net.Register(29794, AoiController.Zgr);
+    Net_1.Net.Register(23008, AoiController.e0r);
+    Net_1.Net.Register(28165, AoiController.t0r);
+    Net_1.Net.Register(27371, AoiController.i0r);
+    Net_1.Net.Register(26936, AoiController.o0r);
     return true;
   }
   static OnClear() {
-    Net_1.Net.UnRegister(17992);
-    Net_1.Net.UnRegister(19063);
-    Net_1.Net.UnRegister(16951);
-    Net_1.Net.UnRegister(21938);
-    Net_1.Net.UnRegister(29745);
-    Net_1.Net.UnRegister(16817);
-    Net_1.Net.UnRegister(24033);
+    Net_1.Net.UnRegister(29856);
+    Net_1.Net.UnRegister(21061);
+    Net_1.Net.UnRegister(29794);
+    Net_1.Net.UnRegister(23008);
+    Net_1.Net.UnRegister(28165);
+    Net_1.Net.UnRegister(27371);
+    Net_1.Net.UnRegister(26936);
     return true;
   }
   static r0r(e, o, r) {
@@ -100,7 +100,7 @@ class AoiController extends ControllerBase_1.ControllerBase {
   }
   static AddMonsterSizeTag(e) {
     var o = e.GetComponent(0)?.GetMonsterComponent()?.FightConfigId;
-    const r = e.GetComponent(215);
+    const r = e.GetComponent(217);
     if (o && r?.Valid && (e = MonsterBattleConfById_1.configMonsterBattleConfById?.GetConfig(o)) && (o = MonsterSizeIdById_1.configMonsterSizeIdById?.GetConfig(e.MonsterSizeId))) {
       o.MonsterSizeTag?.forEach(e => {
         r.AddTag(GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e));

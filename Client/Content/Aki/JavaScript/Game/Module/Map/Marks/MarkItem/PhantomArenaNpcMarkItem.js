@@ -36,7 +36,7 @@ class PhantomArenaNpcMarkItem extends ConfigMarkItem_1.ConfigMarkItem {
   GetTitleText() {
     var e = ConfigManager_1.ConfigManager.PhantomArenaConfig?.GetPhantomBattleChallengeByMarkId(this.MarkId);
     if (e) {
-      e = ModelManager_1.ModelManager.PhantomArenaModel?.GetPermanentChallengeData(e.Id)?.qgf ?? true;
+      e = ModelManager_1.ModelManager.PhantomArenaModel?.GetPermanentChallengeData(e.Id)?.VCf ?? true;
       return ConfigManager_1.ConfigManager.MapConfig.GetLocalText(e ? this.MarkConfig.MarkTitle : "PhantomBattle_1164");
     } else {
       if (Log_1.Log.CheckError()) {

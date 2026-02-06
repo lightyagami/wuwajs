@@ -5,6 +5,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.PhantomArenaAreaFunctionalProxy = undefined;
 const Log_1 = require("../../../../../../Core/Common/Log");
+const EventDefine_1 = require("../../../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../../../Common/Event/EventSystem");
 const ControllerHolder_1 = require("../../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../../Manager/ModelManager");
 const PhantomArenaDefine_1 = require("../../PhantomArenaDefine");
@@ -37,6 +39,7 @@ class PhantomArenaAreaFunctionalProxy extends PhantomArenaAreaProxyBase_1.Phanto
     t = await PhantomArenaSkillInteractFactory_1.PhantomArenaSkillInteractFactory.GetSkillInteract(t.InteractType).Execute(this.ParentArea.ParentArea.ViewProxy, this);
     if (t === 0) {
       this.uhu();
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshHandCardState);
       return true;
     } else {
       return t !== 1;
@@ -57,7 +60,7 @@ class PhantomArenaAreaFunctionalProxy extends PhantomArenaAreaProxyBase_1.Phanto
   }
   async OnHandleCardSetting(t) {
     this.SetCardResetPosition(t);
-    return !!(await ControllerHolder_1.ControllerHolder.PhantomArenaBattleController.RequestPhantomBattleCardTargetInfo(t.Data.CardId, t.Data.ActiveSkillId, t.Data.Index !== PhantomArenaDefine_1.HAND_PHANTOMARENA_INDEX, false)) && (await this.SetCard(t), (await this.OnHandleAreaBySetCard()) ? (this.ParentArea.ParentArea.ViewProxy.GuideManager.FinishCurrentGuide(), true) : (this.ResetCardProxy(), false));
+    return !!(await ControllerHolder_1.ControllerHolder.PhantomArenaBattleController.RequestPhantomBattleCardTargetInfo(t.Data.CardId, t.Data.ActiveSkillId, t.Data.Index !== PhantomArenaDefine_1.HAND_PHANTOMARENA_INDEX, false)) && (await this.SetCard(t), (await this.OnHandleAreaBySetCard()) ? (this.ParentArea.ParentArea.ViewProxy.GuideManager.FinishCurrentGuide(), true) : (this.ResetCardProxy(), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshHandCardState), false));
   }
   CheckGuideCondition(t) {
     var e;

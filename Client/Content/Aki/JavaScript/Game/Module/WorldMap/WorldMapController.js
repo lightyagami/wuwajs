@@ -41,13 +41,13 @@ class WorldMapController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OpenView, this._3o);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CloseView, this.u3o);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDone, this.nye);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsOpenWorldMapView, this.nkf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsOpenWorldMapView, this.YNf);
   }
   static OnRemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OpenView, this._3o);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CloseView, this.u3o);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDone, this.nye);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsOpenWorldMapView, this.nkf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsOpenWorldMapView, this.YNf);
   }
   static TryTeleport(e, r) {
     var o;
@@ -86,7 +86,7 @@ class WorldMapController extends UiControllerBase_1.UiControllerBase {
   static MapOpenPush(e) {
     var r = new Protocol_1.Aki.Protocol.fas();
     r.vjn = e;
-    Net_1.Net.Send(27877, r);
+    Net_1.Net.Send(15468, r);
   }
   static OpenView(o, e, r, t) {
     if (ModelManager_1.ModelManager.WorldMapModel.PendingOpenWorldMapQuestId !== undefined) {
@@ -183,9 +183,9 @@ class WorldMapController extends UiControllerBase_1.UiControllerBase {
   }
   static Mdl(r) {
     var e = Protocol_1.Aki.Protocol.wg_.create();
-    Net_1.Net.Call(25652, e, e => {
+    Net_1.Net.Call(25401, e, e => {
       if (e.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 22296);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 22868);
       }
       e = {
         InstanceDungeonId: r,
@@ -225,9 +225,9 @@ class WorldMapController extends UiControllerBase_1.UiControllerBase {
       Z: r.Z
     };
     t.w7n = o;
-    Net_1.Net.Call(27173, t, e => {
+    Net_1.Net.Call(23141, t, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16633);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19331);
       }
     });
   }
@@ -330,7 +330,7 @@ WorldMapController.Uct = e => {
     }
   }
 };
-WorldMapController.nkf = (e, r, o) => {
+WorldMapController.YNf = (e, r, o) => {
   e = {
     MarkType: e,
     MarkId: r,

@@ -13,7 +13,7 @@ class MotorcycleTechTreeLevelDetailView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
     this.lqe = undefined;
-    this.lwf = undefined;
+    this.xDf = undefined;
     this.sGe = () => new MotorcycleTechTreeListLevelItem_1.MotorcycleTechTreeListLevelItem();
     this.xpt = () => {
       this.CloseMe();
@@ -27,9 +27,9 @@ class MotorcycleTechTreeLevelDetailView extends UiViewBase_1.UiViewBase {
     this.lqe.SetCloseCallBack(this.xpt);
     this.lqe.SetTitleLocalText("MotorBike_TechTree_TechLevelDetail");
     this.lqe.SetHelpBtnActive(false);
-    this.lwf = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(1), this.sGe);
+    this.xDf = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(1), this.sGe);
     var e = this.OpenParam;
-    this.lwf.RefreshByData(e);
+    this.xDf.RefreshByData(e);
   }
   OnBeforeDestroy() {
     this.lqe.Destroy();

@@ -441,7 +441,7 @@ class BattleHeadStatePanel {
     return !!t?.Valid && t.CreatureData.GetEntityType() === Protocol_1.Aki.Protocol.kks.Proto_SceneItem;
   }
   Flh(t) {
-    return !!this.vlt(t) && !!(t = t.GetComponent(138))?.Valid && !!(t = t.GetProgressData()) && t.ProgressCtrlType === "ChargingDevice";
+    return !!this.vlt(t) && !!(t = t.GetComponent(140))?.Valid && !!(t = t.GetProgressData()) && t.ProgressCtrlType === "ChargingDevice";
   }
   plt(t) {
     t = EntitySystem_1.EntitySystem.Get(t).GetComponent(0);

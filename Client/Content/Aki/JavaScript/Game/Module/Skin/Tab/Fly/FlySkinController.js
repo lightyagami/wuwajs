@@ -17,28 +17,28 @@ class FlySkinController extends UiControllerBase_1.UiControllerBase {
   static OnAddEvents() {}
   static OnRemoveEvents() {}
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(16288, this.Bkc);
-    Net_1.Net.Register(23065, this.kkc);
-    Net_1.Net.Register(22850, this.mGc);
+    Net_1.Net.Register(21387, this.Bkc);
+    Net_1.Net.Register(18807, this.kkc);
+    Net_1.Net.Register(15000, this.mGc);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(16288);
-    Net_1.Net.UnRegister(23065);
-    Net_1.Net.UnRegister(22850);
+    Net_1.Net.UnRegister(21387);
+    Net_1.Net.UnRegister(18807);
+    Net_1.Net.UnRegister(15000);
   }
   static FlySkinWearRequest(t, o) {
     var e;
     if (ControllerHolder_1.ControllerHolder.SkinController.CheckCanWearSkinAndShowTip()) {
       (e = Protocol_1.Aki.Protocol.HDc.create()).Q6n = t;
       e.Z7n = o;
-      Net_1.Net.Call(29050, e, e => {
+      Net_1.Net.Call(26153, e, e => {
         if (e) {
           if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
             ModelManager_1.ModelManager.FlySkinModel.EquipFlySkin(t, o);
             EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnFlySkinEquipResponse, t, o);
             ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("FlySkinReplaceTip");
           } else {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17666);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18737);
           }
         }
       });
@@ -48,7 +48,7 @@ class FlySkinController extends UiControllerBase_1.UiControllerBase {
     var t;
     if (ControllerHolder_1.ControllerHolder.SkinController.CheckCanWearSkinAndShowTip()) {
       (t = Protocol_1.Aki.Protocol.WDc.create()).Z7n = e;
-      Net_1.Net.Call(26945, t, e => {
+      Net_1.Net.Call(21510, t, e => {
         if (e) {
           if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
             var t = e.zDc;
@@ -57,7 +57,7 @@ class FlySkinController extends UiControllerBase_1.UiControllerBase {
             }
             EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnFlySkinEquipToAllRoleResponse, t);
           } else {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19467);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21925);
           }
         }
       });
@@ -68,13 +68,13 @@ class FlySkinController extends UiControllerBase_1.UiControllerBase {
     if (ControllerHolder_1.ControllerHolder.SkinController.CheckCanWearSkinAndShowTip()) {
       (e = Protocol_1.Aki.Protocol.KDc.create()).Q6n = t;
       e.Z7n = o;
-      Net_1.Net.Call(23396, e, e => {
+      Net_1.Net.Call(18799, e, e => {
         if (e) {
           if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
             ModelManager_1.ModelManager.FlySkinModel.UnLoadRoleFlySkinBySkinId(t, o);
             EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnFlySkinUnLoadResponse, t, o);
           } else {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16027);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20770);
           }
         }
       });
@@ -84,7 +84,7 @@ class FlySkinController extends UiControllerBase_1.UiControllerBase {
     var e;
     if (ControllerHolder_1.ControllerHolder.SkinController.CheckCanWearSkinAndShowTip()) {
       (e = Protocol_1.Aki.Protocol.DNc.create())._Gc = o;
-      Net_1.Net.Call(19381, e, e => {
+      Net_1.Net.Call(28612, e, e => {
         if (e) {
           if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
             for (const t of e.FNc) {
@@ -92,7 +92,7 @@ class FlySkinController extends UiControllerBase_1.UiControllerBase {
             }
             EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnFlySkinAllUnLoadResponse, o);
           } else {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16027);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20770);
           }
         }
       });

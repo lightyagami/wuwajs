@@ -64,7 +64,7 @@ class BulletActionAfterInit extends BulletActionBase_1.BulletActionBase {
       o.Ljn = r.RandomPosOffset;
       o.Djn = r.RandomInitSpeedOffset;
       this.lra(o);
-      CombatMessage_1.CombatNet.Send(17591, n, o, r.PreContextId, r.ContextId);
+      CombatMessage_1.CombatNet.Send(18137, n, o, r.PreContextId, r.ContextId);
       if (BulletConstant_1.BulletConstant.OpenCreateLog) {
         if (i) {
           BulletLog_1.BulletLog.Debug(n, "创建本地子弹", ...BulletLog_1.BulletLog.ToPairs(r));

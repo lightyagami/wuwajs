@@ -50,12 +50,12 @@ class SceneGameplayPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondaryU
     this.rFo = undefined;
     this.nFo = false;
     this.h1d = false;
-    this.B0f = undefined;
+    this.zpf = undefined;
     this.mji = () => {
       HelpController_1.HelpController.OpenHelpById(HELP_ID);
     };
     this.XDu = () => {
-      if (this.cEf()) {
+      if (this.jbf()) {
         HelpController_1.HelpController.OpenHelpById(HELP_ID_VISION_SETTLEMENT);
       } else {
         HelpController_1.HelpController.OpenHelpById(HELP_ID_2);
@@ -101,9 +101,9 @@ class SceneGameplayPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondaryU
       this.AddChild(this.k2o);
       this.k2o = undefined;
     }
-    if (this.B0f) {
-      this.AddChild(this.B0f);
-      this.B0f = undefined;
+    if (this.zpf) {
+      this.AddChild(this.zpf);
+      this.zpf = undefined;
     }
     this.F2o = undefined;
     this.V2o = undefined;
@@ -142,7 +142,7 @@ class SceneGameplayPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondaryU
   SHe() {
     var e;
     var i;
-    var t = this.dEf();
+    var t = this.$bf();
     this.F2o = t ? this.u2o?.MarkConfig?.Reward ? ExchangeRewardById_1.configExchangeRewardById.GetConfig(this.u2o.MarkConfig.Reward) : undefined : this.Ymt.RewardId ? ExchangeRewardById_1.configExchangeRewardById.GetConfig(this.Ymt.RewardId) : undefined;
     this.V2o = this.Ymt.FirstRewardId ? ExchangeRewardById_1.configExchangeRewardById.GetConfig(this.Ymt.FirstRewardId) : undefined;
     var t = this.u2o.MarkConfigId;
@@ -183,7 +183,7 @@ class SceneGameplayPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondaryU
     this.rFo?.SetActive(false);
     var i;
     var t;
-    var r = this.dEf();
+    var r = this.$bf();
     if (r && (r = this.u2o?.MarkConfig?.MapId, i = this.u2o?.MarkConfig?.RelativeId, ModelManager_1.ModelManager.AdventureGuideModel.IsNightMareHaveConfig(r, i))) {
       ControllerHolder_1.ControllerHolder.AdventureGuideController.RequestLevelPlayVarAsync(r, i).then(() => {
         var e;
@@ -234,8 +234,8 @@ class SceneGameplayPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondaryU
       this.O2o = new SceneGameplayTipGrid_1.SceneGameplayTipGrid();
       this.O2o.Initialize(LguiUtil_1.LguiUtil.DuplicateActor(r, i));
       this.O2o.OnClickPreviewCall = this.aFo;
-      this.B0f = new SceneGameplayTipGrid_1.SceneGameplayTipGridMonster();
-      this.B0f.Initialize(LguiUtil_1.LguiUtil.DuplicateActor(r, i));
+      this.zpf = new SceneGameplayTipGrid_1.SceneGameplayTipGridMonster();
+      this.zpf.Initialize(LguiUtil_1.LguiUtil.DuplicateActor(r, i));
     }
     var t = ModelManager_1.ModelManager.WorldLevelModel.CurWorldLevel;
     this.k2o?.SetBtnPreviewVisible(false);
@@ -247,7 +247,7 @@ class SceneGameplayPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondaryU
       this.K2o(this.k2o, this.V2o, t, "FirstReward");
     }
     this.K2o(this.O2o, this.F2o, t, "ProbReward", e);
-    this.k0f();
+    this.Jpf();
   }
   K2o(e, r, a, i, s = false) {
     if (r) {
@@ -291,7 +291,7 @@ class SceneGameplayPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondaryU
         g.forEach(e => {
           t.delete(e);
         });
-      } else if (this.dEf()) {
+      } else if (this.$bf()) {
         t = ConfigManager_1.ConfigManager.AdventureModuleConfig.GetNightMareShowReward(r.RewardIdCalabash);
       }
       if (t) {
@@ -324,7 +324,7 @@ class SceneGameplayPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondaryU
     var t = this.Ymt.RefreshTime;
     if (t < i) {
       this.cG();
-    } else if (this.dEf() && !this.h1d) {
+    } else if (this.$bf() && !this.h1d) {
       this.cG();
     } else {
       t = t - i;
@@ -336,9 +336,9 @@ class SceneGameplayPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondaryU
       }
     }
   }
-  k0f() {
-    if (this.cEf()) {
-      this.B0f?.SetUiActive(true);
+  Jpf() {
+    if (this.jbf()) {
+      this.zpf?.SetUiActive(true);
       var e = this.Ymt?.Children ?? [];
       var i = new Map();
       for (const a of e) {
@@ -366,9 +366,9 @@ class SceneGameplayPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondaryU
         }
       }
       e = new Map(Array.from(i.entries()).sort((e, i) => i[0].Rarity - e[0].Rarity).map(([e, i]) => [e.ItemId, i]));
-      this.B0f?.Refresh(e, "GuaiWuJuLuo_MonInfo", true, false, false);
+      this.zpf?.Refresh(e, "GuaiWuJuLuo_MonInfo", true, false, false);
     } else {
-      this.B0f?.SetUiActive(false);
+      this.zpf?.SetUiActive(false);
     }
   }
   tGo() {
@@ -384,10 +384,10 @@ class SceneGameplayPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondaryU
       this.rFo?.SetActive(false);
     }
   }
-  dEf() {
+  $bf() {
     return this.u2o?.MarkConfig?.RelativeSubType === 9 || this.u2o?.MarkConfig?.RelativeSubType === 10;
   }
-  cEf() {
+  jbf() {
     return this.u2o?.MarkConfig?.RelativeSubType === 10;
   }
   OnRefreshPanel() {

@@ -49,11 +49,11 @@ class LockValue extends ExtraEffectBase_1.BuffEffect {
     }
   }
   OnCreated() {
-    this.OwnerEntity?.CheckGetComponent(181)?.AddStateAttributeLock(this.ActiveHandleId, this.AttributeId, this.Percent, this.Offset);
+    this.OwnerEntity?.CheckGetComponent(183)?.AddStateAttributeLock(this.ActiveHandleId, this.AttributeId, this.Percent, this.Offset);
   }
   OnExecute() {}
   OnRemoved() {
-    this.OwnerEntity?.CheckGetComponent(181)?.RemoveStateAttributeLock(this.ActiveHandleId, this.AttributeId);
+    this.OwnerEntity?.CheckGetComponent(183)?.RemoveStateAttributeLock(this.ActiveHandleId, this.AttributeId);
   }
   GetDebugEffectString() {
     return `锁定属性${this.AttributeId}为${this.Percent}% + ${this.Offset}`;
@@ -76,11 +76,11 @@ class LockUpperBound extends ExtraEffectBase_1.BuffEffect {
     }
   }
   OnCreated() {
-    this.OwnerEntity?.CheckGetComponent(181)?.AddIntervalLock(0, this.ActiveHandleId, this.AttributeId, this.Percent, this.Offset);
+    this.OwnerEntity?.CheckGetComponent(183)?.AddIntervalLock(0, this.ActiveHandleId, this.AttributeId, this.Percent, this.Offset);
   }
   OnExecute() {}
   OnRemoved() {
-    this.OwnerEntity?.CheckGetComponent(181)?.RemoveIntervalLock(0, this.ActiveHandleId, this.AttributeId);
+    this.OwnerEntity?.CheckGetComponent(183)?.RemoveIntervalLock(0, this.ActiveHandleId, this.AttributeId);
   }
   GetDebugEffectString() {
     return `锁定属性${this.AttributeId}的上限为${(this.Percent / 100).toFixed(1)}% + ${this.Offset}`;
@@ -103,11 +103,11 @@ class LockLowerBound extends ExtraEffectBase_1.BuffEffect {
     }
   }
   OnCreated() {
-    this.OwnerEntity?.CheckGetComponent(181)?.AddIntervalLock(1, this.ActiveHandleId, this.AttributeId, this.Percent, this.Offset);
+    this.OwnerEntity?.CheckGetComponent(183)?.AddIntervalLock(1, this.ActiveHandleId, this.AttributeId, this.Percent, this.Offset);
   }
   OnExecute() {}
   OnRemoved() {
-    this.OwnerEntity?.CheckGetComponent(181)?.RemoveIntervalLock(1, this.ActiveHandleId, this.AttributeId);
+    this.OwnerEntity?.CheckGetComponent(183)?.RemoveIntervalLock(1, this.ActiveHandleId, this.AttributeId);
   }
   GetDebugEffectString() {
     return `锁定属性${this.AttributeId}的下限为${(this.Percent / 100).toFixed(1)}% + ${this.Offset}`;
@@ -278,7 +278,7 @@ class AddBuffToVision extends ExtraEffectBase_1.BuffEffect {
         Log_1.Log.Warn("BuffItem", 35, "没有父Buff的上下文信息");
       }
     }
-    var s = t?.GetComponent(183);
+    var s = t?.GetComponent(185);
     if (s) {
       for (const i of this.BuffIds) {
         s.AddBuff(i, {
@@ -291,7 +291,7 @@ class AddBuffToVision extends ExtraEffectBase_1.BuffEffect {
   }
   OnExecute() {}
   OnRemoved() {
-    var t = PhantomUtil_1.PhantomUtil.GetSummonedEntity(this.OwnerEntity, this.SummonType)?.Entity?.GetComponent(183);
+    var t = PhantomUtil_1.PhantomUtil.GetSummonedEntity(this.OwnerEntity, this.SummonType)?.Entity?.GetComponent(185);
     if (t) {
       for (const e of this.BuffIds) {
         t.RemoveBuff(e, -1, `召唤者的buff${this.BuffId}移除`);
@@ -312,7 +312,7 @@ class ModifyToughReduce extends ExtraEffectBase_1.BuffEffect {
     }
   }
   OnCreated() {
-    var t = this.OwnerEntity?.CheckGetComponent(181);
+    var t = this.OwnerEntity?.CheckGetComponent(183);
     if (t) {
       this.ModifierHandle = t.AddModifier(CharacterAttributeTypes_1.EAttributeId.Proto_ToughReduce, {
         Type: -1,
@@ -322,7 +322,7 @@ class ModifyToughReduce extends ExtraEffectBase_1.BuffEffect {
   }
   OnExecute() {}
   OnRemoved() {
-    var t = this.OwnerEntity?.CheckGetComponent(181);
+    var t = this.OwnerEntity?.CheckGetComponent(183);
     if (t) {
       t.RemoveModifier(CharacterAttributeTypes_1.EAttributeId.Proto_ToughReduce, this.ModifierHandle);
     }
@@ -702,7 +702,7 @@ class SyncTimeScaleEffect extends ExtraEffectBase_1.BuffEffect {
     this.Group = undefined;
     this.fye = 0;
     this.T4u = false;
-    this.cPm = new Set();
+    this.kPm = new Set();
   }
   OnExecute() {}
   OnCreated() {
@@ -723,10 +723,10 @@ class SyncTimeScaleEffect extends ExtraEffectBase_1.BuffEffect {
   }
   OnRemoved() {
     if (this.Group && !this.T4u) {
-      for (const t of this.cPm) {
+      for (const t of this.kPm) {
         this.RemoveTimeScale(t, false);
       }
-      this.cPm.clear();
+      this.kPm.clear();
       this.Group.RemoveOwner(this.fye);
       if (this.Group.CanRelease()) {
         this.Group.Release();
@@ -738,7 +738,7 @@ class SyncTimeScaleEffect extends ExtraEffectBase_1.BuffEffect {
   SetTimeScale(t, e, s, i, r, h = false, f = false) {
     if (this.Group?.InstigatorTimeScaleComp?.Valid) {
       t = this.Group.InstigatorTimeScaleComp.SetTimeScale(t, e, s, i, r, h, f);
-      this.cPm.add(t);
+      this.kPm.add(t);
       return t;
     } else {
       return 0;
@@ -746,7 +746,7 @@ class SyncTimeScaleEffect extends ExtraEffectBase_1.BuffEffect {
   }
   RemoveTimeScale(t, e = true) {
     if (e) {
-      this.cPm.delete(t);
+      this.kPm.delete(t);
     }
     this.Group?.InstigatorTimeScaleComp?.RemoveTimeScale(t);
   }
@@ -765,7 +765,7 @@ class SyncTimescaleGroup {
         }
       }
     };
-    this.InstigatorTimeScaleComp = this.InstigatorHandle.Entity.GetComponent(188);
+    this.InstigatorTimeScaleComp = this.InstigatorHandle.Entity.GetComponent(190);
     EventSystem_1.EventSystem.AddWithTarget(this.InstigatorHandle.Entity, EventDefine_1.EEventName.CharBeHitTimeScale, this.OnInstigatorTimeScaleChanged);
   }
   Release() {
@@ -783,7 +783,7 @@ class SyncTimescaleGroup {
         Log_1.Log.Error("BuffItem", 20, "添加了多个Buff都有85号效果", ["BuffId", this.eHr], ["Instigator", this.InstigatorHandle.Id], ["Owner", t?.Id]);
       }
     } else {
-      e = t.GetComponent(188);
+      e = t.GetComponent(190);
       this.N7u.set(t.Id, e);
     }
   }
@@ -820,7 +820,7 @@ class SpecialEnergyModifier extends ExtraEffectBase_1.BuffEffect {
     }
   }
   static ApplyEffects(t, e, s, i) {
-    t = t?.GetComponent(183)?.BuffEffectManager;
+    t = t?.GetComponent(185)?.BuffEffectManager;
     if (!t) {
       return 0;
     }
@@ -868,12 +868,12 @@ class BindBuffToVehicleEffect extends ExtraEffectBase_1.BuffEffect {
     this.BuffIds = undefined;
     this.OnEnterVehicle = t => {
       if (t.IsDriver) {
-        this.JYf(t.VehicleEntity, "OnEnterVehicle");
+        this.ffg(t.VehicleEntity, "OnEnterVehicle");
       }
     };
     this.OnLeaveVehicle = t => {
       if (t.IsDriver) {
-        this.ZYf(t.VehicleEntity, "OnLeaveVehicle");
+        this.gfg(t.VehicleEntity, "OnLeaveVehicle");
       }
     };
   }
@@ -885,16 +885,16 @@ class BindBuffToVehicleEffect extends ExtraEffectBase_1.BuffEffect {
   OnCreated() {
     var t;
     if (this.CheckAuthority() && (EventSystem_1.EventSystem.AddWithTarget(this.ExactOwnerEntity, EventDefine_1.EEventName.OnEnterVehicle, this.OnEnterVehicle), EventSystem_1.EventSystem.AddWithTarget(this.ExactOwnerEntity, EventDefine_1.EEventName.OnLeaveVehicle, this.OnLeaveVehicle), t = this.ExactOwnerEntity.GetComponent(242)) && t.IsDriver) {
-      this.JYf(t.VehicleEntity, "OnCreated");
+      this.ffg(t.VehicleEntity, "OnCreated");
     }
   }
   OnRemoved() {
     var t;
     if (this.CheckAuthority() && (EventSystem_1.EventSystem.RemoveWithTarget(this.ExactOwnerEntity, EventDefine_1.EEventName.OnEnterVehicle, this.OnEnterVehicle), EventSystem_1.EventSystem.RemoveWithTarget(this.ExactOwnerEntity, EventDefine_1.EEventName.OnLeaveVehicle, this.OnLeaveVehicle), t = this.ExactOwnerEntity.GetComponent(242)) && t.IsDriver) {
-      this.ZYf(t.VehicleEntity, "OnRemoved");
+      this.gfg(t.VehicleEntity, "OnRemoved");
     }
   }
-  JYf(t, e, s) {
+  ffg(t, e, s) {
     var i = this.PendingBuff;
     if (t && i) {
       var r = t.GetComponent(257);
@@ -907,7 +907,7 @@ class BindBuffToVehicleEffect extends ExtraEffectBase_1.BuffEffect {
       CombatLog_1.CombatLog.Warn("Buff", this.OwnerEntity, "AddBuffToVehicleInvalid", ["buffId", this.BuffId], ["vehicleEntityValid", !!t], ["buffValid", !!i]);
     }
   }
-  ZYf(t, e, s) {
+  gfg(t, e, s) {
     var i = this.PendingBuff;
     if (t && i) {
       var r = t.GetComponent(257);
@@ -921,18 +921,18 @@ class BindBuffToVehicleEffect extends ExtraEffectBase_1.BuffEffect {
     }
   }
   OnStackDecreased(t, e, s) {
-    this.ezf(t, e);
+    this.Cfg(t, e);
   }
   OnStackIncreased(t, e, s) {
-    this.ezf(t, e);
+    this.Cfg(t, e);
   }
-  ezf(t, e) {
+  Cfg(t, e) {
     var s;
     if (this.CheckAuthority() && t !== e && (s = this.OwnerEntity?.GetComponent(242)) && s.IsDriver && (s = s.VehicleEntity)) {
       if (e < t) {
-        this.JYf(s, "OnStackIncreased", t - e);
+        this.ffg(s, "OnStackIncreased", t - e);
       } else {
-        this.ZYf(s, "OnStackDecreased", e - t);
+        this.gfg(s, "OnStackDecreased", e - t);
       }
     }
   }

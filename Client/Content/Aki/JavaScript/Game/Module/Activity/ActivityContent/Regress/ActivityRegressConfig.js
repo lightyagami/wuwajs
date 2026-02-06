@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.ActivityRegressConfig = undefined;
 const Log_1 = require("../../../../../Core/Common/Log");
 const ConditionGroupById_1 = require("../../../../../Core/Define/ConfigQuery/ConditionGroupById");
+const GachaRoleDevelopInsByDungeonDetection_1 = require("../../../../../Core/Define/ConfigQuery/GachaRoleDevelopInsByDungeonDetection");
 const GachaRoleDevelopInsById_1 = require("../../../../../Core/Define/ConfigQuery/GachaRoleDevelopInsById");
 const GachaRoleDevelopInsByRoleId_1 = require("../../../../../Core/Define/ConfigQuery/GachaRoleDevelopInsByRoleId");
 const RegressBaseByEntryType_1 = require("../../../../../Core/Define/ConfigQuery/RegressBaseByEntryType");
@@ -176,6 +177,9 @@ class ActivityRegressConfig extends ConfigBase_1.ConfigBase {
   }
   GetGachaRoleDevelopInsByRoleId(e) {
     return GachaRoleDevelopInsByRoleId_1.configGachaRoleDevelopInsByRoleId.GetConfigList(e);
+  }
+  GetGachaRoleDevelopInsByDungeonId(e) {
+    return GachaRoleDevelopInsByDungeonDetection_1.configGachaRoleDevelopInsByDungeonDetection.GetConfig(e);
   }
   GetTrialRoleAll() {
     return RegressTrialRoleAll_1.configRegressTrialRoleAll.GetConfigList();

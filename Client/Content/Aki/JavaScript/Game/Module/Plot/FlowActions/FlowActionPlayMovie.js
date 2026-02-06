@@ -12,12 +12,23 @@ class FlowActionPlayMovie extends FlowActionBase_1.FlowActionBase {
     var e = this.ActionInfo.Params;
     var o = ControllerHolder_1.ControllerHolder.FlowController.GetNextAction()?.Name === "PlayMovie";
     VideoLauncher_1.VideoLauncher.ShowVideoCg(e.VideoName, () => {
+      VideoLauncher_1.VideoLauncher.SetupFrameEvent(undefined);
       ControllerHolder_1.ControllerHolder.FlowController.EnableSkip(false);
       this.FinishExecute(true);
-    }, e.BackgroundFade, o, true, e.ProgramSpecialConfig, e.Mp4FadeOutTime, e.BlackBorderFadeOutTime);
+    }, {
+      BackgroundFade: e.BackgroundFade,
+      RemainViewWhenEnd: o,
+      InPlot: true,
+      ProgramSpecialConfig: e.ProgramSpecialConfig,
+      Mp4FadeOutTime: e.Mp4FadeOutTime,
+      BlackBorderFadeOutTime: e.BlackBorderFadeOutTime,
+      Mp4BlendAnim: e.Mp4BlendAnim
+    });
+    VideoLauncher_1.VideoLauncher.SetupFrameEvent(e.Mp4FrameEvents);
   }
   OnInterruptExecute() {
     VideoLauncher_1.VideoLauncher.CloseVideoCg();
+    VideoLauncher_1.VideoLauncher.SetupFrameEvent(undefined);
     this.FinishExecute(true);
   }
 }

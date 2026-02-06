@@ -32,11 +32,11 @@ class MotorcycleRailMoveView extends UiTickViewBase_1.UiTickViewBase {
         }
       }
     };
-    this.CRm = (e, t) => {
+    this.wRm = (e, t) => {
       this.det[0].SetCustomSkillItemEnable(t);
       this.det[0].SetCustomDynamicEffectId(t ? EFFECT_ID : 0);
     };
-    this.pRm = (e, t) => {
+    this.LRm = (e, t) => {
       this.det[1].SetCustomSkillItemEnable(t);
       this.det[1].SetCustomDynamicEffectId(t ? EFFECT_ID : 0);
     };
@@ -102,9 +102,9 @@ class MotorcycleRailMoveView extends UiTickViewBase_1.UiTickViewBase {
   }
   c$e() {
     var e = ModelManager_1.ModelManager.CreatureModel.GetPlayerId();
-    if (ControllerHolder_1.ControllerHolder.FormationDataController.IsPlayerExist(e) && (e = ControllerHolder_1.ControllerHolder.FormationDataController.GetPlayerEntity(e)?.GetComponent(210))) {
-      this.mdt(e, switchLeftTag, this.CRm, true);
-      this.mdt(e, switchRightTag, this.pRm, true);
+    if (ControllerHolder_1.ControllerHolder.FormationDataController.IsPlayerExist(e) && (e = ControllerHolder_1.ControllerHolder.FormationDataController.GetPlayerEntity(e)?.GetComponent(212))) {
+      this.mdt(e, switchLeftTag, this.wRm, true);
+      this.mdt(e, switchRightTag, this.LRm, true);
     }
   }
   m$e() {

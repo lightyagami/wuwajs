@@ -25,8 +25,8 @@ class GameplayCueMagnitude extends GameplayCueBase_1.GameplayCueBase {
     this.Value = 0;
     this.Z$o = 0;
     this.ajc = false;
-    this.LMf = 0;
-    this.kkf = false;
+    this.$Tf = 0;
+    this.w3f = false;
     this._yo = (t, i, s) => {
       if (t === this.z$o) {
         this.rne = i;
@@ -55,8 +55,8 @@ class GameplayCueMagnitude extends GameplayCueBase_1.GameplayCueBase {
       if (!MathUtils_1.MathUtils.IsNearlyEqual(this.Value, CameraController_1.CameraController.CameraRotator.Pitch)) {
         this.eYo(CameraController_1.CameraController.CameraRotator.Pitch, false);
       }
-    } else if (this.kkf) {
-      this.eYo(Time_1.Time.FlowTime - this.LMf, false);
+    } else if (this.w3f) {
+      this.eYo(Time_1.Time.FlowTime - this.$Tf, false);
     }
   }
   OnCreate() {
@@ -122,8 +122,8 @@ class GameplayCueMagnitude extends GameplayCueBase_1.GameplayCueBase {
         t = CameraController_1.CameraController.CameraRotator.Pitch;
         break;
       case 6:
-        this.LMf = Time_1.Time.FlowTime;
-        this.kkf = true;
+        this.$Tf = Time_1.Time.FlowTime;
+        this.w3f = true;
         t = 0;
         break;
       default:
@@ -156,7 +156,7 @@ class GameplayCueMagnitude extends GameplayCueBase_1.GameplayCueBase {
           this.ajc = false;
           break;
         case 6:
-          this.kkf = false;
+          this.w3f = false;
       }
     }
   }
@@ -197,10 +197,11 @@ class GameplayCueMagnitude extends GameplayCueBase_1.GameplayCueBase {
     }
   }
   iqi() {
-    this.$te = this.EntityHandle.Entity.GetComponent(181);
-    this.m1t = this.EntityHandle.Entity.GetComponent(220);
-    this.Xte = this.EntityHandle.Entity.GetComponent(215);
+    this.$te = this.EntityHandle.Entity.GetComponent(183);
+    this.m1t = this.EntityHandle.Entity.GetComponent(222);
+    this.Xte = this.EntityHandle.Entity.GetComponent(217);
   }
+  SyncMagnitude(t) {}
 }
 exports.GameplayCueMagnitude = GameplayCueMagnitude;
 //# sourceMappingURL=GameplayCueMagnitude.js.map

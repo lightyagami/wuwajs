@@ -39,7 +39,7 @@ let VehicleHitComponent = class VehicleHitComponent extends BaseHitComponent_1.B
     this.Hte = this.Entity.GetComponent(247);
     this.Qr_ = this.Entity.GetComponent(19);
     this.ph_ = this.Entity.GetComponent(250);
-    this.vHr = this.Entity.GetComponent(131);
+    this.vHr = this.Entity.GetComponent(133);
     var t = this.Hte?.Actor.CharRenderingComponent;
     if (t) {
       this.hXs = new BaseHitComponent_1.OnHitMaterialAction(t, this.vHr);
@@ -83,7 +83,7 @@ let VehicleHitComponent = class VehicleHitComponent extends BaseHitComponent_1.B
         if (this.hXs.ComparePriority(e, s)) {
           this.hXs.Stop(true);
           let t = undefined;
-          o = o?.GetComponent(3);
+          o = o?.GetComponent(1);
           if (o) {
             t = o?.GetReplaceEffect(i);
           }
@@ -93,5 +93,5 @@ let VehicleHitComponent = class VehicleHitComponent extends BaseHitComponent_1.B
     }
   }
 };
-VehicleHitComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(299)], VehicleHitComponent);
+VehicleHitComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(301)], VehicleHitComponent);
 exports.VehicleHitComponent = VehicleHitComponent; //# sourceMappingURL=VehicleHitComponent.js.map

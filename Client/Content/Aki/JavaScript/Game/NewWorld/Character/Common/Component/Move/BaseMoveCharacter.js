@@ -76,7 +76,7 @@ class BaseMoveCharacter {
       i.P5n = this.Hte.ActorLocationProxy;
       i.g8n = undefined;
       t.iVn = [i];
-      Net_1.Net.Send(27928, t);
+      Net_1.Net.Send(27349, t);
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("AI", 42, "向服务器同步NPC位置", ["EntityId", this.Jh.Id], ["PbDataId", this.wDe], ["X", i.P5n.X], ["Y", i.P5n.Y], ["Z", i.P5n.Z]);
       }
@@ -95,7 +95,7 @@ class BaseMoveCharacter {
   Init(t) {
     this.Jh = t;
     this.Hte = this.Jh.GetComponent(3);
-    this.rJo = this.Jh.GetComponent(109);
+    this.rJo = this.Jh.GetComponent(111);
     this.wDe = this.Hte.CreatureData.GetPbDataId();
     this.fJo = [];
     this.Ero = false;
@@ -364,19 +364,19 @@ class BaseMoveCharacter {
     }
   }
   BJo() {
-    var t = this.Hte.Entity.GetComponent(71);
+    var t = this.Hte.Entity.GetComponent(73);
     var i = t.GetCurrentMoveSample();
     i.P5n = this.Hte.ActorLocationProxy;
     t.PendingMoveInfos.push(i);
     var e = Protocol_1.Aki.Protocol.Yus.create();
     e.uhh = ModelManager_1.ModelManager.GameModeModel.IsMulti ? ModelManager_1.ModelManager.OnlineModel.OwnerId : ModelManager_1.ModelManager.CreatureModel.GetPlayerId();
     e.WRs.push(t.CollectPendingMoveInfos());
-    Net_1.Net.Send(18891, e);
+    Net_1.Net.Send(16626, e);
     if (Info_1.Info.IsBuildDevelopmentOrDebug) {
       t = {
         scene_id: ModelManager_1.ModelManager.CreatureModel.GetSceneId(),
         instance_id: ModelManager_1.ModelManager.CreatureModel.GetInstanceId(),
-        msg_id: 18891,
+        msg_id: 16626,
         immediately: true,
         sub_count: e.WRs.length,
         is_multi: ModelManager_1.ModelManager.GameModeModel.IsMulti,
@@ -397,7 +397,7 @@ class BaseMoveCharacter {
     t.g8n = this.Hte.ActorRotationProxy;
     var i = Protocol_1.Aki.Protocol.ecs.create();
     i.iVn = [t];
-    Net_1.Net.Send(27928, i);
+    Net_1.Net.Send(27349, i);
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("AI", 42, "向服务器同步NPC位置", ["EntityId", this.Jh.Id], ["PbDataId", this.wDe], ["X", t.P5n.X], ["Y", t.P5n.Y], ["Z", t.P5n.Z]);
     }
@@ -405,7 +405,7 @@ class BaseMoveCharacter {
   yJo() {
     var t;
     var i;
-    if (this.MJo.TargetPoint && (i = this.Jh.GetComponent(46))) {
+    if (this.MJo.TargetPoint && (i = this.Jh.GetComponent(48))) {
       t = this.MJo.TargetPoint.MoveSpeed;
       if (this.sJo) {
         this.Hte?.Actor.KuroSetMovementMode({
@@ -429,8 +429,8 @@ class BaseMoveCharacter {
     }
   }
   Iac(t) {
-    if (this.Hte?.IsRoleAndCtrlByMe && (0, RegisterComponent_1.isComponentInstance)(this.rJo, 184)) {
-      this.rJo.MarkWalkOrRun(t === CharacterUnifiedStateTypes_1.ECharMoveState.Walk);
+    if (this.Hte?.IsRoleAndCtrlByMe && (0, RegisterComponent_1.isComponentInstance)(this.rJo, 186)) {
+      this.rJo.MarkWalkOrRun(t === CharacterUnifiedStateTypes_1.ECharMoveState.Walk, false);
       this.Eac = t === CharacterUnifiedStateTypes_1.ECharMoveState.Walk;
     }
   }

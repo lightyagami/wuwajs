@@ -10,12 +10,12 @@ const ModelManager_1 = require("../../../Manager/ModelManager");
 class MotorSkinData {
   constructor(e) {
     this.ItemId = undefined;
-    this.oFf = undefined;
+    this.k7f = undefined;
     this.ItemId = e;
-    this.oFf = ConfigManager_1.ConfigManager.SkinConfig.GetMotorSkinShowConfig(this.ItemId);
+    this.k7f = ConfigManager_1.ConfigManager.SkinConfig.GetMotorSkinShowConfig(this.ItemId);
   }
   GetName() {
-    return this.oFf?.Name ?? "";
+    return this.k7f?.Name ?? "";
   }
   GetItemId() {
     return this.ItemId;
@@ -27,10 +27,10 @@ class MotorSkinData {
     return 1;
   }
   GetMotorSkinShow() {
-    return this.oFf;
+    return this.k7f;
   }
   GetPreviewTextureInPayShop() {
-    return this.oFf?.Icon ?? "";
+    return this.k7f?.Icon ?? "";
   }
   GetHasNewFlag() {
     return ModelManager_1.ModelManager.NewFlagModel.HasNewFlag(LocalStorageDefine_1.ELocalStoragePlayerKey.RoleSkinRedDot, this.GetItemId());

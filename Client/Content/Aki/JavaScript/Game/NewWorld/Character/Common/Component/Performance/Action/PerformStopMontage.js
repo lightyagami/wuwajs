@@ -7,7 +7,7 @@ exports.PerformStopMontage = undefined;
 const PerformActionBase_1 = require("./PerformActionBase");
 class PerformStopMontage extends PerformActionBase_1.PerformActionBase {
   OnExecute() {
-    var e = this.PerformComp.Entity.GetComponent(45);
+    var e = this.PerformComp.Entity.GetComponent(47);
     if (e) {
       e.MontageManager.StopMontage(this.Param);
     }

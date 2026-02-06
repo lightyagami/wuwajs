@@ -69,7 +69,7 @@ class AiStateMachineCondition {
     t.z4n = this.Transition.To;
     t.t5n = this.Index;
     t.e5n = this.Result;
-    CombatMessage_1.CombatNet.Send(22264, this.Node.Entity, t);
+    CombatMessage_1.CombatNet.Send(22954, this.Node.Entity, t);
   }
   OnTick() {}
   Clear() {

@@ -13,7 +13,7 @@ class WheelTowerRoleGridItem extends LoopScrollMediumItemGrid_1.LoopScrollMedium
   constructor() {
     super(...arguments);
     this.dFe = 0;
-    this.gtf = undefined;
+    this.Erf = undefined;
   }
   OnStart() {
     this.BindOnCanExecuteChange(() => false);
@@ -64,10 +64,10 @@ class WheelTowerRoleGridItem extends LoopScrollMediumItemGrid_1.LoopScrollMedium
     }
   }
   SetToggleClickCallback(e) {
-    this.gtf = e;
+    this.Erf = e;
   }
   OnExtendToggleClicked() {
-    this.gtf?.(this.dFe);
+    this.Erf?.(this.dFe);
   }
 }
 exports.WheelTowerRoleGridItem = WheelTowerRoleGridItem;

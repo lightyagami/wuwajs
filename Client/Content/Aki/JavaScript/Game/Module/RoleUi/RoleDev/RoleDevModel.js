@@ -5,17 +5,35 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.RoleDevModel = undefined;
 const ModelBase_1 = require("../../../../Core/Framework/ModelBase");
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
 class RoleDevModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
-    this.HEd = {
-      DevPropsList: []
-    };
     this.byd = [];
     this.G7d = 0;
+    this.yTg = "";
   }
-  InitRoleDevelopConfigData(e) {
-    this.HEd = e;
+  get Version() {
+    return this.yTg;
+  }
+  set Version(e) {
+    this.yTg = e;
+  }
+  UpdateRoleDevConfig(e) {
+    var t = e.omd;
+    if (t && t.length > 0) {
+      ConfigManager_1.ConfigManager.RoleDevConfig.UpdateDevProsListConfig(t);
+    }
+    if (e.RFd) {
+      this.UpdateDevTargetRoleId(e.RFd);
+    }
+    var t = e.TIg;
+    if (t && t.length > 0) {
+      ConfigManager_1.ConfigManager.RoleDevConfig.UpdateDevPropsProjectConfig(t);
+    }
+    if (e.K7n) {
+      this.yTg = e.K7n;
+    }
   }
   UpdateDevTargetRoleId(e) {
     this.G7d = e;
@@ -23,17 +41,11 @@ class RoleDevModel extends ModelBase_1.ModelBase {
   get DevTargetRoleId() {
     return this.G7d;
   }
-  get RoleDevelopConfigData() {
-    return this.HEd;
-  }
-  get DevPropsList() {
-    return this.HEd.DevPropsList;
-  }
   GetRoleDevPropsConfig(t) {
-    return this.DevPropsList.find(e => e.Id === t);
+    return ConfigManager_1.ConfigManager.RoleDevConfig.GetAllRoleDevProsListConfig().find(e => e.Id === t);
   }
   get IsConfigDataInitialized() {
-    return this.DevPropsList.length > 0;
+    return ConfigManager_1.ConfigManager.RoleDevConfig.GetAllRoleDevProsListConfig().length > 0;
   }
   get HotRoleDataList() {
     return this.byd;

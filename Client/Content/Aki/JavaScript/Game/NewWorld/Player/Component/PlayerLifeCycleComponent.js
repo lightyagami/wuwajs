@@ -61,5 +61,5 @@ let PlayerLifeCycleComponent = class PlayerLifeCycleComponent extends EntityComp
     return true;
   }
 };
-PlayerLifeCycleComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(211)], PlayerLifeCycleComponent);
+PlayerLifeCycleComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(213)], PlayerLifeCycleComponent);
 exports.PlayerLifeCycleComponent = PlayerLifeCycleComponent; //# sourceMappingURL=PlayerLifeCycleComponent.js.map

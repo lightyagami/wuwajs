@@ -41,7 +41,7 @@ class SkillButtonUiModel extends ModelBase_1.ModelBase {
   get GamepadData() {
     if (!this.Feh) {
       if (this.gU && !Info_1.Info.IsInTouch()) {
-        this.csf();
+        this.Uhf();
       }
     }
     return this.Feh;
@@ -55,12 +55,13 @@ class SkillButtonUiModel extends ModelBase_1.ModelBase {
       this.SkillPriorityButtonConfigMap.set(e.ButtonType, e);
     }
     if (!Info_1.Info.IsInTouch()) {
-      this.csf();
+      this.Uhf();
     }
     var t = Info_1.Info.OperationType === 2;
     var i = ConfigManager_1.ConfigManager.SkillButtonConfig.GetSkillIndexConfig(0);
     this.DefaultSkillButtonIndexData = new SkillButtonIndexData_1.SkillButtonIndexData();
     this.DefaultSkillButtonIndexData.UpdateSkillButtonIndexConfig(i, t);
+    this.DefaultSkillButtonIndexData.InitMotorPadSkillButtonIndexConfig();
     this.OtherSkillButtonIndexData = new SkillButtonIndexData_1.SkillButtonIndexData();
     this.CurSkillButtonIndexData = this.DefaultSkillButtonIndexData;
     return this.gU = true;
@@ -80,7 +81,7 @@ class SkillButtonUiModel extends ModelBase_1.ModelBase {
   OnLeaveLevel() {
     return true;
   }
-  csf() {
+  Uhf() {
     this.ChangeGamepadData(0, false);
   }
   ChangeGamepadData(t, i = 0) {
@@ -216,6 +217,7 @@ class SkillButtonUiModel extends ModelBase_1.ModelBase {
       }
     }
     this.CurSkillButtonIndexData.RefreshSkillButtonIndex(i);
+    this.CurSkillButtonIndexData.RefreshMotorPadSkillButtonIndex(i, ModelManager_1.ModelManager.BattleUiModel.MotorcycleData.GetIsRoundJoystick());
     this.Feh?.RefreshSkillButtonData(e);
     this.uIo.RefreshSkillButtonData(e);
   }
@@ -240,11 +242,29 @@ class SkillButtonUiModel extends ModelBase_1.ModelBase {
       }
     }
   }
+  RefreshMotorPadSkillButtonIndexOnJoystickChange(t) {
+    var i = this.uIo?.EntityHandle;
+    if (i) {
+      this.CurSkillButtonIndexData?.RefreshMotorPadSkillButtonIndex(i, t);
+    }
+    this.uIo?.MarkMotorPadSkillIndexChanged();
+  }
   RefreshSkillButtonIndexOnOperationTypeChanged() {
     var t = Info_1.Info.OperationType === 2;
     this.CurSkillButtonIndexData.UpdateSkillButtonIndexConfig(this.CurSkillButtonIndexData.ButtonIndexConfig, t);
     if (this.DefaultSkillButtonIndexData !== this.uIo) {
       this.DefaultSkillButtonIndexData.UpdateSkillButtonIndexConfig(this.DefaultSkillButtonIndexData.ButtonIndexConfig, t);
+    }
+  }
+  GetMotorPadSkillButtonIndexByButton(t) {
+    return this.GetMotorPadButtonTypeList().indexOf(t);
+  }
+  GetMotorPadButtonTypeList() {
+    return this.CurSkillButtonIndexData?.MotorPadButtonTypeList ?? [];
+  }
+  RefreshMotorPadSkillButtonIndex(t, i) {
+    if (t.Id === this.CurSkillButtonIndexData?.ButtonIndexConfigId) {
+      this.CurSkillButtonIndexData.RefreshMotorPadSkillButtonIndex(i, this.CurSkillButtonIndexData.IsRoundJoystick);
     }
   }
   ExecuteMultiSkillIdChanged(t, i, e) {
@@ -365,6 +385,11 @@ class SkillButtonUiModel extends ModelBase_1.ModelBase {
   }
   GetGamepadDataByType(t) {
     return this.GamepadDataMap.get(t);
+  }
+  OnInputControllerChange(t, i) {
+    for (const e of this._Io.values()) {
+      e.OnInputControllerChange(t, i);
+    }
   }
 }
 exports.SkillButtonUiModel = SkillButtonUiModel;

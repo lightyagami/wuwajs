@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.VisionIntensifyView = undefined;
+exports.VisionIntensifyViewPassData = exports.VisionIntensifyView = undefined;
 const UE = require("ue");
 const Log_1 = require("../../../../../Core/Common/Log");
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
@@ -31,6 +31,7 @@ class VisionIntensifyView extends UiViewBase_1.UiViewBase {
     this.TabViewComponent = undefined;
     this.yvt = [];
     this.aji = 0;
+    this.ko_ = 0;
     this.PTt = [];
     this.I6e = 0;
     this.lji = e => {
@@ -55,13 +56,13 @@ class VisionIntensifyView extends UiViewBase_1.UiViewBase {
       var i = this.yvt[e];
       var t = i.ChildViewName;
       var n = this.TabComponent.GetTabItemByIndex(e);
-      var o = this.TabViewComponent.GetCurrentTabView();
-      if (o) {
-        o.HideUiTabView(false);
+      var s = this.TabViewComponent.GetCurrentTabView();
+      if (s) {
+        s.HideUiTabView(false);
       }
       this.SetCurrencyItemList(t);
-      var o = this.CreateExtraParams(t);
-      this.TabViewComponent.ToggleCallBack(i, t, n, o);
+      var s = this.CreateExtraParams(t);
+      this.TabViewComponent.ToggleCallBack(i, t, n, s);
       this.TabComponent.SetHelpButtonCallBack(this.mji);
       this.iId(t);
       this.I6e = e;
@@ -122,8 +123,8 @@ class VisionIntensifyView extends UiViewBase_1.UiViewBase {
       case "VisionRefineTabView":
         if (ModelManager_1.ModelManager.FunctionModel.IsOpen(e.FunctionId)) {
           return {
-            IsUnlocked: t = ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomBattleData(this.aji).GetVisionIfCanRefine(),
-            Message: t ? undefined : "Text_PhantomRefineConditionUnfit_Text"
+            IsUnlocked: true,
+            Message: undefined
           };
         } else {
           return {
@@ -163,25 +164,42 @@ class VisionIntensifyView extends UiViewBase_1.UiViewBase {
   }
   CreateExtraParams(e) {
     let i = undefined;
-    return i = e === "VisionRefineTabView" ? {
-      ViewState: 2,
-      UniqueId: this.aji,
-      ActiveCaptionItem: false,
-      SlotInteractive: false,
-      ResultShowTips: false,
-      IsSingleMode: true
-    } : this.aji;
+    switch (e) {
+      case "VisionRefineTabView":
+        {
+          var t = ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomBattleData(this.aji);
+          let e = 0;
+          if (!t || !!t.GetVisionIfCanRefine(1)) {
+            e = 1;
+          }
+          t = ModelManager_1.ModelManager.VisionRecommendModel.GetRoleCostAttrRecommendInfo(this.ko_, t?.GetCost() ?? 0)?.GetSubAttrRecommendInfo();
+          t = {
+            ViewState: 2,
+            RefineType: e,
+            UniqueId: this.aji,
+            ActiveCaptionItem: false,
+            SlotInteractive: false,
+            ResultShowTips: false,
+            IsSingleMode: true,
+            CurrencyChangeCallback: e => {
+              this.TabComponent.SetCurrencyItemList(e);
+            },
+            RecommendRefineSubList: t
+          };
+          i = t;
+          break;
+        }
+      default:
+        i = this.aji;
+    }
+    return i;
   }
   SetCurrencyItemList(e) {
     this.PTt.length = 0;
-    if (e === "VisionRefineTabView") {
-      ModelManager_1.ModelManager.PhantomBattleModel.GetVisionRefineMaterialCost(this.aji)?.forEach((e, i) => {
-        this.PTt.push(i);
-      });
-    } else {
+    if (e !== "VisionRefineTabView") {
       this.PTt.push(ItemDefines_1.EItemId.Gold);
+      this.TabComponent.SetCurrencyItemList(this.PTt);
     }
-    this.TabComponent.SetCurrencyItemList(this.PTt);
   }
   OnHandleLoadScene() {
     var e = this.TabViewComponent.GetCurrentTabViewName();
@@ -251,7 +269,9 @@ class VisionIntensifyView extends UiViewBase_1.UiViewBase {
     }
   }
   OnBeforeCreate() {
-    this.aji = this.OpenParam;
+    var e = this.OpenParam;
+    this.aji = e.UniqueId;
+    this.ko_ = e.RoleId;
   }
   OnBeforeDestroy() {
     this.TabViewComponent.DestroyTabViewComponent();
@@ -273,4 +293,12 @@ class VisionIntensifyView extends UiViewBase_1.UiViewBase {
   }
 }
 exports.VisionIntensifyView = VisionIntensifyView;
+class VisionIntensifyViewPassData {
+  constructor() {
+    this.UniqueId = 0;
+    this.Cost = 0;
+    this.RoleId = 0;
+  }
+}
+exports.VisionIntensifyViewPassData = VisionIntensifyViewPassData;
 //# sourceMappingURL=VisionIntensifyView.js.map

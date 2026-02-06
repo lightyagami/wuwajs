@@ -15,7 +15,7 @@ class PayShopTabRedDot extends RedDotBase_1.RedDotBase {
     return false;
   }
   OnGetEvents() {
-    return [EventDefine_1.EEventName.PayShopGoodsBuy, EventDefine_1.EEventName.GoodsRefreshDiscountTime, EventDefine_1.EEventName.SwitchPayShopView, EventDefine_1.EEventName.RefreshPayShop, EventDefine_1.EEventName.RefreshGoods, EventDefine_1.EEventName.RefreshGoodsList, EventDefine_1.EEventName.UnLockGoods, EventDefine_1.EEventName.RefreshPayShopTabRedDot];
+    return [EventDefine_1.EEventName.PayShopGoodsBuy, EventDefine_1.EEventName.GoodsRefreshDiscountTime, EventDefine_1.EEventName.SwitchPayShopView, EventDefine_1.EEventName.RefreshPayShop, EventDefine_1.EEventName.RefreshGoods, EventDefine_1.EEventName.RefreshGoodsList, EventDefine_1.EEventName.UnLockGoods, EventDefine_1.EEventName.RefreshPayShopTabRedDot, EventDefine_1.EEventName.ReceiveWeekCardDataEvent];
   }
   OnCheck(e) {
     var n = ModelManager_1.ModelManager.PayShopModel.GetCurrentPayShopId();

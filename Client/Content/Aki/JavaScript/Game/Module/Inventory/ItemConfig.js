@@ -8,6 +8,7 @@ const ModelUtil_1 = require("../../../Core/Utils/ModelUtil");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
 class ItemConfig {
   constructor() {
+    this.Id = 0;
     this.ItemDataType = 0;
     this.ItemType = undefined;
     this.MainTypeId = 1;
@@ -30,7 +31,8 @@ class ItemConfig {
     this.ItemBuffType = 0;
     this.ShowTypes = [];
   }
-  Refresh(i, s) {
+  Refresh(i, s, t) {
+    this.Id = t;
     this.Icon = i.Icon;
     this.QualityId = i.QualityId;
     this.AttributesDescription = i.AttributesDescription;
@@ -92,16 +94,28 @@ class ItemConfig {
         this.IBd(i);
         break;
       case 20:
-        this.MVm(i);
+        this.N6m(i);
+        break;
+      case 25:
+        this.X8g(i);
         break;
       case 21:
-        this.Ikf(i);
+        this.v3f(i);
+        break;
+      case 26:
+        this.Y8g(i);
+        break;
+      case 27:
+        this.J8g(i);
         break;
       case 22:
-        this.jVf(i);
+        this.KXf(i);
         break;
       case 23:
-        this.$Vf(i);
+        this.XXf(i);
+        break;
+      case 24:
+        this.M1g(i);
     }
   }
   Cmi(i) {
@@ -431,7 +445,7 @@ class ItemConfig {
     this.ShowInBag = i.ShowInBag;
     this.ObtainedShowDescription = i.ObtainedShowDescription;
   }
-  MVm(i) {
+  N6m(i) {
     this.ItemDataType = 20;
     this.ItemType = 60016;
     this.MainTypeId = 1;
@@ -449,7 +463,21 @@ class ItemConfig {
     this.IconSmall = i.IconSmall;
     this.Mesh = undefined;
   }
-  Ikf(i) {
+  X8g(i) {
+    this.ItemDataType = 25;
+    this.ItemType = 32;
+    this.MainTypeId = 1;
+    this.Name = i.Title;
+    this.TypeDescription = i.TypeDescription;
+    this.Icon = i.Icon;
+    this.IconMiddle = i.IconMiddle;
+    this.IconSmall = i.IconSmall;
+    this.ItemAccess = i.ItemAccess;
+    this.ShowInBag = i.ShowInBag;
+    this.ObtainedShowDescription = i.ObtainedShowDescription;
+    this.Mesh = undefined;
+  }
+  v3f(i) {
     this.ItemDataType = 21;
     this.ItemType = 30;
     this.MainTypeId = 1;
@@ -463,7 +491,35 @@ class ItemConfig {
     this.ObtainedShowDescription = i.ObtainedShowDescription;
     this.Mesh = undefined;
   }
-  jVf(i) {
+  Y8g(i) {
+    this.ItemDataType = 26;
+    this.ItemType = 31;
+    this.MainTypeId = 1;
+    this.Name = i.Title;
+    this.TypeDescription = i.TypeDescription;
+    this.Icon = i.Icon;
+    this.IconMiddle = i.IconMiddle;
+    this.IconSmall = i.IconSmall;
+    this.ItemAccess = i.ItemAccess;
+    this.ShowInBag = i.ShowInBag;
+    this.ObtainedShowDescription = i.ObtainedShowDescription;
+    this.Mesh = undefined;
+  }
+  J8g(i) {
+    this.ItemDataType = 27;
+    this.ItemType = 33;
+    this.MainTypeId = 1;
+    this.Name = i.Name;
+    this.TypeDescription = i.TypeDescription;
+    this.Icon = i.Icon;
+    this.IconMiddle = i.IconMiddle;
+    this.IconSmall = i.IconSmall;
+    this.ItemAccess = i.ItemAccess;
+    this.ShowInBag = i.ShowInBag;
+    this.ObtainedShowDescription = i.ObtainedShowDescription;
+    this.Mesh = undefined;
+  }
+  KXf(i) {
     this.ItemDataType = 22;
     this.ItemType = 60017;
     this.MainTypeId = 1;
@@ -481,7 +537,7 @@ class ItemConfig {
     this.ShowInBag = true;
     this.ObtainedShowDescription = "";
   }
-  $Vf(i) {
+  XXf(i) {
     this.ItemDataType = 23;
     this.ItemType = 60018;
     this.MainTypeId = 1;
@@ -498,6 +554,20 @@ class ItemConfig {
     this.RedDotDisableRule = 0;
     this.ShowInBag = true;
     this.ObtainedShowDescription = "";
+  }
+  M1g(i) {
+    this.ItemDataType = 24;
+    this.ItemType = 60019;
+    this.MainTypeId = 1;
+    this.Name = i.Name;
+    this.Icon = i.Icon;
+    this.IconMiddle = i.IconMiddle;
+    this.IconSmall = i.Icon;
+    this.Mesh = undefined;
+    this.Parameters.clear();
+    this.SortIndex = 0;
+    this.ItemBuffType = 0;
+    this.ShowInBag = false;
   }
 }
 exports.ItemConfig = ItemConfig;

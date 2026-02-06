@@ -15,6 +15,7 @@ const CalabashLevelByLevel_1 = require("../../../Core/Define/ConfigQuery/Calabas
 const ConditionGroupById_1 = require("../../../Core/Define/ConfigQuery/ConditionGroupById");
 const MonsterInfoById_1 = require("../../../Core/Define/ConfigQuery/MonsterInfoById");
 const MultiTextLang_1 = require("../../../Core/Define/ConfigQuery/MultiTextLang");
+const PhantomDirectRefiningAll_1 = require("../../../Core/Define/ConfigQuery/PhantomDirectRefiningAll");
 const ConfigBase_1 = require("../../../Core/Framework/ConfigBase");
 class CalabashConfig extends ConfigBase_1.ConfigBase {
   GetCalabashConfigByLevel(e) {
@@ -93,6 +94,9 @@ class CalabashConfig extends ConfigBase_1.ConfigBase {
   }
   GetCalabashRewardListByAreaId(e) {
     return CalabashDevelopRewardByInteractAreaId_1.configCalabashDevelopRewardByInteractAreaId.GetConfigList(e);
+  }
+  GetPhantomDirectRefiningAll() {
+    return PhantomDirectRefiningAll_1.configPhantomDirectRefiningAll.GetConfigList();
   }
 }
 exports.CalabashConfig = CalabashConfig;

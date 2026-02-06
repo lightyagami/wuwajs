@@ -101,11 +101,14 @@ class TsAnimNotifyStatePositionBranchTarget extends UE.KuroAnimNotifyState {
     this.MaxSpeed = 2000;
     this.是否永远面向目标 = true;
     this.忽略Z轴方向 = true;
+    this.忽略水平方向 = false;
     this.永远修正Z轴 = false;
     this.忽略双方半径 = false;
     this.IsShareTarget = false;
     this.TargetOffset = undefined;
     this.TargetRotation = undefined;
+    this.OffsetByOrientation = false;
+    this.OffsetByAbsolute = false;
     this.MinHeightFromTargetFloor = 0;
     this.允许反向移动 = false;
     this.允许正向移动 = true;
@@ -122,6 +125,7 @@ class TsAnimNotifyStatePositionBranchTarget extends UE.KuroAnimNotifyState {
     this.TsMaxSpeed = -0;
     this.TsLookAtTarget = false;
     this.TsIgnoreZ = false;
+    this.TsIgnoreHorizontal = false;
     this.TsAlwaysMoveZ = false;
     this.TsIgnoreRadius = false;
     this.TsIsShareTarget = false;
@@ -147,6 +151,7 @@ class TsAnimNotifyStatePositionBranchTarget extends UE.KuroAnimNotifyState {
     this.TsMaxSpeed = -0;
     this.TsLookAtTarget = false;
     this.TsIgnoreZ = false;
+    this.TsIgnoreHorizontal = false;
     this.TsAlwaysMoveZ = false;
     this.TsIgnoreRadius = false;
     this.TsIsShareTarget = false;
@@ -173,6 +178,7 @@ class TsAnimNotifyStatePositionBranchTarget extends UE.KuroAnimNotifyState {
       this.TsMaxSpeed = this.MaxSpeed;
       this.TsLookAtTarget = this.是否永远面向目标;
       this.TsIgnoreZ = this.忽略Z轴方向;
+      this.TsIgnoreHorizontal = this.忽略水平方向;
       this.TsAlwaysMoveZ = this.永远修正Z轴;
       this.TsIgnoreRadius = this.忽略双方半径;
       this.TsIsShareTarget = this.IsShareTarget;
@@ -203,9 +209,9 @@ class TsAnimNotifyStatePositionBranchTarget extends UE.KuroAnimNotifyState {
       return false;
     }
     var r;
-    var e = h.Entity.GetComponent(40);
+    var e = h.Entity.GetComponent(42);
     let a = undefined;
-    if (!(a = this.TsIsShareTarget && (r = h.Entity.GetComponent(0), r = ModelManager_1.ModelManager.CreatureModel.GetEntity(r.GetSummonerId())?.Entity, a = r?.GetComponent(40)) || e)) {
+    if (!(a = this.TsIsShareTarget && (r = h.Entity.GetComponent(0), r = ModelManager_1.ModelManager.CreatureModel.GetEntity(r.GetSummonerId())?.Entity, a = r?.GetComponent(42)) || e)) {
       if (Log_1.Log.CheckWarn()) {
         Log_1.Log.Warn("Test", 6, "No SkillComponent", ["Actor", h.Owner?.GetName()]);
       }
@@ -213,7 +219,7 @@ class TsAnimNotifyStatePositionBranchTarget extends UE.KuroAnimNotifyState {
     }
     let o = paramMap.get(h.Entity.Id);
     (o = o || (paramPool.length ? paramPool.pop() : new PositionBranchTargetParams())).BaseActorComp = h;
-    o.BaseUnifiedComp = h.Entity.GetComponent(109);
+    o.BaseUnifiedComp = h.Entity.GetComponent(111);
     o.BaseSkillComp = a;
     o.NowTime = 0;
     o.TotalTime = s;
@@ -237,13 +243,29 @@ class TsAnimNotifyStatePositionBranchTarget extends UE.KuroAnimNotifyState {
     var h;
     if (t.TargetPos) {
       i.DeepCopy(t.TargetPos);
+      if (this.OffsetByAbsolute) {
+        this.TmpVector.DeepCopy(this.TsTargetOffset);
+      } else {
+        if (this.OffsetByOrientation) {
+          i.Subtraction(t.BaseActorComp.ActorLocationProxy, this.TmpVector);
+        } else {
+          t.BaseActorComp.ActorLocationProxy.Subtraction(i, this.TmpVector);
+        }
+        this.TmpVector.ToOrientationQuat(this.TmpQuat);
+        this.TmpQuat.RotateVector(this.TsTargetOffset, this.TmpVector);
+      }
+      i.AdditionEqual(this.TmpVector);
     } else {
       if (t.SocketName && t.TargetCharActorComp?.Actor) {
         i.FromUeVector(t.TargetCharActorComp.Actor.Mesh.D_GetSocketLocation(FNameUtil_1.FNameUtil.GetDynamicFName(t.SocketName)));
       } else {
         i.DeepCopy(t.TargetBaseActorComp.ActorLocationProxy);
       }
-      t.TargetBaseActorComp.ActorQuatProxy.RotateVector(this.TsTargetOffset, this.TmpVector);
+      if (this.OffsetByAbsolute) {
+        this.TmpVector.DeepCopy(this.TsTargetOffset);
+      } else {
+        (this.OffsetByOrientation ? (i.Subtraction(t.BaseActorComp.ActorLocationProxy, this.TmpVector), this.TmpVector.ToOrientationQuat(this.TmpQuat), this.TmpQuat) : t.TargetBaseActorComp.ActorQuatProxy).RotateVector(this.TsTargetOffset, this.TmpVector);
+      }
       i.AdditionEqual(this.TmpVector);
       if (t.TargetCharActorComp && (s = GravityUtils_1.GravityUtils.GetZnInGravityForActor(t.TargetBaseActorComp, t.TargetCharActorComp.FloorLocation) + this.TsMinHeightFromTargetFloor, (h = GravityUtils_1.GravityUtils.GetZnInGravityForActor(t.TargetBaseActorComp, i)) < s)) {
         GravityUtils_1.GravityUtils.AddZnInGravityForActor(t.TargetBaseActorComp, i, s - h);
@@ -258,6 +280,13 @@ class TsAnimNotifyStatePositionBranchTarget extends UE.KuroAnimNotifyState {
     i.DeepCopy(this.TmpVector);
     if (this.TsIgnoreZ) {
       GravityUtils_1.GravityUtils.ConvertToPlanarVectorForActor(t.BaseActorComp, i);
+      if (s < 0) {
+        return -1;
+      } else {
+        return i.Size();
+      }
+    } else if (this.TsIgnoreHorizontal) {
+      GravityUtils_1.GravityUtils.ConvertToVerticalVectorForActor(t.BaseActorComp, i);
       if (s < 0) {
         return -1;
       } else {

@@ -1,22 +1,22 @@
 "use strict";
 
-var __decorate = this && this.__decorate || function (e, t, i, s) {
-  var o;
-  var n = arguments.length;
-  var r = n < 3 ? t : s === null ? s = Object.getOwnPropertyDescriptor(t, i) : s;
+var __decorate = this && this.__decorate || function (e, t, i, o) {
+  var s;
+  var r = arguments.length;
+  var n = r < 3 ? t : o === null ? o = Object.getOwnPropertyDescriptor(t, i) : o;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    r = Reflect.decorate(e, t, i, s);
+    n = Reflect.decorate(e, t, i, o);
   } else {
-    for (var h = e.length - 1; h >= 0; h--) {
-      if (o = e[h]) {
-        r = (n < 3 ? o(r) : n > 3 ? o(t, i, r) : o(t, i)) || r;
+    for (var c = e.length - 1; c >= 0; c--) {
+      if (s = e[c]) {
+        n = (r < 3 ? s(n) : r > 3 ? s(t, i, n) : s(t, i)) || n;
       }
     }
   }
-  if (n > 3 && r) {
-    Object.defineProperty(t, i, r);
+  if (r > 3 && n) {
+    Object.defineProperty(t, i, n);
   }
-  return r;
+  return n;
 };
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -28,12 +28,11 @@ const ResourceSystem_1 = require("../../../../../Core/Resource/ResourceSystem");
 const TimerSystem_1 = require("../../../../../Core/Timer/TimerSystem");
 const MathUtils_1 = require("../../../../../Core/Utils/MathUtils");
 const ObjectUtils_1 = require("../../../../../Core/Utils/ObjectUtils");
-const EventDefine_1 = require("../../../../Common/Event/EventDefine");
-const EventSystem_1 = require("../../../../Common/Event/EventSystem");
 const ConfigManager_1 = require("../../../../Manager/ConfigManager");
 const CharacterNameDefines_1 = require("../../../../NewWorld/Character/Common/CharacterNameDefines");
 const UiModelComponentDefine_1 = require("../../Define/UiModelComponentDefine");
 const UiModelComponentBase_1 = require("../UiModelComponentBase");
+const UiModelComponentInterface_1 = require("../UiModelComponentInterface");
 let UiRoleHuluLightSequenceComponent = class UiRoleHuluLightSequenceComponent extends UiModelComponentBase_1.UiModelComponentBase {
   constructor() {
     super(...arguments);
@@ -41,18 +40,11 @@ let UiRoleHuluLightSequenceComponent = class UiRoleHuluLightSequenceComponent ex
     this.SPe = undefined;
     this.b2t = undefined;
     this.hJ = ResourceSystem_1.ResourceSystem.InvalidId;
-    this.Twr = e => {
-      if (!e) {
-        this.StopLightSequence();
-      }
-    };
   }
   OnInit() {
     this.n$t = this.Owner.CheckGetComponent(1);
   }
-  OnStart() {
-    EventSystem_1.EventSystem.AddWithTarget(this.Owner, EventDefine_1.EEventName.OnUiModelVisibleChange, this.Twr);
-  }
+  OnStart() {}
   fBr() {
     var e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("LevelSequence_HuluLight");
     this.hJ = ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.LevelSequence, e => {
@@ -86,7 +78,6 @@ let UiRoleHuluLightSequenceComponent = class UiRoleHuluLightSequenceComponent ex
     }
   }
   OnEnd() {
-    EventSystem_1.EventSystem.RemoveWithTarget(this.Owner, EventDefine_1.EEventName.OnUiModelVisibleChange, this.Twr);
     this.StopLightSequence();
     const e = this.b2t;
     TimerSystem_1.GameplayTimerSystem.Next(() => {
@@ -95,6 +86,11 @@ let UiRoleHuluLightSequenceComponent = class UiRoleHuluLightSequenceComponent ex
     this.SPe = undefined;
     this.b2t = undefined;
   }
+  OnModelVisibleChange(e) {
+    if (!e) {
+      this.StopLightSequence();
+    }
+  }
 };
-UiRoleHuluLightSequenceComponent = __decorate([(0, UiModelComponentDefine_1.RegisterUiModelComponent)(20)], UiRoleHuluLightSequenceComponent);
+UiRoleHuluLightSequenceComponent = __decorate([(0, UiModelComponentInterface_1.RegisterUiModelComponentImplements)(0), (0, UiModelComponentDefine_1.RegisterUiModelComponent)(20)], UiRoleHuluLightSequenceComponent);
 exports.UiRoleHuluLightSequenceComponent = UiRoleHuluLightSequenceComponent; //# sourceMappingURL=UiRoleHuluLightSequenceComponent.js.map

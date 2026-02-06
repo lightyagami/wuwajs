@@ -13,8 +13,7 @@ const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
-const UiViewBase_1 = require("../../../Ui/Base/UiViewBase");
-const PopupCaptionItem_1 = require("../../../Ui/Common/PopupCaptionItem");
+const UiTabViewBase_1 = require("../../../Ui/Base/UiTabViewBase");
 const UiLayer_1 = require("../../../Ui/UiLayer");
 const UiManager_1 = require("../../../Ui/UiManager");
 const ButtonItem_1 = require("../../Common/Button/ButtonItem");
@@ -30,11 +29,10 @@ const PhantomManageConfigItem_1 = require("../Items/PhantomManageConfigItem");
 const PhantomManageConfigTypeItem_1 = require("../Items/PhantomManageConfigTypeItem");
 const PhantomManageSettingTitleItem_1 = require("../Items/PhantomManageSettingTitleItem");
 const PhantomManageConfigViewModel_1 = require("./PhantomManageConfigViewModel");
-class PhantomManageConfigView extends UiViewBase_1.UiViewBase {
+class PhantomManageConfigView extends UiTabViewBase_1.UiTabViewBase {
   constructor() {
     super(...arguments);
     this.yil = undefined;
-    this.lqe = undefined;
     this.nGu = undefined;
     this.sGu = undefined;
     this.aGu = undefined;
@@ -45,6 +43,10 @@ class PhantomManageConfigView extends UiViewBase_1.UiViewBase {
     this.Vxe = undefined;
     this.Gdd = false;
     this.fFd = true;
+    this.OnPlayingStartSequenceAsync = () => {
+      this.Drd?.Play();
+      this.xrd?.Play();
+    };
     this.fTu = t => {
       if (t === 0) {
         this.iw1();
@@ -139,9 +141,6 @@ class PhantomManageConfigView extends UiViewBase_1.UiViewBase {
         UiManager_1.UiManager.OpenView("PhantomManageView");
       }
     };
-    this.RWu = () => {
-      ControllerHolder_1.ControllerHolder.HelpController.OpenHelpById(InventoryDefine_1.MANAGE_CONFIG_HELP_ID);
-    };
     this.wWu = () => {
       var t = this.yil.GetSelectConfig();
       var i = this.yil.GetEditData();
@@ -193,9 +192,6 @@ class PhantomManageConfigView extends UiViewBase_1.UiViewBase {
       });
       ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(t);
     };
-    this.LGu = () => {
-      this.CloseMe();
-    };
     this.gGu = async t => {
       var i = this.yil.GetSelectConfig();
       var e = i.Clone();
@@ -218,7 +214,7 @@ class PhantomManageConfigView extends UiViewBase_1.UiViewBase {
         this._Gu(false, i);
       } else {
         this.Vxe.SetConfigState(!t);
-        (e = this.GetTexture(13)).SetChangeColor(!t, e.changeColor);
+        (e = this.GetTexture(12)).SetChangeColor(!t, e.changeColor);
       }
       UiLayer_1.UiLayer.SetShowMaskLayer("ManageConfigSwitchClick", false);
     };
@@ -233,45 +229,48 @@ class PhantomManageConfigView extends UiViewBase_1.UiViewBase {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIHorizontalLayout], [2, UE.UILoopScrollViewComponent], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIText], [6, UE.UIButtonComponent], [7, UE.UIItem], [8, UE.UIScrollViewWithScrollbarComponent], [9, UE.UIItem], [10, UE.UIButtonComponent], [11, UE.UIItem], [12, UE.UIItem], [13, UE.UITexture], [14, UE.UIButtonComponent], [15, UE.UIButtonComponent]];
-    this.BtnBindInfo = [[6, this.fGu], [10, this.CGu], [14, this.wWu], [15, this.djc]];
+    this.ComponentRegisterInfos = [[0, UE.UIHorizontalLayout], [1, UE.UILoopScrollViewComponent], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIText], [5, UE.UIButtonComponent], [6, UE.UIItem], [7, UE.UIScrollViewWithScrollbarComponent], [8, UE.UIItem], [9, UE.UIButtonComponent], [10, UE.UIItem], [11, UE.UIItem], [12, UE.UITexture], [13, UE.UIButtonComponent], [14, UE.UIButtonComponent]];
+    this.BtnBindInfo = [[5, this.fGu], [9, this.CGu], [13, this.wWu], [14, this.djc]];
   }
   async OnBeforeStartAsync() {
     var t = [];
     this.hGu = new ButtonItem_1.ButtonItem();
-    t.push(this.hGu.CreateThenShowByActorAsync(this.GetItem(12).GetOwner()));
+    t.push(this.hGu.CreateThenShowByActorAsync(this.GetItem(11).GetOwner()));
     this.hGu.SetFunction(this.SGu);
     this.hGu.SetLocalTextNew("PhantomProject_EditButton");
     this.lGu = new ButtonItem_1.ButtonItem();
-    t.push(this.lGu.CreateThenShowByActorAsync(this.GetItem(11).GetOwner()));
+    t.push(this.lGu.CreateThenShowByActorAsync(this.GetItem(10).GetOwner()));
     this.lGu.SetFunction(this.TGu);
     this.lGu.SetLocalTextNew("PhantomProject_SiftButton");
     this.Vxe = new ToggleSwitch();
-    t.push(this.Vxe.CreateThenShowByActorAsync(this.GetItem(7).GetOwner()));
+    t.push(this.Vxe.CreateThenShowByActorAsync(this.GetItem(6).GetOwner()));
     this.Vxe.OnClickedSwitch = this.UNu;
     this.Vxe.OnCheckCanChange = this.X4u;
+    var i = ModelManager_1.ModelManager.InventoryModel.GetPhantomManageConfigClear();
+    if (i) {
+      t.push(ControllerHolder_1.ControllerHolder.InventoryController.PhantomManageConfigRequestAsync());
+    }
     await Promise.all(t);
   }
   OnStart() {
-    this.lqe = new PopupCaptionItem_1.PopupCaptionItem(this.GetItem(0));
-    this.lqe.SetHelpCallBack(this.RWu);
-    this.lqe.SetCloseCallBack(this.LGu);
     this.yil = new PhantomManageConfigViewModel_1.PhantomManageConfigViewModel();
     this.yil.Bind(this.fTu);
-    this.nGu = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(1), this.AGu);
+    this.nGu = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(0), this.AGu);
     PhantomManageConfigTypeItem_1.PhantomManageConfigTypeItem.ViewModel = this.yil;
-    this.sGu = new LoopScrollView_1.LoopScrollView(this.GetLoopScrollViewComponent(2), this.GetItem(3).GetOwner(), this.PGu);
+    this.sGu = new LoopScrollView_1.LoopScrollView(this.GetLoopScrollViewComponent(1), this.GetItem(2).GetOwner(), this.PGu);
     PhantomManageConfigItem_1.PhantomManageConfigItem.CallbackBtnSelect = this.mGu;
     PhantomManageConfigItem_1.PhantomManageConfigItem.ViewModel = this.yil;
-    this.aGu = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(8), this.xGu, undefined, true);
+    this.aGu = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(7), this.xGu, undefined, true);
     PhantomManageSettingTitleItem_1.PhantomManageSettingTitleItem.ViewModel = this.yil;
     this.Drd = this.sGu.GetUiAnimController();
-    this.xrd = this.GetScrollViewWithScrollbar(8).GetContent().GetComponentByClass(UE.UIInturnAnimController.StaticClass());
+    this.xrd = this.GetScrollViewWithScrollbar(7).GetContent().GetComponentByClass(UE.UIInturnAnimController.StaticClass());
     this.yil.SetSelectType(Protocol_1.Aki.Protocol.Oxu.Proto_AutoLock);
-  }
-  async OnPlayingStartSequenceAsync() {
-    this.Drd?.Play();
-    this.xrd?.Play();
+    this.UiViewSequence?.AddSequenceFinishEvent("Start", this.OnPlayingStartSequenceAsync);
+    this.UiViewSequence?.AddSequenceFinishEvent("UnSelect", () => {
+      if (!this.yil.GetEditState()) {
+        this.GetItem(3).SetUIActive(false);
+      }
+    });
   }
   OnBeforeDestroy() {
     this.yil.UnBind(this.fTu);
@@ -311,9 +310,9 @@ class PhantomManageConfigView extends UiViewBase_1.UiViewBase {
     var t = this.yil.GetEditState();
     var t = t ? this.yil.GetEditSwitch() : i.GetIsOn();
     this.Vxe.SetConfigState(t);
-    var e = this.GetTexture(13);
+    var e = this.GetTexture(12);
     e.SetChangeColor(t, e.changeColor);
-    this.GetText(5).SetText(i.GetName());
+    this.GetText(4).SetText(i.GetName());
   }
   Bgt() {
     var t = ModelManager_1.ModelManager.InventoryModel.GetSettingTitleItemDataList();
@@ -324,21 +323,17 @@ class PhantomManageConfigView extends UiViewBase_1.UiViewBase {
     this.hGu.SetLocalTextNew(t ? "PhantomProject_SaveButton02" : "PhantomProject_EditButton");
   }
   uGu() {
-    const t = this.yil.GetEditState();
+    var t = this.yil.GetEditState();
     if (t) {
-      this.GetItem(4).SetUIActive(true);
+      this.GetItem(3).SetUIActive(true);
     }
-    this.SetButtonUiActive(14, t);
-    var i = t ? "Select" : "UnSelect";
-    this.PlaySequence(i, () => {
-      if (!t) {
-        this.GetItem(4).SetUIActive(false);
-      }
-    });
+    this.SetButtonUiActive(13, t);
+    var t = t ? "Select" : "UnSelect";
+    this.UiViewSequence?.PlaySequence(t);
   }
   cjc() {
     var t = this.yil.GetEditState();
-    this.SetButtonUiActive(15, !t);
+    this.SetButtonUiActive(14, !t);
   }
   dGu() {
     var t = this.yil.GetSelectConfig();
@@ -379,7 +374,7 @@ class PhantomManageConfigView extends UiViewBase_1.UiViewBase {
   }
   DNu() {
     this.Vxe.SetConfigState(false);
-    var t = this.GetTexture(13);
+    var t = this.GetTexture(12);
     t.SetChangeColor(false, t.changeColor);
     ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId(InventoryDefine_1.EMPTY_CHECK_TEXT_ID);
   }

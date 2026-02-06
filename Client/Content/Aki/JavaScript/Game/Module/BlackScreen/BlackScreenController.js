@@ -17,13 +17,13 @@ const BlackScreenTransitionView_1 = require("./BlackScreenTransitionView");
 class BlackScreenController extends UiControllerBase_1.UiControllerBase {
   static OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.UiManagerInit, this.i0t);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsAddBlackScreen, this.ikf);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsRemoveBlackScreen, this.rkf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsAddBlackScreen, this.QNf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsRemoveBlackScreen, this.KNf);
   }
   static OnRemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.UiManagerInit, this.i0t);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsAddBlackScreen, this.ikf);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsRemoveBlackScreen, this.rkf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsAddBlackScreen, this.QNf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsRemoveBlackScreen, this.KNf);
   }
   static AddBlackScreen(e, t) {
     if (Log_1.Log.CheckInfo()) {
@@ -70,7 +70,7 @@ class BlackScreenController extends UiControllerBase_1.UiControllerBase {
     }
     return true;
   }
-  static async okf(e, t) {
+  static async XNf(e, t) {
     await this.AddBlackScreenAsync(e, t);
     EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsNotifyCsAddBlackScreenFinish);
   }
@@ -84,9 +84,9 @@ BlackScreenController.i0t = () => {
     _a.r0t.CreateByResourceIdAsync("UiView_BlackScreen_Prefab", UiLayer_1.UiLayer.GetLayerRootUiItem(UiLayerType_1.ELayerType.CG), true);
   }
 };
-BlackScreenController.ikf = (e, t) => {
-  _a.okf(e, t);
+BlackScreenController.QNf = (e, t) => {
+  _a.XNf(e, t);
 };
-BlackScreenController.rkf = (e, t) => {
+BlackScreenController.KNf = (e, t) => {
   _a.RemoveBlackScreen(e, t);
 }; //# sourceMappingURL=BlackScreenController.js.map

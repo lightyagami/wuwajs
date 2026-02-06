@@ -39,12 +39,12 @@ class FragmentMemoryController extends ControllerBase_1.ControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CreateViewInstance, this.AHe);
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(28813, this.ewn);
-    Net_1.Net.Register(16999, this.twn);
+    Net_1.Net.Register(15812, this.ewn);
+    Net_1.Net.Register(22335, this.twn);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(28813);
-    Net_1.Net.UnRegister(16999);
+    Net_1.Net.UnRegister(15812);
+    Net_1.Net.UnRegister(22335);
   }
   static t6i() {
     if (ModelManager_1.ModelManager.FragmentMemoryModel.CurrentUnlockCollectId !== 0 && !UiManager_1.UiManager.IsViewShow("ObtainFragmentView") && UiManager_1.UiManager.IsViewShow("BattleView")) {
@@ -55,16 +55,16 @@ class FragmentMemoryController extends ControllerBase_1.ControllerBase {
     }
   }
   static RequestPhotoMemory() {
-    Net_1.Net.Call(26596, Protocol_1.Aki.Protocol.Afs.create(), e => {
+    Net_1.Net.Call(20171, Protocol_1.Aki.Protocol.Afs.create(), e => {
       ModelManager_1.ModelManager.FragmentMemoryModel.OnPhotoMemoryResponse(e);
     });
   }
   static RequestMemoryReward(e) {
     var t = Protocol_1.Aki.Protocol.xfs.create();
     t.QVn = e;
-    Net_1.Net.Call(29495, t, e => {
+    Net_1.Net.Call(20498, t, e => {
       if (e.fMs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.fMs, 18306);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.fMs, 17900);
       }
     });
   }

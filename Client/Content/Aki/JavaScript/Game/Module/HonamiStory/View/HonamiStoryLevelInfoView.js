@@ -31,10 +31,10 @@ const hardColor = UE.Color.FromHex("#A04661");
 class HonamiStoryLevelInfoView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
-    this.ezm = 0;
-    this.tzm = 0;
-    this.izm = 0;
-    this.rzm = 0;
+    this.qZm = 0;
+    this.OZm = 0;
+    this.GZm = 0;
+    this.FZm = 0;
     this.lqe = undefined;
     this.S9_ = undefined;
     this.ofm = undefined;
@@ -42,9 +42,9 @@ class HonamiStoryLevelInfoView extends UiViewBase_1.UiViewBase {
     this.sfm = undefined;
     this.afm = undefined;
     this.kfm = undefined;
-    this.zLm = undefined;
+    this.SPm = undefined;
     this.Hea = undefined;
-    this.uDm = new Map([[1, 11], [2, 11], [3, 12], [4, 12], [5, 12]]);
+    this.RAm = new Map([[1, 11], [2, 11], [3, 12], [4, 12], [5, 12]]);
     this.Wim = undefined;
     this.hfm = undefined;
     this.ufm = 1;
@@ -81,23 +81,23 @@ class HonamiStoryLevelInfoView extends UiViewBase_1.UiViewBase {
       }
     };
     this.Bpt = i => i !== this.hfm;
-    this.cFm = "";
+    this.PNm = "";
     this.$An = i => {
-      if (i === "Enter04" && this.cFm) {
-        this.SetTextureByPath(this.cFm, this.GetTexture(0));
+      if (i === "Enter04" && this.PNm) {
+        this.SetTextureByPath(this.PNm, this.GetTexture(0));
       }
     };
     this.mfm = () => {
       switch (this.hfm) {
         case 0:
-          if (!(this.ufm > this.ezm)) {
+          if (!(this.ufm > this.qZm)) {
             return;
           }
           --this.ufm;
           this.lfm = this.ufm;
           break;
         case 1:
-          if (!(this.ufm > this.izm)) {
+          if (!(this.ufm > this.GZm)) {
             return;
           }
           --this.ufm;
@@ -113,14 +113,14 @@ class HonamiStoryLevelInfoView extends UiViewBase_1.UiViewBase {
     this.Cfm = () => {
       switch (this.hfm) {
         case 0:
-          if (!(this.ufm < this.tzm)) {
+          if (!(this.ufm < this.OZm)) {
             return;
           }
           this.ufm += 1;
           this.lfm = this.ufm;
           break;
         case 1:
-          if (!(this.ufm < this.rzm)) {
+          if (!(this.ufm < this.FZm)) {
             return;
           }
           this.ufm += 1;
@@ -161,19 +161,19 @@ class HonamiStoryLevelInfoView extends UiViewBase_1.UiViewBase {
     this.afm = new PnlTeam();
     this.S9_ = new HonamiStoryQuestPanel_1.HonamiStoryQuestPanel();
     this.kfm = new HonamiStoryBozaiTalkPanel_1.HonamiStoryBozaiTalkPanel();
-    this.zLm = new HonamiStoryProfitPanel_1.HonamiStoryProfitPanel();
+    this.SPm = new HonamiStoryProfitPanel_1.HonamiStoryProfitPanel();
     this.Hea = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
-    var i = [this.lqe.CreateThenShowByActorAsync(this.GetItem(1).GetOwner()), this.ofm.CreateThenShowByActorAsync(this.GetItem(3).GetOwner()), this.nfm.CreateThenShowByActorAsync(this.GetItem(4).GetOwner()), this.sfm.CreateThenShowByActorAsync(this.GetItem(20).GetOwner()), this.afm.CreateThenShowByActorAsync(this.GetItem(7).GetOwner()), this.S9_.CreateThenShowByActorAsync(this.GetItem(2).GetOwner()), this.kfm.CreateThenShowByActorAsync(this.GetItem(22).GetOwner()), this.zLm.CreateThenShowByActorAsync(this.GetItem(23).GetOwner())];
+    var i = [this.lqe.CreateThenShowByActorAsync(this.GetItem(1).GetOwner()), this.ofm.CreateThenShowByActorAsync(this.GetItem(3).GetOwner()), this.nfm.CreateThenShowByActorAsync(this.GetItem(4).GetOwner()), this.sfm.CreateThenShowByActorAsync(this.GetItem(20).GetOwner()), this.afm.CreateThenShowByActorAsync(this.GetItem(7).GetOwner()), this.S9_.CreateThenShowByActorAsync(this.GetItem(2).GetOwner()), this.kfm.CreateThenShowByActorAsync(this.GetItem(22).GetOwner()), this.SPm.CreateThenShowByActorAsync(this.GetItem(23).GetOwner())];
     await Promise.all(i);
     this.lqe.SetHelpCallBack(this.pcr);
     this.lqe.SetCloseCallBack(this.Jvt);
     this.Wim = ModelManager_1.ModelManager.HonamiStoryModel.GetActivityData();
     if (this.Wim) {
       i = ConfigManager_1.ConfigManager.HonamiStoryConfig.GetHonamiStoryActivityConfig(this.Wim.Id);
-      this.ezm = i.OriAreaDangerLevel;
-      this.tzm = i.MaxAreaDangerLevel;
-      this.izm = i.OriTopTowerDangerLevel;
-      this.rzm = i.MaxTopTowerDangerLevel;
+      this.qZm = i.OriAreaDangerLevel;
+      this.OZm = i.MaxAreaDangerLevel;
+      this.GZm = i.OriTopTowerDangerLevel;
+      this.FZm = i.MaxTopTowerDangerLevel;
       this.sfm.SetPnlSelectLv(this);
       this.hvm = ModelManager_1.ModelManager.FunctionModel.IsOpen(10121);
       this.lvm = ModelManager_1.ModelManager.FunctionModel.IsOpen(10115);
@@ -188,9 +188,9 @@ class HonamiStoryLevelInfoView extends UiViewBase_1.UiViewBase {
         this.dfm(this.Wim.CurTarget);
       } else {
         this.dfm(0);
-        this.cFm = ConfigManager_1.ConfigManager.HonamiStoryConfig.GetHonamiStoryAreaConfig(this.lfm).LvSelectBgPath;
+        this.PNm = ConfigManager_1.ConfigManager.HonamiStoryConfig.GetHonamiStoryAreaConfig(this.lfm).LvSelectBgPath;
       }
-      this.SetTextureByPath(this.cFm, this.GetTexture(0));
+      this.SetTextureByPath(this.PNm, this.GetTexture(0));
       i = ConfigManager_1.ConfigManager.HonamiStoryConfig.GetDangerLevelConfig(this.ufm);
       this.cfm = i.DangerLv;
       await this.lqe.SetCurrencyItemList([this.Wim.OutCoinItemId]);
@@ -201,7 +201,7 @@ class HonamiStoryLevelInfoView extends UiViewBase_1.UiViewBase {
       this.nfm.OnClickToggleBack = this.nh_;
       this.nfm.SetRedDotShow(false);
       this.S9_.Refresh(this.hfm === 0);
-      this.zLm.RefreshNormal();
+      this.SPm.RefreshNormal();
       this.iHd();
       this.ffm();
       this.uvm();
@@ -214,17 +214,17 @@ class HonamiStoryLevelInfoView extends UiViewBase_1.UiViewBase {
   OnBeforeShow() {
     this.afm.RefreshView();
     this.S9_.Refresh(this.hfm === 0);
-    this.zLm.RefreshNormal();
-    this.vEm();
-    this.yEm();
+    this.SPm.RefreshNormal();
+    this.AEm();
+    this.DEm();
     this.sfm.RefreshView();
   }
   OnAfterShow() {
     this.q0m();
     this.JCm();
     let i = 13;
-    if (!this.hvm && this.uDm.has(this.ufm)) {
-      i = this.uDm.get(this.ufm);
+    if (!this.hvm && this.RAm.has(this.ufm)) {
+      i = this.RAm.get(this.ufm);
     }
     var t = ModelManager_1.ModelManager.HonamiStoryModel.GetRandomDialogData(i);
     this.kfm.SetTalkInfoTextAndPlayAudio(t);
@@ -277,7 +277,7 @@ class HonamiStoryLevelInfoView extends UiViewBase_1.UiViewBase {
       LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.HonamiStorySelectLvTowerUnLockTips, false);
     }
   }
-  vEm() {
+  AEm() {
     var i;
     if (!this.hvm) {
       i = this.Wim.GetHonamiStoryAreaDataList().length;
@@ -287,7 +287,7 @@ class HonamiStoryLevelInfoView extends UiViewBase_1.UiViewBase {
       }
     }
   }
-  yEm() {
+  DEm() {
     if (LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.HonamiStorySelectLvTowerUnLockTogRedDot)) {
       this.nfm.SetRedDotShow(true);
     }
@@ -302,14 +302,14 @@ class HonamiStoryLevelInfoView extends UiViewBase_1.UiViewBase {
         this.ufm = this.lfm;
         this.ofm.GetTog.SetToggleState(1, false);
         this.nfm.GetTog.SetToggleState(0, false);
-        this.cFm = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("HonamiSelectLvBg1");
+        this.PNm = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("HonamiSelectLvBg1");
         break;
       case 1:
         this.hfm = 1;
         this.ufm = this._fm;
         this.ofm.GetTog.SetToggleState(0, false);
         this.nfm.GetTog.SetToggleState(1, false);
-        this.cFm = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("HonamiSelectLvBg2");
+        this.PNm = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("HonamiSelectLvBg2");
     }
     this.Hea?.StopSequenceByKey("Switch");
     this.Hea?.PlayLevelSequenceByName("Switch");
@@ -393,12 +393,12 @@ class HonamiStoryLevelInfoView extends UiViewBase_1.UiViewBase {
       let t = 0;
       switch (this.hfm) {
         case 0:
-          i = this.ezm;
-          t = this.tzm;
+          i = this.qZm;
+          t = this.OZm;
           break;
         case 1:
-          i = this.izm;
-          t = this.rzm;
+          i = this.GZm;
+          t = this.FZm;
       }
       e.SetSelfInteractive(this.ufm !== i);
       s.SetSelfInteractive(this.ufm !== t);
@@ -473,7 +473,7 @@ class BtnGo extends UiPanelBase_1.UiPanelBase {
     this.vfm = 0;
     this.v0m = undefined;
     this.dvm = false;
-    this.U2m = new Map();
+    this.kkm = new Map();
     this.yfm = () => {
       var t = ModelManager_1.ModelManager.HonamiStoryModel.GetAllRoleIdList();
       if (!t || t.length === 0 || t.every(i => i === 0)) {
@@ -513,7 +513,7 @@ class BtnGo extends UiPanelBase_1.UiPanelBase {
     }
   }
   SetCostData(i) {
-    this.U2m = i;
+    this.kkm = i;
     this.RefreshView();
   }
   RefreshView() {
@@ -522,7 +522,7 @@ class BtnGo extends UiPanelBase_1.UiPanelBase {
     var e = this.GetItem(5);
     let s = this.v0m.GetCurSafeLeavePrice();
     if (this.dvm) {
-      s += this.U2m.get(this.vfm) ?? 0;
+      s += this.kkm.get(this.vfm) ?? 0;
     }
     var h = s > 0;
     e.SetUIActive(h);

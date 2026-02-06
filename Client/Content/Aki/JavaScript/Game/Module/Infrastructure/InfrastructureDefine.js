@@ -19,14 +19,14 @@ exports.INFR_OBSERVATORY_MARK_ID = 342011;
 exports.INFR_ACTIVITY_MALE_TEXTURE = "/Game/Aki/UI/UIResources/Common/Image/BgCgBig/Activity/Activity30/ActivityInfrastructure/ActivityMain/T_AcivityMainMale.T_AcivityMainMale";
 exports.INFR_ACTIVITY_FEMALE_TEXTURE = "/Game/Aki/UI/UIResources/Common/Image/BgCgBig/Activity/Activity30/ActivityInfrastructure/ActivityMain/T_AcivityMainFemale.T_AcivityMainFemale";
 exports.infrTaskStateToRewardStateResolver = {
-  [Protocol_1.Aki.Protocol.YNm.Proto_InfrTaskRunning]: 0,
-  [Protocol_1.Aki.Protocol.YNm.Proto_InfrTaskFinish]: 1,
-  [Protocol_1.Aki.Protocol.YNm.Proto_InfrTaskTaken]: 2
+  [Protocol_1.Aki.Protocol.f4m.Proto_InfrTaskRunning]: 0,
+  [Protocol_1.Aki.Protocol.f4m.Proto_InfrTaskFinish]: 1,
+  [Protocol_1.Aki.Protocol.f4m.Proto_InfrTaskTaken]: 2
 };
 exports.infrTaskStateToRewardText = {
-  [Protocol_1.Aki.Protocol.YNm.Proto_InfrTaskRunning]: "CollectActivity_state_open",
-  [Protocol_1.Aki.Protocol.YNm.Proto_InfrTaskFinish]: "CollectActivity_state_CanRecive",
-  [Protocol_1.Aki.Protocol.YNm.Proto_InfrTaskTaken]: "CollectActivity_state_recived"
+  [Protocol_1.Aki.Protocol.f4m.Proto_InfrTaskRunning]: "CollectActivity_state_open",
+  [Protocol_1.Aki.Protocol.f4m.Proto_InfrTaskFinish]: "CollectActivity_state_CanRecive",
+  [Protocol_1.Aki.Protocol.f4m.Proto_InfrTaskTaken]: "CollectActivity_state_recived"
 };
 exports.infrShopTabMenuName = {
   [2]: "BuildShop_Title_1",

@@ -39,5 +39,5 @@ let CollectComponent = CollectComponent_1 = class CollectComponent extends Entit
     return this.IPa;
   }
 };
-CollectComponent = CollectComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(276)], CollectComponent);
+CollectComponent = CollectComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(278)], CollectComponent);
 exports.CollectComponent = CollectComponent; //# sourceMappingURL=CollectComponent.js.map

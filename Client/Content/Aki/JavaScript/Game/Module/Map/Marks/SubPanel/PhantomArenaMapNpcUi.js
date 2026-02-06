@@ -15,12 +15,12 @@ class PhantomArenaMapNpcUi extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.SPe = undefined;
-    this.MNf = false;
+    this.sHf = false;
     this.MCt = 0;
     this.A4_ = e => {
-      if (e === "Start" && this.MNf) {
+      if (e === "Start" && this.sHf) {
         this.SPe?.PlaySequence("Unlock");
-        this.MNf = false;
+        this.sHf = false;
       }
     };
   }
@@ -44,11 +44,11 @@ class PhantomArenaMapNpcUi extends UiPanelBase_1.UiPanelBase {
         this.GetTexture(6)?.SetUIActive(r === 2);
         this.GetItem(4)?.SetUIActive(r === 2);
         this.GetItem(3)?.SetUIActive(r === 0);
-        r = ModelManager_1.ModelManager.PhantomArenaModel?.GetPermanentChallengeData(a.Id)?.qgf ?? true ? a.NpcMapHead : ConfigManager_1.ConfigManager.UiResourceConfig?.GetResourcePath(PhantomArenaDefine_1.MYSTERY_NPC_HEAD);
+        r = ModelManager_1.ModelManager.PhantomArenaModel?.GetPermanentChallengeData(a.Id)?.VCf ?? true ? a.NpcMapHead : ConfigManager_1.ConfigManager.UiResourceConfig?.GetResourcePath(PhantomArenaDefine_1.MYSTERY_NPC_HEAD);
         this.TrySetTextureByPath(r, this.GetTexture(2));
         this.GetText(1)?.SetText(a.NpcNumber);
         if ((r = ModelManager_1.ModelManager.PhantomArenaModel?.GetPermanentPhantomArenaActivityData()?.GetCurrentUnlockChallengeIds())?.has(a.Id)) {
-          this.MNf = true;
+          this.sHf = true;
           r.delete(a.Id);
         }
       } else if (Log_1.Log.CheckError()) {

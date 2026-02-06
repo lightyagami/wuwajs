@@ -4,6 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.SkinBuyDetailViewData = undefined;
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 class SkinBuyDetailViewData {
   constructor() {
@@ -11,6 +12,7 @@ class SkinBuyDetailViewData {
     this.vyl = [];
     this.NOe = 0;
     this.vUl = "";
+    this.x1g = false;
   }
   static Create(t) {
     var e = new SkinBuyDetailViewData();
@@ -28,8 +30,26 @@ class SkinBuyDetailViewData {
   GetPreviewTitle() {
     return this.vUl;
   }
+  SetIsActivityReward(t) {
+    this.x1g = t;
+  }
+  GetIsActivityReward() {
+    return this.x1g;
+  }
   SetIndex(t) {
     this.NOe = t;
+  }
+  GetIndex() {
+    return this.NOe;
+  }
+  GetConnectOtherReward() {
+    var t = [];
+    var e = {
+      IncId: 0,
+      ItemId: ConfigManager_1.ConfigManager.SkinConfig.GetRoleSkinConfig(this.GetCurrentSkinData().GetItemId()).HeadId
+    };
+    t.push([e, 0]);
+    return t;
   }
   InitDataByRoleSkinData(t) {
     this.fyl = t;
@@ -64,6 +84,11 @@ class SkinBuyDetailViewData {
   }
   GetCurrentSkinData() {
     return this.fyl[this.NOe];
+  }
+  SwitchToNextSkinData() {
+    if (!(this.fyl.length <= 1)) {
+      this.NOe = (this.NOe + 1) % this.fyl.length;
+    }
   }
   GetIfNeedShowSwitchItem() {
     return this.GetCurrentSkinData().GetSuitWeaponSkinId() > 0;

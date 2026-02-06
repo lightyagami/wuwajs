@@ -33,15 +33,15 @@ class WorldMapSecondaryUiLayoutB extends WorldMapSecondaryUi_1.WorldMapSecondary
   }
   async OnBeforeStartAsync() {
     await super.OnBeforeStartAsync();
-    this.RUf();
+    this.OLf();
     this.MapTipsActivateTipPanel = new MapTipsActivateTipPanel_1.MapTipsActivateTipPanel();
-    this.LUf();
+    this.lGf();
     var t = [];
-    t.push(this.wUf(this.LayoutContext));
+    t.push(this._Gf(this.LayoutContext));
     t.push(this.MapTipsActivateTipPanel.CreateByActorAsync(this.GetItem(13).GetOwner()));
     await Promise.all(t);
   }
-  RUf() {
+  OLf() {
     this.LeftConfirmBtn = new ButtonItem_1.ButtonItem(this.GetItem(7));
     this.LeftConfirmBtn.SetFunction(this.OnLeftConfirmBtnClick);
     this.RightConfirmBtn = new ButtonItem_1.ButtonItem(this.GetItem(8));
@@ -49,12 +49,12 @@ class WorldMapSecondaryUiLayoutB extends WorldMapSecondaryUi_1.WorldMapSecondary
     this.MiddleCenterBtn = new ButtonItem_1.ButtonItem(this.GetButton(12).RootUIComp);
     this.MiddleCenterBtn.SetFunction(this.OnMiddleCenterBtnClick);
   }
-  LUf() {
+  lGf() {
     this.LayoutContext = new WorldMapSecondaryUiContext_1.WorldMapSecondaryUiContext();
     this.LayoutContext.TrackButtonItem = this.LeftConfirmBtn;
     this.LayoutContext.MapTipsActivateTipPanel = this.MapTipsActivateTipPanel;
   }
-  async wUf(t) {
+  async _Gf(t) {
     this.AutoPilotContext = new WorldMapSecondaryUiAutoPilotContext_1.WorldMapSecondaryUiAutoPilotContext(t);
     this.AutoPilotContext.SetCloseSecondaryUiFunction(this.Close);
     this.AutoPilotContext.SetDownStateBtnRoot(this.GetItem(15));
@@ -75,7 +75,7 @@ class WorldMapSecondaryUiLayoutB extends WorldMapSecondaryUi_1.WorldMapSecondary
     this.MapTipsActivateTipPanel.SetUiActive(false);
     this.AutoPilotContext?.SetMap(this.Map);
     this.AutoPilotContext?.SetDownStateBtnRootActive(true);
-    this.AutoPilotContext?.SetAutoPilotTrackToggleActive(false);
+    this.AutoPilotContext?.SetAutoPilotNavBtnActive(false);
     this.AutoPilotContext?.RefreshAutoPilotTrackBtnGroup(false);
   }
   SetDelBtnActive(t) {

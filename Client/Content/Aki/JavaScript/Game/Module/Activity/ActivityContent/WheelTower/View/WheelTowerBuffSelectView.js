@@ -16,20 +16,20 @@ class WheelTowerBuffSelectView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
     this.lqe = undefined;
-    this.ktf = undefined;
-    this.qtf = -1;
-    this.Otf = () => {
+    this.Hrf = undefined;
+    this.jrf = -1;
+    this.$rf = () => {
       var e = new BuffCard();
       e.SetToggleCallback(this.ZW1);
       return e;
     };
     this.ZW1 = (e, i) => {
-      this.qtf = e;
-      this.ktf?.SelectGridProxy(i);
+      this.jrf = e;
+      this.Hrf?.SelectGridProxy(i);
     };
     this.p5t = () => {
-      if (this.qtf !== -1) {
-        ModelManager_1.ModelManager.WheelTowerModel.SelectedBuff = this.qtf;
+      if (this.jrf !== -1) {
+        ModelManager_1.ModelManager.WheelTowerModel.SelectedBuff = this.jrf;
       }
       this.CloseMe();
     };
@@ -39,13 +39,13 @@ class WheelTowerBuffSelectView extends UiViewBase_1.UiViewBase {
     this.BtnBindInfo = [[4, this.p5t]];
   }
   async OnBeforeStartAsync() {
-    this.ktf = new LoopScrollView_1.LoopScrollView(this.GetLoopScrollViewComponent(1), this.GetItem(2).GetOwner(), this.Otf);
+    this.Hrf = new LoopScrollView_1.LoopScrollView(this.GetLoopScrollViewComponent(1), this.GetItem(2).GetOwner(), this.$rf);
     this.lqe = new PopupCaptionItem_1.PopupCaptionItem();
     await this.lqe.CreateThenShowByActorAsync(this.GetItem(0).GetOwner());
   }
   OnStart() {
     var e = ModelManager_1.ModelManager.WheelTowerModel.GetLevelBuffList();
-    this.ktf?.RefreshByData([...e]);
+    this.Hrf?.RefreshByData([...e]);
     this.lqe?.SetCloseCallBack(() => {
       this.CloseMe();
     });

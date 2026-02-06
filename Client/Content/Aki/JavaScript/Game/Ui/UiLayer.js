@@ -37,34 +37,34 @@ class UiLayer {
   static get WorldSpaceUiRootItem() {
     return this.pCr;
   }
-  static async vCr(i) {
-    if (this.MCr.has(i)) {
-      var e = this.MCr.get(i);
-      if (e.length > 0 && e[0] !== undefined) {
+  static async g7g(i, e) {
+    if (this.C7g.has(i)) {
+      var t = this.C7g.get(i);
+      if (t.length > 0 && t[0] !== undefined) {
         return;
       }
     }
-    var e = [];
-    var t = this.GetLayerRootUiItem(i);
-    await this.ECr(0, t, e);
-    this.MCr.set(i, e);
+    var t = [];
+    var a = this.GetLayerRootUiItem(i);
+    await this.p7g(0, a, t, e);
+    this.C7g.set(i, t);
   }
-  static async ECr(i, e, t) {
-    var a = await LguiUtil_1.LguiUtil.LoadPrefabByResourceIdAsync("UiItem_BattleViewUnitNode_Prefab", e, undefined, 100, "Ui");
-    LguiUtil_1.LguiUtil.SetActorIsPermanent(a, true, false);
-    var r = a.RootComponent;
-    t.push(r);
+  static async p7g(i, e, t, a) {
+    var r = await LguiUtil_1.LguiUtil.LoadPrefabByResourceIdAsync("UiItem_BattleViewUnitNode_Prefab", e, undefined, 100, "Ui");
+    LguiUtil_1.LguiUtil.SetActorIsPermanent(r, true, false);
+    var o = r.RootComponent;
+    t.push(o);
     if (Info_1.Info.IsPlayInEditor) {
-      a.SetActorLabel(a = "Unit_" + i);
-      r.SetDisplayName(a);
+      r.SetActorLabel(r = "Unit_" + i);
+      o.SetDisplayName(r);
     }
-    var r = i + 1;
-    if (r !== UiLayerType_1.TIP_LAYER_UNIT_COUNT) {
-      await this.ECr(r, e, t);
+    var o = i + 1;
+    if (o !== a) {
+      await this.p7g(o, e, t, a);
     }
   }
   static GetFloatUnit(i, e) {
-    i = this.MCr.get(i);
+    i = this.C7g.get(i);
     if (i) {
       if (e >= i.length) {
         if (Log_1.Log.CheckError()) {
@@ -141,7 +141,7 @@ class UiLayer {
       UiLayer.ZCe = true;
       await Promise.all([this.ICr(), this.TCr()]);
       await this.LCr();
-      await Promise.all([this.DCr(), this.vCr(UiLayerType_1.ELayerType.BattleFloat), this.vCr(UiLayerType_1.ELayerType.Float), this.pGl(UiLayerType_1.ELayerType.BattleFloat)]);
+      await Promise.all([this.DCr(), this.g7g(UiLayerType_1.ELayerType.BattleFloat, UiLayerType_1.TIP_LAYER_UNIT_COUNT), this.g7g(UiLayerType_1.ELayerType.Float, UiLayerType_1.TIP_LAYER_UNIT_COUNT), this.g7g(UiLayerType_1.ELayerType.Loading, UiLayerType_1.LOADING_LAYER_UNIT_COUNT), this.pGl(UiLayerType_1.ELayerType.BattleFloat)]);
       this.Iym();
     }
   }
@@ -161,9 +161,9 @@ class UiLayer {
       t.push(s);
     }
     var a = new Map();
-    var r = this.MCr.get(UiLayerType_1.ELayerType.BattleFloat);
+    var r = this.C7g.get(UiLayerType_1.ELayerType.BattleFloat);
     a.set(UiLayerType_1.ELayerType.BattleFloat, r);
-    var r = this.MCr.get(UiLayerType_1.ELayerType.Float);
+    var r = this.C7g.get(UiLayerType_1.ELayerType.Float);
     a.set(UiLayerType_1.ELayerType.Float, r);
     var r = this.fGl.get(UiLayerType_1.ELayerType.BattleFloat);
     EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.OnTsLayerInit, e, t, a, r);
@@ -375,7 +375,7 @@ UiLayer.yCr = undefined;
 UiLayer.SCr = new Map();
 UiLayer.UCr = false;
 UiLayer.ACr = new Set();
-UiLayer.MCr = new Map();
+UiLayer.C7g = new Map();
 UiLayer.fGl = new Map();
 UiLayer.ZL1 = i => {
   if (Log_1.Log.CheckInfo()) {

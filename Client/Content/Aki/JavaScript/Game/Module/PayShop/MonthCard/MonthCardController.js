@@ -30,12 +30,12 @@ class MonthCardController extends UiControllerBase_1.UiControllerBase {
   }
   static async RequestMonthCardData() {
     var e = Protocol_1.Aki.Protocol.vhs.create();
-    var e = await Net_1.Net.CallAsync(15529, e);
+    var e = await Net_1.Net.CallAsync(23638, e);
     if (e) {
       if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
         this.H2i(e.Pbs);
       } else {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23358);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20458);
       }
     }
   }
@@ -69,12 +69,12 @@ class MonthCardController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDone, this.NTn);
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(23112, MonthCardController.Q2i);
-    Net_1.Net.Register(25536, MonthCardController.X2i);
+    Net_1.Net.Register(20551, MonthCardController.Q2i);
+    Net_1.Net.Register(19634, MonthCardController.X2i);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(23112);
-    Net_1.Net.UnRegister(25536);
+    Net_1.Net.UnRegister(20551);
+    Net_1.Net.UnRegister(19634);
   }
 }
 exports.MonthCardController = MonthCardController;

@@ -72,17 +72,17 @@ class LevelFlowVehicleMoveWithPathLine extends LevelFlowActionBase_1.LevelFlowAc
       switch (this.OPt.ControlType.Type) {
         case "EnterPathMoving":
           var e = this.OPt.SplineEntityId;
-          var t = this.Jh.GetComponent(117);
+          var t = this.Jh.GetComponent(119);
           t?.SetExtraMoveParams(this.OPt.ControlType.ControlParams);
           t?.StartSplineMove(e, this.OPt.ControlType.Pattern);
           if (ModelManager_1.ModelManager.LevelFlowModel.IsDebug) {
             t = ModelManager_1.ModelManager.GameSplineModel.LoadAndGetSplineComponent(e, this.Jh.Id, 1);
-            this.mPm(t, this.OPt.ControlType.Pattern.MaxOffsetDistance ?? 0);
+            this.OPm(t, this.OPt.ControlType.Pattern.MaxOffsetDistance ?? 0);
           }
           break;
         case "ExitPathMoving":
           e = this.OPt.SplineEntityId;
-          t = this.Jh.GetComponent(117);
+          t = this.Jh.GetComponent(119);
           t?.ResetExtraMoveParams();
           t?.EndSplineMove(e);
       }
@@ -99,7 +99,7 @@ class LevelFlowVehicleMoveWithPathLine extends LevelFlowActionBase_1.LevelFlowAc
       Log_1.Log.Info("LevelFlow", 58, "执行行为", ["ActionId", this.ActionId], ["ActionName", this.constructor.name], ["ControlType", this.OPt.ControlType.Type], ["SplineEntityId", this.OPt.SplineEntityId]);
     }
   }
-  mPm(t, i) {
+  OPm(t, i) {
     var o = t.GetSplineLength();
     for (let e = 0; e <= o; e += 100) {
       var a = t?.D_GetLocationAtDistanceAlongSpline(e, 1);

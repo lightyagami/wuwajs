@@ -34,8 +34,8 @@ class PhantomArenaBattleView extends UiViewBase_1.UiViewBase {
     this.DesktopBg = undefined;
     this.FirstShowDirty = true;
     this.DissolveTween = undefined;
-    this.f1f = e => {
-      this.g1f(e);
+    this.puf = e => {
+      this.vuf(e);
     };
   }
   OnRegisterComponent() {
@@ -45,14 +45,14 @@ class PhantomArenaBattleView extends UiViewBase_1.UiViewBase {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UILayoutBase], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIButtonComponent], [6, UE.UIItem], [7, UE.UIButtonComponent], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UIItem], [11, UE.UIItem], [12, UE.UIText], [13, UE.UIText], [14, UE.UIItem], [15, UE.UIItem], [16, UE.UIText], [17, UE.UIItem], [18, UE.UIItem], [19, UE.UIText], [20, UE.UIItem], [21, UE.UIItem], [22, UE.UIItem], [23, UE.UIItem], [24, UE.UISprite], [25, UE.UISprite], [26, UE.UIItem], [27, UE.UITexture], [28, UE.UIItem], [29, UE.UINiagara], [30, UE.UINiagara], [31, UE.UINiagara], [32, UE.UINiagara], [33, UE.UIItem]];
     this.BtnBindInfo = [[5, this.MSr.HideLayoutClick], [7, this.MSr.TimeEndClick]];
   }
-  async LFm() {
+  async KNm() {
     var e;
     if (!ModelManager_1.ModelManager.PhantomArenaBattleModel.IsOldBvb) {
       e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("SP_DesktopCardAll");
       await Promise.all([this.SetSpriteAsync(e, this.GetSprite(24), true), this.SetSpriteAsync(e, this.GetSprite(25), true)]);
     }
   }
-  async skm() {
+  async Sqm() {
     var e = ModelManager_1.ModelManager.PhantomArenaBattleModel.IsOldBvb ? "OldPnlDesktopBg" : "NewPnlDesktopBg";
     var e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(e);
     this.DesktopBg = await this.LoadPrefabAsync(e, this.GetItem(26));
@@ -110,16 +110,16 @@ class PhantomArenaBattleView extends UiViewBase_1.UiViewBase {
   }
   async OnBeforeStartAsync() {
     this.zDn();
-    await Promise.all([this.skm(), this.LFm(), this.$i1(), this.Wi1(), this.lU1(), this.rU1(), this.Xeu(), this.wtu(), this.yG1(), this.J31(), this.K81()]);
+    await Promise.all([this.Sqm(), this.KNm(), this.$i1(), this.Wi1(), this.lU1(), this.rU1(), this.Xeu(), this.wtu(), this.yG1(), this.J31(), this.K81()]);
     this.MSr.ProcessManager.InitStateMap();
   }
   OnStart() {
     this.DissolveTween = new LguiFloatTween_1.LguiFloatTween();
     this.DissolveTween.SetCurrentEase(12);
-    this.DissolveTween.BindUpdateTween(this.f1f);
-    this.C1f(false);
-    this.p1f(false);
-    this.Ydf(false);
+    this.DissolveTween.BindUpdateTween(this.puf);
+    this.yuf(false);
+    this.Suf(false);
+    this.fgf(false);
     this.MSr.BanButtonClickModule.RegisterButton(this.GetButton(7));
     this.MSr.BanButtonClickModule.RegisterButton(this.MSr.CaptionItem.GetCloseBtn());
     this.MSr.BanButtonClickModule.RegisterButton(this.MSr.CaptionItem.GetHelpBtn());
@@ -227,10 +227,10 @@ class PhantomArenaBattleView extends UiViewBase_1.UiViewBase {
     this.GetText(19).SetText(e.toString() + "/" + PhantomArenaDefine_1.LIMIT_BATTLE_CARD_NUM);
   }
   async PlayShowFieldEffect() {
-    await Promise.all([this.nSt(), this.y1f()]);
+    await Promise.all([this.nSt(), this.Euf()]);
     var e = ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.FieldData;
     AudioSystem_1.AudioSystem.PostEvent(e.FieldAudio);
-    this.p1f(true);
+    this.Suf(true);
     await this.UiViewSequence?.PlaySequenceAsync("FieldRelease", new CustomPromise_1.CustomPromise());
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPhantomArenaPlayFieldEffect);
   }
@@ -238,21 +238,21 @@ class PhantomArenaBattleView extends UiViewBase_1.UiViewBase {
     this.DissolveTween.PlayTween(PhantomArenaDefine_1.NPC_DISSOLVE_VALUE, 0, PhantomArenaDefine_1.NPC_DISSOLVE_TWEEN_TIME);
   }
   UnlockNpcField() {
-    this.S1f();
-    this.C1f(true);
+    this.Iuf();
+    this.yuf(true);
     this.UiViewSequence?.PlaySequencePurely("FieldReleaseNpc");
     this.DissolveTween.PlayTween(0, PhantomArenaDefine_1.NPC_DISSOLVE_VALUE, PhantomArenaDefine_1.NPC_DISSOLVE_TWEEN_TIME);
   }
-  C1f(e) {
+  yuf(e) {
     this.GetUiNiagara(30).SetUIActive(e);
   }
-  Ydf(e) {
+  fgf(e) {
     this.GetUiNiagara(31).SetUIActive(e);
   }
-  p1f(e) {
+  Suf(e) {
     this.GetUiNiagara(29).SetUIActive(e);
   }
-  S1f() {
+  Iuf() {
     var e;
     var t = ModelManager_1.ModelManager.PhantomArenaBattleModel.OpponentData.FieldData;
     var i = this.GetUiNiagara(30);
@@ -274,7 +274,7 @@ class PhantomArenaBattleView extends UiViewBase_1.UiViewBase {
       await this.SetTextureAsync(e.FieldBg, this.GetTexture(27));
     }
   }
-  async y1f() {
+  async Euf() {
     var e;
     var t = ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.FieldData;
     var i = this.GetUiNiagara(29);
@@ -300,7 +300,7 @@ class PhantomArenaBattleView extends UiViewBase_1.UiViewBase {
       return this.RootItem;
     }
   }
-  g1f(e) {
+  vuf(e) {
     this.GetUiNiagara(30).SetNiagaraVarFloat("Dissolve", e);
   }
   GetGuideUiItemAndUiItemForShowEx(e) {

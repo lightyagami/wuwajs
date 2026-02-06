@@ -10,22 +10,22 @@ const Global_1 = require("../../../../Global");
 class CharacterExploreModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
-    this.iZf = new Set();
+    this.Cvg = new Set();
     this.AutoResetSkillFinishedInternal = true;
-    this.FAc = new Array(3).fill(0);
+    this.FAc = new Array(4).fill(0);
     this.NAc = 1001;
     this.VAc = 0;
   }
   GetActiveExploreComponent() {
-    if (this.iZf.size === 0) {
+    if (this.Cvg.size === 0) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Character", 79, "[CharacterExploreModel] 当前没有激活的探索组件");
       }
     } else {
-      if (this.iZf.size > 1 && Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("Character", 79, "[CharacterExploreModel] 同时存在多个激活的探索组件,", ["数量", this.iZf.size]);
+      if (this.Cvg.size > 1 && Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Character", 79, "[CharacterExploreModel] 同时存在多个激活的探索组件,", ["数量", this.Cvg.size]);
       }
-      for (const e of this.iZf) {
+      for (const e of this.Cvg) {
         if (e.Valid) {
           return e;
         }
@@ -33,7 +33,7 @@ class CharacterExploreModel extends ModelBase_1.ModelBase {
     }
   }
   RegisterExploreComponent(e) {
-    this.iZf.add(e);
+    this.Cvg.add(e);
   }
   UnregisterExploreComponent(e) {
     if (!e.Valid) {
@@ -41,7 +41,7 @@ class CharacterExploreModel extends ModelBase_1.ModelBase {
         Log_1.Log.Error("Character", 79, "[CharacterExploreModel] 注销探索组件时组件已失效", ["EntityId", e.Entity.Id]);
       }
     }
-    this.iZf.delete(e);
+    this.Cvg.delete(e);
   }
   get AutoResetSkillFinished() {
     return this.AutoResetSkillFinishedInternal;
@@ -61,7 +61,7 @@ class CharacterExploreModel extends ModelBase_1.ModelBase {
       this.VAc = e === 0 ? this.NAc : e;
     } else {
       let t = this.NAc;
-      for (let e = 2; e >= 0; e--) {
+      for (let e = 3; e >= 0; e--) {
         if (this.FAc[e] !== 0) {
           t = this.FAc[e];
           this.VAc = t;
@@ -89,7 +89,7 @@ class CharacterExploreModel extends ModelBase_1.ModelBase {
       this.HAc(e, t, r);
       this.jAc();
     } else {
-      for (let e = 2; e > 0; e--) {
+      for (let e = 3; e > 0; e--) {
         this.FAc[e] = 0;
       }
       this.HAc(e, t, r);
@@ -103,13 +103,13 @@ class CharacterExploreModel extends ModelBase_1.ModelBase {
     this.$Ac(0, e, t);
   }
   ExistAutoLayerSkill() {
-    return this.FAc[2] !== 0;
+    return this.FAc[3] !== 0;
   }
   CheckNeedChangeSkill(e, t) {
     if (this.FAc[t] === e || this.VAc === e) {
       return false;
     }
-    for (let e = t + 1; e < 3; e++) {
+    for (let e = t + 1; e < 4; e++) {
       if (this.FAc[e] !== 0) {
         return false;
       }

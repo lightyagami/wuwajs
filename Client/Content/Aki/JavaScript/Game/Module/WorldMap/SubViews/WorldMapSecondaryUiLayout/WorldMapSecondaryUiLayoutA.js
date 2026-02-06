@@ -126,7 +126,7 @@ class WorldMapSecondaryUiLayoutA extends WorldMapSecondaryUi_1.WorldMapSecondary
     this.GetVerticalLayout(40).RootUIComp.SetUIActive(false);
     this.AutoPilotContext?.SetMap(this.Map);
     this.AutoPilotContext?.SetDownStateBtnRootActive(true);
-    this.AutoPilotContext?.SetAutoPilotTrackToggleActive(false);
+    this.AutoPilotContext?.SetAutoPilotNavBtnActive(false);
     this.AutoPilotContext?.RefreshAutoPilotTrackBtnGroup(false);
   }
   UpdateQuickGoto() {

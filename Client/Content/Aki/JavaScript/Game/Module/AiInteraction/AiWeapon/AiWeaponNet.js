@@ -14,17 +14,17 @@ const ModelManager_1 = require("../../../Manager/ModelManager");
 const MAX_SPEED_SIZE = 600;
 class AiWeaponNet {
   RegisterNet() {
-    Net_1.Net.Register(23654, e => {
+    Net_1.Net.Register(23957, e => {
       this.yje(e);
     });
   }
   UnRegisterNet() {
-    Net_1.Net.UnRegister(23654);
+    Net_1.Net.UnRegister(23957);
   }
   yje(e) {
     var t = MathUtils_1.MathUtils.LongToNumber(e.F4n);
     var t = ModelManager_1.ModelManager.CreatureModel.GetEntity(t);
-    if (t &&= t.Entity.GetComponent(84)) {
+    if (t &&= t.Entity.GetComponent(86)) {
       if (e.nRs !== 0) {
         t.RegisterCharacterDropWeaponEvent(e.nRs);
         t.ChangeWeaponByWeaponByConfigId(e.nRs);
@@ -35,13 +35,13 @@ class AiWeaponNet {
   }
   SendHoldWeaponPushOnSafe(e, t) {
     var r = EntitySystem_1.EntitySystem.Get(t);
-    return !!r && !!r.GetComponent(153).CanBeUsed() && this.SendHoldWeaponPush(e, t);
+    return !!r && !!r.GetComponent(155).CanBeUsed() && this.SendHoldWeaponPush(e, t);
   }
   SendHoldWeaponPush(e, t) {
     var r = new Protocol_1.Aki.Protocol.Jcs();
     r.F4n = this.Ije(e);
     r.d8n = this.Ije(t);
-    Net_1.Net.Send(24977, r);
+    Net_1.Net.Send(17308, r);
     return true;
   }
   SendDiscardWeaponPush(e) {
@@ -56,7 +56,7 @@ class AiWeaponNet {
     var o = new Protocol_1.Aki.Protocol.C8n();
     r.F4n = this.Ije(e.Entity.Id);
     var a = e.Entity.GetComponent(3);
-    var e = e.Entity.GetComponent(64);
+    var e = e.Entity.GetComponent(66);
     let i = undefined;
     if (e.GetHitData()) {
       i = Vector_1.Vector.Create(e.GetHitData().HitPosition);
@@ -84,7 +84,7 @@ class AiWeaponNet {
     o.f8n.Y = e.Y;
     o.f8n.Z = e.Z;
     r.C8n = o;
-    Net_1.Net.Call(16491, r, e => {});
+    Net_1.Net.Call(25607, r, e => {});
     return true;
   }
   Ije(e) {

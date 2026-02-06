@@ -46,7 +46,7 @@ class TsDecoratorBlackboardIntCompare extends UE.BTDecorator_BlueprintBase {
     }
     this.InitTsVariables();
     let s = undefined;
-    e = t.Entity.GetComponent(79);
+    e = t.Entity.GetComponent(81);
     s = (s = (s = e ? e.StateMachineGroup?.GetCustomBlackboard(this.TsBlackboardKey) : s) === undefined ? ControllerHolder_1.ControllerHolder.BlackboardController.GetIntValueByEntity(t.Entity.Id, this.TsBlackboardKey) : s) || 0;
     switch (this.TsOperation) {
       case 0:

@@ -122,12 +122,12 @@ class PlotController extends UiControllerBase_1.UiControllerBase {
     }
   }
   static TogglePlotIndependentStreaming(e, t = undefined) {
-    if (!this.$qf?.IsValid()) {
-      this.$qf = ModelManager_1.ModelManager.GameModeModel?.CreateShapedStreamingSource(360);
+    if (!this.ZVf?.IsValid()) {
+      this.ZVf = ModelManager_1.ModelManager.GameModeModel?.CreateShapedStreamingSource(360);
     }
-    var o = this.$qf?.GetComponentByClass(UE.WorldPartitionStreamingSourceComponent.StaticClass());
+    var o = this.ZVf?.GetComponentByClass(UE.WorldPartitionStreamingSourceComponent.StaticClass());
     if (e && t) {
-      this.$qf?.D_K2_SetActorLocation(t.ToUeVector(true), false, undefined, false);
+      this.ZVf?.D_K2_SetActorLocation(t.ToUeVector(true), false, undefined, false);
       o?.EnableStreamingSource();
     } else {
       o?.DisableStreamingSource();
@@ -195,6 +195,9 @@ class PlotController extends UiControllerBase_1.UiControllerBase {
     this.EnableViewControl(false);
     var e = ModelManager_1.ModelManager.PlotModel.PlotResult;
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PlotNetworkEnd, e);
+    if (UiManager_1.UiManager.IsViewOpen("MusicSubtitleView")) {
+      UiManager_1.UiManager.CloseView("MusicSubtitleView");
+    }
     ControllerHolder_1.ControllerHolder.PreloadControllerNew.RemovePlot(e.FlowListName, e.FlowId, e.StateId);
     e.Reset();
     ModelManager_1.ModelManager.PlotModel.ClearContext();
@@ -231,7 +234,8 @@ class PlotController extends UiControllerBase_1.UiControllerBase {
         o = "PlotSubtitleView";
         break;
       case "LevelC":
-        o = "PlotView";
+        var r = ModelManager_1.ModelManager.PlotModel.PlotConfig.ActivityGamePlayPlotConfig;
+        o = r ? "ActivityGamePlayPlotView" : "PlotView";
         break;
       case "LevelD":
         o = "PlotViewHUD";
@@ -328,8 +332,8 @@ class PlotController extends UiControllerBase_1.UiControllerBase {
     var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
     if (t && !this.TYi.has(t.Id)) {
       this.TYi.add(t.Id);
-      e = t?.Entity?.GetComponent(183);
-      if (t = t?.Entity?.GetComponent(215)) {
+      e = t?.Entity?.GetComponent(185);
+      if (t = t?.Entity?.GetComponent(217)) {
         if (!t.HasTag(this.LYi)) {
           t.AddTag(this.LYi);
         }
@@ -351,8 +355,8 @@ class PlotController extends UiControllerBase_1.UiControllerBase {
     this.TYi.clear();
   }
   static RYi(e, t) {
-    var o = e?.GetComponent(183);
-    var e = e?.GetComponent(215);
+    var o = e?.GetComponent(185);
+    var e = e?.GetComponent(217);
     if (t) {
       e?.RemoveTag(this.LYi);
       e?.RemoveTag(this.DYi);
@@ -383,7 +387,7 @@ class PlotController extends UiControllerBase_1.UiControllerBase {
         this.EndInteraction();
         return false;
       }
-      var r = o.Entity.GetComponent(207);
+      var r = o.Entity.GetComponent(209);
       if (!r) {
         this.EndInteraction();
         return false;
@@ -723,7 +727,7 @@ PlotController.AfterTick = o => {
   }
 };
 PlotController.O01 = undefined;
-PlotController.$qf = undefined;
+PlotController.ZVf = undefined;
 PlotController.SYi = () => {
   if (ModelManager_1.ModelManager.PlotModel.IsInPlot) {
     ModelManager_1.ModelManager.PlotModel.PlotResult.ResultCode = 1;

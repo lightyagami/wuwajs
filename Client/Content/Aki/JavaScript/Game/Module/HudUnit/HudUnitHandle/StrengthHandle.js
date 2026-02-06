@@ -13,6 +13,7 @@ const StrengthUnit_1 = require("../HudUnit/StrengthUnit");
 const HudUnitHandleBase_1 = require("./HudUnitHandleBase");
 const flyTag = -2027866845;
 const motorcycleTag = 346080557;
+const mechanicalTag = 225676701;
 class StrengthHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
   constructor() {
     super(...arguments);
@@ -91,6 +92,7 @@ class StrengthHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
     if (t && (e = t.EntityHandle.Id, this.Rni !== e) && (this.Rni = e, this.X9e = t.EntityHandle, EventSystem_1.EventSystem.AddWithTargetUseHoldKey(this, t.EntityHandle, EventDefine_1.EEventName.RemoveEntity, this.zpe), e = t.GameplayTagComponent)) {
       this.mdt(e, flyTag, this.UWi);
       this.mdt(e, motorcycleTag, this.UWi);
+      this.mdt(e, mechanicalTag, this.UWi);
       this.mdt(e, -689911122, this.VQ_, true);
     }
   }
@@ -114,6 +116,16 @@ class StrengthHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
   }
   zAl(t) {
     if (this.vni && (t = t?.GameplayTagComponent)) {
+      if (t.HasTag(mechanicalTag)) {
+        this.vni.AddStrengthItem(4, 2);
+        this.vni.SetStandardBarMode(false);
+        this.vni.SwapPlace(true);
+        if (Log_1.Log.CheckDebug()) {
+          Log_1.Log.Debug("HudUnit", 96, "增加Aimisi机甲体力条");
+        }
+      } else {
+        this.vni.SetStandardBarMode(true);
+      }
       if (t.HasTag(flyTag)) {
         this.vni.AddStrengthItem(2, 1);
         this.vni.SwapPlace(true);

@@ -12,13 +12,13 @@ const ModelManager_1 = require("../../Manager/ModelManager");
 const VisibleStateUtil_1 = require("../BattleUi/VisibleStateUtil");
 class SkillCdController extends ControllerBase_1.ControllerBase {
   static OnInit() {
-    Net_1.Net.Register(27909, this.uQe);
-    Net_1.Net.Register(21493, this.cQe);
+    Net_1.Net.Register(19564, this.uQe);
+    Net_1.Net.Register(16984, this.cQe);
     return true;
   }
   static OnClear() {
-    Net_1.Net.UnRegister(27909);
-    Net_1.Net.UnRegister(21493);
+    Net_1.Net.UnRegister(19564);
+    Net_1.Net.UnRegister(16984);
     return true;
   }
   static OnTick(e) {}

@@ -126,6 +126,9 @@ class UiViewBase extends UiPanelBase_1.UiPanelBase {
     var n = new CustomPromise_1.CustomPromise();
     await this.UiViewSequence.PlaySequenceAsync(e, n, i, t, s);
   }
+  PlayOrReplaySequence(e, i = false, t = undefined) {
+    this.UiViewSequence.PlayOrReplaySequenceByName(e, i, t);
+  }
   SetAudioEvent(e) {
     this.AudioEvent = e;
   }
@@ -187,6 +190,8 @@ class UiViewBase extends UiPanelBase_1.UiPanelBase {
       } else {
         return UiLayer_1.UiLayer.GetFloatUnit(UiLayerType_1.ELayerType.Float, i.RootItemIndex);
       }
+    } else if (e === UiLayerType_1.ELayerType.Loading) {
+      return UiLayer_1.UiLayer.GetFloatUnit(UiLayerType_1.ELayerType.Loading, UiLayerType_1.LOADING_VIEW_NODE_TYPE);
     } else {
       return UiLayer_1.UiLayer.GetLayerRootUiItem(e);
     }
@@ -303,6 +308,9 @@ class UiViewBase extends UiPanelBase_1.UiPanelBase {
     this.ShowPromise?.SetResult(undefined);
     this.HandleAllLoadingFinishOperation();
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnViewShow, this.Info.Name, this);
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("UiCore", 95, "界面显示完成", ["ViewName", this.Info.Name]);
+    }
   }
   OnFinishShowImplementImplement() {
     this.OnFinishShowImplementImplementImplement();

@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.LoginServerView = undefined;
 const UE = require("ue");
+const LauncherNetworkDetectionController_1 = require("../../../../Launcher/NetworkDetection/LauncherNetworkDetectionController");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const ModelManager_1 = require("../../../Manager/ModelManager");
@@ -17,7 +18,7 @@ class LoginServerView extends UiViewBase_1.UiViewBase {
     super(...arguments);
     this.xqe = undefined;
     this.TSi = undefined;
-    this.LSi = (e, t, i) => {
+    this.LSi = (e, t, r) => {
       return new LoginServerItem_1.LoginServerItem();
     };
     this.DSi = () => {
@@ -29,6 +30,7 @@ class LoginServerView extends UiViewBase_1.UiViewBase {
       ModelManager_1.ModelManager.LoginModel.SetServerName(e.name);
       ModelManager_1.ModelManager.LoginModel.SetServerIp(e.ip, 3);
       ModelManager_1.ModelManager.LoginModel.SetServerId(e.id);
+      LauncherNetworkDetectionController_1.LauncherNetworkDetectionController.LoginNetworkDetectionConfig = undefined;
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnConfirmServerItem);
       this.CloseMe();
     };
@@ -66,15 +68,15 @@ class LoginServerView extends UiViewBase_1.UiViewBase {
     this.GetUIDynScrollViewComponent(2).ScrollToItemIndex(e);
   }
   ASi(t) {
-    let i = 0;
-    var r = t.length;
-    for (let e = 0; e < r; e++) {
+    let r = 0;
+    var i = t.length;
+    for (let e = 0; e < i; e++) {
       if (ModelManager_1.ModelManager.LoginServerModel.CurrentUiSelectSeverData === t[e]) {
-        i = e;
+        r = e;
         break;
       }
     }
-    return i;
+    return r;
   }
   OnBeforeDestroy() {
     this.xqe.ClearChildren();

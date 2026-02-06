@@ -61,7 +61,7 @@ let DangoPerformComponent = class DangoPerformComponent extends StackableChessCo
     return !!super.OnStart() && (this.ActorComp = this.Entity.CheckGetComponent(2), true);
   }
   OnActivate() {
-    var t = this.Entity.GetComponent(186)?.MainAnimInstance;
+    var t = this.Entity.GetComponent(188)?.MainAnimInstance;
     if (t && UE.KuroStaticLibrary.IsObjectClassByName(t, new UE.FName("ABP_TuanziNPC_C"))) {
       this.rRe = t;
     }
@@ -245,5 +245,5 @@ let DangoPerformComponent = class DangoPerformComponent extends StackableChessCo
     }
   }
 };
-DangoPerformComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(310)], DangoPerformComponent);
+DangoPerformComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(312)], DangoPerformComponent);
 exports.DangoPerformComponent = DangoPerformComponent; //# sourceMappingURL=DangoPerformComponent.js.map

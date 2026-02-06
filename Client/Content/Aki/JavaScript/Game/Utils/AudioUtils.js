@@ -27,7 +27,7 @@ class AudioUtils {
       Log_1.Log.Debug("Audio", 39, "[AudioBox] 更新音频盒子队列", ["Type", o], ["Box", e]);
     }
     var e = ModelManager_1.ModelManager.AudioModel.UpdateAudioBoxQueue(e, o);
-    if (e && (o = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e.PbDataId)) && (e = o.Entity.GetComponent(140))) {
+    if (e && (o = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e.PbDataId)) && (e = o.Entity.GetComponent(142))) {
       e.PostAudioBoxEvent();
     }
   }
@@ -53,7 +53,7 @@ class AudioUtils {
         }
       }
     }
-    o?.GetComponent(199)?.UpdateIsInAudioShrubEvent(r.IsAudioShrub, r.AudioShrubTag);
+    o?.GetComponent(201)?.UpdateIsInAudioShrubEvent(r.IsAudioShrub, r.AudioShrubTag);
     return r;
   }
 }

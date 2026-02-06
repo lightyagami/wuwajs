@@ -19,6 +19,7 @@ const LoopScrollView_1 = require("../../Util/ScrollView/LoopScrollView");
 const PayShopGoods_1 = require("../PayShopData/PayShopGoods");
 const PayShopItem_1 = require("./TabItem/PayShopItem");
 const PayShopSwitchItem_1 = require("./TabItem/PayShopSwitchItem");
+const LogReportDefine_1 = require("../../LogReport/LogReportDefine");
 const TIMEGAP = 1000;
 class DiscountShopView extends UiTabViewBase_1.UiTabViewBase {
   constructor() {
@@ -53,6 +54,10 @@ class DiscountShopView extends UiTabViewBase_1.UiTabViewBase {
       var t = ModelManager_1.ModelManager.PayShopModel.GetPayShopTabIdList(this.CurrentShopId);
       this.CurrentSelectTabId = t[e];
       this.RefreshLoopScroll(this.CurrentSelectTabId);
+      var t = new LogReportDefine_1.OnClickPayShopTabLogEvent();
+      t.i_shop_id = this.CurrentShopId;
+      t.i_tab_id = this.CurrentSelectTabId;
+      ControllerHolder_1.ControllerHolder.LogReportController.LogReport(t);
     };
     this.CheckIfNeedShowPlayStationStoreIcon = () => {
       if (this.Uhh) {

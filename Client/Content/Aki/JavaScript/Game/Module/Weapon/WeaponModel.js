@@ -290,25 +290,19 @@ class WeaponModel extends ModelBase_1.ModelBase {
   }
   GetWeaponItemExp(e, t) {
     if (e && e > 0) {
-      if (e = this.GetWeaponDataByIncId(e)) {
-        return e.GetMaterialExp();
-      } else {
-        return 0;
-      }
+      return this.GetWeaponDataByIncId(e).GetMaterialExp();
     } else {
       return ConfigManager_1.ConfigManager.WeaponConfig.GetWeaponExpItemConfig(t).BasicExp;
     }
   }
   GetWeaponItemExpCost(e, t) {
     if (e && e > 0) {
-      if (e = this.GetWeaponDataByIncId(e)) {
+      e = this.GetWeaponDataByIncId(e);
+      if (e) {
         return e.GetMaterialCost();
-      } else {
-        return 0;
       }
-    } else {
-      return ConfigManager_1.ConfigManager.WeaponConfig.GetWeaponExpItemConfig(t).Cost;
     }
+    return ConfigManager_1.ConfigManager.WeaponConfig.GetWeaponExpItemConfig(t).Cost;
   }
   GetWeaponExpItemListCost(e) {
     let t = 0;

@@ -146,10 +146,10 @@ class FormationPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
         this.jmc();
       }
     };
-    this.zAf = () => {
+    this.Pqf = () => {
       this.RefreshKeyItemEnableInMotorcycle();
     };
-    this.sJm = () => {
+    this.Wef = () => {
       this.RefreshKeyItemEnableInMotorcycle();
     };
   }
@@ -306,8 +306,8 @@ class FormationPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InputControllerChange, this.XBo);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RefreshGuest, this.jmc);
     if (this.GetOperationType() === 2) {
-      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiPressMotorcycleCombineButtonChanged, this.zAf);
-      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiMotorcycleStateChanged, this.sJm);
+      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiPressMotorcycleCombineButtonChanged, this.Pqf);
+      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiMotorcycleStateChanged, this.Wef);
     }
   }
   RemoveEvents() {
@@ -328,8 +328,8 @@ class FormationPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InputControllerChange, this.XBo);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RefreshGuest, this.jmc);
     if (this.GetOperationType() === 2) {
-      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiPressMotorcycleCombineButtonChanged, this.zAf);
-      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiMotorcycleStateChanged, this.sJm);
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiPressMotorcycleCombineButtonChanged, this.Pqf);
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiMotorcycleStateChanged, this.Wef);
     }
   }
   jze(t, e) {

@@ -83,8 +83,11 @@ class RoleSkillTreeView extends UiTabViewBase_1.UiTabViewBase {
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRoleInternalViewEnter);
       }
     };
-    this.FFf = () => {
+    this.m9f = () => {
       this.kWd?.OnRoleSkillBranchChanged();
+    };
+    this._8g = e => {
+      this.kWd?.SetSkillBranchVisible(1, !e);
     };
   }
   OnRegisterComponent() {
@@ -106,7 +109,8 @@ class RoleSkillTreeView extends UiTabViewBase_1.UiTabViewBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SkillTreeNodeActive, this.Ldo);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SkillTreeNodeLevelUp, this.Udo);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnAddCommonItemList, this.TTt);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRoleSkillBranchChanged, this.FFf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRoleSkillBranchChanged, this.m9f);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRoleSkillInputPanelVisible, this._8g);
   }
   RemoveEventListener() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RoleSystemChangeRole, this.Kco);
@@ -116,7 +120,8 @@ class RoleSkillTreeView extends UiTabViewBase_1.UiTabViewBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SkillTreeNodeActive, this.Ldo);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SkillTreeNodeLevelUp, this.Udo);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnAddCommonItemList, this.TTt);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRoleSkillBranchChanged, this.FFf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRoleSkillBranchChanged, this.m9f);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRoleSkillInputPanelVisible, this._8g);
   }
   OnBeforeShow() {
     RoleController_1.RoleController.PlayRoleMontage(5);
@@ -134,7 +139,11 @@ class RoleSkillTreeView extends UiTabViewBase_1.UiTabViewBase {
     LogReportController_1.LogReportController.LogReport(e);
   }
   OnShowUiTabViewFromToggle() {
-    this.kWd?.PlayItemSequence("Sle");
+    if (this.d1o.GetPreSelectTabName() === this.GetViewName()) {
+      this.kWd?.PlayItemSequence("ChangeRole");
+    } else {
+      this.kWd?.PlayItemSequence("Sle");
+    }
   }
   OnShowUiTabViewFromView() {
     this.kWd?.PlayItemSequence("Start");

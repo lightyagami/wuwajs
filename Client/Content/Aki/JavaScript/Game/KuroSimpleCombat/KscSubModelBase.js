@@ -17,12 +17,14 @@ class KscSubModelBase {
     this.dRu = new Map();
     this.EntityProcessMgr = new UiAsyncTaskManager_1.UiAsyncTaskManager(true);
     this.KscEntities = new Map();
+    this.DamageIds = new Map();
     this.KscPlayerEntity = undefined;
     this.KscPlayerCreatureDataId = 0;
     this.KscPlayerEntityId = 0;
     this.KscPlayerHeadStateData = undefined;
     this.NextPlayerHpSyncTime = 0;
     this.IsHpModify = false;
+    this.KscInitState = 0;
   }
   GetSkillDtPath() {
     return "";
@@ -39,7 +41,9 @@ class KscSubModelBase {
     this.EntityDataDt.clear();
     this.dRu.clear();
     this.KscEntities.clear();
+    this.DamageIds.clear();
     this.SetKscPlayerEntity(undefined, 0);
+    this.KscInitState = 0;
     return this.OnClear();
   }
   OnInit() {
@@ -68,6 +72,9 @@ class KscSubModelBase {
   RemoveLogicProxy(t) {
     return this.dRu.delete(t);
   }
+  GetAllEntityIds() {
+    return Array.from(this.dRu.keys());
+  }
   GetEntityCreatureId(t) {
     t = this.KscEntities.get(t);
     if (t?.Valid) {
@@ -75,6 +82,9 @@ class KscSubModelBase {
     } else {
       return 0;
     }
+  }
+  GetEntityPathById(t) {
+    return this.EntityDataDt.get(t)?.[1];
   }
   SetKscPlayerEntity(t, e) {
     this.KscPlayerEntity = t;
@@ -101,6 +111,9 @@ class KscSubModelBase {
       this.KscPlayerHeadStateData = undefined;
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnKscPlayerHpChanged, undefined);
     }
+  }
+  IsMapLoadOrWorldDone() {
+    return this.KscInitState === 2 || this.KscInitState === 3;
   }
 }
 exports.KscSubModelBase = KscSubModelBase;

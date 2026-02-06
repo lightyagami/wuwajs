@@ -47,7 +47,7 @@ class FormationItem extends BattleChildView_1.BattleChildView {
     this.RoleConfig = undefined;
     this.RoleSkinConfig = undefined;
     this.i$e = [];
-    this.hhf = 0;
+    this.b1f = 0;
     this.vat = 0;
     this.Sat = 0;
     this.yat = undefined;
@@ -67,7 +67,7 @@ class FormationItem extends BattleChildView_1.BattleChildView {
     this.yoh = false;
     this.rxl = false;
     this.Znh = false;
-    this.JAf = undefined;
+    this.Aqf = undefined;
     this.qat = t => {
       if (Info_1.Info.OperationType === 2) {
         t = t * TimeUtil_1.TimeUtil.InverseMillisecond;
@@ -154,6 +154,7 @@ class FormationItem extends BattleChildView_1.BattleChildView {
         this.RefreshLinkActive(false);
       }
     };
+    this.$Bg = undefined;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UIItem], [2, UE.UITexture], [3, UE.UIText], [4, UE.UIItem], [5, UE.UINiagara], [9, UE.UITexture], [12, UE.UISprite], [17, UE.UISprite], [13, UE.UISprite], [14, UE.UIItem], [15, UE.UITexture], [16, UE.UISprite], [6, UE.UIItem], [10, UE.UIItem], [7, UE.UINiagara], [8, UE.UIText], [11, UE.UISprite], [18, UE.UIItem], [19, UE.UIItem], [20, UE.UIItem], [21, UE.UINiagara], [22, UE.UINiagara], [23, UE.UIItem]];
@@ -180,9 +181,9 @@ class FormationItem extends BattleChildView_1.BattleChildView {
       this.Qtt = new CombineKeyItem_1.CombineKeyItem();
       await this.Qtt.CreateByActorAsync(i.GetOwner());
     }
-    await this.v4f();
+    await this.A$f();
   }
-  async v4f() {
+  async A$f() {
     this.Pat = new FormationTrialItem_1.FormationTrialItem();
     await this.Pat.CreateThenShowByResourceIdAsync("UiItem_FigthRoleHeadTest", this.RootItem);
   }
@@ -274,11 +275,11 @@ class FormationItem extends BattleChildView_1.BattleChildView {
     var i;
     EventSystem_1.EventSystem.AddWithTarget(t, EventDefine_1.EEventName.OnChangeRoleCoolDownChanged, this.qat);
     if (this.IsMyRole) {
-      i = t.GetComponent(215);
+      i = t.GetComponent(217);
       this.d$e(i, 1414093614, this.jat);
       this.d$e(i, -2107968822, this.f51);
     } else {
-      i = t.GetComponent(215);
+      i = t.GetComponent(217);
       this.d$e(i, 166024319, this.Vat);
     }
   }
@@ -324,12 +325,16 @@ class FormationItem extends BattleChildView_1.BattleChildView {
       this.xat.Destroy();
       this.xat = undefined;
     }
+    if (TimerSystem_1.TimerSystem.Has(this.$Bg)) {
+      TimerSystem_1.TimerSystem.Remove(this.$Bg);
+      this.$Bg = undefined;
+    }
     super.Reset();
   }
   OnTick(t) {
     var i;
     if (this.vat > 0) {
-      if ((i = this.hhf - Time_1.Time.PlayerWorldTime) <= 0) {
+      if ((i = this.b1f - Time_1.Time.PlayerWorldTime) <= 0) {
         this.vat = 0;
         this.nht();
       } else {
@@ -369,7 +374,7 @@ class FormationItem extends BattleChildView_1.BattleChildView {
       var i = ModelManager_1.ModelManager.BattleUiModel.GetCurRoleData()?.EntityHandle;
       var e = this.RoleData.EntityHandle;
       if (i && e?.IsInit) {
-        t = i.Entity.GetComponent(104).IsQteReady(e);
+        t = i.Entity.GetComponent(106).IsQteReady(e);
       }
       this.hht(t, false);
     }
@@ -393,7 +398,7 @@ class FormationItem extends BattleChildView_1.BattleChildView {
     this._ht();
   }
   tht() {
-    var t = this.RoleData?.EntityHandle?.Entity?.GetComponent(99);
+    var t = this.RoleData?.EntityHandle?.Entity?.GetComponent(101);
     if (!!t && !((t = t.GetChangeRoleCoolDown()) <= 0)) {
       this.Gat(t, t);
     }
@@ -530,7 +535,7 @@ class FormationItem extends BattleChildView_1.BattleChildView {
       }
       this.nht();
     } else {
-      this.hhf = Time_1.Time.PlayerWorldTime + i;
+      this.b1f = Time_1.Time.PlayerWorldTime + i;
       this.vat = t;
       this.Sat = i;
       this.sht();
@@ -587,7 +592,7 @@ class FormationItem extends BattleChildView_1.BattleChildView {
   RefreshSelectedRole() {
     var t;
     if (this.RoleData?.AttributeComponent) {
-      if (!this.IsMyRole || (this.eht(), this.RoleData.AttributeComponent.GetCurrentValue(EAttributeId.Proto_Life) <= 0)) {
+      if (!this.IsMyRole || (this.WBg(), this.RoleData.AttributeComponent.GetCurrentValue(EAttributeId.Proto_Life) <= 0)) {
         this.SetRoleSelected(false);
       } else {
         t = this.zPl();
@@ -689,7 +694,7 @@ class FormationItem extends BattleChildView_1.BattleChildView {
   eht() {
     var t;
     if (Info_1.Info.OperationType === 2) {
-      if (this.IsMyRole && this.zPl() || (t = ModelManager_1.ModelManager.BattleUiModel.FormationPanelData?.GetRolePosition(this.PlayerId, this.RoleConfigId) ?? 0) <= 0 || (this.Qtt.RefreshAction("切换角色" + t), (t = this.Qtt.GetKeyName()) && this.JAf?.includes(t))) {
+      if (this.IsMyRole && this.zPl() || (t = ModelManager_1.ModelManager.BattleUiModel.FormationPanelData?.GetRolePosition(this.PlayerId, this.RoleConfigId) ?? 0) <= 0 || (this.Qtt.RefreshAction("切换角色" + t), (t = this.Qtt.GetKeyName()) && this.Aqf?.includes(t))) {
         this.Qtt.SetActive(false);
       } else {
         this.Qtt.SetActive(true);
@@ -863,8 +868,14 @@ class FormationItem extends BattleChildView_1.BattleChildView {
     }
   }
   SetInvisibleByKeyList(t) {
-    this.JAf = t;
-    this.eht();
+    this.Aqf = t;
+    this.WBg();
+  }
+  WBg() {
+    this.$Bg ||= TimerSystem_1.TimerSystem.Next(() => {
+      this.eht();
+      this.$Bg = undefined;
+    });
   }
 }
 exports.FormationItem = FormationItem;

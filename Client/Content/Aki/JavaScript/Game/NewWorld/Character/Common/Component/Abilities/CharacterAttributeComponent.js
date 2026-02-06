@@ -97,7 +97,7 @@ let CharacterAttributeComponent = class CharacterAttributeComponent extends Base
     }
   }
   static AttributeChangedNotify(t, e) {
-    var r = t?.GetComponent(182);
+    var r = t?.GetComponent(184);
     if (t && r) {
       for (const i of e.GSs) {
         if (CharacterAttributeTypes_1.stateAttributeIds.has(i.tSs)) {
@@ -111,7 +111,7 @@ let CharacterAttributeComponent = class CharacterAttributeComponent extends Base
     }
   }
   static RecoverPropChangedNotify(t, e) {
-    var r = t?.GetComponent(182);
+    var r = t?.GetComponent(184);
     if (r) {
       var i = Time_1.Time.ServerCombatStopTime - Number(MathUtils_1.MathUtils.LongToBigInt(e.S6n));
       for (const s of e.GSs) {
@@ -121,7 +121,7 @@ let CharacterAttributeComponent = class CharacterAttributeComponent extends Base
   }
   OnInit() {
     super.OnInit();
-    this.BuffComponent = this.Entity.CheckGetComponent(183);
+    this.BuffComponent = this.Entity.CheckGetComponent(185);
     return true;
   }
   OnStart() {
@@ -168,5 +168,5 @@ let CharacterAttributeComponent = class CharacterAttributeComponent extends Base
 };
 __decorate([CombatMessage_1.CombatNet.Listen("OFn", true)], CharacterAttributeComponent, "AttributeChangedNotify", null);
 __decorate([CombatMessage_1.CombatNet.Listen("v3n", true)], CharacterAttributeComponent, "RecoverPropChangedNotify", null);
-CharacterAttributeComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(182)], CharacterAttributeComponent);
+CharacterAttributeComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(184)], CharacterAttributeComponent);
 exports.CharacterAttributeComponent = CharacterAttributeComponent; //# sourceMappingURL=CharacterAttributeComponent.js.map

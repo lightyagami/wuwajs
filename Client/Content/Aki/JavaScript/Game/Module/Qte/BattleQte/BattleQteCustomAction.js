@@ -9,7 +9,7 @@ const ModelManager_1 = require("../../../Manager/ModelManager");
 const CooperationController_1 = require("../../Battle/Cooperation/CooperationController");
 function battleQteChangeRole(r) {
   var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentTeamItem;
-  if (!e?.EntityHandle?.Entity?.GetComponent(215)?.HasTag(-1697149502)) {
+  if (!e?.EntityHandle?.Entity?.GetComponent(217)?.HasTag(-1697149502)) {
     var a = ModelManager_1.ModelManager.SceneTeamModel.GetTeamItems();
     var n = a.length;
     var t = a.indexOf(e);

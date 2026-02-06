@@ -132,21 +132,26 @@ class PublicUtil {
         case 0:
           return `${t}?${r}&channelId=${ControllerHolder_1.ControllerHolder.KuroSdkController.GetChannelId()}`;
         case 1:
+        case 3:
+          return this.J4f(t);
+        case 2:
           var i = PublicUtil.OverridePackageId ?? ControllerHolder_1.ControllerHolder.KuroSdkController.GetPackageId();
           var o = ControllerHolder_1.ControllerHolder.KuroSdkController.GetChannelId();
-          var a = ModelManager_1.ModelManager.KuroSdkModel.GetPlatformStr();
-          var l = LanguageSystem_1.LanguageSystem.PackageLanguage;
-          return `${t}?login_info=${UE.KuroStaticLibrary.Base64Encode(r)}&packageId=${i}&channelId=${o}&platform=${a}&lang=${l}&entryType=game&svr_area=${ControllerHolder_1.ControllerHolder.KuroSdkController.GetIfGlobalSdk() ? "global" : "cn"}`;
-        case 2:
-          i = PublicUtil.OverridePackageId ?? ControllerHolder_1.ControllerHolder.KuroSdkController.GetPackageId();
-          o = ControllerHolder_1.ControllerHolder.KuroSdkController.GetChannelId();
-          a = UE.KuroStaticLibrary.Base64Encode(r);
-          l = ControllerHolder_1.ControllerHolder.KuroSdkController.GetIfGlobalSdk() ? "global" : "cn";
+          var a = UE.KuroStaticLibrary.Base64Encode(r);
+          var l = ControllerHolder_1.ControllerHolder.KuroSdkController.GetIfGlobalSdk() ? "global" : "cn";
           return `${t}/${LanguageSystem_1.LanguageSystem.PackageLanguage}/?login_info=${a}&packageId=${i}&channelId=${o}&svr_area=${l}&entryType=game&platform=${ModelManager_1.ModelManager.KuroSdkModel.GetPlatformStr()}`;
         default:
           return;
       }
     }
+  }
+  static J4f(t) {
+    var e = this.GetPublicInfo();
+    var r = PublicUtil.OverridePackageId ?? ControllerHolder_1.ControllerHolder.KuroSdkController.GetPackageId();
+    var i = ControllerHolder_1.ControllerHolder.KuroSdkController.GetChannelId();
+    var o = ModelManager_1.ModelManager.KuroSdkModel.GetPlatformStr();
+    var a = LanguageSystem_1.LanguageSystem.PackageLanguage;
+    return `${t}?login_info=${UE.KuroStaticLibrary.Base64Encode(e)}&packageId=${r}&channelId=${i}&platform=${o}&lang=${a}&entryType=game&svr_area=${ControllerHolder_1.ControllerHolder.KuroSdkController.GetIfGlobalSdk() ? "global" : "cn"}`;
   }
   static GetExtendExternalUrl(t, e = true) {
     if (StringUtils_1.StringUtils.IsEmpty(t) || StringUtils_1.StringUtils.IsBlank(t)) {

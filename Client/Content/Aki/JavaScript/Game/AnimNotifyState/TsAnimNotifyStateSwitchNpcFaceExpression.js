@@ -16,11 +16,11 @@ class TsAnimNotifyStateSwitchNpcFaceExpression extends UE.KuroAnimNotifyState {
   }
   K2_NotifyBegin(t, e, s) {
     var t = t.GetOwner();
-    return t instanceof TsBaseCharacter_1.default && !!(t = t.CharacterActorComponent?.Entity.GetComponent(197)) && (this.PlayExpressionHandle ||= t.ExpressionController.ChangeFaceForExpressionFromAnimNotify(this.FaceExpressionId), true);
+    return t instanceof TsBaseCharacter_1.default && !!(t = t.CharacterActorComponent?.Entity.GetComponent(199)) && (this.PlayExpressionHandle ||= t.ExpressionController.ChangeFaceForExpressionFromAnimNotify(this.FaceExpressionId), true);
   }
   K2_NotifyEnd(t, e) {
     var t = t.GetOwner();
-    return t instanceof TsBaseCharacter_1.default && !!(t = t.CharacterActorComponent?.Entity.GetComponent(197)) && (this.PlayExpressionHandle && (t.ExpressionController.ResetFaceForExpressionFromAnimNotify(this.PlayExpressionHandle), this.PlayExpressionHandle = 0), true);
+    return t instanceof TsBaseCharacter_1.default && !!(t = t.CharacterActorComponent?.Entity.GetComponent(199)) && (this.PlayExpressionHandle && (t.ExpressionController.ResetFaceForExpressionFromAnimNotify(this.PlayExpressionHandle), this.PlayExpressionHandle = 0), true);
   }
   GetNotifyName() {
     return "切换Npc表情";

@@ -29,7 +29,7 @@ class EditBattleTeamModel extends ModelBase_1.ModelBase {
     this.e4t = new Map();
     this.t4t = undefined;
     this.i4t = true;
-    this.G6f = false;
+    this.iJf = false;
     this.IsFormTeleportAction = false;
     this.o4t = false;
   }
@@ -46,10 +46,10 @@ class EditBattleTeamModel extends ModelBase_1.ModelBase {
     this.o4t = e;
   }
   get CanUseSpecialTrialRole() {
-    return this.G6f;
+    return this.iJf;
   }
   set CanUseSpecialTrialRole(e) {
-    this.G6f = e;
+    this.iJf = e;
   }
   SetInstanceDungeonId(e) {
     this.z3t = e;

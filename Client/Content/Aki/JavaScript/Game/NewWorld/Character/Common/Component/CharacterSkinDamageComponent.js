@@ -113,7 +113,7 @@ let CharacterSkinDamageComponent = CharacterSkinDamageComponent_1 = class Charac
   OnStart() {
     this.EIe = this.Entity.CheckGetComponent(0);
     this.Hte = this.Entity.CheckGetComponent(3);
-    this.Lie = this.Entity.CheckGetComponent(215);
+    this.Lie = this.Entity.CheckGetComponent(217);
     this.SkinDamageType = 0;
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnBattleStateChanged, this.Zpe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRoleGoDown, this.q2t);
@@ -223,5 +223,5 @@ let CharacterSkinDamageComponent = CharacterSkinDamageComponent_1 = class Charac
   }
 };
 CharacterSkinDamageComponent.EnableSkinDamage = true;
-CharacterSkinDamageComponent = CharacterSkinDamageComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(221)], CharacterSkinDamageComponent);
+CharacterSkinDamageComponent = CharacterSkinDamageComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(223)], CharacterSkinDamageComponent);
 exports.CharacterSkinDamageComponent = CharacterSkinDamageComponent; //# sourceMappingURL=CharacterSkinDamageComponent.js.map

@@ -33,7 +33,7 @@ class HonamiStoryRoleEquipItem extends UiPanelBase_1.UiPanelBase {
     this.Xmt = undefined;
     this.Ufd = [];
     this.fcl = undefined;
-    this.etf = false;
+    this.arf = false;
     this.zmm = e => {
       if (this.OnEnterGridCb) {
         this.OnEnterGridCb(e);
@@ -65,16 +65,17 @@ class HonamiStoryRoleEquipItem extends UiPanelBase_1.UiPanelBase {
       }
     };
     this.jYd = () => {
-      var e = this.C$m();
+      var e = this.mQm();
       var t = HonamiStoryUtil_1.HonamiStoryUtil.CheckInHonamiStoryDungeon();
       ModelManager_1.ModelManager.HonamiStoryModel.AddLevel = [90, 90];
       if (t || !e) {
-        this.Fuf();
+        this.qdf();
       } else {
-        this.Nuf();
+        this.Odf();
       }
     };
     this.osa = e => {
+      ModelManager_1.ModelManager.HonamiStoryModel.AddLevel = [-1, -1];
       var t;
       var i;
       var r;
@@ -111,7 +112,7 @@ class HonamiStoryRoleEquipItem extends UiPanelBase_1.UiPanelBase {
       return !ModelManager_1.ModelManager.RoleModel.GetRoleDataById(e)?.IsTrialRole() && !!ModelManager_1.ModelManager.EditFormationModel.IsRoleDead(e);
     };
     this.v4t = t => {
-      var e = this.C$m();
+      var e = this.mQm();
       var i = HonamiStoryUtil_1.HonamiStoryUtil.CheckInHonamiStoryDungeon();
       if (!e || i) {
         return false;
@@ -161,7 +162,7 @@ class HonamiStoryRoleEquipItem extends UiPanelBase_1.UiPanelBase {
         this.fcl?.ResetToggleState();
       }
     };
-    this.Gif = () => {
+    this.Jof = () => {
       this.fcl?.SetNewItemShow(false);
     };
   }
@@ -184,15 +185,15 @@ class HonamiStoryRoleEquipItem extends UiPanelBase_1.UiPanelBase {
     await Promise.all(e);
   }
   OnStart() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnHonamiStoryBackpackClickWeapon, this.Gif);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnHonamiStoryBackpackClickWeapon, this.Jof);
   }
   OnBeforeShow() {
     this.g0o();
     this.a8l();
-    this.ttf();
+    this.hrf();
   }
   OnBeforeDestroy() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnHonamiStoryBackpackClickWeapon, this.Gif);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnHonamiStoryBackpackClickWeapon, this.Jof);
   }
   g0o() {
     var e;
@@ -232,7 +233,7 @@ class HonamiStoryRoleEquipItem extends UiPanelBase_1.UiPanelBase {
     await this.Gfd();
     this.g0o();
     this.a8l();
-    this.ttf();
+    this.hrf();
   }
   async Gfd() {
     var t = this.xfd.GetPluginList();
@@ -274,15 +275,15 @@ class HonamiStoryRoleEquipItem extends UiPanelBase_1.UiPanelBase {
     return this.Ufd;
   }
   SetRoleTipOpenState(e) {
-    var t = this.itf();
-    this.etf = e;
+    var t = this.lrf();
+    this.arf = e;
     this.GetButton(5)?.RootUIComp.SetUIActive(t && !e);
   }
-  ttf() {
-    var e = this.itf();
-    this.GetButton(5)?.RootUIComp.SetUIActive(e && !this.etf);
+  hrf() {
+    var e = this.lrf();
+    this.GetButton(5)?.RootUIComp.SetUIActive(e && !this.arf);
   }
-  itf() {
+  lrf() {
     var e;
     var t;
     return (!!ModelManager_1.ModelManager.HonamiStoryModel.GetBackpackLogic().IsBackpackView() || !HonamiStoryUtil_1.HonamiStoryUtil.IsMobileView()) && !(e = this.xfd.GetWeaponId() <= 0, t = this.xfd.GetEquipItemDataList().length === 0, e && t);
@@ -308,10 +309,10 @@ class HonamiStoryRoleEquipItem extends UiPanelBase_1.UiPanelBase {
       t.Refresh(t.GetData(), -1);
     }
   }
-  C$m() {
+  mQm() {
     return ModelManager_1.ModelManager.FunctionModel.IsOpen(10111);
   }
-  Fuf() {
+  qdf() {
     const t = HonamiStoryUtil_1.HonamiStoryUtil.CheckInHonamiStoryDungeon();
     var e = this.xfd.GetRoleId();
     var i = this.xfd.GetPosition();
@@ -333,7 +334,7 @@ class HonamiStoryRoleEquipItem extends UiPanelBase_1.UiPanelBase {
     RoleController_1.RoleController.OpenTeamRoleSelectView(e);
     AudioSystem_1.AudioSystem.PostEvent("play_ui_honamistory_roleselect_page_start");
   }
-  Nuf() {
+  Odf() {
     var e = this.xfd.GetRoleId();
     var t = this.xfd.GetPosition();
     var i = ModelManager_1.ModelManager.HonamiStoryModel.GetActivityData(false);

@@ -36,11 +36,11 @@ let CharacterLinkedAnimInstComponent = class CharacterLinkedAnimInstComponent ex
     this.CurrentActivate = 0;
   }
   static get Dependencies() {
-    return [3, 215, 186];
+    return [3, 217, 188];
   }
   OnStart() {
     this.ActorComp = this.Entity.GetComponent(3);
-    this.AnimComp = this.Entity.GetComponent(186);
+    this.AnimComp = this.Entity.GetComponent(188);
     return true;
   }
   SyncLinkGameplayAnimBlueprint(e) {
@@ -66,5 +66,5 @@ let CharacterLinkedAnimInstComponent = class CharacterLinkedAnimInstComponent ex
     return "";
   }
 };
-CharacterLinkedAnimInstComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(108)], CharacterLinkedAnimInstComponent);
+CharacterLinkedAnimInstComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(110)], CharacterLinkedAnimInstComponent);
 exports.CharacterLinkedAnimInstComponent = CharacterLinkedAnimInstComponent; //# sourceMappingURL=CharacterLinkedAnimInstComponent.js.map

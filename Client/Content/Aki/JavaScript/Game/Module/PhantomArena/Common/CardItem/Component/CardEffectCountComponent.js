@@ -16,23 +16,23 @@ class CardEffectCountComponent extends CardComponentBase_1.CardComponentBase {
     this.Data = undefined;
     this.Layout = undefined;
     this.Sequence = undefined;
-    this.lkm = () => new EffectCountItem();
+    this.Iqm = () => new EffectCountItem();
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UILayoutBase], [2, UE.UIItem]];
   }
   OnStart() {
     this.Sequence = new UiSequencePlayer_1.UiSequencePlayer(this.RootItem);
-    this.Layout = new GenericLayout_1.GenericLayout(this.GetLayoutBase(1), this.lkm, this.GetItem(2).GetOwner());
+    this.Layout = new GenericLayout_1.GenericLayout(this.GetLayoutBase(1), this.Iqm, this.GetItem(2).GetOwner());
   }
   OnBeforeDestroy() {
     this.Sequence.Clear();
   }
-  PFm() {
+  XNm() {
     this.GetText(0).SetText(this.Data.EffectCount + "/" + this.Data.EffectCountMax);
   }
-  async Tjm() {
-    this.PFm();
+  async E$m() {
+    this.XNm();
     var t = [];
     for (const s of this.Layout.GetLayoutItemList()) {
       t.push(s.FullSequence());
@@ -41,8 +41,8 @@ class CardEffectCountComponent extends CardComponentBase_1.CardComponentBase {
     t.push(this.Sequence.PlaySequenceAsync("Full", e));
     await Promise.all(t);
   }
-  async bjm(e, s) {
-    this.PFm();
+  async I$m(e, s) {
+    this.XNm();
     var i = this.Layout.GetLayoutItemList();
     var r = [];
     for (let t = e; t < s && !(t >= i.length); t++) {
@@ -50,15 +50,15 @@ class CardEffectCountComponent extends CardComponentBase_1.CardComponentBase {
     }
     await Promise.all(r);
   }
-  async Rjm() {
-    this.PFm();
+  async T$m() {
+    this.XNm();
     var t = [];
     for (const e of this.Layout.GetLayoutItemList()) {
       t.push(e.ResetSequence());
     }
     await Promise.all(t);
   }
-  AFm() {
+  YNm() {
     var e = [];
     for (let t = 0; t < this.Data.EffectCountMax; t++) {
       var s = {
@@ -75,8 +75,8 @@ class CardEffectCountComponent extends CardComponentBase_1.CardComponentBase {
       e = this.Data?.InFight ?? false;
       if (t.InFight !== e) {
         this.Data = t;
-        this.PFm();
-        this.AFm();
+        this.XNm();
+        this.YNm();
       }
     } else {
       this.SetActive(false);
@@ -86,11 +86,11 @@ class CardEffectCountComponent extends CardComponentBase_1.CardComponentBase {
     var e = this.Data.EffectCountMax;
     var s = this.Data.EffectCount;
     if ((this.Data = t).EffectCount === e) {
-      await this.Tjm();
+      await this.E$m();
     } else if (t.EffectCount > s) {
-      await this.bjm(s, t.EffectCount);
+      await this.I$m(s, t.EffectCount);
     } else if (t.EffectCount === 0) {
-      await this.Rjm();
+      await this.T$m();
     }
   }
 }

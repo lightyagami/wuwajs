@@ -82,7 +82,7 @@ class NpcFlowLogic extends CharacterFlowLogic_1.CharacterFlowLogic {
       i = this.GetFlowText(e.TidTalk);
       if (!StringUtils_1.StringUtils.IsEmpty(i)) {
         e = e.WaitTime && e.WaitTime > 0 ? e.WaitTime + 0.05 : this.WaitSecondsRemain + 0.05;
-        t = t.GetComponent(85);
+        t = t.GetComponent(87);
         this.IsWaitForDialogueUi = true;
         t.SetDialogueText(i, e).finally(() => {
           this.IsWaitForDialogueUi = false;
@@ -111,7 +111,7 @@ class NpcFlowLogic extends CharacterFlowLogic_1.CharacterFlowLogic {
     this.MZi(t?.TalkAkEvent);
     this.xer = false;
     if (t.Montage) {
-      i.GetComponent(195)?.TryPlayMontage(t.Montage.ActionMontage.Path);
+      i.GetComponent(197)?.TryPlayMontage(t.Montage.ActionMontage.Path);
     }
     var e = t.PlayVoice ? PlotAudioById_1.configPlotAudioById.GetConfig(t.TidTalk) : undefined;
     if (e) {
@@ -119,7 +119,7 @@ class NpcFlowLogic extends CharacterFlowLogic_1.CharacterFlowLogic {
     } else {
       if (t.UniversalTone) {
         var e = t.UniversalTone.UniversalToneId;
-        var o = t.UniversalTone.TimberId || i.GetComponent(195)?.GetTimberId();
+        var o = t.UniversalTone.TimberId || i.GetComponent(197)?.GetTimberId();
         if (o && e) {
           var s = InterjectionByTimberIdAndUniversalToneId_1.configInterjectionByTimberIdAndUniversalToneId.GetConfig(o, e);
           if (s) {
@@ -135,7 +135,7 @@ class NpcFlowLogic extends CharacterFlowLogic_1.CharacterFlowLogic {
       this.WaitSecondsRemain = this.GetWaitSeconds(t);
       o = this.WaitSecondsRemain + 0.05;
       this.IsWaitForDialogueUi = true;
-      i.GetComponent(85).SetDialogueText(s, o, this.RedDotLogic.GetRedDotActive()).finally(() => {
+      i.GetComponent(87).SetDialogueText(s, o, this.RedDotLogic.GetRedDotActive()).finally(() => {
         this.IsWaitForDialogueUi = false;
       });
     }

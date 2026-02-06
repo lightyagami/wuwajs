@@ -25,7 +25,7 @@ class InfrastructureRoadPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecon
     return "UiItem_GeneralPanel_Prefab";
   }
   async OnBeforeStartAsync() {
-    await Promise.all([super.OnBeforeStartAsync(), this.Akf()]);
+    await Promise.all([super.OnBeforeStartAsync(), this.b3f()]);
     this.q_o = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(5), () => new MapVerticalLayoutItem_1.MapVerticalLayoutItem());
   }
   SetupWorldMapSecondaryUiLayout() {
@@ -35,12 +35,12 @@ class InfrastructureRoadPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecon
     this.GetItem(14).SetUIActive(true);
     this.GetVerticalLayout(5).RootUIComp.SetUIActive(true);
   }
-  async Akf() {
+  async b3f() {
     await this.RewardsView.CreateThenShowByActorAsync(this.GetItem(8).GetOwner());
   }
   OnShowWorldMapSecondaryUi(e) {
     this.LayoutContext.MarkItem = e;
-    this.cxm();
+    this.Gxm();
     WorldMapSecondaryUiLayoutHelper_1.WorldMapSecondaryUiLayoutHelper.UpdateConfirmButtonTextWithFastMoveStyle(this.LayoutContext);
     WorldMapSecondaryUiLayoutHelper_1.WorldMapSecondaryUiLayoutHelper.UpdateTrackButtonTextWithTrackStyle(this.LayoutContext);
     WorldMapSecondaryUiLayoutHelper_1.WorldMapSecondaryUiLayoutHelper.UpdateIconAndTitle(this.LayoutContext);
@@ -50,41 +50,41 @@ class InfrastructureRoadPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecon
     this.UpdateTopRightIconActive();
     e = this.UpdateQuickGoto();
     this.LayoutContext.SetConfirmBtnActive(!e);
-    this.Cjm();
-    this.q_o.RefreshByData(this.pjm());
-    this.Dkf();
+    this.wHm();
+    this.q_o.RefreshByData(this.LHm());
+    this.R3f();
     this.Nqe();
   }
-  cxm() {
+  Gxm() {
     var e = this.LayoutContext.MarkItem;
     this.LayoutContext.SetConfirmBtnEnableClick(!e.IsLocked);
   }
-  Cjm() {
+  wHm() {
     var e = this.LayoutContext.MarkItem;
     var e = ConfigManager_1.ConfigManager.InfrastructureConfig.GetRoadConfigByMarkId(e.MarkId);
-    var t = ModelManager_1.ModelManager.InfrastructureModel.GetRoadDataByRoadId(e.Id)?.Status ?? Protocol_1.Aki.Protocol.zNm.Proto_InfrStatusLock;
+    var t = ModelManager_1.ModelManager.InfrastructureModel.GetRoadDataByRoadId(e.Id)?.Status ?? Protocol_1.Aki.Protocol.g4m.Proto_InfrStatusLock;
     var e = Array.from(e.Requirement.entries());
     const r = ModelManager_1.ModelManager.InventoryModel;
     e = e.every(([e, t]) => r.GetItemCountByConfigId(e) >= t);
-    if (t === Protocol_1.Aki.Protocol.zNm.Proto_InfrStatusProgress && e) {
+    if (t === Protocol_1.Aki.Protocol.g4m.Proto_InfrStatusProgress && e) {
       this.GetItem(25).SetUIActive(true);
       this.GetText(30).ShowTextNew("Map_BuildRoad_BuildAllowedTips");
     }
   }
-  pjm() {
+  LHm() {
     var e = this.LayoutContext.MarkItem;
     var e = ConfigManager_1.ConfigManager.InfrastructureConfig.GetRoadConfigByMarkId(e.MarkId);
     var t = ModelManager_1.ModelManager.InfrastructureModel.GetRoadDataByRoadId(e.Id);
-    var r = t?.Status ?? Protocol_1.Aki.Protocol.zNm.Proto_InfrStatusLock;
+    var r = t?.Status ?? Protocol_1.Aki.Protocol.g4m.Proto_InfrStatusLock;
     var a = {
       LeftTextId: "Map_BuildRoad_State",
-      RightTextId: r === Protocol_1.Aki.Protocol.zNm.Proto_InfrStatusComplete ? "Map_BuildRoad_State_BuildingComplete" : "Map_BuildRoad_State_Building",
+      RightTextId: r === Protocol_1.Aki.Protocol.g4m.Proto_InfrStatusComplete ? "Map_BuildRoad_State_BuildingComplete" : "Map_BuildRoad_State_Building",
       ShowBtnHelp: false,
       ShowIcon: false,
       ShowSprite: false,
       ShowScaleIcon: false
     };
-    if (r === Protocol_1.Aki.Protocol.zNm.Proto_InfrStatusComplete) {
+    if (r === Protocol_1.Aki.Protocol.g4m.Proto_InfrStatusComplete) {
       r = new Date((t?.CompleteTime ?? 0) * TimeUtil_1.TimeUtil.InverseMillisecond);
       return [a, {
         LeftTextId: "PrefabTextItem_1724067072_Text",
@@ -104,10 +104,10 @@ class InfrastructureRoadPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecon
       }];
     }
   }
-  Dkf() {
+  R3f() {
     var e = this.LayoutContext.MarkItem;
     var e = ConfigManager_1.ConfigManager.InfrastructureConfig.GetRoadConfigByMarkId(e.MarkId);
-    if (ModelManager_1.ModelManager.InfrastructureModel.GetRoadDataByRoadId(e.Id)?.Status !== Protocol_1.Aki.Protocol.zNm.Proto_InfrStatusComplete) {
+    if (ModelManager_1.ModelManager.InfrastructureModel.GetRoadDataByRoadId(e.Id)?.Status !== Protocol_1.Aki.Protocol.g4m.Proto_InfrStatusComplete) {
       this.GetVerticalLayout(7).RootUIComp.SetUIActive(true);
       this.GetItem(8).SetUIActive(true);
       e = Array.from(e.Requirement.entries()).sort((e, t) => e[0] - t[0]).map(([e, t]) => [{
@@ -121,7 +121,7 @@ class InfrastructureRoadPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecon
   Nqe() {
     var e = this.LayoutContext.MarkItem;
     var e = ConfigManager_1.ConfigManager.InfrastructureConfig.GetRoadConfigByMarkId(e.MarkId);
-    if (ModelManager_1.ModelManager.InfrastructureModel.GetRoadDataByRoadId(e.Id)?.Status === Protocol_1.Aki.Protocol.zNm.Proto_InfrStatusComplete) {
+    if (ModelManager_1.ModelManager.InfrastructureModel.GetRoadDataByRoadId(e.Id)?.Status === Protocol_1.Aki.Protocol.g4m.Proto_InfrStatusComplete) {
       this.GetItem(48).SetUIActive(false);
     } else {
       this.GetItem(48).SetUIActive(true);

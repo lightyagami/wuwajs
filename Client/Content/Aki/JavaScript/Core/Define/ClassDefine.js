@@ -89,6 +89,7 @@ const classDefined = {
   SceneEffectStatePostVolume_C: ["/Game/Aki/Render/RuntimeBP/Effect/Scene/SceneEffectStatePostVolume.SceneEffectStatePostVolume_C", 0],
   BP_StartupPlayerController_C: ["/Game/Aki/Core/BP_StartupPlayerController.BP_StartupPlayerController_C", 0],
   BP_KuroDestructibleActor_Stone_C: ["/Game/Aki/Render/RuntimeBP/Scene/Destructible/3_0/BP_KuroDestructibleActor_Stone.BP_KuroDestructibleActor_Stone_C", 1],
+  BP_KuroMotorcycleFreezeWaterComponent_C: ["/Game/Aki/Character/Vehicle/Motor/Component/BP_KuroMotorcycleFreezeWaterComponent.BP_KuroMotorcycleFreezeWaterComponent_C", 0],
   BP_KuroTrackTargetWhileRotate_C: ["/Game/Aki/GamePlay/Physics/FauxPhysics/BP_KuroTrackTargetWhileRotate.BP_KuroTrackTargetWhileRotate_C", 1],
   BP_FollowShooterDeadEyeConfig_C: ["/Game/Aki/Data/Fight/FollowShooter/DeadEye/BP_FollowShooterDeadEyeConfig.BP_FollowShooterDeadEyeConfig_C", 1],
   BP_KuroMasterSeqEvent_C: ["/Game/Aki/Sequence/Manager/BP_KuroMasterSeqEvent.BP_KuroMasterSeqEvent_C", 1],
@@ -201,6 +202,7 @@ const classDefined = {
   BP_ReplaceHitEffect_C: ["/Game/Aki/Character/BaseCharacter/BP_ReplaceHitEffect.BP_ReplaceHitEffect_C", 0],
   BP_BaseVision_C: ["/Game/Aki/Character/Vision/BP_BaseVision.BP_BaseVision_C", 0],
   DAC_BatchCreateBullet_C: ["/Game/Aki/Character/BaseCharacter/DAC_BatchCreateBullet.DAC_BatchCreateBullet_C", 0],
+  BP_FloatingMovementConfig_C: ["/Game/Aki/Character/BaseCharacter/BP_FloatingMovementConfig.BP_FloatingMovementConfig_C", 1],
   BP_SummonGongduolaConfig_C: ["/Game/Aki/Data/Level/SummonGongduola/BP_SummonGongduolaConfig.BP_SummonGongduolaConfig_C", 0],
   BP_AIGearStrategy_C: ["/Game/Aki/Data/AIGearStrategy/BP_AiGearStrategy.BP_AIGearStrategy_C", 0],
   BP_AIRaceStrategy_C: ["/Game/Aki/Data/AIGearStrategy/AIRaceStrategy/BP_AIRaceStrategy.BP_AIRaceStrategy_C", 0],
@@ -235,10 +237,19 @@ const classDefined = {
   BP_CrowdAiBoidActorSystemBase_C: ["/Game/Aki/Character/NPC/GPUNPC/BP/CrowdAi/BP_CrowdAiBoidActorSystemBase.BP_CrowdAiBoidActorSystemBase_C", 0],
   BP_CrowdAiConfig_C: ["/Game/Aki/Character/NPC/GPUNPC/BP/CrowdAi/BP_CrowdAiConfig.BP_CrowdAiConfig_C", 0],
   BP_RollBlockGameplaySetting_C: ["/Game/Aki/Data/Gameplay/RollBlock/BP_RollBlockGameplaySetting.BP_RollBlockGameplaySetting_C", 0],
+  BP_AimisiSpecialConfig_C: ["/Game/Aki/Character/Role/FemaleM/Aimisi/Data/BP_AimisiSpecialConfig.BP_AimisiSpecialConfig_C", 0],
   BP_PilotThrowGameplaySetting_C: ["/Game/Aki/Data/Gameplay/PilotThrow/BP_PilotThrowGameplaySetting.BP_PilotThrowGameplaySetting_C", 1],
   BP_TsTransitionWorldPartitionTriggerVolumeWrapper_C: ["/Game/Aki/GamePlay/TriggerItems/BP_TsTransitionWorldPartitionTriggerVolumeWrapper_C", 1],
+  BP_FindSunSpiritGlobalConfig_C: ["/Game/Aki/GamePlay/FindSunSpirit/BP_FindSunSpiritGlobalConfig.BP_FindSunSpiritGlobalConfig_C", 1],
+  BP_Prop_GobletLiquid_C: ["/Game/Aki/Sequence/Seq_BP/BPGobletLiquid/BP_Prop_GobletLiquid.BP_Prop_GobletLiquid_C", 1],
   BP_SunSpiritConfig_C: ["/Game/Aki/Data/Gameplay/SunSpirit/BP_SunSpiritConfig.BP_SunSpiritConfig_C", 0],
-  BP_Motor_BaseVehicle_C: ["/Game/Aki/Character/Vehicle/Motor/BP_Motor_BaseVehicle.BP_Motor_BaseVehicle_C", 0]
+  BP_Motor_BaseVehicle_C: ["/Game/Aki/Character/Vehicle/Motor/BP_Motor_BaseVehicle.BP_Motor_BaseVehicle_C", 0],
+  BP_BaseVehicle_Seq_V2_C: ["/Game/Aki/Character/Vehicle/Seq/BP_BaseVehicle_Seq_V2.BP_BaseVehicle_Seq_V2_C", 0],
+  BP_MovieCameraConfig_C: ["/Game/Aki/Data/Camera/BP_MovieCameraConfig..BP_MovieCameraConfig_C", 1],
+  BP_SnowTrailComponent_C: ["/Game/Aki/Render/RuntimeBP/SnowCoverInteraction/BluePrints/BP_SnowTrailComponent.BP_SnowTrailComponent_C", 0],
+  MediaPlayForModel_Extra_C: ["/Game/Aki/Render/RuntimeBP/SceneViedoPlay/MediaPlayForModel_Extra.MediaPlayForModel_Extra_C", 1],
+  BP_SnowTrailComponent_NPC_C: ["/Game/Aki/Render/RuntimeBP/SnowCoverInteraction/BluePrints/BP_SnowTrailComponent_NPC.BP_SnowTrailComponent_NPC_C", 0],
+  BP_Fx_Scanning_C: ["/Game/Aki/Effect/BluePrint/BP_FX_Common/BP_Fx_Scanning.BP_Fx_Scanning_C", 0]
 };
 const structDefined = {
   SModelConfig: ["/Game/Aki/Data/Entity/Struct/SModelConfig.SModelConfig", 0],

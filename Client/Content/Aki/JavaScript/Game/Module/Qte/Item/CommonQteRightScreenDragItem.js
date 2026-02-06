@@ -44,7 +44,7 @@ class CommonQteRightScreenDragItem extends CommonQteItemBase_1.CommonQteItemBase
     this.vlm = Vector2D_1.Vector2D.Create();
     this.ylm = Vector2D_1.Vector2D.Create();
     this.flm = Vector2D_1.Vector2D.Create();
-    this.oqm = false;
+    this.yOm = false;
     this.$xt = t => {
       if (t === "Start") {
         if (!this.IsQteEnd && !(this.IsQteStart = true, this.IsQteInteractive = true, this.SPe?.PlayLevelSequenceByName("Loop"), this.IsMobile)) {
@@ -163,7 +163,7 @@ class CommonQteRightScreenDragItem extends CommonQteItemBase_1.CommonQteItemBase
         this.plm = i.DragBounds;
         this.s7 = i.DragLength;
         this.aXa = i.LerpSpeed / this.s7 / CommonDefine_1.MILLIONSECOND_PER_SECOND;
-        this.oqm = i.CheckByRealTimeInput;
+        this.yOm = i.CheckByRealTimeInput;
       }
       this.SetQteActive(t);
     }
@@ -284,7 +284,7 @@ class CommonQteRightScreenDragItem extends CommonQteItemBase_1.CommonQteItemBase
           this.dbe = MathUtils_1.MathUtils.Clamp(this.dbe, 0, 1);
           this.ISm = MathUtils_1.MathUtils.InterpConstantTo(this.ISm, this.dbe, t, this.aXa);
           this.fS1.SetDraggingInfo(this.ISm, 0);
-          if (this.oqm && this.fS1.CheckDragComplete(this.dbe, 0)) {
+          if (this.yOm && this.fS1.CheckDragComplete(this.dbe, 0)) {
             this.fS1.IsPreSuccess = true;
           }
           if (ModelManager_1.ModelManager.CommonQteModel?.IsRefreshMode) {

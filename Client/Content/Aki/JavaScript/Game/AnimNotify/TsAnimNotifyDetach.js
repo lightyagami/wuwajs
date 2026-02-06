@@ -16,7 +16,7 @@ class TsAnimNotifyDetach extends UE.KuroAnimNotify {
     var s;
     var r;
     var t = t.GetOwner();
-    return t instanceof TsBaseCharacter_1.default && !!(s = t.CharacterActorComponent)?.Valid && !!s.IsAutonomousProxy && !!(r = s.Entity.GetComponent(41))?.Valid && !!r.SkillTarget?.Entity && !!(r = t.GetEntityNoBlueprint()?.GetComponent(189))?.Valid && !(t = s.Entity.GetComponent(220).CreateAnimNotifyContent(e.GetName(), this.exportIndex), r.DetachFromHost(this.IsDetachFollower, this.IsRecursion, true, t), 0);
+    return t instanceof TsBaseCharacter_1.default && !!(s = t.CharacterActorComponent)?.Valid && !!s.IsAutonomousProxy && !!(r = s.Entity.GetComponent(43))?.Valid && !!r.SkillTarget?.Entity && !!(r = t.GetEntityNoBlueprint()?.GetComponent(191))?.Valid && !(t = s.Entity.GetComponent(222).CreateAnimNotifyContent(e.GetName(), this.exportIndex), r.DetachFromHost(this.IsDetachFollower, this.IsRecursion, true, t), 0);
   }
   GetNotifyName() {
     return "从目标身上解绑";

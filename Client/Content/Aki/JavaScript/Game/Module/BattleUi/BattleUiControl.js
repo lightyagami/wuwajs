@@ -59,9 +59,9 @@ class BattleUiControl extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SetResolution, this.xQe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SetDisplayMode, this.xQe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.UIViewPortSizeChanged, this.xQe);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPlayerFollowerPossessed, this.CQm);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPlayerFollowerConfigChanged, this.SQm);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPlayerFollowerUnPossessed, this.pQm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPlayerFollowerPossessed, this.Wzm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPlayerFollowerConfigChanged, this.Yzm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPlayerFollowerUnPossessed, this.Qzm);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPlayerFollowerEnableChange, this.xrh);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.GuideGroupOpening, this.IJt);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.DriveFishingShipStateChanged, this.Gd_);
@@ -73,6 +73,7 @@ class BattleUiControl extends UiControllerBase_1.UiControllerBase {
     var e = ModelManager_1.ModelManager.BattleUiModel.FormationPanelData;
     e.RegisterInputHandler(0, CooperationController_1.CooperationController.FormationInputHandler);
     e.RegisterInputHandler(1, ControllerHolder_1.ControllerHolder.FishingController.FishingInputHandler);
+    e.RegisterInputHandler(2, ControllerHolder_1.ControllerHolder.SpringManorController.SpringManorInputHandler);
     e.SetInputType(0);
     InputDistributeController_1.InputDistributeController.BindActions(e.GetActionNames(), this.gTn);
     ModelManager_1.ModelManager.BattleUiModel.ChildViewData.AddCallback(0, this.wQe);
@@ -96,10 +97,10 @@ class BattleUiControl extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SetResolution, this.xQe);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SetDisplayMode, this.xQe);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.UIViewPortSizeChanged, this.xQe);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPlayerFollowerPossessed, this.CQm);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPlayerFollowerUnPossessed, this.pQm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPlayerFollowerPossessed, this.Wzm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPlayerFollowerUnPossessed, this.Qzm);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPlayerFollowerEnableChange, this.xrh);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPlayerFollowerConfigChanged, this.SQm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPlayerFollowerConfigChanged, this.Yzm);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.GuideGroupOpening, this.IJt);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.DriveFishingShipStateChanged, this.Gd_);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiSpecialSkillEnableChanged, this.Dwc);
@@ -112,12 +113,22 @@ class BattleUiControl extends UiControllerBase_1.UiControllerBase {
     ModelManager_1.ModelManager.BattleUiModel.ChildViewData.RemoveCallback(18, this.BQe);
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(24045, this.Omc);
-    Net_1.Net.Register(19418, this.qmc);
+    Net_1.Net.Register(29448, this.Omc);
+    Net_1.Net.Register(26378, this.qmc);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(24045);
-    Net_1.Net.UnRegister(19418);
+    Net_1.Net.UnRegister(29448);
+    Net_1.Net.UnRegister(26378);
+  }
+  static RefreshWorldFormationInputType() {
+    var e = ModelManager_1.ModelManager.BattleUiModel.FormationPanelData;
+    if (e) {
+      if (ModelManager_1.ModelManager.SpringManorModel?.CheckInInstance()) {
+        e.SetInputType(2);
+      } else {
+        e.SetInputType(0);
+      }
+    }
   }
   static async PreloadBattleViewFromLoading(e) {
     if (Log_1.Log.CheckDebug()) {
@@ -168,11 +179,11 @@ class BattleUiControl extends UiControllerBase_1.UiControllerBase {
     }
   }
   static GetMainViewName() {
-    var e;
-    if (ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance()) {
-      e = ModelManager_1.ModelManager.CreatureModel.GetInstanceId();
-      if ((e = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(e))?.InstSubType) {
-        e = GameMainViewStorage_1.GameMainViewStorage.HasRegisterMainViewInfo(e.InstSubType);
+    var e = ModelManager_1.ModelManager.CreatureModel.GetInstanceId();
+    var e = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(e);
+    if (e?.InstSubType) {
+      if (e.InstSubType === 12 || ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance()) {
+        e = GameMainViewStorage_1.GameMainViewStorage.HasRegisterMainViewInfo(e.InstSubType, e.WorldDungeonSubType);
         UiModel_1.UiModel.MainViewName = e ? "CommonGameMainView" : "BattleView";
       } else {
         UiModel_1.UiModel.MainViewName = "BattleView";
@@ -183,14 +194,12 @@ class BattleUiControl extends UiControllerBase_1.UiControllerBase {
     return UiModel_1.UiModel.MainViewName;
   }
   static GetMainViewProxy() {
-    if (ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance()) {
-      var e = ModelManager_1.ModelManager.CreatureModel.GetInstanceId();
-      var e = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(e);
-      if (e?.InstSubType) {
-        e = GameMainViewStorage_1.GameMainViewStorage.GetMainViewInfo(e.InstSubType);
-        if (e) {
-          return new e();
-        }
+    var e = ModelManager_1.ModelManager.CreatureModel.GetInstanceId();
+    var e = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(e);
+    if (e?.InstSubType && (e.InstSubType === 12 || ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance())) {
+      e = GameMainViewStorage_1.GameMainViewStorage.GetMainViewInfo(e.InstSubType, e.WorldDungeonSubType);
+      if (e) {
+        return new e();
       }
     }
   }
@@ -233,7 +242,7 @@ class BattleUiControl extends UiControllerBase_1.UiControllerBase {
   static ResetFocus() {
     var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
     if (e?.Valid) {
-      e.Entity.GetComponent(33).ResetFocus();
+      e.Entity.GetComponent(34).ResetFocus();
     }
   }
   static TryOpenPureMode() {
@@ -280,6 +289,7 @@ BattleUiControl.NQe = new Set();
 BattleUiControl.WVc = new Map([[35, "DangoMonopolyMainView"], [34, "MapRogueMainView"], [31, "RacingBetsMainView"], [36, "PhantomArenaBattleView"]]);
 BattleUiControl.nye = () => {
   ModelManager_1.ModelManager.BattleUiModel.OnWorldDone();
+  BattleUiControl.RefreshWorldFormationInputType();
 };
 BattleUiControl.xie = (e, t) => {
   BattleUiControl.kQe.Start();
@@ -350,13 +360,13 @@ BattleUiControl.PQe = (e, t, n) => {
 BattleUiControl.xQe = () => {
   ModelManager_1.ModelManager.BattleUiModel.UpdateViewPortSize();
 };
-BattleUiControl.SQm = e => {
+BattleUiControl.Yzm = e => {
   ModelManager_1.ModelManager.BattleUiModel.FormationData.RefreshFollowerConfig(e);
 };
-BattleUiControl.CQm = e => {
+BattleUiControl.Wzm = e => {
   ModelManager_1.ModelManager.BattleUiModel.FormationData.AddFollower(e);
 };
-BattleUiControl.pQm = () => {
+BattleUiControl.Qzm = () => {
   ModelManager_1.ModelManager.BattleUiModel.FormationData.RemoveFollower();
 };
 BattleUiControl.xrh = e => {

@@ -13,16 +13,16 @@ const LguiUtil_1 = require("../../../Util/LguiUtil");
 class MotorMusicNewMusicTips extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
-    this.Off = [];
+    this.gCf = [];
     this._at = undefined;
-    this.Gff = () => {
+    this.CCf = () => {
       this.CloseMe();
       this._at = undefined;
     };
     this.eTt = () => {
       this.CloseMe();
       UiManager_1.UiManager.OpenView("PhonographNewMusicView", {
-        UnlockMusicList: this.Off
+        UnlockMusicList: this.gCf
       });
     };
   }
@@ -31,9 +31,9 @@ class MotorMusicNewMusicTips extends UiViewBase_1.UiViewBase {
     this.BtnBindInfo = [[0, this.eTt]];
   }
   async OnBeforeStartAsync() {
-    this.Off = this.OpenParam;
-    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), "MotorMusicTips07", this.Off.length);
-    this._at = TimerSystem_1.TimerSystem.Delay(this.Gff, ConfigManager_1.ConfigManager.MotorMusicPlayerConfig.GetMusicUnlockTipTime());
+    this.gCf = this.OpenParam;
+    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), "MotorMusicTips07", this.gCf.length);
+    this._at = TimerSystem_1.TimerSystem.Delay(this.CCf, ConfigManager_1.ConfigManager.MotorMusicPlayerConfig.GetMusicUnlockTipTime());
   }
   OnBeforeDestroy() {
     this.jm();

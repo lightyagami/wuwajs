@@ -17,17 +17,17 @@ class TsAnimNotifyStateWeaponHang extends UE.KuroAnimNotifyState {
   Constructor() {}
   K2_NotifyBegin(t, e, s) {
     t = t.GetOwner();
-    return t instanceof TsBaseCharacter_1.default && (t?.CharacterActorComponent?.Entity?.GetComponent(84)?.ChangeWeaponHangState(this.Id, this.新的挂载点名, this.挂载相对位置, this.缓冲时间), true);
+    return t instanceof TsBaseCharacter_1.default && (t?.CharacterActorComponent?.Entity?.GetComponent(86)?.ChangeWeaponHangState(this.Id, this.新的挂载点名, this.挂载相对位置, this.缓冲时间, "TsAnimNotifyStateWeaponHang.NotifyBegin"), true);
   }
   K2_NotifyEnd(t, e) {
     t = t.GetOwner();
     if (t instanceof TsBaseCharacter_1.default) {
-      t = t?.CharacterActorComponent?.Entity?.GetComponent(84);
+      t = t?.CharacterActorComponent?.Entity?.GetComponent(86);
       if (!t?.Valid) {
         return false;
       }
       if (t._Pr === this.Id) {
-        return (this.结束后状态 === 0 || this.结束后状态 === 1) && (t.ChangeWeaponHangState(this.结束后状态, UE.NewArray(UE.BuiltinName), UE.NewArray(UE.Transform), this.缓冲时间), true);
+        return (this.结束后状态 === 0 || this.结束后状态 === 1) && (t.ChangeWeaponHangState(this.结束后状态, UE.NewArray(UE.BuiltinName), UE.NewArray(UE.Transform), this.缓冲时间, "TsAnimNotifyStateWeaponHang.NotifyEnd"), true);
       }
     }
     return false;

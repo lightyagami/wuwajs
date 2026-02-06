@@ -32,7 +32,7 @@ class LevelConditionCheckPlayerEnterClientTriggerDir extends LevelGeneralBase_1.
     if (t.Type !== 5) {
       return false;
     }
-    var a = ModelManager_1.ModelManager.CreatureModel.GetEntityById(t.TriggerEntityId ?? 0)?.Entity?.CheckGetComponent(89)?.GetRangeActor()?.K2_GetActorQuaternion();
+    var a = ModelManager_1.ModelManager.CreatureModel.GetEntityById(t.TriggerEntityId ?? 0)?.Entity?.CheckGetComponent(91)?.GetRangeActor()?.K2_GetActorQuaternion();
     if (!a) {
       return false;
     }

@@ -18,7 +18,7 @@ function createSkillCommand(e, t) {
     var r;
     var n;
     var o;
-    var e = e.GetComponent(40);
+    var e = e.GetComponent(42);
     if (e && e.Valid) {
       r = e.GetSkillInfo(t);
       n = e.GetPriority(t);
@@ -32,10 +32,10 @@ function createSkillCommand(e, t) {
   }
 }
 function canResponseInput(e) {
-  return !!e.GetComponent(46)?.CanResponseInput() && !(e = e.GetComponent(215))?.HasAnyTag([-2044964178, 855966206, 504239013, -1159105522, -648310348, 1501154053]) && (!e?.HasTag(-2100129479) || !!e.HasTag(2077247789));
+  return !!e.GetComponent(48)?.CanResponseInput() && !(e = e.GetComponent(217))?.HasAnyTag([-2044964178, 855966206, 504239013, -1159105522, -648310348, 1501154053]) && (!e?.HasTag(-2100129479) || !!e.HasTag(2077247789));
 }
 function canVehicleResponseInput(e) {
-  return !!e.GetComponent(249)?.CanResponseInput() && !e.GetComponent(215)?.HasTag(1646668090);
+  return !!e.GetComponent(249)?.CanResponseInput() && !e.GetComponent(217)?.HasTag(1646668090);
 }
 function canCharacterResponseInput() {
   var e = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity;
@@ -44,8 +44,8 @@ function canCharacterResponseInput() {
 function createInputCommandFromDataTable(e, t, r) {
   var n = EntitySystem_1.EntitySystem.Get(e);
   if (n) {
-    var o = EntitySystem_1.EntitySystem.GetComponent(e, 215);
-    var i = EntitySystem_1.EntitySystem.GetComponent(e, 40);
+    var o = EntitySystem_1.EntitySystem.GetComponent(e, 217);
+    var i = EntitySystem_1.EntitySystem.GetComponent(e, 42);
     if (o && i) {
       e = ModelManager_1.ModelManager.InputModel?.GetInputCommandTransformData(t, r);
       if (e) {
@@ -73,7 +73,7 @@ function createInputCommandFromDataTable(e, t, r) {
   }
 }
 function hasEnoughEnergy(e) {
-  e = e.GetComponent(182);
+  e = e.GetComponent(184);
   return e.GetCurrentValue(CharacterAttributeTypes_1.EAttributeId.Proto_SpecialEnergy4) >= e.GetCurrentValue(CharacterAttributeTypes_1.EAttributeId.Proto_SpecialEnergy4Max);
 }
 exports.createSkillCommand = createSkillCommand;

@@ -46,7 +46,7 @@ class AdvanceNoticeSubView extends ActivitySubViewBase_1.ActivitySubViewBase {
     var e;
     var i;
     var t;
-    if (this.ActivityBaseData && (e = ConfigManager_1.ConfigManager.AdvanceNoticeConfig.GetAdvertisingPageInfoByActivityId(this.ActivityBaseData.Id), LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), e.TitleText), this.GetText(5).SetText(e.TitleVersion), i = this.ActivityBaseData.GetUnlockTimeStamp(), i = new Date(i * TimeUtil_1.TimeUtil.InverseMillisecond), LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(6), e.OpenTimeText, i.getMonth() + 1, i.getDate()), i = this.GetText(7), t = e.PVLinkId > 0, i.SetUIActive(t), this.GetSprite(2).SetUIActive(!t), this.GetButton(1).RootUIComp.SetUIActive(t), t)) {
+    if (this.ActivityBaseData && (e = ConfigManager_1.ConfigManager.AdvanceNoticeConfig.GetAdvertisingPageInfoByActivityId(this.ActivityBaseData.Id), this.SetTextureByPath(e.InscriptionPic, this.GetTexture(8)), LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), e.TitleText), this.GetText(5).SetText(e.TitleVersion), i = this.ActivityBaseData.GetUnlockTimeStamp(), i = new Date(i * TimeUtil_1.TimeUtil.InverseMillisecond), LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(6), e.OpenTimeText, i.getMonth() + 1, i.getDate()), i = this.GetText(7), t = e.PVLinkId > 0, i.SetUIActive(t), this.GetSprite(2).SetUIActive(!t), this.GetButton(1).RootUIComp.SetUIActive(t), t)) {
       LguiUtil_1.LguiUtil.SetLocalTextNew(i, e.PVText);
     }
   }

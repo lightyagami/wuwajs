@@ -29,10 +29,10 @@ class EditFormationController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CloseView, this.$Ge);
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(18242, EditFormationController.i5t);
+    Net_1.Net.Register(15822, EditFormationController.i5t);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(18242);
+    Net_1.Net.UnRegister(15822);
   }
   static OnAddOpenViewCheckFunction() {
     UiManager_1.UiManager.AddOpenViewCheckFunction("EditFormationView", EditFormationController.CanOpenView, EditFormationController.name);
@@ -48,7 +48,7 @@ class EditFormationController extends UiControllerBase_1.UiControllerBase {
       Log_1.Log.Info("Formation", 48, "请求所有编队数据");
     }
     var o = new Protocol_1.Aki.Protocol.Wis();
-    Net_1.Net.Call(19035, o, o => {});
+    Net_1.Net.Call(19275, o, o => {});
   }
   static async EditFormationRequest(o) {
     var r;
@@ -105,8 +105,8 @@ class EditFormationController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Formation", 48, "更新单机编队", ["formations", e]);
     }
-    var _ = await Net_1.Net.CallAsync(29442, _);
-    EditFormationController.mJf();
+    var _ = await Net_1.Net.CallAsync(19789, _);
+    EditFormationController.hCg();
     if (_?.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_ErrFormationRoleNotActive && (n.IsFormationHasSpecialTrialRole() || n.IsEditingFormationHasSpecialTrialRole())) {
       ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("Error_Trial_Role_Expired");
     }
@@ -124,8 +124,8 @@ class EditFormationController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Formation", 48, "更新单机编队", ["formation", n]);
     }
-    var r = await Net_1.Net.CallAsync(29442, o);
-    return r !== undefined;
+    var r = await Net_1.Net.CallAsync(19789, o);
+    return r?.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs;
   }
   static async UpdateFightRoleRequest() {
     var o = ModelManager_1.ModelManager.EditFormationModel;
@@ -160,17 +160,17 @@ class EditFormationController extends UiControllerBase_1.UiControllerBase {
       Log_1.Log.Info("Formation", 48, "更新联机编队", ["massage", t]);
     }
     ModelManager_1.ModelManager.SceneTeamModel.RefreshLastTransform();
-    r = await Net_1.Net.CallAsync(24981, t);
+    r = await Net_1.Net.CallAsync(16071, t);
     return r?.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs;
   }
-  static ctg() {
+  static wAg() {
     if (ModelManager_1.ModelManager.EditFormationModel.IsFormationHasSpecialTrialRole()) {
       for (const o of ModelManager_1.ModelManager.EditFormationModel.GetFormationAllSpecialTrialRole()) {
         ModelManager_1.ModelManager.TrialRoleModel.SetTrialRoleVisibility(o, true);
       }
     }
   }
-  static mJf() {
+  static hCg() {
     var o = ModelManager_1.ModelManager.EditFormationModel.IsCurFormationHasSpecialTrialRole();
     ModelManager_1.ModelManager.OnlineModel.DisableOnline(2, o);
   }
@@ -211,14 +211,14 @@ EditFormationController.CanOpenView = o => {
     }
     return false;
   }
-  e = t.Entity.GetComponent(215);
+  e = t.Entity.GetComponent(217);
   if (!e?.Valid) {
     if (Log_1.Log.CheckWarn()) {
       Log_1.Log.Warn("Formation", 5, "打开编队按钮时，当前实体的 TagComponent 不存在");
     }
     return false;
   }
-  var n = t.Entity.GetComponent(183);
+  var n = t.Entity.GetComponent(185);
   if (!n?.Valid) {
     if (Log_1.Log.CheckWarn()) {
       Log_1.Log.Warn("Formation", 5, "打开编队按钮时，当前实体的 CharacterBuffComponent 不存在");
@@ -284,7 +284,7 @@ EditFormationController.CanOpenView = o => {
   }
   if (e.HasTag(-2100129479)) {
     var e = PhantomUtil_1.PhantomUtil.GetSummonedEntity(t.Entity, Protocol_1.Aki.Protocol.Summon.x3s.Proto_ESummonTypeConcomitantVision);
-    if (e && e.Entity.GetComponent(215)?.HasTag(40422668)) {
+    if (e && e.Entity.GetComponent(217)?.HasTag(40422668)) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Formation", 5, "打开编队按钮时，当前角色为声骸变身状态且处于空中");
       }
@@ -298,7 +298,7 @@ EditFormationController.CanOpenView = o => {
     }
     ScrollingTipsController_1.ScrollingTipsController.ShowTipsById(EditFormationController.o5t);
     return false;
-  } else if ((e = t.Entity.GetComponent(82)) && e.WalkOnWaterStage > 0) {
+  } else if ((e = t.Entity.GetComponent(84)) && e.WalkOnWaterStage > 0) {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Formation", 36, "打开编队按钮时，当前角色在水面上行走");
     }
@@ -343,7 +343,7 @@ EditFormationController.i5t = o => {
   } else {
     ModelManager_1.ModelManager.EditFormationModel.UpdatePlayerFormations(r);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRefreshOnlineTeamList);
-    EditFormationController.mJf();
-    EditFormationController.ctg();
+    EditFormationController.hCg();
+    EditFormationController.wAg();
   }
 }; //# sourceMappingURL=EditFormationController.js.map

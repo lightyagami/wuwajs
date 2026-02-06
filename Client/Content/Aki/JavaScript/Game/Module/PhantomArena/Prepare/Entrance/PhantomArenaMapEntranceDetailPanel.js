@@ -30,17 +30,17 @@ class PhantomArenaMapEntranceDetailPanel extends UiPanelBase_1.UiPanelBase {
     this.Wpm = undefined;
     this.hyc = 0;
     this.$pt = undefined;
-    this.Xrf = 0;
+    this.fsf = 0;
     this.BaseCloseCallBack = undefined;
-    this.Yrf = undefined;
+    this.gsf = undefined;
     this.K3t = e => {
       if (e === "Close") {
         this.Gh_();
       }
     };
     this.Close = (e, t = true) => {
-      this.Yrf = e;
-      this.Xrf = 1;
+      this.gsf = e;
+      this.fsf = 1;
       if (t) {
         this.$pt?.PlaySequence("Close");
       } else {
@@ -50,13 +50,13 @@ class PhantomArenaMapEntranceDetailPanel extends UiPanelBase_1.UiPanelBase {
     this.Awe = () => {
       this.Close();
     };
-    this.z3m = () => {
+    this.g5m = () => {
       var e = ConfigManager_1.ConfigManager.PhantomArenaConfig?.GetPhantomBattleChallenge(this.hyc);
       if (e) {
         if (ModelManager_1.ModelManager.PhantomArenaModel?.GetPermanentChallengeStateById(this.hyc) === 2) {
-          this.STf(e.TeleporterId, e.ReChallengeQuestId);
+          this.MPf(e.TeleporterId, e.ReChallengeQuestId);
         } else {
-          this.oIf(e.TeleporterId, e.QuestId);
+          this.Bwf(e.TeleporterId, e.QuestId);
         }
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("PhantomArena", 87, "PhantomArenaMapEntranceDetailPanel:获取挑战信息失败", ["ChallengeId", this.hyc]);
@@ -106,7 +106,7 @@ class PhantomArenaMapEntranceDetailPanel extends UiPanelBase_1.UiPanelBase {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIText], [2, UE.UIText], [3, UE.UIText], [4, UE.UIText], [5, UE.UIHorizontalLayout], [6, UE.UIItem], [7, UE.UIText], [8, UE.UIText], [9, UE.UIHorizontalLayout], [10, UE.UIItem], [11, UE.UIButtonComponent], [12, UE.UIItem], [13, UE.UIText]];
-    this.BtnBindInfo = [[0, this.Awe], [11, this.z3m]];
+    this.BtnBindInfo = [[0, this.Awe], [11, this.g5m]];
   }
   async OnBeforeStartAsync() {
     await this.Qpm();
@@ -123,7 +123,7 @@ class PhantomArenaMapEntranceDetailPanel extends UiPanelBase_1.UiPanelBase {
     this.SetActive(true);
     this.$pt?.ReplaySequence("Start");
     this.Refresh(e);
-    this.Xrf = 0;
+    this.fsf = 0;
     if (this.$pt?.IsSequenceInPlaying("Start")) {
       this.$pt?.ReplaySequence("Start");
     } else {
@@ -136,13 +136,13 @@ class PhantomArenaMapEntranceDetailPanel extends UiPanelBase_1.UiPanelBase {
     this.m2e();
   }
   m2e() {
-    this.Xrf = 2;
+    this.fsf = 2;
     this.BaseCloseCallBack?.();
-    this.Yrf?.();
-    this.Yrf = undefined;
+    this.gsf?.();
+    this.gsf = undefined;
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SetWorldMapCursorButtonVisible, true);
   }
-  oIf(e, t) {
+  Bwf(e, t) {
     var i = ModelManager_1.ModelManager.QuestNewModel?.GetQuestState(t);
     if (i === 1 || i === 2) {
       ControllerHolder_1.ControllerHolder.QuestNewController.RequestTrackQuest(t, true, 2);
@@ -151,7 +151,7 @@ class PhantomArenaMapEntranceDetailPanel extends UiPanelBase_1.UiPanelBase {
     }
     ControllerHolder_1.ControllerHolder.WorldMapController.TryTeleport(e, this.YCu);
   }
-  STf(e, t) {
+  MPf(e, t) {
     var t = ModelManager_1.ModelManager.QuestNewModel?.GetQuestState(t);
     if (t === 1 || t === 2) {
       (t = new ConfirmBoxDefine_1.ConfirmBoxDataNew(423)).FunctionMap.set(2, () => {
@@ -170,7 +170,7 @@ class PhantomArenaMapEntranceDetailPanel extends UiPanelBase_1.UiPanelBase {
     if (n) {
       LguiUtil_1.LguiUtil.TrySetLocalTextNew(this.GetText(1), n.ChallengeName);
       this.GetText(2)?.SetText(n.NpcLevel.toString());
-      i = (t = ModelManager_1.ModelManager.PhantomArenaModel?.GetPermanentChallengeData(e)?.qgf ?? true) ? n.NpcName : "PhantomBattle_1164";
+      i = (t = ModelManager_1.ModelManager.PhantomArenaModel?.GetPermanentChallengeData(e)?.VCf ?? true) ? n.NpcName : "PhantomBattle_1164";
       LguiUtil_1.LguiUtil.TrySetLocalTextNew(this.GetText(3), i);
       LguiUtil_1.LguiUtil.TrySetLocalTextNew(this.GetText(4), n.NpcTitle);
       LguiUtil_1.LguiUtil.TrySetLocalTextNew(this.GetText(7), n.FieldInfoDesc);
@@ -197,18 +197,18 @@ class PhantomArenaMapEntranceDetailPanel extends UiPanelBase_1.UiPanelBase {
       this.Wpm?.SetUiActive(false);
       this.GetButton(11)?.RootUIComp.SetUIActive(true);
       if (e) {
-        this.zrf();
+        this.Csf();
       }
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("PhantomArena", 87, "获取挑战配置失败", ["ChallengeId", this.hyc]);
     }
   }
-  zrf() {
+  Csf() {
     var e;
     var t = ConfigManager_1.ConfigManager.PhantomArenaConfig?.GetPhantomBattleChallenge(this.hyc);
     if (t) {
       if (e = ConfigManager_1.ConfigManager.ConditionConfig?.GetGroupConditionIds(t.OpenConditionGroupId)) {
-        if (e = this.Zrf(e)) {
+        if (e = this.vsf(e)) {
           this.Wpm?.SetTextByTextId(e);
         }
         this.Wpm?.SetUiActive(true);
@@ -221,7 +221,7 @@ class PhantomArenaMapEntranceDetailPanel extends UiPanelBase_1.UiPanelBase {
       Log_1.Log.Error("PhantomArena", 87, "获取挑战配置失败", ["ChallengeId", this.hyc]);
     }
   }
-  Zrf(e) {
+  vsf(e) {
     var t = ModelManager_1.ModelManager.PhantomArenaModel?.GetPermanentChallengeData(this.hyc);
     for (const i of e) {
       if (!t?.qS_.includes(i)) {
@@ -235,13 +235,13 @@ class PhantomArenaMapEntranceDetailPanel extends UiPanelBase_1.UiPanelBase {
     await this.Wpm.CreateThenShowByActorAsync(this.GetItem(12).GetOwner());
   }
   get IsUiOpen() {
-    return this.Xrf === 0;
+    return this.fsf === 0;
   }
   get IsUiCloseComplete() {
-    return this.Xrf === 2;
+    return this.fsf === 2;
   }
   get IsUiClose() {
-    return this.Xrf === 1;
+    return this.fsf === 1;
   }
 }
 exports.PhantomArenaMapEntranceDetailPanel = PhantomArenaMapEntranceDetailPanel;

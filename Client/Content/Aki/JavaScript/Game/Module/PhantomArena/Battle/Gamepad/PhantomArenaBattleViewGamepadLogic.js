@@ -4,6 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.PhantomArenaBattleViewGamepadLogic = undefined;
+const ModelManager_1 = require("../../../../Manager/ModelManager");
 const PhantomArenaDefine_1 = require("../PhantomArenaDefine");
 class PhantomArenaBattleViewGamepadLogic {
   constructor(t) {
@@ -47,14 +48,14 @@ class PhantomArenaBattleViewGamepadLogic {
   async I7c(t) {
     await this.Proxy.OwnArea.MoveFunctionalCardToRecycle(t, t.Data.Index, this.SlotIndex);
   }
-  fKf(t) {
+  $hg(t) {
     if (t) {
       (this.OwnBattleShowTipsCard = t).SetSelectedStateByGamepad(true);
     } else {
-      this.gKf();
+      this.Whg();
     }
   }
-  gKf() {
+  Whg() {
     if (this.OwnBattleShowTipsCard) {
       this.OwnBattleShowTipsCard.SetSelectedStateByGamepad(false);
       this.OwnBattleShowTipsCard = undefined;
@@ -72,7 +73,7 @@ class PhantomArenaBattleViewGamepadLogic {
   }
   ResetGamepadOperation() {
     this.CancelSelectedCard();
-    this.gKf();
+    this.Whg();
   }
   SwitchCardLayoutHoist() {
     this.Proxy.OwnArea.HandArea.SwitchLayoutHoist();
@@ -89,11 +90,11 @@ class PhantomArenaBattleViewGamepadLogic {
   }
   async SelectHandCard(t) {
     var i;
-    return !this.Proxy.InCantDragState() && !!(i = this.Proxy.OwnArea.HandArea.GetCardProxyByIndex(t)) && (this.HandIndex = t, await this.S7c(i.GetCard(), 0), true);
+    return !this.Proxy.InCantDragState() && !!(i = this.Proxy.OwnArea.HandArea.GetCardProxyByIndex(t)) && !!ModelManager_1.ModelManager.PhantomArenaBattleModel.CanDragCard(i.GetCard().Data.CardId) && !(this.HandIndex = t, await this.S7c(i.GetCard(), 0), 0);
   }
   async SelectBattleCard(t) {
     var i;
-    return !this.Proxy.InCantDragState() && !!(i = this.Proxy.OwnArea.FunctionalArea.GetCardProxyByIndex(t)) && !!i.Card && !(this.gKf(), await this.M7c(i.Card, t), 0);
+    return !this.Proxy.InCantDragState() && !!(i = this.Proxy.OwnArea.FunctionalArea.GetCardProxyByIndex(t)) && !!i.Card && !i.IsInCardTween && !(this.Whg(), await this.M7c(i.Card, t), 0);
   }
   async MoveHandCardToFunctional(t) {
     if (!!this.SelectedCard && this.SelectedCard.Data.Index === PhantomArenaDefine_1.HAND_PHANTOMARENA_INDEX && this.SlotIndex !== t && !this.u3u) {
@@ -128,7 +129,7 @@ class PhantomArenaBattleViewGamepadLogic {
     var t = this.Proxy.OwnArea.FunctionalArea.GetCardProxyByIndex(t);
     if (t && t.Card) {
       i = this.Proxy.SwitchCardTips(t.Card.Data);
-      this.fKf(i ? t.Card : undefined);
+      this.$hg(i ? t.Card : undefined);
     }
   }
   SwitchOpponentBattleCardTips(t) {
@@ -139,7 +140,7 @@ class PhantomArenaBattleViewGamepadLogic {
   }
   HideCardTips() {
     this.Proxy.HideCardTips();
-    this.gKf();
+    this.Whg();
   }
   IsInSkillInteractByOpponentIndex(t) {
     t = this.Proxy.OpponentArea.FunctionalArea.GetCardProxyByIndex(t);

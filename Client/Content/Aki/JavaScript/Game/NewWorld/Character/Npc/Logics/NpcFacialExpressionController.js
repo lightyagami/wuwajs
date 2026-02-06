@@ -46,8 +46,8 @@ class NpcFacialExpressionController {
     this.$0a = false;
     this.Ler = undefined;
     this.RWa = ResourceSystem_1.ResourceSystem.InvalidId;
-    this.hef = undefined;
-    this.lef = 0;
+    this.pif = undefined;
+    this.vif = 0;
     this.V0a = true;
     this.W0a = 1;
     this.HOc = undefined;
@@ -75,7 +75,7 @@ class NpcFacialExpressionController {
     };
     this.E0 = t;
     this.wDe = EntitySystem_1.EntitySystem.GetComponent(t, 0)?.GetPbDataId();
-    this.oRe = EntitySystem_1.EntitySystem.GetComponent(t, 45);
+    this.oRe = EntitySystem_1.EntitySystem.GetComponent(t, 47);
     this.Hte = EntitySystem_1.EntitySystem.GetComponent(t, 2);
   }
   Init() {
@@ -94,7 +94,7 @@ class NpcFacialExpressionController {
         if (i.NpcSpecialMarks) {
           for (const e of i.NpcSpecialMarks) {
             if (e.Type === IComponent_1.ESpecialNpcMarkType.TrafficLight) {
-              this.hef = IComponent_1.ESpecialNpcMarkType.TrafficLight;
+              this.pif = IComponent_1.ESpecialNpcMarkType.TrafficLight;
               break;
             }
           }
@@ -147,7 +147,7 @@ class NpcFacialExpressionController {
       case "AnimSequence":
         this.nZc(t);
     }
-    var e = EntitySystem_1.EntitySystem.Get(this.E0)?.GetComponent(45);
+    var e = EntitySystem_1.EntitySystem.Get(this.E0)?.GetComponent(47);
     if (e?.Valid) {
       e.DisableBlink = t.DisableBlink;
     }
@@ -207,10 +207,10 @@ class NpcFacialExpressionController {
     var s;
     var h;
     var r;
-    return !!this.E0 && !!(r = EntitySystem_1.EntitySystem.Get(this.E0))?.Valid && !!r?.GetComponent(2).Owner?.IsValid() && !(r = this.Uer(), e = this.Hte?.Actor.CharRenderingComponent, !r?.IsValid()) && !!e?.IsValid() && !!(s = e?.GetSkeletalMeshComponentBodyName(r)) && !(h = r.GetMaterialIndex(this._ef(i)), (r = r?.GetMaterial(h))?.IsValid() && r?.IsA(UE.MaterialInstanceDynamic.StaticClass()) ? r.K2_GetTextureParameterValue(this.Ser)?.IsValid() ? (this.uef() && (this.lef = i, this.oRe?.SetHeadBaseYaw(this.cef(i))), e.AddFloatUpdateParamPermanentByIndexV2(this.Mer, t, s, h), 0) : (Log_1.Log.CheckWarn() && Log_1.Log.Warn("NPC", 50, "FaceMesh未配置或错误配置FaceAniMap贴图", ["PbDataId", this.wDe], ["ExpressionId", t], ["MatName", r?.GetName()], ["Montage", this.HOc?.GetName() ?? "None"]), 1) : (Log_1.Log.CheckWarn() && Log_1.Log.Warn("NPC", 50, "设置贴图表情失败，无法获取脸部动态材质实例", ["PbDataId", this.wDe], ["ExpressionId", t], ["BodyName", s], ["MatName", r?.GetName()], ["Montage", this.HOc?.GetName() ?? "None"]), 1));
+    return !!this.E0 && !!(r = EntitySystem_1.EntitySystem.Get(this.E0))?.Valid && !!r?.GetComponent(2).Owner?.IsValid() && !(r = this.Uer(), e = this.Hte?.Actor.CharRenderingComponent, !r?.IsValid()) && !!e?.IsValid() && !!(s = e?.GetSkeletalMeshComponentBodyName(r)) && !(h = r.GetMaterialIndex(this.yif(i)), (r = r?.GetMaterial(h))?.IsValid() && r?.IsA(UE.MaterialInstanceDynamic.StaticClass()) ? r.K2_GetTextureParameterValue(this.Ser)?.IsValid() ? (this.Sif() && (this.vif = i, this.oRe?.SetHeadBaseYaw(this.Mif(i))), e.AddFloatUpdateParamPermanentByIndexV2(this.Mer, t, s, h), 0) : (Log_1.Log.CheckWarn() && Log_1.Log.Warn("NPC", 50, "FaceMesh未配置或错误配置FaceAniMap贴图", ["PbDataId", this.wDe], ["ExpressionId", t], ["MatName", r?.GetName()], ["Montage", this.HOc?.GetName() ?? "None"]), 1) : (Log_1.Log.CheckWarn() && Log_1.Log.Warn("NPC", 50, "设置贴图表情失败，无法获取脸部动态材质实例", ["PbDataId", this.wDe], ["ExpressionId", t], ["BodyName", s], ["MatName", r?.GetName()], ["Montage", this.HOc?.GetName() ?? "None"]), 1));
   }
-  _ef(t) {
-    if (!this.uef()) {
+  yif(t) {
+    if (!this.Sif()) {
       if (t !== 0 && Log_1.Log.CheckError()) {
         Log_1.Log.Error("NPC", 50, "单插槽脸使用了多插槽", ["PbDataId", this.wDe], ["SlotId", t]);
       }
@@ -284,7 +284,7 @@ class NpcFacialExpressionController {
   ChangeFaceForExpression(t, i) {
     var e = this.J0a(i);
     if (e) {
-      if (this.mef(e) && this.W0a > 3) {
+      if (this.Eif(e) && this.W0a > 3) {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("NPC", 50, "当前正在说话，切换表情失败", ["PbDataId", this.wDe], ["FaceId", i]);
         }
@@ -299,13 +299,13 @@ class NpcFacialExpressionController {
   ChangeFaceForExpressionFromAnimNotify(t) {
     var i = this.J0a(t);
     if (i) {
-      if (this.mef(i) && this.W0a > 2) {
+      if (this.Eif(i) && this.W0a > 2) {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("NPC", 50, "当前具有口型或来自于TD数据的表情，切换表情失败", ["PbDataId", this.wDe], ["FaceId", t]);
         }
         return 0;
       } else {
-        i = this.fef();
+        i = this.Iif();
         this.$7a.add(i);
         this.Z0a(t);
         this.X0a(2, "通过ANS切换表情");
@@ -349,11 +349,11 @@ class NpcFacialExpressionController {
       switch (this._Jc?.Type ?? this.uJc?.Type ?? (this.$0a ? "Morph" : "Texture")) {
         case "Texture":
           var i = this.uJc?.Config;
-          this.Der(i?.FaceIndex ?? 1, this.lef);
+          this.Der(i?.FaceIndex ?? 1, this.vif);
           break;
         case "TextureMultiSlot":
           i = this.uJc?.Config;
-          this.Der(i?.FaceIndex ?? 1, this.lef);
+          this.Der(i?.FaceIndex ?? 1, this.vif);
           break;
         case "Morph":
           this.XOc(this.Ler);
@@ -369,7 +369,7 @@ class NpcFacialExpressionController {
             this.nZc(this.uJc);
           }
       }
-      var e = EntitySystem_1.EntitySystem.Get(this.E0)?.GetComponent(45);
+      var e = EntitySystem_1.EntitySystem.Get(this.E0)?.GetComponent(47);
       if (e?.Valid) {
         e.DisableBlink = false;
       }
@@ -394,17 +394,17 @@ class NpcFacialExpressionController {
     this.oRe?.MainAnimInstance?.OnMontageEnded.Remove(this.KOc);
     return true;
   }
-  fef() {
+  Iif() {
     return ++this.Oud;
   }
-  mef(t) {
+  Eif(t) {
     return t === "Texture" || t === "TextureMultiSlot";
   }
-  uef() {
-    return this.hef !== undefined;
+  Sif() {
+    return this.pif !== undefined;
   }
-  cef(t) {
-    if (this.hef !== IComponent_1.ESpecialNpcMarkType.TrafficLight) {
+  Mif(t) {
+    if (this.pif !== IComponent_1.ESpecialNpcMarkType.TrafficLight) {
       return 0;
     } else {
       return t * TRIFFIC_LIGHT_SLOT_YAW;

@@ -43,7 +43,11 @@ class NetworkDetectionItem extends GridProxyAbstract_1.GridProxyAbstract {
   }
   OnBeforeDestroy() {
     if (this.Aic.EntryData.Type === 4) {
-      UE.KuroNetworkDetection.DetectionFinish(this.Aic.Result?.Success ?? false);
+      if (LauncherNetworkDetectionController_1.LauncherNetworkDetectionController.GetGateWayUdpCheckState()) {
+        UE.KuroNetworkDetection.AbortGatewayUdpReachable();
+      } else {
+        UE.KuroNetworkDetection.DetectionFinish(this.Aic.Result?.Success ?? false);
+      }
     }
   }
   async Proceed() {

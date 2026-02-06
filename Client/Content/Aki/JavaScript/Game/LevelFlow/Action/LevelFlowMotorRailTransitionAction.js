@@ -18,8 +18,8 @@ class LevelFlowMotorRailTransitionAction extends LevelFlowActionBase_1.LevelFlow
     this.E0 = 0;
     this.zun = 0;
     this.Hte = undefined;
-    this.zIf = undefined;
-    this.yyf = (i, o, e) => {
+    this.NRf = undefined;
+    this.DEf = (i, o, e) => {
       if (this.Hte && (i && o ? this.Hte.SetActorLocationAndRotation(i.ToUeVector(), o.ToUeRotator(), "LevelFlowMotorRailTransitionAction", false) : i ? this.Hte.SetActorLocation(i.ToUeVector(), "LevelFlowMotorRailTransitionAction", false) : o && this.Hte.SetActorRotation(o.ToUeRotator(), "LevelFlowMotorRailTransitionAction", false), e)) {
         o = (i = this.Hte.VehicleMoveComp)?.VehicleMovement;
         i?.SetForceSpeed(e);
@@ -33,8 +33,8 @@ class LevelFlowMotorRailTransitionAction extends LevelFlowActionBase_1.LevelFlow
         this.Hte.ResetCachedVelocityTime();
       }
     };
-    this.Syf = (i, o, e) => {
-      return !!this.Hte && (i && i.DeepCopy(this.Hte.ActorLocationProxy), o && o.DeepCopy(this.Hte.ActorRotationProxy), !e || !!this.zIf?.GetVelocity(e) || !((i = this.Hte.Actor?.VehicleMovementComponent)?.IsValid() ? (e.FromUeVector(i.Velocity), 0) : !(o = this.Hte.Owner?.D_GetVelocity()) || (e.FromUeVector(o), 0)));
+    this.UEf = (i, o, e) => {
+      return !!this.Hte && (i && i.DeepCopy(this.Hte.ActorLocationProxy), o && o.DeepCopy(this.Hte.ActorRotationProxy), !e || !!this.NRf?.GetVelocity(e) || !((i = this.Hte.Actor?.VehicleMovementComponent)?.IsValid() ? (e.FromUeVector(i.Velocity), 0) : !(o = this.Hte.Owner?.D_GetVelocity()) || (e.FromUeVector(o), 0)));
     };
   }
   Init(i, o) {
@@ -59,9 +59,9 @@ class LevelFlowMotorRailTransitionAction extends LevelFlowActionBase_1.LevelFlow
           (e = new MotorcycleJumpToRailMoveData_1.MotorcycleJumpToRailMoveData(t, undefined)).MoveConfig.DeepCopy(o);
           e.TargetSpline = i;
           e.GravityDir.DeepCopy(GravityUtils_1.GravityUtils.GetGravityDirectForActor(this.Hte));
-          e.MoveUpdater = this.yyf;
-          e.MoveGetter = this.Syf;
-          (this.zIf = e).Enter(undefined);
+          e.MoveUpdater = this.DEf;
+          e.MoveGetter = this.UEf;
+          (this.NRf = e).Enter(undefined);
         } else {
           if (Log_1.Log.CheckError()) {
             Log_1.Log.Error("LevelFlow", 58, "[MoveWithSpline]实体没有MoveComp", ["EntityId", t.Id]);
@@ -82,11 +82,11 @@ class LevelFlowMotorRailTransitionAction extends LevelFlowActionBase_1.LevelFlow
     }
   }
   OnTick(i) {
-    if (this.zIf) {
-      if (this.zIf.IsFinishMove) {
+    if (this.NRf) {
+      if (this.NRf.IsFinishMove) {
         this.FinishExecute(true);
       } else {
-        this.zIf?.Tick(i);
+        this.NRf?.Tick(i);
       }
     } else {
       this.FinishExecute(false);

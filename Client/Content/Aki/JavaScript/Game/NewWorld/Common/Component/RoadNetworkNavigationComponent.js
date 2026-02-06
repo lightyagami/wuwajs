@@ -30,6 +30,7 @@ const Time_1 = require("../../../../Core/Common/Time");
 const EntityComponent_1 = require("../../../../Core/Entity/EntityComponent");
 const RegisterComponent_1 = require("../../../../Core/Entity/RegisterComponent");
 const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
+const FNameUtil_1 = require("../../../../Core/Utils/FNameUtil");
 const Rotator_1 = require("../../../../Core/Utils/Math/Rotator");
 const Transform_1 = require("../../../../Core/Utils/Math/Transform");
 const Vector_1 = require("../../../../Core/Utils/Math/Vector");
@@ -45,11 +46,10 @@ const ModelManager_1 = require("../../../Manager/ModelManager");
 const VehicleStreamDefine_1 = require("../../../Module/VehicleStream/VehicleStreamDefine");
 const ColorUtils_1 = require("../../../Utils/ColorUtils");
 const MIN_BUFFER_TIME_LENGTH = 0.02;
-const MAX_BUFFER_TIME_LENGTH = 60000;
 const BLINK_MOVE_MIN_TIME = 4;
 const HIT_INTERVAL = 3000;
 const COMMON_CONTEXT = "RoadNetworkNavigationComponent";
-const INIT_VISIBLE_DISTANCE = 2000;
+const INIT_VISIBLE_DISTANCE = 1000;
 let RoadNetworkNavigationComponent = RoadNetworkNavigationComponent_1 = class RoadNetworkNavigationComponent extends EntityComponent_1.EntityComponent {
   constructor() {
     super(...arguments);
@@ -57,98 +57,107 @@ let RoadNetworkNavigationComponent = RoadNetworkNavigationComponent_1 = class Ro
     this.n$t = undefined;
     this.Nln = undefined;
     this.emn = undefined;
-    this.Heg = undefined;
-    this.jeg = undefined;
+    this.jPg = undefined;
+    this.$Pg = undefined;
+    this.u$g = false;
     this.wDe = 0;
     this.Wpo = 0;
-    this._Af = false;
+    this.v2f = false;
     this.b1n = false;
-    this.ujf = false;
-    this.mXf = false;
-    this.$eg = false;
-    this.Weg = false;
+    this.Lig = false;
+    this.S_g = false;
+    this.WPg = false;
+    this.QPg = false;
     this.Lo = undefined;
-    this.mGf = undefined;
-    this.cjf = undefined;
+    this.L6f = undefined;
+    this.wig = undefined;
     this.jUn = 0;
     this.FY1 = 0;
     this.wY = 0;
-    this.Qeg = 1;
-    this.Keg = 0;
-    this.djf = Transform_1.Transform.Create();
-    this.mjf = undefined;
-    this.E$f = -1;
-    this.I$f = undefined;
-    this.vtg = undefined;
-    this.GQf = new Map();
-    this.fjf = t => {
-      var e = this.GetVehicleTeamMember();
-      if (e && (e.OnForceTick(t), this.IsTickOnPreMove())) {
-        if (this.Weg && this.Qeg !== 1) {
-          this.Keg += t;
-          if (++this.wY % this.Qeg == 0) {
-            e.OnTick(0, this.Keg, this.Qeg);
-            this.Keg = 0;
+    this.KPg = 1;
+    this.XPg = 0;
+    this.Pig = Transform_1.Transform.Create();
+    this.Aig = undefined;
+    this.eog = -1;
+    this.tog = undefined;
+    this.tDg = undefined;
+    this.cag = new Map();
+    this.fGr = (t, e) => {
+      this.u$g = t;
+    };
+    this.Dig = t => {
+      var e;
+      if (!this.u$g) {
+        if ((e = this.GetVehicleTeamMember()) && (e.OnForceTick(t), this.IsTickOnPreMove())) {
+          if (this.QPg && this.KPg !== 1) {
+            this.XPg += t;
+            if (++this.wY % this.KPg == 0) {
+              e.OnTick(0, this.XPg, this.KPg);
+              this.XPg = 0;
+            }
+          } else {
+            e.OnTick(0, t, 1);
           }
-        } else {
-          e.OnTick(0, t, 1);
         }
       }
     };
-    this.ytg = () => {
-      var t = this.Stg();
+    this.iDg = () => {
+      var t = this.rDg();
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("VehicleStream", 18, "车流载具预制体:加载完毕", ["CreatureDataId", this.Wpo], ["PlayerInInitLocation", !t]);
       }
       if (t) {
-        this.Mtg();
+        this.oDg();
       } else {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("VehicleStream", 18, "车流载具预制体:玩家在出生范围", ["CreatureDataId", this.Wpo]);
         }
-        this.vtg = TimerSystem_1.TimerSystem.Forever(this.Etg, 1000);
+        this.tDg = TimerSystem_1.TimerSystem.Forever(this.nDg, 1000);
       }
     };
-    this.Etg = () => {
-      if (this.Stg()) {
-        if (TimerSystem_1.TimerSystem.Has(this.vtg)) {
-          TimerSystem_1.TimerSystem.Remove(this.vtg);
+    this.nDg = () => {
+      if (this.rDg()) {
+        if (TimerSystem_1.TimerSystem.Has(this.tDg)) {
+          TimerSystem_1.TimerSystem.Remove(this.tDg);
         }
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("VehicleStream", 18, "车流载具预制体:玩家离开出生范围", ["CreatureDataId", this.Wpo]);
         }
-        this.Mtg();
+        this.oDg();
       }
     };
-    this.cDm = () => {
-      this.n$t?.SetupSceneInteractionWhenLoadCompleted();
-      ControllerHolder_1.ControllerHolder.CreatureController.SetEntityEnable(this.Entity, true, COMMON_CONTEXT);
-      this.$eg = this.GetShowActor()?.WasRecentlyRenderedOnScreen() ?? false;
-      this.emn = this.n$t?.GetInteractionSkeletalMeshActor()?.SkeletalMeshComponent;
-      var t = this.LaunchVehicle();
-      if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("VehicleStream", 18, "车流载具预制体:显示", ["CreatureDataId", this.Wpo], ["RecentlyRenderedOnScreen", this.$eg], ["LaunchSuccess", t]);
+    this.wAm = () => {
+      this.WPg = this.GetShowActor()?.WasRecentlyRenderedOnScreen() ?? false;
+      var t = this.n$t?.GetInteractionSkeletalMeshActor();
+      this.emn = t?.SkeletalMeshComponent;
+      var e = this.Entity.GetComponent(91);
+      if (e) {
+        e.SetRangeActorParent(t, false, FNameUtil_1.FNameUtil.GetDynamicFName("BoostPad"));
       }
-      if (t) {
+      var e = this.LaunchVehicle();
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("VehicleStream", 18, "车流载具预制体:显示", ["CreatureDataId", this.Wpo], ["RecentlyRenderedOnScreen", this.WPg], ["LaunchSuccess", e]);
+      }
+      if (e) {
         this.Nln?.SetEnableMovementSync(true, "RoadNetworkNavigationComponent Enable");
       }
     };
-    this.FQf = t => {
-      if (this.FFm) {
+    this.dag = t => {
+      if (this.n3m) {
         if (t) {
           if (this.HasModelBuffer()) {
-            this.NQf(false, 2);
+            this.mag(false, 2);
           }
         } else {
-          this.NQf(true, 2);
+          this.mag(true, 2);
         }
       }
     };
-    this.fXf = t => {
+    this.M_g = t => {
       if (t.size) {
         for (const e of t) {
           if (e === this.emn) {
-            this.mXf = true;
+            this.S_g = true;
             if (Log_1.Log.CheckDebug()) {
               Log_1.Log.Debug("VehicleStream", 18, "OnMotorcycleBaseMovementChanged", ["CreatureDataId", this.Wpo], ["baseMovement", e]);
             }
@@ -156,16 +165,16 @@ let RoadNetworkNavigationComponent = RoadNetworkNavigationComponent_1 = class Ro
           }
         }
       }
-      this.mXf = false;
+      this.S_g = false;
     };
     this.M6l = t => {
       if (t.VehicleEntity && t.VehicleType === "Motorcycle" && t.IsRolePassenger(true)) {
-        EventSystem_1.EventSystem.AddWithTarget(t.VehicleEntity, EventDefine_1.EEventName.MotorcycleBaseMovementChanged, this.fXf);
+        EventSystem_1.EventSystem.AddWithTarget(t.VehicleEntity, EventDefine_1.EEventName.MotorcycleBaseMovementChanged, this.M_g);
       }
     };
     this.E6l = t => {
       if (t.VehicleEntity && t.VehicleType === "Motorcycle" && t.IsRolePassenger(true)) {
-        EventSystem_1.EventSystem.RemoveWithTarget(t.VehicleEntity, EventDefine_1.EEventName.MotorcycleBaseMovementChanged, this.fXf);
+        EventSystem_1.EventSystem.RemoveWithTarget(t.VehicleEntity, EventDefine_1.EEventName.MotorcycleBaseMovementChanged, this.M_g);
       }
     };
     this.Ohn = () => {
@@ -187,10 +196,10 @@ let RoadNetworkNavigationComponent = RoadNetworkNavigationComponent_1 = class Ro
       }
     };
     this.OnComponentHit = (t, e, i, s, h) => {
-      var o = this.gjf();
+      var o = this.Uig();
       if (!!o && e === o && !(TimeUtil_1.TimeUtil.GetServerTimeStamp() - this.FY1 < HIT_INTERVAL)) {
         if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("VehicleStream", 18, "摩托碰撞车流载具", ["CreatureDataId", this.Wpo], ["otherActor", e?.GetName()], ["IsPlayerStandOn", this.ujf]);
+          Log_1.Log.Debug("VehicleStream", 18, "摩托碰撞车流载具", ["CreatureDataId", this.Wpo], ["otherActor", e?.GetName()], ["IsPlayerStandOn", this.Lig]);
         }
         this.FY1 = TimeUtil_1.TimeUtil.GetServerTimeStamp();
         o = 201106;
@@ -200,51 +209,51 @@ let RoadNetworkNavigationComponent = RoadNetworkNavigationComponent_1 = class Ro
         if (ModelManager_1.ModelManager.VehicleStreamModel.EnableDebug) {
           UE.KismetSystemLibrary.DrawDebugSphere(t, h.ImpactPoint, 15, 12, ColorUtils_1.ColorUtils.LinearYellow, 1);
         }
-        if (this.cjf) {
+        if (this.wig) {
           e = "[RoadNetworkNavigationComponent]";
           if (this.jUn) {
             EffectSystem_1.EffectSystem.StopEffectById(this.jUn, e, false);
           }
           o = UE.KismetMathLibrary.WD_LocalToWorld(GlobalData_1.GlobalData.World, h.ImpactPoint);
-          this.djf.SetLocation(o);
-          this.jUn = this.hst(this.cjf, this.djf.ToUeTransform(), e);
+          this.Pig.SetLocation(o);
+          this.jUn = this.hst(this.wig, this.Pig.ToUeTransform(), e);
         }
       }
     };
     this.OnEntityWasRecentlyRenderedOnScreenChange = t => {
-      if (!(this.$eg = t)) {
-        this.Weg = true;
-        this.Keg = 0;
+      if (!(this.WPg = t)) {
+        this.QPg = true;
+        this.XPg = 0;
       }
     };
-    this.FFm = undefined;
+    this.n3m = undefined;
     this.OutTransformOffsetRef = (0, puerts_1.$ref)(undefined);
   }
   get SkeletalMeshComponentToWorld() {
-    if (this.E$f < Time_1.Time.Frame && this.emn?.IsValid()) {
-      this.E$f = Time_1.Time.Frame;
-      this.I$f = this.emn.D_K2_GetComponentToWorld();
+    if (this.eog < Time_1.Time.Frame && this.emn?.IsValid()) {
+      this.eog = Time_1.Time.Frame;
+      this.tog = this.emn.D_K2_GetComponentToWorld();
     }
-    return this.I$f;
+    return this.tog;
   }
   OnInitData(t) {
     var e = t.GetParam(RoadNetworkNavigationComponent_1)[0];
     this.Lo = e;
     var e = this.Lo.ObstacleConfig.ExtraObstacleDetectionRange;
     if (e?.Type === "Box") {
-      this.mGf = e;
+      this.L6f = e;
     }
-    this.cjf = this.Lo.BasicConfig.HitEffect;
-    this.mjf = new EffectContext_1.EffectContext(this.Entity.Id);
+    this.wig = this.Lo.BasicConfig.HitEffect;
+    this.Aig = new EffectContext_1.EffectContext(this.Entity.Id);
     this.wDe = t.PbDataId;
     this.Wpo = t.CreatureDataId;
     this.u1t = this.Entity.GetComponent(0);
-    this.Nln = this.Entity.GetComponent(167);
-    this.n$t = this.Entity.GetComponent(212);
-    this.Heg = this.Entity.GetComponent(130);
-    var e = this.u1t.ComponentDataMap.get("bwm")?.bwm?.Q2m;
-    if (e && e.kLm && e.fom) {
-      ControllerHolder_1.ControllerHolder.VehicleStreamController.RegisterVehicleTeamMember(this.Wpo, this.wDe, e.kLm, e.qLm, e.fom, e.gom, Vector_1.Vector.Create(this.u1t.ServerStartLocation), Rotator_1.Rotator.Create(this.u1t.GetRotation()), this.Lo.BasicConfig);
+    this.Nln = this.Entity.GetComponent(169);
+    this.n$t = this.Entity.GetComponent(214);
+    this.jPg = this.Entity.GetComponent(132);
+    var e = this.u1t.ComponentDataMap.get("$wm")?.$wm?.lqm;
+    if (e && e.uPm && e.fom) {
+      ControllerHolder_1.ControllerHolder.VehicleStreamController.RegisterVehicleTeamMember(this.Wpo, this.wDe, e.uPm, e.cPm, e.fom, e.gom, Vector_1.Vector.Create(this.u1t.ServerStartLocation), Rotator_1.Rotator.Create(this.u1t.GetRotation()), this.Lo.BasicConfig);
     }
     this.u1t.SetVisible(false);
     return true;
@@ -256,30 +265,47 @@ let RoadNetworkNavigationComponent = RoadNetworkNavigationComponent_1 = class Ro
         this.Nln?.SetEnableMovementSync(true, "RoadNetworkNavigationComponent Enable");
       }
     } else {
-      EventSystem_1.EventSystem.OnceWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompletedNew, this.ytg);
+      EventSystem_1.EventSystem.OnceWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompletedNew, this.iDg);
     }
-    if (this.Heg?.Valid) {
+    if (this.jPg?.Valid) {
       t = this.Entity?.GameBudgetManagedToken;
-      this.jeg = this.Heg.CreatePerceptionEvent(VehicleStreamDefine_1.COLLISION_AUDIO_ENABLE_RANGE, t, this.Ohn, this.Fhn);
+      this.$Pg = this.jPg.CreatePerceptionEvent(VehicleStreamDefine_1.COLLISION_AUDIO_ENABLE_RANGE, t, this.Ohn, this.Fhn);
     }
-    ControllerHolder_1.ControllerHolder.ComponentForceTickController.RegisterPreMoveTick(this, this.fjf);
+    ControllerHolder_1.ControllerHolder.ComponentForceTickController.RegisterPreMoveTick(this, this.Dig);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnAbsoluteTimeStop, this.fGr);
   }
   OnEnable() {
-    ControllerHolder_1.ControllerHolder.ComponentForceTickController.RegisterPreMoveTick(this, this.fjf);
+    ControllerHolder_1.ControllerHolder.ComponentForceTickController.RegisterPreMoveTick(this, this.Dig);
   }
   OnDisable(t) {
     ControllerHolder_1.ControllerHolder.ComponentForceTickController.UnregisterPreMoveTick(this);
   }
   OnEnd() {
-    if (EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompletedNew, this.ytg)) {
-      EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompletedNew, this.ytg);
+    if (this.b1n) {
+      this.Fhn();
     }
-    if (EventSystem_1.EventSystem.HasWithTarget(this, EventDefine_1.EEventName.VehicleMemberBlockByTraceTarget, this.FQf)) {
-      EventSystem_1.EventSystem.RemoveWithTarget(this, EventDefine_1.EEventName.VehicleMemberBlockByTraceTarget, this.FQf);
+    ControllerHolder_1.ControllerHolder.ComponentForceTickController.UnregisterPreMoveTick(this);
+    if (this.n3m?.IsValid()) {
+      this.n3m.SetComponentTickEnabled(false);
     }
-    var t = this.gXf();
-    if (t && EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.MotorcycleBaseMovementChanged, this.fXf)) {
-      EventSystem_1.EventSystem.RemoveWithTarget(t, EventDefine_1.EEventName.MotorcycleBaseMovementChanged, this.fXf);
+    if (this.$Pg) {
+      this.jPg?.DeletePerceptionEvent(this.$Pg);
+    }
+    return true;
+  }
+  OnClear() {
+    if (EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompletedNew, this.iDg)) {
+      EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompletedNew, this.iDg);
+    }
+    if (EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionShowCompleted, this.wAm)) {
+      EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionShowCompleted, this.wAm);
+    }
+    if (EventSystem_1.EventSystem.HasWithTarget(this, EventDefine_1.EEventName.VehicleMemberBlockByTraceTarget, this.dag)) {
+      EventSystem_1.EventSystem.RemoveWithTarget(this, EventDefine_1.EEventName.VehicleMemberBlockByTraceTarget, this.dag);
+    }
+    var t = this.E_g();
+    if (t && EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.MotorcycleBaseMovementChanged, this.M_g)) {
+      EventSystem_1.EventSystem.RemoveWithTarget(t, EventDefine_1.EEventName.MotorcycleBaseMovementChanged, this.M_g);
     }
     if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnEnterVehicle, this.M6l)) {
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnEnterVehicle, this.M6l);
@@ -287,85 +313,79 @@ let RoadNetworkNavigationComponent = RoadNetworkNavigationComponent_1 = class Ro
     if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnLeaveVehicle, this.E6l)) {
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnLeaveVehicle, this.E6l);
     }
-    if (this.b1n) {
-      this.Fhn();
+    if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnAbsoluteTimeStop, this.fGr)) {
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnAbsoluteTimeStop, this.fGr);
     }
-    ControllerHolder_1.ControllerHolder.ComponentForceTickController.UnregisterPreMoveTick(this);
-    ControllerHolder_1.ControllerHolder.VehicleStreamController.UnRegisterVehicleTeamMember(this.Wpo);
-    if (this.FFm?.IsValid()) {
-      this.FFm.SetComponentTickEnabled(false);
-    }
-    if (this.jeg) {
-      this.Heg?.DeletePerceptionEvent(this.jeg);
-    }
-    return true;
+    return ControllerHolder_1.ControllerHolder.VehicleStreamController.UnRegisterVehicleTeamMember(this.Wpo);
   }
   OnTick(t) {
-    if (!this._Af) {
-      this._Af = true;
-      if (this.Entity.DistanceWithCamera > VehicleStreamDefine_1.COLLISION_AUDIO_ENABLE_RANGE) {
-        this.Fhn();
-      } else {
-        this.Ohn();
-      }
-    }
-    const e = this.GetVehicleTeamMember();
-    if (e) {
-      if (this.Weg) {
-        this.Weg = false;
-        TimerSystem_1.TimerSystem.Next(() => {
-          e?.OnTick(2, t, this.Entity.GetTickInterval());
-        });
-      } else {
-        if (!this.IsTickOnPreMove()) {
-          e.OnTick(1, t, this.Entity.GetTickInterval());
+    if (!this.u$g) {
+      if (!this.v2f) {
+        this.v2f = true;
+        if (this.Entity.DistanceWithCamera > VehicleStreamDefine_1.COLLISION_AUDIO_ENABLE_RANGE) {
+          this.Fhn();
+        } else {
+          this.Ohn();
         }
-        this.Qeg = this.Entity.GetTickInterval();
+      }
+      const e = this.GetVehicleTeamMember();
+      if (e) {
+        if (this.QPg) {
+          this.QPg = false;
+          TimerSystem_1.TimerSystem.Next(() => {
+            e?.OnTick(2, t, this.Entity.GetTickInterval());
+          });
+        } else {
+          if (!this.IsTickOnPreMove()) {
+            e.OnTick(1, t, this.Entity.GetTickInterval());
+          }
+          this.KPg = this.Entity.GetTickInterval();
+        }
       }
     }
   }
-  Stg() {
+  rDg() {
     var t = Global_1.Global.BaseCharacter?.CharacterActorComponent;
     return !!t && !!this.n$t && Vector_1.Vector.Distance(t.ActorLocationProxy, this.n$t.ActorLocationProxy) > INIT_VISIBLE_DISTANCE;
   }
-  Mtg() {
+  oDg() {
     this.u1t?.SetVisible(true);
-    this.n$t?.ToggleSceneInteractionVisible(true, this.cDm, COMMON_CONTEXT);
+    EventSystem_1.EventSystem.OnceWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionShowCompleted, this.wAm);
+    ControllerHolder_1.ControllerHolder.CreatureController.SetEntityEnable(this.Entity, true, COMMON_CONTEXT);
   }
   LaunchVehicle() {
     var t;
-    return !!this.emn && !!ControllerHolder_1.ControllerHolder.VehicleStreamController.LaunchVehicle(this.Wpo, this.emn) && (t = this.n$t?.Owner, this.FFm = t?.GetComponentByClass(UE.KuroSceneItemModelBufferComponent.StaticClass()), this.FFm?.IsValid() || (this.FFm = t?.AddComponentByClass(UE.KuroSceneItemModelBufferComponent.StaticClass(), false, new UE.Transform(), false), this.FFm.SetUpMeshComponent(this.emn)), this.GQf.clear(), this.NQf(true, 0), EventSystem_1.EventSystem.AddWithTarget(this, EventDefine_1.EEventName.VehicleMemberBlockByTraceTarget, this.FQf), this.CXf(), true);
+    return !!this.emn && !!ControllerHolder_1.ControllerHolder.VehicleStreamController.LaunchVehicle(this.Wpo, this.emn) && (t = this.n$t?.Owner, this.n3m = t?.GetComponentByClass(UE.KuroSceneItemModelBufferComponent.StaticClass()), this.n3m?.IsValid() || (this.n3m = t?.AddComponentByClass(UE.KuroSceneItemModelBufferComponent.StaticClass(), false, new UE.Transform(), false), this.n3m.SetUpMeshComponent(this.emn)), this.cag.clear(), this.mag(true, 0), EventSystem_1.EventSystem.AddWithTarget(this, EventDefine_1.EEventName.VehicleMemberBlockByTraceTarget, this.dag), this.I_g(), true);
   }
-  CXf() {
-    var t = this.gXf();
+  I_g() {
+    var t = this.E_g();
     if (t) {
-      EventSystem_1.EventSystem.AddWithTarget(t, EventDefine_1.EEventName.MotorcycleBaseMovementChanged, this.fXf);
-    } else {
-      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnEnterVehicle, this.M6l);
-      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnLeaveVehicle, this.E6l);
+      EventSystem_1.EventSystem.AddWithTarget(t, EventDefine_1.EEventName.MotorcycleBaseMovementChanged, this.M_g);
     }
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnEnterVehicle, this.M6l);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnLeaveVehicle, this.E6l);
   }
   OnCharacterStandOn(t) {
     if (Global_1.Global.BaseCharacter && Global_1.Global.BaseCharacter.EntityId === t) {
-      this.ujf = true;
+      this.Lig = true;
     }
   }
   OnCharacterLeave(t) {
     if (Global_1.Global.BaseCharacter && Global_1.Global.BaseCharacter.EntityId === t) {
-      this.ujf = false;
+      this.Lig = false;
     }
   }
-  gXf() {
+  E_g() {
     return Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity?.GetComponent(242)?.VehicleEntity;
   }
-  gjf() {
-    var t = this.gXf();
+  Uig() {
+    var t = this.E_g();
     if (t) {
       return t.GetComponent(1)?.Owner;
     }
   }
   hst(t, e, i) {
-    return EffectSystem_1.EffectSystem.SpawnUnloopedEffect(GlobalData_1.GlobalData.World, e, t, i, this.mjf, 3, undefined, undefined);
+    return EffectSystem_1.EffectSystem.SpawnUnloopedEffect(GlobalData_1.GlobalData.World, e, t, i, this.Aig, 3, undefined, undefined);
   }
   GetConfig() {
     return this.Lo;
@@ -393,7 +413,7 @@ let RoadNetworkNavigationComponent = RoadNetworkNavigationComponent_1 = class Ro
     return this.n$t?.CurLevelPrefabShowActor;
   }
   WasRecentlyRenderedOnScreen() {
-    return this.$eg;
+    return this.WPg;
   }
   GetVehicleTeamMember() {
     return ModelManager_1.ModelManager.VehicleStreamModel.GetVehicleTeamMember(this.Wpo);
@@ -402,10 +422,10 @@ let RoadNetworkNavigationComponent = RoadNetworkNavigationComponent_1 = class Ro
     return this.b1n;
   }
   GetExtraBoxTrigger() {
-    return this.mGf;
+    return this.L6f;
   }
   IsTickOnPreMove() {
-    return this.ujf || this.mXf || this.Weg;
+    return this.Lig || this.S_g || this.QPg;
   }
   GetObstacleDetectionType() {
     return this.Lo?.ObstacleConfig?.ObstacleDetectionType;
@@ -413,42 +433,11 @@ let RoadNetworkNavigationComponent = RoadNetworkNavigationComponent_1 = class Ro
   CheckCanLaunch() {
     return this.emn !== undefined;
   }
-  SetLocationAndRotatorWithModelBuffer(t, e, i, s, h = false) {
-    var o;
-    if (this.n$t) {
-      if (this.FFm) {
-        if (this.emn) {
-          if (i < MIN_BUFFER_TIME_LENGTH) {
-            if (Log_1.Log.CheckError()) {
-              Log_1.Log.Error("VehicleStream", 18, "ModelBuffer Time is Too Short", ["PbDataId", this.wDe], ["CreatureDataId", this.Wpo], ["timeLength", i]);
-            }
-            this.n$t.SetActorLocationAndRotation(t, e, s + ".移动表现优化.Mesh缓动.没有缓动", h);
-            this.StopModelBuffer();
-          } else if (Math.abs(i) < MAX_BUFFER_TIME_LENGTH) {
-            this.FFm.BufferNowTime = 0;
-            this.FFm.BufferTimeLength = i / 1000;
-            this.NQf(true, 1);
-            o = this.SkeletalMeshComponentToWorld;
-            this.n$t.SetActorLocationAndRotationExceptSkeletalMesh(this.FFm, t, e, s + "移动表现优化，Mesh缓动", h);
-            this.FFm.D_GetTransformOffsetInWorld(o, this.n$t.ActorTransform, this.OutTransformOffsetRef);
-          } else if (Log_1.Log.CheckError()) {
-            Log_1.Log.Error("Test", 6, "ModelBuffer Time is Too Long", ["PbDataId", this.wDe], ["CreatureDataId", this.Wpo], ["timeLength", i]);
-          }
-        } else {
-          this.n$t.SetActorLocationAndRotation(t, e, s + "移动表现优化，Mesh缓动", h);
-        }
-      } else if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("VehicleStream", 18, "AnimationComp is undefined", ["PbDataId", this.wDe], ["CreatureDataId", this.Wpo], ["timeLength", i]);
-      }
-    } else if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("VehicleStream", 18, "ActorComponent is undefined", ["PbDataId", this.wDe], ["CreatureDataId", this.Wpo], ["timeLength", i]);
-    }
-  }
   SetLocationAndRotatorWithKeepingModelBuffer(e, i, s, h, o = true) {
     if (this.n$t) {
-      if (this.FFm) {
+      if (this.n3m) {
         if (this.emn) {
-          var r = this.FFm.BufferTimeLength - this.FFm.BufferNowTime;
+          var r = this.n3m.BufferTimeLength - this.n3m.BufferNowTime;
           let t = s / 1000;
           if (r > 0) {
             t += r;
@@ -460,11 +449,11 @@ let RoadNetworkNavigationComponent = RoadNetworkNavigationComponent_1 = class Ro
             this.n$t.SetActorLocationAndRotation(e, i, h + "bufferTime不合法", o);
           } else {
             r = this.emn.D_K2_GetComponentToWorld();
-            this.n$t.SetActorLocationAndRotationExceptSkeletalMesh(this.FFm, e, i, h, o);
-            this.FFm.BufferNowTime = 0;
-            this.FFm.BufferTimeLength = t;
-            this.NQf(true, 1);
-            this.FFm.D_GetTransformOffsetInWorld(r, this.n$t.ActorTransform, this.OutTransformOffsetRef);
+            this.n$t.SetActorLocationAndRotationExceptSkeletalMesh(this.n3m, e, i, h, o);
+            this.n3m.BufferNowTime = 0;
+            this.n3m.BufferTimeLength = t;
+            this.mag(true, 1);
+            this.n3m.D_GetTransformOffsetInWorld(r, this.n$t.ActorTransform, this.OutTransformOffsetRef);
           }
         } else {
           this.n$t.SetActorLocationAndRotation(e, i, h + "移动表现优化，Mesh缓动", o);
@@ -477,32 +466,43 @@ let RoadNetworkNavigationComponent = RoadNetworkNavigationComponent_1 = class Ro
     }
   }
   StopModelBuffer() {
-    this.FFm?.StopModelBuffer();
-    this.NQf(false, 1);
+    this.n3m?.StopModelBuffer();
+    this.mag(false, 1);
+    if (ModelManager_1.ModelManager.VehicleStreamModel.EnableDebug && Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("VehicleStream", 18, "StopModelBuffer", ["CreatureDataId", this.Wpo]);
+    }
   }
   HasModelBuffer() {
     return this.GetModelBufferTime() > 0;
   }
+  IsModelBufferCompTickEnabled() {
+    return !!this.n3m && this.n3m.IsComponentTickEnabled();
+  }
   GetModelBufferTime() {
-    if (this.FFm) {
-      return this.FFm.BufferTimeLength;
+    if (this.n3m) {
+      return this.n3m.BufferTimeLength;
     } else {
       return 0;
     }
   }
-  NQf(t, e) {
-    if (this.FFm) {
+  mag(t, e) {
+    if (this.n3m) {
       if (t) {
-        this.GQf.delete(e);
-        if (!this.GQf.size) {
-          this.FFm.SetComponentTickEnabled(true);
+        this.cag.delete(e);
+        if (!this.cag.size && !this.n3m.IsComponentTickEnabled()) {
+          this.n3m.SetComponentTickEnabled(true);
+          if (Log_1.Log.CheckDebug()) {
+            Log_1.Log.Debug("VehicleStream", 18, "SetModelBufferComponentTickable", ["PbDataId", this.wDe], ["CreatureDataId", this.Wpo], ["source", e], ["enable", true]);
+          }
         }
       } else {
-        this.GQf.set(e, true);
-        this.FFm.SetComponentTickEnabled(false);
+        this.cag.set(e, true);
+        if (this.n3m.IsComponentTickEnabled() && (this.n3m.SetComponentTickEnabled(false), Log_1.Log.CheckDebug())) {
+          Log_1.Log.Debug("VehicleStream", 18, "SetModelBufferComponentTickable", ["PbDataId", this.wDe], ["CreatureDataId", this.Wpo], ["source", e], ["enable", false]);
+        }
       }
     }
   }
 };
-RoadNetworkNavigationComponent = RoadNetworkNavigationComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(338)], RoadNetworkNavigationComponent);
+RoadNetworkNavigationComponent = RoadNetworkNavigationComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(340)], RoadNetworkNavigationComponent);
 exports.RoadNetworkNavigationComponent = RoadNetworkNavigationComponent; //# sourceMappingURL=RoadNetworkNavigationComponent.js.map

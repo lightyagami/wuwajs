@@ -56,13 +56,13 @@ class MarkGamePlayComponent extends MapComponent_1.MapComponent {
       return e.RelativeId;
     }
   }
-  LKf() {
+  Dlg() {
     var e = this.ParentEntity.GetComponent(15)?.Config;
     if (e && (e instanceof MapMark_1.MapMark || e instanceof DynamicMapMark_1.DynamicMapMark)) {
       return e.RelativeDungeonId;
     }
   }
-  Qzf() {
+  Ngg() {
     var e = this.ParentEntity.GetComponent(15)?.Config;
     if (e && (e instanceof MapMark_1.MapMark || e instanceof DynamicMapMark_1.DynamicMapMark)) {
       return e.RelativeType;
@@ -71,7 +71,7 @@ class MarkGamePlayComponent extends MapComponent_1.MapComponent {
   get GameplayRewardIdList() {
     var e;
     var t;
-    if (this.Qzf() !== 1) {
+    if (this.Ngg() !== 1) {
       return [];
     }
     const r = this.UQu();
@@ -97,7 +97,7 @@ class MarkGamePlayComponent extends MapComponent_1.MapComponent {
   }
   get GameplayCompleteRewardIds() {
     var e;
-    if (this.Qzf() === 1 && (e = this.UQu()) !== undefined && e !== 0 && (e = ModelManager_1.ModelManager.LevelPlayModel.GetLevelPlayConfig(e))) {
+    if (this.Ngg() === 1 && (e = this.UQu()) !== undefined && e !== 0 && (e = ModelManager_1.ModelManager.LevelPlayModel.GetLevelPlayConfig(e))) {
       return e.RewardConfig?.CompleteRewardIds ?? [];
     } else {
       return [];
@@ -111,11 +111,11 @@ class MarkGamePlayComponent extends MapComponent_1.MapComponent {
     var t;
     var r;
     var a;
-    if (this.Qzf() !== 1) {
+    if (this.Ngg() !== 1) {
       return [];
     }
     const i = this.UQu();
-    if (i === undefined || !(a = ModelManager_1.ModelManager.LevelPlayModel.GetLevelPlayConfig(i)) || (r = this.LKf()) === undefined) {
+    if (i === undefined || !(a = ModelManager_1.ModelManager.LevelPlayModel.GetLevelPlayConfig(i)) || (r = this.Dlg()) === undefined) {
       return [];
     } else {
       e = (t = ModelManager_1.ModelManager.LevelPlayReportModel).GetLevelPlayRewardTreasureBoxIds(r, a.Id) ?? [];
@@ -127,7 +127,7 @@ class MarkGamePlayComponent extends MapComponent_1.MapComponent {
   }
   get RewardNodeIds() {
     var e;
-    if (this.Qzf() === 1 && (e = this.UQu()) !== undefined && (e = ModelManager_1.ModelManager.LevelPlayModel.GetLevelPlayConfig(e))) {
+    if (this.Ngg() === 1 && (e = this.UQu()) !== undefined && (e = ModelManager_1.ModelManager.LevelPlayModel.GetLevelPlayConfig(e))) {
       return e.RewardConfig?.RewardNodeIds ?? [];
     } else {
       return [];
@@ -135,7 +135,7 @@ class MarkGamePlayComponent extends MapComponent_1.MapComponent {
   }
   get RewardTreasureBoxIds() {
     var e = this.UQu();
-    if (e !== undefined && this.Qzf() === 1 && (e = ModelManager_1.ModelManager.LevelPlayModel.GetLevelPlayConfig(e))) {
+    if (e !== undefined && this.Ngg() === 1 && (e = ModelManager_1.ModelManager.LevelPlayModel.GetLevelPlayConfig(e))) {
       return e.RewardConfig?.TreasureBoxIds ?? [];
     } else {
       return [];
@@ -151,7 +151,7 @@ class MarkGamePlayComponent extends MapComponent_1.MapComponent {
     var a;
     var i;
     var n = this.UQu();
-    return n !== undefined && (e = this.LKf()) !== undefined && !!(n = ModelManager_1.ModelManager.LevelPlayModel.GetLevelPlayConfig(n)) && (t = this.RewardNodeIds, r = this.RewardTreasureBoxIds, a = (i = ModelManager_1.ModelManager.LevelPlayReportModel).GetLevelPlayRewardNodeIds(e, n.Id), i = i.GetLevelPlayRewardTreasureBoxIds(e, n.Id), a.length >= t.length) && i.length >= r.length;
+    return n !== undefined && (e = this.Dlg()) !== undefined && !!(n = ModelManager_1.ModelManager.LevelPlayModel.GetLevelPlayConfig(n)) && (t = this.RewardNodeIds, r = this.RewardTreasureBoxIds, a = (i = ModelManager_1.ModelManager.LevelPlayReportModel).GetLevelPlayRewardNodeIds(e, n.Id), i = i.GetLevelPlayRewardTreasureBoxIds(e, n.Id), a.length >= t.length) && i.length >= r.length;
   }
 }
 exports.MarkGamePlayComponent = MarkGamePlayComponent;

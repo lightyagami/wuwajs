@@ -11,6 +11,7 @@ const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiManager_1 = require("../../../Ui/UiManager");
 const ConfirmBoxDefine_1 = require("../../ConfirmBox/ConfirmBoxDefine");
+const LogReportDefine_1 = require("../../LogReport/LogReportDefine");
 const DiscountShopView_1 = require("./DiscountShopView");
 const PayShopBigItem_1 = require("./TabItem/PayShopBigItem");
 class PayShopRechargeView extends DiscountShopView_1.DiscountShopView {
@@ -18,7 +19,14 @@ class PayShopRechargeView extends DiscountShopView_1.DiscountShopView {
     super(...arguments);
     this.r3i = false;
     this.InitItem = () => {
-      return new PayShopBigItem_1.PayShopBigItem();
+      var e = new PayShopBigItem_1.PayShopBigItem();
+      e.SetOnClickRechargeCallback(e => {
+        var r = new LogReportDefine_1.OnClickRechargeItemLogEvent();
+        r.i_id = e.PayItemId;
+        r.i_shop_id = 100;
+        ControllerHolder_1.ControllerHolder.LogReportController.LogReport(r);
+      });
+      return e;
     };
     this.GetProxyData = e => this.PayShopGoodsList[e];
     this.USe = e => {};
@@ -48,14 +56,14 @@ class PayShopRechargeView extends DiscountShopView_1.DiscountShopView {
   }
   RefreshLoopScroll(e) {
     var r = ModelManager_1.ModelManager.PayItemModel.GetDataList().sort((e, r) => e.ItemCount - r.ItemCount);
-    var t = new Array();
-    for (const o of r) {
-      if (o.GetIfCanShow()) {
-        t.push(o);
+    var o = new Array();
+    for (const t of r) {
+      if (t.GetIfCanShow()) {
+        o.push(t);
       }
     }
-    this.PayShopGoodsList = t;
-    this.G3a(t);
+    this.PayShopGoodsList = o;
+    this.G3a(o);
     this.LoopScrollView.ReloadProxyData(this.GetProxyData, this.PayShopGoodsList.length, false);
     this.GetLoopScrollViewComponent(1).RootUIComp.SetUIActive(true);
   }
@@ -77,6 +85,9 @@ class PayShopRechargeView extends DiscountShopView_1.DiscountShopView {
   OnBeforeShow() {
     this.GetItem(4).SetUIActive(false);
     this.TabGroup.SetActive(false);
+    var e = new LogReportDefine_1.OnClickPayShopTabLogEvent();
+    e.i_shop_id = this.CurrentShopId;
+    ControllerHolder_1.ControllerHolder.LogReportController.LogReport(e);
   }
   AfterShowUiTabViewFromToggle() {
     PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk()?.ShowPlayStationStoreIcon(0);

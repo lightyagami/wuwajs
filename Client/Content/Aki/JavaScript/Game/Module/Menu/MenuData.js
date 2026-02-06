@@ -4,10 +4,13 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.MenuData = undefined;
+const UE = require("ue");
 const StringUtils_1 = require("../../../Core/Utils/StringUtils");
 const GameSettingsDefine_1 = require("../../GameSettings/GameSettingsDefine");
 const GameSettingsDeviceRender_1 = require("../../GameSettings/GameSettingsDeviceRender");
+const ConfigManager_1 = require("../../Manager/ConfigManager");
 const ModelManager_1 = require("../../Manager/ModelManager");
+const MenuDefine_1 = require("./MenuDefine");
 class MenuData {
   constructor(e) {
     this.rSl = e;
@@ -114,6 +117,9 @@ class MenuData {
   get hHa() {
     return this.rSl.DetailText;
   }
+  get CanClickWhenDisable() {
+    return this.rSl.CanDisableDetailShow;
+  }
   get CustomTitleArgs() {}
   GetEnable() {
     if (this.FunctionId === GameSettingsDefine_1.EFunction.MobileGamepadMode) {
@@ -125,6 +131,12 @@ class MenuData {
     if (this.FunctionId === GameSettingsDefine_1.EFunction.EyeProtection) {
       return ModelManager_1.ModelManager.MenuModel?.GetDataCacheOrCurValue(GameSettingsDefine_1.EFunction.ImageDisplayMode) === 2;
     }
+    if (this.FunctionId === GameSettingsDefine_1.EFunction.HDR) {
+      return UE.KuroGISystem.CheckWindowsSupportHDR();
+    }
+    if (this.N6g()) {
+      return false;
+    }
     for (var [e, t] of this.gac) {
       e = ModelManager_1.ModelManager.MenuModel?.GetDataCacheOrCurValue(e);
       if (e !== undefined && t.includes(e)) {
@@ -132,6 +144,15 @@ class MenuData {
       }
     }
     return true;
+  }
+  N6g() {
+    var e = ModelManager_1.ModelManager.CreatureModel.GetInstanceId();
+    var e = ConfigManager_1.ConfigManager.InstanceDungeonConfig?.GetConfig(e);
+    if (!e) {
+      return false;
+    }
+    let t = undefined;
+    return !!(t = e.InstSubType !== 12 ? MenuDefine_1.disableSettingsInstMap.get(e.InstSubType) : MenuDefine_1.disableSettingsWorldInstMap.get(e.WorldDungeonSubType)) && t.includes(this.FunctionId);
   }
   get EnableRedDot() {
     return false;

@@ -6,8 +6,10 @@ Object.defineProperty(exports, "__esModule", {
 exports.WheelTowerData = exports.EnergyInfo = undefined;
 const Log_1 = require("../../../../../Core/Common/Log");
 const CommonDefine_1 = require("../../../../../Core/Define/CommonDefine");
+const MathUtils_1 = require("../../../../../Core/Utils/MathUtils");
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
+const TimeUtil_1 = require("../../../../Common/TimeUtil");
 const ConfigManager_1 = require("../../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const ActivityCommonDefine_1 = require("../../ActivityCommonDefine");
@@ -36,39 +38,56 @@ class WheelTowerData extends ActivityData_1.ActivityBaseData {
   constructor() {
     super(...arguments);
     this.CycleId = -1;
-    this.eff = new Map();
-    this.tff = new Map();
+    this.CycleBeginTime = -1;
+    this.CycleEndTime = -1;
+    this.v0f = new Map();
+    this.y0f = new Map();
     this.QY = new Map();
   }
   PhraseEx(e) {
     ModelManager_1.ModelManager.WheelTowerModel.SetActivityId(this.Id);
-    e = e.Aef;
-    this.CycleId = e.bN_;
-    this.rff(e.Uef);
-    this.nff(e.Uef);
-    this.sff(e);
+    e = e.Gif;
+    this.J3g(e);
+    this.S0f(e.Fif);
+    this.M0f(e.Fif);
+    this.E0f(e);
   }
-  rff(e) {
-    this.eff.clear();
+  J3g(e) {
+    if (this.CycleId !== -1 && this.CycleId !== e.bN_) {
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WheelTowerCycleChange);
+    }
+    this.CycleId = e.bN_;
+    this.CycleBeginTime = MathUtils_1.MathUtils.LongToNumber(e.RN_);
+    this.CycleEndTime = MathUtils_1.MathUtils.LongToNumber(e.qDg);
+  }
+  S0f(e) {
+    this.v0f.clear();
     e?.forEach(e => {
       var t = ConfigManager_1.ConfigManager.WheelTowerConfig.GetLevelConfigById(e.gG_).Diff;
-      this.eff.set(t !== 0, e);
-      this.FWf();
+      this.v0f.set(t !== 0, e);
+      this.Hng();
     });
   }
-  FWf() {
-    this.eff.forEach(e => {
-      e.qef.forEach(e => {
-        e.Vef.forEach(e => {
+  Hng() {
+    this.v0f.forEach(e => {
+      e.jif.forEach(e => {
+        e.Xif.forEach(e => {
           var t = this.CheckMainCharacterCorrect(e.Q6n);
           e.Q6n = t;
         });
       });
     });
   }
+  IsInCycle() {
+    return this.CycleId > 0;
+  }
+  IsInCycleTime() {
+    var e = TimeUtil_1.TimeUtil.GetServerTime();
+    return e >= this.CycleBeginTime && e <= this.CycleEndTime;
+  }
   IsTowerUnlocked() {
     if (this.IsUnLock()) {
-      for (var [, e] of this.eff) {
+      for (var [, e] of this.v0f) {
         if (e.K6n) {
           return true;
         }
@@ -77,70 +96,70 @@ class WheelTowerData extends ActivityData_1.ActivityBaseData {
     return false;
   }
   GetLevelRecord(e) {
-    return this.eff.get(e);
+    return this.v0f.get(e);
   }
   IsLevelUnlocked(e) {
-    e = this.eff.get(e);
+    e = this.v0f.get(e);
     return e !== undefined && e.K6n;
   }
   GetHistoryBestScore(e) {
-    return this.GetLevelRecord(e).xuf;
+    return this.GetLevelRecord(e).Adf;
   }
   GetRoundScore(e, t) {
-    return this.GetLevelRecord(e).qef[t]?.Buf ?? 0;
+    return this.GetLevelRecord(e).jif[t]?.Ddf ?? 0;
   }
   GetRoundTotalScore(t, r) {
-    let n = 0;
+    let i = 0;
     for (let e = 0; e <= r; e++) {
-      n += this.GetRoundScore(t, e);
+      i += this.GetRoundScore(t, e);
     }
-    return n;
+    return i;
   }
   GetTotalScore(e) {
-    var t = this.GetLevelRecord(e).qef.length - 1;
+    var t = this.GetLevelRecord(e).jif.length - 1;
     return this.GetRoundTotalScore(e, t);
   }
-  nff(e) {
-    this.tff.clear();
+  M0f(e) {
+    this.y0f.clear();
     e?.forEach(e => {
       var t = ConfigManager_1.ConfigManager.WheelTowerConfig.GetLevelConfigById(e.gG_).Diff !== 0;
       var r = new Map();
-      for (const i of Object.keys(e.Oef)) {
-        var n = e.Oef[i];
-        var a = this.CheckMainCharacterCorrect(Number(i));
-        r.set(a, n);
+      for (const s of Object.keys(e.$if)) {
+        var i = e.$if[s];
+        var n = this.CheckMainCharacterCorrect(Number(s));
+        r.set(n, i);
       }
-      this.tff.set(t, this.aff(r, e.qef));
+      this.y0f.set(t, this.I0f(r, e.jif));
     });
   }
   GetRoundEnergyInfo(e, t) {
     var r = this.GetLevelRecord(e);
-    const n = new Map();
-    this.tff.get(e).RoleEnergyMap.forEach((e, t) => {
-      n.set(t, e);
+    const i = new Map();
+    this.y0f.get(e).RoleEnergyMap.forEach((e, t) => {
+      i.set(t, e);
     });
-    for (let e = t; e < r.qef.length; e++) {
-      r.qef[e].Vef.forEach(e => {
+    for (let e = t; e < r.jif.length; e++) {
+      r.jif[e].Xif.forEach(e => {
         var e = ModelManager_1.ModelManager.WheelTowerModel.TryGetRealRoleId(e.Q6n);
         var t = ModelManager_1.ModelManager.WheelTowerModel.GetRoleCost(e);
-        var r = n.get(e);
-        n.set(e, r + t);
+        var r = i.get(e);
+        i.set(e, r + t);
       });
     }
-    return this.aff(n, r.qef.slice(0, t));
+    return this.I0f(i, r.jif.slice(0, t));
   }
-  aff(e, t) {
+  I0f(e, t) {
     const r = new EnergyInfo();
     e.forEach((e, t) => {
       r.RoleEnergyMap.set(t, e);
     });
     t.forEach(e => {
-      e.Vef.forEach(e => {
+      e.Xif.forEach(e => {
         const t = ModelManager_1.ModelManager.WheelTowerModel.TryGetRealRoleId(e.Q6n);
         if (e.Qtm !== 0) {
           r.WeaponEnergyMap.set(e.Qtm, t);
         }
-        e.Nef.forEach(e => {
+        e.Kif.forEach(e => {
           if (e !== 0) {
             r.PhantomEnergyMap.set(e, t);
           }
@@ -152,21 +171,21 @@ class WheelTowerData extends ActivityData_1.ActivityBaseData {
   CheckMainCharacterCorrect(e) {
     var t = ModelManager_1.ModelManager.WheelTowerModel;
     var r = ModelManager_1.ModelManager.RoleModel;
-    var n = t.TryGetRealRoleId(e);
-    if (r.IsMainRole(n)) {
-      n = r.GetCurSelectMainRoleId() ?? 0;
+    var i = t.TryGetRealRoleId(e);
+    if (r.IsMainRole(i)) {
+      i = r.GetCurSelectMainRoleId() ?? 0;
       if (t.IsTemplateRole(e)) {
-        return t.GetTemplateRoleId(n);
+        return t.GetTemplateRoleId(i);
       } else {
-        return n;
+        return i;
       }
     } else {
       return e;
     }
   }
-  sff(e) {
+  E0f(e) {
     const r = new Map();
-    e.Uef?.forEach(e => {
+    e.Fif?.forEach(e => {
       const t = ConfigManager_1.ConfigManager.WheelTowerConfig.GetLevelConfigById(e.gG_).Diff;
       ConfigManager_1.ConfigManager.WheelTowerConfig.GetRewardConfigListByLevelId(e.gG_)?.forEach(e => {
         r.set(e.Id, t);
@@ -234,43 +253,43 @@ class WheelTowerData extends ActivityData_1.ActivityBaseData {
     var t = e.gG_;
     var t = ConfigManager_1.ConfigManager.WheelTowerConfig.GetLevelConfigById(t).Diff !== 0;
     var r = this.GetLevelRecord(t);
-    r.qef.push(e.jef);
-    r.kef = e.jef.Hef;
-    const a = this.tff.get(t);
-    e.jef?.Vef?.forEach(e => {
+    r.jif.push(e.zif);
+    r.Hif = e.zif.Yif;
+    const n = this.y0f.get(t);
+    e.zif?.Xif?.forEach(e => {
       const t = ModelManager_1.ModelManager.WheelTowerModel.TryGetRealRoleId(e.Q6n);
       var r = ModelManager_1.ModelManager.WheelTowerModel.GetRoleCost(t);
-      var n = a.RoleEnergyMap.get(t);
-      a.RoleEnergyMap.set(t, n - r);
+      var i = n.RoleEnergyMap.get(t);
+      n.RoleEnergyMap.set(t, i - r);
       if (e.Qtm !== 0) {
-        a.WeaponEnergyMap.set(e.Qtm, t);
+        n.WeaponEnergyMap.set(e.Qtm, t);
       }
-      e.Nef.forEach(e => {
+      e.Kif.forEach(e => {
         if (e !== 0) {
-          a.PhantomEnergyMap.set(e, t);
+          n.PhantomEnergyMap.set(e, t);
         }
       });
     });
-    r.SMs = e.quf;
-    if (r.xuf < e.quf) {
-      r.xuf = e.quf;
+    r.SMs = e.xdf;
+    if (r.Adf < e.xdf) {
+      r.Adf = e.xdf;
     }
   }
   OnLevelRecordUpdateNotify(e) {
-    this.rff([e]);
-    this.nff([e]);
+    this.S0f([e]);
+    this.M0f([e]);
   }
   OnRoleEnergyUpdateNotify(e) {
-    this.FWf();
+    this.Hng();
     e.forEach(e => {
       var t = ConfigManager_1.ConfigManager.WheelTowerConfig.GetLevelConfigById(e.gG_).Diff !== 0;
       var r = new Map();
-      for (const i of Object.keys(e.Oef)) {
-        var n = e.Oef[i];
-        r.set(Number(i), n);
+      for (const s of Object.keys(e.$if)) {
+        var i = e.$if[s];
+        r.set(Number(s), i);
       }
-      var a = this.aff(r, this.eff.get(t).qef);
-      this.tff.set(t, a);
+      var n = this.I0f(r, this.v0f.get(t).jif);
+      this.y0f.set(t, n);
     });
   }
   OnTaskClaim(e) {
@@ -297,11 +316,36 @@ class WheelTowerData extends ActivityData_1.ActivityBaseData {
     ModelManager_1.ModelManager.ActivityModel.SaveActivityData(this.Id, 0, 0, 0, 1);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.Id);
   }
+  ShouldShowRewardRedDot() {
+    return !!this.kBg() || this.HasAnyRewardCanReceive();
+  }
+  kBg() {
+    return ModelManager_1.ModelManager.ActivityModel.GetActivityCacheData(this.Id, 0, 2, this.CycleId, 0) === 0;
+  }
+  RecordReadReward() {
+    ModelManager_1.ModelManager.ActivityModel?.SaveActivityData(this.Id, 2, this.CycleId, 0, 1);
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.Id);
+  }
+  HasAnyLevelRedDot() {
+    return this.HasLevelRedDot(false) || this.HasLevelRedDot(true);
+  }
+  HasLevelRedDot(e) {
+    e = this.v0f.get(e);
+    return !!e && !!e.K6n && this.qBg(e.gG_);
+  }
+  qBg(e) {
+    return ModelManager_1.ModelManager.ActivityModel.GetActivityCacheData(this.Id, 0, 1, this.CycleId, e) === 0;
+  }
+  RecordEnterLevel(e) {
+    e = this.v0f.get(e)?.gG_ ?? 0;
+    ModelManager_1.ModelManager.ActivityModel?.SaveActivityData(this.Id, 1, this.CycleId, e, 1);
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.Id);
+  }
   GetExDataRedPointShowState() {
-    return ModelManager_1.ModelManager.ActivityModel.GetActivityCacheData(this.Id, 0, 0, 0, 0) === 0 || this.HasAnyRewardCanReceive();
+    return ModelManager_1.ModelManager.ActivityModel.GetActivityCacheData(this.Id, 0, 0, 0, 0) === 0 || !!this.IsInCycle() && (!!this.ShouldShowRewardRedDot() || this.HasAnyLevelRedDot());
   }
   GetExDataFinishShowState() {
-    return this.GetCurrentRewardProgress() >= this.GetTotalRewardProgress();
+    return !!this.IsInCycle() && this.GetCurrentRewardProgress() >= this.GetTotalRewardProgress();
   }
 }
 exports.WheelTowerData = WheelTowerData;

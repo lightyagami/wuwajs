@@ -37,10 +37,10 @@ let FishingBoatDeathComponent = class FishingBoatDeathComponent extends BaseDeat
   }
   OnInit() {
     this.u1t = this.Entity.CheckGetComponent(0);
-    this.Xte = this.Entity.GetComponent(215);
-    this.tRr = this.Entity.GetComponent(40);
-    this.m1t = this.Entity.GetComponent(183);
-    this.$te = this.Entity.GetComponent(182);
+    this.Xte = this.Entity.GetComponent(217);
+    this.tRr = this.Entity.GetComponent(42);
+    this.m1t = this.Entity.GetComponent(185);
+    this.$te = this.Entity.GetComponent(184);
     return true;
   }
   OnStart() {
@@ -57,5 +57,5 @@ let FishingBoatDeathComponent = class FishingBoatDeathComponent extends BaseDeat
     this.Xte?.RemoveTag(1008164187);
   }
 };
-FishingBoatDeathComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(303)], FishingBoatDeathComponent);
+FishingBoatDeathComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(305)], FishingBoatDeathComponent);
 exports.FishingBoatDeathComponent = FishingBoatDeathComponent; //# sourceMappingURL=FishingBoatDeathComponent.js.map

@@ -107,8 +107,8 @@ let CharacterWalkOnAirComponent = CharacterWalkOnAirComponent_1 = class Characte
   }
   OnStart() {
     this.Hte = this.Entity.GetComponent(3);
-    var t = this.Entity.GetComponent(215);
-    return !!t?.Valid && (this.Iz1 = this.Hte.Actor, this.Lie = t, !!this.Entity.GetComponent(187)?.Valid) && (this.k_(), this.mBe = this.Entity.GetComponent(184), true);
+    var t = this.Entity.GetComponent(217);
+    return !!t?.Valid && (this.Iz1 = this.Hte.Actor, this.Lie = t, !!this.Entity.GetComponent(189)?.Valid) && (this.k_(), this.mBe = this.Entity.GetComponent(186), true);
   }
   k_() {
     this.Sz1 = this.Lie.ListenForTagAddOrRemove(1970009389, this.RKr);
@@ -210,5 +210,5 @@ let CharacterWalkOnAirComponent = CharacterWalkOnAirComponent_1 = class Characte
   }
 };
 CharacterWalkOnAirComponent.Lz1 = new UE.VectorDouble(BOX_LENGTH, BOX_LENGTH, 1);
-CharacterWalkOnAirComponent = CharacterWalkOnAirComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(83)], CharacterWalkOnAirComponent);
+CharacterWalkOnAirComponent = CharacterWalkOnAirComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(85)], CharacterWalkOnAirComponent);
 exports.CharacterWalkOnAirComponent = CharacterWalkOnAirComponent; //# sourceMappingURL=CharacterWalkOnAirComponent.js.map

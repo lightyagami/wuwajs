@@ -160,11 +160,11 @@ let SceneItemMovementSyncComponent = class SceneItemMovementSyncComponent extend
       n.V8n = t;
       n.e5n = "V8n";
       r.C6n = [n];
-      Net_1.Net.Call(15418, r, () => {});
+      Net_1.Net.Call(16728, r, () => {});
       this.CollectSampleAndSend(true);
       return true;
     }
   }
 };
-SceneItemMovementSyncComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(167)], SceneItemMovementSyncComponent);
+SceneItemMovementSyncComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(169)], SceneItemMovementSyncComponent);
 exports.SceneItemMovementSyncComponent = SceneItemMovementSyncComponent; //# sourceMappingURL=SceneItemMovementSyncComponent.js.map

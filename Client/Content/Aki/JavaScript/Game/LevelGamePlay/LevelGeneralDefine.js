@@ -239,4 +239,8 @@ exports.ELevelGeneralCondition = undefined;
   e.OnEnterWheelTowerEndlessMode = "OnEnterWheelTowerEndlessMode";
   e.OnGuideTriggerEvent = "OnGuideTriggerEvent";
   e.CheckUiItemShow = "CheckUiItemShow";
+  e.CheckExploreSkillFlag = "CheckExploreSkillFlag";
+  e.CheckGuessJokerRound = "CheckGuessJokerRound";
+  e.CheckMotorFightLevelFinished = "CheckMotorFightLevelFinished";
+  e.CheckEncircleChallengeId = "CheckEncircleChallengeId";
 })(ELevelGeneralCondition = exports.ELevelGeneralCondition ||= {}); //# sourceMappingURL=LevelGeneralDefine.js.map

@@ -28,7 +28,7 @@ class HonamiStoryItemGridItem extends UiPanelBase_1.UiPanelBase {
     this.OverflowItem = undefined;
     this.DragGridFrame = undefined;
     this.Lnm = false;
-    this.Ekm = true;
+    this.Oqm = true;
     this.OnTipsCallback = () => {
       if (this.OnClickedGridTipsCb) {
         this.OnClickedGridTipsCb();
@@ -37,7 +37,7 @@ class HonamiStoryItemGridItem extends UiPanelBase_1.UiPanelBase {
     this.OnClickedToggle = () => {
       var i;
       var t;
-      if (this.Ekm) {
+      if (this.Oqm) {
         if ((t = (i = ModelManager_1.ModelManager.HonamiStoryModel.GetBackpackLogic()).GetLogicState()) === 0) {
           if (i.OnClickGrid(this.ItemData, this.OnTipsCallback, this)) {
             i.TipsItem.SetItemDataOut(undefined);
@@ -163,7 +163,7 @@ class HonamiStoryItemGridItem extends UiPanelBase_1.UiPanelBase {
     }
   }
   SetCanOpenTips(i) {
-    this.Ekm = i;
+    this.Oqm = i;
   }
   SetOverFlowEnable(i) {
     if (i) {

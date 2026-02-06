@@ -223,7 +223,7 @@ class PhotographView extends UiTickViewBase_1.UiTickViewBase {
       if (UiManager_1.UiManager.IsViewOpen("PhotographSetupView")) {
         UiManager_1.UiManager.CloseView("PhotographSetupView");
       }
-      Net_1.Net.Send(22282, Protocol_1.Aki.Protocol._Zn.create());
+      Net_1.Net.Send(23186, Protocol_1.Aki.Protocol._Zn.create());
       PhotographController_1.PhotographController.ScreenShot({
         ScreenShot: true,
         PrepareFullScreenShot: true,
@@ -299,14 +299,14 @@ class PhotographView extends UiTickViewBase_1.UiTickViewBase {
     GlobalData_1.GlobalData.BpEventManager.OnEnterPhotograph.Broadcast();
     var t = ModelManager_1.ModelManager.SceneTeamModel?.GetCurrentEntity?.Entity;
     if (t?.Valid) {
-      t.GetComponent(123)?.SetLodBias(PhotographDefine_1.MAX_LOD_BIAS);
+      t.GetComponent(125)?.SetLodBias(PhotographDefine_1.MAX_LOD_BIAS);
     }
   }
   OnAfterDestroy() {
     GlobalData_1.GlobalData.BpEventManager.OnExitPhotograph.Broadcast();
     var t = ModelManager_1.ModelManager.SceneTeamModel?.GetCurrentEntity?.Entity;
     if (t?.Valid) {
-      t.GetComponent(123)?.SetLodBias(PhotographDefine_1.DEFAULT_LOD_BIAS);
+      t.GetComponent(125)?.SetLodBias(PhotographDefine_1.DEFAULT_LOD_BIAS);
     }
   }
   OnAddEventListener() {
@@ -438,7 +438,6 @@ class PhotographView extends UiTickViewBase_1.UiTickViewBase {
         ControllerHolder_1.ControllerHolder.FilterSettingController.SwitchFilter(false);
       }
       ControllerHolder_1.ControllerHolder.EyeProtectController.SwitchFilter(false);
-      UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Kuro.EnableCharacterLut 0");
       this.ZQi();
       this.JQi();
       RedDotController_1.RedDotController.BindRedDot("FunctionPhotograph", this.GetItem(19));

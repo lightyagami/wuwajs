@@ -38,82 +38,82 @@ class InfrastructureController extends ActivityControllerBase_1.ActivityControll
     return r;
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(25638, InfrastructureController.D3m);
-    Net_1.Net.Register(24081, InfrastructureController.U3m);
-    Net_1.Net.Register(19308, InfrastructureController.x3m);
-    Net_1.Net.Register(25983, InfrastructureController.k3m);
-    Net_1.Net.Register(17165, InfrastructureController.BWm);
-    Net_1.Net.Register(22983, InfrastructureController.ZHf);
+    Net_1.Net.Register(15504, InfrastructureController.z4m);
+    Net_1.Net.Register(22186, InfrastructureController.J4m);
+    Net_1.Net.Register(15976, InfrastructureController.Z4m);
+    Net_1.Net.Register(17799, InfrastructureController.t5m);
+    Net_1.Net.Register(22231, InfrastructureController.LKm);
+    Net_1.Net.Register(26149, InfrastructureController.cig);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(25638);
-    Net_1.Net.UnRegister(24081);
-    Net_1.Net.UnRegister(19308);
-    Net_1.Net.UnRegister(25983);
-    Net_1.Net.UnRegister(17165);
-    Net_1.Net.UnRegister(22983);
+    Net_1.Net.UnRegister(15504);
+    Net_1.Net.UnRegister(22186);
+    Net_1.Net.UnRegister(15976);
+    Net_1.Net.UnRegister(17799);
+    Net_1.Net.UnRegister(22231);
+    Net_1.Net.UnRegister(26149);
   }
   static async RequestInfrastructureInfoRequest() {
-    var e = Protocol_1.Aki.Protocol.QFm.create();
-    var e = await Net_1.Net.CallAsync(29715, e);
-    return !ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 19339) && (ModelManager_1.ModelManager.InfrastructureModel.SetInfrastructureData(e.SNm), true);
+    var e = Protocol_1.Aki.Protocol.c3m.create();
+    var e = await Net_1.Net.CallAsync(22166, e);
+    return !ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 18097) && (ModelManager_1.ModelManager.InfrastructureModel.SetInfrastructureData(e.F3m), true);
   }
   static async RequestInfrastructureArchiveTaskReward() {
     var e;
     var r = ModelManager_1.ModelManager.InfrastructureModel;
-    var t = r.GetLibraryTaskDataByTaskState(Protocol_1.Aki.Protocol.YNm.Proto_InfrTaskFinish).map(e => e.TaskId);
-    return t.length !== 0 && ((e = Protocol_1.Aki.Protocol.XFm.create()).FLd = t, t = await Net_1.Net.CallAsync(16248, e), !ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(t, 15453)) && (EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.InfrastructureArchiveTaskUpdate), UiManager_1.UiManager.IsViewOpen("ActivityRewardPopUpView") && EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRewardPopUpView, r.GetScoreRewardData()), true);
+    var t = r.GetLibraryTaskDataByTaskState(Protocol_1.Aki.Protocol.f4m.Proto_InfrTaskFinish).map(e => e.TaskId);
+    return t.length !== 0 && ((e = Protocol_1.Aki.Protocol.m3m.create()).FLd = t, t = await Net_1.Net.CallAsync(15623, e), !ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(t, 19721)) && (EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.InfrastructureArchiveTaskUpdate), UiManager_1.UiManager.IsViewOpen("ActivityRewardPopUpView") && EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRewardPopUpView, r.GetScoreRewardData()), true);
   }
   static async RequestInfrastructurePhoneTaskReward() {
     var e;
     var r = ModelManager_1.ModelManager.InfrastructureModel;
-    var t = r.GetPhoneTaskDataByTaskState(Protocol_1.Aki.Protocol.YNm.Proto_InfrTaskFinish).map(e => e.TaskId);
-    return t.length !== 0 && ((e = Protocol_1.Aki.Protocol.fNm.create()).FLd = t, t = await Net_1.Net.CallAsync(27820, e), !ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(t, 16530)) && (EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.InfrastructurePhoneTaskUpdate), UiManager_1.UiManager.IsViewOpen("ActivityRewardPopUpView") && EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRewardPopUpView, r.GetScoreRewardData()), true);
+    var t = r.GetPhoneTaskDataByTaskState(Protocol_1.Aki.Protocol.f4m.Proto_InfrTaskFinish).map(e => e.TaskId);
+    return t.length !== 0 && ((e = Protocol_1.Aki.Protocol.x3m.create()).FLd = t, t = await Net_1.Net.CallAsync(25729, e), !ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(t, 29967)) && (EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.InfrastructurePhoneTaskUpdate), UiManager_1.UiManager.IsViewOpen("ActivityRewardPopUpView") && EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRewardPopUpView, r.GetScoreRewardData()), true);
   }
   static async RequestInfrastructureLevelUp() {
-    var e = Protocol_1.Aki.Protocol.sNm.create();
-    var e = await Net_1.Net.CallAsync(16242, e);
-    return !ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 23049);
+    var e = Protocol_1.Aki.Protocol.T3m.create();
+    var e = await Net_1.Net.CallAsync(15575, e);
+    return !ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 15875);
   }
   static async RequestInfrastructureRoadBuild(e) {
-    var r = Protocol_1.Aki.Protocol.hNm.create();
-    r.MNm = e;
-    var e = await Net_1.Net.CallAsync(24998, r);
-    return !ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 29507);
+    var r = Protocol_1.Aki.Protocol.R3m.create();
+    r.N3m = e;
+    var e = await Net_1.Net.CallAsync(27535, r);
+    return !ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 18499);
   }
   static async RequestInfrastructureManualSwitchTraceRoad(e) {
-    var r = Protocol_1.Aki.Protocol.ZFm.create();
-    r.MNm = e;
-    var r = await Net_1.Net.CallAsync(18047, r);
-    return !ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(r, 21591) && (ModelManager_1.ModelManager.InfrastructureModel.ChangeTraceRoad(e), true);
+    var r = Protocol_1.Aki.Protocol.p3m.create();
+    r.N3m = e;
+    var r = await Net_1.Net.CallAsync(22471, r);
+    return !ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(r, 19082) && (ModelManager_1.ModelManager.InfrastructureModel.ChangeTraceRoad(e), true);
   }
   static async RequestInfrManualCancelTraceRoadRequest() {
-    var e = Protocol_1.Aki.Protocol.iWm.create();
-    var e = await Net_1.Net.CallAsync(20116, e);
-    return !ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 18460) && (ModelManager_1.ModelManager.InfrastructureModel.ChangeTraceRoad(0), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.InfrastructureTraceRoadUpdate), true);
+    var e = Protocol_1.Aki.Protocol.YQm.create();
+    var e = await Net_1.Net.CallAsync(15699, e);
+    return !ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 22753) && (ModelManager_1.ModelManager.InfrastructureModel.ChangeTraceRoad(0), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.InfrastructureTraceRoadUpdate), true);
   }
   static async RequestInfrastructureFireNotice() {
-    var e = Protocol_1.Aki.Protocol.tNm.create();
-    var e = await Net_1.Net.CallAsync(18967, e);
-    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.InfrastructureRoadNoticeUpdate, e?.ENm?.map(e => ({
-      RoadId: e.MNm,
-      PasserId: e.FNm,
-      GiftCount: e.NNm,
+    var e = Protocol_1.Aki.Protocol.y3m.create();
+    var e = await Net_1.Net.CallAsync(22457, e);
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.InfrastructureRoadNoticeUpdate, e?.V3m?.map(e => ({
+      RoadId: e.N3m,
+      PasserId: e.n4m,
+      GiftCount: e.s4m,
       CreateTime: e.aws
     })) ?? []);
     return e;
   }
   static async RequestInfrArchiveReadRequest(e) {
-    var r = Protocol_1.Aki.Protocol.oWm.create();
-    r.aWm = e;
-    var r = await Net_1.Net.CallAsync(23952, r);
-    return !ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(r, 24062) && (ModelManager_1.ModelManager.InfrastructureModel.SetArchiveRead(e), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.InfrastructureArchiveReadUpdate), true);
+    var r = Protocol_1.Aki.Protocol.JQm.create();
+    r.tKm = e;
+    var r = await Net_1.Net.CallAsync(26618, r);
+    return !ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(r, 16702) && (ModelManager_1.ModelManager.InfrastructureModel.SetArchiveRead(e), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.InfrastructureArchiveReadUpdate), true);
   }
   static async RequestInfrLimitTaskRewardRequest(e, r) {
-    var t = Protocol_1.Aki.Protocol.dNm.create();
+    var t = Protocol_1.Aki.Protocol.D3m.create();
     t.gps = r;
-    var r = await Net_1.Net.CallAsync(19208, t);
-    return !ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(r, 28567);
+    var r = await Net_1.Net.CallAsync(21304, t);
+    return !ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(r, 23024);
   }
   static OpenMaterialDelivery(e, r, t, a) {
     e = {
@@ -133,25 +133,25 @@ class InfrastructureController extends ActivityControllerBase_1.ActivityControll
     UiManager_1.UiManager.OpenView("InfrOpeningTipsView");
   }
 }
-(exports.InfrastructureController = InfrastructureController).BWm = e => {
+(exports.InfrastructureController = InfrastructureController).LKm = e => {
   ModelManager_1.ModelManager.InfrastructureModel.SetFireShopCoinData(e);
 };
-InfrastructureController.ZHf = e => {
+InfrastructureController.cig = e => {
   ModelManager_1.ModelManager.InfrastructureModel.UpdateActivityTaskData(e);
 };
-InfrastructureController.D3m = e => {
+InfrastructureController.z4m = e => {
   ModelManager_1.ModelManager.InfrastructureModel.AddFireLevel(e);
-  EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.InfrastructureFireExpAdd, e.TNm);
+  EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.InfrastructureFireExpAdd, e.H3m);
 };
-InfrastructureController.U3m = e => {
-  ModelManager_1.ModelManager.InfrastructureModel.SetFireData(e.INm);
+InfrastructureController.J4m = e => {
+  ModelManager_1.ModelManager.InfrastructureModel.SetFireData(e.j3m);
 };
-InfrastructureController.x3m = e => {
-  ModelManager_1.ModelManager.InfrastructureModel.SetRoadData(e.bNm);
+InfrastructureController.Z4m = e => {
+  ModelManager_1.ModelManager.InfrastructureModel.SetRoadData(e.$3m);
 };
-InfrastructureController.k3m = e => {
-  ModelManager_1.ModelManager.InfrastructureModel.SetArchiveTaskData(e.RNm);
-  ModelManager_1.ModelManager.InfrastructureModel.SetPhoneTaskData(e.wNm);
+InfrastructureController.t5m = e => {
+  ModelManager_1.ModelManager.InfrastructureModel.SetArchiveTaskData(e.W3m);
+  ModelManager_1.ModelManager.InfrastructureModel.SetPhoneTaskData(e.Q3m);
   e = ModelManager_1.ModelManager.InfrastructureModel.GetActivityData();
   if (e) {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, e.Id);

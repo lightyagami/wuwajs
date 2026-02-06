@@ -236,8 +236,8 @@ class CameraModifyController extends CameraControllerBase_1.CameraControllerBase
     this.az = Quat_1.Quat.Create();
     this.KJ = Quat_1.Quat.Create();
     this.Lz = Vector_1.Vector.Create();
-    this.Dkm = true;
-    this.Ukm = true;
+    this.Qqm = true;
+    this.Kqm = true;
     this.Gjs = () => {
       if (this.ModifyMontage && this.ModifyMontage !== this.Eue?.GetCurrentActiveMontage()) {
         this.EndModify(true, true);
@@ -408,6 +408,7 @@ class CameraModifyController extends CameraControllerBase_1.CameraControllerBase
           }
         } else if (this._ue < this.mue + this.cue) {
           this.EndModify(true, true);
+          return;
         }
       }
       let t = undefined;
@@ -529,7 +530,7 @@ class CameraModifyController extends CameraControllerBase_1.CameraControllerBase
       }
       this.Camera.IsModifiedArmLength = true;
       this.Camera.IsModifiedZoomModifier = true;
-      if (this.Camera.DesiredCamera.ZoomModifier <= MathUtils_1.MathUtils.SmallNumber && this.Dkm && (this.Dkm = false, Log_1.Log.CheckInfo())) {
+      if (this.Camera.DesiredCamera.ZoomModifier <= MathUtils_1.MathUtils.SmallNumber && this.Qqm && (this.Qqm = false, Log_1.Log.CheckInfo())) {
         Log_1.Log.Info("Camera", 57, "[DebugZoomModifier UpdateArmLengthModifier]", ["state", s], ["DesiredCamera.ZoomModifier", this.Camera.DesiredCamera.ZoomModifier], ["this.StartVirtualCamera.ZoomModifier", this.Hue.ZoomModifier], ["targetZoomModifier", i], ["ratio", t], ["Anim", this.j1_?.GetName() ?? "None"], ["CameraConfigTags", this.Camera.CameraConfigController.GetCameraConfigTagsContent()]);
       }
     }
@@ -1039,7 +1040,7 @@ class CameraModifyController extends CameraControllerBase_1.CameraControllerBase
           [i.ModifyZoomModifier, r] = i.UseFadeOutTimeLerp ? this.FloatLerp(i.StartFinalArmLength, i.FinalArmLength, e, MathUtils_1.MathUtils.KindaSmallNumber) : this.FloatInterpTo(this.Camera.GetArmLengthWithSettingAndZoom(this.Camera.CurrentCamera, false), i.FinalArmLength, t, this.ModifyArmLengthLagSpeed, MODIFY_SMALL_LENGTH);
           h.ZoomModifier = r / this.Camera.GetArmLengthWithSetting(this.Camera.CurrentCamera);
           this.Camera.IsModifiedZoomModifier = true;
-          if (this.Camera.DesiredCamera.ZoomModifier <= MathUtils_1.MathUtils.SmallNumber && this.Ukm && (this.Ukm = false, Log_1.Log.CheckInfo())) {
+          if (this.Camera.DesiredCamera.ZoomModifier <= MathUtils_1.MathUtils.SmallNumber && this.Kqm && (this.Kqm = false, Log_1.Log.CheckInfo())) {
             Log_1.Log.Info("Camera", 57, "[DebugZoomModifier UpdateModifyFadeOut]", ["DesiredCamera.ZoomModifier", this.Camera.DesiredCamera.ZoomModifier], ["finalArmLength", r], ["ArmLength", this.Camera.GetArmLengthWithSetting(this.Camera.CurrentCamera)], ["Anim", this.j1_?.GetName() ?? "None"], ["CameraConfigTags", this.Camera.CameraConfigController.GetCameraConfigTagsContent()]);
           }
         }
@@ -1126,7 +1127,7 @@ class CameraModifyController extends CameraControllerBase_1.CameraControllerBase
   }
   Gqn(t, i) {
     let s = undefined;
-    return (s = t ? t.GetEntityNoBlueprint() : (t = i?.GetEntityNoBlueprint()?.GetComponent(0))?.IsVision() || t?.IsMonster() ? i?.GetEntityNoBlueprint() : this.Camera.CharacterEntityHandle.Entity)?.GetComponent(186)?.MainAnimInstance;
+    return (s = t ? t.GetEntityNoBlueprint() : (t = i?.GetEntityNoBlueprint()?.GetComponent(0))?.IsVision() || t?.IsMonster() ? i?.GetEntityNoBlueprint() : this.Camera.CharacterEntityHandle.Entity)?.GetComponent(188)?.MainAnimInstance;
   }
   FloatInterpTo(t, i, s, h, e) {
     s = MathUtils_1.MathUtils.InterpTo(t, i, s, h);

@@ -11,87 +11,87 @@ const EventSystem_1 = require("../../Common/Event/EventSystem");
 class PanoramicModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
-    this.UVm = undefined;
-    this.xVm = undefined;
+    this.J6m = undefined;
+    this.Z6m = undefined;
     this.cSa = false;
-    this.fnf = false;
-    this.Qvf = 0;
+    this.Baf = false;
+    this.nEf = 0;
   }
   get IsPanoramic() {
-    return this.fnf;
+    return this.Baf;
   }
   set IsPanoramic(t) {
-    this.fnf = t;
+    this.Baf = t;
   }
   get PlayMoveMotorTag() {
-    return this.Qvf;
+    return this.nEf;
   }
   set PlayMoveMotorTag(t) {
-    this.Qvf = t;
+    this.nEf = t;
   }
   OnInit() {
-    this.UVm = undefined;
+    this.J6m = undefined;
     this.cSa = false;
-    this.fnf = false;
-    this.xVm = new Map();
+    this.Baf = false;
+    this.Z6m = new Map();
     return true;
   }
   OnClear() {
-    this.UVm = undefined;
+    this.J6m = undefined;
     this.cSa = false;
-    this.fnf = false;
+    this.Baf = false;
     this.ClearPoint();
     return true;
   }
   OnLeaveLevel() {
-    this.UVm = undefined;
+    this.J6m = undefined;
     this.cSa = false;
-    this.fnf = false;
+    this.Baf = false;
     this.ClearPoint();
     return true;
   }
   AddPoint(t, i) {
-    this.xVm ||= new Map();
-    if (this.xVm?.has(t) && Log_1.Log.CheckInfo()) {
+    this.Z6m ||= new Map();
+    if (this.Z6m?.has(t) && Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Panoramic", 45, "[环视] AddPoint but already have", ["Id", t]);
     }
-    this.xVm?.set(t, i);
+    this.Z6m?.set(t, i);
   }
   RemovePoint(t) {
     var i;
-    if (this.xVm?.has(t)) {
-      i = this.xVm?.get(t);
-      if (this.UVm === i) {
-        this.UVm = undefined;
+    if (this.Z6m?.has(t)) {
+      i = this.Z6m?.get(t);
+      if (this.J6m === i) {
+        this.J6m = undefined;
       }
-      this.xVm?.delete(t);
+      this.Z6m?.delete(t);
     }
   }
   ClearPoint() {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Panoramic", 45, "[环视] ClearPoint");
     }
-    this.xVm?.clear();
-    this.xVm = undefined;
+    this.Z6m?.clear();
+    this.Z6m = undefined;
   }
   FindPoint(t) {
-    if (this.xVm?.has(t)) {
-      return this.xVm?.get(t);
+    if (this.Z6m?.has(t)) {
+      return this.Z6m?.get(t);
     }
     if (Log_1.Log.CheckWarn()) {
       Log_1.Log.Warn("Panoramic", 45, "[环视] FindPoint not find");
     }
   }
   GetPoint() {
-    return this.xVm;
+    return this.Z6m;
   }
   GetPointNum() {
-    return this.xVm?.size ?? 0;
+    return this.Z6m?.size ?? 0;
   }
   SetCurrentPanoramic(t, i = false) {
     if (!t) {
       if (i) {
-        this.UVm = undefined;
+        this.J6m = undefined;
         return;
       } else {
         this.ChangeAllPanoramicType(0);
@@ -106,22 +106,22 @@ class PanoramicModel extends ModelBase_1.ModelBase {
       this.cSa = true;
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPanoramicActive);
     }
-    if (t?.GetId() !== this.UVm?.GetId()) {
+    if (t?.GetId() !== this.J6m?.GetId()) {
       this.ChangeAllPanoramicTypeExecptWhich(0, t?.GetId());
-      this.UVm = t;
+      this.J6m = t;
     }
-    this.UVm?.ChangeSpotType(1);
+    this.J6m?.ChangeSpotType(1);
   }
   GetCurrentPanoramic() {
-    return this.UVm;
+    return this.J6m;
   }
   ChangeAllPanoramicType(i) {
-    this.xVm?.forEach(t => {
+    this.Z6m?.forEach(t => {
       t.ChangeSpotType(i);
     });
   }
   ChangeAllPanoramicTypeExecptWhich(i, e) {
-    this.xVm?.forEach(t => {
+    this.Z6m?.forEach(t => {
       if (t.GetId() !== e) {
         t.ChangeSpotType(i);
       }

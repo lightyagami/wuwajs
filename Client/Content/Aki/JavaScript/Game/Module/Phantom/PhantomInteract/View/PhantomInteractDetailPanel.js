@@ -14,12 +14,12 @@ const PhantomInteractListItem_1 = require("./PhantomInteractListItem");
 class PhantomInteractDetailPanel extends UiPanelBase_1.UiPanelBase {
   constructor(t) {
     super();
-    this.T5f = t;
-    this._gf = undefined;
-    this.Ewf = undefined;
+    this.nQf = t;
+    this.YSf = undefined;
+    this.QDf = undefined;
     this.Ami = 0;
-    this.b5f = undefined;
-    this.o6f = undefined;
+    this.sQf = undefined;
+    this.Czf = undefined;
     this.Hea = undefined;
   }
   OnRegisterComponent() {
@@ -27,32 +27,32 @@ class PhantomInteractDetailPanel extends UiPanelBase_1.UiPanelBase {
   }
   async OnBeforeStartAsync() {
     var t = [];
-    if (this.T5f) {
+    if (this.nQf) {
       e = (i = new PhantomInteractDetailSpecialContent_1.PhantomInteractDetailSpecialContent()).CreateByResourceIdAsync("UiItem_VisionEditTipSpecial", this.GetItem(2));
-      this.b5f = i;
+      this.sQf = i;
       t.push(e);
     } else {
       e = (i = new PhantomInteractDetailNormalContent_1.PhantomInteractDetailNormalContent()).CreateByResourceIdAsync("UiItem_VisionEditTipNor", this.GetItem(2));
-      this.b5f = i;
+      this.sQf = i;
       t.push(e);
     }
-    this._gf = new PhantomInteractListItem_1.PhantomInteractListItem();
-    var i = this._gf.CreateByActorAsync(this.GetItem(0).GetOwner());
+    this.YSf = new PhantomInteractListItem_1.PhantomInteractListItem();
+    var i = this.YSf.CreateByActorAsync(this.GetItem(0).GetOwner());
     t.push(i);
-    this.Ewf = new GetWayPanel();
-    var e = this.Ewf.CreateByActorAsync(this.GetItem(3).GetOwner());
+    this.QDf = new GetWayPanel();
+    var e = this.QDf.CreateByActorAsync(this.GetItem(3).GetOwner());
     t.push(e);
     this.Hea = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetRootItem());
-    this.o6f = new ActivePanel();
-    var i = this.o6f.CreateByActorAsync(this.GetItem(4).GetOwner());
+    this.Czf = new ActivePanel();
+    var i = this.Czf.CreateByActorAsync(this.GetItem(4).GetOwner());
     t.push(i);
     await Promise.all(t);
-    this._gf.SetUiActive(true);
-    this._gf.DisableToggle();
-    this.Ewf?.SetUiActive(false);
-    this.b5f?.SetUiActive(true);
+    this.YSf.SetUiActive(true);
+    this.YSf.DisableToggle();
+    this.QDf?.SetUiActive(false);
+    this.sQf?.SetUiActive(true);
     this.GetItem(4)?.SetUIActive(false);
-    this.o6f.SetText("PhantomDisplay_AreaNotSupported");
+    this.Czf.SetText("PhantomDisplay_AreaNotSupported");
   }
   async Refresh(t) {
     var i = {
@@ -61,17 +61,17 @@ class PhantomInteractDetailPanel extends UiPanelBase_1.UiPanelBase {
     };
     var e = this.GetText(1);
     LguiUtil_1.LguiUtil.SetLocalTextNew(e, t.Name);
-    await this._gf.Refresh(i, false, false);
-    this.b5f?.Refresh(t);
+    await this.YSf.Refresh(i, false, false);
+    this.sQf?.Refresh(t);
     this.GetItem(4)?.SetUIActive(t.IsSpecial && !t.IsInArea);
-    this.Ewf?.SetUiActive(t.NeedGetWay);
+    this.QDf?.SetUiActive(t.NeedGetWay);
     if (t.NeedGetWay && this.Ami !== t.GetWayItemData?.Id) {
       this.Ami = t.GetWayItemData?.Id ?? 0;
       const s = t.GetWayItemData;
-      this.Ewf?.SetButtonFunction(() => {
+      this.QDf?.SetButtonFunction(() => {
         s?.Function?.();
       });
-      this.Ewf?.SetText(s?.Text ?? "");
+      this.QDf?.SetText(s?.Text ?? "");
     }
   }
   PlaySwitchAnimation() {
@@ -104,33 +104,33 @@ class GetWayPanel extends UiPanelBase_1.UiPanelBase {
 }
 class PhantomInteractDetailPanelGroup {
   constructor() {
-    this.R5f = undefined;
-    this.L5f = undefined;
+    this.aQf = undefined;
+    this.hQf = undefined;
     this.V1i = 0;
-    this.Cjf = false;
+    this.xig = false;
   }
   async CreateWithParent(t) {
-    this.R5f = new PhantomInteractDetailPanel(true);
-    this.L5f = new PhantomInteractDetailPanel(false);
-    await Promise.all([this.R5f.CreateByResourceIdAsync("UiItem_VisionEditTip", t), this.L5f.CreateByResourceIdAsync("UiItem_VisionEditTip", t)]);
+    this.aQf = new PhantomInteractDetailPanel(true);
+    this.hQf = new PhantomInteractDetailPanel(false);
+    await Promise.all([this.aQf.CreateByResourceIdAsync("UiItem_VisionEditTip", t), this.hQf.CreateByResourceIdAsync("UiItem_VisionEditTip", t)]);
   }
   RefreshDetailPanel(t, i) {
     if (t) {
       if (i) {
-        this.w5f(i);
+        this.lQf(i);
       }
     } else {
-      this.R5f?.SetUiActive(false);
-      this.L5f?.SetUiActive(false);
+      this.aQf?.SetUiActive(false);
+      this.hQf?.SetUiActive(false);
       this.V1i = 0;
     }
   }
-  async w5f(t) {
+  async lQf(t) {
     var i = t.IsSpecial;
-    var e = i ? this.R5f : this.L5f;
-    this.R5f?.SetUiActive(false);
-    this.L5f?.SetUiActive(false);
-    this.Cjf = i;
+    var e = i ? this.aQf : this.hQf;
+    this.aQf?.SetUiActive(false);
+    this.hQf?.SetUiActive(false);
+    this.xig = i;
     if (this.V1i !== t.MonsterId) {
       this.V1i = t.MonsterId;
       e?.PlaySwitchAnimation();
@@ -138,8 +138,8 @@ class PhantomInteractDetailPanelGroup {
     } else {
       e?.Refresh(t);
     }
-    this.R5f?.SetUiActive(this.Cjf);
-    this.L5f?.SetUiActive(!this.Cjf);
+    this.aQf?.SetUiActive(this.xig);
+    this.hQf?.SetUiActive(!this.xig);
   }
 }
 exports.PhantomInteractDetailPanelGroup = PhantomInteractDetailPanelGroup;

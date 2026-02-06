@@ -17,10 +17,18 @@ class LordGymExitHandler extends InstanceDungeonExitHandlerBase_1.InstanceDungeo
     r.IsEscViewTriggerCallBack = false;
     r.FunctionMap.set(0, e?.CancelBack);
     r.FunctionMap.set(1, () => {
-      ControllerHolder_1.ControllerHolder.InstanceDungeonEntranceController.EnterEntrance(LordGymDefine_1.THRID_ENTRANCE_ID);
+      ControllerHolder_1.ControllerHolder.InstanceDungeonEntranceController.EnterEntrance(LordGymDefine_1.THRID_ENTRANCE_ID).then(e => {
+        if (e) {
+          ControllerHolder_1.ControllerHolder.LordGymController.ClearChallengeFailViewDelay();
+        }
+      });
     });
     r.FunctionMap.set(2, () => {
-      ControllerHolder_1.ControllerHolder.InstanceDungeonEntranceController.RestartInstanceDungeon().finally(() => {
+      ControllerHolder_1.ControllerHolder.InstanceDungeonEntranceController.RestartInstanceDungeon().then(e => {
+        if (e) {
+          ControllerHolder_1.ControllerHolder.LordGymController.ClearChallengeFailViewDelay();
+        }
+      }).finally(() => {
         if (e?.CancelBack) {
           e.CancelBack();
         }

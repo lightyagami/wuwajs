@@ -9,7 +9,7 @@ const LevelGeneralBase_1 = require("../LevelGeneralBase");
 class LevelEventChangeToVision extends LevelGeneralBase_1.LevelEventBase {
   ExecuteNew(e, l) {
     var s;
-    if (e && ((s = Global_1.Global.BaseCharacter.CharacterActorComponent.Entity).GetComponent(3).ClearInput(), s.GetComponent(215)?.AddTag(-1697149502), s = s.GetComponent(41))) {
+    if (e && ((s = Global_1.Global.BaseCharacter.CharacterActorComponent.Entity).GetComponent(3).ClearInput(), s.GetComponent(217)?.AddTag(-1697149502), s = s.GetComponent(43))) {
       s.EndOwnerAndFollowSkills();
       s.BeginSkillAsync(e.Id, {
         Reason: "LevelEventChangeToVision.ExecuteNew"

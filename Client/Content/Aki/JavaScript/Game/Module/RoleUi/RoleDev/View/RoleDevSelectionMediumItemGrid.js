@@ -4,37 +4,36 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.RoleDevSelectionMediumItemGrid = undefined;
-const MultiTextLang_1 = require("../../../../../Core/Define/ConfigQuery/MultiTextLang");
 const LoopScrollMediumItemGrid_1 = require("../../../Common/MediumItemGrid/LoopScrollMediumItemGrid");
 class RoleDevSelectionMediumItemGrid extends LoopScrollMediumItemGrid_1.LoopScrollMediumItemGrid {
   constructor() {
     super(...arguments);
     this.dFe = 0;
   }
-  OnRefresh(e, t, i) {
-    var o;
+  OnRefresh(e, t, o) {
+    var i;
     this.dFe = e.Id;
     if (e.TypeTag === 0) {
-      o = {
+      i = {
         Type: 5,
         Data: e,
-        BottomText: MultiTextLang_1.configMultiTextLang.GetLocalTextNew(e.Name),
+        BottomText: e.Name,
         RoleDevTag: e.TypeTag
       };
-      this.Apply(o);
+      this.Apply(i);
     } else {
-      o = {
+      i = {
         Type: 2,
         Data: e,
         ItemConfigId: e.Id,
         SkinId: e.SkinId,
-        BottomText: MultiTextLang_1.configMultiTextLang.GetLocalTextNew(e.Name),
+        BottomText: e.Name,
         IsInTeam: false,
         ElementId: e.ElementId,
         IsTrialRoleVisible: e.IsTrial,
         RoleDevTag: e.TypeTag
       };
-      this.Apply(o);
+      this.Apply(i);
     }
     this.SetSelected(t);
   }

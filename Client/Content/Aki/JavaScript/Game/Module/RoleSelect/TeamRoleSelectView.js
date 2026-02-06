@@ -102,7 +102,7 @@ class TeamRoleSelectView extends UiViewBase_1.UiViewBase {
     this.IsNeedRefreshTeamList = false;
     this.szd = undefined;
     this.wVl = undefined;
-    this.ZDf = undefined;
+    this.DOf = undefined;
     this.Hlo = (i, t, e) => {
       this.Vlo = i;
       i = this.Vlo.length > 0;
@@ -301,7 +301,7 @@ class TeamRoleSelectView extends UiViewBase_1.UiViewBase {
     this.GetItem(26).SetUIActive(t);
     this.GetItem(27).SetUIActive(!t);
     this.GetItem(28).SetUIActive(t);
-    await this.eUf();
+    await this.UOf();
   }
   OnStart() {
     this.Flo = new LoopScrollView_1.LoopScrollView(this.GetLoopScrollViewComponent(1), this.GetItem(7).GetOwner(), this.cHe);
@@ -446,7 +446,7 @@ class TeamRoleSelectView extends UiViewBase_1.UiViewBase {
       this.GetText(2).ShowTextNew(i);
     }
   }
-  OBm() {
+  N2m() {
     var i;
     var t;
     if (this.Pe?.ForFunction === 1) {
@@ -457,14 +457,14 @@ class TeamRoleSelectView extends UiViewBase_1.UiViewBase {
       this.GetButton(3).RootUIComp.SetUIActive(true);
     }
   }
-  iGm() {
+  gFm() {
     if (this.Pe?.ForFunction === 1) {
       this.GetButton(9).RootUIComp.SetUIActive(false);
     } else {
       this.GetButton(9).RootUIComp.SetUIActive(true);
     }
   }
-  juf() {
+  Ndf() {
     var i = this.Pe?.ShowLockPanel?.(this.CurSelectRole.GetDataId()) ?? false;
     this.wVl.SetActive(i);
     if (i) {
@@ -493,9 +493,9 @@ class TeamRoleSelectView extends UiViewBase_1.UiViewBase {
       }
       if (this.CurSelectRole && this.CurSelectRole.IsTrialRole()) {
         s = this.CurSelectRole?.GetTrialRoleId();
-        this.tUf(s);
+        this.xOf(s);
       } else {
-        this.ZDf?.SetUiActive(false);
+        this.DOf?.SetUiActive(false);
       }
       var s = ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillList(e.SkillId);
       if (s) {
@@ -551,9 +551,9 @@ class TeamRoleSelectView extends UiViewBase_1.UiViewBase {
           if (s) {
             this.Klo?.RefreshByData(i);
           }
-          this.OBm();
-          this.iGm();
-          this.juf();
+          this.N2m();
+          this.gFm();
+          this.Ndf();
         }
       }
     }
@@ -632,16 +632,16 @@ class TeamRoleSelectView extends UiViewBase_1.UiViewBase {
     });
     return s;
   }
-  async eUf() {
-    this.ZDf = new RoleTrialLabelItem_1.RoleTrialLabelItem();
-    await this.ZDf.CreateThenShowByActorAsync(this.GetItem(30).GetOwner());
+  async UOf() {
+    this.DOf = new RoleTrialLabelItem_1.RoleTrialLabelItem();
+    await this.DOf.CreateThenShowByActorAsync(this.GetItem(30).GetOwner());
   }
-  tUf(i) {
+  xOf(i) {
     if (!RoleUtils_1.RoleUtils.IsTrialRole(i) || RoleUtils_1.RoleUtils.GetTrialRoleType(i) === 0) {
-      this.ZDf?.SetUiActive(false);
+      this.DOf?.SetUiActive(false);
     } else {
-      this.ZDf?.SetUiActive(true);
-      this.ZDf?.Refresh(i);
+      this.DOf?.SetUiActive(true);
+      this.DOf?.Refresh(i);
     }
   }
 }

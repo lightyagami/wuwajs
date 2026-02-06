@@ -30,7 +30,7 @@ class QuestTreeNodeDetailView extends UiViewBase_1.UiViewBase {
     this.KDd = undefined;
     this.XDd = undefined;
     this._U1 = undefined;
-    this.$Im = false;
+    this.rTm = false;
     this.YDd = () => {
       ControllerHolder_1.ControllerHolder.QuestTreeController.CancelTrackNode(this.Pe);
     };
@@ -47,7 +47,7 @@ class QuestTreeNodeDetailView extends UiViewBase_1.UiViewBase {
     };
     this.AOe = e => {
       if (e === this.Pe) {
-        this.WIm();
+        this.oTm();
       }
     };
   }
@@ -125,16 +125,16 @@ class QuestTreeNodeDetailView extends UiViewBase_1.UiViewBase {
     this.QDd.RefreshByData(this.Pe.RewardList);
     i = e?.IsSuspend() && e.GetSuspendType() === 2;
     this.GetItem(19).SetUIActive(this.Pe.State === 4);
-    this.GetItem(20).SetUIActive(this.Pe.State === 1 && !i && !this.QIm());
+    this.GetItem(20).SetUIActive(this.Pe.State === 1 && !i && !this.nTm());
     this.beu();
     this.GetItem(15).SetUIActive(this.Pe.IsTracking && !i);
-    this.KDd.SetActive(this.QIm());
+    this.KDd.SetActive(this.nTm());
     this.GetItem(5).SetUIActive(false);
     this._U1.SetActive(e?.IsSuspend() ?? false);
     this._U1.UpdateData(this.Pe);
     await Promise.all(t);
     this.K8u.SetLocalTextNew("QuestTree_Status_Ongoing_CancelTrack");
-    this.KIm();
+    this.sTm();
     this.XDd.SetLocalTextNew("QuestTree_Status_Ongoing_Track");
     if (this.Pe.State === 1) {
       this._U1.SetLocalText("QuestTree_Status_Locked");
@@ -161,11 +161,11 @@ class QuestTreeNodeDetailView extends UiViewBase_1.UiViewBase {
       t.OverrideItem = e.GetOwner();
     }
   }
-  QIm() {
+  nTm() {
     var e;
-    return !this.Pe.IsTracking && !!(e = ModelManager_1.ModelManager.QuestNewModel.GetQuest(this.Pe.QuestId)) && (!e.IsSuspend() || e.GetSuspendType() !== 2) && ((e = ModelManager_1.ModelManager.QuestNewModel.GetQuestSpecialState(e)) === 2 || e === 3 || e === 9 ? this.$Im = true : this.Pe.State === 2 || this.Pe.State === 3);
+    return !this.Pe.IsTracking && !!(e = ModelManager_1.ModelManager.QuestNewModel.GetQuest(this.Pe.QuestId)) && (!e.IsSuspend() || e.GetSuspendType() !== 2) && ((e = ModelManager_1.ModelManager.QuestNewModel.GetQuestSpecialState(e)) === 2 || e === 3 || e === 9 ? this.rTm = true : this.Pe.State === 2 || this.Pe.State === 3);
   }
-  KIm() {
+  sTm() {
     var e = ModelManager_1.ModelManager.QuestNewModel.GetQuest(this.Pe.QuestId);
     if (e) {
       switch (ModelManager_1.ModelManager.QuestNewModel.GetQuestSpecialState(e)) {
@@ -193,9 +193,9 @@ class QuestTreeNodeDetailView extends UiViewBase_1.UiViewBase {
       }
     }
   }
-  async WIm() {
-    if (this.$Im) {
-      this.$Im = false;
+  async oTm() {
+    if (this.rTm) {
+      this.rTm = false;
       await this.PlaySequenceAsync("Close");
       await this.JDd();
       await this.PlaySequenceAsync("Start");

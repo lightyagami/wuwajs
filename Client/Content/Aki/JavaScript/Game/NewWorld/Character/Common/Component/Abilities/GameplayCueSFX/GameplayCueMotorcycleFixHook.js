@@ -16,16 +16,29 @@ class GameplayCueMotorcycleFixHook extends GameplayCueBase_1.GameplayCueBase {
   OnInit() {}
   OnTick(e) {}
   OnCreate() {
-    var e = this.EntityHandle.Entity?.GetComponent(57);
-    if (e?.Valid) {
-      if ((e = e.InteractingTarget)?.Valid && e.Active) {
-        this.$$o = GameplayCueHookCommonItem_1.GameplayCueHookCommonItem.Spawn(this.ActorInternal, FNameUtil_1.FNameUtil.GetDynamicFName(this.CueConfig.Socket), e.TriggerLocation.ToUeVector(), this.CueConfig.Resources);
+    var e;
+    var o = this.EntityHandle.Entity?.GetComponent(59);
+    if (o?.Valid) {
+      if (e = o.GetInteractingTargetLocation()) {
+        this.$$o = GameplayCueHookCommonItem_1.GameplayCueHookCommonItem.Spawn(this.ActorInternal, FNameUtil_1.FNameUtil.GetDynamicFName(this.CueConfig.Socket), e.ToUeVector(), this.Qjg());
       } else if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("Battle", 79, "GameplayCueMotorcycleFixHook播放失败, 当前探索组件正在交互实体已失效");
+        Log_1.Log.Error("Battle", 79, "GameplayCueMotorcycleFixHook播放失败, interactingTargetLocation为空", ["ClientEntityId", o.Entity.Id]);
       }
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("Battle", 79, "GameplayCueMotorcycleFixHook播放失败, 当前探索组件已失效");
     }
+  }
+  Qjg() {
+    var o = this.EntityHandle.Entity?.GetComponent(1);
+    var t = this.CueConfig.Resources;
+    if (!o?.Valid) {
+      return t;
+    }
+    var a = [];
+    for (let e = 0; e < t.length; e++) {
+      a[e] = o.GetReplaceEffect(t[e]) ?? t[e];
+    }
+    return a;
   }
   OnDestroy() {
     if (this.$$o) {

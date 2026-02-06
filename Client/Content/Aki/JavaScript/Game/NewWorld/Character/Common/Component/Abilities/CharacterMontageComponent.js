@@ -34,7 +34,7 @@ let CharacterMontageComponent = class CharacterMontageComponent extends BaseMont
     this.$Rc = false;
   }
   OnStart() {
-    this.AnimationComponent = this.Entity.CheckGetComponent(186);
+    this.AnimationComponent = this.Entity.CheckGetComponent(188);
     return !!super.OnStart();
   }
   GetMainAnimInstance() {
@@ -42,7 +42,7 @@ let CharacterMontageComponent = class CharacterMontageComponent extends BaseMont
   }
   AddMontage(e, t, o) {
     if (this.$Rc) {
-      this.MorphComponent = this.MorphComponent ?? this.Entity.GetComponent(306);
+      this.MorphComponent = this.MorphComponent ?? this.Entity.GetComponent(308);
       var r = this.MorphComponent;
       if (r) {
         var n = r.GetMontagePathMorphType(o);

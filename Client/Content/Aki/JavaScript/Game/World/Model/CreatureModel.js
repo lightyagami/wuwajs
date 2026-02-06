@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.CreatureModel = exports.globalEntityTypePerceptionType = exports.ENABLE_KAWAII_MASK = exports.DISABLE_KAWAII_MASK = undefined;
+exports.CreatureModel = exports.globalEntityTypePerceptionType = exports.DISABLE_KAWAII_MOBLIE_MASK = exports.ENABLE_KAWAII_MASK = exports.DISABLE_ON_ELEVATOR_KAWAII_MASK = exports.DISABLE_KAWAII_MASK = undefined;
 const puerts_1 = require("puerts");
 const UE = require("ue");
 const Info_1 = require("../../../Core/Common/Info");
@@ -43,7 +43,9 @@ const ComponentReadHelper_1 = require("../EntityReadCode/Component/ComponentRead
 const zero = 0n;
 const ONE_HUNDRED = 100;
 exports.DISABLE_KAWAII_MASK = 1;
+exports.DISABLE_ON_ELEVATOR_KAWAII_MASK = 2;
 exports.ENABLE_KAWAII_MASK = ~exports.DISABLE_KAWAII_MASK;
+exports.DISABLE_KAWAII_MOBLIE_MASK = 4;
 exports.globalEntityTypePerceptionType = [1, 1, 1, 2, 2, 2, 2, 4];
 class CreatureModel extends ModelBase_1.ModelBase {
   constructor() {
@@ -78,7 +80,6 @@ class CreatureModel extends ModelBase_1.ModelBase {
     this.RMr = new Map();
     this.UMr = undefined;
     this.ActorMovableHandleMap = new Map();
-    this.DisableLock = new Set();
     this.LeavingLevel = false;
     this.ifl = 0;
     this.AMr = () => {
@@ -105,11 +106,11 @@ class CreatureModel extends ModelBase_1.ModelBase {
           var e;
           if ((!Global_1.Global.BaseCharacter?.IsValid() || Global_1.Global.BaseCharacter.EntityId !== i.Id) && i.Entity.GetComponent(0).GetEntityType() !== Protocol_1.Aki.Protocol.kks.Proto_SceneItem && !this.dMr.has(i.Id) && !this.NCa.has(i.Id)) {
             if (i.IsInit) {
-              if (e = i.Entity.GetComponent(120)) {
+              if (e = i.Entity.GetComponent(122)) {
                 e = e.DisableTickWithLog("CreatureModel.OnTeleportStart");
                 this.NCa.set(i.Id, e);
               }
-              if (e = i.Entity.GetComponent(122)) {
+              if (e = i.Entity.GetComponent(124)) {
                 e.TeleportLock = true;
               }
             } else {
@@ -131,7 +132,7 @@ class CreatureModel extends ModelBase_1.ModelBase {
         }
         for (var [i, r] of this.NCa) {
           i = ModelManager_1.ModelManager.CreatureModel.GetEntityById(i);
-          if (i?.Valid && (i.Entity.GetComponent(120).EnableTickWithLog(r, "CreatureModel.OnTeleportComplete"), r = i.Entity.GetComponent(122))) {
+          if (i?.Valid && (i.Entity.GetComponent(122).EnableTickWithLog(r, "CreatureModel.OnTeleportComplete"), r = i.Entity.GetComponent(124))) {
             r.OnEntityBudgetTickEnableChange(true);
             r.TeleportLock = false;
           }
@@ -1029,6 +1030,9 @@ class CreatureModel extends ModelBase_1.ModelBase {
       this.ifl &= exports.ENABLE_KAWAII_MASK;
     } else {
       this.ifl |= exports.DISABLE_KAWAII_MASK;
+    }
+    if (Platform_1.Platform.IsMobilePlatform()) {
+      this.ifl |= exports.DISABLE_KAWAII_MOBLIE_MASK;
     }
   }
   _r_(t) {

@@ -133,10 +133,9 @@ class ShipTowerModel extends ModelBase_1.ModelBase {
   OnLeaveLevel() {
     return true;
   }
-  InitData() {
-    if (!this.Z7_) {
+  InitData(e = false) {
+    if (!this.Z7_ || !!e) {
       this.Z7_ = true;
-      this.l5_();
       this.fA_();
       this.UW_();
     }
@@ -158,7 +157,23 @@ class ShipTowerModel extends ModelBase_1.ModelBase {
     this._5_(ShipTowerDefine_1.SHIP_TOWER_ZERO_SEASON);
   }
   _5_(e) {
-    ConfigManager_1.ConfigManager.ShipTowerConfig.GetBuffCfgBySeason(e)?.forEach(e => {
+    var t;
+    var i;
+    var r = ConfigManager_1.ConfigManager.ShipTowerConfig.GetBuffCfgBySeason(e) ?? [];
+    var s = this.CurSeason;
+    var a = [];
+    for (const o of r) {
+      if (e !== 0) {
+        a.push(o);
+      } else {
+        t = s >= o.StartSeason;
+        i = o.EndSeason === -1 || s <= o.EndSeason;
+        if (t && i) {
+          a.push(o);
+        }
+      }
+    }
+    a.forEach(e => {
       this.c5_(e);
     });
     this.u5_();
@@ -172,7 +187,16 @@ class ShipTowerModel extends ModelBase_1.ModelBase {
     });
   }
   d5_(e) {
-    return this.IsOldSeason(e.Season);
+    var t;
+    var i;
+    if (e.Season === ShipTowerDefine_1.SHIP_TOWER_ZERO_SEASON) {
+      i = ConfigManager_1.ConfigManager.ShipTowerConfig.GetBuffCfgByItemId(e.ItemId);
+      t = this.CurSeason >= i.StartSeason;
+      i = i.EndSeason === -1 || this.CurSeason <= i.EndSeason;
+      return !t || !i;
+    } else {
+      return this.IsOldSeason(e.Season);
+    }
   }
   IsOldSeason(e) {
     return e !== ShipTowerDefine_1.SHIP_TOWER_ZERO_SEASON && e !== this.CurSeason;
@@ -199,10 +223,8 @@ class ShipTowerModel extends ModelBase_1.ModelBase {
     this.ts_.push(...Array.from(this.is_.values()));
     this.ts_.sort((e, t) => t.Quality - e.Quality);
   }
-  async CheckInitProto() {
-    if (this.qG_()) {
-      await ControllerHolder_1.ControllerHolder.ShipTowerController.SlashAndTowerInfoRequest();
-    }
+  async CheckInitProto(e = false) {
+    return !!this.qG_() && (await ControllerHolder_1.ControllerHolder.ShipTowerController.SlashAndTowerInfoRequest(), e && (this.InitData(true), this.ClearAreaList(), this.GetAreaList()), true);
   }
   qG_() {
     return !!this.IsOpen() && (!this.TowerStageDataList[0]?.IsHaveProtoData || !!this.TimeIsOver() || !!UiManager_1.UiManager.IsViewOpen("ShipTowerReviewView"));
@@ -444,12 +466,14 @@ class ShipTowerModel extends ModelBase_1.ModelBase {
     this.CA_();
   }
   SlashAndTowerInfoResponse(e) {
-    if (!this.ls_(e, 16849, false)) {
+    if (!this.ls_(e, 20873, false)) {
+      this.es_.clear();
       this.Zn_.length = 0;
       e?.BL_.forEach(e => {
         this.as_(e.s5n);
       });
       this.cA_ = this.Zn_[this.Zn_.length - 1]?.BelongToSeason ?? 1;
+      this.l5_();
       this.UG_ = MathUtils_1.MathUtils.LongToNumber(e.dG_);
       this.DG_ = !!e.fG_;
       this.BG_ = !!e.mG_;
@@ -463,12 +487,10 @@ class ShipTowerModel extends ModelBase_1.ModelBase {
         this.dA_.add(e);
       });
       this.Pac(e?.Mac ?? []);
-      this.ClearAreaList();
-      this.GetAreaList();
     }
   }
   SlashAndTowerScoreRewardResponse(e) {
-    if (!this.ls_(e, 23571)) {
+    if (!this.ls_(e, 26796)) {
       e.cOl.forEach(e => {
         this.dA_.add(e);
       });
@@ -477,7 +499,7 @@ class ShipTowerModel extends ModelBase_1.ModelBase {
     }
   }
   EndLessHistoryResponse(e) {
-    if (!this.ls_(e, 19548)) {
+    if (!this.ls_(e, 27511)) {
       this.RecordList.length = 0;
       this.nq_(ShipTowerDefine_1.shipTowerTextKey.CurrentRecord, e.qL_);
       this.nq_(ShipTowerDefine_1.shipTowerTextKey.HistoryRecord, e.OL_);
@@ -517,7 +539,7 @@ class ShipTowerModel extends ModelBase_1.ModelBase {
     }
   }
   SlashAndTowerSaveRecordResponse(e, t) {
-    if (!this.ls_(t, 28508)) {
+    if (!this.ls_(t, 15066)) {
       this.GetStageDataById(e)?.CoverChallenge();
       this.CA_();
       this.SetChallengeStageDataNull();
@@ -526,7 +548,7 @@ class ShipTowerModel extends ModelBase_1.ModelBase {
     }
   }
   SlashAndTowerResetResponse(e, t) {
-    if (!this.ls_(t, 16258)) {
+    if (!this.ls_(t, 29777)) {
       this.GetStageDataById(e)?.ResetStage();
       this.CA_();
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ShipTowerSureResetStage, e);
@@ -534,12 +556,12 @@ class ShipTowerModel extends ModelBase_1.ModelBase {
     }
   }
   SlashAndTowerRecommendResponse(e, t) {
-    if (!this.ls_(t, 22559)) {
+    if (!this.ls_(t, 19490)) {
       this.GetStageDataById(e)?.ProtoUpdateTeamRecommendList(t);
     }
   }
   SlashAndTowerReviewResponse(e) {
-    if (!this.ls_(e, 16655)) {
+    if (!this.ls_(e, 21545)) {
       this.ReviewList.length = 0;
       e?.CG_.forEach(e => {
         var t = e.gG_;
@@ -799,7 +821,7 @@ class ShipTowerModel extends ModelBase_1.ModelBase {
   async CheckIsNeedShowSeasonReview() {
     if (!this.QH_ || this.QH_.IsFulfilled()) {
       if (this.TimeIsOver()) {
-        await this.CheckInitProto();
+        await this.CheckInitProto(true);
       }
       if (!this.BG_) {
         return false;
@@ -812,7 +834,7 @@ class ShipTowerModel extends ModelBase_1.ModelBase {
       });
       this.BG_ = false;
       this.btc();
-      await this.CheckInitProto();
+      await this.CheckInitProto(true);
     }
     await this.QH_.Promise;
     return true;

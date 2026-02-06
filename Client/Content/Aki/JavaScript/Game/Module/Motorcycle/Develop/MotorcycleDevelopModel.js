@@ -8,6 +8,7 @@ const Log_1 = require("../../../../Core/Common/Log");
 const CommonParamById_1 = require("../../../../Core/Define/ConfigCommon/CommonParamById");
 const Protocol_1 = require("../../../../Core/Define/Net/Protocol");
 const ModelBase_1 = require("../../../../Core/Framework/ModelBase");
+const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
 const MathUtils_1 = require("../../../../Core/Utils/MathUtils");
 const LocalStorage_1 = require("../../../Common/LocalStorage");
 const LocalStorageDefine_1 = require("../../../Common/LocalStorageDefine");
@@ -17,113 +18,119 @@ const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiManager_1 = require("../../../Ui/UiManager");
 const FormationAttributeController_1 = require("../../Abilities/FormationAttributeController");
+const ScrollingTipsController_1 = require("../../ScrollingTips/ScrollingTipsController");
 const MotorcycleDevelopDefine_1 = require("./MotorcycleDevelopDefine");
 class MotorcycleDevelopModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
     this.qbi = -1;
-    this.Qxf = -1;
-    this.ZUf = 0;
-    this.exf = 0;
-    this.txf = false;
+    this.qFf = -1;
+    this.OGf = 0;
+    this.GGf = 0;
+    this.FGf = false;
     this.zVl = 1;
-    this.ZHm = 0;
-    this.vcf = 0;
-    this.Kxf = undefined;
+    this.AWm = 0;
+    this.gmf = 0;
+    this.OFf = undefined;
     this.OQo = "MotorLevel";
-    this.xjm = 0;
-    this.Hcf = 0;
-    this.ycf = [];
+    this.DWm = 0;
+    this.Fmf = 0;
+    this.Cmf = [];
     this.TechNodeMap = new Map();
     this.DamgeIdToSkillLevel = new Map();
-    this.Scf = new Map();
-    this.Bjm = new Map();
+    this.pmf = new Map();
+    this.UWm = new Map();
+    this.xAg = undefined;
   }
   UpdateMotorInfo(e) {
-    this.zVl = e.Q1f;
-    this.ZHm = e.K1f;
-    this.vcf = e.j1f;
-    this.ZUf = e.iBf;
-    this.exf = e.rBf;
-    this.xjm = e.H1f;
-    this.txf = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.MotorDevelopIsFirstDailyExpLimit) ?? false;
+    this.zVl = e.ncf;
+    this.AWm = e.scf;
+    this.gmf = e.icf;
+    this.OGf = e.WFf;
+    this.GGf = e.QFf;
+    this.DWm = e.tcf;
+    this.FGf = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.MotorDevelopIsFirstDailyExpLimit) ?? false;
     if (this.qbi === -1) {
       this.qbi = this.zVl;
     }
-    if (this.Qxf === -1) {
-      this.Qxf = this.ZHm;
+    if (this.qFf === -1) {
+      this.qFf = this.AWm;
     }
-    this.UpdateTechTree(e.X1f);
-    this.UpdateAllTreeTask(e.$1f);
+    this.UpdateTechTree(e.acf);
+    this.UpdateAllTreeTask(e.rcf);
     this.UpdateMotorLevelEffect();
+  }
+  OnClear() {
+    this.RemoveSwitchTechTreeLockTimer();
+    return true;
   }
   GetMotorTabList() {
     var t = ConfigManager_1.ConfigManager.DynamicTabConfig.GetViewTabList("MotorcycleRootView");
     var r = t.length;
-    var o = [];
+    var i = [];
     for (let e = 0; e < r; e++) {
-      var i = t[e];
-      if (ModelManager_1.ModelManager.FunctionModel.IsOpen(i.FunctionId)) {
-        o.push(i);
+      var o = t[e];
+      if (ModelManager_1.ModelManager.FunctionModel.IsOpen(o.FunctionId)) {
+        i.push(o);
       }
     }
-    return o;
+    return i;
   }
   GetLastLevel() {
     return this.qbi;
   }
   GetLastExp() {
-    return this.Qxf;
+    return this.qFf;
   }
   GetCurLevel() {
     return this.zVl;
   }
   GetCurExp() {
-    return this.ZHm;
+    return this.AWm;
   }
   GetCurRewardedMaxLv() {
-    return this.vcf;
+    return this.gmf;
   }
   GetAttrValueByType(e, t) {
     let r = 0;
-    var o = ModelManager_1.ModelManager.WorldLevelModel.CurWorldLevel;
-    var i = ConfigManager_1.ConfigManager.MotorConfig.GetMotorLevelConfig(t);
-    if (i) {
-      var a = i.WorldLv2Attack.get(o);
-      var s = i.WorldLv2MotorShield.get(o);
+    var i = ModelManager_1.ModelManager.WorldLevelModel.CurWorldLevel;
+    var o = ConfigManager_1.ConfigManager.MotorConfig.GetMotorLevelConfig(t);
+    if (o) {
+      var a = o.WorldLv2Attack.get(i);
+      var s = o.WorldLv2MotorShield.get(i);
       switch (e) {
         case 3:
           r = a || 0;
           break;
         case 1:
-          r = i.Speed;
+          r = o.Speed;
           break;
         case 5:
-          r = i.NitrogenSpeedValue;
+          r = o.NitrogenSpeedValue;
           break;
         case 2:
-          r = i.NitrogenValue;
+          r = o.NitrogenValue;
           break;
         case 7:
-          r = i.NitrogenRecoverRate;
+          r = o.NitrogenRecoverRate;
           break;
         case 8:
-          r = i.NitrogenRecoverCoolDown;
+          r = o.NitrogenRecoverCoolDown;
           break;
         case 6:
-          r = i.NitrogenConsumeRate;
+          r = o.NitrogenConsumeRate;
           break;
         case 9:
-          r = i.MotorInitialShieldRate;
+          r = o.MotorInitialShieldRate;
           break;
         case 4:
           r = s || 0;
           break;
         case 10:
-          r = i.MotorShieldRecoverRate;
+          r = o.MotorShieldRecoverRate;
           break;
         case 11:
-          r = i.MotorShieldCoolDown;
+          r = o.MotorShieldCoolDown;
       }
     }
     return r;
@@ -142,11 +149,11 @@ class MotorcycleDevelopModel extends ModelBase_1.ModelBase {
       var e = e[0].ItemId;
       var t = t[0].ItemId;
       var r = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(e);
-      var o = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(t);
+      var i = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(t);
       var r = r ? r.QualityId : 0;
-      var o = o ? o.QualityId : 0;
-      if (r !== o) {
-        return o - r;
+      var i = i ? i.QualityId : 0;
+      if (r !== i) {
+        return i - r;
       } else {
         return e - t;
       }
@@ -158,20 +165,20 @@ class MotorcycleDevelopModel extends ModelBase_1.ModelBase {
     var e = ConfigManager_1.ConfigManager.MotorConfig.GetAllMotorLevelList();
     var t = new Map();
     for (const s of e) {
-      var o = s.RewardId;
-      if (o !== 0) {
-        o = ConfigManager_1.ConfigManager.RewardConfig.GetDropPackage(o)?.DropPreview;
-        if (o) {
-          for (var [i, a] of o) {
-            let e = t.get(i);
+      var i = s.RewardId;
+      if (i !== 0) {
+        i = ConfigManager_1.ConfigManager.RewardConfig.GetDropPackage(i)?.DropPreview;
+        if (i) {
+          for (var [o, a] of i) {
+            let e = t.get(o);
             if (e) {
               e[1] = e[1] + a;
             } else {
               e = [{
                 IncId: 0,
-                ItemId: i
+                ItemId: o
               }, a];
-              t.set(i, e);
+              t.set(o, e);
             }
           }
         }
@@ -184,11 +191,11 @@ class MotorcycleDevelopModel extends ModelBase_1.ModelBase {
       var e = e[0].ItemId;
       var t = t[0].ItemId;
       var r = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(e);
-      var o = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(t);
+      var i = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(t);
       var r = r ? r.QualityId : 0;
-      var o = o ? o.QualityId : 0;
-      if (r !== o) {
-        return o - r;
+      var i = i ? i.QualityId : 0;
+      if (r !== i) {
+        return i - r;
       } else {
         return e - t;
       }
@@ -200,11 +207,11 @@ class MotorcycleDevelopModel extends ModelBase_1.ModelBase {
     if (e !== 0) {
       e = ConfigManager_1.ConfigManager.RewardConfig.GetDropPackage(e)?.DropPreview;
       if (e) {
-        for (var [r, o] of e) {
+        for (var [r, i] of e) {
           r = [{
             IncId: 0,
             ItemId: r
-          }, o];
+          }, i];
           t.push(r);
         }
       }
@@ -212,35 +219,35 @@ class MotorcycleDevelopModel extends ModelBase_1.ModelBase {
     return t;
   }
   IsDailyExpToLimit() {
-    return this.exf > 0 && this.ZUf >= this.exf;
+    return this.GGf > 0 && this.OGf >= this.GGf;
   }
   UpdateMotorExpAndLevel(e) {
-    this.ZHm = e.ILs;
+    this.AWm = e.ILs;
     this.zVl = e.TLs;
-    this.ZUf = e.iBf;
-    this.exf = e.rBf;
+    this.OGf = e.WFf;
+    this.GGf = e.QFf;
     this.UpdateMotorLevelEffect();
   }
   UpdateMotorRewardedMaxLevel(e) {
-    this.vcf = e.j1f;
+    this.gmf = e.icf;
   }
   CheckMotorExpChange() {
     if (this.qbi < this.zVl) {
-      this.SetLevelUp(this.qbi, this.zVl, this.ZHm, this.Qxf);
+      this.SetLevelUp(this.qbi, this.zVl, this.AWm, this.qFf);
       this.qbi = this.zVl;
     }
-    this.Qxf = this.ZHm;
-    if (this.ZUf === 0) {
-      this.txf = false;
+    this.qFf = this.AWm;
+    if (this.OGf === 0) {
+      this.FGf = false;
       LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.MotorDevelopIsFirstDailyExpLimit, false);
     }
-    if (this.IsDailyExpToLimit() && !this.txf) {
+    if (this.IsDailyExpToLimit() && !this.FGf) {
       ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("MotorBike_ExpLimit_Tips");
-      this.txf = true;
+      this.FGf = true;
       LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.MotorDevelopIsFirstDailyExpLimit, true);
     }
   }
-  SetExpChange(e, t, r, o, i) {
+  SetExpChange(e, t, r, i, o) {
     this.ovi({
       AddExp: true,
       PreLevel: e,
@@ -249,49 +256,49 @@ class MotorcycleDevelopModel extends ModelBase_1.ModelBase {
       CurExp: t
     });
   }
-  SetLevelUp(e, t, r, o) {
+  SetLevelUp(e, t, r, i) {
     this.ovi({
       AddExp: true,
       PreLevel: e,
-      PreExp: o,
+      PreExp: i,
       CurLevel: t,
       CurExp: r
     });
   }
   ONn(e) {
-    if (this.Kxf) {
+    if (this.OFf) {
       if (e.AddExp) {
-        this.Kxf.AddExp = e.AddExp;
+        this.OFf.AddExp = e.AddExp;
       }
-      if (e.PreLevel < this.Kxf.PreLevel) {
-        this.Kxf.PreLevel = e.PreLevel;
-        this.Kxf.PreExp = e.PreExp;
-      } else if (e.PreLevel === this.Kxf.PreLevel && e.PreExp <= this.Kxf.PreExp) {
-        this.Kxf.PreExp = e.PreExp;
+      if (e.PreLevel < this.OFf.PreLevel) {
+        this.OFf.PreLevel = e.PreLevel;
+        this.OFf.PreExp = e.PreExp;
+      } else if (e.PreLevel === this.OFf.PreLevel && e.PreExp <= this.OFf.PreExp) {
+        this.OFf.PreExp = e.PreExp;
       }
-      if (e.CurLevel > this.Kxf.CurLevel) {
-        this.Kxf.CurLevel = e.CurLevel;
-        this.Kxf.CurExp = e.CurExp;
-      } else if (e.CurLevel === this.Kxf.CurLevel && e.CurExp >= this.Kxf.CurExp) {
-        this.Kxf.CurExp = e.CurExp;
+      if (e.CurLevel > this.OFf.CurLevel) {
+        this.OFf.CurLevel = e.CurLevel;
+        this.OFf.CurExp = e.CurExp;
+      } else if (e.CurLevel === this.OFf.CurLevel && e.CurExp >= this.OFf.CurExp) {
+        this.OFf.CurExp = e.CurExp;
       }
     }
   }
   ovi(e) {
-    if (UiManager_1.UiManager.IsViewOpen("MotorcycleLevelUpView") && this.Kxf) {
+    if (UiManager_1.UiManager.IsViewOpen("MotorcycleLevelUpView") && this.OFf) {
       this.ONn(e);
     } else {
-      this.Kxf = e;
+      this.OFf = e;
       if (!UiManager_1.UiManager.GetViewByName("MotorcycleLevelUpView")) {
-        UiManager_1.UiManager.OpenView("MotorcycleLevelUpView", this.Kxf);
+        UiManager_1.UiManager.OpenView("MotorcycleLevelUpView", this.OFf);
       }
     }
   }
   GetCacheData() {
-    return this.Kxf;
+    return this.OFf;
   }
   ClearCacheData() {
-    this.Kxf = undefined;
+    this.OFf = undefined;
   }
   UpdateMotorLevelEffect() {
     var e = ConfigManager_1.ConfigManager.MotorConfig.GetMotorLevelConfig(this.zVl);
@@ -302,9 +309,9 @@ class MotorcycleDevelopModel extends ModelBase_1.ModelBase {
     }
   }
   RedDotHasLevelUpReward() {
-    return this.vcf < this.zVl;
+    return this.gmf < this.zVl;
   }
-  kjm() {
+  xWm() {
     if (!(this.TechNodeMap.size > 0)) {
       for (const t of ConfigManager_1.ConfigManager.MotorConfig.GetAllMotorTreeIds()) {
         for (const r of ConfigManager_1.ConfigManager.MotorConfig.GetMotorTechConfigList(t)) {
@@ -315,31 +322,31 @@ class MotorcycleDevelopModel extends ModelBase_1.ModelBase {
     }
   }
   UpdateCurTreeType(e) {
-    this.xjm = e;
+    this.DWm = e;
   }
   UpdateSelectedTreeType(e) {
-    this.Hcf = e;
+    this.Fmf = e;
   }
   UpdateDamgeIdToSkillLevel(e, t, r) {
     if (t !== r) {
       if (t > 0) {
         t = this.GetnodeEffectConfig(e, t);
         if (t) {
-          for (const i of t.DamageIdList) {
-            this.DamgeIdToSkillLevel.delete(i);
+          for (const o of t.DamageIdList) {
+            this.DamgeIdToSkillLevel.delete(o);
           }
         }
       }
       if (r > 0) {
-        var o = this.GetnodeEffectConfig(e, r);
-        if (o) {
-          for (const a of o.DamageIdList) {
+        var i = this.GetnodeEffectConfig(e, r);
+        if (i) {
+          for (const a of i.DamageIdList) {
             if (this.DamgeIdToSkillLevel.has(a)) {
               if (Log_1.Log.CheckError()) {
                 Log_1.Log.Error("Vehicle", 85, "重复的结算ID", ["ID", a]);
               }
             } else {
-              this.DamgeIdToSkillLevel.set(a, o.SkillLevel);
+              this.DamgeIdToSkillLevel.set(a, i.SkillLevel);
             }
           }
         }
@@ -355,8 +362,8 @@ class MotorcycleDevelopModel extends ModelBase_1.ModelBase {
     }
   }
   UpdateOneTechTree(e) {
-    e = e.W1f;
-    this.kjm();
+    e = e.ocf;
+    this.xWm();
     for (const r of e) {
       var t = this.TechNodeMap.get(r.s5n);
       if (t && (this.UpdateDamgeIdToSkillLevel(r.s5n, t.NodeLevel, r.F6n), t.NodeLevel = r.F6n, t.CurrentValue = r.lMs, t.TargetValue = r.j6n, r.CMs)) {
@@ -366,7 +373,7 @@ class MotorcycleDevelopModel extends ModelBase_1.ModelBase {
   }
   UpdateTechTree(e) {
     for (const t of e) {
-      this.UnlockTechTree(t.V1f);
+      this.UnlockTechTree(t.ecf);
       this.UpdateOneTechTree(t);
     }
   }
@@ -383,11 +390,11 @@ class MotorcycleDevelopModel extends ModelBase_1.ModelBase {
     }
   }
   UnlockTechTree(e) {
-    if (!this.ycf.includes(e)) {
-      this.ycf.push(e);
+    if (!this.Cmf.includes(e)) {
+      this.Cmf.push(e);
       this.UpdateTechTreeNewUnlocked(e, true);
     }
-    this.ycf.sort((e, t) => {
+    this.Cmf.sort((e, t) => {
       e = ConfigManager_1.ConfigManager.MotorConfig.GetMotorTechTreeConfig(e);
       t = ConfigManager_1.ConfigManager.MotorConfig.GetMotorTechTreeConfig(t);
       return (e ? e.Order : 0) - (t ? t.Order : 0);
@@ -396,9 +403,9 @@ class MotorcycleDevelopModel extends ModelBase_1.ModelBase {
   GetCommonTechNodeIdList(e) {
     var t = [];
     const r = [];
-    for (const o of ConfigManager_1.ConfigManager.MotorConfig.GetMotorTechConfigList(e)) {
-      if (o.Type === 0) {
-        t.push(o);
+    for (const i of ConfigManager_1.ConfigManager.MotorConfig.GetMotorTechConfigList(e)) {
+      if (i.Type === 0) {
+        t.push(i);
       }
     }
     t.sort((e, t) => e.GeneralNodeSortOrder - t.GeneralNodeSortOrder);
@@ -409,10 +416,10 @@ class MotorcycleDevelopModel extends ModelBase_1.ModelBase {
   }
   FindTechNodeIdByCoord(e, t) {
     let r = -1;
-    for (const i of ConfigManager_1.ConfigManager.MotorConfig.GetMotorTechConfigList(t)) {
-      var o = i.ExclusiveNodeSortOrder;
-      if (e[0] === o[0] && e[1] === o[1]) {
-        r = i.Id;
+    for (const o of ConfigManager_1.ConfigManager.MotorConfig.GetMotorTechConfigList(t)) {
+      var i = o.ExclusiveNodeSortOrder;
+      if (e[0] === i[0] && e[1] === i[1]) {
+        r = o.Id;
         break;
       }
     }
@@ -422,13 +429,13 @@ class MotorcycleDevelopModel extends ModelBase_1.ModelBase {
     return this.DamgeIdToSkillLevel.get(e);
   }
   GetCurTreeType() {
-    return this.xjm;
+    return this.DWm;
   }
   GetSelectedTreeType() {
-    return this.Hcf;
+    return this.Fmf;
   }
   GetActivatedTreeTypeList() {
-    return this.ycf;
+    return this.Cmf;
   }
   GetTechNodeById(e) {
     return this.TechNodeMap.get(e);
@@ -436,42 +443,42 @@ class MotorcycleDevelopModel extends ModelBase_1.ModelBase {
   GetExclusiveNodeParamList(e) {
     var t;
     var r = [];
-    var o = [];
+    var i = [];
     for (const d of ConfigManager_1.ConfigManager.MotorConfig.GetMotorTechConfigList(e)) {
       if (d.Type === 1) {
         t = d.ExclusiveNodeSortOrder;
-        o.push(t);
+        i.push(t);
       }
     }
-    var i;
+    var o;
     var a;
     var s = new Map();
-    for (const M of o) {
+    for (const _ of i) {
       var n;
-      var h = M[0];
-      var f = M[1];
+      var h = _[0];
+      var l = _[1];
       if (h > 0) {
-        if (!(n = s.get(h) ?? []).includes(f)) {
-          n.push(f);
+        if (!(n = s.get(h) ?? []).includes(l)) {
+          n.push(l);
         }
         n.sort((e, t) => e - t);
         s.set(h, n);
       }
     }
-    for ([i, a] of s) {
-      var l = [];
+    for ([o, a] of s) {
       var c = [];
-      for (const _ of a) {
-        if (_ > 0) {
-          l.push(this.FindTechNodeIdByCoord([i, _], e));
-        } else if (_ < 0) {
-          c.push(this.FindTechNodeIdByCoord([i, _], e));
+      var f = [];
+      for (const M of a) {
+        if (M > 0) {
+          c.push(this.FindTechNodeIdByCoord([o, M], e));
+        } else if (M < 0) {
+          f.push(this.FindTechNodeIdByCoord([o, M], e));
         }
       }
-      var g = this.FindTechNodeIdByCoord([i, 0], e);
+      var g = this.FindTechNodeIdByCoord([o, 0], e);
       r.push({
-        TopIds: l,
-        BottomIds: c,
+        TopIds: c,
+        BottomIds: f,
         MiddleId: g
       });
     }
@@ -493,18 +500,32 @@ class MotorcycleDevelopModel extends ModelBase_1.ModelBase {
     if (!e.PreNodeIds || e.PreNodeIds.length === 0) {
       t = true;
     }
-    for (const o of e.PreNodeIds) {
-      if (o === 0) {
+    for (const i of e.PreNodeIds) {
+      if (i === 0) {
         t = true;
         break;
       }
-      var r = this.GetTechNodeById(o);
+      var r = this.GetTechNodeById(i);
       if (r && r.Status === 1) {
         t = true;
         break;
       }
     }
     return t;
+  }
+  IsAllNodeMaxLevel(e) {
+    for (const r of this.TechNodeMap.values()) {
+      if (r.TreeType === e) {
+        var t = ConfigManager_1.ConfigManager.MotorConfig.GetMotorTechConfig(r.NodeId);
+        if (!t) {
+          return false;
+        }
+        if (r.NodeLevel < t.TechLv.length) {
+          return false;
+        }
+      }
+    }
+    return true;
   }
   GetnodeEffectConfig(e, t) {
     e = ConfigManager_1.ConfigManager.MotorConfig.GetMotorTechConfig(e);
@@ -519,11 +540,11 @@ class MotorcycleDevelopModel extends ModelBase_1.ModelBase {
   CanUpgradeNode(e) {
     var t;
     var r;
-    var o = ConfigManager_1.ConfigManager.MotorConfig.GetMotorTechTreeConfig(e.TreeType);
-    return !!o && !!(t = ConfigManager_1.ConfigManager.MotorConfig.GetMotorTechConfig(e.NodeId)) && !(e = e.NodeLevel === t.TechLv.length ? e.NodeLevel : e.NodeLevel + 1, t = t.TechLv[e - 1], !(r = ConfigManager_1.ConfigManager.MotorConfig.GetMotorTechLvConfig(t))) && !!r.Consume && ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(o.TpItemId) - r.Consume >= 0;
+    var i = ConfigManager_1.ConfigManager.MotorConfig.GetMotorTechTreeConfig(e.TreeType);
+    return !!i && !!(t = ConfigManager_1.ConfigManager.MotorConfig.GetMotorTechConfig(e.NodeId)) && !(e = e.NodeLevel === t.TechLv.length ? e.NodeLevel : e.NodeLevel + 1, t = t.TechLv[e - 1], !(r = ConfigManager_1.ConfigManager.MotorConfig.GetMotorTechLvConfig(t))) && !!r.Consume && ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(i.TpItemId) - r.Consume >= 0;
   }
   RedDotHasAnyNewTechTree() {
-    for (const e of this.ycf) {
+    for (const e of this.Cmf) {
       if (this.RedDotHasNewTechTree(e)) {
         return true;
       }
@@ -539,19 +560,20 @@ class MotorcycleDevelopModel extends ModelBase_1.ModelBase {
       var t = e === undefined || o.TreeType === e;
       var r = ConfigManager_1.ConfigManager.MotorConfig.GetMotorTechConfig(o.NodeId);
       var r = o.NodeLevel >= r.TechLv.length;
-      if (t && !r && this.CanUpgradeNode(o)) {
+      var i = o.Status === -1;
+      if (t && !r && !i && this.CanUpgradeNode(o)) {
         return true;
       }
     }
     return false;
   }
   UpdateOneTask(e) {
-    let t = this.Bjm.get(e.s5n);
+    let t = this.UWm.get(e.s5n);
     if (!t) {
       r = ConfigManager_1.ConfigManager.MotorConfig.GetMotorTaskConfig(e.s5n);
       (t = new MotorcycleDevelopDefine_1.MotorTechTaskNode()).TaskId = r.Id;
       t.TreeType = r.TreeType;
-      this.Bjm.set(e.s5n, t);
+      this.UWm.set(e.s5n, t);
     }
     t.StartTime = MathUtils_1.MathUtils.LongToNumber(e.Mps);
     t.EndTime = MathUtils_1.MathUtils.LongToNumber(e.dps);
@@ -562,16 +584,16 @@ class MotorcycleDevelopModel extends ModelBase_1.ModelBase {
     t.RewardInfo.MaxRewardCount = e.DS_.Hm1;
     var r = e.h5n;
     switch (r) {
-      case Protocol_1.Aki.Protocol.z1f.Proto_Unknown:
+      case Protocol_1.Aki.Protocol.lcf.Proto_Unknown:
         t.Type = 0;
         break;
-      case Protocol_1.Aki.Protocol.z1f.Proto_Single:
+      case Protocol_1.Aki.Protocol.lcf.Proto_Single:
         t.Type = 1;
         break;
-      case Protocol_1.Aki.Protocol.z1f.Proto_Cycle:
+      case Protocol_1.Aki.Protocol.lcf.Proto_Cycle:
         t.Type = 3;
         break;
-      case Protocol_1.Aki.Protocol.z1f.Proto_Limited:
+      case Protocol_1.Aki.Protocol.lcf.Proto_Limited:
         t.Type = 2;
     }
   }
@@ -582,49 +604,49 @@ class MotorcycleDevelopModel extends ModelBase_1.ModelBase {
   }
   UpdateAllTreeTask(e) {
     for (const t of e) {
-      this.Scf.set(t.V1f, t.Y1f);
+      this.pmf.set(t.ecf, t.hcf);
       this.UpdateOneTreeTask(t.cMs);
     }
   }
   GetTaskNodeInfo(e) {
-    return this.Bjm.get(e);
+    return this.UWm.get(e);
   }
   GetTaskListByTree(r) {
-    const o = [];
-    const i = TimeUtil_1.TimeUtil.GetServerTime();
-    this.Bjm.forEach((e, t) => {
+    const i = [];
+    const o = TimeUtil_1.TimeUtil.GetServerTime();
+    this.UWm.forEach((e, t) => {
       if (e.TreeType === r) {
         if (e.Type === 2) {
-          if (e.StartTime < i && e.EndTime > i) {
-            o.push(e);
+          if (e.StartTime < o && e.EndTime > o) {
+            i.push(e);
           }
         } else if (e.Type !== 3 || e.RewardInfo.MaxRewardCount !== 0 && e.RewardInfo.MaxRewardCount !== -1) {
-          o.push(e);
+          i.push(e);
         }
       }
     });
-    o.sort((e, t) => {
+    i.sort((e, t) => {
       var r;
-      var o;
-      var i = e.RewardInfo.WaitRewardCount;
+      var i;
+      var o = e.RewardInfo.WaitRewardCount;
       var a = t.RewardInfo.WaitRewardCount;
-      if (i !== a) {
-        return a - i;
+      if (o !== a) {
+        return a - o;
       } else {
         a = e.RewardInfo.MaxRewardCount;
-        i = t.RewardInfo.MaxRewardCount;
+        o = t.RewardInfo.MaxRewardCount;
         r = e.RewardInfo.RewardedCount;
-        o = t.RewardInfo.RewardedCount;
-        if ((a = a > 0 && a <= r ? 0 : 1) != (r = i > 0 && i <= o ? 0 : 1)) {
+        i = t.RewardInfo.RewardedCount;
+        if ((a = a > 0 && a <= r ? 0 : 1) != (r = o > 0 && o <= i ? 0 : 1)) {
           return r - a;
         } else {
-          i = ConfigManager_1.ConfigManager.MotorConfig.GetMotorTaskConfig(e.TaskId);
-          o = ConfigManager_1.ConfigManager.MotorConfig.GetMotorTaskConfig(t.TaskId);
-          return (i ? i.SortOrder : 0) - (o ? o.SortOrder : 0);
+          o = ConfigManager_1.ConfigManager.MotorConfig.GetMotorTaskConfig(e.TaskId);
+          i = ConfigManager_1.ConfigManager.MotorConfig.GetMotorTaskConfig(t.TaskId);
+          return (o ? o.SortOrder : 0) - (i ? i.SortOrder : 0);
         }
       }
     });
-    return o;
+    return i;
   }
   GetWaitRewardTaskIds(e) {
     var t = [];
@@ -637,14 +659,14 @@ class MotorcycleDevelopModel extends ModelBase_1.ModelBase {
   }
   GetCostPointByTree(e) {
     let t = 0;
-    for (const i of ConfigManager_1.ConfigManager.MotorConfig.GetMotorTechConfigList(e)) {
-      var r = this.GetTechNodeById(i.Id);
+    for (const o of ConfigManager_1.ConfigManager.MotorConfig.GetMotorTechConfigList(e)) {
+      var r = this.GetTechNodeById(o.Id);
       if (r) {
-        for (let e = 0; e < i.TechLv.length; e++) {
-          var o = i.TechLv[e];
-          var o = ConfigManager_1.ConfigManager.MotorConfig.GetMotorTechLvConfig(o);
-          if (o && r.NodeLevel >= e + 1) {
-            t += o.Consume;
+        for (let e = 0; e < o.TechLv.length; e++) {
+          var i = o.TechLv[e];
+          var i = ConfigManager_1.ConfigManager.MotorConfig.GetMotorTechLvConfig(i);
+          if (i && r.NodeLevel >= e + 1) {
+            t += i.Consume;
           }
         }
       }
@@ -669,18 +691,47 @@ class MotorcycleDevelopModel extends ModelBase_1.ModelBase {
     var r = this.GetFreePointByTree(e);
     return this.GetTotalPointByTree(e) <= t + r;
   }
-  RedDotCanGetTaskReward(e) {
-    for (const t of this.GetActivatedTreeTypeList()) {
-      if (this.IsOverLimitPointNum(t)) {
-        return false;
-      }
-    }
-    for (const r of this.Bjm.values()) {
-      if ((e === undefined || r.TreeType === e) && r.RewardInfo.WaitRewardCount > 0) {
+  RedDotCanGetAnyTaskReward() {
+    for (const e of this.GetActivatedTreeTypeList()) {
+      if (this.RedDotCanGetTaskReward(e)) {
         return true;
       }
     }
     return false;
+  }
+  RedDotCanGetTaskReward(e) {
+    if (!this.IsOverLimitPointNum(e)) {
+      for (const t of this.UWm.values()) {
+        if ((e === undefined || t.TreeType === e) && t.RewardInfo.WaitRewardCount > 0) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+  StartSwitchTechTreeLockTimer(e) {
+    this.RemoveSwitchTechTreeLockTimer();
+    this.xAg = TimerSystem_1.GameplayTimerSystem.Delay(() => {
+      this.RemoveSwitchTechTreeLockTimer();
+    }, e * 1000);
+  }
+  RemoveSwitchTechTreeLockTimer() {
+    if (this.xAg) {
+      TimerSystem_1.GameplayTimerSystem.Remove(this.xAg);
+      this.xAg = undefined;
+    }
+  }
+  IsSwitchTechTreeTimeLocked() {
+    return this.xAg !== undefined;
+  }
+  IsSwitchTechTreePlayerLocked() {
+    var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.GetComponent(217);
+    if (e.HasTag(-1371021686) || e.HasTag(1996802261)) {
+      ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("Text_ForbiddenActionInFight_Text");
+      return true;
+    } else {
+      return (!!e.HasTag(40422668) || !!e.HasTag(-1330336472) || !!e.HasTag(1566606455)) && (ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("Text_ForbiddenActionMidair_Text"), true);
+    }
   }
 }
 exports.MotorcycleDevelopModel = MotorcycleDevelopModel;

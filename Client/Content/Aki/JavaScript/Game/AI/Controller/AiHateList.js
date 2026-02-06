@@ -58,46 +58,46 @@ class AiHateList {
     this.Lie = undefined;
     this.Die = undefined;
     this.Rie = Vector_1.Vector.Create();
-    this.Uie = (i, t, e, s, r) => {
-      var h = s.DamageData;
-      if (h.CalculateType === 0) {
-        h = s.Damage;
+    this.Uie = (e, t, i, s, h) => {
+      var r = s.DamageData;
+      if (r.CalculateType === 0) {
+        r = s.Damage;
         if (!this.Lie?.Valid || !this.Lie.HasTag(-893996770)) {
-          var s = i.GetComponent(215);
+          var s = e.GetComponent(217);
           if (!s?.Valid || !s.HasTag(-1566015933)) {
-            let t = i.GetComponent(3);
+            let t = e.GetComponent(3);
             if (!t) {
-              s = i.GetComponent(246);
+              s = e.GetComponent(246);
               if (!(t = s?.GetCurrentOrLastDriver()?.GetComponent(3))) {
                 return;
               }
             }
             if (CampUtils_1.CampUtils.GetCampRelationship(this.Bte.CharActorComp.Actor.Camp, t.Actor.Camp) === 2) {
-              if (s = this.Aie.get(i.Id)) {
-                s.HatredValue += Math.max(MIN_HATE, s.InDecreasing ? -h * this.vie.IncreaseRateWhenDecreasing : -h);
+              if (s = this.Aie.get(e.Id)) {
+                s.HatredValue += Math.max(MIN_HATE, s.InDecreasing ? -r * this.vie.IncreaseRateWhenDecreasing : -r);
               } else {
-                this.Pie(i.Id, Math.max(MIN_HATE, -h), 0, "Damage");
+                this.Pie(e.Id, Math.max(MIN_HATE, -r), 0, "Damage");
               }
             }
           }
         }
       }
     };
-    this.xie = (t, i) => {
-      var e;
-      if (i && this.vie && (this.Die?.Valid && this.Die === i && (EventSystem_1.EventSystem.EmitWithTarget(this.Bte.CharAiDesignComp.Entity, EventDefine_1.EEventName.AiHateTargetChanged, t.Id, i.Id), this.Die = t, ControllerHolder_1.ControllerHolder.BlackboardController.SetEntityIdByEntity(this.Bte.CharActorComp.Entity.Id, "HateTarget", t.Id)), (e = this.Aie.get(i?.Id)) !== undefined)) {
-        this.wie(t.Id, e, "ChangeRole");
-        this.Bie(i.Id, "InActive");
+    this.xie = (t, e) => {
+      var i;
+      if (e && this.vie && (this.Die?.Valid && this.Die === e && (EventSystem_1.EventSystem.EmitWithTarget(this.Bte.CharAiDesignComp.Entity, EventDefine_1.EEventName.AiHateTargetChanged, t.Id, e.Id), this.Die = t, ControllerHolder_1.ControllerHolder.BlackboardController.SetEntityIdByEntity(this.Bte.CharActorComp.Entity.Id, "HateTarget", t.Id)), (i = this.Aie.get(e?.Id)) !== undefined)) {
+        this.wie(t.Id, i, "ChangeRole");
+        this.Bie(e.Id, "InActive");
       }
     };
-    this.Mjs = (t, i) => {
-      if (this.vie && (i = this.Aie.get(i?.Id)) !== undefined) {
-        this.wie(t.Id, i, "VisionMorphBegin");
+    this.Mjs = (t, e) => {
+      if (this.vie && (e = this.Aie.get(e?.Id)) !== undefined) {
+        this.wie(t.Id, e, "VisionMorphBegin");
       }
     };
-    this.CMl = (t, i) => {
-      if (this.vie && (i = this.Aie.get(i?.Id)) !== undefined) {
-        this.wie(t.Id, i, "VisionMorphEnd");
+    this.CMl = (t, e) => {
+      if (this.vie && (e = this.Aie.get(e?.Id)) !== undefined) {
+        this.wie(t.Id, e, "VisionMorphEnd");
       }
     };
     this.Aie = new Map();
@@ -107,26 +107,31 @@ class AiHateList {
     this.Nie = 0;
     this.Oie = 0;
     this.kie = 2;
+    this.pr1 = t => {
+      if (t === this.Bte.CharActorComp?.Entity.Id) {
+        this.Bie(0, "Dead");
+      }
+    };
   }
   get AiHate() {
     return this.vie;
   }
   set AiHate(t) {
     if (this.vie !== t) {
-      var i = this.Bte.CharActorComp.Entity.GetComponent(187);
-      if (i) {
+      var e = this.Bte.CharActorComp.Entity.GetComponent(189);
+      if (e) {
         if (s = this.Fie()) {
           ControllerHolder_1.ControllerHolder.BlackboardController.SetVectorValueByEntity(this.Bte.CharActorComp.Entity.Id, "CenterLocation", s.X, s.Y, s.Z);
         }
-        i.SetChain(t ? t.MaxMoveFromBorn : 0, s);
+        e.SetChain(t ? t.MaxMoveFromBorn : 0, s);
       }
       this.vie = t;
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("AI", 6, "AiHateInternal Changed", ["Actor", this.Bte.CharActorComp?.Actor.GetName()], ["Id", t?.Id]);
       }
       if (t) {
-        for (var [, e] of this.Aie) {
-          e.DisengageTime = -1;
+        for (var [, i] of this.Aie) {
+          i.DisengageTime = -1;
         }
         if (t.ExcludeTag) {
           this.Mie = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(t.ExcludeTag);
@@ -136,13 +141,13 @@ class AiHateList {
         }
         this.Sie = t.DisengageDistanceRange.Min * t.DisengageDistanceRange.Min;
         this.yie = t.DisengageDistanceRange.Max * t.DisengageDistanceRange.Max;
-        var i = t.DisengageBornDistance.Min;
+        var e = t.DisengageBornDistance.Min;
         var s = t.DisengageBornDistance.Max;
-        if (i < 0 && s < 0) {
+        if (e < 0 && s < 0) {
           this.Iie = Number.MAX_VALUE;
           this.Tie = Number.MAX_VALUE;
         } else {
-          this.Iie = i * i;
+          this.Iie = e * e;
           this.Tie = s * s;
         }
       } else {
@@ -155,17 +160,17 @@ class AiHateList {
     }
   }
   RefreshAbilityComp() {
-    this.Lie = this.Bte.CharAiDesignComp?.Entity?.GetComponent(215);
+    this.Lie = this.Bte.CharAiDesignComp?.Entity?.GetComponent(217);
   }
   GetHatredMap() {
     return this.Aie;
   }
   GetHatredMapDebugText() {
     let t = "";
-    for (var [i, e] of this.Aie) {
-      i = ControllerHolder_1.ControllerHolder.CharacterController.GetCharacterActorComponentById(i);
-      if (i?.Valid) {
-        t += "--" + i.Actor.GetName() + "(" + e.HatredValue + "," + e.TauntValue + "," + e.DisengageTime + ")\n";
+    for (var [e, i] of this.Aie) {
+      e = ControllerHolder_1.ControllerHolder.CharacterController.GetCharacterActorComponentById(e);
+      if (e?.Valid) {
+        t += "--" + e.Actor.GetName() + "(" + i.HatredValue + "," + i.TauntValue + "," + i.DisengageTime + ")\n";
       }
     }
     return t += "AiHateConfig:" + this.AiHate.Id;
@@ -181,6 +186,7 @@ class AiHateList {
     if (this.vie) {
       EventSystem_1.EventSystem.AddWithTarget(this.Bte.CharAiDesignComp.Entity, EventDefine_1.EEventName.CharBeDamage, this.Uie);
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnChangeRole, this.xie);
+      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CharOnRoleDead, this.pr1);
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.VisionMorphBegin, this.Mjs);
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.VisionMorphEnd, this.CMl);
     }
@@ -198,6 +204,9 @@ class AiHateList {
     if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.VisionMorphEnd, this.CMl)) {
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.VisionMorphEnd, this.CMl);
     }
+    if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.CharOnRoleDead, this.pr1)) {
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CharOnRoleDead, this.pr1);
+    }
   }
   Clear(t = true) {
     if (t) {
@@ -209,67 +218,67 @@ class AiHateList {
     this.Bie(0, "Clear");
   }
   Tick(t) {
-    var i;
+    var e;
     if (this.vie) {
-      i = this.Bte.CharActorComp.ScaledHalfHeight;
-      t = this.Vie(t * MathUtils_1.MathUtils.MillisecondToSecond, i);
-      i = this.Die?.Id;
+      e = this.Bte.CharActorComp.ScaledHalfHeight;
+      t = this.Vie(t * MathUtils_1.MathUtils.MillisecondToSecond, e);
+      e = this.Die?.Id;
       this.Die = t ? ModelManager_1.ModelManager.CreatureModel.GetEntityById(t) : undefined;
-      if ((t = this.Die?.Id) !== i) {
-        EventSystem_1.EventSystem.EmitWithTarget(this.Bte.CharAiDesignComp.Entity, EventDefine_1.EEventName.AiHateTargetChanged, t, i);
+      if ((t = this.Die?.Id) !== e) {
+        EventSystem_1.EventSystem.EmitWithTarget(this.Bte.CharAiDesignComp.Entity, EventDefine_1.EEventName.AiHateTargetChanged, t, e);
       }
       t = this.Bte.CharAiDesignComp.Entity.Id;
       if (this.Die) {
         if (ControllerHolder_1.ControllerHolder.BlackboardController.GetEntityIdByEntity(t, "HateTarget") !== this.Die.Id) {
           ControllerHolder_1.ControllerHolder.BlackboardController.SetEntityIdByEntity(t, "HateTarget", this.Die.Id);
         }
-        i = this.Aie.get(this.Die.Id);
-        if (Time_1.Time.WorldTime > i.DecreaseCdEndTime && i.HatredValue > MIN_HATE) {
-          i.DecreaseCdEndTime = Time_1.Time.WorldTime + this.vie.DecreaseTimeCd;
-          i.DecreaseEndTime = Time_1.Time.WorldTime + this.vie.DecreaseTimeLength;
-          i.NextDecreaseTime = Time_1.Time.WorldTime + ONE_THOUSAND_MILLISECONDS;
+        e = this.Aie.get(this.Die.Id);
+        if (Time_1.Time.WorldTime > e.DecreaseCdEndTime && e.HatredValue > MIN_HATE) {
+          e.DecreaseCdEndTime = Time_1.Time.WorldTime + this.vie.DecreaseTimeCd;
+          e.DecreaseEndTime = Time_1.Time.WorldTime + this.vie.DecreaseTimeLength;
+          e.NextDecreaseTime = Time_1.Time.WorldTime + ONE_THOUSAND_MILLISECONDS;
         }
       } else if (ControllerHolder_1.ControllerHolder.BlackboardController.HasValueByEntity(t, "HateTarget")) {
         ControllerHolder_1.ControllerHolder.BlackboardController.RemoveValueByEntity(t, "HateTarget");
       }
     }
   }
-  wie(t, i, e) {
+  wie(t, e, i) {
     if (this.Aie.has(t)) {
-      this.Aie.set(t, i);
+      this.Aie.set(t, e);
     } else {
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("AI", 6, "AddHatredItem", ["Actor", this.Bte.CharActorComp?.Actor.GetName()], ["entityId", t], ["reason", e]);
+        Log_1.Log.Info("AI", 6, "AddHatredItem", ["Actor", this.Bte.CharActorComp?.Actor.GetName()], ["entityId", t], ["reason", i]);
       }
-      this.Aie.set(t, i);
-      if ((e = EntitySystem_1.EntitySystem.Get(t))?.Valid) {
-        EventSystem_1.EventSystem.EmitWithTarget(e, EventDefine_1.EEventName.AiHateAddOrRemove, true, this.Bte);
-        this.Bte.AiPerceptionEvents.CollectAiHateEvent(true, e);
+      this.Aie.set(t, e);
+      if ((i = EntitySystem_1.EntitySystem.Get(t))?.Valid) {
+        EventSystem_1.EventSystem.EmitWithTarget(i, EventDefine_1.EEventName.AiHateAddOrRemove, true, this.Bte);
+        this.Bte.AiPerceptionEvents.CollectAiHateEvent(true, i);
       }
       EventSystem_1.EventSystem.EmitWithTarget(this.Bte.CharAiDesignComp.Entity, EventDefine_1.EEventName.AiInFight, this.Aie.size > 0);
     }
   }
-  Pie(i, e = MIN_HATE, s, r = "None") {
+  Pie(e, i = MIN_HATE, s, h = "None") {
     if (this.vie) {
-      let t = this.Aie.get(i);
+      let t = this.Aie.get(e);
       if (t) {
-        t.HatredValue = e;
+        t.HatredValue = i;
         if (s) {
           t.TauntValue = s;
         }
       } else {
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("AI", 6, "AddHatredItemByValue", ["Actor", this.Bte.CharActorComp?.Actor.GetName()], ["entityId", i], ["reason", r]);
+          Log_1.Log.Info("AI", 6, "AddHatredItemByValue", ["Actor", this.Bte.CharActorComp?.Actor.GetName()], ["entityId", e], ["reason", h]);
         }
-        (t = new HatredItem()).HatredValue = e;
+        (t = new HatredItem()).HatredValue = i;
         if (s) {
           t.TauntValue = s;
         }
         t.EarliestClearTime = Time_1.Time.WorldTime + this.vie.MinClearTime;
-        this.Aie.set(i, t);
-        if ((r = EntitySystem_1.EntitySystem.Get(i))?.Valid) {
-          EventSystem_1.EventSystem.EmitWithTarget(r, EventDefine_1.EEventName.AiHateAddOrRemove, true, this.Bte);
-          this.Bte.AiPerceptionEvents.CollectAiHateEvent(true, r);
+        this.Aie.set(e, t);
+        if ((h = EntitySystem_1.EntitySystem.Get(e))?.Valid) {
+          EventSystem_1.EventSystem.EmitWithTarget(h, EventDefine_1.EEventName.AiHateAddOrRemove, true, this.Bte);
+          this.Bte.AiPerceptionEvents.CollectAiHateEvent(true, h);
         }
         if (this.Bte.CharAiDesignComp?.Entity) {
           EventSystem_1.EventSystem.EmitWithTarget(this.Bte.CharAiDesignComp.Entity, EventDefine_1.EEventName.AiInFight, this.Aie.size > 0);
@@ -278,9 +287,9 @@ class AiHateList {
       return t;
     }
   }
-  Bie(t, i) {
+  Bie(t, e) {
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("AI", 6, "RemoveHatredItem", ["Actor", this.Bte.CharActorComp?.Actor.GetName()], ["entityId", t], ["reason", i]);
+      Log_1.Log.Info("AI", 6, "RemoveHatredItem", ["Actor", this.Bte.CharActorComp?.Actor.GetName()], ["entityId", t], ["reason", e]);
     }
     if (t) {
       if (this.Aie.has(t)) {
@@ -293,8 +302,8 @@ class AiHateList {
         EventSystem_1.EventSystem.EmitWithTarget(this.Bte.CharAiDesignComp.Entity, EventDefine_1.EEventName.AiInFight, this.Aie.size > 0);
       }
     } else if (this.Aie.size) {
-      for (var [e] of this.Aie) {
-        const s = EntitySystem_1.EntitySystem.Get(e);
+      for (var [i] of this.Aie) {
+        const s = EntitySystem_1.EntitySystem.Get(i);
         if (s?.IsInit) {
           EventSystem_1.EventSystem.EmitWithTarget(s, EventDefine_1.EEventName.AiHateAddOrRemove, false, this.Bte);
           this.Bte.AiPerceptionEvents.CollectAiHateEvent(false, s);
@@ -304,89 +313,89 @@ class AiHateList {
       EventSystem_1.EventSystem.EmitWithTarget(this.Bte.CharAiDesignComp.Entity, EventDefine_1.EEventName.AiInFight, this.Aie.size > 0);
     }
   }
-  Vie(t, i) {
+  Vie(t, e) {
     this.Rie.FromUeVector(this.Bte.CharActorComp.GetInitLocation());
-    var e = this.Bte.CharActorComp.ActorLocationProxy;
-    this.Hie(t, this.Rie, e, i);
-    this.jie(this.Rie, e, i);
+    var i = this.Bte.CharActorComp.ActorLocationProxy;
+    this.Hie(t, this.Rie, i, e);
+    this.jie(this.Rie, i, e);
     let s = 0;
-    for (const r of this.bie) {
-      this.Bie(r, this.qie[s]);
+    for (const h of this.bie) {
+      this.Bie(h, this.qie[s]);
       ++s;
     }
     return this.Gie;
   }
-  Hie(t, i, e, s) {
+  Hie(t, e, i, s) {
     this.Gie = 0;
     this.Nie = this.yie;
     this.Oie = 0;
     this.kie = 2;
     this.bie.length = 0;
     this.qie.length = 0;
-    for (var [r, h] of this.Aie) {
-      var n = ControllerHolder_1.ControllerHolder.CharacterController.GetCharacterActorComponentById(r);
+    for (var [h, r] of this.Aie) {
+      var n = ControllerHolder_1.ControllerHolder.CharacterController.GetCharacterActorComponentById(h);
       if (n && n.Entity.Active) {
-        n.ActorLocationProxy.Subtraction(e, tmpVector);
+        n.ActorLocationProxy.Subtraction(i, tmpVector);
         var a = GravityUtils_1.GravityUtils.ConvertToPlanarVectorForActor(this.Bte.CharActorComp, tmpVector);
         a += s - n.ScaledHalfHeight;
         var o = tmpVector.SizeSquared();
-        i.Subtraction(n.ActorLocationProxy, tmpVector);
+        e.Subtraction(n.ActorLocationProxy, tmpVector);
         var _ = GravityUtils_1.GravityUtils.GetPlanarSizeSquared2dForActor(this.Bte.CharActorComp, tmpVector);
-        h.InMaxArea = this.Wie(o, a, _);
-        var a = h.InMaxArea && this.Kie(o, a, _);
-        if (Time_1.Time.WorldTime < h.EarliestClearTime) {
-          if (!!(h.DisengageTime <= 0) && (!h.InMaxArea || !a)) {
-            h.DisengageTime = Time_1.Time.WorldTime + MathUtils_1.MathUtils.GetRandomRange(this.vie.DisengageTimeRange.Min, this.vie.DisengageTimeRange.Max);
+        r.InMaxArea = this.Wie(o, a, _);
+        var a = r.InMaxArea && this.Kie(o, a, _);
+        if (Time_1.Time.WorldTime < r.EarliestClearTime) {
+          if (!!(r.DisengageTime <= 0) && (!r.InMaxArea || !a)) {
+            r.DisengageTime = Time_1.Time.WorldTime + MathUtils_1.MathUtils.GetRandomRange(this.vie.DisengageTimeRange.Min, this.vie.DisengageTimeRange.Max);
           }
         } else {
-          if (!h.InMaxArea) {
-            this.bie.push(r);
+          if (!r.InMaxArea) {
+            this.bie.push(h);
             this.qie.push("MaxArea");
             continue;
           }
-          if (h.DisengageTime > 0) {
+          if (r.DisengageTime > 0) {
             if (a) {
-              h.DisengageTime = -1;
-            } else if (h.TauntValue <= 0 && Time_1.Time.WorldTime > h.DisengageTime) {
-              this.bie.push(r);
+              r.DisengageTime = -1;
+            } else if (r.TauntValue <= 0 && Time_1.Time.WorldTime > r.DisengageTime) {
+              this.bie.push(h);
               this.qie.push("MinAreaTimer");
               continue;
             }
           } else if (!a) {
-            h.DisengageTime = Time_1.Time.WorldTime + MathUtils_1.MathUtils.GetRandomRange(this.vie.DisengageTimeRange.Min, this.vie.DisengageTimeRange.Max);
+            r.DisengageTime = Time_1.Time.WorldTime + MathUtils_1.MathUtils.GetRandomRange(this.vie.DisengageTimeRange.Min, this.vie.DisengageTimeRange.Max);
           }
         }
-        if (h.InDecreasing && Time_1.Time.WorldTime > h.NextDecreaseTime) {
-          h.HatredValue = Math.max(MIN_HATE, h.HatredValue * this.vie.DecreaseRate);
-          h.AfterTriggerHatredDecrease();
+        if (r.InDecreasing && Time_1.Time.WorldTime > r.NextDecreaseTime) {
+          r.HatredValue = Math.max(MIN_HATE, r.HatredValue * this.vie.DecreaseRate);
+          r.AfterTriggerHatredDecrease();
         }
-        _ = this.Qie(n.Entity, h.TauntValue);
+        _ = this.Qie(n.Entity, r.TauntValue);
         if (!(this.kie > _)) {
           if (this.kie === _) {
-            if (this.Oie > h.HatredValueActual) {
+            if (this.Oie > r.HatredValueActual) {
               continue;
             }
-            if (this.Oie === h.HatredValueActual && this.Nie <= o) {
+            if (this.Oie === r.HatredValueActual && this.Nie <= o) {
               continue;
             }
           }
           this.kie = _;
-          this.Oie = h.HatredValue;
+          this.Oie = r.HatredValue;
           this.Nie = o;
-          this.Gie = r;
+          this.Gie = h;
         }
       } else {
-        this.bie.push(r);
+        this.bie.push(h);
         this.qie.push("InActive");
       }
     }
   }
-  AddNewHateListForTaunt(t, i) {
-    var e = this.Aie.get(t);
-    if (e) {
-      e.TauntValue = i;
+  AddNewHateListForTaunt(t, e) {
+    var i = this.Aie.get(t);
+    if (i) {
+      i.TauntValue = e;
     } else {
-      this.Pie(t, MIN_HATE, i, "Taunt");
+      this.Pie(t, MIN_HATE, e, "Taunt");
     }
   }
   RemoveHateListForTaunt(t) {
@@ -395,27 +404,27 @@ class AiHateList {
       t.TauntValue = 0;
     }
   }
-  jie(t, i, e) {
+  jie(t, e, i) {
     if (!(this.vie.BaseHatred <= 0) && this.Bte.AiPerception) {
       for (const a of this.Bte.AiPerception.AllEnemies) {
         if (!this.Aie.has(a)) {
           var s = ControllerHolder_1.ControllerHolder.CharacterController.GetCharacterActorComponentById(a);
           if (s?.Valid) {
-            var r = this.Qie(s.Entity, 0);
-            if (!(r <= 1)) {
-              s.ActorLocationProxy.Subtraction(i, tmpVector);
-              var h = GravityUtils_1.GravityUtils.ConvertToPlanarVectorForActor(this.Bte.CharActorComp, tmpVector);
-              h += e - s.HalfHeight;
+            var h = this.Qie(s.Entity, 0);
+            if (!(h <= 1)) {
+              s.ActorLocationProxy.Subtraction(e, tmpVector);
+              var r = GravityUtils_1.GravityUtils.ConvertToPlanarVectorForActor(this.Bte.CharActorComp, tmpVector);
+              r += i - s.HalfHeight;
               var n = tmpVector.SizeSquared();
               t.Subtraction(s.ActorLocationProxy, tmpVector);
               var s = GravityUtils_1.GravityUtils.GetPlanarSizeSquared2dForActor(this.Bte.CharActorComp, tmpVector);
-              if (this.Kie(n, h, s)) {
-                h = this.Pie(a, MIN_HATE, 0, "Area");
-                if (h) {
-                  h.InMaxArea = true;
+              if (this.Kie(n, r, s)) {
+                r = this.Pie(a, MIN_HATE, 0, "Area");
+                if (r) {
+                  r.InMaxArea = true;
                 }
-                if (!(this.kie > r)) {
-                  if (this.kie === r) {
+                if (!(this.kie > h)) {
+                  if (this.kie === h) {
                     if (this.Oie > MIN_HATE) {
                       continue;
                     }
@@ -423,7 +432,7 @@ class AiHateList {
                       continue;
                     }
                   }
-                  this.kie = r;
+                  this.kie = h;
                   this.Oie = MIN_HATE;
                   this.Nie = n;
                   this.Gie = a;
@@ -435,20 +444,20 @@ class AiHateList {
       }
     }
   }
-  ChangeHatred(t, i, e) {
+  ChangeHatred(t, e, i) {
     if (t === 0) {
-      for (var [s, r] of this.Aie) {
-        r.HatredValue = r.HatredValue * i + e;
-        if (r.HatredValue <= 0) {
+      for (var [s, h] of this.Aie) {
+        h.HatredValue = h.HatredValue * e + i;
+        if (h.HatredValue <= 0) {
           this.Bie(s, "ForceChanged");
         }
       }
     } else {
-      var h = this.Aie.get(t);
-      if (h) {
-        h.HatredValue = h.HatredValue * i + e;
-      } else if (e > 0) {
-        this.Pie(t, e, 0, "Blueprint");
+      var r = this.Aie.get(t);
+      if (r) {
+        r.HatredValue = r.HatredValue * e + i;
+      } else if (i > 0) {
+        this.Pie(t, i, 0, "Blueprint");
       }
     }
   }
@@ -459,51 +468,51 @@ class AiHateList {
       this.Bie(t, "Clear");
     }
   }
-  Qie(t, i) {
+  Qie(t, e) {
     if (!t?.Active) {
       return 0;
     }
-    var e = t.GetComponent(184);
-    if (e?.Valid && !e.IsInGame) {
+    var i = t.GetComponent(186);
+    if (i?.Valid && !i.IsInGame) {
       return 0;
     }
-    e = t.GetComponent(215);
-    if (e) {
-      if (this.Mie && e.HasTag(this.Mie)) {
+    i = t.GetComponent(217);
+    if (i) {
+      if (this.Mie && i.HasTag(this.Mie)) {
         return 1;
       }
-      if (e.HasTag(1008164187)) {
+      if (i.HasTag(1008164187)) {
         return 2;
       }
-      if (i > 0) {
+      if (e > 0) {
         return 6;
       }
-      i = t.GetComponent(0).GetPlayerId();
-      if (!ControllerHolder_1.ControllerHolder.OnlineController.CheckPlayerNetHealthy(i)) {
+      e = t.GetComponent(0).GetPlayerId();
+      if (!ControllerHolder_1.ControllerHolder.OnlineController.CheckPlayerNetHealthy(e)) {
         return 3;
       }
-      if (this.Eie && e.HasTag(this.Eie)) {
+      if (this.Eie && i.HasTag(this.Eie)) {
         return 5;
       }
     } else {
-      i = t.GetComponent(0).GetPlayerId();
-      if (!ControllerHolder_1.ControllerHolder.OnlineController.CheckPlayerNetHealthy(i)) {
+      e = t.GetComponent(0).GetPlayerId();
+      if (!ControllerHolder_1.ControllerHolder.OnlineController.CheckPlayerNetHealthy(e)) {
         return 3;
       }
     }
     return 4;
   }
-  Kie(t, i, e) {
-    return t < this.Sie && MathUtils_1.MathUtils.InRange(i, this.vie.DisengageHeightRange) && e < this.Iie;
+  Kie(t, e, i) {
+    return t < this.Sie && MathUtils_1.MathUtils.InRange(e, this.vie.DisengageHeightRange) && i < this.Iie;
   }
-  Wie(t, i, e) {
-    return t < this.yie && MathUtils_1.MathUtils.InRange(i, this.vie.DisengageHeightRangeMax) && e < this.Tie;
+  Wie(t, e, i) {
+    return t < this.yie && MathUtils_1.MathUtils.InRange(e, this.vie.DisengageHeightRangeMax) && i < this.Tie;
   }
   SharedHatredTarget(t) {
-    var i;
+    var e;
     if (this.vie && !this.Die) {
-      if (i = this.Aie.get(t)) {
-        i.EarliestClearTime = Time_1.Time.WorldTime + this.vie.MinClearTime;
+      if (e = this.Aie.get(t)) {
+        e.EarliestClearTime = Time_1.Time.WorldTime + this.vie.MinClearTime;
       } else {
         this.Pie(t, MIN_HATE, 0, "Shared");
       }
@@ -525,12 +534,12 @@ class AiHateList {
       }
     }
   }
-  OnEntityCampModified(t, i, e) {
+  OnEntityCampModified(t, e, i) {
     if (t.Id === this.Bte.CharAiDesignComp?.Entity.Id) {
       this.Bie(0, "ChangeCamp");
-    } else if (CampUtils_1.CampUtils.GetCampRelationship(this.Bte.CharActorComp.Actor.Camp, e) !== 2 && (this.Bie(t.Id, "ChangeCamp"), this.Die?.Id === t.Id)) {
-      e = this.Bte.CharActorComp.ScaledHalfHeight;
-      t = this.Vie(0, e);
+    } else if (CampUtils_1.CampUtils.GetCampRelationship(this.Bte.CharActorComp.Actor.Camp, i) !== 2 && (this.Bie(t.Id, "ChangeCamp"), this.Die?.Id === t.Id)) {
+      i = this.Bte.CharActorComp.ScaledHalfHeight;
+      t = this.Vie(0, i);
       this.Die = t ? ModelManager_1.ModelManager.CreatureModel.GetEntityById(t) : undefined;
     }
   }

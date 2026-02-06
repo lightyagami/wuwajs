@@ -139,18 +139,18 @@ class BossRushController extends ActivityControllerBase_1.ActivityControllerBase
     return false;
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(16976, this.vSn);
-    Net_1.Net.Register(18410, this.pSn);
-    Net_1.Net.Register(20974, this.IB_);
-    Net_1.Net.Register(23881, this.EB_);
-    Net_1.Net.Register(28873, this.MB_);
+    Net_1.Net.Register(16958, this.vSn);
+    Net_1.Net.Register(23427, this.pSn);
+    Net_1.Net.Register(23099, this.IB_);
+    Net_1.Net.Register(26224, this.EB_);
+    Net_1.Net.Register(18724, this.MB_);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(16976);
-    Net_1.Net.UnRegister(18410);
-    Net_1.Net.UnRegister(20974);
-    Net_1.Net.UnRegister(23881);
-    Net_1.Net.UnRegister(28873);
+    Net_1.Net.UnRegister(16958);
+    Net_1.Net.UnRegister(23427);
+    Net_1.Net.UnRegister(23099);
+    Net_1.Net.UnRegister(26224);
+    Net_1.Net.UnRegister(18724);
   }
   OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.LeaveInstanceDungeonConfirm, this.fSn);
@@ -232,9 +232,9 @@ class BossRushController extends ActivityControllerBase_1.ActivityControllerBase
     e.w6n = t;
     var o = ModelManager_1.ModelManager.ActivityModel.GetActivityById(t);
     e.Aym = o.GetFinishAndUnclaimedTaskList();
-    Net_1.Net.Call(29383, e, e => {
+    Net_1.Net.Call(19642, e, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19588);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19482);
       }
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BossRefreshBossRushRewardRedDot, t);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BossRefreshBossRushReward);
@@ -281,9 +281,9 @@ class BossRushController extends ActivityControllerBase_1.ActivityControllerBase
     ControllerHolder_1.ControllerHolder.InstanceDungeonController.PrewarTeamFightRequest(t, n, 0, 0);
   }
   static RequestSettlement() {
-    Net_1.Net.Call(24661, new Protocol_1.Aki.Protocol.ffs(), e => {
+    Net_1.Net.Call(27235, new Protocol_1.Aki.Protocol.ffs(), e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29702);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29224);
       }
     });
   }
@@ -292,9 +292,9 @@ class BossRushController extends ActivityControllerBase_1.ActivityControllerBase
     r.w6n = t;
     r.N6n = e;
     r.k6n = o;
-    Net_1.Net.Call(23871, r, e => {
+    Net_1.Net.Call(20112, r, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 28789);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19398);
       }
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BossRefreshBossRushRewardRedDot, t);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BossRefreshBossRushReward);
@@ -305,9 +305,9 @@ class BossRushController extends ActivityControllerBase_1.ActivityControllerBase
     var n = new Protocol_1.Aki.Protocol.ZC_();
     n.ell = e;
     n.c5n = r;
-    Net_1.Net.Call(26555, n, e => {
+    Net_1.Net.Call(18428, n, e => {
       if (e.fMs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.fMs, 28789);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.fMs, 19398);
       }
       ModelManager_1.ModelManager.ActivityModel.GetActivityById(t).SetRewardStateClaimed(o, r);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BossRefreshBossRushRewardRedDot, t);
@@ -338,9 +338,9 @@ class BossRushController extends ActivityControllerBase_1.ActivityControllerBase
   }
   static async RefreshBossRushBuffInGame() {
     var e = Protocol_1.Aki.Protocol.pC_.create();
-    var e = await Net_1.Net.CallAsync(22096, e);
+    var e = await Net_1.Net.CallAsync(26254, e);
     if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27888);
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15059);
       return false;
     } else {
       ModelManager_1.ModelManager.BossRushModel.ChoseBuffInGameHandleList = e?.$As ?? [];
@@ -350,8 +350,8 @@ class BossRushController extends ActivityControllerBase_1.ActivityControllerBase
   static async RequestBossRushChooseBuffInGame(e) {
     var t = Protocol_1.Aki.Protocol.yC_.create();
     t.c5n = e;
-    var e = await Net_1.Net.CallAsync(28161, t);
-    return e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs || (ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26609), false);
+    var e = await Net_1.Net.CallAsync(29125, t);
+    return e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs || (ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25658), false);
   }
 }
 (exports.BossRushController = BossRushController).Tua = 0;

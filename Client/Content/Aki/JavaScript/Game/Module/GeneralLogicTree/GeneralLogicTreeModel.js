@@ -25,6 +25,7 @@ class GeneralLogicTreeModel extends ModelBase_1.ModelBase {
     this.c$1 = undefined;
     this.gYt = undefined;
     this.pKs = undefined;
+    this.Nhg = undefined;
     this.fYt = undefined;
     this.IsWakeUp = false;
     this.ExpressionOccupationTreeIncId = undefined;
@@ -33,6 +34,7 @@ class GeneralLogicTreeModel extends ModelBase_1.ModelBase {
     this.nno = 0;
     this.HistorySoarScore = 0;
     this.GuaranteeActionsWhenLogicTreeRemove = undefined;
+    this.LevelPlayTrackBindingMap = undefined;
   }
   OnInit() {
     this.dYt = BigInt(0);
@@ -42,6 +44,8 @@ class GeneralLogicTreeModel extends ModelBase_1.ModelBase {
     this.fYt = new Map();
     this.pKs = new Map();
     this.GuaranteeActionsWhenLogicTreeRemove = new Map();
+    this.LevelPlayTrackBindingMap = new Map();
+    this.Nhg = new Map();
     return true;
   }
   OnLeaveLevel() {
@@ -68,7 +72,11 @@ class GeneralLogicTreeModel extends ModelBase_1.ModelBase {
     this.c$1?.clear();
     this.c$1 = undefined;
     this.GuaranteeActionsWhenLogicTreeRemove?.clear();
-    return !(this.GuaranteeActionsWhenLogicTreeRemove = undefined);
+    this.GuaranteeActionsWhenLogicTreeRemove = undefined;
+    this.LevelPlayTrackBindingMap?.clear();
+    this.LevelPlayTrackBindingMap = undefined;
+    this.Nhg?.clear();
+    return !(this.Nhg = undefined);
   }
   SetTimerUiOwnerId(e) {
     this.dYt = e;
@@ -86,43 +94,43 @@ class GeneralLogicTreeModel extends ModelBase_1.ModelBase {
     let o = !this.IsWakeUp;
     switch (i.hps) {
       case Protocol_1.Aki.Protocol.hps.Proto_BtTypeQuest:
-        var n = ModelManager_1.ModelManager.QuestNewModel.GetQuest(i.sEs);
-        if (n) {
-          s = n.IsHideInTaskList || n.Type === 11;
-          r = new BaseBehaviorTree_1.BaseBehaviorTree(t, i.sEs, i.hps, n.DungeonId, n.QuestMarkId, n.OnlineType, n.GetUiPriority(), n.IsNewQuest, s);
-          n.SetUpBehaviorTree(r);
+        var s = ModelManager_1.ModelManager.QuestNewModel.GetQuest(i.sEs);
+        if (s) {
+          n = s.IsHideInTaskList || s.Type === 11;
+          r = new BaseBehaviorTree_1.BaseBehaviorTree(t, i.sEs, i.hps, s.DungeonId, s.QuestMarkId, s.OnlineType, s.GetUiPriority(), s.IsNewQuest, n);
+          s.SetUpBehaviorTree(r);
         } else if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("GeneralLogicTree", 18, "创建任务行为树时：任务不存在", ["任务Id", i.sEs]);
         }
         break;
       case Protocol_1.Aki.Protocol.hps.Proto_BtTypeLevelPlay:
         {
-          var s = ModelManager_1.ModelManager.LevelPlayModel.GetProcessingLevelPlayInfo(i.sEs);
-          if (!s) {
+          var n = ModelManager_1.ModelManager.LevelPlayModel.GetProcessingLevelPlayInfo(i.sEs);
+          if (!n) {
             if (Log_1.Log.CheckError()) {
               Log_1.Log.Error("GeneralLogicTree", 18, "创建玩法行为树时：玩法不存在", ["玩法Id", i.sEs]);
             }
             break;
           }
           let e = undefined;
-          if (s.CustomIconId !== 0) {
-            e = ConfigManager_1.ConfigManager.MapConfig.GetTaskMarkConfig(s.CustomIconId)?.MarkId;
+          if (n.CustomIconId !== 0) {
+            e = ConfigManager_1.ConfigManager.MapConfig.GetTaskMarkConfig(n.CustomIconId)?.MarkId;
           }
-          (r = new BaseBehaviorTree_1.BaseBehaviorTree(t, i.sEs, i.hps, ModelManager_1.ModelManager.CreatureModel.GetInstanceId(), e ?? GeneralLogicTreeDefine_1.COMMONLEVELPLAY_TRACKICONID, s.OnlineType, s.GetUiPriority())).SetUseInnerTrackIconId(e !== undefined);
-          s.SetUpBehaviorTree(r);
+          (r = new BaseBehaviorTree_1.BaseBehaviorTree(t, i.sEs, i.hps, ModelManager_1.ModelManager.CreatureModel.GetInstanceId(), e ?? GeneralLogicTreeDefine_1.COMMONLEVELPLAY_TRACKICONID, n.OnlineType, n.GetUiPriority())).SetUseInnerTrackIconId(e !== undefined);
+          n.SetUpBehaviorTree(r);
           break;
         }
       case Protocol_1.Aki.Protocol.hps.Proto_BtTypeInst:
         {
-          n = ModelManager_1.ModelManager.InstanceDungeonModel.GetInstanceDungeonInfo();
-          if (!n) {
+          s = ModelManager_1.ModelManager.InstanceDungeonModel.GetInstanceDungeonInfo();
+          if (!s) {
             if (Log_1.Log.CheckError()) {
               Log_1.Log.Error("GeneralLogicTree", 18, "创建副本行为树时：副本不存在", ["副本Id", i.sEs]);
             }
             break;
           }
           let e = GeneralLogicTreeDefine_1.COMMONLEVELPLAY_TRACKICONID;
-          switch (n.SubType) {
+          switch (s.SubType) {
             case 2:
               e = ConfigManager_1.ConfigManager.QuestNewConfig.GetQuestTypeMarkId(1);
               break;
@@ -130,8 +138,8 @@ class GeneralLogicTreeModel extends ModelBase_1.ModelBase {
               e = ConfigManager_1.ConfigManager.QuestNewConfig.GetQuestTypeMarkId(3);
           }
           o = !ModelManager_1.ModelManager.GameModeModel.WorldDone;
-          r = new BaseBehaviorTree_1.BaseBehaviorTree(t, i.sEs, i.hps, ModelManager_1.ModelManager.CreatureModel.GetInstanceId(), e, n.OnlineType, n.GetUiPriority());
-          n.SetUpBehaviorTree(r);
+          r = new BaseBehaviorTree_1.BaseBehaviorTree(t, i.sEs, i.hps, ModelManager_1.ModelManager.CreatureModel.GetInstanceId(), e, s.OnlineType, s.GetUiPriority());
+          s.SetUpBehaviorTree(r);
           break;
         }
       default:
@@ -163,6 +171,9 @@ class GeneralLogicTreeModel extends ModelBase_1.ModelBase {
       t.Destroy();
       this.CYt.delete(e);
       this.gYt.get(t.BtType)?.delete(e);
+      if ((i = this.Nhg?.get(t.BtType))?.get(t.TreeConfigId) === t) {
+        i.delete(t.TreeConfigId);
+      }
       return t;
     }
   }
@@ -191,6 +202,22 @@ class GeneralLogicTreeModel extends ModelBase_1.ModelBase {
   }
   GetAllBehaviorTrees() {
     return this.CYt;
+  }
+  GetBehaviorTreeByConfigId(e, i) {
+    let t = this.Nhg?.get(e);
+    if (!t) {
+      t = new Map();
+      this.Nhg?.set(e, t);
+    }
+    if (!t.has(i)) {
+      for (var [, r] of this.CYt ?? []) {
+        if (r.TreeConfigId === i && r.BtType === e) {
+          t.set(i, r);
+          break;
+        }
+      }
+    }
+    return t.get(i);
   }
   SaveUpdateInfo(e, i) {
     var t;
@@ -302,6 +329,20 @@ class GeneralLogicTreeModel extends ModelBase_1.ModelBase {
           return o;
         }
       }
+    }
+  }
+  AddLevelPlayTrackBinding(e, i, t) {
+    i = this.GetBehaviorTree(i);
+    if (i) {
+      i.BindingExpressionHolder?.AddWatchingLevelPlay(t);
+      i.BindingExpressionHolder?.AddBindingExpression(e, t);
+    }
+  }
+  RemoveLevelPlayTrackBinding(e, i) {
+    e = this.GetBehaviorTree(e);
+    if (e) {
+      e.BindingExpressionHolder?.RemoveBindingExpression(i);
+      e.BindingExpressionHolder?.RemoveWatchingLevelPlay(i);
     }
   }
 }

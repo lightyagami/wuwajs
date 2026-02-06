@@ -34,13 +34,13 @@ let VehicleSkillComponent = class VehicleSkillComponent extends BaseSkillCompone
     this.Jzr = Stats_1.Stat.Create("Vehicle DoSkillBegin Target&Rotation");
     this.oRe = undefined;
     this.Gce = undefined;
-    this.iLf = undefined;
+    this.mBf = undefined;
   }
   static get Dependencies() {
     return [247];
   }
   OnInit() {
-    return !!super.OnInit() && (this.oRe = this.Entity.GetComponent(248), this.Gce = this.Entity.GetComponent(249), this.iLf = this.ActorComp, true);
+    return !!super.OnInit() && (this.oRe = this.Entity.GetComponent(248), this.Gce = this.Entity.GetComponent(249), this.mBf = this.ActorComp, true);
   }
   GetMainAnimInstance() {
     return this.oRe.MainAnimInstance;
@@ -82,34 +82,34 @@ let VehicleSkillComponent = class VehicleSkillComponent extends BaseSkillCompone
     }
   }
   een() {
-    if (this.iLf.IsAutonomousProxy && this.IsHasInputDir()) {
-      MathUtils_1.MathUtils.LookRotationUpFirst(this.iLf.InputDirectProxy, this.Gce.GravityUp, this.TmpRotator);
-      this.TmpTransform.Set(this.iLf.ActorLocationProxy, this.TmpRotator.Quaternion(), this.iLf.ActorScaleProxy);
-      this.iLf.SetActorTransform(this.TmpTransform.ToUeTransform(), "载具.释放技能.转向输入方向", false, 1);
+    if (this.mBf.IsAutonomousProxy && this.IsHasInputDir()) {
+      MathUtils_1.MathUtils.LookRotationUpFirst(this.mBf.InputDirectProxy, this.Gce.GravityUp, this.TmpRotator);
+      this.TmpTransform.Set(this.mBf.ActorLocationProxy, this.TmpRotator.Quaternion(), this.mBf.ActorScaleProxy);
+      this.mBf.SetActorTransform(this.TmpTransform.ToUeTransform(), "载具.释放技能.转向输入方向", false, 1);
     }
   }
   IsHasInputDir() {
     var t;
-    return !!this.CheckIsLoaded() && (t = this.iLf.InputDirectProxy, Math.abs(t.X) > 0 || Math.abs(t.Y) > 0);
+    return !!this.CheckIsLoaded() && (t = this.mBf.InputDirectProxy, Math.abs(t.X) > 0 || Math.abs(t.Y) > 0);
   }
   ten() {
     this.TmpRotator.FromUeRotator(Global_1.Global.CharacterCameraManager.GetCameraRotation());
     this.TmpRotator.Vector(this.TmpVector);
-    MathUtils_1.MathUtils.LookRotationUpFirst(this.TmpVector, this.iLf?.MoveComp?.GravityUp ?? Vector_1.Vector.UpVectorProxy, this.TmpRotator);
-    this.TmpTransform.Set(this.iLf.ActorLocationProxy, this.TmpRotator.Quaternion(), this.iLf.ActorScaleProxy);
-    this.iLf.SetActorTransform(this.TmpTransform.ToUeTransform(), "载具.释放技能.转向摄像机方向", false, 1);
+    MathUtils_1.MathUtils.LookRotationUpFirst(this.TmpVector, this.mBf?.MoveComp?.GravityUp ?? Vector_1.Vector.UpVectorProxy, this.TmpRotator);
+    this.TmpTransform.Set(this.mBf.ActorLocationProxy, this.TmpRotator.Quaternion(), this.mBf.ActorScaleProxy);
+    this.mBf.SetActorTransform(this.TmpTransform.ToUeTransform(), "载具.释放技能.转向摄像机方向", false, 1);
   }
   ZZr() {
     if (this.SkillTarget) {
       this.TmpVector.FromUeVector(this.GetTargetTransform().GetLocation());
-      this.TmpVector.SubtractionEqual(this.iLf.ActorLocationProxy);
-      MathUtils_1.MathUtils.LookRotationUpFirst(this.TmpVector, this.iLf?.MoveComp?.GravityUp ?? Vector_1.Vector.UpVectorProxy, this.TmpRotator);
-      this.iLf.SetActorRotation(this.TmpRotator.ToUeRotator(), "载具.释放技能.转向技能目标", false);
+      this.TmpVector.SubtractionEqual(this.mBf.ActorLocationProxy);
+      MathUtils_1.MathUtils.LookRotationUpFirst(this.TmpVector, this.mBf?.MoveComp?.GravityUp ?? Vector_1.Vector.UpVectorProxy, this.TmpRotator);
+      this.mBf.SetActorRotation(this.TmpRotator.ToUeRotator(), "载具.释放技能.转向技能目标", false);
     }
   }
   DoSkillEndMoveAction(t) {
     this.oRe?.CancelForceDisableAnimOptimization(4);
   }
 };
-VehicleSkillComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(42)], VehicleSkillComponent);
+VehicleSkillComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(44)], VehicleSkillComponent);
 exports.VehicleSkillComponent = VehicleSkillComponent; //# sourceMappingURL=VehicleSkillComponent.js.map

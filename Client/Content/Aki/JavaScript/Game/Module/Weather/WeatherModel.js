@@ -22,14 +22,14 @@ class WeatherModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
     this.Oto = 0;
-    this._uf = new Set();
-    this.BTf = undefined;
-    this.rHf = undefined;
-    this.rKf = undefined;
+    this.hdf = new Set();
+    this.YPf = undefined;
+    this.ftg = undefined;
+    this.Zag = undefined;
     this.LastSwitchTime = 0;
     this.TimeSwitchConfirmNeedShow = true;
-    this.ywf = undefined;
-    this.oHf = undefined;
+    this.gUf = undefined;
+    this.gtg = undefined;
   }
   get CurrentWeatherId() {
     return this.Oto;
@@ -47,25 +47,25 @@ class WeatherModel extends ModelBase_1.ModelBase {
   static GetWorldWeatherActor() {
     return this.$ko;
   }
-  get kTf() {
-    if (this.BTf === undefined) {
-      this.BTf = new Set();
+  get zPf() {
+    if (this.YPf === undefined) {
+      this.YPf = new Set();
       for (const e of LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.WeatherCentralClicked) ?? []) {
-        this.BTf.add(e);
+        this.YPf.add(e);
       }
     }
-    return this.BTf;
+    return this.YPf;
   }
   GetSwitchConfigIdByWeatherId(e) {
-    if (this.rHf === undefined) {
-      this.rHf = new Map();
+    if (this.ftg === undefined) {
+      this.ftg = new Map();
       for (const t of ConfigManager_1.ConfigManager.WeatherModuleConfig.GetWeatherSwitchConfigAll()) {
         t.Weather.forEach(e => {
-          this.rHf.set(e, t.Id);
+          this.ftg.set(e, t.Id);
         });
       }
     }
-    return this.rHf.get(e) ?? 0;
+    return this.ftg.get(e) ?? 0;
   }
   GetCurrentWeatherSwitchConfigId() {
     var e = ModelManager_1.ModelManager.AreaModel.GetCurrentAreaId();
@@ -77,13 +77,13 @@ class WeatherModel extends ModelBase_1.ModelBase {
     }
   }
   IsInValidArea(e) {
-    if (this.rKf === undefined) {
-      this.rKf = new Set();
+    if (this.Zag === undefined) {
+      this.Zag = new Set();
       for (const t of ObservatoryAll_1.configObservatoryAll.GetConfigList()) {
-        this.rKf.add(t.AreaId);
+        this.Zag.add(t.AreaId);
       }
     }
-    return this.rKf.has(e);
+    return this.Zag.has(e);
   }
   IsWeatherBanArea(e, t) {
     e = ConfigManager_1.ConfigManager.WeatherModuleConfig.GetWeatherSwitchConfig(e);
@@ -114,29 +114,29 @@ class WeatherModel extends ModelBase_1.ModelBase {
     return r * CommonDefine_1.SECOND_PER_HOUR;
   }
   SetUnlockedWeatherSwitchConfigIdList(e) {
-    this._uf.clear();
+    this.hdf.clear();
     for (const t of e) {
-      this._uf.add(t);
+      this.hdf.add(t);
     }
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnWeatherCentralRedDotUpdate);
   }
   AddUnlockedWeatherSwitchConfigId(e) {
-    this._uf.add(e);
+    this.hdf.add(e);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnWeatherCentralRedDotUpdate);
   }
   IsWeatherSwitchConfigUnlocked(e) {
-    return this._uf.has(e);
+    return this.hdf.has(e);
   }
   HasAnyNewWeather() {
-    var e = this._uf?.size ?? 0;
-    return this.kTf.size < e;
+    var e = this.hdf?.size ?? 0;
+    return this.zPf.size < e;
   }
   IsWeatherClicked(e) {
-    return this.kTf.has(e);
+    return this.zPf.has(e);
   }
   RecordWeatherClicked(e) {
-    this.kTf.add(e);
-    LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.WeatherCentralClicked, [...this.kTf.values()]);
+    this.zPf.add(e);
+    LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.WeatherCentralClicked, [...this.zPf.values()]);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnWeatherCentralRedDotUpdate);
   }
   RecordSwitchTime() {
@@ -151,21 +151,21 @@ class WeatherModel extends ModelBase_1.ModelBase {
     return this.GetRemainCoolDownTime() <= 0;
   }
   get ObservatoryModule() {
-    if (this.ywf === undefined) {
-      this.ywf = new ObservatoryModule_1.ObservatoryModule();
+    if (this.gUf === undefined) {
+      this.gUf = new ObservatoryModule_1.ObservatoryModule();
     }
-    return this.ywf;
+    return this.gUf;
   }
   get TargetWeatherSwitchConfigId() {
     var e;
-    if (this.oHf !== undefined) {
-      e = this.oHf;
-      this.oHf = undefined;
+    if (this.gtg !== undefined) {
+      e = this.gtg;
+      this.gtg = undefined;
       return e;
     }
   }
   SetTargetWeatherSwitchConfigId(e) {
-    this.oHf = e;
+    this.gtg = e;
   }
 }
 (exports.WeatherModel = WeatherModel).$ko = new WeatherActor_1.WeatherActor();

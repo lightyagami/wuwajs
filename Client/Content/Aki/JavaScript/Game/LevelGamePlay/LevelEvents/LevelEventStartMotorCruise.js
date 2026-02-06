@@ -16,7 +16,7 @@ class LevelEventStartMotorCruise extends LevelGeneralBase_1.LevelEventBase {
   constructor() {
     super(...arguments);
     this.jwu = undefined;
-    this.Gmf = e => {
+    this.o0f = e => {
       if (!e) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("LevelEvent", 87, "StartMotorCruise:巡航完成");
@@ -35,7 +35,7 @@ class LevelEventStartMotorCruise extends LevelGeneralBase_1.LevelEventBase {
       r = e.RoadSpline?.D_GetLocationAtSplinePoint(this.jwu.StartPoint.PointId, 1);
       e = e.RoadSpline?.GetRotationAtSplinePoint(this.jwu.StartPoint.PointId, 1);
       if (r && e) {
-        this.oIf(r, e);
+        this.Bwf(r, e);
       } else {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("LevelEvent", 87, "巡航起点样条线上的点id不存在", ["PointId", this.jwu.StartPoint.PointId]);
@@ -49,7 +49,7 @@ class LevelEventStartMotorCruise extends LevelGeneralBase_1.LevelEventBase {
       this.FinishExecute(false);
     }
   }
-  async oIf(e, t) {
+  async Bwf(e, t) {
     if (await ControllerHolder_1.ControllerHolder.TeleportController.TeleportPlayerInVehicle({
       ClientReason: "LevelEventStartMotorCruise",
       TargetPosition: e,
@@ -59,12 +59,12 @@ class LevelEventStartMotorCruise extends LevelGeneralBase_1.LevelEventBase {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("LevelEvent", 87, "StartMotorCruise:传送到起点");
       }
-      this.nIf();
+      this.kwf();
     } else {
       this.FinishExecute(false);
     }
   }
-  async nIf() {
+  async kwf() {
     var e;
     if (this.jwu) {
       if (e = TransportNetworkController_1.TransportNetworkController.GetTransportSystem().GetRoadWay(this.jwu.EndPoint.Spline)) {
@@ -76,7 +76,7 @@ class LevelEventStartMotorCruise extends LevelGeneralBase_1.LevelEventBase {
           ModelManager_1.ModelManager.AutoPilotModel?.SetIsCanShowSkipBtn(this.jwu.AllowSkip);
           ModelManager_1.ModelManager.AutoPilotModel?.SetTrackingData(e);
           if (await ControllerHolder_1.ControllerHolder.AutoPilotController.EnterAutoPilot()) {
-            EventSystem_1.EventSystem.Once(EventDefine_1.EEventName.OnAutoPilotStateChange, this.Gmf);
+            EventSystem_1.EventSystem.Once(EventDefine_1.EEventName.OnAutoPilotStateChange, this.o0f);
           } else {
             this.FinishExecute(false);
           }

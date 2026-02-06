@@ -17,15 +17,17 @@ const GravityUtils_1 = require("../../../Utils/GravityUtils");
 const PortalUtils_1 = require("../../../Utils/PortalUtils");
 const SceneItemManipulableBaseState_1 = require("./SceneItemManipulableBaseState");
 class SceneItemManipulableDrawState extends SceneItemManipulableBaseState_1.SceneItemManipulableBaseState {
-  constructor(t, e, i) {
+  constructor(t, e, i, s) {
     super(t);
     this.pYi = undefined;
+    this.e0g = undefined;
     this.esr = undefined;
     this.tsr = undefined;
     this.Znr = undefined;
     this.bga = false;
     this.pYi = e;
-    this.Znr = i;
+    this.e0g = i;
+    this.Znr = s;
   }
   SetEnterCallback(t) {
     this.EnterCallback = t;
@@ -55,6 +57,7 @@ class SceneItemManipulableDrawState extends SceneItemManipulableBaseState_1.Scen
       this.SceneItem.ClearAttachOutletInfo();
     }
     this.StartCameraShake(this.pYi);
+    this.StartGamepadShake(this.e0g);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.AddSubCameraTag, this.Znr);
     this.SceneItem.ActorComp.PhysicsMode = 0;
     this.Timer = 0;
@@ -75,6 +78,7 @@ class SceneItemManipulableDrawState extends SceneItemManipulableBaseState_1.Scen
   }
   OnExit() {
     this.StopCameraShake();
+    this.StopGamepadShake(this.e0g);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RemoveSubCameraTag, this.Znr);
   }
   osr() {
@@ -97,7 +101,7 @@ class SceneItemManipulableDrawState extends SceneItemManipulableBaseState_1.Scen
     var a = Global_1.Global.BaseCharacter.CharacterActorComponent.ActorTransform;
     var r = a.TransformPositionNoScale(r);
     let h = UE.KismetMathLibrary.ComposeRotators(this.SceneItem.ConfigHoldRotator, a.Rotator());
-    var a = this.SceneItem.Entity.GetComponent(147);
+    var a = this.SceneItem.Entity.GetComponent(149);
     if (a?.Valid) {
       a = new UE.Rotator(0, -a.Rotation, 0);
       h = UE.KismetMathLibrary.ComposeRotators(a, h);

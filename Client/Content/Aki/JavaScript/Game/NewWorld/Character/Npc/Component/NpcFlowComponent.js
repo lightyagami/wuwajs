@@ -35,7 +35,7 @@ let NpcFlowComponent = class NpcFlowComponent extends CharacterFlowComponent_1.C
     this.KYs = -1;
   }
   OnStart() {
-    this.Stn = this.Entity.GetComponent(130);
+    this.Stn = this.Entity.GetComponent(132);
     super.OnStart();
     return true;
   }
@@ -56,7 +56,7 @@ let NpcFlowComponent = class NpcFlowComponent extends CharacterFlowComponent_1.C
   TryPlayMontage(t) {
     this.KYs = -1;
     this.yj_ = -1;
-    var e = this.Entity.GetComponent(47);
+    var e = this.Entity.GetComponent(49);
     if (e && t?.includes("/")) {
       this.KYs = e.PlayPerformMontage(3, {
         MontagePath: t,
@@ -72,7 +72,7 @@ let NpcFlowComponent = class NpcFlowComponent extends CharacterFlowComponent_1.C
   }
   Vtn() {
     var t;
-    if (this.ActorComp && this.ActorComp.SkeletalMesh && (t = this.Entity.GetComponent(47))) {
+    if (this.ActorComp && this.ActorComp.SkeletalMesh && (t = this.Entity.GetComponent(49))) {
       t.EnableAction(this.KYs, false);
       t.StopPerformMontage(3, {
         Method: 0,
@@ -91,5 +91,5 @@ let NpcFlowComponent = class NpcFlowComponent extends CharacterFlowComponent_1.C
     return this.FlowData?.TimberId;
   }
 };
-NpcFlowComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(195)], NpcFlowComponent);
+NpcFlowComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(197)], NpcFlowComponent);
 exports.NpcFlowComponent = NpcFlowComponent; //# sourceMappingURL=NpcFlowComponent.js.map

@@ -93,7 +93,7 @@ class PlayerMarkItem extends MarkItem_1.MarkItem {
   PDc() {
     var e = ModelManager_1.ModelManager.SceneTeamModel.GetTeamPlayerData(this.PlayerId)?.GetCurrentGroup()?.GetCurrentRole()?.CreatureDataId;
     if (e) {
-      e = ModelManager_1.ModelManager.CreatureModel.GetEntity(e)?.Entity?.GetComponent(46)?.IsStandardGravity;
+      e = ModelManager_1.ModelManager.CreatureModel.GetEntity(e)?.Entity?.GetComponent(48)?.IsStandardGravity;
       this.MarkItemEntity.GamePlay.Gravity = e ? 1 : 2;
     } else {
       e = ModelManager_1.ModelManager.WorldMapModel.IsGravityMap(this.MapId);

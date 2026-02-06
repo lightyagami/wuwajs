@@ -44,7 +44,7 @@ let SceneItemPickInteractComponent = SceneItemPickInteractComponent_1 = class Sc
     return true;
   }
   OnStart() {
-    this.DGa = this.Entity.GetComponent(147);
+    this.DGa = this.Entity.GetComponent(149);
     return true;
   }
   get Index() {
@@ -74,5 +74,5 @@ let SceneItemPickInteractComponent = SceneItemPickInteractComponent_1 = class Sc
     this.xGa.length = 0;
   }
 };
-SceneItemPickInteractComponent = SceneItemPickInteractComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(280)], SceneItemPickInteractComponent);
+SceneItemPickInteractComponent = SceneItemPickInteractComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(282)], SceneItemPickInteractComponent);
 exports.SceneItemPickInteractComponent = SceneItemPickInteractComponent; //# sourceMappingURL=SceneItemPickInteractComponent.js.map

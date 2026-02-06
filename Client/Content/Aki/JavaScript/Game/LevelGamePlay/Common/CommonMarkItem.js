@@ -22,7 +22,7 @@ class CommonMarkItem extends UiPanelBase_1.UiPanelBase {
     this.LastScreenPosition = Vector2D_1.Vector2D.Create();
     this.bZd = Vector2D_1.Vector2D.Create();
     this.PointTransport = Vector2D_1.Vector2D.Create(1, -1);
-    this.MKm = false;
+    this.jYm = false;
     this.InRange = false;
     this.y$e = 0;
     this.I$e = 0;
@@ -65,10 +65,10 @@ class CommonMarkItem extends UiPanelBase_1.UiPanelBase {
         this.ScreenPosition.MultiplyEqual(i.ScreenPositionScale).AdditionEqual(i.ScreenPositionOffset).MultiplyEqual(this.PointTransport);
         this.bZd.DeepCopy(this.ScreenPosition);
         this.InRange = this.ClampToEllipse(this.ScreenPosition, t);
-        if (this.InRange !== this.MKm) {
+        if (this.InRange !== this.jYm) {
           this.InRangeStateChanged(this.InRange);
         }
-        this.MKm = this.InRange;
+        this.jYm = this.InRange;
         s = this.ScreenPosition.AdditionEqual(this.Center);
         this.RootItem.SetAnchorOffset(s.ToUeVector2D());
         this.OnScreenPositionChanged(this.InRange);

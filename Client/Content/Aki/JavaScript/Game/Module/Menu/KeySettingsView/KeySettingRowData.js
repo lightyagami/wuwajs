@@ -4,8 +4,10 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.KeySettingRowData = undefined;
+const Log_1 = require("../../../../Core/Common/Log");
 const KeyPoolById_1 = require("../../../../Core/Define/ConfigQuery/KeyPoolById");
 const StringUtils_1 = require("../../../../Core/Utils/StringUtils");
+const InputBindingDefine_1 = require("../../../InputSettings/Binding/InputBindingDefine");
 const InputKeyUtils_1 = require("../../../InputSettings/InputKeyUtils");
 const InputSettings_1 = require("../../../InputSettings/InputSettings");
 const InputSettingsManager_1 = require("../../../InputSettings/InputSettingsManager");
@@ -40,6 +42,7 @@ class KeySettingRowData {
     this.ConfigId = 0;
     this.SortId = 0;
     this.BothActionName = [];
+    this.BothActionSyncAllExclusive = false;
     this.CanCombination = false;
     this.OpenViewType = 0;
     this.IsCheckSameKey = true;
@@ -91,6 +94,7 @@ class KeySettingRowData {
     this.IsLock = t.IsLock;
     this.DetailTextId = t.DetailTextId;
     this.BothActionName = t.BothActionName;
+    this.BothActionSyncAllExclusive = t.BothActionSyncAllExclusive;
     this.CanCombination = t.CanCombination;
     this.OpenViewType = t.OpenViewType;
     this.IsCheckSameKey = t.IsCheckSameKey;
@@ -327,15 +331,29 @@ class KeySettingRowData {
     }
   }
   ChangeBothAction(t) {
-    var i;
-    var s;
-    var e;
-    if (this.OneActionBinding && this.TwoActionBinding && (s = [], this.OneActionBinding.GetKeyNameListByBindingType(i = [], this.BindingType), this.TwoActionBinding.GetKeyNameListByBindingType(s, this.BindingType), i) && s) {
-      e = s[t = this.GetKeyIndex(t)];
-      s[t] = i[t];
-      i[t] = e;
-      this.OneActionBinding.SetKeys(i, this.BindingType);
-      this.TwoActionBinding.SetKeys(s, this.BindingType);
+    if (this.OneActionBinding && this.TwoActionBinding) {
+      var i = [];
+      var s = [];
+      this.OneActionBinding.GetKeyNameListByBindingType(i, this.BindingType);
+      this.TwoActionBinding.GetKeyNameListByBindingType(s, this.BindingType);
+      if (i && s) {
+        var t = this.GetKeyIndex(t);
+        var e = s[t];
+        s[t] = i[t];
+        i[t] = e;
+        if (this.BothActionSyncAllExclusive) {
+          if (Log_1.Log.CheckDebug()) {
+            Log_1.Log.Debug("Menu", 95, "同步互换类型设置到所有独占类型: " + this.wPi?.Id);
+          }
+          for (const h of InputBindingDefine_1.inputBindingTypesArray) {
+            this.OneActionBinding.SetKeys(i, h);
+            this.TwoActionBinding.SetKeys(s, h);
+          }
+        } else {
+          this.OneActionBinding.SetKeys(i, this.BindingType);
+          this.TwoActionBinding.SetKeys(s, this.BindingType);
+        }
+      }
     }
   }
   IsBothAction() {
@@ -543,7 +561,7 @@ class KeySettingRowData {
     let e = false;
     return e = !this.XPi || this.XPi.length <= 0 || this.XPi.includes(i);
   }
-  W5f(t, i) {
+  bQf(t, i) {
     return !!t && !!i && (t === i || !!t.includes("Gamepad_LeftTrigger") && !!i.includes("Gamepad_LeftTrigger") || !!t.includes("Gamepad_RightTrigger") && !!i.includes("Gamepad_RightTrigger"));
   }
   HasKey(t, i) {
@@ -562,12 +580,12 @@ class KeySettingRowData {
       if (this.ActionBinding) {
         s = this.GetKeyIndex(i);
         this.ActionBinding.GetKeyNameListByBindingType(t = [], this.BindingType);
-        return this.W5f(t[s], e);
+        return this.bQf(t[s], e);
       }
       if (this.AxisBinding) {
         t = this.GetKeyScale(i);
         for (const h of this.AxisBinding.GetKey(t, this.BindingType)) {
-          if (this.W5f(h.KeyName, e)) {
+          if (this.bQf(h.KeyName, e)) {
             return true;
           }
         }

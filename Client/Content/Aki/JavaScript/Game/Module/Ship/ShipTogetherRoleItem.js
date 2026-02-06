@@ -34,27 +34,27 @@ class ShipTogetherRoleItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.H5e = this.GetExtendToggle(0);
     this.H5e?.OnStateChange.Add(this.kqe);
   }
-  Refresh(t, i, e) {
-    this.dFe = t.GetRoleId();
-    var s = ModelManager_1.ModelManager.EditFormationModel.GetCurrentFormationData?.GetRoleIdList ?? [];
-    this._n_ = s.includes(this.dFe);
+  Refresh(t, i, s) {
+    var e = t.RoleInstance;
+    this.dFe = e.GetRoleId();
+    this._n_ = t.IsInFormation;
     this._Oe();
-    var s = {
+    var t = {
       Data: t,
-      SkinId: t.GetRoleSkinId(),
+      SkinId: e.GetRoleSkinId(),
       Type: 2,
       ItemConfigId: this.dFe,
       IsBlack: this._n_
     };
-    this.sft?.Apply(s);
+    this.sft?.Apply(t);
     this.sft?.BindOnCanExecuteChange(() => false);
-    this.GetText(1)?.SetText(t.GetRoleRealName());
-    var s = t.GetFavorData().GetFavorLevel();
+    this.GetText(1)?.SetText(e.GetRoleRealName());
+    var t = e.GetFavorData().GetFavorLevel();
     this.GetText(2).SetUIActive(!this._n_);
     if (this._n_) {
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(3), "CannotInviteInFormation");
     } else {
-      this.GetText(3)?.SetText("" + s);
+      this.GetText(3)?.SetText("" + t);
     }
   }
   BindOnClickToggleCallBack(t) {

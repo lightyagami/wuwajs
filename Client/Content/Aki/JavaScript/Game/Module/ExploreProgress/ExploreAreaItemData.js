@@ -68,42 +68,42 @@ class ExploreAreaItemData {
   get IsShowRecommendPlayPoint() {
     return this.IsRecommend && !this.IsFinishedPlayPoint && this.IsUnlocked() && this.IsNearestPlayPointUnlock();
   }
-  Initialize(t) {
-    this.AreaId = t.Area;
-    this.ExploreType = t.ExploreType;
-    this.QHs = t.PhantomSkillId;
-    this.$Hs = t.UnlockTextId;
-    this.XHs = t.LockTextId;
-    this.UnlockConditionId = t.UnlockCondition;
-    this.SpecialPlayPointIndexMap = t.SpecialPlayerMap;
-    this.IsRecommend = t.IsRecommend;
-    this.Jjl = t.IsShowProgress;
-    this.SubTypes = Array.from(t.SubTypeScore.keys());
-    this.SpecialPlayerDesc = t.SpecialPlayerDesc;
-    this.ConfigId = t.Id;
-    this.IsShowTrackBtn = t.IsShowTrack;
-    this.UnlockTrackType = t.UnlockTrackType;
-    this.LockTrackType = t.LockTrackType;
-    this.AccessPathId = t.AccessPathId;
+  Initialize(e) {
+    this.AreaId = e.Area;
+    this.ExploreType = e.ExploreType;
+    this.QHs = e.PhantomSkillId;
+    this.$Hs = e.UnlockTextId;
+    this.XHs = e.LockTextId;
+    this.UnlockConditionId = e.UnlockCondition;
+    this.SpecialPlayPointIndexMap = e.SpecialPlayerMap;
+    this.IsRecommend = e.IsRecommend;
+    this.Jjl = e.IsShowProgress;
+    this.SubTypes = Array.from(e.SubTypeScore.keys());
+    this.SpecialPlayerDesc = e.SpecialPlayerDesc;
+    this.ConfigId = e.Id;
+    this.IsShowTrackBtn = e.IsShowTrack;
+    this.UnlockTrackType = e.UnlockTrackType;
+    this.LockTrackType = e.LockTrackType;
+    this.AccessPathId = e.AccessPathId;
     this.YHs = false;
     if (this.QHs !== 0) {
       this.YHs = ModelManager_1.ModelManager.RouletteModel.UnlockExploreSkillDataMap.has(this.QHs);
     }
-    t = ConfigManager_1.ConfigManager.ExploreProgressConfig.GetExploreTypeByType(this.ExploreType);
-    this.KHs = t.Name;
-    this.JHs = t.CountMode;
-    this.Icon = t.Icon;
-    this.DescBg = t.DescBg;
-    this.SortIndex = t.SortIndex;
-    this.LockDescId = t.LockDescId;
-    this.DescId = t.DescId;
+    e = ConfigManager_1.ConfigManager.ExploreProgressConfig.GetExploreTypeByType(this.ExploreType);
+    this.KHs = e.Name;
+    this.JHs = e.CountMode;
+    this.Icon = e.Icon;
+    this.DescBg = e.DescBg;
+    this.SortIndex = e.SortIndex;
+    this.LockDescId = e.LockDescId;
+    this.DescId = e.DescId;
   }
-  Refresh(t) {
-    this.VVt = t.BPs;
-    this.ExploreProgressId = t.qPs;
-    this.HPt = t.EDs;
-    this.JXt = t.dvs;
-    this.gQl = t.MT_;
+  Refresh(e) {
+    this.VVt = e.BPs;
+    this.ExploreProgressId = e.qPs;
+    this.HPt = e.EDs;
+    this.JXt = e.dvs;
+    this.gQl = e.MT_;
     this.SOl();
   }
   GetProgress() {
@@ -119,11 +119,11 @@ class ExploreAreaItemData {
     return this.KHs;
   }
   GetPlayDetailTitle() {
-    var t = "PrefabTextItem_1918495092_Text";
-    var e = this.GetNameId();
-    var t = ConfigManager_1.ConfigManager.TextConfig.GetMultiTextByKey(t, t);
+    var e = "PrefabTextItem_1918495092_Text";
+    var t = this.GetNameId();
     var e = ConfigManager_1.ConfigManager.TextConfig.GetMultiTextByKey(e, e);
-    return StringUtils_1.StringUtils.Format(t, e);
+    var t = ConfigManager_1.ConfigManager.TextConfig.GetMultiTextByKey(t, t);
+    return StringUtils_1.StringUtils.Format(e, t);
   }
   IsPercent() {
     return this.JHs === 0;
@@ -144,18 +144,18 @@ class ExploreAreaItemData {
     return this.YHs;
   }
   GetPhantomSkillHelpId() {
-    var t = ConfigManager_1.ConfigManager.RouletteConfig.GetExploreConfigById(this.QHs);
-    if (t) {
-      return t.HelpId;
+    var e = ConfigManager_1.ConfigManager.RouletteConfig.GetExploreConfigById(this.QHs);
+    if (e) {
+      return e.HelpId;
     }
   }
   IsUnlocked() {
     return this.gQl;
   }
   GetLockDetailId() {
-    var t;
-    if (this.UnlockConditionId && (t = ConfigManager_1.ConfigManager.ConditionConfig.GetConditionGroupConfig(this.UnlockConditionId))) {
-      return t.HintText;
+    var e;
+    if (this.UnlockConditionId && (e = ConfigManager_1.ConfigManager.ConditionConfig.GetConditionGroupConfig(this.UnlockConditionId))) {
+      return e.HintText;
     } else {
       return "";
     }
@@ -166,24 +166,24 @@ class ExploreAreaItemData {
       this.PlayPointToBeCompletedCount = 0;
       this.PlayPointLockedCount = this.JXt - this.HPt;
       this.PlayPointTotalCount = this.JXt;
-      for (let t = 0; t < this.JXt; t++) {
+      for (let e = 0; e < this.JXt; e++) {
         this.PlayProgressDataList.push({
           ExploreType: this.ExploreType,
           PlayPointType: 0,
-          PlayPointState: t < this.HPt ? 2 : 0
+          PlayPointState: e < this.HPt ? 2 : 0
         });
       }
     }
   }
-  IsSubType(t) {
-    return this.SubTypes.includes(t);
+  IsSubType(e) {
+    return this.SubTypes.includes(e);
   }
-  AddPlayPointData(t) {
-    this.PlayIdMap.set(t.PlayId, t);
+  AddPlayPointData(e) {
+    this.PlayIdMap.set(e.PlayId, e);
     this.PlayPointTotalCount++;
-    if (t.PlayState === 2) {
+    if (e.PlayState === 2) {
       this.PlayPointCompletedCount++;
-    } else if (t.PlayState === 1) {
+    } else if (e.PlayState === 1) {
       this.PlayPointToBeCompletedCount++;
     } else {
       this.PlayPointLockedCount++;
@@ -191,12 +191,12 @@ class ExploreAreaItemData {
     this.PlayProgressDataList.push({
       ExploreType: this.ExploreType,
       PlayPointType: 0,
-      PlayPointState: t.PlayState,
-      PlayPointId: t.PlayId,
-      EntityId: t.EntityId,
-      IsClear: t.IsClear,
-      ClearInfo: t.ClearInfo,
-      IsUnlock: t.IsUnlock
+      PlayPointState: e.PlayState,
+      PlayPointId: e.PlayId,
+      EntityId: e.EntityId,
+      IsClear: e.IsClear,
+      ClearInfo: e.ClearInfo,
+      IsUnlock: e.IsUnlock
     });
   }
   ClearPlayPointData() {
@@ -209,22 +209,22 @@ class ExploreAreaItemData {
   }
   PlayPointDataAddFinish() {
     if (this.PlayProgressDataList.length !== 0) {
-      this.PlayProgressDataList.sort((t, e) => e.PlayPointState - t.PlayPointState);
-      this.SpecialPlayPointIndexMap.forEach((t, e) => {
-        e = this.PlayProgressDataList[e];
-        if (e) {
-          e.PlayPointType = t;
+      this.PlayProgressDataList.sort((e, t) => t.PlayPointState - e.PlayPointState);
+      this.SpecialPlayPointIndexMap.forEach((e, t) => {
+        t = this.PlayProgressDataList[t];
+        if (t) {
+          t.PlayPointType = e;
         }
       });
     }
   }
   HasSpecialPlayPoint() {
-    return this.PlayProgressDataList.some(t => t.PlayPointType === 1);
+    return this.PlayProgressDataList.some(e => e.PlayPointType === 1);
   }
   IsNearestPlayPointUnlock() {
-    var t = this.GetNearTrackMapMark();
-    let e = true;
-    return e = t && t.GameplayLockJumpId !== 0 && t.GameplayLockText !== "" && !this.GetPlayIdIsUnlock(t.RelativeId) ? false : e;
+    var e = this.GetNearTrackMapMark();
+    let t = true;
+    return t = e && e.GameplayLockJumpId !== 0 && e.GameplayLockText !== "" && !this.GetPlayIdIsUnlock(e.RelativeId) ? false : t;
   }
   TrackPoint() {
     if (Log_1.Log.CheckDebug()) {
@@ -237,8 +237,8 @@ class ExploreAreaItemData {
     }
   }
   gZu() {
-    var t = this.SubTypes[0];
-    ControllerHolder_1.ControllerHolder.ExploreProgressController.ExploreEntityTraceRequest(t, this.AreaId);
+    var e = this.SubTypes[0];
+    ControllerHolder_1.ControllerHolder.ExploreProgressController.ExploreEntityTraceRequest(e, this.AreaId);
   }
   TrackPlayPoint() {
     if (!this.MOl()) {
@@ -248,98 +248,102 @@ class ExploreAreaItemData {
         }
         return false;
       }
-      var t = this.yOl();
-      var e = this.EOl(t);
-      if (e.length === 0) {
+      var e = this.yOl();
+      var t = this.EOl(e);
+      if (t.length === 0) {
         return false;
       }
-      e = this.GetMarkByPointState(t, e);
-      if (!e) {
+      t = this.GetMarkByPointState(e, t);
+      if (!t) {
         return false;
       }
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("ExploreProgress", 69, "导航去附近标记", ["MarkId", e.MarkId], ["MarkType", e.ObjectType], ["MarkName", ConfigManager_1.ConfigManager.TextConfig.GetMultiTextByKey(e.MarkTitle)], ["FindState", t]);
+        Log_1.Log.Debug("ExploreProgress", 69, "导航去附近标记", ["MarkId", t.MarkId], ["MarkType", t.ObjectType], ["MarkName", ConfigManager_1.ConfigManager.TextConfig.GetMultiTextByKey(t.MarkTitle)], ["FindState", e]);
       }
-      if (t === 1) {
-        if (!ModelManager_1.ModelManager.MapModel.IsConfigMarkIdUnlock(e.MarkId)) {
-          ModelManager_1.ModelManager.MapModel.CreateTempMapMark(e.MarkId);
+      if (e === 1) {
+        if (!ModelManager_1.ModelManager.MapModel.IsMarkFogUnlock(t.MarkId)) {
+          ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("MapAreaIsLock");
+          return false;
+        }
+        if (!ModelManager_1.ModelManager.MapModel.IsConfigMarkIdUnlock(t.MarkId)) {
+          ModelManager_1.ModelManager.MapModel.CreateTempMapMark(t.MarkId);
         }
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WorldMapNavigate, {
-          MarkId: e.MarkId,
-          MarkType: e.ObjectType,
+          MarkId: t.MarkId,
+          MarkType: t.ObjectType,
           Focal: true,
           NeedTempShow: true
         });
-      } else if (t === 0) {
-        this.t6_(e);
+      } else if (e === 0) {
+        this.t6_(t);
       }
     }
     return true;
   }
   GetNearTrackMapMark() {
     if (!(this.PlayIdMap.size <= 0) && !this.IsFinishedPlayPoint) {
-      var t = this.yOl();
-      var e = this.EOl(t);
-      if (e.length !== 0) {
-        return this.GetMarkByPointState(t, e);
+      var e = this.yOl();
+      var t = this.EOl(e);
+      if (t.length !== 0) {
+        return this.GetMarkByPointState(e, t);
       }
     }
   }
-  GetMarkByPointState(t, e) {
-    switch (t === 0 ? this.LockTrackType : this.UnlockTrackType) {
+  GetMarkByPointState(e, t) {
+    switch (e === 0 ? this.LockTrackType : this.UnlockTrackType) {
       case 0:
-        return this.IOl(e);
+        return this.IOl(t);
       case 1:
-        return this.eKl(e);
+        return this.eKl(t);
     }
   }
-  GetPlayIdIsUnlock(t) {
-    return this.PlayIdMap.get(t)?.IsUnlock ?? true;
+  GetPlayIdIsUnlock(e) {
+    return this.PlayIdMap.get(e)?.IsUnlock ?? true;
   }
-  t6_(t) {
+  t6_(e) {
     if (this.e6_?.IsClear) {
       this.i6_();
     } else {
-      t = {
-        MarkId: t.MarkId,
-        MarkType: t.ObjectType,
+      e = {
+        MarkId: e.MarkId,
+        MarkType: e.ObjectType,
         Tips: "NoPlayPoint_Text",
-        GamePlayId: t.RelativeId,
+        GamePlayId: e.RelativeId,
         ExploreTypeName: this.GetNameId()
       };
-      ModelManager_1.ModelManager.WorldMapModel.NavigateMarkShowRangeInfo = t;
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.NavigateMarkAndShowRange, t);
+      ModelManager_1.ModelManager.WorldMapModel.NavigateMarkShowRangeInfo = e;
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.NavigateMarkAndShowRange, e);
     }
   }
   i6_() {
-    var t = new ConfirmBoxDefine_1.ConfirmBoxDataNew(255);
-    t.FunctionMap.set(2, () => {
+    var e = new ConfirmBoxDefine_1.ConfirmBoxDataNew(255);
+    e.FunctionMap.set(2, () => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("ExploreProgress", 69, "", ["FindPlayIdInfo", this.e6_]);
       }
-      var t;
-      var e = this.e6_?.ClearInfo;
-      if (e) {
-        t = (e = e.split("_"))[0].toLowerCase();
-        e = e[1];
-        if (t === "q") {
-          this.r6_(e);
-        } else if (t === "l") {
-          this.o6_(e);
+      var e;
+      var t = this.e6_?.ClearInfo;
+      if (t) {
+        e = (t = t.split("_"))[0].toLowerCase();
+        t = t[1];
+        if (e === "q") {
+          this.r6_(t);
+        } else if (e === "l") {
+          this.o6_(t);
         }
       }
     });
-    ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(t);
+    ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(e);
   }
-  r6_(t) {
-    var t = Number(t);
-    var e = ModelManager_1.ModelManager.QuestNewModel.GetQuest(t);
-    var i = e?.GetCurrentActiveChildQuestNode()?.NodeId ?? 0;
-    var r = e?.GetDefaultMark(i) ?? 0;
+  r6_(e) {
+    var e = Number(e);
+    var t = ModelManager_1.ModelManager.QuestNewModel.GetQuest(e);
+    var i = t?.GetCurrentActiveChildQuestNode()?.NodeId ?? 0;
+    var r = t?.GetDefaultMark(i) ?? 0;
     if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("ExploreProgress", 69, "清场-找到任务标记", ["QuestId", t], ["QuestInfo", e], ["NodeId", i], ["QuestMarkId", r], ["IsSuspend", e?.IsSuspend()]);
+      Log_1.Log.Debug("ExploreProgress", 69, "清场-找到任务标记", ["QuestId", e], ["QuestInfo", t], ["NodeId", i], ["QuestMarkId", r], ["IsSuspend", t?.IsSuspend()]);
     }
-    if (r && !e?.IsSuspend()) {
+    if (r && !t?.IsSuspend()) {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WorldMapNavigate, {
         MarkId: r,
         MarkType: 12,
@@ -349,25 +353,25 @@ class ExploreAreaItemData {
       this.n6_(r, 12);
     }
   }
-  o6_(t) {
-    var t = Number(t);
-    var e = this.GetMapMarkByPlayId(t);
+  o6_(e) {
+    var e = Number(e);
+    var t = this.GetMapMarkByPlayId(e);
     if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("ExploreProgress", 69, "清场-找到玩法点标记", ["PlayId", t], ["MapMark-Id", e?.MarkId], ["MapMark-Type", e?.ObjectType]);
+      Log_1.Log.Debug("ExploreProgress", 69, "清场-找到玩法点标记", ["PlayId", e], ["MapMark-Id", t?.MarkId], ["MapMark-Type", t?.ObjectType]);
     }
-    if (e) {
+    if (t) {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WorldMapNavigate, {
-        MarkId: e.MarkId,
-        MarkType: e.ObjectType,
+        MarkId: t.MarkId,
+        MarkType: t.ObjectType,
         Focal: true,
         NeedTempShow: true
       });
-      this.n6_(e.MarkId, e.ObjectType);
+      this.n6_(t.MarkId, t.ObjectType);
     }
   }
-  n6_(t, e) {
+  n6_(e, t) {
     var i = ModelManager_1.ModelManager.WorldMapModel.NavigateMarkShowRangeInfo;
-    if (i?.MarkId === t && i?.MarkType === e) {
+    if (i?.MarkId === e && i?.MarkType === t) {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.HideNavigateMarkRange);
     }
   }
@@ -375,25 +379,25 @@ class ExploreAreaItemData {
     return !(this.PlayIdMap.size > 0) && !(ScrollingTipsController_1.ScrollingTipsController.ShowTipsByText(`Track ExploreType: ${this.ExploreType}, AreaId: ${this.AreaId}`), 0);
   }
   yOl() {
-    let t = 0;
-    return t = this.PlayPointToBeCompletedCount > 0 ? 1 : t;
+    let e = 0;
+    return e = this.PlayPointToBeCompletedCount > 0 ? 1 : e;
   }
-  EOl(e) {
+  EOl(t) {
     const i = [];
-    this.PlayIdMap.forEach(t => {
-      if (t.PlayState === e) {
-        i.push(t);
+    this.PlayIdMap.forEach(e => {
+      if (e.PlayState === t) {
+        i.push(e);
       }
     });
     if (i.length === 0 && Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("ExploreProgress", 69, "没有找到玩法状态对应的玩法点列表", ["FindState", e], ["PlayIdMap", this.PlayIdMap]);
+      Log_1.Log.Debug("ExploreProgress", 69, "没有找到玩法状态对应的玩法点列表", ["FindState", t], ["PlayIdMap", this.PlayIdMap]);
     }
     return i;
   }
-  IOl(t) {
-    if (t.length === 0) {
+  IOl(e) {
+    if (e.length === 0) {
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("ExploreProgress", 69, "没有找到附近的标记", ["InfoList", t]);
+        Log_1.Log.Debug("ExploreProgress", 69, "没有找到附近的标记", ["InfoList", e]);
       }
     } else {
       const i = ModelManager_1.ModelManager.WorldMapModel.GetPlayerPosition();
@@ -404,69 +408,69 @@ class ExploreAreaItemData {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("ExploreProgress", 69, "玩家位置(已缩小)", ["MyPos", i], ["Scale", 1000]);
       }
-      var e = t.map(t => ({
-        Info: t,
-        Mark: this.Czl(t)
-      })).filter(t => t.Mark !== undefined);
-      if (e.length !== 0) {
-        e = e.sort((t, e) => {
-          if (t.Info.IsUnlock !== e.Info.IsUnlock) {
-            if (t.Info.IsUnlock) {
+      var t = e.map(e => ({
+        Info: e,
+        Mark: this.Czl(e)
+      })).filter(e => e.Mark !== undefined);
+      if (t.length !== 0) {
+        t = t.sort((e, t) => {
+          if (e.Info.IsUnlock !== t.Info.IsUnlock) {
+            if (e.Info.IsUnlock) {
               return -1;
             } else {
               return 1;
             }
           } else {
-            t = ModelManager_1.ModelManager.WorldMapModel.GetEntityPosition(t.Mark.EntityConfigId, t.Mark.MapId);
             e = ModelManager_1.ModelManager.WorldMapModel.GetEntityPosition(e.Mark.EntityConfigId, e.Mark.MapId);
-            t.DivisionEqual(MapDefine_1.UNIT * 1000);
+            t = ModelManager_1.ModelManager.WorldMapModel.GetEntityPosition(t.Mark.EntityConfigId, t.Mark.MapId);
             e.DivisionEqual(MapDefine_1.UNIT * 1000);
-            return Vector_1.Vector.DistSquared(i, t) - Vector_1.Vector.DistSquared(i, e);
+            t.DivisionEqual(MapDefine_1.UNIT * 1000);
+            return Vector_1.Vector.DistSquared(i, e) - Vector_1.Vector.DistSquared(i, t);
           }
         })[0];
         if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("ExploreProgress", 69, "找到附近的标记", ["MarkId", e.Mark.MarkId], ["NearInfo", e.Info]);
+          Log_1.Log.Debug("ExploreProgress", 69, "找到附近的标记", ["MarkId", t.Mark.MarkId], ["NearInfo", t.Info]);
         }
-        this.e6_ = e.Info;
-        return e.Mark;
+        this.e6_ = t.Info;
+        return t.Mark;
       }
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("ExploreProgress", 69, "没有找到有效的标记", ["InfoList", t]);
+        Log_1.Log.Debug("ExploreProgress", 69, "没有找到有效的标记", ["InfoList", e]);
       }
     }
   }
-  eKl(t) {
-    if (t.length === 0) {
+  eKl(e) {
+    if (e.length === 0) {
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("ExploreProgress", 69, "没有找到标记id最小的玩法点", ["InfoList", t]);
+        Log_1.Log.Debug("ExploreProgress", 69, "没有找到标记id最小的玩法点", ["InfoList", e]);
       }
     } else {
-      var e = t.map(t => ({
-        Info: t,
-        Mark: this.Czl(t)
-      })).filter(t => t.Mark !== undefined);
-      if (e.length !== 0) {
-        e = e.sort((t, e) => t.Info.IsUnlock !== e.Info.IsUnlock ? t.Info.IsUnlock ? -1 : 1 : t.Mark.MarkId - e.Mark.MarkId)[0];
+      var t = e.map(e => ({
+        Info: e,
+        Mark: this.Czl(e)
+      })).filter(e => e.Mark !== undefined);
+      if (t.length !== 0) {
+        t = t.sort((e, t) => e.Info.IsUnlock !== t.Info.IsUnlock ? e.Info.IsUnlock ? -1 : 1 : e.Mark.MarkId - t.Mark.MarkId)[0];
         if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("ExploreProgress", 69, "找到标记id最小的玩法点", ["MarkId", e.Mark.MarkId], ["Info", e.Info]);
+          Log_1.Log.Debug("ExploreProgress", 69, "找到标记id最小的玩法点", ["MarkId", t.Mark.MarkId], ["Info", t.Info]);
         }
-        this.e6_ = e.Info;
-        return e.Mark;
+        this.e6_ = t.Info;
+        return t.Mark;
       }
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("ExploreProgress", 69, "没有找到有效的标记", ["InfoList", t]);
+        Log_1.Log.Debug("ExploreProgress", 69, "没有找到有效的标记", ["InfoList", e]);
       }
     }
   }
-  Czl(t) {
-    return this.GetMapMarkByPlayId(t.PlayId);
+  Czl(e) {
+    return this.GetMapMarkByPlayId(e.PlayId);
   }
-  GetMapMarkByPlayId(t) {
-    var e = ModelManager_1.ModelManager.ExploreProgressModel.GetExploreAreaData(this.AreaId);
-    return ConfigManager_1.ConfigManager.MapConfig.GetMapMarkByRelativeId(t, e.GetSceneId());
+  GetMapMarkByPlayId(e) {
+    var t = ModelManager_1.ModelManager.ExploreProgressModel.GetExploreAreaData(this.AreaId);
+    return ConfigManager_1.ConfigManager.MapConfig.GetMapMarkByRelativeId(e, t.GetSceneId());
   }
   GetPlayPointStateList() {
-    return this.PlayProgressDataList.map(t => t.PlayPointState);
+    return this.PlayProgressDataList.map(e => e.PlayPointState);
   }
   LogInfo() {
     if (Log_1.Log.CheckDebug()) {
@@ -476,50 +480,50 @@ class ExploreAreaItemData {
   FinishNewRecommendPlay() {
     this.IsNewRecommendPlay = false;
   }
-  SetSequenceData(t) {
-    this.SequenceData = t;
+  SetSequenceData(e) {
+    this.SequenceData = e;
   }
-  SetFlagSequenceData(t) {
-    this.FlagSequenceData = t;
+  SetFlagSequenceData(e) {
+    this.FlagSequenceData = e;
   }
   GetFlagSequenceDataAndClean() {
-    var t = this.FlagSequenceData;
+    var e = this.FlagSequenceData;
     this.FlagSequenceData = false;
-    return t;
+    return e;
   }
   GetPlayProgressDataIgnoreHiddenList() {
-    return this.PlayProgressDataList.map(t => ({
-      ...t,
+    return this.PlayProgressDataList.map(e => ({
+      ...e,
       IgnoreHiddenType: true
     }));
   }
-  SetEntityList(t) {
-    this.yJe = t;
+  SetEntityList(e) {
+    this.yJe = e;
     this.CalcEntityDistance();
     this.CreateEntityMark();
   }
   CalcEntityDistance() {
     if (this.yJe && !(this.yJe.length < 2)) {
-      var t = ConfigManager_1.ConfigManager.AreaConfig.GetAreaInfo(this.AreaId);
-      if (t) {
-        const s = t.MapConfigId;
+      var e = ConfigManager_1.ConfigManager.AreaConfig.GetAreaInfo(this.AreaId);
+      if (e) {
+        const s = e.MapConfigId;
         const o = ModelManager_1.ModelManager.WorldMapModel.GetPlayerPosition();
         let i = Number.MAX_VALUE;
         let r = 0;
         o.DivisionEqual(1000);
-        this.yJe.forEach((t, e) => {
-          t = ModelManager_1.ModelManager.WorldMapModel.GetEntityPosition(t, s);
-          t.DivisionEqual(1000);
-          t = Vector_1.Vector.DistSquared(o, t);
-          if (t < i) {
-            i = t;
-            r = e;
+        this.yJe.forEach((e, t) => {
+          e = ModelManager_1.ModelManager.WorldMapModel.GetEntityPosition(e, s);
+          e.DivisionEqual(1000);
+          e = Vector_1.Vector.DistSquared(o, e);
+          if (e < i) {
+            i = e;
+            r = t;
           }
         });
         if (r > 0) {
-          t = this.yJe[r];
+          e = this.yJe[r];
           this.yJe.splice(r, 1);
-          this.yJe.unshift(t);
+          this.yJe.unshift(e);
         }
       } else if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("ExploreProgress", 87, "找不到区域配置信息", ["AreaId", this.AreaId]);
@@ -527,20 +531,20 @@ class ExploreAreaItemData {
     }
   }
   CreateEntityMark() {
-    var t;
     var e;
+    var t;
     var i;
     var r;
     if (this.yJe && this.yJe.length !== 0) {
-      if (t = ExploreProgressDefine_1.exploreType2MarkType.get(this.ExploreType)) {
-        if (e = ExploreProgressDefine_1.exploreType2Config.get(this.ExploreType)) {
+      if (e = ExploreProgressDefine_1.exploreType2MarkType.get(this.ExploreType)) {
+        if (t = ExploreProgressDefine_1.exploreType2Config.get(this.ExploreType)) {
           if (i = ConfigManager_1.ConfigManager.AreaConfig.GetAreaInfo(this.AreaId)) {
             r = this.yJe[0];
-            r = ModelManager_1.ModelManager.MapModel.CreateDyMarkByEntity(r, t, e, i.MapConfigId);
+            r = ModelManager_1.ModelManager.MapModel.CreateDyMarkByEntity(r, e, t, i.MapConfigId);
             ModelManager_1.ModelManager.MapModel.AddPendingTempMapMarkList(r);
             EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WorldMapNavigate, {
               MarkId: r,
-              MarkType: t,
+              MarkType: e,
               Focal: true
             });
           } else if (Log_1.Log.CheckError()) {

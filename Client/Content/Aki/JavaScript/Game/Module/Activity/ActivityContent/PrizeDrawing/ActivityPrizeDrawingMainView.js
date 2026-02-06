@@ -30,14 +30,14 @@ class PrizeDrawingMainView extends UiTickViewBase_1.UiTickViewBase {
     this.sOe = [];
     this.SPe = undefined;
     this.q8d = false;
-    this.BAm = e => {
+    this.WPm = e => {
       if (e === "Guide") {
-        this.W_f();
+        this.jcf();
       }
     };
-    this.Q_f = e => {
+    this.$cf = e => {
       if (e === "TransIn") {
-        this.W_f();
+        this.jcf();
       }
     };
     this.G8d = () => {
@@ -54,7 +54,7 @@ class PrizeDrawingMainView extends UiTickViewBase_1.UiTickViewBase {
         this.SPe?.PlaySequencePurely("TransIn", true);
       }
     };
-    this.Eff = () => {
+    this.R0f = () => {
       this.Og();
     };
     this.F8d = () => {
@@ -93,7 +93,7 @@ class PrizeDrawingMainView extends UiTickViewBase_1.UiTickViewBase {
     this.cQa();
     this.KGt(true);
     this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
-    this.SPe.BindSequenceCloseEvent(this.Q_f);
+    this.SPe.BindSequenceCloseEvent(this.$cf);
   }
   Og() {
     this.KGt();
@@ -114,16 +114,16 @@ class PrizeDrawingMainView extends UiTickViewBase_1.UiTickViewBase {
   OnAddEventListener() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CloseView, this.$Ge);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPrizeDrawingRewardStatusChanged, this.G8d);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPrizeDrawingQuestUpdated, this.Eff);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.BAm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPrizeDrawingQuestUpdated, this.R0f);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.WPm);
   }
   OnRemoveEventListener() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CloseView, this.$Ge);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPrizeDrawingRewardStatusChanged, this.G8d);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPrizeDrawingQuestUpdated, this.Eff);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.BAm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPrizeDrawingQuestUpdated, this.R0f);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.WPm);
   }
-  W_f() {
+  jcf() {
     if (this.Pe.ShouldShowButtonRedDot()) {
       this.SPe?.PlayOrReplaySequenceByName("GuideLoop");
     } else {

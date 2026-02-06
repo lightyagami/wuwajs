@@ -19,7 +19,7 @@ const RegressTransitionStateMachine_1 = require("./RegressTransitionStateMachine
 class ActivityRegressStartupView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
-    this.o9f = false;
+    this.aZf = false;
     this.Lle = undefined;
     this.H3e = undefined;
     this.W2e = () => {
@@ -47,7 +47,7 @@ class ActivityRegressStartupView extends UiViewBase_1.UiViewBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RecallActivityInfoUpdate, this.RefreshReward);
   }
   OnStart() {
-    this.o9f = this.OpenParam ?? false;
+    this.aZf = this.OpenParam ?? false;
     this.Lle = new RegressTransitionStateMachine_1.RegressTransitionStateMachine();
     this.H3e = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(0), this.W2e);
     var e = ModelManager_1.ModelManager.ActivityRegressModel.Grade;
@@ -86,7 +86,7 @@ class ActivityRegressStartupView extends UiViewBase_1.UiViewBase {
     this.CloseMe();
     const e = ModelManager_1.ModelManager.ActivityRegressModel.DisposableReward;
     var t = ModelManager_1.ModelManager.ActivityRegressModel.ActivityId;
-    if (t === 0 || this.o9f) {
+    if (t === 0 || this.aZf) {
       if (!e) {
         ActivityControllerHolder_1.ActivityControllerHolder.ActivityRegressController.RegressDisposableRewardRequest();
       }

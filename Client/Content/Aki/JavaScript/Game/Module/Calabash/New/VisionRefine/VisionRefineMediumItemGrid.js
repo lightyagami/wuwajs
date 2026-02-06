@@ -13,6 +13,8 @@ class VisionRefineMediumItemGrid extends LoopScrollMediumItemGrid_1.LoopScrollMe
   constructor() {
     super(...arguments);
     this.CheckSelectByView = undefined;
+    this.CheckWarningByView = undefined;
+    this.GetRefineType = undefined;
     this.ZBt = () => {
       var e = this.fGt;
       if (e) {
@@ -28,65 +30,82 @@ class VisionRefineMediumItemGrid extends LoopScrollMediumItemGrid_1.LoopScrollMe
     super.OnBeforeDestroy();
     this.GetItemGridExtendToggle().FocusListenerDelegate.Unbind();
   }
-  OnRefresh(e, t, r) {
+  OnRefresh(e, i, t) {
+    this.Data = e;
     this.MRu(e);
   }
-  MRu(e) {
-    var t = e.GetUniqueId();
+  MRu(i) {
+    var t = i.GetUniqueId();
     var r = ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomBattleData(t);
     if (r) {
-      var i;
-      var o;
-      var s;
-      var n = e.GetItemDataType();
-      var a = {
+      var e = i.GetItemDataType();
+      var s = {
         Type: 4,
-        Data: e,
-        ItemConfigId: e.GetConfigId(),
-        IsLockVisible: e.GetIsLock(),
-        IsDeprecate: e.GetIsDeprecated(),
-        StarLevel: e.GetQuality()
+        Data: i,
+        ItemConfigId: i.GetConfigId(),
+        IsLockVisible: i.GetIsLock(),
+        IsDeprecate: i.GetIsDeprecated(),
+        StarLevel: i.GetQuality()
       };
-      switch (n) {
+      switch (e) {
         case 3:
           {
-            a.ItemConfigId = r.GetConfigId(true);
-            a.QualityId = r.GetQuality();
-            a.Level = r.GetCost();
-            a.IsLevelTextUseChangeColor = true;
-            a.BottomTextId = "VisionLevel";
-            a.BottomTextParameter = [r.GetPhantomLevel()];
-            a.VisionFetterGroupId = r.GetFetterGroupId();
-            a.IsOmitBottomText = true;
-            a.IsDisable = !r.GetVisionIfCanRefine();
+            var o;
+            var n;
+            var a;
+            var l = s;
+            var d = this.GetRefineType?.() ?? 0;
+            l.ItemConfigId = r.GetConfigId(true);
+            l.QualityId = r.GetQuality();
+            l.Level = r.GetCost();
+            l.IsLevelTextUseChangeColor = true;
+            l.BottomTextId = "VisionLevel";
+            l.BottomTextParameter = [r.GetPhantomLevel()];
+            l.VisionFetterGroupId = r.GetFetterGroupId();
+            l.IsOmitBottomText = true;
+            l.IsDisable = !r.GetVisionIfCanRefine(d);
             let e = false;
-            if (!(e = this.CheckSelectByView ? this.CheckSelectByView(this.fGt) : e) && ControllerHolder_1.ControllerHolder.PhantomBattleController.CheckIsEquip(t)) {
-              i = r.GetUniqueId();
-              o = ControllerHolder_1.ControllerHolder.PhantomBattleController.GetEquipRole(i);
-              s = ModelManager_1.ModelManager.PhantomBattleModel.CheckPhantomIsMain(i);
-              a.VisionRoleHeadInfo = {
-                RoleConfigId: o,
-                VisionUniqueId: i
+            if (this.CheckSelectByView) {
+              e = this.CheckSelectByView(i);
+            }
+            if (d !== 0 && !e && ControllerHolder_1.ControllerHolder.PhantomBattleController.CheckIsEquip(t)) {
+              o = r.GetUniqueId();
+              n = ControllerHolder_1.ControllerHolder.PhantomBattleController.GetEquipRole(o);
+              a = ModelManager_1.ModelManager.PhantomBattleModel.CheckPhantomIsMain(o);
+              l.VisionRoleHeadInfo = {
+                RoleConfigId: n,
+                VisionUniqueId: o
               };
-              a.IsMainVisionVisible = s;
+              l.IsMainVisionVisible = a;
+            }
+            this.SetSelected(e, true);
+            var h = e && r.GetVisionIfCanRefine(d);
+            switch (d) {
+              case 0:
+                {
+                  let e = !(l.ReduceButtonInfo = {
+                    IsVisible: h
+                  });
+                  if (this.CheckWarningByView) {
+                    e = this.CheckWarningByView(this.fGt);
+                  }
+                  l.IsWarning = e;
+                  l.IsGreenSelected = false;
+                  break;
+                }
+              case 1:
+                l.ReduceButtonInfo = {
+                  IsVisible: false
+                };
+                l.IsWarning = false;
+                l.IsGreenSelected = h;
             }
             break;
           }
         default:
-          a.BottomText = e.GetCount().toString();
+          s.BottomText = i.GetCount().toString();
       }
-      this.Apply(a);
-      this.ERu(e);
-    }
-  }
-  ERu(e) {
-    var t;
-    if (this.CheckSelectByView) {
-      t = this.CheckSelectByView(this.fGt);
-      this.SetSelected(t, true);
-      e = e.GetUniqueId();
-      e = ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomBattleData(e);
-      this.SetGreenSelected(t && e.GetVisionIfCanRefine());
+      this.Apply(s);
     }
   }
   RefreshByView(e) {

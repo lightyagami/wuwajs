@@ -72,7 +72,7 @@ class TsTaskMoveToLocation extends TsTaskAbortImmediatelyBase_1.default {
             this.Finish(false);
           }
         };
-        this.MoveComp = s.GetComponent(46);
+        this.MoveComp = s.GetComponent(48);
         s = {
           Index: 0,
           Position: e,

@@ -8,6 +8,7 @@ const ModelBase_1 = require("../../../Core/Framework/ModelBase");
 const TimerSystem_1 = require("../../../Core/Timer/TimerSystem");
 const TimeUtil_1 = require("../../Common/TimeUtil");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
+const TotalTopUpDefine_1 = require("../Activity/ActivityContent/TotalTopUp/TotalTopUpDefine");
 const BuffItemData_1 = require("./BuffItemData");
 const UseBuffItemRoleData_1 = require("./UseBuffItemRoleData");
 class BuffItemModel extends ModelBase_1.ModelBase {
@@ -16,11 +17,12 @@ class BuffItemModel extends ModelBase_1.ModelBase {
     this.F0t = new Map();
     this.lnt = new Map();
     this.K4l = new Map();
-    this.J2m = new Map();
+    this.dqm = new Map();
     this.V0t = 0;
     this.H0t = undefined;
     this.j0t = undefined;
     this.W0t = 0;
+    this.zqg = [];
     this.K0t = e => {
       if (this.GetBuffItemRemainCdTime(this.W0t) <= 0) {
         if (this.j0t) {
@@ -65,8 +67,8 @@ class BuffItemModel extends ModelBase_1.ModelBase {
     this.F0t.clear();
     this.lnt.clear();
   }
-  NewUseBuffItemRoleData(e, t, i, r, s, f, u, a) {
-    e = new UseBuffItemRoleData_1.UseBuffItemRoleData(e, t, i, r, s, f, u, a);
+  NewUseBuffItemRoleData(e, t, i, r, s, f, a, u) {
+    e = new UseBuffItemRoleData_1.UseBuffItemRoleData(e, t, i, r, s, f, a, u);
     this.F0t.set(t, e);
   }
   SetCurrentUseBuffItemId(e) {
@@ -136,17 +138,17 @@ class BuffItemModel extends ModelBase_1.ModelBase {
     var i = ConfigManager_1.ConfigManager.BuffItemConfig.GetBuffEquipItemCategory(e);
     if (i !== 0) {
       if (t) {
-        this.J2m.set(i, e);
+        this.dqm.set(i, e);
       } else {
-        this.J2m.delete(i);
+        this.dqm.delete(i);
       }
     }
   }
   IsEquippedBuffCategory(e) {
-    return this.J2m.has(e);
+    return this.dqm.has(e);
   }
   GetEquippedBuffItemId(e) {
-    return this.J2m.get(e);
+    return this.dqm.get(e);
   }
   IsEquippedBuffItem(e) {
     return !!this.K4l.get(e);
@@ -168,6 +170,22 @@ class BuffItemModel extends ModelBase_1.ModelBase {
       }
     }
     return t;
+  }
+  SetCurrentPreviewItemData(e, t) {
+    this.zqg = [];
+    e = ConfigManager_1.ConfigManager.BuffItemConfig.GetBuffEquipItemByItemId(e);
+    if ((e?.length ?? 0) !== 0) {
+      for (const i of e) {
+        if (i.RoleId === t) {
+          TotalTopUpDefine_1.TotalTopUpUtil.Debug("填充Buff", ["RoleId", i.RoleId], ["Buffs", i.Buffs]);
+          this.zqg = [...i.Buffs];
+          break;
+        }
+      }
+    }
+  }
+  GetCurrentPreviewItemBuffList() {
+    return this.zqg;
   }
 }
 exports.BuffItemModel = BuffItemModel;

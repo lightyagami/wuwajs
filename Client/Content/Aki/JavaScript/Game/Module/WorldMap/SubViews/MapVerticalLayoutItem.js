@@ -11,13 +11,13 @@ class MapVerticalLayoutItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
     super(...arguments);
     this.Pe = undefined;
-    this.vjm = () => {
+    this.PHm = () => {
       this.Pe?.OnBtnClickCb?.();
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIText], [2, UE.UIButtonComponent], [3, UE.UITexture], [4, UE.UISprite], [5, UE.UISprite]];
-    this.BtnBindInfo = [[2, this.vjm]];
+    this.BtnBindInfo = [[2, this.PHm]];
   }
   Refresh(t, i, s) {
     if ((this.Pe = t).LeftText) {

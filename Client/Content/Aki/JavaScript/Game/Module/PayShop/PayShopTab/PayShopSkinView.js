@@ -11,6 +11,7 @@ const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiTabViewBase_1 = require("../../../Ui/Base/UiTabViewBase");
 const TabComponent_1 = require("../../Common/TabComponent/TabComponent");
 const TabViewComponent_1 = require("../../Common/TabComponent/TabViewComponent");
+const LogReportDefine_1 = require("../../LogReport/LogReportDefine");
 const PayShopDefine_1 = require("../PayShopDefine");
 const PayShopSwitchItem_1 = require("./TabItem/PayShopSwitchItem");
 class PayShopSkinView extends UiTabViewBase_1.UiTabViewBase {
@@ -21,8 +22,9 @@ class PayShopSkinView extends UiTabViewBase_1.UiTabViewBase {
     this.TabList = [];
     this.CurrentSelectTabId = 0;
     this._3i = 0;
-    this.ZZf = [];
-    this.veg = false;
+    this.$Mg = [];
+    this.XRg = false;
+    this.x4e = true;
     this.fqe = (e, i) => {
       return new PayShopSwitchItem_1.PayShopSwitchItem();
     };
@@ -32,6 +34,10 @@ class PayShopSkinView extends UiTabViewBase_1.UiTabViewBase {
       var t = PayShopDefine_1.skinTabView[i];
       var e = this.TabGroup.GetTabItemByIndex(e);
       this.TabViewComponent.ToggleCallBack(i, t, e, this._3i);
+      var t = new LogReportDefine_1.OnClickPayShopTabLogEvent();
+      t.i_shop_id = this._3i;
+      t.i_tab_id = i;
+      ControllerHolder_1.ControllerHolder.LogReportController.LogReport(t);
     };
   }
   OnRegisterComponent() {
@@ -50,13 +56,13 @@ class PayShopSkinView extends UiTabViewBase_1.UiTabViewBase {
   OnBeforeShow() {
     this._3i = this.Params;
     this.GetText(5).SetUIActive(false);
-    this.eeg();
+    this.WMg();
   }
   OnHideUiTabViewBase(e) {
     if (e) {
       this.TabGroup.ResetSelectIndex();
     }
-    this.ZZf = [];
+    this.$Mg = [];
   }
   OnAfterShow() {
     if (Log_1.Log.CheckInfo()) {
@@ -85,22 +91,22 @@ class PayShopSkinView extends UiTabViewBase_1.UiTabViewBase {
     }
   }
   RefreshView(e) {
-    this.eeg();
+    this.WMg();
   }
   OnTickUiTabViewBase(e) {
-    if (this.veg) {
-      if (!this.ZZf || this.ZZf.length <= 0) {
-        this.veg = false;
+    if (this.XRg) {
+      if (!this.$Mg || this.$Mg.length <= 0) {
+        this.XRg = false;
       } else {
         var i = [];
         var t = [];
-        for (const s of this.ZZf) {
-          if (s.NeedUpdate() || s.NeedDown()) {
-            (s.IsDirect() ? i : t).push(s.GetGoodsId());
+        for (const o of this.$Mg) {
+          if (o.NeedUpdate() || o.NeedDown()) {
+            (o.IsDirect() ? i : t).push(o.GetGoodsId());
           }
         }
         if (!(t.length <= 0) || !(i.length <= 0)) {
-          this.veg = false;
+          this.XRg = false;
           if (Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("Shop", 27, "PayShop:Skin 请求刷新商品", ["goodsList", t]);
           }
@@ -114,22 +120,22 @@ class PayShopSkinView extends UiTabViewBase_1.UiTabViewBase {
       }
     }
   }
-  teg() {
+  QMg() {
     var e = [];
     for (const i of ModelManager_1.ModelManager.PayShopModel.GetPayShopGoodsByTabType(6, 3)) {
       if (i.IsShowInShop() && (i.InUpdateTime() || i.InUnPermanentSellTime() || i.WillSell())) {
         e.push(i);
       }
     }
-    this.ZZf = e;
-    this.veg = this.ZZf.length > 0;
+    this.$Mg = e;
+    this.XRg = this.$Mg.length > 0;
   }
-  eeg() {
+  WMg() {
     var e = ModelManager_1.ModelManager.PayShopModel.GetPayShopTableList(6);
-    this.teg();
+    this.QMg();
     this.TabList = e.filter(e => e !== 3 || ModelManager_1.ModelManager.PayShopModel.GetPayShopTabData(6, e).length > 0);
     let i = 0;
-    if (this.ExtraParams) {
+    if (this.ExtraParams && this.x4e) {
       var t = this.ExtraParams;
       for (let e = 0; e < this.TabList.length; e++) {
         if (this.TabList[e] === t) {
@@ -137,6 +143,7 @@ class PayShopSkinView extends UiTabViewBase_1.UiTabViewBase {
           break;
         }
       }
+      this.x4e = false;
     } else {
       i = this.TabGroup.TryGetSelectedIndex(i);
     }

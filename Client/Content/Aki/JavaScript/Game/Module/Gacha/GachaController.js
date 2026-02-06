@@ -42,12 +42,12 @@ class GachaController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDoneAndCloseLoading, this.nye);
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(20983, GachaController.OnGachaResultNotify);
-    Net_1.Net.Register(25718, GachaController.OnGachaNewNotify);
+    Net_1.Net.Register(20461, GachaController.OnGachaResultNotify);
+    Net_1.Net.Register(20203, GachaController.OnGachaNewNotify);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(20983);
-    Net_1.Net.UnRegister(25718);
+    Net_1.Net.UnRegister(20461);
+    Net_1.Net.UnRegister(20203);
   }
   static CanCloseView() {
     return !!ModelManager_1.ModelManager.GachaModel.CanCloseView || (EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.CloseGachaSceneView), Log_1.Log.CheckDebug() && Log_1.Log.Debug("Gacha", 27, "GachaController关闭GachaScene"), false);
@@ -69,15 +69,15 @@ class GachaController extends UiControllerBase_1.UiControllerBase {
         GachaController.ZHt.add(e.GetDataId());
       }
     });
-    var n;
-    var r = await Net_1.Net.CallAsync(18251, r);
+    var o;
+    var r = await Net_1.Net.CallAsync(17051, r);
     if (r) {
       if (r.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_ErrGachaIsNotInOpenTime) {
-        n = new ConfirmBoxDefine_1.ConfirmBoxDataNew(67);
-        ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(n);
+        o = new ConfirmBoxDefine_1.ConfirmBoxDataNew(67);
+        ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(o);
         this.zHt();
       } else if (r.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(r.Q4n, 27660);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(r.Q4n, 20661);
       } else {
         ModelManager_1.ModelManager.GachaModel.UpdateCount(e, a);
         ModelManager_1.ModelManager.GachaModel.CurGachaResult = r.tws;
@@ -89,9 +89,9 @@ class GachaController extends UiControllerBase_1.UiControllerBase {
   static async GachaPoolDetailRequestAsync(e) {
     var a = Protocol_1.Aki.Protocol._m_.create();
     a.o9n = e;
-    var e = await Net_1.Net.CallAsync(26354, a);
+    var e = await Net_1.Net.CallAsync(25441, a);
     if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16105);
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 28546);
     }
     return e;
   }
@@ -104,10 +104,10 @@ class GachaController extends UiControllerBase_1.UiControllerBase {
       }
     } else {
       r = Protocol_1.Aki.Protocol.Xrs.create();
-      Net_1.Net.Call(24476, r, e => {
+      Net_1.Net.Call(16989, r, e => {
         if (e) {
           if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17163);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16411);
           } else if (ModelManager_1.ModelManager.LoadingModel?.IsLoading) {
             if (Log_1.Log.CheckInfo()) {
               Log_1.Log.Info("Gacha", 34, "[GachaController.GachaInfoRequest] 在Loading中,打开抽卡界面取消");
@@ -131,6 +131,33 @@ class GachaController extends UiControllerBase_1.UiControllerBase {
       });
     }
   }
+  static async GachaInfoRequestAsync() {
+    var e = TimeUtil_1.TimeUtil.GetServerTime() - this.ejt;
+    this.ejt = TimeUtil_1.TimeUtil.GetServerTime();
+    if (!(e < this.tjt)) {
+      e = Protocol_1.Aki.Protocol.Xrs.create();
+      if (e = await Net_1.Net.CallAsync(16989, e)) {
+        if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16411);
+        } else if (ModelManager_1.ModelManager.LoadingModel?.IsLoading) {
+          if (Log_1.Log.CheckInfo()) {
+            Log_1.Log.Info("Gacha", 34, "[GachaController.GachaInfoRequest] 在Loading中,打开抽卡界面取消");
+          }
+        } else {
+          if (Log_1.Log.CheckDebug()) {
+            Log_1.Log.Debug("Gacha", 34, "抽卡服务端数据-Async:", ["Result", JSON.stringify(e)]);
+          }
+          ModelManager_1.ModelManager.GachaModel.InitGachaInfoMap(e.zUs);
+          ModelManager_1.ModelManager.GachaModel.TodayResultCount = e.ZUs;
+          ModelManager_1.ModelManager.GachaModel.RecordId = e.ews;
+          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshGachaMainView);
+          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnOpenGachaChanged);
+        }
+      } else if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Gacha", 8, "请求抽奖数据失败");
+      }
+    }
+  }
   static TryGachaInfoRequest(a) {
     var e = TimeUtil_1.TimeUtil.GetServerTime() - this.ejt;
     this.ejt = TimeUtil_1.TimeUtil.GetServerTime();
@@ -138,10 +165,10 @@ class GachaController extends UiControllerBase_1.UiControllerBase {
       a?.(true);
     }
     var e = Protocol_1.Aki.Protocol.Xrs.create();
-    Net_1.Net.Call(24476, e, e => {
+    Net_1.Net.Call(16989, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17163);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16411);
           a?.(false);
         } else if (ModelManager_1.ModelManager.LoadingModel?.IsLoading) {
           if (Log_1.Log.CheckInfo()) {
@@ -185,10 +212,10 @@ class GachaController extends UiControllerBase_1.UiControllerBase {
     var e = Protocol_1.Aki.Protocol.eos.create();
     e.t9n = a;
     e.o9n = r;
-    Net_1.Net.Call(22768, e, e => {
+    Net_1.Net.Call(25335, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21596);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19560);
         } else if (e = ModelManager_1.ModelManager.GachaModel.GetGachaInfo(a)) {
           e.UsePoolId = r;
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.GachaPoolSelectResponse, a, r);
@@ -202,70 +229,70 @@ class GachaController extends UiControllerBase_1.UiControllerBase {
   }
   static PreloadGachaResultResource(e) {
     const i = [];
-    const l = new Map();
+    const _ = new Map();
     ModelManager_1.ModelManager.GachaModel.CurGachaResult.forEach((e, a) => {
       var r = e.e9n.L8n;
-      let n;
+      let o;
       switch (ConfigManager_1.ConfigManager.GachaConfig.GetItemIdType(r)) {
         case 1:
-          var o = ConfigManager_1.ConfigManager.GachaConfig.GetRoleInfoById(r);
-          if (!l.get(r)) {
-            l.set(r, true);
-            i.push(...UiModelResourcesManager_1.UiModelResourcesManager.GetRoleResourcesPath(o.Id));
+          var n = ConfigManager_1.ConfigManager.GachaConfig.GetRoleInfoById(r);
+          if (!_.get(r)) {
+            _.set(r, true);
+            i.push(...UiModelResourcesManager_1.UiModelResourcesManager.GetRoleResourcesPath(n.Id));
           }
-          var t = ModelManager_1.ModelManager.WeaponModel.GetWeaponIdByRoleDataId(o.Id);
-          n = UiModelResourcesManager_1.UiModelResourcesManager.GetWeaponResourcesPath(t);
-          if (!l.get(r)) {
-            l.set(r, true);
-            i.push(...n);
+          var t = ModelManager_1.ModelManager.WeaponModel.GetWeaponIdByRoleDataId(n.Id);
+          o = UiModelResourcesManager_1.UiModelResourcesManager.GetWeaponResourcesPath(t);
+          if (!_.get(r)) {
+            _.set(r, true);
+            i.push(...o);
           }
-          var t = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(o.Id);
+          var t = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(n.Id);
           i.push(...UiModelResourcesManager_1.UiModelResourcesManager.GetHuluResourcesPath(CharacterUtils_1.CharacterUtils.GetHuluModelId(t.PartyId)));
           break;
         case 2:
-          n = UiModelResourcesManager_1.UiModelResourcesManager.GetWeaponResourcesPath(r);
-          if (!l.get(r)) {
-            l.set(r, true);
-            i.push(...n);
+          o = UiModelResourcesManager_1.UiModelResourcesManager.GetWeaponResourcesPath(r);
+          if (!_.get(r)) {
+            _.set(r, true);
+            i.push(...o);
           }
       }
     });
     UiModelResourcesManager_1.UiModelResourcesManager.LoadUiModelResources(i, e);
   }
   static CommonShowRoleResult(e, a, r) {
-    var n = e.wb_.s5n;
-    if (ConfigManager_1.ConfigManager.InventoryConfig.GetItemDataTypeByConfigId(n) === 1) {
-      var o = new Array();
+    var o = e.wb_.s5n;
+    if (ConfigManager_1.ConfigManager.InventoryConfig.GetItemDataTypeByConfigId(o) === 1) {
+      var n = new Array();
       var t = new GachaModel_1.GachaResult();
       var i = new Protocol_1.Aki.Protocol.e9n();
-      i.L8n = n;
+      i.L8n = o;
       i.n9n = 1;
       t.e9n = i;
-      const l = [];
+      const _ = [];
       e.gws?.forEach(e => {
-        l.push(new Protocol_1.Aki.Protocol.e9n({
+        _.push(new Protocol_1.Aki.Protocol.e9n({
           L8n: e.s5n,
           n9n: e.m9n
         }));
       });
-      t.h9n = l;
-      o.push(t);
-      n = {
+      t.h9n = _;
+      n.push(t);
+      o = {
         SkipOnLoadResourceFinish: a,
         ResultViewHideExtraReward: r,
         IsOnlyShowGold: false
       };
       if (UiManager_1.UiManager.IsViewOpen("DrawMainView") || UiManager_1.UiManager.IsViewOpen("GachaScanView")) {
         ModelManager_1.ModelManager.GachaModel.CacheGachaInfo({
-          ResultViewData: n,
-          GachaResult: o
+          ResultViewData: o,
+          GachaResult: n
         });
       } else {
-        ModelManager_1.ModelManager.GachaModel.CurGachaResult = o;
-        if (n.SkipOnLoadResourceFinish) {
-          UiManager_1.UiManager.OpenView("GachaScanView", n);
+        ModelManager_1.ModelManager.GachaModel.CurGachaResult = n;
+        if (o.SkipOnLoadResourceFinish) {
+          UiManager_1.UiManager.OpenView("GachaScanView", o);
         } else {
-          UiManager_1.UiManager.OpenView("DrawMainView", n);
+          UiManager_1.UiManager.OpenView("DrawMainView", o);
         }
       }
     }

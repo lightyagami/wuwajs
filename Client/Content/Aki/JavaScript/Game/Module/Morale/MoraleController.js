@@ -38,11 +38,11 @@ class MoraleController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Morale", 69, "F91", ["", o]);
     }
-    var e = await Net_1.Net.CallAsync(18430, o);
+    var e = await Net_1.Net.CallAsync(25800, o);
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Morale", 69, "N91", ["", e]);
     }
-    if (!ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 22133)) {
+    if (!ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 18550)) {
       ModelManager_1.ModelManager.MoraleModel?.ProtoProgressRewardResponse(e);
     }
   }
@@ -51,7 +51,7 @@ class MoraleController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Morale", 69, "duu", ["", e]);
     }
-    var e = await Net_1.Net.CallAsync(17183, e);
+    var e = await Net_1.Net.CallAsync(28869, e);
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Morale", 69, "muu", ["", e]);
     }
@@ -63,11 +63,11 @@ class MoraleController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Morale", 69, "pUu", ["", o]);
     }
-    var e = await Net_1.Net.CallAsync(27708, o);
+    var e = await Net_1.Net.CallAsync(22496, o);
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Morale", 69, "vUu", ["", e]);
     }
-    if (!ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 26122)) {
+    if (!ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 15929)) {
       ModelManager_1.ModelManager.MoraleModel?.ProtoMoraleTreasureBoxTraceResponse(e);
     }
   }

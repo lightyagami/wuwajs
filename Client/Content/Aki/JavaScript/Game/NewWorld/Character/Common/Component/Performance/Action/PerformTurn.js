@@ -41,7 +41,7 @@ class PerformTurn extends PerformActionBase_1.PerformActionBase {
   OnExecute() {
     var t;
     if (this.PerformComp.Entity.GetComponent(3)) {
-      if ((t = this.PerformComp.Entity.GetComponent(45)).MontageManager.IsMontagePlaying()) {
+      if ((t = this.PerformComp.Entity.GetComponent(47)).MontageManager.IsMontagePlaying()) {
         t.MontageManager.StopMontage({
           Method: 0,
           BlendOutTime: 0.5

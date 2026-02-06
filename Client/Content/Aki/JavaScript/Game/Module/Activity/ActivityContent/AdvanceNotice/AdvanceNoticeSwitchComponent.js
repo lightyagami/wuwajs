@@ -18,7 +18,7 @@ class AdvanceNoticeSwitchComponent {
     this.Hym = () => {
       var t = new AdvanceNoticeThumbItem_1.AdvanceNoticeThumbItem();
       t.OnItemToggleClickDelegate = this.$ym;
-      t.CanItemToggleChangeDelegate = this.NLm;
+      t.CanItemToggleChangeDelegate = this.nPm;
       return t;
     };
     this.H0d = () => {
@@ -28,11 +28,12 @@ class AdvanceNoticeSwitchComponent {
       }
     };
     this.$ym = (t, i) => {
-      if (this.VLm(t.TabId)) {
+      if (this.sPm(t.TabId)) {
         this.SelectThumb(i);
+        this.yil?.ClickTabLogEvent();
       }
     };
-    this.NLm = (t, i) => this.VLm(t.TabId);
+    this.nPm = (t, i) => this.sPm(t.TabId);
   }
   Initialize(t, i, h, s) {
     if (!this.kPt) {
@@ -61,7 +62,7 @@ class AdvanceNoticeSwitchComponent {
       }
     }
   }
-  VLm(t) {
+  sPm(t) {
     return t === this.yil.TabId;
   }
   SelectThumb(t) {

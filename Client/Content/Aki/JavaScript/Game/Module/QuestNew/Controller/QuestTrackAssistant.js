@@ -51,10 +51,10 @@ class QuestTrackAssistant extends ControllerAssistantBase_1.ControllerAssistantB
   }
   OnDestroy() {}
   OnRegisterNetEvent() {
-    Net_1.Net.Register(20346, this.Hro);
+    Net_1.Net.Register(24935, this.Hro);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(20346);
+    Net_1.Net.UnRegister(24935);
   }
   OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.GeneralLogicTreeSuspend, this.jro);
@@ -111,9 +111,9 @@ class QuestTrackAssistant extends ControllerAssistantBase_1.ControllerAssistantB
       fHn: r ? 1 : 2,
       gHn: t
     });
-    Net_1.Net.Call(21924, i, e => {
+    Net_1.Net.Call(21081, i, e => {
       if (e.BEs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.BEs, 25802);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.BEs, 19410);
       }
       n?.();
     });

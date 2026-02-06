@@ -64,7 +64,7 @@ class TopPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     this.ZB1 = undefined;
     this.dau = undefined;
     this.Qet = undefined;
-    this.K$m = undefined;
+    this.JOm = undefined;
     this.Xet = undefined;
     this.$et = undefined;
     this.Yet = undefined;
@@ -85,7 +85,7 @@ class TopPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     this.sQd = undefined;
     this.Rim = undefined;
     this.zom = undefined;
-    this.ukm = undefined;
+    this.bqm = undefined;
     this.pO_ = undefined;
     this.NL1 = undefined;
     this.Oze = false;
@@ -230,7 +230,7 @@ class TopPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     this._tt = () => {
       FunctionController_1.FunctionController.OpenFunctionRelateView(10002);
     };
-    this.X$m = () => {
+    this.ZOm = () => {
       PhoneMsgController_1.PhoneMsgController.OpenAndJumpShowTipShortMessage(1, 1);
     };
     this.Omt = () => {
@@ -332,7 +332,7 @@ class TopPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
   }
   async InitializeAsync() {
     this.Het = [];
-    await Promise.all([this.Stt(), this.ytt(), this.Itt(), this.Ttt(), this.Ltt(), this.Dtt(), this.gau(), this.v2c(), this.Rtt(), this.Utt(), this.Att(), this.Ptt(), this.xtt(), this.wtt(), this.Btt(), this.MDn(), this.u8c(), this.btt(), this.rk1(), this.qtt(), this.Gtt(), this.MCa(), this.LG_(), this.EJ1(), this.R_c(), this.xF1(), this.W9a(), this.yml(), this.qMl(), this.vO_(), this.jL1(), this.art(), this.Jom(), this.Y$m()]);
+    await Promise.all([this.Stt(), this.ytt(), this.Itt(), this.Ttt(), this.Ltt(), this.Dtt(), this.gau(), this.v2c(), this.Rtt(), this.Utt(), this.Att(), this.Ptt(), this.xtt(), this.wtt(), this.Btt(), this.MDn(), this.u8c(), this.btt(), this.rk1(), this.qtt(), this.Gtt(), this.MCa(), this.LG_(), this.EJ1(), this.R_c(), this.xF1(), this.W9a(), this.yml(), this.qMl(), this.vO_(), this.jL1(), this.art(), this.Jom(), this.eGm()]);
     this.Ntt();
   }
   OnSeamlessTravelFinish() {
@@ -358,7 +358,7 @@ class TopPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     this.pO_.ShowBattleVisibleChildView();
     this.NL1.ShowBattleVisibleChildView();
     this.zom?.ShowBattleVisibleChildView();
-    this.ukm?.ShowBattleVisibleChildView();
+    this.bqm?.ShowBattleVisibleChildView();
     if (this.Oze && !this.Qet.GetActive()) {
       this.Qet.RefreshButtonState();
     }
@@ -381,7 +381,7 @@ class TopPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     this.pO_.HideBattleVisibleChildView();
     this.NL1.HideBattleVisibleChildView();
     this.zom?.HideBattleVisibleChildView();
-    this.ukm?.HideBattleVisibleChildView();
+    this.bqm?.HideBattleVisibleChildView();
   }
   Ntt() {
     this.Oze = Info_1.Info.IsInGamepad();
@@ -657,21 +657,21 @@ class TopPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     var t = this.GetItem(6);
     (await this.Vtt(t, "FunctionInventory", undefined, true)).BindOnClicked(this._tt);
   }
-  async Y$m() {
+  async eGm() {
     var t;
     if (BaseConfigController_1.BaseConfigController.GetIosAuditFirstDownloadTipWithSkip()) {
       this.GetItem(38).SetUIActive(false);
     } else {
       t = this.GetItem(38);
-      this.K$m = await this.NewStaticChildViewAsync(t.GetOwner(), BattlePhoneMessageButton_1.BattlePhoneMessageButton, {
+      this.JOm = await this.NewStaticChildViewAsync(t.GetOwner(), BattlePhoneMessageButton_1.BattlePhoneMessageButton, {
         RedDotName: "FunctionPhoneMsg",
         FunctionType: 10130,
         ChildType: 3,
         HideInGamepad: true,
         HideByRoleConfig: true
       });
-      this.Het.push(this.K$m);
-      this.K$m.BindOnClicked(this.X$m);
+      this.Het.push(this.JOm);
+      this.JOm.BindOnClicked(this.ZOm);
     }
   }
   async v2c() {
@@ -877,7 +877,7 @@ class TopPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
           return undefined;
         }
       } else if (e === "HonamiStoryPlayerLevel") {
-        if (i = this.ukm?.GetGuideUiItem("0")) {
+        if (i = this.bqm?.GetGuideUiItem("0")) {
           return [i, i];
         } else {
           return undefined;
@@ -913,7 +913,7 @@ class TopPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
       this.Het.push(this.Rim);
       this.zom = await this.NewDynamicChildViewByResourceId(this.GetItem(32), "UiItem_HonamiStoryMapLevel", BattleHonamiStoryMapLevelView_1.BattleHonamiStoryMapLevelView);
       if (!HonamiStoryUtil_1.HonamiStoryUtil.CheckInHonamiStoryMainDungeon()) {
-        this.ukm = await this.NewDynamicChildViewByResourceId(t, "UiItem_HonamiStoryMainStateTip", BattleHonamiStoryPlayerStateView_1.BattleHonamiStoryPlayerStateView);
+        this.bqm = await this.NewDynamicChildViewByResourceId(t, "UiItem_HonamiStoryMainStateTip", BattleHonamiStoryPlayerStateView_1.BattleHonamiStoryPlayerStateView);
       }
     }
   }
@@ -930,7 +930,7 @@ class TopPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     if (Info_1.Info.IsInGamepad()) {
       return this.YWl.GetPhoneMsgButton();
     } else {
-      return this.K$m;
+      return this.JOm;
     }
   }
 }

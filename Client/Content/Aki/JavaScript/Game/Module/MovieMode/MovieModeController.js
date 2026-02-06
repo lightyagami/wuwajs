@@ -22,14 +22,14 @@ class MovieModeController extends UiControllerBase_1.UiControllerBase {
     return true;
   }
   static OnAddEvents() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PlotSequenceStarted, this.sYf);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PlotSequenceEnd, this.aYf);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.UIViewPortSizeChanged, this.hYf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PlotSequenceStarted, this.Vug);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PlotSequenceEnd, this.Hug);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.UIViewPortSizeChanged, this.jug);
   }
   static OnRemoveEvents() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PlotSequenceStarted, this.sYf);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PlotSequenceEnd, this.aYf);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.UIViewPortSizeChanged, this.hYf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PlotSequenceStarted, this.Vug);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PlotSequenceEnd, this.Hug);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.UIViewPortSizeChanged, this.jug);
   }
   static AddTick(e) {
     this.UYi++;
@@ -48,7 +48,7 @@ class MovieModeController extends UiControllerBase_1.UiControllerBase {
   }
   static async EnterMovieMode(e, i) {
     if (this.G2e === 2) {
-      this.Ehf();
+      this.N1f();
       i?.(false);
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("MovieMode", 87, "进入电影模式,还在取消进入的过程中,黑边反向");
@@ -60,7 +60,7 @@ class MovieModeController extends UiControllerBase_1.UiControllerBase {
       }
     } else {
       this.G2e = 1;
-      await this.Ihf(e);
+      await this.V1f(e);
       if (this.G2e !== 1) {
         this.ClearViews();
         i?.(false);
@@ -68,16 +68,16 @@ class MovieModeController extends UiControllerBase_1.UiControllerBase {
           Log_1.Log.Info("MovieMode", 87, "进入电影模式失败,已经不在进入状态", ["CurrentState", this.G2e]);
         }
       } else {
-        this.GYf = e.IsAutoExitInFlowSequence ?? false;
+        this.Jdg = e.IsAutoExitInFlowSequence ?? false;
         this.G2e = 3;
-        this.Hmf(e);
+        this.h0f(e);
         this.ResetMovieModeHideUi(false);
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.MovieModeAspectOffsetApply, true, this.GetAspectOffset());
         i?.(true);
       }
     }
   }
-  static async Ihf(e) {
+  static async V1f(e) {
     await this.CreateAspectView(e);
     if (this.G2e !== 1) {
       if (Log_1.Log.CheckInfo()) {
@@ -92,7 +92,7 @@ class MovieModeController extends UiControllerBase_1.UiControllerBase {
       if (e.BlendTime === 0) {
         this.ClearViews();
       } else {
-        this.bhf();
+        this.j1f();
       }
       i?.(false);
       if (Log_1.Log.CheckInfo()) {
@@ -107,7 +107,7 @@ class MovieModeController extends UiControllerBase_1.UiControllerBase {
       this.G2e = 4;
       this.ResetMovieModeHideUi(true);
       ModelManager_1.ModelManager.MovieModeModel?.FreezeUi("ExitMovieMode");
-      await this.Rhf(e);
+      await this.$1f(e);
       ModelManager_1.ModelManager.MovieModeModel?.UnFreezeUi("ExitMovieMode");
       this.G2e = 0;
       this.ResetMovieModeHideUi(false);
@@ -115,7 +115,7 @@ class MovieModeController extends UiControllerBase_1.UiControllerBase {
       i?.(true);
     }
   }
-  static async Rhf(e) {
+  static async $1f(e) {
     this.ResetMovieModeHideUi(true);
     var i = [];
     if (e.BlackFadeInTime) {
@@ -125,31 +125,31 @@ class MovieModeController extends UiControllerBase_1.UiControllerBase {
     await Promise.all(i);
     await e.AfterBlackFadeInCallbackAsync?.();
     this.RemoveUiView();
-    await this.$mf();
+    await this._0f();
     if (e.BlackFadeInTime) {
       ControllerHolder_1.ControllerHolder.LevelLoadingController.CloseLoading(0);
     }
   }
   static async CreateAspectView(e) {
     var i;
-    if (this.whf) {
+    if (this.W1f) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("MovieMode", 87, "执行黑边淡入逻辑失败,黑边已存在", ["CurrentState", this.G2e]);
       }
     } else {
-      this.whf = new MovieModeAspectView_1.MovieModeAspectView();
-      e.Parent?.AddChild(this.whf);
+      this.W1f = new MovieModeAspectView_1.MovieModeAspectView();
+      e.Parent?.AddChild(this.W1f);
       i = {
         IsBanAdaptation: e.IsBanAdaptation ?? false
       };
-      this.whf.OpenParam = i;
-      await this.whf.CreateThenShowByResourceIdAsync("UiView_BlackFadeScreen_Prefab", UiLayer_1.UiLayer.GetLayerRootUiItem(UiLayerType_1.ELayerType.Pop));
+      this.W1f.OpenParam = i;
+      await this.W1f.CreateThenShowByResourceIdAsync("UiView_BlackFadeScreen_Prefab", UiLayer_1.UiLayer.GetLayerRootUiItem(UiLayerType_1.ELayerType.Pop));
       if (this.G2e !== 1) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("MovieMode", 87, "执行黑边淡入逻辑失败,已经不在进入状态", ["CurrentState", this.G2e]);
         }
       } else {
-        await this.whf.Fade(true, e.BlendTime * CommonDefine_1.MILLIONSECOND_PER_SECOND);
+        await this.W1f.Fade(true, e.BlendTime * CommonDefine_1.MILLIONSECOND_PER_SECOND);
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("MovieMode", 87, "电影模式黑边动画完成");
         }
@@ -157,48 +157,48 @@ class MovieModeController extends UiControllerBase_1.UiControllerBase {
     }
   }
   static async RemoveAspectView(e) {
-    if (this.whf) {
-      if (e.BlendTime !== 0 && (await this.whf.Fade(false, e.BlendTime * CommonDefine_1.MILLIONSECOND_PER_SECOND), Log_1.Log.CheckInfo())) {
+    if (this.W1f) {
+      if (e.BlendTime !== 0 && (await this.W1f.Fade(false, e.BlendTime * CommonDefine_1.MILLIONSECOND_PER_SECOND), Log_1.Log.CheckInfo())) {
         Log_1.Log.Info("MovieMode", 87, "电影模式黑边淡出完成");
       }
-      this.whf?.Destroy();
-      this.whf = undefined;
+      this.W1f?.Destroy();
+      this.W1f = undefined;
     }
   }
   static async CreateUiView(e) {
-    if (this.Lhf) {
+    if (this.Q1f) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("MovieMode", 87, "打开电影模式UI界面失败,界面已存在", ["CurrentState", this.G2e]);
       }
     } else {
-      this.Lhf = new MovieModeUiView_1.MovieModeUiView();
-      e.Parent?.AddChild(this.Lhf);
-      this.Lhf.OpenParam = e;
-      await this.Lhf.CreateThenShowByResourceIdAsync("UiView_MotorcycleMovieMode", UiLayer_1.UiLayer.GetLayerRootUiItem(UiLayerType_1.ELayerType.Pop));
+      this.Q1f = new MovieModeUiView_1.MovieModeUiView();
+      e.Parent?.AddChild(this.Q1f);
+      this.Q1f.OpenParam = e;
+      await this.Q1f.CreateThenShowByResourceIdAsync("UiView_MotorcycleMovieMode", UiLayer_1.UiLayer.GetLayerRootUiItem(UiLayerType_1.ELayerType.Pop));
     }
   }
   static RemoveUiView() {
-    this.Lhf?.Destroy();
-    this.Lhf = undefined;
+    this.Q1f?.Destroy();
+    this.Q1f = undefined;
   }
   static GetAspectOffset() {
-    return this.whf?.GetAspectOffset();
+    return this.W1f?.GetAspectOffset();
   }
-  static bhf() {
+  static j1f() {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("MovieMode", 87, "取消进入电影模式");
     }
-    this.whf?.FadeReverse();
+    this.W1f?.FadeReverse();
     this.G2e = 2;
   }
-  static Ehf() {
+  static N1f() {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("MovieMode", 87, "重新进入电影模式");
     }
-    this.whf?.FadeReverse();
+    this.W1f?.FadeReverse();
     this.G2e = 1;
   }
-  static Hmf(e) {
+  static h0f(e) {
     if (e?.MovieCameraConfig) {
       if (e.MovieCameraConfig.MovieCameraType.Type === "Common") {
         const i = e.MovieCameraConfig.MovieCameraType.RowName;
@@ -220,7 +220,7 @@ class MovieModeController extends UiControllerBase_1.UiControllerBase {
       Log_1.Log.Info("MovieMode", 87, "进入电影模式没有配置对应电影镜头");
     }
   }
-  static async $mf() {
+  static async _0f() {
     const i = new CustomPromise_1.CustomPromise();
     ModelManager_1.ModelManager.CameraModel?.StopMovieCamera(e => {
       if (Log_1.Log.CheckInfo()) {
@@ -252,17 +252,17 @@ class MovieModeController extends UiControllerBase_1.UiControllerBase {
   static ResetMovieModeHideUi(e) {
     if (!ModelManager_1.ModelManager.MovieModeModel?.IsFreezingUi) {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.MovieModeHideUiChange, e);
-      this.Lhf?.ActivateTimer();
+      this.Q1f?.ActivateTimer();
     }
   }
   static ClearViews() {
-    if (this.whf) {
-      this.whf.Destroy();
-      this.whf = undefined;
+    if (this.W1f) {
+      this.W1f.Destroy();
+      this.W1f = undefined;
     }
-    if (this.Lhf) {
-      this.Lhf.Destroy();
-      this.Lhf = undefined;
+    if (this.Q1f) {
+      this.Q1f.Destroy();
+      this.Q1f = undefined;
     }
     this.G2e = 0;
   }
@@ -273,25 +273,26 @@ class MovieModeController extends UiControllerBase_1.UiControllerBase {
   }
 }
 exports.MovieModeController = MovieModeController;
-(_a = MovieModeController).whf = undefined;
-MovieModeController.Lhf = undefined;
+(_a = MovieModeController).IsTickEvenPausedInternal = true;
+MovieModeController.W1f = undefined;
+MovieModeController.Q1f = undefined;
 MovieModeController.UYi = 0;
 MovieModeController.PYi = new Map();
 MovieModeController.G2e = 0;
-MovieModeController.GYf = false;
-MovieModeController.hYf = () => {
-  _a.whf?.UpdateTransform();
+MovieModeController.Jdg = false;
+MovieModeController.jug = () => {
+  _a.W1f?.UpdateTransform();
 };
-MovieModeController.sYf = () => {
-  if (_a.Lhf && (_a.Lhf.SetUiActive(false), Log_1.Log.CheckInfo() && Log_1.Log.Info("MovieMode", 87, "电影模式UI显示状态", ["isActive", false]), _a.GYf)) {
+MovieModeController.Vug = () => {
+  if (_a.Q1f && (_a.Q1f.SetUiActive(false), Log_1.Log.CheckInfo() && Log_1.Log.Info("MovieMode", 87, "电影模式UI显示状态", ["isActive", false]), _a.Jdg)) {
     _a.ExitMovieMode({
       BlendTime: 0
     });
-    _a.GYf = false;
+    _a.Jdg = false;
   }
 };
-MovieModeController.aYf = () => {
-  if (_a.Lhf && (_a.Lhf.SetUiActive(true), Log_1.Log.CheckInfo())) {
+MovieModeController.Hug = () => {
+  if (_a.Q1f && (_a.Q1f.SetUiActive(true), Log_1.Log.CheckInfo())) {
     Log_1.Log.Info("MovieMode", 87, "电影模式UI显示状态", ["isActive", true]);
   }
 }; //# sourceMappingURL=MovieModeController.js.map

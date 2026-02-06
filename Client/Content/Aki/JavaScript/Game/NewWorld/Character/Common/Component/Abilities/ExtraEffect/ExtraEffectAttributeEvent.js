@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.AttributeConvert = exports.AttributeEventEffects = undefined;
 const Log_1 = require("../../../../../../../Core/Common/Log");
 const Macro_1 = require("../../../../../../../Core/Preprocessor/Macro");
+const GameplayTagUtils_1 = require("../../../../../../../Core/Utils/GameplayTagUtils");
 const CombatLog_1 = require("../../../../../../Utils/CombatLog");
 const BulletController_1 = require("../../../../../Bullet/BulletController");
 const AbilityUtils_1 = require("../AbilityUtils");
@@ -22,7 +23,7 @@ class AttributeEventEffects extends ExtraEffectBase_1.BuffEffect {
     this.Times = undefined;
     this.KQo = undefined;
     this.QQo = undefined;
-    this.XQo = false;
+    this.R8g = false;
     this.jht = false;
     this.$Qo = new Array();
     this.YQo = 0;
@@ -49,8 +50,8 @@ class AttributeEventEffects extends ExtraEffectBase_1.BuffEffect {
     var t = AbilityUtils_1.AbilityUtils.GetLevelValue(t, s, -1);
     this.KQo = new CharacterAttributeIntervalCheck_1.AttributeIntervalCheck(h, e, t, r);
     this.GoalType = Number(i[2]);
-    this.Ids = i[3].split("#").map(t => Number(t));
-    this.XQo = Number(i[4] ?? 0) === 1;
+    this.Ids = i[3].split("#").map(t => t);
+    this.R8g = Number(i[4] ?? 0) === 1;
     if (Number(i[5] ?? 0) === 1) {
       this.YQo = 2;
     } else {
@@ -65,7 +66,7 @@ class AttributeEventEffects extends ExtraEffectBase_1.BuffEffect {
   OnCreated() {
     var t = this.JQo();
     if (t) {
-      this.QQo = t.GetComponent(182);
+      this.QQo = t.GetComponent(184);
       if (this.KQo.IsPerTenThousand && this.KQo.MaxAttributeId === undefined) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("Character", 19, "Buff额外效果6 监听属性变化到特定区间，基于相对最大值的万分比，但是监听的属性没有对应的最大值属性，该效果无效", ["buff Id", this.BuffId], ["属性Id", this.KQo.ListenAttributeId]);
@@ -93,6 +94,9 @@ class AttributeEventEffects extends ExtraEffectBase_1.BuffEffect {
           break;
         case 0:
           this.ExecuteAddBuffs();
+          break;
+        case 3:
+          this.ExecuteAddOrRemoveTags(true);
       }
     }
   }
@@ -111,20 +115,26 @@ class AttributeEventEffects extends ExtraEffectBase_1.BuffEffect {
     }
   }
   zQo() {
-    if (this.GoalType === 0) {
-      if (this.XQo) {
-        for (const t of this.$Qo) {
-          this.GetEffectTarget()?.RemoveBuffByHandle(t, -1, `因为其它buff属性监听额外效果而移除（前置buff Id=${this.BuffId}, handle=${this.ActiveHandleId}）`);
+    switch (this.GoalType) {
+      case 0:
+        if (this.R8g) {
+          for (const t of this.$Qo) {
+            this.GetEffectTarget()?.RemoveBuffByHandle(t, -1, `因为其它buff属性监听额外效果而移除（前置buff Id=${this.BuffId}, handle=${this.ActiveHandleId}）`);
+          }
         }
-      }
-      this.$Qo.length = 0;
+        this.$Qo.length = 0;
+        break;
+      case 3:
+        if (this.R8g) {
+          this.ExecuteAddOrRemoveTags(false);
+        }
     }
   }
   ExecuteAddBuffs() {
     var i = this.GetEffectTarget();
     if (this.CheckExecutable() && i) {
       for (let t = 0; t < this.Ids.length; t++) {
-        var e = this.Ids[t];
+        var e = Number(this.Ids[t]);
         var s = AbilityUtils_1.AbilityUtils.GetArrayValue(this.Times, t, ExtraEffectPassiveEffects_1.DEFAULT_PASSIVE_BUFF_ADD_TIMES);
         var e = i.AddBuffLocal(e, {
           InstigatorId: this.InstigatorBuffComponent.CreatureDataId,
@@ -134,7 +144,7 @@ class AttributeEventEffects extends ExtraEffectBase_1.BuffEffect {
           ServerId: this.ServerId,
           Reason: `因为其它buff额外效果而添加（前置buff Id=${this.BuffId}, handle=${this.ActiveHandleId}）`
         });
-        if (this.XQo && e > 0) {
+        if (this.R8g && e > 0) {
           this.$Qo.push(e);
         }
       }
@@ -147,7 +157,7 @@ class AttributeEventEffects extends ExtraEffectBase_1.BuffEffect {
     var s = t?.Entity;
     if (i && e && s) {
       for (let t = 0; t < this.Ids.length; t++) {
-        var h = String(this.Ids[t]);
+        var h = this.Ids[t];
         var r = AbilityUtils_1.AbilityUtils.GetArrayValue(this.Times, t, ExtraEffectPassiveEffects_1.DEFAULT_PASSIVE_BULLET_TIMES);
         var a = this.Buff.MessageId;
         for (let t = 0; t < r; t++) {
@@ -156,6 +166,15 @@ class AttributeEventEffects extends ExtraEffectBase_1.BuffEffect {
             CreateOnAuthority: false
           }, a);
         }
+      }
+    }
+  }
+  ExecuteAddOrRemoveTags(t) {
+    var i = this.GetEffectTarget();
+    if (this.CheckExecutable() && i) {
+      for (const s of this.Ids) {
+        var e = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(s);
+        this.OwnerEntity?.CheckGetComponent(217)?.TagContainer.UpdateExactTag(2, e, t ? 1 : -1);
       }
     }
   }
@@ -205,7 +224,7 @@ class AttributeConvert extends ExtraEffectBase_1.BuffEffect {
     this.yB = AbilityUtils_1.AbilityUtils.GetLevelValue(t, h, -1);
   }
   OnCreated() {
-    var t = this.ExactOwnerEntity?.GetComponent(182);
+    var t = this.ExactOwnerEntity?.GetComponent(184);
     if (t) {
       if (!this.Bul || this.Pul !== CharacterAttributeTypes_1.EAttributeId.Proto_EAttributeType_None) {
         t.AddListener(this.xul, this._yo, "ExtraEffectAttributeEvent");
@@ -215,10 +234,10 @@ class AttributeConvert extends ExtraEffectBase_1.BuffEffect {
     }
   }
   OnRemoved() {
-    this.OwnerEntity?.GetComponent(181)?.RemoveListener(this.xul, this._yo);
+    this.OwnerEntity?.GetComponent(183)?.RemoveListener(this.xul, this._yo);
   }
   OnExecute(i) {
-    var e = this.OwnerEntity?.GetComponent(181);
+    var e = this.OwnerEntity?.GetComponent(183);
     if (e) {
       let t = this.qul ? Math.abs(i) : i;
       if (this.Bul) {

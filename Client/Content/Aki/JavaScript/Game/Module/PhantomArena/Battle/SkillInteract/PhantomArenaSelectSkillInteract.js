@@ -15,20 +15,20 @@ class PhantomArenaSelectSkillInteract extends PhantomArenaSkillInteractBase_1.Ph
     this.ns1 = -1;
     this.$81 = 0;
   }
-  URf() {
+  jxf() {
     let t = undefined;
     t = this.Data.IsFight ? ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.GetBattleCardByCardId(this.Data.DataId) : ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.GetHandCardDataByCardId(this.Data.DataId);
     var i = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardConfig(t.ConfigId);
     this.BattleProxy.SkillTriggerMask.ShowTriggerMask(i.ActiveSkillId);
     this.BattleProxy.SkillTriggerMask.RefreshSkill(i.Name, i.CardEffectDescription, i.CardEffectDescriptionParams);
   }
-  xRf() {
+  $xf() {
     var t = ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.GetBattleCardByCardId(this.Data.DataId);
     var i = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardConfig(t.ConfigId);
     this.BattleProxy.SkillTriggerMask.ShowTriggerMask(t.ClickActiveSkillId);
     this.BattleProxy.SkillTriggerMask.RefreshSkill(i.Name, i.DurableSkillDescription, i.DurableSkillDescriptionParams);
   }
-  BRf() {
+  Wxf() {
     var t;
     var i;
     var a;
@@ -45,7 +45,7 @@ class PhantomArenaSelectSkillInteract extends PhantomArenaSkillInteractBase_1.Ph
       }
     }
   }
-  kRf() {
+  Qxf() {
     var t;
     var i;
     var a;
@@ -60,21 +60,21 @@ class PhantomArenaSelectSkillInteract extends PhantomArenaSkillInteractBase_1.Ph
       this.BattleProxy.SkillTriggerMask.RefreshSkill(i, a, e);
     }
   }
-  qRf() {
+  Kxf() {
     if (this.Data.IsRole) {
-      this.kRf();
+      this.Qxf();
     } else if (this.Data.IsPassive) {
-      this.BRf();
+      this.Wxf();
     } else if (this.Data.DataId) {
       if (this.Data.IsClickInteract) {
-        this.xRf();
+        this.$xf();
       } else {
-        this.URf();
+        this.jxf();
       }
     }
   }
   W81() {
-    this.qRf();
+    this.Kxf();
     this.BattleProxy.SkillTriggerMask.RefreshTips(this.os1.size, this.$81);
     this.BattleProxy.SkillTriggerMask.RefreshCancelBtnActive(this.Data.IsPassive);
   }

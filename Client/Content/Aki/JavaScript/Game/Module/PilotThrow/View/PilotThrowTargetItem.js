@@ -23,44 +23,44 @@ class PilotThrowTargetItem extends CommonMarkItem_1.CommonMarkItem {
   constructor(t) {
     super(Vector_1.Vector.Create(t.Position.X ?? 0, t.Position.Y ?? 0, t.Position.Z ?? 0).ToUeVector());
     this.Config = t;
-    this.oXm = undefined;
+    this.lZm = undefined;
     this.RootActorRotation = Rotator_1.Rotator.Create();
     this.IZd = Vector_1.Vector.Create();
-    this.nXm = false;
+    this._Zm = false;
     this.$pt = undefined;
     this.OnTargetInOutRange = undefined;
-    this.i9f = 1;
+    this.gng = 1;
     this.rvi = undefined;
-    this.sXm = false;
+    this.uZm = false;
     this.yct = t => {
       if (t === "Lock_Out_new") {
-        this.oXm?.SetUIActive(false);
+        this.lZm?.SetUIActive(false);
       } else if (t === "Close") {
         this.CloseMeAsync();
       }
     };
     this.IZd.Set(this.TargetPosition.X, this.TargetPosition.Y, this.TargetPosition.Z);
-    this.nXm = t.VisualType === IComponent_1.EPilotThrowPointVisualType.MainStory;
-    this.i9f = t.UiScale ?? ModelManager_1.ModelManager.PilotThrowModel.Setting.Ui缩放;
+    this._Zm = t.VisualType === IComponent_1.EPilotThrowPointVisualType.MainStory;
+    this.gng = t.UiScale ?? ModelManager_1.ModelManager.PilotThrowModel.Setting.Ui缩放;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIItem]];
   }
   OnStart() {
     this.RootActorRotation.FromUeRotator(this.RootActor.K2_GetActorRotation());
-    this.oXm = this.GetItem(3);
-    this.oXm?.SetUIActive(false);
+    this.lZm = this.GetItem(3);
+    this.lZm?.SetUIActive(false);
     this.RootItem?.SetAsFirstHierarchy();
-    this.GetItem(1)?.SetUIActive(!this.nXm);
-    this.GetItem(2)?.SetUIActive(!!this.nXm);
-    this.GetItem(4)?.SetUIActive(!!this.nXm);
-    this.GetItem(6)?.SetUIActive(!this.nXm);
-    this.GetItem(7)?.SetUIActive(!!this.nXm);
+    this.GetItem(1)?.SetUIActive(!this._Zm);
+    this.GetItem(2)?.SetUIActive(!!this._Zm);
+    this.GetItem(4)?.SetUIActive(!!this._Zm);
+    this.GetItem(6)?.SetUIActive(!this._Zm);
+    this.GetItem(7)?.SetUIActive(!!this._Zm);
     this.GetItem(5)?.SetUIActive(false);
     this.$pt = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
     this.$pt.BindSequenceCloseEvent(this.yct);
     this.$pt?.PlayLevelSequenceByName("Start");
-    this.RootItem?.SetRelativeScale3D(new UE.Vector(this.i9f, this.i9f, this.i9f));
+    this.RootItem?.SetRelativeScale3D(new UE.Vector(this.gng, this.gng, this.gng));
     this.RootItem?.SetUIRelativeLocation(UE.KismetMathLibrary.Conv_VectorDoubleToVector(this.TargetPosition));
     this.GetItem(0)?.SetUIActive(false);
     this.i3l();
@@ -106,13 +106,16 @@ class PilotThrowTargetItem extends CommonMarkItem_1.CommonMarkItem {
   OnTick(t) {
     this.UpdateRotation();
     var e = ModelManager_1.ModelManager.PilotThrowModel.IsInProjectileSplineLastPointRange(this.IZd);
-    if (e !== this.sXm) {
+    if (e !== this.uZm) {
       this.$pt?.StopPlayingSequence();
       if (e) {
-        this.oXm?.SetUIActive(e);
+        this.lZm?.SetUIActive(e);
+        ModelManager_1.ModelManager.PilotThrowModel.CurrentInRangePoint = Vector_1.Vector.Create(this.TargetPosition.X, this.TargetPosition.Y, this.TargetPosition.Z);
+      } else {
+        ModelManager_1.ModelManager.PilotThrowModel.CurrentInRangePoint = undefined;
       }
       this.$pt?.PlayLevelSequenceByName(e ? "Lock_In_new" : "Lock_Out_new");
-      this.sXm = e;
+      this.uZm = e;
       this.OnTargetInOutRange?.(e);
     }
   }

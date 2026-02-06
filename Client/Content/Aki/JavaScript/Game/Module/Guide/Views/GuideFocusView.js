@@ -65,7 +65,7 @@ class GuideFocusView extends GuideBaseView_1.GuideBaseView {
         this.zJc = undefined;
       }
     };
-    this.fDm = t => {
+    this.JAm = t => {
       this.GetRootItem()?.SetUIActive(t);
     };
   }
@@ -99,11 +99,11 @@ class GuideFocusView extends GuideBaseView_1.GuideBaseView {
   }
   OnGuideBaseViewAddEvent() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSkillButtonIndexRefresh, this.aZt);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPreparePhotoScreenShot, this.fDm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPreparePhotoScreenShot, this.JAm);
   }
   OnGuideBaseViewRemoveEvent() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSkillButtonIndexRefresh, this.aZt);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPreparePhotoScreenShot, this.fDm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPreparePhotoScreenShot, this.JAm);
   }
   OnGuideViewAfterShow() {
     this.RootItem.SetRaycastTarget(false);

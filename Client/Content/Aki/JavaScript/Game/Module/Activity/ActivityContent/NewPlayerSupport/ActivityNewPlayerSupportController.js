@@ -30,16 +30,22 @@ class ActivityNewPlayerSupportController extends ActivityControllerBase_1.Activi
     super(...arguments);
     this.X4c = undefined;
     this.Jca = new Map();
-    this.sDf = e => {
+    this.Gqf = e => {
       if (this.X4c) {
         this.X4c.UpdateTaskData(e.nAu);
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.X4c.Id);
       }
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnActivityNewPlayerSupportTaskUpdate);
     };
-    this.fBf = e => {
-      for (const t of e.Ogf) {
-        this.gBf(t);
+    this.lNf = e => {
+      var t = e.HCf;
+      var r = e.h_g;
+      for (const i of t) {
+        if (r && r.Q6n === i) {
+          this._Nf(i, r);
+        } else {
+          this._Nf(i);
+        }
       }
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.X4c.Id);
     };
@@ -47,7 +53,7 @@ class ActivityNewPlayerSupportController extends ActivityControllerBase_1.Activi
       this.Jca.set(ActivityNewPlayerSupportDefine_1.ENewPlayerSupportStartCondition.WorldDone, true);
       this.zca();
     };
-    this.k6f = () => {
+    this.Zzf = () => {
       var e = ModelManager_1.ModelManager.GameModeModel.WorldDone;
       this.Jca.set(ActivityNewPlayerSupportDefine_1.ENewPlayerSupportStartCondition.WorldDone, e);
       var e = this.X4c?.IsActivityFirstShow ?? false;
@@ -68,23 +74,23 @@ class ActivityNewPlayerSupportController extends ActivityControllerBase_1.Activi
   }
   OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDone, this.nye);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnActivityNewPlayerSupportInfoUpdate, this.k6f);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnActivityNewPlayerSupportInfoUpdate, this.Zzf);
   }
   OnRemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDone, this.nye);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivityNewPlayerSupportInfoUpdate, this.k6f);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivityNewPlayerSupportInfoUpdate, this.Zzf);
   }
   OnClear() {
     this.Jca.clear();
     return true;
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(28009, this.sDf);
-    Net_1.Net.Register(18065, this.fBf);
+    Net_1.Net.Register(16544, this.Gqf);
+    Net_1.Net.Register(19100, this.lNf);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(28009);
-    Net_1.Net.UnRegister(18065);
+    Net_1.Net.UnRegister(16544);
+    Net_1.Net.UnRegister(19100);
   }
   OnOpenView(e) {}
   OnGetActivityResource(e) {
@@ -107,7 +113,7 @@ class ActivityNewPlayerSupportController extends ActivityControllerBase_1.Activi
   }
   zca() {
     if (PublicUtil_1.PublicUtil.GetIsSilentLogin() || this.X4c?.AlreadyStartView) {
-      this.Ajf();
+      this.Xig();
     } else {
       let e = true;
       for (const i in ActivityNewPlayerSupportDefine_1.ENewPlayerSupportStartCondition) {
@@ -126,11 +132,11 @@ class ActivityNewPlayerSupportController extends ActivityControllerBase_1.Activi
         });
         ControllerHolder_1.ControllerHolder.SplashScreenController.PushSplashScreenTask(r);
       } else {
-        this.Ajf();
+        this.Xig();
       }
     }
   }
-  Ajf() {
+  Xig() {
     this.Jca.set(ActivityNewPlayerSupportDefine_1.ENewPlayerSupportStartCondition.WorldDone, false);
   }
   RequestRewardTask(e, t = false) {
@@ -141,10 +147,10 @@ class ActivityNewPlayerSupportController extends ActivityControllerBase_1.Activi
       v.push(e);
     }
     if (!!v && !(v.length <= 0)) {
-      (t = Protocol_1.Aki.Protocol.Agf.create()).B6n = v;
-      Net_1.Net.Call(27388, t, e => {
+      (t = Protocol_1.Aki.Protocol.kCf.create()).B6n = v;
+      Net_1.Net.Call(21594, t, e => {
         if (e.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 17339);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 19153);
         } else {
           var t = new Map();
           for (const l of v) {
@@ -167,7 +173,7 @@ class ActivityNewPlayerSupportController extends ActivityControllerBase_1.Activi
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.X4c.Id);
           var e = e.Q6n;
           for (const _ of e) {
-            this.gBf(_);
+            this._Nf(_);
           }
           this.OpenRewardView(n, e);
         }
@@ -175,28 +181,29 @@ class ActivityNewPlayerSupportController extends ActivityControllerBase_1.Activi
     }
   }
   RequestTrialRoleLvUp(e) {
-    var t = Protocol_1.Aki.Protocol.Ugf.create();
-    t.Ogf = e;
-    Net_1.Net.Call(20407, t, e => {
+    var t = Protocol_1.Aki.Protocol.OCf.create();
+    t.HCf = e;
+    Net_1.Net.Call(19425, t, e => {
       if (e.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 16830);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 22425);
       } else {
-        this.gBf(e.Q6n);
+        this._Nf(e.Q6n, e.h_g);
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.ActivityData.Id);
       }
     });
   }
-  RequestSetCurUseTrialRole(e) {
+  RequestSetCurUseTrialRole(e, r) {
     var t;
     if (RoleUtils_1.RoleUtils.GetTrialRoleType(e) === 2) {
-      (t = Protocol_1.Aki.Protocol.ZEf.create()).Ogf = e;
-      Net_1.Net.Call(16492, t, e => {
+      (t = Protocol_1.Aki.Protocol.wwf.create()).HCf = e;
+      Net_1.Net.Call(28543, t, e => {
         var t;
         if (e.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 16191);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 19934);
         } else {
           t = e.Q6n;
-          this.ActivityData?.UpdateCurUseTrialRole(t, e.oXf);
+          this.ActivityData?.UpdateCurUseTrialRole(t, e.h_g);
+          r?.(t);
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnActivityNewPlayerSupportCurTrialRoleChange, t);
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.X4c.Id);
         }
@@ -208,8 +215,8 @@ class ActivityNewPlayerSupportController extends ActivityControllerBase_1.Activi
     e.SetRequestTrialRoleLvUpFunc(e => {
       this.RequestTrialRoleLvUp(e);
     });
-    e.SetRequestSetCurUseTrialRoleFunc(e => {
-      this.RequestSetCurUseTrialRole(e);
+    e.SetRequestSetCurUseTrialRoleFunc((e, t) => {
+      this.RequestSetCurUseTrialRole(e, t);
     });
     var t = ConfigManager_1.ConfigManager.ActivityNewPlayerSupportConfig.GetTrialRoleUnlockDesc();
     e.SetTrialRoleGroupUnlockDesc(t);
@@ -226,12 +233,12 @@ class ActivityNewPlayerSupportController extends ActivityControllerBase_1.Activi
       UiManager_1.UiManager.OpenView("ActivityNewPlayerSupportRewardView", e);
     }
   }
-  gBf(e) {
-    var t = ConfigManager_1.ConfigManager.TrialRoleConfig?.GetTrialRoleGroupId(e);
-    if (ModelManager_1.ModelManager.TrialRoleModel.GetDataByGroupId(t).IsLocked()) {
+  _Nf(e, t) {
+    var r = ConfigManager_1.ConfigManager.TrialRoleConfig?.GetTrialRoleGroupId(e);
+    if (ModelManager_1.ModelManager.TrialRoleModel.GetDataByGroupId(r).IsLocked()) {
       this.ActivityData.SaveTrailRoleEntranceRedDot(true);
     }
-    this.ActivityData.UpdateActivatedTrialRole(e);
+    this.ActivityData.UpdateActivatedTrialRole(e, t);
   }
   NotifyRedDotRefresh() {
     if (this.X4c) {

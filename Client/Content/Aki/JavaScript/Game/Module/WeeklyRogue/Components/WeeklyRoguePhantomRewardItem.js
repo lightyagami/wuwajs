@@ -20,7 +20,7 @@ class WeeklyRoguePhantomRewardItem extends GridProxyAbstract_1.GridProxyAbstract
     this.InventoryGiftItem = undefined;
     this.IsSelectOnCb = undefined;
     this.OnToggleStateChangeFunction = undefined;
-    this.Vbf = () => new WeeklyRogueRewardFetterItem();
+    this.dDf = () => new WeeklyRogueRewardFetterItem();
     this.Jmi = () => {
       this.Oei(false, true);
     };
@@ -40,7 +40,7 @@ class WeeklyRoguePhantomRewardItem extends GridProxyAbstract_1.GridProxyAbstract
     this.InventoryGiftItem = new InventoryGiftCellItem_1.InventoryGiftCellItem();
     this.InventoryGiftItem.Initialize(this.GetItem(0).GetOwner());
     this.GetExtendToggle(3).OnStateChange.Add(this.Yai);
-    this.ElementLayout = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(4), this.Vbf);
+    this.ElementLayout = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(4), this.dDf);
   }
   Refresh(t, e, i) {
     this.Data = t;

@@ -227,7 +227,7 @@ class EditFormationModel extends ModelBase_1.ModelBase {
     let t = 0;
     let r = 0;
     for (const e of ModelManager_1.ModelManager.SceneTeamModel.GetTeamEntities()) {
-      var o = e.Entity?.GetComponent(182);
+      var o = e.Entity?.GetComponent(184);
       if (o) {
         t += o.GetCurrentValue(CharacterAttributeTypes_1.EAttributeId.Proto_Lv);
         r++;

@@ -22,7 +22,7 @@ class TsAnimNotifyExecutionAdjust extends UE.KuroAnimNotify {
   K2_Notify(e, t) {
     e = e.GetOwner();
     if (e instanceof TsBaseCharacter_1.default) {
-      var o = e.CharacterActorComponent.Entity.GetComponent(53);
+      var o = e.CharacterActorComponent.Entity.GetComponent(55);
       if (o) {
         o = o.PendingCaughtList.get(this.CaughtId);
         if (o) {

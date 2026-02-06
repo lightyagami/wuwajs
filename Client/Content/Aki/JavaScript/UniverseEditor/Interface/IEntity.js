@@ -1745,7 +1745,7 @@ exports.entityDetailsAki = {
 该类型的实体用于监听外部事件并触发对应Action，详情点击跳转👉https://kurogame.feishu.cn/wiki/Qy4wwVEL0iY3V5kUvVkc2Ksgnqb。`,
     EntityType: "可交互条件监听器(InteractiveConditionListener)",
     EntityLogic: "Item",
-    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "InteractComponent", "ConditionListenerComponent", "VarComponent", "ClientConditionListenerComponent", "SceneItemLifeCycleComponent"]
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "InteractComponent", "ConditionListenerComponent", "ClientConditionListenerComponent", "VarComponent", "SceneItemLifeCycleComponent"]
   },
   TriggerConditionListener: {
     Category: "场景交互物类",
@@ -2017,6 +2017,15 @@ exports.entityDetailsAki = {
     EntityLogic: "Item",
     EntityType: "无渲染传送门机关(Portal)",
     Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "RangeComponent", "TriggerComponent", "NoRenderPortalComponent", "AttachTargetComponent", "SceneItemLifeCycleComponent"]
+  },
+  MoveNoRenderPortal: {
+    Category: "机关玩法类",
+    Owner: 15,
+    Status: "开发中",
+    Description: "可移动的无渲染传送门",
+    EntityLogic: "Item",
+    EntityType: "可移动无渲染传送门机关(Portal)",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "RangeComponent", "TriggerComponent", "NoRenderPortalComponent", "VarComponent", "AttachTargetComponent", "SceneItemMovementComponent", "SceneItemLifeCycleComponent"]
   },
   EffectArea: {
     Category: "机关玩法类",
@@ -2333,6 +2342,15 @@ exports.entityDetailsAki = {
     EntityType: "跑酷滑轨(SlideRail)",
     Components: ["BaseInfoComponent", "ModelComponent", "SlideRailComponent"]
   },
+  SlidePerformRail: {
+    Category: "轨道滑行轨道",
+    Owner: 4,
+    Status: "开发中",
+    Description: "轨道滑行轨道，用于实现轨道滑行相关玩法",
+    EntityLogic: "Item",
+    EntityType: "轨道滑行轨道(SlidePerformRail)",
+    Components: ["BaseInfoComponent", "ModelComponent", "SlidePerformComponent"]
+  },
   CurveControlDestructible: {
     Category: "可被曲线控制的可破坏物",
     Owner: 4,
@@ -2404,6 +2422,15 @@ exports.entityDetailsAki = {
     EntityLogic: "Monster",
     EntityType: "塔防辅助机(FollowShooter)",
     Components: ["BaseInfoComponent", "ModelComponent", "AiComponent", "AttributeComponent", "MonsterComponent", "CombatComponent", "FollowShooterComponent", "SimpleCombatComponent"]
+  },
+  RenderSpecifiedFollowShooter: {
+    Category: "辅助机类",
+    Owner: 12,
+    Status: "可使用",
+    Description: "3.1范围渲染辅助机，在 FollowShooter 基础上新增范围渲染组件",
+    EntityLogic: "Monster",
+    EntityType: "范围渲染辅助机(RenderSpecifiedFollowShooter)",
+    Components: ["BaseInfoComponent", "ModelComponent", "AiComponent", "AttributeComponent", "MonsterComponent", "CombatComponent", "FollowShooterComponent", "RenderSpecifiedRangeComponent"]
   },
   GodKingFrequencyController: {
     Category: "神王频率玩法控制器",
@@ -2484,10 +2511,11 @@ exports.entityDetailsAki = {
     Category: "机关玩法类",
     Owner: 16,
     Status: "可使用",
-    Description: "滚方块玩法中的地板实体类型，含有一个滚方块物品组件",
+    Description: "滚方块玩法中的物品实体类型，含有一个滚方块物品组件",
     EntityType: "滚方块物品(RollBlockItem)",
     EntityLogic: "Item",
-    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "SceneItemLifeCycleComponent", "RollBlockItemComponent"]
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "SceneItemLifeCycleComponent", "RollBlockItemComponent", "RangeComponent"],
+    DefaultDisabledComponents: ["RangeComponent"]
   },
   SunSpiritCollectUnit: {
     Category: "日灵玩法类",
@@ -2653,6 +2681,24 @@ exports.entityDetailsAki = {
     EntityLogic: "Item",
     EntityType: "可破坏物带钩锁(DestructibleWithHook)",
     Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "CollectComponent", "InteractComponent", "RangeComponent", "TriggerComponent", "ClientTriggerComponent", "HookLockPoint", "RefreshComponent", "RewardComponent", "SceneItemLifeCycleComponent", "InteractAudioComponent", "NearbyTrackingComponent", "DestructibleItem", "FightInteractComponent"]
+  },
+  ExhibitBase: {
+    Category: "机关玩法类",
+    Owner: 18,
+    Status: "开发中",
+    Description: "可在站台上创建并展示声骸、武器模型",
+    EntityType: "展台底座(ExhibitBase)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "ExhibitComponent", "InteractComponent"]
+  },
+  TimeScheduleManagerEntity: {
+    Category: "日程表管理器",
+    Owner: 14,
+    Status: "开发中",
+    Description: "该类型的实体用于管理一组实体的日程信息。",
+    EntityLogic: "Custom",
+    EntityType: "日程表管理器实体(TimeScheduleManagerEntity)",
+    Components: ["BaseInfoComponent", "TimeScheduleComponent"]
   }
 };
 exports.entityDetails = {

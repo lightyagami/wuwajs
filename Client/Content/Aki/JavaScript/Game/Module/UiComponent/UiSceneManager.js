@@ -329,11 +329,14 @@ class UiSceneManager {
   }
   static InitRoleSystemRoleActor(e) {
     var a = this.Sxo.Peek();
-    if (a) {
-      a.SetMoveOutActor();
+    if (a && (a.SetMoveOutActor(), Log_1.Log.CheckInfo())) {
+      Log_1.Log.Info("UiSceneManager", 58, "InitRoleSystemRoleActor MoveOutActor", ["ActorIndex", a.GetRoleActorIndex()]);
     }
     var a = UiSceneRoleActorManager_1.UiSceneRoleActorManager.CreateUiSceneRoleActor(e);
     this.Sxo.Push(a);
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("UiSceneManager", 58, "InitRoleSystemRoleActor", ["ActorIndex", a.GetRoleActorIndex()], ["UseWay", e]);
+    }
     return a;
   }
   static GetRoleSystemRoleActor() {
@@ -368,10 +371,16 @@ class UiSceneManager {
       r = this.Sxo.Peek() === e;
       UiSceneManager.Sxo.Delete(e);
       e = e.GetRoleActorIndex();
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("UiSceneManager", 58, "DestroyRoleSystemRoleActor", ["ActorIndex", e]);
+      }
       a = UiSceneRoleActorManager_1.UiSceneRoleActorManager.DestroyUiSceneRoleActor(e);
     }
     if (!this.Sxo.Empty && r) {
       const e = UiSceneManager.Sxo.Peek();
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("UiSceneManager", 58, "DestroyRoleSystemRoleActor MoveInActor", ["ActorIndex", e.GetRoleActorIndex()]);
+      }
       e.SetMoveInActor();
     }
     return a;
@@ -653,17 +662,20 @@ class UiSceneManager {
       UiSceneManager.Jkc = undefined;
     }
   }
-  static InitMotorSkeletalHandle() {
-    if (UiSceneManager.$jm !== undefined) {
+  static InitMotorSkeletalHandle(e = 18) {
+    if (UiSceneManager.HWm !== undefined) {
       if (Log_1.Log.CheckWarn()) {
         Log_1.Log.Warn("UiSceneManager", 43, "[MotorSkeletalHandle]重复初始化");
       }
     } else {
-      UiSceneManager.$jm = UiSceneManager.fxo(18);
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("UiSceneManager", 43, "InitMotorSkeletalHandle", ["UseWay", e]);
+      }
+      UiSceneManager.HWm = UiSceneManager.fxo(e);
     }
   }
   static GetMotorSkeletalHandle() {
-    var e = UiSceneManager.$jm;
+    var e = UiSceneManager.HWm;
     if (e) {
       return e;
     }
@@ -672,9 +684,12 @@ class UiSceneManager {
     }
   }
   static DestroyMotorSkeletalHandle() {
-    if (UiSceneManager.$jm) {
-      SkeletalObserverManager_1.SkeletalObserverManager.DestroySkeletalObserver(UiSceneManager.$jm);
-      UiSceneManager.$jm = undefined;
+    if (UiSceneManager.HWm) {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("UiSceneManager", 43, "DestroyMotorSkeletalHandle");
+      }
+      SkeletalObserverManager_1.SkeletalObserverManager.DestroySkeletalObserver(UiSceneManager.HWm);
+      UiSceneManager.HWm = undefined;
     }
   }
   static AddUiShowRoomShowActor(e, a) {
@@ -701,16 +716,24 @@ class UiSceneManager {
       n.SetResult(undefined);
     }
     await n.Promise;
+    UiSceneManager.KUg();
     this.SetSceneFloorReflection(true, true);
     UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.EnableKuroTranslucentPrePassStencilClear 1");
+    if (Info_1.Info.IsMacPlatform()) {
+      UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.AllowHardwareOcclusion 0");
+    }
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.UiSceneLastStepInLoadScene);
   }
   static async ExitScene() {
     await WorldController_1.WorldController.EndWorldOriginInUiMode();
+    UiSceneManager.XUg();
     UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Shadow.ForceUpdateCSMOnce 1");
     UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.EnableKuroTranslucentPrePassStencilClear 0");
     this.SetSceneFloorReflection(false, false);
     UiSceneManager.CloseUiScene();
+    if (Info_1.Info.IsMacPlatform()) {
+      UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.AllowHardwareOcclusion 1");
+    }
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.UiSceneLastStepInExitScene);
   }
   static SetSceneFloorReflection(e, a) {
@@ -723,6 +746,13 @@ class UiSceneManager {
         UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Kuro.EnablePlanarReflection 0");
       }
     }
+  }
+  static KUg() {
+    this.Gwg = UE.KismetSystemLibrary.GetConsoleVariableIntValue("r.Kuro.HideLandscape");
+    UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Kuro.HideLandscape 0");
+  }
+  static XUg() {
+    UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Kuro.HideLandscape " + this.Gwg);
   }
   static Ixo() {
     if (GlobalData_1.GlobalData.World) {
@@ -805,7 +835,8 @@ UiSceneManager.KTc = new UE.Vector();
 UiSceneManager.PBa = Vector_1.Vector.Create();
 UiSceneManager.AYe = new UE.Vector2D();
 UiSceneManager.Jkc = undefined;
-UiSceneManager.$jm = undefined;
+UiSceneManager.HWm = undefined;
 UiSceneManager.Jeh = true;
+UiSceneManager.Gwg = 0;
 UiSceneManager.Txo = 0;
 UiSceneManager.Lxo = 0; //# sourceMappingURL=UiSceneManager.js.map

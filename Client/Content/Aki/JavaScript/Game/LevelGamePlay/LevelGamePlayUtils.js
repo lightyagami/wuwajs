@@ -282,7 +282,7 @@ class LevelGamePlayUtils {
       case 1:
       case 5:
         var a = this.GetEntityHandle(undefined, e);
-        var r = a?.Entity?.GetComponent(131);
+        var r = a?.Entity?.GetComponent(133);
         if (a?.Valid && r) {
           t = r.CurrentTimeScale * r.TimeDilation;
         }
@@ -370,12 +370,12 @@ class LevelGamePlayUtils {
   static TogglePlayerControl(e, t) {
     var a = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint();
     if (a?.Valid) {
-      var r = a.GetComponent(184);
-      var i = a.GetComponent(41);
+      var r = a.GetComponent(186);
+      var i = a.GetComponent(43);
       var n = a.GetComponent(3);
-      var o = a.GetComponent(65);
-      var s = a.GetComponent(215);
-      var a = a.GetComponent(187);
+      var o = a.GetComponent(67);
+      var s = a.GetComponent(217);
+      var a = a.GetComponent(189);
       var l = [-1697149502, -541178966, -542518289, -732810197, -1802431900, -1752099043, 581080458, -469423249, -2140742267, -1013832153];
       if (e) {
         a?.StopMove(false);

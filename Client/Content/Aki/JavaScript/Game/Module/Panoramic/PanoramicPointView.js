@@ -24,7 +24,7 @@ const center = Vector2D_1.Vector2D.Create(0, CENTER_Y);
 class PanoramicPointView extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.OVm = undefined;
+    this.r8m = undefined;
     this.Qtt = undefined;
     this.ScreenPositionRef = (0, puerts_1.$ref)(undefined);
     this.Hea = undefined;
@@ -50,8 +50,8 @@ class PanoramicPointView extends UiPanelBase_1.UiPanelBase {
     this.y$e = Math.min(TrackDefine_1.MAX_A, ((t?.GetWidth() ?? 0) - TrackDefine_1.MARGIN_A) / 2);
     this.I$e = Math.min(TrackDefine_1.MAX_B, ((t?.GetHeight() ?? 0) - TrackDefine_1.MARGIN_B) / 2);
     this.RootItem?.SetUIActive(true);
-    this.OVm = this.GetItem(1);
-    this.OVm.SetUIActive(false);
+    this.r8m = this.GetItem(1);
+    this.r8m.SetUIActive(false);
     this.Qtt?.SetUiActive(false);
     this.Hea = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
     this.ICt.Reset();
@@ -106,7 +106,7 @@ class PanoramicPointView extends UiPanelBase_1.UiPanelBase {
         if (!this.RootItem.bIsUIActive) {
           this.RootItem.SetUIActive(true);
         }
-        this.OVm.SetUIActive(false);
+        this.r8m.SetUIActive(false);
       } else {
         if (ControllerHolder_1.ControllerHolder.PanoramicController.IsInFight()) {
           if (this.RootItem.bIsUIActive) {
@@ -117,8 +117,8 @@ class PanoramicPointView extends UiPanelBase_1.UiPanelBase {
         }
         this.cie.Reset();
         this.cie.Yaw = Math.atan2(this.ScreenPosition.Y, this.ScreenPosition.X) * TrackDefine_1.RAD_2_DEG;
-        this.OVm.SetUIRelativeRotation(this.cie.ToUeRotator());
-        this.OVm.SetUIActive(true);
+        this.r8m.SetUIRelativeRotation(this.cie.ToUeRotator());
+        this.r8m.SetUIActive(true);
       }
     }
   }

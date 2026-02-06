@@ -44,7 +44,7 @@ class FarmGoldController extends ActivityControllerBase_1.ActivityControllerBase
     this.xwl = e => {
       var t = e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs;
       if (t) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23678);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25596);
       }
       var n = {
         ButtonTextId: "ConfirmBox_217_ButtonText_0",
@@ -68,7 +68,7 @@ class FarmGoldController extends ActivityControllerBase_1.ActivityControllerBase
       var o = {
         TitleTextId: "FarmGoldCurrentPoint",
         Record: e.iMs.toString(),
-        IsNewRecord: e.iMs > e.rMs
+        IsNewRecord: e.iMs >= e.rMs
       };
       ItemRewardController_1.ItemRewardController.OpenExploreRewardView(t ? ItemRewardDefine_1.FARM_GOLD_FAIL : ItemRewardDefine_1.FARM_GOLD_SUCCESS, !t && e.tMs, undefined, t ? undefined : o, undefined, t ? [n] : [n, r], undefined, undefined, undefined);
     };
@@ -93,54 +93,58 @@ class FarmGoldController extends ActivityControllerBase_1.ActivityControllerBase
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.LeaveInstanceDungeonConfirm, this.fSn);
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(15633, this.Pwl);
-    Net_1.Net.Register(23678, this.xwl);
+    Net_1.Net.Register(29625, this.Pwl);
+    Net_1.Net.Register(25596, this.xwl);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(15633);
-    Net_1.Net.UnRegister(23678);
+    Net_1.Net.UnRegister(29625);
+    Net_1.Net.UnRegister(25596);
   }
   static RequestExitDungeon() {
     var e = new Protocol_1.Aki.Protocol.u0_();
-    Net_1.Net.Call(20229, e, e => {
+    Net_1.Net.Call(18832, e, e => {
       if (!e) {
         InstanceDungeonEntranceController_1.InstanceDungeonEntranceController.LeaveInstanceDungeonRequest();
       }
     });
   }
   static RequestFarmGoldPoint(t, n) {
-    var e = Protocol_1.Aki.Protocol.n0_.create();
-    e.w6n = t;
-    e.s5n = n;
-    Net_1.Net.Call(27611, e, e => {
-      if (e && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22786);
-      } else if (e && e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
-        (e = ModelManager_1.ModelManager.ActivityModel.GetActivityById(t)).AddFinishPointId(n);
-        if (UiManager_1.UiManager.IsViewOpen("ActivityRewardPopUpView")) {
-          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRewardPopUpView, e.GetRewardPopUpViewData());
+    var e;
+    if (!(n.length <= 0)) {
+      (e = Protocol_1.Aki.Protocol.Y1g.create()).w6n = t;
+      e.BVn = n;
+      Net_1.Net.Call(15555, e, e => {
+        if (e && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22074);
+        } else if (e && e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
+          (e = ModelManager_1.ModelManager.ActivityModel.GetActivityById(t)).AddFinishPointId(n);
+          if (UiManager_1.UiManager.IsViewOpen("ActivityRewardPopUpView")) {
+            EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRewardPopUpView, e.GetRewardPopUpViewData());
+          }
+          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.FarmGoldRefreshRewardRedDot, t);
+          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, t);
         }
-        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.FarmGoldRefreshRewardRedDot, t);
-        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, t);
-      }
-    });
+      });
+    }
   }
   static RequestFarmGoldLevelPlay(t, n) {
-    var e = Protocol_1.Aki.Protocol.a0_.create();
-    e.w6n = t;
-    e.r6n = n;
-    Net_1.Net.Call(27784, e, e => {
-      if (e && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29484);
-      } else if (e && e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
-        (e = ModelManager_1.ModelManager.ActivityModel.GetActivityById(t)).FinishLevelReward(n);
-        if (UiManager_1.UiManager.IsViewOpen("ActivityRewardPopUpView")) {
-          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRewardPopUpView, e.GetRewardPopUpViewData());
+    var e;
+    if (!(n.length <= 0)) {
+      (e = Protocol_1.Aki.Protocol.K1g.create()).w6n = t;
+      e.e_g = n;
+      Net_1.Net.Call(20648, e, e => {
+        if (e && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16663);
+        } else if (e && e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
+          (e = ModelManager_1.ModelManager.ActivityModel.GetActivityById(t)).FinishLevelReward(n);
+          if (UiManager_1.UiManager.IsViewOpen("ActivityRewardPopUpView")) {
+            EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRewardPopUpView, e.GetRewardPopUpViewData());
+          }
+          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.FarmGoldRefreshRewardRedDot, t);
+          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, t);
         }
-        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.FarmGoldRefreshRewardRedDot, t);
-        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, t);
-      }
-    });
+      });
+    }
   }
   static async OpenDefaultFarmGoldView() {
     for (const e of ModelManager_1.ModelManager.ActivityModel.GetAllActivityMap().values()) {
@@ -287,9 +291,9 @@ class FarmGoldController extends ActivityControllerBase_1.ActivityControllerBase
   e.w6n = t;
   e.r6n = n;
   e.z6n = r;
-  Net_1.Net.Call(22542, e, e => {
+  Net_1.Net.Call(28388, e, e => {
     if (e && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29484);
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29187);
     }
     ModelManager_1.ModelManager.ActivityModel.GetActivityById(t).SetInsDifficult(n, r);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRefreshInstancedRecommendLevel);

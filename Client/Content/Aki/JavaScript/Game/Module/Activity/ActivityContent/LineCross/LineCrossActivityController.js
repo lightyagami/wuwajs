@@ -57,10 +57,10 @@ class LineCrossActivityController extends ActivityControllerBase_1.ActivityContr
     return false;
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(20045, this.yid);
+    Net_1.Net.Register(15967, this.yid);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(20045);
+    Net_1.Net.UnRegister(15967);
   }
   wPu(e) {
     if (ModelManager_1.ModelManager.ActivityModel.GetActivityById(e)) {
@@ -71,9 +71,9 @@ class LineCrossActivityController extends ActivityControllerBase_1.ActivityContr
     var t = new Protocol_1.Aki.Protocol.yed();
     t.s5n = r;
     ModelManager_1.ModelManager.LineCrossModel.CurrentChallengeFinishState = ModelManager_1.ModelManager.LineCrossModel.GetChallengeFinishState(e, r);
-    Net_1.Net.Call(26979, t, e => {
+    Net_1.Net.Call(21329, t, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25030);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29645);
       }
     });
   }

@@ -67,7 +67,7 @@ class TsTaskPatrol extends TsTaskAbortImmediatelyBase_1.default {
     if (e) {
       this.PatrolLogic = e.AiPatrol;
       this.PatrolConfig = this.PatrolLogic.GetConfig();
-      if (this.PatrolConfig && (this.Entity = e.CharAiDesignComp.Entity, this.MoveComp = this.Entity.GetComponent(46), this.StateComp = this.Entity.GetComponent(109), this.ActorComp = e.CharActorComp, this.PatrolConfig.ContainZ && e.CharActorComp?.Actor.KuroSetMovementMode({
+      if (this.PatrolConfig && (this.Entity = e.CharAiDesignComp.Entity, this.MoveComp = this.Entity.GetComponent(48), this.StateComp = this.Entity.GetComponent(111), this.ActorComp = e.CharActorComp, this.PatrolConfig.ContainZ && e.CharActorComp?.Actor.KuroSetMovementMode({
         Mode: 5,
         Context: "[TsTaskPatrol.ReceiveExecuteAI]"
       }), this.HandleMoveEnd ||= t => {
@@ -75,7 +75,7 @@ class TsTaskPatrol extends TsTaskAbortImmediatelyBase_1.default {
       }, this.InitPatrolInfo(), this.PatrolLogic?.PatrolPoint)) {
         (s = Protocol_1.Aki.Protocol.Kes.create()).F4n = MathUtils_1.MathUtils.NumberToLong(e.CharActorComp.CreatureData.GetCreatureDataId());
         s.V4n = !this.PatrolLogic.StartWithInversePath;
-        Net_1.Net.Call(22211, s, () => {});
+        Net_1.Net.Call(18670, s, () => {});
         this.MoveToPatrolPoint();
         if (e.AiPatrol.StartWithInversePath !== undefined) {
           e.AiPatrol.StartWithInversePath = undefined;
@@ -196,7 +196,7 @@ class TsTaskPatrol extends TsTaskAbortImmediatelyBase_1.default {
     if (this.AIOwner instanceof TsAiController_1.default) {
       if (EntitySystem_1.EntitySystem.Get(this.Entity.Id)) {
         (t = Protocol_1.Aki.Protocol.Xes.create()).F4n = MathUtils_1.MathUtils.NumberToLong(this.ActorComp.CreatureData.GetCreatureDataId());
-        Net_1.Net.Call(21531, t, () => {});
+        Net_1.Net.Call(15120, t, () => {});
       }
       if (this.MoveComp) {
         if (this.TsMoveOnePath) {

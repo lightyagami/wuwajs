@@ -34,8 +34,10 @@ class ScreenEffectModel extends ModelBase_1.ModelBase {
     this.HandlePool = [];
     this.FightRootInited = false;
     this.GeneralRootInited = false;
+    this.CoverLoadingRootInited = false;
     this.nye = () => {
       this.$xu();
+      this.d7g();
     };
     this.Wxu = undefined;
     this.Qxu = () => {
@@ -45,31 +47,39 @@ class ScreenEffectModel extends ModelBase_1.ModelBase {
       this.Wxu?.K2_DetachFromActor();
       this.SetGeneralRootInited(false);
     };
+    this.m7g = undefined;
+    this.f7g = () => {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("UiCore", 39, "CoverLoadingUiRoot被销毁");
+      }
+      this.m7g?.K2_DetachFromActor();
+      this.SetCoverLoadingRootInited(false);
+    };
   }
   OnInit() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDone, this.nye);
     return true;
   }
   PlayScreenEffect(e, t) {
-    let r = this.PathToHandleMap.get(e);
-    if (!r) {
-      (r = this.GetHandle()).Path = e;
-      this.PathToHandleMap.set(e, r);
+    let i = this.PathToHandleMap.get(e);
+    if (!i) {
+      (i = this.GetHandle()).Path = e;
+      this.PathToHandleMap.set(e, i);
     }
-    var i = this.HandleIdGenerator++;
-    r.HandleIds.add(i);
-    this.HandleMap.set(i, r);
+    var r = this.HandleIdGenerator++;
+    i.HandleIds.add(r);
+    this.HandleMap.set(r, i);
     if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("RenderEffect", 17, "调用播放镜头特效接口", ["handleId", i], ["path", e]);
+      Log_1.Log.Debug("RenderEffect", 17, "调用播放镜头特效接口", ["handleId", r], ["path", e]);
     }
-    if (r.HandleIds.size === 1) {
-      r.LoadResId = this.uTa(e, t);
+    if (i.HandleIds.size === 1) {
+      i.LoadResId = this.uTa(e, t);
     }
-    return i;
+    return r;
   }
-  uTa(r, e) {
-    return ResourceSystem_1.ResourceSystem.LoadAsync(r, UE.EffectScreenPlayData_C, e => {
-      var t = this.PathToHandleMap.get(r);
+  uTa(i, e) {
+    return ResourceSystem_1.ResourceSystem.LoadAsync(i, UE.EffectScreenPlayData_C, e => {
+      var t = this.PathToHandleMap.get(i);
       if (t && t.HandleIds.size !== 0 && e) {
         t.EffectData = e;
         t.RootType = e.RootType;
@@ -89,10 +99,16 @@ class ScreenEffectModel extends ModelBase_1.ModelBase {
               }
               t.WaitingRootInit = true;
               return;
+            case 3:
+              if (this.CoverLoadingRootInited) {
+                break;
+              }
+              t.WaitingRootInit = true;
+              return;
           }
         }
         if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("RenderEffect", 17, "开始播放镜头特效", ["path", r]);
+          Log_1.Log.Debug("RenderEffect", 17, "开始播放镜头特效", ["path", i]);
         }
         ScreenEffectSystem_1.ScreenEffectSystem.GetInstance().PlayScreenEffect(e);
       }
@@ -186,6 +202,21 @@ class ScreenEffectModel extends ModelBase_1.ModelBase {
       }
     }
   }
+  SetCoverLoadingRootInited(e) {
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("RenderEffect", 39, "设置通用镜头特效根节点", ["isInit", e]);
+    }
+    if (this.CoverLoadingRootInited !== e && (this.CoverLoadingRootInited = e)) {
+      for (const t of this.PathToHandleMap.values()) {
+        if (t.WaitingRootInit && t.RootType === 3 && (t.WaitingRootInit = false, t.EffectData)) {
+          if (Log_1.Log.CheckDebug()) {
+            Log_1.Log.Debug("RenderEffect", 17, "开始播放镜头特效", ["path", t.Path]);
+          }
+          ScreenEffectSystem_1.ScreenEffectSystem.GetInstance().PlayScreenEffect(t.EffectData);
+        }
+      }
+    }
+  }
   GetHandle() {
     var e = this.HandlePool.pop();
     return e || new ScreenEffectHandle();
@@ -202,8 +233,8 @@ class ScreenEffectModel extends ModelBase_1.ModelBase {
   $xu() {
     var e = (0, puerts_1.$ref)(undefined);
     var t = ScreenEffectSystem_1.ScreenEffectSystem.GetInstance();
-    var r = UiLayer_1.UiLayer.GetLayerRootUiItem(UiLayerType_1.ELayerType.ScreenEffect);
-    if (t?.IsValid() && r) {
+    var i = UiLayer_1.UiLayer.GetLayerRootUiItem(UiLayerType_1.ELayerType.ScreenEffect);
+    if (t?.IsValid() && i) {
       t.GetScreenEffectGeneralRoot(e);
       if (e = (0, puerts_1.$unref)(e)) {
         if (e !== this.Wxu) {
@@ -217,7 +248,7 @@ class ScreenEffectModel extends ModelBase_1.ModelBase {
           }
           this.Wxu = e;
           this.Wxu.OnDestroyed.Add(this.Qxu);
-          this.Wxu.K2_AttachRootComponentTo(r);
+          this.Wxu.K2_AttachRootComponentTo(i);
           UE.KuroStaticLibrary.SetActorPermanent(t, true, false);
           UE.KuroStaticLibrary.SetActorPermanent(e, true, false);
           this.SetGeneralRootInited(true);
@@ -234,6 +265,34 @@ class ScreenEffectModel extends ModelBase_1.ModelBase {
       }
     }
     return false;
+  }
+  d7g() {
+    var e = (0, puerts_1.$ref)(undefined);
+    var t = ScreenEffectSystem_1.ScreenEffectSystem.GetInstance();
+    var i = UiLayer_1.UiLayer.GetFloatUnit(UiLayerType_1.ELayerType.Loading, UiLayerType_1.SE_COVER_LOADING_VIEW_NODE_TYPE);
+    if (t?.IsValid() && i) {
+      t.GetScreenEffectCoverLoadingRoot(e);
+      if (e = (0, puerts_1.$unref)(e)) {
+        if (e !== this.m7g) {
+          if (this.m7g?.IsValid()) {
+            if (Log_1.Log.CheckInfo()) {
+              Log_1.Log.Info("UiCore", 39, "ScreenEffectUiRoot被替换");
+            }
+            this.m7g.OnDestroyed.Remove(this.f7g);
+            this.m7g?.K2_DetachFromActor();
+            this.SetCoverLoadingRootInited(false);
+          }
+          this.m7g = e;
+          this.m7g.OnDestroyed.Add(this.f7g);
+          this.m7g.K2_AttachRootComponentTo(i);
+          UE.KuroStaticLibrary.SetActorPermanent(t, true, false);
+          UE.KuroStaticLibrary.SetActorPermanent(e, true, false);
+          this.SetCoverLoadingRootInited(true);
+        }
+      } else if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("UiCore", 39, "CoverLoadingUiRoot获取失败");
+      }
+    }
   }
 }
 exports.ScreenEffectModel = ScreenEffectModel;

@@ -20,7 +20,7 @@ class AutoPilotUtil {
       var n = i[t];
       var h = n.RoadSpline;
       if (h) {
-        s += this.Q8m(h, t, l, e, o, r, a?.get(n.Id));
+        s += this.J8m(h, t, l, e, o, r, a?.get(n.Id));
       }
     }
     return s;
@@ -29,8 +29,8 @@ class AutoPilotUtil {
     i.Empty();
     this.GenerateSplinePoints(t, 0, t.GetSplineLength(), i, true, true);
   }
-  static Q8m(t, i, e, o, r, a, s) {
-    this.AXf.Start();
+  static J8m(t, i, e, o, r, a, s) {
+    this.N_g.Start();
     var l = t.GetSplineLength();
     let n = 0;
     let h = l;
@@ -54,22 +54,22 @@ class AutoPilotUtil {
     } else {
       c = l;
     }
-    this.AXf.Stop();
+    this.N_g.Stop();
     this.GenerateSplinePoints(t, n, h, o, u, _, s);
     return c;
   }
   static GetDistanceAlongSplineAtWorldLocation(t, i) {
-    this.lzf.Start();
+    this.Sgg.Start();
     i = t.D_FindInputKeyClosestToWorldLocation(i.ToUeVector(true));
     t = t.GetDistanceAlongSplineAtSplineInputKey(i);
-    this.lzf.Stop();
+    this.Sgg.Stop();
     return t;
   }
   static GenerateSplinePoints(i, e, t, o, r, a, s) {
     var l = t - e;
     var n = ModelManager_1.ModelManager.AutoPilotModel.HighLightSampleDist;
     if (!(l < n)) {
-      this.LXf.Start();
+      this.O_g.Start();
       if (r) {
         o.Add(this.d0n(e, i));
         s?.push(e);
@@ -84,19 +84,19 @@ class AutoPilotUtil {
         o.Add(this.d0n(t, i));
         s?.push(t);
       }
-      this.LXf.Stop();
+      this.O_g.Stop();
     }
   }
   static d0n(t, i) {
     i = i.D_GetLocationAtDistanceAlongSpline(t, 1);
     this.CTn.Set(i.X, i.Y);
-    MapUtil_1.MapUtil.WorldPosition2UiPosition2D(this.CTn, this.V8m);
-    t = this.V8m.ToUeVector2D(true);
+    MapUtil_1.MapUtil.WorldPosition2UiPosition2D(this.CTn, this.Q8m);
+    t = this.Q8m.ToUeVector2D(true);
     return t;
   }
   static ProcessSplinePointsForAutoPilotRoute(t, i, o, r) {
     if (r.has(t.Id)) {
-      this._zf.Start();
+      this.Mgg.Start();
       var a;
       var s;
       var l = this.GetDistanceAlongSplineAtWorldLocation(t.RoadSpline, o);
@@ -128,21 +128,21 @@ class AutoPilotUtil {
       for (const n of this.gz) {
         r.delete(n);
       }
-      this._zf.Stop();
+      this.Mgg.Stop();
     }
   }
   static CheckReachEnd(t, i, e, o = 1000) {
-    this.PXf.Start();
+    this.F_g.Start();
     i = this.GetDistanceAlongSplineAtWorldLocation(t, i);
     t = this.GetDistanceAlongSplineAtWorldLocation(t, e) - i;
-    this.PXf.Stop();
+    this.F_g.Stop();
     return t < o;
   }
   static IsNearRoadWay(t, i) {
     if (!t.RoadSpline) {
       return false;
     }
-    this.wXf.Start();
+    this.G_g.Start();
     var e = t.RoadSpline.D_FindInputKeyClosestToWorldLocation(i.ToUeVector(true));
     var e = t.RoadSpline.D_GetLocationAtSplineInputKey(e, 1);
     if (ModelManager_1.ModelManager.AutoPilotModel?.IsDebugMode) {
@@ -155,17 +155,17 @@ class AutoPilotUtil {
     var e = ModelManager_1.ModelManager.AutoPilotModel.AutoPilotRoadWayWidthOffset;
     var i = t.Width / 2 + e;
     var t = i * i;
-    this.wXf.Stop();
+    this.G_g.Stop();
     return o <= t;
   }
 }
 (exports.AutoPilotUtil = AutoPilotUtil).CTn = Vector2D_1.Vector2D.Create();
-AutoPilotUtil.V8m = Vector2D_1.Vector2D.Create();
+AutoPilotUtil.Q8m = Vector2D_1.Vector2D.Create();
 AutoPilotUtil.gz = [];
 AutoPilotUtil.Wye = Vector_1.Vector.Create();
-AutoPilotUtil.LXf = Stats_1.Stat.Create("GenerateSplinePoints");
-AutoPilotUtil.wXf = Stats_1.Stat.Create("IsNearRoadWay");
-AutoPilotUtil.AXf = Stats_1.Stat.Create("ProcessRoadwaySpline");
-AutoPilotUtil.PXf = Stats_1.Stat.Create("CheckReachEnd");
-AutoPilotUtil._zf = Stats_1.Stat.Create("ProcessSplinePointsForAutoPilotRoute");
-AutoPilotUtil.lzf = Stats_1.Stat.Create("GetDistanceAlongSplineAtWorldLocation"); //# sourceMappingURL=AutoPilotUtil.js.map
+AutoPilotUtil.O_g = Stats_1.Stat.Create("GenerateSplinePoints");
+AutoPilotUtil.G_g = Stats_1.Stat.Create("IsNearRoadWay");
+AutoPilotUtil.N_g = Stats_1.Stat.Create("ProcessRoadwaySpline");
+AutoPilotUtil.F_g = Stats_1.Stat.Create("CheckReachEnd");
+AutoPilotUtil.Mgg = Stats_1.Stat.Create("ProcessSplinePointsForAutoPilotRoute");
+AutoPilotUtil.Sgg = Stats_1.Stat.Create("GetDistanceAlongSplineAtWorldLocation"); //# sourceMappingURL=AutoPilotUtil.js.map

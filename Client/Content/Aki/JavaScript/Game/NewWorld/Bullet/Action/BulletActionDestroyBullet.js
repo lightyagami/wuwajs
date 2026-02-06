@@ -47,7 +47,7 @@ class BulletActionDestroyBullet extends BulletActionBase_1.BulletActionBase {
     for ([e, l] of t.HitTimeScaleEntityMap.entries()) {
       var i = ModelManager_1.ModelManager.CharacterModel?.GetHandle(e);
       if (i?.Valid) {
-        i.Entity.GetComponent(131)?.RemoveTimeScale(l);
+        i.Entity.GetComponent(133)?.RemoveTimeScale(l);
       }
     }
     t.HitTimeScaleEntityMap.clear();
@@ -93,7 +93,7 @@ class BulletActionDestroyBullet extends BulletActionBase_1.BulletActionBase {
             ParentTargetId: this.BulletInfo.Target?.Id,
             ParentId: this.BulletInfo.Entity.Id,
             DtType: this.BulletInfo.BulletInitParams.DtType,
-            BattleFlags: this.BulletInfo.BulletInitParams.BattleFlags,
+            BattleContext: this.BulletInfo.BulletInitParams.BattleContext,
             ParentIds: undefined
           }, this.BulletInfo.ContextId)) {
             BulletUtil_1.BulletUtil.ProcessHandOverEffectToSon(this.BulletInfo, o);

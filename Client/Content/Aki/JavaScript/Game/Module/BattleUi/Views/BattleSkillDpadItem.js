@@ -10,7 +10,7 @@ class BattleSkillDpadItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.x5e = [];
-    this.NBf = [];
+    this.ANf = [];
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem]];
@@ -21,7 +21,7 @@ class BattleSkillDpadItem extends UiPanelBase_1.UiPanelBase {
     this.x5e.push(this.GetItem(3));
     this.x5e.push(this.GetItem(4));
     for (let t = 0; t < 4; t++) {
-      this.NBf.push(true);
+      this.ANf.push(true);
     }
   }
   SetVisible(t) {
@@ -40,13 +40,13 @@ class BattleSkillDpadItem extends UiPanelBase_1.UiPanelBase {
     this.GetItem(0).SetUIActive(t);
   }
   SetArrowEnable(t, s, e = false) {
-    if (this.NBf[t] !== s || !!e) {
+    if (this.ANf[t] !== s || !!e) {
       if (s) {
         this.x5e[t].SetAlpha(1);
       } else {
         this.x5e[t].SetAlpha(0.2);
       }
-      this.NBf[t] = s;
+      this.ANf[t] = s;
     }
   }
 }

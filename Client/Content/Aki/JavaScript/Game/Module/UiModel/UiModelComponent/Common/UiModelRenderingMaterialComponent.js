@@ -74,6 +74,18 @@ let UiModelRenderingMaterialComponent = class UiModelRenderingMaterialComponent 
     this.m8();
     return t;
   }
+  AddRenderingMaterialByPath(e) {
+    var t = this.rKt;
+    var e = {
+      EffectPath: e,
+      HandleId: ResourceSystem_1.ResourceSystem.InvalidId,
+      RenderingId: ResourceSystem_1.ResourceSystem.InvalidId
+    };
+    this.tBr.set(t, e);
+    this.oBr.add(t);
+    this.m8();
+    return t;
+  }
   AddRenderingMaterialByData(e) {
     var t = this.rKt;
     var e = {
@@ -124,8 +136,11 @@ let UiModelRenderingMaterialComponent = class UiModelRenderingMaterialComponent 
   rBr(e) {
     const t = this.tBr.get(e);
     const i = this.ActorComponent.CharRenderingComponent;
-    if (t.EffectId) {
-      e = EffectUtil_1.EffectUtil.GetEffectPath(t.EffectId);
+    if (t.EffectId || t.EffectPath) {
+      e = t.EffectId ? EffectUtil_1.EffectUtil.GetEffectPath(t.EffectId) : t.EffectPath;
+      if (!e) {
+        return;
+      }
       t.HandleId = ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.Object, e => {
         t.RenderingId = i.AddMaterialControllerData(e);
       }, 100, "Ui.UiSceneModel");

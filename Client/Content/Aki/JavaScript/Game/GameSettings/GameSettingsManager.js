@@ -68,20 +68,40 @@ class GameSettingsManager {
       return [false, "CheckPlatform:" + n];
     }
   }
-  static IsPcVeryHighDevice() {
-    return GameSettingsDeviceRender_1.GameSettingsDeviceRender.DeviceType === 14 && GameSettingsDeviceRender_1.GameSettingsDeviceRender.DeviceScore > 2800;
+  static IsShowPcVeryHighOption() {
+    if (GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsNvidiaLaptopGPU()) {
+      if (GameSettingsDeviceRender_1.GameSettingsDeviceRender.DeviceType === 14) {
+        return true;
+      }
+    } else if (GameSettingsDeviceRender_1.GameSettingsDeviceRender.DeviceType === 15) {
+      return true;
+    }
+    return false;
+  }
+  static IsShowPcHighestOption() {
+    if (!GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsFrameRate120DeviceForAllDevice()) {
+      return false;
+    }
+    if (GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsNvidiaLaptopGPU()) {
+      if (GameSettingsDeviceRender_1.GameSettingsDeviceRender.DeviceType === 15) {
+        return true;
+      }
+    } else if (GameSettingsDeviceRender_1.GameSettingsDeviceRender.DeviceType === 16) {
+      return true;
+    }
+    return !!GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsNvidia5060AndAbove();
   }
   static IsPcHighestDevice() {
-    return GameSettingsDeviceRender_1.GameSettingsDeviceRender.DeviceType === 15 && GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsFrameRate120DeviceForAllDevice();
+    return GameSettingsDeviceRender_1.GameSettingsDeviceRender.DeviceType === 16 && GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsFrameRate120DeviceForAllDevice();
   }
   static udc(e) {
     e = e.Device;
     if (e === "isBelowVeryHigh") {
-      return [!this.IsPcVeryHighDevice() && !this.IsPcHighestDevice(), "isBelowVeryHigh"];
-    } else if (e === "isVeryHigh") {
-      return [this.IsPcVeryHighDevice(), "isVeryHigh"];
-    } else if (e === "isHighest") {
-      return [this.IsPcHighestDevice(), "isHighest"];
+      return [!this.IsShowPcVeryHighOption() && !this.IsShowPcHighestOption(), "isBelowVeryHigh"];
+    } else if (e === "isShowVeryHigh") {
+      return [this.IsShowPcVeryHighOption(), "isShowVeryHigh"];
+    } else if (e === "isShowHighest") {
+      return [this.IsShowPcHighestOption(), "isShowHighest"];
     } else if (e === "isNotAndroidVeryHigh") {
       return [!Info_1.Info.IsAndroidPlatform() || !GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsAndroidHighestResolutionDevice(), "isNotAndroidVeryHigh"];
     } else if (e === "isAndroidVeryHigh") {
@@ -122,6 +142,8 @@ class GameSettingsManager {
       return [!GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsRTX50(), "isNot50Series"];
     } else if (e === "isWindows") {
       return [Info_1.Info.IsWindowsPlatform() && !Platform_1.Platform.IsCloudGame(), "isWindows"];
+    } else if (e === "isNotWindows") {
+      return [!Info_1.Info.IsWindowsPlatform() || Platform_1.Platform.IsCloudGame(), "isNotWindows"];
     } else {
       return [true, "DEFAULT"];
     }
@@ -133,19 +155,18 @@ class GameSettingsManager {
     var a = GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsDlss3GpuDevice() && GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsDlssSupported();
     var s = GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsVulkanDevice();
     var r = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetD3D12Type() > 0;
-    var g = GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsXess2Supported();
-    var o = GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsXeFGSupported();
+    var o = GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsXess2Supported();
+    var g = GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsXeFGSupported();
     var _ = UE.KuroFFXFSR3BlueprintLibrary.IsGlobalSwitchOn();
-    var m = GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsFsr3Supported();
-    var S = GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsFFXFISupported();
-    var c = GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsFsr3FallbackToFsr();
-    var f = GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsShowRayTracingSetting();
+    var S = GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsFsr3Supported();
+    var m = GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsFFXFISupported();
+    var f = GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsFsr3FallbackToFsr();
+    var c = GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsShowRayTracingSetting();
     var G = this.GetCurrentValueSafely(GameSettingsDefine_1.EFunction.RayTracing) > 0;
-    var D = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetLumenGISupported() && f && G;
-    var u = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetLumenReflectionsSupported() && f && G;
-    var h = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetRayTracingShadowsSupported() && f && G;
+    var D = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetLumenGISupported() && c && G;
+    var u = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetLumenReflectionsSupported() && c && G;
+    var h = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetRayTracingShadowsSupported() && c && G;
     var d = UE.KismetRenderingLibrary.IsSupportedAFME();
-    var v = GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsIntelGroupGpu();
     switch (e) {
       case GameSettingsDefine_1.EFunction.NVIDIADLSS:
         return [t, "EFunction.NVIDIADLSS"];
@@ -158,7 +179,7 @@ class GameSettingsManager {
       case GameSettingsDefine_1.EFunction.NVIDIAREFLEX:
         return [t, "EFunction.NVIDIAREFLEX"];
       case GameSettingsDefine_1.EFunction.FSR:
-        return [i || c, "EFunction.FSR"];
+        return [i || f, "EFunction.FSR"];
       case GameSettingsDefine_1.EFunction.IRX:
         return [n, "EFunction.IRX"];
       case GameSettingsDefine_1.EFunction.METALFX:
@@ -169,14 +190,14 @@ class GameSettingsManager {
         return [false, "EFunction.XESS_QUALITY"];
       case GameSettingsDefine_1.EFunction.XESS2:
       case GameSettingsDefine_1.EFunction.XESS2_QUALITY:
-        return [g, "EFunction.XESS2"];
+        return [o, "EFunction.XESS2"];
       case GameSettingsDefine_1.EFunction.XESS2_FG:
-        return [g && o, "EFunction.XESS2_FG"];
+        return [o && g, "EFunction.XESS2_FG"];
       case GameSettingsDefine_1.EFunction.FSR3:
       case GameSettingsDefine_1.EFunction.FSR3_QUALITY:
-        return [m && r && _, "EFunction.FSR3"];
+        return [S && r && _, "EFunction.FSR3"];
       case GameSettingsDefine_1.EFunction.FSR3_FG:
-        return [S && r && _, "EFunction.FSR3_FG"];
+        return [m && r && _, "EFunction.FSR3_FG"];
       case GameSettingsDefine_1.EFunction.SCENEAO:
         return [!Info_1.Info.IsMobilePlatform() || GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsAndroidPlatformAOValid() || GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsIOSPlatformAOValid(), "EFunction.SCENEAO"];
       case GameSettingsDefine_1.EFunction.VOLUMEFOG:
@@ -184,7 +205,7 @@ class GameSettingsManager {
       case GameSettingsDefine_1.EFunction.DOLBYATOMS:
         return [UE.KuroAudioStatics.IsDolbyAtmosGameSupported(), "EFunction.DOLBYATOMS"];
       case GameSettingsDefine_1.EFunction.RayTracing:
-        return [f, "EFunction.RayTracing"];
+        return [c, "EFunction.RayTracing"];
       case GameSettingsDefine_1.EFunction.RayTracedGI:
         return [D, "EFunction.RayTracedGI"];
       case GameSettingsDefine_1.EFunction.RayTracedReflection:
@@ -195,8 +216,6 @@ class GameSettingsManager {
         return [d, "EFunction.AdrenoFME"];
       case GameSettingsDefine_1.EFunction.Vulkan:
         return [s, "EFunction.Vulkan"];
-      case GameSettingsDefine_1.EFunction.AutoExposure:
-        return [!v, "EFunction.AutoExposure"];
       default:
         return [true, "DEFAULT"];
     }
@@ -217,12 +236,14 @@ class GameSettingsManager {
         return [Info_1.Info.IsPcPlatform(), "EMenuConfigPlatform.PC_ONLY"];
       case 0:
         return [true, "EMenuConfigPlatform.NORMAL"];
+      case 99:
+        return [true, "EMenuConfigPlatform.NONE"];
       default:
         return [false, "DEFAULT"];
     }
   }
   static ZMc(e) {
-    return e.MainType === GameSettingsDefine_1.MAIN_TYPE_OF_KEY_SETTING && e.Platform !== 2 && e.FunctionId !== GameSettingsDefine_1.EFunction.KeyboardLockEnemyMode && e.FunctionId !== GameSettingsDefine_1.EFunction.GamepadLockEnemyMode;
+    return e.Platform !== 99 && e.MainType === GameSettingsDefine_1.MAIN_TYPE_OF_KEY_SETTING && e.Platform !== 2 && e.FunctionId !== GameSettingsDefine_1.EFunction.KeyboardLockEnemyMode && e.FunctionId !== GameSettingsDefine_1.EFunction.GamepadLockEnemyMode;
   }
   static Hsc(e, t) {
     this.$sc.get(GameSettingsDefine_1.EFunction.IMAGEQUALITY)?.CacheValue(e.QualityType, t);
@@ -272,6 +293,7 @@ class GameSettingsManager {
     this.MGc();
     this.Pr1();
     this.q5u();
+    this.zfg();
   }
   static Xsc() {
     if (!LocalStorage_1.LocalStorage.GetGlobal(LocalStorageDefine_1.ELocalStorageGlobalKey.IsConvertAllViewSensitivity, false)) {
@@ -307,7 +329,7 @@ class GameSettingsManager {
   }
   static zsc() {
     var e;
-    if (Platform_1.Platform.IsCloudGame() && ((e = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetDefaultDeviceRenderFeature()) === undefined ? Log_1.Log.CheckError() && Log_1.Log.Error("GameSettings", 64, "云游戏时不能获得渲染Feature预设值") : this.Hsc(e, 0), this.$sc.get(GameSettingsDefine_1.EFunction.NVIDIADLSS)?.CacheValue(1, 0), this.$sc.get(GameSettingsDefine_1.EFunction.NVIDIADLSSQUALITY)?.CacheValue(0, 0), CloudGameManagerLauncher_1.CloudGameManagerLauncher.IsPreLaunch) && (CloudGameManager_1.CloudGameManager.ScreenWidth !== 0 && ((e = UE.GameUserSettings.GetGameUserSettings()).SetScreenResolution(new UE.IntPoint(CloudGameManager_1.CloudGameManager.ScreenWidth, CloudGameManager_1.CloudGameManager.ScreenHeight)), e.ApplySettings(true)), Log_1.Log.CheckInfo())) {
+    if (Platform_1.Platform.IsCloudGame() && ((e = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetDefaultDeviceRenderFeature()) === undefined ? Log_1.Log.CheckError() && Log_1.Log.Error("GameSettings", 64, "云游戏时不能获得渲染Feature预设值") : this.Hsc(e, 0), this.$sc.has(GameSettingsDefine_1.EFunction.NVIDIADLSS) || this.$sc.set(GameSettingsDefine_1.EFunction.NVIDIADLSS, new GameSettingsInitValueSource_1.GameSettingsInitValueSource(GameSettingsDefine_1.EFunction.NVIDIADLSS)), this.$sc.has(GameSettingsDefine_1.EFunction.NVIDIADLSSQUALITY) || this.$sc.set(GameSettingsDefine_1.EFunction.NVIDIADLSSQUALITY, new GameSettingsInitValueSource_1.GameSettingsInitValueSource(GameSettingsDefine_1.EFunction.NVIDIADLSSQUALITY)), this.$sc.get(GameSettingsDefine_1.EFunction.NVIDIADLSS)?.CacheValue(1, 0), this.$sc.get(GameSettingsDefine_1.EFunction.NVIDIADLSSQUALITY)?.CacheValue(-1, 0), CloudGameManagerLauncher_1.CloudGameManagerLauncher.IsPreLaunch) && (CloudGameManager_1.CloudGameManager.ScreenWidth !== 0 && ((e = UE.GameUserSettings.GetGameUserSettings()).SetScreenResolution(new UE.IntPoint(CloudGameManager_1.CloudGameManager.ScreenWidth, CloudGameManager_1.CloudGameManager.ScreenHeight)), e.ApplySettings(true)), Log_1.Log.CheckInfo())) {
       Log_1.Log.Info("CloudGame", 16, "初始化游戏设置 - 云游戏预启动分辨率设置", ["CloudGameManager.ScreenWidth", CloudGameManager_1.CloudGameManager.ScreenWidth], ["CloudGameManager.ScreenHeight", CloudGameManager_1.CloudGameManager.ScreenHeight]);
     }
   }
@@ -350,7 +372,7 @@ class GameSettingsManager {
       ModelManager_1.ModelManager.RecommendQualityModel.IsNeedApply = false;
     }
   }
-  static wFf() {
+  static r9f() {
     return false;
   }
   static Mud() {
@@ -372,6 +394,14 @@ class GameSettingsManager {
     var e;
     if (UE.KuroStaticLibrary.IsLowMemoryDevice() && (e = this.$sc.get(GameSettingsDefine_1.EFunction.NPCDENSITY)) !== undefined) {
       e.CacheValue(0, 1);
+    }
+  }
+  static zfg() {
+    var e;
+    if (!UE.KuroGISystem.CheckWindowsSupportHDR()) {
+      if ((e = this.$sc.get(GameSettingsDefine_1.EFunction.HDR)) !== undefined) {
+        e.CacheValue(0, 1);
+      }
     }
   }
   static eac() {
@@ -590,7 +620,7 @@ class GameSettingsManager {
       }
       this.ForceSaveValue(GameSettingsDefine_1.EFunction.Vulkan, 0);
       this._X1(GameSettingsDefine_1.EFunction.Vulkan, 0, 2);
-    } else if (this.IsValid(GameSettingsDefine_1.EFunction.Vulkan) && !LocalStorage_1.LocalStorage.GetGlobal(LocalStorageDefine_1.ELocalStorageGlobalKey.VulkanChangeFlag) && this.wFf()) {
+    } else if (this.IsValid(GameSettingsDefine_1.EFunction.Vulkan) && !LocalStorage_1.LocalStorage.GetGlobal(LocalStorageDefine_1.ELocalStorageGlobalKey.VulkanChangeFlag) && this.r9f()) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("GameSettings", 64, "通过灰度测试的设备，强制开启Vulkan");
       }
@@ -627,7 +657,9 @@ class GameSettingsManager {
       }
     }
   }
-  static Clear() {}
+  static Clear() {
+    this.Fsc = undefined;
+  }
   static GetCurrentValue(e, t = true) {
     if (this.IsValid(e)) {
       var i = GameSettingsDefine_1.function2GameSettings[e];

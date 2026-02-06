@@ -145,9 +145,9 @@ class CommonBossStateView extends BossStateViewBase_1.BossStateViewBase {
     this.Vnt = () => {
       this.bnt(31);
     };
-    this.mLm = () => {
-      this.fLm();
-      this.gLm();
+    this.OLm = () => {
+      this.GLm();
+      this.FLm();
     };
     this.Hnt = new Map();
     this.jnt = t => {
@@ -221,7 +221,7 @@ class CommonBossStateView extends BossStateViewBase_1.BossStateViewBase {
     this.Znt();
     this.est();
     this.tst();
-    this.CLm(true);
+    this.NLm(true);
     this.dnt.SetUpdateCallback(this.Nnt, this.knt, this.Vnt);
     this.ont.SetVisible(true, SHOW_VIEW_ANIM_TIME);
   }
@@ -319,7 +319,7 @@ class CommonBossStateView extends BossStateViewBase_1.BossStateViewBase {
       this.ist();
     }
     this.snt = i;
-    this.fLm();
+    this.GLm();
   }
   fst(t) {
     var i;
@@ -569,21 +569,21 @@ class CommonBossStateView extends BossStateViewBase_1.BossStateViewBase {
       }
     }
   }
-  CLm(t = false) {
+  NLm(t = false) {
     this.GetUiNiagara(37).SetUIActive(false);
     if (this.Qti) {
       this.Qti.Refresh(this.GetEntity());
-      this.fLm();
-      this.gLm(t);
-      this.Qti.SetStateChangeCallback(this.mLm);
+      this.GLm();
+      this.FLm(t);
+      this.Qti.SetStateChangeCallback(this.OLm);
     }
   }
-  fLm() {
+  GLm() {
     if (this.Qti && this.Qti.IsFullState()) {
       this.GetSprite(36).SetFillAmount(this.snt);
     }
   }
-  gLm(t = false) {
+  FLm(t = false) {
     if (this.Qti.IsInBreakAnim() && !t) {
       this.GetItem(35).SetUIActive(true);
       this.bnt(39);

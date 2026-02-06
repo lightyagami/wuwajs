@@ -69,8 +69,8 @@ let SceneItemReboundComponent = SceneItemReboundComponent_1 = class SceneItemReb
     return true;
   }
   OnStart() {
-    this.Hte = this.Entity.GetComponent(212);
-    this.Lie = this.Entity.GetComponent(206);
+    this.Hte = this.Entity.GetComponent(214);
+    this.Lie = this.Entity.GetComponent(208);
     this.Ovn = Vector_1.Vector.Create();
     this.kvn = Vector_1.Vector.Create();
     this.u9r = Vector_1.Vector.Create();
@@ -104,7 +104,7 @@ let SceneItemReboundComponent = SceneItemReboundComponent_1 = class SceneItemReb
       this.l9r.Radius = 75;
       this.l9r.SetTraceTypeQuery(QueryTypeDefine_1.KuroTraceTypeQuery.Visible);
     }
-    this.l9r.WorldContextObject = this.Entity.GetComponent(212)?.Owner;
+    this.l9r.WorldContextObject = this.Entity.GetComponent(214)?.Owner;
   }
   CalculateReflectDir(t, e, i = undefined, s = true) {
     if (((i ? (this.cie.DeepCopy(i.K2_GetActorRotation()), this.cie) : this.Hte.ActorRotationProxy).Vector(this.Fvn), Vector_1.Vector.ZeroVectorProxy.Subtraction(t, t), s) && t.DotProduct(this.Fvn) < 0) {
@@ -156,5 +156,5 @@ let SceneItemReboundComponent = SceneItemReboundComponent_1 = class SceneItemReb
     return !!this.CalculateReflectDir(this.Ovn, this.kvn, i, false) && !(MathUtils_1.MathUtils.LookRotationForwardFirst(this.kvn, Vector_1.Vector.UpVectorProxy, e.MoveInfo.BeginSpeedRotator), this.Wvn ? ((i ? (this.Ovn.DeepCopy(i.D_K2_GetActorLocation()), this.cie.FromUeRotator(i.K2_GetActorRotation()), this.cie) : (this.Ovn.DeepCopy(this.Hte.ActorLocationProxy), this.Hte.ActorRotationProxy)).Quaternion(this.e7o), this.kvn.Multiply(REFLECT_START_OFFSET, this.kvn)) : (this.kvn.Multiply(REFLECT_START_OFFSET, this.kvn), this.Ovn.DeepCopy(this.cz)), this.Ovn.Addition(this.kvn, this.Ovn), this.e7o.RotateVector(this.Kvn, this.cz), this.Ovn.Addition(this.cz, this.Ovn), e.ActorComponent.SetActorLocation(this.Ovn.ToUeVector()), e.ActorComponent.SetActorRotation(e.MoveInfo.BeginSpeedRotator.ToUeRotator()), e.LiveTimeAddDelta = 0, e.LiveTime = 0);
   }
 };
-SceneItemReboundComponent = SceneItemReboundComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(171)], SceneItemReboundComponent);
+SceneItemReboundComponent = SceneItemReboundComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(173)], SceneItemReboundComponent);
 exports.SceneItemReboundComponent = SceneItemReboundComponent; //# sourceMappingURL=SceneItemReboundComponent.js.map

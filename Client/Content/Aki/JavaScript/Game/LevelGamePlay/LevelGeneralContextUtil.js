@@ -89,7 +89,7 @@ class LevelGeneralContextUtil {
           e = LevelGeneralContextUtil.AUe(t.fvs, t.qvs.ups);
           break;
         case Protocol_1.Aki.Protocol.TOs.Proto_RollBlockGamePlayActionCtx:
-          e = LevelGeneralContextUtil.AUe(t.fvs, t.xvf.ups);
+          e = LevelGeneralContextUtil.AUe(t.fvs, t.WMf.ups);
           break;
         case Protocol_1.Aki.Protocol.TOs.Proto_FlowActionCtx:
           e = LevelGeneralContextDefine_1.FlowActionContext.Create(t.Xvs, t.fvs);

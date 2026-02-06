@@ -806,43 +806,43 @@ class MathUtils {
   static VectorDistance(t, a) {
     return Math.sqrt(this.VectorDistanceSquared(t, a));
   }
-  static uRm() {
+  static MRm() {
     let t = undefined;
-    if (this.cRm.length) {
-      (t = this.cRm.pop())?.Reset();
+    if (this.ERm.length) {
+      (t = this.ERm.pop())?.Reset();
     }
     return t = t || Vector_1.Vector.Create();
   }
-  static dRm(t) {
+  static IRm(t) {
     t.Reset();
-    this.cRm.push(t);
+    this.ERm.push(t);
   }
-  static mRm() {
+  static TRm() {
     let t = undefined;
-    if (this.fRm.length) {
-      (t = this.fRm.pop())?.Reset();
+    if (this.bRm.length) {
+      (t = this.bRm.pop())?.Reset();
     }
     return t = t || Rotator_1.Rotator.Create();
   }
-  static gRm(t) {
+  static RRm(t) {
     t.Reset();
-    this.fRm.push(t);
+    this.bRm.push(t);
   }
   static ExecWithTmpVectorAndRotator(a, i, t) {
     var r = [];
     var e = [];
     for (let t = 0; t < a; t++) {
-      r.push(this.uRm());
+      r.push(this.MRm());
     }
     for (let t = 0; t < i; t++) {
-      e.push(this.mRm());
+      e.push(this.TRm());
     }
     t(r, e);
     for (let t = 0; t < a; t++) {
-      this.dRm(r[t]);
+      this.IRm(r[t]);
     }
     for (let t = 0; t < i; t++) {
-      this.gRm(e[t]);
+      this.RRm(e[t]);
     }
   }
   static GetSpiralGrid(t, a) {
@@ -964,8 +964,9 @@ MathUtils.cz = Vector_1.Vector.Create();
 MathUtils.fz = Vector_1.Vector.Create();
 MathUtils.pz = Vector_1.Vector.Create();
 MathUtils.CommonTempVector = Vector_1.Vector.Create();
+MathUtils.CommonTempVector2 = Vector_1.Vector.Create();
 MathUtils.CommonTempRotator = Rotator_1.Rotator.Create();
 MathUtils.CommonTempQuat = Quat_1.Quat.Create();
 MathUtils.az = Quat_1.Quat.Create();
-MathUtils.cRm = [];
-MathUtils.fRm = []; //# sourceMappingURL=MathUtils.js.map
+MathUtils.ERm = [];
+MathUtils.bRm = []; //# sourceMappingURL=MathUtils.js.map

@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.MotorRaceSettlementView = undefined;
 const UE = require("ue");
+const AudioSystem_1 = require("../../../../Core/Audio/AudioSystem");
 const UiViewBase_1 = require("../../../Ui/Base/UiViewBase");
 const GeneralLogicTreeController_1 = require("../../GeneralLogicTree/GeneralLogicTreeController");
 class MotorRaceSettlementView extends UiViewBase_1.UiViewBase {
@@ -12,18 +13,18 @@ class MotorRaceSettlementView extends UiViewBase_1.UiViewBase {
     super(...arguments);
     this.Nvr = 0;
     this._Xe = -1;
-    this.HMf = () => {
+    this.nbf = () => {
       this.Nvr = 1;
       this.CloseMe();
     };
-    this.jMf = () => {
+    this.sbf = () => {
       this.Nvr = 0;
       this.CloseMe();
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIButtonComponent], [4, UE.UIButtonComponent], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIText], [9, UE.UIItem], [10, UE.UIText], [11, UE.UIText], [12, UE.UIText], [13, UE.UIText]];
-    this.BtnBindInfo = [[3, this.HMf], [4, this.jMf]];
+    this.BtnBindInfo = [[3, this.nbf], [4, this.sbf]];
   }
   OnBeforeShow() {
     var e = this.OpenParam;
@@ -31,8 +32,12 @@ class MotorRaceSettlementView extends UiViewBase_1.UiViewBase {
     let t = 2;
     if (e.Score >= e.RankS) {
       t = 0;
+      AudioSystem_1.AudioSystem.PostEvent("play_ui_moto_parkour_settlement_level_s");
     } else if (e.Score >= e.RankB) {
       t = 1;
+      AudioSystem_1.AudioSystem.PostEvent("play_ui_moto_parkour_settlement_level_a");
+    } else {
+      AudioSystem_1.AudioSystem.PostEvent("play_ui_moto_parkour_settlement_level_others");
     }
     this.GetItem(0).SetUIActive(t === 0);
     this.GetItem(1).SetUIActive(t === 1);

@@ -7,6 +7,7 @@ exports.MotorcycleAccelerateAlongRailMoveData = undefined;
 const Log_1 = require("../../../../../Core/Common/Log");
 const Rotator_1 = require("../../../../../Core/Utils/Math/Rotator");
 const Vector_1 = require("../../../../../Core/Utils/Math/Vector");
+const Transform_1 = require("../../../../../Core/Utils/Math/Transform");
 const MathUtils_1 = require("../../../../../Core/Utils/MathUtils");
 const MotorcycleRailMoveConfigs_1 = require("./MotorcycleRailMoveConfigs");
 const MotorcycleRailMoveDataBase_1 = require("./MotorcycleRailMoveDataBase");
@@ -21,8 +22,8 @@ class MotorcycleAccelerateAlongRailMoveData extends MotorcycleRailMoveDataBase_1
     this.lLo = 0;
     this.Txa = 0;
     this.qsn = 0;
-    this.RRm = 0;
-    this.wRm = true;
+    this.ORm = 0;
+    this.GRm = true;
     this.I1e = Vector_1.Vector.Create();
     this.cce = Rotator_1.Rotator.Create();
     this.dHo = Vector_1.Vector.Create();
@@ -30,23 +31,25 @@ class MotorcycleAccelerateAlongRailMoveData extends MotorcycleRailMoveDataBase_1
     this.fHo = Vector_1.Vector.Create();
     this.pHo = Vector_1.Vector.Create();
     this.vHo = Vector_1.Vector.Create();
-    this.ayf = false;
-    this.fqf = 0;
-    this.VQf = -1;
+    this.sBg = Transform_1.Transform.Create();
+    this.vEf = false;
+    this.EVf = 0;
+    this.fag = -1;
   }
-  get iTf() {
+  get WRf() {
     return this.MoveConfig.AccelerateAlongRailConfig.LinearMoveConfig;
   }
   get ojo() {
     return this.MoveConfig.AccelerateAlongRailConfig.CommonConfig;
   }
-  get gqf() {
+  get IVf() {
     return this.MoveConfig.BasicRailMoveConfig;
   }
   OnTick(t) {
     this.TickUpdateMove(t);
-    this.Cqf(t);
-    this.LRm();
+    this.TVf(t);
+    this.aBg();
+    this.FRm();
   }
   OnEnter(t) {
     if (!this.Spline) {
@@ -62,7 +65,7 @@ class MotorcycleAccelerateAlongRailMoveData extends MotorcycleRailMoveDataBase_1
       return false;
     }
     var i = this.Spline.FindInputKeyClosestToWorldLocation(this.I1e);
-    this.RRm = MathUtils_1.MathUtils.Clamp(this.Spline.GetDistanceAlongSplineAtSplineInputKey(i), 0, this.Spline.GetSplineLength());
+    this.ORm = MathUtils_1.MathUtils.Clamp(this.Spline.GetDistanceAlongSplineAtSplineInputKey(i), 0, this.Spline.GetSplineLength());
     this.Spline.GetLocationAtSplineInputKey(i, 1, this.I1e);
     var i = this.dHo;
     var s = this.Tz;
@@ -89,7 +92,7 @@ class MotorcycleAccelerateAlongRailMoveData extends MotorcycleRailMoveDataBase_1
     if (!i.IsNearlyZero() && t < 0 && (s.Multiply(t, h), i.SubtractionEqual(h), i.IsNearlyZero(1))) {
       i.Reset();
     }
-    this.Spline.GetDirectionAtDistanceAlongSpline(this.RRm, 1, e);
+    this.Spline.GetDirectionAtDistanceAlongSpline(this.ORm, 1, e);
     t = Vector_1.Vector.DotProduct(e, s);
     if (MathUtils_1.MathUtils.IsNearlyZero(t)) {
       if (Log_1.Log.CheckWarn()) {
@@ -97,18 +100,18 @@ class MotorcycleAccelerateAlongRailMoveData extends MotorcycleRailMoveDataBase_1
       }
       return false;
     }
-    this.wRm = t > 0;
-    if (!this.wRm) {
+    this.GRm = t > 0;
+    if (!this.GRm) {
       e.UnaryNegation(e);
     }
     var r;
     var a;
     var h = Vector_1.Vector.DotProduct(e, i);
-    this.lLo = MathUtils_1.MathUtils.Clamp(Math.abs(h), this.iTf.MinSpeed, this.iTf.MaxSpeed);
-    this.Spline.GetQuaternionAtDistanceAlongSpline(this.RRm, 1, MathUtils_1.MathUtils.CommonTempQuat);
+    this.lLo = MathUtils_1.MathUtils.Clamp(Math.abs(h), this.WRf.MinSpeed, this.WRf.MaxSpeed);
+    this.Spline.GetQuaternionAtDistanceAlongSpline(this.ORm, 1, MathUtils_1.MathUtils.CommonTempQuat);
     MathUtils_1.MathUtils.CommonTempQuat.GetUpVector(o);
     MathUtils_1.MathUtils.LookRotationForwardFirst(e, o, this.cce);
-    var l = this.OwnerEntity.GetComponent(215);
+    var l = this.OwnerEntity.GetComponent(217);
     for ([r, a] of this.ojo.ModifyVehicleTagsOnEnter) {
       if (a) {
         l?.AddTag(r);
@@ -121,7 +124,7 @@ class MotorcycleAccelerateAlongRailMoveData extends MotorcycleRailMoveDataBase_1
   OnExit() {
     var t;
     var i;
-    var s = this.OwnerEntity.GetComponent(215);
+    var s = this.OwnerEntity.GetComponent(217);
     for ([t, i] of this.ojo.ModifyVehicleTagsOnExit) {
       if (i) {
         s?.AddTag(t);
@@ -129,16 +132,16 @@ class MotorcycleAccelerateAlongRailMoveData extends MotorcycleRailMoveDataBase_1
         s?.RemoveTag(t);
       }
     }
-    if (this.VQf !== -1) {
-      this.HQf(this.VQf);
+    if (this.fag !== -1) {
+      this.gag(this.fag);
     }
   }
   GetVelocity(t) {
     if (this.Spline) {
       t.Reset();
-      this.Spline.GetDirectionAtDistanceAlongSpline(this.RRm, 1, t);
-      t.MultiplyEqual(MathUtils_1.MathUtils.Clamp(Math.abs(this.lLo), this.iTf.MinSpeed, this.iTf.MaxSpeed));
-      if (!this.wRm) {
+      this.Spline.GetDirectionAtDistanceAlongSpline(this.ORm, 1, t);
+      t.MultiplyEqual(MathUtils_1.MathUtils.Clamp(Math.abs(this.lLo), this.WRf.MinSpeed, this.WRf.MaxSpeed));
+      if (!this.GRm) {
         t.MultiplyEqual(-1);
       }
       return true;
@@ -149,17 +152,17 @@ class MotorcycleAccelerateAlongRailMoveData extends MotorcycleRailMoveDataBase_1
   TickUpdateMove(e) {
     if (this.Spline) {
       var o = this.GetCurrentSegmentPointOption();
-      this.Txa = Math.abs(o?.MaxSpeed ?? this.gqf.DefaultMoveSpeed);
+      this.Txa = Math.abs(o?.MaxSpeed ?? this.IVf.DefaultMoveSpeed);
       this.qsn = Math.abs(o?.AbsAcceleration ?? 0);
       if (MathUtils_1.MathUtils.IsNearlyZero(this.lLo) && MathUtils_1.MathUtils.IsNearlyZero(this.qsn)) {
-        this.lLo = this.gqf.DefaultMoveSpeed;
+        this.lLo = this.IVf.DefaultMoveSpeed;
       }
-      var o = Math.min(e, this.gqf.MaxDeltaTimeForMoveUpdate);
-      var e = MathUtils_1.MathUtils.Clamp(Math.abs(this.lLo), this.iTf.MinSpeed, this.iTf.MaxSpeed);
-      var r = MathUtils_1.MathUtils.Clamp(Math.abs(this.Txa), this.iTf.MinSpeed, this.iTf.MaxSpeed);
+      var o = Math.min(e, this.IVf.MaxDeltaTimeForMoveUpdate);
+      var e = MathUtils_1.MathUtils.Clamp(Math.abs(this.lLo), this.WRf.MinSpeed, this.WRf.MaxSpeed);
+      var r = MathUtils_1.MathUtils.Clamp(Math.abs(this.Txa), this.WRf.MinSpeed, this.WRf.MaxSpeed);
       var a = Math.abs(this.qsn) * (r - e > 0 ? 1 : -1);
       var l = Math.abs(r - e);
-      var n = this.wRm ? Math.abs(this.Spline.GetSplineLength() - this.RRm) : Math.abs(0 - this.RRm);
+      var n = this.GRm ? Math.abs(this.Spline.GetSplineLength() - this.ORm) : Math.abs(0 - this.ORm);
       let t = a * o;
       let i = o;
       if (a != 0 && Math.abs(t) > l) {
@@ -177,100 +180,110 @@ class MotorcycleAccelerateAlongRailMoveData extends MotorcycleRailMoveDataBase_1
         h = n - s;
         t;
       }
-      if (this.wRm) {
+      if (this.GRm) {
         this.lLo = MathUtils_1.MathUtils.Clamp(e + t, 0, r);
-        this.RRm = MathUtils_1.MathUtils.Clamp(this.RRm + (s + h), 0, this.Spline.GetSplineLength());
+        this.ORm = MathUtils_1.MathUtils.Clamp(this.ORm + (s + h), 0, this.Spline.GetSplineLength());
       } else {
         this.lLo = MathUtils_1.MathUtils.Clamp(e + t, 0, r);
-        this.RRm = MathUtils_1.MathUtils.Clamp(this.RRm - (s + h), 0, this.Spline.GetSplineLength());
+        this.ORm = MathUtils_1.MathUtils.Clamp(this.ORm - (s + h), 0, this.Spline.GetSplineLength());
       }
-      this.Spline.GetLocationAtDistanceAlongSpline(this.RRm, 1, this.I1e);
+      this.Spline.GetLocationAtDistanceAlongSpline(this.ORm, 1, this.I1e);
       a = this.dHo;
       o = this.Tz;
-      this.Spline.GetDirectionAtDistanceAlongSpline(this.RRm, 1, a);
-      if (!this.wRm) {
+      this.Spline.GetDirectionAtDistanceAlongSpline(this.ORm, 1, a);
+      if (!this.GRm) {
         a.UnaryNegation(a);
       }
-      this.Spline.GetQuaternionAtDistanceAlongSpline(this.RRm, 1, MathUtils_1.MathUtils.CommonTempQuat);
+      this.Spline.GetQuaternionAtDistanceAlongSpline(this.ORm, 1, MathUtils_1.MathUtils.CommonTempQuat);
       MathUtils_1.MathUtils.CommonTempQuat.GetUpVector(o);
       MathUtils_1.MathUtils.LookRotationForwardFirst(a, o, this.cce);
-      this.jQf();
-      l = this.dHo;
-      n = this.GetVelocity(l);
-      this.MoveUpdater?.(this.I1e, this.cce, n ? l : undefined);
+      this.Cag();
     }
   }
-  LRm() {
-    if (this.ojo.EnableBlockingCheck && this.ayf && this.fqf > this.ojo.MaxBlockingTimeOut) {
+  aBg() {
+    var t;
+    var i;
+    if (this.ojo.EnableBlockingCheck && this.vEf) {
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("MotorRailMove", 39, "[MotorcycleAccelerateAlongRailMoveData] 检测到阻挡，不应用位移更新", ["BlockingTime", this.EVf], ["CurrentLocation", this.I1e]);
+      }
+    } else {
+      t = this.dHo;
+      i = this.GetVelocity(t);
+      this.MoveUpdater?.(this.I1e, this.cce, i ? t : undefined, this.ojo.EnableBlockingCheck);
+    }
+  }
+  FRm() {
+    if (this.ojo.EnableBlockingCheck && this.vEf && this.EVf > this.ojo.MaxBlockingTimeOut) {
       this.IsFinishMove = true;
       this.IsFinishMoveOnFailure = true;
       if (Log_1.Log.CheckWarn()) {
-        Log_1.Log.Warn("MotorRailMove", 39, "[MotorcycleAccelerateAlongRailMoveData] Finish move on blocking", ["BlockingTime", this.fqf], ["CurrentLocation", this.I1e]);
+        Log_1.Log.Warn("MotorRailMove", 39, "[MotorcycleAccelerateAlongRailMoveData] Finish move on blocking", ["BlockingTime", this.EVf], ["CurrentLocation", this.I1e]);
       }
     } else if (this.Spline) {
-      if (this.wRm) {
-        this.IsFinishMove = this.RRm >= this.Spline.GetSplineLength();
+      if (this.GRm) {
+        this.IsFinishMove = this.ORm >= this.Spline.GetSplineLength();
       } else {
-        this.IsFinishMove = this.RRm <= 0;
+        this.IsFinishMove = this.ORm <= 0;
       }
     }
   }
-  Cqf(t) {
+  TVf(t) {
     var i;
     var s;
-    var h;
-    if (this.ojo.EnableBlockingCheck && !this.IsFinishMove && (i = this.OwnerEntity.GetComponent(247), h = this.OwnerEntity.GetComponent(249), i && h && h.VehicleMovement)) {
-      s = this.ayf;
-      this.ayf = !h.VehicleMovement.IsValidTransform(i.ActorTransform, undefined);
-      if (this.ayf) {
-        h = s ? Math.min(t, this.gqf.MaxDeltaTimeForMoveUpdate) : 0;
-        this.fqf += h;
+    if (this.ojo.EnableBlockingCheck && !this.IsFinishMove && (i = this.OwnerEntity.GetComponent(247), s = this.OwnerEntity.GetComponent(249), i && s && s.VehicleMovement)) {
+      i = this.vEf;
+      this.sBg.Set(this.I1e, this.cce.Quaternion(), Vector_1.Vector.OneVectorProxy);
+      this.vEf = !s.VehicleMovement.IsValidTransform(this.sBg.ToUeTransform(), undefined);
+      if (this.vEf) {
+        s = i ? Math.min(t, this.IVf.MaxDeltaTimeForMoveUpdate) : 0;
+        this.EVf += s;
         if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("MotorRailMove", 39, "[MotorcycleAccelerateAlongRailMoveData] Blocked", ["BlockingTime", this.fqf], ["CurrentLocation", this.I1e]);
+          Log_1.Log.Debug("MotorRailMove", 39, "[MotorcycleAccelerateAlongRailMoveData] Blocked", ["BlockingTime", this.EVf], ["CurrentLocation", this.I1e]);
         }
       } else {
-        this.fqf = 0;
+        this.EVf = 0;
       }
     }
   }
-  jQf() {
+  Cag() {
     var t = this.IsFinishMove ? this.GetCurrentSegmentPointIndex() : -1;
-    if (t !== undefined && this.VQf !== t) {
+    if (t !== undefined && this.fag !== t) {
       if (t === -1) {
-        this.HQf(this.VQf);
-        this.VQf = t;
-      } else if (this.VQf === -1) {
-        this.VQf = t;
-        this.$Qf(this.VQf);
-      } else if (this.wRm) {
-        while (this.VQf < t) {
-          this.HQf(this.VQf);
-          this.VQf++;
-          this.$Qf(this.VQf);
+        this.gag(this.fag);
+        this.fag = t;
+      } else if (this.fag === -1) {
+        this.fag = t;
+        this.pag(this.fag);
+      } else if (this.GRm) {
+        while (this.fag < t) {
+          this.gag(this.fag);
+          this.fag++;
+          this.pag(this.fag);
         }
       } else {
-        while (this.VQf > t) {
-          this.HQf(this.VQf);
-          this.VQf--;
-          this.$Qf(this.VQf);
+        while (this.fag > t) {
+          this.gag(this.fag);
+          this.fag--;
+          this.pag(this.fag);
         }
       }
     }
   }
-  $Qf(t) {
+  pag(t) {
     if (t !== -1 && (t = this.SplinePointOptions[t]) && t.SubCameraTag) {
-      this.OwnerEntity.GetComponent(215)?.AddTag(t.SubCameraTag);
+      this.OwnerEntity.GetComponent(217)?.AddTag(t.SubCameraTag);
     }
   }
-  HQf(t) {
+  gag(t) {
     if (t !== -1 && (t = this.SplinePointOptions[t]) && t.SubCameraTag) {
-      this.OwnerEntity.GetComponent(215)?.RemoveTag(t.SubCameraTag);
+      this.OwnerEntity.GetComponent(217)?.RemoveTag(t.SubCameraTag);
     }
   }
   GetCurrentSegmentPointOption() {
     var t;
     if (this.Spline) {
-      t = this.Spline.GetInputKeyAtDistanceAlongSpline(this.RRm);
+      t = this.Spline.GetInputKeyAtDistanceAlongSpline(this.ORm);
       t = this.Spline.GetNearestPositionIndexAtInputKey(t);
       return this.SplinePointOptions[t];
     }
@@ -278,12 +291,12 @@ class MotorcycleAccelerateAlongRailMoveData extends MotorcycleRailMoveDataBase_1
   GetCurrentSegmentPointIndex() {
     var t;
     if (this.Spline) {
-      t = this.Spline.GetInputKeyAtDistanceAlongSpline(this.RRm);
+      t = this.Spline.GetInputKeyAtDistanceAlongSpline(this.ORm);
       return this.Spline.GetNearestPositionIndexAtInputKey(t);
     }
   }
   GetIsMoveAlongSplineForward() {
-    return this.wRm;
+    return this.GRm;
   }
 }
 exports.MotorcycleAccelerateAlongRailMoveData = MotorcycleAccelerateAlongRailMoveData;

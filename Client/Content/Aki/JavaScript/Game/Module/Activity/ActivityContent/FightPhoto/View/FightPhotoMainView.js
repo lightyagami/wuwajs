@@ -34,7 +34,7 @@ class FightPhotoMainView extends UiTickViewBase_1.UiTickViewBase {
     this.CNe = undefined;
     this.W9d = undefined;
     this.Hwl = undefined;
-    this.mDm = [];
+    this.zAm = [];
     this.B0m = false;
     this.hLt = -1;
     this.lqe = undefined;
@@ -112,8 +112,8 @@ class FightPhotoMainView extends UiTickViewBase_1.UiTickViewBase {
       while (t.length < TEAM_MAX_NUMBER) {
         t.push(0);
       }
-      this.mDm = t;
-      this.tFe.RefreshByData(this.mDm);
+      this.zAm = t;
+      this.tFe.RefreshByData(this.zAm);
     };
     this.Oye = t => {
       if (!(t.length <= 0)) {
@@ -145,7 +145,7 @@ class FightPhotoMainView extends UiTickViewBase_1.UiTickViewBase {
         ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("ErrorCode_600064_Text");
       } else {
         ModelManager_1.ModelManager.LoadingModel.SetSpecifiedLoadingConfigId(this.Hwl.LoadingId);
-        ActivityControllerHolder_1.ActivityControllerHolder.FightPhotoController.EnterFightPhotoDungeonDirectly(this.CNe.Id, this.Hwl.LevelId, this.Hwl.InstanceId, this.mDm);
+        ActivityControllerHolder_1.ActivityControllerHolder.FightPhotoController.EnterFightPhotoDungeonDirectly(this.CNe.Id, this.Hwl.LevelId, this.Hwl.InstanceId, this.zAm);
       }
     };
     this.Q9d = () => {
@@ -265,8 +265,8 @@ class FightPhotoMainView extends UiTickViewBase_1.UiTickViewBase {
         t.SetIsFinished(this.Hwl.IsFinished);
       }
     });
-    this.mDm = t.GetRoleIdListIncludeZero();
-    this.tFe.RefreshByData(this.mDm);
+    this.zAm = t.GetRoleIdListIncludeZero();
+    this.tFe.RefreshByData(this.zAm);
     this.GetButton(19)?.RootUIComp.SetUIActive(t.IsUnLock);
     this.wVl?.SetUiActive(t.LevelGroupData.IsUnLock && !t.IsUnLock);
     if (!t.IsUnLock) {

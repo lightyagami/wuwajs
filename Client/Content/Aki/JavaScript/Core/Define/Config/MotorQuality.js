@@ -16,6 +16,12 @@ class MotorQuality {
   get Path() {
     return this.path();
   }
+  get FramePath() {
+    return this.framepath();
+  }
+  get FrameShinePath() {
+    return this.frameshinepath();
+  }
   __init(t, i) {
     this.z7 = t;
     this.J7 = i;
@@ -34,6 +40,22 @@ class MotorQuality {
   }
   path(t) {
     var i = this.J7.__offset(this.z7, 6);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
+  framepath(t) {
+    var i = this.J7.__offset(this.z7, 8);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
+  frameshinepath(t) {
+    var i = this.J7.__offset(this.z7, 10);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);

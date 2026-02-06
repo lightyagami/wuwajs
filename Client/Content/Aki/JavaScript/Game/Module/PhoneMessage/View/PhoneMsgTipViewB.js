@@ -15,43 +15,43 @@ const CLOSE_TIME = 4000;
 class PhoneMsgTipViewB extends UiTickViewBase_1.UiTickViewBase {
   constructor() {
     super(...arguments);
-    this.Fsf = undefined;
+    this.dlf = undefined;
     this.Ybe = CLOSE_TIME;
     this.vNi = false;
     this.Hea = undefined;
-    this.fLf = undefined;
-    this.gLf = undefined;
-    this.CLf = undefined;
-    this.pLf = undefined;
+    this.bBf = undefined;
+    this.RBf = undefined;
+    this.LBf = undefined;
+    this.wBf = undefined;
     this.Wpu = (i, e) => {
       var t;
       if (e === "Close_UI") {
         this.CloseMe();
       }
       if (e === "Particle_In" && (e = undefined, t = UiManager_1.UiManager.GetViewByName("BattleView").OpenParam) && (e = t.GetTopPanelPhoneMsgButtonItem())) {
-        this.vLf(e);
+        this.PBf(e);
       }
     };
     this.TipsWorldPos = Vector_1.Vector.Create(0, 0, 0);
-    this.cUf = false;
-    this.raf = () => {
-      this.cUf = true;
+    this.NOf = false;
+    this.Plf = () => {
+      this.NOf = true;
       this.CloseMe();
     };
     this.OnAfterDestroyImplement = () => {
-      if (this.cUf) {
-        UiManager_1.UiManager.OpenView("PhoneMsgPanelViewBig", this.Fsf);
+      if (this.NOf) {
+        UiManager_1.UiManager.OpenView("PhoneMsgPanelViewBig", this.dlf);
       }
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UISprite]];
-    this.BtnBindInfo = [[0, this.raf]];
+    this.BtnBindInfo = [[0, this.Plf]];
   }
   OnStart() {
-    this.Fsf = this.OpenParam;
+    this.dlf = this.OpenParam;
     this.Hea = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
-    if (this.Fsf === undefined) {
+    if (this.dlf === undefined) {
       this.CloseMe();
     }
     this.RootActor.OnSequencePlayEvent.Bind(this.Wpu);
@@ -71,20 +71,20 @@ class PhoneMsgTipViewB extends UiTickViewBase_1.UiTickViewBase {
   OnBeforeDestroy() {
     this.Hea?.Clear();
     this.Hea = undefined;
-    this.fLf?.Destroy();
-    this.gLf?.Destroy();
+    this.bBf?.Destroy();
+    this.RBf?.Destroy();
   }
   GetMessageDataId() {
-    return this.Fsf?.Id;
+    return this.dlf?.Id;
   }
-  vLf(i) {
-    this.fLf = new LguiFloatTween_1.LguiFloatTween();
-    this.fLf.BindUpdateTween(i => {
+  PBf(i) {
+    this.bBf = new LguiFloatTween_1.LguiFloatTween();
+    this.bBf.BindUpdateTween(i => {
       this.TipsWorldPos.X = i;
       this.RootItem.SetUIWorldLocation(this.TipsWorldPos.ToUeVectorOld());
     });
-    this.gLf = new LguiFloatTween_1.LguiFloatTween();
-    this.gLf.BindUpdateTween(i => {
+    this.RBf = new LguiFloatTween_1.LguiFloatTween();
+    this.RBf.BindUpdateTween(i => {
       this.TipsWorldPos.Z = i;
       this.RootItem.SetUIWorldLocation(this.TipsWorldPos.ToUeVectorOld());
     });
@@ -92,8 +92,8 @@ class PhoneMsgTipViewB extends UiTickViewBase_1.UiTickViewBase {
     var t = this.RootItem.D_K2_GetComponentLocation();
     var i = i.D_K2_GetComponentLocation();
     this.TipsWorldPos.DeepCopy(t);
-    this.fLf.PlayTween(t.X, i.X, e, this.CLf);
-    this.gLf.PlayTween(t.Z, i.Z, e, this.pLf);
+    this.bBf.PlayTween(t.X, i.X, e, this.LBf);
+    this.RBf.PlayTween(t.Z, i.Z, e, this.wBf);
   }
 }
 exports.PhoneMsgTipViewB = PhoneMsgTipViewB;

@@ -96,6 +96,10 @@ class SkillButtonData {
     this.RemainingCountCustom = 0;
     this.TotalCoolDownCustom = 0;
     this.HideCoolDownTextCustom = false;
+    this.CustomSkillTexturePath = undefined;
+    this.CustomSkillIconName = undefined;
+    this.IsEnableDotIndicator = false;
+    this.DotIndicatorCount = 0;
     this.gvl = true;
     this.pvl = false;
     this.fvl = 0;
@@ -103,6 +107,7 @@ class SkillButtonData {
     this.RemainingCountVehicleSkill = 0;
     this.ExploreAsFightTagIds = [];
     this.IsExploreAsFight = false;
+    this.IsEnableSlideControl = false;
   }
   get bSo() {
     return this.DSo;
@@ -167,16 +172,16 @@ class SkillButtonData {
       this.kY_(this.ConfigVehicle);
     }
     this.vSo = i.IsLongPressControlCamera;
-    this.TSo = t.GetComponent(40);
-    this.LSo = t.GetComponent(218);
-    this.GameplayTagComponent = t.GetComponent(215);
-    this.BuffComponent = t.GetComponent(220);
+    this.TSo = t.GetComponent(42);
+    this.LSo = t.GetComponent(220);
+    this.GameplayTagComponent = t.GetComponent(217);
+    this.BuffComponent = t.GetComponent(222);
     this.u1t = t.GetComponent(0);
-    this.RSo = t.GetComponent(65);
-    this.$te = t.GetComponent(182);
-    this.USo = t.GetComponent(44);
+    this.RSo = t.GetComponent(67);
+    this.$te = t.GetComponent(184);
+    this.USo = t.GetComponent(46);
     this.Cvl = t.GetComponent(242);
-    this.pWu = t.GetComponent(321);
+    this.pWu = t.GetComponent(323);
     this.InitCustomHandle();
     this.InitVehicleHandle();
     this.qSo();
@@ -199,6 +204,7 @@ class SkillButtonData {
     this.RefreshIsShowLongPress();
     this.RefreshIsEnableLongPress();
     this.RefreshConfigIsShowLongPress();
+    this.RefreshIsOccupy();
   }
   Reset() {
     this.qxa = 0;
@@ -709,43 +715,49 @@ class SkillButtonData {
     return !!s && (i = s.IconPath, this.SkillIconName = s.Name, !StringUtils_1.StringUtils.IsEmpty(i)) && (this.PSo = i, this.I9_ = t, true);
   }
   RefreshSkillTexturePath() {
-    this.I9_ = 0;
-    if (this.SkillIconTagIds && this.SkillIconTagIds.length > 0) {
-      for (const s of this.SkillIconTagIds) {
-        if (this.mSo(s) && this.T9_(s)) {
-          return;
-        }
-      }
-    }
-    var t = this.FormationData?.SkillIconPath;
-    if (t) {
-      var i = this.FormationData.EnableSkillId;
-      if (i === 0 || i === this.wmo) {
-        this.PSo = t;
-        this.SkillIconName = undefined;
-        return;
-      }
-    }
-    this.SkillIconName = undefined;
-    if (this.ConfigRole || this.ConfigVehicle) {
-      if (this.RO === InputEnums_1.EInputAction.幻象1) {
-        var i = this.WSo();
-        if (i) {
-          this.PSo = i;
-          return;
-        }
-      } else if (this.RO === InputEnums_1.EInputAction.幻象2 && this.PSo !== undefined) {
-        return;
-      }
-    }
-    if (this.wmo === -1 && this.ConfigFollower) {
-      this.PSo = this.ConfigFollower.SkillIcon;
-    } else if (this.wmo === -1 && this.ConfigVehicle) {
-      this.PSo = this.ConfigVehicle.SkillIcon;
-    } else if (!(t = this.GetSkillConfig()) || !(i = t.SkillIcon) || (t = i.AssetPathName, FNameUtil_1.FNameUtil.IsNothing(t))) {
-      this.PSo = undefined;
+    if (this.CustomSkillTexturePath) {
+      this.PSo = this.CustomSkillTexturePath;
+      this.SkillIconName = this.CustomSkillIconName;
+      this.I9_ = -1;
     } else {
-      this.PSo = t.toString();
+      this.I9_ = 0;
+      if (this.SkillIconTagIds && this.SkillIconTagIds.length > 0) {
+        for (const s of this.SkillIconTagIds) {
+          if (this.mSo(s) && this.T9_(s)) {
+            return;
+          }
+        }
+      }
+      var t = this.FormationData?.SkillIconPath;
+      if (t) {
+        var i = this.FormationData.EnableSkillId;
+        if (i === 0 || i === this.wmo) {
+          this.PSo = t;
+          this.SkillIconName = undefined;
+          return;
+        }
+      }
+      this.SkillIconName = undefined;
+      if (this.ConfigRole || this.ConfigVehicle) {
+        if (this.RO === InputEnums_1.EInputAction.幻象1) {
+          var i = this.WSo();
+          if (i) {
+            this.PSo = i;
+            return;
+          }
+        } else if (this.RO === InputEnums_1.EInputAction.幻象2 && this.PSo !== undefined) {
+          return;
+        }
+      }
+      if (this.wmo === -1 && this.ConfigFollower) {
+        this.PSo = this.ConfigFollower.SkillIcon;
+      } else if (this.wmo === -1 && this.ConfigVehicle) {
+        this.PSo = this.ConfigVehicle.SkillIcon;
+      } else if (!(t = this.GetSkillConfig()) || !(i = t.SkillIcon) || (t = i.AssetPathName, FNameUtil_1.FNameUtil.IsNothing(t))) {
+        this.PSo = undefined;
+      } else {
+        this.PSo = t.toString();
+      }
     }
   }
   NSo() {
@@ -994,13 +1006,22 @@ class SkillButtonData {
     return `Type:${this.CSo},SkillId:${this.wmo},Visible:${this.ASo},Enable:${this.bSo},${this.J6a},`;
   }
   InitCustomHandle() {
-    if ((this.Config instanceof SkillButton_1.SkillButton || this.Config instanceof SkillFollowerButton_1.SkillFollowerButton) && (this.CustomHandle = SkillButtonCustomHandleFactory_1.SkillButtonCustomHandleFactory.GetSkillButtonCustomHandleById(this.Config.CustomHandleId), this.CustomHandle)) {
+    let t = 0;
+    if (this.ConfigRole) {
+      t = this.ConfigRole.CustomHandleId;
+    } else if (this.ConfigFollower) {
+      t = this.ConfigFollower.CustomHandleId;
+    }
+    if (t && (this.CustomHandle = SkillButtonCustomHandleFactory_1.SkillButtonCustomHandleFactory.GetSkillButtonCustomHandleById(t), this.CustomHandle)) {
       this.CustomHandle.Init(this);
       this.CustomHandle.Refresh();
     }
   }
   GetRemainingCoolDownCustom() {
     return this.CustomHandle?.GetCustomRemainingCoolDown() ?? 0;
+  }
+  GetCustomHdMarkFrom() {
+    return this.CustomHandle?.CustomHdMarkFrom ?? -1;
   }
   InitVehicleHandle() {
     var t;

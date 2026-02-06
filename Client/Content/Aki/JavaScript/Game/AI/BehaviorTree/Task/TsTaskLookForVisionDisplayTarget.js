@@ -11,7 +11,7 @@ const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const AiContollerLibrary_1 = require("../../Controller/AiContollerLibrary");
 const TsTaskAbortImmediatelyBase_1 = require("./TsTaskAbortImmediatelyBase");
-const visionMark2VisionDisplayTargetMap = new Map([[0, "MechanicalDeer"], [1, "MechanicalDeerSunSpirit"], [2, "RockSpider"], [3, "PiPapa"], [4, "MammothCollision"], [5, "MammothSlide"], [6, "MachineFalcon"], [7, "BiologicalFalcon"]]);
+const visionMark2VisionDisplayTargetMap = new Map([[0, "MechanicalDeer"], [1, "MechanicalDeerSunSpirit"], [2, "RockSpider"], [3, "PiPapa"], [4, "MammothCollision"], [5, "MammothSlide"], [6, "MammothSmashDown"]]);
 class TsTaskLookForVisionDisplayTarget extends TsTaskAbortImmediatelyBase_1.default {
   constructor() {
     super(...arguments);
@@ -63,7 +63,7 @@ class TsTaskLookForVisionDisplayTarget extends TsTaskAbortImmediatelyBase_1.defa
         var l;
         var h = Vector_1.Vector.Create(0, 0, 0);
         for (const n of this.TmpHandles) {
-          if (n.Entity?.Activate && (o = n.Entity.GetComponent(145)) && o.IsVisionDisplayType && o.VisionDisplayIsCanBeInteract) {
+          if (n.Entity?.Activate && (o = n.Entity.GetComponent(147)) && o.IsVisionDisplayType && o.VisionDisplayIsCanBeLookFor()) {
             if (!!(a = o.GetMoveTargetPos()) && !!(l = o.GetVisionDisplayType()) && l === this.TsInteractVisionDisplayType && !!o.CheckOnVisionDisplayType() && !((l = Vector_1.Vector.DistSquared(r, a)) > i) && (!this.TsNavigationOn || !!AiContollerLibrary_1.AiControllerLibrary.NavigationFindPath(e, r.ToUeVector(), a.ToUeVector()))) {
               i = l;
               t = n;

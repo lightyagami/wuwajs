@@ -25,7 +25,7 @@ class RoadBookPhantomTaskView extends UiViewBase_1.UiViewBase {
     this.Otl = undefined;
     this.b4c = undefined;
     this.LevelSequencePlayer = undefined;
-    this.F9m = undefined;
+    this.jHm = undefined;
     this.oWi = () => {
       return new PhantomCardItem(this.b4c);
     };
@@ -39,7 +39,7 @@ class RoadBookPhantomTaskView extends UiViewBase_1.UiViewBase {
   }
   async OnBeforeStartAsync() {
     this.b4c = this.OpenParam;
-    this.F9m = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(2), this.oWi);
+    this.jHm = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(2), this.oWi);
     var e = [];
     this.Otl = new PopupCaptionItem_1.PopupCaptionItem();
     this.Otl.SetHelpCallBack(this.pcr);
@@ -70,24 +70,24 @@ class RoadBookPhantomTaskView extends UiViewBase_1.UiViewBase {
       s += h;
     }
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), "RoadBookPhantomGain_Progress", o, s);
-    await this.F9m.RefreshByDataAsync(r.sort((e, i) => e - i));
-    this.F9m.GetGenericLayout().PlayGridAnim();
+    await this.jHm.RefreshByDataAsync(r.sort((e, i) => e - i));
+    this.jHm.GetGenericLayout().PlayGridAnim();
     t = r.indexOf(a);
     if (t !== -1) {
-      this.S6f(t);
+      this.Ozf(t);
     }
   }
-  S6f(t) {
-    const r = this.F9m.GetItemByIndex(Math.max(t, 0));
+  Ozf(t) {
+    const r = this.jHm.GetItemByIndex(Math.max(t, 0));
     if (r) {
-      this.F9m.BindLateUpdate(e => {
+      this.jHm.BindLateUpdate(e => {
         TimerSystem_1.GameplayTimerSystem.Next(() => {
           var e = this.GetScrollViewWithScrollbar(2);
-          var i = Math.floor(this.F9m.ScrollWidth / r.Width / 2);
-          var i = this.F9m.GetItemByIndex(Math.max(t - i, 0));
+          var i = Math.floor(this.jHm.ScrollWidth / r.Width / 2);
+          var i = this.jHm.GetItemByIndex(Math.max(t - i, 0));
           e.ScrollToLeft((0, puerts_1.$ref)(new UE.Vector2D(e.ContentUIItem.RelativeLocation)), i);
         });
-        this.F9m.UnBindLateUpdate();
+        this.jHm.UnBindLateUpdate();
       });
     }
   }
@@ -100,8 +100,8 @@ class PhantomCardItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.PhantomId = 0;
     this.jbe = () => {
       var e = Time_1.Time.SystemNow;
-      if (!(e - PhantomCardItem.M6f < CLICK_COOLDOWN_MS)) {
-        PhantomCardItem.M6f = e;
+      if (!(e - PhantomCardItem.Gzf < CLICK_COOLDOWN_MS)) {
+        PhantomCardItem.Gzf = e;
         e = ConfigManager_1.ConfigManager.ActivityRoadBookConfig.GetPhantomConfig(this.PhantomId);
         if (ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance()) {
           ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("DungeonDetection");
@@ -159,5 +159,5 @@ class PhantomCardItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.ActivityBaseData.SaveFirstCheckRedDotState(4, this.PhantomId);
   }
 }
-PhantomCardItem.M6f = 0;
+PhantomCardItem.Gzf = 0;
 //# sourceMappingURL=RoadBookPhantomTaskView.js.map

@@ -96,13 +96,15 @@ class VelocityAddition {
   }
 }
 class GravityScale {
-  constructor(t = 0, i = 0, e = 0, s = 0, h = 0, o = 0) {
+  constructor(t = 0, i = 0, e = 0, s = 0, h = 0, o = 0, r = false, a = false) {
     this.ScaleUp = t;
     this.ScaleDown = i;
     this.ScaleTop = e;
     this.VelocityTop = s;
     this.Duration = h;
     this.ElapsedTime = o;
+    this.ForceVelocityZero = r;
+    this.Enable = a;
   }
 }
 exports.GravityScale = GravityScale;
@@ -170,6 +172,8 @@ let BaseMoveComponent = BaseMoveComponent_1 = class BaseMoveComponent extends En
     this.JumpFrameCount = 0;
     this.CharHeightAboveGround = -1;
     this.CharHeightAboveGroundDetectHeight = -1;
+    this.CharHeightAboveWater = -1;
+    this.CharHeightAboveWaterDetectHeight = -1;
     this.CreatureProperty = undefined;
     this.DefaultMovementData = undefined;
     this.MovementDataMap = new Map();
@@ -197,6 +201,7 @@ let BaseMoveComponent = BaseMoveComponent_1 = class BaseMoveComponent extends En
     this.CannotResponseInputCount = 0;
     this.CapsuleOffset = undefined;
     this.SphereTrace = undefined;
+    this.WaterSphereTrace = undefined;
     this.AccelerationChangeMoveState = undefined;
     this.AccelerationLerpCurve = undefined;
     this.FallingHorizontalMaxSpeed = DEFAULT_MAX_FALLING_VELOCITY_2D;
@@ -259,6 +264,9 @@ let BaseMoveComponent = BaseMoveComponent_1 = class BaseMoveComponent extends En
   set CurrentMovementSettings(t) {
     this.B2r = t;
     this.b2r.UpdateSettings(t.ControllerRotationSpeedSetting);
+    if (this.CharacterMovement && t) {
+      this.CharacterMovement.SetKuroMovementSettings(new UE.KuroMovementSetting(t.Acceleration, t.ControllerRotationSpeed, new UE.KuroMovementRotationSetting(t.ControllerRotationSpeedSetting.最大旋转速度, t.ControllerRotationSpeedSetting.最大角度差, t.ControllerRotationSpeedSetting.最小旋转速度, t.ControllerRotationSpeedSetting.最小角度差, t.ControllerRotationSpeedSetting.渐变曲线.CurveType, t.ControllerRotationSpeedSetting.渐变曲线.N), t.FastSwimSpeed, t.GroundFriction, t.MovementCurve, t.NormalSwimSpeed, t.RotationRateCurve, t.RunSpeed, t.SprintSpeed, t.SwingAcceleration, t.SwingSpeed, t.WalkSpeed));
+    }
   }
   SetGravityDirectWithoutRotate(t) {
     this.SetGravityDirectWithoutRotateByNumber(t.X, t.Y, t.Z);
@@ -303,7 +311,7 @@ let BaseMoveComponent = BaseMoveComponent_1 = class BaseMoveComponent extends En
           Context: "[BaseMoveComponent.SetGravityDirectByNumber]"
         });
       }
-      if (this.ActorComp.ActorUpProxy.DotProduct(this.TmpVector) > MathUtils_1.MathUtils.KindaSmallNumber - 1 && (this.TmpQuat.RotateVector(Vector_1.Vector.UpVectorProxy, this.TmpVector), this.TmpQuat.Multiply(this.ActorComp.ActorQuatProxy, this.TmpQuat2), this.TmpQuat2.Rotator(this.TmpRotator), this.AnimComp ? this.AnimComp.SetLocationAndRotatorWithModelBuffer(this.ActorComp.ActorLocationProxy.ToUeVector(), this.TmpRotator.ToUeRotator(), t, "SetGravity") : this.ActorComp.SetActorRotation(this.TmpRotator.ToUeRotator(), "SetGravity"), this.ActorComp?.IsRoleAndCtrlByMe) && !this.Entity.GetComponent(65)?.IsLocalInput) {
+      if (this.ActorComp.ActorUpProxy.DotProduct(this.TmpVector) > MathUtils_1.MathUtils.KindaSmallNumber - 1 && (this.TmpQuat.RotateVector(Vector_1.Vector.UpVectorProxy, this.TmpVector), this.TmpQuat.Multiply(this.ActorComp.ActorQuatProxy, this.TmpQuat2), this.TmpQuat2.Rotator(this.TmpRotator), this.AnimComp ? this.AnimComp.SetLocationAndRotatorWithModelBuffer(this.ActorComp.ActorLocationProxy.ToUeVector(), this.TmpRotator.ToUeRotator(), t, "SetGravity") : this.ActorComp.SetActorRotation(this.TmpRotator.ToUeRotator(), "SetGravity"), this.ActorComp?.IsRoleAndCtrlByMe) && !this.Entity.GetComponent(67)?.IsLocalInput) {
         this.TmpQuat.RotateVector(this.ActorComp.InputDirectProxy, this.TmpVector);
         this.ActorComp.SetInputDirect(this.TmpVector, true);
         this.TmpQuat.RotateVector(this.ActorComp.InputFacingProxy, this.TmpVector);
@@ -356,7 +364,7 @@ let BaseMoveComponent = BaseMoveComponent_1 = class BaseMoveComponent extends En
   }
   OnStart() {
     this.InitGravityDirect();
-    this.TimeScaleComp = this.Entity.GetComponent(131);
+    this.TimeScaleComp = this.Entity.GetComponent(133);
     return true;
   }
   SetUseDebugMovementSetting(t) {
@@ -482,6 +490,11 @@ let BaseMoveComponent = BaseMoveComponent_1 = class BaseMoveComponent extends En
     this.SphereTrace.bIsSingle = true;
     this.SphereTrace.bIgnoreSelf = true;
     this.SphereTrace.SetTraceTypeQuery(QueryTypeDefine_1.KuroTraceTypeQuery.Visible);
+    this.WaterSphereTrace = UE.NewObject(UE.TraceSphereElement.StaticClass());
+    this.WaterSphereTrace.WorldContextObject = this.ActorComp.Owner;
+    this.WaterSphereTrace.bIsSingle = true;
+    this.WaterSphereTrace.bIgnoreSelf = true;
+    this.WaterSphereTrace.SetTraceTypeQuery(QueryTypeDefine_1.KuroTraceTypeQuery.Water);
   }
   InitBaseState() {
     switch (this.ActorComp.CreatureData.GetEntityType()) {
@@ -684,6 +697,8 @@ let BaseMoveComponent = BaseMoveComponent_1 = class BaseMoveComponent extends En
   OnTick(t) {
     this.CharHeightAboveGround = -1;
     this.CharHeightAboveGroundDetectHeight = -1;
+    this.CharHeightAboveWater = -1;
+    this.CharHeightAboveWaterDetectHeight = -1;
     this.CanMoveWithDistanceInternal = this.Entity.DistanceWithCamera <= 7000;
     if (this.uha && this.cha + WALK_OFF_LEDGE_DELAY_FRAME <= Time_1.Time.Frame) {
       this.cha = Time_1.Time.Frame;
@@ -692,13 +707,13 @@ let BaseMoveComponent = BaseMoveComponent_1 = class BaseMoveComponent extends En
     }
   }
   OnTickGravityScale() {
-    if (!(this.CurrentGravityScale.Duration < 0)) {
+    if (this.CurrentGravityScale.Enable) {
       if (this.CurrentGravityScale.ElapsedTime >= this.CurrentGravityScale.Duration || this.UnifiedStateComponent?.PositionState !== CharacterUnifiedStateTypes_1.ECharPositionState.Air) {
         if (OPEN_DEBUG && Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("Character", 20, "OnTickGravityScale结束", ["Entity.Id", this.Entity.Id]);
         }
         this.CharacterMovement.GravityScale = 2;
-        this.CurrentGravityScale.Duration = -1;
+        this.CurrentGravityScale.Enable = false;
       } else {
         this.CurrentGravityScale.ElapsedTime += this.DeltaTimeSeconds;
         if (OPEN_DEBUG && Log_1.Log.CheckDebug()) {
@@ -708,6 +723,9 @@ let BaseMoveComponent = BaseMoveComponent_1 = class BaseMoveComponent extends En
           this.CharacterMovement.GravityScale = (this.CharacterMovement.Velocity.Z > 0 ? this.CurrentGravityScale.ScaleUp : this.CurrentGravityScale.ScaleDown) * 2;
         } else {
           this.CharacterMovement.GravityScale = this.CurrentGravityScale.ScaleTop * 2;
+          if (this.CurrentGravityScale.ForceVelocityZero) {
+            this.CharacterMovement.Velocity = Vector_1.Vector.ZeroVector;
+          }
         }
         if (OPEN_DEBUG && Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("Character", 20, "受击重力", ["EntityId", this.Entity.Id], ["Velocity", this.CharacterMovement.Velocity.Z], ["GravityScale", this.CharacterMovement.GravityScale]);
@@ -791,6 +809,27 @@ let BaseMoveComponent = BaseMoveComponent_1 = class BaseMoveComponent extends En
       }
     }
     return this.CharHeightAboveGround;
+  }
+  GetHeightAboveWater(t = HEIGHT_DETECT) {
+    var i;
+    var e;
+    if (!(this.CharHeightAboveWaterDetectHeight >= t)) {
+      this.CharHeightAboveWaterDetectHeight = t;
+      i = this.ActorComp.FloorLocation;
+      TraceElementCommon_1.TraceElementCommon.SetStartLocation(this.WaterSphereTrace, i);
+      this.TmpVector.DeepCopy(i);
+      GravityUtils_1.GravityUtils.AddZnInGravityForActor(this.ActorComp, this.TmpVector, -t);
+      TraceElementCommon_1.TraceElementCommon.SetEndLocation(this.WaterSphereTrace, this.TmpVector);
+      this.WaterSphereTrace.Radius = this.ActorComp.ScaledRadius;
+      i = TraceElementCommon_1.TraceElementCommon.SphereTrace(this.WaterSphereTrace, PROFILE_KEY);
+      e = this.WaterSphereTrace.HitResult;
+      if (i && e.bBlockingHit) {
+        this.CharHeightAboveWater = e.TimeArray.Get(0) * t;
+      } else {
+        this.CharHeightAboveWater = t;
+      }
+    }
+    return this.CharHeightAboveWater;
   }
   IsInAir() {
     return this.UnifiedStateComponent?.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Air;
@@ -963,6 +1002,12 @@ let BaseMoveComponent = BaseMoveComponent_1 = class BaseMoveComponent extends En
   ResetAirControl() {
     this.CharacterMovement.AirControl = DEFAULT_AIR_CONTROL;
   }
+  ResetCharTraceHeight() {
+    this.CharHeightAboveGround = -1;
+    this.CharHeightAboveGroundDetectHeight = -1;
+    this.CharHeightAboveWater = -1;
+    this.CharHeightAboveWaterDetectHeight = -1;
+  }
   OnClear() {
     super.OnClear();
     this.uha = false;
@@ -1003,5 +1048,5 @@ let BaseMoveComponent = BaseMoveComponent_1 = class BaseMoveComponent extends En
 BaseMoveComponent.BaseMoveInheritCurveInternal = undefined;
 BaseMoveComponent.VelocityAdditionTotal = Vector_1.Vector.Create();
 BaseMoveComponent.VelocityAdditionDestination = Vector_1.Vector.Create();
-BaseMoveComponent = BaseMoveComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(46)], BaseMoveComponent);
+BaseMoveComponent = BaseMoveComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(48)], BaseMoveComponent);
 exports.BaseMoveComponent = BaseMoveComponent; //# sourceMappingURL=BaseMoveComponent.js.map

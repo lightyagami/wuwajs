@@ -46,10 +46,10 @@ class RouletteAssemblyView extends UiTickViewBase_1.UiTickViewBase {
     this.UOt = true;
     this.nAd = undefined;
     this.RouletteUiItem = undefined;
-    this.ZLf = undefined;
+    this.Tkf = undefined;
     this.fpo = t => {
       this.ts1.OnRouletteTypeSwitch(t);
-      this.$Om();
+      this.nFm();
     };
     this.Ufo = () => {
       var t = this.Afo === 0 ? 1 : 0;
@@ -62,21 +62,21 @@ class RouletteAssemblyView extends UiTickViewBase_1.UiTickViewBase {
       this.xfo();
     };
     this.wfo = t => {
-      var e = this.Sfo?.GridIndex;
+      var i = this.Sfo?.GridIndex;
       this.Sfo = t;
-      if (e !== undefined && e !== this.Sfo.GridIndex) {
-        this.pfo.GetGridByIndex(e)?.SetGridToggleState(false);
+      if (i !== undefined && i !== this.Sfo.GridIndex) {
+        this.pfo.GetGridByIndex(i)?.SetGridToggleState(false);
       }
       this.pfo.SetCurrentGridByData(t);
       this.Afo = 1;
     };
-    this.Bfo = (t, e) => {
-      if (this.Sfo && e === 1) {
-        e = this.Sfo.GridIndex === t.GridIndex;
-        if (Info_1.Info.IsInGamepad() && e) {
+    this.Bfo = (t, i) => {
+      if (this.Sfo && i === 1) {
+        i = this.Sfo.GridIndex === t.GridIndex;
+        if (Info_1.Info.IsInGamepad() && i) {
           this.Ufo();
         }
-        return !e;
+        return !i;
       }
       return true;
     };
@@ -88,26 +88,26 @@ class RouletteAssemblyView extends UiTickViewBase_1.UiTickViewBase {
       return t;
     };
     this.bfo = t => {
-      var e = t.State;
-      var i = t.Data;
+      var i = t.State;
+      var e = t.Data;
       var t = t.MediumItemGrid;
-      this.yfo = i;
-      if (e === 1 && (this.Mfo.DeselectCurrentGridProxy(), this.Mfo.SelectGridProxy(i.Index), this.qfo(), this.RefreshTips(), ModelManager_1.ModelManager.RouletteModel.TryRemoveNewItem(this.yfo.Id))) {
-        t.RefreshNewAndRedDot();
+      this.yfo = e;
+      if (i === 1 && (this.Mfo.DeselectCurrentGridProxy(), this.Mfo.SelectGridProxy(e.Index), this.qfo(), this.RefreshTips(), ModelManager_1.ModelManager.RouletteModel.TryRemoveNewItem(this.yfo.Id))) {
+        this.Mfo.RefreshGridProxy(t.GridIndex);
       }
     };
-    this.Vbt = (t, e, i) => {
-      return !this.yfo || i !== 1 || this.yfo.Id !== t.Id;
+    this.Vbt = (t, i, e) => {
+      return !this.yfo || e !== 1 || this.yfo.Id !== t.Id;
     };
     this.Xpt = () => {
       var t = this.yfo;
-      var e = this.Sfo.DeepCopy();
-      var i = t.State === 2;
+      var i = this.Sfo.DeepCopy();
+      var e = t.State === 2;
       switch (t.State) {
         case 2:
-          e.Id = 0;
-          e.Name = undefined;
-          e.State = 2;
+          i.Id = 0;
+          i.Name = undefined;
+          i.State = 2;
           if (t.GridType === 0) {
             ModelManager_1.ModelManager.RouletteModel.SendExploreToolEquipLogData(t.Id, 0, this.ts1.CurrentRouletteType);
           } else if (t.GridType === 2) {
@@ -115,8 +115,8 @@ class RouletteAssemblyView extends UiTickViewBase_1.UiTickViewBase {
           }
           break;
         case 0:
-          e.Id = t.Id;
-          e.State = 1;
+          i.Id = t.Id;
+          i.State = 1;
           if (t.GridType === 0) {
             if ((s = this.Sfo.Id) !== 0) {
               ModelManager_1.ModelManager.RouletteModel.SendExploreToolEquipLogData(s, 0, this.ts1.CurrentRouletteType);
@@ -131,8 +131,8 @@ class RouletteAssemblyView extends UiTickViewBase_1.UiTickViewBase {
           break;
         case 1:
           {
-            e.Id = t.Id;
-            e.State = 1;
+            i.Id = t.Id;
+            i.State = 1;
             var s = this.pfo.GetGridByValidId(t.Id);
             var h = s.Data;
             h.Id = this.Sfo.Id;
@@ -148,28 +148,28 @@ class RouletteAssemblyView extends UiTickViewBase_1.UiTickViewBase {
             break;
           }
       }
-      this.pfo.RefreshCurrentGridData(e);
+      this.pfo.RefreshCurrentGridData(i);
       const o = this.Sfo.DataIndex;
-      this.Gfo(o, e);
-      this.Sfo = e;
-      this.Esi(i);
+      this.Gfo(o, i);
+      this.Sfo = i;
+      this.Esi(e);
       this.qfo();
       this.Nfo();
     };
-    this.Ofo = (t, e) => {
-      var i = t;
+    this.Ofo = (t, i) => {
+      var e = t;
       let s = 0;
       if (this.TempKeepSelect) {
         s = this.Mfo.GetSelectedGridIndex();
         this.TempKeepSelect = false;
       } else {
-        for (let t = 0; t < i.length; t++) {
-          if (i[t].State === 2) {
+        for (let t = 0; t < e.length; t++) {
+          if (e[t].State === 2) {
             s = t;
           }
         }
       }
-      this.kfo(s, i);
+      this.kfo(s, e);
     };
     this.Ffo = t => {
       this.OZt(1, t);
@@ -197,7 +197,7 @@ class RouletteAssemblyView extends UiTickViewBase_1.UiTickViewBase {
       t = t === 1 ? 1 : 0;
       ModelManager_1.ModelManager.RouletteModel.SaveRouletteSelectConfig(t);
     };
-    this.$wf = () => {
+    this.fUf = () => {
       PhantomInteractController_1.PhantomInteractController.OpenPhantomVisionEditView();
     };
   }
@@ -231,9 +231,9 @@ class RouletteAssemblyView extends UiTickViewBase_1.UiTickViewBase {
     this.Dfo = new ButtonItem_1.ButtonItem(this.GetItem(7));
     this.Dfo.SetFunction(this.Xpt);
     this.Dfo.SetActive(false);
-    this.ZLf = new ButtonItem_1.ButtonItem(this.GetItem(16));
-    this.ZLf.SetFunction(this.$wf);
-    this.ZLf.SetUiActive(false);
+    this.Tkf = new ButtonItem_1.ButtonItem(this.GetItem(16));
+    this.Tkf.SetFunction(this.fUf);
+    this.Tkf.SetUiActive(false);
     this.lqe = new PopupCaptionItem_1.PopupCaptionItem(this.GetItem(0));
     this.lqe.SetCloseCallBack(this.Wfo);
     this.ToggleLeft = this.GetExtendToggle(3);
@@ -283,19 +283,24 @@ class RouletteAssemblyView extends UiTickViewBase_1.UiTickViewBase {
     if (this.UOt) {
       this.nAd.SelectTab(this.ts1.CurrentRouletteType);
       this.UOt = false;
+    } else {
+      this.Esi(true);
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Phantom", 95, "刷新滑动列表2", ["this.ViewProxy.AssemblyGridDataMap", this.ts1.AssemblyGridDataMap]);
+      }
     }
     this.ts1.BeforeShow();
     this.Rfo?.RefreshPhantomInteractEquipmentPanel();
-    this.ZLf?.BindRedDot("RedDotPhantomInteractEditEntry");
+    this.Tkf?.BindRedDot("RedDotPhantomInteractEditEntry");
   }
   OnAfterHide() {
-    this.ZLf?.UnBindGivenUid(0);
+    this.Tkf?.UnBindGivenUid(0);
   }
   OnTick(t) {
-    var [t, e] = this.vfo.Tick(t);
-    this.pfo.Refresh(t, e);
+    var [t, i] = this.vfo.Tick(t);
+    this.pfo.Refresh(t, i);
   }
-  $Om() {
+  nFm() {
     this.zfo();
     this.Zfo();
     this.epo();
@@ -338,11 +343,11 @@ class RouletteAssemblyView extends UiTickViewBase_1.UiTickViewBase {
     }
   }
   GetGuideUiItemAndUiItemForShowEx(t) {
-    var e;
+    var i;
     if (t.length === 1 || isNaN(Number(t[0]))) {
-      e = Number(t[0]);
-      if (e = this.Mfo?.GetGridAndScrollToByJudge(e, (t, e) => t === e.Id)) {
-        return [e, e];
+      i = Number(t[0]);
+      if (i = this.Mfo?.GetGridAndScrollToByJudge(i, (t, i) => t === i.Id)) {
+        return [i, i];
       } else {
         return undefined;
       }
@@ -379,8 +384,8 @@ class RouletteAssemblyView extends UiTickViewBase_1.UiTickViewBase {
     this.vfo = undefined;
     var t = this.GetItem(1).GetLGUISpaceAbsolutePosition();
     var t = RouletteInputManager_1.AngleCalculator.ConvertLguiPosToScreenPos(t.X, t.Y);
-    var e = CommonParamById_1.configCommonParamById.GetFloatConfig("Roulette_Assembly_Gamepad_DeadLimit");
-    this.vfo = new RouletteInputManager_1.rouletteInputManager[Info_1.Info.InputControllerMainType](t, 0, undefined, e);
+    var i = CommonParamById_1.configCommonParamById.GetFloatConfig("Roulette_Assembly_Gamepad_DeadLimit");
+    this.vfo = new RouletteInputManager_1.rouletteInputManager[Info_1.Info.InputControllerMainType](t, 0, undefined, i);
     this.vfo.BindEvent();
     this.vfo.OnInit();
     this.vfo.SetIsNeedEmpty(true);
@@ -412,18 +417,18 @@ class RouletteAssemblyView extends UiTickViewBase_1.UiTickViewBase {
   }
   Esi(t = false) {
     if (this.Sfo) {
-      var e = this.Sfo.GridType;
-      var i = this.ts1.AssemblyGridDataMap.get(e) ?? [];
+      var i = this.Sfo.GridType;
+      var e = this.ts1.AssemblyGridDataMap.get(i) ?? [];
       var s = [];
-      for (let t = 0; t < i.length; t++) {
-        var h = i[t];
-        if (e === 2) {
-          if (i[t].ItemType !== this.Efo) {
+      for (let t = 0; t < e.length; t++) {
+        var h = e[t];
+        if (i === 2) {
+          if (e[t].ItemType !== this.Efo) {
             continue;
           }
         }
-        h.State = this._po(i[t], this.Sfo);
-        h.RelativeIndex = this.lpo(i[t]);
+        h.State = this._po(e[t], this.Sfo);
+        h.RelativeIndex = this.lpo(e[t]);
         s.push(h);
       }
       this.TempKeepSelect = t;
@@ -432,13 +437,13 @@ class RouletteAssemblyView extends UiTickViewBase_1.UiTickViewBase {
       Log_1.Log.Info("Phantom", 37, "未收到选中轮盘格子数据,无法刷新");
     }
   }
-  kfo(t, e) {
+  kfo(t, i) {
     this.yfo = undefined;
     this.Mfo.DeselectCurrentGridProxy();
-    this.GetLoopScrollViewComponent(5).RootUIComp.SetUIActive(e.length > 0);
-    this.GetItem(9).SetUIActive(e.length <= 0);
-    if (e.length > 0) {
-      this.Mfo.ReloadData(e);
+    this.GetLoopScrollViewComponent(5).RootUIComp.SetUIActive(i.length > 0);
+    this.GetItem(9).SetUIActive(i.length <= 0);
+    if (i.length > 0) {
+      this.Mfo.ReloadData(i);
       if (!this.Mfo.IsGridDisplaying(t)) {
         this.Mfo.ScrollToGridIndex(t);
       }
@@ -449,31 +454,31 @@ class RouletteAssemblyView extends UiTickViewBase_1.UiTickViewBase {
       }
       this.Rfo.SetActive(false);
       this.qfo();
-      this.ZLf?.SetUiActive(false);
+      this.Tkf?.SetUiActive(false);
     }
   }
-  _po(t, e) {
-    let i = 0;
+  _po(t, i) {
+    let e = 0;
     let s = [];
-    if (e.GridType === 2) {
+    if (i.GridType === 2) {
       s.push(this.ts1.CurrentRouletteListSaveData.ExtraItemId);
     } else {
       s = this.ts1.CurrentRouletteListSaveData.RouletteIdList;
     }
     if (s.includes(t.Id)) {
-      i = 1;
+      e = 1;
     }
-    return i = t.Id === e.Id ? 2 : i;
+    return e = t.Id === i.Id ? 2 : e;
   }
   qfo() {
     this.GetItem(14).SetUIActive(false);
     if (this.yfo) {
       if (this.yfo.GridType === 0) {
-        var e = ConfigManager_1.ConfigManager.RouletteConfig.GetExploreConfigById(this.yfo.Id);
-        if (!e) {
+        var i = ConfigManager_1.ConfigManager.RouletteConfig.GetExploreConfigById(this.yfo.Id);
+        if (!i) {
           return;
         }
-        if (!ControllerHolder_1.ControllerHolder.RouletteController.CheckCanExploreSkillEquip(this.yfo.Id) || !e.AssemblyEquipButton) {
+        if (!ControllerHolder_1.ControllerHolder.RouletteController.CheckCanExploreSkillEquip(this.yfo.Id) || !i.AssemblyEquipButton) {
           this.Dfo.SetActive(false);
           this.GetItem(14).SetUIActive(true);
           return;
@@ -494,22 +499,22 @@ class RouletteAssemblyView extends UiTickViewBase_1.UiTickViewBase {
       this.Dfo.SetActive(true);
     } else {
       this.Dfo.SetActive(false);
-      this.ZLf?.SetUiActive(false);
+      this.Tkf?.SetUiActive(false);
     }
   }
-  Gfo(t, e) {
-    var i;
-    if (e.GridType === 2) {
-      this.ts1.CurrentRouletteListSaveData.ExtraItemId = e.Id;
+  Gfo(t, i) {
+    var e;
+    if (i.GridType === 2) {
+      this.ts1.CurrentRouletteListSaveData.ExtraItemId = i.Id;
     } else {
-      i = this.ts1.CurrentRouletteListSaveData.RouletteIdList;
-      if (t >= 0 && t < i.length) {
-        i[t] = e.Id;
+      e = this.ts1.CurrentRouletteListSaveData.RouletteIdList;
+      if (t >= 0 && t < e.length) {
+        e[t] = i.Id;
       }
     }
   }
-  RefreshItemFilterSort(t, e) {
-    this.Mpt.UpdateData(t, e);
+  RefreshItemFilterSort(t, i) {
+    this.Mpt.UpdateData(t, i);
     this.Mpt.SetActive(false);
   }
   RefreshTips() {
@@ -517,7 +522,7 @@ class RouletteAssemblyView extends UiTickViewBase_1.UiTickViewBase {
     switch (this.yfo.GridType) {
       case 1:
         this.Rfo.SetActive(false);
-        this.ZLf?.SetUiActive(false);
+        this.Tkf?.SetUiActive(false);
         return;
       case 0:
         this.Rfo.SetActive(true);
@@ -528,39 +533,39 @@ class RouletteAssemblyView extends UiTickViewBase_1.UiTickViewBase {
         t = this.cpo(this.yfo);
     }
     this.Rfo.Refresh(t);
-    this.ZLf?.SetUiActive(t.ShowPhantomInteractEquipment);
+    this.Tkf?.SetUiActive(t.ShowPhantomInteractEquipment);
   }
   upo(t) {
-    var e = new RouletteDefine_1.AssemblyTipsData();
-    var i = ConfigManager_1.ConfigManager.RouletteConfig.GetExploreConfigById(t.Id);
-    e.GridType = 0;
-    e.GridId = t.Id;
-    e.TextMain = i.CurrentSkillInfo;
-    e.IsIconTexture = false;
-    e.IconPath = i.BackGround;
-    e.HelpId = i?.HelpId ?? 0;
-    e.Title = t.Name;
-    e.CanSetItemNum = ModelManager_1.ModelManager.RouletteModel.GetExploreSkillShowSetNumById(t.Id);
-    e.NeedItemMap = i.Cost;
-    e.ShowPhantomInteractEquipment = PhantomInteractModel_1.PhantomInteractModel.CheckIsPhantomInteractExploreTool(t.Id);
+    var i = new RouletteDefine_1.AssemblyTipsData();
+    var e = ConfigManager_1.ConfigManager.RouletteConfig.GetExploreConfigById(t.Id);
+    i.GridType = 0;
+    i.GridId = t.Id;
+    i.TextMain = e.CurrentSkillInfo;
+    i.IsIconTexture = false;
+    i.IconPath = e.BackGround;
+    i.HelpId = e?.HelpId ?? 0;
+    i.Title = t.Name;
+    i.CanSetItemNum = ModelManager_1.ModelManager.RouletteModel.GetExploreSkillShowSetNumById(t.Id);
+    i.NeedItemMap = e.Cost;
+    i.ShowPhantomInteractEquipment = PhantomInteractModel_1.PhantomInteractModel.CheckIsPhantomInteractExploreTool(t.Id);
     const s = new Set();
-    i.Authorization.forEach((t, e) => {
+    e.Authorization.forEach((t, i) => {
       s.add(t);
     });
-    e.Authorization = Array.from(s);
-    return e;
+    i.Authorization = Array.from(s);
+    return i;
   }
   cpo(t) {
-    var e = new RouletteDefine_1.AssemblyTipsData();
-    var i = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfig(t.Id);
-    e.GridType = 2;
-    e.GridId = t.Id;
-    e.BgQuality = i.QualityId;
-    e.Title = t.Name;
-    e.TextMain = i.AttributesDescription;
-    e.TextSub = i.BgDescription;
-    if (i.ItemAccess && i.ItemAccess?.length > 0) {
-      for (const h of i.ItemAccess) {
+    var i = new RouletteDefine_1.AssemblyTipsData();
+    var e = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfig(t.Id);
+    i.GridType = 2;
+    i.GridId = t.Id;
+    i.BgQuality = e.QualityId;
+    i.Title = t.Name;
+    i.TextMain = e.AttributesDescription;
+    i.TextSub = e.BgDescription;
+    if (e.ItemAccess && e.ItemAccess?.length > 0) {
+      for (const h of e.ItemAccess) {
         var s = ConfigManager_1.ConfigManager.GetWayConfig.GetConfigById(h);
         if (s) {
           s = {
@@ -572,21 +577,21 @@ class RouletteAssemblyView extends UiTickViewBase_1.UiTickViewBase {
               SkipTaskManager_1.SkipTaskManager.RunByConfigId(h, t.Id);
             }
           };
-          e.GetWayData.push(s);
+          i.GetWayData.push(s);
         }
       }
     }
-    return e;
+    return i;
   }
   rpo() {
     if (this.Sfo) {
-      var e = this.Sfo.GridType === 2;
-      this.GetItem(2).SetUIActive(e);
-      if (e) {
+      var i = this.Sfo.GridType === 2;
+      this.GetItem(2).SetUIActive(i);
+      if (i) {
         let t = this.Efo;
-        e = this.Sfo.Id;
-        if (e !== 0) {
-          t = ControllerHolder_1.ControllerHolder.SpecialItemController.IsSpecialItem(e) ? 13 : 1;
+        i = this.Sfo.Id;
+        if (i !== 0) {
+          t = ControllerHolder_1.ControllerHolder.SpecialItemController.IsSpecialItem(i) ? 13 : 1;
           this.Efo = t;
         }
         (t === 1 ? this.ToggleLeft : this.ToggleRight).SetToggleState(1);
@@ -595,11 +600,11 @@ class RouletteAssemblyView extends UiTickViewBase_1.UiTickViewBase {
       Log_1.Log.Info("Phantom", 37, "未收到选中轮盘格子数据,无法刷新");
     }
   }
-  $fo(t, e) {
-    return !t || this.Efo !== e;
+  $fo(t, i) {
+    return !t || this.Efo !== i;
   }
-  OZt(t, e) {
-    if (e === 1 && this.Efo !== t) {
+  OZt(t, i) {
+    if (i === 1 && this.Efo !== t) {
       this.Efo = t;
       (this.Efo === 1 ? this.ToggleRight : this.ToggleLeft).SetToggleState(0);
       this.Esi();

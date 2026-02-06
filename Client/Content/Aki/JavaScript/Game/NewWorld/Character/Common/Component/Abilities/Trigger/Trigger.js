@@ -318,13 +318,13 @@ class AttributeChangedTrigger extends Trigger {
     }
     switch (this.TargetType) {
       case 0:
-        this.uPm(this.OwnerTriggerComp?.Entity);
+        this.BPm(this.OwnerTriggerComp?.Entity);
         break;
       case 1:
       case 2:
         var e = this.TargetType === 1;
         for (const i of ModelManager_1.ModelManager.SceneTeamModel.GetTeamEntities(e)) {
-          this.uPm(i.Entity);
+          this.BPm(i.Entity);
         }
     }
   }
@@ -334,8 +334,8 @@ class AttributeChangedTrigger extends Trigger {
       AbilityEvent_1.AbilityEvent.Remove(t, 5, this.AttributeId, this.OnEvent);
     }
   }
-  uPm(t) {
-    var e = t?.GetComponent(182);
+  BPm(t) {
+    var e = t?.GetComponent(184);
     if (e) {
       e = e.GetCurrentValue(this.AttributeId);
       this.OnEvent(this.AttributeId, t, e, e);
@@ -395,7 +395,7 @@ class TagTrigger extends Trigger {
   }
   OnActive() {
     if (this.TagId !== undefined) {
-      var t = this.OwnerTriggerComp?.Entity.GetComponent(215);
+      var t = this.OwnerTriggerComp?.Entity.GetComponent(217);
       if (t) {
         switch (this.InitBehavior) {
           case 1:
@@ -414,7 +414,7 @@ class TagTrigger extends Trigger {
   }
   OnInactive() {
     if (this.TagId !== undefined) {
-      this.OwnerTriggerComp?.Entity.GetComponent(215)?.RemoveTagAddOrRemoveListener(this.TagId, this.OnEvent);
+      this.OwnerTriggerComp?.Entity.GetComponent(217)?.RemoveTagAddOrRemoveListener(this.TagId, this.OnEvent);
     }
   }
 }
@@ -445,7 +445,7 @@ class TagStackTrigger extends Trigger {
   }
   OnActive() {
     if (this.TagId !== undefined) {
-      var t = this.OwnerTriggerComp?.Entity.GetComponent(215);
+      var t = this.OwnerTriggerComp?.Entity.GetComponent(217);
       if (t) {
         var e = t.GetTagCount(this.TagId);
         switch (this.InitBehavior) {
@@ -466,7 +466,7 @@ class TagStackTrigger extends Trigger {
   }
   OnInactive() {
     if (this.TagId !== undefined) {
-      this.OwnerTriggerComp?.Entity.GetComponent(215)?.RemoveTagChangedListener(this.TagId, this.OnEvent);
+      this.OwnerTriggerComp?.Entity.GetComponent(217)?.RemoveTagChangedListener(this.TagId, this.OnEvent);
     }
   }
 }
@@ -480,7 +480,7 @@ class LimitDodgeTrigger extends Trigger {
           Attacker: t,
           Victim: e,
           SkillID: i,
-          SkillType: EntitySystem_1.EntitySystem.Get(t.Id)?.GetComponent(41)?.GetSkillInfo(i)?.SkillGenre,
+          SkillType: EntitySystem_1.EntitySystem.Get(t.Id)?.GetComponent(43)?.GetSkillInfo(i)?.SkillGenre,
           BulletID: s
         };
         this.EvaluateAndExecute(e);
@@ -513,7 +513,7 @@ class SkillTrigger extends Trigger {
     this.OnSelfEvent = (t, e) => {
       if ((!this.Checker || this.Checker()) && (this.AllSKill || this.SkillIds.includes(e))) {
         var t = EntitySystem_1.EntitySystem.Get(t);
-        var i = t?.GetComponent(41);
+        var i = t?.GetComponent(43);
         var s = i?.GetSkillInfo(e);
         if (i && s) {
           var r = [];
@@ -529,7 +529,7 @@ class SkillTrigger extends Trigger {
               SkillType: s?.SkillGenre,
               SkillTags: r,
               SkillID: e,
-              BattleFlags: i.BattleFlags,
+              BattleFlags: i.BattleContext?.BattleFlags ?? [],
               Attacker: t
             };
             this.EvaluateAndExecute(e);
@@ -732,6 +732,7 @@ class DeathTrigger extends Trigger {
   constructor() {
     super(...arguments);
     this.TargetType = 0;
+    this.ListenDeathType = 0;
     this.OnEvent = (t, e, i, s) => {
       var r;
       var n;
@@ -755,20 +756,36 @@ class DeathTrigger extends Trigger {
         }
       }
     };
+    this.OnDeathBefore = () => {
+      if (!this.Checker || !!this.Checker()) {
+        this.EvaluateAndExecute({});
+      }
+    };
   }
   OnInitParams(t) {
     this.TargetType = Number(t[0] ?? 0);
+    this.ListenDeathType = Number(t[1] ?? 0);
   }
   OnActive() {
     var t = getTarget(this.OwnerTriggerComp?.Entity, this.TargetType);
-    if (t && !EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.CharBeDamage, this.OnEvent)) {
-      EventSystem_1.EventSystem.AddWithTarget(t, EventDefine_1.EEventName.CharBeDamage, this.OnEvent);
+    if (t) {
+      if (this.ListenDeathType !== 0 || EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.CharBeDamage, this.OnEvent)) {
+        if (this.ListenDeathType === 1 && !EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.CharOnRoleDeadBefore, this.OnDeathBefore)) {
+          EventSystem_1.EventSystem.AddWithTarget(t, EventDefine_1.EEventName.CharOnRoleDeadBefore, this.OnDeathBefore);
+        }
+      } else {
+        EventSystem_1.EventSystem.AddWithTarget(t, EventDefine_1.EEventName.CharBeDamage, this.OnEvent);
+      }
     }
   }
   OnInactive() {
     var t = getTarget(this.OwnerTriggerComp?.Entity, this.TargetType);
-    if (t && EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.CharBeDamage, this.OnEvent)) {
-      EventSystem_1.EventSystem.RemoveWithTarget(t, EventDefine_1.EEventName.CharBeDamage, this.OnEvent);
+    if (t) {
+      if (this.ListenDeathType === 0 && EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.CharBeDamage, this.OnEvent)) {
+        EventSystem_1.EventSystem.RemoveWithTarget(t, EventDefine_1.EEventName.CharBeDamage, this.OnEvent);
+      } else if (this.ListenDeathType === 1 && EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.CharOnRoleDeadBefore, this.OnDeathBefore)) {
+        EventSystem_1.EventSystem.RemoveWithTarget(t, EventDefine_1.EEventName.CharOnRoleDeadBefore, this.OnDeathBefore);
+      }
     }
   }
 }
@@ -1003,7 +1020,7 @@ class BuffVictimTrigger extends Trigger {
         var n = this.ListenBuffIds.get(e);
         if (n) {
           for (var [h, a] of n) {
-            if (h === 0 && s >= a && i < a || h === 1 && s <= a && i > a) {
+            if (h === 0 && s >= a && i < a || h === 1 && s <= a && i > a || h === 2 && s >= a || h === 3 && s <= a) {
               t = true;
               break;
             }

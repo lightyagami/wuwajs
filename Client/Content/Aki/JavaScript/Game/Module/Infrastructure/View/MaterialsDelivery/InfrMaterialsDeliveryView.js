@@ -19,41 +19,41 @@ const InfrMaterialsDeliveryInfoPanel_1 = require("./InfrMaterialsDeliveryInfoPan
 class InfrMaterialsDeliveryView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
-    this.U4m = 0;
-    this.x4m = Protocol_1.Aki.Protocol.VNm.Proto_Road;
+    this.J5m = 0;
+    this.Z5m = Protocol_1.Aki.Protocol.a4m.Proto_Road;
     this.gJc = 0;
-    this.b5m = false;
+    this.$Vm = false;
     this.Qyi = new PopupCaptionItem_1.PopupCaptionItem();
     this.LSc = new InfrMaterialsDeliveryInfoPanel_1.InfrMaterialsDeliveryInfoPanel();
-    this.R5m = () => {
+    this.WVm = () => {
       UiManager_1.UiManager.OpenView("InfrRoadNetworkMainView", {
-        DeliveryType: this.x4m,
-        RoadId: this.U4m
+        DeliveryType: this.Z5m,
+        RoadId: this.J5m
       });
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIButtonComponent]];
-    this.BtnBindInfo = [[2, this.R5m]];
+    this.BtnBindInfo = [[2, this.WVm]];
   }
   async OnBeforeStartAsync() {
     var e = this.OpenParam;
-    this.U4m = e.RoadId;
-    this.x4m = e.DeliveryType;
+    this.J5m = e.RoadId;
+    this.Z5m = e.DeliveryType;
     this.gJc = e.ActionId;
-    this.b5m = false;
+    this.$Vm = ModelManager_1.ModelManager.InfrastructureModel.GetRoadDataByRoadId(this.J5m)?.Status === Protocol_1.Aki.Protocol.g4m.Proto_InfrStatusComplete;
     await InfrastructureController_1.InfrastructureController.RequestInfrastructureInfoRequest();
-    await Promise.all([this.e7a(), this.w5m()]);
+    await Promise.all([this.e7a(), this.QVm()]);
   }
   async e7a() {
     await this.Qyi.CreateThenShowByActorAsync(this.GetItem(0).GetOwner());
     await this.Qyi.SetCurrencyItemList([InfrastructureDefine_1.INFR_BATTLE_MATERIAL_ID, InfrastructureDefine_1.INFR_COLLECTION_MATERIAL_ID, InfrastructureDefine_1.INFR_QUEST_MATERIAL_ID]);
   }
-  async w5m() {
+  async QVm() {
     await this.LSc.CreateThenShowByActorAsync(this.GetItem(1).GetOwner(), this.OpenParam);
   }
   OnStart() {
-    this.L5m();
+    this.KVm();
     this.cQa();
   }
   cQa() {
@@ -69,23 +69,23 @@ class InfrMaterialsDeliveryView extends UiViewBase_1.UiViewBase {
     this.Qyi.SetCurrencyItemVisible(e);
     this.GetButton(2).RootUIComp.SetUIActive(e);
   }
-  L5m() {
+  KVm() {
     this.LSc.SetClickBtnBuildCb(() => {
-      this.P5m();
+      this.XVm();
     });
   }
-  async P5m() {
-    if (this.x4m === Protocol_1.Aki.Protocol.VNm.Proto_Road) {
-      this.b5m = await InfrastructureController_1.InfrastructureController.RequestInfrastructureRoadBuild(this.U4m);
+  async XVm() {
+    if (this.Z5m === Protocol_1.Aki.Protocol.a4m.Proto_Road) {
+      this.$Vm = await InfrastructureController_1.InfrastructureController.RequestInfrastructureRoadBuild(this.J5m);
     } else {
-      this.b5m = await InfrastructureController_1.InfrastructureController.RequestInfrastructureLevelUp();
+      this.$Vm = await InfrastructureController_1.InfrastructureController.RequestInfrastructureLevelUp();
     }
-    if (this.b5m) {
+    if (this.$Vm) {
       this.CloseMe();
     }
   }
   OnBeforeDestroy() {
-    ControllerHolder_1.ControllerHolder.GeneralLogicTreeController.OpenSystemBoardResultRequest(this.b5m ? 1 : 0, this.gJc);
+    ControllerHolder_1.ControllerHolder.GeneralLogicTreeController.OpenSystemBoardResultRequest(this.$Vm ? 1 : 0, this.gJc);
   }
 }
 exports.InfrMaterialsDeliveryView = InfrMaterialsDeliveryView;

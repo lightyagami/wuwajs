@@ -56,21 +56,21 @@ let SceneBulletComponent = SceneBulletComponent_1 = class SceneBulletComponent e
     this.Ycn = undefined;
     this.vtn = undefined;
     this.Hte = undefined;
-    this.sVf = undefined;
+    this.YQf = undefined;
     this.JUn = undefined;
     this.V4l = false;
     this.Jcn = false;
     this.nye = () => {
-      this.aVf(this.G2e);
+      this.zQf(this.G2e);
     };
     this.zcn = (t, e) => {
       e = e.Entity;
-      if (this.M_n && e && (e.GetComponent(64) || e.GetComponent(163))) {
+      if (this.M_n && e && (e.GetComponent(66) || e.GetComponent(165))) {
         if (this.Qcn = t) {
-          this.aVf(this.G2e);
+          this.zQf(this.G2e);
         } else {
           for (const i of this.Ycn.keys()) {
-            this.hVf(i);
+            this.JQf(i);
           }
         }
       }
@@ -79,11 +79,11 @@ let SceneBulletComponent = SceneBulletComponent_1 = class SceneBulletComponent e
       this.G2e = t;
       if (this.M_n && e) {
         if (this.Qcn || this.Jcn) {
-          this.aVf(this.G2e);
+          this.zQf(this.G2e);
         }
         for (const i of this.Ycn.keys()) {
           if (i !== this.G2e) {
-            this.hVf(i);
+            this.JQf(i);
           }
         }
       }
@@ -104,19 +104,19 @@ let SceneBulletComponent = SceneBulletComponent_1 = class SceneBulletComponent e
     var i = this.Entity.GetComponent(0)?.ComponentDataMap.get("Kys");
     this.JUn = MathUtils_1.MathUtils.LongToBigInt(i?.Kys?._Vn);
     this.V4l = t.DisableGenerateByRange ?? false;
-    this.sVf = this.Entity.GetComponent(338);
+    this.YQf = this.Entity.GetComponent(340);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemStateChange, this.m1n);
     return true;
   }
   OnStart() {
-    var t = this.Entity.GetComponent(89);
+    var t = this.Entity.GetComponent(91);
     if (!this.V4l && t) {
       this.vtn = t;
       this.vtn.AddOnEntityOverlapCallback(this.zcn);
     } else {
       this.Jcn = true;
     }
-    var e = this.Entity.GetComponent(206);
+    var e = this.Entity.GetComponent(208);
     for (const i of this.Ycn.keys()) {
       if (e.HasTag(i)) {
         this.G2e = i;
@@ -130,7 +130,7 @@ let SceneBulletComponent = SceneBulletComponent_1 = class SceneBulletComponent e
     this.M_n = true;
     if (Global_1.Global.BaseCharacter?.CharacterActorComponent !== undefined && ModelManager_1.ModelManager.GameModeModel.WorldDone) {
       if (this.Jcn) {
-        this.aVf(this.G2e);
+        this.zQf(this.G2e);
       }
     } else if (this.Jcn) {
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDone, this.nye);
@@ -138,11 +138,11 @@ let SceneBulletComponent = SceneBulletComponent_1 = class SceneBulletComponent e
     return true;
   }
   OnTick(t) {
-    this.lVf();
+    this.ZQf();
   }
-  lVf() {
-    if (ModelManager_1.ModelManager.GameModeModel.WorldDone && this.Ycn && this.sVf) {
-      var t = this.sVf.GetVehicleTeamMember();
+  ZQf() {
+    if (ModelManager_1.ModelManager.GameModeModel.WorldDone && this.Ycn && this.YQf) {
+      var t = this.YQf.GetVehicleTeamMember();
       if (t) {
         var e = this.Ycn.get(this.G2e);
         if (e && e.length) {
@@ -151,7 +151,7 @@ let SceneBulletComponent = SceneBulletComponent_1 = class SceneBulletComponent e
             var s = n.BulletGroup?.CustomBulletLogic;
             if (s && s.Type === "TrafficBullet") {
               s = t.GetSpeed() >= s.MinSpeed;
-              i = this.sVf.IsInPerceptionRange();
+              i = this.YQf.IsInPerceptionRange();
               if (s && i) {
                 if (!n.BulletEntityId) {
                   this.oZo(n);
@@ -165,17 +165,17 @@ let SceneBulletComponent = SceneBulletComponent_1 = class SceneBulletComponent e
       }
     }
   }
-  aVf(t) {
+  zQf(t) {
     if (this.Ycn) {
       t = this.Ycn.get(t);
       if (t && t.length) {
         for (const i of t) {
           if (!i.BulletEntityId) {
             if (i.BulletGroup?.CustomBulletLogic?.Type === "TrafficBullet") {
-              if (!this.sVf) {
+              if (!this.YQf) {
                 continue;
               }
-              var e = this.sVf.GetVehicleTeamMember();
+              var e = this.YQf.GetVehicleTeamMember();
               if (!e) {
                 continue;
               }
@@ -207,7 +207,7 @@ let SceneBulletComponent = SceneBulletComponent_1 = class SceneBulletComponent e
     }
     var n = BulletController_1.BulletController.GetSceneBulletOwner();
     if (n?.IsInit) {
-      if ((n = BulletController_1.BulletController.CreateBulletCustomTarget(n.Entity, e.BulletId.toString(), i.ToUeTransform(), s, this.JUn))?.GetComponent(178)?.Owner?.IsValid()) {
+      if ((n = BulletController_1.BulletController.CreateBulletCustomTarget(n.Entity, e.BulletId.toString(), i.ToUeTransform(), s, this.JUn))?.GetComponent(180)?.Owner?.IsValid()) {
         (i = BulletController_1.BulletController.GetActionCenter().CreateBulletActionInfo(14)).IsParentActor = true;
         i.Actor = this.Hte.Owner;
         i.LocationRule = 1;
@@ -230,7 +230,7 @@ let SceneBulletComponent = SceneBulletComponent_1 = class SceneBulletComponent e
       return false;
     }
   }
-  hVf(t) {
+  JQf(t) {
     if (this.Ycn.has(t) && this.Ycn.get(t).length !== 0) {
       for (const e of this.Ycn.get(t)) {
         this.HVo(e);
@@ -239,7 +239,7 @@ let SceneBulletComponent = SceneBulletComponent_1 = class SceneBulletComponent e
   }
   HVo(t) {
     var e;
-    return !!t.BulletEntityId && !((e = EntitySystem_1.EntitySystem.Get(t.BulletEntityId))?.Valid && e.GetComponent(178).Owner?.K2_DetachFromActor(1, 1, 1), BulletController_1.BulletController.DestroyBullet(t.BulletEntityId, false), t.BulletEntityId = undefined);
+    return !!t.BulletEntityId && !((e = EntitySystem_1.EntitySystem.Get(t.BulletEntityId))?.Valid && e.GetComponent(180).Owner?.K2_DetachFromActor(1, 1, 1), BulletController_1.BulletController.DestroyBullet(t.BulletEntityId, false), t.BulletEntityId = undefined);
   }
   Zcn(t) {
     t.BulletTransform = Transform_1.Transform.Create();
@@ -256,7 +256,7 @@ let SceneBulletComponent = SceneBulletComponent_1 = class SceneBulletComponent e
     }
     this.vtn?.RemoveOnEntityOverlapCallback(this.zcn);
     for (const t of this.Ycn.keys()) {
-      this.hVf(t);
+      this.JQf(t);
     }
     this.Ycn.clear();
     this.M_n = false;
@@ -269,5 +269,5 @@ let SceneBulletComponent = SceneBulletComponent_1 = class SceneBulletComponent e
     return true;
   }
 };
-SceneBulletComponent = SceneBulletComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(151)], SceneBulletComponent);
+SceneBulletComponent = SceneBulletComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(153)], SceneBulletComponent);
 exports.SceneBulletComponent = SceneBulletComponent; //# sourceMappingURL=SceneBulletComponent.js.map

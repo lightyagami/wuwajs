@@ -57,12 +57,12 @@ let BaseVehiclePerformComponent = BaseVehiclePerformComponent_1 = class BaseVehi
     this.Config = undefined;
     this.ConfigInternal = undefined;
     this.VehicleFeatures = new Set();
-    this.QJf = undefined;
+    this.$pg = undefined;
     this.DriverInternal = undefined;
     this.PassengerInfoMap = new Map();
     this.SeatInfoMap = new Map();
     this.IsPendingDestroy = false;
-    this.f2f = undefined;
+    this.d4f = undefined;
     this.EntityHandle = undefined;
     this.TmpVector1 = Vector_1.Vector.Create();
     this.TmpVector2 = Vector_1.Vector.Create();
@@ -83,10 +83,10 @@ let BaseVehiclePerformComponent = BaseVehiclePerformComponent_1 = class BaseVehi
         }
       }
     };
-    this.g2f = "TrialAttributeModifier";
+    this.m4f = "TrialAttributeModifier";
   }
   GetCurrentOrLastDriver() {
-    return this.Driver || (this.QJf !== undefined ? EntitySystem_1.EntitySystem.Get(this.QJf) : undefined);
+    return this.Driver || (this.$pg !== undefined ? EntitySystem_1.EntitySystem.Get(this.$pg) : undefined);
   }
   get Driver() {
     return this.DriverInternal;
@@ -94,7 +94,7 @@ let BaseVehiclePerformComponent = BaseVehiclePerformComponent_1 = class BaseVehi
   set Driver(e) {
     var t;
     if (this.DriverInternal !== e && (t = this.DriverInternal, this.DriverInternal = e, EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnVehicleDriverChange, t, e), this.OnSetDriver(), e)) {
-      this.QJf = e.Id;
+      this.$pg = e.Id;
     }
   }
   OnSetDriver() {}
@@ -112,7 +112,7 @@ let BaseVehiclePerformComponent = BaseVehiclePerformComponent_1 = class BaseVehi
       this.VehicleType = i.Category.VehicleType;
       i = (0, IComponent_1.getComponent)(t.ComponentsData, "VehicleComponent");
       if (i && (this.MaxSeatCount = i.SeatCount, this.DriverSeat = i.DriverSeat !== VehicleInfoDefines_1.INVALID_SEAT ? i.DriverSeat : -1, i.VehicleTypedConfig)) {
-        this.f2f = i.VehicleTypedConfig.TrialAttributeId;
+        this.d4f = i.VehicleTypedConfig.TrialAttributeId;
       }
     }
     return true;
@@ -193,7 +193,7 @@ let BaseVehiclePerformComponent = BaseVehiclePerformComponent_1 = class BaseVehi
   InitVehicleMovementFeature(e) {}
   InitVehicleBattleFeature(e) {}
   TryEnter(e, t) {
-    return !!this.EnterConditionCheck(e, t) && (e.GetComponent(1).CreatureData?.IsRole() ? this.wzf(e, t, 0) : this.Pzf(e, t, 0), true);
+    return !!this.EnterConditionCheck(e, t) && (e.GetComponent(1).CreatureData?.IsRole() ? this.Egg(e, t, 0) : this.Igg(e, t, 0), true);
   }
   TryEnterAtOnce(e, t, i = "") {
     var r;
@@ -210,10 +210,10 @@ let BaseVehiclePerformComponent = BaseVehiclePerformComponent_1 = class BaseVehi
       n.ExitType = 1;
       n.PlayerId = s.CreatureData.GetPlayerId();
       if (s.CreatureData?.IsRole()) {
-        this.wzf(e, t, r, i);
+        this.Egg(e, t, r, i);
         ModelManager_1.ModelManager.VehicleModel.UpdatePlayerVehicleData(n);
       } else {
-        this.Pzf(e, t, r, i);
+        this.Igg(e, t, r, i);
         ModelManager_1.ModelManager.VehicleModel.UpdateEntityVehicleData(n);
       }
       if (Log_1.Log.CheckInfo()) {
@@ -226,48 +226,58 @@ let BaseVehiclePerformComponent = BaseVehiclePerformComponent_1 = class BaseVehi
     }
   }
   Enter(e, t) {
-    var i = this.DriverSeat === t;
-    var r = new VehicleInfoDefines_1.VehiclePassengerInfo();
-    r.VehicleEntity = this.Entity;
-    r.PassengerEntity = e;
-    r.VehicleType = this.VehicleType;
-    r.IsDriver = i;
-    r.Seat = t;
-    var o = e.GetComponent(0).GetPlayerId();
-    var s = this.Entity.GetComponent(1);
-    var n = this.CreatureData.GetPbDataId();
-    if (i && (s?.SetAutonomous(o === ModelManager_1.ModelManager.CreatureModel.GetPlayerId()), Log_1.Log.CheckInfo())) {
-      Log_1.Log.Info("Vehicle", 50, "[BaseVehicleComp] 进入载具设置移动主控", ["v", o === ModelManager_1.ModelManager.CreatureModel.GetPlayerId()]);
+    var i;
+    var r = this.DriverSeat === t;
+    var o = new VehicleInfoDefines_1.VehiclePassengerInfo();
+    o.VehicleEntity = this.Entity;
+    o.PassengerEntity = e;
+    o.VehicleType = this.VehicleType;
+    o.IsDriver = r;
+    o.Seat = t;
+    var s = e.GetComponent(0);
+    var n = e.GetComponent(242);
+    var h = this.Entity.GetComponent(1);
+    var a = this.CreatureData.GetPbDataId();
+    if (r && (i = s.GetPlayerId(), h?.SetAutonomous(i === ModelManager_1.ModelManager.CreatureModel.GetPlayerId()), Log_1.Log.CheckInfo())) {
+      Log_1.Log.Info("Vehicle", 50, "[BaseVehicleComp] 进入载具设置移动主控", ["v", i === ModelManager_1.ModelManager.CreatureModel.GetPlayerId()]);
     }
-    var s = this.SeatInfoMap.get(t);
-    if (s) {
-      if (s.PassengerEntity === e) {
+    if (n?.VehicleEntity && n.VehicleEntity !== this.Entity) {
+      h = n.VehicleEntity.GetComponent(246);
+      i = n.VehicleEntity.GetComponent(0);
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Vehicle", 50, "[BaseVehicleComp] 进入载具时乘客已在其他载具上", ["Passenger", s.GetPbDataId()], ["OldVehicle", i?.GetPbDataId()], ["NewVehicle", a]);
+      }
+      h?.Leave(e, 1);
+    }
+    var n = this.SeatInfoMap.get(t);
+    if (n) {
+      if (n.PassengerEntity === e) {
         return;
       }
-      o = s.PassengerEntity.GetComponent(0);
+      s = n.PassengerEntity.GetComponent(0);
       if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("Vehicle", 50, "[BaseVehicleComp] 进入载具时目标位置已有实体", ["Vehicle", n], ["OldPassenger", o?.GetPbDataId()], ["NewPassenger", e.GetComponent(0)?.GetPbDataId()], ["Seat", t]);
+        Log_1.Log.Error("Vehicle", 50, "[BaseVehicleComp] 进入载具时目标位置已有实体", ["Vehicle", a], ["OldPassenger", s?.GetPbDataId()], ["NewPassenger", e.GetComponent(0)?.GetPbDataId()], ["Seat", t]);
       }
-      this.Leave(s.PassengerEntity, 1);
+      this.Leave(n.PassengerEntity, 1);
     }
-    this.PassengerInfoMap.set(e.Id, r);
-    this.SeatInfoMap.set(t, r);
-    if (i) {
+    this.PassengerInfoMap.set(e.Id, o);
+    this.SeatInfoMap.set(t, o);
+    if (r) {
       this.Driver = e;
     }
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("Vehicle", 50, "[BaseVehicleComp] 进入载具", ["V_PbDataId", n], ["V_CreatureId", this.CreatureData.GetCreatureDataId()], ["P_PbDataId", e.GetComponent(0)?.GetPbDataId()], ["P_CreatureId", e.GetComponent(0)?.GetCreatureDataId()], ["P_PlayerId", e.GetComponent(0)?.GetPlayerId()], ["Seat", t], ["isDriver", i]);
+      Log_1.Log.Info("Vehicle", 50, "[BaseVehicleComp] 进入载具", ["V_PbDataId", a], ["V_CreatureId", this.CreatureData.GetCreatureDataId()], ["P_PbDataId", e.GetComponent(0)?.GetPbDataId()], ["P_CreatureId", e.GetComponent(0)?.GetCreatureDataId()], ["P_PlayerId", e.GetComponent(0)?.GetPlayerId()], ["Seat", t], ["isDriver", r]);
     }
-    this.AddTrialAttributeModifier(r);
-    this.EnterVehiclePerform(r);
-    EventSystem_1.EventSystem.EmitWithTarget(e, EventDefine_1.EEventName.OnEnterVehicle, r);
-    EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnVehicleBeenEntered, r);
-    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnEnterVehicle, r);
-    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnVehicleBeenEntered, r);
+    this.AddTrialAttributeModifier(o);
+    this.EnterVehiclePerform(o);
+    EventSystem_1.EventSystem.EmitWithTarget(e, EventDefine_1.EEventName.OnEnterVehicle, o);
+    EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnVehicleBeenEntered, o);
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnEnterVehicle, o);
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnVehicleBeenEntered, o);
     this.Entity.GetComponent(248)?.StartForceDisableAnimOptimization2(7);
   }
   TryLeave(e, t = 0) {
-    return !!this.LeaveConditionCheck(e) && (e.GetComponent(1)?.CreatureData?.IsRole() ? this.Azf(e, t, 0) : this.Dzf(e, t, 0), true);
+    return !!this.LeaveConditionCheck(e) && (e.GetComponent(1)?.CreatureData?.IsRole() ? this.Tgg(e, t, 0) : this.bgg(e, t, 0), true);
   }
   TryLeaveAtOnce(e, t = 0, i = "") {
     var r;
@@ -275,9 +285,9 @@ let BaseVehiclePerformComponent = BaseVehiclePerformComponent_1 = class BaseVehi
     if (this.LeaveConditionCheck(e)) {
       r = ++BaseVehiclePerformComponent_1.PrePerformHandleGenerator;
       if (e.GetComponent(1)?.CreatureData?.IsRole()) {
-        this.Azf(e, t, r, i);
+        this.Tgg(e, t, r, i);
       } else {
-        this.Dzf(e, t, r, i);
+        this.bgg(e, t, r, i);
       }
       o = this.PassengerInfoMap.get(e.Id);
       if (Log_1.Log.CheckInfo()) {
@@ -313,7 +323,7 @@ let BaseVehiclePerformComponent = BaseVehiclePerformComponent_1 = class BaseVehi
   }
   RefreshMoveConfigFromVehicleConfig() {}
   FixBornLocation(e = 0, t) {}
-  wzf(e, t, i, r = "") {
+  Egg(e, t, i, r = "") {
     var e = e.GetComponent(0);
     var o = this.Entity.GetComponent(0);
     var e = ModelManager_1.ModelManager.GameModeModel.IsMulti ? ModelManager_1.ModelManager.OnlineModel.OwnerId : e.GetPlayerId();
@@ -322,16 +332,16 @@ let BaseVehiclePerformComponent = BaseVehiclePerformComponent_1 = class BaseVehi
     s.ORs = e;
     s.phl = true;
     s.fhl = t;
-    s.CRf = !!i;
-    s.JJf = r;
-    Net_1.Net.Call(22092, s, e => {
+    s.Rxf = !!i;
+    s.evg = r;
+    Net_1.Net.Call(23532, s, e => {
       if (i) {
         e = e?.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs;
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnEnterVehicleAtOnceResponse, i, e);
       }
     });
   }
-  Azf(e, t, i, r = "") {
+  Tgg(e, t, i, r = "") {
     var o = e.GetComponent(0);
     var s = this.Entity.GetComponent(0);
     var e = this.PassengerInfoMap.get(e.Id);
@@ -343,50 +353,50 @@ let BaseVehiclePerformComponent = BaseVehiclePerformComponent_1 = class BaseVehi
     n.phl = false;
     n.fhl = e.Seat;
     n.bI_ = t;
-    n.CRf = !!i;
-    n.JJf = r;
-    Net_1.Net.Call(22092, n, e => {
+    n.Rxf = !!i;
+    n.evg = r;
+    Net_1.Net.Call(23532, n, e => {
       if (i) {
         e = e?.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs;
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnLeaveVehicleAtOnceResponse, i, e);
       }
     });
   }
-  Pzf(e, t, i, r = "") {
+  Igg(e, t, i, r = "") {
     var e = e.GetComponent(0);
     var o = this.Entity.GetComponent(0);
     var s = ModelManager_1.ModelManager.GameModeModel.IsMulti ? ModelManager_1.ModelManager.OnlineModel.OwnerId : e.GetPlayerId();
-    var n = Protocol_1.Aki.Protocol.g6f.create();
+    var n = Protocol_1.Aki.Protocol.Dzf.create();
     n.F4n = MathUtils_1.MathUtils.NumberToLong(e.GetCreatureDataId());
     n.TI_ = MathUtils_1.MathUtils.NumberToLong(o.GetCreatureDataId());
     n.ORs = s;
     n.phl = true;
     n.fhl = t;
-    n.CRf = !!i;
-    n.JJf = r;
-    Net_1.Net.Call(23707, n, e => {
+    n.Rxf = !!i;
+    n.evg = r;
+    Net_1.Net.Call(28551, n, e => {
       if (i) {
         e = e?.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs;
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnEnterVehicleAtOnceResponse, i, e);
       }
     });
   }
-  Dzf(e, t, i, r = "") {
+  bgg(e, t, i, r = "") {
     var o = e.GetComponent(0);
     var s = this.Entity.GetComponent(0);
     var e = this.PassengerInfoMap.get(e.Id);
     var n = ModelManager_1.ModelManager.GameModeModel.IsMulti ? ModelManager_1.ModelManager.OnlineModel.OwnerId : o.GetPlayerId();
     var t = ControllerHolder_1.ControllerHolder.VehicleController.ToServerExitVehicleType(t);
-    var h = Protocol_1.Aki.Protocol.g6f.create();
+    var h = Protocol_1.Aki.Protocol.Dzf.create();
     h.F4n = MathUtils_1.MathUtils.NumberToLong(o.GetCreatureDataId());
     h.TI_ = MathUtils_1.MathUtils.NumberToLong(s.GetCreatureDataId());
     h.ORs = n;
     h.phl = false;
     h.fhl = e.Seat;
     h.bI_ = t;
-    h.CRf = !!i;
-    h.JJf = r;
-    Net_1.Net.Call(23707, h, e => {
+    h.Rxf = !!i;
+    h.evg = r;
+    Net_1.Net.Call(28551, h, e => {
       if (i) {
         e = e?.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs;
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnLeaveVehicleAtOnceResponse, i, e);
@@ -397,10 +407,29 @@ let BaseVehiclePerformComponent = BaseVehiclePerformComponent_1 = class BaseVehi
     ControllerHolder_1.ControllerHolder.CreatureController.DelayRemoveEntityFinished(this.Entity);
   }
   EnterConditionCheck(e, t) {
-    return !(t < 0) && !(t >= this.MaxSeatCount) && !this.SeatInfoMap.has(t) && (!!this.CanBeenManipulated || this.DriverSeat !== t) && !!(t = e.GetComponent(242)) && !t.IsOnVehicle;
+    var i = e.GetComponent(0);
+    if (t < 0 || t >= this.MaxSeatCount) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Vehicle", 50, "[EnterConditionCheck] 座位不合法", ["P_PbDataId", i?.GetPbDataId()], ["V_PbDataId", this.CreatureData?.GetPbDataId()], ["Seat", t]);
+      }
+      return false;
+    } else if (this.SeatInfoMap.has(t)) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Vehicle", 50, "[EnterConditionCheck] 目标座位已被占用", ["P_PbDataId", i?.GetPbDataId()], ["V_PbDataId", this.CreatureData?.GetPbDataId()], ["Seat", t]);
+      }
+      return false;
+    } else if (this.CanBeenManipulated || this.DriverSeat !== t) {
+      return !!(e = e.GetComponent(242)) && !e.IsOnVehicle || (Log_1.Log.CheckError() && Log_1.Log.Error("Vehicle", 50, "[EnterConditionCheck] 没有驾驶组件 或 已经处于载具上", ["P_PbDataId", i?.GetPbDataId()], ["V_PbDataId", this.CreatureData?.GetPbDataId()], ["HasDriverComp", !!e], ["Seat", t]), false);
+    } else {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Vehicle", 50, "[EnterConditionCheck] 自动驾驶的载具不能乘坐驾驶位", ["P_PbDataId", i?.GetPbDataId()], ["V_PbDataId", this.CreatureData?.GetPbDataId()], ["Seat", t]);
+      }
+      return false;
+    }
   }
   LeaveConditionCheck(e) {
-    return !!this.PassengerInfoMap.has(e.Id);
+    var t = e.GetComponent(0);
+    return !!this.PassengerInfoMap.has(e.Id) || (Log_1.Log.CheckError() && Log_1.Log.Error("Vehicle", 50, "[LeaveConditionCheck] 不在此载具上无法离开", ["P_PbDataId", t?.GetPbDataId()], ["V_PbDataId", this.CreatureData?.GetPbDataId()]), false);
   }
   EnterVehiclePerform(e) {}
   LeaveVehiclePerform(e) {}
@@ -428,35 +457,35 @@ let BaseVehiclePerformComponent = BaseVehiclePerformComponent_1 = class BaseVehi
     }
   }
   GetVehicleVelocity(e) {}
-  QXf(e) {
+  wug(e) {
     var t;
-    return !!this.f2f && !!e.IsDriver && !!(t = e.PassengerEntity?.GetComponent(0)) && !!t.IsRole() && !!(t = e.PassengerEntity?.GetComponent(220)) && !!t.HasBuffAuthority();
+    return !!this.d4f && !!e.IsDriver && !!(t = e.PassengerEntity?.GetComponent(0)) && !!t.IsRole() && !!(t = e.PassengerEntity?.GetComponent(222)) && !!t.HasBuffAuthority();
   }
   AddTrialAttributeModifier(e) {
     var t;
-    if (this.QXf(e)) {
-      if (e = ConfigManager_1.ConfigManager.MotorConfig.GetTrialMotorConfig(this.f2f)) {
+    if (this.wug(e)) {
+      if (e = ConfigManager_1.ConfigManager.MotorConfig.GetTrialMotorConfig(this.d4f)) {
         if (e.Level !== 0) {
           if (t = ConfigManager_1.ConfigManager.MotorConfig.GetMotorLevelConfig(e.Level)) {
             if (Log_1.Log.CheckInfo()) {
-              Log_1.Log.Info("Vehicle", 85, "添加试用属性Modifier", ["Level", this.f2f]);
+              Log_1.Log.Info("Vehicle", 85, "添加试用属性Modifier", ["Level", this.d4f]);
             }
-            FormationAttributeController_1.FormationAttributeController.AddSpeedModifier(this.g2f, 14, 0, t.NitrogenRecoverRate, 1);
+            FormationAttributeController_1.FormationAttributeController.AddSpeedModifier(this.m4f, 14, 0, t.NitrogenRecoverRate, 1);
           } else if (Log_1.Log.CheckError()) {
             Log_1.Log.Error("Vehicle", 85, "无效的等级", ["Level", e.Level]);
           }
         }
       } else if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("Vehicle", 85, "无效的试用属性", ["Id", this.f2f]);
+        Log_1.Log.Error("Vehicle", 85, "无效的试用属性", ["Id", this.d4f]);
       }
     }
   }
   RemoveTrialAttributeModifier(e) {
-    if (this.QXf(e)) {
+    if (this.wug(e)) {
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("Vehicle", 85, "移除试用属性Modifier", ["Id", this.f2f]);
+        Log_1.Log.Info("Vehicle", 85, "移除试用属性Modifier", ["Id", this.d4f]);
       }
-      FormationAttributeController_1.FormationAttributeController.RemoveSpeedModifier(this.g2f, 14);
+      FormationAttributeController_1.FormationAttributeController.RemoveSpeedModifier(this.m4f, 14);
     }
   }
 };

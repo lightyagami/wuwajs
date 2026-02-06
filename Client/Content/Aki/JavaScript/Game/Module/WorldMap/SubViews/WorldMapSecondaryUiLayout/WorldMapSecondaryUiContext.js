@@ -21,17 +21,17 @@ class WorldMapSecondaryUiContext {
     this.DelButton = undefined;
     this.MapTipsActivateTipPanel = undefined;
     this.TakeAction = false;
-    this._7m = true;
+    this.c9m = true;
   }
   SetConfirmBtnItem(i) {
     this.p9t = i;
   }
   SetConfirmBtnActive(i) {
     this.p9t.SetActive(i);
-    this._7m = i;
+    this.c9m = i;
   }
   GetIsConfirmBtnActive() {
-    return this.p9t && this._7m;
+    return this.p9t && this.c9m;
   }
   SetConfirmBtnText(i, ...t) {
     if (i !== undefined) {

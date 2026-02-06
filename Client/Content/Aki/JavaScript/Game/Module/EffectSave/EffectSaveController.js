@@ -19,27 +19,27 @@ const GlobalData_1 = require("../../GlobalData");
 const ModelManager_1 = require("../../Manager/ModelManager");
 class EffectSaveController extends ControllerBase_1.ControllerBase {
   static OnInit() {
-    Net_1.Net.Register(26508, EffectSaveController.EffectAddNotify);
-    Net_1.Net.Register(28039, EffectSaveController.EffectRemoveNotify);
+    Net_1.Net.Register(16819, EffectSaveController.EffectAddNotify);
+    Net_1.Net.Register(18541, EffectSaveController.EffectRemoveNotify);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnEnterOnlineWorld, EffectSaveController.RemoveEffectOnOnlineModeChange);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnLeaveOnlineWorld, EffectSaveController.RemoveEffectOnOnlineModeChange);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.LeaveInstanceDungeon, EffectSaveController.OnLeaveInstanceDungeon);
     return true;
   }
   static OnClear() {
-    Net_1.Net.UnRegister(26508);
-    Net_1.Net.UnRegister(28039);
+    Net_1.Net.UnRegister(16819);
+    Net_1.Net.UnRegister(18541);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnEnterOnlineWorld, EffectSaveController.RemoveEffectOnOnlineModeChange);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnLeaveOnlineWorld, EffectSaveController.RemoveEffectOnOnlineModeChange);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.LeaveInstanceDungeon, EffectSaveController.OnLeaveInstanceDungeon);
-    this.eKf("[EffectSaveController] Remove By Controller Clear");
+    this.Xag("[EffectSaveController] Remove By Controller Clear");
     return true;
   }
   static MarkEffectSave(t, e, o) {
     var r;
     var a = EffectSaveByEffectPath_1.configEffectSaveByEffectPath.GetConfig(t);
     if (a) {
-      (r = new Protocol_1.Aki.Protocol.LTm()).BKn = ModelManager_1.ModelManager.GameModeModel.InstanceDungeon.Id;
+      (r = new Protocol_1.Aki.Protocol.NTm()).BKn = ModelManager_1.ModelManager.GameModeModel.InstanceDungeon.Id;
       r.l9_ = e;
       r.aC1 = a.EffectId;
       r.g8n = {
@@ -47,7 +47,7 @@ class EffectSaveController extends ControllerBase_1.ControllerBase {
         Y: o.Roll,
         Z: o.Yaw
       };
-      Net_1.Net.Call(24286, r, e => {
+      Net_1.Net.Call(21812, r, e => {
         if (e?.G9n !== Protocol_1.Aki.Protocol.Q4n.KRs && Log_1.Log.CheckError()) {
           Log_1.Log.Error("LevelPlay", 93, "[EffectSaveController] 转发特效信息至服务器失败", ["effectPath", t], ["errorCode", e?.G9n]);
         }
@@ -56,7 +56,7 @@ class EffectSaveController extends ControllerBase_1.ControllerBase {
       Log_1.Log.Error("LevelPlay", 93, "[EffectSaveController] 特效路径在t.特效保留.xlsx中未配置", ["effectPath", t]);
     }
   }
-  static eKf(e) {
+  static Xag(e) {
     for (const t of ModelManager_1.ModelManager.EffectSaveModel.EffectSaveMap.values() ?? []) {
       if (EffectSystem_1.EffectSystem.IsValid(t)) {
         EffectSystem_1.EffectSystem.StopEffectById(t, e, true);
@@ -81,7 +81,7 @@ exports.EffectSaveController = EffectSaveController;
         ModelManager_1.ModelManager.EffectSaveModel.TempTransform.SetLocation(ModelManager_1.ModelManager.EffectSaveModel.TempPosition);
         ModelManager_1.ModelManager.EffectSaveModel.TempTransform.SetRotation(ModelManager_1.ModelManager.EffectSaveModel.TempRotation.Quaternion());
         t = EffectSystem_1.EffectSystem.SpawnEffect(GlobalData_1.GlobalData.World, ModelManager_1.ModelManager.EffectSaveModel.TempTransform, t.EffectPath, "[EffectSaveController] Add By Proto_DecalAddNotify");
-        ModelManager_1.ModelManager.EffectSaveModel.EffectSaveMap.set(MathUtils_1.MathUtils.LongToBigInt(r.UTm), t);
+        ModelManager_1.ModelManager.EffectSaveModel.EffectSaveMap.set(MathUtils_1.MathUtils.LongToBigInt(r.$Tm), t);
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("LevelPlay", 93, "[EffectSaveController] 特效Id在t.特效保留.xlsx中未配置", ["effectId", r.aC1]);
       }
@@ -90,7 +90,7 @@ exports.EffectSaveController = EffectSaveController;
 };
 EffectSaveController.EffectRemoveNotify = e => {
   for (const r of e.YVn) {
-    var t = MathUtils_1.MathUtils.LongToBigInt(r.UTm);
+    var t = MathUtils_1.MathUtils.LongToBigInt(r.$Tm);
     var o = ModelManager_1.ModelManager.EffectSaveModel.EffectSaveMap.get(t);
     if (o) {
       if (EffectSystem_1.EffectSystem.IsValid(o)) {
@@ -101,8 +101,8 @@ EffectSaveController.EffectRemoveNotify = e => {
   }
 };
 EffectSaveController.RemoveEffectOnOnlineModeChange = () => {
-  _a.eKf("[EffectSaveController] Remove By Online Mode Change");
+  _a.Xag("[EffectSaveController] Remove By Online Mode Change");
 };
 EffectSaveController.OnLeaveInstanceDungeon = () => {
-  _a.eKf("[EffectSaveController] Remove By Leave Instance Dungeon");
+  _a.Xag("[EffectSaveController] Remove By Leave Instance Dungeon");
 }; //# sourceMappingURL=EffectSaveController.js.map

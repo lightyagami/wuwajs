@@ -34,8 +34,8 @@ class TsAnimNotifyStateBulletDuration extends UE.KuroAnimNotifyState {
     if (r instanceof TsBaseCharacter_1.default || r instanceof TsBaseVehicle_1.default) {
       var o = r.GetEntityNoBlueprint();
       if (o?.Valid) {
-        var h = o.GetComponent(220)?.CreateAnimNotifyContent(e.GetName(), this.exportIndex);
-        var e = o.GetComponent(40);
+        var h = o.GetComponent(222)?.CreateAnimNotifyContent(e.GetName(), this.exportIndex);
+        var e = o.GetComponent(42);
         var a = e ? e.GetCurrentMontageCorrespondingSkillId() : 0;
         var l = this.BulletIds.Num();
         var n = this.LocationOffsets.Num();

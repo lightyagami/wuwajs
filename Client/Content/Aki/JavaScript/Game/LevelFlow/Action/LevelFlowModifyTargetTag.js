@@ -25,7 +25,7 @@ class LevelFlowModifyTargetTag extends LevelFlowActionBase_1.LevelFlowActionBase
   OnExecute() {
     var e = ModelManager_1.ModelManager.CreatureModel.GetEntityById(this.E0);
     if (e?.Valid && e.Entity?.Valid) {
-      var o = e.Entity.CheckGetComponent(215);
+      var o = e.Entity.CheckGetComponent(217);
       if (o) {
         if (this.bpm) {
           for (const l of this.KC1) {

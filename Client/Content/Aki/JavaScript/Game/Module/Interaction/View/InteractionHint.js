@@ -153,10 +153,10 @@ class InteractionHint extends UiPanelBase_1.UiPanelBase {
   }
   Refresh(t, e, i) {
     this.Y_i = this.GridIndex;
-    this.J_i = t.GetComponent(127);
-    this.z_i = t.GetComponent(126);
+    this.J_i = t.GetComponent(129);
+    this.z_i = t.GetComponent(128);
     this.wDe = t.GetComponent(0)?.GetPbDataId() ?? 0;
-    this.Mfu = t.GetComponent(320);
+    this.Mfu = t.GetComponent(322);
     if (this.z_i) {
       this.ETt = this.z_i.DropItemId;
       if (this.ETt) {
@@ -246,7 +246,7 @@ class InteractionHint extends UiPanelBase_1.UiPanelBase {
       }
       return t;
     }
-    if ((0, RegisterComponent_1.isComponentInstance)(this.J_i, 207)) {
+    if ((0, RegisterComponent_1.isComponentInstance)(this.J_i, 209)) {
       t = this.J_i.GetInteractController().DefaultShowOption;
       if (t) {
         if (Log_1.Log.CheckDebug()) {
@@ -297,7 +297,7 @@ class InteractionHint extends UiPanelBase_1.UiPanelBase {
     if (t = ModelManager_1.ModelManager.InteractionModel.GetConditionIconPath(this.ActorIndex)) {
       return t;
     }
-    if ((0, RegisterComponent_1.isComponentInstance)(this.J_i, 207)) {
+    if ((0, RegisterComponent_1.isComponentInstance)(this.J_i, 209)) {
       e = this.J_i.GetInteractController().GetInteractIcon();
       if (e === "Collect") {
         var i = this.J_i.GetInteractController().CreatureData.GetPbEntityInitData();
@@ -420,7 +420,7 @@ class InteractionHint extends UiPanelBase_1.UiPanelBase {
     return this.cui;
   }
   UpdatePriority() {
-    if ((0, RegisterComponent_1.isComponentInstance)(this.J_i, 207)) {
+    if ((0, RegisterComponent_1.isComponentInstance)(this.J_i, 209)) {
       this.cui = this.J_i.GetInteractController().InteractEntity.Priority;
     }
   }

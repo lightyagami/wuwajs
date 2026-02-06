@@ -31,7 +31,7 @@ class PhantomArenaBattleDetailsAreaItem extends UiPanelBase_1.UiPanelBase {
       t.RegisterProxy(this.Proxy);
       return t;
     };
-    this.IFm = (t, e) => {
+    this.jNm = (t, e) => {
       this.DetailsTipsItem.SetUiActive(true);
       this.DetailsTipsItem.RefreshByCardData(t.CardData);
     };
@@ -61,7 +61,7 @@ class PhantomArenaBattleDetailsAreaItem extends UiPanelBase_1.UiPanelBase {
     await this.SkillItem.CreateThenShowByActorAsync(this.GetItem(3).GetOwner());
     this.SetSettlePoint(0);
   }
-  async TFm() {
+  async HNm() {
     this.DetailsTipsItem = new PhantomArenaBattleDetailsTips_1.PhantomArenaBattleDetailsTips();
     await this.DetailsTipsItem.CreateThenShowByResourceIdAsync("PnlCardTips", this.GetItem(4));
     this.DetailsTipsItem.SetTipsActive(0);
@@ -76,7 +76,7 @@ class PhantomArenaBattleDetailsAreaItem extends UiPanelBase_1.UiPanelBase {
     this.DetailsTipsItem.SetTipsPositionByAttachItem(e);
     this.DetailsTipsItem.SetBtnMaskCallback(this.c2u);
   }
-  async bFm() {
+  async $Nm() {
     var t;
     if (ModelManager_1.ModelManager.PhantomArenaBattleModel.IsOldBvb) {
       this.GetItem(5).SetUIActive(false);
@@ -84,14 +84,14 @@ class PhantomArenaBattleDetailsAreaItem extends UiPanelBase_1.UiPanelBase {
       t = (this.IsOwn ? ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData : ModelManager_1.ModelManager.PhantomArenaBattleModel.OpponentData).FieldData;
       this.GetItem(5).SetUIActive(true);
       this.FieldItem = new PhantomArenaFieldItem_1.PhantomArenaFieldItem();
-      this.FieldItem.SetInteractClickCallback(this.IFm);
+      this.FieldItem.SetInteractClickCallback(this.jNm);
       await this.FieldItem.CreateByActorAsync(this.GetItem(6).GetOwner());
       await this.FieldItem.Refresh(t);
       this.FieldItem.SetFieldItemActive(true);
     }
   }
   async OnBeforeStartAsync() {
-    await Promise.all([this.t1o(), this.tU1(), this.iU1(), this.TFm(), this.bFm()]);
+    await Promise.all([this.t1o(), this.tU1(), this.iU1(), this.HNm(), this.$Nm()]);
   }
   RegisterProxy(t) {
     this.Proxy = t;

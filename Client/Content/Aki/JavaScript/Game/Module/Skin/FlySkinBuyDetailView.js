@@ -78,13 +78,7 @@ class FlySkinBuyDetailView extends UiTickViewBase_1.UiTickViewBase {
       this.x11();
     };
     this.zSl = () => {
-      var i;
-      if (this.C0t.GetIfDirect()) {
-        i = this.C0t.GetCurrentGoodsData().GetCurrentGoodsData().GetGoodsData().Id;
-        ControllerHolder_1.ControllerHolder.PayGiftController.SdkPay(i);
-      } else {
-        ControllerHolder_1.ControllerHolder.PayShopController.OpenBuyViewByGoodsId(this.C0t.GetCurrentGoodsData().GetCurrentGoodsData());
-      }
+      ControllerHolder_1.ControllerHolder.PayShopController.OpenBuySkinDetailView(this.C0t.GetCurrentGoodsData().GetCurrentGoodsData());
     };
     this.iNe = () => {
       if (!(TimeUtil_1.TimeUtil.GetServerTimeStamp() - this.vql < ConfigManager_1.ConfigManager.SkinConfig.GetSkinDetailButtonGap())) {
@@ -282,17 +276,17 @@ class FlySkinBuyDetailView extends UiTickViewBase_1.UiTickViewBase {
       if (this.U01) {
         var e = ConfigManager_1.ConfigManager.SkinConfig;
         var s = this.y31;
-        var h = this.C0t.GetCurrentSkinData(s).GetFlySkinConfig();
-        const r = h.StandAnim;
-        var n = e.GetFlySkinSpawnEffectId(s);
+        var n = this.C0t.GetCurrentSkinData(s).GetFlySkinConfig();
+        const r = n.StandAnim;
+        var h = e.GetFlySkinSpawnEffectId(s);
         var e = e.GetFlySkinSpawnMaterialController(s);
-        var s = EffectUtil_1.EffectUtil.GetEffectPath(n);
+        var s = EffectUtil_1.EffectUtil.GetEffectPath(h);
         const o = EffectUtil_1.EffectUtil.GetEffectPath(e);
-        n = [r, s, o];
+        h = [r, s, o];
         const a = i.CheckGetComponent(2);
         const U = i.CheckGetComponent(1);
         U.SetTransformByTag(t);
-        a.LoadModelByModelId(h.ModelId, true, () => {
+        a.LoadModelByModelId(n.ModelId, true, () => {
           var i;
           var t;
           var e = this.Vkc?.Model;
@@ -310,7 +304,7 @@ class FlySkinBuyDetailView extends UiTickViewBase_1.UiTickViewBase {
             }
             UiModelUtil_1.UiModelUtil.PlayEffectOnRoot(e, "GliderEffect");
           }
-        }, n);
+        }, h);
       } else {
         UiModelUtil_1.UiModelUtil.SetVisible(i, false);
         const U = i.CheckGetComponent(1);

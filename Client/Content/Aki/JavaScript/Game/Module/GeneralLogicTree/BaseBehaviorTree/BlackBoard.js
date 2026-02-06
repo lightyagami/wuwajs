@@ -39,6 +39,7 @@ class Blackboard extends BehaviorTreeTagComponent_1.BehaviorTreeTagContainer {
     this.BtType = Protocol_1.Aki.Protocol.hps.Proto_BtTypeInvalid;
     this.TreeIncId = BigInt(0);
     this.TreeConfigId = 0;
+    this.BoundParentTreeId = undefined;
     this.GDa = [];
     this.ODa = new Map();
     this.kDa = new Set();
@@ -64,11 +65,23 @@ class Blackboard extends BehaviorTreeTagComponent_1.BehaviorTreeTagContainer {
     };
   }
   get TaskMarkTableId() {
+    if (this.IsTrackBoundToParent) {
+      var e = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(this.BoundParentTreeId);
+      if (e) {
+        return e.GetBlackBoard().TaskMarkTableId;
+      }
+    }
     if (!this.UseInnerTrackIconId && this.BtType !== Protocol_1.Aki.Protocol.hps.Proto_BtTypeQuest && this.IsChallengeUi()) {
       return GeneralLogicTreeDefine_1.CHALLENGELEVELPLAY_TRACKICONID;
     } else {
       return this.fQt;
     }
+  }
+  get IsTrackBoundToParent() {
+    return this.BoundParentTreeId !== undefined;
+  }
+  get IsBindingLevelPlayTrack() {
+    return ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(this.TreeIncId)?.BindingExpressionHolder?.IsValid() ?? false;
   }
   get DungeonId() {
     return this.CurrentDungeonId;
@@ -265,9 +278,17 @@ class Blackboard extends BehaviorTreeTagComponent_1.BehaviorTreeTagContainer {
     return this.ContainTag(11);
   }
   CreateShowData(e = true) {
+    var t;
+    if (this.ContainTag(17) && (t = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(this.TreeIncId))?.BindingExpressionHolder?.IsValid()) {
+      return t.BindingExpressionHolder.GetShowData(e);
+    } else {
+      return this.CreateOriginalShowData(e);
+    }
+  }
+  CreateOriginalShowData(e = true) {
     var t = this.BtType === Protocol_1.Aki.Protocol.hps.Proto_BtTypeQuest ? ModelManager_1.ModelManager.QuestNewModel.GetQuest(this.TreeConfigId)?.NameKey : undefined;
     if (!e) {
-      return MissionViewDefine_1.BehaviorTreeViewShowData.Create(this.BtType, this.TreeIncId, this.TreeConfigId, this.IsChallengeUi(), this.TaskMarkTableId, this.ZU_, t, this.UiTrackTextInfo.MainTitle, this.UiTrackTextInfo.SubTitles);
+      return MissionViewDefine_1.BehaviorTreeViewShowData.Create(this.BtType, this.TreeIncId, this.TreeConfigId, this.IsChallengeUi(), this.TaskMarkTableId, this.ZU_, t, this.UiTrackTextInfo.MainTitle, this.UiTrackTextInfo.SubTitles, this.BoundParentTreeId);
     }
     let i = undefined;
     var r;
@@ -304,7 +325,7 @@ class Blackboard extends BehaviorTreeTagComponent_1.BehaviorTreeTagContainer {
         s.length = 0;
       }
     }
-    return MissionViewDefine_1.BehaviorTreeViewShowData.Create(this.BtType, this.TreeIncId, this.TreeConfigId, this.IsChallengeUi(), this.TaskMarkTableId, this.ZU_, t, i, s);
+    return MissionViewDefine_1.BehaviorTreeViewShowData.Create(this.BtType, this.TreeIncId, this.TreeConfigId, this.IsChallengeUi(), this.TaskMarkTableId, this.ZU_, t, i, s, this.BoundParentTreeId);
   }
   pCc(e) {
     return e.QuestScheduleType?.Type === IQuest_1.EQuestScheduleType.ChildQuestCompleted && !!(e = this.GetNode(e.QuestScheduleType.ChildQuestId)) && e.ContainTag(1);

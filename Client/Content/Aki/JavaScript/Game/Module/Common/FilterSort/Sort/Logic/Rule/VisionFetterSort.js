@@ -39,8 +39,8 @@ class VisionFetterSort extends CommonSort_1.CommonSort {
     };
     this.hUt = (e, r, t) => 0;
     this.iRt = (e, r, t) => {
-      if (e.Id !== r.Id) {
-        return (e.Id - r.Id) * (t ? -1 : 1);
+      if (e.SortId !== r.SortId) {
+        return (e.SortId - r.SortId) * (t ? 1 : -1);
       } else {
         return 0;
       }

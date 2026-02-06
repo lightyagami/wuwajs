@@ -123,7 +123,7 @@ let CharacterPatrolComponent = class CharacterPatrolComponent extends EntityComp
   OnStart() {
     this.CreatureData = this.Entity.GetComponent(0);
     this.ActorComp = this.Entity.GetComponent(1);
-    this.MoveComp = this.Entity.GetComponent(46);
+    this.MoveComp = this.Entity.GetComponent(48);
     this.RecordList = new Map();
     this.SplineInfoList = new Map();
     this.CacheVector = Vector_1.Vector.Create();
@@ -389,7 +389,8 @@ let CharacterPatrolComponent = class CharacterPatrolComponent extends EntityComp
         CircleMove: false,
         UsePreviousIndex: false,
         UseNearestPoint: false,
-        ReturnFalseWhenNavigationFailed: false
+        ReturnFalseWhenNavigationFailed: false,
+        NoAsyncPoint: s.NoSyncPoint
       };
       h.Callback = this.OnSegmentPatrolFinished;
       t.SegmentsMoveConfig.push(h);
@@ -443,14 +444,14 @@ let CharacterPatrolComponent = class CharacterPatrolComponent extends EntityComp
     if (this.CreatureData.IsMonster() && !this.pKl) {
       (t = Protocol_1.Aki.Protocol.Kes.create()).F4n = MathUtils_1.MathUtils.NumberToLong(this.CreatureData.GetCreatureDataId());
       t.V4n = this.CurrentPatrol.LastPointIndex < this.CurrentSplineInfo.SplineComp.PathPoint.length - 1;
-      Net_1.Net.Call(22211, t, () => {});
+      Net_1.Net.Call(18670, t, () => {});
     }
   }
   PatrolEndRequest() {
     var t;
     if (this.CreatureData.IsMonster() && !this.pKl) {
       (t = Protocol_1.Aki.Protocol.Xes.create()).F4n = MathUtils_1.MathUtils.NumberToLong(this.CreatureData.GetCreatureDataId());
-      Net_1.Net.Call(21531, t, () => {});
+      Net_1.Net.Call(15120, t, () => {});
     }
   }
   DirectionChangeRequest(t) {
@@ -462,14 +463,14 @@ let CharacterPatrolComponent = class CharacterPatrolComponent extends EntityComp
         }
         (i = Protocol_1.Aki.Protocol.Jes.create()).F4n = MathUtils_1.MathUtils.NumberToLong(this.CreatureData.GetCreatureDataId());
         i.V4n = true;
-        Net_1.Net.Call(23106, i, () => {});
+        Net_1.Net.Call(16567, i, () => {});
       } else if (t === this.CurrentSplineInfo.SplineComp.PathPoint.length - 1) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("AI", 50, "往返式巡逻：走到终点", ["PbDataID", this.ActorComp.CreatureData.GetPbDataId()]);
         }
         (i = Protocol_1.Aki.Protocol.Jes.create()).F4n = MathUtils_1.MathUtils.NumberToLong(this.ActorComp.CreatureData.GetCreatureDataId());
         i.V4n = false;
-        Net_1.Net.Call(23106, i, () => {});
+        Net_1.Net.Call(16567, i, () => {});
       }
     }
   }
@@ -605,7 +606,7 @@ let CharacterPatrolComponent = class CharacterPatrolComponent extends EntityComp
     }
   }
   TryInitSplineFromAiPatrol(i) {
-    var t = this.Entity.GetComponent(48)?.AiController.AiPatrol;
+    var t = this.Entity.GetComponent(50)?.AiController.AiPatrol;
     if (!t?.AllPatrolPoints || !t.AllPatrolPoints.length) {
       return false;
     }
@@ -625,5 +626,5 @@ let CharacterPatrolComponent = class CharacterPatrolComponent extends EntityComp
     return true;
   }
 };
-CharacterPatrolComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(49)], CharacterPatrolComponent);
+CharacterPatrolComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(51)], CharacterPatrolComponent);
 exports.CharacterPatrolComponent = CharacterPatrolComponent; //# sourceMappingURL=CharacterPatrolComponent.js.map

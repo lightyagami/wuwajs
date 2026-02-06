@@ -14,7 +14,7 @@ class AttributeSelectItem extends UiPanelBase_1.UiPanelBase {
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UITexture], [1, UE.UIText], [2, UE.UIText], [3, UE.UIItem], [4, UE.UIItem]];
   }
-  RefreshByData(e) {
+  c4e(e) {
     this.GetItem(3).SetUIActive(false);
     this.GetItem(4).SetUIActive(true);
     var t = ConfigManager_1.ConfigManager.PropertyIndexConfig.GetPropertyIndexInfo(e.PropIndexId);
@@ -28,7 +28,7 @@ class AttributeSelectItem extends UiPanelBase_1.UiPanelBase {
   }
   RefreshUi(e) {
     if (e) {
-      this.RefreshByData(e);
+      this.c4e(e);
     } else {
       this.GetItem(3).SetUIActive(true);
       this.GetItem(4).SetUIActive(false);

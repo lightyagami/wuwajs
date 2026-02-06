@@ -26,9 +26,11 @@ const TimerSystem_1 = require("../../../Core/Timer/TimerSystem");
 const MathUtils_1 = require("../../../Core/Utils/MathUtils");
 const StringUtils_1 = require("../../../Core/Utils/StringUtils");
 const BaseConfigController_1 = require("../../../Launcher/BaseConfig/BaseConfigController");
+const VideoResUpdate_1 = require("../../../Launcher/DiffPatch/Update/VideoResUpdate");
 const HotPatchKuroSdk_1 = require("../../../Launcher/HotPatchKuroSdk/HotPatchKuroSdk");
 const LauncherSdk_1 = require("../../../Launcher/HotPatchKuroSdk/LauncherSdk");
 const HotPatchLogReport_1 = require("../../../Launcher/HotPatchLogReport");
+const LauncherNetworkDetectionController_1 = require("../../../Launcher/NetworkDetection/LauncherNetworkDetectionController");
 const CloudGameManagerLauncher_1 = require("../../../Launcher/Platform/CloudGameManagerLauncher");
 const Platform_1 = require("../../../Launcher/Platform/Platform");
 const PlatformSdkConfig_1 = require("../../../Launcher/Platform/PlatformSdk/PlatformSdkConfig");
@@ -36,6 +38,7 @@ const PlatformSdkManagerNew_1 = require("../../../Launcher/Platform/PlatformSdk/
 const PlatformSdkReportData_1 = require("../../../Launcher/Platform/PlatformSdk/PlatformSdkReportData");
 const PlatformSdkServer_1 = require("../../../Launcher/Platform/PlatformSdk/PlatformSdkServer");
 const PreDownloadManager_1 = require("../../../Launcher/PreDownload/PreDownloadManager");
+const HotFixManager_1 = require("../../../Launcher/Ui/HotFix/HotFixManager");
 const HotFixSceneManager_1 = require("../../../Launcher/Ui/HotFix/HotFixSceneManager");
 const HotFixSubPackageDefine_1 = require("../../../Launcher/Ui/HotFix/HotFixSubPackageDefine");
 const AppUtil_1 = require("../../../Launcher/Update/AppUtil");
@@ -83,6 +86,7 @@ const Heartbeat_1 = require("./Heartbeat");
 const HeartbeatDefine_1 = require("./HeartbeatDefine");
 const LoginModel_1 = require("./LoginModel");
 const LoginServerController_1 = require("./LoginServerController");
+const LoginUdpDelay_1 = require("./LoginUdpDelay");
 const VERIFY_CONFIG_VERSION_INTERVAL = 90000;
 const TRY_BACK_TO_GAME_INTERVAL = 3000;
 const RENWE_ACCESS_TOKEN_INTERVAL = 600000;
@@ -169,7 +173,7 @@ class LoginController extends UiControllerBase_1.UiControllerBase {
     e.push(101);
     e.push(105);
     e.push(107);
-    e.push(22400);
+    e.push(24619);
     Net_1.Net.InitCanTimerOutMessage(e);
     AudioSystem_1.AudioSystem.SetState("platform", cpp_1.KuroApplication.IniPlatformName());
     AudioSystem_1.AudioSystem.SetRtpcValue("time_local", TimeUtil_1.TimeUtil.GetHoursFloat());
@@ -217,14 +221,14 @@ class LoginController extends UiControllerBase_1.UiControllerBase {
   static OnRegisterNetEvent() {
     Net_1.Net.Register(110, LoginController.SMi);
     Net_1.Net.Register(115, LoginController.pla);
-    Net_1.Net.Register(27248, LoginController.Y3a);
-    Net_1.Net.Register(28626, LoginController.Ta1);
+    Net_1.Net.Register(24509, LoginController.Y3a);
+    Net_1.Net.Register(24972, LoginController.Ta1);
   }
   static OnUnRegisterNetEvent() {
     Net_1.Net.UnRegister(110);
     Net_1.Net.UnRegister(115);
-    Net_1.Net.UnRegister(27248);
-    Net_1.Net.UnRegister(28626);
+    Net_1.Net.UnRegister(24509);
+    Net_1.Net.UnRegister(24972);
   }
   static yMi(o) {
     Heartbeat_1.Heartbeat.StopHeartBeat(HeartbeatDefine_1.EStopHeartbeat.LogoutNotify);
@@ -304,7 +308,7 @@ class LoginController extends UiControllerBase_1.UiControllerBase {
         Log_1.Log.Info("Login", 16, "LoginProcedure-OpenLoginView-播放进入登录的镜头(拉远)");
       }
       Stats_1.Stat.CreateInstantStat("LoginProcedure_LoginView_CameraAnim_Zoom_Out:Start");
-      this.iKf();
+      this.Jag();
       LoginController.OpenSdkLoginView();
       LoginServerController_1.LoginServerController.PingAllRegion();
     });
@@ -519,11 +523,16 @@ class LoginController extends UiControllerBase_1.UiControllerBase {
       var a = new Array();
       if (t.hosts) {
         for (const _ of t.hosts) {
-          a.push(_);
+          if (_ !== undefined && _ !== "" && _.length > 0) {
+            a.push(_);
+          }
         }
       } else {
         a.push(t.host);
       }
+      LauncherNetworkDetectionController_1.LauncherNetworkDetectionController.SetGateWayCheckInfo({
+        Hosts: a
+      }, ModelManager_1.ModelManager.LoginModel?.GetSdkLoginConfig()?.Uid ?? "");
       if (o) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Login", 16, "LoginProcedure-Http-登录http请求返回", ["Token", i], ["Hosts", a.join()], ["Port", t.port], ["TCPPort", t.tcpPort], ["TCPRatio", t.tcpRatio], ["Code", t.code], ["rpcId", t.userData], ["errMessage", t.errMessage], ["hasRpc", o], ["httpCode", e]);
@@ -778,12 +787,20 @@ class LoginController extends UiControllerBase_1.UiControllerBase {
     o.l31 = 1;
     if (ResourceUpdateManager_1.ResourceDiffUpdaterManager.IsGrayBoxHit()) {
       r = UE.KuroLauncherLibrary.IsSeparateVideo();
-      o.l31 = r ? 2 : 1;
-      o.lUm = Protocol_1.Aki.Protocol.fUm.Proto_BStateSimple;
-      o.bqf = ControllerHolder_1.ControllerHolder.ResourceManagerController.GetDownloadedQuestListBeforeLogin();
+      o.l31 = r ? VideoResUpdate_1.VideoResUpdate.VideoDownloadState : 1;
+      if (ResourceUpdateManager_1.ResourceDiffUpdaterManager.IsAllOptionalResourceDownloaded()) {
+        o.TDm = Protocol_1.Aki.Protocol.ADm.Proto_BStateComplete;
+      } else {
+        o.TDm = Protocol_1.Aki.Protocol.ADm.Proto_BStateSimple;
+      }
+      if (o.l31 !== 1 || o.TDm !== Protocol_1.Aki.Protocol.ADm.Proto_BStateComplete) {
+        r = 2;
+        r = (i = HotFixManager_1.HotFixManager.LaunchSubPackageHttpData?.Sex) === 1 ? 1 : i === 0 ? 0 : 2;
+        o.UVf = ControllerHolder_1.ControllerHolder.ResourceManagerController.GetDownloadedQuestListBeforeLogin(r);
+      }
     } else {
       o.l31 = 1;
-      o.lUm = Protocol_1.Aki.Protocol.fUm.Proto_BStateAll;
+      o.TDm = Protocol_1.Aki.Protocol.ADm.Proto_BStateAll;
     }
     let n = false;
     let t = false;
@@ -798,11 +815,11 @@ class LoginController extends UiControllerBase_1.UiControllerBase {
     }
     o.h7n.l7n = n;
     o.h7n._7n = t;
-    var r = this.BMi();
+    var i = this.BMi();
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("Login", 27, "设备信息", ["tdm", r]);
+      Log_1.Log.Info("Login", 27, "设备信息", ["tdm", i]);
     }
-    o.h7n.u7n = r;
+    o.h7n.u7n = i;
     if (LoginController.bMi()) {
       this.vMi();
       o.c7n = Protocol_1.Aki.Protocol.c7n.create();
@@ -810,28 +827,28 @@ class LoginController extends UiControllerBase_1.UiControllerBase {
       o.c7n.d7n = ModelManager_1.ModelManager.LoginModel.PublicMiscVersion;
       o.c7n.C7n = ModelManager_1.ModelManager.LoginModel.PublicUniverseEditorVersion;
     }
-    let i = "";
     let a = "";
     let _ = "";
-    let g = 0;
-    if (PlatformSdkManagerNew_1.PlatformSdkManagerNew.IsSdkOn && (i = PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk().GetUserId(), (r = await PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk().GetSdkOnlineId([i])) && (a = r.get(i) ?? ""), r = await PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk().GetSdkAccountId([i]), (_ = r ? r.get(i) ?? "" : _) !== "" && (r = await PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk().GetCommunicationRestrictedAsync(_), g = r === 1 ? 1 : 0), ModelManager_1.ModelManager.PlayerInfoModel.InitThirdPartyId(i, a, _), Log_1.Log.CheckInfo())) {
-      Log_1.Log.Info("Login", 27, "登录PSN信息", ["psnUserId", i], ["psnOnlineId", a], ["psnAccountId", _]);
+    let g = "";
+    let l = 0;
+    if (PlatformSdkManagerNew_1.PlatformSdkManagerNew.IsSdkOn && (a = PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk().GetUserId(), (r = await PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk().GetSdkOnlineId([a])) && (_ = r.get(a) ?? ""), i = await PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk().GetSdkAccountId([a]), (g = i ? i.get(a) ?? "" : g) !== "" && (r = await PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk().GetCommunicationRestrictedAsync(g), l = r === 1 ? 1 : 0), ModelManager_1.ModelManager.PlayerInfoModel.InitThirdPartyId(a, _, g), Log_1.Log.CheckInfo())) {
+      Log_1.Log.Info("Login", 27, "登录PSN信息", ["psnUserId", a], ["psnOnlineId", _], ["psnAccountId", g]);
     }
-    o.Jxa = i;
-    o.Qxa = a;
-    o.ywa = _;
-    o.$4l = g;
+    o.Jxa = a;
+    o.Qxa = _;
+    o.ywa = g;
+    o.$4l = l;
     o.z3a = BaseConfigController_1.BaseConfigController.GetPackageClientFightConfig();
     o.L5u = UE.KuroStaticLibrary.IsLowMemoryDevice();
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Login", 16, "LoginProcedure-LoginRequest-请求登录", ["account", o.X9n], ["token", o.$9n], ["AppVersion", o.Y9n], ["LauncherVersion", o.J9n], ["ResourceVersion", o.z9n], ["ClientBasicInfo", o.Z9n], ["ConfigMd5", NetDefine_1.CONFIG_MD5_VALUE], ["ConfigVersion", NetDefine_1.CONFIG_VERSION], ["ProtoMd5", NetDefine_1.PROTO_MD5_VALUE], ["ProtoSeedMd5", NetDefine_1.PROTO_SEED_MD5_VALUE], ["ProtoVersion", NetDefine_1.PROTO_VERSION], ["pQ_", o.pQ_], ["IsLowMemoryPlatform", o.L5u], ["LoginTraceId", ModelManager_1.ModelManager.LoginModel.LoginTraceId]);
     }
-    r = await LoginController.qMi(o);
-    if (r?.Cvs === Protocol_1.Aki.Protocol.Q4n.Proto_ServerFullLoadGate) {
+    i = await LoginController.qMi(o);
+    if (i?.Cvs === Protocol_1.Aki.Protocol.Q4n.Proto_ServerFullLoadGate) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Login", 16, "LoginProcedure-LoginRequest-ServerFullLoadGate");
       }
-      if (await LoginController.GMi(r.K9n, r.Q9n, r.Oxs)) {
+      if (await LoginController.GMi(i.K9n, i.Q9n, i.Oxs)) {
         return LoginController.wMi(e);
       } else {
         ModelManager_1.ModelManager.LoginModel.SetLoginStatus(LoginDefine_1.ELoginStatus.Init);
@@ -1123,6 +1140,7 @@ class LoginController extends UiControllerBase_1.UiControllerBase {
           o(false);
         }
       });
+      LoginUdpDelay_1.LoginUdpDelay.Start();
     } else {
       o(false);
     }
@@ -1406,7 +1424,7 @@ class LoginController extends UiControllerBase_1.UiControllerBase {
       UiManager_1.UiManager.CloseView("LoginView");
     }
   }
-  static iKf() {
+  static Jag() {
     if (CloudGameManager_1.CloudGameManager.IsCloudGame) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("CloudGame", 58, "云游戏设置LoginTraceId", ["trace", CloudGameManager_1.CloudGameManager.CloudGameTraceId]);
@@ -1436,6 +1454,13 @@ class LoginController extends UiControllerBase_1.UiControllerBase {
     n.s_driver_date = ModelManager_1.ModelManager.LoginModel.DriverDate();
     if (HotPatchKuroSdk_1.HotPatchKuroSdk.CanUseSdk()) {
       n.s_device_id = UE.KuroSDKManager.GetBasicInfo().DeviceId;
+    }
+    if (Platform_1.Platform.IsAndroidPlatform() && UE.KuroStaticAndroidLibrary.IsHarmonyOS()) {
+      n.s_os = "HarmonyOS";
+      n.s_os_version = UE.KuroStaticAndroidLibrary.GetHarmonyOSVersion();
+    } else {
+      n.s_os = cpp_1.KuroApplication.IniPlatformName();
+      n.s_os_version = UE.KuroStaticLibrary.GetOSVersion();
     }
     n.s_command_line = cpp_1.KuroApplication.GetCommandLine();
     LogReportController_1.LogReportController.LogReport(n);
@@ -1878,7 +1903,7 @@ LoginController.GetHttpAsync = async (e = false, o = true) => {
   Heartbeat_1.Heartbeat.StopHeartBeat(HeartbeatDefine_1.EStopHeartbeat.BeforeGetToken);
   ModelManager_1.ModelManager.LoginModel.SetLoginStatus(LoginDefine_1.ELoginStatus.LoginHttp);
   if (o) {
-    _a.iKf();
+    _a.Jag();
   }
   let r = "";
   try {
@@ -1952,6 +1977,7 @@ LoginController.OnSdkLogin = e => {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Login", 16, "LoginProcedure-OnSdkLogin-SDK登录成功");
     }
+    HotFixManager_1.HotFixManager.SaveHotFixSdkLoginState(true);
     LoginController.wfa();
     ControllerHolder_1.ControllerHolder.LoginServerController.TryGetServerPlayerInfo();
   } else {

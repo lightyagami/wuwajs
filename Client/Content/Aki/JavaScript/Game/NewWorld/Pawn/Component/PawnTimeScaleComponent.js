@@ -187,7 +187,7 @@ let PawnTimeScaleComponent = PawnTimeScaleComponent_1 = class PawnTimeScaleCompo
   }
   OnStart() {
     this.ActorComp = this.Entity.GetComponent(1);
-    this.Xln = this.Entity.GetComponent(64);
+    this.Xln = this.Entity.GetComponent(66);
     var e = this.ActorComp.CreatureData.GetEntityPropertyConfig();
     this.Vhn = e.子弹受击顿帧时长比例 / 100;
     return true;
@@ -368,5 +368,5 @@ let PawnTimeScaleComponent = PawnTimeScaleComponent_1 = class PawnTimeScaleCompo
     return e;
   }
 };
-PawnTimeScaleComponent = PawnTimeScaleComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(131)], PawnTimeScaleComponent);
+PawnTimeScaleComponent = PawnTimeScaleComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(133)], PawnTimeScaleComponent);
 exports.PawnTimeScaleComponent = PawnTimeScaleComponent; //# sourceMappingURL=PawnTimeScaleComponent.js.map

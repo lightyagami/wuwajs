@@ -37,7 +37,7 @@ class LevelEventWaitSceneRefEntityPlaySequence extends LevelGeneralBase_1.LevelE
   }
   KJc(e, t) {
     var n = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e);
-    return !n?.Entity?.Valid || !this.fEm || ((n = n.Entity.GetComponent(172)) ? n.IsPlayToMarkFinished(t) : (Log_1.Log.CheckError() && Log_1.Log.Error("GeneralLogicTree", 18, "LevelEventWaitSceneRefEntityPlaySequence:找不到实体身上的SceneItemReferenceComponent组件", ["pbDataId", e]), true));
+    return !n?.Entity?.Valid || !this.fEm || ((n = n.Entity.GetComponent(174)) ? n.IsPlayToMarkFinished(t) : (Log_1.Log.CheckError() && Log_1.Log.Error("GeneralLogicTree", 18, "LevelEventWaitSceneRefEntityPlaySequence:找不到实体身上的SceneItemReferenceComponent组件", ["pbDataId", e]), true));
   }
 }
 exports.LevelEventWaitSceneRefEntityPlaySequence = LevelEventWaitSceneRefEntityPlaySequence;

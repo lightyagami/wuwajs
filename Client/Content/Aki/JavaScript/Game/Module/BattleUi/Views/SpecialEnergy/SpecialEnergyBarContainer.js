@@ -18,22 +18,22 @@ class SpecialEnergyBarContainer extends BattleVisibleChildView_1.BattleVisibleCh
     this.E0 = 0;
     this.Edt = undefined;
     this.Sdt = new Map();
-    this.kLf = new MotorcycleSpecialEnergyBar_1.MotorcycleSpecialEnergyBar();
+    this.QBf = new MotorcycleSpecialEnergyBar_1.MotorcycleSpecialEnergyBar();
     this.kpe = () => {
       this.ydt();
       this.Idt();
     };
-    this.qLf = () => {
+    this.KBf = () => {
       this.Idt();
     };
   }
   Initialize(e) {
     super.Initialize(e);
-    this.InitChildType(41);
+    this.InitChildType(43);
     this.Mdt = e;
     this.E0 = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Id ?? 0;
     this.ydt();
-    this.kLf.Init(this.RootItem, this.qLf);
+    this.QBf.Init(this.RootItem, this.KBf);
     this.Idt();
     this.Ore();
   }
@@ -42,7 +42,7 @@ class SpecialEnergyBarContainer extends BattleVisibleChildView_1.BattleVisibleCh
     for (const e of this.Sdt.values()) {
       e.Destroy();
     }
-    this.kLf.Destroy();
+    this.QBf.Destroy();
   }
   Reset() {
     this.kre();
@@ -52,7 +52,7 @@ class SpecialEnergyBarContainer extends BattleVisibleChildView_1.BattleVisibleCh
     for (const i of this.Sdt.values()) {
       i.Tick(e);
     }
-    this.kLf?.Tick(e);
+    this.QBf?.Tick(e);
   }
   OnChangeRole(e) {
     var i;
@@ -77,11 +77,11 @@ class SpecialEnergyBarContainer extends BattleVisibleChildView_1.BattleVisibleCh
   }
   Ore() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiAllRoleDataChanged, this.kpe);
-    this.kLf.AddEvents();
+    this.QBf.AddEvents();
   }
   kre() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiAllRoleDataChanged, this.kpe);
-    this.kLf.RemoveEvents();
+    this.QBf.RemoveEvents();
   }
   ydt() {
     for (const i of ModelManager_1.ModelManager.SceneTeamModel.GetTeamItems(true)) {
@@ -105,7 +105,7 @@ class SpecialEnergyBarContainer extends BattleVisibleChildView_1.BattleVisibleCh
   }
   Idt() {
     for (var [e, i] of this.Sdt) {
-      if (e !== this.E0 || this.kLf.IsEnable()) {
+      if (e !== this.E0 || this.QBf.IsEnable()) {
         i.SetVisible(false);
       } else {
         i.SetVisible(true);

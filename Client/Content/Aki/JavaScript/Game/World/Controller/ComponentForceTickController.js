@@ -11,9 +11,9 @@ const RegisterComponent_1 = require("../../../Core/Entity/RegisterComponent");
 const ControllerBase_1 = require("../../../Core/Framework/ControllerBase");
 class ComponentForceTickController extends ControllerBase_1.ControllerBase {
   static OnInit() {
-    this.S0r = [148, 338];
-    this.y0r = [54, 71, 148, 114, 165, 167, 158, 156, 160, 168, 228];
-    this.I0r = [67, 71, 167];
+    this.S0r = [150, 340];
+    this.y0r = [56, 73, 150, 116, 167, 169, 160, 158, 162, 170, 230];
+    this.I0r = [69, 73, 169];
     return true;
   }
   static RegisterPreMoveTick(o, r) {

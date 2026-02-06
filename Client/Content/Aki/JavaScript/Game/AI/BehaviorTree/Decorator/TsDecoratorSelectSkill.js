@@ -35,7 +35,7 @@ class TsDecoratorSelectSkill extends UE.BTDecorator_BlueprintBase {
     if (s) {
       this.InitTsVariables();
       if (s.AiSkill) {
-        return !!(t = s.CharAiDesignComp.Entity.GetComponent(41)).Valid && ((e = s.AiHateList.GetCurrentTarget())?.Valid ? AiLibrary_1.AiLibrary.SelectSkillWithTarget(s, t, e.Entity.GetComponent(3), this.TsSkillType, this.TsDebugLog) : AiLibrary_1.AiLibrary.SelectSkillWithoutTarget(s, t, this.TsSkillType));
+        return !!(t = s.CharAiDesignComp.Entity.GetComponent(43)).Valid && ((e = s.AiHateList.GetCurrentTarget())?.Valid ? AiLibrary_1.AiLibrary.SelectSkillWithTarget(s, t, e.Entity.GetComponent(3), this.TsSkillType, this.TsDebugLog) : AiLibrary_1.AiLibrary.SelectSkillWithoutTarget(s, t, this.TsSkillType));
       } else {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("BehaviorTree", 6, "没有配置技能", ["AiBaseId", s.AiBase.Id]);

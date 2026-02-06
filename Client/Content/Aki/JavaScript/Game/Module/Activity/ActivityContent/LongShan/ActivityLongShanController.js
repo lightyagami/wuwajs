@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.ActivityLongShanController = undefined;
 const LongShanActivityConfigByActivityId_1 = require("../../../../../Core/Define/ConfigQuery/LongShanActivityConfigByActivityId");
 const LongShanStageById_1 = require("../../../../../Core/Define/ConfigQuery/LongShanStageById");
+const LongShanUiConfigById_1 = require("../../../../../Core/Define/ConfigQuery/LongShanUiConfigById");
 const Protocol_1 = require("../../../../../Core/Define/Net/Protocol");
 const Net_1 = require("../../../../../Core/Net/Net");
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
@@ -25,27 +26,27 @@ class ActivityLongShanController extends ActivityControllerBase_1.ActivityContro
   constructor() {
     super(...arguments);
     this.TOe = e => {
-      for (const t of ActivityLongShanController.wja()) {
-        t.UpdateStage(e.gMs);
+      for (const i of ActivityLongShanController.wja()) {
+        i.UpdateStage(e.gMs);
       }
     };
   }
   OnGetIsOpeningActivityRelativeView() {
-    for (const t of ModelManager_1.ModelManager.ActivityModel.GetActivitiesByType(Protocol_1.Aki.Protocol.uks.Proto_LongShanMainActivity)) {
-      if (!t.CheckIfInShowTime()) {
+    for (const i of ModelManager_1.ModelManager.ActivityModel.GetActivitiesByType(Protocol_1.Aki.Protocol.uks.Proto_LongShanMainActivity)) {
+      if (!i.CheckIfInShowTime()) {
         let e = [];
-        switch (LongShanActivityConfigByActivityId_1.configLongShanActivityConfigByActivityId.GetConfig(t.Id)?.Type) {
+        switch (LongShanActivityConfigByActivityId_1.configLongShanActivityConfigByActivityId.GetConfig(i.Id)?.Type) {
           case 2:
             e = ["RoleGrowingMainView", "RoleGrowingTaskView"];
             break;
           case 3:
             e = ["SevenHillsMainView", "SevenHillsStageTaskView"];
             break;
-          case 4:
+          default:
             e = ["Theme26MainView", "Theme26StageTaskView"];
         }
-        for (const i of e) {
-          if (UiManager_1.UiManager.IsViewOpen(i)) {
+        for (const t of e) {
+          if (UiManager_1.UiManager.IsViewOpen(t)) {
             return true;
           }
         }
@@ -65,7 +66,7 @@ class ActivityLongShanController extends ActivityControllerBase_1.ActivityContro
       case 4:
         return "UiItem_ActivityThemeGuide26";
       default:
-        return "UiItem_LongshanMain";
+        return ActivityLongShanController.GetActivityUiConfig(e.Id).SubViewId;
     }
   }
   OnCreateSubPageComponent(e) {
@@ -79,7 +80,7 @@ class ActivityLongShanController extends ActivityControllerBase_1.ActivityContro
       case 4:
         return new ActivitySubViewTheme26_1.ActivitySubViewTheme26();
       default:
-        return new ActivitySubViewLongShan_1.ActivitySubViewLongShan();
+        return new ActivitySubViewTheme26_1.ActivitySubViewTheme26();
     }
   }
   OnCreateActivityData(e) {
@@ -93,8 +94,8 @@ class ActivityLongShanController extends ActivityControllerBase_1.ActivityContro
       case 3:
         UiManager_1.UiManager.OpenView("ActivityUnlockTipSevenHillsView");
         break;
-      case 4:
-        UiManager_1.UiManager.OpenView("Theme26UnlockTipView");
+      default:
+        UiManager_1.UiManager.OpenView("Theme26UnlockTipView", e);
     }
   }
   OnInit() {
@@ -102,10 +103,10 @@ class ActivityLongShanController extends ActivityControllerBase_1.ActivityContro
     return true;
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(24924, this.TOe);
+    Net_1.Net.Register(21337, this.TOe);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(24924);
+    Net_1.Net.UnRegister(21337);
   }
   OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnCommonItemCountAnyChange, ActivityLongShanController.qdi);
@@ -116,43 +117,47 @@ class ActivityLongShanController extends ActivityControllerBase_1.ActivityContro
   static wja() {
     return ModelManager_1.ModelManager.ActivityModel.GetCurrentActivitiesByType(Protocol_1.Aki.Protocol.uks.Proto_LongShanMainActivity);
   }
+  static GetActivityUiConfig(e) {
+    e = LongShanActivityConfigByActivityId_1.configLongShanActivityConfigByActivityId.GetConfig(e);
+    return LongShanUiConfigById_1.configLongShanUiConfigById.GetConfig(e.Type);
+  }
   static ShowUnlockTip(e) {
     e = LongShanStageById_1.configLongShanStageById.GetConfig(e);
     e = LevelGeneralCommons_1.LevelGeneralCommons.GetConditionGroupHintText(e.OpenConditionId);
     ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByItsType(9, new LguiUtil_1.TableTextArgNew(e));
   }
-  static TakeTaskReward(t) {
+  static TakeTaskReward(i) {
     var e;
-    if (!this.DOe.includes(t)) {
-      this.DOe.push(t);
-      (e = Protocol_1.Aki.Protocol.Igs.create()).B6n = [t];
-      Net_1.Net.Call(15545, e, e => {
+    if (!this.DOe.includes(i)) {
+      this.DOe.push(i);
+      (e = Protocol_1.Aki.Protocol.Igs.create()).B6n = [i];
+      Net_1.Net.Call(24741, e, e => {
         if (e) {
-          this.DOe.splice(this.DOe.indexOf(t), 1);
+          this.DOe.splice(this.DOe.indexOf(i), 1);
         }
       });
     }
   }
-  static RequestScoreReward(t, e) {
-    var i = Protocol_1.Aki.Protocol.rK1.create();
-    i.w6n = t;
-    i.BVn = e;
-    Net_1.Net.Call(17282, i, e => {
+  static RequestScoreReward(i, e) {
+    var t = Protocol_1.Aki.Protocol.rK1.create();
+    t.w6n = i;
+    t.BVn = e;
+    Net_1.Net.Call(26047, t, e => {
       if (e) {
         if (e.fMs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.fMs, 26276);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.fMs, 22197);
         } else {
-          ModelManager_1.ModelManager.ActivityModel.GetActivityById(t).UpdateScoreRewardStatus(e.nK1);
+          ModelManager_1.ModelManager.ActivityModel.GetActivityById(i).UpdateScoreRewardStatus(e.nK1);
         }
       }
     });
   }
 }
 (exports.ActivityLongShanController = ActivityLongShanController).DOe = [];
-ActivityLongShanController.qdi = (e, t) => {
-  var i = ActivityLongShanController.wja();
-  if (i.length !== 0) {
-    for (const n of i) {
+ActivityLongShanController.qdi = (e, i) => {
+  var t = ActivityLongShanController.wja();
+  if (t.length !== 0) {
+    for (const n of t) {
       if (n.ScoreItemId === e) {
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, n.Id);
       }

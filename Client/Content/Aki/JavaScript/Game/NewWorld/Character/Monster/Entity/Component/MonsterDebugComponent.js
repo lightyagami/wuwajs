@@ -39,22 +39,22 @@ let MonsterDebugComponent = class MonsterDebugComponent extends EntityComponent_
   constructor() {
     super(...arguments);
     this.HFt = 0;
-    this.PAf = false;
-    this.AAf = false;
+    this.hqf = false;
+    this.lqf = false;
     this.j3 = undefined;
-    this.DAf = false;
+    this._qf = false;
     this.wK = false;
-    this.SUf = e => {
-      if (!!this.Entity.Active && ModelManager_1.ModelManager.SceneTeamModel?.GetCurrentEntity?.Entity?.Id === e && !this.PAf) {
+    this.eGf = e => {
+      if (!!this.Entity.Active && ModelManager_1.ModelManager.SceneTeamModel?.GetCurrentEntity?.Entity?.Id === e && !this.hqf) {
         if (FormationDataController_1.FormationDataController.GlobalIsInFight) {
           this.wK = true;
         }
         this.tWr();
-        this.PAf = true;
+        this.hqf = true;
       }
     };
     this.Dca = () => {
-      this.AAf = true;
+      this.lqf = true;
     };
     this.Zpe = e => {
       if (e) {
@@ -63,18 +63,18 @@ let MonsterDebugComponent = class MonsterDebugComponent extends EntityComponent_
     };
   }
   OnStart() {
-    EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.MonsterDebug, this.SUf);
+    EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.MonsterDebug, this.eGf);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharBeDamage, this.Dca);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnBattleStateChanged, this.Zpe);
     return true;
   }
   OnTick(e) {
-    if (this.PAf && !this.DAf) {
+    if (this.hqf && !this._qf) {
       this.HFt += e;
     }
   }
   OnEnd() {
-    EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.MonsterDebug, this.SUf);
+    EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.MonsterDebug, this.eGf);
     EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CharBeDamage, this.Dca);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnBattleStateChanged, this.Zpe);
     this.BCe();
@@ -85,10 +85,10 @@ let MonsterDebugComponent = class MonsterDebugComponent extends EntityComponent_
       this.BCe();
       var e = this.Entity?.GameBudgetManagedToken;
       if (this.HFt <= CHECK_TIME) {
-        this.DAf = true;
+        this._qf = true;
         CombatLog_1.CombatLog.Error("Skill", this.Entity, "怪物状态出问题了！不Tick！", ["TimeCount", this.HFt], ["DebugInfo", LogController_1.LogController.OutputDebugInfo(false)], ["location", this.Entity?.GetComponent(1)?.ActorLocationProxy], ["centerRoleLocation", GameBudgetInterfaceController_1.GameBudgetInterfaceController.CenterRole?.K2_GetActorLocation()], ["centerOffset", GameBudgetInterfaceController_1.GameBudgetInterfaceController.GetCenterOffset()], ["debugStr", e ? cpp_1.FKuroGameBudgetAllocatorInterface.GetGameBudgetDebugString(e) : undefined]);
       }
-      if (!this.AAf) {
+      if (!this.lqf) {
         CombatLog_1.CombatLog.Error("Skill", this.Entity, "怪物状态出问题了！没有伤害结算！", ["DebugInfo", LogController_1.LogController.OutputDebugInfo(false)], ["location", this.Entity?.GetComponent(1)?.ActorLocationProxy], ["centerRoleLocation", GameBudgetInterfaceController_1.GameBudgetInterfaceController.CenterRole?.K2_GetActorLocation()], ["centerOffset", GameBudgetInterfaceController_1.GameBudgetInterfaceController.GetCenterOffset()], ["debugStr", e ? cpp_1.FKuroGameBudgetAllocatorInterface.GetGameBudgetDebugString(e) : undefined]);
       }
       if (!this.wK) {
@@ -103,5 +103,5 @@ let MonsterDebugComponent = class MonsterDebugComponent extends EntityComponent_
     }
   }
 };
-MonsterDebugComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(193)], MonsterDebugComponent);
+MonsterDebugComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(195)], MonsterDebugComponent);
 exports.MonsterDebugComponent = MonsterDebugComponent; //# sourceMappingURL=MonsterDebugComponent.js.map

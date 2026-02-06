@@ -55,8 +55,8 @@ class GameAudioController extends ControllerBase_1.ControllerBase {
     this.xin(e);
     this.$Tn(e);
     this.kWe(e);
-    if (Math.abs(this.I2f - e.Z) > 10) {
-      this.I2f = e.Z;
+    if (Math.abs(this.Z4f - e.Z) > 10) {
+      this.Z4f = e.Z;
       AudioSystem_1.AudioSystem.SetRtpcValue("player_z", e.Z);
     }
   }
@@ -74,11 +74,12 @@ class GameAudioController extends ControllerBase_1.ControllerBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnAggroAdd, this.zwa);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnAggroRemoved, this.Jwa);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PlotNetworkEnd, this.hWe);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CharOnRoleDead, this.pr1);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnLevelPlayStateNotify, this.Fpi);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnEnterLevelPlayNotify, this.Hpi);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnLeaveLevelPlayNotify, this.jpi);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TeleportStart, this.OnTeleportStart);
-    Net_1.Net.Register(27022, GameAudioController.UUn);
+    Net_1.Net.Register(25184, GameAudioController.UUn);
     this.bQc.Init();
     this.xq1();
     return true;
@@ -104,11 +105,12 @@ class GameAudioController extends ControllerBase_1.ControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnAggroAdd, this.zwa);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnAggroRemoved, this.Jwa);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PlotNetworkEnd, this.hWe);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CharOnRoleDead, this.pr1);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnLevelPlayStateNotify, this.Fpi);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnEnterLevelPlayNotify, this.Hpi);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnLeaveLevelPlayNotify, this.jpi);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TeleportStart, this.OnTeleportStart);
-    Net_1.Net.UnRegister(27022);
+    Net_1.Net.UnRegister(25184);
     this.bQc.Clear();
     return true;
   }
@@ -267,7 +269,7 @@ class GameAudioController extends ControllerBase_1.ControllerBase {
   }
   static GetAkComponent(e, t) {
     if (e.IsA(UE.TsBaseCharacter_C.StaticClass())) {
-      var o = e.CharacterActorComponent?.Entity?.GetComponent(52);
+      var o = e.CharacterActorComponent?.Entity?.GetComponent(54);
       if (o?.Valid) {
         return o.GetAkComponent(t);
       }
@@ -441,7 +443,7 @@ class GameAudioController extends ControllerBase_1.ControllerBase {
   static N21(e) {
     var t;
     var o = e.CreatureData.GetAttributeComponent();
-    var i = e.Entity.GetComponent(215);
+    var i = e.Entity.GetComponent(217);
     if (o.FightMusic) {
       this.B6l = o.FightMusic;
       this.k6l = o.FightMusic;
@@ -643,7 +645,7 @@ class GameAudioController extends ControllerBase_1.ControllerBase {
 exports.GameAudioController = GameAudioController;
 (_a = GameAudioController).HWe = undefined;
 GameAudioController.Nme = undefined;
-GameAudioController.I2f = 0;
+GameAudioController.Z4f = 0;
 GameAudioController.Ltl = undefined;
 GameAudioController.YTn = new EnvironmentCache();
 GameAudioController.VWe = new Map();
@@ -735,7 +737,7 @@ GameAudioController.jUc = (e, t) => {
 };
 GameAudioController.Dq1 = new Map();
 GameAudioController._7_ = (e, t, o) => {
-  var i = e.GetComponent(306);
+  var i = e.GetComponent(308);
   var a = e.EntityData?.GetActor();
   if (a && i) {
     t = i.GetMorphData(t)?.ModelId;
@@ -758,6 +760,11 @@ GameAudioController.zwa = e => {
 GameAudioController.Jwa = e => {
   for (const t of e) {
     _a.cWe(t);
+  }
+};
+GameAudioController.pr1 = e => {
+  if (_a.oWe.has(e)) {
+    _a.cWe(e);
   }
 };
 GameAudioController.lWe = e => {

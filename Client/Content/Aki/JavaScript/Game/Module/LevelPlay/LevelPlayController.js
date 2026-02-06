@@ -49,23 +49,23 @@ const assistantMap = {
 class LevelPlayController extends ControllerWithAssistantBase_1.ControllerWithAssistantBase {
   static OnRegisterNetEvent() {
     super.OnRegisterNetEvent();
-    Net_1.Net.Register(28760, LevelPlayController.Opi);
-    Net_1.Net.Register(16396, LevelPlayController.kpi);
-    Net_1.Net.Register(29347, LevelPlayController.Fpi);
-    Net_1.Net.Register(22425, LevelPlayController.Vpi);
-    Net_1.Net.Register(21496, LevelPlayController.Hpi);
-    Net_1.Net.Register(27813, LevelPlayController.jpi);
-    Net_1.Net.Register(29366, LevelPlayController.oja);
+    Net_1.Net.Register(21380, LevelPlayController.Opi);
+    Net_1.Net.Register(25318, LevelPlayController.kpi);
+    Net_1.Net.Register(20288, LevelPlayController.Fpi);
+    Net_1.Net.Register(25315, LevelPlayController.Vpi);
+    Net_1.Net.Register(16414, LevelPlayController.Hpi);
+    Net_1.Net.Register(26188, LevelPlayController.jpi);
+    Net_1.Net.Register(28296, LevelPlayController.oja);
   }
   static OnUnRegisterNetEvent() {
     super.OnRegisterNetEvent();
-    Net_1.Net.UnRegister(28760);
-    Net_1.Net.UnRegister(16396);
-    Net_1.Net.UnRegister(29347);
-    Net_1.Net.UnRegister(22425);
-    Net_1.Net.UnRegister(21496);
-    Net_1.Net.UnRegister(27813);
-    Net_1.Net.UnRegister(29366);
+    Net_1.Net.UnRegister(21380);
+    Net_1.Net.UnRegister(25318);
+    Net_1.Net.UnRegister(20288);
+    Net_1.Net.UnRegister(25315);
+    Net_1.Net.UnRegister(16414);
+    Net_1.Net.UnRegister(26188);
+    Net_1.Net.UnRegister(28296);
   }
   static OnAddEvents() {
     super.OnAddEvents();
@@ -94,44 +94,95 @@ class LevelPlayController extends ControllerWithAssistantBase_1.ControllerWithAs
     return super.OnInit();
   }
   static Wpi() {
-    const l = GeneralLogicTreeUtil_1.GeneralLogicTreeUtil.GetPlayerLocation();
-    if (l) {
-      var e = ModelManager_1.ModelManager.LevelPlayModel;
-      var r = e.GetProcessingLevelPlayInfos();
-      if (r.size === 0) {
-        e.SetTrackLevelPlayId(LevelPlayDefine_1.INVALID_LEVELPLAYID);
+    const o = GeneralLogicTreeUtil_1.GeneralLogicTreeUtil.GetPlayerLocation();
+    if (o) {
+      const a = ModelManager_1.ModelManager.LevelPlayModel;
+      var e = a.GetProcessingLevelPlayInfos();
+      if (e.size === 0) {
+        a.SetTrackLevelPlayId(LevelPlayDefine_1.INVALID_LEVELPLAYID);
       } else {
-        let t = e.GetTrackLevelPlayInfo();
-        if (!!t && (!t.CanTrack || !(t.UpdateDistanceSquared(l), t.IsInTrackRange()))) {
+        let t = a.GetTrackLevelPlayInfo();
+        if (t && (t = t.CanTrack && (t.UpdateDistanceSquared(o), t.IsInTrackRange()) ? t : undefined)?.Tree?.GetBlackBoard()?.IsTrackBoundToParent) {
           t = undefined;
         }
-        const o = e.GetTrackLevelPlayId();
-        r.forEach((e, r) => {
-          if (r !== o && e.CanTrack) {
-            if (t) {
-              if (!(e.TrackPriority < t.TrackPriority)) {
-                if (e.TrackPriority > t.TrackPriority) {
-                  e.UpdateDistanceSquared(l);
-                  if (e.IsInTrackRange()) {
-                    t = e;
-                  }
-                } else {
-                  e.UpdateDistanceSquared(l);
-                  if (e.IsInTrackRange() && e.CacheDistanceSquared < t.CacheDistanceSquared) {
-                    t = e;
+        const n = a.GetTrackLevelPlayId();
+        e.forEach((e, r) => {
+          if (r !== n && e.CanTrack) {
+            for (var [, l] of a.EverBoundLevelPlayIds ?? []) {
+              if (l?.has(r)) {
+                return;
+              }
+            }
+            if (!e?.Tree?.GetBlackBoard()?.IsTrackBoundToParent) {
+              if (e?.IsOnlyTrackWhenQuestBind) {
+                e.UpdateDistanceSquared(o);
+              } else if (t) {
+                if (!(e.TrackPriority < t.TrackPriority)) {
+                  if (e.TrackPriority > t.TrackPriority) {
+                    e.UpdateDistanceSquared(o);
+                    if (e.IsInTrackRange()) {
+                      t = e;
+                    }
+                  } else {
+                    e.UpdateDistanceSquared(o);
+                    if (e.IsInTrackRange() && e.CacheDistanceSquared < t.CacheDistanceSquared) {
+                      t = e;
+                    }
                   }
                 }
-              }
-            } else {
-              e.UpdateDistanceSquared(l);
-              if (e.IsInTrackRange()) {
-                t = e;
+              } else {
+                e.UpdateDistanceSquared(o);
+                if (e.IsInTrackRange()) {
+                  t = e;
+                }
               }
             }
           }
         });
-        r = t?.Id ?? LevelPlayDefine_1.INVALID_LEVELPLAYID;
-        e.SetTrackLevelPlayId(r);
+        e = t?.Id ?? LevelPlayDefine_1.INVALID_LEVELPLAYID;
+        a.SetTrackLevelPlayId(e);
+      }
+    }
+  }
+  static GFg() {
+    const t = GeneralLogicTreeUtil_1.GeneralLogicTreeUtil.GetPlayerLocation();
+    if (t) {
+      var e = ModelManager_1.ModelManager.LevelPlayModel;
+      var r = e.GetProcessingLevelPlayInfos();
+      if (r.size === 0) {
+        e.SetTrackBoundLevelPlayId(LevelPlayDefine_1.INVALID_LEVELPLAYID);
+      } else {
+        let l = e.GetTrackBoundLevelPlayInfo();
+        if (!!l && !(l = l.CanTrack && (l.UpdateDistanceSquared(t), l.IsInTrackRange()) ? l : undefined)?.Tree?.GetBlackBoard()?.IsTrackBoundToParent) {
+          l = undefined;
+        }
+        const o = e.GetTrackBoundLevelPlayId();
+        r.forEach((e, r) => {
+          if (r !== o && e.CanTrack && e?.Tree?.GetBlackBoard()?.IsTrackBoundToParent) {
+            if (l) {
+              if (!(e.TrackPriority < l.TrackPriority)) {
+                if (e.TrackPriority > l.TrackPriority) {
+                  e.UpdateDistanceSquared(t);
+                  if (e.IsInTrackRange()) {
+                    l = e;
+                  }
+                } else {
+                  e.UpdateDistanceSquared(t);
+                  if (e.IsInTrackRange() && e.CacheDistanceSquared < l.CacheDistanceSquared) {
+                    l = e;
+                  }
+                }
+              }
+            } else {
+              e.UpdateDistanceSquared(t);
+              if (e.IsInTrackRange()) {
+                l = e;
+              }
+            }
+          }
+        });
+        r = l?.Id ?? LevelPlayDefine_1.INVALID_LEVELPLAYID;
+        e.SetTrackBoundLevelPlayId(r);
       }
     }
   }
@@ -144,9 +195,9 @@ class LevelPlayController extends ControllerWithAssistantBase_1.ControllerWithAs
       });
     }
   }
-  static ReceiveReward(t, l) {
+  static ReceiveReward(l, t) {
     if (!ModelManager_1.ModelManager.LevelPlayModel.IsInReceiveReward) {
-      const M = ModelManager_1.ModelManager.CreatureModel.GetEntity(t);
+      const M = ModelManager_1.ModelManager.CreatureModel.GetEntity(l);
       if (M) {
         var o = M.Entity.GetComponent(0);
         var a = o.GetPbDataId();
@@ -157,14 +208,14 @@ class LevelPlayController extends ControllerWithAssistantBase_1.ControllerWithAs
             const C = a.Cost.get(5);
             let e = !(ModelManager_1.ModelManager.LevelPlayModel.IsInReceiveReward = true);
             let r = undefined;
-            if (l > 0) {
-              const y = ModelManager_1.ModelManager.LevelPlayModel.GetLevelPlayInfo(l);
+            if (t > 0) {
+              const y = ModelManager_1.ModelManager.LevelPlayModel.GetLevelPlayInfo(t);
               if (y && y.LevelPlayType === "SilentArea" && (r = ActivityDoubleRewardController_1.ActivityDoubleRewardController.GetDungeonUpActivity([3], false)) && r.LeftUpCount > 0) {
                 e = true;
               }
             }
-            var [l, n, i, _, s] = ModelManager_1.ModelManager.ActivityRegressModel.GetLevelPlayDoubleDropTuple(l);
-            var v = a.SharedId > 0;
+            var [t, n, i, _, v] = ModelManager_1.ModelManager.ActivityRegressModel.GetLevelPlayDoubleDropTuple(t);
+            var s = a.SharedId > 0;
             if (a.SharedId === LevelPlayDefine_1.WEEK_SHARE_ID) {
               var g = ModelManager_1.ModelManager.ExchangeRewardModel.GetExchangeRewardShareCount(a.SharedId);
               if (ConfigManager_1.ConfigManager.ExchangeRewardConfig.GetShareMaxCount(a.SharedId) <= g) {
@@ -173,11 +224,11 @@ class LevelPlayController extends ControllerWithAssistantBase_1.ControllerWithAs
                 return;
               }
             }
-            if (!l && !v && ModelManager_1.ModelManager.FunctionModel.IsOpen(10071) && CommonParamById_1.configCommonParamById.GetIntArrayConfig("MultiExchangeLevelPlayType")?.includes(y.LevelPlayTypeNumber)) {
+            if (!t && !s && ModelManager_1.ModelManager.FunctionModel.IsOpen(10071) && CommonParamById_1.configCommonParamById.GetIntArrayConfig("MultiExchangeLevelPlayType")?.includes(y.LevelPlayTypeNumber)) {
               a = {
                 SinglePowerCost: C,
                 RewardCallBack: e => {
-                  LevelPlayController.RequestReceiveReward(t, e, y);
+                  LevelPlayController.RequestReceiveReward(l, e, y);
                 },
                 NeedResetLevelPlayModelRewardFlag: true
               };
@@ -196,12 +247,12 @@ class LevelPlayController extends ControllerWithAssistantBase_1.ControllerWithAs
                 g.SetBtnText(0, ConfigManager_1.ConfigManager.TextConfig.GetMultiTextByKey("Text_ButtonTextRetry_Text", ""));
                 g.FunctionMap.set(1, () => {
                   ModelManager_1.ModelManager.LevelPlayModel.IsInReceiveReward = false;
-                  LevelGeneralNetworks_1.LevelGeneralNetworks.RequestEntityInteractOption(t, L, e => M.Entity?.GetComponent(207)?.GetInteractController()?.HandleInteractResponse(e.Q4n, e.UIs));
+                  LevelGeneralNetworks_1.LevelGeneralNetworks.RequestEntityInteractOption(l, L, e => M.Entity?.GetComponent(209)?.GetInteractController()?.HandleInteractResponse(e.Q4n, e.UIs));
                 });
               }
               g.FunctionMap.set(2, () => {
                 if (LevelPlayController.Qpi(C)) {
-                  LevelPlayController.RequestReceiveReward(t, 1, y);
+                  LevelPlayController.RequestReceiveReward(l, 1, y);
                 }
               });
               g.DestroyFunction = () => {
@@ -210,10 +261,10 @@ class LevelPlayController extends ControllerWithAssistantBase_1.ControllerWithAs
               if (e && r) {
                 g.Tip = r.GetFullTip();
               }
-              if (l) {
-                v = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(s);
+              if (t) {
+                s = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(v);
                 a = StringUtils_1.StringUtils.FormatStaticBuilder(MultiTextLang_1.configMultiTextLang.GetLocalTextNew(_), n, i);
-                g.Tip = "" + v + a;
+                g.Tip = "" + s + a;
               }
               ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(g);
             }
@@ -228,8 +279,8 @@ class LevelPlayController extends ControllerWithAssistantBase_1.ControllerWithAs
       var r = (0, IComponent_1.getComponent)(e.ComponentsData, "InteractComponent");
       if (r && r.Options) {
         for (let e = 0; e < r.Options.length; e++) {
-          var t = r.Options[e];
-          if (t.Type.Type === "Actions" && t.Type.Actions?.[0]?.Name === "ResetLevelPlay") {
+          var l = r.Options[e];
+          if (l.Type.Type === "Actions" && l.Type.Actions?.[0]?.Name === "ResetLevelPlay") {
             return e;
           }
         }
@@ -237,19 +288,19 @@ class LevelPlayController extends ControllerWithAssistantBase_1.ControllerWithAs
     }
     return -1;
   }
-  static RequestReceiveReward(e, r, t) {
+  static RequestReceiveReward(e, r, l) {
     e = Protocol_1.Aki.Protocol.Jns.create({
       F4n: MathUtils_1.MathUtils.NumberToLong(e),
       Cal: r
     });
-    ModelManager_1.ModelManager.ActivityRegressModel.LastUnGetRewardLevelPlayId = t.Id;
-    Net_1.Net.Call(29375, e, e => {
+    ModelManager_1.ModelManager.ActivityRegressModel.LastUnGetRewardLevelPlayId = l.Id;
+    Net_1.Net.Call(20399, e, e => {
       ModelManager_1.ModelManager.ActivityRegressModel.LastUnGetRewardLevelPlayId = 0;
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
         e = ConfigManager_1.ConfigManager.ErrorCodeConfig.GetTextByErrorId(e.Q4n);
         ScrollingTipsController_1.ScrollingTipsController.ShowTipsByText(e);
       } else {
-        t.UpdateCanGetReward(false);
+        l.UpdateCanGetReward(false);
       }
     });
   }
@@ -264,48 +315,48 @@ class LevelPlayController extends ControllerWithAssistantBase_1.ControllerWithAs
     }
   }
   static async Dku(e) {
-    for (const l of await BattleNetController_1.BattleNetController.RequestBatchCaptureEntity(e)) {
-      var r = EntitySystem_1.EntitySystem.Get(l);
-      var t = r?.GetComponent(155);
-      if (r?.Valid && t) {
-        t.AfterCapture();
+    for (const t of await BattleNetController_1.BattleNetController.RequestBatchCaptureEntity(e)) {
+      var r = EntitySystem_1.EntitySystem.Get(t);
+      var l = r?.GetComponent(157);
+      if (r?.Valid && l) {
+        l.AfterCapture();
       }
     }
   }
   static Bku(e, r = 0) {
-    var t;
     var l;
+    var t;
     var o;
     var a;
     var n = [];
-    for ([t, l] of ModelManager_1.ModelManager.VisionCaptureModel.GetVisionFinish()) {
-      if (e.RangeAbsorbPbDataIds.has(t) && (a = (o = EntitySystem_1.EntitySystem.Get(l))?.GetComponent(1), o?.Valid) && a && (ModelManager_1.ModelManager.LevelPlayModel.EntityPositionRangeCheck?.GetOrAdd(e.RangeAbsorbPhantom.AutoAbsorbRangeEntity), ModelManager_1.ModelManager.LevelPlayModel.EntityPositionRangeCheck?.CheckReachedPosition(e.RangeAbsorbPhantom.AutoAbsorbRangeEntity, a.ActorLocationProxy))) {
-        n.push(l);
+    for ([l, t] of ModelManager_1.ModelManager.VisionCaptureModel.GetVisionFinish()) {
+      if (e.RangeAbsorbPbDataIds.has(l) && (a = (o = EntitySystem_1.EntitySystem.Get(t))?.GetComponent(1), o?.Valid) && a && (ModelManager_1.ModelManager.LevelPlayModel.EntityPositionRangeCheck?.GetOrAdd(e.RangeAbsorbPhantom.AutoAbsorbRangeEntity), ModelManager_1.ModelManager.LevelPlayModel.EntityPositionRangeCheck?.CheckReachedPosition(e.RangeAbsorbPhantom.AutoAbsorbRangeEntity, a.ActorLocationProxy))) {
+        n.push(t);
       }
     }
     if (!(n.length <= 0)) {
       this.Dku(n);
     }
   }
-  static uMm(e, t, l) {
-    if (l.GameplayTags.Num() > 0) {
+  static mMm(e, l, t) {
+    if (t.GameplayTags.Num() > 0) {
       e = ActorUtils_1.ActorUtils.GetEntityByActor(e);
       if (!e?.Valid || !e.Entity?.Valid) {
         return;
       }
-      var o = e.Entity.CheckGetComponent(215);
+      var o = e.Entity.CheckGetComponent(217);
       if (!o) {
         return;
       }
-      for (let e = 0, r = l.GameplayTags.Num(); e < r; ++e) {
-        var a = l.GameplayTags.Get(e);
+      for (let e = 0, r = t.GameplayTags.Num(); e < r; ++e) {
+        var a = t.GameplayTags.Get(e);
         if (!o.HasTag(a.TagId)) {
           return;
         }
       }
     }
-    for (let e = 0, r = t.GameplayTags.Num(); e < r; ++e) {
-      var n = t.GameplayTags.Get(e);
+    for (let e = 0, r = l.GameplayTags.Num(); e < r; ++e) {
+      var n = l.GameplayTags.Get(e);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.CheckClientEvent, n);
     }
   }
@@ -316,8 +367,8 @@ class LevelPlayController extends ControllerWithAssistantBase_1.ControllerWithAs
       } else {
         ModelManager_1.ModelManager.LevelPlayModel.NightmareLevelPlayInfos.set(e.Id, new LevelPlayModel_1.NightmareKillInfo(true, 0, 0, e.RangeAbsorbPhantom.IntervalKillNumber));
       }
-      for (const t of e.Children) {
-        var r = t.split("_");
+      for (const l of e.Children) {
+        var r = l.split("_");
         var r = r[r.length - 1];
         var r = MathUtils_1.MathUtils.StringToNumber(r);
         if (r) {
@@ -326,9 +377,9 @@ class LevelPlayController extends ControllerWithAssistantBase_1.ControllerWithAs
           if (r) {
             r = (0, IComponent_1.getComponent)(r.ComponentsData, "SpawnMonsterComponent");
             if (r) {
-              for (const l of r.SpawnMonsterConfigs) {
-                if (l.TargetsToAwake) {
-                  for (const o of l.TargetsToAwake) {
+              for (const t of r.SpawnMonsterConfigs) {
+                if (t.TargetsToAwake) {
+                  for (const o of t.TargetsToAwake) {
                     e.RangeAbsorbPbDataIds.add(o);
                   }
                 }
@@ -347,9 +398,9 @@ class LevelPlayController extends ControllerWithAssistantBase_1.ControllerWithAs
   static qku(e) {
     ModelManager_1.ModelManager.LevelPlayModel.NightmareLevelPlayInfos?.delete(e.Id);
   }
-  static H0n(e, r, t) {
-    var l;
-    if (t?.Valid && (l = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity)?.Valid && l === t) {
+  static H0n(e, r, l) {
+    var t;
+    if (l?.Valid && (t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity)?.Valid && t === l) {
       if (r) {
         this.kku(e);
       } else {
@@ -359,14 +410,14 @@ class LevelPlayController extends ControllerWithAssistantBase_1.ControllerWithAs
   }
   static Gku(e) {
     var r;
-    var t = e.RangeAbsorbPhantom.PlayerActiveFuncRangeEntity;
-    var t = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t);
-    if (t?.Valid && t.Entity?.Valid) {
-      if (r = t.Entity?.GetComponent(89)) {
+    var l = e.RangeAbsorbPhantom.PlayerActiveFuncRangeEntity;
+    var l = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(l);
+    if (l?.Valid && l.Entity?.Valid) {
+      if (r = l.Entity?.GetComponent(91)) {
         if (r.IsOverlappingPlayer()) {
           this.kku(e);
         } else {
-          EventSystem_1.EventSystem.AddWithTargetUseHoldKey(e, t.Entity, EventDefine_1.EEventName.OnEntityInOutRangeLocal, this.H0n.bind(this, e));
+          EventSystem_1.EventSystem.AddWithTargetUseHoldKey(e, l.Entity, EventDefine_1.EEventName.OnEntityInOutRangeLocal, this.H0n.bind(this, e));
         }
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("BehaviorTree", 72, "范围吸收声骸功能没有正确配置范围实体", ["LevelPlayId", e.Id], ["RangeAbsorbPhantom", e.RangeAbsorbPhantom]);
@@ -376,19 +427,19 @@ class LevelPlayController extends ControllerWithAssistantBase_1.ControllerWithAs
   static Fku(r) {
     if (r.LevelPlayType === "NightmareSpawnPoint") {
       if (r.RangeAbsorbPhantom) {
-        const t = r.RangeAbsorbPhantom.PlayerActiveFuncRangeEntity;
+        const l = r.RangeAbsorbPhantom.PlayerActiveFuncRangeEntity;
         var e;
-        if (ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t)?.Valid) {
+        if (ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(l)?.Valid) {
           this.Gku(r);
         } else {
           if (ModelManager_1.ModelManager.LevelPlayModel.NightmareLevelPlayWaitEntityTask?.has(r.Id)) {
             ModelManager_1.ModelManager.LevelPlayModel.NightmareLevelPlayWaitEntityTask?.get(r.Id)?.Cancel();
           }
-          e = WaitEntityTask_1.WaitEntityTask.CreateWithPbDataId("LevelPlayController.RegisterNightmareRangeEntity", t, e => {
+          e = WaitEntityTask_1.WaitEntityTask.CreateWithPbDataId("LevelPlayController.RegisterNightmareRangeEntity", l, e => {
             if (e) {
               this.Gku(r);
             } else if (Log_1.Log.CheckError()) {
-              Log_1.Log.Error("Event", 72, "Entity加载超时或已被移除", ["PbDataId", t]);
+              Log_1.Log.Error("Event", 72, "Entity加载超时或已被移除", ["PbDataId", l]);
             }
           }, WAIT_ENTITY_OVER_TIME, false);
           ModelManager_1.ModelManager.LevelPlayModel.NightmareLevelPlayWaitEntityTask?.set(r.Id, e);
@@ -404,17 +455,17 @@ class LevelPlayController extends ControllerWithAssistantBase_1.ControllerWithAs
     EventSystem_1.EventSystem.RemoveAllTargetUseKey(e);
     this.qku(e);
   }
-  static LogReportMotorcycleLevelPlay(e, r, t, l = 2, o = 1) {
+  static LogReportMotorcycleLevelPlay(e, r, l, t = 2, o = 1) {
     var a;
     var n = Global_1.Global.BaseCharacter?.CachedActorLocation;
     if (n) {
       (a = new LogReportDefine_1.ExploreEntityLogEvent()).i_config_id = e;
       a.i_type = r;
       a.interaction = o;
-      if (t !== undefined) {
-        a.i_status = t ? 2 : 1;
+      if (l !== undefined) {
+        a.i_status = l ? 2 : 1;
       }
-      a.i_result = l;
+      a.i_result = t;
       a.f_pos_x = n.X;
       a.f_pos_y = n.Y;
       a.f_pos_z = n.Z;
@@ -430,38 +481,39 @@ exports.LevelPlayController = LevelPlayController;
 (_a = LevelPlayController).OnTick = e => {
   if (ModelManager_1.ModelManager.GeneralLogicTreeModel.IsWakeUp) {
     LevelPlayController.Wpi();
+    LevelPlayController.GFg();
     LevelPlayController.cYt(0)?.Tick(e);
   }
 };
 LevelPlayController.Opi = e => {
-  for (const t of e.Dxs) {
-    var r = ModelManager_1.ModelManager.LevelPlayModel.SafeCreateLevelPlayInfo(t.s5n);
-    r.UpdateState(t.Y4n);
-    r.UpdateFirstPass(t.vDs);
-    r.UpdateRefreshTime(t.Lxs);
+  for (const l of e.Dxs) {
+    var r = ModelManager_1.ModelManager.LevelPlayModel.SafeCreateLevelPlayInfo(l.s5n);
+    r.UpdateState(l.Y4n);
+    r.UpdateFirstPass(l.vDs);
+    r.UpdateRefreshTime(l.Lxs);
     if (r.IsClose && r.MarkConfig !== undefined && r.MarkConfig.MarkId > 0) {
       LevelPlayController.Kpi(r.MarkConfig.MarkId);
     }
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("SceneGameplay", 18, "下发已开启的玩法", ["玩法id", t.s5n], ["玩法状态", LevelPlayDefine_1.levelPlayStatusLogString[t.Y4n]], ["是否首通", t.vDs], ["开启时间", t.Lxs]);
+      Log_1.Log.Info("SceneGameplay", 18, "下发已开启的玩法", ["玩法id", l.s5n], ["玩法状态", LevelPlayDefine_1.levelPlayStatusLogString[l.Y4n]], ["是否首通", l.vDs], ["开启时间", l.Lxs]);
     }
   }
 };
 LevelPlayController.kpi = e => {
   var r;
   var e = e.s5n;
-  var t = ModelManager_1.ModelManager.LevelPlayModel.GetProcessingLevelPlayInfo(e);
-  if (t) {
-    t.UpdateFirstPass(true);
-    if (t.FirstRewardId) {
+  var l = ModelManager_1.ModelManager.LevelPlayModel.GetProcessingLevelPlayInfo(e);
+  if (l) {
+    l.UpdateFirstPass(true);
+    if (l.FirstRewardId) {
       r = ConfigManager_1.ConfigManager.GenericPromptConfig.GetPromptInfo(LevelPlayDefine_1.GAMEPLAY_FIRST_PROMPT_TYPE_ID);
       ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByItsType(r.TypeId, undefined, undefined, undefined, undefined, LevelPlayDefine_1.GAMEPLAY_FIRST_PROMPT_TYPE_ID);
     }
-    if ((r = t.LevelPlayFirstPassAction) && r.length > 0) {
+    if ((r = l.LevelPlayFirstPassAction) && r.length > 0) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("SceneGameplay", 33, "开始执行玩法首通动作");
       }
-      ControllerHolder_1.ControllerHolder.LevelGeneralController.ExecuteActionsNew(r, LevelGeneralContextDefine_1.LevelPlayContext.Create(t.Id));
+      ControllerHolder_1.ControllerHolder.LevelGeneralController.ExecuteActionsNew(r, LevelGeneralContextDefine_1.LevelPlayContext.Create(l.Id));
     }
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("SceneGameplay", 18, "玩法首通信息推送", ["id", e]);
@@ -472,20 +524,20 @@ LevelPlayController.kpi = e => {
 };
 LevelPlayController.Fpi = e => {
   var r = e.s5n;
-  var t = e.Bb_;
+  var l = e.Bb_;
   EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnLevelPlayStateNotify, r, e.Y4n);
   switch (e.Y4n) {
     case 1:
     case 2:
-      var l = ModelManager_1.ModelManager.LevelPlayModel.SafeCreateLevelPlayInfo(r);
-      l.UpdateState(e.Y4n);
-      l.UpdateCompleteNumber(t);
-      ModelManager_1.ModelManager.WorldMapModel?.CheckGamePlayIsTracked(l);
+      var t = ModelManager_1.ModelManager.LevelPlayModel.SafeCreateLevelPlayInfo(r);
+      t.UpdateState(e.Y4n);
+      t.UpdateCompleteNumber(l);
+      ModelManager_1.ModelManager.WorldMapModel?.CheckGamePlayIsTracked(t);
       break;
     case 0:
-      l = ModelManager_1.ModelManager.LevelPlayModel.GetLevelPlayInfo(r);
-      if (l && (ModelManager_1.ModelManager.LevelPlayModel.LevelPlayClose(l), l.MarkConfig) && l.MarkConfig.MarkId > 0) {
-        LevelPlayController.Kpi(l.MarkConfig.MarkId);
+      t = ModelManager_1.ModelManager.LevelPlayModel.GetLevelPlayInfo(r);
+      if (t && (ModelManager_1.ModelManager.LevelPlayModel.LevelPlayClose(t), t.MarkConfig) && t.MarkConfig.MarkId > 0) {
+        LevelPlayController.Kpi(t.MarkConfig.MarkId);
       }
       break;
     case 3:
@@ -497,17 +549,17 @@ LevelPlayController.Fpi = e => {
 };
 LevelPlayController.Hpi = e => {
   var r = e.s5n;
-  let t = ModelManager_1.ModelManager.LevelPlayModel.GetProcessingLevelPlayInfo(r);
-  t = t || ModelManager_1.ModelManager.LevelPlayModel.EnterLevelPlayRange(r);
-  LevelPlayController.Fku(t);
-  t.UpdateState(e.Y4n);
-  t.UpdateCanGetReward(e.Txs);
-  e = t.LevelPlayEnterAction;
-  if (t.CanExecOpenAction && e && e.length > 0) {
+  let l = ModelManager_1.ModelManager.LevelPlayModel.GetProcessingLevelPlayInfo(r);
+  l = l || ModelManager_1.ModelManager.LevelPlayModel.EnterLevelPlayRange(r);
+  LevelPlayController.Fku(l);
+  l.UpdateState(e.Y4n);
+  l.UpdateCanGetReward(e.Txs);
+  e = l.LevelPlayEnterAction;
+  if (l.CanExecOpenAction && e && e.length > 0) {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("SceneGameplay", 33, "开始执行玩法进入动作(Finish状态下不会执行)");
     }
-    ControllerHolder_1.ControllerHolder.LevelGeneralController.ExecuteActionsNew(e, LevelGeneralContextDefine_1.LevelPlayContext.Create(t.Id));
+    ControllerHolder_1.ControllerHolder.LevelGeneralController.ExecuteActionsNew(e, LevelGeneralContextDefine_1.LevelPlayContext.Create(l.Id));
   }
   if (Log_1.Log.CheckInfo()) {
     Log_1.Log.Info("SceneGameplay", 18, "玩法进入", ["id", r]);
@@ -528,14 +580,14 @@ LevelPlayController.jpi = e => {
 };
 LevelPlayController.oja = e => {
   var r;
-  var t = e.s5n;
+  var l = e.s5n;
   var e = MathUtils_1.MathUtils.LongToNumber(e.ZLs);
   var e = Math.floor(e - TimeUtil_1.TimeUtil.GetServerTime());
   if (!(e <= 0)) {
     r = MultiTextLang_1.configMultiTextLang.GetLocalTextNew("Levelplay_reflesh");
     ScrollingTipsController_1.ScrollingTipsController.ShowTipsByText(StringUtils_1.StringUtils.Format(r, e.toString()));
     if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("SceneGameplay", 65, "多人联机获奖提示", ["id", t], ["countdown", e]);
+      Log_1.Log.Debug("SceneGameplay", 65, "多人联机获奖提示", ["id", l], ["countdown", e]);
     }
   }
 };
@@ -546,10 +598,10 @@ LevelPlayController.Vpi = e => {
     Log_1.Log.Debug("SceneGameplay", 18, "玩法开启时间更新", ["id", r], ["OpenTime", e.pDs]);
   }
 };
-LevelPlayController.M6c = (e, r, t) => {
-  var l = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
-  if (l?.Valid) {
-    if (l.Entity === e) {
+LevelPlayController.M6c = (e, r, l) => {
+  var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
+  if (t?.Valid) {
+    if (t.Entity === e) {
       LevelPlayController.E6c();
     }
   } else if (Log_1.Log.CheckInfo()) {
@@ -559,11 +611,11 @@ LevelPlayController.M6c = (e, r, t) => {
 LevelPlayController.dLe = () => {
   LevelPlayController.E6c();
 };
-LevelPlayController.V1m = (e, r, t, l) => {
-  _a.uMm(r, t, l);
+LevelPlayController.V1m = (e, r, l, t) => {
+  _a.mMm(r, l, t);
 };
-LevelPlayController.j1m = (e, r, t, l, o, a) => {
-  _a.uMm(r, o, a);
+LevelPlayController.j1m = (e, r, l, t, o, a) => {
+  _a.mMm(r, o, a);
 };
 LevelPlayController.nye = () => {
   var e = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetSubsystem(Global_1.Global.BaseCharacter, UE.KuroLevelPlaySubsystem.StaticClass());
@@ -576,17 +628,17 @@ LevelPlayController.nye = () => {
 };
 LevelPlayController.Uku = e => {
   var r;
-  var t;
   var l;
+  var t;
   var o = ModelManager_1.ModelManager.CreatureModel.GetCreaturePbDataId(e);
-  for ([r, t] of ModelManager_1.ModelManager.LevelPlayModel.NightmareLevelPlayInfos) {
-    if (t.Enable && (l = ModelManager_1.ModelManager.LevelPlayModel.GetLevelPlayInfo(r)) && l.RangeAbsorbPbDataIds?.has(o) && (t.CurrentKillCount++, t.CurrentKillCount >= t.IntervalKillNumber[t.CurrentIntervalIndex % t.IntervalKillNumber.length])) {
-      t.CurrentKillCount = 0;
-      t.CurrentIntervalIndex = (t.CurrentIntervalIndex + 1) % t.IntervalKillNumber.length;
-      if (l.RangeAbsorbPhantom?.DelayTime) {
-        TimerSystem_1.TimerSystem.Delay(_a.Bku.bind(_a, l), l.RangeAbsorbPhantom?.DelayTime * CommonDefine_1.MILLIONSECOND_PER_SECOND);
+  for ([r, l] of ModelManager_1.ModelManager.LevelPlayModel.NightmareLevelPlayInfos) {
+    if (l.Enable && (t = ModelManager_1.ModelManager.LevelPlayModel.GetLevelPlayInfo(r)) && t.RangeAbsorbPbDataIds?.has(o) && (l.CurrentKillCount++, l.CurrentKillCount >= l.IntervalKillNumber[l.CurrentIntervalIndex % l.IntervalKillNumber.length])) {
+      l.CurrentKillCount = 0;
+      l.CurrentIntervalIndex = (l.CurrentIntervalIndex + 1) % l.IntervalKillNumber.length;
+      if (t.RangeAbsorbPhantom?.DelayTime) {
+        TimerSystem_1.TimerSystem.Delay(_a.Bku.bind(_a, t), t.RangeAbsorbPhantom?.DelayTime * CommonDefine_1.MILLIONSECOND_PER_SECOND);
       } else {
-        _a.Bku(l);
+        _a.Bku(t);
       }
     }
   }

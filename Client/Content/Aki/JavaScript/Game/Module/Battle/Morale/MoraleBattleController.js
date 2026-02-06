@@ -16,14 +16,14 @@ const MORALE_CHARACTER_BUFF_TIPS_PARAM = "0";
 const EXTRA_TEMP_MORALE_MAX_LEVEL_BUFF_ID = 632400018;
 class MoraleBattleController extends ControllerBase_1.ControllerBase {
   static OnInit() {
-    Net_1.Net.Register(24723, this.pL1);
+    Net_1.Net.Register(27880, this.pL1);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnCloseLoadingView, this.jJa);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnMoraleIndomitableLevelChanged, this.Myu);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CharOnBuffAddShowMoraleBuffTips, this.i2u);
     return true;
   }
   static OnClear() {
-    Net_1.Net.UnRegister(24723);
+    Net_1.Net.UnRegister(27880);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnCloseLoadingView, this.jJa);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnMoraleIndomitableLevelChanged, this.Myu);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CharOnBuffAddShowMoraleBuffTips, this.i2u);

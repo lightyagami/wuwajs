@@ -82,13 +82,13 @@ class ExploreInfoItem extends UiPanelBase_1.UiPanelBase {
         }
       }
     };
-    this.yKa = () => this.bFf(10, MingSuDefine_1.DARK_COAST_POOL_CONFIG_ID);
-    this.WAd = () => this.bFf(2, MingSuDefine_1.MING_SU_POOL_CONFIG_ID);
-    this.QAd = () => this.bFf(12, MingSuDefine_1.PUPU_VILLAGE_POOL_CONFIG_ID);
-    this.yhm = () => this.bFf(15, MingSuDefine_1.PUPU_VILLAGE_QIQIU_POOL_CONFIG_ID);
-    this.RFf = () => this.bFf(16, MingSuDefine_1.LAHAILUOSHENGXIA_POOL_CONFIG_ID);
-    this.LFf = () => this.bFf(17, MingSuDefine_1.RILINGCOLLECT_POOL_CONFIG_ID);
-    this.bFf = (t, e) => {
+    this.yKa = () => this.e9f(10, MingSuDefine_1.DARK_COAST_POOL_CONFIG_ID);
+    this.WAd = () => this.e9f(2, MingSuDefine_1.MING_SU_POOL_CONFIG_ID);
+    this.QAd = () => this.e9f(12, MingSuDefine_1.PUPU_VILLAGE_POOL_CONFIG_ID);
+    this.yhm = () => this.e9f(15, MingSuDefine_1.PUPU_VILLAGE_QIQIU_POOL_CONFIG_ID);
+    this.t9f = () => this.e9f(16, MingSuDefine_1.LAHAILUOSHENGXIA_POOL_CONFIG_ID);
+    this.i9f = () => this.e9f(17, MingSuDefine_1.RILINGCOLLECT_POOL_CONFIG_ID);
+    this.e9f = (t, e) => {
       var i = MapNoteById_1.configMapNoteById.GetConfig(t);
       if (i && this.YYa(i)) {
         var a;
@@ -308,7 +308,7 @@ class ExploreInfoItem extends UiPanelBase_1.UiPanelBase {
     }
   }
   A2l() {
-    return [this.WAd, this.KAd, this.XAd, this.N4o, this.O4o, this.uql, this.jAd, this.HAd, this.$Ad, this.yKa, this.QAd, this.yhm, this.RFf, this.LFf];
+    return [this.WAd, this.KAd, this.XAd, this.N4o, this.O4o, this.uql, this.jAd, this.HAd, this.$Ad, this.yKa, this.QAd, this.yhm, this.t9f, this.i9f];
   }
   D2l(t) {
     return !t.Disable && ((t = t.ConditionId) === 0 || ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckCondition(t.toString(), undefined));

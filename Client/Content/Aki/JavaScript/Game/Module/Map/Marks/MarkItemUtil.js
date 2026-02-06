@@ -212,14 +212,14 @@ class MarkItemUtil {
   static IsTrackPointedMarkInCurrentDungeon(e, r = false) {
     switch (e.TrackSource) {
       case 1:
-        return this.Xnf(e, r);
+        return this.mhf(e, r);
       case 2:
-        return this.Ynf(e);
+        return this.fhf(e);
       default:
         return true;
     }
   }
-  static Xnf(e, r = false) {
+  static mhf(e, r = false) {
     var a = ModelManager_1.ModelManager.GameModeModel.InstanceDungeon?.MapConfigId;
     if (e.Id <= 0) {
       const t = ModelManager_1.ModelManager.MapModel.GetDynamicMarkInfoById(e.Id);
@@ -238,7 +238,7 @@ class MarkItemUtil {
       return r;
     }
   }
-  static Ynf(e) {
+  static fhf(e) {
     var r;
     var a = ModelManager_1.ModelManager.GameModeModel.InstanceDungeon?.Id;
     return !a || !e.TrackInstanceId || !!(r = ModelManager_1.ModelManager.MapModel.GetDynamicMarkInfoById(e.Id)) && !!r.InstanceDungeonId && r.MarkType === 12 || a === e.TrackInstanceId;

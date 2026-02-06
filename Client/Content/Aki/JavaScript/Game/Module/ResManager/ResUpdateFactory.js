@@ -57,12 +57,12 @@ class ResourceDiffUpdaterFactory {
     }
     var o = VideoUpdateManager_1.VideoUpdateManager.GetVideoUpdaterWithName(a, e);
     var i = ModelManager_1.ModelManager.PlayerInfoModel.GetPlayerGender();
-    var t = ModelManager_1.ModelManager.QuestResourceModel.FilterVideoByFinishedQuest(this.kVf(t));
+    var t = ModelManager_1.ModelManager.QuestResourceModel.FilterVideoByFinishedQuest(this.FXf(t));
     var e = new VideoUpdateWrapper_1.VideoUpdateWrapper(e, r, a, o, t, i);
     await e.Init();
     return e;
   }
-  static kVf(e) {
+  static FXf(e) {
     const r = LauncherStorageLib_1.LauncherStorageLib.GetGlobal(LauncherStorageLib_1.ELauncherStorageGlobalKey.UserFinishedVideoList);
     if (r) {
       if (Log_1.Log.CheckInfo()) {

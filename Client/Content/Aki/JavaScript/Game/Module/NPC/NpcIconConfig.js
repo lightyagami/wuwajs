@@ -25,6 +25,8 @@ class NpcIconConfig extends ConfigBase_1.ConfigBase {
     this.TGi = 0;
     this.LGi = 0;
     this.qJ1 = 0;
+    this.kOg = 0;
+    this.qOg = 0;
   }
   get NpcIconHeadInfoLimitMinDistanceSquared() {
     return this.yGi;
@@ -91,6 +93,24 @@ class NpcIconConfig extends ConfigBase_1.ConfigBase {
   GetPlayerInfoIconLocationOffsetZ() {
     this.qJ1 ||= CommonParamById_1.configCommonParamById.GetIntConfig("OnlinePlayerNameZOffset");
     return this.qJ1;
+  }
+  GetPlayerInfoNameLimitDistance() {
+    var e;
+    if (!this.kOg) {
+      e = CommonParamById_1.configCommonParamById.GetIntArrayConfig("OnlineTeammateDistanceThreshold");
+      this.kOg = e[0] * 100;
+      this.qOg = e[1] * 100;
+    }
+    return this.kOg;
+  }
+  GetPlayerInfoIconLimitDistance() {
+    var e;
+    if (!this.qOg) {
+      e = CommonParamById_1.configCommonParamById.GetIntArrayConfig("OnlineTeammateDistanceThreshold");
+      this.kOg = e[0] * 100;
+      this.qOg = e[1] * 100;
+    }
+    return this.qOg;
   }
   OnClear() {
     this.pGi.clear();

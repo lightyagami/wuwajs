@@ -37,23 +37,23 @@ class CardSkillComponent extends CardComponentBase_1.CardComponentBase {
   OnBeforeDestroy() {
     this.Sequence.Clear();
   }
-  wjm() {
+  b$m() {
     this.Sequence.StopPrevSequence(false, true);
     this.Sequence.PlaySequence("UseToNor");
     this.GetItem(0).SetUIActive(true);
   }
-  Ljm() {
+  R$m() {
     this.Sequence.StopPrevSequence(false, true);
     this.Sequence.PlaySequence("NorToUse");
     this.GetItem(0).SetUIActive(true);
     this.GetButton(3).RootUIComp.SetUIActive(true);
   }
-  Pjm() {
+  w$m() {
     this.Sequence.StopPrevSequence(false, true);
     this.Sequence.PlaySequence("CdToNor");
     this.GetSprite(1).SetUIActive(true);
   }
-  Ajm() {
+  L$m() {
     this.Sequence.StopPrevSequence(false, true);
     this.Sequence.PlaySequence("UseToCd");
     this.GetItem(0).SetUIActive(true);
@@ -74,18 +74,18 @@ class CardSkillComponent extends CardComponentBase_1.CardComponentBase {
     this.Data = t;
   }
   TriggerCanUseState() {
-    this.Ljm();
+    this.R$m();
   }
   TriggerNormalState(t) {
     var s = !!this.Data?.SkillCd && this.Data.SkillCd > 0;
     if (t.SkillCd > 0) {
       if (!s) {
-        this.Ajm();
+        this.L$m();
       }
     } else if (s) {
-      this.Pjm();
+      this.w$m();
     } else if (!t.InSelect && this.Data?.InSelect) {
-      this.wjm();
+      this.b$m();
     }
   }
 }

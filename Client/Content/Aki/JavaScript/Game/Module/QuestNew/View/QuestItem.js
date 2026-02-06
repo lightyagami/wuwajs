@@ -22,6 +22,7 @@ const GeneralLogicTreeController_1 = require("../../GeneralLogicTree/GeneralLogi
 const MapUtil_1 = require("../../Map/MapUtil");
 const LguiUtil_1 = require("../../Util/LguiUtil");
 const TICK_INTERVAL = 1000;
+const ONLINE_LIMIT_TAG_ID = 9;
 class QuestItem extends UiPanelBase_1.UiPanelBase {
   constructor(e) {
     super();
@@ -125,13 +126,13 @@ class QuestItem extends UiPanelBase_1.UiPanelBase {
   Ino(e) {
     var t;
     var i;
-    var a;
-    var r = this.GetText(3);
-    if (e.IsSuspend() || !(t = e.GetCurrentActiveChildQuestNode()) || !GeneralLogicTreeController_1.GeneralLogicTreeController.IsShowNodeTrackDistance(e.TreeId, t.NodeId) || !(i = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(e.TreeId)) || (a = ModelManager_1.ModelManager.CreatureModel.GetInstanceId(), MapUtil_1.MapUtil.GetDungeonsRelation(a, i.DungeonId) === 3) || (a = e.GetTrackDistance(t.NodeId), e.IsInTrackRange()) || !a) {
-      r.SetUIActive(false);
+    var r;
+    var a = this.GetText(3);
+    if (e.IsSuspend() || !(t = e.GetCurrentActiveChildQuestNode()) || !GeneralLogicTreeController_1.GeneralLogicTreeController.IsShowNodeTrackDistance(e.TreeId, t.NodeId) || !(i = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(e.TreeId)) || (r = ModelManager_1.ModelManager.CreatureModel.GetInstanceId(), MapUtil_1.MapUtil.GetDungeonsRelation(r, i.DungeonId) === 3) || (r = e.GetTrackDistance(t.NodeId), e.IsInTrackRange()) || !r) {
+      a.SetUIActive(false);
     } else {
-      LguiUtil_1.LguiUtil.SetLocalText(r, "Meter", a);
-      r.SetUIActive(true);
+      LguiUtil_1.LguiUtil.SetLocalText(a, "Meter", r);
+      a.SetUIActive(true);
     }
   }
   UpdateFunctionIcon(e) {
@@ -143,28 +144,28 @@ class QuestItem extends UiPanelBase_1.UiPanelBase {
     var e = ModelManager_1.ModelManager.QuestNewModel;
     this.qGn = false;
     var i = this.GetText(10);
-    let a = undefined;
     let r = undefined;
+    let a = undefined;
     switch (e.GetQuestSpecialState(t)) {
       case 4:
-        a = t.GetSuspendText()?.split("，")[0];
-        r = CommonParamById_1.configCommonParamById.GetStringConfig("TaskUnableColor") ?? "";
+        r = t.GetSuspendText()?.split("，")[0];
+        a = CommonParamById_1.configCommonParamById.GetStringConfig("TaskUnableColor") ?? "";
         break;
       case 5:
-        a = ConfigManager_1.ConfigManager.TextConfig.GetTextById("SuspendByOnline") ?? "SuspendByOnline";
-        r = CommonParamById_1.configCommonParamById.GetStringConfig("TaskUnableColor") ?? "";
+        r = ConfigManager_1.ConfigManager.TextConfig.GetTextById("SuspendByOnline") ?? "SuspendByOnline";
+        a = CommonParamById_1.configCommonParamById.GetStringConfig("TaskUnableColor") ?? "";
         break;
       case 7:
-        a = t.GetRefOccupiedEntityText()?.split("，")[0];
-        r = CommonParamById_1.configCommonParamById.GetStringConfig("TaskUnableColor") ?? "";
+        r = t.GetRefOccupiedEntityText()?.split("，")[0];
+        a = CommonParamById_1.configCommonParamById.GetStringConfig("TaskUnableColor") ?? "";
         break;
       case 1:
-        a = ModelManager_1.ModelManager.QuestNewModel.GetShowQuestConditionDescribe(t.Id);
-        r = CommonParamById_1.configCommonParamById.GetStringConfig("TaskUnableColor") ?? "";
+        r = ModelManager_1.ModelManager.QuestNewModel.GetShowQuestConditionDescribe(t.Id);
+        a = CommonParamById_1.configCommonParamById.GetStringConfig("TaskUnableColor") ?? "";
         break;
       case 2:
-        a = MultiTextLang_1.configMultiTextLang.GetLocalTextNew("DownloadResource") ?? "DownloadResource";
-        r = CommonParamById_1.configCommonParamById.GetStringConfig("TaskUnableColor") ?? "";
+        r = MultiTextLang_1.configMultiTextLang.GetLocalTextNew("DownloadResource") ?? "DownloadResource";
+        a = CommonParamById_1.configCommonParamById.GetStringConfig("TaskUnableColor") ?? "";
         break;
       case 6:
         {
@@ -174,94 +175,119 @@ class QuestItem extends UiPanelBase_1.UiPanelBase {
             e = ModelManager_1.ModelManager.QuestNewModel.GetQuest(o[0])?.Name ?? "";
           }
           LguiUtil_1.LguiUtil.SetLocalText(i, "QuestRecommendTip", e);
-          r = CommonParamById_1.configCommonParamById.GetStringConfig("TaskRemindColor") ?? "";
+          a = CommonParamById_1.configCommonParamById.GetStringConfig("TaskRemindColor") ?? "";
           break;
         }
       case 8:
-        a = MultiTextLang_1.configMultiTextLang.GetLocalTextNew("Task_Focus_Tips01") ?? "Task_Focus_Tips01";
-        r = CommonParamById_1.configCommonParamById.GetStringConfig("TaskUnableColor") ?? "";
+        r = MultiTextLang_1.configMultiTextLang.GetLocalTextNew("Task_Focus_Tips01") ?? "Task_Focus_Tips01";
+        a = CommonParamById_1.configCommonParamById.GetStringConfig("TaskUnableColor") ?? "";
         break;
       case 11:
       case 12:
         this.qGn = true;
         this.GGn(t.Id, false);
-        r = CommonParamById_1.configCommonParamById.GetStringConfig("TaskCountDownColor") ?? "";
-    }
-    if (r && !StringUtils_1.StringUtils.IsBlank(r)) {
-      e = UE.Color.FromHex(r);
-      i.SetColor(e);
+        a = CommonParamById_1.configCommonParamById.GetStringConfig("TaskCountDownColor") ?? "";
     }
     if (a && !StringUtils_1.StringUtils.IsBlank(a)) {
-      i.SetText(a);
+      e = UE.Color.FromHex(a);
+      i.SetColor(e);
+    }
+    if (r && !StringUtils_1.StringUtils.IsBlank(r)) {
+      i.SetText(r);
       i.SetUIActive(true);
     } else {
       i.SetUIActive(false);
     }
   }
-  GGn(i, a) {
+  GGn(i, r) {
     if (this.qGn) {
       if (ModelManager_1.ModelManager.QuestNewModel.GetQuest(this.QuestId)) {
-        var r = this.GetText(10);
+        var a = this.GetText(10);
         let e = 0;
         let t = undefined;
         if ((e = ModelManager_1.ModelManager.QuestNewModel.GetQuestBindingActivityId(i)) === 0) {
           e = ModelManager_1.ModelManager.QuestNewModel.GetQuestActivityId(i);
           if (!(t = ModelManager_1.ModelManager.ActivityModel.GetActivityById(e)) || !ModelManager_1.ModelManager.QuestNewModel.GetQuestShowQuestLeftTime(i)) {
-            r.SetUIActive(false);
+            a.SetUIActive(false);
             return;
           }
         } else if (!(t = ModelManager_1.ModelManager.ActivityModel.GetActivityById(e)) || !t.LocalConfig?.IfShowQuestLeftTime) {
-          r.SetUIActive(false);
+          a.SetUIActive(false);
           return;
         }
         var o;
-        var n = MultiTextLang_1.configMultiTextLang.GetLocalTextNew("ActivityRemainingTime");
-        if (n) {
+        var s = MultiTextLang_1.configMultiTextLang.GetLocalTextNew("ActivityRemainingTime");
+        if (s) {
           if (t.CheckIfInOpenTime()) {
             if (t.EndOpenTime) {
               o = TimeUtil_1.TimeUtil.GetServerTime();
               o = t.EndOpenTime - o;
-              o = ModelManager_1.ModelManager.QuestNewModel.GetActivityGuideQuestRemainTimeText(o, n);
-              r.SetText(o);
+              o = ModelManager_1.ModelManager.QuestNewModel.GetActivityGuideQuestRemainTimeText(o, s);
+              a.SetText(o);
             } else {
-              r.SetUIActive(false);
+              a.SetUIActive(false);
             }
-          } else if (a) {
+          } else if (r) {
             EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ActivityQuestCountdownEnd, i);
             this.qGn = false;
           }
         } else {
-          r.SetUIActive(false);
+          a.SetUIActive(false);
         }
-      } else if (a) {
+      } else if (r) {
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ActivityQuestCountdownEnd, i);
         this.qGn = false;
       }
     }
   }
   kfa(e) {
-    var t;
-    var i;
-    var a = this.GetItem(11);
-    if (a) {
-      if (e.TagId) {
-        if (t = QuestTagById_1.configQuestTagById.GetConfig(e.TagId)) {
-          if (i = this.GetSprite(12)) {
-            this.SetSpriteByPath(t.BgSpritePath, i, false);
-            i.SetUIActive(true);
-          }
-          if (i = this.GetText(13)) {
-            LguiUtil_1.LguiUtil.SetLocalTextNew(i, t.Text);
-            i.SetUIActive(true);
-          }
+    var t = this.GetItem(11);
+    if (t) {
+      if (this.b_g(this.QuestId)) {
+        const i = QuestTagById_1.configQuestTagById.GetConfig(ONLINE_LIMIT_TAG_ID);
+        const r = this.GetSprite(12);
+        if (r) {
+          this.SetSpriteByPath(i.BgSpritePath, r, false);
+          r.SetUIActive(true);
+        }
+        const a = this.GetText(13);
+        if (a) {
+          LguiUtil_1.LguiUtil.SetLocalTextNew(a, i.Text);
           a.SetUIActive(true);
+        }
+        t.SetUIActive(true);
+      } else if (e.TagId) {
+        const i = QuestTagById_1.configQuestTagById.GetConfig(e.TagId);
+        if (i) {
+          const r = this.GetSprite(12);
+          if (r) {
+            this.SetSpriteByPath(i.BgSpritePath, r, false);
+            r.SetUIActive(true);
+          }
+          const a = this.GetText(13);
+          if (a) {
+            LguiUtil_1.LguiUtil.SetLocalTextNew(a, i.Text);
+            a.SetUIActive(true);
+          }
+          t.SetUIActive(true);
         } else if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("Quest", 18, "找不到任务标签配置", ["questId", e.Id], ["TagId", e.TagId]);
         }
       } else {
-        a.SetUIActive(false);
+        t.SetUIActive(false);
       }
     }
+  }
+  b_g(e) {
+    var t = ModelManager_1.ModelManager.OnlineModel.GetOnlineDisabledSource();
+    if (t) {
+      for (var [i] of t) {
+        if (i.Type === 0 && i.TreeId === e) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
   SetSelected(e) {
     var t = e ? 1 : 0;

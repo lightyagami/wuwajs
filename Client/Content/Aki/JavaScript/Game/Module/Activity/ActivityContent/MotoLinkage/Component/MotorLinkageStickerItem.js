@@ -10,10 +10,10 @@ const ActivityControllerHolder_1 = require("../../../ActivityControllerHolder");
 class MotorLinkageStickerItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.l2f = 0;
+    this.o4f = 0;
     this.ClickToggleCallback = undefined;
     this.kqe = () => {
-      if (this.l2f !== 0) {
+      if (this.o4f !== 0) {
         this.ClickToggleCallback?.();
       }
     };
@@ -23,12 +23,12 @@ class MotorLinkageStickerItem extends UiPanelBase_1.UiPanelBase {
     this.BtnBindInfo = [[0, this.kqe]];
   }
   Refresh(e) {
-    this.l2f = e;
+    this.o4f = e;
     e = this.IsReceived();
     this.GetItem(1)?.SetUIActive(e);
   }
   IsReceived() {
-    return ActivityControllerHolder_1.ActivityControllerHolder.ActivityMotorLinkageController.ActivityData.IsStickerReceived(this.l2f);
+    return ActivityControllerHolder_1.ActivityControllerHolder.ActivityMotorLinkageController.ActivityData.IsStickerReceived(this.o4f);
   }
   SetToggleSelect(e, t) {
     this.GetExtendToggle(0)?.SetToggleStateForce(e ? 1 : 0, t);

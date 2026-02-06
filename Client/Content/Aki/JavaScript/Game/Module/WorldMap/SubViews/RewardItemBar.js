@@ -14,10 +14,10 @@ class RewardItemBar extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.H3e = undefined;
-    this._Vf = false;
+    this.oKf = false;
     this.JGe = () => {
       var e = new CommonItemSmallItemGrid_1.CommonItemSmallItemGrid();
-      e.ShowReceivedCallBack = e => this._Vf;
+      e.ShowReceivedCallBack = e => this.oKf;
       return e;
     };
   }
@@ -32,7 +32,7 @@ class RewardItemBar extends UiPanelBase_1.UiPanelBase {
     this.H3e.RefreshByData(e ?? []);
   }
   RebuildRewardsByLevelRewardData(e) {
-    this._Vf = e.FinishRecord;
+    this.oKf = e.FinishRecord;
     this.H3e.RefreshByData(e.ItemList);
   }
   SetTitleNewTxt(e) {

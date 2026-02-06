@@ -60,7 +60,7 @@ class DamageShare extends ExtraEffectBase_1.BuffEffect {
   static GetShareRateMap(t, e) {
     var r;
     var i;
-    var s = t.GetComponent(183);
+    var s = t.GetComponent(185);
     var t = s.BuffEffectManager.FilterById(18);
     var a = new Map();
     for (const o of t) {

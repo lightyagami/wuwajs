@@ -19,8 +19,8 @@ const InputCombinationAxisKey_1 = require("./Key/InputCombinationAxisKey");
 const InputKey_1 = require("./Key/InputKey");
 const LanguageKeyTransUtils_1 = require("./LanguageKeyTrans/LanguageKeyTransUtils");
 class InputSettings {
-  static gzf(t, i, e, n, s, a) {
-    let o = this.Czf.pop();
+  static ngg(t, i, e, n, s, a) {
+    let o = this.sgg.pop();
     if (o) {
       InputActionKey_1.InputActionKey.Refresh(o, t, i, e, n, s, a);
     } else {
@@ -28,11 +28,11 @@ class InputSettings {
     }
     return o;
   }
-  static pzf(t) {
-    this.Czf.push(t);
+  static agg(t) {
+    this.sgg.push(t);
   }
-  static vzf(t, i, e) {
-    let n = this.yzf.pop();
+  static hgg(t, i, e) {
+    let n = this.lgg.pop();
     if (n) {
       InputAxisKey_1.InputAxisKey.Refresh(n, t, i, e);
     } else {
@@ -40,8 +40,8 @@ class InputSettings {
     }
     return n;
   }
-  static Szf(t) {
-    this.yzf.push(t);
+  static _gg(t) {
+    this.lgg.push(t);
   }
   static Initialize() {
     if (Log_1.Log.CheckDebug()) {
@@ -316,8 +316,8 @@ class InputSettings {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("InputSettings", 10, "设置Action按键映射", ["actionName", t], ["keys", i]);
     }
-    this.o5f(t, e, n);
-    this.Mzf(t, i, e, s);
+    this.xWf(t, e, n);
+    this.ugg(t, i, e, s);
   }
   static SetActionMapping(t, i, e, n) {
     if (this.CEe?.IsValid()) {
@@ -346,7 +346,7 @@ class InputSettings {
       Log_1.Log.Error("InputSettings", 10, "添加Action按键映射时，InputSetting不可用", ["actionName", t]);
     }
   }
-  static Mzf(t, i, e, n) {
+  static ugg(t, i, e, n) {
     if (i.length > 0) {
       if (n) {
         var s = UE.NewArray(UE.InputActionKeyMapping);
@@ -374,7 +374,7 @@ class InputSettings {
       a = new Map();
       s.set(e, a);
     }
-    e = InputSettings.gzf(t, false, false, false, false, i);
+    e = InputSettings.ngg(t, false, false, false, false, i);
     if (n) {
       this.CEe.AddActionMapping(e.ToUeInputActionKeyMapping());
     }
@@ -419,14 +419,14 @@ class InputSettings {
       for (const e of t.values()) {
         for (const n of e.values()) {
           i.Add(n.ToUeInputActionKeyMapping());
-          InputSettings.pzf(n);
+          InputSettings.agg(n);
         }
         e.clear();
       }
       this.CEe.RemoveActionMappings(i);
     }
   }
-  static o5f(t, i, e) {
+  static xWf(t, i, e) {
     t = this.GetInputActionKeyMap(t);
     if (t) {
       t = t.get(i);
@@ -435,12 +435,12 @@ class InputSettings {
           var n = UE.NewArray(UE.InputActionKeyMapping);
           for (const s of t.values()) {
             n.Add(s.ToUeInputActionKeyMapping());
-            InputSettings.pzf(s);
+            InputSettings.agg(s);
           }
           this.CEe.RemoveActionMappings(n);
         } else {
           for (const a of t.values()) {
-            InputSettings.pzf(a);
+            InputSettings.agg(a);
           }
         }
         t.clear();
@@ -474,7 +474,7 @@ class InputSettings {
     this.CEe.GetActionMappingByName(FNameUtil_1.FNameUtil.GetDynamicFName(t), this.MEe);
     return (0, puerts_1.$unref)(this.MEe);
   }
-  static n5f(t, i, e) {
+  static BWf(t, i, e) {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("InputSettings", 10, "AddInputSettings设置Axis按键映射", ["actionName", t], ["keys", i]);
     }
@@ -508,7 +508,7 @@ class InputSettings {
       this.CEe.AddAxisMappings(r);
     }
   }
-  static s5f(t, i, e) {
+  static kWf(t, i, e) {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("InputSettings", 10, "ApplyInputSettings设置Axis按键映射", ["actionName", t], ["keys", i]);
     }
@@ -590,9 +590,9 @@ class InputSettings {
           }
           this.CEe.RemoveAxisMappings(s);
         }
-        InputSettings.n5f(t, i, n);
+        InputSettings.BWf(t, i, n);
       } else {
-        InputSettings.s5f(t, i, n);
+        InputSettings.kWf(t, i, n);
       }
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("InputSettings", 10, "设置Axis按键映射时，InputSetting不可用", ["actionName", t]);
@@ -610,7 +610,7 @@ class InputSettings {
       o = new Map();
       a.set(n, o);
     }
-    n = InputSettings.vzf(t, i, e);
+    n = InputSettings.hgg(t, i, e);
     if (s) {
       this.CEe.AddAxisMapping(n.ToUeInputAxisKeyMapping(), true);
     }
@@ -622,7 +622,7 @@ class InputSettings {
     if (e) {
       this.CEe.RemoveAxisMapping(t.ToUeInputAxisKeyMapping());
     }
-    InputSettings.Szf(t);
+    InputSettings._gg(t);
     i.delete(n);
   }
   static ClearAxisMapping(t) {
@@ -634,7 +634,7 @@ class InputSettings {
           for (const n of i.values()) {
             for (const s of n.values()) {
               e.Add(s.ToUeInputAxisKeyMapping());
-              InputSettings.Szf(s);
+              InputSettings._gg(s);
             }
             n.clear();
           }
@@ -717,5 +717,5 @@ InputSettings.REe = new Map();
 InputSettings.vEe = (0, puerts_1.$ref)(undefined);
 InputSettings.MEe = (0, puerts_1.$ref)(undefined);
 InputSettings.EEe = (0, puerts_1.$ref)(undefined);
-InputSettings.Czf = [];
-InputSettings.yzf = []; //# sourceMappingURL=InputSettings.js.map
+InputSettings.sgg = [];
+InputSettings.lgg = []; //# sourceMappingURL=InputSettings.js.map

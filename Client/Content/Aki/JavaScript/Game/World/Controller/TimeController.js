@@ -50,13 +50,13 @@ class TimeController extends ControllerBase_1.ControllerBase {
       this.Qhh.set(e, {
         StopMove: t
       });
-      EntitySystem_1.EntitySystem.Get(e)?.GetComponent(131)?.AddDelayLock("ANS AbsoluteTimeStop Role");
+      EntitySystem_1.EntitySystem.Get(e)?.GetComponent(133)?.AddDelayLock("ANS AbsoluteTimeStop Role");
       this.Khh();
       return true;
     }
   }
   static RemoveLock(e) {
-    return !!this.Qhh.delete(e) && (EntitySystem_1.EntitySystem.Get(e)?.GetComponent(131)?.RemoveDelayLock("ANS AbsoluteTimeStop Role"), this.Khh(), true);
+    return !!this.Qhh.delete(e) && (EntitySystem_1.EntitySystem.Get(e)?.GetComponent(133)?.RemoveDelayLock("ANS AbsoluteTimeStop Role"), this.Khh(), true);
   }
   static Khh() {
     if (ModelManager_1.ModelManager.GameModeModel?.IsMulti) {
@@ -128,8 +128,8 @@ class TimeController extends ControllerBase_1.ControllerBase {
   }
   static Jhh(e, t) {
     this.Zll.add(e);
-    e.Entity?.GetComponent(131)?.AddPauseLock("ANS AbsoluteTimeStop monster");
-    var r = e.Entity?.GetComponent(46);
+    e.Entity?.GetComponent(133)?.AddPauseLock("ANS AbsoluteTimeStop monster");
+    var r = e.Entity?.GetComponent(48);
     if (t) {
       r?.AddPauseLock("ANS AbsoluteTimeStop monster");
     } else {
@@ -139,42 +139,42 @@ class TimeController extends ControllerBase_1.ControllerBase {
   }
   static zhh(e) {
     this.Zll.delete(e);
-    e.Entity?.GetComponent(131)?.RemovePauseLock("ANS AbsoluteTimeStop monster");
-    e.Entity?.GetComponent(46)?.RemovePauseLock("ANS AbsoluteTimeStop monster");
+    e.Entity?.GetComponent(133)?.RemovePauseLock("ANS AbsoluteTimeStop monster");
+    e.Entity?.GetComponent(48)?.RemovePauseLock("ANS AbsoluteTimeStop monster");
     BulletUtil_1.BulletUtil.UnFrozenCharacterBullet(e.Id);
   }
   static AddTimeStopRequestLock(e) {
-    if (this.OVf.has(e)) {
+    if (this.VXf.has(e)) {
       CombatLog_1.CombatLog.Error("Skill", e, "同一实体重复添加副本时停请求，将不被处理");
       return false;
     } else {
-      this.OVf.add(e);
-      if (this.OVf.size === 1) {
-        this.GVf();
+      this.VXf.add(e);
+      if (this.VXf.size === 1) {
+        this.HXf();
       }
       return true;
     }
   }
   static RemoveTimeStopRequestLock(e) {
-    return !!this.OVf.delete(e) && (this.OVf.size === 0 && this.FVf(), true);
+    return !!this.VXf.delete(e) && (this.VXf.size === 0 && this.jXf(), true);
   }
-  static GVf() {
+  static HXf() {
     Time_1.Time.SetFlowTimeDilation(0);
     for (const e of ModelManager_1.ModelManager.CreatureModel?.GetAllEntities() ?? []) {
       if (e.IsInit) {
-        e.Entity?.GetComponent(183)?.AddPauseLock("ANS AbsoluteTimeStop");
-        this.NVf.add(e);
+        e.Entity?.GetComponent(185)?.AddPauseLock("ANS AbsoluteTimeStop");
+        this.$Xf.add(e);
       }
     }
     FormationAttributeController_1.FormationAttributeController.AddPauseLock("ANS AbsoluteTimeStop");
     SkillCdController_1.SkillCdController.Pause(0, true);
   }
-  static FVf() {
+  static jXf() {
     Time_1.Time.SetFlowTimeDilation(ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation);
-    for (const e of this.NVf) {
-      e.Entity?.GetComponent(183)?.RemovePauseLock("ANS AbsoluteTimeStop");
+    for (const e of this.$Xf) {
+      e.Entity?.GetComponent(185)?.RemovePauseLock("ANS AbsoluteTimeStop");
     }
-    this.NVf.clear();
+    this.$Xf.clear();
     FormationAttributeController_1.FormationAttributeController.RemovePauseLock("ANS AbsoluteTimeStop");
     SkillCdController_1.SkillCdController.Pause(0, false);
   }
@@ -215,7 +215,7 @@ TimeController.TimeCheckRequest = () => {
       e.A6n = Time_1.Time.TimeDilation;
     }
     e.U6n = Time_1.Time.FlowTimeDilation;
-    Net_1.Net.Call(21575, e, e => {
+    Net_1.Net.Call(20186, e, e => {
       var t;
       var r;
       var i;
@@ -239,5 +239,5 @@ TimeController.NYs = e => {
     _a.Jhh(e, true);
   }
 };
-TimeController.NVf = new Set();
-TimeController.OVf = new Set(); //# sourceMappingURL=TimeController.js.map
+TimeController.$Xf = new Set();
+TimeController.VXf = new Set(); //# sourceMappingURL=TimeController.js.map

@@ -39,7 +39,7 @@ class SequenceController extends ControllerWithAssistantBase_1.ControllerWithAss
     if (this.jio.DisableMotionBlurFrame > 0 && (this.jio.DisableMotionBlurFrame--, this.jio.DisableMotionBlurFrame === 0)) {
       this.Wio.SetMotionBlurState(true);
     }
-    if (this.jio.BeginSwitchFrame > 0 && (this.jio.BeginSwitchFrame--, this.jio.BeginSwitchFrame === 0) && (this.Kio ? this.Kio.EndSwitchPose() : Log_1.Log.CheckWarn() && Log_1.Log.Warn("Plot", 38, "SwitchPose 失败!"), Log_1.Log.CheckDebug())) {
+    if (this.jio.BeginSwitchFrame > 0 && (this.jio.BeginSwitchFrame--, this.jio.BeginSwitchFrame === 0) && (this.Kio ? (this.Kio.EndSwitchPose(), ControllerHolder_1.ControllerHolder.PlotBlendController.TryExecuteBlend(this.jio.Config?.Path)) : Log_1.Log.CheckWarn() && Log_1.Log.Warn("Plot", 38, "SwitchPose 失败!"), Log_1.Log.CheckDebug())) {
       Log_1.Log.Debug("Plot", 38, "SwitchPose 结束");
     }
     this.FlushDialogueState();
@@ -77,7 +77,7 @@ class SequenceController extends ControllerWithAssistantBase_1.ControllerWithAss
   static get zio() {
     return this.Assistants.get(6);
   }
-  static Play(t, s, i, e = true, a = true, h = false, n = 1, r = false) {
+  static Play(t, s, i, e = true, r = true, h = false, n = 1, a = false) {
     if (this.jio.IsPlaying) {
       ControllerHolder_1.ControllerHolder.FlowController.LogError("重复播放剧情Sequence，当前一次只能播放一段");
       i(false);
@@ -89,11 +89,14 @@ class SequenceController extends ControllerWithAssistantBase_1.ControllerWithAss
       }
       this.jio.Config = t;
       this.jio.IsViewTargetControl = e;
-      this.jio.IsSubtitleUiUse = a;
+      this.jio.IsSubtitleUiUse = r;
       this.jio.IsWaitRenderData = h;
       this.jio.PlayRate = n;
-      this.jio.IsSeamless = r;
+      this.jio.IsSeamless = a;
       this.jio.FinishCallback = i;
+      if (t.SeqBlendAnim) {
+        ControllerHolder_1.ControllerHolder.PlotBlendController.SetupInfo(t.SeqBlendAnim, t.Path);
+      }
       this.un(t => {
         if (!this.jio.IsEnding) {
           if (t) {
@@ -163,10 +166,10 @@ class SequenceController extends ControllerWithAssistantBase_1.ControllerWithAss
       var t = this.zio.LoadPromise();
       var i = this.Kio.BeginLoadMouthAssetPromise();
       const e = new CustomPromise_1.CustomPromise();
-      const a = new CustomPromise_1.CustomPromise();
+      const r = new CustomPromise_1.CustomPromise();
       this.Qio.Load(t => {
         if (t) {
-          this.zio.PreloadUi(a);
+          this.zio.PreloadUi(r);
           this.Kio.Load(t => {
             if (t) {
               this.$io.Load(t => {
@@ -195,10 +198,10 @@ class SequenceController extends ControllerWithAssistantBase_1.ControllerWithAss
         } else {
           ControllerHolder_1.ControllerHolder.FlowController.LogError("Sequence加载失败");
           e.SetResult(false);
-          a.SetResult(false);
+          r.SetResult(false);
         }
       });
-      Promise.all([t, i, e.Promise, a.Promise]).then(t => {
+      Promise.all([t, i, e.Promise, r.Promise]).then(t => {
         t = t[0] && t[1] && t[2] && t[3];
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Plot", 26, "[剧情加载等待] Sequence加载-完成", ["result", t]);
@@ -279,8 +282,9 @@ class SequenceController extends ControllerWithAssistantBase_1.ControllerWithAss
     this.Jio.AllStop();
     this.zio.AllStop();
     var t = this.Kio.AllStopPromise();
+    var i = this.Yio.AllStopPromise();
     this.Yio.AllStop();
-    t.then(t => {
+    Promise.all([t, i]).then(t => {
       if (t) {
         this.Qio.AllStop();
         this.ioo();
@@ -306,9 +310,9 @@ class SequenceController extends ControllerWithAssistantBase_1.ControllerWithAss
       var i = s.Num();
       var e = new UE.FName("SequencePostProcess");
       for (let t = 0; t < i; t++) {
-        var a = s.Get(t);
-        if (a.ActorHasTag(e)) {
-          a.Settings = new UE.PostProcessSettings();
+        var r = s.Get(t);
+        if (r.ActorHasTag(e)) {
+          r.Settings = new UE.PostProcessSettings();
         }
       }
       this.jio.State = 0;

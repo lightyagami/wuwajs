@@ -55,44 +55,48 @@ class AddBattleFlag extends ExtraEffectBase_1.BuffEffect {
   CheckExecutable() {
     return this.OwnerBuffComponent?.HasBuffAuthority() ?? false;
   }
-  static Fod(e, t, s) {
-    var r = e.GetComponent(183);
+  static Fod(e, t, s, a) {
+    var r = e.GetComponent(185);
     var e = r?.BuffEffectManager;
     if (e) {
-      for (const a of e.FilterById(76)) {
-        if (a.Check({}, r) && !a.OZc?.has(t.SkillId)) {
+      for (const i of e.FilterById(76)) {
+        if (i.Check({}, r) && !i.OZc?.has(t.SkillId)) {
           let e = undefined;
-          switch (a.LNc) {
+          switch (i.LNc) {
             case 1:
-              e = a.Execute(s);
+              e = i.Execute(s);
               break;
             case 2:
-              if (a.KXo.includes(t.SkillId)) {
-                e = a.Execute(s);
+              if (i.KXo.includes(t.SkillId)) {
+                e = i.Execute(s);
               }
               break;
             case 3:
-              if (a.wNc.includes(t.SkillInfo.SkillGenre)) {
-                e = a.Execute(s);
+              if (i.wNc.includes(t.SkillInfo.SkillGenre)) {
+                e = i.Execute(s);
               }
           }
           if (e) {
-            t.BattleFlags.push(e);
+            a.push(e);
           }
         }
       }
     }
   }
   static ApplyEffects(e, t) {
-    t.BattleFlags = [];
-    this.Fod(e, t, false);
+    t.BattleContext = {
+      BattleFlags: [],
+      VisionId: 0
+    };
+    var s = t.BattleContext.BattleFlags;
+    this.Fod(e, t, false, s);
     var e = e.GetComponent(0);
-    var s = e?.IsVision();
+    var a = e?.IsVision();
     var e = e?.GetSummonerId();
-    if (s && e && (s = ModelManager_1.ModelManager.CreatureModel.GetEntity(e)?.Entity)) {
-      this.Fod(s, t, true);
+    if (a && e && (a = ModelManager_1.ModelManager.CreatureModel.GetEntity(e)?.Entity)) {
+      this.Fod(a, t, true, s);
     }
-    t.BattleFlags.length;
+    s.length;
   }
 }
 exports.AddBattleFlag = AddBattleFlag;

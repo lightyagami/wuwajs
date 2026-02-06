@@ -22,6 +22,9 @@ class SkillButtonCustom {
   get BuffIds() {
     return GameUtils_1.GameUtils.ConvertToArray(this.buffidsLength(), this.buffids, this);
   }
+  get Params() {
+    return GameUtils_1.GameUtils.ConvertToArray(this.paramsLength(), this.params, this);
+  }
   __init(t, s) {
     this.z7 = t;
     this.J7 = s;
@@ -98,6 +101,25 @@ class SkillButtonCustom {
       return new Float64Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
       return null;
+    }
+  }
+  GetParamsAt(t) {
+    return this.params(t);
+  }
+  params(t, s) {
+    var i = this.J7.__offset(this.z7, 12);
+    var i = i ? this.J7.__string(this.J7.__vector(this.z7 + i) + t * 4, s) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
+  paramsLength() {
+    var t = this.J7.__offset(this.z7, 12);
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
     }
   }
 }

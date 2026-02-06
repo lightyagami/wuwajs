@@ -32,10 +32,10 @@ class GreatSwordController extends UiControllerBase_1.UiControllerBase {
       }
     } else {
       (e = new Protocol_1.Aki.Protocol.N$c()).e8n = a;
-      Net_1.Net.Call(27288, Protocol_1.Aki.Protocol.N$c.create(e), e => {
+      Net_1.Net.Call(25938, Protocol_1.Aki.Protocol.N$c.create(e), e => {
         if (e) {
           if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27288);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25938);
           } else {
             var r = [];
             for (const l of e.rXu) {
@@ -69,10 +69,10 @@ class GreatSwordController extends UiControllerBase_1.UiControllerBase {
       }
       return Promise.resolve(undefined);
     } else {
-      return Net_1.Net.CallAsync(15056, ((e = new Protocol_1.Aki.Protocol.S7d()).e8n = a, e)).then(e => {
+      return Net_1.Net.CallAsync(27410, ((e = new Protocol_1.Aki.Protocol.S7d()).e8n = a, e)).then(e => {
         if (e) {
           if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27288);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25938);
             return;
           }
           var r = [];
@@ -102,14 +102,14 @@ class GreatSwordController extends UiControllerBase_1.UiControllerBase {
   var e = new Protocol_1.Aki.Protocol.eXu();
   e.r6n = r;
   e._ps = o;
-  Net_1.Net.Call(27187, Protocol_1.Aki.Protocol.eXu.create(e), e => {
+  Net_1.Net.Call(24673, Protocol_1.Aki.Protocol.eXu.create(e), e => {
     if (e) {
       if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
         ModelManager_1.ModelManager.GreatSwordChallengeModel.SetIsStartChallenge(true);
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.GreatSwordLevelSelectedComplete, r, o);
       } else {
         ModelManager_1.ModelManager.GreatSwordChallengeModel.SetIsStartChallenge(false);
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27187);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24673);
       }
     }
   });

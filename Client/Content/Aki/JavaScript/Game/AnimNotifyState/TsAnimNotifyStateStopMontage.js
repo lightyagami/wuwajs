@@ -10,7 +10,7 @@ class TsAnimNotifyStateStopMontage extends UE.KuroAnimNotifyState {
   Constructor() {}
   K2_NotifyTick(e, t, r) {
     var e = e.GetOwner();
-    return e instanceof TsBaseCharacter_1.default && !!(e = e.CharacterActorComponent?.Entity) && (e.GetComponent(187)?.HasMoveInput && (e = e.GetComponent(186)) && e.MainAnimInstance.Montage_Stop(QUIT_BLEND_TIME), true);
+    return e instanceof TsBaseCharacter_1.default && !!(e = e.CharacterActorComponent?.Entity) && (e.GetComponent(189)?.HasMoveInput && (e = e.GetComponent(188)) && e.MainAnimInstance.Montage_Stop(QUIT_BLEND_TIME), true);
   }
 }
 exports.default = TsAnimNotifyStateStopMontage;

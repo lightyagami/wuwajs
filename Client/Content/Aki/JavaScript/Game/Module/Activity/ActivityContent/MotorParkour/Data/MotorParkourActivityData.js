@@ -14,16 +14,16 @@ const MotorParkourLevelData_1 = require("./MotorParkourLevelData");
 class MotorParkourActivityData extends ActivityData_1.ActivityBaseData {
   constructor() {
     super(...arguments);
-    this.TMf = new Map();
+    this.NTf = new Map();
     this.dQa = [];
   }
   OnInit(t) {
-    this.bMf();
+    this.VTf();
   }
   PhraseEx(t) {
-    t = t.aSf;
+    t = t.STf;
     if (t) {
-      this.UpdateMotorParkourLevelList(t.hSf);
+      this.UpdateMotorParkourLevelList(t.MTf);
     }
   }
   GetExDataRedPointShowState() {
@@ -42,10 +42,10 @@ class MotorParkourActivityData extends ActivityData_1.ActivityBaseData {
     }
     return true;
   }
-  bMf() {
+  VTf() {
     for (const e of ConfigManager_1.ConfigManager.MotorParkourConfig.GetMotorParkourLevelByActivityId(this.Id)) {
       var t = new MotorParkourLevelData_1.MotorParkourLevelData(e);
-      this.TMf.set(e.Id, t);
+      this.NTf.set(e.Id, t);
       this.dQa.push(t);
     }
     this.dQa.sort((t, e) => t.Id - e.Id);
@@ -55,14 +55,14 @@ class MotorParkourActivityData extends ActivityData_1.ActivityBaseData {
   }
   UpdateMotorParkourLevelList(t) {
     for (const r of t) {
-      var e = r.lSf;
-      var e = this.TMf.get(e);
+      var e = r.ETf;
+      var e = this.NTf.get(e);
       if (!e) {
         return;
       }
-      e.UpdateTaskStatus(r._Sf);
+      e.UpdateTaskStatus(r.ITf);
       e.UnlockTime = MathUtils_1.MathUtils.LongToNumber(r.yzs);
-      e.BestRecordTime = r.uSf;
+      e.BestRecordTime = r.TTf;
     }
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.Id);
   }
@@ -122,7 +122,7 @@ class MotorParkourActivityData extends ActivityData_1.ActivityBaseData {
     return this.dQa;
   }
   GetLevelDataById(t) {
-    var e = this.TMf.get(t);
+    var e = this.NTf.get(t);
     if (e) {
       return e;
     }

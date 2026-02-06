@@ -15,7 +15,7 @@ class SunSpiritFlyingToGearState extends SunSpiritFlyingEffectState_1.SunSpiritF
     this.GearConfigId = r;
     this.GearSocketIndex = n;
     this.FlyingTargetGetter = (t, i) => {
-      return ModelManager_1.ModelManager.CreatureModel?.GetEntityByPbDataId(this.GearConfigId)?.Entity?.GetComponent(334)?.GetSunSpiritSocketLocAndRot(this.GearSocketIndex, t, i) ?? false;
+      return ModelManager_1.ModelManager.CreatureModel?.GetEntityByPbDataId(this.GearConfigId)?.Entity?.GetComponent(336)?.GetSunSpiritSocketLocAndRot(this.GearSocketIndex, t, i) ?? false;
     };
     this.FlyingFinishCallback = S;
     this.FlyingInterruptCallback = S;

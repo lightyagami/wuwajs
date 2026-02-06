@@ -9,6 +9,7 @@ const Protocol_1 = require("../../../../../Core/Define/Net/Protocol");
 const Transform_1 = require("../../../../../Core/Utils/Math/Transform");
 const Vector_1 = require("../../../../../Core/Utils/Math/Vector");
 const TraceElementCommon_1 = require("../../../../../Core/Utils/TraceElementCommon");
+const Global_1 = require("../../../../Global");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const ActorUtils_1 = require("../../../../Utils/ActorUtils");
 const VehicleStreamDefine_1 = require("../../VehicleStreamDefine");
@@ -21,7 +22,7 @@ class VehicleStateBase {
     this.EndTracePosition = Vector_1.Vector.Create();
     this.LocalHitPoint = Vector_1.Vector.Create();
     this.TraceRotator = new UE.Rotator();
-    this.E7m = new VehicleStreamDefine_1.ObstructionCheckInfo();
+    this.T9m = new VehicleStreamDefine_1.ObstructionCheckInfo();
     this.ObstructionCheckInfo = new VehicleStreamDefine_1.ObstructionCheckInfo();
     this.TmpTransform = Transform_1.Transform.Create();
   }
@@ -38,10 +39,6 @@ class VehicleStateBase {
     this.OnExit(e);
   }
   Destroy() {
-    var e = this.BlackBoard.CurrentRoadway;
-    if (e) {
-      ModelManager_1.ModelManager.VehicleStreamModel.ExitRoadway(e.Id, this.BlackBoard.CreatureDataId);
-    }
     this.OnDestroy();
   }
   OnEnterPlayerRange() {}
@@ -49,41 +46,34 @@ class VehicleStateBase {
   CheckGetNextState() {
     return 0;
   }
-  CheckObstruction(e, t, i) {
+  CheckObstruction(e, t) {
     this.ObstructionCheckInfo.Reset();
-    e = this.I7m(e, t, i);
-    this.ObstructionCheckInfo.HitChanged = this.E7m.IsHitTargetChanged(this.ObstructionCheckInfo);
-    this.E7m.DeepCopy(this.ObstructionCheckInfo);
-    return e;
-  }
-  I7m(e, t, i) {
-    if (this.lue(t, i)) {
-      this.ObstructionCheckInfo.CheckResultType = "TraceBlock";
-    } else if (this.wUm(e)) {
-      this.ObstructionCheckInfo.CheckResultType = "SameRoadwayVehicleBlock";
-    } else if (this.T7m(e)) {
-      this.ObstructionCheckInfo.CheckResultType = "NextRoadwayVehicleBlock";
-    }
+    this.b9m(e, t);
+    this.ObstructionCheckInfo.HitChanged = this.T9m.IsHitTargetChanged(this.ObstructionCheckInfo);
+    this.T9m.DeepCopy(this.ObstructionCheckInfo);
     return this.ObstructionCheckInfo.CheckResultType;
   }
-  lue(e, t) {
+  b9m(e, t) {
+    if (!this.lue(t)) {
+      this.$8g();
+    }
+    if (!this.txm(e)) {
+      this.R9m(e);
+    }
+  }
+  lue(e) {
     var i = this.BlackBoard.BoxTrace;
     if (!i) {
       return false;
     }
     const r = this.BlackBoard.RoadNetworkNavigationComponent;
-    var s = r.SkeletalMeshComponentToWorld;
-    if (!s) {
+    var t = r.SkeletalMeshComponentToWorld;
+    if (!t) {
       return false;
     }
-    this.TmpTransform.FromUeTransform(s);
+    this.TmpTransform.FromUeTransform(t);
     i.WorldContextObject = r.GetActor();
     this.TmpTransform.TransformPositionNoScale(this.BlackBoard.BoxTracePosition, this.StartTracePosition);
-    let h = 0;
-    if (t) {
-      h = Math.min(t, this.BlackBoard.NormalSpeed * 2 * VehicleStreamDefine_1.METER_TO_CENTIMETER);
-    }
-    this.BlackBoard.BoxTraceEndPosition.X = this.BlackBoard.BoxTracePosition.X + h;
     this.TmpTransform.TransformPositionNoScale(this.BlackBoard.BoxTraceEndPosition, this.EndTracePosition);
     TraceElementCommon_1.TraceElementCommon.SetStartLocation(i, this.StartTracePosition);
     TraceElementCommon_1.TraceElementCommon.SetEndLocation(i, this.EndTracePosition);
@@ -92,105 +82,96 @@ class VehicleStateBase {
     if (!i.HitResult) {
       return false;
     }
-    var a = i.HitResult.Actors;
-    var n = i.HitResult.GetHitCount();
-    if (!n) {
+    var h = i.HitResult.Actors;
+    var s = i.HitResult.GetHitCount();
+    if (!s) {
       return false;
     }
-    var o = r.GetObstacleDetectionType();
-    let l = false;
-    this.ObstructionCheckInfo.HitDistance = Number.MAX_SAFE_INTEGER;
-    for (let t = 0; t < n; t++) {
-      var c = a.Get(t);
-      if (c?.IsValid()) {
-        let e = ActorUtils_1.ActorUtils.GetEntityByActor(c, false);
-        if ((e = e || ModelManager_1.ModelManager.SceneInteractionModel.GetEntityByActor(c, true)) && e.Entity) {
-          var _;
-          var m;
-          var c = e.Entity.GetComponent(0);
-          if (c && c?.GetCreatureDataId() !== this.BlackBoard.CreatureDataId) {
-            const r = e.Entity.GetComponent(338);
-            if (!r && (c = c.GetEntityType(), o === undefined || (0, VehicleStreamDefine_1.checkObstacleDetectionTypeMatch)(o, c))) {
+    var a = r.GetObstacleDetectionType();
+    for (let t = 0; t < s; t++) {
+      var o = h.Get(t);
+      if (o?.IsValid()) {
+        let e = ActorUtils_1.ActorUtils.GetEntityByActor(o, false);
+        if ((e = e || ModelManager_1.ModelManager.SceneInteractionModel.GetEntityByActor(o, true)) && e.Entity) {
+          var n;
+          var o = e.Entity.GetComponent(0);
+          if (o && o?.GetCreatureDataId() !== this.BlackBoard.CreatureDataId) {
+            const r = e.Entity.GetComponent(340);
+            if (!r && (o = o.GetEntityType(), a === undefined || (0, VehicleStreamDefine_1.checkObstacleDetectionTypeMatch)(a, o))) {
               TraceElementCommon_1.TraceElementCommon.GetImpactPoint(i.HitResult, t, this.HitLocation);
               this.TmpTransform.InverseTransformPosition(this.HitLocation, this.LocalHitPoint);
-              if ((_ = (this.LocalHitPoint.X - this.BlackBoard.RootCenterToHead) * VehicleStreamDefine_1.CENTIMETER_TO_METER) <= 0) {
-                if (c === Protocol_1.Aki.Protocol.kks.Proto_Player && (l = true, (m = VehicleStreamDefine_1.DISTANCE_BETWEEN_PLAYER * 2) < this.ObstructionCheckInfo.HitDistance)) {
-                  this.ObstructionCheckInfo.HitEntityCreatureDataId = e.CreatureDataId;
-                  this.ObstructionCheckInfo.HitDistance = m;
-                  this.ObstructionCheckInfo.HitEntityType = c;
+              if ((n = (this.LocalHitPoint.X - this.BlackBoard.RootCenterToHead) * VehicleStreamDefine_1.CENTIMETER_TO_METER) <= 0) {
+                if (o === Protocol_1.Aki.Protocol.kks.Proto_Player) {
+                  this.ObstructionCheckInfo.TryUpdateHitDistance("TraceBlock", e.CreatureDataId, o, VehicleStreamDefine_1.DISTANCE_BETWEEN_PLAYER * 2, true);
                 }
               } else {
-                l = true;
-                if (_ < this.ObstructionCheckInfo.HitDistance) {
-                  this.ObstructionCheckInfo.HitEntityCreatureDataId = e.CreatureDataId;
-                  this.ObstructionCheckInfo.HitDistance = _;
-                  this.ObstructionCheckInfo.HitEntityType = c;
-                }
+                this.ObstructionCheckInfo.TryUpdateHitDistance("TraceBlock", e.CreatureDataId, o, n, this.YLe(e.CreatureDataId));
               }
             }
           }
         }
       }
     }
-    return l;
+    return this.ObstructionCheckInfo.CheckResultType === "TraceBlock";
   }
-  wUm(e) {
+  $8g() {
+    var e;
+    var t;
+    var i = Global_1.Global.BaseCharacter?.CharacterActorComponent;
+    return !!this.BlackBoard.IsInPlayerRange && !!i && !!(t = this.BlackBoard.RoadNetworkNavigationComponent.GetActorComponent()) && !(e = i.ActorLocation, t = t.ActorTransform.InverseTransformPosition(e), Math.abs(t.Y) > this.BlackBoard.VehicleSize.Y * 0.5) && !(this.ObstructionCheckInfo.PlayerHitDistance = (t.X - this.BlackBoard.RootCenterToHead) * VehicleStreamDefine_1.CENTIMETER_TO_METER, this.ObstructionCheckInfo.PlayerHitDistance < 0) && !(this.ObstructionCheckInfo.PlayerHitDistance > VehicleStreamDefine_1.DISTANCE_BETWEEN_PLAYER + VehicleStreamDefine_1.MAX_BRAKING_DISTANCE_WHEN_CHECKOBSTRUCTION) && !(this.ObstructionCheckInfo.TryUpdateHitDistance("CheckPlayerBlock", i.CreatureData.GetCreatureDataId(), Protocol_1.Aki.Protocol.kks.Proto_Player, this.ObstructionCheckInfo.PlayerHitDistance, true), 0);
+  }
+  txm(e) {
     var t = this.BlackBoard.CurrentRoadway;
     if (!t) {
       return false;
     }
     var i;
     var r;
-    var s;
-    var h = ModelManager_1.ModelManager.VehicleStreamModel;
-    var t = h.GetAllVehicleInRoadway(t.Id);
+    var h;
+    var s = ModelManager_1.ModelManager.VehicleStreamModel;
+    var t = s.GetAllVehicleInRoadway(t.Id);
     if (!t || t.size === 0) {
       return false;
     }
     let a = false;
-    this.ObstructionCheckInfo.HitDistance = Number.MAX_SAFE_INTEGER;
-    for (const n of t) {
-      if (n !== this.BlackBoard.CreatureDataId && (i = h.GetVehicleTeamMember(n))) {
-        s = i.GetRelativeLocation();
-        if (!(Math.abs(s.Y - this.BlackBoard.RelativeLocationToStart.Y) > (i.GetVehicleSize().Y + this.BlackBoard.VehicleSize.Y) * 0.5) && !(s = e + this.BlackBoard.RootCenterToHead, r = i.GetCurrentMeshHeadDistance(), i = i.GetVehicleSize().X * VehicleStreamDefine_1.CENTIMETER_TO_METER, r = (r - s) * VehicleStreamDefine_1.CENTIMETER_TO_METER, s = VehicleStreamDefine_1.DISTANCE_BE_TO_OBSTRUCTION + VehicleStreamDefine_1.MAX_BRAKING_DISTANCE_WHEN_CHECKOBSTRUCTION + i, r <= 0) && !(s <= r)) {
+    for (const o of t) {
+      if (o !== this.BlackBoard.CreatureDataId && (i = s.GetVehicleTeamMember(o))) {
+        h = i.GetRelativeLocation();
+        if (!(Math.abs(h.Y - this.BlackBoard.RelativeLocationToStart.Y) > (i.GetVehicleSize().Y + this.BlackBoard.VehicleSize.Y) * 0.5) && !(h = e + this.BlackBoard.RootCenterToHead, r = i.GetCurrentMeshHeadDistance(), i = i.GetVehicleSize().X * VehicleStreamDefine_1.CENTIMETER_TO_METER, r = (r - h) * VehicleStreamDefine_1.CENTIMETER_TO_METER, h = VehicleStreamDefine_1.DISTANCE_BE_TO_OBSTRUCTION + VehicleStreamDefine_1.MAX_BRAKING_DISTANCE_WHEN_CHECKOBSTRUCTION + i, r <= 0) && !(h <= r)) {
           a = true;
-          if ((s = r - i) < this.ObstructionCheckInfo.HitDistance) {
-            this.ObstructionCheckInfo.HitEntityCreatureDataId = n;
-            this.ObstructionCheckInfo.HitDistance = s;
-          }
+          h = r - i;
+          this.ObstructionCheckInfo.TryUpdateHitDistance("SameRoadwayVehicleBlock", o, Protocol_1.Aki.Protocol.kks.Proto_SceneItem, h);
         }
       }
     }
     return a;
   }
-  T7m(e) {
+  R9m(e) {
     var t = this.BlackBoard.NextRoadway;
     if (!t) {
       return false;
     }
     var i;
     var r;
-    var s;
     var h;
+    var s;
     var a = ModelManager_1.ModelManager.VehicleStreamModel;
     var t = a.GetAllVehicleInRoadway(t.Id);
     if (!t || t.size === 0) {
       return false;
     }
-    let n = false;
-    for (const o of t) {
-      if (o !== this.BlackBoard.CreatureDataId && (i = a.GetVehicleTeamMember(o))) {
-        h = i.GetRelativeLocation();
-        if (!(Math.abs(h.Y - this.BlackBoard.RelativeLocationToStart.Y) > (i.GetVehicleSize().Y + this.BlackBoard.VehicleSize.Y) * 0.5) && !(h = e + this.BlackBoard.RootCenterToHead, s = i.GetCurrentMeshHeadDistance(), h = this.BlackBoard.CurrentSplineLength - h, i = i.GetVehicleSize().X * VehicleStreamDefine_1.CENTIMETER_TO_METER, r = VehicleStreamDefine_1.DISTANCE_BE_TO_NEXTVEHICLE + VehicleStreamDefine_1.MAX_BRAKING_DISTANCE_WHEN_CHECKOBSTRUCTION + i, (s = (s + h) * VehicleStreamDefine_1.CENTIMETER_TO_METER) <= 0) && !(r <= s)) {
-          n = true;
-          if ((h = s - i) < this.ObstructionCheckInfo.HitDistance) {
-            this.ObstructionCheckInfo.HitEntityCreatureDataId = o;
-            this.ObstructionCheckInfo.HitDistance = h;
-          }
+    let o = false;
+    for (const n of t) {
+      if (n !== this.BlackBoard.CreatureDataId && (i = a.GetVehicleTeamMember(n))) {
+        s = i.GetRelativeLocation();
+        if (!(Math.abs(s.Y - this.BlackBoard.RelativeLocationToStart.Y) > (i.GetVehicleSize().Y + this.BlackBoard.VehicleSize.Y) * 0.5) && !(s = e + this.BlackBoard.RootCenterToHead, h = i.GetCurrentMeshHeadDistance(), s = this.BlackBoard.CurrentSplineLength - s, i = i.GetVehicleSize().X * VehicleStreamDefine_1.CENTIMETER_TO_METER, r = VehicleStreamDefine_1.DISTANCE_BE_TO_NEXTVEHICLE + VehicleStreamDefine_1.MAX_BRAKING_DISTANCE_WHEN_CHECKOBSTRUCTION + i, (h = (h + s) * VehicleStreamDefine_1.CENTIMETER_TO_METER) <= 0) && !(r <= h)) {
+          o = true;
+          s = h - i;
+          this.ObstructionCheckInfo.TryUpdateHitDistance("SameRoadwayVehicleBlock", n, Protocol_1.Aki.Protocol.kks.Proto_SceneItem, s);
         }
       }
     }
-    return n;
+    return o;
   }
   CheckPositionalRelationshipToTarget(e, t, i) {
     var r = e + this.BlackBoard.RootCenterToHead;
@@ -225,6 +206,9 @@ class VehicleStateBase {
         this.BlackBoard.KeyPointDistanceSyncRecord.set(e, false);
       }
     }
+  }
+  YLe(e) {
+    return e === Global_1.Global.BaseCharacter?.CharacterActorComponent?.CreatureData.GetCreatureDataId();
   }
   OnCreate() {}
   OnUpdate(e) {}

@@ -19,6 +19,7 @@ const GridProxyAbstract_1 = require("../../../Util/Grid/GridProxyAbstract");
 const LguiUtil_1 = require("../../../Util/LguiUtil");
 const PayShopGoods_1 = require("../../PayShopData/PayShopGoods");
 const PayShopDefine_1 = require("../../PayShopDefine");
+const PayShopExtraTagItem_1 = require("./PayShopExtraTagItem");
 const PayShopTagItem_1 = require("./PayShopTagItem");
 const NORMALCOLOR = "000000FF";
 const REDCOLOR = "BA5C59FF";
@@ -35,6 +36,8 @@ class PayShopBigItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.O71 = 0;
     this.ckn = "";
     this.q71 = 0;
+    this.mGg = () => {};
+    this.JGg = undefined;
     this.R3i = () => {
       if (this.Pe && this.IsUiActiveInHierarchy() && (this.RefreshCommonItem(), this.RefreshRechargeItem(), this.G71(), this.iFi(), this.pJd(), this.F71(), this.RefreshRedDot(), this.Pe instanceof PayShopGoods_1.PayShopGoods) && (this.N71(this.Pe) || this.V71(this.Pe))) {
         this.TryEmitRefreshTips();
@@ -58,6 +61,7 @@ class PayShopBigItem extends GridProxyAbstract_1.GridProxyAbstract {
           Log_1.Log.Info("Shop", 10, "PayShop:ShopItem 点击充值", ["Id", this.Pe.PayItemId]);
         }
         PayItemController_1.PayItemController.SdkPay(this.Pe.PayItemId);
+        this.mGg(this.Pe);
       } else {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Shop", 10, "PayShop:ShopItem 点击商品", ["Id", this.Pe.GetGoodsData().Id]);
@@ -78,6 +82,9 @@ class PayShopBigItem extends GridProxyAbstract_1.GridProxyAbstract {
   OnBeforeShow() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.DiscountShopTimerRefresh, this.R3i);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPayItemSuccess, this.USe);
+  }
+  SetOnClickRechargeCallback(t) {
+    this.mGg = t;
   }
   Refresh(t, i, e) {
     var s;
@@ -129,11 +136,13 @@ class PayShopBigItem extends GridProxyAbstract_1.GridProxyAbstract {
       this.H71(this.Pe);
       this.U3i(this.Pe);
       this.B2t(this.Pe);
+      this.fqg(this.Pe);
     }
   }
   RefreshRechargeItem() {
     if (!!this.Pe && !(this.Pe instanceof PayShopGoods_1.PayShopGoods)) {
       this.W71(this.Pe);
+      this.kxg(this.Pe);
     }
   }
   U3i(e) {
@@ -150,6 +159,12 @@ class PayShopBigItem extends GridProxyAbstract_1.GridProxyAbstract {
         t?.SetMaskVisible(i);
       });
     }
+  }
+  fqg(t) {
+    this.Q71(12, t.GetIfShowTotalTopUpScore(), () => {});
+  }
+  kxg(t) {
+    this.Q71(12, t.GetIfShowTotalTopUpScore(), () => {});
   }
   B2t(t) {
     var t = t.GetCountDownData();
@@ -222,19 +237,37 @@ class PayShopBigItem extends GridProxyAbstract_1.GridProxyAbstract {
     }
   }
   Q71(t, i, e, s = true) {
-    var h;
-    var r = this.B71.get(t);
-    if (i && !r) {
-      h = new PayShopTagItem_1.PayShopTagItem();
-      this.B71.set(t, h);
-      t = PayShopDefine_1.payShopTagTypeToResourceId[t];
-      s = s ? this.GetItem(12) : this.GetItem(11);
-      h.CreateThenShowByResourceIdAsync(t, s).then(() => {
-        e();
-      });
+    var h = this.B71.get(t);
+    if (i && !h) {
+      this.JGg = this.zGg(t, e, s);
     }
-    r?.SetUiActive(i);
+    h?.SetUiActive(i);
+    if (h instanceof PayShopExtraTagItem_1.PayShopExtraTagItem && i) {
+      h.Refresh(this.Pe);
+    }
     e();
+  }
+  async zGg(t, i, e = true) {
+    if (this.JGg) {
+      await this.JGg;
+    }
+    if (!this.B71.get(t)) {
+      var s = new (PayShopDefine_1.payShopTagTypeToExtraConstructor.get(t) ?? PayShopTagItem_1.PayShopTagItem)();
+      this.B71.set(t, s);
+      var t = PayShopDefine_1.payShopTagTypeToResourceId[t];
+      var e = e ? this.GetItem(12) : this.GetItem(11);
+      await s.CreateThenShowByResourceIdAsync(t, e);
+      if (s instanceof PayShopExtraTagItem_1.PayShopExtraTagItem) {
+        s.Refresh(this.Pe);
+      }
+      for (const r of PayShopDefine_1.payShopTagSortList) {
+        var h = this.B71.get(r);
+        if (h) {
+          h.GetRootItem().SetAsLastHierarchy();
+        }
+      }
+    }
+    i();
   }
   G71() {
     var t = this.GetText(6);

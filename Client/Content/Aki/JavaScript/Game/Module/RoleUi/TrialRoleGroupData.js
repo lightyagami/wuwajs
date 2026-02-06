@@ -9,65 +9,65 @@ const ConfigManager_1 = require("../../Manager/ConfigManager");
 const ModelManager_1 = require("../../Manager/ModelManager");
 class TrialRoleGroupData {
   constructor(t) {
-    this.yBf = undefined;
-    this.SBf = undefined;
+    this.mNf = undefined;
+    this.fNf = undefined;
     this.h0i = 0;
-    this.TDf = undefined;
-    this.MBf = undefined;
-    this.yBf = ConfigManager_1.ConfigManager.TrialRoleConfig?.GetTrialRoleConfig(t);
-    t = ConfigManager_1.ConfigManager.TrialRoleConfig?.GetTrialRoleConfigsByGroupId(this.yBf.GroupId);
-    this.TDf = ConfigCommon_1.ConfigCommon.ToList(t);
-    this.TDf?.sort((t, e) => t.WorldLevel - e.WorldLevel);
+    this.oOf = undefined;
+    this.gNf = undefined;
+    this.mNf = ConfigManager_1.ConfigManager.TrialRoleConfig?.GetTrialRoleConfig(t);
+    t = ConfigManager_1.ConfigManager.TrialRoleConfig?.GetTrialRoleConfigsByGroupId(this.mNf.GroupId);
+    this.oOf = ConfigCommon_1.ConfigCommon.ToList(t);
+    this.oOf?.sort((t, e) => t.WorldLevel - e.WorldLevel);
   }
   get RealRoleId() {
-    return this.yBf?.ParentId ?? 0;
+    return this.mNf?.ParentId ?? 0;
   }
   get TrialRoleId() {
-    return this.yBf?.Id ?? 0;
+    return this.mNf?.Id ?? 0;
   }
   get TrialRoleGroupId() {
-    return this.yBf?.GroupId ?? 0;
+    return this.mNf?.GroupId ?? 0;
   }
   get Status() {
     return this.h0i;
   }
   get TrialRoleConfig() {
-    return this.yBf;
+    return this.mNf;
   }
   get TrialRoleData() {
-    return this.SBf;
+    return this.fNf;
   }
   get TrialRoleType() {
-    return this.yBf.Type;
+    return this.mNf.Type;
   }
   SetIsUnlocked(t) {
     this.h0i = t ? 1 : 0;
-    if (t && !this.SBf) {
-      this.SBf = ModelManager_1.ModelManager.RoleModel?.GetRoleDataById(this.TrialRoleId);
-      this.SBf.SetIsVisibleInFormation(false);
-      this.SBf.SetIsVisibleInRoleSystem(false);
+    if (t && !this.fNf) {
+      this.fNf = ModelManager_1.ModelManager.RoleModel?.GetRoleDataById(this.TrialRoleId);
+      this.fNf.SetIsVisibleInFormation(false);
+      this.fNf.SetIsVisibleInRoleSystem(false);
     }
-    this.SBf?.SetIsUnlock(t);
-    if (this.MBf !== undefined) {
-      this.SBf?.SetIsVisibleInFormation(this.MBf);
-      this.MBf = undefined;
+    this.fNf?.SetIsUnlock(t);
+    if (this.gNf !== undefined) {
+      this.fNf?.SetIsVisibleInFormation(this.gNf);
+      this.gNf = undefined;
     }
   }
   SetIsVisibleInFormation(t) {
-    if (this.SBf) {
-      this.SBf.SetIsVisibleInFormation(t);
+    if (this.fNf) {
+      this.fNf.SetIsVisibleInFormation(t);
     } else {
-      this.MBf = t;
+      this.gNf = t;
     }
   }
   SetIsVisibleInRoleSystem(t) {
-    this.SBf?.SetIsVisibleInRoleSystem(t);
+    this.fNf?.SetIsVisibleInRoleSystem(t);
   }
   SetActivatedTrialRoleId(t) {
-    var e = this.SBf;
-    this.yBf = ConfigManager_1.ConfigManager.TrialRoleConfig?.GetTrialRoleConfig(t);
-    this.SBf = ModelManager_1.ModelManager.RoleModel?.GetRoleDataById(t);
-    if (e && e !== this.SBf) {
+    var e = this.fNf;
+    this.mNf = ConfigManager_1.ConfigManager.TrialRoleConfig?.GetTrialRoleConfig(t);
+    this.fNf = ModelManager_1.ModelManager.RoleModel?.GetRoleDataById(t);
+    if (e && e !== this.fNf) {
       e.SetIsVisibleInFormation(false);
       e.SetIsVisibleInRoleSystem(false);
     }
@@ -82,15 +82,15 @@ class TrialRoleGroupData {
     return !!this.IsUnlocked() && this.IsReachUpgradeCondition();
   }
   GetCurWorldLevel() {
-    return this.yBf?.WorldLevel ?? 0;
+    return this.mNf?.WorldLevel ?? 0;
   }
   GetNextWorldLevel() {
-    if (!this.TDf) {
+    if (!this.oOf) {
       return -1;
     }
-    let t = this.TDf.findIndex(t => t.Id === this.TrialRoleId) ?? -1;
-    if (t >= 0 && t + 1 < this.TDf.length) {
-      return t = this.TDf[t + 1].WorldLevel;
+    let t = this.oOf.findIndex(t => t.Id === this.TrialRoleId) ?? -1;
+    if (t >= 0 && t + 1 < this.oOf.length) {
+      return t = this.oOf[t + 1].WorldLevel;
     } else {
       return -1;
     }
@@ -108,7 +108,7 @@ class TrialRoleGroupData {
     }
     var t = ModelManager_1.ModelManager.WorldLevelModel.OriginWorldLevel;
     let e = this.TrialRoleId;
-    for (const i of this.TDf) {
+    for (const i of this.oOf) {
       if (i.WorldLevel > t) {
         break;
       }
@@ -117,8 +117,8 @@ class TrialRoleGroupData {
     return e;
   }
   SetActivatedRoleAttr(t, e) {
-    if (this.SBf) {
-      var i = this.SBf.GetAttributeData();
+    if (this.fNf) {
+      var i = this.fNf.GetAttributeData();
       i.ClearRoleBaseAttr();
       for (const r of t) {
         i.SetRoleBaseAttr(r.Z4n, r.e5n);

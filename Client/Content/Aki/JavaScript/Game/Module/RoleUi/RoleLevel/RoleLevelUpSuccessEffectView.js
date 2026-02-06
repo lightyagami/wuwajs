@@ -10,7 +10,7 @@ const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const UiViewBase_1 = require("../../../Ui/Base/UiViewBase");
 const GridProxyAbstract_1 = require("../../Util/Grid/GridProxyAbstract");
 const LguiUtil_1 = require("../../Util/LguiUtil");
-const LoopScrollView_1 = require("../../Util/ScrollView/LoopScrollView");
+const GenericScrollViewNew_1 = require("../../Util/ScrollView/GenericScrollViewNew");
 class RoleLevelUpSuccessEffectView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
@@ -28,7 +28,7 @@ class RoleLevelUpSuccessEffectView extends UiViewBase_1.UiViewBase {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UILoopScrollViewComponent], [1, UE.UIItem], [2, UE.UIText], [3, UE.UIText], [4, UE.UIButtonComponent], [5, UE.UIButtonComponent]];
+    this.ComponentRegisterInfos = [[0, UE.UIScrollViewWithScrollbarComponent], [1, UE.UIItem], [2, UE.UIText], [3, UE.UIText], [4, UE.UIButtonComponent], [5, UE.UIButtonComponent]];
     this.BtnBindInfo = [[4, this.nqe], [5, this.nqe]];
   }
   OnBeforeCreate() {
@@ -43,18 +43,12 @@ class RoleLevelUpSuccessEffectView extends UiViewBase_1.UiViewBase {
   }
   OnStart() {
     var e = this.GetItem(1);
-    this.Xuo = new LoopScrollView_1.LoopScrollView(this.GetLoopScrollViewComponent(0), e.GetOwner(), this.$uo);
+    this.Xuo = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(0), this.$uo, e.GetOwner());
   }
   OnBeforeShow() {
     this.RDt();
     this.Yuo();
     this.uuo();
-  }
-  OnBeforeDestroy() {
-    if (this.Xuo) {
-      this.Xuo.ClearGridProxies();
-      this.Xuo = undefined;
-    }
   }
   Dbt() {
     var e = this.Pe.AudioId;
@@ -75,9 +69,9 @@ class RoleLevelUpSuccessEffectView extends UiViewBase_1.UiViewBase {
     var e;
     if (this.Xuo) {
       if ((e = this.Pe.TextList) !== undefined) {
-        this.Xuo.ReloadData(e);
+        this.Xuo.RefreshByData(e);
       } else {
-        this.GetLoopScrollViewComponent(0).RootUIComp.SetUIActive(false);
+        this.GetScrollViewWithScrollbar(0).RootUIComp.SetUIActive(false);
       }
     }
   }

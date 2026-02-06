@@ -15,8 +15,8 @@ class HonamiStoryMainButtonItem extends UiPanelBase_1.UiPanelBase {
     super(...arguments);
     this.awi = 0;
     this.rMt = undefined;
-    this.M$m = undefined;
-    this.lDm = undefined;
+    this.QDg = undefined;
+    this.MAm = undefined;
     this.aJd = undefined;
     this.SpecialParamName = undefined;
     this.SpecialSequenceName = undefined;
@@ -34,46 +34,49 @@ class HonamiStoryMainButtonItem extends UiPanelBase_1.UiPanelBase {
   OnStart() {
     this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
   }
-  SetConfigData(e) {
-    if (e.FunctionId) {
-      this.awi = e.FunctionId;
+  SetConfigData(t) {
+    if (t.FunctionId) {
+      this.awi = t.FunctionId;
     }
-    if (e.SetTextCallback) {
-      this.lDm = e.SetTextCallback;
+    if (t.SetTextCallback) {
+      this.MAm = t.SetTextCallback;
     }
-    if (e.ShowRedDot) {
-      this.aJd = e.ShowRedDot;
+    if (t.ShowRedDot) {
+      this.aJd = t.ShowRedDot;
     }
-    if (e.SpecialParamName) {
-      this.SpecialParamName = e.SpecialParamName;
+    if (t.ShowCallback) {
+      this.QDg = t.ShowCallback;
     }
-    if (e.SpecialSequenceName) {
-      this.SpecialSequenceName = e.SpecialSequenceName;
+    if (t.SpecialParamName) {
+      this.SpecialParamName = t.SpecialParamName;
+    }
+    if (t.SpecialSequenceName) {
+      this.SpecialSequenceName = t.SpecialSequenceName;
     }
   }
-  SetClickCallback(e) {
-    this.rMt = e;
+  SetClickCallback(t) {
+    this.rMt = t;
   }
   CheckIsSpecialSet() {
     return (this.aJd && this.aJd() && this.SpecialSequenceName !== undefined) ?? false;
   }
   SetButtonState() {
-    var e = ModelManager_1.ModelManager.FunctionModel.IsOpen(this.awi);
-    var t = !this.M$m || this.M$m();
-    if (e && t) {
+    var t = ModelManager_1.ModelManager.FunctionModel.IsOpen(this.awi);
+    var e = !this.QDg || this.QDg();
+    if (t && e) {
       this.SetUiActive(true);
-      if (!(e = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.HonamiStoryMainButtonUnlockSet) ?? new Set()).has(this.awi)) {
+      if (!(t = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.HonamiStoryMainButtonUnlockSet) ?? new Set()).has(this.awi)) {
         this.SPe.PlaySequencePurely("Start");
-        e.add(this.awi);
-        LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.HonamiStoryMainButtonUnlockSet, e);
+        t.add(this.awi);
+        LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.HonamiStoryMainButtonUnlockSet, t);
       }
     } else {
       this.SetUiActive(false);
     }
   }
   SetText() {
-    if (this.lDm) {
-      this.lDm(this.GetText(1));
+    if (this.MAm) {
+      this.MAm(this.GetText(1));
     } else {
       this.GetText(1).SetText("");
     }
@@ -87,8 +90,9 @@ class HonamiStoryMainButtonItem extends UiPanelBase_1.UiPanelBase {
   }
   Clear() {
     this.rMt = undefined;
-    this.lDm = undefined;
+    this.MAm = undefined;
     this.aJd = undefined;
+    this.QDg = undefined;
     this.SpecialParamName = undefined;
     this.SpecialSequenceName = undefined;
   }

@@ -91,7 +91,7 @@ class PawnInteractController {
     this.yrr = "";
     this.Irr = DEFAULT_INTERACT_RANGE;
     this.Trr = -1;
-    this.Xkf = new Map();
+    this.j3f = new Map();
     this.SectorRange = undefined;
     this.LocationOffset = undefined;
     this.InteractCameraOffsetConifg = undefined;
@@ -101,6 +101,7 @@ class PawnInteractController {
     this.IsTurnAround = false;
     this.IsTurnRecoveryImmediately = false;
     this.IsWaitTurnComplete = false;
+    this.IsWaitMontageFinish = undefined;
     this.A_d = "Dialog";
     this.D_d = undefined;
     this.x_d = undefined;
@@ -119,16 +120,16 @@ class PawnInteractController {
     this.OnInteractionUpdate = undefined;
     this.OnInteractActionEnd = undefined;
     this.rOu = new Set();
-    this.Ykf = new Set();
-    this.zkf = new Map();
+    this.$3f = new Set();
+    this.W3f = new Map();
     this.SecondConfirmHandle = 0;
     this.NeedActiveUi = true;
-    this.Jkf = (t, i) => {
-      if (!i && this.Ykf.has(t)) {
-        this.Ykf.delete(t);
+    this.Q3f = (t, i) => {
+      if (!i && this.$3f.has(t)) {
+        this.$3f.delete(t);
         this.frr?.ForceUpdate();
-      } else if (i && !this.Ykf.has(t)) {
-        this.Ykf.add(t);
+      } else if (i && !this.$3f.has(t)) {
+        this.$3f.add(t);
         this.frr?.ForceUpdate();
       }
     };
@@ -156,12 +157,12 @@ class PawnInteractController {
       InteractConfirmController_1.InteractConfirmController.CancelAction(this.SecondConfirmHandle);
     }
     this.SecondConfirmHandle = 0;
-    this.Ykf.clear();
-    for (const t of this.zkf.values()) {
+    this.$3f.clear();
+    for (const t of this.W3f.values()) {
       t.EndTask();
     }
-    this.zkf.clear();
-    this.Xkf.clear();
+    this.W3f.clear();
+    this.j3f.clear();
   }
   get DefaultShowOption() {
     var t = this.GetInteractiveOption();
@@ -202,7 +203,7 @@ class PawnInteractController {
         }
         if (e.RangesByTags) {
           for (const r of e.RangesByTags) {
-            this.Xkf.set(r.Tag, r);
+            this.j3f.set(r.Tag, r);
           }
         }
         if (e.ExitRange) {
@@ -227,6 +228,9 @@ class PawnInteractController {
         }
         if (e.TidContent) {
           this.yrr = e.TidContent;
+        }
+        if (e.InterruptMontageType) {
+          this.IsWaitMontageFinish = e.InterruptMontageType;
         }
         this.Drr = e.DoIntactType;
         if (e.TurnAroundType) {
@@ -1044,7 +1048,7 @@ class PawnInteractController {
   HandleInteractRequest() {
     if (this.frr?.Valid) {
       if (WorldFunctionLibrary_1.default.GetEntityTypeByEntity(this.frr.Entity.Id) === Protocol_1.Aki.Protocol.kks.Proto_Npc) {
-        this.frr.Entity.GetComponent(46)?.MoveController?.PushMoveInfo();
+        this.frr.Entity.GetComponent(48)?.MoveController?.PushMoveInfo();
       }
       this.frr.SetInteractionState(false, "发送交互请求");
       InputDistributeController_1.InputDistributeController.RefreshInputTag();
@@ -1064,13 +1068,13 @@ class PawnInteractController {
       }
       this.frr.SetServerLockInteract(false, "交互失败");
       if (t !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrSceneEntityNotExist && t !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrInteractRange && t !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrInteractCd && t !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrPreCondition && t !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrInteractOptionGuidInvalid && t !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrInteractIsNotParticipant && t !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrInteracTreeSuspend && t !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrorBanInteractEntity) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t, 21923);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t, 23746);
       }
       if (!ModelManager_1.ModelManager.PlotModel.IsInPlot && UiManager_1.UiManager.IsViewShow("PlotView")) {
         PlotController_1.PlotController.EndInteraction(false, true);
       }
     } else {
-      if (i = this.Hte?.Entity?.GetComponent(150)) {
+      if (i = this.Hte?.Entity?.GetComponent(152)) {
         i.CloseAllCollisions();
       }
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnInteractDropItemSuccess);
@@ -1139,26 +1143,26 @@ class PawnInteractController {
     return "无";
   }
   InitInteractPerceptionWithOffset(t) {
-    var i = this.Xkf;
+    var i = this.j3f;
     if (i.size !== 0) {
       for (const r of i.values()) {
         var e = r.ExitRange || this.Trr;
         t(r.Tag, r.Range, e, this.LocationOffset, () => {
           var t;
-          this.Ykf.add(r.Tag);
-          if (!this.zkf.has(r.Tag)) {
-            t = this.frr.PlayerTagComponent.ListenForTagAddOrRemove(r.Tag, this.Jkf);
-            this.zkf.set(r.Tag, t);
+          this.$3f.add(r.Tag);
+          if (!this.W3f.has(r.Tag)) {
+            t = this.frr.PlayerTagComponent.ListenForTagAddOrRemove(r.Tag, this.Q3f);
+            this.W3f.set(r.Tag, t);
           }
           if (this.frr?.PlayerTagComponent?.HasExactTag(r.Tag)) {
             this.frr?.ForceUpdate();
           }
         }, () => {
-          this.Ykf.delete(r.Tag);
-          var t = this.zkf.get(r.Tag);
+          this.$3f.delete(r.Tag);
+          var t = this.W3f.get(r.Tag);
           if (t) {
             t.EndTask();
-            this.zkf.delete(r.Tag);
+            this.W3f.delete(r.Tag);
           }
           if (this.frr?.PlayerTagComponent?.HasExactTag(r.Tag)) {
             this.frr?.ForceUpdate();
@@ -1168,10 +1172,10 @@ class PawnInteractController {
     }
   }
   IsAnyTagCheckInRange() {
-    return this.Ykf.size > 0;
+    return this.$3f.size > 0;
   }
   IsHasTagInTagCheckRange() {
-    for (const t of this.Ykf) {
+    for (const t of this.$3f) {
       if (this.frr?.PlayerTagComponent?.HasExactTag(t)) {
         return true;
       }

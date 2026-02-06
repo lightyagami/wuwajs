@@ -96,6 +96,7 @@ class BulletInfo {
     this.ParentEffect = 0;
     this.NeedNotifyChildrenWhenDestroy = false;
     this.HitNumberAll = 0;
+    this.EntityHitSet = new Set();
     this.EntityHitCount = new Map();
     this.CountByParent = false;
     this.TimeScaleList = undefined;
@@ -308,19 +309,19 @@ class BulletInfo {
     return this.eVo;
   }
   get AttackerSkillComp() {
-    this.BHo ||= this.Attacker?.GetComponent(40);
+    this.BHo ||= this.Attacker?.GetComponent(42);
     return this.BHo;
   }
   get AttackerBuffComp() {
-    this.bHo ||= this.Attacker?.GetComponent(220);
+    this.bHo ||= this.Attacker?.GetComponent(222);
     return this.bHo;
   }
   get AttackerMoveComp() {
-    this.qHo ||= this.Attacker?.GetComponent(187);
+    this.qHo ||= this.Attacker?.GetComponent(189);
     return this.qHo;
   }
   get AttackerAudioComponent() {
-    this.GHo ||= this.Attacker?.GetComponent(52);
+    this.GHo ||= this.Attacker?.GetComponent(54);
     return this.GHo;
   }
   get Target() {
@@ -365,7 +366,7 @@ class BulletInfo {
     }
   }
   GetLockOnTargetDynamic() {
-    return this.xHo?.Entity?.GetComponent(33)?.GetCurrentTarget()?.Entity?.GetComponent(1);
+    return this.xHo?.Entity?.GetComponent(34)?.GetCurrentTarget()?.Entity?.GetComponent(1);
   }
   get ParentEntityId() {
     return this.SHo.ParentId;
@@ -468,6 +469,7 @@ class BulletInfo {
     this.NeedNotifyChildrenWhenDestroy = false;
     this.HitNumberAll = 0;
     this.EntityHitCount.clear();
+    this.EntityHitSet.clear();
     this.CountByParent = false;
     this.TimeScaleList = undefined;
     this.TimeScaleMap = undefined;

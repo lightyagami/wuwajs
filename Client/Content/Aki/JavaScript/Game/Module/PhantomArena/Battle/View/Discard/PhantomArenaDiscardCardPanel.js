@@ -73,7 +73,7 @@ class PhantomArenaDiscardCardPanel extends UiPanelBase_1.UiPanelBase {
     this.SelectedIdSet.clear();
     await this.Scroll.RefreshByDataAsync(this.Data.CardDataList);
     this.mGe();
-    this.GLf();
+    this.XBf();
     this.pG1();
     this.ViewProxy.HideCardTips();
     this.ViewProxy.SetCaptionItemActive(false);
@@ -127,7 +127,7 @@ class PhantomArenaDiscardCardPanel extends UiPanelBase_1.UiPanelBase {
   mGe() {
     this.GetText(0).SetText(this.SelectedIdSet.size + "/" + this.Data.LimitCount);
   }
-  GLf() {
+  XBf() {
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(7), this.Data.TitleTips);
   }
   pG1() {

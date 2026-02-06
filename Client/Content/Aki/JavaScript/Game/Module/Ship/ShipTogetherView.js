@@ -7,8 +7,10 @@ exports.ShipTogetherView = undefined;
 const UE = require("ue");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
+const ConfigManager_1 = require("../../Manager/ConfigManager");
 const ModelManager_1 = require("../../Manager/ModelManager");
 const UiViewBase_1 = require("../../Ui/Base/UiViewBase");
+const RoleDefine_1 = require("../RoleUi/RoleDefine");
 const LoopScrollView_1 = require("../Util/ScrollView/LoopScrollView");
 const ShipTogetherRoleItem_1 = require("./ShipTogetherRoleItem");
 class ShipTogetherView extends UiViewBase_1.UiViewBase {
@@ -21,12 +23,12 @@ class ShipTogetherView extends UiViewBase_1.UiViewBase {
       e.BindOnClickToggleCallBack(this.tbl);
       return e;
     };
-    this.tbl = (e, t) => {
+    this.tbl = (e, o) => {
       if (this.ebl !== e) {
         this.ebl?.SetToggleState(0);
       }
       this.ebl = e;
-      ModelManager_1.ModelManager.ShipTogetherModel.CurrentSelectTogetherRoleId = t;
+      ModelManager_1.ModelManager.ShipTogetherModel.CurrentSelectTogetherRoleId = o;
     };
     this.L3e = () => {
       if (ModelManager_1.ModelManager.ShipTogetherModel.CurrentSelectTogetherRoleId !== -1) {
@@ -47,16 +49,29 @@ class ShipTogetherView extends UiViewBase_1.UiViewBase {
   }
   OnBeforeShow() {
     var e = ModelManager_1.ModelManager.RoleModel.GetRoleList();
-    const o = ModelManager_1.ModelManager.EditFormationModel.GetCurrentFormationData?.GetRoleIdList ?? [];
-    var t = [];
-    for (const i of e) {
-      if (!ModelManager_1.ModelManager.RoleModel.IsMainRole(i.GetRoleId())) {
-        t.push(i);
+    const t = ModelManager_1.ModelManager.EditFormationModel.GetCurrentFormationData?.GetRoleIdList ?? [];
+    var o;
+    var i = [];
+    const n = [];
+    for (const r of t) {
+      if (r > RoleDefine_1.ROBOT_DATA_MIN_ID) {
+        n.push(ConfigManager_1.ConfigManager.RoleConfig.GetTrialRoleConfig(r)?.ParentId ?? 0);
       }
     }
-    t.sort((e, t) => {
-      var i = o.includes(e.GetRoleId());
-      var r = o.includes(t.GetRoleId());
+    for (const s of e) {
+      if (!ModelManager_1.ModelManager.RoleModel.IsMainRole(s.GetRoleId())) {
+        o = {
+          RoleInstance: s,
+          IsInFormation: t.includes(s.GetRoleId()) || n.includes(s.GetRoleId())
+        };
+        i.push(o);
+      }
+    }
+    i.sort((e, o) => {
+      var e = e.RoleInstance;
+      var o = o.RoleInstance;
+      var i = t.includes(e.GetRoleId()) || n.includes(e.GetRoleId());
+      var r = t.includes(o.GetRoleId()) || n.includes(o.GetRoleId());
       if (i || r) {
         if (i && r) {
           return 0;
@@ -65,13 +80,13 @@ class ShipTogetherView extends UiViewBase_1.UiViewBase {
         } else {
           return -1;
         }
-      } else if ((r = e.GetFavorData().GetFavorLevel()) !== (i = t.GetFavorData().GetFavorLevel())) {
+      } else if ((r = e.GetFavorData().GetFavorLevel()) !== (i = o.GetFavorData().GetFavorLevel())) {
         return i - r;
       } else {
-        return t.GetRoleCreateTime() - e.GetRoleCreateTime();
+        return o.GetRoleCreateTime() - e.GetRoleCreateTime();
       }
     });
-    this.Flo?.RefreshByData(t);
+    this.Flo?.RefreshByData(i);
   }
 }
 exports.ShipTogetherView = ShipTogetherView;

@@ -47,11 +47,11 @@ class SkillButtonDebugInfo extends Json_1.JsonObjBase {
 }
 class LogController extends ControllerBase_1.ControllerBase {
   static OnInit() {
-    Net_1.Net.Register(17142, this.SLn);
+    Net_1.Net.Register(24715, this.SLn);
     return true;
   }
   static OnClear() {
-    Net_1.Net.UnRegister(17142);
+    Net_1.Net.UnRegister(24715);
     return true;
   }
   static qfr(o) {
@@ -196,11 +196,11 @@ class LogController extends ControllerBase_1.ControllerBase {
     LogReportController_1.LogReportController.LogReport(o);
   }
   static SetCurrentUploadLogId(o) {
-    this.gMm = o;
+    this.vMm = o;
   }
   static LogCustomServiceReport(o) {
     var e = new LogReportDefine_1.CustomServiceLogEvent();
-    e.s_trace_id = LogController.gMm;
+    e.s_trace_id = LogController.vMm;
     e.log_status = LauncherNetworkDetectionDefine_1.SendStateToCustomServiceLogMap.get(o) ?? 0;
     LogReportController_1.LogReportController.LogReport(e);
   }
@@ -226,7 +226,7 @@ class LogController extends ControllerBase_1.ControllerBase {
     return o;
   }
   static OutputDebugInfo(o = true) {
-    var e = new DebugInfo(Protocol_1.Aki.Protocol.i4s[ModelManager_1.ModelManager.GameModeModel.InstanceType], ModelManager_1.ModelManager.OnlineModel.GetIsMyTeam(), ModelManager_1.ModelManager.GameModeModel.InstanceDungeon.MapConfigId, Time_1.Time.TimeDilation, ModelManager_1.ModelManager.CreatureModel.GetPlayerId(), [Global_1.Global.BaseCharacter.CharacterActorComponent.ActorLocationProxy.X.toFixed(2), Global_1.Global.BaseCharacter.CharacterActorComponent.ActorLocationProxy.Y.toFixed(2), Global_1.Global.BaseCharacter.CharacterActorComponent.ActorLocationProxy.Z.toFixed(2)], ModelManager_1.ModelManager.GameModeModel.IsMulti, ModelManager_1.ModelManager.OnlineModel.GetAllWorldTeamPlayer(), FormationDataController_1.FormationDataController.GetPlayerEntity(ModelManager_1.ModelManager.CreatureModel.GetPlayerId()).GetComponent(209).GetAllBuffs().map(o => String(o.Id)), CharacterGasDebugComponent_1.CharacterGasDebugComponent.GetFormationAttributeDebugStrings().replace(/\n/g, ",").replace(/\s/g, ""), ModelManager_1.ModelManager.SceneTeamModel.GetTeamItems().map(o => ({
+    var e = new DebugInfo(Protocol_1.Aki.Protocol.i4s[ModelManager_1.ModelManager.GameModeModel.InstanceType], ModelManager_1.ModelManager.OnlineModel.GetIsMyTeam(), ModelManager_1.ModelManager.GameModeModel.InstanceDungeon.MapConfigId, Time_1.Time.TimeDilation, ModelManager_1.ModelManager.CreatureModel.GetPlayerId(), [Global_1.Global.BaseCharacter.CharacterActorComponent.ActorLocationProxy.X.toFixed(2), Global_1.Global.BaseCharacter.CharacterActorComponent.ActorLocationProxy.Y.toFixed(2), Global_1.Global.BaseCharacter.CharacterActorComponent.ActorLocationProxy.Z.toFixed(2)], ModelManager_1.ModelManager.GameModeModel.IsMulti, ModelManager_1.ModelManager.OnlineModel.GetAllWorldTeamPlayer(), FormationDataController_1.FormationDataController.GetPlayerEntity(ModelManager_1.ModelManager.CreatureModel.GetPlayerId()).GetComponent(211).GetAllBuffs().map(o => String(o.Id)), CharacterGasDebugComponent_1.CharacterGasDebugComponent.GetFormationAttributeDebugStrings().replace(/\n/g, ",").replace(/\s/g, ""), ModelManager_1.ModelManager.SceneTeamModel.GetTeamItems().map(o => ({
       EntityHandleId: o.EntityHandle?.Id,
       ConfigId: o.GetConfigId,
       IsMyRole: o.IsMyRole(),
@@ -240,12 +240,12 @@ class LogController extends ControllerBase_1.ControllerBase {
       var r;
       var l = o.Entity;
       var n = l?.GetComponent(3);
-      var a = l?.GetComponent(220);
+      var a = l?.GetComponent(222);
       if (l && n && a) {
         e = l.GetComponent(0);
-        t = l.GetComponent(215);
-        r = l.GetComponent(181);
-        l = l.GetComponent(109);
+        t = l.GetComponent(217);
+        r = l.GetComponent(183);
+        l = l.GetComponent(111);
         g += `
 ***********
 实体信息: EntityHandleId: ${o.Id}, CreatureDataId: ${e?.GetCreatureDataId()}, PbDataId: ${e?.GetPbDataId()}, Type: ${e?.GetEntityType()}, 位置: ${[n?.ActorLocationProxy.X.toFixed(2), n?.ActorLocationProxy.Y.toFixed(2), n?.ActorLocationProxy.Z.toFixed(2)]}, IsInFighting: ${l?.IsInFighting}
@@ -263,7 +263,7 @@ ${g}`);
   static RequestOutputDebugInfo() {
     var o = new Protocol_1.Aki.Protocol.Debug.FZn();
     o.GKn = LogController.OutputDebugInfo();
-    Net_1.Net.Call(20197, o, o => {
+    Net_1.Net.Call(21564, o, o => {
       if (o && Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Log", 37, "[Debug]服务器端战斗状态信息打印");
       }
@@ -274,7 +274,7 @@ ${g}`);
 LogController.Ofr = new Array();
 LogController.kfr = FRAMING_LOG_NUM;
 LogController.Ffr = Stats_1.Stat.Create("LogOnBattleEnd_Framing");
-LogController.gMm = "";
+LogController.vMm = "";
 LogController.Nfr = () => {
   LogController.Ffr.Start();
   var o = LogController.kfr;

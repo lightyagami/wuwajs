@@ -37,7 +37,7 @@ class HonamiStoryWeaponSelectView extends UiViewBase_1.UiViewBase {
     this.XYd = undefined;
     this.p9t = undefined;
     this.wVl = undefined;
-    this.ZNm = undefined;
+    this.p4m = undefined;
     this.YYd = () => {
       var t = new HonamiStoryWeaponPanelItem_1.HonamiStoryWeaponPanelItem();
       t.BindWeaponToggleClick(this.zYd);
@@ -67,14 +67,14 @@ class HonamiStoryWeaponSelectView extends UiViewBase_1.UiViewBase {
       var t = ModelManager_1.ModelManager.HonamiStoryModel.GetWeaponEquipState(e) ?? this.ram?.GetEquipData();
       if (t && t.GetRoleId() !== 0 && this.$Yd?.GetRoleId() !== t.GetRoleId()) {
         (t = new ConfirmBoxDefine_1.ConfirmBoxDataNew(421)).FunctionMap.set(2, () => {
-          this.rIf(e, this.$Yd.GetPosition());
+          this.xwf(e, this.$Yd.GetPosition());
         });
         ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(t);
       } else {
-        this.rIf(e, this.$Yd.GetPosition());
+        this.xwf(e, this.$Yd.GetPosition());
       }
     };
-    this.rIf = (t, e) => {
+    this.xwf = (t, e) => {
       HonamiStoryController_1.HonamiStoryController.SendHonamiStoryWeaponDressRequest(t, e, () => {
         this.ZYd();
         for (const t of this.oam) {
@@ -88,7 +88,7 @@ class HonamiStoryWeaponSelectView extends UiViewBase_1.UiViewBase {
     this._5e = () => {
       this.CloseMe();
     };
-    this.JNm = t => {
+    this.C4m = t => {
       this.ZYd();
     };
   }
@@ -96,10 +96,10 @@ class HonamiStoryWeaponSelectView extends UiViewBase_1.UiViewBase {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIVerticalLayout], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIText], [7, UE.UIText], [8, UE.UIText], [9, UE.UIText], [10, UE.UIMultiTemplateLayout], [11, UE.UIItem], [12, UE.UIText], [13, UE.UIVerticalLayout], [14, UE.UIItem], [15, UE.UIText], [16, UE.UIText], [17, UE.UIItem], [18, UE.UIItem], [19, UE.UIItem], [20, UE.UIItem]];
   }
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnHonamiStorySkillDescModeChange, this.JNm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnHonamiStorySkillDescModeChange, this.C4m);
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnHonamiStorySkillDescModeChange, this.JNm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnHonamiStorySkillDescModeChange, this.C4m);
   }
   async OnBeforeStartAsync() {
     this.Fq();
@@ -112,8 +112,8 @@ class HonamiStoryWeaponSelectView extends UiViewBase_1.UiViewBase {
     }
     await this.QYd?.RefreshByDataAsync(t);
     this.nam();
-    this.ZNm = new HonamiStorySkillDescToggle_1.HonamiStorySkillDescToggle();
-    await this.ZNm.CreateThenShowByActorAsync(this.GetItem(0).GetOwner());
+    this.p4m = new HonamiStorySkillDescToggle_1.HonamiStorySkillDescToggle();
+    await this.p4m.CreateThenShowByActorAsync(this.GetItem(0).GetOwner());
   }
   OnStart() {
     var t = {

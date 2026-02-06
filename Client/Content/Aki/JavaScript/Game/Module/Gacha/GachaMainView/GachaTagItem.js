@@ -10,7 +10,9 @@ const StringUtils_1 = require("../../../../Core/Utils/StringUtils");
 const LocalStorage_1 = require("../../../Common/LocalStorage");
 const LocalStorageDefine_1 = require("../../../Common/LocalStorageDefine");
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
+const LogReportDefine_1 = require("../../LogReport/LogReportDefine");
 const GridProxyAbstract_1 = require("../../Util/Grid/GridProxyAbstract");
 const LguiUtil_1 = require("../../Util/LguiUtil");
 class GachaTagItem extends GridProxyAbstract_1.GridProxyAbstract {
@@ -33,41 +35,43 @@ class GachaTagItem extends GridProxyAbstract_1.GridProxyAbstract {
   OnStart() {
     this.GetExtendToggle(3).CanExecuteChange.Bind(() => !this.CanExecuteChange || this.CanExecuteChange(this.GridIndex));
   }
-  SetSelected(t) {
-    if (t) {
+  SetSelected(e) {
+    if (e) {
       this.GetExtendToggle(3).SetToggleState(1);
+      (e = new LogReportDefine_1.OnClickGachaScrollLogEvent()).i_gacha_id = this.GachaId;
+      ControllerHolder_1.ControllerHolder.LogReportController.LogReport(e);
     } else {
       this.GetExtendToggle(3).SetToggleState(0);
     }
   }
   RefreshRedDot() {
-    let t = ModelManager_1.ModelManager.GachaModel.CheckNewGachaPoolById(this.GachaId);
-    var e;
+    let e = ModelManager_1.ModelManager.GachaModel.CheckNewGachaPoolById(this.GachaId);
+    var t;
     var i;
-    if (!t) {
-      if ((e = ModelManager_1.ModelManager.GachaModel.GetGachaInfo(this.GachaId))?.GetFirstValidPool()?.UiType === 5) {
-        e = e?.UsePoolId === 0;
+    if (!e) {
+      if ((t = ModelManager_1.ModelManager.GachaModel.GetGachaInfo(this.GachaId))?.GetFirstValidPool()?.UiType === 5) {
+        t = t?.UsePoolId === 0;
         i = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.FirstOpenCommonWeaponSelect, false) ?? false;
-        t = e && !i;
+        e = t && !i;
       }
     }
-    this.GetItem(2)?.SetUIActive(t);
+    this.GetItem(2)?.SetUIActive(e);
   }
   InitData() {
-    var t;
     var e;
+    var t;
     if (this.Data) {
-      t = this.Data.PoolInfo.Id;
-      if (t = ConfigManager_1.ConfigManager.GachaConfig.GetGachaViewInfo(t)) {
-        this.SetSpriteByPath(t.TagNotSelectedSpritePath, this.GetSprite(0), false);
-        this.SetSpriteByPath(t.TagSelectedSpritePath, this.GetSprite(1), false);
+      e = this.Data.PoolInfo.Id;
+      if (e = ConfigManager_1.ConfigManager.GachaConfig.GetGachaViewInfo(e)) {
+        this.SetSpriteByPath(e.TagNotSelectedSpritePath, this.GetSprite(0), false);
+        this.SetSpriteByPath(e.TagSelectedSpritePath, this.GetSprite(1), false);
         this.GetItem(4).SetUIActive(true);
-        t = t.Type;
-        if ((e = (t = ConfigManager_1.ConfigManager.GachaConfig.GetGachaViewTypeConfig(t)).TagText) && !StringUtils_1.StringUtils.IsBlank(e)) {
+        e = e.Type;
+        if ((t = (e = ConfigManager_1.ConfigManager.GachaConfig.GetGachaViewTypeConfig(e)).TagText) && !StringUtils_1.StringUtils.IsBlank(t)) {
           this.GetItem(4).SetUIActive(true);
-          LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(6), t.TagText);
-          e = UE.Color.FromHex(t.TagColor);
-          this.GetSprite(5).SetColor(e);
+          LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(6), e.TagText);
+          t = UE.Color.FromHex(e.TagColor);
+          this.GetSprite(5).SetColor(t);
         } else {
           this.GetItem(4).SetUIActive(false);
         }
@@ -76,23 +80,23 @@ class GachaTagItem extends GridProxyAbstract_1.GridProxyAbstract {
       }
     }
   }
-  Refresh(t, e, i) {
-    this.Data = t;
+  Refresh(e, t, i) {
+    this.Data = e;
     this.InitData();
     this.RefreshRedDot();
-    if (e) {
+    if (t) {
       this.OnSelected(false);
     } else {
       this.OnDeselected(false);
     }
   }
-  GetKey(t, e) {
+  GetKey(e, t) {
     return this.GachaId;
   }
-  OnSelected(t) {
+  OnSelected(e) {
     this.SetSelected(true);
   }
-  OnDeselected(t) {
+  OnDeselected(e) {
     this.SetSelected(false);
   }
 }

@@ -22,7 +22,7 @@ class InfrastructureMissionPanel extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
     super(...arguments);
     this.Pe = undefined;
-    this.p4m = undefined;
+    this.q5m = undefined;
     this.LevelSequencePlayer = undefined;
     this.T8a = () => {
       if (this.Pe?.Index === 0) {
@@ -67,7 +67,7 @@ class InfrastructureMissionPanel extends GridProxyAbstract_1.GridProxyAbstract {
     this.GetItem(11).SetUIActive(false);
   }
   async OnBeforeStartAsync() {
-    this.p4m = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(4), () => {
+    this.q5m = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(4), () => {
       return new InfrastructureMissionItem_1.InfrastructureMissionItem();
     });
     return Promise.resolve();
@@ -79,13 +79,13 @@ class InfrastructureMissionPanel extends GridProxyAbstract_1.GridProxyAbstract {
     this.Pe = e;
     RedDotController_1.RedDotController.UnBindGivenUi("QuestViewItem", this.GetItem(6));
     if (e.Index === 0) {
-      this.P4m();
+      this.X5m();
     } else {
-      this.A4m();
+      this.Y5m();
     }
     this.LevelSequencePlayer.PlayLevelSequenceByName("Start");
   }
-  P4m() {
+  X5m() {
     this.GetText(0).ShowTextNew("BuildRoadNet_CoreTask");
     this.GetItem(6).SetUIActive(true);
     var e = ModelManager_1.ModelManager.InfrastructureModel;
@@ -102,7 +102,7 @@ class InfrastructureMissionPanel extends GridProxyAbstract_1.GridProxyAbstract {
     }
     this.SetSpriteByPath("/Game/Aki/UI/UIResources/UiActivity/Atlas/Activity30/ActivityInfrastructure/Main/SP_IconActivityInfrastructure8.SP_IconActivityInfrastructure8", this.GetSprite(8), true);
   }
-  A4m() {
+  Y5m() {
     var e = ModelManager_1.ModelManager.InfrastructureModel;
     var r = ConfigManager_1.ConfigManager.InfrastructureConfig;
     this.GetItem(6).SetUIActive(false);
@@ -122,7 +122,7 @@ class InfrastructureMissionPanel extends GridProxyAbstract_1.GridProxyAbstract {
         CurrentCount: ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(i)
       });
     }
-    this.p4m?.RefreshByData(o);
+    this.q5m?.RefreshByData(o);
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), "BuildRoadNet_RoadTask", e.GetCompleteRoadIds().length, r.GetRoadConfigList().length);
     this.GetText(0).ShowTextNew("BuildRoadNet_RoadTask");
     this.GetText(3).ShowTextNew(n.QuestDescription);

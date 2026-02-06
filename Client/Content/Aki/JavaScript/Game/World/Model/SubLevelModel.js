@@ -15,8 +15,8 @@ class SubLevelModel extends ModelBase_1.ModelBase {
     this.SW_ = new Map();
     this.da = new Map();
     this.MW_ = new Map();
-    this.CMm = false;
-    this.pMm = false;
+    this.yMm = false;
+    this.SMm = false;
   }
   OnLeaveLevel() {
     var e;
@@ -32,22 +32,22 @@ class SubLevelModel extends ModelBase_1.ModelBase {
       this.RemoveSubLevel(r, true);
     }
     l.length = 0;
-    this.CMm = false;
-    return !(this.pMm = false);
+    this.yMm = false;
+    return !(this.SMm = false);
   }
   SetSubLevelSwitching(e) {
-    this.CMm = true;
-    this.pMm = e;
+    this.yMm = true;
+    this.SMm = e;
   }
   UnsetSubLevelSwitching() {
-    this.CMm = false;
-    this.pMm = false;
+    this.yMm = false;
+    this.SMm = false;
   }
   IsInSubLevelSwitching() {
-    return this.CMm;
+    return this.yMm;
   }
   IsInSubLevelSwitchingAndBlockingInput() {
-    return this.CMm && this.pMm;
+    return this.yMm && this.SMm;
   }
   GetAllPreloadSubLevels() {
     return this.SW_;
@@ -108,8 +108,8 @@ class SubLevelModel extends ModelBase_1.ModelBase {
       this.SW_.delete(e);
     }
     if (!l) {
-      if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("World", 3, "[GameModeModel.RemoveSubLevel]不存在子关卡，删除子关卡失败。", ["Path", e]);
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("World", 3, "[GameModeModel.RemoveSubLevel]不存在子关卡，删除子关卡失败。", ["Path", e]);
       }
       return false;
     }

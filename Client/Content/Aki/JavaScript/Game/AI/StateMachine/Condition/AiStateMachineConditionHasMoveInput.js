@@ -11,17 +11,47 @@ class AiStateMachineConditionHasMoveInput extends AiStateMachineCondition_1.AiSt
   constructor() {
     super(...arguments);
     this.Awu = (t, e) => {
-      this.ResultSelf = this.Node.MoveComponent.HasMoveInput;
+      this.ResultSelf = this.Node.MoveComponent.HasMoveInput || this.Node.FloatingComponent.HasFloatingMoveInput;
       if (this.Node?.Activated) {
         this.Node.Owner.TickStateMachine(this.Result, "AiStateMachineConditionHasMoveInput", this.Node.Name);
       }
     };
+    this.Q6g = (t, e) => {
+      this.ResultSelf = this.Node.MoveComponent.HasMoveInput || this.Node.FloatingComponent.HasFloatingMoveInput;
+      if (this.Node?.Activated) {
+        this.Node.Owner.TickStateMachine(this.Result, "AiStateMachineConditionHasFloatingMoveInput", this.Node.Name);
+      }
+    };
   }
   RegisterEvents() {
-    return !!super.RegisterEvents() && !!this.Node && !!this.Node.Entity && !EventSystem_1.EventSystem.HasWithTarget(this.Node.Entity, EventDefine_1.EEventName.OnInputMoveChanged, this.Awu) && !(EventSystem_1.EventSystem.AddWithTarget(this.Node.Entity, EventDefine_1.EEventName.OnInputMoveChanged, this.Awu), 0);
+    if (super.RegisterEvents() && this.Node && this.Node.Entity) {
+      let t = false;
+      if (!EventSystem_1.EventSystem.HasWithTarget(this.Node.Entity, EventDefine_1.EEventName.OnInputMoveChanged, this.Awu)) {
+        EventSystem_1.EventSystem.AddWithTarget(this.Node.Entity, EventDefine_1.EEventName.OnInputMoveChanged, this.Awu);
+        t = true;
+      }
+      if (!EventSystem_1.EventSystem.HasWithTarget(this.Node.Entity, EventDefine_1.EEventName.OnFloatingMoveInputChanged, this.Q6g)) {
+        EventSystem_1.EventSystem.AddWithTarget(this.Node.Entity, EventDefine_1.EEventName.OnFloatingMoveInputChanged, this.Q6g);
+        t = true;
+      }
+      return t;
+    }
+    return false;
   }
   UnregisterEvents() {
-    return !!super.UnregisterEvents() && !!this.Node && !!this.Node.Entity && !!EventSystem_1.EventSystem.HasWithTarget(this.Node.Entity, EventDefine_1.EEventName.OnInputMoveChanged, this.Awu) && (EventSystem_1.EventSystem.RemoveWithTarget(this.Node.Entity, EventDefine_1.EEventName.OnInputMoveChanged, this.Awu), true);
+    if (super.UnregisterEvents() && this.Node && this.Node.Entity) {
+      let t = false;
+      if (EventSystem_1.EventSystem.HasWithTarget(this.Node.Entity, EventDefine_1.EEventName.OnInputMoveChanged, this.Awu)) {
+        EventSystem_1.EventSystem.RemoveWithTarget(this.Node.Entity, EventDefine_1.EEventName.OnInputMoveChanged, this.Awu);
+        t = true;
+      }
+      if (EventSystem_1.EventSystem.HasWithTarget(this.Node.Entity, EventDefine_1.EEventName.OnFloatingMoveInputChanged, this.Q6g)) {
+        EventSystem_1.EventSystem.RemoveWithTarget(this.Node.Entity, EventDefine_1.EEventName.OnFloatingMoveInputChanged, this.Q6g);
+        t = true;
+      }
+      return t;
+    }
+    return false;
   }
   OnInit(t) {
     this.RegisterEvents();
@@ -31,7 +61,7 @@ class AiStateMachineConditionHasMoveInput extends AiStateMachineCondition_1.AiSt
     this.UnregisterEvents();
   }
   OnTick() {
-    this.ResultSelf = this.Node.MoveComponent.HasMoveInput;
+    this.ResultSelf = this.Node.MoveComponent.HasMoveInput || this.Node.FloatingComponent.HasFloatingMoveInput;
   }
   ToString(t, e = 0) {
     super.ToString(t, e);

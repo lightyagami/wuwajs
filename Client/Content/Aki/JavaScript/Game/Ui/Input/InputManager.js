@@ -52,7 +52,7 @@ class InputManager {
         IsAllowOpenViewByShortcutKey: () => this.IsAllowOpenViewByShortcutKey(),
         IsAllowCloseViewByShortcutKey: () => this.IsAllowCloseViewByShortcutKey(),
         IsLockShortcutKey: (e, t) => {
-          for (const n of InputManager.c7m.values()) {
+          for (const n of InputManager.m9m.values()) {
             if (n(e, t)) {
               return true;
             }
@@ -92,14 +92,14 @@ class InputManager {
       }
     }
   }
-  static RegisterLockShortcutKeyReason(e, t = InputManager.d7m) {
-    InputManager.c7m.set(e, t);
+  static RegisterLockShortcutKeyReason(e, t = InputManager.f9m) {
+    InputManager.m9m.set(e, t);
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("InputManager", 10, "锁定快捷键输入的原因", ["reason", e]);
     }
   }
   static RemoveLockShortcutKeyReason(e) {
-    InputManager.c7m.delete(e);
+    InputManager.m9m.delete(e);
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("InputManager", 10, "解锁快捷键输入的原因", ["reason", e]);
     }
@@ -395,7 +395,7 @@ InputManager.$ya = new ViewHotKeyHandleContainer_1.ViewHotKeyHandleContainer();
 InputManager.IsAutoMoveCursorToCenter = true;
 InputManager.IsAltPress = false;
 InputManager.ImmersiveMouseModule = undefined;
-InputManager.c7m = new Map();
+InputManager.m9m = new Map();
 InputManager.il = () => {
   if (!InputManager.gU) {
     InputManager.smr();
@@ -420,7 +420,7 @@ InputManager.ht = () => {
     InputManager.IsAltPress = false;
   }
 };
-InputManager.d7m = (e, t) => true;
+InputManager.f9m = (e, t) => true;
 InputManager.amr = (e, t) => {
   if (t === 1 && ModelManager_1.ModelManager.SundryModel.GmBlueprintGmIsOpen && ModelManager_1.ModelManager.SundryModel.CanOpenGmView) {
     if (UiManager_1.UiManager.IsViewOpen("GmView")) {

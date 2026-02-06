@@ -38,7 +38,7 @@ class GameplayAbilityVisionShow extends GameplayAbilityVisionBase_1.GameplayAbil
   }
   HZo() {
     this.MZo = PhantomUtil_1.PhantomUtil.GetSummonedEntity(this.VisionComponent.Entity, Protocol_1.Aki.Protocol.Summon.x3s.Proto_ESummonTypeConcomitantVision);
-    return !this.MZo.Entity.Active && (this.OZo = this.MZo.Entity.GetComponent(3), this.kZo = this.MZo.Entity.GetComponent(41), true);
+    return !this.MZo.Entity.Active && (this.OZo = this.MZo.Entity.GetComponent(3), this.kZo = this.MZo.Entity.GetComponent(43), true);
   }
   VZo(i) {
     let t = 1;

@@ -17,7 +17,7 @@ class LevelConditionCheckEntityLocked extends LevelGeneralBase_1.LevelConditionB
       if (!t?.Valid) {
         return false;
       }
-      t = t.Entity.GetComponent(206);
+      t = t.Entity.GetComponent(208);
       if (!t) {
         return false;
       }

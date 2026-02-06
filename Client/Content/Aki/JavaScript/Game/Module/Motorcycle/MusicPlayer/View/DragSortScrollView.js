@@ -5,9 +5,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.DragSortGridAbstract = exports.DragSortGridData = exports.DragSortScrollView = undefined;
 const UE = require("ue");
+const CommonDefine_1 = require("../../../../../Core/Define/CommonDefine");
 const Vector2D_1 = require("../../../../../Core/Utils/Math/Vector2D");
 const MathUtils_1 = require("../../../../../Core/Utils/MathUtils");
 const GlobalData_1 = require("../../../../GlobalData");
+const ConfigManager_1 = require("../../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const LguiEventSystemManager_1 = require("../../../../Ui/LguiEventSystem/LguiEventSystemManager");
 const UiLayer_1 = require("../../../../Ui/UiLayer");
@@ -16,21 +18,21 @@ const LguiUtil_1 = require("../../../Util/LguiUtil");
 class DragSortScrollView {
   constructor(t, i, s = undefined) {
     this.cNo = undefined;
-    this.TPm = 0;
+    this.HDm = 0;
     this.Ugo = undefined;
     this.Dui = 0;
-    this.bPm = 2;
-    this.RPm = 100;
-    this.wPm = 0.001;
-    this.LPm = 0.01;
+    this.$Dm = ConfigManager_1.ConfigManager.MotorMusicPlayerConfig.GetDragSwapSpeed();
+    this.WDm = 100;
+    this.QDm = ConfigManager_1.ConfigManager.MotorMusicPlayerConfig.GetDragScrollSpeedRange()[0];
+    this.KDm = ConfigManager_1.ConfigManager.MotorMusicPlayerConfig.GetDragScrollSpeedRange()[1];
     this.yGo = [];
     this.SGo = [];
-    this.PPm = new Map();
-    this.APm = [];
-    this.DPm = undefined;
+    this.XDm = new Map();
+    this.YDm = [];
+    this.zDm = undefined;
     this.a4e = undefined;
     this.ypt = [];
-    this.PUf = 0;
+    this.uGf = 0;
     this.OnItemPointerDownCallback = undefined;
     this.OnItemPointerUpCallback = undefined;
     this.pGo = () => {
@@ -47,10 +49,10 @@ class DragSortScrollView {
       this.Ugo = undefined;
       this.yGo.length = 0;
       this.SGo.length = 0;
-      this.PPm.clear();
+      this.XDm.clear();
       this.ypt = [];
-      this.APm = [];
-      this.DPm = undefined;
+      this.YDm = [];
+      this.zDm = undefined;
       this.a4e = undefined;
       this.OnItemPointerDownCallback = undefined;
       this.OnItemPointerUpCallback = undefined;
@@ -58,46 +60,46 @@ class DragSortScrollView {
     this.Ga_ = () => {
       if (this.Ugo) {
         this.Ugo.RefreshDragPosition();
-        this.UPm();
+        this.JDm();
       }
       this.Xqe();
     };
-    this.xPm = t => {
+    this.ZDm = t => {
       if (!t.DragData.IsTweenMoving) {
         this.Ugo = t;
-        this.PUf = t.DragData.Index;
+        this.uGf = t.DragData.Index;
         t.GetRootItem().SetHierarchyIndex(this.SGo.length);
       }
     };
-    this.BPm = t => {
+    this.eUm = t => {
       var i;
       var s;
       var h;
       if (t === this.Ugo) {
-        if ((i = LguiEventSystemManager_1.LguiEventSystemManager.GetPointerEventDataPosition(0)).Y < this.RPm) {
-          (s = this.cNo.VerticalScrollbarComp).SetValue(s.Value - MathUtils_1.MathUtils.RangeClamp(i.Y, this.RPm, 0, this.wPm, this.LPm));
+        if ((i = LguiEventSystemManager_1.LguiEventSystemManager.GetPointerEventDataPosition(0)).Y < this.WDm) {
+          (s = this.cNo.VerticalScrollbarComp).SetValue(s.Value - MathUtils_1.MathUtils.RangeClamp(i.Y, this.WDm, 0, this.QDm, this.KDm));
         }
         s = UE.WidgetLayoutLibrary.GetViewportSize(GlobalData_1.GlobalData.World).Y;
-        if (i.Y > s - this.RPm) {
-          (h = this.cNo.VerticalScrollbarComp).SetValue(h.Value + MathUtils_1.MathUtils.RangeClamp(s - i.Y, this.RPm, 0, this.wPm, this.LPm));
+        if (i.Y > s - this.WDm) {
+          (h = this.cNo.VerticalScrollbarComp).SetValue(h.Value + MathUtils_1.MathUtils.RangeClamp(s - i.Y, this.WDm, 0, this.QDm, this.KDm));
         }
         t.RefreshDragPosition();
-        this.UPm();
+        this.JDm();
       }
     };
-    this.kPm = t => {
+    this.tUm = t => {
       if (this.Ugo) {
         this.SetGridIndex(this.Ugo, this.Ugo.DragData.Index);
         this.Ugo = undefined;
       }
     };
-    this.yGf = t => {
+    this.x6f = t => {
       if (!t.DragData.IsTweenMoving) {
         ControllerHolder_1.ControllerHolder.UiNavigationNewController.NotifyNavigationMousePositionDragState(true);
       }
       this.OnItemPointerDownCallback?.(t);
     };
-    this.SGf = t => {
+    this.B6f = t => {
       this.OnItemPointerUpCallback?.(t);
       ControllerHolder_1.ControllerHolder.UiNavigationNewController.NotifyNavigationMousePositionDragState(false);
     };
@@ -107,9 +109,9 @@ class DragSortScrollView {
     h.SetEnable(false);
     let r = s;
     if (r = s ? r : h.RootUIComp.GetAttachUIChild(0)?.GetOwner()) {
-      this.DPm = r.GetUIItem();
-      this.DPm.SetUIActive(false);
-      this.TPm = h.Spacing;
+      this.zDm = r.GetUIItem();
+      this.zDm.SetUIActive(false);
+      this.HDm = h.Spacing;
       this.Dui = r.GetUIItem().Height;
       this.a4e = i;
       t.OnScrollValueChange.Bind(this.Ga_);
@@ -125,7 +127,7 @@ class DragSortScrollView {
     return this.cNo.RootUIComp.Height ?? 0;
   }
   CalcGridOffsetY(t) {
-    return -t * (this.Dui + this.TPm) - this.Dui * 0.5;
+    return -t * (this.Dui + this.HDm) - this.Dui * 0.5;
   }
   SetGridIndex(t, i, s = true) {
     if (t.DragData) {
@@ -140,20 +142,20 @@ class DragSortScrollView {
     }
   }
   async RefreshByDataAsync(i, t = 0) {
-    this.qPm();
-    this.APm = [];
+    this.iUm();
+    this.YDm = [];
     this.ypt = i;
     for (let t = 0; t < i.length; t++) {
       const i = new DragSortGridData();
       i.Index = t;
       i.OriginDataIndex = t;
-      this.APm.push(i);
+      this.YDm.push(i);
     }
-    for (const i of this.APm) {
+    for (const i of this.YDm) {
       i.TargetOffsetY = this.CalcGridOffsetY(i.Index);
     }
     this.Xqe();
-    this.ContentItem?.SetHeight(i.length * (this.Dui + this.TPm) - this.TPm);
+    this.ContentItem?.SetHeight(i.length * (this.Dui + this.HDm) - this.HDm);
   }
   IsDragging() {
     return this.Ugo !== undefined;
@@ -162,39 +164,39 @@ class DragSortScrollView {
     if (this.Ugo) {
       let t = true;
       var i = this.Ugo.DragData.Index;
-      if (i > this.PUf) {
+      if (i > this.uGf) {
         t = true;
-        for (const h of this.APm) {
-          if (h.Index >= this.PUf && h.Index < i) {
+        for (const h of this.YDm) {
+          if (h.Index >= this.uGf && h.Index < i) {
             h.Index += 1;
           }
           h.TargetOffsetY = this.CalcGridOffsetY(h.Index);
           h.IsTweenMoving = true;
         }
       } else {
-        if (!(i < this.PUf)) {
-          this.Ugo.DragData.Index = this.PUf;
-          this.kPm(this.Ugo);
+        if (!(i < this.uGf)) {
+          this.Ugo.DragData.Index = this.uGf;
+          this.tUm(this.Ugo);
           return;
         }
         t = false;
-        for (const r of this.APm) {
-          if (r.Index <= this.PUf && r.Index > i) {
+        for (const r of this.YDm) {
+          if (r.Index <= this.uGf && r.Index > i) {
             --r.Index;
           }
           r.TargetOffsetY = this.CalcGridOffsetY(r.Index);
           r.IsTweenMoving = true;
         }
       }
-      this.Ugo.DragData.Index = this.PUf;
-      this.kPm(this.Ugo);
+      this.Ugo.DragData.Index = this.uGf;
+      this.tUm(this.Ugo);
       this.Xqe();
       for (const e of this.SGo) {
         var s = e.DragData;
-        if (s.Index <= i && t && s.Index > this.PUf) {
+        if (s.Index <= i && t && s.Index > this.uGf) {
           e.GetRootItem().SetAnchorOffsetY(this.CalcGridOffsetY(s.Index - 1));
           s.IsTweenMoving = true;
-        } else if (s.Index >= i && !t && s.Index < this.PUf) {
+        } else if (s.Index >= i && !t && s.Index < this.uGf) {
           e.GetRootItem().SetAnchorOffsetY(this.CalcGridOffsetY(s.Index + 1));
           s.IsTweenMoving = true;
         }
@@ -203,8 +205,8 @@ class DragSortScrollView {
   }
   Xqe() {
     var t = [];
-    var i = Math.max(0, this.ContentItem.GetAnchorOffsetY() / (this.Dui + this.TPm) - 1);
-    var s = Math.min((this.ContentItem.GetAnchorOffsetY() + this.ScrollHeight) / (this.Dui + this.TPm) + 1, this.ypt.length - 1);
+    var i = Math.max(0, this.ContentItem.GetAnchorOffsetY() / (this.Dui + this.HDm) - 1);
+    var s = Math.min((this.ContentItem.GetAnchorOffsetY() + this.ScrollHeight) / (this.Dui + this.HDm) + 1, this.ypt.length - 1);
     for (const h of this.SGo) {
       if ((h.DragData.Index < i || h.DragData.Index > s) && h !== this.Ugo) {
         t.push(h);
@@ -213,15 +215,15 @@ class DragSortScrollView {
     for (const r of t) {
       this.PGo(r);
     }
-    for (const e of this.APm) {
-      if (!this.PPm.has(e)) {
+    for (const e of this.YDm) {
+      if (!this.XDm.has(e)) {
         if (e.Index >= i && e.Index <= s) {
-          this.OPm(e);
+          this.rUm(e);
         }
       }
     }
   }
-  UPm() {
+  JDm() {
     if (this.Ugo && this.Ugo.DragData) {
       var t = this.Ugo.GetRootItem();
       const s = this.Ugo.DragData.Index - 1;
@@ -244,7 +246,7 @@ class DragSortScrollView {
   }
   PGo(t) {
     this.SGo.splice(this.SGo.indexOf(t), 1);
-    this.PPm.delete(t.DragData);
+    this.XDm.delete(t.DragData);
     t.DragData.IsTweenMoving = false;
     t.DragData = undefined;
     if (t) {
@@ -252,30 +254,30 @@ class DragSortScrollView {
       this.yGo.push(t);
     }
   }
-  qPm() {
+  iUm() {
     for (const t of Array.from(this.SGo)) {
       this.PGo(t);
     }
   }
   AGo(t) {
-    var i = LguiUtil_1.LguiUtil.CopyItem(this.DPm, this.ContentItem);
+    var i = LguiUtil_1.LguiUtil.CopyItem(this.zDm, this.ContentItem);
     var s = this.a4e();
-    s.OnDragBeginCallback = this.xPm;
-    s.OnDragCallback = this.BPm;
-    s.OnDragEndCallback = this.kPm;
-    s.OnPointerDownCallback = this.yGf;
-    s.OnPointerUpCallback = this.SGf;
+    s.OnDragBeginCallback = this.ZDm;
+    s.OnDragCallback = this.eUm;
+    s.OnDragEndCallback = this.tUm;
+    s.OnPointerDownCallback = this.x6f;
+    s.OnPointerUpCallback = this.B6f;
     s.CreateThenShowByActor(i.GetOwner());
     return s;
   }
-  OPm(t) {
+  rUm(t) {
     let i = this.yGo.pop();
     (i = i || this.AGo(t)).SetUiActive(true);
     i.DragData = t;
     this.SetGridIndex(i, i.DragData.Index, false);
     i.Refresh(this.ypt[t.OriginDataIndex], false, t.Index);
     this.SGo.push(i);
-    this.PPm.set(t, i);
+    this.XDm.set(t, i);
     return i;
   }
   Tick(t) {
@@ -288,7 +290,7 @@ class DragSortScrollView {
         if (r.IsTweenMoving) {
           s = h.GetAnchorOffsetY();
           if (Math.abs(r.TargetOffsetY - s) > 0.1) {
-            h.SetAnchorOffsetY(MathUtils_1.MathUtils.Lerp(s, r.TargetOffsetY, 1 / t * this.bPm));
+            h.SetAnchorOffsetY(MathUtils_1.MathUtils.Lerp(s, r.TargetOffsetY, t * CommonDefine_1.SECOND_PER_MILLIONSECOND * this.$Dm));
           } else {
             h.SetAnchorOffsetY(r.TargetOffsetY);
             r.IsTweenMoving = false;
@@ -298,10 +300,10 @@ class DragSortScrollView {
     }
   }
   GetSortedData() {
-    return this.APm.sort((t, i) => t.Index - i.Index).map(t => this.ypt[t.OriginDataIndex]);
+    return this.YDm.sort((t, i) => t.Index - i.Index).map(t => this.ypt[t.OriginDataIndex]);
   }
   HasChanged() {
-    return this.APm.findIndex(t => t.Index !== t.OriginDataIndex) !== -1;
+    return this.YDm.findIndex(t => t.Index !== t.OriginDataIndex) !== -1;
   }
 }
 exports.DragSortScrollView = DragSortScrollView;

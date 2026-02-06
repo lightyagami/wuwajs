@@ -225,6 +225,7 @@ class RoleVisionTabView extends UiTabViewBase_1.UiTabViewBase {
     });
     this.GetButton(6).RootUIComp.SetUIActive(true);
     this.uCo = ConfigManager_1.ConfigManager.PhantomBattleConfig.GetVisionDragCurveTime();
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnVisionRefineSubNeedAck);
   }
   async vCo() {
     var t = this.d1o?.GetCurSelectRoleData();

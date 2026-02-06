@@ -12,11 +12,12 @@ const PhantomArenaDefine_1 = require("../../PhantomArenaDefine");
 class PhantomArenaMapEntranceDifficultItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
     super(...arguments);
-    this.eof = 0;
+    this.ysf = 0;
     this.SelectCallBack = undefined;
+    this.GetCurrentMapId = undefined;
     this.jbe = e => {
       if (e !== 0) {
-        this.SelectCallBack?.(this.eof);
+        this.SelectCallBack?.(this.ysf);
         this.ScrollViewDelegate?.SelectGridProxy(this.GridIndex, this.DisplayIndex, false);
       }
     };
@@ -30,10 +31,11 @@ class PhantomArenaMapEntranceDifficultItem extends GridProxyAbstract_1.GridProxy
     this.GetExtendToggle(0).SetToggleState(0, false);
   }
   Refresh(e, t, i) {
-    this.eof = e;
+    this.ysf = e;
     e = ConfigManager_1.ConfigManager.UiResourceConfig?.GetResourcePath(PhantomArenaDefine_1.difficultNumTextures[e]);
     this.TrySetTextureByPath(e, this.GetTexture(1));
-    e = ModelManager_1.ModelManager.PhantomArenaModel.GetPermanentIsDifficultCompleted(this.eof);
+    e = this.GetCurrentMapId?.();
+    e = !!e && ModelManager_1.ModelManager.PhantomArenaModel.GetPermanentIsDifficultCompleted(e, this.ysf);
     this.GetItem(2)?.SetUIActive(e);
   }
   OnSelected(e) {
@@ -43,7 +45,7 @@ class PhantomArenaMapEntranceDifficultItem extends GridProxyAbstract_1.GridProxy
     this.GetExtendToggle(0).SetToggleState(0, e);
   }
   GetKey(e, t) {
-    return this.eof;
+    return this.ysf;
   }
 }
 exports.PhantomArenaMapEntranceDifficultItem = PhantomArenaMapEntranceDifficultItem;

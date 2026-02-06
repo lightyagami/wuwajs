@@ -21,6 +21,8 @@ const ModelManager_1 = require("../../Manager/ModelManager");
 const RedDotController_1 = require("../../RedDot/RedDotController");
 const UiTickViewBase_1 = require("../../Ui/Base/UiTickViewBase");
 const UiManager_1 = require("../../Ui/UiManager");
+const TotalTopUpPageActivityEnterPanel_1 = require("../Activity/ActivityContent/TotalTopUp/View/TotalTopUpPageActivityEnterPanel");
+const ActivityControllerHolder_1 = require("../Activity/ActivityControllerHolder");
 const CommonTabComponentData_1 = require("../Common/TabComponent/CommonTabComponentData");
 const CommonTabData_1 = require("../Common/TabComponent/CommonTabData");
 const CommonTabTitleData_1 = require("../Common/TabComponent/CommonTabTitleData");
@@ -30,6 +32,7 @@ const TabViewComponent_1 = require("../Common/TabComponent/TabViewComponent");
 const ConfirmBoxDefine_1 = require("../ConfirmBox/ConfirmBoxDefine");
 const LguiUtil_1 = require("../Util/LguiUtil");
 const PayShopGoods_1 = require("./PayShopData/PayShopGoods");
+const PayShopViewData_1 = require("./PayShopData/PayShopViewData");
 const PayShopDefine_1 = require("./PayShopDefine");
 const PayShopAccumulateItem_1 = require("./PayShopTab/TabItem/PayShopAccumulateItem");
 class PayShopRootView extends UiTickViewBase_1.UiTickViewBase {
@@ -48,6 +51,7 @@ class PayShopRootView extends UiTickViewBase_1.UiTickViewBase {
     this.PayShopViewData = undefined;
     this.uah = undefined;
     this.Ox1 = undefined;
+    this.Uxg = undefined;
     this.FFi = () => {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Shop", 10, "PayShop:Root 打开客服反馈");
@@ -90,9 +94,14 @@ class PayShopRootView extends UiTickViewBase_1.UiTickViewBase {
     this.HFi = e => {
       this.jFi(this.TabShopList, 0);
     };
-    this.WFi = (e, t) => {
-      e = this.TabShopList.indexOf(e);
-      this.TabComponent.SelectToggleByIndex(e);
+    this.SwitchPayShopTabItem = (e, t) => {
+      var i = this.TabShopList.indexOf(e);
+      if (!this.PayShopViewData) {
+        this.PayShopViewData = new PayShopViewData_1.PayShopViewData();
+        this.PayShopViewData.PayShopId = e;
+      }
+      this.PayShopViewData.SwitchId = t;
+      this.TabComponent.SelectToggleByIndex(i, true);
     };
     this.KFi = (e, t, i) => {
       if (t === this.PayShopId) {
@@ -102,7 +111,7 @@ class PayShopRootView extends UiTickViewBase_1.UiTickViewBase {
     this.QFi = e => {
       var t;
       var i;
-      if (this.uah === e && (PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk()?.HidePlayStationStoreIcon(), t = ModelManager_1.ModelManager.PayShopModel.GetPayShopInfoDynamicTabId(e), t = ConfigManager_1.ConfigManager.DynamicTabConfig.GetTabViewConfById(t).ChildViewName, Log_1.Log.CheckInfo() && Log_1.Log.Info("Shop", 10, "PayShop:Root 切换界面", ["ViewName", t]), this.TabComponent?.SetTitleIconVisible(true), this.PayShopId = e, this.RefreshCurrency(e), i = this.TabShopList.indexOf(e), i = this.TabComponent.GetTabItemByIndex(i), this.TabViewComponent.ToggleCallBack(e, t, i, this.PayShopViewData?.SwitchId), this.UpdateGoodsList(), this.qsa(), this.UpdateInterval = 0, this.PayShopViewData && (this.PayShopViewData.SwitchId = undefined), e === 100)) {
+      if (this.uah === e && (PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk()?.HidePlayStationStoreIcon(), t = ModelManager_1.ModelManager.PayShopModel.GetPayShopInfoDynamicTabId(e), t = ConfigManager_1.ConfigManager.DynamicTabConfig.GetTabViewConfById(t).ChildViewName, Log_1.Log.CheckInfo() && Log_1.Log.Info("Shop", 10, "PayShop:Root 切换界面", ["ViewName", t], ["Switch", this.PayShopViewData?.SwitchId]), this.TabComponent?.SetTitleIconVisible(true), this.PayShopId = e, this.RefreshCurrency(e), i = this.TabShopList.indexOf(e), i = this.TabComponent.GetTabItemByIndex(i), this.TabViewComponent.ToggleCallBack(e, t, i, this.PayShopViewData?.SwitchId), this.UpdateGoodsList(), this.qsa(), this.UpdateInterval = 0, this.PayShopViewData && (this.PayShopViewData.SwitchId = undefined), e === 100)) {
         LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.PayShopRechargeRedDot, true);
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshPayShopInstanceRedDot, e);
       }
@@ -154,9 +163,21 @@ class PayShopRootView extends UiTickViewBase_1.UiTickViewBase {
     this.BtnBindInfo = [[6, this.FFi], [9, this.mVa]];
   }
   async OnBeforeStartAsync() {
-    await ControllerHolder_1.ControllerHolder.PayShopController.SendRequestPayShopInfo();
+    await Promise.all([ControllerHolder_1.ControllerHolder.PayShopController.SendRequestPayShopInfo(), ActivityControllerHolder_1.ActivityControllerHolder.TotalTopUpController?.RequestScoreInfoAsync()]);
     this.Ox1 = new PayShopAccumulateItem_1.PayShopAccumulateItem();
-    await this.Ox1.CreateByActorAsync(this.GetItem(10).GetOwner());
+    var e = [];
+    var t = this.Ox1.CreateByActorAsync(this.GetItem(10).GetOwner());
+    e.push(t);
+    if (ActivityControllerHolder_1.ActivityControllerHolder.TotalTopUpController?.CheckCurrentTotalUpRunning()) {
+      this.Uxg = new TotalTopUpPageActivityEnterPanel_1.TotalTopUpPageActivityEnterPanel();
+      t = this.Uxg.CreateByResourceIdAsync("UiItem_CumulativeRechargeActivityEnter", this.GetItem(1));
+      e.push(t);
+    }
+    await Promise.all(e);
+    this.Uxg?.SetUiActive(false);
+  }
+  OnBeforeShow() {
+    this.Uxg?.PlayStartSequence();
   }
   OnStart() {
     var e = new CommonTabComponentData_1.CommonTabComponentData(this.fqe, this.pqe, this.yqe);
@@ -172,7 +193,7 @@ class PayShopRootView extends UiTickViewBase_1.UiTickViewBase {
     this.ZFi();
     this.qsa();
     this.dVa();
-    this.VFi(this.PayShopId);
+    this.xxg();
   }
   ZFi() {
     RedDotController_1.RedDotController.BindRedDot("CustomerService", this.GetItem(7));
@@ -184,9 +205,14 @@ class PayShopRootView extends UiTickViewBase_1.UiTickViewBase {
     var e = LanguageSystem_1.LanguageSystem.PackageLanguage === CommonDefine_1.KOREAN_ISO639_1;
     this.GetButton(9).RootUIComp.SetUIActive(e);
   }
+  xxg() {
+    var e = (this.PayShopViewData?.ShowShopIdList?.length ?? 0) === 0;
+    var t = ActivityControllerHolder_1.ActivityControllerHolder.TotalTopUpController?.CheckCurrentTotalUpRunning() ?? false;
+    this.Uxg?.SetUiActive(e && t);
+  }
   OnAddEventListener() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RefreshAllPayShop, this.HFi);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SwitchPayShopTabItem, this.WFi);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SwitchPayShopTabItem, this.SwitchPayShopTabItem);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RefreshGoods, this.KFi);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SwitchPayShopView, this.QFi);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RefreshPayShop, this.XFi);
@@ -197,7 +223,7 @@ class PayShopRootView extends UiTickViewBase_1.UiTickViewBase {
   }
   OnRemoveEventListener() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RefreshAllPayShop, this.HFi);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SwitchPayShopTabItem, this.WFi);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SwitchPayShopTabItem, this.SwitchPayShopTabItem);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RefreshGoods, this.KFi);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SwitchPayShopView, this.QFi);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RefreshPayShop, this.XFi);
@@ -391,6 +417,7 @@ class PayShopRootView extends UiTickViewBase_1.UiTickViewBase {
     super.OnTick(e);
     this.TickGoodList();
     this.UpdateTime(e);
+    this.Uxg?.OnTick();
   }
 }
 exports.PayShopRootView = PayShopRootView;

@@ -88,7 +88,7 @@ class TsAnimNotifyStateRotateAlignGravity extends UE.KuroAnimNotifyState {
     var s;
     var r;
     var t = t.GetOwner();
-    return t instanceof TsBaseCharacter_1.default && !!(t = t.CharacterActorComponent) && !!(r = t.MoveComp) && (t.Entity.GetComponent(242)?.IsOnVehicle || (r = r.GravityUp, s = MathUtils_1.MathUtils.GetAngleByVectorDot(r, t.ActorUpProxy), Math.abs(s) < 1) || (this.TempVector.DeepCopy(t.ActorForwardProxy), s = t.ActorRightProxy, Vector_1.Vector.VectorPlaneProject(this.TempVector, r, this.TempVector2), this.TempVector2.IsNearlyZero() && s.CrossProduct(r, this.TempVector2), MathUtils_1.MathUtils.LookRotationForwardFirst(this.TempVector2, r, this.TempRotator), r = (s = t.Entity.GetComponent(186))?.GetMeshTransform(), t.SetActorRotation(this.TempRotator.ToUeRotator(), "TsAnimNotifyStateRotateAlignGravity.End", false), s && r && s?.SetModelBuffer(r, this.ModelBufferTime)), true);
+    return t instanceof TsBaseCharacter_1.default && !!(t = t.CharacterActorComponent) && !!(r = t.MoveComp) && (t.Entity.GetComponent(242)?.IsOnVehicle || (r = r.GravityUp, s = MathUtils_1.MathUtils.GetAngleByVectorDot(r, t.ActorUpProxy), Math.abs(s) < 1) || (this.TempVector.DeepCopy(t.ActorForwardProxy), s = t.ActorRightProxy, Vector_1.Vector.VectorPlaneProject(this.TempVector, r, this.TempVector2), this.TempVector2.IsNearlyZero() && s.CrossProduct(r, this.TempVector2), MathUtils_1.MathUtils.LookRotationForwardFirst(this.TempVector2, r, this.TempRotator), r = (s = t.Entity.GetComponent(188))?.GetMeshTransform(), t.SetActorRotation(this.TempRotator.ToUeRotator(), "TsAnimNotifyStateRotateAlignGravity.End", false), s && r && s?.SetModelBuffer(r, this.ModelBufferTime)), true);
   }
   GetNotifyName() {
     return "旋转对齐Up到重力反方向";

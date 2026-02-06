@@ -89,7 +89,7 @@ let CharacterSwimComponent = CharacterSwimComponent_1 = class CharacterSwimCompo
     this.hWr = (t, i) => {
       this.Lie.RemoveTag(-104158548);
       if (this.EnterSwimFromAirBuffIndex) {
-        this.Entity.GetComponent(183)?.RemoveBuffByHandle(this.EnterSwimFromAirBuffIndex, -1, "空中入水结束");
+        this.Entity.GetComponent(185)?.RemoveBuffByHandle(this.EnterSwimFromAirBuffIndex, -1, "空中入水结束");
         this.EnterSwimFromAirBuffIndex = 0;
       }
       if (i === CharacterUnifiedStateTypes_1.ECharMoveState.FastSwim) {
@@ -173,7 +173,7 @@ let CharacterSwimComponent = CharacterSwimComponent_1 = class CharacterSwimCompo
     };
   }
   static get Dependencies() {
-    return [3, 187, 215];
+    return [3, 189, 217];
   }
   get BuffIndex() {
     return this.wWr;
@@ -325,7 +325,7 @@ let CharacterSwimComponent = CharacterSwimComponent_1 = class CharacterSwimCompo
             }
           } else {
             if (this.Gce.FallingIntoWater && Time_1.Time.Now > this.BWr && (this.Gce.FallingIntoWater = false, this.Lie.RemoveTag(-104158548), this.EnterSwimFromAirBuffIndex)) {
-              this.Entity.GetComponent(183)?.RemoveBuffByHandle(this.EnterSwimFromAirBuffIndex, -1, "空中入水结束");
+              this.Entity.GetComponent(185)?.RemoveBuffByHandle(this.EnterSwimFromAirBuffIndex, -1, "空中入水结束");
               this.EnterSwimFromAirBuffIndex = 0;
             }
             this.MWr.DeepCopy(this.Hte.ActorLocation);
@@ -399,16 +399,16 @@ let CharacterSwimComponent = CharacterSwimComponent_1 = class CharacterSwimCompo
     this.Hte = this.Entity.GetComponent(3);
     var t = this.Hte.ActorLocationProxy;
     Vector_1.Vector.VectorCopy(t, this.fWr);
-    var t = this.Entity.GetComponent(215);
+    var t = this.Entity.GetComponent(217);
     if (!t?.Valid) {
       return false;
     }
     this.Lie = t;
-    this.I5r = this.Entity.GetComponent(184);
-    this.oRe = this.Entity.GetComponent(186);
-    this.cBe = this.Entity.GetComponent(41);
-    this.RWr = this.Entity.GetComponent(35);
-    t = this.Entity.GetComponent(187);
+    this.I5r = this.Entity.GetComponent(186);
+    this.oRe = this.Entity.GetComponent(188);
+    this.cBe = this.Entity.GetComponent(43);
+    this.RWr = this.Entity.GetComponent(36);
+    t = this.Entity.GetComponent(189);
     return !!t?.Valid && (this.Gce = t, this.vWr = this.Hte.HalfHeight, Vector_1.Vector.VectorCopy(this.Hte.ActorLocationProxy, this.MWr), true);
   }
   lUr() {
@@ -464,7 +464,7 @@ let CharacterSwimComponent = CharacterSwimComponent_1 = class CharacterSwimCompo
     for (let t = 0; t < _; ++t) {
       var a = i.Actors.Get(t);
       if (a?.IsValid()) {
-        if (a.ActorHasTag(CharacterSwimComponent_1.ZWr)) {
+        if (UE.KuroCollisionLibrary.ActorHasTag(a, CharacterSwimComponent_1.ZWr, i.ItemArray.Get(t))) {
           e = true;
           TraceElementCommon_1.TraceElementCommon.GetImpactPoint(i, t, this.cz);
           if ((a = GravityUtils_1.GravityUtils.GetZnInGravityForActor(this.Hte, this.cz)) > r) {
@@ -619,7 +619,7 @@ let CharacterSwimComponent = CharacterSwimComponent_1 = class CharacterSwimCompo
             this.cBe.StopAllSkills("CharacterSwimComponent.DetectEnterWaterFromAir");
             this.iKr(s, e);
             this.Lie.AddTag(-104158548);
-            if (h = this.Entity.GetComponent(183)) {
+            if (h = this.Entity.GetComponent(185)) {
               this.EnterSwimFromAirBuffIndex = h.AddBuffLocal(CharacterBuffIds_1.buffId.FallImmune, {
                 InstigatorId: this.Hte.CreatureData.GetCreatureDataId(),
                 Duration: 1,
@@ -701,7 +701,7 @@ let CharacterSwimComponent = CharacterSwimComponent_1 = class CharacterSwimCompo
   }
   VWr(t) {
     if (this.Gce.FallingIntoWater && Time_1.Time.Now > this.BWr && (this.Gce.FallingIntoWater = false, this.Lie.RemoveTag(-104158548), this.EnterSwimFromAirBuffIndex)) {
-      this.Entity.GetComponent(183)?.RemoveBuffByHandle(this.EnterSwimFromAirBuffIndex, -1, "空中入水结束");
+      this.Entity.GetComponent(185)?.RemoveBuffByHandle(this.EnterSwimFromAirBuffIndex, -1, "空中入水结束");
       this.EnterSwimFromAirBuffIndex = 0;
     }
     let i = false;
@@ -872,5 +872,5 @@ let CharacterSwimComponent = CharacterSwimComponent_1 = class CharacterSwimCompo
 };
 CharacterSwimComponent.ZWr = new UE.FName("Water_No_Swim");
 CharacterSwimComponent.UseSwimTrigger = false;
-CharacterSwimComponent = CharacterSwimComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(80)], CharacterSwimComponent);
+CharacterSwimComponent = CharacterSwimComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(82)], CharacterSwimComponent);
 exports.CharacterSwimComponent = CharacterSwimComponent; //# sourceMappingURL=CharacterSwimComponent.js.map

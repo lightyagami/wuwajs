@@ -61,6 +61,12 @@ class LevelGamePlayBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary 
     }
     return LevelGamePlayBlueprintFunctionLibrary.PolygonsOpenPathsDifferenceViaSplines((0, puerts_1.$ref)(t), (0, puerts_1.$ref)(n), 3, 1, 1);
   }
+  static UseNewScanSystem() {
+    return ControllerHolder_1.ControllerHolder.LevelGamePlayController.UseNewScanSystem;
+  }
+  static StartScan() {
+    ControllerHolder_1.ControllerHolder.ScanController.StartScan();
+  }
 }
 exports.default = LevelGamePlayBlueprintFunctionLibrary;
 //# sourceMappingURL=LevelGamePlayBlueprintFunctionLibrary.js.map

@@ -11,7 +11,7 @@ const PhoneMessageButtonHelper_1 = require("../../../PhoneMessage/View/PhoneMess
 class GamepadPhoneMessageButton extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.nYf = undefined;
+    this.Nug = undefined;
     this.Fr = () => {
       PhoneMsgController_1.PhoneMsgController.OpenAndJumpShowTipShortMessage(1, 1);
     };
@@ -22,29 +22,29 @@ class GamepadPhoneMessageButton extends UiPanelBase_1.UiPanelBase {
   }
   OnStart() {
     this.GetItem(1).SetUIActive(false);
-    this.nYf = new PhoneMessageButtonHelper_1.PhoneMessageButtonHelper(this.RootItem, this.RootActor, this.GetItem(1), this.GetSprite(2), this.GetItem(4), this.GetTexture(5), this.GetItem(6), this.GetUiNiagara(7), (e, s) => {
+    this.Nug = new PhoneMessageButtonHelper_1.PhoneMessageButtonHelper(this.RootItem, this.RootActor, this.GetItem(1), this.GetSprite(2), this.GetItem(4), this.GetTexture(5), this.GetItem(6), this.GetUiNiagara(7), (e, s) => {
       this.SetTextureByPath(e, s);
     });
-    this.nYf.Init();
+    this.Nug.Init();
   }
   OnShowGamepadTopPanel() {
-    this.nYf?.OnShowBattleChildView();
+    this.Nug?.OnShowBattleChildView();
   }
   OnHideGamepadTopPanel() {
-    this.nYf?.OnHideBattleChildView();
+    this.Nug?.OnHideBattleChildView();
   }
   OnBeforeDestroy() {
     super.OnBeforeDestroy();
-    this.nYf?.Clear();
+    this.Nug?.Clear();
   }
   CheckAndPlayPhoneSequence() {
-    this.nYf?.CheckAndPlayPhoneSequence();
+    this.Nug?.CheckAndPlayPhoneSequence();
   }
   PopShowHeadIcon() {
-    this.nYf?.PopShowHeadIcon();
+    this.Nug?.PopShowHeadIcon();
   }
   HideHeadIcon() {
-    this.nYf?.HideHeadIcon();
+    this.Nug?.HideHeadIcon();
   }
 }
 exports.GamepadPhoneMessageButton = GamepadPhoneMessageButton;

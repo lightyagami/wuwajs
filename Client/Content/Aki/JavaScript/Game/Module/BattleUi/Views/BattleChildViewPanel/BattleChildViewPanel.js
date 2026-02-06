@@ -166,7 +166,7 @@ class BattleChildViewPanel extends UiPanelBase_1.UiPanelBase {
     return Info_1.Info.OperationType;
   }
   ListenForTagSignificantChanged(i, t, e) {
-    var i = i.Entity.GetComponent(215);
+    var i = i.Entity.GetComponent(217);
     if (i) {
       i = i.ListenForTagAddOrRemove(t, e);
       this.i$e.push(i);
@@ -181,7 +181,7 @@ class BattleChildViewPanel extends UiPanelBase_1.UiPanelBase {
     }
   }
   ContainsTag(i, t) {
-    i = i.Entity.GetComponent(215);
+    i = i.Entity.GetComponent(217);
     return !!i && i.HasTag(t);
   }
   GetItem(i) {

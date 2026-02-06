@@ -19,28 +19,28 @@ class ActivityRegressNewVersionMainQuestView extends ActivityRegressMainSubViewB
   constructor() {
     super(...arguments);
     this.bOe = undefined;
-    this.W3f = false;
-    this.Q3f = 0;
-    this.K3f = 0;
+    this.o$f = false;
+    this.n$f = 0;
+    this.s$f = 0;
     this.wqo = () => {
       return new CommonItemSmallItemGrid_1.CommonItemSmallItemGrid();
     };
-    this.X3f = () => {
-      if (this.Q3f) {
-        UiManager_1.UiManager.OpenView("QuestView", this.Q3f);
+    this.a$f = () => {
+      if (this.n$f) {
+        UiManager_1.UiManager.OpenView("QuestView", this.n$f);
       }
     };
-    this.Y3f = () => {
-      if (this.K3f) {
+    this.h$f = () => {
+      if (this.s$f) {
         ActivityRegressController_1.ActivityRegressController.RegressStartJumpToActivity(() => {
-          ControllerHolder_1.ControllerHolder.ActivityController.OpenActivityById(this.K3f);
+          ControllerHolder_1.ControllerHolder.ActivityController.OpenActivityById(this.s$f);
         });
       }
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIText], [2, UE.UIText], [3, UE.UIScrollViewWithScrollbarComponent], [4, UE.UIText], [5, UE.UIButtonComponent], [6, UE.UIButtonComponent], [7, UE.UIText], [8, UE.UIItem], [9, UE.UITexture]];
-    this.BtnBindInfo = [[5, this.X3f], [6, this.Y3f]];
+    this.BtnBindInfo = [[5, this.a$f], [6, this.h$f]];
   }
   OnStart() {
     super.OnStart();
@@ -49,26 +49,24 @@ class ActivityRegressNewVersionMainQuestView extends ActivityRegressMainSubViewB
     var t = ModelManager_1.ModelManager.ActivityRegressModel.GetLatestRegressBase();
     if (t) {
       e = ModelManager_1.ModelManager.ActivityRegressModel.GetCurrentMainLineQuest();
-      this.W3f = e === 0;
+      this.o$f = e === 0;
       this.bOe = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(3), this.wqo);
       i = ModelManager_1.ModelManager.ActivityRegressModel.GetDropPreviewRewardItemListForPreview(t.RewardPreview);
-      this.bOe.RefreshByData(i, () => {
-        for (const e of this.bOe.GetScrollItemList()) {
-          e.SetReceivedVisible(this.W3f);
-        }
-      });
+      this.bOe.RefreshByData(i);
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), t.Title);
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), t.SubTitle);
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), t.Description);
       i = ModelManager_1.ModelManager.PlayerInfoModel.GetPlayerGender();
       this.SetTextureByPath(i === 1 ? t.BgPath : t.BgPathF, this.GetTexture(9));
-      if (this.W3f) {
+      if (this.o$f) {
         LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), "Recall_Main_Task_Finish");
         this.GetButton(5).RootUIComp.SetUIActive(false);
         this.GetButton(6).RootUIComp.SetUIActive(false);
         this.GetItem(8).SetUIActive(true);
       } else {
-        if (ModelManager_1.ModelManager.ActivityRegressModel.GetCurrentMainLineBranch() < ModelManager_1.ModelManager.ActivityRegressModel.LatestBranch) {
+        this.s$f = t.TargetActivityId;
+        i = !!this.s$f && ModelManager_1.ModelManager.ActivityModel.IsActivityOpen(t.TargetActivityId);
+        if (ModelManager_1.ModelManager.ActivityRegressModel.GetCurrentMainLineBranch() < ModelManager_1.ModelManager.ActivityRegressModel.LatestBranch && i) {
           this.GetButton(5).RootUIComp.SetUIActive(false);
           this.GetButton(6).RootUIComp.SetUIActive(true);
           LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(7), t.JumpBtnDes);
@@ -76,8 +74,7 @@ class ActivityRegressNewVersionMainQuestView extends ActivityRegressMainSubViewB
           this.GetButton(5).RootUIComp.SetUIActive(true);
           this.GetButton(6).RootUIComp.SetUIActive(false);
         }
-        this.K3f = t.TargetActivityId;
-        this.Q3f = e;
+        this.n$f = e;
         this.GetItem(8).SetUIActive(false);
         i = ModelManager_1.ModelManager.QuestNewModel.GetQuest(e);
         t = ConfigManager_1.ConfigManager.QuestNewConfig.GetChapterConfig(i.ChapterId);

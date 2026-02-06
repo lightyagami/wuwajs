@@ -220,7 +220,7 @@ class ServerNotifyAssistant extends ControllerAssistantBase_1.ControllerAssistan
               ControllerHolder_1.ControllerHolder.GreatSwordController.RequestGreatSwordInfoAndOpenView(o.s5n, t.w5n);
               break;
             case Protocol_1.Aki.Protocol.tw_.Proto_InfrHandIn:
-              o = t.vNm;
+              o = t.O3m;
               if (!o) {
                 if (Log_1.Log.CheckError()) {
                   Log_1.Log.Error("Infrastructure", 86, "ActionOpenSystemBoardNotify:打开基建交付时，服务端下发参数为空");
@@ -234,7 +234,7 @@ class ServerNotifyAssistant extends ControllerAssistantBase_1.ControllerAssistan
               InfrastructureController_1.InfrastructureController.OpenMaterialDelivery(o.h5n, o.s5n, t.w5n, 1);
               break;
             case Protocol_1.Aki.Protocol.tw_.Proto_MotorRaceChallenge:
-              o = t.FTf;
+              o = t.nAf;
               if (!o) {
                 if (Log_1.Log.CheckError()) {
                   Log_1.Log.Error("GeneralLogicTree", 71, "ActionOpenSystemBoardNotify:打开摩托模拟赛结算时，服务端下发参数为空");
@@ -250,35 +250,35 @@ class ServerNotifyAssistant extends ControllerAssistantBase_1.ControllerAssistan
   }
   OnDestroy() {}
   OnRegisterNetEvent() {
-    Net_1.Net.Register(18424, this.X$t);
-    Net_1.Net.Register(18729, this.$$t);
-    Net_1.Net.Register(29641, this.Y$t);
-    Net_1.Net.Register(18166, this.J$t);
-    Net_1.Net.Register(19525, this.z$t);
-    Net_1.Net.Register(29840, this.Z$t);
-    Net_1.Net.Register(25590, this.eYt);
-    Net_1.Net.Register(21387, this.iYt);
-    Net_1.Net.Register(21186, this.oYt);
-    Net_1.Net.Register(27019, this.rYt);
-    Net_1.Net.Register(28787, this.nYt);
-    Net_1.Net.Register(28297, this.sYt);
-    Net_1.Net.Register(20385, this.uMa);
-    Net_1.Net.Register(25954, this.Ahl);
+    Net_1.Net.Register(21837, this.X$t);
+    Net_1.Net.Register(29706, this.$$t);
+    Net_1.Net.Register(29050, this.Y$t);
+    Net_1.Net.Register(16463, this.J$t);
+    Net_1.Net.Register(19340, this.z$t);
+    Net_1.Net.Register(28444, this.Z$t);
+    Net_1.Net.Register(29984, this.eYt);
+    Net_1.Net.Register(26956, this.iYt);
+    Net_1.Net.Register(25726, this.oYt);
+    Net_1.Net.Register(26353, this.rYt);
+    Net_1.Net.Register(28790, this.nYt);
+    Net_1.Net.Register(26781, this.sYt);
+    Net_1.Net.Register(18925, this.uMa);
+    Net_1.Net.Register(20130, this.Ahl);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(18424);
-    Net_1.Net.UnRegister(18729);
-    Net_1.Net.UnRegister(29641);
-    Net_1.Net.UnRegister(18166);
-    Net_1.Net.UnRegister(29840);
-    Net_1.Net.UnRegister(25590);
-    Net_1.Net.UnRegister(21387);
-    Net_1.Net.UnRegister(21186);
-    Net_1.Net.UnRegister(27019);
-    Net_1.Net.UnRegister(28787);
-    Net_1.Net.UnRegister(28297);
-    Net_1.Net.UnRegister(20385);
-    Net_1.Net.UnRegister(25954);
+    Net_1.Net.UnRegister(21837);
+    Net_1.Net.UnRegister(29706);
+    Net_1.Net.UnRegister(29050);
+    Net_1.Net.UnRegister(16463);
+    Net_1.Net.UnRegister(28444);
+    Net_1.Net.UnRegister(29984);
+    Net_1.Net.UnRegister(26956);
+    Net_1.Net.UnRegister(25726);
+    Net_1.Net.UnRegister(26353);
+    Net_1.Net.UnRegister(28790);
+    Net_1.Net.UnRegister(26781);
+    Net_1.Net.UnRegister(18925);
+    Net_1.Net.UnRegister(20130);
   }
   OpenSystemBoardResultRequest(e, r) {
     var o = ModelManager_1.ModelManager.PlayerInfoModel.GetId();
@@ -287,9 +287,9 @@ class ServerNotifyAssistant extends ControllerAssistantBase_1.ControllerAssistan
       j7n: e,
       w5n: r
     });
-    Net_1.Net.Call(16596, o, e => {
+    Net_1.Net.Call(27834, o, e => {
       if (e.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 20997, undefined, false);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 17323, undefined, false);
       }
     });
   }

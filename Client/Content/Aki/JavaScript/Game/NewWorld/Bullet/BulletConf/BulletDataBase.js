@@ -71,6 +71,7 @@ class BulletDataBase {
     this.iSa = undefined;
     this.HitActorTypeInternal = undefined;
     this._au = undefined;
+    this.DLg = undefined;
     this.Pe = t;
   }
   get IgnoreGradient() {
@@ -440,6 +441,12 @@ class BulletDataBase {
       this._au = this.Pe.大范围子弹检测方式;
     }
     return this._au;
+  }
+  get IsRandomVictim() {
+    if (this.DLg === undefined) {
+      this.DLg = this.Pe.IsRandomVictim;
+    }
+    return this.DLg;
   }
   Preload() {
     this.F6o();

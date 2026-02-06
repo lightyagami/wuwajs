@@ -21,10 +21,10 @@ class RegressBpRewardTabView extends UiTabViewBase_1.UiTabViewBase {
     this.vVt = undefined;
     this.E2i = undefined;
     this.d2t = () => new RegressBpRewardItem();
-    this.utg = () => {
+    this.LAg = () => {
       this.R2i(false);
     };
-    this.BBf = () => {
+    this.TNf = () => {
       ModelManager_1.ModelManager.ActivityRegressModel.ActivityData.SetBpPayButtonRedDotChecked();
       UiManager_1.UiManager.OpenView("RegressBpPayView", undefined, (e, r) => {
         UiManager_1.UiManager.GetViewByName("ActivityRegressMainView")?.AddChildViewById(r);
@@ -33,13 +33,13 @@ class RegressBpRewardTabView extends UiTabViewBase_1.UiTabViewBase {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UISprite], [1, UE.UILoopScrollViewComponent], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIButtonComponent]];
-    this.BtnBindInfo = [[4, this.BBf]];
+    this.BtnBindInfo = [[4, this.TNf]];
   }
   async OnBeforeStartAsync() {
     this.vVt = new LoopScrollView_1.LoopScrollView(this.GetLoopScrollViewComponent(1), this.GetItem(2).GetOwner(), this.d2t);
     this.E2i = new RegressBpRewardItem();
     await this.E2i.CreateThenShowByActorAsync(this.GetItem(3).GetOwner());
-    this.vVt.BindOnScrollValueChanged(this.utg);
+    this.vVt.BindOnScrollValueChanged(this.LAg);
   }
   OnBeforeShow() {
     this.RefreshView(true);
@@ -79,7 +79,7 @@ class RegressBpRewardItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
     super(...arguments);
     this.avt = [];
-    this.X5f = [];
+    this.GQf = [];
     this.q3e = e => {
       var e = this.avt[e];
       if (e) {
@@ -102,8 +102,8 @@ class RegressBpRewardItem extends GridProxyAbstract_1.GridProxyAbstract {
     e.Initialize(this.GetItem(1).GetOwner());
     r.Initialize(this.GetItem(2).GetOwner());
     i.Initialize(this.GetItem(3).GetOwner());
-    this.X5f = [e, r, i];
-    this.X5f.forEach((e, r) => {
+    this.GQf = [e, r, i];
+    this.GQf.forEach((e, r) => {
       e.BindOnCanExecuteChange(() => false);
       e.BindOnExtendToggleClicked(() => {
         this.q3e(r);
@@ -140,12 +140,12 @@ class RegressBpRewardItem extends GridProxyAbstract_1.GridProxyAbstract {
         });
       }
     }
-    for (let e = 0; e < this.X5f.length; e++) {
+    for (let e = 0; e < this.GQf.length; e++) {
       if (t.length > e) {
-        ActivityRegressHelper_1.ActivityRegressHelper.RefreshItemGridByData(this.X5f[e], t[e]);
-        this.X5f[e].SetUiActive(true);
+        ActivityRegressHelper_1.ActivityRegressHelper.RefreshItemGridByData(this.GQf[e], t[e]);
+        this.GQf[e].SetUiActive(true);
       } else {
-        this.X5f[e].SetUiActive(false);
+        this.GQf[e].SetUiActive(false);
       }
     }
     this.avt = t;

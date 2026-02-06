@@ -32,7 +32,7 @@ class GamepadTopPanel extends BattleVisibleChildView_1.BattleVisibleChildView {
     this.kgl = undefined;
     this.SPe = undefined;
     this.C$l = undefined;
-    this.K$m = undefined;
+    this.JOm = undefined;
     this.g$l = e => {
       if (e) {
         this.C$l?.PlayLevelSequenceByName("BtnShow");
@@ -66,7 +66,7 @@ class GamepadTopPanel extends BattleVisibleChildView_1.BattleVisibleChildView {
         UiManager_1.UiManager.OpenView("FunctionView");
       }
     };
-    this.Lkf = () => {
+    this.E3f = () => {
       this.SPe?.StopSequenceByKey("Phone");
       this.SPe?.PlayLevelSequenceByName("Phone");
     };
@@ -85,15 +85,15 @@ class GamepadTopPanel extends BattleVisibleChildView_1.BattleVisibleChildView {
     this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
   }
   async InitializeAsync(e) {
-    this.K$m = new GamepadPhoneMessageButton_1.GamepadPhoneMessageButton();
-    await this.K$m.CreateThenShowByActorAsync(this.GetItem(9).GetOwner());
+    this.JOm = new GamepadPhoneMessageButton_1.GamepadPhoneMessageButton();
+    await this.JOm.CreateThenShowByActorAsync(this.GetItem(9).GetOwner());
   }
   Reset() {
     super.Reset();
     this.SPe?.Clear();
     this.SPe = undefined;
-    this.K$m?.Destroy();
-    this.K$m = undefined;
+    this.JOm?.Destroy();
+    this.JOm = undefined;
     this.RemoveEvents();
     this.RemoveRedDot();
   }
@@ -129,35 +129,40 @@ class GamepadTopPanel extends BattleVisibleChildView_1.BattleVisibleChildView {
   AddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InputControllerChange, this.XBo);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnFunctionOpenUpdate, this.RQe);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPhoneTipsClose, this.Lkf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPhoneTipsClose, this.E3f);
   }
   RemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InputControllerChange, this.XBo);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnFunctionOpenUpdate, this.RQe);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPhoneTipsClose, this.Lkf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPhoneTipsClose, this.E3f);
   }
   OnShowBattleChildView() {
     this.$Wl();
     this.yQl();
-    this.XJf();
+    this.zpg();
     this.kgl?.PlayLevelSequenceByName("BtnShow");
   }
   OnHideBattleChildView() {
-    this.YJf();
+    this.Jpg();
     this.kgl?.PlayLevelSequenceByName("BtnHide");
   }
   yQl() {
     var e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(iconTypeSprite[Info_1.Info.InputControllerType]);
     this.SetTextureByPath(e, this.GetTexture(7));
   }
-  XJf() {
-    if (ModelManager_1.ModelManager.FunctionModel.IsOpen(10130)) {
-      this.K$m?.OnShowGamepadTopPanel();
+  zpg() {
+    var e = !ModelManager_1.ModelManager.PhoneMsgModel.IsAllPhoneMsgRead();
+    var e = ModelManager_1.ModelManager.PhoneMsgModel.IsHasUnReceivedMsg() || e;
+    var t = ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance();
+    if (ModelManager_1.ModelManager.FunctionModel.IsOpen(10130) && e && !t) {
+      this.JOm?.OnShowGamepadTopPanel();
+    } else {
+      this.GetItem(9).SetUIActive(false);
     }
   }
-  YJf() {
+  Jpg() {
     if (ModelManager_1.ModelManager.FunctionModel.IsOpen(10130)) {
-      this.K$m?.OnHideGamepadTopPanel();
+      this.JOm?.OnHideGamepadTopPanel();
     }
   }
   GetPanelItem(e) {
@@ -166,7 +171,7 @@ class GamepadTopPanel extends BattleVisibleChildView_1.BattleVisibleChildView {
     }
   }
   GetPhoneMsgButton() {
-    return this.K$m;
+    return this.JOm;
   }
 }
 exports.GamepadTopPanel = GamepadTopPanel;

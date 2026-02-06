@@ -17,7 +17,7 @@ class MotorcycleTechTreeDetailView extends UiViewBase_1.UiViewBase {
     super(...arguments);
     this.lqe = undefined;
     this.eGe = undefined;
-    this.Ncf = () => new MotorcycleTechTreeListScrollItem_1.MotorcycleTechTreeListScrollItem();
+    this.Omf = () => new MotorcycleTechTreeListScrollItem_1.MotorcycleTechTreeListScrollItem();
     this.AMo = () => {
       this.CloseMe();
     };
@@ -28,7 +28,7 @@ class MotorcycleTechTreeDetailView extends UiViewBase_1.UiViewBase {
   OnStart() {
     this.lqe = new PopupCaptionItem_1.PopupCaptionItem(this.GetItem(0));
     this.lqe.SetCloseCallBack(this.AMo);
-    this.eGe = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(3), this.Ncf);
+    this.eGe = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(3), this.Omf);
     var e = this.OpenParam;
     var i = ConfigManager_1.ConfigManager.MotorConfig.GetMotorTechTreeConfig(e);
     this.SetTextureByPath(i.Icon, this.GetTexture(1));

@@ -26,7 +26,7 @@ class TsAnimNotifyStateAccelInSplineMove extends UE.KuroAnimNotifyState {
     if (!n?.Valid) {
       return false;
     }
-    n = n.GetComponent(116);
+    n = n.GetComponent(118);
     if (!n?.Active) {
       return false;
     }
@@ -39,8 +39,8 @@ class TsAnimNotifyStateAccelInSplineMove extends UE.KuroAnimNotifyState {
     }
     TsAnimNotifyStateAccelInSplineMove.Initialize();
     this.InitializeSelf();
-    if (n.Entity.GetComponent(186)?.HasKuroRootMotion) {
-      var o = n.Entity.GetComponent(187);
+    if (n.Entity.GetComponent(188)?.HasKuroRootMotion) {
+      var o = n.Entity.GetComponent(189);
       if (!o) {
         return false;
       }
@@ -58,7 +58,7 @@ class TsAnimNotifyStateAccelInSplineMove extends UE.KuroAnimNotifyState {
       o.MoveCharacter(TsAnimNotifyStateAccelInSplineMove.TmpVector, i, "ANSAccelInSplineMove");
       n.ActorVelocityProxy.Addition(e, TsAnimNotifyStateAccelInSplineMove.TmpVector);
       t.CharacterMovement.Velocity = TsAnimNotifyStateAccelInSplineMove.TmpVector.ToUeVectorOld();
-      const r = n.Entity.GetComponent(122);
+      const r = n.Entity.GetComponent(124);
       r?.CacheVelocityInfo("SetActorVelocity");
     } else {
       this.AddSpeedMap.delete(t);
@@ -67,7 +67,7 @@ class TsAnimNotifyStateAccelInSplineMove extends UE.KuroAnimNotifyState {
         return false;
       }
       t.CharacterMovement.Velocity = TsAnimNotifyStateAccelInSplineMove.CurrentSpeed.ToUeVectorOld();
-      const r = n.Entity.GetComponent(122);
+      const r = n.Entity.GetComponent(124);
       r?.CacheVelocityInfo("SetActorVelocity");
     }
     return true;

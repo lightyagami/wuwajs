@@ -13,16 +13,17 @@ const ModelManager_1 = require("../../../Manager/ModelManager");
 const InputDefine_1 = require("../../../NewWorld/Character/Common/Component/Input/InputLayerFunction/InputDefine");
 const UiControllerBase_1 = require("../../../Ui/Base/UiControllerBase");
 const UiManager_1 = require("../../../Ui/UiManager");
+const PhantomUtil_1 = require("../PhantomUtil");
 const PhantomInteractDefine_1 = require("./PhantomInteractDefine");
 const PhantomInteractModel_1 = require("./PhantomInteractModel");
 class PhantomInteractController extends UiControllerBase_1.UiControllerBase {
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(22103, PhantomInteractController.rgf);
-    Net_1.Net.Register(20034, PhantomInteractController.ogf);
+    Net_1.Net.Register(18139, PhantomInteractController.HSf);
+    Net_1.Net.Register(23094, PhantomInteractController.jSf);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(22103);
-    Net_1.Net.UnRegister(20034);
+    Net_1.Net.UnRegister(18139);
+    Net_1.Net.UnRegister(23094);
   }
   static OpenPhantomVisionSummonView(e, t) {
     var n = ModelManager_1.ModelManager.PhantomInteractModel;
@@ -41,41 +42,43 @@ class PhantomInteractController extends UiControllerBase_1.UiControllerBase {
   }
   static BeginVisionSkill(e) {
     var t;
-    var n = ModelManager_1.ModelManager.PhantomInteractModel;
-    var o = ModelManager_1.ModelManager.SceneTeamModel?.GetCurrentEntity?.Entity;
-    if (o && (t = o.GetComponent(41), o = o.GetComponent(218), t) && o) {
-      n.SetSummonMonsterId(e);
-      t.BeginSkillAsync(InputDefine_1.SKILL_ID_SHOW_VISION);
+    var n;
+    var o = ModelManager_1.ModelManager.PhantomInteractModel;
+    var r = ModelManager_1.ModelManager.SceneTeamModel?.GetCurrentEntity?.Entity;
+    if (r && (t = r.GetComponent(43), n = r.GetComponent(220), t) && n) {
+      n = PhantomUtil_1.PhantomUtil.BeforeVisionSkillExecute(r, e);
+      o.SetSummonMonsterId(e);
+      t.BeginSkillAsync(InputDefine_1.SKILL_ID_SHOW_VISION, n);
     }
   }
   static UpdateEquippedPhantom() {
     var t = ModelManager_1.ModelManager.PhantomInteractModel;
-    var n = Protocol_1.Aki.Protocol._ff.create();
+    var n = Protocol_1.Aki.Protocol.Opf.create();
     for (let e = 0; e < t.InteractInfoData.EquippedVisionData.length; e++) {
       var o = t.InteractInfoData.EquippedVisionData[e];
-      n.vff[e] = o.MonsterId;
+      n.Qpf[e] = o.MonsterId;
     }
-    Net_1.Net.CallAsync(16869, n);
+    Net_1.Net.CallAsync(24919, n);
   }
   static UpdateEquippedPhantomSkin(e, t) {
-    var n = Protocol_1.Aki.Protocol.cff.create();
-    n.Sff = [{
+    var n = Protocol_1.Aki.Protocol.Fpf.create();
+    n.Xpf = [{
       TIs: e,
       Z7n: t
     }];
-    Net_1.Net.CallAsync(29162, n);
+    Net_1.Net.CallAsync(29115, n);
   }
 }
-(exports.PhantomInteractController = PhantomInteractController).rgf = e => {
+(exports.PhantomInteractController = PhantomInteractController).HSf = e => {
   if (Log_1.Log.CheckDebug()) {
     Log_1.Log.Debug("PhantomInteraction", 95, "收到声骸互动全量信息");
   }
   ModelManager_1.ModelManager.PhantomInteractModel.InteractInfoData.LoadFromProto(e);
 };
-PhantomInteractController.ogf = e => {
+PhantomInteractController.jSf = e => {
   ModelManager_1.ModelManager.PhantomInteractModel.InteractInfoData.UpdateFromProto(e);
-  var t = e.yff?.TIs ?? 0;
-  if (e?.yff?.Cff) {
+  var t = e.Kpf?.TIs ?? 0;
+  if (e?.Kpf?.$pf) {
     PhantomInteractModel_1.PhantomInteractModel.SetPhantomInteractUnlockRedDot(t, true);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PhantomInteractNewUnlock, t);
   }

@@ -36,9 +36,24 @@ RouletteFunctionOpenController.BKd = () => {
     UiManager_1.UiManager.OpenView("SurvivorsTabMainView");
   }
 };
-RouletteFunctionOpenController.nmf = () => {
+RouletteFunctionOpenController.Igf = () => {
   if (HonamiStoryUtil_1.HonamiStoryUtil.CheckInHonamiStoryAreaDungeon()) {
     UiManager_1.UiManager.OpenView("HonamiStoryQuestView");
   }
 };
-RouletteFunctionOpenController.Ucc = new Map([[20001, _a.Dcc], [20002, _a.Hw1], [20004, _a.BKd], [20007, _a.nmf]]); //# sourceMappingURL=RouletteFunctionOpenController.js.map
+RouletteFunctionOpenController.s5g = () => {
+  if (ModelManager_1.ModelManager.SpringManorModel?.CheckInInstance()) {
+    UiManager_1.UiManager.OpenView("Spring26AtmosphereLevelView");
+  }
+};
+RouletteFunctionOpenController.a5g = () => {
+  if (ModelManager_1.ModelManager.SpringManorModel?.CheckInInstance()) {
+    UiManager_1.UiManager.OpenView("Spring26QuestView");
+  }
+};
+RouletteFunctionOpenController.h5g = () => {
+  if (ModelManager_1.ModelManager.SpringManorModel?.CheckInInstance()) {
+    UiManager_1.UiManager.OpenView("Spring26RoleSelectView");
+  }
+};
+RouletteFunctionOpenController.Ucc = new Map([[20001, _a.Dcc], [20002, _a.Hw1], [20004, _a.BKd], [20007, _a.Igf], [20008, _a.s5g], [20009, _a.a5g], [20011, _a.h5g]]); //# sourceMappingURL=RouletteFunctionOpenController.js.map

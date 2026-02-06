@@ -11,15 +11,15 @@ class ItemTipsModel extends ModelBase_1.ModelBase {
     super(...arguments);
     this.gxt = undefined;
     this.SharpTempOpenParam = undefined;
-    this.zDf = 0;
+    this.POf = 0;
   }
   get DebugCacheTipsItemId() {
-    return this.zDf;
+    return this.POf;
   }
   SetCurrentItemTipsData(e) {
     this.gxt = e;
     if (!Info_1.Info.IsBuildShipping && e) {
-      this.zDf = e.ConfigId;
+      this.POf = e.ConfigId;
     }
   }
   GetCurrentItemTipsData() {

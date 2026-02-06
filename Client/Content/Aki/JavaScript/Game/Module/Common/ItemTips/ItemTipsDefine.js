@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.TipsHonamiStoryData = exports.TipsAbyssDangoData = exports.TipsCardData = exports.TipsOverPowerData = exports.TipsCharacterData = exports.TipsVisionData = exports.TipsWeaponData = exports.TipsMaterialData = exports.ItemTipsData = undefined;
+exports.TipsFurnitureData = exports.TipsHonamiStoryData = exports.TipsAbyssDangoData = exports.TipsCardData = exports.TipsOverPowerData = exports.TipsCharacterData = exports.TipsVisionData = exports.TipsWeaponData = exports.TipsMaterialData = exports.ItemTipsData = undefined;
 const MultiTextLang_1 = require("../../../../Core/Define/ConfigQuery/MultiTextLang");
 const PhantomRarityByRare_1 = require("../../../../Core/Define/ConfigQuery/PhantomRarityByRare");
 const Protocol_1 = require("../../../../Core/Define/Net/Protocol");
@@ -214,15 +214,15 @@ class TipsVisionData extends ItemTipsData {
       }
       e = t?.GetSubPropShowAttributeList(1);
       if (e !== undefined) {
-        for (const g of e) {
-          var n = ConfigManager_1.ConfigManager.PropertyIndexConfig.GetPropertyIndexInfo(g.Id);
+        for (const d of e) {
+          var n = ConfigManager_1.ConfigManager.PropertyIndexConfig.GetPropertyIndexInfo(d.Id);
           var n = {
-            Id: g.Id,
+            Id: d.Id,
             IsMainAttribute: false,
             Name: n.Name,
             IconPath: n.Icon,
-            Value: g.BaseValue,
-            IsRatio: g.IsRatio
+            Value: d.BaseValue,
+            IsRatio: d.IsRatio
           };
           o.push(n);
         }
@@ -324,4 +324,11 @@ class TipsHonamiStoryData extends ItemTipsData {
   }
 }
 exports.TipsHonamiStoryData = TipsHonamiStoryData;
+class TipsFurnitureData extends ItemTipsData {
+  constructor(t) {
+    super(t);
+    this.ItemType = 8;
+  }
+}
+exports.TipsFurnitureData = TipsFurnitureData;
 //# sourceMappingURL=ItemTipsDefine.js.map

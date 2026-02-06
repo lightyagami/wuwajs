@@ -10,6 +10,7 @@ const EventSystem_1 = require("../../../../Common/Event/EventSystem");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const UiManager_1 = require("../../../../Ui/UiManager");
 const MissionPanelControllerBase_1 = require("./MissionPanelControllerBase");
+const PendingProcessControllerRuleConfig_1 = require("./PendingProcessControllerRuleConfig");
 class PendingProcess {
   constructor(e, s) {
     this.ProcessType = e;
@@ -128,10 +129,16 @@ class PendingProcessController extends MissionPanelControllerBase_1.MissionPanel
       if (this.CheckDeleteSameTreeHandle()) {
         this.$Ze(e.Id);
       }
+      if (ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(e.Id)?.GetBlackBoard()?.ContainTag(17)) {
+        this.$Ze(e.Id);
+      }
       this.YZe(new MissionItemViewStartTrackProcess(e, s, t));
     };
     this.JZe = (e, s, t) => {
       if (this.CheckDeleteSameTreeHandle()) {
+        this.$Ze(e);
+      }
+      if (ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(e)?.GetBlackBoard()?.ContainTag(17)) {
         this.$Ze(e);
       }
       this.YZe(new MissionItemViewEndTrackProcess(e, s, t));
@@ -209,6 +216,11 @@ class PendingProcessController extends MissionPanelControllerBase_1.MissionPanel
     }
   }
   YZe(e) {
+    for (const s of PendingProcessControllerRuleConfig_1.pendingProcessExCheckList) {
+      if (s.IsActive() && !s.PendingProgressExCheck(e)) {
+        return;
+      }
+    }
     this.KZe.push(e);
   }
   KOn(e) {

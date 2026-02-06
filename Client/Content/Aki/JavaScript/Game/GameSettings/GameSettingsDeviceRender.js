@@ -20,6 +20,7 @@ const GameSettingsDefine_1 = require("./GameSettingsDefine");
 const GameSettingsDeviceRenderDefine_1 = require("./GameSettingsDeviceRenderDefine");
 const GameSettingsManager_1 = require("./GameSettingsManager");
 const GameSettingsUtils_1 = require("./GameSettingsUtils");
+const MultiTextLang_1 = require("../../Core/Define/ConfigQuery/MultiTextLang");
 class GameSettingsDeviceRender {
   static get ksc() {
     if (this.qsc === undefined) {
@@ -70,14 +71,14 @@ class GameSettingsDeviceRender {
   static get PhysicalGBRam() {
     return this.ANa;
   }
-  static fwm(e, t) {
-    if (this.gwm === undefined) {
-      this.gwm = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetDeviceProfileProfileName();
+  static wwm(e, t) {
+    if (this.Lwm === undefined) {
+      this.Lwm = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetDeviceProfileProfileName();
     }
     if (t) {
-      return e === this.gwm;
+      return e === this.Lwm;
     } else {
-      return this.gwm.includes(e);
+      return this.Lwm.includes(e);
     }
   }
   static IsTargetBaseProfile(e, t) {
@@ -89,6 +90,7 @@ class GameSettingsDeviceRender {
   }
   static InitializeBaseInfo() {
     this.ANa = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetPhysicalGBRam();
+    this.DeviceVideoGbRam = UE.KuroStaticLibrary.GetVideoMemoryGB() > 0 ? UE.KuroStaticLibrary.GetVideoMemoryGB() + 1 : 0;
     this.DNa = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetRHIVendorName();
     this.RNa = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetRHIDeviceName();
     this.UNa = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetDeviceProfileBaseProfileName();
@@ -96,8 +98,11 @@ class GameSettingsDeviceRender {
     this.xNa = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetRHIName();
     this.PNa = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetDeviceHardwareLevel();
     this.DriverDate = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetRHIDriverDate();
-    this.IsAdreno = this.fwm("Adreno", false);
-    this.IsXuanJie = this.fwm("Xiaomi_O1", true);
+    this.DriverVersion = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetRHIDriverVersion();
+    this.WindowsVersion = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetWindowsVersion();
+    this.IsSSDDevice = UE.KuroRenderingRuntimeBPPluginBPLibrary.IsSSDDevice();
+    this.IsAdreno = this.wwm("Adreno", false);
+    this.IsXuanJie = this.wwm("Xiaomi_O1", true);
     this.HU1 = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetMobileDeviceModel();
     this.Qud = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetMobileDeviceMake();
     this.CPUFrequency = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetCPUFrequency();
@@ -119,11 +124,6 @@ class GameSettingsDeviceRender {
       UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Mobile.UseClusteredDeferredShading -1");
     } else {
       UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Mobile.UseClusteredDeferredShading 2");
-    }
-    if (GameSettingsDeviceRender.IsIntelGroupGpu()) {
-      UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Kuro.AutoExposure 0");
-    } else {
-      UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Kuro.AutoExposure 1");
     }
     if (Platform_1.Platform.IsIOSPlatform()) {
       this.DeviceType = 32;
@@ -167,16 +167,18 @@ class GameSettingsDeviceRender {
       }
     } else if (Platform_1.Platform.IsCloudGame()) {
       this.DeviceType = 51;
-    } else if (this.UNa === "Windows_Low") {
+    } else if (this.UNa === "Windows_Lowest") {
       this.DeviceType = 11;
-    } else if (this.UNa === "Windows_Mid") {
+    } else if (this.UNa === "Windows_Low") {
       this.DeviceType = 12;
-    } else if (this.UNa === "Windows_High") {
+    } else if (this.UNa === "Windows_Mid") {
       this.DeviceType = 13;
-    } else if (this.UNa === "Windows_VeryHigh") {
+    } else if (this.UNa === "Windows_High") {
       this.DeviceType = 14;
-    } else if (this.UNa === "Windows_ExtraHigh") {
+    } else if (this.UNa === "Windows_VeryHigh") {
       this.DeviceType = 15;
+    } else if (this.UNa === "Windows_Highest") {
+      this.DeviceType = 16;
     } else if (this.UNa === "Windows") {
       this.DeviceType = 14;
     } else {
@@ -184,7 +186,7 @@ class GameSettingsDeviceRender {
     }
     this.iml();
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("Render", 64, "初始化当前设备基本信息", ["VendorName", this.DNa], ["DeviceName", this.RNa], ["BaseProfileName", this.UNa], ["PhysicalGBRam", this.ANa], ["DeviceScore", this.DeviceScore], ["RHIName", this.xNa], ["HardwareLevel", this.PNa], ["DeviceType", this.DeviceType], ["QualityRange", this.rml], ["platform", Platform_1.Platform.Type], ["MobileDeviceModel", this.HU1], ["LowMemoryDeviceMark", this.LowMemoryDeviceMark]);
+      Log_1.Log.Info("Render", 64, "初始化当前设备基本信息", ["VendorName", this.DNa], ["CPUBrand", this.CPUBrand], ["DeviceName", this.RNa], ["BaseProfileName", this.UNa], ["DriverDate", this.DriverDate], ["DriverVersion", this.DriverVersion], ["PhysicalGBRam", this.ANa], ["VideoGbRam", this.DeviceVideoGbRam], ["DeviceScore", this.DeviceScore], ["RHIName", this.xNa], ["WindowsVersion", this.WindowsVersion], ["IsSSDDevice", this.IsSSDDevice], ["HardwareLevel", this.PNa], ["DeviceType", this.DeviceType], ["QualityRange", this.rml], ["platform", Platform_1.Platform.Type], ["MobileDeviceModel", this.HU1], ["LowMemoryDeviceMark", this.LowMemoryDeviceMark]);
     }
   }
   static Initialize() {
@@ -201,6 +203,10 @@ class GameSettingsDeviceRender {
     var e = /(\d{1,2})-(\d{1,2})-(\d{4})/.exec(this.DriverDate);
     return e?.length === 4 && Number(e[3]) < 2024 || e?.length === 4 && Number(e[3]) === 2024 && Number(e[1]) < 6 || e?.length === 4 && Number(e[3]) === 2024 && Number(e[1]) === 6 && Number(e[2]) < 4;
   }
+  static IsDriverNeedUpdateForRayTracingAMD9000() {
+    var e = /(\d{1,2})-(\d{1,2})-(\d{4})/.exec(this.DriverDate);
+    return e?.length === 4 && Number(e[3]) < 2025 || e?.length === 4 && Number(e[3]) === 2025 && Number(e[1]) < 10 || e?.length === 4 && Number(e[3]) === 2025 && Number(e[1]) === 10 && Number(e[2]) < 25;
+  }
   static IsDxr1_1NotSupported() {
     return UE.KuroRenderingRuntimeBPPluginBPLibrary.GetRayTracingSupportedType() === 1;
   }
@@ -209,19 +215,18 @@ class GameSettingsDeviceRender {
       case 11:
       case 12:
         break;
-      case 15:
+      case 16:
         if (GameSettingsManager_1.GameSettingsManager.IsPcHighestDevice()) {
           this.rml = 5;
         } else {
           this.rml = 4;
         }
         break;
+      case 15:
+        this.rml = 4;
+        break;
       case 14:
-        if (GameSettingsManager_1.GameSettingsManager.IsPcVeryHighDevice()) {
-          this.rml = 4;
-        } else {
-          this.rml = 1;
-        }
+        this.rml = 1;
         break;
       case 21:
       case 22:
@@ -299,6 +304,7 @@ class GameSettingsDeviceRender {
     this.Gsc.set(GameSettingsDefine_1.EFunction.BLOOM, e.Bloom);
     this.Gsc.set(GameSettingsDefine_1.EFunction.SUPERRESOLUTION, e.SuperResolution);
     this.Gsc.set(GameSettingsDefine_1.EFunction.RayTracing, e.Raytracing);
+    this.Gsc.set(GameSettingsDefine_1.EFunction.LOADINGRANGESCALELEVEL, 0);
     return this.Gsc;
   }
   static IsIosAndAndroidHighDevice() {
@@ -321,9 +327,6 @@ class GameSettingsDeviceRender {
   }
   static IsAndroidPlatformLow() {
     return this.DeviceType === 21;
-  }
-  static IsPcPlatformVeryHigh() {
-    return this.DeviceType === 15;
   }
   static IsAndroidAdreno() {
     return this.IsAdreno;
@@ -354,9 +357,6 @@ class GameSettingsDeviceRender {
   static IsQualcommGpu() {
     return this.RNa.includes("Qualcomm(R) Adreno(TM)");
   }
-  static IsIntelGroupGpu() {
-    return this.RNa.includes("Intel") && this.UNa.includes("Windows_Low");
-  }
   static IsMaliNewSocOrXclipseOrPowerVR() {
     return !!this.RNa.includes("G710") || !!this.RNa.includes("G715") || !!this.RNa.includes("G720") || !!this.RNa.includes("G610") || !!this.RNa.includes("G615") || !!this.RNa.includes("G620") || !!this.RNa.includes("Xclipse") || !!this.RNa.includes("BXM-8-256");
   }
@@ -383,6 +383,10 @@ class GameSettingsDeviceRender {
   static IsNvidia4060() {
     return this.DNa === "NVIDIA" && this.RNa.includes("4060");
   }
+  static IsNvidia5060AndAbove() {
+    var e = this.RNa.match(/\bRTX\s*(50\d{2})\b/i);
+    return !!e && (e = parseInt(e[1], 10), this.DNa === "NVIDIA") && e >= 5060;
+  }
   static Is120FrameGPU() {
     if (this.DNa) {
       return (this.DNa === "AMD" || this.DNa === "NVIDIA" || this.DNa === "Intel") && this.DeviceScore > 1300 || this.DNa === "Intel" && UE.KuroRenderingRuntimeBPPluginBPLibrary.GetRayTracingSupportedType() === 0;
@@ -395,6 +399,9 @@ class GameSettingsDeviceRender {
   }
   static IsLaptopCPU() {
     return !!this.CPUBrand.includes("14900") || !!this.CPUBrand.includes("14790") || !!this.CPUBrand.includes("14700") || !!this.CPUBrand.includes("14650") || !!this.CPUBrand.includes("14600") || !!this.CPUBrand.includes("14500") || !!this.CPUBrand.includes("14490") || !!this.CPUBrand.includes("14450") || !!this.CPUBrand.includes("14400") || !!this.CPUBrand.includes("13980") || !!this.CPUBrand.includes("13950") || !!this.CPUBrand.includes("13905") || !!this.CPUBrand.includes("13900") || !!this.CPUBrand.includes("13800") || !!this.CPUBrand.includes("13790") || !!this.CPUBrand.includes("13705") || !!this.CPUBrand.includes("13700") || !!this.CPUBrand.includes("13650") || !!this.CPUBrand.includes("13620") || !!this.CPUBrand.includes("13600") || !!this.CPUBrand.includes("13500") || !!this.CPUBrand.includes("13490") || !!this.CPUBrand.includes("13450") || !!this.CPUBrand.includes("13400") || !!this.CPUBrand.includes("12950") || !!this.CPUBrand.includes("12900") || !!this.CPUBrand.includes("12850") || !!this.CPUBrand.includes("12800") || !!this.CPUBrand.includes("12700") || !!this.CPUBrand.includes("12650") || !!this.CPUBrand.includes("12600") || !!this.CPUBrand.includes("12500") || !!this.CPUBrand.includes("11980") || !!this.CPUBrand.includes("11950") || !!this.CPUBrand.includes("11900") || !!this.CPUBrand.includes("11850") || !!this.CPUBrand.includes("11800") || !!this.CPUBrand.includes("11700") || !!this.CPUBrand.includes("10980") || !!this.CPUBrand.includes("10940") || !!this.CPUBrand.includes("10920") || !!this.CPUBrand.includes("10900") || !!this.CPUBrand.includes("10885") || !!this.CPUBrand.includes("10875") || !!this.CPUBrand.includes("10870") || !!this.CPUBrand.includes("10850") || !!this.CPUBrand.includes("10700") || !!this.CPUBrand.includes("9980") || !!this.CPUBrand.includes("9940") || !!this.CPUBrand.includes("9920") || !!this.CPUBrand.includes("9900") || !!this.CPUBrand.includes("9880") || !!this.CPUBrand.includes("9820") || !!this.CPUBrand.includes("9800") || !!this.CPUBrand.includes("9-7900") || !!this.CPUBrand.includes("7-7820") || !!this.CPUBrand.includes("7-6900") || !!this.CPUBrand.includes("9-185") || !!this.CPUBrand.includes("7-165") || !!this.CPUBrand.includes("7-155") || !!this.CPUBrand.includes("5-135") || !!this.CPUBrand.includes("5-125") || !!this.CPUBrand.includes("9-3495") || !!this.CPUBrand.includes("9-3475") || !!this.CPUBrand.includes("7-3465") || !!this.CPUBrand.includes("7-3455") || !!this.CPUBrand.includes("7-3445") || !!this.CPUBrand.includes("5-3435") || !!this.CPUBrand.includes("5-3425") || !!this.CPUBrand.includes("7-1270") || !!this.CPUBrand.includes("7-1260") || !!this.CPUBrand.includes("5-1250") || !!this.CPUBrand.includes("5-1240") || !!this.CPUBrand.includes("9700") || !!this.CPUBrand.includes("9600") || !!this.CPUBrand.includes("8945") || !!this.CPUBrand.includes("8845") || !!this.CPUBrand.includes("8840") || !!this.CPUBrand.includes("8700") || !!this.CPUBrand.includes("7980") || !!this.CPUBrand.includes("7970") || !!this.CPUBrand.includes("7960") || !!this.CPUBrand.includes("7950") || !!this.CPUBrand.includes("7945") || !!this.CPUBrand.includes("7940") || !!this.CPUBrand.includes("7900") || !!this.CPUBrand.includes("7845") || !!this.CPUBrand.includes("7840") || !!this.CPUBrand.includes("7800") || !!this.CPUBrand.includes("7745") || !!this.CPUBrand.includes("7735") || !!this.CPUBrand.includes("7700") || !!this.CPUBrand.includes("6980") || !!this.CPUBrand.includes("6900") || !!this.CPUBrand.includes("6800") || !!this.CPUBrand.includes("5980") || !!this.CPUBrand.includes("5975") || !!this.CPUBrand.includes("5965") || !!this.CPUBrand.includes("5955") || !!this.CPUBrand.includes("5950") || !!this.CPUBrand.includes("5945") || !!this.CPUBrand.includes("5900") || !!this.CPUBrand.includes("5800") || !!this.CPUBrand.includes("5700") || !!this.CPUBrand.includes("4900") || !!this.CPUBrand.includes("4800") || !!this.CPUBrand.includes("4700") || !!this.CPUBrand.includes("3975") || !!this.CPUBrand.includes("3970") || !!this.CPUBrand.includes("3960") || !!this.CPUBrand.includes("3955") || !!this.CPUBrand.includes("3950") || !!this.CPUBrand.includes("3945") || !!this.CPUBrand.includes("3900") || !!this.CPUBrand.includes("3800") || !!this.CPUBrand.includes("3700") || !!this.CPUBrand.includes("2950") || !!this.CPUBrand.includes("2920") || !!this.CPUBrand.includes("2700") || !!this.CPUBrand.includes("1950") || !!this.CPUBrand.includes("1920") || !!this.CPUBrand.includes("1900") || !!this.CPUBrand.includes("1800") || !!this.CPUBrand.includes("1700") || !!this.CPUBrand.includes("Intel(R) Core(TM) i5-11600K") || !!this.CPUBrand.includes("Intel(R) Core(TM) i5-12490F") || !!this.CPUBrand.includes("Intel(R) Core(TM) Ultra 9 28") || !!this.CPUBrand.includes("Intel(R) Core(TM) Ultra 9 27") || !!this.CPUBrand.includes("Intel(R) Core(TM) Ultra 7 26") || !!this.CPUBrand.includes("Intel(R) Core(TM) Ultra 7 25") || !!this.CPUBrand.includes("Intel(R) Core(TM) Ultra 5 24") || !!this.CPUBrand.includes("Intel(R) Core(TM) Ultra 5 23") || !!this.CPUBrand.includes("AMD Ryzen 5 9") || !!this.CPUBrand.includes("AMD Ryzen 7 9") || !!this.CPUBrand.includes("AMD Ryzen 9 9") || !!this.CPUBrand.includes("AMD Ryzen 5 8600") || !!this.CPUBrand.includes("AMD Ryzen 7 7435H");
+  }
+  static IsNvidiaLaptopGPU() {
+    return this.DNa === "NVIDIA" && this.RNa.includes("Laptop");
   }
   static IsFrameRate120DeviceForAllDevice() {
     return Info_1.Info.IsPcOrGamepadPlatform() && GameSettingsDeviceRender.WOu() || Info_1.Info.IsIosPlatform() && GameSettingsDeviceRender.QOu() || Info_1.Info.IsMacPlatform() && GameSettingsDeviceRender.KOu();
@@ -415,7 +422,7 @@ class GameSettingsDeviceRender {
     return (!!(this.CPUFrequency >= 3000) && !!(this.CPUCoresIncludingHyperthreads >= 16) || !!this.oCd() || !!this.IsLaptopCPU()) && !!this.Is120FrameGPU();
   }
   static IsAndroidHighestResolutionDevice() {
-    return this.DeviceType === 24;
+    return this.DeviceScore >= 280;
   }
   static IsAndroidHighResolutionDevice() {
     return this.DeviceType === 23 || this.DeviceType === 24;
@@ -474,9 +481,14 @@ class GameSettingsDeviceRender {
           Log_1.Log.Warn("Render", 64, "非AMD RX系列，或者型号解析不出来，不能开启光追");
         }
         return false;
-      } else if (MathUtils_1.MathUtils.InRangeArray(e, [6700, 6799]) || MathUtils_1.MathUtils.InRangeArray(e, [7600, 7699]) || MathUtils_1.MathUtils.InRangeArray(e, [9000, 9999])) {
+      } else if (MathUtils_1.MathUtils.InRangeArray(e, [6700, 6799]) || MathUtils_1.MathUtils.InRangeArray(e, [7600, 7699])) {
         if (Log_1.Log.CheckWarn()) {
           Log_1.Log.Warn("Render", 64, "AMD RX 某些型号不支持光追");
+        }
+        return false;
+      } else if (MathUtils_1.MathUtils.InRangeArray(e, [9000, 9999]) && this.IsDriverNeedUpdateForRayTracingAMD9000()) {
+        if (Log_1.Log.CheckWarn()) {
+          Log_1.Log.Warn("Render", 73, "AMD 9000 驱动不支持光追");
         }
         return false;
       } else {
@@ -950,7 +962,9 @@ class GameSettingsDeviceRender {
     }
     r = UE.GameUserSettings.GetGameUserSettings();
     r.SetFrameRateLimit(i);
-    r.SetFramePace(t);
+    if (Info_1.Info.IsAndroidPlatform()) {
+      r.SetFramePace(t);
+    }
     r.ApplySettings(true);
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Render", 91, "ApplyFrameRate", ["InputFrameRate", e]);
@@ -962,16 +976,20 @@ class GameSettingsDeviceRender {
       Log_1.Log.Debug("Render", 91, "ApplyFrameRate", ["FinalFrameRate", t]);
     }
     if (PerfSightController_1.PerfSightController.IsEnable) {
-      UE.PerfSightHelper.PostEvent(801, t.toString());
+      UE.PerfSightHelper.PostEvent(801, i.toString());
     }
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SettingFrameRateChanged, t);
   }
   static ApplyUnlimitedFrameRate(e) {
     if (e) {
       this.ApplyFrameRate(0);
-      UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.SetFramePace 120");
     } else {
       this.ApplyFrameRate(this.BNa);
+    }
+    var t = UE.GameUserSettings.GetGameUserSettings();
+    if (GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.PCVSYNC) === 1) {
+      t.SetVSyncEnabled(!e);
+      t.ApplySettings(true);
     }
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Render", 91, "ApplyUnlimitedFrameRate", ["value", e]);
@@ -1128,16 +1146,91 @@ class GameSettingsDeviceRender {
   static ShouldOverrideVegetationDitherDefaultValue() {
     return this.DNa.toLowerCase() === "intel" && (this.RNa.includes("A580") || this.RNa.includes("A750") || this.RNa.includes("A770"));
   }
+  static GetCPUInformation() {
+    var e = this.CPUBrand.toLowerCase();
+    let t = true;
+    if (e.includes("intel")) {
+      var i = this.CPUBrand.match(/i([0-9])-([0-9]{4,5})/i);
+      if (i) {
+        var s = parseInt(i[1], 10);
+        var i = i[2];
+        let e = 0;
+        e = i.length === 4 ? parseInt(i[0], 10) : parseInt(i.slice(0, 2), 10);
+        if (s < 5 || e < 9) {
+          t = false;
+        }
+      }
+    } else if (e.includes("amd") && (i = this.CPUBrand.match(/ryzen\s+[3579]\s+([0-9]{4})/i)) && parseInt(i[1], 10) < 2700) {
+      t = false;
+    }
+    return [this.CPUBrand, !t];
+  }
+  static GetGPUInformation() {
+    var e;
+    var t = this.RNa.toLowerCase();
+    let i = true;
+    if (t.includes("nvidia") || t.includes("geforce")) {
+      if ((e = this.RNa.match(/gtx\s*(\d{3,4})/i)) && parseInt(e[1], 10) < 1060) {
+        i = false;
+      }
+    } else if ((t.includes("amd") || t.includes("radeon")) && (e = this.RNa.match(/rx\s*(\d{3,4})/i)) && parseInt(e[1], 10) < 570) {
+      i = false;
+    }
+    if (this.DeviceType === 11) {
+      i = false;
+    }
+    return [this.RNa, !i];
+  }
+  static GetGraphicDriverVersion() {
+    var e = this.IsDriverNeedUpdate();
+    return [this.DriverVersion, e];
+  }
+  static GetGraphicAPI() {
+    let e = this.xNa;
+    if (this.xNa === "D3D11") {
+      e = "DX11";
+    } else if (this.xNa === "D3D12") {
+      e = "DX12";
+    }
+    var t = UE.KismetSystemLibrary.GetCommandLine().includes("-dx11");
+    var t = this.xNa === "D3D11" && !t;
+    return [e, t];
+  }
+  static GetMemoryInformation() {
+    var e = Math.ceil(this.ANa / 4) * 4;
+    return [e + "GB", !(e >= 16)];
+  }
+  static GetVideoMemoryInformation() {
+    if (this.DeviceVideoGbRam > 0) {
+      return [this.DeviceVideoGbRam + "GB", false];
+    } else {
+      return ["", false];
+    }
+  }
+  static GetGameInstallPath() {
+    var e = this.IsSSDDevice ? MultiTextLang_1.configMultiTextLang.GetLocalTextNew("DeviceInfo_InstallPath_SSD") : MultiTextLang_1.configMultiTextLang.GetLocalTextNew("DeviceInfo_InstallPath_HDD");
+    return ["" + e, !e];
+  }
+  static GetWindowsVersion() {
+    return [this.WindowsVersion, false];
+  }
+  static IsAutoExposureOn() {
+    return UE.KismetSystemLibrary.GetConsoleVariableIntValue("r.Kuro.AutoExposure") === 1;
+  }
 }
 (exports.GameSettingsDeviceRender = GameSettingsDeviceRender).qsc = undefined;
 GameSettingsDeviceRender.Osc = undefined;
 GameSettingsDeviceRender.ANa = 0;
+GameSettingsDeviceRender.DeviceVideoGbRam = 0;
 GameSettingsDeviceRender.CPUFrequency = 0;
 GameSettingsDeviceRender.CPUCores = 0;
 GameSettingsDeviceRender.CPUCoresIncludingHyperthreads = 0;
 GameSettingsDeviceRender.CPUBrand = "";
 GameSettingsDeviceRender.IsSupportedAFME = false;
 GameSettingsDeviceRender.DriverDate = "Unknown";
+GameSettingsDeviceRender.DriverVersion = "Unknown";
+GameSettingsDeviceRender.WindowsVersion = "Unknown";
+GameSettingsDeviceRender.IsSSDDevice = false;
 GameSettingsDeviceRender.IsAdreno = false;
 GameSettingsDeviceRender.IsXuanJie = false;
 GameSettingsDeviceRender.HU1 = "";
@@ -1165,7 +1258,7 @@ GameSettingsDeviceRender.bNa = -0;
 GameSettingsDeviceRender.Tve = new Set();
 GameSettingsDeviceRender.PerformanceLimitRunning = new Map();
 GameSettingsDeviceRender.InCacheSceneColorMode = 0;
-GameSettingsDeviceRender.gwm = undefined;
+GameSettingsDeviceRender.Lwm = undefined;
 GameSettingsDeviceRender.Gsc = new Map();
 GameSettingsDeviceRender.cZ_ = new Map();
 GameSettingsDeviceRender.VQ1 = new Map();

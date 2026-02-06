@@ -11,18 +11,18 @@ const ActivityControllerHolder_1 = require("../../../ActivityControllerHolder");
 class MotorLinkageButton extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.KDm = 0;
+    this._Dm = 0;
     this.NTt = undefined;
-    this.vGf = undefined;
-    this.cNf = undefined;
+    this.U6f = undefined;
+    this.Y9f = undefined;
     this.Fr = () => {
-      this.NTt?.(this.KDm);
+      this.NTt?.(this._Dm);
     };
-    this.CGf = () => {
-      this.vGf?.(this.KDm);
+    this.A6f = () => {
+      this.U6f?.(this._Dm);
     };
-    this.lNf = () => {
-      this.cNf?.();
+    this.Q9f = () => {
+      this.Y9f?.();
     };
   }
   OnRegisterComponent() {
@@ -32,8 +32,8 @@ class MotorLinkageButton extends UiPanelBase_1.UiPanelBase {
   OnStart() {
     var t = this.GetButton(0);
     if (t) {
-      t.OnPointEnterCallBack.Bind(this.CGf);
-      t.OnPointExitCallBack.Bind(this.lNf);
+      t.OnPointEnterCallBack.Bind(this.A6f);
+      t.OnPointExitCallBack.Bind(this.Q9f);
     }
   }
   OnBeforeShow() {
@@ -41,26 +41,26 @@ class MotorLinkageButton extends UiPanelBase_1.UiPanelBase {
   }
   Refresh() {
     var t;
-    var i = ConfigManager_1.ConfigManager.ActivityMotorLinkageConfig.GetIpConfig(this.KDm);
+    var i = ConfigManager_1.ConfigManager.ActivityMotorLinkageConfig.GetIpConfig(this._Dm);
     if (i) {
       t = ActivityControllerHolder_1.ActivityControllerHolder.ActivityMotorLinkageController.ActivityData;
       this.GetItem(1)?.SetUIActive(t.IsStickerReceived(i.IpStickerList[0]));
       this.GetItem(2)?.SetUIActive(t.IsStickerReceived(i.IpStickerList[1]));
-      i = t.IpHasAnyRewardCanReceive(this.KDm);
+      i = t.IpHasAnyRewardCanReceive(this._Dm);
       this.GetItem(3)?.SetUIActive(i);
     }
   }
   SetIpId(t) {
-    this.KDm = t;
+    this._Dm = t;
   }
   SetClickCallback(t) {
     this.NTt = t;
   }
   SetEnterCallback(t) {
-    this.vGf = t;
+    this.U6f = t;
   }
   SetExitCallback(t) {
-    this.cNf = t;
+    this.Y9f = t;
   }
 }
 exports.MotorLinkageButton = MotorLinkageButton;

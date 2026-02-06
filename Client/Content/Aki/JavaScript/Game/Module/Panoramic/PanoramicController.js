@@ -18,61 +18,61 @@ const PANORMIC_TAG = -826780033;
 class PanoramicController extends ControllerBase_1.ControllerBase {
   static Init() {
     var e = super.Init();
-    this.AVm = ModelManager_1.ModelManager.PanoramicModel;
-    this.Onf = new InputLayerHelper_1.InputLayerHelper();
-    this.Onf.Init(10);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPanoramicActive, this.dZm);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPanoramicDisable, this.mZm);
+    this.Y6m = ModelManager_1.ModelManager.PanoramicModel;
+    this.ohf = new InputLayerHelper_1.InputLayerHelper();
+    this.ohf.Init(10);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPanoramicActive, this.Ztf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPanoramicDisable, this.eif);
     return e;
   }
   static Clear() {
-    if (this.Onf) {
-      this.Onf.Clear();
-      this.Onf = undefined;
+    if (this.ohf) {
+      this.ohf.Clear();
+      this.ohf = undefined;
     }
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPanoramicActive, this.dZm);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPanoramicDisable, this.mZm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPanoramicActive, this.Ztf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPanoramicDisable, this.eif);
     return super.Clear();
   }
   static OnTick(e) {
-    if (!this.AVm || this.AVm?.GetPointNum() <= 0) {
-      this.AVm.SetCurrentPanoramic(undefined);
+    if (!this.Y6m || this.Y6m?.GetPointNum() <= 0) {
+      this.Y6m.SetCurrentPanoramic(undefined);
     } else if (this.IsInFight()) {
       var r;
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Panoramic", 45, "[环视]进入战斗");
       }
-      for ([, r] of this.AVm.GetPoint() ?? []) {
-        this.heg(r);
+      for ([, r] of this.Y6m.GetPoint() ?? []) {
+        this.pIg(r);
       }
-      this.AVm.SetCurrentPanoramic(undefined, true);
-      this.AVm.ChangeAllPanoramicType(2);
+      this.Y6m.SetCurrentPanoramic(undefined, true);
+      this.Y6m.ChangeAllPanoramicType(2);
       this.RemoveInputLayer();
     } else if (!ModelManager_1.ModelManager.PanoramicModel?.IsPanoramic) {
-      this.DVm();
+      this.z6m();
     }
   }
   static yWu() {
-    this.Onf?.AddInputLayer();
+    this.ohf?.AddInputLayer();
   }
   static RemoveInputLayer() {
-    this.Onf?.RemoveInputLayer();
+    this.ohf?.RemoveInputLayer();
   }
-  static DVm() {
-    var e = this.AVm.GetPoint();
+  static z6m() {
+    var e = this.Y6m.GetPoint();
     if (e && !(e.size <= 0)) {
       let a = PanoramicDefine_1.PANORAMIC_MAX_ANGLE;
       let t = undefined;
       let o = -1;
       e.forEach((e, r) => {
-        this.heg(e);
+        this.pIg(e);
         if (e.CheckCondition() && e.Angle < a) {
           a = e.Angle;
           t = e;
           o = t.GetId();
         }
       });
-      this.AVm.SetCurrentPanoramic(t);
+      this.Y6m.SetCurrentPanoramic(t);
       if (t) {
         this.yWu();
       }
@@ -81,9 +81,9 @@ class PanoramicController extends ControllerBase_1.ControllerBase {
       }
     }
   }
-  static heg(e) {
+  static pIg(e) {
     var r;
-    var a = e.Entity.GetComponent(207);
+    var a = e.Entity.GetComponent(209);
     if (a && (r = a.GetInteractController(), a.ForceUpdate(), r) && r.CurrentInteractOption) {
       if (a.CanInteraction && a.IsPawnInteractive() && e.CheckInCircle()) {
         e.ChangeNeedTickCheck(true);
@@ -103,9 +103,9 @@ class PanoramicController extends ControllerBase_1.ControllerBase {
         Log_1.Log.Info("Panoramic", 45, "[环视] InteractPawn 在战斗中");
       }
     } else if (this.CheckCanEnterCameraGuide()) {
-      if ((e = this.AVm.GetCurrentPanoramic()) && e.Entity) {
+      if ((e = this.Y6m.GetCurrentPanoramic()) && e.Entity) {
         if (e.CheckCondition()) {
-          if ((r = e.Entity.GetComponent(207)) && (a = r.GetInteractController()) && a.CurrentInteractOption && r.PanoramicInteract(a.CurrentInteractOption.InstanceId)) {
+          if ((r = e.Entity.GetComponent(209)) && (a = r.GetInteractController()) && a.CurrentInteractOption && r.PanoramicInteract(a.CurrentInteractOption.InstanceId)) {
             if (Log_1.Log.CheckInfo()) {
               Log_1.Log.Info("Panoramic", 45, "[环视] InteractPawn成功", ["currentPanoramic", e.GetId()]);
             }
@@ -122,13 +122,13 @@ class PanoramicController extends ControllerBase_1.ControllerBase {
     }
   }
   static IsInFight() {
-    return Global_1.Global.BaseCharacter?.CharacterActorComponent.Entity.GetComponent(215)?.HasTag(1996802261) ?? false;
+    return Global_1.Global.BaseCharacter?.CharacterActorComponent.Entity.GetComponent(217)?.HasTag(1996802261) ?? false;
   }
   static CheckCanEnterCameraGuide() {
     var e = ControllerHolder_1.ControllerHolder.CameraController.FightCamera?.LogicComponent;
     return !!e && e.CameraGuideController.IsCameraGuideAvailable();
   }
-  static wdf(e) {
+  static Rff(e) {
     var r = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
     var a = r?.Valid && r.Entity?.GetComponent(242)?.IsOnVehicle && r.Entity?.GetComponent(242)?.VehicleType === "Motorcycle";
     var r = a ? r.Entity?.GetComponent(242)?.VehicleEntity : undefined;
@@ -146,11 +146,16 @@ class PanoramicController extends ControllerBase_1.ControllerBase {
   static EnterPanoramic(r, e) {
     if (ModelManager_1.ModelManager.PanoramicModel) {
       if (ModelManager_1.ModelManager.PanoramicModel.IsPanoramic = r) {
-        ModelManager_1.ModelManager.PanoramicModel.PlayMoveMotorTag = e !== undefined ? GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e) : -731650997;
+        if (e !== undefined) {
+          ModelManager_1.ModelManager.PanoramicModel.PlayMoveMotorTag = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e);
+        } else {
+          this.E_g()?.GetComponent(264)?.ExternalResetAssistInput("进入环视");
+          ModelManager_1.ModelManager.PanoramicModel.PlayMoveMotorTag = 1325228559;
+        }
       }
-      this.wdf(r);
+      this.Rff(r);
     }
-    e = this.AVm?.GetPoint();
+    e = this.Y6m?.GetPoint();
     if (e) {
       e.forEach(e => {
         e.ChangeNeedTickCheck(!r);
@@ -158,16 +163,24 @@ class PanoramicController extends ControllerBase_1.ControllerBase {
       });
     }
   }
+  static E_g() {
+    var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
+    if (e?.Valid && e.Entity?.GetComponent(242)?.IsOnVehicle && e.Entity?.GetComponent(242)?.VehicleType === "Motorcycle") {
+      return e.Entity?.GetComponent(242)?.VehicleEntity;
+    } else {
+      return undefined;
+    }
+  }
 }
-(exports.PanoramicController = PanoramicController).AVm = undefined;
-PanoramicController.Onf = undefined;
-PanoramicController.dZm = () => {
+(exports.PanoramicController = PanoramicController).Y6m = undefined;
+PanoramicController.ohf = undefined;
+PanoramicController.Ztf = () => {
   var e = ModelManager_1.ModelManager.CreatureModel.GetPlayerId();
   if (ControllerHolder_1.ControllerHolder.FormationDataController.IsPlayerExist(e) && !ControllerHolder_1.ControllerHolder.FormationDataController.HasPlayerTag(e, PANORMIC_TAG)) {
     ControllerHolder_1.ControllerHolder.FormationDataController.AddPlayerTag(e, PANORMIC_TAG);
   }
 };
-PanoramicController.mZm = () => {
+PanoramicController.eif = () => {
   var e = ModelManager_1.ModelManager.CreatureModel.GetPlayerId();
   if (ControllerHolder_1.ControllerHolder.FormationDataController.IsPlayerExist(e) && ControllerHolder_1.ControllerHolder.FormationDataController.HasPlayerTag(e, PANORMIC_TAG)) {
     ControllerHolder_1.ControllerHolder.FormationDataController.RemovePlayerTag(e, PANORMIC_TAG);

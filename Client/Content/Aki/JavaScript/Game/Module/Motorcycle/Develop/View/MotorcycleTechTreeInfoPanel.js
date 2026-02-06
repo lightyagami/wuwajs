@@ -34,7 +34,7 @@ class MotorcycleTechTreeInfoPanel extends UiPanelBase_1.UiPanelBase {
     this.wNo = undefined;
     this.hJ = ResourceSystem_1.ResourceSystem.InvalidId;
     this.Hea = undefined;
-    this.hwf = () => {
+    this.UDf = () => {
       if (this.PRr) {
         var t = ConfigManager_1.ConfigManager.MotorConfig.GetMotorTechConfig(this.PRr.NodeId);
         if (t) {
@@ -56,7 +56,9 @@ class MotorcycleTechTreeInfoPanel extends UiPanelBase_1.UiPanelBase {
     this.tWt = () => {
       if (this.PRr) {
         if (ModelManager_1.ModelManager.MotorcycleDevelopModel.CanUpgradeNode(this.PRr)) {
-          ControllerHolder_1.ControllerHolder.MotorcycleDevelopController.RequestMotorTechLevelUp(this.PRr.NodeId);
+          if (!this.BAg) {
+            ControllerHolder_1.ControllerHolder.MotorcycleDevelopController.RequestMotorTechLevelUp(this.PRr.NodeId);
+          }
         } else {
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SelectMotorDevelopTab, "MotorcycleTaskTabView");
         }
@@ -66,9 +68,12 @@ class MotorcycleTechTreeInfoPanel extends UiPanelBase_1.UiPanelBase {
       ControllerHolder_1.ControllerHolder.HelpController.OpenHelpById(MotorcycleDevelopDefine_1.MOTORCYCLE_DEVELOP_HELP_TECHTREE);
     };
   }
+  get BAg() {
+    return ModelManager_1.ModelManager.MotorcycleDevelopModel.IsSwitchTechTreePlayerLocked();
+  }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UITexture], [1, UE.UIText], [3, UE.UISprite], [2, UE.UISprite], [4, UE.UIText], [5, UE.UIText], [6, UE.UIButtonComponent], [7, UE.UIText], [8, UE.UITexture], [9, UE.UIItem], [10, UE.UITexture], [11, UE.UIItem], [12, UE.UIItem], [13, UE.UIItem], [14, UE.UIExtendToggle]];
-    this.BtnBindInfo = [[14, this.hwf]];
+    this.BtnBindInfo = [[14, this.UDf]];
   }
   async OnBeforeStartAsync() {
     this.Hea = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
@@ -97,18 +102,18 @@ class MotorcycleTechTreeInfoPanel extends UiPanelBase_1.UiPanelBase {
     var n;
     var s;
     var a = ConfigManager_1.ConfigManager.MotorConfig.GetMotorTechTreeConfig(e.TreeType);
-    var h = ConfigManager_1.ConfigManager.MotorConfig.GetMotorTechConfig(e.NodeId);
-    if (a && h && (t = ConfigManager_1.ConfigManager.MotorConfig.GetMotorTechTagConfig(h.TagId))) {
+    var _ = ConfigManager_1.ConfigManager.MotorConfig.GetMotorTechConfig(e.NodeId);
+    if (a && _ && (t = ConfigManager_1.ConfigManager.MotorConfig.GetMotorTechTagConfig(_.TagId))) {
       s = (o = e.Status) === -1;
       n = o === 1;
       o = o === 0;
       r = ModelManager_1.ModelManager.MotorcycleDevelopModel.IsPreNodeActivated(e);
-      this.SetTextureByPath(h.Icon, this.GetTexture(0));
+      this.SetTextureByPath(_.Icon, this.GetTexture(0));
       this.GetItem(12).SetUIActive(s || !r);
-      this.GetItem(11).SetUIActive(h.Type === 0);
+      this.GetItem(11).SetUIActive(_.Type === 0);
       this.uVd.SetTextByTextId("MotorBike_TechTree_Locked_PreTech");
       if (s) {
-        s = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(h.UnlockConditionDesc);
+        s = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(_.UnlockConditionDesc);
         i = StringUtils_1.StringUtils.Format("({0}/{1})", e.CurrentValue.toString(), e.TargetValue.toString());
         this.uVd.SetTextByText(s + i);
       }
@@ -117,11 +122,11 @@ class MotorcycleTechTreeInfoPanel extends UiPanelBase_1.UiPanelBase {
       this.GetSprite(2).SetColor(UE.Color.FromHex(t.NameColor));
       this.GetSprite(3).SetColor(UE.Color.FromHex(t.NameColor));
       this.GetSprite(3).SetAlpha(TAG_BG_ALPHA);
-      this.GetItem(9).SetUIActive(!StringUtils_1.StringUtils.IsBlank(h.Video));
-      s = ModelManager_1.ModelManager.PlayerInfoModel.GetPlayerGender() === 1 ? h.Video : h.VideoFemale;
-      this.wNo.PlayVideo(h.VideoName, s, true);
+      this.GetItem(9).SetUIActive(!StringUtils_1.StringUtils.IsBlank(_.Video));
+      s = ModelManager_1.ModelManager.PlayerInfoModel.GetPlayerGender() === 1 ? _.Video : _.VideoFemale;
+      this.wNo.PlayVideo(_.VideoName, s, true);
       i = this.GetText(7);
-      s = e.NodeLevel >= h.TechLv.length;
+      s = e.NodeLevel >= _.TechLv.length;
       this.GetItem(13).SetUIActive(s);
       this.ucc.SetUiActive(false);
       if (o) {
@@ -135,15 +140,15 @@ class MotorcycleTechTreeInfoPanel extends UiPanelBase_1.UiPanelBase {
         i.SetChangeColor(!r, i.changeColor);
       }
       o = (s = e.NodeLevel) === 0 ? s + 1 : s;
-      n = Math.min(s + 1, h.TechLv.length);
-      r = ConfigManager_1.ConfigManager.MotorConfig.GetMotorTechLvConfig(h.TechLv[o - 1]);
-      e = ConfigManager_1.ConfigManager.MotorConfig.GetMotorTechLvConfig(h.TechLv[n - 1]);
-      n = StringUtils_1.StringUtils.Format("Lv.{0} {1}", o.toString(), MultiTextLang_1.configMultiTextLang.GetLocalTextNew(h.Title) ?? "");
-      o = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(h.Title) ?? "";
-      h = h.NotActivatedPreviewDesc;
+      n = Math.min(s + 1, _.TechLv.length);
+      r = ConfigManager_1.ConfigManager.MotorConfig.GetMotorTechLvConfig(_.TechLv[o - 1]);
+      e = ConfigManager_1.ConfigManager.MotorConfig.GetMotorTechLvConfig(_.TechLv[n - 1]);
+      n = StringUtils_1.StringUtils.Format("Lv.{0} {1}", o.toString(), MultiTextLang_1.configMultiTextLang.GetLocalTextNew(_.Title) ?? "");
+      o = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(_.Title) ?? "";
+      _ = _.NotActivatedPreviewDesc;
       e = StringUtils_1.StringUtils.Format("x{0}", e.Consume.toString());
       o = s === 0 ? o : n;
-      n = s === 0 ? h : r.Desc;
+      n = s === 0 ? _ : r.Desc;
       this.GetText(1).SetText(o);
       i.SetText(e);
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(5), n);

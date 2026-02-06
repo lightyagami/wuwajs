@@ -28,12 +28,12 @@ class MingSuModel extends ModelBase_1.ModelBase {
     this.CurrentPreviewLevel = 0;
     this.qAr = 0;
     this.CurrentInteractCreatureDataLongId = undefined;
-    this.yNf = new Set();
+    this.oHf = new Set();
     this.qbi = 0;
     this.qdi = (e, t) => {
       var r;
       var o;
-      if (this.yNf.has(e) && (e = ConfigManager_1.ConfigManager.CollectItemConfig.GetDragonPoolConfigByCoreId(e)) && e.CanLevelUpTips && e.CanLevelUpTips.length === MingSuDefine_1.PLOTPARAM_NUM && this.hxf(e.Id)) {
+      if (this.oHf.has(e) && (e = ConfigManager_1.ConfigManager.CollectItemConfig.GetDragonPoolConfigByCoreId(e)) && e.CanLevelUpTips && e.CanLevelUpTips.length === MingSuDefine_1.PLOTPARAM_NUM && this.QGf(e.Id)) {
         r = e.CanLevelUpTips[0];
         o = Number(e.CanLevelUpTips[1]);
         e = Number(e.CanLevelUpTips[2]);
@@ -47,7 +47,7 @@ class MingSuModel extends ModelBase_1.ModelBase {
     var e = ConfigManager_1.ConfigManager.CollectItemConfig.GetAllDragonPoolConfigList();
     if (e !== undefined) {
       for (const t of e) {
-        this.yNf.add(t.CoreId);
+        this.oHf.add(t.CoreId);
       }
     }
     return true;
@@ -177,11 +177,13 @@ class MingSuModel extends ModelBase_1.ModelBase {
         }
         var r = new Array();
         for (const n of e) {
-          var o = ConfigManager_1.ConfigManager.ItemConfig.GetConfig(n.L8n);
-          r.push({
-            ItemInfo: o,
-            Count: n.n9n
-          });
+          var o = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(n.L8n);
+          if (o) {
+            r.push({
+              ItemInfo: o,
+              Count: n.n9n
+            });
+          }
         }
         return r;
       }
@@ -284,7 +286,7 @@ class MingSuModel extends ModelBase_1.ModelBase {
   get MingSuLastLevel() {
     return this.qbi;
   }
-  hxf(e) {
+  QGf(e) {
     var t = this.GetDragonPoolInstanceById(e);
     var r = t.GetGoalList();
     var o = this.GetTargetDragonPoolCoreCountById(e) + this.GetItemCount(t.GetCoreId());

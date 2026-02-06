@@ -10,7 +10,7 @@ const LevelGeneralBase_1 = require("../LevelGeneralBase");
 class LevelConditionCheckCalabashChildFunctionOpen extends LevelGeneralBase_1.LevelConditionBase {
   Check(e, n) {
     const a = e.LimitParams?.get("ChildViewName");
-    return !!a && !!ModelManager_1.ModelManager.CalabashModel.GetViewTabList().some(e => e.ChildViewName === a) && !!(e = UiManager_1.UiManager.GetViewByName("VisionIntensifyView")) && (e = e.GetCurrentUniqueId(), ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomBattleData(e)?.GetVisionIfCanRefine() ?? false);
+    return !!a && !!ModelManager_1.ModelManager.CalabashModel.GetViewTabList().some(e => e.ChildViewName === a) && !!(e = UiManager_1.UiManager.GetViewByName("VisionIntensifyView")) && (e = e.GetCurrentUniqueId(), ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomBattleData(e)?.GetVisionIfCanRefine(0) ?? false);
   }
 }
 exports.LevelConditionCheckCalabashChildFunctionOpen = LevelConditionCheckCalabashChildFunctionOpen;

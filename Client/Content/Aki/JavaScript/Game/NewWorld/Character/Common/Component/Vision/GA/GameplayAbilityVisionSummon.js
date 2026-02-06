@@ -67,7 +67,7 @@ class GameplayAbilityVisionSummon extends GameplayAbilityVisionBase_1.GameplayAb
       });
     }
     let t = undefined;
-    var i = this.Entity.GetComponent(41);
+    var i = this.Entity.GetComponent(43);
     if (i?.Valid) {
       for (const s of i.GetAllActivatedSkill()) {
         if (s.SkillInfo?.SkillGenre === 9) {
@@ -88,7 +88,7 @@ class GameplayAbilityVisionSummon extends GameplayAbilityVisionBase_1.GameplayAb
   }
   HZo() {
     this.MZo = PhantomUtil_1.PhantomUtil.GetSummonedEntity(this.VisionComponent.Entity, Protocol_1.Aki.Protocol.Summon.x3s.Proto_ESummonTypeConcomitantVision);
-    return !!this.MZo.IsInit && !this.MZo.Entity.Active && (this.oMt = PhantomUtil_1.PhantomUtil.GetVisionData(this.VisionComponent.GetVisionId()), this.OZo = this.MZo.Entity.GetComponent(3), this.kZo = this.MZo.Entity.GetComponent(41), this.aer = this.MZo.Entity.GetComponent(215), this.KZo = this.MZo.Entity.GetComponent(183), this.fAr = this.MZo.Entity.GetComponent(21), true);
+    return !!this.MZo.IsInit && !this.MZo.Entity.Active && (this.oMt = PhantomUtil_1.PhantomUtil.GetVisionData(this.VisionComponent.GetVisionId()), this.OZo = this.MZo.Entity.GetComponent(3), this.kZo = this.MZo.Entity.GetComponent(43), this.aer = this.MZo.Entity.GetComponent(217), this.KZo = this.MZo.Entity.GetComponent(185), this.fAr = this.MZo.Entity.GetComponent(21), true);
   }
   her() {
     return this.oMt.空中能否释放 && this.GameplayTagComponent.HasTag(40422668);

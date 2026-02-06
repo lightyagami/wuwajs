@@ -2,21 +2,21 @@
 
 var __decorate = this && this.__decorate || function (t, e, i, s) {
   var n;
-  var h = arguments.length;
-  var o = h < 3 ? e : s === null ? s = Object.getOwnPropertyDescriptor(e, i) : s;
+  var o = arguments.length;
+  var h = o < 3 ? e : s === null ? s = Object.getOwnPropertyDescriptor(e, i) : s;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    o = Reflect.decorate(t, e, i, s);
+    h = Reflect.decorate(t, e, i, s);
   } else {
     for (var r = t.length - 1; r >= 0; r--) {
       if (n = t[r]) {
-        o = (h < 3 ? n(o) : h > 3 ? n(e, i, o) : n(e, i)) || o;
+        h = (o < 3 ? n(h) : o > 3 ? n(e, i, h) : n(e, i)) || h;
       }
     }
   }
-  if (h > 3 && o) {
-    Object.defineProperty(e, i, o);
+  if (o > 3 && h) {
+    Object.defineProperty(e, i, h);
   }
-  return o;
+  return h;
 };
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -44,6 +44,8 @@ const GeneralLogicTreeUtil_1 = require("../../../../Module/GeneralLogicTree/Gene
 const NpcIconComponent_1 = require("../../../../Module/NPC/NpcIconComponent");
 const UiModel_1 = require("../../../../Ui/UiModel");
 const EnvironmentalPerceptionController_1 = require("../../../../World/Enviroment/EnvironmentalPerceptionController");
+const SceneItemActorComponent_1 = require("../../../SceneItem/SceneItemActorComponent");
+const BaseCharacterComponent_1 = require("./BaseCharacterComponent");
 const CharacterActorComponent_1 = require("./CharacterActorComponent");
 const CHECK_QUEST_ICON_INTERVAL = 1000;
 const DESTROY_ICON_COMP_TIME = 6000;
@@ -157,10 +159,10 @@ let PawnHeadInfoComponent = class PawnHeadInfoComponent extends EntityComponent_
     return [1, 0];
   }
   OnStart() {
-    this.xJr = this.Entity.GetComponent(126);
+    this.xJr = this.Entity.GetComponent(128);
     this.Hte = this.Entity.GetComponent(1);
-    this.wJr = this.Entity.GetComponent(128);
-    this.BJr = this.Entity.GetComponent(207);
+    this.wJr = this.Entity.GetComponent(130);
+    this.BJr = this.Entity.GetComponent(209);
     this.bJr = Vector_1.Vector.Create();
     this.pie();
     if (this.Hte instanceof CharacterActorComponent_1.CharacterActorComponent) {
@@ -412,8 +414,13 @@ let PawnHeadInfoComponent = class PawnHeadInfoComponent extends EntityComponent_
     return this.Hte.ActorLocationProxy;
   }
   GetAttachToMeshComponent() {
+    var t;
     if (this.VJr() === Protocol_1.Aki.Protocol.kks.Proto_SceneItem) {
-      return this.Hte.GetStaticMeshComponent();
+      if (t = this.Entity.GetComponent(340)) {
+        return t.GetSkeletalMeshComponent();
+      } else {
+        return this.Hte.GetStaticMeshComponent();
+      }
     } else {
       return this.Hte.SkeletalMesh;
     }
@@ -421,17 +428,20 @@ let PawnHeadInfoComponent = class PawnHeadInfoComponent extends EntityComponent_
   GetAttachToSocketName() {
     return this.xJr?.GetHeadStateSocketName() ?? ConfigManager_1.ConfigManager.NpcIconConfig.GetNpcIconSocketName();
   }
-  GetAttachToLocation(t) {
-    var e;
+  GetAttachToLocation(e) {
+    var t;
     var i = this.Hte;
-    if (i) {
-      e = i.SkeletalMesh.D_K2_GetComponentLocation();
-      t.Set(e.X, e.Y, e.Z + i.HalfHeight * 2);
+    if (i instanceof BaseCharacterComponent_1.BaseCharacterComponent) {
+      t = i.SkeletalMesh.D_K2_GetComponentLocation();
+      e.Set(t.X, t.Y, t.Z + i.HalfHeight * 2);
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("HudUnit", 50, "获取根头顶组件位置", ["PbDataId", this.Hte?.CreatureData.GetPbDataId()], ["RootLocation", t], ["ActorLocation", i.ActorLocationProxy], ["MeshLocation", e]);
+        Log_1.Log.Info("HudUnit", 50, "获取根头顶组件位置", ["PbDataId", this.Hte?.CreatureData.GetPbDataId()], ["RootLocation", e], ["ActorLocation", i.ActorLocationProxy], ["MeshLocation", t]);
       }
     } else {
-      t.FromUeVector(this.Hte.SkeletalMesh.D_K2_GetComponentLocation());
+      let t = this.Hte.SkeletalMesh;
+      if (t = this.Hte instanceof SceneItemActorComponent_1.SceneItemActorComponent && !t ? this.Hte.GetInteractionSkeletalMeshActor()?.SkeletalMeshComponent : t) {
+        e.FromUeVector(t.D_K2_GetComponentLocation());
+      }
     }
   }
   GetAddOffsetZ() {
@@ -481,21 +491,25 @@ let PawnHeadInfoComponent = class PawnHeadInfoComponent extends EntityComponent_
   }
   async UpdatePlayerInfoIcon(t) {
     var e;
+    var i;
     if (t) {
       this.ZMl();
       await this.jMl.Promise;
       t = this.Hte.CreatureData.GetPlayerId();
       t = ModelManager_1.ModelManager.OnlineModel.GetCurrentTeamListById(t);
-      e = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(PLAYER_INFO_DECORATOR_KEY);
-      e = StringUtils_1.StringUtils.Format(e, t.Name);
+      e = ConfigManager_1.ConfigManager.NpcIconConfig.GetPlayerInfoIconLimitDistance();
+      i = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(PLAYER_INFO_DECORATOR_KEY);
+      i = StringUtils_1.StringUtils.Format(i, t.Name);
       t = playerInfoIconPaths[t.PlayerNumber - 1];
       this.hor.SetPlayerInfoIcon(t);
-      this.hor.SetCharacterName(e);
+      this.hor.SetCharacterName(i);
+      this.hor.SetupCheckRange(e * e);
     } else {
       this.hor?.SetPlayerInfoIconState(false);
+      this.hor?.SetNameTextState(true);
       this.hor?.SetHeadInfoNameState(this.IsShowNameInfo());
     }
   }
 };
-PawnHeadInfoComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(85)], PawnHeadInfoComponent);
+PawnHeadInfoComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(87)], PawnHeadInfoComponent);
 exports.PawnHeadInfoComponent = PawnHeadInfoComponent; //# sourceMappingURL=PawnHeadInfoComponent.js.map

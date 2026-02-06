@@ -19,21 +19,21 @@ const PhoneSystemDefine_1 = require("../PhoneSystemDefine");
 class PhoneSystemChatPartnerTabItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
     super(...arguments);
-    this.kaf = undefined;
-    this.qaf = undefined;
-    this.Mpf = undefined;
+    this.l1f = undefined;
+    this._1f = undefined;
+    this.nSf = undefined;
     this.Nji = undefined;
-    this.Oaf = undefined;
+    this.u1f = undefined;
     this.Hea = undefined;
-    this.n0f = (t, e, i) => {
-      if (this.Oaf) {
-        this.Oaf(e, i);
+    this.hpf = (t, e, i) => {
+      if (this.u1f) {
+        this.u1f(e, i);
       }
     };
-    this.Bpt = t => this.qaf.GetSelectedGridIndex() !== t;
-    this.Gaf = () => {
+    this.Bpt = t => this._1f.GetSelectedGridIndex() !== t;
+    this.c1f = () => {
       var t = new TogChatTalkItem();
-      t.SetOnTogClickCallBack(this.n0f);
+      t.SetOnTogClickCallBack(this.hpf);
       t.SetCanExecuteChange(this.Bpt);
       return t;
     };
@@ -47,14 +47,14 @@ class PhoneSystemChatPartnerTabItem extends GridProxyAbstract_1.GridProxyAbstrac
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIVerticalLayout], [2, UE.UIItem]];
   }
   async OnBeforeStartAsync() {
-    this.kaf = new TogChatPartner();
+    this.l1f = new TogChatPartner();
     this.Hea = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
-    var t = [this.kaf.CreateThenShowByActorAsync(this.GetItem(0).GetOwner())];
+    var t = [this.l1f.CreateThenShowByActorAsync(this.GetItem(0).GetOwner())];
     await Promise.all(t);
-    this.qaf = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(1), this.Gaf, undefined, true);
+    this._1f = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(1), this.c1f, undefined, true);
   }
   OnBeforeShow() {
-    this.Faf();
+    this.d1f();
   }
   OnBeforeDestroy() {
     this.Hea?.Clear();
@@ -62,8 +62,8 @@ class PhoneSystemChatPartnerTabItem extends GridProxyAbstract_1.GridProxyAbstrac
   }
   SetToggleState(t) {
     var e = t ? 1 : 0;
-    this.kaf.GetTogglePartner().SetToggleState(e);
-    this.kaf.SetSelected(t);
+    this.l1f.GetTogglePartner().SetToggleState(e);
+    this.l1f.SetSelected(t);
   }
   OnSelected(t) {
     this.SetToggleState(true);
@@ -71,40 +71,40 @@ class PhoneSystemChatPartnerTabItem extends GridProxyAbstract_1.GridProxyAbstrac
   }
   OnDeselected(t) {
     this.SetToggleState(false);
-    this.Faf();
+    this.d1f();
   }
   DeselectAllChatTabItem() {
-    this.qaf.DeselectCurrentGridProxy();
+    this._1f.DeselectCurrentGridProxy();
   }
   SetRefreshMainPanelFunc(t) {
-    this.Oaf = t;
+    this.u1f = t;
   }
   async RefreshAsync(t, e, i) {
-    this.kaf?.RefreshView(t.ChatPartnerId, e, i);
-    this.kaf?.SetClickCallBack(this.OnClickThisItem);
+    this.l1f?.RefreshView(t.ChatPartnerId, e, i);
+    this.l1f?.SetClickCallBack(this.OnClickThisItem);
     e = ModelManager_1.ModelManager.PhoneMsgModel.GetAllPhoneMsgShortMsgDataByChatPartnerId(t.ChatPartnerId);
     if (e) {
-      this.Mpf = [];
+      this.nSf = [];
       for (const h of e) {
         var s = new PhoneSystemDefine_1.ChatTalkTabItemData(h);
-        this.Mpf.push(s);
+        this.nSf.push(s);
       }
-      await this.qaf?.RefreshByDataAsync(this.Mpf);
+      await this._1f?.RefreshByDataAsync(this.nSf);
     }
   }
   SetClickCallBack(t) {
     this.Nji = t;
   }
   ExpandChatTabItem() {
-    this.qaf?.SetActive(true);
+    this._1f?.SetActive(true);
     this.Hea?.StopSequenceByKey("Switch_In");
     this.Hea?.PlayLevelSequenceByName("Switch_In");
   }
-  Faf() {
-    this.qaf?.SetActive(false);
+  d1f() {
+    this._1f?.SetActive(false);
   }
   RefreshShowChatText(t) {
-    t = this.qaf?.GetLayoutItemByKey(t);
+    t = this._1f?.GetLayoutItemByKey(t);
     if (t) {
       t.RefreshShowChatText();
     }
@@ -117,17 +117,17 @@ exports.PhoneSystemChatPartnerTabItem = PhoneSystemChatPartnerTabItem;
 class TogChatPartner extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.Vaf = undefined;
-    this.lQf = 0;
-    this.owf = false;
+    this.f1f = undefined;
+    this.Tsg = 0;
+    this.LDf = false;
     this.Toggle = undefined;
-    this.Haf = () => {
-      if (this.Vaf) {
-        this.Vaf();
+    this.g1f = () => {
+      if (this.f1f) {
+        this.f1f();
       }
     };
     this.HandleSubItemSelected = (t, e) => {
-      if (e === this.lQf) {
+      if (e === this.Tsg) {
         this.SetSelectBgShow(true);
       } else {
         this.SetSelectBgShow(false);
@@ -136,13 +136,13 @@ class TogChatPartner extends UiPanelBase_1.UiPanelBase {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UITexture], [2, UE.UIText], [3, UE.UIItem], [4, UE.UIText], [5, UE.UIItem], [6, UE.UISprite], [7, UE.UISprite], [8, UE.UIText]];
-    this.BtnBindInfo = [[0, this.Haf]];
+    this.BtnBindInfo = [[0, this.g1f]];
   }
-  nwf(t) {
-    if (!this.owf) {
+  PDf(t) {
+    if (!this.LDf) {
       RedDotController_1.RedDotController.BindRedDot("PhoneMsgChatPartnerRedDot", this.GetItem(3), undefined, t);
       RedDotController_1.RedDotController.BindRedDot("PhoneMsgChatPartnerRedDotGiftIcon", this.GetItem(5), undefined, t);
-      this.owf = true;
+      this.LDf = true;
     }
   }
   OnStart() {
@@ -152,7 +152,7 @@ class TogChatPartner extends UiPanelBase_1.UiPanelBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPhoneMsgChatTabClick, this.HandleSubItemSelected);
     RedDotController_1.RedDotController.UnBindRedDot("PhoneMsgChatItemRedDot");
     RedDotController_1.RedDotController.UnBindRedDot("PhoneMsgChatPartnerRedDotGiftIcon");
-    this.owf = false;
+    this.LDf = false;
   }
   GetTogglePartner() {
     return this.GetExtendToggle(0);
@@ -160,17 +160,17 @@ class TogChatPartner extends UiPanelBase_1.UiPanelBase {
   RefreshView(t, e, i) {
     var s = ConfigManager_1.ConfigManager.PhoneMsgConfig.GetChatPartnerConfig(t);
     if (s) {
-      this.lQf = t;
+      this.Tsg = t;
       if (s.Icon) {
         this.SetTextureByPath(s.Icon, this.GetTexture(1));
       }
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), s.Name);
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(8), s.Name);
-      this.nwf(t);
+      this.PDf(t);
     }
   }
   SetClickCallBack(t) {
-    this.Vaf = t;
+    this.f1f = t;
   }
   SetSelected(t) {
     this.GetText(2).SetUIActive(!t);
@@ -185,9 +185,9 @@ class TogChatTalkItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
     super(...arguments);
     this.ShortMsgId = 0;
-    this.jaf = undefined;
+    this.C1f = undefined;
     this.x1_ = undefined;
-    this.owf = false;
+    this.LDf = false;
     this.Hea = undefined;
     this.HandleSelected = (t, e) => {
       if (t === this.ShortMsgId) {
@@ -203,16 +203,16 @@ class TogChatTalkItem extends GridProxyAbstract_1.GridProxyAbstract {
         switch (i.FinallPopType) {
           case 4:
             if (ModelManager_1.ModelManager.QuestNewModel.GetQuestState(i.QuestId) === 3) {
-              this.mNf();
+              this.J9f();
             }
             break;
           case 6:
             if (e.IsReceived) {
-              this.mNf();
+              this.J9f();
             }
             break;
           default:
-            this.mNf();
+            this.J9f();
         }
       }
     };
@@ -225,14 +225,14 @@ class TogChatTalkItem extends GridProxyAbstract_1.GridProxyAbstract {
         this.SetSpriteByPath(e, this.GetSprite(2), false);
       }
     };
-    this.Haf = () => {
+    this.g1f = () => {
       var t = ConfigManager_1.ConfigManager.PhoneMsgConfig.GetPhoneMsgConfig(this.ShortMsgId);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPhoneMsgChatTabClick, this.ShortMsgId, t.WhichChat);
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UISprite], [2, UE.UISprite], [3, UE.UIText], [4, UE.UIItem]];
-    this.BtnBindInfo = [[0, this.Haf]];
+    this.BtnBindInfo = [[0, this.g1f]];
   }
   OnStart() {
     this.Hea = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
@@ -251,19 +251,19 @@ class TogChatTalkItem extends GridProxyAbstract_1.GridProxyAbstract {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPhoneMsgSetAsRead, this.HandleSetAsRead);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPhoneMsgSetReceived, this.HandleSetAsRead);
     RedDotController_1.RedDotController.UnBindRedDot("PhoneMsgChatItemRedDot");
-    this.owf = false;
+    this.LDf = false;
   }
-  nwf(t) {
-    if (!this.owf) {
+  PDf(t) {
+    if (!this.LDf) {
       RedDotController_1.RedDotController.BindRedDot("PhoneMsgChatItemRedDot", this.GetItem(4), undefined, t);
-      this.owf = true;
+      this.LDf = true;
     }
   }
-  mNf() {
+  J9f() {
     this.Hea?.StopSequenceByKey("Switch");
     this.Hea?.PlayLevelSequenceByName("Switch");
   }
-  swf() {
+  ADf() {
     var t = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("PhoneMsgFinishIconSel");
     var e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("PhoneMsgFinishIconNml");
     this.SetSpriteByPath(e, this.GetSprite(1), false);
@@ -272,13 +272,13 @@ class TogChatTalkItem extends GridProxyAbstract_1.GridProxyAbstract {
   async RefreshAsync(t, e, i) {
     this.ShortMsgId = t.ShortMsgData.ShortMsgId;
     if (t.IsFinish) {
-      this.swf();
+      this.ADf();
     } else {
       this.SetSpriteByPath(t.UnFinishIconNormal, this.GetSprite(1), false);
       this.SetSpriteByPath(t.UnFinishIconSelect, this.GetSprite(2), false);
     }
     this.RefreshShowChatText();
-    this.nwf(this.ShortMsgId);
+    this.PDf(this.ShortMsgId);
   }
   RefreshShowChatText() {
     var t = ModelManager_1.ModelManager.PhoneMsgModel.GetLastChatTextByShortMsgId(this.ShortMsgId);
@@ -288,7 +288,7 @@ class TogChatTalkItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.GetText(3).SetText(t);
   }
   SetOnTogClickCallBack(t) {
-    this.jaf = t;
+    this.C1f = t;
   }
   SetCanExecuteChange(t) {
     this.x1_ = t;
@@ -298,8 +298,8 @@ class TogChatTalkItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.GetExtendToggle(0).SetToggleState(t);
   }
   OnSelected(t) {
-    if (this.jaf) {
-      this.jaf(this.GridIndex, this.ShortMsgId, this);
+    if (this.C1f) {
+      this.C1f(this.GridIndex, this.ShortMsgId, this);
     }
     this.SetToggleState(true);
   }

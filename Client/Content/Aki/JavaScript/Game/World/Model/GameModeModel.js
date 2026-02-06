@@ -392,6 +392,14 @@ class GameModeModel extends ModelBase_1.ModelBase {
     t = [new UE.StreamingSourceShape(true, t, 0, true, e, undefined, undefined)];
     return GameModeModel.nQs(MathUtils_1.MathUtils.DefaultTransformDouble, 128, 0, undefined, t);
   }
+  static CreateIndependentStreamingSource(e, t, i) {
+    t = [new UE.StreamingSourceShape(false, 1, t, false, 360, undefined, undefined)];
+    i = GameModeModel.nQs(MathUtils_1.MathUtils.DefaultTransformDouble, i, 0, e, t);
+    if (i?.IsValid() && (e = i.GetComponentByClass(UE.WorldPartitionStreamingSourceComponent.StaticClass()))?.IsValid()) {
+      e.EnableStreamingSource();
+    }
+    return i;
+  }
   static nQs(e, t, i, s, o) {
     var r = ActorSystem_1.ActorSystem.Get(UE.Actor.StaticClass(), e);
     r.AddComponentByClass(UE.SceneComponent.StaticClass(), false, MathUtils_1.MathUtils.DefaultTransform, false);

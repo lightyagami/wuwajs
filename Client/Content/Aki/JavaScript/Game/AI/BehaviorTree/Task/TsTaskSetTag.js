@@ -93,7 +93,7 @@ class TsTaskSetTag extends TsTaskAbortImmediatelyBase_1.default {
     }
   }
   SetGameplayTag(t) {
-    if (this.TsIsCommonTag && (s = t.GetComponent(206))) {
+    if (this.TsIsCommonTag && (s = t.GetComponent(208))) {
       i = this.TsGameplayTag.TagId;
       e = s.HasTag(i);
       if (this.TsIsAdd && !e) {
@@ -104,7 +104,7 @@ class TsTaskSetTag extends TsTaskAbortImmediatelyBase_1.default {
     }
     var s;
     var i;
-    var e = t.GetComponent(215);
+    var e = t.GetComponent(217);
     if (e) {
       s = this.TsGameplayTag.TagId;
       i = e.HasTag(s);

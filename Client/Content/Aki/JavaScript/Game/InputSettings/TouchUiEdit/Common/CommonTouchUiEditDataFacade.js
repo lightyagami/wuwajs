@@ -14,7 +14,7 @@ class CommonTouchUiEditDataFacade {
     this.hs = 0;
     this.NQ = new Map();
     this.wZt = undefined;
-    this.n_f = undefined;
+    this.Ccf = undefined;
     this.MinTouchMoveDifference = 0;
     this.MaxTouchMoveDifference = 0;
     this.MaxTouchMoveValue = 0;
@@ -47,20 +47,20 @@ class CommonTouchUiEditDataFacade {
     this.MaxTouchMoveValue = CommonParamById_1.configCommonParamById.GetFloatConfig("MaxTouchMoveValue");
     this.MinTouchMoveValue = CommonParamById_1.configCommonParamById.GetFloatConfig("MinTouchMoveValue");
     this.ControlScaleRate = CommonParamById_1.configCommonParamById.GetFloatConfig("ControlScaleRate");
-    Net_1.Net.Register(24830, this.oJc);
+    Net_1.Net.Register(20720, this.oJc);
   }
   Clear() {
     this.NQ.clear();
     this.wZt = undefined;
-    Net_1.Net.UnRegister(24830);
+    Net_1.Net.UnRegister(20720);
   }
   SetGroup(e) {
     this.hs = e;
     this.wZt = ConfigManager_1.ConfigManager.CommonTouchUiEditConfig.GetConfigListByEditGroup(this.hs);
-    this.n_f = ConfigManager_1.ConfigManager.CommonTouchUiEditConfig.GetGroupConfigById(this.hs);
+    this.Ccf = ConfigManager_1.ConfigManager.CommonTouchUiEditConfig.GetGroupConfigById(this.hs);
   }
   GetGroupConfig() {
-    return this.n_f;
+    return this.Ccf;
   }
   GetResIdList() {
     var e = new Set();
@@ -125,8 +125,8 @@ class CommonTouchUiEditDataFacade {
     }
     e = Protocol_1.Aki.Protocol.oHc.create();
     e.v8n = t;
-    Net_1.Net.Call(29996, e, e => {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 18091);
+    Net_1.Net.Call(20627, e, e => {
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 26958);
     });
   }
   GetData(e, t) {

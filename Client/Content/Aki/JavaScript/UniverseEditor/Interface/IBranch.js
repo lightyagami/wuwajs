@@ -4,4 +4,4 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.depotBranch = undefined;
-exports.depotBranch = ["branch_1.0", "branch_1.1", "branch_1.2", "branch_1.3", "branch_1.4", "branch_2.0", "branch_2.1", "branch_2.2", "branch_2.3", "branch_2.4", "branch_2.5", "branch_2.6", "branch_2.7", "branch_2.8", "branch_3.0", "branch_3.1", "development"]; //# sourceMappingURL=IBranch.js.map
+exports.depotBranch = ["branch_1.0", "branch_1.1", "branch_1.2", "branch_1.3", "branch_1.4", "branch_2.0", "branch_2.1", "branch_2.2", "branch_2.3", "branch_2.4", "branch_2.5", "branch_2.6", "branch_2.7", "branch_2.8", "branch_3.0", "branch_3.1", "branch_3.2", "development"]; //# sourceMappingURL=IBranch.js.map

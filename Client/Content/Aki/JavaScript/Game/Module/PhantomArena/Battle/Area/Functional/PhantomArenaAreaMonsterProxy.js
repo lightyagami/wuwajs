@@ -111,12 +111,12 @@ class PhantomArenaAreaMonsterProxy extends PhantomArenaAreaProxyBase_1.PhantomAr
   }
   PointerEnterCard() {}
   PointerDownCard(t, e) {
-    this.WD_ = this.ieg(t);
+    this.WD_ = this.eEg(t);
     if (this.WD_) {
       this.Card?.RecordLastDragPos(e.pointerPosition);
     }
   }
-  ieg(t) {
+  eEg(t) {
     return !this.IsInCardTween && !ModelManager_1.ModelManager.PhantomArenaBattleModel.InWaitReconstructCardIdList(t) && this.ParentArea.ParentArea.IsCanDragCard(t);
   }
   PointerBeginDrag(t, e) {

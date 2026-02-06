@@ -22,8 +22,8 @@ class LevelConditionCheckFightEnergyBall extends LevelGeneralBase_1.LevelConditi
       }
       return false;
     } else {
-      r = (e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity)?.Entity?.GetComponent(97)?.RoleElementEnergy;
-      e = e?.Entity?.GetComponent(97)?.RoleElementEnergyMax;
+      r = (e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity)?.Entity?.GetComponent(99)?.RoleElementEnergy;
+      e = e?.Entity?.GetComponent(99)?.RoleElementEnergyMax;
       return r === 0 && n === 0 || r > 0 && r < e && n === 2 || e <= r && n === 1;
     }
   }

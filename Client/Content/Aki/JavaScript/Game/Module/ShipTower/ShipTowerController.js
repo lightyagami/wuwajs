@@ -17,20 +17,20 @@ const UiTimeDilation_1 = require("../../Ui/Base/UiTimeDilation");
 const UiManager_1 = require("../../Ui/UiManager");
 class ShipTowerController extends UiControllerBase_1.UiControllerBase {
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(26641, e => {
+    Net_1.Net.Register(24188, e => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("ShipTower", 69, "My_", ["割草爬塔活动副本积分结算推送", e]);
       }
       UiTimeDilation_1.UiTimeDilation.DeleteWaitSetTimeDilationTag("ShipTower");
       ModelManager_1.ModelManager.ShipTowerModel.UpdateResultNotify(e);
     });
-    Net_1.Net.Register(20814, e => {
+    Net_1.Net.Register(21450, e => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("ShipTower", 69, "Ey_", ["割草爬塔关卡信息更新", e]);
       }
       ModelManager_1.ModelManager.ShipTowerModel.UpdateLevelPlayNotify(e);
     });
-    Net_1.Net.Register(26381, e => {
+    Net_1.Net.Register(26199, e => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("ShipTower", 69, "_O1", ["割草爬塔局内周期更新推送", e]);
       }
@@ -38,9 +38,9 @@ class ShipTowerController extends UiControllerBase_1.UiControllerBase {
     });
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(26641);
-    Net_1.Net.UnRegister(20814);
-    Net_1.Net.UnRegister(26381);
+    Net_1.Net.UnRegister(24188);
+    Net_1.Net.UnRegister(21450);
+    Net_1.Net.UnRegister(26199);
   }
   static OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDoneAndCloseLoading, this.Jn_);
@@ -72,7 +72,7 @@ class ShipTowerController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("ShipTower", 69, "Cy_");
     }
-    var e = await Net_1.Net.CallAsync(19991, e);
+    var e = await Net_1.Net.CallAsync(24721, e);
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("ShipTower", 69, "gy_", ["", e]);
     }
@@ -85,7 +85,7 @@ class ShipTowerController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("ShipTower", 69, "py_", ["", r]);
     }
-    var e = await Net_1.Net.CallAsync(29579, r);
+    var e = await Net_1.Net.CallAsync(16527, r);
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("ShipTower", 69, "vy_", ["", e]);
     }
@@ -96,7 +96,7 @@ class ShipTowerController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("ShipTower", 69, "yy_");
     }
-    var e = await Net_1.Net.CallAsync(17579, e);
+    var e = await Net_1.Net.CallAsync(20664, e);
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("ShipTower", 69, "Sy_", ["", e]);
     }
@@ -108,7 +108,7 @@ class ShipTowerController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("ShipTower", 69, "Iy_", ["", o]);
     }
-    var o = await Net_1.Net.CallAsync(25369, o);
+    var o = await Net_1.Net.CallAsync(15111, o);
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("ShipTower", 69, "Ty_", ["", o]);
     }
@@ -120,7 +120,7 @@ class ShipTowerController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("ShipTower", 69, "by_", ["", o]);
     }
-    var o = await Net_1.Net.CallAsync(24247, o);
+    var o = await Net_1.Net.CallAsync(25424, o);
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("ShipTower", 69, "Ly_", ["", o]);
     }
@@ -132,7 +132,7 @@ class ShipTowerController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("ShipTower", 69, "wy_", ["", o]);
     }
-    var o = await Net_1.Net.CallAsync(17051, o);
+    var o = await Net_1.Net.CallAsync(27255, o);
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("ShipTower", 69, "Ry_", ["", o]);
     }
@@ -143,7 +143,7 @@ class ShipTowerController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("ShipTower", 69, "lG_");
     }
-    var e = await Net_1.Net.CallAsync(16220, e);
+    var e = await Net_1.Net.CallAsync(18902, e);
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("ShipTower", 69, "_G_", ["", e]);
     }
@@ -154,11 +154,10 @@ class ShipTowerController extends UiControllerBase_1.UiControllerBase {
   if (ModelManager_1.ModelManager.ShipTowerModel.CheckInBattleShipTower()) {
     UiTimeDilation_1.UiTimeDilation.AddWaitSetTimeDilationTag("ShipTower");
   }
-  ModelManager_1.ModelManager.ShipTowerModel.InitData();
-  ModelManager_1.ModelManager.ShipTowerModel.CheckInitProto();
+  ModelManager_1.ModelManager.ShipTowerModel.CheckInitProto(true);
 };
 ShipTowerController.Wjd = () => {
-  ModelManager_1.ModelManager.ShipTowerModel.CheckInitProto();
+  ModelManager_1.ModelManager.ShipTowerModel.CheckInitProto(true);
 };
 ShipTowerController.PG_ = e => {
   e.forEach(e => {
@@ -173,6 +172,6 @@ ShipTowerController.PG_ = e => {
 };
 ShipTowerController.m7_ = (e, o) => {
   if (o && e === 10081) {
-    ModelManager_1.ModelManager.ShipTowerModel.CheckInitProto();
+    ModelManager_1.ModelManager.ShipTowerModel.CheckInitProto(false);
   }
 }; //# sourceMappingURL=ShipTowerController.js.map

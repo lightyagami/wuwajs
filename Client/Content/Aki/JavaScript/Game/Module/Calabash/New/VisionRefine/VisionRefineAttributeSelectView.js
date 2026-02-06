@@ -9,6 +9,7 @@ const ConfigManager_1 = require("../../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const UiViewBase_1 = require("../../../../Ui/Base/UiViewBase");
 const LguiUtil_1 = require("../../../Util/LguiUtil");
+const CalabashDefine_1 = require("../../CalabashDefine");
 const AttributeSelectPanel_1 = require("./AttributeSelectPanel");
 class VisionRefineAttributeSelectView extends UiViewBase_1.UiViewBase {
   constructor() {
@@ -18,19 +19,21 @@ class VisionRefineAttributeSelectView extends UiViewBase_1.UiViewBase {
     this.b1c = [];
     this.nvt = undefined;
     this.L1c = undefined;
+    this.oAg = undefined;
     this.p5t = () => {
       if (this.L1c) {
         this.L1c(this.gh1);
       }
       this.CloseMe();
     };
-    this.j_1 = e => {
-      this.gh1 = e;
+    this.j_1 = i => {
+      this.gh1 = i;
       this.Tke();
+      this.C4e();
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIButtonComponent], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIText]];
+    this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIButtonComponent], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIText], [5, UE.UIItem], [6, UE.UIText], [7, UE.UIItem]];
     this.BtnBindInfo = [[1, this.p5t]];
   }
   async OnBeforeStartAsync() {
@@ -42,26 +45,35 @@ class VisionRefineAttributeSelectView extends UiViewBase_1.UiViewBase {
     await this.nvt.CreateThenShowByActorAsync(this.GetItem(2).GetOwner());
   }
   OnStart() {
-    var e = this.OpenParam;
-    this._Xe = e.IncId;
-    this.L1c = e.Callback;
-    var e = ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomDataBase(this._Xe);
-    var i = e.GetMainPropShowAttributeList(1)[0];
-    var t = ModelManager_1.ModelManager.CalabashModel.GetVisionRefineRecommendAttributes(e.GetCost(), e.GetFetterGroupId());
-    var e = ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomMainPropItemRefineAvailableIdList(e.GetConfigId());
-    var s = new Array();
-    for (const a of e) {
-      var r = ConfigManager_1.ConfigManager.PhantomBattleConfig.GetPhantomMainPropertyItemId(a);
-      var r = {
-        PropItemId: a,
-        PropIndexId: r.PropId,
-        IsRecommend: t.includes(r.PropId),
-        IsDisable: i.Id === r.PropId
+    var i;
+    var e;
+    var t = this.OpenParam;
+    this._Xe = t.IncId;
+    this.L1c = t.Callback;
+    this.oAg = t.GetSelectedPropItemIdList;
+    this.gh1 = t.SelectAttribute;
+    var s = ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomDataBase(this._Xe);
+    var r = s.GetMainPropShowAttributeList(1)[0];
+    var h = ModelManager_1.ModelManager.CalabashModel.GetVisionRefineRecommendAttributes(s.GetCost(), s.GetFetterGroupId());
+    var s = ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomMainPropItemRefineAvailableIdList(s.GetConfigId());
+    var a = new Array();
+    let n = undefined;
+    for ([i, e] of s.entries()) {
+      var o = ConfigManager_1.ConfigManager.PhantomBattleConfig.GetPhantomMainPropertyItemId(e);
+      var o = {
+        PropItemId: e,
+        PropIndexId: o.PropId,
+        IsRecommend: !!t.DataConfirmed && h.includes(o.PropId),
+        IsDisable: !!t.DataConfirmed && r.Id === o.PropId
       };
-      s.push(r);
+      a.push(o);
+      if (t.SelectAttribute !== undefined && t.SelectAttribute.PropItemId === e) {
+        n = i;
+      }
     }
-    this.b1c = s;
-    this.nvt.RefreshByData(this.b1c);
+    this.b1c = a;
+    this.nvt.RefreshByData(this.b1c, n);
+    this.C4e();
   }
   OnBeforeShow() {
     this.Tke();
@@ -72,6 +84,26 @@ class VisionRefineAttributeSelectView extends UiViewBase_1.UiViewBase {
     } else {
       this.GetButton(1).SetSelfInteractive(false);
     }
+  }
+  C4e() {
+    if (this.oAg) {
+      var e = this.oAg();
+      var t = this.gh1?.PropItemId;
+      if (t !== undefined && e.length > 0) {
+        let i = 0;
+        for (const s of e) {
+          if (s === t) {
+            i += 1;
+          }
+        }
+        if (i > 0) {
+          this.GetItem(5)?.SetUIActive(true);
+          LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(6), CalabashDefine_1.VISION_REFINE_CAN_REFINE_WITH_NUMBER_TEXT_ID, i);
+          return;
+        }
+      }
+    }
+    this.GetItem(5)?.SetUIActive(false);
   }
 }
 exports.VisionRefineAttributeSelectView = VisionRefineAttributeSelectView;

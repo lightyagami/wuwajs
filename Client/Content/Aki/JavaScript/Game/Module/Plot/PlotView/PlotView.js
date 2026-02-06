@@ -520,9 +520,6 @@ class PlotView extends UiTickViewBase_1.UiTickViewBase {
   OnBeforeHide() {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PlotViewChange, this.Info.Name, false);
     ModelManager_1.ModelManager.PlotModel.OptionEnable = true;
-    this.SetTextureByPath(DEFAULT_PATH, this.veo);
-    this.SetTextureByPath(DEFAULT_PATH, this.Meo);
-    this.SetTextureByPath(DEFAULT_PATH, this.Eeo);
     this.xeo = false;
     this.Reo = 0;
     this.Ueo = 0;

@@ -16,6 +16,8 @@ const ButtonItem_1 = require("../../Common/Button/ButtonItem");
 const LguiUtil_1 = require("../../Util/LguiUtil");
 const ItemRewardController_1 = require("../ItemRewardController");
 const RewardItemList_1 = require("./RewardItemList");
+const RewardItemLoopList_1 = require("./RewardItemLoopList");
+const MAXROWCNT = 2;
 class CommonRewardView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
@@ -23,6 +25,7 @@ class CommonRewardView extends UiViewBase_1.UiViewBase {
     this.sOe = undefined;
     this.q9a = undefined;
     this.s$a = undefined;
+    this.Awf = undefined;
     this.V0i = t => {
       var e = t.GetRewardInfo();
       if (e.Type === 1 && e.ViewName === "CommonRewardView" && (this.UiViewSequence?.PlaySequencePurely("Start01", true), this.$Tt = t, this.bYt())) {
@@ -51,7 +54,7 @@ class CommonRewardView extends UiViewBase_1.UiViewBase {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIText], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIText], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIGridLayout]];
     this.BtnBindInfo = [[0, this.dSt]];
   }
   OnAddEventListener() {
@@ -72,6 +75,9 @@ class CommonRewardView extends UiViewBase_1.UiViewBase {
     this.s$a = new ButtonItem_1.ButtonItem(this.GetItem(6));
     this.q9a?.SetFunction(this.tNe);
     this.s$a?.SetFunction(this.iNe);
+    var t = this.GetItem(7);
+    this.Awf = new RewardItemLoopList_1.RewardItemLoopList();
+    await this.Awf.CreateByActorAsync(t.GetOwner(), t);
   }
   OnStart() {
     var t = this.OpenParam;
@@ -89,6 +95,8 @@ class CommonRewardView extends UiViewBase_1.UiViewBase {
     this.UiViewSequence.StopSequenceByKey("Switch");
   }
   OnBeforeDestroy() {
+    this.Awf = undefined;
+    this.sOe = undefined;
     var t = this.$Tt.GetRewardInfo().OnCloseCallback;
     if (t) {
       t();
@@ -147,8 +155,15 @@ class CommonRewardView extends UiViewBase_1.UiViewBase {
     }
     return t;
   }
+  Dwf() {
+    var t = this.GetGridLayout(8).GetCellSize().X;
+    var e = this.GetGridLayout(8).RootUIComp;
+    return Math.floor(e.GetWidth() / t) * MAXROWCNT;
+  }
   qYt() {
-    this.sOe.Refresh(this.$Tt.GetItemList(), this.$Tt.GetRewardInfo().TipsCanSkip);
+    if (this.$Tt && this.sOe && this.Awf) {
+      (this.$Tt.GetItemList().length < this.Dwf() ? (this.sOe.Show(), this.Awf.Hide(), this.sOe) : (this.sOe.Hide(), this.Awf.Show(), this.Awf)).Refresh(this.$Tt.GetItemList(), this.$Tt.GetRewardInfo().TipsCanSkip);
+    }
   }
   ZGe(t) {
     t = t.GetRewardInfo();

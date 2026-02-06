@@ -27,7 +27,7 @@ const ModelManager_1 = require("../../Manager/ModelManager");
 const PhantomUtil_1 = require("../../Module/Phantom/PhantomUtil");
 const CharacterUtils_1 = require("../Character/CharacterUtils");
 const CampUtils_1 = require("../Character/Common/Blueprint/Utils/CampUtils");
-const FollowFunctionLibrary_1 = require("../Character/Common/Component/Abilities/Follow/FollowFunctionLibrary");
+const FollowUtils_1 = require("../Character/Common/Component/Abilities/Follow/FollowUtils");
 const PawnTimeScaleComponent_1 = require("../Pawn/Component/PawnTimeScaleComponent");
 const BulletConstant_1 = require("./BulletConstant");
 const BulletStaticFunction_1 = require("./BulletStaticMethod/BulletStaticFunction");
@@ -82,7 +82,7 @@ class BulletUtil {
     }
   }
   static DoesEntityContainsTag(t, e) {
-    return !!t && (!!t.GetComponent(206)?.HasTag(e) || !!(t = t.GetComponent(215)) && t.HasTag(e));
+    return !!t && (!!t.GetComponent(208)?.HasTag(e) || !!(t = t.GetComponent(217)) && t.HasTag(e));
   }
   static GetCurrentRole(t) {
     if (ModelManager_1.ModelManager.GameModeModel.IsMulti) {
@@ -119,7 +119,7 @@ class BulletUtil {
         if (t.BulletDataMain.Render.CameraShakeToSummonOwner) {
           return true;
         }
-        if (FollowFunctionLibrary_1.FollowFunctionLibrary.IsFollowingPlayer(e.GetCreatureDataId(), o)) {
+        if (FollowUtils_1.FollowUtils.IsFollowingPlayer(e.GetCreatureDataId(), o)) {
           return true;
         }
       }
@@ -177,7 +177,7 @@ class BulletUtil {
   static BulletUnfrozen(t) {
     t.IsFrozen = false;
     var e = t.ActorComponent;
-    var o = t.Attacker?.GetComponent(131)?.GetTopForeverTimeScale(0) ?? ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation;
+    var o = t.Attacker?.GetComponent(133)?.GetTopForeverTimeScale(0) ?? ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation;
     e.SetBulletCustomTimeDilation(o);
     BulletStaticFunction_1.BulletStaticFunction.SetBulletEffectTimeScale(t.EffectInfo, 1);
   }
@@ -211,16 +211,16 @@ class BulletUtil {
       return 0;
     }
     var a = Time_1.Time.WorldTimeSeconds - a;
-    var u = a + r;
-    let _ = n;
+    var _ = a + r;
+    let u = n;
     if (n >= 0) {
       t.TimeScaleId += 1;
-      _ = t.TimeScaleId;
+      u = t.TimeScaleId;
     }
-    n = new PawnTimeScaleComponent_1.TimeScale(a, u, e, o, l, r, _, i, (0, PawnTimeScaleComponent_1.getSourceGroup)(i));
+    n = new PawnTimeScaleComponent_1.TimeScale(a, _, e, o, l, r, u, i, (0, PawnTimeScaleComponent_1.getSourceGroup)(i));
     t.TimeScaleList.Push(n);
-    t.TimeScaleMap.set(_, n);
-    return _;
+    t.TimeScaleMap.set(u, n);
+    return u;
   }
   static RemoveTimeScale(t, e) {
     t = t.TimeScaleMap.get(e);
@@ -228,10 +228,10 @@ class BulletUtil {
       t.MarkDelete = true;
     }
   }
-  static SetVictimTimeScale(t, e, o, l, r, i, a, n, u, _ = false) {
+  static SetVictimTimeScale(t, e, o, l, r, i, a, n, _, u = false) {
     if (!(a <= 0)) {
-      o = o.SetTimeScale(l, r, i, a, n, _, true);
-      if (u && o > 0 && (l = EntitySystem_1.EntitySystem.Get(t)?.GetBulletInfo().CollisionInfo)) {
+      o = o.SetTimeScale(l, r, i, a, n, u, true);
+      if (_ && o > 0 && (l = EntitySystem_1.EntitySystem.Get(t)?.GetBulletInfo().CollisionInfo)) {
         l.HitTimeScaleEntityMap.set(e, o);
       }
     }
@@ -242,7 +242,7 @@ class BulletUtil {
     if (l === 3) {
       return false;
     }
-    if ((0, RegisterComponent_1.isComponentInstance)(e, 3) && e.Entity.GetComponent(215)?.HasTag(855966206)) {
+    if ((0, RegisterComponent_1.isComponentInstance)(e, 3) && e.Entity.GetComponent(217)?.HasTag(855966206)) {
       return false;
     }
     var r = t.AttackerActorComp;
@@ -289,14 +289,14 @@ class BulletUtil {
     return true;
   }
   static SetHitRotator(t, e, o) {
-    if (BulletUtil.GetHitRotator(t, e, this.TmpRotator) && !e.Entity.GetComponent(215)?.HasTag(1447214865) && (this.TmpRotator2.Set(0, o, 0), this.TmpRotator.Quaternion(this.TmpQuat), this.TmpRotator2.Quaternion(this.TmpQuat2), this.TmpQuat.Multiply(this.TmpQuat2, this.TmpQuat), this.TmpQuat.Rotator(this.TmpRotator), e.SetActorRotation(this.TmpRotator.ToUeRotator(), this.constructor.name, false), (0, RegisterComponent_1.isComponentInstance)(e, 3))) {
+    if (BulletUtil.GetHitRotator(t, e, this.TmpRotator) && !e.Entity.GetComponent(217)?.HasTag(1447214865) && (this.TmpRotator2.Set(0, o, 0), this.TmpRotator.Quaternion(this.TmpQuat), this.TmpRotator2.Quaternion(this.TmpQuat2), this.TmpQuat.Multiply(this.TmpQuat2, this.TmpQuat), this.TmpQuat.Rotator(this.TmpRotator), e.SetActorRotation(this.TmpRotator.ToUeRotator(), this.constructor.name, false), (0, RegisterComponent_1.isComponentInstance)(e, 3))) {
       e.SetInputRotator(this.TmpRotator);
     }
     return this.TmpRotator.ToUeRotator();
   }
   static GetOverrideHitAnimByAngle(t, e, o) {
     let l = e;
-    var e = (0, RegisterComponent_1.isComponentInstance)(t, 212);
+    var e = (0, RegisterComponent_1.isComponentInstance)(t, 214);
     var r = ModelManager_1.ModelManager.BulletModel;
     var i = r.SelfAdaptBeHitAnim.has(l);
     if (i || e) {
@@ -412,34 +412,34 @@ class BulletUtil {
     }
   }
   static GetSkillContextId(e, o) {
-    e = e?.GetComponent(40);
+    e = e?.GetComponent(42);
     if (e) {
       let t = e?.GetSkill(o)?.MNc;
       if (!t && e?.Entity?.Id) {
         var l = EntitySystem_1.EntitySystem.GetComponent(e?.Entity?.Id, 0).GetSummonerId();
         if (l > 0) {
           const e = ModelManager_1.ModelManager.CreatureModel.GetEntity(l)?.Entity;
-          l = e?.GetComponent(40);
+          l = e?.GetComponent(42);
           t = l?.GetSkill(o)?.MNc;
         } else {
-          l = PhantomUtil_1.PhantomUtil.GetSummonedEntity(e?.Entity, Protocol_1.Aki.Protocol.Summon.x3s.Proto_ESummonTypeConcomitantCustom)?.Entity?.GetComponent(40);
+          l = PhantomUtil_1.PhantomUtil.GetSummonedEntity(e?.Entity, Protocol_1.Aki.Protocol.Summon.x3s.Proto_ESummonTypeConcomitantCustom)?.Entity?.GetComponent(42);
           t = l?.GetSkill(o)?.MNc;
         }
       }
       return t;
     }
   }
-  static CreateBulletFromAN(t, e, o, l, r, i, a, n, u) {
-    var _ = t instanceof Entity_1.Entity ? t : t.GetEntityNoBlueprint();
-    var s = this.GetSkillContextId(_, l);
+  static CreateBulletFromAN(t, e, o, l, r, i, a, n, _) {
+    var u = t instanceof Entity_1.Entity ? t : t.GetEntityNoBlueprint();
+    var s = this.GetSkillContextId(u, l);
     return ControllerHolder_1.ControllerHolder.BulletController.CreateBulletCustomTarget(t, e, o, {
       SkillId: l,
       SkillContextId: s,
       SyncType: r ? 1 : 0,
       InitTargetLocation: a,
       LocationOffset: n,
-      BeginRotatorOffset: u,
-      BattleFlags: _?.GetComponent(40)?.GetSkill(l)?.BattleFlags
+      BeginRotatorOffset: _,
+      BattleContext: u?.GetComponent(42)?.GetSkill(l)?.BattleContext
     }, i, 1)?.Id ?? 0;
   }
   static AttachParentEffectSkeleton(t, e, o) {
@@ -451,6 +451,9 @@ class BulletUtil {
     t.ActorComponent.ResetAllCachedTime();
     t.ActorComponent.NeedDetach = true;
     EffectSystem_1.EffectSystem.AttachToEffectSkeletalMesh(o, t.Actor, l.BoneName, 0);
+    if (BulletConstant_1.BulletConstant.OpenMoveLog && Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("Bullet", 20, "BulletUtil.AttachParentEffectSkeleton", ["Bullet", t.BulletRowName], ["NeedDetach", t.ActorComponent.NeedDetach]);
+    }
     t.Actor.D_K2_SetActorRelativeLocation(t.BornLocationOffset.ToUeVector(), false, undefined, false);
     t.Actor.K2_SetActorRelativeRotation(Rotator_1.Rotator.ZeroRotator, false, undefined, true);
     return true;
@@ -516,9 +519,6 @@ class BulletUtil {
         Log_1.Log.Error("Battle", 20, "子弹数组Tag条件 格式错误! 参数需要是数字!");
       }
       return false;
-    }
-    if (o <= 0) {
-      return true;
     }
     switch (e[0]) {
       case ">":

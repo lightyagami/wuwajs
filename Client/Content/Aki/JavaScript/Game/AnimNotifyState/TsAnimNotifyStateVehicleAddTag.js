@@ -53,7 +53,7 @@ class TsAnimNotifyStateVehicleAddTag extends UE.KuroAnimNotifyState {
       return false;
     }
     if (this.AddToVehicle) {
-      e?.GetComponent(215)?.TagContainer.RemoveExactTag(4, i);
+      e?.GetComponent(217)?.TagContainer.RemoveExactTag(4, i);
     }
     e = e.GetComponent(246);
     if (this.AddToDriver && e.Driver) {

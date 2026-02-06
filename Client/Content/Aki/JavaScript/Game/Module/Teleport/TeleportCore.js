@@ -7,8 +7,8 @@ var __decorate = this && this.__decorate || function (e, t, r, o) {
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
     i = Reflect.decorate(e, t, r, o);
   } else {
-    for (var _ = e.length - 1; _ >= 0; _--) {
-      if (l = e[_]) {
+    for (var n = e.length - 1; n >= 0; n--) {
+      if (l = e[n]) {
         i = (a < 3 ? l(i) : a > 3 ? l(t, r, i) : l(t, r)) || i;
       }
     }
@@ -28,6 +28,7 @@ const Info_1 = require("../../../Core/Common/Info");
 const Log_1 = require("../../../Core/Common/Log");
 const Protocol_1 = require("../../../Core/Define/Net/Protocol");
 const Net_1 = require("../../../Core/Net/Net");
+const LoadModeManager_1 = require("../../../Core/Performance/LoadMode/LoadModeManager");
 const ResourceSystem_1 = require("../../../Core/Resource/ResourceSystem");
 const TimerSystem_1 = require("../../../Core/Timer/TimerSystem");
 const Quat_1 = require("../../../Core/Utils/Math/Quat");
@@ -48,9 +49,9 @@ class TeleportCore extends TeleportContextHolder_1.TeleportContextHolder {
   constructor() {
     super(...arguments);
     this.WIo = undefined;
-    this.cRf = 0;
+    this.Exf = 0;
     this.dLe = () => {
-      this.Okm();
+      this.eOm();
       this.Flm(true);
     };
   }
@@ -58,7 +59,7 @@ class TeleportCore extends TeleportContextHolder_1.TeleportContextHolder {
     var t;
     var r;
     var o = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity;
-    if (e && !this.m2f()) {
+    if (e && !this.c4f()) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Teleport", 79, "传送失败: 获取当前驾驶载具实体失败");
       }
@@ -66,7 +67,7 @@ class TeleportCore extends TeleportContextHolder_1.TeleportContextHolder {
     }
     this.Dlm(true);
     if (e) {
-      if (t = (r = this.m2f())?.GetComponent(70)) {
+      if (t = (r = this.c4f())?.GetComponent(72)) {
         t.CollectSampleAndSend(true);
         t.SetEnableMovementSync(false);
       }
@@ -77,17 +78,17 @@ class TeleportCore extends TeleportContextHolder_1.TeleportContextHolder {
       this.Ulm(r);
     }
     this.EmitTeleportStartEvent(o);
-    this.uRf(false);
+    this.Mxf(false);
     if (e) {
       this.jlm();
       this.Hlm();
     } else {
-      this.Okm();
+      this.eOm();
       this.xlm();
       this.Blm();
       this.qlm();
     }
-    this.uRf(true);
+    this.Mxf(true);
     ModelManager_1.ModelManager.GameModeModel.AddLoadMapHandle("TeleportEntity");
     this.TeleportContext.TeleportStreamingHelper.FlushWorldPartitionUnloadingStreamingCells();
     if (this.TeleportContext.NeedWaitStreaming) {
@@ -99,7 +100,7 @@ class TeleportCore extends TeleportContextHolder_1.TeleportContextHolder {
       await this.WaitServerResponse();
     }
     if (e) {
-      this.TeleportContext.TeleportEntity.GetComponent(70)?.SetEnableMovementSync(true);
+      this.TeleportContext.TeleportEntity.GetComponent(72)?.SetEnableMovementSync(true);
     }
     this.Glm();
     return true;
@@ -107,7 +108,7 @@ class TeleportCore extends TeleportContextHolder_1.TeleportContextHolder {
   async TeleportPlayerWithLoading(e) {
     var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
     if (e) {
-      r = this.m2f()?.GetComponent(247);
+      r = this.c4f()?.GetComponent(247);
       this.Ulm(r);
     } else {
       r = t?.Entity?.GetComponent(1);
@@ -121,7 +122,7 @@ class TeleportCore extends TeleportContextHolder_1.TeleportContextHolder {
     if (TeleportMisc_1.TeleportMisc.BackToGameIfTargetPositionInvalid(ModelManager_1.ModelManager.TeleportModel.TargetPosition, this.TeleportContext.ClientReason)) {
       return false;
     }
-    ResourceSystem_1.ResourceSystem.SetLoadModeInLoading(GlobalData_1.GlobalData.World, this.TeleportContext.ClientReason);
+    LoadModeManager_1.LoadModeManager.SetLoadModeByReason("Loading", "Teleport");
     ModelManager_1.ModelManager.GameModeModel.LoadingPhase = 4;
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.TeleportOpenLoadingEnd);
     if (t?.Entity && ControllerHolder_1.ControllerHolder.CharacterController.GetActorComponent(t)?.Valid) {
@@ -148,6 +149,7 @@ class TeleportCore extends TeleportContextHolder_1.TeleportContextHolder {
       await this.TeleportContext.TeleportSeamlessHelper?.SeamlessTeleportPreEnd();
     }
     await this.WaitTeamLoaded();
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.FixBornLocation);
     cpp_1.FKuroPerfSightHelper.BeginExtTag("Teleport.CloseLoading");
     if (e) {
       this.jlm();
@@ -164,7 +166,7 @@ class TeleportCore extends TeleportContextHolder_1.TeleportContextHolder {
     ModelManager_1.ModelManager.GameModeModel?.StopIndependentStreaming(ControllerHolder_1.ControllerHolder.RoleTriggerController.GetMyRoleTriggerOrUndefined());
     ModelManager_1.ModelManager.GameModeModel.LoadingPhase = 16;
     ControllerHolder_1.ControllerHolder.RoleAudioController.SetUpdateAudioDynamicTrace(true);
-    ResourceSystem_1.ResourceSystem.SetLoadModeInGame(GlobalData_1.GlobalData.World, this.TeleportContext.ClientReason);
+    LoadModeManager_1.LoadModeManager.ResetLoadModeByReason("Teleport");
     if (r) {
       ControllerHolder_1.ControllerHolder.WorldController.ForceGarbageCollection(false);
     }
@@ -194,7 +196,7 @@ class TeleportCore extends TeleportContextHolder_1.TeleportContextHolder {
     this.Ulm(t);
     this.EmitTeleportStartEvent(e);
     this.TeleportContext.ElevatorEntity.GetComponent(1).SetActorLocation(this.TeleportContext.TargetPosition);
-    this.Okm();
+    this.eOm();
     this.xlm();
     this.Blm();
     this.qlm();
@@ -222,16 +224,16 @@ class TeleportCore extends TeleportContextHolder_1.TeleportContextHolder {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.TeleportComplete, this.TeleportContext);
     return true;
   }
-  uRf(e) {
+  Mxf(e) {
     if (e) {
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("Teleport", 79, "传送: 开启运动模糊", ["MotionBlurValue", this.cRf]);
+        Log_1.Log.Info("Teleport", 79, "传送: 开启运动模糊", ["MotionBlurValue", this.Exf]);
       }
-      UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.MotionBlur.Amount " + this.cRf);
+      UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.MotionBlur.Amount " + this.Exf);
     } else {
-      this.cRf = UE.KismetSystemLibrary.GetConsoleVariableFloatValue("r.MotionBlur.Amount");
+      this.Exf = UE.KismetSystemLibrary.GetConsoleVariableFloatValue("r.MotionBlur.Amount");
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("Teleport", 79, "传送: 关闭运动模糊", ["MotionBlurValue", this.cRf]);
+        Log_1.Log.Info("Teleport", 79, "传送: 关闭运动模糊", ["MotionBlurValue", this.Exf]);
       }
       UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.InvalidSeveralFrameOcculusion 30");
       UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.MotionBlur.Amount 0");
@@ -331,7 +333,7 @@ class TeleportCore extends TeleportContextHolder_1.TeleportContextHolder {
     var o = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
     var l = o?.Entity.GetComponent(3);
     if (l) {
-      o?.Entity?.GetComponent(186)?.StopModelBuffer();
+      o?.Entity?.GetComponent(188)?.StopModelBuffer();
       l.SetActorRotation(t.TargetRotation.ToUeRotator(), "TeleportController", false);
       l.MoveComp?.SetGravityDirectWithoutRotate(t.TargetGravityDirect);
       l.TeleportAndFindStandLocation(t.TargetPosition);
@@ -354,7 +356,7 @@ class TeleportCore extends TeleportContextHolder_1.TeleportContextHolder {
       Log_1.Log.Error("Teleport", 79, "传送: HandleCharacterTransform失败, 找不到当前编队实体的CharacterActorComponent");
     }
   }
-  Okm() {
+  eOm() {
     if (this.WIo) {
       TimerSystem_1.GameplayTimerSystem.Remove(this.WIo);
     }
@@ -374,7 +376,7 @@ class TeleportCore extends TeleportContextHolder_1.TeleportContextHolder {
     var e;
     var t = ModelManager_1.ModelManager.TeleportModel;
     var r = t.TeleportContext;
-    var o = this.m2f();
+    var o = this.c4f();
     if (o?.Valid) {
       e = o.GetComponent(247);
       if (Log_1.Log.CheckInfo()) {
@@ -385,15 +387,15 @@ class TeleportCore extends TeleportContextHolder_1.TeleportContextHolder {
       t = Vector_1.Vector.Create(t.TargetPosition);
       e.SetActorLocation(t.ToUeVector(), "Teleport.HandleVehicleTransform", false);
       e.VehicleMoveComp?.SetForceSpeed(r.TargetSpeed || Vector_1.Vector.ZeroVectorProxy);
-      o.GetComponent(119)?.ForceClearUpdate();
-      o.GetComponent(70)?.ClearReplaySamples();
+      o.GetComponent(121)?.ForceClearUpdate();
+      o.GetComponent(72)?.ClearReplaySamples();
       EventSystem_1.EventSystem.EmitWithTarget(o, EventDefine_1.EEventName.TeleportChangeLocation);
       ControllerHolder_1.ControllerHolder.RoleTriggerController.UpdateTransform();
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("Teleport", 79, "传送载具: 实体已无效", ["CreatureDataId", o?.CheckGetComponent(0)?.GetCreatureDataId()]);
     }
   }
-  m2f() {
+  c4f() {
     var e = ModelManager_1.ModelManager.TeleportModel.TeleportContext;
     if (e.TeleportEntity) {
       return e.TeleportEntity;
@@ -458,7 +460,7 @@ class TeleportCore extends TeleportContextHolder_1.TeleportContextHolder {
   }
   async WaitServerResponse() {
     var e = new Protocol_1.Aki.Protocol.pCs();
-    Net_1.Net.Call(21130, e, e => {
+    Net_1.Net.Call(18760, e, e => {
       this.TeleportContext.TeleportFinishRequest.SetResult(true);
     });
     await this.TeleportContext.TeleportFinishRequest.Promise;

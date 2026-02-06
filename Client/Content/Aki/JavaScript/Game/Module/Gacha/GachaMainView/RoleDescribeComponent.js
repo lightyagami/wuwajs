@@ -15,10 +15,14 @@ class RoleDescribeComponent extends UiPanelBase_1.UiPanelBase {
     this.cWt = 0;
     this.SPe = undefined;
     this.$be = undefined;
+    this.OnClickLookCallback = undefined;
     this.OpenRolePreview = () => {};
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIItem], [3, UE.UITexture], [4, UE.UISprite], [2, UE.UIHorizontalLayout], [5, UE.UISprite], [6, UE.UIButtonComponent], [7, UE.UIItem]];
+    this.BtnBindInfo = [[6, () => {
+      this.OnClickLookCallback?.();
+    }]];
   }
   OnStart() {
     this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
@@ -49,6 +53,9 @@ class RoleDescribeComponent extends UiPanelBase_1.UiPanelBase {
   }
   GetJumpBtnRoot() {
     return this.GetItem(7);
+  }
+  SetLookBtnActive(e) {
+    this.GetButton(6).RootUIComp.SetUIActive(e);
   }
 }
 exports.RoleDescribeComponent = RoleDescribeComponent;

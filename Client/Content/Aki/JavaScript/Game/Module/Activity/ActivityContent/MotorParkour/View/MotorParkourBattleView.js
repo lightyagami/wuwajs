@@ -18,20 +18,20 @@ class MotorParkourBattleView extends UiTickViewBase_1.UiTickViewBase {
     this.m_i = undefined;
     this.Jjs = undefined;
     this.Xut = undefined;
-    this.OMf = undefined;
-    this.GMf = (e, t) => {
+    this.ebf = undefined;
+    this.tbf = (e, t) => {
       e = this.m_i.GetLapRankList(e, t);
-      this.OMf.RefreshRankList(e);
+      this.ebf.RefreshRankList(e);
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem]];
   }
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.MotorParkourFinishLap, this.GMf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.MotorParkourFinishLap, this.tbf);
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.MotorParkourFinishLap, this.GMf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.MotorParkourFinishLap, this.tbf);
   }
   async OnBeforeStartAsync() {
     this.m_i = this.OpenParam;
@@ -41,9 +41,9 @@ class MotorParkourBattleView extends UiTickViewBase_1.UiTickViewBase {
     this.Xut = new MissionPanel_1.MissionPanel();
     this.Xut.OpenParam = 5;
     e.push(this.Xut.CreateThenShowByResourceIdAsync("UiItem_Mission", this.GetItem(1)));
-    this.OMf = new MotorParkourRankPanel_1.MotorParkourRankPanel();
-    this.OMf.SetUiActive(false);
-    e.push(this.OMf.CreateByActorAsync(this.GetItem(2).GetOwner()));
+    this.ebf = new MotorParkourRankPanel_1.MotorParkourRankPanel();
+    this.ebf.SetUiActive(false);
+    e.push(this.ebf.CreateByActorAsync(this.GetItem(2).GetOwner()));
     await Promise.all(e);
     ModelManager_1.ModelManager.BattleUiModel.ChildViewData.SetChildrenVisible(16, [5], false);
     var e = ModelManager_1.ModelManager.InstanceDungeonModel.GetInstanceDungeonInfo()?.Tree;

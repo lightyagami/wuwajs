@@ -22,7 +22,7 @@ class LevelFlowVehicleForceStopPathLineMove extends LevelFlowActionBase_1.LevelF
   OnExecute() {
     var e = this.puc(this.E9, this.E0);
     if (e) {
-      e.GetComponent(117)?.ForceStopSplineMove();
+      e.GetComponent(119)?.ForceStopSplineMove();
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("LevelFlow", 58, "目标实体不存在", ["Type", this.E9], ["EntityId", this.E0]);
     }

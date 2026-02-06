@@ -12,7 +12,7 @@ const AutoPilotView_1 = require("./AutoPilotView");
 class AutoPilotPcView extends AutoPilotView_1.AutoPilotView {
   constructor() {
     super(...arguments);
-    this.r6m = undefined;
+    this.n7m = undefined;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIButtonComponent], [2, UE.UITexture], [3, UE.UISpriteTransition], [4, UE.UIButtonComponent], [5, UE.UIButtonComponent], [6, UE.UIButtonComponent], [7, UE.UIButtonComponent], [8, UE.UIItem]];
@@ -37,7 +37,7 @@ class AutoPilotPcView extends AutoPilotView_1.AutoPilotView {
   }
   InitUi() {
     super.InitUi();
-    this.hPf();
+    this.xkf();
   }
   InitUiItemAspectOffsetConfig() {
     var e = this.GetItem(8);
@@ -54,26 +54,26 @@ class AutoPilotPcView extends AutoPilotView_1.AutoPilotView {
   HandleClickSkipBtn() {
     ControllerHolder_1.ControllerHolder.AutoPilotController.SkipToTarget();
   }
-  hPf() {
-    this.r6m = this.GetButton(5);
-    this.r6m?.OnClickCallBack.Bind(this.OnClickPhotoBtn);
+  xkf() {
+    this.n7m = this.GetButton(5);
+    this.n7m?.OnClickCallBack.Bind(this.OnClickPhotoBtn);
   }
   RefreshUiVisible() {
     super.RefreshUiVisible();
-    this.lPf();
+    this.Bkf();
   }
   RefreshUiByIsMovieModeHideUi() {
     super.RefreshUiByIsMovieModeHideUi();
-    this.lPf();
+    this.Bkf();
   }
   RefreshUiByIsInMovieMode() {
     super.RefreshUiByIsInMovieMode();
     this.RefreshPhotoBtnVisible();
-    this.lPf();
+    this.Bkf();
   }
-  lPf() {
+  Bkf() {
     var e = ModelManager_1.ModelManager.AutoPilotModel.GetIsInMovieMode();
-    this.r6m?.RootUIComp?.SetUIActive(e && !this.IsMovieModeHideUi);
+    this.n7m?.RootUIComp?.SetUIActive(e && !this.IsMovieModeHideUi);
   }
   RefreshPhotoBtnVisible() {
     var e = ModelManager_1.ModelManager.AutoPilotModel.GetIsInMovieMode();

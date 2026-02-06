@@ -9,12 +9,12 @@ class RoleDevPhantomSuitItemData {
   constructor() {
     this.fvd = 0;
     this.JGi = 0;
-    this.vMm = undefined;
+    this.MMm = undefined;
   }
   Init(t, e, r) {
     this.fvd = t;
     this.JGi = e;
-    this.vMm = r;
+    this.MMm = r;
   }
   get SuitId() {
     return this.fvd;
@@ -23,10 +23,10 @@ class RoleDevPhantomSuitItemData {
     return this.JGi;
   }
   get UseRate() {
-    return this.vMm?.GetUsage() ?? 0;
+    return this.MMm?.GetUsage() ?? 0;
   }
   get UseRateText() {
-    return this.vMm?.GetUsageText() ?? "";
+    return this.MMm?.GetUsageText() ?? "";
   }
   get FetterGroupConfig() {
     return ConfigManager_1.ConfigManager.PhantomBattleConfig?.GetFetterGroupById(this.fvd);

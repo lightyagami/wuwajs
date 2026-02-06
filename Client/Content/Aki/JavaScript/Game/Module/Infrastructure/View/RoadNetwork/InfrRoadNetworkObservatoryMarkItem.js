@@ -13,22 +13,22 @@ class InfrRoadNetworkObservatoryMarkItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.Hea = undefined;
-    this.klf = false;
-    this.aVm = undefined;
-    this.Olf = undefined;
-    this.hVm = () => {
-      this.aVm?.();
+    this.euf = false;
+    this.b6m = undefined;
+    this.iuf = undefined;
+    this.R6m = () => {
+      this.b6m?.();
     };
     this.yct = e => {
       if (e === "Finish") {
-        this.Olf?.();
-        this.Olf = undefined;
+        this.iuf?.();
+        this.iuf = undefined;
       }
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIText]];
-    this.BtnBindInfo = [[0, this.hVm]];
+    this.BtnBindInfo = [[0, this.R6m]];
   }
   OnStart() {
     this.Hea = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
@@ -36,13 +36,13 @@ class InfrRoadNetworkObservatoryMarkItem extends UiPanelBase_1.UiPanelBase {
     this.Refresh();
   }
   OnAfterShow() {
-    if (!this.klf) {
+    if (!this.euf) {
       this.Hea?.PlayLevelSequenceByName("Start");
     }
   }
   Refresh() {
     this.Kbe();
-    this._Vm();
+    this.L6m();
   }
   Kbe() {
     if (ModelManager_1.ModelManager.InfrastructureModel.FireLevel === ConfigManager_1.ConfigManager.InfrastructureConfig.GetMaxLevel()) {
@@ -50,7 +50,7 @@ class InfrRoadNetworkObservatoryMarkItem extends UiPanelBase_1.UiPanelBase {
       this.GetItem(1).SetUIActive(true);
     }
   }
-  _Vm() {
+  L6m() {
     var e = ConfigManager_1.ConfigManager.InfrastructureConfig.GetLevelConfigById(ModelManager_1.ModelManager.InfrastructureModel.FireLevel);
     if (e) {
       this.GetText(3).ShowTextNew(e.Description);
@@ -59,20 +59,20 @@ class InfrRoadNetworkObservatoryMarkItem extends UiPanelBase_1.UiPanelBase {
     }
   }
   SetOnClickToggleCb(e) {
-    this.aVm = e;
+    this.b6m = e;
   }
   SetNeedPlayFinishSeq(e) {
-    this.klf = e;
+    this.euf = e;
   }
   SetSelected(e) {
     this.GetExtendToggle(0).SetToggleState(e ? 1 : 0);
     if (e) {
-      this.aVm?.();
+      this.b6m?.();
     }
   }
   ShowMarkFinish(e) {
     this.Hea?.PlayLevelSequenceByName("Finish");
-    this.Olf = e;
+    this.iuf = e;
   }
   ShowLevelUpSeq() {
     this.Hea?.PlayLevelSequenceByName("LevelUp");

@@ -38,9 +38,9 @@ class RoadBookTravelTaskView extends UiViewBase_1.UiViewBase {
     this.EVl = [];
     this.fVl = -1;
     this.B5l = false;
-    this.Gbf = 0;
-    this.E6f = [];
-    this.I6f = (t, i, e) => {
+    this.bAf = 0;
+    this.Fzf = [];
+    this.Nzf = (t, i, e) => {
       return new AreaLayout(this.b4c);
     };
     this.Hwn = (t, i, e) => {
@@ -59,7 +59,7 @@ class RoadBookTravelTaskView extends UiViewBase_1.UiViewBase {
       this.MVl?.Refresh();
       var t = this.b4c.GetAllAreaData().filter(t => t.TravelTaskIdSet.size > 0);
       this.TabLayout.RefreshByData(t);
-      var t = this.T6f(t);
+      var t = this.Vzf(t);
       this.AreaLayoutList.RefreshByData(t);
     };
     this.TVl = () => {
@@ -74,7 +74,7 @@ class RoadBookTravelTaskView extends UiViewBase_1.UiViewBase {
       if (!this.B5l) {
         a = this.TabLayout.GetDisplayGridStartIndex();
         t = this.TabLayout.GetDisplayGridEndIndex();
-        if ((i = this.Fbf()) !== -1) {
+        if ((i = this.wAf()) !== -1) {
           this.XN(this.fVl, false, false);
           h = (s = (e = this.GetUIDynScrollViewComponent(2)).ContentUIItem.GetAnchorOffsetY()) + e.RootUIComp.Height;
           o = (r = this.TabLayout.GetGrid(i)).GetAnchorOffsetY();
@@ -116,7 +116,7 @@ class RoadBookTravelTaskView extends UiViewBase_1.UiViewBase {
     this.MVl = new RewardPanel(this.b4c);
     t.push(this.MVl.CreateByActorAsync(this.GetItem(1).GetOwner()));
     this.AddChild(this.MVl);
-    this.AreaLayoutList = new DynScrollView_1.DynamicScrollView(this.GetUIDynScrollViewComponent(4), this.GetItem(5), new AreaLayoutBaseItem(), this.I6f);
+    this.AreaLayoutList = new DynScrollView_1.DynamicScrollView(this.GetUIDynScrollViewComponent(4), this.GetItem(5), new AreaLayoutBaseItem(), this.Nzf);
     t.push(this.AreaLayoutList.Init());
     var i = this.GetUIDynScrollViewComponent(4);
     if (i) {
@@ -151,11 +151,11 @@ class RoadBookTravelTaskView extends UiViewBase_1.UiViewBase {
       }
     }
     this.TabLayout.RefreshByData(i);
-    var h = this.T6f(i);
-    this.E6f = [];
+    var h = this.Vzf(i);
+    this.Fzf = [];
     for (let t = 0; t < h.length; t++) {
       if (h[t].IsTitle) {
-        this.E6f.push(t);
+        this.Fzf.push(t);
       }
     }
     this.bVl(h);
@@ -167,13 +167,13 @@ class RoadBookTravelTaskView extends UiViewBase_1.UiViewBase {
     this.AreaLayoutList.BindLateUpdate(() => {
       var t;
       this.q5l(e);
-      if (s && (t = this.E6f[e], t = this.AreaLayoutList?.GetScrollItemFromIndex(t))) {
+      if (s && (t = this.Fzf[e], t = this.AreaLayoutList?.GetScrollItemFromIndex(t))) {
         t.PlayUnlockAnim();
       }
       this.AreaLayoutList.UnBindLateUpdate();
     });
   }
-  T6f(t) {
+  Vzf(t) {
     var i = [];
     for (const e of t) {
       i.push(new AreaLayoutItemData(true, e));
@@ -212,27 +212,27 @@ class RoadBookTravelTaskView extends UiViewBase_1.UiViewBase {
       t = e - r;
       i[i.length - 1].ExtraHeight = t;
     }
-    this.Gbf = e;
+    this.bAf = e;
   }
   XN(t, i, e) {
     this.TabLayout.GetScrollItemFromIndex(t)?.SetSelected(i, e);
   }
-  Fbf() {
+  wAf() {
     var i = this.GetUIDynScrollViewComponent(4).ContentUIItem.GetAnchorOffsetY();
-    if (this.EVl[this.fVl] < i + this.Gbf && this.EVl[this.fVl + 1] > i) {
+    if (this.EVl[this.fVl] < i + this.bAf && this.EVl[this.fVl + 1] > i) {
       return -1;
     }
     let e = -1;
     if ((i > this.EVl[this.fVl] ? 1 : -1) > 0) {
       for (let t = this.fVl + 1; t < this.EVl.length; t++) {
-        if (this.EVl[t] <= i + this.Gbf && i < this.EVl[t + 1]) {
+        if (this.EVl[t] <= i + this.bAf && i < this.EVl[t + 1]) {
           e = t;
           break;
         }
       }
     } else {
       for (let t = this.fVl - 1; t >= 0; t--) {
-        if (this.EVl[t] <= i + this.Gbf && i < this.EVl[t + 1]) {
+        if (this.EVl[t] <= i + this.bAf && i < this.EVl[t + 1]) {
           e = t;
           break;
         }
@@ -241,7 +241,7 @@ class RoadBookTravelTaskView extends UiViewBase_1.UiViewBase {
     return e;
   }
   q5l(t) {
-    t = this.E6f[t];
+    t = this.Fzf[t];
     this.GetUIDynScrollViewComponent(4).ScrollToItemIndex(t);
   }
   async PlayStartSequence() {

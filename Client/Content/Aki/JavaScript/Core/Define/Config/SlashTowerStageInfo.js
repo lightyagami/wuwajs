@@ -16,6 +16,9 @@ class SlashTowerStageInfo {
   get InstId() {
     return this.instid();
   }
+  get SeasonVersion() {
+    return this.seasonversion();
+  }
   get MonsterId() {
     return GameUtils_1.GameUtils.ConvertToArray(this.monsteridLength(), this.monsterid, this);
   }
@@ -46,11 +49,19 @@ class SlashTowerStageInfo {
       return 0;
     }
   }
+  seasonversion() {
+    var t = this.J7.__offset(this.z7, 8);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
   GetMonsteridAt(t) {
     return this.monsterid(t);
   }
   monsterid(t) {
-    var s = this.J7.__offset(this.z7, 8);
+    var s = this.J7.__offset(this.z7, 10);
     if (s) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + s) + t * 4);
     } else {
@@ -58,7 +69,7 @@ class SlashTowerStageInfo {
     }
   }
   monsteridLength() {
-    var t = this.J7.__offset(this.z7, 8);
+    var t = this.J7.__offset(this.z7, 10);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -66,7 +77,7 @@ class SlashTowerStageInfo {
     }
   }
   monsteridArray() {
-    var t = this.J7.__offset(this.z7, 8);
+    var t = this.J7.__offset(this.z7, 10);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -77,7 +88,7 @@ class SlashTowerStageInfo {
     return this.buffid(t);
   }
   buffid(t) {
-    var s = this.J7.__offset(this.z7, 10);
+    var s = this.J7.__offset(this.z7, 12);
     if (s) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + s) + t * 4);
     } else {
@@ -85,7 +96,7 @@ class SlashTowerStageInfo {
     }
   }
   buffidLength() {
-    var t = this.J7.__offset(this.z7, 10);
+    var t = this.J7.__offset(this.z7, 12);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -93,7 +104,7 @@ class SlashTowerStageInfo {
     }
   }
   buffidArray() {
-    var t = this.J7.__offset(this.z7, 10);
+    var t = this.J7.__offset(this.z7, 12);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {

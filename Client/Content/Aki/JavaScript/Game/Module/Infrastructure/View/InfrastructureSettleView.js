@@ -23,7 +23,7 @@ class InfrastructureSettleView extends UiViewBase_1.UiViewBase {
     this.zFe = () => {
       UiManager_1.UiManager.ResetToBattleView();
     };
-    this.y5f = () => {
+    this.eQf = () => {
       this.CloseMe();
     };
   }
@@ -44,7 +44,7 @@ class InfrastructureSettleView extends UiViewBase_1.UiViewBase {
     this.GetText(1).GetOwner().GetComponentByClass(UE.UIEffectOutline.StaticClass()).SetOutlineColor(UE.Color.FromHex("#C48B29"));
     var t;
     var e = this.OpenParam;
-    if (e.DeliveryType === Protocol_1.Aki.Protocol.VNm.Proto_Observatory) {
+    if (e.DeliveryType === Protocol_1.Aki.Protocol.a4m.Proto_Observatory) {
       t = ConfigManager_1.ConfigManager.InfrastructureConfig.GetLevelConfigById(ModelManager_1.ModelManager.InfrastructureModel.FireLevel);
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(14), t.BuildSuccessDes);
     } else {
@@ -67,7 +67,7 @@ class InfrastructureSettleView extends UiViewBase_1.UiViewBase {
     this.Button.SetBtnText("Leave");
     this.Button.HideFloatText();
     this.Button.SetOnClickEvent(this.zFe);
-    this.Button.SetOnClickLeftEvent(this.y5f);
+    this.Button.SetOnClickLeftEvent(this.eQf);
   }
 }
 exports.InfrastructureSettleView = InfrastructureSettleView;
@@ -75,10 +75,10 @@ class InfrastructureSettleViewButton extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.RFe = undefined;
-    this.S5f = undefined;
+    this.tQf = undefined;
     this.q9a = new ButtonItem_1.ButtonItem();
     this.EVt = () => {
-      this.S5f?.();
+      this.tQf?.();
     };
     this.UFe = () => {
       this.RFe?.();
@@ -106,7 +106,7 @@ class InfrastructureSettleViewButton extends UiPanelBase_1.UiPanelBase {
     this.RFe = t;
   }
   SetOnClickLeftEvent(t) {
-    this.S5f = t;
+    this.tQf = t;
   }
 }
 exports.InfrastructureSettleViewButton = InfrastructureSettleViewButton;

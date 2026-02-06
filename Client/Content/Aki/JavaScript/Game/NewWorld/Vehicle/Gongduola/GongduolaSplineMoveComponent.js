@@ -116,5 +116,5 @@ let GongduolaSplineMoveComponent = class GongduolaSplineMoveComponent extends Ve
     t?.SetEnableInputSprint(true);
   }
 };
-GongduolaSplineMoveComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(118)], GongduolaSplineMoveComponent);
+GongduolaSplineMoveComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(120)], GongduolaSplineMoveComponent);
 exports.GongduolaSplineMoveComponent = GongduolaSplineMoveComponent; //# sourceMappingURL=GongduolaSplineMoveComponent.js.map

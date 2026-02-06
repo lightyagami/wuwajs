@@ -13,22 +13,22 @@ const ModelManager_1 = require("../../../Manager/ModelManager");
 class MotorcycleMusicPlayerModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
-    this.vPm = [];
-    this.yPm = -1;
-    this.SPm = -1;
+    this.ODm = [];
+    this.GDm = -1;
+    this.FDm = -1;
     this.UnlockMusicIds = new Set();
-    this.Wqf = 0;
+    this.e8f = 0;
     this.X2n = false;
-    this.MPm = -1;
-    this.M4f = undefined;
+    this.NDm = -1;
+    this.x$f = undefined;
     this.CurrentPlayMusicTotalTime = 0;
-    this.IPm = [];
-    this.mpf = new Map();
+    this.jDm = [];
+    this.zyf = new Map();
     this.vW = 0;
-    this.kZf = true;
+    this.NSg = true;
   }
   get IsEnable() {
-    return this.vW === 0 && this.kZf;
+    return this.vW === 0 && this.NSg;
   }
   IncreaseDisableCount() {
     this.vW++;
@@ -37,42 +37,42 @@ class MotorcycleMusicPlayerModel extends ModelBase_1.ModelBase {
     this.vW = this.vW - 1;
   }
   SetFunctionEnable(e) {
-    this.kZf = e;
+    this.NSg = e;
   }
   LoadLocalStorageData() {
-    this.M4f = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.MotorcycleMusicRedDot) ?? new Set();
-    this.Wqf = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.MotorcyclePlayMode) ?? 0;
+    this.x$f = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.MotorcycleMusicRedDot) ?? new Set();
+    this.e8f = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.MotorcyclePlayMode) ?? 0;
     return true;
   }
   IsMusicFavorite(e) {
-    return this.vPm.includes(e);
+    return this.ODm.includes(e);
   }
   ToggleMusicFavorite(e) {
     if (this.IsMusicFavorite(e)) {
-      var t = this.vPm.indexOf(e);
+      var t = this.ODm.indexOf(e);
       if (t !== -1) {
-        this.vPm.splice(t, 1);
+        this.ODm.splice(t, 1);
       }
     } else {
-      if (this.vPm.length >= ConfigManager_1.ConfigManager.MotorMusicPlayerConfig.GetFavoriteCountLimit()) {
+      if (this.ODm.length >= ConfigManager_1.ConfigManager.MotorMusicPlayerConfig.GetFavoriteCountLimit()) {
         ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("MotorMusicTips06");
         return false;
       }
-      this.vPm.unshift(e);
+      this.ODm.unshift(e);
     }
     return true;
   }
   GetFavoriteMusicList() {
-    return this.vPm;
+    return this.ODm;
   }
   SetFavoriteMusicList(e) {
-    this.vPm = Array.from(e);
+    this.ODm = Array.from(e);
   }
   GetCurrentPlayList() {
-    return this.IPm;
+    return this.jDm;
   }
   SetPlayList(e) {
-    this.IPm = e;
+    this.jDm = e;
   }
   IsMusicUnlock(e) {
     return ModelManager_1.ModelManager.PhonographModel.IsUnlockMusic(e);
@@ -80,12 +80,12 @@ class MotorcycleMusicPlayerModel extends ModelBase_1.ModelBase {
   GetMusicByAlbum(t) {
     var e;
     if (t === ConfigManager_1.ConfigManager.MotorMusicPlayerConfig.GetFavoriteAlbumId()) {
-      return this.vPm.map(e => ConfigManager_1.ConfigManager.PhonographConfig.GetMusicById(e));
-    } else if (this.mpf.has(t)) {
-      return this.mpf.get(t);
+      return this.ODm.map(e => ConfigManager_1.ConfigManager.PhonographConfig.GetMusicById(e));
+    } else if (this.zyf.has(t)) {
+      return this.zyf.get(t);
     } else {
       e = (ConfigManager_1.ConfigManager.PhonographConfig?.GetMusicList() ?? []).filter(e => e.Album.includes(t));
-      this.mpf.set(t, e);
+      this.zyf.set(t, e);
       return e;
     }
   }
@@ -109,28 +109,28 @@ class MotorcycleMusicPlayerModel extends ModelBase_1.ModelBase {
     }
   }
   GetCurPlayMusicId() {
-    return this.yPm;
+    return this.GDm;
   }
   SetCurPlayMusic(e, t) {
-    if (e === this.SPm) {
-      this.MPm = this.yPm;
+    if (e === this.FDm) {
+      this.NDm = this.GDm;
     } else {
-      this.SPm = e;
-      this.MPm = -1;
+      this.FDm = e;
+      this.NDm = -1;
     }
-    this.yPm = t;
+    this.GDm = t;
     this.X2n = false;
     LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.MotorcycleCurPlayAlbumId, e);
     LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.MotorcycleCurPlayMusicId, t);
   }
   GetPrevMusicId() {
-    return this.MPm;
+    return this.NDm;
   }
   ClearPrevMusicId() {
-    this.MPm = -1;
+    this.NDm = -1;
   }
   GetCurPlayAlbum() {
-    return this.SPm;
+    return this.FDm;
   }
   GetIsPause() {
     return this.X2n;
@@ -139,45 +139,45 @@ class MotorcycleMusicPlayerModel extends ModelBase_1.ModelBase {
     this.X2n = e;
   }
   GetPlayMode() {
-    return this.Wqf;
+    return this.e8f;
   }
   SetCurPlayMode(e) {
-    this.Wqf = e;
+    this.e8f = e;
     LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.MotorcyclePlayMode, e);
   }
   IsMusicNew(e) {
-    if (this.M4f === undefined) {
-      this.M4f = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.MotorcycleMusicRedDot);
+    if (this.x$f === undefined) {
+      this.x$f = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.MotorcycleMusicRedDot);
     }
-    return this.IsMusicUnlock(e) && (this.M4f?.has(e) ?? false);
+    return this.IsMusicUnlock(e) && (this.x$f?.has(e) ?? false);
   }
   AddMusicListToNew(e) {
-    if (this.M4f === undefined) {
-      this.M4f = new Set();
+    if (this.x$f === undefined) {
+      this.x$f = new Set();
     }
     for (const t of e) {
-      if (!this.M4f.has(t)) {
-        this.M4f.add(t);
+      if (!this.x$f.has(t)) {
+        this.x$f.add(t);
       }
     }
     this.SaveCacheMusicNewData();
   }
   ClearMusicNew(e) {
-    if (this.M4f !== undefined && this.M4f.has(e)) {
-      this.M4f.delete(e);
+    if (this.x$f !== undefined && this.x$f.has(e)) {
+      this.x$f.delete(e);
       this.SaveCacheMusicNewData();
     }
   }
   SaveCacheMusicNewData() {
-    if (this.M4f) {
-      LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.MotorcycleMusicRedDot, this.M4f);
+    if (this.x$f) {
+      LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.MotorcycleMusicRedDot, this.x$f);
     }
   }
   CheckAlbumHasNewMusic(e) {
     return this.GetMusicByAlbum(e).some(e => this.IsMusicNew(e.Id));
   }
   ClearAlbum2MusicCache() {
-    this.mpf.clear();
+    this.zyf.clear();
   }
 }
 exports.MotorcycleMusicPlayerModel = MotorcycleMusicPlayerModel;

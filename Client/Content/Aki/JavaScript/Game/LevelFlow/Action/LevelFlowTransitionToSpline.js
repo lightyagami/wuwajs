@@ -35,7 +35,7 @@ class LevelFlowTransitionToSpline extends LevelFlowActionBase_1.LevelFlowActionB
           o = ModelManager_1.ModelManager.GameSplineModel.LoadAndGetSplineComponent(this.pDe.SplineId, e.Id, 1).D_GetTransformAtDistanceAlongSpline(0, 1);
           o = Transform_1.Transform.Create(o);
           if (this.pDe.SnapToWall) {
-            this.mqm(o);
+            this.POm(o);
           }
           if (o = VehiclePathMoveController_1.VehiclePathMoveController.CreateMotorcycleMoveToTask(e, o, this.pDe.Speed)) {
             o.CurveInfo.SplineId = -this.pDe.SplineId;
@@ -71,7 +71,7 @@ class LevelFlowTransitionToSpline extends LevelFlowActionBase_1.LevelFlowActionB
       this.FinishExecute(false);
     }
   }
-  mqm(e) {
+  POm(e) {
     var o = UE.NewObject(UE.TraceSphereElement.StaticClass());
     o.bIsSingle = true;
     o.bIgnoreSelf = true;

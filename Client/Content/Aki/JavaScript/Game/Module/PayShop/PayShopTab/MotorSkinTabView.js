@@ -6,9 +6,12 @@ Object.defineProperty(exports, "__esModule", {
 exports.MotorSkinTabView = undefined;
 const UE = require("ue");
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiTabViewBase_1 = require("../../../Ui/Base/UiTabViewBase");
 const UiManager_1 = require("../../../Ui/UiManager");
+const TotalTopUpPayAdditiveTagItem_1 = require("../../Activity/ActivityContent/TotalTopUp/View/TotalTopUpPayAdditiveTagItem");
+const LogReportDefine_1 = require("../../LogReport/LogReportDefine");
 const MotorSkinBuyDetailViewData_1 = require("../../Skin/Data/MotorSkinBuyDetailViewData");
 const ShopMotorSkinData_1 = require("../../Skin/Data/ShopMotorSkinData");
 const GridProxyAbstract_1 = require("../../Util/Grid/GridProxyAbstract");
@@ -28,7 +31,7 @@ class MotorSkinTabView extends UiTabViewBase_1.UiTabViewBase {
   OnStart() {
     this._3i = this.ExtraParams;
     this.bD = this.Params;
-    this.eGe = new GenericLayout_1.GenericLayout(this.GetGridLayout(0), this.oWi);
+    this.eGe = new GenericLayout_1.GenericLayout(this.GetGridLayout(0), this.oWi, undefined, false, false);
   }
   OnBeforeShow() {
     this.v4e();
@@ -58,53 +61,63 @@ class SkinItemContent extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
     super(...arguments);
     this.H3e = undefined;
-    this.tFf = undefined;
+    this.U7f = undefined;
+    this.DNg = undefined;
     this.NOe = 0;
     this.d2t = () => new RewardItemGrid();
     this.zSl = () => {
-      if (this.tFf) {
+      if (this.U7f) {
         var t = new Array();
-        for (const r of this.tFf.AllData) {
-          var i = ShopMotorSkinData_1.ShopMotorSkinData.Create(r);
+        for (const a of this.U7f.AllData) {
+          var i = ShopMotorSkinData_1.ShopMotorSkinData.Create(a);
           t.push(i);
         }
         var e = MotorSkinBuyDetailViewData_1.MotorSkinBuyDetailViewData.Create(t);
         e.SetIndex(this.NOe);
         e.SetPreviewTitle("MotorSkinShopTitle_Text");
+        var r = t[this.NOe].GetPayShopGoods();
+        var s = new LogReportDefine_1.OnClickPayShopItemLogEvent();
+        s.i_id = r.GetGoodsId();
+        s.i_shop_id = r.PayShopId;
+        s.i_tab_id = r.GetGoodsData().TabId;
+        ControllerHolder_1.ControllerHolder.LogReportController.LogReport(s);
         UiManager_1.UiManager.OpenView("MotorSkinBuyDetailView", e);
       }
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UITexture], [2, UE.UITexture], [3, UE.UITexture], [4, UE.UITexture], [5, UE.UISprite], [6, UE.UISprite], [7, UE.UIText], [8, UE.UIHorizontalLayout], [9, UE.UIItem], [10, UE.UITexture], [11, UE.UIText], [12, UE.UIItem], [13, UE.UIText], [14, UE.UIText], [15, UE.UIItem], [16, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UITexture], [2, UE.UITexture], [3, UE.UITexture], [4, UE.UITexture], [5, UE.UISprite], [6, UE.UISprite], [7, UE.UIText], [8, UE.UIHorizontalLayout], [9, UE.UIItem], [10, UE.UITexture], [11, UE.UIText], [12, UE.UIItem], [13, UE.UIText], [14, UE.UIText], [15, UE.UIItem], [16, UE.UIItem], [17, UE.UIItem]];
     this.BtnBindInfo = [[0, this.zSl]];
   }
   async OnBeforeStartAsync() {
     this.H3e = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(8), this.d2t);
+    this.DNg = new TotalTopUpPayAdditiveTagItem_1.TotalTopUpPayAdditiveTagItem();
+    await this.DNg.CreateByResourceIdAsync("UiItem_CumulativeRechargeScoreTag", this.GetItem(17));
   }
   Refresh(t, i, e) {
     var r = t.ShopMotorSkinData;
-    this.tFf = t;
+    this.U7f = t;
     this.NOe = e;
     if (r) {
-      t = r?.GetMotorSkinData()?.GetMotorSkinShow();
-      if (t) {
-        this.P5e(t);
-        this.Kbe(t);
-        this.BGt(t);
+      e = r?.GetMotorSkinData()?.GetMotorSkinShow();
+      if (e) {
+        this.P5e(e);
+        this.Kbe(e);
+        this.BGt(e);
         this.iFi(r);
         this.u3e(r);
-        this.iFf(r);
-        this.rFf(r);
+        this.x7f(r);
+        this.B7f(r);
         this.HEl(r);
         const s = [];
-        t.ItemCount.forEach((t, i) => {
+        e.ItemCount.forEach((t, i) => {
           s.push({
             IconPath: i,
             Count: t
           });
         });
         this.H3e?.RefreshByData(s);
+        this.DNg?.RefreshByGoodsId(t?.ShopMotorSkinData?.GetPayShopGoods()?.GetGoodsId() ?? 0);
       }
     }
   }
@@ -151,7 +164,7 @@ class SkinItemContent extends GridProxyAbstract_1.GridProxyAbstract {
       this.GetItem(13).SetUIActive(false);
     }
   }
-  iFf(t) {
+  x7f(t) {
     var i = this.GetText(14);
     if (t.GetIfCanBuy()) {
       t = t.GetCurrentGoodsData().GetShopTipsText();
@@ -161,7 +174,7 @@ class SkinItemContent extends GridProxyAbstract_1.GridProxyAbstract {
       i?.SetUIActive(false);
     }
   }
-  rFf(t) {
+  B7f(t) {
     t = !t.GetIfCanBuy();
     this.GetItem(15)?.SetUIActive(t);
   }

@@ -44,10 +44,10 @@ class ButtonStateController extends ControllerBase_1.ControllerBase {
         Log_1.Log.Info("HomeBtn", 87, "向服务器请求按钮状态");
       }
       (e = new Protocol_1.Aki.Protocol.vrm()).jom = [...this.snm.keys()];
-      Net_1.Net.Call(28515, e, e => {
+      Net_1.Net.Call(27139, e, e => {
         if (e) {
           if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21010);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21352);
           } else {
             e.j7n.forEach(e => {
               if (Log_1.Log.CheckInfo()) {

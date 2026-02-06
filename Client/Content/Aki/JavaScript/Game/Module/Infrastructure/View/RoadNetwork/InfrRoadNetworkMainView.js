@@ -10,7 +10,6 @@ const Protocol_1 = require("../../../../../Core/Define/Net/Protocol");
 const TimerSystem_1 = require("../../../../../Core/Timer/TimerSystem");
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
-const TimeUtil_1 = require("../../../../Common/TimeUtil");
 const ConfigManager_1 = require("../../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const UiViewBase_1 = require("../../../../Ui/Base/UiViewBase");
@@ -27,19 +26,19 @@ class InfrRoadNetworkMainView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
     this.Qyi = new PopupCaptionItem_1.PopupCaptionItem();
-    this.A5m = new InfrRoadNetworkMapPanel_1.InfrRoadNetworkMapPanel();
-    this.v4m = new InfrastructureFireExpPanel_1.InfrastructureFireExpPanel();
-    this.ujm = undefined;
+    this.YVm = new InfrRoadNetworkMapPanel_1.InfrRoadNetworkMapPanel();
+    this.O5m = new InfrastructureFireExpPanel_1.InfrastructureFireExpPanel();
+    this.MHm = undefined;
     this.o4o = undefined;
     this.ZoomIn = undefined;
     this.ZoomOut = undefined;
-    this.U5m = false;
+    this.JVm = false;
     this.IRe = undefined;
-    this.x5m = Protocol_1.Aki.Protocol.VNm.Proto_Road;
-    this.B5m = 0;
-    this.klf = false;
-    this.e6f = 1;
-    this.t6f = [0, 0];
+    this.ZVm = Protocol_1.Aki.Protocol.a4m.Proto_Road;
+    this.e6m = 0;
+    this.euf = false;
+    this.dzf = 1;
+    this.mzf = [0, 0];
     this.P4o = () => {
       this.o4o.LongPressScroll(-this.o4o.ScaleStep);
     };
@@ -51,35 +50,35 @@ class InfrRoadNetworkMainView extends UiViewBase_1.UiViewBase {
     };
     this.Xjs = t => {
       this.GetSlider(7).SetValue(this.o4o.MapScale, true);
-      this.A5m.RefreshMarkScale(this.o4o.MapScale);
+      this.YVm.RefreshMarkScale(this.o4o.MapScale);
     };
-    this.k5m = () => {
-      if (this.U5m) {
-        this.U5m = false;
-        this.ujm = undefined;
+    this.t6m = () => {
+      if (this.JVm) {
+        this.JVm = false;
+        this.MHm = undefined;
         UiManager_1.UiManager.CloseView("InfrRoadNetworkInfoView");
-        this.A5m.DeselectMark();
+        this.YVm.DeselectMark();
         this.PlaySequence("ShowView");
         t = CommonParamById_1.configCommonParamById.GetFloatConfig("InfrRoadNetworkFocalTime");
-        this.o4o.ScaleToTarget(this.e6f, this.t6f, 0, t, 0);
+        this.o4o.ScaleToTarget(this.dzf, this.mzf, 0, t, 0);
       }
-      var t = this.A5m.GetRootItem().GetAnchorOffset();
-      this.t6f = [-t.X / this.e6f, -t.Y / this.e6f];
-      this.i6f();
+      var t = this.YVm.GetRootItem().GetAnchorOffset();
+      this.mzf = [-t.X / this.dzf, -t.Y / this.dzf];
+      this.fzf();
     };
-    this.q5m = t => {
-      if (!this.ujm) {
+    this.i6m = t => {
+      if (!this.MHm) {
         this.PlaySequence("SweepCarrier");
       }
-      this.ujm = t;
-      this.U5m = true;
+      this.MHm = t;
+      this.JVm = true;
       var i = {
         InfoParam: t,
         BuildCb: () => {
-          this.P5m();
+          this.XVm();
         },
         CloseCb: () => {
-          this.k5m();
+          this.t6m();
         }
       };
       if (UiManager_1.UiManager.IsViewOpen("InfrRoadNetworkInfoView")) {
@@ -91,22 +90,19 @@ class InfrRoadNetworkMainView extends UiViewBase_1.UiViewBase {
           }
         });
       }
-      this.e6f = this.o4o.MapScale;
-      var i = this.A5m.GetRootItem().GetAnchorOffset();
-      this.t6f = [-i.X / this.e6f, -i.Y / this.e6f];
+      this.dzf = this.o4o.MapScale;
+      var i = this.YVm.GetRootItem().GetAnchorOffset();
+      this.mzf = [-i.X / this.dzf, -i.Y / this.dzf];
       var i = CommonParamById_1.configCommonParamById.GetFloatConfig("InfrRoadNetworkFocalTime");
       let e = undefined;
-      e = t.DeliveryType === Protocol_1.Aki.Protocol.VNm.Proto_Road ? this.A5m.GetMarkUiPosition(t.RoadId) : this.A5m.GetObservatoryMarkUiPosition();
+      e = t.DeliveryType === Protocol_1.Aki.Protocol.a4m.Proto_Road ? this.YVm.GetMarkUiPosition(t.RoadId) : this.YVm.GetObservatoryMarkUiPosition();
       var t = this.GetItem(12).GetUIWorldPosition();
       var s = CommonParamById_1.configCommonParamById.GetFloatConfig("InfrRoadNetworkFoaclScale");
       e = [e[0] - t.X / s, e[1] - t.Y / s];
       this.o4o.ScaleToTarget(s, e, 0, i, 1);
-      this.i6f();
+      this.fzf();
     };
-    this.O5m = () => {
-      InfrastructureController_1.InfrastructureController.RequestInfrastructureFireNotice();
-    };
-    this.G5m = t => {
+    this.o6m = t => {
       var i;
       var e;
       if (t.length === 0) {
@@ -120,11 +116,11 @@ class InfrRoadNetworkMainView extends UiViewBase_1.UiViewBase {
         LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(8), "BuildRoad_InfrPasser", new LguiUtil_1.TableTextArgNew(i.Name), new LguiUtil_1.TableTextArgNew(e.Name), t.GiftCount);
       }
     };
-    this.mTf = () => {
-      this.A5m.RefreshAllMarks();
+    this.tPf = () => {
+      this.YVm.RefreshAllMarks();
     };
     this.D1c = () => {
-      this.k5m();
+      this.t6m();
     };
   }
   OnRegisterComponent() {
@@ -132,35 +128,35 @@ class InfrRoadNetworkMainView extends UiViewBase_1.UiViewBase {
     this.BtnBindInfo = [[15, this.D1c]];
   }
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InfrastructureRoadNoticeUpdate, this.G5m);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InfrastructureTraceRoadUpdate, this.mTf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InfrastructureRoadNoticeUpdate, this.o6m);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InfrastructureTraceRoadUpdate, this.tPf);
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InfrastructureRoadNoticeUpdate, this.G5m);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InfrastructureTraceRoadUpdate, this.mTf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InfrastructureRoadNoticeUpdate, this.o6m);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InfrastructureTraceRoadUpdate, this.tPf);
   }
   async OnBeforeStartAsync() {
-    this.j5m(this.OpenParam);
+    this.h6m(this.OpenParam);
     await InfrastructureController_1.InfrastructureController.RequestInfrastructureInfoRequest();
-    await Promise.all([this.e7a(), this.F5m(), this.N5m()]);
+    await Promise.all([this.e7a(), this.n6m(), this.s6m()]);
     await this.cQa();
   }
-  j5m(t) {
+  h6m(t) {
     if (t) {
-      this.x5m = t.DeliveryType;
-      this.B5m = t.RoadId;
-      this.klf = t.NeedPlayFinishSeq ?? false;
+      this.ZVm = t.DeliveryType;
+      this.e6m = t.RoadId;
+      this.euf = t.NeedPlayFinishSeq ?? false;
     }
   }
   async e7a() {
     await this.Qyi.CreateThenShowByActorAsync(this.GetItem(0).GetOwner());
   }
-  async F5m() {
-    await this.A5m.CreateThenShowByActorAsync(this.GetDraggable(9).GetOwner(), this.OpenParam);
-    this.A5m.SetOnClickMarkCb(this.q5m);
+  async n6m() {
+    await this.YVm.CreateThenShowByActorAsync(this.GetDraggable(9).GetOwner(), this.OpenParam);
+    this.YVm.SetOnClickMarkCb(this.i6m);
   }
-  async N5m() {
-    await this.v4m.CreateThenShowByActorAsync(this.GetItem(4).GetOwner());
+  async s6m() {
+    await this.O5m.CreateThenShowByActorAsync(this.GetItem(4).GetOwner());
   }
   async cQa() {
     this.Qyi.SetCloseCallBack(() => {
@@ -173,40 +169,34 @@ class InfrRoadNetworkMainView extends UiViewBase_1.UiViewBase {
     await this.Qyi.SetCurrencyItemList([InfrastructureDefine_1.INFR_BATTLE_MATERIAL_ID, InfrastructureDefine_1.INFR_COLLECTION_MATERIAL_ID, InfrastructureDefine_1.INFR_QUEST_MATERIAL_ID]);
   }
   OnStart() {
-    this.V5m();
-    this.H5m();
+    this.a6m();
+    this.l6m();
     this.fHs();
-    this.$5m();
-    this.djm();
-    this.O5m();
-    this.G5m([]);
-    this.r6f();
+    this.o6m([]);
+    this.gzf();
   }
   OnBeforeShow() {
-    this.A5m.RefreshMarkScale(this.o4o.MapScale);
+    this.YVm.RefreshMarkScale(this.o4o.MapScale);
     this.o4o.BindTouch();
     this.o4o.AddGamepadEvent();
+    this.IHm();
   }
   OnAfterHide() {
     this.o4o.UnbindTouch();
     this.o4o.RemoveGamepadEvent();
   }
   OnAfterPlayStartSequence() {
-    this.A5m.ShowMarkUnlock(this.klf, () => {
-      this.qlf();
+    this.YVm.ShowMarkUnlock(this.euf, () => {
+      this.tuf();
     });
   }
-  V5m() {
+  a6m() {
     this.o4o = new BuildingMapMoveComponent_1.BuildingMapMoveComponent(this.GetDraggable(9));
     var t = CommonParamById_1.configCommonParamById.GetFloatArrayConfig("InfrRoadNetworkMapSizeParam");
     this.o4o.SetScaleSafeArea(t[0], t[1]);
-    this.o4o.PointerBeginDragExtraCallBack = this.k5m;
-    this.o4o.PointerUpExtraCallBack = this.k5m;
+    this.o4o.PointerBeginDragExtraCallBack = this.t6m;
+    this.o4o.PointerUpExtraCallBack = this.t6m;
     this.o4o.SetChangeScaleCallback(this.Xjs);
-  }
-  $5m() {
-    var t = CommonParamById_1.configCommonParamById.GetIntConfig("InfrRoadNetworkMessageInterval");
-    this.IRe = TimerSystem_1.GameplayTimerSystem.Forever(this.O5m, t * TimeUtil_1.TimeUtil.InverseMillisecond);
   }
   fHs() {
     var t = this.GetSlider(7);
@@ -216,38 +206,38 @@ class InfrRoadNetworkMainView extends UiViewBase_1.UiViewBase {
     this.ZoomIn = new LongPressButton_1.LongPressButton(this.GetButton(5), this.w4o);
     this.ZoomOut = new LongPressButton_1.LongPressButton(this.GetButton(6), this.P4o);
   }
-  H5m() {
-    this.v4m.SetOnClickHelpCb(() => {
+  l6m() {
+    this.O5m.SetOnClickHelpCb(() => {
       var t = ConfigManager_1.ConfigManager.InfrastructureConfig.GetHelpIdRoadProcess();
       ControllerHolder_1.ControllerHolder.HelpController.OpenHelpById(t);
     });
-    if (this.klf) {
-      this.v4m.RefreshExpBeforeRoadBuilt(this.B5m);
+    if (this.euf) {
+      this.O5m.RefreshExpBeforeRoadBuilt(this.e6m);
     }
   }
-  djm() {
+  IHm() {
     var t = this.OpenParam;
     if (t && !t.NeedPlayFinishSeq) {
-      this.A5m.SelectMark(this.x5m, this.B5m);
+      this.YVm.SelectMark(this.ZVm, this.e6m);
     }
   }
-  qlf() {
-    if (this.klf) {
+  tuf() {
+    if (this.euf) {
       const t = () => {
-        if (this.klf) {
-          this.klf = false;
+        if (this.euf) {
+          this.euf = false;
           this.GetTexture(11).SetUIActive(false);
           UiManager_1.UiManager.OpenView("InfrastructureSettleView", {
-            DeliveryType: this.x5m,
-            RoadId: this.B5m
+            DeliveryType: this.ZVm,
+            RoadId: this.e6m
           });
         }
       };
-      this.v4m.SetOnDigitSequenceFinishCb(t);
-      this.A5m.RefreshFinishTextureLine(this.B5m);
+      this.O5m.SetOnDigitSequenceFinishCb(t);
+      this.YVm.RefreshFinishTextureLine(this.e6m);
       this.PlaySequence("Finish", () => {
-        this.A5m.ShowMarkFinishSeq(this.x5m, this.B5m, () => {
-          if (!this.v4m.UpdateExp()) {
+        this.YVm.ShowMarkFinishSeq(this.ZVm, this.e6m, () => {
+          if (!this.O5m.UpdateExp()) {
             t();
           }
         });
@@ -256,14 +246,14 @@ class InfrRoadNetworkMainView extends UiViewBase_1.UiViewBase {
       this.GetTexture(11).SetUIActive(false);
     }
   }
-  r6f() {
+  gzf() {
     var t = CommonParamById_1.configCommonParamById.GetFloatConfig("InfrRoadNetworkMapDefaultSize");
     var i = CommonParamById_1.configCommonParamById.GetIntArrayConfig("InfrRoadNetworkMapDefaultPos");
-    this.e6f = t;
-    this.t6f = i;
-    if (this.klf) {
+    this.dzf = t;
+    this.mzf = i;
+    if (this.euf) {
       let t = undefined;
-      t = this.x5m === Protocol_1.Aki.Protocol.VNm.Proto_Road ? this.A5m.GetMarkUiPosition(this.B5m) : this.A5m.GetObservatoryMarkUiPosition();
+      t = this.ZVm === Protocol_1.Aki.Protocol.a4m.Proto_Road ? this.YVm.GetMarkUiPosition(this.e6m) : this.YVm.GetObservatoryMarkUiPosition();
       var e = CommonParamById_1.configCommonParamById.GetFloatConfig("InfrRoadNetworkFoaclScale");
       this.o4o.SetScale(e, 5);
       this.o4o.MoveToTarget(t, 0, 0);
@@ -272,18 +262,18 @@ class InfrRoadNetworkMainView extends UiViewBase_1.UiViewBase {
       this.o4o.MoveToTarget(i, 0, 0);
     }
   }
-  i6f() {
-    this.Qyi.SetUiActive(!this.U5m);
-    this.GetItem(3).SetUIActive(!this.U5m);
-    this.GetButton(15).RootUIComp.SetUIActive(this.U5m);
-    if (this.U5m && !UiManager_1.UiManager.IsViewOpen("InfrRoadNetworkInfoView")) {
+  fzf() {
+    this.Qyi.SetUiActive(!this.JVm);
+    this.GetItem(3).SetUIActive(!this.JVm);
+    this.GetButton(15).RootUIComp.SetUIActive(this.JVm);
+    if (this.JVm && !UiManager_1.UiManager.IsViewOpen("InfrRoadNetworkInfoView")) {
       UiManager_1.UiManager.OpenView("InfrRoadNetworkInfoView", {
-        InfoParam: this.ujm,
+        InfoParam: this.MHm,
         BuildCb: () => {
-          this.P5m();
+          this.XVm();
         },
         CloseCb: () => {
-          this.k5m();
+          this.t6m();
         }
       }, (t, i) => {
         if (t) {
@@ -299,10 +289,10 @@ class InfrRoadNetworkMainView extends UiViewBase_1.UiViewBase {
       this.IRe = undefined;
     }
   }
-  async P5m() {
-    if (this.ujm) {
-      if (this.ujm.DeliveryType === Protocol_1.Aki.Protocol.VNm.Proto_Road) {
-        await InfrastructureController_1.InfrastructureController.RequestInfrastructureRoadBuild(this.ujm.RoadId);
+  async XVm() {
+    if (this.MHm) {
+      if (this.MHm.DeliveryType === Protocol_1.Aki.Protocol.a4m.Proto_Road) {
+        await InfrastructureController_1.InfrastructureController.RequestInfrastructureRoadBuild(this.MHm.RoadId);
       } else {
         await InfrastructureController_1.InfrastructureController.RequestInfrastructureLevelUp();
       }
@@ -310,7 +300,7 @@ class InfrRoadNetworkMainView extends UiViewBase_1.UiViewBase {
   }
   GetGuideUiItemAndUiItemForShowEx(t) {
     if (t.length !== 0 && t[0] === "RoadMark") {
-      return this.A5m?.GetGuideUiItemAndUiItemForShowEx(t);
+      return this.YVm?.GetGuideUiItemAndUiItemForShowEx(t);
     } else {
       return undefined;
     }

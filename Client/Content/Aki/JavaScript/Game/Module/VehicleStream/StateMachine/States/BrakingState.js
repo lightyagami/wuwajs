@@ -6,7 +6,6 @@ Object.defineProperty(exports, "__esModule", {
 exports.BrakingState = undefined;
 const UE = require("ue");
 const Log_1 = require("../../../../../Core/Common/Log");
-const Protocol_1 = require("../../../../../Core/Define/Net/Protocol");
 const TimeUtil_1 = require("../../../../Common/TimeUtil");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const VehicleStreamDefine_1 = require("../../VehicleStreamDefine");
@@ -14,7 +13,7 @@ const VehicleStateBase_1 = require("./VehicleStateBase");
 class BrakingState extends VehicleStateBase_1.VehicleStateBase {
   constructor() {
     super(...arguments);
-    this.oAf = 0;
+    this.d2f = 0;
   }
   OnEnter(e, t) {
     if (Log_1.Log.CheckDebug()) {
@@ -30,11 +29,13 @@ class BrakingState extends VehicleStateBase_1.VehicleStateBase {
   CheckGetNextState() {
     var e = this.CheckObstruction(this.BlackBoard.CurrentRootDistance, "VehicleStream.braking");
     if (e !== "None") {
-      if (e === "TraceBlock" && (this.BlackBoard.BlockTarget = Protocol_1.Aki.Protocol.kks.Proto_Player, this.BlackBoard.HornAudio) && TimeUtil_1.TimeUtil.GetServerTimeStamp() - this.oAf >= VehicleStreamDefine_1.HORN_AUDIO_PLAY_INTERVAL_TIME) {
-        this.BlackBoard.OpenAudio(this.BlackBoard.HornAudio, false);
-        this.oAf = TimeUtil_1.TimeUtil.GetServerTimeStamp();
+      this.BlackBoard.BlockTarget = this.ObstructionCheckInfo.HitEntityType;
+      if (e === "TraceBlock" || e === "CheckPlayerBlock") {
+        if (this.BlackBoard.HornAudio && TimeUtil_1.TimeUtil.GetServerTimeStamp() - this.d2f >= VehicleStreamDefine_1.HORN_AUDIO_PLAY_INTERVAL_TIME) {
+          this.BlackBoard.OpenAudio(this.BlackBoard.HornAudio, false);
+          this.d2f = TimeUtil_1.TimeUtil.GetServerTimeStamp();
+        }
       }
-      this.BlackBoard.BlockTarget = Protocol_1.Aki.Protocol.kks.Proto_SceneItem;
       return 0;
     }
     this.BlackBoard.BlockTarget = undefined;

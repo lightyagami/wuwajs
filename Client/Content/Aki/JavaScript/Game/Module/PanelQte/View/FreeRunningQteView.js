@@ -245,7 +245,7 @@ class FreeRunningQteView extends PanelQteView_1.PanelQteView {
       if (!e) {
         return false;
       }
-      if (!e.GetComponent(105)?.CanActivateFixHook()) {
+      if (!e.GetComponent(107)?.CanActivateFixHook()) {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("PanelQte", 67, "[FreeRunningQteView]Fix hook target not exist");
         }

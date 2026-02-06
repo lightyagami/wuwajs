@@ -113,7 +113,7 @@ let CharacterPhysicsAssetComponent = CharacterPhysicsAssetComponent_1 = class Ch
     this.Djr = 0;
     this.Ype = false;
     this.I3r = t => {
-      t = t.GetComponent(75);
+      t = t.GetComponent(77);
       t.Tjr.ClearAnimState();
     };
     this.Rjr = (t, e) => {
@@ -130,7 +130,7 @@ let CharacterPhysicsAssetComponent = CharacterPhysicsAssetComponent_1 = class Ch
     };
   }
   static get Dependencies() {
-    return [3, 215, 186];
+    return [3, 217, 188];
   }
   OnInitData() {
     this.Tjr = new PhysicsState();
@@ -143,8 +143,8 @@ let CharacterPhysicsAssetComponent = CharacterPhysicsAssetComponent_1 = class Ch
       this.Ijr = false;
       return !(this.Hte = undefined);
     }
-    this.Lie = this.Entity.GetComponent(215);
-    this.oRe = this.Entity.GetComponent(186);
+    this.Lie = this.Entity.GetComponent(217);
+    this.oRe = this.Entity.GetComponent(188);
     var t = this.Hte.CreatureData.GetRoleConfig().RoleBody;
     var t = ConfigManager_1.ConfigManager.EntityPhysicsAssetConfig.GetPhysicsAssetConfigByRoleBody(t);
     for (const e of CharacterPhysicsAssetComponent_1.Ajr) {
@@ -239,5 +239,5 @@ let CharacterPhysicsAssetComponent = CharacterPhysicsAssetComponent_1 = class Ch
   }
 };
 CharacterPhysicsAssetComponent.Ajr = [-648310348];
-CharacterPhysicsAssetComponent = CharacterPhysicsAssetComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(75)], CharacterPhysicsAssetComponent);
+CharacterPhysicsAssetComponent = CharacterPhysicsAssetComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(77)], CharacterPhysicsAssetComponent);
 exports.CharacterPhysicsAssetComponent = CharacterPhysicsAssetComponent; //# sourceMappingURL=CharacterPhysicsAssetComponent.js.map

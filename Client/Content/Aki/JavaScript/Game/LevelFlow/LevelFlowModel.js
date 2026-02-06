@@ -16,14 +16,14 @@ class LevelFlowModel extends ModelBase_1.ModelBase {
     super(...arguments);
     this.IsDebug = false;
     this.IsIgnoreForceMove = false;
-    this.rtf = undefined;
-    this.otf = 0;
-    this.iMf = undefined;
+    this._rf = undefined;
+    this.urf = 0;
+    this.rTf = undefined;
     this.BXd = 0;
     this.xXd = undefined;
-    this.aRf = false;
-    this.tTm = new Set();
-    this.lZf = undefined;
+    this.DUf = false;
+    this.dTm = new Set();
+    this.qvg = undefined;
     this.kXd = (e, t) => {
       if (t) {
         if (e.SectionId !== this.xXd.SectionId) {
@@ -33,8 +33,8 @@ class LevelFlowModel extends ModelBase_1.ModelBase {
         } else {
           this.xXd.Exit();
           this.BXd++;
-          if (this.BXd < this.iMf.GetCapacity()) {
-            const e = this.iMf.GetSection(this.BXd);
+          if (this.BXd < this.rTf.GetCapacity()) {
+            const e = this.rTf.GetSection(this.BXd);
             if (e) {
               this.xXd = e;
               this.OXd(e);
@@ -49,10 +49,10 @@ class LevelFlowModel extends ModelBase_1.ModelBase {
       }
     };
     this.Lrm = (e, t) => {
-      if (this.aRf) {
+      if (this.DUf) {
         this.wXt();
-        this.lZf?.(t);
-        this.lZf = undefined;
+        this.qvg?.(t);
+        this.qvg = undefined;
       } else if (t) {
         if (e.SectionId !== this.xXd.SectionId) {
           if (Log_1.Log.CheckError()) {
@@ -65,25 +65,25 @@ class LevelFlowModel extends ModelBase_1.ModelBase {
         Log_1.Log.Error("LevelFlow", 58, "回退都失败了，怎么能成功呢");
       }
     };
-    this.iTm = (e, t) => {
+    this.mTm = (e, t) => {
       if (t) {
-        this.tTm.delete(e);
+        this.dTm.delete(e);
       }
     };
   }
   InitTaskTreeInfo(e, t) {
-    this.rtf = e;
-    this.otf = t;
+    this._rf = e;
+    this.urf = t;
   }
   InitTiTanLevelFlowInfo() {
-    this.iMf = new LevelFlowTiTanData_1.LevelFlowTiTanData();
-    this.iMf.Init();
+    this.rTf = new LevelFlowTiTanData_1.LevelFlowTiTanData();
+    this.rTf.Init();
   }
   StartLevelFlow(e) {
-    if (!(this.iMf.GetCapacity() <= 0)) {
-      this.aRf = false;
+    if (!(this.rTf.GetCapacity() <= 0)) {
+      this.DUf = false;
       this.BXd = e;
-      if (e = this.iMf.GetSection(this.BXd)) {
+      if (e = this.rTf.GetSection(this.BXd)) {
         this.xXd = e;
         this.OXd(e);
       }
@@ -92,7 +92,7 @@ class LevelFlowModel extends ModelBase_1.ModelBase {
   OnTick(e) {
     if (this.xXd) {
       this.xXd.Tick(e);
-      for (const t of this.tTm) {
+      for (const t of this.dTm) {
         t.Tick(e);
       }
     }
@@ -102,25 +102,29 @@ class LevelFlowModel extends ModelBase_1.ModelBase {
     e.Enter();
   }
   ResetLevelFlow(e = false) {
-    this.aRf = e;
+    this.DUf = e;
     if (this.xXd) {
       this.xXd.BindResetCompleteCallBack(this.Lrm);
       this.xXd.Reset();
     }
-    for (const t of this.tTm) {
+    for (const t of this.dTm) {
       t.Reset();
     }
-    this.tTm.clear();
+    this.dTm.clear();
   }
   RollBackLevelFlow(e) {
-    this.lZf = e;
-    this.ResetLevelFlow(true);
+    if (this.xXd) {
+      this.qvg = e;
+      this.ResetLevelFlow(true);
+    } else {
+      e(true);
+    }
   }
   PushDynamicAction(e) {
     if (!this.IsEnd) {
       if (this.xXd) {
-        this.tTm.add(e);
-        e.BindCompleteCallBack(this.iTm);
+        this.dTm.add(e);
+        e.BindCompleteCallBack(this.mTm);
         e.Execute();
       }
     }
@@ -130,13 +134,13 @@ class LevelFlowModel extends ModelBase_1.ModelBase {
     LevelFlowResourceManager_1.LevelFlowResourceManager.Release();
   }
   get TreeIncId() {
-    return this.rtf;
+    return this._rf;
   }
   get TreeNodeId() {
-    return this.otf;
+    return this.urf;
   }
   get IsEnd() {
-    return this.aRf;
+    return this.DUf;
   }
 }
 exports.LevelFlowModel = LevelFlowModel;

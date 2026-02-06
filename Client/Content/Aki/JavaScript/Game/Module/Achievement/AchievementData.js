@@ -1,51 +1,78 @@
 "use strict";
 
+var __decorate = this && this.__decorate || function (e, t, r, i) {
+  var a;
+  var s = arguments.length;
+  var n = s < 3 ? t : i === null ? i = Object.getOwnPropertyDescriptor(t, r) : i;
+  if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
+    n = Reflect.decorate(e, t, r, i);
+  } else {
+    for (var o = e.length - 1; o >= 0; o--) {
+      if (a = e[o]) {
+        n = (s < 3 ? a(n) : s > 3 ? a(t, r, n) : a(t, r)) || n;
+      }
+    }
+  }
+  if (s > 3 && n) {
+    Object.defineProperty(t, r, n);
+  }
+  return n;
+};
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.AchievementSearchGroupData = exports.AchievementSearchData = exports.AchievementGroupData = exports.AchievementCategoryData = exports.AchievementData = undefined;
+const Info_1 = require("../../../Core/Common/Info");
+const Descriptors_1 = require("../../../Core/CrossDataSource/Descriptors");
 const CommonParamById_1 = require("../../../Core/Define/ConfigCommon/CommonParamById");
 const StringBuilder_1 = require("../../../Core/Utils/StringBuilder");
 const PlatformSdkManagerNew_1 = require("../../../Launcher/Platform/PlatformSdk/PlatformSdkManagerNew");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
-class AchievementData {
-  constructor(t) {
-    this.xe = t;
-    this._be = undefined;
+let AchievementData = class AchievementData {
+  constructor(e) {
+    this.FinishTime = undefined;
     this.gbe = 0;
     this.ube = -1;
     this.cbe = new Array();
-    this.mbe = false;
-    this.dbe = undefined;
-    this.Cbe = undefined;
+    this.HasGetRewardState = false;
+    this.CurrentProgress = undefined;
+    this.MaxProgress = undefined;
+    this.Id = 0;
     this.nba = "-1";
-    this.gbe = ConfigManager_1.ConfigManager.AchievementConfig.GetAchievementNextLink(this.xe);
+    this.Id = e;
+    this.gbe = ConfigManager_1.ConfigManager.AchievementConfig.GetAchievementNextLink(this.Id);
   }
-  SetLastLink(t) {
-    this.ube = t;
+  SetLastLink(e) {
+    this.ube = e;
   }
-  Phrase(t) {
-    this._be = t.rvs;
-    this.mbe = t.ovs;
-    this.dbe = t.nvs.tvs;
-    this.Cbe = t.nvs.ivs;
+  Phrase(e) {
+    this.FinishTime = e.rvs;
+    this.HasGetRewardState = e.ovs;
+    this.CurrentProgress = e.nvs.tvs;
+    this.MaxProgress = e.nvs.ivs;
     this.NYd();
     this.sba();
   }
   sba() {
-    var t = this.GetThirdPartyTrophyId();
-    if (this.GetFinishState() !== 0 && t !== "-1") {
-      ControllerHolder_1.ControllerHolder.KuroSdkController.UnlockSdkTrophy(t);
+    var e = this.GetThirdPartyTrophyId();
+    if (this.GetFinishState() !== 0 && e !== "-1") {
+      ControllerHolder_1.ControllerHolder.KuroSdkController.UnlockSdkTrophy(e);
     }
   }
   GetId() {
-    return this.xe;
+    return this.Id;
   }
   NYd() {
     if (this.nba === "-1") {
-      this.nba = PlatformSdkManagerNew_1.PlatformSdkManagerNew.IsSdkOn ? ConfigManager_1.ConfigManager.AchievementConfig.GetThirdPartyTrophyId(this.xe).toString() : ConfigManager_1.ConfigManager.AchievementConfig.GetExternalTrophyId(this.xe);
+      if (PlatformSdkManagerNew_1.PlatformSdkManagerNew.IsSdkOn) {
+        this.nba = ConfigManager_1.ConfigManager.AchievementConfig.GetThirdPartyTrophyId(this.Id).toString();
+      } else if (Info_1.Info.IsIosPlatform()) {
+        this.nba = ConfigManager_1.ConfigManager.AchievementConfig.GetExternalTrophyId(this.Id);
+      } else {
+        this.nba = ConfigManager_1.ConfigManager.AchievementConfig.GetGPExternalTrophyId(this.Id);
+      }
     }
   }
   GetThirdPartyTrophyId() {
@@ -55,13 +82,13 @@ class AchievementData {
     return this.GetFinishState() === 1 && !!this.GetShowState();
   }
   GetIconPath() {
-    return ConfigManager_1.ConfigManager.AchievementConfig.GetAchievementIcon(this.xe);
+    return ConfigManager_1.ConfigManager.AchievementConfig.GetAchievementIcon(this.Id);
   }
   IfSingleAchievement() {
     return this.gbe === -1;
   }
   GetShowState() {
-    if (this.Cbe === undefined) {
+    if (this.MaxProgress === undefined) {
       return false;
     }
     if (this.GetHiddenState() && this.GetFinishState() === 0) {
@@ -73,67 +100,67 @@ class AchievementData {
     return this.GetFinishState() !== 2 || !(this.gbe > 0);
   }
   GetHiddenState() {
-    return ConfigManager_1.ConfigManager.AchievementConfig.GetAchievementHiddenState(this.xe);
+    return ConfigManager_1.ConfigManager.AchievementConfig.GetAchievementHiddenState(this.Id);
   }
-  GetReplaceDesc(t) {
-    let e = this.GetDesc();
+  GetReplaceDesc(e) {
+    let t = this.GetDesc();
     var r = new StringBuilder_1.StringBuilder();
     var i = CommonParamById_1.configCommonParamById.GetStringConfig("TutorialSearchColor");
     r.Append("<color=");
     r.Append(i?.toLowerCase() + ">");
-    r.Append(t);
+    r.Append(e);
     r.Append("</color>");
-    var i = "" + t;
-    return e = e.replace(i, r.ToString());
+    var i = "" + e;
+    return t = t.replace(i, r.ToString());
   }
-  GetReplaceTitle(t) {
-    let e = this.GetTitle();
+  GetReplaceTitle(e) {
+    let t = this.GetTitle();
     var r = new StringBuilder_1.StringBuilder();
     var i = CommonParamById_1.configCommonParamById.GetStringConfig("TutorialSearchColor");
     r.Append("<color=");
     r.Append(i?.toLowerCase() + ">");
-    r.Append(t);
+    r.Append(e);
     r.Append("</color>");
-    var i = "" + t;
-    return e = e.replace(i, r.ToString());
+    var i = "" + e;
+    return t = t.replace(i, r.ToString());
   }
   GetDesc() {
-    return ConfigManager_1.ConfigManager.AchievementConfig.GetAchievementDesc(this.xe);
+    return ConfigManager_1.ConfigManager.AchievementConfig.GetAchievementDesc(this.Id);
   }
   GetTitle() {
-    return ConfigManager_1.ConfigManager.AchievementConfig.GetAchievementTitle(this.xe);
+    return ConfigManager_1.ConfigManager.AchievementConfig.GetAchievementTitle(this.Id);
   }
   GetMaxStar() {
     if (this.IfSingleAchievement()) {
-      const e = ConfigManager_1.ConfigManager.AchievementConfig.GetAchievementLevel(this.xe);
-      return e;
+      const t = ConfigManager_1.ConfigManager.AchievementConfig.GetAchievementLevel(this.Id);
+      return t;
     }
-    let t = ModelManager_1.ModelManager.AchievementModel.GetAchievementData(this.xe);
-    while (t?.gbe) {
-      t = ModelManager_1.ModelManager.AchievementModel.GetAchievementData(t?.gbe);
+    let e = ModelManager_1.ModelManager.AchievementModel.GetAchievementData(this.Id);
+    while (e?.gbe) {
+      e = ModelManager_1.ModelManager.AchievementModel.GetAchievementData(e?.gbe);
     }
-    const e = ConfigManager_1.ConfigManager.AchievementConfig.GetAchievementLevel(t.GetId());
-    return e;
+    const t = ConfigManager_1.ConfigManager.AchievementConfig.GetAchievementLevel(e.GetId());
+    return t;
   }
   GetFinishedStar() {
-    var t;
     var e;
+    var t;
     if (this.GetShowState()) {
-      t = ConfigManager_1.ConfigManager.AchievementConfig.GetAchievementLevel(this.xe);
+      e = ConfigManager_1.ConfigManager.AchievementConfig.GetAchievementLevel(this.Id);
       if (this.IfSingleAchievement()) {
         if (this.GetFinishState() === 2 || this.GetFinishState() === 1) {
-          return t;
+          return e;
         } else {
           return 0;
         }
       } else {
-        e = this.fbe();
+        t = this.fbe();
         if (this.GetFinishState() === 2 || this.GetFinishState() === 1) {
-          return t + e;
+          return e + t;
         } else if (this.GetFinishState() === 0) {
-          return e;
+          return t;
         } else {
-          return (t - 1 >= 0 ? t - 1 : 0) + e;
+          return (e - 1 >= 0 ? e - 1 : 0) + t;
         }
       }
     } else {
@@ -141,23 +168,23 @@ class AchievementData {
     }
   }
   fbe() {
-    let t = 0;
-    let e = this.ube;
-    while (e !== -1) {
-      var r = ModelManager_1.ModelManager.AchievementModel.GetAchievementData(e);
-      t += ConfigManager_1.ConfigManager.AchievementConfig.GetAchievementLevel(e);
-      e = r.ube;
+    let e = 0;
+    let t = this.ube;
+    while (t !== -1) {
+      var r = ModelManager_1.ModelManager.AchievementModel.GetAchievementData(t);
+      e += ConfigManager_1.ConfigManager.AchievementConfig.GetAchievementLevel(t);
+      t = r.ube;
     }
-    return t;
+    return e;
   }
   GetAchievementShowStar() {
-    var t;
+    var e;
     if (this.GetShowState()) {
-      t = ConfigManager_1.ConfigManager.AchievementConfig.GetAchievementLevel(this.xe);
+      e = ConfigManager_1.ConfigManager.AchievementConfig.GetAchievementLevel(this.Id);
       if (this.IfSingleAchievement() || this.GetFinishState() === 2 || this.GetFinishState() === 1) {
-        return t;
-      } else if (t - 1 >= 0) {
-        return t - 1;
+        return e;
+      } else if (e - 1 >= 0) {
+        return e - 1;
       } else {
         return 0;
       }
@@ -169,22 +196,22 @@ class AchievementData {
     return ConfigManager_1.ConfigManager.AchievementConfig.GetAchievementLevel(this.GetId());
   }
   GetCurrentProgress() {
-    return this.dbe;
+    return this.CurrentProgress;
   }
   GetMaxProgress() {
-    return this.Cbe;
+    return this.MaxProgress;
   }
   GetRewards() {
     if (this.cbe.length === 0) {
       this.cbe = new Array();
-      var t = ConfigManager_1.ConfigManager.AchievementConfig.GetAchievementReward(this.xe);
-      if (t) {
-        for (var [e, r] of t) {
-          e = [{
+      var e = ConfigManager_1.ConfigManager.AchievementConfig.GetAchievementReward(this.Id);
+      if (e) {
+        for (var [t, r] of e) {
+          t = [{
             IncId: 0,
-            ItemId: e
+            ItemId: t
           }, r];
-          this.cbe.push(e);
+          this.cbe.push(t);
         }
       }
     }
@@ -203,9 +230,9 @@ class AchievementData {
     return this.GetFinishState() === 2 || this.GetFinishState() === 1;
   }
   GetFinishState() {
-    if (this.mbe) {
+    if (this.HasGetRewardState) {
       return 2;
-    } else if (this._be > 0) {
+    } else if (this.FinishTime > 0) {
       return 1;
     } else {
       return 0;
@@ -221,105 +248,115 @@ class AchievementData {
     }
   }
   GetFinishTime() {
-    return this._be;
+    return this.FinishTime;
   }
   GetGroupId() {
-    return ConfigManager_1.ConfigManager.AchievementConfig.GetAchievementGroup(this.xe);
+    return ConfigManager_1.ConfigManager.AchievementConfig.GetAchievementGroup(this.Id);
   }
-}
+};
+__decorate([(0, Descriptors_1.CSharpField)("FinishTime")], AchievementData.prototype, "FinishTime", undefined);
+__decorate([(0, Descriptors_1.CSharpField)("HasGetRewardState")], AchievementData.prototype, "HasGetRewardState", undefined);
+__decorate([(0, Descriptors_1.CSharpField)("CurrentProgress")], AchievementData.prototype, "CurrentProgress", undefined);
+__decorate([(0, Descriptors_1.CSharpField)("MaxProgress")], AchievementData.prototype, "MaxProgress", undefined);
+__decorate([(0, Descriptors_1.CSharpDataUid)()], AchievementData.prototype, "Id", undefined);
+AchievementData = __decorate([(0, Descriptors_1.CSharpDataProxy)("", "AchievementData")], AchievementData);
 exports.AchievementData = AchievementData;
-class AchievementCategoryData {
-  constructor(t) {
-    this.xe = t;
+let AchievementCategoryData = class AchievementCategoryData {
+  constructor(e) {
+    this.Id = 0;
+    this.Id = e;
   }
   GetId() {
-    return this.xe;
+    return this.Id;
   }
   GetFunctionType() {
-    return ConfigManager_1.ConfigManager.AchievementConfig.GetCategoryFunctionType(this.xe);
+    return ConfigManager_1.ConfigManager.AchievementConfig.GetCategoryFunctionType(this.Id);
   }
   GetOrignalTitle() {
-    return ConfigManager_1.ConfigManager.AchievementConfig.GetCategoryOriginalTitle(this.xe);
+    return ConfigManager_1.ConfigManager.AchievementConfig.GetCategoryOriginalTitle(this.Id);
   }
   GetTitle() {
-    return ConfigManager_1.ConfigManager.AchievementConfig.GetCategoryTitle(this.xe);
+    return ConfigManager_1.ConfigManager.AchievementConfig.GetCategoryTitle(this.Id);
   }
   GetTexture() {
-    return ConfigManager_1.ConfigManager.AchievementConfig.GetCategoryTexture(this.xe);
+    return ConfigManager_1.ConfigManager.AchievementConfig.GetCategoryTexture(this.Id);
   }
   GetSprite() {
-    return ConfigManager_1.ConfigManager.AchievementConfig.GetCategorySprite(this.xe);
+    return ConfigManager_1.ConfigManager.AchievementConfig.GetCategorySprite(this.Id);
   }
   GetAchievementCategoryProgress() {
-    let t = 0;
     let e = 0;
-    for (const i of ModelManager_1.ModelManager.AchievementModel.GetAchievementCategoryGroups(this.xe)) {
-      for (const n of ModelManager_1.ModelManager.AchievementModel.GetGroupAchievements(i.GetId(), false)) {
-        var r = n.GetFinishState();
-        if ((!n.GetHiddenState() || r !== 0) && n.GetMaxProgress() !== undefined) {
-          t++;
+    let t = 0;
+    for (const i of ModelManager_1.ModelManager.AchievementModel.GetAchievementCategoryGroups(this.Id)) {
+      for (const a of ModelManager_1.ModelManager.AchievementModel.GetGroupAchievements(i.GetId(), false)) {
+        var r = a.GetFinishState();
+        if ((!a.GetHiddenState() || r !== 0) && a.GetMaxProgress() !== undefined) {
+          e++;
           if (r !== 0) {
-            e++;
+            t++;
           }
         }
       }
     }
-    return Math.round(e * 100 / t) + "%";
+    return Math.round(t * 100 / e) + "%";
   }
-}
+};
+__decorate([(0, Descriptors_1.CSharpDataUid)()], AchievementCategoryData.prototype, "Id", undefined);
+AchievementCategoryData = __decorate([(0, Descriptors_1.CSharpDataProxy)("", "AchievementCategoryData")], AchievementCategoryData);
 exports.AchievementCategoryData = AchievementCategoryData;
-class AchievementGroupData {
-  constructor(t) {
-    this.xe = t;
-    this.mbe = false;
-    this._be = 0;
+let AchievementGroupData = class AchievementGroupData {
+  constructor(e) {
+    this.Id = 0;
+    this.HasGetRewardState = false;
+    this.FinishTime = 0;
     this.cbe = new Array();
     this.pbe = false;
-    this.vbe = false;
+    this.IfUnLock = false;
+    this.Id = e;
   }
-  Phrase(t) {
-    this.mbe = t.ovs;
-    this._be = t.rvs;
-    this.vbe = true;
+  Phrase(e) {
+    this.HasGetRewardState = e.ovs;
+    this.FinishTime = e.rvs;
+    this.IfUnLock = true;
   }
   GetId() {
-    return this.xe;
+    return this.Id;
   }
   GetSort() {
-    return ConfigManager_1.ConfigManager.AchievementConfig.GetAchievementGroupSort(this.xe);
+    return ConfigManager_1.ConfigManager.AchievementConfig.GetAchievementGroupSort(this.Id);
   }
   GetTitle() {
-    return ConfigManager_1.ConfigManager.AchievementConfig.GetAchievementGroupTitle(this.xe);
+    return ConfigManager_1.ConfigManager.AchievementConfig.GetAchievementGroupTitle(this.Id);
   }
   GetTexture() {
-    return ConfigManager_1.ConfigManager.AchievementConfig.GetAchievementGroupIcon(this.xe);
+    return ConfigManager_1.ConfigManager.AchievementConfig.GetAchievementGroupIcon(this.Id);
   }
   GetSmallIcon() {
-    return ConfigManager_1.ConfigManager.AchievementConfig.GetAchievementGroupSmallIcon(this.xe);
+    return ConfigManager_1.ConfigManager.AchievementConfig.GetAchievementGroupSmallIcon(this.Id);
   }
   GetBackgroundIcon() {
-    return ConfigManager_1.ConfigManager.AchievementConfig.GetAchievementGroupBackgroundIcon(this.xe);
+    return ConfigManager_1.ConfigManager.AchievementConfig.GetAchievementGroupBackgroundIcon(this.Id);
   }
   GetCategory() {
-    return ConfigManager_1.ConfigManager.AchievementConfig.GetAchievementGroupCategory(this.xe);
+    return ConfigManager_1.ConfigManager.AchievementConfig.GetAchievementGroupCategory(this.Id);
   }
   GetFinishTime() {
-    return this._be;
+    return this.FinishTime;
   }
   GetShowState() {
-    return !!this.vbe && !!ConfigManager_1.ConfigManager.AchievementConfig.GetAchievementGroupEnable(this.xe);
+    return !!this.IfUnLock && !!ConfigManager_1.ConfigManager.AchievementConfig.GetAchievementGroupEnable(this.Id);
   }
   GetRewards() {
     if (!this.pbe) {
       this.cbe = new Array();
-      var t = ConfigManager_1.ConfigManager.AchievementConfig.GetAchievementGroupReward(this.xe);
-      if (t) {
-        for (var [e, r] of t) {
-          e = [{
+      var e = ConfigManager_1.ConfigManager.AchievementConfig.GetAchievementGroupReward(this.Id);
+      if (e) {
+        for (var [t, r] of e) {
+          t = [{
             IncId: 0,
-            ItemId: e
+            ItemId: t
           }, r];
-          this.cbe.push(e);
+          this.cbe.push(t);
         }
       }
       this.pbe = true;
@@ -327,55 +364,60 @@ class AchievementGroupData {
     return this.cbe;
   }
   SmallItemRedPoint() {
-    return !!this.RedPoint() || ModelManager_1.ModelManager.AchievementModel.GetGroupAchievementsIsRedDot(this.xe);
+    return !!this.RedPoint() || ModelManager_1.ModelManager.AchievementModel.GetGroupAchievementsIsRedDot(this.Id);
   }
   RedPoint() {
     return this.GetFinishState() === 1 && !!this.GetShowState() && !(this.GetRewards().length <= 0);
   }
   GetCurrentProgress() {
-    var t = ModelManager_1.ModelManager.AchievementModel.GetGroupAchievements(this.xe);
-    let e = 0;
-    t.forEach(t => {
-      if (t.GetFinishState() !== 0) {
-        e++;
+    var e = ModelManager_1.ModelManager.AchievementModel.GetGroupAchievements(this.Id);
+    let t = 0;
+    e.forEach(e => {
+      if (e.GetFinishState() !== 0) {
+        t++;
       }
     });
-    return e;
+    return t;
   }
   GetMaxProgress() {
-    var t = ModelManager_1.ModelManager.AchievementModel.GetGroupAchievements(this.xe);
-    let e = 0;
-    t.forEach(t => {
-      if (t.GetShowState()) {
-        e++;
+    var e = ModelManager_1.ModelManager.AchievementModel.GetGroupAchievements(this.Id);
+    let t = 0;
+    e.forEach(e => {
+      if (e.GetShowState()) {
+        t++;
       }
     });
-    return e;
+    return t;
   }
   GetFinishState() {
-    if (this.mbe) {
+    if (this.HasGetRewardState) {
       return 2;
-    } else if (this._be > 0) {
+    } else if (this.FinishTime > 0) {
       return 1;
     } else {
       return 0;
     }
   }
   GetAchievementGroupProgress() {
-    let t = 0;
     let e = 0;
-    for (const i of ModelManager_1.ModelManager.AchievementModel.GetGroupAchievements(this.xe, false)) {
+    let t = 0;
+    for (const i of ModelManager_1.ModelManager.AchievementModel.GetGroupAchievements(this.Id, false)) {
       var r = i.GetFinishState();
       if ((!i.GetHiddenState() || r !== 0) && i.GetMaxProgress() !== undefined) {
-        t++;
+        e++;
         if (r !== 0) {
-          e++;
+          t++;
         }
       }
     }
-    return Math.round(e * 100 / t) + "%";
+    return Math.round(t * 100 / e) + "%";
   }
-}
+};
+__decorate([(0, Descriptors_1.CSharpDataUid)()], AchievementGroupData.prototype, "Id", undefined);
+__decorate([(0, Descriptors_1.CSharpField)("HasGetRewardState")], AchievementGroupData.prototype, "HasGetRewardState", undefined);
+__decorate([(0, Descriptors_1.CSharpField)("FinishTime")], AchievementGroupData.prototype, "FinishTime", undefined);
+__decorate([(0, Descriptors_1.CSharpField)("IfUnLock")], AchievementGroupData.prototype, "IfUnLock", undefined);
+AchievementGroupData = __decorate([(0, Descriptors_1.CSharpDataProxy)("", "AchievementGroupData")], AchievementGroupData);
 exports.AchievementGroupData = AchievementGroupData;
 class AchievementSearchData {
   constructor() {

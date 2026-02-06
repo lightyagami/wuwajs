@@ -17,31 +17,31 @@ class RegionalTerminalGroupItem extends GridProxyAbstract_1.GridProxyAbstract {
     super(...arguments);
     this.SPe = undefined;
     this.Pe = undefined;
-    this.BXm = undefined;
+    this.rJm = undefined;
     this.vIl = false;
     this.OnClickToggleCallBack = undefined;
     this.IsToggleSelectOnCallBack = undefined;
     this.Wpu = (e, t) => {
       if (e === "Start" && t === "Start") {
-        this.BXm?.PlayGridAnim();
+        this.rJm?.PlayGridAnim();
       }
     };
-    this.HXm = () => {
+    this.uJm = () => {
       var e = new RegionalTerminalGameplayItem_1.RegionalTerminalGameplayItem();
       e.OnClickToggleCallBack = this.kqe;
-      e.IsToggleSelectOn = this.QXm;
+      e.IsToggleSelectOn = this.fJm;
       return e;
     };
     this.kqe = (e, t) => {
       this.OnClickToggleCallBack?.(e, t, this.Pe.GroupId);
     };
-    this.QXm = e => this.IsToggleSelectOnCallBack?.(e) ?? false;
+    this.fJm = e => this.IsToggleSelectOnCallBack?.(e) ?? false;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UITexture], [1, UE.UITexture], [2, UE.UIText], [3, UE.UISprite], [4, UE.UIGridLayout], [5, UE.UIItem], [6, UE.UIItem]];
   }
   OnStart() {
-    this.BXm = new GenericLayout_1.GenericLayout(this.GetGridLayout(4), this.HXm, undefined, true);
+    this.rJm = new GenericLayout_1.GenericLayout(this.GetGridLayout(4), this.uJm, undefined, true);
     this.GetGridLayout(4).GetOwner().OnSequencePlayEvent.Bind(this.Wpu);
     this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
     this.GetItem(6).SetUIActive(false);
@@ -52,10 +52,10 @@ class RegionalTerminalGroupItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.SetTextureShowUntilLoaded(e.Icon, this.GetTexture(0));
     this.SetTextureShowUntilLoaded(e.IconShadow, this.GetTexture(1));
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), e.Name);
-    await this.BXm.RefreshByDataAsync(this.Pe.GameplayDataList.filter(e => e.GetShowState()).sort(ModelManager_1.ModelManager.RegionalTerminalModel.SortGameplayData));
+    await this.rJm.RefreshByDataAsync(this.Pe.GameplayDataList.filter(e => e.GetShowState()).sort(ModelManager_1.ModelManager.RegionalTerminalModel.SortGameplayData));
   }
   RefreshFunctional() {
-    this.BXm.GetLayoutItemList().forEach(e => {
+    this.rJm.GetLayoutItemList().forEach(e => {
       e.RefreshFunctional();
     });
   }
@@ -65,7 +65,7 @@ class RegionalTerminalGroupItem extends GridProxyAbstract_1.GridProxyAbstract {
     }
   }
   GetGameplayItem(e) {
-    return this.BXm.GetLayoutItemByKey(e);
+    return this.rJm.GetLayoutItemByKey(e);
   }
   GetKey(e, t) {
     return e.GroupId;

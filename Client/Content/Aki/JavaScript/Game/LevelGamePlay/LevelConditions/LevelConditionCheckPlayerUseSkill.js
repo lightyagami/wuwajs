@@ -15,7 +15,7 @@ class LevelConditionCheckPlayerUseSkill extends LevelGeneralBase_1.LevelConditio
     if (!l) {
       return false;
     }
-    l = l.GetComponent(40);
+    l = l.GetComponent(42);
     if (!l || !l.CurrentSkill) {
       return false;
     }

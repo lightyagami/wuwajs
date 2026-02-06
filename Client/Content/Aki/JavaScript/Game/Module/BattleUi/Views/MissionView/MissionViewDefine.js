@@ -70,7 +70,7 @@ class LackResourceQuestTextInfo extends MissionViewStepTextInfoBase {
 }
 exports.LackResourceQuestTextInfo = LackResourceQuestTextInfo;
 class BehaviorTreeViewShowData {
-  constructor(t, s, e, i, h, r, o, a, n) {
+  constructor(t, s, e, i, h, r, o, a, n, u) {
     this.BtType = t;
     this.Id = s;
     this.TreeConfigId = e;
@@ -80,10 +80,11 @@ class BehaviorTreeViewShowData {
     this.TitleTextKey = o;
     this.MainStepInfo = a;
     this.SubStepInfos = n;
+    this.ParentId = u;
     this.DataSource = 0;
   }
-  static Create(t, s, e, i, h, r, o, a, n) {
-    return new BehaviorTreeViewShowData(t, s, e, i, h, r, o, a, n);
+  static Create(t, s, e, i, h, r, o, a, n, u) {
+    return new BehaviorTreeViewShowData(t, s, e, i, h, r, o, a, n, u);
   }
 }
 exports.BehaviorTreeViewShowData = BehaviorTreeViewShowData;
@@ -96,6 +97,7 @@ class FishingEntrustViewShowData {
     this.SubStepInfos = h;
     this.DataSource = 1;
     this.ShowPriority = 0;
+    this.ParentId = 0;
     this.ShowPriority = t;
   }
   static Create(t, s, e, i, h) {
@@ -112,6 +114,7 @@ class LackResourceQuestViewShowData {
     this.SubStepInfos = h;
     this.DataSource = 2;
     this.ShowPriority = 0;
+    this.ParentId = 0;
     this.ShowPriority = t;
   }
   static Create(t, s, e, i, h) {

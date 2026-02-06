@@ -18,8 +18,8 @@ const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const TimeUtil_1 = require("../../../Common/TimeUtil");
 const Global_1 = require("../../../Global");
 const ModelManager_1 = require("../../../Manager/ModelManager");
-const FollowFunctionLibrary_1 = require("../../../NewWorld/Character/Common/Component/Abilities/Follow/FollowFunctionLibrary");
 const FollowShooterDrone_1 = require("../../../NewWorld/Character/Common/Component/Abilities/Follow/FollowShooterDrone");
+const FollowUtils_1 = require("../../../NewWorld/Character/Common/Component/Abilities/Follow/FollowUtils");
 const IFollow_1 = require("../../../NewWorld/Character/Common/Component/Abilities/Follow/IFollow");
 const LockOnUtils_1 = require("../../../NewWorld/Character/Common/Component/LockOn/LockOnUtils");
 const FollowShootAutoAimUnit_1 = require("../HudUnit/FollowShootAutoAimUnit");
@@ -79,7 +79,7 @@ class FollowShootAutoAimHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
       if (t?.Valid) {
         this.sDe = t;
         this.n$t = this.sDe.Entity?.GetComponent(1);
-        this.BPl = this.sDe.Entity?.GetComponent(234);
+        this.BPl = this.sDe.Entity?.GetComponent(235);
         this.c$e();
         this.HGa();
       } else {
@@ -173,10 +173,11 @@ class FollowShootAutoAimHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
           }
         }
         if (!i) {
+          this.BPl.LockOnTarget = undefined;
           return;
         }
       }
-      var i = FollowFunctionLibrary_1.FollowFunctionLibrary.GetPlayerFollowHandler(this.BPl.PlayerId, IFollow_1.EPlayerFollowerHandlerType.FollowShooter)?.GetFollowShooterCustomEntityId(e.CustomEntityKey);
+      var i = FollowUtils_1.FollowUtils.GetPlayerFollowHandler(this.BPl.PlayerId, IFollow_1.EPlayerFollowerHandlerType.FollowShooter)?.GetFollowShooterCustomEntityId(e.CustomEntityKey);
       if (this.HFt === 0) {
         i = this.Yhc(e, this.n$t.Owner, e.Distance, e.WorldDistanceWeight, e.Radius, e.ScreenDistanceWeight, e.CharacterExtraWeight, e.SceneItemExtraWeight, e.LockOnGameplayTagContainer, e.IgnoreLockOnGameplayTagContainer, this.BPl.LockableCategories, [64, 256], i);
         this.BPl.LockOnTarget = i ? new WeakRef(i) : undefined;
@@ -205,25 +206,25 @@ class FollowShootAutoAimHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
     var t = t.deref();
     return !!t?.IsValid() && !!(t = LockOnUtils_1.LockOnUtils.GetLockOnTargetLocation(t)) && !!HudUnitUtils_1.HudUnitUtils.PositionUtil.ProjectWorldToScreen(t, this.jma) && !(this.noi?.SetTargetItemOffset(this.jma.X, this.jma.Y), 0);
   }
-  Yhc(i, e, o, r, s, n, l, h, t, a, _, u, m) {
+  Yhc(i, e, o, s, r, n, l, h, t, a, _, u, m) {
     let v = Number.MIN_VALUE;
     let d = undefined;
-    var c = e.D_K2_GetActorLocation();
+    var U = e.D_K2_GetActorLocation();
     if (m !== undefined) {
       m = ModelManager_1.ModelManager.BulletModel.GetBulletSetByAttacker(m);
       if (!m) {
         return;
       }
       let t = o;
-      for (const L of m) {
-        var U = L.GetBulletInfo().BulletRowName;
-        if (i.CustomBulletTargetRowNameSet.Contains(U)) {
-          U = L.CheckGetComponent(178);
-          if (U) {
-            const o = c.op_Subtraction(U.ActorLocation).Size();
+      for (const O of m) {
+        var c = O.GetBulletInfo().BulletRowName;
+        if (i.CustomBulletTargetRowNameSet.Contains(c)) {
+          c = O.CheckGetComponent(180);
+          if (c) {
+            const o = U.op_Subtraction(c.ActorLocation).Size();
             if (o < t) {
               t = o;
-              d = L.CheckGetComponent(178)?.Owner;
+              d = O.CheckGetComponent(180)?.Owner;
             }
           }
         }
@@ -234,24 +235,24 @@ class FollowShootAutoAimHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
     }
     m = [];
     ModelManager_1.ModelManager.CreatureModel.GetEntitiesInRange(o, 255, m);
-    for (const O of m) {
-      if (LockOnUtils_1.LockOnUtils.IsValidLockOnTarget(O, t, a)) {
+    for (const k of m) {
+      if (LockOnUtils_1.LockOnUtils.IsValidLockOnTarget(k, t, a)) {
         let t = 0;
-        var f = O.Entity.GetComponent(0);
-        var w = O.Entity.GetComponent(1).Owner;
+        var f = k.Entity.GetComponent(0);
+        var w = k.Entity.GetComponent(1).Owner;
         switch (f?.GetEntityType()) {
           case Protocol_1.Aki.Protocol.kks.Proto_Player:
           case Protocol_1.Aki.Protocol.kks.Proto_Npc:
             continue;
           case Protocol_1.Aki.Protocol.kks.Proto_SceneItem:
-            if (O.Entity.GetComponent(163) === undefined || f.GetBaseInfo().Camp !== 7) {
+            if (k.Entity.GetComponent(165) === undefined || f.GetBaseInfo().Camp !== 7) {
               continue;
             }
             t = h;
             break;
           case Protocol_1.Aki.Protocol.kks.Proto_Animal:
           case Protocol_1.Aki.Protocol.kks.Proto_Monster:
-            var A = O.Entity.GetComponent(2);
+            var A = k.Entity.GetComponent(2);
             if (A && LockOnUtils_1.LockOnUtils.CheckFriendCamp(A.Actor.Camp)) {
               continue;
             }
@@ -261,17 +262,17 @@ class FollowShootAutoAimHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
           var C = LockOnUtils_1.LockOnUtils.GetLockOnTargetLocation(w);
           if (C) {
             var E = HudUnitUtils_1.HudUnitUtils.PositionUtil.ProjectWorldToScreen(C, this.jma);
-            var F = this.jma.Size();
-            if (E && !(s < F)) {
-              E = this.Coi(e, c, C);
+            var S = this.jma.Size();
+            if (E && !(r < S)) {
+              E = this.Coi(e, U, C);
               if (E?.bBlockingHit) {
                 var E = E.Actors.Get(0);
-                var S = ModelManager_1.ModelManager.CreatureModel.GetEntityActorByChildActor(E);
-                if (w !== E && w !== S) {
+                var F = ModelManager_1.ModelManager.CreatureModel.GetEntityActorByChildActor(E);
+                if (w !== E && w !== F) {
                   continue;
                 }
               }
-              E = (1 - c.op_Subtraction(C).Size() / o) * r + (1 - F / s) * n + t;
+              E = (1 - U.op_Subtraction(C).Size() / o) * s + (1 - S / r) * n + t;
               if (!(E < v)) {
                 v = E;
                 d = w;
@@ -282,19 +283,19 @@ class FollowShootAutoAimHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
       }
     }
     if (u && u.length > 0) {
-      var y = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetSubsystem(Global_1.Global.BaseCharacter, UE.GamePartitionSubsystem.StaticClass())?.GetGamePartition(0);
-      if (y?.IsValid()) {
-        for (const k of u) {
-          var p = y.RangeQuery(c, o, k);
-          for (let t = 0, i = p.Num(); t < i; ++t) {
-            var M;
+      var p = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetSubsystem(Global_1.Global.BaseCharacter, UE.GamePartitionSubsystem.StaticClass())?.GetGamePartition(0);
+      if (p?.IsValid()) {
+        for (const L of u) {
+          var M = p.RangeQuery(U, o, L);
+          for (let t = 0, i = M.Num(); t < i; ++t) {
+            var y;
             var H;
             var g;
-            var q = p.Get(t).Actor;
-            if (q?.IsValid() && (g = LockOnUtils_1.LockOnUtils.GetLockOnTargetLocation(q))) {
+            var q = M.Get(t).Actor;
+            if (q?.IsValid() && !q.bHidden && (g = LockOnUtils_1.LockOnUtils.GetLockOnTargetLocation(q))) {
               H = HudUnitUtils_1.HudUnitUtils.PositionUtil.ProjectWorldToScreen(g, this.jma);
-              M = this.jma.Size();
-              if (!!H && !(s < M) && !(H = c.op_Subtraction(g).Size(), (g = MathUtils_1.MathUtils.Clamp((1 - H / o) * r, 0, 1) + MathUtils_1.MathUtils.Clamp((1 - M / s) * n, 0, 1)) < v)) {
+              y = this.jma.Size();
+              if (!!H && !(r < y) && !(H = U.op_Subtraction(g).Size(), (g = MathUtils_1.MathUtils.Clamp((1 - H / o) * s, 0, 1) + MathUtils_1.MathUtils.Clamp((1 - y / r) * n, 0, 1)) < v)) {
                 v = g;
                 d = q;
               }

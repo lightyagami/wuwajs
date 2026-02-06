@@ -4,7 +4,7 @@ var ELayerType;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.MOBILE_SWITCH_ALLOW_VIEW_TYPE = exports.MULTIPLE_VIEW_TYPE = exports.BLOCKCLICK_TYPE = exports.UIBLUR_TYPE = exports.IGNORE_MASK_TYPE = exports.NORMAL_PLOT_CONTAINER_TYPE = exports.PLOT_CONTAINER_TYPE = exports.NORMAL_CONTAINER_TYPE = exports.BATTLE_VIEW_UNIT_COUNT = exports.TIP_LAYER_UNIT_COUNT = exports.LayerTypeEnumValues = exports.ELayerType = undefined;
+exports.SE_COVER_LOADING_VIEW_NODE_TYPE = exports.LOADING_VIEW_NODE_TYPE = exports.MOBILE_SWITCH_ALLOW_VIEW_TYPE = exports.MULTIPLE_VIEW_TYPE = exports.BLOCKCLICK_TYPE = exports.UIBLUR_TYPE = exports.IGNORE_MASK_TYPE = exports.NORMAL_PLOT_CONTAINER_TYPE = exports.PLOT_CONTAINER_TYPE = exports.NORMAL_CONTAINER_TYPE = exports.BATTLE_VIEW_UNIT_COUNT = exports.LOADING_LAYER_UNIT_COUNT = exports.TIP_LAYER_UNIT_COUNT = exports.LayerTypeEnumValues = exports.ELayerType = undefined;
 (function (e) {
   e[e.HUD = 1] = "HUD";
   e[e.Normal = 2] = "Normal";
@@ -25,6 +25,7 @@ exports.MOBILE_SWITCH_ALLOW_VIEW_TYPE = exports.MULTIPLE_VIEW_TYPE = exports.BLO
 })(ELayerType = exports.ELayerType ||= {});
 exports.LayerTypeEnumValues = Object.values(ELayerType).filter(e => typeof e == "number");
 exports.TIP_LAYER_UNIT_COUNT = 3;
+exports.LOADING_LAYER_UNIT_COUNT = 2;
 exports.BATTLE_VIEW_UNIT_COUNT = 3;
 exports.NORMAL_CONTAINER_TYPE = ELayerType.Normal | ELayerType.CG;
 exports.PLOT_CONTAINER_TYPE = ELayerType.Plot;
@@ -33,4 +34,6 @@ exports.IGNORE_MASK_TYPE = ELayerType.Float | ELayerType.Guide;
 exports.UIBLUR_TYPE = ELayerType.Normal | ELayerType.Plot | ELayerType.Pop;
 exports.BLOCKCLICK_TYPE = ELayerType.Normal | ELayerType.Plot | ELayerType.Pop;
 exports.MULTIPLE_VIEW_TYPE = ELayerType.Float;
-exports.MOBILE_SWITCH_ALLOW_VIEW_TYPE = ELayerType.NetWork | ELayerType.CG; //# sourceMappingURL=UiLayerType.js.map
+exports.MOBILE_SWITCH_ALLOW_VIEW_TYPE = ELayerType.NetWork | ELayerType.CG;
+exports.LOADING_VIEW_NODE_TYPE = 0;
+exports.SE_COVER_LOADING_VIEW_NODE_TYPE = 1; //# sourceMappingURL=UiLayerType.js.map

@@ -11,15 +11,15 @@ const StringUtils_1 = require("../../../../Core/Utils/StringUtils");
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
 class BattleSkillItemDynamicEffect {
   constructor(t) {
-    this.gWm = undefined;
+    this._Km = undefined;
     this.Ktt = 0;
     this.jtt = undefined;
     this.vit = 0;
     this.zQ_ = undefined;
     this.Wtt = undefined;
     this.trm = 1;
-    this.CWm = undefined;
-    this.gWm = t;
+    this.uKm = undefined;
+    this._Km = t;
   }
   CancelLoadDynamicEffectNiagara() {
     if (this.Ktt) {
@@ -30,7 +30,7 @@ class BattleSkillItemDynamicEffect {
   }
   RefreshDynamicEffect(t) {
     let i = undefined;
-    if (this.CWm = t) {
+    if (this.uKm = t) {
       i = this.GetDynamicEffectPath(t);
     }
     this.RefreshDynamicEffectScale(t);
@@ -46,9 +46,9 @@ class BattleSkillItemDynamicEffect {
         this.Ktt = ResourceSystem_1.ResourceSystem.LoadAsync(this.Wtt, UE.NiagaraSystem, t => {
           var i;
           this.Wtt = undefined;
-          if (t?.IsValid() && (i = this.gWm)) {
+          if (t?.IsValid() && (i = this._Km)) {
             i.SetNiagaraSystem(t);
-            this.JQ_(this.CWm);
+            this.JQ_(this.uKm);
             this.SetDynamicEffectVisible(true);
           }
         });
@@ -71,7 +71,7 @@ class BattleSkillItemDynamicEffect {
         this.vit = 0;
         t = new UE.LinearColor(UE.Color.FromHex(this.zQ_));
       }
-      i = this.gWm;
+      i = this._Km;
       if (t) {
         i.SetNiagaraVarLinearColor("Color", t);
       } else {
@@ -86,11 +86,11 @@ class BattleSkillItemDynamicEffect {
     t = t?.Scale ?? 1;
     if (this.trm !== t) {
       this.trm = t;
-      this.gWm?.SetUIItemScale(t === 1 ? Vector_1.Vector.OneVector : new UE.Vector(t, t, t));
+      this._Km?.SetUIItemScale(t === 1 ? Vector_1.Vector.OneVector : new UE.Vector(t, t, t));
     }
   }
   SetDynamicEffectVisible(t) {
-    var i = this.gWm;
+    var i = this._Km;
     if (i) {
       if (t) {
         if (!i.bIsUIActive) {
@@ -111,7 +111,7 @@ class BattleSkillItemDynamicEffect {
   Reset() {
     this.CancelLoadDynamicEffectNiagara();
     if (this.vit !== 0 || this.zQ_ !== undefined) {
-      this.gWm?.ResetOverrideParameters();
+      this._Km?.ResetOverrideParameters();
       this.vit = 0;
       this.zQ_ = undefined;
     }

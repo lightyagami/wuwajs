@@ -32,6 +32,8 @@ const PhantomSkillById_1 = require("../../../../Core/Define/ConfigQuery/PhantomS
 const PhantomSkillByPhantomSkillId_1 = require("../../../../Core/Define/ConfigQuery/PhantomSkillByPhantomSkillId");
 const PhantomSubPropertyById_1 = require("../../../../Core/Define/ConfigQuery/PhantomSubPropertyById");
 const PhantomSubPropertyByPropId_1 = require("../../../../Core/Define/ConfigQuery/PhantomSubPropertyByPropId");
+const PhantomVicePolishConfigAll_1 = require("../../../../Core/Define/ConfigQuery/PhantomVicePolishConfigAll");
+const PhantomVicePolishConfigByPropCount_1 = require("../../../../Core/Define/ConfigQuery/PhantomVicePolishConfigByPropCount");
 const PhantomWildItemAll_1 = require("../../../../Core/Define/ConfigQuery/PhantomWildItemAll");
 const TrailPhantomPropById_1 = require("../../../../Core/Define/ConfigQuery/TrailPhantomPropById");
 const TrialPhantomPropItemById_1 = require("../../../../Core/Define/ConfigQuery/TrialPhantomPropItemById");
@@ -110,6 +112,13 @@ class PhantomBattleConfig extends ConfigBase_1.ConfigBase {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Phantom", 75, "获取幻象洗炼材料配置失败, 请检查配置表");
       }
+    }
+    return e;
+  }
+  GetPhantomVicePolishConfigAll() {
+    var e = PhantomVicePolishConfigAll_1.configPhantomVicePolishConfigAll.GetConfigList();
+    if (e === undefined && Log_1.Log.CheckError()) {
+      Log_1.Log.Error("Phantom", 75, "获取幻象辅音洗炼材料配置失败, 请检查配置表");
     }
     return e;
   }
@@ -486,6 +495,9 @@ class PhantomBattleConfig extends ConfigBase_1.ConfigBase {
   }
   GetVisionAttrSortArray() {
     return CommonParamById_1.configCommonParamById.GetIntArrayConfig("VisionMainViewExtraAttributeForPreset");
+  }
+  GetPhantomVicePolishCostByLockCount(e) {
+    return PhantomVicePolishConfigByPropCount_1.configPhantomVicePolishConfigByPropCount.GetConfig(e);
   }
   OnClear() {
     this.jVi.clear();

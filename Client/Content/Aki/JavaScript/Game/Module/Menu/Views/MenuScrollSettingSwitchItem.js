@@ -26,7 +26,7 @@ class MenuScrollSettingSwitchItem extends MenuScrollSettingBaseItem_1.MenuScroll
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIText], [2, UE.UIButtonComponent], [3, UE.UIButtonComponent], [4, UE.UIItem], [5, UE.UIText], [6, UE.UISprite], [7, UE.UISprite]];
+    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIText], [2, UE.UIButtonComponent], [3, UE.UIButtonComponent], [4, UE.UIItem], [5, UE.UIText], [7, UE.UISprite], [6, UE.UISprite], [8, UE.UIExtendToggleSpriteTransition]];
   }
   OnStart() {
     this.GetButton(3).SetCanClickWhenDisable(true);
@@ -44,6 +44,7 @@ class MenuScrollSettingSwitchItem extends MenuScrollSettingBaseItem_1.MenuScroll
     this.Ibi();
     this.sxi();
     this.cHa();
+    this.RefreshDetailSprite();
   }
   mGe() {
     this.GetText(0).ShowTextNew(this.Data.FunctionName ?? "");
@@ -59,19 +60,19 @@ class MenuScrollSettingSwitchItem extends MenuScrollSettingBaseItem_1.MenuScroll
     this.GetButton(3).OnClickCallBack.Bind(this.Mbi);
   }
   SetInteractionActive(t) {
-    var e = this.GetIndex();
-    this.RefreshInteractionGroup(e, t);
+    var i = this.GetIndex();
+    this.RefreshInteractionGroup(i, t);
   }
   Sbi(t) {
-    let e = this.Data.OptionsNameList[t];
+    let i = this.Data.OptionsNameList[t];
     if (this.Sac()) {
-      e = MenuDefine_1.CUSTOM_TEXT_ID;
+      i = MenuDefine_1.CUSTOM_TEXT_ID;
     }
-    this.GetText(1).ShowTextNew(e);
+    this.GetText(1).ShowTextNew(i);
     this.GetSprite(7).SetUIActive(this.Data.IsRecommendIndex(t));
   }
-  RefreshInteractionGroup(t, e = true) {
-    if (e) {
+  RefreshInteractionGroup(t, i = true) {
+    if (i) {
       this.GetButton(3).SetSelfInteractive(this.Sac() || t !== this.Data.OptionsNameList.length - 1);
       this.GetButton(2).SetSelfInteractive(this.Sac() || t !== 0);
     } else {
@@ -80,44 +81,58 @@ class MenuScrollSettingSwitchItem extends MenuScrollSettingBaseItem_1.MenuScroll
     }
   }
   vbi(t) {
-    var e = this.GetIndex();
-    let i = Math.floor(e + t);
+    var i = this.GetIndex();
+    let e = Math.floor(i + t);
     if (this.Sac()) {
-      i = t > 0 ? 0 : this.Data.OptionsNameList.length - 1;
+      e = t > 0 ? 0 : this.Data.OptionsNameList.length - 1;
     }
-    this.FireSaveMenuChange(this.Data.OptionsValueList[i]);
+    this.FireSaveMenuChange(this.Data.OptionsValueList[e]);
   }
   Sac() {
     return this.Data.FunctionId === GameSettingsDefine_1.EFunction.IMAGEQUALITY && ModelManager_1.ModelManager.MenuModel.IsImageQualityCustom;
   }
   GetIndex() {
     var t = ModelManager_1.ModelManager.MenuModel?.GetDataCacheOrCurValue(this.Data.FunctionId);
-    var e = this.Data.OptionsValueList;
-    let i = e.indexOf(t);
-    if (i < 0) {
+    var i = this.Data.OptionsValueList;
+    let e = i.indexOf(t);
+    if (e < 0) {
       t = this.Data.OptionsDefault;
-      if ((e = e.indexOf(t)) < 0 && Log_1.Log.CheckError()) {
+      if ((i = i.indexOf(t)) < 0 && Log_1.Log.CheckError()) {
         Log_1.Log.Error("Menu", 64, "默认值不存在于可选值列表中，请策划策划策划检查配置", ["functionId", this.Data.FunctionId], ["Default Value", t]);
       }
-      i = e;
+      e = i;
     }
-    return i;
+    return e;
   }
   OnSetDetailVisible(t) {
     this.GetItem(4)?.SetUIActive(t);
+    if (this.Data && this.Data.CanClickWhenDisable && !this.Data.GetEnable()) {
+      t = t ? UE.Color.FromHex(MenuDefine_1.DETAIL_SPRITE_VISIBLE_COLOR_SRGB) : UE.Color.FromHex("FFFFFFFF");
+      this.GetSprite(6).SetColor(t);
+      this.GetUiExtendToggleSpriteTransition(8).TransitionState.UnDetermineUnHoverState.Color = t;
+      this.GetUiExtendToggleSpriteTransition(8).TransitionState.UnDetermineHoverState.Color = t;
+      this.GetUiExtendToggleSpriteTransition(8).TransitionState.UnDeterminePressedState.Color = t;
+    }
   }
   sxi() {
     var t;
-    var e;
+    var i;
     if (this.Data && this.Data.HasDetailText()) {
       t = this.GetText(5);
-      e = this.Data.GetDetailTextId();
-      LguiUtil_1.LguiUtil.SetLocalTextNew(t, e);
+      i = this.Data.GetDetailTextId();
+      LguiUtil_1.LguiUtil.SetLocalTextNew(t, i);
     }
   }
   cHa() {
     if (this.Data) {
       this.GetSprite(6)?.SetUIActive(this.Data.HasDetailText());
+    }
+  }
+  async RefreshDetailSprite() {
+    var t;
+    if (this.Data) {
+      t = this.Data.CanClickWhenDisable ? MenuDefine_1.DETAIL_SPRITE_PATH : MenuDefine_1.LOCK_SPRITE_PATH;
+      await Promise.all([this.SetExtendToggleSpriteTransitionByPath(t, this.GetUiExtendToggleSpriteTransition(8), 6), this.SetExtendToggleSpriteTransitionByPath(t, this.GetUiExtendToggleSpriteTransition(8), 7), this.SetExtendToggleSpriteTransitionByPath(t, this.GetUiExtendToggleSpriteTransition(8), 8)]);
     }
   }
 }

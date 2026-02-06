@@ -35,11 +35,17 @@ class PhantomFetterGroup {
   get FetterGroupDesc() {
     return this.fettergroupdesc();
   }
+  get SortId() {
+    return this.sortid();
+  }
   get FetterElementColor() {
     return this.fetterelementcolor();
   }
   get FetterElementPath() {
     return this.fetterelementpath();
+  }
+  get AimModelElementPath() {
+    return this.aimmodelelementpath();
   }
   __init(t, e) {
     this.z7 = t;
@@ -108,8 +114,16 @@ class PhantomFetterGroup {
     }
     return e;
   }
+  sortid() {
+    var t = this.J7.__offset(this.z7, 16);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
   fetterelementcolor(t) {
-    var e = this.J7.__offset(this.z7, 16);
+    var e = this.J7.__offset(this.z7, 18);
     var e = e ? this.J7.__string(this.z7 + e, t) : null;
     if (typeof e == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(e);
@@ -117,7 +131,15 @@ class PhantomFetterGroup {
     return e;
   }
   fetterelementpath(t) {
-    var e = this.J7.__offset(this.z7, 18);
+    var e = this.J7.__offset(this.z7, 20);
+    var e = e ? this.J7.__string(this.z7 + e, t) : null;
+    if (typeof e == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(e);
+    }
+    return e;
+  }
+  aimmodelelementpath(t) {
+    var e = this.J7.__offset(this.z7, 22);
     var e = e ? this.J7.__string(this.z7 + e, t) : null;
     if (typeof e == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(e);

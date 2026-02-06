@@ -12,84 +12,69 @@ const ConfigManager_1 = require("../../../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../../Manager/ModelManager");
 const UiTabViewBase_1 = require("../../../../../Ui/Base/UiTabViewBase");
+const UiManager_1 = require("../../../../../Ui/UiManager");
 const TabComponent_1 = require("../../../../Common/TabComponent/TabComponent");
 const SkipTaskManager_1 = require("../../../../SkipInterface/SkipTaskManager");
 const LguiUtil_1 = require("../../../../Util/LguiUtil");
 const LoopScrollView_1 = require("../../../../Util/ScrollView/LoopScrollView");
-const MotorcycleDiyStickerItem_1 = require("../../Item/MotorcycleDiyStickerItem");
-const MotorcycleDiyDefine_1 = require("../../MotorcycleDiyDefine");
-const MotorcycleDiyStickerTabItem_1 = require("../../TabItem/MotorcycleDiyStickerTabItem");
 const MotorcycleUiModelUtil_1 = require("../../../Model/MotorcycleUiModelUtil");
-const StringBuilder_1 = require("../../../../../../Core/Utils/StringBuilder");
-const MultiTextLang_1 = require("../../../../../../Core/Define/ConfigQuery/MultiTextLang");
+const MotorcycleDiyStickerDecoItem_1 = require("../../Item/MotorcycleDiyStickerDecoItem");
+const MotorcycleDiyDefine_1 = require("../../MotorcycleDiyDefine");
+const MotorcycleDiyPartTabItem_1 = require("../../TabItem/MotorcycleDiyPartTabItem");
 class MotorcycleDiyStickerTabView extends UiTabViewBase_1.UiTabViewBase {
   constructor() {
     super(...arguments);
-    this.FCf = undefined;
-    this.NCf = undefined;
-    this.VCf = [];
-    this.tOf = [];
+    this.OnTabCameraClick = undefined;
+    this.Eyf = undefined;
+    this.Iyf = undefined;
+    this.Tyf = [];
+    this._8f = [];
     this.ebl = undefined;
-    this.HCf = 0;
+    this.byf = 0;
     this.Uou = 0;
-    this.$Cf = (e, i) => {
-      return new MotorcycleDiyStickerTabItem_1.MotorcycleDiyStickerTabItem();
+    this.Ryf = (e, i) => {
+      return new MotorcycleDiyPartTabItem_1.MotorcycleDiyPartTabItem();
     };
     this.pqe = e => {
-      e = this.VCf[e];
-      this.HCf = e.StickerPart;
-      this.kfo(e.StickerPart, true);
+      e = this.Tyf[e];
+      this.byf = e.PartId;
+      this.kfo(e.PartId, true);
+      this.OnTabCameraClick?.(this.byf);
     };
-    this.WCf = () => {
-      var e = new MotorcycleDiyStickerItem_1.MotorcycleDiyStickerItem();
-      e.OnClickToggleBack = this.QCf;
+    this.Lyf = () => {
+      var e = new MotorcycleDiyStickerDecoItem_1.MotorcycleDiyStickerDecoItem();
+      e.OnClickToggleBack = this.Pyf;
       return e;
     };
-    this.KCf = (e, i) => {
-      var t = ModelManager_1.ModelManager.MotorcycleDiyModel.GetStickerState(e.StickerId);
-      var r = ModelManager_1.ModelManager.MotorcycleDiyModel.GetStickerState(i.StickerId);
+    this.Ayf = (e, i) => {
+      var t = ModelManager_1.ModelManager.MotorcycleDiyModel.GetStickerState(e.ItemId);
+      var r = ModelManager_1.ModelManager.MotorcycleDiyModel.GetStickerState(i.ItemId);
       if (t !== r) {
         return t - r;
+      } else if ((t = e.QualityId) !== (r = i.QualityId)) {
+        return r - t;
       } else {
-        t = ConfigManager_1.ConfigManager.MotorDiyConfig.GetMotorStickerConfig(e.StickerId);
-        r = ConfigManager_1.ConfigManager.MotorDiyConfig.GetMotorStickerConfig(i.StickerId);
-        if ((e = t ? t.QualityId : 0) !== (i = r ? r.QualityId : 0)) {
-          return i - e;
-        } else {
-          i = t ? t.SortIndex : 0;
-          return (r ? r.SortIndex : 0) - i;
-        }
+        r = e.SortIndex;
+        return i.SortIndex - r;
       }
     };
-    this.XCf = () => {
-      this.kfo(this.HCf, false);
+    this.Dyf = () => {
+      this.kfo(this.byf, false);
     };
-    this.QCf = (e, i, t) => {
-      var r = ModelManager_1.ModelManager.MotorcycleDiyModel.GetStickerState(e);
-      if (r === 4) {
+    this.Pyf = (e, i, t) => {
+      var r;
+      var o;
+      var a;
+      var s;
+      var n;
+      var h;
+      var l;
+      var c = ModelManager_1.ModelManager.MotorcycleDiyModel.GetStickerState(e);
+      if (c === 4) {
         i.SetToggleState(0);
-        var o;
-        var n;
-        var a = new StringBuilder_1.StringBuilder();
-        var s = new StringBuilder_1.StringBuilder();
-        var l = [1, 2, 3];
-        var _ = [];
-        var h = ConfigManager_1.ConfigManager.MotorDiyConfig.GetMotorStickerConfig(e);
-        var M = ConfigManager_1.ConfigManager.MotorDiyConfig.GetMotorComponentGroupConfig(h.GroupId);
-        var h = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(h.Title);
-        a.Append("\"");
-        a.Append(h ?? "");
-        a.Append("\"");
-        _.push(M.Id);
-        for (const u of l) {
-          if (u !== this.HCf && (n = ModelManager_1.ModelManager.MotorcycleDiyModel.GetSelectedStickerId(u) ?? 0) !== 0 && (o = ConfigManager_1.ConfigManager.MotorDiyConfig.GetMotorStickerConfig(n), n = ConfigManager_1.ConfigManager.MotorDiyConfig.GetMotorComponentGroupConfig(o.GroupId)) && !_.includes(n.Id)) {
-            n = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(o.Title);
-            s.Append("\"");
-            s.Append(n ?? "");
-            s.Append("\"");
-          }
+        if (r = ModelManager_1.ModelManager.MotorcycleDiyModel.GetBanTips(2, e)) {
+          ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("MotorDIYWarning01", r[0], r[1]);
         }
-        ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("MotorDIYWarning01", a.ToString(), s.ToString());
       } else {
         if (this.ebl) {
           this.ebl.SetToggleState(0);
@@ -99,142 +84,170 @@ class MotorcycleDiyStickerTabView extends UiTabViewBase_1.UiTabViewBase {
         this.UiViewSequence.StopSequenceByKey("Switch");
         this.UiViewSequence.PlaySequencePurely("Switch");
         if (e === 0) {
-          MotorcycleUiModelUtil_1.MotorcycleUiModelUtil.SetEmptySticker(this.HCf);
+          MotorcycleUiModelUtil_1.MotorcycleUiModelUtil.SetEmptySticker(this.byf);
         } else {
-          MotorcycleUiModelUtil_1.MotorcycleUiModelUtil.ChangeMaterialByStickerId(e);
+          MotorcycleUiModelUtil_1.MotorcycleUiModelUtil.AddMaterialByStickerId(e);
         }
-        var c;
-        var h = ModelManager_1.ModelManager.MotorcycleDiyModel.IsEquipDefaultSticker(this.HCf);
-        var M = e === 0 && !h;
-        ModelManager_1.ModelManager.MotorcycleDiyModel.SetSelectStickerInfo(this.HCf, e);
-        if (r === 2 || !!M) {
-          l = ModelManager_1.ModelManager.MotorcycleDiyModel.GetSelectedStickerIdList(true);
-          ControllerHolder_1.ControllerHolder.MotorcycleDiyController.EquipMotorStickerRequest(l);
+        r = ModelManager_1.ModelManager.MotorcycleDiyModel.IsEquipDefaultSticker(this.byf);
+        i = e === 0 && !r;
+        ModelManager_1.ModelManager.MotorcycleDiyModel.SetSelectStickerInfo(this.byf, e);
+        if (c === 2 || !!i) {
+          r = ModelManager_1.ModelManager.MotorcycleDiyModel.GetSelectedStickerIdList(true);
+          ControllerHolder_1.ControllerHolder.MotorcycleDiyController.EquipMotorStickerRequest(r);
         }
-        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.MotorDiyOnSelectToggleClick, this.HCf, e);
-        var a = ModelManager_1.ModelManager.MotorcycleDiyModel.RedDotHasNewItem(e);
-        if (a) {
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.MotorDiyOnSelectToggleClick, 2, this.byf, e);
+        if (ModelManager_1.ModelManager.MotorcycleDiyModel.RedDotHasNewItem(e)) {
           ModelManager_1.ModelManager.MotorcycleDiyModel.UpdateItemNewUnlocked(e, false);
           t.SetUIActive(false);
-          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.MotorDiyInfoRedDotUpdate);
         }
-        var i = this.GetItem(7);
-        var h = this.GetItem(10);
-        var M = this.GetItem(12);
-        var l = this.GetText(11);
-        var a = this.GetButton(9);
-        var t = this.GetText(13);
-        var g = this.GetText(6);
-        var y = this.GetText(8);
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.MotorDiyInfoRedDotUpdate);
+        i = this.GetItem(7);
+        r = this.GetItem(10);
+        t = this.GetItem(12);
+        o = this.GetText(11);
+        a = this.GetButton(9);
+        s = this.GetText(13);
+        n = this.GetText(6);
+        l = this.GetText(8);
         i.SetUIActive(false);
-        h.SetUIActive(false);
-        M.SetUIActive(false);
+        r.SetUIActive(false);
+        t.SetUIActive(false);
         a.RootUIComp.SetUIActive(false);
         if (e <= 0) {
           i = CommonParamById_1.configCommonParamById.GetStringConfig("MotorEmptyStickerName");
-          c = CommonParamById_1.configCommonParamById.GetStringConfig("MotorEmptyStickerType");
-          y.SetUIActive(true);
-          LguiUtil_1.LguiUtil.SetLocalTextNew(y, c);
-          LguiUtil_1.LguiUtil.SetLocalTextNew(g, i);
+          h = CommonParamById_1.configCommonParamById.GetStringConfig("MotorEmptyStickerType");
+          l.SetUIActive(true);
+          LguiUtil_1.LguiUtil.SetLocalTextNew(l, h);
+          LguiUtil_1.LguiUtil.SetLocalTextNew(n, i);
         } else {
-          c = ConfigManager_1.ConfigManager.MotorDiyConfig.GetMotorStickerConfig(e);
-          LguiUtil_1.LguiUtil.SetLocalTextNew(y, c.SubTitle);
-          LguiUtil_1.LguiUtil.SetLocalTextNew(g, c.Title);
-          this.GetItem(7).SetUIActive(r === 3);
-          if (i = c.ItemAccess[0]) {
+          h = ConfigManager_1.ConfigManager.MotorDiyConfig.GetMotorStickerConfig(e);
+          LguiUtil_1.LguiUtil.SetLocalTextNew(l, h.SubTitle);
+          LguiUtil_1.LguiUtil.SetLocalTextNew(n, h.Title);
+          this.GetItem(7).SetUIActive(c === 3);
+          if (i = h.ItemAccess[0]) {
             e = ConfigManager_1.ConfigManager.SkipInterfaceConfig.GetAccessPathConfig(i);
             this.Uou = i;
-            y = e.SkipName;
-            a.RootUIComp.SetUIActive(y !== -1 && r === 3);
-            M.SetUIActive(r === 3);
-            h.SetUIActive(y === -1 && r === 3);
-            LguiUtil_1.LguiUtil.SetLocalTextNew(l, e.Description);
-            LguiUtil_1.LguiUtil.SetLocalTextNew(t, e.Description);
+            l = e.SkipName;
+            a.RootUIComp.SetUIActive(l !== -1 && c === 3);
+            t.SetUIActive(c === 3);
+            r.SetUIActive(l === -1 && c === 3);
+            LguiUtil_1.LguiUtil.SetLocalTextNew(o, e.Description);
+            LguiUtil_1.LguiUtil.SetLocalTextNew(s, e.Description);
           }
         }
       }
     };
-    this.scf = () => {
+    this.rmf = () => {
       if (!(this.Uou <= 0)) {
         SkipTaskManager_1.SkipTaskManager.RunByConfigId(this.Uou);
       }
     };
+    this.WEg = () => {
+      var e = [];
+      e.push(2);
+      e.push(this.byf);
+      UiManager_1.UiManager.OpenView("MotorcycleDiyOverviewView", e);
+    };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIHorizontalLayout], [1, UE.UIItem], [2, UE.UILoopScrollViewComponent], [3, UE.UIItem], [4, UE.UIItem], [6, UE.UIText], [7, UE.UIItem], [8, UE.UIText], [9, UE.UIButtonComponent], [10, UE.UIItem], [11, UE.UIText], [12, UE.UIItem], [13, UE.UIText]];
-    this.BtnBindInfo = [[9, this.scf]];
+    this.ComponentRegisterInfos = [[0, UE.UIHorizontalLayout], [1, UE.UIItem], [2, UE.UILoopScrollViewComponent], [3, UE.UIItem], [4, UE.UIItem], [6, UE.UIText], [7, UE.UIItem], [8, UE.UIText], [9, UE.UIButtonComponent], [10, UE.UIItem], [11, UE.UIText], [12, UE.UIItem], [13, UE.UIText], [14, UE.UIButtonComponent]];
+    this.BtnBindInfo = [[9, this.rmf], [14, this.WEg]];
   }
   async OnBeforeStartAsync() {
-    this.FCf = new TabComponent_1.TabComponent(this.GetHorizontalLayout(0).RootUIComp, this.$Cf, this.pqe, undefined);
-    this.NCf = new LoopScrollView_1.LoopScrollView(this.GetLoopScrollViewComponent(2), this.GetItem(4).GetOwner(), this.WCf, true);
-    [1, 2, 3].forEach((e, i) => {
-      var t = new MotorcycleDiyStickerTabItem_1.MotorcycleDiyStickerTabItemData();
-      t.StickerPart = e;
-      this.VCf.push(t);
-    });
-    await this.FCf.RefreshTabItemAsync(this.VCf);
     var e;
     var i;
-    var t = this.FCf.GetTabItemMap();
-    for ([e, i] of t) {
-      i.BindRedDot("MotorcycleDiyStickerPartTab", this.VCf[e].StickerPart);
+    this.byf = this.ExtraParams ?? 0;
+    this.Eyf = new TabComponent_1.TabComponent(this.GetHorizontalLayout(0).RootUIComp, this.Ryf, this.pqe, undefined);
+    this.Iyf = new LoopScrollView_1.LoopScrollView(this.GetLoopScrollViewComponent(2), this.GetItem(4).GetOwner(), this.Lyf, true);
+    MotorcycleDiyDefine_1.MOTORCYCLE_DIY_STICKER_PART.forEach((e, i) => {
+      var t = new MotorcycleDiyPartTabItem_1.MotorcycleDiyPartTabItemData();
+      t.OutlookType = 2;
+      t.PartId = e;
+      t.IsShowLine = i !== MotorcycleDiyDefine_1.MOTORCYCLE_DIY_STICKER_PART.length - 1;
+      this.Tyf.push(t);
+    });
+    await this.Eyf.RefreshTabItemAsync(this.Tyf);
+    for ([e, i] of this.Eyf.GetTabItemMap()) {
+      i.BindRedDot("MotorcycleDiyStickerPartTab", this.Tyf[e].PartId);
+      i.BindPreviewRedDot("MotorcycleDiyStickerPrePartTab", this.Tyf[e].PartId);
     }
+    this.GetButton(14).RootUIComp.SetUIActive(true);
   }
   OnBeforeShow() {
-    var e = ModelManager_1.ModelManager.MotorcycleDiyModel.GetJumpStickerIndex();
-    this.FCf.SelectToggleByIndex(e, true);
+    var e = this.byf > 0 ? this.byf - 1 : 0;
+    this.Eyf.SelectToggleByIndex(e, true);
   }
   AddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.MotorDiyInfoUpdate, this.XCf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.MotorDiyInfoUpdate, this.Dyf);
   }
   RemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.MotorDiyInfoUpdate, this.XCf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.MotorDiyInfoUpdate, this.Dyf);
   }
-  RefreshPartScrollView() {
-    this.kfo(this.HCf, true);
-  }
-  YCf(e) {
-    var i = ModelManager_1.ModelManager.MotorcycleDiyModel;
-    var t = [];
-    t.push(new MotorcycleDiyDefine_1.MotorcycleDiyStickerItemData(e, 0));
-    var r = i.GetEquippedStickerId(e);
-    if (r) {
-      t.push(new MotorcycleDiyDefine_1.MotorcycleDiyStickerItemData(e, r));
+  RefreshItemScrollView() {
+    if (this.Iyf !== undefined) {
+      this.kfo(this.byf, true);
     }
-    for (const n of i.CurCanUseStickerIds) {
-      var o = ConfigManager_1.ConfigManager.MotorDiyConfig.GetMotorStickerConfig(n);
-      if (o && o.PartId === e && (o = i.GetStickerState(n)) !== 0 && o !== 1) {
-        t.push(new MotorcycleDiyDefine_1.MotorcycleDiyStickerItemData(e, n));
+  }
+  Uyf(e) {
+    var i;
+    var t;
+    var r = [];
+    var o = new MotorcycleDiyDefine_1.MotorcycleDiyStickerDecoItemData();
+    o.Part = e;
+    o.ItemId = 0;
+    o.IsSticker = true;
+    r.push(o);
+    var o = ModelManager_1.ModelManager.MotorcycleDiyModel.GetEquippedStickerId(e);
+    if (o) {
+      i = ConfigManager_1.ConfigManager.MotorDiyConfig.GetMotorStickerConfig(o);
+      (t = new MotorcycleDiyDefine_1.MotorcycleDiyStickerDecoItemData()).Part = e;
+      t.ItemId = o;
+      t.QualityId = i ? i.QualityId : 0;
+      t.SortIndex = i ? i.SortIndex : 0;
+      t.IsSticker = true;
+      r.push(t);
+    }
+    var o = ModelManager_1.ModelManager.MotorcycleDiyModel.GetCanUseStickerIdsInRegion();
+    for (const n of o) {
+      var a;
+      var s = ConfigManager_1.ConfigManager.MotorDiyConfig.GetMotorStickerConfig(n);
+      if (s && s.PartId === e && (a = ModelManager_1.ModelManager.MotorcycleDiyModel.GetStickerState(n)) !== 0 && a !== 1) {
+        (a = new MotorcycleDiyDefine_1.MotorcycleDiyStickerDecoItemData()).Part = e;
+        a.ItemId = n;
+        a.QualityId = s ? s.QualityId : 0;
+        a.SortIndex = s ? s.SortIndex : 0;
+        a.IsSticker = true;
+        r.push(a);
       }
     }
-    return t;
+    return r;
   }
   kfo(e, i) {
     if (i) {
-      const t = this.YCf(e);
-      t.sort(this.KCf);
-      this.NCf.RefreshByData(t, true, () => {
-        this.zCf(e, t);
+      const t = this.Uyf(e);
+      t.sort(this.Ayf);
+      this.Iyf.RefreshByData(t, true, () => {
+        this.xyf(e, t);
       });
-      this.tOf = t;
+      this._8f = t;
     } else {
-      this.NCf.RefreshByData(this.tOf, true);
+      this.Iyf.RefreshByData(this._8f, true);
     }
   }
-  zCf(e, i) {
+  xyf(e, i) {
     let t = 0;
     let r = 0;
     var o = ModelManager_1.ModelManager.MotorcycleDiyModel.GetSelectedStickerId(e);
-    r = o !== undefined ? o : ModelManager_1.ModelManager.MotorcycleDiyModel.GetEquippedStickerId(e);
-    var o = i.find(e => e.StickerId === r);
+    r = o !== 0 ? o : ModelManager_1.ModelManager.MotorcycleDiyModel.GetEquippedStickerId(e);
+    var o = i.find(e => e.ItemId === r);
     if (o) {
       t = i.indexOf(o);
     }
-    if (!this.NCf.IsGridDisplaying(t)) {
-      this.NCf.ScrollToGridIndex(t, false);
+    if (!this.Iyf.IsGridDisplaying(t)) {
+      this.Iyf.ScrollToGridIndex(t, false);
     }
-    this.NCf.DeselectCurrentGridProxy();
-    this.NCf.SelectGridProxy(t);
+    this.Iyf.DeselectCurrentGridProxy();
+    this.Iyf.SelectGridProxy(t);
   }
 }
 exports.MotorcycleDiyStickerTabView = MotorcycleDiyStickerTabView;

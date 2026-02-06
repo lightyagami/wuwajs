@@ -28,22 +28,22 @@ class BirthdayController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CrossDayZone, this.OnCrossDayZone);
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(29264, e => {
+    Net_1.Net.Register(17274, e => {
       ModelManager_1.ModelManager.BirthdayModel.UpdateBirthdayInfo(e);
     });
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(29264);
+    Net_1.Net.UnRegister(17274);
   }
   static TrySelectBirthDayCardRoleRequest(r, t) {
     var e;
     if (!ModelManager_1.ModelManager.BirthdayModel.GetSelectedRoleId(t)) {
       (e = Protocol_1.Aki.Protocol.GS1.create()).mjn = r;
       e.HS1 = t;
-      Net_1.Net.Call(29656, e, e => {
+      Net_1.Net.Call(23177, e, e => {
         if (e) {
           if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24231);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26623);
           } else {
             ModelManager_1.ModelManager.BirthdayModel.SetSelectedRole(r, t);
           }
@@ -53,10 +53,10 @@ class BirthdayController extends UiControllerBase_1.UiControllerBase {
   }
   static TryBirthDayRewardRequest(e) {
     var r;
-    return ModelManager_1.ModelManager.BirthdayModel.GetSelectedRoleId(e) === undefined && ((r = Protocol_1.Aki.Protocol.NS1.create()).HS1 = e, Net_1.Net.Call(24223, r, e => {
+    return ModelManager_1.ModelManager.BirthdayModel.GetSelectedRoleId(e) === undefined && ((r = Protocol_1.Aki.Protocol.NS1.create()).HS1 = e, Net_1.Net.Call(21051, r, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17849);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27673);
         } else {
           ModelManager_1.ModelManager.BirthdayModel.SetIsReceiveBirthdayReward(true);
         }

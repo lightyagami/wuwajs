@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.ConfirmBoxController = undefined;
 const cpp_1 = require("cpp");
 const UE = require("ue");
+const Log_1 = require("../../../Core/Common/Log");
 const GlobalData_1 = require("../../GlobalData");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
@@ -19,7 +20,7 @@ class ConfirmBoxController extends UiControllerBase_1.UiControllerBase {
     if (o.FunctionMap.size > 0) {
       o.IsMultipleView = true;
     }
-    return !!e && (UiManager_1.UiManager.OpenView(e, o, o.FinishOpenFunction), true);
+    return !!e && (Log_1.Log.CheckInfo() && Log_1.Log.Info("ConfirmBox", 10, "打开确认弹窗", ["ConfigId", o.ConfigId], ["UiViewName", e]), UiManager_1.UiManager.OpenView(e, o, o.FinishOpenFunction), true);
   }
   static CheckIsConfirmBoxOpen() {
     for (const o of ConfirmBoxController.mqt.values()) {

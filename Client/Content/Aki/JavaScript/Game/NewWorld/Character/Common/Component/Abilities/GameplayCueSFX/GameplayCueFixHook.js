@@ -59,8 +59,8 @@ class GameplayCueFixHook extends GameplayCueBase_1.GameplayCueBase {
     return this.rim().GetCurrentTargetEnterPortalCapture();
   }
   rim() {
-    var t = this.EntityHandle.Entity.GetComponent(105);
-    return t || this.EntityHandle.Entity.GetComponent(250)?.Driver?.GetComponent(105);
+    var t = this.EntityHandle.Entity.GetComponent(107);
+    return t || this.EntityHandle.Entity.GetComponent(250)?.Driver?.GetComponent(107);
   }
 }
 exports.GameplayCueFixHook = GameplayCueFixHook;

@@ -197,7 +197,7 @@ class MapUtil {
     var r = MapUtil.GetInstanceDungeonBelongWorldId(e) ?? e;
     var a = ConfigManager_1.ConfigManager.WorldMapConfig.GetAllMapRangeConfigByMapId(r);
     if (a) {
-      for (const _ of a) {
+      for (const _ of a.map(e => e).sort((e, t) => t.AreaRange.length - e.AreaRange.length)) {
         if (!(_.AreaRange.length >= 4)) {
           return ConfigManager_1.ConfigManager.MapConfig.GetLocalText(_.MapName);
         }
@@ -306,12 +306,10 @@ class MapUtil {
         var n = a.InstSubType;
         let e = r.MapConfigId;
         let t = a.MapConfigId;
-        if (i === 12) {
-          i = MapUtil.slh(r);
+        if (i === 12 && r.EntranceEntities.length >= 1 && (i = MapUtil.slh(r))) {
           e = i.MapConfigId;
         }
-        if (n === 12) {
-          r = MapUtil.slh(a);
+        if (n === 12 && a.EntranceEntities.length >= 1 && (r = MapUtil.slh(a))) {
           t = r.MapConfigId;
         }
         return e !== t;

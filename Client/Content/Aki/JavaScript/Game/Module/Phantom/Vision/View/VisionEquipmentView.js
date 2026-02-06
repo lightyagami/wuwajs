@@ -42,6 +42,7 @@ const VisionEquipmentDragItem_1 = require("./VisionEquipmentDragItem");
 const VisionEquipmentDropDownItem_1 = require("./VisionEquipmentDropDownItem");
 const VisionEquipmentDropDownTitleItem_1 = require("./VisionEquipmentDropDownTitleItem");
 const VisionEquipmentRecommendItem_1 = require("./VisionEquipmentRecommendItem");
+const VisionIntensifyView_1 = require("./VisionIntensifyView");
 const VisionMediumItemGrid_1 = require("./VisionMediumItemGrid");
 const ANIMATIONTIME = 300;
 const INVALIDINDEX = 999;
@@ -92,6 +93,7 @@ class VisionEquipmentView extends UiViewBase_1.UiViewBase {
     this.t7i = new Array();
     this.h8e = undefined;
     this.i7i = new Array();
+    this._Zf = new Map();
     this.Ife = false;
     this.H8i = false;
     this.o7i = false;
@@ -152,7 +154,10 @@ class VisionEquipmentView extends UiViewBase_1.UiViewBase {
       ModelManager_1.ModelManager.PhantomBattleModel.SaveIfSimpleState(1, !i);
     };
     this.Cpt = () => {
-      UiManager_1.UiManager.OpenView("VisionSkinView", this.B9i?.GetUniqueId());
+      var i = {
+        UniqueId: this.B9i?.GetUniqueId()
+      };
+      UiManager_1.UiManager.OpenView("VisionSkinView", i);
     };
     this.l7i = i => {
       if (i.ToHandleData.ViewName === "VisionEquipmentView" && this.IsShowOrShowing && !this.n7i) {
@@ -174,7 +179,10 @@ class VisionEquipmentView extends UiViewBase_1.UiViewBase {
       });
     };
     this.m7i = () => {
-      UiManager_1.UiManager.OpenView("VisionIntensifyView", this.B9i.GetUniqueId());
+      var i = new VisionIntensifyView_1.VisionIntensifyViewPassData();
+      i.UniqueId = this.B9i.GetUniqueId();
+      i.RoleId = this.dFe;
+      UiManager_1.UiManager.OpenView("VisionIntensifyView", i);
     };
     this.Osa = () => {
       this.Gsa = this.N9i;
@@ -655,8 +663,11 @@ class VisionEquipmentView extends UiViewBase_1.UiViewBase {
   }
   aHi() {
     const h = ModelManager_1.ModelManager.VisionRecommendModel.GetRoleFetterRecommendInfo(this.dFe);
-    ConfigManager_1.ConfigManager.PhantomBattleConfig.GetFetterGroupArray().forEach(i => {
+    var i = ConfigManager_1.ConfigManager.PhantomBattleConfig.GetFetterGroupArray();
+    this._Zf.clear();
+    i.forEach(i => {
       this.i7i.push(i.Id);
+      this._Zf.set(i.Id, i.SortId);
     });
     this.i7i.sort((t, s) => {
       var i = h.find(i => i.GetRecommendFetterGroupId() === t);
@@ -669,7 +680,7 @@ class VisionEquipmentView extends UiViewBase_1.UiViewBase {
         i = i.GetUsage();
         return e.GetUsage() - i;
       } else {
-        return t - s;
+        return this._Zf.get(s) - this._Zf.get(t);
       }
     });
     this.i7i.unshift(0);

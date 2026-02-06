@@ -21,7 +21,7 @@ class PhantomArenaBattleSkillTips extends UiPanelBase_1.UiPanelBase {
         this.SetActive(false);
       }
     };
-    this.tmf = () => {
+    this.ygf = () => {
       if (this.RootItem) {
         if (!LguiEventSystemManager_1.LguiEventSystemManager.GetPointerEventData(0, true).enterComponentStack.Contains(this.RootItem)) {
           this.dbu();
@@ -42,16 +42,16 @@ class PhantomArenaBattleSkillTips extends UiPanelBase_1.UiPanelBase {
     this.Sequence.Clear();
     this.FBd();
   }
-  wFm(e, i, t) {
+  QNm(e, i, t) {
     var s = this.GetOriginalItem();
     s?.SetPivot(new UE.Vector2D(e, i));
     s?.SetAnchorHAlign(t);
     s?.SetAnchorOffset(new UE.Vector2D(0, 0));
   }
-  cGf() {
+  b6f() {
     this.FBd();
     this.TimerHandle = TimerSystem_1.GameplayTimerSystem.Forever(() => {
-      this.tmf();
+      this.ygf();
     }, 100);
   }
   FBd() {
@@ -78,9 +78,9 @@ class PhantomArenaBattleSkillTips extends UiPanelBase_1.UiPanelBase {
   SetTipsPosition(e, i) {
     this.RootItem?.SetUIParent(e);
     if (i) {
-      this.wFm(1, 0, 3);
+      this.QNm(1, 0, 3);
     } else {
-      this.wFm(0, 1, 1);
+      this.QNm(0, 1, 1);
     }
   }
   SetTipsActive(e) {
@@ -88,7 +88,7 @@ class PhantomArenaBattleSkillTips extends UiPanelBase_1.UiPanelBase {
       if (this.IsInActive = e) {
         this.jt_();
       } else {
-        this.cGf();
+        this.b6f();
       }
     }
   }

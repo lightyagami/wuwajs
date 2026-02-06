@@ -135,13 +135,13 @@ class BlackScreenFadeController extends UiControllerBase_1.UiControllerBase {
 exports.BlackScreenFadeController = BlackScreenFadeController;
 (_a = BlackScreenFadeController).r0t = undefined;
 BlackScreenFadeController.NeedInputDis = false;
-BlackScreenFadeController.wtd = 23;
+BlackScreenFadeController.wtd = 24;
 BlackScreenFadeController.l0t = new Set(["GuideTutorialView", "GuideTutorialPopView"]);
 BlackScreenFadeController.pu1 = true;
 BlackScreenFadeController.n0t = () => {
   if (!_a.r0t) {
     _a.r0t = new BlackScreenFadeView_1.BlackScreenFadeView();
-    _a.r0t.CreateByResourceIdAsync("UiView_BlackFadeScreen_Prefab", UiLayer_1.UiLayer.GetLayerRootUiItem(UiLayerType_1.ELayerType.Loading), true);
+    _a.r0t.CreateByResourceIdAsync("UiView_BlackFadeScreen_Prefab", UiLayer_1.UiLayer.GetFloatUnit(UiLayerType_1.ELayerType.Loading, UiLayerType_1.LOADING_VIEW_NODE_TYPE), true);
   }
 };
 BlackScreenFadeController.t$s = (e, r, t) => {

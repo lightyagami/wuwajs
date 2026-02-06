@@ -24,8 +24,8 @@ class LaHaiLuoCollectView extends CollectItemViewBase_1.CollectItemViewBase {
     this.Nbi = undefined;
     this.GAr = undefined;
     this.Kbi = false;
-    this.b7m = undefined;
-    this.R7m = new Map([[MingSuDefine_1.LAHAILUOSHENGXIA_POOL_CONFIG_ID, "NpcSystemBackground_10132_Title"], [MingSuDefine_1.RILINGCOLLECT_POOL_CONFIG_ID, "NpcSystemBackground_10133_Title"]]);
+    this.IAm = undefined;
+    this.TAm = new Map([[MingSuDefine_1.LAHAILUOSHENGXIA_POOL_CONFIG_ID, "NpcSystemBackground_10132_Title"], [MingSuDefine_1.RILINGCOLLECT_POOL_CONFIG_ID, "NpcSystemBackground_10133_Title"]]);
     this.d2t = () => {
       var i = new CollectSmallItemGrid_1.CollectSmallItemGrid();
       i.BindOnExtendToggleRelease(this.Qbi);
@@ -53,14 +53,14 @@ class LaHaiLuoCollectView extends CollectItemViewBase_1.CollectItemViewBase {
           Log_1.Log.Info("NPC", 58, "[CollectionItemDisplay]当点击交付按钮时，在播放等级提升动画，不做任何响应", ["PoolConfigId", this.PoolConfigId]);
         }
       } else {
-        i = this.b7m.GetTargetDragonPoolLevelById(this.PoolConfigId);
+        i = this.IAm.GetTargetDragonPoolLevelById(this.PoolConfigId);
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("NPC", 58, "[CollectionItemDisplay]当点击交付按钮时", ["CurrentShowLevel", this.CurrentShowLevel], ["dragonPoolLevel", i], ["PoolConfigId", this.PoolConfigId]);
         }
         if (this.CurrentShowLevel === i + 1) {
-          if (this.b7m.CheckUp(this.PoolConfigId)) {
-            this.b7m.MingSuLastLevel = this.b7m.GetTargetDragonPoolLevelById(this.PoolConfigId);
-            if (this.b7m.CanLevelUp(this.PoolConfigId)) {
+          if (this.IAm.CheckUp(this.PoolConfigId)) {
+            this.IAm.MingSuLastLevel = this.IAm.GetTargetDragonPoolLevelById(this.PoolConfigId);
+            if (this.IAm.CanLevelUp(this.PoolConfigId)) {
               if (Log_1.Log.CheckInfo()) {
                 Log_1.Log.Info("NPC", 58, "[CollectionItemDisplay]提交声匣之后，等级提升会播放等级提升Sequence，IsInLevelUpDisplay设置为true");
               }
@@ -95,9 +95,9 @@ class LaHaiLuoCollectView extends CollectItemViewBase_1.CollectItemViewBase {
   OnBegined() {
     this.Nbi = new GenericLayout_1.GenericLayout(this.GetItem(5).GetOwner().GetComponentByClass(UE.UILayoutBase.StaticClass()), this.d2t);
     this.GAr = this.GetSprite(2);
-    this.b7m = ModelManager_1.ModelManager.MingSuModel;
+    this.IAm = ModelManager_1.ModelManager.MingSuModel;
     var i = this.GetText(16);
-    var t = this.R7m.get(this.PoolConfigId);
+    var t = this.TAm.get(this.PoolConfigId);
     if (t) {
       LguiUtil_1.LguiUtil.SetLocalTextNew(i, t);
     }
@@ -119,7 +119,7 @@ class LaHaiLuoCollectView extends CollectItemViewBase_1.CollectItemViewBase {
   OnEnded() {
     this.Nbi = undefined;
     this.GAr = undefined;
-    this.b7m = undefined;
+    this.IAm = undefined;
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnExitNpcInteract);
   }
   OnUpdateDragonPoolView() {
@@ -161,8 +161,8 @@ class LaHaiLuoCollectView extends CollectItemViewBase_1.CollectItemViewBase {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.HangPlotViewHud, false);
   }
   NAr() {
-    var i = this.b7m.GetTargetDragonPoolMaxLevelById(this.PoolConfigId);
-    var t = this.b7m.GetTargetDragonPoolLevelById(this.PoolConfigId);
+    var i = this.IAm.GetTargetDragonPoolMaxLevelById(this.PoolConfigId);
+    var t = this.IAm.GetTargetDragonPoolLevelById(this.PoolConfigId);
     this.CurrentShowLevel = Math.min(i, t + 1);
     this.bl();
   }
@@ -188,23 +188,23 @@ class LaHaiLuoCollectView extends CollectItemViewBase_1.CollectItemViewBase {
   }
   oqi(i) {
     var t = this.GetText(3);
-    var e = this.b7m.GetTargetDragonPoolMaxLevelById(this.PoolConfigId);
+    var e = this.IAm.GetTargetDragonPoolMaxLevelById(this.PoolConfigId);
     var e = Math.min(e, i);
     LguiUtil_1.LguiUtil.SetLocalTextNew(t, "PupuVillage_LevelText", e - 1, e);
     this.CurrentShowLevel = e;
-    this.b7m.CurrentPreviewLevel = this.CurrentShowLevel;
+    this.IAm.CurrentPreviewLevel = this.CurrentShowLevel;
   }
   rqi() {
     var i = this.GetButton(0).RootUIComp;
     var t = this.GetButton(1).RootUIComp;
     i.SetUIActive(this.CurrentShowLevel !== 1);
-    t.SetUIActive(this.CurrentShowLevel !== this.b7m.GetTargetDragonPoolMaxLevelById(this.PoolConfigId));
+    t.SetUIActive(this.CurrentShowLevel !== this.IAm.GetTargetDragonPoolMaxLevelById(this.PoolConfigId));
   }
   K0i() {
-    var e = this.b7m.GetTargetDragonPoolLevelById(this.PoolConfigId);
-    var s = this.b7m.GetTargetDragonPoolMaxLevelById(this.PoolConfigId);
+    var e = this.IAm.GetTargetDragonPoolLevelById(this.PoolConfigId);
+    var s = this.IAm.GetTargetDragonPoolMaxLevelById(this.PoolConfigId);
     var h = this.GetText(4);
-    var n = this.b7m.GetTargetDragonPoolActiveById(this.PoolConfigId);
+    var n = this.IAm.GetTargetDragonPoolActiveById(this.PoolConfigId);
     if (this.CurrentShowLevel === e + 1 || this.CurrentShowLevel === e && this.CurrentShowLevel === s) {
       let i = e;
       this.aPi = 1;
@@ -214,30 +214,30 @@ class LaHaiLuoCollectView extends CollectItemViewBase_1.CollectItemViewBase {
       if (e === s) {
         --i;
       }
-      var s = this.b7m.GetTargetDragonPoolLevelNeedCoreById(this.PoolConfigId, i);
+      var s = this.IAm.GetTargetDragonPoolLevelNeedCoreById(this.PoolConfigId, i);
       let t = 0;
-      var n = (t = n === 2 ? s : this.b7m.GetTargetDragonPoolCoreCountById(this.PoolConfigId)) / s;
+      var n = (t = n === 2 ? s : this.IAm.GetTargetDragonPoolCoreCountById(this.PoolConfigId)) / s;
       this.GAr.SetFillAmount(n);
       h.SetText(t + "/" + s);
     } else if (this.CurrentShowLevel <= e) {
       this.aPi = 0;
-      n = this.b7m.GetTargetDragonPoolLevelNeedCoreById(this.PoolConfigId, this.CurrentShowLevel - 1);
+      n = this.IAm.GetTargetDragonPoolLevelNeedCoreById(this.PoolConfigId, this.CurrentShowLevel - 1);
       h.SetText(n + "/" + n);
       this.GAr.SetFillAmount(1);
     } else if (this.CurrentShowLevel > e + 1) {
       this.aPi = 2;
-      s = this.b7m.GetTargetDragonPoolLevelNeedCoreById(this.PoolConfigId, this.CurrentShowLevel - 1);
+      s = this.IAm.GetTargetDragonPoolLevelNeedCoreById(this.PoolConfigId, this.CurrentShowLevel - 1);
       h.SetText("0/" + s);
       this.GAr.SetFillAmount(0);
     }
   }
   jqe() {
-    var i = this.b7m.GetTargetDragonPoolLevelRewardById(this.PoolConfigId, this.CurrentShowLevel - 1);
+    var i = this.IAm.GetTargetDragonPoolLevelRewardById(this.PoolConfigId, this.CurrentShowLevel - 1);
     this.Nbi.RefreshByData(i);
   }
   B5t() {
     var i = this.GetText(6);
-    if (this.b7m.GetTargetDragonPoolActiveById(this.PoolConfigId) === 2) {
+    if (this.IAm.GetTargetDragonPoolActiveById(this.PoolConfigId) === 2) {
       this.aPi = 3;
     }
     if (this.aPi === 1) {
@@ -255,11 +255,11 @@ class LaHaiLuoCollectView extends CollectItemViewBase_1.CollectItemViewBase {
   }
   M3e() {
     var i = this.GetText(8);
-    var t = this.b7m.GetTargetDragonPoolActiveById(this.PoolConfigId) === 2;
+    var t = this.IAm.GetTargetDragonPoolActiveById(this.PoolConfigId) === 2;
     this.GetItem(9).SetUIActive(!t);
     this.GetItem(13).SetUIActive(t);
     if (!t) {
-      t = this.b7m.GetTargetDragonPoolLevelById(this.PoolConfigId);
+      t = this.IAm.GetTargetDragonPoolLevelById(this.PoolConfigId);
       if (this.CurrentShowLevel === t + 1) {
         LguiUtil_1.LguiUtil.SetLocalText(i, "MingSuTi_Text3");
       } else {

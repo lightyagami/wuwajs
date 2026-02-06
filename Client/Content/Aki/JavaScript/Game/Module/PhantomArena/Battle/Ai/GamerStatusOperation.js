@@ -13,9 +13,9 @@ class GamerStatusOperation extends NpcAiOperation_1.NpcAiOperation {
     this.Info = e;
   }
   ExecuteAiOperation(e) {
-    if (this.Info.Fg1 === Protocol_1.Aki.Protocol.$xm.Proto_GamerFighterNpc) {
+    if (this.Info.Fg1 === Protocol_1.Aki.Protocol.pBm.Proto_GamerFighterNpc) {
       ModelManager_1.ModelManager.PhantomArenaBattleModel.OpponentData.RefreshBattleStatus(this.Info.Vg1);
-    } else if (this.Info.Fg1 === Protocol_1.Aki.Protocol.$xm.Proto_GamerFighterPlayer) {
+    } else if (this.Info.Fg1 === Protocol_1.Aki.Protocol.pBm.Proto_GamerFighterPlayer) {
       ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.RefreshBattleStatus(this.Info.Vg1);
     }
   }

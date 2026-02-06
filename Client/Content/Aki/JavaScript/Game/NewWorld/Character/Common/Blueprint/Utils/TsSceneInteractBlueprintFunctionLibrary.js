@@ -33,17 +33,17 @@ class TsSceneInteractBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrar
     EntitySystem_1.EntitySystem.GetComponent(t, 29)?.EndBounce();
   }
   static IsAiDriver(t) {
-    return EntitySystem_1.EntitySystem.GetComponent(t, 48)?.IsAiDriver ?? false;
+    return EntitySystem_1.EntitySystem.GetComponent(t, 50)?.IsAiDriver ?? false;
   }
   static IsDropItem(t) {
-    return EntitySystem_1.EntitySystem.GetComponent(t, 158) !== undefined;
+    return EntitySystem_1.EntitySystem.GetComponent(t, 160) !== undefined;
   }
   static PickUpDropItem(t, e) {
     e = EntitySystem_1.EntitySystem.Get(e).GetComponent(0);
     RewardController_1.RewardController.PickUpFightDrop(e.GetCreatureDataId(), e.GetPbDataId());
   }
   static InteractSceneItem(t, e) {
-    EntitySystem_1.EntitySystem.GetComponent(e, 207)?.ExecuteInteractFromVision(t);
+    EntitySystem_1.EntitySystem.GetComponent(e, 209)?.ExecuteInteractFromVision(t);
   }
 }
 exports.default = TsSceneInteractBlueprintFunctionLibrary;

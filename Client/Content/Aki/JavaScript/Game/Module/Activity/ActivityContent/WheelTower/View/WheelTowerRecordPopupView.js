@@ -18,9 +18,9 @@ const WheelTowerScoreItem_1 = require("../Component/WheelTowerScoreItem");
 class WheelTowerRecordPopupView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
-    this.Kmf = undefined;
-    this.Xmf = undefined;
-    this.Ymf = undefined;
+    this.d0f = undefined;
+    this.m0f = undefined;
+    this.f0f = undefined;
     this.osa = undefined;
     this.rsa = undefined;
     this.rki = () => {
@@ -37,12 +37,12 @@ class WheelTowerRecordPopupView extends UiViewBase_1.UiViewBase {
     this.BtnBindInfo = [[6, this.rki], [7, this.p5t]];
   }
   async OnBeforeStartAsync() {
-    this.Kmf = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(2), () => new ScoreItem(), undefined);
+    this.d0f = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(2), () => new ScoreItem(), undefined);
     var e = [];
-    this.Xmf = new TeamItem();
-    e.push(this.Xmf.CreateThenShowByActorAsync(this.GetItem(4).GetOwner()));
-    this.Ymf = new TeamItem();
-    e.push(this.Ymf.CreateThenShowByActorAsync(this.GetItem(5).GetOwner()));
+    this.m0f = new TeamItem();
+    e.push(this.m0f.CreateThenShowByActorAsync(this.GetItem(4).GetOwner()));
+    this.f0f = new TeamItem();
+    e.push(this.f0f.CreateThenShowByActorAsync(this.GetItem(5).GetOwner()));
     await Promise.all(e);
   }
   OnStart() {
@@ -51,12 +51,12 @@ class WheelTowerRecordPopupView extends UiViewBase_1.UiViewBase {
     this.rsa = e.OnClickCancel;
     var t = e.IsEndless ? "WheelBattleMode_Endless" : "WheelBattleMode_Normal";
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), "WheelTowerRecordPopup_Title", MultiTextLang_1.configMultiTextLang.GetLocalTextNew(t), e.Round.toString());
-    this.zmf(e);
-    this.Xmf?.Refresh(e.BeforeData.TeamRoleIdList, e.BeforeData.BuffId);
-    this.Ymf?.Refresh(e.AfterData.TeamRoleIdList, e.AfterData.BuffId);
+    this.g0f(e);
+    this.m0f?.Refresh(e.BeforeData.TeamRoleIdList, e.BeforeData.BuffId);
+    this.f0f?.Refresh(e.AfterData.TeamRoleIdList, e.AfterData.BuffId);
     ModelManager_1.ModelManager.WheelTowerModel.BlockEndlessUnlockTips = false;
   }
-  zmf(e) {
+  g0f(e) {
     e = [{
       Title: "WheelTowerRecordPopupScore",
       ScoreOld: e.BeforeData.RoundScore,
@@ -73,7 +73,7 @@ class WheelTowerRecordPopupView extends UiViewBase_1.UiViewBase {
       ScoreNew: e.AfterData.ScoreRecord,
       NeedScoreIcon: true
     }];
-    this.Kmf?.RefreshByData(e);
+    this.d0f?.RefreshByData(e);
   }
 }
 exports.WheelTowerRecordPopupView = WheelTowerRecordPopupView;

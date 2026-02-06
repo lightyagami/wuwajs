@@ -12,7 +12,7 @@ class OpenSystemActivitySubView extends OpenSystemBase_1.OpenSystemBase {
   async ExecuteOpenView(e, i) {
     var t;
     var r;
-    return !e || ((t = ActivityViewNameById_1.configActivityViewNameById.GetConfig(e.BoardId)) ? (r = t.Type, !!(r = ActivityManager_1.ActivityManager.GetActivityController(r)) && (await r.OpenViewByViewName(t.ViewName))) : (Log_1.Log.CheckError() && Log_1.Log.Error("Activity", 75, "OpenSystemActivitySubView Error", ["id", e.BoardId]), false));
+    return !e || ((t = ActivityViewNameById_1.configActivityViewNameById.GetConfig(e.BoardId)) ? (r = t.Type, !!(r = ActivityManager_1.ActivityManager.GetActivityController(r)) && (await r.OpenViewByViewName(t.ViewName, e.BoardId))) : (Log_1.Log.CheckError() && Log_1.Log.Error("Activity", 75, "OpenSystemActivitySubView Error", ["id", e.BoardId]), false));
   }
   GetViewName(e, i) {
     e = ActivityViewNameById_1.configActivityViewNameById.GetConfig(e.BoardId);

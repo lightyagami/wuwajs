@@ -13,7 +13,7 @@ class HonamiStoryLeaveTip extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
     this.dcm = false;
-    this.Fhf = false;
+    this.o_f = false;
     this.osa = undefined;
     this.rsa = undefined;
     this.Ldu = () => {
@@ -33,7 +33,7 @@ class HonamiStoryLeaveTip extends UiViewBase_1.UiViewBase {
   }
   OnStart() {
     var i = this.OpenParam;
-    this.Fhf = i.ShowSafeLeaveUpdate ?? false;
+    this.o_f = i.ShowSafeLeaveUpdate ?? false;
     this.osa = i.ConfirmCallback;
     this.rsa = i.CancelCallback;
     var i = HonamiStoryUtil_1.HonamiStoryUtil.CheckInHonamiStoryTopTower() ? 3 : i.LeaveType;
@@ -88,9 +88,9 @@ class HonamiStoryLeaveTip extends UiViewBase_1.UiViewBase {
     await this.PlaySequenceAsync(this.dcm ? "Close1" : "Close2", true);
   }
   OnBeforeDestroy() {
-    if (this.Fhf) {
+    if (this.o_f) {
       HonamiStoryController_1.HonamiStoryController.ShowSafeLeaveUpdate();
-      this.Fhf = false;
+      this.o_f = false;
     }
   }
 }

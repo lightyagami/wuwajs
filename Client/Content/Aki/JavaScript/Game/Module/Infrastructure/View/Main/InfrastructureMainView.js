@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.InfrastructureMainView = undefined;
 const UE = require("ue");
 const CustomPromise_1 = require("../../../../../Core/Common/CustomPromise");
+const Info_1 = require("../../../../../Core/Common/Info");
 const CommonParamById_1 = require("../../../../../Core/Define/ConfigCommon/CommonParamById");
 const Protocol_1 = require("../../../../../Core/Define/Net/Protocol");
 const ResourceSystem_1 = require("../../../../../Core/Resource/ResourceSystem");
@@ -31,35 +32,35 @@ class InfrastructureMainView extends UiTickViewBase_1.UiTickViewBase {
     super(...arguments);
     this.dqc = new PopupCaptionItem_1.PopupCaptionItem();
     this.Xut = new InfrastructureMissionPanel_1.InfrastructureMissionPanel();
-    this.Ujf = new InfrastructureMissionPanel_1.InfrastructureMissionPanel();
-    this.v4m = new InfrastructureFireExpPanel_1.InfrastructureFireExpPanel();
-    this.h$m = new ButtonItem_1.ButtonItem();
-    this.l$m = new ButtonItem_1.ButtonItem();
-    this._$m = new ButtonItem_1.ButtonItem();
-    this.XWf = false;
-    this.YWf = false;
+    this.zig = new InfrastructureMissionPanel_1.InfrastructureMissionPanel();
+    this.O5m = new InfrastructureFireExpPanel_1.InfrastructureFireExpPanel();
+    this.sQm = new ButtonItem_1.ButtonItem();
+    this.aQm = new ButtonItem_1.ButtonItem();
+    this.hQm = new ButtonItem_1.ButtonItem();
+    this.Jng = false;
+    this.Zng = false;
     this.Hea = undefined;
     this.wNo = undefined;
     this.hJ = ResourceSystem_1.ResourceSystem.InvalidId;
-    this.y4m = () => {
+    this.G5m = () => {
       UiManager_1.UiManager.OpenView("InfrLimitTaskMainView", {
         OpenSource: 1
       });
     };
-    this.S4m = () => {
+    this.F5m = () => {
       UiManager_1.UiManager.OpenView("InfrastructureShopMainView", {
         OpenSource: 1
       });
     };
-    this.M4m = () => {
+    this.N5m = () => {
       UiManager_1.UiManager.OpenView("InfrArchiveMainView", {
         OpenSource: 1
       });
     };
-    this.E4m = e => {
-      this.v4m.UpdateExp();
+    this.V5m = e => {
+      this.O5m.UpdateExp();
     };
-    this.I4m = () => {
+    this.j5m = () => {
       UiManager_1.UiManager.OpenView("InfrRoadNetworkMainView");
     };
     this.yct = e => {
@@ -67,35 +68,38 @@ class InfrastructureMainView extends UiTickViewBase_1.UiTickViewBase {
         UiManager_1.UiManager.OpenView("InfrastructureSettleView", this.OpenParam.SettleInfo);
       }
     };
-    this.M5f = () => {
-      this.c$m();
+    this.iQf = () => {
+      this._Qm();
     };
-    this.E5f = () => {
-      this.hjm();
+    this.rQf = () => {
+      this.vHm();
     };
-    this.eJf = () => {
-      this.tJf();
+    this.Kgg = () => {
+      this.Xgg();
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIVerticalLayout], [2, UE.UIItem], [3, UE.UIButtonComponent], [4, UE.UIButtonComponent], [5, UE.UIButtonComponent], [6, UE.UIItem], [7, UE.UIText], [8, UE.UIText], [9, UE.UIItem], [10, UE.UIText], [11, UE.UISprite], [12, UE.UIText], [13, UE.UIItem], [14, UE.UIText], [16, UE.UIButtonComponent], [15, UE.UIItem], [17, UE.UIItem], [18, UE.UIItem], [20, UE.UIItem], [21, UE.UITexture]];
-    this.BtnBindInfo = [[16, this.I4m]];
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIVerticalLayout], [2, UE.UIItem], [3, UE.UIButtonComponent], [4, UE.UIButtonComponent], [5, UE.UIButtonComponent], [6, UE.UIItem], [7, UE.UIText], [8, UE.UIText], [9, UE.UIItem], [10, UE.UIText], [11, UE.UISprite], [12, UE.UIText], [13, UE.UIItem], [14, UE.UIText], [16, UE.UIButtonComponent], [15, UE.UIItem], [17, UE.UIItem], [18, UE.UIItem], [20, UE.UIItem], [21, UE.UITexture], [22, UE.UIItem]];
+    this.BtnBindInfo = [[16, this.j5m]];
   }
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InfrastructureFireExpAdd, this.E4m);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RefreshGoods, this.M5f);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InfrastructureActivityTaskDataUpdate, this.E5f);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.UIViewPortSizeChanged, this.eJf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InfrastructureFireExpAdd, this.V5m);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RefreshGoods, this.iQf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InfrastructureActivityTaskDataUpdate, this.rQf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.UIViewPortSizeChanged, this.Kgg);
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InfrastructureFireExpAdd, this.E4m);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RefreshGoods, this.M5f);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InfrastructureActivityTaskDataUpdate, this.E5f);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.UIViewPortSizeChanged, this.eJf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InfrastructureFireExpAdd, this.V5m);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RefreshGoods, this.iQf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InfrastructureActivityTaskDataUpdate, this.rQf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.UIViewPortSizeChanged, this.Kgg);
   }
   async OnBeforeStartAsync() {
     this.wNo = new MediaPlayer_1.MediaPlayer(this.GetTexture(21));
-    await Promise.all([InfrastructureController_1.InfrastructureController.RequestInfrastructureInfoRequest(), this.T4m(), this.xjf(), this.e7a(), this.b4m(), this.s$m(), this.a$m(), this.u$m(), this.SXf()]);
+    await Promise.all([InfrastructureController_1.InfrastructureController.RequestInfrastructureInfoRequest(), this.H5m(), this.Jig(), this.e7a(), this.$5m(), this.oQm(), this.nQm(), this.lQm()]);
+    if (Info_1.Info.PlatformType === 2) {
+      await this.A_g();
+    }
     var e = ModelManager_1.ModelManager.InfrastructureModel.FireLevel;
     var e = ConfigManager_1.ConfigManager.InfrastructureConfig.GetLevelConfigById(e);
     await Promise.all([this.cQa(), this.wNo.LoadVideoAndPlay(e.VideoName, e.VideoPath, true)]);
@@ -103,14 +107,14 @@ class InfrastructureMainView extends UiTickViewBase_1.UiTickViewBase {
   async e7a() {
     await this.dqc.CreateThenShowByActorAsync(this.GetItem(0).GetOwner());
   }
-  async T4m() {
+  async H5m() {
     await this.Xut.CreateByActorAsync(this.GetItem(2).GetOwner());
   }
-  async xjf() {
-    await this.Ujf.CreateByActorAsync(this.GetItem(20).GetOwner());
+  async Jig() {
+    await this.zig.CreateByActorAsync(this.GetItem(20).GetOwner());
   }
-  async b4m() {
-    await this.v4m.CreateThenShowByActorAsync(this.GetItem(15).GetOwner());
+  async $5m() {
+    await this.O5m.CreateThenShowByActorAsync(this.GetItem(15).GetOwner());
   }
   async cQa() {
     this.dqc.SetCloseCallBack(() => {
@@ -122,20 +126,20 @@ class InfrastructureMainView extends UiTickViewBase_1.UiTickViewBase {
     });
     await this.dqc.SetCurrencyItemList([InfrastructureDefine_1.INFR_BATTLE_MATERIAL_ID, InfrastructureDefine_1.INFR_COLLECTION_MATERIAL_ID, InfrastructureDefine_1.INFR_QUEST_MATERIAL_ID]);
   }
-  async s$m() {
-    await this.h$m.CreateThenShowByActorAsync(this.GetButton(3).GetOwner());
-    this.h$m.SetFunction(this.y4m);
+  async oQm() {
+    await this.sQm.CreateThenShowByActorAsync(this.GetButton(3).GetOwner());
+    this.sQm.SetFunction(this.G5m);
   }
-  async a$m() {
-    await this.l$m.CreateThenShowByActorAsync(this.GetButton(4).GetOwner());
-    this.l$m.SetFunction(this.S4m);
+  async nQm() {
+    await this.aQm.CreateThenShowByActorAsync(this.GetButton(4).GetOwner());
+    this.aQm.SetFunction(this.F5m);
   }
-  async u$m() {
-    await this._$m.CreateThenShowByActorAsync(this.GetButton(5).GetOwner());
-    this._$m.SetFunction(this.M4m);
-    this._$m.SetTextShowState(false);
+  async lQm() {
+    await this.hQm.CreateThenShowByActorAsync(this.GetButton(5).GetOwner());
+    this.hQm.SetFunction(this.N5m);
+    this.hQm.SetTextShowState(false);
   }
-  async SXf() {
+  async A_g() {
     const t = new CustomPromise_1.CustomPromise();
     this.X3i();
     var e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("M_VideoTexture");
@@ -152,13 +156,13 @@ class InfrastructureMainView extends UiTickViewBase_1.UiTickViewBase {
     }
   }
   OnStart() {
-    this.zWf();
-    this.zRf();
-    this.w4m();
-    this.L4m();
-    this.tKf();
+    this.esg();
+    this.hBf();
+    this.Q5m();
+    this.K5m();
+    this.zag();
   }
-  tJf() {
+  Xgg() {
     var e = UiLayer_1.UiLayer.UiRootItem.GetWidth();
     var t = UiLayer_1.UiLayer.UiRootItem.GetHeight();
     var i = CommonParamById_1.configCommonParamById.GetIntArrayConfig("InfMainVideoAspect");
@@ -173,21 +177,21 @@ class InfrastructureMainView extends UiTickViewBase_1.UiTickViewBase {
     }
   }
   OnBeforeShow() {
-    this.R4m();
-    this.hjm();
-    this.c$m();
-    this.tKf();
-    if (ModelManager_1.ModelManager.InfrastructureModel.NeedHighlightTrackedRoad || this.YWf) {
-      this.YWf = false;
-      this.Ujf.PlayFocusSequence();
+    this.W5m();
+    this.vHm();
+    this._Qm();
+    this.zag();
+    if (ModelManager_1.ModelManager.InfrastructureModel.NeedHighlightTrackedRoad || this.Zng) {
+      this.Zng = false;
+      this.zig.PlayFocusSequence();
       ModelManager_1.ModelManager.InfrastructureModel.SetNeedHighlightTrackedRoad(false);
     }
-    this.tJf();
+    this.Xgg();
   }
   OnAfterShow() {
     ModelManager_1.ModelManager.InfrastructureModel.CloseLoadingPanel();
-    if (this.XWf) {
-      this.XWf = false;
+    if (this.Jng) {
+      this.Jng = false;
       if (ModelManager_1.ModelManager.InfrastructureModel.FireLevel === ConfigManager_1.ConfigManager.InfrastructureConfig.GetMaxLevel()) {
         this.Hea.PlayLevelSequenceByName("Completed");
       } else {
@@ -200,17 +204,18 @@ class InfrastructureMainView extends UiTickViewBase_1.UiTickViewBase {
     this.wNo = undefined;
     this.X3i();
   }
-  zWf() {
-    this.XWf = this.OpenParam?.NeedPlayBuildSuccessSeq ?? false;
-    this.YWf = this.OpenParam?.NeedFocusBuildQuest ?? false;
+  esg() {
+    this.Jng = this.OpenParam?.NeedPlayBuildSuccessSeq ?? false;
+    this.Zng = this.OpenParam?.NeedFocusBuildQuest ?? false;
   }
-  zRf() {
+  hBf() {
     this.Hea = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetItem(18));
     this.Hea.BindSequenceCloseEvent(this.yct);
   }
-  R4m() {
+  W5m() {
     var e = ModelManager_1.ModelManager.InfrastructureModel;
     var t = e.FireLevel;
+    let i = true;
     if (ConfigManager_1.ConfigManager.InfrastructureConfig.GetLevelConfigById(t) && t < ConfigManager_1.ConfigManager.InfrastructureConfig.GetMaxLevel()) {
       this.Xut.Refresh({
         Index: 0
@@ -218,19 +223,23 @@ class InfrastructureMainView extends UiTickViewBase_1.UiTickViewBase {
       this.Xut.SetUiActive(true);
     } else {
       this.Xut.SetUiActive(false);
+      i = false;
     }
-    var t = CommonParamById_1.configCommonParamById.GetIntConfig("InfrTeachStageEndQuestId");
-    var t = ModelManager_1.ModelManager.QuestNewModel.GetQuestState(t) === 3;
+    t = CommonParamById_1.configCommonParamById.GetIntConfig("InfrTeachStageEndQuestId");
+    t = ModelManager_1.ModelManager.QuestNewModel.GetQuestState(t) === 3;
+    let r = true;
     if (e.TracedRoadId === 0 && e.RecommendRoadId === 0 || !t) {
-      this.Ujf.SetUiActive(false);
+      this.zig.SetUiActive(false);
+      r = false;
     } else {
-      this.Ujf.Refresh({
+      this.zig.Refresh({
         Index: 1
       });
-      this.Ujf.SetUiActive(true);
+      this.zig.SetUiActive(true);
     }
+    this.GetItem(22).SetUIActive(i || r);
   }
-  w4m() {
+  Q5m() {
     var e = ModelManager_1.ModelManager.InfrastructureModel.FireLevel;
     var t = ModelManager_1.ModelManager.InfrastructureModel.FireExp;
     var i = ConfigManager_1.ConfigManager.InfrastructureConfig.GetLevelConfigById(e);
@@ -248,7 +257,7 @@ class InfrastructureMainView extends UiTickViewBase_1.UiTickViewBase {
       this.GetSprite(11).SetFillAmount(e);
     }
   }
-  hjm() {
+  vHm() {
     var e;
     var t = ModelManager_1.ModelManager.InfrastructureModel.GetActivityData();
     if (t) {
@@ -261,30 +270,30 @@ class InfrastructureMainView extends UiTickViewBase_1.UiTickViewBase {
         }
         this.GetText(7).SetText(e.CountDownText ?? "");
         t = (e = t.GetActivityTaskDataList()).filter(e => e.Status === Protocol_1.Aki.Protocol.I$s.Proto_ActivityTaskTaken).length;
-        this.h$m.SetText(t + "/" + e.length);
-        this.h$m.BindRedDot("InfrLimitedTask");
+        this.sQm.SetText(t + "/" + e.length);
+        this.sQm.BindRedDot("InfrLimitedTask");
       }
     } else {
       this.GetItem(6).SetUIActive(false);
     }
   }
-  c$m() {
+  _Qm() {
     var e = ModelManager_1.ModelManager.InfrastructureModel;
     var t = e.GetAllShopCurrencyNum();
-    this.l$m.SetText(e.MoneyHistorySpent + "/" + t);
-    this.l$m.BindRedDot("InfrShop");
+    this.aQm.SetText(e.MoneyHistorySpent + "/" + t);
+    this.aQm.BindRedDot("InfrShop");
   }
-  tKf() {
-    this._$m.BindRedDot("InfrArchive");
+  zag() {
+    this.hQm.BindRedDot("InfrArchive");
   }
-  L4m() {
-    this.v4m.SetOnClickHelpCb(() => {
+  K5m() {
+    this.O5m.SetOnClickHelpCb(() => {
       var e = ConfigManager_1.ConfigManager.InfrastructureConfig.GetHelpIdRoadProcess();
       ControllerHolder_1.ControllerHolder.HelpController.OpenHelpById(e);
     });
   }
   GetGuideUiItemAndUiItemForShowEx(e) {
-    if (e.length !== 0 && e[0] === "Mission" && ((e = Number(e[1])) === 0 || e === 1) && (e = (e === 0 ? this.Xut : this.Ujf).GetRootItem())) {
+    if (e.length !== 0 && e[0] === "Mission" && ((e = Number(e[1])) === 0 || e === 1) && (e = (e === 0 ? this.Xut : this.zig).GetRootItem())) {
       return [e, e];
     } else {
       return undefined;

@@ -8,8 +8,8 @@ var __decorate = this && this.__decorate || function (t, e, i, s) {
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
     n = Reflect.decorate(t, e, i, s);
   } else {
-    for (var r = t.length - 1; r >= 0; r--) {
-      if (h = t[r]) {
+    for (var a = t.length - 1; a >= 0; a--) {
+      if (h = t[a]) {
         n = (o < 3 ? h(n) : o > 3 ? h(e, i, n) : h(e, i)) || n;
       }
     }
@@ -278,7 +278,7 @@ let RangeComponent = RangeComponent_1 = class RangeComponent extends EntityCompo
   OnInitData() {
     this.EIe = this.Entity.GetComponent(0);
     this.Hte = this.Entity.GetComponent(1);
-    this.Men = this.Entity.GetComponent(172);
+    this.Men = this.Entity.GetComponent(174);
     var t = this.EIe?.GetPbEntityInitData();
     return !!t && (this.XKs(t) ? (this.YKs(t), this.b7a(t), this.ooh(t), this.WKl(t), ModelManager_1.ModelManager.SundryModel?.GetModuleDebugLevel(DEBUG_DETAIL_KEY) && Log_1.Log.CheckInfo() && Log_1.Log.Info("SceneItem", 39, "[RangeComponent] 初始化网络节省配置完成", ["CreatureDataId", this.EIe.GetCreatureDataId()], ["ConfigId", this.EIe.GetPbDataId()], ["ReqEntityAccessRange", this.WKs], ["ReqPlayerAccessRange", this.KKs]), this.Oen = new Map(), this.Fen = false, this.ken = new Set(), this.eoh = new Set(), this.$Tl = new Map(), this.Hen = new Map(), this.jen = new Set(), this.ben = [], this.qen = [], this.Nen = [], this.wen = false, this.xen = false, this.Wen = new Map(), this.EIe.PbInRangeEntityCreatureDataIds && this.ServerUpdateEntitiesInRangeOnline(true, this.EIe.PbInRangeEntityCreatureDataIds), this.EIe.PbInRangePlayerIds && this.ServerUpdatePlayerInRangeOnline(true, this.EIe.PbInRangePlayerIds), this.Kua = Stats_1.Stat.CreateNoFlameGraph("[RangeComp.BeginOverlap] CfgId:" + this.EIe?.GetPbDataId()), this.Xua = Stats_1.Stat.CreateNoFlameGraph("[RangeComp.EndOverlap] CfgId:" + this.EIe?.GetPbDataId()), this.Dzl = Stats_1.Stat.CreateNoFlameGraph("[RangeComp.SetupRangeActor] CfgId:" + this.EIe?.GetPbDataId()), true) : (Log_1.Log.CheckError() && Log_1.Log.Error("SceneGameplay", 29, "[RangeComponent] 范围数据出错", ["CreatureDataId", this.EIe.GetCreatureDataId()], ["ConfigId", this.EIe.GetPbDataId()], ["PlayerId", this.EIe.GetPlayerId()]), false));
   }
@@ -291,18 +291,47 @@ let RangeComponent = RangeComponent_1 = class RangeComponent extends EntityCompo
       this.bjo = e.Shape;
       this.lzd = e.SetRangeActorCollisionResponseToChannels;
     } else if (i) {
-      i = {
-        Type: "Cylinder",
-        ...i.Range
-      };
-      this.bjo = i;
+      if (i.BeamLayout) {
+        var o = {
+          Type: "Combination",
+          CombinationShapes: []
+        };
+        var n = i.BeamLayout.Distance;
+        var a = {
+          X: i.Range.Radius,
+          Y: i.Range.Radius,
+          Z: i.Range.Height * 0.5
+        };
+        for (let t = 0; t < i.BeamLayout.Count; t++) {
+          var r = {
+            ...i.Range.Center
+          };
+          if (r.Y !== undefined) {
+            r.Y += t * n;
+          } else {
+            r.Y = t * n;
+          }
+          o.CombinationShapes.push({
+            Type: "Box",
+            Center: r,
+            Size: a
+          });
+        }
+        this.bjo = o;
+      } else {
+        var _ = {
+          Type: "Cylinder",
+          ...i.Range
+        };
+        this.bjo = _;
+      }
     } else if (s) {
-      i = {
+      _ = {
         Type: "Box",
         Center: Vector_1.Vector.ZeroVectorProxy,
         Size: Vector_1.Vector.OneVectorProxy
       };
-      this.bjo = i;
+      this.bjo = _;
     } else if (h) {
       s = {
         Type: "Cone",
@@ -310,7 +339,7 @@ let RangeComponent = RangeComponent_1 = class RangeComponent extends EntityCompo
       };
       this.bjo = s;
     }
-    return !!this.bjo && (e?.ExtraRange !== undefined ? this.Uen = e.ExtraRange : !(i = (0, IComponent_1.getComponent)(t.ComponentsData, "TriggerComponent")) || this.bjo.Type !== "Box" && this.bjo.Type !== "Cylinder" && this.bjo.Type !== "Sphere" || (this.Uen = i.ExitConfig?.ExtraRange ?? 0), true);
+    return !!this.bjo && (e?.ExtraRange !== undefined ? this.Uen = e.ExtraRange : !(_ = (0, IComponent_1.getComponent)(t.ComponentsData, "TriggerComponent")) || this.bjo.Type !== "Box" && this.bjo.Type !== "Cylinder" && this.bjo.Type !== "Sphere" || (this.Uen = _.ExitConfig?.ExtraRange ?? 0), true);
   }
   YKs(e) {
     if ((0, IComponent_1.getComponent)(e.ComponentsData, "RangeComponent")) {
@@ -433,12 +462,14 @@ let RangeComponent = RangeComponent_1 = class RangeComponent extends EntityCompo
     this.Wen?.clear();
     return true;
   }
-  ht_() {
-    var t = this.bjo;
-    if (t.Type !== "Volume" && t.Type !== "ActorRefVolume" && t.Type !== "ActorCollision") {
+  ht_(t = true, e) {
+    var i = this.bjo;
+    if (i.Type !== "Volume" && i.Type !== "ActorRefVolume" && i.Type !== "ActorCollision") {
       this.Dzl?.Start();
-      this.Qen();
-      this.Bzl();
+      if (t) {
+        this.Qen(e);
+      }
+      this.Bzl(e);
       this.lt_();
       this.Dzl?.Stop();
     }
@@ -451,13 +482,13 @@ let RangeComponent = RangeComponent_1 = class RangeComponent extends EntityCompo
     if (e && e.length !== 0) {
       var h = t.GetComponentByClass(UE.PrimitiveComponent.StaticClass());
       if (h) {
-        for (const r of e) {
-          var o = r.CollisionChannelType;
-          var n = r.CollisionResponseType;
-          if (h.GetCollisionResponseToChannel(o) !== r.CollisionResponseType && (h.SetCollisionResponseToChannel(o, n), i)) {
+        for (const a of e) {
+          var o = a.CollisionChannelType;
+          var n = a.CollisionResponseType;
+          if (h.GetCollisionResponseToChannel(o) !== a.CollisionResponseType && (h.SetCollisionResponseToChannel(o, n), i)) {
             s.push({
-              CollisionChannelType: r.CollisionChannelType,
-              CollisionResponseType: r.CollisionResponseType
+              CollisionChannelType: a.CollisionChannelType,
+              CollisionResponseType: a.CollisionResponseType
             });
           }
         }
@@ -680,35 +711,44 @@ let RangeComponent = RangeComponent_1 = class RangeComponent extends EntityCompo
     this.Den = false;
     return !!t?.IsValid() || (Log_1.Log.CheckError() && Log_1.Log.Error("SceneGameplay", 29, "[RangeComponent] CollisionActor非Valid", ["CreatureDataId", this.EIe.GetCreatureDataId()], ["ConfigId", this.EIe.GetPbDataId()], ["PlayerId", this.EIe.GetPlayerId()]), false);
   }
-  Qen() {
+  Qen(t) {
     if (!this.Ren) {
       if (this.Den) {
-        this.Izl();
+        this.Izl(t);
       }
     }
   }
-  Izl() {
+  Izl(e) {
     if (this.Ien && this.Den && !this.Ren) {
-      var t = this.bjo;
-      if (t.Type !== "Volume" && t.Type !== "ActorRefVolume" && t.Type !== "ActorCollision") {
+      var i = this.bjo;
+      if (i.Type !== "Volume" && i.Type !== "ActorRefVolume" && i.Type !== "ActorCollision") {
         if (!this.tOl?.IsValid()) {
           this.tOl = this.Entity.GetComponent(1)?.Owner;
         }
-        var e = Transform_1.Transform.Create(this.tOl?.D_GetTransform() ?? this.EIe.D_GetTransform());
-        e.SetScale3D(Vector_1.Vector.OneVectorProxy);
-        var i = Transform_1.Transform.Create();
-        var s = this.Uen && this.F0a?.IsValid() ? Transform_1.Transform.Create() : undefined;
-        switch (t.Type) {
+        let t = undefined;
+        if (e) {
+          if ((s = this.tOl?.GetComponentByClass(UE.MeshComponent.StaticClass()))?.IsValid()) {
+            t = s.D_GetSocketTransform(e);
+          }
+        } else {
+          t = this.tOl?.D_GetTransform() ?? this.EIe.D_GetTransform();
+        }
+        var s;
+        var h = Transform_1.Transform.Create(t);
+        h.SetScale3D(Vector_1.Vector.OneVectorProxy);
+        var o = Transform_1.Transform.Create();
+        var n = this.Uen && this.F0a?.IsValid() ? Transform_1.Transform.Create() : undefined;
+        switch (i.Type) {
           case "Combination":
-            this.IP1(t, e, i, s);
+            this.IP1(i, h, o, n);
             break;
           case "Cylinder":
           case "HollowCylinder":
           case "Cone":
-            this.DO1(t, e, i, s);
+            this.DO1(i, h, o, n);
             break;
           default:
-            this.bP1(t, e, i, s);
+            this.bP1(i, h, o, n);
         }
       }
     }
@@ -719,12 +759,12 @@ let RangeComponent = RangeComponent_1 = class RangeComponent extends EntityCompo
     for (let t = 0; t < e.CombinationShapes.length; t++) {
       var o = e.CombinationShapes[t];
       var n = this._P1[t];
-      var r = this.uP1?.[t];
+      var a = this.uP1?.[t];
       this.TP1(o, i, s, h);
-      this.EP1(o, n, r);
+      this.EP1(o, n, a);
       n?.D_K2_SetWorldTransform(s.ToUeTransform(), false, undefined, true);
-      if (h && r && r?.IsValid()) {
-        r.D_K2_SetWorldTransform(h.ToUeTransform(), false, undefined, true);
+      if (h && a && a?.IsValid()) {
+        a.D_K2_SetWorldTransform(h.ToUeTransform(), false, undefined, true);
       }
     }
   }
@@ -811,13 +851,13 @@ let RangeComponent = RangeComponent_1 = class RangeComponent extends EntityCompo
       this.F0a.D_K2_SetActorTransform(e.ToUeTransform(), false, undefined, true);
     }
   }
-  Bzl() {
-    var t;
-    if (this.Ien && this.Den && !this.Ren && (t = this.bjo).Type !== "Volume" && t.Type !== "ActorRefVolume" && t.Type !== "ActorCollision" && (t = this.tOl)?.IsValid()) {
+  Bzl(t) {
+    var e;
+    if (this.Ien && this.Den && !this.Ren && (e = this.bjo).Type !== "Volume" && e.Type !== "ActorRefVolume" && e.Type !== "ActorCollision" && (e = this.tOl)?.IsValid()) {
       this.Ien?.RootComponent?.SetAbsolute(false, false, true);
-      this.Ien?.K2_AttachToActor(t, undefined, 1, 1, 1, false);
+      this.Ien?.K2_AttachToActor(e, t, 1, 1, 1, false);
       this.F0a?.RootComponent?.SetAbsolute(false, false, true);
-      this.F0a?.K2_AttachToActor(t, undefined, 1, 1, 1, false);
+      this.F0a?.K2_AttachToActor(e, t, 1, 1, 1, false);
     }
   }
   Wku(t) {
@@ -966,7 +1006,7 @@ let RangeComponent = RangeComponent_1 = class RangeComponent extends EntityCompo
         if (this.DP1(s)) {
           return;
         }
-        var h = s.Entity?.GetComponent(212);
+        var h = s.Entity?.GetComponent(214);
         if (h && !h.IsReadyForOverlap && (t === h?.Owner || t === h.GetMainCollisionActor())) {
           return;
         }
@@ -1047,23 +1087,25 @@ let RangeComponent = RangeComponent_1 = class RangeComponent extends EntityCompo
     if (this.WKs) {
       for (var [, i] of this.Oen) {
         i = i.Entity?.GetComponent(0)?.GetCreatureDataId();
-        if (!i) {
-          break;
+        if (i) {
+          t.push(i);
         }
-        t.push(i);
       }
     }
+    const v = this.EIe?.GetCreatureDataId();
+    const g = this.EIe?.GetPbDataId();
+    const C = this.EIe?.GetPlayerId();
     this.ReqInitRange(t, e, t => {
       if (t && t.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
-        this.jKs = true;
         var e = MathUtils_1.MathUtils.LongToNumber(t.zWn);
         var i = ModelManager_1.ModelManager.CreatureModel.GetEntity(e);
-        var s = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity;
-        if (i.Valid && i.Entity?.Valid) {
+        if (v === e && i?.Valid && i.Entity?.Valid && !this.EIe?.GetRemoveState() && this.Entity?.Id === i.Id) {
+          this.jKs = true;
+          var s = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity;
           if (s?.Valid) {
-            for (const a of Object.keys(t.dL_._L_)) {
-              var h = t.dL_._L_[a];
-              RangeComponentMessageManager_1.RangeComponentMessageManager.Instance.EmitMessage(i.Entity, t.dL_.i6n, Number(a), s, h);
+            for (const r of Object.keys(t.dL_._L_)) {
+              var h = t.dL_._L_[r];
+              RangeComponentMessageManager_1.RangeComponentMessageManager.Instance.EmitMessage(i.Entity, t.dL_.i6n, Number(r), s, h);
             }
           }
           for (const _ of t.cL_) {
@@ -1071,14 +1113,16 @@ let RangeComponent = RangeComponent_1 = class RangeComponent extends EntityCompo
             var n = ModelManager_1.ModelManager.CreatureModel.GetEntity(o);
             if (n?.Valid && n.Entity?.Valid) {
               for (const l of Object.keys(_._L_)) {
-                var r = _._L_[l];
-                RangeComponentMessageManager_1.RangeComponentMessageManager.Instance.EmitMessage(i.Entity, _.i6n, Number(l), n.Entity, r);
+                var a = _._L_[l];
+                RangeComponentMessageManager_1.RangeComponentMessageManager.Instance.EmitMessage(i.Entity, _.i6n, Number(l), n.Entity, a);
               }
             }
           }
+        } else if (Log_1.Log.CheckWarn()) {
+          Log_1.Log.Warn("SceneItem", 39, "[RangeComponent] ReqInitRange服务器返回时，范围实体已销毁", ["CreatureDataId", v], ["PbDataId", g], ["PlayerId", C]);
         }
       } else if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("SceneItem", 39, "[RangeComponent] ReqInitRange出错", ["CreatureDataId", this.EIe.GetCreatureDataId()], ["PbDataId", this.EIe.GetPbDataId()], ["PlayerId", this.EIe.GetPlayerId()]);
+        Log_1.Log.Error("SceneItem", 39, "[RangeComponent] ReqInitRange出错", ["CreatureDataId", v], ["PbDataId", g], ["PlayerId", C], ["ErrorCode", t?.Q4n]);
       }
     });
   }
@@ -1198,7 +1242,7 @@ let RangeComponent = RangeComponent_1 = class RangeComponent extends EntityCompo
         s?.(e, i);
       } catch {
         if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("SceneItem", 39, "[RangeComp] 范围组件回调异常，请检查之前的报错");
+          Log_1.Log.Error("SceneItem", 39, "[RangeComp] 范围组件回调异常，请检查之前的报错", ["PbDataId", this.EIe?.GetPbDataId()], ["IsEnter", e]);
         }
       }
     }
@@ -1304,12 +1348,12 @@ let RangeComponent = RangeComponent_1 = class RangeComponent extends EntityCompo
         Log_1.Log.Info("SceneItem", 39, "[RangeComp] 本机玩家进出:(发起PlayerAccessRange)", ["PbDataId", this.EIe?.GetPbDataId()], ["CreatureDataId", this.EIe?.GetCreatureDataId()], ["IsEnter", t], ["OtherPbDataId", s?.GetPbDataId()], ["OtherCreatureId", h], ["OtherLocation", i?.ActorLocationProxy]);
       }
       e.Entity?.GetComponent(3)?.ResetLocationCachedTime();
-      if ((s = e.Entity?.GetComponent(71))?.GetEnableMovementSync()) {
+      if ((s = e.Entity?.GetComponent(73))?.GetEnableMovementSync()) {
         s.CollectSampleAndSend(true);
       }
       (h = Protocol_1.Aki.Protocol.Ugs.create()).zWn = this.EIe.GetCreatureDataId();
       h.i6n = t ? Protocol_1.Aki.Protocol.i6n.Proto_RangeEnter : Protocol_1.Aki.Protocol.i6n.Proto_RangeLeave;
-      Net_1.Net.Call(28654, h, t => {
+      Net_1.Net.Call(24468, h, t => {
         if (t && t.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
           var e = MathUtils_1.MathUtils.LongToNumber(t.zWn);
           var i = ModelManager_1.ModelManager.CreatureModel.GetEntity(e);
@@ -1331,7 +1375,7 @@ let RangeComponent = RangeComponent_1 = class RangeComponent extends EntityCompo
         var s;
         var h = n.Entity?.GetComponent(0);
         var o = h?.GetCreatureDataId();
-        if (o && (i.push(o), ModelManager_1.ModelManager.SundryModel?.GetModuleDebugLevel(DEBUG_DETAIL_KEY) && (s = n.Entity?.GetComponent(1), Log_1.Log.CheckInfo()) && Log_1.Log.Info("SceneItem", 39, "[RangeComp] 实体进出:(加入EntityAccessRange队列)", ["PbDataId", this.EIe?.GetPbDataId()], ["CreatureDataId", this.EIe?.GetCreatureDataId()], ["IsEnter", t], ["OtherPbDataId", h?.GetPbDataId()], ["OtherCreatureId", o], ["OtherPos", s?.ActorLocationProxy]), n.Entity?.GetComponent(1)?.ResetLocationCachedTime(), (h = n.Entity?.GetComponent(70))?.GetEnableMovementSync())) {
+        if (o && (i.push(o), ModelManager_1.ModelManager.SundryModel?.GetModuleDebugLevel(DEBUG_DETAIL_KEY) && (s = n.Entity?.GetComponent(1), Log_1.Log.CheckInfo()) && Log_1.Log.Info("SceneItem", 39, "[RangeComp] 实体进出:(加入EntityAccessRange队列)", ["PbDataId", this.EIe?.GetPbDataId()], ["CreatureDataId", this.EIe?.GetCreatureDataId()], ["IsEnter", t], ["OtherPbDataId", h?.GetPbDataId()], ["OtherCreatureId", o], ["OtherPos", s?.ActorLocationProxy]), n.Entity?.GetComponent(1)?.ResetLocationCachedTime(), (h = n.Entity?.GetComponent(72))?.GetEnableMovementSync())) {
           h.CollectSampleAndSend(true);
         }
       }
@@ -1339,7 +1383,7 @@ let RangeComponent = RangeComponent_1 = class RangeComponent extends EntityCompo
       e.zWn = this.EIe.GetCreatureDataId();
       e.HKs = i;
       e.i6n = t ? Protocol_1.Aki.Protocol.i6n.Proto_RangeEnter : Protocol_1.Aki.Protocol.i6n.Proto_RangeLeave;
-      Net_1.Net.Call(28309, e, t => {
+      Net_1.Net.Call(19102, e, t => {
         if (t && t.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
           var e = MathUtils_1.MathUtils.LongToNumber(t.zWn);
           var i = ModelManager_1.ModelManager.CreatureModel.GetEntity(e);
@@ -1348,9 +1392,9 @@ let RangeComponent = RangeComponent_1 = class RangeComponent extends EntityCompo
               var s = MathUtils_1.MathUtils.LongToNumber(n.g6n);
               var h = ModelManager_1.ModelManager.CreatureModel.GetEntity(s);
               if (h?.Valid && h.Entity?.Valid) {
-                for (const r of Object.keys(n._L_)) {
-                  var o = n._L_[r];
-                  RangeComponentMessageManager_1.RangeComponentMessageManager.Instance.EmitMessage(i.Entity, n.i6n, Number(r), h.Entity, o);
+                for (const a of Object.keys(n._L_)) {
+                  var o = n._L_[a];
+                  RangeComponentMessageManager_1.RangeComponentMessageManager.Instance.EmitMessage(i.Entity, n.i6n, Number(a), h.Entity, o);
                 }
               }
             }
@@ -1364,7 +1408,7 @@ let RangeComponent = RangeComponent_1 = class RangeComponent extends EntityCompo
     s.zWn = this.EIe.GetCreatureDataId();
     s.JKs = t;
     s.zKs = e;
-    Net_1.Net.Call(29596, s, i);
+    Net_1.Net.Call(20517, s, i);
   }
   IsOverlappingPlayer() {
     return this.Ven;
@@ -1384,30 +1428,56 @@ let RangeComponent = RangeComponent_1 = class RangeComponent extends EntityCompo
       }
     }
   }
-  SetRangeActorParent(t) {
+  UpdateCombinationBoxRange(t, e, i) {
+    var s;
+    if (this.bjo.Type === "Combination" && !(t >= this._P1.length)) {
+      if ((s = this._P1[t]) && s instanceof UE.BoxComponent) {
+        s.D_K2_SetRelativeLocation(e, false, undefined, true);
+        s?.D_SetBoxExtent(i, true);
+      }
+      if (this.Uen && (s = this.uP1?.[t]) && s instanceof UE.BoxComponent) {
+        s.D_K2_SetRelativeLocation(e, false, undefined, true);
+        s?.D_SetBoxExtent(i.op_Addition(this.Uen), true);
+      }
+    }
+  }
+  UpdateCylinderShape(t) {
+    var e;
+    var i;
+    var s;
+    if (this.Ien && this.yen && this.bjo?.Type === "Cylinder") {
+      (e = Transform_1.Transform.Create(this.tOl?.D_GetTransform() ?? this.EIe.D_GetTransform())).SetScale3D(Vector_1.Vector.OneVectorProxy);
+      i = Transform_1.Transform.Create(this.Ien?.D_GetTransform());
+      s = this.F0a ? Transform_1.Transform.Create(this.F0a?.D_GetTransform()) : undefined;
+      this.TP1(t, e, i, s);
+      this.BO1(t, i, s);
+      this.UO1(i, s);
+    }
+  }
+  SetRangeActorParent(t, e = true, i) {
     this.tOl = t?.IsValid() ? t : this.Entity.GetComponent(1)?.Owner;
     if (this.Ien?.IsValid() && this.Den && !this.Ren && this.wen) {
       this.Ien?.K2_DetachFromActor(1, 1, 1);
       this.F0a?.K2_DetachFromActor(1, 1, 1);
       if (this._P1.length > 0) {
-        for (const e of this._P1) {
-          if (e.bKuroPassiveCollision) {
-            e?.KuroSetPassiveCollision(false, false);
+        for (const s of this._P1) {
+          if (s.bKuroPassiveCollision) {
+            s?.KuroSetPassiveCollision(false, false);
           }
         }
       } else if (this.yen?.bKuroPassiveCollision) {
         this.yen?.KuroSetPassiveCollision(false, false);
       }
       if (this.uP1 && this.uP1.length > 0) {
-        for (const i of this.uP1) {
-          if (i.bKuroPassiveCollision) {
-            i?.KuroSetPassiveCollision(false, false);
+        for (const h of this.uP1) {
+          if (h.bKuroPassiveCollision) {
+            h?.KuroSetPassiveCollision(false, false);
           }
         }
       } else if (this.Pen?.bKuroPassiveCollision) {
         this.Pen?.KuroSetPassiveCollision(false, false);
       }
-      this.ht_();
+      this.ht_(e, i);
     }
   }
   roh(t) {
@@ -1461,5 +1531,5 @@ let RangeComponent = RangeComponent_1 = class RangeComponent extends EntityCompo
     }
   }
 };
-RangeComponent = RangeComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(89)], RangeComponent);
+RangeComponent = RangeComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(91)], RangeComponent);
 exports.RangeComponent = RangeComponent; //# sourceMappingURL=RangeComponent.js.map

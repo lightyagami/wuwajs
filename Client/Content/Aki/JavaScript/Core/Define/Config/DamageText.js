@@ -76,6 +76,9 @@ class DamageText {
   get MonsterCriticalDamageCurvePath() {
     return GameUtils_1.GameUtils.ConvertToArray(this.monstercriticaldamagecurvepathLength(), this.monstercriticaldamagecurvepath, this);
   }
+  get UseForOptimization() {
+    return this.useforoptimization();
+  }
   __init(t, i) {
     this.z7 = t;
     this.J7 = i;
@@ -299,6 +302,10 @@ class DamageText {
     } else {
       return 0;
     }
+  }
+  useforoptimization() {
+    var t = this.J7.__offset(this.z7, 48);
+    return !t || !!this.J7.readInt8(this.z7 + t);
   }
 }
 exports.DamageText = DamageText;

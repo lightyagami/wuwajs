@@ -187,7 +187,7 @@ let CommonConnectComponent = CommonConnectComponent_1 = class CommonConnectCompo
   CheckEntityMatchCondition(t, e) {
     if (t && !(t.length <= 0)) {
       var i = e?.GetComponent(1);
-      var s = e?.GetComponent(206);
+      var s = e?.GetComponent(208);
       if (i && s) {
         var r = i.CreatureData.GetBaseInfo();
         if (r) {
@@ -236,7 +236,7 @@ let CommonConnectComponent = CommonConnectComponent_1 = class CommonConnectCompo
         var i;
         var s;
         var r = [];
-        if (e.Type !== 0 && (i = e.PortalPairId, s = ModelManager_1.ModelManager.CreatureModel?.GetEntity(i)?.Entity?.GetComponent(226))) {
+        if (e.Type !== 0 && (i = e.PortalPairId, s = ModelManager_1.ModelManager.CreatureModel?.GetEntity(i)?.Entity?.GetComponent(228))) {
           s = s.GetPairCreatureDataId();
           if (e.Type === 1) {
             r.push(MathUtils_1.MathUtils.NumberToLong(i));
@@ -499,8 +499,8 @@ let CommonConnectComponent = CommonConnectComponent_1 = class CommonConnectCompo
       if (!e) {
         return false;
       }
-      var n = ModelManager_1.ModelManager.CreatureModel?.GetEntity(s)?.Entity?.GetComponent(226);
-      var h = ModelManager_1.ModelManager.CreatureModel?.GetEntity(n.GetPairCreatureDataId())?.Entity?.GetComponent(226);
+      var n = ModelManager_1.ModelManager.CreatureModel?.GetEntity(s)?.Entity?.GetComponent(228);
+      var h = ModelManager_1.ModelManager.CreatureModel?.GetEntity(n.GetPairCreatureDataId())?.Entity?.GetComponent(228);
       var n = n?.GetTriggerComp();
       var h = h?.GetTriggerComp();
       if (!n || !h) {
@@ -670,7 +670,7 @@ let CommonConnectComponent = CommonConnectComponent_1 = class CommonConnectCompo
     }
     r.C$s = i;
     s.g$s = r;
-    Net_1.Net.Call(24657, s, t => {
+    Net_1.Net.Call(19130, s, t => {
       e.forEach(t => {
         this.ServerProcessingEntities.delete(t.Target.Id);
       });
@@ -679,7 +679,7 @@ let CommonConnectComponent = CommonConnectComponent_1 = class CommonConnectCompo
         case Protocol_1.Aki.Protocol.Q4n.Proto_ErrConnectorEntityNoExist:
           break;
         default:
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 25874);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 20511);
       }
     });
   }
@@ -703,9 +703,9 @@ let CommonConnectComponent = CommonConnectComponent_1 = class CommonConnectCompo
   }
   bna() {
     this.ActorComp = this.Entity.GetComponent(3);
-    this.Lna = this.Entity.GetComponent(129);
-    this.rXa = this.Entity.GetComponent(215);
-    this.kCl = this.Entity.GetComponent(70);
+    this.Lna = this.Entity.GetComponent(131);
+    this.rXa = this.Entity.GetComponent(217);
+    this.kCl = this.Entity.GetComponent(72);
     if (this.Tna.LogicType.Type === "Range") {
       this.cQs = this.Tna.LogicType.EnterRange;
       this.mQs = this.Tna.LogicType.LeaveRange;
@@ -803,9 +803,9 @@ let CommonConnectComponent = CommonConnectComponent_1 = class CommonConnectCompo
     var i = MathUtils_1.MathUtils.NumberToLong(this.ActorComp.CreatureData.GetCreatureDataId());
     e.F4n = i;
     e.SDs = t;
-    Net_1.Net.Call(20902, e, t => {
+    Net_1.Net.Call(29806, e, t => {
       if (t?.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 21037);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 29931);
       }
     });
   }
@@ -824,7 +824,7 @@ let CommonConnectComponent = CommonConnectComponent_1 = class CommonConnectCompo
     if (t) {
       var i = ModelManager_1.ModelManager.PortalModel.GetPortal(t);
       if (i && i.Portal1Enable && i.Portal2Enable) {
-        var s = ModelManager_1.ModelManager.CreatureModel?.GetEntity(t)?.Entity?.GetComponent(226);
+        var s = ModelManager_1.ModelManager.CreatureModel?.GetEntity(t)?.Entity?.GetComponent(228);
         var r = (0, puerts_1.$ref)(undefined);
         s?.PortalCapture?.GetPair(r);
         var r = (0, puerts_1.$unref)(r);
@@ -905,12 +905,12 @@ let CommonConnectComponent = CommonConnectComponent_1 = class CommonConnectCompo
     return true;
   }
   Bna() {
-    this.ActorComp = this.Entity.GetComponent(212);
-    this.mBe = this.Entity.GetComponent(142);
+    this.ActorComp = this.Entity.GetComponent(214);
+    this.mBe = this.Entity.GetComponent(144);
     if (this.Rna?.LogicType.MatchConditions) {
       EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemStateChange, this.g_n);
     }
-    this.mBe = this.Entity.GetComponent(142);
+    this.mBe = this.Entity.GetComponent(144);
     if (this.Rna.LogicType.Type === "Range") {
       this.EQs = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(this.Rna.LogicType.ActiveState);
       this.cQs = this.Rna.LogicType.EnterRange;

@@ -87,7 +87,7 @@ class DamageAccumulation extends ExtraEffectBase_1.BuffEffect {
           {
             let t = 0;
             var e;
-            if ((t = this.ine ? (e = this.lXo * CharacterAttributeTypes_1.DIVIDED_TEN_THOUSAND, this.OwnerEntity.GetComponent(182)?.GetBaseValue(this.ine) * e) : this.lXo) < this.rXo) {
+            if ((t = this.ine ? (e = this.lXo * CharacterAttributeTypes_1.DIVIDED_TEN_THOUSAND, this.OwnerEntity.GetComponent(184)?.GetBaseValue(this.ine) * e) : this.lXo) < this.rXo) {
               this.mXo();
             }
             break;

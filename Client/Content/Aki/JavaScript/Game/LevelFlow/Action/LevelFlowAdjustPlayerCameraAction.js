@@ -219,7 +219,7 @@ class LevelFlowAdjustPlayerCameraAction extends LevelFlowActionBase_1.LevelFlowA
   TLe(e, t = undefined) {
     ControllerHolder_1.ControllerHolder.CameraController.FightCamera.LogicComponent?.CameraConfigController.EnableHookConfig(e.Option.Type, t);
     if (Global_1.Global.BaseCharacter) {
-      ModelManager_1.ModelManager.CreatureModel.GetEntityById(Global_1.Global.BaseCharacter.EntityId)?.Entity?.GetComponent(65)?.InterruptAutoMoving("进入相机调整AdjustPlayerCamera", true);
+      ModelManager_1.ModelManager.CreatureModel.GetEntityById(Global_1.Global.BaseCharacter.EntityId)?.Entity?.GetComponent(67)?.InterruptAutoMoving("进入相机调整AdjustPlayerCamera", true);
     }
   }
 }

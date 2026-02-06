@@ -33,7 +33,7 @@ class PersonalController extends UiControllerBase_1.UiControllerBase {
   }
   static c3l() {
     var e = new Protocol_1.Aki.Protocol.E0_();
-    Net_1.Net.Call(29171, e, e => {
+    Net_1.Net.Call(23097, e, e => {
       if (e) {
         ModelManager_1.ModelManager.PersonalModel.InitPlayerHeadData(e.FE_);
         e = Protocol_1.Aki.Protocol.I0_.encode(e).finish().slice().buffer;
@@ -44,13 +44,13 @@ class PersonalController extends UiControllerBase_1.UiControllerBase {
   static SendBirthdayInitRequest(t) {
     var e = Protocol_1.Aki.Protocol.SYn.create();
     e.ZVn = t;
-    Net_1.Net.Call(27593, e, e => {
+    Net_1.Net.Call(15965, e, e => {
       if (e) {
         if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
           ModelManager_1.ModelManager.PersonalModel.SetBirthday(t);
           ModelManager_1.ModelManager.BirthdayModel.ResetBirthday();
         } else {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21515);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24926);
         }
       }
     });
@@ -58,12 +58,12 @@ class PersonalController extends UiControllerBase_1.UiControllerBase {
   static SendBirthdayShowSetRequest(t) {
     var e = Protocol_1.Aki.Protocol.wYn.create();
     e.$7n = t;
-    Net_1.Net.Call(25274, e, e => {
+    Net_1.Net.Call(26593, e, e => {
       if (e) {
         if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
           ModelManager_1.ModelManager.PersonalModel.SetBirthdayDisplay(t);
         } else {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16202);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19177);
         }
       }
     });
@@ -71,12 +71,12 @@ class PersonalController extends UiControllerBase_1.UiControllerBase {
   static SendRoleShowListUpdateRequest(t) {
     var e = Protocol_1.Aki.Protocol.yYn.create();
     e.Y7n = t;
-    Net_1.Net.Call(24461, e, e => {
+    Net_1.Net.Call(20201, e, e => {
       if (e) {
         if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
           ModelManager_1.ModelManager.PersonalModel.UpdateRoleShowList(t);
         } else {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29915);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18762);
         }
       }
     });
@@ -84,25 +84,25 @@ class PersonalController extends UiControllerBase_1.UiControllerBase {
   static async SendRoleShowListUpdateRequestAsync(e) {
     var t = Protocol_1.Aki.Protocol.yYn.create();
     t.Y7n = e;
-    var t = await Net_1.Net.CallAsync(24461, t);
+    var t = await Net_1.Net.CallAsync(20201, t);
     if (t) {
       if (t.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
         ModelManager_1.ModelManager.PersonalModel.UpdateRoleShowList(e);
         return true;
       }
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 29915);
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 18762);
     }
     return false;
   }
   static SendChangeCardRequest(t) {
     var e = Protocol_1.Aki.Protocol.RYn.create();
     e.J7n = t;
-    Net_1.Net.Call(25938, e, e => {
+    Net_1.Net.Call(26598, e, e => {
       if (e) {
         if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
           ModelManager_1.ModelManager.PersonalModel.SetCurCardId(t);
         } else {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23260);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24577);
         }
       }
     });
@@ -110,12 +110,12 @@ class PersonalController extends UiControllerBase_1.UiControllerBase {
   static SendReadCardRequest(t) {
     var e = Protocol_1.Aki.Protocol.AYn.create();
     e.J7n = t;
-    Net_1.Net.Call(19369, e, e => {
+    Net_1.Net.Call(16429, e, e => {
       if (e) {
         if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
           ModelManager_1.ModelManager.PersonalModel.UpdateCardUnlockList(t, true);
         } else {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25756);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22466);
         }
       }
     });
@@ -123,14 +123,14 @@ class PersonalController extends UiControllerBase_1.UiControllerBase {
   static SendModifySignatureRequest(t) {
     var e = Protocol_1.Aki.Protocol.uYn.create();
     e.zVn = t;
-    Net_1.Net.Call(23755, e, e => {
+    Net_1.Net.Call(24376, e, e => {
       if (e) {
         if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
           ModelManager_1.ModelManager.PersonalModel.SetSignature(t);
         } else if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_ContainsDirtyWord || e.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_ErrRoleInvalidNameLength) {
           ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("NotElegantName");
         } else {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18983);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29631);
         }
       }
     });
@@ -138,12 +138,12 @@ class PersonalController extends UiControllerBase_1.UiControllerBase {
   static SendChangeHeadPhotoRequest(t) {
     var e = Protocol_1.Aki.Protocol.dYn.create();
     e.z7n = t;
-    Net_1.Net.Call(20320, e, e => {
+    Net_1.Net.Call(16140, e, e => {
       if (e) {
         if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
           ModelManager_1.ModelManager.PersonalModel.SetHeadPhotoId(t);
         } else {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22357);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16931);
         }
       }
     });
@@ -152,48 +152,48 @@ class PersonalController extends UiControllerBase_1.UiControllerBase {
     return ModelManager_1.ModelManager.PersonalModel.GetCurCardId() === e;
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(24619, e => {
+    Net_1.Net.Register(17935, e => {
       ModelManager_1.ModelManager.PersonalModel.AddCardUnlockList(e.J7n, false);
     });
-    Net_1.Net.Register(17036, e => {
+    Net_1.Net.Register(22226, e => {
       ModelManager_1.ModelManager.PersonalModel.SetHeadPhotoId(e.dSs);
     });
-    Net_1.Net.Register(23787, e => {
+    Net_1.Net.Register(21928, e => {
       ModelManager_1.ModelManager.PersonalModel.SetRoleShowList(e.MSs);
     });
-    Net_1.Net.Register(23109, e => {
+    Net_1.Net.Register(28494, e => {
       ModelManager_1.ModelManager.PersonalModel.SetSignature(e.zVn);
     });
-    Net_1.Net.Register(28030, e => {
+    Net_1.Net.Register(27240, e => {
       ModelManager_1.ModelManager.PlayerInfoModel.SetPlayerName(e.H8n);
       ModelManager_1.ModelManager.PersonalModel.SetModifyNameInfo(e.Zha, StringUtils_1.EMPTY_STRING);
     });
-    Net_1.Net.Register(22486, e => {
+    Net_1.Net.Register(29708, e => {
       ModelManager_1.ModelManager.PersonalModel.UpdatePlayerHeadData(e.NE_);
     });
-    Net_1.Net.Register(16595, e => {
+    Net_1.Net.Register(19155, e => {
       ModelManager_1.ModelManager.PersonalModel.SetDressedPlayerTitle(e.tnc, e.inc);
     });
-    Net_1.Net.Register(24849, e => {
+    Net_1.Net.Register(18044, e => {
       ModelManager_1.ModelManager.PersonalModel.UpdateUnDressedPlayerTitleList(e.rnc);
     });
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(24619);
-    Net_1.Net.UnRegister(17036);
-    Net_1.Net.UnRegister(23787);
-    Net_1.Net.UnRegister(23109);
-    Net_1.Net.UnRegister(28030);
-    Net_1.Net.UnRegister(22486);
-    Net_1.Net.UnRegister(16595);
-    Net_1.Net.UnRegister(24849);
+    Net_1.Net.UnRegister(17935);
+    Net_1.Net.UnRegister(22226);
+    Net_1.Net.UnRegister(21928);
+    Net_1.Net.UnRegister(28494);
+    Net_1.Net.UnRegister(27240);
+    Net_1.Net.UnRegister(29708);
+    Net_1.Net.UnRegister(19155);
+    Net_1.Net.UnRegister(18044);
   }
   static SendChangePlayerTitleRequest(e) {
     var t = Protocol_1.Aki.Protocol.Zoc.create();
     t.tnc = e;
-    Net_1.Net.Call(21252, t, e => {
+    Net_1.Net.Call(27799, t, e => {
       if (e && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23975);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15384);
       }
     });
   }
@@ -211,33 +211,33 @@ exports.PersonalController = PersonalController;
 PersonalController.RequestModifySignature = async e => {
   var t = Protocol_1.Aki.Protocol.uYn.create();
   t.zVn = e;
-  var t = await Net_1.Net.CallAsync(23755, t);
+  var t = await Net_1.Net.CallAsync(24376, t);
   if (t.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
     ModelManager_1.ModelManager.PersonalModel.SetSignature(e);
   } else if (t.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_ContainsDirtyWord || t.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_ErrRoleInvalidNameLength) {
     ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("NotElegantName");
   } else {
-    ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 18983);
+    ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 29631);
   }
   return t.Q4n;
 };
 PersonalController.RequestModifyName = async e => {
   var t = Protocol_1.Aki.Protocol.lYn.create();
   t.H8n = e;
-  var e = await Net_1.Net.CallAsync(21061, t);
+  var e = await Net_1.Net.CallAsync(21547, t);
   if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
     ModelManager_1.ModelManager.PersonalModel.SetModifyNameInfo(e.Zha, e.ela);
   } else if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_ContainsDirtyWord || e.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_ErrRoleInvalidNameLength) {
     ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("NotElegantName");
   } else {
-    ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22357);
+    ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16931);
   }
   return e.Q4n;
 };
 PersonalController.Wac = (e, t) => {
   if (e === 10082 && t) {
     e = Protocol_1.Aki.Protocol.zoc.create();
-    Net_1.Net.Call(25683, e, e => {
+    Net_1.Net.Call(16874, e, e => {
       if (e) {
         ModelManager_1.ModelManager.PersonalModel.InitPlayerTitleData(e.onc);
       }

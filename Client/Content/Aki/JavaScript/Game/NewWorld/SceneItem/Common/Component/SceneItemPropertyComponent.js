@@ -120,8 +120,8 @@ let SceneItemPropertyComponent = class SceneItemPropertyComponent extends Entity
   }
   OnStart() {
     var t = this.Entity?.GetComponent(0);
-    this.Xte = this.Entity?.GetComponent(206);
-    this.cen = this.Entity?.GetComponent(142);
+    this.Xte = this.Entity?.GetComponent(208);
+    this.cen = this.Entity?.GetComponent(144);
     if ((t &&= t.GetPbEntityInitData()) && (t = (0, IComponent_1.getComponent)(t.ComponentsData, "EntityStateComponent"), this.A1n = t?.LockConfig, this.A1n)) {
       this.Xrh ||= this.Xte?.ListenForTagAddOrRemove(-662723379, this.zrh);
       this.sb1 ||= this.Xte?.ListenForTagAddOrRemove(-1584109024, this.ab1);
@@ -205,5 +205,5 @@ let SceneItemPropertyComponent = class SceneItemPropertyComponent extends Entity
     }
   }
 };
-SceneItemPropertyComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(139)], SceneItemPropertyComponent);
+SceneItemPropertyComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(141)], SceneItemPropertyComponent);
 exports.SceneItemPropertyComponent = SceneItemPropertyComponent; //# sourceMappingURL=SceneItemPropertyComponent.js.map

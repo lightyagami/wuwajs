@@ -5,7 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ComposePopupView = undefined;
 const UE = require("ue");
-const TimerSystem_1 = require("../../../../../Core/Timer/TimerSystem");
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
 const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
@@ -16,7 +15,6 @@ const ConfirmBoxDefine_1 = require("../../../ConfirmBox/ConfirmBoxDefine");
 const ItemDefines_1 = require("../../../Item/Data/ItemDefines");
 const GenericScrollViewNew_1 = require("../../../Util/ScrollView/GenericScrollViewNew");
 const ComposePopupGridItem_1 = require("./ComposePopupGridItem");
-const DELAY_REFRESH_TIME = 20;
 class ComposePopupView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
@@ -28,21 +26,14 @@ class ComposePopupView extends UiViewBase_1.UiViewBase {
     this.Cgm = false;
     this.pgm = undefined;
     this.vgm = undefined;
-    this.UBm = false;
-    this.xBm = undefined;
+    this.s2m = false;
     this.N8e = e => {
       this.Cgm = e === 1;
       this.Og();
     };
     this.ygm = () => {
-      if (!this.UBm) {
-        if (TimerSystem_1.GameplayTimerSystem.Has(this.xBm)) {
-          TimerSystem_1.GameplayTimerSystem.Remove(this.xBm);
-        }
-        this.xBm = TimerSystem_1.GameplayTimerSystem.Delay(() => {
-          this.xBm = undefined;
-          this.Og();
-        }, DELAY_REFRESH_TIME);
+      if (!this.s2m) {
+        this.Og();
       }
     };
     this.jWt = () => {
@@ -105,7 +96,7 @@ class ComposePopupView extends UiViewBase_1.UiViewBase {
     var t = this.OpenParam;
     if (t) {
       e = ModelManager_1.ModelManager.ComposePopupModel.MergeDuplicateSelectedData(t.SelectedItemList);
-      this.fgm = this.Kwm(e);
+      this.fgm = this.pLm(e);
       this.pgm = t.ClickConfirm;
       this.vgm = t.BelongView;
       e = this.Mgm(this.fgm);
@@ -121,11 +112,6 @@ class ComposePopupView extends UiViewBase_1.UiViewBase {
     this.JPt?.GetScrollItemList().forEach(e => {
       e.StopNiagara();
     });
-  }
-  OnBeforeDestroy() {
-    if (TimerSystem_1.GameplayTimerSystem.Has(this.xBm)) {
-      TimerSystem_1.GameplayTimerSystem.Remove(this.xBm);
-    }
   }
   OnAddEventListener() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnCommonItemCountAnyChange, this.ygm);
@@ -156,7 +142,7 @@ class ComposePopupView extends UiViewBase_1.UiViewBase {
   Sgm() {
     this.ZAt?.SetEnableClick(false);
     ControllerHolder_1.ControllerHolder.ComposeController.SendSynthesisItemRequestBatchNew(this.ggm, () => {
-      this.UBm = true;
+      this.s2m = true;
       this.pgm?.();
     }).finally(() => {
       this.CloseMe();
@@ -181,7 +167,7 @@ class ComposePopupView extends UiViewBase_1.UiViewBase {
       };
     }
   }
-  Kwm(e) {
+  pLm(e) {
     return e.sort((e, t) => {
       e = e.SelectedCount - e.Count >= 0;
       t = t.SelectedCount - t.Count >= 0;

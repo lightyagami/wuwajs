@@ -47,7 +47,7 @@ let UeSceneItemMoveTickManagerComponent = class UeSceneItemMoveTickManagerCompon
     };
   }
   OnStart() {
-    this.Hte = this.Entity.GetComponent(212);
+    this.Hte = this.Entity.GetComponent(214);
     if (this.Entity.GameBudgetConfig.GroupName.op_Equality(FNameUtil_1.FNameUtil.GetDynamicFName("MoveSceneItemEntity"))) {
       this.H7u = true;
     }
@@ -81,5 +81,5 @@ let UeSceneItemMoveTickManagerComponent = class UeSceneItemMoveTickManagerCompon
     }
   }
 };
-UeSceneItemMoveTickManagerComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(322)], UeSceneItemMoveTickManagerComponent);
+UeSceneItemMoveTickManagerComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(324)], UeSceneItemMoveTickManagerComponent);
 exports.UeSceneItemMoveTickManagerComponent = UeSceneItemMoveTickManagerComponent; //# sourceMappingURL=UeSceneItemMoveTickManagerComponent.js.map

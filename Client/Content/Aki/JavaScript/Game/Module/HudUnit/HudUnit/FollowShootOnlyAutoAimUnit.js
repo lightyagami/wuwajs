@@ -12,8 +12,8 @@ class FollowShootOnlyAutoAimUnit extends HudUnitBase_1.HudUnitBase {
   constructor() {
     super(...arguments);
     this.Kti = undefined;
-    this.dzm = undefined;
-    this.mzm = undefined;
+    this.YZm = undefined;
+    this.zZm = undefined;
     this.SPe = undefined;
     this.dce = false;
     this.Yti = false;
@@ -24,19 +24,19 @@ class FollowShootOnlyAutoAimUnit extends HudUnitBase_1.HudUnitBase {
   }
   OnStart() {
     this.Kti = this.GetItem(0);
-    this.dzm = this.GetItem(1);
-    this.mzm = this.GetItem(2);
+    this.YZm = this.GetItem(1);
+    this.zZm = this.GetItem(2);
     this.Kti?.SetUIActive(false);
-    this.dzm?.SetUIActive(false);
-    this.mzm?.SetUIActive(false);
+    this.YZm?.SetUIActive(false);
+    this.zZm?.SetUIActive(false);
     this.dce = false;
     this.Yti = false;
     this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
   }
   OnBeforeDestroy() {
     this.Kti = undefined;
-    this.dzm = undefined;
-    this.mzm = undefined;
+    this.YZm = undefined;
+    this.zZm = undefined;
     this.SPe?.Clear();
     this.SPe = undefined;
     super.OnBeforeDestroy();
@@ -45,8 +45,8 @@ class FollowShootOnlyAutoAimUnit extends HudUnitBase_1.HudUnitBase {
     if (!this.IsCreateOrCreating) {
       if (t !== this.dce) {
         this.dce = t;
-        this.dzm?.SetUIActive(false);
-        this.mzm?.SetUIActive(false);
+        this.YZm?.SetUIActive(false);
+        this.zZm?.SetUIActive(false);
         if (t) {
           super.SetActive(true);
           this.SPe?.StopSequenceByKey("Close");

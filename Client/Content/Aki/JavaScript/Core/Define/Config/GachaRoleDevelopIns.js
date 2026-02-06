@@ -27,6 +27,9 @@ class GachaRoleDevelopIns {
   get DungeonEntranceId() {
     return this.dungeonentranceid();
   }
+  get LevelPlayParam() {
+    return this.levelplayparam();
+  }
   __init(t, e) {
     this.z7 = t;
     this.J7 = e;
@@ -81,6 +84,14 @@ class GachaRoleDevelopIns {
       return this.J7.readInt32(this.z7 + t);
     } else {
       return 0;
+    }
+  }
+  levelplayparam() {
+    var t = this.J7.__offset(this.z7, 16);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 36;
     }
   }
 }

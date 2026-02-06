@@ -23,37 +23,37 @@ class ActivityNewPlayerSupportSubView extends ActivitySubViewBase_1.ActivitySubV
   constructor() {
     super(...arguments);
     this.CNe = undefined;
-    this.mDf = undefined;
+    this.Qqf = undefined;
     this.dNe = false;
     this.Ftl = "";
-    this.Q2f = "";
+    this.P5f = "";
     this.qoh = undefined;
-    this.q5f = undefined;
-    this.O5f = undefined;
-    this.G5f = undefined;
-    this.fDf = () => {
+    this.cQf = undefined;
+    this.dQf = undefined;
+    this.mQf = undefined;
+    this.Kqf = () => {
       ActivityControllerHolder_1.ActivityControllerHolder.ActivityNewPlayerSupportController?.OpenTrialRoleView();
     };
     this.I_1 = () => new ActivityNewPlayerSupportTaskItem_1.ActivityNewPlayerSupportTaskItem();
-    this.Ocf = () => {
-      this.gDf();
+    this.Bmf = () => {
+      this.Xqf();
     };
-    this.CDf = () => {
-      this.pDf();
+    this.Yqf = () => {
+      this.zqf();
     };
-    this.F5f = () => {
+    this.fQf = () => {
       UiManager_1.UiManager.OpenView("ActivityRegressMainView", {
         SubView: 3,
         OpenType: 1
       });
     };
-    this.N5f = () => {
+    this.gQf = () => {
       UiManager_1.UiManager.OpenView("ActivityRegressMainView", {
         SubView: 1,
         OpenType: 1
       });
     };
-    this.V5f = () => {
+    this.CQf = () => {
       UiManager_1.UiManager.OpenView("ActivityRegressMainView", {
         SubView: 4,
         OpenType: 1
@@ -65,27 +65,27 @@ class ActivityNewPlayerSupportSubView extends ActivitySubViewBase_1.ActivitySubV
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIText], [2, UE.UIText], [3, UE.UIButtonComponent], [4, UE.UITexture], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIHorizontalLayout], [10, UE.UIItem], [11, UE.UIText], [12, UE.UIItem], [13, UE.UIText], [14, UE.UIItem], [15, UE.UIItem]];
-    this.BtnBindInfo = [[3, this.fDf]];
+    this.BtnBindInfo = [[3, this.Kqf]];
   }
   async OnBeforeStartAsync() {
-    this.O5f = new ActivityNewPlayerSupportEntranceItem();
-    this.O5f.SetEntranceFunc(this.F5f);
-    await this.O5f.CreateThenShowByActorAsync(this.GetItem(6).GetOwner());
-    this.O5f.BindRedDot("RedDotNewPlayerSupportAdventure");
-    this.q5f = new ActivityNewPlayerSupportEntranceItem();
-    this.q5f.SetEntranceFunc(this.N5f);
-    await this.q5f.CreateThenShowByActorAsync(this.GetItem(7).GetOwner());
-    this.G5f = new ActivityNewPlayerSupportEntranceItem();
-    this.G5f.SetEntranceFunc(this.V5f);
-    await this.G5f.CreateThenShowByActorAsync(this.GetItem(8).GetOwner());
+    this.dQf = new ActivityNewPlayerSupportEntranceItem();
+    this.dQf.SetEntranceFunc(this.fQf);
+    await this.dQf.CreateThenShowByActorAsync(this.GetItem(6).GetOwner());
+    this.dQf.BindRedDot("RedDotNewPlayerSupportAdventure");
+    this.cQf = new ActivityNewPlayerSupportEntranceItem();
+    this.cQf.SetEntranceFunc(this.gQf);
+    await this.cQf.CreateThenShowByActorAsync(this.GetItem(7).GetOwner());
+    this.mQf = new ActivityNewPlayerSupportEntranceItem();
+    this.mQf.SetEntranceFunc(this.CQf);
+    await this.mQf.CreateThenShowByActorAsync(this.GetItem(8).GetOwner());
   }
   OnStart() {
     this.Ftl = MultiTextLang_1.configMultiTextLang.GetLocalTextNew("ActivityRemainingTime");
-    this.Q2f = CommonParamById_1.configCommonParamById.GetStringConfig("NewPlayerSupportTrialRoleChosenDesc");
+    this.P5f = CommonParamById_1.configCommonParamById.GetStringConfig("NewPlayerSupportTrialRoleChosenDesc");
     this.qoh = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(9), this.I_1);
-    this.mDf = this.GetText(1);
+    this.Qqf = this.GetText(1);
     this.dNe = this.CNe.EndShowTime !== 0;
-    this.mDf.SetUIActive(this.dNe);
+    this.Qqf.SetUIActive(this.dNe);
     this.GetText(0).SetText(this.CNe.GetTitle());
     this.GetText(2).SetText(this.CNe.GetDesc());
     RedDotController_1.RedDotController.BindRedDot("RedDotNewPlayerSupportTrialRoleEntrance", this.GetItem(12));
@@ -94,37 +94,37 @@ class ActivityNewPlayerSupportSubView extends ActivitySubViewBase_1.ActivitySubV
     RedDotController_1.RedDotController.UnBindGivenUi("RedDotNewPlayerSupportTrialRoleEntrance", this.GetItem(12));
   }
   OnBeforeShow() {
-    this.pDf();
-    this.gDf();
+    this.zqf();
+    this.Xqf();
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnActivityNewPlayerSupportEntranceRedDotUpdate);
   }
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnActivityNewPlayerSupportTaskUpdate, this.Ocf);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnActivityNewPlayerSupportCurTrialRoleChange, this.CDf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnActivityNewPlayerSupportTaskUpdate, this.Bmf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnActivityNewPlayerSupportCurTrialRoleChange, this.Yqf);
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivityNewPlayerSupportTaskUpdate, this.Ocf);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivityNewPlayerSupportCurTrialRoleChange, this.CDf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivityNewPlayerSupportTaskUpdate, this.Bmf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivityNewPlayerSupportCurTrialRoleChange, this.Yqf);
   }
   OnRefreshView() {
-    this.pDf();
-    this.gDf();
+    this.zqf();
+    this.Xqf();
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnActivityNewPlayerSupportEntranceRedDotUpdate);
   }
   pNe(e) {
     if (this.dNe !== e) {
       this.dNe = e;
-      this.mDf.SetUIActive(e);
+      this.Qqf.SetUIActive(e);
     }
   }
   fNe() {
-    var [e, t] = this.K2f();
+    var [e, t] = this.A5f();
     this.pNe(e);
     if (e) {
-      this.mDf.SetText(t);
+      this.Qqf.SetText(t);
     }
   }
-  K2f() {
+  A5f() {
     if (this.CNe.CheckIfInShowTime()) {
       return [true, ModelManager_1.ModelManager.ActivityModel.GetRemainTimeText(this.CNe.EndShowTime, this.Ftl)];
     } else {
@@ -134,7 +134,7 @@ class ActivityNewPlayerSupportSubView extends ActivitySubViewBase_1.ActivitySubV
   OnTimer(e) {
     this.fNe();
   }
-  pDf() {
+  zqf() {
     var e = this.CNe.CurUseTrialRoleData;
     var t = e !== undefined;
     const i = this.GetTexture(4);
@@ -151,9 +151,9 @@ class ActivityNewPlayerSupportSubView extends ActivitySubViewBase_1.ActivitySubV
         i.SetSizeFromTexture();
       });
       e = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(t.Name) ?? "";
-      t = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(this.Q2f) ?? "";
+      t = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(this.P5f) ?? "";
       r.SetText(`${e} <color=#e6efff><size=-6>${t}</size></color>`);
-      LguiUtil_1.LguiUtil.SetLocalTextNew(s, this.Q2f);
+      LguiUtil_1.LguiUtil.SetLocalTextNew(s, this.P5f);
       n.SetUIActive(false);
       a.SetUIActive(false);
     } else {
@@ -163,7 +163,7 @@ class ActivityNewPlayerSupportSubView extends ActivitySubViewBase_1.ActivitySubV
       LguiUtil_1.LguiUtil.SetLocalTextNew(s, "PrefabTextItem_436156489_Text");
     }
   }
-  gDf() {
+  Xqf() {
     var t = this.CNe?.GetTaskDataList();
     if (t) {
       var i = t.length;
@@ -201,15 +201,15 @@ exports.ActivityNewPlayerSupportSubView = ActivityNewPlayerSupportSubView;
 class ActivityNewPlayerSupportEntranceItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.H5f = () => {};
+    this.pQf = () => {};
     this.l4e = undefined;
-    this.j5f = () => {
-      this.H5f?.();
+    this.vQf = () => {
+      this.pQf?.();
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIText], [2, UE.UIItem]];
-    this.BtnBindInfo = [[0, this.j5f]];
+    this.BtnBindInfo = [[0, this.vQf]];
   }
   OnBeforeDestroy() {
     if (this.l4e) {
@@ -218,7 +218,7 @@ class ActivityNewPlayerSupportEntranceItem extends UiPanelBase_1.UiPanelBase {
     }
   }
   SetEntranceFunc(e) {
-    this.H5f = e;
+    this.pQf = e;
   }
   BindRedDot(e) {
     this.l4e = e;

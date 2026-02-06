@@ -14,14 +14,14 @@ const lerpTimeTagList = [1878618325];
 class MotorCycleTransformBuffer {
   constructor() {
     this.Camera = undefined;
-    this.QUf = false;
-    this.KUf = 0;
-    this.uVf = 0;
-    this.YUf = Vector_1.Vector.Create();
-    this.cVf = Vector_1.Vector.Create();
-    this.dVf = FNameUtil_1.FNameUtil.EMPTY;
-    this.mVf = FNameUtil_1.FNameUtil.EMPTY;
-    this.fVf = false;
+    this.DGf = false;
+    this.UGf = 0;
+    this.ZKf = 0;
+    this.BGf = Vector_1.Vector.Create();
+    this.eXf = Vector_1.Vector.Create();
+    this.tXf = FNameUtil_1.FNameUtil.EMPTY;
+    this.iXf = FNameUtil_1.FNameUtil.EMPTY;
+    this.rXf = false;
     this.cz = Vector_1.Vector.Create();
     this.fz = Vector_1.Vector.Create();
     this.pz = Vector_1.Vector.Create();
@@ -30,56 +30,56 @@ class MotorCycleTransformBuffer {
     this.Camera = t;
   }
   IsValid() {
-    return !!this.Camera?.BaseVehiclePerformComponent?.Valid && this.Camera.BaseVehiclePerformComponent.VehicleType === "Motorcycle" || this.gVf() || this.CVf();
+    return !!this.Camera?.BaseVehiclePerformComponent?.Valid && this.Camera.BaseVehiclePerformComponent.VehicleType === "Motorcycle" || this.oXf() || this.nXf();
   }
   IsNeedBufferPlayerLocation() {
     return !!this.Camera && this.Camera.LastFrameAttachToVehicle !== this.Camera.AttachToVehicle;
   }
-  pVf() {
+  sXf() {
     return !!this.Camera && !!this.Camera.VehicleAnimationComponent?.Valid && this.Camera.LastFrameCameraArmLocationSocketName !== this.Camera.CameraArmLocationSocketName;
   }
-  gVf() {
-    return this.QUf || this.IsNeedBufferPlayerLocation();
+  oXf() {
+    return this.DGf || this.IsNeedBufferPlayerLocation();
   }
-  CVf() {
-    return this.fVf || this.pVf();
+  nXf() {
+    return this.rXf || this.sXf();
   }
   BufferPlayerLocation(t, i) {
-    if (!this.gVf() || !this.vVf(t, i)) {
-      if (this.CVf()) {
-        this.yVf(t, i);
+    if (!this.oXf() || !this.aXf(t, i)) {
+      if (this.nXf()) {
+        this.hXf(t, i);
       }
     }
   }
-  vVf(t, i) {
-    return !!this.Camera && (this.Camera.AttachToVehicle || (this.IsNeedBufferPlayerLocation() && (this.QUf = true, this.KUf = 0, this.YUf.DeepCopy(this.Camera.LastFramePlayerLocation), this.Camera.VehicleAnimationComponent?.Valid ? this.Camera.VehicleAnimationComponent.GetCameraPosition(this.pz, VehicleAnimationComponent_1.VehicleAnimationComponent.SeatProp01) : this.pz.DeepCopy(this.Camera.PlayerLocation), this.Camera.GetPlayerLocation(this.fz), this.pz.Subtraction(this.fz, this.cVf), this.uVf = this.cVf.Size(), this.cVf.Normalize()), this.KUf += t, t = (t = this.zKf()) > 0 ? MathUtils_1.MathUtils.Clamp(this.KUf / t, 0, 1) : 1, this.QUf = t < 1, this.cz.DeepCopy(this.cVf), this.cz.MultiplyEqual(this.uVf * (1 - t)), i.AdditionEqual(this.cz)), true);
+  aXf(t, i) {
+    return !!this.Camera && (this.Camera.AttachToVehicle || (this.IsNeedBufferPlayerLocation() && (this.DGf = true, this.UGf = 0, this.BGf.DeepCopy(this.Camera.LastFramePlayerLocation), this.Camera.VehicleAnimationComponent?.Valid ? this.Camera.VehicleAnimationComponent.GetCameraPosition(this.pz, VehicleAnimationComponent_1.VehicleAnimationComponent.SeatProp01) : this.pz.DeepCopy(this.Camera.PlayerLocation), this.Camera.GetPlayerLocation(this.fz), this.pz.Subtraction(this.fz, this.eXf), this.ZKf = this.eXf.Size(), this.eXf.Normalize()), this.UGf += t, t = (t = this.W1g()) > 0 ? MathUtils_1.MathUtils.Clamp(this.UGf / t, 0, 1) : 1, this.DGf = t < 1, this.cz.DeepCopy(this.eXf), this.cz.MultiplyEqual(this.ZKf * (1 - t)), i.AdditionEqual(this.cz)), true);
   }
-  yVf(t, i) {
+  hXf(t, i) {
     if (!this.Camera || !this.Camera.VehicleAnimationComponent?.Valid) {
       return false;
     }
-    var s = this.pVf();
-    if (!this.pVf() && !this.fVf) {
+    var s = this.sXf();
+    if (!this.sXf() && !this.rXf) {
       return false;
     }
     if (s) {
-      this.fVf = true;
-      this.KUf = 0;
-      this.dVf = this.Camera.LastFrameCameraArmLocationSocketName;
-      this.mVf = this.Camera.CameraArmLocationSocketName;
+      this.rXf = true;
+      this.UGf = 0;
+      this.tXf = this.Camera.LastFrameCameraArmLocationSocketName;
+      this.iXf = this.Camera.CameraArmLocationSocketName;
     }
-    this.Camera.VehicleAnimationComponent.GetCameraPosition(this.cz, this.dVf);
-    this.Camera.VehicleAnimationComponent.GetCameraPosition(this.fz, this.mVf);
-    this.KUf += t;
-    s = MathUtils_1.MathUtils.Clamp(this.KUf / Math.max(0.5), 0, 1);
-    this.fVf = s < 1;
+    this.Camera.VehicleAnimationComponent.GetCameraPosition(this.cz, this.tXf);
+    this.Camera.VehicleAnimationComponent.GetCameraPosition(this.fz, this.iXf);
+    this.UGf += t;
+    s = MathUtils_1.MathUtils.Clamp(this.UGf / Math.max(0.5), 0, 1);
+    this.rXf = s < 1;
     Vector_1.Vector.Lerp(this.cz, this.fz, s, i);
     return true;
   }
   StopBufferPlayerLocation() {
-    this.QUf = false;
+    this.DGf = false;
   }
-  zKf() {
+  W1g() {
     if (this.Camera.ContainsAnyTag(lerpTimeTagList) && this.Camera.Fading) {
       return this.Camera.FadeDuration;
     } else {
@@ -91,20 +91,20 @@ exports.MotorCycleTransformBuffer = MotorCycleTransformBuffer;
 class CameraTransformBuffer {
   constructor() {
     this.Hh = undefined;
-    this.SVf = new Map();
+    this.lXf = new Map();
   }
   Init(t) {
     this.Hh = t;
     var i = new MotorCycleTransformBuffer();
     i.Init(t);
-    this.SVf.set(1, i);
+    this.lXf.set(1, i);
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Camera", 57, "[CameraTransformBuffer] Init");
     }
   }
   BufferPlayerLocation(t, i) {
     if (this.Hh) {
-      for (var [, s] of this.SVf) {
+      for (var [, s] of this.lXf) {
         if (s.IsValid()) {
           s.BufferPlayerLocation(t, i);
           return;
@@ -113,7 +113,7 @@ class CameraTransformBuffer {
     }
   }
   StopBufferPlayerLocation() {
-    for (var [, t] of this.SVf) {
+    for (var [, t] of this.lXf) {
       t.StopBufferPlayerLocation();
     }
   }

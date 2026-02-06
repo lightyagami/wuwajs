@@ -118,6 +118,9 @@ class ActivitySubViewGeneralInfo extends ActivitySubViewBase_1.ActivitySubViewBa
   GetFunctional() {
     return this.ANe;
   }
+  GetFunctionalButtonItem() {
+    return this.ANe?.GetFunctionButtonItem();
+  }
 }
 exports.ActivitySubViewGeneralInfo = ActivitySubViewGeneralInfo;
 //# sourceMappingURL=ActivitySubViewGeneralInfo.js.map

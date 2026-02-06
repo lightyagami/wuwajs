@@ -53,7 +53,7 @@ class HonamiStoryEquipBackpackPanel extends HonamiStoryBackpackPanelBase_1.Honam
         this.RefreshRoleTipItem();
       }
     };
-    this.qBm = () => {
+    this.F2m = () => {
       this.RefreshEquipItem();
       this.RefreshRoleTipItem();
     };
@@ -129,14 +129,14 @@ class HonamiStoryEquipBackpackPanel extends HonamiStoryBackpackPanelBase_1.Honam
   dde() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnHonamiStoryBackpackUpdate, this.TQd);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnHonamiStoryPowerLevelUpdate, this.lem);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnHonamiStoryRoleEquipChanged, this.qBm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnHonamiStoryRoleEquipChanged, this.F2m);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnAddCommonItemList, this.ppm);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRemoveCommonItem, this.ppm);
   }
   Cde() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnHonamiStoryBackpackUpdate, this.TQd);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnHonamiStoryPowerLevelUpdate, this.lem);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnHonamiStoryRoleEquipChanged, this.qBm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnHonamiStoryRoleEquipChanged, this.F2m);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnAddCommonItemList, this.ppm);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRemoveCommonItem, this.ppm);
   }
@@ -400,13 +400,13 @@ class HonamiStoryEquipBackpackPanel extends HonamiStoryBackpackPanelBase_1.Honam
     var i = [];
     for (const s of t.G$d) {
       var e = ModelManager_1.ModelManager.HonamiStoryModel.GetItemData(s.Xmd);
-      if (e && (s.h5n === 0 || s.h5n === 1) && (e = e.GetPosition(), e = this.YTm(e))) {
+      if (e && (s.h5n === 0 || s.h5n === 1) && (e = e.GetPosition(), e = this.JTm(e))) {
         i.push(e);
       }
     }
     return i;
   }
-  YTm(t) {
+  JTm(t) {
     for (const i of this.fgd) {
       for (const e of i.GetPluginItemList()) {
         if (e.GetPosition() === t) {

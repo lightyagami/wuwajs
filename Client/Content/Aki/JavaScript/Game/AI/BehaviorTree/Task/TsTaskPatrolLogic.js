@@ -107,15 +107,15 @@ class TsTaskPatrolLogic extends TsTaskAbortImmediatelyBase_1.default {
       this.IsMoveFlyingState = this.PatrolConfig.ContainZ;
       this.Entity = t.CharAiDesignComp.Entity;
       this.ActorComp = t.CharActorComp;
-      this.MoveComp = this.Entity.GetComponent(46);
+      this.MoveComp = this.Entity.GetComponent(48);
       if (this.IsMoveFlyingState && this.MoveComp) {
         this.ActorComp?.Actor.KuroSetMovementMode({
           Mode: 5,
           Context: "[TsTaskPatrolLogic.InitComp]"
         });
       }
-      this.StateComp = this.Entity.GetComponent(109);
-      this.AnimComp = this.Entity.GetComponent(186);
+      this.StateComp = this.Entity.GetComponent(111);
+      this.AnimComp = this.Entity.GetComponent(188);
       if (!this.PatrolLogic.IsInitialized) {
         this.PatrolLogic.GeneratePatrol(false);
       }

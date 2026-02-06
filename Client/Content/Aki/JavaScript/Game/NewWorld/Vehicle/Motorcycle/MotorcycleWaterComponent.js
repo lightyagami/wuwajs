@@ -1,20 +1,20 @@
 "use strict";
 
-var __decorate = this && this.__decorate || function (e, t, r, i) {
+var __decorate = this && this.__decorate || function (e, t, i, r) {
   var o;
   var s = arguments.length;
-  var n = s < 3 ? t : i === null ? i = Object.getOwnPropertyDescriptor(t, r) : i;
+  var n = s < 3 ? t : r === null ? r = Object.getOwnPropertyDescriptor(t, i) : r;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    n = Reflect.decorate(e, t, r, i);
+    n = Reflect.decorate(e, t, i, r);
   } else {
-    for (var _ = e.length - 1; _ >= 0; _--) {
-      if (o = e[_]) {
-        n = (s < 3 ? o(n) : s > 3 ? o(t, r, n) : o(t, r)) || n;
+    for (var h = e.length - 1; h >= 0; h--) {
+      if (o = e[h]) {
+        n = (s < 3 ? o(n) : s > 3 ? o(t, i, n) : o(t, i)) || n;
       }
     }
   }
   if (s > 3 && n) {
-    Object.defineProperty(t, r, n);
+    Object.defineProperty(t, i, n);
   }
   return n;
 };
@@ -30,59 +30,71 @@ const QueryTypeDefine_1 = require("../../../../Core/Define/QueryTypeDefine");
 const EntityComponent_1 = require("../../../../Core/Entity/EntityComponent");
 const RegisterComponent_1 = require("../../../../Core/Entity/RegisterComponent");
 const Vector_1 = require("../../../../Core/Utils/Math/Vector");
-const TraceElementCommon_1 = require("../../../../Core/Utils/TraceElementCommon");
-const TsBaseCharacter_1 = require("../../../Character/TsBaseCharacter");
+const EventDefine_1 = require("../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
-const GravityUtils_1 = require("../../../Utils/GravityUtils");
-const CharacterSwimComponent_1 = require("../../Character/Common/Component/CharacterSwimComponent");
-const TsBaseVehicle_1 = require("../TsBaseVehicle");
-const FIVE_HUNDRED_TO_FIND_SURFACE = 500;
-const ONE_HUNDRED_TO_FIND_SURFACE = 100;
-const waterAreaDetectExtent = new UE.VectorDouble(500, 500, 5000);
+const MotorcycleTraceWaterCapability_1 = require("./MotorcycleTraceWaterCapability");
+const waterAreaDetectExtent = new UE.VectorDouble(MotorcycleTraceWaterCapability_1.FIVE_HUNDRED, MotorcycleTraceWaterCapability_1.FIVE_HUNDRED, 5000);
 const IMMERSION_DEPTH = -5;
 const LEAVE_MOTOR_DEPTH = IMMERSION_DEPTH + 90;
 const SEND_LEAVE_PERIOD = 1000;
-const PROFILE_DETECT_WATER_DEPTH = "MotorWaterTrace";
-const tmpVector = Vector_1.Vector.Create();
+const WATER_COMP_DISABLE_REASON = "OnVehicleBeenEntered";
 let MotorcycleWaterComponent = class MotorcycleWaterComponent extends EntityComponent_1.EntityComponent {
   constructor() {
     super(...arguments);
+    this.TraceWaterCapability = undefined;
     this.ActorComp = undefined;
     this.MoveComp = undefined;
     this.TagComp = undefined;
-    this.Mao = undefined;
     this.rka = false;
     this.ika = 0;
-    this.$Fm = 0;
-    this.Ype = false;
+    this._3m = 0;
     this.BKs = Vector_1.Vector.Create();
-    this.WFm = false;
+    this.Rne = undefined;
+    this.u3m = false;
+    this.otg = e => {
+      if (this.Rne !== undefined) {
+        this.Enable(this.Rne, WATER_COMP_DISABLE_REASON);
+      }
+      this.Rne = undefined;
+    };
+    this.E8f = e => {
+      this.InSwimArea = false;
+      this.Immersion = false;
+      this.Rne = this.Disable(WATER_COMP_DISABLE_REASON);
+    };
   }
   static get Dependencies() {
     return [247, 249];
   }
   get Immersion() {
-    return this.WFm;
+    return this.u3m;
   }
   set Immersion(e) {
-    if (this.WFm !== e && ((this.WFm = e) ? this.TagComp?.AddTag(1471383626) : this.TagComp?.RemoveTag(1471383626), Log_1.Log.CheckDebug())) {
+    if (this.u3m !== e && ((this.u3m = e) ? this.TagComp?.AddTag(1471383626) : this.TagComp?.RemoveTag(1471383626), Log_1.Log.CheckDebug())) {
       Log_1.Log.Debug("Movement", 6, "Motorcycle Immersion", ["v", e]);
+    }
+  }
+  get InSwimArea() {
+    return this.rka;
+  }
+  set InSwimArea(e) {
+    if (this.rka !== e && (this.rka = e, EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.MotorcycleWaterAreaChange, e), ModelManager_1.ModelManager.SundryModel.GetModuleDebugLevel(MotorcycleTraceWaterCapability_1.MOTORCYCLE_WATER_DEBUG_KEY) > 0) && Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("Motor", 72, "MotorcycleWaterComponent.MotorcycleWaterAreaChange", ["InArea", e]);
     }
   }
   oka() {
     var e;
-    var t;
     if (this.MoveComp && !this.MoveComp.IsStandardGravity) {
-      this.rka = true;
-      this.ika = FIVE_HUNDRED_TO_FIND_SURFACE;
+      this.InSwimArea = true;
+      this.ika = MotorcycleTraceWaterCapability_1.FIVE_HUNDRED;
     } else {
       e = (0, puerts_1.$ref)(0);
-      t = false;
-      t = UE.NavigationSystemV1.D_NavigationGetWaterSurface(this.ActorComp.Owner, this.ActorComp.ActorLocation, waterAreaDetectExtent, e, this.ActorComp.Owner, undefined);
-      if (this.rka = t) {
-        t = (0, puerts_1.$unref)(e);
-        this.ika = t - this.ActorComp.ActorLocationProxy.Z + ONE_HUNDRED_TO_FIND_SURFACE;
+      this.InSwimArea = UE.NavigationSystemV1.D_NavigationGetWaterSurface(this.ActorComp.Owner, this.ActorComp.ActorLocation, waterAreaDetectExtent, e, this.ActorComp.Owner, undefined);
+      if (this.InSwimArea) {
+        e = (0, puerts_1.$unref)(e);
+        this.ika = e - this.ActorComp.ActorLocationProxy.Z + MotorcycleTraceWaterCapability_1.ONE_HUNDRED;
       } else {
         this.ika = 0;
       }
@@ -91,104 +103,46 @@ let MotorcycleWaterComponent = class MotorcycleWaterComponent extends EntityComp
   OnStart() {
     this.ActorComp = this.Entity.GetComponent(247);
     this.MoveComp = this.Entity.GetComponent(249);
-    this.TagComp = this.Entity.GetComponent(215);
-    this.ewr();
+    this.TagComp = this.Entity.GetComponent(217);
+    this.TraceWaterCapability = new MotorcycleTraceWaterCapability_1.MotorcycleTraceWaterCapability(this.ActorComp);
+    this.TraceWaterCapability.Activate();
+    EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnVehicleBeenEntered, this.otg);
+    EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnVehicleBeenLeaved, this.E8f);
     return true;
   }
   OnEnd() {
+    this.ActorComp = undefined;
+    this.MoveComp = undefined;
+    this.TagComp = undefined;
+    this.TraceWaterCapability?.Deactivate();
+    this.TraceWaterCapability = undefined;
+    EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnVehicleBeenEntered, this.otg);
+    EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnVehicleBeenLeaved, this.E8f);
     return true;
   }
   OnTick(e) {
+    var t;
     var i = this.ActorComp;
     if (!this.BKs.Equals(i.ActorLocationProxy, 1)) {
       this.BKs.DeepCopy(i.ActorLocationProxy);
       this.oka();
-      if (this.rka) {
-        tmpVector.DeepCopy(i.ActorLocationProxy);
-        GravityUtils_1.GravityUtils.AddZnInGravityForActor(i, tmpVector, this.ika);
-        TraceElementCommon_1.TraceElementCommon.SetStartLocation(this.Mao, tmpVector);
-        tmpVector.DeepCopy(i.ActorLocationProxy);
-        GravityUtils_1.GravityUtils.AddZnInGravityForActor(i, tmpVector, IMMERSION_DEPTH);
-        TraceElementCommon_1.TraceElementCommon.SetEndLocation(this.Mao, tmpVector);
-        TraceElementCommon_1.TraceElementCommon.SphereTrace(this.Mao, "MotorTrace");
-        var o = TraceElementCommon_1.TraceElementCommon.SphereTrace(this.Mao, PROFILE_DETECT_WATER_DEPTH);
-        let t = false;
-        let r = this.ika + 1;
-        if (o) {
-          var s;
-          var n = this.Mao.HitResult;
-          var _ = n.GetHitCount();
-          for (let e = 0; e < _; ++e) {
-            if (n.Actors.Get(e)?.IsValid()) {
-              TraceElementCommon_1.TraceElementCommon.GetImpactPoint(n, e, tmpVector);
-              tmpVector.SubtractionEqual(i.ActorLocationProxy);
-              s = GravityUtils_1.GravityUtils.GetZnInGravityForActor(this.ActorComp, tmpVector);
-              t = true;
-              r = Math.min(r, s);
-            }
+      if (!this.InSwimArea || !this.TraceWaterCapability || this.MoveComp?.VehicleMovement?.UpdatedPrimitive?.GetCollisionResponseToChannel(QueryTypeDefine_1.KuroCollisionChannel.KuroWater) === 2 || !(i = this.TraceWaterCapability.TraceWater(this.ika, IMMERSION_DEPTH)).FoundWater || this.TraceWaterCapability.CeilingCheck(i.MinWaterHeight)) {
+        this.Immersion = false;
+      } else if (i.MinWaterHeight > LEAVE_MOTOR_DEPTH) {
+        if (this._3m <= Time_1.Time.Now) {
+          this._3m = Time_1.Time.Now + SEND_LEAVE_PERIOD;
+          if (t = this.Entity.GetComponent(246)) {
+            t.TryLeaveAllAtOnce(1, MotorcycleTraceWaterCapability_1.MOTORCYCLE_WATER_DEBUG_KEY);
           }
-        }
-        if (!t || this.Uqf(r)) {
-          this.Immersion = false;
-        } else if (r > LEAVE_MOTOR_DEPTH) {
-          if (this.$Fm <= Time_1.Time.Now) {
-            this.$Fm = Time_1.Time.Now + SEND_LEAVE_PERIOD;
-            if (o = this.Entity.GetComponent(246)) {
-              o.TryLeaveAllAtOnce(1, "MotorcycleWater");
-            }
-            ControllerHolder_1.ControllerHolder.CreatureController.SetEntityEnable(this.Entity, false, "MotorcycleWater", true);
-            this.Immersion = false;
-          }
-        } else if (r > IMMERSION_DEPTH) {
-          this.Immersion = true;
-        } else {
+          ControllerHolder_1.ControllerHolder.CreatureController.SetEntityEnable(this.Entity, false, MotorcycleTraceWaterCapability_1.MOTORCYCLE_WATER_DEBUG_KEY, true);
           this.Immersion = false;
         }
+      } else if (i.MinWaterHeight > IMMERSION_DEPTH) {
+        this.Immersion = true;
       } else {
         this.Immersion = false;
       }
     }
-  }
-  ewr() {
-    this.Mao = UE.NewObject(UE.TraceSphereElement.StaticClass());
-    this.Mao.WorldContextObject = this.ActorComp.Owner;
-    this.Mao.Radius = 1;
-    this.Mao.bIgnoreSelf = true;
-    this.Mao.bIsSingle = false;
-    this.Mao.SetDrawDebugTrace(this.Ype ? 2 : 0);
-    this.Mao.DrawTime = 0.1;
-    this.Mao.SetTraceTypeQuery(QueryTypeDefine_1.KuroTraceTypeQuery.Water);
-    TraceElementCommon_1.TraceElementCommon.SetTraceColor(this.Mao, CharacterSwimComponent_1.CharacterSwimUtils.DebugColor3);
-    TraceElementCommon_1.TraceElementCommon.SetTraceHitColor(this.Mao, CharacterSwimComponent_1.CharacterSwimUtils.DebugColor4);
-  }
-  Uqf(e) {
-    var t = ModelManager_1.ModelManager.TraceElementModel.GetActorTrace();
-    t.WorldContextObject = this.ActorComp.Owner;
-    t.Radius = 5;
-    var r = this.ActorComp;
-    tmpVector.DeepCopy(r.ActorLocationProxy);
-    TraceElementCommon_1.TraceElementCommon.SetStartLocation(t, tmpVector);
-    tmpVector.DeepCopy(r.ActorLocationProxy);
-    GravityUtils_1.GravityUtils.AddZnInGravityForActor(r, tmpVector, e);
-    TraceElementCommon_1.TraceElementCommon.SetEndLocation(t, tmpVector);
-    t.ActorsToIgnore.Empty();
-    for (const n of ModelManager_1.ModelManager.WorldModel.ActorsToIgnoreSet) {
-      t.ActorsToIgnore.Add(n);
-    }
-    if (TraceElementCommon_1.TraceElementCommon.ShapeTrace(r.Actor.CapsuleComponent, t, PROFILE_DETECT_WATER_DEPTH, PROFILE_DETECT_WATER_DEPTH)) {
-      var i = t.HitResult;
-      var o = i.GetHitCount();
-      for (let e = 0; e < o; ++e) {
-        var s = i.Components.Get(e);
-        if (s && s.GetCollisionObjectType() !== QueryTypeDefine_1.KuroCollisionChannel.KuroWater) {
-          s = i.Actors.Get(e);
-          if (s?.IsValid() && !(s instanceof TsBaseCharacter_1.default) && !(s instanceof TsBaseVehicle_1.default)) {
-            return true;
-          }
-        }
-      }
-    }
-    return false;
   }
 };
 MotorcycleWaterComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(266)], MotorcycleWaterComponent);

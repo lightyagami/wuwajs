@@ -22,19 +22,19 @@ class InfrastructureShopMainView extends UiViewBase_1.UiViewBase {
     super(...arguments);
     this.qVl = 0;
     this.dqc = new PopupCaptionItem_1.PopupCaptionItem();
-    this.mVm = undefined;
-    this.fVm = undefined;
-    this.gVm = e => {
-      this.mVm.GetLayoutItemList().forEach(e => {
+    this.U6m = undefined;
+    this.x6m = undefined;
+    this.B6m = e => {
+      this.U6m.GetLayoutItemList().forEach(e => {
         if (e.Level === this.qVl) {
           e.SetDeselect();
         }
       });
       this.qVl = e;
-      this.CVm();
+      this.k6m();
     };
     this.YFi = () => {
-      this.CVm();
+      this.k6m();
     };
   }
   OnRegisterComponent() {
@@ -46,14 +46,14 @@ class InfrastructureShopMainView extends UiViewBase_1.UiViewBase {
   OnRemoveEventListener() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RefreshGoods, this.YFi);
   }
-  mjm() {
+  THm() {
     return ConfigManager_1.ConfigManager.InfrastructureConfig.GetAllLevelConfigs().filter(e => e.Level > 1).map(e => e.Level).sort((e, t) => e - t);
   }
   async OnBeforeStartAsync() {
     await ControllerHolder_1.ControllerHolder.PayShopController.SendRequestPayShopInfo(true);
-    await Promise.all([this.dqc.CreateThenShowByActorAsync(this.GetItem(0).GetOwner()), this.fjm()]);
+    await Promise.all([this.dqc.CreateThenShowByActorAsync(this.GetItem(0).GetOwner()), this.bHm()]);
     await this.cQa();
-    this.vVm();
+    this.O6m();
   }
   async cQa() {
     this.dqc.SetCloseCallBack(() => {
@@ -62,35 +62,35 @@ class InfrastructureShopMainView extends UiViewBase_1.UiViewBase {
     this.dqc.SetHelpBtnActive(false);
     await this.dqc.SetCurrencyItemList([InfrastructureDefine_1.INFR_SHOP_CURRENCY_ID]);
   }
-  async fjm() {
-    this.mVm = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(1), () => {
+  async bHm() {
+    this.U6m = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(1), () => {
       var e = new InfrastructureShopMenuItem_1.InfrastructureShopMenuItem();
-      e.SetOnClickToggleItem(this.gVm);
+      e.SetOnClickToggleItem(this.B6m);
       return e;
     });
-    await this.mVm.RefreshByDataAsync(this.mjm());
+    await this.U6m.RefreshByDataAsync(this.THm());
   }
-  vVm() {
-    this.fVm = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(3), () => {
+  O6m() {
+    this.x6m = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(3), () => {
       return new InfrastructureShopItem_1.InfrastructureShopItem();
     });
   }
   OnStart() {
     ModelManager_1.ModelManager.InfrastructureModel.RefreshShopHasNewRedDot();
-    this.qVl = this.mjm()[0];
-    this.CVm();
-    this.gjm();
-    this.mVm.GetLayoutItemList().forEach(e => {
+    this.qVl = this.THm()[0];
+    this.k6m();
+    this.RHm();
+    this.U6m.GetLayoutItemList().forEach(e => {
       if (e.Level === this.qVl) {
         e.SetSelect();
       }
     });
   }
-  CVm() {
+  k6m() {
     var e = ModelManager_1.ModelManager.InfrastructureModel.GetShopDataList(this.qVl);
-    this.fVm.RefreshByData(e);
+    this.x6m.RefreshByData(e);
   }
-  gjm() {}
+  RHm() {}
 }
 exports.InfrastructureShopMainView = InfrastructureShopMainView;
 //# sourceMappingURL=InfrastructureShopMainView.js.map

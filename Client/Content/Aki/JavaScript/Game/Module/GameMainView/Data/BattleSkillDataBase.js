@@ -16,12 +16,15 @@ class BattleSkillDataBase {
     this.LongPressDuration = 0;
     this.IsConfigShowLongPress = false;
     this.IsVisibleInternal = true;
+    this.IsEnableSlideControl = false;
     this.IsLimitCountCustom = false;
     this.RemainingCountCustom = 0;
     this.TotalCoolDownCustom = 0;
     this.HideCoolDownTextCustom = false;
     this.IsLimitCountVehicleSkill = false;
     this.RemainingCountVehicleSkill = 0;
+    this.IsEnableDotIndicator = false;
+    this.DotIndicatorCount = 0;
   }
   InitData(t) {
     this.ZMe = t;

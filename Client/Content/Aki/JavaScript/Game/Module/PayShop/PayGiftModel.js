@@ -28,23 +28,23 @@ class PayGiftModel extends ModelBase_1.ModelBase {
       this.cFi.clear();
       var r = new Array();
       for (const i of t) {
-        var s = new PayPackageData_1.PayPackageData();
-        s.Phrase(i);
+        var a = new PayPackageData_1.PayPackageData();
+        a.Phrase(i);
         r.push(i.uBs);
-        this.lFi.push(s);
-        this._Fi.push(s.GetPayShopGoods());
-        this.uFi.set(s.Id, s.GetPayShopGoods());
-        this.cFi.set(s.Id, s);
-        if (!this.mFi.includes(s.TabId) && s.ShowInShop()) {
-          this.mFi.push(s.TabId);
+        this.lFi.push(a);
+        this._Fi.push(a.GetPayShopGoods());
+        this.uFi.set(a.Id, a.GetPayShopGoods());
+        this.cFi.set(a.Id, a);
+        if (!this.mFi.includes(a.TabId) && a.ShowInShop()) {
+          this.mFi.push(a.TabId);
         }
       }
       if (e) {
-        var a = new Set();
+        var s = new Set();
         for (const o of this.mFi) {
-          a.add(o);
+          s.add(o);
         }
-        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshGoodsList, a);
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshGoodsList, s);
       }
     }
   }
@@ -88,6 +88,9 @@ class PayGiftModel extends ModelBase_1.ModelBase {
   }
   GetPayGiftDataById(t) {
     return this.cFi.get(t);
+  }
+  GetPayGiftDataByType(e) {
+    return this.lFi.filter(t => t.Type === e);
   }
   GetPayShopGoodsList() {
     return this._Fi;

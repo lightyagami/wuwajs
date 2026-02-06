@@ -12,9 +12,9 @@ class ReadPhoneMessageBehaviorNode extends ChildQuestNodeBase_1.ChildQuestNodeBa
   constructor() {
     super(...arguments);
     this.QXt = false;
-    this.hMf = 0;
-    this.lMf = (e, t, s) => {
-      if (e === this.hMf && !this.Submitting && !this.QXt) {
+    this.lTf = 0;
+    this._Tf = (e, t, s) => {
+      if (e === this.lTf && !this.Submitting && !this.QXt) {
         if (s) {
           this.SubmitNode();
         }
@@ -29,7 +29,7 @@ class ReadPhoneMessageBehaviorNode extends ChildQuestNodeBase_1.ChildQuestNodeBa
   }
   get CorrelativeEntities() {}
   OnCreate(e) {
-    return !!super.OnCreate(e) && (e = e.Condition).Type === IQuest_1.EChildQuest.ReadPhoneMessage && !!e.PhoneMessageId && (this.hMf = e.PhoneMessageId, true);
+    return !!super.OnCreate(e) && (e = e.Condition).Type === IQuest_1.EChildQuest.ReadPhoneMessage && !!e.PhoneMessageId && (this.lTf = e.PhoneMessageId, true);
   }
   OnStart() {
     this.QXt = false;
@@ -39,11 +39,11 @@ class ReadPhoneMessageBehaviorNode extends ChildQuestNodeBase_1.ChildQuestNodeBa
   }
   AddEventsOnChildQuestStart() {
     super.AddEventsOnChildQuestStart();
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPhoneMsgReadProgressUpdate, this.lMf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPhoneMsgReadProgressUpdate, this._Tf);
   }
   RemoveEventsOnChildQuestEnd() {
     super.RemoveEventsOnChildQuestEnd();
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPhoneMsgReadProgressUpdate, this.lMf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPhoneMsgReadProgressUpdate, this._Tf);
   }
 }
 exports.ReadPhoneMessageBehaviorNode = ReadPhoneMessageBehaviorNode;

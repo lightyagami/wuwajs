@@ -14,50 +14,56 @@ const ModelManager_1 = require("../../Manager/ModelManager");
 const TransportNetworkController_1 = require("../Transport/TransportNetworkController");
 const AutoPilotUtil_1 = require("./AutoPilotUtil");
 class AutoPilotCirclePathResult {
-  constructor(e, t) {
+  constructor(t, e) {
     this.MapId = 0;
     this.CircleId = 0;
     this.CircleRoadWaysIds = undefined;
     this.PathToCircleSplinePoints = UE.NewArray(UE.Vector2D);
-    this._If = [];
-    this.uIf = true;
-    this.nKf = Vector_1.Vector.Create();
-    this.azf = new Map();
-    this.CircleId = e;
-    this.uIf = t;
-    t = AutoPilotCirclesById_1.configAutoPilotCirclesById.GetConfig(e);
-    this.MapId = t?.MapId ?? 0;
-    this.CircleRoadWaysIds = t?.WaySplines;
-  }
-  RefreshPathToCircleDataInAutoPilot() {
-    var e;
-    var t;
-    if (!this.uIf) {
-      if ((e = ModelManager_1.ModelManager.AutoPilotModel?.ActorComp) && (t = ModelManager_1.ModelManager.AutoPilotModel?.SplineMoveComp?.CurrentSplineMoveParams?.CurrentRouteIndex) !== undefined) {
-        AutoPilotUtil_1.AutoPilotUtil.ProcessSplinePointsForAutoPilotRoute(this._If[t], this.PathToCircleSplinePoints, e.ActorLocationProxy, this.azf);
-        this.RefreshIsInCircle();
+    this.Nwf = [];
+    this.Vwf = true;
+    this.thg = Vector_1.Vector.Create();
+    this.vgg = new Map();
+    this.RefreshPathToCircleDataInAutoPilot = () => {
+      var t = ModelManager_1.ModelManager.AutoPilotModel?.ActorComp;
+      if (t) {
+        var e = ModelManager_1.ModelManager.AutoPilotModel?.SplineMoveComp?.CurrentSplineMoveParams?.CurrentRouteIndex;
+        if (e !== undefined) {
+          if (e === this.Nwf.length - 1) {
+            if (AutoPilotUtil_1.AutoPilotUtil.CheckReachEnd(this.Nwf[e].RoadSpline, t.ActorLocationProxy, this.thg)) {
+              this.RefreshIsInCircle(true);
+              return;
+            }
+          }
+          AutoPilotUtil_1.AutoPilotUtil.ProcessSplinePointsForAutoPilotRoute(this.Nwf[e], this.PathToCircleSplinePoints, t.ActorLocationProxy, this.vgg);
+        }
       }
-    }
+    };
+    this.CircleId = t;
+    this.Vwf = e;
+    e = AutoPilotCirclesById_1.configAutoPilotCirclesById.GetConfig(t);
+    this.MapId = e?.MapId ?? 0;
+    this.CircleRoadWaysIds = e?.WaySplines;
   }
   RefreshPathToCircleData() {
-    if (!this.uIf) {
-      var e = ModelManager_1.ModelManager.AutoPilotModel?.EnterCircleRoadId;
-      if (e) {
-        e = ControllerHolder_1.ControllerHolder.TransportController.GetTransportSystem().GetRoadWay(e)?.RoadSpline?.D_GetLocationAtSplinePoint(1, 1);
-        if (e) {
-          this.nKf.DeepCopy(e);
-          e = ModelManager_1.ModelManager.AutoPilotModel?.ActorComp;
-          if (e) {
-            var t = ControllerHolder_1.ControllerHolder.TransportController.FindPath(e.ActorLocationProxy, this.nKf, true, false, ModelManager_1.ModelManager.AutoPilotModel?.IsDebugMode);
-            if (t) {
-              this._If.length = 0;
-              var r = t.Roadways.Num();
-              for (let e = 0; e < r; e++) {
-                var o = t.Roadways.Get(e);
-                this._If.push(o);
-                this.azf.set(o.Id, []);
+    if (!this.Vwf) {
+      var t = ModelManager_1.ModelManager.AutoPilotModel?.EnterCircleRoadId;
+      if (t) {
+        t = ControllerHolder_1.ControllerHolder.TransportController.GetTransportSystem().GetRoadWay(t)?.RoadSpline?.D_GetLocationAtSplinePoint(1, 1);
+        if (t) {
+          this.thg.DeepCopy(t);
+          t = ModelManager_1.ModelManager.AutoPilotModel?.ActorComp;
+          if (t) {
+            var e = ControllerHolder_1.ControllerHolder.TransportController.FindPath(t.ActorLocationProxy, this.thg, true, false, ModelManager_1.ModelManager.AutoPilotModel?.IsDebugMode);
+            if (e) {
+              this.Nwf.length = 0;
+              var r = e.Roadways.Num();
+              for (let t = 0; t < r; t++) {
+                var i = e.Roadways.Get(t);
+                this.Nwf.push(i);
+                this.vgg.set(i.Id, []);
               }
-              AutoPilotUtil_1.AutoPilotUtil.GenerateAllSplinePoints(this._If, this.PathToCircleSplinePoints, e.ActorLocationProxy, this.nKf, this.azf);
+              AutoPilotUtil_1.AutoPilotUtil.GenerateAllSplinePoints(this.Nwf, this.PathToCircleSplinePoints, t.ActorLocationProxy, this.thg, this.vgg);
+              ControllerHolder_1.ControllerHolder.AutoPilotController.AddTick(this.RefreshPathToCircleDataInAutoPilot);
             }
           }
         }
@@ -65,33 +71,30 @@ class AutoPilotCirclePathResult {
     }
   }
   GenerateAutopilotRoute() {
-    let e = undefined;
-    if (this.uIf) {
+    let t = undefined;
+    if (this.Vwf) {
       if (this.CircleRoadWaysIds) {
-        return e = TransportNetworkController_1.TransportNetworkController.GetAssembleAutopilotRoute(this.CircleRoadWaysIds, true, ModelManager_1.ModelManager.AutoPilotModel?.IsDebugMode);
+        return t = TransportNetworkController_1.TransportNetworkController.GetAssembleAutopilotRoute(this.CircleRoadWaysIds, true, ModelManager_1.ModelManager.AutoPilotModel?.IsDebugMode);
       } else {
         return undefined;
       }
     }
-    var t = [];
-    for (const r of this._If) {
-      t.push(r.Id);
+    var e = [];
+    for (const r of this.Nwf) {
+      e.push(r.Id);
     }
-    return e = TransportNetworkController_1.TransportNetworkController.GetAssembleAutopilotRoute(t, false, ModelManager_1.ModelManager.AutoPilotModel?.IsDebugMode);
+    return t = TransportNetworkController_1.TransportNetworkController.GetAssembleAutopilotRoute(e, false, ModelManager_1.ModelManager.AutoPilotModel?.IsDebugMode);
   }
-  RefreshIsInCircle() {
-    var e = this.RXf();
-    if (this.uIf !== e) {
-      this.uIf = e;
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnCircleStateChange, e);
+  RefreshIsInCircle(t) {
+    if (this.Vwf !== t) {
+      if (this.Vwf = t) {
+        ControllerHolder_1.ControllerHolder.AutoPilotController.RemoveTick(this.RefreshPathToCircleDataInAutoPilot);
+      }
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnCircleStateChange, t);
     }
-  }
-  RXf() {
-    var e;
-    return !!ModelManager_1.ModelManager.AutoPilotModel?.GetIsOnNearestRoadway() && !!(e = ModelManager_1.ModelManager.AutoPilotModel?.GetNearestRoadway()) && !!(e = e.Roadway) && (this.CircleRoadWaysIds?.includes(e.Id) ?? false);
   }
   GetIsInCircle() {
-    return this.uIf;
+    return this.Vwf;
   }
 }
 exports.AutoPilotCirclePathResult = AutoPilotCirclePathResult;

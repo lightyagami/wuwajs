@@ -31,7 +31,7 @@ const RoleDefine_1 = require("../../Module/RoleUi/RoleDefine");
 const TowerDefenseEventController_1 = require("../../Module/TowerDefenseEvent/TowerDefenseEventController");
 const UiCameraAnimationManager_1 = require("../../Module/UiCameraAnimation/UiCameraAnimationManager");
 const CampUtils_1 = require("../../NewWorld/Character/Common/Blueprint/Utils/CampUtils");
-const FollowFunctionLibrary_1 = require("../../NewWorld/Character/Common/Component/Abilities/Follow/FollowFunctionLibrary");
+const FollowUtils_1 = require("../../NewWorld/Character/Common/Component/Abilities/Follow/FollowUtils");
 const IFollow_1 = require("../../NewWorld/Character/Common/Component/Abilities/Follow/IFollow");
 const BattleSetting_1 = require("../../NewWorld/Setting/BattleSetting");
 const RenderModuleController_1 = require("../../Render/Manager/RenderModuleController");
@@ -61,7 +61,7 @@ class WorldFunctionLibrary extends UE.BlueprintFunctionLibrary {
     return !!t && t.GetPbDataId() === e;
   }
   static ActorHasSceneItemTag(t, e) {
-    return ActorUtils_1.ActorUtils.GetEntityByActor(t).Entity.GetComponent(206).HasTag(e);
+    return ActorUtils_1.ActorUtils.GetEntityByActor(t).Entity.GetComponent(208).HasTag(e);
   }
   static GetControlVisionEntityId(t) {
     var e = EntitySystem_1.EntitySystem.Get(t);
@@ -164,10 +164,10 @@ class WorldFunctionLibrary extends UE.BlueprintFunctionLibrary {
     }
   }
   static SetVisionPos(t, e) {
-    EntitySystem_1.EntitySystem.Get(t)?.GetComponent(44)?.SetCurrentPosition(e);
+    EntitySystem_1.EntitySystem.Get(t)?.GetComponent(46)?.SetCurrentPosition(e);
   }
   static GetVisionPos(t) {
-    return EntitySystem_1.EntitySystem.Get(t)?.GetComponent(44)?.GetCurrentPosition() ?? 0;
+    return EntitySystem_1.EntitySystem.Get(t)?.GetComponent(46)?.GetCurrentPosition() ?? 0;
   }
   static GetSummonEntityIds(t) {
     var e;
@@ -276,7 +276,7 @@ class WorldFunctionLibrary extends UE.BlueprintFunctionLibrary {
   static GetEntityDestructible(t) {
     var e = EntitySystem_1.EntitySystem.Get(t);
     if (e) {
-      return e.GetComponent(110) !== undefined;
+      return e.GetComponent(112) !== undefined;
     } else {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Battle", 39, "无法找到实体", ["entityId", t]);
@@ -663,7 +663,7 @@ class WorldFunctionLibrary extends UE.BlueprintFunctionLibrary {
     l.l8n = WorldGlobal_1.WorldGlobal.ToTsVector(o.GetLocation());
     l._8n = WorldGlobal_1.WorldGlobal.ToTsRotator(o.GetRotation().Rotator());
     l.mKn = a;
-    Net_1.Net.Send(15253, l);
+    Net_1.Net.Send(18793, l);
   }
   static GetTestSpawnTemplateEntityString() {
     var t = UE.NewArray(UE.BuiltinString);
@@ -956,7 +956,7 @@ class WorldFunctionLibrary extends UE.BlueprintFunctionLibrary {
     UE.GameplayStatics.SetGlobalTimeDilation(GlobalData_1.GlobalData.GameInstance, ModelManager_1.ModelManager.CharacterModel.SelfCenteredTimeDilation * t);
     var e = Protocol_1.Aki.Protocol.GCs.create();
     e.dKn = t;
-    Net_1.Net.Send(16566, e);
+    Net_1.Net.Send(29253, e);
   }
   static GetTimeDilation() {
     if (GlobalData_1.GlobalData.GameInstance) {
@@ -1014,16 +1014,16 @@ class WorldFunctionLibrary extends UE.BlueprintFunctionLibrary {
   }
   static GetPlayerFollower() {
     var t = ModelManager_1.ModelManager.CreatureModel.GetPlayerId();
-    var t = FollowFunctionLibrary_1.FollowFunctionLibrary.GetPlayerFollowShooter(t)?.Entity?.Id;
+    var t = FollowUtils_1.FollowUtils.GetPlayerFollowShooter(t)?.Entity?.Id;
     return t || 0;
   }
   static IsPlayerFollowerEnable() {
     var t = ModelManager_1.ModelManager.CreatureModel.GetPlayerId();
-    return ControllerHolder_1.ControllerHolder.FormationDataController.GetPlayerEntity(t)?.GetComponent(237)?.GetOrCreateHandler(IFollow_1.EPlayerFollowerHandlerType.FollowShooter)?.IsFollowShooterEnable() ?? false;
+    return FollowUtils_1.FollowUtils.IsFollowShooterEnable(t);
   }
-  static SetPlayerFollowerEnable(t) {
-    var e = ModelManager_1.ModelManager.CreatureModel.GetPlayerId();
-    ControllerHolder_1.ControllerHolder.FormationDataController.GetPlayerEntity(e)?.GetComponent(237)?.GetOrCreateHandler(IFollow_1.EPlayerFollowerHandlerType.FollowShooter)?.SetFollowShooterEnable(t, "WorldFunctionLibrary.SetPlayerFollowerEnable");
+  static SetPlayerFollowerEnable(t, e = 1) {
+    var r = ModelManager_1.ModelManager.CreatureModel.GetPlayerId();
+    FollowUtils_1.FollowUtils.SetPlayerFollowShooterEnable(r, t, e, "WorldFunctionLibrary.SetPlayerFollowerEnable");
   }
   static SetPlayerFollowerCustomEntityId(t, e) {
     var r = ModelManager_1.ModelManager.CreatureModel.GetPlayerId();
@@ -1034,15 +1034,15 @@ class WorldFunctionLibrary extends UE.BlueprintFunctionLibrary {
     ControllerHolder_1.ControllerHolder.FormationDataController.GetPlayerEntity(e)?.GetComponent(237)?.GetOrCreateHandler(IFollow_1.EPlayerFollowerHandlerType.FollowShooter)?.RemoveFollowShooterCustomEntityId(t);
   }
   static GetFollowerShooterConfig(t) {
-    return EntitySystem_1.EntitySystem.Get(t)?.CheckGetComponent(234)?.FollowShooterConfig;
+    return EntitySystem_1.EntitySystem.Get(t)?.CheckGetComponent(235)?.FollowShooterConfig;
   }
   static GetPlayerFollowerMotor() {
     var t = ModelManager_1.ModelManager.CreatureModel.GetPlayerId();
-    return FollowFunctionLibrary_1.FollowFunctionLibrary.GetPlayerFollowVehicle(t, "Motorcycle")?.Entity?.Id ?? 0;
+    return FollowUtils_1.FollowUtils.GetPlayerFollowVehicle(t, "Motorcycle")?.Entity?.Id ?? 0;
   }
   static IsPlayerFollowerMotorEnable() {
     var t = ModelManager_1.ModelManager.CreatureModel.GetPlayerId();
-    var e = FollowFunctionLibrary_1.FollowFunctionLibrary.GetPlayerFollowVehicle(t, "Motorcycle");
+    var e = FollowUtils_1.FollowUtils.GetPlayerFollowVehicle(t, "Motorcycle");
     if (e?.Entity) {
       return e?.Entity?.Active;
     } else {
@@ -1054,7 +1054,7 @@ class WorldFunctionLibrary extends UE.BlueprintFunctionLibrary {
   }
   static SetPlayerFollowerMotorEnable(t) {
     var e = ModelManager_1.ModelManager.CreatureModel.GetPlayerId();
-    var r = FollowFunctionLibrary_1.FollowFunctionLibrary.GetPlayerFollowVehicle(e, "Motorcycle");
+    var r = FollowUtils_1.FollowUtils.GetPlayerFollowVehicle(e, "Motorcycle");
     if (r?.Entity) {
       ControllerHolder_1.ControllerHolder.CreatureController.SetEntityEnable(r.Entity, t, "WorldFunctionLibrary.SetPlayerFollowerMotorEnable", true);
     } else if (Log_1.Log.CheckWarn()) {

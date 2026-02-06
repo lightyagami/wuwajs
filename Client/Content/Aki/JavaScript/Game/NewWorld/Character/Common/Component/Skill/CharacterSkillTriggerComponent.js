@@ -34,7 +34,7 @@ let CharacterSkillTriggerComponent = class CharacterSkillTriggerComponent extend
     this.dHs = undefined;
   }
   OnInit() {
-    this.cBe = this.Entity.CheckGetComponent(40);
+    this.cBe = this.Entity.CheckGetComponent(42);
     this.dHs = this.Entity.CheckGetComponent(28);
     return true;
   }
@@ -98,5 +98,5 @@ let CharacterSkillTriggerComponent = class CharacterSkillTriggerComponent extend
     this.pVs(t, e);
   }
 };
-CharacterSkillTriggerComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(219)], CharacterSkillTriggerComponent);
+CharacterSkillTriggerComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(221)], CharacterSkillTriggerComponent);
 exports.CharacterSkillTriggerComponent = CharacterSkillTriggerComponent; //# sourceMappingURL=CharacterSkillTriggerComponent.js.map

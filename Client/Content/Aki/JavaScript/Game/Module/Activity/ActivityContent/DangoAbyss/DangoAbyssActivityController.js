@@ -102,20 +102,20 @@ class DangoAbyssActivityController extends ActivityControllerBase_1.ActivityCont
     return false;
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(21283, this.Io_);
-    Net_1.Net.Register(21714, this.uvc);
-    Net_1.Net.Register(15111, this.dvc);
-    Net_1.Net.Register(19440, this.mvc);
-    Net_1.Net.Register(26141, this.fvc);
-    Net_1.Net.Register(21287, this.VNc);
+    Net_1.Net.Register(25464, this.Io_);
+    Net_1.Net.Register(28633, this.uvc);
+    Net_1.Net.Register(21664, this.dvc);
+    Net_1.Net.Register(21562, this.mvc);
+    Net_1.Net.Register(24101, this.fvc);
+    Net_1.Net.Register(17007, this.VNc);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(21283);
-    Net_1.Net.UnRegister(21714);
-    Net_1.Net.UnRegister(15111);
-    Net_1.Net.UnRegister(19440);
-    Net_1.Net.UnRegister(26141);
-    Net_1.Net.UnRegister(21287);
+    Net_1.Net.UnRegister(25464);
+    Net_1.Net.UnRegister(28633);
+    Net_1.Net.UnRegister(21664);
+    Net_1.Net.UnRegister(21562);
+    Net_1.Net.UnRegister(24101);
+    Net_1.Net.UnRegister(17007);
   }
   cvc() {
     for (const e of ModelManager_1.ModelManager.ActivityModel.GetAllActivityMap()) {
@@ -140,9 +140,9 @@ class DangoAbyssActivityController extends ActivityControllerBase_1.ActivityCont
   static RequestGetAbyssRewardList(e) {
     var t = new Protocol_1.Aki.Protocol.M0c();
     t.BVn = e;
-    Net_1.Net.Call(21992, t, e => {
+    Net_1.Net.Call(29976, t, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25337);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21756);
       }
     });
   }
@@ -150,9 +150,9 @@ class DangoAbyssActivityController extends ActivityControllerBase_1.ActivityCont
     var e = new Protocol_1.Aki.Protocol.I0c();
     e.s5n = t;
     e.F6n = o;
-    Net_1.Net.Call(29683, e, e => {
+    Net_1.Net.Call(23595, e, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15940);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23322);
       } else {
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnAbyssDangoLevelUp, t, o);
       }
@@ -162,9 +162,9 @@ class DangoAbyssActivityController extends ActivityControllerBase_1.ActivityCont
     var i = new Protocol_1.Aki.Protocol.b0c();
     i.Q0c = e;
     i.j0c = t;
-    Net_1.Net.Call(26893, i, e => {
+    Net_1.Net.Call(24818, i, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22452);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16639);
       } else {
         this.ShowEquipTipsByState(o);
       }
@@ -173,9 +173,9 @@ class DangoAbyssActivityController extends ActivityControllerBase_1.ActivityCont
   static RequestPluginRecovery(e) {
     var t = new Protocol_1.Aki.Protocol.w0c();
     t.cPc = e;
-    Net_1.Net.Call(16896, t, e => {
+    Net_1.Net.Call(28305, t, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18381);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 28184);
       } else {
         e = e.uPc;
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnAbyssPluginRecovery, e);

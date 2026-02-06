@@ -44,5 +44,5 @@ let RbBaseComponent = class RbBaseComponent extends EntityComponent_1.EntityComp
   }
   OnActualShow() {}
 };
-RbBaseComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(328)], RbBaseComponent);
+RbBaseComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(330)], RbBaseComponent);
 exports.RbBaseComponent = RbBaseComponent; //# sourceMappingURL=RbBaseComponent.js.map

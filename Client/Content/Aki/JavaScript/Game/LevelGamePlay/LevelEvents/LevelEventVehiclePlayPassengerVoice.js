@@ -18,7 +18,7 @@ class LevelEventVehiclePlayPassengerVoice extends LevelGeneralBase_1.LevelEventB
       switch (Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity.GetComponent(242)?.VehicleType) {
         case "Gongduola":
           if (ModelManager_1.ModelManager.GameAudioModel?.CheckRideSharingState()) {
-            if (this.NYm(l)) {
+            if (this.gZm(l)) {
               ModelManager_1.ModelManager.GameAudioModel?.PlayRideSharingPlotAudio(l.TriggerType);
               this.FinishExecute(true);
               return;
@@ -30,7 +30,7 @@ class LevelEventVehiclePlayPassengerVoice extends LevelGeneralBase_1.LevelEventB
           break;
         case "Motorcycle":
           if (ModelManager_1.ModelManager.GameAudioModel?.CheckMotorState()) {
-            if (this.NYm(l)) {
+            if (this.gZm(l)) {
               ModelManager_1.ModelManager.GameAudioModel?.PlayMotorPlotAudio(l.TriggerType);
               this.FinishExecute(true);
               return;
@@ -56,7 +56,7 @@ class LevelEventVehiclePlayPassengerVoice extends LevelGeneralBase_1.LevelEventB
       this.FinishExecute(false);
     }
   }
-  NYm(e) {
+  gZm(e) {
     if (e.TriggerPassengers?.Passengers && e.TriggerPassengers.Passengers.length > 0) {
       var a = ModelManager_1.ModelManager.VehicleModel.RideSharingInfoMap.values().next().value.RoleId;
       if ((e.TriggerPassengers.MatchNone ?? false) === e.TriggerPassengers.Passengers.includes(a)) {

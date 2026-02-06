@@ -16,12 +16,12 @@ class InputCombinationAxisBinding {
     this.Lo = undefined;
     this.aEe = 0;
     this.SecondaryKeyScaleMap = undefined;
-    this.Vhf = new Map();
-    this.Hhf = new Map();
-    this.zhf = new Map();
-    this.Jhf = new Map();
-    this.Zhf = new Map();
-    this.rlf = new Map();
+    this.s_f = new Map();
+    this.a_f = new Map();
+    this.f_f = new Map();
+    this.g_f = new Map();
+    this.C_f = new Map();
+    this.S_f = new Map();
     this.CurrentBindingType = 0;
   }
   Initialize(t) {
@@ -40,10 +40,10 @@ class InputCombinationAxisBinding {
     var o;
     var p;
     var f;
-    var M = this.elf(this.Lo.ExclusiveType);
-    var u = this.tlf(this.Lo.ExclusiveType);
-    var v = this.ilf(this.Lo.ExclusiveType);
-    var y = this.olf(this.Lo.ExclusiveType);
+    var M = this.p_f(this.Lo.ExclusiveType);
+    var u = this.v_f(this.Lo.ExclusiveType);
+    var v = this.y_f(this.Lo.ExclusiveType);
+    var y = this.M_f(this.Lo.ExclusiveType);
     for ([i, s] of t.PcKeyMap) {
       u.set(i, s);
       M.set(i, s);
@@ -58,10 +58,10 @@ class InputCombinationAxisBinding {
     this.uEe = M;
     this.SecondaryKeyScaleMap = y;
     for ([n, o] of t.KeyboardVersionMap) {
-      this.Vhf.set(n, o);
+      this.s_f.set(n, o);
     }
     for ([p, f] of t.GamepadVersionMap) {
-      this.Hhf.set(p, f);
+      this.a_f.set(p, f);
     }
     this.dEe();
   }
@@ -72,12 +72,12 @@ class InputCombinationAxisBinding {
     this.sEe = undefined;
     this.aEe = 0;
     this.Lo = undefined;
-    this.Vhf.clear();
-    this.Hhf.clear();
-    this.zhf.clear();
-    this.Jhf.clear();
-    this.Zhf.clear();
-    this.rlf.clear();
+    this.s_f.clear();
+    this.a_f.clear();
+    this.f_f.clear();
+    this.g_f.clear();
+    this.C_f.clear();
+    this.S_f.clear();
   }
   dEe() {
     this.hEe.clear();
@@ -90,9 +90,9 @@ class InputCombinationAxisBinding {
     }
   }
   SwitchKeysByBindingType(t) {
-    var i = this.Jhf.get(t) ?? this.Jhf.get(0);
-    var s = this.Zhf.get(t) ?? this.Zhf.get(0);
-    var e = this.rlf.get(t) ?? this.rlf.get(0);
+    var i = this.g_f.get(t) ?? this.g_f.get(0);
+    var s = this.C_f.get(t) ?? this.C_f.get(0);
+    var e = this.S_f.get(t) ?? this.S_f.get(0);
     var h = new Map();
     if (i) {
       for (var [r, a] of i) {
@@ -105,7 +105,7 @@ class InputCombinationAxisBinding {
       }
     }
     if (e) {
-      this.rlf.set(t, e);
+      this.S_f.set(t, e);
     }
     if (h) {
       this.CurrentBindingType = t;
@@ -118,19 +118,19 @@ class InputCombinationAxisBinding {
     }
   }
   AddKey(t, i, s) {
-    this.elf(s).set(t, i);
+    this.p_f(s).set(t, i);
     if (this.CurrentBindingType === s) {
       this.uEe.set(t, i);
     }
     var e = InputSettings_1.InputSettings.GetKey(i);
-    if (e && ((e.IsKeyboardKey || e.IsMouseButton) && (this.tlf(s).set(t, i), this.CurrentBindingType === s) && this.hEe.set(t, i), e.IsGamepadKey) && (this.ilf(s).set(t, i), this.CurrentBindingType === s)) {
+    if (e && ((e.IsKeyboardKey || e.IsMouseButton) && (this.v_f(s).set(t, i), this.CurrentBindingType === s) && this.hEe.set(t, i), e.IsGamepadKey) && (this.y_f(s).set(t, i), this.CurrentBindingType === s)) {
       this.lEe.set(t, i);
     }
   }
   RemoveKey(t, i) {
-    this.elf(i).delete(t);
-    this.tlf(i).delete(t);
-    this.ilf(i).delete(t);
+    this.p_f(i).delete(t);
+    this.v_f(i).delete(t);
+    this.y_f(i).delete(t);
     if (this.CurrentBindingType === i) {
       this.uEe.delete(t);
       this.hEe.delete(t);
@@ -141,64 +141,64 @@ class InputCombinationAxisBinding {
     return this.sEe;
   }
   SetKeyboardVersion(t, i) {
-    this.Vhf.set(i, t);
+    this.s_f.set(i, t);
   }
   GetKeyboardVersion(t) {
-    return this.Vhf.get(t) ?? 0;
+    return this.s_f.get(t) ?? 0;
   }
   SetGamepadVersion(t, i) {
-    this.Hhf.set(i, t);
+    this.a_f.set(i, t);
   }
   GetGamepadVersion(t) {
-    return this.Hhf.get(t) ?? 0;
+    return this.a_f.get(t) ?? 0;
   }
   GetCombinationAxisKeyMap() {
     return InputSettings_1.InputSettings.GetCombinationAxisKeyMap(this.sEe);
   }
   HasKeyboardCombinationAxis(t) {
-    return this.tlf(t).size > 0;
+    return this.v_f(t).size > 0;
   }
   HasGamepadCombinationAxis(t) {
-    return this.ilf(t).size > 0;
+    return this.y_f(t).size > 0;
   }
   GetAxisMappingType() {
     return this.aEe;
   }
   GetSourceAxisValue(t) {
-    let i = this.rlf.get(this.CurrentBindingType);
-    return (i = i || this.rlf.get(0)).get(t);
+    let i = this.S_f.get(this.CurrentBindingType);
+    return (i = i || this.S_f.get(0)).get(t);
   }
   GetConfigId() {
     return this.Mne;
   }
   GetAllPcKeyNameMap(t) {
-    for (var [i, s] of this.Jhf) {
+    for (var [i, s] of this.g_f) {
       t.set(i, s);
     }
   }
   GetPcKeyNameMap(t, i) {
     var s;
     var e;
-    for ([s, e] of this.tlf(i)) {
+    for ([s, e] of this.v_f(i)) {
       t.set(s, e);
     }
   }
   GetAllGamepadKeyNameMap(t) {
-    for (var [i, s] of this.Zhf) {
+    for (var [i, s] of this.C_f) {
       t.set(i, s);
     }
   }
   GetGamepadKeyNameMap(t, i) {
     var s;
     var e;
-    for ([s, e] of this.ilf(i)) {
+    for ([s, e] of this.y_f(i)) {
       t.set(s, e);
     }
   }
   GetKeyMap(t, i) {
     var s;
     var e;
-    for ([s, e] of this.elf(i)) {
+    for ([s, e] of this.p_f(i)) {
       t.set(s, e);
     }
   }
@@ -206,7 +206,7 @@ class InputCombinationAxisBinding {
     var t;
     var i;
     var s = new Map();
-    for ([t, i] of this.zhf) {
+    for ([t, i] of this.f_f) {
       var e;
       var h;
       var r = new Map();
@@ -225,37 +225,37 @@ class InputCombinationAxisBinding {
     }
   }
   HasKey(t, i, s) {
-    return this.elf(s).get(t) === i;
+    return this.p_f(s).get(t) === i;
   }
-  elf(t) {
-    let i = this.zhf.get(t);
+  p_f(t) {
+    let i = this.f_f.get(t);
     if (!i) {
       i = new Map();
-      this.zhf.set(t, i);
+      this.f_f.set(t, i);
     }
     return i;
   }
-  tlf(t) {
-    let i = this.Jhf.get(t);
+  v_f(t) {
+    let i = this.g_f.get(t);
     if (!i) {
       i = new Map();
-      this.Jhf.set(t, i);
+      this.g_f.set(t, i);
     }
     return i;
   }
-  ilf(t) {
-    let i = this.Zhf.get(t);
+  y_f(t) {
+    let i = this.C_f.get(t);
     if (!i) {
       i = new Map();
-      this.Zhf.set(t, i);
+      this.C_f.set(t, i);
     }
     return i;
   }
-  olf(t) {
-    let i = this.rlf.get(t);
+  M_f(t) {
+    let i = this.S_f.get(t);
     if (!i) {
       i = new Map();
-      this.rlf.set(t, i);
+      this.S_f.set(t, i);
     }
     return i;
   }

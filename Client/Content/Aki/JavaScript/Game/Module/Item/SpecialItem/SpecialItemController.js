@@ -38,6 +38,34 @@ class SpecialItemController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnChangeRole, this.xie);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ChangeModeFinish, this.zYe);
   }
+  static OnInit() {
+    this.PauseTick();
+    return true;
+  }
+  static OnAfterTick(e) {
+    this.PauseTick();
+    this.Vjg();
+  }
+  static Hjg(t, r) {
+    if (!this.jjg.some(e => e[0] === t && e[1] === r)) {
+      this.jjg.push([t, r]);
+      this.ResumeTick();
+    }
+  }
+  static Vjg() {
+    if (this.jjg.length !== 0) {
+      if (this.jjg.length > 4 && Log_1.Log.CheckWarn()) {
+        Log_1.Log.Warn("Item", 39, "RefreshSpecialItemAllowReqUse单Tick派发次数过多，可能存在性能问题", ["Count", this.jjg.length], ["List", this.jjg]);
+      }
+      var e;
+      var t;
+      var r = this.jjg;
+      this.jjg = [];
+      for ([e, t] of r) {
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRefreshSpecialItemAllowReqUse, e, t);
+      }
+    }
+  }
   static IsSpecialItem(e) {
     return !!ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfig(e)?.SpecialItem;
   }
@@ -52,18 +80,18 @@ class SpecialItemController extends UiControllerBase_1.UiControllerBase {
     if (!e.UseInMultiMode && ModelManager_1.ModelManager.GameModeModel.IsMulti) {
       return false;
     }
-    var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity.GetComponent(215);
+    var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity.GetComponent(217);
     if (!t) {
       return e.AllowTags.length === 0;
     }
-    for (const n of e.AllowTags) {
-      var r = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(n);
+    for (const o of e.AllowTags) {
+      var r = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(o);
       if (!r || !t.HasTag(r)) {
         return false;
       }
     }
-    for (const o of e.BanTags) {
-      var l = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(o);
+    for (const n of e.BanTags) {
+      var l = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(n);
       if (l && t.HasTag(l)) {
         return false;
       }
@@ -74,20 +102,20 @@ class SpecialItemController extends UiControllerBase_1.UiControllerBase {
     if (SpecialItemController.IsSpecialItem(e)) {
       var r = ConfigManager_1.ConfigManager.SpecialItemConfig.GetConfig(e);
       if (r) {
-        var l = t?.Entity?.GetComponent(215);
+        var l = t?.Entity?.GetComponent(217);
         SpecialItemController.StopListenSpecialItemRelatedTags();
         for (const a of r.AllowTags) {
-          var n = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(a);
-          if (n) {
-            l?.AddTagAddOrRemoveListener(n, SpecialItemController.egi);
-            ModelManager_1.ModelManager.SpecialItemModel.WatchedAllowTagIds.add(n);
+          var o = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(a);
+          if (o) {
+            l?.AddTagAddOrRemoveListener(o, SpecialItemController.egi);
+            ModelManager_1.ModelManager.SpecialItemModel.WatchedAllowTagIds.add(o);
           }
         }
         for (const i of r.BanTags) {
-          var o = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(i);
-          if (o) {
-            l?.AddTagAddOrRemoveListener(o, SpecialItemController.egi);
-            ModelManager_1.ModelManager.SpecialItemModel.WatchedBanTagIds.add(o);
+          var n = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(i);
+          if (n) {
+            l?.AddTagAddOrRemoveListener(n, SpecialItemController.egi);
+            ModelManager_1.ModelManager.SpecialItemModel.WatchedBanTagIds.add(n);
           }
         }
         ModelManager_1.ModelManager.SpecialItemModel.TagWatchedItemId = e;
@@ -96,7 +124,7 @@ class SpecialItemController extends UiControllerBase_1.UiControllerBase {
     }
   }
   static StopListenSpecialItemRelatedTags() {
-    var e = ModelManager_1.ModelManager.SpecialItemModel?.TagWatchedEntityHandle?.Entity?.GetComponent(215);
+    var e = ModelManager_1.ModelManager.SpecialItemModel?.TagWatchedEntityHandle?.Entity?.GetComponent(217);
     if (e) {
       for (const t of ModelManager_1.ModelManager.SpecialItemModel.WatchedAllowTagIds) {
         e.RemoveTagAddOrRemoveListener(t, SpecialItemController.egi);
@@ -112,13 +140,13 @@ class SpecialItemController extends UiControllerBase_1.UiControllerBase {
     ModelManager_1.ModelManager.SpecialItemModel.TagWatchedItemId = 0;
     ModelManager_1.ModelManager.SpecialItemModel.TagWatchedEntityHandle = undefined;
   }
-  static EquipSpecialItem(t, r = true, l = true, n = 0) {
+  static EquipSpecialItem(t, r = true, l = true, o = 0) {
     var e;
     return !!ModelManager_1.ModelManager.RouletteModel.IsExploreRouletteOpen() && !((e = ConfigManager_1.ConfigManager.SpecialItemConfig.GetConfig(t)) ? e.SpecialItemType !== 0 ? (Log_1.Log.CheckInfo() && Log_1.Log.Info("Item", 37, "特殊道具配置类型无法装备", ["Id", t], ["SpecialItemType", e.SpecialItemType]), 1) : ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(t) <= 0 ? (Log_1.Log.CheckInfo() && Log_1.Log.Info("Item", 37, "背包中没有对应特殊道具,无法切换", ["Id", t]), 1) : (ModelManager_1.ModelManager.SpecialItemModel.GetEquipSpecialItemId() !== t ? RouletteController_1.RouletteController.SaveExploreRouletteExtraItemId(t, e => {
-      if (e && (r && RouletteController_1.RouletteController.EquipItemSetRequest(t, undefined, n), l)) {
+      if (e && (r && RouletteController_1.RouletteController.EquipItemSetRequest(t, undefined, o), l)) {
         ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("ItemEquiped");
       }
-    }) : r && RouletteController_1.RouletteController.EquipItemSetRequest(t, undefined, n), 0) : (Log_1.Log.CheckError() && Log_1.Log.Error("Item", 37, "特殊道具不存在,请检查是否配置t.特殊道具", ["Id", t]), 1));
+    }) : r && RouletteController_1.RouletteController.EquipItemSetRequest(t, undefined, o), 0) : (Log_1.Log.CheckError() && Log_1.Log.Error("Item", 37, "特殊道具不存在,请检查是否配置t.特殊道具", ["Id", t]), 1));
   }
   static UnEquipSpecialItem(e) {
     if (ModelManager_1.ModelManager.SpecialItemModel.GetEquipSpecialItemId() === e) {
@@ -136,7 +164,7 @@ class SpecialItemController extends UiControllerBase_1.UiControllerBase {
   }
   static tgi(e, t, r) {
     var l = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity;
-    if (l?.Valid && (l = l.GetComponent(41)).Valid) {
+    if (l?.Valid && (l = l.GetComponent(43)).Valid) {
       l.BeginSkillAsync(r, {
         Reason: "Explore skill item: UseSkill"
       });
@@ -144,7 +172,8 @@ class SpecialItemController extends UiControllerBase_1.UiControllerBase {
   }
 }
 exports.SpecialItemController = SpecialItemController;
-(_a = SpecialItemController).$di = e => {
+(_a = SpecialItemController).jjg = [];
+SpecialItemController.$di = e => {
   var t;
   if (e === undefined) {
     SpecialItemController.StopListenSpecialItemRelatedTags();
@@ -158,21 +187,21 @@ SpecialItemController.xie = (e, t) => {
   if (r) {
     SpecialItemController.StopListenSpecialItemRelatedTags();
     SpecialItemController.ListenSpecialItemRelatedTags(r, e);
-    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRefreshSpecialItemAllowReqUse, r, e);
+    _a.Hjg(r, e);
   }
 };
 SpecialItemController.zYe = () => {
   var e = ModelManager_1.ModelManager.SpecialItemModel.TagWatchedItemId;
   var t = ModelManager_1.ModelManager.SpecialItemModel.TagWatchedEntityHandle;
   if (e) {
-    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRefreshSpecialItemAllowReqUse, e, t);
+    _a.Hjg(e, t);
   }
 };
 SpecialItemController.egi = (e, t) => {
   var r = ModelManager_1.ModelManager.SpecialItemModel.TagWatchedItemId;
   var l = ModelManager_1.ModelManager.SpecialItemModel.TagWatchedEntityHandle;
   if (r) {
-    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRefreshSpecialItemAllowReqUse, r, l);
+    _a.Hjg(r, l);
   }
 };
 SpecialItemController.JCi = e => {

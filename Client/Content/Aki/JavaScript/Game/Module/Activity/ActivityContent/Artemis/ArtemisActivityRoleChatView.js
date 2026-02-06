@@ -29,62 +29,62 @@ class ArtemisActivityRoleChatView extends UiViewBase_1.UiViewBase {
     super(...arguments);
     this.ArtemisData = undefined;
     this.lqe = undefined;
-    this.yzm = undefined;
-    this.Szm = undefined;
-    this.ISf = false;
-    this.Mzm = () => {
-      this.Ezm(ArtemisActivityController_1.ArtemisActivityController.CurrentDayIndex);
-      this.Izm();
+    this.oef = undefined;
+    this.nef = undefined;
+    this.cIf = false;
+    this.sef = () => {
+      this.aef(ArtemisActivityController_1.ArtemisActivityController.CurrentDayIndex);
+      this.hef();
     };
-    this.LSf = (i, e) => {
+    this.CIf = (i, e) => {
       if (e === "Dele_M") {
         UiLayer_1.UiLayer.SetShowMaskLayer("ArtemisActivityRoleChatView", false);
       }
     };
-    this.Tzm = () => {
+    this.lef = () => {
       var i = new ArtemisDaysItem_1.ArtemisDaysItem();
-      i.SetClickCallback(this.bzm);
+      i.SetClickCallback(this._ef);
       return i;
     };
-    this.Rzm = () => {
-      this.Izm();
+    this.uef = () => {
+      this.hef();
     };
-    this.bzm = i => {
-      if (this.vsf(i)) {
+    this._ef = i => {
+      if (this.Whf(i)) {
         if (ArtemisActivityController_1.ArtemisActivityController.CurrentDayIndex !== i) {
           ArtemisActivityController_1.ArtemisActivityController.CurrentDayIndex = i;
-          this.Ezm(i);
-          this.tPf(i + 1);
+          this.aef(i);
+          this.Rkf(i + 1);
         }
-        this.Izm();
+        this.hef();
       }
     };
-    this.Qqf = () => {
+    this.i8f = () => {
       var i = ArtemisActivityController_1.ArtemisActivityController.CurrentDayIndex;
       var i = {
         GamePlayId: (ConfigManager_1.ConfigManager.ArtemisActivityConfig?.GetArtemisByActivityIdAndDay(this.ArtemisData.GetCacheActivityId, i)).QteId,
         Index: i,
-        CallBack: this.TSf
+        CallBack: this.dIf
       };
       UiManager_1.UiManager.OpenView("ArtemisQteView", i, () => {
         UiManager_1.UiManager.CloseView("ArtemisActivityCertificationView");
       });
     };
-    this.TSf = () => {
+    this.dIf = () => {
       var i = {
-        CallBack: this.p5f,
+        CallBack: this.JWf,
         IsPlayFixedDone: true
       };
       UiManager_1.UiManager.OpenView("ArtemisActivityCertificationView", i);
     };
-    this.p5f = () => {
+    this.JWf = () => {
       var i = ArtemisActivityController_1.ArtemisActivityController.CurrentDayIndex;
-      var e = this.yzm?.GetScrollItemByIndex(i);
+      var e = this.oef?.GetScrollItemByIndex(i);
       if (e) {
         e?.LoadMaterial(false);
       }
       ArtemisActivityController_1.ArtemisActivityController.RequestArtemisStatus(this.ArtemisData, i + 1, i => {
-        this.ISf = false;
+        this.cIf = false;
         if (i) {
           this.CloseMe();
         }
@@ -92,7 +92,7 @@ class ArtemisActivityRoleChatView extends UiViewBase_1.UiViewBase {
     };
     this.v6e = () => {
       this.PlaySequence("Fix_Done");
-      this.Szm?.PlayFixDoneSequence();
+      this.nef?.PlayFixDoneSequence();
       UiLayer_1.UiLayer.SetShowMaskLayer("ArtemisActivityRoleChatView", true);
     };
   }
@@ -100,30 +100,30 @@ class ArtemisActivityRoleChatView extends UiViewBase_1.UiViewBase {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIArtText], [2, UE.UIArtText], [3, UE.UIScrollViewWithScrollbarComponent], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UITexture], [7, UE.UIText]];
   }
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnArtemisStateRefresh, this.Mzm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnArtemisStateRefresh, this.sef);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnCloseRewardView, this.v6e);
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnArtemisStateRefresh, this.Mzm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnArtemisStateRefresh, this.sef);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnCloseRewardView, this.v6e);
   }
   async OnBeforeStartAsync() {
-    this.RootActor?.OnSequencePlayEvent.Bind(this.LSf);
+    this.RootActor?.OnSequencePlayEvent.Bind(this.CIf);
     var i = this.OpenParam;
     ArtemisActivityController_1.ArtemisActivityController.CurrentDayIndex = i.DefaultIndex;
     this.ArtemisData = i.Data;
     this.zDn();
-    this.wzm();
+    this.cef();
     this.GetText(7)?.ShowTextNew("Activity_ArtemisChatRewardTips");
     await super.OnBeforeStartAsync();
-    this.Szm = new ArtemisDialogueBoxPanel_1.ArtemisDialogueBoxPanel();
+    this.nef = new ArtemisDialogueBoxPanel_1.ArtemisDialogueBoxPanel();
     var i = this.GetItem(5).GetOwner();
-    await this.Szm.CreateThenShowByActorAsync(i);
+    await this.nef.CreateThenShowByActorAsync(i);
   }
   OnBeforeShow() {
-    this.Rzm();
-    this.Ezm(ArtemisActivityController_1.ArtemisActivityController.CurrentDayIndex);
-    this.tPf(ArtemisActivityController_1.ArtemisActivityController.CurrentDayIndex + 1);
+    this.uef();
+    this.aef(ArtemisActivityController_1.ArtemisActivityController.CurrentDayIndex);
+    this.Rkf(ArtemisActivityController_1.ArtemisActivityController.CurrentDayIndex + 1);
   }
   OnBeforeDestroy() {
     this.RootActor?.OnSequencePlayEvent.Unbind();
@@ -137,17 +137,17 @@ class ArtemisActivityRoleChatView extends UiViewBase_1.UiViewBase {
       this.lqe.SetTitle(this.ArtemisData.GetTitle());
     }
   }
-  wzm() {
+  cef() {
     var i;
-    if (!this.yzm) {
+    if (!this.oef) {
       if (i = this.GetScrollViewWithScrollbar(3)) {
-        this.yzm = new GenericScrollViewNew_1.GenericScrollViewNew(i, this.Tzm);
+        this.oef = new GenericScrollViewNew_1.GenericScrollViewNew(i, this.lef);
       }
     }
   }
-  Izm() {
+  hef() {
     var i = ConfigManager_1.ConfigManager.ArtemisActivityConfig?.GetArtemisGroupByActivityId(this.ArtemisData.GetCacheActivityId);
-    if (i && i.length && this.yzm) {
+    if (i && i.length && this.oef) {
       var e = [];
       for (const r of i) {
         var t = {
@@ -156,19 +156,19 @@ class ArtemisActivityRoleChatView extends UiViewBase_1.UiViewBase {
         };
         e.push(t);
       }
-      this.yzm?.RefreshByData(e, () => {
-        var i = this.yzm?.GetItemByIndex(ArtemisActivityController_1.ArtemisActivityController.CurrentDayIndex);
+      this.oef?.RefreshByData(e, () => {
+        var i = this.oef?.GetItemByIndex(ArtemisActivityController_1.ArtemisActivityController.CurrentDayIndex);
         if (i) {
-          this.yzm?.LateScrollTo(i);
+          this.oef?.LateScrollTo(i);
         }
       });
     }
   }
-  tPf(i) {
+  Rkf(i) {
     i = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("T_ChatBallBg_" + i);
     this.TrySetTextureByPath(i, this.GetTexture(6));
   }
-  vsf(i) {
+  Whf(i) {
     if (this.ArtemisData?.GetArtemisStatus(i) !== 0) {
       return true;
     }
@@ -182,25 +182,25 @@ class ArtemisActivityRoleChatView extends UiViewBase_1.UiViewBase {
     }
     return false;
   }
-  Ezm(i) {
-    this.yzm?.SelectGridProxy(i);
-    this.Lzm(i);
-    this.qbf();
+  aef(i) {
+    this.oef?.SelectGridProxy(i);
+    this.mef(i);
+    this.IAf();
   }
-  Lzm(i) {
+  mef(i) {
     if (!(i < 0)) {
-      this.mnf();
+      this.xaf();
       switch (this.ArtemisData?.GetArtemisStatus(i)) {
         case 1:
-          this.Szm?.SetShowRewardItems(false);
-          this.Szm?.ScrollToTop(true);
-          this.Pzm(true, true, this.ArtemisData?.GetCacheActivityId, i);
-          if (!this.ISf && !(this.ISf = true, e = CommonParamById_1.configCommonParamById.GetIntConfig("ArtemisWaitFixedTime") ?? 1, UiManager_1.UiManager.IsViewOpen("ArtemisActivityCertificationView"))) {
+          this.nef?.SetShowRewardItems(false);
+          this.nef?.ScrollToTop(true);
+          this.fef(true, true, this.ArtemisData?.GetCacheActivityId, i);
+          if (!this.cIf && !(this.cIf = true, e = CommonParamById_1.configCommonParamById.GetIntConfig("ArtemisWaitFixedTime") ?? 1, UiManager_1.UiManager.IsViewOpen("ArtemisActivityCertificationView"))) {
             UiLayer_1.UiLayer.SetShowMaskLayer("ArtemisActivityRoleChatView", true);
             TimerSystem_1.GameplayTimerSystem.Delay(() => {
               UiLayer_1.UiLayer.SetShowMaskLayer("ArtemisActivityRoleChatView", false);
               var i = {
-                CallBack: this.Qqf,
+                CallBack: this.i8f,
                 IsPlayFixedDone: false
               };
               UiManager_1.UiManager.OpenView("ArtemisActivityCertificationView", i);
@@ -208,16 +208,16 @@ class ArtemisActivityRoleChatView extends UiViewBase_1.UiViewBase {
           }
           break;
         case 2:
-          this.Szm?.SetShowRewardItems(true);
+          this.nef?.SetShowRewardItems(true);
           var e = ConfigManager_1.ConfigManager.ArtemisActivityConfig?.GetArtemisByActivityIdAndDay(this.ArtemisData?.GetCacheActivityId, i);
           var e = this.GetRewardItem(e.DropId);
-          this.Szm?.SetRewardItems(e, true);
-          this.Szm?.ScrollToTop(false);
-          this.Pzm(false, false, this.ArtemisData?.GetCacheActivityId, i);
+          this.nef?.SetRewardItems(e, true);
+          this.nef?.ScrollToTop(false);
+          this.fef(false, false, this.ArtemisData?.GetCacheActivityId, i);
       }
     }
   }
-  mnf() {
+  xaf() {
     this.GetArtText(1)?.SetText("0" + (ArtemisActivityController_1.ArtemisActivityController.CurrentDayIndex + 1));
     var i = ConfigManager_1.ConfigManager.ArtemisActivityConfig?.GetArtemisGroupByActivityId(this.ArtemisData.GetCacheActivityId);
     this.GetArtText(2)?.SetText("/0" + i?.length);
@@ -238,15 +238,15 @@ class ArtemisActivityRoleChatView extends UiViewBase_1.UiViewBase {
     }
     return e;
   }
-  Azm(i) {
+  gef(i) {
     this.GetItem(5)?.SetUIActive(i);
   }
-  Pzm(i, e, t, r) {
-    this.Azm(true);
+  fef(i, e, t, r) {
+    this.gef(true);
     t = ConfigManager_1.ConfigManager.ArtemisActivityConfig?.GetArtemisByActivityIdAndDay(t, r);
-    this.Szm?.ShowDialogue(t ? t.ChatIds : [], i, e);
+    this.nef?.ShowDialogue(t ? t.ChatIds : [], i, e);
   }
-  qbf() {
+  IAf() {
     var i = ConfigManager_1.ConfigManager.ArtemisActivityConfig?.GetArtemisByActivityIdAndDay(this.ArtemisData.GetCacheActivityId, ArtemisActivityController_1.ArtemisActivityController.CurrentDayIndex);
     if (i) {
       var e = this.ArtemisData.GetCacheActivityId;

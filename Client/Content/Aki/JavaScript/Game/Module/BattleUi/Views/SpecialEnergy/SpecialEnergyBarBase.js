@@ -270,6 +270,7 @@ class SpecialEnergyBarBase extends UiPanelBase_1.UiPanelBase {
   OnKeyEnableChanged() {}
   OnChangeVisibleByTagChange(t) {}
   ReplaceFullEffect(t) {}
+  RevertFullEffect() {}
   InitTweenAnim(t) {
     this.TweenAnimPlayer ||= new BattleUiTweenAnimPlayer_1.BattleUiTweenAnimPlayer();
     this.TweenAnimPlayer.InitTweenAnim(t, this.GetItem(t));

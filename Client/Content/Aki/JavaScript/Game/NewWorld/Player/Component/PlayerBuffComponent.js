@@ -41,7 +41,6 @@ let PlayerBuffComponent = PlayerBuffComponent_1 = class PlayerBuffComponent exte
   constructor() {
     super(...arguments);
     this.PlayerId = 0;
-    this.BuffEffectManager = undefined;
     this.TimeScaleComponent = undefined;
     this.oim = undefined;
     this.xie = () => {
@@ -78,12 +77,12 @@ let PlayerBuffComponent = PlayerBuffComponent_1 = class PlayerBuffComponent exte
     };
   }
   OnCreate() {
-    this.BuffEffectManager = new ExtraEffectManager_1.PlayerExtraEffectManager(this);
+    this.BuffEffectManager = new ExtraEffectManager_1.ExtraEffectManager(this);
     return true;
   }
   OnInit() {
     super.OnInit();
-    this.TimeScaleComponent = this.Entity.GetComponent(131);
+    this.TimeScaleComponent = this.Entity.GetComponent(133);
     return true;
   }
   OnInitData(t) {
@@ -184,16 +183,16 @@ let PlayerBuffComponent = PlayerBuffComponent_1 = class PlayerBuffComponent exte
     return this.Entity.TimeDilation * (this.TimeScaleComponent?.GetTopForeverTimeScale(0) ?? 1);
   }
   GetCurrentBuffComponent() {
-    return this.GetEntity()?.GetComponent(183);
+    return this.GetEntity()?.GetComponent(185);
   }
   GetSkillComponent() {
-    return this.GetEntity()?.GetComponent(40);
+    return this.GetEntity()?.GetComponent(42);
   }
   GetAttributeComponent() {
-    return this.GetEntity()?.GetComponent(182);
+    return this.GetEntity()?.GetComponent(184);
   }
   GetTagComponent() {
-    return this.GetEntity()?.GetComponent(215);
+    return this.GetEntity()?.GetComponent(217);
   }
   CheckAdd(t, e, o) {
     return !this.GetTagComponent() || super.CheckAdd(t, e, o);
@@ -208,7 +207,7 @@ let PlayerBuffComponent = PlayerBuffComponent_1 = class PlayerBuffComponent exte
     return this.GetEntity()?.GetComponent(1);
   }
   GetBuffLevel(t) {
-    return this.GetEntity()?.GetComponent(183)?.GetBuffLevel(t);
+    return this.GetEntity()?.GetComponent(185)?.GetBuffLevel(t);
   }
   GetCueComponent() {
     return this.Entity.GetComponent(238);
@@ -240,7 +239,7 @@ let PlayerBuffComponent = PlayerBuffComponent_1 = class PlayerBuffComponent exte
       for (const B of e) {
         var m = B.EntityHandle?.Entity;
         if (B.EntityHandle?.Valid && m) {
-          var l = m?.GetComponent(183);
+          var l = m?.GetComponent(185);
           if (l && C.RemoveBuffWithTags && C.RemoveBuffWithTags.length > 0) {
             const h = `因为buff${t.Id}(handle=${t.Handle})的RemoveBuffWithTags导致移除`;
             for (const _ of C.RemoveBuffWithTags) {
@@ -302,7 +301,7 @@ let PlayerBuffComponent = PlayerBuffComponent_1 = class PlayerBuffComponent exte
       n.n5n = t.Duration;
       n.Bjn = t.StackCount;
       n.WHn = t.IsActive();
-      CombatMessage_1.CombatNet.Send(29439, this.Entity, Protocol_1.Aki.Protocol.ie_.create(n), t.PreMessageId, t.MessageId, o);
+      CombatMessage_1.CombatNet.Send(24889, this.Entity, Protocol_1.Aki.Protocol.ie_.create(n), t.PreMessageId, t.MessageId, o);
     }
   }
   BroadcastActivateBuff(t, e) {
@@ -311,7 +310,7 @@ let PlayerBuffComponent = PlayerBuffComponent_1 = class PlayerBuffComponent exte
     if (!!t && !(t.Id < 0) && !!this.NeedBroadcastBuff(t)) {
       (o = Protocol_1.Aki.Protocol.pe_.create()).uVn = t.Handle;
       o.qjn = e;
-      CombatMessage_1.CombatNet.Send(28202, this.Entity, o);
+      CombatMessage_1.CombatNet.Send(23501, this.Entity, o);
     }
     PlayerBuffComponent_1.R__.Stop();
   }
@@ -327,7 +326,7 @@ let PlayerBuffComponent = PlayerBuffComponent_1 = class PlayerBuffComponent exte
       if ((o = t.GetRemainDuration()) > 0) {
         s.n5n = o;
       }
-      CombatMessage_1.CombatNet.Send(20056, this.Entity, s, undefined);
+      CombatMessage_1.CombatNet.Send(23426, this.Entity, s, undefined);
     }
   }
   BroadcastRemoveBuff(t, e, o, n) {
@@ -338,7 +337,7 @@ let PlayerBuffComponent = PlayerBuffComponent_1 = class PlayerBuffComponent exte
       (f = Protocol_1.Aki.Protocol.re_.create()).uVn = t.Handle;
       f.F4n = MathUtils_1.MathUtils.NumberToLong(r);
       f.Ojn = e;
-      CombatMessage_1.CombatNet.Send(29211, this.Entity, f, o, undefined, n);
+      CombatMessage_1.CombatNet.Send(24578, this.Entity, f, o, undefined, n);
     }
   }
   AddBuffOrder(t, e) {
@@ -385,5 +384,5 @@ PlayerBuffComponent.G__ = Stats_1.Stat.Create("PlayerBuffComponent.OnBuffStackIn
 PlayerBuffComponent.F__ = Stats_1.Stat.Create("PlayerBuffComponent.OnBuffStackDecreased");
 PlayerBuffComponent.N__ = Stats_1.Stat.Create("PlayerBuffComponent.OnBuffActiveChanged");
 PlayerBuffComponent.R__ = Stats_1.Stat.Create("PlayerBuffComponent.BroadcastActivateBuff");
-PlayerBuffComponent = PlayerBuffComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(209)], PlayerBuffComponent);
+PlayerBuffComponent = PlayerBuffComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(211)], PlayerBuffComponent);
 exports.PlayerBuffComponent = PlayerBuffComponent; //# sourceMappingURL=PlayerBuffComponent.js.map

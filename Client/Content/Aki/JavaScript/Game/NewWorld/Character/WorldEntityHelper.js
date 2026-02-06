@@ -105,6 +105,7 @@ const SceneItemConveyorBeltComponent_1 = require("../SceneItem/SceneItemConveyor
 const SceneItemDamageComponent_1 = require("../SceneItem/SceneItemDamageComponent");
 const SceneItemDropItemComponent_1 = require("../SceneItem/SceneItemDropItemComponent");
 const SceneItemEventListenerComponent_1 = require("../SceneItem/SceneItemEventListenerComponent");
+const SceneItemExhibitComponent_1 = require("../SceneItem/SceneItemExhibitComponent");
 const SceneItemExploreInteractComponent_1 = require("../SceneItem/SceneItemExploreInteractComponent");
 const SceneItemFanComponent_1 = require("../SceneItem/SceneItemFanComponent");
 const SceneItemFishingPointComponent_1 = require("../SceneItem/SceneItemFishingPointComponent");
@@ -122,6 +123,7 @@ const SceneItemMultiInteractionActorComponent_1 = require("../SceneItem/SceneIte
 const SceneItemNearbyTrackingComponent_1 = require("../SceneItem/SceneItemNearbyTrackingComponent");
 const SceneItemOutletComponent_1 = require("../SceneItem/SceneItemOutletComponent");
 const SceneItemPickInteractComponent_1 = require("../SceneItem/SceneItemPickInteractComponent");
+const SceneItemQuantumDoorComponent_1 = require("../SceneItem/SceneItemQuantumDoorComponent");
 const SceneItemReboundComponent_1 = require("../SceneItem/SceneItemReboundComponent");
 const SceneItemReferenceComponent_1 = require("../SceneItem/SceneItemReferenceComponent");
 const SceneItemResetPositionComponent_1 = require("../SceneItem/SceneItemResetPositionComponent");
@@ -139,6 +141,7 @@ const SceneItemGenericOutletComponent_1 = require("../SceneItemGenericOutletComp
 const MotorAnimationSyncComponent_1 = require("../Vehicle/Common/MotorAnimationSyncComponent");
 const UeVehicleMovementTickManageComponent_1 = require("../Vehicle/Common/UeVehicleMovementTickManageComponent");
 const VehicleAbilityComponent_1 = require("../Vehicle/Common/VehicleAbilityComponent");
+const VehicleActionComponent_1 = require("../Vehicle/Common/VehicleActionComponent");
 const VehicleActorComponent_1 = require("../Vehicle/Common/VehicleActorComponent");
 const VehicleAnimationComponent_1 = require("../Vehicle/Common/VehicleAnimationComponent");
 const VehicleAudioComponent_1 = require("../Vehicle/Common/VehicleAudioComponent");
@@ -166,11 +169,13 @@ const GongduolaSplineMoveComponent_1 = require("../Vehicle/Gongduola/GongduolaSp
 const MotorcycleActorComponent_1 = require("../Vehicle/Motorcycle/MotorcycleActorComponent");
 const MotorcycleAnimationComponent_1 = require("../Vehicle/Motorcycle/MotorcycleAnimationComponent");
 const MotorcycleAudioComponent_1 = require("../Vehicle/Motorcycle/MotorcycleAudioComponent");
+const MotorcycleFreezeWaterComponent_1 = require("../Vehicle/Motorcycle/MotorcycleFreezeWaterComponent");
 const MotorcycleInputComponent_1 = require("../Vehicle/Motorcycle/MotorcycleInputComponent");
 const MotorcycleMoveComponent_1 = require("../Vehicle/Motorcycle/MotorcycleMoveComponent");
 const MotorcycleOutlookComponent_1 = require("../Vehicle/Motorcycle/MotorcycleOutlookComponent");
 const MotorcyclePerformComponent_1 = require("../Vehicle/Motorcycle/MotorcyclePerformComponent");
 const MotorcycleRailMoveComponent_1 = require("../Vehicle/Motorcycle/MotorcycleRailMove/MotorcycleRailMoveComponent");
+const MotorcycleRoadwayComponent_1 = require("../Vehicle/Motorcycle/MotorcycleRoadwayComponent");
 const MotorcycleSplineMoveComponent_1 = require("../Vehicle/Motorcycle/MotorcycleSplineMoveComponent");
 const MotorcycleStrengthComponent_1 = require("../Vehicle/Motorcycle/MotorcycleStrengthComponent");
 const MotorcycleUiComponent_1 = require("../Vehicle/Motorcycle/MotorcycleUiComponent");
@@ -184,6 +189,7 @@ const BaseDamageComponent_1 = require("./Common/Component/Abilities/BaseDamageCo
 const CharacterAbilityComponent_1 = require("./Common/Component/Abilities/CharacterAbilityComponent");
 const CharacterAttributeComponent_1 = require("./Common/Component/Abilities/CharacterAttributeComponent");
 const CharacterBuffComponent_1 = require("./Common/Component/Abilities/CharacterBuffComponent");
+const CharacterCustomActionComponent_1 = require("./Common/Component/Abilities/CharacterCustomActionComponent");
 const CharacterDamageComponent_1 = require("./Common/Component/Abilities/CharacterDamageComponent");
 const CharacterGameplayCueComponent_1 = require("./Common/Component/Abilities/CharacterGameplayCueComponent");
 const CharacterGasDebugComponent_1 = require("./Common/Component/Abilities/CharacterGasDebugComponent");
@@ -192,8 +198,6 @@ const CharacterPassiveSkillComponent_1 = require("./Common/Component/Abilities/C
 const CharacterStatisticsComponent_1 = require("./Common/Component/Abilities/CharacterStatisticsComponent");
 const CharacterTriggerComponent_1 = require("./Common/Component/Abilities/CharacterTriggerComponent");
 const CharacterUnifiedStateComponent_1 = require("./Common/Component/Abilities/CharacterUnifiedStateComponent");
-const FollowableComponent_1 = require("./Common/Component/Abilities/Follow/FollowableComponent");
-const FollowerComponent_1 = require("./Common/Component/Abilities/Follow/FollowerComponent");
 const FollowShooterComponent_1 = require("./Common/Component/Abilities/Follow/FollowShooterComponent");
 const PlayerFollowableComponent_1 = require("./Common/Component/Abilities/Follow/PlayerFollowableComponent");
 const VisionBuffComponent_1 = require("./Common/Component/Abilities/VisionBuffComponent");
@@ -226,6 +230,7 @@ const CharacterLinkedAnimInstComponent_1 = require("./Common/Component/Character
 const CharacterLogicStateSyncComponent_1 = require("./Common/Component/CharacterLogicStateSyncComponent");
 const CharacterManipulateComponent_1 = require("./Common/Component/CharacterManipulateComponent");
 const CharacterManipulateInteractComponent_1 = require("./Common/Component/CharacterManipulateInteractComponent");
+const CharacterMeshDitherDetectComponent_1 = require("./Common/Component/CharacterMeshDitherDetectComponent");
 const CharacterMoveComponent_1 = require("./Common/Component/CharacterMoveComponent");
 const CharacterMovementSyncComponent_1 = require("./Common/Component/CharacterMovementSyncComponent");
 const CharacterPartComponent_1 = require("./Common/Component/CharacterPartComponent");
@@ -243,6 +248,7 @@ const CharacterStateMachineNewComponent_1 = require("./Common/Component/Characte
 const CharacterSwimComponent_1 = require("./Common/Component/CharacterSwimComponent");
 const CharacterThrowComponent_1 = require("./Common/Component/CharacterThrowComponent");
 const CharacterTimeScaleComponent_1 = require("./Common/Component/CharacterTimeScaleComponent");
+const CharacterTrailEffectComponent_1 = require("./Common/Component/CharacterTrailEffectComponent");
 const CharacterWalkOnAirComponent_1 = require("./Common/Component/CharacterWalkOnAirComponent");
 const CharacterWalkOnWaterComponent_1 = require("./Common/Component/CharacterWalkOnWaterComponent");
 const CharacterWeaponComponent_1 = require("./Common/Component/CharacterWeaponComponent");
@@ -256,6 +262,7 @@ const CharacterLockOnComponent_1 = require("./Common/Component/LockOn/CharacterL
 const CharacterMorphComponent_1 = require("./Common/Component/Morph/CharacterMorphComponent");
 const CharacterCatapultComponent_1 = require("./Common/Component/Move/CharacterCatapultComponent");
 const CharacterClimbComponent_1 = require("./Common/Component/Move/CharacterClimbComponent");
+const CharacterFloatingComponent_1 = require("./Common/Component/Move/CharacterFloatingComponent");
 const CharacterKiteComponent_1 = require("./Common/Component/Move/CharacterKiteComponent");
 const CharacterPatrolComponent_1 = require("./Common/Component/Move/CharacterPatrolComponent");
 const CharacterRailSlideComponent_1 = require("./Common/Component/Move/CharacterRailSlideComponent");
@@ -722,6 +729,9 @@ class WorldEntityHelper {
     if (!e.AddComponent(BaseCrowdAiComponent_1.BaseCrowdAiComponent)) {
       return false;
     }
+    if (!e.AddComponent(CharacterTrailEffectComponent_1.CharacterTrailEffectComponent)) {
+      return false;
+    }
     if (!e.AddComponent(CharacterCombatMessageComponent_1.CharacterCombatMessageComponent)) {
       return false;
     }
@@ -919,6 +929,9 @@ class WorldEntityHelper {
     if (!e.AddComponent(CharacterSwimComponent_1.CharacterSwimComponent)) {
       return false;
     }
+    if (!e.AddComponent(CharacterFloatingComponent_1.CharacterFloatingComponent)) {
+      return false;
+    }
     if (!e.AddComponent(CharacterWalkOnWaterComponent_1.CharacterWalkOnWaterComponent)) {
       return false;
     }
@@ -947,6 +960,9 @@ class WorldEntityHelper {
       return false;
     }
     if (!e.AddComponent(CharacterActionComponent_1.CharacterActionComponent)) {
+      return false;
+    }
+    if (!e.AddComponent(CharacterCustomActionComponent_1.CharacterCustomActionComponent)) {
       return false;
     }
     if (!e.AddComponent(CharacterHoldingHandsComponent_1.CharacterHoldingHandsComponent)) {
@@ -988,8 +1004,11 @@ class WorldEntityHelper {
     if (!e.AddComponent(CharacterVisionComponent_1.CharacterVisionComponent)) {
       return false;
     }
-    if (e.AddComponent(CharacterPhysicsAssetComponent_1.CharacterPhysicsAssetComponent)) {
-      return !!e.AddComponent(CharacterFootEffectComponent_1.CharacterFootEffectComponent) && !!e.AddComponent(CharacterSkinDamageComponent_1.CharacterSkinDamageComponent) && !!e.AddComponent(RolePartyComponent_1.RolePartyComponent) && !!e.AddComponent(CharacterCrowdAiComponent_1.CharacterCrowdAiComponent) && !!e.AddComponent(CharacterMorphComponent_1.CharacterMorphComponent) && !!e.AddComponent(CharacterCombatMessageComponent_1.CharacterCombatMessageComponent) && !!e.AddComponent(RolePreloadComponent_1.RolePreloadComponent) && !!e.AddComponent(SubMeshComponent_1.SubMeshComponent) && !!e.AddComponent(RoleInhalationComponent_1.RoleInhalationComponent) && (e.RegisterToGameBudgetController = true);
+    if (!e.AddComponent(CharacterPhysicsAssetComponent_1.CharacterPhysicsAssetComponent)) {
+      return false;
+    }
+    if (e.AddComponent(CharacterFootEffectComponent_1.CharacterFootEffectComponent)) {
+      return !!e.AddComponent(CharacterSkinDamageComponent_1.CharacterSkinDamageComponent) && !!e.AddComponent(RolePartyComponent_1.RolePartyComponent) && !!e.AddComponent(CharacterCrowdAiComponent_1.CharacterCrowdAiComponent) && !!e.AddComponent(CharacterMorphComponent_1.CharacterMorphComponent) && !!e.AddComponent(CharacterMeshDitherDetectComponent_1.CharacterMeshDitherDetectComponent) && !!e.AddComponent(CharacterCombatMessageComponent_1.CharacterCombatMessageComponent) && !!e.AddComponent(RolePreloadComponent_1.RolePreloadComponent) && !!e.AddComponent(SubMeshComponent_1.SubMeshComponent) && !!e.AddComponent(RoleInhalationComponent_1.RoleInhalationComponent) && (e.RegisterToGameBudgetController = true);
     }
     return false;
   }
@@ -1131,7 +1150,7 @@ class WorldEntityHelper {
       }
       e.SetParam(UeComponentTickManageComponent_1.UeComponentTickManageComponent, UE.TsCharacterDebugComponent_C.StaticClass());
     }
-    return !!e.AddComponent(CharacterAiComponent_1.CharacterAiComponent) && !!e.AddComponent(CharacterAudioComponent_1.CharacterAudioComponent) && !!e.AddComponent(CharacterVisionComponent_1.CharacterVisionComponent) && !!e.AddComponent(CharacterCombatMessageComponent_1.CharacterCombatMessageComponent) && !!e.AddComponent(RolePreloadComponent_1.RolePreloadComponent) && !!e.AddComponent(SubMeshComponent_1.SubMeshComponent) && (e.RegisterToGameBudgetController = true);
+    return !!e.AddComponent(CharacterAiComponent_1.CharacterAiComponent) && !!e.AddComponent(CharacterAudioComponent_1.CharacterAudioComponent) && !!e.AddComponent(CharacterVisionComponent_1.CharacterVisionComponent) && !!e.AddComponent(CharacterMeshDitherDetectComponent_1.CharacterMeshDitherDetectComponent) && !!e.AddComponent(CharacterCombatMessageComponent_1.CharacterCombatMessageComponent) && !!e.AddComponent(RolePreloadComponent_1.RolePreloadComponent) && !!e.AddComponent(SubMeshComponent_1.SubMeshComponent) && (e.RegisterToGameBudgetController = true);
   }
   static GetSceneEntityComponentRecord(e) {
     return !!e.AddComponent(CreatureDataComponent_1.CreatureDataComponent) && !!e.AddComponent(CharacterActorComponent_1.CharacterActorComponent) && !!e.AddComponent(CharacterAbilityComponent_1.CharacterAbilityComponent) && !!e.AddComponent(CharacterAttributeComponent_1.CharacterAttributeComponent) && !!e.AddComponent(CharacterBuffComponent_1.CharacterBuffComponent) && !!e.AddDebugComponent(CharacterGasDebugComponent_1.CharacterGasDebugComponent) && !!e.AddDebugComponent(CharacterStatisticsComponent_1.CharacterStatisticsComponent) && !!e.AddComponent(CharacterTriggerComponent_1.CharacterTriggerComponent) && !!e.AddComponent(CharacterDamageComponent_1.CharacterDamageComponent) && !!e.AddComponent(LevelTagComponent_1.LevelTagComponent) && !!e.AddComponent(CharacterRoleTransitionComponent_1.CharacterRoleTransitionComponent) && !!e.AddComponent(CharacterPassiveSkillComponent_1.CharacterPassiveSkillComponent) && !!e.AddComponent(CharacterFollowComponent_1.CharacterFollowComponent) && !!e.AddComponent(CharacterHitComponent_1.CharacterHitComponent) && !!e.AddComponent(CharacterTimeScaleComponent_1.CharacterTimeScaleComponent) && !!e.AddComponent(MonsterFlowComponent_1.MonsterFlowComponent) && !!e.AddComponent(CharacterCombatMessageComponent_1.CharacterCombatMessageComponent) && !!e.AddComponent(RolePreloadComponent_1.RolePreloadComponent);
@@ -1341,6 +1360,9 @@ class WorldEntityHelper {
       }
     }
     if (!e.AddComponent(CharacterPlanComponent_1.CharacterPlanComponent)) {
+      return false;
+    }
+    if (!e.AddComponent(CharacterTrailEffectComponent_1.CharacterTrailEffectComponent)) {
       return false;
     }
     if (!e.AddComponent(UeSkeletalTickManageComponent_1.UeSkeletalTickManageComponent)) {
@@ -1564,11 +1586,11 @@ class WorldEntityHelper {
     if (!n.AddComponent(InteractItemComponent_1.InteractItemComponent)) {
       return false;
     }
-    var t = CreateEntityData_1.CreateEntityData.GetBaseInfo(n);
-    if (t?.IsShowNameOnHead && !n.HasComponent(PawnHeadInfoComponent_1.PawnHeadInfoComponent) && !n.AddComponent(PawnHeadInfoComponent_1.PawnHeadInfoComponent)) {
+    var e = CreateEntityData_1.CreateEntityData.GetBaseInfo(n);
+    if (e?.IsShowNameOnHead && !n.HasComponent(PawnHeadInfoComponent_1.PawnHeadInfoComponent) && !n.AddComponent(PawnHeadInfoComponent_1.PawnHeadInfoComponent)) {
       return false;
     }
-    t = t?.Category?.FishingMechanismType;
+    var t = e?.Category?.FishingMechanismType;
     if ((t === "FishingPoint" || t === "DynamicFishingPoint") && !n.AddComponent(SceneItemFishingPointComponent_1.SceneItemFishingPointComponent)) {
       return false;
     }
@@ -1594,7 +1616,7 @@ class WorldEntityHelper {
         return false;
       }
     }
-    return (!n.ComponentDataMap.get("Mys") || !!n.AddComponent(SceneItemDropItemComponent_1.SceneItemDropItemComponent)) && (!n.EnableMovement || !!n.AddComponent(SceneItemMovementSyncComponent_1.SceneItemMovementSyncComponent));
+    return (!n.ComponentDataMap.get("Mys") || !!n.AddComponent(SceneItemDropItemComponent_1.SceneItemDropItemComponent)) && (!n.EnableMovement || !!n.AddComponent(SceneItemMovementSyncComponent_1.SceneItemMovementSyncComponent)) && (e?.Category.MechanismType !== "SpaceStationQuantumDoor" || !!n.AddComponent(SceneItemQuantumDoorComponent_1.SceneItemQuantumDoorComponent));
   }
   static GetVehicleComponentRecord(e) {
     var n = e.PbEntityInitData;
@@ -1610,7 +1632,7 @@ class WorldEntityHelper {
     }
     switch (n.Category.VehicleType) {
       case "Motorcycle":
-        if (e.AddComponent(MotorcycleActorComponent_1.MotorcycleActorComponent) && e.AddComponent(MotorcycleRailMoveComponent_1.MotorcycleRailMoveComponent) && e.AddComponent(MotorcycleAnimationComponent_1.MotorcycleAnimationComponent) && e.AddComponent(MotorcycleOutlookComponent_1.MotorcycleOutlookComponent) && e.AddComponent(MotorAnimationSyncComponent_1.MotorAnimationSyncComponent) && e.AddComponent(MotorcycleExploreComponent_1.MotorcycleExploreComponent)) {
+        if (e.AddComponent(MotorcycleActorComponent_1.MotorcycleActorComponent) && e.AddComponent(MotorcycleRailMoveComponent_1.MotorcycleRailMoveComponent) && e.AddComponent(MotorcycleAnimationComponent_1.MotorcycleAnimationComponent) && e.AddComponent(MotorcycleOutlookComponent_1.MotorcycleOutlookComponent) && e.AddComponent(MotorAnimationSyncComponent_1.MotorAnimationSyncComponent)) {
           break;
         }
         return false;
@@ -1621,6 +1643,9 @@ class WorldEntityHelper {
         return false;
     }
     if (!e.AddComponent(VehicleAbilityComponent_1.VehicleAbilityComponent)) {
+      return false;
+    }
+    if (!e.AddComponent(VehicleTagComponent_1.VehicleTagComponent)) {
       return false;
     }
     switch (n.Category.VehicleType) {
@@ -1638,7 +1663,7 @@ class WorldEntityHelper {
       case "NpcVehicle":
         return false;
       case "Motorcycle":
-        if (e.AddComponent(BaseDamageComponent_1.BaseDamageComponent) && e.AddComponent(MotorcylceConfigComponent_1.MotorcycleConfigComponent) && e.AddComponent(MotorcycleSplineMoveComponent_1.MotorcycleSplineMoveComponent) && e.AddComponent(MotorcycleInputComponent_1.MotorcycleInputComponent) && e.AddComponent(MotorcyclePerformComponent_1.MotorcyclePerformComponent) && e.AddComponent(MotorcycleAudioComponent_1.MotorcycleAudioComponent) && e.AddComponent(MotorcycleMoveComponent_1.MotorcycleMoveComponent) && e.AddComponent(MotorcycleWaterComponent_1.MotorcycleWaterComponent) && e.AddComponent(CharacterAttributeComponent_1.CharacterAttributeComponent) && e.AddComponent(VehicleLockOnComponent_1.VehicleLockOnComponent) && e.AddComponent(CharacterSkillCdComponent_1.CharacterSkillCdComponent) && e.AddComponent(CharacterTimeScaleComponent_1.CharacterTimeScaleComponent) && e.AddComponent(VehicleFrozenComponent_1.VehicleFrozenComponent) && e.AddComponent(VehicleBuffComponent_1.VehicleBuffComponent) && e.AddComponent(RolePreloadComponent_1.RolePreloadComponent) && e.AddComponent(VehicleSkillComponent_1.VehicleSkillComponent) && e.AddComponent(VehicleCatapultComponent_1.VehicleCatapultComponent) && e.AddComponent(CharacterGameplayCueComponent_1.CharacterGameplayCueComponent) && e.AddComponent(FollowerComponent_1.FollowerComponent) && e.AddComponent(FollowableComponent_1.FollowableComponent) && e.AddComponent(MotorcycleUiComponent_1.MotorcycleUiComponent) && e.AddComponent(MotorcycleStrengthComponent_1.MotorcycleStrengthComponent) && e.AddComponent(VehicleMontageComponent_1.VehicleMontageComponent) && e.AddComponent(BaseCrowdAiComponent_1.BaseCrowdAiComponent)) {
+        if (e.AddComponent(BaseDamageComponent_1.BaseDamageComponent) && e.AddComponent(MotorcylceConfigComponent_1.MotorcycleConfigComponent) && e.AddComponent(MotorcycleSplineMoveComponent_1.MotorcycleSplineMoveComponent) && e.AddComponent(MotorcycleInputComponent_1.MotorcycleInputComponent) && e.AddComponent(MotorcyclePerformComponent_1.MotorcyclePerformComponent) && e.AddComponent(MotorcycleAudioComponent_1.MotorcycleAudioComponent) && e.AddComponent(MotorcycleMoveComponent_1.MotorcycleMoveComponent) && e.AddComponent(MotorcycleWaterComponent_1.MotorcycleWaterComponent) && e.AddComponent(CharacterAttributeComponent_1.CharacterAttributeComponent) && e.AddComponent(VehicleLockOnComponent_1.VehicleLockOnComponent) && e.AddComponent(CharacterSkillCdComponent_1.CharacterSkillCdComponent) && e.AddComponent(CharacterTimeScaleComponent_1.CharacterTimeScaleComponent) && e.AddComponent(VehicleFrozenComponent_1.VehicleFrozenComponent) && e.AddComponent(VehicleBuffComponent_1.VehicleBuffComponent) && e.AddComponent(RolePreloadComponent_1.RolePreloadComponent) && e.AddComponent(VehicleSkillComponent_1.VehicleSkillComponent) && e.AddComponent(MotorcycleExploreComponent_1.MotorcycleExploreComponent) && e.AddComponent(MotorcycleFreezeWaterComponent_1.MotorcycleFreezeWaterComponent) && e.AddComponent(VehicleCatapultComponent_1.VehicleCatapultComponent) && e.AddComponent(VehicleActionComponent_1.VehicleActionComponent) && e.AddComponent(CharacterGameplayCueComponent_1.CharacterGameplayCueComponent) && e.AddComponent(MotorcycleUiComponent_1.MotorcycleUiComponent) && e.AddComponent(MotorcycleStrengthComponent_1.MotorcycleStrengthComponent) && e.AddComponent(VehicleMontageComponent_1.VehicleMontageComponent) && e.AddComponent(BaseCrowdAiComponent_1.BaseCrowdAiComponent) && e.AddComponent(MotorcycleRoadwayComponent_1.MotorcycleRoadWayComponent)) {
           break;
         }
         return false;
@@ -1673,7 +1698,7 @@ class WorldEntityHelper {
         return false;
       }
     }
-    return !!e.AddComponent(PawnInteractNewComponent_1.PawnInteractNewComponent) && !!e.AddComponent(InteractionSpotComponent_1.InteractionSpotComponent) && !!e.AddComponent(PawnPerceptionComponent_1.PawnPerceptionComponent) && !!e.AddComponent(PawnSensoryInfoComponent_1.PawnSensoryInfoComponent) && !!e.AddComponent(VehicleTagComponent_1.VehicleTagComponent) && !!e.AddComponent(UeActorTickManageComponent_1.UeActorTickManageComponent) && !!e.AddComponent(UeSkeletalTickManageComponent_1.UeSkeletalTickManageComponent) && !!e.AddComponent(UeVehicleMovementTickManageComponent_1.UeVehicleMovementTickManageComponent) && !(this.UIc(e, this.BIc), 0);
+    return !!e.AddComponent(PawnInteractNewComponent_1.PawnInteractNewComponent) && !!e.AddComponent(InteractionSpotComponent_1.InteractionSpotComponent) && !!e.AddComponent(PawnPerceptionComponent_1.PawnPerceptionComponent) && !!e.AddComponent(PawnSensoryInfoComponent_1.PawnSensoryInfoComponent) && !!e.AddComponent(UeActorTickManageComponent_1.UeActorTickManageComponent) && !!e.AddComponent(UeSkeletalTickManageComponent_1.UeSkeletalTickManageComponent) && !!e.AddComponent(UeVehicleMovementTickManageComponent_1.UeVehicleMovementTickManageComponent) && !(this.UIc(e, this.BIc), 0);
   }
   static UIc(n, e, o) {
     var t = n.PbEntityInitData;
@@ -1684,21 +1709,21 @@ class WorldEntityHelper {
         var m = t.EntityType;
         var t = IEntity_1.componentsByEntityAki[m];
         if (t) {
-          for (const l of t) {
-            var C = r[l];
+          for (const _ of t) {
+            var C = r[_];
             if (!C) {
               if (Log_1.Log.CheckError()) {
-                Log_1.Log.Error("Entity", 31, "初始化Entity找不到对应的prefab配置", ["entityType", m], ["creatureDataId", n.CreatureDataId], ["pbDataId", n.PbDataId], ["componentType", l]);
+                Log_1.Log.Error("Entity", 31, "初始化Entity找不到对应的prefab配置", ["entityType", m], ["creatureDataId", n.CreatureDataId], ["pbDataId", n.PbDataId], ["componentType", _]);
               }
               return false;
             }
             if (!C.Disabled) {
-              var a = e.get(l);
+              var a = e.get(_);
               if (a) {
-                var i = o?.get(l);
+                var i = o?.get(_);
                 if (i && i.length !== a.length) {
                   if (Log_1.Log.CheckError()) {
-                    Log_1.Log.Error("Entity", 79, "组件和条件配置数量不一致", ["ctorArrayLength", a.length], ["conditionFuncArrayLength", i.length], ["componentType", l]);
+                    Log_1.Log.Error("Entity", 79, "组件和条件配置数量不一致", ["ctorArrayLength", a.length], ["conditionFuncArrayLength", i.length], ["componentType", _]);
                   }
                   return false;
                 }
@@ -1749,12 +1774,12 @@ class WorldEntityHelper {
   }
   static Oor() {
     this.For.set(3, [CharacterActorComponent_1.CharacterActorComponent, PawnSensoryInfoComponent_1.PawnSensoryInfoComponent, BaseUnifiedStateComponent_1.BaseUnifiedStateComponent, NpcMoveComponent_1.NpcMoveComponent, CharacterPatrolComponent_1.CharacterPatrolComponent, CharacterAnimationComponent_1.CharacterAnimationComponent, CharacterAnimationSyncComponent_1.CharacterAnimationSyncComponent, VehicleTagComponent_1.VehicleTagComponent, PawnSensoryComponent_1.PawnSensoryComponent, VehicleInputComponent_1.VehicleInputComponent, CommonNpcPerformComponent_1.CommonNpcPerformComponent, NpcVehiclePerformComponent_1.NpcVehiclePerformComponent, PawnInteractNewComponent_1.PawnInteractNewComponent, InteractionSpotComponent_1.InteractionSpotComponent, PawnPerceptionComponent_1.PawnPerceptionComponent, PawnInfoManageComponent_1.PawnInfoManageComponent, PawnHeadInfoComponent_1.PawnHeadInfoComponent, CharacterAiComponent_1.CharacterAiComponent, CharacterPlanComponent_1.CharacterPlanComponent, NpcFlowComponent_1.NpcFlowComponent, UeSkeletalTickManageComponent_1.UeSkeletalTickManageComponent, UeMovementTickManageComponent_1.UeMovementTickManageComponent, UeActorTickManageComponent_1.UeActorTickManageComponent, CharacterAudioComponent_1.CharacterAudioComponent, ScanComponent_1.ScanComponent]);
-    this.For.set(0, [CharacterActorComponent_1.CharacterActorComponent, PawnSensoryInfoComponent_1.PawnSensoryInfoComponent, BaseUnifiedStateComponent_1.BaseUnifiedStateComponent, NpcMoveComponent_1.NpcMoveComponent, CharacterPatrolComponent_1.CharacterPatrolComponent, CharacterAnimationComponent_1.CharacterAnimationComponent, CharacterAnimationSyncComponent_1.CharacterAnimationSyncComponent, LevelTagComponent_1.LevelTagComponent, PawnSensoryComponent_1.PawnSensoryComponent, CommonNpcPerformComponent_1.CommonNpcPerformComponent, PawnInteractNewComponent_1.PawnInteractNewComponent, InteractionSpotComponent_1.InteractionSpotComponent, PawnPerceptionComponent_1.PawnPerceptionComponent, PawnInfoManageComponent_1.PawnInfoManageComponent, PawnHeadInfoComponent_1.PawnHeadInfoComponent, CharacterAiComponent_1.CharacterAiComponent, CharacterPlanComponent_1.CharacterPlanComponent, NpcFlowComponent_1.NpcFlowComponent, UeSkeletalTickManageComponent_1.UeSkeletalTickManageComponent, UeMovementTickManageComponent_1.UeMovementTickManageComponent, UeActorTickManageComponent_1.UeActorTickManageComponent, CharacterAudioComponent_1.CharacterAudioComponent, ScanComponent_1.ScanComponent, NpcDriveVehicleComponent_1.NpcDriveVehicleComponent, CharacterHoldingHandsComponent_1.CharacterHoldingHandsComponent, NpcSitOnChairComponent_1.NpcSitOnChairComponent, CharacterGameplayCueComponent_1.CharacterGameplayCueComponent, CharacterInteractivePerformComponent_1.CharacterInteractivePerformComponent, CharacterSwingComponent_1.CharacterSwingComponent, CharacterLinkedAnimInstComponent_1.CharacterLinkedAnimInstComponent, BaseCrowdAiComponent_1.BaseCrowdAiComponent]);
+    this.For.set(0, [CharacterActorComponent_1.CharacterActorComponent, PawnSensoryInfoComponent_1.PawnSensoryInfoComponent, BaseUnifiedStateComponent_1.BaseUnifiedStateComponent, NpcMoveComponent_1.NpcMoveComponent, CharacterPatrolComponent_1.CharacterPatrolComponent, CharacterAnimationComponent_1.CharacterAnimationComponent, CharacterAnimationSyncComponent_1.CharacterAnimationSyncComponent, LevelTagComponent_1.LevelTagComponent, PawnSensoryComponent_1.PawnSensoryComponent, CommonNpcPerformComponent_1.CommonNpcPerformComponent, PawnInteractNewComponent_1.PawnInteractNewComponent, InteractionSpotComponent_1.InteractionSpotComponent, PawnPerceptionComponent_1.PawnPerceptionComponent, PawnInfoManageComponent_1.PawnInfoManageComponent, PawnHeadInfoComponent_1.PawnHeadInfoComponent, CharacterAiComponent_1.CharacterAiComponent, CharacterPlanComponent_1.CharacterPlanComponent, NpcFlowComponent_1.NpcFlowComponent, UeSkeletalTickManageComponent_1.UeSkeletalTickManageComponent, UeMovementTickManageComponent_1.UeMovementTickManageComponent, UeActorTickManageComponent_1.UeActorTickManageComponent, CharacterAudioComponent_1.CharacterAudioComponent, ScanComponent_1.ScanComponent, NpcDriveVehicleComponent_1.NpcDriveVehicleComponent, CharacterHoldingHandsComponent_1.CharacterHoldingHandsComponent, NpcSitOnChairComponent_1.NpcSitOnChairComponent, CharacterCustomActionComponent_1.CharacterCustomActionComponent, CharacterGameplayCueComponent_1.CharacterGameplayCueComponent, CharacterInteractivePerformComponent_1.CharacterInteractivePerformComponent, CharacterSwingComponent_1.CharacterSwingComponent, CharacterLinkedAnimInstComponent_1.CharacterLinkedAnimInstComponent, BaseCrowdAiComponent_1.BaseCrowdAiComponent, CharacterTrailEffectComponent_1.CharacterTrailEffectComponent]);
     if (Info_1.Info.IsBuildDevelopmentOrDebug) {
       this.For.get(0)?.push(ActorDebugMovementComponent_1.ActorDebugMovementComponent);
     }
-    this.For.set(1, [SimpleNpcActorComponent_1.SimpleNpcActorComponent, SimpleNpcAnimationComponent_1.SimpleNpcAnimationComponent, PawnSensoryInfoComponent_1.PawnSensoryInfoComponent, CommonNpcPerformComponent_1.CommonNpcPerformComponent, PawnPerceptionComponent_1.PawnPerceptionComponent, PawnInfoManageComponent_1.PawnInfoManageComponent, PawnHeadInfoComponent_1.PawnHeadInfoComponent, NpcFlowComponent_1.NpcFlowComponent, UeSkeletalTickManageComponent_1.UeSkeletalTickManageComponent, UeActorTickManageComponent_1.UeActorTickManageComponent, ScanComponent_1.ScanComponent, BaseCrowdAiComponent_1.BaseCrowdAiComponent]);
-    this.For.set(2, [CharacterActorComponent_1.CharacterActorComponent, BaseUnifiedStateComponent_1.BaseUnifiedStateComponent, NpcMoveComponent_1.NpcMoveComponent, NpcPerformComponent_1.NpcPerformComponent, CharacterAnimationComponent_1.CharacterAnimationComponent, NpcPasserbyComponent_1.NpcPasserbyComponent, UeSkeletalTickManageComponent_1.UeSkeletalTickManageComponent, UeMovementTickManageComponent_1.UeMovementTickManageComponent, UeActorTickManageComponent_1.UeActorTickManageComponent, BaseCrowdAiComponent_1.BaseCrowdAiComponent]);
+    this.For.set(1, [SimpleNpcActorComponent_1.SimpleNpcActorComponent, SimpleNpcAnimationComponent_1.SimpleNpcAnimationComponent, PawnSensoryInfoComponent_1.PawnSensoryInfoComponent, CommonNpcPerformComponent_1.CommonNpcPerformComponent, PawnPerceptionComponent_1.PawnPerceptionComponent, PawnInfoManageComponent_1.PawnInfoManageComponent, PawnHeadInfoComponent_1.PawnHeadInfoComponent, NpcFlowComponent_1.NpcFlowComponent, UeSkeletalTickManageComponent_1.UeSkeletalTickManageComponent, UeActorTickManageComponent_1.UeActorTickManageComponent, ScanComponent_1.ScanComponent, BaseCrowdAiComponent_1.BaseCrowdAiComponent, CharacterTrailEffectComponent_1.CharacterTrailEffectComponent]);
+    this.For.set(2, [CharacterActorComponent_1.CharacterActorComponent, BaseUnifiedStateComponent_1.BaseUnifiedStateComponent, NpcMoveComponent_1.NpcMoveComponent, NpcPerformComponent_1.NpcPerformComponent, CharacterAnimationComponent_1.CharacterAnimationComponent, NpcPasserbyComponent_1.NpcPasserbyComponent, UeSkeletalTickManageComponent_1.UeSkeletalTickManageComponent, UeMovementTickManageComponent_1.UeMovementTickManageComponent, UeActorTickManageComponent_1.UeActorTickManageComponent, BaseCrowdAiComponent_1.BaseCrowdAiComponent, CharacterTrailEffectComponent_1.CharacterTrailEffectComponent]);
     this.For.set(4, [CharacterActorComponent_1.CharacterActorComponent, CharacterAnimationComponent_1.CharacterAnimationComponent, UeSkeletalTickManageComponent_1.UeSkeletalTickManageComponent, UeActorTickManageComponent_1.UeActorTickManageComponent, DangoPerformComponent_1.DangoPerformComponent]);
   }
   static xIc() {
@@ -1858,6 +1883,7 @@ class WorldEntityHelper {
     this.DIc.set("RoadNetworkNavigationComponent", [RoadNetworkNavigationComponent_1.RoadNetworkNavigationComponent]);
     this.DIc.set("VisionDisplayComponent", [SmartObjectComponent_1.SmartObjectComponent]);
     this.DIc.set("ProceduralVisualComponent", [ProceduralVisualComponent_1.ProceduralVisualComponent]);
+    this.DIc.set("ExhibitComponent", [SceneItemExhibitComponent_1.SceneItemExhibitComponent]);
   }
   static yna() {
     this.Ina.set("CharacterConnectorComponent", [PawnSensoryComponent_1.PawnSensoryComponent, CommonConnectComponent_1.CommonConnectComponent]);

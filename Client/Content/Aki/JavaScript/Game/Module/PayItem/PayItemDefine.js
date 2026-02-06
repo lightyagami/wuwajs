@@ -10,6 +10,7 @@ const StringUtils_1 = require("../../../Core/Utils/StringUtils");
 const PlatformSdkManagerNew_1 = require("../../../Launcher/Platform/PlatformSdk/PlatformSdkManagerNew");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
 const ModelManager_1 = require("../../Manager/ModelManager");
+const ActivityControllerHolder_1 = require("../Activity/ActivityControllerHolder");
 const PayShopItemBase_1 = require("../PayShop/PayShopTab/TabItem/PayShopItemBase");
 class PayItemData {
   constructor() {
@@ -86,6 +87,9 @@ class PayItemData {
     } else {
       return this.ItemCount + this.BonusItemCount;
     }
+  }
+  GetIfShowTotalTopUpScore() {
+    return (ActivityControllerHolder_1.ActivityControllerHolder.TotalTopUpController?.GetRechargeItemScore(this.PayItemId) ?? 0) > 0;
   }
 }
 exports.PayItemData = PayItemData;

@@ -36,7 +36,7 @@ class SkillButtonUiMotorcycleGamepadData extends SkillButtonUiGamepadDataBase_1.
     this._oh = new Set();
     this.qyo = new Map();
     this.Gyo = new Map();
-    this.dsf = new Map();
+    this.xhf = new Map();
     this.jyo = false;
     this.IsShowCombineButton = false;
     this.Qyo = false;
@@ -121,7 +121,7 @@ class SkillButtonUiMotorcycleGamepadData extends SkillButtonUiGamepadDataBase_1.
         }
       }
     }
-    this.dsf.clear();
+    this.xhf.clear();
     for (const m of initAxisNames) {
       var h = InputSettingsManager_1.InputSettingsManager.GetAxisBinding(m);
       if (h) {
@@ -129,7 +129,7 @@ class SkillButtonUiMotorcycleGamepadData extends SkillButtonUiGamepadDataBase_1.
           var r;
           var p = h.GetGamepadKeyByIndex(t);
           if (p && (r = axisToActionKey.get(p.KeyName) ?? p.KeyName) && this.ButtonKeyList.includes(r)) {
-            this.dsf.set(r, {
+            this.xhf.set(r, {
               AxisName: m,
               KeyName: r,
               Scale: p.Scale
@@ -139,7 +139,7 @@ class SkillButtonUiMotorcycleGamepadData extends SkillButtonUiGamepadDataBase_1.
       }
     }
     this.Oah();
-    this.dJm();
+    this.Zef();
     this.eIo();
     this.KWa();
   }
@@ -166,7 +166,7 @@ class SkillButtonUiMotorcycleGamepadData extends SkillButtonUiGamepadDataBase_1.
       }
     }
   }
-  dJm() {
+  Zef() {
     this.MusicSubKeyList.length = 0;
     for (const n of musicActionNames) {
       var t = InputSettingsManager_1.InputSettingsManager.GetCombinationActionBindingByActionName(n);
@@ -223,7 +223,7 @@ class SkillButtonUiMotorcycleGamepadData extends SkillButtonUiGamepadDataBase_1.
       return actionNameToButtonTypeMap.get(i) || 0;
     }
     if (!e) {
-      e = this.dsf.get(t);
+      e = this.xhf.get(t);
       if (e) {
         t = axisNameToButtonTypeMap.get(e.AxisName);
         if (t) {
@@ -330,7 +330,7 @@ class SkillButtonUiMotorcycleGamepadData extends SkillButtonUiGamepadDataBase_1.
   rIo() {
     var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
     if (t?.Valid) {
-      var e = t.Entity.CheckGetComponent(215);
+      var e = t.Entity.CheckGetComponent(217);
       this.ShootEnable = e.HasTag(-1785184580);
       this.CurStateTagId = 0;
       this.StateButtonTypeList = undefined;
@@ -376,6 +376,7 @@ class SkillButtonUiMotorcycleGamepadData extends SkillButtonUiGamepadDataBase_1.
   RefreshSkillButtonData(t) {
     if (t === 1) {
       this.RefreshButtonData();
+      this.RefreshInteractBehaviorData();
     }
   }
   RefreshInteractBehaviorData() {

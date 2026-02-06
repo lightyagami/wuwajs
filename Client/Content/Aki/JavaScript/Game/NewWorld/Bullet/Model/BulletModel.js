@@ -55,7 +55,7 @@ class BulletInitParams {
     this.LocationOffset = f;
     this.BeginRotatorOffset = c;
     this.DtType = m;
-    this.BattleFlags = g;
+    this.BattleContext = g;
     this.CreateSource = M;
   }
 }
@@ -83,7 +83,7 @@ class BulletModel extends ModelBase_1.ModelBase {
     this.ajo = new Map();
     this.hjo = new Map();
     this.ljo = new Map();
-    this.VWf = new Map();
+    this.$ng = new Map();
     this._jo = new Map();
     this.ujo = new Map();
     this.SelfAdaptBeHitAnim = undefined;
@@ -219,7 +219,7 @@ class BulletModel extends ModelBase_1.ModelBase {
     BulletActorPool_1.BulletActorPool.Clear();
     BulletTraceElementPool_1.BulletTraceElementPool.Clear();
     this.ljo.clear();
-    this.VWf.clear();
+    this.$ng.clear();
     this.ejo.length = 0;
     this.pjo();
     this.SceneBulletOwnerId = 0;
@@ -236,7 +236,7 @@ class BulletModel extends ModelBase_1.ModelBase {
         _ = _ ?? ConfigManager_1.ConfigManager.BulletConfig.GetBulletData(t, e, true, g);
         if (_) {
           if (!r) {
-            var I = t.GetComponent(215);
+            var I = t.GetComponent(217);
             var p = _.Base.BornForbidTagIds;
             if (p) {
               for (const w of p) {
@@ -312,7 +312,7 @@ class BulletModel extends ModelBase_1.ModelBase {
     }
   }
   rMc(s, r, n) {
-    s = s.GetComponent(220)?.BuffEffectManager;
+    s = s.GetComponent(222)?.BuffEffectManager;
     if (s) {
       let t = 0;
       let e = 0;
@@ -401,7 +401,7 @@ class BulletModel extends ModelBase_1.ModelBase {
         }
         if (e = this.GetBulletHandleById(o)) {
           (l = Protocol_1.Aki.Protocol.te_.create()).uVn = e;
-          CombatMessage_1.CombatNet.Send(18449, t.Attacker, l);
+          CombatMessage_1.CombatNet.Send(26657, t.Attacker, l);
           if (BulletConstant_1.BulletConstant.OpenCreateLog && Log_1.Log.CheckDebug()) {
             Log_1.Log.Debug("Bullet", 20, "销毁子弹 发送协议", ...BulletLog_1.BulletLog.ToPairs(t));
           }
@@ -527,13 +527,13 @@ class BulletModel extends ModelBase_1.ModelBase {
     }
   }
   GetCustomBulletAttacker(t) {
-    return this.VWf.get(t);
+    return this.$ng.get(t);
   }
   SetCustomBulletAttacker(t, e) {
-    this.VWf.set(t, e);
+    this.$ng.set(t, e);
   }
   RemoveCustomBulletAttacker(t) {
-    return this.VWf.delete(t);
+    return this.$ng.delete(t);
   }
   ShowBulletCollision(t = 0) {
     return this._jo.has(t) && (this._jo.get(t) ?? false);

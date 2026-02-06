@@ -15,8 +15,8 @@ class MotorcycleLevelAttrListScrollItem extends GridProxyAbstract_1.GridProxyAbs
   constructor() {
     super(...arguments);
     this.SPe = undefined;
-    this.icf = "";
-    this.pHe = () => !StringUtils_1.StringUtils.IsBlank(this.icf);
+    this.Zdf = "";
+    this.pHe = () => !StringUtils_1.StringUtils.IsBlank(this.Zdf);
     this.ToggleEvent = t => {
       t = t === 1;
       this.GetText(8).SetUIActive(t);
@@ -50,12 +50,12 @@ class MotorcycleLevelAttrListScrollItem extends GridProxyAbstract_1.GridProxyAbs
     var s = ConfigManager_1.ConfigManager.MotorConfig.GetMotorAttrConfig(r.AttrId);
     if (s) {
       this.GetSprite(1).useChangeColor = !r.IsShowBg;
-      this.icf = s.Desc;
-      if (StringUtils_1.StringUtils.IsBlank(this.icf)) {
+      this.Zdf = s.Desc;
+      if (StringUtils_1.StringUtils.IsBlank(this.Zdf)) {
         this.GetItem(6).SetUIActive(false);
       } else {
         this.GetItem(6).SetUIActive(true);
-        this.GetText(8).ShowTextNew(this.icf);
+        this.GetText(8).ShowTextNew(this.Zdf);
       }
       var n = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetCurLevel();
       var l = s.IsNumber;

@@ -29,25 +29,25 @@ class MailController extends UiControllerBase_1.UiControllerBase {
   }
   static OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDoneAndCloseLoading, this.dyi);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestSelectMail, this.bbm);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestPickMailAttachment, this.Rbm);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestDeleteMail, this.wbm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestSelectMail, this.Obm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestPickMailAttachment, this.Gbm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestDeleteMail, this.Fbm);
   }
   static OnRemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDoneAndCloseLoading, this.dyi);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestSelectMail, this.bbm);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestPickMailAttachment, this.Rbm);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestDeleteMail, this.wbm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestSelectMail, this.Obm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestPickMailAttachment, this.Gbm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestDeleteMail, this.Fbm);
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(24551, this.Cyi);
-    Net_1.Net.Register(15551, this.gyi);
-    Net_1.Net.Register(29086, this.fyi);
+    Net_1.Net.Register(27769, this.Cyi);
+    Net_1.Net.Register(20407, this.gyi);
+    Net_1.Net.Register(20553, this.fyi);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(24551);
-    Net_1.Net.UnRegister(15551);
-    Net_1.Net.UnRegister(29086);
+    Net_1.Net.UnRegister(27769);
+    Net_1.Net.UnRegister(20407);
+    Net_1.Net.UnRegister(20553);
   }
   static SelectedMail(e) {
     if (e) {
@@ -65,11 +65,11 @@ class MailController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Mail", 27, "邮件控制器：RequestReadMail 未阅读邮件，申请阅读", ["mailId", e]);
     }
-    Net_1.Net.Call(25715, Protocol_1.Aki.Protocol.Nss.create(o), e => {
+    Net_1.Net.Call(23350, Protocol_1.Aki.Protocol.Nss.create(o), e => {
       var o;
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29158);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15076);
         } else if (o = ModelManager_1.ModelManager.MailModel.GetMailInstanceById(e.s5n)) {
           o.ReadTime = MathUtils_1.MathUtils.LongToNumber(e.ebs);
           o.ExpiryTime = MathUtils_1.MathUtils.LongToNumber(e.jb_);
@@ -92,7 +92,7 @@ class MailController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Mail", 27, "邮件控制器：RequestPickAttachment 申请领取附件", ["attachmentIds", o.I7n]);
     }
-    Net_1.Net.Call(26940, Protocol_1.Aki.Protocol.Vss.create(o), o => {
+    Net_1.Net.Call(21672, Protocol_1.Aki.Protocol.Vss.create(o), o => {
       if (o) {
         if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
           let e = "";
@@ -107,7 +107,7 @@ class MailController extends UiControllerBase_1.UiControllerBase {
           if (e !== "") {
             ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode(e);
           } else {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 23247);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 26532);
           }
         } else {
           ModelManager_1.ModelManager.MailModel.SetLastPickedAttachments(o.lbs, t);
@@ -123,10 +123,10 @@ class MailController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Mail", 27, "邮件控制器：RequestDeleteMail请求删除邮件", ["mailId", e]);
     }
-    Net_1.Net.Call(27588, Protocol_1.Aki.Protocol.Hss.create(o), e => {
+    Net_1.Net.Call(25332, Protocol_1.Aki.Protocol.Hss.create(o), e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21470);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16132);
         } else if (e._bs.length > 0) {
           for (const o of e._bs) {
             ModelManager_1.ModelManager.MailModel.DeleteMail(o);
@@ -218,12 +218,12 @@ MailController.dyi = (e = "NewMail") => {
     }
   }
 };
-MailController.bbm = (e, o) => {
+MailController.Obm = (e, o) => {
   _a.SelectedMail(ModelManager_1.ModelManager.MailModel.GetMailInstanceById(e));
 };
-MailController.Rbm = (e, o) => {
+MailController.Gbm = (e, o) => {
   _a.RequestPickAttachment(e, o);
 };
-MailController.wbm = e => {
+MailController.Fbm = e => {
   _a.RequestDeleteMail(e);
 }; //# sourceMappingURL=MailController.js.map

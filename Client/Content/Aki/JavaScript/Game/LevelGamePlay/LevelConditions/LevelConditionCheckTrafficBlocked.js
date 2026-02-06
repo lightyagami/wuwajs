@@ -22,7 +22,7 @@ class LevelConditionCheckTrafficBlocked extends LevelGeneralBase_1.LevelConditio
       case "Self":
         a = ActorUtils_1.ActorUtils.GetEntityByActor(r);
     }
-    return !!a && !!a.Entity?.Valid && !!(e = (e = a.Entity.GetComponent(338)) && e.GetVehicleTeamMember()) && ((e = e.GetBlockTarget()) !== undefined && (i.MatchTarget === undefined || (0, VehicleStreamDefine_1.checkObstacleDetectionTypeMatch)(i.MatchTarget, e)) ? i.IsBlocked : !i.IsBlocked);
+    return !!a && !!a.Entity?.Valid && !!(e = (e = a.Entity.GetComponent(340)) && e.GetVehicleTeamMember()) && ((e = e.GetBlockTarget()) !== undefined && (i.MatchTarget === undefined || (0, VehicleStreamDefine_1.checkObstacleDetectionTypeMatch)(i.MatchTarget, e)) ? i.IsBlocked : !i.IsBlocked);
   }
 }
 exports.LevelConditionCheckTrafficBlocked = LevelConditionCheckTrafficBlocked;

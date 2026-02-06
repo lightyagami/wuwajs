@@ -351,10 +351,12 @@ let CharacterInputComponent = CharacterInputComponent_1 = class CharacterInputCo
     this._7_ = (t, i) => {
       if (this.Bhh) {
         if (i !== 0) {
-          i = t.GetComponent(306)?.GetMorphBpInputComp();
+          i = t.GetComponent(308)?.GetMorphBpInputComp();
           this.Bhh.SetBpInputComp(i);
+          this.Gjd?.SetEnable(false);
         } else {
           this.Bhh.ResetBpInputComp();
+          this.Gjd?.SetEnable(true);
         }
       }
     };
@@ -697,11 +699,11 @@ let CharacterInputComponent = CharacterInputComponent_1 = class CharacterInputCo
       InputController_1.InputController.AddInputHandler(this);
     }
     this.pZo = this.Entity.GetComponent(18);
-    this.Lie = this.Entity.GetComponent(215);
-    this.mBe = this.Entity.GetComponent(184);
-    this.tRr = this.Entity.GetComponent(41);
-    this.Gce = this.Entity.GetComponent(187);
-    this.rJo = this.Entity.GetComponent(184);
+    this.Lie = this.Entity.GetComponent(217);
+    this.mBe = this.Entity.GetComponent(186);
+    this.tRr = this.Entity.GetComponent(43);
+    this.Gce = this.Entity.GetComponent(189);
+    this.rJo = this.Entity.GetComponent(186);
     this.bhh();
     this.Fjd();
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CharAnimBreakPoint, this.n8r);
@@ -826,7 +828,7 @@ let CharacterInputComponent = CharacterInputComponent_1 = class CharacterInputCo
     this.S8r.EndTask();
   }
   K8r() {
-    return this.Gce?.CharacterMovement?.CustomMovementMode === CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_LEISURE && (this.Entity.GetComponent(34)?.LockRotator ?? false);
+    return this.Gce?.CharacterMovement?.CustomMovementMode === CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_LEISURE && (this.Entity.GetComponent(35)?.LockRotator ?? false);
   }
   i8r(t) {
     let i = Vector_1.Vector.ZeroVectorProxy;
@@ -895,6 +897,9 @@ let CharacterInputComponent = CharacterInputComponent_1 = class CharacterInputCo
               break;
             case CharacterUnifiedStateTypes_1.ECharPositionState.Water:
               this.Q8r();
+              break;
+            case CharacterUnifiedStateTypes_1.ECharPositionState.Floating:
+              this.X8r();
           }
         }
       }
@@ -1128,7 +1133,7 @@ let CharacterInputComponent = CharacterInputComponent_1 = class CharacterInputCo
     return i = i === undefined ? INVALID_PRIORITY : i;
   }
   Z8r(t) {
-    return (this.F6r?.CharacterActorComponent?.Entity?.GetComponent(41)).GetPriority(t);
+    return (this.F6r?.CharacterActorComponent?.Entity?.GetComponent(43)).GetPriority(t);
   }
   P8r(t, i) {
     CharacterInputComponent_1.P0l.Start();
@@ -1171,11 +1176,14 @@ let CharacterInputComponent = CharacterInputComponent_1 = class CharacterInputCo
         break;
       case 10:
         this.rja(e);
+        break;
+      case 12:
+        this.LPf(e);
     }
     CharacterInputComponent_1.P0l.Stop();
   }
   t9r(t) {
-    var i = this.Entity.GetComponent(187);
+    var i = this.Entity.GetComponent(189);
     if (i.Valid) {
       if (t.IntValue === 1) {
         i.JumpPress();
@@ -1185,30 +1193,39 @@ let CharacterInputComponent = CharacterInputComponent_1 = class CharacterInputCo
     }
   }
   i9r(t) {
-    this.Entity.GetComponent(35)?.ClimbPress(t.IntValue === 1);
+    this.Entity.GetComponent(36)?.ClimbPress(t.IntValue === 1);
   }
   o9r(t) {
     if (t.IntValue === 1) {
-      this.Entity.CheckGetComponent(184).SprintPress();
+      this.Entity.CheckGetComponent(186).SprintPress();
     } else {
-      this.Entity.CheckGetComponent(184).SprintRelease();
+      this.Entity.CheckGetComponent(186).SprintRelease();
     }
   }
   r9r(t) {
-    this.Entity.CheckGetComponent(184).SwitchFastSwim(t.IntValue === 1);
+    this.Entity.CheckGetComponent(186).SwitchFastSwim(t.IntValue === 1);
   }
   n9r(t) {
-    this.Entity.CheckGetComponent(184).SwitchFastClimb(t.IntValue === 1);
+    this.Entity.CheckGetComponent(186).SwitchFastClimb(t.IntValue === 1);
   }
   a9r(t) {
-    this.Entity.CheckGetComponent(184).WalkPress();
+    this.Entity.CheckGetComponent(186).WalkPress();
   }
   rja(t) {
-    this.Entity.CheckGetComponent(62)?.SetSoarBoostOn(t.IntValue > 0);
+    this.Entity.CheckGetComponent(64)?.SetSoarBoostOn(t.IntValue > 0);
+  }
+  LPf(t) {
+    if (this.Gce) {
+      if (t.IntValue === 1) {
+        this.Gce.OnDropPress();
+      } else {
+        this.Gce.OnDropRelease();
+      }
+    }
   }
   s9r(t) {}
   e9r(t, i) {
-    this.Entity.GetComponent(41).BeginSkillAsync(t, {
+    this.Entity.GetComponent(43).BeginSkillAsync(t, {
       Reason: "CharacterInputComponent.ExecuteSkill." + i
     });
   }
@@ -1507,7 +1524,7 @@ let CharacterInputComponent = CharacterInputComponent_1 = class CharacterInputCo
           }
         });
         this.mBe?.SetDirectionState(CharacterUnifiedStateTypes_1.ECharDirectionState.CameraDirection);
-        this.Entity?.GetComponent(46)?.SetLockedRotation(true);
+        this.Entity?.GetComponent(48)?.SetLockedRotation(true);
       } else {
         this.Wvm = false;
         this.gXd();
@@ -1517,7 +1534,7 @@ let CharacterInputComponent = CharacterInputComponent_1 = class CharacterInputCo
   gXd() {
     this.rJo?.MarkWalkOrRun(false, false, false);
     this.mBe?.SetDirectionState(CharacterUnifiedStateTypes_1.ECharDirectionState.FaceDirection);
-    this.Entity?.GetComponent(46)?.SetLockedRotation(false);
+    this.Entity?.GetComponent(48)?.SetLockedRotation(false);
     if (this.IWd) {
       for (const t of this.IWd.FirstPersonTagList) {
         this.Lie?.RemoveTag(t);
@@ -1573,7 +1590,7 @@ let CharacterInputComponent = CharacterInputComponent_1 = class CharacterInputCo
       }
       if (this.mBe.DirectionState !== CharacterUnifiedStateTypes_1.ECharDirectionState.CameraDirection) {
         this.mBe?.SetDirectionState(CharacterUnifiedStateTypes_1.ECharDirectionState.CameraDirection);
-        this.Entity?.GetComponent(46)?.SetLockedRotation(true);
+        this.Entity?.GetComponent(48)?.SetLockedRotation(true);
       }
       if (this.rJo?.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Ground && !this.fz.IsNearlyZero() && !this.tRr?.CurrentSkill && (t = GravityUtils_1.GravityUtils.GetAngleOffsetInGravityForActor(this.Hte, this.Hte.ActorForwardProxy, this.Hte.InputDirectProxy), Math.abs(t) < (this.IWd?.ForwardAngle ?? FIRST_FORWARD_ANGLE))) {
         this.a_m(true);
@@ -1594,8 +1611,8 @@ let CharacterInputComponent = CharacterInputComponent_1 = class CharacterInputCo
     var t;
     var i;
     if (!this.olc) {
-      t = this.Entity.GetComponent(215);
-      i = this.Entity.GetComponent(220);
+      t = this.Entity.GetComponent(217);
+      i = this.Entity.GetComponent(222);
       this.olc = new InputContinuously(t, i);
       this.olc.InitConfig();
     }
@@ -1704,5 +1721,5 @@ CharacterInputComponent.B0l = Stats_1.Stat.Create("CharacterInputComponent.Dispa
 CharacterInputComponent.b0l = Stats_1.Stat.Create("CharacterInputComponent.HandlePress");
 CharacterInputComponent.q0l = Stats_1.Stat.Create("CharacterInputComponent.HandleRelease");
 CharacterInputComponent.T8r = new Map();
-CharacterInputComponent = CharacterInputComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(65)], CharacterInputComponent);
+CharacterInputComponent = CharacterInputComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(67)], CharacterInputComponent);
 exports.CharacterInputComponent = CharacterInputComponent; //# sourceMappingURL=CharacterInputComponent.js.map

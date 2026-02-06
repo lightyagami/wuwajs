@@ -19,14 +19,14 @@ class TsAnimNotifyStateRequestSignal extends UE.KuroAnimNotifyState {
       return false;
     }
     var e = ModelManager_1.ModelManager.CreatureModel.GetEntityById(e.EntityId);
-    var a = e?.Entity?.GetComponent(323);
-    var o = e?.Entity?.GetComponent(321);
+    var a = e?.Entity?.GetComponent(325);
+    var o = e?.Entity?.GetComponent(323);
     if (!a || !o) {
       return false;
     }
     a = o.GetHoldingHandsOtherEntity();
     o = a?.GetComponent(0);
-    a = a?.GetComponent(323);
+    a = a?.GetComponent(325);
     if (!a || !o) {
       return false;
     }
@@ -43,7 +43,7 @@ class TsAnimNotifyStateRequestSignal extends UE.KuroAnimNotifyState {
   K2_NotifyEnd(e, r) {
     var t;
     var e = e?.GetOwner();
-    return e instanceof TsBaseCharacter_1.default && (t = (e = ModelManager_1.ModelManager.CreatureModel.GetEntityById(e.EntityId))?.Entity?.GetComponent(323), e = e?.Entity?.GetComponent(321), !!t && !!e && !!(t = e.GetHoldingHandsOtherEntity()?.GetComponent(323)) && !(t.RemoveRequestSignal(this.Signal), 0));
+    return e instanceof TsBaseCharacter_1.default && (t = (e = ModelManager_1.ModelManager.CreatureModel.GetEntityById(e.EntityId))?.Entity?.GetComponent(325), e = e?.Entity?.GetComponent(323), !!t && !!e && !!(t = e.GetHoldingHandsOtherEntity()?.GetComponent(325)) && !(t.RemoveRequestSignal(this.Signal), 0));
   }
   GetNotifyName() {
     return "请求交互动作";

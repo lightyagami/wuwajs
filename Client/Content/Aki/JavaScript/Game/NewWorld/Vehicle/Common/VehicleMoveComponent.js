@@ -78,6 +78,7 @@ let VehicleMoveComponent = class VehicleMoveComponent extends EntityComponent_1.
     this.IsStandardGravityInternal = true;
     this.DebugCurve = undefined;
     this.IsSummoningPerform = false;
+    this.CreatureProperty = undefined;
     this.TmpVector = Vector_1.Vector.Create();
     this.TmpVector2 = Vector_1.Vector.Create();
     this.TmpRotator = Rotator_1.Rotator.Create();
@@ -86,7 +87,7 @@ let VehicleMoveComponent = class VehicleMoveComponent extends EntityComponent_1.
     this.TmpQuat2 = Quat_1.Quat.Create();
     this.zum = 2;
     this.StopMoveContinuousTime = 0;
-    this.MCf = 1000;
+    this.oyf = 1000;
     this.OnResponseInputTagsChanged = (t, i) => {
       if (i) {
         if (this.CannotResponseInputCount === 0) {
@@ -133,8 +134,9 @@ let VehicleMoveComponent = class VehicleMoveComponent extends EntityComponent_1.
   OnStart() {
     this.ActorComp = this.Entity.GetComponent(247);
     this.AnimComp = this.Entity.GetComponent(248);
-    this.TagComponent = this.Entity.GetComponent(215);
+    this.TagComponent = this.Entity.GetComponent(217);
     this.AudioComp = this.Entity.GetComponent(255);
+    this.InitCreatureProperty();
     this.UeMovementMgrComp = this.Entity.GetComponent(259);
     this.UeMovementDisableHandle = this.UeMovementMgrComp.Disable("载具出生时默认关闭移动组件");
     this.VehicleMovement = this.ActorComp.Actor.GetComponentByClass(UE.KuroVehicleMovementComponent.StaticClass());
@@ -228,6 +230,16 @@ let VehicleMoveComponent = class VehicleMoveComponent extends EntityComponent_1.
   CacheVar() {
     this.PreviousVelocity.DeepCopy(this.ActorComp.ActorVelocityProxy);
     this.PreviousAimYaw = this.ActorComp.ActorRotation.Yaw;
+  }
+  InitCreatureProperty() {
+    var t = this.Entity.GetComponent(0);
+    this.CreatureProperty = t.GetEntityPropertyConfig();
+    var t = this.ActorComp?.Actor.CharacterMovement;
+    if (t) {
+      t.Mass = this.CreatureProperty.重量;
+      t.HitPriority = this.CreatureProperty.碰撞优先级;
+      t.GoThroughPriority = this.CreatureProperty.穿透优先级;
+    }
   }
   InitGravityDirect() {
     var t = this.Entity.GetComponent(0);
@@ -345,7 +357,7 @@ let VehicleMoveComponent = class VehicleMoveComponent extends EntityComponent_1.
         if (this.IsMoving) {
           this.EnableUeMovementTick("有速度自动启用移动组件Tick");
         }
-      } else if (!this.IsMoving && !(this.StopMoveContinuousTime += t, this.StopMoveContinuousTime - this.MCf < MathUtils_1.MathUtils.KindaSmallNumber)) {
+      } else if (!this.IsMoving && !(this.StopMoveContinuousTime += t, this.StopMoveContinuousTime - this.oyf < MathUtils_1.MathUtils.KindaSmallNumber)) {
         this.StopMoveContinuousTime = 0;
         this.SetForceSpeed(Vector_1.Vector.ZeroVector);
         this.DisableUeMovementTick("无速度自动关闭移动组件Tick");

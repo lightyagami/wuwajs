@@ -39,21 +39,21 @@ class AdvanceNoticeNewRoleTabView extends AdvanceNoticeTabViewBase_1.AdvanceNoti
       t.SetUIActive(true);
       r.SetUIActive(false);
       o.SetUIActive(false);
-      this.ftg(i.MainBgPic, t);
+      this.zAg(i.MainBgPic, t);
     } else {
       s.SetUIActive(true);
       a.SetUIActive(true);
       t.SetUIActive(true);
-      this.ftg(i.MainPic, s);
-      this.ftg(i.MainBgPic, t);
-      this.ftg(i.MainPic, a);
+      this.zAg(i.MainPic, s);
+      this.zAg(i.MainBgPic, t);
+      this.zAg(i.MainPic, a);
       s = i.QualityId;
       r.SetUIActive(s === 4);
       o.SetUIActive(s === 5);
     }
     this.Ept.Refresh(e);
   }
-  ftg(e, i) {
+  zAg(e, i) {
     if (!StringUtils_1.StringUtils.IsBlank(e)) {
       this.SetTextureByPath(e, i);
     }

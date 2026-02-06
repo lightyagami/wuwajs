@@ -13,11 +13,11 @@ class TsAnimNotifyStateVisionCounterAttack extends UE.KuroAnimNotifyState {
   Constructor() {}
   K2_NotifyBegin(t, e, r) {
     var t = t.GetOwner();
-    return t instanceof TsBaseCharacter_1.default && !!(t = t.CharacterActorComponent?.Entity)?.Valid && (e = t.GetComponent(220)?.CreateAnimNotifyContent(e.GetName(), this.exportIndex), (t = t.GetComponent(64))?.SetCounterAttackAnsInfo(e, this.exportIndex), t?.SetVisionCounterAttackInfo(this.对策设置), t?.SetCounterAttackEndTime(r), true);
+    return t instanceof TsBaseCharacter_1.default && !!(t = t.CharacterActorComponent?.Entity)?.Valid && (e = t.GetComponent(222)?.CreateAnimNotifyContent(e.GetName(), this.exportIndex), (t = t.GetComponent(66))?.SetCounterAttackAnsInfo(e, this.exportIndex), t?.SetVisionCounterAttackInfo(this.对策设置), t?.SetCounterAttackEndTime(r), true);
   }
   K2_NotifyEnd(t, e) {
     var t = t.GetOwner();
-    return t instanceof TsBaseCharacter_1.default && !!(t = t.CharacterActorComponent?.Entity)?.Valid && (t.GetComponent(64)?.VisionCounterAttackEnd(), true);
+    return t instanceof TsBaseCharacter_1.default && !!(t = t.CharacterActorComponent?.Entity)?.Valid && (t.GetComponent(66)?.VisionCounterAttackEnd(), true);
   }
   GetNotifyName() {
     return "幻象弹反";

@@ -172,7 +172,7 @@ let VisionSkillComponent = class VisionSkillComponent extends CharacterSkillComp
   }
   LZo(t, i) {
     if (t === InputEnums_1.EInputAction.幻象2 || t === InputEnums_1.EInputAction.攻击 && this.UGn) {
-      t = this.vZo.Entity.GetComponent(44);
+      t = this.vZo.Entity.GetComponent(46);
       if (this.Wpo === t?.GetVisionCreatureDataId() && !(this.SZo <= 0)) {
         t = this.EZo.GetMultiSkillInfo(this.SZo);
         if (t?.NextSkillId) {
@@ -184,7 +184,7 @@ let VisionSkillComponent = class VisionSkillComponent extends CharacterSkillComp
               if (h?.Valid && this.yZo) {
                 CombatLog_1.CombatLog.Info("Skill", this.Entity, "使用幻象技能（输入触发下一段）", ["skillId", t.NextSkillId]);
                 this.AbilityComp.SendGameplayEventToActor(GameplayTagUtils_1.GameplayTagUtils.GetGameplayTagById(useNextSkillTagId));
-                h = h.Entity.CheckGetComponent(41);
+                h = h.Entity.CheckGetComponent(43);
                 if (!super.BeginSkill(s, {
                   Target: h.SkillTarget?.Entity,
                   SocketName: h.SkillTargetSocket,
@@ -212,5 +212,5 @@ let VisionSkillComponent = class VisionSkillComponent extends CharacterSkillComp
     return !!this.Ghh && this.LZo(t, i);
   }
 };
-VisionSkillComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(43)], VisionSkillComponent);
+VisionSkillComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(45)], VisionSkillComponent);
 exports.VisionSkillComponent = VisionSkillComponent; //# sourceMappingURL=VisionSkillComponent.js.map

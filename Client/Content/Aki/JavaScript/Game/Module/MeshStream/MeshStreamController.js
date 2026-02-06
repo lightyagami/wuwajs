@@ -67,14 +67,14 @@ class MeshStreamController extends ControllerBase_1.ControllerBase {
   }
   static OnClear() {
     if (this.Fpd.size > 0) {
-      if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("MeshStream", 43, "[MeshStream] 清理时有未完成的网格体流送任务", ["TaskCount", this.Fpd.size]);
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("MeshStream", 43, "[MeshStream] 清理时有未完成的网格体流送任务", ["TaskCount", this.Fpd.size]);
       }
       this.Fpd.clear();
     }
     if (this.Gpd.size > 0) {
-      if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("MeshStream", 43, "[MeshStream] 清理时有未完成的网格体流送回调", ["TaskCount", this.Gpd.size]);
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("MeshStream", 43, "[MeshStream] 清理时有未完成的网格体流送回调", ["TaskCount", this.Gpd.size]);
       }
       this.Gpd.clear();
     }

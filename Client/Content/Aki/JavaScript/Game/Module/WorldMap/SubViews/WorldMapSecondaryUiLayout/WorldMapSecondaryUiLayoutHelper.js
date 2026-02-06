@@ -100,28 +100,28 @@ class WorldMapSecondaryUiLayoutHelper {
   }
   static UpdateAutoPilotState(t) {
     var e;
-    var a = t.LayoutContext.MarkItem;
-    if (a && this.u7m(t)) {
-      if (!(e = ModelManager_1.ModelManager.AutoPilotModel?.IsPlayerInAutoPilotArea)) {
+    var a;
+    var r = t.LayoutContext.MarkItem;
+    if (r && (a = ControllerHolder_1.ControllerHolder.AutoPilotController.GetAutoPilotAreaId(r.WorldPosition, r.MapId), this.d9m(t, a))) {
+      if (!(a = (e = ModelManager_1.ModelManager.AutoPilotModel.AutoPilotAreaId) !== 0 && e === a)) {
         t.LayoutContext.MapTipsActivateTipPanel?.SetUiActive(true);
-        t.LayoutContext.MapTipsActivateTipPanel?.SetActivatedTip("AutoPilot_AreaNotSupported", false);
+        t.LayoutContext.MapTipsActivateTipPanel?.SetActivatedTip(e === 0 ? "AutoPilot_AreaNotSupported" : "AutoPilot_AreaIsolatedTips", false);
       }
-      t.UpdateAutoPilotTrackToggle(!e ? 2 : a.IsAutoPilotTracked ? 1 : 0);
-      t.SetDownStateBtnRootActive(!a.IsAutoPilotTracked);
-      t.RefreshAutoPilotTrackBtnGroup(a.IsAutoPilotTracked);
+      t.UpdateAutoPilotNavBtn(r.IsAutoPilotTracked, a);
+      t.SetDownStateBtnRootActive(!r.IsAutoPilotTracked);
+      t.RefreshAutoPilotTrackBtnGroup(r.IsAutoPilotTracked);
     }
   }
-  static u7m(t) {
-    let e = true;
-    if (t.LayoutContext.GetIsConfirmBtnActive()) {
-      e = false;
+  static d9m(t, e) {
+    let a = true;
+    if (!!t.LayoutContext.GetIsConfirmBtnActive() || !t.LayoutContext.TrackButtonItem.IsUiActiveInHierarchy()) {
+      a = false;
     }
-    var a = t.LayoutContext.MarkItem;
-    if (!ControllerHolder_1.ControllerHolder.AutoPilotController.CheckIsInAutoPilotArea(a.WorldPosition, a.MapId)) {
-      e = false;
+    if (e === 0) {
+      a = false;
     }
-    t.SetAutoPilotTrackToggleActive(e);
-    return e;
+    t.SetAutoPilotNavBtnActive(a);
+    return a;
   }
 }
 exports.WorldMapSecondaryUiLayoutHelper = WorldMapSecondaryUiLayoutHelper;

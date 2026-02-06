@@ -23,14 +23,14 @@ class WeaponSkinController extends UiControllerBase_1.UiControllerBase {
   }
   static Wil() {
     var e = new Protocol_1.Aki.Protocol._ss();
-    Net_1.Net.Call(28027, Protocol_1.Aki.Protocol._ss.create(e), e => {
+    Net_1.Net.Call(16579, Protocol_1.Aki.Protocol._ss.create(e), e => {
       if (e) {
         ModelManager_1.ModelManager.WeaponSkinModel.NotifyWeaponSkinData(e.qxs);
       }
     });
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(20482, e => {
+    Net_1.Net.Register(22774, e => {
       if (e) {
         if (e.wVn) {
           ModelManager_1.ModelManager.WeaponSkinModel.NotifyAllUnlockSkinData(e.bBs);
@@ -39,49 +39,49 @@ class WeaponSkinController extends UiControllerBase_1.UiControllerBase {
         }
       }
     });
-    Net_1.Net.Register(24994, e => {
+    Net_1.Net.Register(20376, e => {
       if (e && (ModelManager_1.ModelManager.WeaponSkinModel.DeleteWeaponSkinData(e.Q6n), Log_1.Log.CheckInfo())) {
         Log_1.Log.Info("WeaponSkin,", 10, "武器皮肤卸载成功", ["roleId", e.Q6n]);
       }
     });
-    Net_1.Net.Register(17627, e => {
+    Net_1.Net.Register(28485, e => {
       var t = MathUtils_1.MathUtils.LongToNumber(e.F4n);
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Character", 4, "服务器下发武器皮肤", ["WeaponSkinId", e.lI_?.yI_], ["ServerEntityId", t]);
       }
-      t = ModelManager_1.ModelManager.CreatureModel.GetEntity(t).Entity.GetComponent(84);
+      t = ModelManager_1.ModelManager.CreatureModel.GetEntity(t).Entity.GetComponent(86);
       if (t) {
         t.OnEntityEquipSkinChangeNotify(e);
       }
     });
-    Net_1.Net.Register(29892, e => {
+    Net_1.Net.Register(22011, e => {
       for (const o of e.zDc) {
         var t = MathUtils_1.MathUtils.LongToNumber(o.F4n);
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("Character", 4, "服务器下发翱翔与滑翔翼皮肤", ["FlySkinId", o.cGc], ["ServerEntityId", t]);
         }
-        t = ModelManager_1.ModelManager.CreatureModel.GetEntity(t).Entity.GetComponent(84);
+        t = ModelManager_1.ModelManager.CreatureModel.GetEntity(t).Entity.GetComponent(86);
         if (!t) {
           return;
         }
         t.OnEntitySoarWingOrParaglidingSkinChangeNotify(o);
       }
     });
-    Net_1.Net.Register(24613, this.TOd);
+    Net_1.Net.Register(27028, this.TOd);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(20482);
-    Net_1.Net.UnRegister(24994);
-    Net_1.Net.UnRegister(17627);
-    Net_1.Net.UnRegister(29892);
-    Net_1.Net.UnRegister(24613);
+    Net_1.Net.UnRegister(22774);
+    Net_1.Net.UnRegister(20376);
+    Net_1.Net.UnRegister(28485);
+    Net_1.Net.UnRegister(22011);
+    Net_1.Net.UnRegister(27028);
   }
   static Jsl(t, o) {
     var e = Protocol_1.Aki.Protocol.tg_.create();
     e.R5n = Protocol_1.Aki.Protocol.kR_.create();
     e.R5n.mjn = t;
     e.R5n.Zsl = o;
-    Net_1.Net.Call(22995, e, e => {
+    Net_1.Net.Call(25541, e, e => {
       if (e) {
         if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
           ModelManager_1.ModelManager.WeaponSkinModel.EquipWeaponSkinData(e.Gxs);
@@ -89,7 +89,7 @@ class WeaponSkinController extends UiControllerBase_1.UiControllerBase {
             Log_1.Log.Info("WeaponSkin,", 10, "武器皮肤装备成功", ["roleId", t], ["skinId", o]);
           }
         } else {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26458);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25260);
         }
       }
     });
@@ -98,9 +98,9 @@ class WeaponSkinController extends UiControllerBase_1.UiControllerBase {
     var t;
     if (!!e && !(e <= 0)) {
       (t = Protocol_1.Aki.Protocol.rg_.create()).mjn = e;
-      Net_1.Net.Call(24828, t, e => {
+      Net_1.Net.Call(27434, t, e => {
         if (e && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15216);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22477);
         }
       });
     }

@@ -9,26 +9,26 @@ const DefaultLanguageKeyTrans_1 = require("./DefaultLanguageKeyTrans");
 const FrenchLanguageKeyTrans_1 = require("./FrenchLanguageKeyTrans");
 const ThaiLanguageKeyTrans_1 = require("./ThaiLanguageKeyTrans");
 class LanguageKeyTransUtils {
-  static QYf() {
-    this.KYf.set("Default", new DefaultLanguageKeyTrans_1.DefaultLanguageKeyTrans());
-    this.KYf.set("French", new FrenchLanguageKeyTrans_1.FrenchLanguageKeyTrans());
-    this.KYf.set("Thai", new ThaiLanguageKeyTrans_1.ThaiLanguageKeyTrans());
+  static Tfg() {
+    this.bfg.set("Default", new DefaultLanguageKeyTrans_1.DefaultLanguageKeyTrans());
+    this.bfg.set("French", new FrenchLanguageKeyTrans_1.FrenchLanguageKeyTrans());
+    this.bfg.set("Thai", new ThaiLanguageKeyTrans_1.ThaiLanguageKeyTrans());
   }
-  static XYf() {
+  static Rfg() {
     for (const e of ConfigManager_1.ConfigManager.InputSettingsConfig.GetPcKeyConfigList()) {
-      for (const a of this.KYf.values()) {
+      for (const a of this.bfg.values()) {
         a.InitPcKeysByConfig(e);
       }
     }
   }
   static Initialize() {
-    this.QYf();
-    this.XYf();
+    this.Tfg();
+    this.Rfg();
   }
   static GetKeyTrans(e) {
-    e = this.KYf.get(e);
-    return e || this.KYf.get("Default");
+    e = this.bfg.get(e);
+    return e || this.bfg.get("Default");
   }
 }
-(exports.LanguageKeyTransUtils = LanguageKeyTransUtils).KYf = new Map();
+(exports.LanguageKeyTransUtils = LanguageKeyTransUtils).bfg = new Map();
 //# sourceMappingURL=LanguageKeyTransUtils.js.map

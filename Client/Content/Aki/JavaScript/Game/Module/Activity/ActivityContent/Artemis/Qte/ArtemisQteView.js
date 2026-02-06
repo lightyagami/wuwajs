@@ -25,7 +25,7 @@ class ArtemisQteView extends UiTickViewBase_1.UiTickViewBase {
     this.hfl = undefined;
     this.HDe = undefined;
     this._U1 = undefined;
-    this.eOf = undefined;
+    this.l8f = undefined;
     this.CurrentGameplayId = 0;
     this.f7_ = 0;
     this.At_ = t => {
@@ -54,7 +54,7 @@ class ArtemisQteView extends UiTickViewBase_1.UiTickViewBase {
   async OnBeforeStartAsync() {
     var t = this.OpenParam;
     this.GameplayStart(t?.GamePlayId, MAX_QTE_ROUNG);
-    this.eOf = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
+    this.l8f = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
     var t = [];
     this.hfl = new ArtemisQteProgressItem_1.ArtemisQteProgressItem();
     var e = this.GetCurrentGameplayId;
@@ -67,12 +67,12 @@ class ArtemisQteView extends UiTickViewBase_1.UiTickViewBase {
     await Promise.all(t);
   }
   OnBeforeShow() {
-    this.Gti(this.eOf, "Start");
+    this.Gti(this.l8f, "Start");
     this.hfl?.PlayAnim("Start");
   }
   async OnBeforeHideAsync() {
     this.hfl?.PlayAnim("Close");
-    await this.eOf?.PlaySequenceAsync("Close", new CustomPromise_1.CustomPromise());
+    await this.l8f?.PlaySequenceAsync("Close", new CustomPromise_1.CustomPromise());
   }
   OnAddEventListener() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnArtemisQteAreaChange, this.At_);
@@ -94,8 +94,8 @@ class ArtemisQteView extends UiTickViewBase_1.UiTickViewBase {
     if (this.HDe) {
       this.HDe();
     }
-    this.eOf?.Clear();
-    this.eOf = undefined;
+    this.l8f?.Clear();
+    this.l8f = undefined;
   }
   OnTick(t) {
     this.hfl?.OnTick(t);
@@ -136,7 +136,7 @@ class ArtemisQteView extends UiTickViewBase_1.UiTickViewBase {
     switch (t) {
       case 2:
         this.hfl.StartAnimProgress();
-        this.Gti(this.eOf, "Perfect");
+        this.Gti(this.l8f, "Perfect");
         this.OnPerfectOn();
         var s = this.GameInfo.GetRingInfo();
         if (!s.IsWholeRing) {
@@ -149,7 +149,7 @@ class ArtemisQteView extends UiTickViewBase_1.UiTickViewBase {
         break;
       case 1:
         this.hfl.StartAnimProgress();
-        this.Gti(this.eOf, "Success");
+        this.Gti(this.l8f, "Success");
         this.OnQteOn();
         s = this.GameInfo.GetRingInfo();
         if (!s.IsWholeRing) {
@@ -161,7 +161,7 @@ class ArtemisQteView extends UiTickViewBase_1.UiTickViewBase {
         this._U1?.ShowTip(0);
         break;
       case 0:
-        this.Gti(this.eOf, "Miss");
+        this.Gti(this.l8f, "Miss");
         this.OnMissOn();
         this._U1?.ShowTip(1);
     }

@@ -29,8 +29,8 @@ class HonamiStoryActivityData extends ActivityData_1.ActivityBaseData {
     this.LEu = new Map();
     this.wEu = new Map();
     this.CYd = new Map();
-    this.oDm = new Map();
-    this.nDm = [];
+    this.CAm = new Map();
+    this.pAm = [];
     this.u5d = new Map();
     this.CurTarget = 0;
     this.CurHonamiLv = 0;
@@ -46,19 +46,19 @@ class HonamiStoryActivityData extends ActivityData_1.ActivityBaseData {
       ModelManager_1.ModelManager.HonamiStoryModel.InitActivityInfo(this.Id, t);
       this.uQd();
       this.cQd();
-      this.twm();
+      this.cwm();
       this.dQd();
       this.pYd();
       this.g5d();
       this.InitSubQuestTaskDataList(t.C4d);
       this.UpdateHonamiStoryAreaDataList(t.w$d);
       this.UpdateHonamiStoryMascotDataList(t.R$d);
-      this.UpdatePermanentTaskDataList(t.HTm);
+      this.UpdatePermanentTaskDataList(t.nbm);
       this.UpdateLimitTaskDataList(t.L$d);
       this.UpdateScoreRewardDataList(t.P$d);
       this.UpdateItemCollectionDataList(t.b$d);
       this.RefreshTowerData(t.i1m);
-      this.ozm();
+      this.NZm();
     }
   }
   PhraseEx(t) {
@@ -71,13 +71,13 @@ class HonamiStoryActivityData extends ActivityData_1.ActivityBaseData {
       ModelManager_1.ModelManager.HonamiStoryModel.UpdateActivityInfo(this.Id, t);
       this.UpdateHonamiStoryAreaDataList(t.w$d);
       this.UpdateHonamiStoryMascotDataList(t.R$d);
-      this.UpdatePermanentTaskDataList(t.HTm);
+      this.UpdatePermanentTaskDataList(t.nbm);
       this.UpdateLimitTaskDataList(t.L$d);
       this.UpdateScoreRewardDataList(t.P$d);
       this.UpdateItemCollectionDataList(t.b$d);
       this.UpdateSubQuestTaskDataList(t.C4d);
       this.RefreshTowerData(t.i1m);
-      ModelManager_1.ModelManager.HonamiStoryModel.SetTotalRevenueInternal(t.$Tm);
+      ModelManager_1.ModelManager.HonamiStoryModel.SetTotalRevenueInternal(t.sbm);
     }
   }
   GetExDataRedPointShowState() {
@@ -235,7 +235,7 @@ class HonamiStoryActivityData extends ActivityData_1.ActivityBaseData {
     }
     return true;
   }
-  twm() {
+  cwm() {
     for (const a of ConfigManager_1.ConfigManager.HonamiStoryConfig.GetHonamiStoryPermanentTaskConfigList(this.Id)) {
       var t = new HonamiStoryPermanentTaskData_1.HonamiStoryPermanentTaskData(a.Id);
       this.LEu.set(a.Id, t);
@@ -394,12 +394,12 @@ class HonamiStoryActivityData extends ActivityData_1.ActivityBaseData {
     return t;
   }
   InitSubQuestTaskDataList(t) {
-    this.oDm.clear();
-    this.nDm.length = 0;
+    this.CAm.clear();
+    this.pAm.length = 0;
     for (const r of t) {
       var a = new HonamiStoryQuestData_1.HonamiStorySubQuestData(r.s5n);
-      this.oDm.set(r.s5n, a);
-      this.nDm.push(a);
+      this.CAm.set(r.s5n, a);
+      this.pAm.push(a);
       a.UpdateData(r);
     }
   }
@@ -415,7 +415,7 @@ class HonamiStoryActivityData extends ActivityData_1.ActivityBaseData {
     }
   }
   GetSubQuestTaskData(t) {
-    var a = this.oDm.get(t);
+    var a = this.CAm.get(t);
     if (a !== undefined) {
       return a;
     }
@@ -424,7 +424,7 @@ class HonamiStoryActivityData extends ActivityData_1.ActivityBaseData {
     }
   }
   GetSubQuestTaskDataList() {
-    return this.nDm;
+    return this.pAm;
   }
   g5d() {
     for (const a of ConfigManager_1.ConfigManager.HonamiStoryConfig.GetHonamiStoryItemCollectionConfigList(this.Id)) {
@@ -460,7 +460,7 @@ class HonamiStoryActivityData extends ActivityData_1.ActivityBaseData {
     }
     return false;
   }
-  ozm() {
+  NZm() {
     this.CurHonamiLv = this.Lo?.OriAreaDangerLevel ?? 0;
     this.CurTowerLv = this.Lo?.OriTopTowerDangerLevel ?? 0;
   }

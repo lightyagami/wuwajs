@@ -97,7 +97,7 @@ class WeeklyRogueSubView extends ActivitySubViewBase_1.ActivitySubViewBase {
     this.BNe();
     this._Fe();
     this.l3e();
-    this.Qbf();
+    this.pDf();
   }
   OnTimer(t) {
     this.FNe();
@@ -133,7 +133,7 @@ class WeeklyRogueSubView extends ActivitySubViewBase_1.ActivitySubViewBase {
     var t = this.ActivityBaseData?.GetCycleConfig();
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(6), "PrefabTextItem_1382682910_Text", this.ActivityBaseData.Score.toString(), t.MaxScore);
   }
-  Qbf() {
+  pDf() {
     var t = this.ActivityBaseData?.FreeCount ?? 0;
     var i = this.ActivityBaseData?.FreeCountMax ?? 0;
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(8), "Text_WeeklyRogue_FreeTime");

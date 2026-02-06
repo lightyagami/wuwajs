@@ -14,10 +14,10 @@ const RouletteListDataBase_1 = require("./RouletteListDataBase");
 class RouletteListDataMotor extends RouletteListDataBase_1.RouletteListDataBase {
   constructor() {
     super(...arguments);
-    this.DOm = [[[1], 4, 0], [[2], 5, 0], [[3], 6, 0], [[4], 7, 0], [[5], 8, 0], [[6], 9, 0], [[7], 10, 0], [[8], 11, 0]];
+    this.WGm = [[[1], 4, 0], [[2], 5, 0], [[3], 6, 0], [[4], 7, 0], [[5], 8, 0], [[6], 9, 0], [[7], 10, 0], [[8], 11, 0]];
     this.RouletteType = 3;
     this.Priority = 0;
-    this.xOm = false;
+    this.KGm = false;
   }
   GetRouletteIdList() {
     return this.RouletteIdListServer;
@@ -31,7 +31,7 @@ class RouletteListDataMotor extends RouletteListDataBase_1.RouletteListDataBase 
   Init() {}
   Clear() {}
   IsActivate() {
-    return this.xOm;
+    return this.KGm;
   }
   foi() {
     if (Log_1.Log.CheckInfo()) {
@@ -54,7 +54,7 @@ class RouletteListDataMotor extends RouletteListDataBase_1.RouletteListDataBase 
     return e.UnlockFuncId === 0 || ModelManager_1.ModelManager.FunctionModel.IsOpen(e.UnlockFuncId);
   }
   IsMainRouletteCanOpenView(e) {
-    return !!this.IsRouletteOpen() && (!ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(215)?.HasAnyTag(ModelManager_1.ModelManager.RouletteModel.GetExploreRouletteBanTagIds()) && !!ModelManager_1.ModelManager.LevelFuncFlagModel.GetFuncFlagEnable(1) || !(e && ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("ExploreToolCantOpen"), 1));
+    return !!this.IsRouletteOpen() && (!ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(217)?.HasAnyTag(ModelManager_1.ModelManager.RouletteModel.GetExploreRouletteBanTagIds()) && !!ModelManager_1.ModelManager.LevelFuncFlagModel.GetFuncFlagEnable(1) || !(e && ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("ExploreToolCantOpen"), 1));
   }
   CreateAssemblyGridData() {
     var e = new Map();
@@ -70,11 +70,11 @@ class RouletteListDataMotor extends RouletteListDataBase_1.RouletteListDataBase 
     return new MotorRouletteMainViewProxy_1.MotorRouletteMainViewProxy();
   }
   GetRouletteDataMap() {
-    return this.DOm;
+    return this.WGm;
   }
   ChangeRouletteActivateStatus(e) {
-    if (this.xOm !== e) {
-      if (this.xOm = e) {
+    if (this.KGm !== e) {
+      if (this.KGm = e) {
         this.foi();
       } else {
         this.poi();

@@ -46,7 +46,7 @@ class GenericLayout {
       this.cGo.RegisterAnimController();
     }
   }
-  get Rjt() {
+  get IsLock() {
     return this.pjt;
   }
   Ujt() {
@@ -148,7 +148,7 @@ class GenericLayout {
   }
   RefreshByData(t, i, s = false) {
     var e;
-    if (this.Rjt) {
+    if (this.IsLock) {
       e = new OperationParam(t, i, s);
       this.gWt.Push(e);
     } else {

@@ -54,7 +54,7 @@ class CommonActivityView extends UiViewBase_1.UiViewBase {
     this.yvt = undefined;
     this.JPd = undefined;
     this.ZPd = ActivityCommonDefine_1.ACTIVITY_FILTER_ALL_ID;
-    this.lLm = false;
+    this.wLm = false;
     this.s5e = undefined;
     this.xpm = undefined;
     this.SPe = undefined;
@@ -124,7 +124,7 @@ class CommonActivityView extends UiViewBase_1.UiViewBase {
     this.jY_ = i => {
       this.BNe(i);
       this.HY_();
-      this.Kjf(i);
+      this.drg(i);
     };
     this.$Y_ = () => {
       var i;
@@ -208,6 +208,7 @@ class CommonActivityView extends UiViewBase_1.UiViewBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ActivityViewRefreshCurrent, this.M5e);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnActivityClose, this.OnActivityUpdate);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnActivityOpen, this.OnActivityUpdate);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PlaySequenceEventByStringParam, this.E5e);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SetActivityViewState, this.u5e);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SetActivityViewCurrency, this.CLn);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ChangeActivityViewNeedBlurState, this.cMl);
@@ -219,6 +220,7 @@ class CommonActivityView extends UiViewBase_1.UiViewBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ActivityViewRefreshCurrent, this.M5e);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivityClose, this.OnActivityUpdate);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivityOpen, this.OnActivityUpdate);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PlaySequenceEventByStringParam, this.E5e);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SetActivityViewState, this.u5e);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SetActivityViewCurrency, this.CLn);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ChangeActivityViewNeedBlurState, this.cMl);
@@ -239,7 +241,7 @@ class CommonActivityView extends UiViewBase_1.UiViewBase {
       for (const n of t) {
         var s = this.FilterActivitiesByTabId(e, n.Id);
         if (s.length !== 0) {
-          if (n.Id === ActivityCommonDefine_1.ACTIVITY_PERMANENT_TAB_ID) {
+          if (i.length > 0 && n.Id === ActivityCommonDefine_1.ACTIVITY_PERMANENT_TAB_ID) {
             i.push({
               IsLineType: true
             });
@@ -278,41 +280,44 @@ class CommonActivityView extends UiViewBase_1.UiViewBase {
     await Promise.all(i);
   }
   OnStart() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PlaySequenceEventByStringParam, this.E5e);
-    var [i, t, e] = this.OpenParam ?? [4, 0, undefined];
-    this.H41 = e;
+    var [i,, t] = this.OpenParam ?? [4, 0, undefined];
+    this.H41 = t;
     ModelManager_1.ModelManager.ActivityModel.SendActivityViewOpenLogData(i);
     this.PRn = ActivityCommonDefine_1.activityViewStateSequence[0];
     this.lqe.SetTitleLocalText("Activity_Title");
     this.uxt();
     this.bvt();
-    let s = undefined;
-    var n = [];
-    for (const h of this.yvt) {
-      if (!h.IsLineType) {
-        for (const r of h.Activities) {
-          n.push(r.Id);
-          if (r.Id === t) {
-            s = h.Id;
+  }
+  OnBeforeShow() {
+    if (this.XPd === undefined) {
+      var [, t] = this.OpenParam ?? [4, 0, undefined];
+      let i = undefined;
+      var e = [];
+      for (const s of this.yvt) {
+        if (!s.IsLineType) {
+          for (const n of s.Activities) {
+            e.push(n.Id);
+            if (n.Id === t) {
+              i = s.Id;
+            }
           }
         }
       }
-    }
-    if ((s = s ?? this.yvt?.at(0)?.Id) !== undefined) {
+      if ((i = i ?? this.yvt?.at(0)?.Id) === undefined) {
+        return;
+      }
       if (ModelManager_1.ModelManager.ActivityModel.GetDebugPermanentFilterVisible()) {
-        if (s !== ActivityCommonDefine_1.ACTIVITY_PERMANENT_TAB_ID) {
+        if (i !== ActivityCommonDefine_1.ACTIVITY_PERMANENT_TAB_ID) {
           this.ZPd = ModelManager_1.ModelManager.ActivityModel.GetActivityPermanentFilterId();
         }
         this.oAd();
       }
-      this.BindRedDotIds(n);
+      this.BindRedDotIds(e);
       this.XY_[0] = this.GetButton(11).RootUIComp;
       this.XY_[1] = this.GetButton(12).RootUIComp;
-      this.qel.set(s, t);
-      this.iAd(s, true);
+      this.qel.set(i, t);
+      this.iAd(i, true);
     }
-  }
-  OnBeforeShow() {
     for (const i of this.h5e) {
       if (!i.CheckIfInShowTime()) {
         ControllerHolder_1.ControllerHolder.ActivityController.RequestActivityData().finally(() => {
@@ -324,7 +329,7 @@ class CommonActivityView extends UiViewBase_1.UiViewBase {
     this.BNe();
     this.HY_();
     if (!this.Dvt) {
-      this.J$f();
+      this.Dog();
     }
     this.i5e.BindScrollValueChange(this.$Y_);
     this.s5e?.RefreshView();
@@ -336,7 +341,6 @@ class CommonActivityView extends UiViewBase_1.UiViewBase {
     GameSettingsDeviceRender_1.GameSettingsDeviceRender.CancelTemporaryDisableFrameGeneration("CommonActivityView");
   }
   OnBeforeDestroy() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PlaySequenceEventByStringParam, this.E5e);
     ControllerHolder_1.ControllerHolder.ActivityController.DisableRefreshTimer();
     this.i5e.UnBindScrollValueChange();
     if (this.YPd) {
@@ -359,14 +363,14 @@ class CommonActivityView extends UiViewBase_1.UiViewBase {
     this.GetItem(9).SetUIActive(false);
     this.XY_[0]?.SetUIActive(false);
     this.XY_[1]?.SetUIActive(false);
-    this.lLm = true;
+    this.wLm = true;
     this.v5e(i, false).finally(() => {
       this.SPe.PlayLevelSequenceByName(t ? "SwitchModel" : "SwitchList", true);
       this.GetItem(8).SetUIActive(true);
       this.GetItem(9).SetUIActive(true);
       this.HY_();
       TimerSystem_1.GameplayTimerSystem.Delay(() => {
-        this.lLm = false;
+        this.wLm = false;
         this.HY_();
         this.$Y_();
       }, 100);
@@ -407,7 +411,7 @@ class CommonActivityView extends UiViewBase_1.UiViewBase {
     }
   }
   HY_() {
-    if (this.lLm) {
+    if (this.wLm) {
       this.FY_ = [undefined, undefined];
     } else {
       var t = [];
@@ -420,13 +424,13 @@ class CommonActivityView extends UiViewBase_1.UiViewBase {
       this.FY_ = t.length <= 0 ? [undefined, undefined] : [this.i5e.GetItemByIndex(t[0]), this.i5e.GetItemByIndex(t[t.length - 1])];
     }
   }
-  Kjf(i) {
+  drg(i) {
     i = this.i5e.GetGenericLayout()?.GetLayoutItemByKey(i);
     if (i) {
       i.RefreshBubbleAndCheckTimer();
     }
   }
-  J$f() {
+  Dog() {
     var i = this.i5e.GetGenericLayout()?.GetLayoutItemList();
     if (i) {
       for (const t of i) {

@@ -117,6 +117,9 @@ class PayShopGoodsData {
     }
     return !!this.yFi;
   }
+  GetCanBuyValue() {
+    return this.yFi;
+  }
   IfRoleItem() {
     return ConfigManager_1.ConfigManager.InventoryConfig.GetItemDataTypeByConfigId(this.ItemId) === 1;
   }

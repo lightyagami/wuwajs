@@ -36,7 +36,7 @@ let FishingBoatInputComponent = class FishingBoatInputComponent extends Gongduol
     if (e === 210012) {
       PhotographController_1.PhotographController.PhotographFastScreenShot();
     } else {
-      this.Entity.GetComponent(40).BeginSkill(e, {
+      this.Entity.GetComponent(42).BeginSkill(e, {
         Reason: "FishingBoatInputComponent.ExecuteSkill"
       });
     }

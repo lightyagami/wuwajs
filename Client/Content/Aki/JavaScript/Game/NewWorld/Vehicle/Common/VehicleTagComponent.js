@@ -45,11 +45,11 @@ let VehicleTagComponent = class VehicleTagComponent extends BaseTagComponent_1.B
         if (s) {
           if (i) {
             for (const e of s) {
-              this.PerformComp.Driver.GetComponent(215)?.AddTag(e);
+              this.PerformComp.Driver.GetComponent(217)?.AddTag(e);
             }
           } else {
             for (const o of s) {
-              this.PerformComp.Driver.GetComponent(215)?.RemoveTag(o);
+              this.PerformComp.Driver.GetComponent(217)?.RemoveTag(o);
             }
           }
         }
@@ -57,7 +57,7 @@ let VehicleTagComponent = class VehicleTagComponent extends BaseTagComponent_1.B
         if (s) {
           if (i) {
             for (const h of s) {
-              this.PerformComp.Driver.GetComponent(220)?.AddBuff(h, {
+              this.PerformComp.Driver.GetComponent(222)?.AddBuff(h, {
                 InstigatorId: this.BaseActorComp.CreatureData.GetCreatureDataId(),
                 PreMessageId: this.VehicleBuffComp?.MotorContextId,
                 Reason: "MotorTag.Buff"
@@ -65,7 +65,7 @@ let VehicleTagComponent = class VehicleTagComponent extends BaseTagComponent_1.B
             }
           } else {
             for (const r of s) {
-              this.PerformComp.Driver.GetComponent(220)?.RemoveBuff(r, -1, "MotorTag.Buff");
+              this.PerformComp.Driver.GetComponent(222)?.RemoveBuff(r, -1, "MotorTag.Buff");
             }
           }
         }
@@ -88,7 +88,7 @@ let VehicleTagComponent = class VehicleTagComponent extends BaseTagComponent_1.B
           this.PassengerTagMap.set(t.PassengerEntity, new Set());
           this.AddEnterVehicleTagsForPassenger(t.PassengerEntity);
           if (t.Seat === this.PerformComp?.DriverSeat) {
-            var s = t.PassengerEntity.GetComponent(215);
+            var s = t.PassengerEntity.GetComponent(217);
             if (s) {
               for (var [e, o] of this.VehicleToDriverTagIdMap) {
                 if (this.HasTag(e)) {
@@ -102,7 +102,7 @@ let VehicleTagComponent = class VehicleTagComponent extends BaseTagComponent_1.B
                 }
               }
             }
-            var h = t.PassengerEntity.GetComponent(220);
+            var h = t.PassengerEntity.GetComponent(222);
             if (h) {
               for (var [r, f] of this.VehicleToDriverBuffIdMap) {
                 if (this.HasTag(r)) {
@@ -128,7 +128,7 @@ let VehicleTagComponent = class VehicleTagComponent extends BaseTagComponent_1.B
       if (t.PassengerEntity) {
         this.RemoveListenDriverTagChange(t);
         if (t.Seat === this.PerformComp?.DriverSeat) {
-          var i = t.PassengerEntity.GetComponent(215);
+          var i = t.PassengerEntity.GetComponent(217);
           if (i) {
             for (var [s, e] of this.VehicleToDriverTagIdMap) {
               if (this.HasTag(s)) {
@@ -138,7 +138,7 @@ let VehicleTagComponent = class VehicleTagComponent extends BaseTagComponent_1.B
               }
             }
           }
-          var o = t.PassengerEntity.GetComponent(220);
+          var o = t.PassengerEntity.GetComponent(222);
           if (o) {
             for (var [h, r] of this.VehicleToDriverBuffIdMap) {
               if (this.HasTag(h)) {
@@ -230,7 +230,7 @@ let VehicleTagComponent = class VehicleTagComponent extends BaseTagComponent_1.B
       this.RemoveTagAddOrRemoveListener(i, this.VehicleTagChanged);
     }
     this.ListenedTags.clear();
-    var t = this.PerformComp?.Driver?.GetComponent(215);
+    var t = this.PerformComp?.Driver?.GetComponent(217);
     if (t) {
       for (const s of this.DriverListenTags) {
         t.RemoveTagAddOrRemoveListener(s, this.DriverTagChanged);
@@ -272,19 +272,19 @@ let VehicleTagComponent = class VehicleTagComponent extends BaseTagComponent_1.B
   }
   AddTagForPassenger(t, i, s) {
     if (t && this.PassengerTagMap.has(t)) {
-      t.GetComponent(215)?.TagContainer.AddExactTag(i, s);
+      t.GetComponent(217)?.TagContainer.AddExactTag(i, s);
       this.PassengerTagMap.get(t).add(s);
     }
   }
   RemoveTagForPassenger(t, i, s) {
     if (t && this.PassengerTagMap.get(t)?.has(s)) {
-      t.GetComponent(215)?.TagContainer.RemoveExactTag(i, s);
+      t.GetComponent(217)?.TagContainer.RemoveExactTag(i, s);
       this.PassengerTagMap.get(t).delete(s);
     }
   }
   RemoveAllTagsForPassenger(t) {
     if (t) {
-      const s = t.GetComponent(215);
+      const s = t.GetComponent(217);
       var i = this.PassengerTagMap.get(t);
       if (i && s) {
         i.forEach(t => {
@@ -296,7 +296,7 @@ let VehicleTagComponent = class VehicleTagComponent extends BaseTagComponent_1.B
   }
   ListenDriverTagChange(t) {
     if (t.IsDriver && t.PassengerEntity) {
-      var i = t.PassengerEntity.GetComponent(215);
+      var i = t.PassengerEntity.GetComponent(217);
       if (i) {
         t = this.PerformComp?.Config?.DriverToVehicleTagMap;
         if (t) {
@@ -317,7 +317,7 @@ let VehicleTagComponent = class VehicleTagComponent extends BaseTagComponent_1.B
   }
   RemoveListenDriverTagChange(t) {
     if (t.IsDriver && t.PassengerEntity) {
-      var i = t.PassengerEntity.GetComponent(215);
+      var i = t.PassengerEntity.GetComponent(217);
       if (i) {
         t = this.PerformComp?.Config?.DriverToVehicleTagMap;
         if (t) {

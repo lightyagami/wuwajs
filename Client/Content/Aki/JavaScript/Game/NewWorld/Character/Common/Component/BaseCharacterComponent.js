@@ -141,7 +141,7 @@ let BaseCharacterComponent = class BaseCharacterComponent extends BaseActorCompo
       if (s && Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Entity", 3, "[CharacterActorComponent.FixBornLocation] 实体地面修正:射线碰到地面", ["CreatureDataId", this.CreatureDataInternal.GetCreatureDataId()], ["PbDataId", this.CreatureDataInternal.GetPbDataId()], ["Actors", e], ["HitLocationIndex", o], ["HitLocationName", r], ["经过修正的位置", l], ["Context", n]);
       }
-      if (!this.wBn && this.CreatureDataInternal.IsNpc() && (this.wBn = true, a = this.Entity.GetComponent(186)) && a.Actor?.Mesh && (t = a.GetMeshTransform().GetLocation(), MathUtils_1.MathUtils.CommonTempVector.Set(0, 0, -FIX_LOCATION_TOLERANCE), a.AddModelLocation(MathUtils_1.MathUtils.CommonTempVector), s) && Log_1.Log.CheckInfo()) {
+      if (!this.wBn && this.CreatureDataInternal.IsNpc() && (this.wBn = true, a = this.Entity.GetComponent(188)) && a.Actor?.Mesh && (t = a.GetMeshTransform().GetLocation(), MathUtils_1.MathUtils.CommonTempVector.Set(0, 0, -FIX_LOCATION_TOLERANCE), a.AddModelLocation(MathUtils_1.MathUtils.CommonTempVector), s) && Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Entity", 50, "[CharacterActorComponent.FixBornLocation] 实体地面修正:模型位置修正", ["CreatureDataId", this.CreatureDataInternal.GetCreatureDataId()], ["PbDataId", this.CreatureDataInternal.GetPbDataId()], ["OrigMeshLocation", t], ["FixMeshLocation", a.GetMeshTransform().GetLocation()], ["Context", n]);
       }
       ModelManager_1.ModelManager.TraceElementModel.ClearActorTrace();

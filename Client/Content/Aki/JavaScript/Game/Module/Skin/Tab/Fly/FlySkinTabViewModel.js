@@ -4,93 +4,147 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.FlySkinTabViewModel = undefined;
+const UE = require("ue");
+const FNameUtil_1 = require("../../../../../Core/Utils/FNameUtil");
 const ConfigManager_1 = require("../../../../Manager/ConfigManager");
+const SkinViewModelBase_1 = require("../../SkinViewModelBase");
 const FlySkinDefine_1 = require("./FlySkinDefine");
 const FlySkinGridData_1 = require("./FlySkinGridData");
-class FlySkinTabViewModel {
+class FlySkinTabViewModel extends SkinViewModelBase_1.ViewModelBase {
   constructor() {
-    this.RoleDataId = 0;
-    this.SelectedTab = undefined;
-    this.SelectedFlySkinType = 1;
-    this.SelectedGridIndex = -1;
-    this.SelectedFlySkinId = -1;
-    this.SelectedFlySkinConfig = undefined;
-    this.SelectedGridData = undefined;
-    this.GridDataList = [];
-    this.SkinIdToGridIndexMap = new Map();
-    this.GetWayDataList = undefined;
+    super();
+    this._Br = 0;
+    this.z9m = 1;
+    this.J9m = -1;
+    this.Z9m = undefined;
+    this.ejm = undefined;
+    this.tjm = new Map();
+    this.ijm = undefined;
+    this.rjm = "";
     this.UiShowState = true;
     this.IsApplyToAll = false;
-    this.ModelCase = "";
+    this.DataMap.set(0, []);
+    this.DataMap.set(1, undefined);
+    this.DataMap.set(2, -1);
   }
-  SelectTab(i) {
-    this.SelectedTab = i;
-    this.SelectedFlySkinType = FlySkinDefine_1.flySkinTabToType[i];
-    this.ModelCase = FlySkinDefine_1.flySkinTypeToCase[this.SelectedFlySkinType];
-    this.SelectedGridIndex = -1;
+  get RoleDataId() {
+    return this._Br;
+  }
+  get SelectedFlySkinType() {
+    return this.z9m;
+  }
+  get SelectedFlySkinId() {
+    return this.J9m;
+  }
+  get SelectedGridData() {
+    return this.ejm;
+  }
+  get GetWayDataList() {
+    return this.ijm;
+  }
+  get ModelCase() {
+    return this.rjm;
+  }
+  GetGridDataList() {
+    return this.GetData(0);
+  }
+  SetSelectedTab(t, e) {
+    this.SetData(1, t, e);
+  }
+  GetSelectedTab() {
+    return this.GetData(1);
+  }
+  SetSelectedGridIndex(t, e) {
+    this.SetData(2, t, e);
+  }
+  GetSelectedGridIndex() {
+    return this.GetData(2);
+  }
+  Init(t) {
+    this._Br = t.RoleId;
+    this.J9m = t.FlySkinId ?? -1;
+    t = t.FlySkinTab ?? 0;
+    this.SetSelectedTab(t);
+  }
+  SelectTab(t) {
+    this.z9m = FlySkinDefine_1.flySkinTabToType[t];
+    this.rjm = FlySkinDefine_1.flySkinTypeToCase[this.z9m];
+    this.SetSelectedGridIndex(-1, true);
     this.UpdateGridData();
+    this.SetSelectedTab(t);
   }
   UpdateGridData() {
-    this.GridDataList.length = 0;
-    this.SkinIdToGridIndexMap.clear();
-    var i = this.SelectedFlySkinType;
-    this.GridDataList.push(new FlySkinGridData_1.FlySkinGridData(0, this.RoleDataId, i));
-    var t = ConfigManager_1.ConfigManager.SkinConfig.GetFlySkinConfigListByType(i);
-    for (const e of t) {
-      var s = new FlySkinGridData_1.FlySkinGridData(e.Id, this.RoleDataId, i, e);
-      this.GridDataList.push(s);
+    var e = this.GetGridDataList();
+    e.length = 0;
+    this.tjm.clear();
+    var t = this.z9m;
+    e.push(new FlySkinGridData_1.FlySkinGridData(0, this._Br, t));
+    var i = ConfigManager_1.ConfigManager.SkinConfig.GetFlySkinConfigListByType(t);
+    for (const r of i) {
+      var s = new FlySkinGridData_1.FlySkinGridData(r.Id, this._Br, t, r);
+      e.push(s);
     }
-    this.GridDataList.sort((i, t) => i.SkinConfig === undefined ? -1 : t.SkinConfig === undefined ? 1 : i.GetIsLock() !== t.GetIsLock() ? i.GetIsLock() ? 1 : -1 : i.SkinConfig.SortIndex !== t.SkinConfig.SortIndex ? t.SkinConfig.SortIndex - i.SkinConfig.SortIndex : t.SkinId - i.SkinId);
-    for (let i = 0; i < this.GridDataList.length; i++) {
-      this.SkinIdToGridIndexMap.set(this.GridDataList[i].SkinId, i);
+    e.sort((t, e) => t.SkinConfig === undefined ? -1 : e.SkinConfig === undefined ? 1 : t.GetIsLock() !== e.GetIsLock() ? t.GetIsLock() ? 1 : -1 : t.SkinConfig.SortIndex !== e.SkinConfig.SortIndex ? e.SkinConfig.SortIndex - t.SkinConfig.SortIndex : e.SkinId - t.SkinId);
+    for (let t = 0; t < e.length; t++) {
+      this.tjm.set(e[t].SkinId, t);
     }
+    this.SetData(0, e);
   }
-  GetGridIndexBySkinId(i) {
-    return this.SkinIdToGridIndexMap?.get(i);
+  GetGridIndexBySkinId(t) {
+    return this.tjm?.get(t);
   }
-  SelectGridByIndex(i) {
-    this.SelectedGridIndex = i;
-    this.SelectedGridData = this.GridDataList[i];
-    this.SelectedFlySkinId = this.SelectedGridData.SkinId;
-    this.SelectedFlySkinConfig = this.SelectedFlySkinId > 0 ? ConfigManager_1.ConfigManager.SkinConfig.GetFlySkinConfig(this.SelectedFlySkinId) : undefined;
+  SelectGridByIndex(t) {
+    this.ejm = this.GetGridDataList()[t];
+    this.J9m = this.ejm.SkinId;
+    this.Z9m = this.J9m > 0 ? ConfigManager_1.ConfigManager.SkinConfig.GetFlySkinConfig(this.J9m) : undefined;
     this.UpdateGetWayDataList();
+    this.SetSelectedGridIndex(t);
   }
   UpdateGetWayDataList() {
-    this.GetWayDataList = [];
-    if (this.SelectedFlySkinConfig) {
-      for (const t of this.SelectedFlySkinConfig.ItemAccess) {
-        var i = ConfigManager_1.ConfigManager.GetWayConfig.GetConfigById(t);
-        if (i) {
-          i = {
-            Id: t,
+    this.ijm = [];
+    if (this.Z9m) {
+      for (const e of this.Z9m.ItemAccess) {
+        var t = ConfigManager_1.ConfigManager.GetWayConfig.GetConfigById(e);
+        if (t) {
+          t = {
+            Id: e,
             ConfigId: this.SelectedFlySkinId,
-            Type: i?.Type,
-            Text: i.Description,
-            SortIndex: i.SortIndex
+            Type: t?.Type,
+            Text: t.Description,
+            SortIndex: t.SortIndex
           };
-          this.GetWayDataList.push(i);
+          this.ijm.push(t);
         }
       }
-      this.GetWayDataList.sort((i, t) => {
-        var s = i.SortIndex;
-        var e = t.SortIndex;
-        if (s === e) {
-          return t.Id - i.Id;
+      this.ijm.sort((t, e) => {
+        var i = t.SortIndex;
+        var s = e.SortIndex;
+        if (i === s) {
+          return e.Id - t.Id;
         } else {
-          return e - s;
+          return s - i;
         }
       });
     }
   }
-  SetUiShowState(i) {
-    this.UiShowState = i;
+  SetUiShowState(t) {
+    this.UiShowState = t;
   }
-  SetIsApplyToAll(i) {
-    this.IsApplyToAll = i;
+  SetIsApplyToAll(t) {
+    this.IsApplyToAll = t;
   }
   ResetSelectedTab() {
-    this.SelectedTab = undefined;
-    this.SelectedGridIndex = -1;
+    this.SetSelectedTab(undefined);
+    this.SetSelectedGridIndex(-1);
+  }
+  GetFlySkinTabCameraInputData(t) {
+    var e = ConfigManager_1.ConfigManager.UiRoleCameraConfig.GetRoleCameraConfig("翱翔滑翔皮肤旋转查看");
+    var i = this.rjm;
+    return {
+      DragComponent: t,
+      CameraSettingConfig: e,
+      SourceLocation: UE.KuroCollectActorComponent.GetActorWithTag(FNameUtil_1.FNameUtil.GetDynamicFName(i), 1).D_K2_GetActorLocation()
+    };
   }
 }
 exports.FlySkinTabViewModel = FlySkinTabViewModel;

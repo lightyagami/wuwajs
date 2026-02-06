@@ -23,10 +23,10 @@ class ActivityPageSelectContent extends GridProxyAbstract_1.GridProxyAbstract {
     this.uFe = undefined;
     this.kel = undefined;
     this.U5e = false;
-    this.t$f = undefined;
-    this.i$f = false;
+    this.yrg = undefined;
+    this.Srg = false;
     this.kOe = t => {
-      this.t$f.RefreshBubble(this.Pe);
+      this.yrg.RefreshBubble(this.Pe);
     };
     this.cJs = t => {
       if (this.Pe?.Id && this.Pe.Id === t) {
@@ -34,15 +34,15 @@ class ActivityPageSelectContent extends GridProxyAbstract_1.GridProxyAbstract {
         this.u3e();
         this.Kbe();
         this.AM1();
-        this.WVm();
-        this.QVm();
+        this.Fkm();
+        this.Nkm();
         this.RefreshBubbleAndCheckTimer();
       }
     };
     this.jbe = t => {
       this.kel?.(this.Pe, t);
       if (t) {
-        this.r$f();
+        this.Mrg();
       }
     };
     this.A5e = () => this.uFe?.(this.Pe.Id, this.GetExtendToggle(0).GetToggleState() === 1) ?? true;
@@ -53,7 +53,7 @@ class ActivityPageSelectContent extends GridProxyAbstract_1.GridProxyAbstract {
   }
   OnStart() {
     this.GetExtendToggle(0).CanExecuteChange.Bind(this.A5e);
-    this.t$f = new ActivityBubbleComponent_1.ActivityBubbleComponent(this.GetItem(10), this.GetSprite(11), this.GetText(12), (t, e, i) => {
+    this.yrg = new ActivityBubbleComponent_1.ActivityBubbleComponent(this.GetItem(10), this.GetSprite(11), this.GetText(12), (t, e, i) => {
       this.SetSpriteByPath(t, e, i);
     });
   }
@@ -71,17 +71,17 @@ class ActivityPageSelectContent extends GridProxyAbstract_1.GridProxyAbstract {
   }
   kot() {
     ControllerHolder_1.ControllerHolder.ActivityController.RegisterRefreshTimerDelegate(this.kOe);
-    this.i$f = true;
+    this.Srg = true;
   }
   xHe() {
     ControllerHolder_1.ControllerHolder.ActivityController.UnregisterRefreshTimerDelegate(this.kOe);
-    this.i$f = false;
+    this.Srg = false;
   }
-  o$f() {
-    return !this.i$f && (this.kot(), true);
+  Erg() {
+    return !this.Srg && (this.kot(), true);
   }
-  n$f() {
-    return !!this.i$f && (this.xHe(), true);
+  Irg() {
+    return !!this.Srg && (this.xHe(), true);
   }
   OnBeforeDestroy() {
     this.Ovt();
@@ -91,7 +91,7 @@ class ActivityPageSelectContent extends GridProxyAbstract_1.GridProxyAbstract {
     var i = t ? 1 : 0;
     this.GetExtendToggle(0).SetToggleState(i, e);
     if (!e && t) {
-      this.r$f();
+      this.Mrg();
     }
   }
   SetToggleState(t, e = true) {
@@ -115,8 +115,8 @@ class ActivityPageSelectContent extends GridProxyAbstract_1.GridProxyAbstract {
       this.u3e();
       this.Kbe();
       this.AM1();
-      this.WVm();
-      this.QVm();
+      this.Fkm();
+      this.Nkm();
       this.RefreshBubbleAndCheckTimer();
     } catch (t) {
       ModelManager_1.ModelManager.ActivityModel.OpenActivityErrorConfirmBox(this.Pe?.Id ?? 0, this.Pe?.Type ?? 0);
@@ -130,7 +130,7 @@ class ActivityPageSelectContent extends GridProxyAbstract_1.GridProxyAbstract {
     }
   }
   Clear() {
-    this.n$f();
+    this.Irg();
   }
   P5e() {
     var t = this.Pe.GetTitle();
@@ -166,11 +166,11 @@ class ActivityPageSelectContent extends GridProxyAbstract_1.GridProxyAbstract {
       this.SetSpriteByPath(t, e, true);
     }
   }
-  WVm() {
+  Fkm() {
     var t = this.Pe.FinishShowState;
     this.GetSprite(9).SetUIActive(this.Pe.LocalConfig.IsTabEffectNotice && !t);
   }
-  QVm() {
+  Nkm() {
     var t;
     var e;
     var i = this.Pe.LocalConfig.ShowTabTypeId;
@@ -191,14 +191,14 @@ class ActivityPageSelectContent extends GridProxyAbstract_1.GridProxyAbstract {
     }
   }
   RefreshBubbleAndCheckTimer() {
-    if (this.t$f.RefreshBubble(this.Pe)) {
-      this.o$f();
+    if (this.yrg.RefreshBubble(this.Pe)) {
+      this.Erg();
     } else {
-      this.n$f();
+      this.Irg();
     }
   }
-  r$f() {
-    if (this.t$f.CheckToUpdateBubbleClickState()) {
+  Mrg() {
+    if (this.yrg.CheckToUpdateBubbleClickState()) {
       this.RefreshBubbleAndCheckTimer();
     }
   }

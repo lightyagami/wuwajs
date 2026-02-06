@@ -59,12 +59,12 @@ class FunctionController extends UiControllerBase_1.UiControllerBase {
     this.K9t.set(10072, FunctionController.jtl);
     this.K9t.set(10086, FunctionController.D71);
     this.K9t.set(10095, FunctionController.Fvu);
-    this.K9t.set(10102, FunctionController.LBm);
-    this.K9t.set(10130, FunctionController.d$m);
-    this.K9t.set(10132, FunctionController.jrf);
-    this.K9t.set(10098, FunctionController.wCf);
-    this.K9t.set(10131, FunctionController.jvf);
-    this.K9t.set(10133, FunctionController.DTf);
+    this.K9t.set(10102, FunctionController.i2m);
+    this.K9t.set(10130, FunctionController.Jqm);
+    this.K9t.set(10132, FunctionController._sf);
+    this.K9t.set(10098, FunctionController._yf);
+    this.K9t.set(10131, FunctionController.iEf);
+    this.K9t.set(10133, FunctionController.QPf);
     return true;
   }
   static InitFunctionOpenViewLimit() {
@@ -77,11 +77,11 @@ class FunctionController extends UiControllerBase_1.UiControllerBase {
   }
   static OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CloseView, this.v7t);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestOpenFunctionRelateView, this.Hgf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestOpenFunctionRelateView, this.KCf);
   }
   static OnRemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CloseView, this.v7t);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestOpenFunctionRelateView, this.Hgf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestOpenFunctionRelateView, this.KCf);
   }
   static async TryOpenFunctionOpenView() {
     if (!this.M7t()) {
@@ -120,9 +120,9 @@ class FunctionController extends UiControllerBase_1.UiControllerBase {
   static async E7t(n) {
     var o = Protocol_1.Aki.Protocol.Krs.create();
     o.d6n = n;
-    var o = await Net_1.Net.CallAsync(24863, o);
+    var o = await Net_1.Net.CallAsync(17328, o);
     if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 21988);
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 21415);
       return false;
     } else {
       ModelManager_1.ModelManager.FunctionModel.RefreshInfoManualState(n);
@@ -138,7 +138,7 @@ class FunctionController extends UiControllerBase_1.UiControllerBase {
     if (!o) {
       return false;
     }
-    if (!(n = !(n = o.Info.Name === "BattleView" ? true : n) && this.S7t(o.Info.Name) ? true : n)) {
+    if (!(n = !(n = o.Info.Name === UiModel_1.UiModel.MainViewName ? true : n) && this.S7t(o.Info.Name) ? true : n)) {
       return false;
     }
     if (!ModelManager_1.ModelManager.InputDistributeModel.IsAllowUiInput()) {
@@ -169,17 +169,17 @@ class FunctionController extends UiControllerBase_1.UiControllerBase {
     return this.p7t.has(n);
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(21616, n => {
+    Net_1.Net.Register(19046, n => {
       ModelManager_1.ModelManager.FunctionModel.SetFunctionOpenInfo(n);
     });
-    Net_1.Net.Register(15014, n => {
+    Net_1.Net.Register(17246, n => {
       ModelManager_1.ModelManager.FunctionModel.UpdateFunctionOpenInfo(n);
       FunctionController.TryOpenFunctionOpenView();
     });
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(21616);
-    Net_1.Net.UnRegister(15014);
+    Net_1.Net.UnRegister(19046);
+    Net_1.Net.UnRegister(17246);
   }
   static async mXa() {
     if ((await PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk().GetCommunicationRestrictedAsync(ModelManager_1.ModelManager.PlayerInfoModel.GetThirdPartyAccountId())) === 1) {
@@ -253,7 +253,7 @@ FunctionController.Uzs = (n, o) => {
 FunctionController.v7t = n => {
   FunctionController.TryOpenFunctionOpenView();
 };
-FunctionController.Hgf = n => {
+FunctionController.KCf = n => {
   _a.OpenFunctionRelateView(n);
 };
 FunctionController.Q9t = () => {
@@ -346,10 +346,10 @@ FunctionController.a7t = () => {
 FunctionController.l7t = () => {
   ControllerHolder_1.ControllerHolder.BattlePassController.OpenBattlePassView();
 };
-FunctionController.LBm = () => {
+FunctionController.i2m = () => {
   HonamiStoryController_1.HonamiStoryController.OpenHonamiStoryBag();
 };
-FunctionController.d$m = () => {
+FunctionController.Jqm = () => {
   var n = {
     ShortMessage: undefined,
     NeedShowTips: false,
@@ -358,15 +358,15 @@ FunctionController.d$m = () => {
   };
   UiManager_1.UiManager.OpenView("PhoneMsgPanelViewBig", n);
 };
-FunctionController.jrf = () => {
+FunctionController._sf = () => {
   ControllerHolder_1.ControllerHolder.PhantomArenaBattleController.OpenPhantomArenaMapEntrance();
 };
-FunctionController.jvf = () => {
+FunctionController.iEf = () => {
   InfrastructureController_1.InfrastructureController.OpenInfrastructureMainView();
 };
-FunctionController.wCf = () => {
+FunctionController._yf = () => {
   ControllerHolder_1.ControllerHolder.MotorcycleDevelopController.OpenRootView();
 };
-FunctionController.DTf = () => {
+FunctionController.QPf = () => {
   ControllerHolder_1.ControllerHolder.WeatherController.TryOpenWeatherCentralMainView();
 }; //# sourceMappingURL=FunctionController.js.map

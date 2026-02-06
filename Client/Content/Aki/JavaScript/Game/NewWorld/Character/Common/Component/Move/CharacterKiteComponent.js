@@ -62,7 +62,7 @@ let CharacterKiteComponent = class CharacterKiteComponent extends EntityComponen
     };
   }
   static get Dependencies() {
-    return [187];
+    return [189];
   }
   KiteMove(t) {
     var e;
@@ -74,7 +74,7 @@ let CharacterKiteComponent = class CharacterKiteComponent extends EntityComponen
     } else if (this.Die?.Valid && this.Nul === this.Die.SplineMoveEndCount) {
       if (Vector_1.Vector.DistSquared(this.znr, this.Gce.ActorComp.ActorLocationProxy) < BLOCK_DIST_THRESHOLD_SQUARED) {
         if (this.G91 > KITE_MAX_BLOCK && ++this.Nau >= KITE_BLOCK_COUNT) {
-          this.Entity.GetComponent(105)?.SetIsHookEndByInterrupt(true);
+          this.Entity.GetComponent(107)?.SetIsHookEndByInterrupt(true);
           this.Gce?.ActorComp?.Actor.KuroSetMovementMode({
             Mode: 3,
             Context: "[CharacterKiteComponent.KiteMove.Block]"
@@ -92,7 +92,7 @@ let CharacterKiteComponent = class CharacterKiteComponent extends EntityComponen
       this.M1l.DeepCopy(this.Die.HookLocation);
     } else {
       if (this.Cgl !== this.Die?.SplineMoveBrokenCount) {
-        this.Entity.GetComponent(105)?.SetIsHookEndByInterrupt(true);
+        this.Entity.GetComponent(107)?.SetIsHookEndByInterrupt(true);
       }
       this.Gce?.ActorComp?.Actor.KuroSetMovementMode({
         Mode: 3,
@@ -104,7 +104,7 @@ let CharacterKiteComponent = class CharacterKiteComponent extends EntityComponen
     return true;
   }
   OnStart() {
-    this.Gce = this.Entity.GetComponent(187);
+    this.Gce = this.Entity.GetComponent(189);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharOnUnifiedMoveStateChanged, this.OnMoveStateChanged);
     return true;
   }
@@ -120,5 +120,5 @@ let CharacterKiteComponent = class CharacterKiteComponent extends EntityComponen
     }), this.M1l.DeepCopy(this.Die.HookLocation), this.G91 = 0, this.znr.DeepCopy(this.Gce.ActorComp.ActorLocationProxy), 0);
   }
 };
-CharacterKiteComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(39)], CharacterKiteComponent);
+CharacterKiteComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(41)], CharacterKiteComponent);
 exports.CharacterKiteComponent = CharacterKiteComponent; //# sourceMappingURL=CharacterKiteComponent.js.map

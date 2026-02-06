@@ -33,8 +33,8 @@ class PhantomArenaActivityData extends ActivityData_1.ActivityBaseData {
     this.etu = new Map();
     this.IA1 = 0;
     this.$Tu = 0;
-    this.GQm = 0;
-    this.FQm = 0;
+    this.sYm = 0;
+    this.aYm = 0;
     this.CV1 = 0;
     this.pV1 = 0;
     this.vV1 = 0;
@@ -44,9 +44,11 @@ class PhantomArenaActivityData extends ActivityData_1.ActivityBaseData {
     this.fqt = 0;
     this.mMo = 0;
     this.CSu = 0;
-    this.Qrf = new Map();
-    this.yTf = new Set();
-    this.NQm = 0;
+    this._Ig = new Map();
+    this.uIg = [];
+    this.SPf = new Set();
+    this.W7g = new Set();
+    this.hYm = 0;
   }
   PhraseEx(t) {
     this.mV1.length = 0;
@@ -59,20 +61,22 @@ class PhantomArenaActivityData extends ActivityData_1.ActivityBaseData {
     this.etu.clear();
     this.Zeu.clear();
     this.Gdo.clear();
-    this.Qrf.clear();
+    this._Ig.clear();
+    this.W7g.clear();
+    this.uIg.length = 0;
     var e;
     var i = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleActivityConfig(this.Id);
     this.$Tu = i.FourCostCardCount;
-    this.GQm = i.AreaCardCount;
-    this.FQm = i.ItemCardMaxCount;
+    this.sYm = i.AreaCardCount;
+    this.aYm = i.ItemCardMaxCount;
     this.CV1 = i.NormalCardCount;
-    this.IA1 = this.$Tu + this.CV1 + this.GQm;
+    this.IA1 = this.$Tu + this.CV1 + this.sYm;
     this.pV1 = i.DeckLimit;
     this.vV1 = i.ElementMax;
     this.Sbu = i.CardMaxLimit;
     this.fqt = i.ShopItemId;
     this.mMo = i.ShopId;
-    var i = t.h5n === Protocol_1.Aki.Protocol.uks.Proto_PhantomBattle ? t.cg1 : t.uFm;
+    var i = t.h5n === Protocol_1.Aki.Protocol.uks.Proto_PhantomBattle ? t.cg1 : t.xNm;
     if (i) {
       if (t.h5n === Protocol_1.Aki.Protocol.uks.Proto_PhantomBattleRecord) {
         this.SetIfFirstOpen(false);
@@ -117,12 +121,14 @@ class PhantomArenaActivityData extends ActivityData_1.ActivityBaseData {
     var n = this.C81.get(t);
     if (n) {
       if (n.K6n !== e && e) {
-        this.yTf.add(t);
+        this.SPf.add(t);
+        this.W7g.add(ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleChallenge(t).MapId);
       }
       n.K6n = e;
       n.Sg1 = i;
-      n.qgf = s;
+      n.VCf = s;
       ModelManager_1.ModelManager.PhantomArenaModel.SaveChallengeUnlockRedDotById(t, e);
+      ModelManager_1.ModelManager.PhantomArenaModel.SaveMapUnlockRedDotById(ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleChallenge(t).MapId, e);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPhantomArenaChallengeUpdate);
     } else if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("PhantomArena", 75, "挑战进度更新失败，此挑战未初始化", ["ChallengeId", t]);
@@ -130,20 +136,41 @@ class PhantomArenaActivityData extends ActivityData_1.ActivityBaseData {
   }
   UpdateChallengeInfoList(t) {
     this.C81.clear();
-    this.Qrf.clear();
-    for (const s of t) {
-      var e = s.yg1;
-      this.C81.set(e, s);
-      var i = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleChallenge(e);
-      if (i.IsShowEntrance) {
-        if (!this.Qrf.has(i.Difficult)) {
-          this.Qrf.set(i.Difficult, []);
+    this._Ig.clear();
+    this.uIg.length = 0;
+    for (const n of t) {
+      var i = n.yg1;
+      this.C81.set(i, n);
+      var s = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleChallenge(i);
+      if (s.IsShowEntrance) {
+        let t = this._Ig.get(s.MapId);
+        if (!t) {
+          t = new Map();
+          this._Ig.set(s.MapId, t);
         }
-        this.Qrf.get(i.Difficult)?.push(e);
+        let e = t.get(s.Difficult);
+        if (!e) {
+          e = [];
+          t.set(s.Difficult, e);
+        }
+        e.push(i);
+        this.uIg.push(i);
+        ModelManager_1.ModelManager.PhantomArenaModel.SaveChallengeUnlockRedDotById(i, n.K6n);
+        ModelManager_1.ModelManager.PhantomArenaModel.SaveMapUnlockRedDotById(s.MapId, n.K6n);
+        if (n.K6n) {
+          this.W7g.add(s.MapId);
+        }
       }
-      ModelManager_1.ModelManager.PhantomArenaModel.SaveChallengeUnlockRedDotById(e, s.K6n);
     }
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPhantomArenaChallengeUpdate);
+  }
+  UpdateChallengeFinishConditions(t, e) {
+    var i = this.C81.get(t);
+    if (i) {
+      i.qS_ = e;
+    } else if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("PhantomArena", 87, "挑战进度更新失败，此挑战未初始化", ["ChallengeId", t]);
+    }
   }
   UpdateProtocolDeckInfoList(t) {
     this.mV1 = t;
@@ -215,7 +242,7 @@ class PhantomArenaActivityData extends ActivityData_1.ActivityBaseData {
     e.SetDeckServerId(t.c5n);
     e.SetDeckName(t.H8n);
     e.SetCanUse(t.Dg1);
-    for (const r of t.Gqm) {
+    for (const r of t.lGm) {
       var s = r.J7n;
       if (ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardConfig(s).Type === 3) {
         e.SetFieldCardSkillUnlockInfo(r);
@@ -228,8 +255,8 @@ class PhantomArenaActivityData extends ActivityData_1.ActivityBaseData {
     var t = new DeckInfo_1.DeckInfo();
     t.SetNormalCardCountLimit(this.CV1);
     t.SetCoreCardCountLimit(this.$Tu);
-    t.SetFieldCardCountLimit(this.GQm);
-    t.SetItemCardCountLimit(this.FQm);
+    t.SetFieldCardCountLimit(this.sYm);
+    t.SetItemCardCountLimit(this.aYm);
     t.SetElementCountLimit(this.vV1);
     var e = this.Type === Protocol_1.Aki.Protocol.uks.Proto_PhantomBattleRecord ? 10142 : 10085;
     t.SetIsCoreCardSlotLocked(!ModelManager_1.ModelManager.FunctionModel.IsOpen(e));
@@ -347,8 +374,11 @@ class PhantomArenaActivityData extends ActivityData_1.ActivityBaseData {
   GetChallengeInfoById(t) {
     return this.C81.get(t);
   }
-  GetDifficultChallengeIdsMap() {
-    return this.Qrf;
+  GetDifficultChallengeIdsMap(t) {
+    return this._Ig.get(t);
+  }
+  GetAllChallengeIds() {
+    return this.uIg;
   }
   GetFinishedChallengeCount() {
     let t = 0;
@@ -368,7 +398,7 @@ class PhantomArenaActivityData extends ActivityData_1.ActivityBaseData {
     }
   }
   GetCurrentUnlockChallengeIds() {
-    return this.yTf;
+    return this.SPf;
   }
   UpdateRoleInfo(t) {
     for (const e of t) {
@@ -533,7 +563,7 @@ class PhantomArenaActivityData extends ActivityData_1.ActivityBaseData {
         this.QY.set(i.s5n, i);
         if (!this.Aou.has(e.TaskType)) {
           if (e.TaskType === PhantomArenaDefine_1.SPECIAL_TASK_TABTYPE) {
-            this.NQm = i.s5n;
+            this.hYm = i.s5n;
           } else {
             this.Aou.set(e.TaskType, []);
           }
@@ -578,12 +608,12 @@ class PhantomArenaActivityData extends ActivityData_1.ActivityBaseData {
     return this.QY;
   }
   GetSpecialTask() {
-    var t = this.QY.get(this.NQm);
+    var t = this.QY.get(this.hYm);
     if (t) {
       return t;
     }
     if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("PhantomArena", 71, "特殊任务不存在", ["SpecialTaskId", this.NQm]);
+      Log_1.Log.Error("PhantomArena", 71, "特殊任务不存在", ["SpecialTaskId", this.hYm]);
     }
   }
   GetAllCanReceiveTaskIdsByTabId(t) {

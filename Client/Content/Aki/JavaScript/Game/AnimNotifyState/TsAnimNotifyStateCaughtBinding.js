@@ -22,7 +22,7 @@ class TsAnimNotifyStateCaughtBinding extends UE.KuroAnimNotifyState {
   K2_NotifyBegin(e, t, r) {
     var i;
     var e = e.GetOwner();
-    return e instanceof TsBaseCharacter_1.default && !!(e = e.CharacterActorComponent.Entity) && (t = e.GetComponent(220)?.CreateAnimNotifyContent(t.GetName(), this.exportIndex), i = e.GetComponent(41), !!(e = e.GetComponent(53))) && (this.DetectionRadius > 0 && this.CheckPosition(e), e.SetCaughtBindingAnsInfo(t), e.BeginCaught(this.CaughtIds, i?.CurrentSkill?.SkillId ?? 0), true);
+    return e instanceof TsBaseCharacter_1.default && !!(e = e.CharacterActorComponent.Entity) && (t = e.GetComponent(222)?.CreateAnimNotifyContent(t.GetName(), this.exportIndex), i = e.GetComponent(43), !!(e = e.GetComponent(55))) && (this.DetectionRadius > 0 && this.CheckPosition(e), e.SetCaughtBindingAnsInfo(t), e.BeginCaught(this.CaughtIds, i?.CurrentSkill?.SkillId ?? 0), true);
   }
   CheckPosition(r) {
     for (let e = 0; e < this.CaughtIds.Num(); e++) {
@@ -82,7 +82,7 @@ class TsAnimNotifyStateCaughtBinding extends UE.KuroAnimNotifyState {
   }
   K2_NotifyEnd(e, t) {
     var e = e.GetOwner();
-    return e instanceof TsBaseCharacter_1.default && !!e.CharacterActorComponent && !!(e = e.CharacterActorComponent.Entity) && !!(e = e.GetComponent(53)) && !(e.EndCaught(), 0);
+    return e instanceof TsBaseCharacter_1.default && !!e.CharacterActorComponent && !!(e = e.CharacterActorComponent.Entity) && !!(e = e.GetComponent(55)) && !(e.EndCaught(), 0);
   }
   GetNotifyName() {
     return "抓取绑定";

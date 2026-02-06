@@ -48,7 +48,7 @@ let CharacterFlowComponent = class CharacterFlowComponent extends EntityComponen
   }
   OnStart() {
     this.ActorComp = this.Entity.GetComponent(1);
-    this.HeadInfoComp = this.Entity.GetComponent(85);
+    this.HeadInfoComp = this.Entity.GetComponent(87);
     var t = this.ActorComp?.CreatureData.GetPbEntityInitData();
     if (t) {
       this.FlowData = (0, IComponent_1.getComponent)(t.ComponentsData, "BubbleComponent");
@@ -162,5 +162,5 @@ let CharacterFlowComponent = class CharacterFlowComponent extends EntityComponen
     }
   }
 };
-CharacterFlowComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(31)], CharacterFlowComponent);
+CharacterFlowComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(32)], CharacterFlowComponent);
 exports.CharacterFlowComponent = CharacterFlowComponent; //# sourceMappingURL=CharacterFlowComponent.js.map

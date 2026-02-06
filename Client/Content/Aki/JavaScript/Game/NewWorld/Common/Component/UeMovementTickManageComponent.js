@@ -238,10 +238,10 @@ let UeMovementTickManageComponent = UeMovementTickManageComponent_1 = class UeMo
   }
   OnStart() {
     this.Hte = this.Entity.GetComponent(3);
-    this.Msn = this.Entity.GetComponent(46);
+    this.Msn = this.Entity.GetComponent(48);
     this.tr_ = this.Entity.GetComponent(246);
     this.o4o = this.Hte.Owner.GetComponentByClass(UE.CharacterMovementComponent.StaticClass());
-    return !!this.o4o && (this.Esn = this.Entity.GetComponent(30), this.SkelTickMgr = this.Entity.GetComponent(123), this.o4o.SetKuroOnlyTickOutside(true), this.o4o.SetComponentTickEnabled(false), this.oRe = this.Entity.GetComponent(186), this.ForbiddenTickPose = this.Entity.GetTickInterval() > 1 || UeSkeletalTickManageComponent_1.UeSkeletalTickController.EnabledNewSkelTickTiming, this.Isn = Time_1.Time.Frame, this.utl = false, this.TickMode = UeMovementTickController.EnabledMovementParallel ? 1 : 2, ModelManager_1.ModelManager.SundryModel.RoleFallingDebugLogOn && this.Hte.IsRoleAndCtrlByMe && this.SetVelocityInfoCacheEnable(true), true);
+    return !!this.o4o && (this.Esn = this.Entity.GetComponent(31), this.SkelTickMgr = this.Entity.GetComponent(125), this.o4o.SetKuroOnlyTickOutside(true), this.o4o.SetComponentTickEnabled(false), this.oRe = this.Entity.GetComponent(188), this.ForbiddenTickPose = this.Entity.GetTickInterval() > 1 || UeSkeletalTickManageComponent_1.UeSkeletalTickController.EnabledNewSkelTickTiming, this.Isn = Time_1.Time.Frame, this.utl = false, this.TickMode = UeMovementTickController.EnabledMovementParallel ? 1 : 2, ModelManager_1.ModelManager.SundryModel.RoleFallingDebugLogOn && this.Hte.IsRoleAndCtrlByMe && this.SetVelocityInfoCacheEnable(true), true);
   }
   OnEnd() {
     this.TickMode = 0;
@@ -260,6 +260,7 @@ let UeMovementTickManageComponent = UeMovementTickManageComponent_1 = class UeMo
       Log_1.Log.Info("Movement", 6, "UeMovementTickManageComponent Enable", ["Entity", this.Entity.Id]);
     }
     this.Isn = Time_1.Time.Frame;
+    this.oRe?.ConsumeRootMotion();
   }
   OnTick(t) {
     if (this.TickMode === 2 && (this.TickMovement(t), this.ResetCachedTransformAndSetModelBuffer(), UeMovementTickController.EnabledMovementParallel)) {
@@ -319,13 +320,13 @@ let UeMovementTickManageComponent = UeMovementTickManageComponent_1 = class UeMo
         }
         if (this.tr_) {
           for (const o of this.tr_.PassengerInfoMap.values()) {
-            o.PassengerEntity?.GetComponent(30)?.MarkDebugRecord("载具移动组件更新前", undefined, true);
+            o.PassengerEntity?.GetComponent(31)?.MarkDebugRecord("载具移动组件更新前", undefined, true);
           }
         }
         this.Msn.ConsumeForceFallingSpeed();
         var i;
         var e;
-        var s = this.Entity.GetComponent(131)?.CurrentTimeScale ?? 1;
+        var s = this.Entity.GetComponent(133)?.CurrentTimeScale ?? 1;
         if (!!this.Msn.NeedRootMotionWhenAttached || !this.Msn.IsSpecialMove) {
           if (this.Msn) {
             this.Msn.GetAndConsumeAddMove(t * MathUtils_1.MathUtils.MillisecondToSecond * s, UeMovementTickManageComponent_1.Lz, UeMovementTickManageComponent_1.Gue);
@@ -368,7 +369,7 @@ let UeMovementTickManageComponent = UeMovementTickManageComponent_1 = class UeMo
     this.UpdateVelocityCache();
     if (this.$k_ && (this.Msn.IsSpecialMove || this.Hte.ResetAllCachedTime(), !this.Kzl || !(this.Qzl >= CharacterAnimationComponent_1.MIN_BUFFER_TIME_LENGTH) || this.$zl.Equals(this.Hte.ActorLocationProxy) && this.Xzl.Equals(this.Hte.ActorRotationProxy) || (this.oRe.SetModelBuffer(this.Kzl, this.Qzl), this.Kzl = undefined), this.Msn.ApplyForceSpeedAndRecordSpeed(), this.Esn && this.Esn.MarkDebugRecord("移动组件更新后", undefined, true), this.tr_)) {
       for (const i of this.tr_.PassengerInfoMap.values()) {
-        var t = i.PassengerEntity?.GetComponent(30);
+        var t = i.PassengerEntity?.GetComponent(31);
         i.PassengerEntity?.GetComponent(1)?.ResetAllCachedTime();
         t?.MarkDebugRecord("载具移动组件更新后", undefined, true);
       }
@@ -449,5 +450,5 @@ let UeMovementTickManageComponent = UeMovementTickManageComponent_1 = class UeMo
 };
 UeMovementTickManageComponent.Lz = Vector_1.Vector.Create();
 UeMovementTickManageComponent.Gue = Rotator_1.Rotator.Create();
-UeMovementTickManageComponent = UeMovementTickManageComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(122)], UeMovementTickManageComponent);
+UeMovementTickManageComponent = UeMovementTickManageComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(124)], UeMovementTickManageComponent);
 exports.UeMovementTickManageComponent = UeMovementTickManageComponent; //# sourceMappingURL=UeMovementTickManageComponent.js.map

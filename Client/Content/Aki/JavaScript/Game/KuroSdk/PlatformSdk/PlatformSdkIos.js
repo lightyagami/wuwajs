@@ -172,6 +172,41 @@ class PlatformSdkIos extends PlatformSdkBase_1.PlatformSdkBase {
   CurrentPlatformYearReviewTime() {
     return MAXREVIEWTIME;
   }
+  KuroBindExternalLoginResult() {
+    UE.KuroSDKManager.Get().ExternalLoginCallBack.Clear();
+    UE.KuroSDKManager.Get().ExternalLoginCallBack.Add(e => {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("KuroSdk", 27, "ShowExternalLoginUI", ["result", e]);
+      }
+      if (e) {
+        this.ExternalLoginState = true;
+        this.QueryExternalAchievement();
+      }
+      this.ExternalLoginState = e;
+    });
+  }
+  BindExternalEvent() {
+    this.KuroBindExternalLoginResult();
+    this.KuroBindExternalAchievementWriteResult();
+    this.KuroBindExternalAchievementQueryResult();
+  }
+  UnlockSdkTrophy(e) {
+    this.UpdateExternalAchievementProgress(e.toString(), 100);
+  }
+  UpdateExternalAchievementProgress(e, r) {
+    var t;
+    if (!!this.ExternalLoginState && !((this.AchievementMap.get(e) ? this.AchievementMap.get(e).Progress : 0) >= 100)) {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("KuroSdk", 27, "UpdateExternalAchievementProgress", ["achievementName", e]);
+      }
+      (t = new KuroSdkData_1.AchievementContentData()).AchievementId = e;
+      t.Progress = r;
+      (e = new KuroSdkData_1.AchievementData()).Achievements = new Array();
+      e.Achievements.push(t);
+      r = Json_1.Json.Stringify(e);
+      ue_1.KuroSDKManager.WriteExternalAchievements(r);
+    }
+  }
 }
 exports.PlatformSdkIos = PlatformSdkIos;
 //# sourceMappingURL=PlatformSdkIos.js.map

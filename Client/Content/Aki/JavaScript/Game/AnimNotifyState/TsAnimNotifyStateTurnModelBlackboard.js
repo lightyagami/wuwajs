@@ -39,7 +39,7 @@ class TsAnimNotifyStateTurnModelBlackboard extends UE.KuroAnimNotifyState {
       return false;
     }
     var a = t.CharacterActorComponent.Entity;
-    if (!a.GetComponent(186)?.Valid) {
+    if (!a.GetComponent(188)?.Valid) {
       return false;
     }
     a = a.Id;
@@ -69,7 +69,7 @@ class TsAnimNotifyStateTurnModelBlackboard extends UE.KuroAnimNotifyState {
     if (!(t instanceof TsBaseCharacter_1.default)) {
       return false;
     }
-    var a = t.CharacterActorComponent.Entity.GetComponent(186);
+    var a = t.CharacterActorComponent.Entity.GetComponent(188);
     if (!a?.Valid) {
       return false;
     }
@@ -103,7 +103,7 @@ class TsAnimNotifyStateTurnModelBlackboard extends UE.KuroAnimNotifyState {
     if (this.TurnActorOnEnd) {
       e.AddActorLocalRotation(s.TurnModel.ToUeRotator(), "TsAnimNotifyStateTurnModelBlackboard", false);
     }
-    t = a.GetComponent(186);
+    t = a.GetComponent(188);
     return !!t && (t.ResetModelQuat(), true);
   }
   GetNotifyName() {

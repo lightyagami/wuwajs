@@ -10,6 +10,9 @@ const Log_1 = require("../../../Core/Common/Log");
 const ControllerBase_1 = require("../../../Core/Framework/ControllerBase");
 const FNameUtil_1 = require("../../../Core/Utils/FNameUtil");
 const Vector_1 = require("../../../Core/Utils/Math/Vector");
+const EventDefine_1 = require("../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../Common/Event/EventSystem");
+const GlobalData_1 = require("../../GlobalData");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const AOI_OFFSET = 1000;
 const MEDIA_ACTOR_TICK_FEQ = 30;
@@ -30,21 +33,21 @@ class BpActorController extends ControllerBase_1.ControllerBase {
     var o = new UE.GameBudgetBlueprintGroupConfig();
     o.Group = 3;
     o.GameBudgetGroupName = FNameUtil_1.FNameUtil.GetDynamicFName("BlueprintTick.SceneBlueprintActor");
-    var i = new UE.GameBudgetBlueprintGroupConfig();
-    i.Group = 7;
-    i.GameBudgetGroupName = FNameUtil_1.FNameUtil.GetDynamicFName("BlueprintTick.FarBlueprintActor");
     var e = new UE.GameBudgetBlueprintGroupConfig();
-    e.Group = 4;
-    e.GameBudgetGroupName = FNameUtil_1.FNameUtil.GetDynamicFName("BlueprintTick.SuperFarBlueprintActor");
+    e.Group = 7;
+    e.GameBudgetGroupName = FNameUtil_1.FNameUtil.GetDynamicFName("BlueprintTick.FarBlueprintActor");
+    var i = new UE.GameBudgetBlueprintGroupConfig();
+    i.Group = 4;
+    i.GameBudgetGroupName = FNameUtil_1.FNameUtil.GetDynamicFName("BlueprintTick.SuperFarBlueprintActor");
     var _ = new UE.GameBudgetBlueprintGroupConfig();
     _.Group = 5;
     _.GameBudgetGroupName = FNameUtil_1.FNameUtil.GetDynamicFName("BlueprintTick.DynamicPhysicsInteractionActor");
-    var s = new UE.GameBudgetBlueprintGroupConfig();
-    s.Group = 6;
-    s.GameBudgetGroupName = FNameUtil_1.FNameUtil.GetDynamicFName("BlueprintTick.StaticPhysicsInteractionActor");
     var l = new UE.GameBudgetBlueprintGroupConfig();
-    l.Group = 8;
-    l.GameBudgetGroupName = FNameUtil_1.FNameUtil.GetDynamicFName("BlueprintTick.HighPriorityPhysicsInteractionActor");
+    l.Group = 6;
+    l.GameBudgetGroupName = FNameUtil_1.FNameUtil.GetDynamicFName("BlueprintTick.StaticPhysicsInteractionActor");
+    var s = new UE.GameBudgetBlueprintGroupConfig();
+    s.Group = 8;
+    s.GameBudgetGroupName = FNameUtil_1.FNameUtil.GetDynamicFName("BlueprintTick.HighPriorityPhysicsInteractionActor");
     var c = new UE.GameBudgetBlueprintGroupConfig();
     c.Group = 9;
     c.GameBudgetGroupName = FNameUtil_1.FNameUtil.GetDynamicFName("BlueprintTick.SpecialBlueprintActor");
@@ -53,17 +56,19 @@ class BpActorController extends ControllerBase_1.ControllerBase {
     a.GameBudgetGroupName = FNameUtil_1.FNameUtil.GetDynamicFName("BlueprintTick.SparseGridPhysicsInteractionActor");
     t.Add(r);
     t.Add(o);
-    t.Add(i);
     t.Add(e);
+    t.Add(i);
     t.Add(_);
-    t.Add(s);
     t.Add(l);
+    t.Add(s);
     t.Add(c);
     t.Add(a);
     UE.KuroGameBudgetBlueprintDefine.Initialize(t);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SetEnvironmentInteraction, BpActorController.Yag);
     return true;
   }
   static OnClear() {
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SetEnvironmentInteraction, BpActorController.Yag);
     UE.KuroGameBudgetBlueprintDefine.Clear();
     return true;
   }
@@ -151,8 +156,8 @@ class BpActorController extends ControllerBase_1.ControllerBase {
     return ControllerHolder_1.ControllerHolder.TimeOfDayController?.CheckInMinuteSpan(DAY_MINITE_START, DAY_MINITE_END);
   }
   static RegisterDayNightActor(t) {
-    if (!this.DVf.has(t)) {
-      this.DVf.add(t);
+    if (!this.kXf.has(t)) {
+      this.kXf.add(t);
       if (this.ior()) {
         t.OnEnterDay();
       } else {
@@ -161,39 +166,39 @@ class BpActorController extends ControllerBase_1.ControllerBase {
     }
   }
   static UnregisterDayNightActor(t) {
-    if (this.DVf.has(t)) {
-      this.DVf.delete(t);
+    if (this.kXf.has(t)) {
+      this.kXf.delete(t);
     }
   }
-  static UVf() {
-    if (!(this.DVf.size < 0)) {
-      if (this.xVf === undefined) {
-        this.xVf = this.ior();
+  static qXf() {
+    if (!(this.kXf.size < 0)) {
+      if (this.OXf === undefined) {
+        this.OXf = this.ior();
       } else {
         var t = this.ior();
-        if (this.xVf !== t) {
-          if (this.xVf = t) {
-            for (const r of this.DVf) {
+        if (this.OXf !== t) {
+          if (this.OXf = t) {
+            for (const r of this.kXf) {
               if (r?.IsValid()) {
                 r.OnEnterDay();
               } else {
-                this.BVf.add(r);
+                this.GXf.add(r);
               }
             }
           } else {
-            for (const o of this.DVf) {
+            for (const o of this.kXf) {
               if (o?.IsValid()) {
                 o.OnEnterNight();
               } else {
-                this.BVf.add(o);
+                this.GXf.add(o);
               }
             }
           }
-          if (this.BVf.size > 0) {
-            for (const i of this.BVf) {
-              this.DVf.delete(i);
+          if (this.GXf.size > 0) {
+            for (const e of this.GXf) {
+              this.kXf.delete(e);
             }
-            this.BVf.clear();
+            this.GXf.clear();
           }
         }
       }
@@ -201,7 +206,7 @@ class BpActorController extends ControllerBase_1.ControllerBase {
   }
   static OnTick(t) {
     this.jSa();
-    this.UVf();
+    this.qXf();
   }
   static DisableMediaByGM(t) {
     this.IsDisableMediaByGM = t;
@@ -237,12 +242,12 @@ class BpActorController extends ControllerBase_1.ControllerBase {
       }
     }
   }
-  static cFf(t) {
+  static g7f(t) {
     var r = (0, puerts_1.$ref)(0);
     t.GetAoiRange(r);
     return (0, puerts_1.$unref)(r);
   }
-  static dFf(t) {
+  static C7f(t) {
     var r = (0, puerts_1.$ref)(false);
     t.ShouldStopOnHide(r);
     return (0, puerts_1.$unref)(r);
@@ -251,20 +256,20 @@ class BpActorController extends ControllerBase_1.ControllerBase {
     if (this.VSa.size > 0 && this.HSa?.IsValid()) {
       let t = undefined;
       var o;
-      var i = ControllerHolder_1.ControllerHolder.CameraController.CameraLocation;
+      var e = ControllerHolder_1.ControllerHolder.CameraController.CameraLocation;
       let r = Number.MAX_VALUE;
-      for (const s of this.VSa) {
-        var e = s;
+      for (const l of this.VSa) {
+        var i = l;
         var _ = Vector_1.Vector.Create();
-        _.FromUeVector(e.D_K2_GetActorLocation());
-        var e = Vector_1.Vector.Dist(i, _);
-        if (e < r && !this.dFf(s)) {
-          r = e;
-          t = s;
+        _.FromUeVector(i.D_K2_GetActorLocation());
+        var i = Vector_1.Vector.Dist(e, _);
+        if (i < r && !this.C7f(l)) {
+          r = i;
+          t = l;
         }
       }
       if (t?.IsValid() && this.HSa === t) {
-        if ((o = this.cFf(t)) && o + AOI_OFFSET < r && (this.HSa.Stop(), this.HSa = undefined, Log_1.Log.CheckDebug())) {
+        if ((o = this.g7f(t)) && o + AOI_OFFSET < r && (this.HSa.Stop(), this.HSa = undefined, Log_1.Log.CheckDebug())) {
           Log_1.Log.Debug("World", 38, "BpActorController MediaActor 超出Aoi 关掉当前");
         }
       } else {
@@ -280,19 +285,19 @@ class BpActorController extends ControllerBase_1.ControllerBase {
     if (this.VSa.size > 0 && !this.HSa?.IsValid()) {
       let t = undefined;
       var o;
-      var i = ControllerHolder_1.ControllerHolder.CameraController.CameraLocation;
+      var e = ControllerHolder_1.ControllerHolder.CameraController.CameraLocation;
       let r = Number.MAX_VALUE;
-      for (const s of this.VSa) {
-        var e = s;
+      for (const l of this.VSa) {
+        var i = l;
         var _ = Vector_1.Vector.Create();
-        _.FromUeVector(e.D_K2_GetActorLocation());
-        var e = Vector_1.Vector.DistSquared(i, _);
-        if (e < r && !this.dFf(s)) {
-          r = e;
-          t = s;
+        _.FromUeVector(i.D_K2_GetActorLocation());
+        var i = Vector_1.Vector.DistSquared(e, _);
+        if (i < r && !this.C7f(l)) {
+          r = i;
+          t = l;
         }
       }
-      if (t?.IsValid() && (r = Math.sqrt(r), o = this.cFf(t)) && o > r && (t.Start(), this.HSa = t, Log_1.Log.CheckDebug())) {
+      if (t?.IsValid() && (r = Math.sqrt(r), o = this.g7f(t)) && o > r && (t.Start(), this.HSa = t, Log_1.Log.CheckDebug())) {
         Log_1.Log.Debug("World", 38, "BpActorController MediaActor 当前可见并距离小于AOI 开始播放");
       }
     }
@@ -301,20 +306,20 @@ class BpActorController extends ControllerBase_1.ControllerBase {
     if (this.gzl.size > 0 && this.pzl?.IsValid()) {
       let t = undefined;
       var o;
-      var i = ControllerHolder_1.ControllerHolder.CameraController.CameraLocation;
+      var e = ControllerHolder_1.ControllerHolder.CameraController.CameraLocation;
       let r = Number.MAX_VALUE;
-      for (const s of this.gzl) {
-        var e = s;
+      for (const l of this.gzl) {
+        var i = l;
         var _ = Vector_1.Vector.Create();
-        _.FromUeVector(e.D_K2_GetActorLocation());
-        var e = Vector_1.Vector.Dist(i, _);
-        if (e < r && !this.dFf(s)) {
-          r = e;
-          t = s;
+        _.FromUeVector(i.D_K2_GetActorLocation());
+        var i = Vector_1.Vector.Dist(e, _);
+        if (i < r && !this.C7f(l)) {
+          r = i;
+          t = l;
         }
       }
       if (t?.IsValid() && this.pzl === t) {
-        if ((o = this.cFf(t)) && o + AOI_OFFSET < r && (this.pzl.Stop(), this.pzl = undefined, Log_1.Log.CheckDebug())) {
+        if ((o = this.g7f(t)) && o + AOI_OFFSET < r && (this.pzl.Stop(), this.pzl = undefined, Log_1.Log.CheckDebug())) {
           Log_1.Log.Debug("World", 38, "BpActorController MediaActor Extra 超出Aoi 关掉当前");
         }
       } else {
@@ -330,19 +335,19 @@ class BpActorController extends ControllerBase_1.ControllerBase {
     if (this.gzl.size > 0 && !this.pzl?.IsValid()) {
       let t = undefined;
       var o;
-      var i = ControllerHolder_1.ControllerHolder.CameraController.CameraLocation;
+      var e = ControllerHolder_1.ControllerHolder.CameraController.CameraLocation;
       let r = Number.MAX_VALUE;
-      for (const s of this.gzl) {
-        var e = s;
+      for (const l of this.gzl) {
+        var i = l;
         var _ = Vector_1.Vector.Create();
-        _.FromUeVector(e.D_K2_GetActorLocation());
-        var e = Vector_1.Vector.DistSquared(i, _);
-        if (e < r && !this.dFf(s)) {
-          r = e;
-          t = s;
+        _.FromUeVector(i.D_K2_GetActorLocation());
+        var i = Vector_1.Vector.DistSquared(e, _);
+        if (i < r && !this.C7f(l)) {
+          r = i;
+          t = l;
         }
       }
-      if (t?.IsValid() && (r = Math.sqrt(r), o = this.cFf(t)) && o > r && (t.Start(), this.pzl = t, Log_1.Log.CheckDebug())) {
+      if (t?.IsValid() && (r = Math.sqrt(r), o = this.g7f(t)) && o > r && (t.Start(), this.pzl = t, Log_1.Log.CheckDebug())) {
         Log_1.Log.Debug("World", 38, "BpActorController MediaActor Extra 当前可见并距离小于AOI 开始播放");
       }
     }
@@ -354,6 +359,12 @@ BpActorController.VSa = new Set();
 BpActorController.gzl = new Set();
 BpActorController.HSa = undefined;
 BpActorController.pzl = undefined;
-BpActorController.DVf = new Set();
-BpActorController.xVf = undefined;
-BpActorController.BVf = new Set(); //# sourceMappingURL=BpActorController.js.map
+BpActorController.kXf = new Set();
+BpActorController.Yag = t => {
+  var r = UE.SubsystemBlueprintLibrary.GetGameInstanceSubsystem(GlobalData_1.GlobalData.GameInstance, UE.KuroGameBudgetSubSystem.StaticClass());
+  if (r) {
+    r.SetEnvInteractChange(t > 0);
+  }
+};
+BpActorController.OXf = undefined;
+BpActorController.GXf = new Set(); //# sourceMappingURL=BpActorController.js.map

@@ -110,6 +110,17 @@ class CharDitherEffect extends CharRenderBase_1.CharRenderBase {
     this.Thr();
     this.vhr = true;
   }
+  PreBodyInfoRuntimeInit(t) {
+    if (this.vhr) {
+      this.Ihr();
+    }
+  }
+  PostBodyInfoRuntimeInit(t) {
+    if (this.vhr) {
+      this.Thr();
+      this.Lhr(this.mhr);
+    }
+  }
   Update() {}
   GetComponentId() {
     return RenderConfig_1.RenderConfig.IdDitherEffect;

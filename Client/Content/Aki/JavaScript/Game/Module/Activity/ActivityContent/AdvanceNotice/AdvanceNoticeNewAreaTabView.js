@@ -10,7 +10,7 @@ const LguiUtil_1 = require("../../../Util/LguiUtil");
 const AdvanceNoticeTabViewBase_1 = require("./AdvanceNoticeTabViewBase");
 class AdvanceNoticeNewAreaTabView extends AdvanceNoticeTabViewBase_1.AdvanceNoticeTabViewBase {
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UITexture], [1, UE.UIText], [2, UE.UIText], [3, UE.UIText]];
+    this.ComponentRegisterInfos = [[0, UE.UITexture], [1, UE.UIText], [2, UE.UIText], [3, UE.UIText], [4, UE.UIScrollViewWithScrollbarComponent]];
   }
   RefreshView() {
     var e = this.ViewModel.CurrentSubTabId;

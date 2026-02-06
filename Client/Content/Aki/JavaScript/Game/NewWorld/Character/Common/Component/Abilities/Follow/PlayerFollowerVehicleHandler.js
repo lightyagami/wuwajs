@@ -9,7 +9,6 @@ const IComponent_1 = require("../../../../../../../UniverseEditor/Interface/ICom
 const EventDefine_1 = require("../../../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../../../Common/Event/EventSystem");
 const ModelManager_1 = require("../../../../../../Manager/ModelManager");
-const GameCommand_1 = require("../../../../../../Utils/Command/GameCommand");
 const ResponsibilityChain_1 = require("../../../../../../Utils/ResponsibilityChain/ResponsibilityChain");
 const WaitEntityTask_1 = require("../../../../../../World/Define/WaitEntityTask");
 const IFollow_1 = require("./IFollow");
@@ -29,13 +28,12 @@ exports.RegardAsVehicleHandler = RegardAsVehicleHandler;
 class PlayerFollowerVehicleHandler extends IFollow_1.PlayerFollowerSwallowHandler {
   constructor() {
     super(...arguments);
-    this.Q8f = new Set();
-    this.IHf = new Map();
-    this.MKf = new Map();
-    this.CommandInvoker = new GameCommand_1.CommandInvoker();
+    this.szf = new Set();
+    this.ktg = new Map();
+    this.plg = new Map();
   }
   GetPlayerFollowVehicle(e) {
-    for (const r of this.Q8f) {
+    for (const r of this.szf) {
       var o = ModelManager_1.ModelManager.CreatureModel.GetEntity(r)?.Entity?.GetComponent(0)?.GetPbEntityInitData();
       if (o) {
         if ((0, IComponent_1.getComponent)(o.ComponentsData, "BaseInfoComponent")?.Category.VehicleType === e) {
@@ -45,20 +43,20 @@ class PlayerFollowerVehicleHandler extends IFollow_1.PlayerFollowerSwallowHandle
     }
   }
   HasFollower(e) {
-    return this.Q8f.has(e);
+    return this.szf.has(e);
   }
   AddFollowerReceiver() {
     return {
       ReceiveExecute: o => {
         var e = WaitEntityTask_1.WaitEntityTask.Create("PlayerFollowerVehicleHandler.AddFollower", o.CreatureDataId, e => {
-          this.IHf.delete(o.CreatureDataId);
+          this.ktg.delete(o.CreatureDataId);
           if (e && (e = ModelManager_1.ModelManager.CreatureModel.GetEntity(o.CreatureDataId))?.EntityType === Protocol_1.Aki.Protocol.kks.HI_) {
-            this.Q8f.add(o.CreatureDataId);
-            this.EKf(e);
+            this.szf.add(o.CreatureDataId);
+            this.vlg(e);
           }
         }, IFollow_1.WAIT_FOLLOWER_TIME, false, true);
         if (e) {
-          this.IHf.set(o.CreatureDataId, e);
+          this.ktg.set(o.CreatureDataId, e);
         }
       }
     };
@@ -66,36 +64,36 @@ class PlayerFollowerVehicleHandler extends IFollow_1.PlayerFollowerSwallowHandle
   RemoveFollowerReceiver() {
     return {
       ReceiveExecute: e => {
-        this.Q8f.delete(e);
-        this.IKf(e);
-        var o = this.IHf.get(e);
+        this.szf.delete(e);
+        this.ylg(e);
+        var o = this.ktg.get(e);
         if (o) {
           o.Cancel();
-          this.IHf.delete(e);
+          this.ktg.delete(e);
         }
       }
     };
   }
   OnClear() {
-    this.Q8f.clear();
-    this.IHf.forEach(e => {
+    this.szf.clear();
+    this.ktg.forEach(e => {
       e.Cancel();
     });
-    this.IHf.clear();
+    this.ktg.clear();
   }
-  EKf(e) {
+  vlg(e) {
     var o;
-    if (e && (o = e?.Entity?.GetComponent(0)?.GetPbEntityInitData()) && (o = (0, IComponent_1.getComponent)(o.ComponentsData, "BaseInfoComponent")?.Category.VehicleType) && (this.MKf.set(e.CreatureDataId, o), o === "Motorcycle")) {
+    if (e && (o = e?.Entity?.GetComponent(0)?.GetPbEntityInitData()) && (o = (0, IComponent_1.getComponent)(o.ComponentsData, "BaseInfoComponent")?.Category.VehicleType) && (this.plg.set(e.CreatureDataId, o), o === "Motorcycle")) {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSetBattleUiChildCacheStateNotify, 0, true);
     }
   }
-  IKf(e) {
-    var o = this.MKf.get(e);
+  ylg(e) {
+    var o = this.plg.get(e);
     if (o) {
       if (o === "Motorcycle") {
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSetBattleUiChildCacheStateNotify, 0, false);
       }
-      this.MKf.delete(e);
+      this.plg.delete(e);
     }
   }
 }

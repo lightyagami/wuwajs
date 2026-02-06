@@ -67,7 +67,7 @@ class RoadBookMainView extends UiViewBase_1.UiViewBase {
     this.kVl = () => {
       this.CloseMe();
     };
-    this.$_f = () => {
+    this.Hcf = () => {
       ControllerHolder_1.ControllerHolder.HelpController.OpenHelpById(this.ActivityBaseData.LocalConfig.HelpId);
     };
   }
@@ -82,7 +82,7 @@ class RoadBookMainView extends UiViewBase_1.UiViewBase {
       this.Otl = new PopupCaptionItem_1.PopupCaptionItem();
       t.push(this.Otl.CreateThenShowByActorAsync(this.GetItem(0).GetOwner()));
       this.Otl.SetCloseCallBack(this.kVl);
-      this.Otl.SetHelpCallBack(this.$_f);
+      this.Otl.SetHelpCallBack(this.Hcf);
       this.UVl = new ActivityButtonItem_1.ActivityButtonItem();
       t.push(this.UVl.CreateByActorAsync(this.GetItem(11).GetOwner()));
       this.UVl.SetFunction(this.NVl);

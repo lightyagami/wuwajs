@@ -23,12 +23,12 @@ const LordGymThirdBossItem_1 = require("./LordGymThirdBossItem");
 class LordGymThirdBossSelectView extends LordGymLordEntranceSelectView_1.LordGymLordEntranceSelectView {
   constructor() {
     super(...arguments);
-    this.x6f = false;
+    this.zzf = false;
     this.ShopTextId = "BossChanllengeShop";
     this.ConfirmTextId = "BossChanllengeStart";
     this.ShopTabIndex = PayShopDefine_1.LORD_GYM_THIRD_TAB_INDEX;
     this.c1o = new UE.TransformDouble(new UE.Rotator(0, 0, 0), new UE.VectorDouble(0, 0, 0), new UE.VectorDouble(1, 1, 1));
-    this.uLf = 0;
+    this.MBf = 0;
     this.I5t = () => {
       var e;
       if (ControllerHolder_1.ControllerHolder.LordGymController.IsInLordGymDungeon()) {
@@ -94,10 +94,10 @@ class LordGymThirdBossSelectView extends LordGymLordEntranceSelectView_1.LordGym
     }
     await this.InitSelectAsync();
     if (this.OpenParam?.IsPlaySpecialSequence && (e = LordGymEntranceById_1.configLordGymEntranceById.GetConfig(this.SelectedEntranceId))?.LordUISceneEffect) {
-      await this.cLf(e.LordUISceneEffect);
+      await this.EBf(e.LordUISceneEffect);
     }
   }
-  async cLf(e) {
+  async EBf(e) {
     const r = new CustomPromise_1.CustomPromise();
     EffectSystem_1.EffectSystem.SpawnEffect(GlobalData_1.GlobalData.World, this.c1o, e, "LordGymSceneEffect", undefined, 1, undefined, (e, t) => {
       r.SetResult();
@@ -105,21 +105,19 @@ class LordGymThirdBossSelectView extends LordGymLordEntranceSelectView_1.LordGym
     await r.Promise;
   }
   async InitSelectAsync() {
+    let e = 0;
     let t = 0;
-    var r = ModelManager_1.ModelManager.LordGymModel.LastChallengeLordEntranceId;
-    if (r > 0) {
-      for (let e = 0; e < this.LordEntranceList.length; e++) {
-        if (this.LordEntranceList[e] === r) {
-          t = e;
-          break;
-        }
-      }
+    if (ModelManager_1.ModelManager.LordGymModel.EntranceEntityId > 0 && UiSceneManager_1.UiSceneManager.HasLordSkeletalHandle()) {
+      t = ModelManager_1.ModelManager.LordGymModel.EntranceEntityId;
+      e = this.LordEntranceList.indexOf(t);
+    } else if ((t = ModelManager_1.ModelManager.LordGymModel.LastChallengeLordEntranceId) > 0) {
+      e = this.LordEntranceList.indexOf(t);
     }
-    await this.SelectLordEntranceByIndexAsync(t);
+    await this.SelectLordEntranceByIndexAsync(e);
     this.RefreshLordGymCurrency();
-    var e = ModelManager_1.ModelManager.LordGymModel;
+    var r = ModelManager_1.ModelManager.LordGymModel;
     for (const n of this.LordEntranceList) {
-      e.RecordNewLordGymEntrance(n);
+      r.RecordNewLordGymEntrance(n);
     }
   }
   CreateItem() {
@@ -142,11 +140,11 @@ class LordGymThirdBossSelectView extends LordGymLordEntranceSelectView_1.LordGym
       ControllerHolder_1.ControllerHolder.LordGymController.CreateLordModelByEntranceId();
       ControllerHolder_1.ControllerHolder.LordGymController.LoadLordModelByEntranceId(this.SelectedEntranceId, true, true);
     }
-    if (this.OpenParam?.IsPlaySpecialSequence && !this.x6f && (e = LordGymEntranceById_1.configLordGymEntranceById.GetConfig(this.SelectedEntranceId))?.LordUISceneEffect) {
-      this.uLf = EffectSystem_1.EffectSystem.SpawnEffect(GlobalData_1.GlobalData.World, this.c1o, e.LordUISceneEffect, "LordGymSceneEffect", undefined, 1);
+    if (this.OpenParam?.IsPlaySpecialSequence && !this.zzf && (e = LordGymEntranceById_1.configLordGymEntranceById.GetConfig(this.SelectedEntranceId))?.LordUISceneEffect) {
+      this.MBf = EffectSystem_1.EffectSystem.SpawnEffect(GlobalData_1.GlobalData.World, this.c1o, e.LordUISceneEffect, "LordGymSceneEffect", undefined, 1);
     }
-    ControllerHolder_1.ControllerHolder.LordGymController.PlayLordModelMaterialAnimationByEntranceId(this.SelectedEntranceId, undefined, undefined, this.x6f);
-    this.x6f = true;
+    ControllerHolder_1.ControllerHolder.LordGymController.PlayLordModelMaterialAnimationByEntranceId(this.SelectedEntranceId, undefined, undefined, this.zzf, !this.zzf);
+    this.zzf = true;
   }
   async OnHandlePostLoadSceneAsync(e) {
     if (e) {
@@ -161,17 +159,20 @@ class LordGymThirdBossSelectView extends LordGymLordEntranceSelectView_1.LordGym
   }
   OnHandleReleaseScene() {
     UiSceneManager_1.UiSceneManager.DestroyLordSkeletalHandle();
-    if (EffectSystem_1.EffectSystem.IsValid(this.uLf)) {
-      EffectSystem_1.EffectSystem.StopEffectById(this.uLf, "[LordGymThirdBossSelectView.OnBeforeDestroy]", true);
-      this.uLf = 0;
+    if (EffectSystem_1.EffectSystem.IsValid(this.MBf)) {
+      EffectSystem_1.EffectSystem.StopEffectById(this.MBf, "[LordGymThirdBossSelectView.OnBeforeDestroy]", true);
+      this.MBf = 0;
     }
     ModelManager_1.ModelManager.LordGymModel.DestroyLordGymThirdBossSequenceActor();
   }
   SelectLordEntranceByIndex(e) {
-    if (this.LordEntranceList[e] !== 0) {
-      super.SelectLordEntranceByIndex(e);
-      e = (e + 1).toString();
-      this.SetSpriteByPath(StringUtils_1.StringUtils.Format(LordGymDefine_1.LORD_GYM_BOSS_SPRITE_PATH, e, e), this.GetSprite(7), true);
+    var t = this.LordEntranceList[e];
+    if (t !== 0) {
+      this.LordEntranceScrollView?.GetGenericLayout()?.SelectGridProxy(e);
+      this.SelectedEntranceId = t;
+      ControllerHolder_1.ControllerHolder.LordGymController.LoadLordModelByEntranceId(this.SelectedEntranceId, true, true);
+      t = (e + 1).toString();
+      this.SetSpriteByPath(StringUtils_1.StringUtils.Format(LordGymDefine_1.LORD_GYM_BOSS_SPRITE_PATH, t, t), this.GetSprite(7), true);
       this.PlaySequence("Switch");
     }
   }
@@ -186,9 +187,9 @@ class LordGymThirdBossSelectView extends LordGymLordEntranceSelectView_1.LordGym
     }
   }
   OnBeforeDestroy() {
-    if (EffectSystem_1.EffectSystem.IsValid(this.uLf)) {
-      EffectSystem_1.EffectSystem.StopEffectById(this.uLf, "[LordGymThirdBossSelectView.OnBeforeDestroy]", true);
-      this.uLf = 0;
+    if (EffectSystem_1.EffectSystem.IsValid(this.MBf)) {
+      EffectSystem_1.EffectSystem.StopEffectById(this.MBf, "[LordGymThirdBossSelectView.OnBeforeDestroy]", true);
+      this.MBf = 0;
     }
     InstanceDungeonEntranceController_1.InstanceDungeonEntranceController.RestoreDungeonEntranceEntity();
   }

@@ -9,67 +9,67 @@ const ActivityData_1 = require("../../ActivityData");
 class ArtemisActivityData extends ActivityData_1.ActivityBaseData {
   constructor() {
     super(...arguments);
-    this.SSf = 0;
-    this.MSf = 0;
-    this.ESf = 0;
+    this.lIf = 0;
+    this._If = 0;
+    this.uIf = 0;
   }
   get GetCacheActivityId() {
-    return this.SSf;
+    return this.lIf;
   }
   get GetUnlockIndex() {
-    return this.MSf;
+    return this._If;
   }
   get GetRewardedIndex() {
-    return this.ESf;
+    return this.uIf;
   }
   PhraseEx(t) {
-    if (t &&= t.WEm) {
+    if (t &&= t.zEm) {
       this.SetCacheActivityId(t.w6n);
-      this.SetUnlockIndex(t.Xgf);
-      this.SetRewardedIndex(t.Ygf);
+      this.SetUnlockIndex(t.TMf);
+      this.SetRewardedIndex(t.bMf);
     }
   }
   SetCacheActivityId(t) {
-    this.SSf = t;
+    this.lIf = t;
   }
   SetUnlockIndex(t) {
-    this.MSf = t;
+    this._If = t;
   }
   SetRewardedIndex(t) {
-    this.ESf = t;
+    this.uIf = t;
   }
   GetArtemisStatus(t) {
     t += 1;
-    if (t <= this.MSf) {
-      if (t <= this.ESf) {
+    if (t <= this._If) {
+      if (t <= this.uIf) {
         return 2;
       }
-      if (t === this.ESf + 1) {
+      if (t === this.uIf + 1) {
         return 1;
       }
     }
     return 0;
   }
   GetArtemisRewardedIndex() {
-    return Math.max(this.ESf - 1, 0);
+    return Math.max(this.uIf - 1, 0);
   }
   GetArtemisUnlockIndex() {
-    return Math.max(this.MSf - 1, 0);
+    return Math.max(this._If - 1, 0);
   }
   GetArtemisDefaultOpenIndex() {
     let t = 0;
-    t = this.MSf > this.ESf ? this.ESf + 1 : this.MSf;
+    t = this._If > this.uIf ? this.uIf + 1 : this._If;
     return Math.max(t - 1, 0);
   }
   GetCanReceive() {
-    return this.MSf > this.ESf;
+    return this._If > this.uIf;
   }
   GetExDataRedPointShowState() {
     return this.GetCanReceive();
   }
   GetExDataFinishShowState() {
     var t;
-    return this.MSf === this.ESf && (t = ConfigManager_1.ConfigManager.ArtemisActivityConfig?.GetArtemisGroupByActivityId(this.SSf), this.MSf === t?.length);
+    return this._If === this.uIf && (t = ConfigManager_1.ConfigManager.ArtemisActivityConfig?.GetArtemisGroupByActivityId(this.lIf), this._If === t?.length);
   }
 }
 exports.ArtemisActivityData = ArtemisActivityData;

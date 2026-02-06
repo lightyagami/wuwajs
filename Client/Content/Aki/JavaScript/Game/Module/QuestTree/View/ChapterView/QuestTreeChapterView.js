@@ -47,7 +47,7 @@ class QuestTreeChapterView extends UiTickViewBase_1.UiTickViewBase {
     this.pWd = 0;
     this.tdm = false;
     this.idm = false;
-    this.IEm = false;
+    this.kEm = false;
     this.A2t = t => {
       var e = this.GetSlider(4);
       this.qDd.SetInteractive(t < e.GetMaxValue());
@@ -155,7 +155,7 @@ class QuestTreeChapterView extends UiTickViewBase_1.UiTickViewBase {
     var e = this.GetScrollViewWithScrollbar(5);
     e.SetVertical(true);
     e.SetHorizontal(true);
-    this.IEm = true;
+    this.kEm = true;
     var e = this.OpenParam.ChapterId;
     var e = ModelManager_1.ModelManager.QuestTreeModel.GetChapterDataById(e);
     if (e) {
@@ -213,7 +213,7 @@ class QuestTreeChapterView extends UiTickViewBase_1.UiTickViewBase {
   OnAfterShow() {
     ModelManager_1.ModelManager.QuestTreeModel.ViewModelChapter.NotifyUpdateNode();
     this.AOe(undefined);
-    this.IEm = false;
+    this.kEm = false;
     var t;
     var e = this.OpenParam.ChapterId;
     var e = ModelManager_1.ModelManager.QuestTreeModel.GetChapterDataById(e);
@@ -234,12 +234,12 @@ class QuestTreeChapterView extends UiTickViewBase_1.UiTickViewBase {
     this.idm = false;
   }
   OnTick(t) {
-    this.TEm(t);
-    this.bEm(t);
-    this.REm(t);
-    this.wEm(t);
+    this.qEm(t);
+    this.OEm(t);
+    this.GEm(t);
+    this.FEm(t);
   }
-  TEm(t) {
+  qEm(t) {
     this.mie += t;
     if (this.mie >= 100 && (this.mie = 0, this.ODd)) {
       (t = this.GetHorizontalLayout(6)).GetRootComponent().SetUIActive(false);
@@ -247,7 +247,7 @@ class QuestTreeChapterView extends UiTickViewBase_1.UiTickViewBase {
       this.ODd = false;
     }
   }
-  bEm(t) {
+  OEm(t) {
     var e;
     var i;
     var s;
@@ -264,14 +264,14 @@ class QuestTreeChapterView extends UiTickViewBase_1.UiTickViewBase {
       e.SetPadding(this.kDd);
     }
   }
-  wEm(t) {
+  FEm(t) {
     var e;
     var i;
-    if (this.IEm && (e = this.OpenParam.ChapterId, e = ModelManager_1.ModelManager.QuestTreeModel.GetChapterDataById(e)) && (i = (i = this.OpenParam.NodeId) ? e.NodeMap.get(i) : e.GetDefaultLocatingNode())) {
+    if (this.kEm && (e = this.OpenParam.ChapterId, e = ModelManager_1.ModelManager.QuestTreeModel.GetChapterDataById(e)) && (i = (i = this.OpenParam.NodeId) ? e.NodeMap.get(i) : e.GetDefaultLocatingNode())) {
       ModelManager_1.ModelManager.QuestTreeModel.ViewModelChapter.LocateToNode(i, false);
     }
   }
-  REm(t) {
+  GEm(t) {
     var e;
     if (this.tdm) {
       this.tdm = false;

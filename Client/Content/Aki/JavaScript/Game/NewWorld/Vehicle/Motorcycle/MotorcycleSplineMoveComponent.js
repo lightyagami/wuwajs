@@ -35,6 +35,8 @@ const GravityUtils_1 = require("../../../Utils/GravityUtils");
 const BaseSplineMoveComponent_1 = require("../../Common/Component/BaseSplineMoveComponent");
 const VehicleSplineMoveComponent_1 = require("../Common/VehicleSplineMoveComponent");
 const greenColor = new UE.LinearColor(0, 1, 0, 1);
+const yellowColor = new UE.LinearColor(1, 1, 0, 1);
+const blueColor = new UE.LinearColor(0, 0, 1, 1);
 const AUTOPILOT_BRAKING_THRESHOLD_MIN = 30;
 const AUTOPILOT_BRAKING_THRESHOLD_MAX = 90;
 const ROAD_BLOCK_DETECT_RADIUS = 15;
@@ -51,7 +53,6 @@ let MotorcycleSplineMoveComponent = class MotorcycleSplineMoveComponent extends 
     this.MoveDelta = Vector_1.Vector.Create();
     this.AutopilotBrakingInternal = false;
     this.AutopilotSprintInternal = false;
-    this.IsForward = true;
     this.IsDebug = false;
   }
   get AutopilotBraking() {
@@ -112,14 +113,14 @@ let MotorcycleSplineMoveComponent = class MotorcycleSplineMoveComponent extends 
   CalAdjustRotation(t, i) {
     var s = this.ActorComp.ActorForwardProxy;
     let h = this.CurrentSplineMoveParams.PredictDist;
-    if (!this.IsForward) {
+    if (!this.IsPositiveMoving) {
       h *= -1;
     }
     var e = this.CurrentSplineMoveParams.Spline;
     var o = e.GetDistanceAlongSplineAtSplineInputKey(this.SplineTimeKey);
     this.TmpVector.FromUeVector(e.D_GetLocationAtDistanceAlongSpline(o + h, 1));
     this.TmpVector.SubtractionEqual(this.ActorComp.ActorLocationProxy);
-    var e = this.CharActorComp?.MoveComp;
+    var e = this.ActorComp?.VehicleMoveComp;
     if (e) {
       MathUtils_1.MathUtils.LookRotationUpFirst(this.TmpVector, e.GravityUp, this.TmpQuat);
     } else {
@@ -175,7 +176,7 @@ let MotorcycleSplineMoveComponent = class MotorcycleSplineMoveComponent extends 
     var s;
     if (this.CurrentSplineMoveParams) {
       if (this.CurrentSplineMoveParams.AutopilotRoute) {
-        if (this.uKm()) {
+        if (this.DYm()) {
           this.KSm(0, 0, true, ROAD_BLOCK_RIGHT_OFFSET, ROAD_BLOCK_NEW_PREDICT_DIST);
         } else {
           this.KSm(0, 0, true);
@@ -192,7 +193,7 @@ let MotorcycleSplineMoveComponent = class MotorcycleSplineMoveComponent extends 
             this.TmpVector.MultiplyEqual(-1);
           }
         }
-        if (t = this.CharActorComp?.MoveComp) {
+        if (t = this.ActorComp?.VehicleMoveComp) {
           MathUtils_1.MathUtils.LookRotationUpFirst(this.TmpVector, t.GravityUp, this.TmpQuat);
         } else {
           MathUtils_1.MathUtils.LookRotationUpFirst(this.TmpVector, Vector_1.Vector.UpVectorProxy, this.TmpQuat);
@@ -210,7 +211,7 @@ let MotorcycleSplineMoveComponent = class MotorcycleSplineMoveComponent extends 
   }
   KSm(t, i, s = false, h = 0, e = 0) {
     let o = e > 0 ? e : this.CurrentSplineMoveParams.PredictDist;
-    if (!this.IsForward) {
+    if (!this.IsPositiveMoving) {
       o *= -1;
     }
     var e = this.CurrentSplineMoveParams.Spline;
@@ -246,7 +247,7 @@ let MotorcycleSplineMoveComponent = class MotorcycleSplineMoveComponent extends 
       } else {
         this.AutopilotBraking = false;
       }
-      this.AutopilotSprint = !this.AutopilotBraking && this.CurrentSplineMoveParams.AutoSprint && MathUtils_1.MathUtils.IsNearlyZero(h) && this.TagComp.HasTag(886886086);
+      this.AutopilotSprint = !this.AutopilotBraking && this.CurrentSplineMoveParams.AutoSprint && MathUtils_1.MathUtils.IsNearlyZero(h) && this.TagComp.HasTag(1909821484);
     } else {
       this.AutopilotBraking = false;
       this.AutopilotSprint = false;
@@ -259,14 +260,14 @@ let MotorcycleSplineMoveComponent = class MotorcycleSplineMoveComponent extends 
     var o;
     var r = s.GetNumberOfSplinePoints() - 1;
     if (this.LastTimeKey === BaseSplineMoveComponent_1.INVALID_TIME_KEY || r < 5) {
-      h = s.D_FindInputKeyClosestToWorldLocationInGravity(this.ActorComp.ActorLocationProxy.ToUeVector(), this.ActorComp.ActorGravityDirectProxy.ToUeVectorOld(), this.CurrentSplineMoveParams.LayerVerticalLimit);
+      h = this.CurrentSplineMoveParams.UseSplineGravity ? s.D_FindInputKeyClosestToWorldLocation(this.ActorComp.ActorLocationProxy.ToUeVector()) : s.D_FindInputKeyClosestToWorldLocationInGravity(this.ActorComp.ActorLocationProxy.ToUeVector(), this.ActorComp.ActorGravityDirectProxy.ToUeVectorOld(), this.CurrentSplineMoveParams.LayerVerticalLimit);
       if (this.IsDebug && Log_1.Log.CheckWarn()) {
         Log_1.Log.Warn("Test", 6, "MotorSplineMove Start", ["ActorLocation", this.ActorComp?.ActorLocationProxy], ["timeKey", h]);
       }
     } else {
       let t = this.LastTimeKey;
       let i = this.LastTimeKey;
-      i = this.IsForward ? (t = this.LastTimeKey - 1, this.LastTimeKey + 3) : (t = this.LastTimeKey - 3, this.LastTimeKey + 1);
+      i = this.IsPositiveMoving ? (t = this.LastTimeKey - 1, this.LastTimeKey + 3) : (t = this.LastTimeKey - 3, this.LastTimeKey + 1);
       h = s.IsClosedLoop() ? t < 0 ? (o = s.D_FindInputKeyClosestToWorldLocationInRange(this.ActorComp.ActorLocation, t + r, r), e = s.D_FindInputKeyClosestToWorldLocationInRange(this.ActorComp.ActorLocation, 0, i), this.TmpVector.FromUeVector(s.D_GetLocationAtSplineInputKey(o, 1)), this.TmpVector1.FromUeVector(s.D_GetLocationAtSplineInputKey(e, 1)), Vector_1.Vector.DistSquared(this.ActorComp.ActorLocationProxy, this.TmpVector) < Vector_1.Vector.DistSquared(this.ActorComp.ActorLocationProxy, this.TmpVector1) ? o : e) : i > r ? (o = s.D_FindInputKeyClosestToWorldLocationInRange(this.ActorComp.ActorLocation, 0, i - r), e = s.D_FindInputKeyClosestToWorldLocationInRange(this.ActorComp.ActorLocation, t, r), this.TmpVector.FromUeVector(s.D_GetLocationAtSplineInputKey(o, 1)), this.TmpVector1.FromUeVector(s.D_GetLocationAtSplineInputKey(e, 1)), Vector_1.Vector.DistSquared(this.ActorComp.ActorLocationProxy, this.TmpVector) < Vector_1.Vector.DistSquared(this.ActorComp.ActorLocationProxy, this.TmpVector1) ? o : e) : s.D_FindInputKeyClosestToWorldLocationInRange(this.ActorComp.ActorLocation, t, i) : s.D_FindInputKeyClosestToWorldLocationInRange(this.ActorComp.ActorLocation, t, i);
       if (this.IsDebug && Log_1.Log.CheckWarn()) {
         Log_1.Log.Warn("Test", 6, "MotorSplineMove Update", ["LastSplineLocation", this.LastSplineLocation], ["LastTimeKey", this.LastTimeKey], ["ActorLocation", this.ActorComp?.ActorLocationProxy], ["timeKey", h], ["Points", s.GetNumberOfSplinePoints()]);
@@ -275,12 +276,12 @@ let MotorcycleSplineMoveComponent = class MotorcycleSplineMoveComponent extends 
     this.SplineTimeKey = h;
     this.SplineLocation.FromUeVector(s.D_GetLocationAtSplineInputKey(h, 1));
     this.SplineDirection.DeepCopy(s.GetDirectionAtSplineInputKey(h, 1));
-    if (this.CurrentSplineMoveParams.OnlyForward || this.CurrentSplineMoveParams.PositiveMove) {
-      this.IsForward = true;
+    if (this.CurrentSplineMoveParams.OnlyForward || this.CurrentSplineMoveParams.OnlyPositiveMove) {
+      this.IsPositiveMoving = true;
     } else {
       r = this.ActorComp.ActorForwardProxy;
       o = this.SplineDirection.DotProduct(r);
-      this.IsForward = o >= 0;
+      this.IsPositiveMoving = o >= 0;
     }
     if (this.IsPlannerMove()) {
       GravityUtils_1.GravityUtils.ConvertToPlanarVectorForActor(this.ActorComp, this.SplineDirection);
@@ -291,9 +292,9 @@ let MotorcycleSplineMoveComponent = class MotorcycleSplineMoveComponent extends 
     MathUtils_1.MathUtils.LookRotationUpFirst(this.SplineDirection, this.TmpVector, this.SplineQuat);
     this.CurrentSplineMoveParams?.UpdateParamsByTimeKey(this.SplineTimeKey);
   }
-  uKm(t = ROAD_BLOCK_DETECT_DIS) {
+  DYm(t = ROAD_BLOCK_DETECT_DIS) {
     let i = t;
-    if (!this.IsForward) {
+    if (!this.IsPositiveMoving) {
       i *= -1;
     }
     var s = this.CurrentSplineMoveParams.Spline;
@@ -318,14 +319,14 @@ let MotorcycleSplineMoveComponent = class MotorcycleSplineMoveComponent extends 
     var r = this.ActorComp.Actor.CapsuleComponent;
     var o = Math.acos(this.TmpVector1.DotProduct(this.SplineDirection) / t) * MathUtils_1.MathUtils.RadToDeg;
     var _ = Math.max(1, Math.ceil(o / ROAD_BLOCK_DETECT_MAX_ANGLE));
-    var a = i / _;
+    var n = i / _;
     this.TmpVector.DeepCopy(this.SplineLocation);
-    var n = this.ActorComp?.MoveComp?.GravityDirect ?? Vector_1.Vector.DownVectorProxy;
-    GravityUtils_1.GravityUtils.AddZnInGravity(n, this.TmpVector, ROAD_BLOCK_DETECT_HEIGHT);
+    var a = this.ActorComp?.MoveComp?.GravityDirect ?? Vector_1.Vector.DownVectorProxy;
+    GravityUtils_1.GravityUtils.AddZnInGravity(a, this.TmpVector, ROAD_BLOCK_DETECT_HEIGHT);
     let l = false;
     for (let t = 0; t < _; ++t) {
-      this.TmpVector1.DeepCopy(s.D_GetLocationAtDistanceAlongSpline(h + (t + 1) * a, 1));
-      GravityUtils_1.GravityUtils.AddZnInGravity(n, this.TmpVector1, ROAD_BLOCK_DETECT_HEIGHT);
+      this.TmpVector1.DeepCopy(s.D_GetLocationAtDistanceAlongSpline(h + (t + 1) * n, 1));
+      GravityUtils_1.GravityUtils.AddZnInGravity(a, this.TmpVector1, ROAD_BLOCK_DETECT_HEIGHT);
       TraceElementCommon_1.TraceElementCommon.SetStartLocation(e, this.TmpVector);
       TraceElementCommon_1.TraceElementCommon.SetEndLocation(e, this.TmpVector1);
       if (TraceElementCommon_1.TraceElementCommon.ShapeTrace(r, e, PROFILE_KEY, PROFILE_KEY)) {
@@ -342,18 +343,31 @@ let MotorcycleSplineMoveComponent = class MotorcycleSplineMoveComponent extends 
     }
     return l;
   }
+  OnSelectNextSplineMoveBegin() {
+    this.AutopilotBraking = false;
+    this.AutopilotSprint = false;
+    super.OnSelectNextSplineMoveBegin();
+  }
   OnSelectNextSplineMoveEnd() {
     super.OnSelectNextSplineMoveEnd();
     this.Entity.GetComponent(264)?.ForceRefreshBraking();
   }
-  EndSplineMove(t) {
-    super.EndSplineMove(t);
-    this.AutopilotBraking = false;
-    this.AutopilotSprint = false;
-  }
   ForceClearUpdate() {
     this.LastTimeKey = BaseSplineMoveComponent_1.INVALID_TIME_KEY;
   }
+  UpdateSplineGravity(t) {
+    super.UpdateSplineGravity(t);
+    if (this.IsDebug && this.CurrentSplineMoveParams?.UseSplineGravity) {
+      this.TmpVector.DeepCopy(this.ActorComp.VehicleMoveComp.GravityUp);
+      this.TmpVector.MultiplyEqual(300);
+      this.TmpVector.AdditionEqual(this.ActorComp.ActorLocationProxy);
+      UE.KismetSystemLibrary.D_DrawDebugArrow(this.ActorComp.Owner, this.ActorComp.ActorLocation, this.TmpVector.ToUeVector(), 5, yellowColor, undefined, 10);
+      this.TmpVector.FromUeVector(this.ActorComp.VehicleMoveComp.VehicleMovement.GetMotorNormal());
+      this.TmpVector.MultiplyEqual(300);
+      this.TmpVector.AdditionEqual(this.ActorComp.ActorLocationProxy);
+      UE.KismetSystemLibrary.D_DrawDebugArrow(this.ActorComp.Owner, this.ActorComp.ActorLocation, this.TmpVector.ToUeVector(), 5, blueColor, undefined, 10);
+    }
+  }
 };
-MotorcycleSplineMoveComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(119)], MotorcycleSplineMoveComponent);
+MotorcycleSplineMoveComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(121)], MotorcycleSplineMoveComponent);
 exports.MotorcycleSplineMoveComponent = MotorcycleSplineMoveComponent; //# sourceMappingURL=MotorcycleSplineMoveComponent.js.map

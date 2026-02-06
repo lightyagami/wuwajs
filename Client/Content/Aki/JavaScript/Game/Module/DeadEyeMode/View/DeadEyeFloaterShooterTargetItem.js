@@ -19,13 +19,13 @@ class DeadEyeFloaterShooterTargetItem extends CommonMarkItem_1.CommonMarkItem {
     this.AimRange = t;
     this.TargetEntity = s;
     this.Ocm = false;
-    this.D5f = undefined;
+    this.MQf = undefined;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem]];
   }
   OnStart() {
-    this.D5f = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
+    this.MQf = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
     this.UpdatePositionAndRotation();
     this.GetItem(0).SetUIActive(false);
     this.Ocm = false;
@@ -34,7 +34,7 @@ class DeadEyeFloaterShooterTargetItem extends CommonMarkItem_1.CommonMarkItem {
     var e;
     if (this.IsLocked) {
       e = new CustomPromise_1.CustomPromise();
-      await this.D5f?.PlaySequenceAsync("Close", e);
+      await this.MQf?.PlaySequenceAsync("Close", e);
     }
   }
   OnTick(e) {
@@ -49,7 +49,7 @@ class DeadEyeFloaterShooterTargetItem extends CommonMarkItem_1.CommonMarkItem {
       this.RootItem.SetAnchorOffset(t.ToUeVector2D());
       if (!this.IsLocked) {
         t = this.RootItem.GetAnchorOffset();
-        if (this.KKm(t)) {
+        if (this.gzm(t)) {
           this.m7c();
           this.Ocm = true;
         }
@@ -59,9 +59,9 @@ class DeadEyeFloaterShooterTargetItem extends CommonMarkItem_1.CommonMarkItem {
   }
   async PlayClickSequence() {
     var e = new CustomPromise_1.CustomPromise();
-    await this.D5f?.PlaySequenceAsync("Click", e);
+    await this.MQf?.PlaySequenceAsync("Click", e);
   }
-  KKm(e) {
+  gzm(e) {
     var t = this.AimRange.X * 0.5;
     var s = this.AimRange.Y * 0.5;
     return e.X >= -t && e.X <= t && e.Y >= -s && e.Y <= s;
@@ -72,7 +72,7 @@ class DeadEyeFloaterShooterTargetItem extends CommonMarkItem_1.CommonMarkItem {
         ModelManager_1.ModelManager.DeadEyeModeModel.RecordLockedTarget(this.TargetEntity);
       }
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.DeadEyeModeTargetPointLocked);
-      this.D5f?.PlayLevelSequenceByName("Start");
+      this.MQf?.PlayLevelSequenceByName("Start");
     }
   }
   get IsLocked() {

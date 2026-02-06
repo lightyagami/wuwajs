@@ -82,16 +82,16 @@ class SurvivorsActivityController extends ActivityControllerBase_1.ActivityContr
     return new SurvivorsActivityData_1.SurvivorsActivityData();
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(15054, this.Skd);
-    Net_1.Net.Register(17702, this.lOd);
-    Net_1.Net.Register(18077, this._Od);
-    Net_1.Net.Register(21358, this.hVd);
+    Net_1.Net.Register(28656, this.Skd);
+    Net_1.Net.Register(20679, this.lOd);
+    Net_1.Net.Register(17419, this._Od);
+    Net_1.Net.Register(27625, this.hVd);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(15054);
-    Net_1.Net.UnRegister(17702);
-    Net_1.Net.UnRegister(18077);
-    Net_1.Net.UnRegister(21358);
+    Net_1.Net.UnRegister(28656);
+    Net_1.Net.UnRegister(20679);
+    Net_1.Net.UnRegister(17419);
+    Net_1.Net.UnRegister(27625);
   }
   OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnCommonItemCountAnyChange, this.qdi);
@@ -104,10 +104,10 @@ class SurvivorsActivityController extends ActivityControllerBase_1.ActivityContr
   static RequestGetRewardTask(o) {
     var e = new Protocol_1.Aki.Protocol.uDd();
     e.Pb_ = o;
-    Net_1.Net.Call(16928, e, e => {
+    Net_1.Net.Call(17201, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18164);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19603);
         } else {
           var r = ModelManager_1.ModelManager.SurvivorsRogueModel.ActivityData;
           if (r) {
@@ -123,10 +123,10 @@ class SurvivorsActivityController extends ActivityControllerBase_1.ActivityContr
   static RequestGetRewardScore(o) {
     var e = new Protocol_1.Aki.Protocol.dDd();
     e.Pb_ = o;
-    Net_1.Net.Call(24896, e, e => {
+    Net_1.Net.Call(21820, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22917);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25833);
         } else {
           var r = ModelManager_1.ModelManager.SurvivorsRogueModel.ActivityData;
           if (r) {
@@ -142,11 +142,11 @@ class SurvivorsActivityController extends ActivityControllerBase_1.ActivityContr
   static SurvivorsTalentLevelUpRequest(t, o) {
     var e = new Protocol_1.Aki.Protocol.gDd();
     e.r5n = t;
-    Net_1.Net.Call(29548, e, e => {
+    Net_1.Net.Call(15208, e, e => {
       var r;
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22223);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23477);
         } else if (r = ModelManager_1.ModelManager.SurvivorsRogueModel.ActivityData) {
           r.RefreshTalentTreeNode(t, e.F6n);
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SurvivorsRogueTalentNodeUpdate, t);

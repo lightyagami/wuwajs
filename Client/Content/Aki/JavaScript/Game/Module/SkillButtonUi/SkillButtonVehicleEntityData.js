@@ -37,6 +37,7 @@ class SkillButtonVehicleEntityData {
     this.JSo = new Set();
     this.zSo = new Set();
     this.ZSo = new Set();
+    this.y5g = new Set();
     this.tyo = new Set();
     this.pdt = new Set();
     this.oyo = false;
@@ -63,12 +64,16 @@ class SkillButtonVehicleEntityData {
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSkillButtonDynamicEffectRefresh, e.GetButtonType());
       }
       this.ZSo.clear();
-      for (const o of this.tyo) {
-        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSkillButtonCdRefresh, o.GetButtonType());
+      for (const o of this.y5g) {
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSkillButtonCustomRefresh, o.GetButtonType(), o.GetCustomHdMarkFrom());
+      }
+      this.y5g.clear();
+      for (const n of this.tyo) {
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSkillButtonCdRefresh, n.GetButtonType());
       }
       this.tyo.clear();
-      for (const n of this.pdt) {
-        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSkillButtonAttributeRefresh, n.GetButtonType());
+      for (const r of this.pdt) {
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSkillButtonAttributeRefresh, r.GetButtonType());
       }
       this.pdt.clear();
       if (this.oyo) {
@@ -211,6 +216,11 @@ class SkillButtonVehicleEntityData {
               this.$So.add(h);
               this.VXe();
             }
+            if (h.CustomHandle.CustomHdModifyMark) {
+              h.CustomHandle.CustomHdModifyMark = false;
+              this.y5g.add(h);
+              this.VXe();
+            }
             h.CustomHandle.ClearModifyMark();
           }
         }
@@ -230,9 +240,9 @@ class SkillButtonVehicleEntityData {
   Init(t) {
     var t = (this.EntityHandle = t).Entity;
     var i = t.GetComponent(0).GetTemplateId();
-    this.AttributeComponent = t.GetComponent(181);
-    this.TagComponent = t.GetComponent(215);
-    this.SkillComponent = t.GetComponent(41);
+    this.AttributeComponent = t.GetComponent(183);
+    this.TagComponent = t.GetComponent(217);
+    this.SkillComponent = t.GetComponent(43);
     t = ConfigManager_1.ConfigManager.SkillButtonConfig.GetAllSkillVehicleButtonConfig(i);
     if (this.SkillButtonConfigList = t) {
       for (const e of t) {
@@ -372,6 +382,7 @@ class SkillButtonVehicleEntityData {
       }
       this.wXe = undefined;
       this.$So.clear();
+      this.y5g.clear();
       this.YSo.clear();
       this.JSo.clear();
       this.zSo.clear();

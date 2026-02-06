@@ -23,7 +23,7 @@ class LevelEventSpawnBlueprintActor extends LevelGeneralBase_1.LevelEventBase {
           Log_1.Log.Error("LevelEvent", 72, "[LevelEventSpawnBlueprintActor] 无效参数", ["inParams", e], ["context", t]);
         }
       } else if (e.SpawnBlueprintParam.Type === 0) {
-        LevelEventSpawnBlueprintActor.FMm(e.SpawnBlueprintParam);
+        LevelEventSpawnBlueprintActor.aMm(e.SpawnBlueprintParam);
       }
     }
   }
@@ -34,7 +34,7 @@ class LevelEventSpawnBlueprintActor extends LevelGeneralBase_1.LevelEventBase {
     });
     await t.Promise;
   }
-  static NMm(t, r) {
+  static hMm(t, r) {
     if (t?.IsValid()) {
       t.ResetInternalState();
       let e = undefined;
@@ -48,7 +48,7 @@ class LevelEventSpawnBlueprintActor extends LevelGeneralBase_1.LevelEventBase {
       }
     }
   }
-  static async FMm(t) {
+  static async aMm(t) {
     const r = t.TrackTargetWhileRotateBlueprintType ?? "BP_KuroTrackTargetWhileRotate_C";
     const a = t.DestructibleStoneBlueprintType ?? "BP_KuroDestructibleActor_Stone_C";
     let o = undefined;
@@ -115,7 +115,7 @@ class LevelEventSpawnBlueprintActor extends LevelGeneralBase_1.LevelEventBase {
         case 2:
           e = o.GetComponentByClass(UE.KuroFauxPhysicsConeRotateComponent.StaticClass());
       }
-      this.NMm(e, t.RotateParam);
+      this.hMm(e, t.RotateParam);
       if (e?.IsValid()) {
         i.K2_AttachToComponent(e, undefined, 2, 2, 2, false);
       }

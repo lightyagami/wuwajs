@@ -95,7 +95,7 @@ class TreeExpressAssistant extends ControllerAssistantBase_1.ControllerAssistant
         case IQuest_1.EQuestScheduleType.EntityHP:
           var i;
           var s = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(a.EntityId);
-          if (s &&= s.Entity.GetComponent(182)) {
+          if (s &&= s.Entity.GetComponent(184)) {
             i = s.GetCurrentValue(Protocol_1.Aki.Protocol.Vks.Proto_Life);
             s = s.GetCurrentValue(Protocol_1.Aki.Protocol.Vks.l5n);
             r = Math.floor(i / s * ONE_HUNDRED);
@@ -108,97 +108,107 @@ class TreeExpressAssistant extends ControllerAssistantBase_1.ControllerAssistant
     let i = PublicUtil_1.PublicUtil.GetConfigTextByKey(r);
     var o = e;
     if (o) {
-      switch (o.Type) {
-        case IQuest_1.EQuestScheduleType.ChildQuestCompleted:
-          var n = o;
-          i = n.TitlePreState && a ? this.GetNodeTrackText(t, n.ChildQuestId, n.TitlePreState?.TidPreStateTitle, n.Vars, n.OnlyShowWhileRunning) : this.GetNodeTrackText(t, n.ChildQuestId, r, n.Vars, n.OnlyShowWhileRunning);
-          break;
-        case IQuest_1.EQuestScheduleType.TimeLeft:
-          i = PublicUtil_1.PublicUtil.GetConfigTextByKey(r);
-          if (o.ShowTime) {
+      const u = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(t);
+      if (u?.BindingExpressionHolder?.IsValid() !== true) {
+        switch (o.Type) {
+          case IQuest_1.EQuestScheduleType.ChildQuestCompleted:
+            var n = o;
+            i = n.TitlePreState && a ? this.GetNodeTrackText(t, n.ChildQuestId, n.TitlePreState?.TidPreStateTitle, n.Vars, n.OnlyShowWhileRunning) : this.GetNodeTrackText(t, n.ChildQuestId, r, n.Vars, n.OnlyShowWhileRunning);
+            break;
+          case IQuest_1.EQuestScheduleType.TimeLeft:
+            i = PublicUtil_1.PublicUtil.GetConfigTextByKey(r);
+            if (o.ShowTime) {
+              n = this.GetQCount(t, e);
+              i = i.replace("{q_count}", "" + n);
+            }
+            break;
+          case IQuest_1.EQuestScheduleType.EntityHP:
+            i = PublicUtil_1.PublicUtil.GetConfigTextByKey(r);
             n = this.GetQCount(t, e);
-            i = i.replace("{q_count}", "" + n);
-          }
-          break;
-        case IQuest_1.EQuestScheduleType.EntityHP:
-          i = PublicUtil_1.PublicUtil.GetConfigTextByKey(r);
-          n = this.GetQCount(t, e);
-          i = i.replace("{q_count}", n + "%");
-          break;
-        case IQuest_1.EQuestScheduleType.ChildQuestCompletedCount:
-          {
-            var l = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(t);
-            if (!l) {
+            i = i.replace("{q_count}", n + "%");
+            break;
+          case IQuest_1.EQuestScheduleType.ChildQuestCompletedCount:
+            {
+              const u = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(t);
+              if (!u) {
+                break;
+              }
+              var n = PublicUtil_1.PublicUtil.GetConfigTextByKey(r);
+              var l = o.AssociatedChildQuestIds;
+              var c = l.length;
+              let e = 0;
+              for (const v of l) {
+                if (u.GetNode(v)?.IsSuccess) {
+                  e++;
+                }
+              }
+              i = `${n}(${e}/${c})`;
               break;
             }
-            var n = PublicUtil_1.PublicUtil.GetConfigTextByKey(r);
-            var c = o.AssociatedChildQuestIds;
-            var _ = c.length;
-            let e = 0;
-            for (const M of c) {
-              if (l.GetNode(M)?.IsSuccess) {
-                e++;
-              }
-            }
-            i = `${n}(${e}/${_})`;
-            break;
-          }
-        case IQuest_1.EQuestScheduleType.Score:
-          i = PublicUtil_1.PublicUtil.GetConfigTextByKey(r);
-          c = this.Okn(ModelManager_1.ModelManager.ScoreModel.GetCurrentScore()?.toString());
-          i = (i = i.replace("{currentScore}", "" + c)).replace("{targetScore}", "" + ModelManager_1.ModelManager.ScoreModel.GetTargetScore());
-          break;
-        case IQuest_1.EQuestScheduleType.TowerChallengeTitle:
-          if (ModelManager_1.ModelManager.TowerModel.CheckInTower()) {
-            i = ModelManager_1.ModelManager.TowerModel.GetCurrentFloorName();
-          }
-          break;
-        case IQuest_1.EQuestScheduleType.Var:
-          n = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(t);
-          if (n) {
-            i = this.rr1(r, o.Var, o.ShowAsWordArt !== undefined, LevelGeneralContextDefine_1.GeneralLogicTreeContext.Create(n.BtType, n.TreeIncId, n.TreeConfigId));
-          }
-          break;
-        case IQuest_1.EQuestScheduleType.MultiVar:
-        case IQuest_1.EQuestScheduleType.Condition:
-          var u = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(t);
-          if (u) {
-            _ = o.Vars;
+          case IQuest_1.EQuestScheduleType.Score:
             i = PublicUtil_1.PublicUtil.GetConfigTextByKey(r);
-            if (_ && _.length !== 0) {
-              var v = o?.ShowAsWordArt;
-              for (const h of _) {
-                i = this.p2_(i, h, v !== undefined, LevelGeneralContextDefine_1.GeneralLogicTreeContext.Create(u.BtType, u.TreeIncId, u.TreeConfigId));
-              }
+            l = this.Okn(ModelManager_1.ModelManager.ScoreModel.GetCurrentScore()?.toString());
+            i = (i = i.replace("{currentScore}", "" + l)).replace("{targetScore}", "" + ModelManager_1.ModelManager.ScoreModel.GetTargetScore());
+            break;
+          case IQuest_1.EQuestScheduleType.TowerChallengeTitle:
+            if (ModelManager_1.ModelManager.TowerModel.CheckInTower()) {
+              i = ModelManager_1.ModelManager.TowerModel.GetCurrentFloorName();
             }
-          }
-          break;
-        case IQuest_1.EQuestScheduleType.ProgressValue:
-          var c = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(o.TargetProgressEntity);
-          if (c) {
-            n = c.Entity.GetComponent(138);
-            i = n ? (_ = n.GetProgressData()?.CurrentValue ?? 0, n = (c = n.GetProgressData()?.MaxValue ?? 0) === 0 ? 0 : Math.round(_ / c * 100), c = Math.round(_), (i = (i = PublicUtil_1.PublicUtil.GetConfigTextByKey(r)).replace("{percent}", n + "%")).replace("{real_progress}", "" + c)) : "";
-          } else {
-            i = "";
-          }
-          break;
-        case IQuest_1.EQuestScheduleType.DistanceValue:
-          var _ = GeneralLogicTreeUtil_1.GeneralLogicTreeUtil.GetPlayerLocation();
-          if (_) {
-            n = Vector_1.Vector.Create(o.Pos.X ?? 0, o.Pos.Y ?? 0, o.Pos.Z ?? 0);
-            c = ConfigManager_1.ConfigManager.TextConfig.GetTextById("Meter");
-            _ = Math.round(Vector_1.Vector.Dist2D(_, n) * 0.01);
-            n = StringUtils_1.StringUtils.Format(c, _.toString());
-            i += n;
-          }
-      }
-      for (const d of s ?? []) {
-        i = i.replace(`{${d.PlaceHolderName}}`, this.igf(d.BindingProgressType));
+            break;
+          case IQuest_1.EQuestScheduleType.Var:
+            {
+              const u = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(t);
+              if (!u) {
+                break;
+              }
+              i = this.rr1(r, o.Var, o.ShowAsWordArt !== undefined, LevelGeneralContextDefine_1.GeneralLogicTreeContext.Create(u.BtType, u.TreeIncId, u.TreeConfigId));
+              break;
+            }
+          case IQuest_1.EQuestScheduleType.MultiVar:
+          case IQuest_1.EQuestScheduleType.Condition:
+            {
+              const u = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(t);
+              if (!u) {
+                break;
+              }
+              n = o.Vars;
+              i = PublicUtil_1.PublicUtil.GetConfigTextByKey(r);
+              if (!n || n.length === 0) {
+                break;
+              }
+              var _ = o?.ShowAsWordArt;
+              for (const M of n) {
+                i = this.p2_(i, M, _ !== undefined, LevelGeneralContextDefine_1.GeneralLogicTreeContext.Create(u.BtType, u.TreeIncId, u.TreeConfigId));
+              }
+              break;
+            }
+          case IQuest_1.EQuestScheduleType.ProgressValue:
+            var c = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(o.TargetProgressEntity);
+            if (c) {
+              l = c.Entity.GetComponent(140);
+              i = l ? (n = l.GetProgressData()?.CurrentValue ?? 0, l = (c = l.GetProgressData()?.MaxValue ?? 0) === 0 ? 0 : Math.round(n / c * 100), c = Math.round(n), (i = (i = PublicUtil_1.PublicUtil.GetConfigTextByKey(r)).replace("{percent}", l + "%")).replace("{real_progress}", "" + c)) : "";
+            } else {
+              i = "";
+            }
+            break;
+          case IQuest_1.EQuestScheduleType.DistanceValue:
+            n = GeneralLogicTreeUtil_1.GeneralLogicTreeUtil.GetPlayerLocation();
+            if (n) {
+              l = Vector_1.Vector.Create(o.Pos.X ?? 0, o.Pos.Y ?? 0, o.Pos.Z ?? 0);
+              c = ConfigManager_1.ConfigManager.TextConfig.GetTextById("Meter");
+              n = Math.round(Vector_1.Vector.Dist2D(n, l) * 0.01);
+              l = StringUtils_1.StringUtils.Format(c, n.toString());
+              i += l;
+            }
+        }
+        for (const h of s ?? []) {
+          i = i.replace(`{${h.PlaceHolderName}}`, this.TCf(h.BindingProgressType));
+        }
       }
     }
     return i;
   }
-  static igf(e) {
+  static TCf(e) {
     if (e.Type !== IQuest_1.EBindingProgressType.PlayerHavingItemCount) {
       return "";
     } else {
@@ -300,7 +310,13 @@ class TreeExpressAssistant extends ControllerAssistantBase_1.ControllerAssistant
       case Protocol_1.Aki.Protocol.hps.Proto_BtTypeInst:
       case Protocol_1.Aki.Protocol.hps.Proto_BtTypeLevelPlay:
         if (r) {
-          this._Yt(t);
+          if (ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(t)?.GetBlackBoard()?.IsTrackBoundToParent) {
+            this.TryReleaseExpressionOccupation(t);
+          } else {
+            this._Yt(t);
+          }
+        } else {
+          this.TryReleaseExpressionOccupation(t);
         }
     }
   }

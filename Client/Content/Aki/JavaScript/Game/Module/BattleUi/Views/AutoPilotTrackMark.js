@@ -36,7 +36,7 @@ class AutoPilotTrackMark extends UiPanelBase_1.UiPanelBase {
     this.xCt = undefined;
     this.DirectionComp = undefined;
     this.xst = undefined;
-    this.G6m = false;
+    this.N7m = false;
     if (GlobalData_1.GlobalData.World) {
       t = UiLayer_1.UiLayer.UiRootItem;
       this.y$e = Math.min(TrackDefine_1.MAX_A, ((t?.GetWidth() ?? 0) - TrackDefine_1.MARGIN_A) / 2);
@@ -65,12 +65,12 @@ class AutoPilotTrackMark extends UiPanelBase_1.UiPanelBase {
   }
   OnUiHide() {}
   ehi() {
-    if (this.G6m) {
+    if (this.N7m) {
       this.TrySetSpriteByPath(this.xst, this.GetSprite(0), false);
-      this.G6m = false;
+      this.N7m = false;
     }
   }
-  F6m() {
+  V7m() {
     var t;
     var i = ModelManager_1.ModelManager.AutoPilotModel?.GetFindPathResult();
     if (i) {
@@ -94,7 +94,7 @@ class AutoPilotTrackMark extends UiPanelBase_1.UiPanelBase {
       if (this.tgt()) {
         this.hj1(true);
         this.UpdatePositionAndRotation(t);
-        this.F6m();
+        this.V7m();
         this.ehi();
       } else {
         this.hj1(false);
@@ -136,7 +136,7 @@ class AutoPilotTrackMark extends UiPanelBase_1.UiPanelBase {
   }
   tgt() {
     var t = ModelManager_1.ModelManager.AutoPilotModel?.GetFindPathResult();
-    return !!t && t.MapId === ModelManager_1.ModelManager.MapModel?.CurrentWorldMapConfigId && !!t.GetTrackingPoint() && !(t = t.GetIsShowStartPoint() ? AutoPilotDefine_1.STARTPOPINT_ICONPATH : AutoPilotDefine_1.ENDPOINT_ICONPATH, this.xst !== t && (this.xst = t, this.G6m = true), 0);
+    return !!t && t.MapId === ModelManager_1.ModelManager.MapModel?.CurrentWorldMapConfigId && !!t.GetTrackingPoint() && !(t = t.GetIsShowStartPoint() ? AutoPilotDefine_1.STARTPOPINT_ICONPATH : AutoPilotDefine_1.ENDPOINT_ICONPATH, this.xst !== t && (this.xst = t, this.N7m = true), 0);
   }
   ClampToEllipse(t, i) {
     var e = t.X;

@@ -15,7 +15,7 @@ class SpecialEnergyBarMotorcycle extends SpecialEnergyBarBase_1.SpecialEnergyBar
     this.Rdt = undefined;
     this.DP_ = false;
     this.q7o = 100;
-    this.ELf = t => {
+    this.xBf = t => {
       this.PercentMachine.SetTargetPercent(Math.min(1, t / this.q7o));
       this.RefreshBarPercent();
     };
@@ -26,7 +26,7 @@ class SpecialEnergyBarMotorcycle extends SpecialEnergyBarBase_1.SpecialEnergyBar
   InitMotorcycleData(t, e) {
     this.sDe = t;
     this.Config = e;
-    this.TagComponent = t.Entity.GetComponent(215);
+    this.TagComponent = t.Entity.GetComponent(217);
     this.OnInitData();
     this.PercentMachine.Init(0);
     this.InitKeyEnableTag();
@@ -52,7 +52,7 @@ class SpecialEnergyBarMotorcycle extends SpecialEnergyBarBase_1.SpecialEnergyBar
   }
   AddEvents() {
     super.AddEvents();
-    this.ListenForTagCountChanged(countTag, this.ELf);
+    this.ListenForTagCountChanged(countTag, this.xBf);
   }
   Tick(t) {
     super.Tick(t);
@@ -65,9 +65,9 @@ class SpecialEnergyBarMotorcycle extends SpecialEnergyBarBase_1.SpecialEnergyBar
     var e = this.PercentMachine.GetCurPercent();
     var s = this.GetKeyEnable();
     this.Rdt?.UpdatePercent(e, s, t);
-    this.ILf(s, t);
+    this.BBf(s, t);
   }
-  ILf(t, e = false) {
+  BBf(t, e = false) {
     if (this.DP_ !== t || !!e) {
       this.DP_ = t;
       this.GetItem(2).SetUIActive(t);

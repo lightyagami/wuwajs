@@ -25,6 +25,8 @@ class PhantomBattleData extends PhantomDataBase_1.PhantomDataBase {
     this.FuncValue = e.Vws ?? 0;
     this.SetSkinId(e.Z7n ?? 0);
     this.SetIncId(this.wTt);
+    this.UnAckSubProp = e.DFg ?? [];
+    this.LockSubPropIndices = e.bSg ?? [];
   }
   GetUniqueId() {
     return this.wTt;

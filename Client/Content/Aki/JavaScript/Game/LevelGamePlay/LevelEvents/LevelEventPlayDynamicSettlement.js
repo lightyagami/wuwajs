@@ -112,7 +112,7 @@ class LevelEventPlayDynamicSettlement extends LevelGeneralBase_1.LevelEventBase 
     this.tRe(e);
     ControllerHolder_1.ControllerHolder.DamageUiController.SetDamageTimeScaleEnable(true);
     var e = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint();
-    if (e && (this.wQl !== 0 && (this.aeu = e.GetComponent(21), this.aeu) && (this.vau = this.aeu.AddCue(this.wQl)), e = e.GetComponent(65))) {
+    if (e && (this.wQl !== 0 && (this.aeu = e.GetComponent(21), this.aeu) && (this.vau = this.aeu.AddCue(this.wQl)), e = e.GetComponent(67))) {
       e.ClearInputCache(0, 0);
     }
     if (this.fK1 === "BattleSoundWave") {
@@ -161,7 +161,7 @@ class LevelEventPlayDynamicSettlement extends LevelGeneralBase_1.LevelEventBase 
   iRe(e, t, i, o, r, n, a) {
     var l;
     var s;
-    if (e?.Valid && (s = e.Entity)?.IsInit && (l = s.GetComponent(131)) && (s = s.GetComponent(1)?.ActorLocationProxy) && Math.abs(s.X - t.X) <= i && Math.abs(s.Y - t.Y) <= i && Math.abs(s.Z - t.Z) <= i) {
+    if (e?.Valid && (s = e.Entity)?.IsInit && (l = s.GetComponent(133)) && (s = s.GetComponent(1)?.ActorLocationProxy) && Math.abs(s.X - t.X) <= i && Math.abs(s.Y - t.Y) <= i && Math.abs(s.Z - t.Z) <= i) {
       s = l.SetTimeScale(o, r, n, a, 5);
       this.$De.set(e, s);
     }

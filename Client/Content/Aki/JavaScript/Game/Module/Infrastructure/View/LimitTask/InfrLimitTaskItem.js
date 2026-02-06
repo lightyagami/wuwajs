@@ -24,13 +24,13 @@ class InfrLimitTaskItem extends GridProxyAbstract_1.GridProxyAbstract {
         SkipTaskManager_1.SkipTaskManager.RunByConfigId(this.Pe.JumpId);
       }
     };
-    this.m4m = () => {
+    this.U5m = () => {
       this.GKc?.();
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIArtText], [1, UE.UIText], [2, UE.UIText], [3, UE.UIScrollViewWithScrollbarComponent], [4, UE.UIItem], [5, UE.UIText], [6, UE.UISprite], [7, UE.UISprite], [8, UE.UIItem], [9, UE.UIButtonComponent], [10, UE.UIButtonComponent]];
-    this.BtnBindInfo = [[9, this.zNd], [10, this.m4m]];
+    this.BtnBindInfo = [[9, this.zNd], [10, this.U5m]];
   }
   OnStart() {
     this.T8e = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(3), this.rOe);

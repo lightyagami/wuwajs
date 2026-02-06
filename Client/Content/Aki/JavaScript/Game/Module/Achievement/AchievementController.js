@@ -8,6 +8,7 @@ exports.AchievementController = undefined;
 const Protocol_1 = require("../../../Core/Define/Net/Protocol");
 const ControllerBase_1 = require("../../../Core/Framework/ControllerBase");
 const Net_1 = require("../../../Core/Net/Net");
+const EventCSharpBridge_1 = require("../../Common/Event/EventCSharpBridge");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
@@ -33,16 +34,16 @@ class AchievementController extends ControllerBase_1.ControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleViewActiveSequenceFinish, this.rbe);
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(26482, AchievementController.nbe);
-    Net_1.Net.Register(21284, AchievementController.sbe);
-    Net_1.Net.Register(19996, AchievementController.abe);
-    Net_1.Net.Register(20469, AchievementController.yth);
+    Net_1.Net.Register(16481, AchievementController.nbe);
+    Net_1.Net.Register(20674, AchievementController.sbe);
+    Net_1.Net.Register(17865, AchievementController.abe);
+    Net_1.Net.Register(26859, AchievementController.yth);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(26482);
-    Net_1.Net.UnRegister(21284);
-    Net_1.Net.UnRegister(19996);
-    Net_1.Net.UnRegister(20469);
+    Net_1.Net.UnRegister(16481);
+    Net_1.Net.UnRegister(20674);
+    Net_1.Net.UnRegister(17865);
+    Net_1.Net.UnRegister(26859);
   }
   static OpenAchievementMainView() {
     UiManager_1.UiManager.OpenView("AchievementMainView");
@@ -62,9 +63,9 @@ class AchievementController extends ControllerBase_1.ControllerBase {
   }
   static async RequestUpdateAchievementInfo() {
     var e = new Protocol_1.Aki.Protocol.kg_();
-    var e = await Net_1.Net.CallAsync(21640, e);
+    var e = await Net_1.Net.CallAsync(18057, e);
     if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18616);
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17052);
     } else {
       ModelManager_1.ModelManager.AchievementModel.PhraseUpdateData(e);
     }
@@ -73,9 +74,9 @@ class AchievementController extends ControllerBase_1.ControllerBase {
     var r = new Protocol_1.Aki.Protocol.o$n();
     r.s5n = t;
     r.x6n = e;
-    Net_1.Net.Call(15342, r, e => {
+    Net_1.Net.Call(27185, r, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21632);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23432);
       }
     });
   }
@@ -83,18 +84,18 @@ class AchievementController extends ControllerBase_1.ControllerBase {
     var r = new Protocol_1.Aki.Protocol.a8u();
     r.T8u = e;
     r.b8u = t;
-    Net_1.Net.Call(25355, r, e => {
+    Net_1.Net.Call(27304, r, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19250);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16526);
       }
     });
   }
   static RequestAchievementFinish(e) {
     var t = new Protocol_1.Aki.Protocol.l$n();
     t.s5n = e;
-    Net_1.Net.Call(18476, t, e => {
+    Net_1.Net.Call(21586, t, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20897);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20190);
       }
     });
   }
@@ -124,8 +125,9 @@ exports.AchievementController = AchievementController;
 (_a = AchievementController).Wq_ = true;
 AchievementController.obe = async () => {
   var e = new Protocol_1.Aki.Protocol.i$n();
-  var e = await Net_1.Net.CallAsync(19007, e);
+  var e = await Net_1.Net.CallAsync(26501, e);
   ModelManager_1.ModelManager.AchievementModel.PhraseBaseData(e);
+  EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsSyncAchievementFinish, ModelManager_1.ModelManager.AchievementModel.GetCategoryIdList(), ModelManager_1.ModelManager.AchievementModel.GetGroupDataList(), ModelManager_1.ModelManager.AchievementModel.GetAchievementDataList(), e.oS_, e.nS_);
 };
 AchievementController.nbe = e => {
   AchievementController.hbe(e.uvs);

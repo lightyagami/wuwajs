@@ -17,21 +17,21 @@ class ArtemisSubView extends ActivitySubViewBase_1.ActivitySubViewBase {
   constructor() {
     super(...arguments);
     this.CommonInfoPanel = undefined;
-    this.wSf = false;
-    this.RSf = 0;
-    this.LSf = (e, t) => {
+    this.fIf = false;
+    this.gIf = 0;
+    this.CIf = (e, t) => {
       if (t === "Loop_Stop") {
         this.LevelSequencePlayer?.StopSequenceByKey("Loop");
         this.LevelSequencePlayer?.StopSequenceByKey("Loop_Last");
-        this.GetItem(11)?.SetUIActive(!this.wSf);
-        this.GetTexture(3)?.SetUIActive(this.wSf);
+        this.GetItem(11)?.SetUIActive(!this.fIf);
+        this.GetTexture(3)?.SetUIActive(this.fIf);
       }
       if (t === "Loop_Play") {
-        this.LevelSequencePlayer?.PlaySequencePurely(this.wSf ? "Loop_Last" : "Loop");
+        this.LevelSequencePlayer?.PlaySequencePurely(this.fIf ? "Loop_Last" : "Loop");
       }
-      if (t === "Day_Start" && (t = this.ActivityBaseData) && t.GetRewardedIndex > 0 && !this.eRf(t.GetRewardedIndex)) {
+      if (t === "Day_Start" && (t = this.ActivityBaseData) && t.GetRewardedIndex > 0 && !this.IUf(t.GetRewardedIndex)) {
         this.LevelSequencePlayer?.PlaySequencePurely("Day" + t.GetRewardedIndex);
-        this.tRf(t.GetRewardedIndex);
+        this.TUf(t.GetRewardedIndex);
       }
     };
     this.Jk_ = () => {
@@ -42,16 +42,16 @@ class ArtemisSubView extends ActivitySubViewBase_1.ActivitySubViewBase {
       };
       UiManager_1.UiManager.OpenView("ArtemisActivityRoleChatView", e);
     };
-    this.Vzm = () => {
+    this.wef = () => {
       var e;
       var t = this.ActivityBaseData;
       if (t !== undefined) {
         e = ConfigManager_1.ConfigManager.ArtemisActivityConfig?.GetArtemisGroupByActivityId(t.GetCacheActivityId);
-        this.RSf = e?.length ?? 0;
-        this.wSf = t.GetRewardedIndex >= this.RSf;
-        this.iRf(t.GetRewardedIndex);
+        this.gIf = e?.length ?? 0;
+        this.fIf = t.GetRewardedIndex >= this.gIf;
+        this.bUf(t.GetRewardedIndex);
         this.GetArtText(0)?.SetText("0" + t.GetRewardedIndex);
-        this.GetArtText(1)?.SetText("0" + this.RSf);
+        this.GetArtText(1)?.SetText("0" + this.gIf);
         e = t?.GetCanReceive();
         this.CommonInfoPanel?.SetBtnText("FarmGoldEnterText");
         this.CommonInfoPanel?.GetFunctional()?.FunctionButton?.SetRedDotVisible(e);
@@ -62,7 +62,7 @@ class ArtemisSubView extends ActivitySubViewBase_1.ActivitySubViewBase {
     this.ComponentRegisterInfos = [[0, UE.UIArtText], [1, UE.UIArtText], [2, UE.UIItem], [3, UE.UITexture], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UIItem], [11, UE.UIItem]];
   }
   async OnBeforeStartAsync() {
-    this.RootActor?.OnSequencePlayEvent.Bind(this.LSf);
+    this.RootActor?.OnSequencePlayEvent.Bind(this.CIf);
     await super.OnBeforeStartAsync();
     this.CommonInfoPanel = new ActivitySubViewGeneralInfo_1.ActivitySubViewGeneralInfo();
     this.CommonInfoPanel.SetData(this.ActivityBaseData);
@@ -71,30 +71,30 @@ class ArtemisSubView extends ActivitySubViewBase_1.ActivitySubViewBase {
     await this.CommonInfoPanel.CreateThenShowByActorAsync(e);
   }
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnArtemisStateRefresh, this.Vzm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnArtemisStateRefresh, this.wef);
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnArtemisStateRefresh, this.Vzm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnArtemisStateRefresh, this.wef);
   }
   OnBeforeShow() {
-    this.Vzm();
+    this.wef();
   }
   OnBeforeDestroy() {
     this.RootActor?.OnSequencePlayEvent.Unbind();
   }
-  iRf(e) {
-    var t = this.eRf(e) ? e : e - 1;
-    for (let e = 0; e < this.RSf; e++) {
+  bUf(e) {
+    var t = this.IUf(e) ? e : e - 1;
+    for (let e = 0; e < this.gIf; e++) {
       var i = t > e;
       this.GetItem(4 + e)?.SetAlpha(i ? 1 : 0);
     }
   }
-  eRf(e) {
+  IUf(e) {
     var t;
     var i = this.ActivityBaseData;
     return !!i && !(i = i.GetCacheActivityId, !(t = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.FirstPlayArtemisPlaneAnimMap))) && !!t.has(i) && e <= (t.get(i) ?? 0);
   }
-  tRf(e) {
+  TUf(e) {
     var t;
     var i = this.ActivityBaseData;
     if (i) {

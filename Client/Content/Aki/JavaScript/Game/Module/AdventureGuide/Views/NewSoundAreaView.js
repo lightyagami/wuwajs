@@ -30,8 +30,8 @@ const RoguelikeDefine_1 = require("../../Roguelike/Define/RoguelikeDefine");
 const GridProxyAbstract_1 = require("../../Util/Grid/GridProxyAbstract");
 const GenericLayout_1 = require("../../Util/Layout/GenericLayout");
 const LguiUtil_1 = require("../../Util/LguiUtil");
-const GenericScrollViewNew_1 = require("../../Util/ScrollView/GenericScrollViewNew");
 const LoopScrollView_1 = require("../../Util/ScrollView/LoopScrollView");
+const MultiTemplateScrollView_1 = require("../../Util/ScrollView/MultiTemplateScrollView");
 const AdventureDefine_1 = require("../AdventureDefine");
 const AdventureGuideController_1 = require("../AdventureGuideController");
 const NewSoundDetectItem_1 = require("./NewSoundDetectItem");
@@ -46,6 +46,7 @@ class NewSoundAreaView extends UiTabViewBase_1.UiTabViewBase {
     this.r8e = undefined;
     this.n8e = undefined;
     this.hY1 = undefined;
+    this.ycg = [];
     this.s8e = [];
     this.a8e = 4;
     this.H6e = undefined;
@@ -58,7 +59,7 @@ class NewSoundAreaView extends UiTabViewBase_1.UiTabViewBase {
     this.t5e = 0;
     this.i7i = new Array();
     this.Anl = false;
-    this.p4f = undefined;
+    this.P$f = undefined;
     this.si_ = i => {
       if (this.s8e) {
         for (let e = 0; e < this.s8e.length; e++) {
@@ -109,12 +110,27 @@ class NewSoundAreaView extends UiTabViewBase_1.UiTabViewBase {
     this.WDu = e => {
       return Number(e);
     };
+    this.n7g = (e, i) => {
+      var t = [];
+      for (const o of this.ycg) {
+        var r = o.Data;
+        if (r.Area !== e) {
+          if (!!r.IsVisible || r.TabTextId !== "") {
+            t.push(o);
+          }
+        } else if (!!(r.IsVisible = i) || r.TabTextId !== "") {
+          t.push(o);
+        }
+      }
+      var s = new MultiTemplateScrollView_1.MultiTemplateScrollViewRefreshContext(t);
+      this.hY1?.RefreshByData(s);
+    };
     this.f8e = () => {
       UiManager_1.UiManager.OpenView("LordGymChallengeRecordView");
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UILoopScrollViewComponent], [2, UE.UIItem], [3, UE.UILoopScrollViewComponent], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIText], [7, UE.UIText], [8, UE.UIItem], [9, UE.UIText], [10, UE.UIText], [11, UE.UIItem], [12, UE.UIItem], [13, UE.UIText], [14, UE.UIItem], [15, UE.UIButtonComponent], [16, UE.UIItem], [17, UE.UIItem], [18, UE.UIItem], [19, UE.UIText], [20, UE.UIItem], [21, UE.UIItem], [22, UE.UIItem], [23, UE.UIText], [24, UE.UITexture], [25, UE.UIText], [26, UE.UIScrollViewWithScrollbarComponent], [27, UE.UIVerticalLayout], [28, UE.UIItem], [29, UE.UIItem], [30, UE.UIText], [31, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UILoopScrollViewComponent], [2, UE.UIItem], [3, UE.UILoopScrollViewComponent], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIText], [7, UE.UIText], [8, UE.UIItem], [9, UE.UIText], [10, UE.UIText], [11, UE.UIItem], [12, UE.UIItem], [13, UE.UIText], [14, UE.UIItem], [15, UE.UIButtonComponent], [16, UE.UIItem], [17, UE.UIItem], [18, UE.UIItem], [19, UE.UIText], [20, UE.UIItem], [21, UE.UIItem], [22, UE.UIItem], [23, UE.UIText], [24, UE.UITexture], [25, UE.UIText], [26, UE.UIMultiTemplateScrollViewComponent], [27, UE.UIItem], [28, UE.UIItem], [29, UE.UIItem], [30, UE.UIText], [31, UE.UIItem]];
     this.BtnBindInfo = [[15, this.f8e]];
   }
   AddEventListener() {
@@ -139,13 +155,17 @@ class NewSoundAreaView extends UiTabViewBase_1.UiTabViewBase {
     e.push(this.ODu.Init());
     this.qDu = new CommonDropDown_1.CommonDropDown(this.GetItem(29), this.jDu, this.VDu);
     e.push(this.qDu.Init());
-    this.p4f = new RegressPanel();
-    e.push(this.p4f.CreateByActorAsync(this.GetItem(31).GetOwner()));
+    this.P$f = new RegressPanel();
+    e.push(this.P$f.CreateByActorAsync(this.GetItem(31).GetOwner()));
+    var i = AdventureGuideController_1.AdventureGuideController.GetPlayerType();
+    if (i.includes(2) || i.includes(1)) {
+      e.push(ActivityControllerHolder_1.ActivityControllerHolder.ActivityRegressController.NewTrialRoleGetNightmarePhantomInstInfoRequest());
+    }
     await Promise.all(e);
   }
   OnStart() {
     const i = (e, i) => {
-      if (this.a8e === 6) {
+      if (this.a8e === 6 || this.a8e === 62) {
         var t = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.RoleTutorialNew) ?? new Map();
         var [, r] = ModelManager_1.ModelManager.AdventureGuideModel.GetCanShowDungeonRecordsByType(this.a8e);
         for (const n of r) {
@@ -157,7 +177,7 @@ class NewSoundAreaView extends UiTabViewBase_1.UiTabViewBase {
       var s;
       var o;
       var r = AdventureGuideController_1.AdventureGuideController.GetPlayerType();
-      this.p4f?.SetUiActive((r.includes(2) || r.includes(1)) && this.a8e === 22);
+      this.P$f?.SetUiActive((r.includes(2) || r.includes(1)) && this.a8e === 22);
       var r = ConfigManager_1.ConfigManager.AdventureModuleConfig.GetSecondaryGuideDataConf(e);
       this.GDu = r?.DropDownTypeId ?? 0;
       this.QDu();
@@ -212,7 +232,7 @@ class NewSoundAreaView extends UiTabViewBase_1.UiTabViewBase {
     });
     this.n8e = new LoopScrollView_1.LoopScrollView(this.GetLoopScrollViewComponent(3), this.GetItem(2).GetOwner(), () => new NewSoundDetectItem_1.NewSoundDetectItem(), true);
     this.n8e.SetAnimFinishDelegate(this.Pnl);
-    this.hY1 = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(26), () => new NewSoundDetectTabItem_1.NewSoundDetectTabItem());
+    this.hY1 = new MultiTemplateScrollView_1.MultiTemplateScrollView(this.GetMultiTemplateScrollViewComponent(26));
     ConfigManager_1.ConfigManager.PhantomBattleConfig.GetFetterGroupArray().forEach(e => {
       this.i7i.push(e.Id);
     });
@@ -259,7 +279,7 @@ class NewSoundAreaView extends UiTabViewBase_1.UiTabViewBase {
   }
   _Y1(e) {
     var i = e.length;
-    this.hY1?.SetActive(false);
+    this.GetItem(28).SetUIActive(false);
     this.n8e.SetTargetRootComponentActive(true);
     if (i) {
       const n = this.$8i?.NewSoundDetectTracingIdList;
@@ -290,7 +310,7 @@ class NewSoundAreaView extends UiTabViewBase_1.UiTabViewBase {
     }
   }
   lY1(e) {
-    this.hY1?.SetActive(true);
+    this.GetItem(28).SetUIActive(true);
     this.n8e.SetTargetRootComponentActive(false);
     var i = new Map();
     const t = this.$8i?.NewSoundDetectTracingIdList;
@@ -307,44 +327,42 @@ class NewSoundAreaView extends UiTabViewBase_1.UiTabViewBase {
         return 0;
       }
     });
-    for (const n of e) {
-      var s = n.DungeonDetectionRecord ? n.DungeonDetectionRecord.Conf.DetectionTabType : n.SilentAreaDetectionRecord?.Conf.DetectionTabType ?? 0;
+    for (const h of e) {
+      var s = h.DungeonDetectionRecord ? h.DungeonDetectionRecord.Conf.DetectionTabType : h.SilentAreaDetectionRecord?.Conf.DetectionTabType ?? 0;
       if (s) {
         if (!i.has(s)) {
           var o = DetectionTabTypeById_1.configDetectionTabTypeById.GetConfig(s);
           if (!o) {
             continue;
           }
-          o = {
-            Id: s,
-            TabTextId: o.Text,
-            IconPath: o.Icon,
-            Sort: o.Order,
-            DungeonList: [],
-            IsVisible: true
-          };
+          var n = new AdventureDefine_1.NewSoundDetectTabItemData();
+          n.Area = s;
+          n.TabTextId = o.Text;
+          n.IconPath = o.Icon;
+          n.Sort = o.Order;
+          n.IsVisible = true;
+          var o = new NewSoundDetectTabItem_1.NewSoundDetectTabItemTitleData(n);
+          o.OnClickCallBack = this.n7g;
           i.set(s, o);
         }
-        o = new NewSoundDetectItem_1.NewSoundDetectItemData();
-        o.DetectRecordData = n;
+        var n = i.get(s).Data.Sort;
+        var o = new NewSoundDetectItem_1.NewSoundDetectItemData();
+        o.DetectRecordData = h;
         o.TracingList = t;
         o.NightMareParam = r;
-        i.get(s).DungeonList.push(o);
+        var a = new AdventureDefine_1.NewSoundDetectTabItemData();
+        a.Area = s;
+        a.Dungeon = o;
+        a.Sort = n;
+        a.IsVisible = true;
+        var s = new NewSoundDetectTabItem_1.NewSoundDetectTabItemDungeonData(a);
+        i.set(h.Conf.Id, s);
       }
     }
-    e = Array.from(i.values()).sort((e, i) => i.Sort - e.Sort);
-    this.hY1?.RefreshByData(e, () => {
-      if (this.hY1?.GetItemByIndex(0)) {
-        this.hY1?.BindLateUpdate(() => {
-          TimerSystem_1.GameplayTimerSystem.Next(() => {
-            if (this?.IsShowOrShowing) {
-              this.hY1?.ScrollToTop(0);
-            }
-          });
-          this.hY1?.UnBindLateUpdate();
-        });
-      }
-    });
+    this.ycg = Array.from(i.values()).sort((e, i) => i.Data.Sort - e.Data.Sort);
+    e = new MultiTemplateScrollView_1.MultiTemplateScrollViewRefreshContext(this.ycg);
+    e.ScrollToGridIndex = 0;
+    this.hY1?.RefreshByData(e);
   }
   OnBeforeShow() {
     this.$8i = this.ExtraParams;

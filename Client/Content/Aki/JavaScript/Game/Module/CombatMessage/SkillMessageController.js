@@ -39,22 +39,22 @@ class SkillMessageController extends ControllerBase_1.ControllerBase {
     this.UIt.add(e);
   }
   static OnInit() {
-    Net_1.Net.Register(25844, SkillMessageController.sCc);
+    Net_1.Net.Register(22831, SkillMessageController.sCc);
     return true;
   }
   static OnClear() {
-    Net_1.Net.UnRegister(25844);
+    Net_1.Net.UnRegister(22831);
     SkillMessageController.UIt.clear();
     return true;
   }
   static PreUseSkillNotify(e, o) {
-    e = e?.GetComponent(58);
+    e = e?.GetComponent(60);
     return !e || !!e.PreSwitchRemoteFightState(o.dVn.mVn);
   }
   static UseSkillNotify(e, o, t) {
     var l;
     if (e && o && o.dVn && o.dVn.r5n) {
-      if (o.dVn.s5n && (t = MathUtils_1.MathUtils.LongToBigInt(t.$8n), e = e.GetComponent(40), l = MathUtils_1.MathUtils.LongToNumber(o.dVn.CVn), e?.SimulatedBeginSkill(MathUtils_1.MathUtils.LongToNumber(o.dVn.r5n), l, o.dVn.gVn, o.dVn.n5n * 0.001, t))) {
+      if (o.dVn.s5n && (t = MathUtils_1.MathUtils.LongToBigInt(t.$8n), e = e.GetComponent(42), l = MathUtils_1.MathUtils.LongToNumber(o.dVn.CVn), e?.SimulatedBeginSkill(MathUtils_1.MathUtils.LongToNumber(o.dVn.r5n), l, o.dVn.gVn, o.dVn.n5n * 0.001, t))) {
         SkillMessageController.UIt.add(t);
       }
     } else if (Log_1.Log.CheckError()) {
@@ -63,7 +63,7 @@ class SkillMessageController extends ControllerBase_1.ControllerBase {
   }
   static SkillNotify(e, o, t) {
     var l;
-    var r = e?.GetComponent(40);
+    var r = e?.GetComponent(42);
     if (r) {
       l = MathUtils_1.MathUtils.LongToBigInt(t.X8n);
       if (SkillMessageController.UIt.has(l)) {
@@ -82,13 +82,13 @@ class SkillMessageController extends ControllerBase_1.ControllerBase {
     if (o.dVn && o.dVn.s5n) {
       t = MathUtils_1.MathUtils.LongToBigInt(t.X8n);
       SkillMessageController.UIt.delete(t);
-      e?.GetComponent(40)?.SimulateEndSkill(MathUtils_1.MathUtils.LongToNumber(o.dVn.r5n));
+      e?.GetComponent(42)?.SimulateEndSkill(MathUtils_1.MathUtils.LongToNumber(o.dVn.r5n));
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("World", 3, "[CreatureController.EndSkillNotify] 服务器返回参数有误。");
     }
   }
   static UseSkillRequest(o, e, t) {
-    const l = o.GetComponent(40);
+    const l = o.GetComponent(42);
     var r = e.SkillId;
     var a = e.SkillInfo.AutonomouslyBySimulate;
     var s = e.SkillInfo.MoveControllerTime;
@@ -104,12 +104,12 @@ class SkillMessageController extends ControllerBase_1.ControllerBase {
     n.dVn.gVn = a;
     n.dVn.n5n = s * 1000;
     n.dVn.EVn = i;
-    n.Qh1 = e.BattleFlags.map(e => GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e));
+    n.Qh1 = e.BattleContext?.BattleFlags.map(e => GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e)) ?? [];
     const C = e.FightStateHandle;
     if (C) {
       n.dVn.mVn = l.FightStateComp?.GetFightState() ?? 0;
     }
-    CombatMessage_1.CombatNet.Call(18258, o, n, e => {
+    CombatMessage_1.CombatNet.Call(16637, o, n, e => {
       if (!o.IsEnd) {
         if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
           if (C) {
@@ -134,7 +134,7 @@ class SkillMessageController extends ControllerBase_1.ControllerBase {
       l.WSl.F4n = t.EntityId;
       l.WSl.r5n = t.SkillId;
       l.WSl.Mjn = t.BulletId;
-      CombatMessage_1.CombatNet.Send(27644, e, l);
+      CombatMessage_1.CombatNet.Send(20620, e, l);
       return true;
     } else {
       if (Log_1.Log.CheckError()) {
@@ -158,7 +158,7 @@ class SkillMessageController extends ControllerBase_1.ControllerBase {
     e = Protocol_1.Aki.Protocol.w3n.create();
     e.dVn = t;
     e.pVn = l;
-    CombatMessage_1.CombatNet.Call(17842, o, e, e => {
+    CombatMessage_1.CombatNet.Call(20039, o, e, e => {
       if (!o.IsEnd) {
         switch (e.Q4n) {
           case Protocol_1.Aki.Protocol.Q4n.KRs:
@@ -175,7 +175,7 @@ class SkillMessageController extends ControllerBase_1.ControllerBase {
     s.yVn = l;
     s.lVn = t;
     s.r5n = o;
-    CombatMessage_1.CombatNet.Send(26668, e, Protocol_1.Aki.Protocol.Pe_.create(s), r, a);
+    CombatMessage_1.CombatNet.Send(16555, e, Protocol_1.Aki.Protocol.Pe_.create(s), r, a);
   }
   static PassiveSkillAddRequest(e, o, t = undefined) {
     CombatLog_1.CombatLog.Info("Skill", e, "添加被动Request", ["被动技能Id", o]);
@@ -183,7 +183,7 @@ class SkillMessageController extends ControllerBase_1.ControllerBase {
     l.IVn = MathUtils_1.MathUtils.NumberToLong(o);
     l.TVn = e.GetComponent(0).GetCreatureDataId();
     var o = ModelManager_1.ModelManager.CombatMessageModel.GenMessageId();
-    CombatMessage_1.CombatNet.Send(15020, e, Protocol_1.Aki.Protocol.Be_.create(l), t, o);
+    CombatMessage_1.CombatNet.Send(25124, e, Protocol_1.Aki.Protocol.Be_.create(l), t, o);
     return o;
   }
   static PassiveSkillRemoveRequest(e, o, t = undefined, l = undefined) {
@@ -191,7 +191,7 @@ class SkillMessageController extends ControllerBase_1.ControllerBase {
     var r = Protocol_1.Aki.Protocol.je_.create();
     r.IVn = MathUtils_1.MathUtils.NumberToLong(o);
     r.TVn = e.GetComponent(0).GetCreatureDataId();
-    CombatMessage_1.CombatNet.Send(21852, e, Protocol_1.Aki.Protocol.je_.create(r), t, l);
+    CombatMessage_1.CombatNet.Send(24023, e, Protocol_1.Aki.Protocol.je_.create(r), t, l);
   }
   static aCc(e, o) {
     if (!this.ClosePrintDebugFightErrInfo) {

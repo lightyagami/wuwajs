@@ -28,16 +28,16 @@ class SunSpiritData {
     this.PbData = undefined;
     this.ac = new SunSpiritNoneState_1.SunSpiritNoneState(this);
     this.nsm = new Queue_1.Queue();
-    this.A$m = new SunSpiritNonePerform_1.SunSpiritNonePerform(this, MathUtils_1.MathUtils.DefaultTransformProxy);
+    this.wQm = new SunSpiritNonePerform_1.SunSpiritNonePerform(this, MathUtils_1.MathUtils.DefaultTransformProxy);
     this.LHo = undefined;
     this.asm = 0;
     this.hsm = undefined;
     this.zti = undefined;
     this.lsm = 0;
-    this.D$m = undefined;
-    this.U$m = 0;
-    this.x$m = undefined;
-    this.B$m = 0;
+    this.LQm = undefined;
+    this.PQm = 0;
+    this.AQm = undefined;
+    this.DQm = 0;
   }
   get StateType() {
     return this.ac.StateType;
@@ -82,18 +82,18 @@ class SunSpiritData {
     }
   }
   GetSunSpiritPerform() {
-    return this.A$m;
+    return this.wQm;
   }
   ChangeSunSpiritPerform(t) {
-    var i = this.A$m;
-    this.A$m = t;
+    var i = this.wQm;
+    this.wQm = t;
     var t = Transform_1.Transform.Create();
     i.GetTransform(t);
     i.Destroy();
-    var i = this.A$m.Init();
+    var i = this.wQm.Init();
     if (!i) {
-      this.A$m = new SunSpiritNonePerform_1.SunSpiritNonePerform(this, t);
-      this.A$m.Init();
+      this.wQm = new SunSpiritNonePerform_1.SunSpiritNonePerform(this, t);
+      this.wQm.Init();
     }
   }
   SetOrUpdateSunSpiritBasicDataByProto(t) {
@@ -119,7 +119,7 @@ class SunSpiritData {
   get Location() {
     if (this.asm < Time_1.Time.Frame) {
       this.LHo ||= Vector_1.Vector.Create();
-      if (!this.A$m.GetTransformData(this.LHo)) {
+      if (!this.wQm.GetTransformData(this.LHo)) {
         return;
       }
       this.asm = Time_1.Time.Frame;
@@ -130,7 +130,7 @@ class SunSpiritData {
     if (this.lsm < Time_1.Time.Frame) {
       this.zti ||= Rotator_1.Rotator.Create();
       this.hsm ||= Quat_1.Quat.Create();
-      if (!this.A$m.GetTransformData(undefined, this.zti)) {
+      if (!this.wQm.GetTransformData(undefined, this.zti)) {
         return;
       }
       this.zti.Quaternion(this.hsm);
@@ -142,30 +142,30 @@ class SunSpiritData {
     return this.Rotator?.Quaternion(this.hsm);
   }
   get Scale3D() {
-    if (this.U$m < Time_1.Time.Frame) {
-      this.D$m ||= Vector_1.Vector.Create();
-      if (!this.A$m.GetTransformData(undefined, undefined, this.D$m)) {
+    if (this.PQm < Time_1.Time.Frame) {
+      this.LQm ||= Vector_1.Vector.Create();
+      if (!this.wQm.GetTransformData(undefined, undefined, this.LQm)) {
         return;
       }
-      this.U$m = Time_1.Time.Frame;
+      this.PQm = Time_1.Time.Frame;
     }
-    return this.D$m;
+    return this.LQm;
   }
   get Transform() {
-    if (this.B$m < Time_1.Time.Frame) {
-      this.x$m ||= Transform_1.Transform.Create();
-      if (!this.A$m.GetTransform(this.x$m)) {
+    if (this.DQm < Time_1.Time.Frame) {
+      this.AQm ||= Transform_1.Transform.Create();
+      if (!this.wQm.GetTransform(this.AQm)) {
         return;
       }
-      this.B$m = Time_1.Time.Frame;
+      this.DQm = Time_1.Time.Frame;
     }
-    return this.x$m;
+    return this.AQm;
   }
   SetLocation(t) {
     this.LHo ||= Vector_1.Vector.Create();
     this.LHo.FromUeVector(t);
     this.asm = Time_1.Time.Frame;
-    this.A$m.SetTransformData(this.LHo);
+    this.wQm.SetTransformData(this.LHo);
   }
   SetRotation(t) {
     this.zti ||= Rotator_1.Rotator.Create();
@@ -179,7 +179,7 @@ class SunSpiritData {
     }
     this.zti.Quaternion(this.hsm);
     this.lsm = Time_1.Time.Frame;
-    this.A$m.SetTransformData(undefined, this.zti);
+    this.wQm.SetTransformData(undefined, this.zti);
   }
   SetLocationAndRotation(t, i) {
     this.zti ||= Rotator_1.Rotator.Create();
@@ -195,19 +195,19 @@ class SunSpiritData {
     }
     this.zti.Quaternion(this.hsm);
     this.lsm = Time_1.Time.Frame;
-    this.A$m.SetTransformData(this.LHo, this.zti);
+    this.wQm.SetTransformData(this.LHo, this.zti);
   }
   SetScale3D(t) {
-    this.D$m ||= Vector_1.Vector.Create();
-    this.D$m.FromUeVector(t);
-    this.U$m = Time_1.Time.Frame;
-    this.A$m.SetTransformData(undefined, undefined, this.D$m);
+    this.LQm ||= Vector_1.Vector.Create();
+    this.LQm.FromUeVector(t);
+    this.PQm = Time_1.Time.Frame;
+    this.wQm.SetTransformData(undefined, undefined, this.LQm);
   }
   SetTransform(t) {
-    this.x$m ||= Transform_1.Transform.Create();
-    this.x$m.Set(t.GetLocation(), t.GetRotation(), t.GetScale3D());
-    this.B$m = Time_1.Time.Frame;
-    this.A$m.SetTransform(this.x$m);
+    this.AQm ||= Transform_1.Transform.Create();
+    this.AQm.Set(t.GetLocation(), t.GetRotation(), t.GetScale3D());
+    this.DQm = Time_1.Time.Frame;
+    this.wQm.SetTransform(this.AQm);
   }
 }
 exports.SunSpiritData = SunSpiritData;

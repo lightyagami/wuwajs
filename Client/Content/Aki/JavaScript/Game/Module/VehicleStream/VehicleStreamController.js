@@ -22,45 +22,45 @@ const VehicleStreamDefine_1 = require("./VehicleStreamDefine");
 class VehicleStreamController extends ControllerWithAssistantBase_1.ControllerWithAssistantBase {
   static OnRegisterNetEvent() {
     super.OnRegisterNetEvent();
-    Net_1.Net.Register(20251, VehicleStreamController.DUm);
+    Net_1.Net.Register(29663, VehicleStreamController.nxm);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(20251);
+    Net_1.Net.UnRegister(29663);
     super.OnUnRegisterNetEvent();
   }
   static OnAddEvents() {
     super.OnAddEvents();
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TransportSystemInitDone, VehicleStreamController.cvf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TransportSystemInitDone, VehicleStreamController.SMf);
   }
   static OnRemoveEvents() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TransportSystemInitDone, VehicleStreamController.cvf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TransportSystemInitDone, VehicleStreamController.SMf);
     super.OnRemoveEvents();
   }
-  static UUm(e, t) {
+  static sxm(e, t) {
     var r = e.Entity.GetComponent(1);
-    var o = e.Entity.GetComponent(338);
-    VehicleStreamController.RegisterVehicleAndLaunch(e.CreatureDataId, e.PbDataId, t.bAm, t.RAm, t.fom, t.gom, r.ActorLocationProxy, r.ActorRotationProxy, o.GetConfig().BasicConfig, "RoadNetworkEntityStartNavNotifyImp Enable");
+    var o = e.Entity.GetComponent(340);
+    VehicleStreamController.RegisterVehicleAndLaunch(e.CreatureDataId, e.PbDataId, t.dAm, t.mAm, t.fom, t.gom, r.ActorLocationProxy, r.ActorRotationProxy, o.GetConfig().BasicConfig, "RoadNetworkEntityStartNavNotifyImp Enable");
   }
   static UnRegisterVehicleTeamMember(e) {
-    ModelManager_1.ModelManager.VehicleStreamModel.RemoveTeamMember(e);
+    return ModelManager_1.ModelManager.VehicleStreamModel.RemoveTeamMember(e);
   }
-  static RegisterVehicleAndLaunch(e, t, r, o, a, i, n, l, c, s) {
-    var m = ModelManager_1.ModelManager.CreatureModel.GetEntity(e);
-    if (m?.Valid) {
-      return !!VehicleStreamController.RegisterVehicleTeamMember(e, t, r, o, a, i, n, l, c) && !!(t = m.Entity.GetComponent(338))?.LaunchVehicle() && (t.GetMoveSyncComponent()?.SetEnableMovementSync(true, s), true);
+  static RegisterVehicleAndLaunch(e, t, r, o, a, i, n, l, c, m) {
+    var s = ModelManager_1.ModelManager.CreatureModel.GetEntity(e);
+    if (s?.Valid) {
+      return !!VehicleStreamController.RegisterVehicleTeamMember(e, t, r, o, a, i, n, l, c) && !!(t = s.Entity.GetComponent(340))?.LaunchVehicle() && (t.GetMoveSyncComponent()?.SetEnableMovementSync(true, m), true);
     } else {
       if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("VehicleStream", 18, "无法获取对应实体", ["creatureDataId", e], ["enableMoveSyncReason", s]);
+        Log_1.Log.Error("VehicleStream", 18, "无法获取对应实体", ["creatureDataId", e], ["enableMoveSyncReason", m]);
       }
       return false;
     }
   }
   static RegisterVehicleTeamMember(e, t, r, o, a, i, n, l, c) {
-    var s = ModelManager_1.ModelManager.VehicleStreamModel;
-    if (s.TransportSystemInitDone) {
-      return VehicleStreamController.xUm(e, t, r, o, a, i, n, l, c);
+    var m = ModelManager_1.ModelManager.VehicleStreamModel;
+    if (m.TransportSystemInitDone) {
+      return VehicleStreamController.axm(e, t, r, o, a, i, n, l, c);
     } else {
-      s.AddWaitTransportInitVehicle(e, {
+      m.AddWaitTransportInitVehicle(e, {
         VehiclePbDataId: t,
         StartRoadId: r,
         StartRoadIndex: o,
@@ -73,31 +73,31 @@ class VehicleStreamController extends ControllerWithAssistantBase_1.ControllerWi
       return false;
     }
   }
-  static xUm(e, t, r, o, a, i, n, l, c) {
-    var s = ModelManager_1.ModelManager.VehicleStreamModel;
-    let m = s.GetVehicleTeam(0);
-    if (!m) {
-      m = new VehicleTeam_1.VehicleTeam(0);
-      s.AddVehicleTeam(0, m);
+  static axm(e, t, r, o, a, i, n, l, c) {
+    var m = ModelManager_1.ModelManager.VehicleStreamModel;
+    let s = m.GetVehicleTeam(0);
+    if (!s) {
+      s = new VehicleTeam_1.VehicleTeam(0);
+      m.AddVehicleTeam(0, s);
     }
     var _;
-    var S = m.GetVehicleMember(e);
+    var S = s.GetVehicleMember(e);
     if (S) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("VehicleStream", 18, "[VehicleStream]VehicleStreamController.RegisterVehicleTeamMember:载具实体在车队中已存在", ["CreatureDataId", e]);
       }
       return false;
     } else {
-      o = VehicleStreamController.BUm(r, o);
-      _ = VehicleStreamController.BUm(a, i);
-      return !!o && !!_ && !((s = ControllerHolder_1.ControllerHolder.TransportController.FindPath(o, _, false, true, s.EnableDebug)) && s.Roadways.Num() ? ((S = new VehicleTeamMember_1.VehicleTeamMember(m.TeamId, 0, e, t, n, l, _, a, i, c, s)).Init(), m.AddVehicleMember(e, S), 0) : (Log_1.Log.CheckError() && Log_1.Log.Error("VehicleStream", 18, "[VehicleStream]VehicleStreamController.RegisterVehicleTeamMember:查找路径失败", ["CreatureDataId", e], ["startRoadId", r], ["destRoadId", a], ["startLocation", o], ["destinationLocation", _]), 1));
+      o = VehicleStreamController.hxm(r, o);
+      _ = VehicleStreamController.hxm(a, i);
+      return !!o && !!_ && !((m = ControllerHolder_1.ControllerHolder.TransportController.FindPath(o, _, false, true, m.EnableDebug)) && m.Roadways.Num() ? ((S = new VehicleTeamMember_1.VehicleTeamMember(s.TeamId, 0, e, t, n, l, _, a, i, c, m)).Init(), s.AddVehicleMember(e, S), Log_1.Log.CheckDebug() && Log_1.Log.Debug("VehicleStream", 18, "载具初始化成功", ["vehicleCreatureDataId", e]), 0) : (Log_1.Log.CheckError() && Log_1.Log.Error("VehicleStream", 18, "[VehicleStream]VehicleStreamController.RegisterVehicleTeamMember:查找路径失败", ["CreatureDataId", e], ["startRoadId", r], ["destRoadId", a], ["startLocation", o], ["destinationLocation", _]), 1));
     }
   }
   static LaunchVehicle(e, t) {
     e = ModelManager_1.ModelManager.VehicleStreamModel.GetVehicleTeamMember(e);
     return !!e && (e.Launch(t), true);
   }
-  static BUm(e, t) {
+  static hxm(e, t) {
     var r = ModelManager_1.ModelManager.CreatureModel?.GetCompleteEntityData(e);
     if (r) {
       var o = (0, IComponent_1.getComponent)(r.ComponentsData, "SplineComponent");
@@ -148,14 +148,14 @@ class VehicleStreamController extends ControllerWithAssistantBase_1.ControllerWi
     }
   }
   static RequestNetworkEntityUpdateCurRoadPush(e, t, r) {
-    var o = Protocol_1.Aki.Protocol.xLm.create();
+    var o = Protocol_1.Aki.Protocol.lPm.create();
     o.F4n = e;
-    o.OLm = t;
-    o.GLm = r;
-    Net_1.Net.Send(18034, o);
+    o.dPm = t;
+    o.mPm = r;
+    Net_1.Net.Send(26733, o);
   }
 }
-(exports.VehicleStreamController = VehicleStreamController).cvf = () => {
+(exports.VehicleStreamController = VehicleStreamController).SMf = () => {
   var e;
   var t;
   var r = ModelManager_1.ModelManager.VehicleStreamModel;
@@ -166,13 +166,13 @@ class VehicleStreamController extends ControllerWithAssistantBase_1.ControllerWi
   }
   r.clear();
 };
-VehicleStreamController.DUm = t => {
+VehicleStreamController.nxm = t => {
   if (t) {
     const r = MathUtils_1.MathUtils.LongToNumber(t.F4n);
     WaitEntityTask_1.WaitEntityTask.Create("RoadNetworkEntityStartNavNotify", r, e => {
       if (e) {
         if ((e = ModelManager_1.ModelManager.CreatureModel.GetEntity(r))?.Valid) {
-          VehicleStreamController.UUm(e, t);
+          VehicleStreamController.sxm(e, t);
         } else if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("VehicleStream", 18, "[VehicleStreamController.OnRoadNetworkEntityStartNavNotify]无法获取对应实体", ["creatureDataId", r], ["F4n", t.F4n]);
         }

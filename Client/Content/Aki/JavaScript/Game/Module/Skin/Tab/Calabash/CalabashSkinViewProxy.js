@@ -5,188 +5,137 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.CalabashSkinViewProxy = undefined;
 const UE = require("ue");
-const TimerSystem_1 = require("../../../../../Core/Timer/TimerSystem");
 const FNameUtil_1 = require("../../../../../Core/Utils/FNameUtil");
 const ConfigManager_1 = require("../../../../Manager/ConfigManager");
-const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
-const UiCameraAnimationManager_1 = require("../../../UiCameraAnimation/UiCameraAnimationManager");
-const UiCameraHandleData_1 = require("../../../UiCameraAnimation/UiCameraContext/UiCameraHandleData");
+const SkinViewModelBase_1 = require("../../SkinViewModelBase");
 const CalabashSkinData_1 = require("./CalabashSkinData");
 const CalabashSkinDefine_1 = require("./CalabashSkinDefine");
-class CalabashSkinViewProxy {
+class CalabashSkinViewProxy extends SkinViewModelBase_1.ViewModelBase {
   constructor() {
-    this.View = undefined;
-    this.SkinRootViewModel = undefined;
-    this.TimeHandler = undefined;
-    this.FailRequestCd = 0;
-    this.NeedStopRotate = false;
-    this.SkinDataList = [];
-    this.EquipSkinId = CalabashSkinDefine_1.CALABASH_SKIN_DEFAULT_ID;
-    this.SelectedSkinId = CalabashSkinDefine_1.CALABASH_SKIN_DEFAULT_ID;
-    this.SkinIdFromSkip = CalabashSkinDefine_1.CALABASH_SKIN_DEFAULT_ID;
+    super();
+    this.W9m = false;
+    this.Q9m = 0;
+    this.K9m = CalabashSkinDefine_1.CALABASH_SKIN_DEFAULT_ID;
+    this.X9m = CalabashSkinDefine_1.CALABASH_SKIN_DEFAULT_ID;
+    this.G9m = undefined;
     this.NeedLoadModel = false;
-    this.CalabashHideUiClick = i => {
-      if (i === 1) {
-        this.View?.ShowView();
-        this.SkinRootViewModel.ShowRootView();
-        this.View?.SwitchHuluRotate(false);
-        this.kBd();
-        this.iHa();
-      } else {
-        this.View?.HideView();
-        this.SkinRootViewModel.HideRootView();
-        this.View?.SwitchHuluRotate(this.NeedStopRotate);
-        this.OBd();
-      }
+    this.CalabashGridItemCanExecuteChange = e => {
+      e = e.SkinId;
+      return this.GetSelectedSkinId() !== e;
     };
-    this.CalabashConfirmClick = async () => {
-      var i;
-      var a;
-      if (!this.TimeHandler) {
-        if (ControllerHolder_1.ControllerHolder.SkinController.CheckCanWearSkinAndShowTip()) {
-          if (await ControllerHolder_1.ControllerHolder.CalabashSkinController.RequestCalabashSkinTakeOn(this.SelectedSkinId)) {
-            i = this.Ril(this.EquipSkinId);
-            a = this.Ril(this.SelectedSkinId);
-            this.View?.RefreshGridSelect(i, a);
-            this.View?.RefreshConfirmBox(true);
-            this.View?.ShowEquipTips();
-            this.View?.RefreshMainRoleHulu();
-            this.EquipSkinId = this.SelectedSkinId;
-          }
-        } else {
-          this.qBd();
-        }
-      }
-    };
-    this.CalabashGridItemClick = i => {
-      i = i.Data.SkinId;
-      this.Pil(i);
-      this.View?.SwitchHuluObserver(i);
-      this.SelectedSkinId = i;
-    };
-    this.CalabashGridItemCanExecuteChange = i => {
-      i = i.SkinId;
-      return this.SelectedSkinId !== i;
-    };
+    this.DataMap.set(0, []);
+    this.DataMap.set(1, CalabashSkinDefine_1.CALABASH_SKIN_DEFAULT_ID);
+    this.DataMap.set(2, CalabashSkinDefine_1.CALABASH_SKIN_DEFAULT_ID);
   }
-  RegisterView(i, a) {
-    this.View = i;
-    this.SkinRootViewModel = a;
-    this.FailRequestCd = ConfigManager_1.ConfigManager.SkinConfig.GetCalabashSkinFailRequestCd();
-    this.NeedStopRotate = ConfigManager_1.ConfigManager.SkinConfig.GetCalabashSkinNeedStopRotate();
+  get NeedStopRotate() {
+    return this.W9m;
   }
-  GBd(i) {
-    return new CalabashSkinData_1.CalabashSkinData(i);
+  get FailRequestCd() {
+    return this.Q9m;
   }
-  Ril(a) {
-    var i = this.SkinDataList.findIndex(i => i.SkinId === a);
-    if (i < 0) {
+  Init(e) {
+    this.X9m = e.CalabashSkinId ?? CalabashSkinDefine_1.CALABASH_SKIN_DEFAULT_ID;
+    this.Q9m = ConfigManager_1.ConfigManager.SkinConfig.GetCalabashSkinFailRequestCd();
+    this.W9m = ConfigManager_1.ConfigManager.SkinConfig.GetCalabashSkinNeedStopRotate();
+    this.InitSkinDataList();
+    this.InitGridSelected();
+  }
+  GetSkinDataList() {
+    return this.GetData(0);
+  }
+  GetSkinDataByIndex(e) {
+    return this.GetSkinDataList()[e];
+  }
+  GetSkinDataBySkinId(e) {
+    e = this.GetDataIndexBySkinId(e);
+    return this.GetSkinDataByIndex(e);
+  }
+  SetEquipSkinId(e, a) {
+    this.K9m = this.GetEquipSkinId();
+    this.SetData(1, e, a);
+  }
+  GetEquipSkinId() {
+    return this.GetData(1);
+  }
+  SetSelectedSkinId(e, a) {
+    this.SetData(2, e, a);
+  }
+  GetSelectedSkinId() {
+    return this.GetData(2);
+  }
+  SetGetDragItemFunc(e) {
+    this.G9m = e;
+  }
+  get PrevEquipSkinId() {
+    return this.K9m;
+  }
+  GetDragItem() {
+    return this.G9m?.();
+  }
+  GBd(e) {
+    return new CalabashSkinData_1.CalabashSkinData(e);
+  }
+  GetDataIndexBySkinId(a) {
+    var e = this.GetSkinDataList().findIndex(e => e.SkinId === a);
+    if (e < 0) {
       return 0;
     } else {
-      return i;
+      return e;
     }
   }
-  Pil(i) {
-    var a = this.Ril(i);
-    var t = this.SkinDataList[a];
-    this.View?.RefreshBottom(t, this.EquipSkinId === i);
-    this.View?.RefreshText(t.Name, t.Description);
-    this.View?.SelectedGrid(a);
-  }
-  qBd() {
-    this.TimeHandler ||= TimerSystem_1.GameplayTimerSystem.Delay(() => {
-      this.TimeHandler = undefined;
-    }, this.FailRequestCd);
-  }
-  FBd() {
-    if (this.TimeHandler) {
-      TimerSystem_1.GameplayTimerSystem.Remove(this.TimeHandler);
-      this.TimeHandler = undefined;
-    }
-  }
-  NBd() {
-    var i;
-    var a;
-    if (this.SkinRootViewModel.CameraInputComponent) {
-      a = ConfigManager_1.ConfigManager.UiRoleCameraConfig.GetRoleCameraConfig(CalabashSkinDefine_1.CALABASH_CONFIG_TAG);
-      i = UE.KuroCollectActorComponent.GetActorWithTag(FNameUtil_1.FNameUtil.GetDynamicFName(CalabashSkinDefine_1.DEFAULT_CALABASH_SKIN_CASE), 1).D_K2_GetActorLocation();
-      a = {
-        DragComponent: this.View.GetDragItem(),
-        CameraSettingConfig: a,
-        SourceLocation: i
-      };
-      this.SkinRootViewModel.CameraInputComponent.InitData(a);
-    }
-  }
-  OBd() {
-    if (this.SkinRootViewModel.CameraInputComponent) {
-      this.NBd();
-      this.SkinRootViewModel.CameraInputComponent.CanCameraInput = true;
-      this.SkinRootViewModel.CameraInputComponent.Start();
-      this.SkinRootViewModel.CameraInputComponent.Activate();
-    }
-  }
-  kBd() {
-    if (this.SkinRootViewModel.CameraInputComponent) {
-      this.SkinRootViewModel.CameraInputComponent.CanCameraInput = false;
-      this.SkinRootViewModel.CameraInputComponent.End();
-    }
-  }
-  iHa() {
-    var i = UiCameraHandleData_1.UiCameraHandleData.NewByView("CalabashSkinTabView");
-    UiCameraAnimationManager_1.UiCameraAnimationManager.PushCameraHandle(i, true, true, "1001");
-  }
-  TryPushCamera() {
-    this.NeedLoadModel = true;
-    var i = UiCameraHandleData_1.UiCameraHandleData.NewByView("CalabashSkinTabView");
-    UiCameraAnimationManager_1.UiCameraAnimationManager.PushCameraHandle(i, true, true, "10010");
+  GetCalabashSkinTabCameraInputData() {
+    var e = ConfigManager_1.ConfigManager.UiRoleCameraConfig.GetRoleCameraConfig(CalabashSkinDefine_1.CALABASH_CONFIG_TAG);
+    var a = UE.KuroCollectActorComponent.GetActorWithTag(FNameUtil_1.FNameUtil.GetDynamicFName(CalabashSkinDefine_1.DEFAULT_CALABASH_SKIN_CASE), 1).D_K2_GetActorLocation();
+    return {
+      DragComponent: this.GetDragItem(),
+      CameraSettingConfig: e,
+      SourceLocation: a
+    };
   }
   InitGridSelected() {
-    if (this.SkinIdFromSkip !== CalabashSkinDefine_1.CALABASH_SKIN_DEFAULT_ID) {
-      this.SelectedSkinId = this.SkinIdFromSkip;
+    if (this.X9m !== CalabashSkinDefine_1.CALABASH_SKIN_DEFAULT_ID) {
+      this.SetSelectedSkinId(this.X9m);
     } else {
-      this.SelectedSkinId = ModelManager_1.ModelManager.CalabashSkinModel.GetCurrentEquipSkinId();
+      this.SetSelectedSkinId(ModelManager_1.ModelManager.CalabashSkinModel.GetCurrentEquipSkinId());
     }
-    this.EquipSkinId = ModelManager_1.ModelManager.CalabashSkinModel.GetCurrentEquipSkinId();
-    this.Pil(this.SelectedSkinId);
+    var e = ModelManager_1.ModelManager.CalabashSkinModel.GetCurrentEquipSkinId();
+    this.K9m = e;
+    this.SetEquipSkinId(e);
   }
   InitSkinDataList() {
-    var i = ConfigManager_1.ConfigManager.SkinConfig.GetCalabashSkinConfigList();
+    var e = ConfigManager_1.ConfigManager.SkinConfig.GetCalabashSkinConfigList();
     const a = this.GBd(CalabashSkinDefine_1.CALABASH_SKIN_DEFAULT_ID);
-    this.SkinDataList.push(a);
-    for (const s of i) {
-      var t = ConfigManager_1.ConfigManager.SkinConfig.GetCalabashSkinConfig(s.Id);
+    var i = this.GetSkinDataList();
+    i.push(a);
+    for (const r of e) {
+      var t = ConfigManager_1.ConfigManager.SkinConfig.GetCalabashSkinConfig(r.Id);
       if (t) {
-        var e = ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(t.Id);
-        if (!(e <= 0) || t.ShowWhenLocked) {
-          const a = this.GBd(s.Id);
-          this.SkinDataList.push(a);
+        var n = ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(t.Id);
+        if (!(n <= 0) || t.ShowWhenLocked) {
+          const a = this.GBd(r.Id);
+          i.push(a);
         }
       }
     }
-    this.SkinDataList.sort((i, a) => {
-      var t;
-      if (i.IsEmptyData !== a.IsEmptyData) {
-        if (i.IsEmptyData) {
+    i.sort((e, a) => {
+      var i;
+      if (e.IsEmptyData !== a.IsEmptyData) {
+        if (e.IsEmptyData) {
           return -1;
         } else {
           return 1;
         }
-      } else if ((t = i.GetIsLock()) !== a.GetIsLock()) {
-        if (t) {
+      } else if ((i = e.GetIsLock()) !== a.GetIsLock()) {
+        if (i) {
           return 1;
         } else {
           return -1;
         }
       } else {
-        return a.SortIndex - i.SortIndex;
+        return a.SortIndex - e.SortIndex;
       }
     });
-  }
-  BeforeDestroy() {
-    this.View?.ReleaseHuluObserver();
-    this.FBd();
   }
 }
 exports.CalabashSkinViewProxy = CalabashSkinViewProxy;

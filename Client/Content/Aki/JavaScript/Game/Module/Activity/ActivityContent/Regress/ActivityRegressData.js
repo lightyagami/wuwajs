@@ -27,13 +27,13 @@ class ActivityRegressData extends ActivityData_1.ActivityBaseData {
     this.yfa = 0;
     this.CurrentUseTrialRole = 0;
     this.DisposableReward = false;
-    this.c$f = 0;
-    this.d$f = undefined;
+    this.Drg = 0;
+    this.Urg = undefined;
     this.lp1 = [RegressDefine_1.ERegressQuestionnaireType.Type1, RegressDefine_1.ERegressQuestionnaireType.Type2];
     this.Jl1 = new Map();
   }
   get PrevBpExp() {
-    return this.c$f;
+    return this.Drg;
   }
   PhraseEx(e) {
     this.zl1 = e.Zh1;
@@ -56,10 +56,10 @@ class ActivityRegressData extends ActivityData_1.ActivityBaseData {
           Log_1.Log.Warn("ActivityRecall", 63, "回流活动-ActivityRegressData.PhraseEx()->", ["协议下发的回流活动数据没有已经领取的积分奖励, data:", this.zl1.Hca]);
         }
       }
-      this.DisposableReward = this.zl1.Gyf;
-      this.CurrentUseTrialRole = this.zl1.RIf;
-      this._Df(this.zl1.J6n);
-      ModelManager_1.ModelManager.TrialRoleModel.SetCurUseTrialRole(this.CurrentUseTrialRole, this.zl1.oXf);
+      this.DisposableReward = this.zl1.eTf;
+      this.CurrentUseTrialRole = this.zl1.nRf;
+      this.Hqf(this.zl1.J6n);
+      ModelManager_1.ModelManager.TrialRoleModel.SetCurUseTrialRole(this.CurrentUseTrialRole, this.zl1.h_g);
       this.EndOpenTimeInternal = MathUtils_1.MathUtils.LongToNumber(this.zl1.dps);
       this.EndShowTimeInternal = this.EndOpenTimeInternal;
       if (this.EndOpenTimeInternal === 0) {
@@ -82,17 +82,17 @@ class ActivityRegressData extends ActivityData_1.ActivityBaseData {
       Log_1.Log.Error("ActivityRecall", 63, "回流活动-ActivityRegressData.PhraseEx()->", ["协议下发的活动数据没有回流活动相关的, data:", this.zl1]);
     }
   }
-  _Df(e) {
+  Hqf(e) {
     var t;
     var r;
     var i = [];
     var o = new Set();
     for (const s of e) {
       i.push({
-        TrialRoleId: s.Ogf,
+        TrialRoleId: s.HCf,
         IsUnlocked: true
       });
-      var a = ConfigManager_1.ConfigManager.TrialRoleConfig?.GetTrialRoleGroupId(s.Ogf);
+      var a = ConfigManager_1.ConfigManager.TrialRoleConfig?.GetTrialRoleGroupId(s.HCf);
       o.add(a);
     }
     for ([t, r] of ConfigManager_1.ConfigManager.TrialRoleConfig?.GetTrialRoleAllConfigByType(3)) {
@@ -373,8 +373,8 @@ class ActivityRegressData extends ActivityData_1.ActivityBaseData {
   hda(e) {
     return this.zl1.Hca.includes(e);
   }
-  DBf(e) {
-    return this.zl1.Oyf.includes(e);
+  MNf(e) {
+    return this.zl1.ZIf.includes(e);
   }
   GetRegressTaskScoreRewardState(e) {
     if (this.hda(e.Id)) {
@@ -386,9 +386,9 @@ class ActivityRegressData extends ActivityData_1.ActivityBaseData {
     }
   }
   GetRegressTaskPayScoreRewardState(e) {
-    if (this.DBf(e.Id)) {
+    if (this.MNf(e.Id)) {
       return 2;
-    } else if (this.zl1.mAf && this.GetRegressTaskScore() >= e.NeedScore) {
+    } else if (this.zl1.wqf && this.GetRegressTaskScore() >= e.NeedScore) {
       return 1;
     } else {
       return 0;
@@ -406,8 +406,8 @@ class ActivityRegressData extends ActivityData_1.ActivityBaseData {
   }
   SetRegressScoreRewardReached(e) {
     this.zl1.Hca = this.zl1.Hca.concat(e);
-    if (this.zl1.mAf) {
-      this.zl1.Oyf = this.zl1.Oyf.concat(e);
+    if (this.zl1.wqf) {
+      this.zl1.ZIf = this.zl1.ZIf.concat(e);
     }
   }
   GetRegressTaskProgressTuple() {
@@ -512,13 +512,13 @@ class ActivityRegressData extends ActivityData_1.ActivityBaseData {
     };
   }
   IsPayRewardUnlock() {
-    return this.zl1?.mAf ?? false;
+    return this.zl1?.wqf ?? false;
   }
   GetMaxLevel() {
     return this.GetSortedRegressBonusRewardConfigList().length;
   }
   SetPayRewardUnlock(e) {
-    this.zl1.mAf = e;
+    this.zl1.wqf = e;
   }
   ResetBpPayButtonRedDot() {
     LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.ActivityRegressBpPayButtonRedDotCheckedInPeriod, false);
@@ -530,15 +530,15 @@ class ActivityRegressData extends ActivityData_1.ActivityBaseData {
     LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.ActivityRegressBpPayButtonRedDotCheckedInPeriod, true);
   }
   RefreshPrevBpExp() {
-    this.c$f = ModelManager_1.ModelManager.InventoryModel.GetCommonItemCount(20);
+    this.Drg = ModelManager_1.ModelManager.InventoryModel.GetCommonItemCount(20);
   }
   GetSortedRegressBonusRewardConfigList() {
     var e;
-    if (this.d$f === undefined || this.d$f.length === 0) {
+    if (this.Urg === undefined || this.Urg.length === 0) {
       e = ConfigManager_1.ConfigManager.ActivityRegressConfig.GetRegressBonusRewardConfigList(this.Grade) ?? [];
-      this.d$f = [...e].sort((e, t) => e.NeedScore - t.NeedScore);
+      this.Urg = [...e].sort((e, t) => e.NeedScore - t.NeedScore);
     }
-    return this.d$f;
+    return this.Urg;
   }
 }
 exports.ActivityRegressData = ActivityRegressData;

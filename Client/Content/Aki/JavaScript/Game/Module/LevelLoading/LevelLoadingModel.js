@@ -6,10 +6,9 @@ Object.defineProperty(exports, "__esModule", {
 exports.LevelLoadingModel = undefined;
 const Log_1 = require("../../../Core/Common/Log");
 const ModelBase_1 = require("../../../Core/Framework/ModelBase");
-const ResourceSystem_1 = require("../../../Core/Resource/ResourceSystem");
+const LoadModeManager_1 = require("../../../Core/Performance/LoadMode/LoadModeManager");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
-const GlobalData_1 = require("../../GlobalData");
 class LevelLoadingModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
@@ -34,14 +33,12 @@ class LevelLoadingModel extends ModelBase_1.ModelBase {
     return !(this.Spi = undefined);
   }
   SetLoadingState(e) {
-    var o;
     if (this.ypi !== e) {
-      o = "LoadingMode[Fade]";
       if (this.ypi = e) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Loading", 7, "LevelLoading:LoadingModeEnable");
         }
-        ResourceSystem_1.ResourceSystem.SetLoadModeInLoading(GlobalData_1.GlobalData.World, o);
+        LoadModeManager_1.LoadModeManager.SetLoadModeByReason("Loading", "LevelLoading");
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.AddLevelLoadingTimeDilationTag);
       } else {
         this.Ipi();
@@ -49,8 +46,8 @@ class LevelLoadingModel extends ModelBase_1.ModelBase {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Loading", 7, "LevelLoading:LoadingModeDisable");
         }
-        if (ResourceSystem_1.ResourceSystem.IsLoadingReasonNotEmpty(o)) {
-          ResourceSystem_1.ResourceSystem.SetLoadModeInGame(GlobalData_1.GlobalData.World, o);
+        if (LoadModeManager_1.LoadModeManager.IsReasonTargetNotDefault("LevelLoading")) {
+          LoadModeManager_1.LoadModeManager.ResetLoadModeByReason("LevelLoading");
         }
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RemoveLevelLoadingTimeDilationTag);
       }

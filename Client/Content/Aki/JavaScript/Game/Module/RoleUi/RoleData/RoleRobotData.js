@@ -44,29 +44,34 @@ class RoleRobotData extends RoleDataBase_1.RoleDataBase {
     var t = this.GetRoleConfig().SkillId;
     var r = this.GetRoleId();
     var i = ModelManager_1.ModelManager.RoleModel.ClientCheckRoleIsUpgradeLightMainRole(r);
-    for (const g of e.GetSkillList()) {
-      var n = this.__o(g.Id);
+    for (const l of e.GetSkillList()) {
+      var n = this.__o(l.Id);
       var n = n < a.UnlockSkillLevel ? n : a.UnlockSkillLevel;
-      var o = ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillTreeNodeByGroupIdAndSkillId(t, g.Id);
+      var o = ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillTreeNodeByGroupIdAndSkillId(t, l.Id);
       if (o || i) {
         if (o?.NodeType === 3) {
-          e.SetSkillLevel(g.Id, 0);
+          e.SetSkillLevel(l.Id, 0);
         } else {
-          e.SetSkillLevel(g.Id, n);
+          e.SetSkillLevel(l.Id, n);
         }
-        e.SetSkillReferenceMapBySkillId(g.Id);
+        e.SetSkillReferenceMapBySkillId(l.Id);
       }
     }
-    var s = [];
-    for (const h of a.UnlockSkillNodeList) {
-      var l = ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillTreeNodeByGroupIdAndIndex(t, h);
-      var _ = l?.NodeType;
-      if (_ === 4 || _ === 3) {
-        s.push(new SkillNodeDataInfo_1.SkillNodeDataInfo(l.Id, true, l.SkillId));
-      }
+    var s = new Map();
+    for (const _ of a.UnlockSkillNodeList) {
+      this.yVg(t, _, s);
     }
-    if (s.length > 0) {
-      e.SetSkillNodeStateData(s);
+    this.yVg(t, 8, s);
+    this.yVg(t, 17, s);
+    e.SetSkillNodeStateData(s);
+  }
+  yVg(a, e, t) {
+    var a = ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillTreeNodeByGroupIdAndIndex(a, e);
+    var e = a?.NodeType;
+    if (e === 4 || e === 3) {
+      e = a.Id;
+      a = new SkillNodeDataInfo_1.SkillNodeDataInfo(e, true, a.SkillId);
+      t.set(e, a);
     }
   }
   __o(a) {

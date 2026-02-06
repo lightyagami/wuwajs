@@ -63,13 +63,13 @@ let CharacterAnimationSyncComponent = CharacterAnimationSyncComponent_1 = class 
       if (ModelManager_1.ModelManager.GameModeModel.IsMulti && this.ActorComp.IsMoveAutonomousProxy) {
         (a = Protocol_1.Aki.Protocol.Se_.create()).hWn = t;
         a.lWn = i;
-        CombatMessage_1.CombatNet.Send(23511, this.Entity, a);
+        CombatMessage_1.CombatNet.Send(28212, this.Entity, a);
       }
     };
   }
   get MainAnimInstance() {
     var t;
-    if (!this.qwr && !(t = this.Entity.GetComponent(45), this.qwr = t?.MainAnimInstance, this.qwr)) {
+    if (!this.qwr && !(t = this.Entity.GetComponent(47), this.qwr = t?.MainAnimInstance, this.qwr)) {
       t = this.Entity.GetComponent(248);
       this.qwr = t?.MainAnimInstance;
     }
@@ -77,7 +77,7 @@ let CharacterAnimationSyncComponent = CharacterAnimationSyncComponent_1 = class 
   }
   get _wl() {
     var t;
-    if (!this.hwl && !(t = this.Entity.GetComponent(45), this.hwl = t?.SpecialAnimInstance, this.hwl)) {
+    if (!this.hwl && !(t = this.Entity.GetComponent(47), this.hwl = t?.SpecialAnimInstance, this.hwl)) {
       t = this.Entity.GetComponent(248);
       this.hwl = t?.SpecialAnimInstance;
     }
@@ -90,9 +90,9 @@ let CharacterAnimationSyncComponent = CharacterAnimationSyncComponent_1 = class 
   OnActivate() {
     CombatMessageController_1.CombatMessageController.RegisterAfterTick(this, this.X3r);
     this.ActorComp = this.Entity.CheckGetComponent(1);
-    this.Lie = this.Entity.GetComponent(215);
+    this.Lie = this.Entity.GetComponent(217);
     this.EIe = this.Entity.GetComponent(0);
-    if (this.Entity.GetComponent(306)?.IsEnableMorph()) {
+    if (this.Entity.GetComponent(308)?.IsEnableMorph()) {
       this.F4u = this.EIe?.GetModelConfig().ID ?? 0;
     }
     this.J3r();
@@ -148,7 +148,7 @@ let CharacterAnimationSyncComponent = CharacterAnimationSyncComponent_1 = class 
         }
       }
       var a = t?.cys?.fIs;
-      var o = this.Entity.GetComponent(186);
+      var o = this.Entity.GetComponent(188);
       if (o && a && a.length > 0) {
         for (const s of a) {
           o.HideBone(FNameUtil_1.FNameUtil.GetDynamicFName(s.sWn), !s.aWn, false);
@@ -198,7 +198,7 @@ let CharacterAnimationSyncComponent = CharacterAnimationSyncComponent_1 = class 
     }
   }
   static AnimationGameplayTagNotify(t, i) {
-    t?.GetComponent(51)?.AnimationGameplayTagHandle(i);
+    t?.GetComponent(53)?.AnimationGameplayTagHandle(i);
   }
   AnimationStateChangedPush(t, i, a) {
     var e;
@@ -209,7 +209,7 @@ let CharacterAnimationSyncComponent = CharacterAnimationSyncComponent_1 = class 
       if (e.rWn.length > MAX_ANIM_STATE_CHANGE_COUNT || e.oWn.length > MAX_ANIM_STATE_CHANGE_COUNT) {
         CombatLog_1.CombatLog.Error("Animation", t, "状态机增量变化数组超长", ["States", CharacterAnimationSyncComponent_1.OrderToString(e.rWn)], ["SpecialStates", CharacterAnimationSyncComponent_1.OrderToString(e.oWn)]);
       }
-      CombatMessage_1.CombatNet.Send(20809, t, e);
+      CombatMessage_1.CombatNet.Send(18415, t, e);
     }
   }
   AnimationStateInitPush() {
@@ -229,13 +229,13 @@ let CharacterAnimationSyncComponent = CharacterAnimationSyncComponent_1 = class 
         CombatLog_1.CombatLog.Error("Animation", this.Entity, "状态机增量变化数组超长", ["States", CharacterAnimationSyncComponent_1.OrderToString(e.rWn)], ["SpecialStates", CharacterAnimationSyncComponent_1.OrderToString(e.oWn)]);
       }
       CombatLog_1.CombatLog.Info("Animation", this.Entity, "动画状态机初始化请求", ["v", CharacterAnimationSyncComponent_1.OrderToString(i)]);
-      CombatMessage_1.CombatNet.Send(15226, this.Entity, e);
+      CombatMessage_1.CombatNet.Send(16294, this.Entity, e);
     }
   }
   static AnimationStateChangedNotify(t, i) {
     var a = t?.GetComponent(1);
     if (t && a && !a.IsMoveAutonomousProxy) {
-      if ((a = t.GetComponent(51)).F4u && i.R4u !== a.F4u) {
+      if ((a = t.GetComponent(53)).F4u && i.R4u !== a.F4u) {
         CombatLog_1.CombatLog.Info("Animation", t, "动画状态机修改通知, ModelId不匹配", ["NotifyModelId", i.R4u], ["CheckModelId", a.F4u]);
       } else {
         WorldGlobal_1.WorldGlobal.ToUeInt32Array(i.rWn, animationStates);
@@ -252,7 +252,7 @@ let CharacterAnimationSyncComponent = CharacterAnimationSyncComponent_1 = class 
       var a = MathUtils_1.MathUtils.LongToNumber(n.F4n);
       var a = ModelManager_1.ModelManager.CreatureModel.GetEntity(a);
       var e = a?.Entity?.GetComponent(1);
-      var o = a?.Entity?.GetComponent(51);
+      var o = a?.Entity?.GetComponent(53);
       if (e && o && !e.IsMoveAutonomousProxy) {
         for (const s of n.k9d) {
           if (o.F4u && s.R4u !== o.F4u) {
@@ -271,7 +271,7 @@ let CharacterAnimationSyncComponent = CharacterAnimationSyncComponent_1 = class 
   }
   static AnimationStateInitNotify(t, i) {
     CombatLog_1.CombatLog.Info("Animation", t, "动画状态机初始化通知", ["v", this.OrderToString(i.rWn)]);
-    var a = t.GetComponent(51);
+    var a = t.GetComponent(53);
     if (a.F4u && i.R4u !== a.F4u) {
       CombatLog_1.CombatLog.Info("Animation", t, "动画状态机初始化通知, ModelId不匹配", ["NotifyModelId", i.R4u], ["CheckModelId", a.F4u]);
     } else {
@@ -304,7 +304,7 @@ let CharacterAnimationSyncComponent = CharacterAnimationSyncComponent_1 = class 
     return i.ToString();
   }
   RebuildAnimationStates(t = true) {
-    var i = this.Entity.GetComponent(45)?.MainAnimInstance;
+    var i = this.Entity.GetComponent(47)?.MainAnimInstance;
     if (i) {
       this.qwr = i;
       this.F4u = t ? this.EIe?.GetModelConfig().ID ?? 0 : 0;
@@ -319,5 +319,5 @@ __decorate([CombatMessage_1.CombatNet.Listen("$Fn", true)], CharacterAnimationSy
 __decorate([CombatMessage_1.CombatNet.Listen("NFn", true)], CharacterAnimationSyncComponent, "AnimationStateChangedNotify", null);
 __decorate([CombatMessage_1.CombatNet.Listen("B9d", false)], CharacterAnimationSyncComponent, "PackAnimChangedNotify", null);
 __decorate([CombatMessage_1.CombatNet.Listen("kFn", false)], CharacterAnimationSyncComponent, "AnimationStateInitNotify", null);
-CharacterAnimationSyncComponent = CharacterAnimationSyncComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(51)], CharacterAnimationSyncComponent);
+CharacterAnimationSyncComponent = CharacterAnimationSyncComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(53)], CharacterAnimationSyncComponent);
 exports.CharacterAnimationSyncComponent = CharacterAnimationSyncComponent; //# sourceMappingURL=CharacterAnimationSyncComponent.js.map

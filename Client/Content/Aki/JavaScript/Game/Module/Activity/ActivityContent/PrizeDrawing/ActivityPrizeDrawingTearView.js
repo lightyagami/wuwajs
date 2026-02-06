@@ -38,19 +38,19 @@ class ActivityPrizeDrawingTearView extends UiTickViewBase_1.UiTickViewBase {
   constructor() {
     super(...arguments);
     this.bzt = false;
-    this.LAm = 0;
-    this.PAm = 0;
-    this.DAm = undefined;
+    this.FPm = 0;
+    this.NPm = 0;
+    this.jPm = undefined;
     this.wAt = undefined;
     this.yGe = undefined;
-    this.tSm = undefined;
-    this.iSm = undefined;
+    this.zym = undefined;
+    this.Jym = undefined;
     this.SPe = undefined;
     this.ac = 0;
     this.Oze = false;
-    this.UAm = false;
-    this.xAm = false;
-    this.B2m = () => {
+    this.HPm = false;
+    this.$Pm = false;
+    this.Ykm = () => {
       this.Oze = Info_1.Info.IsInGamepad();
       if (this.Oze) {
         this.GetItem(6)?.SetUIActive(false);
@@ -59,11 +59,11 @@ class ActivityPrizeDrawingTearView extends UiTickViewBase_1.UiTickViewBase {
       }
     };
     this.Pkc = () => {
-      if (!this.iSm?.IsUnOpened()) {
+      if (!this.Jym?.IsUnOpened()) {
         if (this.CNe.IsAllFinished() || !this.CNe.HaveEnoughCoinToRoll()) {
           this.CloseMe();
         } else {
-          this.rSm();
+          this.Zym();
         }
       }
     };
@@ -72,53 +72,53 @@ class ActivityPrizeDrawingTearView extends UiTickViewBase_1.UiTickViewBase {
     };
     this.Y8d = () => {
       var t;
-      if (this.iSm?.IsUnOpened()) {
-        this.iSm.SetTearShadowActive(false);
+      if (this.Jym?.IsUnOpened()) {
+        this.Jym.SetTearShadowActive(false);
         this.SetGamepadCanPress(false);
-        t = tearType2AnimName[this.LAm];
+        t = tearType2AnimName[this.FPm];
         this.SPe?.PlaySequencePurely(t, true);
       }
     };
     this.yct = t => {
       if (t === "SkipA" || t === "SkipB" || t === "SkipC") {
-        this.iSm?.Open(false);
+        this.Jym?.Open(false);
       }
     };
-    this.BAm = t => {
+    this.WPm = t => {
       if (t === "Reveal") {
-        this.iSm?.PlayRevelAnimation();
+        this.Jym?.PlayRevelAnimation();
       }
     };
     this.Eem = t => {
       this.bzt = true;
-      if (this.iSm?.IsUnOpened()) {
+      if (this.Jym?.IsUnOpened()) {
         this.$8d(1);
-        this.iSm?.OnStartDragging();
+        this.Jym?.OnStartDragging();
       }
       return true;
     };
     this.Iem = t => {
       this.bzt = false;
-      if (this.iSm?.IsUnOpened()) {
+      if (this.Jym?.IsUnOpened()) {
         this.$8d(0);
-        this.iSm?.OnStopDragging();
+        this.Jym?.OnStopDragging();
       }
       return true;
     };
     this.Tem = () => {
       this.SetGamepadCanPress(false);
-      if (this.Ikm() !== 0) {
+      if (this.Gqm() !== 0) {
         this.GetItem(9)?.SetUIActive(true);
-        this.nSm(this.iSm.GetFxControl(), false, true, TEAR_SHINE_ALPHA_TWEEN_DURATION);
-        this.nSm(this.iSm.GetFxControlMinor(), false, true, TEAR_SHINE_ALPHA_TWEEN_DURATION);
-        if (TimerSystem_1.GameplayTimerSystem.Has(this.DAm)) {
-          TimerSystem_1.GameplayTimerSystem.Remove(this.DAm);
+        this.tSm(this.Jym.GetFxControl(), false, true, TEAR_SHINE_ALPHA_TWEEN_DURATION);
+        this.tSm(this.Jym.GetFxControlMinor(), false, true, TEAR_SHINE_ALPHA_TWEEN_DURATION);
+        if (TimerSystem_1.GameplayTimerSystem.Has(this.jPm)) {
+          TimerSystem_1.GameplayTimerSystem.Remove(this.jPm);
         }
-        this.DAm = TimerSystem_1.GameplayTimerSystem.Delay(() => {
-          this.q2m();
+        this.jPm = TimerSystem_1.GameplayTimerSystem.Delay(() => {
+          this.Jkm();
         }, END_ANIM_DELAY);
       } else {
-        this.q2m();
+        this.Jkm();
       }
     };
   }
@@ -126,10 +126,10 @@ class ActivityPrizeDrawingTearView extends UiTickViewBase_1.UiTickViewBase {
     return ActivityControllerHolder_1.ActivityControllerHolder.PrizeDrawingController.ActivityData;
   }
   GetGamepadCanPress() {
-    return this.UAm;
+    return this.HPm;
   }
   SetGamepadCanPress(t) {
-    this.UAm = t;
+    this.HPm = t;
     UiNavigationViewManager_1.UiNavigationViewManager.RefreshCurrentHotKey();
   }
   OnRegisterComponent() {
@@ -142,14 +142,14 @@ class ActivityPrizeDrawingTearView extends UiTickViewBase_1.UiTickViewBase {
     t.push(this.wAt.CreateThenShowByActorAsync(this.GetItem(2).GetOwner()));
     var i = new CommonCurrencyItem_1.CommonCurrencyItem();
     t.push(i.CreateThenShowByResourceIdAsync("UiItem_Cost", this.GetItem(5)));
-    this.tSm = new PrizeDrawingTearCoverItem_1.PrizeDrawingTearCoverItemBase();
-    t.push(this.tSm.CreateThenShowByActorAsync(this.GetItem(8).GetOwner()));
-    this.iSm = new PrizeDrawingTearCoverItem_1.PrizeDrawingTearCoverItem();
-    t.push(this.iSm.CreateThenShowByActorAsync(this.GetItem(7).GetOwner()));
+    this.zym = new PrizeDrawingTearCoverItem_1.PrizeDrawingTearCoverItemBase();
+    t.push(this.zym.CreateThenShowByActorAsync(this.GetItem(8).GetOwner()));
+    this.Jym = new PrizeDrawingTearCoverItem_1.PrizeDrawingTearCoverItem();
+    t.push(this.Jym.CreateThenShowByActorAsync(this.GetItem(7).GetOwner()));
     await Promise.all(t);
     i.RefreshTemp(this.CNe.GetCostCoinId());
     i.SetButtonActive(false);
-    this.iSm.OpenedCallback = this.Tem;
+    this.Jym.OpenedCallback = this.Tem;
   }
   OnStart() {
     this.yGe = this.GetItem(4);
@@ -159,53 +159,53 @@ class ActivityPrizeDrawingTearView extends UiTickViewBase_1.UiTickViewBase {
     this.wAt?.SetFunction(this.Pkc);
     this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetRootItem());
     this.SPe.BindSequenceCloseEvent(this.yct);
-    this.B2m();
-    this.oSm();
+    this.Ykm();
+    this.eSm();
   }
   OnBeforeDestroy() {
     this.SPe?.Clear();
-    if (TimerSystem_1.GameplayTimerSystem.Has(this.DAm)) {
-      TimerSystem_1.GameplayTimerSystem.Remove(this.DAm);
+    if (TimerSystem_1.GameplayTimerSystem.Has(this.jPm)) {
+      TimerSystem_1.GameplayTimerSystem.Remove(this.jPm);
     }
   }
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.BAm);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InputControllerChange, this.B2m);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.WPm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InputControllerChange, this.Ykm);
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.BAm);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InputControllerChange, this.B2m);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.WPm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InputControllerChange, this.Ykm);
   }
   OnGamepadPress() {
-    this.xAm = true;
+    this.$Pm = true;
     this.Eem(undefined);
   }
   OnGamepadRelease() {
-    this.xAm = false;
+    this.$Pm = false;
     this.Iem(undefined);
   }
   OnGamepadHold(t) {
-    var t = t >= 1 ? 1 : MathUtils_1.MathUtils.Lerp(this.PAm, t, GAMEPAD_PROGRESS_TWEEN_DURATION);
-    this.PAm = t;
+    var t = t >= 1 ? 1 : MathUtils_1.MathUtils.Lerp(this.NPm, t, GAMEPAD_PROGRESS_TWEEN_DURATION);
+    this.NPm = t;
     var i = MathUtils_1.MathUtils.Lerp(0, -GAMEPAD_OFFSET_X_RANGE, t);
-    this.kAm(i, 0);
-    this.iSm?.OnTick(t);
+    this.QPm(i, 0);
+    this.Jym?.OnTick(t);
   }
   OnTick() {
     var t;
     var i;
-    if (!this.xAm) {
-      this.PAm = MathUtils_1.MathUtils.Lerp(this.PAm, 0, GAMEPAD_PROGRESS_TWEEN_DURATION);
+    if (!this.$Pm) {
+      this.NPm = MathUtils_1.MathUtils.Lerp(this.NPm, 0, GAMEPAD_PROGRESS_TWEEN_DURATION);
       t = this.yGe.GetAnchorOffsetX();
       i = this.yGe.GetAnchorOffsetY();
-      this.kAm(t, i);
+      this.QPm(t, i);
       if (this.SPe?.GetCurrentSequence() === undefined) {
         i = MathUtils_1.MathUtils.Clamp(-t / MAX_SLIDE_DISTANCE, 0, 1);
-        this.iSm?.OnTick(Math.max(i, this.PAm));
+        this.Jym?.OnTick(Math.max(i, this.NPm));
       }
     }
   }
-  kAm(t, i) {
+  QPm(t, i) {
     var e = this.yGe.RelativeRotation;
     let s = 0;
     let h = 0;
@@ -219,28 +219,28 @@ class ActivityPrizeDrawingTearView extends UiTickViewBase_1.UiTickViewBase {
     e.Pitch = MathUtils_1.MathUtils.Lerp(e.Pitch, i, TEAR_DAMPING_SPEED);
     this.yGe.SetUIRelativeRotation(e);
   }
-  oSm() {
-    this.O2m();
+  eSm() {
+    this.Zkm();
     this.z8d().then(() => {
-      this.G2m();
+      this.eqm();
     });
   }
-  async rSm() {
-    this.O2m();
-    this.iSm?.Reset();
-    this.iSm?.SetUiActive(true);
+  async Zym() {
+    this.Zkm();
+    this.Jym?.Reset();
+    this.Jym?.SetUiActive(true);
     var t = [];
     t.push(this.z8d());
     t.push(this.SPe?.PlaySequenceAsync("Next", new CustomPromise_1.CustomPromise(), true));
     await Promise.all(t);
-    this.G2m();
+    this.eqm();
   }
-  O2m() {
+  Zkm() {
     this.$8d(0, false);
   }
-  G2m() {
+  eqm() {
     this.SetGamepadCanPress(true);
-    this.F2m();
+    this.tqm();
     this.GetItem(9)?.SetUIActive(false);
   }
   async z8d() {
@@ -261,12 +261,12 @@ class ActivityPrizeDrawingTearView extends UiTickViewBase_1.UiTickViewBase {
       });
       let t = undefined;
       t = i.POd === 1 ? 2 : e[0].Rare === 0 ? 3 : e[0].Times > 1 ? 1 : 0;
-      this.LAm = t;
-      this.iSm?.RefreshEffectVisible(this.Ikm());
-      await this.iSm?.CreateTearItem(e, t);
+      this.FPm = t;
+      this.Jym?.RefreshEffectVisible(this.Gqm());
+      await this.Jym?.CreateTearItem(e, t);
     }
   }
-  F2m() {
+  tqm() {
     if (this.CNe.IsAllFinished()) {
       this.wAt?.SetShowText("PrefabTextItem_1120255634_Text");
     } else if (this.CNe.HaveEnoughCoinToRoll()) {
@@ -275,25 +275,25 @@ class ActivityPrizeDrawingTearView extends UiTickViewBase_1.UiTickViewBase {
       this.wAt?.SetShowText("Ichiban_Kuji_confirm");
     }
   }
-  q2m() {
-    this.DAm = undefined;
-    var t = this.iSm?.GetTearItem();
-    this.tSm?.AttachTearItemToContent(t);
-    this.iSm?.SetUiActive(false);
-    this.tSm?.SetUiActive(true);
+  Jkm() {
+    this.jPm = undefined;
+    var t = this.Jym?.GetTearItem();
+    this.zym?.AttachTearItemToContent(t);
+    this.Jym?.SetUiActive(false);
+    this.zym?.SetUiActive(true);
     this.$8d(2);
     this.SPe?.PlaySequencePurely("Next");
     this.SPe?.StopCurrentSequence();
   }
   $8d(t, i = true) {
     this.ac = t;
-    this.nSm(this.GetItem(6), t === 0 && !this.Oze, i);
-    this.nSm(this.GetButton(1).RootUIComp, t === 0, i);
-    this.nSm(this.GetButton(0).RootUIComp, t === 2, i);
-    this.nSm(this.wAt.GetRootItem(), t === 2, i);
-    this.nSm(this.GetItem(5), t !== 1, i);
+    this.tSm(this.GetItem(6), t === 0 && !this.Oze, i);
+    this.tSm(this.GetButton(1).RootUIComp, t === 0, i);
+    this.tSm(this.GetButton(0).RootUIComp, t === 2, i);
+    this.tSm(this.wAt.GetRootItem(), t === 2, i);
+    this.tSm(this.GetItem(5), t !== 1, i);
   }
-  nSm(t, i, e, s) {
+  tSm(t, i, e, s) {
     var h;
     if (e) {
       e = i ? 1 : 0;
@@ -307,8 +307,8 @@ class ActivityPrizeDrawingTearView extends UiTickViewBase_1.UiTickViewBase {
     }
     t.SetRaycastTarget(i);
   }
-  Ikm() {
-    switch (this.LAm) {
+  Gqm() {
+    switch (this.FPm) {
       case 0:
         return 0;
       case 3:

@@ -25,11 +25,8 @@ class RegionalTerminalActivityData extends RegionalTerminalGameplayData_1.Region
     }
   }
   BarFunction() {
-    var e;
     if (this.GetLockState()) {
       ControllerHolder_1.ControllerHolder.RegionalTerminalController.OpenTerminalOverviewView(this.Id);
-    } else if ((e = this.GetGameplayConfig()).AreaForbiddenTips && !ModelManager_1.ModelManager.RegionalTerminalModel.CheckGameplayAreaAvailable(this.Id)) {
-      ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId(e.AreaForbiddenTips);
     } else {
       this.TerminalFunction();
     }

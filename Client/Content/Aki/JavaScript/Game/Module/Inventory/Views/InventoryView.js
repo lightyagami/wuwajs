@@ -452,6 +452,9 @@ class InventoryView extends UiViewBase_1.UiViewBase {
       Log_1.Log.Info("Inventory", 37, "背包物品滚动框ViewPort尺寸：", ["宽度", i], ["高度", e]);
     }
   }
+  OnStart() {
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnVisionRefineSubNeedAck);
+  }
   OnAfterPlayStartSequence() {
     var t = this.Ivt.GetSelectedIndex();
     this.Ivt.ScrollToToggleByIndex(t);

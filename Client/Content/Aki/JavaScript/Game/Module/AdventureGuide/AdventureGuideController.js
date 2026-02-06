@@ -51,8 +51,8 @@ class AdventureGuideController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TrackMapMark, this.OnTrackMapMark);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDone, this.$5e);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnFunctionOpenUpdate, this.RQe);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnEnterOnlineWorld, this.Ohf);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnLeaveOnlineWorld, this.Ohf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnEnterOnlineWorld, this.i_f);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnLeaveOnlineWorld, this.i_f);
   }
   static OnRemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnLoadingNetDataDone, this.Q5e);
@@ -60,8 +60,8 @@ class AdventureGuideController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TrackMapMark, this.OnTrackMapMark);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDone, this.$5e);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnFunctionOpenUpdate, this.RQe);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnEnterOnlineWorld, this.Ohf);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnLeaveOnlineWorld, this.Ohf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnEnterOnlineWorld, this.i_f);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnLeaveOnlineWorld, this.i_f);
   }
   static EmitRedDotFirstAwardEvent(e) {
     var r = ModelManager_1.ModelManager.AdventureGuideModel.GetSilentAreaDetectData(e);
@@ -71,22 +71,22 @@ class AdventureGuideController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RedDotSilentFirstAwardResult, e);
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(24563, this.Y5e);
-    Net_1.Net.Register(23722, this.J5e);
-    Net_1.Net.Register(23161, this.Jcm);
-    Net_1.Net.Register(18102, this.Z5e);
-    Net_1.Net.Register(25319, this.eVe);
-    Net_1.Net.Register(23506, this.tVe);
-    Net_1.Net.Register(24586, this.Wkl);
+    Net_1.Net.Register(27890, this.Y5e);
+    Net_1.Net.Register(20611, this.J5e);
+    Net_1.Net.Register(20928, this.Jcm);
+    Net_1.Net.Register(19545, this.Z5e);
+    Net_1.Net.Register(28811, this.eVe);
+    Net_1.Net.Register(27392, this.tVe);
+    Net_1.Net.Register(26338, this.Wkl);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(24563);
-    Net_1.Net.UnRegister(23722);
-    Net_1.Net.UnRegister(23161);
-    Net_1.Net.UnRegister(18102);
-    Net_1.Net.UnRegister(25319);
-    Net_1.Net.UnRegister(23506);
-    Net_1.Net.UnRegister(24586);
+    Net_1.Net.UnRegister(27890);
+    Net_1.Net.UnRegister(20611);
+    Net_1.Net.UnRegister(20928);
+    Net_1.Net.UnRegister(19545);
+    Net_1.Net.UnRegister(28811);
+    Net_1.Net.UnRegister(27392);
+    Net_1.Net.UnRegister(26338);
   }
   static OnAddOpenViewCheckFunction() {
     UiManager_1.UiManager.AddOpenViewCheckFunction("AdventureGuideView", AdventureGuideController.iVe, "AdventureGuideController.CanOpenView");
@@ -112,7 +112,7 @@ class AdventureGuideController extends UiControllerBase_1.UiControllerBase {
     var e = Protocol_1.Aki.Protocol.J$n.create({
       W5n: e
     });
-    var e = await Net_1.Net.CallAsync(29634, e);
+    var e = await Net_1.Net.CallAsync(26291, e);
     AdventureGuideController.oVe(e);
   }
   static rVe(e, r) {
@@ -123,18 +123,18 @@ class AdventureGuideController extends UiControllerBase_1.UiControllerBase {
     var r = Protocol_1.Aki.Protocol.V$n.create({
       W5n: r
     });
-    Net_1.Net.Call(25630, r, AdventureGuideController.nVe);
+    Net_1.Net.Call(22769, r, AdventureGuideController.nVe);
   }
   static async RequestMultiForAdventureReward(e) {
     e = Protocol_1.Aki.Protocol.f8u.create({
       s5n: e
     });
-    e = await Net_1.Net.CallAsync(16407, e);
+    e = await Net_1.Net.CallAsync(26315, e);
     AdventureGuideController.U8u(e);
   }
   static async GetDetectionLabelInfoRequest() {
     var e = Protocol_1.Aki.Protocol.DXn.create({});
-    var e = await Net_1.Net.CallAsync(19902, e);
+    var e = await Net_1.Net.CallAsync(29873, e);
     AdventureGuideController.aVe(e);
   }
   static RequestForDetection(e, r, t) {
@@ -146,7 +146,7 @@ class AdventureGuideController extends UiControllerBase_1.UiControllerBase {
         h5n: e,
         o8n: t
       });
-      Net_1.Net.Call(17563, e, AdventureGuideController.hVe);
+      Net_1.Net.Call(21106, e, AdventureGuideController.hVe);
     }
   }
   static HardCode(e, r) {
@@ -173,59 +173,104 @@ class AdventureGuideController extends UiControllerBase_1.UiControllerBase {
       ModelManager_1.ModelManager.AdventureGuideModel.CleanCurTrackingMonster();
     }
   }
-  static _Ve(o, n) {
-    if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("AdventureGuide", 5, "尝试追踪下一个距离最近的怪物", ["探测Id", o]);
+  static NAg(e) {
+    let r = MAX_INT32_NUMBER;
+    let t = undefined;
+    let o = undefined;
+    var n;
+    var a = ModelManager_1.ModelManager.AdventureGuideModel.GetMonsterPendingList();
+    var i = ModelManager_1.ModelManager.CreatureModel.GetInstanceId();
+    for (const l of a.values()) {
+      if (i === l.MapId && (n = {
+        X: l.PositionX,
+        Y: l.PositionY,
+        Z: l.PositionZ
+      }, n = Vector_1.Vector.Create(n), (n = Vector_1.Vector.Dist(e, n)) < r)) {
+        r = n;
+        t = l.Id;
+      }
     }
-    if (o !== ModelManager_1.ModelManager.AdventureGuideModel.GetPendingMonsterConfId()) {
+    if (t) {
+      o = i;
+    } else {
+      for (const _ of a.values()) {
+        if (i !== _.MapId) {
+          var d = {
+            X: _.PositionX,
+            Y: _.PositionY,
+            Z: _.PositionZ
+          };
+          var d = Vector_1.Vector.Create(d);
+          var d = Vector_1.Vector.Dist(e, d);
+          r = d;
+          t = _.Id;
+          o = _.MapId;
+          ModelManager_1.ModelManager.AdventureGuideModel.SetFromManualDetect(true);
+          break;
+        }
+      }
+    }
+    return {
+      TargetId: t,
+      TargetMapId: o
+    };
+  }
+  static VAg(e, r) {
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("AdventureGuide", 5, "尝试追踪下一个距离最近的怪物", ["探测材料Id", e]);
+    }
+    if (e !== ModelManager_1.ModelManager.AdventureGuideModel.GetPendingMonsterConfId()) {
+      if (Log_1.Log.CheckWarn()) {
+        Log_1.Log.Warn("AdventureGuide", 5, "pending列表与探测材料目标不一致");
+      }
+    } else {
+      var {
+        TargetId: r,
+        TargetMapId: t
+      } = this.NAg(r);
+      if (r !== undefined) {
+        if (Log_1.Log.CheckDebug()) {
+          Log_1.Log.Debug("AdventureGuide", 5, "找到距离最近的怪物发起探测", ["材料探测Id", e], ["实体id", r], ["地图id", t]);
+        }
+        t = ModelManager_1.ModelManager.CreatureModel.GetEntityData(r, t);
+        if (t) {
+          t = ModelManager_1.ModelManager.AdventureGuideModel.GetMonsterDetectIdByBlueprintType(t?.BlueprintType);
+          if (t) {
+            this.Zcm(r, t, Protocol_1.Aki.Protocol.r8n.Proto_NormalMonster);
+            return;
+          }
+        }
+      }
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("AdventureGuide", 5, "没有找到距离最近怪物，结束探测", ["探测Id", e]);
+      }
+      ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("CannotFindTarget");
+      this.StopTrackCurDetectingMonster();
+      this.CancelDetectingRequest();
+    }
+  }
+  static _Ve(e, r) {
+    var t;
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("AdventureGuide", 5, "尝试追踪下一个距离最近的怪物", ["探测Id", e]);
+    }
+    if (e !== ModelManager_1.ModelManager.AdventureGuideModel.GetPendingMonsterConfId()) {
       if (Log_1.Log.CheckWarn()) {
         Log_1.Log.Warn("AdventureGuide", 5, "pending列表与探测目标不一致");
       }
     } else {
-      let e = MAX_INT32_NUMBER;
-      let r = undefined;
-      let t = undefined;
-      var a;
-      var i = ModelManager_1.ModelManager.AdventureGuideModel.GetMonsterPendingList();
-      var l = ModelManager_1.ModelManager.CreatureModel.GetInstanceId();
-      for (const _ of i.values()) {
-        if (l === _.MapId && (a = {
-          X: _.PositionX,
-          Y: _.PositionY,
-          Z: _.PositionZ
-        }, a = Vector_1.Vector.Create(a), (a = Vector_1.Vector.Dist(n, a)) < e)) {
-          e = a;
-          r = _.Id;
-        }
-      }
-      if (r) {
-        t = l;
-      } else {
-        for (const M of i.values()) {
-          if (l !== M.MapId) {
-            var d = {
-              X: M.PositionX,
-              Y: M.PositionY,
-              Z: M.PositionZ
-            };
-            var d = Vector_1.Vector.Create(d);
-            var d = Vector_1.Vector.Dist(n, d);
-            e = d;
-            r = M.Id;
-            t = M.MapId;
-            ModelManager_1.ModelManager.AdventureGuideModel.SetFromManualDetect(true);
-            break;
-          }
-        }
-      }
+      ({
+        TargetId: r,
+        TargetMapId: t
+      } = this.NAg(r));
       if (r !== undefined) {
         if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("AdventureGuide", 5, "找到距离最近的怪物发起探测", ["探测Id", o], ["实体id", r], ["地图id", t]);
+          Log_1.Log.Debug("AdventureGuide", 5, "找到距离最近的怪物发起探测", ["探测Id", e], ["实体id", r], ["地图id", t]);
         }
-        this.Zcm(r, o, Protocol_1.Aki.Protocol.r8n.Proto_NormalMonster);
+        this.Zcm(r, e, Protocol_1.Aki.Protocol.r8n.Proto_NormalMonster);
       } else {
         if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("AdventureGuide", 5, "没有找到距离最近怪物，结束探测", ["探测Id", o]);
+          Log_1.Log.Debug("AdventureGuide", 5, "没有找到距离最近怪物，结束探测", ["探测Id", e]);
         }
         ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("CannotFindTarget");
         this.StopTrackCurDetectingMonster();
@@ -236,13 +281,13 @@ class AdventureGuideController extends UiControllerBase_1.UiControllerBase {
   static CancelDetectingRequest() {
     var e = Protocol_1.Aki.Protocol.jcm.create();
     e.o8n = 0;
-    Net_1.Net.Call(17563, e, () => {});
+    Net_1.Net.Call(21106, e, () => {});
   }
   static NormalMonsterManualInfoRequest(e) {
     e = Protocol_1.Aki.Protocol.LXn.create({
       o8n: e
     });
-    Net_1.Net.Call(19449, e, AdventureGuideController.cVe);
+    Net_1.Net.Call(24235, e, AdventureGuideController.cVe);
   }
   static StopTrackCurDetectingDungeon() {
     var e = ModelManager_1.ModelManager.AdventureGuideModel.GetDetectingDungeonMarkId();
@@ -297,9 +342,9 @@ class AdventureGuideController extends UiControllerBase_1.UiControllerBase {
   static RequestSilentFirstAward(o, n) {
     var e = Protocol_1.Aki.Protocol.Z$n.create();
     e.s5n = o;
-    Net_1.Net.Call(28974, e, e => {
+    Net_1.Net.Call(19734, e, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19126);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27589);
       } else {
         var r = [];
         for (const t of ConfigManager_1.ConfigManager.AdventureModuleConfig.GetDropShowInfo(n).entries()) {
@@ -351,7 +396,7 @@ class AdventureGuideController extends UiControllerBase_1.UiControllerBase {
     e = Protocol_1.Aki.Protocol.W$n.create({
       h8n: e
     });
-    Net_1.Net.Call(19120, e, AdventureGuideController.gVe);
+    Net_1.Net.Call(18437, e, AdventureGuideController.gVe);
   }
   static edm(e) {
     ModelManager_1.ModelManager.AdventureGuideModel.DeletePendingMonsterList(e);
@@ -360,7 +405,11 @@ class AdventureGuideController extends UiControllerBase_1.UiControllerBase {
       AdventureGuideController.StopTrackCurDetectingMonster();
       AdventureGuideController.CancelDetectingRequest();
     } else if (e === ModelManager_1.ModelManager.AdventureGuideModel.GetDetectingMonsterId()) {
-      AdventureGuideController._Ve(ModelManager_1.ModelManager.AdventureGuideModel.GetPendingMonsterConfId(), AdventureGuideController.lVe());
+      if (ModelManager_1.ModelManager.AdventureGuideModel.GetIsMaterialDetect()) {
+        AdventureGuideController.VAg(ModelManager_1.ModelManager.AdventureGuideModel.GetPendingMonsterConfId(), AdventureGuideController.lVe());
+      } else {
+        AdventureGuideController._Ve(ModelManager_1.ModelManager.AdventureGuideModel.GetPendingMonsterConfId(), AdventureGuideController.lVe());
+      }
     }
   }
   static GetValidMonsterEntityIdsOfDetectConf(e) {
@@ -515,10 +564,10 @@ class AdventureGuideController extends UiControllerBase_1.UiControllerBase {
     var t = Protocol_1.Aki.Protocol.Gp_.create();
     t.r6n = e;
     t._ps = r;
-    var t = await Net_1.Net.CallAsync(28285, t);
+    var t = await Net_1.Net.CallAsync(22459, t);
     if (t) {
       if (t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 16969);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 21222);
       } else {
         ModelManager_1.ModelManager.AdventureGuideModel.UpdateNightMareMsg(e, r, t.hEs);
       }
@@ -572,6 +621,9 @@ class AdventureGuideController extends UiControllerBase_1.UiControllerBase {
           if (UiManager_1.UiManager.IsViewOpen("AdventureGuideView")) {
             UiManager_1.UiManager.CloseView("AdventureGuideView");
           }
+          if (ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(o)?.InstSubType === 50 && ModelManager_1.ModelManager.ActivityRegressModel.SaveInsIdList.includes(o)) {
+            ModelManager_1.ModelManager.InstanceDungeonModel.InstanceContinue = true;
+          }
           ControllerHolder_1.ControllerHolder.InstanceDungeonController.PrewarTeamFightRequest(o, n, 0, 0);
         } else if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("AdventureGuide", 5, "预开放位面副本对应地块资源缺失，需要下载", ["detectionId", e], ["preOpenDetectionId", r?.Id]);
@@ -600,9 +652,9 @@ class AdventureGuideController extends UiControllerBase_1.UiControllerBase {
     if (o) {
       if (ModelManager_1.ModelManager.SubPackageDownLoadModel.CheckAdventureTeleportHaveSubPackage(o)) {
         var t = {
-          Q6f: e
+          _Jf: e
         };
-        ModelManager_1.ModelManager.InstanceDungeonModel.InstanceEnterContentText.K6f = t;
+        ModelManager_1.ModelManager.InstanceDungeonModel.InstanceEnterContentText.uJf = t;
         var n = [];
         for (const a of ModelManager_1.ModelManager.SceneTeamModel.GetTeamItems()) {
           n.push(a.GetConfigId);
@@ -692,7 +744,7 @@ AdventureGuideController.RQe = (e, r) => {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RedDotAdventurePeriodicityTabUpdate);
   }
 };
-AdventureGuideController.Ohf = () => {
+AdventureGuideController.i_f = () => {
   _a.StopTrackCurDetectingDungeon();
   _a.StopTrackCurDetectingMonster();
   _a.StopTrackCurDetectingSilentArea();
@@ -725,7 +777,7 @@ AdventureGuideController.Wkl = e => {
 AdventureGuideController.nVe = e => {};
 AdventureGuideController.U8u = e => {
   if (e.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-    ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 16820);
+    ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 23302);
   } else {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("AdventureGuide", 5, "拾音辑录任务领奖返回", ["ids", e.s5n]);
@@ -753,7 +805,7 @@ AdventureGuideController.hVe = e => {
     Log_1.Log.Debug("AdventureGuide", 5, "收到探测请求响应消息 GetDetectionTargetResponse");
   }
   if (e.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-    ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 29685);
+    ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 16304);
   } else if (e.Qcm.length <= 0) {
     ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("CannotFindTarget");
   } else {
@@ -762,6 +814,10 @@ AdventureGuideController.hVe = e => {
       case Protocol_1.Aki.Protocol.r8n.Proto_NormalMonster:
         ModelManager_1.ModelManager.AdventureGuideModel.UpdatePendingMonsterList(e.Qcm, e.o8n);
         AdventureGuideController._Ve(e.o8n, r);
+        break;
+      case Protocol_1.Aki.Protocol.r8n.Proto_Material:
+        ModelManager_1.ModelManager.AdventureGuideModel.UpdatePendingMonsterList(e.Qcm, e.o8n, true);
+        AdventureGuideController.VAg(e.o8n, r);
         break;
       case Protocol_1.Aki.Protocol.r8n.sxu:
         ModelManager_1.ModelManager.AdventureGuideModel.UpdatePendingDungeonList(e.Qcm, e.o8n);
@@ -778,7 +834,7 @@ AdventureGuideController.cVe = e => {
     Log_1.Log.Debug("AdventureGuide", 64, "普通怪物探测面板信息 DetectionResponse");
   }
   if (e.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-    ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 26182);
+    ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 16331);
   }
   if (e.FMs.length !== 0) {
     ModelManager_1.ModelManager.AdventureGuideModel.SetDetectingMonsterRefreshTime(e.FMs[0].o8n, e.FMs[0].qMs);
@@ -808,14 +864,14 @@ AdventureGuideController.tVe = e => {
 };
 AdventureGuideController.gVe = e => {
   if (e.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-    ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 28254);
+    ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 29220);
   } else {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ChapterRewardReceived, e.h8n);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RedDotAdventureManualUpdate);
   }
 };
 AdventureGuideController.Jcm = e => {
-  if (e.x9n === Protocol_1.Aki.Protocol.LXm.aWn) {
+  if (e.x9n === Protocol_1.Aki.Protocol.jzm.aWn) {
     ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("MonsterDetection_MonsterHide");
   }
   AdventureGuideController.edm(e.F4n);
@@ -847,8 +903,8 @@ AdventureGuideController.Zcm = (r, t, e) => {
             break;
           }
         }
-        var l = (a = e ? a : 7) === 7;
-        n = AdventureGuideController.MVe(o, i.Conf.MarkId, e, a, l);
+        var d = (a = e ? a : 7) === 7;
+        n = AdventureGuideController.MVe(o, i.Conf.MarkId, e, a, d);
         ModelManager_1.ModelManager.AdventureGuideModel.SetCurDetectingMonsterMarkId(n);
         ModelManager_1.ModelManager.AdventureGuideModel.SetDetectingMonsterId(r);
       }
@@ -858,11 +914,11 @@ AdventureGuideController.Zcm = (r, t, e) => {
         ModelManager_1.ModelManager.AdventureGuideModel.SetCurDetectingDungeonConfId(t);
       }
       o = ModelManager_1.ModelManager.AdventureGuideModel.GetDungeonPendingList().get(r);
-      l = ModelManager_1.ModelManager.AdventureGuideModel.GetSoundAreaDetectData(t);
-      l = ConfigManager_1.ConfigManager.InstanceDungeonEntranceConfig.GetConfig(l.Conf.DungeonId);
-      if (AdventureGuideController.mVe(6, l.MarkId)) {
+      d = ModelManager_1.ModelManager.AdventureGuideModel.GetSoundAreaDetectData(t);
+      d = ConfigManager_1.ConfigManager.InstanceDungeonEntranceConfig.GetConfig(d.Conf.DungeonId);
+      if (AdventureGuideController.mVe(6, d.MarkId)) {
         a = 6;
-        n = AdventureGuideController.MVe(o, l.MarkId, true, a, false);
+        n = AdventureGuideController.MVe(o, d.MarkId, true, a, false);
         ModelManager_1.ModelManager.AdventureGuideModel.SetDetectingDungeonMarkId(n);
         ModelManager_1.ModelManager.AdventureGuideModel.SetDetectingDungeonId(r);
       }
@@ -872,11 +928,11 @@ AdventureGuideController.Zcm = (r, t, e) => {
         ModelManager_1.ModelManager.AdventureGuideModel.SetCurDetectingSilentAreaConfId(t);
       }
       o = ModelManager_1.ModelManager.AdventureGuideModel.GetSilentAreaPendingList().get(r);
-      var l = ModelManager_1.ModelManager.AdventureGuideModel.GetSilentAreaDetectData(t);
-      var d = MapMarkByMarkId_1.configMapMarkByMarkId.GetConfig(l.Conf.MarkId);
-      var _ = AdventureGuideController.mVe(d?.ObjectType, l.Conf.MarkId);
-      a = _ ? d.ObjectType : 7;
-      n = AdventureGuideController.MVe(o, l.Conf.MarkId, _, a, !_);
+      var d = ModelManager_1.ModelManager.AdventureGuideModel.GetSilentAreaDetectData(t);
+      var l = MapMarkByMarkId_1.configMapMarkByMarkId.GetConfig(d.Conf.MarkId);
+      var _ = AdventureGuideController.mVe(l?.ObjectType, d.Conf.MarkId);
+      a = _ ? l.ObjectType : 7;
+      n = AdventureGuideController.MVe(o, d.Conf.MarkId, _, a, !_);
       ModelManager_1.ModelManager.AdventureGuideModel.SetDetectingSilentAreaMarkId(n, a);
       ModelManager_1.ModelManager.AdventureGuideModel.SetDetectingSilentAreaId(r);
   }

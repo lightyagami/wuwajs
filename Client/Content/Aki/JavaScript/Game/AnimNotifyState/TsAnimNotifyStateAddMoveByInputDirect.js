@@ -47,8 +47,8 @@ class TsAnimNotifyStateAddMoveByInputDirect extends UE.KuroAnimNotifyState {
     this.TmpVector ||= Vector_1.Vector.Create();
     var h = new AddMoveParams();
     var e = t.CharacterActorComponent.Entity;
-    h.CharSkillComp = e.GetComponent(41);
-    h.MoveComp = e.GetComponent(46);
+    h.CharSkillComp = e.GetComponent(43);
+    h.MoveComp = e.GetComponent(48);
     h.CharActorComp = t.CharacterActorComponent;
     paramMap.set(t.EntityId, h);
     this.TotalTime = s;

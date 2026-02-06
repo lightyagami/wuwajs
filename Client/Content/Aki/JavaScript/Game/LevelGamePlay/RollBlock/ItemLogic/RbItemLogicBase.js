@@ -14,6 +14,7 @@ class RbItemLogicBase {
   Start(t) {}
   End() {}
   Update(t) {}
+  OnRbItemUpdate(t) {}
   OnStateChange(t) {}
 }
 exports.RbItemLogicBase = RbItemLogicBase;

@@ -1,19 +1,19 @@
 "use strict";
 
-var __decorate = this && this.__decorate || function (e, t, i, o) {
-  var n;
-  var s = arguments.length;
-  var r = s < 3 ? t : o === null ? o = Object.getOwnPropertyDescriptor(t, i) : o;
+var __decorate = this && this.__decorate || function (e, t, i, s) {
+  var o;
+  var n = arguments.length;
+  var r = n < 3 ? t : s === null ? s = Object.getOwnPropertyDescriptor(t, i) : s;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    r = Reflect.decorate(e, t, i, o);
+    r = Reflect.decorate(e, t, i, s);
   } else {
     for (var h = e.length - 1; h >= 0; h--) {
-      if (n = e[h]) {
-        r = (s < 3 ? n(r) : s > 3 ? n(t, i, r) : n(t, i)) || r;
+      if (o = e[h]) {
+        r = (n < 3 ? o(r) : n > 3 ? o(t, i, r) : o(t, i)) || r;
       }
     }
   }
-  if (s > 3 && r) {
+  if (n > 3 && r) {
     Object.defineProperty(t, i, r);
   }
   return r;
@@ -23,6 +23,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.VehicleSplineMoveComponent = undefined;
 const RegisterComponent_1 = require("../../../../Core/Entity/RegisterComponent");
+const Vector_1 = require("../../../../Core/Utils/Math/Vector");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
@@ -105,6 +106,19 @@ let VehicleSplineMoveComponent = class VehicleSplineMoveComponent extends BaseSp
     this.CharActorComp?.ClearInput();
     this.LastLocation.DeepCopy(this.ActorComp.ActorLocationProxy);
   }
+  UpdateSplineGravity(e = false) {
+    var t;
+    if (this.CurrentSplineMoveParams?.UseSplineGravity) {
+      t = this.Entity.GetComponent(268);
+      if (e) {
+        t?.SetVehicleGravityDirect(Vector_1.Vector.DownVectorProxy, true);
+      } else {
+        this.TmpVector.DeepCopy(this.CurrentSplineMoveParams.Spline.GetUpVectorAtSplineInputKey(this.SplineTimeKey, 1));
+        this.TmpVector.UnaryNegation(this.TmpVector);
+        t?.SetVehicleGravityDirect(this.TmpVector, true);
+      }
+    }
+  }
 };
-VehicleSplineMoveComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(117)], VehicleSplineMoveComponent);
+VehicleSplineMoveComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(119)], VehicleSplineMoveComponent);
 exports.VehicleSplineMoveComponent = VehicleSplineMoveComponent; //# sourceMappingURL=VehicleSplineMoveComponent.js.map

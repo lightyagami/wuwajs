@@ -51,15 +51,15 @@ let RoleBreakWeaknessComponent = class RoleBreakWeaknessComponent extends Entity
     this.Gin = undefined;
     this.b3d = undefined;
     this._se = 0;
-    this.IYf = "";
-    this.TYf = 0;
+    this.udg = "";
+    this.cdg = 0;
     this.kk1 = 0;
-    this.bYf = 0;
-    this.iXf = [];
-    this.gJf = undefined;
-    this.ZVf = [];
+    this.ddg = 0;
+    this.s_g = [];
+    this._Cg = undefined;
+    this.aYf = [];
     this.I2r = [];
-    this.e8f = [];
+    this.hYf = [];
     this.Zln = t => {
       var e = t.Target;
       this.R3d(e, t);
@@ -77,17 +77,17 @@ let RoleBreakWeaknessComponent = class RoleBreakWeaknessComponent extends Entity
         this.L3d();
       }
     };
-    this.t8f = (t, e) => {
+    this.lYf = (t, e) => {
       if (e) {
         this.L3d();
       }
     };
-    this.CJf = (t, e) => {
+    this.uCg = (t, e) => {
       if (!e) {
         this.L3d();
       }
     };
-    this.r8f = (t, e) => {
+    this.uYf = (t, e) => {
       if (e) {
         this.L3d();
       }
@@ -100,30 +100,30 @@ let RoleBreakWeaknessComponent = class RoleBreakWeaknessComponent extends Entity
         (i = new UE.GameplayEventData()).Target = e;
         this.bkr.SendGameplayEventToActor(GameplayTagUtils_1.GameplayTagUtils.GetGameplayTagById(triggerTag), i);
         if (t) {
-          EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.TriggerBreakWeakness, this.Entity, t, this.IYf);
+          EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.TriggerBreakWeakness, this.Entity, t, this.udg);
         }
         this.L3d();
       }
     };
   }
   OnStart() {
-    this.tRr = this.Entity.GetComponent(40);
+    this.tRr = this.Entity.GetComponent(42);
     this.bkr = this.Entity.GetComponent(18);
-    this.Xte = this.Entity.GetComponent(215);
+    this.Xte = this.Entity.GetComponent(217);
     for (const i of this.tRr.GetAllSkillId()) {
       var t = this.tRr.GetSkillInfo(i);
       if (t?.SkillGenre === 13) {
         this.I3d = true;
         t = ConfigManager_1.ConfigManager.WorldConfig.GetLockOnConfig(t.SkillTarget.LockOnConfigId);
-        this.TYf = t?.Distance ?? 0;
+        this.cdg = t?.Distance ?? 0;
         this.kk1 = t?.UpDistance ?? 0;
-        this.bYf = t?.DownDistance ?? 0;
+        this.ddg = t?.DownDistance ?? 0;
         break;
       }
     }
     var e;
-    this.o8f();
-    if (this.I3d && (this.n8f(), EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharHitLocal, this.Zln), EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharLimitDodge, this.w3d), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRoleGoDown, this.q2t), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnBattleStateChanged, this.Zpe), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.MonsterBeginBroken, this.P3d), this.Gin = PhantomUtil_1.PhantomUtil.GetSummonedEntity(this.Entity, Protocol_1.Aki.Protocol.Summon.x3s.Proto_ESummonTypeConcomitantCustom), e = this.Gin?.Entity) && !EventSystem_1.EventSystem.HasWithTarget(e, EventDefine_1.EEventName.CharHitLocal, this.Zln)) {
+    this.cYf();
+    if (this.I3d && (this.dYf(), EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharHitLocal, this.Zln), EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharLimitDodge, this.w3d), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRoleGoDown, this.q2t), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnBattleStateChanged, this.Zpe), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.MonsterBeginBroken, this.P3d), this.Gin = PhantomUtil_1.PhantomUtil.GetSummonedEntity(this.Entity, Protocol_1.Aki.Protocol.Summon.x3s.Proto_ESummonTypeConcomitantCustom), e = this.Gin?.Entity) && !EventSystem_1.EventSystem.HasWithTarget(e, EventDefine_1.EEventName.CharHitLocal, this.Zln)) {
       EventSystem_1.EventSystem.AddWithTarget(e, EventDefine_1.EEventName.CharHitLocal, this.Zln);
     }
     return true;
@@ -132,7 +132,7 @@ let RoleBreakWeaknessComponent = class RoleBreakWeaknessComponent extends Entity
     if (this.I3d && (EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CharHitLocal, this.Zln), EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CharLimitDodge, this.w3d), EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRoleGoDown, this.q2t), EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnBattleStateChanged, this.Zpe), EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.MonsterBeginBroken, this.P3d), this.Gin?.Valid)) {
       EventSystem_1.EventSystem.RemoveWithTarget(this.Gin.Entity, EventDefine_1.EEventName.CharHitLocal, this.Zln);
     }
-    this.s8f();
+    this.mYf();
     this.L3d();
     return true;
   }
@@ -143,7 +143,7 @@ let RoleBreakWeaknessComponent = class RoleBreakWeaknessComponent extends Entity
       var i = ModelManager_1.ModelManager.SceneTeamModel.GetTeamItem(this.Entity.Id, {
         ParamType: 1
       })?.IsControl();
-      var s = t?.GetComponent(215);
+      var s = t?.GetComponent(217);
       if (i && s?.HasTag(weaknessTag)) {
         for (const n of targetForbiddenTags) {
           if (s.HasTag(n)) {
@@ -163,18 +163,18 @@ let RoleBreakWeaknessComponent = class RoleBreakWeaknessComponent extends Entity
             if (!e || this.tRr?.SkillTarget?.Entity === t) {
               i = this.tRr?.SkillTargetSocket ?? "";
               if (this._se === t?.Id) {
-                if (this.IYf !== i) {
-                  this.IYf = i;
-                  t?.GetComponent(92)?.UpdateTargetSocket(this.IYf);
+                if (this.udg !== i) {
+                  this.udg = i;
+                  t?.GetComponent(94)?.UpdateTargetSocket(this.udg);
                 }
                 this.BCe();
                 this.tWr();
               } else {
-                this.IYf = i;
+                this.udg = i;
                 if (this.BCe()) {
                   this.L3d();
                 }
-                this.B8f(t);
+                this.$Yf(t);
               }
             }
           }
@@ -190,24 +190,24 @@ let RoleBreakWeaknessComponent = class RoleBreakWeaknessComponent extends Entity
   BCe() {
     return !!TimerSystem_1.FlowTimeTimerSystem.Has(this.b3d) && !(TimerSystem_1.FlowTimeTimerSystem.Remove(this.b3d), this.b3d = undefined);
   }
-  B8f(t) {
+  $Yf(t) {
     this._se = t.Id;
-    this.a8f(t);
-    t.GetComponent(92)?.ShowWeaknessButton(this.IYf, this.TYf, this.kk1, this.bYf);
+    this.fYf(t);
+    t.GetComponent(94)?.ShowWeaknessButton(this.udg, this.cdg, this.kk1, this.ddg);
     this.Xte?.AddTag(activateButtonTag);
     this.tWr();
   }
   L3d() {
-    this.h8f();
+    this.gYf();
     if (this._se) {
       this.BCe();
-      EntitySystem_1.EntitySystem.Get(this._se)?.GetComponent(92)?.HideWeaknessButton();
+      EntitySystem_1.EntitySystem.Get(this._se)?.GetComponent(94)?.HideWeaknessButton();
       this.Xte?.RemoveTag(activateButtonTag);
       this._se = 0;
-      this.IYf = "";
+      this.udg = "";
     }
   }
-  RYf(t, e, i, s) {
+  mdg(t, e, i, s) {
     for (const h of e) {
       var n = t.ListenForTagAddOrRemove(h, s);
       if (n) {
@@ -215,7 +215,7 @@ let RoleBreakWeaknessComponent = class RoleBreakWeaknessComponent extends Entity
       }
     }
   }
-  LYf(t) {
+  fdg(t) {
     if (t.length !== 0) {
       for (const e of t) {
         e.EndTask();
@@ -223,45 +223,45 @@ let RoleBreakWeaknessComponent = class RoleBreakWeaknessComponent extends Entity
       t.length = 0;
     }
   }
-  a8f(t) {
-    this.h8f();
-    t = t.GetComponent(215);
+  fYf(t) {
+    this.gYf();
+    t = t.GetComponent(217);
     if (t) {
-      this.RYf(t, targetForbiddenTags, this.iXf, this.t8f);
-      this.gJf = t.ListenForTagAddOrRemove(weaknessTag, this.CJf);
+      this.mdg(t, targetForbiddenTags, this.s_g, this.lYf);
+      this._Cg = t.ListenForTagAddOrRemove(weaknessTag, this.uCg);
     }
   }
-  h8f() {
-    this.LYf(this.iXf);
-    if (this.gJf) {
-      this.gJf.EndTask();
-      this.gJf = undefined;
+  gYf() {
+    this.fdg(this.s_g);
+    if (this._Cg) {
+      this._Cg.EndTask();
+      this._Cg = undefined;
     }
   }
-  o8f() {
-    this.ZVf.length = 0;
+  cYf() {
+    this.aYf.length = 0;
     this.I2r.length = 0;
     var t = ConfigManager_1.ConfigManager.SkillButtonConfig?.GetBehaviorCommonButtonConfig(exports.BREAK_WEAKNESS_BUTTON_CONFIG_ID);
     if (t) {
-      this.ZVf.push(...t.HiddenTags);
+      this.aYf.push(...t.HiddenTags);
       this.I2r.push(...t.DisableTags);
     }
   }
   Vti() {
-    return this.Xte?.HasAnyTag(this.ZVf) ?? false;
+    return this.Xte?.HasAnyTag(this.aYf) ?? false;
   }
   Dri() {
     return this.Xte?.HasAnyTag(this.I2r) ?? false;
   }
-  n8f() {
-    this.s8f();
-    if (this.Xte && this.ZVf.length !== 0) {
-      this.RYf(this.Xte, this.ZVf, this.e8f, this.r8f);
+  dYf() {
+    this.mYf();
+    if (this.Xte && this.aYf.length !== 0) {
+      this.mdg(this.Xte, this.aYf, this.hYf, this.uYf);
     }
   }
-  s8f() {
-    this.LYf(this.e8f);
+  mYf() {
+    this.fdg(this.hYf);
   }
 };
-RoleBreakWeaknessComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(93)], RoleBreakWeaknessComponent);
+RoleBreakWeaknessComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(95)], RoleBreakWeaknessComponent);
 exports.RoleBreakWeaknessComponent = RoleBreakWeaknessComponent; //# sourceMappingURL=RoleBreakWeaknessComponent.js.map

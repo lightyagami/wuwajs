@@ -18,7 +18,7 @@ class HonamiStoryBackpackLogicController {
     this.BackpackView = undefined;
     this.ahm = undefined;
     this.hhm = undefined;
-    this.K_f = undefined;
+    this.Wcf = undefined;
     this.PanelBaseList = [];
     this._ii = 0;
     this.Bhm = undefined;
@@ -34,20 +34,20 @@ class HonamiStoryBackpackLogicController {
   }
   OnClickGrid(t, i, o) {
     if (this.hhm !== undefined && t !== this.hhm) {
-      this.K_f?.CancelToggleSelect();
+      this.Wcf?.CancelToggleSelect();
       this.BCe();
     }
-    this.K_f = o;
+    this.Wcf = o;
     this.hhm = t;
     if (this.ahm && this.ahm.Valid()) {
       this.BCe();
-      this.K_f = undefined;
+      this.Wcf = undefined;
       return !(this.hhm = undefined);
     } else {
       o = ConfigManager_1.ConfigManager.HonamiStoryConfig.GetDoubleClickDelay();
       this.ahm = TimerSystem_1.TimerSystem.Delay(() => {
         this.ahm = undefined;
-        this.K_f = undefined;
+        this.Wcf = undefined;
         this.hhm = undefined;
         i();
       }, o);

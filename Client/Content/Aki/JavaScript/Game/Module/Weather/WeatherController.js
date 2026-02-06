@@ -15,6 +15,7 @@ const MathUtils_1 = require("../../../Core/Utils/MathUtils");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
 const GlobalData_1 = require("../../GlobalData");
+const ConfigManager_1 = require("../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
 const UiManager_1 = require("../../Ui/UiManager");
@@ -43,7 +44,7 @@ class WeatherController extends ControllerBase_1.ControllerBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDoneAndCloseLoading, WeatherController.FWe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TeleportComplete, this.Ilt);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnFunctionOpenUpdate, WeatherController.RQe);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnFunctionOpenSet, WeatherController.UTf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnFunctionOpenSet, WeatherController.KPf);
   }
   static OnRemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.EnterGameSuccess, WeatherController.nTo);
@@ -52,7 +53,7 @@ class WeatherController extends ControllerBase_1.ControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDoneAndCloseLoading, WeatherController.FWe);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TeleportComplete, this.Ilt);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnFunctionOpenUpdate, WeatherController.RQe);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnFunctionOpenSet, WeatherController.UTf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnFunctionOpenSet, WeatherController.KPf);
   }
   static P3e() {
     WeatherController.Wko = TimerSystem_1.TimerSystem.Forever(WeatherController.Kko, CHECKGAP);
@@ -64,14 +65,14 @@ class WeatherController extends ControllerBase_1.ControllerBase {
     }
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(27691, WeatherController.Qko);
-    Net_1.Net.Register(15238, e => {
-      WeatherController.xTf(e._1f);
+    Net_1.Net.Register(20797, WeatherController.Qko);
+    Net_1.Net.Register(23651, e => {
+      WeatherController.XPf(e._uf);
     });
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(27691);
-    Net_1.Net.UnRegister(15238);
+    Net_1.Net.UnRegister(20797);
+    Net_1.Net.UnRegister(23651);
   }
   static jko() {
     WeatherModel_1.WeatherModel.GetWorldWeatherActor().Destroy();
@@ -79,9 +80,9 @@ class WeatherController extends ControllerBase_1.ControllerBase {
   static RequestChangeWeather(e) {
     var t = new Protocol_1.Aki.Protocol.Ods();
     t.pjn = e;
-    Net_1.Net.Call(27563, t, e => {
+    Net_1.Net.Call(20803, t, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27735);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27627);
       }
     });
   }
@@ -113,29 +114,35 @@ class WeatherController extends ControllerBase_1.ControllerBase {
   }
   static async RequestWeatherControlInfoAsync() {
     var e;
-    var t = new Protocol_1.Aki.Protocol.a1f();
-    var t = await Net_1.Net.CallAsync(26951, t);
-    return t !== undefined && !(t.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_WeatherCtlAreaDateLocked ? (ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("WeatherControl_DateOccupied"), 1) : t.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_WeatherCtlAreaWeatherLocked ? (e = MathUtils_1.MathUtils.LongToBigInt(t.w5n), e = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(e), e = ModelManager_1.ModelManager.QuestNewModel.GetQuest(e.TreeConfigId), e = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(e.Name), ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("WeatherControl_Occupied", e), 1) : t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs ? (ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 28804, undefined, true, false), 1) : (ModelManager_1.ModelManager.WeatherModel?.SetUnlockedWeatherSwitchConfigIdList(t.l1f), 0));
+    var t = new Protocol_1.Aki.Protocol.auf();
+    var t = await Net_1.Net.CallAsync(16025, t);
+    return t !== undefined && !(t.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_WeatherCtlAreaDateLocked ? (ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("WeatherControl_DateOccupied"), 1) : t.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_WeatherCtlAreaWeatherLocked ? (e = MathUtils_1.MathUtils.LongToBigInt(t.w5n), e = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(e), e = ModelManager_1.ModelManager.QuestNewModel.GetQuest(e.TreeConfigId), e = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(e.Name), ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("WeatherControl_Occupied", e), 1) : t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs ? (ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 16018, undefined, true, false), 1) : (ModelManager_1.ModelManager.WeatherModel?.SetUnlockedWeatherSwitchConfigIdList(t.luf), 0));
   }
   static async RequestWeatherControlInfoWithoutCheckAsync() {
-    var e = new Protocol_1.Aki.Protocol.XNf();
-    var e = await Net_1.Net.CallAsync(20383, e);
+    var e = new Protocol_1.Aki.Protocol.kHf();
+    var e = await Net_1.Net.CallAsync(15454, e);
     if (e === undefined) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Weather", 90, "天气控制器请求初始数据失败！！！");
       }
       return false;
     } else {
-      ModelManager_1.ModelManager.WeatherModel?.SetUnlockedWeatherSwitchConfigIdList(e.l1f);
+      ModelManager_1.ModelManager.WeatherModel?.SetUnlockedWeatherSwitchConfigIdList(e.luf);
       return true;
     }
   }
   static async RequestSwitchWeather(e) {
-    var t = new Protocol_1.Aki.Protocol.n1f();
-    t._1f = e;
-    var e = await Net_1.Net.CallAsync(21668, t);
-    if (e && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20219);
+    var t = new Protocol_1.Aki.Protocol.nuf();
+    t._uf = e;
+    var t = await Net_1.Net.CallAsync(28918, t);
+    if (t) {
+      if (t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 25737);
+      } else {
+        t = ConfigManager_1.ConfigManager.WeatherModuleConfig.GetWeatherSwitchConfig(e);
+        e = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(t.Name);
+        ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("WeatherControl_SuccessTips", e);
+      }
     }
   }
 }
@@ -176,13 +183,13 @@ WeatherController.RQe = (e, t) => {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnWeatherCentralRedDotUpdate);
   }
 };
-WeatherController.UTf = (e, t) => {
+WeatherController.KPf = (e, t) => {
   if (t && e === 10133) {
     ControllerHolder_1.ControllerHolder.WeatherController.RequestWeatherControlInfoWithoutCheckAsync();
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnWeatherCentralRedDotUpdate);
   }
 };
-WeatherController.xTf = e => {
+WeatherController.XPf = e => {
   ModelManager_1.ModelManager.WeatherModel.AddUnlockedWeatherSwitchConfigId(e);
 };
 WeatherController.FWe = () => {

@@ -12,7 +12,7 @@ class UiModelSystem {
     return this.CreateUiModelByCreateData(t, i, e);
   }
   static CreateUiModelByCreateData(e, i, t) {
-    var s = new UiModelBase_1.UiModelBase(this.Xwm++, t);
+    var s = new UiModelBase_1.UiModelBase(this.vLm++, t);
     for (const o of e.Components) {
       s.AddComponent(o);
     }
@@ -29,5 +29,5 @@ class UiModelSystem {
     return s;
   }
 }
-(exports.UiModelSystem = UiModelSystem).Xwm = 0;
+(exports.UiModelSystem = UiModelSystem).vLm = 0;
 //# sourceMappingURL=UiModelSystem.js.map

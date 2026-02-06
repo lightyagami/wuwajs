@@ -28,9 +28,9 @@ class DamageView extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.uFt = Vector_1.Vector.Create();
-    this.sqm = Vector_1.Vector.Create();
+    this.MOm = Vector_1.Vector.Create();
     this.gX1 = new UE.VectorDouble();
-    this.aqm = Vector2D_1.Vector2D.Create();
+    this.EOm = Vector2D_1.Vector2D.Create();
     this.dFt = undefined;
     this.CFt = undefined;
     this._Ft = undefined;
@@ -42,8 +42,8 @@ class DamageView extends UiPanelBase_1.UiPanelBase {
     this.bge = 1;
     this.tlh = 1;
     this.r7c = [];
-    this.hqm = -1;
-    this.lqm = false;
+    this.IOm = -1;
+    this.TOm = false;
   }
   Init() {
     var i = ControllerHolder_1.ControllerHolder.BattleUiControl.Pool.GetDamageView();
@@ -80,10 +80,10 @@ class DamageView extends UiPanelBase_1.UiPanelBase {
   InitializeData(h, a, r, _, o = false, l = false, n = false, E = "", U = 0, g) {
     if (_) {
       DamageView.MFt.Start();
-      this.lqm = n;
+      this.TOm = n;
       this.gFt = _;
       this.uFt.FromUeVector(a);
-      this.sqm.FromUeVector(r);
+      this.MOm.FromUeVector(r);
       this.gX1.Set(this.uFt.X, this.uFt.Y, this.uFt.Z);
       var a = DamageUiManager_1.DamageUiManager.GetDamageTextAreaById(U);
       var r = UE.LGUIBPLibrary.ConvertWorldPosToLGUIPos(Global_1.Global.CharacterController, this.gX1);
@@ -98,9 +98,9 @@ class DamageView extends UiPanelBase_1.UiPanelBase {
         t *= CRITICAL_OFFSET_SCALE;
         e *= CRITICAL_OFFSET_SCALE;
       }
-      this.aqm.X = MathUtils_1.MathUtils.GetRandomFloatNumber(i, t);
-      this.aqm.Y = MathUtils_1.MathUtils.GetRandomFloatNumber(s, e);
-      this.RFt(r.X + this.aqm.X, r.Y + this.aqm.Y);
+      this.EOm.X = MathUtils_1.MathUtils.GetRandomFloatNumber(i, t);
+      this.EOm.Y = MathUtils_1.MathUtils.GetRandomFloatNumber(s, e);
+      this.RFt(r.X + this.EOm.X, r.Y + this.EOm.Y);
       this.r7c.length = 0;
       if (g) {
         if (StringUtils_1.StringUtils.IsEmpty(E)) {
@@ -127,12 +127,12 @@ class DamageView extends UiPanelBase_1.UiPanelBase {
         }
       }
       if (this.r7c.length > 0) {
-        this.hqm = 0;
+        this.IOm = 0;
         this.SFt(n, false, false);
         this.yFt(false);
         this.IFt(this.r7c[0], false, false);
       } else {
-        this.hqm = -1;
+        this.IOm = -1;
         _ = (a = !StringUtils_1.StringUtils.IsEmpty(E)) ? E : l ? "+" + h : h.toString();
         this.SFt(n, o, a);
         this.yFt(o);
@@ -195,11 +195,11 @@ class DamageView extends UiPanelBase_1.UiPanelBase {
       if (this.pFt <= 0) {
         DamageUiManager_1.DamageUiManager.RemoveDamageView(this);
       } else {
-        if (this.hqm !== -1 && (t = Math.floor((ANIM_TIME - this.pFt) / MERGE_PER_TEXT_TIME), this.hqm !== t) && (this.hqm = t, this.r7c.length > t)) {
+        if (this.IOm !== -1 && (t = Math.floor((ANIM_TIME - this.pFt) / MERGE_PER_TEXT_TIME), this.IOm !== t) && (this.IOm = t, this.r7c.length > t)) {
           this.dFt.SetText(this.r7c[t]);
         }
-        if (this.lqm) {
-          this._qm();
+        if (this.TOm) {
+          this.bOm();
         } else {
           this.EFt();
         }
@@ -224,17 +224,17 @@ class DamageView extends UiPanelBase_1.UiPanelBase {
     var i;
     var t = UE.LGUIBPLibrary.ConvertWorldPosToLGUIPos(Global_1.Global.CharacterController, this.gX1);
     if (t) {
-      i = t.X + this.aqm.X;
-      t = t.Y + this.aqm.Y;
+      i = t.X + this.EOm.X;
+      t = t.Y + this.EOm.Y;
       this.RFt(i, t);
     }
   }
-  _qm() {
+  bOm() {
     var i;
     var t = UE.LGUIBPLibrary.ConvertWorldPosToLGUIPos(Global_1.Global.CharacterController, this.gX1);
     if (t) {
-      i = t.X + this.aqm.X;
-      t = t.Y + this.aqm.Y;
+      i = t.X + this.EOm.X;
+      t = t.Y + this.EOm.Y;
       this.RFt(i, t);
     }
   }

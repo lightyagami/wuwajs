@@ -11,18 +11,20 @@ const EventDefine_1 = require("../Common/Event/EventDefine");
 const EventSystem_1 = require("../Common/Event/EventSystem");
 class NetEventDispatcher {
   constructor() {
-    this.CsNetCall = (i, e, v, t) => {
-      Net_1.Net.CsCall(i, e, (e, t, n) => {
+    this.CsNetCall = (v, e, E, t) => {
+      Net_1.Net.CsCall(v, e, (e, t, n) => {
         var r;
+        var i;
         if (n === undefined) {
           if (Log_1.Log.CheckError()) {
-            Log_1.Log.Error("Net", 63, "[C#]Net.Call失败,返回数据为空:", ["requestMessageId", i], ["status", t], ["csRpcId", v]);
+            Log_1.Log.Error("Net", 63, "[C#]Net.Call失败,返回数据为空:", ["requestMessageId", v], ["status", t], ["csRpcId", E]);
           }
         } else {
-          t = n.SeqNo;
-          r = n.MessageId;
+          t = n.MsgType;
+          r = n.SeqNo;
+          i = n.MessageId;
           n = n.MessageBuffer;
-          EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.NotifyCsOnNetReceiveResponse, t, v, r, n);
+          EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.NotifyCsOnNetReceiveResponse, t, r, E, i, n);
         }
       }, t);
     };

@@ -19,6 +19,8 @@ const LoginDefine_1 = require("../../Login/Data/LoginDefine");
 const ScrollingTipsController_1 = require("../../ScrollingTips/ScrollingTipsController");
 const LguiUtil_1 = require("../../Util/LguiUtil");
 const MainRoleController_1 = require("../MainRoleController");
+const MALE_CONFIGID = 1501;
+const FEMALE_CONFIGID = 1502;
 class RoleGenderChangeView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
@@ -31,7 +33,7 @@ class RoleGenderChangeView extends UiViewBase_1.UiViewBase {
     };
     this.OnClickConfirm = () => {
       var e;
-      if (Global_1.Global.BaseCharacter?.CharacterActorComponent.Entity.GetComponent(215)?.HasTag(1996802261)) {
+      if (Global_1.Global.BaseCharacter?.CharacterActorComponent.Entity.GetComponent(217)?.HasTag(1996802261)) {
         ScrollingTipsController_1.ScrollingTipsController.ShowTipsByText(ConfigManager_1.ConfigManager.TextConfig.GetTextById("CanNotTransferInFight"));
         this.CloseMe();
       } else if (ModelManager_1.ModelManager.RoleModel.HasAnyTrialRole()) {
@@ -52,30 +54,31 @@ class RoleGenderChangeView extends UiViewBase_1.UiViewBase {
   OnStart() {
     var e = ModelManager_1.ModelManager.RoleModel.GetCurSelectMainRoleId();
     if (e) {
-      var r = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(e);
+      var n = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(e);
       var o = ModelManager_1.ModelManager.WorldLevelModel.Sex;
-      var t = r.ElementId;
+      var t = n.ElementId;
       var o = o === LoginDefine_1.ELoginSex.Boy ? LoginDefine_1.ELoginSex.Girl : LoginDefine_1.ELoginSex.Boy;
       var a = ConfigManager_1.ConfigManager.RoleConfig.GetMainRoleByGender(o);
       var l = a.length;
+      let r = undefined;
       let i = undefined;
-      let n = undefined;
       for (let e = 0; e < l; e++) {
-        var s = a[e];
-        var _ = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(s.Id);
-        if (t === _.ElementId) {
-          n = s.Id;
-          i = _;
+        var _ = a[e];
+        var s = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(_.Id);
+        if (t === s.ElementId) {
+          i = _.Id;
+          r = s;
           break;
         }
       }
-      if (i) {
-        this.SetRoleIcon(r.RoleHeadIconBig, this.GetTexture(0), e);
-        this.SetRoleIcon(i.RoleHeadIconBig, this.GetTexture(1), n);
-        o = ModelManager_1.ModelManager.MainRoleModel.CanChangeSex();
-        this.GetInteractionGroup(7)?.SetInteractable(o);
-        r = CommonParamById_1.configCommonParamById.GetIntConfig("ChangeSexCd");
-        LguiUtil_1.LguiUtil.SetLocalText(this.GetText(4), "GenderTransfer", Math.round(r / TimeUtil_1.TimeUtil.Hour));
+      if (r) {
+        o = this.wSg(n, r);
+        this.SetRoleIcon(o.FromPath, this.GetTexture(0), e);
+        this.SetRoleIcon(o.TargetPath, this.GetTexture(1), i);
+        n = ModelManager_1.ModelManager.MainRoleModel.CanChangeSex();
+        this.GetInteractionGroup(7)?.SetInteractable(n);
+        e = CommonParamById_1.configCommonParamById.GetIntConfig("ChangeSexCd");
+        LguiUtil_1.LguiUtil.SetLocalText(this.GetText(4), "GenderTransfer", Math.round(e / TimeUtil_1.TimeUtil.Hour));
         LguiUtil_1.LguiUtil.SetLocalText(this.GetText(5), "Cancel");
         LguiUtil_1.LguiUtil.SetLocalText(this.GetText(6), "Confirm");
       }
@@ -90,6 +93,39 @@ class RoleGenderChangeView extends UiViewBase_1.UiViewBase {
   Tkl() {
     var e = ModelManager_1.ModelManager.WorldLevelModel.Sex === LoginDefine_1.ELoginSex.Boy ? LoginDefine_1.ELoginSex.Girl : LoginDefine_1.ELoginSex.Boy;
     MainRoleController_1.MainRoleController.SendRoleSexChangeRequest(e);
+  }
+  wSg(e, r) {
+    var i = ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(e.Id);
+    if (!i) {
+      return {
+        FromPath: e.RoleHeadIconBig,
+        TargetPath: r.RoleHeadIconBig
+      };
+    }
+    var i = i.GetRoleSkinId();
+    var i = ModelManager_1.ModelManager.RoleSkinModel.GetRoleSkinData(i);
+    var n = ModelManager_1.ModelManager.PlayerInfoModel.GetPlayerGender() === 0;
+    var o = ConfigManager_1.ConfigManager.SkinConfig.GetSkinGroupList(i.GetRoleSkinConfig().GroupId);
+    if (!o) {
+      return {
+        FromPath: e.RoleHeadIconBig,
+        TargetPath: r.RoleHeadIconBig
+      };
+    }
+    let t = undefined;
+    for (const a of o) {
+      if (n) {
+        if (a.RoleId === MALE_CONFIGID) {
+          t = a.RoleHeadIconBig;
+        }
+      } else if (a.RoleId === FEMALE_CONFIGID) {
+        t = a.RoleHeadIconBig;
+      }
+    }
+    return {
+      FromPath: i.GetRoleSkinConfig().RoleHeadIconBig,
+      TargetPath: t
+    };
   }
 }
 exports.RoleGenderChangeView = RoleGenderChangeView;

@@ -50,7 +50,7 @@ class LevelConditionCheckTargetAttribute extends LevelGeneralBase_1.LevelConditi
     let r = true;
     for (const t of e) {
       if (t.Type === ICondition_1.EPlayerAttributeType.StabilityPoint) {
-        r &&= this.Dwm(t);
+        r &&= this.rLm(t);
       } else {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("LevelCondition", 93, "检测目标战斗属性 队伍属性检查", ["不支持的属性类型", t.Type]);
@@ -65,14 +65,14 @@ class LevelConditionCheckTargetAttribute extends LevelGeneralBase_1.LevelConditi
   }
   rLe(e, r) {
     var t;
-    var e = e.Entity?.GetComponent(182);
+    var e = e.Entity?.GetComponent(184);
     return !!e && (t = e.GetCurrentValue(Protocol_1.Aki.Protocol.Vks.Proto_Life), e = e.GetCurrentValue(Protocol_1.Aki.Protocol.Vks.l5n), this.Rnm(r.Compare, t / e * 100, r.Value));
   }
   bnm(e, r, t) {
     r = ControllerHolder_1.ControllerHolder.FormationAttributeController.GetValue(r);
     return this.Rnm(e.Compare, r, t ?? e.Value);
   }
-  Dwm(e) {
+  rLm(e) {
     var r = e;
     let t = true;
     if (r.ValueGroup && r.ValueGroup > 0) {

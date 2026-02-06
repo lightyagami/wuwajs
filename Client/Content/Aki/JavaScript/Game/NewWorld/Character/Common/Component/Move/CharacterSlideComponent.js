@@ -131,6 +131,7 @@ let CharacterSlideComponent = CharacterSlideComponent_1 = class CharacterSlideCo
     this.F8a = false;
     this.MJr = undefined;
     this.exn = undefined;
+    this.d5g = 0;
     this.EJr = Vector_1.Vector.Create();
     this.r2n = Vector_1.Vector.Create();
     this.o2n = Vector_1.Vector.Create();
@@ -261,7 +262,7 @@ let CharacterSlideComponent = CharacterSlideComponent_1 = class CharacterSlideCo
       }
     };
     this.DJr = (t, i) => {
-      if (!i && !(i = t.GetComponent(36), this.I5r.MoveState !== CharacterUnifiedStateTypes_1.ECharMoveState.Slide && this.I5r.MoveState !== CharacterUnifiedStateTypes_1.ECharMoveState.NormalSki && i.I5r.MoveState !== CharacterUnifiedStateTypes_1.ECharMoveState.Slide && i.I5r.MoveState !== CharacterUnifiedStateTypes_1.ECharMoveState.NormalSki)) {
+      if (!i && !(i = t.GetComponent(37), this.I5r.MoveState !== CharacterUnifiedStateTypes_1.ECharMoveState.Slide && this.I5r.MoveState !== CharacterUnifiedStateTypes_1.ECharMoveState.NormalSki && i.I5r.MoveState !== CharacterUnifiedStateTypes_1.ECharMoveState.Slide && i.I5r.MoveState !== CharacterUnifiedStateTypes_1.ECharMoveState.NormalSki)) {
         this._Jr = i._Jr;
         this.SlideForward.DeepCopy(i.SlideForward);
         this.mJr = i.mJr;
@@ -342,7 +343,7 @@ let CharacterSlideComponent = CharacterSlideComponent_1 = class CharacterSlideCo
     return this.RJr;
   }
   static get Dependencies() {
-    return [3, 187, 184];
+    return [3, 189, 186];
   }
   s2n(t) {
     let i = this.pJr.BaseAccForSpeedUp;
@@ -369,7 +370,7 @@ let CharacterSlideComponent = CharacterSlideComponent_1 = class CharacterSlideCo
     var a = this.pJr.TurnSpeed;
     let o = -DEFAULT_SKI_MAX_TURN_ANGLE;
     let _ = DEFAULT_SKI_MAX_TURN_ANGLE;
-    var n = this.Entity.GetComponent(116);
+    var n = this.Entity.GetComponent(118);
     s.DeepCopy(this.Hte.ActorForwardProxy);
     if (n?.Active) {
       o = n.MinTurnAngle;
@@ -426,13 +427,13 @@ let CharacterSlideComponent = CharacterSlideComponent_1 = class CharacterSlideCo
   }
   OnStart() {
     this.Hte = this.Entity.GetComponent(3);
-    this.Gce = this.Entity.GetComponent(187);
-    this.oRe = this.Entity.GetComponent(186);
-    this.osn = this.Entity.GetComponent(182);
-    this.Nce = this.Entity.GetComponent(65);
-    this.I5r = this.Entity.GetComponent(184);
-    this.cBe = this.Entity.GetComponent(41);
-    this.Lie = this.Entity.GetComponent(215);
+    this.Gce = this.Entity.GetComponent(189);
+    this.oRe = this.Entity.GetComponent(188);
+    this.osn = this.Entity.GetComponent(184);
+    this.Nce = this.Entity.GetComponent(67);
+    this.I5r = this.Entity.GetComponent(186);
+    this.cBe = this.Entity.GetComponent(43);
+    this.Lie = this.Entity.GetComponent(217);
     this.Lz.Reset();
     this.lJr.Reset();
     if (this.Lie?.Valid) {
@@ -652,10 +653,11 @@ let CharacterSlideComponent = CharacterSlideComponent_1 = class CharacterSlideCo
       var i = this.Gce.CharacterMovement.Kuro_GetBlockDirectWhenMove();
       this.Lz.FromUeVector(i);
       var s = this.Gce.CharacterMovement.Kuro_GetBlockActorWhenMove();
-      var h = CharacterSlideComponent_1.SlideConfig;
+      var h = this.Gce.CharacterMovement.Kuro_GetKuroBlockHitIndexWhenMove();
+      var e = CharacterSlideComponent_1.SlideConfig;
       this.GroundNormal.Reset();
       this.fHo.FromUeVector(this.Gce.CharacterMovement.Velocity);
-      if (GravityUtils_1.GravityUtils.GetZnInGravityForActor(this.Hte, this.Lz) > SLIDE_Z_THRESHOLD && (this.pJr ?? GravityUtils_1.GravityUtils.GetZnInGravityForActor(this.Hte, this.fHo) < -MathUtils_1.MathUtils.KindaSmallNumber) && s && !s.ActorHasTag(CharacterNameDefines_1.CharacterNameDefines.NO_SLIDE)) {
+      if (GravityUtils_1.GravityUtils.GetZnInGravityForActor(this.Hte, this.Lz) > SLIDE_Z_THRESHOLD && (this.pJr ?? GravityUtils_1.GravityUtils.GetZnInGravityForActor(this.Hte, this.fHo) < -MathUtils_1.MathUtils.KindaSmallNumber) && s && !UE.KuroCollisionLibrary.ActorHasTag(s, CharacterNameDefines_1.CharacterNameDefines.NO_SLIDE, h)) {
         this.SlideForward.FromUeVector(i);
         this.GroundNormal.DeepCopy(this.SlideForward);
         if (this.I5r.MoveState !== CharacterUnifiedStateTypes_1.ECharMoveState.Slide && !this.PJr()) {
@@ -681,7 +683,7 @@ let CharacterSlideComponent = CharacterSlideComponent_1 = class CharacterSlideCo
         this.dJr = CharacterSlideComponent_1.GetSlideFallingFriction(this.mJr);
       }
       this.AJr(t);
-      this.UJr(t, h);
+      this.UJr(t, e);
     }
   }
   TickSkiMode(i) {
@@ -693,7 +695,7 @@ let CharacterSlideComponent = CharacterSlideComponent_1 = class CharacterSlideCo
     if (this.SJr) {
       this.SJr = false;
     } else {
-      i = this.Entity.GetComponent(82);
+      i = this.Entity.GetComponent(84);
       if ((!i?.IsActive || i.WalkOnWaterStage === 2) && (this.I5r.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Ground || this.I5r.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Ski)) {
         if (this.uJr.size > 0 || this.oRe?.Valid && this.oRe.HasKuroRootMotion) {
           if (this.I5r.MoveState === CharacterUnifiedStateTypes_1.ECharMoveState.NormalSki) {
@@ -711,10 +713,12 @@ let CharacterSlideComponent = CharacterSlideComponent_1 = class CharacterSlideCo
           if (s) {
             this.exn = s.Components.Get(0);
             this.MJr = this.exn?.GetOwner();
+            this.d5g = s.ItemArray.Get(0);
             TraceElementCommon_1.TraceElementCommon.GetImpactNormal(s, 0, this.EJr);
           } else {
             this.exn = undefined;
             this.MJr = undefined;
+            this.d5g = 0;
             this.EJr.Reset();
           }
           if (this.ixn()) {
@@ -728,7 +732,7 @@ let CharacterSlideComponent = CharacterSlideComponent_1 = class CharacterSlideCo
                 return;
               }
               i = ModelManager_1.ModelManager.TraceElementModel.GetActorTrace();
-              s = this.Entity.GetComponent(186);
+              s = this.Entity.GetComponent(188);
               TraceElementCommon_1.TraceElementCommon.GetHitLocation(i.HitResult, 0, this.Lz);
               s?.SetLocationAndRotatorWithModelBuffer(this.Lz.ToUeVector(), this.Hte.ActorRotation, ENTER_SKI_BUFFER_TIME, "CharacterSlideComp.EnterSki");
               this.Gce?.ActorComp?.Actor.KuroSetMovementMode({
@@ -777,7 +781,7 @@ let CharacterSlideComponent = CharacterSlideComponent_1 = class CharacterSlideCo
     }
   }
   ixn() {
-    return !!this.exn && (!this.MJr || !this.MJr.ActorHasTag(CharacterNameDefines_1.CharacterNameDefines.NO_SLIDE)) && !this.EJr.ContainsNaN() && GravityUtils_1.GravityUtils.GetZnInGravityForActor(this.Hte, this.EJr) !== 0 && !(Math.acos(Vector_1.Vector.DotProduct(this.EJr, this.Hte.MoveComp.GravityUp)) * MathUtils_1.MathUtils.RadToDeg >= SKI_GROUND_MAX_ANGLE);
+    return !!this.exn && (!this.MJr || !UE.KuroCollisionLibrary.ActorHasTag(this.MJr, CharacterNameDefines_1.CharacterNameDefines.NO_SLIDE, this.d5g)) && !this.EJr.ContainsNaN() && GravityUtils_1.GravityUtils.GetZnInGravityForActor(this.Hte, this.EJr) !== 0 && !(Math.acos(Vector_1.Vector.DotProduct(this.EJr, this.Hte.MoveComp.GravityUp)) * MathUtils_1.MathUtils.RadToDeg >= SKI_GROUND_MAX_ANGLE);
   }
   V8a(t) {
     return !(Math.acos(Vector_1.Vector.DotProduct(this.GroundNormal, this.Hte.MoveComp.GravityUp)) * MathUtils_1.MathUtils.RadToDeg >= SKI_GROUND_MAX_ANGLE) && !(this.Lz.FromUeVector(this.Hte.Actor.D_K2_GetActorLocation()), Vector_1.Vector.Dist(this.Hte.LastActorLocation, this.Lz) < t * DEFAULT_SKI_MIN_SPEED) && !(this._Jr = LEAVE_SKI_TIME, 0);
@@ -786,7 +790,7 @@ let CharacterSlideComponent = CharacterSlideComponent_1 = class CharacterSlideCo
     var t = Protocol_1.Aki.Protocol.Lm_.create();
     t.H8a = Protocol_1.Aki.Protocol.PR_.Proto_None;
     t.j8a = Protocol_1.Aki.Protocol.PR_.Proto_Ski;
-    Net_1.Net.Call(24995, t, t => {
+    Net_1.Net.Call(19621, t, t => {
       if (t && t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
         if (Log_1.Log.CheckWarn()) {
           Log_1.Log.Warn("Movement", 50, "请求切换滑雪模式失败");
@@ -799,7 +803,7 @@ let CharacterSlideComponent = CharacterSlideComponent_1 = class CharacterSlideCo
     var t = Protocol_1.Aki.Protocol.Lm_.create();
     t.H8a = Protocol_1.Aki.Protocol.PR_.Proto_Ski;
     t.j8a = Protocol_1.Aki.Protocol.PR_.Proto_None;
-    Net_1.Net.Call(24995, t, () => {});
+    Net_1.Net.Call(19621, t, () => {});
   }
   LKa() {
     if (this.pJr) {
@@ -822,7 +826,7 @@ let CharacterSlideComponent = CharacterSlideComponent_1 = class CharacterSlideCo
     if (UE.KuroStaticLibrary.IsObjectClassByName(t, CharacterNameDefines_1.CharacterNameDefines.ABP_BASEROLE)) {
       t.设置跳跃速率(this.pJr.JumpTimeScale);
     }
-    this.osn.SetBaseValue(Protocol_1.Aki.Protocol.Vks.RIm, CharacterAttributeTypes_1.PER_TEN_THOUSAND * this.pJr.JumpHeightRate);
+    this.osn.SetBaseValue(Protocol_1.Aki.Protocol.Vks.jIm, CharacterAttributeTypes_1.PER_TEN_THOUSAND * this.pJr.JumpHeightRate);
   }
   xKa() {
     this.Lie.RemoveTag(-451106150);
@@ -831,7 +835,7 @@ let CharacterSlideComponent = CharacterSlideComponent_1 = class CharacterSlideCo
     if (UE.KuroStaticLibrary.IsObjectClassByName(t, CharacterNameDefines_1.CharacterNameDefines.ABP_BASEROLE)) {
       t.设置跳跃速率(1);
     }
-    this.osn.SetBaseValue(Protocol_1.Aki.Protocol.Vks.RIm, +CharacterAttributeTypes_1.PER_TEN_THOUSAND);
+    this.osn.SetBaseValue(Protocol_1.Aki.Protocol.Vks.jIm, +CharacterAttributeTypes_1.PER_TEN_THOUSAND);
   }
   TKa(t) {
     var t = t.SkiConfig;
@@ -852,5 +856,5 @@ CharacterSlideComponent.SlideFallingCoefficientArray = [0, 0, 0, 0];
 CharacterSlideComponent.SpeedReduceCurve = undefined;
 CharacterSlideComponent.RJr = undefined;
 CharacterSlideComponent.I2r = [-1503953470, 1008164187, -752177221];
-CharacterSlideComponent = CharacterSlideComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(36)], CharacterSlideComponent);
+CharacterSlideComponent = CharacterSlideComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(37)], CharacterSlideComponent);
 exports.CharacterSlideComponent = CharacterSlideComponent; //# sourceMappingURL=CharacterSlideComponent.js.map

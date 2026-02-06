@@ -37,6 +37,7 @@ const FNameUtil_1 = require("../../../../../Core/Utils/FNameUtil");
 const GameplayTagUtils_1 = require("../../../../../Core/Utils/GameplayTagUtils");
 const MathCommon_1 = require("../../../../../Core/Utils/Math/MathCommon");
 const Quat_1 = require("../../../../../Core/Utils/Math/Quat");
+const Rotator_1 = require("../../../../../Core/Utils/Math/Rotator");
 const Transform_1 = require("../../../../../Core/Utils/Math/Transform");
 const Vector_1 = require("../../../../../Core/Utils/Math/Vector");
 const MathUtils_1 = require("../../../../../Core/Utils/MathUtils");
@@ -45,10 +46,10 @@ const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
 const Global_1 = require("../../../../Global");
 const ConfigManager_1 = require("../../../../Manager/ConfigManager");
+const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const AnimController_1 = require("../../../../Module/Anim/AnimController");
 const CombatMessage_1 = require("../../../../Module/CombatMessage/CombatMessage");
-const PhotographController_1 = require("../../../../Module/Photograph/PhotographController");
 const InputDistributeController_1 = require("../../../../Ui/InputDistribute/InputDistributeController");
 const CombatLog_1 = require("../../../../Utils/CombatLog");
 const PreloadConstants_1 = require("../../../../World/Controller/PreloadConstants");
@@ -58,6 +59,7 @@ const CharacterBuffIds_1 = require("./Abilities/CharacterBuffIds");
 const CharacterUnifiedStateTypes_1 = require("./Abilities/CharacterUnifiedStateTypes");
 const BaseAnimationComponent_1 = require("./BaseAnimationComponent");
 const RotateBonesToTargetManager_1 = require("./MeshHelper/RotateBonesToTargetManager");
+const CreatureModel_1 = require("../../../../World/Model/CreatureModel");
 const PERFORMANCE_COUNT = 3;
 const ROTATABLE_THREADHOLD = 0.5;
 const MIN_SCLOPE_SCALE = 0.5;
@@ -87,7 +89,6 @@ const priorityToMaxSquareDistance = [[5, 250000], [10, 1000000], [20, 4000000]];
 const WALK_RUN_MIX_LERP = 0.995;
 const DEFAULT_CAMERA_HEIGHT_RATE = 1 / 3;
 const MODEL_BUFFER_SMOOTH_FACTOR = 0.75;
-const DISABLE_ON_ELEVATOR_KAWAII_MASK = 2;
 const limitBlendSpaceY = [-30, 30];
 const limitBlendSpaceX = [-90, 90];
 const PROFILE_KEY = "CharacterAnimationComponent_Performance";
@@ -140,7 +141,7 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
     this.n3r = Vector_1.Vector.Create();
     this.s3r = undefined;
     this.iym = undefined;
-    this.mvf = false;
+    this.EMf = false;
     this.EnableLowerBlend = false;
     this.EnableLeftArmBlend = false;
     this.EnableRightArmBlend = false;
@@ -193,10 +194,10 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
     this.m2c = false;
     this.I3r = (t, i) => {
       var s;
-      if (t?.Valid && (s = t.GetComponent(186))?.Valid) {
+      if (t?.Valid && (s = t.GetComponent(188))?.Valid) {
         if (i) {
           this.T3r();
-        } else if (!t.GetComponent(215)?.HasTag(715234113)) {
+        } else if (!t.GetComponent(217)?.HasTag(715234113)) {
           if ((i = this.Mesh.GetAnimInstance()) !== (t = this.GetAnimInstance())) {
             i.SyncAnimStates(undefined);
           }
@@ -212,7 +213,7 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
           } else {
             t?.SyncAnimStates(undefined);
           }
-          (i = this.Entity.GetComponent(51))?.ClearOrders();
+          (i = this.Entity.GetComponent(53))?.ClearOrders();
           i?.AnimationStateInitPush();
           this.T3r();
         }
@@ -223,8 +224,8 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
       this.d6_();
       this.StartAnimInstance();
       this.jIu();
-      this.Entity.GetComponent(51)?.RebuildAnimationStates();
-      this.Entity.GetComponent(123)?.RefreshCharacterAnimInstance();
+      this.Entity.GetComponent(53)?.RebuildAnimationStates();
+      this.Entity.GetComponent(125)?.RefreshCharacterAnimInstance();
     };
     this.bpr = t => {
       if (!t || !!ModelManager_1.ModelManager.LevelLoadingModel?.IsLoading) {
@@ -240,7 +241,7 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
       }
     };
     this.ri_ = 0;
-    this.Dof = (t, i) => {
+    this.zsf = (t, i) => {
       if (t === this.Entity.Id && i) {
         this.StartForceDisableAnimOptimization(1);
         this.ri_ = 2;
@@ -459,12 +460,12 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
     if (this.ActorComp.Actor.Mesh.SkeletalMesh) {
       this.Actor = this.ActorComp.Actor;
       this.Mesh = this.Actor.Mesh;
-      this.Gce = this.Entity.GetComponent(46);
-      this.bre = this.Entity.GetComponent(48);
-      this.Lie = this.Entity.GetComponent(215);
-      this.zFr = this.Entity.GetComponent(84);
-      this.$zo = this.Entity.GetComponent(183);
-      this.ph_ = this.Entity.GetComponent(47);
+      this.Gce = this.Entity.GetComponent(48);
+      this.bre = this.Entity.GetComponent(50);
+      this.Lie = this.Entity.GetComponent(217);
+      this.zFr = this.Entity.GetComponent(86);
+      this.$zo = this.Entity.GetComponent(185);
+      this.ph_ = this.Entity.GetComponent(49);
       this.uwl = this.Entity.GetComponent(242);
       this.EDa = this.Mesh?.KuroAnimInstanceLod ?? 0;
       if (this.Mesh) {
@@ -534,12 +535,23 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
     this.IkMeshOffset = 0;
     var t = this.Mesh;
     this.BufferOriginTransform.FromUeTransform(t.D_GetRelativeTransform());
+    if (!!this.ActorComp?.IsRoleAndCtrlByMe && (this.BufferOriginTransform.GetLocation().X !== 0 || this.BufferOriginTransform.GetLocation().Y !== 0)) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Character", 6, "Animation.InitBaseInfo OriginTransError", ["Actor", this.Actor?.GetName()], ["Origin", this.BufferOriginTransform]);
+      }
+      this.h3r.Set(0, 0, -this.ActorComp.ScaledHalfHeight);
+      this.Z_e.SetLocation(this.h3r);
+      (i = Rotator_1.Rotator.Create()).Set(0, -90, 0);
+      this.Z_e.SetRotation(i.Quaternion());
+      this.Z_e.SetScale3D(Vector_1.Vector.OneVectorProxy);
+      t.D_K2_SetRelativeTransform(this.Z_e.ToUeTransform(), false, undefined, false);
+    }
     this.BufferShowTransform.FromUeTransform(t.D_GetRelativeTransform());
-    var t = this.ActorComp.CreatureData.GetEntityType();
+    var i = this.ActorComp.CreatureData.GetEntityType();
     this.dFe = this.ActorComp.CreatureData.GetRoleId();
     this.SightDirect.DeepCopy(Vector_1.Vector.RightVectorProxy);
     this.SightDirect2.DeepCopy(Vector_1.Vector.RightVectorProxy);
-    if (t === Protocol_1.Aki.Protocol.kks.Proto_Player) {
+    if (i === Protocol_1.Aki.Protocol.kks.Proto_Player) {
       this.IsPlayer = true;
     } else {
       this.IsPlayer = false;
@@ -553,24 +565,27 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
     }
   }
   OnChangeTimeDilation(t) {
-    var i = this.O0d();
-    var s = i > 1;
-    if (Info_1.Info.EnableForceTick) {
-      this.BufferNowTime /= this.BufferNowScale;
-      this.BufferTimeLength /= this.BufferNowScale;
-      if (s) {
-        this.BufferNowTime *= i;
-        this.BufferTimeLength *= i;
+    var i;
+    var s;
+    if (this.ZFr) {
+      s = (i = this.O0d()) > 1;
+      if (Info_1.Info.EnableForceTick) {
+        this.BufferNowTime /= this.BufferNowScale;
+        this.BufferTimeLength /= this.BufferNowScale;
+        if (s) {
+          this.BufferNowTime *= i;
+          this.BufferTimeLength *= i;
+        }
+      } else {
+        this.ZFr.BufferNowTime /= this.BufferNowScale;
+        this.ZFr.BufferTimeLength /= this.BufferNowScale;
+        if (s) {
+          this.ZFr.BufferNowTime *= i;
+          this.ZFr.BufferTimeLength *= i;
+        }
       }
-    } else {
-      this.ZFr.BufferNowTime /= this.BufferNowScale;
-      this.ZFr.BufferTimeLength /= this.BufferNowScale;
-      if (s) {
-        this.ZFr.BufferNowTime *= i;
-        this.ZFr.BufferTimeLength *= i;
-      }
+      this.BufferNowScale = i;
     }
-    this.BufferNowScale = i;
   }
   Ore() {
     if (!this.m2c) {
@@ -587,7 +602,7 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
       EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.TeleportOpenLoadingEnd, this.Oul);
       EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharOnRoleDrown, this.R3r);
       EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.RequestClearMeshRotationBuffer, this.U3r);
-      EventSystem_1.EventSystem.AddWithTarget(this.vJ, EventDefine_1.EEventName.OnPreSetActorHidden, this.Dof);
+      EventSystem_1.EventSystem.AddWithTarget(this.vJ, EventDefine_1.EEventName.OnPreSetActorHidden, this.zsf);
     }
   }
   kre() {
@@ -604,7 +619,7 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
       EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.TeleportOpenLoadingEnd, this.Oul);
       EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CharOnRoleDrown, this.R3r);
       EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.RequestClearMeshRotationBuffer, this.U3r);
-      EventSystem_1.EventSystem.RemoveWithTarget(this.vJ, EventDefine_1.EEventName.OnPreSetActorHidden, this.Dof);
+      EventSystem_1.EventSystem.RemoveWithTarget(this.vJ, EventDefine_1.EEventName.OnPreSetActorHidden, this.zsf);
     }
   }
   OnEnd() {
@@ -656,7 +671,7 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
     this.q3r();
     if (this.IsPlayer && (this.C3r -= t, this.BattleIdleEndTime > 0 && this.ActorComp.InputDirectProxy.SizeSquared2D() > MathUtils_1.MathUtils.SmallNumber && (this.C3r = 0), this.UpdateWalkRunMix(t), this.RefreshPerformancePosition(), this.IsPlayer)) {
       this.vth = this.$zo?.GetBuffById(CharacterBuffIds_1.buffId.ElevatorBuff) !== undefined;
-      this.Mesh.KuroLodMask = this.vth ? DISABLE_ON_ELEVATOR_KAWAII_MASK | ModelManager_1.ModelManager.CreatureModel.KuroLodMask : ModelManager_1.ModelManager.CreatureModel.KuroLodMask;
+      this.Mesh.KuroLodMask = this.vth ? CreatureModel_1.DISABLE_ON_ELEVATOR_KAWAII_MASK | ModelManager_1.ModelManager.CreatureModel.KuroLodMask : ModelManager_1.ModelManager.CreatureModel.KuroLodMask;
     }
   }
   OnForceAfterTick(t) {
@@ -676,7 +691,7 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
       Log_1.Log.Info("Character", 57, "人物上场隐藏一帧 【组件Disable 隐藏结束】", ["Entity:", this.Entity.Id]);
     }
     this.p3r = -1;
-    if (!this.Entity.GetComponent(197)?.AnyIdleLoopMontagePlaying) {
+    if (!this.Entity.GetComponent(199)?.AnyIdleLoopMontagePlaying) {
       if (this.MainAnimInstanceInternal?.IsValid() && (this.MainAnimInstanceInternal.Montage_Stop(0), this.vJ.AddHoldEntity("CharacterAnimationComponent.OnDisable"), this.B$a === 0)) {
         this.B$a = TickProcessSystem_1.TickProcessSystem.RegisterOnceTickProcess(5, true, this.OnPostEndAnimNotify);
       }
@@ -764,6 +779,12 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
     }
   }
   SetOriginLocation(t) {
+    if (t.X !== 0 || t.Y !== 0) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Character", 6, "Animation.SetOriginLocation LocationError", ["Actor", this.Actor?.GetName()], ["Loc", t]);
+      }
+      t.Set(0, 0, -this.ActorComp.ScaledHalfHeight);
+    }
     if (Info_1.Info.EnableForceTick) {
       t.Division(this.BufferOriginTransform.GetLocation(), this.h3r);
       this.BufferOriginTransform.SetLocation(t);
@@ -773,6 +794,20 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
       }
     } else {
       this.ZFr.SetOriginLocation(t.ToUeVectorOld());
+      if (this.ZFr.BufferNowTime >= this.ZFr.BufferTimeLength) {
+        this.Z_e.FromUeTransform(this.Mesh.D_GetRelativeTransform());
+        if (this.Z_e.GetLocation().X !== 0 || this.Z_e.GetLocation().Y !== 0) {
+          if (Log_1.Log.CheckError()) {
+            Log_1.Log.Error("Character", 6, "Animation.SetOriginLocation OriginTransError", ["Actor", this.Actor?.GetName()], ["Origin", this.Z_e]);
+          }
+          this.h3r.Set(0, 0, -this.ActorComp.ScaledHalfHeight);
+          this.Z_e.SetLocation(this.h3r);
+          (t = Rotator_1.Rotator.Create()).Set(0, -90, 0);
+          this.Z_e.SetRotation(t.Quaternion());
+          this.Z_e.SetScale3D(Vector_1.Vector.OneVectorProxy);
+          this.Mesh.D_K2_SetRelativeTransform(this.Z_e.ToUeTransform(), false, undefined, false);
+        }
+      }
     }
   }
   ResetModelQuat() {
@@ -797,6 +832,25 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
     } else {
       this.ZFr.ResetModelLocation();
     }
+  }
+  CheckAndResetModel() {
+    this.Z_e.FromUeTransform(this.Mesh.D_GetRelativeTransform());
+    var t = this.BufferOriginTransform.GetLocation();
+    if (t.X !== 0 || t.Y !== 0) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Character", 6, "Animation.CheckAndResetModel Origin Error", ["Actor", this.Actor?.GetName()], ["location", t]);
+      }
+      t.X = 0;
+      t.Y = 0;
+    }
+    var t = this.Z_e.GetLocation().Equals(t, 0.1) && this.Z_e.GetRotation().Equals(this.BufferOriginTransform.GetRotation(), 0.01);
+    if (!t) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Character", 6, "Animation.CheckAndResetModel", ["Actor", this.Actor?.GetName()], ["Current", this.Z_e], ["NowTime", (Info_1.Info.EnableForceTick ? this : this.ZFr).BufferNowTime], ["TimeLength", (Info_1.Info.EnableForceTick ? this : this.ZFr).BufferTimeLength]);
+      }
+      this.Mesh.D_K2_SetRelativeTransform(this.BufferOriginTransform.ToUeTransform(), false, undefined, false);
+    }
+    return t;
   }
   G3r(t, i, s) {
     if (Info_1.Info.EnableForceTick) {
@@ -963,45 +1017,47 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
     return MathUtils_1.MathUtils.Clamp(this.SlopeStepPeriodicCurve.GetFloatValue(this.t3r) * this.SlopeStepSizeCurve.GetFloatValue(this.t3r), MIN_SCLOPE_SCALE, MAX_SCLOPE_SCALE);
   }
   q3r() {
-    var t = this.Gce.CharacterMovement.MovementMode;
-    if (t !== 1 && t !== 2) {
-      this.t3r = 0;
-      this.o3r.FromUeVector(this.Gce.GravityUp);
-    } else {
-      var i = this.ActorComp.ActorLocationProxy;
-      var s = this.ActorComp.ActorForwardProxy;
-      if (t === 1) {
-        t = this.Gce.CharacterMovement.CurrentFloor;
-        if (!t.bBlockingHit) {
-          this.t3r = 0;
-          this.o3r.FromUeVector(this.Gce.GravityUp);
-          return;
-        }
-        t = t.HitResult.ImpactNormal;
-        this.t3r = Math.asin(MathUtils_1.MathUtils.DotProduct(s, t)) * -1 * MathUtils_1.MathUtils.RadToDeg;
-        this.o3r.Set(t.X, t.Y, t.Z);
+    if (this.Gce?.CharacterMovement) {
+      var t = this.Gce.CharacterMovement.MovementMode;
+      if (t !== 1 && t !== 2) {
+        this.t3r = 0;
+        this.o3r.FromUeVector(this.Gce.GravityUp);
       } else {
-        if (Time_1.Time.Frame - this.d3r != 1) {
-          this.t3r = 0;
-          this.o3r.FromUeVector(this.Gce.GravityUp);
-          this.d3r = Time_1.Time.Frame;
-          this.Wnr.FromUeVector(i);
-          return;
-        }
-        i.Subtraction(this.Wnr, this.h3r);
-        if (Math.abs(this.h3r.X) < MathUtils_1.MathUtils.SmallNumber && Math.abs(this.h3r.Y) < MathUtils_1.MathUtils.SmallNumber) {
-          this.t3r = 0;
-          this.o3r.FromUeVector(this.Gce.GravityUp);
+        var i = this.ActorComp.ActorLocationProxy;
+        var s = this.ActorComp.ActorForwardProxy;
+        if (t === 1) {
+          t = this.Gce.CharacterMovement.CurrentFloor;
+          if (!t.bBlockingHit) {
+            this.t3r = 0;
+            this.o3r.FromUeVector(this.Gce.GravityUp);
+            return;
+          }
+          t = t.HitResult.ImpactNormal;
+          this.t3r = Math.asin(MathUtils_1.MathUtils.DotProduct(s, t)) * -1 * MathUtils_1.MathUtils.RadToDeg;
+          this.o3r.Set(t.X, t.Y, t.Z);
         } else {
-          this.Gce.GravityUp.CrossProduct(this.h3r, this.l3r);
-          this.h3r.CrossProduct(this.l3r, this._3r);
-          this._3r.Normalize();
-          this.t3r = Math.asin(s.DotProduct(this._3r)) * -1 * MathUtils_1.MathUtils.RadToDeg;
-          this.o3r.FromUeVector(this._3r);
+          if (Time_1.Time.Frame - this.d3r != 1) {
+            this.t3r = 0;
+            this.o3r.FromUeVector(this.Gce.GravityUp);
+            this.d3r = Time_1.Time.Frame;
+            this.Wnr.FromUeVector(i);
+            return;
+          }
+          i.Subtraction(this.Wnr, this.h3r);
+          if (Math.abs(this.h3r.X) < MathUtils_1.MathUtils.SmallNumber && Math.abs(this.h3r.Y) < MathUtils_1.MathUtils.SmallNumber) {
+            this.t3r = 0;
+            this.o3r.FromUeVector(this.Gce.GravityUp);
+          } else {
+            this.Gce.GravityUp.CrossProduct(this.h3r, this.l3r);
+            this.h3r.CrossProduct(this.l3r, this._3r);
+            this._3r.Normalize();
+            this.t3r = Math.asin(s.DotProduct(this._3r)) * -1 * MathUtils_1.MathUtils.RadToDeg;
+            this.o3r.FromUeVector(this._3r);
+          }
         }
+        this.d3r = Time_1.Time.Frame;
+        this.Wnr.FromUeVector(i);
       }
-      this.d3r = Time_1.Time.Frame;
-      this.Wnr.FromUeVector(i);
     }
   }
   b3r(t) {
@@ -1018,12 +1074,12 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
       } else {
         if (!this.ph_?.IsInPlot && ModelManager_1.ModelManager.PerformModel.HasSightTarget(this.Entity.Id)) {
           this.eX_(this.n3r);
-        } else if (this.Mwm(this.h3r)) {
+        } else if (this.Uwm(this.h3r)) {
           this.F3r(this.n3r);
         } else {
           this.V3r(this.n3r);
         }
-        this.aef(t);
+        this.Cif(t);
         this.O3r(t);
       }
     }
@@ -1036,53 +1092,59 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
         this.n3r.DeepCopy(this.ActorComp.ActorForwardProxy);
       }
     } else {
-      if (!InputDistributeController_1.InputDistributeController.IsAllowHeadRotation()) {
-        this.SightDirect.DeepCopy(Vector_1.Vector.RightVectorProxy);
-        this.SightDirect2.DeepCopy(Vector_1.Vector.RightVectorProxy);
-        return !(this.SightDirectIsEqual = true);
-      }
-      if (PhotographController_1.PhotographController.IsOpenPhotograph()) {
-        if (PhotographController_1.PhotographController.IsPlayerLookAtCamera()) {
-          this.UpdateStaticRotation(this.n3r);
-        } else {
-          this.u3r = Time_1.Time.WorldTime + WATCH_CAMERA_TIME;
-          this.n3r.DeepCopy(this.ActorComp.ActorForwardProxy);
-        }
-      } else if (this.iym) {
-        this.rym(this.n3r, this.iym);
-      } else if (this.mvf) {
-        this.fvf(this.n3r);
+      var i = ModelManager_1.ModelManager.PerformModel.PlayerSightTarget;
+      if (i) {
+        this.SightTargetPoint = i;
+        this.F3r(this.n3r);
       } else {
-        if (this.uwl?.Valid) {
-          var i = this.uwl.VehicleType;
-          if (i === "Gongduola" || i === "AutoMoveGongduola" || i === "FishingBoat") {
+        if (!InputDistributeController_1.InputDistributeController.IsAllowHeadRotation()) {
+          this.SightDirect.DeepCopy(Vector_1.Vector.RightVectorProxy);
+          this.SightDirect2.DeepCopy(Vector_1.Vector.RightVectorProxy);
+          return !(this.SightDirectIsEqual = true);
+        }
+        if (ControllerHolder_1.ControllerHolder.PhotographController.IsOpenPhotograph()) {
+          if (ControllerHolder_1.ControllerHolder.PhotographController.IsPlayerLookAtCamera()) {
             this.UpdateStaticRotation(this.n3r);
-            return true;
-          }
-        }
-        if (this.Lie?.Valid) {
-          if (this.Lie.HasTag(1733479717)) {
-            this.SightDirect.DeepCopy(Vector_1.Vector.RightVectorProxy);
-            this.SightDirect2.DeepCopy(Vector_1.Vector.RightVectorProxy);
-            return !(this.SightDirectIsEqual = true);
-          }
-          if (this.Lie.HasTag(-1371021686) || this.Lie.HasTag(504239013) || !this.Lie.HasTag(-1462404775)) {
-            this.n3r.DeepCopy(this.ActorComp.ActorForwardProxy);
-            return true;
-          }
-        }
-        if (this.C3r > 0 || !this.Gce.CanResponseInput()) {
-          this.u3r = Time_1.Time.WorldTime + WATCH_CAMERA_TIME_2;
-          this.n3r.DeepCopy(this.ActorComp.ActorForwardProxy);
-        } else {
-          this.H3r();
-          if (this.GetSightTargetItem()) {
-            this.F3r(this.n3r);
-          } else if ((!this.Lie?.Valid || this.Lie.HasTag(-1898186757) || this.Lie.HasTag(855966206)) && this.Gce.HasMoveInput) {
-            this.u3r = Time_1.Time.WorldTime + WATCH_CAMERA_TIME;
-            this.k3r(this.n3r);
           } else {
+            this.u3r = Time_1.Time.WorldTime + WATCH_CAMERA_TIME;
             this.n3r.DeepCopy(this.ActorComp.ActorForwardProxy);
+          }
+        } else if (this.iym) {
+          this.rym(this.n3r, this.iym);
+        } else if (this.EMf) {
+          this.IMf(this.n3r);
+        } else {
+          if (this.uwl?.Valid) {
+            i = this.uwl.VehicleType;
+            if (i === "Gongduola" || i === "AutoMoveGongduola" || i === "FishingBoat") {
+              this.UpdateStaticRotation(this.n3r);
+              return true;
+            }
+          }
+          if (this.Lie?.Valid) {
+            if (this.Lie.HasTag(1733479717)) {
+              this.SightDirect.DeepCopy(Vector_1.Vector.RightVectorProxy);
+              this.SightDirect2.DeepCopy(Vector_1.Vector.RightVectorProxy);
+              return !(this.SightDirectIsEqual = true);
+            }
+            if (this.Lie.HasTag(-1371021686) || this.Lie.HasTag(504239013) || !this.Lie.HasTag(-1462404775)) {
+              this.n3r.DeepCopy(this.ActorComp.ActorForwardProxy);
+              return true;
+            }
+          }
+          if (this.C3r > 0 || !this.Gce.CanResponseInput()) {
+            this.u3r = Time_1.Time.WorldTime + WATCH_CAMERA_TIME_2;
+            this.n3r.DeepCopy(this.ActorComp.ActorForwardProxy);
+          } else {
+            this.H3r();
+            if (this.GetSightTargetItem()) {
+              this.F3r(this.n3r);
+            } else if ((!this.Lie?.Valid || this.Lie.HasTag(-1898186757) || this.Lie.HasTag(855966206)) && this.Gce.HasMoveInput) {
+              this.u3r = Time_1.Time.WorldTime + WATCH_CAMERA_TIME;
+              this.k3r(this.n3r);
+            } else {
+              this.n3r.DeepCopy(this.ActorComp.ActorForwardProxy);
+            }
           }
         }
       }
@@ -1093,7 +1155,7 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Character", 57, "设置角色头部注释，是否直接跟随(没有插值)1", ["bEnable", t], ["reason", i]);
     }
-    this.mvf = t;
+    this.EMf = t;
   }
   SetSightBoneLimit(t, i, s, h, e, r, o) {
     if (Log_1.Log.CheckInfo()) {
@@ -1116,7 +1178,7 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
     this.az.Inverse(this.az);
     this.l3r.FromUeVector(this.n3r);
     this.az.RotateVector(this.n3r, this.n3r);
-    if (this.mvf) {
+    if (this.EMf) {
       this.SightDirect.DeepCopy(this.n3r);
     } else {
       this.ClampSightDirect(this.n3r, this.n3r);
@@ -1138,7 +1200,7 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
       }
     }
   }
-  aef(t) {
+  Cif(t) {
     if (MathUtils_1.MathUtils.IsNearlyEqual(this.HeadBaseYawBuffer, this.HeadBaseYaw)) {
       this.HeadBaseYawBuffer = this.HeadBaseYaw;
     } else {
@@ -1163,7 +1225,7 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
       this.j3r(t);
     }
   }
-  Mwm(t) {
+  Uwm(t) {
     var i;
     if (this.SightTargetPoint) {
       t.DeepCopy(this.SightTargetPoint);
@@ -1177,7 +1239,7 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
   }
   F3r(t) {
     var i;
-    if (this.Mwm(this.h3r)) {
+    if (this.Uwm(this.h3r)) {
       this.h3r.SubtractionEqual(this.ActorComp.ActorLocationProxy);
       i = this.GetSightTargetItem();
       if ((0, RegisterComponent_1.isComponentInstance)(i, 2)) {
@@ -1281,7 +1343,7 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
       t.DeepCopy(h);
     }
   }
-  fvf(t) {
+  IMf(t) {
     t.FromUeVector(Global_1.Global.CharacterCameraManager.GetActorForwardVector());
     this.j3r(t);
   }
@@ -1329,7 +1391,7 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
       (s = Protocol_1.Aki.Protocol.Me_.create()).nWn = Protocol_1.Aki.Protocol.nWn.create();
       s.nWn.sWn = t.toString();
       s.nWn.aWn = !i;
-      CombatMessage_1.CombatNet.Send(27254, this.Entity, s);
+      CombatMessage_1.CombatNet.Send(22634, this.Entity, s);
     }
   }
   static BoneVisibleChangeNotify(t, i) {}
@@ -1366,7 +1428,7 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
         this.DefaultVisibilityBasedAnimTickOption = 0;
         break;
       case Protocol_1.Aki.Protocol.kks.Proto_Monster:
-        var a = this.Entity.GetComponent(234);
+        var a = this.Entity.GetComponent(235);
         var a = this.Entity.GetComponent(0).GetSummonerId() || a?.Valid;
         this.DefaultVisibilityBasedAnimTickOption = a ? 1 : 3;
         break;
@@ -1426,7 +1488,7 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
           var a;
           var n;
           var _ = this.Gce.CharacterMovement.CurrentFloor.HitResult.ImpactNormal.Z;
-          var m = this.Entity.GetComponent(80).WaterHeightAboveMe;
+          var m = this.Entity.GetComponent(82).WaterHeightAboveMe;
           let s = false;
           let h = 0;
           for (let i = 0; i < PERFORMANCE_COUNT; ++i) {
@@ -1476,7 +1538,7 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
       t.IsFallingIntoWaterRef = i.IsFallingIntoWater;
       t.JumpUpRateRef = i.JumpUpRate;
       t.ForceExitStateStopRef = i.ForceExitStateStop;
-      if ((s = this.Entity.GetComponent(35))?.Valid) {
+      if ((s = this.Entity.GetComponent(36))?.Valid) {
         t.ClimbInfoRef = s.GetClimbInfoNew();
         t.ClimbStateRef = s.GetClimbStateNew();
       }
@@ -1523,5 +1585,5 @@ CharacterAnimationComponent.CameraPosition = new UE.FName("CameraPosition");
 CharacterAnimationComponent.HitCase = new UE.FName("HitCase");
 CharacterAnimationComponent.ebc = new UE.FName("DD_Bip001Pelvis");
 __decorate([CombatMessage_1.CombatNet.Listen("YFn", true)], CharacterAnimationComponent, "BoneVisibleChangeNotify", null);
-CharacterAnimationComponent = CharacterAnimationComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(186)], CharacterAnimationComponent);
+CharacterAnimationComponent = CharacterAnimationComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(188)], CharacterAnimationComponent);
 exports.CharacterAnimationComponent = CharacterAnimationComponent; //# sourceMappingURL=CharacterAnimationComponent.js.map

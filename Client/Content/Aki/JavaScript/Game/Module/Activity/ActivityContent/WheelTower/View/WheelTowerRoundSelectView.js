@@ -29,68 +29,68 @@ const WheelTowerScoreItem_1 = require("../Component/WheelTowerScoreItem");
 class WheelTowerRoundSelectView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
-    this.Txf = undefined;
+    this.dFf = undefined;
     this.Qyi = undefined;
-    this.Ytf = undefined;
+    this.rof = undefined;
     this.fDo = undefined;
     this.d8t = undefined;
-    this.Plf = undefined;
-    this.Alf = undefined;
+    this.K_f = undefined;
+    this.X_f = undefined;
     this.Hea = undefined;
     this.$Ge = e => {
       if (e === "WheelTowerTeamSelectView") {
-        this.iif();
+        this.lof();
       }
     };
-    this.ztf = () => {
+    this.oof = () => {
       var e = new WheelTowerBossItem_1.WheelTowerBossItem();
-      e.SetClickCallback(this.Jmf);
+      e.SetClickCallback(this.C0f);
       return e;
     };
-    this.Jmf = (e, t) => {
-      this.Ytf?.SelectGridProxy(e);
+    this.C0f = (e, t) => {
+      this.rof?.SelectGridProxy(e);
       e = ConfigManager_1.ConfigManager.WheelTowerConfig.GetWaveConfigById(t);
       this.GetText(9)?.ShowTextNew(e.Desc);
     };
-    this.Ztf = () => {
-      if (!this.Txf?.MovingState()) {
+    this.sof = () => {
+      if (!this.dFf?.MovingState()) {
         var t = ModelManager_1.ModelManager.WheelTowerModel.GetMaxChallengeRound();
         var i = ModelManager_1.ModelManager.WheelTowerModel.SelectedRound;
         if (t === 0) {
-          this.bxf(0);
+          this.mFf(0);
         } else {
           let e = i - 1;
           if (e < 0) {
             e += t + 1;
           }
-          this.bxf(e);
+          this.mFf(e);
         }
       }
     };
-    this.eif = () => {
+    this.aof = () => {
       var e;
       var t;
-      if (!this.Txf?.MovingState()) {
+      if (!this.dFf?.MovingState()) {
         e = ModelManager_1.ModelManager.WheelTowerModel.GetMaxChallengeRound();
         t = ModelManager_1.ModelManager.WheelTowerModel.SelectedRound;
         if (e === 0) {
-          this.bxf(0);
+          this.mFf(0);
         } else {
-          this.bxf((t + 1) % (e + 1));
+          this.mFf((t + 1) % (e + 1));
         }
       }
     };
-    this.tif = () => {
+    this.hof = () => {
       var e = ModelManager_1.ModelManager.WheelTowerModel;
       if (e.CheckSelectedRoleEnergyEnough()) {
         if (e.CheckBuffIsSelected()) {
           if (e.CheckSelectedIsConflict()) {
             (e = new ConfirmBoxDefine_1.ConfirmBoxDataNew(420)).FunctionMap.set(2, () => {
-              this.Zmf();
+              this.p0f();
             });
             ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(e);
           } else {
-            this.Zmf();
+            this.p0f();
           }
         } else {
           ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(new ConfirmBoxDefine_1.ConfirmBoxDataNew(408));
@@ -118,7 +118,7 @@ class WheelTowerRoundSelectView extends UiViewBase_1.UiViewBase {
         this.CloseMe();
       }
     };
-    this._Uf = () => {
+    this.VOf = () => {
       UiManager_1.UiManager.OpenView("WheelTowerTeamSelectView", undefined, (e, t) => {
         if (e) {
           this.AddChildViewById(t);
@@ -132,12 +132,12 @@ class WheelTowerRoundSelectView extends UiViewBase_1.UiViewBase {
       return r;
     };
     this.N8e = e => {
-      this.bxf(e);
+      this.mFf(e);
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIButtonComponent], [4, UE.UIButtonComponent], [5, UE.UIButtonComponent], [6, UE.UIItem], [7, UE.UIScrollViewWithScrollbarComponent], [8, UE.UIItem], [9, UE.UIText], [10, UE.UIItem], [11, UE.UIItem], [12, UE.UIItem], [13, UE.UIItem], [14, UE.UIText], [15, UE.UIButtonComponent], [16, UE.UIButtonComponent], [17, UE.UIText], [18, UE.UIItem], [19, UE.UIText]];
-    this.BtnBindInfo = [[4, this.Ztf], [5, this.eif], [15, this.tif], [16, this.Fc_]];
+    this.BtnBindInfo = [[4, this.sof], [5, this.aof], [15, this.hof], [16, this.Fc_]];
   }
   async OnBeforeStartAsync() {
     var e = [];
@@ -147,12 +147,12 @@ class WheelTowerRoundSelectView extends UiViewBase_1.UiViewBase {
     e.push(this.fDo.CreateThenShowByActorAsync(this.GetItem(10).GetOwner()));
     this.d8t = new WheelTowerTeamItem_1.WheelTowerTeamItem();
     e.push(this.d8t.CreateThenShowByActorAsync(this.GetItem(11).GetOwner()));
-    this.Ytf = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(7), this.ztf);
-    this.Plf = new RecordItem();
-    this.Alf = new RecordItem();
-    e.push(this.Plf.CreateThenShowByActorAsync(this.GetItem(12).GetOwner()));
-    e.push(this.Alf.CreateThenShowByActorAsync(this.GetItem(13).GetOwner()));
-    this.Txf = new NoCircleAttachView_1.NoCircleAttachView(this.GetItem(6).GetOwner());
+    this.rof = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(7), this.oof);
+    this.K_f = new RecordItem();
+    this.X_f = new RecordItem();
+    e.push(this.K_f.CreateThenShowByActorAsync(this.GetItem(12).GetOwner()));
+    e.push(this.X_f.CreateThenShowByActorAsync(this.GetItem(13).GetOwner()));
+    this.dFf = new NoCircleAttachView_1.NoCircleAttachView(this.GetItem(6).GetOwner());
     await Promise.all(e);
   }
   OnStart() {
@@ -162,13 +162,14 @@ class WheelTowerRoundSelectView extends UiViewBase_1.UiViewBase {
     this.Qyi?.SetCloseCallBack(this.I5t);
     var t = e ? "WheelBattleMode_Endless" : "WheelBattleMode_Normal";
     this.Qyi?.SetTitleLocalText(t);
-    this.d8t.ClickCallback = this._Uf;
+    this.d8t.ClickCallback = this.VOf;
     var t = ModelManager_1.ModelManager.WheelTowerModel.GetTowerConfig().DefaultCostEnergy;
     this.GetText(14)?.SetText(t.toString());
     this.pO();
     ActivityControllerHolder_1.ActivityControllerHolder.WheelTowerController.TryOpenOverridePopupView(() => {
       this.pO();
     });
+    ModelManager_1.ModelManager.WheelTowerModel?.ActivityData.RecordEnterLevel(e);
     this.Hea = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
     this._rm();
     if (e) {
@@ -176,10 +177,10 @@ class WheelTowerRoundSelectView extends UiViewBase_1.UiViewBase {
     }
   }
   pO() {
-    this.Rxf();
-    this.Oqf();
-    this.Gqf();
-    this.oif();
+    this.fFf();
+    this.$Vf();
+    this.WVf();
+    this.uof();
   }
   OnAddEventListener() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CloseView, this.$Ge);
@@ -188,7 +189,7 @@ class WheelTowerRoundSelectView extends UiViewBase_1.UiViewBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CloseView, this.$Ge);
   }
   OnBeforeShow() {
-    this.iif();
+    this.lof();
   }
   OnBeforeDestroy() {
     this.Hea?.Clear();
@@ -200,44 +201,44 @@ class WheelTowerRoundSelectView extends UiViewBase_1.UiViewBase {
       }
     });
   }
-  oif() {
+  uof() {
     var e = ModelManager_1.ModelManager.WheelTowerModel.GetMaxChallengeRound();
     var t = this.OpenParam;
     let i = e;
     if (t !== undefined) {
       i = MathUtils_1.MathUtils.Clamp(t, 0, e);
     }
-    this.Txf?.AttachToIndex(i, true);
+    this.dFf?.AttachToIndex(i, true);
     this.rLn(i);
   }
   rLn(e, t = true) {
     if (!!t || e !== ModelManager_1.ModelManager.WheelTowerModel.SelectedRound) {
       this.Hea?.PlayOrReplaySequenceByName("Switch");
       ModelManager_1.ModelManager.WheelTowerModel.UpdateSelectRound(e, t);
-      this.iif();
-      this.nif(e);
+      this.lof();
+      this.cof(e);
       if (ModelManager_1.ModelManager.WheelTowerModel.EndlessMode) {
         t = ModelManager_1.ModelManager.WheelTowerModel.GetRoundBossRound(e);
         LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(17), "PrefabTextItem_414249711_Text", t);
       } else {
         this.GetText(17)?.ShowTextNew("WheelTower_RoundSelect_NormalTips");
       }
-      this.Plf?.Refresh(true);
-      this.Alf?.Refresh(false);
+      this.K_f?.Refresh(true);
+      this.X_f?.Refresh(false);
       t = ModelManager_1.ModelManager.WheelTowerModel.IsRoundChallenged(e);
       this.GetText(19)?.ShowTextNew(t ? "WheelTower_RoundSelect_Retry" : "WheelTower_RoundSelect_Start");
     }
   }
-  Gqf() {
+  WVf() {
     var e = ModelManager_1.ModelManager.WheelTowerModel.HasChallengeAnyRound();
     this.GetButton(16)?.RootUIComp.SetUIActive(e);
   }
-  Oqf() {
+  $Vf() {
     var e = ModelManager_1.ModelManager.WheelTowerModel.GetMaxChallengeRound();
     this.GetButton(4)?.SetSelfInteractive(e > 0);
     this.GetButton(5)?.SetSelfInteractive(e > 0);
   }
-  iif() {
+  lof() {
     var e = ModelManager_1.ModelManager.WheelTowerModel.SelectedRoleList;
     const i = [];
     for (let e = 0; e < ModelManager_1.ModelManager.WheelTowerModel.GetTeamMaxRoleCount(); e++) {
@@ -252,7 +253,7 @@ class WheelTowerRoundSelectView extends UiViewBase_1.UiViewBase {
     var t = ModelManager_1.ModelManager.WheelTowerModel.CheckSelectedIsConflict();
     this.GetButton(15)?.SetSelfInteractive(e && !t);
   }
-  nif(e) {
+  cof(e) {
     const t = ModelManager_1.ModelManager.WheelTowerModel.GetRoundBossInfo(e);
     let i = t.findIndex(e => e.HpPercentage > 0);
     if (i < 0) {
@@ -267,20 +268,20 @@ class WheelTowerRoundSelectView extends UiViewBase_1.UiViewBase {
         StartPercent: t.HpPercentage
       });
     });
-    this.Ytf?.RefreshByData(s, () => {
-      this.Ytf?.GetScrollItemByIndex(i)?.SetCurrentChallenge(true);
-      this.Ytf?.ScrollToItemByKey(i);
-      this.Jmf(i, t[i].WaveConfigId);
+    this.rof?.RefreshByData(s, () => {
+      this.rof?.GetScrollItemByIndex(i)?.SetCurrentChallenge(true);
+      this.rof?.ScrollToItemByKey(i);
+      this.C0f(i, t[i].WaveConfigId);
     });
   }
-  Zmf() {
+  p0f() {
     ActivityControllerHolder_1.ActivityControllerHolder.WheelTowerController.RequestSelectedRoundChallenge();
     this.CloseMe();
   }
-  Rxf() {
-    this.Txf?.SetControllerItem(this.GetItem(6));
-    this.Txf?.CreateItems(this.GetItem(18).GetOwner(), 0, this.Hwn);
-    this.Txf?.SetIfNeedFakeItem(true);
+  fFf() {
+    this.dFf?.SetControllerItem(this.GetItem(6));
+    this.dFf?.CreateItems(this.GetItem(18).GetOwner(), 0, this.Hwn);
+    this.dFf?.SetIfNeedFakeItem(true);
     this.GetItem(18)?.SetUIActive(false);
     var t = ModelManager_1.ModelManager.WheelTowerModel.GetMaxChallengeRound();
     var i = [];
@@ -290,11 +291,11 @@ class WheelTowerRoundSelectView extends UiViewBase_1.UiViewBase {
         IsLock: false
       });
     }
-    this.Txf.ReloadView(i.length, i, t);
+    this.dFf.ReloadView(i.length, i, t);
   }
-  bxf(e) {
-    if (this.Txf?.GetCurrentSelectIndex() !== e) {
-      this.Txf?.AttachToIndex(e);
+  mFf(e) {
+    if (this.dFf?.GetCurrentSelectIndex() !== e) {
+      this.dFf?.AttachToIndex(e);
     }
     this.rLn(e, false);
   }

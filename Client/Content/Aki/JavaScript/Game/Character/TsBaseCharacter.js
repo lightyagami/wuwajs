@@ -180,13 +180,16 @@ class TsBaseCharacter extends UE.BaseCharacter {
         EventSystem_1.EventSystem.EmitWithTarget(this.CharacterActorComponent.Entity, EventDefine_1.EEventName.CustomMoveRoll, e);
         break;
       case CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_KITE:
-        this.CharacterActorComponent?.Entity.GetComponent(39)?.KiteMove(e);
+        this.CharacterActorComponent?.Entity.GetComponent(41)?.KiteMove(e);
         break;
       case CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_RAIL_SLIDE:
         EventSystem_1.EventSystem.EmitWithTarget(this.CharacterActorComponent.Entity, EventDefine_1.EEventName.CustomMoveRailSlide, e);
         break;
       case CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_RIDE:
         EventSystem_1.EventSystem.EmitWithTarget(this.CharacterActorComponent.Entity, EventDefine_1.EEventName.CustomMoveRide, e);
+        break;
+      case CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_FLOATING:
+        EventSystem_1.EventSystem.EmitWithTarget(this.CharacterActorComponent.Entity, EventDefine_1.EEventName.CustomMoveFloating, e);
         break;
       case CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_SPLINE_CLIMB:
         EventSystem_1.EventSystem.EmitWithTarget(this.CharacterActorComponent.Entity, EventDefine_1.EEventName.CustomMoveSplineClimb, e);

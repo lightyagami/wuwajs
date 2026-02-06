@@ -21,7 +21,7 @@ class LevelEventClientUnlockAchievement extends LevelGeneralBase_1.LevelEventBas
             }
           } else {
             (o = Protocol_1.Aki.Protocol.l$n.create()).s5n = e.Id;
-            Net_1.Net.Call(18476, o, () => {});
+            Net_1.Net.Call(21586, o, () => {});
           }
         } else if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("LevelEvent", 31, "[LevelEventClientUnlockAchievement] 成就数据不存在");

@@ -307,7 +307,7 @@ class UiNavigationNewController extends UiControllerBase_1.UiControllerBase {
     if (i.DefaultListener) {
       var t = i.DefaultListener;
       if (t.IsIgnoreScrollOrLayoutCheckInSwitchGroup()) {
-        return this.rbo(i);
+        return this.Mjg(i);
       }
       if (!t.IsScrollOrLayoutActor() && t.IsCanFocus()) {
         return t;
@@ -323,9 +323,9 @@ class UiNavigationNewController extends UiControllerBase_1.UiControllerBase {
         return t;
       }
     }
-    return this.rbo(i);
+    return this.Mjg(i);
   }
-  static Exf(a, i) {
+  static uFf(a, i) {
     let e = undefined;
     var n = (i.ScrollProxy?.ScrollView).DisplayItemArray;
     for (let i = 0, t = n.Num(); i < t; ++i) {
@@ -345,19 +345,41 @@ class UiNavigationNewController extends UiControllerBase_1.UiControllerBase {
     }
     return e;
   }
-  static rbo(a) {
+  static Ejg(i, t) {
+    let a = undefined;
+    var e = t.GetScrollOrLayoutActor();
+    var n = i.MultiTemplateScrollSortListenerList;
+    for (let i = 0, t = n.length; i < t; ++i) {
+      var r = n[i];
+      if (!a && r.IsCanFocus()) {
+        a = r;
+      }
+      if (r.IsInScrollDisplayByGridActor() && (!e || r.GetScrollOrLayoutActor() === e) && r.IsInScrollOrLayoutCanFocus()) {
+        return r;
+      }
+    }
+    return a;
+  }
+  static rbo(i, t) {
+    if (t.HasDynamicScrollView()) {
+      return UiNavigationNewController.uFf(i, t);
+    } else if (t.HasMultiTemplateScrollView()) {
+      return UiNavigationNewController.Ejg(i, t);
+    } else if (t.IsInScrollOrLayoutCanFocus()) {
+      return t;
+    } else {
+      return undefined;
+    }
+  }
+  static Mjg(a) {
     let e = undefined;
     for (let i = 0, t = a.ListenerList.length; i < t; ++i) {
       var n = a.ListenerList[i];
       if (!e && n.IsCanFocus()) {
         e = n;
       }
-      if (n.HasDynamicScrollView()) {
-        var r = UiNavigationNewController.Exf(a, n);
-        if (r) {
-          return r;
-        }
-      } else if (n.IsInScrollOrLayoutCanFocus()) {
+      var n = UiNavigationNewController.rbo(a, n);
+      if (n) {
         return n;
       }
     }
@@ -367,7 +389,7 @@ class UiNavigationNewController extends UiControllerBase_1.UiControllerBase {
     if (t.HasDynamicScrollView()) {
       return UiNavigationNewController.AWs(i, t);
     } else if (t.HasMultiTemplateScrollView()) {
-      return UiNavigationNewController.sRf(i, t);
+      return UiNavigationNewController.PUf(i, t);
     } else {
       return UiNavigationNewController.UWs(i, t);
     }
@@ -412,7 +434,7 @@ class UiNavigationNewController extends UiControllerBase_1.UiControllerBase {
     }
     return a;
   }
-  static sRf(i, t) {
+  static PUf(i, t) {
     let a = undefined;
     var e = t.GetScrollOrLayoutActor();
     var n = i.MultiTemplateScrollSortListenerList;
@@ -448,6 +470,23 @@ class UiNavigationNewController extends UiControllerBase_1.UiControllerBase {
         }
       }
     }
+  }
+  static GetCanFocusInsideListenerList(i) {
+    var a = i.GetNavigationGroup().InsideGroupNameSet;
+    var e = UE.LGUIBPLibrary.GetComponentsInChildrenWithHirerarchyIndex(i.InsideGroupActor, UE.TsUiNavigationBehaviorListener_C.StaticClass(), true);
+    if (!e) {
+      return [];
+    }
+    var n = [];
+    for (let i = 0, t = e.Num(); i < t; ++i) {
+      var r = e.Get(i);
+      if (!StringUtils_1.StringUtils.IsEmpty(r.GroupName)) {
+        if (a.has(r.GroupName) && r.IsCanFocus()) {
+          n.push(r);
+        }
+      }
+    }
+    return n;
   }
   static IsInFocusInsideListenerList(i, t) {
     var a;
@@ -830,6 +869,19 @@ class UiNavigationNewController extends UiControllerBase_1.UiControllerBase {
             }
           }
         }
+      }
+    }
+  }
+  static HandleCommonConsumeNavigationInside() {
+    var i;
+    var t;
+    var a = this.GetCurrentNavigationFocusListener();
+    if (a) {
+      if ((t = this.GetCanFocusInsideListenerList(a)).length > 1) {
+        i = t[0];
+        this.SwitchNavigationFocus(i);
+      } else if (t.length === 1 && (i = a.IsInScrollOrLayoutCanFocus(), t = t[0], this.Dje(t), i) && !a.IsInScrollOrLayoutCanFocus()) {
+        this.MarkViewHandleRefreshNavigationDirty();
       }
     }
   }

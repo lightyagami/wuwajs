@@ -42,8 +42,8 @@ class GeographyHandBookChildItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.GetItem(2).SetUIActive(o);
     this.GetTexture(0).SetUIActive(!e);
     this.GetItem(3).SetUIActive(e);
-    this.HYf();
-    this.jYf();
+    this.dfg();
+    this.mfg();
     this.GetTog()?.SetEnable(!e);
   }
   ToggleClick() {
@@ -110,12 +110,12 @@ class GeographyHandBookChildItem extends GridProxyAbstract_1.GridProxyAbstract {
   GetIsUnlock() {
     return !!this.kZt && !this.kZt.IsLock;
   }
-  HYf() {
+  dfg() {
     var e = this.GetTog();
     e?.OnStateChange.Clear();
     e?.CanExecuteChange.Unbind();
   }
-  jYf() {
+  mfg() {
     this.GetTog()?.OnStateChange.Add(this.mei);
   }
 }

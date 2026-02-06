@@ -13,28 +13,28 @@ class DeckInfo {
     this.eP1 = "";
     this.BV1 = false;
     this.zTu = 0;
-    this.sGm = undefined;
+    this.yFm = undefined;
     this.tP1 = [];
     this.iP1 = new Map();
     this.kV1 = new Map();
     this.Mbu = new Map();
     this.rP1 = [];
     this.JTu = undefined;
-    this.zQm = undefined;
+    this.pYm = undefined;
     this.Sbu = new Map();
     this.ZTu = 0;
-    this.aGm = 0;
-    this.JQm = 0;
+    this.SFm = 0;
+    this.vYm = 0;
     this.sP1 = 0;
     this.aP1 = 0;
     this.OV1 = 0;
     this.ebu = 0;
-    this.hGm = 0;
-    this.ZQm = 0;
+    this.MFm = 0;
+    this.yYm = 0;
     this.GV1 = 0;
     this.tbu = false;
-    this.eKm = 0;
-    this.tKm = 0;
+    this.SYm = 0;
+    this.MYm = 0;
   }
   DeepCopy() {
     var t;
@@ -44,11 +44,11 @@ class DeckInfo {
     s.w81 = this.w81;
     s.eP1 = this.eP1;
     s.BV1 = this.BV1;
-    s.sGm = this.sGm;
+    s.yFm = this.yFm;
     s.OV1 = this.OV1;
     s.ebu = this.ebu;
-    s.hGm = this.hGm;
-    s.ZQm = this.ZQm;
+    s.MFm = this.MFm;
+    s.yYm = this.yYm;
     s.GV1 = this.GV1;
     s.tbu = this.tbu;
     s.zTu = this.zTu;
@@ -80,9 +80,9 @@ class DeckInfo {
       return 1;
     } else if (s && e + this.ZTu > this.ebu) {
       return 2;
-    } else if ((i = t.CardType === 3) && e + this.aGm > this.hGm) {
+    } else if ((i = t.CardType === 3) && e + this.SFm > this.MFm) {
       return 3;
-    } else if (t.CardType === 2 && e + this.JQm > this.ZQm) {
+    } else if (t.CardType === 2 && e + this.vYm > this.yYm) {
       return 4;
     } else if (!s && !i && e + this.sP1 > this.OV1) {
       return 6;
@@ -136,7 +136,7 @@ class DeckInfo {
         if (r) {
           this.JTu = t;
         } else if (h) {
-          this.zQm = t;
+          this.pYm = t;
         } else {
           this.rP1.push(t);
         }
@@ -148,10 +148,10 @@ class DeckInfo {
       if (r) {
         this.ZTu += e;
       } else if (h) {
-        this.aGm += e;
+        this.SFm += e;
       } else {
         if (o) {
-          this.JQm += e;
+          this.vYm += e;
         }
         this.sP1 += e;
       }
@@ -168,10 +168,10 @@ class DeckInfo {
     var h = t.CardId;
     var t = t.RemoveCount;
     var o = this.iP1.get(h);
-    return !!o && !(o.Count < t) && !(i = o.Cost === this.zTu, s = o.CardType === 3, e = o.CardType === 2, o.Count -= t, o.Count === 0 && (this.iP1.delete(h), this.tP1.splice(this.tP1.indexOf(o), 1), i ? this.JTu = undefined : s ? this.zQm = undefined : this.rP1.splice(this.rP1.indexOf(o), 1), h = o.Element, r = this.kV1.get(h)) && (r.splice(r.indexOf(o), 1), r.length === 0) && this.kV1.delete(h), i ? this.ZTu -= t : s ? this.aGm -= t : (e && (this.JQm -= t), this.sP1 -= t), this.Mbu.set(o.Cost, this.Mbu.get(o.Cost) - t), this.aP1 -= t, 0);
+    return !!o && !(o.Count < t) && !(i = o.Cost === this.zTu, s = o.CardType === 3, e = o.CardType === 2, o.Count -= t, o.Count === 0 && (this.iP1.delete(h), this.tP1.splice(this.tP1.indexOf(o), 1), i ? this.JTu = undefined : s ? this.pYm = undefined : this.rP1.splice(this.rP1.indexOf(o), 1), h = o.Element, r = this.kV1.get(h)) && (r.splice(r.indexOf(o), 1), r.length === 0) && this.kV1.delete(h), i ? this.ZTu -= t : s ? this.SFm -= t : (e && (this.vYm -= t), this.sP1 -= t), this.Mbu.set(o.Cost, this.Mbu.get(o.Cost) - t), this.aP1 -= t, 0);
   }
   RemoveAllCard() {
-    return this.aP1 !== 0 && (this.iP1.clear(), this.tP1.length = 0, this.kV1.clear(), this.rP1.length = 0, this.JTu = undefined, this.zQm = undefined, this.ZTu = 0, this.aGm = 0, this.JQm = 0, this.sP1 = 0, this.aP1 = 0, this.Mbu.clear(), true);
+    return this.aP1 !== 0 && (this.iP1.clear(), this.tP1.length = 0, this.kV1.clear(), this.rP1.length = 0, this.JTu = undefined, this.pYm = undefined, this.ZTu = 0, this.SFm = 0, this.vYm = 0, this.sP1 = 0, this.aP1 = 0, this.Mbu.clear(), true);
   }
   RemoveCardByElements(t) {
     var i;
@@ -203,7 +203,7 @@ class DeckInfo {
     return this.JTu;
   }
   GetFieldCardSlot() {
-    return this.zQm;
+    return this.pYm;
   }
   GetNormalCardSlotList() {
     return this.rP1;
@@ -215,7 +215,7 @@ class DeckInfo {
     return this.eP1;
   }
   GetTotalCardCountLimit() {
-    return this.OV1 + this.ebu + this.hGm;
+    return this.OV1 + this.ebu + this.MFm;
   }
   SetNormalCardCountLimit(t) {
     if (!(t < this.sP1)) {
@@ -234,20 +234,20 @@ class DeckInfo {
     return this.ebu;
   }
   SetFieldCardCountLimit(t) {
-    if (!(t < this.aGm)) {
-      this.hGm = t;
+    if (!(t < this.SFm)) {
+      this.MFm = t;
     }
   }
   GetFieldCardCountLimit() {
-    return this.hGm;
+    return this.MFm;
   }
   SetItemCardCountLimit(t) {
-    if (!(t < this.JQm)) {
-      this.ZQm = t;
+    if (!(t < this.vYm)) {
+      this.yYm = t;
     }
   }
   GetItemCardCountLimit() {
-    return this.ZQm;
+    return this.yYm;
   }
   SetElementCountLimit(t) {
     if (!(t < this.GV1)) {
@@ -284,7 +284,7 @@ class DeckInfo {
     return this.ZTu;
   }
   GetFieldCardCount() {
-    return this.aGm;
+    return this.SFm;
   }
   GetNormalCardCount() {
     return this.sP1;
@@ -351,10 +351,10 @@ class DeckInfo {
     return this.w81;
   }
   SetFieldCardSkillUnlockInfo(t) {
-    this.sGm = t;
+    this.yFm = t;
   }
   GetFieldCardSkillUnlockInfo() {
-    return this.sGm;
+    return this.yFm;
   }
   CoverToCardIdList() {
     var i = [];
@@ -414,14 +414,14 @@ class DeckInfo {
     return i;
   }
   SetFieldCardConditionProgress(t, i) {
-    this.eKm = t;
-    this.tKm = i;
+    this.SYm = t;
+    this.MYm = i;
   }
   GetFieldCardConditionCurNum() {
-    return this.eKm;
+    return this.SYm;
   }
   GetFieldCardConditionTargetNum() {
-    return this.tKm;
+    return this.MYm;
   }
 }
 exports.DeckInfo = DeckInfo;

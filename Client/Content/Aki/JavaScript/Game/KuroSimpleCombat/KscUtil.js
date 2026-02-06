@@ -192,6 +192,18 @@ class KscUtil {
     r.set(45, e.DamageAmplify2);
     return r;
   }
+  static ToBuffParam(e, r) {
+    var t = {};
+    for (const o of e) {
+      t[o.toString()] = 1;
+    }
+    if (r) {
+      for (const s of r) {
+        t[s.toString()] = 1;
+      }
+    }
+    return t;
+  }
 }
 (exports.KscUtil = KscUtil).ujd = 0;
 //# sourceMappingURL=KscUtil.js.map

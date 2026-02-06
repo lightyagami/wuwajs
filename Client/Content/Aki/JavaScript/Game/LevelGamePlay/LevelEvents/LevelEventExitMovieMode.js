@@ -18,9 +18,9 @@ class LevelEventExitMovieMode extends LevelGeneralBase_1.LevelEventBase {
       BlendTime: e.BorderAnimDuration ?? CommonParamById_1.configCommonParamById.GetIntConfig("ExitMovieModeTimeThreshold") ?? 1,
       BlackFadeInTime: e.FadeOutMaskConfig?.TransitionTime
     };
-    this.chf(o, e.DurationType);
+    this.P1f(o, e.DurationType);
   }
-  async chf(e, i) {
+  async P1f(e, i) {
     const o = new CustomPromise_1.CustomPromise();
     ControllerHolder_1.ControllerHolder.MovieModeController.ExitMovieMode(e, e => {
       o.SetResult();

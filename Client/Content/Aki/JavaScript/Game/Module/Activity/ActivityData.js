@@ -30,6 +30,8 @@ class ActivityBaseData {
     this.EndLimitTimeInternal = -0;
     this.BeginRewardTimeInternal = -0;
     this.EndRewardTimeInternal = -0;
+    this.dTg = 0;
+    this.mTg = "";
     this.P4e = false;
     this.Dk_ = false;
     this.x4e = false;
@@ -37,7 +39,9 @@ class ActivityBaseData {
     this.b4e = 0;
     this.Bk_ = 0;
     this._8a = [];
+    this.fTg = false;
     this.q4e = "";
+    this.gTg = 0;
     this.LocalConfig = undefined;
   }
   get Id() {
@@ -142,6 +146,39 @@ class ActivityBaseData {
     }
     return false;
   }
+  get BubbleEndShowTime() {
+    if (this.gTg > 0) {
+      return this.gTg;
+    } else if (this.EndOpenTimeInternal > 0) {
+      return this.EndOpenTimeInternal;
+    } else {
+      return this.EndShowTimeInternal;
+    }
+  }
+  get BubbleEndShowTimeText() {
+    return this.mTg;
+  }
+  get BubbleType() {
+    return this.dTg;
+  }
+  UpdateImportantBubble() {
+    var t;
+    var i;
+    var e;
+    if (!this.FinishShowState && this.CheckIfInOpenTime() && ([i, t, e] = ModelManager_1.ModelManager.ActivityModel.GetTimeVisibleAndRemainTime(this), this.gTg = e, this.mTg = t, i) && !(e <= 0) && (t = ConfigManager_1.ConfigManager.ActivityConfig.GetActivityTimeShow(this.LocalConfig.TimeShowId))) {
+      i = TimeUtil_1.TimeUtil.GetServerTime();
+      e = Math.max(e - i, 1);
+      i = TimeUtil_1.TimeUtil.CalculateRemainingTime(e, 3)?.TimeValue ?? 0;
+      e = ModelManager_1.ModelManager.ActivityModel.GetBubbleTypeByTimeInterval(t, i);
+      this.dTg = e;
+      this.fTg = e === 3;
+    } else {
+      this.fTg = false;
+    }
+  }
+  get IsShowImportantBubble() {
+    return this.fTg;
+  }
   GetExternalButtonRedPointName() {}
   GetExternalButtonRedPointId() {
     return 0;
@@ -221,12 +258,12 @@ class ActivityBaseData {
     if ((e = t === undefined ? this.TimeType === 1 ? this.LocalConfig.PermanentPreviewDrop : this.LocalConfig.PreviewDrop : e) !== 0) {
       t = ConfigManager_1.ConfigManager.RewardConfig.GetDropPackage(e)?.DropPreview;
       if (t) {
-        for (var [r, s] of t) {
-          r = [{
+        for (var [s, r] of t) {
+          s = [{
             IncId: 0,
-            ItemId: r
-          }, s];
-          i.push(r);
+            ItemId: s
+          }, r];
+          i.push(s);
         }
       } else if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Activity", 27, "找不到奖励配置", ["id", e]);
@@ -283,18 +320,18 @@ class ActivityBaseData {
   GetPreShowGuideQuestName() {
     var i = new StringBuilder_1.StringBuilder();
     var e = new Array();
-    var r = this.B4e;
-    let s = r.length;
-    for (let t = 0; t < s; t++) {
-      if (!ModelManager_1.ModelManager.QuestNewModel.CheckQuestFinished(r[0])) {
-        e.push(r[t]);
+    var s = this.B4e;
+    let r = s.length;
+    for (let t = 0; t < r; t++) {
+      if (!ModelManager_1.ModelManager.QuestNewModel.CheckQuestFinished(s[0])) {
+        e.push(s[t]);
       }
     }
-    s = e.length;
-    for (let t = 0; t < s; t++) {
+    r = e.length;
+    for (let t = 0; t < r; t++) {
       var h = PublicUtil_1.PublicUtil.GetConfigTextByKey(ModelManager_1.ModelManager.QuestNewModel.GetQuestConfig(e[t]).TidName);
       i.Append(h);
-      if (t !== s - 1) {
+      if (t !== r - 1) {
         i.Append(",");
       }
     }

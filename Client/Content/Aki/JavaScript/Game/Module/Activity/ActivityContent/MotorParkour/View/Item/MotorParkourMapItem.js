@@ -13,7 +13,7 @@ class MotorParkourMapItem extends UiPanelBase_1.UiPanelBase {
   constructor(e) {
     super();
     this.LevelData = e;
-    this.kMf = undefined;
+    this.JTf = undefined;
     this.Wzu = Vector2D_1.Vector2D.Create();
     this.Qzu = Vector2D_1.Vector2D.Create();
   }
@@ -25,8 +25,8 @@ class MotorParkourMapItem extends UiPanelBase_1.UiPanelBase {
     this.Qzu.Set(this.LevelData.CenterOffset[0], this.LevelData.CenterOffset[1]);
     this.GetItem(0).SetAnchorOffset(this.Wzu.ToUeVector2D());
     var e = [];
-    this.kMf = new MotorParkourPlayerMarkItem_1.MotorParkourPlayerMarkItem();
-    e.push(this.kMf.CreateThenShowByActorAsync(this.GetItem(4).GetOwner()));
+    this.JTf = new MotorParkourPlayerMarkItem_1.MotorParkourPlayerMarkItem();
+    e.push(this.JTf.CreateThenShowByActorAsync(this.GetItem(4).GetOwner()));
     this.DrawMapPathLine();
     var t = this.GetItem(3);
     t.SetAnchorOffset(ModelManager_1.ModelManager.MotorParkourMapModel.EndPointOffset.ToUeVector2D());
@@ -40,7 +40,7 @@ class MotorParkourMapItem extends UiPanelBase_1.UiPanelBase {
     this.GetUiLineRaw(1)?.SetPoints(e);
   }
   UpdatePlayerPosition() {
-    this.kMf?.UpdatePosition(this.LevelData.MapScale, this.Qzu);
+    this.JTf?.UpdatePosition(this.LevelData.MapScale, this.Qzu);
     var e = ModelManager_1.ModelManager.MotorParkourMapModel.GetPathTakenSplinePoints();
     this.GetUiLineRaw(2)?.SetPoints(e);
   }

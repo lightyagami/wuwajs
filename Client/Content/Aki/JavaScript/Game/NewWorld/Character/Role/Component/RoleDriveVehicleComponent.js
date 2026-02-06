@@ -37,7 +37,7 @@ const CombatLog_1 = require("../../../../Utils/CombatLog");
 const GravityUtils_1 = require("../../../../Utils/GravityUtils");
 const BasePlatform_1 = require("../../../Common/BasePlatform");
 const VehicleConfig_1 = require("../../../Vehicle/Common/VehicleConfig");
-const FollowFunctionLibrary_1 = require("../../Common/Component/Abilities/Follow/FollowFunctionLibrary");
+const FollowUtils_1 = require("../../Common/Component/Abilities/Follow/FollowUtils");
 const CharacterActionComponent_1 = require("../../Common/Component/Action/CharacterActionComponent");
 const CharacterDriveVehicleComponent_1 = require("../../Common/Component/CharacterDriveVehicleComponent");
 const STAND_UP_EXIT_DELAY_TIME = 1700;
@@ -58,7 +58,7 @@ let RoleDriveVehicleComponent = class RoleDriveVehicleComponent extends Characte
         ModelManager_1.ModelManager.SceneTeamModel.GetTeamItem(t, {
           ParamType: 2,
           IsControl: true
-        })?.EntityHandle?.Entity?.GetComponent(187)?.TrySetGlide();
+        })?.EntityHandle?.Entity?.GetComponent(189)?.TrySetGlide();
       }
     };
     this.GuaranteeBounceSkillEnd = () => {
@@ -74,14 +74,14 @@ let RoleDriveVehicleComponent = class RoleDriveVehicleComponent extends Characte
         this.RestoreSwimAndCollision();
       }
     };
-    this.XOm = (t, e) => {
+    this.lFm = (t, e) => {
       if (e && this.VehicleInfo) {
         CombatLog_1.CombatLog.Info("Vehicle", this.Entity, "角色被抓取请求离开载具");
         this.TryLeaveAndDisableVehicle("RoleDriveVehicleComponent.OnCaughtTagChange", true);
       }
     };
-    this.gKm = t => {
-      if (this.YOm() && this.VehicleInfo && !t) {
+    this.OYm = t => {
+      if (this._Fm() && this.VehicleInfo && !t) {
         CombatLog_1.CombatLog.Info("Vehicle", this.Entity, "角色被冻结结束请求离开载具");
         this.TryLeaveAndDisableVehicle("RoleDriveVehicleComponent.OnFrozenChange", true);
       }
@@ -172,7 +172,7 @@ let RoleDriveVehicleComponent = class RoleDriveVehicleComponent extends Characte
       super.LeaveVehiclePerform(t);
     }
     Quat_1.Quat.FindBetween(this.ActorComp.ActorUpProxy, this.MoveComp.GravityUp, this.TmpQuat);
-    var t = this.Entity.GetComponent(186);
+    var t = this.Entity.GetComponent(188);
     var e = Quat_1.Quat.Create();
     this.TmpQuat.Multiply(this.ActorComp.ActorQuatProxy, e);
     var i = Rotator_1.Rotator.Create();
@@ -187,7 +187,7 @@ let RoleDriveVehicleComponent = class RoleDriveVehicleComponent extends Characte
     var e;
     var i;
     var s = t.VehicleEntity?.GetComponent(247);
-    var t = t.VehicleEntity?.GetComponent(267);
+    var t = t.VehicleEntity?.GetComponent(268);
     if (s && t) {
       e = t.LaunchSpeedFadeTime;
       i = t.LaunchSpeedFadeCurve;
@@ -236,7 +236,7 @@ let RoleDriveVehicleComponent = class RoleDriveVehicleComponent extends Characte
     }
   }
   ChangeCurrentState() {
-    var t = this.Entity.GetComponent(41);
+    var t = this.Entity.GetComponent(43);
     if (t.GetSkillIdWithGroupId(2) !== 800001) {
       t?.EndOwnerAndFollowSkills();
     }
@@ -277,8 +277,8 @@ let RoleDriveVehicleComponent = class RoleDriveVehicleComponent extends Characte
   ListenAutoLeave() {
     super.ListenAutoLeave();
     if (this.BuffComp?.HasBuffAuthority()) {
-      this.TagComp?.AddTagAddOrRemoveListener(-648310348, this.XOm);
-      EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharAfterFrozenChange, this.gKm);
+      this.TagComp?.AddTagAddOrRemoveListener(-648310348, this.lFm);
+      EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharAfterFrozenChange, this.OYm);
       EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharBeHitAnim, this.OnCharBeHitAnim);
     }
     if (this.ActorComp?.IsRoleAndCtrlByMe) {
@@ -292,8 +292,8 @@ let RoleDriveVehicleComponent = class RoleDriveVehicleComponent extends Characte
   RemoveListenAutoLeave() {
     super.RemoveListenAutoLeave();
     if (this.BuffComp?.HasBuffAuthority()) {
-      this.TagComp?.RemoveTagAddOrRemoveListener(-648310348, this.XOm);
-      EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CharAfterFrozenChange, this.gKm);
+      this.TagComp?.RemoveTagAddOrRemoveListener(-648310348, this.lFm);
+      EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CharAfterFrozenChange, this.OYm);
       EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CharBeHitAnim, this.OnCharBeHitAnim);
     }
     if (EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.CharOnRoleDeadTargetSelf, this.OnRoleDead)) {
@@ -304,7 +304,7 @@ let RoleDriveVehicleComponent = class RoleDriveVehicleComponent extends Characte
       EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnEnterOrExitUnopenedArea, this.OnEnterOrExitUnopenedArea);
     }
   }
-  YOm() {
+  _Fm() {
     return FormationAttributeController_1.FormationAttributeController.GetValue(16) <= 0;
   }
   TryLeaveAndDisableVehicle(t, e = false) {
@@ -319,7 +319,7 @@ let RoleDriveVehicleComponent = class RoleDriveVehicleComponent extends Characte
         } else {
           s?.TryLeave(this.Entity, 1);
         }
-        if (FollowFunctionLibrary_1.FollowFunctionLibrary.GetPlayerFollowVehicle(ModelManager_1.ModelManager.CreatureModel.GetPlayerId(), "Motorcycle")?.Entity?.Id === i.Id) {
+        if (FollowUtils_1.FollowUtils.GetPlayerFollowVehicle(ModelManager_1.ModelManager.CreatureModel.GetPlayerId(), "Motorcycle")?.Entity?.Id === i.Id) {
           ControllerHolder_1.ControllerHolder.CreatureController.SetEntityEnable(i, false, t, true);
         }
       } else {

@@ -19,7 +19,7 @@ class LevelConditionCheckClientUseVisionSkill extends LevelGeneralBase_1.LevelCo
       }
       return false;
     } else if (o = e.LimitParams.get("PhantomSkillId")) {
-      return !!(n = Global_1.Global.BaseCharacter) && !!(i = n.GetEntityNoBlueprint()?.GetComponent(44)) && !!(n = n.GetEntityNoBlueprint()?.GetComponent(41)) && !!(i = i.GetVisionData(Number(o))) && !!n.GetSkill(i.技能ID)?.Active;
+      return !!(n = Global_1.Global.BaseCharacter) && !!(i = n.GetEntityNoBlueprint()?.GetComponent(46)) && !!(n = n.GetEntityNoBlueprint()?.GetComponent(43)) && !!(i = i.GetVisionData(Number(o))) && !!n.GetSkill(i.技能ID)?.Active;
     } else {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("LevelCondition", 16, `配置错误！条件${e.Id}的参数不符合条件类型${LevelGeneralDefine_1.ELevelGeneralCondition.CheckClientUseVisionSkill}的定义`);

@@ -13,14 +13,14 @@ const LguiUtil_1 = require("../../../Util/LguiUtil");
 class MotorcycleLevelActiveTreeItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.Zuf = () => {
+    this.Ydf = () => {
       var e = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetCurTreeType();
       UiManager_1.UiManager.OpenView("MotorcycleTechTreeDetailView", e);
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UITexture], [1, UE.UIText], [2, UE.UIButtonComponent]];
-    this.BtnBindInfo = [[2, this.Zuf]];
+    this.BtnBindInfo = [[2, this.Ydf]];
   }
   Refresh() {
     var e = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetCurTreeType();

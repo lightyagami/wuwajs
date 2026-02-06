@@ -35,7 +35,6 @@ class MotorcycleLevelUpView extends UiViewBase_1.UiViewBase {
     this.ZMt = undefined;
     this.Xtl = false;
     this.eEt = CommonParamById_1.configCommonParamById.GetIntConfig("ExpDisplayTime");
-    this.tEt = CommonParamById_1.configCommonParamById.GetIntConfig("ExpDisplayCloseTime");
     this.cce = Rotator_1.Rotator.Create();
     this.iEt = t => {
       this.XMt += this.zMt * t;
@@ -51,7 +50,7 @@ class MotorcycleLevelUpView extends UiViewBase_1.UiViewBase {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UITexture], [2, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UITexture], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem]];
   }
   OnStart() {
     var t = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetCacheData();
@@ -70,6 +69,8 @@ class MotorcycleLevelUpView extends UiViewBase_1.UiViewBase {
     this.$Mt = this.KMt ? e : this.JMt;
     this.YMt = this.WMt ? t.CurExp + this.$Mt : t.CurExp;
     this.zMt = (this.YMt - this.XMt) / this.eEt;
+    this.GetItem(3).SetUIActive(true);
+    this.GetItem(4).SetUIActive(false);
     this.oEt();
     if (this.WMt) {
       this.UiViewSequence.AddSequenceFinishEvent("LevelUp", () => {
@@ -97,10 +98,6 @@ class MotorcycleLevelUpView extends UiViewBase_1.UiViewBase {
   OnAfterShow() {
     if (this.KMt) {
       this.ZMt = TimerSystem_1.GameplayTimerSystem.Forever(this.iEt, TimerSystem_1.MIN_TIME);
-    } else {
-      this.ZMt = TimerSystem_1.GameplayTimerSystem.Delay(() => {
-        this.svi();
-      }, this.tEt);
     }
   }
   get lvi() {
@@ -110,6 +107,8 @@ class MotorcycleLevelUpView extends UiViewBase_1.UiViewBase {
     if (this.ZMt && !this.rEt && this.lvi) {
       this.rEt = true;
       this.GetText(0).SetText(this.Wft.toString());
+      this.GetItem(3).SetUIActive(false);
+      this.GetItem(4).SetUIActive(true);
       this.UiViewSequence?.PlaySequence("LevelUp");
     }
     var t = this.rEt ? this.XMt - this.$Mt : this.XMt;
@@ -119,7 +118,6 @@ class MotorcycleLevelUpView extends UiViewBase_1.UiViewBase {
     this.GetItem(2).SetUIRelativeRotation(this.cce.ToUeRotator());
     if (this.ZMt && e < t && !this.QMt) {
       this.QMt = true;
-      this.UiViewSequence.PlaySequence("Stuck");
     }
   }
   OnBeforeDestroy() {

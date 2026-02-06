@@ -34,6 +34,7 @@ const EventSystem_1 = require("../../../../../Common/Event/EventSystem");
 const ConfigManager_1 = require("../../../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../../Manager/ModelManager");
+const SceneTeamController_1 = require("../../../../../Module/SceneTeam/SceneTeamController");
 const BaseDeathComponent_1 = require("../../../Common/Component/Abilities/BaseDeathComponent");
 const CharacterUnifiedStateTypes_1 = require("../../../Common/Component/Abilities/CharacterUnifiedStateTypes");
 const MonsterDeathEffectMachine_1 = require("../../Logics/MonsterDeathEffectMachine");
@@ -54,7 +55,7 @@ let MonsterDeathComponent = class MonsterDeathComponent extends BaseDeathCompone
         this.Xte.AddTag(-208062360);
       }
       this.Entity.Disable("[DeathComponent.SetActive] 死亡隐藏");
-      this.Entity.GetComponent(45)?.CancelForceDisableAnimOptimization(6);
+      this.Entity.GetComponent(47)?.CancelForceDisableAnimOptimization(6);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.DropItemStarted, this.Entity?.Id);
       ControllerHolder_1.ControllerHolder.CreatureController.DelayRemoveEntityFinished(this.Entity);
     };
@@ -65,7 +66,7 @@ let MonsterDeathComponent = class MonsterDeathComponent extends BaseDeathCompone
     };
   }
   OnInit() {
-    this.Xte = this.Entity.CheckGetComponent(215);
+    this.Xte = this.Entity.CheckGetComponent(217);
     return true;
   }
   OnStart() {
@@ -88,12 +89,12 @@ let MonsterDeathComponent = class MonsterDeathComponent extends BaseDeathCompone
     return true;
   }
   ExecuteDeath(e) {
-    return !!super.ExecuteDeath(e) && (this.Entity.GetComponent(183)?.RemoveBuffByEffectType(36, "实体死亡移除冰冻buff"), this.Xte.AddTag(1008164187), this.Entity.GetComponent(189)?.DetachFromHost(true, false, false), this.Entity.GetComponent(41)?.StopAllSkills("MonsterDeathComponent.ExecuteDeath"), this.Entity.GetComponent(109)?.ResetCharState(), this.Entity.GetComponent(183)?.RemoveAllDurationBuffs("实体死亡清理持续型buff"), this.PlayDeathAnimation(e), this.Bml(), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.CharOnRoleDead, this.Entity.Id), EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.CharOnRoleDeadTargetSelf), true);
+    return !!super.ExecuteDeath(e) && (SceneTeamController_1.SceneTeamController.EmitEvent(this.Entity, EventDefine_1.EEventName.CharOnRoleDeadBefore), this.Entity.GetComponent(185)?.RemoveBuffByEffectType(36, "实体死亡移除冰冻buff"), this.Xte.AddTag(1008164187), this.Entity.GetComponent(191)?.DetachFromHost(true, false, false), this.Entity.GetComponent(43)?.StopAllSkills("MonsterDeathComponent.ExecuteDeath"), this.Entity.GetComponent(111)?.ResetCharState(), this.Entity.GetComponent(185)?.RemoveAllDurationBuffs("实体死亡清理持续型buff"), this.PlayDeathAnimation(e), this.Bml(), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.CharOnRoleDead, this.Entity.Id), EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.CharOnRoleDeadTargetSelf), true);
   }
   PlayDeathAnimation(i) {
     if (!ModelManager_1.ModelManager.DeadReviveModel.SkipDeathAnim && !this.Xte?.HasTag(-1943786195) && this.MontageComponent?.Valid && this.Entity.IsInit && this.Entity.Active) {
       if (!this.xzd()) {
-        var e = this.Entity.GetComponent(109)?.PositionState;
+        var e = this.Entity.GetComponent(111)?.PositionState;
         if (e === CharacterUnifiedStateTypes_1.ECharPositionState.Water) {
           this.PlayDeathMontageWithType(1, this.OnDeathEnded, i, true);
         } else {
@@ -176,5 +177,5 @@ let MonsterDeathComponent = class MonsterDeathComponent extends BaseDeathCompone
     }
   }
 };
-MonsterDeathComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(192)], MonsterDeathComponent);
+MonsterDeathComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(194)], MonsterDeathComponent);
 exports.MonsterDeathComponent = MonsterDeathComponent; //# sourceMappingURL=MonsterDeathComponent.js.map

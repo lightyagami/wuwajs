@@ -32,7 +32,7 @@ class GuideTutorialTipsView extends UiTickViewBase_1.UiTickViewBase {
     };
     this.cZt = () => {
       this.TutorialInfo.TipState = 1;
-      UiManager_1.UiManager.CloseView(this.Info.Name, () => {
+      this.CloseMe(() => {
         ModelManager_1.ModelManager.GuideModel.TryShowTutorial();
       });
     };
@@ -130,7 +130,7 @@ class GuideTutorialTipsView extends UiTickViewBase_1.UiTickViewBase {
     }
   }
   IZt() {
-    UiManager_1.UiManager.CloseView(this.Info.Name, () => {
+    this.CloseMe(() => {
       TutorialController_1.TutorialController.TryOpenAwardUiViewPending();
       ModelManager_1.ModelManager.GuideModel.TryShowTutorial();
     });

@@ -18,7 +18,7 @@ function visionSkill1Function(n, e = false) {
   if (o) {
     o = o.CharacterActorComponent?.Entity?.GetComponent(242)?.VehicleEntity;
     if (o) {
-      var l = o.GetComponent(215);
+      var l = o.GetComponent(217);
       if (l) {
         var r = (0, InputFunctionCommon_1.createInputCommandFromDataTable)(o.Id, 7, 1);
         if (r) {
@@ -26,7 +26,7 @@ function visionSkill1Function(n, e = false) {
         }
         let n = 0;
         let i = 0;
-        var r = o?.GetComponent(57);
+        var r = o?.GetComponent(59);
         var t = r?.GetSkillIdByCurrentTarget();
         if (t) {
           n = t;

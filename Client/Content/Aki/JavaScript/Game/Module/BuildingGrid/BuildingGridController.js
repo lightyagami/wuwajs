@@ -13,11 +13,11 @@ const GlobalData_1 = require("../../GlobalData");
 const ModelManager_1 = require("../../Manager/ModelManager");
 class BuildingGridController extends ControllerBase_1.ControllerBase {
   static OnInit() {
-    Net_1.Net.Register(28412, BuildingGridController.HKu);
+    Net_1.Net.Register(15574, BuildingGridController.HKu);
     return true;
   }
   static OnClear() {
-    Net_1.Net.UnRegister(28412);
+    Net_1.Net.UnRegister(15574);
     return true;
   }
   static Kod(e, r, t, o, l) {

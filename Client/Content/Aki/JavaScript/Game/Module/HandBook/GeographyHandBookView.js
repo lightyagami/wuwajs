@@ -96,7 +96,7 @@ class GeographyHandBookView extends UiViewBase_1.UiViewBase {
       var t = this.yvt?.findIndex(t => t.Id === n.GeographyTabType);
       this.I6e = t;
       this.Ivt.SelectToggleByIndex(this.I6e);
-      this.eSf(n);
+      this.rIf(n);
     };
   }
   OnRegisterComponent() {
@@ -119,13 +119,13 @@ class GeographyHandBookView extends UiViewBase_1.UiViewBase {
   }
   async OnBeforeStartAsync() {
     this.QPn();
-    this.tSf();
+    this.oIf();
     await this.InitCommonTabTitle();
   }
   QPn() {
     this.yvt = ConfigManager_1.ConfigManager.HandBookConfig.GetGeographyTabList();
   }
-  tSf() {
+  oIf() {
     var t = ConfigCommon_1.ConfigCommon.ToList(ConfigManager_1.ConfigManager.HandBookConfig.GetGeographyTypeConfigList());
     t.sort(this.aei);
     this.pei = t;
@@ -144,7 +144,7 @@ class GeographyHandBookView extends UiViewBase_1.UiViewBase {
     if (this.KO1 && this.KO1 > 0) {
       const t = ConfigManager_1.ConfigManager.HandBookConfig.GetGeographyHandBookConfig(this.KO1);
       TimerSystem_1.TimerSystem.Next(() => {
-        this.eSf(t, true);
+        this.rIf(t, true);
         this.KO1 = 0;
       });
     }
@@ -203,7 +203,7 @@ class GeographyHandBookView extends UiViewBase_1.UiViewBase {
     var t = HandBookController_1.HandBookController.GetCollectProgress(2);
     LguiUtil_1.LguiUtil.SetLocalText(this.GetText(2), "RoleExp", t[0], t[1]);
   }
-  eSf(e, i = false) {
+  rIf(e, i = false) {
     var o = this.GetScrollViewWithScrollbar(3);
     var n = this.GenericLayout.GetLayoutItemList();
     var s = n.length;

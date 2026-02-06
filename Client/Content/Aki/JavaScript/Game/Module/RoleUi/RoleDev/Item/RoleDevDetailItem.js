@@ -34,7 +34,7 @@ class RoleDevDetailItem extends GridProxyAbstract_1.GridProxyAbstract {
       } else {
         i = this.Pe?.ButtonType ?? -1;
         ControllerHolder_1.ControllerHolder.RoleDevController.LogRoleDevSubPageClick(this.Pe?.RoleId ?? 0, this.Pe?.MainPage ?? 0, i);
-        if (i !== 22 || !this.oDf(e)) {
+        if (i !== 22 || !this.Bqf(e)) {
           i = t?.JumpGroup ?? [];
           e = RoleDevUtils_1.RoleDevUtils.GetFirstUnlockedTeleportId(i);
           this._xd(e);
@@ -95,7 +95,7 @@ class RoleDevDetailItem extends GridProxyAbstract_1.GridProxyAbstract {
     }
     return true;
   }
-  oDf(e) {
+  Bqf(e) {
     var t = ConfigManager_1.ConfigManager.RoleDevConfig?.GetItemJumpGroupConfig(e);
     if (t) {
       e = this.Pe?.RoleId;

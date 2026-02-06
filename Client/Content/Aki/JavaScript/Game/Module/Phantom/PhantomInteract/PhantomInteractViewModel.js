@@ -72,70 +72,70 @@ class PhantomInteractEditViewModel {
     this.GridsDataList = [];
     this.SelectedGridItemIndex = [-1, -1];
     this.GridViewModelMap = new Map();
-    this.qJf = [];
-    this.vEf = undefined;
+    this.E0g = [];
+    this.ejm = undefined;
     this.b5d = new PhantomInteractDefine_1.PhantomInteractInfoData();
-    this.yEf = undefined;
-    this.SEf = undefined;
-    this.OJf = [];
-    this.EEf = [];
-    this.IEf = [];
-    this.TEf = [];
-    this.qUf = new Set();
-    this.agf = undefined;
-    this.bEf = undefined;
-    this.wEf = undefined;
-    this._9f = undefined;
-    this.REf = (t, ...i) => {
+    this.zbf = undefined;
+    this.Jbf = undefined;
+    this.I0g = [];
+    this.ewf = [];
+    this.twf = [];
+    this.iwf = [];
+    this.pGf = new Set();
+    this.QSf = undefined;
+    this.rwf = undefined;
+    this.owf = undefined;
+    this.uZf = undefined;
+    this.nwf = (t, ...i) => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("PhantomInteraction", 95, t, ...i);
       }
     };
   }
   ConfirmEquipHandler() {
-    if (this.agf) {
-      this.agf(this);
+    if (this.QSf) {
+      this.QSf(this);
     }
   }
   SetConfirmEquipHandler(t) {
-    this.agf = t;
+    this.QSf = t;
   }
   EquipRecommendHandler() {
-    if (this.bEf) {
-      this.bEf(this);
+    if (this.rwf) {
+      this.rwf(this);
     }
   }
   SetEquipRecommendHandler(t) {
-    this.bEf = t;
+    this.rwf = t;
   }
   EquipRecommendCallback() {
-    if (this._9f) {
-      this._9f();
-      this._9f = undefined;
+    if (this.uZf) {
+      this.uZf();
+      this.uZf = undefined;
     }
   }
   SetEquipRecommendCallback(t) {
-    this._9f = t;
+    this.uZf = t;
   }
   MoveNextSkinHandler() {
-    if (this.wEf) {
-      this.wEf(this);
+    if (this.owf) {
+      this.owf(this);
     }
   }
   SetMoveNextSkinHandler(t) {
-    this.wEf = t;
+    this.owf = t;
   }
   get SelectedGridData() {
-    return this.vEf;
+    return this.ejm;
   }
   GetFilteredRecommendedIdList() {
-    return this.IEf;
+    return this.twf;
   }
   InitData(t, i) {
     this.b5d = t;
     var e = ModelManager_1.ModelManager.AreaModel.GetCurrentAreaId();
-    this.EEf = this.OUf(e);
-    this.PEf(t.GridItemDataList);
+    this.ewf = this.vGf(e);
+    this.awf(t.GridItemDataList);
     this.RefreshFilterGridViewData();
     this.SelectItem(i);
     if (this.SelectedItemData?.MonsterId === 0 && (e = this.GridsDataList?.at(0)?.MonsterIds?.at(0)) && e > 0) {
@@ -153,7 +153,7 @@ class PhantomInteractEditViewModel {
     this.brd();
   }
   SelectGrid(t) {
-    this.SelectedGridItemIndex = this.AEf(t);
+    this.SelectedGridItemIndex = this.hwf(t);
     if (this.SelectedItemData?.MonsterId === 0) {
       this.BtnState = 2;
     } else {
@@ -164,12 +164,12 @@ class PhantomInteractEditViewModel {
   }
   FindGridIndexInMultiTemplate(i) {
     var t;
-    if (this.IEf.length <= 0) {
-      return this.TEf.findIndex(t => t === i);
-    } else if ((t = this.IEf.findIndex(t => t === i)) >= 0) {
+    if (this.twf.length <= 0) {
+      return this.iwf.findIndex(t => t === i);
+    } else if ((t = this.twf.findIndex(t => t === i)) >= 0) {
       return t + 1;
-    } else if ((t = this.TEf.findIndex(t => t === i)) >= 0) {
-      return t + this.IEf.length + 2;
+    } else if ((t = this.iwf.findIndex(t => t === i)) >= 0) {
+      return t + this.twf.length + 2;
     } else {
       return -1;
     }
@@ -189,25 +189,25 @@ class PhantomInteractEditViewModel {
       }
     }
   }
-  PEf(t) {
+  awf(t) {
     this.GridViewModelMap.clear();
     for (const h of t) {
       var i = new PhantomInteractEditGridViewModel(h);
-      i.IsInArea = this.GUf(h.InteractAreaId);
+      i.IsInArea = this.yGf(h.InteractAreaId);
       this.GridViewModelMap.set(h.MonsterId, i);
     }
     var e;
     var s;
-    for (const r of this.EEf) {
+    for (const r of this.ewf) {
       if (!this.GridViewModelMap.has(r)) {
         (e = new PhantomInteractDefine_1.PhantomInteractGridData()).LoadLockData(r);
         (s = new PhantomInteractEditGridViewModel(e)).IsInArea = true;
         this.GridViewModelMap.set(e.MonsterId, s);
       }
     }
-    this.qJf = [...this.GridViewModelMap.values()].sort((t, i) => t.SortId - i.SortId).map(t => t.MonsterId);
+    this.E0g = [...this.GridViewModelMap.values()].sort((t, i) => t.SortId - i.SortId).map(t => t.MonsterId);
   }
-  AEf(e) {
+  hwf(e) {
     if (!this.GridsDataList) {
       return [-1, -1];
     }
@@ -219,7 +219,7 @@ class PhantomInteractEditViewModel {
         var n = this.GridViewModelMap.get(r);
         if (n && (n.IsSelected = r === e, !s) && n.IsSelected) {
           s = [i, t];
-          this.vEf = n;
+          this.ejm = n;
         }
       }
     }
@@ -240,7 +240,7 @@ class PhantomInteractEditViewModel {
     }
   }
   SetFilterCost(t) {
-    this.yEf = t > 0 ? t : undefined;
+    this.zbf = t > 0 ? t : undefined;
   }
   SetFilterIsSpecial(t) {
     let i = undefined;
@@ -249,40 +249,40 @@ class PhantomInteractEditViewModel {
     } else if (t === 2) {
       i = false;
     }
-    this.SEf = i;
+    this.Jbf = i;
   }
   RefreshFilterGridViewData() {
-    this.OJf.length = 0;
-    this.IEf.length = 0;
-    let t = this.TEf.length = 0;
-    for (const s of this.qJf) {
+    this.I0g.length = 0;
+    this.twf.length = 0;
+    let t = this.iwf.length = 0;
+    for (const s of this.E0g) {
       var i = this.GridViewModelMap.get(s);
-      if (i && this.DEf(i)) {
-        this.OJf.push(i.MonsterId);
-        if (this.GUf(i.InteractAreaId)) {
-          this.IEf.push(i.MonsterId);
+      if (i && this.lwf(i)) {
+        this.I0g.push(i.MonsterId);
+        if (this.yGf(i.InteractAreaId)) {
+          this.twf.push(i.MonsterId);
           if (i.IsUnlocked) {
             t++;
           }
         } else {
-          this.TEf.push(i.MonsterId);
+          this.iwf.push(i.MonsterId);
         }
       }
     }
-    if (this.IEf.length === 0) {
+    if (this.twf.length === 0) {
       this.GridsDataList = [{
         TitleType: 0,
-        MonsterIds: this.TEf
+        MonsterIds: this.iwf
       }];
     } else {
       this.GridsDataList = [{
         TitleType: t > 0 ? 1 : 2,
-        MonsterIds: this.IEf
+        MonsterIds: this.twf
       }];
-      if (this.TEf.length > 0) {
+      if (this.iwf.length > 0) {
         this.GridsDataList.push({
           TitleType: 3,
-          MonsterIds: this.TEf
+          MonsterIds: this.iwf
         });
       }
     }
@@ -291,14 +291,14 @@ class PhantomInteractEditViewModel {
       this.SelectGrid(e);
     }
   }
-  DEf(t) {
-    return (this.yEf === undefined || t.Cost === this.yEf) && (this.SEf === undefined || t.IsSpecial === this.SEf);
+  lwf(t) {
+    return (this.zbf === undefined || t.Cost === this.zbf) && (this.Jbf === undefined || t.IsSpecial === this.Jbf);
   }
-  OUf(t) {
-    this.qUf.clear();
+  vGf(t) {
+    this.pGf.clear();
     t = ModelManager_1.ModelManager.AreaModel.GetAllAreaIdInheritableById(t);
     for (const h of t) {
-      this.qUf.add(h);
+      this.pGf.add(h);
     }
     var i;
     var e = [];
@@ -310,14 +310,14 @@ class PhantomInteractEditViewModel {
     }
     if (e) {
       i = e.map(t => t.MonsterId);
-      this.REf("[声骸显像]加载当前地区推荐声骸", ["当前所属的所有区域", t], ["推荐声骸列表", i]);
+      this.nwf("[声骸显像]加载当前地区推荐声骸", ["当前所属的所有区域", t], ["推荐声骸列表", i]);
       return i;
     } else {
       return [];
     }
   }
-  GUf(t) {
-    return this.qUf.has(t);
+  yGf(t) {
+    return this.pGf.has(t);
   }
 }
 exports.PhantomInteractEditViewModel = PhantomInteractEditViewModel;
@@ -333,7 +333,7 @@ class PhantomInteractDetailViewModel {
     this.SkillName = undefined;
     this.SkillDescription = undefined;
     this.GetWayItemData = undefined;
-    this.Mwf = 0;
+    this.WDf = 0;
   }
   get NeedGetWay() {
     return this.IsSpecial && !this.IsUnlocked;
@@ -342,8 +342,8 @@ class PhantomInteractDetailViewModel {
     if (t) {
       this.MonsterId = t.MonsterId;
       var i = ConfigManager_1.ConfigManager.CalabashConfig.GetCalabashDevelopRewardByMonsterId(this.MonsterId);
-      if (i && (this.Name = t.Name, this.IconPath = t.IconPath, this.IsSpecial = t.IsSpecial, this.IsInArea = t.IsInArea, this.IsUnlocked = t.IsUnlocked, this.SkillPicturePath = i.SpecialSkillPicturePath, this.SkillName = i.SpecialSkillName, this.SkillDescription = i.SpecialSkillDescription, this.NeedGetWay) && this.Mwf !== t.GetWayConfigId && (this.GetWayItemData = undefined, this.Mwf = t.GetWayConfigId, this.Mwf > 0)) {
-        const e = ConfigManager_1.ConfigManager.GetWayConfig.GetConfigById(this.Mwf);
+      if (i && (this.Name = t.Name, this.IconPath = t.IconPath, this.IsSpecial = t.IsSpecial, this.IsInArea = t.IsInArea, this.IsUnlocked = t.IsUnlocked, this.SkillPicturePath = i.SpecialSkillPicturePath, this.SkillName = i.SpecialSkillName, this.SkillDescription = i.SpecialSkillDescription, this.NeedGetWay) && this.WDf !== t.GetWayConfigId && (this.GetWayItemData = undefined, this.WDf = t.GetWayConfigId, this.WDf > 0)) {
+        const e = ConfigManager_1.ConfigManager.GetWayConfig.GetConfigById(this.WDf);
         if (e) {
           this.GetWayItemData = {
             Id: e.Id,

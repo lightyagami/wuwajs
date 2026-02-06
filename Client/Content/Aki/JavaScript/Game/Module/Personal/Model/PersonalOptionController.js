@@ -36,16 +36,17 @@ class PersonalOptionController extends UiControllerBase_1.UiControllerBase {
     this.v5i.set(13, this.R5i);
     this.v5i.set(14, this.Kac);
     this.v5i.set(15, this.BEd);
+    this.v5i.set(16, this.p0g);
   }
   static OnAddEvents() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestLookCard, PersonalOptionController._Ef);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestReportPlayer, PersonalOptionController.uEf);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestChangePlayerRemark, PersonalOptionController.OXf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestLookCard, PersonalOptionController.Vbf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestReportPlayer, PersonalOptionController.Hbf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestChangePlayerRemark, PersonalOptionController.yug);
   }
   static OnRemoveEvents() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestLookCard, PersonalOptionController._Ef);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestReportPlayer, PersonalOptionController.uEf);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestChangePlayerRemark, PersonalOptionController.OXf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestLookCard, PersonalOptionController.Vbf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestReportPlayer, PersonalOptionController.Hbf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestChangePlayerRemark, PersonalOptionController.yug);
   }
   static GetOptionFunc(e) {
     if (this.v5i.size === 0) {
@@ -103,10 +104,14 @@ exports.PersonalOptionController = PersonalOptionController;
 (_a = PersonalOptionController).v5i = new Map();
 PersonalOptionController.M5i = () => {
   var e = (UiManager_1.UiManager.IsViewOpen("OnlineProcessView") ? ModelManager_1.ModelManager.OnlineModel : ModelManager_1.ModelManager.FriendModel).CachePlayerData;
-  if (ModelManager_1.ModelManager.ChatModel.IsInMute(e.PlayerId)) {
-    ChatController_1.ChatController.ChatMutePlayerRequest(e.PlayerId, false);
+  if (ModelManager_1.ModelManager.FriendModel.IsMyFriend(e.PlayerId)) {
+    if (ModelManager_1.ModelManager.ChatModel.IsInMute(e.PlayerId)) {
+      ChatController_1.ChatController.ChatMutePlayerRequest(e.PlayerId, false);
+    } else {
+      ChatController_1.ChatController.ChatMutePlayerRequest(e.PlayerId, true);
+    }
   } else {
-    ChatController_1.ChatController.ChatMutePlayerRequest(e.PlayerId, true);
+    ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("NotFriendShieldTips");
   }
 };
 PersonalOptionController.S5i = () => {
@@ -153,6 +158,10 @@ PersonalOptionController.BEd = () => {
   UiManager_1.UiManager.OpenView("PersonalRootView", ModelManager_1.ModelManager.PersonalModel.GetPersonalInfoData());
   UiManager_1.UiManager.CloseView("PersonalOptionView");
 };
+PersonalOptionController.p0g = () => {
+  UiManager_1.UiManager.OpenView("FeedbackRewardMainView");
+  UiManager_1.UiManager.CloseView("PersonalOptionView");
+};
 PersonalOptionController.W0 = () => {
   CommonInputViewController_1.CommonInputViewController.OpenSetRoleNameInputView();
 };
@@ -183,13 +192,13 @@ PersonalOptionController.D5i = () => {
 PersonalOptionController.R5i = () => {
   CommonInputViewController_1.CommonInputViewController.OpenSetPlayerRemarkNameInputView();
 };
-PersonalOptionController._Ef = () => {
+PersonalOptionController.Vbf = () => {
   _a.D5i();
 };
-PersonalOptionController.uEf = e => {
+PersonalOptionController.Hbf = e => {
   _a.S5i();
 };
-PersonalOptionController.OXf = e => {
+PersonalOptionController.yug = e => {
   ModelManager_1.ModelManager.FriendModel.SetCurrentOperationPlayerId(e);
   _a.R5i();
 }; //# sourceMappingURL=PersonalOptionController.js.map

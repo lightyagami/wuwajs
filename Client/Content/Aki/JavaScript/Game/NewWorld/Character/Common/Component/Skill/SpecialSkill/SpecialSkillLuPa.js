@@ -41,8 +41,8 @@ class SpecialSkillLuPa extends SpecialSkillBase_1.SpecialSkillBase {
   OnStart() {
     this.Hte = this.SpecialSkillComponent.Entity.GetComponent(3);
     this.EIe = this.SpecialSkillComponent.Entity.GetComponent(0);
-    this.cBe = this.SpecialSkillComponent.Entity.GetComponent(41);
-    var i = this.SpecialSkillComponent.Entity.GetComponent(215);
+    this.cBe = this.SpecialSkillComponent.Entity.GetComponent(43);
+    var i = this.SpecialSkillComponent.Entity.GetComponent(217);
     this.hBa = this.cBe?.GetSkill(SPECIAL_SKILL_ID);
     if (this.Hte?.IsAutonomousProxy) {
       this.rqo = i.ListenForTagAddOrRemove(-307383857, (i, t) => {
@@ -74,7 +74,7 @@ class SpecialSkillLuPa extends SpecialSkillBase_1.SpecialSkillBase {
     let h = undefined;
     for (const _ of e) {
       if (LockOnUtils_1.LockOnUtils.IsValidLockOnTarget(_)) {
-        if (_.Entity.GetComponent(183)) {
+        if (_.Entity.GetComponent(185)) {
           var l = _.Entity.GetComponent(2);
           if (l) {
             l = CampUtils_1.CampUtils.GetCampRelationship(l.Actor.Camp, s);
@@ -127,7 +127,7 @@ class SpecialSkillLuPa extends SpecialSkillBase_1.SpecialSkillBase {
     }
   }
   NEn(i) {
-    i.Entity.GetComponent(183).AddBuff(this.jk1, {
+    i.Entity.GetComponent(185).AddBuff(this.jk1, {
       InstigatorId: this.EIe.GetCreatureDataId(),
       Reason: "露帕特殊技能瞄准目标加Buff",
       PreMessageId: this.hBa?.MNc
@@ -136,7 +136,7 @@ class SpecialSkillLuPa extends SpecialSkillBase_1.SpecialSkillBase {
   }
   qpu() {
     if (this.Opu?.Valid) {
-      this.Opu.Entity.GetComponent(183)?.RemoveBuff(this.jk1, -1, "露帕特殊技能瞄准目标移除Buff", this.hBa?.MNc);
+      this.Opu.Entity.GetComponent(185)?.RemoveBuff(this.jk1, -1, "露帕特殊技能瞄准目标移除Buff", this.hBa?.MNc);
       this.Opu = undefined;
     }
   }

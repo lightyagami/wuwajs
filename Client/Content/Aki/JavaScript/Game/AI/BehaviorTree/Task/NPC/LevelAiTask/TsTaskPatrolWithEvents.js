@@ -39,9 +39,9 @@ class TsTaskPatrolWithEvents extends TsTaskAbortImmediatelyBase_1.default {
     var r = e.AiController;
     if (r) {
       const s = r.CharAiDesignComp.Entity;
-      this.PatrolComp = s.GetComponent(49);
+      this.PatrolComp = s.GetComponent(51);
       const i = this.TsSplineId;
-      const o = s.GetComponent(49);
+      const o = s.GetComponent(51);
       if (o) {
         if (o.HasPatrolRecord(this.TsSplineId)) {
           o.ResumePatrol(this.TsSplineId, "PatrolWithEvents");

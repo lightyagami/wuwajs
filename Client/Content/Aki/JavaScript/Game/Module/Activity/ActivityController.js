@@ -46,16 +46,16 @@ class ActivityController extends ControllerBase_1.ControllerBase {
   }
   static DisableRefreshTimer() {
     if (this.GOe !== undefined) {
-      this.Qjf.clear();
+      this.crg.clear();
       TimerSystem_1.GameplayTimerSystem.Remove(this.GOe);
       this.GOe = undefined;
     }
   }
   static RegisterRefreshTimerDelegate(t) {
-    this.Qjf.add(t);
+    this.crg.add(t);
   }
   static UnregisterRefreshTimerDelegate(t) {
-    this.Qjf.delete(t);
+    this.crg.delete(t);
   }
   static OnAddOpenViewCheckFunction() {
     UiManager_1.UiManager.AddOpenViewCheckFunction("CommonActivityView", ActivityController.CheckCanOpen, "ActivityController.CheckCanOpen");
@@ -97,12 +97,12 @@ class ActivityController extends ControllerBase_1.ControllerBase {
   }
   static InitActivity(t) {}
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(24139, ActivityController.T4e);
-    Net_1.Net.Register(18882, ActivityController.L4e);
+    Net_1.Net.Register(23133, ActivityController.T4e);
+    Net_1.Net.Register(16812, ActivityController.L4e);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(24139);
-    Net_1.Net.UnRegister(18882);
+    Net_1.Net.UnRegister(23133);
+    Net_1.Net.UnRegister(16812);
   }
   static R6t() {
     if (this.zaa !== undefined) {
@@ -158,9 +158,9 @@ class ActivityController extends ControllerBase_1.ControllerBase {
     var t;
     if (e?.GetIfFirstOpen()) {
       (t = new Protocol_1.Aki.Protocol.M$n()).w6n = e.Id;
-      Net_1.Net.Call(23791, t, t => {
+      Net_1.Net.Call(26023, t, t => {
         if (t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 19522);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 18812);
         }
         ModelManager_1.ModelManager.ActivityModel.OnReceiveActivityRead(e.Id);
       });
@@ -171,10 +171,10 @@ class ActivityController extends ControllerBase_1.ControllerBase {
     var t;
     if (e?.CanPreOpen()) {
       (t = new Protocol_1.Aki.Protocol.ak_()).w6n = e.Id;
-      Net_1.Net.Call(25220, t, t => {
+      Net_1.Net.Call(20115, t, t => {
         if (t) {
           if (t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 18546);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 22155);
             i?.(false);
           } else {
             EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnActivityPreOpen, e.Id);
@@ -218,10 +218,10 @@ exports.ActivityController = ActivityController;
 (_a = ActivityController).zaa = undefined;
 ActivityController.A1h = false;
 ActivityController.GOe = undefined;
-ActivityController.Qjf = new Set();
+ActivityController.crg = new Set();
 ActivityController.o3i = t => {
-  if (_a.Qjf.size !== 0) {
-    for (const e of _a.Qjf) {
+  if (_a.crg.size !== 0) {
+    for (const e of _a.crg) {
       e(t);
     }
   }
@@ -280,10 +280,10 @@ ActivityController.Zaa = () => {
 ActivityController.RequestActivityData = async () => {
   return !!ModelManager_1.ModelManager.FunctionModel.IsOpen(10053) && new Promise(e => {
     var t = new Protocol_1.Aki.Protocol.v$n();
-    Net_1.Net.Call(23005, t, t => {
+    Net_1.Net.Call(24392, t, t => {
       if (t) {
         if (t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 18119);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 25508);
           e(false);
         } else {
           ModelManager_1.ModelManager.ActivityModel.OnReceiveMessageData(t.Yps);

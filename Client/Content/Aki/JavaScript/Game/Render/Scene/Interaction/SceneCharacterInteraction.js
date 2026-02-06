@@ -199,7 +199,7 @@ class SceneCharacterInteraction {
     }
     SceneCharacterInteraction.koe();
     this.IsEnable = true;
-    this.SwimComponent = this.OwnerCharacter.CharacterActorComponent?.Entity?.GetComponent(80);
+    this.SwimComponent = this.OwnerCharacter.CharacterActorComponent?.Entity?.GetComponent(82);
     this.EnviInteractionComponent = this.OwnerCharacter?.GetComponentByClass(UE.KuroEnviInteractionComponent.StaticClass());
     if (this.EnviInteractionComponent) {
       this.EnviInteractionComponent.bUpdateWaterEID = true;
@@ -289,7 +289,7 @@ class SceneCharacterInteraction {
       }
       var e = this.OwnerCharacter.CapsuleComponent;
       var h = e.D_K2_GetComponentLocation();
-      var s = this.OwnerCharacter.CharacterActorComponent?.Entity?.GetComponent(187);
+      var s = this.OwnerCharacter.CharacterActorComponent?.Entity?.GetComponent(189);
       let t = new UE.VectorDouble(0, 0, e.CapsuleHalfHeight);
       let i = new UE.VectorDouble(0, 0, -e.CapsuleHalfHeight - this.Config.射线向下延长);
       if (s) {

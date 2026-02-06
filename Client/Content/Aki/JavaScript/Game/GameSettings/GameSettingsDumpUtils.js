@@ -175,4 +175,5 @@ GameSettingsDumpUtils.DumpVulkan = () => {
 GameSettingsDumpUtils.DumpWaterInteract = () => "SceneBattleInteractModel.Open: " + ModelManager_1.ModelManager.SceneBattleInteractModel.Open;
 GameSettingsDumpUtils.DumpVegetationDither = () => "";
 GameSettingsDumpUtils.DumpVegetationDensity = () => "";
-GameSettingsDumpUtils.DumpAutoExposure = () => _a.JMc("r.Kuro.AutoExposurePlayerCustom"); //# sourceMappingURL=GameSettingsDumpUtils.js.map
+GameSettingsDumpUtils.DumpAutoExposure = () => _a.JMc("r.Kuro.AutoExposurePlayerCustom");
+GameSettingsDumpUtils.DumpLoadingRangeScaleLevel = () => _a.JMc("wp.Runtime.PlannedLoadingRangeScaleExtra"); //# sourceMappingURL=GameSettingsDumpUtils.js.map

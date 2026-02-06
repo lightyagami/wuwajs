@@ -76,11 +76,11 @@ class PhantomArenaBattleDetailsView extends UiTickViewBase_1.UiTickViewBase {
     this.Pcu = t => {
       this.IsWin = t.nD1;
       this.NpcDamaged = t.hD1;
-      this.NpcOriginalDamage = t.wWm;
+      this.NpcOriginalDamage = t.MKm;
       this.MeDamaged = t.sD1;
-      this.MeOriginalDamage = t.RWm;
-      this.IsFinishSettle = t.Oxm;
-      this.kTm();
+      this.MeOriginalDamage = t.SKm;
+      this.IsFinishSettle = t.uBm;
+      this.KTm();
     };
     this.Ucu = t => {
       if (t === "DamageAccumulate") {
@@ -130,12 +130,12 @@ class PhantomArenaBattleDetailsView extends UiTickViewBase_1.UiTickViewBase {
     this.hSu = () => {
       this.GetUiNiagara(5).SetUIActive(false);
       this.SequencePlayer?.PlayLevelSequenceByName("Damage");
-      this.nBf();
+      this.XFf();
     };
     this._Su = () => {
       this.GetUiNiagara(7).SetUIActive(false);
       this.SequencePlayer?.PlayLevelSequenceByName("DamageNPC");
-      this.sBf();
+      this.YFf();
     };
     this.Bcu = () => {
       var t;
@@ -156,7 +156,7 @@ class PhantomArenaBattleDetailsView extends UiTickViewBase_1.UiTickViewBase {
           this.kcu();
         }
         if (this.NpcBeforeDamaged) {
-          this.mYm();
+          this.kJm();
         }
       }
     };
@@ -221,7 +221,7 @@ class PhantomArenaBattleDetailsView extends UiTickViewBase_1.UiTickViewBase {
     var t = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardRole(t);
     this.OwnArea.RoleItem.RefreshHeadIcon(t.RoleHeadTexture);
     this.VU1();
-    this.nBf();
+    this.XFf();
   }
   async Wi1() {
     this.OpponentArea = new PhantomArenaBattleDetailsAreaItem_1.PhantomArenaBattleDetailsAreaItem();
@@ -238,43 +238,43 @@ class PhantomArenaBattleDetailsView extends UiTickViewBase_1.UiTickViewBase {
       this.OpponentArea.RoleItem.RefreshHeadIcon(t.NpcHead);
     }
     this.jU1();
-    this.sBf();
+    this.YFf();
   }
   async qcu() {
-    var t = [this.VTf(), this.HTf(), this.jTf(), this.$Tf(), this.WTf(), this.QTf(), this.KTf()];
+    var t = [this.aAf(), this.hAf(), this.lAf(), this._Af(), this.uAf(), this.cAf(), this.dAf()];
     await Promise.all(t);
   }
-  async VTf() {
+  async aAf() {
     var t = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("CardBattleAccumulateY");
     var t = new LoadAsyncPromise_1.LoadAsyncPromise(t, UE.CurveFloat);
     this.CurveZ = await t.Promise;
   }
-  async HTf() {
+  async hAf() {
     var t = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("CardBattleAccumulateMeX");
     var t = new LoadAsyncPromise_1.LoadAsyncPromise(t, UE.CurveFloat);
     this.CurveMeX = await t.Promise;
   }
-  async jTf() {
+  async lAf() {
     var t = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("CardBattleAccumulateNpcX");
     var t = new LoadAsyncPromise_1.LoadAsyncPromise(t, UE.CurveFloat);
     this.CurveOppositeX = await t.Promise;
   }
-  async $Tf() {
+  async _Af() {
     var t = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("CardBattleAccumulateCommon");
     var t = new LoadAsyncPromise_1.LoadAsyncPromise(t, UE.CurveFloat);
     this.CurveCommon = await t.Promise;
   }
-  async WTf() {
+  async uAf() {
     var t = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("CardBattleDamage");
     var t = new LoadAsyncPromise_1.LoadAsyncPromise(t, UE.CurveFloat);
     this.CurveDamageX = await t.Promise;
   }
-  async QTf() {
+  async cAf() {
     var t = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("CardBattleDamageY");
     var t = new LoadAsyncPromise_1.LoadAsyncPromise(t, UE.CurveFloat);
     this.CurveDamageYMe = await t.Promise;
   }
-  async KTf() {
+  async dAf() {
     var t = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("CardBattleDamageYNPC");
     var t = new LoadAsyncPromise_1.LoadAsyncPromise(t, UE.CurveFloat);
     this.CurveDamageYNpc = await t.Promise;
@@ -283,13 +283,13 @@ class PhantomArenaBattleDetailsView extends UiTickViewBase_1.UiTickViewBase {
     var t = UiManager_1.UiManager.GetViewByName("BattleView").OpenParam;
     this.HeadStatePanel = t.HeadStatePanel;
   }
-  async y3m() {
+  async G4m() {
     this.DamageStatistics = new PhantomArenaBattleDamageStatisticsPanel_1.PhantomArenaBattleDamageStatisticsPanel();
     await this.DamageStatistics.CreateThenShowByActorAsync(this.GetItem(9).GetOwner());
   }
   async OnBeforeStartAsync() {
     this.Proxy.RegisterView(this);
-    await Promise.all([this.$i1(), this.Wi1(), this.EEu(), this.qcu(), this.y3m()]);
+    await Promise.all([this.$i1(), this.Wi1(), this.EEu(), this.qcu(), this.G4m()]);
     this.oU1();
   }
   OnStart() {
@@ -383,7 +383,7 @@ class PhantomArenaBattleDetailsView extends UiTickViewBase_1.UiTickViewBase {
     var i = ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.GetBattleStatusValue(Protocol_1.Aki.Protocol.qC1.Proto_PhantomBattleMaxLife);
     this.OwnArea.RoleItem.RefreshLifeNum(t, i);
   }
-  nBf() {
+  XFf() {
     var t = ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.GetBattleBattleAttr(Protocol_1.Aki.Protocol.GC1.Proto_Defence);
     this.OwnArea.RoleItem.RefreshShieldNum(t);
   }
@@ -392,7 +392,7 @@ class PhantomArenaBattleDetailsView extends UiTickViewBase_1.UiTickViewBase {
     var i = ModelManager_1.ModelManager.PhantomArenaBattleModel.OpponentData.GetBattleStatusValue(Protocol_1.Aki.Protocol.qC1.Proto_PhantomBattleMaxLife);
     this.OpponentArea.RoleItem.RefreshLifeNum(t, i);
   }
-  sBf() {
+  YFf() {
     var t = ModelManager_1.ModelManager.PhantomArenaBattleModel.OpponentData.GetBattleBattleAttr(Protocol_1.Aki.Protocol.GC1.Proto_Defence);
     this.OpponentArea.RoleItem.RefreshShieldNum(t);
   }
@@ -425,7 +425,7 @@ class PhantomArenaBattleDetailsView extends UiTickViewBase_1.UiTickViewBase {
     var t = Array.from(t);
     return t.length === 0 || t[t.length - 1] !== this.Info.Name;
   }
-  kTm() {
+  KTm() {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("PhantomArena", 77, "声骸竞技场BvB结算表现开始", ["isWin", this.IsWin], ["MeDamaged", this.MeDamaged], ["NpcDamaged", this.NpcDamaged]);
     }
@@ -444,13 +444,13 @@ class PhantomArenaBattleDetailsView extends UiTickViewBase_1.UiTickViewBase {
       ModelManager_1.ModelManager.PhantomArenaBattleModel.TryPhantomBattleDealCardNotify();
     }
   }
-  fYm(t) {
+  qJm(t) {
     let i = "";
     i = t < DAMAGE_FIRST ? "NS_Fx_LGUI_Trail_0" : "NS_Fx_LGUI_Trail_1";
     return ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(i);
   }
   async kcu() {
-    var t = this.fYm(this.NpcOriginalDamage);
+    var t = this.qJm(this.NpcOriginalDamage);
     await this.SetNiagaraSystemByPathAsync(t, this.GetUiNiagara(5));
     this.GetUiNiagara(5).SetUIActive(true);
     var t = this.OwnArea.GetHeadLocation();
@@ -460,8 +460,8 @@ class PhantomArenaBattleDetailsView extends UiTickViewBase_1.UiTickViewBase {
     this.TweenerNpcZ.PlayTween(i.Z, t.Z, PhantomArenaDefine_1.DAMAGE_TWEEN_TIME, this.CurveDamageYNpc);
     AudioSystem_1.AudioSystem.PostEvent(PhantomArenaDefine_1.DAMAGE_AUDIO);
   }
-  async mYm() {
-    var t = this.fYm(this.MeOriginalDamage);
+  async kJm() {
+    var t = this.qJm(this.MeOriginalDamage);
     await this.SetNiagaraSystemByPathAsync(t, this.GetUiNiagara(7));
     this.GetUiNiagara(7).SetUIActive(true);
     var t = this.OpponentArea.GetHeadLocation();

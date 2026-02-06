@@ -93,7 +93,7 @@ class LevelGeneralCommons {
     }
   }
   static LUe(e, t, o) {
-    var a = t?.Entity?.GetComponent(206);
+    var a = t?.Entity?.GetComponent(208);
     if (a) {
       var r = GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(o);
       if (a.HasTag(o)) {
@@ -119,8 +119,8 @@ class LevelGeneralCommons {
     var t;
     var e = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e);
     if (e && e.IsInit) {
-      t = e.Entity.GetComponent(206);
-      if ((e = e.Entity.GetComponent(142))?.StateTagId) {
+      t = e.Entity.GetComponent(208);
+      if ((e = e.Entity.GetComponent(144))?.StateTagId) {
         t?.RemoveServerTagByIdLocal(e?.StateTagId, "ChangeToDestroyState");
       }
       t?.AddServerTagByIdLocal(-1278190765, "ChangeToDestroyState");
@@ -130,8 +130,8 @@ class LevelGeneralCommons {
     var o;
     var e = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e);
     if (e && e.IsInit) {
-      o = e.Entity.GetComponent(206);
-      if (e.Entity.GetComponent(142)?.StateTagId) {
+      o = e.Entity.GetComponent(208);
+      if (e.Entity.GetComponent(144)?.StateTagId) {
         o?.RemoveServerTagByIdLocal(-1278190765, "RollbackDestroyState");
       }
       o?.AddServerTagByIdLocal(t, "RollbackDestroyState");

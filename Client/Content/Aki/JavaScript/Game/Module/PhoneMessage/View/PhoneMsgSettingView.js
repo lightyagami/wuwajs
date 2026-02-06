@@ -23,81 +23,81 @@ class PhoneMsgSettingView extends UiViewBase_1.UiViewBase {
     super(...arguments);
     this.lqe = undefined;
     this.hfm = undefined;
-    this.Nsf = undefined;
+    this.mlf = undefined;
     this.m8t = undefined;
-    this.Vsf = [];
-    this.Hsf = [];
-    this.sbf = 0;
-    this.mFf = -1;
-    this.abf = 0;
-    this.fFf = -1;
-    this.Yvf = undefined;
+    this.flf = [];
+    this.glf = [];
+    this.qAf = 0;
+    this.P7f = -1;
+    this.OAf = 0;
+    this.A7f = -1;
+    this.hEf = undefined;
     this.XAt = () => {
-      this.Yvf.OnNameChange();
+      this.hEf.OnNameChange();
     };
-    this.rLf = () => {
-      this.Ksf();
+    this._Bf = () => {
+      this.Slf();
       this.P7e();
     };
-    this.Wsf = () => {
+    this.vlf = () => {
       if (this.hfm !== 0) {
         this.dfm(0);
       }
     };
-    this.Qsf = () => {
+    this.ylf = () => {
       if (this.hfm !== 1) {
         this.dfm(1);
       }
     };
-    this.Ksf = () => {
+    this.Slf = () => {
       switch (this.hfm) {
         case 0:
-          this.Jsf();
-          this.Vsf[0].Data.IsSelected = true;
-          this.mFf = 0;
-          var t = new MultiTemplateScrollView_1.MultiTemplateScrollViewRefreshContext(this.Vsf);
-          this.Nsf.RefreshByData(t);
+          this.Tlf();
+          this.flf[0].Data.IsSelected = true;
+          this.P7f = 0;
+          var t = new MultiTemplateScrollView_1.MultiTemplateScrollViewRefreshContext(this.flf);
+          this.mlf.RefreshByData(t);
           break;
         case 1:
-          this.Zsf();
-          this.Hsf[0].Data.IsSelected = true;
-          this.fFf = 0;
-          t = new MultiTemplateScrollView_1.MultiTemplateScrollViewRefreshContext(this.Hsf);
-          this.Nsf.RefreshByData(t);
+          this.blf();
+          this.glf[0].Data.IsSelected = true;
+          this.A7f = 0;
+          t = new MultiTemplateScrollView_1.MultiTemplateScrollViewRefreshContext(this.glf);
+          this.mlf.RefreshByData(t);
       }
     };
-    this.Xsf = (t, i) => {
-      if (this.mFf >= 0) {
-        var e = this.mFf;
-        this.Vsf[e].Data.IsSelected = false;
-        const s = this.Nsf.GetProxyByGridIndex(e);
+    this.Mlf = (t, i) => {
+      if (this.P7f >= 0) {
+        var e = this.P7f;
+        this.flf[e].Data.IsSelected = false;
+        const s = this.mlf.GetProxyByGridIndex(e);
         s?.SetToggleState(false);
       }
-      this.mFf = t;
-      this.sbf = i.DialogId;
+      this.P7f = t;
+      this.qAf = i.DialogId;
       i.IsSelected = true;
-      const s = this.Nsf.GetProxyByGridIndex(t);
+      const s = this.mlf.GetProxyByGridIndex(t);
       s?.SetToggleState(true);
       this.P7e();
-      this.Ysf();
+      this.Elf();
     };
-    this.zsf = (t, i) => {
-      if (this.fFf >= 0) {
-        var e = this.fFf;
-        this.Hsf[e].Data.IsSelected = false;
-        const s = this.Nsf.GetProxyByGridIndex(e);
+    this.Ilf = (t, i) => {
+      if (this.A7f >= 0) {
+        var e = this.A7f;
+        this.glf[e].Data.IsSelected = false;
+        const s = this.mlf.GetProxyByGridIndex(e);
         s?.SetToggleState(false);
       }
-      this.fFf = t;
-      this.abf = i.BgId;
+      this.A7f = t;
+      this.OAf = i.BgId;
       i.IsSelected = true;
-      const s = this.Nsf.GetProxyByGridIndex(t);
+      const s = this.mlf.GetProxyByGridIndex(t);
       s?.SetToggleState(true);
       this.P7e();
       this.WNe();
     };
     this.OnBtnConfirmClick = () => {
-      PhoneMsgController_1.PhoneMsgController.SendChangeChatDialogAndBgRequest(this.sbf, this.abf);
+      PhoneMsgController_1.PhoneMsgController.SendChangeChatDialogAndBgRequest(this.qAf, this.OAf);
     };
     this.Jvt = () => {
       this.CloseMe();
@@ -105,16 +105,16 @@ class PhoneMsgSettingView extends UiViewBase_1.UiViewBase {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIHorizontalLayout], [2, UE.UIExtendToggle], [3, UE.UIExtendToggle], [4, UE.UIMultiTemplateScrollViewComponent], [5, UE.UIItem], [7, UE.UIItem], [6, UE.UIItem], [8, UE.UIItem], [9, UE.UIText], [10, UE.UITexture], [11, UE.UIText], [12, UE.UIText], [13, UE.UIItem]];
-    this.BtnBindInfo = [[2, this.Wsf], [3, this.Qsf]];
+    this.BtnBindInfo = [[2, this.vlf], [3, this.ylf]];
   }
   async OnBeforeStartAsync() {
     this.lqe = new PopupCaptionItem_1.PopupCaptionItem();
-    this.Yvf = new RightChatItem();
-    this.Nsf = new MultiTemplateScrollView_1.MultiTemplateScrollView(this.GetMultiTemplateScrollViewComponent(4));
+    this.hEf = new RightChatItem();
+    this.mlf = new MultiTemplateScrollView_1.MultiTemplateScrollView(this.GetMultiTemplateScrollViewComponent(4));
     this.m8t = new ButtonItem_1.ButtonItem();
-    await Promise.all([this.lqe.CreateThenShowByActorAsync(this.GetItem(0).GetOwner()), this.Yvf.CreateThenShowByActorAsync(this.GetItem(13).GetOwner()), this.m8t.CreateThenShowByActorAsync(this.GetItem(8).GetOwner())]);
+    await Promise.all([this.lqe.CreateThenShowByActorAsync(this.GetItem(0).GetOwner()), this.hEf.CreateThenShowByActorAsync(this.GetItem(13).GetOwner()), this.m8t.CreateThenShowByActorAsync(this.GetItem(8).GetOwner())]);
     this.m8t.SetFunction(this.OnBtnConfirmClick);
-    this.Yvf.InitView();
+    this.hEf.InitView();
     this.lqe.SetHelpBtnActive(false);
     this.lqe.SetCloseCallBack(this.Jvt);
     this.GetExtendToggle(2).CanExecuteChange.Bind(() => this.hfm !== 0);
@@ -122,27 +122,27 @@ class PhoneMsgSettingView extends UiViewBase_1.UiViewBase {
   }
   OnBeforeShow() {
     var t = ModelManager_1.ModelManager.PhoneMsgModel;
-    this.sbf = t.CurrentUsingChatDialogId;
-    this.abf = t.CurrentUsingChatBgId;
-    this.Jsf();
-    this.Zsf();
-    this.Hsf[0].Data.IsSelected = true;
-    this.Vsf[0].Data.IsSelected = true;
-    this.mFf = 0;
-    this.fFf = 0;
-    this.Ysf();
+    this.qAf = t.CurrentUsingChatDialogId;
+    this.OAf = t.CurrentUsingChatBgId;
+    this.Tlf();
+    this.blf();
+    this.glf[0].Data.IsSelected = true;
+    this.flf[0].Data.IsSelected = true;
+    this.P7f = 0;
+    this.A7f = 0;
+    this.Elf();
     this.WNe();
-    this.Wsf();
+    this.vlf();
     this.GetItem(7).SetUIActive(false);
     this.GetItem(6).SetUIActive(false);
     this.P7e();
   }
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPhoneMsgChatShowChange, this.rLf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPhoneMsgChatShowChange, this._Bf);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnNameChange, this.XAt);
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPhoneMsgChatShowChange, this.rLf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPhoneMsgChatShowChange, this._Bf);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnNameChange, this.XAt);
   }
   dfm(t) {
@@ -150,16 +150,16 @@ class PhoneMsgSettingView extends UiViewBase_1.UiViewBase {
     var e = this.GetExtendToggle(3);
     switch (t) {
       case 0:
-        var s = new MultiTemplateScrollView_1.MultiTemplateScrollViewRefreshContext(this.Vsf);
-        this.Nsf.RefreshByData(s);
+        var s = new MultiTemplateScrollView_1.MultiTemplateScrollViewRefreshContext(this.flf);
+        this.mlf.RefreshByData(s);
         i.SetToggleState(1, false);
         this.hfm = 0;
         e.SetToggleState(0, false);
-        this.Ysf();
+        this.Elf();
         break;
       case 1:
-        s = new MultiTemplateScrollView_1.MultiTemplateScrollViewRefreshContext(this.Hsf);
-        this.Nsf.RefreshByData(s);
+        s = new MultiTemplateScrollView_1.MultiTemplateScrollViewRefreshContext(this.glf);
+        this.mlf.RefreshByData(s);
         e.SetToggleState(1, false);
         this.hfm = 1;
         i.SetToggleState(0, false);
@@ -167,8 +167,8 @@ class PhoneMsgSettingView extends UiViewBase_1.UiViewBase {
     }
     this.P7e();
   }
-  Jsf() {
-    this.Vsf.length = 0;
+  Tlf() {
+    this.flf.length = 0;
     var t = ConfigManager_1.ConfigManager.PhoneMsgConfig.GetAllChatDialogConfigList();
     if (t) {
       var i = [];
@@ -180,17 +180,17 @@ class PhoneMsgSettingView extends UiViewBase_1.UiViewBase {
         s.IsUsing = ModelManager_1.ModelManager.PhoneMsgModel.CurrentUsingChatDialogId === r.Id;
         s.IsSelected = false;
         var h = new SettingViewLeftDialogItemData(s);
-        h.OnToggleCallBack = this.Xsf;
-        (s.IsUsing ? this.Vsf : s.IsUnlocked ? i : e).push(h);
+        h.OnToggleCallBack = this.Mlf;
+        (s.IsUsing ? this.flf : s.IsUnlocked ? i : e).push(h);
       }
-      this.pjf(i);
-      this.pjf(e);
-      this.Vsf.push(...i);
-      this.Vsf.push(...e);
+      this.kig(i);
+      this.kig(e);
+      this.flf.push(...i);
+      this.flf.push(...e);
     }
   }
-  Zsf() {
-    this.Hsf.length = 0;
+  blf() {
+    this.glf.length = 0;
     var t = ConfigManager_1.ConfigManager.PhoneMsgConfig.GetAllChatBgConfigList();
     if (t) {
       var i = [];
@@ -202,32 +202,32 @@ class PhoneMsgSettingView extends UiViewBase_1.UiViewBase {
         s.IsUsing = ModelManager_1.ModelManager.PhoneMsgModel.CurrentUsingChatBgId === r.Id;
         s.IsSelected = false;
         var h = new SettingViewLeftBgItemData(s);
-        h.OnToggleCallBack = this.zsf;
-        (s.IsUsing ? this.Hsf : s.IsUnlocked ? i : e).push(h);
+        h.OnToggleCallBack = this.Ilf;
+        (s.IsUsing ? this.glf : s.IsUnlocked ? i : e).push(h);
       }
-      this.pjf(i);
-      this.pjf(e);
-      this.Hsf.push(...i);
-      this.Hsf.push(...e);
+      this.kig(i);
+      this.kig(e);
+      this.glf.push(...i);
+      this.glf.push(...e);
     }
   }
-  pjf(t) {
+  kig(t) {
     t.sort((t, i) => {
       t = t.Data?.GetConfig?.()?.SortId ?? 0;
       return (i.Data?.GetConfig?.()?.SortId ?? 0) - t;
     });
   }
-  Ysf() {
-    var t = ConfigManager_1.ConfigManager.PhoneMsgConfig.GetChatDialogConfig(this.sbf);
+  Elf() {
+    var t = ConfigManager_1.ConfigManager.PhoneMsgConfig.GetChatDialogConfig(this.qAf);
     if (t) {
-      this.Yvf.RefreshDialog(this.sbf);
+      this.hEf.RefreshDialog(this.qAf);
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(9), t.Name);
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(11), t.Desc);
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(12), t.GetWay);
     }
   }
   WNe() {
-    var t = ConfigManager_1.ConfigManager.PhoneMsgConfig.GetChatBgConfig(this.abf);
+    var t = ConfigManager_1.ConfigManager.PhoneMsgConfig.GetChatBgConfig(this.OAf);
     if (t) {
       this.SetTextureByPath(t.BgPath, this.GetTexture(10));
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(9), t.Name);
@@ -241,12 +241,12 @@ class PhoneMsgSettingView extends UiViewBase_1.UiViewBase {
     var e = ModelManager_1.ModelManager.PhoneMsgModel;
     switch (this.hfm) {
       case 0:
-        t = e.IsChatDialogUnlocked(this.sbf) && e.CurrentUsingChatDialogId !== this.sbf;
-        i = e.CurrentUsingChatDialogId === this.sbf;
+        t = e.IsChatDialogUnlocked(this.qAf) && e.CurrentUsingChatDialogId !== this.qAf;
+        i = e.CurrentUsingChatDialogId === this.qAf;
         break;
       case 1:
-        t = e.IsChatBgUnlocked(this.abf) && e.CurrentUsingChatBgId !== this.abf;
-        i = e.CurrentUsingChatBgId === this.abf;
+        t = e.IsChatBgUnlocked(this.OAf) && e.CurrentUsingChatBgId !== this.OAf;
+        i = e.CurrentUsingChatBgId === this.OAf;
     }
     this.m8t.SetEnableClick(t);
     var s = i ? "Text_InUse_Text" : "ChatBubble_SettingUse";
@@ -259,11 +259,11 @@ class RightChatItem extends UiPanelBase_1.UiPanelBase {
     this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UITexture], [2, UE.UIText], [3, UE.UIItem], [4, UE.UIText], [5, UE.UIItem], [6, UE.UITexture], [7, UE.UIItem], [8, UE.UIButtonComponent], [9, UE.UITexture], [10, UE.UISprite]];
   }
   InitView() {
-    this.laf();
+    this.klf();
     var t = ModelManager_1.ModelManager.PhoneMsgModel.CurrentUsingChatDialogId;
     this.RefreshDialog(t);
   }
-  laf() {
+  klf() {
     var t = ModelManager_1.ModelManager.RoleModel.GetCurSelectMainRoleId();
     var t = ModelManager_1.ModelManager.RoleSkinModel.GetRoleSkinIdByRoleId(t);
     var t = ConfigManager_1.ConfigManager.SkinConfig.GetRoleSkinConfig(t).RoleHeadIconCircle;
@@ -288,11 +288,11 @@ exports.RightChatItem = RightChatItem;
 class PhoneMsgDialogItem extends SyncGridProxyAbstract_1.SyncGridProxyAbstract {
   constructor() {
     super(...arguments);
-    this.taf = undefined;
+    this.wlf = undefined;
     this.OnToggleCallBack = undefined;
     this.kqe = () => {
       if (this.OnToggleCallBack) {
-        this.OnToggleCallBack(this.GridIndex, this.taf);
+        this.OnToggleCallBack(this.GridIndex, this.wlf);
       }
     };
   }
@@ -302,7 +302,7 @@ class PhoneMsgDialogItem extends SyncGridProxyAbstract_1.SyncGridProxyAbstract {
   }
   Refresh(t) {
     if (t) {
-      this.taf = t;
+      this.wlf = t;
       this.SetSpriteByPath(t.GetConfig().BgPath, this.GetSprite(1), false);
       this.GetSprite(2).SetUIActive(t.IsUsing);
       this.GetItem(3).SetUIActive(!t.IsUnlocked);
@@ -310,7 +310,7 @@ class PhoneMsgDialogItem extends SyncGridProxyAbstract_1.SyncGridProxyAbstract {
     }
   }
   SetToggleState(t, i = false) {
-    t = (this.taf.IsSelected = t) ? 1 : 0;
+    t = (this.wlf.IsSelected = t) ? 1 : 0;
     this.GetExtendToggle(0).SetToggleState(t, undefined, i, i);
   }
 }
@@ -318,11 +318,11 @@ exports.PhoneMsgDialogItem = PhoneMsgDialogItem;
 class PhoneMsgBgItem extends SyncGridProxyAbstract_1.SyncGridProxyAbstract {
   constructor() {
     super(...arguments);
-    this.iaf = undefined;
+    this.Llf = undefined;
     this.OnToggleCallBack = undefined;
     this.kqe = () => {
       if (this.OnToggleCallBack) {
-        this.OnToggleCallBack(this.GridIndex, this.iaf);
+        this.OnToggleCallBack(this.GridIndex, this.Llf);
       }
     };
   }
@@ -332,7 +332,7 @@ class PhoneMsgBgItem extends SyncGridProxyAbstract_1.SyncGridProxyAbstract {
   }
   Refresh(t) {
     if (t) {
-      this.iaf = t;
+      this.Llf = t;
       this.SetTextureByPath(t.GetConfig().ScrollViewBgPath, this.GetTexture(2));
       this.GetSprite(3).SetUIActive(t.IsUsing);
       this.GetItem(4).SetUIActive(!t.IsUnlocked);
@@ -340,7 +340,7 @@ class PhoneMsgBgItem extends SyncGridProxyAbstract_1.SyncGridProxyAbstract {
     }
   }
   SetToggleState(t, i = false) {
-    t = (this.iaf.IsSelected = t) ? 1 : 0;
+    t = (this.Llf.IsSelected = t) ? 1 : 0;
     this.GetExtendToggle(0).SetToggleState(t, undefined, i, i);
   }
   OnSelected() {

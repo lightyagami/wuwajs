@@ -35,6 +35,7 @@ let BulletActorComponent = class BulletActorComponent extends BaseActorComponent
     super(...arguments);
     this.bjo = undefined;
     this.NeedDetach = false;
+    this.NeedDetachForBaseMovement = false;
     this.ChildrenAttached = [];
     this.VBr = false;
   }
@@ -103,6 +104,7 @@ let BulletActorComponent = class BulletActorComponent extends BaseActorComponent
     this.bjo = undefined;
     this.ChildrenAttached.length = 0;
     this.NeedDetach = false;
+    this.NeedDetachForBaseMovement = false;
     return super.OnClear();
   }
   SetAttachToComponent(t, o, e, i, r, s) {
@@ -117,5 +119,5 @@ let BulletActorComponent = class BulletActorComponent extends BaseActorComponent
     this.ActorInternal.CustomTimeDilation = t;
   }
 };
-BulletActorComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(178)], BulletActorComponent);
+BulletActorComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(180)], BulletActorComponent);
 exports.BulletActorComponent = BulletActorComponent; //# sourceMappingURL=BulletActorComponent.js.map

@@ -3,20 +3,20 @@
 var __decorate = this && this.__decorate || function (e, t, i, s) {
   var o;
   var h = arguments.length;
-  var n = h < 3 ? t : s === null ? s = Object.getOwnPropertyDescriptor(t, i) : s;
+  var r = h < 3 ? t : s === null ? s = Object.getOwnPropertyDescriptor(t, i) : s;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    n = Reflect.decorate(e, t, i, s);
+    r = Reflect.decorate(e, t, i, s);
   } else {
-    for (var r = e.length - 1; r >= 0; r--) {
-      if (o = e[r]) {
-        n = (h < 3 ? o(n) : h > 3 ? o(t, i, n) : o(t, i)) || n;
+    for (var n = e.length - 1; n >= 0; n--) {
+      if (o = e[n]) {
+        r = (h < 3 ? o(r) : h > 3 ? o(t, i, r) : o(t, i)) || r;
       }
     }
   }
-  if (h > 3 && n) {
-    Object.defineProperty(t, i, n);
+  if (h > 3 && r) {
+    Object.defineProperty(t, i, r);
   }
-  return n;
+  return r;
 };
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -28,12 +28,11 @@ const Log_1 = require("../../../../../Core/Common/Log");
 const ResourceSystem_1 = require("../../../../../Core/Resource/ResourceSystem");
 const FNameUtil_1 = require("../../../../../Core/Utils/FNameUtil");
 const MathUtils_1 = require("../../../../../Core/Utils/MathUtils");
-const EventDefine_1 = require("../../../../Common/Event/EventDefine");
-const EventSystem_1 = require("../../../../Common/Event/EventSystem");
 const CharacterNameDefines_1 = require("../../../../NewWorld/Character/Common/CharacterNameDefines");
 const RoleDefine_1 = require("../../../RoleUi/RoleDefine");
 const UiModelComponentDefine_1 = require("../../Define/UiModelComponentDefine");
 const UiModelComponentBase_1 = require("../UiModelComponentBase");
+const UiModelComponentInterface_1 = require("../UiModelComponentInterface");
 let UiModelActorComponent = class UiModelActorComponent extends UiModelComponentBase_1.UiModelComponentBase {
   constructor() {
     super(...arguments);
@@ -45,29 +44,6 @@ let UiModelActorComponent = class UiModelActorComponent extends UiModelComponent
     this.ywr = undefined;
     this.D_r = undefined;
     this.Iwr = undefined;
-    this.Twr = e => {
-      var t;
-      if (this.MainMeshComponent) {
-        this.Lwr(this.MainMeshComponent, e);
-        if (!e) {
-          t = this.MainMeshComponent.GetAnimInstance();
-          UE.KuroAnimLibrary.EndAnimNotifyStates(t);
-        }
-      }
-      if (this.ChildMeshComponentList && this.ChildMeshComponentList.length > 0) {
-        for (const i of this.ChildMeshComponentList) {
-          this.Lwr(i, e);
-        }
-      }
-      if (this.DecorationMeshComponentList && this.DecorationMeshComponentList.length > 0) {
-        for (const s of this.DecorationMeshComponentList) {
-          this.Lwr(s, e);
-        }
-      }
-    };
-    this.Dwr = e => {
-      this.CharRenderingComponent?.SetDitherEffect(e, 0);
-    };
   }
   OnInit() {
     this.ywr = this.Owner.CheckGetComponent(0);
@@ -81,13 +57,30 @@ let UiModelActorComponent = class UiModelActorComponent extends UiModelComponent
         this.CharRenderingComponent = this.Rwr(7);
     }
   }
-  OnStart() {
-    EventSystem_1.EventSystem.AddWithTarget(this.Owner, EventDefine_1.EEventName.OnUiModelVisibleChange, this.Twr);
-    EventSystem_1.EventSystem.AddWithTarget(this.Owner, EventDefine_1.EEventName.OnUiModelSetDitherEffect, this.Dwr);
+  OnStart() {}
+  OnEnd() {}
+  OnModelVisibleChange(e) {
+    var t;
+    if (this.MainMeshComponent) {
+      this.Lwr(this.MainMeshComponent, e);
+      if (!e) {
+        t = this.MainMeshComponent.GetAnimInstance();
+        UE.KuroAnimLibrary.EndAnimNotifyStates(t);
+      }
+    }
+    if (this.ChildMeshComponentList && this.ChildMeshComponentList.length > 0) {
+      for (const i of this.ChildMeshComponentList) {
+        this.Lwr(i, e);
+      }
+    }
+    if (this.DecorationMeshComponentList && this.DecorationMeshComponentList.length > 0) {
+      for (const s of this.DecorationMeshComponentList) {
+        this.Lwr(s, e);
+      }
+    }
   }
-  OnEnd() {
-    EventSystem_1.EventSystem.RemoveWithTarget(this.Owner, EventDefine_1.EEventName.OnUiModelVisibleChange, this.Twr);
-    EventSystem_1.EventSystem.RemoveWithTarget(this.Owner, EventDefine_1.EEventName.OnUiModelSetDitherEffect, this.Dwr);
+  OnModelDitherEffectChange(e) {
+    this.CharRenderingComponent?.SetDitherEffect(e, 0);
   }
   Uwr(e) {
     e = this.Actor.AddComponentByClass(UE.SkeletalMeshComponent.StaticClass(), false, e ?? MathUtils_1.MathUtils.DefaultTransform, false);
@@ -139,6 +132,7 @@ let UiModelActorComponent = class UiModelActorComponent extends UiModelComponent
       case 3:
       case 4:
       case 5:
+      case 7:
         this.xwr(e, t, undefined, o);
         break;
       case 6:
@@ -162,8 +156,8 @@ let UiModelActorComponent = class UiModelActorComponent extends UiModelComponent
       this.Bwr(o);
     }
     if (i && i.length > 0) {
-      for (const n of i) {
-        this.bwr(n);
+      for (const r of i) {
+        this.bwr(r);
       }
     }
     this.Awr();
@@ -180,17 +174,17 @@ let UiModelActorComponent = class UiModelActorComponent extends UiModelComponent
     } else {
       this.CharRenderingComponent.ResetAllRenderingState();
       this.wwr();
-      this.lPm();
+      this.LPm();
       this.D_r?.DestroyAllEffect();
-      var n = this.MainMeshComponent;
+      var r = this.MainMeshComponent;
       let t = undefined;
-      if (n && n.GetAnimationMode() === 0 && (t = this.GetAnimInstanceFromSkeletalMesh(n))) {
+      if (r && r.GetAnimationMode() === 0 && (t = this.GetAnimInstanceFromSkeletalMesh(r))) {
         UE.KuroAnimLibrary.EndAnimNotifyStates(t);
       }
-      var r = this.Uwr();
-      this.QN1(r, i, h);
-      r?.SetAnimClass(e);
-      var i = this.GetAnimInstanceFromSkeletalMesh(r);
+      var n = this.Uwr();
+      this.QN1(n, i, h);
+      n?.SetAnimClass(e);
+      var i = this.GetAnimInstanceFromSkeletalMesh(n);
       if (t) {
         let e = false;
         h = t.StateInternal;
@@ -198,9 +192,9 @@ let UiModelActorComponent = class UiModelActorComponent extends UiModelComponent
           i.SyncAnimInstance(t);
         }
       }
-      this.MainMeshComponent = r;
-      if (n) {
-        this.Bwr(n);
+      this.MainMeshComponent = n;
+      if (r) {
+        this.Bwr(r);
       }
       if (s && s.length > 0) {
         for (const a of s) {
@@ -208,8 +202,8 @@ let UiModelActorComponent = class UiModelActorComponent extends UiModelComponent
         }
       }
       if (o && o.length > 0) {
-        for (const _ of o) {
-          this._Pm(_);
+        for (const c of o) {
+          this.PPm(c);
         }
       }
       this.Awr();
@@ -225,7 +219,7 @@ let UiModelActorComponent = class UiModelActorComponent extends UiModelComponent
     this.CharRenderingComponent.AddComponent("OtherCase" + e, t);
     return t;
   }
-  _Pm(e) {
+  PPm(e) {
     this.DecorationMeshComponentList ||= [];
     var t = this.Uwr(e.Transform);
     this.QN1(t, e.SkeletalMesh);
@@ -241,7 +235,7 @@ let UiModelActorComponent = class UiModelActorComponent extends UiModelComponent
       this.ChildMeshComponentList.length = 0;
     }
   }
-  lPm() {
+  LPm() {
     if (this.DecorationMeshComponentList) {
       for (const e of this.DecorationMeshComponentList) {
         this.Bwr(e);
@@ -313,5 +307,5 @@ let UiModelActorComponent = class UiModelActorComponent extends UiModelComponent
     }
   }
 };
-UiModelActorComponent = __decorate([(0, UiModelComponentDefine_1.RegisterUiModelComponent)(1)], UiModelActorComponent);
+UiModelActorComponent = __decorate([(0, UiModelComponentInterface_1.RegisterUiModelComponentImplements)(0, 1), (0, UiModelComponentDefine_1.RegisterUiModelComponent)(1)], UiModelActorComponent);
 exports.UiModelActorComponent = UiModelActorComponent; //# sourceMappingURL=UiModelActorComponent.js.map

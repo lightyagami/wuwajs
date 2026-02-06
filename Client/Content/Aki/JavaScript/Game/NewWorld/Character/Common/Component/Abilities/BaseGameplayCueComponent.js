@@ -120,7 +120,11 @@ function getGameplayCueClass(e, a) {
     case 12:
       return GameplayCueHideBone_1.GameplayCueHideBone;
     case 13:
-      return GameplayCueManipulateInteract_1.GameplayCueManipulateInteract;
+      if (a) {
+        return undefined;
+      } else {
+        return GameplayCueManipulateInteract_1.GameplayCueManipulateInteract;
+      }
     case 15:
       return GameplayCueHitEffect_1.GameplayCueHitEffect;
     case 16:
@@ -214,6 +218,13 @@ let BaseGameplayCueComponent = class BaseGameplayCueComponent extends EntityComp
   GetCueByHandle(e) {
     return this.Sau.get(e);
   }
+  GetCueByCueId(e) {
+    for (const a of this.Sau.values()) {
+      if (a.CueConfig.Id === e) {
+        return a;
+      }
+    }
+  }
   ChangeBuffHandle(e, a) {
     e = this.Sau.get(e);
     if (e) {
@@ -223,7 +234,7 @@ let BaseGameplayCueComponent = class BaseGameplayCueComponent extends EntityComp
   xJs(e) {
     var a = Protocol_1.Aki.Protocol.he_.create();
     a.TJs = MathUtils_1.MathUtils.NumberToLong(e);
-    CombatMessage_1.CombatNet.Send(16635, this.GetEntityHandle().Entity, a);
+    CombatMessage_1.CombatNet.Send(27122, this.GetEntityHandle().Entity, a);
   }
   static GameplayCueNotify(e, a) {
     e = e?.GetComponent(21);
@@ -243,13 +254,6 @@ let BaseGameplayCueComponent = class BaseGameplayCueComponent extends EntityComp
     }
     return r;
   }
-  wlu(e) {
-    for (const a of this.Sau.values()) {
-      if (a.CueConfig.Id === e) {
-        return a;
-      }
-    }
-  }
   Iau(a, t = {}) {
     var r = GameplayCueController_1.GameplayCueController.GetConfigById(a);
     if (r) {
@@ -258,7 +262,7 @@ let BaseGameplayCueComponent = class BaseGameplayCueComponent extends EntityComp
         var l = t.Instant ?? false;
         var C = getGameplayCueClass(r, l);
         if (C) {
-          let e = this.wlu(a);
+          let e = this.GetCueByCueId(a);
           if (!e || !C.IsSingleInstance()) {
             e = C.Spawn({
               CueConfig: r,
@@ -285,7 +289,7 @@ let BaseGameplayCueComponent = class BaseGameplayCueComponent extends EntityComp
   }
   Lau(e) {
     var a;
-    return e.Group <= 0 || !(a = this.Eau.get(e.Group)) || !(a = this.wlu(a)) || a.CueConfig.Priority <= e.Priority;
+    return e.Group <= 0 || !(a = this.Eau.get(e.Group)) || !(a = this.GetCueByCueId(a)) || a.CueConfig.Priority <= e.Priority;
   }
   bau(e) {
     if (!(e.Group <= 0)) {
@@ -294,7 +298,7 @@ let BaseGameplayCueComponent = class BaseGameplayCueComponent extends EntityComp
         if (a === e.Id) {
           return;
         }
-        var t = this.wlu(a);
+        var t = this.GetCueByCueId(a);
         if (t && t.CueConfig.Priority > e.Priority) {
           return;
         }

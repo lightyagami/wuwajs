@@ -24,7 +24,7 @@ const ActorUtils_1 = require("../../../../../../Utils/ActorUtils");
 const LockOnUtils_1 = require("../../../../Common/Component/LockOn/LockOnUtils");
 const deadEyeTag = 1172215447;
 class FollowShooterDrone {
-  static Zaf(t, r, o, a, i) {
+  static xuf(t, r, o, a, i) {
     var e = r.CheckGetComponent(1)?.Owner;
     if (e) {
       var n = e.GetComponentsByTag(UE.SceneComponent.StaticClass(), o);
@@ -36,12 +36,12 @@ class FollowShooterDrone {
       }
     }
   }
-  static DLm(o, e, t, r, a, i) {
+  static iPm(o, e, t, r, a, i) {
     var n = i.ShouldAimAtLockOnTargetName;
     let l = false;
     var e = ActorUtils_1.ActorUtils.GetEntityByActor(e, false);
     if (e?.Valid && e.Entity?.Valid) {
-      var s = e.Entity.CheckGetComponent(215);
+      var s = e.Entity.CheckGetComponent(217);
       if (!s) {
         return;
       }
@@ -53,7 +53,7 @@ class FollowShooterDrone {
         }
       }
     }
-    if (l && (e = o.GetComponent(40)) && (o = n.toString(), r.has(o) || r.set(o, -1), t <= i.AutoShootAngle) && Time_1.Time.Now - r.get(o) >= i.AutoShootGapTime) {
+    if (l && (e = o.GetComponent(42)) && (o = n.toString(), r.has(o) || r.set(o, -1), t <= i.AutoShootAngle) && Time_1.Time.Now - r.get(o) >= i.AutoShootGapTime) {
       r.set(o, Time_1.Time.Now);
       e.BeginSkillAsync(i.AutoShootSkillId);
     }
@@ -65,7 +65,7 @@ class FollowShooterDrone {
     } else if (o?.IsA(UE.Actor.StaticClass())) {
       t = ActorUtils_1.ActorUtils.GetEntityByActor(o, false);
     }
-    var r = t?.Entity?.CheckGetComponent(215);
+    var r = t?.Entity?.CheckGetComponent(217);
     if (!r) {
       return false;
     }
@@ -85,22 +85,22 @@ class FollowShooterDrone {
       s = a.D_K2_GetComponentToWorld();
       l = UE.KismetMathLibrary.D_FindLookAtRotation(s.GetLocation(), l).Quaternion().op_Multiply(n.RotateOffset.Quaternion());
       s = s.GetRotation().AngularDistance(l) * MathCommon_1.MathCommon.RadToDeg;
-      FollowShooterDrone.DLm(r, o, s, e, i, n);
+      FollowShooterDrone.iPm(r, o, s, e, i, n);
       r = UE.KismetMathLibrary.RInterpTo(a.K2_GetComponentRotation(), l.Rotator(), t / CommonDefine_1.MILLIONSECOND_PER_SECOND, n.RotationInterpSpeed);
       a.K2_SetWorldRotation(r, false, undefined, true);
     }
   }
-  static Jaf(t, r, a) {
+  static Uuf(t, r, a) {
     if (r?.IsValid() && t.Valid) {
       for (let o = 0, e = r.LockOnConfig.ArrayAutoAimConfig.Num(); o < e; ++o) {
         var i = r.LockOnConfig.ArrayAutoAimConfig.Get(o);
-        FollowShooterDrone.Zaf(a, t, i.ShouldAimAtLockOnTargetName, r.LockOnConfig, i);
+        FollowShooterDrone.xuf(a, t, i.ShouldAimAtLockOnTargetName, r.LockOnConfig, i);
       }
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("Character", 72, "AllOwnerSceneComponentExecute 参数错误", ["FollowShooterConfig", r], ["entity", t.Id], ["Executor", a]);
     }
   }
-  static vTf(o, e, t, r, a, i) {
+  static sPf(o, e, t, r, a, i) {
     if (FollowShooterDrone.ShouldUpdateRotationToAimAtLockOnTarget(i, t.Id)) {
       t = Global_1.Global.CharacterCameraManager.D_GetActorForwardVector();
       t = Global_1.Global.CharacterCameraManager.D_GetCameraLocation().op_Addition(t.op_Multiply(a.CameraForwardDistance));
@@ -114,7 +114,7 @@ class FollowShooterDrone {
       for (let o = 0, e = r.LockOnConfig.ArrayAutoAimConfig.Num(); o < e; ++o) {
         var n = r.LockOnConfig.ArrayAutoAimConfig.Get(o);
         if (a.op_Equality(n.ShouldAimAtLockOnTargetName)) {
-          FollowShooterDrone.Zaf(i, t, a, r.LockOnConfig, n);
+          FollowShooterDrone.xuf(i, t, a, r.LockOnConfig, n);
         }
       }
     } else if (Log_1.Log.CheckError()) {
@@ -135,17 +135,20 @@ class FollowShooterDrone {
       Log_1.Log.Error("Character", 72, "AttachToByConfig 参数错误", ["TagId", e]);
     }
   }
+  static SetHiddenInGame(o, e, t, r, a) {
+    t.SetHiddenInGame(o, true);
+  }
   static UpdateRotationToAimAtLockOnTarget(o, e, t, r, a) {
-    FollowShooterDrone.Jaf(o, r, FollowShooterDrone.gnm.bind(FollowShooterDrone, e, t, a));
+    FollowShooterDrone.Uuf(o, r, FollowShooterDrone.gnm.bind(FollowShooterDrone, e, t, a));
   }
   static UpdateRotationToCameraForward(o, e, t, r) {
-    FollowShooterDrone.Jaf(o, t, FollowShooterDrone.vTf.bind(FollowShooterDrone, e, r));
+    FollowShooterDrone.Uuf(o, t, FollowShooterDrone.sPf.bind(FollowShooterDrone, e, r));
   }
   static async AsyncStartShootAtTargets(o, e, t, r, a) {
     var o = EntitySystem_1.EntitySystem.Get(o);
     var i = o?.CheckGetComponent(1)?.Owner;
-    var n = o?.CheckGetComponent(215);
-    const l = o?.CheckGetComponent(40);
+    var n = o?.CheckGetComponent(217);
+    const l = o?.CheckGetComponent(42);
     if (i?.IsValid() && e?.IsValid() && t.length !== 0 && r?.IsValid() && n && l) {
       var s = UE.AIBlueprintHelperLibrary.GetAIController(i);
       if (s && s.CachedGameplayTasksComponent && UE.KuroStaticLibrary.IsImplementInterface(s.CachedGameplayTasksComponent.GetClass(), UE.GameplayTaskOwnerInterface.StaticClass())) {
@@ -165,13 +168,13 @@ class FollowShooterDrone {
           } else {
             const h = [];
             for (let o = 0; o < m; ++o) {
-              var _ = e.LockOnConfig.ArrayAutoAimConfig.Get(o);
-              var c = u.Get(_.ShouldAimAtLockOnTargetName);
-              if (c && !FNameUtil_1.FNameUtil.IsNothing(_.ShouldAimAtLockOnTargetName)) {
-                if ((_ = i.GetComponentsByTag(UE.SceneComponent.StaticClass(), _.ShouldAimAtLockOnTargetName)) && _.Num() === 1) {
-                  h.push([_.Get(0), c]);
+              var c = e.LockOnConfig.ArrayAutoAimConfig.Get(o);
+              var _ = u.Get(c.ShouldAimAtLockOnTargetName);
+              if (_ && !FNameUtil_1.FNameUtil.IsNothing(c.ShouldAimAtLockOnTargetName)) {
+                if ((c = i.GetComponentsByTag(UE.SceneComponent.StaticClass(), c.ShouldAimAtLockOnTargetName)) && c.Num() === 1) {
+                  h.push([c.Get(0), _]);
                 } else if (Log_1.Log.CheckError()) {
-                  Log_1.Log.Error("Character", 72, "[FollowShooterComponent]射击辅助机Tag重复或者遗漏", ["Config", e], ["components", _]);
+                  Log_1.Log.Error("Character", 72, "[FollowShooterComponent]射击辅助机Tag重复或者遗漏", ["Config", e], ["components", c]);
                 }
               }
             }
@@ -183,18 +186,18 @@ class FollowShooterDrone {
                 HudUnitUtils_1.HudUnitUtils.PositionUtil.ProjectWorldToScreen(e.ToUeVector(), r);
                 return r.X - t.X;
               });
-              const g = [];
+              const S = [];
               for (let o = 0; o < Math.min(t.length, h.length); ++o) {
-                g.push(UE.NewArray(UE.VectorDouble));
+                S.push(UE.NewArray(UE.VectorDouble));
               }
               r.forEach((o, e) => {
                 e %= h.length;
-                g[e].Add(o.ToUeVector());
+                S[e].Add(o.ToUeVector());
               });
-              const S = [];
+              const g = [];
               n?.AddTag(deadEyeTag);
-              for (let o = 0; o < g.length; ++o) {
-                var C = UE.AsyncTaskRotateSequence.D_StartRotateSequenceByTranslation(s.CachedGameplayTasksComponent, h[o][0], g[o]);
+              for (let o = 0; o < S.length; ++o) {
+                var C = UE.AsyncTaskRotateSequence.D_StartRotateSequenceByTranslation(s.CachedGameplayTasksComponent, h[o][0], S[o]);
                 if (C) {
                   const u = h[o][1];
                   C.AimSpeedDegPerSec = u.AimSpeedDegPerSec;
@@ -209,13 +212,13 @@ class FollowShooterDrone {
                   }
                   const w = u.SkillId;
                   const d = new CustomPromise_1.CustomPromise();
-                  S.push(d.Promise);
+                  g.push(d.Promise);
                   C.OnShootStepFired.Add((o, e) => {
                     if (o?.IsValid()) {
                       o = l.BeginSkillAsync(w, {
                         Reason: "FollowShooterComponent.AsyncStartShootAtTargets"
                       });
-                      S.push(o);
+                      g.push(o);
                     }
                   });
                   C.OnSequenceFinished.Add(o => {
@@ -226,7 +229,7 @@ class FollowShooterDrone {
                   Log_1.Log.Error("Character", 72, "[FollowShooterComponent]  创建Task失败", ["Config", e], ["DeadEyeFollowShooter", h]);
                 }
               }
-              await Promise.all(S);
+              await Promise.all(g);
               const f = new CustomPromise_1.CustomPromise();
               TimerSystem_1.GameplayTimerSystem.Delay(o => {
                 f.SetResult();

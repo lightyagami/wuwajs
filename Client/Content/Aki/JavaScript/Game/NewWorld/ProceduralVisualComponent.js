@@ -38,7 +38,7 @@ let ProceduralVisualComponent = ProceduralVisualComponent_1 = class ProceduralVi
     super(...arguments);
     this.Lo = undefined;
     this.Hte = undefined;
-    this.Wwf = Vector_1.Vector.Create(1, 0, 0);
+    this.CUf = Vector_1.Vector.Create(1, 0, 0);
   }
   OnInitData(t) {
     t = t.GetParam(ProceduralVisualComponent_1)[0];
@@ -46,19 +46,19 @@ let ProceduralVisualComponent = ProceduralVisualComponent_1 = class ProceduralVi
     return !!this.Lo;
   }
   OnStart() {
-    this.Hte = this.Entity.GetComponent(212);
-    return !!this.Hte && (this.Wwf.DeepCopy(this.Hte.ActorForwardProxy), true);
+    this.Hte = this.Entity.GetComponent(214);
+    return !!this.Hte && (this.CUf.DeepCopy(this.Hte.ActorForwardProxy), true);
   }
   OnTick(t) {
     if (this.Lo) {
       for (const e of this.Lo.Configs) {
         if (e.Type === IComponent_1.EProceduralVisualType.LookAt) {
-          this.Tnf(t, e);
+          this.$af(t, e);
         }
       }
     }
   }
-  Tnf(r, i) {
+  $af(r, i) {
     if (this.Hte && i) {
       var n = ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckConditionNew(i.Condition, this.Hte?.Owner);
       var s = i.RotateNode;
@@ -71,9 +71,9 @@ let ProceduralVisualComponent = ProceduralVisualComponent_1 = class ProceduralVi
         s = Rotator_1.Rotator.Create();
         if (!n) {
           n = Rotator_1.Rotator.Create();
-          this.Wwf.Rotation(n);
+          this.CUf.Rotation(n);
           if (o !== this.Hte.Owner) {
-            this.Wwf.DeepCopy(this.Hte.ActorForwardProxy);
+            this.CUf.DeepCopy(this.Hte.ActorForwardProxy);
           }
           const l = Rotator_1.Rotator.Create(o.K2_GetActorRotation());
           if (l.Equals2(n)) {
@@ -110,5 +110,5 @@ let ProceduralVisualComponent = ProceduralVisualComponent_1 = class ProceduralVi
     }
   }
 };
-ProceduralVisualComponent = ProceduralVisualComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(341)], ProceduralVisualComponent);
+ProceduralVisualComponent = ProceduralVisualComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(343)], ProceduralVisualComponent);
 exports.ProceduralVisualComponent = ProceduralVisualComponent; //# sourceMappingURL=ProceduralVisualComponent.js.map

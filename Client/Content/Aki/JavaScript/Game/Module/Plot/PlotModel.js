@@ -73,6 +73,7 @@ class PlotConfig {
     this.IsGmPlayPlotOnce = false;
     this.IsPreStreaming = false;
     this.IsSkipConfirmBoxShow = true;
+    this.ActivityGamePlayPlotConfig = undefined;
   }
   SetMode(t, e = false) {
     this.SkipHiddenBlackScreenAtEnd = t.DisableAutoFadeOut;
@@ -124,6 +125,7 @@ class PlotConfig {
         this.ShouldSwitchMainRole = t.IsSwitchMainRole;
         this.PauseTime = !e;
         this.SkipTalkWhenFighting = false;
+        this.ActivityGamePlayPlotConfig = t.SystemGameDialogConfigId;
         PlotController_1.PlotController.TogglePlotProtect(true);
         PlotController_1.PlotController.EnableViewControl(ControllerHolder_1.ControllerHolder.FlowController.CheckViewControlBeginForC());
         PlotController_1.PlotController.HideSummonedEntity();
@@ -202,6 +204,7 @@ class PlotModel extends ModelBase_1.ModelBase {
     this.InteractController = undefined;
     this.IsGmCanSkip = false;
     this.IsMuteAllPlot = false;
+    this.IsBlendProcessing = false;
     this.IsChangeLevelCToLevelB = false;
     this.IsFadeIn = false;
     this.BlackScreenType = undefined;
@@ -451,7 +454,7 @@ class PlotModel extends ModelBase_1.ModelBase {
   HYi() {
     var t;
     var e;
-    if (this.PlotConfig.PlotLevel !== "LevelD" && this.PlotConfig.PlotLevel !== "Prompt" && Global_1.Global.BaseCharacter && (t = Global_1.Global.BaseCharacter.CharacterActorComponent?.Entity.GetComponent(41), (e = Global_1.Global.BaseCharacter.CharacterActorComponent?.Entity.GetComponent(321)) && (e.CanSkillInterrupt = false), t?.Valid && t.StopAllSkills("PlotModel.StopMainCharacterSkill"), e)) {
+    if (this.PlotConfig.PlotLevel !== "LevelD" && this.PlotConfig.PlotLevel !== "Prompt" && Global_1.Global.BaseCharacter && (t = Global_1.Global.BaseCharacter.CharacterActorComponent?.Entity.GetComponent(43), (e = Global_1.Global.BaseCharacter.CharacterActorComponent?.Entity.GetComponent(323)) && (e.CanSkillInterrupt = false), t?.Valid && t.StopAllSkills("PlotModel.StopMainCharacterSkill"), e)) {
       e.CanSkillInterrupt = true;
     }
   }
@@ -554,7 +557,7 @@ class PlotModel extends ModelBase_1.ModelBase {
   }
   SaveCharacterLockOn() {
     var t;
-    if (this.JYi() && (t = Global_1.Global.BaseCharacter.GetEntityIdNoBlueprint(), EntitySystem_1.EntitySystem.Get(t)?.GetComponent(215)?.HasTag(-1150819426))) {
+    if (this.JYi() && (t = Global_1.Global.BaseCharacter.GetEntityIdNoBlueprint(), EntitySystem_1.EntitySystem.Get(t)?.GetComponent(217)?.HasTag(-1150819426))) {
       this.GYi = true;
     }
   }
@@ -567,7 +570,7 @@ class PlotModel extends ModelBase_1.ModelBase {
   JYi() {
     var t = Global_1.Global.BaseCharacter?.GetEntityIdNoBlueprint();
     if (t) {
-      t = EntitySystem_1.EntitySystem.Get(t)?.GetComponent(33);
+      t = EntitySystem_1.EntitySystem.Get(t)?.GetComponent(34);
       if (t?.Valid) {
         return t;
       }

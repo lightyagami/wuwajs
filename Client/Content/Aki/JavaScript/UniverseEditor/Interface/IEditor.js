@@ -8,6 +8,7 @@ var EMaximumDisplayCountInSelector;
 var ERecentSelectRecordMode;
 var EEditorLoginAccountType;
 var EEditorLaunchMode;
+var EEditorFullDataMode;
 var EPackageServerType;
 var EEditorSearchMode;
 var ESyncBlockContext;
@@ -32,7 +33,7 @@ function createDefaultDeployConfig() {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.EEntityAssignPriority = exports.EAreaConflictSelector = exports.ESyncBlockContext = exports.EEditorSearchMode = exports.EPackageServerType = exports.EEditorLaunchMode = exports.EEditorLoginAccountType = exports.ERecentSelectRecordMode = exports.defaultEditorArgConfig = exports.EMaximumDisplayCountInSelector = exports.ETreeNodeDisabledType = exports.EActionDisabledType = exports.createDefaultDeployConfig = exports.EActorDeleteMode = exports.getEntityActorLoadModeName = exports.actorLoadOptions = exports.EEntityActorLoadMode = exports.multiplyValue = exports.EDITOR_SAVE_CONFIG_PATH = exports.MAX_MAP_SIZE = exports.GRID_SIZE = exports.WORLD_PARTITION_MAP_SIZE = exports.WORLD_PARTITION_BOUNDS_SIZE = undefined;
+exports.EEntityAssignPriority = exports.EAreaConflictSelector = exports.ESyncBlockContext = exports.EEditorSearchMode = exports.EPackageServerType = exports.EEditorFullDataMode = exports.EEditorLaunchMode = exports.EEditorLoginAccountType = exports.ERecentSelectRecordMode = exports.defaultEditorArgConfig = exports.EMaximumDisplayCountInSelector = exports.ETreeNodeDisabledType = exports.EActionDisabledType = exports.createDefaultDeployConfig = exports.EActorDeleteMode = exports.getEntityActorLoadModeName = exports.actorLoadOptions = exports.EEntityActorLoadMode = exports.multiplyValue = exports.EDITOR_SAVE_CONFIG_PATH = exports.MAX_MAP_SIZE = exports.GRID_SIZE = exports.WORLD_PARTITION_MAP_SIZE = exports.WORLD_PARTITION_BOUNDS_SIZE = undefined;
 exports.WORLD_PARTITION_BOUNDS_SIZE = 50400;
 exports.WORLD_PARTITION_MAP_SIZE = exports.WORLD_PARTITION_BOUNDS_SIZE * 64;
 exports.GRID_SIZE = 85000;
@@ -95,6 +96,11 @@ exports.defaultEditorArgConfig = {
   e.Attach = "Attach";
   e.Package = "Package（不可用）";
 })(EEditorLaunchMode = exports.EEditorLaunchMode ||= {});
+(function (e) {
+  e.ON = "开启";
+  e.OFF = "关闭";
+  e.DEFAULT = "自动";
+})(EEditorFullDataMode = exports.EEditorFullDataMode ||= {});
 (function (e) {
   e.Package = "Package";
   e.Local = "Local";

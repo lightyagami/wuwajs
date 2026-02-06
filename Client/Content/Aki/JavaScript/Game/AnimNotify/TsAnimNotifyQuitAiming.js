@@ -18,8 +18,8 @@ class TsAnimNotifyQuitAiming extends UE.KuroAnimNotify {
       if (!e.CharacterActorComponent.IsWorldOwner()) {
         return false;
       }
-      if (this.Tag.TagName === "None" || r.GetComponent(215).HasTag(this.Tag.TagId)) {
-        r.GetComponent(184).ExitAimStatus();
+      if (this.Tag.TagName === "None" || r.GetComponent(217).HasTag(this.Tag.TagId)) {
+        r.GetComponent(186).ExitAimStatus();
         return true;
       }
     }

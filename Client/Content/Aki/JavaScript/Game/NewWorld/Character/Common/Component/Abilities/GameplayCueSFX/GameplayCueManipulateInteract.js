@@ -4,42 +4,38 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.GameplayCueManipulateInteract = undefined;
-const UE = require("ue");
-const ActorSystem_1 = require("../../../../../../../Core/Actor/ActorSystem");
-const ResourceSystem_1 = require("../../../../../../../Core/Resource/ResourceSystem");
 const FNameUtil_1 = require("../../../../../../../Core/Utils/FNameUtil");
-const MathUtils_1 = require("../../../../../../../Core/Utils/MathUtils");
-const GlobalData_1 = require("../../../../../../GlobalData");
+const ModelManager_1 = require("../../../../../../Manager/ModelManager");
+const GameplayCueHookCommonItem_1 = require("./CommonItem/GameplayCueHookCommonItem");
 const GameplayCueBase_1 = require("./GameplayCueBase");
 class GameplayCueManipulateInteract extends GameplayCueBase_1.GameplayCueBase {
   constructor() {
     super(...arguments);
-    this.g1t = undefined;
-    this.sYo = [];
-    this.c$o = undefined;
+    this.$$o = undefined;
   }
   OnInit() {}
   OnTick(e) {}
   OnCreate() {
-    this.g1t = FNameUtil_1.FNameUtil.GetDynamicFName(this.CueConfig.Socket);
-    this.sYo = this.CueConfig.Resources;
-    this.c$o = ActorSystem_1.ActorSystem.Get(UE.Actor.StaticClass(), this.ActorInternal.D_GetTransform());
-    if (GlobalData_1.GlobalData.IsPlayInEditor) {
-      this.c$o.SetActorLabel(this.ActorInternal.GetActorLabel() + ":" + GameplayCueManipulateInteract.name);
+    var e;
+    var t = this.GetTargetPosition();
+    if (t) {
+      e = !((e = this.CueConfig.Parameters).length > 0) || Number(e[0]) === 0;
+      this.$$o = GameplayCueHookCommonItem_1.GameplayCueHookCommonItem.Spawn(this.ActorInternal, FNameUtil_1.FNameUtil.GetDynamicFName(this.CueConfig.Socket), t, this.CueConfig.Resources, e);
     }
-    ResourceSystem_1.ResourceSystem.LoadAsync(this.sYo[0], UE.NiagaraSystem, e => {
-      var t = this.c$o.AddComponentByClass(UE.NiagaraComponent.StaticClass(), false, MathUtils_1.MathUtils.DefaultTransform, false);
-      t.SetAsset(e);
-      var e = UE.KismetMathLibrary.WD_WorldToLocal(GlobalData_1.GlobalData.World, this.GetTargetPosition());
-      t.SetNiagaraVariableVec3("End", e);
-      this.c$o.K2_AttachToComponent(this.ActorInternal.Mesh, this.g1t, 2, 2, 2, false);
-    });
   }
   OnDestroy() {
-    ActorSystem_1.ActorSystem.Put("GameplayCueManipulateInteract.OnDestroy", this.c$o);
+    if (this.$$o) {
+      this.$$o.Destroy();
+      this.$$o = undefined;
+    }
   }
   GetTargetPosition() {
-    return this.EntityHandle.Entity.GetComponent(69).GetTargetLocation().ToUeVector();
+    return this.lsf()?.GetTargetLocation()?.ToUeVector();
+  }
+  lsf() {
+    var e = this.EntityHandle.Entity;
+    var t = e.GetComponent(71);
+    return t || (e.GetComponent(235) ? ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(71) : undefined);
   }
 }
 exports.GameplayCueManipulateInteract = GameplayCueManipulateInteract;

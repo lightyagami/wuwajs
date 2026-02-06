@@ -10,34 +10,34 @@ class MultiTemplateComponent {
   constructor(t, e) {
     this.xTt = undefined;
     this.ypt = [];
-    this.cCf = new Map();
-    this.dCf = new Map();
-    this.mCf = new Map();
-    this.fCf = [];
+    this.Kvf = new Map();
+    this.Xvf = new Map();
+    this.Yvf = new Map();
+    this.zvf = [];
     this.xTt = t;
-    for (var [i, o] of this.cCf = e) {
-      this.dCf.set(i, []);
+    for (var [i, o] of this.Kvf = e) {
+      this.Xvf.set(i, []);
       o.SetUIActive(false);
     }
   }
   RefreshByData(t) {
     if (this.CheckDataListValid(t)) {
-      this.gCf();
+      this.Jvf();
       this.ypt = Array.from(t);
-      this.CCf();
+      this.Zvf();
       this.RefreshDirectly();
     }
   }
   RefreshDirectly() {
-    if (this.fCf.length !== this.ypt.length) {
+    if (this.zvf.length !== this.ypt.length) {
       if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("MultiTemplateComponent", 43, "[MultiTemplateComponent] [RefreshDirectly] Display items length is not equal to data list length", ["displayItemsLength", this.fCf.length], ["dataListLength", this.ypt.length]);
+        Log_1.Log.Error("MultiTemplateComponent", 43, "[MultiTemplateComponent] [RefreshDirectly] Display items length is not equal to data list length", ["displayItemsLength", this.zvf.length], ["dataListLength", this.ypt.length]);
       }
     } else {
       for (let t = 0; t < this.ypt.length; t++) {
         var e = this.ypt[t];
-        var i = this.fCf[t];
-        var o = this.mCf.get(i);
+        var i = this.zvf[t];
+        var o = this.Yvf.get(i);
         if (o) {
           o.Refresh(e.Data);
         } else if (Log_1.Log.CheckError()) {
@@ -46,66 +46,66 @@ class MultiTemplateComponent {
       }
     }
   }
-  CCf() {
+  Zvf() {
     for (let e = 0; e < this.ypt.length; e++) {
       var i = this.ypt[e];
       var o = i.GetTemplateIndex();
-      let t = this.pCf(o);
+      let t = this.eyf(o);
       if (!t) {
-        if (!(t = this.vCf(o))) {
+        if (!(t = this.tyf(o))) {
           if (Log_1.Log.CheckError()) {
             Log_1.Log.Error("MultiTemplateComponent", 43, "[MultiTemplateComponent] [AllocateDisplayItems] Failed to create item by template index", ["templateIndex", o]);
           }
           continue;
         }
         i = i.CreateProxy();
-        this.mCf.set(t, i);
+        this.Yvf.set(t, i);
         i.CreateByActor(t.GetOwner());
       }
-      i = this.mCf.get(t);
+      i = this.Yvf.get(t);
       if (i) {
         t.SetUIActive(true);
         t.SetHierarchyIndex(e);
         i.GridIndex = e;
-        this.fCf.push(t);
+        this.zvf.push(t);
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("MultiTemplateComponent", 43, "[MultiTemplateComponent] [AllocateDisplayItems] Proxy not found in proxy items", ["item", t], ["templateIndex", o]);
       }
     }
   }
-  pCf(t) {
-    t = this.dCf.get(t);
+  eyf(t) {
+    t = this.Xvf.get(t);
     if (t) {
       return t.pop();
     }
   }
-  vCf(t) {
-    t = this.cCf.get(t);
+  tyf(t) {
+    t = this.Kvf.get(t);
     if (t) {
       return LguiUtil_1.LguiUtil.CopyItem(t, this.xTt);
     }
   }
-  gCf() {
-    if (this.fCf.length !== 0) {
-      for (let t = 0; t < this.fCf.length; t++) {
-        this.yCf(t);
+  Jvf() {
+    if (this.zvf.length !== 0) {
+      for (let t = 0; t < this.zvf.length; t++) {
+        this.iyf(t);
       }
-      this.fCf.length = 0;
+      this.zvf.length = 0;
     }
   }
-  yCf(t) {
+  iyf(t) {
     var e;
     var i;
     var o;
     var n;
-    if (t < 0 || t >= this.fCf.length) {
+    if (t < 0 || t >= this.zvf.length) {
       if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("MultiTemplateComponent", 43, "[MultiTemplateComponent] [RecycleItemByIndex] Display index out of range", ["displayIndex", t], ["displayItemsLength", this.fCf.length]);
+        Log_1.Log.Error("MultiTemplateComponent", 43, "[MultiTemplateComponent] [RecycleItemByIndex] Display index out of range", ["displayIndex", t], ["displayItemsLength", this.zvf.length]);
       }
-    } else if (e = this.fCf[t]) {
-      if (i = this.mCf.get(e)) {
+    } else if (e = this.zvf[t]) {
+      if (i = this.Yvf.get(e)) {
         o = this.ypt[t].GetTemplateIndex();
-        if (n = this.dCf.get(o)) {
+        if (n = this.Xvf.get(o)) {
           e.SetUIActive(false);
           n.push(e);
           i.Clear();
@@ -122,7 +122,7 @@ class MultiTemplateComponent {
   CheckDataListValid(e) {
     for (let t = 0; t < e.length; t++) {
       var i = e[t].GetTemplateIndex();
-      if (!this.cCf.has(i)) {
+      if (!this.Kvf.has(i)) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("MultiTemplateComponent", 43, "[MultiTemplateComponent] [CheckDataListValid] Template index not found in template items", ["dataIndex", t], ["templateIndex", i]);
         }
@@ -132,15 +132,15 @@ class MultiTemplateComponent {
     return true;
   }
   GetDisplayItems() {
-    return this.fCf;
+    return this.zvf;
   }
   GetItemByDisplayIndex(t) {
-    return this.fCf[t];
+    return this.zvf[t];
   }
   GetProxyByDisplayIndex(t) {
-    t = this.fCf[t];
+    t = this.zvf[t];
     if (t) {
-      return this.mCf.get(t);
+      return this.Yvf.get(t);
     }
   }
   GetTemplateIndexByDisplayIndex(t) {

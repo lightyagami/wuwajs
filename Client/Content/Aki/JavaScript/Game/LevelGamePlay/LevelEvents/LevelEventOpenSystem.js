@@ -18,6 +18,8 @@ const OpenSystemActivityFunPlay_1 = require("./OpenSystem/OpenSystemActivityFunP
 const OpenSystemActivitySubView_1 = require("./OpenSystem/OpenSystemActivitySubView");
 const OpenSystemAdmissionStudentCard_1 = require("./OpenSystem/OpenSystemAdmissionStudentCard");
 const OpenSystemBossRushBuff_1 = require("./OpenSystem/OpenSystemBossRushBuff");
+const OpenSystemChangePhantomExhibitView_1 = require("./OpenSystem/OpenSystemChangePhantomExhibitView");
+const OpenSystemChangeWeaponExhibitView_1 = require("./OpenSystem/OpenSystemChangeWeaponExhibitView");
 const OpenSystemChasingMoonMain_1 = require("./OpenSystem/OpenSystemChasingMoonMain");
 const OpenSystemCiacconaChapterEntry_1 = require("./OpenSystem/OpenSystemCiacconaChapterEntry");
 const OpenSystemCiacconaChapterView_1 = require("./OpenSystem/OpenSystemCiacconaChapterView");
@@ -27,6 +29,8 @@ const OpenSystemCook_1 = require("./OpenSystem/OpenSystemCook");
 const OpenSystemDangoAbyssView_1 = require("./OpenSystem/OpenSystemDangoAbyssView");
 const OpenSystemDigitalScreen_1 = require("./OpenSystem/OpenSystemDigitalScreen");
 const OpenSystemDreamLinkLevel_1 = require("./OpenSystem/OpenSystemDreamLinkLevel");
+const OpenSystemDrinksGamePlayView_1 = require("./OpenSystem/OpenSystemDrinksGamePlayView");
+const OpenSystemDrinksSelectRoleView_1 = require("./OpenSystem/OpenSystemDrinksSelectRoleView");
 const OpenSystemExploreLevel_1 = require("./OpenSystem/OpenSystemExploreLevel");
 const OpenSystemExpostulation_1 = require("./OpenSystem/OpenSystemExpostulation");
 const OpenSystemFeed_1 = require("./OpenSystem/OpenSystemFeed");
@@ -35,8 +39,11 @@ const OpenSystemFishingDock_1 = require("./OpenSystem/OpenSystemFishingDock");
 const OpenSystemFixCook_1 = require("./OpenSystem/OpenSystemFixCook");
 const OpenSystemForging_1 = require("./OpenSystem/OpenSystemForging");
 const OpenSystemFragmentMemory_1 = require("./OpenSystem/OpenSystemFragmentMemory");
+const OpenSystemFurnitureShopView_1 = require("./OpenSystem/OpenSystemFurnitureShopView");
 const OpenSystemGameSysOpen_1 = require("./OpenSystem/OpenSystemGameSysOpen");
 const OpenSystemGreatSwordSelectView_1 = require("./OpenSystem/OpenSystemGreatSwordSelectView");
+const OpenSystemGuessJokerGamePlayView_1 = require("./OpenSystem/OpenSystemGuessJokerGamePlayView");
+const OpenSystemGuessJokerSelectRoleView_1 = require("./OpenSystem/OpenSystemGuessJokerSelectRoleView");
 const OpenSystemHiddenBossWindow_1 = require("./OpenSystem/OpenSystemHiddenBossWindow");
 const OpenSystemHonamiChooseLevelView_1 = require("./OpenSystem/OpenSystemHonamiChooseLevelView");
 const OpenSystemHonamiInventoryView_1 = require("./OpenSystem/OpenSystemHonamiInventoryView");
@@ -54,6 +61,7 @@ const OpenSystemLordGymLordEntranceSelectView_1 = require("./OpenSystem/OpenSyst
 const OpenSystemMingSuTi_1 = require("./OpenSystem/OpenSystemMingSuTi");
 const OpenSystemMoraleAreaSum_1 = require("./OpenSystem/OpenSystemMoraleAreaSum");
 const OpenSystemMotorcycleDevelop_1 = require("./OpenSystem/OpenSystemMotorcycleDevelop");
+const OpenSystemMotorcycleDiy_1 = require("./OpenSystem/OpenSystemMotorcycleDiy");
 const OpenSystemMowBuffDistribute_1 = require("./OpenSystem/OpenSystemMowBuffDistribute");
 const OpenSystemMowingTower_1 = require("./OpenSystem/OpenSystemMowingTower");
 const OpenSystemPhantomArenaChallengeView_1 = require("./OpenSystem/OpenSystemPhantomArenaChallengeView");
@@ -74,12 +82,16 @@ const OpenSystemShipTower_1 = require("./OpenSystem/OpenSystemShipTower");
 const OpenSystemShopView_1 = require("./OpenSystem/OpenSystemShopView");
 const OpenSystemShower_1 = require("./OpenSystem/OpenSystemShower");
 const OpenSystemSoundAreaPlayInfo_1 = require("./OpenSystem/OpenSystemSoundAreaPlayInfo");
+const OpenSystemSpringFestivalBrochureView_1 = require("./OpenSystem/OpenSystemSpringFestivalBrochureView");
+const OpenSystemSpringFestivalPictureAlbumView_1 = require("./OpenSystem/OpenSystemSpringFestivalPictureAlbumView");
 const OpenSystemSynthetic_1 = require("./OpenSystem/OpenSystemSynthetic");
+const OpenSystemTakePhotoView_1 = require("./OpenSystem/OpenSystemTakePhotoView");
 const OpenSystemTransitionPopupView_1 = require("./OpenSystem/OpenSystemTransitionPopupView");
 const OpenSystemTrapDefenseMapChange_1 = require("./OpenSystem/OpenSystemTrapDefenseMapChange");
 const OpenSystemTrialRoleDescription_1 = require("./OpenSystem/OpenSystemTrialRoleDescription");
 const OpenSystemTurntableControl_1 = require("./OpenSystem/OpenSystemTurntableControl");
 const OpenSystemVersionPreheat_1 = require("./OpenSystem/OpenSystemVersionPreheat");
+const OpenSystemVideoPromptView_1 = require("./OpenSystem/OpenSystemVideoPromptView");
 const OpenSystemWeeklyRogueTokenSelect_1 = require("./OpenSystem/OpenSystemWeeklyRogueTokenSelect");
 const OpenSystemWorldMap_1 = require("./OpenSystem/OpenSystemWorldMap");
 class LevelEventOpenSystem extends LevelGeneralBase_1.LevelEventBase {
@@ -100,7 +112,7 @@ class LevelEventOpenSystem extends LevelGeneralBase_1.LevelEventBase {
         EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CloseView, this.QDe);
       }
     };
-    this.lLf = e => {
+    this.yBf = e => {
       if (e === this.WDe) {
         ControllerHolder_1.ControllerHolder.LevelLoadingController.CloseLoading(0);
       }
@@ -180,6 +192,18 @@ class LevelEventOpenSystem extends LevelGeneralBase_1.LevelEventBase {
     this.KDe.set("Map", new OpenSystemWorldMap_1.OpenSystemWorldMap(this));
     this.KDe.set("AreaTerminalGamePlay", new OpenSystemRegionalTerminal_1.OpenSystemRegionalTerminal(this));
     this.KDe.set("Motorcycle", new OpenSystemMotorcycleDevelop_1.OpenSystemMotorcycleDevelop(this));
+    this.KDe.set("MotorcycleDiy", new OpenSystemMotorcycleDiy_1.OpenSystemMotorcycleDiy(this));
+    this.KDe.set("GuessCardGamePlayView", new OpenSystemGuessJokerGamePlayView_1.OpenSystemGuessJokerGamePlayView(this));
+    this.KDe.set("GuessJokerSelectRoleView", new OpenSystemGuessJokerSelectRoleView_1.OpenSystemGuessJokerSelectRoleView(this));
+    this.KDe.set("DrinksMixDrinksView", new OpenSystemDrinksGamePlayView_1.OpenSystemDrinksGamePlayView(this));
+    this.KDe.set("DrinksSelectRoleView", new OpenSystemDrinksSelectRoleView_1.OpenSystemDrinksSelectRoleView(this));
+    this.KDe.set("FurnitureDiyShop", new OpenSystemFurnitureShopView_1.OpenSystemFurnitureShopView(this));
+    this.KDe.set("ChangeWeaponExhibitView", new OpenSystemChangeWeaponExhibitView_1.OpenSystemChangeWeaponExhibitView(this));
+    this.KDe.set("ChangePhantomExhibitView", new OpenSystemChangePhantomExhibitView_1.OpenSystemChangePhantomExhibitView(this));
+    this.KDe.set("TakePhoto", new OpenSystemTakePhotoView_1.OpenSystemTakePhotoView(this));
+    this.KDe.set("SpringFestivalBrochure", new OpenSystemSpringFestivalBrochureView_1.OpenSystemSpringFestivalBrochureView(this));
+    this.KDe.set("SpringFestivalPictureAlbum", new OpenSystemSpringFestivalPictureAlbumView_1.OpenSystemSpringFestivalPictureAlbumView(this));
+    this.KDe.set("PictureCaption", new OpenSystemVideoPromptView_1.OpenSystemVideoPromptView(this));
   }
   OnReset() {
     if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.CloseView, this.QDe)) {
@@ -191,8 +215,8 @@ class LevelEventOpenSystem extends LevelGeneralBase_1.LevelEventBase {
     this.Sjl = undefined;
   }
   async d2n(t, n) {
-    var s = this.KDe.get(t.SystemType);
-    if (s) {
+    var i = this.KDe.get(t.SystemType);
+    if (i) {
       if (!ModelManager_1.ModelManager.GameModeModel.WorldDoneAndLoadingClosed) {
         if (!t.WaitLoading) {
           if (Log_1.Log.CheckInfo()) {
@@ -207,19 +231,19 @@ class LevelEventOpenSystem extends LevelGeneralBase_1.LevelEventBase {
           Log_1.Log.Info("LevelEvent", 87, "[LevelEventOpenSystem]Loading完成继续往下执行");
         }
       }
-      var i = s.GetViewName(t, n);
-      this.WDe = i;
+      var s = i.GetViewName(t, n);
+      this.WDe = s;
       let e = false;
-      var o = n;
-      if (o?.EntityId && i) {
-        if (!EntitySystem_1.EntitySystem.GetComponent(o.EntityId, 207)?.CanInteraction) {
-          TsInteractionUtils_1.TsInteractionUtils.RegisterWaitOpenViewName(i);
+      var r = n;
+      if (r?.EntityId && s) {
+        if (!EntitySystem_1.EntitySystem.GetComponent(r.EntityId, 209)?.CanInteraction) {
+          TsInteractionUtils_1.TsInteractionUtils.RegisterWaitOpenViewName(s);
           e = true;
         }
       }
       if (this.IsAsync) {
-        EventSystem_1.EventSystem.Once(EventDefine_1.EEventName.OpenView, this.lLf);
-        s.ExecuteOpenView(t, n).then(e => {
+        EventSystem_1.EventSystem.Once(EventDefine_1.EEventName.OpenView, this.yBf);
+        i.ExecuteOpenView(t, n).then(e => {
           if (!e) {
             ControllerHolder_1.ControllerHolder.LevelLoadingController.CloseLoading(0);
           }
@@ -228,11 +252,11 @@ class LevelEventOpenSystem extends LevelGeneralBase_1.LevelEventBase {
           Log_1.Log.Info("LevelEvent", 36, "[LevelEventOpenSystem]行为打开界面,异步", ["SystemType", t.SystemType]);
         }
       } else {
-        o = await s.ExecuteOpenView(t, n);
+        r = await i.ExecuteOpenView(t, n);
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("LevelEvent", 36, "[LevelEventOpenSystem]行为打开界面,同步", ["SystemType", t.SystemType], ["IsSuccess", o]);
+          Log_1.Log.Info("LevelEvent", 36, "[LevelEventOpenSystem]行为打开界面,同步", ["SystemType", t.SystemType], ["IsSuccess", r]);
         }
-        if (!o) {
+        if (!r) {
           if (Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("LevelEvent", 36, "[LevelEventOpenSystem] 执行打开界面失败算直接完成", ["OpenSystemType", t.SystemType]);
           }
@@ -245,7 +269,7 @@ class LevelEventOpenSystem extends LevelGeneralBase_1.LevelEventBase {
         }
       }
       if (this.WDe) {
-        this.XDe(t, s, n);
+        this.XDe(t, i, n);
         if (this.IsAsync) {
           if (Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("LevelEvent", 36, "[LevelEventOpenSystem] 节点行为配置为异步算直接完成", ["OpenSystemType", t.SystemType]);
@@ -295,15 +319,15 @@ class LevelEventOpenSystem extends LevelGeneralBase_1.LevelEventBase {
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDoneAndCloseLoading, this.FWe);
     }
   }
-  XDe(t, n, s) {
-    n = n.GetViewName(t, s);
+  XDe(t, n, i) {
+    n = n.GetViewName(t, i);
     if (n) {
       if (t.SystemType === "Photograph") {
         TsInteractionUtils_1.TsInteractionUtils.RegisterOpenViewName(n);
       } else {
         let e = undefined;
-        s = s?.EntityId;
-        if (e = s ? EntitySystem_1.EntitySystem.Get(s)?.GetComponent(197) : e) {
+        i = i?.EntityId;
+        if (e = i ? EntitySystem_1.EntitySystem.Get(i)?.GetComponent(199) : e) {
           TsInteractionUtils_1.TsInteractionUtils.RegisterOpenViewName(n);
           e.SetUiOpenPerformance(n, t.BoardId);
         }

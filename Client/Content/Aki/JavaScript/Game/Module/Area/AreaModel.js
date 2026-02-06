@@ -27,6 +27,7 @@ class AreaModel extends ModelBase_1.ModelBase {
     this.wWe = new Map();
     this.BWe = 0;
     this.Dtc = new Set();
+    this.s8g = true;
   }
   OnInit() {
     this.SetAreaInfo(DEFAULT_AREA_ID);
@@ -54,6 +55,9 @@ class AreaModel extends ModelBase_1.ModelBase {
         Log_1.Log.Error("Area", 7, "[区域.xlsx]当前需要显示的区域提示没有配置对应文本", ["区域id", this.UWe.AreaId]);
       }
     }
+  }
+  SetEnableAreaNamePrompt(e) {
+    this.s8g = !e;
   }
   get AreaInfo() {
     return this.UWe;
@@ -127,7 +131,7 @@ class AreaModel extends ModelBase_1.ModelBase {
     var t;
     var a = this.UWe?.AreaId;
     this.SetAreaInfo(e);
-    if (this.UWe.Tips && (this.AWe = this.UWe.Title, (t = this.wWe.get(e)) === undefined || r || Time_1.Time.PlayerTime - t > this.BWe)) {
+    if (this.UWe.Tips && (this.AWe = this.UWe.Title, t = this.wWe.get(e), Log_1.Log.CheckDebug() && Log_1.Log.Debug("Temp", 31, "地区弹窗", ["Time", t], ["TimerIgnore", r], ["EnableAreaNamePrompt", this.s8g]), t === undefined || r || Time_1.Time.PlayerTime - t > this.BWe) && this.s8g) {
       if (UiManager_1.UiManager.IsViewOpen("AreaView")) {
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.UpdateAreaView);
       } else {

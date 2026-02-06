@@ -29,5 +29,5 @@ let PawnGamePlayComponent = class PawnGamePlayComponent extends EntityComponent_
   WeightResponse() {}
   GrabResponse() {}
 };
-PawnGamePlayComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(125)], PawnGamePlayComponent);
+PawnGamePlayComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(127)], PawnGamePlayComponent);
 exports.PawnGamePlayComponent = PawnGamePlayComponent; //# sourceMappingURL=PawnGamePlayComponent.js.map

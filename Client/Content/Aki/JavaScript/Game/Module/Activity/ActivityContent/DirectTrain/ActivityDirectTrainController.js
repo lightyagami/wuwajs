@@ -38,10 +38,10 @@ class ActivityDirectTrainController extends ActivityControllerBase_1.ActivityCon
       }
       if (e) {
         e.finally(() => {
-          this.Z8f();
+          this.czf();
         });
       } else {
-        this.Z8f();
+        this.czf();
       }
     };
     this.itt = e => {
@@ -98,16 +98,16 @@ class ActivityDirectTrainController extends ActivityControllerBase_1.ActivityCon
   OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDone, this.nye);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.itt);
-    Net_1.Net.Register(17631, this.lU_);
-    Net_1.Net.Register(28420, this.KB1);
-    Net_1.Net.Register(24776, this.XB1);
+    Net_1.Net.Register(24785, this.lU_);
+    Net_1.Net.Register(16990, this.KB1);
+    Net_1.Net.Register(18481, this.XB1);
   }
   OnRemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDone, this.nye);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.itt);
-    Net_1.Net.UnRegister(17631);
-    Net_1.Net.UnRegister(28420);
-    Net_1.Net.UnRegister(24776);
+    Net_1.Net.UnRegister(24785);
+    Net_1.Net.UnRegister(16990);
+    Net_1.Net.UnRegister(18481);
   }
   OnOpenView(e) {}
   OnCreateActivityData(e) {
@@ -125,7 +125,7 @@ class ActivityDirectTrainController extends ActivityControllerBase_1.ActivityCon
   get hU_() {
     return ActivityDirectTrainHelper_1.ActivityDirectTrainHelper.DirectTrainStartConditionMap;
   }
-  Z8f() {
+  czf() {
     if (!ModelManager_1.ModelManager.ActivityDirectTrainModel.HasInitData()) {
       ActivityDirectTrainHelper_1.ActivityDirectTrainHelper.RequestDirectTrainInfoBeforeActivityOpen().then(e => {
         ModelManager_1.ModelManager.ActivityDirectTrainModel.LoadDataFromInfoProto(e);

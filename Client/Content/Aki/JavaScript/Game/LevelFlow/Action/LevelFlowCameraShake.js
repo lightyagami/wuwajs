@@ -17,14 +17,14 @@ const MAX_SHAKE_DURATION = CommonDefine_1.SECOND_PER_MINUTE;
 class LevelFlowCameraShake extends LevelFlowActionBase_1.LevelFlowActionBase {
   constructor() {
     super(...arguments);
-    this.emf = undefined;
+    this.vgf = undefined;
   }
   Init(e) {
-    this.emf = e;
+    this.vgf = e;
     return this;
   }
   OnExecute() {
-    var e = this.emf;
+    var e = this.vgf;
     if (e) {
       const a = e.CameraShakeConfig;
       ResourceSystem_1.ResourceSystem.LoadAsync(e.CameraShakeBp + "_C", UE.Class, r => {

@@ -11,6 +11,9 @@ const KSCBuffById_1 = require("../../Core/Define/ConfigQuery/KSCBuffById");
 const Protocol_1 = require("../../Core/Define/Net/Protocol");
 const ControllerBase_1 = require("../../Core/Framework/ControllerBase");
 const Net_1 = require("../../Core/Net/Net");
+const Rotator_1 = require("../../Core/Utils/Math/Rotator");
+const Vector_1 = require("../../Core/Utils/Math/Vector");
+const MathUtils_1 = require("../../Core/Utils/MathUtils");
 const EventDefine_1 = require("../Common/Event/EventDefine");
 const EventSystem_1 = require("../Common/Event/EventSystem");
 const GlobalData_1 = require("../GlobalData");
@@ -27,6 +30,7 @@ const KscEntityHandle_1 = require("./KscEntityHandle");
 const KscEnv_1 = require("./KscEnv");
 const KscLog_1 = require("./KscLog");
 const KscUtil_1 = require("./KscUtil");
+const MotorcycleArrowSubController_1 = require("./MA/MotorcycleArrowSubController");
 const SurvivorsRogueSubController_1 = require("./SR/SurvivorsRogueSubController");
 const TDPlayerController_1 = require("./TD/TDPlayer/TDPlayerController");
 const TowerDefenseSubController_1 = require("./TD/TowerDefenseSubController");
@@ -55,9 +59,9 @@ class KuroSimpleCombatController extends ControllerBase_1.ControllerBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.AfterLoadMap, KuroSimpleCombatController.k2a);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDoneAndCloseLoading, KuroSimpleCombatController.nye);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ClearWorld, KuroSimpleCombatController.mYc);
-    Net_1.Net.Register(25191, KuroSimpleCombatController.GKu);
-    Net_1.Net.Register(26617, KuroSimpleCombatController.qSd);
-    Net_1.Net.Register(28487, KuroSimpleCombatController.wId);
+    Net_1.Net.Register(27907, KuroSimpleCombatController.GKu);
+    Net_1.Net.Register(26322, KuroSimpleCombatController.qSd);
+    Net_1.Net.Register(22777, KuroSimpleCombatController.wId);
     return true;
   }
   static OnClear() {
@@ -68,8 +72,8 @@ class KuroSimpleCombatController extends ControllerBase_1.ControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.AfterLoadMap, KuroSimpleCombatController.k2a);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDoneAndCloseLoading, KuroSimpleCombatController.nye);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ClearWorld, KuroSimpleCombatController.mYc);
-    Net_1.Net.UnRegister(25191);
-    Net_1.Net.UnRegister(26617);
+    Net_1.Net.UnRegister(27907);
+    Net_1.Net.UnRegister(26322);
     this.StopKscHeadStateManager();
     return true;
   }
@@ -238,7 +242,7 @@ class KuroSimpleCombatController extends ControllerBase_1.ControllerBase {
   static _Wu(e) {
     var t = Protocol_1.Aki.Protocol.Cwu.create();
     t.pWc = e;
-    Net_1.Net.Call(24110, t, t => {
+    Net_1.Net.Call(24373, t, t => {
       if (!t || t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
         KscLog_1.KscLog.Warn("Common", 84, KscEnv_1.KscEnv.KscWorld, "请求实体死亡异常", ["requestInfos", e], ["error", t?.Q4n]);
       }
@@ -321,7 +325,7 @@ class KuroSimpleCombatController extends ControllerBase_1.ControllerBase {
     s.vGd = n;
     i[t] = s;
     r.yGd = i;
-    Net_1.Net.Send(28355, r);
+    Net_1.Net.Send(21551, r);
   }
   static SetDebugOn(t) {
     this.IsDebug = t;
@@ -344,15 +348,42 @@ class KuroSimpleCombatController extends ControllerBase_1.ControllerBase {
       this.zjd = undefined;
     }
   }
+  static GmCreateEntity(t, e) {
+    var o;
+    var r = ControllerHolder_1.ControllerHolder.KuroSimpleCombatController.CurSubModel.GetEntityPathById(t);
+    if (r) {
+      if (o = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity) {
+        if (o = o.GetComponent(1)) {
+          o = o.ActorLocationProxy.Addition(o.ActorForwardProxy.Multiply(e, MathUtils_1.MathUtils.CommonTempVector), MathUtils_1.MathUtils.CommonTempVector);
+          e = new UE.TransformDouble(Rotator_1.Rotator.ZeroRotator, o.ToUeVector(), Vector_1.Vector.OneVectorDouble);
+          ControllerHolder_1.ControllerHolder.KuroSimpleCombatController.AsyncAddEntity({
+            CreatureId: -1,
+            SimpleCombatId: t,
+            AssetPath: r,
+            PropertyId: 0,
+            Transform: e
+          });
+        } else {
+          KscLog_1.KscLog.Error("Common", 85, KscEnv_1.KscEnv.KscWorld, "[摩托战斗]baseActorComponent为空");
+        }
+      } else {
+        KscLog_1.KscLog.Error("Common", 85, KscEnv_1.KscEnv.KscWorld, "[摩托战斗]playerEntity为空");
+      }
+    } else {
+      KscLog_1.KscLog.Error("Common", 85, KscEnv_1.KscEnv.KscWorld, "[摩托战斗]实体资产路径不存在", ["simpleCombatId", t]);
+    }
+  }
   static GmAddBuff(t, e) {
-    t = t === 0 ? this.GmGetPlayerEntityId() : t;
-    if (t !== 0) {
+    if (t === 0 && this.CurSubController instanceof MotorcycleArrowSubController_1.MotorcycleArrowSubController) {
+      this.CurSubController.EffectManager.AddBuffEffect(e, undefined, true);
+    } else if ((t = t === 0 ? this.GmGetPlayerEntityId() : t) !== 0) {
       this.ModifyBuffAsync(t, true, e);
     }
   }
   static GmRemoveBuff(t, e) {
-    t = t === 0 ? this.GmGetPlayerEntityId() : t;
-    if (t !== 0) {
+    if (t === 0 && this.CurSubController instanceof MotorcycleArrowSubController_1.MotorcycleArrowSubController) {
+      this.CurSubController.EffectManager.RemovePlayerBuff(e);
+    } else if ((t = t === 0 ? this.GmGetPlayerEntityId() : t) !== 0) {
       this.ModifyBuffAsync(t, false, e);
     }
   }
@@ -369,9 +400,21 @@ class KuroSimpleCombatController extends ControllerBase_1.ControllerBase {
       this.CurSubController.GmPrintInfo();
     }
   }
+  static GmCreateKSCWorld(t) {
+    if (!this.CurSubController) {
+      if (t = this.DSd.get(t)) {
+        this.CurSubController = t;
+        this.ECd = true;
+        this.CurSubController.InitMap();
+        this.CurSubController.MapLoaded();
+        this.CurSubController.WorldDone();
+        this.ResumeTick();
+      }
+    }
+  }
 }
 exports.KuroSimpleCombatController = KuroSimpleCombatController;
-(_a = KuroSimpleCombatController).DSd = new Map([[0, new TowerDefenseSubController_1.TowerDefenseSubController()], [1, new SurvivorsRogueSubController_1.SurvivorsRogueSubController()]]);
+(_a = KuroSimpleCombatController).DSd = new Map([[0, new TowerDefenseSubController_1.TowerDefenseSubController()], [1, new SurvivorsRogueSubController_1.SurvivorsRogueSubController()], [2, new MotorcycleArrowSubController_1.MotorcycleArrowSubController()]]);
 KuroSimpleCombatController.CurSubController = undefined;
 KuroSimpleCombatController.vbd = (0, puerts_1.$ref)(UE.NewArray(UE.KSC_MiniMapContext));
 KuroSimpleCombatController.ECd = false;

@@ -49,6 +49,7 @@ class AdventureGuideModel extends ModelBase_1.ModelBase {
     this.PVe = 0;
     this.xVe = 0;
     this.wVe = 0;
+    this.HAg = false;
     this.BVe = 0;
     this.bVe = 0;
     this.qVe = false;
@@ -59,6 +60,7 @@ class AdventureGuideModel extends ModelBase_1.ModelBase {
     this.NVe = new Map();
     this.OVe = new Map();
     this.AllMonsterDetectionRecord = new Map();
+    this.jAg = new Map();
     this.AllDungeonDetectionRecord = new Map();
     this.AllSilentAreaDetectionRecord = new Map();
     this.hK1 = [];
@@ -182,6 +184,9 @@ class AdventureGuideModel extends ModelBase_1.ModelBase {
   GetMonsterDetectData(e) {
     return this.AllMonsterDetectionRecord.get(e);
   }
+  GetMonsterDetectIdByBlueprintType(e) {
+    return this.jAg.get(e);
+  }
   GetDetectingMonsterId() {
     return this.AVe;
   }
@@ -202,6 +207,9 @@ class AdventureGuideModel extends ModelBase_1.ModelBase {
   }
   GetPendingMonsterConfId() {
     return this.wVe;
+  }
+  GetIsMaterialDetect() {
+    return this.HAg;
   }
   GetPendingDungeonConfId() {
     return this.BVe;
@@ -316,15 +324,13 @@ class AdventureGuideModel extends ModelBase_1.ModelBase {
     if (r) {
       if (e === 6 || e === 62) {
         const a = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.RoleTutorialNew) ?? new Map();
-        if (e === 6) {
-          i.forEach(e => {
-            var t = e.Conf.SubDungeonId;
-            if (ModelManager_1.ModelManager.ExchangeRewardModel.IsFinishInstance(t)) {
-              a.set(e.Conf.Id, true);
-            }
-          });
-          LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.RoleTutorialNew, a);
-        }
+        i.forEach(e => {
+          var t = e.Conf.SubDungeonId;
+          if (ModelManager_1.ModelManager.ExchangeRewardModel.IsFinishInstance(t)) {
+            a.set(e.Conf.Id, true);
+          }
+        });
+        LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.RoleTutorialNew, a);
         i.sort((e, t) => {
           var r = e.Conf.SubDungeonId;
           var i = t.Conf.SubDungeonId;
@@ -438,25 +444,28 @@ class AdventureGuideModel extends ModelBase_1.ModelBase {
     var e;
     for (const i of ConfigManager_1.ConfigManager.AdventureModuleConfig.GetAllMonsterDetection()) {
       this.AllMonsterDetectionRecord.set(i.Id, new AdventureDefine_1.MonsterDetectionRecord(i, true, 0));
-    }
-    for (const o of ConfigManager_1.ConfigManager.AdventureModuleConfig.GetAllDungeonDetection()) {
-      var t = new AdventureDefine_1.DungeonDetectionRecord(o, true, 0);
-      this.AllDungeonDetectionRecord.set(o.Id, t);
-      let e = this.VVe.get(o.Secondary);
-      if (!e) {
-        e = [];
-        this.VVe.set(o.Secondary, e);
+      for (const o of i.BlueprintTypeList) {
+        this.jAg.set(o, i.Id);
       }
-      t = new AdventureDefine_1.SoundAreaDetectionRecord(0, t);
-      e.push(t);
     }
-    for (const n of ConfigManager_1.ConfigManager.AdventureModuleConfig.GetAllSilentAreaDetection()) {
-      var r = new AdventureDefine_1.SilentAreaDetectionRecord(n, n.LockCon !== 0, 0);
-      this.AllSilentAreaDetectionRecord.set(n.Id, r);
+    for (const n of ConfigManager_1.ConfigManager.AdventureModuleConfig.GetAllDungeonDetection()) {
+      var t = new AdventureDefine_1.DungeonDetectionRecord(n, true, 0);
+      this.AllDungeonDetectionRecord.set(n.Id, t);
       let e = this.VVe.get(n.Secondary);
       if (!e) {
         e = [];
         this.VVe.set(n.Secondary, e);
+      }
+      t = new AdventureDefine_1.SoundAreaDetectionRecord(0, t);
+      e.push(t);
+    }
+    for (const a of ConfigManager_1.ConfigManager.AdventureModuleConfig.GetAllSilentAreaDetection()) {
+      var r = new AdventureDefine_1.SilentAreaDetectionRecord(a, a.LockCon !== 0, 0);
+      this.AllSilentAreaDetectionRecord.set(a.Id, r);
+      let e = this.VVe.get(a.Secondary);
+      if (!e) {
+        e = [];
+        this.VVe.set(a.Secondary, e);
       }
       r = new AdventureDefine_1.SoundAreaDetectionRecord(1, undefined, r);
       e.push(r);
@@ -470,7 +479,7 @@ class AdventureGuideModel extends ModelBase_1.ModelBase {
   }
   UpdateByAdventureManualResponse(e) {
     if (e.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 17290);
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 16752);
     } else {
       this.P4l = true;
       this.hK1 = e.NMs.sK1;
@@ -705,7 +714,7 @@ class AdventureGuideModel extends ModelBase_1.ModelBase {
       return (0, IComponent_1.getComponent)(e.ComponentsData, "AttributeComponent").Level;
     }
   }
-  UpdatePendingMonsterList(e, t) {
+  UpdatePendingMonsterList(e, t, r = false) {
     if (!(e.length <= 0)) {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("AdventureGuide", 5, "更新怪物探测信息", ["配置Id", t]);
@@ -713,19 +722,20 @@ class AdventureGuideModel extends ModelBase_1.ModelBase {
       if (t !== this.GetCurDetectingMonsterConfId()) {
         this.GVe.clear();
         this.wVe = t;
+        this.HAg = r;
       }
-      for (const i of e) {
-        for (const o of i.FLd) {
-          var r = ModelManager_1.ModelManager.CreatureModel.GetEntityData(o, i.w7n).Transform.Pos;
-          var r = {
-            Id: o,
+      for (const o of e) {
+        for (const n of o.FLd) {
+          var i = ModelManager_1.ModelManager.CreatureModel.GetEntityData(n, o.w7n).Transform.Pos;
+          var i = {
+            Id: n,
             RefreshTime: 0,
-            MapId: i.w7n,
-            PositionX: r.X,
-            PositionY: r.Y,
-            PositionZ: r.Z
+            MapId: o.w7n,
+            PositionX: i.X,
+            PositionY: i.Y,
+            PositionZ: i.Z
           };
-          this.GVe.set(o, r);
+          this.GVe.set(n, i);
         }
       }
     }
@@ -974,7 +984,7 @@ class AdventureGuideModel extends ModelBase_1.ModelBase {
   }
   CheckRedDotDetectionItemByRecord(e) {
     var t = e.Conf;
-    return !!t && !!t.LockCon && !e.IsLock && this.DetectionRedDotRecord?.get(t.Id) !== true && !this.IsDetectionFinished(e);
+    return !!t && !e.IsLock && (t.Secondary === 62 || !!t.LockCon) && this.DetectionRedDotRecord?.get(t.Id) !== true && !this.IsDetectionFinished(e);
   }
   CheckRedDotPeriodicityTab() {
     return !!ModelManager_1.ModelManager.AdventureGuideModel.GetPeriodicityRedDot(3, ModelManager_1.ModelManager.TowerModel.CurrentSeason) || !!ModelManager_1.ModelManager.AdventureGuideModel.GetPeriodicityRedDot(6, ModelManager_1.ModelManager.ShipTowerModel.CurSeason) || !!ModelManager_1.ModelManager.AdventureGuideModel.GetPeriodicityRedDot(7, ModelManager_1.ModelManager.WeeklyRogueModel.CycleId);
@@ -1102,6 +1112,12 @@ class AdventureGuideModel extends ModelBase_1.ModelBase {
   BDu(e, t) {
     return MapUtil_1.MapUtil.GetGamePlayKey(e, t);
   }
+  IOg(e) {
+    return ConfigManager_1.ConfigManager.ActivityRegressConfig.GetGachaRoleDevelopInsByDungeonId(e)?.LevelPlayParam ?? 0;
+  }
+  GetNightMarePreOpenTarget(e) {
+    return [ModelManager_1.ModelManager.ActivityRegressModel.NightmarePhantomInstInfoMap.get(e) ?? 0, this.IOg(e)];
+  }
   GetNightMareTarget(e, t) {
     if (!e || !t) {
       return [-1, -1];
@@ -1197,7 +1213,7 @@ class AdventureGuideModel extends ModelBase_1.ModelBase {
     } else if (this.IsShipTowerType(e)) {
       return !!this.CheckTargetDungeonTypeCanShow(28) && (LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.AdventrueShipTowerSeason) ?? DEFAULT_SEASON_ID) < t;
     } else {
-      return !!this.IsWeeklyRogueType(e) && !!this.CheckTargetDungeonTypeCanShow(29) && !!(e = ModelManager_1.ModelManager.WeeklyRogueModel.ActivityData).CheckIfInShowTime() && !!e.CycleId && (LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.AdventrueWeeklyRogue) ?? DEFAULT_SEASON_ID) < t;
+      return !!this.IsWeeklyRogueType(e) && !!this.CheckTargetDungeonTypeCanShow(29) && (e = ModelManager_1.ModelManager.WeeklyRogueModel.ActivityDataNew) !== undefined && !!e.CheckIfInShowTime() && !!e.CycleId && (LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.AdventrueWeeklyRogue) ?? DEFAULT_SEASON_ID) < t;
     }
   }
   SetPeriodicityRedDot(e, t) {

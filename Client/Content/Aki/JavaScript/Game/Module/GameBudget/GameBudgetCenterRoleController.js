@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.GameBudgetCenterRoleController = undefined;
+const Log_1 = require("../../../Core/Common/Log");
 const ControllerBase_1 = require("../../../Core/Framework/ControllerBase");
 const GameBudgetInterfaceController_1 = require("../../../Core/GameBudgetAllocator/GameBudgetInterfaceController");
 const TsBaseCharacter_1 = require("../../Character/TsBaseCharacter");
@@ -21,61 +22,79 @@ class GameBudgetCenterRoleController extends ControllerBase_1.ControllerBase {
   static OnClear() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnChangeRole, this.SK);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CameraModeChanged, this.IK);
-    this.uZm = undefined;
+    this.ztf = undefined;
     return super.OnClear();
   }
-  static OpenStreamingSourceMode() {
-    var e = GameBudgetInterfaceController_1.GameBudgetInterfaceController.CenterRole ? new WeakRef(GameBudgetInterfaceController_1.GameBudgetInterfaceController.CenterRole) : undefined;
-    this.uZm = {
-      CenterActor: e,
-      Model: GameBudgetInterfaceController_1.GameBudgetInterfaceController.BudgetMode
-    };
-    this.BK(3);
-  }
-  static CloseStreamingSourceMode() {
-    var e = this.uZm?.Model;
-    var t = this.uZm?.CenterActor?.deref();
-    if (e) {
+  static Z5g(e) {
+    var t;
+    if (!this.eVg) {
+      t = GameBudgetInterfaceController_1.GameBudgetInterfaceController.CenterRole ? new WeakRef(GameBudgetInterfaceController_1.GameBudgetInterfaceController.CenterRole) : undefined;
+      this.ztf = {
+        CenterActor: t,
+        Model: GameBudgetInterfaceController_1.GameBudgetInterfaceController.BudgetMode
+      };
       this.BK(e);
-    } else {
-      this.BK(1);
-    }
-    if (t) {
-      this.aMf(t);
-    }
-    this.uZm = undefined;
-  }
-  static SetCenterRole(e) {
-    if (e) {
-      if (GameBudgetInterfaceController_1.GameBudgetInterfaceController.BudgetMode === 3 && this.uZm) {
-        this.uZm.CenterActor = new WeakRef(e);
-      } else {
-        this.aMf(e);
+      this.eVg = true;
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Game", 61, "[GameBudget]LockGameBudgetMode", ["gameBudgetMode", e]);
       }
     }
   }
+  static tVg() {
+    var e;
+    var t;
+    if (this.eVg && (this.eVg = false, e = this.ztf?.Model, t = this.ztf?.CenterActor?.deref(), this.ztf = undefined, e ? this.BK(e) : this.BK(1), t && this.hTf(t), Log_1.Log.CheckInfo())) {
+      Log_1.Log.Info("Game", 61, "[GameBudget]UnLockGameBudgetMode");
+    }
+  }
+  static OpenStreamingSourceMode() {
+    try {
+      this.Z5g(3);
+    } catch (e) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Game", 61, "[GameBudget]OpenStreamingSourceMode Error: ", ["error", e]);
+      }
+      this.CloseStreamingSourceMode();
+    }
+  }
+  static CloseStreamingSourceMode() {
+    this.tVg();
+  }
+  static iVg(e = undefined, t = undefined) {
+    if (this.eVg && (this.ztf ||= {
+      CenterActor: undefined,
+      Model: 1
+    }, e && (this.ztf.Model = e), t)) {
+      this.ztf.CenterActor = new WeakRef(t);
+    }
+    return this.eVg;
+  }
+  static SetCenterRole(e) {
+    if (!!e && !this.iVg(undefined, e)) {
+      this.hTf(e);
+    }
+  }
   static BK(e) {
-    if (GameBudgetInterfaceController_1.GameBudgetInterfaceController.BudgetMode === 3 && this.uZm) {
-      this.uZm.Model = e;
-    } else {
+    if (!this.iVg(e)) {
       GameBudgetInterfaceController_1.GameBudgetInterfaceController.OnBudgetModelChange(e);
     }
   }
   static SetCenterOffset(e) {
-    if (GameBudgetInterfaceController_1.GameBudgetInterfaceController.BudgetMode !== 3) {
+    if (!this.iVg()) {
       GameBudgetInterfaceController_1.GameBudgetInterfaceController.OnChangeCenterRole(undefined, e);
     }
   }
-  static aMf(e, t = undefined) {
+  static hTf(e, t = undefined) {
     let r = t;
     if (!t && e && e instanceof TsBaseCharacter_1.default && (t = ModelManager_1.ModelManager.CreatureModel?.GetEntityById(e.EntityId)?.Entity)) {
-      r = t.GetComponent(306)?.GetCenterActorLocationOffset();
+      r = t.GetComponent(308)?.GetCenterActorLocationOffset();
     }
     GameBudgetInterfaceController_1.GameBudgetInterfaceController.OnChangeCenterRole(e, r);
   }
 }
 exports.GameBudgetCenterRoleController = GameBudgetCenterRoleController;
-(_a = GameBudgetCenterRoleController).uZm = undefined;
+(_a = GameBudgetCenterRoleController).ztf = undefined;
+GameBudgetCenterRoleController.eVg = false;
 GameBudgetCenterRoleController.SK = (e, t) => {
   _a.SetCenterRole(Global_1.Global.BaseCharacter);
 };

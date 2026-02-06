@@ -1,20 +1,20 @@
 "use strict";
 
-var __decorate = this && this.__decorate || function (e, t, o, i) {
+var __decorate = this && this.__decorate || function (t, e, o, i) {
   var n;
   var r = arguments.length;
-  var s = r < 3 ? t : i === null ? i = Object.getOwnPropertyDescriptor(t, o) : i;
+  var s = r < 3 ? e : i === null ? i = Object.getOwnPropertyDescriptor(e, o) : i;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    s = Reflect.decorate(e, t, o, i);
+    s = Reflect.decorate(t, e, o, i);
   } else {
-    for (var a = e.length - 1; a >= 0; a--) {
-      if (n = e[a]) {
-        s = (r < 3 ? n(s) : r > 3 ? n(t, o, s) : n(t, o)) || s;
+    for (var a = t.length - 1; a >= 0; a--) {
+      if (n = t[a]) {
+        s = (r < 3 ? n(s) : r > 3 ? n(e, o, s) : n(e, o)) || s;
       }
     }
   }
   if (r > 3 && s) {
-    Object.defineProperty(t, o, s);
+    Object.defineProperty(e, o, s);
   }
   return s;
 };
@@ -27,39 +27,57 @@ const UiModelComponentBase_1 = require("../UiModelComponentBase");
 let UiMotorDataComponent = class UiMotorDataComponent extends UiModelComponentBase_1.UiModelComponentBase {
   constructor() {
     super(...arguments);
-    this.ywr = undefined;
     this.bVi = 0;
-    this.fpf = 0;
+    this.hGg = [];
     this.FYh = 0;
-    this.gpf = 0;
-  }
-  OnInit() {
-    this.ywr = this.Owner.CheckGetComponent(0);
+    this.lGg = [];
+    this.JGi = 0;
+    this.aTl = 0;
+    this.K7g = "";
   }
   GetSkinId() {
     return this.bVi;
   }
-  GetStickerId() {
-    return this.fpf;
-  }
   GetFrameId() {
     return this.FYh;
   }
-  GetDecorateId() {
-    return this.gpf;
+  GetStickerIdList() {
+    return this.hGg;
   }
-  SetSkinId(e) {
-    this.bVi = e;
-    this.ywr.ModelConfigId = e;
+  GetDecorateIdList() {
+    return this.lGg;
   }
-  SetStickerId(e) {
-    this.fpf = e;
+  SetSkinId(t) {
+    this.bVi = t;
   }
-  SetFrameId(e) {
-    this.FYh = e;
+  SetFrameId(t) {
+    this.FYh = t;
   }
-  SetDecorateId(e) {
-    this.gpf = e;
+  SetStickerIdList(t) {
+    this.hGg = t;
+  }
+  SetDecorateIdList(t) {
+    this.lGg = t;
+  }
+  SetDecorationId(t, e) {
+    this.lGg[t - 1] = e;
+  }
+  IsSameDecorationId(t, e) {
+    return this.lGg[t - 1] === e;
+  }
+  SetRoleData(t, e, o) {
+    this.JGi = t;
+    this.aTl = e;
+    this.K7g = o ?? "";
+  }
+  GetRoleId() {
+    return this.JGi;
+  }
+  GetRoleSkinId() {
+    return this.aTl;
+  }
+  GetAnimPath() {
+    return this.K7g;
   }
 };
 UiMotorDataComponent = __decorate([(0, UiModelComponentDefine_1.RegisterUiModelComponent)(32)], UiMotorDataComponent);

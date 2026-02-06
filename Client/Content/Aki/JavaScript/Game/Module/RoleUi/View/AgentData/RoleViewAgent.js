@@ -15,6 +15,7 @@ class RoleViewAgent {
     this.CurSelectRoleId = 0;
     this.RoleViewStateInternal = 0;
     this.TeamPositionType = undefined;
+    this.PreSelectTabName = undefined;
   }
   Init(e, t, r) {
     this.RoleIdList = e;
@@ -90,8 +91,17 @@ class RoleViewAgent {
     var e = this.GetRoleSystemMode();
     return RoleUiDefine_1.roleSystemModeUiParam[e];
   }
+  SetCurSelectTabName(e) {
+    this.CurSelectTabName = e;
+  }
   GetCurSelectTabName() {
     return this.CurSelectTabName;
+  }
+  SetPreSelectTabName(e) {
+    this.PreSelectTabName = e;
+  }
+  GetPreSelectTabName() {
+    return this.PreSelectTabName;
   }
   GetRoleTabDataList() {
     var e = this.GetRoleSystemMode();

@@ -22,14 +22,18 @@ class SunSpiritOccupiedByGearState extends SunSpiritBaseState_1.SunSpiritBaseSta
   }
   OnEnter() {
     var e = ModelManager_1.ModelManager.CreatureModel?.GetEntityByPbDataId(this.GearConfigId)?.Entity;
-    var r = e?.GetComponent(334);
+    var r = e?.GetComponent(336);
     var t = Transform_1.Transform.Create();
     r?.GetSunSpiritSocketTransform(this.GearSocketIndex, t);
+    var i = this.SunSpiritData.GetSunSpiritPerform();
     if (r?.GetSunSpiritPerformType() === "ToGearRelativePos") {
-      if (!(this.SunSpiritData.GetSunSpiritPerform() instanceof SunSpiritCrowdPerform_1.SunSpiritCrowdPerform)) {
-        this.SunSpiritData.ChangeSunSpiritPerform(new SunSpiritCrowdPerform_1.SunSpiritCrowdPerform(this.SunSpiritData, t, false));
+      if (i instanceof SunSpiritCrowdPerform_1.SunSpiritCrowdPerform) {
+        i.UpdateCtrlByCrowdAi(false);
+        i.UpdateForceSpawn(true);
+      } else {
+        this.SunSpiritData.ChangeSunSpiritPerform(new SunSpiritCrowdPerform_1.SunSpiritCrowdPerform(this.SunSpiritData, t, false, true));
       }
-    } else if (!(this.SunSpiritData.GetSunSpiritPerform() instanceof SunSpiritNonePerform_1.SunSpiritNonePerform)) {
+    } else if (!(i instanceof SunSpiritNonePerform_1.SunSpiritNonePerform)) {
       this.SunSpiritData.ChangeSunSpiritPerform(new SunSpiritNonePerform_1.SunSpiritNonePerform(this.SunSpiritData, t));
     }
     if (e && r) {
@@ -41,7 +45,7 @@ class SunSpiritOccupiedByGearState extends SunSpiritBaseState_1.SunSpiritBaseSta
   OnExit() {
     var e;
     var r = ModelManager_1.ModelManager.CreatureModel?.GetEntityByPbDataId(this.GearConfigId)?.Entity;
-    var t = r?.GetComponent(334);
+    var t = r?.GetComponent(336);
     if (r && t) {
       if (t.GetSunSpiritPerformType() === "ScaleUp") {
         e = Transform_1.Transform.Create();

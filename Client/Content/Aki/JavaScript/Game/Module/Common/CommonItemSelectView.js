@@ -36,14 +36,15 @@ class CommonItemSelectView extends UiPanelBase_1.UiPanelBase {
   WTt(e) {
     this.GetItem(3).SetUIActive(e?.length <= 0);
   }
-  UpdateSelectableComponent(e, t, i, o, s = undefined) {
+  UpdateSelectableComponent(e, t, i, s, o = undefined) {
     if (!this.jTt) {
       this.jTt = new (e === 0 ? SelectableComponent_1.SelectableComponent : VisionRecoverySelectableComponent_1.VisionRecoverySelectableComponent)();
-      this.jTt.InitLoopScroller(this.GetLoopScrollViewComponent(0), this.GetItem(1), o);
+      this.jTt.InitLoopScroller(this.GetLoopScrollViewComponent(0), this.GetItem(1), s);
     }
-    this.SetMaxSize(o.MaxSelectedGridNum);
+    this.SetMaxSize(s.MaxSelectedGridNum);
+    this.SetOnlyGold(s.OnlyGold);
     this.WTt(t);
-    this.jTt.UpdateComponent(t, i, s);
+    this.jTt.UpdateComponent(t, i, o);
   }
   GetCurrentSelectedData() {
     return this.jTt.GetCurrentSelectedData();
@@ -60,6 +61,9 @@ class CommonItemSelectView extends UiPanelBase_1.UiPanelBase {
   }
   SetMaxSize(e) {
     this.jTt.SetMaxSize(e);
+  }
+  SetOnlyGold(e) {
+    this.jTt.SetOnlyGold(e);
   }
   OnBeforeDestroy() {
     this.jTt?.Destroy();

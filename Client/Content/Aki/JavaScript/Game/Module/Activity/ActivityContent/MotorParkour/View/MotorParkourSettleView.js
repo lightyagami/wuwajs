@@ -14,17 +14,17 @@ const ActivityControllerHolder_1 = require("../../../ActivityControllerHolder");
 class MotorParkourSettleView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
-    this.HMf = () => {
+    this.nbf = () => {
       ControllerHolder_1.ControllerHolder.InstanceDungeonEntranceController.RestartInstanceDungeon();
     };
-    this.jMf = () => {
+    this.sbf = () => {
       ActivityControllerHolder_1.ActivityControllerHolder.MotorParkourController.IsNeedShowMotorParkourMainView = true;
       ActivityControllerHolder_1.ActivityControllerHolder.MotorParkourController.LeaveInstanceDungeon();
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIButtonComponent], [5, UE.UIButtonComponent], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIText], [10, UE.UIItem], [11, UE.UIText], [12, UE.UIText], [13, UE.UIText], [14, UE.UIText], [15, UE.UIText], [16, UE.UIText], [17, UE.UIText]];
-    this.BtnBindInfo = [[4, this.HMf], [5, this.jMf]];
+    this.BtnBindInfo = [[4, this.nbf], [5, this.sbf]];
   }
   OnBeforeShow() {
     var e = this.OpenParam;

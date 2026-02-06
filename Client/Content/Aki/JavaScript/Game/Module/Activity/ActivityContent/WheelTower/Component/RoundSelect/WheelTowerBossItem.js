@@ -16,12 +16,12 @@ const roundBgDefine = ["/Game/Aki/UI/UIResources/UiActivity/Atlas/ActivityMowing
 class WheelTowerBossItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
     super(...arguments);
-    this.ctf = 0;
+    this.vrf = 0;
     this.WYl = undefined;
-    this.PIf = undefined;
+    this.yRf = undefined;
     this.It_ = undefined;
     this.ije = () => {
-      this.WYl?.(this.GridIndex, this.ctf);
+      this.WYl?.(this.GridIndex, this.vrf);
     };
   }
   OnRegisterComponent() {
@@ -36,7 +36,7 @@ class WheelTowerBossItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.GetItem(3)?.SetUIActive(false);
   }
   OnBeforeDestroy() {
-    this.AIf();
+    this.SRf();
   }
   Refresh(e, i, t) {
     this.nOe(e, t);
@@ -47,27 +47,27 @@ class WheelTowerBossItem extends GridProxyAbstract_1.GridProxyAbstract {
       const o = e.BossInfo.HpPercentage / 100;
       s.SetFillAmount(r);
       let i = 0;
-      this.AIf();
-      this.PIf = TimerSystem_1.GameplayTimerSystem.Forever(e => {
+      this.SRf();
+      this.yRf = TimerSystem_1.GameplayTimerSystem.Forever(e => {
         i = MathUtils_1.MathUtils.Clamp(i + e * HP_BAR_ANIMATION_SPEED_MULTIPLE / MS_PER_SEC, 0, 1);
         s.SetFillAmount(MathUtils_1.MathUtils.Lerp(r, o, i));
         if (i >= 1) {
-          this.AIf();
+          this.SRf();
         }
       }, TimerSystem_1.MIN_TIME);
     }
   }
-  AIf() {
-    if (TimerSystem_1.GameplayTimerSystem.Has(this.PIf)) {
-      TimerSystem_1.GameplayTimerSystem.Remove(this.PIf);
+  SRf() {
+    if (TimerSystem_1.GameplayTimerSystem.Has(this.yRf)) {
+      TimerSystem_1.GameplayTimerSystem.Remove(this.yRf);
     }
   }
   nOe(e, i) {
     var e = e.BossInfo;
-    this.ctf = e.WaveConfigId;
+    this.vrf = e.WaveConfigId;
     var t = ConfigManager_1.ConfigManager.WheelTowerConfig.GetWaveConfigById(e.WaveConfigId);
     this.GetText(2)?.ShowTextNew(t.Name);
-    this.vvf(i + 1);
+    this.PMf(i + 1);
     this.SetTextureShowUntilLoaded(t.Icon, this.GetTexture(7));
     var i = e.HpPercentage;
     this.GetText(5)?.SetText(i + "%");
@@ -80,16 +80,16 @@ class WheelTowerBossItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.GetItem(10)?.SetUIActive(i);
     if (i) {
       this.GetText(12)?.SetText("R" + e.Round);
-      this.fNf(e.Round);
+      this.Z9f(e.Round);
     }
   }
-  fNf(e) {
+  Z9f(e) {
     e -= 1;
     let i = undefined;
     i = e < roundBgDefine.length ? roundBgDefine[e] : roundBgDefine[roundBgDefine.length - 1];
     this.SetSpriteByPath(i, this.GetSprite(11), false);
   }
-  vvf(e) {
+  PMf(e) {
     this.GetText(1)?.SetText(e.toString());
   }
   SetFinished(e) {

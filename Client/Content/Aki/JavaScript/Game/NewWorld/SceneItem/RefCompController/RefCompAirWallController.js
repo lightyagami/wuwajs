@@ -172,15 +172,15 @@ class RefCompAirWallController extends RefCompControllerBase_1.RefCompController
   constructor() {
     super(...arguments);
     this.Type = 1;
-    this.avf = undefined;
-    this.hvf = undefined;
+    this.gMf = undefined;
+    this.CMf = undefined;
     this.zvn = new Map();
     this.Zvn = new Map();
     this.eMn = new Map();
     this.gme = undefined;
     this.tMn = undefined;
     this.wkd = undefined;
-    this.lvf = undefined;
+    this.pMf = undefined;
     this.PKs = (e, t, i) => {
       var r;
       var l;
@@ -205,7 +205,7 @@ class RefCompAirWallController extends RefCompControllerBase_1.RefCompController
         }
       }
     };
-    this.Gdf = (e, t) => {
+    this.Off = (e, t) => {
       var i;
       var r;
       var l;
@@ -237,29 +237,29 @@ class RefCompAirWallController extends RefCompControllerBase_1.RefCompController
           }
         } else {
           RefCompAirWallController.U_d(e);
-          this.Fdf(e);
+          this.Gff(e);
         }
       }
     };
   }
   get AirWallEffectViewHandles() {
-    this.avf ||= new Map();
-    return this.avf;
+    this.gMf ||= new Map();
+    return this.gMf;
   }
   get AirWallRefs() {
-    this.hvf ||= new Array();
-    return this.hvf;
+    this.CMf ||= new Array();
+    return this.CMf;
   }
   get AirWallEffectChain() {
     var e;
     var t;
-    if (!this.lvf) {
+    if (!this.pMf) {
       e = new AirWallEffectSplineHandler();
       t = new AirWallEffectCommonHandler();
       e.SetNext(t);
-      this.lvf = e;
+      this.pMf = e;
     }
-    return this.lvf;
+    return this.pMf;
   }
   OnStart() {
     this.wkd = UE.NewObject(UE.TraceLineElement.StaticClass());
@@ -288,14 +288,14 @@ class RefCompAirWallController extends RefCompControllerBase_1.RefCompController
       e.OnComponentHit.Clear();
     }
   }
-  Fdf(e) {
-    e.OnActorBeginOverlap.Remove(this.Gdf);
+  Gff(e) {
+    e.OnActorBeginOverlap.Remove(this.Off);
   }
   cMn() {
     if (this.AirWallRefs?.length) {
       for (const t of this.AirWallRefs) {
         var e = this.ActorSubsystem.GetActor(t);
-        if (e?.IsValid() && (RefCompAirWallController.U_d(e), this.Fdf(e), e.SetActorEnableCollision(false), EventSystem_1.EventSystem.HasWithTarget(e, EventDefine_1.EEventName.BulletHitAirWall, this.PKs))) {
+        if (e?.IsValid() && (RefCompAirWallController.U_d(e), this.Gff(e), e.SetActorEnableCollision(false), EventSystem_1.EventSystem.HasWithTarget(e, EventDefine_1.EEventName.BulletHitAirWall, this.PKs))) {
           EventSystem_1.EventSystem.RemoveWithTarget(e, EventDefine_1.EEventName.BulletHitAirWall, this.PKs);
         }
       }
@@ -329,7 +329,7 @@ class RefCompAirWallController extends RefCompControllerBase_1.RefCompController
               if (!a.IsControl()) {
                 var r = a.EntityHandle?.Entity;
                 if (r) {
-                  var l = r.GetComponent(99);
+                  var l = r.GetComponent(101);
                   if (l && l.GetTeamState() === 1) {
                     l = r.GetComponent(1).ActorLocationProxy;
                     if (!MathUtils_1.MathUtils.IsInsideBoxSphereBounds(t, l.ToUeVectorOld()) || this.Lkd(e, l)) {
@@ -399,7 +399,7 @@ class RefCompAirWallController extends RefCompControllerBase_1.RefCompController
   }
   Ivl(t, e, i) {
     RefCompAirWallController.U_d(t);
-    this.Fdf(t);
+    this.Gff(t);
     var r = this.AirWallEffectViewHandles?.get(e);
     if (EffectSystem_1.EffectSystem.IsValid(r ?? 0)) {
       EffectSystem_1.EffectSystem.StopEffectById(r, "[SceneItemReferenceComponent.HandleAirWall]", false);
@@ -431,7 +431,7 @@ class RefCompAirWallController extends RefCompControllerBase_1.RefCompController
     if (l) {
       this.Zvn.set(r, l);
       if (i.CollisionPreset === IAction_1.EAirWallCollisionPreset.PlayerOverlap) {
-        t.OnActorBeginOverlap.Add(this.Gdf);
+        t.OnActorBeginOverlap.Add(this.Off);
       }
       this.zvn.set(r, i.HitCd || DEFAULT_HIT_CD);
       t.OnActorHit.Add((e, t, i, r) => {

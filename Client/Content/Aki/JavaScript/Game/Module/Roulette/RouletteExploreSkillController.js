@@ -19,39 +19,42 @@ class RouletteExploreSkillController extends ControllerBase_1.ControllerBase {
     }
   }
   static UseExploreSkillId(l, e) {
-    var o = this.BOm.get(e);
+    var o = this.XGm.get(e);
     return !!o && (o(l, e), true);
   }
 }
 exports.RouletteExploreSkillController = RouletteExploreSkillController;
-(_a = RouletteExploreSkillController).kOm = () => {
+(_a = RouletteExploreSkillController).YGm = () => {
   ControllerHolder_1.ControllerHolder.RouletteController.OnUseEquipItem();
 };
-RouletteExploreSkillController.qOm = () => {
+RouletteExploreSkillController.zGm = () => {
   ControllerHolder_1.ControllerHolder.RouletteController.OpenEmptyTips();
 };
-RouletteExploreSkillController.OOm = (l, e) => {
+RouletteExploreSkillController.JGm = (l, e) => {
   ControllerHolder_1.ControllerHolder.MapExploreToolController.CheckUseMapExploreTool(l, e);
 };
-RouletteExploreSkillController.GOm = () => {
+RouletteExploreSkillController.ZGm = () => {
   ControllerHolder_1.ControllerHolder.AdviceController.OpenAdviceCreateView();
 };
-RouletteExploreSkillController.FOm = () => {
+RouletteExploreSkillController.eFm = () => {
   ControllerHolder_1.ControllerHolder.PhotographController.PhotographFastScreenShot();
 };
-RouletteExploreSkillController.NOm = () => {
+RouletteExploreSkillController.tFm = () => {
   ControllerHolder_1.ControllerHolder.PhotographController.TryOpenPhotograph(3);
 };
-RouletteExploreSkillController.z6m = () => {
+RouletteExploreSkillController.Z7m = () => {
   ControllerHolder_1.ControllerHolder.AutoPilotController.EnterAutoPilot();
 };
-RouletteExploreSkillController.ZRf = () => {
+RouletteExploreSkillController.uBf = () => {
   ControllerHolder_1.ControllerHolder.AutoPilotController.SummonMotorAndEnterAutoPilot();
 };
-RouletteExploreSkillController.bHm = () => {
+RouletteExploreSkillController.oWm = () => {
   ControllerHolder_1.ControllerHolder.MotorcycleMusicPlayerController.OpenMusicPlayerView();
 };
-RouletteExploreSkillController.VUf = (l, e) => {
+RouletteExploreSkillController.EGf = (l, e) => {
   PhantomInteractController_1.PhantomInteractController.OpenPhantomVisionSummonView(l, e);
 };
-RouletteExploreSkillController.BOm = new Map([[210013, _a.kOm], [210018, _a.qOm], [210015, _a.OOm], [210016, _a.OOm], [210017, _a.OOm], [210011, _a.GOm], [210012, _a.FOm], [700103, _a.NOm], [10001007, _a.z6m], [10001008, _a.bHm], [800003, _a.ZRf], [2100081, _a.VUf], [10001012, _a.VUf]]); //# sourceMappingURL=RouletteExploreSkillController.js.map
+RouletteExploreSkillController.tPg = () => {
+  ControllerHolder_1.ControllerHolder.MotorcycleDevelopController.OpenMotorTechTreeSwitchView();
+};
+RouletteExploreSkillController.XGm = new Map([[210013, _a.YGm], [210018, _a.zGm], [210015, _a.JGm], [210016, _a.JGm], [210017, _a.JGm], [210011, _a.ZGm], [210012, _a.eFm], [700103, _a.tFm], [10001007, _a.Z7m], [10001008, _a.oWm], [800003, _a.uBf], [2100081, _a.EGf], [10001012, _a.EGf], [10001100, _a.tPg]]); //# sourceMappingURL=RouletteExploreSkillController.js.map

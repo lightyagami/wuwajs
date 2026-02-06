@@ -39,7 +39,7 @@ class CharacterController extends ControllerBase_1.ControllerBase {
       t = new Uint8Array(t);
       cpp_1.FuncOpenLibrary.FreeArrayBuffer(e);
       (e = new Protocol_1.Aki.Protocol.CombatMessage.Hfs()).Ujn = t;
-      t = await Net_1.Net.CallAsync(21492, e);
+      t = await Net_1.Net.CallAsync(22564, e);
       cpp_1.FuncOpenLibrary.SetIsCheckEncrypt(t?.JLs ?? "");
     }
   }
@@ -163,7 +163,7 @@ class CharacterController extends ControllerBase_1.ControllerBase {
     }
   }
   static GetActorComponent(t) {
-    let e = t.Entity.GetComponent(212);
+    let e = t.Entity.GetComponent(214);
     return e = (e = e || t.Entity.GetComponent(2)) || t.Entity.GetComponent(247);
   }
   static GetTsBaseCharacterByEntity(t) {
@@ -220,7 +220,7 @@ class CharacterController extends ControllerBase_1.ControllerBase {
   static OnChangeMode() {
     if (!ModelManager_1.ModelManager.GameModeModel.IsMulti) {
       for (const t of ModelManager_1.ModelManager.CreatureModel.GetAllEntities()) {
-        t.Entity.GetComponent(48)?.SwitchControl(true);
+        t.Entity.GetComponent(50)?.SwitchControl(true);
       }
     }
     return true;

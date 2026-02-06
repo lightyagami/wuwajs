@@ -62,7 +62,7 @@ class TsTaskFindNearestInteractiveTarget extends TsTaskAbortImmediatelyBase_1.de
           default:
             t = false;
         }
-        if (t && i.Entity.GetComponent(111)?.IsInit && (i = Vector_1.Vector.Dist(e.ActorLocationProxy, i.ActorLocationProxy)) < r) {
+        if (t && i.Entity.GetComponent(113)?.IsInit && (i = Vector_1.Vector.Dist(e.ActorLocationProxy, i.ActorLocationProxy)) < r) {
           r = i;
           s = o.Id;
         }

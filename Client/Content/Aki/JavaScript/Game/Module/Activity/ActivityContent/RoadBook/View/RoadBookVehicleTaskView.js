@@ -23,18 +23,18 @@ class RoadBookVehicleTaskView extends UiViewBase_1.UiViewBase {
     this.Otl = undefined;
     this.b4c = undefined;
     this.LevelSequencePlayer = undefined;
-    this.j9m = undefined;
+    this.WHm = undefined;
     this.OOe = undefined;
     this.fVl = -1;
-    this.H9m = undefined;
-    this.hkf = () => {
+    this.QHm = undefined;
+    this.ZNf = () => {
       var t = this.b4c.GetAllMotorTabData()[this.fVl];
-      this.Q9m();
+      this.YHm();
       this.Dke(t);
     };
-    this.$9m = () => {
+    this.KHm = () => {
       var t = new TabGroupGridItem();
-      t.OnChildToggleCallback = this.W9m;
+      t.OnChildToggleCallback = this.XHm;
       return t;
     };
     this.kou = () => {
@@ -47,12 +47,12 @@ class RoadBookVehicleTaskView extends UiViewBase_1.UiViewBase {
       var t = this.b4c.GetMotorItemDataList(t.RewardIds).filter(t => t.Status === 0).map(t => t.Id);
       ActivityRoadBookController_1.ActivityRoadBookController.RequestMultiTakeMotorChallengeReward(t);
     };
-    this.W9m = (t, i) => {
-      if (this.H9m) {
-        this.H9m.SetIsSelect(false);
+    this.XHm = (t, i) => {
+      if (this.QHm) {
+        this.QHm.SetIsSelect(false);
       }
-      this.H9m = i;
-      this.H9m.SetIsSelect(true);
+      this.QHm = i;
+      this.QHm.SetIsSelect(true);
       if (this.fVl !== t.TabIndex) {
         this.fVl = t.TabIndex;
         if (t.IsUnlock && !this.b4c.SaveFirstCheckRedDotState(7, t.PlayId)) {
@@ -79,7 +79,7 @@ class RoadBookVehicleTaskView extends UiViewBase_1.UiViewBase {
   }
   async OnBeforeStartAsync() {
     this.b4c = this.OpenParam;
-    this.j9m = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(1), this.$9m, undefined, true);
+    this.WHm = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(1), this.KHm, undefined, true);
     this.OOe = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(3), this.kou);
     var t = [];
     this.Otl = new PopupCaptionItem_1.PopupCaptionItem();
@@ -89,16 +89,16 @@ class RoadBookVehicleTaskView extends UiViewBase_1.UiViewBase {
       this.CloseMe();
     });
     await Promise.all(t);
-    await this.Q9m();
-    this.j9m.GetScrollItemByIndex(0)?.SelectFirstTab();
+    await this.YHm();
+    this.WHm.GetScrollItemByIndex(0)?.SelectFirstTab();
   }
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RoadBookMotorRefresh, this.hkf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RoadBookMotorRefresh, this.ZNf);
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RoadBookMotorRefresh, this.hkf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RoadBookMotorRefresh, this.ZNf);
   }
-  async Q9m() {
+  async YHm() {
     var t = this.b4c.GetAllMotorTabData();
     var i = new Map();
     for (const h of t) {
@@ -117,7 +117,7 @@ class RoadBookVehicleTaskView extends UiViewBase_1.UiViewBase {
         GroupTitleId: r.VehicleClassificationName.get(i)
       });
     });
-    await this.j9m.RefreshByDataAsync(s);
+    await this.WHm.RefreshByDataAsync(s);
   }
   Dke(t) {
     var i = t.IsUnlock;
@@ -162,8 +162,8 @@ class TabGridItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
     super(...arguments);
     this.OnChildToggleCallback = undefined;
-    this.X9m = undefined;
-    this.Y9m = undefined;
+    this.JHm = undefined;
+    this.ZHm = undefined;
     this.Pe = undefined;
   }
   OnRegisterComponent() {
@@ -171,27 +171,27 @@ class TabGridItem extends GridProxyAbstract_1.GridProxyAbstract {
   }
   async OnBeforeStartAsync() {
     var t = [];
-    this.X9m = new MenuTabToggleItem();
-    this.Y9m = new MenuTabToggleItem();
-    t.push(this.X9m.CreateByActorAsync(this.GetItem(0).GetOwner()));
-    t.push(this.Y9m.CreateByActorAsync(this.GetItem(1).GetOwner()));
-    this.X9m.OnChildToggleCallback = this.OnChildToggleCallback;
-    this.Y9m.OnChildToggleCallback = this.OnChildToggleCallback;
+    this.JHm = new MenuTabToggleItem();
+    this.ZHm = new MenuTabToggleItem();
+    t.push(this.JHm.CreateByActorAsync(this.GetItem(0).GetOwner()));
+    t.push(this.ZHm.CreateByActorAsync(this.GetItem(1).GetOwner()));
+    this.JHm.OnChildToggleCallback = this.OnChildToggleCallback;
+    this.ZHm.OnChildToggleCallback = this.OnChildToggleCallback;
     await Promise.all(t);
   }
   SetItemNewVisible(t) {
     if (this.Pe.IsUnlock) {
-      this.X9m.SetItemNewVisible(t);
+      this.JHm.SetItemNewVisible(t);
     }
   }
   Refresh(t, i, e) {
-    ((this.Pe = t).IsUnlock ? this.X9m : this.Y9m).Refresh(t);
-    (this.Pe.IsUnlock ? this.X9m : this.Y9m).SetIsSelect(i, false);
+    ((this.Pe = t).IsUnlock ? this.JHm : this.ZHm).Refresh(t);
+    (this.Pe.IsUnlock ? this.JHm : this.ZHm).SetIsSelect(i, false);
     this.GetItem(0)?.SetUIActive(t.IsUnlock);
     this.GetItem(1)?.SetUIActive(!t.IsUnlock);
   }
   OnSelected(t) {
-    (this.Pe.IsUnlock ? this.X9m : this.Y9m).SetIsSelect(true, t);
+    (this.Pe.IsUnlock ? this.JHm : this.ZHm).SetIsSelect(true, t);
   }
 }
 class MenuTabToggleItem extends UiPanelBase_1.UiPanelBase {
@@ -199,13 +199,13 @@ class MenuTabToggleItem extends UiPanelBase_1.UiPanelBase {
     super(...arguments);
     this.OnChildToggleCallback = undefined;
     this.Pe = undefined;
-    this.z9m = t => {
+    this.e$m = t => {
       this.OnChildToggleCallback?.(this.Pe, this);
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UIText], [2, UE.UISprite], [3, UE.UISprite], [4, UE.UIItem], [5, UE.UIItem]];
-    this.BtnBindInfo = [[0, this.z9m]];
+    this.BtnBindInfo = [[0, this.e$m]];
   }
   async OnBeforeStartAsync() {
     this.GetExtendToggle(0).CanExecuteChange.Bind(this.Lke.bind(this));

@@ -55,7 +55,7 @@ class HonamiStoryViewBase extends BattleVisibleChildView_1.BattleVisibleChildVie
   }
   OnStart() {
     this.OnInitData();
-    this.InitChildType(41);
+    this.InitChildType(43);
     this.$pt = new UiSequencePlayer_1.UiSequencePlayer(this.RootItem);
     this.DangerPercent = CommonParamById_1.configCommonParamById.GetFloatConfig(this.DangerPercentConfigId) ?? 0;
     this.NormalPercent = 1 - this.DangerPercent;

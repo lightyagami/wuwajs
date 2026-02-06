@@ -29,6 +29,7 @@ const LoginDefine_1 = require("../../Login/Data/LoginDefine");
 const LoginController_1 = require("../../Login/LoginController");
 const ReconnectDefine_1 = require("../../ReConnect/ReconnectDefine");
 const ScrollingTipsController_1 = require("../../ScrollingTips/ScrollingTipsController");
+const GameSettingsManager_1 = require("../../../GameSettings/GameSettingsManager");
 class LoginDebugView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
@@ -97,9 +98,10 @@ class LoginDebugView extends UiViewBase_1.UiViewBase {
     this.E3t = e => {
       this.GetSprite(8).SetUIActive(e === 1);
     };
-    this.zWm = e => {
+    this.$Km = e => {
       this.GetSprite(10).SetUIActive(e === 1);
       Platform_1.Platform.IsFakeCloudGame = e === 1;
+      GameSettingsManager_1.GameSettingsManager.Clear();
     };
     this.S3t = e => {
       this.GetSprite(12).SetUIActive(e === 1);
@@ -238,7 +240,7 @@ class LoginDebugView extends UiViewBase_1.UiViewBase {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIButtonComponent], [2, UE.UITextInputComponent], [3, UE.UIDropdownComponent], [4, UE.UIDropdownComponent], [5, UE.UIButtonComponent], [6, UE.UIButtonComponent], [7, UE.UIExtendToggle], [8, UE.UISprite], [9, UE.UIExtendToggle], [10, UE.UISprite], [11, UE.UIExtendToggle], [12, UE.UISprite], [13, UE.UITextInputComponent], [14, UE.UITextInputComponent], [15, UE.UIDropdownComponent], [16, UE.UIDropdownComponent], [17, UE.UITextInputComponent], [18, UE.UIExtendToggle], [19, UE.UIItem], [20, UE.UITextInputComponent]];
-    this.BtnBindInfo = [[0, this.d3t], [1, this.C3t], [5, this.v3t], [6, this.f3t], [7, this.E3t], [9, this.zWm], [11, this.S3t], [18, this.zIa]];
+    this.BtnBindInfo = [[0, this.d3t], [1, this.C3t], [5, this.v3t], [6, this.f3t], [7, this.E3t], [9, this.$Km], [11, this.S3t], [18, this.zIa]];
   }
   OnStart() {
     this.m3t = (0, puerts_1.toManualReleaseDelegate)(this.D3t);
@@ -259,7 +261,7 @@ class LoginDebugView extends UiViewBase_1.UiViewBase {
     this.P3t();
     this.x3t();
     this.w3t();
-    this.JWm();
+    this.WKm();
     this.B3t();
     if (GlobalData_1.GlobalData.IsPlayInEditor && !UiManager_1.UiManager.IsViewShow("LoginStatusView")) {
       UiManager_1.UiManager.OpenView("LoginStatusView");
@@ -326,17 +328,17 @@ class LoginDebugView extends UiViewBase_1.UiViewBase {
       let o = false;
       if (a) {
         for (let e = 0; e < a.length; ++e) {
-          var l = a[e];
-          var s = l.MapId + "-" + l.MapName;
-          var g = new UE.UIDropdownOptionData(s, r, 0, "");
-          this.u3t.Add(g);
-          t.Options.Add(g);
-          if (l.MapId === n) {
+          var g = a[e];
+          var s = g.MapId + "-" + g.MapName;
+          var l = new UE.UIDropdownOptionData(s, r, 0, "");
+          this.u3t.Add(l);
+          t.Options.Add(l);
+          if (g.MapId === n) {
             t.Value = e;
             t.CaptionText.UIText.SetText(s);
             o = true;
           }
-          if (l.MapId === _) {
+          if (g.MapId === _) {
             i = e;
           }
         }
@@ -358,10 +360,10 @@ class LoginDebugView extends UiViewBase_1.UiViewBase {
       this.E3t(e);
     }
   }
-  JWm() {
+  WKm() {
     if (this.GetExtendToggle(9)) {
       this.GetExtendToggle(9).SetToggleState(0);
-      this.zWm(0);
+      this.$Km(0);
     }
   }
   B3t() {

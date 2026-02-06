@@ -28,6 +28,12 @@ class MotorLoadProject {
   get Sticker() {
     return GameUtils_1.GameUtils.ConvertToArray(this.stickerLength(), this.sticker, this);
   }
+  get Frame() {
+    return this.frame();
+  }
+  get Decorations() {
+    return GameUtils_1.GameUtils.ConvertToArray(this.decorationsLength(), this.decorations, this);
+  }
   __init(t, s) {
     this.z7 = t;
     this.J7 = s;
@@ -93,6 +99,41 @@ class MotorLoadProject {
   }
   stickerArray() {
     var t = this.J7.__offset(this.z7, 14);
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
+  }
+  frame() {
+    var t = this.J7.__offset(this.z7, 16);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  GetDecorationsAt(t) {
+    return this.decorations(t);
+  }
+  decorations(t) {
+    var s = this.J7.__offset(this.z7, 18);
+    if (s) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + s) + t * 4);
+    } else {
+      return 0;
+    }
+  }
+  decorationsLength() {
+    var t = this.J7.__offset(this.z7, 18);
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  decorationsArray() {
+    var t = this.J7.__offset(this.z7, 18);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {

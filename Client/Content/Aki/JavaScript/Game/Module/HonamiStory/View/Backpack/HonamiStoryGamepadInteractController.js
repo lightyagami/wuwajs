@@ -12,8 +12,8 @@ class HonamiStoryGamepadInteractController {
   constructor() {
     this.PanelBaseList = [];
     this.Tgd = new HonamiStoryInteractOperateAgent_1.HonamiStoryInteractOperateAgent();
-    this.C2m = -1;
-    this.p2m = -1;
+    this.ykm = -1;
+    this.Skm = -1;
   }
   RegisterPanel(t) {
     this.PanelBaseList.push(t);
@@ -34,7 +34,7 @@ class HonamiStoryGamepadInteractController {
   HasFallingPile() {
     return this.PanelBaseList.length > 2;
   }
-  nQm(t) {
+  ZKm(t) {
     t = HonamiStoryDefine_1.HonamiBackpackTypeMap.get(t);
     if (t) {
       return ModelManager_1.ModelManager.HonamiStoryModel.GetBackPackData(t);
@@ -42,30 +42,30 @@ class HonamiStoryGamepadInteractController {
   }
   GetBackpackCapacity(t) {
     let e = 0;
-    t = this.nQm(t);
+    t = this.ZKm(t);
     return e = t ? t.GetCapacity() : e;
   }
   GetBackpackWidth(t) {
     let e = 0;
-    t = this.nQm(t);
+    t = this.ZKm(t);
     return e = t ? t.GetWidthCount() : e;
   }
-  sQm(t, e) {
+  eXm(t, e) {
     return Math.floor(t / e);
   }
-  aQm(t, e) {
+  tXm(t, e) {
     return t % e;
   }
-  v2m(t, e, i, r) {
+  Mkm(t, e, i, r) {
     var s;
     var a;
-    var o = this.aQm(t, r);
-    var t = this.sQm(t, r);
+    var o = this.tXm(t, r);
+    var t = this.eXm(t, r);
     let n = 0;
     let h = 0;
     return (h = e === 1 && i === 1 ? (n = o, t) : e % 2 == 1 && i % 2 == 1 ? (s = Math.floor(i / 2), a = Math.floor(e / 2), n = o + s, t + a) : e % 2 == 0 && i % 2 == 0 ? (n = o + i - 1, t + e - 1) : e % 2 == 1 && i % 2 == 0 ? (s = Math.floor(e / 2), n = o + i - 1, t + s) : e % 2 == 0 && i % 2 == 1 ? (a = Math.floor(i / 2), n = o + a, t + e - 1) : (n = o, t)) * r + n;
   }
-  y2m(t, e) {
+  Ekm(t, e) {
     let i = 0;
     let r = 0;
     let s = 0;
@@ -75,7 +75,7 @@ class HonamiStoryGamepadInteractController {
       r = t.GetGridWidth();
       s = t.GetGridHeight();
     }
-    return this.v2m(i, r, s, e);
+    return this.Mkm(i, r, s, e);
   }
   GetGridItemListByBackpackType(t) {
     let e = [];
@@ -156,8 +156,8 @@ class HonamiStoryGamepadInteractController {
     var e;
     var i = this.GetPanelByGridItem(t);
     if (!!i && ((e = i.GetBackpackType()) === 0 || e === 2 || e === 1)) {
-      this.C2m = this.GetBackpackWidth(i.GetBackpackType());
-      this.p2m = this.y2m(t, this.C2m);
+      this.ykm = this.GetBackpackWidth(i.GetBackpackType());
+      this.Skm = this.Ekm(t, this.ykm);
     }
     this.Tgd.Clear();
     this.Tgd.BaseWidth = 0;
@@ -172,9 +172,9 @@ class HonamiStoryGamepadInteractController {
       if (this.Tgd.TargetOperateBackpack !== e) {
         this.Tgd.TargetOperateBackpack?.OnHoverEnd();
         this.Tgd.TargetOperateBackpack = e;
-        this.Tgd.TargetOperateBackpack?.OnHoverGamepad(t, this.p2m, this.Tgd);
+        this.Tgd.TargetOperateBackpack?.OnHoverGamepad(t, this.Skm, this.Tgd);
       } else {
-        this.Tgd.TargetOperateBackpack.OnHoverGamepad(t, this.p2m, this.Tgd);
+        this.Tgd.TargetOperateBackpack.OnHoverGamepad(t, this.Skm, this.Tgd);
       }
     } else {
       this.Tgd.TargetOperateBackpack?.OnHoverEnd();
@@ -221,8 +221,8 @@ class HonamiStoryGamepadInteractController {
     }
   }
   Reset() {
-    this.C2m = -1;
-    this.p2m = -1;
+    this.ykm = -1;
+    this.Skm = -1;
     for (const t of this.PanelBaseList) {
       t.OnHoverEnd();
     }

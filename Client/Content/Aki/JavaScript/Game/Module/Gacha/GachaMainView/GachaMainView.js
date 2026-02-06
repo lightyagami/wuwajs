@@ -65,7 +65,7 @@ class GachaMainView extends UiTickViewBase_1.UiTickViewBase {
     this.lqe = undefined;
     this.djt = undefined;
     this.Cjt = undefined;
-    this.Dqm = undefined;
+    this.KOm = undefined;
     this.gjt = undefined;
     this.Dvt = false;
     this._Ma = 0;
@@ -85,11 +85,15 @@ class GachaMainView extends UiTickViewBase_1.UiTickViewBase {
       ConfirmBoxController_1.ConfirmBoxController.ShowConfirmBoxNew(e);
     };
     this.dpt = () => {
+      var e;
       if (this.vjt) {
         if (this.vjt.UsePoolId === 0) {
           ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("SelfGacha_NoDetail_Tips");
         } else {
           UiManager_1.UiManager.OpenView("GachaPoolDetailView", this.vjt.GetPoolInfo(this.vjt.UsePoolId));
+          (e = new LogReportDefine_1.OnClickGachaOperationLogEvent()).i_gacha_id = this.vjt.Id;
+          e.i_operation_type = 3;
+          ControllerHolder_1.ControllerHolder.LogReportController.LogReport(e);
         }
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Gacha", 34, "OnHelpBtnClick CurGachaInfo is null");
@@ -97,6 +101,10 @@ class GachaMainView extends UiTickViewBase_1.UiTickViewBase {
     };
     this.Sjt = () => {
       ControllerHolder_1.ControllerHolder.PayShopController.OpenPayShopViewWithTab(4, 1);
+      var e = new LogReportDefine_1.OnClickGachaOperationLogEvent();
+      e.i_gacha_id = this.vjt.Id;
+      e.i_operation_type = 1;
+      ControllerHolder_1.ControllerHolder.LogReportController.LogReport(e);
     };
     this.yjt = () => {
       var e;
@@ -108,15 +116,18 @@ class GachaMainView extends UiTickViewBase_1.UiTickViewBase {
       if (a) {
         a = this.vjt.GroupId;
         e = ModelManager_1.ModelManager.GachaModel.GetGachaRecordUrlPrefix();
-        t = ModelManager_1.ModelManager.GachaModel.GetServerArea();
-        i = ModelManager_1.ModelManager.KuroSdkModel.GetPlatformStr();
-        a = `{0}/aki/gacha/index.html#/record?svr_id={1}&player_id=${ModelManager_1.ModelManager.PlayerInfoModel.GetId()?.toString()}&lang=${LanguageSystem_1.LanguageSystem.PackageLanguage}&gacha_id=${this.vjt?.Id}&gacha_type=${a.toString()}&svr_area=${t}&record_id=${ModelManager_1.ModelManager.GachaModel.RecordId}&resources_id=${this.vjt?.ResourcesId}&platform=${i}`;
-        t = CdnServerDebugConfig_1.CdnServerDebugConfig.Singleton.TryGetGachaRecordDebugUrl(a, e, ModelManager_1.ModelManager.LoginModel.GetServerId());
+        i = ModelManager_1.ModelManager.GachaModel.GetServerArea();
+        t = ModelManager_1.ModelManager.KuroSdkModel.GetPlatformStr();
+        a = `{0}/aki/gacha/index.html#/record?svr_id={1}&player_id=${ModelManager_1.ModelManager.PlayerInfoModel.GetId()?.toString()}&lang=${LanguageSystem_1.LanguageSystem.PackageLanguage}&gacha_id=${this.vjt?.Id}&gacha_type=${a.toString()}&svr_area=${i}&record_id=${ModelManager_1.ModelManager.GachaModel.RecordId}&resources_id=${this.vjt?.ResourcesId}&platform=${t}`;
+        i = CdnServerDebugConfig_1.CdnServerDebugConfig.Singleton.TryGetGachaRecordDebugUrl(a, e, ModelManager_1.ModelManager.LoginModel.GetServerId());
         if (ControllerHolder_1.ControllerHolder.KuroSdkController.CanUseSdk()) {
-          ControllerHolder_1.ControllerHolder.KuroSdkController.OpenWebView("", t, true, true);
+          ControllerHolder_1.ControllerHolder.KuroSdkController.OpenWebView("", i, true, true);
         } else {
-          ModelManager_1.ModelManager.MailModel.OpenWebBrowser(t);
+          ModelManager_1.ModelManager.MailModel.OpenWebBrowser(i);
         }
+        (t = new LogReportDefine_1.OnClickGachaOperationLogEvent()).i_gacha_id = this.vjt.Id;
+        t.i_operation_type = 4;
+        ControllerHolder_1.ControllerHolder.LogReportController.LogReport(t);
       }
     };
     this.B6e = () => {
@@ -158,13 +169,17 @@ class GachaMainView extends UiTickViewBase_1.UiTickViewBase {
             };
             UiManager_1.UiManager.OpenView("WeaponPreviewView", n);
         }
+        e = new LogReportDefine_1.OnClickGachaOperationLogEvent();
+        e.i_gacha_id = this.vjt.Id;
+        e.i_operation_type = 2;
+        ControllerHolder_1.ControllerHolder.LogReportController.LogReport(e);
       }
     };
     this.Tjt = () => {
       var e = this.vjt;
       if (e) {
         GachaController_1.GachaController.OpenGachaSelectionView(e);
-        this.x7m();
+        this.fjm();
       }
     };
     this.RefreshLeftTime = () => {
@@ -383,8 +398,8 @@ class GachaMainView extends UiTickViewBase_1.UiTickViewBase {
     this.djt = new GachaButton_1.GachaButton(GachaDefine_1.GACHA_ONE);
     this.Cjt = new GachaButton_1.GachaButton(GachaDefine_1.GACHA_TEN);
     await Promise.all([this.djt.CreateThenShowByActorAsync(this.GetItem(5).GetOwner()), this.Cjt.CreateThenShowByActorAsync(this.GetItem(6).GetOwner())]);
-    this.Dqm = new ButtonItem_1.ButtonItem(this.GetItem(23));
-    this.Dqm.SetFunction(this.Tjt);
+    this.KOm = new ButtonItem_1.ButtonItem(this.GetItem(23));
+    this.KOm.SetFunction(this.Tjt);
     this.cjt = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(14), this.bjt);
     this.lqe = new PopupCaptionItem_1.PopupCaptionItem(this.GetItem(0));
     this.lqe.SetCloseCallBack(this.B6e);
@@ -455,10 +470,10 @@ class GachaMainView extends UiTickViewBase_1.UiTickViewBase {
       this.djt.GetRootItem().SetUIActive(e && this.vjt.UsePoolId !== 0);
       this.Cjt.GetRootItem().SetUIActive(i && this.vjt.UsePoolId !== 0);
       var t = this.vjt?.UsePoolId === 0;
-      this.Dqm?.SetActive(t);
+      this.KOm?.SetActive(t);
       var a = this.Mjt?.UiType === 5;
       var a = (a && !LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.FirstOpenCommonWeaponSelect, false)) ?? false;
-      this.Dqm?.SetRedDotVisible(t && a);
+      this.KOm?.SetRedDotVisible(t && a);
       var t = ConfigManager_1.ConfigManager.GachaConfig.GetGachaViewInfo(this.Ejt);
       if (t && (a = t.Type) && (t = ConfigManager_1.ConfigManager.GachaConfig.GetGachaViewTypeConfig(a))) {
         a = t.GachaButtonTip;
@@ -493,7 +508,7 @@ class GachaMainView extends UiTickViewBase_1.UiTickViewBase {
     }
     this.cjt.RefreshByData(i);
   }
-  x7m() {
+  fjm() {
     var e;
     if (this.Mjt?.UiType === 5 && !(LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.FirstOpenCommonWeaponSelect, false) ?? false) && (LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.FirstOpenCommonWeaponSelect, true), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnOpenCommonWeaponSelect), this.jjt(), e = this._jt.GetGenericLayout().GetSelectedGridIndex(), e = this._jt?.GetScrollItemByIndex(e))) {
       e.RefreshRedDot();

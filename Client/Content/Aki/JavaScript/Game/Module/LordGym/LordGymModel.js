@@ -41,8 +41,7 @@ class LordGymModel extends ModelBase_1.ModelBase {
     this.CacheLocation = undefined;
     this.CacheRotator = undefined;
     this.CacheScale = undefined;
-    this.iHf = undefined;
-    this.Leg = 0;
+    this.mtg = undefined;
   }
   OnInit() {
     this.LordId2EntranceIdMap = new Map();
@@ -174,17 +173,17 @@ class LordGymModel extends ModelBase_1.ModelBase {
     let t = 0;
     var i = ConfigManager_1.ConfigManager.LordGymConfig;
     var o = ConfigManager_1.ConfigManager.ExchangeRewardConfig;
-    for (const s of e) {
-      for (const h of i.GetLordGymEntranceConfig(s).LordGymList) {
+    for (const a of e) {
+      for (const h of i.GetLordGymEntranceConfig(a).LordGymList) {
         var n = i.GetLordGymConfig(h).RewardId;
         var n = o.GetExchangeRewardPreviewRewardList(n);
-        var a = this.GetLordGymIsFinish(h);
-        for (const d of n) {
-          if (d[0].ItemId === PayShopDefine_1.LORD_GYM_CURRENCY_ID || d[0].ItemId === PayShopDefine_1.LORD_GYM_THIRD_CURRENCY_ID) {
-            if (a) {
-              r += d[1];
+        var s = this.GetLordGymIsFinish(h);
+        for (const f of n) {
+          if (f[0].ItemId === PayShopDefine_1.LORD_GYM_CURRENCY_ID || f[0].ItemId === PayShopDefine_1.LORD_GYM_THIRD_CURRENCY_ID) {
+            if (s) {
+              r += f[1];
             }
-            t += d[1];
+            t += f[1];
           }
         }
       }
@@ -227,50 +226,47 @@ class LordGymModel extends ModelBase_1.ModelBase {
     return this.LordGymEntrancesWithNewTag;
   }
   GetLordGymThirdBossSequenceActor() {
-    return this.iHf;
+    return this.mtg;
   }
   DestroyLordGymThirdBossSequenceActor() {
-    if (this.iHf?.IsValid()) {
-      this.iHf.SequencePlayer?.Stop();
-      this.iHf.K2_DestroyActor();
-      this.iHf = undefined;
+    if (this.mtg?.IsValid()) {
+      this.mtg.SequencePlayer?.Stop();
+      this.mtg.K2_DestroyActor();
+      this.mtg = undefined;
     }
   }
   PlaybackPosition(e) {
     var r;
     var t;
-    if (this.iHf?.IsValid() && (r = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetSubsystem(GlobalData_1.GlobalData.World, UE.KuroSceneInteractionActorSystem.StaticClass()), (t = UE.KuroCollectActorComponent.GetActorWithTag(FNameUtil_1.FNameUtil.GetDynamicFName("MonsterCase"), 1))?.IsValid() && r.SetSequenceWithTargetLevelActor(this.iHf, this.iHf.GetSequence(), t), UE.KuroSequenceRuntimeFunctionLibrary.SetSequenceInUiScene(this.iHf.GetSequence(), true), this.iHf.bOverrideInstanceData = true, r = this.iHf.DefaultInstanceData, t = UE.KismetMathLibrary.Conv_TransformDoubleToTransform(ControllerHolder_1.ControllerHolder.RenderModuleController.GetKuroCurrentUiSceneTransform()), r.TransformOrigin = t, r = (e ? this.iHf?.SequencePlayer?.GetStartTime() : this.iHf?.SequencePlayer?.GetEndTime()).Time)) {
+    if (this.mtg?.IsValid() && (r = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetSubsystem(GlobalData_1.GlobalData.World, UE.KuroSceneInteractionActorSystem.StaticClass()), (t = UE.KuroCollectActorComponent.GetActorWithTag(FNameUtil_1.FNameUtil.GetDynamicFName("MonsterCase"), 1))?.IsValid() && r.SetSequenceWithTargetLevelActor(this.mtg, this.mtg.GetSequence(), t), UE.KuroSequenceRuntimeFunctionLibrary.SetSequenceInUiScene(this.mtg.GetSequence(), true), this.mtg.bOverrideInstanceData = true, r = this.mtg.DefaultInstanceData, t = UE.KismetMathLibrary.Conv_TransformDoubleToTransform(ControllerHolder_1.ControllerHolder.RenderModuleController.GetKuroCurrentUiSceneTransform()), r.TransformOrigin = t, r = (e ? this.mtg?.SequencePlayer?.GetStartTime() : this.mtg?.SequencePlayer?.GetEndTime()).Time)) {
       t = new UE.MovieSceneSequencePlaybackParams(r, 0, "", 0, 0);
-      this.iHf?.SequencePlayer?.SetPlaybackPosition(t);
+      this.mtg?.SequencePlayer?.SetPlaybackPosition(t);
     }
   }
-  async weg(e) {
+  async Fwg(e) {
     this.DestroyLordGymThirdBossSequenceActor();
     var r;
     var t = await new LoadAsyncPromise_1.LoadAsyncPromise(LordGymDefine_1.LORD_GYM_THIRD_SEQUENCE_PATH, UE.LevelSequence).Promise;
-    if (t && !this.iHf?.IsValid()) {
+    if (t && !this.mtg?.IsValid()) {
       r = (0, puerts_1.$ref)(undefined);
       UE.LevelSequencePlayer.CreateLevelSequencePlayer(GlobalData_1.GlobalData.World, t, new UE.MovieSceneSequencePlaybackSettings(), r);
-      this.iHf = (0, puerts_1.$unref)(r);
+      this.mtg = (0, puerts_1.$unref)(r);
       (r = new UE.MovieSceneSequencePlaybackSettings()).bRestoreState = false;
       r.bPauseAtEnd = true;
-      this.iHf.PlaybackSettings = r;
-      this.iHf.SetTickableWhenPaused(true);
-      this.iHf.SetSequence(t);
+      this.mtg.PlaybackSettings = r;
+      this.mtg.SetTickableWhenPaused(true);
+      this.mtg.SetSequence(t);
       this.PlaybackPosition(e);
     }
   }
   async EnterLordGymThirdBossScene(e) {
-    this.Leg = UE.KismetSystemLibrary.GetConsoleVariableIntValue("r.Kuro.HideLandscape");
-    UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Kuro.HideLandscape 0");
-    await this.weg(e);
+    await this.Fwg(e);
     var e = UE.KuroGISystem.GetKuroGISystem(GlobalData_1.GlobalData.World.GetWorld());
     if (e && ((e = e.GetKuroGlobalGIActor()).UINeedLerpData = true, e.GlobalUiScenePostProcess && (e.GlobalUiScenePostProcess.bEnabled = false), e.GlobalPostProcessVolume)) {
       e.GlobalPostProcessVolume.bIsUISceneRendering = true;
     }
   }
   ExitLordGymThirdBossScene() {
-    UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Kuro.HideLandscape " + this.Leg);
     var e = UE.KuroGISystem.GetKuroGISystem(GlobalData_1.GlobalData.World.GetWorld());
     if (e && ((e = e.GetKuroGlobalGIActor()).UINeedLerpData = false, e.GlobalUiScenePostProcess && (e.GlobalUiScenePostProcess.bEnabled = true), e.GlobalPostProcessVolume)) {
       e.GlobalPostProcessVolume.bIsUISceneRendering = false;

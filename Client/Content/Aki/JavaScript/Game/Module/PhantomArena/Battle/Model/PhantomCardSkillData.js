@@ -14,8 +14,8 @@ class PhantomCardSkillData {
   RefreshData(t) {
     this.CardId = t.J7n;
     this.Unlock = t.CMs;
-    this.TargetNum = t.Nqm;
-    this.CurNum = t.Vqm;
+    this.TargetNum = t.uGm;
+    this.CurNum = t.cGm;
   }
 }
 exports.PhantomCardSkillData = PhantomCardSkillData;

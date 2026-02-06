@@ -3,9 +3,8 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.extraUiPanelInfoMap = exports.SCALE_STEP = exports.onlinePlayerIconPathList2 = exports.onlinePlayerIconPathList = exports.MarkPriority2HierarchyIndexHelper = exports.HUANG_LONG_COUNTRY_ID = exports.secondaryUiPanelComponentsRegisterInfoB = exports.secondaryUiPanelComponentsRegisterInfoA = exports.ESecondaryPanel = exports.DEBUG_SPHERE_DEFAULT_DURATION = exports.DEBUG_SPHERE_DEFAULT_SEGMENTS = exports.DEBUG_SPHERE_DEFAULT_RADIUS = exports.MARK_CLICK_RANGE = exports.MARK_ITEM_VIEW_PATH = exports.MORALE_FLAG_BOX_ICON_PATH = exports.TEMPORARY_TELEPORT_NORMAL_ICON_PATH = exports.MULTI_MAP_ICON_PATH = exports.SUB_ICON_PATH = exports.BLOCK_MARK_ICON_PATH = exports.MULTI_MAP_SELECT_ICON_PATH = undefined;
+exports.SCALE_STEP = exports.onlinePlayerIconPathList2 = exports.onlinePlayerIconPathList = exports.MarkPriority2HierarchyIndexHelper = exports.HUANG_LONG_COUNTRY_ID = exports.secondaryUiPanelComponentsRegisterInfoB = exports.secondaryUiPanelComponentsRegisterInfoA = exports.ESecondaryPanel = exports.DEBUG_SPHERE_DEFAULT_DURATION = exports.DEBUG_SPHERE_DEFAULT_SEGMENTS = exports.DEBUG_SPHERE_DEFAULT_RADIUS = exports.MARK_CLICK_RANGE = exports.MARK_ITEM_VIEW_PATH = exports.MORALE_FLAG_BOX_ICON_PATH = exports.TEMPORARY_TELEPORT_NORMAL_ICON_PATH = exports.MULTI_MAP_ICON_PATH = exports.SUB_ICON_PATH = exports.BLOCK_MARK_ICON_PATH = exports.MULTI_MAP_SELECT_ICON_PATH = undefined;
 const UE = require("ue");
-const PhantomArenaMapEntrancePanel_1 = require("../PhantomArena/Prepare/Entrance/PhantomArenaMapEntrancePanel");
 var ESecondaryPanel;
 exports.MULTI_MAP_SELECT_ICON_PATH = "SP_MarkMultiMapSelect";
 exports.BLOCK_MARK_ICON_PATH = "SP_MarkBlock";
@@ -80,27 +79,27 @@ class MarkPriority2HierarchyIndexHelper {
   }
   AddMarkItem(e, r) {
     var a = this.C3o(e, r);
-    var n = this.d3o.length;
-    let t = 0;
-    if (n === 0) {
+    var t = this.d3o.length;
+    let o = 0;
+    if (t === 0) {
       this.d3o.push(new PriorityHierarchyIndexNode(a));
     } else {
       let r = -1;
-      for (let e = 0; e < n; ++e) {
-        var o = this.d3o[e];
-        var E = o.Priority;
+      for (let e = 0; e < t; ++e) {
+        var n = this.d3o[e];
+        var E = n.Priority;
         if (!(E < a)) {
           if (E === a) {
-            t += o.MaxHierarchyIndex;
-            ++o.MaxHierarchyIndex;
+            o += n.MaxHierarchyIndex;
+            ++n.MaxHierarchyIndex;
             break;
           }
           r = e;
           break;
         }
-        t += o.MaxHierarchyIndex;
-        if (e === n - 1) {
-          r = n;
+        o += n.MaxHierarchyIndex;
+        if (e === t - 1) {
+          r = t;
           break;
         }
       }
@@ -108,7 +107,7 @@ class MarkPriority2HierarchyIndexHelper {
         this.d3o.splice(r, 0, new PriorityHierarchyIndexNode(a));
       }
     }
-    return t;
+    return o;
   }
   RemoveMarkItem(e, r) {
     const a = this.C3o(e, r);
@@ -126,7 +125,4 @@ class MarkPriority2HierarchyIndexHelper {
 exports.MarkPriority2HierarchyIndexHelper = MarkPriority2HierarchyIndexHelper;
 exports.onlinePlayerIconPathList = ["SP_MapFollowing1", "SP_MapFollowing2", "SP_MapFollowing3"];
 exports.onlinePlayerIconPathList2 = ["SP_IconMap_Mark_1P_UI", "SP_IconMap_Mark_2P_UI", "SP_IconMap_Mark_3P_UI"];
-exports.SCALE_STEP = 0.1;
-exports.extraUiPanelInfoMap = {
-  PhantomArenaMapEntrance: [PhantomArenaMapEntrancePanel_1.PhantomArenaMapEntrancePanel, "UiView_SoundRemnantArenaMap"]
-}; //# sourceMappingURL=WorldMapDefine.js.map
+exports.SCALE_STEP = 0.1; //# sourceMappingURL=WorldMapDefine.js.map

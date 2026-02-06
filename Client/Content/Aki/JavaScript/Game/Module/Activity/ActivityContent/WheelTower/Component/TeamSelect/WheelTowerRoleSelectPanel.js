@@ -14,10 +14,10 @@ class WheelTowerRoleSelectPanel extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.OnRoleSelect = undefined;
-    this.btf = undefined;
+    this.Urf = undefined;
     this.adi = undefined;
-    this.ECf = 0;
-    this.Rtf = () => {
+    this.syf = 0;
+    this.xrf = () => {
       var e = new WheelTowerRoleGridItem_1.WheelTowerRoleGridItem();
       e.SetToggleClickCallback(this.N8e);
       return e;
@@ -45,10 +45,10 @@ class WheelTowerRoleSelectPanel extends UiPanelBase_1.UiPanelBase {
       }
       t.push(...n);
       e = t.length > 0;
-      this.btf?.ContentItem?.SetUIActive(e);
+      this.Urf?.ContentItem?.SetUIActive(e);
       if (e) {
-        this.ECf = t[0];
-        this.btf.RefreshByData(t);
+        this.syf = t[0];
+        this.Urf.RefreshByData(t);
       }
     };
   }
@@ -56,7 +56,7 @@ class WheelTowerRoleSelectPanel extends UiPanelBase_1.UiPanelBase {
     this.ComponentRegisterInfos = [[0, UE.UIScrollViewWithScrollbarComponent], [1, UE.UIItem]];
   }
   OnStart() {
-    this.btf = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(0), this.Rtf);
+    this.Urf = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(0), this.xrf);
     var e = this.GetItem(1);
     this.adi = new FilterSortEntrance_1.FilterSortEntrance(e, this.Hlo);
   }
@@ -65,14 +65,14 @@ class WheelTowerRoleSelectPanel extends UiPanelBase_1.UiPanelBase {
     this.adi?.UpdateData(5, e);
   }
   GetFirstRoleId() {
-    return this.ECf;
+    return this.syf;
   }
   OnBeforeDestroy() {
     this.adi?.Destroy();
     this.adi = undefined;
   }
   OnlyRefreshScroll() {
-    this.btf.GetGenericLayout()?.RefreshWithoutDataSync();
+    this.Urf.GetGenericLayout()?.RefreshWithoutDataSync();
   }
 }
 exports.WheelTowerRoleSelectPanel = WheelTowerRoleSelectPanel;

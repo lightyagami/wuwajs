@@ -45,10 +45,10 @@ class HonamiStorySettleFailView extends UiViewBase_1.UiViewBase {
       if (e) {
         LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(5), "HonamiStory_EvacuationInterface_4", i);
       }
-      this.c9m();
+      this.Qjm();
     }
   }
-  c9m() {
+  Qjm() {
     var e = ModelManager_1.ModelManager.HonamiStoryModel.GetRandomDialogData(3);
     AudioSystem_1.AudioSystem.PostEvent(e.AudioEvent);
   }

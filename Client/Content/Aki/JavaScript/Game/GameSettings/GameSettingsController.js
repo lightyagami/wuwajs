@@ -6,6 +6,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.GameSettingsController = undefined;
 const UE = require("ue");
+const Application_1 = require("../../Core/Application/Application");
+const AudioSystem_1 = require("../../Core/Audio/AudioSystem");
 const Info_1 = require("../../Core/Common/Info");
 const Log_1 = require("../../Core/Common/Log");
 const ControllerBase_1 = require("../../Core/Framework/ControllerBase");
@@ -21,8 +23,6 @@ const GameSettingsDeviceRenderDefine_1 = require("./GameSettingsDeviceRenderDefi
 const GameSettingsLevelRender_1 = require("./GameSettingsLevelRender");
 const GameSettingsManager_1 = require("./GameSettingsManager");
 const GameSettingsUtils_1 = require("./GameSettingsUtils");
-const AudioSystem_1 = require("../../Core/Audio/AudioSystem");
-const Application_1 = require("../../Core/Application/Application");
 class GameSettingsController extends ControllerBase_1.ControllerBase {
   static OnInit() {
     if (Log_1.Log.CheckInfo()) {
@@ -39,6 +39,7 @@ class GameSettingsController extends ControllerBase_1.ControllerBase {
     return true;
   }
   static eFd() {
+    var e;
     GameSettingsManager_1.GameSettingsManager.ReApply(GameSettingsDefine_1.EFunction.NPCDENSITY, 0, false);
     GameSettingsManager_1.GameSettingsManager.ReApply(GameSettingsDefine_1.EFunction.NVIDIADLSSQUALITY, 0, false);
     GameSettingsManager_1.GameSettingsManager.ReApply(GameSettingsDefine_1.EFunction.NIAGARAQUALITY, 0, false);
@@ -49,25 +50,31 @@ class GameSettingsController extends ControllerBase_1.ControllerBase {
         UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "UBInstancing.Enabled 1");
       }
     }
+    if (GameSettingsDeviceRender_1.GameSettingsDeviceRender.DeviceVideoGbRam <= 12 && this.KuroRenderQualityLocalIndex >= 70 && this.KuroRenderQualityLocalIndex < 90 && (e = UE.KismetSystemLibrary.GetConsoleVariableFloatValue("wp.Runtime.LoadingRangeScale")) > 1) {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Render", 92, "[局部性能盒子-TS] 低显存限制流送系数", ["OldValue:", e], ["Value:", 1]);
+      }
+      UE.KuroStaticLibrary.SetConsoleVariableWithCurrentPriority_Float("wp.Runtime.LoadingRangeScale", 1);
+    }
   }
   static JGd() {
     this.zGd.OnEnterVolumeBlueprintEvent.Add(() => {
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("Render", 92, "进入局部性能盒子");
+        Log_1.Log.Info("Render", 92, "[局部性能盒子-TS] 进入盒子");
       }
     });
     this.zGd.OnApplyKuroRenderLocalSettingsBlueprintEvent.Add(e => {
       this.KuroRenderQualityLocalIndex = e;
       this.eFd();
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("Render", 92, "局部性能盒子应用索引", ["LocalIndex:", e]);
+        Log_1.Log.Info("Render", 92, "[局部性能盒子-TS] 盒子应用索引", ["LocalIndex:", e]);
       }
     });
     this.zGd.OnLeaveVolumeBlueprintEvent.Add(() => {
       this.KuroRenderQualityLocalIndex = -1;
       this.eFd();
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("Render", 92, "离开局部性能盒子");
+        Log_1.Log.Info("Render", 92, "[局部性能盒子-TS] 离开盒子");
       }
     });
   }
@@ -161,7 +168,7 @@ GameSettingsController.hMe = () => {
         UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "sg.FoliageQuality 2");
         UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.CapsuleKuroAO 1");
         UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.LandscapeReverseLODScaleFactor 0");
-      } else if (e === 14 || e === 51) {
+      } else if (e === 14 || e === 15 || e === 51) {
         UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "sg.ViewDistanceQuality 3");
         UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "sg.AntiAliasingQuality 3");
         UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "sg.PostProcessQuality 3");
@@ -174,7 +181,7 @@ GameSettingsController.hMe = () => {
         UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "sg.FoliageQuality 3");
         UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.CapsuleKuroAO 1");
         UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.LandscapeReverseLODScaleFactor 0");
-      } else if (e === 15) {
+      } else if (e === 16) {
         UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "sg.ViewDistanceQuality 3");
         UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "sg.AntiAliasingQuality 3");
         UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "sg.PostProcessQuality 3");

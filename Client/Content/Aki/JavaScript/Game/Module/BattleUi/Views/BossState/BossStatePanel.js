@@ -33,7 +33,7 @@ class BossStatePanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     this.Prt = undefined;
     this.xrt = 0;
     this.wrt = 0;
-    this.Svf = [];
+    this.DMf = [];
     this.Brt = t => {
       if (t && this.brt(t)) {
         EventSystem_1.EventSystem.AddWithTargetUseHoldKey(this, t, EventDefine_1.EEventName.RemoveEntity, this.zpe);
@@ -42,13 +42,13 @@ class BossStatePanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     this.zpe = (t, e) => {
       var i;
       var s;
-      if (e?.Valid && (i = e.Entity.GetComponent(3)) && i.IsBoss && (i = e.Id, this.Drt.has(i)) && (this.Drt.delete(i), this.YQn.delete(i), (s = this.Svf.indexOf(i)) > -1 && this.Svf.splice(s, 1), EventSystem_1.EventSystem.RemoveWithTargetUseKey(this, e, EventDefine_1.EEventName.RemoveEntity, this.zpe), i === this.Rrt) && this.IsTargetBossExist()) {
+      if (e?.Valid && (i = e.Entity.GetComponent(3)) && i.IsBoss && (i = e.Id, this.Drt.has(i)) && (this.Drt.delete(i), this.YQn.delete(i), (s = this.DMf.indexOf(i)) > -1 && this.DMf.splice(s, 1), EventSystem_1.EventSystem.RemoveWithTargetUseKey(this, e, EventDefine_1.EEventName.RemoveEntity, this.zpe), i === this.Rrt) && this.IsTargetBossExist()) {
         this.qrt(false);
         this.Grt();
       }
     };
     this.AQe = (t, e, i, s) => {
-      if ((this.Rrt === t || !!this.Mvf(this.Rrt, t)) && (e.CueType === 2 || e.CueType === 14)) {
+      if ((this.Rrt === t || !!this.UMf(this.Rrt, t)) && (e.CueType === 2 || e.CueType === 14)) {
         this.Art?.ChangeBuff(e, i, s, t);
       }
     };
@@ -184,7 +184,7 @@ class BossStatePanel extends BattleChildViewPanel_1.BattleChildViewPanel {
         this.Art.HideWithAnim();
       }
       if (this.Art instanceof CommonBossStateDoubleView_1.CommonBossStateDoubleView) {
-        this.Svf.length = 0;
+        this.DMf.length = 0;
         this.Urt.delete(2);
       }
       this.Art = undefined;
@@ -226,28 +226,28 @@ class BossStatePanel extends BattleChildViewPanel_1.BattleChildViewPanel {
         this.qrt(false);
         this.Grt();
       }
-    } else if (this.Rrt !== t && !this.Mvf(this.Rrt, t)) {
+    } else if (this.Rrt !== t && !this.UMf(this.Rrt, t)) {
       this.OnChangeBoss(t);
     }
   }
-  Mvf(t, e) {
+  UMf(t, e) {
     if (this.Art instanceof CommonBossStateDoubleView_1.CommonBossStateDoubleView) {
-      if (this.Svf.includes(t) && this.Svf.includes(e)) {
+      if (this.DMf.includes(t) && this.DMf.includes(e)) {
         return true;
       }
       var i = EntitySystem_1.EntitySystem.Get(t)?.GetComponent(0);
       var s = EntitySystem_1.EntitySystem.Get(e)?.GetComponent(0);
       var n = i?.GetSummonerId() ?? 0;
       if (n > 0 && i && s?.CustomServerEntityIds.includes(i.GetCreatureDataId())) {
-        this.Svf.push(t, e);
+        this.DMf.push(t, e);
         return true;
       }
       n = s?.GetSummonerId() ?? 0;
       if (n > 0 && s && i?.CustomServerEntityIds.includes(s.GetCreatureDataId())) {
-        this.Svf.push(t, e);
+        this.DMf.push(t, e);
         return true;
       }
-      this.Svf.length = 0;
+      this.DMf.length = 0;
     }
     return false;
   }

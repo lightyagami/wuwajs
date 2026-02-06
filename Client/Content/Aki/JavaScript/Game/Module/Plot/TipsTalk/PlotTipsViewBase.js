@@ -37,7 +37,7 @@ class PlotTipsViewBase extends UiPanelBase_1.UiPanelBase {
     this.m3d = undefined;
     this.Ebn = undefined;
     this.ybn = undefined;
-    this.mXm = false;
+    this.Izm = false;
     this.lZi = AudioSystem_1.INVALID_AUDIO_EVENT_VALUE;
     this.Ybn = 0;
     this.Lbn = new Map();
@@ -82,8 +82,8 @@ class PlotTipsViewBase extends UiPanelBase_1.UiPanelBase {
       this.SetUiActive(!e);
     };
     this.Eto = (e = false, t = true) => {
-      if (this.mXm !== e && (!!e || !this.IsHideOrHiding)) {
-        if (this.mXm = e) {
+      if (this.Izm !== e && (!!e || !this.IsHideOrHiding)) {
+        if (this.Izm = e) {
           if (t) {
             this.SetUiActive(false);
           }
@@ -264,7 +264,7 @@ class PlotTipsViewBase extends UiPanelBase_1.UiPanelBase {
           }
           if (e === 0 && s === this.Ybn) {
             this.lZi = AudioSystem_1.INVALID_AUDIO_EVENT_VALUE;
-            this.Rbn(this.Ebn.CaptionParams?.IntervalTime || ModelManager_1.ModelManager.PlotModel.PlotGlobalConfig.AudioEndWaitTimePrompt, this.mXm);
+            this.Rbn(this.Ebn.CaptionParams?.IntervalTime || ModelManager_1.ModelManager.PlotModel.PlotGlobalConfig.AudioEndWaitTimePrompt, this.Izm);
           }
         }
       });
@@ -311,7 +311,7 @@ class PlotTipsViewBase extends UiPanelBase_1.UiPanelBase {
           }
           if (e === 0 && o === this.Ybn) {
             this.lZi = AudioSystem_1.INVALID_AUDIO_EVENT_VALUE;
-            this.Rbn(this.Ebn.CaptionParams?.IntervalTime || ModelManager_1.ModelManager.PlotModel.PlotGlobalConfig.AudioEndWaitTimePrompt, this.mXm);
+            this.Rbn(this.Ebn.CaptionParams?.IntervalTime || ModelManager_1.ModelManager.PlotModel.PlotGlobalConfig.AudioEndWaitTimePrompt, this.Izm);
           }
         }
       });
@@ -344,7 +344,7 @@ class PlotTipsViewBase extends UiPanelBase_1.UiPanelBase {
     }
   }
   get IsHang() {
-    return this.mXm;
+    return this.Izm;
   }
   GetViewName() {
     return this.m3d?.ViewName;

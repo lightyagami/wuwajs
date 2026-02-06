@@ -29,8 +29,8 @@ class TrapDefenseBattleSkillData extends BattleSkillDataBase_1.BattleSkillDataBa
     this.EntityHandle = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
     if (this.EntityHandle) {
       t = this.EntityHandle.Entity;
-      this.GameplayTagComponent = t.GetComponent(215);
-      this.CharacterSkillCdComponent = t.GetComponent(218);
+      this.GameplayTagComponent = t.GetComponent(217);
+      this.CharacterSkillCdComponent = t.GetComponent(220);
     }
     if (this.Config) {
       this.InitSkill();

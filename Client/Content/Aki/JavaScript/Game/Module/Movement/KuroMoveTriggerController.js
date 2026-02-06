@@ -34,7 +34,7 @@ class MoveTriggerController extends ControllerBase_1.ControllerBase {
           if (o.Actor instanceof TsBaseCharacter_1.default && o.Actor?.IsValid()) {
             var t = o.Actor?.CharacterActorComponent?.Entity;
             if (t?.Valid && o.Area === 0) {
-              const l = t.GetComponent(80);
+              const l = t.GetComponent(82);
               if (o.EnterOverlap) {
                 if (l?.Valid) {
                   l.InSwimTriggerCount++;

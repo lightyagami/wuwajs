@@ -20,28 +20,28 @@ class ActivityWheelTowerRewardView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
     this.Qyi = undefined;
-    this.Ilf = undefined;
+    this.V_f = undefined;
     this.T8e = undefined;
-    this.Tlf = false;
+    this.H_f = false;
     this.Hwn = () => {
       var e = new RewardTabItem();
       e.SetToggleClickCallback(this.pqe);
       return e;
     };
     this.pqe = e => {
-      this.Ilf?.SelectGridProxy(e);
-      this.Tlf = e === 1;
-      this.blf();
+      this.V_f?.SelectGridProxy(e);
+      this.H_f = e === 1;
+      this.j_f();
     };
     this.rOe = () => {
       var e = new RewardItem();
-      e.SetOnClickReceiveCallback(this.Rlf);
+      e.SetOnClickReceiveCallback(this.$_f);
       return e;
     };
-    this.Rlf = () => {
-      ActivityControllerHolder_1.ActivityControllerHolder.WheelTowerController.RequestTaskReceive(this.Tlf).then(() => {
-        this.Ilf?.GetGenericLayout()?.RefreshWithoutDataSync();
-        this.blf();
+    this.$_f = () => {
+      ActivityControllerHolder_1.ActivityControllerHolder.WheelTowerController.RequestTaskReceive(this.H_f).then(() => {
+        this.V_f?.GetGenericLayout()?.RefreshWithoutDataSync();
+        this.j_f();
       });
     };
   }
@@ -51,20 +51,20 @@ class ActivityWheelTowerRewardView extends UiViewBase_1.UiViewBase {
   async OnBeforeStartAsync() {
     this.Qyi = new PopupCaptionItem_1.PopupCaptionItem();
     await this.Qyi.CreateThenShowByActorAsync(this.GetItem(0).GetOwner());
-    this.Ilf = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(1), this.Hwn, undefined);
+    this.V_f = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(1), this.Hwn, undefined);
     this.T8e = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(3), this.rOe, undefined);
   }
   OnStart() {
-    this.Ilf?.RefreshByData(wheelTowerDiffList, () => {
-      this.Ilf?.GetScrollItemByIndex(0)?.SetToggleStateForce(true, true);
+    this.V_f?.RefreshByData(wheelTowerDiffList, () => {
+      this.V_f?.GetScrollItemByIndex(0)?.SetToggleStateForce(true, true);
     }, true);
     this.Qyi?.SetCloseCallBack(() => {
       this.CloseMe();
     });
   }
-  blf() {
+  j_f() {
     const t = ModelManager_1.ModelManager.WheelTowerModel.ActivityData;
-    var e = t.GetLevelRecord(this.Tlf);
+    var e = t.GetLevelRecord(this.H_f);
     var e = ConfigManager_1.ConfigManager.WheelTowerConfig.GetRewardConfigListByLevelId(e.gG_);
     const s = e => {
       switch (t.GetTaskState(e)) {
@@ -92,10 +92,10 @@ exports.ActivityWheelTowerRewardView = ActivityWheelTowerRewardView;
 class RewardTabItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
     super(...arguments);
-    this.wlf = -1;
-    this.gtf = undefined;
+    this.W_f = -1;
+    this.Erf = undefined;
     this.kqe = () => {
-      this.gtf?.(this.wlf);
+      this.Erf?.(this.W_f);
     };
   }
   OnRegisterComponent() {
@@ -105,9 +105,10 @@ class RewardTabItem extends GridProxyAbstract_1.GridProxyAbstract {
   OnStart() {
     const e = this.GetExtendToggle(0);
     e.CanExecuteChange.Bind(() => e.ToggleState !== 1);
+    ModelManager_1.ModelManager.WheelTowerModel?.ActivityData.RecordReadReward();
   }
   Refresh(e, t, i) {
-    var e = (this.wlf = e) === 1;
+    var e = (this.W_f = e) === 1;
     var r = e ? "WheelBattleMode_Endless" : "WheelBattleMode_Normal";
     this.GetText(2)?.ShowTextNew(r);
     var r = ModelManager_1.ModelManager.WheelTowerModel.ActivityData;
@@ -119,7 +120,7 @@ class RewardTabItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.GetItem(1)?.SetUIActive(o);
   }
   SetToggleClickCallback(e) {
-    this.gtf = e;
+    this.Erf = e;
   }
   SetToggleStateForce(e, t) {
     this.GetExtendToggle(0)?.SetToggleStateForce(e ? 1 : 0, t);
@@ -132,9 +133,9 @@ class RewardItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
     super(...arguments);
     this.H3e = undefined;
-    this.Llf = undefined;
+    this.Q_f = undefined;
     this.FVc = () => {
-      this.Llf?.();
+      this.Q_f?.();
     };
   }
   OnRegisterComponent() {
@@ -159,7 +160,7 @@ class RewardItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.GetText(1)?.SetText(s.Current + "/" + s.Target);
   }
   SetOnClickReceiveCallback(e) {
-    this.Llf = e;
+    this.Q_f = e;
   }
 }
 //# sourceMappingURL=WheelTowerRewardView.js.map

@@ -60,7 +60,7 @@ let TriggerComponent = TriggerComponent_1 = class TriggerComponent extends Entit
   OnInitData(e) {
     var e = e.GetParam(TriggerComponent_1)[0];
     var e = e || undefined;
-    var t = this.Entity.GetComponent(130);
+    var t = this.Entity.GetComponent(132);
     if (t && !t.LogicRange) {
       t.SetLogicRange(300);
     }
@@ -70,7 +70,7 @@ let TriggerComponent = TriggerComponent_1 = class TriggerComponent extends Entit
     return true;
   }
   OnStart() {
-    this.vtn = this.Entity.GetComponent(89);
+    this.vtn = this.Entity.GetComponent(91);
     if (this.vtn) {
       if (this.Lo?.OnlineDisableTip && !RangeComponentMessageManager_1.RangeComponentMessageManager.Instance.HasMessage(this.Entity, Protocol_1.Aki.Protocol.i6n.Proto_RangeEnter, Protocol_1.Aki.Protocol.WR_.Proto_Trigger, this.ful)) {
         RangeComponentMessageManager_1.RangeComponentMessageManager.Instance.RegisterMessage(this.Entity, Protocol_1.Aki.Protocol.i6n.Proto_RangeEnter, Protocol_1.Aki.Protocol.WR_.Proto_Trigger, this.ful);
@@ -94,5 +94,5 @@ let TriggerComponent = TriggerComponent_1 = class TriggerComponent extends Entit
     return LevelGeneralContextDefine_1.TriggerContext.Create(this.Entity.Id, e);
   }
 };
-TriggerComponent = TriggerComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(90)], TriggerComponent);
+TriggerComponent = TriggerComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(92)], TriggerComponent);
 exports.TriggerComponent = TriggerComponent; //# sourceMappingURL=TriggerComponent.js.map

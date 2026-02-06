@@ -49,8 +49,8 @@ let BaseFrozenComponent = class BaseFrozenComponent extends EntityComponent_1.En
   }
   OnStart() {
     this.ActorComponent = this.Entity.GetComponent(2);
-    this.$br = this.Entity.GetComponent(64);
-    this.ybr = this.Entity.CheckGetComponent(131);
+    this.$br = this.Entity.GetComponent(66);
+    this.ybr = this.Entity.CheckGetComponent(133);
     this.Ubr();
     return true;
   }
@@ -66,7 +66,7 @@ let BaseFrozenComponent = class BaseFrozenComponent extends EntityComponent_1.En
     return true;
   }
   Ubr() {
-    var t = this.Entity.CheckGetComponent(215);
+    var t = this.Entity.CheckGetComponent(217);
     this.Ibr = t.ListenForTagAddOrRemove(2118071836, this.Lbr);
   }
   AddTimeScaleByBuff(t, e, i, s, o) {

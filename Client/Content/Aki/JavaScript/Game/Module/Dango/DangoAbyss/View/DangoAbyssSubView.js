@@ -125,6 +125,7 @@ class DangoAbyssSubView extends ActivitySubViewBase_1.ActivitySubViewBase {
     }
   }
   mGe() {
+    this.LNe.SetActivityBaseData(this.ActivityBaseData);
     this.LNe.SetTitleByText(this.ActivityBaseData.GetTitle());
     var [t, i] = this.GetTimeVisibleAndRemainTime();
     this.LNe.SetTimeTextVisible(t);

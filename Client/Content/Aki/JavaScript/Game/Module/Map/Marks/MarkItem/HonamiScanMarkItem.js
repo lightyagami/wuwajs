@@ -18,12 +18,12 @@ class HonamiScanMarkItem extends ConfigMarkItem_1.ConfigMarkItem {
   OnInitialize() {
     super.OnInitialize();
     this.yn_();
-    this.$ff();
+    this.ECf();
   }
   OnUpdate(e) {
     super.OnUpdate(e);
     if (this.MapType === 1) {
-      this.$ff();
+      this.ECf();
     }
   }
   InitIcon() {
@@ -53,7 +53,7 @@ class HonamiScanMarkItem extends ConfigMarkItem_1.ConfigMarkItem {
   yn_() {
     this.MarkItemEntity.GamePlay.GamePlayState = this.GamePlayIsFinish() ? 2 : 0;
   }
-  $ff() {
+  ECf() {
     this.IsSelectThisFloor = this.GetIsSelectThisFloor();
   }
 }

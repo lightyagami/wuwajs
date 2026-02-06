@@ -53,7 +53,7 @@ class TsTaskUseSkillDesignated extends TsTaskAbortImmediatelyBase_1.default {
           if (this.TsBlackboardKeyTarget && (r = ControllerHolder_1.ControllerHolder.BlackboardController.GetEntityIdByEntity(t.CharAiDesignComp.Entity.Id, this.TsBlackboardKeyTarget), r = ModelManager_1.ModelManager.CreatureModel.GetEntityById(r))) {
             e = r;
           }
-          var r = t.CharAiDesignComp.Entity.GetComponent(41);
+          var r = t.CharAiDesignComp.Entity.GetComponent(43);
           if (r.Valid) {
             if (this.TsDebugLog && Log_1.Log.CheckInfo()) {
               Log_1.Log.Info("BehaviorTree", 6, "UseSkillDesignated TrySkill", ["skill", o.SkillId]);

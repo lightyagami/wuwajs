@@ -11,24 +11,24 @@ class MovieModeModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
     this.MovieModeHideUiTimeThreshold = 0;
-    this.bUf = new Set();
+    this.hGf = new Set();
   }
   OnInit() {
-    this.TIf();
+    this.iRf();
     return true;
   }
-  TIf() {
+  iRf() {
     this.MovieModeHideUiTimeThreshold = CommonParamById_1.configCommonParamById.GetIntConfig("MovieModeHideUiTimeThreshold") ?? 1;
     this.MovieModeHideUiTimeThreshold *= CommonDefine_1.MILLIONSECOND_PER_SECOND;
   }
   FreezeUi(e) {
-    this.bUf.add(e);
+    this.hGf.add(e);
   }
   UnFreezeUi(e) {
-    this.bUf.delete(e);
+    this.hGf.delete(e);
   }
   get IsFreezingUi() {
-    return this.bUf.size > 0;
+    return this.hGf.size > 0;
   }
   OnClear() {
     return true;

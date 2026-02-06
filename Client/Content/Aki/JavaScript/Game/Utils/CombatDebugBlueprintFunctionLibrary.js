@@ -89,10 +89,10 @@ class CombatDebugBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     CombatDebugController_1.CombatDebugController.RefreshServerDebugInfo();
   }
   static GetBuffComponent(t, e) {
-    t = EntitySystem_1.EntitySystem.Get(t)?.GetComponent(220);
+    t = EntitySystem_1.EntitySystem.Get(t)?.GetComponent(222);
     if (t?.GetBuffByHandle(e)) {
       return t;
-    } else if (t && (0, RegisterComponent_1.isComponentInstance)(t, 200) && t.GetFormationBuffComp()?.GetBuffByHandle(e)) {
+    } else if (t && (0, RegisterComponent_1.isComponentInstance)(t, 202) && t.GetFormationBuffComp()?.GetBuffByHandle(e)) {
       return t.GetFormationBuffComp();
     } else {
       return undefined;
@@ -105,9 +105,9 @@ class CombatDebugBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     return CombatDebugBlueprintFunctionLibrary.GetBuffComponent(t, e)?.Entity.GetComponent(22)?.GetServerBuffTotalDuration(e) ?? -1;
   }
   static GetDebugBuff(t, e) {
-    var t = EntitySystem_1.EntitySystem.Get(t)?.GetComponent(220);
+    var t = EntitySystem_1.EntitySystem.Get(t)?.GetComponent(222);
     var r = t?.GetBuffByHandle(e);
-    return r || (!r && (0, RegisterComponent_1.isComponentInstance)(t, 200) ? t.GetFormationBuffComp().GetBuffByHandle(e) : undefined);
+    return r || (!r && (0, RegisterComponent_1.isComponentInstance)(t, 202) ? t.GetFormationBuffComp().GetBuffByHandle(e) : undefined);
   }
   static GetBuffRemainDuration(t, e) {
     return CombatDebugBlueprintFunctionLibrary.GetDebugBuff(t, e)?.GetRemainDuration() ?? -1;
@@ -117,12 +117,12 @@ class CombatDebugBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   }
   static HasServerBuff(t, e) {
     var r = EntitySystem_1.EntitySystem.Get(t)?.GetComponent(22);
-    return !!r && (t = EntitySystem_1.EntitySystem.Get(t)?.GetComponent(200)?.GetFormationBuffComp()?.Entity.GetComponent(22), r.HasServerBuff(e) || t?.HasServerBuff(e) || !r.HasBuffRequest(e) && !t?.HasBuffRequest(e));
+    return !!r && (t = EntitySystem_1.EntitySystem.Get(t)?.GetComponent(202)?.GetFormationBuffComp()?.Entity.GetComponent(22), r.HasServerBuff(e) || t?.HasServerBuff(e) || !r.HasBuffRequest(e) && !t?.HasBuffRequest(e));
   }
   static GetAttributeDebugString(t, e = "") {
     var r = new Set([...e.matchAll(/[0-9]+/g)].map(t => Number(t[0] ?? 0)));
     var e = EntitySystem_1.EntitySystem.GetComponent(t, 22);
-    var n = EntitySystem_1.EntitySystem.GetComponent(t, 182);
+    var n = EntitySystem_1.EntitySystem.GetComponent(t, 184);
     if (!e || !n) {
       return "";
     }
@@ -155,7 +155,7 @@ class CombatDebugBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   static GetStateAttributeDebugString(t, e = "") {
     var r = new Set([...e.matchAll(/[0-9]+/g)].map(t => Number(t[0] ?? 0)));
     var e = EntitySystem_1.EntitySystem.GetComponent(t, 22);
-    var n = EntitySystem_1.EntitySystem.GetComponent(t, 182);
+    var n = EntitySystem_1.EntitySystem.GetComponent(t, 184);
     if (!e || !n) {
       return "";
     }
@@ -260,7 +260,7 @@ class CombatDebugBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     }
     let a = "";
     if (e.GetAllPassiveSkills().length > 0) {
-      var i = EntitySystem_1.EntitySystem.GetComponent(t, 217);
+      var i = EntitySystem_1.EntitySystem.GetComponent(t, 219);
       a += "----- 客户端被动技能 -----\n";
       for (const l of e.GetAllPassiveSkills()) {
         if (!(r.length > 0) || r.some(t => String(l.SkillId).startsWith(t))) {
@@ -335,7 +335,7 @@ ${"" + s}`}说明: ${o.SkillDesc}
   }
   static GetTagsDebugString(t, e = "") {
     const s = e.split(/[,，]/).map(t => t.trim());
-    const o = EntitySystem_1.EntitySystem.GetComponent(t, 215)?.TagContainer;
+    const o = EntitySystem_1.EntitySystem.GetComponent(t, 217)?.TagContainer;
     e = EntitySystem_1.EntitySystem.GetComponent(t, 22);
     if (!e || !o) {
       return "";
@@ -398,7 +398,7 @@ ${"" + s}`}说明: ${o.SkillDesc}
     var a = [...t.matchAll(/[0-9]+/g)].map(t => t[0] ?? "");
     for (const i of r.GetAllCurrentCueRef()) {
       if (!(a.length > 0) || !!a.some(t => String(i.CueConfig.Id).includes(t))) {
-        n += `CueId: ${i.CueConfig.Id} CueHandleId: ${[...i.CueHandleIds]} BuffId: ${i.BuffId}
+        n += `CueId: ${i.CueConfig.Id} CueHandleId: ${[...i.CueHandleIds]} CueType: ${i.CueConfig.CueType} BuffId: ${i.BuffId}
 `;
       }
     }
@@ -408,7 +408,7 @@ ${"" + s}`}说明: ${o.SkillDesc}
       if (t) {
         for (const o of t.GetAllCurrentCueRef()) {
           if (!(a.length > 0) || !!a.some(t => String(o.CueConfig.Id).includes(t))) {
-            n += `CueId: ${o.CueConfig.Id} CueHandleId: ${[...o.CueHandleIds]} BuffId: ${o.BuffId}
+            n += `CueId: ${o.CueConfig.Id} CueHandleId: ${[...o.CueHandleIds]} CueType: ${o.CueConfig.CueType} BuffId: ${o.BuffId}
 `;
           }
         }
@@ -422,7 +422,7 @@ ${"" + s}`}说明: ${o.SkillDesc}
     }
   }
   static GetDebugStateMachine(t, e) {
-    var t = EntitySystem_1.EntitySystem.GetComponent(t, 79);
+    var t = EntitySystem_1.EntitySystem.GetComponent(t, 81);
     t?.StateMachineGroup?.RequestServerDebugInfo();
     var t = t?.StateMachineGroup?.ToString();
     var r = (0, puerts_1.$unref)(e);
@@ -434,9 +434,9 @@ ${"" + s}`}说明: ${o.SkillDesc}
   }
   static GetSkillDebugString(e) {
     let r = "";
-    var n = EntitySystem_1.EntitySystem.GetComponent(e, 40);
+    var n = EntitySystem_1.EntitySystem.GetComponent(e, 42);
     if (n) {
-      var a = EntitySystem_1.EntitySystem.GetComponent(e, 218);
+      var a = EntitySystem_1.EntitySystem.GetComponent(e, 220);
       let t = false;
       for (const s of n.GetAllActivatedSkill()) {
         t = true;
@@ -446,7 +446,7 @@ ${"" + s}`}说明: ${o.SkillDesc}
       if (t) {
         r += "\n";
       }
-      var n = EntitySystem_1.EntitySystem.GetComponent(e, 186);
+      var n = EntitySystem_1.EntitySystem.GetComponent(e, 188);
       var e = n?.MainAnimInstance?.GetMainAnimsDebugText();
       r += "" + e;
       var i = n?.MainAnimInstance?.ActiveAnimNotifyState;

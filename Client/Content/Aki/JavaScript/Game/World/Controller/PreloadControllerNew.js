@@ -272,7 +272,7 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
     u.MainAsset.AddObjectCallback = (e, o) => {
       r.HoldPreloadObject.AddEntityAsset(i.GetCreatureDataId(), e);
     };
-    var o = e.Entity.GetComponent(3);
+    var o = e.Entity.GetComponent(1);
     var c = i.GetModelConfig();
     o?.SetupReplacement(c, u);
     r.AddEntityAsset(i.GetCreatureDataId(), u);
@@ -320,7 +320,7 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
       n.Stop();
       return 4;
     }
-    var c = e.Entity.GetComponent(230);
+    var c = e.Entity.GetComponent(232);
     if (c) {
       c.InitPreload(u);
       await c.InitMorph();
@@ -400,11 +400,11 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
     if (v) {
       for (const [L, I] of P.BulletAssetMap) {
         var D;
-        var h = new GameModePromise_1.GameModePromise();
+        var M = new GameModePromise_1.GameModePromise();
         if (ModelManager_1.ModelManager.PreloadModelNew?.EnablePreloadLog && (D = P.IndexMapping.get(L), Log_1.Log.CheckDebug())) {
           Log_1.Log.Debug("Preload", 4, "[预加载] 开始预加载子弹资源", ["CreatureDataId", u.CreatureDataComponent.GetCreatureDataId()], ["bulletId", D], ["\nAssets", "\n" + Array.from(I.AssetPathSet).map(e => "" + e).join("\n")]);
         }
-        this.LoadAssetAsync(I, u.LoadPriority, false, h, e => {
+        this.LoadAssetAsync(I, u.LoadPriority, false, M, e => {
           if (! --v) {
             f?.Stop();
           }
@@ -415,7 +415,7 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
             }
           }
         });
-        C.push(h.Promise);
+        C.push(M.Promise);
       }
     } else {
       f?.Stop();
@@ -433,13 +433,13 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
       n.Stop();
       return 4;
     }
-    let M = true;
+    let h = true;
     for (const S of t) {
       if (!S) {
-        M = false;
+        h = false;
       }
     }
-    if (M) {
+    if (h) {
       a.SetResult(3);
       i.SetPreloadFinished(true);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PreloadEntityFinished, e);
@@ -505,61 +505,72 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
     }
     o = new GameModePromise_1.GameModePromise();
     this.LoadAssetAsync(t, 101, false, o);
-    t = await o.Promise;
-    if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("Preload", 26, "[预加载][Plot] 剧情预载资源 --- 结束", ["id", e], ["result", t]);
+    let r = await o.Promise;
+    if (r) {
+      this.QUg(e, t);
+      o = new GameModePromise_1.GameModePromise();
+      this.LoadAssetAsync(t, 101, false, o);
+      r = await o.Promise;
     }
-    if (t) {
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("Preload", 26, "[预加载][Plot] 剧情预载资源 --- 结束", ["id", e], ["result", r]);
+    }
+    if (r) {
       return 3;
     } else {
       return 2;
     }
   }
   static hI1(e, o) {
-    var t;
-    var r = ModelManager_1.ModelManager.PreloadModelNew;
-    let a = undefined;
-    let i = false;
-    for (const s of e) {
-      if (s.Name === "SetPlotMode") {
-        var n = s.Params;
-        a = n.Mode;
-      } else if (s.Name === "ShowTalk") {
-        if (a === "LevelA" || a === "LevelB") {
-          var l;
-          var n = s.Params;
-          var _ = n.SequenceDataAsset;
-          if (_) {
-            i = true;
-            r.PlotAssetManager.AddPath(o, _);
+    var t = ModelManager_1.ModelManager.PreloadModelNew;
+    let r = undefined;
+    for (const l of e) {
+      if (l.Name === "SetPlotMode") {
+        var a = l.Params;
+        r = a.Mode;
+      } else if (l.Name === "ShowTalk") {
+        if (r === "LevelA" || r === "LevelB") {
+          var i;
+          var a = l.Params;
+          var n = a.SequenceDataAsset;
+          if (n) {
+            t.PlotAssetManager.AddPath(o, n);
           }
-          if (a === "LevelB") {
-            const f = [];
-            n.TalkItems.forEach(e => {
+          if (r === "LevelB") {
+            const _ = [];
+            a.TalkItems.forEach(e => {
               if (e.TidTalk && e.PlayVoice) {
-                f.push(e.TidTalk);
+                _.push(e.TidTalk);
               }
             });
-            for (const d of f) {
-              if (!StringUtils_1.StringUtils.IsEmpty(d)) {
-                if ((l = PlotAudioById_1.configPlotAudioById.GetConfig(d)) && l.GenLipSync) {
-                  l = PlotAudioModel_1.PlotAudioModel.GetAudioMouthAnimName(l);
-                  r.PlotAssetManager.AddPath(o, l);
+            for (const s of _) {
+              if (!StringUtils_1.StringUtils.IsEmpty(s)) {
+                if ((i = PlotAudioById_1.configPlotAudioById.GetConfig(s)) && i.GenLipSync) {
+                  i = PlotAudioModel_1.PlotAudioModel.GetAudioMouthAnimName(i);
+                  t.PlotAssetManager.AddPath(o, i);
                 }
               }
             }
           }
         }
-      } else if (s.Name === "PlaySequenceData" && (_ = s.Params.Path)) {
-        i = true;
-        r.PlotAssetManager.AddPath(o, _);
+      } else if (l.Name === "PlaySequenceData" && (n = l.Params.Path)) {
+        t.PlotAssetManager.AddPath(o, n);
       }
     }
-    if (i) {
-      e = ModelManager_1.ModelManager.SequenceModel.SeqMainCharacterModelConfig.网格体?.ToAssetPathName();
-      t = ModelManager_1.ModelManager.SequenceModel.SeqMainCharacterModelConfig.蓝图?.ToAssetPathName();
-      r.PlotAssetManager.AddPath(o, e);
-      r.PlotAssetManager.AddPath(o, t);
+  }
+  static QUg(e, o) {
+    var t;
+    var r = ModelManager_1.ModelManager.PreloadModelNew;
+    for (const a of r.PlotAssetManager.GetAllLoadedAssets(e)) {
+      if (a.IsA(UE.BP_SequenceData_C.StaticClass()) && (t = a).NeedSwitchMainCharacter && t.GeneratedData) {
+        if (ModelManager_1.ModelManager.PlayerInfoModel?.GetPlayerGender() === 1) {
+          r.PlotAssetManager.AddPath(o, t.GeneratedData.MalePlayerBP.ToAssetPathName());
+          r.PlotAssetManager.AddPath(o, t.GeneratedData.MaleMesh.ToAssetPathName());
+        } else if (ModelManager_1.ModelManager.PlayerInfoModel?.GetPlayerGender() === 0) {
+          r.PlotAssetManager.AddPath(o, t.GeneratedData.FemalePlayerBP.ToAssetPathName());
+          r.PlotAssetManager.AddPath(o, t.GeneratedData.FemaleMesh.ToAssetPathName());
+        }
+      }
     }
   }
   static sI1(e) {

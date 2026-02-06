@@ -6,9 +6,11 @@ Object.defineProperty(exports, "__esModule", {
 exports.RoleSkinRecommendItem = exports.RoleSkinItemContent = undefined;
 const UE = require("ue");
 const Log_1 = require("../../../../../Core/Common/Log");
+const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const UiPanelBase_1 = require("../../../../Ui/Base/UiPanelBase");
 const UiManager_1 = require("../../../../Ui/UiManager");
+const LogReportDefine_1 = require("../../../LogReport/LogReportDefine");
 const GenericLayout_1 = require("../../../Util/Layout/GenericLayout");
 const LguiUtil_1 = require("../../../Util/LguiUtil");
 const ShopSkinData_1 = require("../../Data/ShopSkinData");
@@ -28,8 +30,8 @@ class RoleSkinItemContent extends UiPanelBase_1.UiPanelBase {
     await this.dFl.CreateByActorAsync(this.GetItem(0).GetOwner());
     this.dFl.GetOriginalItem()?.SetUIParent(this.RootItem);
   }
-  Refresh(i) {
-    this.dFl?.Refresh(i);
+  Refresh(e) {
+    this.dFl?.Refresh(e);
     this.dFl?.SetActive(true);
     this.GetSpine(1).SetAnimation(0, "idle", true);
   }
@@ -42,13 +44,23 @@ class RoleSkinRecommendItem extends UiPanelBase_1.UiPanelBase {
     this.A6i = undefined;
     this.s4e = undefined;
     this.zSl = () => {
-      var i = SkinBuyDetailViewData_1.SkinBuyDetailViewData.Create([this.Kyl]);
-      i.SetPreviewTitle("RoleSkinPreviewTitle_Text");
-      i.SetIndex(0);
-      UiManager_1.UiManager.OpenView("SkinBuyDetailView", i);
+      var e = SkinBuyDetailViewData_1.SkinBuyDetailViewData.Create([this.Kyl]);
+      e.SetPreviewTitle("RoleSkinPreviewTitle_Text");
+      e.SetIndex(0);
+      UiManager_1.UiManager.OpenView("SkinBuyDetailView", e);
+      var e = new LogReportDefine_1.OnClickRecommendSkinButtonLogEvent();
+      e.i_operation_type = 1;
+      ControllerHolder_1.ControllerHolder.LogReportController.LogReport(e);
     };
     this.W2e = () => {
-      return new SkinRewardItemGrid_1.SkinRewardItemGrid();
+      var e = new SkinRewardItemGrid_1.SkinRewardItemGrid();
+      e.OnClickRecommendSkinButtonCallback = e => {
+        var i = new LogReportDefine_1.OnClickRecommendSkinButtonLogEvent();
+        i.i_operation_type = 0;
+        i.i_item_id = e;
+        ControllerHolder_1.ControllerHolder.LogReportController.LogReport(i);
+      };
+      return e;
     };
   }
   OnRegisterComponent() {
@@ -58,13 +70,13 @@ class RoleSkinRecommendItem extends UiPanelBase_1.UiPanelBase {
   OnStart() {
     this.s4e = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(0), this.W2e);
   }
-  Refresh(i) {
-    this.A6i = ModelManager_1.ModelManager.PayShopModel.GetRecommendDataById(i);
-    var e = ModelManager_1.ModelManager.PayShopModel.GetPayShopGoods(this.A6i.RecommendId);
-    if (e) {
-      this.Kyl = ShopSkinData_1.ShopSkinData.Create(e);
+  Refresh(e) {
+    this.A6i = ModelManager_1.ModelManager.PayShopModel.GetRecommendDataById(e);
+    var i = ModelManager_1.ModelManager.PayShopModel.GetPayShopGoods(this.A6i.RecommendId);
+    if (i) {
+      this.Kyl = ShopSkinData_1.ShopSkinData.Create(i);
     } else if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("Shop", 27, "PayShopData is null", ["id", i]);
+      Log_1.Log.Error("Shop", 27, "PayShopData is null", ["id", e]);
     }
     this.Og();
   }
@@ -80,18 +92,18 @@ class RoleSkinRecommendItem extends UiPanelBase_1.UiPanelBase {
     this.v4e(this.Kyl);
     this.MK1(this.Kyl);
   }
-  sSt(i) {
-    var e;
-    if (i) {
-      if (i = i.GetDiscountTimeData()) {
+  sSt(e) {
+    var i;
+    if (e) {
+      if (e = e.GetDiscountTimeData()) {
         this.GetText(2).SetUIActive(true);
         this.GetItem(10)?.SetUIActive(true);
         this.GetItem(11)?.SetUIActive(true);
-        e = this.GetText(2);
-        if (typeof i == "string") {
-          e.SetText(i);
+        i = this.GetText(2);
+        if (typeof e == "string") {
+          i.SetText(e);
         } else {
-          LguiUtil_1.LguiUtil.SetLocalText(e, i.TextId, i.TimeValue);
+          LguiUtil_1.LguiUtil.SetLocalText(i, e.TextId, e.TimeValue);
         }
       } else {
         this.GetText(2).SetUIActive(false);
@@ -104,102 +116,102 @@ class RoleSkinRecommendItem extends UiPanelBase_1.UiPanelBase {
       this.GetItem(11)?.SetUIActive(false);
     }
   }
-  $yl(i) {
-    if (i) {
-      i = i.GetRoleSkinData().GetTitleName();
-      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(3), i);
+  $yl(e) {
+    if (e) {
+      e = e.GetRoleSkinData().GetTitleName();
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(3), e);
     } else {
       this.GetText(3).SetText("");
     }
   }
-  jyl(i) {
-    if (i) {
-      i = i.GetRoleSkinData().GetSubTitle();
-      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), i);
+  jyl(e) {
+    if (e) {
+      e = e.GetRoleSkinData().GetSubTitle();
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), e);
     } else {
       this.GetText(4).SetText("");
     }
   }
-  syl(i) {
-    var e;
-    if (i) {
-      e = i.GetIfDirect();
-      this.GetTexture(9).SetUIActive(!e);
-      if (!e) {
-        e = i.GetPriceData();
-        this.SetItemIcon(this.GetTexture(9), e.CurrencyId);
+  syl(e) {
+    var i;
+    if (e) {
+      i = e.GetIfDirect();
+      this.GetTexture(9).SetUIActive(!i);
+      if (!i) {
+        i = e.GetPriceData();
+        this.SetItemIcon(this.GetTexture(9), i.CurrencyId);
       }
     } else {
       this.GetTexture(9).SetUIActive(false);
     }
   }
-  ryl(i) {
-    if (!i || i.GetIfDirect()) {
+  ryl(e) {
+    if (!e || e.GetIfDirect()) {
       this.GetText(6).SetText("");
-    } else if (i = i.GetPriceData().OriginalPrice) {
+    } else if (e = e.GetPriceData().OriginalPrice) {
       this.GetText(6).SetUIActive(true);
-      this.GetText(6).SetText(`<s>${i.toString()}</s>`);
+      this.GetText(6).SetText(`<s>${e.toString()}</s>`);
     } else {
       this.GetText(6).SetUIActive(false);
     }
   }
-  iyl(i) {
-    var e;
-    if (i) {
-      if (i.GetIfDirect()) {
-        e = i.GetDirectPriceText();
-        this.GetText(5).SetText(e);
+  iyl(e) {
+    var i;
+    if (e) {
+      if (e.GetIfDirect()) {
+        i = e.GetDirectPriceText();
+        this.GetText(5).SetText(i);
       } else {
-        e = i.GetPriceData().NowPrice;
-        this.GetText(5).SetText(e.toString());
+        i = e.GetPriceData().NowPrice;
+        this.GetText(5).SetText(i.toString());
       }
     } else {
       this.GetText(5).SetText("");
     }
   }
-  Oyl(i) {
-    if (i) {
-      i = i.GetIfCanBuy();
-      this.GetButton(7).RootUIComp.SetUIActive(i);
+  Oyl(e) {
+    if (e) {
+      e = e.GetIfCanBuy();
+      this.GetButton(7).RootUIComp.SetUIActive(e);
     } else {
       this.GetButton(7).RootUIComp.SetUIActive(false);
     }
   }
-  Ywn(i) {
-    if (i) {
-      i = i.GetIfCanBuy();
-      this.GetItem(8).SetUIActive(!i);
+  Ywn(e) {
+    if (e) {
+      e = e.GetIfCanBuy();
+      this.GetItem(8).SetUIActive(!e);
     } else {
       this.GetItem(8).SetUIActive(false);
     }
   }
-  v4e(i) {
-    if (i) {
-      var e = [];
-      for (const h of i.GetAllReward()) {
+  v4e(e) {
+    if (e) {
+      var i = [];
+      for (const r of e.GetAllReward()) {
         var t = new SkinRewardItemGrid_1.SkinRewardData();
         var s = [{
-          IncId: h[0].IncId,
-          ItemId: h[0].ItemId
+          IncId: r[0].IncId,
+          ItemId: r[0].ItemId
         }, 0];
         t.ItemData = s;
-        t.FinishState = i.GetCurrentGoodsData().IsSoldOut();
-        e.push(t);
+        t.FinishState = e.GetCurrentGoodsData().IsSoldOut();
+        i.push(t);
       }
-      this.s4e?.SetActive(e.length !== 0);
-      this.s4e?.RefreshByData(e);
+      this.s4e?.SetActive(i.length !== 0);
+      this.s4e?.RefreshByData(i);
     } else {
       this.s4e?.SetActive(false);
     }
   }
-  MK1(i) {
-    var e;
-    if (i && (e = i.GetCurrentGoodsData().GetAvailableCouponItem())) {
+  MK1(e) {
+    var i;
+    if (e && (i = e.GetCurrentGoodsData().GetAvailableCouponItem())) {
       this.GetItem(12).SetUIActive(true);
-      i = i.GetCurrentGoodsData().GetAvailableCouponDiscount();
-      this.GetText(13).SetText((-i).toString());
-      i = this.GetTexture(14);
-      this.SetTextureByPath(e.GetConfig().IconSmall, i);
+      e = e.GetCurrentGoodsData().GetAvailableCouponDiscount();
+      this.GetText(13).SetText((-e).toString());
+      e = this.GetTexture(14);
+      this.SetTextureByPath(i.GetConfig().IconSmall, e);
     } else {
       this.GetItem(12).SetUIActive(false);
     }

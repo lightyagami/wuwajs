@@ -36,7 +36,7 @@ let CharacterPartScanComponent = class CharacterPartScanComponent extends Entity
     this._jr = undefined;
   }
   OnInit() {
-    this.ljr = this.Entity.GetComponent(72);
+    this.ljr = this.Entity.GetComponent(74);
     this.n$t = this.Entity.GetComponent(3);
     this._jr = this.n$t.Actor.CharRenderingComponent;
     return true;
@@ -55,5 +55,5 @@ let CharacterPartScanComponent = class CharacterPartScanComponent extends Entity
     }
   }
 };
-CharacterPartScanComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(73)], CharacterPartScanComponent);
+CharacterPartScanComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(75)], CharacterPartScanComponent);
 exports.CharacterPartScanComponent = CharacterPartScanComponent; //# sourceMappingURL=CharacterPartScanComponent.js.map

@@ -34,6 +34,7 @@ class TaskMarkItem extends ServerMarkItem_1.ServerMarkItem {
     this.iRi = 0;
     this.oRi = false;
     this.rRi = 0;
+    this.$wg = false;
     this.nRi = undefined;
     this.sRi = true;
     this.aRi = false;
@@ -74,6 +75,7 @@ class TaskMarkItem extends ServerMarkItem_1.ServerMarkItem {
     if (this.NodeId) {
       this.TreeIncId = t.TreeId;
       this.Tree = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(this.TreeIncId);
+      this.$wg = t.IsBoundToParentQuest;
       if (!this.Tree) {
         return;
       }
@@ -166,7 +168,7 @@ class TaskMarkItem extends ServerMarkItem_1.ServerMarkItem {
     if (this.BtType !== Protocol_1.Aki.Protocol.hps.Proto_BtTypeQuest) {
       return this.BtType === Protocol_1.Aki.Protocol.hps.Proto_BtTypeLevelPlay && this.InstanceDungeonId === HonamiStoryDefine_1.HONAMI_DUNGEON_ID || this.MapType === 1;
     } else {
-      return (typeof this.TrackTarget != "number" || !!ModelManager_1.ModelManager.CreatureModel.CheckEntityVisible(this.TrackTarget)) && (!!this.CanShowInDistance || !!this.IsTracked);
+      return (!!this.$wg || !this.Tree?.GetBlackBoard()?.IsBindingLevelPlayTrack) && (typeof this.TrackTarget != "number" || !!ModelManager_1.ModelManager.CreatureModel.CheckEntityVisible(this.TrackTarget)) && (!!this.CanShowInDistance || !!this.IsTracked);
     }
   }
   IsTracking() {

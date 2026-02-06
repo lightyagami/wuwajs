@@ -65,7 +65,7 @@ class BulletActionSummonBullet extends BulletActionBase_1.BulletActionBase {
             ParentId: this.BulletInfo.Entity.Id,
             DtType: this.BulletInfo.BulletInitParams.DtType,
             CreateOnAuthority: e.CreateOnAuthority,
-            BattleFlags: this.BulletInfo.BulletInitParams.BattleFlags,
+            BattleContext: this.BulletInfo.BulletInitParams.BattleContext,
             ParentIds: undefined
           }, this.BulletInfo.ContextId);
           if (u) {
@@ -92,7 +92,7 @@ class BulletActionSummonBullet extends BulletActionBase_1.BulletActionBase {
           ParentId: this.BulletInfo.Entity.Id,
           DtType: this.BulletInfo.BulletInitParams.DtType,
           CreateOnAuthority: e.CreateOnAuthority,
-          BattleFlags: this.BulletInfo.BulletInitParams.BattleFlags,
+          BattleContext: this.BulletInfo.BulletInitParams.BattleContext,
           ParentIds: undefined
         }, this.BulletInfo.ContextId);
         if (s) {

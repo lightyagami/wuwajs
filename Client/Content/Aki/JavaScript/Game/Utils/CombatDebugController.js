@@ -107,7 +107,7 @@ ${error.stack}`;
   }
   static ir1() {
     var e;
-    if (this.DebugEntityId && (e = EntitySystem_1.EntitySystem.Get(this.DebugEntityId)?.GetComponent(200))) {
+    if (this.DebugEntityId && (e = EntitySystem_1.EntitySystem.Get(this.DebugEntityId)?.GetComponent(202))) {
       e.GetFormationBuffComp()?.Entity.GetComponent(22)?.ServerDebugInfoRequest();
     }
   }

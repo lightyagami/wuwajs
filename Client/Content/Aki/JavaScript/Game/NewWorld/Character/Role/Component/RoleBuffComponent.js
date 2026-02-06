@@ -71,7 +71,7 @@ let RoleBuffComponent = RoleBuffComponent_1 = class RoleBuffComponent extends Ch
   }
   GetFormationBuffComp() {
     if (this.HasBuffAuthority()) {
-      return FormationDataController_1.FormationDataController.GetPlayerEntity(ModelManager_1.ModelManager.CreatureModel.GetPlayerId())?.GetComponent(209);
+      return FormationDataController_1.FormationDataController.GetPlayerEntity(ModelManager_1.ModelManager.CreatureModel.GetPlayerId())?.GetComponent(211);
     }
     CombatLog_1.CombatLog.Warn("Buff", this.Entity, "暂不支持对其它玩家操作编队buff");
   }
@@ -85,7 +85,7 @@ let RoleBuffComponent = RoleBuffComponent_1 = class RoleBuffComponent extends Ch
     }
   }
   RemoveBuffLocal(e, t, r) {
-    var n = CharacterBuffController_1.default.GetBuffDefinition(e);
+    var n = CharacterBuffController_1.default.GetBuffDefinition(e, r);
     if (n) {
       if (n.FormationPolicy === 5) {
         return this.GetFormationBuffComp()?.RemoveBuffLocal(e, t, r) ?? 0;
@@ -98,7 +98,7 @@ let RoleBuffComponent = RoleBuffComponent_1 = class RoleBuffComponent extends Ch
     }
   }
   RemoveBuffOrder(e, t, r) {
-    if (CharacterBuffController_1.default.GetBuffDefinition(e)?.FormationPolicy === 5) {
+    if (CharacterBuffController_1.default.GetBuffDefinition(e, r)?.FormationPolicy === 5) {
       CombatLog_1.CombatLog.Warn("Buff", this.Entity, "暂不支持移除远端编队buff", ["buffId", e], ["原因", r]);
     } else {
       super.RemoveBuffOrder(e, t, r);
@@ -127,7 +127,7 @@ let RoleBuffComponent = RoleBuffComponent_1 = class RoleBuffComponent extends Ch
         var i = ModelManager_1.ModelManager.SceneTeamModel.GetTeamEntities(true);
         if (i.some(e => e.Entity === this.Entity)) {
           for (const m of i) {
-            var u = m.Entity?.GetComponent(183);
+            var u = m.Entity?.GetComponent(185);
             if (m.Entity !== this.Entity && u) {
               s.push(u);
             }
@@ -222,5 +222,5 @@ let RoleBuffComponent = RoleBuffComponent_1 = class RoleBuffComponent extends Ch
   }
 };
 RoleBuffComponent.FrozenImmuneTags = [400631093, -2100129479, -1009010563, -1221493771, 1733479717, 855966206, 1918148596, 1918148596];
-RoleBuffComponent = RoleBuffComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(200)], RoleBuffComponent);
+RoleBuffComponent = RoleBuffComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(202)], RoleBuffComponent);
 exports.RoleBuffComponent = RoleBuffComponent; //# sourceMappingURL=RoleBuffComponent.js.map

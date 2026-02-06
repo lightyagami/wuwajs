@@ -32,13 +32,13 @@ class PanelQteResultHandler {
       var i = l.Num();
       for (let e = 0; e < i; e++) {
         var n = l.Get(e);
-        (r = r ?? o.GetComponent(215)).AddTag(n.TagId);
+        (r = r ?? o.GetComponent(217)).AddTag(n.TagId);
       }
       var s = e.RemoveTags;
       var _ = s.Num();
       for (let e = 0; e < _; e++) {
         var d = s.Get(e);
-        (r = r ?? o.GetComponent(215)).RemoveTag(d.TagId);
+        (r = r ?? o.GetComponent(217)).RemoveTag(d.TagId);
       }
       var v = e.AddBuffs;
       var u = v.Num();
@@ -48,7 +48,7 @@ class PanelQteResultHandler {
         if (c) {
           if (t.BuffIndex >= 0) {
             var C = Number(v.Get(t.BuffIndex));
-            (a = a ?? o.GetComponent(183)).AddBuff(C, {
+            (a = a ?? o.GetComponent(185)).AddBuff(C, {
               InstigatorId: c,
               Reason: "界面QTE结算时添加",
               PreMessageId: f
@@ -56,7 +56,7 @@ class PanelQteResultHandler {
           } else {
             for (let e = 0; e < u; e++) {
               var p = Number(v.Get(e));
-              (a = a ?? o.GetComponent(183)).AddBuff(p, {
+              (a = a ?? o.GetComponent(185)).AddBuff(p, {
                 InstigatorId: c,
                 Reason: "界面QTE结算时添加",
                 PreMessageId: f
@@ -76,7 +76,7 @@ class PanelQteResultHandler {
   LOi(e, r, a) {
     switch (e) {
       case 0:
-        var t = a.GetComponent(183);
+        var t = a.GetComponent(185);
         if (t) {
           t.RemoveBuffByEffectType(36, "界面QTE解除冰冻buff");
         }
@@ -87,29 +87,29 @@ class PanelQteResultHandler {
       case 2:
         {
           const a = this.TOi();
-          if (a?.GetComponent(184)?.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Climb) {
-            if ((t = a?.GetComponent(186))?.Valid) {
+          if (a?.GetComponent(186)?.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Climb) {
+            if ((t = a?.GetComponent(188))?.Valid) {
               t.ClimbDash();
             }
           } else {
-            a?.GetComponent(41)?.BeginSkill(RUSH_SKILL_ID, {
+            a?.GetComponent(43)?.BeginSkill(RUSH_SKILL_ID, {
               Reason: "PanelQteResultHandler.HandleCustomAction.Rush"
             });
           }
           break;
         }
       case 3:
-        this.TOi()?.GetComponent(41)?.BeginSkill(HOOK_SKILL_ID, {
+        this.TOi()?.GetComponent(43)?.BeginSkill(HOOK_SKILL_ID, {
           Reason: "PanelQteResultHandler.HandleCustomAction.Hook"
         });
         break;
       case 4:
-        this.TOi()?.GetComponent(187)?.TryJumpInFreeRunning();
+        this.TOi()?.GetComponent(189)?.TryJumpInFreeRunning();
     }
   }
   DOi() {
     var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentTeamItem;
-    if (!e?.EntityHandle?.Entity?.GetComponent(215)?.HasTag(-1697149502)) {
+    if (!e?.EntityHandle?.Entity?.GetComponent(217)?.HasTag(-1697149502)) {
       var a = ModelManager_1.ModelManager.SceneTeamModel.GetTeamItems();
       var t = a.length;
       var o = a.indexOf(e);

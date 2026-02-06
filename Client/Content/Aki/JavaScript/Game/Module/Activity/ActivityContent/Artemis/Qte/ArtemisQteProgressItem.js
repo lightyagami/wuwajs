@@ -26,7 +26,7 @@ class ArtemisQteProgressItem extends UiPanelBase_1.UiPanelBase {
     this.GameInfo = undefined;
     this.RingInfo = undefined;
     this.cce = Rotator_1.Rotator.Create();
-    this.Kqf = Rotator_1.Rotator.Create();
+    this.r8f = Rotator_1.Rotator.Create();
     this.hc_ = Rotator_1.Rotator.Create();
     this.cc_ = false;
     this.Vbn = 0;
@@ -40,9 +40,9 @@ class ArtemisQteProgressItem extends UiPanelBase_1.UiPanelBase {
     this.y7_ = new Map();
     this.Qfl = new Map();
     this.jfl = [];
-    this.p6f = undefined;
-    this.v6f = undefined;
-    this.Xqf = [];
+    this.Bzf = undefined;
+    this.kzf = undefined;
+    this.o8f = [];
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UITexture], [1, UE.UITexture], [2, UE.UITexture], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIText], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIItem]];
@@ -51,7 +51,7 @@ class ArtemisQteProgressItem extends UiPanelBase_1.UiPanelBase {
     this.GetItem(3).SetUIActive(false);
   }
   OnBeforeDestroy() {
-    this.Xqf.length = 0;
+    this.o8f.length = 0;
     this.y7_.clear();
     this.Qfl.clear();
     this.jfl.length = 0;
@@ -99,7 +99,7 @@ class ArtemisQteProgressItem extends UiPanelBase_1.UiPanelBase {
           this.RingInfo.CurrentArrowStayCellIndex = this.Ft_();
           break;
         case 1:
-          this.Xqf.forEach(t => {
+          this.o8f.forEach(t => {
             t = t?.GetRootItem();
             if (t?.IsUIActiveSelf()) {
               t.SetUIRelativeRotation(this.cce.ToUeRotator());
@@ -172,13 +172,13 @@ class ArtemisQteProgressItem extends UiPanelBase_1.UiPanelBase {
   OnAreaClick(t, i) {
     switch (t) {
       case 0:
-        this.p6f = undefined;
+        this.Bzf = undefined;
         this.PlayAnim("Miss");
         break;
       case 1:
         this.PeriodAlphaCurrentTime = 0;
-        this.p6f = undefined;
-        this.v6f = "Success";
+        this.Bzf = undefined;
+        this.kzf = "Success";
         this.StopTargetPlayingSequence("Perfect");
         this.StopTargetPlayingSequence("Perfect_Light");
         if (i) {
@@ -187,8 +187,8 @@ class ArtemisQteProgressItem extends UiPanelBase_1.UiPanelBase {
         break;
       case 2:
         this.PeriodAlphaCurrentTime = 0;
-        this.p6f = "Perfect";
-        this.v6f = "Perfect_Light";
+        this.Bzf = "Perfect";
+        this.kzf = "Perfect_Light";
         this.PlayAnim("Perfect");
         if (i) {
           this.AnyTargetPlayAnim(t, "Perfect_Light", i.ContinuousIndex, false);
@@ -215,28 +215,28 @@ class ArtemisQteProgressItem extends UiPanelBase_1.UiPanelBase {
     if (t === 2) {
       for (const h of this.Qfl) {
         if (!(this.Qfl.size > 1)) {
-          this.oYf(h[1], i, s);
+          this.Fug(h[1], i, s);
           return;
         }
         if (h[0] !== e) {
-          this.oYf(h[1], i, s);
+          this.Fug(h[1], i, s);
           return;
         }
       }
     } else {
       for (const r of this.y7_) {
         if (!(this.y7_.size > 1)) {
-          this.oYf(r[1], i, s);
+          this.Fug(r[1], i, s);
           return;
         }
         if (r[0] !== e) {
-          this.oYf(r[1], i, s);
+          this.Fug(r[1], i, s);
           return;
         }
       }
     }
   }
-  oYf(t, i, e) {
+  Fug(t, i, e) {
     if (t) {
       if (e) {
         t.PlayAnim(i);
@@ -245,18 +245,18 @@ class ArtemisQteProgressItem extends UiPanelBase_1.UiPanelBase {
       }
     }
   }
-  y6f(t, i) {
+  qzf(t, i) {
     t = (t === 2 ? this.Qfl : this.y7_).get(i);
-    if (t && (this.p6f && t.PlayAnim(this.p6f), this.v6f)) {
-      t.PlayLevelSequenceByName(this.v6f);
-      this.v6f = undefined;
+    if (t && (this.Bzf && t.PlayAnim(this.Bzf), this.kzf)) {
+      t.PlayLevelSequenceByName(this.kzf);
+      this.kzf = undefined;
     }
   }
   Nqe(t) {
     var i = Math.ceil(t * 100);
     this.GetText(5).SetText(i + "%");
-    this.Kqf.Yaw = MathUtils_1.MathUtils.Lerp(PROGRESS_START_ANGLE, PROGRESS_END_ANGLE, t);
-    this.GetItem(6)?.SetUIRelativeRotation(this.Kqf.ToUeRotator());
+    this.r8f.Yaw = MathUtils_1.MathUtils.Lerp(PROGRESS_START_ANGLE, PROGRESS_END_ANGLE, t);
+    this.GetItem(6)?.SetUIRelativeRotation(this.r8f.ToUeRotator());
   }
   mc_(t, i) {
     let e = t;
@@ -376,7 +376,7 @@ class ArtemisQteProgressItem extends UiPanelBase_1.UiPanelBase {
   }
   async S7_(i, e, s) {
     await this.zt_(i, 1, e, s);
-    this.y6f(1, i);
+    this.qzf(1, i);
     var h = ConfigManager_1.ConfigManager.ArtemisActivityConfig?.GetArtemisQteConfigById(this.GamePlayId);
     if (this.rvl(0, 100) <= this.GameInfo.PerfectAppearRate) {
       var s = Math.min(s, h.PerfectSize);
@@ -385,7 +385,7 @@ class ArtemisQteProgressItem extends UiPanelBase_1.UiPanelBase {
       let t = e;
       t = h <= r ? this.rvl(h, r - s + 1) : this.rvl(h, h + s - 1 - s + 1) % ArtemisQteDefine_1.QTE_RINGCELLCOUNT;
       await this.zt_(i, 2, t, s);
-      this.y6f(2, i);
+      this.qzf(2, i);
     }
   }
   SpawnAreaAtValidArea(t, i) {
@@ -472,7 +472,7 @@ class ArtemisQteProgressItem extends UiPanelBase_1.UiPanelBase {
     const e = this.GetItem(3);
     if (this.RingInfo.IsWholeRing) {
       await (h = new ArtemisQteRingBgSingleItem_1.ArtemisQteRingBgSingleItem(1, ArtemisQteDefine_1.QTE_RINGCELLCOUNT, true)).CreateThenShowByActorAsync(e.GetOwner());
-      this.Xqf.push(h);
+      this.o8f.push(h);
       h?.SetType(0);
       this.RingInfo.AddValidArea(1, ArtemisQteDefine_1.QTE_RINGCELLCOUNT);
     } else {
@@ -504,13 +504,13 @@ class ArtemisQteProgressItem extends UiPanelBase_1.UiPanelBase {
         var i = new ArtemisQteRingBgSingleItem_1.ArtemisQteRingBgSingleItem(i, t, false);
         var t = LguiUtil_1.LguiUtil.CopyItem(e, this.GetItem(8));
         n.push(i.CreateThenShowByActorAsync(t.GetOwner()));
-        this.Xqf.push(i);
+        this.o8f.push(i);
       });
       await Promise.all(n);
     }
   }
   SetCurrentPlayingSequenceName(t) {
-    this.p6f = t;
+    this.Bzf = t;
   }
 }
 exports.ArtemisQteProgressItem = ArtemisQteProgressItem;

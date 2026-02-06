@@ -48,7 +48,7 @@ class LevelEventSetBattleState extends LevelGeneralBase_1.LevelEventBase {
               i.push(a.EntityId);
               var o = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(a.EntityId);
               if (a.BeforeHide) {
-                o?.Entity?.GetComponent(215)?.AddTag(447365096);
+                o?.Entity?.GetComponent(217)?.AddTag(447365096);
               }
             }
             this.CreateWaitEntityTask(i);
@@ -123,7 +123,7 @@ class LevelEventSetBattleState extends LevelGeneralBase_1.LevelEventBase {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Event", 33, "LevelEventSetBattleState AddTag", ["EntityId", t], ["TagName", i]);
     }
-    e = e.Entity.GetComponent(215);
+    e = e.Entity.GetComponent(217);
     if (e) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Event", 33, "LevelEventSetBattleState AddTagByName", ["EntityId", t], ["TagName", i]);
@@ -141,7 +141,7 @@ class LevelEventSetBattleState extends LevelGeneralBase_1.LevelEventBase {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Event", 33, "LevelEventSetBattleState RemoveTag", ["EntityId", t], ["TagName", i]);
     }
-    e = e.Entity.GetComponent(215);
+    e = e.Entity.GetComponent(217);
     if (e) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Event", 33, "LevelEventSetBattleState RemoveTagByName", ["EntityId", t], ["TagName", i]);
@@ -167,7 +167,7 @@ class LevelEventSetBattleState extends LevelGeneralBase_1.LevelEventBase {
         this.FinishExecute(false);
         return;
       }
-      o = o.Entity.GetComponent(48);
+      o = o.Entity.GetComponent(50);
       if (!o?.Valid) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("Event", 31, "被通知Entity没有AIComponent", ["ID", s]);
@@ -229,9 +229,9 @@ class LevelEventSetBattleState extends LevelGeneralBase_1.LevelEventBase {
   LRe(t, e) {
     if (t.StandbyTags.length !== 0 && e.Type === 1) {
       e = EntitySystem_1.EntitySystem.Get(e.EntityId);
-      if (e && e.GetComponent(48)?.AiController?.AiPatrol) {
+      if (e && e.GetComponent(50)?.AiController?.AiPatrol) {
         const o = e.GetComponent(1);
-        e = e.GetComponent(49);
+        e = e.GetComponent(51);
         if (e && e.GetLastPointRawIndex() !== -1) {
           var i = Math.floor(MathUtils_1.MathUtils.GetRandomFloatNumber(0, t.StandbyTags.length));
           const a = Protocol_1.Aki.Protocol.Mgs.create();
@@ -239,7 +239,7 @@ class LevelEventSetBattleState extends LevelGeneralBase_1.LevelEventBase {
           a.u5n = e.GetCurrentPatrolSplineId();
           a.c5n = e.GetLastPointRawIndex();
           a.m5n = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(t.StandbyTags[i]);
-          Net_1.Net.Call(17752, a, t => {
+          Net_1.Net.Call(19217, a, t => {
             if (t && t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && Log_1.Log.CheckWarn()) {
               Log_1.Log.Warn("AI", 50, "请求状态机切换生态表演失败", ["CreatureId", a.F4n], ["PbDataId", o.CreatureData.GetPbDataId()], ["SplineId", a.u5n], ["Index", a.c5n], ["Tag", a.m5n]);
             }

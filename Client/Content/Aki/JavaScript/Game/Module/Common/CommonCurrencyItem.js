@@ -12,6 +12,8 @@ const ConfigManager_1 = require("../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
 const UiPanelBase_1 = require("../../Ui/Base/UiPanelBase");
+const ItemDefines_1 = require("../Item/Data/ItemDefines");
+const LogReportDefine_1 = require("../LogReport/LogReportDefine");
 const LguiUtil_1 = require("../Util/LguiUtil");
 class CommonCurrencyItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
@@ -22,8 +24,13 @@ class CommonCurrencyItem extends UiPanelBase_1.UiPanelBase {
     this.STt = undefined;
     this.cX_ = undefined;
     this.ije = () => {
+      var e;
       this.STt?.();
       this._Y_?.(this.ItemId);
+      if (this.ItemId === ItemDefines_1.EItemId.PayGold || this.ItemId === ItemDefines_1.EItemId.BlackCard || this.ItemId === ItemDefines_1.GACHAITEM) {
+        (e = new LogReportDefine_1.OnClickAddCurrencyLogEvent()).i_id = this.ItemId;
+        ControllerHolder_1.ControllerHolder.LogReportController.LogReport(e);
+      }
     };
     this.yTt = () => {
       if (!this.cX_ || !!this.cX_(this.ItemId)) {
@@ -33,37 +40,37 @@ class CommonCurrencyItem extends UiPanelBase_1.UiPanelBase {
     this.ITt = () => {
       this.RefreshCountText();
     };
-    this.TTt = t => {
-      for (const e of t) {
-        if (this.ItemId === e.s5n) {
+    this.TTt = e => {
+      for (const t of e) {
+        if (this.ItemId === t.s5n) {
           this.RefreshCountText();
           return;
         }
       }
     };
-    this.LTt = t => {
-      if (t.includes(this.ItemId)) {
+    this.LTt = e => {
+      if (e.includes(this.ItemId)) {
         this.RefreshCountText();
       }
     };
-    this.DTt = (t, e, i) => {
-      if (this.ItemId === t.s5n) {
+    this.DTt = (e, t, i) => {
+      if (this.ItemId === e.s5n) {
         this.RefreshCountText();
       }
     };
-    this.RTt = t => {
-      if (t === ConfigManager_1.ConfigManager.GachaConfig.PrimaryCurrency()) {
+    this.RTt = e => {
+      if (e === ConfigManager_1.ConfigManager.GachaConfig.PrimaryCurrency()) {
         ControllerHolder_1.ControllerHolder.PayShopController.OpenPayShopViewToRecharge();
-      } else if (t === ConfigManager_1.ConfigManager.GachaConfig.SecondCurrency()) {
-        ControllerHolder_1.ControllerHolder.ItemExchangeController.OpenExchangeViewByItemId(t);
+      } else if (e === ConfigManager_1.ConfigManager.GachaConfig.SecondCurrency()) {
+        ControllerHolder_1.ControllerHolder.ItemExchangeController.OpenExchangeViewByItemId(e);
       }
     };
   }
-  set ButtonFunction(t) {
-    if (t !== this._Y_ && Log_1.Log.CheckDebug()) {
+  set ButtonFunction(e) {
+    if (e !== this._Y_ && Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("WeeklyRogue", 34, "Test");
     }
-    this._Y_ = t;
+    this._Y_ = e;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UITexture], [1, UE.UIText], [2, UE.UIButtonComponent], [3, UE.UIButtonComponent], [4, UE.UITextureTransitionComponent], [5, UE.UIItem], [6, UE.UISprite], [7, UE.UISprite], [8, UE.UIItem]];
@@ -94,64 +101,64 @@ class CommonCurrencyItem extends UiPanelBase_1.UiPanelBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnCommonItemCountRefresh, this.DTt);
   }
   UTt() {
-    const t = this.GetTexture(0);
-    t.SetUIActive(false);
+    const e = this.GetTexture(0);
+    e.SetUIActive(false);
     this.SetItemIcon(this.GetTexture(0), this.ItemId, undefined, () => {
       this.ATt();
-      t.SetUIActive(true);
+      e.SetUIActive(true);
     });
   }
   ATt() {
-    var t = this.GetUiTextureTransitionComponent(4);
-    if (t) {
-      t.SetAllStateTexture(this.GetTexture(0).GetTexture());
+    var e = this.GetUiTextureTransitionComponent(4);
+    if (e) {
+      e.SetAllStateTexture(this.GetTexture(0).GetTexture());
     }
   }
-  RefreshTemp(t, e) {
-    this.ShowWithoutText(t);
-    this.RefreshCountText(e);
+  RefreshTemp(e, t) {
+    this.ShowWithoutText(e);
+    this.RefreshCountText(t);
   }
-  ShowWithoutText(t) {
-    this.ItemId = t;
+  ShowWithoutText(e) {
+    this.ItemId = e;
     this.UTt();
   }
-  RefreshCountText(t) {
-    var e = this.GetText(1);
-    var t = t ?? ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(this.ItemId);
-    e?.SetText(t.toString());
+  RefreshCountText(e) {
+    var t = this.GetText(1);
+    var e = e ?? ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(this.ItemId);
+    t?.SetText(e.toString());
   }
-  SetCountText(t, ...e) {
-    LguiUtil_1.LguiUtil.SetLocalText(this.GetText(1), t, ...e);
+  SetCountText(e, ...t) {
+    LguiUtil_1.LguiUtil.SetLocalText(this.GetText(1), e, ...t);
   }
-  SetCountTextNew(t, ...e) {
-    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), t, ...e);
+  SetCountTextNew(e, ...t) {
+    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), e, ...t);
   }
-  SetCount(t) {
-    this.GetText(1).SetText(t.toString());
+  SetCount(e) {
+    this.GetText(1).SetText(e.toString());
   }
-  SetButtonFunction(t) {
-    this.ButtonFunction = t;
+  SetButtonFunction(e) {
+    this.ButtonFunction = e;
   }
-  SetBeforeButtonFunction(t) {
-    this.STt = t;
+  SetBeforeButtonFunction(e) {
+    this.STt = e;
   }
-  SetTextureClickCheckFunction(t) {
-    this.cX_ = t;
+  SetTextureClickCheckFunction(e) {
+    this.cX_ = e;
   }
-  SetButtonActive(t) {
-    this.GetButton(2).RootUIComp.SetUIActive(t);
+  SetButtonActive(e) {
+    this.GetButton(2).RootUIComp.SetUIActive(e);
   }
-  RefreshMaxItem(t) {
-    this.GetItem(8).SetUIActive(t);
+  RefreshMaxItem(e) {
+    this.GetItem(8).SetUIActive(e);
   }
   SetToPayShopFunction() {
     this.ButtonFunction = this.RTt;
   }
   RefreshAddButtonActive() {
-    var t = ConfigManager_1.ConfigManager.GachaConfig.PrimaryCurrency();
-    var e = ConfigManager_1.ConfigManager.GachaConfig.SecondCurrency();
+    var e = ConfigManager_1.ConfigManager.GachaConfig.PrimaryCurrency();
+    var t = ConfigManager_1.ConfigManager.GachaConfig.SecondCurrency();
     var i = this.GetButton(2);
-    if (this.ItemId !== t && this.ItemId !== e) {
+    if (this.ItemId !== e && this.ItemId !== t) {
       i.RootUIComp.SetUIActive(false);
     } else {
       i.RootUIComp.SetUIActive(true);

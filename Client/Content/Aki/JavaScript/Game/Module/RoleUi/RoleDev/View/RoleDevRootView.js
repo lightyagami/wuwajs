@@ -84,7 +84,7 @@ class RoleDevRootView extends UiViewBase_1.UiViewBase {
       e.BindOnCanExecuteChange(this.dyd);
       return e;
     };
-    this.jbm = (e, t) => {
+    this.eRm = (e, t) => {
       this.Pnd.RoleDevPhantomViewItemData?.RefreshSuitDataList();
       this.Iyd();
     };
@@ -141,7 +141,7 @@ class RoleDevRootView extends UiViewBase_1.UiViewBase {
       return e;
     };
     this.etc = e => {
-      this._Mm(e);
+      this.dMm(e);
       this.Cxd(e);
     };
     this.Z4d = () => {
@@ -250,7 +250,7 @@ class RoleDevRootView extends UiViewBase_1.UiViewBase {
     this.tud = new RoleDevSkillViewItem_1.RoleDevSkillViewItem();
     this.tud.OnPlanChangeCallback = this.nMm;
     await Promise.all([this.J1d.CreateByResourceIdAsync("UiItem_PlanRole", this.GetItem(13), false), this.Z1d.CreateByResourceIdAsync("UiItem_PlanWeapon", this.GetItem(17), false), this.eud.CreateByResourceIdAsync("UiItem_PlanVision", this.GetItem(19), false), this.tud.CreateByResourceIdAsync("UiItem_PlanRoleSkill", this.GetItem(15), false)]);
-    this.eud.OnChangeFetterGroupSuccessCallBack = this.jbm;
+    this.eud.OnChangeFetterGroupSuccessCallBack = this.eRm;
   }
   async Cpm() {
     this.yvt = [{
@@ -365,7 +365,7 @@ class RoleDevRootView extends UiViewBase_1.UiViewBase {
     this.Myd(t, e);
     this.p2d();
     this.Fnd(this.CurSelectTab);
-    this._Mm(this.CurSelectTab);
+    this.dMm(this.CurSelectTab);
   }
   CLd(t, i) {
     if (this.oTd) {
@@ -430,7 +430,7 @@ class RoleDevRootView extends UiViewBase_1.UiViewBase {
       this.Syd(e);
     }
   }
-  _Mm(e) {
+  dMm(e) {
     this.SetCurSelectTab(e);
     this.vyd(e);
     e = RoleDevDefine_1.tabTypeToMainPageMap[e];
@@ -504,7 +504,7 @@ class RoleDevRootView extends UiViewBase_1.UiViewBase {
     var t;
     if (RoleDevUtils_1.RoleDevUtils.GetRoleTypeTagByRoleId(e) === 0) {
       t = ConfigManager_1.ConfigManager.RoleDevConfig.GetRoleDevProsProjectConfig(e);
-      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(6), t.RoleName);
+      this.GetText(6).SetText(t.RoleName);
     } else {
       t = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(e);
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(6), t.Name);

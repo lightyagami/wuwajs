@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.GeneralLogicTreeUtil = undefined;
+exports.GeneralLogicTreeUtil = exports.GENERAL_LOGIC_TREE_DEBUG_KEY = undefined;
 const Log_1 = require("../../../Core/Common/Log");
 const QuestChapterById_1 = require("../../../Core/Define/ConfigQuery/QuestChapterById");
 const Protocol_1 = require("../../../Core/Define/Net/Protocol");
@@ -15,6 +15,7 @@ const ConfigManager_1 = require("../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
 const LguiUtil_1 = require("../Util/LguiUtil");
+exports.GENERAL_LOGIC_TREE_DEBUG_KEY = "GeneralLogicTree";
 class GeneralLogicTreeUtil {
   static GetEntityConfigPosition(e, r) {
     let t = undefined;
@@ -46,6 +47,23 @@ class GeneralLogicTreeUtil {
       if (e) {
         return e.ActorLocationProxy;
       }
+    }
+  }
+  static GetEntitySpeed(e) {
+    let r = e?.Entity;
+    var t = e?.Entity?.GetComponent(242);
+    var t = (r = t && t.VehicleEntity ? t.VehicleEntity : r)?.GetComponent(1);
+    if (t) {
+      if (t.SafeActorVelocityProxy) {
+        return t.SafeActorVelocityProxy.Size();
+      } else {
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("GeneralLogicTree", 72, "GeneralLogicTreeUtil.GetEntitySpeed 获取速度时Actor无效", ["entityHandle", e], ["targetEntity", r]);
+        }
+        return 0;
+      }
+    } else {
+      return 0;
     }
   }
   static GetNodeConfig(e, r, t) {

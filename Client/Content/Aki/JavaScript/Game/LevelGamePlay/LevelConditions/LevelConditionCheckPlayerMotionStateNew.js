@@ -20,7 +20,7 @@ class LevelConditionCheckPlayerMotionStateNew extends LevelGeneralBase_1.LevelCo
       }
       return false;
     }
-    var r = t.Entity.GetComponent(184);
+    var r = t.Entity.GetComponent(186);
     if (!r) {
       if (Log_1.Log.CheckWarn()) {
         Log_1.Log.Warn("LevelCondition", 7, "[CheckPlayerMotionState]无法获取当前角色UnifiedState组件");
@@ -64,7 +64,7 @@ class LevelConditionCheckPlayerMotionStateNew extends LevelGeneralBase_1.LevelCo
         n = true;
     }
     if (n) {
-      var s = t.Entity.GetComponent(215);
+      var s = t.Entity.GetComponent(217);
       if (!s) {
         if (Log_1.Log.CheckWarn()) {
           Log_1.Log.Warn("LevelCondition", 7, "[CheckPlayerMotionState]无法获取当前角色CharacterGameplayTag组件");

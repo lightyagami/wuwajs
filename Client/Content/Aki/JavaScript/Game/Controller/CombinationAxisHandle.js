@@ -17,7 +17,7 @@ class CombinationAxisHandle {
     this.Hde = undefined;
     this.PressMainKeyTimeStamp = 0;
     this.Jde = undefined;
-    this.zde = false;
+    this.w7g = new Set();
     this.InCombinationAxis = false;
     this.M7a = new Set();
   }
@@ -25,19 +25,21 @@ class CombinationAxisHandle {
     this.Jde = undefined;
   }
   PressAnyKey(t) {
-    if (!this.Hde) {
-      if (InputSettingsManager_1.InputSettingsManager.IsCombinationAxisMainKey(t)) {
-        this.Xde(t);
-      } else {
-        this.zde = true;
+    if (this.Hde) {
+      if (this.w7g.size > 0) {
+        this.w7g.add(t);
       }
+    } else if (InputSettingsManager_1.InputSettingsManager.IsCombinationAxisMainKey(t)) {
+      this.Xde(t);
+    } else {
+      this.w7g.add(t);
     }
   }
   ReleaseAnyKey(t) {
     if (this.Hde === t) {
       this.Yde();
     } else {
-      this.zde = false;
+      this.w7g.delete(t);
     }
   }
   Xde(t) {
@@ -60,7 +62,7 @@ class CombinationAxisHandle {
     this.PressMainKeyTimeStamp = 0;
   }
   Tick(t) {
-    if (this.zde) {
+    if (this.w7g.size > 0) {
       this.InCombinationAxis = false;
     } else if (this.Jde) {
       if (this.Jde.size <= 0) {
@@ -87,12 +89,12 @@ class CombinationAxisHandle {
             }
           }
         } else {
-          for (var [u, h] of this.Jde) {
-            var l = InputSettings_1.InputSettings.GetUeKey(u);
+          for (var [h, u] of this.Jde) {
+            var l = InputSettings_1.InputSettings.GetUeKey(h);
             var _ = i.GetInputAnalogKeyState(l);
-            for (const I of h) {
+            for (const I of u) {
               var f = I.GetAxisName();
-              var g = _ * I.GetSourceAxisValue(u);
+              var g = _ * I.GetSourceAxisValue(h);
               t = t || Math.abs(g) > InputDistributeDefine_1.AXIS_TOLERANCE;
               ControllerHolder_1.ControllerHolder.InputDistributeController.InputAxis(f, g);
             }

@@ -4,6 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.ObtainedRoleDevRoleData = undefined;
+const MultiTextLang_1 = require("../../../../../../Core/Define/ConfigQuery/MultiTextLang");
 const ConfigManager_1 = require("../../../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../../../Manager/ModelManager");
 const RoleDevUtils_1 = require("../../RoleDevUtils");
@@ -43,7 +44,8 @@ class ObtainedRoleDevRoleData extends RoleDevRoleViewItemDataBase_1.RoleDevRoleV
     return this.F7d.DetailItems;
   }
   GetRoleName() {
-    return ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(this.RoleId).Name;
+    var e = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(this.RoleId).Name;
+    return MultiTextLang_1.configMultiTextLang.GetLocalTextNew(e) ?? "";
   }
   GetIsCanUpgrade() {
     return !this.a9d?.GetRoleNeedBreakUp();

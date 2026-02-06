@@ -14,8 +14,8 @@ class ArtemisQteRingSingleItem extends UiPanelBase_1.UiPanelBase {
     super(...arguments);
     this.$pt = undefined;
     this.JZ = undefined;
-    this.zqf = undefined;
-    this.Jqf = undefined;
+    this.s8f = undefined;
+    this.a8f = undefined;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem]];
@@ -27,11 +27,11 @@ class ArtemisQteRingSingleItem extends UiPanelBase_1.UiPanelBase {
     this.JZ = new ArtemisQteRingSingleAreaItem_1.ArtemisQteRingSingleAreaItem();
     e.push(this.JZ.CreateThenShowByActorAsync(t.GetOwner()));
     var t = this.GetItem(2);
-    this.zqf = new ArtemisQteRingSingleAreaItem_1.ArtemisQteRingSingleAreaItem();
-    e.push(this.zqf.CreateThenShowByActorAsync(t.GetOwner()));
+    this.s8f = new ArtemisQteRingSingleAreaItem_1.ArtemisQteRingSingleAreaItem();
+    e.push(this.s8f.CreateThenShowByActorAsync(t.GetOwner()));
     var t = this.GetItem(3);
-    this.Jqf = new ArtemisQteRingSingleAreaItem_1.ArtemisQteRingSingleAreaItem();
-    e.push(this.Jqf.CreateThenShowByActorAsync(t.GetOwner()));
+    this.a8f = new ArtemisQteRingSingleAreaItem_1.ArtemisQteRingSingleAreaItem();
+    e.push(this.a8f.CreateThenShowByActorAsync(t.GetOwner()));
     await Promise.all(e);
   }
   OnBeforeDestroy() {
@@ -41,8 +41,8 @@ class ArtemisQteRingSingleItem extends UiPanelBase_1.UiPanelBase {
   SetRotation(e) {
     e = Rotator_1.Rotator.Create(0, e, 0).ToUeRotator();
     this.JZ?.GetRootItem().SetUIRelativeRotation(e);
-    this.zqf?.GetRootItem().SetUIRelativeRotation(e);
-    this.Jqf?.GetRootItem().SetUIRelativeRotation(e);
+    this.s8f?.GetRootItem().SetUIRelativeRotation(e);
+    this.a8f?.GetRootItem().SetUIRelativeRotation(e);
   }
   InitItem() {
     this.GetRootItem()?.SetUIRelativeRotation(Rotator_1.Rotator.Create(0, 0, 0).ToUeRotator());
@@ -59,11 +59,11 @@ class ArtemisQteRingSingleItem extends UiPanelBase_1.UiPanelBase {
   }
   SetFill(e) {
     this.JZ?.SetFillAmount(e);
-    this.zqf?.SetFillAmount(e);
-    this.Jqf?.SetFillAmount(e);
+    this.s8f?.SetFillAmount(e);
+    this.a8f?.SetFillAmount(e);
     this.JZ?.SetCustomMaterialScalarParameter(e);
-    this.zqf?.SetCustomMaterialScalarParameter(e);
-    this.Jqf?.SetCustomMaterialScalarParameter(e);
+    this.s8f?.SetCustomMaterialScalarParameter(e);
+    this.a8f?.SetCustomMaterialScalarParameter(e);
   }
   PlayAnim(e) {
     if (this.$pt.GetCurrentSequence() === e) {

@@ -94,6 +94,12 @@ class SkillButtonPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
         t.RefreshDynamicEffect();
       }
     };
+    this.g5g = (t, e = -1) => {
+      t = this.GetBattleSkillItemByButtonType(t);
+      if (t?.GetSkillButtonData()) {
+        t.RefreshCustomHdData(e);
+      }
+    };
     this.EZe = t => {
       var e = ModelManager_1.ModelManager.SkillButtonUiModel.GetSkillButtonDataByButton(t);
       if (e && (t = this.GetBattleSkillItemByButtonType(t))) {
@@ -139,7 +145,13 @@ class SkillButtonPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
         t.RefreshExtraEffect();
       }
     };
-    this.uWm = t => {
+    this.Sqg = t => {
+      t = this.GetBattleSkillItemByButtonType(t);
+      if (t) {
+        t.RefreshSlideControl();
+      }
+    };
+    this.nKm = t => {
       t = this.Uet(t);
       if (t) {
         t.RefreshEnable(false);
@@ -151,19 +163,19 @@ class SkillButtonPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
         t.RefreshVisible();
       }
     };
-    this.cWm = t => {
+    this.sKm = t => {
       t = this.Uet(t);
       if (t) {
         t.RefreshAll();
       }
     };
-    this.dWm = t => {
+    this.aKm = t => {
       t = this.Uet(t);
       if (t) {
         t.RefreshSkillIcon();
       }
     };
-    this.mWm = t => {
+    this.hKm = t => {
       t = this.Uet(t);
       if (t) {
         t.RefreshDynamicEffect();
@@ -226,10 +238,10 @@ class SkillButtonPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
         }
       }
     };
-    this.zAf = () => {
+    this.Pqf = () => {
       this.RefreshKeyItemEnableInMotorcycle();
     };
-    this.sJm = () => {
+    this.Wef = () => {
       if (!Info_1.Info.IsInTouch() && !ModelManager_1.ModelManager.BattleUiModel.MotorcycleData?.IsDriving) {
         for (const t of this.lZe) {
           t.GetKeyItem()?.SetEnable(true);
@@ -397,7 +409,9 @@ class SkillButtonPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     var t = ModelManager_1.ModelManager.SkillButtonUiModel;
     for (const i of this.Tet.values()) {
       var e = t.GetBehaviorButtonDataByButton(i.BehaviorType);
-      i.Refresh(e);
+      if (e) {
+        i.Refresh(e);
+      }
     }
   }
   Uet(t) {
@@ -411,17 +425,19 @@ class SkillButtonPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSkillButtonEnableRefresh, this.gZe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSkillButtonVisibleRefresh, this.pZe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSkillButtonDynamicEffectRefresh, this.vZe);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSkillButtonCustomRefresh, this.g5g);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSkillButtonSkillIdRefresh, this.EZe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSkillButtonAttributeRefresh, this.yZe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSkillButtonIconPathRefresh, this.IZe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSkillButtonCdRefresh, this.TZe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSkillButtonLongPressRefresh, this.lvl);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSkillButtonExtraEffectRefresh, this.$Xd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnBehaviorButtonEnableRefresh, this.uWm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSkillButtonSlideControlRefresh, this.Sqg);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnBehaviorButtonEnableRefresh, this.nKm);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnBehaviorButtonVisibleRefresh, this.DZe);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnBehaviorButtonSkillIdRefresh, this.cWm);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnBehaviorButtonIconPathRefresh, this.dWm);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnBehaviorButtonDynamicEffectRefresh, this.mWm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnBehaviorButtonSkillIdRefresh, this.sKm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnBehaviorButtonIconPathRefresh, this.aKm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnBehaviorButtonDynamicEffectRefresh, this.hKm);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PauseGame, this.LZe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TriggerUiTimeDilation, this.zze);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CharSkillCdPauseStateChanged, this.zze);
@@ -429,9 +445,9 @@ class SkillButtonPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnFunctionOpenUpdate, this.RQe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InputControllerChange, this.XBo);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiExploreModeChanged, this.bet);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiMotorcycleStateChanged, this.sJm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiMotorcycleStateChanged, this.Wef);
     if (this.GetOperationType() === 2) {
-      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiPressMotorcycleCombineButtonChanged, this.zAf);
+      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiPressMotorcycleCombineButtonChanged, this.Pqf);
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.UIViewPortSizeChanged, this.xQe);
       InputDistributeController_1.InputDistributeController.BindActions(actionNameList, this.bMe);
     }
@@ -444,17 +460,19 @@ class SkillButtonPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSkillButtonEnableRefresh, this.gZe);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSkillButtonVisibleRefresh, this.pZe);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSkillButtonDynamicEffectRefresh, this.vZe);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSkillButtonCustomRefresh, this.g5g);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSkillButtonSkillIdRefresh, this.EZe);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSkillButtonAttributeRefresh, this.yZe);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSkillButtonIconPathRefresh, this.IZe);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSkillButtonCdRefresh, this.TZe);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSkillButtonLongPressRefresh, this.lvl);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSkillButtonExtraEffectRefresh, this.$Xd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnBehaviorButtonEnableRefresh, this.uWm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSkillButtonSlideControlRefresh, this.Sqg);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnBehaviorButtonEnableRefresh, this.nKm);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnBehaviorButtonVisibleRefresh, this.DZe);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnBehaviorButtonSkillIdRefresh, this.cWm);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnBehaviorButtonIconPathRefresh, this.dWm);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnBehaviorButtonDynamicEffectRefresh, this.mWm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnBehaviorButtonSkillIdRefresh, this.sKm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnBehaviorButtonIconPathRefresh, this.aKm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnBehaviorButtonDynamicEffectRefresh, this.hKm);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PauseGame, this.LZe);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TriggerUiTimeDilation, this.zze);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CharSkillCdPauseStateChanged, this.zze);
@@ -462,9 +480,9 @@ class SkillButtonPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnFunctionOpenUpdate, this.RQe);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InputControllerChange, this.XBo);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiExploreModeChanged, this.bet);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiMotorcycleStateChanged, this.sJm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiMotorcycleStateChanged, this.Wef);
     if (this.GetOperationType() === 2) {
-      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiPressMotorcycleCombineButtonChanged, this.zAf);
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiPressMotorcycleCombineButtonChanged, this.Pqf);
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.UIViewPortSizeChanged, this.xQe);
       InputDistributeController_1.InputDistributeController.UnBindActions(actionNameList, this.bMe);
     }

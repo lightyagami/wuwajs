@@ -41,16 +41,16 @@ class RoleDevPhantomViewItem extends UiPanelBase_1.UiPanelBase {
       var e = {
         RoleId: this.Pe.RoleId,
         IsFromRoleDev: true,
-        SuccessCallBack: this.$bm,
-        GetSelectedFetterGroupIdCallBack: this.Wbm
+        SuccessCallBack: this.iRm,
+        GetSelectedFetterGroupIdCallBack: this.rRm
       };
       UiManager_1.UiManager.OpenView("VisionRecommendView", e);
     };
-    this.$bm = (e, t) => {
+    this.iRm = (e, t) => {
       this.Pe?.RoleDevViewModel?.SetRoleRecommendFetterGroupId(e, t);
       this.OnChangeFetterGroupSuccessCallBack?.(e, t);
     };
-    this.Wbm = e => this.Pe?.RoleDevViewModel?.GetRoleRecommendFetterGroupId(e) ?? 0;
+    this.rRm = e => this.Pe?.RoleDevViewModel?.GetRoleRecommendFetterGroupId(e) ?? 0;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIButtonComponent], [9, UE.UIVerticalLayout], [10, UE.UIItem]];

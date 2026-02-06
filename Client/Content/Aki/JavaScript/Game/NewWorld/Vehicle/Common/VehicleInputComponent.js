@@ -96,13 +96,13 @@ let VehicleInputComponent = VehicleInputComponent_1 = class VehicleInputComponen
     this.LongPressLeaveCondition = false;
     this.InvalidHoldTime = 0;
     this.ForwardInputCurve = undefined;
-    this.vZf = 0;
-    this.WLm = t => {
+    this.Cyg = 0;
+    this.gPm = t => {
       if (this.IsEnableLongPressLeave) {
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SkillLongPressEnd, t);
       }
     };
-    this.QLm = t => {
+    this.CPm = t => {
       if (this.IsEnableLongPressLeave && (this.LongPressLeaveCondition = true, this.InvalidHoldTime = 0, this.CheckIfCanLeave())) {
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SkillLongPressStart, t);
       }
@@ -116,7 +116,7 @@ let VehicleInputComponent = VehicleInputComponent_1 = class VehicleInputComponen
         this.SetVehicleType(t.VehicleType);
         if (!t.IsDriver) {
           this.SetVehicleRelatedInputEnable(this.Entity, false);
-          (e = this.Entity.GetComponent(215))?.RemoveTag(-469423249);
+          (e = this.Entity.GetComponent(217))?.RemoveTag(-469423249);
           e?.RemoveTag(-1802431900);
         }
         this.OnEnterOrLeaveVehicle(t, true);
@@ -151,9 +151,9 @@ let VehicleInputComponent = VehicleInputComponent_1 = class VehicleInputComponen
   }
   OnStart() {
     this.PerformComp = this.Entity.GetComponent(246);
-    this.TagComp = this.Entity.GetComponent(215);
+    this.TagComp = this.Entity.GetComponent(217);
     this.ActorComp = this.Entity.CheckGetComponent(247) ?? this.Entity.CheckGetComponent(3);
-    this.KLm();
+    this.pPm();
     this.AddBlockEvents();
     this.InitPassengerInputForbidTagInfo();
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnVehicleBeenEntered, this.OnEnterVehicle);
@@ -170,19 +170,19 @@ let VehicleInputComponent = VehicleInputComponent_1 = class VehicleInputComponen
       this.UpdateVehicleInputDirectAndFacing();
     }
   }
-  XLm() {
+  vPm() {
     if (this.Bhh) {
-      EventSystem_1.EventSystem.RemoveWithTarget(this.Bhh, EventDefine_1.EEventName.VehicleInputLayerPress, this.QLm);
-      EventSystem_1.EventSystem.RemoveWithTarget(this.Bhh, EventDefine_1.EEventName.VehicleInputLayerRelease, this.WLm);
+      EventSystem_1.EventSystem.RemoveWithTarget(this.Bhh, EventDefine_1.EEventName.VehicleInputLayerPress, this.CPm);
+      EventSystem_1.EventSystem.RemoveWithTarget(this.Bhh, EventDefine_1.EEventName.VehicleInputLayerRelease, this.gPm);
       InputController_1.InputController.RemoveInputLayer(this.Bhh);
       this.Bhh.Clear();
       this.Bhh = undefined;
     }
   }
-  KLm() {
+  pPm() {
     var t;
     if (this.Bhh) {
-      this.XLm();
+      this.vPm();
     }
     this.Bhh = InputController_1.InputController.CreateInputLayer(4);
     if (this.Bhh) {
@@ -190,8 +190,8 @@ let VehicleInputComponent = VehicleInputComponent_1 = class VehicleInputComponen
         this.Bhh.Init(t);
         InputController_1.InputController.AddInputLayer(this.Entity.Id, this.Bhh);
       }
-      EventSystem_1.EventSystem.AddWithTarget(this.Bhh, EventDefine_1.EEventName.VehicleInputLayerPress, this.QLm);
-      EventSystem_1.EventSystem.AddWithTarget(this.Bhh, EventDefine_1.EEventName.VehicleInputLayerRelease, this.WLm);
+      EventSystem_1.EventSystem.AddWithTarget(this.Bhh, EventDefine_1.EEventName.VehicleInputLayerPress, this.CPm);
+      EventSystem_1.EventSystem.AddWithTarget(this.Bhh, EventDefine_1.EEventName.VehicleInputLayerRelease, this.gPm);
     }
   }
   Mqu(t) {
@@ -221,14 +221,14 @@ let VehicleInputComponent = VehicleInputComponent_1 = class VehicleInputComponen
   }
   HandlePressEvent(t, e) {
     if (ModelManager_1.ModelManager.BattleInputModel?.GetInputEnable(t)) {
-      this.InputEvents.push(new CharacterInputComponent_1.InputEvent(t, 1, e, this.vZf++));
+      this.InputEvents.push(new CharacterInputComponent_1.InputEvent(t, 1, e, this.Cyg++));
     } else if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Battle", 17, "该战斗输入被禁用，不执行按下操作", ["action", t]);
     }
   }
   HandleReleaseEvent(t, e) {
     if (ModelManager_1.ModelManager.BattleInputModel?.GetInputEnable(t)) {
-      this.InputEvents.push(new CharacterInputComponent_1.InputEvent(t, 2, e, this.vZf++));
+      this.InputEvents.push(new CharacterInputComponent_1.InputEvent(t, 2, e, this.Cyg++));
       VehicleInputComponent_1.HoldPressMap.set(t, false);
       VehicleInputComponent_1.HoldActionMap.delete(t);
     } else if (Log_1.Log.CheckDebug()) {
@@ -347,14 +347,14 @@ let VehicleInputComponent = VehicleInputComponent_1 = class VehicleInputComponen
     this.LastMovementInputTime = INVALID_INPUT_TIME;
     this.InputEvents.length = 0;
     this.InputCaches.length = 0;
-    this.vZf = 0;
+    this.Cyg = 0;
     this.AxisValues.clear();
     this.LongPressLeaveCondition = false;
     VehicleInputComponent_1.HoldPressMap.clear();
     VehicleInputComponent_1.HoldActionMap.clear();
   }
   SetVehicleRelatedInputEnable(t, e) {
-    const i = t?.GetComponent(215);
+    const i = t?.GetComponent(217);
     if (i) {
       if (e) {
         this.PassengerInputForbidTagArray.forEach(t => {

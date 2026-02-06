@@ -41,6 +41,9 @@ class MotorSkinShow {
   get Desc() {
     return this.desc();
   }
+  get JumpDiyRoot() {
+    return this.jumpdiyroot();
+  }
   __init(t, i) {
     this.z7 = t;
     this.J7 = i;
@@ -123,6 +126,14 @@ class MotorSkinShow {
       GameUtils_1.GameUtils.InternalizedString(i);
     }
     return i;
+  }
+  jumpdiyroot() {
+    var t = this.J7.__offset(this.z7, 20);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 1;
+    }
   }
 }
 exports.MotorSkinShow = MotorSkinShow;

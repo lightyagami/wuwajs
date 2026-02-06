@@ -10,7 +10,7 @@ class AnimationUtils {
     var t;
     var r;
     a.Reset();
-    if (e.Valid && (e = e.GetComponent(186)?.MainAnimInstance)) {
+    if (e.Valid && (e = e.GetComponent(188)?.MainAnimInstance)) {
       t = e.GetCurveValue(CharacterNameDefines_1.CharacterNameDefines.ROOT_X);
       r = e.GetCurveValue(CharacterNameDefines_1.CharacterNameDefines.ROOT_Y);
       e = e.GetCurveValue(CharacterNameDefines_1.CharacterNameDefines.ROOT_Z);
@@ -21,7 +21,7 @@ class AnimationUtils {
     var r;
     var i;
     t.Reset();
-    if (e.Valid && (e = e.GetComponent(186)?.MainAnimInstance)) {
+    if (e.Valid && (e = e.GetComponent(188)?.MainAnimInstance)) {
       r = e.GetMainAnimsCurveValueWithDelta(CharacterNameDefines_1.CharacterNameDefines.ROOT_X, a);
       i = e.GetMainAnimsCurveValueWithDelta(CharacterNameDefines_1.CharacterNameDefines.ROOT_Y, a);
       e = e.GetMainAnimsCurveValueWithDelta(CharacterNameDefines_1.CharacterNameDefines.ROOT_Z, a);

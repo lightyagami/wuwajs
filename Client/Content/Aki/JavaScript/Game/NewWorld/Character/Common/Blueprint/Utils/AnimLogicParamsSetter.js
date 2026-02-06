@@ -76,6 +76,8 @@ class AnimLogicParamsSetter {
     this.RightHandIkTarget = new HoldingHandsUtils_1.IkTarget();
     this.DisableBlink = false;
     this.IsRegionMoveMode = false;
+    this.FloatingLocalDirection = Vector_1.Vector.Create();
+    this.FloatingMoveMix = 0;
   }
 }
 exports.AnimLogicParamsSetter = AnimLogicParamsSetter;

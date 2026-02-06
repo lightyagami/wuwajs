@@ -130,6 +130,15 @@ let BaseTagComponent = BaseTagComponent_1 = class BaseTagComponent extends Entit
     }
     return false;
   }
+  HasAnyTagContainer(t) {
+    var e = t.GameplayTags;
+    for (let t = e.Num() - 1; t >= 0; --t) {
+      if (this.HasTag(e.Get(t).TagId)) {
+        return true;
+      }
+    }
+    return false;
+  }
   HasAllTag(t) {
     for (const e of t) {
       if (!this.HasTag(e)) {
@@ -233,7 +242,7 @@ let BaseTagComponent = BaseTagComponent_1 = class BaseTagComponent extends Entit
         EventSystem_1.EventSystem.EmitWithTarget(o, EventDefine_1.EEventName.OnGlobalGameplayTagChanged, this.Entity.Id, t, a, e);
       }
       BaseTagComponent_1.Dc_.Stop();
-      this.Entity.GetComponent(220)?.OnTagChanged(t);
+      this.Entity.GetComponent(222)?.OnTagChanged(t);
     }
     BaseTagComponent_1.Pc_.Stop();
   }
@@ -251,5 +260,5 @@ BaseTagComponent.Rc_ = new Map();
 BaseTagComponent.Pc_ = Stats_1.Stat.Create("BaseTagComponent.OnAnyTagChanged");
 BaseTagComponent.wc_ = Stats_1.Stat.Create("BaseTagComponent.OnAnyTagChanged.Callbacks");
 BaseTagComponent.Dc_ = Stats_1.Stat.Create("BaseTagComponent.OnAnyTagChanged.OnGlobalGameplayTagChanged");
-BaseTagComponent = BaseTagComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(215)], BaseTagComponent);
+BaseTagComponent = BaseTagComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(217)], BaseTagComponent);
 exports.BaseTagComponent = BaseTagComponent; //# sourceMappingURL=BaseTagComponent.js.map

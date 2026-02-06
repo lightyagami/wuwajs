@@ -20,7 +20,7 @@ class TurntableControlModel extends ModelBase_1.ModelBase {
   }
   SetCurControllerEntity(t) {
     var t = EntitySystem_1.EntitySystem.Get(t);
-    var e = t?.GetComponent(144);
+    var e = t?.GetComponent(146);
     if (!e) {
       this.ClearCurControllerEntity();
     }

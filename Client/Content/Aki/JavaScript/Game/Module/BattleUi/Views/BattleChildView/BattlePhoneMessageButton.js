@@ -10,7 +10,7 @@ const BattleEntranceButton_1 = require("./BattleEntranceButton");
 class BattlePhoneMessageButton extends BattleEntranceButton_1.BattleEntranceButton {
   constructor() {
     super(...arguments);
-    this.nYf = undefined;
+    this.Nug = undefined;
   }
   OnRegisterComponent() {
     super.OnRegisterComponent();
@@ -18,34 +18,34 @@ class BattlePhoneMessageButton extends BattleEntranceButton_1.BattleEntranceButt
   }
   OnStart() {
     super.OnStart();
-    this.nYf = new PhoneMessageButtonHelper_1.PhoneMessageButtonHelper(this.RootItem, this.RootActor, this.GetItem(1), this.GetSprite(2), this.GetItem(4), this.GetTexture(5), this.GetItem(6), this.GetUiNiagara(7), (e, t) => {
+    this.Nug = new PhoneMessageButtonHelper_1.PhoneMessageButtonHelper(this.RootItem, this.RootActor, this.GetItem(1), this.GetSprite(2), this.GetItem(4), this.GetTexture(5), this.GetItem(6), this.GetUiNiagara(7), (e, t) => {
       this.SetTextureByPath(e, t);
     });
-    this.nYf.Init();
+    this.Nug.Init();
   }
   Initialize(e) {
     super.Initialize(e);
   }
   OnShowBattleChildView() {
     super.OnShowBattleChildView();
-    this.nYf?.OnShowBattleChildView();
+    this.Nug?.OnShowBattleChildView();
   }
   OnHideBattleChildView() {
     super.OnHideBattleChildView();
-    this.nYf?.OnHideBattleChildView();
+    this.Nug?.OnHideBattleChildView();
   }
   Reset() {
     super.Reset();
-    this.nYf?.Clear();
+    this.Nug?.Clear();
   }
   CheckAndPlayPhoneSequence() {
-    this.nYf?.CheckAndPlayPhoneSequence();
+    this.Nug?.CheckAndPlayPhoneSequence();
   }
   PopShowHeadIcon() {
-    this.nYf?.PopShowHeadIcon();
+    this.Nug?.PopShowHeadIcon();
   }
   HideHeadIcon() {
-    this.nYf?.HideHeadIcon();
+    this.Nug?.HideHeadIcon();
   }
 }
 exports.BattlePhoneMessageButton = BattlePhoneMessageButton;

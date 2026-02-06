@@ -41,6 +41,20 @@ class ClickBtnInsideComponent extends HotKeyComponent_1.HotKeyComponent {
       }
     }
   }
+  OnRefreshHotKeyTextId(i) {
+    if (!this.CurComponent.GetIsForceSetText()) {
+      var e = this.GetBindButtonTag();
+      if (!StringUtils_1.StringUtils.IsEmpty(e)) {
+        i = i.GetFocusListener();
+        if (i) {
+          let t = UiNavigationNewController_1.UiNavigationNewController.GetFocusListenerInsideListenerByTag(i, e);
+          i = (t = t || i.GetChildListenerByTag(e))?.GetTipsTextIdByState();
+          this.SetHotKeyTextId(i);
+          this.RefreshHotKeyNameText();
+        }
+      }
+    }
+  }
   OnRefreshSelfHotKeyState(i) {
     var e = this.GetBindButtonTag();
     if (!StringUtils_1.StringUtils.IsEmpty(e)) {

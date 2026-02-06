@@ -30,18 +30,18 @@ class RoadBookLevelTipsView extends UiViewBase_1.UiViewBase {
     this.i4l = 0;
     this.r4l = 0;
     this.GLl = undefined;
-    this.P9m = 0;
-    this.A9m = undefined;
-    this.D9m = 0;
+    this.UHm = 0;
+    this.xHm = undefined;
+    this.BHm = 0;
     this.$An = t => {
       if (t === "TipsChange") {
         this.o4l();
       }
     };
-    this.U9m = t => {
+    this.kHm = t => {
       this.GLl.GetRootUiItem()?.SetAnchorOffsetX(t);
     };
-    this.x9m = () => {
+    this.qHm = () => {
       this.GLl.GetLayoutItemByIndex(this.zVl)?.PlayLevelUpAnim();
     };
     this.oWi = () => new LevelItemGrid();
@@ -63,9 +63,9 @@ class RoadBookLevelTipsView extends UiViewBase_1.UiViewBase {
     this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIText], [2, UE.UIHorizontalLayout], [3, UE.UIItem], [4, UE.UISprite], [5, UE.UISprite]];
   }
   OnStart() {
-    this.A9m = new LguiFloatTween_1.LguiFloatTween();
-    this.A9m.BindUpdateTween(this.U9m);
-    this.A9m.BindCompleteTween(this.x9m);
+    this.xHm = new LguiFloatTween_1.LguiFloatTween();
+    this.xHm.BindUpdateTween(this.kHm);
+    this.xHm.BindCompleteTween(this.qHm);
     var t = this.OpenParam;
     this.UQa = t.LastTravelLevel;
     this.zVl = t.TravelLevel;
@@ -86,8 +86,8 @@ class RoadBookLevelTipsView extends UiViewBase_1.UiViewBase {
       this.CloseMe();
     }
     this.GLl = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(2), this.oWi);
-    this.P9m = this.GetItem(3).Width;
-    this.D9m = this.GetHorizontalLayout(2).Spacing;
+    this.UHm = this.GetItem(3).Width;
+    this.BHm = this.GetHorizontalLayout(2).Spacing;
     this.v4e(t.MaxTravelLevel);
   }
   OnAddEventListener() {
@@ -129,7 +129,7 @@ class RoadBookLevelTipsView extends UiViewBase_1.UiViewBase {
   }
   OnBeforeDestroy() {
     this.S0t();
-    this.A9m?.Destroy();
+    this.xHm?.Destroy();
   }
   v4e(i) {
     var s = [];
@@ -139,10 +139,10 @@ class RoadBookLevelTipsView extends UiViewBase_1.UiViewBase {
     this.GLl.RefreshByData(s, () => {
       this.GLl.SelectGridProxy(this.UQa);
     });
-    this.GLl.GetRootUiItem()?.SetAnchorOffsetX(this.B9m(this.UQa));
+    this.GLl.GetRootUiItem()?.SetAnchorOffsetX(this.OHm(this.UQa));
   }
-  B9m(t) {
-    return -(t * (this.P9m + this.D9m) + this.P9m * 0.5);
+  OHm(t) {
+    return -(t * (this.UHm + this.BHm) + this.UHm * 0.5);
   }
   async _4l() {
     var t = this.i4l >= this.r4l;
@@ -155,7 +155,7 @@ class RoadBookLevelTipsView extends UiViewBase_1.UiViewBase {
   async l4l() {
     await this.c4l(this.t4l, this.e4l, this.e4l);
     this.UiViewSequence.PlaySequence("LevelChange");
-    this.A9m?.PlayTween(this.GLl.GetRootUiItem().GetAnchorOffsetX(), this.B9m(this.zVl), 1);
+    this.xHm?.PlayTween(this.GLl.GetRootUiItem().GetAnchorOffsetX(), this.OHm(this.zVl), 1);
     this.GLl.GetLayoutItemByIndex(this.UQa)?.PlaySmallAnim();
     this.GLl.GetLayoutItemByIndex(this.zVl)?.PlayBigAnim();
     this.n4l(0, this.r4l);

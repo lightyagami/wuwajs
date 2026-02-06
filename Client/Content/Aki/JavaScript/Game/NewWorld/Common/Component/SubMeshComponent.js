@@ -213,5 +213,5 @@ let SubMeshComponent = class SubMeshComponent extends EntityComponent_1.EntityCo
     return h;
   }
 };
-SubMeshComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(235)], SubMeshComponent);
+SubMeshComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(236)], SubMeshComponent);
 exports.SubMeshComponent = SubMeshComponent; //# sourceMappingURL=SubMeshComponent.js.map

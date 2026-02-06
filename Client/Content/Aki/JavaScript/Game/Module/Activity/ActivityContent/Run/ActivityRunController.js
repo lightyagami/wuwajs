@@ -38,12 +38,12 @@ class ActivityRunController extends ActivityControllerBase_1.ActivityControllerB
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnReceiveActivityData, ActivityRunController.AFe);
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(21671, ActivityRunController.PFe);
-    Net_1.Net.Register(22925, ActivityRunController.xFe);
+    Net_1.Net.Register(29598, ActivityRunController.PFe);
+    Net_1.Net.Register(18311, ActivityRunController.xFe);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(21671);
-    Net_1.Net.UnRegister(22925);
+    Net_1.Net.UnRegister(29598);
+    Net_1.Net.UnRegister(18311);
   }
   static SelectDefaultChallengeId(e) {
     e = ModelManager_1.ModelManager.ActivityRunModel.GetDefaultOpenUiChallengeIndex(e);
@@ -51,7 +51,7 @@ class ActivityRunController extends ActivityControllerBase_1.ActivityControllerB
   }
   static wFe() {
     var e = new Protocol_1.Aki.Protocol.xhs();
-    Net_1.Net.Call(22250, e, e => {
+    Net_1.Net.Call(24830, e, e => {
       ModelManager_1.ModelManager.ActivityRunModel.OnReceiveMessageData(e);
     });
   }
@@ -59,9 +59,9 @@ class ActivityRunController extends ActivityControllerBase_1.ActivityControllerB
     var e = new Protocol_1.Aki.Protocol.qhs();
     e.e8n = t;
     e.t8n = i;
-    Net_1.Net.Call(25547, e, e => {
+    Net_1.Net.Call(18295, e, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20497);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 28650);
       } else {
         ModelManager_1.ModelManager.ActivityRunModel.OnGetChallengeReward(t, i);
       }
@@ -70,9 +70,9 @@ class ActivityRunController extends ActivityControllerBase_1.ActivityControllerB
   static RequestTransToParkourChallenge(e) {
     var t = new Protocol_1.Aki.Protocol.khs();
     t.e8n = e;
-    Net_1.Net.Call(27216, t, e => {
+    Net_1.Net.Call(27631, t, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24706);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19782);
       } else {
         UiManager_1.UiManager.CloseView("ActivityRunSuccessView");
         UiManager_1.UiManager.CloseView("ActivityRunFailView");

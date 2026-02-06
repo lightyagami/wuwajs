@@ -133,7 +133,7 @@ class PlotCleanRange {
     if (o.GetSubEntityType() === 2) {
       return !this.$Nn || (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Plot", 26, "[PlotCleanRange] 行人 忽略", ["pb", e.PbDataId], ["cd", e.CreatureDataId]), false);
     }
-    if (e.Entity.GetComponent(222)) {
+    if (e.Entity.GetComponent(224)) {
       return !this.$Nn || (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Plot", 26, "[PlotCleanRange] 刷行人器 忽略", ["pb", e.PbDataId], ["cd", e.CreatureDataId]), false);
     }
     n = e.Entity.GetComponent(1)?.ActorTransform;

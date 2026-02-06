@@ -15,6 +15,7 @@ const TimeUtil_1 = require("../../../Common/TimeUtil");
 const LevelGeneralCommons_1 = require("../../../LevelGamePlay/LevelGeneralCommons");
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../Manager/ModelManager");
+const ActivityControllerHolder_1 = require("../../Activity/ActivityControllerHolder");
 const ItemDefines_1 = require("../../Item/Data/ItemDefines");
 const PayShopItemBase_1 = require("../PayShopTab/TabItem/PayShopItemBase");
 class PayShopGoods {
@@ -580,6 +581,9 @@ class PayShopGoods {
   }
   GetCloudGameIcon() {
     return this.Pe.CloudGameIcon;
+  }
+  GetIfShowTotalTopUpScore() {
+    return (ActivityControllerHolder_1.ActivityControllerHolder.TotalTopUpController?.GetGoodsScore(this.GetGoodsId()) ?? 0) > 0;
   }
 }
 exports.PayShopGoods = PayShopGoods;

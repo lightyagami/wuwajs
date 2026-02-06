@@ -23,17 +23,17 @@ class MotorParkourMainView extends UiTickViewBase_1.UiTickViewBase {
   constructor() {
     super(...arguments);
     this.CNe = undefined;
-    this.FMf = undefined;
-    this.NMf = undefined;
-    this.qMf = undefined;
+    this.ibf = undefined;
+    this.rbf = undefined;
+    this.ZTf = undefined;
     this.lqe = undefined;
     this.Og = i => {
-      this.FMf = i;
-      this.NMf.SelectGridProxy(this.NMf.GetScrollItemByKey(i.Id)?.GridIndex);
+      this.ibf = i;
+      this.rbf.SelectGridProxy(this.rbf.GetScrollItemByKey(i.Id)?.GridIndex);
       var e = this.GetTexture(8);
       this.SetTextureByPath(i.RaceTrackTexture, e);
       e?.SetUIRelativeRotation(new UE.Rotator(0, i.RouteTextureRotation, 0));
-      this.qMf.RefreshByData(i.HistoryRankList, undefined, true);
+      this.ZTf.RefreshByData(i.HistoryRankList, undefined, true);
       this.GetItem(14)?.SetUIActive(i.BestRecordTime !== 0);
       var e = TimeUtil_1.TimeUtil.GetRemainTimeDataFormat5(i.BestRecordTime * TimeUtil_1.TimeUtil.Millisecond);
       this.GetText(12)?.SetText(e);
@@ -75,7 +75,7 @@ class MotorParkourMainView extends UiTickViewBase_1.UiTickViewBase {
       if (ModelManager_1.ModelManager.GameModeModel.IsMulti) {
         ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("ErrorCode_600064_Text");
       } else {
-        ActivityControllerHolder_1.ActivityControllerHolder.MotorParkourController.EnterMotorParkourDungeonDirectly(this.FMf.Id);
+        ActivityControllerHolder_1.ActivityControllerHolder.MotorParkourController.EnterMotorParkourDungeonDirectly(this.ibf.Id);
       }
     };
     this.AMo = () => {
@@ -89,22 +89,22 @@ class MotorParkourMainView extends UiTickViewBase_1.UiTickViewBase {
   async OnBeforeStartAsync() {
     ActivityControllerHolder_1.ActivityControllerHolder.MotorParkourController.IsNeedShowMotorParkourMainView = false;
     this.CNe = this.OpenParam;
-    this.NMf = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(2), this.c71, undefined, true);
-    this.qMf = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(10), this.Nn1);
+    this.rbf = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(2), this.c71, undefined, true);
+    this.ZTf = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(10), this.Nn1);
     var i = [];
     var e = this.GetItem(1);
     this.lqe = new PopupCaptionItem_1.PopupCaptionItem();
     this.lqe.SetCloseCallBack(this.AMo);
     i.push(this.lqe.CreateThenShowByActorAsync(e.GetOwner()));
     var e = this.CNe.GetLevelDataList();
-    i.push(this.NMf.RefreshByDataAsync(e, true));
+    i.push(this.rbf.RefreshByDataAsync(e, true));
     await Promise.all(i);
-    this.FMf = this.CNe.GetSelectedLevelData();
+    this.ibf = this.CNe.GetSelectedLevelData();
   }
   OnBeforeShow() {
-    this.NMf.RefreshByData(this.CNe.GetLevelDataList(), () => {
-      this.Og(this.FMf);
-      this.NMf.LateScrollTo(this.NMf.GetItemByKey(this.FMf.Id));
+    this.rbf.RefreshByData(this.CNe.GetLevelDataList(), () => {
+      this.Og(this.ibf);
+      this.rbf.LateScrollTo(this.rbf.GetItemByKey(this.ibf.Id));
     }, true);
     var i = ModelManager_1.ModelManager.PlayerInfoModel.GetPlayerGender() === 0;
     var e = i ? "T_LevelSelectBgFemale" : "T_LevelSelectBgMale";

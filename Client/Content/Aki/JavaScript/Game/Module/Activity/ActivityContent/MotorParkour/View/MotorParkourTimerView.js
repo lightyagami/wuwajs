@@ -12,19 +12,19 @@ const ONE_HUNDRED = 100;
 class MotorParkourTimerView extends UiTickViewBase_1.UiTickViewBase {
   constructor() {
     super(...arguments);
-    this.LMf = 0;
+    this.$Tf = 0;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIText]];
   }
   OnStart() {
-    this.LMf = this.OpenParam;
+    this.$Tf = this.OpenParam;
   }
   OnTick(i) {
     var e;
     var t;
     var r;
-    if (this.LMf !== 0 && (r = (TimeUtil_1.TimeUtil.GetServerStopTimeStamp() - this.LMf) * TimeUtil_1.TimeUtil.Millisecond, Time_1.Time.FlowTimeDilation !== 0)) {
+    if (this.$Tf !== 0 && (r = (TimeUtil_1.TimeUtil.GetServerStopTimeStamp() - this.$Tf) * TimeUtil_1.TimeUtil.Millisecond, Time_1.Time.FlowTimeDilation !== 0)) {
       e = ((e = Math.floor(r % TimeUtil_1.TimeUtil.Hour / TimeUtil_1.TimeUtil.Minute)) < 10 ? "0" : "") + e;
       t = ((t = Math.floor(r % TimeUtil_1.TimeUtil.Minute)) < 10 ? "0" : "") + t;
       r = ((r = Math.floor((r - Math.floor(r)) * ONE_HUNDRED)) < 10 ? "0" : "") + r;

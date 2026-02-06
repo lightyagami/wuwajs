@@ -42,7 +42,7 @@ class HonamiStoryBackpackLevelItem extends UiPanelBase_1.UiPanelBase {
     this.SPe = undefined;
     this.evm = undefined;
     this.wY = 0;
-    this.m7m = undefined;
+    this.g9m = undefined;
     this._em = () => {
       if (!this.H61) {
         var t = ModelManager_1.ModelManager.HonamiStoryModel.GetPlayerData().LifeSupportLevel;
@@ -134,15 +134,15 @@ class HonamiStoryBackpackLevelItem extends UiPanelBase_1.UiPanelBase {
     this.BtnBindInfo = [[3, this._em]];
   }
   async OnBeforeStartAsync() {
-    this.m7m = new HonamiStoryLevelPowerItem();
-    await this.m7m.CreateThenShowByActorAsync(this.GetItem(5).GetOwner());
+    this.g9m = new HonamiStoryLevelPowerItem();
+    await this.g9m.CreateThenShowByActorAsync(this.GetItem(5).GetOwner());
   }
   OnStart() {
     this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
   }
   OnBeforeShow() {
     this.d0m = ModelManager_1.ModelManager.HonamiStoryModel.GetActivityData(false)?.GetPreGuideQuestFinishState() ?? false;
-    this.m7m?.RefreshPowerVisible(this.d0m);
+    this.g9m?.RefreshPowerVisible(this.d0m);
     this.RefreshLifeSupport();
     this.RefreshPowerLevel(false, false, 0, 0);
     this.CheckCanUpgrade();

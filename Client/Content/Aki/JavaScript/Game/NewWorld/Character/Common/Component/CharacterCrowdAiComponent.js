@@ -40,8 +40,8 @@ let CharacterCrowdAiComponent = class CharacterCrowdAiComponent extends BaseCrow
     this.MaxRadius = CrowdAiController_1.DEFAULT_ROLE_BOID_MAX_RADIUS;
     this.MaxRadiusChangeTime = CrowdAiController_1.DEFAULT_ROLE_BOID_CHANGE_TIME;
     this.OnChangeRole = (t, e) => {
-      t = t.Entity?.GetComponent(333);
-      e = e?.Entity?.GetComponent(333);
+      t = t.Entity?.GetComponent(335);
+      e = e?.Entity?.GetComponent(335);
       if (e && t) {
         t.CurRadius = e.CurRadius;
         t.MinRadius = e.MinRadius;
@@ -90,5 +90,5 @@ let CharacterCrowdAiComponent = class CharacterCrowdAiComponent extends BaseCrow
     }
   }
 };
-CharacterCrowdAiComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(333)], CharacterCrowdAiComponent);
+CharacterCrowdAiComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(335)], CharacterCrowdAiComponent);
 exports.CharacterCrowdAiComponent = CharacterCrowdAiComponent; //# sourceMappingURL=CharacterCrowdAiComponent.js.map

@@ -12,7 +12,7 @@ class GuideStepViewData {
     this.xqe = undefined;
     this.OQt = undefined;
     this.uzt = undefined;
-    this._wm = undefined;
+    this.Ewm = undefined;
     this.czt = undefined;
     this.IsAttachToBattleView = false;
     this.mzt = undefined;
@@ -20,7 +20,7 @@ class GuideStepViewData {
     this.OQt = t;
   }
   get IsMultiAttach() {
-    return !!this._wm;
+    return !!this.Ewm;
   }
   get ViewConf() {
     switch (this.OQt.Config.ContentType) {
@@ -50,7 +50,7 @@ class GuideStepViewData {
     return this.dzt ?? this.mzt;
   }
   GetMultiAttachItems() {
-    return this._wm;
+    return this.Ewm;
   }
   SetAttachedUiItem(t) {
     if (this.OQt.Config.ContentType !== 4) {
@@ -82,7 +82,7 @@ class GuideStepViewData {
         Log_1.Log.Error("Guide", 16, `引导步骤 ${this.OQt.Id} 的界面类型不是聚焦引导, 无法添加依附的Ui节点`);
       }
     } else {
-      this._wm = t;
+      this.Ewm = t;
     }
   }
   TryLockScrollView(t) {

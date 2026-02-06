@@ -41,14 +41,14 @@ class ShipTogetherModel extends ModelBase_1.ModelBase {
       this.RiderSharingState = false;
       this.RiderSharingRoleId = 0;
     };
-    this.Brf = e => {
+    this.esf = e => {
       var t = e.SDs;
-      if (e.ief === Protocol_1.Aki.Protocol.nef.Proto_ShareRideMode_MovieMotor) {
+      if (e.Uof === Protocol_1.Aki.Protocol.Bof.Proto_ShareRideMode_MovieMotor) {
         this.OnMovieRideSharingModeChangeForMotorcycle(t);
       }
     };
     this.IY1 = e => {
-      var t = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint()?.GetComponent(215);
+      var t = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint()?.GetComponent(217);
       this.Dnu(e);
       if (e) {
         t?.AddTag(-844934933);
@@ -58,58 +58,58 @@ class ShipTogetherModel extends ModelBase_1.ModelBase {
     };
     this.Bnu = () => {
       var e = Protocol_1.Aki.Protocol.xZ1.create();
-      Net_1.Net.Call(24881, e, () => {});
+      Net_1.Net.Call(26088, e, () => {});
     };
     this.IsInMovieRideSharingMode = false;
-    this.Qmf = false;
-    this._vf = undefined;
-    this.c9f = 0;
-    this.d9f = 0;
-    this.x8f = undefined;
-    this.Grf = 0.5;
+    this.c0f = false;
+    this.vMf = undefined;
+    this.cZf = 0;
+    this.dZf = 0;
+    this.jYf = undefined;
+    this.osf = 0.5;
     this.MotorSharingRideBlackScreenLoad = 0.5;
     this.MotorSharingRideBlackScreenQuit = 0.5;
     this.MotorSharingMovieCameraConfig = "";
     this.CheckCanOpenMotorcycleTogetherView = (e, t) => !!this.IsInMovieRideSharingMode;
     this.RequestMovieRideSharingModeChangeForMotorcycle = async (e, t) => {
-      const i = this.x8f;
-      this.x8f = (async () => {
+      const i = this.jYf;
+      this.jYf = (async () => {
         await i;
         this.PreMovieRideSharingModeChangeForMotorcycle(e, t);
-        await this._vf?.Promise;
+        await this.vMf?.Promise;
       })();
-      await this.x8f;
+      await this.jYf;
     };
   }
   OnInit() {
     this.SHo();
-    this.k9f();
+    this.teg();
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnChangeRideSharingPassengerResponse, this.XBl);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRemoveRideSharingPassengerResponse, this.YBl);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnEnterVehicleRideSharing, this.zBl);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnLeaveVehicleRideSharing, this.JBl);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSpecialVehicleShareNotify, this.Brf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSpecialVehicleShareNotify, this.esf);
     return true;
   }
   OnClear() {
-    this.q9f();
+    this.ieg();
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnChangeRideSharingPassengerResponse, this.XBl);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRemoveRideSharingPassengerResponse, this.YBl);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnEnterVehicleRideSharing, this.zBl);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnLeaveVehicleRideSharing, this.JBl);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSpecialVehicleShareNotify, this.Brf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSpecialVehicleShareNotify, this.esf);
     return true;
   }
   SHo() {
-    this.Grf = CommonParamById_1.configCommonParamById.GetFloatConfig("MotorSharingRideRequestDelay") ?? 0.5;
+    this.osf = CommonParamById_1.configCommonParamById.GetFloatConfig("MotorSharingRideRequestDelay") ?? 0.5;
     this.MotorSharingRideBlackScreenLoad = CommonParamById_1.configCommonParamById.GetFloatConfig("MotorSharingRideBlackScreenLoad") ?? 0.5;
     this.MotorSharingRideBlackScreenQuit = CommonParamById_1.configCommonParamById.GetFloatConfig("MotorSharingRideBlackScreenQuit") ?? 0.5;
     this.MotorSharingMovieCameraConfig = CommonParamById_1.configCommonParamById.GetStringConfig("MotorSharingRideCamera") ?? "SharingRideCamera";
   }
-  k9f() {
+  teg() {
     UiManager_1.UiManager.AddOpenViewCheckFunction("MotorcycleTogetherView", this.CheckCanOpenMotorcycleTogetherView, "ShipTogetherModel.CheckCanOpenMotorcycleTogetherView");
   }
-  q9f() {
+  ieg() {
     UiManager_1.UiManager.RemoveOpenViewCheckFunction("MotorcycleTogetherView", this.CheckCanOpenMotorcycleTogetherView);
   }
   MY1(e) {
@@ -121,7 +121,7 @@ class ShipTogetherModel extends ModelBase_1.ModelBase {
         this.bY1(e);
         break;
       case "Motorcycle":
-        this.Vrf(e);
+        this.asf(e);
     }
   }
   EY1(e) {
@@ -133,17 +133,17 @@ class ShipTogetherModel extends ModelBase_1.ModelBase {
         this.LY1(e);
         break;
       case "Motorcycle":
-        this.Hrf(e);
+        this.hsf(e);
     }
   }
   TY1(e) {
     var t = e?.PassengerEntity;
-    t?.GetComponent(215)?.AddTag(-1296410005);
+    t?.GetComponent(217)?.AddTag(-1296410005);
     e?.VehicleEntity?.GetComponent(254)?.AddTagForPassenger(t, 1, 1937468570);
   }
   RY1(e) {
     var t = e?.PassengerEntity;
-    t?.GetComponent(215)?.RemoveTag(-1296410005);
+    t?.GetComponent(217)?.RemoveTag(-1296410005);
     e?.VehicleEntity?.GetComponent(254)?.RemoveTagForPassenger(t, 1, 1937468570);
   }
   bY1(e) {
@@ -151,7 +151,7 @@ class ShipTogetherModel extends ModelBase_1.ModelBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnScreenShotDone, this.Bnu);
   }
   LY1(e) {
-    Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity?.GetComponent(215)?.RemoveTag(-844934933);
+    Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity?.GetComponent(217)?.RemoveTag(-844934933);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnCoBathSwitchFirstPlayerView, this.IY1);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnScreenShotDone, this.Bnu);
     ModelManager_1.ModelManager.ShowerModel.ExitAndClear();
@@ -159,88 +159,88 @@ class ShipTogetherModel extends ModelBase_1.ModelBase {
   Dnu(e) {
     var t = Protocol_1.Aki.Protocol.AZ1.create();
     t.BZ1 = e ? Protocol_1.Aki.Protocol.kZ1.j4n : Protocol_1.Aki.Protocol.kZ1.Proto_Third;
-    Net_1.Net.Call(19543, t, () => {});
+    Net_1.Net.Call(15007, t, () => {});
   }
   CanEnterMotorcycleMovieRideSharingMode(e) {
     return !ModelManager_1.ModelManager.GameModeModel.IsMulti || (e && ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("MotorSharingRide_Tips03"), false);
   }
-  Vrf(e) {
+  asf(e) {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnMovieMotorRideSharingModeChangeRequest, this.RequestMovieRideSharingModeChangeForMotorcycle);
   }
-  Hrf(e) {
+  hsf(e) {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnMovieMotorRideSharingModeChangeRequest, this.RequestMovieRideSharingModeChangeForMotorcycle);
   }
   async PreMovieRideSharingModeChangeForMotorcycle(e, t) {
     if (this.IsInMovieRideSharingMode === e) {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnMovieMotorRideSharingModeChangeResponse, e, false);
     } else {
-      this._vf = new CustomPromise_1.CustomPromise();
-      this.Qmf = t;
+      this.vMf = new CustomPromise_1.CustomPromise();
+      this.c0f = t;
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Vehicle", 50, "摩托共乘：流程开始", ["Active", e], ["blackScreen", t]);
       }
-      if (this.Qmf && (Log_1.Log.CheckInfo() && Log_1.Log.Info("Vehicle", 50, "摩托共乘: 等待开启黑幕(开始)"), await ControllerHolder_1.ControllerHolder.LevelLoadingController.WaitOpenLoading(22, 3, this.MotorSharingRideBlackScreenLoad, ModelManager_1.ModelManager.GameModeModel.BlackScreenColor, false, false, undefined, true), await TimerSystem_1.TimerSystem.Wait(this.Grf * MathUtils_1.MathUtils.SecondToMillisecond), Log_1.Log.CheckInfo())) {
+      if (this.c0f && (Log_1.Log.CheckInfo() && Log_1.Log.Info("Vehicle", 50, "摩托共乘: 等待开启黑幕(开始)"), await ControllerHolder_1.ControllerHolder.LevelLoadingController.WaitOpenLoading(22, 3, this.MotorSharingRideBlackScreenLoad, ModelManager_1.ModelManager.GameModeModel.BlackScreenColor, false, false, undefined, true), await TimerSystem_1.TimerSystem.Wait(this.osf * MathUtils_1.MathUtils.SecondToMillisecond), Log_1.Log.CheckInfo())) {
         Log_1.Log.Info("Vehicle", 50, "摩托共乘: 等待开启黑幕(完成)");
       }
       this.SendMovieModeRideSharingRequest(e);
     }
   }
   SendMovieModeRideSharingRequest(t) {
-    var e = Protocol_1.Aki.Protocol.ZZm.create();
+    var e = Protocol_1.Aki.Protocol.Pof.create();
     e.SDs = t;
-    e.ief = Protocol_1.Aki.Protocol.nef.Proto_ShareRideMode_MovieMotor;
-    Net_1.Net.Call(16047, e, e => {
+    e.Uof = Protocol_1.Aki.Protocol.Bof.Proto_ShareRideMode_MovieMotor;
+    Net_1.Net.Call(25712, e, e => {
       if (e?.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17899);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29971);
         this.PostMovieRideSharingModeChangeForMotorcycle(t, false);
       }
     });
   }
   async OnMovieRideSharingModeChangeForMotorcycle(e) {
     this.IsInMovieRideSharingMode = e;
-    if (this.c9f) {
+    if (this.cZf) {
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("Vehicle", 50, "摩托共乘: 等待编队加载(中断)", ["Handle", this.c9f]);
+        Log_1.Log.Info("Vehicle", 50, "摩托共乘: 等待编队加载(中断)", ["Handle", this.cZf]);
       }
-    } else if (this.d9f) {
-      this.Qmf = false;
+    } else if (this.dZf) {
+      this.c0f = false;
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("Vehicle", 50, "摩托共乘: 等待关闭黑幕(中断)", ["Handle", this.d9f]);
+        Log_1.Log.Info("Vehicle", 50, "摩托共乘: 等待关闭黑幕(中断)", ["Handle", this.dZf]);
       }
-      this.d9f++;
+      this.dZf++;
     }
     if (await this.WaitMotorTeamUpdateComplete()) {
       await this.PostMovieRideSharingModeChangeForMotorcycle(e, true);
     }
   }
   async PostMovieRideSharingModeChangeForMotorcycle(e, t) {
-    return (!this.Qmf || !!(await this.WaitExitBlackScreen())) && !(Log_1.Log.CheckInfo() && Log_1.Log.Info("Vehicle", 50, "摩托共乘：流程结束", ["Active", e], ["BlackScreen", this.Qmf], ["success", t]), this._vf?.SetResult(), this._vf = undefined, this.Qmf = false, EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnMovieMotorRideSharingModeChangeResponse, e, t), 0);
+    return (!this.c0f || !!(await this.WaitExitBlackScreen())) && !(Log_1.Log.CheckInfo() && Log_1.Log.Info("Vehicle", 50, "摩托共乘：流程结束", ["Active", e], ["BlackScreen", this.c0f], ["success", t]), this.vMf?.SetResult(), this.vMf = undefined, this.c0f = false, EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnMovieMotorRideSharingModeChangeResponse, e, t), 0);
   }
   async WaitMotorTeamUpdateComplete() {
-    var e = ++this.c9f;
+    var e = ++this.cZf;
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Vehicle", 50, "摩托共乘: 等待编队加载(开始)", ["Handle", e]);
     }
     await ModelManager_1.ModelManager.SceneTeamModel.LoadTeamPromise?.Promise;
-    var t = this.c9f === e;
+    var t = this.cZf === e;
     if (t && Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Vehicle", 50, "摩托共乘: 等待编队加载(完成)", ["Handle", e]);
     }
-    this.c9f = 0;
+    this.cZf = 0;
     return t;
   }
   async WaitExitBlackScreen() {
-    var e = ++this.d9f;
+    var e = ++this.dZf;
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Vehicle", 50, "摩托共乘: 等待关闭黑幕(开始)", ["Handle", e]);
     }
     await TimerSystem_1.TimerSystem.Wait(this.MotorSharingRideBlackScreenQuit * MathUtils_1.MathUtils.SecondToMillisecond);
     await ControllerHolder_1.ControllerHolder.LevelLoadingController.WaitCloseLoading(22);
-    var t = this.d9f === e;
+    var t = this.dZf === e;
     if (t && Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Vehicle", 50, "摩托共乘: 等待关闭黑幕(完成)", ["Handle", e]);
     }
-    this.d9f = 0;
+    this.dZf = 0;
     return t;
   }
   $bl() {

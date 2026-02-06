@@ -67,7 +67,7 @@ class FlySkinShowView extends UiTickViewBase_1.UiTickViewBase {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIExtendToggle], [2, UE.UIButtonComponent], [3, UE.UIButtonComponent], [4, UE.UIButtonComponent], [5, UE.UIText], [6, UE.UIText], [7, UE.UIItem], [8, UE.UIExtendToggle], [9, UE.UIItem], [10, UE.UIHorizontalLayout], [11, UE.UIItem], [14, UE.UITexture], [12, UE.UIText], [13, UE.UIItem], [15, UE.UIText], [16, UE.UIText], [17, UE.UIButtonComponent], [18, UE.UIItem], [19, UE.UIText], [20, UE.UIItem], [21, UE.UIText], [22, UE.UITexture], [23, UE.UITexture], [24, UE.UITexture], [25, UE.UIItem], [26, UE.UITexture], [27, UE.UIItem], [28, UE.UIItem], [29, UE.UIDraggableComponent], [30, UE.UITexture], [31, UE.UIExtendToggle], [32, UE.UIItem], [33, UE.UIItem], [34, UE.UITexture], [35, UE.UIText], [36, UE.UITexture], [37, UE.UIText], [45, UE.UIItem], [46, UE.UIItem], [47, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIExtendToggle], [2, UE.UIButtonComponent], [3, UE.UIButtonComponent], [4, UE.UIButtonComponent], [5, UE.UIText], [6, UE.UIText], [7, UE.UIItem], [8, UE.UIExtendToggle], [9, UE.UIItem], [10, UE.UIHorizontalLayout], [11, UE.UIItem], [14, UE.UITexture], [12, UE.UIText], [13, UE.UIItem], [15, UE.UIText], [16, UE.UIText], [17, UE.UIButtonComponent], [18, UE.UIItem], [19, UE.UIText], [20, UE.UIItem], [21, UE.UIText], [22, UE.UITexture], [23, UE.UITexture], [24, UE.UITexture], [25, UE.UIItem], [26, UE.UITexture], [27, UE.UIItem], [28, UE.UIItem], [29, UE.UIDraggableComponent], [30, UE.UITexture], [31, UE.UIExtendToggle], [32, UE.UIItem], [33, UE.UIItem], [34, UE.UITexture], [35, UE.UIText], [36, UE.UITexture], [37, UE.UIText], [45, UE.UIItem], [46, UE.UIItem], [51, UE.UIItem]];
     this.BtnBindInfo = [[1, this.Lyl]];
   }
   OnAddEventListener() {
@@ -84,7 +84,7 @@ class FlySkinShowView extends UiTickViewBase_1.UiTickViewBase {
     this.lqe.SetCloseCallBack(this.$Ge);
     this.lqe.SetTitleLocalText("FlySkinShopTitle_Text");
     this.lqe.SetTitleIconByResourceId("FlySkinShopTitle_Icon");
-    this.lqe.SetHelpBtnActive(true);
+    this.lqe.SetHelpBtnActive(false);
     this.lqe.SetHelpCallBack(this.dtt);
     this.GetItem(7).SetUIActive(false);
     this.GetItem(25).SetUIActive(false);
@@ -94,7 +94,7 @@ class FlySkinShowView extends UiTickViewBase_1.UiTickViewBase {
     this.GetItem(46)?.SetUIActive(false);
     this.GetButton(3)?.RootUIComp.SetUIActive(false);
     this.GetButton(4)?.RootUIComp.SetUIActive(false);
-    this.GetItem(47)?.SetUIActive(false);
+    this.GetItem(51)?.SetUIActive(false);
     this.GetItem(9).SetUIActive(false);
   }
   OnHandleLoadScene() {

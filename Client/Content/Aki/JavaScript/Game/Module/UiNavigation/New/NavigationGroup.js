@@ -163,6 +163,9 @@ class NavigationGroup {
   get SlideToRightOrDown() {
     return this.Lo.SlideToRightOrDown;
   }
+  get WaitScrollAnimation() {
+    return this.Lo.WaitScrollAnimation;
+  }
 }
 exports.NavigationGroup = NavigationGroup;
 //# sourceMappingURL=NavigationGroup.js.map

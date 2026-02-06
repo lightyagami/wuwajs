@@ -12,7 +12,7 @@ const GRID_COUNT = 8;
 class PhantomInteractRouletteTipsPanel extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.QEf = [];
+    this.Iwf = [];
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIText]];
@@ -27,17 +27,17 @@ class PhantomInteractRouletteTipsPanel extends UiPanelBase_1.UiPanelBase {
       var r = LguiUtil_1.LguiUtil.CopyItem(t, s);
       var r = i.CreateByActorAsync(r.GetOwner());
       a.push(r);
-      this.QEf.push(i);
+      this.Iwf.push(i);
     }
     await Promise.all(a);
-    for (const e of this.QEf) {
+    for (const e of this.Iwf) {
       e.SetUiActive(true);
     }
   }
   Refresh() {
     var t = ModelManager_1.ModelManager.PhantomInteractModel;
-    for (let e = 0; e < this.QEf.length; e++) {
-      var s = this.QEf[e];
+    for (let e = 0; e < this.Iwf.length; e++) {
+      var s = this.Iwf[e];
       var a = t.InteractInfoData.EquippedVisionData[e];
       var a = t.InteractInfoData.GridItemDataMap.get(a.MonsterId);
       s.SetIcon(a?.IconPath);

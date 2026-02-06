@@ -35,17 +35,23 @@ class SkinObtainView extends UiViewBase_1.UiViewBase {
       this.CloseMe();
     };
     this.L3e = () => {
-      var e;
-      if (this.Vyl.GetIfHaveRole()) {
+      let e = this.Vyl.GetRoleId();
+      let i = this.Vyl.GetIfHaveRole();
+      var t;
+      if (ModelManager_1.ModelManager.RoleModel.IsMainRole(e)) {
+        e = ModelManager_1.ModelManager.RoleModel.GetCurSelectMainRoleId();
+        i = true;
+      }
+      if (i) {
         BlackScreenController_1.BlackScreenController.AddBlackScreenAsync("Start", "OpenRoleSkinView");
         this.CloseMe(() => {
-          ControllerHolder_1.ControllerHolder.SkinController.SkipToSkinView(this.Vyl.GetRoleId(), "RoleSkinTabView", true, this.Vyl.GetItemId(), () => {
+          ControllerHolder_1.ControllerHolder.SkinController.SkipToSkinView(e, "RoleSkinTabView", true, this.Vyl.GetItemId(), () => {
             BlackScreenController_1.BlackScreenController.RemoveBlackScreen("Close", "OpenRoleSkinView");
           });
         });
       } else {
-        e = new ConfirmBoxDefine_1.ConfirmBoxDataNew(233);
-        ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowNetWorkConfirmBoxView(e);
+        t = new ConfirmBoxDefine_1.ConfirmBoxDataNew(233);
+        ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowNetWorkConfirmBoxView(t);
       }
     };
     this.JWi = () => {

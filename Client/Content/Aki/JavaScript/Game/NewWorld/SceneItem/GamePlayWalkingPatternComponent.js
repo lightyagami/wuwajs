@@ -97,8 +97,8 @@ let GamePlayWalkingPatternComponent = GamePlayWalkingPatternComponent_1 = class 
     return true;
   }
   OnStart() {
-    this.Hte = this.Entity.GetComponent(212);
-    this.mBe = this.Entity.GetComponent(142);
+    this.Hte = this.Entity.GetComponent(214);
+    this.mBe = this.Entity.GetComponent(144);
     this.HFl = this.Disable("GamePlayWalkingPatternComponent 默认关闭Tick");
     this.i3l();
     this.r3l();
@@ -331,9 +331,9 @@ let GamePlayWalkingPatternComponent = GamePlayWalkingPatternComponent_1 = class 
     i.ORs = ModelManager_1.ModelManager.CreatureModel.GetWorldOwner();
     i.F4n = this.Hte.CreatureData.GetCreatureDataId();
     i.Eps = t ?? this.Vsh;
-    Net_1.Net.Call(25234, i, t => {
+    Net_1.Net.Call(28374, i, t => {
       if (t?.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 28949);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 26531);
       }
     });
     if (this.HFl === undefined) {
@@ -341,5 +341,5 @@ let GamePlayWalkingPatternComponent = GamePlayWalkingPatternComponent_1 = class 
     }
   }
 };
-GamePlayWalkingPatternComponent = GamePlayWalkingPatternComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(294)], GamePlayWalkingPatternComponent);
+GamePlayWalkingPatternComponent = GamePlayWalkingPatternComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(296)], GamePlayWalkingPatternComponent);
 exports.GamePlayWalkingPatternComponent = GamePlayWalkingPatternComponent; //# sourceMappingURL=GamePlayWalkingPatternComponent.js.map

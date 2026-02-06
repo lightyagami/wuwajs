@@ -11,17 +11,17 @@ const InfoDisplayController_1 = require("../../../InfoDisplay/InfoDisplayControl
 class ArtemisChatRightItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.ysf = undefined;
-    this.Ssf = () => {
-      if (this.ysf) {
-        ModelManager_1.ModelManager.InfoDisplayModel.SetCurrentOpenInformationTexture(this.ysf);
+    this.Qhf = undefined;
+    this.Khf = () => {
+      if (this.Qhf) {
+        ModelManager_1.ModelManager.InfoDisplayModel.SetCurrentOpenInformationTexture(this.Qhf);
         InfoDisplayController_1.InfoDisplayController.OpenInfoDisplayImgView();
       }
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UITexture], [2, UE.UIText], [3, UE.UISizeControlByOther], [4, UE.UIText], [5, UE.UISprite], [6, UE.UITexture], [7, UE.UIItem], [8, UE.UIButtonComponent], [9, UE.UITexture]];
-    this.BtnBindInfo = [[8, this.Ssf]];
+    this.BtnBindInfo = [[8, this.Khf]];
   }
   OnStart() {
     this.GetText(0)?.SetUIActive(false);
@@ -32,19 +32,19 @@ class ArtemisChatRightItem extends UiPanelBase_1.UiPanelBase {
   SetContent(e) {
     var t;
     if (e) {
-      this.Dzm();
+      this.Cef();
       this.GetUiSizeControlByOther(3).GetRootComponent().SetUIActive(e.Content?.length > 0);
       if (e.Content && e.Content?.length > 0) {
         this.GetText(4)?.ShowTextNew(e.Content);
       }
       t = !!e.PicturePath && !!(e.PicturePath?.length > 0);
-      this.ysf = e.PicturePath;
+      this.Qhf = e.PicturePath;
       this.GetButton(8)?.RootUIComp.SetUIActive(t);
       t = e.PicturePath && e.PicturePath?.length === 0 ? e.PicturePath : undefined;
       this.TrySetTextureByPath(t, this.GetTexture(9));
     }
   }
-  Dzm() {
+  Cef() {
     var e = ModelManager_1.ModelManager.PlayerInfoModel.GetNumberPropById(4);
     var e = ModelManager_1.ModelManager.PersonalModel.GetPlayerHeadData(e);
     const t = this.GetTexture(1);

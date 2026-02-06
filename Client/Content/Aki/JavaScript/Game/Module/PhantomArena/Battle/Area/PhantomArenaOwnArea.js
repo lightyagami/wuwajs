@@ -100,7 +100,7 @@ class PhantomArenaOwnArea {
     }
   }
   async InitArea(t, a, i, e) {
-    await Promise.all([this.Ai1(t), this.Pi1(a), this.nFe(i), this.Iiu(), this.yFm(e)]);
+    await Promise.all([this.Ai1(t), this.Pi1(a), this.nFe(i), this.Iiu(), this.GNm(e)]);
   }
   RegisterViewProxy(t) {
     this.ViewProxy = t;
@@ -363,14 +363,14 @@ class PhantomArenaOwnArea {
     this.FunctionalArea.RemoveCard(a);
     this.HandArea.FunctionalToHand(t);
   }
-  async Jxm(t, a) {
+  async TBm(t, a) {
     var i = new PhantomArenaCard_1.PhantomArenaCard();
     i.RegisterCardLogic(PhantomArenaLogicFactory_1.PhantomArenaLogicFactory.CreateLogic(i, t.GetCardType(), this.ViewProxy));
     await i.InitializePhantomArenaCard(t, a);
     return i;
   }
-  async Zxm(t, a, i) {
-    const e = await this.Jxm(t, i.AreaItem.GetRootItem());
+  async bBm(t, a, i) {
+    const e = await this.TBm(t, i.AreaItem.GetRootItem());
     await i.SetCard(e);
     const n = new CustomPromise_1.CustomPromise();
     t = {
@@ -391,11 +391,11 @@ class PhantomArenaOwnArea {
     e.PlaySequenceWithoutStop("DragUpHandtoTable");
     await n.Promise;
   }
-  async eBm(t, a) {
-    var i = this.HandArea.GetCardProxy(t.CardId);
-    var e = i.GetCard();
-    await i.CallHandCardToFight(t, a.AreaItem.GetRootItem());
-    await Promise.all([this.HandArea.RemoveCard(e), a.SetCard(e)]);
+  async RBm(t, a) {
+    var t = this.HandArea.GetCardProxy(t.CardId);
+    var i = t.GetCard();
+    await t.CallHandCardToFight(a.AreaItem.GetRootItem());
+    await Promise.all([this.HandArea.RemoveCard(i), a.SetCard(i)]);
   }
   async CallHandCardListToFight(t) {
     var a = [];
@@ -405,7 +405,7 @@ class PhantomArenaOwnArea {
       var e = ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.GetBattleCardByCardId(e);
       if (e) {
         i = this.FunctionalArea.GetCardProxyByIndex(e.Index);
-        a.push(this.eBm(e, i));
+        a.push(this.RBm(e, i));
       }
     }
     await Promise.all(a);
@@ -418,19 +418,19 @@ class PhantomArenaOwnArea {
       var e = ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.GetBattleCardByCardId(e);
       if (e) {
         i = this.FunctionalArea.GetCardProxyByIndex(e.Index);
-        a.push(this.Zxm(e, this.ViewProxy.GetOwnCardLibraryItem(), i));
+        a.push(this.bBm(e, this.ViewProxy.GetOwnCardLibraryItem(), i));
       }
     }
     await Promise.all(a);
   }
-  async yFm(t) {
+  async GNm(t) {
     if (!ModelManager_1.ModelManager.PhantomArenaBattleModel.IsOldBvb) {
       this.FiledArea = new PhantomArenaFieldArea_1.PhantomArenaFieldArea();
       this.FiledArea.RegisterViewProxy(this.ViewProxy);
       await this.FiledArea.CreateThenShowByActorAsync(t.GetOwner());
     }
   }
-  async Nif() {
+  async tnf() {
     var t;
     if (!this.FieldEffect) {
       t = ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.FieldData;
@@ -446,7 +446,7 @@ class PhantomArenaOwnArea {
     this.RolePanel.RefreshField();
   }
   async ShowField() {
-    await this.Nif();
+    await this.tnf();
     await this.ShowFiledArea();
   }
   async ShowFiledArea() {

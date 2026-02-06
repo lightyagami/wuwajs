@@ -14,19 +14,37 @@ const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const UiTimeDilation_1 = require("../../../../Ui/Base/UiTimeDilation");
 const UiManager_1 = require("../../../../Ui/UiManager");
+const ConfirmBoxDefine_1 = require("../../../ConfirmBox/ConfirmBoxDefine");
 const ActivityControllerBase_1 = require("../../ActivityControllerBase");
 const WheelTowerSubView_1 = require("./View/WheelTowerSubView");
 const WheelTowerData_1 = require("./WheelTowerData");
 const TAG_WAIT = "WheelTower";
+const wheelTowerViewNameList = ["WheelTowerModeSelectView", "WheelTowerRoundSelectView", "WheelTowerBuffSelectView"];
 class WheelTowerController extends ActivityControllerBase_1.ActivityControllerBase {
   constructor() {
     super(...arguments);
+    this.Y3g = () => {
+      if (ModelManager_1.ModelManager.WheelTowerModel.CheckInInstanceDungeon()) {
+        this.ShowWheelTowerCycleChangeConfirmBox(() => {
+          ControllerHolder_1.ControllerHolder.InstanceDungeonEntranceController.LeaveInstanceDungeonRequest();
+        });
+      } else {
+        for (const e of wheelTowerViewNameList) {
+          if (UiManager_1.UiManager.IsViewOpen(e)) {
+            this.ShowWheelTowerCycleChangeConfirmBox(() => {
+              UiManager_1.UiManager.ResetToBattleView();
+            });
+            return;
+          }
+        }
+      }
+    };
     this.nye = () => {
       if (ModelManager_1.ModelManager.WheelTowerModel.CheckInInstanceDungeon()) {
         this.SetBanTimeStop(true);
       }
     };
-    this.b6f = e => {
+    this.Hzf = e => {
       var o;
       var r = ModelManager_1.ModelManager.WheelTowerModel;
       if (r.EndlessMode && r.CachedRoundInProgress !== (o = e.UJ_)) {
@@ -34,27 +52,27 @@ class WheelTowerController extends ActivityControllerBase_1.ActivityControllerBa
         UiManager_1.UiManager.OpenView("WheelTowerRoundTipsView", e.UJ_);
       }
     };
-    this.lif = o => {
+    this.gof = o => {
       const r = ModelManager_1.ModelManager.WheelTowerModel;
       var t = r.SelectedRound;
       var e = r.IsRoundChallenged(t);
-      var a = r.GetIsEndlessUnlockedInInstance();
-      if (!a) {
+      var n = r.GetIsEndlessUnlockedInInstance();
+      if (!n) {
         if (e) {
           e = {
             BeforeData: {
-              ScoreRecord: o.kuf,
-              RoundScore: o.Ouf,
+              ScoreRecord: o.Udf,
+              RoundScore: o.Bdf,
               TotalScore: r.GetRoundTotalScore(t),
               TeamRoleIdList: r.GetRoundSelectRoleIdList(t),
               BuffId: r.GetRoundSelectBuffList(t)[0]
             },
             AfterData: {
-              ScoreRecord: o.quf,
-              RoundScore: o.Guf,
-              TotalScore: o.quf,
-              TeamRoleIdList: o.jef.Vef.map(e => e.Q6n),
-              BuffId: o.jef.$As[0]
+              ScoreRecord: o.xdf,
+              RoundScore: o.kdf,
+              TotalScore: o.xdf,
+              TeamRoleIdList: o.zif.Xif.map(e => e.Q6n),
+              BuffId: o.zif.$As[0]
             },
             IsEndless: r.EndlessMode,
             Round: t + 1
@@ -64,14 +82,14 @@ class WheelTowerController extends ActivityControllerBase_1.ActivityControllerBa
           r.ActivityData.OnAddNewRecord(o);
         }
       }
-      var n = [];
-      var l = o.$ef.length;
+      var a = [];
+      var l = o.Jif.length;
       for (let e = 0; e < l; e++) {
-        var i = o.$ef[e];
-        var _ = e === 0 ? r.GetRecordPrevBossHpPercentage(t - 1, i.Gef, i.UJ_) : 100;
-        n.push({
+        var i = o.Jif[e];
+        var _ = e === 0 ? r.GetRecordPrevBossHpPercentage(t - 1, i.Wif, i.UJ_) : 100;
+        a.push({
           BossInfo: {
-            WaveConfigId: i.Gef,
+            WaveConfigId: i.Wif,
             Round: i.UJ_,
             HpPercentage: r.GetBossHpPercentage(i)
           },
@@ -82,9 +100,9 @@ class WheelTowerController extends ActivityControllerBase_1.ActivityControllerBa
         EndlessMode: r.EndlessMode,
         TotalRound: r.GetLastChallengeRound() + 1,
         CurrentRound: r.SelectedRound + 1,
-        CurrentScore: o.Guf,
-        TotalScore: o.quf,
-        BossInfoList: n,
+        CurrentScore: o.kdf,
+        TotalScore: o.xdf,
+        BossInfoList: a,
         LeftButtonData: {
           Name: "WheelTower_Result_Back",
           OnClick: () => {
@@ -115,13 +133,13 @@ class WheelTowerController extends ActivityControllerBase_1.ActivityControllerBa
       if (r.EndlessMode) {
         e.CenterButtonData = s;
         e.RightButtonData = d;
-      } else if (a) {
+      } else if (n) {
         e.CenterButtonData = s;
         e.RightButtonData = M;
         e.ShowEndlessUnlockTips = true;
       } else {
-        a = o.jef.Hef;
-        if (r.GetBossHpPercentage(a) <= 0 || r.IsLastRoundCheckLimit(o.gG_, t)) {
+        n = o.zif.Yif;
+        if (r.GetBossHpPercentage(n) <= 0 || r.IsLastRoundCheckLimit(o.gG_, t)) {
           e.RightButtonData = s;
         } else {
           e.CenterButtonData = s;
@@ -132,7 +150,7 @@ class WheelTowerController extends ActivityControllerBase_1.ActivityControllerBa
       this.SetBanTimeStop(false);
       r.CachedRoundInProgress = -1;
     };
-    this.Fqf = e => {
+    this.QVf = e => {
       var e = e.dM_;
       if (e && (e = e.gG_, ConfigManager_1.ConfigManager.WheelTowerConfig.GetLevelConfigById(e).Diff > 0)) {
         if (ModelManager_1.ModelManager.WheelTowerModel.BlockEndlessUnlockTips) {
@@ -142,10 +160,10 @@ class WheelTowerController extends ActivityControllerBase_1.ActivityControllerBa
         }
       }
     };
-    this.Nqf = e => {
+    this.KVf = e => {
       ModelManager_1.ModelManager.WheelTowerModel.ActivityData.OnTaskUpdateNotify(e.E$s);
     };
-    this.Vqf = e => {
+    this.XVf = e => {
       if (e.dM_) {
         ModelManager_1.ModelManager.WheelTowerModel.ActivityData.OnLevelRecordUpdateNotify(e.dM_);
       }
@@ -166,9 +184,17 @@ class WheelTowerController extends ActivityControllerBase_1.ActivityControllerBa
   }
   OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDone, this.nye);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WheelTowerCycleChange, this.Y3g);
   }
   OnRemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDone, this.nye);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WheelTowerCycleChange, this.Y3g);
+  }
+  ShowWheelTowerCycleChangeConfirmBox(e) {
+    var o = new ConfirmBoxDefine_1.ConfirmBoxDataNew(115);
+    o.FunctionMap.set(1, e);
+    o.FunctionMap.set(0, e);
+    ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(o);
   }
   SetBanTimeStop(e) {
     var o = ModelManager_1.ModelManager.WheelTowerModel;
@@ -181,18 +207,18 @@ class WheelTowerController extends ActivityControllerBase_1.ActivityControllerBa
     }
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(29682, this.lif);
-    Net_1.Net.Register(29243, this.Fqf);
-    Net_1.Net.Register(27676, this.Nqf);
-    Net_1.Net.Register(26958, this.Vqf);
-    Net_1.Net.Register(17354, this.b6f);
+    Net_1.Net.Register(21490, this.gof);
+    Net_1.Net.Register(16153, this.QVf);
+    Net_1.Net.Register(20260, this.KVf);
+    Net_1.Net.Register(19169, this.XVf);
+    Net_1.Net.Register(19641, this.Hzf);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(29682);
-    Net_1.Net.UnRegister(29243);
-    Net_1.Net.UnRegister(27676);
-    Net_1.Net.UnRegister(26958);
-    Net_1.Net.UnRegister(17354);
+    Net_1.Net.UnRegister(21490);
+    Net_1.Net.UnRegister(16153);
+    Net_1.Net.UnRegister(20260);
+    Net_1.Net.UnRegister(19169);
+    Net_1.Net.UnRegister(19641);
   }
   TryOpenOverridePopupView(e) {
     var o = ModelManager_1.ModelManager.WheelTowerModel.GetRecordPopupData();
@@ -208,12 +234,12 @@ class WheelTowerController extends ActivityControllerBase_1.ActivityControllerBa
   }
   async TryOverrideLevelRecord(e) {
     var o = ModelManager_1.ModelManager.WheelTowerModel;
-    var r = new Protocol_1.Aki.Protocol.Mef();
+    var r = new Protocol_1.Aki.Protocol.Aif();
     r.gG_ = o.GetCurrentLevelRecord().gG_;
-    var o = await Net_1.Net.CallAsync(16135, r);
+    var o = await Net_1.Net.CallAsync(28134, r);
     if (o) {
       if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 19289);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 28441);
       } else {
         e();
       }
@@ -227,41 +253,41 @@ class WheelTowerController extends ActivityControllerBase_1.ActivityControllerBa
     this.RequestChallenge(e, o, r, t);
   }
   RequestChallenge(e, o, r, t) {
-    var a = new Protocol_1.Aki.Protocol.Jef();
-    a.gG_ = e;
-    a.c5n = o;
-    a.$As = r;
-    a.Vef = [];
+    var n = new Protocol_1.Aki.Protocol.nrf();
+    n.gG_ = e;
+    n.c5n = o;
+    n.$As = r;
+    n.Xif = [];
     for (const i of t) {
-      var n;
-      var l = new Protocol_1.Aki.Protocol.zef();
+      var a;
+      var l = new Protocol_1.Aki.Protocol.orf();
       if (ModelManager_1.ModelManager.WheelTowerModel.IsTemplateRole(i)) {
         l.Q6n = i;
       } else {
-        n = ModelManager_1.ModelManager.WheelTowerModel.GetRoleInfo(i);
+        a = ModelManager_1.ModelManager.WheelTowerModel.GetRoleInfo(i);
         l.Q6n = i;
-        l.Qtm = n.Weapon;
-        l.Nef = n.Phantom;
+        l.Qtm = a.Weapon;
+        l.Kif = a.Phantom;
       }
-      a.Vef.push(l);
+      n.Xif.push(l);
     }
-    o = new Protocol_1.Aki.Protocol.Kef();
-    o.K4s = a;
-    ModelManager_1.ModelManager.InstanceDungeonModel.InstanceEnterContentText.Kef = o;
+    o = new Protocol_1.Aki.Protocol.trf();
+    o.K4s = n;
+    ModelManager_1.ModelManager.InstanceDungeonModel.InstanceEnterContentText.trf = o;
     r = ConfigManager_1.ConfigManager.WheelTowerConfig.GetLevelConfigById(e);
     ControllerHolder_1.ControllerHolder.InstanceDungeonController.PrewarTeamFightRequest(r.InstId, t);
     ModelManager_1.ModelManager.WheelTowerModel.BlockEndlessUnlockTips = true;
     ModelManager_1.ModelManager.WheelTowerModel.DeleteRecordPopupData();
   }
   async RequestRoleEnergyUpdate() {
-    var e = new Protocol_1.Aki.Protocol.Lef();
+    var e = new Protocol_1.Aki.Protocol.qif();
     e.bN_ = ModelManager_1.ModelManager.WheelTowerModel.ActivityData.CycleId;
-    var e = await Net_1.Net.CallAsync(25752, e);
+    var e = await Net_1.Net.CallAsync(24635, e);
     if (e) {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18349);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26897);
       } else {
-        ModelManager_1.ModelManager.WheelTowerModel.ActivityData.OnRoleEnergyUpdateNotify(e.Qef);
+        ModelManager_1.ModelManager.WheelTowerModel.ActivityData.OnRoleEnergyUpdateNotify(e.erf);
       }
     }
   }
@@ -273,10 +299,10 @@ class WheelTowerController extends ActivityControllerBase_1.ActivityControllerBa
         Log_1.Log.Error("WheelTower", 90, "没有可领取的奖励，但意外点击到了领取奖励按钮！");
       }
     } else {
-      (o = new Protocol_1.Aki.Protocol.Ief()).Wef = e;
-      if (o = await Net_1.Net.CallAsync(25657, o)) {
+      (o = new Protocol_1.Aki.Protocol.Uif()).Zif = e;
+      if (o = await Net_1.Net.CallAsync(19199, o)) {
         if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 27714);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 29634);
         } else {
           ModelManager_1.ModelManager.WheelTowerModel.ActivityData.OnTaskClaim(e);
         }
@@ -286,12 +312,12 @@ class WheelTowerController extends ActivityControllerBase_1.ActivityControllerBa
     }
   }
   async RequestResetLevelRecord(e) {
-    var o = new Protocol_1.Aki.Protocol.Duf();
+    var o = new Protocol_1.Aki.Protocol.Ldf();
     o.gG_ = e;
-    var e = await Net_1.Net.CallAsync(23187, o);
+    var e = await Net_1.Net.CallAsync(23999, o);
     if (e) {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27513);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16016);
       }
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("WheelTower", 90, "重置关卡请求异常，服务器返回为空！");

@@ -54,7 +54,7 @@ class TsCharacterDebugComponent extends UE.ActorComponent {
     this.BaseChar = undefined;
   }
   SetMovementDebug(t) {
-    this.BaseChar.CharacterActorComponent.Entity.GetComponent(30).SetDebug(t);
+    this.BaseChar.CharacterActorComponent.Entity.GetComponent(31).SetDebug(t);
   }
   ChangeEnterClimbTrace() {
     switch (this.EnterClimbTrace) {
@@ -67,7 +67,7 @@ class TsCharacterDebugComponent extends UE.ActorComponent {
       default:
         this.EnterClimbTrace = 0;
     }
-    this.BaseChar.CharacterActorComponent.Entity.GetComponent(35).UpdateClimbDebug();
+    this.BaseChar.CharacterActorComponent.Entity.GetComponent(36).UpdateClimbDebug();
   }
   ChangeVaultClimbTrace() {
     switch (this.VaultClimbTrace) {
@@ -80,7 +80,7 @@ class TsCharacterDebugComponent extends UE.ActorComponent {
       default:
         this.VaultClimbTrace = 0;
     }
-    this.BaseChar.CharacterActorComponent.Entity.GetComponent(35).UpdateClimbDebug();
+    this.BaseChar.CharacterActorComponent.Entity.GetComponent(36).UpdateClimbDebug();
   }
   ChangeUpArriveClimbTrace() {
     switch (this.UpArriveClimbTrace) {
@@ -93,7 +93,7 @@ class TsCharacterDebugComponent extends UE.ActorComponent {
       default:
         this.UpArriveClimbTrace = 0;
     }
-    this.BaseChar.CharacterActorComponent.Entity.GetComponent(35).UpdateClimbDebug();
+    this.BaseChar.CharacterActorComponent.Entity.GetComponent(36).UpdateClimbDebug();
   }
   ChangeClimbingTrace() {
     if (this.ClimbingTrace === 0) {
@@ -101,11 +101,11 @@ class TsCharacterDebugComponent extends UE.ActorComponent {
     } else {
       this.ClimbingTrace = 0;
     }
-    this.BaseChar.CharacterActorComponent.Entity.GetComponent(35).UpdateClimbDebug();
+    this.BaseChar.CharacterActorComponent.Entity.GetComponent(36).UpdateClimbDebug();
   }
   ChangeNoTop() {
     this.NoTop = !this.NoTop;
-    this.BaseChar.CharacterActorComponent.Entity.GetComponent(35).UpdateClimbDebug();
+    this.BaseChar.CharacterActorComponent.Entity.GetComponent(36).UpdateClimbDebug();
   }
   ReceiveBeginPlay() {
     this.BaseChar = this.GetOwner();

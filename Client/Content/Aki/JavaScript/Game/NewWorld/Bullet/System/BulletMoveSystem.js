@@ -194,7 +194,7 @@ class BulletMoveSystem extends BulletSystemBase_1.BulletSystemBase {
     if (a?.Valid) {
       e = BulletPool_1.BulletPool.CreateVector();
       if (r.FollowTargetBottom) {
-        l = (o = a.Entity.GetComponent(187)).ActorComp.ActorLocation;
+        l = (o = a.Entity.GetComponent(189)).ActorComp.ActorLocation;
         e.Set(l.X, l.Y, l.Z - o.GetHeightAboveGround(Math.min(r.MinFollowHeight, MIN_HEIGHT_FOLLOW_TARGET)) - o.ActorComp.HalfHeight);
       } else {
         l = t.BulletDataMain?.Move.TrackTargetBone;
@@ -224,7 +224,7 @@ class BulletMoveSystem extends BulletSystemBase_1.BulletSystemBase {
       var r = this.KWo(e);
       let t = undefined;
       if (o > 1) {
-        o = r?.Entity?.GetComponent(187);
+        o = r?.Entity?.GetComponent(189);
         if (!o?.Valid) {
           return;
         }
@@ -250,7 +250,7 @@ class BulletMoveSystem extends BulletSystemBase_1.BulletSystemBase {
         t = BulletUtil_1.BulletUtil.GetTargetLocation(r, StringUtils_1.StringUtils.IsNothing(o) ? e.SkillBoneName : FNameUtil_1.FNameUtil.GetDynamicFName(o), e);
       }
       if (t) {
-        if (r?.Entity.GetComponent(215)?.HasTag(1008164187)) {
+        if (r?.Entity.GetComponent(217)?.HasTag(1008164187)) {
           e.OnTargetInValid();
         } else if (l.TrackParams[0].X !== 0) {
           this.XWo(e, t);
@@ -570,17 +570,21 @@ class BulletMoveSystem extends BulletSystemBase_1.BulletSystemBase {
     var l;
     var o;
     var r;
-    if (ModelManager_1.ModelManager.GameModeModel.IsMulti && !t.BulletInitParams.FromRemote) {
+    if (t.TargetIdLast !== e && (t.SetTargetById(e), ModelManager_1.ModelManager.GameModeModel.IsMulti) && !t.BulletInitParams.FromRemote) {
       if (t.BulletDataMain.Base.SyncType !== 1) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("Bullet", 20, "动态改变目标的子弹必须设置 基础设置.网络同步类型 为 网络同步子弹", ["BulletId", t.BulletRowName], ["Attacker", t.AttackerActorComp?.Owner?.GetName()]);
         }
       } else {
-        if (t.TargetIdLast !== e && (l = ModelManager_1.ModelManager.BulletModel.GetBulletHandleById(t.BulletEntityId), o = ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(e), (r = Protocol_1.Aki.Protocol.Ce_.create()).Ajn = {
+        l = ModelManager_1.ModelManager.BulletModel.GetBulletHandleById(t.BulletEntityId);
+        o = ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(e);
+        (r = Protocol_1.Aki.Protocol.Ce_.create()).Ajn = {
           K8n: undefined,
           uVn: l,
           CVn: MathUtils_1.MathUtils.NumberToLong(o)
-        }, CombatMessage_1.CombatNet.Send(29377, t.Attacker, r), Log_1.Log.CheckDebug())) {
+        };
+        CombatMessage_1.CombatNet.Send(29731, t.Attacker, r);
+        if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("Bullet", 20, "修改子弹目标请求", ["新的目标id", e], ["CreatureId", o]);
         }
         t.TargetIdLast = e;

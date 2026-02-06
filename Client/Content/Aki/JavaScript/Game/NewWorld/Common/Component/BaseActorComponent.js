@@ -110,6 +110,7 @@ let BaseActorComponent = class BaseActorComponent extends EntityComponent_1.Enti
     this.CachedRightTime = -1;
     this.CachedUpTime = -1;
     this.CachedVelocityTime = -1;
+    this.CachedActorVelocity = Vector_1.Vector.Create(0, 0, 0);
     this.CachedGravityDirectTime = -1;
     this.CachedDesiredActorLocation = Vector_1.Vector.Create();
     this.IsChangingLocation = false;
@@ -135,6 +136,8 @@ let BaseActorComponent = class BaseActorComponent extends EntityComponent_1.Enti
     this.HalfHeightInternal = 0;
     this.DefaultRadiusInternal = 0;
     this.DefaultHalfHeightInternal = 0;
+    this.ReplaceEffectMap = new Map();
+    this.ReplaceMontageMap = new Map();
   }
   get IsAutonomousProxy() {
     return this.Nrn;
@@ -174,7 +177,7 @@ let BaseActorComponent = class BaseActorComponent extends EntityComponent_1.Enti
     return true;
   }
   OnStart() {
-    this.MoveComp = this.Entity.GetComponent(46);
+    this.MoveComp = this.Entity.GetComponent(48);
     this.VehicleMoveComp = this.Entity.GetComponent(249);
     this.vJ = ModelManager_1.ModelManager.CreatureModel?.GetEntityById(this.Entity.Id);
     return true;
@@ -254,6 +257,7 @@ let BaseActorComponent = class BaseActorComponent extends EntityComponent_1.Enti
     } else {
       if (this.CachedLocationTime < Time_1.Time.Frame && this.ActorInternal?.IsValid()) {
         this.CachedLocationTime = Time_1.Time.Frame;
+        this.MoveComp?.ResetCharTraceHeight();
         this.Krn(true);
         this.CachedActorLocation.FromUeVector(this.ActorInternal.D_K2_GetActorLocation());
         this.Krn(false);
@@ -373,6 +377,21 @@ let BaseActorComponent = class BaseActorComponent extends EntityComponent_1.Enti
   get Owner() {
     if (this.ActorInternal?.IsValid()) {
       return this.ActorInternal;
+    }
+  }
+  get ActorVelocityProxy() {
+    if (this.CachedVelocityTime < Time_1.Time.Frame) {
+      this.CachedVelocityTime = Time_1.Time.Frame;
+      this.CachedActorVelocity.DeepCopy(this.ActorInternal.D_GetVelocity());
+    }
+    return this.CachedActorVelocity;
+  }
+  get ActorVelocity() {
+    return this.ActorVelocityProxy.ToUeVectorOld();
+  }
+  get SafeActorVelocityProxy() {
+    if (this.ActorInternal?.IsValid()) {
+      return this.ActorVelocityProxy;
     }
   }
   get SkeletalMesh() {}
@@ -626,7 +645,7 @@ let BaseActorComponent = class BaseActorComponent extends EntityComponent_1.Enti
           EventSystem_1.EventSystem.EmitWithTarget(this.vJ, EventDefine_1.EEventName.OnSetActorHidden, this.Entity.Id, t);
         }
       };
-      if (this.Entity.GetComponent(123)) {
+      if (this.Entity.GetComponent(125)) {
         TimerSystem_1.TimerSystem.Next(() => {
           if (this.ActorInternal?.IsValid()) {
             i();
@@ -655,7 +674,7 @@ let BaseActorComponent = class BaseActorComponent extends EntityComponent_1.Enti
     return this.DisableCollisionHandle.DumpDisableInfo();
   }
   DumpDisableTickInfo() {
-    var t = this.Entity.GetComponent(120);
+    var t = this.Entity.GetComponent(122);
     if (t) {
       return t.DumpDisableTickInfo();
     } else {
@@ -685,11 +704,11 @@ let BaseActorComponent = class BaseActorComponent extends EntityComponent_1.Enti
   SetTickEnable(t, i) {
     if (t) {
       if (this.Vrn) {
-        this.Entity.GetComponent(120)?.EnableTickWithLog(this.Vrn, i);
+        this.Entity.GetComponent(122)?.EnableTickWithLog(this.Vrn, i);
         this.Vrn = undefined;
       }
     } else {
-      this.Vrn ||= this.Entity.GetComponent(120)?.DisableTickWithLog(i);
+      this.Vrn ||= this.Entity.GetComponent(122)?.DisableTickWithLog(i);
     }
   }
   OnClear() {
@@ -711,6 +730,21 @@ let BaseActorComponent = class BaseActorComponent extends EntityComponent_1.Enti
   }
   GetWatchedPoint() {
     return this.ActorLocationProxy;
+  }
+  GetReplaceEffect(t) {
+    return this.ReplaceEffectMap.get(t);
+  }
+  GetReplaceMontage(t) {
+    return this.ReplaceMontageMap.get(t);
+  }
+  SetupReplacement(t, i) {
+    var e;
+    if (t.特效替换表 && (e = t.特效替换表.ToAssetPathName()).length > 0) {
+      this.ReplaceEffectMap = i.MainAsset.SetupReplaceEffect(e);
+    }
+    if (t.蒙太奇替换表 && (e = t.蒙太奇替换表.ToAssetPathName()).length > 0) {
+      this.ReplaceMontageMap = i.MainAsset.SetupReplaceMontage(e);
+    }
   }
 };
 BaseActorComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(1)], BaseActorComponent);

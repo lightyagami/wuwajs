@@ -7,6 +7,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.ItemUseLogic = undefined;
 const Log_1 = require("../../../Core/Common/Log");
 const GiftType_1 = require("../../../Core/Define/Config/SubType/GiftType");
+const CommonParamById_1 = require("../../../Core/Define/ConfigCommon/CommonParamById");
 const ItemInfoById_1 = require("../../../Core/Define/ConfigQuery/ItemInfoById");
 const MultiTextLang_1 = require("../../../Core/Define/ConfigQuery/MultiTextLang");
 const UiPlayItemById_1 = require("../../../Core/Define/ConfigQuery/UiPlayItemById");
@@ -19,6 +20,8 @@ const ModelManager_1 = require("../../Manager/ModelManager");
 const CharacterAttributeTypes_1 = require("../../NewWorld/Character/Common/Component/Abilities/CharacterAttributeTypes");
 const UiManager_1 = require("../../Ui/UiManager");
 const AcquireData_1 = require("../Acquire/AcquireData");
+const TotalTopUpData_1 = require("../Activity/ActivityContent/TotalTopUp/TotalTopUpData");
+const TotalTopUpViewModel_1 = require("../Activity/ActivityContent/TotalTopUp/TotalTopUpViewModel");
 const BirthdayController_1 = require("../Birthday/BirthdayController");
 const BuffItemControl_1 = require("../BuffItem/BuffItemControl");
 const CalabashController_1 = require("../Calabash/CalabashController");
@@ -40,7 +43,7 @@ class ItemUseLogic {
     if (n.GetConfigId > RoleDefine_1.ROBOT_DATA_MIN_ID) {
       ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("NoneRole");
     } else {
-      n = n?.EntityHandle?.Entity?.GetComponent(182);
+      n = n?.EntityHandle?.Entity?.GetComponent(184);
       if (!n) {
         return false;
       }
@@ -199,7 +202,15 @@ ItemUseLogic.TryUseBirthdayItem = e => {
 ItemUseLogic.TryUseVisionRefineItem = e => {
   e = ModelManager_1.ModelManager.InventoryModel.GetCommonItemData(e);
   return !!e && !!e.GetConfig().ShowTypes.includes(54) && (CalabashController_1.CalabashController.JumpToCalabashRootView("VisionRefineTabView", {
-    ViewState: 1
+    ViewState: 1,
+    RefineType: 0
+  }), true);
+};
+ItemUseLogic.TryUseVisionRefineSubItem = e => {
+  e = ModelManager_1.ModelManager.InventoryModel.GetCommonItemData(e);
+  return !!e && !!e.GetConfig().ShowTypes.includes(58) && (CalabashController_1.CalabashController.JumpToCalabashRootView("VisionRefineTabView", {
+    ViewState: 1,
+    RefineType: 1
   }), true);
 };
 ItemUseLogic.TryUseBuffEquipItem = e => {
@@ -231,4 +242,16 @@ ItemUseLogic.TryUseBuffEquipItem = e => {
   }
   ControllerHolder_1.ControllerHolder.InventoryController.RequestItemUse(e, 1);
   return true;
+};
+ItemUseLogic.TryUseTotalTopUpRolePickItem = e => {
+  var r;
+  var e = TotalTopUpData_1.TotalTopUpRolePackageData.TryParsePackageData(e);
+  return !!e && ((r = new TotalTopUpViewModel_1.TotalTopUpPickRoleViewModel()).LoadFromGiftPackageInBag(e), UiManager_1.UiManager.OpenView("TotalTopUpPickRoleRewardView", r), true);
+};
+ItemUseLogic.TryUseBrochureItem = e => {
+  var r = CommonParamById_1.configCommonParamById.GetIntArrayConfig("SpringManorBrochureItemId");
+  return !!r && r[0] === e && (e = {
+    IsHideReward: true,
+    ActivityId: r[1]
+  }, UiManager_1.UiManager.OpenView("Spring26BrochureView", e), true);
 }; //# sourceMappingURL=ItemUseLogic.js.map

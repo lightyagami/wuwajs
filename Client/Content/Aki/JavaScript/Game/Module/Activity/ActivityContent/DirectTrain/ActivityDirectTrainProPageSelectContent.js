@@ -27,8 +27,8 @@ class ActivityDirectTrainProPageSelectContent extends GridProxyAbstract_1.GridPr
         this.u3e();
         this.Kbe();
         this.AM1();
-        this.WVm();
-        this.QVm();
+        this.Fkm();
+        this.Nkm();
       }
     };
     this.jbe = t => {
@@ -86,8 +86,8 @@ class ActivityDirectTrainProPageSelectContent extends GridProxyAbstract_1.GridPr
       this.u3e();
       this.Kbe();
       this.AM1();
-      this.WVm();
-      this.QVm();
+      this.Fkm();
+      this.Nkm();
     } catch (t) {
       ModelManager_1.ModelManager.ActivityModel.OpenActivityErrorConfirmBox(this.Pe?.Id ?? 0, this.Pe?.Type ?? 0);
       if (t instanceof Error) {
@@ -133,11 +133,11 @@ class ActivityDirectTrainProPageSelectContent extends GridProxyAbstract_1.GridPr
       this.SetSpriteByPath(t, e, true);
     }
   }
-  WVm() {
+  Fkm() {
     var t = this.Pe.FinishShowState;
     this.GetSprite(9).SetUIActive(this.Pe.LocalConfig.IsTabEffectNotice && !t);
   }
-  QVm() {
+  Nkm() {
     var t;
     var e;
     var i = this.Pe.LocalConfig.ShowTabTypeId;

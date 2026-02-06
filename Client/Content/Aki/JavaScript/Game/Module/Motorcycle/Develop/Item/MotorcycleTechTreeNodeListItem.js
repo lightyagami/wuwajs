@@ -6,15 +6,14 @@ Object.defineProperty(exports, "__esModule", {
 exports.MotorcycleTechTreeNodeListItem = undefined;
 const UE = require("ue");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
-const UiAsyncTask_1 = require("../../../../Ui/Base/UiAsyncTask");
 const GridProxyAbstract_1 = require("../../../Util/Grid/GridProxyAbstract");
 const MotorcycleTechTreeNodeItem_1 = require("./MotorcycleTechTreeNodeItem");
 class MotorcycleTechTreeNodeListItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
     super(...arguments);
-    this.Mjf = [];
-    this._cf = undefined;
-    this.Ejf = [];
+    this.Fig = [];
+    this.amf = undefined;
+    this.Nig = [];
     this.OnAfterRefreshOneNode = undefined;
   }
   OnRegisterComponent() {
@@ -22,64 +21,67 @@ class MotorcycleTechTreeNodeListItem extends GridProxyAbstract_1.GridProxyAbstra
   }
   async OnBeforeStartAsync() {
     this.GetItem(0).SetUIActive(false);
-    this._cf = new MotorcycleTechTreeNodeItem_1.MotorcycleTechTreeNodeItem();
-    this.OnAfterRefreshOneNode?.(this._cf);
-    await this._cf.CreateThenShowByResourceIdAsync("UiItem_MotorcycleTechTreeNode", this.GetRootItem());
+    this.amf = new MotorcycleTechTreeNodeItem_1.MotorcycleTechTreeNodeItem();
+    await this.amf.CreateThenShowByResourceIdAsync("UiItem_MotorcycleTechTreeNode", this.GetRootItem());
   }
   Refresh(e, t, r) {
-    new UiAsyncTask_1.UiAsyncTask("RefreshTopOrBottom", async () => {
-      await this.ucf(e);
-    }).Run();
+    this.hmf(e);
   }
-  async ucf(e) {
+  async hmf(e) {
     this.GetItem(1).SetUIActive(e.TopIds.length > 0);
     this.GetItem(2).SetUIActive(e.BottomIds.length > 0);
     var t = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetTechNodeById(e.MiddleId);
-    this._cf.RefreshNodeData(t);
+    if (this.amf) {
+      this.amf.RefreshNodeData(t);
+      this.amf.PlayNodeSequence();
+      this.OnAfterRefreshOneNode?.(this.amf);
+    }
     var r = [];
     var o = e.TopIds;
-    var t = this.Mjf.length;
-    for (const d of this.Mjf) {
-      d.SetUiActive(false);
+    var t = this.Fig.length;
+    for (const n of this.Fig) {
+      n.SetUiActive(false);
     }
     if (o.length > t) {
       for (let e = t; e < o.length; e++) {
         var s = new MotorcycleTechTreeNodeItem_1.MotorcycleTechTreeNodeItem();
-        this.Mjf.push(s);
+        this.Fig.push(s);
         r.push(s.CreateThenShowByResourceIdAsync("UiItem_MotorcycleTechTreeNode", this.GetItem(3)));
       }
     }
     var i = e.BottomIds;
-    var t = this.Ejf.length;
-    for (const l of this.Ejf) {
-      l.SetUiActive(false);
+    var t = this.Nig.length;
+    for (const M of this.Nig) {
+      M.SetUiActive(false);
     }
     if (i.length > t) {
       for (let e = t; e < i.length; e++) {
         var c = new MotorcycleTechTreeNodeItem_1.MotorcycleTechTreeNodeItem();
-        this.Ejf.push(c);
+        this.Nig.push(c);
         r.push(c.CreateThenShowByResourceIdAsync("UiItem_MotorcycleTechTreeNode", this.GetItem(4)));
       }
     }
     await Promise.all(r);
     for (let e = 0; e < o.length; e++) {
-      var h = this.Mjf[e];
+      var h = this.Fig[e];
       var a = o[e];
       var a = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetTechNodeById(a);
       if (a) {
         h.RefreshNodeData(a);
         h.SetUiActive(true);
+        h.PlayNodeSequence();
         this.OnAfterRefreshOneNode?.(h);
       }
     }
     for (let e = 0; e < i.length; e++) {
-      var n = this.Ejf[e];
-      var T = i[e];
-      var T = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetTechNodeById(T);
-      if (T) {
-        n.RefreshNodeData(T);
-        n.SetUiActive(true);
-        this.OnAfterRefreshOneNode?.(n);
+      var d = this.Nig[e];
+      var l = i[e];
+      var l = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetTechNodeById(l);
+      if (l) {
+        d.RefreshNodeData(l);
+        d.SetUiActive(true);
+        d.PlayNodeSequence();
+        this.OnAfterRefreshOneNode?.(d);
       }
     }
   }

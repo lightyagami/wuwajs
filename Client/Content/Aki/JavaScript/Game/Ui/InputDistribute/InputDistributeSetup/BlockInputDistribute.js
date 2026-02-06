@@ -29,15 +29,16 @@ class BlockInputDistribute extends InputDistributeSetup_1.InputDistributeSetup {
       }
       return true;
     }
+    if (this.v$e()) {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Input", 10, "[InputDistribute]加载中设置输入分发tag为 MouseInputTag NavigationTag");
+      }
+      this.SetInputDistributeTags([InputDistributeDefine_1.inputDistributeTagDefine.UiInputRoot.MouseInputTag, InputDistributeDefine_1.inputDistributeTagDefine.UiInputRoot.NavigationTag]);
+      return true;
+    }
     {
       var t;
-      if (this.v$e()) {
-        if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("Input", 10, "[InputDistribute]加载中设置输入分发tag为 MouseInputTag NavigationTag");
-        }
-        this.SetInputDistributeTags([InputDistributeDefine_1.inputDistributeTagDefine.UiInputRoot.MouseInputTag, InputDistributeDefine_1.inputDistributeTagDefine.UiInputRoot.NavigationTag]);
-        return true;
-      } else if (this.Udr()) {
+      if (this.Udr()) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Input", 10, "[InputDistribute]断线中，则设置输入分发tag为 BlockAllInputTag");
         }
@@ -58,6 +59,12 @@ class BlockInputDistribute extends InputDistributeSetup_1.InputDistributeSetup {
       } else if (ModelManager_1.ModelManager.DeadReviveModel.BlockAllInput) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Input", 48, "[InputDistribute]死亡界面打开中设置输入分发tag为 BlockAllInputTag");
+        }
+        this.SetInputDistributeTag(InputDistributeDefine_1.inputDistributeTagDefine.BlockAllInputTag);
+        return true;
+      } else if (ModelManager_1.ModelManager.ResetPlayerModel.IsReseting) {
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("Input", 48, "[InputDistribute]重置玩家位置中设置输入分发tag为 BlockAllInputTag");
         }
         this.SetInputDistributeTag(InputDistributeDefine_1.inputDistributeTagDefine.BlockAllInputTag);
         return true;
@@ -91,7 +98,7 @@ class BlockInputDistribute extends InputDistributeSetup_1.InputDistributeSetup {
         }
         this.SetInputDistributeTag(InputDistributeDefine_1.inputDistributeTagDefine.BlockAllInputTag);
         return true;
-      } else if ((t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(215)) && t.HasTag(191377386)) {
+      } else if ((t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(217)) && t.HasTag(191377386)) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Input", 10, "[InputDistribute]角色落水中，则设置输入分发tag为 MouseInputTag");
         }

@@ -15,7 +15,7 @@ class PhantomArenaMapEntranceNpcListItem extends GridProxyAbstract_1.GridProxyAb
   constructor() {
     super(...arguments);
     this.hyc = 0;
-    this.tof = undefined;
+    this.Ssf = undefined;
     this.SelectCallBack = undefined;
     this.jbe = t => {
       if (t !== 0) {
@@ -40,24 +40,24 @@ class PhantomArenaMapEntranceNpcListItem extends GridProxyAbstract_1.GridProxyAb
     var s = ModelManager_1.ModelManager.PhantomArenaModel?.GetPermanentChallengeStateById(t);
     var r = ConfigManager_1.ConfigManager.PhantomArenaConfig?.GetPhantomBattleChallengeConfig(t);
     if (r) {
-      var a = ModelManager_1.ModelManager.PhantomArenaModel?.GetPermanentChallengeData(t)?.qgf ?? true;
+      var a = ModelManager_1.ModelManager.PhantomArenaModel?.GetPermanentChallengeData(t)?.VCf ?? true;
       var n = a ? r.NpcName : "PhantomBattle_1164";
-      this.tof?.SetUIActive(false);
+      this.Ssf?.SetUIActive(false);
       this.GetText(4)?.SetText(r.NpcNumber);
       switch (s) {
         case 0:
-          this.tof = this.GetItem(7);
+          this.Ssf = this.GetItem(7);
           LguiUtil_1.LguiUtil.TrySetLocalTextNew(this.GetText(8), n);
           break;
         case 1:
-          this.tof = this.GetItem(2);
+          this.Ssf = this.GetItem(2);
           LguiUtil_1.LguiUtil.TrySetLocalTextNew(this.GetText(3), n);
           break;
         case 2:
-          this.tof = this.GetItem(5);
+          this.Ssf = this.GetItem(5);
           LguiUtil_1.LguiUtil.TrySetLocalTextNew(this.GetText(6), n);
       }
-      this.tof?.SetUIActive(true);
+      this.Ssf?.SetUIActive(true);
       if (a) {
         this.TrySetTextureByPath(r.NpcMapHead, this.GetTexture(1));
       } else {

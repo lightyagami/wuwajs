@@ -12,8 +12,10 @@ const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const UiLayer_1 = require("../../../../Ui/UiLayer");
+const AutoPilotController_1 = require("../../../AutoPilot/AutoPilotController");
 const AlterMarksView_1 = require("../AlterMarksView");
 const AutoPilotTrackedMarksView_1 = require("../AutoPilotTrackedMarksView");
+const BattleSkillSlideControlItem_1 = require("../BattleSkillSlideControlItem");
 const BreakWeaknessPanel_1 = require("../Execution/BreakWeaknessPanel");
 const ExecutionPanel_1 = require("../Execution/ExecutionPanel");
 const GrapplingHookPoint_1 = require("../GrapplingHookPoint/GrapplingHookPoint");
@@ -39,22 +41,22 @@ class CenterPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     this.IJe = 0;
     this.TJe = undefined;
     this.LJe = undefined;
-    this.nXf = false;
-    this.PKf = undefined;
+    this.c_g = false;
+    this.xlg = undefined;
     this.UJe = undefined;
-    this.Q0f = undefined;
+    this.Pvf = undefined;
     this.X9e = undefined;
-    this.V6m = undefined;
-    this.cHf = () => {
-      this.AKf();
+    this.H7m = undefined;
+    this.Itg = () => {
+      this.Blg();
     };
     this.kJe = () => {
       var t = this.ChildViewData.GetChildVisible(17);
       this.GetItem(0).SetUIActive(t);
       this.SJe?.OnBattleHudVisibleChanged(t);
     };
-    this.sXf = t => {
-      this.nXf = !t;
+    this.d_g = t => {
+      this.c_g = !t;
     };
     this.FJe = t => {
       this.GetItem(2).SetUIActive(t);
@@ -74,7 +76,7 @@ class CenterPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
           if (Log_1.Log.CheckDebug()) {
             Log_1.Log.Debug("Battle", 17, "进入处决范围");
           }
-        } else if (i === 3 && (this.Q0f || (this.Q0f = new BreakWeaknessPanel_1.BreakWeaknessPanel(), Info_1.Info.IsInTouch() ? this.Q0f.Init(this.RootItem) : this.Q0f.Init(UiLayer_1.UiLayer.GetBattleViewUnit(1))), this.Q0f.ShowByEntity(e, i), Log_1.Log.CheckDebug())) {
+        } else if (i === 3 && (this.Pvf || (this.Pvf = new BreakWeaknessPanel_1.BreakWeaknessPanel(), Info_1.Info.IsInTouch() ? this.Pvf.Init(this.RootItem) : this.Pvf.Init(UiLayer_1.UiLayer.GetBattleViewUnit(1))), this.Pvf.ShowByEntity(e, i), Log_1.Log.CheckDebug())) {
           Log_1.Log.Debug("Battle", 17, "进入破弱范围");
         }
       } else {
@@ -82,7 +84,7 @@ class CenterPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
           Log_1.Log.Debug("Battle", 17, "离开处决or破弱范围");
         }
         this.UJe?.HideByEntity(e);
-        this.Q0f?.HideByEntity(e);
+        this.Pvf?.HideByEntity(e);
       }
     };
     this.HJe = t => {
@@ -95,17 +97,24 @@ class CenterPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
       this.X9e = t.EntityHandle;
       this.jJe();
     };
-    this.oJm = undefined;
-    this.nJm = undefined;
-    this.lkf = undefined;
-    this.sJm = () => {
-      this.aJm();
-      this.jJe();
+    this.jef = undefined;
+    this.$ef = undefined;
+    this.e3f = undefined;
+    this.Wef = () => {
+      this.Qef();
+      this.rxg();
     };
-    this.yKf = (t, e) => {
+    this.glg = (t, e) => {
       if (t === 0) {
-        this.aJm();
+        this.Qef();
       }
+    };
+    this.pqg = undefined;
+    this.vqg = t => {
+      this.yqg();
+    };
+    this.C8g = () => {
+      this.rxg();
     };
   }
   OnRegisterComponent() {
@@ -121,84 +130,94 @@ class CenterPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     this.X9e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
   }
   async InitializeAsync() {
-    await Promise.all([this.WJe(), this.KJe(), this.QJe(), this.j6m(), this.XJe()]);
+    await Promise.all([this.WJe(), this.KJe(), this.QJe(), this.$7m(), this.XJe()]);
     this.GetItem(2).SetUIActive(false);
-    this.AKf();
-    this.aJm();
+    this.Blg();
+    this.Qef();
   }
   OnShowBattleChildViewPanel() {
     this.TJe?.ShowBattleVisibleChildView();
     this.MJe?.OnShowBattleChildViewPanel();
-    this.V6m?.OnShowBattleChildViewPanel();
-    this.nJm?.OnShowBattleChildViewPanel();
+    this.H7m?.OnShowBattleChildViewPanel();
+    this.$ef?.OnShowBattleChildViewPanel();
   }
   OnHideBattleChildViewPanel() {
     this.TJe?.HideBattleVisibleChildView();
     this.MJe?.OnHideBattleChildViewPanel();
-    this.V6m?.OnHideBattleChildViewPanel();
-    this.nJm?.OnHideBattleChildViewPanel();
+    this.H7m?.OnHideBattleChildViewPanel();
+    this.$ef?.OnHideBattleChildViewPanel();
   }
   SetEventVisible(t) {}
   Reset() {
     this.MJe = undefined;
-    this.V6m = undefined;
+    this.H7m = undefined;
     this.SJe = undefined;
     this.TJe = undefined;
-    this.PKf?.Destroy();
-    this.PKf = undefined;
+    this.xlg?.Destroy();
+    this.xlg = undefined;
     this.UJe?.Destroy();
     this.UJe = undefined;
-    this.Q0f?.Destroy();
-    this.Q0f = undefined;
-    if (this.oJm) {
-      this.oJm.Destroy();
-      this.oJm = undefined;
+    this.Pvf?.Destroy();
+    this.Pvf = undefined;
+    if (this.jef) {
+      this.jef.Destroy();
+      this.jef = undefined;
     }
-    if (this.nJm) {
-      this.nJm.Destroy();
-      this.nJm = undefined;
+    if (this.$ef) {
+      this.$ef.Destroy();
+      this.$ef = undefined;
     }
-    if (this.lkf) {
-      this.lkf.Destroy();
-      this.lkf = undefined;
+    if (this.e3f) {
+      this.e3f.Destroy();
+      this.e3f = undefined;
+    }
+    if (this.pqg) {
+      this.pqg.Destroy();
+      this.pqg = undefined;
+      ModelManager_1.ModelManager.BattleUiModel.SlideControlData.ForceStop();
     }
     this.yJe.length = 0;
     super.Reset();
   }
   AddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiCurRoleDataChanged, this.fHe);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ExploreComponentTargetChanged, this.cHf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ExploreComponentTargetChanged, this.Itg);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRouletteViewVisibleChanged, this.FJe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnEnterOrExitExecutionRange, this.VJe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.GmOnlyShowJoyStick, this.HJe);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiMotorcycleStateChanged, this.sJm);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.EnableGrapplingHookMark, this.sXf);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSetBattleUiChildCacheState, this.yKf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiMotorcycleStateChanged, this.Wef);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.EnableGrapplingHookMark, this.d_g);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSetBattleUiChildCacheState, this.glg);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiSlideControlVisibleChanged, this.vqg);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnMotorcycleRoundJoystickChanged, this.C8g);
     this.ChildViewData.AddCallback(17, this.kJe);
   }
   RemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiCurRoleDataChanged, this.fHe);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ExploreComponentTargetChanged, this.cHf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ExploreComponentTargetChanged, this.Itg);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRouletteViewVisibleChanged, this.FJe);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnEnterOrExitExecutionRange, this.VJe);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.GmOnlyShowJoyStick, this.HJe);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiMotorcycleStateChanged, this.sJm);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.EnableGrapplingHookMark, this.sXf);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSetBattleUiChildCacheState, this.yKf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiMotorcycleStateChanged, this.Wef);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.EnableGrapplingHookMark, this.d_g);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSetBattleUiChildCacheState, this.glg);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiSlideControlVisibleChanged, this.vqg);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnMotorcycleRoundJoystickChanged, this.C8g);
     this.ChildViewData.RemoveCallback(17, this.kJe);
   }
   OnTickBattleChildViewPanel(t) {
     CenterPanel.$Je.Start();
     this.TJe?.Tick(t);
     this.LJe?.Tick(t);
-    this.oJm?.Tick(t);
-    this.nJm?.Tick(t);
-    this.lkf?.Tick(t);
+    this.jef?.Tick(t);
+    this.$ef?.Tick(t);
+    this.e3f?.Tick(t);
+    this.pqg?.Tick(t);
     CenterPanel.$Je.Stop();
     CenterPanel.YJe.Start();
     this.SJe.Update(t);
-    this.DKf();
-    this.Q0f?.Tick(t);
+    this.klg();
+    this.Pvf?.Tick(t);
     CenterPanel.YJe.Stop();
   }
   OnAfterTickBattleChildViewPanel(t) {
@@ -211,48 +230,48 @@ class CenterPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     CenterPanel.ZJe.Start();
     this.eze();
     CenterPanel.ZJe.Stop();
-    CenterPanel.H6m.Start();
-    this.V6m?.Update(t);
-    CenterPanel.H6m.Stop();
+    CenterPanel.W7m.Start();
+    this.H7m?.Update(t);
+    CenterPanel.W7m.Stop();
   }
-  UKf(t) {
+  qlg(t) {
     var e;
-    if (this.PKf) {
-      this.PKf.UpdateHookPointLocation(t.ToUeVector());
+    if (this.xlg) {
+      this.xlg.UpdateHookPointLocation(t.ToUeVector());
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Battle", 79, "已创建钩锁点交互提示, 更新位置");
       }
     } else {
       e = UiLayer_1.UiLayer.GetBattleViewUnit(1);
-      this.PKf = new GrapplingHookPoint_1.GrapplingHookPoint(t, e);
+      this.xlg = new GrapplingHookPoint_1.GrapplingHookPoint(t, e);
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Battle", 79, "创建钩锁点交互提示");
       }
     }
   }
-  xKf() {
-    if (this.PKf && (this.PKf.Destroy(), this.PKf = undefined, Log_1.Log.CheckDebug())) {
+  Olg() {
+    if (this.xlg && (this.xlg.Destroy(), this.xlg = undefined, Log_1.Log.CheckDebug())) {
       Log_1.Log.Debug("Battle", 79, "移除钩锁点交互提示");
     }
   }
-  DKf() {
+  klg() {
     var t;
     var e;
-    if (this.PKf && (t = ModelManager_1.ModelManager.ExploreModel.GetActiveExploreComponent())?.Valid && (e = t.FocusTarget, t.FocusTargetLegal) && e?.Valid && e.IsMovable()) {
-      this.PKf.UpdateHookPointLocation(e.HookLocation.ToUeVector());
+    if (this.xlg && (t = ModelManager_1.ModelManager.ExploreModel.GetActiveExploreComponent())?.Valid && (e = t.FocusTarget, t.FocusTargetLegal) && e?.Valid && e.IsMovable()) {
+      this.xlg.UpdateHookPointLocation(e.HookLocation.ToUeVector());
     }
   }
-  AKf() {
+  Blg() {
     var t;
     var e = ModelManager_1.ModelManager.ExploreModel.GetActiveExploreComponent();
-    if (!e?.Valid || (t = e.FocusTarget, e = e.FocusTargetLegal, !t) || this.nXf) {
-      this.xKf();
+    if (!e?.Valid || (t = e.FocusTarget, e = e.FocusTargetLegal, !t) || this.c_g) {
+      this.Olg();
     } else {
-      this.UKf(t.HookLocation);
+      this.qlg(t.HookLocation);
       if (e) {
-        this.PKf?.EnableMarker();
+        this.xlg?.EnableMarker();
       } else {
-        this.PKf?.DisableMarker();
+        this.xlg?.DisableMarker();
       }
     }
   }
@@ -261,16 +280,16 @@ class CenterPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
   }
   eze() {
     var t;
-    if (this.PKf) {
+    if (this.xlg) {
       if ((t = ModelManager_1.ModelManager.ExploreModel.GetActiveExploreComponent())?.Valid && t.FocusTarget?.Valid) {
         if (t.FocusTargetLegal) {
-          this.PKf.EnableMarker();
-          this.PKf.AfterTick();
+          this.xlg.EnableMarker();
+          this.xlg.AfterTick();
         } else {
-          this.PKf.DisableMarker();
+          this.xlg.DisableMarker();
         }
       } else {
-        this.xKf();
+        this.Olg();
       }
     }
   }
@@ -286,9 +305,9 @@ class CenterPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     var t = this.GetItem(1);
     this.SJe = await this.NewStaticChildViewAsync(t.GetOwner(), AlterMarksView_1.AlterMarksView);
   }
-  async j6m() {
+  async $7m() {
     var t = this.GetItem(0);
-    this.V6m = await this.NewStaticChildViewAsync(t.GetOwner(), AutoPilotTrackedMarksView_1.AutoPilotTrackedMarksView);
+    this.H7m = await this.NewStaticChildViewAsync(t.GetOwner(), AutoPilotTrackedMarksView_1.AutoPilotTrackedMarksView);
   }
   async XJe() {
     var t;
@@ -309,13 +328,10 @@ class CenterPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
       }
       var e = ModelManager_1.ModelManager.BattleUiModel.GetCurRoleData();
       let t = 0;
-      if (ModelManager_1.ModelManager.BattleUiModel.MotorcycleData.IsDriving) {
-        t = 2;
-      }
       if (e?.RoleBattleViewInfo) {
         t = e.RoleBattleViewInfo.JoystickType;
       }
-      if (this.IJe !== t && (this.IJe = t, this.TJe?.SetVisible(3, t === 0), this.TJe?.SetEnable(t === 0), this.LJe && (this.LJe.Destroy(), this.LJe = undefined), t === 1 && ((e = new MoveSkillPanel_1.MoveSkillPanel()).CreateDynamic(this.GetRootItem()), this.LJe = e), t === 3)) {
+      if (this.IJe !== t && (this.IJe = t, this.TJe?.SetVisible(3, t === 0), this.rxg(), this.LJe && (this.LJe.Destroy(), this.LJe = undefined), t === 1 && ((e = new MoveSkillPanel_1.MoveSkillPanel()).CreateDynamic(this.GetRootItem()), this.LJe = e), t === 3)) {
         if (this.GetOperationType() === 1) {
           this.NewDynamicChildViewByResourceIdWithCallback(this.RootItem, "PnlLevelJoystick", JoystickStatic_1.JoystickStatic, true, t => {
             (this.LJe = t).SetVisible(3, true);
@@ -329,91 +345,131 @@ class CenterPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
       }
     }
   }
-  aJm() {
-    this.qXf();
+  rxg() {
+    var t = ModelManager_1.ModelManager.BattleUiModel.MotorcycleData;
+    if (t.IsDriving && !t.GetIsRoundJoystick()) {
+      this.TJe?.SetEnable(false);
+    } else {
+      this.TJe?.SetEnable(this.IJe === 0);
+    }
   }
-  qXf() {
+  Qef() {
+    this.Y_g();
+  }
+  Y_g() {
     var t;
     var e = ModelManager_1.ModelManager.BattleUiModel.MotorcycleData.IsDriving;
     var i = ModelManager_1.ModelManager.BattleUiModel.MotorcycleData.IsNeedCacheUi;
     let s = false;
     if (i) {
-      if (!this.oJm) {
+      if (!this.jef) {
         if (Info_1.Info.IsInTouch()) {
-          this.oJm = new MotorcycleControlMobilePanel_1.MotorcycleControlMobilePanel();
+          this.jef = new MotorcycleControlMobilePanel_1.MotorcycleControlMobilePanel();
         } else {
-          this.oJm = new MotorcycleControlPanel_1.MotorcycleControlPanel();
+          this.jef = new MotorcycleControlPanel_1.MotorcycleControlPanel();
         }
-        this.oJm.Init(this.GetRootItem(), "UiItem_MotorcycleControl");
+        this.jef.Init(this.GetRootItem(), "UiItem_MotorcycleControl");
         s = true;
       }
-      if (!this.nJm) {
-        this.nJm = new MotorcycleControlTopPanel_1.MotorcycleControlTopPanel();
-        this.nJm.Init(this.GetRootItem(), "UiItem_MotorcycleControlTop");
+      if (!this.$ef) {
+        this.$ef = new MotorcycleControlTopPanel_1.MotorcycleControlTopPanel();
+        this.$ef.Init(this.GetRootItem(), "UiItem_MotorcycleControlTop");
       }
-      if (!this.lkf) {
-        this.lkf = new MotorcycleControlHudPanel_1.MotorcycleControlHudPanel();
+      if (!this.e3f) {
+        this.e3f = new MotorcycleControlHudPanel_1.MotorcycleControlHudPanel();
         t = UiLayer_1.UiLayer.GetBattleViewUnit(1);
-        this.lkf.Init(t, "UiItem_MotoParkourHUD_T");
+        this.e3f.Init(t, "UiItem_MotoParkourHUD_T");
       }
       if (s) {
         return;
       }
     } else if (e) {
-      if (!this.oJm) {
+      if (!this.jef) {
         if (Info_1.Info.IsInTouch()) {
-          this.oJm = new MotorcycleControlMobilePanel_1.MotorcycleControlMobilePanel();
+          this.jef = new MotorcycleControlMobilePanel_1.MotorcycleControlMobilePanel();
         } else {
-          this.oJm = new MotorcycleControlPanel_1.MotorcycleControlPanel();
+          this.jef = new MotorcycleControlPanel_1.MotorcycleControlPanel();
         }
-        this.oJm.Init(this.GetRootItem(), "UiItem_MotorcycleControl");
+        this.jef.Init(this.GetRootItem(), "UiItem_MotorcycleControl");
       }
-      if (!this.nJm) {
-        this.nJm = new MotorcycleControlTopPanel_1.MotorcycleControlTopPanel();
-        this.nJm.Init(this.GetRootItem(), "UiItem_MotorcycleControlTop");
+      if (!this.$ef) {
+        this.$ef = new MotorcycleControlTopPanel_1.MotorcycleControlTopPanel();
+        this.$ef.Init(this.GetRootItem(), "UiItem_MotorcycleControlTop");
       }
-      if (!this.lkf) {
-        this.lkf = new MotorcycleControlHudPanel_1.MotorcycleControlHudPanel();
+      if (!this.e3f) {
+        this.e3f = new MotorcycleControlHudPanel_1.MotorcycleControlHudPanel();
         t = UiLayer_1.UiLayer.GetBattleViewUnit(1);
-        this.lkf.Init(t, "UiItem_MotoParkourHUD_T");
+        this.e3f.Init(t, "UiItem_MotoParkourHUD_T");
       }
       return;
     }
     if (e) {
-      if (this.oJm && !this.oJm.IsCreateOrCreating) {
-        this.oJm.ShowBattleVisibleChildView();
+      if (this.jef && !this.jef.IsCreateOrCreating) {
+        this.jef.ShowBattleVisibleChildView();
       }
-      if (this.nJm && !this.nJm.IsCreateOrCreating) {
-        this.nJm.ShowBattleVisibleChildView();
+      if (this.$ef && !this.$ef.IsCreateOrCreating) {
+        this.$ef.ShowBattleVisibleChildView();
       }
-      if (this.lkf && !this.lkf.IsCreateOrCreating) {
-        this.lkf.ShowBattleVisibleChildView();
+      if (this.e3f && !this.e3f.IsCreateOrCreating) {
+        this.e3f.ShowBattleVisibleChildView();
       }
     } else {
-      if (this.oJm) {
+      if (this.jef) {
         if (i) {
-          this.oJm.HideBattleVisibleChildView();
+          this.jef.HideBattleVisibleChildView();
         } else {
-          this.oJm.Destroy();
-          this.oJm = undefined;
+          this.jef.Destroy();
+          this.jef = undefined;
         }
       }
-      if (this.nJm) {
+      if (this.$ef) {
         if (i) {
-          this.nJm.HideBattleVisibleChildView();
+          this.$ef.HideBattleVisibleChildView();
         } else {
-          this.nJm.Destroy();
-          this.nJm = undefined;
+          this.$ef.Destroy();
+          this.$ef = undefined;
         }
       }
-      if (this.lkf) {
+      if (this.e3f) {
         if (i) {
-          this.lkf.HideBattleVisibleChildView();
+          this.e3f.HideBattleVisibleChildView();
         } else {
-          this.lkf.Destroy();
-          this.lkf = undefined;
+          this.e3f.Destroy();
+          this.e3f = undefined;
         }
       }
+    }
+  }
+  GetGuideUiItemAndUiItemForShowEx(t) {
+    if (t[0] === "MotorMobile") {
+      return this.xDg(this.jef, t) ?? this.xDg(this.$ef, t) ?? this.xDg(AutoPilotController_1.AutoPilotController.AutoPilotViewInstance, t);
+    }
+  }
+  xDg(t, e) {
+    var i;
+    if (t) {
+      i = e[1];
+      e = e[2];
+      i = i ? t.GetGuideUiItem(i) : undefined;
+      t = e ? t.GetGuideUiItem(e) : undefined;
+      if (i && t) {
+        return [i, t];
+      } else if (i) {
+        return [i, i];
+      } else {
+        return undefined;
+      }
+    }
+  }
+  yqg() {
+    if (ModelManager_1.ModelManager.BattleUiModel.SlideControlData.GetVisible()) {
+      if (!this.pqg) {
+        this.pqg = new BattleSkillSlideControlItem_1.BattleSkillSlideControlItem();
+        this.pqg.CreateByResourceIdAsync("UiItem_AimisiFlyControl", this.RootItem);
+      }
+      this.pqg.SetComponentActive(true);
+    } else if (this.pqg) {
+      this.pqg.SetComponentActive(false);
     }
   }
 }
@@ -422,4 +478,4 @@ CenterPanel.zJe = Stats_1.Stat.Create("[BattleView]CenterPanelTick2");
 CenterPanel.$Je = Stats_1.Stat.Create("[BattleView]CenterPanelTick5");
 CenterPanel.ZJe = Stats_1.Stat.Create("[BattleView]CenterPanelTick6");
 CenterPanel.YJe = Stats_1.Stat.Create("[BattleView]CenterPanelTick9");
-CenterPanel.H6m = Stats_1.Stat.Create("[BattleView]CenterPanelTick7"); //# sourceMappingURL=CenterPanel.js.map
+CenterPanel.W7m = Stats_1.Stat.Create("[BattleView]CenterPanelTick7"); //# sourceMappingURL=CenterPanel.js.map

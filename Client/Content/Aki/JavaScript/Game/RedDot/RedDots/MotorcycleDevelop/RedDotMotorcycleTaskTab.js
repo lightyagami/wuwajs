@@ -15,7 +15,7 @@ class RedDotMotorcycleTaskTab extends RedDotBase_1.RedDotBase {
     return [EventDefine_1.EEventName.MotorDevelopInfoUpdate, EventDefine_1.EEventName.MotorDevelopTaskUpdate];
   }
   OnCheck() {
-    return ModelManager_1.ModelManager.MotorcycleDevelopModel.RedDotCanGetTaskReward();
+    return ModelManager_1.ModelManager.MotorcycleDevelopModel.RedDotCanGetAnyTaskReward();
   }
 }
 exports.RedDotMotorcycleTaskTab = RedDotMotorcycleTaskTab;

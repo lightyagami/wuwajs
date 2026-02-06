@@ -32,7 +32,7 @@ class LevelAiTaskEntityTurnTo extends LevelAiTask_1.LevelAiTask {
       return 1;
     }
     this.Tae = r.Entity.GetComponent(3);
-    r = r.Entity.GetComponent(46)?.CharacterMovement;
+    r = r.Entity.GetComponent(48)?.CharacterMovement;
     if (r?.IsValid() && this.qJa(this.zLe, e)) {
       this.WTe = r.MovementMode;
       r.MovementMode = 1;
@@ -45,7 +45,7 @@ class LevelAiTaskEntityTurnTo extends LevelAiTask_1.LevelAiTask {
   }
   TickTask(e) {
     if (this.Tae.InputRotatorProxy.Equals(this.Tae.ActorRotationProxy, TOLERANCE)) {
-      this.Tae.Entity.GetComponent(46).CharacterMovement.MovementMode = this.WTe;
+      this.Tae.Entity.GetComponent(48).CharacterMovement.MovementMode = this.WTe;
       this.FinishLatentTask(0);
     }
   }

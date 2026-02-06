@@ -120,7 +120,7 @@ let SceneItemPortalComponent = SceneItemPortalComponent_1 = class SceneItemPorta
     this.Lel = new Set();
     this.jul = new Map();
     this.PortalBounds = Vector_1.Vector.Create();
-    this.ebm = 0;
+    this.cbm = 0;
     this.R0n = undefined;
     this.Thh = undefined;
     this.Uel = ResourceSystem_1.ResourceSystem.InvalidId;
@@ -136,11 +136,11 @@ let SceneItemPortalComponent = SceneItemPortalComponent_1 = class SceneItemPorta
         }
       }
     };
-    this.cDm = () => {
+    this.wAm = () => {
       this.xka();
       this.I6a();
     };
-    this.dDm = () => {
+    this.LAm = () => {
       this.T6a();
       this.R6a();
     };
@@ -178,22 +178,22 @@ let SceneItemPortalComponent = SceneItemPortalComponent_1 = class SceneItemPorta
     this.Lll = undefined;
   }
   get IsPortalPrepared() {
-    return this.ibm(2);
+    return this.mbm(2);
   }
   get IsPortalPrepareStarted() {
-    return this.ibm(1);
+    return this.mbm(1);
   }
   get IsPortalRegistered() {
-    return this.ibm(8);
+    return this.mbm(8);
   }
-  ibm(t) {
-    return !!(this.ebm & t);
+  mbm(t) {
+    return !!(this.cbm & t);
   }
-  rbm(t, e) {
+  fbm(t, e) {
     if (e) {
-      this.ebm |= t;
+      this.cbm |= t;
     } else {
-      this.ebm &= ~t;
+      this.cbm &= ~t;
     }
   }
   GetPbDataId() {
@@ -236,8 +236,8 @@ let SceneItemPortalComponent = SceneItemPortalComponent_1 = class SceneItemPorta
     return true;
   }
   OnStart() {
-    this.ActorComp = this.Entity.GetComponent(212);
-    this.vtn = this.Entity.GetComponent(89);
+    this.ActorComp = this.Entity.GetComponent(214);
+    this.vtn = this.Entity.GetComponent(91);
     if (this.vtn && !EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.OnMyPlayerInOutRangeLocal, this.y6a)) {
       EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnMyPlayerInOutRangeLocal, this.y6a);
     }
@@ -253,14 +253,14 @@ let SceneItemPortalComponent = SceneItemPortalComponent_1 = class SceneItemPorta
           EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPortalUnRegister, this.A6a);
         }
       }
-      if (!EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionShowCompleted, this.cDm)) {
-        EventSystem_1.EventSystem.AddWithTargetUseHoldKey(this, this.Entity, EventDefine_1.EEventName.OnSceneInteractionShowCompleted, this.cDm);
+      if (!EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionShowCompleted, this.wAm)) {
+        EventSystem_1.EventSystem.AddWithTargetUseHoldKey(this, this.Entity, EventDefine_1.EEventName.OnSceneInteractionShowCompleted, this.wAm);
       }
-      if (!EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionHideCompleted, this.dDm)) {
-        EventSystem_1.EventSystem.AddWithTargetUseHoldKey(this, this.Entity, EventDefine_1.EEventName.OnSceneInteractionHideCompleted, this.dDm);
+      if (!EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionHideCompleted, this.LAm)) {
+        EventSystem_1.EventSystem.AddWithTargetUseHoldKey(this, this.Entity, EventDefine_1.EEventName.OnSceneInteractionHideCompleted, this.LAm);
       }
       if (this.ActorComp?.GetIsSceneInteractionLoadCompleted()) {
-        this.cDm();
+        this.wAm();
       }
       this.Lhh();
     }
@@ -324,9 +324,9 @@ let SceneItemPortalComponent = SceneItemPortalComponent_1 = class SceneItemPorta
   }
   xka() {
     if (this.U6a() && !this.IsPortalPrepared) {
-      this.rbm(1, true);
+      this.fbm(1, true);
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("SceneItem", 39, "传送门: PreparePortal Started", ["CreatureDataId", this.Wpo], ["PbDataId", this.wDe], ["PortalStateFlags", this.ebm]);
+        Log_1.Log.Debug("SceneItem", 39, "传送门: PreparePortal Started", ["CreatureDataId", this.Wpo], ["PbDataId", this.wDe], ["PortalStateFlags", this.cbm]);
       }
       var t = this.GetPortalEffectActor();
       if (t?.IsValid()) {
@@ -368,9 +368,9 @@ let SceneItemPortalComponent = SceneItemPortalComponent_1 = class SceneItemPorta
               if (this.kla) {
                 PortalController_1.PortalController.AfterGenerateDynamicPortal(this);
               }
-              this.rbm(2, true);
+              this.fbm(2, true);
               if (Log_1.Log.CheckDebug()) {
-                Log_1.Log.Debug("SceneItem", 39, "传送门: PreparePortal Success", ["CreatureDataId", this.Wpo], ["PbDataId", this.wDe], ["PortalStateFlags", this.ebm], ["IsDynamicPortal", this.kla], ["PortalBounds", this.PortalBounds], ["PlaneTransform", this.PortalCapture.Plane?.D_K2_GetComponentToWorld().ToString()]);
+                Log_1.Log.Debug("SceneItem", 39, "传送门: PreparePortal Success", ["CreatureDataId", this.Wpo], ["PbDataId", this.wDe], ["PortalStateFlags", this.cbm], ["IsDynamicPortal", this.kla], ["PortalBounds", this.PortalBounds], ["PlaneTransform", this.PortalCapture.Plane?.D_K2_GetComponentToWorld().ToString()]);
               }
             } else {
               this.yrl();
@@ -383,13 +383,13 @@ let SceneItemPortalComponent = SceneItemPortalComponent_1 = class SceneItemPorta
     }
   }
   R6a() {
-    if (this.IsPortalPrepareStarted && (this.PortalCapture?.IsValid() && (this.PortalCapture.K2_DetachFromActor(), ActorSystem_1.ActorSystem.Put("SceneItemPortalComponent.UnPreparePortal", this.PortalCapture), this.PortalCapture = undefined), this.Srl(), this.rQs && this.oQs?.IsValid() && this.yEr(), this.Uel !== ResourceSystem_1.ResourceSystem.InvalidId && (ResourceSystem_1.ResourceSystem.CancelAsyncLoad(this.Uel), this.Uel = ResourceSystem_1.ResourceSystem.InvalidId), this.GetKuroActorSubsystem()?.OnAddToSubsystem.Remove(this.Rel), this.kla && (this.Thh?.Cancel(), this.Thh = undefined, PortalController_1.PortalController.AfterDeleteDynamicPortal(this)), this.rbm(2, false), this.rbm(1, false), Log_1.Log.CheckDebug())) {
-      Log_1.Log.Debug("SceneItem", 39, "传送门: UnPreparePortal Success", ["CreatureDataId", this.Wpo], ["PbDataId", this.wDe], ["PortalStateFlags", this.ebm], ["IsDynamicPortal", this.kla], ["PortalBounds", this.PortalBounds]);
+    if (this.IsPortalPrepareStarted && (this.PortalCapture?.IsValid() && (this.PortalCapture.K2_DetachFromActor(), ActorSystem_1.ActorSystem.Put("SceneItemPortalComponent.UnPreparePortal", this.PortalCapture), this.PortalCapture = undefined), this.Srl(), this.rQs && this.oQs?.IsValid() && this.yEr(), this.Uel !== ResourceSystem_1.ResourceSystem.InvalidId && (ResourceSystem_1.ResourceSystem.CancelAsyncLoad(this.Uel), this.Uel = ResourceSystem_1.ResourceSystem.InvalidId), this.GetKuroActorSubsystem()?.OnAddToSubsystem.Remove(this.Rel), this.kla && (this.Thh?.Cancel(), this.Thh = undefined, PortalController_1.PortalController.AfterDeleteDynamicPortal(this)), this.fbm(2, false), this.fbm(1, false), Log_1.Log.CheckDebug())) {
+      Log_1.Log.Debug("SceneItem", 39, "传送门: UnPreparePortal Success", ["CreatureDataId", this.Wpo], ["PbDataId", this.wDe], ["PortalStateFlags", this.cbm], ["IsDynamicPortal", this.kla], ["PortalBounds", this.PortalBounds]);
     }
   }
   CanRegisterPortal() {
     var t;
-    return !!(this.Entity.Flag & 4) && !!this.ActorComp?.GetIsSceneInteractionLoadCompleted() && !!this.PortalCapture?.IsValid() && !!this.GetPortalEffectActor()?.IsValid() && !(t = this.ActorComp.CreatureData.GetEntityOnlineInteractType(), !LevelGamePlayController_1.LevelGamePlayController.MultiplayerLimitTypeCheck(t, false)) && !(t = this.kla ? PortalController_1.PortalController.GetPairDynamicPortal(this) : ModelManager_1.ModelManager.CreatureModel?.GetEntityByPbDataId(this.Aga)?.Entity?.GetComponent(226), !this.IsPortalPrepared) && !!t?.IsPortalPrepared && (!this.vtn || !t.vtn || !!this.IsPlayerInRange || !!t?.IsPlayerInRange);
+    return !!(this.Entity.Flag & 4) && !!this.ActorComp?.GetIsSceneInteractionLoadCompleted() && !!this.PortalCapture?.IsValid() && !!this.GetPortalEffectActor()?.IsValid() && !(t = this.ActorComp.CreatureData.GetEntityOnlineInteractType(), !LevelGamePlayController_1.LevelGamePlayController.MultiplayerLimitTypeCheck(t, false)) && !(t = this.kla ? PortalController_1.PortalController.GetPairDynamicPortal(this) : ModelManager_1.ModelManager.CreatureModel?.GetEntityByPbDataId(this.Aga)?.Entity?.GetComponent(228), !this.IsPortalPrepared) && !!t?.IsPortalPrepared && (!this.vtn || !t.vtn || !!this.IsPlayerInRange || !!t?.IsPlayerInRange);
   }
   I6a() {
     var t;
@@ -398,7 +398,7 @@ let SceneItemPortalComponent = SceneItemPortalComponent_1 = class SceneItemPorta
       if (this.kla) {
         PortalController_1.PortalController.RegisterDynamicPortals();
       } else {
-        e = (t = ModelManager_1.ModelManager.CreatureModel?.GetEntityByPbDataId(this.Aga))?.Entity?.GetComponent(226);
+        e = (t = ModelManager_1.ModelManager.CreatureModel?.GetEntityByPbDataId(this.Aga))?.Entity?.GetComponent(228);
         if (t?.IsInit && e?.IsPortalPrepared) {
           if (this.s1n === "A") {
             this.SetPairCreatureDataId(e.GetCreatureDataId());
@@ -432,17 +432,17 @@ let SceneItemPortalComponent = SceneItemPortalComponent_1 = class SceneItemPorta
     }
   }
   AfterRegisterPair() {
-    this.rbm(8, true);
+    this.fbm(8, true);
     if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("SceneItem", 39, "传送门: AfterRegisterPair", ["CreatureDataId", this.Wpo], ["PbDataId", this.wDe], ["PortalStateFlags", this.ebm]);
+      Log_1.Log.Debug("SceneItem", 39, "传送门: AfterRegisterPair", ["CreatureDataId", this.Wpo], ["PbDataId", this.wDe], ["PortalStateFlags", this.cbm]);
     }
     this.Nla();
     this.EnablePortalRenderingTarget();
   }
   AfterUnRegisterPair() {
-    this.rbm(8, false);
+    this.fbm(8, false);
     if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("SceneItem", 39, "传送门: AfterUnRegisterPair", ["CreatureDataId", this.Wpo], ["PbDataId", this.wDe], ["PortalStateFlags", this.ebm]);
+      Log_1.Log.Debug("SceneItem", 39, "传送门: AfterUnRegisterPair", ["CreatureDataId", this.Wpo], ["PbDataId", this.wDe], ["PortalStateFlags", this.cbm]);
     }
     this.tTa();
     this.DisablePortalRenderingTarget();
@@ -812,7 +812,7 @@ let SceneItemPortalComponent = SceneItemPortalComponent_1 = class SceneItemPorta
           Log_1.Log.Info("SceneItem", 39, "传送门: actor正在传送中，不允许重复触发", ["CreatureDataId", this.Wpo], ["PbDataId", this.wDe]);
         }
       } else {
-        var i = e.CharacterActorComponent?.Entity.GetComponent(68);
+        var i = e.CharacterActorComponent?.Entity.GetComponent(70);
         if (!i?.GetHoldingEntity() || t !== i?.GetHoldingActor()) {
           var i = ActorUtils_1.ActorUtils.GetEntityByActor(t);
           var r = i?.Entity?.GetComponent(1);
@@ -821,7 +821,7 @@ let SceneItemPortalComponent = SceneItemPortalComponent_1 = class SceneItemPorta
           if (r) {
             if (this.Dll(t, t === e)) {
               if (i?.Valid) {
-                r = i.Entity.GetComponent(165);
+                r = i.Entity.GetComponent(167);
                 if (r && r.CurrentState instanceof SceneItemManipulableCastProjectileState_1.SceneItemManipulatableCastProjectileState) {
                   return;
                 }
@@ -833,7 +833,7 @@ let SceneItemPortalComponent = SceneItemPortalComponent_1 = class SceneItemPorta
               Log_1.Log.Info("SceneItem", 39, "传送门: 无法安全通过传送门，忽略", ["CreatureDataId", this.Wpo], ["PbDataId", this.wDe]);
             }
           } else {
-            if ((r = i?.Entity?.GetComponent(165)) && r.CurrentState instanceof SceneItemManipulableCastState_1.SceneItemManipulableCastState && (e = r.CurrentState).HasHitCallback()) {
+            if ((r = i?.Entity?.GetComponent(167)) && r.CurrentState instanceof SceneItemManipulableCastState_1.SceneItemManipulableCastState && (e = r.CurrentState).HasHitCallback()) {
               e.CallHitCallback(t, this.ActorComp?.Owner);
             }
             if (Log_1.Log.CheckInfo()) {
@@ -850,7 +850,7 @@ let SceneItemPortalComponent = SceneItemPortalComponent_1 = class SceneItemPorta
         Log_1.Log.Info("SceneItem", 39, "传送门: BeforeTeleport", ["CreatureDataId", this.Wpo], ["PbDataId", this.wDe], ["ActorPos", Vector_1.Vector.Create(i?.D_GetTransform().GetLocation())], ["ActorRot", Rotator_1.Rotator.Create(i?.D_GetTransform().Rotator())]);
       }
       let t = ModelManager_1.ModelManager.CreatureModel?.GetEntity(this.qSa)?.Entity;
-      var a = (t = t || EntitySystem_1.EntitySystem.Get(this.qSa))?.GetComponent(226);
+      var a = (t = t || EntitySystem_1.EntitySystem.Get(this.qSa))?.GetComponent(228);
       var s = a?.PortalCapture;
       var o = this.s1n === "A";
       var _ = o ? this.GetCreatureDataId() : this.GetPairCreatureDataId();
@@ -878,22 +878,22 @@ let SceneItemPortalComponent = SceneItemPortalComponent_1 = class SceneItemPorta
           if (h?.Valid) {
             this.EnablePortalRipple(s.GetLocation());
             SceneItemPortalComponent_1.P6a.add(i);
-            a = h.Entity?.GetComponent(70);
+            a = h.Entity?.GetComponent(72);
             if (a && (r = a.GetEnableMovementSync(), c.OriginEnableMovementSync = r)) {
               a.SetEnableMovementSync(false, "传送门: 传送开始");
             }
             r = PortalUtils_1.PortalUtils.GetMappingOffsetTransformToOtherPortal(s, _, o, s.GetRotation().GetForwardVectorDouble(), PORTAL_TELEPORT_OFFSET);
             c.AfterTeleportTransform = r;
-            a = h.Entity.GetComponent(215);
+            a = h.Entity.GetComponent(217);
             if (a.HasTag(-1371021686)) {
-              _ = h.Entity.GetComponent(105);
+              _ = h.Entity.GetComponent(107);
               if (a.HasTag(-1009010563) && !_?.GetIsInLastPathway()) {
                 _?.OnRoleBeforeTeleportThroughPortal();
                 this.p4a(c);
                 return;
               }
               if (!a.HasTag(400631093)) {
-                h.Entity.GetComponent(41).StopGroup1Skill("Portal Stop skill");
+                h.Entity.GetComponent(43).StopGroup1Skill("Portal Stop skill");
               }
             }
             EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRolePassPortalBeforeTeleport, h, c.InPortalComp, c.OutPortalComp);
@@ -969,7 +969,7 @@ let SceneItemPortalComponent = SceneItemPortalComponent_1 = class SceneItemPorta
             if (!t || e < TimerSystem_1.MIN_TIME) {
               this.p4a(c);
             } else {
-              h.Entity.GetComponent(188).SetTimeScale(Infinity, 0, undefined, e * CommonDefine_1.SECOND_PER_MILLIONSECOND, 11);
+              h.Entity.GetComponent(190).SetTimeScale(Infinity, 0, undefined, e * CommonDefine_1.SECOND_PER_MILLIONSECOND, 11);
               TimerSystem_1.TimerSystem.Delay(() => {
                 this.p4a(c);
               }, e);
@@ -1011,8 +1011,8 @@ let SceneItemPortalComponent = SceneItemPortalComponent_1 = class SceneItemPorta
       UE.NiagaraFunctionLibrary.MarkNiagaraScalabilityNeedUpdate(GlobalData_1.GlobalData.World);
       if ((e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity)?.Valid) {
         (i = e.Entity.GetComponent(3)).ResetAllCachedTime();
-        r = e.Entity.GetComponent(215);
-        a = e.Entity.GetComponent(65);
+        r = e.Entity.GetComponent(217);
+        a = e.Entity.GetComponent(67);
         s = CameraController_1.CameraController.FightCamera?.LogicComponent?.CameraModifyController;
         if (t.AfterTeleportCameraSettings) {
           s?.ApplyCameraModify(undefined, 0.1, 0, 0, 0, t.AfterTeleportCameraSettings, undefined, undefined, undefined, undefined, "", undefined);
@@ -1025,14 +1025,14 @@ let SceneItemPortalComponent = SceneItemPortalComponent_1 = class SceneItemPorta
         }
         a.ClearMoveVectorCache();
         if (r.HasTag(-1371021686) && r.HasTag(-1009010563)) {
-          e.Entity.GetComponent(105)?.OnRoleTeleportThroughPortal();
+          e.Entity.GetComponent(107)?.OnRoleTeleportThroughPortal();
         }
         if (r.HasTag(1491611589)) {
-          e.Entity.GetComponent(68)?.OnRoleTeleport();
+          e.Entity.GetComponent(70)?.OnRoleTeleport();
         }
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRolePassPortalAfterTeleport, e, t.InPortalComp, t.OutPortalComp);
         if (t.OriginEnableMovementSync) {
-          e?.Entity?.GetComponent(70)?.SetEnableMovementSync(true, "传送门: 传送完成");
+          e?.Entity?.GetComponent(72)?.SetEnableMovementSync(true, "传送门: 传送完成");
         }
       } else if (Log_1.Log.CheckWarn()) {
         Log_1.Log.Warn("Teleport", 7, "传送门:失败,找不到当前玩家角色");
@@ -1048,7 +1048,7 @@ let SceneItemPortalComponent = SceneItemPortalComponent_1 = class SceneItemPorta
     if (t) {
       (e = Protocol_1.Aki.Protocol.Km_.create()).F4n = this.Wpo;
       e.P5n = Vector_1.Vector.Create(t);
-      Net_1.Net.Call(24908, e, t => {
+      Net_1.Net.Call(19727, e, t => {
         if (!t || t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
           if (Log_1.Log.CheckError()) {
             Log_1.Log.Error("SceneItem", 39, "PassPortalRequest返回错误", ["PortalEntityId", this.Wpo]);
@@ -1093,7 +1093,7 @@ let SceneItemPortalComponent = SceneItemPortalComponent_1 = class SceneItemPorta
     if (!a) {
       return false;
     }
-    if (!ModelManager_1.ModelManager.CreatureModel?.GetEntity(this.qSa)?.Entity?.GetComponent(226)) {
+    if (!ModelManager_1.ModelManager.CreatureModel?.GetEntity(this.qSa)?.Entity?.GetComponent(228)) {
       return false;
     }
     a = i ? a.PortalWorldTransform1 : a.PortalWorldTransform2;
@@ -1182,5 +1182,5 @@ SceneItemPortalComponent.aKa = undefined;
 SceneItemPortalComponent.hKa = undefined;
 SceneItemPortalComponent.lKa = undefined;
 SceneItemPortalComponent.P6a = new Set();
-SceneItemPortalComponent = SceneItemPortalComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(226)], SceneItemPortalComponent);
+SceneItemPortalComponent = SceneItemPortalComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(228)], SceneItemPortalComponent);
 exports.SceneItemPortalComponent = SceneItemPortalComponent; //# sourceMappingURL=SceneItemPortalComponent.js.map

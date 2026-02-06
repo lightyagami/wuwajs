@@ -15,6 +15,7 @@ const ModelManager_1 = require("../../../../Manager/ModelManager");
 const UiTabViewBase_1 = require("../../../../Ui/Base/UiTabViewBase");
 const UiLayerType_1 = require("../../../../Ui/Define/UiLayerType");
 const UiLayer_1 = require("../../../../Ui/UiLayer");
+const UiManager_1 = require("../../../../Ui/UiManager");
 const FilterEntrance_1 = require("../../../Common/FilterSort/Filter/View/FilterEntrance");
 const SortEntrance_1 = require("../../../Common/FilterSort/Sort/View/SortEntrance");
 const LevelSequencePlayer_1 = require("../../../Common/LevelSequencePlayer");
@@ -45,6 +46,8 @@ class CalabashCollectTabView extends UiTabViewBase_1.UiTabViewBase {
     this.qpd = MeshStreamDefine_1.INVALID_MESH_STREAM_TASK_ID;
     this.Apt = false;
     this.SPe = undefined;
+    this.h7g = 0;
+    this.l7g = false;
     this.Ppt = () => {
       if (ModelManager_1.ModelManager.CalabashModel.GetIfSimpleState()) {
         this.Ept.PlayDetailShowSequence();
@@ -53,7 +56,11 @@ class CalabashCollectTabView extends UiTabViewBase_1.UiTabViewBase {
       }
     };
     this.xpt = () => {
-      this.wpt();
+      if (this.l7g) {
+        UiManager_1.UiManager.CloseView("CalabashRootView");
+      } else {
+        this.wpt();
+      }
     };
     this.w7 = () => {
       var e = new CalabashCollectGridItem_1.CalabashCollectGridItem();
@@ -92,16 +99,16 @@ class CalabashCollectTabView extends UiTabViewBase_1.UiTabViewBase {
       this.Spt.ScrollToGridIndex(e);
       this.bpt();
     };
-    this.Npt = () => {
+    this.Npt = (e = false) => {
       if (this.Apt) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("Calabash", 43, "重复进入声骸图鉴的内部界面");
         }
       } else {
         this.Apt = true;
-        this.SPe?.PlayLevelSequenceByName("Enter", true);
+        this.SPe?.PlayLevelSequenceByName("Enter", true, undefined, e);
         const i = UiCameraManager_1.UiCameraManager.Get().GetUiCameraComponent(UiCameraControlRotationComponent_1.UiCameraControlRotationComponent);
-        var e = ConfigManager_1.ConfigManager.CalabashConfig.GetCalabashDevelopRewardByMonsterId(this.Rpt);
+        e = ConfigManager_1.ConfigManager.CalabashConfig.GetCalabashDevelopRewardByMonsterId(this.Rpt);
         const t = ConfigManager_1.ConfigManager.MonsterInfoConfig.GetMonsterBodyTypeConfig(e.MonsterBodyType);
         ResourceSystem_1.ResourceSystem.LoadAsync(t.MoveForwardCurvePath, UE.CurveFloat, e => {
           if (e) {
@@ -154,6 +161,7 @@ class CalabashCollectTabView extends UiTabViewBase_1.UiTabViewBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ChangeCalabashCollectSimplyState, this.Ppt);
   }
   async OnBeforeStartAsync() {
+    var e;
     this.Apt = false;
     this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetRootItem());
     this.Ipt = new VisionCameraInputItem_1.VisionCameraInputItem();
@@ -166,9 +174,8 @@ class CalabashCollectTabView extends UiTabViewBase_1.UiTabViewBase {
     });
     this.vpt = new FilterEntrance_1.FilterEntrance(this.GetItem(2), this.qpt);
     this.Mpt = new SortEntrance_1.SortEntrance(this.GetItem(3), this.qpt);
-    var e = this.ExtraParams;
-    if (e > 0) {
-      this.Dpt = e;
+    if (this.ExtraParams !== undefined && (e = this.ExtraParams, this.Dpt = e.MonsterId, this.l7g = e.OnlyShow ?? false, this.l7g)) {
+      this.h7g = e.MonsterId;
     }
     this.Vpt();
     this.Ept = new CalabashCollectDetailItem_1.CalabashCollectDetailItem();
@@ -201,9 +208,17 @@ class CalabashCollectTabView extends UiTabViewBase_1.UiTabViewBase {
     this.Ept.Update(e);
     this.Rpt = e.DevelopRewardData.MonsterId;
     this.kpt();
-    this.U$l(false, !e.UnlockData);
-    if (e.UnlockData) {
+    if (this.l7g) {
+      this.Rpt = this.h7g;
+      this.U$l(true, false);
       this.Fpt();
+      this.Npt(true);
+      ControllerHolder_1.ControllerHolder.BlackScreenController.RemoveBlackScreen("Close", "CalabashCollectOnlyShow");
+    } else {
+      this.U$l(false, !e.UnlockData);
+      if (e.UnlockData) {
+        this.Fpt();
+      }
     }
   }
   Fpt() {

@@ -50,9 +50,9 @@ class BehaviorButtonData {
     this.ButtonType = i.ButtonType;
     this.ActionName = InputEnums_1.EInputAction[this.InputAction];
     this.DefaultSkillId = i.SkillId;
-    this.Kst = t.GetComponent(215);
+    this.Kst = t.GetComponent(217);
     this.u1t = t.GetComponent(0);
-    this.TSo = t.GetComponent(40);
+    this.TSo = t.GetComponent(42);
     this.State = 0;
     this.SkillIconPathList = [];
     if (i.SkillIcons) {
@@ -243,7 +243,7 @@ class BehaviorButtonData {
   }
   GetActionName() {
     if (ModelManager_1.ModelManager.BattleUiModel.MotorcycleData.IsDriving) {
-      var t = BehaviorButtonData.EVf.get(this.ButtonType);
+      var t = BehaviorButtonData.dXf.get(this.ButtonType);
       if (t) {
         return t;
       }
@@ -251,5 +251,5 @@ class BehaviorButtonData {
     return this.ActionName;
   }
 }
-(exports.BehaviorButtonData = BehaviorButtonData).EVf = new Map([[101, InputMappingsDefine_1.actionMappings.载具视角切换], [102, InputMappingsDefine_1.actionMappings.载具锁定目标]]);
+(exports.BehaviorButtonData = BehaviorButtonData).dXf = new Map([[101, InputMappingsDefine_1.actionMappings.载具视角切换], [102, InputMappingsDefine_1.actionMappings.载具锁定目标]]);
 //# sourceMappingURL=BehaviorButtonData.js.map

@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.AchievementContentData = exports.AchievementData = exports.NoticeReadData = exports.NoticeContentData = exports.NoticeRedDotData = exports.NoticeData = exports.IntroductionData = exports.PostWebViewEntryPointData = exports.KuroSdkControllerTool = exports.AndroidGlobalProductContentPriceData = exports.GlobalProductContentData = exports.GlobalProductData = exports.SdkAgreementLinkData = exports.AndroidSdkAgreementData = exports.GameWindowStateData = exports.ShareData = exports.SetFontParamWindows = exports.SetFontParamAndroid = exports.QueryProductInfoParamWindows = exports.CloudSDKPayResult = exports.QueryProductInfoParamAndroid = exports.RoleInfoWindows = exports.AndroidSdkPayRole = exports.RoleInfoSdk = exports.SdkPayObject = exports.PayInfoWindowsGlobal = exports.PayInfoWindows = exports.PayInfoMacIosGlobal = exports.PayInfoCloudIos = exports.PayInfoMacIos = exports.PayInfoAndroid = exports.OpenWebViewParamAndroid = exports.OpenWebViewParamWindows = exports.OpenSdkUrlWndParamWindows = exports.OpenSdkUrlWndParam = exports.OpenPostWebViewParam = exports.OpenWebViewParamCloudGame = exports.OpenCustomerServiceParamWindows = exports.OpenCustomerServiceParamMac = exports.OpenCustomerServiceExtendsInfoData = exports.OpenCustomerServiceExtendsInfo = exports.OpenCustomerServiceParamIos = exports.OpenCustomerServiceParamAndroid = exports.InitializePostWebViewParam = undefined;
+exports.GPUnlockAchievementDataParams = exports.GPUnlockAchievementData = exports.AchievementContentData = exports.AchievementData = exports.NoticeReadData = exports.NoticeContentData = exports.NoticeRedDotData = exports.NoticeData = exports.IntroductionData = exports.PostWebViewEntryPointData = exports.KuroSdkControllerTool = exports.AndroidGlobalProductContentPriceData = exports.GlobalProductContentData = exports.GlobalProductData = exports.SdkAgreementLinkData = exports.AndroidSdkAgreementData = exports.GameWindowStateData = exports.ShareData = exports.SetFontParamWindows = exports.SetFontParamAndroid = exports.QueryProductInfoParamWindows = exports.CloudSDKPayResult = exports.QueryProductInfoParamAndroid = exports.RoleInfoWindows = exports.AndroidSdkPayRole = exports.RoleInfoSdk = exports.SdkPayObject = exports.PayInfoWindowsGlobal = exports.PayInfoWindows = exports.PayInfoMacIosGlobal = exports.PayInfoCloudIos = exports.PayInfoMacIos = exports.PayInfoAndroid = exports.OpenWebViewParamAndroid = exports.OpenWebViewParamWindows = exports.OpenSdkUrlWndParamWindows = exports.OpenSdkUrlWndParam = exports.OpenPostWebViewParam = exports.OpenWebViewParamCloudGame = exports.OpenCustomerServiceParamWindows = exports.OpenCustomerServiceParamMac = exports.OpenCustomerServiceExtendsInfoData = exports.OpenCustomerServiceExtendsInfo = exports.OpenCustomerServiceParamIos = exports.OpenCustomerServiceParamAndroid = exports.InitializePostWebViewParam = undefined;
 const Info_1 = require("../../Core/Common/Info");
 const Json_1 = require("../../Core/Common/Json");
 const Log_1 = require("../../Core/Common/Log");
@@ -621,4 +621,19 @@ class AchievementContentData {
   }
 }
 exports.AchievementContentData = AchievementContentData;
+class GPUnlockAchievementData extends Json_1.JsonObjBase {
+  constructor() {
+    super(...arguments);
+    this.func = "";
+    this.params = undefined;
+  }
+}
+exports.GPUnlockAchievementData = GPUnlockAchievementData;
+class GPUnlockAchievementDataParams extends Json_1.JsonObjBase {
+  constructor() {
+    super(...arguments);
+    this.achievement = "";
+  }
+}
+exports.GPUnlockAchievementDataParams = GPUnlockAchievementDataParams;
 //# sourceMappingURL=KuroSdkData.js.map

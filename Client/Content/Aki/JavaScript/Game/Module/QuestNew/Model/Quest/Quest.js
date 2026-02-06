@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Quest = undefined;
 const Log_1 = require("../../../../../Core/Common/Log");
+const HiddenQuestWhiteByQuestId_1 = require("../../../../../Core/Define/ConfigQuery/HiddenQuestWhiteByQuestId");
 const Protocol_1 = require("../../../../../Core/Define/Net/Protocol");
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
@@ -256,7 +257,7 @@ class Quest extends LogicTreeContainer_1.LogicTreeContainer {
       return true;
     }
     if ((this.Status === Protocol_1.Aki.Protocol.hTs.Proto_InActive || this.Status === Protocol_1.Aki.Protocol.hTs.CTs) && (this.LockByLackResource || this.LockByFocusMode)) {
-      return !this.IsHideInTaskList && this.Type !== 11;
+      return !this.IsHideInTaskList && this.Type !== 11 || ModelManager_1.ModelManager.QuestNewModel.GetQuestSpecialState(this.Id) === 3 && HiddenQuestWhiteByQuestId_1.configHiddenQuestWhiteByQuestId.GetConfig(this.Id) !== undefined;
     }
     if (this.Status !== Protocol_1.Aki.Protocol.hTs.nvs) {
       return false;

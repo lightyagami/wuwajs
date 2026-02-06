@@ -81,7 +81,7 @@ class Event {
     return true;
   }
   Emit(t, ...e) {
-    if (this.cK(t)) {
+    if (this.IsEmitting(t)) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Event", 1, "事件重复派发，请检查事件链是否产生循环调用", ["name", this.rK[t]], ["emittingEventInArray", [...this.AF_.entries()].filter(t => t[1] !== 0).map(t => t[0])], ["emittingEventInSet", this.PF_]);
       }
@@ -188,7 +188,7 @@ class Event {
       return false;
     }
     e = this.UCu(t, e);
-    if (!this.cK(t)) {
+    if (!this.IsEmitting(t)) {
       return this.fK(t, e, i);
     }
     var n = this.nK.get(t);
@@ -249,7 +249,7 @@ class Event {
     return true;
   }
   O7(t, e) {
-    if (!this.cK(t)) {
+    if (!this.IsEmitting(t)) {
       return this.gK(t, e);
     }
     var i = this.nK.get(t);
@@ -294,7 +294,7 @@ class Event {
       return false;
     }
   }
-  cK(t) {
+  IsEmitting(t) {
     if (t >= this.RF_ || t < 0) {
       return this.xF_(t);
     } else {
@@ -349,7 +349,7 @@ class Event {
       r = new EventConditionListener_1.ConditionListener();
       this.LCu.set(t, r);
     }
-    if (!this.cK(t)) {
+    if (!this.IsEmitting(t)) {
       return this.PCu(t, r, e, i, n);
     }
     if (r.Has(n, e)) {
@@ -385,7 +385,7 @@ class Event {
     return !!e && this.xCu(t, e, i);
   }
   xCu(t, e, i) {
-    if (!this.cK(t)) {
+    if (!this.IsEmitting(t)) {
       return this.ACu(t, i, e);
     }
     var n = this.LCu.get(t);

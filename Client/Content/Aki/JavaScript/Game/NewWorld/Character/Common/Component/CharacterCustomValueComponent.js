@@ -286,7 +286,7 @@ let CharacterCustomValueComponent = CharacterCustomValueComponent_1 = class Char
               Log_1.Log.Debug("Battle", 20, "[自定义值]使用者位置 计算结果", ["Key", r], ["Value", o]);
             }
           } else if (a.VecSource === 2) {
-            var e = this.Entity.GetComponent(41)?.SkillTarget;
+            var e = this.Entity.GetComponent(43)?.SkillTarget;
             if (!e?.Valid) {
               if (Log_1.Log.CheckDebug()) {
                 Log_1.Log.Debug("Battle", 20, "[自定义值]技能目标不存在", ["Key", r], ["Actor", this.Entity.GetComponent(1)?.Owner?.GetName()]);
@@ -299,7 +299,7 @@ let CharacterCustomValueComponent = CharacterCustomValueComponent_1 = class Char
               Log_1.Log.Debug("Battle", 20, "[自定义值]技能目标位置 计算结果", ["Key", r], ["Value", o]);
             }
           } else if (a.VecSource === 4) {
-            e = this.Entity.GetComponent(41)?.SkillTarget;
+            e = this.Entity.GetComponent(43)?.SkillTarget;
             if (!e?.Valid) {
               if (Log_1.Log.CheckDebug()) {
                 Log_1.Log.Debug("Battle", 20, "[自定义值]技能目标不存在", ["Key", r], ["Actor", this.Entity.GetComponent(1)?.Owner?.GetName()]);
@@ -317,7 +317,7 @@ let CharacterCustomValueComponent = CharacterCustomValueComponent_1 = class Char
               Log_1.Log.Debug("Battle", 20, "[自定义值]技能目标位置 计算结果", ["Key", r], ["Value", o]);
             }
           } else if (a.VecSource === 5) {
-            e = this.Entity.GetComponent(41)?.SkillTarget;
+            e = this.Entity.GetComponent(43)?.SkillTarget;
             if (!e?.Valid) {
               if (Log_1.Log.CheckDebug()) {
                 Log_1.Log.Debug("Battle", 20, "[自定义值]技能目标不存在", ["Key", r], ["Actor", this.Entity.GetComponent(1)?.Owner?.GetName()]);
@@ -351,7 +351,7 @@ let CharacterCustomValueComponent = CharacterCustomValueComponent_1 = class Char
               Log_1.Log.Debug("Bullet", 20, "[自定义值]获取到参数值", ["key", r], ["value", o]);
             }
           } else if (a.VecSource === 9) {
-            _ = this.Entity.GetComponent(41)?.SkillTarget;
+            _ = this.Entity.GetComponent(43)?.SkillTarget;
             if (!_?.Valid) {
               if (Log_1.Log.CheckDebug()) {
                 Log_1.Log.Debug("Battle", 20, "[自定义值]技能目标不存在", ["Key", r], ["Actor", this.Entity.GetComponent(1)?.Owner?.GetName()]);
@@ -364,7 +364,7 @@ let CharacterCustomValueComponent = CharacterCustomValueComponent_1 = class Char
               Log_1.Log.Debug("Bullet", 20, "[自定义值]获取到参数值", ["key", r], ["value", o]);
             }
           } else if (a.VecSource === 10) {
-            e = this.Entity.GetComponent(41)?.SkillTarget;
+            e = this.Entity.GetComponent(43)?.SkillTarget;
             if (!e?.Valid) {
               if (Log_1.Log.CheckDebug()) {
                 Log_1.Log.Debug("Battle", 20, "[自定义值]技能目标不存在", ["Key", r], ["Actor", this.Entity.GetComponent(1)?.Owner?.GetName()]);
@@ -377,7 +377,7 @@ let CharacterCustomValueComponent = CharacterCustomValueComponent_1 = class Char
               Log_1.Log.Debug("Bullet", 20, "[自定义值]获取到参数值", ["key", r], ["value", o]);
             }
           } else if (a.VecSource === 11) {
-            l = this.Entity.GetComponent(41)?.SkillTarget;
+            l = this.Entity.GetComponent(43)?.SkillTarget;
             if (!l?.Valid) {
               if (Log_1.Log.CheckDebug()) {
                 Log_1.Log.Debug("Battle", 20, "[自定义值]技能目标不存在", ["Key", r], ["Actor", this.Entity.GetComponent(1)?.Owner?.GetName()]);
@@ -397,7 +397,7 @@ let CharacterCustomValueComponent = CharacterCustomValueComponent_1 = class Char
               Log_1.Log.Debug("Battle", 20, "[自定义值]使用者朝向 计算结果", ["Key", r], ["Value", o]);
             }
           } else if (a.RotSource === 2) {
-            _ = this.Entity.GetComponent(41)?.SkillTarget;
+            _ = this.Entity.GetComponent(43)?.SkillTarget;
             if (!_?.Valid) {
               if (Log_1.Log.CheckDebug()) {
                 Log_1.Log.Debug("Battle", 20, "[自定义值]技能目标不存在", ["Key", r], ["Actor", this.Entity.GetComponent(1)?.Owner?.GetName()]);
@@ -423,5 +423,5 @@ let CharacterCustomValueComponent = CharacterCustomValueComponent_1 = class Char
   }
 };
 CharacterCustomValueComponent.Q4_ = new Map();
-CharacterCustomValueComponent = CharacterCustomValueComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(305)], CharacterCustomValueComponent);
+CharacterCustomValueComponent = CharacterCustomValueComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(307)], CharacterCustomValueComponent);
 exports.CharacterCustomValueComponent = CharacterCustomValueComponent; //# sourceMappingURL=CharacterCustomValueComponent.js.map

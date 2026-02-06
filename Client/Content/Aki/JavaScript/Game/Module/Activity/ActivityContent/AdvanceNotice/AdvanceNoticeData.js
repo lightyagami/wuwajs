@@ -10,16 +10,16 @@ class AdvanceNoticeData extends ActivityData_1.ActivityBaseData {
   constructor() {
     super(...arguments);
     this.xC = false;
-    this._km = 0;
+    this.Tqm = 0;
   }
   PhraseEx(t) {
     t = t.Kfm;
     if (t) {
       this.xC = t.mJc;
-      this._km = MathUtils_1.MathUtils.LongToNumber(t.lBm);
+      this.Tqm = MathUtils_1.MathUtils.LongToNumber(t.kBm);
     } else {
       this.xC = false;
-      this._km = 0;
+      this.Tqm = 0;
     }
   }
   GetIsShow() {
@@ -32,7 +32,7 @@ class AdvanceNoticeData extends ActivityData_1.ActivityBaseData {
     return (AdvanceNoticeData.DebugFlag || this.xC) && super.CheckIfInShowTime();
   }
   GetUnlockTimeStamp() {
-    return this._km;
+    return this.Tqm;
   }
 }
 (exports.AdvanceNoticeData = AdvanceNoticeData).DebugFlag = false;

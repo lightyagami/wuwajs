@@ -13,7 +13,7 @@ class PlotMontage {
   StartPlayMontage(o) {
     var e;
     var t;
-    if (o && o.ActionMontage.Path && o.ActionMontage.Path !== "Empty" && (e = o.EntityId === 0 ? ModelManager_1.ModelManager.PlotModel.CurrentInteractEntity : ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(o.EntityId))?.IsInit && (t = e.Entity.GetComponent(47)) && (t.OnNpcInPlot(true), t.PlayPerformMontage(1, {
+    if (o && o.ActionMontage.Path && o.ActionMontage.Path !== "Empty" && (e = o.EntityId === 0 ? ModelManager_1.ModelManager.PlotModel.CurrentInteractEntity : ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(o.EntityId))?.IsInit && (t = e.Entity.GetComponent(49)) && (t.OnNpcInPlot(true), t.PlayPerformMontage(1, {
       MontagePath: o.ActionMontage.Path,
       IsLoop: false
     }), this.tj_.add(e), Log_1.Log.CheckDebug())) {
@@ -23,7 +23,7 @@ class PlotMontage {
   StopAllMontage() {
     for (const e of this.tj_) {
       if (e.Valid) {
-        var o = e.Entity.GetComponent(197);
+        var o = e.Entity.GetComponent(199);
         if (!o) {
           return;
         }

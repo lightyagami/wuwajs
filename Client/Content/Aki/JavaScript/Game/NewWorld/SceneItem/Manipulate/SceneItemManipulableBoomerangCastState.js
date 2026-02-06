@@ -11,8 +11,8 @@ const StringUtils_1 = require("../../../../Core/Utils/StringUtils");
 const IComponent_1 = require("../../../../UniverseEditor/Interface/IComponent");
 const SceneItemManipulableCastState_1 = require("./SceneItemManipulableCastState");
 class SceneItemManipulableBoomerangCastState extends SceneItemManipulableCastState_1.SceneItemManipulableCastState {
-  constructor(t, i) {
-    super(t, i);
+  constructor(t, i, s) {
+    super(t, i, s);
     this.Anr = -0;
     this.XWe = undefined;
     this.Pnr = 180;

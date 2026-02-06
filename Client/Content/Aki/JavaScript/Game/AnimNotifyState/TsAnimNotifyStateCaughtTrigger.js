@@ -14,11 +14,11 @@ class TsAnimNotifyStateCaughtTrigger extends UE.KuroAnimNotifyState {
   K2_NotifyBegin(e, t, r) {
     var s;
     var e = e.GetOwner();
-    return e instanceof TsBaseCharacter_1.default && !!(e = e.CharacterActorComponent.Entity) && (t = e.GetComponent(220)?.CreateAnimNotifyContent(t.GetName(), this.exportIndex), s = e.GetComponent(41), !!(e = e.GetComponent(53))) && (e.SetCaughtTriggerAnsInfo(t), e.BeginCaughtTrigger(this.CaughtIds, s?.CurrentSkill?.SkillId ?? 0), true);
+    return e instanceof TsBaseCharacter_1.default && !!(e = e.CharacterActorComponent.Entity) && (t = e.GetComponent(222)?.CreateAnimNotifyContent(t.GetName(), this.exportIndex), s = e.GetComponent(43), !!(e = e.GetComponent(55))) && (e.SetCaughtTriggerAnsInfo(t), e.BeginCaughtTrigger(this.CaughtIds, s?.CurrentSkill?.SkillId ?? 0), true);
   }
   K2_NotifyEnd(e, t) {
     var e = e.GetOwner();
-    return e instanceof TsBaseCharacter_1.default && !!(e = e.CharacterActorComponent.Entity) && !!(e = e.GetComponent(53)) && (e.EndCaughtTrigger(), true);
+    return e instanceof TsBaseCharacter_1.default && !!(e = e.CharacterActorComponent.Entity) && !!(e = e.GetComponent(55)) && (e.EndCaughtTrigger(), true);
   }
   GetNotifyName() {
     return "抓取判定";

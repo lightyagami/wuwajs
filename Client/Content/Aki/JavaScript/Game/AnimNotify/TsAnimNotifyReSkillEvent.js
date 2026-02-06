@@ -39,7 +39,7 @@ class TsAnimNotifyReSkillEvent extends UE.KuroAnimNotify {
       if (!s?.Valid) {
         return false;
       }
-      var o = s.GetComponent(220)?.CreateAnimNotifyContent(r.GetName(), this.exportIndex);
+      var o = s.GetComponent(222)?.CreateAnimNotifyContent(r.GetName(), this.exportIndex);
       var l = this.GetInitTransform(n);
       if (this.使用召唤者子弹) {
         var i = s.GetComponent(0).GetSummonerId();
@@ -55,7 +55,7 @@ class TsAnimNotifyReSkillEvent extends UE.KuroAnimNotify {
           return false;
         }
       }
-      i = s.GetComponent(40);
+      i = s.GetComponent(42);
       if (!i?.Valid) {
         return false;
       }

@@ -15,14 +15,14 @@ class MotorcycleAutoMovingItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.xii = undefined;
-    this.R2f = -1;
-    this.L2f = -1;
+    this.i5f = -1;
+    this.r5f = -1;
     this.Lti = false;
-    this.w2f = false;
-    this.P2f = false;
-    this.A2f = undefined;
-    this.D2f = undefined;
-    this.U2f = false;
+    this.o5f = false;
+    this.n5f = false;
+    this.s5f = undefined;
+    this.a5f = undefined;
+    this.h5f = false;
     this.TweenAnimPlayer = new BattleUiTweenAnimPlayer_1.BattleUiTweenAnimPlayer();
   }
   OnRegisterComponent() {
@@ -32,8 +32,8 @@ class MotorcycleAutoMovingItem extends UiPanelBase_1.UiPanelBase {
     this.InitTweenAnim(6);
     this.InitTweenAnim(4);
     this.InitTweenAnim(5);
-    this.A2f = this.GetSprite(3);
-    this.D2f = this.GetSprite(1);
+    this.s5f = this.GetSprite(3);
+    this.a5f = this.GetSprite(1);
   }
   OnBeforeDestroy() {
     this.Gii();
@@ -68,44 +68,44 @@ class MotorcycleAutoMovingItem extends UiPanelBase_1.UiPanelBase {
     }
   }
   SetPercentNitrogen(t) {
-    if (t !== this.R2f) {
-      this.A2f.SetFillAmount(t);
+    if (t !== this.i5f) {
+      this.s5f.SetFillAmount(t);
       if (t === 1) {
         this.SetChangeColorNitrogen(true);
         this.PlayTweenAnim(4);
-      } else if (this.R2f === 1) {
+      } else if (this.i5f === 1) {
         this.SetChangeColorNitrogen(false);
       }
-      this.R2f = t;
+      this.i5f = t;
     }
   }
   SetPercentAccelerator(t) {
-    if (t !== this.L2f) {
-      this.D2f.SetFillAmount(t);
+    if (t !== this.r5f) {
+      this.a5f.SetFillAmount(t);
       if (t === 1) {
         this.SetChangeColorAccelerator(true);
         this.PlayTweenAnim(4);
-      } else if (this.L2f === 1) {
+      } else if (this.r5f === 1) {
         this.SetChangeColorAccelerator(false);
       }
-      this.L2f = t;
+      this.r5f = t;
     }
   }
   SetChangeColorNitrogen(t) {
-    if (this.w2f !== t) {
-      this.w2f = t;
-      this.A2f.SetChangeColor(t, this.A2f.changeColor);
+    if (this.o5f !== t) {
+      this.o5f = t;
+      this.s5f.SetChangeColor(t, this.s5f.changeColor);
     }
   }
   SetChangeColorAccelerator(t) {
-    if (this.P2f !== t) {
-      this.P2f = t;
-      this.D2f.SetChangeColor(t, this.D2f.changeColor);
+    if (this.n5f !== t) {
+      this.n5f = t;
+      this.a5f.SetChangeColor(t, this.a5f.changeColor);
     }
   }
   SetNitrogen(t) {
-    if (this.U2f !== t) {
-      this.U2f = t;
+    if (this.h5f !== t) {
+      this.h5f = t;
       this.GetItem(0).SetUIActive(!t);
       this.GetItem(2).SetUIActive(t);
     }

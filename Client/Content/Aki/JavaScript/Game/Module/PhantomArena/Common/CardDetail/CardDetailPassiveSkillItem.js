@@ -40,7 +40,7 @@ class CardDetailPassiveSkillItem extends UiPanelBase_1.UiPanelBase {
       e.SetUIActive(false);
     }
   }
-  fQm(t) {
+  lXm(t) {
     if (t) {
       this.GetItem(1).SetUIActive(false);
       this.GetSprite(4).SetUIActive(false);
@@ -48,11 +48,11 @@ class CardDetailPassiveSkillItem extends UiPanelBase_1.UiPanelBase {
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(3), t.TextArg.TextKey, ...t.TextArg.Params);
     }
   }
-  gQm(t) {
+  _Xm(t) {
     this._Fe(t);
     this.Nqe(t);
   }
-  PFm(t) {
+  XNm(t) {
     this.GetItem(6).SetUIActive(t !== undefined);
     if (t) {
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(7), "PhantomBattle_1161", t.CurrentEffectCount, t.TotalEffectCount);
@@ -60,9 +60,9 @@ class CardDetailPassiveSkillItem extends UiPanelBase_1.UiPanelBase {
   }
   Refresh(t) {
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), t.Desc, ...t.Params);
-    this.gQm(t.FieldData?.OutData);
-    this.fQm(t.FieldData?.InData);
-    this.PFm(t.EffectCountData);
+    this._Xm(t.FieldData?.OutData);
+    this.lXm(t.FieldData?.InData);
+    this.XNm(t.EffectCountData);
   }
 }
 exports.CardDetailPassiveSkillItem = CardDetailPassiveSkillItem;

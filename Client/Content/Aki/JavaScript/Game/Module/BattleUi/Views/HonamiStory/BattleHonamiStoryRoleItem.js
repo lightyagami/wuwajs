@@ -16,11 +16,11 @@ const ModelManager_1 = require("../../../../Manager/ModelManager");
 class BattleHonamiStoryRoleItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.Skm = [];
+    this.kqm = [];
     this.$pt = undefined;
-    this.a9m = undefined;
-    this.h9m = undefined;
-    this.l9m = undefined;
+    this.Vjm = undefined;
+    this.jjm = undefined;
+    this.Hjm = undefined;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UITexture], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UISprite], [5, UE.UIItem], [6, UE.UISprite], [7, UE.UINiagara]];
@@ -34,7 +34,7 @@ class BattleHonamiStoryRoleItem extends UiPanelBase_1.UiPanelBase {
   }
   async JYd(e) {
     var t = new BattleHonamiStoryRoleSuitItem_1.BattleHonamiStoryRoleSuitItem();
-    this.Skm.push(t);
+    this.kqm.push(t);
     return t.CreateThenShowByActorAsync(this.GetItem(e).GetOwner());
   }
   OnStart() {
@@ -47,24 +47,24 @@ class BattleHonamiStoryRoleItem extends UiPanelBase_1.UiPanelBase {
   async OnHideAsyncImplementImplement() {
     this.$pt?.StopPrevSequence(false, true);
     await this.$pt?.PlaySequenceAsync("Close", new CustomPromise_1.CustomPromise());
-    if (this.h9m) {
-      this.h9m.Remove();
-      this.h9m = undefined;
+    if (this.jjm) {
+      this.jjm.Remove();
+      this.jjm = undefined;
       this.GetUiNiagara(7).SetUIActive(false);
     }
   }
   OnAfterHide() {
-    this.l9m?.();
+    this.Hjm?.();
   }
   OnBeforeDestroy() {
-    this.l9m = undefined;
+    this.Hjm = undefined;
     this.$pt?.Clear();
     this.$pt = undefined;
-    this.a9m?.Remove();
-    this.a9m = undefined;
+    this.Vjm?.Remove();
+    this.Vjm = undefined;
   }
   RegisterOnAfterHide(e) {
-    this.l9m = e;
+    this.Hjm = e;
   }
   ShowRoleItem(e, t) {
     var i = e.RoleId;
@@ -80,8 +80,8 @@ class BattleHonamiStoryRoleItem extends UiPanelBase_1.UiPanelBase {
       });
       if (e.BuffActive) {
         this.GetUiNiagara(7).SetUIActive(true);
-        this.h9m = TimerSystem_1.GameplayTimerSystem.Delay(() => {
-          this.h9m = undefined;
+        this.jjm = TimerSystem_1.GameplayTimerSystem.Delay(() => {
+          this.jjm = undefined;
           this.GetUiNiagara(7).SetUIActive(false);
         }, 1000);
       }
@@ -92,14 +92,14 @@ class BattleHonamiStoryRoleItem extends UiPanelBase_1.UiPanelBase {
       this.GetItem(5).SetUIActive(!r);
       if (!r) {
         var n = e.ItemSubType;
-        var m = this.Skm.length;
+        var m = this.kqm.length;
         var l = Math.min(a.length, m);
         let t = undefined;
         for (let e = 0; e < l; e++) {
           var d = a[e];
           var u = h[e];
           var d = ModelManager_1.ModelManager.HonamiStoryModel.GetWeaponSuitData(d).WeaponPluginType;
-          var v = this.Skm[e];
+          var v = this.kqm[e];
           v.Refresh(u, d);
           v.SetUiActive(true);
           if (u.IsActive && n === d) {
@@ -108,28 +108,28 @@ class BattleHonamiStoryRoleItem extends UiPanelBase_1.UiPanelBase {
         }
         t?.PlayBurst();
         for (let e = l; e < m; e++) {
-          this.Skm[e].SetUiActive(false);
+          this.kqm[e].SetUiActive(false);
         }
       }
-      this.Djm(t);
+      this.P$m(t);
     } else {
       if (Log_1.Log.CheckWarn()) {
         Log_1.Log.Warn("HonamiStory", 48, "拾取提示角色配置不存在", ["RoleId", i]);
       }
-      this.l9m?.();
+      this.Hjm?.();
     }
   }
-  Djm(e) {
-    this.a9m = TimerSystem_1.GameplayTimerSystem.Delay(() => {
-      this.a9m = undefined;
+  P$m(e) {
+    this.Vjm = TimerSystem_1.GameplayTimerSystem.Delay(() => {
+      this.Vjm = undefined;
       if (!this.IsHideOrHiding) {
         this.SetActive(false);
       }
     }, e);
   }
   HideRoleItem() {
-    this.a9m?.Remove();
-    this.a9m = undefined;
+    this.Vjm?.Remove();
+    this.Vjm = undefined;
     if (!this.IsHideOrHiding) {
       this.SetActive(false);
     }

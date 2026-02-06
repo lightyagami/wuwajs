@@ -219,7 +219,7 @@ class FightPhotoSaveView extends UiViewBase_1.UiViewBase {
     this.GetItem(10)?.SetUIActive(!e);
     this.GetItem(11)?.SetUIActive(!e);
   }
-  async w3m() {
+  async Q4m() {
     UiLayer_1.UiLayer.SetLayerRenderable(UiLayerType_1.ELayerType.Float, false, "ScreenShot");
     UiLayer_1.UiLayer.SetLayerRenderable(UiLayerType_1.ELayerType.Pop, false, "ScreenShot");
     UiLayer_1.UiLayer.SetLayerRenderable(UiLayerType_1.ELayerType.Normal, false, "ScreenShot");
@@ -237,7 +237,7 @@ class FightPhotoSaveView extends UiViewBase_1.UiViewBase {
     const o = this.p5_ && e || !this.p5_ && !e;
     if (Info_1.Info.IsPs5Platform()) {
       if (o) {
-        this.w3m();
+        this.Q4m();
       }
       r();
     } else if (e = ScreenShotManager_1.ScreenShotManager.PrepareTakeScreenshot("", t[0], t[1], t[2], t[3], false)) {

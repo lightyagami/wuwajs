@@ -10,6 +10,7 @@ const Info_1 = require("../../../../../../Core/Common/Info");
 const Log_1 = require("../../../../../../Core/Common/Log");
 const Time_1 = require("../../../../../../Core/Common/Time");
 const CommonDefine_1 = require("../../../../../../Core/Define/CommonDefine");
+const Protocol_1 = require("../../../../../../Core/Define/Net/Protocol");
 const EntitySystem_1 = require("../../../../../../Core/Entity/EntitySystem");
 const TimerSystem_1 = require("../../../../../../Core/Timer/TimerSystem");
 const Vector_1 = require("../../../../../../Core/Utils/Math/Vector");
@@ -19,45 +20,48 @@ const EventSystem_1 = require("../../../../../Common/Event/EventSystem");
 const Global_1 = require("../../../../../Global");
 const ControllerHolder_1 = require("../../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../../Manager/ModelManager");
+const CombatMessage_1 = require("../../../../../Module/CombatMessage/CombatMessage");
+const LogReportController_1 = require("../../../../../Module/LogReport/LogReportController");
+const LogReportDefine_1 = require("../../../../../Module/LogReport/LogReportDefine");
 const UiCameraAnimationManager_1 = require("../../../../../Module/UiCameraAnimation/UiCameraAnimationManager");
 const TsBaseVehicle_1 = require("../../../../Vehicle/TsBaseVehicle");
-const FollowFunctionLibrary_1 = require("../../Component/Abilities/Follow/FollowFunctionLibrary");
+const FollowUtils_1 = require("../../Component/Abilities/Follow/FollowUtils");
 const photographTagId = 2108050602;
 const disableMotorcycleTagId = 379437700;
 class TsVehicleBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   Constructor() {}
-  static UpdateVehiclePerformData(e, t, i, r) {
+  static UpdateVehiclePerformData(e, t, r, i) {
     e = EntitySystem_1.EntitySystem.GetComponent(e, 260);
     if (e) {
       (0, puerts_1.$set)(t, e.IsBeingImpacted);
-      (0, puerts_1.$set)(i, e.CollisionDirection);
-      (0, puerts_1.$set)(r, e.CollisionStrength);
+      (0, puerts_1.$set)(r, e.CollisionDirection);
+      (0, puerts_1.$set)(i, e.CollisionStrength);
     }
   }
-  static UpdateDrivedVehiclePerformData(e, t, i, r) {
+  static UpdateDrivedVehiclePerformData(e, t, r, i) {
     e = EntitySystem_1.EntitySystem.GetComponent(e, 242)?.VehicleEntity?.GetComponent(260);
     if (e) {
       (0, puerts_1.$set)(t, e.IsBeingImpacted);
-      (0, puerts_1.$set)(i, e.CollisionDirection);
-      (0, puerts_1.$set)(r, e.CollisionStrength);
+      (0, puerts_1.$set)(r, e.CollisionDirection);
+      (0, puerts_1.$set)(i, e.CollisionStrength);
     }
   }
-  static GetVehicleImpactInfo(e, t, i, r) {
-    e = EntitySystem_1.EntitySystem.GetComponent(e, 267);
+  static GetVehicleImpactInfo(e, t, r, i) {
+    e = EntitySystem_1.EntitySystem.GetComponent(e, 268);
     if (e) {
-      TsVehicleBlueprintFunctionLibrary.GetVehicleImpactInfoInternal(e, t, i, r);
+      TsVehicleBlueprintFunctionLibrary.GetVehicleImpactInfoInternal(e, t, r, i);
     }
   }
-  static GetDrivingVehicleImpactInfo(e, t, i, r) {
-    e = EntitySystem_1.EntitySystem.GetComponent(e, 242)?.VehicleEntity?.GetComponent(267);
+  static GetDrivingVehicleImpactInfo(e, t, r, i) {
+    e = EntitySystem_1.EntitySystem.GetComponent(e, 242)?.VehicleEntity?.GetComponent(268);
     if (e) {
-      TsVehicleBlueprintFunctionLibrary.GetVehicleImpactInfoInternal(e, t, i, r);
+      TsVehicleBlueprintFunctionLibrary.GetVehicleImpactInfoInternal(e, t, r, i);
     }
   }
-  static GetVehicleImpactInfoInternal(e, t, i, r) {
+  static GetVehicleImpactInfoInternal(e, t, r, i) {
     (0, puerts_1.$set)(t, e.IsBeingImpacted);
-    (0, puerts_1.$set)(i, e.ImpactedVelocity.ToUeVectorOld());
-    (0, puerts_1.$set)(r, e.CacheImpactHitResult);
+    (0, puerts_1.$set)(r, e.ImpactedVelocity.ToUeVectorOld());
+    (0, puerts_1.$set)(i, e.CacheImpactHitResult);
   }
   static UpdateAnimInfo(e) {
     TsVehicleBlueprintFunctionLibrary.UpdateAnimInfoMove(e);
@@ -65,21 +69,21 @@ class TsVehicleBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   }
   static UpdateAnimInfoMove(e) {
     var t;
-    var i;
     var r;
+    var i;
     var n = EntitySystem_1.EntitySystem.GetComponent(e, 248);
-    if (n?.Valid && (t = n.MainAnimInstance?.LogicParams)?.IsValid() && (n = n.AnimLogicParamsSetter, (i = EntitySystem_1.EntitySystem.GetComponent(e, 247))?.Valid && (r = i.InputDirectProxy, n.InputDirect.Equals(r) || (n.InputDirect.DeepCopy(r), t.InputDirectRef = r.ToUeVectorOld()), r = i.InputRotatorProxy, n.InputRotator.Equals(r) || (n.InputRotator.DeepCopy(r), t.InputRotatorRef = r.ToUeRotator())), (i = EntitySystem_1.EntitySystem.GetComponent(e, 249))?.Valid) && (r = i.Acceleration, n.Acceleration.Equals(r) || (n.Acceleration.DeepCopy(r), t.AccelerationRef = r.ToUeVectorOld()), e = i.IsMoving, n.IsMoving !== e && (n.IsMoving = e, t.IsMovingRef = e), r = i.HasMoveInput, n.HasMoveInput !== r && (n.HasMoveInput = r, t.HasMoveInputRef = r), e = i.Speed, n.Speed !== e)) {
+    if (n?.Valid && (t = n.MainAnimInstance?.LogicParams)?.IsValid() && (n = n.AnimLogicParamsSetter, (r = EntitySystem_1.EntitySystem.GetComponent(e, 247))?.Valid && (i = r.InputDirectProxy, n.InputDirect.Equals(i) || (n.InputDirect.DeepCopy(i), t.InputDirectRef = i.ToUeVectorOld()), i = r.InputRotatorProxy, n.InputRotator.Equals(i) || (n.InputRotator.DeepCopy(i), t.InputRotatorRef = i.ToUeRotator())), (r = EntitySystem_1.EntitySystem.GetComponent(e, 249))?.Valid) && (i = r.Acceleration, n.Acceleration.Equals(i) || (n.Acceleration.DeepCopy(i), t.AccelerationRef = i.ToUeVectorOld()), e = r.IsMoving, n.IsMoving !== e && (n.IsMoving = e, t.IsMovingRef = e), i = r.HasMoveInput, n.HasMoveInput !== i && (n.HasMoveInput = i, t.HasMoveInputRef = i), e = r.Speed, n.Speed !== e)) {
       n.Speed = e;
       t.SpeedRef = e;
     }
   }
   static UpdateAnimInfoUnifiedState(e) {
     var t;
-    var i;
+    var r;
     var e = EntitySystem_1.EntitySystem.GetComponent(e, 248);
-    if (e?.Valid && (t = e.MainAnimInstance?.LogicParams)?.IsValid() && (e = e.AnimLogicParamsSetter, i = ModelManager_1.ModelManager.PlotModel.IsInInteraction || ModelManager_1.ModelManager.PlotModel.IsInPlot && ModelManager_1.ModelManager.PlotModel.PlotConfig.PlotLevel !== "LevelD", e.IsInPerformingPlot !== i && (e.IsInPerformingPlot = i, t.bIsInPerformingPlot = i), i = ModelManager_1.ModelManager.PlotModel.IsInPlot && (ModelManager_1.ModelManager.PlotModel.PlotConfig.PlotLevel === "LevelA" || ModelManager_1.ModelManager.PlotModel.PlotConfig.PlotLevel === "LevelB"), e.IsInSequence !== i && (e.IsInSequence = i, t.bIsInSequence = i), i = UiCameraAnimationManager_1.UiCameraAnimationManager.IsDisablePlayer(), e.IsInUiCamera !== i)) {
-      e.IsInUiCamera = i;
-      t.bIsInUiCamera = i;
+    if (e?.Valid && (t = e.MainAnimInstance?.LogicParams)?.IsValid() && (e = e.AnimLogicParamsSetter, r = ModelManager_1.ModelManager.PlotModel.IsInInteraction || ModelManager_1.ModelManager.PlotModel.IsInPlot && ModelManager_1.ModelManager.PlotModel.PlotConfig.PlotLevel !== "LevelD", e.IsInPerformingPlot !== r && (e.IsInPerformingPlot = r, t.bIsInPerformingPlot = r), r = ModelManager_1.ModelManager.PlotModel.IsInPlot && (ModelManager_1.ModelManager.PlotModel.PlotConfig.PlotLevel === "LevelA" || ModelManager_1.ModelManager.PlotModel.PlotConfig.PlotLevel === "LevelB"), e.IsInSequence !== r && (e.IsInSequence = r, t.bIsInSequence = r), r = UiCameraAnimationManager_1.UiCameraAnimationManager.IsDisablePlayer(), e.IsInUiCamera !== r)) {
+      e.IsInUiCamera = r;
+      t.bIsInUiCamera = r;
     }
   }
   static GetAndResetEnterSprint(e) {
@@ -92,14 +96,14 @@ class TsVehicleBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     if (!e?.VehicleEntity) {
       return false;
     }
-    var i = e.Seat;
-    if (i === -1) {
+    var r = e.Seat;
+    if (r === -1) {
       return false;
     }
     e = e.VehicleEntity.GetComponent(260);
     if (!e?.IsWaterfallMove) {
       MathUtils_1.MathUtils.CommonTempRotator.Reset();
-      if (!e?.GetDrivedVehicleSeatLocalRot(i, MathUtils_1.MathUtils.CommonTempRotator)) {
+      if (!e?.GetDrivedVehicleSeatLocalRot(r, MathUtils_1.MathUtils.CommonTempRotator)) {
         return false;
       }
       e = (0, puerts_1.$unref)(t);
@@ -123,13 +127,13 @@ class TsVehicleBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     if (!e?.Actor?.IsValid()) {
       return false;
     }
-    var i = MathUtils_1.MathUtils.CommonTempVector;
-    i.Reset();
-    e.Entity.GetComponent(246)?.GetVehicleVelocity(i);
+    var r = MathUtils_1.MathUtils.CommonTempVector;
+    r.Reset();
+    e.Entity.GetComponent(246)?.GetVehicleVelocity(r);
     e = (0, puerts_1.$unref)(t);
-    e.X = i.X;
-    e.Y = i.Y;
-    e.Z = i.Z;
+    e.X = r.X;
+    e.Y = r.Y;
+    e.Z = r.Z;
     return true;
   }
   static GetDrivedVehicleVelocity(e, t) {
@@ -140,13 +144,13 @@ class TsVehicleBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     if (!e.VehicleEntity.GetComponent(247)?.Actor?.IsValid()) {
       return false;
     }
-    var i = MathUtils_1.MathUtils.CommonTempVector;
-    i.Reset();
-    e.VehicleEntity.GetComponent(246)?.GetVehicleVelocity(i);
+    var r = MathUtils_1.MathUtils.CommonTempVector;
+    r.Reset();
+    e.VehicleEntity.GetComponent(246)?.GetVehicleVelocity(r);
     e = (0, puerts_1.$unref)(t);
-    e.X = i.X;
-    e.Y = i.Y;
-    e.Z = i.Z;
+    e.X = r.X;
+    e.Y = r.Y;
+    e.Z = r.Z;
     return true;
   }
   static GetVehicleRotiationSpeed(e) {
@@ -165,23 +169,23 @@ class TsVehicleBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
       return 0;
     }
   }
-  static SmoothVehicleRotation(e, t, i, r) {
-    EntitySystem_1.EntitySystem.GetComponent(e, 249)?.SmoothVehicleRotation(t, i, Time_1.Time.DeltaTimeSeconds, false, r);
+  static SmoothVehicleRotation(e, t, r, i) {
+    EntitySystem_1.EntitySystem.GetComponent(e, 249)?.SmoothVehicleRotation(t, r, Time_1.Time.DeltaTimeSeconds, false, i);
   }
-  static AddBuffToVehicleFromGA(e, t, i, r, n) {
+  static AddBuffToVehicleFromGA(e, t, r, i, n) {
     var o;
     var l;
     var a = ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(e);
-    if (a && (o = (e = EntitySystem_1.EntitySystem.GetComponent(e, 40)?.GetSkill(Number(r)))?.MNc, e = e?.AbilityClass?.GetName(), t instanceof TsBaseVehicle_1.default)) {
-      if (l = t.VehicleActorComponent.Entity.CheckGetComponent(183)) {
-        l.AddBuff(Number(i), {
+    if (a && (o = (e = EntitySystem_1.EntitySystem.GetComponent(e, 42)?.GetSkill(Number(i)))?.MNc, e = e?.AbilityClass?.GetName(), t instanceof TsBaseVehicle_1.default)) {
+      if (l = t.VehicleActorComponent.Entity.CheckGetComponent(185)) {
+        l.AddBuff(Number(r), {
           InstigatorId: a,
-          Reason: `技能${r}GA${e}的buff添加`,
+          Reason: `技能${i}GA${e}的buff添加`,
           PreMessageId: o,
           OuterStackCount: n
         });
       } else if (Log_1.Log.CheckWarn()) {
-        Log_1.Log.Warn("Battle", 82, "添加buff对象没有BuffComponent", ["Target", t.GetName()], ["BuffId", i]);
+        Log_1.Log.Warn("Battle", 82, "添加buff对象没有BuffComponent", ["Target", t.GetName()], ["BuffId", r]);
       }
     }
   }
@@ -192,7 +196,7 @@ class TsVehicleBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   static TryGetPlayerMotorEntityId() {
     var e = Global_1.Global.BaseCharacter?.CharacterActorComponent;
     if (e) {
-      return (TsVehicleBlueprintFunctionLibrary.IsSpecificVehicle(e.Entity, "Motorcycle") ? e.Entity.CheckGetComponent(242)?.VehicleEntity : (e = ModelManager_1.ModelManager.CreatureModel.GetPlayerId(), FollowFunctionLibrary_1.FollowFunctionLibrary.GetPlayerFollowVehicle(e, "Motorcycle")?.Entity))?.Id;
+      return (TsVehicleBlueprintFunctionLibrary.IsSpecificVehicle(e.Entity, "Motorcycle") ? e.Entity.CheckGetComponent(242)?.VehicleEntity : (e = ModelManager_1.ModelManager.CreatureModel.GetPlayerId(), FollowUtils_1.FollowUtils.GetPlayerFollowVehicle(e, "Motorcycle")?.Entity))?.Id;
     }
   }
   static ClearMotorTimer() {
@@ -205,118 +209,128 @@ class TsVehicleBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     if (TimerSystem_1.TimerSystem.Has(TsVehicleBlueprintFunctionLibrary.MotorHangTimerHandle)) {
       TimerSystem_1.TimerSystem.Remove(TsVehicleBlueprintFunctionLibrary.MotorHangTimerHandle);
     }
-    var e = TsVehicleBlueprintFunctionLibrary.CurrentMotor?.deref();
-    if (e?.IsValid() && e.CharRenderingComponent?.IsValid()) {
-      if (EventSystem_1.EventSystem.HasWithTarget(e.CharRenderingComponent, EventDefine_1.EEventName.OnAddMaterialController, TsVehicleBlueprintFunctionLibrary.OnAddMaterialController)) {
-        EventSystem_1.EventSystem.RemoveWithTarget(e.CharRenderingComponent, EventDefine_1.EEventName.OnAddMaterialController, TsVehicleBlueprintFunctionLibrary.OnAddMaterialController);
+    var e;
+    var t = TsVehicleBlueprintFunctionLibrary.CurrentMotor?.deref();
+    if (t?.IsValid() && t.CharRenderingComponent?.IsValid()) {
+      if (EventSystem_1.EventSystem.HasWithTarget(t.CharRenderingComponent, EventDefine_1.EEventName.OnAddMaterialController, TsVehicleBlueprintFunctionLibrary.OnAddMaterialController)) {
+        EventSystem_1.EventSystem.RemoveWithTarget(t.CharRenderingComponent, EventDefine_1.EEventName.OnAddMaterialController, TsVehicleBlueprintFunctionLibrary.OnAddMaterialController);
       }
-      if (EventSystem_1.EventSystem.HasWithTarget(e.CharRenderingComponent, EventDefine_1.EEventName.OnRemoveMaterialController, TsVehicleBlueprintFunctionLibrary.OnRemoveMaterialController)) {
-        EventSystem_1.EventSystem.RemoveWithTarget(e.CharRenderingComponent, EventDefine_1.EEventName.OnRemoveMaterialController, TsVehicleBlueprintFunctionLibrary.OnRemoveMaterialController);
+      if (EventSystem_1.EventSystem.HasWithTarget(t.CharRenderingComponent, EventDefine_1.EEventName.OnRemoveMaterialController, TsVehicleBlueprintFunctionLibrary.OnRemoveMaterialController)) {
+        EventSystem_1.EventSystem.RemoveWithTarget(t.CharRenderingComponent, EventDefine_1.EEventName.OnRemoveMaterialController, TsVehicleBlueprintFunctionLibrary.OnRemoveMaterialController);
       }
-      e.SetDitherEffect(1, 1);
+      if ((e = t.VehicleActorComponent?.Entity.CheckGetComponent(0)?.GetPlayerId()) && (e = ControllerHolder_1.ControllerHolder.FormationDataController.GetPlayerEntity(e)?.CheckGetComponent(212))) {
+        e.RemoveTagAddOrRemoveListener(disableMotorcycleTagId, TsVehicleBlueprintFunctionLibrary.OnDisableMotorcycleTagChanged);
+      }
+      TsVehicleBlueprintFunctionLibrary.MotorDisapperBuffContext = undefined;
+      t.SetDitherEffect(1, 1);
     }
   }
   static ClearMotorAppearanceTag(e) {
-    if (e instanceof TsBaseVehicle_1.default && (e = e.VehicleActorComponent.Entity.CheckGetComponent(215))?.HasTag(photographTagId)) {
+    if (e instanceof TsBaseVehicle_1.default && (e = e.VehicleActorComponent.Entity.CheckGetComponent(217))?.HasTag(photographTagId)) {
       e?.RemoveTag(photographTagId);
     }
   }
-  static ExitMotorAppearance(e, t, i) {
+  static ExitMotorAppearance(e, t, r) {
     TsVehicleBlueprintFunctionLibrary.ClearMotorTimer();
-    var r;
-    var n = TsVehicleBlueprintFunctionLibrary.CurrentMotor?.deref();
-    if (n?.IsValid() && n.VehicleActorComponent) {
-      TsVehicleBlueprintFunctionLibrary.ClearMotorAppearanceTag(n);
-      if (EventSystem_1.EventSystem.HasWithTarget(n.VehicleActorComponent.Entity, EventDefine_1.EEventName.OnVehicleBeenEntered, TsVehicleBlueprintFunctionLibrary.OnVehicleBeenEntered)) {
-        EventSystem_1.EventSystem.RemoveWithTarget(n.VehicleActorComponent.Entity, EventDefine_1.EEventName.OnVehicleBeenEntered, TsVehicleBlueprintFunctionLibrary.OnVehicleBeenEntered);
+    var i = TsVehicleBlueprintFunctionLibrary.CurrentMotor?.deref();
+    if (i?.IsValid() && i.VehicleActorComponent) {
+      TsVehicleBlueprintFunctionLibrary.ClearMotorAppearanceTag(i);
+      if (EventSystem_1.EventSystem.HasWithTarget(i.VehicleActorComponent.Entity, EventDefine_1.EEventName.OnVehicleBeenEntered, TsVehicleBlueprintFunctionLibrary.OnVehicleBeenEntered)) {
+        EventSystem_1.EventSystem.RemoveWithTarget(i.VehicleActorComponent.Entity, EventDefine_1.EEventName.OnVehicleBeenEntered, TsVehicleBlueprintFunctionLibrary.OnVehicleBeenEntered);
       }
-      if ((r = n.VehicleActorComponent.Entity.CheckGetComponent(0)?.GetPlayerId()) && (r = ControllerHolder_1.ControllerHolder.FormationDataController.GetPlayerEntity(r)?.CheckGetComponent(210))) {
-        r.RemoveTagAddOrRemoveListener(disableMotorcycleTagId, TsVehicleBlueprintFunctionLibrary.OnDisableMotorcycleTagChanged);
-      }
-      if (t > 0 && n.CharRenderingComponent) {
-        if (EventSystem_1.EventSystem.HasWithTarget(n.CharRenderingComponent, EventDefine_1.EEventName.OnAddMaterialController, TsVehicleBlueprintFunctionLibrary.OnAddMaterialController)) {
+      if (t > 0 && i.CharRenderingComponent) {
+        if (EventSystem_1.EventSystem.HasWithTarget(i.CharRenderingComponent, EventDefine_1.EEventName.OnAddMaterialController, TsVehicleBlueprintFunctionLibrary.OnAddMaterialController)) {
           if (Log_1.Log.CheckWarn()) {
             Log_1.Log.Warn("Motor", 72, "ExitMotorAppearance OnAddMaterialController 事件已存在");
           }
         } else {
-          EventSystem_1.EventSystem.AddWithTarget(n.CharRenderingComponent, EventDefine_1.EEventName.OnAddMaterialController, TsVehicleBlueprintFunctionLibrary.OnAddMaterialController);
+          EventSystem_1.EventSystem.AddWithTarget(i.CharRenderingComponent, EventDefine_1.EEventName.OnAddMaterialController, TsVehicleBlueprintFunctionLibrary.OnAddMaterialController);
         }
-        if (EventSystem_1.EventSystem.HasWithTarget(n.CharRenderingComponent, EventDefine_1.EEventName.OnRemoveMaterialController, TsVehicleBlueprintFunctionLibrary.OnRemoveMaterialController)) {
+        if (EventSystem_1.EventSystem.HasWithTarget(i.CharRenderingComponent, EventDefine_1.EEventName.OnRemoveMaterialController, TsVehicleBlueprintFunctionLibrary.OnRemoveMaterialController)) {
           if (Log_1.Log.CheckWarn()) {
             Log_1.Log.Warn("Motor", 72, "ExitMotorAppearance OnRemoveMaterialController 事件已存在");
           }
         } else {
-          EventSystem_1.EventSystem.AddWithTarget(n.CharRenderingComponent, EventDefine_1.EEventName.OnRemoveMaterialController, TsVehicleBlueprintFunctionLibrary.OnRemoveMaterialController);
+          EventSystem_1.EventSystem.AddWithTarget(i.CharRenderingComponent, EventDefine_1.EEventName.OnRemoveMaterialController, TsVehicleBlueprintFunctionLibrary.OnRemoveMaterialController);
         }
-        TsVehicleBlueprintFunctionLibrary.AddBuffToVehicleFromGA(e, n, t, i, 1);
+        TsVehicleBlueprintFunctionLibrary.AddBuffToVehicleFromGA(e, i, t, r, 1);
       } else {
-        ControllerHolder_1.ControllerHolder.CreatureController.SetEntityEnable(n.VehicleActorComponent.Entity, false, "OnRemoveMaterialController", true);
+        ControllerHolder_1.ControllerHolder.CreatureController.SetEntityEnable(i.VehicleActorComponent.Entity, false, "OnRemoveMaterialController", true);
         TsVehicleBlueprintFunctionLibrary.CurrentMotor = undefined;
       }
     } else {
       TsVehicleBlueprintFunctionLibrary.CurrentMotor = undefined;
     }
   }
-  static MotorAppearance(r, t, n, e = true, i = 2, o = BigInt(0), l = 1000, a = 60, c = BigInt(0)) {
+  static MotorAppearance(i, t, n, e = true, r = 2, o = BigInt(0), l = 1000, a = 60, c = BigInt(0)) {
     if (t instanceof TsBaseVehicle_1.default && t.VehicleActorComponent) {
       TsVehicleBlueprintFunctionLibrary.ClearMotorTimer();
-      var s = i * CommonDefine_1.MILLIONSECOND_PER_SECOND;
+      var s = r * CommonDefine_1.MILLIONSECOND_PER_SECOND;
       var u = a * CommonDefine_1.MILLIONSECOND_PER_SECOND;
       if (s < TimerSystem_1.MIN_TIME || u < TimerSystem_1.MIN_TIME) {
         if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("Motor", 72, "MotorAppearance 时间设置 太小了", ["hangTime", i], ["disappearTime", a]);
+          Log_1.Log.Error("Motor", 72, "MotorAppearance 时间设置 太小了", ["hangTime", r], ["disappearTime", a]);
         }
       } else {
-        if (e && (i = t.VehicleActorComponent.Entity.CheckGetComponent(215))?.HasTag(photographTagId)) {
-          i?.AddTag(photographTagId);
+        if (e && (r = t.VehicleActorComponent.Entity.CheckGetComponent(217))?.HasTag(photographTagId)) {
+          r?.AddTag(photographTagId);
         }
         TsVehicleBlueprintFunctionLibrary.CurrentMotor = new WeakRef(t);
-        const y = t.VehicleActorComponent.Entity.CheckGetComponent(265);
-        y?.SetForceSpeed(Vector_1.Vector.ZeroVector);
-        y?.DisableUeMovementTick("MotorAppearance");
+        const _ = t.VehicleActorComponent.Entity.CheckGetComponent(265);
+        _?.SetForceSpeed(Vector_1.Vector.ZeroVector);
+        _?.DisableUeMovementTick("MotorAppearance");
         t.SetDitherEffect(1, 1);
         if (EventSystem_1.EventSystem.HasWithTarget(t.VehicleActorComponent.Entity, EventDefine_1.EEventName.OnVehicleBeenEntered, TsVehicleBlueprintFunctionLibrary.OnVehicleBeenEntered)) {
           if (Log_1.Log.CheckWarn()) {
-            Log_1.Log.Warn("Motor", 72, "MotorAppearance 重复添加事件", ["entityId", r], ["motor", t], ["skillId", n]);
+            Log_1.Log.Warn("Motor", 72, "MotorAppearance 重复添加事件", ["entityId", i], ["motor", t], ["skillId", n]);
           }
         } else {
           EventSystem_1.EventSystem.OnceWithTarget(t.VehicleActorComponent.Entity, EventDefine_1.EEventName.OnVehicleBeenEntered, TsVehicleBlueprintFunctionLibrary.OnVehicleBeenEntered);
         }
-        a = t.VehicleActorComponent.Entity.CheckGetComponent(0)?.GetPlayerId();
-        if (a && (e = ControllerHolder_1.ControllerHolder.FormationDataController.GetPlayerEntity(a)?.CheckGetComponent(210))) {
-          e.AddTagAddOrRemoveListener(disableMotorcycleTagId, TsVehicleBlueprintFunctionLibrary.OnDisableMotorcycleTagChanged);
+        var a = t.VehicleActorComponent.Entity.CheckGetComponent(0)?.GetPlayerId();
+        if (a && ((r = (e = ControllerHolder_1.ControllerHolder.FormationDataController.GetPlayerEntity(a))?.CheckGetComponent(212)) && r.AddTagAddOrRemoveListener(disableMotorcycleTagId, TsVehicleBlueprintFunctionLibrary.OnDisableMotorcycleTagChanged), a = e?.GetComponent(1))) {
+          (r = new LogReportDefine_1.MotorSummonGetOnLogEvent()).pos_x = a.ActorLocationProxy.X;
+          r.pos_y = a.ActorLocationProxy.Y;
+          r.pos_z = a.ActorLocationProxy.Z;
+          r.operation_type = 1;
+          LogReportController_1.LogReportController.LogReport(r);
         }
+        TsVehicleBlueprintFunctionLibrary.MotorDisapperBuffContext = {
+          EntityId: i,
+          BuffId: c,
+          SkillId: n
+        };
         TsVehicleBlueprintFunctionLibrary.MotorHangTimerHandle = TimerSystem_1.TimerSystem.Delay(e => {
-          if (t?.IsValid() && (y?.EnableUeMovementTick("MotorAppearance"), o > 0)) {
-            TsVehicleBlueprintFunctionLibrary.AddBuffToVehicleFromGA(r, t, o, n, 1);
+          if (t?.IsValid() && (_?.EnableUeMovementTick("MotorAppearance"), o > 0)) {
+            TsVehicleBlueprintFunctionLibrary.AddBuffToVehicleFromGA(i, t, o, n, 1);
           }
         }, s);
         TsVehicleBlueprintFunctionLibrary.MotorDisappearTimerHandle = TimerSystem_1.TimerSystem.Delay(e => {
-          TsVehicleBlueprintFunctionLibrary.ExitMotorAppearance(r, c, n);
+          TsVehicleBlueprintFunctionLibrary.ExitMotorAppearance(i, c, n);
         }, u);
         TsVehicleBlueprintFunctionLibrary.MotorCheckDistanceTimerHandle = TimerSystem_1.TimerSystem.Forever(e => {
           var t;
-          var i = TsVehicleBlueprintFunctionLibrary.CurrentMotor?.deref();
-          if (i?.IsValid() && (t = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity.CheckGetComponent(1)?.ActorLocationProxy, i = i.VehicleActorComponent?.Entity.CheckGetComponent(1)?.ActorLocationProxy, t) && i && (t.Subtraction(i, MathUtils_1.MathUtils.CommonTempVector), MathUtils_1.MathUtils.CommonTempVector.SizeSquared() > l * l)) {
-            TsVehicleBlueprintFunctionLibrary.ExitMotorAppearance(r, c, n);
+          var r = TsVehicleBlueprintFunctionLibrary.CurrentMotor?.deref();
+          if (r?.IsValid() && (t = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity.CheckGetComponent(1)?.ActorLocationProxy, r = r.VehicleActorComponent?.Entity.CheckGetComponent(1)?.ActorLocationProxy, t) && r && (t.Subtraction(r, MathUtils_1.MathUtils.CommonTempVector), MathUtils_1.MathUtils.CommonTempVector.SizeSquared() > l * l)) {
+            TsVehicleBlueprintFunctionLibrary.ExitMotorAppearance(i, c, n);
           }
         }, CommonDefine_1.MILLIONSECOND_PER_SECOND * 0.5);
       }
     }
   }
-  static SummonAndRideMotorcycle(e, t, i) {
-    const r = EntitySystem_1.EntitySystem.GetComponent(e, 3);
-    if (r) {
+  static SummonAndRideMotorcycle(e, t, r) {
+    const i = EntitySystem_1.EntitySystem.GetComponent(e, 3);
+    if (i) {
       var n = ModelManager_1.ModelManager.CreatureModel.GetPlayerId();
-      const l = FollowFunctionLibrary_1.FollowFunctionLibrary.GetPlayerFollowVehicle(n, "Motorcycle");
-      if (l?.Valid && l.Entity) {
-        var o = l.Entity.GetComponent(265);
+      const a = FollowUtils_1.FollowUtils.GetPlayerFollowVehicle(n, "Motorcycle");
+      if (a?.Valid && a.Entity) {
+        var o = a.Entity.GetComponent(265);
         if (o) {
           o = o.GetMotorcycleSummonTrans(e, t);
           if (o) {
-            t = Number(i);
-            if (t !== 0) {
-              if (!l.Entity.GetComponent(40)?.BeginSkill(t, {
+            r = Number(r);
+            if (r !== 0) {
+              if (!a.Entity.GetComponent(42)?.BeginSkill(r, {
                 Reason: "SummonAndRideMotorcycle"
               })) {
                 if (Log_1.Log.CheckWarn()) {
@@ -325,30 +339,51 @@ class TsVehicleBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
                 return;
               }
             }
-            i = l.Entity.GetComponent(247);
-            i?.SetActorTransform(o.ToUeTransform(), "SummonAndRideMotorcycle", false, 1);
-            ControllerHolder_1.ControllerHolder.CreatureController.SetEntityEnable(l.Entity, true, "SummonAndRideMotorcycle", true);
+            var r = a.Entity.GetComponent(247);
+            r.SetActorTransform(o.ToUeTransform(), "SummonAndRideMotorcycle", false, 1);
+            ControllerHolder_1.ControllerHolder.CreatureController.SetEntityEnable(a.Entity, true, "SummonAndRideMotorcycle", false);
             if (Log_1.Log.CheckDebug()) {
-              Log_1.Log.Debug("Vehicle", 6, "SummonAndRideMotorcycle Step1", ["Actor", r.Actor.GetName()], ["tmpTrans", o]);
+              Log_1.Log.Debug("Vehicle", 6, "SummonAndRideMotorcycle Step1", ["Actor", i.Actor.GetName()], ["tmpTrans", o]);
             }
             TimerSystem_1.TimerSystem.Next(() => {
               if (Log_1.Log.CheckDebug()) {
-                Log_1.Log.Debug("Vehicle", 6, "SummonAndRideMotorcycle Step2", ["motorHandle.Valid", l.Valid], ["actorComp.Entity.Active", r.Entity.Active]);
+                Log_1.Log.Debug("Vehicle", 6, "SummonAndRideMotorcycle Step2", ["motorHandle.Valid", a.Valid], ["actorComp.Entity.Active", i.Entity.Active]);
               }
-              if (l.Valid && r.Entity.Active) {
-                l.Entity.GetComponent(250)?.TryEnterAtOnce(r.Entity, 0, "SummonAndRideMotorcycle");
+              if (a.Valid && i.Entity.Active) {
+                a.Entity.GetComponent(250)?.Enter(i.Entity, 0);
               }
             });
-            return i?.Actor;
+            var o = Protocol_1.Aki.Protocol.Fxg.create();
+            o.F4n = 0;
+            o.lxg = MathUtils_1.MathUtils.NumberToLong(r.CreatureData.GetCreatureDataId());
+            o.wn1 = Protocol_1.Aki.Protocol.wn1.create();
+            o.wn1.l8n = Protocol_1.Aki.Protocol.Gks.create();
+            var l = t.GetLocation();
+            o.wn1.l8n.X = l.X;
+            o.wn1.l8n.Y = l.Y;
+            o.wn1.l8n.Z = l.Z;
+            o.wn1._8n = Protocol_1.Aki.Protocol.D2s.create();
+            var l = t.GetRotation().Rotator();
+            o.wn1._8n.Roll = l.Roll;
+            o.wn1._8n.Pitch = l.Pitch;
+            o.wn1._8n.Yaw = l.Yaw;
+            CombatMessage_1.CombatNet.Send(15615, i.Entity, o);
+            var t = new LogReportDefine_1.MotorSummonGetOnLogEvent();
+            t.pos_x = i.ActorLocationProxy.X;
+            t.pos_y = i.ActorLocationProxy.Y;
+            t.pos_z = i.ActorLocationProxy.Z;
+            t.operation_type = 3;
+            LogReportController_1.LogReportController.LogReport(t);
+            return r?.Actor;
           }
           if (Log_1.Log.CheckWarn()) {
             Log_1.Log.Warn("Vehicle", 67, "SummonAndRideMotorcycle Error. SummonTrans Undefined");
           }
         } else if (Log_1.Log.CheckWarn()) {
-          Log_1.Log.Warn("Vehicle", 6, "SummonAndRideMotorcycle Error. Not a Motor.", ["Actor", r.Actor.GetName()], ["follower", l.Entity.GetComponent(1)?.Owner?.GetName()]);
+          Log_1.Log.Warn("Vehicle", 6, "SummonAndRideMotorcycle Error. Not a Motor.", ["Actor", i.Actor.GetName()], ["follower", a.Entity.GetComponent(1)?.Owner?.GetName()]);
         }
       } else if (Log_1.Log.CheckWarn()) {
-        Log_1.Log.Warn("Vehicle", 6, "SummonAndRideMotorcycle Error. No Follower.", ["Actor", r.Actor.GetName()], ["PlayerId", n]);
+        Log_1.Log.Warn("Vehicle", 6, "SummonAndRideMotorcycle Error. No Follower.", ["Actor", i.Actor.GetName()], ["PlayerId", n]);
       }
     } else if (Log_1.Log.CheckWarn()) {
       Log_1.Log.Warn("Vehicle", 6, "SummonAndRideMotorcycle Error. No ActorComp.", ["ActorEntityId", e]);
@@ -365,37 +400,41 @@ class TsVehicleBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   }
   static SetMotorAndroidInitParams(t) {
     if (Info_1.Info.IsAndroidPlatform()) {
-      var i = new UE.MotorShapeConfig();
-      i.BodyShape = t.MotorShapeConfig.BodyShape;
-      i.FrontWheelShape = t.MotorShapeConfig.FrontWheelShape;
-      i.BackWheelShape = t.MotorShapeConfig.BackWheelShape;
+      var r = new UE.MotorShapeConfig();
+      r.BodyShape = t.MotorShapeConfig.BodyShape;
+      r.FrontWheelShape = t.MotorShapeConfig.FrontWheelShape;
+      r.BackWheelShape = t.MotorShapeConfig.BackWheelShape;
       for (let e = 0; e < t.MotorShapeConfig.BodyOtherShapes.Num(); ++e) {
-        i.BodyOtherShapes.Add(t.MotorShapeConfig.BodyOtherShapes.Get(e));
+        r.BodyOtherShapes.Add(t.MotorShapeConfig.BodyOtherShapes.Get(e));
       }
-      i.FrontWheelShape.AccurateCheckCount = 3;
-      i.BackWheelShape.AccurateCheckCount = 3;
-      t.MotorShapeConfig = i;
+      r.FrontWheelShape.AccurateCheckCount = 3;
+      r.BackWheelShape.AccurateCheckCount = 3;
+      t.MotorShapeConfig = r;
       t.MaxSimulationIterations = 1;
     }
+  }
+  static NeedSimulateMotorIk(e) {
+    return !Info_1.Info.IsAndroidPlatform() && !Info_1.Info.IsIosPlatform() && (e = EntitySystem_1.EntitySystem.GetComponent(e, 0)) !== undefined && e.GetPlayerId() !== ModelManager_1.ModelManager.CreatureModel.GetPlayerId();
   }
 }
 (exports.TsVehicleBlueprintFunctionLibrary = TsVehicleBlueprintFunctionLibrary).MotorHangTimerHandle = undefined;
 TsVehicleBlueprintFunctionLibrary.MotorDisappearTimerHandle = undefined;
 TsVehicleBlueprintFunctionLibrary.MotorCheckDistanceTimerHandle = undefined;
 TsVehicleBlueprintFunctionLibrary.CurrentMotor = undefined;
+TsVehicleBlueprintFunctionLibrary.MotorDisapperBuffContext = undefined;
 TsVehicleBlueprintFunctionLibrary.OnVehicleBeenEntered = e => {
   TsVehicleBlueprintFunctionLibrary.ClearMotorTimer();
-  e = e.VehicleEntity?.CheckGetComponent(215);
+  e = e.VehicleEntity?.CheckGetComponent(217);
   if (e?.HasTag(photographTagId)) {
     e?.RemoveTag(photographTagId);
   }
   TsVehicleBlueprintFunctionLibrary.CurrentMotor = undefined;
   ModelManager_1.ModelManager.VehicleModel.MaterialControllerHandles.clear();
 };
-TsVehicleBlueprintFunctionLibrary.OnAddMaterialController = (e, t, i) => {
-  ModelManager_1.ModelManager.VehicleModel.MaterialControllerHandles.add(i);
+TsVehicleBlueprintFunctionLibrary.OnAddMaterialController = (e, t, r) => {
+  ModelManager_1.ModelManager.VehicleModel.MaterialControllerHandles.add(r);
   if (Log_1.Log.CheckInfo()) {
-    Log_1.Log.Info("Motor", 72, "OnAddMaterialController", ["handle", i], ["handles", ModelManager_1.ModelManager.VehicleModel.MaterialControllerHandles]);
+    Log_1.Log.Info("Motor", 72, "OnAddMaterialController", ["handle", r], ["handles", ModelManager_1.ModelManager.VehicleModel.MaterialControllerHandles]);
   }
 };
 TsVehicleBlueprintFunctionLibrary.OnRemoveMaterialController = e => {
@@ -412,7 +451,12 @@ TsVehicleBlueprintFunctionLibrary.OnRemoveMaterialController = e => {
 };
 TsVehicleBlueprintFunctionLibrary.OnDisableMotorcycleTagChanged = (e, t) => {
   if (e === disableMotorcycleTagId) {
-    TsVehicleBlueprintFunctionLibrary.ExitMotorAppearance(0, BigInt(0), "");
+    e = TsVehicleBlueprintFunctionLibrary.MotorDisapperBuffContext ?? {
+      EntityId: 0,
+      BuffId: BigInt(0),
+      SkillId: ""
+    };
+    TsVehicleBlueprintFunctionLibrary.ExitMotorAppearance(e.EntityId, e.BuffId, e.SkillId);
   }
 };
 exports.default = TsVehicleBlueprintFunctionLibrary; //# sourceMappingURL=TsVehicleBlueprintFunctionLibrary.js.map

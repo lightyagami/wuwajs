@@ -36,13 +36,13 @@ let VisionBuffComponent = class VisionBuffComponent extends CharacterBuffCompone
     if (this.a2r !== undefined) {
       return this.a2r;
     } else {
-      return !!(t = this.Entity.GetComponent(59)?.GetAttributeHolder()) && t !== this.Entity && ((t = this.CreatureDataComponent.GetVisionComponent()) && (t = t.VisionId, t = PhantomUtil_1.PhantomUtil.GetVisionData(t), this.a2r = t?.buff是否转移 === true), this.a2r ?? false);
+      return !!(t = this.Entity.GetComponent(61)?.GetAttributeHolder()) && t !== this.Entity && ((t = this.CreatureDataComponent.GetVisionComponent()) && (t = t.VisionId, t = PhantomUtil_1.PhantomUtil.GetVisionData(t), this.a2r = t?.buff是否转移 === true), this.a2r ?? false);
     }
   }
   AddBuff(t, e) {
     var o;
     if (this.CreatureDataId !== e.InstigatorId && this.h2r()) {
-      if ((o = this.Entity.GetComponent(59)?.GetAttributeHolder()?.GetComponent(183)) && o !== this) {
+      if ((o = this.Entity.GetComponent(61)?.GetAttributeHolder()?.GetComponent(185)) && o !== this) {
         o.AddBuff(t, e);
       } else {
         CombatLog_1.CombatLog.Error("Buff", this.Entity, "添加幻象buff时无法获取到合法的召唤者", ["buffId", t], ["reason", e?.Reason]);
@@ -54,7 +54,7 @@ let VisionBuffComponent = class VisionBuffComponent extends CharacterBuffCompone
   RemoveBuff(t, e, o) {
     var i;
     if (this.h2r()) {
-      if ((i = this.Entity.GetComponent(59)?.GetAttributeHolder()?.GetComponent(183)) && i !== this) {
+      if ((i = this.Entity.GetComponent(61)?.GetAttributeHolder()?.GetComponent(185)) && i !== this) {
         i.RemoveBuff(t, e, o);
       } else {
         CombatLog_1.CombatLog.Error("Buff", this.Entity, "移除幻象buff时无法获取到合法的召唤者", ["buffId", t], ["reason", o]);
@@ -66,12 +66,12 @@ let VisionBuffComponent = class VisionBuffComponent extends CharacterBuffCompone
     var o;
     if (this.CreatureDataId === e || !this.h2r()) {
       return this;
-    } else if ((o = this.Entity.GetComponent(59)?.GetAttributeHolder()?.GetComponent(183)) && o !== this) {
+    } else if ((o = this.Entity.GetComponent(61)?.GetAttributeHolder()?.GetComponent(185)) && o !== this) {
       return o.GetBuffApplyTarget(t, e);
     } else {
       return undefined;
     }
   }
 };
-VisionBuffComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(185)], VisionBuffComponent);
+VisionBuffComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(187)], VisionBuffComponent);
 exports.VisionBuffComponent = VisionBuffComponent; //# sourceMappingURL=VisionBuffComponent.js.map

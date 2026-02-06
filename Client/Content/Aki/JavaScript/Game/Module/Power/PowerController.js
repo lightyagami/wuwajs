@@ -30,12 +30,12 @@ const REQUESTPOWERGAP = 1;
 const CHECKPOWERGAP = 500;
 class PowerController extends UiControllerBase_1.UiControllerBase {
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(26029, e => {
+    Net_1.Net.Register(27254, e => {
       ModelManager_1.ModelManager.PowerModel.UpdatePowerData(e._Xs);
     });
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(26029);
+    Net_1.Net.UnRegister(27254);
   }
   static OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BackLoginView, this.loo);
@@ -211,12 +211,12 @@ PowerController.SendUpdatePowerRequest = e => {
   var r = Protocol_1.Aki.Protocol.YZn.create();
   r.BVn = e;
   _a.Mea = TimeUtil_1.TimeUtil.GetServerTime();
-  Net_1.Net.Call(16979, r, e => {
+  Net_1.Net.Call(15919, r, e => {
     if (e) {
       if (e.G9n === Protocol_1.Aki.Protocol.Q4n.KRs) {
         ModelManager_1.ModelManager.PowerModel.UpdatePowerData(e.uXs);
       } else {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 25219);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 18612);
       }
     }
   });

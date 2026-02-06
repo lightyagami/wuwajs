@@ -15,6 +15,7 @@ const GameplayTagUtils_1 = require("../../../../../../../Core/Utils/GameplayTagU
 const ModelManager_1 = require("../../../../../../Manager/ModelManager");
 const PhantomUtil_1 = require("../../../../../../Module/Phantom/PhantomUtil");
 const CombatLog_1 = require("../../../../../../Utils/CombatLog");
+const CampUtils_1 = require("../../../Blueprint/Utils/CampUtils");
 const ActiveBuffConfigs_1 = require("../Buff/ActiveBuffConfigs");
 class BuffEffectBase {
   constructor(e) {
@@ -34,13 +35,13 @@ class BuffEffectBase {
     return this.InstigatorEntity?.Entity?.GetComponent(0)?.GetCreatureDataId() ?? ActiveBuffConfigs_1.NULL_INSTIGATOR_ID;
   }
   get InstigatorBuffComponent() {
-    return this.InstigatorEntity?.Entity?.CheckGetComponent(183);
+    return this.InstigatorEntity?.Entity?.CheckGetComponent(185);
   }
   get OpponentEntity() {
     return EntitySystem_1.EntitySystem.Get(this.OpponentEntityId);
   }
   get OpponentBuffComponent() {
-    return this.OpponentEntity?.CheckGetComponent(183);
+    return this.OpponentEntity?.CheckGetComponent(185);
   }
   get OwnerEntity() {
     return this.OwnerBuffComponent?.GetEntity();
@@ -58,7 +59,7 @@ class BuffEffectBase {
     return this.OwnerBuffComponent?.HasBuffAuthority() ?? false;
   }
   IsPlayerBuff() {
-    return (0, RegisterComponent_1.isComponentInstance)(this.OwnerBuffComponent, 209);
+    return (0, RegisterComponent_1.isComponentInstance)(this.OwnerBuffComponent, 211);
   }
   InitParameters(e) {}
   OnBuffStackOverflow(e, t, r, s) {
@@ -119,16 +120,16 @@ class BuffEffectBase {
         return e.DamageTypes.includes(t.DamageType ?? -1);
       case 17:
         {
-          const s = t.DamageSubTypes ?? [];
+          const i = t.DamageSubTypes ?? [];
           switch (e.IncludeType) {
             case 1:
-              return e.DamageSubTypes.every(e => s.includes(e));
+              return e.DamageSubTypes.every(e => i.includes(e));
             case 3:
-              return e.DamageSubTypes.every(e => !s.includes(e));
+              return e.DamageSubTypes.every(e => !i.includes(e));
             case 2:
-              return e.DamageSubTypes.some(e => !s.includes(e));
+              return e.DamageSubTypes.some(e => !i.includes(e));
             default:
-              return e.DamageSubTypes.some(e => s.includes(e));
+              return e.DamageSubTypes.some(e => i.includes(e));
           }
         }
       case 13:
@@ -138,7 +139,7 @@ class BuffEffectBase {
         r = this.eXo(e.RequireTargetType);
         return (r && r.GetBuffTotalStackById(e.BuffId) >= e.MinStack && r.GetBuffTotalStackById(e.BuffId) <= e.MaxStack) ?? false;
       case 15:
-        return PhantomUtil_1.PhantomUtil.GetSummonedEntity(this.eXo(e.RequireTargetType).GetEntity(), e.SummonType, e.SummonIndex)?.Entity?.CheckGetComponent(215)?.HasAnyTag(e.RequireTagContainer) === e.IsExist;
+        return PhantomUtil_1.PhantomUtil.GetSummonedEntity(this.eXo(e.RequireTargetType).GetEntity(), e.SummonType, e.SummonIndex)?.Entity?.CheckGetComponent(217)?.HasAnyTag(e.RequireTagContainer) === e.IsExist;
       case 16:
         return e.CalculationTypes.includes(t.CalculateType ?? -1);
       case 18:
@@ -152,6 +153,10 @@ class BuffEffectBase {
         }
       case 20:
         return e.ChangeWeaknessType === t.ChangeWeaknessType;
+      case 21:
+        var r = this.eXo(e.RequireTargetType1)?.GetEntity()?.GetComponent(0)?.GetEntityCamp();
+        var s = this.eXo(e.RequireTargetType2)?.GetEntity()?.GetComponent(0)?.GetEntityCamp();
+        return e.Relationship === CampUtils_1.CampUtils.GetCampRelationship(r, s);
       default:
         return true;
     }

@@ -67,6 +67,9 @@ class KeySetting {
   get BothActionName() {
     return GameUtils_1.GameUtils.ConvertToArray(this.bothactionnameLength(), this.bothactionname, this);
   }
+  get BothActionSyncAllExclusive() {
+    return this.bothactionsyncallexclusive();
+  }
   get IsCheckSameKey() {
     return this.ischecksamekey();
   }
@@ -279,19 +282,23 @@ class KeySetting {
       return 0;
     }
   }
-  ischecksamekey() {
+  bothactionsyncallexclusive() {
     var t = this.J7.__offset(this.z7, 42);
+    return !!t && !!this.J7.readInt8(this.z7 + t);
+  }
+  ischecksamekey() {
+    var t = this.J7.__offset(this.z7, 44);
     return !t || !!this.J7.readInt8(this.z7 + t);
   }
   candisable() {
-    var t = this.J7.__offset(this.z7, 44);
+    var t = this.J7.__offset(this.z7, 46);
     return !!t && !!this.J7.readInt8(this.z7 + t);
   }
   GetAllowkeysAt(t) {
     return this.allowkeys(t);
   }
   allowkeys(t, i) {
-    var s = this.J7.__offset(this.z7, 46);
+    var s = this.J7.__offset(this.z7, 48);
     var s = s ? this.J7.__string(this.J7.__vector(this.z7 + s) + t * 4, i) : null;
     if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(s);
@@ -299,7 +306,7 @@ class KeySetting {
     return s;
   }
   allowkeysLength() {
-    var t = this.J7.__offset(this.z7, 46);
+    var t = this.J7.__offset(this.z7, 48);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -310,7 +317,7 @@ class KeySetting {
     return this.allowmainkeys(t);
   }
   allowmainkeys(t, i) {
-    var s = this.J7.__offset(this.z7, 48);
+    var s = this.J7.__offset(this.z7, 50);
     var s = s ? this.J7.__string(this.J7.__vector(this.z7 + s) + t * 4, i) : null;
     if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(s);
@@ -318,7 +325,7 @@ class KeySetting {
     return s;
   }
   allowmainkeysLength() {
-    var t = this.J7.__offset(this.z7, 48);
+    var t = this.J7.__offset(this.z7, 50);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -329,7 +336,7 @@ class KeySetting {
     return this.allowsecondkeys(t);
   }
   allowsecondkeys(t, i) {
-    var s = this.J7.__offset(this.z7, 50);
+    var s = this.J7.__offset(this.z7, 52);
     var s = s ? this.J7.__string(this.J7.__vector(this.z7 + s) + t * 4, i) : null;
     if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(s);
@@ -337,7 +344,7 @@ class KeySetting {
     return s;
   }
   allowsecondkeysLength() {
-    var t = this.J7.__offset(this.z7, 50);
+    var t = this.J7.__offset(this.z7, 52);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -345,14 +352,6 @@ class KeySetting {
     }
   }
   allowkeyspool(t) {
-    var i = this.J7.__offset(this.z7, 52);
-    var i = i ? this.J7.__string(this.z7 + i, t) : null;
-    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(i);
-    }
-    return i;
-  }
-  allowmainkeyspool(t) {
     var i = this.J7.__offset(this.z7, 54);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -360,7 +359,7 @@ class KeySetting {
     }
     return i;
   }
-  allowsecondkeyspool(t) {
+  allowmainkeyspool(t) {
     var i = this.J7.__offset(this.z7, 56);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -368,7 +367,7 @@ class KeySetting {
     }
     return i;
   }
-  detailtextid(t) {
+  allowsecondkeyspool(t) {
     var i = this.J7.__offset(this.z7, 58);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -376,8 +375,16 @@ class KeySetting {
     }
     return i;
   }
+  detailtextid(t) {
+    var i = this.J7.__offset(this.z7, 60);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
   onlyworknotshow() {
-    var t = this.J7.__offset(this.z7, 60);
+    var t = this.J7.__offset(this.z7, 62);
     return !!t && !!this.J7.readInt8(this.z7 + t);
   }
 }

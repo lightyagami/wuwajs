@@ -22,7 +22,7 @@ class TsTaskUseSkill extends TsTaskAbortImmediatelyBase_1.default {
     const s = e.AiController;
     if (s) {
       const t = s.CharAiDesignComp.Entity.Id;
-      var l = s.CharAiDesignComp.Entity.GetComponent(41);
+      var l = s.CharAiDesignComp.Entity.GetComponent(43);
       if (l.Valid) {
         let e = ControllerHolder_1.ControllerHolder.BlackboardController.GetStringValueByEntity(t, "SkillId");
         e = e || "0";

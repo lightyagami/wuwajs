@@ -96,12 +96,12 @@ class PlotTextCommonLogic {
     this.meo = false;
     this.CurOption = new Array();
     this.QMa = undefined;
-    this.WUm = 0;
-    this.QUm = 0;
-    this.KUm = -1;
-    this.XUm = false;
+    this.vxm = 0;
+    this.yxm = 0;
+    this.Sxm = -1;
+    this.Mxm = false;
     this.MuteTimeLimitedOption = false;
-    this.YUm = false;
+    this.Exm = false;
     this.TRn = () => {
       if (!this.meo) {
         this.ceo?.SetActive(false);
@@ -111,11 +111,11 @@ class PlotTextCommonLogic {
     this.beo = () => {
       var t = new PlotOptionItem_1.PlotOptionItem(this.Parent);
       t.BindOnHover(this.qeo);
-      t.BindOnUnHover(this.zUm);
+      t.BindOnUnHover(this.Ixm);
       return t;
     };
-    this.zUm = t => {
-      if (!this.YUm) {
+    this.Ixm = t => {
+      if (!this.Exm) {
         t.SetSelectedDisplay(false);
       }
     };
@@ -124,7 +124,7 @@ class PlotTextCommonLogic {
       (this.neo = t).SetSelectedDisplay(true);
     };
     this.Geo = () => {
-      if (this.YUm) {
+      if (this.Exm) {
         this.neo?.SetSelectedDisplay(false);
         var i = this.ceo.GetDisplayGridEndIndex();
         for (let t = 0; t <= i; t++) {
@@ -138,8 +138,8 @@ class PlotTextCommonLogic {
         }
       }
     };
-    this.JUm = () => {
-      this.ZUm(false);
+    this.Txm = () => {
+      this.bxm(false);
     };
     this.PlayDelayTime = undefined;
     this.K2n = undefined;
@@ -235,7 +235,7 @@ class PlotTextCommonLogic {
       this.ceo.SetActive(false);
     }
     this.UiViewSequence?.AddSequenceFinishEvent("ChoiceClose", this.TRn);
-    this.YUm = this.Parent instanceof PlotView_1.PlotView;
+    this.Exm = this.Parent instanceof PlotView_1.PlotView;
   }
   get Options() {
     return this.ceo?.GetLayoutItemList();
@@ -275,7 +275,7 @@ class PlotTextCommonLogic {
       this.SetOptionsShow(true);
       this.CurOption = this.jeo(this.CurrentContent.Options);
       this.ceo.RefreshByData(this.CurOption, this.Geo);
-      this.exm();
+      this.Rxm();
     }
   }
   ClearOptions() {
@@ -315,47 +315,47 @@ class PlotTextCommonLogic {
           Config: e,
           ConditionCheck: o,
           OnClick: () => {
-            this.JUm();
+            this.Txm();
           }
         });
       }
     }
     return s;
   }
-  exm() {
+  Rxm() {
     var t;
     if (this.CurOption && this.CurrentContent?.TimeLimitOptionGroup && this.CurrentContent.TimeLimitOptionGroup.Style.Type === "Default") {
       if ((t = this.CurrentContent.TimeLimitOptionGroup.Style).TimeLimit <= 0 || t.TimeoutOptionIndex >= this.CurrentContent.Options.length || t.TimeoutOptionIndex < 0) {
         ControllerHolder_1.ControllerHolder.FlowController.LogError("限时选项配置错误");
       } else {
-        this.KUm = t.TimeoutOptionIndex;
-        this.WUm = t.TimeLimit * CommonDefine_1.MILLIONSECOND_PER_SECOND;
-        this.QUm = 0;
+        this.Sxm = t.TimeoutOptionIndex;
+        this.vxm = t.TimeLimit * CommonDefine_1.MILLIONSECOND_PER_SECOND;
+        this.yxm = 0;
         this.OptionLimitBar?.GetRootComponent().SetUIActive(true);
         this.OptionLimitBar?.SetValue(1);
-        this.XUm = true;
+        this.Mxm = true;
       }
     }
   }
-  ZUm(t = false) {
+  bxm(t = false) {
     var i;
-    if (this.XUm) {
-      this.XUm = false;
+    if (this.Mxm) {
+      this.Mxm = false;
       if (t) {
-        if (i = this.Options.find(t => t.OptionIndex === this.KUm)) {
+        if (i = this.Options.find(t => t.OptionIndex === this.Sxm)) {
           i.OptionClick();
         } else {
-          ModelManager_1.ModelManager.PlotModel.MarkGrayOption(this.CurrentContent.Id, this.KUm);
-          i = this.CurrentContent.Options[this.KUm];
-          ControllerHolder_1.ControllerHolder.FlowController.FlowShowTalk.SelectOption(this.KUm, i.Actions);
+          ModelManager_1.ModelManager.PlotModel.MarkGrayOption(this.CurrentContent.Id, this.Sxm);
+          i = this.CurrentContent.Options[this.Sxm];
+          ControllerHolder_1.ControllerHolder.FlowController.FlowShowTalk.SelectOption(this.Sxm, i.Actions);
         }
       }
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Plot", 26, "[Subtitle] 限时选项完成", ["id", this.CurrentContent.Id], ["bSelected", t]);
       }
-      this.WUm = 0;
-      this.QUm = 0;
-      this.KUm = -1;
+      this.vxm = 0;
+      this.yxm = 0;
+      this.Sxm = -1;
     }
   }
   InitInteractOptions() {
@@ -789,8 +789,8 @@ class PlotTextCommonLogic {
     }
   }
   OnTick(t) {
-    if (this.XUm && !this.MuteTimeLimitedOption && (this.QUm += t, this.OptionLimitBar?.SetValue(1 - this.QUm / this.WUm), this.QUm >= this.WUm)) {
-      this.ZUm(true);
+    if (this.Mxm && !this.MuteTimeLimitedOption && (this.yxm += t, this.OptionLimitBar?.SetValue(1 - this.yxm / this.vxm), this.yxm >= this.vxm)) {
+      this.bxm(true);
     }
   }
 }

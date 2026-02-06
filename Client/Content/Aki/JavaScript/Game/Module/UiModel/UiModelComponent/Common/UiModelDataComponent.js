@@ -70,7 +70,7 @@ let UiModelDataComponent = class UiModelDataComponent extends UiModelComponentBa
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("UiComponent", 58, "设置Ui模型显隐", ["ModelUseWay", this.Owner.UseWay], ["Visible", e]);
       }
-      EventSystem_1.EventSystem.EmitWithTarget(this.Owner, EventDefine_1.EEventName.OnUiModelVisibleChange, e);
+      this.Owner.OnVisibleChange(e);
     }
     return true;
   }
@@ -79,7 +79,7 @@ let UiModelDataComponent = class UiModelDataComponent extends UiModelComponentBa
   }
   SetDitherEffect(e) {
     this.$wr = e;
-    EventSystem_1.EventSystem.EmitWithTarget(this.Owner, EventDefine_1.EEventName.OnUiModelSetDitherEffect, e);
+    this.Owner.OnSetDitherEffect(e);
   }
   GetLoadingIconFollowState() {
     return this.kjs;

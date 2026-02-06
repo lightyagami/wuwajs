@@ -170,7 +170,7 @@ let SceneItemDropItemComponent = SceneItemDropItemComponent_1 = class SceneItemD
         this.uCn();
       }
     };
-    this.dQm = () => {
+    this.iXm = () => {
       this.FixBornLocation();
     };
   }
@@ -200,7 +200,7 @@ let SceneItemDropItemComponent = SceneItemDropItemComponent_1 = class SceneItemD
     return !!t && (this.pie(t.Mys), !!this.fGt) && (this.mCn(t.Mys) && (this.Jdn = true), true);
   }
   OnStart() {
-    this.Hte = this.Entity.GetComponent(212);
+    this.Hte = this.Entity.GetComponent(214);
     this.InitDropStateFunction();
     return true;
   }
@@ -213,7 +213,7 @@ let SceneItemDropItemComponent = SceneItemDropItemComponent_1 = class SceneItemD
     if (this.zdn && !Info_1.Info.EnableForceTick && this.Active) {
       ComponentForceTickController_1.ComponentForceTickController.RegisterTick(this, this.KHr);
     }
-    EventSystem_1.EventSystem.OnceWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionShowCompleted, this.dQm);
+    EventSystem_1.EventSystem.OnceWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionShowCompleted, this.iXm);
   }
   OnEnable() {
     if (this.zdn && !Info_1.Info.EnableForceTick && this.Entity?.IsInit) {
@@ -386,7 +386,7 @@ let SceneItemDropItemComponent = SceneItemDropItemComponent_1 = class SceneItemD
   }
   fCn() {
     var t;
-    var e = this.Entity.GetComponent(207);
+    var e = this.Entity.GetComponent(209);
     if (e &&= e.GetInteractController()) {
       (t = new LevelGameplayActionsDefine_1.ActionPickupDropItem()).EntityId = this.Entity.Id;
       e.AddClientInteractOption(t);
@@ -464,7 +464,7 @@ let SceneItemDropItemComponent = SceneItemDropItemComponent_1 = class SceneItemD
   DestroyWithEffect() {
     var t;
     if (this.fGt?.ItemType === 17) {
-      this.Entity.GetComponent(142).HandleDestroyState();
+      this.Entity.GetComponent(144).HandleDestroyState();
     } else {
       this.Hte.StaticMesh.SetCollisionEnabled(0);
       ModelManager_1.ModelManager.InteractionModel.HandleInteractionHint(false, this.Hte.Entity.Id);
@@ -487,9 +487,9 @@ let SceneItemDropItemComponent = SceneItemDropItemComponent_1 = class SceneItemD
   FixBornLocation() {
     var t;
     var e;
-    return !!Global_1.Global.BaseCharacter && !!Global_1.Global.BaseCharacter.CapsuleComponent && !(t = ControllerHolder_1.ControllerHolder.CreatureController.CheckEnableEntityLog(this.Ovr.GetEntityType()), !(e = this.mQm(-3000 + FIX_SPAWN_TRACE_HEIGHT, t))[0]) && !(this.Hte?.SetActorLocation(e[1].ToUeVector(), "SceneItemDropItemComponent.FixBornLocation"), t && Log_1.Log.CheckInfo() && Log_1.Log.Info("Entity", 18, "[SceneItemDropItemComponent.FixBornLocation] 实体地面修正:后", ["CreatureDataId", this.Ovr.GetCreatureDataId()], ["PbDataId", this.Ovr.GetPbDataId()], ["K2_GetActorLocation", this.Hte?.Owner?.D_K2_GetActorLocation()]), 0);
+    return !!Global_1.Global.BaseCharacter && !!Global_1.Global.BaseCharacter.CapsuleComponent && !(t = ControllerHolder_1.ControllerHolder.CreatureController.CheckEnableEntityLog(this.Ovr.GetEntityType()), !(e = this.rXm(-3000 + FIX_SPAWN_TRACE_HEIGHT, t))[0]) && !(this.Hte?.SetActorLocation(e[1].ToUeVector(), "SceneItemDropItemComponent.FixBornLocation"), t && Log_1.Log.CheckInfo() && Log_1.Log.Info("Entity", 18, "[SceneItemDropItemComponent.FixBornLocation] 实体地面修正:后", ["CreatureDataId", this.Ovr.GetCreatureDataId()], ["PbDataId", this.Ovr.GetPbDataId()], ["K2_GetActorLocation", this.Hte?.Owner?.D_K2_GetActorLocation()]), 0);
   }
-  mQm(t, e = true) {
+  rXm(t, e = true) {
     var i;
     var o;
     var a;
@@ -564,5 +564,5 @@ let SceneItemDropItemComponent = SceneItemDropItemComponent_1 = class SceneItemD
   }
 };
 SceneItemDropItemComponent.cz = Vector_1.Vector.Create();
-SceneItemDropItemComponent = SceneItemDropItemComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(158)], SceneItemDropItemComponent);
+SceneItemDropItemComponent = SceneItemDropItemComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(160)], SceneItemDropItemComponent);
 exports.SceneItemDropItemComponent = SceneItemDropItemComponent; //# sourceMappingURL=SceneItemDropItemComponent.js.map

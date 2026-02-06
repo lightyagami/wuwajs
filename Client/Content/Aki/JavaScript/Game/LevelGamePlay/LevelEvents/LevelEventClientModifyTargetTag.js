@@ -24,7 +24,7 @@ class LevelEventClientModifyTargetTag extends LevelGeneralBase_1.LevelEventBase 
     if (!r?.Valid || !r.Entity?.Valid) {
       return false;
     }
-    var l = r.Entity.CheckGetComponent(215);
+    var l = r.Entity.CheckGetComponent(217);
     if (!l) {
       return false;
     }

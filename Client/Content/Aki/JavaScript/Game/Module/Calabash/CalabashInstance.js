@@ -11,7 +11,7 @@ class CalabashInstance {
     this.UQ = 10;
     this.Kft = 0;
     this.Qft = 0;
-    this.VBm = 0;
+    this.$2m = 0;
     this.Xft = new Map();
     this.$ft = new Map();
     this.Yft = new Set();
@@ -21,7 +21,7 @@ class CalabashInstance {
     this.CalabashCurrentExp = t.U8n;
     this.CalabashMaxLevel = ConfigManager_1.ConfigManager.CalabashConfig.GetCalabashMaxLevel();
     this.IdentifyGuaranteeCount = t.vLs;
-    this.LowCostIdentifyGuaranteeCount = t.Yxm;
+    this.LowCostIdentifyGuaranteeCount = t.IBm;
     this.SetUnlockCalabashDevelopRewards(t.fLs);
   }
   SetConfigInfo(t) {
@@ -55,10 +55,10 @@ class CalabashInstance {
     return this.Qft;
   }
   set LowCostIdentifyGuaranteeCount(t) {
-    this.VBm = t;
+    this.$2m = t;
   }
   get LowCostIdentifyGuaranteeCount() {
-    return this.VBm;
+    return this.$2m;
   }
   SetUnlockCalabashDevelopRewards(t) {
     this.$ft.clear();

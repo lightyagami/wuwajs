@@ -4,11 +4,13 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.BehaviorTreeExpressionComponent = undefined;
+const Log_1 = require("../../../../../Core/Common/Log");
 const Protocol_1 = require("../../../../../Core/Define/Net/Protocol");
 const Vector_1 = require("../../../../../Core/Utils/Math/Vector");
 const MathUtils_1 = require("../../../../../Core/Utils/MathUtils");
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
+const ModelManager_1 = require("../../../../Manager/ModelManager");
 const MapDefine_1 = require("../../../Map/MapDefine");
 const TrackDefine_1 = require("../../../Track/TrackDefine");
 const GeneralLogicTreeUtil_1 = require("../../GeneralLogicTreeUtil");
@@ -23,11 +25,15 @@ class BehaviorTreeExpressionComponent {
     this.IQt = undefined;
     this.TQt = undefined;
     this.LQt = undefined;
+    this.yhg = false;
     this.DQt = (e, t, i, s) => {
       if (e.Type === 6 && (e = this.Yre.GetNode(e.NodeId))) {
         this.yQt?.UpdateOnNodeStatusChange(e, i, s);
         if (!e.ContainTag(1)) {
           this.TQt?.UpdateOnNodeStatusChange(this.Yre, e, i);
+          if (this.Yre.IsTrackBoundToParent && e.NodeType !== "ChildQuest" && i === Protocol_1.Aki.Protocol.BNs._5n && (s = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(this.Yre.BoundParentTreeId)) && s.BindingExpressionHolder?.GetCurFocusLevelPlayId() === this.Yre.TreeConfigId) {
+            s?.BindingExpressionHolder?.OnBindingNodeUpdate();
+          }
         }
       }
     };
@@ -41,6 +47,12 @@ class BehaviorTreeExpressionComponent {
           this.TQt?.UpdateOnChildQuestNodeStatusChange(t, e, s);
           this.LQt?.UpdateOnChildQuestNodeStatusChange(t, e, s);
           this.IQt?.UpdateOnChildQuestNodeStatusChange(t, e, s);
+          if (this.Yre.IsBindingLevelPlayTrack) {
+            this.EnableTrack(false);
+          }
+          if (this.Yre.IsTrackBoundToParent && e && (i = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(this.Yre.BoundParentTreeId)) && i.BindingExpressionHolder?.GetCurFocusLevelPlayId() === this.Yre.TreeConfigId) {
+            i?.BindingExpressionHolder?.OnBindingNodeUpdate();
+          }
         }
       }
     };
@@ -105,6 +117,7 @@ class BehaviorTreeExpressionComponent {
   }
   Init() {
     this.tQt();
+    this.yhg = true;
   }
   Dispose() {
     this.EnableTrack(false, 2);
@@ -113,15 +126,28 @@ class BehaviorTreeExpressionComponent {
     this.IQt?.Clear();
     this.LQt?.EnableAllEffects(false);
     this.iQt();
+    this.yhg = false;
   }
-  EnableTrack(e, t = 0) {
-    this.yQt?.EnableTrack(e, t);
-    this.TQt?.EnableTrack(e);
-    this.IQt?.EnableTrack(e);
-    this.LQt?.EnableAllEffects(e);
+  EnableTrack(e, t = 0, i = false) {
+    if (this.Yre.IsTrackBoundToParent && !i) {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("GeneralLogicTree", 74, "当前玩法追踪绑定于父任务，不能独立设置追踪状态", ["当前玩法", this.Yre.TreeConfigId]);
+      }
+    } else {
+      this.yQt?.EnableTrack(e, t);
+      this.TQt?.EnableTrack(e);
+      this.IQt?.EnableTrack(e);
+      this.LQt?.EnableAllEffects(e);
+    }
   }
   RefreshMapMark(e) {
     this.TQt?.EnableTrack(e);
+  }
+  ForceSetAllMapMarksVisible(e) {
+    var t;
+    for ([, t] of this.TQt?.GetAllTrackMarkCreator() ?? []) {
+      t.ForceSetAllMarksVisible(e);
+    }
   }
   StartTextExpress(e = 0) {
     this.yQt?.StartTextExpress(e);
@@ -202,6 +228,24 @@ class BehaviorTreeExpressionComponent {
   }
   CreateMapMarks() {
     this.TQt?.CreateMapMarks();
+  }
+  GetBlackBoard() {
+    return this.Yre;
+  }
+  CreateShowData() {
+    return this.Yre.CreateShowData();
+  }
+  UpdateLevelPlayConditionalMarks() {
+    this.TQt?.UpdateLevelPlayConditionalMarks();
+  }
+  get BoundParentTreeId() {
+    return this.Yre.BoundParentTreeId;
+  }
+  set BoundParentTreeId(e) {
+    this.Yre.BoundParentTreeId = e;
+  }
+  get IsValid() {
+    return this.yhg;
   }
   tQt() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ActiveBattleView, this.PQt);

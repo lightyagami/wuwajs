@@ -17,6 +17,7 @@ const TimeUtil_1 = require("../../../../Common/TimeUtil");
 const ConfigManager_1 = require("../../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const UiManager_1 = require("../../../../Ui/UiManager");
+const ActivityControllerHolder_1 = require("../../ActivityControllerHolder");
 const ActivityRegressDefine_1 = require("./ActivityRegressDefine");
 const ActivityRegressQuestionnaireItemData_1 = require("./Questionnaire/ActivityRegressQuestionnaireItemData");
 const ActivityRegressTaskDefine_1 = require("./Task/ActivityRegressTaskDefine");
@@ -34,9 +35,11 @@ class ActivityRegressModel extends ModelBase_1.ModelBase {
     this.EntryEndTimeStamp = undefined;
     this.$k1 = 0;
     this.LastUnGetRewardLevelPlayId = 0;
-    this.g4f = [];
-    this.C4f = [];
+    this.L$f = [];
+    this.w$f = [];
     this.LatestBranch = 0;
+    this.SaveInsIdList = [];
+    this.NightmarePhantomInstInfoMap = new Map();
     this.Zl1 = undefined;
     this.e_1 = undefined;
     this.LG1 = false;
@@ -68,8 +71,8 @@ class ActivityRegressModel extends ModelBase_1.ModelBase {
     if (Info_1.Info.IsPlayInEditor) {
       this.Rfa = true;
     }
-    this.g4f = CommonParamById_1.configCommonParamById.GetIntArrayConfig("BranchOneMainQuest") ?? [];
-    this.C4f = CommonParamById_1.configCommonParamById.GetIntArrayConfig("BranchTwoMainQuest") ?? [];
+    this.L$f = CommonParamById_1.configCommonParamById.GetIntArrayConfig("BranchOneMainQuest") ?? [];
+    this.w$f = CommonParamById_1.configCommonParamById.GetIntArrayConfig("BranchTwoMainQuest") ?? [];
     this.LatestBranch = CommonParamById_1.configCommonParamById.GetIntConfig("LatestBranch") ?? 0;
     return true;
   }
@@ -770,8 +773,8 @@ class ActivityRegressModel extends ModelBase_1.ModelBase {
       let e = 0;
       let t = 0;
       for (const o of r) {
-        var i = this.g4f.includes(o.Id);
-        var a = this.C4f.includes(o.Id);
+        var i = this.L$f.includes(o.Id);
+        var a = this.w$f.includes(o.Id);
         if (!i && !a) {
           return o.Id;
         }
@@ -795,8 +798,8 @@ class ActivityRegressModel extends ModelBase_1.ModelBase {
     if (t.length > 0) {
       let e = false;
       for (const n of t) {
-        var r = this.g4f.includes(n.Id);
-        var i = this.C4f.includes(n.Id);
+        var r = this.L$f.includes(n.Id);
+        var i = this.w$f.includes(n.Id);
         if (!r && !i) {
           return this.LatestBranch;
         }
@@ -812,8 +815,8 @@ class ActivityRegressModel extends ModelBase_1.ModelBase {
     }
     let e = false;
     for (const s of ModelManager_1.ModelManager.QuestNewModel.FinishedMainQuests) {
-      var a = this.g4f.includes(s);
-      var o = this.C4f.includes(s);
+      var a = this.L$f.includes(s);
+      var o = this.w$f.includes(s);
       if (!a && !o) {
         return this.LatestBranch;
       }
@@ -888,6 +891,10 @@ class ActivityRegressModel extends ModelBase_1.ModelBase {
             }
           }
         }
+      }
+      t = ActivityControllerHolder_1.ActivityControllerHolder.ActivityNewPlayerSupportController?.ActivityData;
+      if (t && t.HaveFinishCarnivalRole > 0) {
+        e.push(t.HaveFinishCarnivalRole);
       }
     }
     return e;

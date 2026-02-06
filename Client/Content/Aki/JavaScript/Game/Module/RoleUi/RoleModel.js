@@ -42,8 +42,8 @@ class RoleModel extends ModelBase_1.ModelBase {
     super(...arguments);
     this.dco = new Map();
     this.Cco = new Map();
-    this.iUf = new Map();
-    this.rUf = new Map();
+    this.BOf = new Map();
+    this.kOf = new Map();
     this.gco = new Set();
     this.P9l = new Set();
     this.fco = new Map();
@@ -51,9 +51,9 @@ class RoleModel extends ModelBase_1.ModelBase {
     this.vco = undefined;
     this.Mco = false;
     this.RoleTrialIdList = new Set();
-    this.qFf = new Map();
-    this.oUf = true;
-    this.nUf = (t, r) => {
+    this.u9f = new Map();
+    this.qOf = true;
+    this.OOf = (t, r) => {
       let o = -1;
       let n = -1;
       var i = ModelManager_1.ModelManager.SceneTeamModel.GetTeamItems(true);
@@ -96,9 +96,9 @@ class RoleModel extends ModelBase_1.ModelBase {
     this.zyn = false;
     this.xie = (e, t) => {
       if (t) {
-        (t.Entity?.GetComponent(203)).RemoveTagAddOrRemoveListener(1733479717, this.Zyn);
+        (t.Entity?.GetComponent(205)).RemoveTagAddOrRemoveListener(1733479717, this.Zyn);
       }
-      if (e && ((t = e.Entity?.GetComponent(203)).AddTagAddOrRemoveListener(1733479717, this.Zyn), this.zyn !== t.HasTag(1733479717))) {
+      if (e && ((t = e.Entity?.GetComponent(205)).AddTagAddOrRemoveListener(1733479717, this.Zyn), this.zyn !== t.HasTag(1733479717))) {
         this.zyn = !this.zyn;
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnEnterOrExitUltraSkill, this.zyn);
       }
@@ -118,10 +118,10 @@ class RoleModel extends ModelBase_1.ModelBase {
     return this.Mco;
   }
   SetCanUseSpecialTrialRole(e) {
-    this.oUf = e;
+    this.qOf = e;
   }
   CanUseSpecialTrialRole(e = undefined) {
-    return !ModelManager_1.ModelManager.GameModeModel?.IsMulti && (!(e = e ?? ModelManager_1.ModelManager.GameModeModel.InstanceDungeon?.Id) || !!this.IsDungeonCanUseSpecialTrialRole(e)) && this.oUf;
+    return !ModelManager_1.ModelManager.GameModeModel?.IsMulti && (!(e = e ?? ModelManager_1.ModelManager.GameModeModel.InstanceDungeon?.Id) || !!this.IsDungeonCanUseSpecialTrialRole(e)) && this.qOf;
   }
   IsDungeonCanUseSpecialTrialRole(e) {
     var t;
@@ -138,8 +138,8 @@ class RoleModel extends ModelBase_1.ModelBase {
     this.IsInRoleTrial = false;
     this.dco.clear();
     this.Cco.clear();
-    this.iUf.clear();
-    this.rUf.clear();
+    this.BOf.clear();
+    this.kOf.clear();
     return true;
   }
   UpdateRoleInfoByServerData(e) {
@@ -276,14 +276,14 @@ class RoleModel extends ModelBase_1.ModelBase {
       }
     }
     if (e) {
-      for (const i of Array.from(this.rUf.keys())) {
-        var o = this.rUf.get(i);
+      for (const i of Array.from(this.kOf.keys())) {
+        var o = this.kOf.get(i);
         if (o?.IsVisibleInFormation()) {
           t.push(o);
         }
       }
     }
-    t.sort((e, t) => this.nUf(e.GetDataId(), t.GetDataId()));
+    t.sort((e, t) => this.OOf(e.GetDataId(), t.GetDataId()));
     return t;
   }
   GetRoleListWithoutMainRole() {
@@ -309,7 +309,7 @@ class RoleModel extends ModelBase_1.ModelBase {
     var r;
     var o;
     var n = new Map(t);
-    for ([r, o] of this.rUf) {
+    for ([r, o] of this.kOf) {
       if (o?.IsVisibleInFormation()) {
         n.set(r, o);
       }
@@ -320,16 +320,16 @@ class RoleModel extends ModelBase_1.ModelBase {
     return this.Cco;
   }
   GetCommonRoleRobotMap() {
-    return this.iUf;
+    return this.BOf;
   }
   GetRoleFormationRobotMap() {
-    return this.rUf;
+    return this.kOf;
   }
   GetBattleTeamFirstRoleId() {
     return ModelManager_1.ModelManager.SceneTeamModel.GetCurrentTeamItem?.GetConfigId;
   }
   rVi(e) {
-    e.sort(this.nUf);
+    e.sort(this.OOf);
   }
   GetRoleDataById(e, t = true) {
     let r = undefined;
@@ -345,13 +345,22 @@ class RoleModel extends ModelBase_1.ModelBase {
       return new RoleOnlineInstanceData_1.RoleOnlineInstanceData(e);
     }
   }
+  GetRoleDataByTrialRoleId(e) {
+    let t = undefined;
+    var r;
+    if (RoleUtils_1.RoleUtils.IsTrialRole(e)) {
+      r = RoleUtils_1.RoleUtils.GetTrailRoleRealRoleId(e);
+      t = (t = !(t = this.dco.get(r)) && this.IsMainRole(r) ? this.GetCurSelectMainRoleInstance() : t) || this.GetRoleRobotData(e);
+    }
+    return t;
+  }
   GetNewMainRoleId(e) {
     return this.fco.get(e);
   }
   GetRoleRobotData(e) {
     let t = this.Cco.get(e);
     if (!t) {
-      (RoleUtils_1.RoleUtils.IsSpecialTrialRole(e) ? (t = new RoleSpecialRobotData_1.RoleSpecialRobotData(e), this.rUf) : (t = new RoleRobotData_1.RoleRobotData(e), this.iUf)).set(e, t);
+      (RoleUtils_1.RoleUtils.IsSpecialTrialRole(e) ? (t = new RoleSpecialRobotData_1.RoleSpecialRobotData(e), this.kOf) : (t = new RoleRobotData_1.RoleRobotData(e), this.BOf)).set(e, t);
       this.Cco.set(e, t);
     }
     return t;
@@ -671,10 +680,12 @@ class RoleModel extends ModelBase_1.ModelBase {
       e = e.GetSkillData();
       if (e) {
         var r = t.length;
-        var o = [];
+        var o = new Map();
         for (let e = 0; e < r; e++) {
           var n = t[e];
-          o.push(new SkillNodeDataInfo_1.SkillNodeDataInfo(n.qHn, n.WHn, n.r5n));
+          var i = n.qHn;
+          var n = new SkillNodeDataInfo_1.SkillNodeDataInfo(i, n.WHn, n.r5n);
+          o.set(i, n);
         }
         e.SetSkillNodeStateData(o);
       }
@@ -776,20 +787,20 @@ class RoleModel extends ModelBase_1.ModelBase {
         i.push(l);
       }
       if (e) {
-        this.B$f(i);
+        this.dog(i);
       }
       this.rVi(i);
       return i;
     }
     const i = this.GetRoleIdList();
     if (e) {
-      this.B$f(i);
+      this.dog(i);
       this.rVi(i);
     }
     return i;
   }
-  B$f(e) {
-    for (const r of this.rUf.values()) {
+  dog(e) {
+    for (const r of this.kOf.values()) {
       var t;
       if (r.IsVisibleInRoleSystem()) {
         t = r.GetDataId();
@@ -1169,7 +1180,7 @@ class RoleModel extends ModelBase_1.ModelBase {
     return this.dco.has(e);
   }
   SetRoleBranch(e, t) {
-    this.qFf.set(e, t);
+    this.u9f.set(e, t);
   }
   IsRoleHasBranch(e) {
     e = this.GetRoleBranchIdList(e);
@@ -1179,7 +1190,7 @@ class RoleModel extends ModelBase_1.ModelBase {
     return ConfigManager_1.ConfigManager.RoleConfig.GetRoleBranchIds(e);
   }
   GetRoleCurrentBranchId(e) {
-    let t = this.qFf.get(e);
+    let t = this.u9f.get(e);
     return t = t || this.GetRoleDefaultBranchId(e);
   }
   GetRoleOppositeBranchId(e) {
@@ -1204,7 +1215,7 @@ class RoleModel extends ModelBase_1.ModelBase {
   }
   CheckCanSwitchRoleBranch(e = false) {
     var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
-    return !!t?.Valid && !!(t = t.Entity.GetComponent(215))?.Valid && (!t.HasTag(1996802261) || !(e && ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsById("ForbiddenActionInFight"), 1));
+    return !!t?.Valid && !!(t = t.Entity.GetComponent(217))?.Valid && (!t.HasTag(1996802261) || !(e && ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsById("ForbiddenActionInFight"), 1));
   }
   IsSkillNodeHasBranch(e) {
     e = this.GetSkillNodeBranchIdList(e);

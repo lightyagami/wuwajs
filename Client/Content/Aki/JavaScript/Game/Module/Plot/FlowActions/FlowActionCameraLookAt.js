@@ -18,7 +18,7 @@ class FlowActionCameraLookAt extends FlowActionLevelAsyncAction_1.FlowActionLeve
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Camera", 57, "[CameraLookAt] FlowActionCameraLookAt");
     }
-    var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.GetComponent(65);
+    var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.GetComponent(67);
     var o = this.ActionInfo.Params;
     CameraController_1.CameraController.FightCamera.LogicComponent.ExitCameraGuide();
     if (o.BanInput) {

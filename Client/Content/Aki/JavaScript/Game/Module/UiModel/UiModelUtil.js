@@ -23,10 +23,10 @@ const EffectUtil_1 = require("../../Utils/EffectUtil");
 const WorldMapUtil_1 = require("../WorldMap/WorldMapUtil");
 class UiModelUtil {
   static PlayEffectOnRootByPath(e, t) {
-    var a = e.CheckGetComponent(4);
+    var r = e.CheckGetComponent(4);
     var e = e.CheckGetComponent(1)?.MainMeshComponent;
     if (e) {
-      a?.PlayEffectOnRoot(t, e, CharacterNameDefines_1.CharacterNameDefines.ROOT, true);
+      r?.PlayEffectOnRoot(t, e, CharacterNameDefines_1.CharacterNameDefines.ROOT, true);
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("Character", 43, "MainMeshComponent为空");
     }
@@ -35,25 +35,25 @@ class UiModelUtil {
     t = EffectUtil_1.EffectUtil.GetEffectPath(t);
     this.PlayEffectOnRootByPath(e, t);
   }
-  static PlayEffectOnRootWithCallback(e, t, a) {
-    var r = e.CheckGetComponent(4);
+  static PlayEffectOnRootWithCallback(e, t, r) {
+    var a = e.CheckGetComponent(4);
     var e = e.CheckGetComponent(1);
     var t = EffectUtil_1.EffectUtil.GetEffectPath(t);
     var e = e?.MainMeshComponent;
     if (e) {
-      if (r) {
-        r = r.PlayEffectByPath(t, e, CharacterNameDefines_1.CharacterNameDefines.ROOT, true, false, Vector_1.Vector.ZeroVectorDouble, Rotator_1.Rotator.ZeroRotator, Vector_1.Vector.OneVectorDouble, true);
-        EffectSystem_1.EffectSystem.AddFinishCallback(r, a);
+      if (a) {
+        a = a.PlayEffectByPath(t, e, CharacterNameDefines_1.CharacterNameDefines.ROOT, true, false, Vector_1.Vector.ZeroVectorDouble, Rotator_1.Rotator.ZeroRotator, Vector_1.Vector.OneVectorDouble, true);
+        EffectSystem_1.EffectSystem.AddFinishCallback(a, r);
       }
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("Character", 43, "MainMeshComponent为空");
     }
   }
   static PlayEffectAtRootComponentByPath(e, t) {
-    var a = e.CheckGetComponent(4);
+    var r = e.CheckGetComponent(4);
     var e = e.CheckGetComponent(1)?.Actor?.RootComponent;
     if (e) {
-      a?.PlayEffectOnRoot(t, e, FNameUtil_1.FNameUtil.EMPTY, true);
+      r?.PlayEffectOnRoot(t, e, FNameUtil_1.FNameUtil.EMPTY, true);
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("Character", 43, "Actor为空");
     }
@@ -74,9 +74,9 @@ class UiModelUtil {
   static GetActorLguiPos(e, t = Vector_1.Vector.ZeroVectorProxy) {
     var e = e.D_K2_GetActorLocation().op_Addition(t.ToUeVector());
     var t = UiLayer_1.UiLayer.UiRootItem.GetCanvasScaler();
-    var a = (0, puerts_1.$ref)(undefined);
-    UE.GameplayStatics.D_ProjectWorldToScreen(Global_1.Global.CharacterController, e, a, true);
-    var e = t.ConvertPositionFromViewportToLGUICanvas((0, puerts_1.$unref)(a));
+    var r = (0, puerts_1.$ref)(undefined);
+    UE.GameplayStatics.D_ProjectWorldToScreen(Global_1.Global.CharacterController, e, r, true);
+    var e = t.ConvertPositionFromViewportToLGUICanvas((0, puerts_1.$unref)(r));
     var t = WorldMapUtil_1.WorldMapUtil.GetViewportSizeByPool();
     t.Set(e.X - t.X / 2, e.Y - t.Y / 2);
     return t.ToUeVector2D();
@@ -87,30 +87,30 @@ class UiModelUtil {
   static SelectDangoActor(e, t) {
     e.Model.CheckGetComponent(30)?.ReplaceSelectMaterial(t);
   }
-  static DangoFadeIn(e, t = "RoleFadeInCurve", a) {
+  static DangoFadeIn(e, t = "RoleFadeInCurve", r) {
     var e = e.Model.CheckGetComponent(8);
-    var r = CommonParamById_1.configCommonParamById.GetIntConfig("RoleFadeInDuration");
-    e?.Fade(1, 0, r, t, a);
+    var a = CommonParamById_1.configCommonParamById.GetIntConfig("RoleFadeInDuration");
+    e?.Fade(1, 0, a, t, r);
   }
-  static DangoFadeOut(e, t = "RoleFadeOutCurve", a) {
+  static DangoFadeOut(e, t = "RoleFadeOutCurve", r) {
     var e = e.Model.CheckGetComponent(8);
-    var r = CommonParamById_1.configCommonParamById.GetIntConfig("RoleFadeOutDuration");
-    e?.Fade(0, 1, r, t, a);
+    var a = CommonParamById_1.configCommonParamById.GetIntConfig("RoleFadeOutDuration");
+    e?.Fade(0, 1, a, t, r);
   }
-  static ModelFadeIn(e, t = "RoleFadeInCurve", a) {
-    var r;
+  static ModelFadeIn(e, t = "RoleFadeInCurve", r) {
+    var a;
     if (e) {
       e = e.CheckGetComponent(8);
-      r = CommonParamById_1.configCommonParamById.GetIntConfig("RoleFadeInDuration");
-      e?.Fade(1, 0, r, t, a);
+      a = CommonParamById_1.configCommonParamById.GetIntConfig("RoleFadeInDuration");
+      e?.Fade(1, 0, a, t, r);
     }
   }
-  static ModelFadeOut(e, t = "RoleFadeOutCurve", a) {
-    var r;
+  static ModelFadeOut(e, t = "RoleFadeOutCurve", r) {
+    var a;
     if (e) {
       e = e.CheckGetComponent(8);
-      r = CommonParamById_1.configCommonParamById.GetIntConfig("RoleFadeOutDuration");
-      e?.Fade(0, 1, r, t, a);
+      a = CommonParamById_1.configCommonParamById.GetIntConfig("RoleFadeOutDuration");
+      e?.Fade(0, 1, a, t, r);
     }
   }
   static SetDitherEffect(e, t) {
@@ -119,29 +119,29 @@ class UiModelUtil {
   static GetRoleMorphConfigMap(e, t) {
     e = ConfigManager_1.ConfigManager.RoleConfig.GetRoleMorphConfigList(e, t);
     if (e && e.length !== 0) {
-      var a;
       var r;
+      var a;
       var o = new Map();
       for (const i of e) {
         if (i.Morph !== 0 && i.UiMeshId !== 0) {
-          a = {
-            MainMeshPath: (a = ModelUtil_1.ModelUtil.GetModelConfig(i.UiMeshId)).网格体.ToAssetPathName(),
+          r = {
+            MainMeshPath: (r = ModelUtil_1.ModelUtil.GetModelConfig(i.UiMeshId)).网格体.ToAssetPathName(),
             AnimPath: i.UiScenePerformanceABP,
             ChildMeshPathList: this.l51(i.UiMeshId),
-            DecorationMeshConfigArray: a.UiModelDecorationArray,
+            DecorationMeshConfigArray: r.UiModelDecorationArray,
             RoleBody: i.RoleBody
           };
-          o.set(i.Morph, a);
+          o.set(i.Morph, r);
         }
       }
       if (o.size > 0 && (e = ModelManager_1.ModelManager.RoleSkinModel.GetRoleSkinData(t))) {
         t = e.GetUiMeshId();
         t = {
-          MainMeshPath: (r = ModelUtil_1.ModelUtil.GetModelConfig(t)).网格体.ToAssetPathName(),
+          MainMeshPath: (a = ModelUtil_1.ModelUtil.GetModelConfig(t)).网格体.ToAssetPathName(),
           AnimPath: e.GetRoleSkinConfig().UiScenePerformanceABP,
           ChildMeshPathList: this.l51(t),
           RoleBody: e.GetRoleSkinConfig().RoleBody,
-          DecorationMeshConfigArray: r.UiModelDecorationArray
+          DecorationMeshConfigArray: a.UiModelDecorationArray
         };
         o.set(0, t);
       }
@@ -151,27 +151,53 @@ class UiModelUtil {
   static l51(e) {
     var t = ModelUtil_1.ModelUtil.GetModelConfig(e).子网格体;
     if (t) {
-      var a = t.Num();
-      if (a > 0) {
-        var r = new Array(a);
-        for (let e = 0; e < a; e++) {
-          r[e] = t.Get(e).ToAssetPathName();
+      var r = t.Num();
+      if (r > 0) {
+        var a = new Array(r);
+        for (let e = 0; e < r; e++) {
+          a[e] = t.Get(e).ToAssetPathName();
         }
-        return r;
+        return a;
       }
     }
   }
   static CheckPathListAndAdd(e, t) {
     if (t && t.length > 0) {
-      for (const a of t) {
-        if (!StringUtils_1.StringUtils.IsEmpty(a)) {
-          e.push(a);
+      for (const r of t) {
+        if (!StringUtils_1.StringUtils.IsEmpty(r)) {
+          e.push(r);
         }
       }
     }
   }
-  static PlayRoleMontage(e, t, a = false, r = false, o = false) {
-    e.CheckGetComponent(16)?.SetState(t, a, r, o);
+  static PlayRoleMontage(e, t, r = false, a = false, o = false) {
+    e.CheckGetComponent(16)?.SetState(t, r, a, o);
+  }
+  static GetSelfAndOwnerComponents(e, t, r = false) {
+    var a = [];
+    var o = UiModelUtil.GetUiModelComponent(e, t);
+    if (o) {
+      a.push(o);
+    }
+    if (r && (o = e.GetAttachRootParentActor())?.IsValid() && (r = UiModelUtil.GetUiModelComponent(o, t))) {
+      a.push(r);
+    }
+    return a;
+  }
+  static GetUiModelComponent(e, t) {
+    if (UiModelUtil.IsUiSceneRoleActor(e)) {
+      return e.Model?.CheckGetComponent(t);
+    } else if (UiModelUtil.IsSkeletalObserver(e)) {
+      return e.Model?.GetComponent(t);
+    } else {
+      return undefined;
+    }
+  }
+  static IsUiSceneRoleActor(e) {
+    return e.IsA(UE.TsUiSceneRoleActor_C.StaticClass());
+  }
+  static IsSkeletalObserver(e) {
+    return e.IsA(UE.TsSkeletalObserver_C.StaticClass());
   }
 }
 exports.UiModelUtil = UiModelUtil;

@@ -38,6 +38,9 @@ class PriorityQueue {
     this.S7.length = 0;
     this.y7.clear();
   }
+  Has(t) {
+    return this.y7.has(t);
+  }
   Push(t) {
     var i = this.S7.push(t) - 1;
     this.y7.set(t, i);

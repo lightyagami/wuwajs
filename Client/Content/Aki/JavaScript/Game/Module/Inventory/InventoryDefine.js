@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.MotorStickerItemRange = exports.HonamiStoryWeaponRange = exports.HonamiStoryItemRange = exports.PhantomArenaBadgeItemRange = exports.PhantomArenaCardItemRange = exports.InfrastructureItemRange = exports.calabashSkinIdRange = exports.flySkinIdRange = exports.DangoAbyssItemRange = exports.playerTitleRange = exports.playerHeadRange = exports.roleSkinIdRange = exports.PhoneChatBackGroundItemRange = exports.PhoneChatDialogItemRange = exports.weaponSkinIdRange = exports.rogueResCurrencyIdRange = exports.rogueCurrencyIdRange = exports.previewItemIdRange = exports.cardIdRange = exports.virtualIdRange = exports.roleIdRange = exports.phantomSpecificIdRange = exports.phantomIdRange = exports.weaponIdRange = exports.recFilterRuleToGirdType = exports.MANAGE_CONFIG_MAX_COUNT = exports.EMPTY_CHECK_TEXT_ID = exports.EMPTY_RULE_TEXT_ID = exports.EMPTY_CONFIG_TEXT_ID = exports.MANAGE_CONFIG_HELP_ID = exports.MANAGE_CONFIG_FUNCTION_ID = exports.WAVEPLATE_CRYSTAL_COIN = exports.WAVEPLATE_COIN = exports.ADVANCED_COIN = exports.COMMON_COIN = exports.UNIQUE_ID = exports.SORT_INDEX = exports.COUNT = exports.QUALITY_ID = exports.LEVEL = exports.CONFIG_ID = undefined;
+exports.FurnitureItemRange = exports.MotorSkinItemRange = exports.MotorDecorationItemRange = exports.MotorStickerItemRange = exports.MotorFrameItemRange = exports.HonamiStoryWeaponRange = exports.HonamiStoryItemRange = exports.PhantomArenaBadgeItemRange = exports.PhantomArenaCardItemRange = exports.InfrastructureItemRange = exports.calabashSkinIdRange = exports.flySkinIdRange = exports.DangoAbyssItemRange = exports.playerTitleRange = exports.playerHeadRange = exports.roleSkinIdRange = exports.PhoneChatBackGroundItemRange = exports.PhoneChatDialogItemRange = exports.weaponSkinIdRange = exports.rogueResCurrencyIdRange = exports.rogueCurrencyIdRange = exports.previewItemIdRange = exports.cardIdRange = exports.virtualIdRange = exports.roleIdRange = exports.phantomSpecificIdRange = exports.phantomIdRange = exports.weaponIdRange = exports.recFilterRuleToGirdType = exports.MANAGE_CONFIG_MAX_COUNT = exports.EMPTY_CHECK_TEXT_ID = exports.EMPTY_RULE_TEXT_ID = exports.EMPTY_CONFIG_TEXT_ID = exports.MANAGE_CONFIG_HELP_ID = exports.MANAGE_CONFIG_FUNCTION_ID = exports.WAVEPLATE_CRYSTAL_COIN = exports.WAVEPLATE_COIN = exports.ADVANCED_COIN = exports.COMMON_COIN = exports.UNIQUE_ID = exports.SORT_INDEX = exports.COUNT = exports.QUALITY_ID = exports.LEVEL = exports.CONFIG_ID = undefined;
 exports.CONFIG_ID = 1;
 exports.LEVEL = 2;
 exports.QUALITY_ID = 3;
@@ -49,4 +49,8 @@ exports.PhantomArenaCardItemRange = [700000, 750000];
 exports.PhantomArenaBadgeItemRange = [75001, 80000];
 exports.HonamiStoryItemRange = [87000000, 87999999];
 exports.HonamiStoryWeaponRange = [88000000, 88999999];
-exports.MotorStickerItemRange = [89100000, 89199999]; //# sourceMappingURL=InventoryDefine.js.map
+exports.MotorFrameItemRange = [89400000, 89499999];
+exports.MotorStickerItemRange = [89100000, 89199999];
+exports.MotorDecorationItemRange = [89300000, 89399999];
+exports.MotorSkinItemRange = [89200000, 89299999];
+exports.FurnitureItemRange = [80830001, 80839999]; //# sourceMappingURL=InventoryDefine.js.map

@@ -32,7 +32,7 @@ class RenderModuleController extends ControllerBase_1.ControllerBase {
     }
     return new UE.VectorDouble(150000, 150000, 150000);
   }
-  static rzf(e) {
+  static Dfg(e) {
     e = hardCodeDataLayerDependencies.get(e);
     let a = true;
     if (e?.size) {
@@ -46,7 +46,7 @@ class RenderModuleController extends ControllerBase_1.ControllerBase {
   }
   static SetWorldPartitionDataLayerState(e, a, t = false) {
     var r;
-    if (a && !this.rzf(e)) {
+    if (a && !this.Dfg(e)) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("World", 39, "[SetWorldPartitionDataLayerState]激活DataLayer前，发现依赖不满足，停止激活DataLayer，并加进DependenciesNotMatchDataLayerSet中", ["dataLayerName", e]);
       }
@@ -63,16 +63,16 @@ class RenderModuleController extends ControllerBase_1.ControllerBase {
       }
       r = a ? 2 : t ? 1 : 0;
       UE.KuroRenderingRuntimeBPPluginBPLibrary.SetWorldPartitionDataLayerState2(GlobalData_1.GlobalData.World, FNameUtil_1.FNameUtil.GetDynamicFName(e), r);
-      this.ozf(e, a, t);
+      this.Ufg(e, a, t);
     }
   }
-  static ozf(e, a, t) {
+  static Ufg(e, a, t) {
     var r = a ? 2 : t ? 1 : 0;
     var t = hardCodeReversedDataLayerDependencies.get(e);
     if (a) {
       if (t?.size) {
         for (const o of t) {
-          if (ModelManager_1.ModelManager.RenderModuleModel?.IsDependenciesNotMatchDataLayer(o) && this.rzf(o)) {
+          if (ModelManager_1.ModelManager.RenderModuleModel?.IsDependenciesNotMatchDataLayer(o) && this.Dfg(o)) {
             if (Log_1.Log.CheckInfo()) {
               Log_1.Log.Info("World", 39, "[SetWorldPartitionDataLayerState]激活DataLayer后，发现有本该激活的RelatedDataLayer依赖都已满足，激活relatedDataLayer", ["dataLayerName", e], ["relatedDataLayer", o]);
             }

@@ -14,6 +14,8 @@ const Platform_1 = require("../../../Launcher/Platform/Platform");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
 const GameSettingsController_1 = require("../../GameSettings/GameSettingsController");
+const GameSettingsDefine_1 = require("../../GameSettings/GameSettingsDefine");
+const GameSettingsDeviceRender_1 = require("../../GameSettings/GameSettingsDeviceRender");
 const CloudGameManager_1 = require("../../Manager/CloudGameManager");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
@@ -22,6 +24,7 @@ const UiSequencePlayer_1 = require("../../Ui/Base/UiSequencePlayer");
 const UiViewBase_1 = require("../../Ui/Base/UiViewBase");
 const MobileSwitchInputController_1 = require("../../Ui/Input/Moblie/MobileSwitchInputController");
 const UiManager_1 = require("../../Ui/UiManager");
+const ButtonItem_1 = require("../Common/Button/ButtonItem");
 const CommonTabComponentData_1 = require("../Common/TabComponent/CommonTabComponentData");
 const CommonTabData_1 = require("../Common/TabComponent/CommonTabData");
 const CommonTabTitleData_1 = require("../Common/TabComponent/CommonTabTitleData");
@@ -86,6 +89,7 @@ class MenuView extends UiViewBase_1.UiViewBase {
     this.feh = undefined;
     this.Jum = undefined;
     this.kQ_ = false;
+    this.FUg = undefined;
     this.Ivt = undefined;
     this.xqe = undefined;
     this.Nwi = undefined;
@@ -93,6 +97,11 @@ class MenuView extends UiViewBase_1.UiViewBase {
     this.a7 = () => new MenuScrollItemData();
     this.kwi = () => {
       this.Fwi();
+    };
+    this.JBi = e => {
+      if (e === GameSettingsDefine_1.EFunction.IMAGEQUALITY) {
+        this.X6d();
+      }
     };
     this.Lja = e => {
       if (e) {
@@ -120,6 +129,25 @@ class MenuView extends UiViewBase_1.UiViewBase {
     this.uWa = () => {
       if (Info_1.Info.IsMobileInputModel() && Info_1.Info.IsInGamepad()) {
         MobileSwitchInputController_1.MobileSwitchInputController.SwitchToTouch();
+      }
+    };
+    this.OCg = () => {
+      const e = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetRecommendQualityLv();
+      var t;
+      if (e !== undefined) {
+        (t = new ConfirmBoxDefine_1.ConfirmBoxDataNew(436)).FunctionMap.set(2, () => {
+          ControllerHolder_1.ControllerHolder.MenuController.HandleFireSaveMenuChange(ModelManager_1.ModelManager.MenuModel.GetMenuDataByFunctionId(GameSettingsDefine_1.EFunction.IMAGEQUALITY), e);
+          this.X6d();
+        });
+        ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(t);
+      }
+    };
+    this.X6d = () => {
+      var e = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetRecommendQualityLv();
+      if (e === undefined || ModelManager_1.ModelManager.MenuModel.GetDataCacheOrCurValue(GameSettingsDefine_1.EFunction.IMAGEQUALITY) !== e || ModelManager_1.ModelManager.MenuModel.IsImageQualityCustom) {
+        this.NUg(true);
+      } else {
+        this.NUg(false);
       }
     };
     this.Rla = t => {
@@ -247,46 +275,51 @@ class MenuView extends UiViewBase_1.UiViewBase {
     this.Kwi = t => {
       var t = this.Bwi[t];
       this.Gwi.MenuViewDataCurMainType = t;
-      var t = ConfigManager_1.ConfigManager.MenuBaseConfig.GetMainTypeConfigById(t);
-      var i = this.GetItem(5);
-      var n = this.GetItem(4);
-      if (t) {
-        let e = t.TabPanelType;
+      var i = ConfigManager_1.ConfigManager.MenuBaseConfig.GetMainTypeConfigById(t);
+      var n = this.GetItem(5);
+      var r = this.GetItem(4);
+      if (i) {
+        let e = i.TabPanelType;
         if (Platform_1.Platform.IsPcPlatform()) {
           if (CloudGameManager_1.CloudGameManager.IsCloudGame) {
             if (Info_1.Info.IsInGamepad()) {
-              e = t.PsTabPanelType;
+              e = i.PsTabPanelType;
             } else if (Info_1.Info.IsMobileInputModel()) {
-              e = t.TabPanelType;
+              e = i.TabPanelType;
             } else if (Info_1.Info.IsPcInputModel()) {
-              e = t.PcTabPanelType;
+              e = i.PcTabPanelType;
             }
           } else {
-            e = t.PcTabPanelType;
+            e = i.PcTabPanelType;
           }
         } else if (Platform_1.Platform.IsPs5Platform() || Platform_1.Platform.IsMobilePlatform() && Info_1.Info.IsInGamepad()) {
-          e = t.PsTabPanelType;
+          e = i.PsTabPanelType;
+        }
+        if (t === 2) {
+          this.FUg?.SetUiActive(true);
+        } else {
+          this.FUg?.SetUiActive(false);
         }
         switch (e) {
           case 1:
             this.Qwi();
-            i.SetUIActive(true);
-            n.SetUIActive(false);
+            n.SetUIActive(true);
+            r.SetUIActive(false);
             break;
           case 2:
             this.Xwi();
-            i.SetUIActive(false);
-            n.SetUIActive(true);
+            n.SetUIActive(false);
+            r.SetUIActive(true);
             break;
           default:
-            i.SetUIActive(false);
             n.SetUIActive(false);
+            r.SetUIActive(false);
         }
         this.uHa(this.Xpt);
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.FinishGuideStepByEvent, MenuDefine_1.STOP_GUIDE_TAG);
       } else {
-        i.SetUIActive(false);
         n.SetUIActive(false);
+        r.SetUIActive(false);
       }
     };
     this.yqe = e => {
@@ -310,10 +343,13 @@ class MenuView extends UiViewBase_1.UiViewBase {
     return this.Gwi;
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIDynScrollViewComponent], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIButtonComponent], [7, UE.UIItem], [8, UE.UIText]];
+    this.ComponentRegisterInfos = [[0, UE.UIDynScrollViewComponent], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIButtonComponent], [7, UE.UIItem], [8, UE.UIText], [9, UE.UIItem]];
     this.BtnBindInfo = [[6, this.uWa]];
   }
   OnStart() {
+    this.FUg = new ButtonItem_1.ButtonItem(this.GetItem(9));
+    this.FUg.SetFunction(this.OCg);
+    this.X6d();
     this.Ivt.SelectToggleByIndex(0, true);
     this.GetButton(6)?.RootUIComp.SetUIActive(Info_1.Info.IsMobileInputModel() && Info_1.Info.IsInGamepad());
   }
@@ -358,6 +394,7 @@ class MenuView extends UiViewBase_1.UiViewBase {
   OnAddEventListener() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnDropDownListVisibleChanged, this.Lja);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TextLanguageChange, this.kwi);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RefreshMenuSetting, this.JBi);
     if (Platform_1.Platform.IsMobilePlatform() || Platform_1.Platform.IsPcPlatform()) {
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ConfigLoadChange, this.Vwi);
     }
@@ -366,10 +403,17 @@ class MenuView extends UiViewBase_1.UiViewBase {
   OnRemoveEventListener() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnDropDownListVisibleChanged, this.Lja);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TextLanguageChange, this.kwi);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RefreshMenuSetting, this.JBi);
     if (Platform_1.Platform.IsMobilePlatform() || Platform_1.Platform.IsPcPlatform()) {
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ConfigLoadChange, this.Vwi);
     }
     UE.GameUserSettings.GetGameUserSettings()?.OnGameUserSettingsUINeedsUpdate.Remove(GameSettingsController_1.GameSettingsController.OnGameUserSettingsUINeedsUpdate);
+  }
+  NUg(e) {
+    if (this.FUg) {
+      this.FUg.SetEnableClick(e);
+      this.FUg.SetLocalTextNew(e ? "ImageSetting_ApplyRec" : "ImageSetting_AppledRec");
+    }
   }
   GetGuideUiItemAndUiItemForShowEx(e) {
     var t;

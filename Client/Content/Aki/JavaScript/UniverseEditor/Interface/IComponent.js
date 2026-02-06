@@ -265,7 +265,10 @@ exports.componentMap = {
   DynamicEntityRewardComponent: undefined,
   FurnitureSlotComponent: undefined,
   VisionDisplayComponent: undefined,
-  SystemModuleDataSyncComponent: undefined
+  SystemModuleDataSyncComponent: undefined,
+  ExhibitComponent: undefined,
+  SlidePerformComponent: undefined,
+  TimeScheduleComponent: undefined
 };
 exports.componentInterfaceMap = exports.componentMap;
 exports.componentList = Object.keys(exports.componentInterfaceMap).sort();
@@ -458,7 +461,10 @@ exports.rewardTypeCollectConfig = [0, 1, 2];
   o.ShopNew = "ShopNew";
 })(ENpcUiInteractType = exports.ENpcUiInteractType ||= {});
 (ESpecialNpcType = exports.ESpecialNpcType ||= {}).BaseRoleNpc = "BaseRoleNpc";
-(ESpecialNpcMarkType = exports.ESpecialNpcMarkType ||= {}).TrafficLight = "TrafficLight";
+(function (o) {
+  o.TrafficLight = "TrafficLight";
+  o.IgnoreCameraHideNpc = "IgnoreCameraHideNpc";
+})(ESpecialNpcMarkType = exports.ESpecialNpcMarkType ||= {});
 (function (o) {
   o.DirectionalField = "DirectionalField";
   o.PointField = "PointField";
@@ -595,6 +601,7 @@ exports.levelPrefabBpPathConfig = {
   o.FlowerBridge = "FlowerBridge";
   o.BookPage = "BookPage";
   o.FogBarrier = "FogBarrier";
+  o.QuantumFollowShooter = "QuantumFollowShooter";
 })(ERenderSpecifiedRangeType = exports.ERenderSpecifiedRangeType ||= {});
 (function (o) {
   o[o.Directional = 0] = "Directional";

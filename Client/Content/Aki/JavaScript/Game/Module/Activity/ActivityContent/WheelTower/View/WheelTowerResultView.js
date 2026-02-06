@@ -19,28 +19,28 @@ class WheelTowerResultView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
     this.zz = undefined;
-    this.Wtf = undefined;
-    this._tf = undefined;
-    this.ntf = undefined;
+    this.Zrf = undefined;
+    this.Crf = undefined;
+    this.crf = undefined;
     this.Pe = undefined;
     this.Hea = undefined;
     this.GV_ = undefined;
-    this.Bqf = undefined;
+    this.VVf = undefined;
     this.FV_ = undefined;
     this.bl = e => {
       if (e === "EnterS") {
-        this.Wtf?.Refresh(this.Pe.EndlessMode, this.Pe.CurrentRound, this.Pe.TotalRound);
-        this._tf?.Refresh(this.Pe.TotalScore, this.Pe.CurrentScore);
-        this.ntf?.Refresh(this.Pe.BossInfoList);
+        this.Zrf?.Refresh(this.Pe.EndlessMode, this.Pe.CurrentRound, this.Pe.TotalRound);
+        this.Crf?.Refresh(this.Pe.TotalScore, this.Pe.CurrentScore);
+        this.crf?.Refresh(this.Pe.BossInfoList);
       }
     };
-    this.Qtf = () => {
+    this.eof = () => {
       this.sQl(this.Pe?.LeftButtonData);
     };
-    this.Ktf = () => {
+    this.tof = () => {
       this.sQl(this.Pe?.CenterButtonData);
     };
-    this.Xtf = () => {
+    this.iof = () => {
       this.sQl(this.Pe?.RightButtonData);
     };
     this.sQl = e => {
@@ -63,11 +63,11 @@ class WheelTowerResultView extends UiViewBase_1.UiViewBase {
   async OnBeforeStartAsync() {
     this.Pe = this.OpenParam;
     var e = [];
-    e.push(this.kqf());
+    e.push(this.HVf());
     this.GV_ = new ButtonItem_1.ButtonItem();
     e.push(this.GV_.CreateThenShowByActorAsync(this.GetItem(4).GetOwner()));
-    this.Bqf = new ButtonItem_1.ButtonItem();
-    e.push(this.Bqf.CreateThenShowByActorAsync(this.GetItem(5).GetOwner()));
+    this.VVf = new ButtonItem_1.ButtonItem();
+    e.push(this.VVf.CreateThenShowByActorAsync(this.GetItem(5).GetOwner()));
     this.FV_ = new ButtonItem_1.ButtonItem();
     e.push(this.FV_.CreateThenShowByActorAsync(this.GetItem(6).GetOwner()));
     await Promise.all(e);
@@ -76,9 +76,9 @@ class WheelTowerResultView extends UiViewBase_1.UiViewBase {
     this.Hea = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
     this.Hea.PlaySequencePurely("Success");
     this.ZGe();
-    this.qqf();
+    this.jVf();
   }
-  qqf() {
+  jVf() {
     var e = this.Pe?.ShowEndlessUnlockTips ?? false;
     this.GetItem(7)?.SetUIActive(e);
   }
@@ -87,17 +87,17 @@ class WheelTowerResultView extends UiViewBase_1.UiViewBase {
       this.GV_?.SetShowText(this.Pe.LeftButtonData.Name);
     }
     if (this.Pe?.CenterButtonData) {
-      this.Bqf?.SetShowText(this.Pe.CenterButtonData.Name);
+      this.VVf?.SetShowText(this.Pe.CenterButtonData.Name);
     }
     if (this.Pe?.RightButtonData) {
       this.FV_?.SetShowText(this.Pe.RightButtonData.Name);
     }
     this.GV_?.SetUiActive(this.Pe?.LeftButtonData !== undefined);
-    this.Bqf?.SetUiActive(this.Pe?.CenterButtonData !== undefined);
+    this.VVf?.SetUiActive(this.Pe?.CenterButtonData !== undefined);
     this.FV_?.SetUiActive(this.Pe?.RightButtonData !== undefined);
-    this.GV_?.SetFunction(this.Qtf);
-    this.Bqf?.SetFunction(this.Ktf);
-    this.FV_?.SetFunction(this.Xtf);
+    this.GV_?.SetFunction(this.eof);
+    this.VVf?.SetFunction(this.tof);
+    this.FV_?.SetFunction(this.iof);
   }
   OnBeforeDestroy() {
     this.Hea?.Clear();
@@ -108,14 +108,14 @@ class WheelTowerResultView extends UiViewBase_1.UiViewBase {
   OnRemoveEventListener() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.bl);
   }
-  async kqf() {
+  async HVf() {
     this.zz = this.GetScrollViewWithScrollbar(3).GetContent().GetUIItem();
-    this.Wtf = new WheelTowerResultRoundItem_1.WheelTowerResultRoundItem();
-    this._tf = new WheelTowerResultScoreList_1.WheelTowerResultScoreList();
-    this.ntf = new WheelTowerResultBossList_1.WheelTowerResultBossList();
-    await this.Wtf.CreateByResourceIdAsync("UiItem_WheelTowerRoundDescInfo", this.zz);
-    await this._tf.CreateByResourceIdAsync("UiItem_WheelTowerScoreList", this.zz);
-    await this.ntf.CreateByResourceIdAsync("UiItem_WheelTowerBossRushGrid", this.zz);
+    this.Zrf = new WheelTowerResultRoundItem_1.WheelTowerResultRoundItem();
+    this.Crf = new WheelTowerResultScoreList_1.WheelTowerResultScoreList();
+    this.crf = new WheelTowerResultBossList_1.WheelTowerResultBossList();
+    await this.Zrf.CreateByResourceIdAsync("UiItem_WheelTowerRoundDescInfo", this.zz);
+    await this.Crf.CreateByResourceIdAsync("UiItem_WheelTowerScoreList", this.zz);
+    await this.crf.CreateByResourceIdAsync("UiItem_WheelTowerBossRushGrid", this.zz);
   }
 }
 exports.WheelTowerResultView = WheelTowerResultView;

@@ -20,14 +20,14 @@ class WheelTowerRoleInfoPanel extends UiPanelBase_1.UiPanelBase {
     this.OnClickConfirm = undefined;
     this.ESc = undefined;
     this.jlo = undefined;
-    this.Quf = undefined;
+    this.jdf = undefined;
     this.dFe = 0;
     this.mqu = () => {
       var e = new RoleSkillItem();
-      e.SetToggleCallback(this.ytf);
+      e.SetToggleCallback(this.Rrf);
       return e;
     };
-    this.ytf = e => {
+    this.Rrf = e => {
       this.jlo?.SelectGridProxyByKey(e);
       var i = ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillConfigById(e);
       this.GetText(5)?.ShowTextNew(i.SkillName);
@@ -58,8 +58,8 @@ class WheelTowerRoleInfoPanel extends UiPanelBase_1.UiPanelBase {
   async OnBeforeStartAsync() {
     this.ESc = new GenericLayout_1.GenericLayout(this.GetMultiTemplateLayout(1), () => new RoleTagMediumIconItem_1.RoleTagMediumIconItem());
     this.jlo = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(3), this.mqu);
-    this.Quf = new WarningTips();
-    await this.Quf.CreateByActorAsync(this.GetItem(19).GetOwner());
+    this.jdf = new WarningTips();
+    await this.jdf.CreateByActorAsync(this.GetItem(19).GetOwner());
   }
   OnStart() {
     this.GetItem(18)?.SetUIActive(false);
@@ -75,11 +75,11 @@ class WheelTowerRoleInfoPanel extends UiPanelBase_1.UiPanelBase {
       this.GetText(0)?.ShowTextNew(i.Name);
       this.qSo(i);
       this.Twc(i);
-      this.Etf(e);
-      this.Itf(e);
+      this.Prf(e);
+      this.Arf(e);
     }
   }
-  Etf(e) {
+  Prf(e) {
     var i = ModelManager_1.ModelManager.WheelTowerModel.IsTemplateRole(e);
     this.GetItem(13)?.SetUIActive(i);
     if (i) {
@@ -87,13 +87,13 @@ class WheelTowerRoleInfoPanel extends UiPanelBase_1.UiPanelBase {
       this.GetText(14)?.ShowTextNew(i);
     }
   }
-  Itf(e) {
+  Arf(e) {
     var i = ModelManager_1.ModelManager.WheelTowerModel.IsTemplateRole(e);
     if (i) {
-      this.Quf?.SetUiActive(false);
+      this.jdf?.SetUiActive(false);
     } else if (ModelManager_1.ModelManager.WheelTowerModel.SelectedEnergyInfo.GetRoleEnergy(e) > 0) {
       i = ModelManager_1.ModelManager.WheelTowerModel.CheckConflict(e);
-      this.Quf?.SetUiActive(i !== undefined);
+      this.jdf?.SetUiActive(i !== undefined);
       if (i !== undefined) {
         let e = "";
         if (i.WeaponConflict && i.PhantomConflict) {
@@ -103,10 +103,10 @@ class WheelTowerRoleInfoPanel extends UiPanelBase_1.UiPanelBase {
         } else if (i.PhantomConflict) {
           e = "WheelBattleRoleInfo_PhantomConflict";
         }
-        this.Quf?.SetTextById(e);
+        this.jdf?.SetTextById(e);
       }
     } else {
-      this.Quf?.SetUiActive(false);
+      this.jdf?.SetUiActive(false);
     }
   }
   qSo(e) {
@@ -144,7 +144,7 @@ class WheelTowerRoleInfoPanel extends UiPanelBase_1.UiPanelBase {
     }
     this.jlo?.RefreshByData(r, () => {
       this.jlo.GetLayoutItemByIndex(0)?.SetSelected(true, true);
-      this.ytf(r[0]);
+      this.Rrf(r[0]);
     });
   }
 }

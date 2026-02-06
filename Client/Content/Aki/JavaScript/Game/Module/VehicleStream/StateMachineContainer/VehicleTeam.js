@@ -10,7 +10,7 @@ class VehicleTeam extends StateMachineContainer_1.StateMachineContainer {
   constructor(e) {
     super();
     this.TeamId = e;
-    this.PUm = new Map();
+    this.rxm = new Map();
   }
   get Type() {
     return 1;
@@ -19,14 +19,14 @@ class VehicleTeam extends StateMachineContainer_1.StateMachineContainer {
     return this.TeamId;
   }
   GetVehicleMember(e) {
-    return this.PUm.get(e);
+    return this.rxm.get(e);
   }
   AddVehicleMember(e, t) {
-    this.PUm.set(e, t);
+    this.rxm.set(e, t);
     ModelManager_1.ModelManager.VehicleStreamModel.OnAddVehicleTeamMember(e, t);
   }
   RemoveVehicleMember(e) {
-    this.PUm.delete(e);
+    this.rxm.delete(e);
     ModelManager_1.ModelManager.VehicleStreamModel.OnRemoveVehicleTeamMember(e);
   }
 }

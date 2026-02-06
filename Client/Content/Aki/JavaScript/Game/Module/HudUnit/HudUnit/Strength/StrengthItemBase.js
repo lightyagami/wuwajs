@@ -4,6 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.StrengthItemBase = undefined;
+const Log_1 = require("../../../../../Core/Common/Log");
 const Stats_1 = require("../../../../../Core/Common/Stats");
 const UiPanelBase_1 = require("../../../../Ui/Base/UiPanelBase");
 const BattleUiTweenAnimPlayer_1 = require("../../../BattleUi/Views/BattleUiTweenAnimPlayer");
@@ -14,11 +15,12 @@ class StrengthItemBase extends UiPanelBase_1.UiPanelBase {
     this.RoleData = undefined;
     this.UiVisibleChanged = undefined;
     this.TagTaskList = [];
+    this.IsEnableStrengthItem = true;
     this.TweenAnimPlayer = new BattleUiTweenAnimPlayer_1.BattleUiTweenAnimPlayer();
   }
-  Init(t, e, s) {
+  Init(t, e, i) {
     this.RoleData = e;
-    this.UiVisibleChanged = s;
+    this.UiVisibleChanged = i;
     this.InitAsync(t).catch(() => {});
   }
   async InitAsync(t) {
@@ -32,6 +34,9 @@ class StrengthItemBase extends UiPanelBase_1.UiPanelBase {
     this.OnAddEvents();
     this.OnAddEntityEvents();
     this.OnRefreshRoleData();
+    if (!this.IsEnableStrengthItem) {
+      this.SetEnableStrengthItem(false);
+    }
   }
   OnBeforeShow() {
     this.UiVisibleChanged?.(true);
@@ -57,11 +62,17 @@ class StrengthItemBase extends UiPanelBase_1.UiPanelBase {
   }
   OnAddEvents() {}
   OnRemoveEvents() {}
+  SetEnableStrengthItem(t) {
+    if (this.IsEnableStrengthItem !== t && (Log_1.Log.CheckInfo() && Log_1.Log.Info("HudUnit", 96, "体力条 SetEnableStrengthItem", ["", this.constructor.name], ["", t]), this.IsEnableStrengthItem = t, this.IsAfterStart)) {
+      this.OnEnableStrengthItem(t);
+    }
+  }
+  OnEnableStrengthItem(t) {}
   OnAddEntityEvents() {}
   OnRemoveEntityEvents() {}
   OnRefreshRoleData() {}
-  ListenForTagAddOrRemove(t, e, s) {
-    t = t.ListenForTagAddOrRemove(e, s, StrengthItemBase.SYe);
+  ListenForTagAddOrRemove(t, e, i) {
+    t = t.ListenForTagAddOrRemove(e, i, StrengthItemBase.SYe);
     if (t) {
       this.TagTaskList.push(t);
     }

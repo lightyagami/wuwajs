@@ -194,24 +194,8 @@ class SettlementCamera {
   PlaySettlementCamera(t) {
     if (!ControllerHolder_1.ControllerHolder.CameraController.IsSequenceCameraInCinematic()) {
       this.E5l(t);
-      if (this.Tme && this.Tme.CameraModifier) {
-        this.Gme = this.Hh.PlayerRotatorInGravity.Yaw;
-        this.Nme = this.Hh.PlayerLocation;
-        this.Ime = Math.max(this.Hh.FinalCameraDistance, this.Dme);
-        this.Fse.bTraceComplex = false;
-        this.Fse.HitResult?.Clear();
-        this.Fse.WorldContextObject = GlobalData_1.GlobalData.World;
-        this.Fse.Radius = this.Ime;
-        this.Fse.ActorsToIgnore.Add(this.Hh.Character);
-        this.Fse.SetTraceTypeQuery(QueryTypeDefine_1.KuroTraceTypeQuery.Camera);
-        this.Fse.AddObjectTypeQuery(QueryTypeDefine_1.KuroObjectTypeQuery.Pawn);
-        this.Fse.AddObjectTypeQuery(QueryTypeDefine_1.KuroObjectTypeQuery.PawnMonster);
-        this.Fse.AddObjectTypeQuery(QueryTypeDefine_1.KuroObjectTypeQuery.PawnPlayer);
-        TraceElementCommon_1.TraceElementCommon.SetStartLocation(this.Fse, this.Hh.PlayerLocation);
-        TraceElementCommon_1.TraceElementCommon.SetEndLocation(this.Fse, this.Hh.PlayerLocation);
-        TraceElementCommon_1.TraceElementCommon.SphereTrace(this.Fse, PROFILE_KEY);
-        this.UpdateRotator(this.Fse.HitResult);
-        this.PlaySettlementCameraInternal();
+      if (this.Tme && this.Tme.CameraModifier && (this.Gme = this.Hh.PlayerRotatorInGravity.Yaw, this.Nme = this.Hh.PlayerLocation, this.Ime = Math.max(this.Hh.FinalCameraDistance, this.Dme), this.Fse.bTraceComplex = false, this.Fse.HitResult?.Clear(), this.Fse.WorldContextObject = GlobalData_1.GlobalData.World, this.Fse.Radius = this.Ime, this.Fse.ActorsToIgnore.Add(this.Hh.Character), this.Fse.SetTraceTypeQuery(QueryTypeDefine_1.KuroTraceTypeQuery.Camera), this.Fse.AddObjectTypeQuery(QueryTypeDefine_1.KuroObjectTypeQuery.Pawn), this.Fse.AddObjectTypeQuery(QueryTypeDefine_1.KuroObjectTypeQuery.PawnMonster), this.Fse.AddObjectTypeQuery(QueryTypeDefine_1.KuroObjectTypeQuery.PawnPlayer), TraceElementCommon_1.TraceElementCommon.SetStartLocation(this.Fse, this.Hh.PlayerLocation), TraceElementCommon_1.TraceElementCommon.SetEndLocation(this.Fse, this.Hh.PlayerLocation), TraceElementCommon_1.TraceElementCommon.SphereTrace(this.Fse, PROFILE_KEY), this.UpdateRotator(this.Fse.HitResult), this.PlaySettlementCameraInternal(), (t = GlobalData_1.GlobalData.BpEventManager)?.IsValid())) {
+        t.当触发结算镜头时.Broadcast();
       }
     }
   }
@@ -442,9 +426,9 @@ class SettlementCamera {
     this.Kme.length = 0;
     this.Wme.push(new YawRange(this.xme, this.wme));
     this.Kme.push(new YawRange(this.Bme, this.bme));
-    for (const l of this.jme) {
-      var t = MathCommon_1.MathCommon.WrapAngle(l.Max - this.Gme);
-      var i = MathCommon_1.MathCommon.WrapAngle(l.Min - this.Gme);
+    for (const N of this.jme) {
+      var t = MathCommon_1.MathCommon.WrapAngle(N.Max - this.Gme);
+      var i = MathCommon_1.MathCommon.WrapAngle(N.Min - this.Gme);
       let s = 0;
       let h = 0;
       let _ = 0;
@@ -527,19 +511,19 @@ class SettlementCamera {
         let t = true;
         var n;
         var R;
-        var N = this.Kme[i];
+        var l = this.Kme[i];
         if (M >= 2) {
-          if (!(N.Min > o) && !(N.Max < A)) {
-            n = Math.max(N.Min, A);
-            R = Math.min(N.Max, o);
+          if (!(l.Min > o) && !(l.Max < A)) {
+            n = Math.max(l.Min, A);
+            R = Math.min(l.Max, o);
             this.Kme.push(new YawRange(n, R));
           }
         }
         if (M >= 1) {
-          if (!(N.Min > r) && !(N.Max < a)) {
+          if (!(l.Min > r) && !(l.Max < a)) {
             t = false;
-            N.Min = Math.max(N.Min, a);
-            N.Max = Math.min(N.Max, r);
+            l.Min = Math.max(l.Min, a);
+            l.Max = Math.min(l.Max, r);
           }
         }
         if (t) {

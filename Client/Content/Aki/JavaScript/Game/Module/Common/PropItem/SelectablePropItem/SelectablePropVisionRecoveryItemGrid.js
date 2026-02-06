@@ -6,49 +6,50 @@ Object.defineProperty(exports, "__esModule", {
 exports.SelectablePropVisionRecoveryItemGrid = undefined;
 const ConfigManager_1 = require("../../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
+const CalabashDefine_1 = require("../../../Calabash/CalabashDefine");
 const SelectablePropMediumItemGrid_1 = require("./SelectablePropMediumItemGrid");
 class SelectablePropVisionRecoveryItemGrid extends SelectablePropMediumItemGrid_1.SelectablePropMediumItemGrid {
   RefreshUi(e) {
     this.SelectablePropData = e;
-    var r;
+    var a;
     var i = ModelManager_1.ModelManager.InventoryModel;
-    var t = e.IncId;
-    var o = e.ItemId;
-    var a = e.ItemDataType;
-    var n = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(o);
-    let s = undefined;
-    if (s = t > 0 ? i.GetAttributeItemData(t) : i.GetCommonItemData(o)) {
+    var r = e.IncId;
+    var t = e.ItemId;
+    var o = e.ItemDataType;
+    var s = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(t);
+    let n = undefined;
+    if (n = r > 0 ? i.GetAttributeItemData(r) : i.GetCommonItemData(t)) {
       i = this.SelectablePropData.SelectedCount;
-      r = this.SelectablePropData.Count;
+      a = this.SelectablePropData.Count;
       e = {
         Type: 4,
         Data: e,
-        ItemConfigId: o,
-        StarLevel: n.QualityId,
+        ItemConfigId: t,
+        StarLevel: s.QualityId,
         ReduceButtonInfo: {
           IsVisible: i > 0,
           LongPressConfigId: 1
         }
       };
-      if (a === 3) {
-        n = (o = ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomBattleData(t)).GetPhantomLevel();
-        a = o.GetExp();
-        e.ItemConfigId = o.GetConfigId(true);
-        e.QualityId = o.GetQuality();
-        e.Level = o.GetCost();
+      if (o === 3) {
+        s = (t = ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomBattleData(r)).GetPhantomLevel();
+        o = t.GetExp();
+        e.ItemConfigId = t.GetConfigId(true);
+        e.QualityId = t.GetQuality();
+        e.Level = t.GetCost();
         e.IsLevelTextUseChangeColor = true;
         e.BottomTextId = "VisionLevel";
-        e.IsDisable = n > 1 || a > 0;
-        e.BottomTextParameter = [o.GetPhantomLevel()];
-        e.VisionFetterGroupId = o.GetFetterGroupId();
+        e.IsDisable = s > 1 || o > 0 || this.SelectablePropData.OnlyGold && t.GetQuality() < CalabashDefine_1.VISION_GOLD_QUALITY;
+        e.BottomTextParameter = [t.GetPhantomLevel()];
+        e.VisionFetterGroupId = t.GetFetterGroupId();
         e.IsOmitBottomText = true;
-        e.IsLockVisible = o.GetIsLock();
-        e.IsDeprecate = o.GetIsDeprecated();
+        e.IsLockVisible = t.GetIsLock();
+        e.IsDeprecate = t.GetIsDeprecated();
       } else if (i > 0) {
         e.BottomTextId = "Text_ItemEnoughText_Text";
-        e.BottomTextParameter = [i, r];
+        e.BottomTextParameter = [i, a];
       } else {
-        e.BottomText = r.toString();
+        e.BottomText = a.toString();
       }
       this.Apply(e);
     }

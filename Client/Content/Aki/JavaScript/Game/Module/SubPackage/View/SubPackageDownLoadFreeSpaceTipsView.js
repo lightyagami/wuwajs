@@ -13,14 +13,14 @@ const LguiUtil_1 = require("../../Util/LguiUtil");
 class SubPackageDownLoadFreeSpaceTipsView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
-    this.xGm = 0;
+    this.KFm = 0;
     this.uHe = () => {
       this.CloseMe();
     };
     this.L3e = () => {
       var e = VideoResUpdate_1.VideoResUpdate.GetFreeSpace();
-      if (ModelManager_1.ModelManager.SubPackageDownLoadModel.GetSubPackageSpace(this.xGm) - ModelManager_1.ModelManager.SubPackageDownLoadModel.GetSubPackageHaveDownLoadSpace(this.xGm) < e) {
-        ControllerHolder_1.ControllerHolder.SubPackageController.PrioritySubPackageDownLoading([this.xGm]);
+      if (ModelManager_1.ModelManager.SubPackageDownLoadModel.GetSubPackageSpace(this.KFm) - ModelManager_1.ModelManager.SubPackageDownLoadModel.GetSubPackageHaveDownLoadSpace(this.KFm) < e) {
+        ControllerHolder_1.ControllerHolder.SubPackageController.PrioritySubPackageDownLoading([this.KFm]);
         this.CloseMe();
       } else {
         this.Og();
@@ -32,19 +32,19 @@ class SubPackageDownLoadFreeSpaceTipsView extends UiViewBase_1.UiViewBase {
     this.BtnBindInfo = [[2, this.uHe], [3, this.L3e]];
   }
   OnStart() {
-    this.xGm = this.OpenParam;
-    if (this.xGm) {
+    this.KFm = this.OpenParam;
+    if (this.KFm) {
       this.Og();
     }
-    ModelManager_1.ModelManager.SubPackageDownLoadModel.HaveTipsOutOfSpaceList.push(this.xGm);
-    var e = ModelManager_1.ModelManager.SubPackageDownLoadModel.GetSubPackageSpace(this.xGm) - ModelManager_1.ModelManager.SubPackageDownLoadModel.GetSubPackageHaveDownLoadSpace(this.xGm);
-    ControllerHolder_1.ControllerHolder.SubPackageController.ReportSubPackageOutOfSpaceLogEvent(this.xGm, e, VideoResUpdate_1.VideoResUpdate.GetFreeSpace());
+    ModelManager_1.ModelManager.SubPackageDownLoadModel.HaveTipsOutOfSpaceList.push(this.KFm);
+    var e = ModelManager_1.ModelManager.SubPackageDownLoadModel.GetSubPackageSpace(this.KFm) - ModelManager_1.ModelManager.SubPackageDownLoadModel.GetSubPackageHaveDownLoadSpace(this.KFm);
+    ControllerHolder_1.ControllerHolder.SubPackageController.ReportSubPackageOutOfSpaceLogEvent(this.KFm, e, VideoResUpdate_1.VideoResUpdate.GetFreeSpace());
   }
   OnBeforeShow() {
     this.ChildPopView?.PopItem?.SetBackBtnShowState(false);
   }
   Og() {
-    var e = ModelManager_1.ModelManager.SubPackageDownLoadModel.GetSubPackageSpace(this.xGm) - ModelManager_1.ModelManager.SubPackageDownLoadModel.GetSubPackageHaveDownLoadSpace(this.xGm);
+    var e = ModelManager_1.ModelManager.SubPackageDownLoadModel.GetSubPackageSpace(this.KFm) - ModelManager_1.ModelManager.SubPackageDownLoadModel.GetSubPackageHaveDownLoadSpace(this.KFm);
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), "DownLoadText_NeedSpace", ModelManager_1.ModelManager.SubPackageDownLoadModel.ByteConverter(e));
     var e = VideoResUpdate_1.VideoResUpdate.GetFreeSpace();
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), "DownLoadText_LeftSpace", `<color=#c25757>${ModelManager_1.ModelManager.SubPackageDownLoadModel.ByteConverter(e)}</color>`);

@@ -22,7 +22,7 @@ const SeamlessTravelScreenEffect_1 = require("../SeamlessTravel/SeamlessTravelSc
 const SeamlessTravelTreadmill_1 = require("../SeamlessTravel/SeamlessTravelTreadmill");
 const TeleportContextHolder_1 = require("./TeleportContextHolder");
 class TeleportSeamlessHelper extends TeleportContextHolder_1.TeleportContextHolder {
-  SeamlessTeleportPreStart() {
+  async SeamlessTeleportPreStart() {
     const t = ModelManager_1.ModelManager.TeleportModel;
     if (this.TeleportContext.SeamlessEndHandle) {
       TimerSystem_1.GameplayTimerSystem.Remove(this.TeleportContext.SeamlessEndHandle);
@@ -30,27 +30,21 @@ class TeleportSeamlessHelper extends TeleportContextHolder_1.TeleportContextHold
     }
     this.TeleportContext.InitSeamlessContext();
     this.TeleportContext.IsInSeamlessTeleport = true;
-    const e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity;
+    if (ModelManager_1.ModelManager.SceneTeamModel.LoadTeamPromise && (Log_1.Log.CheckInfo() && Log_1.Log.Info("SeamlessTravel", 39, "[传送:等待当前正在加载的编队(开始)]"), await ModelManager_1.ModelManager.SceneTeamModel.LoadTeamPromise.Promise, Log_1.Log.CheckInfo())) {
+      Log_1.Log.Info("SeamlessTravel", 39, "[传送:等待当前正在加载的编队(完成)]");
+    }
+    var e;
+    var o = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity;
     this.TeleportContext.UseTreadmill = false;
+    this.TeleportContext.UseKeepKite = false;
     this.TeleportContext.UseKeepMovementMode = false;
-    if (this.TeleportContext.SeamlessConfig?.LeastTime) {
-      this.TeleportContext.UseTreadmill = true;
-    }
-    let o = undefined;
     let s = undefined;
-    if (this.TeleportContext.SeamlessConfig?.KeepMovementStateFeatures?.KeepKite && (r = e.GetComponent(105))?.GetIsHooking() && r.GetCurrentTarget()?.GetHookInteractType() === "KiteHook") {
-      this.TeleportContext.UseTreadmill = false;
-      this.TeleportContext.UseKeepKite = true;
-      this.TeleportContext.UseKeepMovementMode = true;
-      o = 6;
-      s = CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_KITE;
-    }
-    if (!this.TeleportContext.UseKeepMovementMode) {
-      if (r = SeamlessTravelKeepMovementMode_1.SeamlessTravelKeepMovementMode.GetCurrentKeepableMovementMode(this.TeleportContext.SeamlessConfig)) {
+    let r = undefined;
+    if (o?.Valid && (this.TeleportContext.SeamlessConfig?.KeepMovementStateFeatures?.KeepKite && (e = o.GetComponent(107))?.GetIsHooking() && e.GetCurrentTarget()?.GetHookInteractType() === "KiteHook" && (this.TeleportContext.UseKeepKite = true), this.TeleportContext.UseKeepKite ? (this.TeleportContext.UseKeepMovementMode = true, s = 6, r = CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_KITE) : this.TeleportContext.SeamlessConfig?.KeepMovementStateFeatures && (e = SeamlessTravelKeepMovementMode_1.SeamlessTravelKeepMovementMode.GetCurrentKeepableMovementMode(this.TeleportContext.SeamlessConfig)) && (this.TeleportContext.UseKeepMovementMode = true, s = e[0], r = e[1]), this.TeleportContext.SeamlessConfig?.LeastTime)) {
+      if (this.TeleportContext.UseKeepMovementMode) {
         this.TeleportContext.UseTreadmill = false;
-        this.TeleportContext.UseKeepMovementMode = true;
-        o = r[0];
-        s = r[1];
+      } else {
+        this.TeleportContext.UseTreadmill = true;
       }
     }
     if (this.TeleportContext.UseTreadmill) {
@@ -73,43 +67,45 @@ class TeleportSeamlessHelper extends TeleportContextHolder_1.TeleportContextHold
         this.TeleportContext.Treadmill.ResetLockOnLocation(e, t.StartGravityDirect);
       });
     }
-    if (this.TeleportContext.UseKeepKite) {
-      const i = e.GetComponent(105);
-      var r = i.GetCurrentTargetEntity().Entity;
-      this.TeleportContext.KeepKite = new SeamlessTravelKeepKite_1.SeamlessTravelKeepKite();
-      this.TeleportContext.KeepKite.SetInitData(r, e);
-      if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("SeamlessTravel", 39, "传送:风筝资产加载(开始)");
-      }
-      this.TeleportContext.KeepKite.Init(this.TeleportContext.SeamlessConfig, t => {
-        if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("SeamlessTravel", 39, "传送:风筝资产加载(完成)");
-        }
-        if (i?.GetIsHooking() && i.GetCurrentTarget()?.GetHookInteractType() === "KiteHook") {
-          i.GetCurrentTargetEntity().Entity?.Disable("传送隐藏风筝声骸");
-          i.SetIsHookEndByInterrupt(true);
-          e?.GetComponent(41)?.EndSkill(210130, "传送停止勾风筝技能");
-        }
-        if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("SeamlessTravel", 50, "传送:伪风筝显形(开始)");
-        }
-        this.TeleportContext.KeepKite?.AppearEffect(e => {
-          if (Log_1.Log.CheckInfo()) {
-            Log_1.Log.Info("SeamlessTravel", 50, "传送:伪风筝显形(完成)");
-          }
-          this.TeleportContext.KiteAppeared?.SetResult(t);
-        });
-      });
-    }
     if (this.TeleportContext.UseKeepMovementMode) {
       this.TeleportContext.KeepMovementMode = new SeamlessTravelKeepMovementMode_1.SeamlessTravelKeepMovementMode();
-      this.TeleportContext.KeepMovementMode.SetInitDataWithTargetMode(o, s);
+      this.TeleportContext.KeepMovementMode.SetInitDataWithTargetMode(s, r);
       this.TeleportContext.KeepMovementMode.Init(this.TeleportContext.SeamlessConfig, () => {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Teleport", 50, "传送:保持运动模式开始");
         }
         this.TeleportContext.KeepMovementMode?.AppearEffect();
       });
+    }
+    if (this.TeleportContext.UseKeepKite) {
+      e = o?.GetComponent(107)?.GetCurrentTargetEntity()?.Entity;
+      this.TeleportContext.KeepKite = new SeamlessTravelKeepKite_1.SeamlessTravelKeepKite();
+      if (e && o) {
+        this.TeleportContext.KeepKite.SetInitData(e, o);
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("SeamlessTravel", 39, "传送:风筝资产加载(开始)");
+        }
+        this.TeleportContext.KeepKite.Init(this.TeleportContext.SeamlessConfig, t => {
+          if (Log_1.Log.CheckInfo()) {
+            Log_1.Log.Info("SeamlessTravel", 39, "传送:风筝资产加载(完成)");
+          }
+          if (Log_1.Log.CheckInfo()) {
+            Log_1.Log.Info("SeamlessTravel", 50, "传送:伪风筝显形(开始)");
+          }
+          this.TeleportContext.KeepKite?.AppearEffect(e => {
+            if (Log_1.Log.CheckInfo()) {
+              Log_1.Log.Info("SeamlessTravel", 50, "传送:伪风筝显形(完成)");
+            }
+            this.TeleportContext.KeepMovementMode?.CheckAndKeepMoveState();
+            this.TeleportContext.KiteAppeared?.SetResult(t);
+          });
+        });
+      } else {
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("SeamlessTravel", 39, "传送:风筝表现失败，关联实体出错", ["HookTargetEntityValid", !!e?.Valid], ["TargetEntityValid", !!o?.Valid]);
+        }
+        this.TeleportContext.UseKeepKite = false;
+      }
     }
     if (this.TeleportContext.SeamlessConfig?.TransitionWeatherDaPath) {
       this.TeleportContext.PostProcess = new SeamlessTravelPostProcess_1.SeamlessTravelPostProcess();
@@ -238,7 +234,7 @@ class TeleportSeamlessHelper extends TeleportContextHolder_1.TeleportContextHold
           o();
         });
         var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.GetComponent(3);
-        ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.GetComponent(186)?.StopModelBuffer();
+        ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.GetComponent(188)?.StopModelBuffer();
         var t = Vector_1.Vector.Create();
         this.TeleportContext.Treadmill.GetLockOnLocation(t);
         if (Log_1.Log.CheckInfo()) {

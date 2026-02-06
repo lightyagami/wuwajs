@@ -30,7 +30,7 @@ class TsTaskChangeMovementMode extends TsTaskAbortImmediatelyBase_1.default {
     var s;
     var o = e.AiController;
     if (o) {
-      if ((o = o.CharActorComp) && (s = ActorUtils_1.ActorUtils.GetEntityByActor(o.Actor)) && s.Entity.GetComponent(46)) {
+      if ((o = o.CharActorComp) && (s = ActorUtils_1.ActorUtils.GetEntityByActor(o.Actor)) && s.Entity.GetComponent(48)) {
         o.Actor.KuroSetMovementMode({
           Mode: this.TsMovementMode,
           Context: "[TsTaskChangeMovementMode.ReceiveExecuteAI]"

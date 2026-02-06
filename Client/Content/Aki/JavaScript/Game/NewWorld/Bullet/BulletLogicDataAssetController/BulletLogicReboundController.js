@@ -21,7 +21,7 @@ class BulletLogicReboundController extends BulletLogicController_1.BulletLogicCo
     super(t, e);
     this.n$t = undefined;
     this.a7o = undefined;
-    this.n$t = e.GetComponent(178);
+    this.n$t = e.GetComponent(180);
     this.a7o = this.Bullet.GetBulletInfo();
   }
   OnInit() {
@@ -30,7 +30,7 @@ class BulletLogicReboundController extends BulletLogicController_1.BulletLogicCo
   BulletLogicAction(t) {
     var e = t.BulletDataMain.Logic.ReboundChannel;
     if (!((this.LogicController.ReboundBitMask & e) <= 0)) {
-      if (this.LogicController.EffectRebound && UE.KismetSystemLibrary.IsValidSoftObjectReference(this.LogicController.EffectRebound) && (l = (e = t.Attacker).GetComponent(1)) && (e = e.GetComponent(64))) {
+      if (this.LogicController.EffectRebound && UE.KismetSystemLibrary.IsValidSoftObjectReference(this.LogicController.EffectRebound) && (l = (e = t.Attacker).GetComponent(1)) && (e = e.GetComponent(66))) {
         r = UE.KismetMathLibrary.Conv_VectorToVectorDouble(this.LogicController.PositionOffset);
         r = UE.KismetMathLibrary.D_TransformLocation(l.ActorTransform, r);
         l = UE.KismetMathLibrary.D_TransformRotation(l.ActorTransform, this.LogicController.RotationOffset);
@@ -59,7 +59,7 @@ class BulletLogicReboundController extends BulletLogicController_1.BulletLogicCo
           SkillContextId: this.a7o.BulletInitParams.SkillContextId,
           Source: Protocol_1.Aki.Protocol.E4s.Proto_ReboundSource,
           DtType: this.a7o.BulletInitParams.DtType,
-          BattleFlags: this.a7o.BulletInitParams.BattleFlags,
+          BattleContext: this.a7o.BulletInitParams.BattleContext,
           ParentIds: undefined
         }, o);
         if (s?.Valid && (s = s.GetBulletInfo()).BulletDataMain.Render.HandOverParentEffect) {

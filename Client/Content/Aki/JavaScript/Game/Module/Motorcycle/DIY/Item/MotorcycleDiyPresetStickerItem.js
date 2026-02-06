@@ -23,12 +23,12 @@ class MotorcycleDiyPresetStickerItem extends GridProxyAbstract_1.GridProxyAbstra
     a.SetUIActive(false);
     n.SetUIActive(false);
     c.SetUIActive(false);
-    var i = ConfigManager_1.ConfigManager.MotorDiyConfig.GetMotorStickerPartConfig(e.StickerPart);
+    var i = ConfigManager_1.ConfigManager.MotorDiyConfig.GetMotorStickerPartConfig(e.Part);
     this.SetTextureByPath(i.Icon, o);
-    if (e.StickerId <= 0) {
+    if (e.ItemId <= 0) {
       n.SetUIActive(true);
     } else {
-      i = (a = ConfigManager_1.ConfigManager.MotorDiyConfig.GetMotorStickerConfig(e.StickerId)).QualityId;
+      i = (a = ConfigManager_1.ConfigManager.MotorDiyConfig.GetMotorStickerConfig(e.ItemId)).QualityId;
       o = ConfigManager_1.ConfigManager.MotorDiyConfig.GetMotorQualityConfig(i);
       s.SetUIActive(true);
       c.SetUIActive(true);

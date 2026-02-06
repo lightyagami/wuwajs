@@ -15,6 +15,9 @@ class FarmGoldMapMark {
   get MarkId() {
     return this.markid();
   }
+  get EntranceId() {
+    return this.entranceid();
+  }
   __init(t, r) {
     this.z7 = t;
     this.J7 = r;
@@ -37,6 +40,14 @@ class FarmGoldMapMark {
       return this.J7.readInt32(this.z7 + t);
     } else {
       return 0;
+    }
+  }
+  entranceid() {
+    var t = this.J7.__offset(this.z7, 8);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 8720;
     }
   }
 }

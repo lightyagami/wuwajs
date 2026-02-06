@@ -45,7 +45,7 @@ let FishingBoatPerformComponent = class FishingBoatPerformComponent extends Gong
     return !!super.OnInit() && (this.IsHidePassenger = true);
   }
   OnStart() {
-    return !!super.OnStart() && (this.osn = this.Entity.GetComponent(181), this.osn && this.osn.AddListener(CharacterAttributeTypes_1.EAttributeId.vVn, this.Vc_, "FishingBoatPerformComponent"), true);
+    return !!super.OnStart() && (this.osn = this.Entity.GetComponent(183), this.osn && this.osn.AddListener(CharacterAttributeTypes_1.EAttributeId.vVn, this.Vc_, "FishingBoatPerformComponent"), true);
   }
   OnActivate() {
     super.OnActivate();
@@ -96,5 +96,5 @@ let FishingBoatPerformComponent = class FishingBoatPerformComponent extends Gong
     ControllerHolder_1.ControllerHolder.CreatureController.DelayRemoveEntityFinished(this.Entity);
   }
 };
-FishingBoatPerformComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(301)], FishingBoatPerformComponent);
+FishingBoatPerformComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(303)], FishingBoatPerformComponent);
 exports.FishingBoatPerformComponent = FishingBoatPerformComponent; //# sourceMappingURL=FishingBoatPerformComponent.js.map

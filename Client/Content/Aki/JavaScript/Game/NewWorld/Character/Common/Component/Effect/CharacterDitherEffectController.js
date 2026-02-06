@@ -7,9 +7,11 @@ exports.CharacterDitherEffectController = undefined;
 const MathUtils_1 = require("../../../../../../Core/Utils/MathUtils");
 const ObjectUtils_1 = require("../../../../../../Core/Utils/ObjectUtils");
 const TsBaseCharacter_1 = require("../../../../../Character/TsBaseCharacter");
+const TsBaseVehicle_1 = require("../../../../Vehicle/TsBaseVehicle");
 const MILLISECOND_TO_SECOND = 0.001;
 class CharacterDitherEffectController {
   constructor(t, i) {
+    this.Jh = undefined;
     this.qYo = false;
     this.GYo = 1;
     this.NYo = 0;
@@ -18,7 +20,9 @@ class CharacterDitherEffectController {
     this.Ane = undefined;
     this.Pne = undefined;
     this.I1a = false;
-    this.OC = t;
+    if ((this.OC = t) instanceof TsBaseCharacter_1.default || t instanceof TsBaseVehicle_1.default) {
+      this.Jh = t.GetEntityNoBlueprint();
+    }
     this.l9e = i;
     if (!ObjectUtils_1.ObjectUtils.IsValid(this.l9e)) {
       this.kYo = false;
@@ -93,8 +97,8 @@ class CharacterDitherEffectController {
   }
   SetHiddenInGame(t, i) {
     if (this.OC) {
-      if (this.OC instanceof TsBaseCharacter_1.default) {
-        var s = this.OC.CharacterActorComponent;
+      if (this.Jh) {
+        var s = this.Jh.GetComponent(1);
         if (!s) {
           return;
         }
@@ -103,7 +107,7 @@ class CharacterDitherEffectController {
             return;
           }
           this.Ane = s.DisableActor("[CharacterDitherEffectController.SetHiddenInGame]");
-          if (!s.Entity.GetComponent(196)?.IsNpcOutShowRange) {
+          if (!this.Jh.GetComponent(198)?.IsNpcOutShowRange) {
             this.Pne = s.DisableCollision("[CharacterDitherEffectController.SetHiddenInGame]");
           }
         } else {

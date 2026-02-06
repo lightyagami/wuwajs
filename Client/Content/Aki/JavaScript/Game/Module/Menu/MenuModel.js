@@ -329,6 +329,10 @@ class MenuModel extends ModelBase_1.ModelBase {
       FunctionId: GameSettingsDefine_1.EFunction.RayTracedShadow,
       Key: "RayTracedShadow",
       ScoreTable: MenuDefine_1.rayTracedShadowScores
+    }, {
+      FunctionId: GameSettingsDefine_1.EFunction.LOADINGRANGESCALELEVEL,
+      Key: "LoadingRangeScaleLevel",
+      ScoreTable: MenuDefine_1.pcLoadingRangeScores
     }];
     var i = {
       ShadowQuality: 0,
@@ -345,7 +349,8 @@ class MenuModel extends ModelBase_1.ModelBase {
       SuperResolution: 0,
       RayTracingGI: 0,
       RayTracingReflection: 0,
-      RayTracedShadow: 0
+      RayTracedShadow: 0,
+      LoadingRangeScaleLevel: 0
     };
     for (const [a, r] of e) {
       var n = t.find(e => e.FunctionId === a);
@@ -373,14 +378,14 @@ class MenuModel extends ModelBase_1.ModelBase {
       fieldMappings: e
     } = this.DJd(e);
     let n = 0;
-    for (const u of e) {
+    for (const g of e) {
       var a;
       var r;
       var s;
       var o;
-      var _ = u.FunctionId;
-      let e = i[u.Key];
-      let t = this.GetDataCacheOrCurValue(u.FunctionId) ?? 0;
+      var _ = g.FunctionId;
+      let e = i[g.Key];
+      let t = this.GetDataCacheOrCurValue(g.FunctionId) ?? 0;
       if (_ === GameSettingsDefine_1.EFunction.SUPERRESOLUTION && (r = a = _, [a, r, e] = GameSettingsDeviceRender_1.GameSettingsDeviceRender.MapSuperResolutionRecommendValue(a, r, e), s = this.GetDataCacheOrCurValue(a) ?? 0, r = this.GetDataCacheOrCurValue(r) ?? 0, a === GameSettingsDefine_1.EFunction.FSR ? (e = MenuDefine_1.superResolutionScores.length - 2, s === 1 && (t = MenuDefine_1.superResolutionScores.length - 2)) : (e === 99 ? e = 2 : e += 2, t = r === 99 ? 2 : r + 2), s === 0)) {
         t = MenuDefine_1.superResolutionScores.length - 1;
       }
@@ -388,11 +393,11 @@ class MenuModel extends ModelBase_1.ModelBase {
         t = this.GetDataCacheOrCurValue(GameSettingsDefine_1.EFunction.RayTracing) ?? 0;
         a = 4000 / GameSettingsDeviceRender_1.GameSettingsDeviceRender.DeviceScore;
         r = MathUtils_1.MathUtils.Clamp(a, 0.6, 3);
-        s = this.GId(t, e, u.ScoreTable) * r;
+        s = this.GId(t, e, g.ScoreTable) * r;
         n += s;
         this.zhm?.set(_, s);
       } else {
-        o = this.GId(t, e, u.ScoreTable);
+        o = this.GId(t, e, g.ScoreTable);
         n += o;
         this.zhm?.set(_, o);
       }
@@ -420,11 +425,11 @@ class MenuModel extends ModelBase_1.ModelBase {
     var o = this.GetDataCacheOrCurValue(GameSettingsDefine_1.EFunction.VOLUMEFOG) ?? 0;
     var _ = this.GetDataCacheOrCurValue(GameSettingsDefine_1.EFunction.VOLUMELIGHT) ?? 0;
     var f = this.GetDataCacheOrCurValue(GameSettingsDefine_1.EFunction.MOTIONBLUR) ?? 0;
-    var u = this.GetDataCacheOrCurValue(GameSettingsDefine_1.EFunction.FSR) ?? 0;
-    var g = this.GetDataCacheOrCurValue(GameSettingsDefine_1.EFunction.METALFX) ?? 0;
+    var g = this.GetDataCacheOrCurValue(GameSettingsDefine_1.EFunction.FSR) ?? 0;
+    var u = this.GetDataCacheOrCurValue(GameSettingsDefine_1.EFunction.METALFX) ?? 0;
     var m = this.GetDataCacheOrCurValue(GameSettingsDefine_1.EFunction.BLOOM) ?? 0;
-    var h = this.GetDataCacheOrCurValue(GameSettingsDefine_1.EFunction.NPCDENSITY) ?? 0;
-    var D = MenuDefine_1.qualityLevelScores[GameSettingsDeviceRender_1.GameSettingsDeviceRender.GameQualitySettingLevel];
+    var D = this.GetDataCacheOrCurValue(GameSettingsDefine_1.EFunction.NPCDENSITY) ?? 0;
+    var h = MenuDefine_1.qualityLevelScores[GameSettingsDeviceRender_1.GameSettingsDeviceRender.GameQualitySettingLevel];
     var i = MenuDefine_1.shadowQualityScores[MathUtils_1.MathUtils.Clamp(i, 0, MenuDefine_1.shadowQualityScores.length - 1)];
     this.zhm.set(GameSettingsDefine_1.EFunction.SHADOWQUALITY, i);
     var n = MenuDefine_1.niagaraQualityScores[MathUtils_1.MathUtils.Clamp(n, 0, MenuDefine_1.niagaraQualityScores.length - 1)];
@@ -441,17 +446,20 @@ class MenuModel extends ModelBase_1.ModelBase {
     this.zhm.set(GameSettingsDefine_1.EFunction.VOLUMELIGHT, _);
     var f = MenuDefine_1.motionBlurScores[MathUtils_1.MathUtils.Clamp(f, 0, MenuDefine_1.motionBlurScores.length - 1)];
     this.zhm.set(GameSettingsDefine_1.EFunction.MOTIONBLUR, f);
-    var u = MenuDefine_1.amdFsrScores[MathUtils_1.MathUtils.Clamp(u, 0, MenuDefine_1.amdFsrScores.length - 1)];
-    this.zhm.set(GameSettingsDefine_1.EFunction.FSR, u);
-    var g = MenuDefine_1.metalFxScores[MathUtils_1.MathUtils.Clamp(g, 0, MenuDefine_1.metalFxScores.length - 1)];
-    this.zhm.set(GameSettingsDefine_1.EFunction.METALFX, g);
+    var g = MenuDefine_1.amdFsrScores[MathUtils_1.MathUtils.Clamp(g, 0, MenuDefine_1.amdFsrScores.length - 1)];
+    this.zhm.set(GameSettingsDefine_1.EFunction.FSR, g);
+    var u = MenuDefine_1.metalFxScores[MathUtils_1.MathUtils.Clamp(u, 0, MenuDefine_1.metalFxScores.length - 1)];
+    this.zhm.set(GameSettingsDefine_1.EFunction.METALFX, u);
     var m = MenuDefine_1.bloomScores[MathUtils_1.MathUtils.Clamp(m, 0, MenuDefine_1.bloomScores.length - 1)];
     this.zhm.set(GameSettingsDefine_1.EFunction.BLOOM, m);
-    var l = MenuDefine_1.npcDensityScores[MathUtils_1.MathUtils.Clamp(h, 0, MenuDefine_1.npcDensityScores.length - 1)];
+    var l = MenuDefine_1.npcDensityScores[MathUtils_1.MathUtils.Clamp(D, 0, MenuDefine_1.npcDensityScores.length - 1)];
     this.zhm.set(GameSettingsDefine_1.EFunction.NPCDENSITY, l);
-    var h = MenuDefine_1.vegetationDensityScores[MathUtils_1.MathUtils.Clamp(h, 0, MenuDefine_1.vegetationDensityScores.length - 1)];
-    this.zhm.set(GameSettingsDefine_1.EFunction.VegetationDensity, h);
-    var h = D + i + n + a + r + s + o + _ + f + u + g + m + l;
+    var D = MenuDefine_1.vegetationDensityScores[MathUtils_1.MathUtils.Clamp(D, 0, MenuDefine_1.vegetationDensityScores.length - 1)];
+    this.zhm.set(GameSettingsDefine_1.EFunction.VegetationDensity, D);
+    var D = this.GetDataCacheOrCurValue(GameSettingsDefine_1.EFunction.LOADINGRANGESCALELEVEL) ?? 0;
+    var D = MenuDefine_1.mobileLoadingRangeScores[MathUtils_1.MathUtils.Clamp(D, 0, MenuDefine_1.mobileLoadingRangeScores.length - 1)];
+    this.zhm.set(GameSettingsDefine_1.EFunction.LOADINGRANGESCALELEVEL, D);
+    var h = h + i + n + a + r + s + o + _ + f + g + u + m + l + D;
     return h * e * t;
   }
   GetLoadPercentage() {

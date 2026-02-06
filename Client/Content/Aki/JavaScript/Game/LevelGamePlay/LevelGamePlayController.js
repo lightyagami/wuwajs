@@ -24,7 +24,11 @@ const WaitEntityTask_1 = require("../World/Define/WaitEntityTask");
 const SHOW_FAKE_ERROR_CODE_TIPS_INTERVAL = 1000;
 class LevelGamePlayController extends ControllerBase_1.ControllerBase {
   static HandleScanResponse(e, t = 0) {
-    return !!e && !!UE.KuroStaticLibrary.IsImplementInterface(e.GetClass(), UE.BPI_CreatureInterface_C.StaticClass()) && !(e = e, !(e = EntitySystem_1.EntitySystem.Get(e.GetEntityId()))) && !(e.GetComponent(86)?.StartProcess(t), e.GetComponent(73)?.ShowScanEffect(), 0);
+    return !!e && !!UE.KuroStaticLibrary.IsImplementInterface(e.GetClass(), UE.BPI_CreatureInterface_C.StaticClass()) && !(e = e, !(e = EntitySystem_1.EntitySystem.Get(e.GetEntityId()))) && !(e.GetComponent(88)?.StartProcess(t), e.GetComponent(75)?.ShowScanEffect(), 0);
+  }
+  static HandleScanEntityResponse(e, t = 0) {
+    e.GetComponent(88)?.StartProcess(t);
+    e.GetComponent(75)?.ShowScanEffect();
   }
   static HandleClearAllScanEffect() {}
   static MultiplayerLimitTypeCheck(e, t = true) {
@@ -38,11 +42,11 @@ class LevelGamePlayController extends ControllerBase_1.ControllerBase {
         }
         return false;
       case 0:
-        var r = ModelManager_1.ModelManager.PlayerInfoModel.GetId() === ModelManager_1.ModelManager.CreatureModel.GetWorldOwner();
-        if (!r && t) {
+        var a = ModelManager_1.ModelManager.PlayerInfoModel.GetId() === ModelManager_1.ModelManager.CreatureModel.GetWorldOwner();
+        if (!a && t) {
           LevelGamePlayController.ShowFakeErrorCodeTips();
         }
-        return r;
+        return a;
       case 1:
         return true;
       default:
@@ -60,11 +64,11 @@ class LevelGamePlayController extends ControllerBase_1.ControllerBase {
     }
   }
   static OnInit() {
-    Net_1.Net.Register(27083, LevelGamePlayController._Ue);
-    Net_1.Net.Register(16532, LevelGamePlayController.uUe);
-    Net_1.Net.Register(26965, LevelGamePlayController.cUe);
-    Net_1.Net.Register(15456, LevelGamePlayController.dUe);
-    Net_1.Net.Register(29213, LevelGamePlayController.OnEnableNearbyTrackingNotify);
+    Net_1.Net.Register(20934, LevelGamePlayController._Ue);
+    Net_1.Net.Register(20373, LevelGamePlayController.uUe);
+    Net_1.Net.Register(20349, LevelGamePlayController.cUe);
+    Net_1.Net.Register(25669, LevelGamePlayController.dUe);
+    Net_1.Net.Register(23448, LevelGamePlayController.OnEnableNearbyTrackingNotify);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSceneItemVisionCaptureAdd, this.Rku);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSceneItemVisionCaptureRemove, this.aXt);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSceneItemVisionCaptureAddFinish, this.wku);
@@ -72,42 +76,42 @@ class LevelGamePlayController extends ControllerBase_1.ControllerBase {
     return true;
   }
   static OnClear() {
-    Net_1.Net.UnRegister(27083);
-    Net_1.Net.UnRegister(16532);
-    Net_1.Net.UnRegister(26965);
-    Net_1.Net.UnRegister(15456);
-    Net_1.Net.UnRegister(29213);
+    Net_1.Net.UnRegister(20934);
+    Net_1.Net.UnRegister(20373);
+    Net_1.Net.UnRegister(20349);
+    Net_1.Net.UnRegister(25669);
+    Net_1.Net.UnRegister(23448);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSceneItemVisionCaptureAdd, this.Rku);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSceneItemVisionCaptureRemove, this.aXt);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSceneItemVisionCaptureAddFinish, this.wku);
     return !(this.fUe = undefined);
   }
   static ThrowDamageChangeRequest(e, t) {
-    var r = Protocol_1.Aki.Protocol.Dms.create();
-    r.F4n = MathUtils_1.MathUtils.NumberToLong(ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(e));
-    r.I5n = MathUtils_1.MathUtils.NumberToLong(t);
-    Net_1.Net.Call(24784, r, e => {
+    var a = Protocol_1.Aki.Protocol.Dms.create();
+    a.F4n = MathUtils_1.MathUtils.NumberToLong(ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(e));
+    a.I5n = MathUtils_1.MathUtils.NumberToLong(t);
+    Net_1.Net.Call(26201, a, e => {
       switch (e.Q4n) {
         case Protocol_1.Aki.Protocol.Q4n.KRs:
         case Protocol_1.Aki.Protocol.Q4n.Proto_ErrThrowDamageEntityNotExit:
         case Protocol_1.Aki.Protocol.Q4n.Proto_ErrThrowDamageReqEntityIsAlreadyDead:
           break;
         default:
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27580);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29677);
       }
     });
   }
   static ManipulatableBeCastOrDrop2Server(e, t) {
-    var r = Protocol_1.Aki.Protocol.Uds.create();
-    r.F4n = MathUtils_1.MathUtils.NumberToLong(ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(e));
-    r.vul = t;
-    Net_1.Net.Call(26442, r, e => {
+    var a = Protocol_1.Aki.Protocol.Uds.create();
+    a.F4n = MathUtils_1.MathUtils.NumberToLong(ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(e));
+    a.vul = t;
+    Net_1.Net.Call(27477, a, e => {
       switch (e.Q4n) {
         case Protocol_1.Aki.Protocol.Q4n.KRs:
         case Protocol_1.Aki.Protocol.Q4n.Proto_ErrBeControlledEntityNotExist:
           break;
         default:
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27580);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29677);
       }
     });
   }
@@ -118,45 +122,45 @@ class LevelGamePlayController extends ControllerBase_1.ControllerBase {
     this.fUe.set(e, true);
     var t = Protocol_1.Aki.Protocol.wms.create();
     t.F4n = MathUtils_1.MathUtils.NumberToLong(ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(e));
-    var t = await Net_1.Net.CallAsync(20784, t);
+    var t = await Net_1.Net.CallAsync(15722, t);
     this.fUe.delete(e);
-    return !!t && (t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs ? (ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 28868), false) : (EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OpenTreasureBox, e), true));
+    return !!t && (t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs ? (ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 27127), false) : (EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OpenTreasureBox, e), true));
   }
-  static ElevatorStateChangeRequest(e, t, r, o) {
-    var a = Protocol_1.Aki.Protocol.WZn.create();
-    a.F4n = MathUtils_1.MathUtils.NumberToLong(ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(e));
-    a.L5n = t;
-    a.Y4n = r;
-    Net_1.Net.Call(18123, a, e => {
-      o();
+  static ElevatorStateChangeRequest(e, t, a, r) {
+    var o = Protocol_1.Aki.Protocol.WZn.create();
+    o.F4n = MathUtils_1.MathUtils.NumberToLong(ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(e));
+    o.L5n = t;
+    o.Y4n = a;
+    Net_1.Net.Call(26945, o, e => {
+      r();
       if (e) {
         switch (e.Q4n) {
           case Protocol_1.Aki.Protocol.Q4n.KRs:
           case Protocol_1.Aki.Protocol.Q4n.Proto_ErrElevatorLocked:
             break;
           default:
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25895);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22908);
         }
       }
     });
   }
-  static OnManipulatableItemExitAreaInternal(e, t, r = 0) {
+  static OnManipulatableItemExitAreaInternal(e, t, a = 0) {
+    var r;
     var o;
-    var a;
     var l;
     var n = e instanceof EntityHandle_1.EntityHandle ? e.Entity : e;
     if (e && n) {
-      a = n.GetComponent(212);
-      l = n.GetComponent(167);
-      if (!(o = n.GetComponent(165))) {
+      o = n.GetComponent(214);
+      l = n.GetComponent(169);
+      if (!(r = n.GetComponent(167))) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("Character", 31, "[Manipulate] 重置控物对象实体时找不到对应的控物组件");
         }
       }
-      if (a && l && l.HasMoveAuthority() && (o?.ResetItemLocationAndRotation(r, true), a = n.GetComponent(175))) {
-        a.StopTimerOnResetPos();
+      if (o && l && l.HasMoveAuthority() && (r?.ResetItemLocationAndRotation(a, true), o = n.GetComponent(177))) {
+        o.StopTimerOnResetPos();
       }
-      if (o && o.ControlledByLocalPlayer() && (l = t ?? "ResetPositionTip", ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode(l), r = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity) && (n = r.GetComponent(68)) && e.Id === n.GetHoldingEntity()?.Id) {
+      if (r && r.ControlledByLocalPlayer() && (l = t ?? "ResetPositionTip", ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode(l), a = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity) && (n = a.GetComponent(70)) && e.Id === n.GetHoldingEntity()?.Id) {
         n.StopManipulate();
       }
     } else if (Log_1.Log.CheckError()) {
@@ -164,50 +168,50 @@ class LevelGamePlayController extends ControllerBase_1.ControllerBase {
     }
   }
   static EntityFollowTrackRequest(e, t) {
-    var r = Protocol_1.Aki.Protocol.Nds.create();
-    r.F4n = MathUtils_1.MathUtils.NumberToLong(e);
-    Net_1.Net.Call(18201, r, t);
+    var a = Protocol_1.Aki.Protocol.Nds.create();
+    a.F4n = MathUtils_1.MathUtils.NumberToLong(e);
+    Net_1.Net.Call(20705, a, t);
   }
   static EntityBuffProducerRequest(e, t) {
-    var r = Protocol_1.Aki.Protocol._es.create();
-    r.D5n = MathUtils_1.MathUtils.NumberToLong(e);
-    Net_1.Net.Call(20960, r, t);
+    var a = Protocol_1.Aki.Protocol._es.create();
+    a.D5n = MathUtils_1.MathUtils.NumberToLong(e);
+    Net_1.Net.Call(29306, a, t);
   }
-  static ShootTargetHitGearStateChangeRequest(e, t, r, o, a) {
+  static ShootTargetHitGearStateChangeRequest(e, t, a, r, o) {
     var l = Protocol_1.Aki.Protocol.Lms.create();
     l.F4n = MathUtils_1.MathUtils.NumberToLong(ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(e));
     l.yX_ = t;
-    l.Mjn = r;
-    if (o) {
-      l.Ced = o;
+    l.Mjn = a;
+    if (r) {
+      l.Ced = r;
     }
-    Net_1.Net.Call(23053, l, a);
+    Net_1.Net.Call(20490, l, o);
   }
   static OnEnableNearbyTrackingNotify(t) {
     for (const e of t.PSs) {
-      const r = MathUtils_1.MathUtils.LongToNumber(e);
-      WaitEntityTask_1.WaitEntityTask.Create("LevelGamePlayController.OnEnableNearbyTrackingNotify", r, e => {
-        if ((e &&= ModelManager_1.ModelManager.CreatureModel.GetEntity(r)) && (e = e.Entity.GetComponent(169))) {
+      const a = MathUtils_1.MathUtils.LongToNumber(e);
+      WaitEntityTask_1.WaitEntityTask.Create("LevelGamePlayController.OnEnableNearbyTrackingNotify", a, e => {
+        if ((e &&= ModelManager_1.ModelManager.CreatureModel.GetEntity(a)) && (e = e.Entity.GetComponent(171))) {
           e.EnableTracking = t.yIs;
         }
       }, 60000, true, true);
     }
   }
   static EntityAdsorbRequest(e, t) {
-    var r = Protocol_1.Aki.Protocol.Fes.create();
-    r.F4n = e;
-    Net_1.Net.Call(21060, r, t);
+    var a = Protocol_1.Aki.Protocol.Fes.create();
+    a.F4n = e;
+    Net_1.Net.Call(23228, a, t);
   }
-  static RequestChairSit(e, t, r) {
-    var o = Protocol_1.Aki.Protocol.rms.create();
-    o.F4n = MathUtils_1.MathUtils.NumberToLong(e);
-    o.U5n = t;
+  static RequestChairSit(e, t, a) {
+    var r = Protocol_1.Aki.Protocol.rms.create();
+    r.F4n = MathUtils_1.MathUtils.NumberToLong(e);
+    r.U5n = t;
     var e = Global_1.Global.BaseCharacter?.CharacterActorComponent.Entity.GetComponent(0).GetCreatureDataId();
     if (e) {
-      o.R5n = CombatMessage_1.CombatNet.CreateCombatCommon(e);
+      r.R5n = CombatMessage_1.CombatNet.CreateCombatCommon(e);
     }
-    o.x5n = r;
-    Net_1.Net.Call(23875, o, e => {
+    r.x5n = a;
+    Net_1.Net.Call(23227, r, e => {
       Global_1.Global.BaseCharacter.CharacterActorComponent?.Entity.GetComponent(29)?.OnResponseSit(t, e.Q4n);
     });
   }
@@ -220,23 +224,44 @@ class LevelGamePlayController extends ControllerBase_1.ControllerBase {
   static ClientRemoveTagFromTarget(e, t) {
     return ModelManager_1.ModelManager.ClientTagModel.ClientRemoveTagFromTarget(e, t);
   }
+  static ConstraintProcessedValue(e, t) {
+    let a = t;
+    switch (e.Type) {
+      case "Constant":
+        a = e.Value;
+        break;
+      case "Constraint":
+        switch (e.Value.Type) {
+          case "Clamp":
+            a = MathUtils_1.MathUtils.Clamp(a, e.Value.MinValue, e.Value.MaxValue);
+            break;
+          case "Max":
+            a = Math.min(a, e.Value.MaxValue);
+            break;
+          case "Min":
+            a = Math.max(a, e.Value.MinValue);
+        }
+    }
+    return a;
+  }
 }
 (exports.LevelGamePlayController = LevelGamePlayController).fUe = undefined;
 LevelGamePlayController.lUe = 0;
+LevelGamePlayController.UseNewScanSystem = true;
 LevelGamePlayController.cUe = e => {};
 LevelGamePlayController.uUe = e => {
   if (Log_1.Log.CheckDebug()) {
     Log_1.Log.Debug("World", 17, "服务端通知耐久度变化", ["CreatureDataId", e.F4n], ["耐久度", e.jqs]);
   }
   var t;
-  var r;
-  var o = ModelManager_1.ModelManager.CreatureModel.GetEntity(MathUtils_1.MathUtils.LongToNumber(e.F4n));
-  if (o?.Valid) {
-    t = o.Entity.GetComponent(0);
+  var a;
+  var r = ModelManager_1.ModelManager.CreatureModel.GetEntity(MathUtils_1.MathUtils.LongToNumber(e.F4n));
+  if (r?.Valid) {
+    t = r.Entity.GetComponent(0);
     e = e.jqs;
-    r = t.GetDurabilityValue();
+    a = t.GetDurabilityValue();
     t.SetDurabilityValue(e);
-    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnAnySceneItemDurabilityChange, o, e, r);
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnAnySceneItemDurabilityChange, r, e, a);
   }
 };
 LevelGamePlayController._Ue = e => {
@@ -244,37 +269,37 @@ LevelGamePlayController._Ue = e => {
   var t = ModelManager_1.ModelManager.CreatureModel.GetEntity(t);
   if (t) {
     t.Entity.GetComponent(0).UpdateEntityCommonTags(e.aSs);
-    t.Entity.GetComponent(206).SyncTagsFromServer(e.aSs);
+    t.Entity.GetComponent(208).SyncTagsFromServer(e.aSs);
   }
 };
 LevelGamePlayController.dUe = e => {
   var t = MathUtils_1.MathUtils.LongToNumber(e.F4n);
   var t = ModelManager_1.ModelManager.CreatureModel.GetEntity(t);
   if (t) {
-    var r = t.Entity.GetComponent(148);
-    if (r) {
+    var a = t.Entity.GetComponent(150);
+    if (a) {
       switch (e.Pmu?.h5n) {
         case Protocol_1.Aki.Protocol.Gmu.dm1:
-          var o = e.Pmu.Umu;
-          if (o) {
-            r.SetTargetFloorTeleport(e.P5n, o.Bmu ?? 0, o.Dmu ?? 0, o.kmu, o.Omu);
+          var r = e.Pmu.Umu;
+          if (r) {
+            a.SetTargetFloorTeleport(e.P5n, r.Bmu ?? 0, r.Dmu ?? 0, r.kmu, r.Omu);
           } else if (Log_1.Log.CheckError()) {
             Log_1.Log.Error("SceneItem", 79, "SetTargetFloorTeleport Failed, Proto_MoveTeleport is undefined", ["EntityId", e.F4n]);
           }
           break;
         case Protocol_1.Aki.Protocol.Gmu.Krd:
-          o = e.Pmu.Krd;
-          if (!o) {
+          r = e.Pmu.Krd;
+          if (!r) {
             if (Log_1.Log.CheckError()) {
               Log_1.Log.Error("SceneItem", 79, "SetTargetFloorPathMove Failed, Proto_MoveTeleport is undefined", ["EntityId", e.F4n]);
             }
             return;
           }
-          r.SetTargetFloorPathMove(e.P5n, o.Yrd, o.Xrd);
+          a.SetTargetFloorPathMove(e.P5n, r.Yrd, r.Xrd);
           break;
         default:
           Protocol_1.Aki.Protocol.Gmu.Proto_Default;
-          r.SetTargetFloor(e.P5n);
+          a.SetTargetFloor(e.P5n);
       }
     }
   } else if (Log_1.Log.CheckWarn()) {

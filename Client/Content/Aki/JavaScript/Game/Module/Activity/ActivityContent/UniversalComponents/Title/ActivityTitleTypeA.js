@@ -14,10 +14,10 @@ class ActivityTitleTypeA extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.CNe = undefined;
-    this.FVm = 0;
-    this.NVm = 0;
+    this.Kwm = 0;
+    this.Xwm = 0;
     this.kqe = () => {
-      UiManager_1.UiManager.OpenView("ActivityTagInfoHelpView", [this.FVm, this.NVm]);
+      UiManager_1.UiManager.OpenView("ActivityTagInfoHelpView", [this.Kwm, this.Xwm]);
     };
   }
   OnRegisterComponent() {
@@ -31,10 +31,10 @@ class ActivityTitleTypeA extends UiPanelBase_1.UiPanelBase {
   SetActivityBaseData(t) {
     if (t) {
       this.CNe = t;
-      this.VVm();
+      this.pwm();
     }
   }
-  VVm() {
+  pwm() {
     var t;
     var i;
     var e;
@@ -44,19 +44,19 @@ class ActivityTitleTypeA extends UiPanelBase_1.UiPanelBase {
         this.GetItem(6).SetUIActive(i);
         this.GetItem(9).SetUIActive(e);
         if (i && t.ShowActTypeIds[0]) {
-          this.FVm = t.ShowActTypeIds[0];
-          this.jVm(this.FVm);
+          this.Kwm = t.ShowActTypeIds[0];
+          this.Ywm(this.Kwm);
         }
         if (e && t.ShowActTypeIds[1]) {
-          this.NVm = t.ShowActTypeIds[1];
-          this.HVm(this.NVm);
+          this.Xwm = t.ShowActTypeIds[1];
+          this.zwm(this.Xwm);
         }
       } else {
         this.GetExtendToggle(5).RootUIComp.SetUIActive(false);
       }
     }
   }
-  jVm(t) {
+  Ywm(t) {
     var i;
     var t = ConfigManager_1.ConfigManager.ActivityConfig.GetActivityTitleTags(t);
     if (t) {
@@ -65,7 +65,7 @@ class ActivityTitleTypeA extends UiPanelBase_1.UiPanelBase {
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(8), t.TagName);
     }
   }
-  HVm(t) {
+  zwm(t) {
     var i;
     var t = ConfigManager_1.ConfigManager.ActivityConfig.GetActivityTitleTags(t);
     if (t) {

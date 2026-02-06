@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.WORLD_LEVEL_MAX = exports.WORLD_LEVEL_MIN = exports.EDEFAULTCATEGORY = exports.matTypeDes = exports.QuestRewardViewParam = exports.BigWorldID = exports.Monster062DetectConfID = exports.SoundAreaDetectionRecord = exports.SilentAreaDetectionRecord = exports.DungeonDetectionRecord = exports.MonsterDetectionRecord = exports.periodicityChallengeTypeToTarget = exports.AdventureTaskRecord = undefined;
+exports.NewSoundDetectTabItemData = exports.WORLD_LEVEL_MAX = exports.WORLD_LEVEL_MIN = exports.EDEFAULTCATEGORY = exports.matTypeDes = exports.QuestRewardViewParam = exports.BigWorldID = exports.Monster062DetectConfID = exports.SoundAreaDetectionRecord = exports.SilentAreaDetectionRecord = exports.DungeonDetectionRecord = exports.MonsterDetectionRecord = exports.periodicityChallengeTypeToTarget = exports.AdventureTaskRecord = undefined;
 const AdventureTask_1 = require("../../../Core/Define/Config/AdventureTask");
 const Protocol_1 = require("../../../Core/Define/Net/Protocol");
 const ModelManager_1 = require("../../Manager/ModelManager");
@@ -109,4 +109,16 @@ exports.matTypeDes = {
 };
 exports.EDEFAULTCATEGORY = 16;
 exports.WORLD_LEVEL_MIN = 1;
-exports.WORLD_LEVEL_MAX = 8; //# sourceMappingURL=AdventureDefine.js.map
+exports.WORLD_LEVEL_MAX = 8;
+class NewSoundDetectTabItemData {
+  constructor() {
+    this.Area = 0;
+    this.TabTextId = "";
+    this.IconPath = "";
+    this.Dungeon = undefined;
+    this.Sort = 0;
+    this.IsVisible = true;
+  }
+}
+exports.NewSoundDetectTabItemData = NewSoundDetectTabItemData;
+//# sourceMappingURL=AdventureDefine.js.map

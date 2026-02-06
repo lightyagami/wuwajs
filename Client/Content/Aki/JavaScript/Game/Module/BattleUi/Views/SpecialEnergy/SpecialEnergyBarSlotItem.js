@@ -53,12 +53,12 @@ class SpecialEnergyBarSlotItem extends UiPanelBase_1.UiPanelBase {
   SetPointColor(t) {
     this.GetSprite(8).SetColor(t);
   }
-  SetFullEffectColor(t, s = false) {
+  SetFullEffectColor(t, i = false) {
     this.GetUiNiagara(3).SetNiagaraVarLinearColor("Color", t);
     this.GetUiNiagara(4).SetNiagaraVarLinearColor("Color", t);
     this.GetUiNiagara(6).SetNiagaraVarLinearColor("Color", t);
-    this.GetUiNiagara(3).SetNiagaraVarFloat("Default", s ? 0 : 1);
-    this.GetUiNiagara(3).SetNiagaraVarFloat("Shift", s ? 1 : 0);
+    this.GetUiNiagara(3).SetNiagaraVarFloat("Default", i ? 0 : 1);
+    this.GetUiNiagara(3).SetNiagaraVarFloat("Shift", i ? 1 : 0);
   }
   SetBgAndUseEffectColor(t) {
     this.GetUiNiagara(4).SetNiagaraVarLinearColor("Color", t);
@@ -77,11 +77,11 @@ class SpecialEnergyBarSlotItem extends UiPanelBase_1.UiPanelBase {
   SetFullEffectPercent(t) {
     this.GetUiNiagara(3).SetNiagaraVarFloat("Dissolve", t);
   }
-  UpdatePercent(t, s, i = false) {
+  UpdatePercent(t, i, s = false) {
     let h = 0;
     if (t <= MathUtils_1.MathUtils.SmallNumber) {
       h = -1;
-    } else if (t >= 1 - MathUtils_1.MathUtils.SmallNumber && s) {
+    } else if (t >= 1 - MathUtils_1.MathUtils.SmallNumber && i) {
       h = 1;
     }
     if (this.ac !== h) {
@@ -93,7 +93,7 @@ class SpecialEnergyBarSlotItem extends UiPanelBase_1.UiPanelBase {
         this.GetUiNiagara(3).SetUIActive(false);
         this.GetUiNiagara(4).SetUIActive(false);
         this.GetUiNiagara(5).SetUIActive(false);
-        if (this.ac === 1 && !i) {
+        if (this.ac === 1 && !s) {
           this.Jdt();
         }
       } else if (h === 1) {
@@ -113,7 +113,7 @@ class SpecialEnergyBarSlotItem extends UiPanelBase_1.UiPanelBase {
         this.GetUiNiagara(3).SetUIActive(false);
         this.GetUiNiagara(4).SetUIActive(false);
         this.GetUiNiagara(5).SetUIActive(false);
-        if (this.ac === 1 && !i) {
+        if (this.ac === 1 && !s) {
           this.Jdt();
         }
       }
@@ -124,30 +124,30 @@ class SpecialEnergyBarSlotItem extends UiPanelBase_1.UiPanelBase {
       this.Zdt(t);
     }
   }
-  UpdatePercentWithVisible(t, s, i, h, e) {
-    if (s) {
+  UpdatePercentWithVisible(t, i, s, h, e) {
+    if (i) {
       this.GetSprite(1).SetFillAmount(t);
       this.Zdt(t);
     }
     if (h) {
-      this.GetSprite(0).SetUIActive(s);
-      this.GetSprite(1).SetUIActive(s);
-      this.GetSprite(7).SetUIActive(s);
-      this.GetSprite(8).SetUIActive(s);
+      this.GetSprite(0).SetUIActive(i);
+      this.GetSprite(1).SetUIActive(i);
+      this.GetSprite(7).SetUIActive(i);
+      this.GetSprite(8).SetUIActive(i);
       this.GetUiNiagara(5).SetUIActive(false);
       this.GetUiNiagara(6).SetUIActive(false);
-    } else if (i) {
-      this.GetSprite(0).SetUIActive(s);
-      this.GetSprite(1).SetUIActive(s);
-      this.GetSprite(7).SetUIActive(s);
-      this.GetSprite(8).SetUIActive(s);
-      if (s) {
+    } else if (s) {
+      this.GetSprite(0).SetUIActive(i);
+      this.GetSprite(1).SetUIActive(i);
+      this.GetSprite(7).SetUIActive(i);
+      this.GetSprite(8).SetUIActive(i);
+      if (i) {
         this.GetUiNiagara(5).SetUIActive(false);
       } else {
         this.GetUiNiagara(5).SetNiagaraVarFloat("Dissolve", t * this.Vdt);
         this.zdt();
       }
-      if (s && t === 0) {
+      if (i && t === 0) {
         this.GetUiNiagara(6).SetNiagaraVarFloat("Dissolve", e * this.Vdt);
         this.Jdt();
       } else {
@@ -155,8 +155,8 @@ class SpecialEnergyBarSlotItem extends UiPanelBase_1.UiPanelBase {
       }
     }
   }
-  UpdatePercentWithFullEffect(t, s, i) {
-    if (i) {
+  UpdatePercentWithFullEffect(t, i, s) {
+    if (s) {
       this.GetSprite(1).SetUIActive(false);
       this.GetSprite(8).SetUIActive(false);
       this.GetUiNiagara(5).SetUIActive(false);
@@ -165,15 +165,15 @@ class SpecialEnergyBarSlotItem extends UiPanelBase_1.UiPanelBase {
       this.GetUiNiagara(4).SetUIActive(true);
     }
     this.GetUiNiagara(3).SetNiagaraVarFloat("Dissolve", t);
-    this.GetUiNiagara(4).SetNiagaraVarFloat("Dissolve", s);
+    this.GetUiNiagara(4).SetNiagaraVarFloat("Dissolve", i);
     this.GetUiNiagara(3).SetUIActive(t > 0);
-    this.GetUiNiagara(4).SetUIActive(s > 0);
+    this.GetUiNiagara(4).SetUIActive(i > 0);
   }
-  UpdatePercentWithFullEffectEnable(t, s, i = false) {
+  UpdatePercentWithFullEffectEnable(t, i, s = false) {
     let h = 0;
     if (t <= MathUtils_1.MathUtils.SmallNumber) {
       h = -1;
-    } else if (s) {
+    } else if (i) {
       h = t < 1 - MathUtils_1.MathUtils.SmallNumber ? 1 : 2;
     }
     if (this.ac !== h) {
@@ -185,7 +185,7 @@ class SpecialEnergyBarSlotItem extends UiPanelBase_1.UiPanelBase {
         this.GetUiNiagara(3).SetUIActive(false);
         this.GetUiNiagara(4).SetUIActive(false);
         this.GetUiNiagara(5).SetUIActive(false);
-        if (this.ac === 1 && !i) {
+        if (this.ac === 1 && !s) {
           this.Jdt();
         }
       } else if (h === 1) {
@@ -214,7 +214,7 @@ class SpecialEnergyBarSlotItem extends UiPanelBase_1.UiPanelBase {
         this.GetUiNiagara(3).SetUIActive(false);
         this.GetUiNiagara(4).SetUIActive(false);
         this.GetUiNiagara(5).SetUIActive(false);
-        if (this.ac === 1 && !i) {
+        if (this.ac === 1 && !s) {
           this.Jdt();
         }
       }
@@ -230,9 +230,9 @@ class SpecialEnergyBarSlotItem extends UiPanelBase_1.UiPanelBase {
   }
   Zdt(t) {
     var t = Math.max(0, Math.min(1, t));
-    var s = this.GetSprite(8);
-    s.SetStretchRight(this.Xdt + this.$dt * (1 - t));
-    s.SetTileX(this.Ydt * t);
+    var i = this.GetSprite(8);
+    i.SetStretchRight(this.Xdt + this.$dt * (1 - t));
+    i.SetTileX(this.Ydt * t);
   }
   PlayUseEffectWithPercent(t) {
     this.GetUiNiagara(6).SetNiagaraVarFloat("Dissolve", t * this.Vdt);
@@ -248,12 +248,12 @@ class SpecialEnergyBarSlotItem extends UiPanelBase_1.UiPanelBase {
     this.zdt();
   }
   SetChangeEffectOffsetX(t) {
-    var s = this.GetUiNiagara(5);
+    var i = this.GetUiNiagara(5);
     if (!this.z7_) {
       this.z7_ = true;
-      this.Y7_ = s.GetAnchorOffsetX();
+      this.Y7_ = i.GetAnchorOffsetX();
     }
-    s.SetAnchorOffsetX(t);
+    i.SetAnchorOffsetX(t);
   }
   Jdt() {
     this.GetUiNiagara(6).SetUIActive(true);
@@ -271,17 +271,23 @@ class SpecialEnergyBarSlotItem extends UiPanelBase_1.UiPanelBase {
     }
   }
   ReplaceFullEffect(t) {
-    var s = this.GetUiNiagara(3);
-    this.PNn ||= s.NiagaraSystemReference;
-    s.SetNiagaraSystem(t);
+    var i = this.GetUiNiagara(3);
+    this.PNn ||= i.NiagaraSystemReference;
+    i.SetNiagaraSystem(t);
+  }
+  RevertFullEffect() {
+    if (this.PNn) {
+      this.GetUiNiagara(3).SetNiagaraSystem(this.PNn);
+      this.PNn = undefined;
+    }
   }
   SetFullEffectOffsetX(t) {
-    var s = this.GetUiNiagara(3);
+    var i = this.GetUiNiagara(3);
     if (!this.kca) {
       this.kca = true;
-      this.Oca = s.GetAnchorOffsetX();
+      this.Oca = i.GetAnchorOffsetX();
     }
-    s.SetAnchorOffsetX(t);
+    i.SetAnchorOffsetX(t);
   }
   SetFullEffectVisible(t) {
     this.GetUiNiagara(3).SetUIActive(t);

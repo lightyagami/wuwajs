@@ -32,6 +32,8 @@ class CharRenderBase {
   LateUpdate() {}
   Destroy() {}
   OnResetRenderState() {}
+  PreBodyInfoRuntimeInit(t) {}
+  PostBodyInfoRuntimeInit(t) {}
   GetDeltaTime() {
     return this.RenderComponent.GetDeltaTime();
   }

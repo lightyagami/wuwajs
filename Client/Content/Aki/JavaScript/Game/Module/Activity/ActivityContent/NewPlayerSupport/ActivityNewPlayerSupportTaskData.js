@@ -11,14 +11,14 @@ class ActivityNewPlayerSupportTaskData {
     this.Id = undefined;
     this.TaskConfig = undefined;
     this.hTc = undefined;
-    this.vDf = 0;
+    this.Jqf = 0;
     this._Tc = 0;
     this.Id = t;
     this.TaskConfig = ConfigManager_1.ConfigManager.ActivityNewPlayerSupportConfig.GetTaskConfig(t);
   }
   Refresh(t) {
     this.hTc = t.H6n;
-    this.vDf = t.lMs;
+    this.Jqf = t.lMs;
     this._Tc = t.j6n;
   }
   GetRewardList() {
@@ -34,7 +34,7 @@ class ActivityNewPlayerSupportTaskData {
   }
   GetProgressText() {
     if (this.hTc === Protocol_1.Aki.Protocol.Bwu.Proto_ConditionTaskRunning) {
-      return this.vDf + "/" + this._Tc;
+      return this.Jqf + "/" + this._Tc;
     } else {
       return this._Tc + "/" + this._Tc;
     }

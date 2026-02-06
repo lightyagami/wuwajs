@@ -48,13 +48,13 @@ let DynamicPortalCreatorComponent = DynamicPortalCreatorComponent_1 = class Dyna
       e.F4n = MathUtils_1.MathUtils.NumberToLong(this.EIe.GetCreatureDataId());
       e.Mjn = t.BulletId;
       e.ila = true;
-      Net_1.Net.Call(21291, e, t => {
+      Net_1.Net.Call(24828, e, t => {
         switch (t?.Q4n) {
           case Protocol_1.Aki.Protocol.Q4n.KRs:
           case Protocol_1.Aki.Protocol.Q4n.Proto_ErrPortalCreatorActive:
             break;
           default:
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 19012);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 19659);
         }
       });
     };
@@ -72,7 +72,7 @@ let DynamicPortalCreatorComponent = DynamicPortalCreatorComponent_1 = class Dyna
   OnStart() {
     this.EIe = this.Entity.GetComponent(0);
     if (this.Lo.Model.Type === "Bullet") {
-      this.Xln = this.Entity.GetComponent(163);
+      this.Xln = this.Entity.GetComponent(165);
     }
     return true;
   }

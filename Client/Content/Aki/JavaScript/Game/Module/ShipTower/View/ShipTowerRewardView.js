@@ -77,9 +77,9 @@ class ShipTowerRewardView extends UiViewBase_1.UiViewBase {
     }
   }
   async OnBeforeStartAsync() {
-    this.Es_();
     await super.OnBeforeStartAsync();
     await this.s1c();
+    this.Es_();
     this.zJa = new PopupCaptionItem_1.PopupCaptionItem(this.GetItem(0));
     this.zJa.SetCloseCallBack(this.CloseMe.bind(this));
     this.zJa.SetHelpBtnActive(false);

@@ -17,22 +17,37 @@ class AutoPilotFindPathResult {
     this.TargetPoint = Vector_1.Vector.Create();
     this.StartPoint = Vector_1.Vector.Create();
     this.EndPoint = Vector_1.Vector.Create();
-    this.$Jf = Vector_1.Vector.Create();
+    this.Hpg = Vector_1.Vector.Create();
     this.Roadways = [];
     this.SplinePoints = UE.NewArray(UE.Vector2D);
     this.Hce = 0;
-    this.Mkf = false;
-    this.azf = new Map();
-    this.gtg = new Stack_1.Stack();
-    this.xZf = false;
-    this.$8m = false;
-    this.j8m = 0;
+    this.C3f = false;
+    this.vgg = new Map();
+    this.JAg = new Stack_1.Stack();
+    this.GSg = false;
+    this.Y8m = false;
+    this.K8m = 0;
+    this.CheckFindPathAutoPilotConditions = () => {
+      if (ModelManager_1.ModelManager.AutoPilotModel?.CheckCommonConditions()) {
+        if (this.GetIsShowPlayerToTargetLine()) {
+          ModelManager_1.ModelManager.AutoPilotModel?.SetEnableAutoPilot(0, 6);
+        } else {
+          this.RefreshHasArriveStartPoint();
+          if (this.GetHasArriveStartPoint()) {
+            ModelManager_1.ModelManager.AutoPilotModel?.SetEnableAutoPilot(1);
+          } else {
+            ModelManager_1.ModelManager.AutoPilotModel?.SetEnableAutoPilot(0, 2);
+          }
+        }
+      }
+    };
+    ControllerHolder_1.ControllerHolder.AutoPilotController.AddTick(this.CheckFindPathAutoPilotConditions);
   }
   get PlayerPoint() {
     return ModelManager_1.ModelManager.AutoPilotModel?.ActorComp?.ActorLocationProxy ?? Vector_1.Vector.ZeroVectorProxy;
   }
   GetIsShowStartPoint() {
-    return !ModelManager_1.ModelManager.AutoPilotModel?.GetIsInAutoPilot() && !this.$8m && !this.GetIsShowPlayerToTargetLine();
+    return !ModelManager_1.ModelManager.AutoPilotModel?.GetIsInAutoPilot() && !this.Y8m && !this.GetIsShowPlayerToTargetLine();
   }
   GetIsShowEndPoint() {
     return !this.GetIsShowPlayerToTargetLine();
@@ -47,7 +62,7 @@ class AutoPilotFindPathResult {
     return this.GetIsShowEndPoint() && !this.GetIsShowPlayerToTargetLine();
   }
   GetIsShowPlayerToTargetLine() {
-    return this.Mkf;
+    return this.C3f;
   }
   GetTrackingPoint() {
     if (this.GetIsShowStartPoint()) {
@@ -59,59 +74,58 @@ class AutoPilotFindPathResult {
     }
   }
   RefreshSplinePoints() {
-    this.Ctg();
+    this.ZAg();
     if (this.Roadways.length !== 0) {
-      this.ptg();
-      this.Hce = AutoPilotUtil_1.AutoPilotUtil.GenerateAllSplinePoints(this.Roadways, this.SplinePoints, this.StartPoint, this.EndPoint, this.azf);
+      this.eDg();
+      this.Hce = AutoPilotUtil_1.AutoPilotUtil.GenerateAllSplinePoints(this.Roadways, this.SplinePoints, this.StartPoint, this.EndPoint, this.vgg);
     }
   }
-  Ctg() {
-    this.azf.forEach(t => {
+  ZAg() {
+    this.vgg.forEach(t => {
       t.length = 0;
-      this.gtg.Push(t);
+      this.JAg.Push(t);
     });
-    this.azf.clear();
+    this.vgg.clear();
   }
-  ptg() {
+  eDg() {
     for (const t of this.Roadways) {
-      this.azf.set(t.Id, this.gtg.Pop() ?? []);
+      this.vgg.set(t.Id, this.JAg.Pop() ?? []);
     }
   }
   GetDistSquaredPlayerToEndPoint() {
-    return this.j8m;
+    return this.K8m;
   }
   RefreshHasArriveStartPoint() {
     var t;
-    var i;
-    if (ModelManager_1.ModelManager.AutoPilotModel?.GetIsOnNearestRoadway() && this.Roadways.length !== 0 && (t = this.Roadways[0], (i = ModelManager_1.ModelManager.AutoPilotModel?.GetNearestRoadway())?.Roadway?.Id === t.Id || i?.Roadway?.Id === t.OpposingId || AutoPilotUtil_1.AutoPilotUtil.IsNearRoadWay(t, this.PlayerPoint) || (i = ControllerHolder_1.ControllerHolder.TransportController.GetTransportSystem().GetRoadWay(t.OpposingId)) && AutoPilotUtil_1.AutoPilotUtil.IsNearRoadWay(i, this.PlayerPoint))) {
-      this.$8m = true;
+    if (this.Roadways.length !== 0 && (t = this.Roadways[0], AutoPilotUtil_1.AutoPilotUtil.IsNearRoadWay(t, this.PlayerPoint) || (t = ControllerHolder_1.ControllerHolder.TransportController.GetTransportSystem().GetRoadWay(t.OpposingId)) && AutoPilotUtil_1.AutoPilotUtil.IsNearRoadWay(t, this.PlayerPoint))) {
+      this.Y8m = true;
     } else {
-      this.$8m = false;
+      this.Y8m = false;
     }
   }
   GetHasArriveStartPoint() {
-    return this.$8m;
+    return this.Y8m;
   }
   SetIsShowPlayerToTargetLine(t, i) {
-    if (this.Mkf !== t) {
+    if (this.C3f !== t) {
       if (t && Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("AutoPilot", 87, "直接连接玩家和目标点", ["reason", i]);
       }
-      this.Mkf = t;
+      this.C3f = t;
     }
   }
   RefreshData(t, i, e, s) {
     this.MapId = t;
-    this.$Jf.DeepCopy(i);
-    this.TargetPoint.DeepCopy(e);
+    this.Hpg.FromUeVector(i);
+    this.TargetPoint.FromUeVector(e);
     if (s) {
-      this.StartPoint.DeepCopy(s.RoadStartPoint);
+      this.StartPoint.FromUeVector(s.RoadStartPoint);
       this.Roadways.length = 0;
       var r = s.Roadways.Num();
       for (let t = 0; t < r; t++) {
         this.Roadways.push(s.Roadways.Get(t));
       }
-      this.EndPoint.DeepCopy(s.RoadEndPoint);
+      this.EndPoint.FromUeVector(s.RoadEndPoint);
       this.RefreshSplinePoints();
       if (this.Hce < ModelManager_1.ModelManager.AutoPilotModel.GetSplineDistanceThreshold()) {
         this.SetIsShowPlayerToTargetLine(true, "样条线距离过短");
@@ -122,7 +136,7 @@ class AutoPilotFindPathResult {
           this.SetIsShowPlayerToTargetLine(true, "玩家到目标点距离<起点到切入点+切出点到目标点");
         } else {
           this.SetIsShowPlayerToTargetLine(false);
-          this.j8m = Vector_1.Vector.DistSquared(this.PlayerPoint, this.EndPoint);
+          this.K8m = Vector_1.Vector.DistSquared(this.PlayerPoint, this.EndPoint);
         }
       }
     } else {
@@ -130,9 +144,9 @@ class AutoPilotFindPathResult {
     }
   }
   RefreshDataInAutoPilot() {
-    this.xZf = true;
-    this.StartPoint.DeepCopy(this.PlayerPoint);
-    this.j8m = Vector_1.Vector.DistSquared(this.PlayerPoint, this.EndPoint);
+    this.GSg = true;
+    this.StartPoint.FromUeVector(this.PlayerPoint);
+    this.K8m = Vector_1.Vector.DistSquared(this.PlayerPoint, this.EndPoint);
     var t = ModelManager_1.ModelManager.AutoPilotModel?.SplineMoveComp?.CurrentSplineMoveParams?.CurrentRouteIndex;
     if (t !== undefined) {
       if (t === this.Roadways.length - 1) {
@@ -141,7 +155,7 @@ class AutoPilotFindPathResult {
           return;
         }
       }
-      AutoPilotUtil_1.AutoPilotUtil.ProcessSplinePointsForAutoPilotRoute(this.Roadways[t], this.SplinePoints, this.StartPoint, this.azf);
+      AutoPilotUtil_1.AutoPilotUtil.ProcessSplinePointsForAutoPilotRoute(this.Roadways[t], this.SplinePoints, this.StartPoint, this.vgg);
     }
   }
   GetLastRoadWay() {
@@ -158,11 +172,21 @@ class AutoPilotFindPathResult {
   }
   IsNeedRefreshByFindPath(t) {
     var i;
-    if (this.xZf) {
-      return !(this.xZf = false);
+    if (this.GSg) {
+      return !(this.GSg = false);
     } else {
-      return this.Roadways.length !== 0 && (t = Vector_1.Vector.DistSquared(t, this.$Jf), i = ModelManager_1.ModelManager.AutoPilotModel.AutoPilotRoadWayWidthOffset, (i = this.Roadways[0].Width / 2 + i) * i < t);
+      return this.Roadways.length !== 0 && (t = Vector_1.Vector.DistSquared(t, this.Hpg), i = ModelManager_1.ModelManager.AutoPilotModel.AutoPilotRoadWayWidthOffset, (i = this.Roadways[0].Width / 2 + i) * i < t);
     }
+  }
+  GetStartRotator() {
+    var t;
+    if (this.Roadways.length !== 0) {
+      t = AutoPilotUtil_1.AutoPilotUtil.GetDistanceAlongSplineAtWorldLocation(this.Roadways[0].RoadSpline, this.StartPoint);
+      return this.Roadways[0].RoadSpline?.GetRotationAtDistanceAlongSpline(t, 1);
+    }
+  }
+  Clear() {
+    ControllerHolder_1.ControllerHolder.AutoPilotController.RemoveTick(this.CheckFindPathAutoPilotConditions);
   }
 }
 exports.AutoPilotFindPathResult = AutoPilotFindPathResult;

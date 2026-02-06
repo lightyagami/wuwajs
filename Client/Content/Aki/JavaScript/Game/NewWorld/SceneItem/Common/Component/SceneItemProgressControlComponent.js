@@ -164,16 +164,16 @@ let SceneItemProgressControlComponent = SceneItemProgressControlComponent_1 = cl
     return true;
   }
   OnStart() {
-    this.mBe = this.Entity.CheckGetComponent(142);
-    this.Lie = this.Entity.CheckGetComponent(206);
-    this.Hte = this.Entity.CheckGetComponent(212);
+    this.mBe = this.Entity.CheckGetComponent(144);
+    this.Lie = this.Entity.CheckGetComponent(208);
+    this.Hte = this.Entity.CheckGetComponent(214);
     if (!this.mBe || !this.Lie || !this.Hte) {
       return false;
     }
     switch (this.Lo.Control.Type) {
       case "CaptureStrategicPoint":
       case "CaptureStrategicPoint2":
-        this.vtn = this.Entity.CheckGetComponent(89);
+        this.vtn = this.Entity.CheckGetComponent(91);
         if (!this.vtn) {
           return false;
         }
@@ -183,7 +183,7 @@ let SceneItemProgressControlComponent = SceneItemProgressControlComponent_1 = cl
         break;
       case "ChargingDevice":
       case "TimedStrikeDevice":
-        this.$br = this.Entity.CheckGetComponent(163);
+        this.$br = this.Entity.CheckGetComponent(165);
         if (this.$br) {
           this.$br.RegisterComponent(this, this.Lo);
         }
@@ -248,7 +248,7 @@ let SceneItemProgressControlComponent = SceneItemProgressControlComponent_1 = cl
   L1n() {
     var t = Protocol_1.Aki.Protocol.zls.create();
     t.F4n = MathUtils_1.MathUtils.NumberToLong(this.EIe.GetCreatureDataId());
-    Net_1.Net.Call(21369, t, t => {});
+    Net_1.Net.Call(29343, t, t => {});
   }
   g1n() {
     var t = this.Lo.Control;
@@ -645,5 +645,5 @@ let SceneItemProgressControlComponent = SceneItemProgressControlComponent_1 = cl
     }
   }
 };
-SceneItemProgressControlComponent = SceneItemProgressControlComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(138)], SceneItemProgressControlComponent);
+SceneItemProgressControlComponent = SceneItemProgressControlComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(140)], SceneItemProgressControlComponent);
 exports.SceneItemProgressControlComponent = SceneItemProgressControlComponent; //# sourceMappingURL=SceneItemProgressControlComponent.js.map

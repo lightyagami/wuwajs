@@ -134,6 +134,9 @@ class CommonConfig extends ConfigBase_1.ConfigBase {
   GetGiftMaxNineNineNine() {
     return CommonParamById_1.configCommonParamById.GetIntConfig("GiftMaxNineNineNine") ?? 0;
   }
+  GetPioneerPkgIdList() {
+    return CommonParamById_1.configCommonParamById.GetStringArrayConfig("PioneerPkgIdList") ?? [];
+  }
 }
 exports.CommonConfig = CommonConfig;
 //# sourceMappingURL=CommonConfig.js.map

@@ -72,10 +72,19 @@ class GenericScrollViewNew {
       this.cNo.ScrollTo(t);
     }
   }
-  LateScrollTo(e) {
+  LateScrollTo(e, i) {
     this.BindLateUpdate(t => {
       TimerSystem_1.GameplayTimerSystem.Next(() => {
         this.ScrollTo(e);
+        i?.();
+      });
+      this.UnBindLateUpdate();
+    });
+  }
+  LateScrollToLeft(e) {
+    this.BindLateUpdate(t => {
+      TimerSystem_1.GameplayTimerSystem.Next(() => {
+        this.ScrollToLeft(e);
       });
       this.UnBindLateUpdate();
     });

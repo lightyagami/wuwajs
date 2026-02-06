@@ -12,12 +12,10 @@ class RedDotMotorcycleTreeTypeTechTab extends RedDotBase_1.RedDotBase {
     return true;
   }
   OnGetEvents() {
-    return [EventDefine_1.EEventName.MotorDevelopInfoUpdate, EventDefine_1.EEventName.MotorDevelopTechTreeUpdate, EventDefine_1.EEventName.MotorDevelopTaskUpdate, EventDefine_1.EEventName.MotorDevelopTreeTypeRedDotUpdate];
+    return [EventDefine_1.EEventName.MotorDevelopInfoUpdate, EventDefine_1.EEventName.MotorDevelopTechTreeUpdate, EventDefine_1.EEventName.MotorDevelopTaskUpdate];
   }
   OnCheck(e) {
-    var t = ModelManager_1.ModelManager.MotorcycleDevelopModel.RedDotHasNewTechTree(e);
-    var e = ModelManager_1.ModelManager.MotorcycleDevelopModel.RedDotHasUpgradableTechNode(e);
-    return t || e;
+    return ModelManager_1.ModelManager.MotorcycleDevelopModel.RedDotHasUpgradableTechNode(e);
   }
 }
 exports.RedDotMotorcycleTreeTypeTechTab = RedDotMotorcycleTreeTypeTechTab;

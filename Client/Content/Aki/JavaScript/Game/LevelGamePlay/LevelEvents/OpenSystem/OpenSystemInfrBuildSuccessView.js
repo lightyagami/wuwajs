@@ -17,11 +17,11 @@ class OpenSystemInfrBuildSuccessView extends OpenSystemBase_1.OpenSystemBase {
       NeedFocusBuildQuest: false,
       NeedPlayBuildSuccessSeq: true,
       SettleInfo: {
-        DeliveryType: Protocol_1.Aki.Protocol.VNm.Proto_Observatory,
+        DeliveryType: Protocol_1.Aki.Protocol.a4m.Proto_Observatory,
         RoadId: e.Stage
       }
     }, await InfrastructureController_1.InfrastructureController.OpenInfrastructureMainView(t)) : (t = {
-      DeliveryType: Protocol_1.Aki.Protocol.VNm.Proto_Road,
+      DeliveryType: Protocol_1.Aki.Protocol.a4m.Proto_Road,
       RoadId: e.Id,
       NeedPlayFinishSeq: true
     }, await UiManager_1.UiManager.OpenViewAsync("InfrRoadNetworkMainView", t))) !== undefined;

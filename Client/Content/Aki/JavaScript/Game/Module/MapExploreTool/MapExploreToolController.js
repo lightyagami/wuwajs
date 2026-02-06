@@ -78,7 +78,7 @@ class MapExploreToolController extends UiControllerBase_1.UiControllerBase {
   static IAi(e, o) {
     ModelManager_1.ModelManager.MapExploreToolModel.SetCharExploreSkillBusy(false);
     if (!o) {
-      ModelManager_1.ModelManager.CreatureModel.GetEntityById(e.CharId)?.Entity?.GetComponent(218)?.ModifyCdTime([e.SkillId], 0, -1);
+      ModelManager_1.ModelManager.CreatureModel.GetEntityById(e.CharId)?.Entity?.GetComponent(220)?.ModifyCdTime([e.SkillId], 0, -1);
     }
   }
   static EAi(e) {
@@ -103,7 +103,7 @@ class MapExploreToolController extends UiControllerBase_1.UiControllerBase {
     }
     var o = ModelManager_1.ModelManager.CreatureModel.GetEntityById(e.CharId);
     var r = o?.Entity?.GetComponent(3);
-    var a = o?.Entity?.GetComponent(184);
+    var a = o?.Entity?.GetComponent(186);
     if (!o || !r || !a) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Phantom", 39, "[MapExploreTool] 使用者异常", ["UsingInfo", e]);
@@ -120,7 +120,7 @@ class MapExploreToolController extends UiControllerBase_1.UiControllerBase {
     r = o?.Entity?.GetComponent(242);
     r = r?.IsOnVehicle && r?.VehicleType === "Motorcycle";
     if (a.PositionState !== CharacterUnifiedStateTypes_1.ECharPositionState.Ground) {
-      a = o?.Entity?.GetComponent(215);
+      a = o?.Entity?.GetComponent(217);
       if (!r || !a?.HasTag(-433207812)) {
         this.RAi(e, "ExploreStateError");
         if (Log_1.Log.CheckInfo()) {
@@ -388,9 +388,9 @@ class MapExploreToolController extends UiControllerBase_1.UiControllerBase {
   }
   static Jcl(o) {
     var e = Protocol_1.Aki.Protocol.KC_.create();
-    Net_1.Net.Call(29226, e, e => {
+    Net_1.Net.Call(16994, e, e => {
       if (e.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs && e.Cvs !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrSkillIsEffect) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 22600);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 18242);
       } else {
         o({
           PhantomSkillId: 1011,
@@ -401,9 +401,9 @@ class MapExploreToolController extends UiControllerBase_1.UiControllerBase {
   }
   static Zcl(o) {
     var e = Protocol_1.Aki.Protocol.HC_.create();
-    Net_1.Net.Call(19015, e, e => {
+    Net_1.Net.Call(29741, e, e => {
       if (e.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs && e.Cvs !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrTreasureBoxAllActive) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 24567);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 25650);
       } else {
         ModelManager_1.ModelManager.MapModel.UpdateBoxSlotInfo(e.IT_);
         o({
@@ -425,9 +425,9 @@ class MapExploreToolController extends UiControllerBase_1.UiControllerBase {
         var e = ModelManager_1.ModelManager.MapModel.GetBoxSlotInfoByMarkId(r);
         var o = Protocol_1.Aki.Protocol.WC_.create();
         o.b7n = e.b7n;
-        var o = await Net_1.Net.CallAsync(24765, o);
+        var o = await Net_1.Net.CallAsync(27323, o);
         if (o.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Cvs, 22560);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Cvs, 24561);
         } else {
           ModelManager_1.ModelManager.MapModel.RemoveBoxSlotInfo(e.b7n);
         }
@@ -441,9 +441,9 @@ class MapExploreToolController extends UiControllerBase_1.UiControllerBase {
       (r = Protocol_1.Aki.Protocol.YC_.create()).l8n = e.Pos;
       r._8n = e.Rot;
       r.Suc = ModelManager_1.ModelManager.AreaModel.GetCurrentAreaId() ?? 0;
-      Net_1.Net.Call(15033, r, e => {
+      Net_1.Net.Call(21107, r, e => {
         if (e.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 24513);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 27736);
         } else {
           o({
             PhantomSkillId: 1010,
@@ -456,9 +456,9 @@ class MapExploreToolController extends UiControllerBase_1.UiControllerBase {
   static RemoveTemporaryTeleportRequest(e, o) {
     var r = Protocol_1.Aki.Protocol.PCs.create();
     r.R7n = e;
-    Net_1.Net.Call(24777, r, e => {
+    Net_1.Net.Call(23600, r, e => {
       if (e.G9n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 27959);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 23288);
       } else {
         ModelManager_1.ModelManager.MapModel.RemoveTemporaryTeleportInfo(o);
       }
@@ -468,7 +468,7 @@ class MapExploreToolController extends UiControllerBase_1.UiControllerBase {
     var e = Protocol_1.Aki.Protocol.r0_.create();
     return {
       PhantomSkillId: 1011,
-      Content: await Net_1.Net.CallAsync(18624, e)
+      Content: await Net_1.Net.CallAsync(23955, e)
     };
   }
 }

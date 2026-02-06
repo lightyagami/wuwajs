@@ -33,15 +33,15 @@ const ModelManager_1 = require("../../Manager/ModelManager");
 let SceneItemSunSpiritLauncherComponent = SceneItemSunSpiritLauncherComponent_1 = class SceneItemSunSpiritLauncherComponent extends EntityComponent_1.EntityComponent {
   constructor() {
     super(...arguments);
-    this.$Zm = undefined;
+    this.tCf = undefined;
     this.Hte = undefined;
   }
   OnInitData(e) {
-    this.$Zm = e.GetParam(SceneItemSunSpiritLauncherComponent_1)[0];
+    this.tCf = e.GetParam(SceneItemSunSpiritLauncherComponent_1)[0];
     return true;
   }
   OnInit() {
-    this.Hte = this.Entity.GetComponent(212);
+    this.Hte = this.Entity.GetComponent(214);
     return true;
   }
   GetHintViewLocation(e) {
@@ -52,35 +52,34 @@ let SceneItemSunSpiritLauncherComponent = SceneItemSunSpiritLauncherComponent_1 
     return (!this.Hte || !!this.Hte?.GetIsSceneInteractionLoadCompleted()) && !!this.GetTargetGear();
   }
   GetNumOfNeededSunSpirit() {
-    return this.$Zm?.NeedsCount ?? 0;
+    return this.tCf?.NeedsCount ?? 0;
   }
   GetTargetGear() {
-    if (this.$Zm?.SunSpiritGearId) {
-      var e = ModelManager_1.ModelManager.CreatureModel?.GetEntityByPbDataId(this.$Zm.SunSpiritGearId);
+    if (this.tCf?.SunSpiritGearId) {
+      var e = ModelManager_1.ModelManager.CreatureModel?.GetEntityByPbDataId(this.tCf.SunSpiritGearId);
       if (e?.Valid) {
-        return e.Entity?.GetComponent(334);
+        return e.Entity?.GetComponent(336);
       }
     }
   }
   CheckIsSunSpiritOccupiedByTargetGear(e) {
     e = e.GetSunSpiritState();
-    return e instanceof SunSpiritOccupiedByGearState_1.SunSpiritOccupiedByGearState && e.GearConfigId === this.$Zm?.SunSpiritGearId && !e.IsFinished;
+    return e instanceof SunSpiritOccupiedByGearState_1.SunSpiritOccupiedByGearState && e.GearConfigId === this.tCf?.SunSpiritGearId;
   }
   CheckIsSunSpiritFlyingFromPlayerToTargetGear(e) {
     e = e.GetSunSpiritState();
-    return e instanceof SunSpiritFlyingToGearState_1.SunSpiritFlyingToGearState && e.GearConfigId === this.$Zm?.SunSpiritGearId && !e.IsFinished;
+    return e instanceof SunSpiritFlyingToGearState_1.SunSpiritFlyingToGearState && e.GearConfigId === this.tCf?.SunSpiritGearId;
   }
   CheckIsSunSpiritOccupiedByPlayer(e) {
-    e = e.GetSunSpiritState();
-    return e instanceof SunSpiritOccupiedByPlayerState_1.SunSpiritOccupiedByPlayerState && !e.IsFinished;
+    return e.GetSunSpiritState() instanceof SunSpiritOccupiedByPlayerState_1.SunSpiritOccupiedByPlayerState;
   }
   CheckIsSunSpiritFlyingFromTargetGearToPlayer(e) {
     e = e.GetSunSpiritState();
-    return e instanceof SunSpiritFlyingToPlayerState_1.SunSpiritFlyingToPlayerState && e.GearConfigId === this.$Zm?.SunSpiritGearId && !e.IsFinished;
+    return e instanceof SunSpiritFlyingToPlayerState_1.SunSpiritFlyingToPlayerState && e.GearConfigId === this.tCf?.SunSpiritGearId;
   }
   GetNumOfSunSpiritRelatedToLauncher(t, i, n, r) {
-    return ModelManager_1.ModelManager.SunSpiritModel?.GetSunSpiritNumByPlayerIdAndAreaId(ModelManager_1.ModelManager.CreatureModel?.GetPlayerId(), this.$Zm?.AreaId, true, e => t && this.CheckIsSunSpiritOccupiedByTargetGear(e) || i && this.CheckIsSunSpiritOccupiedByPlayer(e) || n && this.CheckIsSunSpiritFlyingFromPlayerToTargetGear(e) || r && this.CheckIsSunSpiritFlyingFromTargetGearToPlayer(e)) ?? 0;
+    return ModelManager_1.ModelManager.SunSpiritModel?.GetSunSpiritNumByPlayerIdAndAreaId(ModelManager_1.ModelManager.CreatureModel?.GetPlayerId(), this.tCf?.AreaId, true, e => t && this.CheckIsSunSpiritOccupiedByTargetGear(e) || i && this.CheckIsSunSpiritOccupiedByPlayer(e) || n && this.CheckIsSunSpiritFlyingFromPlayerToTargetGear(e) || r && this.CheckIsSunSpiritFlyingFromTargetGearToPlayer(e)) ?? 0;
   }
 };
-SceneItemSunSpiritLauncherComponent = SceneItemSunSpiritLauncherComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(335)], SceneItemSunSpiritLauncherComponent);
+SceneItemSunSpiritLauncherComponent = SceneItemSunSpiritLauncherComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(337)], SceneItemSunSpiritLauncherComponent);
 exports.SceneItemSunSpiritLauncherComponent = SceneItemSunSpiritLauncherComponent; //# sourceMappingURL=SceneItemSunSpiritLauncherComponent.js.map

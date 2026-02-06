@@ -16,22 +16,22 @@ const sequenceName = ["FirstDigit", "SecondDigit", "ThirdDigit", "FourthDigit", 
 class InfrastructureFireExpPanel extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.YRf = [];
+    this.aBf = [];
     this.Hea = undefined;
-    this.g4m = undefined;
-    this.pNf = undefined;
+    this.B5m = undefined;
+    this.iHf = undefined;
     this.fFo = () => {
-      this.g4m?.();
+      this.B5m?.();
     };
     this.yct = e => {
       if (sequenceName.includes(e)) {
-        this.pNf?.();
+        this.iHf?.();
       }
     };
     this.Tct = (e, i) => {
       if (sequenceName.includes(e) && i === "On") {
         i = sequenceName.indexOf(e);
-        e = this.YRf[i];
+        e = this.aBf[i];
         this.GetArtText(numEnum[i]).SetText(e.toString());
       }
     };
@@ -44,24 +44,24 @@ class InfrastructureFireExpPanel extends UiPanelBase_1.UiPanelBase {
     this.Hea = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetItem(16));
     this.Hea.BindSequenceCloseEvent(this.yct);
     this.GetItem(16).GetOwner().OnSequencePlayEvent.Bind(this.Tct);
-    this.C4m(0, true);
+    this.k5m(0, true);
   }
   UpdateExp() {
-    return this.C4m();
+    return this.k5m();
   }
   RefreshExpBeforeRoadBuilt(e) {
     e = ConfigManager_1.ConfigManager.InfrastructureConfig.GetRoadConfigById(e);
-    this.C4m(e.FireExpReward, true);
+    this.k5m(e.FireExpReward, true);
   }
-  C4m(e = 0, i = false) {
+  k5m(e = 0, i = false) {
     let t = 10 ** (numEnum.length - 1);
-    var n = this.YRf;
-    this.YRf = [];
+    var n = this.aBf;
+    this.aBf = [];
     let s = ModelManager_1.ModelManager.InfrastructureModel.FireExp - e;
     let r = 0;
     while (r < numEnum.length) {
       var u = Math.floor(s / t);
-      this.YRf.push(u);
+      this.aBf.push(u);
       s %= t;
       t /= 10;
       r++;
@@ -72,7 +72,7 @@ class InfrastructureFireExpPanel extends UiPanelBase_1.UiPanelBase {
       var E = this.GetArtText(numEnum[r]);
       var m = this.GetArtText(preNumEnum[r]);
       var o = this.GetArtText(nextNumEnum[r]);
-      var l = this.YRf[r];
+      var l = this.aBf[r];
       if (h = h && l === 0 && r < numEnum.length - 1) {
         E.SetChangeColor(true, E.changeColor);
       } else {
@@ -94,10 +94,10 @@ class InfrastructureFireExpPanel extends UiPanelBase_1.UiPanelBase {
     return a;
   }
   SetOnClickHelpCb(e) {
-    this.g4m = e;
+    this.B5m = e;
   }
   SetOnDigitSequenceFinishCb(e) {
-    this.pNf = e;
+    this.iHf = e;
   }
 }
 exports.InfrastructureFireExpPanel = InfrastructureFireExpPanel;

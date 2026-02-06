@@ -353,10 +353,10 @@ class CameraController extends ControllerBase_1.ControllerBase {
 }
 (exports.CameraController = CameraController).IsInCameraModeBlending = false;
 CameraController.xie = (e, t) => {
-  if (t?.Valid && (t = t.Entity.GetComponent(215))?.Valid) {
+  if (t?.Valid && (t = t.Entity.GetComponent(217))?.Valid) {
     t.RemoveTagAddOrRemoveListener(constrainAspectRatioGameplayTag, CameraController.cml);
   }
-  if (e?.Valid && (t = e.Entity.GetComponent(215))?.Valid) {
+  if (e?.Valid && (t = e.Entity.GetComponent(217))?.Valid) {
     t.AddTagAddOrRemoveListener(constrainAspectRatioGameplayTag, CameraController.cml);
     CameraController.uml(t.HasTag(constrainAspectRatioGameplayTag));
   }

@@ -33,13 +33,13 @@ exports.CharacterDynamicFlowData = CharacterDynamicFlowData;
 class DynamicFlowController extends ControllerBase_1.ControllerBase {
   static OnInit() {
     this.jYo();
-    Net_1.Net.Register(19915, DynamicFlowController.WYo);
-    Net_1.Net.Register(19899, DynamicFlowController.KYo);
+    Net_1.Net.Register(20571, DynamicFlowController.WYo);
+    Net_1.Net.Register(24284, DynamicFlowController.KYo);
     return true;
   }
   static OnClear() {
-    Net_1.Net.UnRegister(19915);
-    Net_1.Net.UnRegister(19899);
+    Net_1.Net.UnRegister(20571);
+    Net_1.Net.UnRegister(24284);
     return true;
   }
   static jYo() {
@@ -80,12 +80,12 @@ class DynamicFlowController extends ControllerBase_1.ControllerBase {
         }
       }
     }
-    return !!t.MasterInfo?.IsValid() && ((r = this.GetFlowActorEntityHandle(t.MasterInfo))?.Entity?.IsInit && r.Entity?.GetComponent(31)?.PlayDynamicFlowBegin(t), this.UpdateDynamicFlowCache(t, true), true);
+    return !!t.MasterInfo?.IsValid() && ((r = this.GetFlowActorEntityHandle(t.MasterInfo))?.Entity?.IsInit && r.Entity?.GetComponent(32)?.PlayDynamicFlowBegin(t), this.UpdateDynamicFlowCache(t, true), true);
   }
   static RemoveDynamicFlow(t) {
     var r;
     var t = this.GetMasterActorInfoByActorInfo(t);
-    return !!t && !!(r = this.GetDynamicFlowByMasterActorInfo(t)) && ((t = this.GetFlowActorEntityHandle(t))?.Entity?.IsInit && t.Entity?.GetComponent(31)?.PlayDynamicFlowEnd(), this.UpdateDynamicFlowCache(r, false), true);
+    return !!t && !!(r = this.GetDynamicFlowByMasterActorInfo(t)) && ((t = this.GetFlowActorEntityHandle(t))?.Entity?.IsInit && t.Entity?.GetComponent(32)?.PlayDynamicFlowEnd(), this.UpdateDynamicFlowCache(r, false), true);
   }
   static UpdateDynamicFlowCache(t, r) {
     var o = t.MasterInfo;

@@ -41,20 +41,20 @@ let PawnInfoManageComponent = class PawnInfoManageComponent extends EntityCompon
     this.han = undefined;
     this.lan = undefined;
     this._an = -1;
-    this.Aif = undefined;
+    this.$of = undefined;
     this.xrr = undefined;
     this.KQs = undefined;
   }
   OnInit() {
     this.Ovr = this.Entity.GetComponent(0);
-    this.han = this.Entity.GetComponent(158);
+    this.han = this.Entity.GetComponent(160);
     return true;
   }
   get LockRange() {
     return this._an;
   }
   get LockControl() {
-    return this.Aif;
+    return this.$of;
   }
   get PawnName() {
     if (this.xrr !== LanguageSystem_1.LanguageSystem.PackageLanguage) {
@@ -112,7 +112,7 @@ let PawnInfoManageComponent = class PawnInfoManageComponent extends EntityCompon
     return this.Entity.Id;
   }
   get HasQuestOption() {
-    var t = this.Entity.GetComponent(207);
+    var t = this.Entity.GetComponent(209);
     return !!t && !!(t = t.GetInteractController()) && t.HasDynamicOption;
   }
   uan() {
@@ -123,10 +123,10 @@ let PawnInfoManageComponent = class PawnInfoManageComponent extends EntityCompon
       this.he = PublicUtil_1.PublicUtil.GetConfigTextByKey(t.TidName);
       if (t = (0, IComponent_1.getComponent)(this.lan.ComponentsData, "FightInteractComponent")) {
         this._an = t.LockRange;
-        this.Aif = t.LockControl ?? undefined;
+        this.$of = t.LockControl ?? undefined;
       } else {
         this._an = -1;
-        this.Aif = undefined;
+        this.$of = undefined;
       }
       return true;
     } else {
@@ -154,5 +154,5 @@ let PawnInfoManageComponent = class PawnInfoManageComponent extends EntityCompon
     return t || ((t = this.Entity.GetComponent(0)?.GetModelConfig()) ? t.名字Z偏移 : 0);
   }
 };
-PawnInfoManageComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(126)], PawnInfoManageComponent);
+PawnInfoManageComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(128)], PawnInfoManageComponent);
 exports.PawnInfoManageComponent = PawnInfoManageComponent; //# sourceMappingURL=PawnInfoManageComponent.js.map

@@ -23,7 +23,7 @@ class HonamiStoryQuickRoleData {
     this.BestResult = [];
     this.BestPower = 0;
     this.RealBestPower = 0;
-    this.CKm = new HonamiSortOrderListClass();
+    this.GYm = new HonamiSortOrderListClass();
     this.iem = (t, i) => {
       var r = this.GetPower(i);
       var o = this.GetPower(t);
@@ -43,7 +43,7 @@ class HonamiStoryQuickRoleData {
         return r - o;
       }
     };
-    this.MTm = (t, i) => {
+    this.xTm = (t, i) => {
       return this.GetPower(i, false) - this.GetPower(t, false);
     };
   }
@@ -103,7 +103,7 @@ class HonamiStoryQuickRoleData {
         ItemList: []
       };
       var e = this.tem.get(o);
-      s.ItemList = this.ETm(e, this.SlotUnlockCount * 2, i ?? new Set());
+      s.ItemList = this.BTm(e, this.SlotUnlockCount * 2, i ?? new Set());
       r[o - 1] = s;
     }
     this.BestPower = this.nem(r);
@@ -119,20 +119,20 @@ class HonamiStoryQuickRoleData {
   }
   nem(r) {
     let o = 0;
-    for (const i of this.CKm.GetSortOrderList(3)) {
+    for (const i of this.GYm.GetSortOrderList(3)) {
       var t = i[0];
       var s = i[1];
       var e = i[2];
       for (let i = 0; i <= this.SlotUnlockCount; i++) {
         var h = new Set();
         var a = [];
-        [h, a] = this.pKm(r[t].ItemList, h, i);
+        [h, a] = this.FYm(r[t].ItemList, h, i);
         for (let t = 0; t <= this.SlotUnlockCount - i; t++) {
           var n = new Set(h);
           var l = [];
-          [n, l] = this.pKm(r[s].ItemList, n, t);
+          [n, l] = this.FYm(r[s].ItemList, n, t);
           var f = [];
-          [n, f] = this.pKm(r[e].ItemList, n, this.SlotUnlockCount - i - t);
+          [n, f] = this.FYm(r[e].ItemList, n, this.SlotUnlockCount - i - t);
           var n = a.concat(l).concat(f);
           var l = this.RoleData.GetPowerLevelByItemList(n, false);
           if (l > o) {
@@ -144,7 +144,7 @@ class HonamiStoryQuickRoleData {
     }
     return o;
   }
-  ETm(t, i, r) {
+  BTm(t, i, r) {
     let o = 0;
     var s = new Set();
     for (var e = [], h = []; o < t.length && e.length < i;) {
@@ -162,10 +162,10 @@ class HonamiStoryQuickRoleData {
         o++;
       }
     }
-    h.sort(this.MTm);
-    return this.ITm(e, h, i);
+    h.sort(this.xTm);
+    return this.kTm(e, h, i);
   }
-  ITm(t, i, r) {
+  kTm(t, i, r) {
     var o;
     var s = [];
     let e = 0;
@@ -186,14 +186,14 @@ class HonamiStoryQuickRoleData {
     }
     return s;
   }
-  pKm(t, i, r) {
+  FYm(t, i, r) {
     var o = new Set(i);
     var s = [];
     var e = [];
     for (const h of t) {
       (h.GetRoleId() === this.RoleId && this.RoleId !== 0 ? o.has(h.GetGroupId()) ? e : (o.add(h.GetGroupId()), s) : s).push(h);
     }
-    t = this.ITm(s, e, r);
+    t = this.kTm(s, e, r);
     for (const a of t) {
       if (a.GetGroupId() !== 0) {
         i.add(a.GetGroupId());
@@ -227,34 +227,34 @@ class HonamiStoryQuickRoleData {
 }
 class HonamiSortOrderListClass {
   constructor() {
-    this.Gkm = [];
-    this.Fkm = [];
-    this.Nkm = [];
-    this.Vkm = 0;
+    this.tOm = [];
+    this.iOm = [];
+    this.rOm = [];
+    this.oOm = 0;
   }
   GetSortOrderList(i) {
-    if (i !== this.Vkm) {
-      this.Nkm.length = 0;
-      this.Gkm.length = 0;
-      for (let t = this.Fkm.length = 0; t < i; t++) {
-        this.Fkm.push(false);
+    if (i !== this.oOm) {
+      this.rOm.length = 0;
+      this.tOm.length = 0;
+      for (let t = this.iOm.length = 0; t < i; t++) {
+        this.iOm.push(false);
       }
-      this.jkm();
-      this.Vkm = i;
+      this.nOm();
+      this.oOm = i;
     }
-    return this.Nkm;
+    return this.rOm;
   }
-  jkm() {
-    if (this.Gkm.length === this.Fkm.length) {
-      this.Nkm.push(this.Gkm.slice());
+  nOm() {
+    if (this.tOm.length === this.iOm.length) {
+      this.rOm.push(this.tOm.slice());
     } else {
-      for (let t = 0; t < this.Fkm.length; t++) {
-        if (!this.Fkm[t]) {
-          this.Fkm[t] = true;
-          this.Gkm.push(t);
-          this.jkm();
-          this.Gkm.pop();
-          this.Fkm[t] = false;
+      for (let t = 0; t < this.iOm.length; t++) {
+        if (!this.iOm[t]) {
+          this.iOm[t] = true;
+          this.tOm.push(t);
+          this.nOm();
+          this.tOm.pop();
+          this.iOm[t] = false;
         }
       }
     }
@@ -268,7 +268,7 @@ class HonamiStoryQuickEquipAllManager {
     this.IsDirty = true;
     this.aem = new Set();
     this.pXe = new Map();
-    this.Hkm = new HonamiSortOrderListClass();
+    this.sOm = new HonamiSortOrderListClass();
   }
   Refresh(t) {
     if (!this.IsDirty && !t) {
@@ -291,14 +291,14 @@ class HonamiStoryQuickEquipAllManager {
     let e = 0;
     let h = [];
     var a;
-    var t = this.Hkm.GetSortOrderList(i.length);
+    var t = this.sOm.GetSortOrderList(i.length);
     var n = new Map();
     for (let t = 0; t < this.pXe.size; t++) {
       var l = this.pXe.get(t);
       if (l.RoleId === 0) {
         n.set(t, []);
       } else {
-        l = this.vKm(l.RoleId, s);
+        l = this.NYm(l.RoleId, s);
         n.set(t, l);
       }
     }
@@ -478,7 +478,7 @@ class HonamiStoryQuickEquipAllManager {
   GetDirty() {
     return this.IsDirty;
   }
-  vKm(t, i) {
+  NYm(t, i) {
     var r = [];
     if (!(t <= 0)) {
       var o;

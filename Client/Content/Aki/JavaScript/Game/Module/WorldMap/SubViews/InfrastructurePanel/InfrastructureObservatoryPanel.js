@@ -33,7 +33,7 @@ class InfrastructureObservatoryPanel extends WorldMapSecondaryUiLayoutA_1.WorldM
   }
   OnShowWorldMapSecondaryUi(e) {
     this.LayoutContext.MarkItem = e;
-    this.cxm();
+    this.Gxm();
     WorldMapSecondaryUiLayoutHelper_1.WorldMapSecondaryUiLayoutHelper.UpdateConfirmButtonTextWithFastMoveStyle(this.LayoutContext);
     WorldMapSecondaryUiLayoutHelper_1.WorldMapSecondaryUiLayoutHelper.UpdateTrackButtonTextWithTrackStyle(this.LayoutContext);
     WorldMapSecondaryUiLayoutHelper_1.WorldMapSecondaryUiLayoutHelper.UpdateIconAndTitle(this.LayoutContext);
@@ -43,25 +43,25 @@ class InfrastructureObservatoryPanel extends WorldMapSecondaryUiLayoutA_1.WorldM
     this.UpdateTopRightIconByTeleportState();
     e = this.UpdateQuickGoto();
     this.LayoutContext.SetConfirmBtnActive(!e);
-    this.Cjm();
-    this.q_o.RefreshByData(this.pjm());
+    this.wHm();
+    this.q_o.RefreshByData(this.LHm());
   }
-  cxm() {
+  Gxm() {
     var e = this.LayoutContext.MarkItem;
     this.LayoutContext.SetConfirmBtnEnableClick(!e.IsLocked);
   }
-  Cjm() {
+  wHm() {
     var e = ConfigManager_1.ConfigManager.InfrastructureConfig.GetLevelConfigById(ModelManager_1.ModelManager.InfrastructureModel.FireLevel);
     var r = ConfigManager_1.ConfigManager.InfrastructureConfig.GetMaxLevel();
     var e = Array.from(e.Requirement.entries());
     const a = ModelManager_1.ModelManager.InventoryModel;
     e = e.every(([e, r]) => a.GetItemCountByConfigId(e) >= r);
-    if (ModelManager_1.ModelManager.InfrastructureModel.FireLevel < r && ModelManager_1.ModelManager.InfrastructureModel.FireStatus === Protocol_1.Aki.Protocol.zNm.Proto_InfrStatusProgress && e) {
+    if (ModelManager_1.ModelManager.InfrastructureModel.FireLevel < r && ModelManager_1.ModelManager.InfrastructureModel.FireStatus === Protocol_1.Aki.Protocol.g4m.Proto_InfrStatusProgress && e) {
       this.GetItem(25).SetUIActive(true);
       this.GetText(30).ShowTextNew("Map_BuildObser_BuildAllowedTips");
     }
   }
-  pjm() {
+  LHm() {
     var e;
     if (ModelManager_1.ModelManager.InfrastructureModel.FireLevel < ConfigManager_1.ConfigManager.InfrastructureConfig.GetMaxLevel()) {
       return [];

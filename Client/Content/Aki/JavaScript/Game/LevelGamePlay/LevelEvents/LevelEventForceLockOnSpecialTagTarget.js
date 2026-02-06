@@ -20,7 +20,7 @@ class LevelEventForceLockOnSpecialTagTarget extends LevelGeneralBase_1.LevelEven
           Log_1.Log.Error("Level", 22, "LevelEventForceLockOnSpecialTagTarget 事件EntityId为空");
         }
       }
-      if ((a = Global_1.Global.BaseCharacter.CharacterActorComponent.Entity.GetComponent(33))?.Valid) {
+      if ((a = Global_1.Global.BaseCharacter.CharacterActorComponent.Entity.GetComponent(34))?.Valid) {
         n = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e.EntityId);
         (r = new BaseLockOnComponent_1.LockOnInfo()).EntityHandle = n;
         a.ForceLookAt(r, e.IsLocked);

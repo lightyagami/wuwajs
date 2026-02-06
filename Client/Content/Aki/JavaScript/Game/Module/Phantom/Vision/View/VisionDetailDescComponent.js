@@ -58,6 +58,9 @@ class VisionDetailDesc {
   GetNeedWarn() {
     return this.EquipSameMonster || this.EquipOverNeed;
   }
+  GetIsFetterData() {
+    return this.FetterId > 0;
+  }
   static CreateEmptySkillDescData() {
     var t = new Array();
     var i = new VisionDetailDesc();
@@ -367,9 +370,9 @@ class VisionDetailDescContentItem extends GridProxyAbstract_1.GridProxyAbstract 
           this.SPe.ReplaySequenceByKey(t);
         }
       }
-      this.GetItem(10)?.SetUIActive(e.GetNeedWarn() && t === undefined);
+      this.GetItem(10)?.SetUIActive(e.GetNeedWarn() && !e.GetIsFetterData() && t === undefined);
     } else {
-      this.GetItem(10)?.SetUIActive(e.GetNeedWarn());
+      this.GetItem(10)?.SetUIActive(e.GetNeedWarn() && !e.GetIsFetterData());
     }
   }
   s9i(t) {
@@ -383,7 +386,7 @@ class VisionDetailDescContentItem extends GridProxyAbstract_1.GridProxyAbstract 
     }
   }
   a9i(t) {
-    if (t.GreenActiveState && !t.NewState && t.FetterId > 0 || t.GetNeedWarn() || t.GreenActiveState && t.SkillConfig) {
+    if (t.GreenActiveState && !t.NewState && t.FetterId > 0 || t.GetNeedWarn() && !t.GetIsFetterData() || t.GreenActiveState && t.SkillConfig) {
       this.GetItem(1).SetUIActive(false);
     } else {
       this.GetItem(1).SetUIActive(true);

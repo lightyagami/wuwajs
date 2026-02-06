@@ -55,7 +55,7 @@ let AnimalStateMachineComponent = AnimalStateMachineComponent_1 = class AnimalSt
   OnStart() {
     var t = this.Entity.GetComponent(0);
     this.Mne = t.GetPbDataId();
-    this.oRe = this.Entity.GetComponent(186);
+    this.oRe = this.Entity.GetComponent(188);
     var t = this.oRe?.MainAnimInstance;
     if (t && UE.KuroStaticLibrary.IsImplementInterface(t.GetClass(), UE.BPI_AnimalEcological_C.StaticClass())) {
       this.ubr = t;

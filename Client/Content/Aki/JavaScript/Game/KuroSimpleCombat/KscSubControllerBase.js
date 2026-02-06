@@ -3,9 +3,10 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.KscSubControllerBase = exports.KscEntityRedirectFilter = undefined;
+exports.KscSubControllerBase = exports.KscEntityRedirectFilter = exports.DIVIDED_TEN_THOUSAND = undefined;
 const puerts_1 = require("puerts");
 const UE = require("ue");
+const ActorSystem_1 = require("../../Core/Actor/ActorSystem");
 const CustomPromise_1 = require("../../Core/Common/CustomPromise");
 const Info_1 = require("../../Core/Common/Info");
 const Log_1 = require("../../Core/Common/Log");
@@ -26,7 +27,7 @@ const UiLayer_1 = require("../Ui/UiLayer");
 const KscEnv_1 = require("./KscEnv");
 const KscLog_1 = require("./KscLog");
 const KscUtil_1 = require("./KscUtil");
-const DIVIDED_TEN_THOUSAND = 0.0001;
+exports.DIVIDED_TEN_THOUSAND = 0.0001;
 const PLAYER_ENTITY_KEY = 1001;
 class KscEntityRedirectFilter {
   constructor() {
@@ -90,6 +91,7 @@ class KscSubControllerBase {
   }
   InitMap() {
     this.Model.Init();
+    this.Model.KscInitState = 1;
     this.InitPropertyConfigs();
     this.InitEntityAndSkillDt();
     this.InitEntityFilter();
@@ -116,12 +118,14 @@ class KscSubControllerBase {
     await this.PreloadHeadStateRes();
   }
   MapLoaded() {
+    this.Model.KscInitState = 2;
     this.vYc();
     this.PAd = 1;
     this.InitDamageConfigs();
     this.OnMapLoaded();
   }
   WorldDone() {
+    this.Model.KscInitState = 3;
     this.OnWorldDone();
     this.InitHeadStateManagerRes();
     this.AddKscPlayerEntity();
@@ -228,9 +232,11 @@ class KscSubControllerBase {
     if (!t || !t.IsValid()) {
       KscLog_1.KscLog.Error("Load", 85, KscEnv_1.KscEnv.KscWorld, "塔防InitDamageIdConfig failed");
     }
-    for (const r of KSCDamageByKscGameplayType_1.configKSCDamageByKscGameplayType.GetConfigList(this.Model.GameplayType)) {
-      var i = new UE.KSCDamage(r.CalculateType, r.Element, r.Amplify * DIVIDED_TEN_THOUSAND, r.RelatedProperty);
-      t.AddDamageData(r.Id, i);
+    var i = this.Model.DamageIds;
+    for (const s of KSCDamageByKscGameplayType_1.configKSCDamageByKscGameplayType.GetConfigList(this.Model.GameplayType)) {
+      var r = new UE.KSCDamage(s.CalculateType, s.Element, s.Amplify * exports.DIVIDED_TEN_THOUSAND, s.RelatedProperty);
+      i.set(s.Id, r);
+      t.AddDamageData(s.Id, r);
     }
   }
   InitEntityAndSkillDt() {
@@ -249,16 +255,17 @@ class KscSubControllerBase {
     ControllerHolder_1.ControllerHolder.CreatureController.UnregisterCreateEntityFilter(this.RedirectFilter);
   }
   AddKscPlayerEntity() {
-    var e;
-    var t;
     if (KscEnv_1.KscEnv.KscWorld) {
-      if ((e = ModelManager_1.ModelManager.SceneTeamModel?.GetCurrentEntity)?.Valid) {
-        KscLog_1.KscLog.Info("Common", 17, KscEnv_1.KscEnv.KscWorld, "Ksc尝试添加玩家角色", ["Player", e?.Id]);
-        t = e.Entity.GetComponent(3).ActorTransform;
-        ControllerHolder_1.ControllerHolder.KuroSimpleCombatController.AddEntityDt(e.CreatureDataId, PLAYER_ENTITY_KEY, undefined, t, e => {
-          this.Model.SetKscPlayerEntity(e, 0);
+      const t = ModelManager_1.ModelManager.SceneTeamModel?.GetCurrentEntity;
+      var e;
+      if (t?.Valid) {
+        KscLog_1.KscLog.Info("Common", 17, KscEnv_1.KscEnv.KscWorld, "Ksc尝试添加玩家角色", ["Player", t?.Id]);
+        e = t.Entity.GetComponent(3).ActorTransform;
+        ControllerHolder_1.ControllerHolder.KuroSimpleCombatController.AddEntityDt(t.CreatureDataId, PLAYER_ENTITY_KEY, undefined, e, e => {
+          this.Model.SetKscPlayerEntity(e, t.CreatureDataId);
           this.OnPlayerEntityCreated();
           this.AddInputLayer();
+          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnKscPlayerCreate);
         });
       } else {
         KscLog_1.KscLog.Warn("Common", 17, KscEnv_1.KscEnv.KscWorld, "Ksc尝试添加玩家角色,entity非法");
@@ -371,8 +378,15 @@ class KscSubControllerBase {
   }
   ClearHeadState() {
     this.HeadStateScaleCurve = undefined;
-    this.HeadStateDynamicBatchActor = undefined;
-    (this.HeadStateViewActor = undefined, puerts_1.$unref)(this.HeadInfos).Empty();
+    if (this.HeadStateDynamicBatchActor?.IsValid()) {
+      ActorSystem_1.ActorSystem.Put("Ksc.ClearHeadState", this.HeadStateDynamicBatchActor);
+      this.HeadStateDynamicBatchActor = undefined;
+    }
+    if (this.HeadStateViewActor?.IsValid()) {
+      ActorSystem_1.ActorSystem.Put("Ksc.ClearHeadState", this.HeadStateViewActor);
+      this.HeadStateViewActor = undefined;
+    }
+    (0, puerts_1.$unref)(this.HeadInfos).Empty();
   }
   GmAddPlayerEntity() {
     var e;

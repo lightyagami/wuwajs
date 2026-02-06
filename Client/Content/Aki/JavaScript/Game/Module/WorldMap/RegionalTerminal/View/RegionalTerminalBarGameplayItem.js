@@ -30,12 +30,12 @@ class RegionalTerminalBarGameplayItem extends GridProxyAbstract_1.GridProxyAbstr
     s.SetChangeColor(t.GetLockState(), s.changeColor);
     this.SetTextureShowUntilLoaded(r.Icon, s);
     this.K8e();
-    this.khf();
+    this.e_f();
   }
   OnBeforeDestroy() {
     this.Ovt();
   }
-  khf() {
+  e_f() {
     this.GetItem(3)?.SetUIActive(ModelManager_1.ModelManager.RegionalTerminalModel.IsGameplayPin(this.Pe.Id));
     this.GetItem(2)?.SetUIActive(this.Pe.GetLockState());
   }

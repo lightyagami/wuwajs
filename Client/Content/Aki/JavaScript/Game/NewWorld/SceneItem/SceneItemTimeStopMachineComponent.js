@@ -127,13 +127,13 @@ let SceneItemTimeStopMachineComponent = SceneItemTimeStopMachineComponent_1 = cl
   tEn(e) {
     var t;
     var i;
-    var n = e.Entity?.GetComponent(131);
+    var n = e.Entity?.GetComponent(133);
     if (n) {
       t = n.SetTimeScale(1, 0, undefined, this.Lo.StopTime + TOLERANCE_TIME, 8);
       if ((i = e.Entity.GetComponent(0).GetEntityType()) === Protocol_1.Aki.Protocol.kks.Proto_SceneItem) {
-        e.Entity.GetComponent(206)?.AddTag(-1201477412);
+        e.Entity.GetComponent(208)?.AddTag(-1201477412);
       } else {
-        e.Entity.GetComponent(220)?.AddBuff(TIME_STOP_BUFF_ID, {
+        e.Entity.GetComponent(222)?.AddBuff(TIME_STOP_BUFF_ID, {
           InstigatorId: this.u1t.GetCreatureDataId(),
           Level: 1,
           Reason: "TimeStopMachine"
@@ -158,9 +158,9 @@ let SceneItemTimeStopMachineComponent = SceneItemTimeStopMachineComponent_1 = cl
     if (t) {
       t.TimeScaleComponent.RemoveTimeScale(t.TimeScaleId);
       if (t.IsSceneItem) {
-        e.Entity.GetComponent(206)?.RemoveTag(-1201477412);
+        e.Entity.GetComponent(208)?.RemoveTag(-1201477412);
       } else {
-        e.Entity.GetComponent(220)?.RemoveBuff(TIME_STOP_BUFF_ID, -1, "TimeStopMachine");
+        e.Entity.GetComponent(222)?.RemoveBuff(TIME_STOP_BUFF_ID, -1, "TimeStopMachine");
       }
     }
   }
@@ -170,5 +170,5 @@ let SceneItemTimeStopMachineComponent = SceneItemTimeStopMachineComponent_1 = cl
     }
   }
 };
-SceneItemTimeStopMachineComponent = SceneItemTimeStopMachineComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(224)], SceneItemTimeStopMachineComponent);
+SceneItemTimeStopMachineComponent = SceneItemTimeStopMachineComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(226)], SceneItemTimeStopMachineComponent);
 exports.SceneItemTimeStopMachineComponent = SceneItemTimeStopMachineComponent; //# sourceMappingURL=SceneItemTimeStopMachineComponent.js.map

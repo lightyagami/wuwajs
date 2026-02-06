@@ -46,10 +46,10 @@ class VehicleAudioEventInfo {
     this.iQ_ = false;
     this.I5_ = undefined;
     this.T5_ = false;
-    this.VYm = 0;
-    this.HYm = undefined;
-    this.jYm = e => {
-      if (e.FlowIncId === this.HYm?.PlotHandle?.Handle && (this.HYm.PlotHandle = undefined, Log_1.Log.CheckDebug())) {
+    this.CZm = 0;
+    this.pZm = undefined;
+    this.vZm = e => {
+      if (e.FlowIncId === this.pZm?.PlotHandle?.Handle && (this.pZm.PlotHandle = undefined, Log_1.Log.CheckDebug())) {
         Log_1.Log.Debug("Audio", 42, "[Vehicle.Audio] 摩托车角色共乘剧情播放结束");
       }
     };
@@ -301,58 +301,58 @@ class VehicleAudioEventInfo {
     return ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckCondition(e.toString(), undefined, false);
   }
   RegisterMotorDriveAudioEvent(e, i) {
-    if (this.HYm) {
+    if (this.pZm) {
       this.RemoveMotorDriveAudioEvent();
     }
-    this.HYm = {
+    this.pZm = {
       RoleId: e,
       RoleCreatureId: i,
       PassengerId: 0,
       PassengerActor: undefined
     };
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PlotNetworkEnd, this.jYm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PlotNetworkEnd, this.vZm);
     if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("Audio", 42, "[Vehicle.Audio] 触发与角色共乘", ["roleId", this.HYm.RoleId], ["roleCreatureId", this.HYm.RoleCreatureId]);
+      Log_1.Log.Debug("Audio", 42, "[Vehicle.Audio] 触发与角色共乘", ["roleId", this.pZm.RoleId], ["roleCreatureId", this.pZm.RoleCreatureId]);
     }
-    this.VYm = this.$Ym(e);
+    this.CZm = this.yZm(e);
   }
   RemoveMotorDriveAudioEvent() {
-    if (this.HYm) {
-      ModelManager_1.ModelManager.VehicleModel.RemoveKeepDrivingInfo(this.VYm);
-      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PlotNetworkEnd, this.jYm);
-      this.u6l(MathUtils_1.MathUtils.MaxFloat, this.HYm);
+    if (this.pZm) {
+      ModelManager_1.ModelManager.VehicleModel.RemoveKeepDrivingInfo(this.CZm);
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PlotNetworkEnd, this.vZm);
+      this.u6l(MathUtils_1.MathUtils.MaxFloat, this.pZm);
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("Audio", 42, "[Vehicle.Audio] 退出摩托车与角色共乘", ["roleId", this.HYm?.RoleId], ["roleCreatureId", this.HYm?.RoleCreatureId]);
+        Log_1.Log.Debug("Audio", 42, "[Vehicle.Audio] 退出摩托车与角色共乘", ["roleId", this.pZm?.RoleId], ["roleCreatureId", this.pZm?.RoleCreatureId]);
       }
-      this.HYm = undefined;
+      this.pZm = undefined;
     }
   }
   PlayMotorPlotAudioDefault(e) {
-    return (!!ModelManager_1.ModelManager.VehicleModel?.RideSharingInfoMap.size && !!this.HYm?.PassengerActor?.Owner || !!(this.WYm(), this.HYm?.PassengerActor)) && this.jq1(e, this.HYm, "Motorcycle");
+    return (!!ModelManager_1.ModelManager.VehicleModel?.RideSharingInfoMap.size && !!this.pZm?.PassengerActor?.Owner || !!(this.SZm(), this.pZm?.PassengerActor)) && this.jq1(e, this.pZm, "Motorcycle");
   }
   PlayMotorPlotAudio(e, i) {
-    return (!!ModelManager_1.ModelManager.VehicleModel?.RideSharingInfoMap.size && !!this.HYm?.PassengerActor?.Owner || !!(this.WYm(), this.HYm?.PassengerActor)) && this.QYm(e, i, this.HYm);
+    return (!!ModelManager_1.ModelManager.VehicleModel?.RideSharingInfoMap.size && !!this.pZm?.PassengerActor?.Owner || !!(this.SZm(), this.pZm?.PassengerActor)) && this.MZm(e, i, this.pZm);
   }
-  WYm() {
+  SZm() {
     var e;
     var i;
-    if (this.HYm) {
-      i = (e = ModelManager_1.ModelManager.CreatureModel?.GetEntity(this.HYm.RoleCreatureId))?.Entity?.GetComponent(1);
+    if (this.pZm) {
+      i = (e = ModelManager_1.ModelManager.CreatureModel?.GetEntity(this.pZm.RoleCreatureId))?.Entity?.GetComponent(1);
       if (e?.Entity && i) {
-        this.HYm.PassengerActor = i;
-        this.HYm.PassengerId = e.Entity.Id;
+        this.pZm.PassengerActor = i;
+        this.pZm.PassengerId = e.Entity.Id;
       } else {
         if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("Audio", 42, "[Vehicle.Audio] 摩托车角色共乘语音事件播放,没有乘客实体", ["roleId", this.HYm.RoleId], ["roleCreatureId", this.HYm.RoleCreatureId]);
+          Log_1.Log.Error("Audio", 42, "[Vehicle.Audio] 摩托车角色共乘语音事件播放,没有乘客实体", ["roleId", this.pZm.RoleId], ["roleCreatureId", this.pZm.RoleCreatureId]);
         }
-        this.HYm = undefined;
+        this.pZm = undefined;
       }
     }
   }
   CheckMotorState() {
-    return !!ModelManager_1.ModelManager.VehicleModel.IsReadyRiderSharing && !!ModelManager_1.ModelManager.VehicleModel.RideSharingInfoMap.size && !!this.HYm && (!!this.HYm.PassengerActor || !(this.WYm(), !this.HYm?.PassengerActor));
+    return !!ModelManager_1.ModelManager.VehicleModel.IsReadyRiderSharing && !!ModelManager_1.ModelManager.VehicleModel.RideSharingInfoMap.size && !!this.pZm && (!!this.pZm.PassengerActor || !(this.SZm(), !this.pZm?.PassengerActor));
   }
-  $Ym(e) {
+  yZm(e) {
     const i = new VehicleModel_1.KeepDrivingAtSpeedCondition([1, MathUtils_1.MathUtils.MaxFloat], () => this.CheckMotorState(), e => {
       if (this.PlayMotorPlotAudio(e, IAction_1.EGondolaVoiceTriggeredType.KeepMovingByCustomSec)) {
         i.SetConditionTriggered(e);
@@ -374,12 +374,12 @@ class VehicleAudioEventInfo {
     return ModelManager_1.ModelManager.VehicleModel?.AddKeepDrivingInfo(i) ?? 0;
   }
   jq1(e, i, o) {
-    return !!i.PassengerActor?.Owner && !!(o = this.GetPassengerPlotAudioConfigList(i.RoleId, e, o)) && !(o.length < 1) && (o = o[0], this.KYm(o, e, i));
+    return !!i.PassengerActor?.Owner && !!(o = this.GetPassengerPlotAudioConfigList(i.RoleId, e, o)) && !(o.length < 1) && (o = o[0], this.EZm(o, e, i));
   }
-  QYm(e, i, o) {
-    return !!o.PassengerActor?.Owner && !!(e = this.GetPassengerPlotAudioConfigById(e)) && this.KYm(e, i, o);
+  MZm(e, i, o) {
+    return !!o.PassengerActor?.Owner && !!(e = this.GetPassengerPlotAudioConfigById(e)) && this.EZm(e, i, o);
   }
-  KYm(e, i, o) {
+  EZm(e, i, o) {
     var t = e.PlotFlow && e.PlotFlow.length === 3;
     var r = this.C6l(t, e);
     if (r.length === 0) {

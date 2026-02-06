@@ -99,7 +99,7 @@ class ActivityDirectTrainHelper {
   }
   static async RequestDirectTrainInfoBeforeActivityOpen() {
     var e = Protocol_1.Aki.Protocol.$U1.create();
-    var e = await Net_1.Net.CallAsync(28783, e);
+    var e = await Net_1.Net.CallAsync(27485, e);
     if (e) {
       return e;
     }
@@ -107,10 +107,10 @@ class ActivityDirectTrainHelper {
   static RequestThroughTrain(e, r) {
     const t = Protocol_1.Aki.Protocol.zp_.create();
     t.w6n = e;
-    Net_1.Net.Call(21409, t, e => {
+    Net_1.Net.Call(23253, t, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15513);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19814);
         } else {
           if ((e = ModelManager_1.ModelManager.ActivityDirectTrainModel.GetSkipQuestId(t.w6n)) !== ModelManager_1.ModelManager.QuestNewModel.GetCurTrackedQuest()?.Id) {
             QuestController_1.QuestNewController.RequestTrackQuest(e, true, 1);
@@ -127,7 +127,7 @@ class ActivityDirectTrainHelper {
     }
     if ((ActivityDirectTrainHelper.DirectTrainStartConditionMap.get(ActivityDirectTrainDefine_1.EDirectTrainStartCondition.ServerConditionDone) ?? false) || this.IsProOpen) {
       (r = Protocol_1.Aki.Protocol.Kx_.create()).w6n = e;
-      await Net_1.Net.CallAsync(26409, r);
+      await Net_1.Net.CallAsync(16893, r);
       this.DirectTrainStartConditionMap.set(ActivityDirectTrainDefine_1.EDirectTrainStartCondition.ServerConditionDone, false);
     }
   }

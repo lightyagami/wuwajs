@@ -68,7 +68,7 @@ class SurvivorsRogueMainViewProxy extends GameMainViewProxy_1.GameMainViewProxy 
     this.oRd = () => {
       this.BonusWaveTips.ShowTips();
     };
-    this.TTm = () => {
+    this.qTm = () => {
       this.EndlessWaveTips.ShowTips();
     };
     this.WNd = (e, i) => {
@@ -134,7 +134,7 @@ class SurvivorsRogueMainViewProxy extends GameMainViewProxy_1.GameMainViewProxy 
   OnAddEventListener() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SurvivorsRogueSwitchWaveTipsState, this.rRd);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SurvivorsRogueShowBonusWaveTips, this.oRd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SurvivorsRogueShowEndlessWaveTips, this.TTm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SurvivorsRogueShowEndlessWaveTips, this.qTm);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SurvivorsRogueBossTrackedMarkerUpdate, this.WNd);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SurvivorsRoguePlayerEntityCreated, this.jNd);
     var e = ModelManager_1.ModelManager.SurvivorsRogueModel.BattleData.BehaviorDelegate;
@@ -146,7 +146,7 @@ class SurvivorsRogueMainViewProxy extends GameMainViewProxy_1.GameMainViewProxy 
   OnRemoveEventListener() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SurvivorsRogueSwitchWaveTipsState, this.rRd);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SurvivorsRogueShowBonusWaveTips, this.oRd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SurvivorsRogueShowEndlessWaveTips, this.TTm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SurvivorsRogueShowEndlessWaveTips, this.qTm);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SurvivorsRogueBossTrackedMarkerUpdate, this.WNd);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SurvivorsRoguePlayerEntityCreated, this.jNd);
     var e = ModelManager_1.ModelManager.SurvivorsRogueModel.BattleData.BehaviorDelegate;

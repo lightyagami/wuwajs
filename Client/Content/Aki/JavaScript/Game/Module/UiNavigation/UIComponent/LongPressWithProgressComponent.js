@@ -11,41 +11,41 @@ class LongPressWithProgressComponent extends HotKeyComponent_1.HotKeyComponent {
   constructor() {
     super(...arguments);
     this.gct = undefined;
-    this.HLf = () => {
+    this.ikf = () => {
       var e = this.OnGetProgress();
       if (this.IsPress) {
         if (e >= 1) {
           this.CurComponent?.SetLongPressState(0);
           this.ReleaseWithoutCheck();
-          this.jLf();
+          this.rkf();
           return;
         }
       } else if (e <= 0) {
         this.CurComponent?.SetLongPressState(0);
-        this.jLf();
+        this.rkf();
         return;
       }
       this.CurComponent?.SetLongPressState(e);
     };
   }
-  $Lf() {
-    this.gct ||= TimerSystem_1.GameplayTimerSystem.Forever(this.HLf, TimerSystem_1.MIN_TIME);
+  okf() {
+    this.gct ||= TimerSystem_1.GameplayTimerSystem.Forever(this.ikf, TimerSystem_1.MIN_TIME);
   }
   OnPress(e) {
     UiNavigationNewController_1.UiNavigationNewController.SimulationPointDown(e.BindButtonTag);
-    this.$Lf();
+    this.okf();
   }
   OnRelease(e) {
     UiNavigationNewController_1.UiNavigationNewController.SimulationPointUp(e.BindButtonTag);
   }
-  jLf() {
+  rkf() {
     if (this.gct) {
       TimerSystem_1.GameplayTimerSystem.Remove(this.gct);
       this.gct = undefined;
     }
   }
   OnClear() {
-    this.jLf();
+    this.rkf();
   }
   OnGetProgress() {
     return 0;

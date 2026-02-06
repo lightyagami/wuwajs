@@ -110,11 +110,11 @@ exports.HonamiStoryMainQuestData = HonamiStoryMainQuestData;
 class HonamiStorySubQuestData extends HonamiStoryQuestDataBase {
   constructor(t) {
     super();
-    this.sDm = 0;
+    this.vAm = 0;
     this.h0i = 1;
     this.le = 0;
     this.sor = 1;
-    this.sDm = t;
+    this.vAm = t;
     this.TaskType = 2;
   }
   UpdateData(t) {
@@ -122,11 +122,11 @@ class HonamiStorySubQuestData extends HonamiStoryQuestDataBase {
     this.le = t.lMs;
     this.sor = t.j6n;
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("HonamiStory", 78, "HonamiStoryLimitTaskData UpdateData", ["taskId", this.sDm.toString()], ["status", this.h0i], ["current", this.le], ["target", this.sor]);
+      Log_1.Log.Info("HonamiStory", 78, "HonamiStoryLimitTaskData UpdateData", ["taskId", this.vAm.toString()], ["status", this.h0i], ["current", this.le], ["target", this.sor]);
     }
   }
   get Config() {
-    return ConfigManager_1.ConfigManager.HonamiStoryConfig.GetHonamiStoryAreaTaskById(this.sDm);
+    return ConfigManager_1.ConfigManager.HonamiStoryConfig.GetHonamiStoryAreaTaskById(this.vAm);
   }
   GetNameKey() {
     return this.Config.Name;

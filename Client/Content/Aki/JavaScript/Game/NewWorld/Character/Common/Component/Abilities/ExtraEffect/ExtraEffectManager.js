@@ -3,95 +3,95 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.PlayerExtraEffectManager = exports.ExtraEffectManager = exports.BaseExtraEffectManager = undefined;
+exports.ExtraEffectManager = undefined;
 const Stats_1 = require("../../../../../../../Core/Common/Stats");
 const CombatLog_1 = require("../../../../../../Utils/CombatLog");
 const ExtraEffectDefine_1 = require("./ExtraEffectDefine");
 const ExtraEffectLibrary_1 = require("./ExtraEffectLibrary");
-class BaseExtraEffectManager {
-  constructor(t) {
-    this.BuffComponent = t;
+class ExtraEffectManager {
+  constructor(f) {
+    this.BuffComponent = f;
     this.EffectHolder = new Map();
     this.ActivatedHandles = new Set();
   }
-  OnBuffAdded(t) {
-    if (this.SXo(t)) {
-      if (t?.Config) {
-        if (t.IsActive()) {
-          this.CreateBuffEffects(t);
+  OnBuffAdded(f) {
+    if (this.SXo(f)) {
+      if (f?.Config) {
+        if (f.IsActive()) {
+          this.CreateBuffEffects(f);
         }
       } else {
-        CombatLog_1.CombatLog.Error("Buff", this.BuffComponent?.Entity, "正在添加的buff额外效果未加载对应的buffRef", ["buffId", t?.Id], ["handle", t?.Handle], ["持有者", t?.GetOwnerDebugName()]);
+        CombatLog_1.CombatLog.Error("Buff", this.BuffComponent?.Entity, "正在添加的buff额外效果未加载对应的buffRef", ["buffId", f?.Id], ["handle", f?.Handle], ["持有者", f?.GetOwnerDebugName()]);
       }
     }
   }
-  OnBuffRemoved(t, f) {
-    var e = t.Handle;
-    if (this.SXo(t) && t.IsActive()) {
-      this.RemoveBuffEffects(e, f);
+  OnBuffRemoved(f, t) {
+    var e = f.Handle;
+    if (this.SXo(f) && f.IsActive()) {
+      this.RemoveBuffEffects(e, t);
     }
   }
-  OnStackIncreased(t, f, e, r) {
-    if (this.SXo(t)) {
-      for (const s of this.GetEffectsByHandle(t.Handle)) {
-        s.OnStackIncreased(f, e, r);
+  OnStackIncreased(f, t, e, i) {
+    if (this.SXo(f)) {
+      for (const r of this.GetEffectsByHandle(f.Handle)) {
+        r.OnStackIncreased(t, e, i);
       }
     }
   }
-  OnStackDecreased(t, f, e, r) {
-    if (this.SXo(t)) {
-      for (const s of this.GetEffectsByHandle(t.Handle)) {
-        s.OnStackDecreased(f, e, r);
+  OnStackDecreased(f, t, e, i) {
+    if (this.SXo(f)) {
+      for (const r of this.GetEffectsByHandle(f.Handle)) {
+        r.OnStackDecreased(t, e, i);
       }
     }
   }
-  OnBuffStackOverflow(t, f, e, r) {
-    for (const s of t.Config.EffectInfos) {
-      s.ExecutionEffect?.OnBuffStackOverflow(t, f, e, r);
+  OnBuffStackOverflow(f, t, e, i) {
+    for (const r of f.Config.EffectInfos) {
+      r.ExecutionEffect?.OnBuffStackOverflow(f, t, e, i);
     }
-    if (this.SXo(t)) {
-      for (const a of this.GetEffectsByHandle(t.Handle)) {
-        a.OnBuffStackOverflow(t, f, e, r);
+    if (this.SXo(f)) {
+      for (const s of this.GetEffectsByHandle(f.Handle)) {
+        s.OnBuffStackOverflow(f, t, e, i);
       }
     }
   }
-  OnBuffInhibitedChanged(t, f) {
-    var e = t.Handle;
-    if (this.SXo(t)) {
-      if (f) {
+  OnBuffInhibitedChanged(f, t) {
+    var e = f.Handle;
+    if (this.SXo(f)) {
+      if (t) {
         this.RemoveBuffEffects(e, true);
       } else {
-        this.CreateBuffEffects(t);
+        this.CreateBuffEffects(f);
       }
     }
   }
-  SXo(t) {
-    var f = t?.Config;
-    if (f) {
-      return !!f.HasBuffEffect;
+  SXo(f) {
+    var t = f?.Config;
+    if (t) {
+      return !!t.HasBuffEffect;
     } else {
-      CombatLog_1.CombatLog.Error("Buff", this.BuffComponent?.Entity, "处理buff额外效果逻辑时找不到对应的buffRef", ["buffId", t?.Id], ["handleId", t?.Handle], ["持有者", t?.GetOwnerDebugName()]);
+      CombatLog_1.CombatLog.Error("Buff", this.BuffComponent?.Entity, "处理buff额外效果逻辑时找不到对应的buffRef", ["buffId", f?.Id], ["handleId", f?.Handle], ["持有者", f?.GetOwnerDebugName()]);
       return false;
     }
   }
-  CreateBuffEffects(f) {
-    var e = f.Handle;
-    const r = f.Id;
+  CreateBuffEffects(t) {
+    var e = t.Handle;
+    const i = t.Id;
     if (this.ActivatedHandles.has(e)) {
-      CombatLog_1.CombatLog.Error("Buff", this.BuffComponent?.Entity, "重复创建Buff额外效果", ["buffId", r], ["handle", e]);
+      CombatLog_1.CombatLog.Error("Buff", this.BuffComponent?.Entity, "重复创建Buff额外效果", ["buffId", i], ["handle", e]);
     } else {
-      var s = f.GetInstigatorBuffComponent();
+      var r = t.GetInstigatorBuffComponent();
       this.ActivatedHandles.add(e);
-      var a = f.Config.EffectInfos?.map(t => [t, ExtraEffectLibrary_1.BuffExtraEffectLibrary.ResolveRequireAndLimits(r, t, f.Level)]);
-      var t = this.BuffComponent;
-      if (a && t?.Valid) {
-        for (let t = 0; t < a.length; t++) {
-          var i = a[t][0];
-          var o = a[t][1];
-          var n = i.ExtraEffectId;
+      var s = t.Config.EffectInfos?.map(f => [f, ExtraEffectLibrary_1.BuffExtraEffectLibrary.ResolveRequireAndLimits(i, f, t.Level)]);
+      var f = this.BuffComponent;
+      if (s && f?.Valid) {
+        for (let f = 0; f < s.length; f++) {
+          var o = s[f][0];
+          var a = s[f][1];
+          var n = o.ExtraEffectId;
           var n = (0, ExtraEffectDefine_1.getBuffEffectClass)(n);
           if (n) {
-            n = n.Create(e, t, o, this.BuffComponent, s, i);
+            n = n.Create(e, f, a, this.BuffComponent, r, o);
             this.qp(n);
             n.OnCreated();
           }
@@ -99,29 +99,29 @@ class BaseExtraEffectManager {
       }
     }
   }
-  RemoveBuffEffects(t, f) {
-    if (!this.ActivatedHandles.has(t)) {
-      CombatLog_1.CombatLog.Warn("Buff", this.BuffComponent?.Entity, "尝试移除不存在的buff额外效果实例", ["handleId", t], ["entity", this.BuffComponent?.Entity?.Id]);
+  RemoveBuffEffects(f, t) {
+    if (!this.ActivatedHandles.has(f)) {
+      CombatLog_1.CombatLog.Warn("Buff", this.BuffComponent?.Entity, "尝试移除不存在的buff额外效果实例", ["handleId", f], ["entity", this.BuffComponent?.Entity?.Id]);
     }
-    this.ActivatedHandles.delete(t);
-    for (const e of this.GetEffectsByHandle(t)) {
-      e.OnRemoved(f);
+    this.ActivatedHandles.delete(f);
+    for (const e of this.GetEffectsByHandle(f)) {
+      e.OnRemoved(t);
     }
-    this.EffectHolder.delete(t);
+    this.EffectHolder.delete(f);
   }
-  qp(f) {
-    var t;
-    var e = f.ActiveHandleId;
+  qp(t) {
+    var f;
+    var e = t.ActiveHandleId;
     if (e < 0) {
       CombatLog_1.CombatLog.Warn("Buff", this.BuffComponent?.Entity, "invalid handleId when trying to add effect in holder.", ["handle", e]);
     } else {
       if (!this.EffectHolder.has(e)) {
         this.EffectHolder.set(e, []);
       }
-      if ((t = this.EffectHolder.get(e)).some(t => t === f)) {
+      if ((f = this.EffectHolder.get(e)).some(f => f === t)) {
         CombatLog_1.CombatLog.Warn("Buff", this.BuffComponent?.Entity, "duplicated handle when trying to add ExtraEffect.", ["handle", e]);
       } else {
-        t.push(f);
+        f.push(t);
       }
     }
   }
@@ -129,28 +129,28 @@ class BaseExtraEffectManager {
     this.EffectHolder.clear();
     this.ActivatedHandles.clear();
   }
-  *FilterById(t, f) {
+  *FilterById(f, t) {
     var e = [];
-    if (t instanceof Array) {
-      for (const s of t) {
-        var r = (0, ExtraEffectDefine_1.getBuffEffectClass)(s);
-        if (r) {
-          e.push(r);
+    if (f instanceof Array) {
+      for (const r of f) {
+        var i = (0, ExtraEffectDefine_1.getBuffEffectClass)(r);
+        if (i) {
+          e.push(i);
         }
       }
     } else {
-      t = (0, ExtraEffectDefine_1.getBuffEffectClass)(t);
-      if (t) {
-        e.push(t);
+      f = (0, ExtraEffectDefine_1.getBuffEffectClass)(f);
+      if (f) {
+        e.push(f);
       }
     }
     if (e.length >= 0) {
-      for (const a of this.EffectHolder.values()) {
-        if (a) {
-          for (const i of a) {
-            for (const o of e) {
-              if (i instanceof o && (!f || f(i))) {
-                yield i;
+      for (const s of this.EffectHolder.values()) {
+        if (s) {
+          for (const o of s) {
+            for (const a of e) {
+              if (o instanceof a && (!t || t(o))) {
+                yield o;
                 break;
               }
             }
@@ -159,28 +159,28 @@ class BaseExtraEffectManager {
       }
     }
   }
-  FilterFirstById(t, f) {
+  FilterFirstById(f, t) {
     var e = [];
-    if (t instanceof Array) {
-      for (const s of t) {
-        var r = (0, ExtraEffectDefine_1.getBuffEffectClass)(s);
-        if (r) {
-          e.push(r);
+    if (f instanceof Array) {
+      for (const r of f) {
+        var i = (0, ExtraEffectDefine_1.getBuffEffectClass)(r);
+        if (i) {
+          e.push(i);
         }
       }
     } else {
-      t = (0, ExtraEffectDefine_1.getBuffEffectClass)(t);
-      if (t) {
-        e.push(t);
+      f = (0, ExtraEffectDefine_1.getBuffEffectClass)(f);
+      if (f) {
+        e.push(f);
       }
     }
     if (e.length >= 0) {
-      for (const a of this.EffectHolder.values()) {
-        if (a) {
-          for (const i of a) {
-            for (const o of e) {
-              if (i instanceof o && (!f || f(i))) {
-                return i;
+      for (const s of this.EffectHolder.values()) {
+        if (s) {
+          for (const o of s) {
+            for (const a of e) {
+              if (o instanceof a && (!t || t(o))) {
+                return o;
               }
             }
           }
@@ -189,20 +189,17 @@ class BaseExtraEffectManager {
     }
   }
   *GetAllEffects() {
-    for (const t of this.EffectHolder.values()) {
-      if (t) {
-        for (const f of t) {
-          yield f;
+    for (const f of this.EffectHolder.values()) {
+      if (f) {
+        for (const t of f) {
+          yield t;
         }
       }
     }
   }
-  GetEffectsByHandle(t) {
-    return this.EffectHolder.get(t)?.values() ?? [];
+  GetEffectsByHandle(f) {
+    return this.EffectHolder.get(f)?.values() ?? [];
   }
 }
-class ExtraEffectManager extends (exports.BaseExtraEffectManager = BaseExtraEffectManager) {}
 exports.ExtraEffectManager = ExtraEffectManager;
-class PlayerExtraEffectManager extends BaseExtraEffectManager {}
-exports.PlayerExtraEffectManager = PlayerExtraEffectManager;
 //# sourceMappingURL=ExtraEffectManager.js.map

@@ -65,14 +65,26 @@ class WorldMapMultiFloorComponent extends MapComponent_1.MapComponent {
     }
   }
   UpdateMultiMap() {
-    var e = this.Tal();
-    var t = this.NYa.Map.GetSubMapGroupIdByPosition();
-    if (this.SelectedMultiMapGroupId !== t && (this.SelectedMultiMapFloorId === undefined || this.SelectedMultiMapFloorId === 0)) {
-      if (t === 0) {
-        this.SelectMultiMapFloor(e, undefined, undefined);
-      } else {
-        this.SelectMultiMapFloor(e, t, 0);
+    var e = this.NYa.Map.GetWorldMapCenterPosition();
+    let t = 0;
+    if (this.NYa.ClickedItem?.IsMultiMap()) {
+      i = this.NYa.ClickedItem.GetMultiMapId();
+      if (i = ConfigManager_1.ConfigManager.MapConfig.GetSubMapConfigById(i)) {
+        t = i.Area.length > 0 ? i.Area[0] : 0;
       }
+    } else if (e !== undefined) {
+      t = this.NYa.Map.GetMultiMapAreaIdByPosition(e);
+    }
+    var i = e !== undefined ? this.NYa.Map.GetSubMapGroupByPosition(e) : 0;
+    if (this.SelectedMultiMapGroupId !== i && (this.SelectedMultiMapFloorId === undefined || this.SelectedMultiMapFloorId === 0)) {
+      if (i === 0) {
+        this.SelectMultiMapFloor(t, undefined, undefined);
+      } else {
+        this.SelectMultiMapFloor(t, i, 0);
+      }
+    }
+    if (e !== undefined) {
+      this.NYa.Map.UpdateCurrentAreaMapGroupId(e);
     }
   }
   Tal() {
@@ -87,22 +99,27 @@ class WorldMapMultiFloorComponent extends MapComponent_1.MapComponent {
         }
       }
     }
-    return this.NYa.Map.GetWorldMapCenterAreaId();
+    e = this.NYa.Map.GetWorldMapCenterPosition();
+    if (e) {
+      return this.NYa.Map.GetMultiMapAreaIdByPosition(e);
+    } else {
+      return 0;
+    }
   }
-  SelectMultiMapFloor(e, t, n, s = true) {
+  SelectMultiMapFloor(e, t, s, n = true) {
     e = ConfigManager_1.ConfigManager.AreaConfig.GetAreaInfo(e);
     e = e ? ModelManager_1.ModelManager.AreaModel.GetAreaId(e, ExploreProgressDefine_1.AREA_LEVEL) : 0;
     e = ModelManager_1.ModelManager.MapModel.CheckAreasUnlocked(e);
     let r = e;
-    if (e && t !== undefined && n !== undefined) {
+    if (e && t !== undefined && s !== undefined) {
       let e = ConfigCommon_1.ConfigCommon.ToList(ConfigManager_1.ConfigManager.MapConfig.GetSubMapConfigByGroupId(t)) ?? [];
       (e = e.filter(e => ModelManager_1.ModelManager.MapModel.CheckUnlockMultiMapIds(e.Id) || e.Floor === 0)).sort((e, t) => t.Floor - e.Floor);
       if (e.length !== 1) {
         let i = undefined;
         let o = 0;
-        if (n !== undefined) {
+        if (s !== undefined) {
           e.forEach((e, t) => {
-            if (e.Floor === n) {
+            if (e.Floor === s) {
               i = t;
               o = e.Id;
             }
@@ -112,7 +129,7 @@ class WorldMapMultiFloorComponent extends MapComponent_1.MapComponent {
         if ((this.yal = i) !== undefined) {
           ModelManager_1.ModelManager.WorldMapModel.WorldMapCurrentMultiMapId = o;
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WorldMapSelectMultiMap, o);
-          this.Ial(i, false, s);
+          this.Ial(i, false, n);
         }
         this.SetMultiMapMenuActive(r);
         this.MultiMapFloorLayout.RefreshByDataAsync(e, false);
@@ -126,7 +143,7 @@ class WorldMapMultiFloorComponent extends MapComponent_1.MapComponent {
       r = false;
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WorldMapSelectMultiMap, 0);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WorldMapSubMapChangedFromUpdate, 0);
-      this.Ial(0, false, s);
+      this.Ial(0, false, n);
       this.SetMultiMapMenuActive(r);
     }
   }

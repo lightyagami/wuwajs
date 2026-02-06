@@ -30,7 +30,7 @@ class PhantomArenaBattleResultView extends UiViewBase_1.UiViewBase {
       if (e === "Unlock" && i === "LevelChange") {
         this.GetText(2).SetText(t.toString());
       } else if (e === "NameChange" && i === "NameChange") {
-        e = ModelManager_1.ModelManager.PhantomArenaModel.GetMasterTitleIdByLevel(t, this.Nvr.jqm);
+        e = ModelManager_1.ModelManager.PhantomArenaModel.GetMasterTitleIdByLevel(t, this.Nvr.dGm);
         i = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleMasterTitleById(e).Name;
         LguiUtil_1.LguiUtil.TrySetLocalTextNew(this.GetText(7), i);
       }
@@ -81,10 +81,10 @@ class PhantomArenaBattleResultView extends UiViewBase_1.UiViewBase {
     var e;
     var i = this.Nvr?.nD1 ? "GenericPromptTypes_3_GeneralText" : "GenericPromptTypes_4_GeneralText";
     LguiUtil_1.LguiUtil.TrySetLocalTextNew(this.GetText(0), i);
-    var i = this.Nvr.nD1 && this.Nvr.eXm !== Protocol_1.Aki.Protocol.tXm.Proto_CommonSettle && this.Nvr.eXm !== Protocol_1.Aki.Protocol.tXm.Proto_Skip;
+    var i = this.Nvr.nD1 && this.Nvr.Mzm !== Protocol_1.Aki.Protocol.Ezm.Proto_CommonSettle && this.Nvr.Mzm !== Protocol_1.Aki.Protocol.Ezm.Proto_Skip;
     this.GetText(20)?.SetUIActive(i);
     if (i) {
-      if ((i = this.Nvr.eXm) in PhantomArenaDefine_1.phantomBattleSettleReasonToTextId) {
+      if ((i = this.Nvr.Mzm) in PhantomArenaDefine_1.phantomBattleSettleReasonToTextId) {
         e = PhantomArenaDefine_1.phantomBattleSettleReasonToTextId[i];
         LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(20), e);
       } else if (Log_1.Log.CheckError()) {
@@ -104,23 +104,23 @@ class PhantomArenaBattleResultView extends UiViewBase_1.UiViewBase {
     var s = StringUtils_1.StringUtils.Format("EXP+{0}", i.toString());
     this.GetText(8).SetText(s);
     this.GetText(8).SetUIActive(i > 0);
-    var s = ModelManager_1.ModelManager.PhantomArenaModel.GetMasterLevelConfig(e, this.Nvr.jqm);
+    var s = ModelManager_1.ModelManager.PhantomArenaModel.GetMasterLevelConfig(e, this.Nvr.dGm);
     var i = Math.max(t - i, 0) - s.ExpNeed;
     var s = s.ExpNext;
     this.GetSprite(16).SetFillAmount(i / s);
     this.GetSprite(10).SetFillAmount(0);
     this.GetSprite(17).SetFillAmount(0);
-    var i = ModelManager_1.ModelManager.PhantomArenaModel.GetMasterTitleIdByLevel(e, this.Nvr.jqm);
+    var i = ModelManager_1.ModelManager.PhantomArenaModel.GetMasterTitleIdByLevel(e, this.Nvr.dGm);
     var s = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleMasterTitleById(i).Name;
     LguiUtil_1.LguiUtil.TrySetLocalTextNew(this.GetText(7), s);
-    var e = ModelManager_1.ModelManager.PhantomArenaModel.GetMasterExpNextNeed(this.Nvr.jqm);
+    var e = ModelManager_1.ModelManager.PhantomArenaModel.GetMasterExpNextNeed(this.Nvr.dGm);
     var i = StringUtils_1.StringUtils.Format("{0}/{1}", t.toString(), e.toString());
     this.GetText(9).SetText(i);
   }
   $nu() {
     var e = this.Nvr.DS_.T51;
     var i = this.Nvr.DS_.b51;
-    var t = ModelManager_1.ModelManager.PhantomArenaModel.GetPointsItemId(this.Nvr.jqm);
+    var t = ModelManager_1.ModelManager.PhantomArenaModel.GetPointsItemId(this.Nvr.dGm);
     var s = ModelManager_1.ModelManager.InventoryModel.GetCommonItemCount(t);
     let h = 0;
     for (const n of this.Nvr.DS_.DS_) {
@@ -142,7 +142,7 @@ class PhantomArenaBattleResultView extends UiViewBase_1.UiViewBase {
     if (!(i <= 0)) {
       var i = this.Nvr.DS_.T51;
       var t = this.Nvr.DS_.b51;
-      var s = ModelManager_1.ModelManager.PhantomArenaModel.GetMasterLevelConfig(t, this.Nvr.jqm);
+      var s = ModelManager_1.ModelManager.PhantomArenaModel.GetMasterLevelConfig(t, this.Nvr.dGm);
       var s = (this.Nvr.DS_.R51 - s.ExpNeed) / s.ExpNext;
       let e = t - i + 1;
       if (e > 2) {
@@ -162,7 +162,7 @@ class PhantomArenaBattleResultView extends UiViewBase_1.UiViewBase {
   $pu() {
     var e = this.Nvr.DS_.T51;
     var i = this.Nvr.DS_.b51;
-    if (ModelManager_1.ModelManager.PhantomArenaModel.GetMasterTitleIdByLevel(e, this.Nvr.jqm) !== ModelManager_1.ModelManager.PhantomArenaModel.GetMasterTitleIdByLevel(i, this.Nvr.jqm)) {
+    if (ModelManager_1.ModelManager.PhantomArenaModel.GetMasterTitleIdByLevel(e, this.Nvr.dGm) !== ModelManager_1.ModelManager.PhantomArenaModel.GetMasterTitleIdByLevel(i, this.Nvr.dGm)) {
       this.UiViewSequence.PlaySequence("NameChange");
     }
   }

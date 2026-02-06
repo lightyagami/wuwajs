@@ -72,7 +72,7 @@ let HackManagementComponent = HackManagementComponent_1 = class HackManagementCo
         }
       }
     }
-    this.Lie = this.Entity.GetComponent(215);
+    this.Lie = this.Entity.GetComponent(217);
     this.Lie?.AddTag(NUM_TAG_ID);
     var e = this.GetRemainingHackNumber();
     if (e > 1) {
@@ -104,5 +104,5 @@ let HackManagementComponent = HackManagementComponent_1 = class HackManagementCo
     return Math.max(0, this.U2_ - this.D2_.length);
   }
 };
-HackManagementComponent = HackManagementComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(304)], HackManagementComponent);
+HackManagementComponent = HackManagementComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(306)], HackManagementComponent);
 exports.HackManagementComponent = HackManagementComponent; //# sourceMappingURL=HackManagementComponent.js.map

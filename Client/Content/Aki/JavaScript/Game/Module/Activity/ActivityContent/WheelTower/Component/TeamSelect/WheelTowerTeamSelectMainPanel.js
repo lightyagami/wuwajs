@@ -18,31 +18,31 @@ class WheelTowerTeamSelectMainPanel extends UiPanelBase_1.UiPanelBase {
     this.OnRoleSelect = undefined;
     this.OnTeamSelect = undefined;
     this.Ivt = undefined;
-    this.wtf = undefined;
-    this.Ltf = undefined;
-    this.Ptf = undefined;
-    this.Atf = () => {
+    this.Brf = undefined;
+    this.krf = undefined;
+    this.qrf = undefined;
+    this.Orf = () => {
       var e = new TeamTabItem();
       e.SetToggleClickCallback(this.l6c);
       return e;
     };
     this.l6c = e => {
       this.Ivt?.SelectGridProxy(e);
-      this.wtf?.SetUiActive(e === 0);
-      this.Ltf?.SetUiActive(e === 1);
-      this.Ptf?.SetUiActive(e === 2);
+      this.Brf?.SetUiActive(e === 0);
+      this.krf?.SetUiActive(e === 1);
+      this.qrf?.SetUiActive(e === 2);
       let t = undefined;
       switch (e) {
         case 0:
-          this.wtf?.Refresh();
-          t = this.wtf.GetFirstRoleId();
+          this.Brf?.Refresh();
+          t = this.Brf.GetFirstRoleId();
           break;
         case 1:
-          this.Ltf?.Refresh();
+          this.krf?.Refresh();
           break;
         case 2:
-          this.Ptf?.Refresh();
-          t = this.Ptf.GetFirstRoleId();
+          this.qrf?.Refresh();
+          t = this.qrf.GetFirstRoleId();
       }
       this.OnSelectModeChange?.(e, t ?? 0);
     };
@@ -52,35 +52,35 @@ class WheelTowerTeamSelectMainPanel extends UiPanelBase_1.UiPanelBase {
   }
   async OnBeforeStartAsync() {
     var e = [];
-    this.wtf = new WheelTowerRoleSelectPanel_1.WheelTowerRoleSelectPanel();
-    e.push(this.wtf.CreateByActorAsync(this.GetItem(2).GetOwner()));
-    this.Ltf = new WheelTowerTeamSelectPanel_1.WheelTowerTeamSelectPanel();
-    e.push(this.Ltf.CreateByActorAsync(this.GetItem(3).GetOwner()));
-    this.Ptf = new WheelTowerTemplateSelectPanel_1.WheelTowerTemplateSelectPanel();
-    e.push(this.Ptf.CreateByActorAsync(this.GetItem(4).GetOwner()));
+    this.Brf = new WheelTowerRoleSelectPanel_1.WheelTowerRoleSelectPanel();
+    e.push(this.Brf.CreateByActorAsync(this.GetItem(2).GetOwner()));
+    this.krf = new WheelTowerTeamSelectPanel_1.WheelTowerTeamSelectPanel();
+    e.push(this.krf.CreateByActorAsync(this.GetItem(3).GetOwner()));
+    this.qrf = new WheelTowerTemplateSelectPanel_1.WheelTowerTemplateSelectPanel();
+    e.push(this.qrf.CreateByActorAsync(this.GetItem(4).GetOwner()));
     await Promise.all(e);
   }
   OnStart() {
-    this.Ivt = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(0), this.Atf);
+    this.Ivt = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(0), this.Orf);
     this.Ivt.RefreshByData(["WheelBattleSelect_Role", "WheelBattleSelect_Team", "WheelBattleSelect_Template"], () => {
       this.l6c(0);
     });
-    this.wtf.OnRoleSelect = e => this.OnRoleSelect?.(e);
-    this.Ltf.OnTeamSelectCallback = e => this.OnTeamSelect?.(e);
-    this.Ptf.OnTemplateSelect = e => this.OnRoleSelect?.(e);
+    this.Brf.OnRoleSelect = e => this.OnRoleSelect?.(e);
+    this.krf.OnTeamSelectCallback = e => this.OnTeamSelect?.(e);
+    this.qrf.OnTemplateSelect = e => this.OnRoleSelect?.(e);
   }
   RefreshPanel() {
     var e = this.Ivt.GetSelectedGridIndex();
     if (!(e < 0)) {
       switch (e) {
         case 0:
-          this.wtf?.OnlyRefreshScroll();
+          this.Brf?.OnlyRefreshScroll();
           break;
         case 2:
-          this.Ptf?.OnlyRefreshScroll();
+          this.qrf?.OnlyRefreshScroll();
           break;
         case 1:
-          this.Ltf?.Refresh();
+          this.krf?.Refresh();
       }
     }
   }
@@ -92,10 +92,10 @@ exports.WheelTowerTeamSelectMainPanel = WheelTowerTeamSelectMainPanel;
 class TeamTabItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
     super(...arguments);
-    this.gtf = undefined;
+    this.Erf = undefined;
     this.Bke = e => {
       if (e === 1) {
-        this.gtf?.(this.GridIndex);
+        this.Erf?.(this.GridIndex);
       }
     };
   }
@@ -111,7 +111,7 @@ class TeamTabItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.Oei(t);
   }
   SetToggleClickCallback(e) {
-    this.gtf = e;
+    this.Erf = e;
   }
   OnSelected(e) {
     this.Oei(true);

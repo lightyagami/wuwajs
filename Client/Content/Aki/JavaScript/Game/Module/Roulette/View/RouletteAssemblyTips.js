@@ -24,7 +24,7 @@ class RouletteAssemblyTips extends UiPanelBase_1.UiPanelBase {
     this.Axt = undefined;
     this.hfo = undefined;
     this.lfo = undefined;
-    this.KEf = undefined;
+    this.Twf = undefined;
     this.XOe = () => {
       var t = this.Pe.HelpId;
       if (t !== 0) {
@@ -47,8 +47,8 @@ class RouletteAssemblyTips extends UiPanelBase_1.UiPanelBase {
     var e = this.lfo.CreateByActorAsync(e.GetOwner());
     t.push(e);
     var e = this.GetItem(14);
-    this.KEf = new PhantomInteractRouletteTipsPanel_1.PhantomInteractRouletteTipsPanel();
-    var e = this.KEf.CreateByResourceIdAsync("UiItem_VisionEditExploring", e);
+    this.Twf = new PhantomInteractRouletteTipsPanel_1.PhantomInteractRouletteTipsPanel();
+    var e = this.Twf.CreateByResourceIdAsync("UiItem_VisionEditExploring", e);
     t.push(e);
     await Promise.all(t);
   }
@@ -178,10 +178,10 @@ class RouletteAssemblyTips extends UiPanelBase_1.UiPanelBase {
   }
   RefreshPhantomInteractEquipmentPanel() {
     if (this.Pe?.ShowPhantomInteractEquipment) {
-      this.KEf.SetUiActive(true);
-      this.KEf.Refresh();
+      this.Twf.SetUiActive(true);
+      this.Twf.Refresh();
     } else {
-      this.KEf.SetUiActive(false);
+      this.Twf.SetUiActive(false);
     }
   }
 }

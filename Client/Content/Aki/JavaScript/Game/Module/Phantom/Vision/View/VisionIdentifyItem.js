@@ -14,6 +14,7 @@ const UiManager_1 = require("../../../../Ui/UiManager");
 const LevelSequencePlayer_1 = require("../../../Common/LevelSequencePlayer");
 const GridProxyAbstract_1 = require("../../../Util/Grid/GridProxyAbstract");
 const LguiUtil_1 = require("../../../Util/LguiUtil");
+const VisionIntensifyView_1 = require("./VisionIntensifyView");
 const NORMALCOLOR = "EBE5D7FF";
 const GREENCOLOR = "63FF9CFF";
 const WHITECOLOR = "FFFFFFFF";
@@ -28,10 +29,12 @@ class VisionIdentifyItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.oMt = undefined;
     this.C0t = undefined;
     this.nqe = () => {
+      var e;
       if (UiManager_1.UiManager.IsViewShow("VisionIntensifyView")) {
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnClickVisionIntensifyItemJump);
       } else if (this.oMt) {
-        UiManager_1.UiManager.OpenView("VisionIntensifyView", this.oMt.GetIncrId(), () => {
+        (e = new VisionIntensifyView_1.VisionIntensifyViewPassData()).UniqueId = this.oMt.GetIncrId();
+        UiManager_1.UiManager.OpenView("VisionIntensifyView", e, () => {
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnClickVisionIntensifyItemJump);
         });
       }

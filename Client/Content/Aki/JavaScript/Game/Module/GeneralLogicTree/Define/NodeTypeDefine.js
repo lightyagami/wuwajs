@@ -28,6 +28,7 @@ const ReadMailBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/ReadMailB
 const ReadPhoneMessageBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/ReadPhoneMessageBehaviorNode");
 const ServerAchieveChildQuestNode_1 = require("../BehaviorNode/ChildQuestNode/ServerAchieveChildQuestNode");
 const ShowUiBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/ShowUiBehaviorNode");
+const SpringManorGameplayCloseNode_1 = require("../BehaviorNode/ChildQuestNode/SpringManorGameplayCloseNode");
 const TakePicturesWithTimeScaleChildQuestNode_1 = require("../BehaviorNode/ChildQuestNode/TakePicturesWithTimeScaleChildQuestNode");
 const UseItemBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/UseItemBehaviorNode");
 const WaitSceneReferenceEntityPlaySequenceNode_1 = require("../BehaviorNode/ChildQuestNode/WaitSceneReferenceEntityPlaySequenceNode");
@@ -116,6 +117,7 @@ exports.childQuestNodeType = {
   [IQuest_1.EChildQuest.AtomicProcess]: new NodeTypeData(AtomicProcessBehaviorNode_1.AtomicProcessBehaviorNode),
   [IQuest_1.EChildQuest.FinishRollBlock]: new NodeTypeData(ServerAchieveChildQuestNode_1.ServerAchieveChildQuestNode),
   [IQuest_1.EChildQuest.ReadPhoneMessage]: new NodeTypeData(ReadPhoneMessageBehaviorNode_1.ReadPhoneMessageBehaviorNode),
-  [IQuest_1.EChildQuest.UseWeatherSwitch]: new NodeTypeData(ServerAchieveChildQuestNode_1.ServerAchieveChildQuestNode)
+  [IQuest_1.EChildQuest.UseWeatherSwitch]: new NodeTypeData(ServerAchieveChildQuestNode_1.ServerAchieveChildQuestNode),
+  [IQuest_1.EChildQuest.CheckSpringFestivalGameplayCompleted]: new NodeTypeData(SpringManorGameplayCloseNode_1.SpringManorGameplayCloseNode)
 };
 exports.newNodeObj = newNodeObj; //# sourceMappingURL=NodeTypeDefine.js.map

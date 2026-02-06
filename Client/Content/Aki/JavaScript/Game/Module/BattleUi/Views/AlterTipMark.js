@@ -87,7 +87,7 @@ class AlterTipMark extends UiPanelBase_1.UiPanelBase {
     this.RootItem.SetAnchorOffset(s.ToUeVector2D());
   }
   N$e() {
-    var t = ActorUtils_1.ActorUtils.GetEntityByActor(this.E$e).Entity.GetComponent(48).AiController.AiAlert.AlertValue;
+    var t = ActorUtils_1.ActorUtils.GetEntityByActor(this.E$e).Entity.GetComponent(50).AiController.AiAlert.AlertValue;
     if (t > 0) {
       if (this.B$e > 0) {
         return;

@@ -58,14 +58,14 @@ class ActivityFishingController extends ActivityControllerBase_1.ActivityControl
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.UnLockGoods, ActivityFishingController.y9_);
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(25742, ActivityFishingController.ZP_);
-    Net_1.Net.Register(22541, ActivityFishingController.ex_);
-    Net_1.Net.Register(28418, ActivityFishingController.tx_);
+    Net_1.Net.Register(27354, ActivityFishingController.ZP_);
+    Net_1.Net.Register(23534, ActivityFishingController.ex_);
+    Net_1.Net.Register(21538, ActivityFishingController.tx_);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(25742);
-    Net_1.Net.UnRegister(22541);
-    Net_1.Net.UnRegister(28418);
+    Net_1.Net.UnRegister(27354);
+    Net_1.Net.UnRegister(23534);
+    Net_1.Net.UnRegister(21538);
   }
   static GetCurrentActivityData() {
     var e = ModelManager_1.ModelManager.ActivityModel?.GetCurrentActivitiesByType(Protocol_1.Aki.Protocol.uks.Proto_FishingActivity);
@@ -78,9 +78,9 @@ class ActivityFishingController extends ActivityControllerBase_1.ActivityControl
   static FishingActivityLimitRewardRequest(e) {
     var i = new Protocol_1.Aki.Protocol.ky_();
     i.gps = e;
-    Net_1.Net.Call(23424, i, e => {
+    Net_1.Net.Call(20544, i, e => {
       if (e && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24928);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19430);
       }
     });
   }
@@ -90,9 +90,9 @@ class ActivityFishingController extends ActivityControllerBase_1.ActivityControl
     if (t) {
       i.w6n = t.Id;
       i.KM_ = e;
-      Net_1.Net.Call(27900, i, e => {
+      Net_1.Net.Call(16155, i, e => {
         if (e && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26042);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27724);
         }
       });
     }

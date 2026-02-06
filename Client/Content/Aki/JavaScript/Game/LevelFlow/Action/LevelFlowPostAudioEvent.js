@@ -9,14 +9,14 @@ const LevelFlowActionBase_1 = require("./LevelFlowActionBase");
 class LevelFlowPostAudioEvent extends LevelFlowActionBase_1.LevelFlowActionBase {
   constructor() {
     super(...arguments);
-    this.tzf = "";
+    this.Pfg = "";
   }
   Init(e) {
-    this.tzf = e;
+    this.Pfg = e;
     return this;
   }
   OnExecute() {
-    AudioSystem_1.AudioSystem.PostEvent(this.tzf);
+    AudioSystem_1.AudioSystem.PostEvent(this.Pfg);
     this.FinishExecute(true);
   }
 }

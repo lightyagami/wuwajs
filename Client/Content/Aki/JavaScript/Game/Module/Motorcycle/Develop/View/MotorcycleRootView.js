@@ -10,7 +10,6 @@ const Time_1 = require("../../../../../Core/Common/Time");
 const CommonParamById_1 = require("../../../../../Core/Define/ConfigCommon/CommonParamById");
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
-const ConfigManager_1 = require("../../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const UiViewBase_1 = require("../../../../Ui/Base/UiViewBase");
@@ -44,13 +43,7 @@ class MotorcycleRootView extends UiViewBase_1.UiViewBase {
       const o = t.ChildViewName;
       e = this.TabComponent.GetTabItemByIndex(e);
       this.TabViewComponent.ToggleCallBack(t, o, e);
-      this.rmo = o;
-      let i = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetSelectedTreeType();
-      if ((i = i === 0 ? ModelManager_1.ModelManager.MotorcycleDevelopModel.GetCurTreeType() : i) !== 0 && o === "MotorcycleTechTreeTabView") {
-        if (t = ConfigManager_1.ConfigManager.MotorConfig.GetMotorTechTreeConfig(i)) {
-          this.TabComponent.SetCurrencyItemList([t.TpItemId]);
-        }
-      } else {
+      if ((this.rmo = o) !== "MotorcycleTechTreeTabView") {
         this.TabComponent.SetCurrencyItemList([]);
       }
       this.TabComponent.SetHelpButtonCallBack(() => {
@@ -65,21 +58,23 @@ class MotorcycleRootView extends UiViewBase_1.UiViewBase {
       e = this.TabDataList[e];
       return new CommonTabData_1.CommonTabData(e.Icon, new CommonTabTitleData_1.CommonTabTitleData(e.TabName));
     };
-    this.kcf = e => {
+    this.Umf = e => {
       if (e.Currency) {
         this.TabComponent.SetCurrencyItemList(e.Currency);
       }
-      const t = e.IsObserving;
-      if (t) {
-        this.PlaySequence("UiOut", () => {
+      if (e.IsObserving !== undefined) {
+        const t = e.IsObserving;
+        if (t) {
+          this.PlaySequence("UiOut", () => {
+            this.TabComponent.SetUiActive(!t);
+          }, true);
+        } else {
           this.TabComponent.SetUiActive(!t);
-        }, true);
-      } else {
-        this.TabComponent.SetUiActive(!t);
-        this.PlaySequence("UiIn", () => {}, true);
+          this.PlaySequence("UiIn", () => {}, true);
+        }
       }
     };
-    this.$Bf = t => {
+    this.BNf = t => {
       var e = this.TabDataList.findIndex(e => e.ChildViewName === t);
       this.TabComponent.SelectToggleByIndex(e);
     };
@@ -91,6 +86,10 @@ class MotorcycleRootView extends UiViewBase_1.UiViewBase {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem]];
   }
   OnStart() {
+    var e = this.OpenParam;
+    if (e && (this.rmo = e.OpenTabView, e.TreeType)) {
+      ModelManager_1.ModelManager.MotorcycleDevelopModel.UpdateSelectedTreeType(e.TreeType);
+    }
     this.InitTabComponent();
   }
   OnHandleLoadScene() {
@@ -100,7 +99,6 @@ class MotorcycleRootView extends UiViewBase_1.UiViewBase {
   OnBeforeShow() {
     this.RefreshTabListAsync();
     MotorcycleUiModelUtil_1.MotorcycleUiModelUtil.ShowMotor(true);
-    MotorcycleUiModelUtil_1.MotorcycleUiModelUtil.ResetEquippedMotor();
   }
   OnAfterHide() {
     this.TabViewComponent.SetCurrentTabViewState(false);
@@ -117,14 +115,15 @@ class MotorcycleRootView extends UiViewBase_1.UiViewBase {
       this.TabViewComponent.DestroyTabViewComponent();
       this.TabViewComponent = undefined;
     }
+    ModelManager_1.ModelManager.MotorcycleDevelopModel.UpdateSelectedTreeType(0);
   }
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.MotorDevelopRootUpdate, this.kcf);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SelectMotorDevelopTab, this.$Bf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.MotorDevelopRootUpdate, this.Umf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SelectMotorDevelopTab, this.BNf);
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.MotorDevelopRootUpdate, this.kcf);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SelectMotorDevelopTab, this.$Bf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.MotorDevelopRootUpdate, this.Umf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SelectMotorDevelopTab, this.BNf);
   }
   InitTabComponent() {
     var e = new CommonTabComponentData_1.CommonTabComponentData(this.R6e, this.pqe, this.yqe);

@@ -10,7 +10,7 @@ const Log_1 = require("../../../Core/Common/Log");
 const Queue_1 = require("../../../Core/Container/Queue");
 const Protocol_1 = require("../../../Core/Define/Net/Protocol");
 const Net_1 = require("../../../Core/Net/Net");
-const ResourceSystem_1 = require("../../../Core/Resource/ResourceSystem");
+const LoadModeManager_1 = require("../../../Core/Performance/LoadMode/LoadModeManager");
 const FNameUtil_1 = require("../../../Core/Utils/FNameUtil");
 const Rotator_1 = require("../../../Core/Utils/Math/Rotator");
 const Vector_1 = require("../../../Core/Utils/Math/Vector");
@@ -23,6 +23,7 @@ const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
 const ControllerWithAssistantBase_1 = require("../../Module/GeneralLogicTree/ControllerAssistant/ControllerWithAssistantBase");
 const TeleportMisc_1 = require("../../Module/Teleport/TeleportMisc");
+const UiTimeDilation_1 = require("../../Ui/Base/UiTimeDilation");
 const GameModePromise_1 = require("../Define/GameModePromise");
 const LoadLevelDefine_1 = require("../Define/LoadLevelDefine");
 const AsyncTask_1 = require("../Task/AsyncTask");
@@ -43,12 +44,12 @@ class SubLevelController extends ControllerWithAssistantBase_1.ControllerWithAss
   }
   static OnRegisterNetEvent() {
     super.OnRegisterNetEvent();
-    Net_1.Net.Register(17238, SubLevelController.b0r);
-    Net_1.Net.Register(15180, SubLevelController.q0r);
+    Net_1.Net.Register(18686, SubLevelController.b0r);
+    Net_1.Net.Register(29138, SubLevelController.q0r);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(17238);
-    Net_1.Net.UnRegister(15180);
+    Net_1.Net.UnRegister(18686);
+    Net_1.Net.UnRegister(29138);
     super.OnUnRegisterNetEvent();
   }
   static RegisterAssistant() {
@@ -101,9 +102,9 @@ class SubLevelController extends ControllerWithAssistantBase_1.ControllerWithAss
   }
   static ChangeSubLevel(e, o, r, l, a, t, n) {
     var i = new Map();
-    for (const s of o) {
-      var L = n?.indexOf(s) ?? -1;
-      i.set(s, L < 0);
+    for (const _ of o) {
+      var L = n?.indexOf(_) ?? -1;
+      i.set(_, L < 0);
     }
     o = {
       LevelsWithVisible: i,
@@ -143,17 +144,16 @@ class SubLevelController extends ControllerWithAssistantBase_1.ControllerWithAss
     }
     let L = false;
     for ([t] of o) {
-      var s = ModelManager_1.ModelManager.SubLevelModel.GetPreloadOrLoadedSubLevel(t);
-      if (!s || s.LoadState === 1) {
+      var _ = ModelManager_1.ModelManager.SubLevelModel.GetPreloadOrLoadedSubLevel(t);
+      if (!_ || _.LoadState === 1) {
         L = true;
         break;
       }
     }
-    n = "SubLevelController.ChangeSubLevelInternal";
-    let _ = false;
+    let s = false;
     if (L && !ModelManager_1.ModelManager.LevelLoadingModel.CheckLoadingPerformsEmpty()) {
-      ResourceSystem_1.ResourceSystem.SetLoadModeInLoading(GlobalData_1.GlobalData.World, n);
-      _ = true;
+      LoadModeManager_1.LoadModeManager.SetLoadModeByReason("Loading", "ChangeSubLevel");
+      s = true;
     }
     if (l) {
       Global_1.Global.BaseCharacter?.KuroSetMovementMode({
@@ -191,8 +191,8 @@ class SubLevelController extends ControllerWithAssistantBase_1.ControllerWithAss
       Log_1.Log.Info("GameMode", 3, "SubLevelController.切换子关卡:加载子关卡列表(完成)");
     }
     await SubLevelController.Dfr(l, a);
-    if (_) {
-      ResourceSystem_1.ResourceSystem.SetLoadModeInGame(GlobalData_1.GlobalData.World, n);
+    if (s) {
+      LoadModeManager_1.LoadModeManager.ResetLoadModeByReason("ChangeSubLevel");
     }
     if (r !== 0 && (Log_1.Log.CheckInfo() && Log_1.Log.Info("GameMode", 3, "SubLevelController.切换子关卡:关闭黑幕Loading界面(开始)"), await ControllerHolder_1.ControllerHolder.LevelLoadingController.WaitCloseLoading(14, 1), Log_1.Log.CheckInfo())) {
       Log_1.Log.Info("GameMode", 3, "SubLevelController.切换子关卡:关闭黑幕Loading界面(完成)");
@@ -298,7 +298,10 @@ class SubLevelController extends ControllerWithAssistantBase_1.ControllerWithAss
     if (l.LoadState === 0 && (l.LoadState = 1, r = GlobalData_1.GlobalData.GameInstance.场景加载通知器.LoadStreamLevel(FNameUtil_1.FNameUtil.GetDynamicFName(e), l.LoadVisibleParam, false), l.LinkId = r, Log_1.Log.CheckInfo())) {
       Log_1.Log.Info("World", 3, "SubLevelController:加载子关卡", ["Path", e], ["LinkId", r]);
     }
-    return await l.LoadPromise.Promise;
+    UiTimeDilation_1.UiTimeDilation.AddWaitSetTimeDilationTag("SubLevelController.LoadSubLevel" + l.LinkId);
+    o = await l.LoadPromise.Promise;
+    UiTimeDilation_1.UiTimeDilation.DeleteWaitSetTimeDilationTag("SubLevelController.LoadSubLevel" + l.LinkId);
+    return o;
   }
   static async LoadSubLevels(e) {
     var o;
@@ -480,13 +483,13 @@ SubLevelController.b0r = e => {
   const L = new Array();
   t = ModelManager_1.ModelManager.SubLevelModel.GetAllSubLevels();
   if (t) {
-    for (var [s] of t) {
-      (e.FDs.includes(s) ? i : n).push(s);
+    for (var [_] of t) {
+      (e.FDs.includes(_) ? i : n).push(_);
     }
   }
-  for (const _ of e.FDs) {
-    if (!i.includes(_)) {
-      L.push(_);
+  for (const s of e.FDs) {
+    if (!i.includes(s)) {
+      L.push(s);
     }
   }
   SubLevelController.ChangeSubLevel(n, L, 0, o, r, e => {

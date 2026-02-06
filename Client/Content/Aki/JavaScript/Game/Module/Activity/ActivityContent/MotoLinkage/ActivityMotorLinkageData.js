@@ -14,24 +14,24 @@ const ActivityData_1 = require("../../ActivityData");
 class ActivityMotorLinkageData extends ActivityData_1.ActivityBaseData {
   constructor() {
     super(...arguments);
-    this.ODm = new Map();
-    this.LVf = false;
+    this.eDm = new Map();
+    this.wXf = false;
   }
   PhraseEx(e) {
-    e.aLm?.nAu.forEach(e => {
+    e.kLm?.nAu.forEach(e => {
       var t = new ActivityCommonDefine_1.ActivityTaskData();
       t.Id = e.s5n;
       t.Current = e.lMs;
       t.Target = e.j6n;
-      t.Status = this.GDm(e.H6n);
-      this.ODm.set(e.s5n, t);
+      t.Status = this.tDm(e.H6n);
+      this.eDm.set(e.s5n, t);
     });
   }
   CanSubViewPlayShowView() {
-    return !!this.LVf && !(this.LVf = false);
+    return !!this.wXf && !(this.wXf = false);
   }
   SetCanSubViewPlayShowView(e) {
-    this.LVf = e;
+    this.wXf = e;
   }
   GetSortedQuestList(e) {
     var t = [[], [], []];
@@ -54,7 +54,7 @@ class ActivityMotorLinkageData extends ActivityData_1.ActivityBaseData {
     return ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(e) > 0;
   }
   GetQuestCurrentProgress(e) {
-    e = this.ODm.get(e);
+    e = this.eDm.get(e);
     if (e) {
       return e.Current;
     } else {
@@ -62,7 +62,7 @@ class ActivityMotorLinkageData extends ActivityData_1.ActivityBaseData {
     }
   }
   GetQuestTargetProgress(e) {
-    e = this.ODm.get(e);
+    e = this.eDm.get(e);
     if (e) {
       return e.Target;
     } else {
@@ -70,24 +70,24 @@ class ActivityMotorLinkageData extends ActivityData_1.ActivityBaseData {
     }
   }
   IsQuestCanReceive(e) {
-    return this.ODm.get(e)?.Status === 0;
+    return this.eDm.get(e)?.Status === 0;
   }
   IsQuestRewardReceived(e) {
-    return this.ODm.get(e)?.Status === 2;
+    return this.eDm.get(e)?.Status === 2;
   }
   OnQuestUpdateNotify(e) {
     var t = e.vlu?.s5n;
-    var t = t ? this.ODm.get(t) : undefined;
+    var t = t ? this.eDm.get(t) : undefined;
     if (t) {
       t.Current = e.vlu.lMs;
       t.Target = e.vlu.j6n;
-      t.Status = this.GDm(e.vlu.H6n);
+      t.Status = this.tDm(e.vlu.H6n);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.Id);
     }
   }
   OnRewardReceiveNotify(e) {
     e.forEach(e => {
-      e = this.ODm.get(e);
+      e = this.eDm.get(e);
       if (e) {
         e.Status = 2;
       }
@@ -147,7 +147,7 @@ class ActivityMotorLinkageData extends ActivityData_1.ActivityBaseData {
     }
     return t >= e.length;
   }
-  GDm(e) {
+  tDm(e) {
     switch (e) {
       case Protocol_1.Aki.Protocol.Bwu.Proto_ConditionTaskRunning:
         return 1;

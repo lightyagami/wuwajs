@@ -25,11 +25,11 @@ class CardDetailItem extends UiPanelBase_1.UiPanelBase {
     this.nvt = undefined;
     this.CA1 = undefined;
     this.BTu = undefined;
-    this.Wqm = undefined;
-    this.Qqm = undefined;
+    this.tGm = undefined;
+    this.iGm = undefined;
     this.fuo = undefined;
-    this.hFm = undefined;
-    this.BQm = undefined;
+    this.RNm = undefined;
+    this.iYm = undefined;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIMultiTemplateLayout], [2, UE.UIItem], [6, UE.UILayoutBase], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIText], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIText], [10, UE.UIItem], [11, UE.UIItem], [12, UE.UIText], [13, UE.UILayoutBase], [14, UE.UIItem], [15, UE.UIItem], [16, UE.UIItem], [17, UE.UIItem], [18, UE.UIItem], [19, UE.UIItem]];
@@ -38,28 +38,28 @@ class CardDetailItem extends UiPanelBase_1.UiPanelBase {
     this.BTu = new CardDetailTaskDescItem_1.CardDetailTaskDescItem();
     await this.BTu.CreateThenShowByActorAsync(this.GetItem(14).GetOwner());
   }
-  async Kqm() {
-    this.Wqm = new CardDetailActiveSkillItem_1.CardDetailActiveSkillItem();
-    await this.Wqm.CreateThenShowByActorAsync(this.GetItem(15).GetOwner());
+  async rGm() {
+    this.tGm = new CardDetailActiveSkillItem_1.CardDetailActiveSkillItem();
+    await this.tGm.CreateThenShowByActorAsync(this.GetItem(15).GetOwner());
   }
-  async Xqm() {
-    this.Qqm = new CardDetailPassiveSkillItem_1.CardDetailPassiveSkillItem();
-    await this.Qqm.CreateThenShowByActorAsync(this.GetItem(16).GetOwner());
+  async oGm() {
+    this.iGm = new CardDetailPassiveSkillItem_1.CardDetailPassiveSkillItem();
+    await this.iGm.CreateThenShowByActorAsync(this.GetItem(16).GetOwner());
   }
   async B1h() {
     this.fuo = new CardDetailLockItem_1.CardDetailLockItem();
     await this.fuo.CreateThenShowByActorAsync(this.GetItem(17).GetOwner());
   }
-  async lFm() {
-    this.hFm = new CardDetailDurationItem_1.CardDetailDurationItem();
-    await this.hFm.CreateThenShowByActorAsync(this.GetItem(18).GetOwner());
+  async wNm() {
+    this.RNm = new CardDetailDurationItem_1.CardDetailDurationItem();
+    await this.RNm.CreateThenShowByActorAsync(this.GetItem(18).GetOwner());
   }
-  async kQm() {
-    this.BQm = new CardDetailRemainRoundItem_1.CardDetailRemainRoundItem();
-    await this.BQm.CreateThenShowByActorAsync(this.GetItem(19).GetOwner());
+  async rYm() {
+    this.iYm = new CardDetailRemainRoundItem_1.CardDetailRemainRoundItem();
+    await this.iYm.CreateThenShowByActorAsync(this.GetItem(19).GetOwner());
   }
   async OnBeforeStartAsync() {
-    await Promise.all([this.ou_(), this.Kqm(), this.Xqm(), this.B1h(), this.lFm(), this.kQm()]);
+    await Promise.all([this.ou_(), this.rGm(), this.oGm(), this.B1h(), this.wNm(), this.rYm()]);
   }
   OnStart() {
     this.nvt = new CardDetailAttributeLayoutItem_1.CardDetailAttributeLayoutItem(this.GetMultiTemplateLayout(1), this.GetItem(2));
@@ -77,8 +77,8 @@ class CardDetailItem extends UiPanelBase_1.UiPanelBase {
     this.pj1(t.ActiveSkillData);
     this.bwc(t.PassiveSkillData);
     this.Rxt(t.LockData);
-    this._Fm(t.DurationData);
-    this.qQm(t.RemainRoundData);
+    this.LNm(t.DurationData);
+    this.oYm(t.RemainRoundData);
   }
   RefreshName() {
     if (this.Pe) {
@@ -156,7 +156,7 @@ class CardDetailItem extends UiPanelBase_1.UiPanelBase {
   pj1(t) {
     if (t) {
       this.GetItem(15).SetUIActive(true);
-      this.Wqm?.Refresh(t);
+      this.tGm?.Refresh(t);
     } else {
       this.GetItem(15).SetUIActive(false);
     }
@@ -164,7 +164,7 @@ class CardDetailItem extends UiPanelBase_1.UiPanelBase {
   bwc(t) {
     if (t) {
       this.GetItem(16).SetUIActive(true);
-      this.Qqm?.Refresh(t);
+      this.iGm?.Refresh(t);
     } else {
       this.GetItem(16).SetUIActive(false);
     }
@@ -177,18 +177,18 @@ class CardDetailItem extends UiPanelBase_1.UiPanelBase {
       this.GetItem(17).SetUIActive(false);
     }
   }
-  _Fm(t) {
+  LNm(t) {
     if (t) {
       this.GetItem(18).SetUIActive(true);
-      this.hFm?.Refresh(t);
+      this.RNm?.Refresh(t);
     } else {
       this.GetItem(18).SetUIActive(false);
     }
   }
-  qQm(t) {
+  oYm(t) {
     if (t) {
       this.GetItem(19).SetUIActive(true);
-      this.BQm?.Refresh(t);
+      this.iYm?.Refresh(t);
     } else {
       this.GetItem(19).SetUIActive(false);
     }

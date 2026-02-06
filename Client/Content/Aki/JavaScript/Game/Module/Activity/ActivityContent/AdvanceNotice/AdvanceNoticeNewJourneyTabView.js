@@ -10,7 +10,7 @@ const LguiUtil_1 = require("../../../Util/LguiUtil");
 const AdvanceNoticeTabViewBase_1 = require("./AdvanceNoticeTabViewBase");
 class AdvanceNoticeNewJourneyTabView extends AdvanceNoticeTabViewBase_1.AdvanceNoticeTabViewBase {
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UITexture], [1, UE.UIText], [2, UE.UIText], [3, UE.UIText]];
+    this.ComponentRegisterInfos = [[0, UE.UITexture], [1, UE.UIText], [2, UE.UIText], [3, UE.UIText], [4, UE.UIScrollViewWithScrollbarComponent]];
   }
   RefreshView() {
     var e = this.ViewModel.CurrentSubTabId;
@@ -19,6 +19,7 @@ class AdvanceNoticeNewJourneyTabView extends AdvanceNoticeTabViewBase_1.AdvanceN
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), e.Title);
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(3), e.Description);
     this.SetTextureWithPath(this.GetTexture(0), e.MainPic);
+    this.GetScrollViewWithScrollbar(4).SetScrollProgress(0);
   }
 }
 exports.AdvanceNoticeNewJourneyTabView = AdvanceNoticeNewJourneyTabView;

@@ -55,19 +55,21 @@ class ComposePopupModel extends ModelBase_1.ModelBase {
       }
       var o = [];
       var i = this.GetMaxCreateCountNormal(e, false);
-      var [n, s] = this.mMf(e, r = t <= i ? false : r, t, i);
+      var [n, s] = this.fTf(e, r = t <= i ? false : r, t, i);
       if (n <= 0) {
         return this.ugm(s);
       }
       for (const u of a.ConsumeItems) {
         let e = u.Count * n;
         var f = ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(u.ItemId);
-        var f = Math.min(f, e);
-        o.push({
-          ItemId: u.ItemId,
-          RequiredNum: f
-        });
-        e -= f;
+        if (f > 0) {
+          f = Math.min(f, e);
+          o.push({
+            ItemId: u.ItemId,
+            RequiredNum: f
+          });
+          e -= f;
+        }
         if (r && e > 0 && (f = this.CalcGiftExchangeList(u.ItemId, e))) {
           s.push(...f);
           e = 0;
@@ -183,7 +185,7 @@ class ComposePopupModel extends ModelBase_1.ModelBase {
     }
     var a = [];
     var o = this.GetMaxCreateCountPurification(e, false);
-    var [t, i] = this.mMf(e, r = t <= o ? false : r, t, o);
+    var [t, i] = this.fTf(e, r = t <= o ? false : r, t, o);
     if (t <= 0) {
       return this.ugm(i);
     }
@@ -218,7 +220,7 @@ class ComposePopupModel extends ModelBase_1.ModelBase {
       return this.ugm([...a, ...i]);
     }
   }
-  mMf(e, t, r, a) {
+  fTf(e, t, r, a) {
     if (t && a < r) {
       t = this.GetMaxGiftExchangeCount(e);
       a = Math.min(t, r);

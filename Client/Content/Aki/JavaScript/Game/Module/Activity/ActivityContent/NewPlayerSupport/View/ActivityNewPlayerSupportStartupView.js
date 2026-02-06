@@ -13,7 +13,7 @@ class ActivityNewPlayerSupportStartupView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
     this.AMo = () => {
-      this.O6f();
+      this.tJf();
     };
   }
   OnRegisterComponent() {
@@ -26,7 +26,7 @@ class ActivityNewPlayerSupportStartupView extends UiViewBase_1.UiViewBase {
     e.RecordActivityFirstShow();
     e.AlreadyStartView = true;
   }
-  O6f() {
+  tJf() {
     this.CloseMe();
     var e = ActivityControllerHolder_1.ActivityControllerHolder.ActivityNewPlayerSupportController.ActivityData.Id;
     if (e !== 0) {

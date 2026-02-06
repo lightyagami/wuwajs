@@ -36,10 +36,12 @@ const Vector_1 = require("../../../Core/Utils/Math/Vector");
 const MathUtils_1 = require("../../../Core/Utils/MathUtils");
 const TraceElementCommon_1 = require("../../../Core/Utils/TraceElementCommon");
 const IComponent_1 = require("../../../UniverseEditor/Interface/IComponent");
+const CameraController_1 = require("../../Camera/CameraController");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
 const Global_1 = require("../../Global");
 const GlobalData_1 = require("../../GlobalData");
+const LevelGamePlayController_1 = require("../../LevelGamePlay/LevelGamePlayController");
 const LevelGeneralContextDefine_1 = require("../../LevelGamePlay/LevelGeneralContextDefine");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
@@ -47,8 +49,7 @@ const SceneTeamController_1 = require("../../Module/SceneTeam/SceneTeamControlle
 const SceneInteractionManager_1 = require("../../Render/Scene/Interaction/SceneInteractionManager");
 const ActorUtils_1 = require("../../Utils/ActorUtils");
 const SceneItemMoveComponent_1 = require("./Common/Component/SceneItemMoveComponent");
-const LevelGamePlayController_1 = require("../../LevelGamePlay/LevelGamePlayController");
-const CameraController_1 = require("../../Camera/CameraController");
+const CustomConditionDefine_1 = require("./ExploreInteractiveCondition/CustomConditionDefine");
 const OUTLET_ANGLE_LIMIT_COS_VALUE = Math.cos(30 / 180 * Math.PI);
 const DEFAULT_MAX_DISTANCE = 60;
 const OVERWRITE_HOOK_LOCATION_KEY = "OverwriteLocation";
@@ -85,6 +86,8 @@ let SceneItemExploreInteractComponent = SceneItemExploreInteractComponent_1 = cl
     this.Jzl = undefined;
     this.Zzl = false;
     this.Evl = undefined;
+    this.Xbm = false;
+    this.Ybm = undefined;
     this.aln = undefined;
     this.Rhl = undefined;
     this._sr = new Set();
@@ -101,7 +104,8 @@ let SceneItemExploreInteractComponent = SceneItemExploreInteractComponent_1 = cl
       switch (this.Lo.Option.Type) {
         case IComponent_1.EExploreSkillInteractType.PullGiant:
         case IComponent_1.EExploreSkillInteractType.StatueInteractPoint:
-          this.ChangeManipulateInteractPointState(0);
+        case IComponent_1.EExploreSkillInteractType.QuantumDiffusion:
+          this.zbm(0);
           break;
         case IComponent_1.EExploreSkillInteractType.PullStatue:
           this.Val();
@@ -120,9 +124,22 @@ let SceneItemExploreInteractComponent = SceneItemExploreInteractComponent_1 = cl
         case IComponent_1.EExploreSkillInteractType.RagDollCrushingRock:
         case IComponent_1.EExploreSkillInteractType.RagDollDestroySolidRock:
         case IComponent_1.EExploreSkillInteractType.LonelyDollPollutant:
+        case IComponent_1.EExploreSkillInteractType.QuantumDiffusion:
         case IComponent_1.EExploreSkillInteractType.Custom:
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnOverlapSceneItemExploreInteractRange, t, this);
       }
+      if (this.Ybm) {
+        this.Ybm.SetListenerEnable(t);
+        if (t) {
+          this.Jbm(this.Ybm.CheckCondition());
+        } else {
+          this.Zbm();
+        }
+      }
+    };
+    this.Jbm = t => {
+      this.Xbm = !t;
+      this.zbm(t ? 0 : 2);
     };
   }
   get Bi_() {
@@ -164,10 +181,14 @@ let SceneItemExploreInteractComponent = SceneItemExploreInteractComponent_1 = cl
   get IsLocked() {
     return this.Oln.IsLocked;
   }
+  get IsForbidden() {
+    return this.Xbm;
+  }
   get InteractActions() {
     switch (this.Lo.Option.Type) {
       case IComponent_1.EExploreSkillInteractType.PullGiant:
       case IComponent_1.EExploreSkillInteractType.Custom:
+      case IComponent_1.EExploreSkillInteractType.QuantumDiffusion:
         return this.Lo.Option.Actions;
       default:
         return;
@@ -195,13 +216,17 @@ let SceneItemExploreInteractComponent = SceneItemExploreInteractComponent_1 = cl
         Conditions: [t]
       };
     }
+    var t = this.Lo.Option;
+    if (t.Type === IComponent_1.EExploreSkillInteractType.QuantumDiffusion && t.NeedFollowShooter) {
+      this.Ybm = (0, CustomConditionDefine_1.createConditionListener)(0, this.Jbm);
+    }
     return true;
   }
   OnStart() {
-    this.Hte = this.Entity.GetComponent(212);
+    this.Hte = this.Entity.GetComponent(214);
     this.EIe = this.Entity.GetComponent(0);
-    this.Oln = this.Entity.GetComponent(139);
-    this.Lie = this.Entity.GetComponent(206);
+    this.Oln = this.Entity.GetComponent(141);
+    this.Lie = this.Entity.GetComponent(208);
     EventSystem_1.EventSystem.OnceWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted, this.Rnn);
     if (this.Lo.Option.Type !== IComponent_1.EExploreSkillInteractType.PullStatue) {
       this.Disable("非拉取雕像类型不用tick");
@@ -215,14 +240,15 @@ let SceneItemExploreInteractComponent = SceneItemExploreInteractComponent_1 = cl
       case IComponent_1.EExploreSkillInteractType.RagDollCrushingRock:
       case IComponent_1.EExploreSkillInteractType.RagDollDestroySolidRock:
       case IComponent_1.EExploreSkillInteractType.LonelyDollPollutant:
+      case IComponent_1.EExploreSkillInteractType.QuantumDiffusion:
       case IComponent_1.EExploreSkillInteractType.Custom:
-        this.vtn = this.Entity.GetComponent(89);
+        this.vtn = this.Entity.GetComponent(91);
         if (this.vtn?.Valid) {
           this.vtn.AddOnPlayerOverlapCallback(this.eln);
         }
         break;
       case IComponent_1.EExploreSkillInteractType.PullStatue:
-        this.Gce = this.Entity.GetComponent(137);
+        this.Gce = this.Entity.GetComponent(139);
     }
     this.p4l();
     return true;
@@ -231,7 +257,8 @@ let SceneItemExploreInteractComponent = SceneItemExploreInteractComponent_1 = cl
     if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.AddEntity, this.GUe)) {
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.AddEntity, this.GUe);
     }
-    return true;
+    this.Ybm?.Clear();
+    return !(this.Ybm = undefined);
   }
   p4l() {
     if (this.Lo?.IgnoresCollisionCfg) {
@@ -309,6 +336,9 @@ let SceneItemExploreInteractComponent = SceneItemExploreInteractComponent_1 = cl
       case IComponent_1.EExploreSkillInteractType.LonelyDollPollutant:
         this.Trl = 795459287;
         break;
+      case IComponent_1.EExploreSkillInteractType.QuantumDiffusion:
+        this.Trl = -861653675;
+        break;
       case IComponent_1.EExploreSkillInteractType.Custom:
         var t = this.Lo.Option.LockConfigId;
         var t = ExploreSkillInteractById_1.configExploreSkillInteractById.GetConfig(t)?.Tag;
@@ -324,7 +354,7 @@ let SceneItemExploreInteractComponent = SceneItemExploreInteractComponent_1 = cl
     var t;
     if (this.Lo && this.Lo.Option.Type === IComponent_1.EExploreSkillInteractType.PullStatue) {
       if ((t = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(this.Lo.Option.StatueInteractPointId)) && t.Entity) {
-        this.Oal = t.Entity.GetComponent(159);
+        this.Oal = t.Entity.GetComponent(161);
         (this.Oal.AttachParent = this).eJl();
       } else {
         this.Gal = this.Lo.Option.StatueInteractPointId;
@@ -399,7 +429,12 @@ let SceneItemExploreInteractComponent = SceneItemExploreInteractComponent_1 = cl
   TypeSpecialCheck() {
     return this.Lo.Option.Type !== IComponent_1.EExploreSkillInteractType.StatueInteractPoint || this.jal();
   }
-  ChangeManipulateInteractPointState(t) {
+  TryChangeManipulateInteractPointState(t) {
+    if (!this.Xbm) {
+      this.zbm(t);
+    }
+  }
+  zbm(t) {
     if (this.Valid && this.ac !== t) {
       this.Lie.RemoveTag(manipulateInteractPointPointStateTagMap.get(this.ac));
       this.ac = t;
@@ -513,7 +548,7 @@ let SceneItemExploreInteractComponent = SceneItemExploreInteractComponent_1 = cl
         var n = this.Bi_.HitResult.Actors.Get(t);
         if (n !== undefined) {
           let t = undefined;
-          n = (t = (UE.KuroStaticLibrary.IsImplementInterface(n.GetClass(), UE.BPI_CreatureInterface_C.StaticClass()) ? ActorUtils_1.ActorUtils : ModelManager_1.ModelManager.SceneInteractionModel).GetEntityByActor(n))?.Entity?.GetComponent(290);
+          n = (t = (UE.KuroStaticLibrary.IsImplementInterface(n.GetClass(), UE.BPI_CreatureInterface_C.StaticClass()) ? ActorUtils_1.ActorUtils : ModelManager_1.ModelManager.SceneInteractionModel).GetEntityByActor(n))?.Entity?.GetComponent(292);
           if (!t || !n) {
             return true;
           }
@@ -563,15 +598,15 @@ let SceneItemExploreInteractComponent = SceneItemExploreInteractComponent_1 = cl
     if (this.Lie?.HasTag(-709838471)) {
       return false;
     }
-    var t = this.AttachParent.Entity.GetComponent(139);
+    var t = this.AttachParent.Entity.GetComponent(141);
     if (t === undefined || t.IsLocked) {
       return false;
     }
-    t = this.AttachParent.Entity.GetComponent(206);
+    t = this.AttachParent.Entity.GetComponent(208);
     if (t === undefined || t.HasTag(-709838471)) {
       return false;
     }
-    t = this.AttachParent.Entity.GetComponent(212);
+    t = this.AttachParent.Entity.GetComponent(214);
     if (t === undefined) {
       return false;
     }
@@ -594,9 +629,9 @@ let SceneItemExploreInteractComponent = SceneItemExploreInteractComponent_1 = cl
     n.Normalize();
     let o = MathUtils_1.MathUtils.MaxFloat;
     for (const _ of this.DKo) {
-      var r = _.Entity?.GetComponent(290);
+      var r = _.Entity?.GetComponent(292);
       if (r !== undefined && !r.EntityInSocket && r.TryMatch(this.AttachParent.Entity)) {
-        var s = _.Entity?.GetComponent(212);
+        var s = _.Entity?.GetComponent(214);
         if (s !== undefined) {
           var a = Vector_1.Vector.Create(s.ActorLocationProxy);
           a.SubtractionEqual(i);
@@ -614,7 +649,11 @@ let SceneItemExploreInteractComponent = SceneItemExploreInteractComponent_1 = cl
     }
     return this.Fal !== undefined;
   }
+  Zbm() {
+    this.Xbm = false;
+    this.zbm(0);
+  }
 };
 SceneItemExploreInteractComponent.StatueTraceDebug = false;
-SceneItemExploreInteractComponent = SceneItemExploreInteractComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(159)], SceneItemExploreInteractComponent);
+SceneItemExploreInteractComponent = SceneItemExploreInteractComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(161)], SceneItemExploreInteractComponent);
 exports.SceneItemExploreInteractComponent = SceneItemExploreInteractComponent; //# sourceMappingURL=SceneItemExploreInteractComponent.js.map

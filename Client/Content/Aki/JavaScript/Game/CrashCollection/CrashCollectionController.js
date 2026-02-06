@@ -12,7 +12,7 @@ const Stats_1 = require("../../Core/Common/Stats");
 const Protocol_1 = require("../../Core/Define/Net/Protocol");
 const ControllerBase_1 = require("../../Core/Framework/ControllerBase");
 const GameBudgetInterfaceController_1 = require("../../Core/GameBudgetAllocator/GameBudgetInterfaceController");
-const ResourceSystem_1 = require("../../Core/Resource/ResourceSystem");
+const LoadModeManager_1 = require("../../Core/Performance/LoadMode/LoadModeManager");
 const FNameUtil_1 = require("../../Core/Utils/FNameUtil");
 const EventDefine_1 = require("../Common/Event/EventDefine");
 const EventSystem_1 = require("../Common/Event/EventSystem");
@@ -64,7 +64,7 @@ class CrashCollectionController extends ControllerBase_1.ControllerBase {
   }
   static ZFa() {
     if (Stats_1.Stat.Enable) {
-      if (ResourceSystem_1.ResourceSystem.GetLoadMode() === 2) {
+      if (LoadModeManager_1.LoadModeManager.IsLoadModeInGameOrForceInGame()) {
         return this.e3a;
       } else {
         return this.t3a;

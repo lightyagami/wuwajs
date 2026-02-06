@@ -13,13 +13,13 @@ class GameplayCueRtpc extends GameplayCueMagnitude_1.GameplayCueMagnitude {
     super(...arguments);
     this.prm = false;
     this.Hte = undefined;
-    this.qkf = undefined;
-    this.Okf = false;
+    this.P3f = undefined;
+    this.A3f = false;
   }
   OnInit() {
     super.OnInit();
-    this.qkf = this.CueConfig.Parameters[0];
-    this.Okf = this.CueConfig.Parameters[1] === "1";
+    this.P3f = this.CueConfig.Parameters[0];
+    this.A3f = this.CueConfig.Parameters[1] === "1";
     var e = this.EntityHandle.Entity.GetComponent(0);
     this.prm = ModelManager_1.ModelManager.CreatureModel.GetPlayerId() !== e.GetPlayerId();
     if (!this.prm) {
@@ -30,24 +30,24 @@ class GameplayCueRtpc extends GameplayCueMagnitude_1.GameplayCueMagnitude {
     return !this.prm && super.UseMagnitude();
   }
   OnDestroy() {
-    if (this.Okf) {
-      this.Gkf(0);
+    if (this.A3f) {
+      this.D3f(0);
     }
     this.Hte = undefined;
     super.OnDestroy();
   }
   OnSetMagnitude(e) {
-    this.Gkf(e);
+    this.D3f(e);
   }
   Normalize() {
     return this.Value;
   }
-  Gkf(e) {
+  D3f(e) {
     if (this.Hte) {
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("Battle", 17, "[Rtpc] 角色变量同步给音频", ["RtpcKey", this.qkf], ["value", e], ["cueId", this.CueConfig.Id]);
+        Log_1.Log.Debug("Battle", 17, "[Rtpc] 角色变量同步给音频", ["RtpcKey", this.P3f], ["value", e], ["cueId", this.CueConfig.Id]);
       }
-      AudioSystem_1.AudioSystem.SetRtpcValue(this.qkf, e, {
+      AudioSystem_1.AudioSystem.SetRtpcValue(this.P3f, e, {
         Actor: this.Hte.Owner
       });
     }

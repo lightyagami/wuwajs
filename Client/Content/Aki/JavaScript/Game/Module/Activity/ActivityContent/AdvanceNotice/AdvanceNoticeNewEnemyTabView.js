@@ -15,22 +15,22 @@ const AdvanceNoticeTabViewBase_1 = require("./AdvanceNoticeTabViewBase");
 class AdvanceNoticeNewEnemyTabView extends AdvanceNoticeTabViewBase_1.AdvanceNoticeTabViewBase {
   constructor() {
     super(...arguments);
-    this._Gm = undefined;
-    this.uGm = undefined;
-    this.cGm = () => {
+    this.IFm = undefined;
+    this.TFm = undefined;
+    this.bFm = () => {
       return new AdvanceNoticeSuitItem_1.AdvanceNoticeSuitItem();
     };
-    this.dGm = () => {
+    this.RFm = () => {
       return new AdvanceNoticeFetterSuitDetailItem_1.AdvanceNoticeFetterSuitDetailItem();
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UITexture], [1, UE.UIText], [2, UE.UIText], [3, UE.UIText], [4, UE.UIItem], [5, UE.UISprite], [6, UE.UISprite], [7, UE.UITexture], [8, UE.UITexture], [9, UE.UITexture], [10, UE.UINiagara], [11, UE.UIText], [12, UE.UIItem], [13, UE.UIItem], [14, UE.UIText], [15, UE.UILayoutBase], [16, UE.UIItem], [17, UE.UIText], [18, UE.UILayoutBase], [19, UE.UIText]];
+    this.ComponentRegisterInfos = [[0, UE.UITexture], [1, UE.UIText], [2, UE.UIText], [3, UE.UIText], [4, UE.UIItem], [5, UE.UISprite], [6, UE.UISprite], [7, UE.UITexture], [8, UE.UITexture], [9, UE.UITexture], [10, UE.UINiagara], [11, UE.UIText], [12, UE.UIItem], [13, UE.UIItem], [14, UE.UIText], [15, UE.UILayoutBase], [16, UE.UIItem], [17, UE.UIText], [18, UE.UILayoutBase], [19, UE.UIText], [20, UE.UIScrollViewWithScrollbarComponent]];
   }
   async OnBeforeStartAsync() {
     this.GetText(19)?.ShowTextNew("Advertising_EnemyTips");
-    this._Gm = new GenericLayout_1.GenericLayout(this.GetLayoutBase(15), this.cGm);
-    this.uGm = new GenericLayout_1.GenericLayout(this.GetLayoutBase(18), this.dGm);
+    this.IFm = new GenericLayout_1.GenericLayout(this.GetLayoutBase(15), this.bFm);
+    this.TFm = new GenericLayout_1.GenericLayout(this.GetLayoutBase(18), this.RFm);
     return super.OnBeforeStartAsync();
   }
   RefreshView() {
@@ -45,6 +45,7 @@ class AdvanceNoticeNewEnemyTabView extends AdvanceNoticeTabViewBase_1.AdvanceNot
       case 3:
         this.RefreshFetterView();
     }
+    this.GetScrollViewWithScrollbar(20).SetScrollProgress(0);
   }
   RefreshEnemyView() {
     this.GetItem(4).SetUIActive(false);
@@ -73,7 +74,7 @@ class AdvanceNoticeNewEnemyTabView extends AdvanceNoticeTabViewBase_1.AdvanceNot
     for (const e of i.VisionFetterIconList) {
       t.push(e);
     }
-    this._Gm.RefreshByData(t);
+    this.IFm.RefreshByData(t);
     this.GetItem(12).SetUIActive(true);
     this.GetText(11).SetUIActive(true);
     this.GetItem(13).SetUIActive(true);
@@ -112,7 +113,7 @@ class AdvanceNoticeNewEnemyTabView extends AdvanceNoticeTabViewBase_1.AdvanceNot
       };
       r.push(h);
     }
-    this.uGm.RefreshByData(r);
+    this.TFm.RefreshByData(r);
     this.GetItem(12).SetUIActive(false);
     this.GetText(11).SetUIActive(false);
     this.GetLayoutBase(18).RootUIComp.SetUIActive(true);

@@ -62,13 +62,13 @@ class ActivityPrizeDrawingController extends ActivityControllerBase_1.ActivityCo
   async GachaRequest() {
     var e = Protocol_1.Aki.Protocol.ROd.create();
     e.w6n = this.ActivityId;
-    var e = await Net_1.Net.CallAsync(16568, e);
+    var e = await Net_1.Net.CallAsync(27252, e);
     if (e) {
       if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
         this.ActivityData?.OnAwardsUpdate(e);
         return e;
       }
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25416);
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24903);
     }
   }
 }

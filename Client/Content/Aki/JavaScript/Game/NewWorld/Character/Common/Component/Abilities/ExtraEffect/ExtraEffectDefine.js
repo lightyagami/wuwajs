@@ -221,6 +221,8 @@ function getBuffExecutionClass(e) {
       return ExtraExecutionEffect_1.ModifyTeamMemberBuff;
     case 106:
       return ExtraExecutionEffect_1.BuffMapper;
+    case 123:
+      return ExtraExecutionEffect_1.AdjacentBuffStackToAttribute;
     default:
       return;
   }

@@ -85,6 +85,9 @@ class CharacterInputLayer extends InputLayer_1.InputLayer {
           break;
         case InputEnums_1.EInputAction.通用交互:
           s = this.Aia.通用交互按下(e);
+          break;
+        case InputEnums_1.EInputAction.下降:
+          s = this.Aia.下降按下(e);
       }
       CharacterInputLayer.b0l.Stop();
       return s;
@@ -133,6 +136,9 @@ class CharacterInputLayer extends InputLayer_1.InputLayer {
           break;
         case InputEnums_1.EInputAction.瞄准:
           s = this.Aia.瞄准抬起(e);
+          break;
+        case InputEnums_1.EInputAction.下降:
+          s = this.Aia.下降抬起(e);
       }
       CharacterInputLayer.q0l.Stop();
       return s;
@@ -169,6 +175,8 @@ class CharacterInputLayer extends InputLayer_1.InputLayer {
           return this.Aia.锁定目标长按(t);
         case InputEnums_1.EInputAction.瞄准:
           return this.Aia.瞄准长按(t);
+        case InputEnums_1.EInputAction.下降:
+          return this.Aia.下降长按(t);
       }
     }
   }
@@ -216,6 +224,9 @@ class CharacterInputLayer extends InputLayer_1.InputLayer {
           break;
         case InputEnums_1.EInputAction.瞄准:
           this.Aia.瞄准按下事件(t);
+          break;
+        case InputEnums_1.EInputAction.下降:
+          this.Aia.下降按下事件(t);
       }
     }
   }
@@ -263,6 +274,9 @@ class CharacterInputLayer extends InputLayer_1.InputLayer {
           break;
         case InputEnums_1.EInputAction.瞄准:
           this.Aia.瞄准抬起事件(t);
+          break;
+        case InputEnums_1.EInputAction.下降:
+          this.Aia.下降抬起事件(t);
       }
     }
   }

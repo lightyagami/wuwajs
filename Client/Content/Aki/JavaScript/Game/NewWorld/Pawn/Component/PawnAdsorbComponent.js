@@ -89,7 +89,7 @@ let PawnAdsorbComponent = PawnAdsorbComponent_1 = class PawnAdsorbComponent exte
     this.Bsn = t.Range;
     this.bsn = t.StartVelocity;
     this.qsn = t.Acceleration;
-    this.rzr = this.Entity.GetComponent(130);
+    this.rzr = this.Entity.GetComponent(132);
     this.rzr.SetLogicRange(SENSORY_RANGE);
     this.Ore();
     return true;
@@ -102,7 +102,7 @@ let PawnAdsorbComponent = PawnAdsorbComponent_1 = class PawnAdsorbComponent exte
       }
       return false;
     }
-    this.xsn = this.Entity.GetComponent(127);
+    this.xsn = this.Entity.GetComponent(129);
     if (!this.xsn) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Interaction", 29, "[PawnAdsorbComponent.OnStart] 吸收组件初始化失败 Pawn Interact Component Undefined");
@@ -120,7 +120,7 @@ let PawnAdsorbComponent = PawnAdsorbComponent_1 = class PawnAdsorbComponent exte
     this.Mne = t.GetPbDataId();
     t = t.GetBaseInfo();
     this.Qsn = t.OnlineInteractType ?? 0;
-    this.wsn = this.Entity.GetComponent(206);
+    this.wsn = this.Entity.GetComponent(208);
     if (!this.wsn) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Interaction", 29, "[PawnAdsorbComponent.OnStart] 吸收组件初始化失败 LevelTagComponent Undefined", ["EntityConfigID:", this.Mne]);
@@ -167,7 +167,7 @@ let PawnAdsorbComponent = PawnAdsorbComponent_1 = class PawnAdsorbComponent exte
     i.g8n.Yaw = s.Yaw;
     i.J8n = Time_1.Time.NowSeconds;
     t.iVn.push(i);
-    CombatMessage_1.CombatNet.Send(16076, this.Entity, t);
+    CombatMessage_1.CombatNet.Send(15098, this.Entity, t);
   }
   OnEnd() {
     this.kre();
@@ -251,7 +251,7 @@ let PawnAdsorbComponent = PawnAdsorbComponent_1 = class PawnAdsorbComponent exte
         this.Vsn.MultiplyEqual(this.Hsn);
       }
       this.Vsn.Multiply(i, this.Fsn);
-      if (t = this.Entity.GetComponent(46)) {
+      if (t = this.Entity.GetComponent(48)) {
         t.MoveCharacter(this.Fsn, i, "Pawn吸附更新");
       } else {
         this.Hte.AddActorWorldOffset(this.Fsn.ToUeVector(), "Pawn吸附更新", true);
@@ -293,5 +293,5 @@ let PawnAdsorbComponent = PawnAdsorbComponent_1 = class PawnAdsorbComponent exte
     this.jsn = 0;
   }
 };
-PawnAdsorbComponent = PawnAdsorbComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(124)], PawnAdsorbComponent);
+PawnAdsorbComponent = PawnAdsorbComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(126)], PawnAdsorbComponent);
 exports.PawnAdsorbComponent = PawnAdsorbComponent; //# sourceMappingURL=PawnAdsorbComponent.js.map

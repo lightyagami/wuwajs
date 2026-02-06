@@ -18,6 +18,7 @@ class SkinRewardItemGrid extends LoopScrollSmallItemGrid_1.LoopScrollSmallItemGr
   constructor() {
     super(...arguments);
     this.Mne = 0;
+    this.OnClickRecommendSkinButtonCallback = () => {};
   }
   OnRefresh(e, r, t) {
     this.Refresh(e);
@@ -44,6 +45,7 @@ class SkinRewardItemGrid extends LoopScrollSmallItemGrid_1.LoopScrollSmallItemGr
   }
   OnExtendToggleClicked() {
     ControllerHolder_1.ControllerHolder.ItemController.OpenItemTipsByItemId(this.Mne, false);
+    this.OnClickRecommendSkinButtonCallback(this.Mne);
   }
 }
 exports.SkinRewardItemGrid = SkinRewardItemGrid;

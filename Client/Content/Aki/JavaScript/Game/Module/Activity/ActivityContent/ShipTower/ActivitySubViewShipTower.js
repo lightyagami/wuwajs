@@ -61,7 +61,7 @@ class ActivitySubViewShipTower extends ActivitySubViewBase_1.ActivitySubViewBase
   }
   OnSetData() {}
   async OnBeforeStartAsync() {
-    await ModelManager_1.ModelManager.ShipTowerModel.CheckInitProto();
+    await ModelManager_1.ModelManager.ShipTowerModel.CheckInitProto(false);
     var e = [];
     this.CommonInfoPanel = new ActivitySubViewGeneralInfo_1.ActivitySubViewGeneralInfo();
     this.CommonInfoPanel.SetData(this.ActivityBaseData);

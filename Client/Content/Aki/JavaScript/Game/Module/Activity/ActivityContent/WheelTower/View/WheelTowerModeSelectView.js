@@ -23,22 +23,22 @@ class WheelTowerModeSelectView extends UiTickViewBase_1.UiTickViewBase {
   constructor() {
     super(...arguments);
     this.Qyi = undefined;
-    this.Gtf = undefined;
-    this.Ftf = undefined;
+    this.Wrf = undefined;
+    this.Qrf = undefined;
     this.eel = undefined;
     this.Hea = undefined;
-    this.DIf = () => {
+    this.MRf = () => {
       this.Og(true);
-      this.GetItem(25)?.SetUIActive(ModelManager_1.ModelManager.WheelTowerModel.ActivityData.HasAnyRewardCanReceive());
+      this.GetItem(25)?.SetUIActive(ModelManager_1.ModelManager.WheelTowerModel.ActivityData.ShouldShowRewardRedDot());
     };
-    this.jtf = () => {
+    this.zrf = () => {
       UiManager_1.UiManager.OpenView("WheelTowerRewardView", undefined, (e, t) => {
         if (e) {
           this.AddChildViewById(t);
         }
       });
     };
-    this.$tf = () => {
+    this.Jrf = () => {
       UiManager_1.UiManager.OpenView("WheelTowerRoundSelectView");
     };
     this.lPe = () => {
@@ -51,45 +51,45 @@ class WheelTowerModeSelectView extends UiTickViewBase_1.UiTickViewBase {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UITexture], [4, UE.UITexture], [5, UE.UIText], [6, UE.UITexture], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIText], [10, UE.UIItem], [11, UE.UIText], [12, UE.UIButtonComponent], [13, UE.UIText], [14, UE.UIText], [15, UE.UIButtonComponent], [16, UE.UIText], [17, UE.UITexture], [18, UE.UITexture], [19, UE.UITexture], [20, UE.UITexture], [21, UE.UITexture], [22, UE.UITexture], [23, UE.UIItem], [24, UE.UIItem], [25, UE.UIItem]];
-    this.BtnBindInfo = [[12, this.jtf], [15, this.$tf]];
+    this.BtnBindInfo = [[12, this.zrf], [15, this.Jrf]];
   }
   async OnBeforeStartAsync() {
     var e = [];
     this.Qyi = new PopupCaptionItem_1.PopupCaptionItem();
     e.push(this.Qyi.CreateThenShowByActorAsync(this.GetItem(0).GetOwner()));
-    this.Gtf = new ModeToggleItem();
-    e.push(this.Gtf.CreateThenShowByActorAsync(this.GetItem(7).GetOwner()));
-    this.Ftf = new ModeToggleItem();
-    e.push(this.Ftf.CreateThenShowByActorAsync(this.GetItem(8).GetOwner()));
+    this.Wrf = new ModeToggleItem();
+    e.push(this.Wrf.CreateThenShowByActorAsync(this.GetItem(7).GetOwner()));
+    this.Qrf = new ModeToggleItem();
+    e.push(this.Qrf.CreateThenShowByActorAsync(this.GetItem(8).GetOwner()));
     var t = ModelManager_1.ModelManager.WheelTowerModel.ActivityData;
     var i = t.IsLevelUnlocked(false);
     var t = t.IsLevelUnlocked(true);
     if (i || t) {
       e.push(ActivityControllerHolder_1.ActivityControllerHolder.WheelTowerController.RequestRoleEnergyUpdate());
     }
-    e.push(this.xqf());
+    e.push(this.NVf());
     await Promise.all(e);
   }
   OnStart() {
     this.Qyi?.SetCloseCallBack(this.lPe);
-    this.Gtf?.SetToggleClickCallback(() => {
+    this.Wrf?.SetToggleClickCallback(() => {
       this.Aqd(false);
       this.Og();
     });
-    this.Ftf?.SetToggleClickCallback(() => {
+    this.Qrf?.SetToggleClickCallback(() => {
       this.Aqd(true);
       this.Og();
     });
     this.eel = new WheelTowerScoreItem_1.WheelTowerScoreItem(this, this.GetItem(10));
     this.Hea = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
-    this.bCf();
-    this.s0f();
+    this.lyf();
+    this.lpf();
     this._rm();
   }
   OnBeforeDestroy() {
     this.Hea?.Clear();
   }
-  s0f() {
+  lpf() {
     var e = ModelManager_1.ModelManager.WheelTowerModel;
     this.R3a();
     let t = e.EndlessMode;
@@ -97,8 +97,8 @@ class WheelTowerModeSelectView extends UiTickViewBase_1.UiTickViewBase {
       t = false;
     }
     this.Aqd(t);
-    this.Gtf?.SetToggleStateForce(!t);
-    this.Ftf?.SetToggleStateForce(t);
+    this.Wrf?.SetToggleStateForce(!t);
+    this.Qrf?.SetToggleStateForce(t);
   }
   OnTick(e) {
     var [t, i] = ModelManager_1.ModelManager.ActivityModel.GetTimeVisibleAndRemainTime(ModelManager_1.ModelManager.WheelTowerModel.ActivityData);
@@ -110,21 +110,21 @@ class WheelTowerModeSelectView extends UiTickViewBase_1.UiTickViewBase {
   }
   OnBeforeShow() {
     this.OnTick(0);
-    this.DIf();
+    this.MRf();
   }
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.DIf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.MRf);
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.DIf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.MRf);
   }
   async OnBeforeShowAsyncImplementImplement() {
-    await this.xqf();
+    await this.NVf();
   }
   Aqd(e) {
     ModelManager_1.ModelManager.WheelTowerModel.SetEndlessMode(e);
   }
-  bCf() {
+  lyf() {
     this.GetItem(1)?.SetUIActive(true);
     this.GetItem(2)?.SetUIActive(true);
     this.GetItem(23)?.SetUIActive(true);
@@ -138,8 +138,8 @@ class WheelTowerModeSelectView extends UiTickViewBase_1.UiTickViewBase {
       this.Hea?.EndSequenceLastFrame(i);
     }
     this.R3a();
-    this.Gtf?.SetToggleStateForce(!t);
-    this.Ftf?.SetToggleStateForce(t);
+    this.Wrf?.SetToggleStateForce(!t);
+    this.Qrf?.SetToggleStateForce(t);
     var e = ModelManager_1.ModelManager.WheelTowerModel;
     var i = e.GetMaxChallengeRound() + 1;
     this.GetText(9)?.SetText(i.toString());
@@ -147,7 +147,7 @@ class WheelTowerModeSelectView extends UiTickViewBase_1.UiTickViewBase {
     this.GetText(11)?.SetText(t.toString());
     var i = e.GetTotalScoreLevel(t);
     this.eel?.Refresh(i);
-    var t = ConfigManager_1.ConfigManager.WheelTowerConfig.GetWaveConfigById(e.GetCurrentLevelRecord().kef.Gef);
+    var t = ConfigManager_1.ConfigManager.WheelTowerConfig.GetWaveConfigById(e.GetCurrentLevelRecord().Hif.Wif);
     this.SetTextureShowUntilLoaded(t.SmallIcon, this.GetTexture(6));
     var i = e.ActivityData.GetCurrentRewardProgress(0);
     var t = e.ActivityData.GetTotalRewardProgress(0);
@@ -155,22 +155,22 @@ class WheelTowerModeSelectView extends UiTickViewBase_1.UiTickViewBase {
     this.GetText(14)?.SetText(t.toString());
   }
   R3a() {
-    this.Gtf?.Refresh(false);
-    this.Ftf?.Refresh(true);
+    this.Wrf?.Refresh(false);
+    this.Qrf?.Refresh(true);
   }
-  async xqf() {
+  async NVf() {
     var e;
     var t = ModelManager_1.ModelManager.WheelTowerModel;
     var i = [];
     if (t.ActivityData.IsLevelUnlocked(false)) {
-      e = ConfigManager_1.ConfigManager.WheelTowerConfig.GetWaveConfigById(t.ActivityData.GetLevelRecord(false).kef.Gef);
+      e = ConfigManager_1.ConfigManager.WheelTowerConfig.GetWaveConfigById(t.ActivityData.GetLevelRecord(false).Hif.Wif);
       i.push(this.SetTextureAsync(e.BigIcon[0], this.GetTexture(3)));
       i.push(this.SetTextureAsync(e.BigIcon[1], this.GetTexture(4)));
       i.push(this.SetTextureAsync(e.BigIcon[0], this.GetTexture(17)));
       i.push(this.SetTextureAsync(e.BigIcon[1], this.GetTexture(18)));
     }
     if (t.ActivityData.IsLevelUnlocked(true)) {
-      e = ConfigManager_1.ConfigManager.WheelTowerConfig.GetWaveConfigById(t.ActivityData.GetLevelRecord(true).kef.Gef);
+      e = ConfigManager_1.ConfigManager.WheelTowerConfig.GetWaveConfigById(t.ActivityData.GetLevelRecord(true).Hif.Wif);
       i.push(this.SetTextureAsync(e.BigIcon[0], this.GetTexture(19)));
       i.push(this.SetTextureAsync(e.BigIcon[1], this.GetTexture(21)));
       i.push(this.SetTextureAsync(e.BigIcon[0], this.GetTexture(20)));
@@ -190,13 +190,13 @@ exports.WheelTowerModeSelectView = WheelTowerModeSelectView;
 class ModeToggleItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.gtf = undefined;
+    this.Erf = undefined;
     this.N8e = () => {
-      this.gtf?.();
+      this.Erf?.();
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UIExtendToggleSpriteTransition], [2, UE.UIText], [3, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UIExtendToggleSpriteTransition], [2, UE.UIText], [3, UE.UIItem], [4, UE.UIItem]];
     this.BtnBindInfo = [[0, this.N8e]];
   }
   OnStart() {
@@ -207,17 +207,18 @@ class ModeToggleItem extends UiPanelBase_1.UiPanelBase {
   Refresh(e) {
     var t = ModelManager_1.ModelManager.WheelTowerModel;
     var i = t.ActivityData.IsLevelUnlocked(e);
-    var t = t.IsLevelCompleted(e);
+    var s = t.IsLevelCompleted(e);
     this.SetExtendToggleSpriteTransitionByPath(i ? ICON_PLAY : ICON_LOCK, this.GetUiExtendToggleSpriteTransition(1));
     this.GetExtendToggle(0)?.SetSelfInteractive(i);
-    this.GetItem(3)?.SetUIActive(t);
-    this.GetUiExtendToggleSpriteTransition(1)?.RootUIComp.SetUIActive(!t);
+    this.GetItem(3)?.SetUIActive(s);
+    this.GetUiExtendToggleSpriteTransition(1)?.RootUIComp.SetUIActive(!s);
     if (e) {
       this.GetText(2)?.ShowTextNew(i ? "PrefabTextItem_2898489298_Text" : "WheelTower_EndlessCondition");
     }
+    this.GetItem(4)?.SetUIActive(t.ActivityData.HasLevelRedDot(e));
   }
   SetToggleClickCallback(e) {
-    this.gtf = e;
+    this.Erf = e;
   }
   SetToggleStateForce(e) {
     this.GetExtendToggle(0)?.SetToggleStateForce(e ? 1 : 0, false);

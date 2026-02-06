@@ -72,9 +72,9 @@ let PanoramicPointComponent = class PanoramicPointComponent extends EntityCompon
     this.SafeRange = 100;
     this.TargetPos = Vector_1.Vector.Create();
     this.toh = true;
-    this.BVm = false;
-    this.kVm = false;
-    this.qVm = false;
+    this.e8m = false;
+    this.t8m = false;
+    this.i8m = false;
     this.M91 = t => {
       if (this.PointView && this.e21 && this.toh) {
         this.UpdateCondition();
@@ -104,7 +104,7 @@ let PanoramicPointComponent = class PanoramicPointComponent extends EntityCompon
       this.TargetPos.X = i.InteractStyleType.TargetPos.X ?? 0;
       this.TargetPos.Y = i.InteractStyleType.TargetPos.Y ?? 0;
       this.TargetPos.Z = i.InteractStyleType.TargetPos.Z ?? 0;
-      this.jBr = this.Entity.GetComponent(128);
+      this.jBr = this.Entity.GetComponent(130);
       if (this.jBr) {
         this.jBr.SetSightRange(this.Range);
       }
@@ -260,7 +260,7 @@ let PanoramicPointComponent = class PanoramicPointComponent extends EntityCompon
           }
         }
         if (e && o.bBlockingHit) {
-          this.qVm = true;
+          this.i8m = true;
           this.Angle = PanoramicDefine_1.PANORAMIC_MAX_ANGLE;
           return;
         }
@@ -277,12 +277,12 @@ let PanoramicPointComponent = class PanoramicPointComponent extends EntityCompon
           }
         }
         if (e && s.bBlockingHit) {
-          this.qVm = true;
+          this.i8m = true;
           this.Angle = PanoramicDefine_1.PANORAMIC_MAX_ANGLE;
           return;
         }
       }
-      this.qVm = false;
+      this.i8m = false;
       var h;
       var a;
       var _;
@@ -337,16 +337,16 @@ let PanoramicPointComponent = class PanoramicPointComponent extends EntityCompon
     return !(n > this.AngleRange) || !(Log_1.Log.CheckDebug() && Log_1.Log.Debug("Panoramic", 45, "[环视]CheckInShowRange 不在范围角度内", ["pbDataId", this.xe]), 1);
   }
   UpdateCondition() {
-    this.kVm = this.CheckInCircle();
-    this.BVm = this.CheckInAngle();
-    if (this.kVm && this.BVm) {
+    this.t8m = this.CheckInCircle();
+    this.e8m = this.CheckInAngle();
+    if (this.t8m && this.e8m) {
       this.Imu();
     } else {
       this.Angle = PanoramicDefine_1.PANORAMIC_MAX_ANGLE;
     }
   }
   CheckCondition() {
-    return this.kVm && this.BVm && this.toh && (this.PointView ?? false) && this.e21 && !this.qVm;
+    return this.t8m && this.e8m && this.toh && (this.PointView ?? false) && this.e21 && !this.i8m;
   }
   ChangeNeedTickCheck(t) {
     this.toh = t;
@@ -360,5 +360,5 @@ let PanoramicPointComponent = class PanoramicPointComponent extends EntityCompon
     this.DestroyShowSpotEvent();
   }
 };
-PanoramicPointComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(340)], PanoramicPointComponent);
+PanoramicPointComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(342)], PanoramicPointComponent);
 exports.PanoramicPointComponent = PanoramicPointComponent; //# sourceMappingURL=PanoramicPointComponent.js.map

@@ -17,42 +17,44 @@ class MapRoadWaysMgr {
   constructor(e) {
     this._Ui = 0;
     this.ERi = undefined;
-    this.smf = [];
-    this.a5f = [];
-    this.h5f = Vector2D_1.Vector2D.Create();
+    this.Tgf = [];
+    this.qWf = [];
+    this.OWf = Vector2D_1.Vector2D.Create();
     this.kG = Vector_1.Vector.Create();
-    this.l5f = "/Game/Aki/UI/UIResources/UiWorldMap/Prefabs/UiItem_MapRoadWay_Prefab.UiItem_MapRoadWay_Prefab";
+    this.GWf = "/Game/Aki/UI/UIResources/UiWorldMap/Prefabs/UiItem_MapRoadWay_Prefab.UiItem_MapRoadWay_Prefab";
     this.OnMapSetup = () => {
-      this._5f();
-      this.u5f();
+      this.FWf();
+      this.NWf();
     };
     this._Ui = e.MapId;
     this.ERi = e.Container;
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InfrastructureRoadDataUpdate, this.OnMapSetup);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.MapOpenFogChange, this.OnMapSetup);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.MapOpenFogFullUpdate, this.OnMapSetup);
   }
-  _5f() {
-    for (const e of this.smf) {
+  FWf() {
+    for (const e of this.Tgf) {
       e.SetUiActive(false);
-      this.a5f.push(e);
+      this.qWf.push(e);
     }
-    this.smf.length = 0;
+    this.Tgf.length = 0;
   }
-  async u5f() {
+  async NWf() {
     var e = ConfigManager_1.ConfigManager.MapConfig?.GetMapRoadWaysByMapId(this._Ui);
     if (e && e.length !== 0) {
       var t = [];
       for (const i of e) {
-        if (this.YYf(i)) {
-          t.push(this.c5f(this._Ui, i.ResourcePath, i.UiPosition, i.UiScale));
+        if (this.Lfg(i)) {
+          t.push(this.VWf(this._Ui, i.ResourcePath, i.UiPosition, i.UiScale));
         }
       }
       await Promise.all(t);
     }
   }
-  YYf(e) {
+  Lfg(e) {
     if (e.RoadBuildId > 0) {
       var t = ModelManager_1.ModelManager.InfrastructureModel?.GetRoadDataByRoadId(e.RoadBuildId);
-      if (!t || t.Status !== Protocol_1.Aki.Protocol.zNm.Proto_InfrStatusComplete) {
+      if (!t || t.Status !== Protocol_1.Aki.Protocol.g4m.Proto_InfrStatusComplete) {
         return false;
       }
     }
@@ -63,10 +65,10 @@ class MapRoadWaysMgr {
     }
     return true;
   }
-  async c5f(t, i, a, s) {
+  async VWf(t, i, s, a) {
     if (t === this._Ui) {
-      let e = this.a5f.pop();
-      (e || (await (e = new MapRoadWayView()).CreateThenShowByPathAsync(this.l5f, this.ERi), t === this._Ui) ? (e.SetUiActive(true), e.SetTexture(i), this.h5f.Set(a[0], a[1]), e.GetRootItem().SetAnchorOffset(this.h5f.ToUeVector2D()), this.kG.Set(s, s, s), e.GetRootItem().SetUIItemScale(this.kG.ToUeVectorOld()), this.smf) : (e.SetUiActive(false), this.a5f)).push(e);
+      let e = this.qWf.pop();
+      (e || (await (e = new MapRoadWayView()).CreateThenShowByPathAsync(this.GWf, this.ERi), t === this._Ui) ? (e.SetUiActive(true), e.SetTexture(i), this.OWf.Set(s[0], s[1]), e.GetRootItem().SetAnchorOffset(this.OWf.ToUeVector2D()), this.kG.Set(a, a, a), e.GetRootItem().SetUIItemScale(this.kG.ToUeVectorOld()), this.Tgf) : (e.SetUiActive(false), this.qWf)).push(e);
     }
   }
   OnChangeWorldMap(e) {
@@ -74,15 +76,17 @@ class MapRoadWaysMgr {
     this.OnMapSetup();
   }
   Dispose() {
-    for (const e of this.smf) {
+    for (const e of this.Tgf) {
       e.Destroy();
     }
-    this.smf.length = 0;
-    for (const t of this.a5f) {
+    this.Tgf.length = 0;
+    for (const t of this.qWf) {
       t.Destroy();
     }
-    this.a5f.length = 0;
+    this.qWf.length = 0;
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InfrastructureRoadDataUpdate, this.OnMapSetup);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.MapOpenFogChange, this.OnMapSetup);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.MapOpenFogFullUpdate, this.OnMapSetup);
   }
 }
 exports.MapRoadWaysMgr = MapRoadWaysMgr;

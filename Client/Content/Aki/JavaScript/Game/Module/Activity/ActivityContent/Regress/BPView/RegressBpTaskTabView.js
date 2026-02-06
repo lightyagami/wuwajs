@@ -28,14 +28,14 @@ const regressTaskRewardStateSortRecord = {
 class RegressBpTaskTabView extends UiTabViewBase_1.UiTabViewBase {
   constructor() {
     super(...arguments);
-    this.VMf = undefined;
+    this.obf = undefined;
     this.kou = () => new RegressBpTaskItem();
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UILoopScrollViewComponent], [1, UE.UIItem]];
   }
   async OnBeforeStartAsync() {
-    this.VMf = new LoopScrollView_1.LoopScrollView(this.GetLoopScrollViewComponent(0), this.GetItem(1).GetOwner(), this.kou);
+    this.obf = new LoopScrollView_1.LoopScrollView(this.GetLoopScrollViewComponent(0), this.GetItem(1).GetOwner(), this.kou);
     this.RefreshView();
   }
   OnClickBtnClaimAll() {
@@ -50,18 +50,18 @@ class RegressBpTaskTabView extends UiTabViewBase_1.UiTabViewBase {
   RefreshView(e) {
     const i = ModelManager_1.ModelManager.ActivityRegressModel?.ActivityData;
     var r;
-    if (this.VMf && i && (r = [0, 1, 6].reduce((e, r) => {
+    if (this.obf && i && (r = [0, 1, 6].reduce((e, r) => {
       r = i.GetRegressTaskListByType(r);
       if (r?.length) {
         e.push(...r);
       }
       return e;
     }, [])).length !== 0) {
-      this.OBf(r);
-      this.VMf.RefreshByData(r, undefined, undefined, e);
+      this.LNf(r);
+      this.obf.RefreshByData(r, undefined, undefined, e);
     }
   }
-  OBf(e) {
+  LNf(e) {
     e.sort((e, r) => {
       var i = ModelManager_1.ModelManager.ActivityRegressModel.ActivityData.GetTaskRewardState(e.Id);
       var t = ModelManager_1.ModelManager.ActivityRegressModel.ActivityData.GetTaskRewardState(r.Id);
@@ -80,7 +80,7 @@ class RegressBpTaskItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
     super(...arguments);
     this.Pe = undefined;
-    this.GBf = undefined;
+    this.wNf = undefined;
     this.rOe = () => new CommonItemSmallItemGrid_1.CommonItemSmallItemGrid();
     this.YP = () => {
       var e = this.Pe;
@@ -101,7 +101,7 @@ class RegressBpTaskItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.BtnBindInfo = [[4, this.YP], [6, this.YP]];
   }
   OnStart() {
-    this.GBf = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(2), this.rOe);
+    this.wNf = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(2), this.rOe);
   }
   Refresh(e, r, i) {
     this.Pe = e;
@@ -111,7 +111,7 @@ class RegressBpTaskItem extends GridProxyAbstract_1.GridProxyAbstract {
     var i = e.Id;
     var [t, s] = ModelManager_1.ModelManager.ActivityRegressModel.ActivityData.GetTaskProgressTuple(i);
     var o = this.GetText(1);
-    if (this.s7f() && e.TaskType === 0) {
+    if (this.LJf() && e.TaskType === 0) {
       LguiUtil_1.LguiUtil.SetLocalTextNew(o, "Recall_BP_Task_Repeat", t, s);
     } else {
       o.SetText(t + "/" + s);
@@ -125,9 +125,9 @@ class RegressBpTaskItem extends GridProxyAbstract_1.GridProxyAbstract {
   }
   Z3e() {
     var e = ModelManager_1.ModelManager.ActivityRegressModel.GetDropPreviewRewardItemListForPreview(this.Pe.TargetReward);
-    this.GBf.RefreshByData(e);
+    this.wNf.RefreshByData(e);
   }
-  s7f() {
+  LJf() {
     var e = this.Pe;
     var r = e.TaskType;
     var e = e.TaskSubType;
@@ -141,7 +141,7 @@ class RegressBpTaskItem extends GridProxyAbstract_1.GridProxyAbstract {
     var t = this.Pe;
     var s = this.GetItem(8);
     var t = t.TaskType;
-    if (this.s7f()) {
+    if (this.LJf()) {
       s.SetUIActive(true);
       e = this.GetSprite(9);
       r = this.GetSprite(10);

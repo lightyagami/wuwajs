@@ -57,10 +57,10 @@ class LifePointDrawActivityController extends ActivityControllerBase_1.ActivityC
     return false;
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(28600, this.RPu);
+    Net_1.Net.Register(19909, this.RPu);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(28600);
+    Net_1.Net.UnRegister(19909);
   }
   wPu(e) {
     if (ModelManager_1.ModelManager.ActivityModel.GetActivityById(e)) {
@@ -71,9 +71,9 @@ class LifePointDrawActivityController extends ActivityControllerBase_1.ActivityC
     var r = new Protocol_1.Aki.Protocol.eAu();
     r.s5n = t;
     ModelManager_1.ModelManager.LifePointDrawModel.CurrentChallengeFinishState = ModelManager_1.ModelManager.LifePointDrawModel.GetChallengeFinishState(e, t);
-    Net_1.Net.Call(26082, r, e => {
+    Net_1.Net.Call(27062, r, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21303);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15303);
       }
     });
   }

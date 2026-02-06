@@ -20,8 +20,10 @@ const TsEffectActor_1 = require("../../../Effect/TsEffectActor");
 const GlobalData_1 = require("../../../GlobalData");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const CharacterUtils_1 = require("../../../NewWorld/Character/CharacterUtils");
+const TsBaseVehicle_1 = require("../../../NewWorld/Vehicle/TsBaseVehicle");
 const ColorUtils_1 = require("../../../Utils/ColorUtils");
 const EffectUtil_1 = require("../../../Utils/EffectUtil");
+const TsAnimNotifyUtils_1 = require("../../../Utils/TsAnimNotifyUtils");
 const RenderConfig_1 = require("../../Config/RenderConfig");
 const DISTANCE_EFFECT_ON_FLOOR = 1;
 const DISTANCE_FOOT_TO_EFFECT = 10;
@@ -94,7 +96,7 @@ class AnimNotifyEffect extends UE.KuroEffectMakerAN {
     }
     if (GlobalData_1.GlobalData.IsUiSceneOpen || i.Tags.Contains(RenderConfig_1.RenderConfig.UIName)) {
       n = 1;
-    } else if (i instanceof TsBaseCharacter_1.default && i.CharacterActorComponent?.Entity?.GetComponent(40) || i instanceof TsEffectActor_1.default && i.GetEffectType() === 0 || i?.IsA(UE.EffectSystemActor.StaticClass()) && i.GetEffectType() === 0) {
+    } else if (i instanceof TsBaseCharacter_1.default && i.CharacterActorComponent?.Entity?.GetComponent(42) || i instanceof TsEffectActor_1.default && i.GetEffectType() === 0 || i?.IsA(UE.EffectSystemActor.StaticClass()) && i.GetEffectType() === 0) {
       n = 0;
     }
     AnimNotifyEffect.CreateEffectContextStat.Start();
@@ -121,6 +123,8 @@ class AnimNotifyEffect extends UE.KuroEffectMakerAN {
     if (Info_1.Info.IsGameRunning()) {
       if (i instanceof TsBaseCharacter_1.default) {
         r = i.CharacterActorComponent?.GetReplaceEffect(f);
+      } else if (i instanceof TsBaseVehicle_1.default) {
+        r = i.VehicleActorComponent?.GetReplaceEffect(f);
       }
     } else {
       r = EffectUtil_1.EffectUtil.GetPreviewReplaceEffectPath(f);
@@ -145,32 +149,12 @@ class AnimNotifyEffect extends UE.KuroEffectMakerAN {
     }
   }
   GameplayTagsCheck(t) {
-    var e = t.CharacterActorComponent?.Entity?.GetComponent(215);
-    if (e) {
-      var i = this.PlayNeedTags.Num();
-      if (this.NeedAnyTag) {
-        for (let t = 0; t < i; t++) {
-          var f = this.PlayNeedTags.GetKey(t);
-          var o = this.PlayNeedTags.Get(f);
-          if (e.HasTag(f.TagId) === o) {
-            return true;
-          }
-        }
-        return false;
-      }
-      for (let t = 0; t < i; t++) {
-        var n = this.PlayNeedTags.GetKey(t);
-        var s = this.PlayNeedTags.Get(n);
-        if (e.HasTag(n.TagId) !== s) {
-          return false;
-        }
-      }
-    }
-    return true;
+    const e = t.CharacterActorComponent?.Entity?.GetComponent(217);
+    return !e || TsAnimNotifyUtils_1.TsAnimNotifyUtils.CheckTags(this.NeedAnyTag, this.PlayNeedTags, t => e.HasTag(t));
   }
   AttachEffectToSkill(e, i) {
     if (e instanceof TsBaseCharacter_1.default) {
-      e = e.CharacterActorComponent?.Entity?.GetComponent(40);
+      e = e.CharacterActorComponent?.Entity?.GetComponent(42);
       if (e) {
         let t = 0;
         if (!!this.DetachWhenSkillEnd || this.WhenSkillEnd !== 0) {
@@ -199,8 +183,8 @@ class AnimNotifyEffect extends UE.KuroEffectMakerAN {
   AttachEffectToSelfCentered(t, e) {
     var i;
     if (t instanceof TsBaseCharacter_1.default) {
-      if (!(i = t.CharacterActorComponent?.Entity?.GetComponent(40)) || !i.CurrentSkill) {
-        if ((i = t.CharacterActorComponent?.Entity?.GetComponent(312))?.Valid) {
+      if (!(i = t.CharacterActorComponent?.Entity?.GetComponent(42)) || !i.CurrentSkill) {
+        if ((i = t.CharacterActorComponent?.Entity?.GetComponent(314))?.Valid) {
           i.AddEffect(e);
         }
       }

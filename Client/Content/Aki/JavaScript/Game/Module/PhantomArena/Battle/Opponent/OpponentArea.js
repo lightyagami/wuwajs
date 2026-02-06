@@ -80,7 +80,7 @@ class OpponentArea {
     await Promise.all([this.Miu(), this.kiu(), this.Oiu(), this.qiu(), this.hau(), this.Chu()]);
   }
   async InitArea(a, e, i, t) {
-    await Promise.all([this.Ai1(a), this.Pi1(e), this.nFe(i), this.Iiu(), this.yFm(t)]);
+    await Promise.all([this.Ai1(a), this.Pi1(e), this.nFe(i), this.Iiu(), this.GNm(t)]);
   }
   RegisterViewProxy(a) {
     this.ViewProxy = a;
@@ -126,7 +126,7 @@ class OpponentArea {
     }
     await Promise.all(e);
   }
-  async yFm(a) {
+  async GNm(a) {
     if (!ModelManager_1.ModelManager.PhantomArenaBattleModel.IsOldBvb) {
       this.FiledArea = new PhantomArenaFieldArea_1.PhantomArenaFieldArea();
       this.FiledArea.RegisterViewProxy(this.ViewProxy);

@@ -32,6 +32,7 @@ const UiCameraTargetTypeNpc_1 = require("./UiCameraTargetType/UiCameraTargetType
 const UiCameraTargetTypePlayer_1 = require("./UiCameraTargetType/UiCameraTargetTypePlayer");
 const UiCameraTargetTypeSailDock_1 = require("./UiCameraTargetType/UiCameraTargetTypeSailDock");
 const UiCameraTargetTypeUiGlider_1 = require("./UiCameraTargetType/UiCameraTargetTypeUiGlider");
+const UiCameraTargetTypeUiSceneActor_1 = require("./UiCameraTargetType/UiCameraTargetTypeUiSceneActor");
 const UiCameraTargetTypeUiSceneHulu_1 = require("./UiCameraTargetType/UiCameraTargetTypeUiSceneHulu");
 const UiCameraTargetTypeUiSceneInfr_1 = require("./UiCameraTargetType/UiCameraTargetTypeUiSceneInfr");
 const UiCameraTargetTypeUiSceneRole_1 = require("./UiCameraTargetType/UiCameraTargetTypeUiSceneRole");
@@ -70,6 +71,7 @@ class UiCameraAnimationManager {
     this.Mxd.set(7, new UiCameraTargetTypeSailDock_1.UiCameraTargetTypeSailDock());
     this.Mxd.set(8, new UiCameraTargetTypeUiSceneHulu_1.UiCameraTargetTypeUiSceneHulu());
     this.Mxd.set(9, new UiCameraTargetTypeUiSceneInfr_1.UiCameraTargetTypeUiSceneInfr());
+    this.Mxd.set(10, new UiCameraTargetTypeUiSceneActor_1.UiCameraTargetTypeUiSceneActor());
   }
   static SetDynamicDisablePushCamera(a, e) {
     if (e) {
@@ -469,10 +471,10 @@ class UiCameraAnimationManager {
   static GetHandleDataStack() {
     return this.lPo;
   }
-  static GetTargetActor(a) {
+  static GetTargetActor(a, e) {
     a = this.Mxd.get(a);
     if (a) {
-      return a.GetTargetActor();
+      return a.GetTargetActor(e);
     }
   }
   static GetTargetBodyKey(a) {
@@ -481,10 +483,10 @@ class UiCameraAnimationManager {
       return a.GetTargetBodyKey();
     }
   }
-  static GetTargetActorSkeletalMesh(a, e = 0) {
+  static GetTargetActorSkeletalMesh(a, e) {
     a = this.Mxd.get(a);
     if (a) {
-      return a.GetTargetSkeletalMesh();
+      return a.GetTargetSkeletalMesh(e);
     }
   }
   static yPo() {

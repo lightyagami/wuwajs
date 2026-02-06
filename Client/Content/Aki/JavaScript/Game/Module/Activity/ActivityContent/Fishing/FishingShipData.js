@@ -65,7 +65,7 @@ class FishingShipData {
       if (t?.Valid && i?.IsStart && t.Id !== this.sDe?.Id) {
         this.gh_();
         this.sDe = t;
-        this.osn = i.GetComponent(181);
+        this.osn = i.GetComponent(183);
         var r = i.GetComponent(1)?.Owner;
         if (r?.IsValid()) {
           GlobalData_1.GlobalData.BpEventManager.当捕鱼船创建时.Broadcast(r);

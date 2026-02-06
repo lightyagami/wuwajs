@@ -39,7 +39,7 @@ function visionSkill1Function(n) {
         if (i === undefined) {
           return (0, InputFunctionCommon_1.createSkillCommand)(e, n);
         }
-        o = e.GetComponent(218);
+        o = e.GetComponent(220);
         if (o && o.Valid && o.IsSkillInCd(n)) {
           ControllerHolder_1.ControllerHolder.FishingController.ShowFishingSkillTips(i, 2);
         } else {
@@ -83,7 +83,7 @@ function createFishingBoatSprintCommand(n) {
   var e;
   var o = ModelManager_1.ModelManager.FishingModel.GetShipData().GetEntityHandle()?.Entity;
   if (o?.Valid) {
-    if ((e = o.GetComponent(301)) && e.CheckCanSprint()) {
+    if ((e = o.GetComponent(303)) && e.CheckCanSprint()) {
       return (0, InputFunctionCommon_1.createSkillCommand)(o, n);
     } else {
       return undefined;

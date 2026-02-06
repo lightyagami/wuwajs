@@ -49,7 +49,7 @@ class ActivitySubViewPreWarm extends ActivitySubViewBase_1.ActivitySubViewBase {
       this.brd();
       this.mGe();
       this.Dsd();
-      this.ijm();
+      this.dHm();
     };
     this.Dwa = () => {
       this.PKt();
@@ -159,19 +159,19 @@ class ActivitySubViewPreWarm extends ActivitySubViewBase_1.ActivitySubViewBase {
       });
     }
   }
-  get tjm() {
+  get cHm() {
     return this.ActivityBaseData?.IsUnLock() ?? false;
   }
-  ijm() {
+  dHm() {
     var i;
-    if (!!this.tjm && !(i = this.Dmm?.GetIsUnlock())?.IsUnlock) {
+    if (!!this.cHm && !(i = this.Dmm?.GetIsUnlock())?.IsUnlock) {
       LguiUtil_1.LguiUtil.TrySetLocalTextNew(this.GetText(16), "RestoreFrequency_Unlock_0", i?.CdTime);
     }
   }
   brd() {
     var i;
-    this.GetButton(22)?.RootUIComp.SetUIActive(!this.tjm);
-    if (this.tjm) {
+    this.GetButton(22)?.RootUIComp.SetUIActive(!this.cHm);
+    if (this.cHm) {
       this.kmm?.SetUIActive(false);
       switch (this.Dmm?.GetQuestState()) {
         case 0:
@@ -231,7 +231,7 @@ class ActivitySubViewPreWarm extends ActivitySubViewBase_1.ActivitySubViewBase {
   }
   OnTimer(i) {
     this.FNe();
-    this.ijm();
+    this.dHm();
   }
   FNe() {
     var [i, e] = this.GetTimeVisibleAndRemainTime();

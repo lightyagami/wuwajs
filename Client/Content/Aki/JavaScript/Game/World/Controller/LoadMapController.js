@@ -29,6 +29,7 @@ const Log_1 = require("../../../Core/Common/Log");
 const Protocol_1 = require("../../../Core/Define/Net/Protocol");
 const ControllerBase_1 = require("../../../Core/Framework/ControllerBase");
 const Net_1 = require("../../../Core/Net/Net");
+const LoadModeManager_1 = require("../../../Core/Performance/LoadMode/LoadModeManager");
 const ResourceSystem_1 = require("../../../Core/Resource/ResourceSystem");
 const Rotator_1 = require("../../../Core/Utils/Math/Rotator");
 const MathUtils_1 = require("../../../Core/Utils/MathUtils");
@@ -106,7 +107,7 @@ class LoadMapController extends ControllerBase_1.ControllerBase {
   }
   static xK1() {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BeforeLoadMap);
-    ResourceSystem_1.ResourceSystem.SetLoadModeInLoading(GlobalData_1.GlobalData.World, "LoadMapController.PreLoadLevelInstance");
+    LoadModeManager_1.LoadModeManager.SetLoadModeByReason("Loading", "PreLoadLevelInstance");
     UE.Actor.SetKuroNetMode(1);
     UiManager_1.UiManager.LockOpen();
     Net_1.Net.PauseAllNotifyCallback();
@@ -318,7 +319,7 @@ class LoadMapController extends ControllerBase_1.ControllerBase {
     ControllerHolder_1.ControllerHolder.LoadingController.SetProgress(ELoadingPhase_1.WORLD_DONE_END_PROGRESS);
   }
   static async LoadEndAsync(o) {
-    ResourceSystem_1.ResourceSystem.SetLoadModeInGame(GlobalData_1.GlobalData.World, "LoadMapController.PreLoadLevelInstance");
+    LoadModeManager_1.LoadModeManager.ResetLoadModeByReason("PreLoadLevelInstance");
     ControllerHolder_1.ControllerHolder.WorldController.ForceGarbageCollection(false);
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("GameMode", 72, "LoadMapController加载场景:关闭Loading界面(开始)");

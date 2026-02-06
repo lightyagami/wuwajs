@@ -16,24 +16,24 @@ const ConfigBase_1 = require("../../../Core/Framework/ConfigBase");
 class QuestTreeConfig extends ConfigBase_1.ConfigBase {
   constructor() {
     super(...arguments);
-    this.w7m = new Map();
+    this.w9m = new Map();
   }
   OnInit() {
     for (const r of this.GetAllCustomGotoConfig()) {
-      let e = this.w7m.get(r.QuestId);
+      let e = this.w9m.get(r.QuestId);
       if (!e) {
         e = new Map();
-        this.w7m.set(r.QuestId, e);
+        this.w9m.set(r.QuestId, e);
       }
       e.set(r.PreConditionType, r);
     }
     return true;
   }
   OnClear() {
-    for (var [, e] of this.w7m) {
+    for (var [, e] of this.w9m) {
       e.clear();
     }
-    this.w7m.clear();
+    this.w9m.clear();
     return true;
   }
   GetAllChapters() {
@@ -61,7 +61,7 @@ class QuestTreeConfig extends ConfigBase_1.ConfigBase {
     return CommonParamById_1.configCommonParamById.GetFloatConfig("QuestTreeScrollingScaleDelta") ?? 0.01;
   }
   GetCustomGotoConfigByQuestIdAndType(e, r) {
-    return this.w7m.get(e)?.get(r);
+    return this.w9m.get(e)?.get(r);
   }
   GetAllCustomGotoConfig() {
     return QuestTreeCustomJumpConfigAll_1.configQuestTreeCustomJumpConfigAll.GetConfigList() ?? [];

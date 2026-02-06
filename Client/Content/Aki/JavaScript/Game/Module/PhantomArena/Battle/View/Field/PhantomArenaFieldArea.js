@@ -18,7 +18,7 @@ class PhantomArenaFieldArea extends UiPanelBase_1.UiPanelBase {
     this.FieldItem = undefined;
     this.Sequence = undefined;
     this.FieldData = undefined;
-    this.I9m = (i, t) => {
+    this.nHm = (i, t) => {
       this.ViewProxy.FieldPointerEnter(i, t, false);
     };
     this.$xt = i => {
@@ -34,7 +34,7 @@ class PhantomArenaFieldArea extends UiPanelBase_1.UiPanelBase {
     this.FieldItem = new PhantomArenaFieldItem_1.PhantomArenaFieldItem();
     this.FieldItem.SetInteractClickCallback(this.ViewProxy.FieldInteractClick);
     this.FieldItem.SetFinishSkillInteractCallback(this.ViewProxy.FieldFinishSkillInteract);
-    this.FieldItem.SetPointerEnterCallback(this.I9m);
+    this.FieldItem.SetPointerEnterCallback(this.nHm);
     this.FieldItem.SetPointerExitCallback(this.ViewProxy.FieldPointerExit);
     await this.FieldItem.CreateByActorAsync(this.GetItem(0).GetOwner());
   }
@@ -45,7 +45,7 @@ class PhantomArenaFieldArea extends UiPanelBase_1.UiPanelBase {
   OnBeforeDestroy() {
     this.Sequence.Clear();
   }
-  u1f() {
+  muf() {
     var i;
     var t;
     if (this.FieldData.CardData) {
@@ -59,7 +59,7 @@ class PhantomArenaFieldArea extends UiPanelBase_1.UiPanelBase {
       }
     }
   }
-  async d1f() {
+  async guf() {
     var i;
     if (this.FieldData.CardData) {
       i = [];
@@ -78,7 +78,7 @@ class PhantomArenaFieldArea extends UiPanelBase_1.UiPanelBase {
       await Promise.all(i);
     }
   }
-  async c1f() {
+  async fuf() {
     var i = new CustomPromise_1.CustomPromise();
     if (this.FieldData.CardData?.IsNpcCard) {
       await this.Sequence.PlaySequenceAsync("ReleaseNPC", i, true);
@@ -88,18 +88,18 @@ class PhantomArenaFieldArea extends UiPanelBase_1.UiPanelBase {
   }
   async Refresh(i) {
     this.FieldData = i;
-    this.u1f();
-    await Promise.all([this.FieldItem.Refresh(i), this.d1f()]);
+    this.muf();
+    await Promise.all([this.FieldItem.Refresh(i), this.guf()]);
   }
   async RefreshSelf() {
-    this.u1f();
-    await Promise.all([this.FieldItem.RefreshSelf(), this.d1f()]);
+    this.muf();
+    await Promise.all([this.FieldItem.RefreshSelf(), this.guf()]);
   }
   async TriggerSkill() {
-    this.u1f();
+    this.muf();
     this.FieldItem.UseSkill();
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), this.FieldItem.GetFieldDesc());
-    await this.c1f();
+    await this.fuf();
   }
   ResetSkillTrigger() {
     this.FieldItem.ResetSkill();

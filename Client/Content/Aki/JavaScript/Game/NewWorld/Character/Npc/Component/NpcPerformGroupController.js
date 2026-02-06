@@ -32,7 +32,7 @@ class PerformActionChangeMaterial extends (exports.PerformAction = PerformAction
   }
   Register(t) {
     super.Register(t);
-    t = t.GetComponent(197);
+    t = t.GetComponent(199);
     this.NpcMatController = t.MaterialController;
   }
   UnRegister() {

@@ -11,48 +11,55 @@ const CommonTouchUiEditContainer_1 = require("./Common/CommonTouchUiEditContaine
 const CommonTouchUiEditDataFacade_1 = require("./Common/CommonTouchUiEditDataFacade");
 const CommonTouchUiEditItem_1 = require("./Common/CommonTouchUiEditItem");
 const TouchUiEditProxy_1 = require("./TouchUiEditProxy");
+const GameSettingsManager_1 = require("../../GameSettings/GameSettingsManager");
 class TouchUiEditController extends ControllerBase_1.ControllerBase {
   static OnInit() {
     this.G$u(CommonTouchUiEditDataFacade_1.CommonTouchUiEditDataFacade);
-    for (var [, o] of this.F$u) {
-      o.Init();
+    for (var [, e] of this.F$u) {
+      e.Init();
     }
     return true;
   }
   static OnClear() {
-    for (var [, o] of this.F$u) {
-      o.Clear();
+    for (var [, e] of this.F$u) {
+      e.Clear();
     }
     this.F$u.clear();
     return true;
   }
-  static G$u(o) {
-    var t = new o();
-    this.F$u.set(o.name, t);
+  static G$u(e) {
+    var t = new e();
+    this.F$u.set(e.name, t);
   }
-  static GetDataFacade(o) {
-    return this.F$u.get(o.name);
+  static GetDataFacade(e) {
+    return this.F$u.get(e.name);
   }
-  static OpenCommonTouchUiEditView(o) {
+  static OpenCommonTouchUiEditView(e) {
     var t = new CommonTouchUiEditContainer_1.CommonTouchUiEditContainer();
-    var e = this.GetDataFacade(CommonTouchUiEditDataFacade_1.CommonTouchUiEditDataFacade);
-    if (e) {
-      e.SetGroup(o);
-      o = new TouchUiEditProxy_1.TouchUiEditProxy(t, e, (o, t) => new CommonTouchUiEditItem_1.CommonTouchUiEditItem(o, t));
-      UiManager_1.UiManager.OpenView("CommonTouchUiEditView", o);
+    var i = this.GetDataFacade(CommonTouchUiEditDataFacade_1.CommonTouchUiEditDataFacade);
+    if (i) {
+      i.SetGroup(e);
+      e = new TouchUiEditProxy_1.TouchUiEditProxy(t, i, (e, t) => new CommonTouchUiEditItem_1.CommonTouchUiEditItem(e, t));
+      UiManager_1.UiManager.OpenView("CommonTouchUiEditView", e);
     }
   }
-  static CreateProxyForFunction(o) {
-    if (o === GameSettingsDefine_1.EFunction.MotorMobileButtonCustom) {
-      return this.s_f(2);
+  static CreateProxyForFunction(t) {
+    if (t === GameSettingsDefine_1.EFunction.MotorMobileButtonCustom) {
+      let e = 2;
+      t = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.MotorMobileButtonLayout);
+      if (t !== undefined && t === 0) {
+        e = 3;
+      }
+      t = this.pcf(e);
+      return t;
     }
   }
-  static s_f(o) {
+  static pcf(e) {
     var t = new CommonTouchUiEditContainer_1.CommonTouchUiEditContainer();
-    var e = this.GetDataFacade(CommonTouchUiEditDataFacade_1.CommonTouchUiEditDataFacade);
-    if (e) {
-      e.SetGroup(o);
-      return new TouchUiEditProxy_1.TouchUiEditProxy(t, e, (o, t) => new CommonTouchUiEditItem_1.CommonTouchUiEditItem(o, t));
+    var i = this.GetDataFacade(CommonTouchUiEditDataFacade_1.CommonTouchUiEditDataFacade);
+    if (i) {
+      i.SetGroup(e);
+      return new TouchUiEditProxy_1.TouchUiEditProxy(t, i, (e, t) => new CommonTouchUiEditItem_1.CommonTouchUiEditItem(e, t));
     }
   }
 }

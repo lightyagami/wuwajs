@@ -23,8 +23,8 @@ class LevelEventToggleAirWall extends LevelGeneralBase_1.LevelEventBase {
             return undefined;
           }
         }
-        if (r.GetComponent(212)?.Owner) {
-          if (l = r.GetComponent(172)) {
+        if (r.GetComponent(214)?.Owner) {
+          if (l = r.GetComponent(174)) {
             l.HandleAirWall(e, t);
           }
         } else if (Log_1.Log.CheckError()) {

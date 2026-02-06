@@ -22,6 +22,12 @@ class SlashBuffToItem {
   get Tips() {
     return this.tips();
   }
+  get StartSeason() {
+    return this.startseason();
+  }
+  get EndSeason() {
+    return this.endseason();
+  }
   get Unlimited() {
     return this.unlimited();
   }
@@ -71,15 +77,31 @@ class SlashBuffToItem {
       return 0;
     }
   }
-  unlimited() {
+  startseason() {
     var t = this.J7.__offset(this.z7, 12);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return -1;
+    }
+  }
+  endseason() {
+    var t = this.J7.__offset(this.z7, 14);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return -1;
+    }
+  }
+  unlimited() {
+    var t = this.J7.__offset(this.z7, 16);
     return !!t && !!this.J7.readInt8(this.z7 + t);
   }
   GetBuffidsAt(t) {
     return this.buffids(t);
   }
   buffids(t) {
-    var s = this.J7.__offset(this.z7, 14);
+    var s = this.J7.__offset(this.z7, 18);
     if (s) {
       return this.J7.readInt64(this.J7.__vector(this.z7 + s) + t * 8);
     } else {
@@ -87,7 +109,7 @@ class SlashBuffToItem {
     }
   }
   buffidsLength() {
-    var t = this.J7.__offset(this.z7, 14);
+    var t = this.J7.__offset(this.z7, 18);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -95,7 +117,7 @@ class SlashBuffToItem {
     }
   }
   bufftime() {
-    var t = this.J7.__offset(this.z7, 16);
+    var t = this.J7.__offset(this.z7, 20);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {

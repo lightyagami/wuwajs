@@ -37,14 +37,15 @@ class SceneInteractionManager {
           this.TDe.Remove();
           this.TDe = undefined;
         }
-        this.B$a = TickProcessSystem_1.TickProcessSystem.RegisterOnceTickProcess(5, true, () => {
-          this.B$a = 0;
-          this.TDe = TimerSystem_1.TimerSystem.Next(() => {
-            this.TDe = undefined;
-            this.Bkn();
-          });
-        });
+        this.B$a = TickProcessSystem_1.TickProcessSystem.RegisterOnceTickProcess(5, true, this.$5g);
       }
+    };
+    this.$5g = e => {
+      this.B$a = 0;
+      this.TDe = TimerSystem_1.TimerSystem.Next(() => {
+        this.TDe = undefined;
+        this.Bkn();
+      });
     };
   }
   static Get() {

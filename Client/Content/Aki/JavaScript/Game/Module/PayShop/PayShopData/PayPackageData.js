@@ -99,7 +99,7 @@ class PayPackageData {
     }
   }
   ShowInShop() {
-    return this.Type !== 2 && !this.ShowInSkinShop() && !this.ShowInFlySkinShop() && !this.ShowInMotorSkinShop() && this.Type !== 6;
+    return this.Type !== 2 && !this.ShowInSkinShop() && !this.ShowInFlySkinShop() && !this.ShowInMotorSkinShop() && this.Type !== 6 && this.Type !== 7;
   }
   ShowInSkinShop() {
     return this.vFi?.CheckIfRoleSkinGoods() ?? false;

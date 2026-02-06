@@ -36,7 +36,7 @@ class WeaponBreachView extends UiTabViewBase_1.UiTabViewBase {
     this.N2i = undefined;
     this.O2i = undefined;
     this.dmo = undefined;
-    this.pef = undefined;
+    this.Rif = undefined;
     this.AOo = () => {
       var e;
       if (this.ROo === 0 || this.ROo === 1) {
@@ -111,7 +111,7 @@ class WeaponBreachView extends UiTabViewBase_1.UiTabViewBase {
     });
   }
   Rgm() {
-    return this.pef ?? [];
+    return this.Rif ?? [];
   }
   OnBeforeShow() {
     this.DOo = this.ExtraParams;
@@ -151,11 +151,11 @@ class WeaponBreachView extends UiTabViewBase_1.UiTabViewBase {
       }
     }
     r = t.GoldConsume;
-    this.pef = n.map(e => ({
+    this.Rif = n.map(e => ({
       ...e
     }));
     if (r > 0) {
-      this.pef.push({
+      this.Rif.push({
         ItemId: ItemDefines_1.EItemId.Gold,
         IncId: 0,
         Count: r,

@@ -125,7 +125,6 @@ class SubLevelVisibleAssistant extends ControllerAssistantBase_1.ControllerAssis
         t.push(this.FCc(i));
       }
     }
-    t.length = 0;
     if (e.DisableLevels) {
       for (const s of e.DisableLevels) {
         t.push(this.NCc(s));
@@ -216,7 +215,7 @@ class SubLevelVisibleAssistant extends ControllerAssistantBase_1.ControllerAssis
       $$_: e,
       j$_: t
     });
-    Net_1.Net.Call(23994, e, e => {});
+    Net_1.Net.Call(26832, e, e => {});
   }
 }
 exports.SubLevelVisibleAssistant = SubLevelVisibleAssistant;

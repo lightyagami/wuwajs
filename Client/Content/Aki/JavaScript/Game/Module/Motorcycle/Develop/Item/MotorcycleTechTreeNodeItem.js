@@ -17,81 +17,85 @@ class MotorcycleTechTreeNodeItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.Node = undefined;
     this.GLl = undefined;
     this.Hea = undefined;
+    this.F5g = false;
     this.OnClickToggleBack = undefined;
     this.j1a = () => new MotorcycleTechTreeLevelItem_1.MotorcycleTechTreeLevelItem();
-    this.acf = () => {
+    this.omf = () => {
       this.OnClickToggleBack?.(this.Node, this.GetExtendToggle(0));
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UIItem], [2, UE.UISprite], [4, UE.UIItem], [3, UE.UITexture], [5, UE.UITexture], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIHorizontalLayout]];
-    this.BtnBindInfo = [[0, this.acf]];
+    this.BtnBindInfo = [[0, this.omf]];
   }
   OnStart() {
     this.GLl = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(8), this.j1a);
     this.Hea = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
   }
   OnBeforeShow() {
-    this.Hea.StopSequenceByKey("Start");
-    this.Hea.PlayLevelSequenceByName("Start");
+    if (this.Node !== undefined) {
+      this.Hea.StopSequenceByKey("Start");
+      this.Hea.PlayLevelSequenceByName("Start");
+    }
   }
-  RefreshNodeData(e, t = false) {
+  PlayNodeSequence() {
+    if (!this.F5g) {
+      this.Hea.StopSequenceByKey("Start");
+      this.Hea.PlayLevelSequenceByName("Start");
+      this.F5g = true;
+    }
+  }
+  RefreshNodeData(e) {
     if (e) {
       this.Node = e;
-      var r = ConfigManager_1.ConfigManager.MotorConfig.GetMotorTechConfig(e.NodeId);
-      var i = e.Status;
-      var s = i === -1;
-      var o = i === 1;
-      var i = i === 0;
-      var h = ModelManager_1.ModelManager.MotorcycleDevelopModel.IsPreNodeActivated(e);
-      var s = s || !h;
-      var a = this.GetItem(1);
-      var c = this.GetSprite(2);
-      var n = this.GetTexture(3);
-      var l = this.GetItem(6);
+      var t = ConfigManager_1.ConfigManager.MotorConfig.GetMotorTechConfig(e.NodeId);
+      var r = e.Status;
+      var i = r === -1;
+      var s = r === 1;
+      var r = r === 0;
+      var o = ModelManager_1.ModelManager.MotorcycleDevelopModel.IsPreNodeActivated(e);
+      var i = i || !o;
+      var h = this.GetItem(1);
+      var a = this.GetSprite(2);
+      var c = this.GetTexture(3);
+      var n = this.GetItem(6);
+      h.SetUIActive(false);
       a.SetUIActive(false);
-      c.SetUIActive(false);
-      l.SetUIActive(false);
-      this.GetItem(4).SetUIActive(s);
-      this.GetItem(7).SetUIActive(s);
-      var s = ModelManager_1.ModelManager.MotorcycleDevelopModel.CanUpgradeNode(e);
-      if (i) {
+      c.SetChangeColor(false, c.changeColor);
+      n.SetUIActive(false);
+      this.GetItem(4).SetUIActive(i);
+      this.GetItem(7).SetUIActive(i);
+      var i = ModelManager_1.ModelManager.MotorcycleDevelopModel.CanUpgradeNode(e);
+      if (r) {
+        h.SetUIActive(true);
+        a.SetUIActive(false);
+        n.SetUIActive(o && i);
+      } else if (s) {
+        r = e.NodeLevel >= t.TechLv.length;
+        h.SetUIActive(true);
         a.SetUIActive(true);
-        c.SetUIActive(false);
-        l.SetUIActive(h && s);
-      } else if (o) {
-        i = e.NodeLevel >= r.TechLv.length;
-        a.SetUIActive(true);
-        c.SetUIActive(true);
-        n.SetChangeColor(true, n.changeColor);
-        l.SetUIActive(!i && s);
+        c.SetChangeColor(true, c.changeColor);
+        n.SetUIActive(!r && i);
       }
-      var u = e.NodeLevel;
-      var d = [];
-      for (let e = 0; e < r.TechLv.length; e++) {
-        var M = {
+      var l = e.NodeLevel;
+      var u = [];
+      for (let e = 0; e < t.TechLv.length; e++) {
+        var d = {
           TargetLevel: e + 1,
-          CurLevel: u
+          CurLevel: l
         };
-        d.push(M);
+        u.push(d);
       }
-      this.SetTextureByPath(r.Icon, this.GetTexture(3));
-      this.SetTextureByPath(r.Icon, this.GetTexture(5));
-      this.GLl.RefreshByData(d);
-      if (t) {
-        this.Hea.StopSequenceByKey("Start");
-        this.Hea.PlayLevelSequenceByName("Start");
-      }
+      this.SetTextureByPath(t.Icon, this.GetTexture(3));
+      this.SetTextureByPath(t.Icon, this.GetTexture(5));
+      this.GLl.RefreshByData(u);
     }
   }
   Refresh(e, t, r) {
     this.RefreshNodeData(e);
   }
-  RefreshSelfNodeData(e) {
-    this.RefreshNodeData(this.Node, e);
-  }
   SelectNode() {
-    this.acf();
+    this.omf();
   }
 }
 exports.MotorcycleTechTreeNodeItem = MotorcycleTechTreeNodeItem;

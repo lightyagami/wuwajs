@@ -42,7 +42,7 @@ class CharacterModel extends ModelBase_1.ModelBase {
     this.buu = new Array();
     this.hRu = new Array();
     this.Ruu = new Array();
-    this.uBf = undefined;
+    this.tNf = undefined;
     this.AwakeQueue = new PriorityQueue_1.PriorityQueue((e, t) => {
       var i = t[0].Priority;
       var r = e[0].Priority;
@@ -111,16 +111,16 @@ class CharacterModel extends ModelBase_1.ModelBase {
     };
   }
   get ExtraEntitiesToEnterSelfCenteredState() {
-    return this.uBf;
+    return this.tNf;
   }
   AddExtraEntityToEnterSelfCenteredState(e) {
     if (e) {
-      this.uBf ||= new Set();
-      this.uBf.add(e);
+      this.tNf ||= new Set();
+      this.tNf.add(e);
     }
   }
   ClearExtraEntitiesToEnterSelfCenteredState() {
-    this.uBf?.clear();
+    this.tNf?.clear();
   }
   get EnabledSelfCentered() {
     return this.SEu !== 0 || this.ZLc !== 1;
@@ -230,7 +230,7 @@ class CharacterModel extends ModelBase_1.ModelBase {
     this.SwitchSelfCenteredMode(this.GetNextSelfCenteredMode());
   }
   ExitSkillSelfCenteredMode() {
-    var e = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint()?.GetComponent(40);
+    var e = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint()?.GetComponent(42);
     if (e?.Valid) {
       e.BeginSkillAsync(SELF_CENTERED_SKILL_ID);
     }
@@ -242,7 +242,7 @@ class CharacterModel extends ModelBase_1.ModelBase {
   }
   ExitAllSelfCenteredMode() {
     var e;
-    if (this.IsSelfCenteredModeEnabled(5) && (e = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint()?.GetComponent(40))?.Valid) {
+    if (this.IsSelfCenteredModeEnabled(5) && (e = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint()?.GetComponent(42))?.Valid) {
       e.BeginSkillAsync(SELF_CENTERED_SKILL_ID);
     }
     for (const t of this.Ruu) {
@@ -302,7 +302,7 @@ class CharacterModel extends ModelBase_1.ModelBase {
       } else {
         UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.MotionBlur.TargetFPS 1200");
       }
-    }), EffectSystem_1.EffectSystem.EnableNiagaraDownSampling(), RenderUtil_1.RenderUtil.UnsetNeedRenderKuroToonDepth()) : (AudioSystem_1.AudioSystem.SetState("level_2_5_time_slow", "enable"), AudioSystem_1.AudioSystem.PostEvent("enable_monster_effect_2_5_time_slow"), this.HTu(true), UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.MotionBlur.TargetFPS 1200"), EffectSystem_1.EffectSystem.DisableNiagaraDownSampling(), RenderUtil_1.RenderUtil.SetNeedRenderKuroToonDepth()), this.w2u(), this.cBf(), Log_1.Log.CheckInfo() && Log_1.Log.Info("Character", 57, "SelfCentered Change.", ["timeDilation", i], ["SelfCenteredMode", this.SEu]), t !== 5 && this.SEu === 5 ? this.yTu() : t === 5 && this.STu(), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSwitchSelfCenteredMode, this.SEu, i), (t = Protocol_1.Aki.Protocol.kpu.create()).A6n = i, t.o5n = i !== 1, t.n5n = this.lRu(e) * TimeUtil_1.TimeUtil.InverseMillisecond, Net_1.Net.Send(24043, t), 0);
+    }), EffectSystem_1.EffectSystem.EnableNiagaraDownSampling(), RenderUtil_1.RenderUtil.UnsetNeedRenderKuroToonDepth()) : (AudioSystem_1.AudioSystem.SetState("level_2_5_time_slow", "enable"), AudioSystem_1.AudioSystem.PostEvent("enable_monster_effect_2_5_time_slow"), this.HTu(true), UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.MotionBlur.TargetFPS 1200"), EffectSystem_1.EffectSystem.DisableNiagaraDownSampling(), RenderUtil_1.RenderUtil.SetNeedRenderKuroToonDepth()), this.w2u(), this.iNf(), Log_1.Log.CheckInfo() && Log_1.Log.Info("Character", 57, "SelfCentered Change.", ["timeDilation", i], ["SelfCenteredMode", this.SEu]), t !== 5 && this.SEu === 5 ? this.yTu() : t === 5 && this.STu(), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSwitchSelfCenteredMode, this.SEu, i), (t = Protocol_1.Aki.Protocol.kpu.create()).A6n = i, t.o5n = i !== 1, t.n5n = this.lRu(e) * TimeUtil_1.TimeUtil.InverseMillisecond, Net_1.Net.Send(17010, t), 0);
   }
   yTu() {
     FormationAttributeController_1.FormationAttributeController.AddThresholdListener(12, this.grn, 0, 0, "Strength.RoleStrengthComponent");
@@ -317,16 +317,16 @@ class CharacterModel extends ModelBase_1.ModelBase {
       EffectSystem_1.EffectSystem.SetAdditionTimeScaleEnable(e, t);
     }
   }
-  static dBf(e, t) {
-    if (t?.Valid && (t = t.Entity.GetComponent(312))?.Valid) {
+  static rNf(e, t) {
+    if (t?.Valid && (t = t.Entity.GetComponent(314))?.Valid) {
       t.SetSelfCenterTimeDilation(e);
     }
   }
   w2u() {
-    ModelManager_1.ModelManager.SceneTeamModel.GetTeamEntities(true).forEach(CharacterModel.dBf.bind(CharacterModel, this.InverseSelfCenteredTimeDilation));
+    ModelManager_1.ModelManager.SceneTeamModel.GetTeamEntities(true).forEach(CharacterModel.rNf.bind(CharacterModel, this.InverseSelfCenteredTimeDilation));
   }
-  cBf() {
-    this.uBf?.forEach(CharacterModel.dBf.bind(CharacterModel, this.InverseSelfCenteredTimeDilation));
+  iNf() {
+    this.tNf?.forEach(CharacterModel.rNf.bind(CharacterModel, this.InverseSelfCenteredTimeDilation));
   }
 }
 exports.CharacterModel = CharacterModel;

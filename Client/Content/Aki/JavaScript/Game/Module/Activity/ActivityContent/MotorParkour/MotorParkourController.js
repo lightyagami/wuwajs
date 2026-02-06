@@ -26,51 +26,51 @@ const MotorParkourActivitySubView_1 = require("./View/MotorParkourActivitySubVie
 class MotorParkourController extends ActivityControllerBase_1.ActivityControllerBase {
   constructor() {
     super(...arguments);
-    this.LMf = 0;
+    this.$Tf = 0;
     this.IsNeedShowMotorParkourMainView = false;
-    this.PMf = new BehaviorTreeUpdateDelegateProxy_1.BehaviorTreeUpdateDelegateProxy();
-    this.AMf = e => {
+    this.WTf = new BehaviorTreeUpdateDelegateProxy_1.BehaviorTreeUpdateDelegateProxy();
+    this.QTf = e => {
       for (const r of this.wja()) {
-        r.UpdateMotorParkourLevelList(e.hSf);
+        r.UpdateMotorParkourLevelList(e.MTf);
       }
     };
-    this.DMf = e => {
+    this.KTf = e => {
       if (this.CheckInMotorParkourDungeon()) {
-        this.UMf(e.i9u);
-        this.PMf.AddTreeVarUpdateDelegate(ICommon_1.EMotorParkourSystemVarType.CurLap, this.xMf);
+        this.XTf(e.i9u);
+        this.WTf.AddTreeVarUpdateDelegate(ICommon_1.EMotorParkourSystemVarType.CurLap, this.YTf);
       }
-      this.LMf = MathUtils_1.MathUtils.LongToNumber(e.QL_);
-      UiManager_1.UiManager.OpenView("MotorParkourTimerView", this.LMf);
+      this.$Tf = MathUtils_1.MathUtils.LongToNumber(e.QL_);
+      UiManager_1.UiManager.OpenView("MotorParkourTimerView", this.$Tf);
     };
-    this.xMf = (e, r) => {
+    this.YTf = (e, r) => {
       var t;
       var r = MathUtils_1.MathUtils.LongToNumber(r.oTs);
-      if (this.LMf !== 0) {
-        t = TimeUtil_1.TimeUtil.GetServerStopTimeStamp() - this.LMf;
+      if (this.$Tf !== 0) {
+        t = TimeUtil_1.TimeUtil.GetServerStopTimeStamp() - this.$Tf;
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.MotorParkourFinishLap, r, t);
       }
     };
-    this.BMf = e => {
+    this.zTf = e => {
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("MotorParkour", 71, "摩托跑酷结算通知", ["isWin", e.Mws], ["levelId", e.lSf], ["time", e.dSf]);
+        Log_1.Log.Info("MotorParkour", 71, "摩托跑酷结算通知", ["isWin", e.Mws], ["levelId", e.ETf], ["time", e.wTf]);
       }
-      this.LMf = 0;
+      this.$Tf = 0;
       if (UiManager_1.UiManager.IsViewOpen("MotorParkourTimerView")) {
         UiManager_1.UiManager.CloseView("MotorParkourTimerView");
       }
       var r;
       var t = this.CheckInMotorParkourDungeon();
       if (t) {
-        this.PMf.RemoveTreeVarUpdateDelegate(ICommon_1.EMotorParkourSystemVarType.CurLap, this.xMf);
+        this.WTf.RemoveTreeVarUpdateDelegate(ICommon_1.EMotorParkourSystemVarType.CurLap, this.YTf);
       }
       if (e.Mws) {
         if (t) {
-          t = ConfigManager_1.ConfigManager.MotorParkourConfig.GetMotorParkourLevelById(e.lSf).ActivityId;
-          r = (t = this.wPu(t)).UpdateMotorParkourLevelBestRecordTime(e.lSf, MathUtils_1.MathUtils.LongToNumber(e.dSf));
+          t = ConfigManager_1.ConfigManager.MotorParkourConfig.GetMotorParkourLevelById(e.ETf).ActivityId;
+          r = (t = this.wPu(t)).UpdateMotorParkourLevelBestRecordTime(e.ETf, MathUtils_1.MathUtils.LongToNumber(e.wTf));
           t = {
-            LevelData: t.GetLevelDataById(e.lSf),
+            LevelData: t.GetLevelDataById(e.ETf),
             IsNewRecord: r,
-            MyScoreTime: MathUtils_1.MathUtils.LongToNumber(e.dSf)
+            MyScoreTime: MathUtils_1.MathUtils.LongToNumber(e.wTf)
           };
           if (UiManager_1.UiManager.IsViewOpen("MotorParkourBattleView")) {
             UiManager_1.UiManager.CloseView("MotorParkourBattleView");
@@ -100,14 +100,14 @@ class MotorParkourController extends ActivityControllerBase_1.ActivityController
     };
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(22711, this.AMf);
-    Net_1.Net.Register(24157, this.BMf);
-    Net_1.Net.Register(21777, this.DMf);
+    Net_1.Net.Register(22872, this.QTf);
+    Net_1.Net.Register(24739, this.zTf);
+    Net_1.Net.Register(27650, this.KTf);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(22711);
-    Net_1.Net.UnRegister(24157);
-    Net_1.Net.UnRegister(21777);
+    Net_1.Net.UnRegister(22872);
+    Net_1.Net.UnRegister(24739);
+    Net_1.Net.UnRegister(27650);
   }
   OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDone, this.nye);
@@ -154,32 +154,32 @@ class MotorParkourController extends ActivityControllerBase_1.ActivityController
       return Promise.resolve(false);
     }
   }
-  UMf(e) {
+  XTf(e) {
     var r;
     var t;
     var o = new Map();
     for ([r, t] of Object.entries(e)) {
       o.set(r, t);
     }
-    this.PMf.SetBehaviorTreeVarRelation(o);
+    this.WTf.SetBehaviorTreeVarRelation(o);
   }
   RequestTaskReward(e) {
     var r = ConfigManager_1.ConfigManager.MotorParkourConfig.GetMotorParkourLevelById(e).ActivityId;
     var r = this.wPu(r).GetLevelDataById(e).GetCanReceiveRewardIndex();
-    var t = new Protocol_1.Aki.Protocol.iSf();
-    t.lSf = e;
-    t.cSf = r;
-    Net_1.Net.Call(26963, t, e => {
+    var t = new Protocol_1.Aki.Protocol.gTf();
+    t.ETf = e;
+    t.bTf = r;
+    Net_1.Net.Call(29747, t, e => {
       if (e && e.fMs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.fMs, 25716);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.fMs, 18184);
       }
     });
   }
   EnterMotorParkourDungeonDirectly(e) {
     e = {
-      lSf: e
+      ETf: e
     };
-    ModelManager_1.ModelManager.InstanceDungeonModel.InstanceEnterContentText.mSf = e;
+    ModelManager_1.ModelManager.InstanceDungeonModel.InstanceEnterContentText.RTf = e;
     InstanceDungeonController_1.InstanceDungeonController.PrewarTeamFightRequest(0, [], 0, 0);
   }
   CheckInMotorParkourDungeon() {

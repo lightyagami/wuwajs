@@ -49,12 +49,12 @@ class ErrorCodeController extends UiControllerBase_1.UiControllerBase {
     return true;
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(21869, this.$5t);
-    Net_1.Net.Register(15148, this.Y5t);
+    Net_1.Net.Register(17125, this.$5t);
+    Net_1.Net.Register(22888, this.Y5t);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(21869);
-    Net_1.Net.UnRegister(15148);
+    Net_1.Net.UnRegister(17125);
+    Net_1.Net.UnRegister(22888);
   }
   static OpenErrorCodeScrollingTipsView(r, o) {
     var e = ConfigManager_1.ConfigManager.ErrorCodeConfig.GetTextByErrorId(r);
@@ -84,13 +84,20 @@ class ErrorCodeController extends UiControllerBase_1.UiControllerBase {
           return;
         }
         if (n) {
-          r = e > 0 ? `[${e}][${o}]:${r}` : `[-][${o}]:${r}`;
+          r = ErrorCodeController.i7g(e, o, r);
         }
         this.OpenConfirmBoxByText(r);
       }
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("ErrorCode", 8, "服务器错误信息", ["error", r], ["errorParams", t]);
       }
+    }
+  }
+  static i7g(r, o, e) {
+    if (r > 0) {
+      return `[${r}][${o}]:${e}`;
+    } else {
+      return `[-][${o}]:${e}`;
     }
   }
   static LogOnlyErrorCode(r, o = undefined) {

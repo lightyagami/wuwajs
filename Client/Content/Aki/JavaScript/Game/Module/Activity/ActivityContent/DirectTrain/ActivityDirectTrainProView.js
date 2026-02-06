@@ -24,11 +24,11 @@ const TimeUtil_1 = require("../../../../Common/TimeUtil");
 class ActivityDirectTrainProView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
-    this.g9m = 0;
+    this.zjm = 0;
     this.h5e = [];
-    this.C9m = new Map();
-    this.p9m = undefined;
-    this.v9m = new Map();
+    this.Jjm = new Map();
+    this.Zjm = undefined;
+    this.eHm = new Map();
     this.i5e = undefined;
     this.s5e = undefined;
     this.lqe = undefined;
@@ -64,12 +64,12 @@ class ActivityDirectTrainProView extends UiViewBase_1.UiViewBase {
       this.s5e?.PlaySubViewSequence(t);
     };
   }
-  get y9m() {
-    var t = this.C9m.get(this.g9m) ?? 0;
+  get tHm() {
+    var t = this.Jjm.get(this.zjm) ?? 0;
     return this.h5e[t];
   }
   get t5e() {
-    return this.y9m.GetHelpId();
+    return this.tHm.GetHelpId();
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIScrollViewWithScrollbarComponent], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UITexture], [8, UE.UIButtonComponent], [9, UE.UIItem], [10, UE.UIItem], [11, UE.UIItem], [12, UE.UIItem], [13, UE.UIText], [14, UE.UIButtonComponent], [15, UE.UIButtonComponent]];
@@ -98,7 +98,7 @@ class ActivityDirectTrainProView extends UiViewBase_1.UiViewBase {
     this.lqe.SetTitleLocalText("Activity_Title");
     this.uxt();
     this.D5e();
-    var t = this.p9m?.ForceRemindIndex;
+    var t = this.Zjm?.ForceRemindIndex;
     this.Gel(this.h5e[t ?? 0]);
     this.GetButton(8).GetRootComponent().SetUIActive(false);
   }
@@ -114,35 +114,35 @@ class ActivityDirectTrainProView extends UiViewBase_1.UiViewBase {
     ControllerHolder_1.ControllerHolder.ActivityController?.DisableRefreshTimer();
   }
   OnAfterDestroy() {
-    this.v9m.clear();
+    this.eHm.clear();
   }
   Fq() {
-    this.p9m = this.OpenParam;
-    if (this.p9m === undefined) {
+    this.Zjm = this.OpenParam;
+    if (this.Zjm === undefined) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("ActivityDirectTrain", 95, "[剧情直通车]InitData()->", ["直通车数据异常", typeof this.OpenParam]);
       }
     } else {
-      this.C9m.clear();
-      for (const t of this.p9m.ActivityDataList) {
-        this.C9m.set(t.Id, this.h5e.length);
+      this.Jjm.clear();
+      for (const t of this.Zjm.ActivityDataList) {
+        this.Jjm.set(t.Id, this.h5e.length);
         this.h5e.push(t);
       }
     }
   }
   async bNe(t) {
-    this.i5e.GetScrollItemByKey(this.g9m)?.SetToggleState(false, false);
-    this.g9m = t;
+    this.i5e.GetScrollItemByKey(this.zjm)?.SetToggleState(false, false);
+    this.zjm = t;
     this.i5e.GetScrollItemByKey(t)?.SetToggleState(true, true);
     this.D5e();
-    await this.R5e(this.y9m, true);
+    await this.R5e(this.tHm, true);
   }
   I5e() {
     var t = this.GetScrollViewWithScrollbar(1);
     this.i5e = new GenericScrollViewNew_1.GenericScrollViewNew(t, this.C5e);
   }
   async Gel(t) {
-    if (t && t.Id !== this.g9m) {
+    if (t && t.Id !== this.zjm) {
       await this.bNe(t.Id);
     }
   }
@@ -156,10 +156,10 @@ class ActivityDirectTrainProView extends UiViewBase_1.UiViewBase {
     await Promise.all(t);
   }
   D5e() {
-    var t = this.y9m.GetTitle();
+    var t = this.tHm.GetTitle();
     this.lqe.SetHelpBtnActive(this.t5e !== 0);
     this.lqe.SetTitle(t.replace(/<.*?>/g, ""));
-    this.bel.SetActive(this.y9m.LocalConfig.ShowPermanentTips);
+    this.bel.SetActive(this.tHm.LocalConfig.ShowPermanentTips);
     this.JB1();
   }
   async WNe(t) {
@@ -172,23 +172,23 @@ class ActivityDirectTrainProView extends UiViewBase_1.UiViewBase {
     });
     await i.Promise;
   }
-  async S9m(t) {
-    var i = this.v9m.get(t.Id);
+  async iHm(t) {
+    var i = this.eHm.get(t.Id);
     if (i) {
       return i;
     }
-    var i = ActivityManager_1.ActivityManager.GetActivityController(this.y9m.Type);
+    var i = ActivityManager_1.ActivityManager.GetActivityController(this.tHm.Type);
     var e = this.GetItem(5);
-    var s = i.GetActivityResource(this.y9m);
-    const r = i.CreateSubPageComponent(this.y9m);
-    r.SetData(this.y9m);
+    var s = i.GetActivityResource(this.tHm);
+    const r = i.CreateSubPageComponent(this.tHm);
+    r.SetData(this.tHm);
     i = r.CreateByPathAsync(s, e).then(() => r);
-    this.v9m.set(t.Id, i);
+    this.eHm.set(t.Id, i);
     return i;
   }
   async R5e(t, i) {
-    var e = await this.S9m(this.y9m);
-    if (this.g9m === t.Id && (await this.WNe(this.y9m), this.s5e && this.s5e.SetActive(false), this.s5e = e, await this.s5e.BeforeShowSelfAsync(), this.s5e.RefreshView(), this.GetTexture(7).SetUIActive(true), this.s5e.SetActive(true), i)) {
+    var e = await this.iHm(this.tHm);
+    if (this.zjm === t.Id && (await this.WNe(this.tHm), this.s5e && this.s5e.SetActive(false), this.s5e = e, await this.s5e.BeforeShowSelfAsync(), this.s5e.RefreshView(), this.GetTexture(7).SetUIActive(true), this.s5e.SetActive(true), i)) {
       if (this.UiViewSequence.HasSequenceNameInPlaying("Switch")) {
         this.UiViewSequence.ReplaySequence("Switch");
       } else {
@@ -197,7 +197,7 @@ class ActivityDirectTrainProView extends UiViewBase_1.UiViewBase {
     }
   }
   JB1() {
-    var t = this.y9m.LocalConfig.TabResource;
+    var t = this.tHm.LocalConfig.TabResource;
     if (t) {
       this.lqe.SetTitleIcon(t);
     }

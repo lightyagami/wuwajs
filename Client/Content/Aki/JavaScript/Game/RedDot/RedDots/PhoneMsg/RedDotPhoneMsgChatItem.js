@@ -12,7 +12,7 @@ class RedDotPhoneMsgChatItem extends RedDotBase_1.RedDotBase {
     return true;
   }
   OnGetEvents() {
-    return [EventDefine_1.EEventName.OnPhoneMsgSetAsRead, EventDefine_1.EEventName.OnPhoneMsgAdd];
+    return [EventDefine_1.EEventName.OnPhoneMsgSetAsRead, EventDefine_1.EEventName.OnPhoneMsgPanelOpen];
   }
   OnCheck(e) {
     return !ModelManager_1.ModelManager.PhoneMsgModel.IsShortMsgRead(e);

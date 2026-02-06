@@ -88,7 +88,7 @@ let VehicleAnimationComponent = VehicleAnimationComponent_1 = class VehicleAnima
     this.TmpDirect2 = Vector_1.Vector.Create();
     this.TmpDirect3 = Vector_1.Vector.Create();
     this.ri_ = 0;
-    this.Dof = (t, i) => {
+    this.zsf = (t, i) => {
       if (t === this.Entity.Id && i) {
         this.StartForceDisableAnimOptimization(1);
         this.ri_ = 2;
@@ -337,7 +337,7 @@ let VehicleAnimationComponent = VehicleAnimationComponent_1 = class VehicleAnima
     }
   }
   RefreshAnimOptimization() {
-    var i = this.Entity.GetComponent(184)?.IsInFighting ?? false;
+    var i = this.Entity.GetComponent(186)?.IsInFighting ?? false;
     var s = this.ForceDisableAnimOptimizationSet.size > 0;
     var e = s || i;
     var h = this.Actor.K2_GetComponentsByClass(UE.SkeletalMeshComponent.StaticClass());
@@ -621,11 +621,11 @@ let VehicleAnimationComponent = VehicleAnimationComponent_1 = class VehicleAnima
   }
   AddEvents() {
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.RequestClearMeshRotationBuffer, this.OnRequestClearMeshRotationBuffer);
-    EventSystem_1.EventSystem.AddWithTarget(this.Handle, EventDefine_1.EEventName.OnPreSetActorHidden, this.Dof);
+    EventSystem_1.EventSystem.AddWithTarget(this.Handle, EventDefine_1.EEventName.OnPreSetActorHidden, this.zsf);
   }
   RemoveEvents() {
     EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.RequestClearMeshRotationBuffer, this.OnRequestClearMeshRotationBuffer);
-    EventSystem_1.EventSystem.RemoveWithTarget(this.Handle, EventDefine_1.EEventName.OnPreSetActorHidden, this.Dof);
+    EventSystem_1.EventSystem.RemoveWithTarget(this.Handle, EventDefine_1.EEventName.OnPreSetActorHidden, this.zsf);
   }
   ConsumeRootMotion() {
     this.Mesh?.GetAnimInstance()?.ConsumeExtractedRootMotion(1);

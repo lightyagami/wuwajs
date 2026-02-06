@@ -27,9 +27,9 @@ const CD_BUFF_ID = 3199;
 class HeadStateWeaknessItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.FYf = 0;
+    this._fg = 0;
     this.kG = 1;
-    this.mLm = undefined;
+    this.OLm = undefined;
     this.ac = 0;
     this.E0 = 0;
     this.$te = undefined;
@@ -41,24 +41,24 @@ class HeadStateWeaknessItem extends UiPanelBase_1.UiPanelBase {
     this.yst = -1;
     this.zpm = 0;
     this.BY = 0;
-    this.RRf = 0;
+    this.Gxf = 0;
     this.Rjt = false;
     this.DP_ = false;
     this.eEc = false;
-    this.LRf = false;
+    this.Fxf = false;
     this.bst = undefined;
     this.p2a = 0;
-    this.yLm = false;
-    this.vFf = false;
-    this.yFf = false;
+    this.HLm = false;
+    this.Q7f = false;
+    this.K7f = false;
     this.Lti = false;
     this.ldt = [];
-    this.Xzf = false;
-    this.Yzf = undefined;
+    this.Hgg = false;
+    this.jgg = undefined;
     this.zHu = (t, i) => {
       if (t === 4) {
-        this.yFf = i;
-        this.MLm();
+        this.K7f = i;
+        this.WLm();
       }
     };
     this._yo = (t, i, s) => {
@@ -68,44 +68,44 @@ class HeadStateWeaknessItem extends UiPanelBase_1.UiPanelBase {
         this.BY = i;
       }
       this.Gdl();
-      this.MLm();
+      this.WLm();
     };
     this.YAl = (t, i) => {
       this.Rjt = i;
-      this.MLm();
+      this.WLm();
     };
     this.lNu = (t, i) => {
       if (this.DP_ !== i) {
         this.DP_ = i;
       }
-      this.MLm();
+      this.WLm();
     };
-    this.ELm = (t, i) => {
-      if (this.yLm !== i && (this.yLm = i, this.MLm(), this.yLm)) {
+    this.QLm = (t, i) => {
+      if (this.HLm !== i && (this.HLm = i, this.WLm(), this.HLm)) {
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BattleUiShowWeaknessBreakEffect, true);
       }
     };
-    this.PRf = (t, i) => {
+    this.Nxf = (t, i) => {
       this.eEc = i;
       this.GetItem(8).SetUIActive(this.eEc);
-      this.ARf();
+      this.Vxf();
       if (i) {
-        this.zzf();
+        this.$gg();
       }
-      this.MLm();
+      this.WLm();
     };
-    this.DRf = (t, i) => {
-      this.LRf = i;
-      this.MLm();
+    this.Hxf = (t, i) => {
+      this.Fxf = i;
+      this.WLm();
     };
-    this.SFf = (t, i) => {
-      this.yFf = i;
-      this.MLm();
+    this.X7f = (t, i) => {
+      this.K7f = i;
+      this.WLm();
     };
-    this.Jzf = () => {
-      this.Xzf = false;
-      this.Yzf = undefined;
-      this.mLm?.();
+    this.Wgg = () => {
+      this.Hgg = false;
+      this.jgg = undefined;
+      this.OLm?.();
     };
   }
   async InitializeAsync(t, i = 1) {
@@ -139,7 +139,7 @@ class HeadStateWeaknessItem extends UiPanelBase_1.UiPanelBase {
     this.GetItem(8).SetUIActive(false);
     this.a2d = this.GetSprite(9);
     this.a2d.SetFillAmount(0);
-    this.yFf = ModelManager_1.ModelManager.BattleUiModel.GetRoleSpecialState(4);
+    this.K7f = ModelManager_1.ModelManager.BattleUiModel.GetRoleSpecialState(4);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiRoleSpecialStateChanged, this.zHu);
   }
   OnAfterShow() {
@@ -153,61 +153,61 @@ class HeadStateWeaknessItem extends UiPanelBase_1.UiPanelBase {
   }
   OnBeforeDestroy() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiRoleSpecialStateChanged, this.zHu);
-    this.Zzf();
+    this.Qgg();
     this.Refresh(undefined);
     super.OnBeforeDestroy();
   }
   Refresh(t) {
     var i = t?.Id ?? 0;
     if (i !== this.E0) {
-      this.bLm();
+      this.YLm();
       this.E0 = i;
-      this.$te = t?.CheckGetComponent(182);
-      this.Xte = t?.CheckGetComponent(215);
-      this.m1t = t?.CheckGetComponent(220);
+      this.$te = t?.CheckGetComponent(184);
+      this.Xte = t?.CheckGetComponent(217);
+      this.m1t = t?.CheckGetComponent(222);
       i = t?.CheckGetComponent(0)?.GetBaseInfo()?.Category.MonsterMatchType ?? 3;
-      this.FYf = HeadStateWeaknessItem.NYf.get(i) ?? CD_BUFF_ID;
-      this.Xzf = false;
+      this._fg = HeadStateWeaknessItem.ufg.get(i) ?? CD_BUFF_ID;
+      this.Hgg = false;
     }
     if (t && this.$te && this.Xte) {
-      this.RLm();
+      this.zLm();
       this.Rjt = this.Xte.HasTag(lockTag);
       this.DP_ = this.Xte.HasTag(fullTag);
       this.eEc = this.Xte.HasTag(cdTag);
-      this.LRf = this.Xte.HasTag(deBuffTag);
-      this.vFf = this.Xte.HasTag(forbidTag);
+      this.Fxf = this.Xte.HasTag(deBuffTag);
+      this.Q7f = this.Xte.HasTag(forbidTag);
       this.zpm = this.$te.GetCurrentValue(CharacterAttributeTypes_1.EAttributeId.Proto_WeaknessBuildUp);
       this.BY = this.$te.GetCurrentValue(CharacterAttributeTypes_1.EAttributeId.Proto_WeaknessBuildUpMax);
       this.Gdl();
-      this.MLm();
+      this.WLm();
       this.GetItem(8).SetUIActive(this.eEc);
-      this.ARf();
+      this.Vxf();
     } else {
       this.Rjt = false;
       this.DP_ = false;
       this.eEc = false;
-      this.LRf = false;
-      this.vFf = false;
+      this.Fxf = false;
+      this.Q7f = false;
       this.zpm = 0;
       this.BY = 0;
-      this.mLm = undefined;
-      this.MLm();
+      this.OLm = undefined;
+      this.WLm();
     }
     this.Lri();
   }
-  RLm() {
+  zLm() {
     if (this.$te) {
       this.$te.AddListener(CharacterAttributeTypes_1.EAttributeId.Proto_WeaknessBuildUp, this._yo);
       this.$te.AddListener(CharacterAttributeTypes_1.EAttributeId.Proto_WeaknessBuildUpMax, this._yo);
     }
     this.mdt(lockTag, this.YAl);
     this.mdt(fullTag, this.lNu);
-    this.mdt(breakTag, this.ELm);
-    this.mdt(cdTag, this.PRf);
-    this.mdt(deBuffTag, this.DRf);
-    this.mdt(forbidTag, this.SFf);
+    this.mdt(breakTag, this.QLm);
+    this.mdt(cdTag, this.Nxf);
+    this.mdt(deBuffTag, this.Hxf);
+    this.mdt(forbidTag, this.X7f);
   }
-  bLm() {
+  YLm() {
     if (this.$te) {
       this.$te.RemoveListener(CharacterAttributeTypes_1.EAttributeId.Proto_WeaknessBuildUp, this._yo);
       this.$te.RemoveListener(CharacterAttributeTypes_1.EAttributeId.Proto_WeaknessBuildUpMax, this._yo);
@@ -230,19 +230,19 @@ class HeadStateWeaknessItem extends UiPanelBase_1.UiPanelBase {
       this.Pst.SetFillAmount(t);
     }
   }
-  MLm() {
+  WLm() {
     let t = 0;
     var i;
     var s;
-    if (this.vFf || this.yFf) {
+    if (this.Q7f || this.K7f) {
       t = 0;
     } else if (this.Rjt) {
       t = 5;
-    } else if (this.yLm) {
+    } else if (this.HLm) {
       t = this.DP_ ? 4 : 3;
     } else if (this.DP_) {
       t = 2;
-    } else if (this.LRf) {
+    } else if (this.Fxf) {
       t = 6;
     } else if (this.BY > 0 && this.zpm > 0 || this.eEc) {
       t = 1;
@@ -254,7 +254,7 @@ class HeadStateWeaknessItem extends UiPanelBase_1.UiPanelBase {
         Log_1.Log.Debug("Battle", 17, "血条弱点状态改变", ["EntityId", this.E0], ["state", t]);
       }
       this.Lri();
-      HeadStateWeaknessItem.VYf.Start();
+      HeadStateWeaknessItem.cfg.Start();
       if (this.ac === 5) {
         this.SPe.StopSequenceByKey("Unlock");
         this.SPe.PlayLevelSequenceByName("Lock");
@@ -274,32 +274,32 @@ class HeadStateWeaknessItem extends UiPanelBase_1.UiPanelBase {
         this.SPe.PlayLevelSequenceByName("Full");
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BattleUiShowWeaknessBreakEffect, false);
       }
-      HeadStateWeaknessItem.VYf.Stop();
+      HeadStateWeaknessItem.cfg.Stop();
       if (this.Lti) {
         this.Kbe();
       }
-      this.mLm?.();
+      this.OLm?.();
     }
   }
   IsFullState(t = true) {
     return this.ac === 2 || !!t && this.ac === 4;
   }
   IsInBreakAnim() {
-    return this.Xzf;
+    return this.Hgg;
   }
   SetStateChangeCallback(t) {
-    this.mLm = t;
+    this.OLm = t;
   }
-  ARf() {
+  Vxf() {
     if (this.eEc) {
       let t = 0;
       if (!this.bst || !this.m1t?.GetBuffByHandle(this.p2a)) {
-        this.bst = this.m1t?.GetBuffById(this.FYf);
+        this.bst = this.m1t?.GetBuffById(this._fg);
         this.p2a = this.bst?.Handle ?? 0;
       }
       var i = (t = this.bst ? this.bst.GetRemainDuration() / this.bst.Duration : t) === 1 || t === 0 ? 0 : 0.01;
-      if (Math.abs(t - this.RRf) > i) {
-        this.RRf = t;
+      if (Math.abs(t - this.Gxf) > i) {
+        this.Gxf = t;
         this.a2d.SetFillAmount(t);
       }
     }
@@ -316,7 +316,7 @@ class HeadStateWeaknessItem extends UiPanelBase_1.UiPanelBase {
     }
   }
   Tick(t) {
-    this.ARf();
+    this.Vxf();
   }
   Kbe() {
     var t = this.ac === 3 || this.ac === 6 || this.ac === 4;
@@ -325,23 +325,23 @@ class HeadStateWeaknessItem extends UiPanelBase_1.UiPanelBase {
     this.GetItem(4).SetUIActive(t);
     this.GetItem(5).SetUIActive(this.ac === 5);
   }
-  zzf() {
-    this.Xzf = true;
-    if (this.Yzf) {
-      TimerSystem_1.TimerSystem.Remove(this.Yzf);
-      this.Yzf = undefined;
+  $gg() {
+    this.Hgg = true;
+    if (this.jgg) {
+      TimerSystem_1.TimerSystem.Remove(this.jgg);
+      this.jgg = undefined;
     }
-    this.Yzf = TimerSystem_1.TimerSystem.Delay(this.Jzf, 1000);
-    this.mLm?.();
+    this.jgg = TimerSystem_1.TimerSystem.Delay(this.Wgg, 1000);
+    this.OLm?.();
   }
-  Zzf() {
-    if (this.Yzf) {
-      this.Xzf = false;
-      TimerSystem_1.TimerSystem.Remove(this.Yzf);
-      this.Yzf = undefined;
+  Qgg() {
+    if (this.jgg) {
+      this.Hgg = false;
+      TimerSystem_1.TimerSystem.Remove(this.jgg);
+      this.jgg = undefined;
     }
   }
 }
 (exports.HeadStateWeaknessItem = HeadStateWeaknessItem).cW = Stats_1.Stat.Create("HeadStateWeaknessItemStart");
-HeadStateWeaknessItem.VYf = Stats_1.Stat.Create("HeadStateWeaknessItemRefresh");
-HeadStateWeaknessItem.NYf = new Map([[0, 3196], [1, 3197], [2, 3198], [3, 3199]]); //# sourceMappingURL=HeadStateWeaknessItem.js.map
+HeadStateWeaknessItem.cfg = Stats_1.Stat.Create("HeadStateWeaknessItemRefresh");
+HeadStateWeaknessItem.ufg = new Map([[0, 3196], [1, 3197], [2, 3198], [3, 3199]]); //# sourceMappingURL=HeadStateWeaknessItem.js.map

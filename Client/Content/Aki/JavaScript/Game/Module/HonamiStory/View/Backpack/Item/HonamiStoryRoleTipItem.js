@@ -42,8 +42,9 @@ class HonamiStoryRoleTipItem extends UiPanelBase_1.UiPanelBase {
       }
       this.ShowTips(false);
     };
-    this.JNm = () => {
+    this.C4m = () => {
       this.s8l();
+      this.o0m();
     };
   }
   OnRegisterComponent() {
@@ -67,10 +68,10 @@ class HonamiStoryRoleTipItem extends UiPanelBase_1.UiPanelBase {
     this.LevelSequencePlayer = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
     e = ModelManager_1.ModelManager.HonamiStoryModel.GetBackpackLogic().GetTipsOpen();
     this.GetExtendToggle(15)?.RootUIComp.SetUIActive(e);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnHonamiStorySkillDescModeChange, this.JNm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnHonamiStorySkillDescModeChange, this.C4m);
   }
   OnBeforeDestroy() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnHonamiStorySkillDescModeChange, this.JNm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnHonamiStorySkillDescModeChange, this.C4m);
   }
   Refresh(e) {
     this.GetScrollViewWithScrollbar(16)?.ScrollToTop(undefined, this.GetItem(0), true);
@@ -120,24 +121,31 @@ class HonamiStoryRoleTipItem extends UiPanelBase_1.UiPanelBase {
     if (t) {
       var i = new Map();
       var r = new Map();
-      for (const n of e) {
-        if (n) {
-          for (const a of n.GetBuffTempIdList()) {
-            if (!a.RoleId || !!HonamiStoryUtil_1.HonamiStoryUtil.CheckRolePowerValid(a.RoleId, this.$Yd.GetParentRoleId())) {
-              i.set(a.BuffId, a);
+      var s = new Map();
+      for (const h of e) {
+        if (h) {
+          for (const m of h.GetBuffTempIdList()) {
+            if (!m.RoleId || !!HonamiStoryUtil_1.HonamiStoryUtil.CheckRolePowerValid(m.RoleId, this.$Yd.GetParentRoleId())) {
+              i.set(m.BuffId, m);
             }
           }
-          for (const h of n.GetMainPropList()) {
-            var s;
-            var o = ConfigManager_1.ConfigManager.HonamiStoryConfig.GetHonamiStoryProp(h);
-            if (o) {
-              if (r.has(h)) {
-                (s = r.get(h)).PropertyNumber ??= 0;
-                s.PropertyNumber += o.StandardProperty;
+          for (const u of h.GetMainPropList()) {
+            var o;
+            var n;
+            var a = ConfigManager_1.ConfigManager.HonamiStoryConfig.GetHonamiStoryProp(u);
+            if (a) {
+              o = a.PropId;
+              if (!s.has(o)) {
+                s.set(o, u);
+              }
+              o = s.get(o);
+              if (r.has(o)) {
+                (n = r.get(o)).PropertyNumber ??= 0;
+                n.PropertyNumber += a.StandardProperty;
               } else {
-                r.set(h, {
-                  PropId: h,
-                  PropertyNumber: o.StandardProperty
+                r.set(o, {
+                  PropId: o,
+                  PropertyNumber: a.StandardProperty
                 });
               }
             }

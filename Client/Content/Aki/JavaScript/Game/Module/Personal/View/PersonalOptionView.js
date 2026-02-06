@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.PersonalOptionView = undefined;
 const UE = require("ue");
 const BackgroundCardById_1 = require("../../../../Core/Define/ConfigQuery/BackgroundCardById");
+const PersonalTipsById_1 = require("../../../../Core/Define/ConfigQuery/PersonalTipsById");
 const Platform_1 = require("../../../../Launcher/Platform/Platform");
 const PlatformSdkManagerNew_1 = require("../../../../Launcher/Platform/PlatformSdk/PlatformSdkManagerNew");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
@@ -145,6 +146,9 @@ class PersonalOptionView extends UiViewBase_1.UiViewBase {
     }
     e.push(8);
     e.push(9);
+    if (ModelManager_1.ModelManager.FunctionModel.IsOpen(10140)) {
+      e.push(16);
+    }
     e.push(10);
     if (!Platform_1.Platform.IsPs5Platform()) {
       e.push(11);
@@ -154,6 +158,11 @@ class PersonalOptionView extends UiViewBase_1.UiViewBase {
     }
     this.H8t ||= new GenericLayoutNew_1.GenericLayoutNew(this.GetGridLayout(9), this.J8t);
     this.H8t.ClearChildren();
+    e.sort((e, t) => {
+      e = PersonalTipsById_1.configPersonalTipsById.GetConfig(e);
+      t = PersonalTipsById_1.configPersonalTipsById.GetConfig(t);
+      return e.Sort - t.Sort;
+    });
     this.H8t.RebuildLayoutByDataNew(e);
   }
   OnBeforeDestroy() {

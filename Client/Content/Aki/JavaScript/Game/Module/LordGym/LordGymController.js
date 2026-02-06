@@ -41,12 +41,12 @@ class LordGymController extends ControllerBase_1.ControllerBase {
     return true;
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(25080, this.PSi);
-    Net_1.Net.Register(16399, this.xSi);
+    Net_1.Net.Register(18639, this.PSi);
+    Net_1.Net.Register(28422, this.xSi);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(25080);
-    Net_1.Net.UnRegister(16399);
+    Net_1.Net.UnRegister(18639);
+    Net_1.Net.UnRegister(28422);
   }
   static OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDone, this.$5e);
@@ -58,7 +58,7 @@ class LordGymController extends ControllerBase_1.ControllerBase {
   }
   static async LordGymInfoRequest() {
     var e = Protocol_1.Aki.Protocol.Ass.create({});
-    var e = await Net_1.Net.CallAsync(22969, e);
+    var e = await Net_1.Net.CallAsync(28579, e);
     if (e.jxs?.length > 0) {
       ModelManager_1.ModelManager.LordGymModel.UnLockLordGym = e.jxs;
       ModelManager_1.ModelManager.LordGymModel.UnLockLordGym.sort((e, r) => e - r);
@@ -76,8 +76,8 @@ class LordGymController extends ControllerBase_1.ControllerBase {
   static async LordGymBeginRequest(e) {
     var r = Protocol_1.Aki.Protocol.wss.create();
     r.y7n = e;
-    var r = await Net_1.Net.CallAsync(20019, r);
-    return !!r && (r.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs ? (ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(r.Q4n, 20019), false) : (ModelManager_1.ModelManager.LordGymModel.CurrentChallengeLordGymId = e, ModelManager_1.ModelManager.LordGymModel.GetLordGymHasRead(e) || LordGymController.ReadLordGym(e), true));
+    var r = await Net_1.Net.CallAsync(28752, r);
+    return !!r && (r.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs ? (ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(r.Q4n, 28752), false) : (ModelManager_1.ModelManager.LordGymModel.CurrentChallengeLordGymId = e, ModelManager_1.ModelManager.LordGymModel.GetLordGymHasRead(e) || LordGymController.ReadLordGym(e), true));
   }
   static async OpenLordGymEntrance(e, r = 0) {
     await this.LordGymInfoRequest();
@@ -100,7 +100,7 @@ class LordGymController extends ControllerBase_1.ControllerBase {
     ModelManager_1.ModelManager.LordGymModel.ReadLordGym(e);
     var r = Protocol_1.Aki.Protocol.bss.create();
     r.y7n = e;
-    await Net_1.Net.CallAsync(18645, r);
+    await Net_1.Net.CallAsync(19961, r);
   }
   static async EnterLordGymDungeon() {
     var e;
@@ -109,7 +109,7 @@ class LordGymController extends ControllerBase_1.ControllerBase {
   }
   static IsInEntranceEntity() {
     var e = ModelManager_1.ModelManager.LordGymModel.EntranceEntityId;
-    return !e || !(e = ModelManager_1.ModelManager.CreatureModel.GetEntityById(e))?.IsInit || (e.Entity?.GetComponent(128)?.IsInInteractRange ?? false);
+    return !e || !(e = ModelManager_1.ModelManager.CreatureModel.GetEntityById(e))?.IsInit || (e.Entity?.GetComponent(130)?.IsInInteractRange ?? false);
   }
   static CreateLordModelByEntranceId() {
     var e = UiSceneManager_1.UiSceneManager.GetLordSkeletalHandle();
@@ -124,16 +124,20 @@ class LordGymController extends ControllerBase_1.ControllerBase {
       if (r !== e) {
         const c = _.CheckGetComponent(10);
         const m = _.CheckGetComponent(2);
-        const M = _.CheckGetComponent(1);
-        const C = s.StandAnim;
+        const C = _.CheckGetComponent(1);
+        const M = s.StandAnim;
         var r = s.LordChangeMaterialController;
-        var o = s.LordChangeMaterialController;
-        var t = [C];
+        var o = s.LordIdleMaterialController;
+        var t = s.LordStartMaterialController;
+        var n = [M];
         if (!StringUtils_1.StringUtils.IsBlank(r)) {
-          t.push(r);
+          n.push(r);
         }
         if (!StringUtils_1.StringUtils.IsBlank(o)) {
-          t.push(o);
+          n.push(o);
+        }
+        if (!StringUtils_1.StringUtils.IsBlank(t)) {
+          n.push(t);
         }
         const g = new CustomPromise_1.CustomPromise();
         m?.LoadModelByModelId(e, true, () => {
@@ -174,8 +178,8 @@ class LordGymController extends ControllerBase_1.ControllerBase {
             n = new UE.Transform(o, r, t);
             e.CacheTransform = n;
           }
-          M.SetAllMeshComponentRelativeTransform(n, false, undefined, false);
-          var a = m?.GetLoadedResource(C);
+          C.SetAllMeshComponentRelativeTransform(n, false, undefined, false);
+          var a = m?.GetLoadedResource(M);
           if (!a) {
             if (Log_1.Log.CheckError()) {
               Log_1.Log.Error("UiCommon", 43, "[LordGym] 道馆界面待机动画预加载失败");
@@ -185,39 +189,41 @@ class LordGymController extends ControllerBase_1.ControllerBase {
           if (l) {
             this.PlayLordModelMaterialAnimationByEntranceId(i, _, m, d);
           }
-        }, t);
+        }, n);
         await g.Promise;
       }
     }
   }
-  static PlayLordModelMaterialAnimationByEntranceId(e, r, o, t = true) {
-    var n;
+  static PlayLordModelMaterialAnimationByEntranceId(e, r, o, t = true, n = false) {
     var a;
+    var i;
     if (UiSceneManager_1.UiSceneManager.GetLordSkeletalHandle()) {
       if (t) {
         AudioSystem_1.AudioSystem.PostEvent(LordGymDefine_1.LORD_GYM_THIRD_AUDIO_BOSS);
       }
-      e = (t = ConfigManager_1.ConfigManager.LordGymConfig.GetLordGymEntranceConfig(e)).LordChangeMaterialController;
-      n = t.LordChangeMaterialController;
-      a = UiSceneManager_1.UiSceneManager.GetLordSkeletalHandle();
-      r = r ?? a.Model;
-      a = o ?? r.CheckGetComponent(2);
-      o = r.CheckGetComponent(5);
-      if (!StringUtils_1.StringUtils.IsBlank(e)) {
-        if (r = a.GetLoadedResource(e)) {
+      e = (t = ConfigManager_1.ConfigManager.LordGymConfig.GetLordGymEntranceConfig(e)).LordStartMaterialController;
+      i = t.LordChangeMaterialController;
+      a = t.LordIdleMaterialController;
+      n = n && !StringUtils_1.StringUtils.IsBlank(e) ? e : i;
+      e = UiSceneManager_1.UiSceneManager.GetLordSkeletalHandle();
+      i = r ?? e.Model;
+      r = o ?? i.CheckGetComponent(2);
+      e = i.CheckGetComponent(5);
+      if (!StringUtils_1.StringUtils.IsBlank(n)) {
+        if (o = r.GetLoadedResource(n)) {
           if (t.IsGroup) {
-            o?.AddRenderingMaterialGroup(r);
+            e?.AddRenderingMaterialGroup(o);
           } else {
-            o?.AddRenderingMaterialByData(r);
+            e?.AddRenderingMaterialByData(o);
           }
         }
       }
-      if (!StringUtils_1.StringUtils.IsBlank(n)) {
-        if (e = a.GetLoadedResource(n)) {
+      if (!StringUtils_1.StringUtils.IsBlank(a)) {
+        if (i = r.GetLoadedResource(a)) {
           if (t.IsGroup) {
-            o?.AddRenderingMaterialGroup(e);
+            e?.AddRenderingMaterialGroup(i);
           } else {
-            o?.AddRenderingMaterialByData(e);
+            e?.AddRenderingMaterialByData(i);
           }
         }
       }
@@ -227,9 +233,16 @@ class LordGymController extends ControllerBase_1.ControllerBase {
     var e = ModelManager_1.ModelManager.GameModeModel?.InstanceDungeon;
     return !!e && e.InstSubType === 48;
   }
+  static ClearChallengeFailViewDelay() {
+    if (this.kDg !== undefined) {
+      TimerSystem_1.FlowTimeTimerSystem.Remove(this.kDg);
+      this.kDg = undefined;
+    }
+  }
 }
 exports.LordGymController = LordGymController;
-(_a = LordGymController).$5e = () => {
+(_a = LordGymController).kDg = undefined;
+LordGymController.$5e = () => {
   ModelManager_1.ModelManager.LordGymModel?.InitNewLordGymEntranceIdRecord();
   _a.LordGymInfoRequest();
 };
@@ -345,12 +358,11 @@ LordGymController.xSi = r => {
           Version: t.Version
         };
         r = () => {
-          if (!UiManager_1.UiManager.IsViewOpen("LordGymThirdBossSelectView") && !UiManager_1.UiManager.IsViewOpen("LordGymThirdDifficultySelectView") && !!_a.IsInLordGymDungeon()) {
-            UiManager_1.UiManager.OpenView("LordGymChallengeFailView", s);
-          }
+          _a.kDg = undefined;
+          UiManager_1.UiManager.OpenView("LordGymChallengeFailView", s);
         };
         if (e) {
-          TimerSystem_1.FlowTimeTimerSystem.Delay(r, TIME_TO_REVIVE);
+          _a.kDg = TimerSystem_1.FlowTimeTimerSystem.Delay(r, TIME_TO_REVIVE);
         } else {
           r();
         }

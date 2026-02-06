@@ -269,15 +269,26 @@ class NpcIconComponent {
     var e = ConfigManager_1.ConfigManager.NpcIconConfig.GetNpcIconHeadInfoNameLimitDistance();
     return t <= e * e;
   }
+  xOg(t) {
+    var e = ConfigManager_1.ConfigManager.NpcIconConfig.GetPlayerInfoNameLimitDistance();
+    return t <= e * e;
+  }
+  BOg(t) {
+    var e = ConfigManager_1.ConfigManager.NpcIconConfig.GetPlayerInfoIconLimitDistance();
+    return t < e * e;
+  }
   kqi(t) {
     var e;
+    var i;
     if (this.Pe.IsShowPlayerInfo()) {
-      e = this.Oqi(t);
-      this.SetHeadInfoNameState(e);
+      i = this.xOg(t);
+      e = this.BOg(t);
+      this.SetNameTextState(i);
       this.SetPlayerInfoIconState(e);
+      this.SetHeadInfoNameState(true);
     } else if (this.Pe.IsShowNameInfo()) {
-      e = this.Oqi(t);
-      this.SetHeadInfoNameState(e);
+      i = this.Oqi(t);
+      this.SetHeadInfoNameState(i);
     }
   }
   Fqi(t) {
@@ -317,6 +328,9 @@ class NpcIconComponent {
     if (this.tF1) {
       this.HeadView?.SetPlayerInfoItemState(t);
     }
+  }
+  SetNameTextState(t) {
+    this.HeadView?.SetNameTextItemState(t);
   }
   Destroy() {
     this.Kr = true;

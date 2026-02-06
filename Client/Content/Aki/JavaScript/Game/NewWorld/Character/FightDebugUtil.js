@@ -32,10 +32,10 @@ class FightDebugUtil {
   }
   static async LoadCharacterFightDtNewPreload(e) {
     var o = e.GetComponent(0);
-    var r = e.GetComponent(41);
-    var t = e.GetComponent(218);
+    var r = e.GetComponent(43);
+    var t = e.GetComponent(220);
     var a = e.GetComponent(1);
-    var i = e.GetComponent(219);
+    var i = e.GetComponent(221);
     var n = ModelManager_1.ModelManager.PreloadModelNew.GetEntityAssetElement(o.GetCreatureDataId());
     if (n) {
       var e = UE.KismetSystemLibrary.Conv_ClassToSoftClassReference(a.Actor.GetClass());
@@ -101,7 +101,7 @@ class FightDebugUtil {
       this.DtSkillTypeForDebug = e;
       (o = new Protocol_1.Aki.Protocol.Gzn()).VVn = 0;
       o.P8n = "@ChangeInstFightInfoDtType " + e;
-      Net_1.Net.Call(22424, Protocol_1.Aki.Protocol.Gzn.create(o), () => {});
+      Net_1.Net.Call(20381, Protocol_1.Aki.Protocol.Gzn.create(o), () => {});
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SetFightDtTypeForDebug);
     }
   }

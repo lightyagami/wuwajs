@@ -8,6 +8,7 @@ const UE = require("ue");
 const CustomPromise_1 = require("../../../../../Core/Common/CustomPromise");
 const Info_1 = require("../../../../../Core/Common/Info");
 const Log_1 = require("../../../../../Core/Common/Log");
+const CommonParamById_1 = require("../../../../../Core/Define/ConfigCommon/CommonParamById");
 const ResourceSystem_1 = require("../../../../../Core/Resource/ResourceSystem");
 const TimerSystem_1 = require("../../../../../Core/Timer/TimerSystem");
 const Vector2D_1 = require("../../../../../Core/Utils/Math/Vector2D");
@@ -27,32 +28,32 @@ const HudUnitUtils_1 = require("../../../HudUnit/Utils/HudUnitUtils");
 const hitCaseSocket = new UE.FName("HitCase");
 const CLOSE_ANIM_TIME = 300;
 const childType = 17;
-const INTERACTION_SHOW_DELAY = 1000;
 class BreakWeaknessPanel extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.SPe = undefined;
     this.jma = new Vector2D_1.Vector2D();
-    this.K0f = undefined;
-    this.fYf = undefined;
+    this.Avf = undefined;
+    this.idg = undefined;
     this.Xte = undefined;
     this.ldt = [];
-    this.X0f = undefined;
+    this.Dvf = undefined;
     this.Qtt = undefined;
     this._at = undefined;
     this.uat = undefined;
     this.cat = undefined;
     this.mat = true;
-    this.Y0f = true;
-    this.z0f = undefined;
+    this.Uvf = true;
+    this.xvf = undefined;
     this.uxn = false;
     this.Mit = undefined;
-    this.J0f = 0;
+    this.Bvf = 0;
     this.Bit = false;
-    this.nZm = false;
-    this.J8f = undefined;
-    this.IJf = undefined;
-    this.s$f = undefined;
+    this.Htf = false;
+    this.uzf = undefined;
+    this.LCg = undefined;
+    this.Trg = undefined;
+    this.K6g = 0;
     this.dat = () => {
       this._at = undefined;
       this.uat.SetResult();
@@ -77,7 +78,7 @@ class BreakWeaknessPanel extends UiPanelBase_1.UiPanelBase {
       if (t) {
         this.yRl(false);
       } else {
-        for (const s of this.z0f.DisableTags) {
+        for (const s of this.xvf.DisableTags) {
           if (this.Xte.HasTag(s)) {
             this.yRl(false);
             return;
@@ -88,27 +89,27 @@ class BreakWeaknessPanel extends UiPanelBase_1.UiPanelBase {
     };
     this.Jrt = (i, t) => {
       if (t) {
-        this.Y0f = false;
+        this.Uvf = false;
       } else {
-        for (const s of this.z0f.HiddenTags) {
+        for (const s of this.xvf.HiddenTags) {
           if (this.Xte.HasTag(s)) {
-            this.Y0f = false;
+            this.Uvf = false;
             this.Lri();
             return;
           }
         }
-        this.Y0f = true;
+        this.Uvf = true;
       }
       this.Lri();
     };
-    this.Z0f = false;
+    this.kvf = false;
     this.Lti = false;
     this.GXe = undefined;
-    this.eCf = () => {
+    this.qvf = () => {
       this.GXe = undefined;
-      if (this.Z0f !== this.Lti) {
-        this.Z0f = this.Lti;
-        if (this.Z0f) {
+      if (this.kvf !== this.Lti) {
+        this.kvf = this.Lti;
+        if (this.kvf) {
           this.Show();
           if (this._at) {
             TimerSystem_1.TimerSystem.Remove(this._at);
@@ -122,21 +123,22 @@ class BreakWeaknessPanel extends UiPanelBase_1.UiPanelBase {
       }
     };
     this.j3 = undefined;
-    this.rxf = false;
+    this.$Gf = false;
     this.q7e = () => {
-      var i = this.rxf;
-      this.oxf();
-      if (i !== this.rxf) {
+      var i = this.$Gf;
+      this.WGf();
+      if (i !== this.$Gf) {
         this.Lri();
       }
     };
   }
   Init(i) {
-    this.Z0f = false;
+    this.kvf = false;
     this.Lti = false;
     this.cat = ModelManager_1.ModelManager.BattleUiModel.ChildViewData;
     this.mat = this.cat.GetChildVisible(childType);
-    this.z0f = ConfigManager_1.ConfigManager.SkillButtonConfig.GetBehaviorCommonButtonConfig(RoleBreakWeaknessComponent_1.BREAK_WEAKNESS_BUTTON_CONFIG_ID);
+    this.xvf = ConfigManager_1.ConfigManager.SkillButtonConfig.GetBehaviorCommonButtonConfig(RoleBreakWeaknessComponent_1.BREAK_WEAKNESS_BUTTON_CONFIG_ID);
+    this.K6g = CommonParamById_1.configCommonParamById.GetFloatConfig("WeaknessInteractionShowDelay");
     this.Initialize(i);
   }
   async Initialize(i) {
@@ -153,11 +155,11 @@ class BreakWeaknessPanel extends UiPanelBase_1.UiPanelBase {
   }
   async OnBeforeStartAsync() {
     if (!Info_1.Info.IsInTouch()) {
-      await this.fJm();
+      await this.ttf();
     }
     this.Ore();
   }
-  async fJm() {
+  async ttf() {
     var i = new InputMultiKeyItem_1.InputMultiKeyItem();
     var t = this.GetItem(0).GetOwner();
     await i.CreateByActorAsync(t);
@@ -171,7 +173,7 @@ class BreakWeaknessPanel extends UiPanelBase_1.UiPanelBase {
   }
   OnStart() {
     this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
-    this.X0f = this.GetTexture(1);
+    this.Dvf = this.GetTexture(1);
     if (this.Xte) {
       this.Sri(0, false);
     }
@@ -183,33 +185,33 @@ class BreakWeaknessPanel extends UiPanelBase_1.UiPanelBase {
     this.Kbe();
   }
   OnAfterHide() {
-    this.J8f = undefined;
-    this.IJf = undefined;
+    this.uzf = undefined;
+    this.LCg = undefined;
   }
   Kbe() {
     var i;
-    if (this.X0f && (i = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity)?.Valid) {
+    if (this.Dvf && (i = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity)?.Valid) {
       i = i.Entity.GetComponent(0).GetRoleConfig()?.WeaponType ?? 1;
-      i = this.z0f.SkillIcons[i - 1];
+      i = this.xvf.SkillIcons[i - 1];
       this.Irt(i);
     }
   }
   Irt(t) {
     if (!StringUtils_1.StringUtils.IsEmpty(t)) {
-      if (this.Mit !== t && (this.J0f !== 0 && ResourceSystem_1.ResourceSystem.CancelAsyncLoad(this.J0f), this.Bit = true, this.Mit = t, this.J0f = ResourceSystem_1.ResourceSystem.LoadAsync(t, UE.Texture, i => {
+      if (this.Mit !== t && (this.Bvf !== 0 && ResourceSystem_1.ResourceSystem.CancelAsyncLoad(this.Bvf), this.Bit = true, this.Mit = t, this.Bvf = ResourceSystem_1.ResourceSystem.LoadAsync(t, UE.Texture, i => {
         this.Bit = false;
-        if (this.X0f && this.Mit === t) {
+        if (this.Dvf && this.Mit === t) {
           if (i) {
             if (Log_1.Log.CheckDebug()) {
               Log_1.Log.Debug("Battle", 17, "破弱图标加载成功", ["", t]);
             }
-            this.X0f.SetTexture(i);
-            this.X0f.SetUIActive(true);
+            this.Dvf.SetTexture(i);
+            this.Dvf.SetUIActive(true);
           } else {
             if (Log_1.Log.CheckDebug()) {
               Log_1.Log.Debug("Battle", 17, "破弱图标加载完成，但是资源为空", ["", t]);
             }
-            this.X0f.SetUIActive(false);
+            this.Dvf.SetUIActive(false);
           }
         } else if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("Battle", 17, "破弱图标加载完成, 但是已过期", ["", t]);
@@ -218,7 +220,7 @@ class BreakWeaknessPanel extends UiPanelBase_1.UiPanelBase {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("Battle", 17, "破弱图标加载中，隐藏图片", ["", t]);
         }
-        this.X0f.SetUIActive(false);
+        this.Dvf.SetUIActive(false);
       }
     }
   }
@@ -246,7 +248,7 @@ class BreakWeaknessPanel extends UiPanelBase_1.UiPanelBase {
     await this.uat.Promise;
   }
   OnBeforeDestroy() {
-    if (this.K0f) {
+    if (this.Avf) {
       this.fat();
     }
     if (this._at) {
@@ -255,11 +257,11 @@ class BreakWeaknessPanel extends UiPanelBase_1.UiPanelBase {
       this.uat.SetResult();
       this.uat = undefined;
     }
-    this.X0f = undefined;
-    this.J8f = undefined;
+    this.Dvf = undefined;
+    this.uzf = undefined;
     this.kre();
-    this.tCf();
-    this.a$f(true);
+    this.Ovf();
+    this.brg(true);
   }
   Ore() {
     if (!Info_1.Info.IsInTouch()) {
@@ -275,10 +277,10 @@ class BreakWeaknessPanel extends UiPanelBase_1.UiPanelBase {
   }
   Cat() {
     var i;
-    if (this.K0f?.Valid) {
-      this.oxf();
-      if (this.rxf) {
-        if ((i = this.K0f.Entity.GetComponent(127))?.IsPawnInteractive()) {
+    if (this.Avf?.Valid) {
+      this.WGf();
+      if (this.$Gf) {
+        if ((i = this.Avf.Entity.GetComponent(129))?.IsPawnInteractive()) {
           i.InteractPawn();
           this.uxn = true;
         }
@@ -290,11 +292,11 @@ class BreakWeaknessPanel extends UiPanelBase_1.UiPanelBase {
     }
   }
   ShowByEntity(i, t) {
-    if (this.K0f?.Id !== i) {
+    if (this.Avf?.Id !== i) {
       if (i = ModelManager_1.ModelManager.CreatureModel.GetEntityById(i)) {
         this.m$e();
-        this.K0f = i;
-        this.fYf = this.K0f.Entity.GetComponent(92);
+        this.Avf = i;
+        this.idg = this.Avf.Entity.GetComponent(94);
         this._o();
         this.Kbe();
       } else {
@@ -303,22 +305,22 @@ class BreakWeaknessPanel extends UiPanelBase_1.UiPanelBase {
     }
   }
   HideByEntity(i) {
-    if (this.K0f?.Id === i) {
+    if (this.Avf?.Id === i) {
       this.fat();
     }
   }
   _o() {
     var i = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
     if (i?.Valid) {
-      this.Xte = i.Entity.GetComponent(215);
+      this.Xte = i.Entity.GetComponent(217);
       this.Sri(0, false);
       this.Jrt(0, false);
     }
     this.c$e();
-    this.oxf();
+    this.WGf();
     this.kot();
     this.Lri();
-    this.a$f();
+    this.brg();
     ModelManager_1.ModelManager.BattleUiModel.SetExecutionInteractEnable(true);
     ModelManager_1.ModelManager.BattleUiModel.ChildViewData.SetChildVisible(7, 19, false, true);
   }
@@ -326,34 +328,34 @@ class BreakWeaknessPanel extends UiPanelBase_1.UiPanelBase {
     var i;
     this.m$e();
     this.xHe();
-    if (this.K0f?.Valid) {
-      this.J8f = this.K0f;
-      i = this.fYf?.TargetSocket;
-      this.IJf = i ? new UE.FName(i) : hitCaseSocket;
+    if (this.Avf?.Valid) {
+      this.uzf = this.Avf;
+      i = this.idg?.TargetSocket;
+      this.LCg = i ? new UE.FName(i) : hitCaseSocket;
     }
-    this.K0f = undefined;
-    this.fYf = undefined;
+    this.Avf = undefined;
+    this.idg = undefined;
     this.Xte = undefined;
-    this.rxf = false;
+    this.$Gf = false;
     this.Lri();
-    this.h$f();
+    this.Rrg();
     ModelManager_1.ModelManager.BattleUiModel.SetExecutionInteractEnable(false);
   }
   c$e() {
-    if (this.K0f) {
-      EventSystem_1.EventSystem.AddWithTarget(this.K0f, EventDefine_1.EEventName.RemoveEntity, this.zpe);
-      for (const i of this.z0f.DisableTags) {
-        this.iCf(i, this.Sri);
+    if (this.Avf) {
+      EventSystem_1.EventSystem.AddWithTarget(this.Avf, EventDefine_1.EEventName.RemoveEntity, this.zpe);
+      for (const i of this.xvf.DisableTags) {
+        this.Gvf(i, this.Sri);
       }
-      for (const t of this.z0f.HiddenTags) {
-        this.iCf(t, this.Jrt);
+      for (const t of this.xvf.HiddenTags) {
+        this.Gvf(t, this.Jrt);
       }
     }
   }
   m$e() {
     this.FYe();
-    if (this.K0f) {
-      EventSystem_1.EventSystem.RemoveWithTarget(this.K0f, EventDefine_1.EEventName.RemoveEntity, this.zpe);
+    if (this.Avf) {
+      EventSystem_1.EventSystem.RemoveWithTarget(this.Avf, EventDefine_1.EEventName.RemoveEntity, this.zpe);
     }
   }
   yRl(i) {
@@ -365,7 +367,7 @@ class BreakWeaknessPanel extends UiPanelBase_1.UiPanelBase {
       }
     }
   }
-  iCf(i, t) {
+  Gvf(i, t) {
     var s = this.Xte;
     if (s) {
       s = s.ListenForTagAddOrRemove(i, t);
@@ -385,9 +387,9 @@ class BreakWeaknessPanel extends UiPanelBase_1.UiPanelBase {
       if (this.IsShowOrShowing || this.IsHiding) {
         this.Woi();
         return;
-      } else if (this.MVf()) {
+      } else if (this.cXf()) {
         this.Woi();
-        if (this.nZm) {
+        if (this.Htf) {
           this.ehr(true);
         }
         return;
@@ -398,24 +400,24 @@ class BreakWeaknessPanel extends UiPanelBase_1.UiPanelBase {
   }
   Woi() {
     var i;
-    if (this.RootItem && (this.K0f?.Valid || this.J8f?.Valid) && (i = this.Koi()) && (this.nZm = HudUnitUtils_1.HudUnitUtils.PositionUtil.ProjectWorldToScreen(i, this.jma), this.nZm)) {
+    if (this.RootItem && (this.Avf?.Valid || this.uzf?.Valid) && (i = this.Koi()) && (this.Htf = HudUnitUtils_1.HudUnitUtils.PositionUtil.ProjectWorldToScreen(i, this.jma), this.Htf)) {
       this.RootItem.SetAnchorOffset(this.jma.ToUeVector2D(true));
     }
   }
   Koi() {
-    var i = this.K0f || this.J8f;
+    var i = this.Avf || this.uzf;
     if (i) {
       var t;
       var i = i.Entity.GetComponent(1).Owner;
       if (i instanceof TsBaseCharacter_1.default) {
         i = i.Mesh;
-        t = (t = this.fYf?.TargetSocket) ? new UE.FName(t) : this.IJf ?? hitCaseSocket;
+        t = (t = this.idg?.TargetSocket) ? new UE.FName(t) : this.LCg ?? hitCaseSocket;
         return i.D_GetSocketLocation(t);
       }
     }
   }
   Lri() {
-    if (this.rxf && this.mat && this.Y0f && (Info_1.Info.IsInTouch ? this.nZm = true : this.Woi(), this.nZm)) {
+    if (this.$Gf && this.mat && this.Uvf && (Info_1.Info.IsInTouch ? this.Htf = true : this.Woi(), this.Htf)) {
       this.ehr(true);
     } else {
       this.ehr(false);
@@ -423,16 +425,16 @@ class BreakWeaknessPanel extends UiPanelBase_1.UiPanelBase {
   }
   ehr(i) {
     this.Lti = i;
-    if (this.Lti === this.Z0f) {
-      this.tCf();
+    if (this.Lti === this.kvf) {
+      this.Ovf();
     } else {
-      this.rCf();
+      this.Fvf();
     }
   }
-  rCf() {
-    this.GXe ||= TimerSystem_1.TimerSystem.Next(this.eCf);
+  Fvf() {
+    this.GXe ||= TimerSystem_1.TimerSystem.Next(this.qvf);
   }
-  tCf() {
+  Ovf() {
     if (this.GXe) {
       TimerSystem_1.TimerSystem.Remove(this.GXe);
       this.GXe = undefined;
@@ -447,44 +449,44 @@ class BreakWeaknessPanel extends UiPanelBase_1.UiPanelBase {
       this.j3 = undefined;
     }
   }
-  oxf() {
+  WGf() {
     var i;
     var t;
     var s;
-    if (this.K0f?.Valid && this.fYf && (t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity)?.Valid && (t = t.Entity.GetComponent(1).ActorLocationProxy, s = this.Koi())) {
-      if ((i = t.Z - s.Z) < -this.fYf.UpDistance || i > this.fYf.DownDistance) {
-        this.rxf = false;
+    if (this.Avf?.Valid && this.idg && (t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity)?.Valid && (t = t.Entity.GetComponent(1).ActorLocationProxy, s = this.Koi())) {
+      if ((i = t.Z - s.Z) < -this.idg.UpDistance || i > this.idg.DownDistance) {
+        this.$Gf = false;
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("Battle", 17, "破弱Z轴高度超出范围，不显示破弱按钮", ["z", i]);
         }
       } else {
         i = t.X - s.X;
         t = t.Y - s.Y;
-        if ((s = this.fYf.HorizontalDistance) * s < (s = i * i + t * t)) {
-          this.rxf = false;
+        if ((s = this.idg.HorizontalDistance) * s < (s = i * i + t * t)) {
+          this.$Gf = false;
           if (Log_1.Log.CheckDebug()) {
             Log_1.Log.Debug("Battle", 17, "破弱XY距离超出范围，不显示破弱按钮", ["distance", Math.sqrt(s)]);
           }
         } else {
-          this.rxf = true;
+          this.$Gf = true;
         }
       }
     } else {
-      this.rxf = false;
+      this.$Gf = false;
     }
   }
-  MVf() {
-    return this.rxf && this.mat && this.Y0f;
+  cXf() {
+    return this.$Gf && this.mat && this.Uvf;
   }
-  h$f() {
-    this.a$f();
-    this.s$f = TimerSystem_1.TimerSystem.Delay(() => {
+  Rrg() {
+    this.brg();
+    this.Trg = TimerSystem_1.TimerSystem.Delay(() => {
       ModelManager_1.ModelManager.BattleUiModel.ChildViewData.SetChildVisible(7, 19, true, true);
-      this.s$f = undefined;
-    }, INTERACTION_SHOW_DELAY);
+      this.Trg = undefined;
+    }, this.K6g);
   }
-  a$f(i = false) {
-    if (this.s$f && (TimerSystem_1.TimerSystem.Remove(this.s$f), this.s$f = undefined, i)) {
+  brg(i = false) {
+    if (this.Trg && (TimerSystem_1.TimerSystem.Remove(this.Trg), this.Trg = undefined, i)) {
       ModelManager_1.ModelManager.BattleUiModel.ChildViewData.SetChildVisible(7, 19, true, true);
     }
   }

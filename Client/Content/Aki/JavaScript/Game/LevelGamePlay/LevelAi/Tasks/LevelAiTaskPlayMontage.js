@@ -20,7 +20,7 @@ class LevelAiTaskPlayMontage extends LevelAiTask_1.LevelAiTask {
     this.NTe = t.LoopDuration ?? 0;
     this.OTe = t.RepeatTimes ?? 0;
     const e = this.CreatureDataComponent.Entity;
-    var s = e.GetComponent(47);
+    var s = e.GetComponent(49);
     var i = {
       IsAbp: t.IsAbpMontage,
       MontageId: t.MontageId
@@ -33,7 +33,7 @@ class LevelAiTaskPlayMontage extends LevelAiTask_1.LevelAiTask {
     let a = false;
     this.ZV_ = s.VolatileMontagePlayByLoad(3, i, r, s => {
       if (s && t.FaceExpressionId) {
-        e?.GetComponent(197)?.ExpressionController?.ChangeFaceForExpression(s, t.FaceExpressionId);
+        e?.GetComponent(199)?.ExpressionController?.ChangeFaceForExpression(s, t.FaceExpressionId);
       }
     }, s => {
       if (a) {
@@ -50,7 +50,7 @@ class LevelAiTaskPlayMontage extends LevelAiTask_1.LevelAiTask {
     }
   }
   AbortTask() {
-    this.CreatureDataComponent.Entity.GetComponent(47).VolatileMontageStopByLoad(3, this.ZV_, 0);
+    this.CreatureDataComponent.Entity.GetComponent(49).VolatileMontageStopByLoad(3, this.ZV_, 0);
     return 2;
   }
 }

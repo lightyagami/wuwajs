@@ -22,51 +22,51 @@ const PhoneSystemChatItem_1 = require("./PhoneSystemChatItem");
 class PhoneSystemChatPanel extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.ubf = undefined;
-    this.cbf = [];
+    this.VAf = undefined;
+    this.HAf = [];
     this.Rqe = undefined;
-    this.Owf = false;
-    this.Gwf = false;
-    this.Fwf = false;
-    this.j4f = false;
-    this.s6f = false;
+    this.hUf = false;
+    this.lUf = false;
+    this._Uf = false;
+    this.CWf = false;
+    this.vzf = false;
     this.sye = false;
-    this.hCf = undefined;
+    this.jvf = undefined;
     this.OnAfterOneMsgShow = undefined;
     this.OnMsgReadFinished = undefined;
     this.OnBeforeMsgChange = undefined;
     this.J_ = t => {
-      if (this.Gwf) {
-        this.Vwf(this.cbf.length - 1, this.Fwf);
-        this.Gwf = false;
+      if (this.lUf) {
+        this.cUf(this.HAf.length - 1, this._Uf);
+        this.lUf = false;
       }
     };
-    this.Hwf = () => {
-      if (this.s6f) {
+    this.dUf = () => {
+      if (this.vzf) {
         this.GetScrollViewWithScrollbar(4).ScrollToEnd();
-        this.s6f = false;
-        this.Owf = false;
-        this.Gwf = false;
+        this.vzf = false;
+        this.hUf = false;
+        this.lUf = false;
       }
-      if (this.Owf) {
-        this.Gwf = true;
-        this.Owf = false;
+      if (this.hUf) {
+        this.lUf = true;
+        this.hUf = false;
       }
-      if (this.j4f && this.$4f()) {
+      if (this.CWf && this.pWf()) {
         this.GetVerticalLayout(5)?.SetHeightFitToChildren(true);
-        this.j4f = false;
+        this.CWf = false;
       }
     };
-    this.Mxf = () => {
+    this._Ff = () => {
       var t = ModelManager_1.ModelManager.PhoneMsgModel.CurrentUsingChatBgId;
       var t = ConfigManager_1.ConfigManager.PhoneMsgConfig.GetChatBgConfig(t).BgPath;
       this.SetTextureByPath(t, this.GetTexture(6));
     };
-    this.jtf = () => {
-      this.yPf();
+    this.zrf = () => {
+      this.n2f();
     };
-    this.HKf = async t => {
-      var i = this.ubf;
+    this.Jlg = async t => {
+      var i = this.VAf;
       if (i.ReadIndex >= i.ChatDataList.length - 1) {
         i.ReadIndex = i.ChatDataList.length - 1;
       } else {
@@ -74,170 +74,170 @@ class PhoneSystemChatPanel extends UiPanelBase_1.UiPanelBase {
       }
       return Promise.resolve();
     };
-    this.pOf = async t => {
-      var i = this.ubf;
+    this.R8f = async t => {
+      var i = this.VAf;
       if (!(t > i.ChatDataList.length - 1)) {
-        if (i = this.lCf(i.ChatDataList[t])) {
-          this.cbf.push(i);
-          this.hCf.RefreshByData(this.cbf);
+        if (i = this.$vf(i.ChatDataList[t])) {
+          this.HAf.push(i);
+          this.jvf.RefreshByData(this.HAf);
         }
       }
       return Promise.resolve();
     };
-    this.vOf = async t => {
-      if (this.hCf.GetTemplateIndexByDisplayIndex(t) === 0) {
-        t = this.hCf.GetProxyByDisplayIndex(t);
-        await Promise.all([t.PlayInputtingAnimationAsync(), this.vbf()]);
+    this.L8f = async t => {
+      if (this.jvf.GetTemplateIndexByDisplayIndex(t) === 0) {
+        t = this.jvf.GetProxyByDisplayIndex(t);
+        await Promise.all([t.PlayInputtingAnimationAsync(), this.YAf()]);
       }
     };
-    this.yOf = async t => {
-      var i = this.hCf.GetTemplateIndexByDisplayIndex(t);
+    this.w8f = async t => {
+      var i = this.jvf.GetTemplateIndexByDisplayIndex(t);
       if (i === 0 || i === 1) {
-        var s = this.hCf.GetProxyByDisplayIndex(t);
+        var s = this.jvf.GetProxyByDisplayIndex(t);
         if (this.OnAfterOneMsgShow) {
-          t = ModelManager_1.ModelManager.PhoneMsgModel.GetLastChatTextByDisplayData(this.ubf);
+          t = ModelManager_1.ModelManager.PhoneMsgModel.GetLastChatTextByDisplayData(this.VAf);
           this.OnAfterOneMsgShow(t);
         }
         switch (i) {
           case 0:
             var e = s;
             e.RefreshDisplayItem();
-            await Promise.all([this.vbf(), e.PlayChatContentAnimationAsync()]);
+            await Promise.all([this.YAf(), e.PlayChatContentAnimationAsync()]);
             break;
           case 1:
-            await Promise.all([this.vbf(), s.PlayChatContentAnimationAsync()]);
+            await Promise.all([this.YAf(), s.PlayChatContentAnimationAsync()]);
         }
       }
     };
-    this.SOf = async t => {
-      if (this.hCf.GetTemplateIndexByDisplayIndex(t) === 2) {
-        t = this.hCf.GetProxyByDisplayIndex(t);
-        await Promise.all([t.PlayTipsAnimationAsync(), this.vbf()]);
+    this.P8f = async t => {
+      if (this.jvf.GetTemplateIndexByDisplayIndex(t) === 2) {
+        t = this.jvf.GetProxyByDisplayIndex(t);
+        await Promise.all([t.PlayTipsAnimationAsync(), this.YAf()]);
       }
     };
-    this.MOf = async t => {
-      if (this.hCf.GetTemplateIndexByDisplayIndex(t) === 5) {
-        t = this.hCf.GetProxyByDisplayIndex(t);
-        await Promise.all([t.PlayRewardAnimationAsync(), this.vbf()]);
+    this.A8f = async t => {
+      if (this.jvf.GetTemplateIndexByDisplayIndex(t) === 5) {
+        t = this.jvf.GetProxyByDisplayIndex(t);
+        await Promise.all([t.PlayRewardAnimationAsync(), this.YAf()]);
       }
     };
-    this.EOf = async t => {
-      if (this.hCf.GetTemplateIndexByDisplayIndex(t) === 4) {
-        t = this.hCf.GetProxyByDisplayIndex(t);
-        await Promise.all([t.PlayBirthdayAnimationAsync(), this.vbf()]);
+    this.D8f = async t => {
+      if (this.jvf.GetTemplateIndexByDisplayIndex(t) === 4) {
+        t = this.jvf.GetProxyByDisplayIndex(t);
+        await Promise.all([t.PlayBirthdayAnimationAsync(), this.YAf()]);
       }
     };
-    this.IOf = async t => {
-      if (this.hCf.GetTemplateIndexByDisplayIndex(t) === 3) {
-        t = this.hCf.GetProxyByDisplayIndex(t);
-        await Promise.all([t.PlayTaskAnimationAsync(), this.vbf()]);
+    this.U8f = async t => {
+      if (this.jvf.GetTemplateIndexByDisplayIndex(t) === 3) {
+        t = this.jvf.GetProxyByDisplayIndex(t);
+        await Promise.all([t.PlayTaskAnimationAsync(), this.YAf()]);
       }
     };
-    this.Tbf = async () => {
+    this.iDf = async () => {
       var t = new PhoneSystemChatItem_1.EndLineChatGridData(true);
-      this.cbf.push(t);
-      this.hCf.RefreshByData(this.cbf);
-      await this.vbf();
+      this.HAf.push(t);
+      this.jvf.RefreshByData(this.HAf);
+      await this.YAf();
     };
-    this.BOf = t => {
+    this.j8f = t => {
       if (t === 1) {
-        this.kOf();
+        this.$8f();
       }
     };
-    this.bbf = async () => {
+    this.rDf = async () => {
       this.GetItem(14)?.SetUIActive(true);
       this.sye = true;
       return Promise.resolve();
     };
-    this.qOf = t => {
+    this.W8f = t => {
       this.GetItem(14)?.SetUIActive(false);
       this.sye = false;
     };
-    this.wbf = async () => {
+    this.oDf = async () => {
       this.GetItem(14)?.SetUIActive(false);
       this.sye = false;
       return Promise.resolve();
     };
-    this.OOf = t => {
+    this.Q8f = t => {
       if (t === 1) {
         this.GetItem(14)?.SetUIActive(false);
         this.sye = false;
       }
     };
-    this.Lbf = async t => {
-      await this.Pbf(t);
+    this.sDf = async t => {
+      await this.aDf(t);
     };
-    this.Rbf = async () => {
-      this.OnMsgReadFinished?.(this.ubf.ShortMsgId);
+    this.nDf = async () => {
+      this.OnMsgReadFinished?.(this.VAf.ShortMsgId);
       return Promise.resolve();
     };
-    this.EPf = async (t, i) => {
-      if (this.ubf && (t = this.ubf.ChatDataList[t]) !== undefined && (t = t.TalkItem?.Id) !== undefined && (t = this.ubf.IdToIndexMap.get(t)) !== undefined) {
-        await ControllerHolder_1.ControllerHolder.PhoneMsgController.ShortMessageReplyAsync(this.ubf.ShortMsgId, t, i);
-        this.ubf.OptionSelectedMap.set(t, i);
-        ModelManager_1.ModelManager.PhoneMsgModel.ProcessAfterAnswer(this.ubf, t);
+    this.h2f = async (t, i) => {
+      if (this.VAf && (t = this.VAf.ChatDataList[t]) !== undefined && (t = t.TalkItem?.Id) !== undefined && (t = this.VAf.IdToIndexMap.get(t)) !== undefined) {
+        await ControllerHolder_1.ControllerHolder.PhoneMsgController.ShortMessageReplyAsync(this.VAf.ShortMsgId, t, i);
+        this.VAf.OptionSelectedMap.set(t, i);
+        ModelManager_1.ModelManager.PhoneMsgModel.ProcessAfterAnswer(this.VAf, t);
       }
     };
-    this.W4f = async t => {
-      t = this.hCf.GetProxyByDisplayIndex(t);
+    this.vWf = async t => {
+      t = this.jvf.GetProxyByDisplayIndex(t);
       if (t) {
-        if (!this.Q4f()) {
-          this.j4f = true;
+        if (!this.yWf()) {
+          this.CWf = true;
           this.GetVerticalLayout(5)?.SetHeightFitToChildren(false);
         }
         await t?.PlayOptionHideAnimationAsync();
       }
     };
-    this.K4f = (t, i) => {
+    this.SWf = (t, i) => {
       if (t === 1) {
-        this.hCf.GetProxyByDisplayIndex(i)?.StopOptionHideAnimation();
-        this.j4f = false;
+        this.jvf.GetProxyByDisplayIndex(i)?.StopOptionHideAnimation();
+        this.CWf = false;
         this.GetVerticalLayout(5)?.SetHeightFitToChildren(true);
       }
     };
-    this.X4f = async t => {
+    this.MWf = async t => {
       var i;
-      var s = this.hCf.GetProxyByDisplayIndex(t);
-      if (s && (i = this.ubf.ChatDataList[t]) !== undefined) {
+      var s = this.jvf.GetProxyByDisplayIndex(t);
+      if (s && (i = this.VAf.ChatDataList[t]) !== undefined) {
         s = s;
-        this.cbf[t].Data = i;
+        this.HAf[t].Data = i;
         s.Refresh(i);
         if (this.OnAfterOneMsgShow) {
-          t = ModelManager_1.ModelManager.PhoneMsgModel.GetLastChatTextByDisplayData(this.ubf);
+          t = ModelManager_1.ModelManager.PhoneMsgModel.GetLastChatTextByDisplayData(this.VAf);
           this.OnAfterOneMsgShow(t);
         }
         await s.PlayChatContentAnimationAsync(true);
       }
     };
-    this.Y4f = (t, i) => {
-      if (t === 1 && (t = this.hCf.GetProxyByDisplayIndex(i))) {
+    this.EWf = (t, i) => {
+      if (t === 1 && (t = this.jvf.GetProxyByDisplayIndex(i))) {
         t?.StopChatContentAnimation(true);
       }
     };
-    this.GOf = async t => {
-      this.z4f(t);
-      this.J4f(t);
-      this.fbf();
-      this.gbf();
+    this.K8f = async t => {
+      this.IWf(t);
+      this.TWf(t);
+      this.WAf();
+      this.QAf();
       return Promise.resolve();
     };
-    this.FOf = (t, i) => {
+    this.X8f = (t, i) => {
       if (t === 1) {
         this.CancelAllAsyncTask();
       }
     };
-    this.IPf = async () => {
+    this.l2f = async () => {
       var t;
       var i;
-      if ((await ControllerHolder_1.ControllerHolder.PhoneMsgController.ShortMessageReceiveAsync(this.ubf.ShortMsgId)) && (i = this.ubf?.ChatDataList) && (t = i[i.length - 1]) && t.ChatContentType === 2 && t.ContentType === 6 && (t.IsFinish = true, i = this.hCf.GetProxyByDisplayIndex(i.length - 1))) {
+      if ((await ControllerHolder_1.ControllerHolder.PhoneMsgController.ShortMessageReceiveAsync(this.VAf.ShortMsgId)) && (i = this.VAf?.ChatDataList) && (t = i[i.length - 1]) && t.ChatContentType === 2 && t.ContentType === 6 && (t.IsFinish = true, i = this.jvf.GetProxyByDisplayIndex(i.length - 1))) {
         i.Refresh(t);
       }
     };
-    this.Z4f = (t, i) => {
-      if (this.ubf.ChatDataList[t] !== undefined) {
-        this.dbf();
-        this.MPf(t, i);
-        this.NOf(t);
+    this.bWf = (t, i) => {
+      if (this.VAf.ChatDataList[t] !== undefined) {
+        this.jAf();
+        this.a2f(t, i);
+        this.Y8f(t);
       }
     };
     this.LogReport = (t, i) => {
@@ -263,82 +263,82 @@ class PhoneSystemChatPanel extends UiPanelBase_1.UiPanelBase {
   }
   OnStart() {
     var t = new Map([[0, this.GetItem(7)], [1, this.GetItem(8)], [2, this.GetItem(9)], [3, this.GetItem(10)], [4, this.GetItem(11)], [5, this.GetItem(12)], [6, this.GetItem(13)]]);
-    this.hCf = new MultiTemplateComponent_1.MultiTemplateComponent(this.GetVerticalLayout(5).RootUIComp, t);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPhoneMsgChatShowChange, this.Mxf);
+    this.jvf = new MultiTemplateComponent_1.MultiTemplateComponent(this.GetVerticalLayout(5).RootUIComp, t);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPhoneMsgChatShowChange, this._Ff);
     var t = this.GetText(0);
     t.bGameRichText = true;
     t.richText = true;
   }
   OnBeforeShow() {
     this.Rqe = TickSystem_1.TickSystem.Add(this.J_, "PhoneSystemChatPanel", 0, true, undefined, true);
-    this.GetScrollViewWithScrollbar(4).OnLateUpdate.Bind(this.Hwf);
-    this.Mxf();
+    this.GetScrollViewWithScrollbar(4).OnLateUpdate.Bind(this.dUf);
+    this._Ff();
   }
   OnBeforeHide() {
-    this.TPf();
-    this.jwf();
+    this._2f();
+    this.mUf();
     this.GetScrollViewWithScrollbar(4).OnLateUpdate.Unbind();
   }
   OnBeforeDestroy() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPhoneMsgChatShowChange, this.Mxf);
-    this.jwf();
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPhoneMsgChatShowChange, this._Ff);
+    this.mUf();
   }
-  Q4f() {
+  yWf() {
     var t;
     var i = this.GetScrollViewWithScrollbar(4);
     return !!i && !!i.IsValid() && !!(t = this.GetVerticalLayout(5)?.RootUIComp) && !!t.IsValid() && (i = i.RootUIComp.GetHeight(), t.GetHeight() < i);
   }
-  $4f() {
+  pWf() {
     var t;
     var i = this.GetVerticalLayout(5)?.RootUIComp;
-    return !!i && !!i.IsValid() && !!(t = this.hCf?.GetItemByDisplayIndex(this.cbf.length - 1)) && !!t.IsValid() && (i = i.GetHeight(), t.GetRelativeTransform().GetLocation().Y + t.GetLocalSpaceBottom() < -i);
+    return !!i && !!i.IsValid() && !!(t = this.jvf?.GetItemByDisplayIndex(this.HAf.length - 1)) && !!t.IsValid() && (i = i.GetHeight(), t.GetRelativeTransform().GetLocation().Y + t.GetLocalSpaceBottom() < -i);
   }
-  jwf() {
+  mUf() {
     if (this.Rqe) {
       TickSystem_1.TickSystem.Remove(this.Rqe.Id);
       this.Rqe = undefined;
     }
   }
   UpdateChatDialogData() {
-    if (this.ubf) {
-      for (const t of this.ubf.ChatDataList) {
-        t.ChatDialogId = this.ubf.ChatDialogId;
+    if (this.VAf) {
+      for (const t of this.VAf.ChatDataList) {
+        t.ChatDialogId = this.VAf.ChatDialogId;
       }
     }
   }
   UpdateChatScrollViewData() {
-    if (this.ubf) {
+    if (this.VAf) {
       var t;
-      var i = this.ubf.ChatDataList;
-      this.cbf.length = 0;
-      var s = this.ubf.ReadIndex;
+      var i = this.VAf.ChatDataList;
+      this.HAf.length = 0;
+      var s = this.VAf.ReadIndex;
       if (!(s < 0)) {
         for (let t = 0; t <= s; t++) {
           var e = i[t];
-          var e = this.lCf(e);
+          var e = this.$vf(e);
           if (e) {
-            this.cbf.push(e);
+            this.HAf.push(e);
           }
         }
-        if (this.ubf.IsFinished()) {
+        if (this.VAf.IsFinished()) {
           t = new PhoneSystemChatItem_1.EndLineChatGridData(true);
-          this.cbf.push(t);
+          this.HAf.push(t);
         }
       }
     }
   }
   RefreshChatShow() {
     this.UpdateChatDialogData();
-    this.Iaf();
-    this.Taf();
+    this.zlf();
+    this.Jlf();
   }
-  Iaf() {
-    if (!((this.ubf?.ChatDialogId ?? 0) <= 0)) {
-      this.Aaf();
+  zlf() {
+    if (!((this.VAf?.ChatDialogId ?? 0) <= 0)) {
+      this.o1f();
     }
   }
-  Taf() {
-    var t = this.ubf?.ChatBgId ?? 0;
+  Jlf() {
+    var t = this.VAf?.ChatBgId ?? 0;
     if (!(t <= 0)) {
       if (t = ConfigManager_1.ConfigManager.PhoneMsgConfig.GetChatBgConfig(t)) {
         this.SetTextureByPath(t.BgPath, this.GetTexture(6));
@@ -346,31 +346,31 @@ class PhoneSystemChatPanel extends UiPanelBase_1.UiPanelBase {
     }
   }
   RefreshByData(t) {
-    if (this.ubf) {
-      this.EWf();
+    if (this.VAf) {
+      this.fng();
     }
     this.Reset();
-    this.ubf = t;
-    this.Daf();
+    this.VAf = t;
+    this.n1f();
     this.UpdateChatScrollViewData();
-    this.Aaf();
+    this.o1f();
     this.GetVerticalLayout(5)?.SetHeightFitToChildren(true);
-    this.Pbf(this.ubf);
-    if (!this.ubf.IsAllChatRead()) {
-      this.dbf();
-      this.fbf();
-      this.gbf();
+    this.aDf(this.VAf);
+    if (!this.VAf.IsAllChatRead()) {
+      this.jAf();
+      this.WAf();
+      this.QAf();
     }
   }
-  async TPf() {
-    if (this.ubf) {
-      await this.Pbf(this.ubf);
+  async _2f() {
+    if (this.VAf) {
+      await this.aDf(this.VAf);
     }
   }
-  async EWf() {
-    var t = this.ubf;
+  async fng() {
+    var t = this.VAf;
     if (t) {
-      await this.TPf();
+      await this._2f();
       this.OnBeforeMsgChange?.(t.ShortMsgId);
     }
   }
@@ -378,60 +378,60 @@ class PhoneSystemChatPanel extends UiPanelBase_1.UiPanelBase {
     this.CancelAllAsyncTask();
     this.GetItem(14)?.SetUIActive(false);
     this.sye = false;
-    this.Owf = false;
-    this.Fwf = false;
-    this.Gwf = false;
-    this.j4f = false;
-    this.s6f = false;
+    this.hUf = false;
+    this._Uf = false;
+    this.lUf = false;
+    this.CWf = false;
+    this.vzf = false;
   }
-  fbf() {
-    for (let t = this.ubf.ReadIndex + 1; t < this.ubf.ChatDataList.length; t++) {
-      this.Abf(t);
+  WAf() {
+    for (let t = this.VAf.ReadIndex + 1; t < this.VAf.ChatDataList.length; t++) {
+      this.hDf(t);
     }
-    var t = !this.ubf.IsLastOption();
+    var t = !this.VAf.IsLastOption();
     if (t) {
-      this.Dbf();
+      this.lDf();
     }
-    this.xbf(this.ubf);
+    this.uDf(this.VAf);
     if (t) {
-      this.Bbf();
+      this.cDf();
     }
   }
-  Abf(t) {
-    var i = this.ubf.ChatDataList[t];
+  hDf(t) {
+    var i = this.VAf.ChatDataList[t];
     var s = i.ChatContentType;
-    this.jKf(t);
+    this.Zlg(t);
     if (s === 2 && i.ContentType === 4) {
-      this.xbf(this.ubf);
+      this.uDf(this.VAf);
     }
-    this.VOf(t);
+    this.z8f(t);
     switch (s) {
       case 0:
-        this.HOf(t);
-        this.jOf(t);
+        this.J8f(t);
+        this.Z8f(t);
         break;
       case 1:
-        this.jOf(t);
+        this.Z8f(t);
         break;
       case 2:
         switch (i.ContentType) {
           case 7:
-            this.$Of(t);
+            this.e6f(t);
             break;
           case 4:
-            this.WOf(t);
+            this.t6f(t);
             break;
           case 5:
-            this.QOf(t);
+            this.i6f(t);
             break;
           case 6:
-            this.KOf(t);
+            this.r6f(t);
         }
     }
   }
-  Daf() {
+  n1f() {
     var t;
-    if (this.ubf && (t = ConfigManager_1.ConfigManager.PhoneMsgConfig.GetPhoneMsgConfig(this.ubf.ShortMsgId).WhichChat, t = ConfigManager_1.ConfigManager.PhoneMsgConfig.GetChatPartnerConfig(t))) {
+    if (this.VAf && (t = ConfigManager_1.ConfigManager.PhoneMsgConfig.GetPhoneMsgConfig(this.VAf.ShortMsgId).WhichChat, t = ConfigManager_1.ConfigManager.PhoneMsgConfig.GetChatPartnerConfig(t))) {
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), t.Name);
       this.GetText(1).SetUIActive(!t.IsGroupChat);
       this.GetItem(2).SetUIActive(t.IsGroupChat);
@@ -443,16 +443,16 @@ class PhoneSystemChatPanel extends UiPanelBase_1.UiPanelBase {
       } else {
         this.GetText(1).SetUIActive(false);
       }
-      this.Taf();
+      this.Jlf();
     }
   }
-  lCf(t) {
+  $vf(t) {
     switch (t.ChatContentType) {
       case 0:
         return new PhoneSystemChatItem_1.OtherChatGridData(t);
       case 1:
         var i = new PhoneSystemChatItem_1.SelfChatGridData(t);
-        i.OnOptionItemClickDelegate = this.Z4f;
+        i.OnOptionItemClickDelegate = this.bWf;
         return i;
       case 2:
         switch (t.ContentType) {
@@ -464,132 +464,132 @@ class PhoneSystemChatPanel extends UiPanelBase_1.UiPanelBase {
             return new PhoneSystemChatItem_1.BirthdayChatGridData(t);
           case 6:
             var s = new PhoneSystemChatItem_1.RewardChatGridData(t);
-            s.OnRewardClick = this.jtf;
+            s.OnRewardClick = this.zrf;
             return s;
           default:
             return;
         }
     }
   }
-  Aaf() {
-    this.hCf.RefreshByData(this.cbf);
-    this.s6f = true;
+  o1f() {
+    this.jvf.RefreshByData(this.HAf);
+    this.vzf = true;
   }
-  Vwf(t, i = true) {
+  cUf(t, i = true) {
     var s;
-    if (this.hCf && (s = this.GetScrollViewWithScrollbar(4)) && (t = this.hCf.GetItemByDisplayIndex(t))) {
+    if (this.jvf && (s = this.GetScrollViewWithScrollbar(4)) && (t = this.jvf.GetItemByDisplayIndex(t))) {
       s.ScrollTo(t, i);
     }
   }
-  jKf(t) {
-    var i = new UiAsyncTask_1.UiAsyncTask("ChatPerformance", async () => this.HKf(t));
+  Zlg(t) {
+    var i = new UiAsyncTask_1.UiAsyncTask("ChatPerformance", async () => this.Jlg(t));
     this.RunAsyncTask(i);
   }
-  VOf(t) {
-    var i = new UiAsyncTask_1.UiAsyncTask("ChatPerformance", async () => this.pOf(t));
+  z8f(t) {
+    var i = new UiAsyncTask_1.UiAsyncTask("ChatPerformance", async () => this.R8f(t));
     this.RunAsyncTask(i);
   }
-  HOf(i) {
-    var t = new UiAsyncTask_1.UiAsyncTask("ChatPerformance", async () => this.vOf(i), t => {
-      this.XOf(t, i);
+  J8f(i) {
+    var t = new UiAsyncTask_1.UiAsyncTask("ChatPerformance", async () => this.L8f(i), t => {
+      this.o6f(t, i);
     });
     this.RunAsyncTask(t);
   }
-  XOf(t, i) {
-    if (t === 1 && this.hCf.GetTemplateIndexByDisplayIndex(i) === 0) {
-      if (t = this.hCf.GetProxyByDisplayIndex(i)) {
+  o6f(t, i) {
+    if (t === 1 && this.jvf.GetTemplateIndexByDisplayIndex(i) === 0) {
+      if (t = this.jvf.GetProxyByDisplayIndex(i)) {
         t.StopInputtingAnimation();
       }
-      this.kOf();
+      this.$8f();
     }
   }
-  jOf(i) {
-    var t = new UiAsyncTask_1.UiAsyncTask("ChatPerformance", async () => this.yOf(i), t => {
-      this.YOf(t, i);
+  Z8f(i) {
+    var t = new UiAsyncTask_1.UiAsyncTask("ChatPerformance", async () => this.w8f(i), t => {
+      this.n6f(t, i);
     });
     this.RunAsyncTask(t);
   }
-  YOf(t, i) {
-    if (t === 1 && ((t = this.hCf.GetTemplateIndexByDisplayIndex(i)) === 0 || t === 1)) {
-      if (t = this.hCf.GetProxyByDisplayIndex(i)) {
+  n6f(t, i) {
+    if (t === 1 && ((t = this.jvf.GetTemplateIndexByDisplayIndex(i)) === 0 || t === 1)) {
+      if (t = this.jvf.GetProxyByDisplayIndex(i)) {
         t.StopChatContentAnimation();
       }
-      this.kOf();
+      this.$8f();
     }
   }
-  $Of(i) {
-    var t = new UiAsyncTask_1.UiAsyncTask("ChatPerformance", async () => this.SOf(i), t => {
-      this.zOf(t, i);
+  e6f(i) {
+    var t = new UiAsyncTask_1.UiAsyncTask("ChatPerformance", async () => this.P8f(i), t => {
+      this.s6f(t, i);
     });
     this.RunAsyncTask(t);
   }
-  zOf(t, i) {
-    if (t === 1 && this.hCf.GetTemplateIndexByDisplayIndex(i) === 2) {
-      if (t = this.hCf.GetProxyByDisplayIndex(i)) {
+  s6f(t, i) {
+    if (t === 1 && this.jvf.GetTemplateIndexByDisplayIndex(i) === 2) {
+      if (t = this.jvf.GetProxyByDisplayIndex(i)) {
         t.StopTipsAnimation();
       }
-      this.kOf();
+      this.$8f();
     }
   }
-  KOf(i) {
-    var t = new UiAsyncTask_1.UiAsyncTask("ChatPerformance", async () => this.MOf(i), t => {
-      this.JOf(t, i);
+  r6f(i) {
+    var t = new UiAsyncTask_1.UiAsyncTask("ChatPerformance", async () => this.A8f(i), t => {
+      this.a6f(t, i);
     });
     this.RunAsyncTask(t);
   }
-  JOf(t, i) {
-    if (t === 1 && this.hCf.GetTemplateIndexByDisplayIndex(i) === 5) {
-      if (t = this.hCf.GetProxyByDisplayIndex(i)) {
+  a6f(t, i) {
+    if (t === 1 && this.jvf.GetTemplateIndexByDisplayIndex(i) === 5) {
+      if (t = this.jvf.GetProxyByDisplayIndex(i)) {
         t.StopRewardAnimation();
       }
-      this.kOf();
+      this.$8f();
     }
   }
-  QOf(i) {
-    var t = new UiAsyncTask_1.UiAsyncTask("ChatPerformance", async () => this.EOf(i), t => {
-      this.ZOf(t, i);
+  i6f(i) {
+    var t = new UiAsyncTask_1.UiAsyncTask("ChatPerformance", async () => this.D8f(i), t => {
+      this.h6f(t, i);
     });
     this.RunAsyncTask(t);
   }
-  ZOf(t, i) {
-    if (t === 1 && this.hCf.GetTemplateIndexByDisplayIndex(i) === 4) {
-      if (t = this.hCf.GetProxyByDisplayIndex(i)) {
+  h6f(t, i) {
+    if (t === 1 && this.jvf.GetTemplateIndexByDisplayIndex(i) === 4) {
+      if (t = this.jvf.GetProxyByDisplayIndex(i)) {
         t.StopBirthdayAnimation();
       }
-      this.kOf();
+      this.$8f();
     }
   }
-  WOf(i) {
-    var t = new UiAsyncTask_1.UiAsyncTask("ChatPerformance", async () => this.IOf(i), t => {
-      this.eGf(t, i);
+  t6f(i) {
+    var t = new UiAsyncTask_1.UiAsyncTask("ChatPerformance", async () => this.U8f(i), t => {
+      this.l6f(t, i);
     });
     this.RunAsyncTask(t);
   }
-  eGf(t, i) {
-    if (t === 1 && this.hCf.GetTemplateIndexByDisplayIndex(i) === 3) {
-      if (t = this.hCf.GetProxyByDisplayIndex(i)) {
+  l6f(t, i) {
+    if (t === 1 && this.jvf.GetTemplateIndexByDisplayIndex(i) === 3) {
+      if (t = this.jvf.GetProxyByDisplayIndex(i)) {
         t.StopTaskAnimation();
       }
-      this.kOf();
+      this.$8f();
     }
   }
-  Dbf() {
-    var t = new UiAsyncTask_1.UiAsyncTask("ChatPerformance", this.Tbf, this.BOf);
+  lDf() {
+    var t = new UiAsyncTask_1.UiAsyncTask("ChatPerformance", this.iDf, this.j8f);
     this.RunAsyncTask(t);
   }
-  dbf() {
-    var t = new UiAsyncTask_1.UiAsyncTask("ChatPerformance", this.bbf, this.qOf);
+  jAf() {
+    var t = new UiAsyncTask_1.UiAsyncTask("ChatPerformance", this.rDf, this.W8f);
     this.RunAsyncTask(t);
   }
-  gbf() {
-    var t = new UiAsyncTask_1.UiAsyncTask("ChatPerformance", this.wbf, this.OOf);
+  QAf() {
+    var t = new UiAsyncTask_1.UiAsyncTask("ChatPerformance", this.oDf, this.Q8f);
     this.RunAsyncTask(t);
   }
-  xbf(t) {
-    var i = new UiAsyncTask_1.UiAsyncTask("ChatPerformance", async () => this.Lbf(t));
+  uDf(t) {
+    var i = new UiAsyncTask_1.UiAsyncTask("ChatPerformance", async () => this.sDf(t));
     this.RunAsyncTask(i);
   }
-  async Pbf(t) {
+  async aDf(t) {
     var i = t.IsFinished();
     var s = t.ShortMsgId;
     await PhoneMsgController_1.PhoneMsgController.UpdateProgressOfOneMessageAsync(s, t.ReadIndex, i);
@@ -597,45 +597,45 @@ class PhoneSystemChatPanel extends UiPanelBase_1.UiPanelBase {
       await ControllerHolder_1.ControllerHolder.PhoneMsgController.SetOneMessageAsReadAsync(s);
     }
   }
-  Bbf() {
-    var t = new UiAsyncTask_1.UiAsyncTask("ChatPerformance", this.Rbf);
+  cDf() {
+    var t = new UiAsyncTask_1.UiAsyncTask("ChatPerformance", this.nDf);
     this.RunAsyncTask(t);
   }
-  MPf(t, i) {
-    var s = new UiAsyncTask_1.UiAsyncTask("ChatPerformance", async () => this.EPf(t, i));
+  a2f(t, i) {
+    var s = new UiAsyncTask_1.UiAsyncTask("ChatPerformance", async () => this.h2f(t, i));
     this.RunAsyncTask(s);
   }
-  z4f(i) {
-    var t = new UiAsyncTask_1.UiAsyncTask("ChatPerformance", async () => this.W4f(i), t => {
-      this.K4f(t, i);
+  IWf(i) {
+    var t = new UiAsyncTask_1.UiAsyncTask("ChatPerformance", async () => this.vWf(i), t => {
+      this.SWf(t, i);
     });
     this.RunAsyncTask(t);
   }
-  J4f(i) {
-    var t = new UiAsyncTask_1.UiAsyncTask("ChatPerformance", async () => this.X4f(i), t => {
-      this.Y4f(t, i);
+  TWf(i) {
+    var t = new UiAsyncTask_1.UiAsyncTask("ChatPerformance", async () => this.MWf(i), t => {
+      this.EWf(t, i);
     });
     this.RunAsyncTask(t);
   }
-  NOf(i) {
-    var t = new UiAsyncTask_1.UiAsyncTask("ChatPerformance", async () => this.GOf(i), t => {
-      this.FOf(t, i);
+  Y8f(i) {
+    var t = new UiAsyncTask_1.UiAsyncTask("ChatPerformance", async () => this.K8f(i), t => {
+      this.X8f(t, i);
     });
     this.RunAsyncTask(t);
   }
-  yPf() {
-    var t = new UiAsyncTask_1.UiAsyncTask("ChatPerformance", this.IPf);
+  n2f() {
+    var t = new UiAsyncTask_1.UiAsyncTask("ChatPerformance", this.l2f);
     this.RunAsyncTask(t);
   }
-  async vbf() {
-    this.Fwf = true;
-    this.Owf = true;
+  async YAf() {
+    this._Uf = true;
+    this.hUf = true;
     var t = this.GetScrollViewWithScrollbar(4).ScrollToDuration * 1000;
     await TimerSystem_1.GameplayTimerSystem.Wait(t);
   }
-  kOf() {
-    this.Fwf = false;
-    this.Owf = false;
+  $8f() {
+    this._Uf = false;
+    this.hUf = false;
     this.GetScrollViewWithScrollbar(4).StopMovement();
   }
 }

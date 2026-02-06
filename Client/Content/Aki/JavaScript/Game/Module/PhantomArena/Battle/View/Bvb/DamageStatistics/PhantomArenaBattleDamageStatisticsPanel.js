@@ -39,29 +39,29 @@ class PhantomArenaBattleDamageStatisticsPanel extends UiPanelBase_1.UiPanelBase 
         this.GetItem(2).SetUIActive(false);
       }
     };
-    this.o3m = () => this.SelectRankType !== 1;
-    this.n3m = () => this.SelectRankType !== 2;
-    this.s3m = t => {
+    this.E4m = () => this.SelectRankType !== 1;
+    this.I4m = () => this.SelectRankType !== 2;
+    this.T4m = t => {
       if (t === 1) {
         this.SelectRankType = 1;
         this.GetExtendToggle(1).SetToggleStateForce(0);
         this.Dke();
       }
     };
-    this.a3m = t => {
+    this.b4m = t => {
       if (t === 1) {
         this.SelectRankType = 2;
         this.GetExtendToggle(0).SetToggleStateForce(0);
         this.Dke();
       }
     };
-    this.h3m = t => {
+    this.R4m = t => {
       var i = this.GetItem(3).Height;
       let s = 0;
       s = t === 1 ? this.OriginalHeight + (this.GridItemHeight + ITEM_HEIGHT_INTERVAL) * (this.LayoutItemMap.size - 1) : this.OriginalHeight + (this.GridItemHeight + ITEM_HEIGHT_INTERVAL) * (LIMIT_MIN_NUM - 1);
       this.HeightTween.PlayTween(i, s, TWEEN_DURATION, this.LerpCurve);
     };
-    this.l3m = t => {
+    this.w4m = t => {
       if (t === 1) {
         this.Sequence.StopSequenceByKey("Close", false, true);
         this.GetItem(2).SetUIActive(true);
@@ -71,7 +71,7 @@ class PhantomArenaBattleDamageStatisticsPanel extends UiPanelBase_1.UiPanelBase 
         this.Sequence.PlaySequence("Close");
       }
     };
-    this._3m = (t, i, s, e) => {
+    this.L4m = (t, i, s, e) => {
       if (e === 2) {
         this.AllInjury += i;
         this.DamageDataMap.get(2).get(t).Damage += i;
@@ -83,62 +83,62 @@ class PhantomArenaBattleDamageStatisticsPanel extends UiPanelBase_1.UiPanelBase 
         this.IsNotifyValueChange = true;
       }
     };
-    this.u3m = () => this.SelectRankType === 1 ? this.AllDamage : this.AllInjury;
-    this.c3m = t => {
+    this.P4m = () => this.SelectRankType === 1 ? this.AllDamage : this.AllInjury;
+    this.A4m = t => {
       return (this.SelectRankType === 1 ? this.DamageDataMap.get(1) : this.DamageDataMap.get(2)).get(t).Damage;
     };
-    this.Hjm = t => {
+    this.NWm = t => {
       this.ContentItem.SetHeight(t);
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UIExtendToggle], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIExtendToggle], [6, UE.UIExtendToggle]];
-    this.BtnBindInfo = [[0, this.s3m], [1, this.a3m], [5, this.h3m], [6, this.l3m]];
+    this.BtnBindInfo = [[0, this.T4m], [1, this.b4m], [5, this.R4m], [6, this.w4m]];
   }
   async OnBeforeStartAsync() {
-    await this.d3m();
+    await this.D4m();
     await this.dAn();
   }
   OnStart() {
-    this.jjm();
-    this.m3m();
+    this.VWm();
+    this.U4m();
     this.Mqt();
-    this.f3m();
-    this.g3m();
+    this.x4m();
+    this.B4m();
   }
   OnBeforeDestroy() {
     this.Sequence.Clear();
     this.HeightTween.Destroy();
   }
   Tick(t) {
-    this.C3m();
+    this.k4m();
   }
-  jjm() {
+  VWm() {
     this.HeightTween = new LguiIntTween_1.LguiIntTween();
-    this.HeightTween.BindUpdateTween(this.Hjm);
+    this.HeightTween.BindUpdateTween(this.NWm);
   }
-  m3m() {
+  U4m() {
     this.Sequence = new UiSequencePlayer_1.UiSequencePlayer(this.RootItem);
     this.Sequence.BindOnEndSequenceEvent(this.vK1);
   }
   Mqt() {
     var t = this.GetExtendToggle(0);
     var i = this.GetExtendToggle(1);
-    t.CanExecuteChange.Bind(this.o3m);
-    i.CanExecuteChange.Bind(this.n3m);
+    t.CanExecuteChange.Bind(this.E4m);
+    i.CanExecuteChange.Bind(this.I4m);
     var t = ModelManager_1.ModelManager.PhantomArenaBattleModel.BattleData.GetAllEntityIdList();
     this.GetExtendToggle(5).RootUIComp.SetUIActive(t.length > LIMIT_MIN_NUM);
     this.GetExtendToggle(0).SetToggleState(1, true);
   }
-  f3m() {
+  x4m() {
     this.ContentItem = this.GetItem(3);
     this.OriginalHeight = this.ContentItem.Height;
     this.ContentItem.SetHeight(this.OriginalHeight + (this.GridItemHeight + ITEM_HEIGHT_INTERVAL) * (LIMIT_MIN_NUM - 1));
   }
-  g3m() {
+  B4m() {
     this.GetItem(4).SetUIActive(false);
   }
-  async d3m() {
+  async D4m() {
     const i = new CustomPromise_1.CustomPromise();
     var t = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("RacingBetsRankChangeCurve");
     ResourceSystem_1.ResourceSystem.LoadAsync(t, UE.CurveFloat, t => {
@@ -152,7 +152,7 @@ class PhantomArenaBattleDamageStatisticsPanel extends UiPanelBase_1.UiPanelBase 
     return LguiUtil_1.LguiUtil.CopyItem(t, this.GetItem(3));
   }
   async dAn() {
-    this.p3m();
+    this.q4m();
     this.AllDamage = 0;
     this.AllInjury = 0;
     this.DamageDataMap.clear();
@@ -177,14 +177,14 @@ class PhantomArenaBattleDamageStatisticsPanel extends UiPanelBase_1.UiPanelBase 
         Count: t
       };
       s.set(a, r);
-      h.push(this.v3m(a, t));
+      h.push(this.O4m(a, t));
     }
     await Promise.all(h);
   }
-  p3m() {
+  q4m() {
     this.GridItemHeight = this.GetItem(4).Height;
   }
-  C3m() {
+  k4m() {
     if (this.IsNotifyValueChange) {
       this.IsNotifyValueChange = false;
       this.Dke();
@@ -202,12 +202,12 @@ class PhantomArenaBattleDamageStatisticsPanel extends UiPanelBase_1.UiPanelBase 
       s.RefreshCount();
     }
   }
-  async v3m(t, i) {
+  async O4m(t, i) {
     var s = this.RT1().GetOwner();
     var e = new PhantomArenaBattleDamageStatisticsItem_1.PhantomArenaBattleDamageStatisticsItem();
-    e.GetAllCount = this.u3m;
-    e.GetCount = this.c3m;
-    e.NotifyValueChange = this._3m;
+    e.GetAllCount = this.P4m;
+    e.GetCount = this.A4m;
+    e.NotifyValueChange = this.L4m;
     await e.CreateThenShowByActorAsync(s);
     var s = this.DefaultOffsetY - i * (this.GridItemHeight + ITEM_HEIGHT_INTERVAL);
     e.Init(t, this.LerpCurve, s);

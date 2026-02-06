@@ -25,6 +25,7 @@ const InputManager_1 = require("../../../Ui/Input/InputManager");
 const UiManager_1 = require("../../../Ui/UiManager");
 const GameModeController_1 = require("../../../World/Controller/GameModeController");
 const CommonQteGroupContext_1 = require("./CommonQteGroupContext");
+const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const EXTRA_EXPIRED_TIME = 5000;
 const MAX_EXPIRED_TIME = 60000;
 class CommonQteController extends ControllerBase_1.ControllerBase {
@@ -475,16 +476,30 @@ class CommonQteController extends ControllerBase_1.ControllerBase {
       }, MathUtils_1.MathUtils.Clamp(t, TimerSystem_1.MIN_TIME, TimerSystem_1.MAX_TIME));
     }
   }
+  static PlayGamepadShake() {
+    var t;
+    if (this.nx && (t = this.nx.Resource?.GamepadShake) && this.nx.Type) {
+      ControllerHolder_1.ControllerHolder.GamepadController.TriggerGamepadShakeByQte(this.nx.Type, t);
+    }
+  }
+  static StopGamepadShake() {
+    var t;
+    if (this.nx && (t = this.nx.Resource?.GamepadShake) && this.nx.Type) {
+      ControllerHolder_1.ControllerHolder.GamepadController.StopQteGamepadShake(this.nx.Type, t);
+    }
+  }
   static PlayExtraEffect(t) {
     if (this.nx && t === this.nx.HandleId) {
       this.PlayScreenEffect();
       this.PlayCameraShake();
+      this.PlayGamepadShake();
     }
   }
   static StopExtraEffect(t) {
     if (this.nx && t === this.nx.HandleId) {
       this.Tod();
       this.bod(false);
+      this.StopGamepadShake();
     }
   }
   static PlayQteAudio(t, e) {
@@ -531,16 +546,16 @@ class CommonQteController extends ControllerBase_1.ControllerBase {
       this.wfc = true;
       var o = new Set();
       var s = new Map();
-      for (const c of t) {
-        var r = ModelManager_1.ModelManager.CommonQteModel?.GetCommonQteViewName(c);
+      for (const g of t) {
+        var r = ModelManager_1.ModelManager.CommonQteModel?.GetCommonQteViewName(g);
         let t = undefined;
         if (!r) {
-          t = ModelManager_1.ModelManager.CommonQteModel?.GetCommonQteItemName(c);
+          t = ModelManager_1.ModelManager.CommonQteModel?.GetCommonQteItemName(g);
         }
         if (r && !i) {
           o.add(r);
         } else if (t) {
-          s.set(c, t);
+          s.set(g, t);
         }
       }
       var a = Array.from(o);
@@ -551,16 +566,16 @@ class CommonQteController extends ControllerBase_1.ControllerBase {
         }
       }
       await Promise.allSettled(n);
-      var m = Info_1.Info.IsBuildDevelopmentOrDebug;
-      var h = [];
+      var h = Info_1.Info.IsBuildDevelopmentOrDebug;
+      var m = [];
       for (const u of a) {
-        h.push(UiManager_1.UiManager.OpenViewAsync(u));
+        m.push(UiManager_1.UiManager.OpenViewAsync(u));
       }
-      var _ = await Promise.allSettled(h);
+      var _ = await Promise.allSettled(m);
       for (let t = 0; t < _.length; t++) {
         var l = a[t];
         var d = _[t];
-        if (d.status === "fulfilled" && d.value !== undefined && l !== undefined && (d = d.value, this.sS1.set(l, UiManager_1.UiManager.GetView(d)), m)) {
+        if (d.status === "fulfilled" && d.value !== undefined && l !== undefined && (d = d.value, this.sS1.set(l, UiManager_1.UiManager.GetView(d)), h)) {
           this.CommonQteViewMapDebug ||= new Map();
           this.CommonQteViewMapDebug.set(l, UiManager_1.UiManager.GetView(d));
         }
@@ -570,7 +585,7 @@ class CommonQteController extends ControllerBase_1.ControllerBase {
       var v = [];
       for ([Q, C] of s.entries()) {
         var f = ModelManager_1.ModelManager.CommonQteModel?.CreateCommonQteItem(C);
-        if (f && (f.SetPreloadQte(Q), this.NXu.set(Q, f), v.push(f.CreateByResourceIdAsync(C)), m)) {
+        if (f && (f.SetPreloadQte(Q), this.NXu.set(Q, f), v.push(f.CreateByResourceIdAsync(C)), h)) {
           this.CommonQteItemMapDebug ||= new Map();
           this.CommonQteItemMapDebug.set(Q, f);
         }
@@ -579,13 +594,13 @@ class CommonQteController extends ControllerBase_1.ControllerBase {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("CommonQte", 67, "通用Qte预加载界面完成", ["HandleId", this.nx?.HandleId], ["qteIdList", t]);
       }
-      var g = [];
+      var c = [];
       for (const S of t) {
         for (const I of ModelManager_1.ModelManager.CommonQteModel.LoadQteResource(S)) {
-          g.push(I);
+          c.push(I);
         }
       }
-      await Promise.all(g);
+      await Promise.all(c);
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("CommonQte", 67, "通用Qte预加载全部完成", ["HandleId", this.nx?.HandleId], ["qteIdList", t]);
       }

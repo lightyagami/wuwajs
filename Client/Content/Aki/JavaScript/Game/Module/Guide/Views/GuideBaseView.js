@@ -18,7 +18,7 @@ const InputMappingsDefine_1 = require("../../../Ui/InputDistribute/InputMappings
 const UiManager_1 = require("../../../Ui/UiManager");
 const LoadingDefine_1 = require("../../Loading/LoadingDefine");
 const LguiUtil_1 = require("../../Util/LguiUtil");
-const guideConflictView = new Set(["MonthCardRewardView", "QuestRewardView", "ExploreRewardView", "CommonRewardView", "ItemTipsView", "ExploreDetailView", "TowerUnlockView", "TowerOverLockUnlockView", "PowerView", "ActivityRewardPopUpView", "RoleGenderChangeView", "ConfirmBoxView", "CdKeyInputView", "CompositeRewardView", "LogUploadView", "RacingBetsSuccessTip", "RacingBetsFailTip", "DangoAbyssInfoView", "PhantomArenaStartView", "TutorialPopView", "ResolutionListView", ...LoadingDefine_1.loadingViewList]);
+const guideConflictView = new Set(["MonthCardRewardView", "QuestRewardView", "ExploreRewardView", "CommonRewardView", "ItemTipsView", "ExploreDetailView", "TowerUnlockView", "TowerOverLockUnlockView", "PowerView", "ActivityRewardPopUpView", "RoleGenderChangeView", "ConfirmBoxView", "CdKeyInputView", "CompositeRewardView", "LogUploadView", "RacingBetsSuccessTip", "RacingBetsFailTip", "DangoAbyssInfoView", "PhantomArenaStartView", "TutorialPopView", "ResolutionListView", "HelpGuideView", ...LoadingDefine_1.loadingViewList]);
 class GuideBaseView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);

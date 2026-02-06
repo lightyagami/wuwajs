@@ -18,7 +18,7 @@ class SurvivorsRogueWeaponSettleItem extends GridProxyAbstract_1.GridProxyAbstra
     this.CBd = undefined;
     this.Data = undefined;
     this.rHd = new ScrollingNumberTool_1.ScrollingNumberTool();
-    this.X2m = false;
+    this.hqm = false;
     this.pBd = () => {
       return new SurvivorsRogueWeaponEvolveItem_1.SurvivorsRogueWeaponEvolveItem();
     };
@@ -52,7 +52,7 @@ class SurvivorsRogueWeaponSettleItem extends GridProxyAbstract_1.GridProxyAbstra
     }
   }
   PlayAnim() {
-    if (!this.X2m && !(this.X2m = true, !this.Data) && !this.Data.IsLock && !this.Data.IsDisable) {
+    if (!this.hqm && !(this.hqm = true, !this.Data) && !this.Data.IsLock && !this.Data.IsDisable) {
       this.l6d();
       this.rHd.StartScrolling();
     }

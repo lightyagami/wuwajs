@@ -85,7 +85,7 @@ class PhantomArenaBattleLoading extends UiTickViewBase_1.UiTickViewBase {
   OnAfterHide() {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPhantomArenaBattleLoadingHide);
   }
-  async qTm() {
+  async XTm() {
     var t = ModelManager_1.ModelManager.PhantomArenaBattleModel.ChallengeId;
     var t = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleChallengeConfig(t);
     await this.SetTextureAsync(t.BvbBattleLoadingBg, this.GetTexture(7));
@@ -139,7 +139,7 @@ class PhantomArenaBattleLoading extends UiTickViewBase_1.UiTickViewBase {
   }
   async OnBeforeStartAsync() {
     await ModelManager_1.ModelManager.PhantomArenaBattleModel.BattleData.PrepareLoadingPromise?.Promise;
-    await Promise.all([this.aU1(), this.hU1(), this.qTm()]);
+    await Promise.all([this.aU1(), this.hU1(), this.XTm()]);
     this.WaitEntityLoadFinish();
   }
   WaitEntityLoadFinish() {

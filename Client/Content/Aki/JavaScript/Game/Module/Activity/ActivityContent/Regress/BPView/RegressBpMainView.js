@@ -28,9 +28,9 @@ class RegressBpMainView extends ActivityRegressMainSubViewBase_1.ActivityRegress
     this.Ivt = undefined;
     this.Tvt = undefined;
     this.yvt = [];
-    this.KXf = undefined;
-    this.XXf = undefined;
-    this.YXf = undefined;
+    this.Pug = undefined;
+    this.Aug = undefined;
+    this.Dug = undefined;
     this.TDa = e => {
       if (e === ActivityRegressDefine_1.RECALL_SCORE_ITEM_ID) {
         this.R5e();
@@ -54,47 +54,47 @@ class RegressBpMainView extends ActivityRegressMainSubViewBase_1.ActivityRegress
       this.SequencePlayer?.StopSequenceByKey("Switch");
       this.SequencePlayer?.PlaySequence("Switch");
     };
-    this.UBf = () => {
+    this.ENf = () => {
       UiManager_1.UiManager.OpenView("RegressBpBuyLevelView");
     };
-    this.xBf = () => {
+    this.INf = () => {
       this.Tvt?.GetCurrentTabView()?.OnClickBtnClaimAll();
     };
-    this.BBf = () => {
+    this.TNf = () => {
       ModelManager_1.ModelManager.ActivityRegressModel.ActivityData.SetBpPayButtonRedDotChecked();
       UiManager_1.UiManager.OpenView("RegressBpPayView", undefined, (e, t) => {
         UiManager_1.UiManager.GetViewByName("ActivityRegressMainView")?.AddChildViewById(t);
       });
       this.Og();
     };
-    this.zXf = async (e, t, i, s) => {
+    this.Uug = async (e, t, i, s) => {
       if (e < t) {
-        await this.JXf(i, 1);
+        await this.xug(i, 1);
         this.Og();
         this.SequencePlayer?.PlaySequence("LevelUp");
-        await this.JXf(0, s);
+        await this.xug(0, s);
         UiManager_1.UiManager.OpenView("RegressBpLevelUpTipsView", {
           PrevLevel: e,
           CurLevel: t
         });
       } else {
-        await this.JXf(i, s);
+        await this.xug(i, s);
         this.Og();
       }
     };
-    this.ZXf = e => {
+    this.Bug = e => {
       var t = this.GetSprite(4);
       if (t) {
         t.SetFillAmount(e);
       }
     };
     this.tco = () => {
-      this.eYf();
+      this.kug();
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIText], [3, UE.UIText], [4, UE.UISprite], [5, UE.UIButtonComponent], [6, UE.UIItem], [7, UE.UIButtonComponent], [8, UE.UIButtonComponent], [9, UE.UIItem]];
-    this.BtnBindInfo = [[5, this.UBf], [7, this.xBf], [8, this.BBf]];
+    this.BtnBindInfo = [[5, this.ENf], [7, this.INf], [8, this.TNf]];
   }
   OnUpdate(e) {
     this.ZGe();
@@ -107,24 +107,24 @@ class RegressBpMainView extends ActivityRegressMainSubViewBase_1.ActivityRegress
     await this.Ivt.RefreshTabItemAsync(this.CreateTabItemDataByLength(this.yvt.length));
     this.Ivt.SelectToggleByIndex(0);
     this.Og();
-    this.XXf = (0, puerts_1.toManualReleaseDelegate)(this.ZXf);
+    this.Aug = (0, puerts_1.toManualReleaseDelegate)(this.Bug);
   }
   OnBeforeShow() {
     super.OnBeforeShow();
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnCommonItemCountAnyChange, this.TDa);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RegressBpExpAnim, this.zXf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RegressBpExpAnim, this.Uug);
     this.Og(true);
   }
   OnBeforeHide() {
     super.OnBeforeHide();
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnCommonItemCountAnyChange, this.TDa);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RegressBpExpAnim, this.zXf);
-    this.eYf();
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RegressBpExpAnim, this.Uug);
+    this.kug();
   }
   OnBeforeDestroy() {
     super.OnBeforeDestroy();
-    this.eYf();
-    (0, puerts_1.releaseManualReleaseDelegate)(this.ZXf);
+    this.kug();
+    (0, puerts_1.releaseManualReleaseDelegate)(this.Bug);
   }
   ZGe() {
     var e = ModelManager_1.ModelManager.ActivityRegressModel.ActivityData.GetCurLevelProgressData();
@@ -152,22 +152,22 @@ class RegressBpMainView extends ActivityRegressMainSubViewBase_1.ActivityRegress
     }
     return s;
   }
-  async JXf(e, t) {
-    this.eYf();
+  async xug(e, t) {
+    this.kug();
     var i = this.GetSprite(4);
-    if (i && this.XXf && (i.SetFillAmount(e), this.YXf?.SetResult(), this.YXf = new CustomPromise_1.CustomPromise(), this.KXf = UE.LTweenBPLibrary.FloatTo(GlobalData_1.GlobalData.World, this.XXf, e, t, EXP_BAR_ANIM_DURATION, 0, 12), this.KXf && this.KXf.OnCompleteCallBack.Bind(this.tco), this.YXf)) {
-      await this.YXf.Promise;
+    if (i && this.Aug && (i.SetFillAmount(e), this.Dug?.SetResult(), this.Dug = new CustomPromise_1.CustomPromise(), this.Pug = UE.LTweenBPLibrary.FloatTo(GlobalData_1.GlobalData.World, this.Aug, e, t, EXP_BAR_ANIM_DURATION, 0, 12), this.Pug && this.Pug.OnCompleteCallBack.Bind(this.tco), this.Dug)) {
+      await this.Dug.Promise;
     }
   }
-  eYf() {
-    if (this.YXf) {
-      this.YXf.SetResult();
-      this.YXf = undefined;
+  kug() {
+    if (this.Dug) {
+      this.Dug.SetResult();
+      this.Dug = undefined;
     }
-    if (this.KXf && this.KXf.IsValid()) {
-      this.KXf.Kill();
+    if (this.Pug && this.Pug.IsValid()) {
+      this.Pug.Kill();
     }
-    this.KXf = undefined;
+    this.Pug = undefined;
   }
 }
 exports.RegressBpMainView = RegressBpMainView;

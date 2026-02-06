@@ -46,6 +46,9 @@ class Achievement {
   get ExternalTrophyId() {
     return this.externaltrophyid();
   }
+  get GPExternalTrophyId() {
+    return this.gpexternaltrophyid();
+  }
   __init(t, i) {
     this.z7 = t;
     this.J7 = i;
@@ -136,6 +139,14 @@ class Achievement {
   }
   externaltrophyid(t) {
     var i = this.J7.__offset(this.z7, 26);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
+  gpexternaltrophyid(t) {
+    var i = this.J7.__offset(this.z7, 28);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);

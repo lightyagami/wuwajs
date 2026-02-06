@@ -40,6 +40,9 @@ class LordGymEntrance {
   get LordChangeMaterialController() {
     return this.lordchangematerialcontroller();
   }
+  get LordStartMaterialController() {
+    return this.lordstartmaterialcontroller();
+  }
   get LordIdleMaterialController() {
     return this.lordidlematerialcontroller();
   }
@@ -219,7 +222,7 @@ class LordGymEntrance {
     }
     return i;
   }
-  lordidlematerialcontroller(t) {
+  lordstartmaterialcontroller(t) {
     var i = this.J7.__offset(this.z7, 24);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -227,19 +230,19 @@ class LordGymEntrance {
     }
     return i;
   }
-  isgroup() {
-    var t = this.J7.__offset(this.z7, 26);
-    return !!t && !!this.J7.readInt8(this.z7 + t);
-  }
-  lorduisceneeffect(t) {
-    var i = this.J7.__offset(this.z7, 28);
+  lordidlematerialcontroller(t) {
+    var i = this.J7.__offset(this.z7, 26);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
     }
     return i;
   }
-  standanim(t) {
+  isgroup() {
+    var t = this.J7.__offset(this.z7, 28);
+    return !!t && !!this.J7.readInt8(this.z7 + t);
+  }
+  lorduisceneeffect(t) {
     var i = this.J7.__offset(this.z7, 30);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -247,8 +250,16 @@ class LordGymEntrance {
     }
     return i;
   }
+  standanim(t) {
+    var i = this.J7.__offset(this.z7, 32);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
   isdebug() {
-    var t = this.J7.__offset(this.z7, 32);
+    var t = this.J7.__offset(this.z7, 34);
     return !!t && !!this.J7.readInt8(this.z7 + t);
   }
 }

@@ -56,7 +56,7 @@ class DamageUiManager {
     this.DamagePositionCache = Vector_1.Vector.Create();
     this.k2t = ConfigManager_1.ConfigManager.DamageUiConfig.GetAllDamageTextConfig();
     for (const a of ConfigManager_1.ConfigManager.DamageUiConfig.GetAllDamageTextArea()) {
-      this.nqm.set(a.Id, a);
+      this.SOm.set(a.Id, a);
     }
     this.InitializeDamageViewData();
   }
@@ -171,7 +171,7 @@ class DamageUiManager {
     if (this.YFa) {
       var i = ModelManager_1.ModelManager.SceneTeamModel?.GetCurrentEntity;
       if (i?.Valid) {
-        var t = i.Entity?.GetComponent(188)?.CurrentTimeScale ?? 1;
+        var t = i.Entity?.GetComponent(190)?.CurrentTimeScale ?? 1;
         for (const o of DamageUiManager.$2t) {
           o.SetTimeScale(t);
         }
@@ -283,7 +283,7 @@ class DamageUiManager {
     }
   }
   static GetDamageTextAreaById(a) {
-    return this.nqm.get(a);
+    return this.SOm.get(a);
   }
   static OnLeaveLevel() {
     for (const a of DamageUiManager.$2t) {
@@ -313,9 +313,9 @@ class DamageUiManager {
       a.InitDamageConfig(this.Bem);
     }
     a.InitAllRes(UiLayer_1.UiLayer.GetBattleViewUnit(0), this.aXd, this.hXd, this.HideDamageCritEffect ? 1 : 20, Info_1.Info.IsMobilePlatform());
-    for (const i of this.lXd) {
-      var e = this.F2t.get(i);
-      if (e) {
+    for (const i of this.k2t) {
+      var e;
+      if (i.UseForOptimization && (e = i.Id, e = this.F2t.get(e))) {
         e = new UE.DamageViewData(e.ConfigId, e.MinRandomOffsetX, e.MinRandomOffsetY, e.MaxRandomOffsetX, e.MaxRandomOffsetY, e.TextColor, e.CriticalTextColor, this.HideDamageCritEffect ? -1 : e.CriticalNiagaraId, this.LFt.get(e.DamageTextConfig.OwnDamageSequence) ?? 0, this.LFt.get(e.DamageTextConfig.OwnCriticalDamageSequence) ?? 0, this.LFt.get(e.DamageTextConfig.MonsterDamageSequence) ?? 0, this.LFt.get(e.DamageTextConfig.MonsterCriticalDamageSequence) ?? 0, this.LFt.get(e.DamageTextConfig.DamageTextSequence) ?? 0);
         a.AddDamageViewData(e);
       }
@@ -397,7 +397,7 @@ DamageUiManager.MinDamageOffsetDistance = 0;
 DamageUiManager.MaxDamageOffsetDistance = 0;
 DamageUiManager.DamagePositionCache = undefined;
 DamageUiManager.k2t = undefined;
-DamageUiManager.nqm = new Map();
+DamageUiManager.SOm = new Map();
 DamageUiManager.Y2t = (0, puerts_1.$ref)(undefined);
 DamageUiManager.YFa = false;
 DamageUiManager.EnableOptimization = false;
@@ -408,8 +408,7 @@ DamageUiManager.sXd = [];
 DamageUiManager.oXd = 0;
 DamageUiManager.aXd = undefined;
 DamageUiManager.hXd = undefined;
-DamageUiManager.lXd = [1, 2, 3, 4, 5, 6, 8, 9, 10, 1001, 1002, 1003, 1004, 1005, 1006, 1010];
-DamageUiManager.LFt = new Map([["", 0], ["Ani_OwnDamageSequence", 1], ["Ani_OwnCriticalDamageSequence", 2], ["Ani_MonsterDamageSequence", 3], ["Ani_MonsterCriticalDamageSequence", 4], ["Ani_BuffSequence", 5], ["Ani_SpecialDamage", 6], ["Ani_SpecialCriticalDamage", 7]]);
+DamageUiManager.LFt = new Map([["", 0], ["Ani_OwnDamageSequence", 1], ["Ani_OwnCriticalDamageSequence", 2], ["Ani_MonsterDamageSequence", 3], ["Ani_MonsterCriticalDamageSequence", 4], ["Ani_BuffSequence", 5], ["Ani_SpecialDamage", 6], ["Ani_SpecialCriticalDamage", 7], ["Ani_SpecialPathDamage", 8]]);
 DamageUiManager.Z81 = Stats_1.Stat.Create("DamageUiManager.TickStat1");
 DamageUiManager.nXd = undefined;
 DamageUiManager.Bem = undefined;

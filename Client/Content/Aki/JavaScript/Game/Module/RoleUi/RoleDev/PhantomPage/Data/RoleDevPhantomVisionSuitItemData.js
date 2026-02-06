@@ -16,7 +16,7 @@ class RoleDevPhantomVisionSuitItemData {
     this.O7d = 0;
     this.JGi = 0;
     this.q7d = 0;
-    this.ZIm = "";
+    this.uTm = "";
   }
   get Id() {
     return this.FFe;
@@ -49,7 +49,7 @@ class RoleDevPhantomVisionSuitItemData {
     return this.q7d;
   }
   get TypeIcon() {
-    return this.ZIm;
+    return this.uTm;
   }
   InitByBaseData(t, e, s, i, h, r) {
     this.FFe = t;
@@ -57,7 +57,7 @@ class RoleDevPhantomVisionSuitItemData {
     this.FGi = s;
     this.Ivd = i;
     this.Tvd = h;
-    this.ZIm = r;
+    this.uTm = r;
   }
   SetItemType(t) {
     this.q7d = t;

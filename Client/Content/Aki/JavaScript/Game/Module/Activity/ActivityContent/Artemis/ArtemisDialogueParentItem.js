@@ -13,11 +13,11 @@ const ArtemisChatRightItem_1 = require("./ArtemisChatRightItem");
 class ArtemisDialogueParentItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.Bzm = 0;
-    this.kzm = 0;
-    this.qzm = [];
-    this.Ozm = [];
-    this.G8f = [];
+    this.yef = 0;
+    this.Sef = 0;
+    this.Mef = [];
+    this.Eef = [];
+    this.JYf = [];
     this.WaitCallback = () => {};
   }
   OnRegisterComponent() {
@@ -31,10 +31,10 @@ class ArtemisDialogueParentItem extends UiPanelBase_1.UiPanelBase {
     this.RefreshChatUiItemAsync(t, i, e);
   }
   async RefreshChatUiItemAsync(t, i, e) {
-    this.Bzm = 0;
-    this.kzm = 0;
-    this.G8f.length = 0;
-    this.Gzm();
+    this.yef = 0;
+    this.Sef = 0;
+    this.JYf.length = 0;
+    this.Ief();
     var s;
     var h;
     var a;
@@ -56,76 +56,76 @@ class ArtemisDialogueParentItem extends UiPanelBase_1.UiPanelBase {
   }
   async AddDialogueItem(t, i) {
     if (t) {
-      this.Bzm++;
-      await this.Fzm(i);
+      this.yef++;
+      await this.Tef(i);
     } else {
-      this.kzm++;
-      await this.Nzm(i);
+      this.Sef++;
+      await this.bef(i);
     }
   }
-  Gzm() {
-    if (this.qzm?.length > 0) {
-      for (const t of this.qzm) {
+  Ief() {
+    if (this.Mef?.length > 0) {
+      for (const t of this.Mef) {
         t?.SetUiActive(false);
       }
     }
-    if (this.Ozm?.length > 0) {
-      for (const i of this.Ozm) {
+    if (this.Eef?.length > 0) {
+      for (const i of this.Eef) {
         i?.SetUiActive(false);
       }
     }
   }
   GetFirstItem() {
-    if (this.G8f?.length > 0) {
-      return this.G8f[0];
+    if (this.JYf?.length > 0) {
+      return this.JYf[0];
     }
   }
   GetLastItem() {
-    if (this.G8f?.length > 0) {
-      return this.G8f[this.G8f?.length - 1];
+    if (this.JYf?.length > 0) {
+      return this.JYf[this.JYf?.length - 1];
     }
   }
-  async Fzm(t) {
+  async Tef(t) {
     var i;
     var e;
     if (t) {
-      if (this.Bzm >= this.qzm?.length) {
+      if (this.yef >= this.Mef?.length) {
         if (e = this.GetItem(0)) {
           i = new ArtemisChatLeftItem_1.ArtemisChatLeftItem();
           e = LguiUtil_1.LguiUtil.CopyItem(e, this.RootItem);
-          this.qzm.push(i);
-          this.G8f.push(e);
+          this.Mef.push(i);
+          this.JYf.push(e);
           await i.CreateThenShowByActorAsync(e.GetOwner());
           i.SetContent(t);
         }
       } else {
-        (e = this.qzm[this.Bzm])?.SetUiActive(true);
+        (e = this.Mef[this.yef])?.SetUiActive(true);
         e?.SetContent(t);
-        this.G8f?.push(e?.GetRootItem());
+        this.JYf?.push(e?.GetRootItem());
       }
     }
   }
-  async Nzm(t) {
+  async bef(t) {
     var i;
     var e;
-    if (this.kzm >= this.Ozm?.length) {
+    if (this.Sef >= this.Eef?.length) {
       if (e = this.GetItem(1)) {
         i = new ArtemisChatRightItem_1.ArtemisChatRightItem();
         e = LguiUtil_1.LguiUtil.CopyItem(e, this.RootItem);
-        this.Ozm.push(i);
-        this.G8f.push(e);
+        this.Eef.push(i);
+        this.JYf.push(e);
         await i.CreateThenShowByActorAsync(e.GetOwner());
         i.SetContent(t);
       }
     } else {
-      (e = this.Ozm[this.kzm])?.SetUiActive(true);
+      (e = this.Eef[this.Sef])?.SetUiActive(true);
       e?.SetContent(t);
-      this.G8f?.push(e?.GetRootItem());
+      this.JYf?.push(e?.GetRootItem());
     }
   }
   LeftPlayFixDoneLevelSequence() {
-    if (this.qzm?.length > 0) {
-      for (const t of this.qzm) {
+    if (this.Mef?.length > 0) {
+      for (const t of this.Mef) {
         if (t?.GetActive()) {
           t.PlayFixDoneLevelSequence();
         }

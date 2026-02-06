@@ -28,7 +28,7 @@ class InputDistributeController extends ControllerBase_1.ControllerBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OpenViewBegined, this.Nmr);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OpenViewFail, this.Omr);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CloseView, this.$Ge);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.FloatQueueCloseView, this.Rdf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.FloatQueueCloseView, this.bff);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDone, this.nye);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ResetModuleByResetToBattleView, this.OAo);
   }
@@ -40,7 +40,7 @@ class InputDistributeController extends ControllerBase_1.ControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OpenViewBegined, this.Nmr);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OpenViewFail, this.Omr);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CloseView, this.$Ge);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.FloatQueueCloseView, this.Rdf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.FloatQueueCloseView, this.bff);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDone, this.nye);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ResetModuleByResetToBattleView, this.OAo);
   }
@@ -200,7 +200,7 @@ InputDistributeController.Omr = e => {
   }
   EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRemoveNotAllowFightInputViewName);
 };
-InputDistributeController.Rdf = (e, t) => {
+InputDistributeController.bff = (e, t) => {
   if (!ConfigManager_1.ConfigManager.InputDistributeConfig.IsViewAllowFightInput(e)) {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Input", 10, "[InputDistribute]当Float队列关闭界面时, 删除不允许输入的界面", ["viewName", e]);

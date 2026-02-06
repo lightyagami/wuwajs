@@ -113,16 +113,16 @@ class PlatformSdkAndroidGlobal extends PlatformSdkBase_1.PlatformSdkBase {
       return;
     }
     this.LastOpenTime = Time_1.Time.Now;
-    var s = new KuroSdkData_1.OpenWebViewParamAndroid();
-    s.title = e;
-    s.url = r;
-    s.isLandscape = o;
-    s.transparent = t;
-    s.webAccelerated = n;
-    s.identifier = a;
-    s.showInDialog = false;
-    var s = Json_1.Json.Stringify(s);
-    ue_1.KuroSDKManager.OpenWebView(e, r, o, t, n, a, s);
+    var _ = new KuroSdkData_1.OpenWebViewParamAndroid();
+    _.title = e;
+    _.url = r;
+    _.isLandscape = o;
+    _.transparent = t;
+    _.webAccelerated = n;
+    _.identifier = a;
+    _.showInDialog = false;
+    var _ = Json_1.Json.Stringify(_);
+    ue_1.KuroSDKManager.OpenWebView(e, r, o, t, n, a, _);
   }
   OnQueryProduct(e) {
     var e = e.split("|");
@@ -337,6 +337,18 @@ class PlatformSdkAndroidGlobal extends PlatformSdkBase_1.PlatformSdkBase {
   }
   CurrentPlatformYearReviewTime() {
     return MAXREVIEWTIME;
+  }
+  UnlockSdkTrophy(e) {
+    var r = new KuroSdkData_1.GPUnlockAchievementData();
+    r.func = "unlock";
+    var o = new KuroSdkData_1.GPUnlockAchievementDataParams();
+    o.achievement = e;
+    r.params = o;
+    var e = Json_1.Json.Stringify(r);
+    ue_1.KuroSDKManager.CallPlugin(e);
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("KuroSdk", 27, "UnlockSdkTrophy", ["json", e]);
+    }
   }
 }
 exports.PlatformSdkAndroidGlobal = PlatformSdkAndroidGlobal;

@@ -35,7 +35,7 @@ let CharacterGameplayCueComponent = class CharacterGameplayCueComponent extends 
   }
   OnStart() {
     super.OnStart();
-    this.ybr = this.Entity.GetComponent(131);
+    this.ybr = this.Entity.GetComponent(133);
     return true;
   }
   OnEnable() {

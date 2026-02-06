@@ -93,7 +93,8 @@ class SpecialTransitionController extends ControllerBase_1.ControllerBase {
         ViewParams: {
           SpineId: a.Pxd?.xxd?.kxd,
           BgPath: a.Pxd?.Bxd?.Oxd,
-          CustomShowUi: i
+          CustomShowUi: i,
+          AkEvent: a.AWf
         },
         FlowParams: {
           FadeInEffect: e,

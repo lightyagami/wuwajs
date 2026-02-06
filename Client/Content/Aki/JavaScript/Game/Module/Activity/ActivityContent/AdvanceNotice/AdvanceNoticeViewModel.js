@@ -18,7 +18,7 @@ class AdvanceNoticeViewModel {
     this.SubTabIdList = [];
     this.CurrentTabView = "AdvanceNoticeNewRoleTabView";
     this.AdvanceNoticeThumbItemDataList = [];
-    this.Urf = new Map();
+    this.Jnf = new Map();
     this.ActivityId = 0;
     this.OnSwitchSubTabDelegate = undefined;
   }
@@ -35,15 +35,15 @@ class AdvanceNoticeViewModel {
     this.SubTabIdList = t.SubTabIdList;
     this.CurrentSubTabIndex = 0;
     this.AdvanceNoticeThumbItemDataList.length = 0;
-    this.Urf.clear();
+    this.Jnf.clear();
     this.CurrentTabView = AdvanceNoticeDefine_1.advanceNoticeTabTypeToTabViewName[t.Type];
     for (const i of t.SubTabIdList) {
-      var a = this.HLm(t.Type, i);
+      var a = this.hPm(t.Type, i);
       this.AdvanceNoticeThumbItemDataList.push(a);
     }
-    this.xrf();
+    this.Znf();
   }
-  HLm(e, t) {
+  hPm(e, t) {
     var a = new AdvanceNoticeThumbItemData_1.AdvanceNoticeThumbItemData();
     let i = undefined;
     switch (e) {
@@ -71,7 +71,7 @@ class AdvanceNoticeViewModel {
         i = ConfigManager_1.ConfigManager.AdvanceNoticeConfig.GetAdvertisingTabEnemyById(t);
         a.BgTexturePath = i.ThumbnailPic;
         a.NameTextId = i.ThumbnailText;
-        this.Urf?.set(i.Type, a);
+        this.Jnf?.set(i.Type, a);
         break;
       case 6:
         i = ConfigManager_1.ConfigManager.AdvanceNoticeConfig.GetAdvertisingTabActivityById(t);
@@ -87,10 +87,10 @@ class AdvanceNoticeViewModel {
     a.SubTabId = t;
     return a;
   }
-  xrf() {
+  Znf() {
     let e = 0;
-    var t = this.Urf?.size;
-    for (const a of this.Urf) {
+    var t = this.Jnf?.size;
+    for (const a of this.Jnf) {
       if (++e === t) {
         break;
       }

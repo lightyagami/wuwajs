@@ -52,10 +52,10 @@ class AreaController extends UiControllerBase_1.UiControllerBase {
     }
   }
   static RegisterNetEvent() {
-    Net_1.Net.Register(15954, this.LWe);
+    Net_1.Net.Register(15196, this.LWe);
   }
   static UnRegisterNetEvent() {
-    Net_1.Net.UnRegister(15954);
+    Net_1.Net.UnRegister(15196);
   }
   static RegisterEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InitArea, this.DWe);
@@ -70,10 +70,10 @@ class AreaController extends UiControllerBase_1.UiControllerBase {
       s5n: e,
       NKa: 0
     });
-    Net_1.Net.Call(20512, e, e => {
+    Net_1.Net.Call(17571, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.Proto_PlayerNotInTheScene) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22966);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27376);
         } else if (!o || ModelManager_1.ModelManager.AreaModel.AreaInfo?.AreaId !== e.s5n) {
           if (Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("Area", 72, "[AreaController.EnterAreaRequest]", ["CurArea", r], ["EnterArea", e.s5n], ["reason", t]);
@@ -90,10 +90,10 @@ class AreaController extends UiControllerBase_1.UiControllerBase {
         s5n: 0,
         NKa: r
       });
-      Net_1.Net.Call(20512, e, e => {
+      Net_1.Net.Call(17571, e, e => {
         if (e) {
           if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.Proto_PlayerNotInTheScene) {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22966);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27376);
           } else {
             ModelManager_1.ModelManager.AreaModel.SetAreaInfo(e.s5n);
             EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ChangeArea, r, e.s5n);

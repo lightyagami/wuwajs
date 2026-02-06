@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.SceneItemManipulableBaseState = undefined;
 const UE = require("ue");
 const Global_1 = require("../../../Global");
+const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 class SceneItemManipulableBaseState {
   constructor(e) {
     this.SceneItem = undefined;
@@ -80,6 +81,16 @@ class SceneItemManipulableBaseState {
     var e = Global_1.Global.CharacterCameraManager;
     if (e?.IsValid() && this.Unr?.IsValid()) {
       e.StopCameraShake(this.Unr);
+    }
+  }
+  StartGamepadShake(e) {
+    if (e?.IsValid()) {
+      ControllerHolder_1.ControllerHolder.GamepadController.TriggerGamepadShakeByManipulatable(e);
+    }
+  }
+  StopGamepadShake(e) {
+    if (e?.IsValid()) {
+      ControllerHolder_1.ControllerHolder.GamepadController.StopManipulatableGamepadShake(e);
     }
   }
   OpenPhysicsSplit() {

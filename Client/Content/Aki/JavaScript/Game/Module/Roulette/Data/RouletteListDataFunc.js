@@ -16,29 +16,28 @@ const RouletteListDataBase_1 = require("./RouletteListDataBase");
 class RouletteListDataFunc extends RouletteListDataBase_1.RouletteListDataBase {
   constructor() {
     super(...arguments);
-    this.LOm = [[[1], 4, 1], [[2], 5, 1], [[3], 6, 1], [[4], 7, 1], [[5], 8, 1], [[6], 9, 1], [[7], 10, 1], [[8], 11, 1]];
+    this.jGm = [[[1], 4, 1], [[2], 5, 1], [[3], 6, 1], [[4], 7, 1], [[5], 8, 1], [[6], 9, 1], [[7], 10, 1], [[8], 11, 1]];
     this.Priority = 100;
     this.Bcc = undefined;
     this.kcc = [];
-    this.Vbm = new Map();
-    this.EOm = [];
+    this.Kbm = new Map();
+    this.qGm = [];
     this.RouletteType = 1;
     this.nye = () => {
-      var e;
-      var t;
-      if (ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance()) {
-        e = ModelManager_1.ModelManager.CreatureModel.GetInstanceId();
+      var e = ModelManager_1.ModelManager.CreatureModel.GetInstanceId();
+      var t = this.Kbm.get(e) !== undefined;
+      if (ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance() || t) {
         if (t = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(e)) {
-          this.POm(e, t.InstSubType);
+          this.HGm(e, t.InstSubType);
         }
       } else {
-        this.AOm();
+        this.$Gm();
       }
     };
   }
   GetRouletteIdList() {
     if (this.IsRouletteReplace()) {
-      return this.EOm;
+      return this.qGm;
     } else {
       return this.RouletteIdListServer;
     }
@@ -82,7 +81,7 @@ class RouletteListDataFunc extends RouletteListDataBase_1.RouletteListDataBase {
     return new RouletteMainViewProxy_1.RouletteMainViewProxy();
   }
   GetRouletteDataMap() {
-    return this.LOm;
+    return this.jGm;
   }
   OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDone, this.nye);
@@ -92,21 +91,21 @@ class RouletteListDataFunc extends RouletteListDataBase_1.RouletteListDataBase {
   }
   Gcc() {
     this.kcc.length = 0;
-    this.Vbm.clear();
+    this.Kbm.clear();
     for (const e of ConfigManager_1.ConfigManager.RouletteConfig.GetAllFuncReplaceConfig()) {
       if (e.InstIdList.length > 0) {
         for (const t of e.InstIdList) {
-          this.Vbm.set(t, e.Id);
+          this.Kbm.set(t, e.Id);
         }
       } else if (e.InstSubType !== 0) {
         this.kcc.push(e.InstSubType);
       }
     }
   }
-  POm(e, t) {
+  HGm(e, t) {
     let i = undefined;
     let n = 0;
-    e = this.Vbm.get(e);
+    e = this.Kbm.get(e);
     if (e) {
       i = ConfigManager_1.ConfigManager.RouletteConfig.GetFuncReplaceConfigById(e);
       n = e;
@@ -122,18 +121,18 @@ class RouletteListDataFunc extends RouletteListDataBase_1.RouletteListDataBase {
             Log_1.Log.Error("Phantom", 37, "[FunctionRoulette] 替换配置功能轮盘Id数量错误", ["ReplaceId", n]);
           }
         } else {
-          this.EOm.length = 0;
-          this.EOm.push(...i.FuncMenuIdList);
+          this.qGm.length = 0;
+          this.qGm.push(...i.FuncMenuIdList);
           if (Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("Phantom", 37, "[FunctionRoulette] 功能轮盘进入替换模式", ["ReplaceId", this.Bcc]);
           }
         }
       }
     } else {
-      this.AOm();
+      this.$Gm();
     }
   }
-  AOm() {
+  $Gm() {
     if (this.Bcc) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Phantom", 37, "[FunctionRoulette] 功能轮盘退出替换模式", ["LastReplaceId", this.Bcc]);

@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.LevelFlowAddCueAction = undefined;
 const Log_1 = require("../../../Core/Common/Log");
 const ModelManager_1 = require("../../Manager/ModelManager");
-const FollowFunctionLibrary_1 = require("../../NewWorld/Character/Common/Component/Abilities/Follow/FollowFunctionLibrary");
+const FollowUtils_1 = require("../../NewWorld/Character/Common/Component/Abilities/Follow/FollowUtils");
 const LevelFlowActionBase_1 = require("./LevelFlowActionBase");
 class LevelFlowAddCueAction extends LevelFlowActionBase_1.LevelFlowActionBase {
   constructor() {
@@ -23,7 +23,7 @@ class LevelFlowAddCueAction extends LevelFlowActionBase_1.LevelFlowActionBase {
   }
   OnExecute() {
     let e = undefined;
-    if (e = this.IsFloater ? FollowFunctionLibrary_1.FollowFunctionLibrary.GetPlayerFollowShooter(ModelManager_1.ModelManager.CreatureModel.GetPlayerId()) : ModelManager_1.ModelManager.CreatureModel.GetEntityById(this.EntityId)) {
+    if (e = this.IsFloater ? FollowUtils_1.FollowUtils.GetPlayerFollowShooter(ModelManager_1.ModelManager.CreatureModel.GetPlayerId()) : ModelManager_1.ModelManager.CreatureModel.GetEntityById(this.EntityId)) {
       var o = e.Entity;
       if (o) {
         var t = o.GetComponent(238);

@@ -32,6 +32,11 @@ class LogicNodeBase extends BehaviorNodeBase_1.BehaviorNodeBase {
   get ModifyTrackAreaTextConfig() {
     return this.Config?.ModifyTrackAreaText;
   }
+  get TrackLevelPlay() {
+    if (this.TrackTarget?.TrackType.Type === "LevelPlay") {
+      return this.TrackTarget.TrackType;
+    }
+  }
   OnCreate(t) {
     this.Config = t;
     this.TrackTarget = t.UIConfig?.TrackTarget;
@@ -78,6 +83,13 @@ class LogicNodeBase extends BehaviorNodeBase_1.BehaviorNodeBase {
     if (this.Config?.SaveConfig) {
       this.Blackboard.RollbackPoint = this.NodeId;
     }
+    if (this.TrackLevelPlay) {
+      ModelManager_1.ModelManager.GeneralLogicTreeModel.AddLevelPlayTrackBinding(this.NodeId, this.TreeIncId, this.TrackLevelPlay.LevelPlayId);
+      this.Blackboard?.AddTag(17, this.NodeId.toString());
+    }
+    if (this.Config?.DisableSystemPrompt && this.Config.DisableSystemPrompt.length > 0) {
+      this.a8g(true);
+    }
   }
   OnNodeDeActive(t) {
     var i;
@@ -117,6 +129,13 @@ class LogicNodeBase extends BehaviorNodeBase_1.BehaviorNodeBase {
     if (this.Config.LogicProgramSpecialProcess) {
       this.Lam(false);
     }
+    if (this.TrackLevelPlay) {
+      ModelManager_1.ModelManager.GeneralLogicTreeModel.RemoveLevelPlayTrackBinding(this.TreeIncId, this.TrackLevelPlay.LevelPlayId);
+      this.Blackboard?.RemoveTag(17, this.NodeId.toString());
+    }
+    if (this.Config?.DisableSystemPrompt && this.Config.DisableSystemPrompt.length > 0) {
+      this.a8g(false);
+    }
     super.OnNodeDeActive(t);
   }
   Lam(t) {
@@ -128,7 +147,7 @@ class LogicNodeBase extends BehaviorNodeBase_1.BehaviorNodeBase {
         for (const s of e.EntityIds) {
           var i = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(s)?.Entity;
           if (i?.Valid) {
-            i = i.GetComponent(45);
+            i = i.GetComponent(47);
             if (t) {
               i?.StartForceDisableAnimOptimization(0, false);
             } else {
@@ -151,6 +170,13 @@ class LogicNodeBase extends BehaviorNodeBase_1.BehaviorNodeBase {
         break;
       case Protocol_1.Aki.Protocol.hps.Proto_BtTypeLevelPlay:
         ModelManager_1.ModelManager.OnlineModel.DisableOnline(1, t, this.TreeConfigId, this.NodeId);
+    }
+  }
+  a8g(t) {
+    for (const i of this.Config.DisableSystemPrompt) {
+      if (i.Type === IQuest_1.ESystemPromptType.AreaName && (ModelManager_1.ModelManager.AreaModel.SetEnableAreaNamePrompt(t), Log_1.Log.CheckDebug())) {
+        Log_1.Log.Debug("Temp", 31, "屏蔽地区弹窗", ["Disable", t]);
+      }
     }
   }
 }

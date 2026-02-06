@@ -8,7 +8,7 @@ const ModelBase_1 = require("../../../Core/Framework/ModelBase");
 const DAMAGE_EXPRESSION_CACHE = 100;
 const builtinFunc = {
   EntityTagContainer: (e, t) => {
-    var a = t?.GetComponent(215);
+    var a = t?.GetComponent(217);
     if (a) {
       return a.TagContainer;
     }

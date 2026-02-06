@@ -14,11 +14,11 @@ const RangeCheck_1 = require("../Util/RangeCheck");
 const LevelPlay_1 = require("./LevelPlay");
 const LevelPlayDefine_1 = require("./LevelPlayDefine");
 class NightmareKillInfo {
-  constructor(e = false, i = 0, t = 0, r = []) {
+  constructor(e = false, i = 0, t = 0, s = []) {
     this.Enable = e;
     this.CurrentKillCount = i;
     this.CurrentIntervalIndex = t;
-    this.IntervalKillNumber = r;
+    this.IntervalKillNumber = s;
   }
 }
 exports.NightmareKillInfo = NightmareKillInfo;
@@ -28,12 +28,14 @@ class LevelPlayModel extends ModelBase_1.ModelBase {
     this.Xpi = undefined;
     this.$pi = undefined;
     this.Ypi = 0;
+    this.FFg = 0;
     this.Jpi = undefined;
     this.zpi = undefined;
     this.NightmareLevelPlayInfos = undefined;
     this.NightmareLevelPlayWaitEntityTask = undefined;
     this.IsInReceiveReward = false;
     this.EntityPositionRangeCheck = undefined;
+    this.EverBoundLevelPlayIds = undefined;
     this.Zpi = e => {
       for (const i of JSON.parse(e).LevelPlays) {
         this.Jpi.set(i.Id, i);
@@ -51,7 +53,9 @@ class LevelPlayModel extends ModelBase_1.ModelBase {
     this.NightmareLevelPlayInfos = new Map();
     this.NightmareLevelPlayWaitEntityTask = new Map();
     this.Ypi = LevelPlayDefine_1.INVALID_LEVELPLAYID;
+    this.FFg = LevelPlayDefine_1.INVALID_LEVELPLAYID;
     this.EntityPositionRangeCheck = new RangeCheck_1.RangeCheck();
+    this.EverBoundLevelPlayIds = new Map();
     this.InitLevelPlayConfig();
     PublicUtil_1.PublicUtil.RegisterEditorLocalConfig();
     return true;
@@ -68,7 +72,9 @@ class LevelPlayModel extends ModelBase_1.ModelBase {
     this.NightmareLevelPlayWaitEntityTask?.clear();
     this.NightmareLevelPlayWaitEntityTask = undefined;
     this.EntityPositionRangeCheck?.OnClear();
-    return !(this.EntityPositionRangeCheck = undefined);
+    this.EntityPositionRangeCheck = undefined;
+    this.EverBoundLevelPlayIds?.clear();
+    return !(this.EverBoundLevelPlayIds = undefined);
   }
   OnLeaveLevel() {
     this.SetTrackLevelPlayId(0);
@@ -101,13 +107,13 @@ class LevelPlayModel extends ModelBase_1.ModelBase {
       return this.zpi.get(e)?.get(i);
     }
     let t = this.zpi.get(e);
-    let r = (t = t || new Map()).get(i);
-    if (!r) {
+    let s = (t = t || new Map()).get(i);
+    if (!s) {
       e = ConfigManager_1.ConfigManager.LevelPlayConfig.GetLevelPlayNodeConfig(e, i);
-      r = JSON.parse(e.Data);
-      t.set(i, r);
+      s = JSON.parse(e.Data);
+      t.set(i, s);
     }
-    return r;
+    return s;
   }
   CreateLevelPlayInfo(e) {
     var i = new LevelPlay_1.LevelPlayInfo(e);
@@ -132,14 +138,14 @@ class LevelPlayModel extends ModelBase_1.ModelBase {
   }
   LevelPlayFinish(e) {
     var i = this.GetProcessingLevelPlayInfo(e);
-    if (i && (i.Destroy(), i.UpdateState(3), this.$pi.delete(e), this.Ypi === e)) {
+    if (i && (i.Destroy(), i.UpdateState(3), this.$pi.delete(e), this.Ypi === e && (i.SetTrack(false), this.Ypi = LevelPlayDefine_1.INVALID_LEVELPLAYID), this.FFg === e)) {
       i.SetTrack(false);
-      this.Ypi = LevelPlayDefine_1.INVALID_LEVELPLAYID;
+      this.FFg = LevelPlayDefine_1.INVALID_LEVELPLAYID;
     }
   }
   LevelPlayClose(e) {
-    if (e && (e.UpdateState(0), e.Destroy(), this.$pi.delete(e.Id), e.Id === this.Ypi)) {
-      this.Ypi = 0;
+    if (e && (e.UpdateState(0), e.Destroy(), this.$pi.delete(e.Id), e.Id === this.Ypi && (this.Ypi = 0), e.Id === this.FFg)) {
+      this.FFg = 0;
     }
   }
   SetTrackLevelPlayId(e) {
@@ -152,6 +158,16 @@ class LevelPlayModel extends ModelBase_1.ModelBase {
       this.GetProcessingLevelPlayInfo(this.Ypi)?.SetTrack(true);
     }
   }
+  SetTrackBoundLevelPlayId(e) {
+    var i;
+    if (this.FFg !== e) {
+      if (!(i = this.GetProcessingLevelPlayInfo(this.FFg))?.IsTrackPriorityOverride()) {
+        i?.SetTrack(false);
+      }
+      this.FFg = e;
+      this.GetProcessingLevelPlayInfo(this.FFg)?.SetTrack(true);
+    }
+  }
   ChangeLevelPlayTrackRange(e, i) {
     e = this.GetProcessingLevelPlayInfo(e);
     if (e) {
@@ -159,22 +175,22 @@ class LevelPlayModel extends ModelBase_1.ModelBase {
     }
   }
   CheckLevelPlayState(e, i, t) {
-    let r = false;
-    var s = this.GetLevelPlayInfo(e)?.PlayState;
+    let s = false;
+    var r = this.GetLevelPlayInfo(e)?.PlayState;
     switch (i) {
       case ICondition_1.ELevelPlayState.Close:
-        r = s === undefined || s === 0 || s === 1;
+        s = r === undefined || r === 0 || r === 1;
         break;
       case ICondition_1.ELevelPlayState.Running:
-        r = s === 2;
+        s = r === 2;
         break;
       case ICondition_1.ELevelPlayState.Complete:
-        r = s === 3;
+        s = r === 3;
     }
     if (t === "Eq") {
-      return r;
+      return s;
     } else {
-      return !r;
+      return !s;
     }
   }
   SafeCreateLevelPlayInfo(e) {
@@ -195,8 +211,16 @@ class LevelPlayModel extends ModelBase_1.ModelBase {
       return this.GetProcessingLevelPlayInfo(this.Ypi);
     }
   }
+  GetTrackBoundLevelPlayInfo() {
+    if (this.FFg !== LevelPlayDefine_1.INVALID_LEVELPLAYID) {
+      return this.GetProcessingLevelPlayInfo(this.FFg);
+    }
+  }
   GetTrackLevelPlayId() {
     return this.Ypi;
+  }
+  GetTrackBoundLevelPlayId() {
+    return this.FFg;
   }
   GetLevelPlayInfoByRewardEntityId(e) {
     for (var [, i] of this.Xpi) {

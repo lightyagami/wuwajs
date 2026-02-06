@@ -12,6 +12,7 @@ const FlySkinConfigById_1 = require("../../../Core/Define/ConfigQuery/FlySkinCon
 const FlySkinConfigByType_1 = require("../../../Core/Define/ConfigQuery/FlySkinConfigByType");
 const MotorGiftQualityByQualityId_1 = require("../../../Core/Define/ConfigQuery/MotorGiftQualityByQualityId");
 const MotorSkinShowById_1 = require("../../../Core/Define/ConfigQuery/MotorSkinShowById");
+const RoleSkinByGroupId_1 = require("../../../Core/Define/ConfigQuery/RoleSkinByGroupId");
 const RoleSkinById_1 = require("../../../Core/Define/ConfigQuery/RoleSkinById");
 const RoleSkinByRoleId_1 = require("../../../Core/Define/ConfigQuery/RoleSkinByRoleId");
 const WeaponSkinById_1 = require("../../../Core/Define/ConfigQuery/WeaponSkinById");
@@ -163,6 +164,9 @@ class SkinConfig extends ConfigBase_1.ConfigBase {
   }
   GetRoleSkinConfigList(n) {
     return RoleSkinByRoleId_1.configRoleSkinByRoleId.GetConfigList(n);
+  }
+  GetSkinGroupList(n) {
+    return RoleSkinByGroupId_1.configRoleSkinByGroupId.GetConfigList(n);
   }
   GetSkinDetailButtonGap() {
     return CommonParamById_1.configCommonParamById.GetIntConfig("SkinDetailButtonGap");

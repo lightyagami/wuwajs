@@ -23,6 +23,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.SceneItemStateComponent = undefined;
 const Log_1 = require("../../../../../Core/Common/Log");
+const Protocol_1 = require("../../../../../Core/Define/Net/Protocol");
 const EntityComponent_1 = require("../../../../../Core/Entity/EntityComponent");
 const RegisterComponent_1 = require("../../../../../Core/Entity/RegisterComponent");
 const TimerSystem_1 = require("../../../../../Core/Timer/TimerSystem");
@@ -57,6 +58,7 @@ let SceneItemStateComponent = class SceneItemStateComponent extends EntityCompon
     this.JQr = undefined;
     this.a_n = undefined;
     this.h_n = undefined;
+    this.Tkg = undefined;
     this.l_n = undefined;
     this.__n = undefined;
     this.I5a = undefined;
@@ -98,7 +100,7 @@ let SceneItemStateComponent = class SceneItemStateComponent extends EntityCompon
       this.l_n = true;
       var e = t.GetPbEntityInitData();
       if (e) {
-        this.Xte = this.Entity?.GetComponent(206);
+        this.Xte = this.Entity?.GetComponent(208);
         this.Wpo = t.GetCreatureDataId();
         this.r_n = (0, IComponent_1.getComponent)(e.ComponentsData, "SceneItemLifeCycleComponent");
         this.StateConfig = (0, IComponent_1.getComponent)(e.ComponentsData, "EntityStateComponent");
@@ -134,7 +136,7 @@ let SceneItemStateComponent = class SceneItemStateComponent extends EntityCompon
     if (this.a_n !== undefined) {
       TimerSystem_1.TimerSystem.Remove(this.a_n);
     }
-    return true;
+    return !(this.Tkg = undefined);
   }
   IsInState(t) {
     return this._ii === t;
@@ -166,19 +168,19 @@ let SceneItemStateComponent = class SceneItemStateComponent extends EntityCompon
       this.Sj1 = undefined;
     }
   }
-  HandleDestroyState() {
-    var t;
+  HandleDestroyState(t = undefined) {
     var e;
     this.s_n = false;
     if (this.Xte?.HasTag(-991879492)) {
       this.Xte?.RemoveTag(-991879492);
       this.UpdateState(-1278190765, true);
     }
+    this.bkg(t);
     if (this._ii !== 3 || !this.r_n) {
-      if (e = this.Entity.GetComponent(172)) {
-        t = (t = this.StateConfig?.State) ? GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(t) : undefined;
-        if (this.W1n !== t) {
-          e.ResetToInitState(this.StateConfig.State, this.u_n);
+      if (t = this.Entity.GetComponent(174)) {
+        e = (e = this.StateConfig?.State) ? GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e) : undefined;
+        if (this.W1n !== e) {
+          t.ResetToInitState(this.StateConfig.State, this.u_n);
         } else {
           ControllerHolder_1.ControllerHolder.CreatureController.DelayRemoveEntityFinished(this.Entity);
         }
@@ -188,17 +190,17 @@ let SceneItemStateComponent = class SceneItemStateComponent extends EntityCompon
       }
     }
     if (this.__n === undefined) {
-      if ((t = this.r_n.DestroyStageConfig?.BulletId) && this.JQr !== undefined) {
-        e = ModelManager_1.ModelManager.CreatureModel.GetEntity(this.JQr);
-        BulletController_1.BulletController.CreateBulletCustomTarget(e ? e.Entity : Global_1.Global.BaseCharacter, t.toString(), this.Hte.ActorTransform, {}, this.JUn);
+      if ((e = this.r_n.DestroyStageConfig?.BulletId) && this.JQr !== undefined) {
+        t = ModelManager_1.ModelManager.CreatureModel.GetEntity(this.JQr);
+        BulletController_1.BulletController.CreateBulletCustomTarget(t ? t.Entity : Global_1.Global.BaseCharacter, e.toString(), this.Hte.ActorTransform, {}, this.JUn);
       }
-      if (e = this.r_n.DestroyStageConfig?.PerformDuration) {
+      if (t = this.r_n.DestroyStageConfig?.PerformDuration) {
         this.__n = TimerSystem_1.FlowTimeTimerSystem.Delay(() => {
           if (this.Entity?.Valid) {
             ControllerHolder_1.ControllerHolder.CreatureController.DelayRemoveEntityFinished(this.Entity);
             this.__n = undefined;
           }
-        }, e * TimeUtil_1.TimeUtil.InverseMillisecond);
+        }, t * TimeUtil_1.TimeUtil.InverseMillisecond);
       } else {
         ControllerHolder_1.ControllerHolder.CreatureController.DelayRemoveEntityFinished(this.Entity);
       }
@@ -227,7 +229,7 @@ let SceneItemStateComponent = class SceneItemStateComponent extends EntityCompon
       this._ii = 0;
       i = this.r_n?.CreateStageConfig.PerformDuration;
       t = GameplayTagUtils_1.GameplayTagUtils.GetGameplayTagById(-991879492);
-      if (this.nXr?.场景交互物状态列表.Get(t) !== undefined && (this.Xte.AddTag(-991879492), !this.Entity.GetComponent(212).GetIsSceneInteractionLoadCompleted())) {
+      if (this.nXr?.场景交互物状态列表.Get(t) !== undefined && (this.Xte.AddTag(-991879492), !this.Entity.GetComponent(214).GetIsSceneInteractionLoadCompleted())) {
         EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted, this.Rnn);
       } else if (i >= MIN_DELAY_THRESHOLD) {
         this.I5a = TimerSystem_1.FlowTimeTimerSystem.Delay(() => {
@@ -297,6 +299,28 @@ let SceneItemStateComponent = class SceneItemStateComponent extends EntityCompon
     }
     this.I5a = undefined;
   }
+  bkg(e) {
+    if (e !== undefined) {
+      let t = undefined;
+      switch (e) {
+        case Protocol_1.Aki.Protocol.Fks.Proto_RemoveTypeNormal:
+          t = 459429112;
+          break;
+        case Protocol_1.Aki.Protocol.Fks.Proto_RbBlockDestroyed:
+          t = 287761293;
+      }
+      if (t && t !== this.Tkg) {
+        if (this.Tkg) {
+          e = this.Tkg;
+          this.Tkg = t;
+          this.Xte?.ChangeLocalLevelTag(this.Tkg, e);
+        } else {
+          this.Tkg = t;
+          this.Xte?.AddTag(t);
+        }
+      }
+    }
+  }
 };
-SceneItemStateComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(142)], SceneItemStateComponent);
+SceneItemStateComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(144)], SceneItemStateComponent);
 exports.SceneItemStateComponent = SceneItemStateComponent; //# sourceMappingURL=SceneItemStateComponent.js.map

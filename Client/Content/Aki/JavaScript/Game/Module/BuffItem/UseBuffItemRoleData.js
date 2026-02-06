@@ -121,7 +121,7 @@ class UseBuffItemRoleData {
       if (s.length < 2) {
         return r;
       }
-      var o = e.GetComponent(182);
+      var o = e.GetComponent(184);
       var _ = Number(s[0]) / TEN_THOUSANDTH_RATIO;
       var o = o.GetCurrentValue(EAttributeId.l5n);
       r += _ * o + Number(s[1]);
@@ -129,7 +129,7 @@ class UseBuffItemRoleData {
     return r;
   }
   J0t(t, e) {
-    return t.GetComponent(182).GetCurrentValue(e);
+    return t.GetComponent(184).GetCurrentValue(e);
   }
 }
 exports.UseBuffItemRoleData = UseBuffItemRoleData;

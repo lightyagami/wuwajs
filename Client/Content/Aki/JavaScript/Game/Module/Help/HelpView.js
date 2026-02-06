@@ -58,6 +58,10 @@ class HelpView extends UiViewBase_1.UiViewBase {
       }
     }
   }
+  OnGetTimeDilation() {
+    var e = this.OpenParam;
+    return ConfigManager_1.ConfigManager.HelpConfig.GetHelpContentInfoByGroupId(e)[0].TimeDilation;
+  }
 }
 exports.HelpView = HelpView;
 //# sourceMappingURL=HelpView.js.map

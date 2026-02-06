@@ -131,6 +131,9 @@ class TraceElementCommon {
   static SetBoxOrientation(t, e) {
     t.SetBoxOrientation(e.Pitch, e.Yaw, e.Roll);
   }
+  static SetCapsuleOrientation(t, e) {
+    t.SetCapsuleOrientation(e.Pitch, e.Yaw, e.Roll);
+  }
   static GetHitLocation(t, e, i) {
     if (t && t.bBlockingHit) {
       i.X = t.LocationX_Array.Get(e);

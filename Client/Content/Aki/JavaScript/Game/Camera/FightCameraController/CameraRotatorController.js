@@ -50,7 +50,7 @@ class CameraRotatorController extends CameraControllerBase_1.CameraControllerBas
     var i;
     var s;
     if (this.dce) {
-      [s, i] = this.Camera.CharacterEntityHandle.Entity.GetComponent(65).GetCameraInput();
+      [s, i] = this.Camera.CharacterEntityHandle.Entity.GetComponent(67).GetCameraInput();
       if (this.nQ_ && (Math.abs(s) > 0 || Math.abs(i) > 0)) {
         this.Sce();
       } else {

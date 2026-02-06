@@ -19,15 +19,18 @@ class LevelEventPlayerLoockAt extends LevelGeneralBase_1.LevelEventBase {
     var r;
     var a;
     var o;
-    if (t && (r = t.Pos.X, a = t.Pos.Y, o = t.Pos.Z, t = t.CameraMove, r = Vector_1.Vector.Create(r ?? 0, a ?? 0, o ?? 0), a = Global_1.Global.BaseCharacter)) {
-      o = a.CharacterActorComponent;
-      r.Subtraction(o.ActorLocationProxy, tmpVector);
-      MathUtils_1.MathUtils.LookRotationUpFirst(tmpVector, o.ActorUpProxy, tmpQuat);
+    var l;
+    if (t && (a = t.Pos.X, o = t.Pos.Y, l = t.Pos.Z, r = t.CameraMove, a = Vector_1.Vector.Create(a ?? 0, o ?? 0, l ?? 0), o = Global_1.Global.BaseCharacter)) {
+      l = o.CharacterActorComponent;
+      a.Subtraction(l.ActorLocationProxy, tmpVector);
+      MathUtils_1.MathUtils.LookRotationUpFirst(tmpVector, l.ActorUpProxy, tmpQuat);
       if (!tmpQuat.IsNearZero()) {
         tmpQuat.Rotator(tmpRotator);
-        o.SetActorRotation(tmpRotator.ToUeRotator(), "LevelEventPlayerLoockAt", false);
-        o.SetInputRotator(tmpRotator);
-        if (t) {
+        if (!t.PlayAnimation) {
+          l.SetActorRotation(tmpRotator.ToUeRotator(), "LevelEventPlayerLoockAt", false);
+        }
+        l.SetInputRotator(tmpRotator);
+        if (r) {
           CameraBlueprintFunctionLibrary_1.default.SetCameraRotation(tmpRotator.ToUeRotator());
         }
       }

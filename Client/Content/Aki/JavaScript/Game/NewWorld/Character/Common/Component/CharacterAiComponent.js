@@ -124,7 +124,7 @@ let CharacterAiComponent = CharacterAiComponent_1 = class CharacterAiComponent e
   OnInit() {
     this.Mne = this.Entity.GetComponent(0)?.GetPbDataId() ?? 0;
     this.Hte = this.Entity.GetComponent(3);
-    this.SFr = this.Entity.GetComponent(79);
+    this.SFr = this.Entity.GetComponent(81);
     var t = this.Hte.Actor.GetController();
     if (t && (t.SetActorTickEnabled(false), Log_1.Log.CheckWarn())) {
       Log_1.Log.Warn("AI", 29, "AIC配置在AI基础表，请清理BP自带的AIC配置信息", ["ConfigId", this.Mne], ["Actor", this.Hte.Actor?.GetName()], ["AIController", t?.GetName()]);
@@ -476,7 +476,7 @@ let CharacterAiComponent = CharacterAiComponent_1 = class CharacterAiComponent e
     var r = this.Entity.GetComponent(3);
     if (r.IsAutonomousProxy !== i) {
       let t = i;
-      var s = this.Entity.GetComponent(58);
+      var s = this.Entity.GetComponent(60);
       if (!!s && (s.CurrentState === 2 || s.CurrentState === 4)) {
         t = r.IsMoveAutonomousProxy;
       }
@@ -502,7 +502,7 @@ let CharacterAiComponent = CharacterAiComponent_1 = class CharacterAiComponent e
     EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.CharSwitchControl, t);
   }
   static AiHateNotify(t, e) {
-    var i = t.GetComponent(48).MFr.AiHateList;
+    var i = t.GetComponent(50).MFr.AiHateList;
     for (const r of e.ISs) {
       var o = MathUtils_1.MathUtils.LongToNumber(r.F4n);
       var o = ModelManager_1.ModelManager.CreatureModel.GetEntity(o);
@@ -646,5 +646,5 @@ let CharacterAiComponent = CharacterAiComponent_1 = class CharacterAiComponent e
 CharacterAiComponent.NFr = Stats_1.Stat.Create("SetUeController");
 CharacterAiComponent.kFr = Stats_1.Stat.Create("StartUeController");
 __decorate([CombatMessage_1.CombatNet.Listen("a3n", true)], CharacterAiComponent, "AiHateNotify", null);
-CharacterAiComponent = CharacterAiComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(48)], CharacterAiComponent);
+CharacterAiComponent = CharacterAiComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(50)], CharacterAiComponent);
 exports.CharacterAiComponent = CharacterAiComponent; //# sourceMappingURL=CharacterAiComponent.js.map

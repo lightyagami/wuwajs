@@ -23,22 +23,22 @@ class SurvivorsRogueController extends UiControllerBase_1.UiControllerBase {
     return true;
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(20216, this.Jwd);
-    Net_1.Net.Register(21834, this.Zwd);
-    Net_1.Net.Register(20573, this.eLd);
-    Net_1.Net.Register(15893, this.tLd);
-    Net_1.Net.Register(17462, this.iLd);
-    Net_1.Net.Register(24751, this.vxd);
-    Net_1.Net.Register(21964, this.tim);
+    Net_1.Net.Register(15710, this.Jwd);
+    Net_1.Net.Register(27979, this.Zwd);
+    Net_1.Net.Register(19758, this.eLd);
+    Net_1.Net.Register(29801, this.tLd);
+    Net_1.Net.Register(27732, this.iLd);
+    Net_1.Net.Register(17486, this.vxd);
+    Net_1.Net.Register(23342, this.tim);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(20216);
-    Net_1.Net.UnRegister(21834);
-    Net_1.Net.UnRegister(20573);
-    Net_1.Net.UnRegister(15893);
-    Net_1.Net.UnRegister(17462);
-    Net_1.Net.UnRegister(24751);
-    Net_1.Net.UnRegister(21964);
+    Net_1.Net.UnRegister(15710);
+    Net_1.Net.UnRegister(27979);
+    Net_1.Net.UnRegister(19758);
+    Net_1.Net.UnRegister(29801);
+    Net_1.Net.UnRegister(27732);
+    Net_1.Net.UnRegister(17486);
+    Net_1.Net.UnRegister(23342);
   }
   static OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDone, this.nye);
@@ -49,10 +49,10 @@ class SurvivorsRogueController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnInstanceChange, this.jUc);
   }
   static OnAddOpenViewCheckFunction() {
-    UiManager_1.UiManager.AddOpenViewCheckFunction("SurvivorsTabMainView", SurvivorsRogueController.Auf, "SurvivorsRogueController.CanOpenSurvivorsTabMainView");
+    UiManager_1.UiManager.AddOpenViewCheckFunction("SurvivorsTabMainView", SurvivorsRogueController.wdf, "SurvivorsRogueController.CanOpenSurvivorsTabMainView");
   }
   static OnRemoveOpenViewCheckFunction() {
-    UiManager_1.UiManager.RemoveOpenViewCheckFunction("SurvivorsTabMainView", SurvivorsRogueController.Auf);
+    UiManager_1.UiManager.RemoveOpenViewCheckFunction("SurvivorsTabMainView", SurvivorsRogueController.wdf);
   }
   static tHu() {
     var e = new SplashScreenTask_1.SplashScreenTask(0, 1, () => {
@@ -70,9 +70,9 @@ class SurvivorsRogueController extends UiControllerBase_1.UiControllerBase {
     } else if (e === "End") {
       r.UAd = new Protocol_1.Aki.Protocol.BAd();
     }
-    Net_1.Net.Call(21153, r, e => {
+    Net_1.Net.Call(17425, r, e => {
       if (e && e.G9n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 29599);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 29445);
       }
     });
   }
@@ -83,10 +83,10 @@ class SurvivorsRogueController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("SurvivorsRogue", 37, "[SurvivorsRogue] RequestCommandOperation", ["CommandId", e], ["IncId", r]);
     }
-    Net_1.Net.Call(27779, t, e => {
+    Net_1.Net.Call(21665, t, e => {
       if (e) {
         if (e.G9n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 24222);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 17097);
           o?.(false);
         } else {
           o?.(true);
@@ -101,10 +101,10 @@ class SurvivorsRogueController extends UiControllerBase_1.UiControllerBase {
     n.w5n = e;
     n.Y5n = o;
     n.VB1 = r;
-    Net_1.Net.Call(17967, n, e => {
+    Net_1.Net.Call(28961, n, e => {
       if (e) {
         if (e.G9n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 28192);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 20582);
           t?.(false);
         } else {
           t?.(true);
@@ -131,10 +131,10 @@ class SurvivorsRogueController extends UiControllerBase_1.UiControllerBase {
   }
   static RequestInstSettle(r) {
     var e = new Protocol_1.Aki.Protocol._bd();
-    Net_1.Net.Call(23111, e, e => {
+    Net_1.Net.Call(28318, e, e => {
       if (e) {
         if (e.G9n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 17805);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 17713);
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SurvivorsInstSettle, false);
         } else {
           if (r && e.KTd) {
@@ -150,7 +150,7 @@ class SurvivorsRogueController extends UiControllerBase_1.UiControllerBase {
   }
   static async RequestWeaponInfoUpdate() {
     var e = new Protocol_1.Aki.Protocol.hDd();
-    var r = await Net_1.Net.CallAsync(15968, e);
+    var r = await Net_1.Net.CallAsync(27532, e);
     if (r) {
       e = r.IDd;
       for (const n of Object.keys(e)) {
@@ -163,7 +163,7 @@ class SurvivorsRogueController extends UiControllerBase_1.UiControllerBase {
   static async RequestLastFile() {
     var e = new SurvivorsActivityDefine_1.SurvivorsLevelInfo();
     var r = new Protocol_1.Aki.Protocol.QBd();
-    var r = await Net_1.Net.CallAsync(24980, r);
+    var r = await Net_1.Net.CallAsync(19805, r);
     if (r &&= r.ekd) {
       e.LevelId = r.gG_;
       e.RoleId = r.Q6n;
@@ -229,7 +229,7 @@ class SurvivorsRogueController extends UiControllerBase_1.UiControllerBase {
   }
 }
 exports.SurvivorsRogueController = SurvivorsRogueController;
-(_a = SurvivorsRogueController).Auf = (e, r) => {
+(_a = SurvivorsRogueController).wdf = (e, r) => {
   var o = ControllerHolder_1.ControllerHolder.KuroSimpleCombatController.CurSubModel?.KscPlayerEntity;
   return !!o && !!o.GetSkillComp()?.AttrSet_?.Attrs_;
 };

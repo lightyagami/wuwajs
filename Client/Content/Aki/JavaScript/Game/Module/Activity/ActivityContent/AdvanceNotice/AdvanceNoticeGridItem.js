@@ -14,7 +14,7 @@ class AdvanceNoticeGridItem extends UiPanelBase_1.UiPanelBase {
     super();
     this.AdvertisingPageInfoId = i;
     this.bD = 0;
-    this.dUf = undefined;
+    this.WOf = undefined;
     this.aFi = () => {
       ActivityControllerHolder_1.ActivityControllerHolder.AdvanceNoticeController?.OpenAdvanceNoticeView(this.AdvertisingPageInfoId, this.bD);
     };
@@ -24,7 +24,7 @@ class AdvanceNoticeGridItem extends UiPanelBase_1.UiPanelBase {
     this.BtnBindInfo = [[0, this.aFi]];
   }
   OnStart() {
-    this.dUf = this.GetTexture(1).GetOwner().GetComponentByClass(UE.UITextureTransitionComponent.StaticClass());
+    this.WOf = this.GetTexture(1).GetOwner().GetComponentByClass(UE.UITextureTransitionComponent.StaticClass());
   }
   RefreshByTabId(i) {
     this.bD = i;
@@ -33,7 +33,7 @@ class AdvanceNoticeGridItem extends UiPanelBase_1.UiPanelBase {
   Refresh() {
     var i = ConfigManager_1.ConfigManager.AdvanceNoticeConfig.GetAdvertisingTabInfoById(this.bD);
     this.SetTextureByPath(i.EntryButtonImage, this.GetTexture(1), undefined, () => {
-      this.dUf.SetAllStateTexture(this.GetTexture(1).GetTexture());
+      this.WOf.SetAllStateTexture(this.GetTexture(1).GetTexture());
     });
     this.SetSpriteByPath(i.TabIcon, this.GetSprite(2), false);
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(3), i.EntryButtonText);

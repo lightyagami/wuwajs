@@ -32,7 +32,7 @@ const FormationAttributeController_1 = require("../../../../../Module/Abilities/
 const Trigger_1 = require("./Trigger/Trigger");
 const TriggerType_1 = require("./Trigger/TriggerType");
 function checkRoleAttr(e, t, r, n) {
-  var o = e?.GetComponent(182)?.GetCurrentValue(r);
+  var o = e?.GetComponent(184)?.GetCurrentValue(r);
   if (o) {
     if (t === 0) {
       if (o < n) {
@@ -61,20 +61,20 @@ function checkRoleAttr(e, t, r, n) {
 const builtinFunc = {
   GetTags: e => {
     var t = [];
-    for (const r of e.CheckGetComponent(215).TagContainer.GetAllExactTags() ?? []) {
+    for (const r of e.CheckGetComponent(217).TagContainer.GetAllExactTags() ?? []) {
       t.push(GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(r));
     }
     return t;
   },
   GetAttributeByID(e, t) {
-    return e.CheckGetComponent(182).GetCurrentValue(t);
+    return e.CheckGetComponent(184).GetCurrentValue(t);
   },
   HasInt: (e, t) => !!t && t.length !== 0 && t.includes(e),
   MatchAnyInt: (e, t) => !!e && !!t && e.length !== 0 && t.length !== 0 && e.some(e => t.includes(e)),
   MatchAllInt: (e, t) => !!e && !!t && e.length !== 0 && t.length !== 0 && e.every(e => t.includes(e)),
-  MatchAnyTag: (e, t) => e.CheckGetComponent(215).HasAnyTag(t.map(e => GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e))),
-  MatchAllTags: (e, t) => e.CheckGetComponent(215).HasAllTag(t.map(e => GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e))),
-  GetShieldValue: e => e.CheckGetComponent(78)?.ShieldTotal ?? 0,
+  MatchAnyTag: (e, t) => e.CheckGetComponent(217).HasAnyTag(t.map(e => GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e))),
+  MatchAllTags: (e, t) => e.CheckGetComponent(217).HasAllTag(t.map(e => GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e))),
+  GetShieldValue: e => e.CheckGetComponent(80)?.ShieldTotal ?? 0,
   Distance: (e, t) => {
     var r = ModelManager_1.ModelManager.CreatureModel;
     var n = e?.GetComponent(0);
@@ -101,28 +101,28 @@ const builtinFunc = {
   },
   GetBattleScore: () => ModelManager_1.ModelManager.BattleScoreModel.GetCurScore(),
   GetBuffStack: (e, t) => {
-    var r = e.CheckGetComponent(200);
+    var r = e.CheckGetComponent(202);
     var t = Number(t);
     if (r) {
       return (r.GetFormationBuffComp()?.GetFormationBuffTotalStackById(t) ?? 0) + (r.GetBuffTotalStackById(t) ?? 0);
     } else {
-      return e.CheckGetComponent(220)?.GetBuffTotalStackById(t) ?? 0;
+      return e.CheckGetComponent(222)?.GetBuffTotalStackById(t) ?? 0;
     }
   },
   MatchAnyBattleFlags: (e, t) => !!e && !!t && e.length !== 0 && t.length !== 0 && e.some(e => t.includes(e)),
-  GetTagStackCount: (e, t) => e.GetComponent(215)?.GetTagCount(GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(t)) ?? 0,
-  MatchAnyBuff: (e, t) => {
-    const r = e?.GetComponent(220);
-    return !!r && !!t && t.length !== 0 && t.some(e => r.HasBuff(e));
+  GetTagStackCount: (e, t) => e.GetComponent(217)?.GetTagCount(GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(t)) ?? 0,
+  MatchAnyBuff: (e, t, r = false) => {
+    const n = e?.GetComponent(222);
+    return !!n && !!t && t.length !== 0 && t.some(e => n.HasBuff(e, r));
   },
-  MatchAllBuff: (e, t) => {
-    const r = e?.GetComponent(220);
-    return !!r && !!t && t.length !== 0 && t.every(e => r.HasBuff(e));
+  MatchAllBuff: (e, t, r = false) => {
+    const n = e?.GetComponent(222);
+    return !!n && !!t && t.length !== 0 && t.every(e => n.HasBuff(e, r));
   },
   GetMaxTagCountIndex: (e, t) => {
     let r = 0;
     let n = 0;
-    const o = e.GetComponent(215);
+    const o = e.GetComponent(217);
     if (o && t && t.length !== 0) {
       t.forEach((e, t) => {
         e = o.GetTagCount(GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e));
@@ -151,7 +151,7 @@ const builtinFunc = {
   GetContainTagEntityCount: (e, t, r) => {
     let n = 0;
     if (t === 0) {
-      if (e.GetComponent(215)?.HasTag(GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(r))) {
+      if (e.GetComponent(217)?.HasTag(GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(r))) {
         return 1;
       } else {
         return 0;
@@ -161,7 +161,7 @@ const builtinFunc = {
     var a = e.GetComponent(0).GetPlayerId();
     for (const i of o) {
       if (t !== 1 || i.Entity?.GetComponent(0).GetPlayerId() === a) {
-        if (i.Entity?.GetComponent(215)?.HasTag(GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(r))) {
+        if (i.Entity?.GetComponent(217)?.HasTag(GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(r))) {
           n++;
         }
       }

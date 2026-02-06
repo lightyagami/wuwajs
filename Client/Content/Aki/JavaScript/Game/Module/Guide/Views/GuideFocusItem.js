@@ -36,69 +36,77 @@ class GuideFocusItem extends UiPanelBase_1.UiPanelBase {
     this.Gzt = undefined;
     this.Nzt = undefined;
     this.Ozt = undefined;
-    this.uwm = new UE.Vector2D(0, 0);
-    this.cwm = new UE.Vector(0, 0, 0);
+    this.Iwm = new UE.Vector2D(0, 0);
+    this.Twm = new UE.Vector(0, 0, 0);
+    this.l9g = false;
     this.Fr = () => {
       if (GuideFocusItem.IsOpenLog && Log_1.Log.CheckWarn()) {
         Log_1.Log.Warn("Guide", 16, "OnButtonClick enter");
       }
       var e = this.Nzt;
       this.kzt();
-      if (e?.IsInteractable() && this.xzt.bIsUIActive) {
-        if (e.IsA(UE.UIExtendButtonComponent.StaticClass())) {
-          var t = e;
-          if (!t.OnClickCallBack.IsBound() && t.HelpGroupId > 0) {
-            if (GuideFocusItem.IsOpenLog && Log_1.Log.CheckWarn()) {
-              Log_1.Log.Warn("Guide", 74, "OnButtonClick execute parent SetDelegateForHelpClick UIExtendButtonComponent");
-            }
-            ControllerHolder_1.ControllerHolder.HelpController.OpenHelpById(t.HelpGroupId);
-            return;
-          }
+      if (this.l9g) {
+        if (Log_1.Log.CheckDebug()) {
+          Log_1.Log.Debug("Guide", 95, "引导框连点，不重复执行点击回调");
         }
-        if (e.IsA(UE.UIButtonComponent.StaticClass())) {
-          if ((t = e).OnClickCallBack.IsBound()) {
-            if (GuideFocusItem.IsOpenLog && Log_1.Log.CheckWarn()) {
-              Log_1.Log.Warn("Guide", 16, "OnButtonClick execute parent OnClickCallBack UIButtonComponent");
+      } else {
+        this.l9g = true;
+        if (e?.IsInteractable() && this.xzt.bIsUIActive) {
+          if (e.IsA(UE.UIExtendButtonComponent.StaticClass())) {
+            var t = e;
+            if (!t.OnClickCallBack.IsBound() && t.HelpGroupId > 0) {
+              if (GuideFocusItem.IsOpenLog && Log_1.Log.CheckWarn()) {
+                Log_1.Log.Warn("Guide", 74, "OnButtonClick execute parent SetDelegateForHelpClick UIExtendButtonComponent");
+              }
+              ControllerHolder_1.ControllerHolder.HelpController.OpenHelpById(t.HelpGroupId);
+              return;
             }
-            t.OnClickCallBack.Execute();
           }
-        } else if (e.IsA(UE.UISelectableButtonComponent.StaticClass())) {
-          if ((t = e).OnClickCallBack.IsBound()) {
-            if (GuideFocusItem.IsOpenLog && Log_1.Log.CheckWarn()) {
-              Log_1.Log.Warn("Guide", 16, "OnButtonClick execute parent OnClickCallBack UISelectableButtonComponent");
+          if (e.IsA(UE.UIButtonComponent.StaticClass())) {
+            if ((t = e).OnClickCallBack.IsBound()) {
+              if (GuideFocusItem.IsOpenLog && Log_1.Log.CheckWarn()) {
+                Log_1.Log.Warn("Guide", 16, "OnButtonClick execute parent OnClickCallBack UIButtonComponent");
+              }
+              t.OnClickCallBack.Execute();
             }
-            t.OnClickCallBack.Execute();
-          }
-        } else if (e.IsA(UE.UIToggleComponent.StaticClass())) {
-          e.SetState(!e.IsOn, true);
-          if (GuideFocusItem.IsOpenLog && Log_1.Log.CheckWarn()) {
-            Log_1.Log.Warn("Guide", 16, "OnButtonClick execute parent SetState UIToggleComponent");
-          }
-        } else if (e.IsA(UE.UIExtendToggle.StaticClass())) {
-          t = e;
-          if (GuideFocusItem.IsOpenLog && Log_1.Log.CheckWarn()) {
-            Log_1.Log.Warn("Guide", 16, "OnButtonClick execute parent SetToggleState ETT_Checked UIExtendToggle");
-          }
-          if (this.Config.EnableAllToggleState) {
-            if (t.GetToggleState() === 0) {
+          } else if (e.IsA(UE.UISelectableButtonComponent.StaticClass())) {
+            if ((t = e).OnClickCallBack.IsBound()) {
+              if (GuideFocusItem.IsOpenLog && Log_1.Log.CheckWarn()) {
+                Log_1.Log.Warn("Guide", 16, "OnButtonClick execute parent OnClickCallBack UISelectableButtonComponent");
+              }
+              t.OnClickCallBack.Execute();
+            }
+          } else if (e.IsA(UE.UIToggleComponent.StaticClass())) {
+            e.SetState(!e.IsOn, true);
+            if (GuideFocusItem.IsOpenLog && Log_1.Log.CheckWarn()) {
+              Log_1.Log.Warn("Guide", 16, "OnButtonClick execute parent SetState UIToggleComponent");
+            }
+          } else if (e.IsA(UE.UIExtendToggle.StaticClass())) {
+            t = e;
+            if (GuideFocusItem.IsOpenLog && Log_1.Log.CheckWarn()) {
+              Log_1.Log.Warn("Guide", 16, "OnButtonClick execute parent SetToggleState ETT_Checked UIExtendToggle");
+            }
+            if (this.Config.EnableAllToggleState) {
+              if (t.GetToggleState() === 0) {
+                t.SetToggleState(1, true);
+              } else if (t.GetToggleState() === 1) {
+                t.SetToggleState(0, true);
+              }
+            } else if (t.GetToggleState() === 0) {
               t.SetToggleState(1, true);
-            } else if (t.GetToggleState() === 1) {
-              t.SetToggleState(0, true);
             }
-          } else if (t.GetToggleState() === 0) {
-            t.SetToggleState(1, true);
-          }
-          if (t.GetToggleState() === 2 && t.OnUndeterminedClicked && GuideFocusItem.IsOpenLog) {
-            if (Log_1.Log.CheckWarn()) {
-              Log_1.Log.Warn("Guide", 95, "OnButtonClick execute parent OnUndeterminedClicked UIExtendToggle");
+            if (t.GetToggleState() === 2 && t.OnUndeterminedClicked && GuideFocusItem.IsOpenLog) {
+              if (Log_1.Log.CheckWarn()) {
+                Log_1.Log.Warn("Guide", 95, "OnButtonClick execute parent OnUndeterminedClicked UIExtendToggle");
+              }
+              t.OnUndeterminedClicked.Broadcast();
             }
-            t.OnUndeterminedClicked.Broadcast();
+          } else if (e.IsA(UE.UISliderComponent.StaticClass()) && (t = e).OnValueChangeCb.IsBound()) {
+            if (GuideFocusItem.IsOpenLog && Log_1.Log.CheckWarn()) {
+              Log_1.Log.Warn("Guide", 16, "OnButtonClick execute parent OnValueChangeCb UISliderComponent");
+            }
+            t.OnValueChangeCb.Execute(t.Value);
           }
-        } else if (e.IsA(UE.UISliderComponent.StaticClass()) && (t = e).OnValueChangeCb.IsBound()) {
-          if (GuideFocusItem.IsOpenLog && Log_1.Log.CheckWarn()) {
-            Log_1.Log.Warn("Guide", 16, "OnButtonClick execute parent OnValueChangeCb UISliderComponent");
-          }
-          t.OnValueChangeCb.Execute(t.Value);
         }
       }
     };
@@ -442,16 +450,16 @@ class GuideFocusItem extends UiPanelBase_1.UiPanelBase {
       var i = [10000, 10000];
       var o = [0, 0];
       for (const g of this.Owner.GetGuideStepInfo().ViewData.GetMultiAttachItems() ?? []) {
-        var [n, s, u, a] = this.dwm(g);
+        var [n, s, u, a] = this.bwm(g);
         i[0] = Math.min(i[0], n);
         i[1] = Math.min(i[1], s);
         o[0] = Math.max(o[0], u);
         o[1] = Math.max(o[1], a);
       }
-      this.RootItem.SetPivot(this.uwm);
-      this.cwm.X = i[1];
-      this.cwm.Y = i[0];
-      this.RootItem.SetLGUISpaceAbsolutePosition(this.cwm);
+      this.RootItem.SetPivot(this.Iwm);
+      this.Twm.X = i[1];
+      this.Twm.Y = i[0];
+      this.RootItem.SetLGUISpaceAbsolutePosition(this.Twm);
       this.RootItem.SetHeight(o[0] - i[0]);
       this.RootItem.SetWidth(o[1] - i[1]);
     } else {
@@ -490,7 +498,7 @@ class GuideFocusItem extends UiPanelBase_1.UiPanelBase {
       e.SetWidth(UiLayer_1.UiLayer.UiRootItem.Width);
     }
   }
-  dwm(e) {
+  bwm(e) {
     var t = e.GetLGUISpaceCenterAbsolutePosition();
     var i = e.D_K2_GetComponentScale();
     var o = e.Width * i.X;

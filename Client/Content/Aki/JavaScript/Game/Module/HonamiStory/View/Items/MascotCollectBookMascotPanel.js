@@ -70,7 +70,7 @@ class MascotCollectBookMascotPanel extends UiPanelBase_1.UiPanelBase {
     };
     this.v6e = () => {
       if (this.bId) {
-        this.IYm();
+        this.WJm();
       }
     };
   }
@@ -185,7 +185,7 @@ class MascotCollectBookMascotPanel extends UiPanelBase_1.UiPanelBase {
   CloseWithSequence() {
     this.yvm.PlaySequence("Close");
   }
-  IYm() {
+  WJm() {
     this.bId = false;
     this.P5d.Refresh(this.P5d.Data, true, 0);
     this._$c();

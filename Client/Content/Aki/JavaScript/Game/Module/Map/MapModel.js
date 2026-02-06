@@ -55,7 +55,7 @@ class MapModel extends ModelBase_1.ModelBase {
     this.of1 = new Map();
     this.rQd = undefined;
     this.LastHighLevelAreaInner = undefined;
-    this.ttg = undefined;
+    this.rAg = undefined;
     this.yW1 = new Map();
     this.SW1 = new TrimLru_1.TrimLru(3);
   }
@@ -84,9 +84,9 @@ class MapModel extends ModelBase_1.ModelBase {
     this.UnlockMapBlockIds = [];
     this.of1 = new Map();
     this.rQd = new Map();
-    this.ttg = new Map();
-    this.ttg.set(1, new Set());
-    this.ttg.set(2, new Set());
+    this.rAg = new Map();
+    this.rAg.set(1, new Set());
+    this.rAg.set(2, new Set());
     this.InitTeleportMarkQueryCache();
     return true;
   }
@@ -110,7 +110,7 @@ class MapModel extends ModelBase_1.ModelBase {
     this.Qcl.clear();
     this.of1.clear();
     this.rQd.clear();
-    this.ttg.clear();
+    this.rAg.clear();
     this.EDi = undefined;
     this.LDi = undefined;
     this.Nhl = undefined;
@@ -120,7 +120,7 @@ class MapModel extends ModelBase_1.ModelBase {
     this.Kpc = undefined;
     this.CacheEnrichmentAreaWorldMapCircle = undefined;
     this.CacheEnrichmentAreaEntityId = 0;
-    return !(this.ttg = undefined);
+    return !(this.rAg = undefined);
   }
   GetUnlockedTeleportMap() {
     return this.LDi;
@@ -292,12 +292,12 @@ class MapModel extends ModelBase_1.ModelBase {
     this.PDi.clear();
     var e = this.EDi.get(12);
     var r = this.EDi.get(7);
-    var t = this.Dff();
+    var t = this._Cf();
     this.EDi?.clear();
     this.TDi?.clear();
     this.Vlh(12, e);
     this.Vlh(7, r);
-    this.Uff(t);
+    this.uCf(t);
   }
   Vlh(e, r) {
     if (r) {
@@ -307,7 +307,7 @@ class MapModel extends ModelBase_1.ModelBase {
       });
     }
   }
-  Uff(e) {
+  uCf(e) {
     for (var [r, t] of e) {
       this.EDi?.set(r, t);
       t.forEach(e => {
@@ -315,7 +315,7 @@ class MapModel extends ModelBase_1.ModelBase {
       });
     }
   }
-  Dff() {
+  _Cf() {
     var e = new Map();
     var r = this.EDi?.get(36);
     if (r) {
@@ -825,7 +825,13 @@ class MapModel extends ModelBase_1.ModelBase {
     if (e !== 0) {
       e = ConfigManager_1.ConfigManager.WorldMapConfig.GetDungeonConfig(e);
       if (e !== undefined) {
-        return (e.InstSubType === 12 ? this.GetDungeonEntranceConfig(e) : e).MapConfigId;
+        if (e.InstSubType === 12) {
+          var r = this.GetDungeonEntranceConfig(e);
+          if (r) {
+            return r.MapConfigId;
+          }
+        }
+        return e.MapConfigId;
       }
     }
   }
@@ -1121,20 +1127,20 @@ class MapModel extends ModelBase_1.ModelBase {
   }
   UpdateExtraUiMarkTypeVisible(e, r, t) {
     if (t) {
-      this.ttg?.get(e)?.add(r);
+      this.rAg?.get(e)?.add(r);
     } else {
-      this.ttg?.get(e)?.delete(r);
+      this.rAg?.get(e)?.delete(r);
     }
   }
   HasExtraUiMarkType(e) {
-    e = this.ttg?.get(e);
+    e = this.rAg?.get(e);
     return !!e && e.size > 0;
   }
   IsExtraUiMarkTypeVisible(e, r) {
-    return this.ttg?.get(e)?.has(r) ?? false;
+    return this.rAg?.get(e)?.has(r) ?? false;
   }
   ClearExtraUiMarkType(e) {
-    this.ttg?.get(e)?.clear();
+    this.rAg?.get(e)?.clear();
   }
 }
 exports.MapModel = MapModel;

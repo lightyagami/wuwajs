@@ -29,7 +29,7 @@ class SkillUtils {
     if (t?.Valid && i) {
       var l = t.Entity.GetComponent(1);
       if (l?.Valid) {
-        var o = t.Entity.GetComponent(40);
+        var o = t.Entity.GetComponent(42);
         if (o?.Valid) {
           var a;
           var s;
@@ -162,7 +162,7 @@ class SkillUtils {
             this.Pbd(r);
             (o = Protocol_1.Aki.Protocol.Qe_.create()).o5n = true;
             o.n5n = t * TimeUtil_1.TimeUtil.InverseMillisecond;
-            CombatMessage_1.CombatNet.Send(16854, l, o);
+            CombatMessage_1.CombatNet.Send(26118, l, o);
             EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnAbsoluteTimeStop, true, t);
             EventSystem_1.EventSystem.EmitWithTarget(l, EventDefine_1.EEventName.OnAbsoluteTimeStop, true, t);
           } else {
@@ -182,7 +182,7 @@ class SkillUtils {
       this.Abd(e);
       (e = Protocol_1.Aki.Protocol.Qe_.create()).o5n = false;
       e.n5n = 0;
-      CombatMessage_1.CombatNet.Send(16854, t, e);
+      CombatMessage_1.CombatNet.Send(26118, t, e);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnAbsoluteTimeStop, false, 0);
       EventSystem_1.EventSystem.EmitWithTarget(t, EventDefine_1.EEventName.OnAbsoluteTimeStop, false, 0);
     }
@@ -199,7 +199,7 @@ class SkillUtils {
             this.Pbd(r);
             (e = Protocol_1.Aki.Protocol.Fe_.create()).o5n = true;
             e.n5n = t * TimeUtil_1.TimeUtil.InverseMillisecond;
-            CombatMessage_1.CombatNet.Send(27239, i, e);
+            CombatMessage_1.CombatNet.Send(29477, i, e);
             EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnTimeStopRequest, true, t);
             EventSystem_1.EventSystem.EmitWithTarget(i, EventDefine_1.EEventName.OnTimeStopRequest, true, t);
           } else {
@@ -217,7 +217,7 @@ class SkillUtils {
       this.Abd(e);
       (e = Protocol_1.Aki.Protocol.Fe_.create()).o5n = false;
       e.n5n = 0;
-      CombatMessage_1.CombatNet.Send(27239, t, e);
+      CombatMessage_1.CombatNet.Send(29477, t, e);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnTimeStopRequest, false, 0);
       EventSystem_1.EventSystem.EmitWithTarget(t, EventDefine_1.EEventName.OnTimeStopRequest, false, 0);
     }

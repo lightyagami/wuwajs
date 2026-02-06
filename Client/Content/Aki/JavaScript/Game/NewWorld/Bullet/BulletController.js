@@ -155,7 +155,7 @@ class BulletController extends ControllerBase_1.ControllerBase {
     BeginRotatorOffset: c,
     DtType: C = -1,
     CreateOnAuthority: d = true,
-    BattleFlags: g = undefined,
+    BattleContext: g = undefined,
     ParentIds: M = undefined
   } = {}, h = undefined, m = 0) {
     if (ModelManager_1.ModelManager.GameModeModel.WorldDone) {
@@ -172,7 +172,7 @@ class BulletController extends ControllerBase_1.ControllerBase {
         BulletController.$9o.Stop();
         if (v) {
           if (m === 1 && v.Base.DestroyOnSkillEnd) {
-            var y = S.GetComponent(40);
+            var y = S.GetComponent(42);
             if (!y?.Valid) {
               if (Log_1.Log.CheckError()) {
                 Log_1.Log.Error("Bullet", 20, "勾选了技能结束是否销毁子弹, 技能组件不存在", ["bulletRowName", e], ["SkillId", r]);
@@ -205,7 +205,7 @@ class BulletController extends ControllerBase_1.ControllerBase {
               LocationOffset: B,
               BeginRotatorOffset: c,
               DtType: C,
-              BattleFlags: g,
+              BattleContext: g,
               ParentIds: M
             }, h, m);
             BulletController.U7c(e);
@@ -216,7 +216,7 @@ class BulletController extends ControllerBase_1.ControllerBase {
           }
         }
       } else {
-        CombatLog_1.CombatLog.Error("Bullet", 35, "创建子弹时contextId为空", ["rowName", e]);
+        CombatLog_1.CombatLog.Error("Bullet", undefined, "创建子弹时contextId为空", ["rowName", e]);
       }
       BulletController.U7c(e);
     }
@@ -240,7 +240,7 @@ class BulletController extends ControllerBase_1.ControllerBase {
       return this.Z9o(t, r, l);
     }
     if (i === 4) {
-      o = t.GetComponent(33)?.GetCurrentTarget();
+      o = t.GetComponent(34)?.GetCurrentTarget();
       if (o?.Valid) {
         return o.Id;
       }
@@ -280,13 +280,13 @@ class BulletController extends ControllerBase_1.ControllerBase {
     var l = new Protocol_1.Aki.Protocol.Gzn();
     l.VVn = 0;
     l.P8n = `@gmcreatebullet ${t} ${e}`;
-    Net_1.Net.Call(22424, Protocol_1.Aki.Protocol.Gzn.create(l), () => {});
+    Net_1.Net.Call(20381, Protocol_1.Aki.Protocol.Gzn.create(l), () => {});
     return 0;
   }
   static Y9o(t, e, l, r, o) {
     var i = e.Move.TrackTarget;
     if (i === 4 || i === 3) {
-      var a = t.GetComponent(33)?.GetCurrentTarget();
+      var a = t.GetComponent(34)?.GetCurrentTarget();
       if (a?.Valid) {
         return a.Id;
       }
@@ -336,7 +336,7 @@ class BulletController extends ControllerBase_1.ControllerBase {
   }
   static z9o(t, e) {
     var l;
-    var t = t.GetComponent(40)?.SkillTarget;
+    var t = t.GetComponent(42)?.SkillTarget;
     if (BulletConstant_1.BulletConstant.OpenCreateLog && (l = t?.Entity?.GetComponent(1)?.Owner?.GetName(), Log_1.Log.CheckDebug())) {
       Log_1.Log.Debug("Bullet", 20, "获取技能目标", ["BulletId", e], ["Target", l ?? StringUtils_1.NONE_STRING]);
     }
@@ -347,7 +347,7 @@ class BulletController extends ControllerBase_1.ControllerBase {
     }
   }
   static hNn() {
-    var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.GetComponent(33)?.GetCurrentTarget();
+    var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.GetComponent(34)?.GetCurrentTarget();
     if (t?.Valid) {
       return t.Id;
     } else {
@@ -357,7 +357,7 @@ class BulletController extends ControllerBase_1.ControllerBase {
   static J9o(t, e, l, r, o) {
     var i = e.Move.InitVelocityDirStandard;
     if (i === 5) {
-      var a = t.GetComponent(33)?.GetCurrentTarget();
+      var a = t.GetComponent(34)?.GetCurrentTarget();
       if (a?.Valid) {
         return a.Id;
       }
@@ -401,7 +401,7 @@ class BulletController extends ControllerBase_1.ControllerBase {
     DtType: g = -1,
     RandomPosOffset: M = undefined,
     RandomInitSpeedOffset: h = undefined,
-    BattleFlags: m = undefined,
+    BattleContext: m = undefined,
     ParentIds: S = undefined
   } = {}, v = undefined, y = 0) {
     var I = i === 2;

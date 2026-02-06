@@ -271,7 +271,7 @@ class LoginServerModel extends ModelBase_1.ModelBase {
   SetPlayerLoginInfo(e, r) {
     this.DEi.set(e, r);
   }
-  _Wm(r) {
+  oKm(r) {
     var o = Array.from(this.REi.keys());
     var t = o.length;
     for (let e = 0; e < t; e++) {
@@ -285,10 +285,11 @@ class LoginServerModel extends ModelBase_1.ModelBase {
       this.CurrentSelectServerData = LauncherServer_1.LauncherServer.CacheSuggestLoginServerData.get(e);
       r(LauncherServer_1.LauncherServer.CacheSuggestLoginServerData.get(e));
       LauncherServer_1.LauncherServer.CacheSuggestLoginServerData.delete(e);
+      this.OnBeginSuggestServerData = this.CurrentSelectServerData;
     } else {
       this.CurrentSelectServerData = undefined;
       e = this.UEi(e);
-      this.CurrentSelectServerData = this._Wm(e);
+      this.CurrentSelectServerData = this.oKm(e);
       this.OnBeginSuggestServerData = this.CurrentSelectServerData;
       if (!this.OnBeginSuggestServerData) {
         if ((e = this.GetLoginServersByClientRegion()) && e.length > 0) {
@@ -321,38 +322,39 @@ class LoginServerModel extends ModelBase_1.ModelBase {
     }
     let i = "";
     if (t.UserInfos.length > 0) {
-      var n = t.UserInfos[0].LastOnlineTime;
+      let r = t.UserInfos[0].LastOnlineTime;
       i = t.UserInfos[0].Region;
-      var a = t.UserInfos.length;
-      for (let e = 0; e < a; e++) {
-        if (t.UserInfos[e].LastOnlineTime > n) {
+      var n = t.UserInfos.length;
+      for (let e = 0; e < n; e++) {
+        if (t.UserInfos[e].LastOnlineTime > r) {
           i = t.UserInfos[e].Region;
+          r = t.UserInfos[e].LastOnlineTime;
         }
       }
     }
     if (i !== "") {
-      var g;
+      var a;
       var e = this.PEi(i);
       if (e) {
-        (g = new RegionAndIpSt()).Phrase(e.Region, e.ip);
+        (a = new RegionAndIpSt()).Phrase(e.Region, e.ip);
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("Login", 27, "recommendRegion", ["recommendRegion", i]);
         }
-        return g;
+        return a;
       }
     }
-    var s = t.RecommendRegion;
+    var g = t.RecommendRegion;
     for (let e = 0; e < o; e++) {
-      if (r[e].Region === s) {
+      if (r[e].Region === g) {
         if (this.xEi()) {
           if (Log_1.Log.CheckDebug()) {
             Log_1.Log.Debug("Login", 27, "PingHigh", [r[e].Region, r[e].ip]);
           }
-          (l = new RegionAndIpSt()).Phrase(r[e].Region, r[e].ip);
-          return l;
+          (s = new RegionAndIpSt()).Phrase(r[e].Region, r[e].ip);
+          return s;
         }
-        var l = this.REi.get(r[e]);
-        if (l && l > 100) {
+        var s = this.REi.get(r[e]);
+        if (s && s > 100) {
           if (Log_1.Log.CheckDebug()) {
             Log_1.Log.Debug("Login", 27, "this.RegionPingMap.get(keys[i]) > 100");
           }
@@ -361,9 +363,9 @@ class LoginServerModel extends ModelBase_1.ModelBase {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("Login", 27, "返回推荐");
         }
-        var L = new RegionAndIpSt();
-        L.Phrase(r[e].Region, r[e].ip);
-        return L;
+        var l = new RegionAndIpSt();
+        l.Phrase(r[e].Region, r[e].ip);
+        return l;
       }
     }
     return this.AEi(DEFAULTSERVERREGION);

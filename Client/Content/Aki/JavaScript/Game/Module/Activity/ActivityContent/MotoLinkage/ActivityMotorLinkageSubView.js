@@ -20,12 +20,12 @@ const RESET_TIME_MS = 2000;
 class ActivityMotorLinkageSubView extends ActivitySubViewBase_1.ActivitySubViewBase {
   constructor() {
     super(...arguments);
-    this.n2f = undefined;
+    this.e4f = undefined;
     this.ActivityBaseData = undefined;
     this.Het = [];
-    this.sNf = undefined;
-    this.aNf = undefined;
-    this.DIf = e => {
+    this.j9f = undefined;
+    this.$9f = undefined;
+    this.MRf = e => {
       if (e === this.ActivityBaseData?.Id) {
         this.OnRefreshView();
       }
@@ -36,18 +36,18 @@ class ActivityMotorLinkageSubView extends ActivitySubViewBase_1.ActivitySubViewB
     };
     this.Fr = e => {
       UiManager_1.UiManager.OpenView("MotoLinkageRewardView", e);
-      this.ZNf();
+      this.VHf();
       this.ActivityBaseData?.SetCanSubViewPlayShowView(true);
     };
-    this.CGf = e => {
-      const r = this.o2f(e);
-      if (!this.sNf) {
-        this.sNf = [];
-        this.sNf.fill(true, 0, roleAnimNameDefine.length);
+    this.A6f = e => {
+      const r = this.Z3f(e);
+      if (!this.j9f) {
+        this.j9f = [];
+        this.j9f.fill(true, 0, roleAnimNameDefine.length);
       }
-      this.hNf();
+      this.W9f();
       let n = true;
-      for (const t of this.sNf) {
+      for (const t of this.j9f) {
         if (!t) {
           n = false;
           break;
@@ -59,16 +59,17 @@ class ActivityMotorLinkageSubView extends ActivitySubViewBase_1.ActivitySubViewB
           this.GetItem(fxDefineList[t])?.SetUIActive(true);
           this.GetItem(fxDefineList[t])?.SetAlpha(1);
         }
-        var s = this.sNf[t];
+        var s = this.j9f[t];
         if (s !== i || !!n) {
-          this.sNf[t] = i;
+          this.j9f[t] = i;
+          this.LevelSequencePlayer?.StopSequenceByKey(e[i ? 0 : 1]);
           this.LevelSequencePlayer?.PlaySequencePurely(e[i ? 1 : 0]);
         }
       });
     };
-    this.lNf = () => {
-      this.hNf();
-      this._Nf();
+    this.Q9f = () => {
+      this.W9f();
+      this.K9f();
     };
   }
   OnRegisterComponent() {
@@ -76,15 +77,15 @@ class ActivityMotorLinkageSubView extends ActivitySubViewBase_1.ActivitySubViewB
   }
   async OnBeforeStartAsync() {
     var e = [];
-    e.push(this.tUm());
-    this.n2f = new ActivitySubViewGeneralInfo_1.ActivitySubViewGeneralInfo();
-    this.n2f?.SetData(this.ActivityBaseData);
-    this.n2f?.SetClickFunc(this.UOe);
-    e.push(this.n2f.CreateThenShowByActorAsync(this.GetItem(0).GetOwner()));
+    e.push(this.CDm());
+    this.e4f = new ActivitySubViewGeneralInfo_1.ActivitySubViewGeneralInfo();
+    this.e4f?.SetData(this.ActivityBaseData);
+    this.e4f?.SetClickFunc(this.UOe);
+    e.push(this.e4f.CreateThenShowByActorAsync(this.GetItem(0).GetOwner()));
     await Promise.all(e);
   }
   OnStart() {
-    this.n2f?.SetBtnText("MotorLinkage_Go");
+    this.e4f?.SetBtnText("MotorLinkage_Go");
     this.ActivityBaseData?.ReadRedDot();
   }
   OnRefreshView() {
@@ -96,13 +97,13 @@ class ActivityMotorLinkageSubView extends ActivitySubViewBase_1.ActivitySubViewB
     this.f4e();
   }
   OnBeforeDestroy() {
-    this.hNf();
+    this.W9f();
   }
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.DIf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.MRf);
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.DIf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.MRf);
   }
   f4e() {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshActivityTab, this.ActivityBaseData.Id);
@@ -122,9 +123,9 @@ class ActivityMotorLinkageSubView extends ActivitySubViewBase_1.ActivitySubViewB
   BNe() {
     var e = this.ActivityBaseData.HasAnyRewardCanReceive();
     var t = this.ActivityBaseData.HasSkipRedDot();
-    this.n2f?.SetFunctionRedDotVisible(t || e);
+    this.e4f?.SetFunctionRedDotVisible(t || e);
   }
-  async tUm() {
+  async CDm() {
     const s = this.ActivityBaseData.GetSortedIpList();
     const r = [];
     buttonDefineList.forEach((e, t) => {
@@ -132,8 +133,8 @@ class ActivityMotorLinkageSubView extends ActivitySubViewBase_1.ActivitySubViewB
       this.Het.push(i);
       i.SetIpId(s[t]);
       i.SetClickCallback(this.Fr);
-      i.SetEnterCallback(this.CGf);
-      i.SetExitCallback(this.lNf);
+      i.SetEnterCallback(this.A6f);
+      i.SetExitCallback(this.Q9f);
       r.push(i.CreateThenShowByActorAsync(this.GetItem(e).GetOwner()));
     });
     await Promise.all(r);
@@ -142,39 +143,40 @@ class ActivityMotorLinkageSubView extends ActivitySubViewBase_1.ActivitySubViewB
     this.LevelSequencePlayer?.StopPlayingSequence();
     this.LevelSequencePlayer?.PlaySequencePurely(e ? "ShowView01" : "HideView01", true);
     if (e) {
-      this.ZNf();
+      this.VHf();
     }
   }
-  ZNf() {
-    this.hNf();
+  VHf() {
+    this.W9f();
     this.Sbo();
   }
   Sbo() {
-    if (this.sNf) {
+    if (this.j9f) {
       roleAnimNameDefine.forEach((e, t) => {
         var i = fxDefineList[t];
         this.GetItem(i)?.SetUIActive(false);
-        var i = this.sNf[t];
+        var i = this.j9f[t];
         if (!i) {
-          this.sNf[t] = true;
+          this.j9f[t] = true;
+          this.LevelSequencePlayer?.StopSequenceByKey(e[0]);
           this.LevelSequencePlayer?.PlaySequencePurely(e[1]);
         }
       });
     }
   }
-  hNf() {
-    if (this.aNf) {
-      TimerSystem_1.GameplayTimerSystem.Remove(this.aNf);
-      this.aNf = undefined;
+  W9f() {
+    if (this.$9f) {
+      TimerSystem_1.GameplayTimerSystem.Remove(this.$9f);
+      this.$9f = undefined;
     }
   }
-  _Nf() {
-    this.aNf = TimerSystem_1.GameplayTimerSystem.Delay(() => {
+  K9f() {
+    this.$9f = TimerSystem_1.GameplayTimerSystem.Delay(() => {
       this.Sbo();
-      this.aNf = undefined;
+      this.$9f = undefined;
     }, RESET_TIME_MS);
   }
-  o2f(t) {
+  Z3f(t) {
     return ActivityControllerHolder_1.ActivityControllerHolder.ActivityMotorLinkageController.ActivityData.GetSortedIpList().findIndex(e => e === t);
   }
 }

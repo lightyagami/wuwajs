@@ -39,7 +39,8 @@ class RenderAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
     if (Info_1.Info.IsPcOrGamepadPlatform()) {
       UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Kuro.AutoExposure 0");
     }
-    if (this.Model.GetType() === 0 && (this.Model.PreviousMotionBlur = UE.KismetSystemLibrary.GetConsoleVariableFloatValue("r.MotionBlur.Amount"), this.Model.PreviousMotionBlur !== 0)) {
+    this.Model.PreviousMotionBlur = UE.KismetSystemLibrary.GetConsoleVariableFloatValue("r.MotionBlur.Amount");
+    if (this.Model.PreviousMotionBlur !== 0) {
       UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.MotionBlur.Amount 0");
     }
     UE.KismetMaterialLibrary.SetScalarParameterValue(GlobalData_1.GlobalData.World, RenderDataManager_1.RenderDataManager.Get().GetEyesParameterMaterialParameterCollection(), this.mio, 0);
@@ -78,7 +79,7 @@ class RenderAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
     if (Info_1.Info.IsPcOrGamepadPlatform()) {
       UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Kuro.AutoExposure 1");
     }
-    if (this.Model.GetType() === 0 && this.Model.PreviousMotionBlur !== 0) {
+    if (this.Model.PreviousMotionBlur !== 0) {
       UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.MotionBlur.Amount " + this.Model.PreviousMotionBlur);
     }
     UE.KismetMaterialLibrary.SetScalarParameterValue(GlobalData_1.GlobalData.World, RenderDataManager_1.RenderDataManager.Get().GetEyesParameterMaterialParameterCollection(), this.mio, 1);
@@ -109,7 +110,8 @@ class RenderAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
       var a = this.Model.SequenceData;
       for (let e = 0; e < a.剧情资源.Num(); e++) {
         var i = a.剧情资源.Get(e);
-        if (!UE.KuroSequenceRuntimeFunctionLibrary.HandleSeqTexStreaming(i, true)) {
+        var r = a.CollectExtraTexture;
+        if (!UE.KuroSequenceRuntimeFunctionLibrary.HandleSeqTexStreaming(i, true, r)) {
           t = false;
         }
       }
@@ -131,7 +133,8 @@ class RenderAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
       var t = this.Model.SequenceData;
       for (let e = 0; e < t.剧情资源.Num(); e++) {
         var a = t.剧情资源.Get(e);
-        UE.KuroSequenceRuntimeFunctionLibrary.HandleSeqTexStreaming(a, false);
+        var i = t.CollectExtraTexture;
+        UE.KuroSequenceRuntimeFunctionLibrary.HandleSeqTexStreaming(a, false, i);
       }
       if (this.Model.SequenceData.NeedSwitchMainCharacter && this.Model.MainSeqCharacterMesh) {
         UE.KuroMeshTextureFunctionLibrary.HandleSkeletalMeshComponentStreaming(this.Model.MainSeqCharacterMesh, false);

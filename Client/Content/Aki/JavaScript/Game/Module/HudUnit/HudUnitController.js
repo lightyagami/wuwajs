@@ -18,10 +18,12 @@ class HudUnitController extends UiControllerBase_1.UiControllerBase {
   }
   static OnClear() {
     HudUnitManager_1.HudUnitManager.Clear();
+    HudUnitController.wHg.clear();
     return true;
   }
   static OnLeaveLevel() {
     HudUnitManager_1.HudUnitManager.Clear();
+    HudUnitController.wHg.clear();
     return true;
   }
   static OnTick(e) {
@@ -43,20 +45,29 @@ class HudUnitController extends UiControllerBase_1.UiControllerBase {
     ModelManager_1.ModelManager.BattleUiModel.ChildViewData.RemoveCallback(17, this.iJe);
   }
   static TryCreateHud(e) {
-    e = HudUnitManager_1.HudUnitManager.HudUnitHandleClassMap.get(e);
-    if (e) {
-      HudUnitManager_1.HudUnitManager.TryNew(e);
+    var t;
+    if (ModelManager_1.ModelManager.GameModeModel.WorldDone) {
+      if (t = HudUnitManager_1.HudUnitManager.HudUnitHandleClassMap.get(e)) {
+        HudUnitManager_1.HudUnitManager.TryNew(t);
+      }
+    } else {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Battle", 17, "WorldDone前不允许打开hud, 缓存起来");
+      }
+      this.wHg.add(e);
     }
   }
   static TryDestroyHud(e) {
-    e = HudUnitManager_1.HudUnitManager.HudUnitHandleClassMap.get(e);
-    if (e) {
-      HudUnitManager_1.HudUnitManager.Destroy(e);
+    if (!this.wHg.delete(e)) {
+      if (e = HudUnitManager_1.HudUnitManager.HudUnitHandleClassMap.get(e)) {
+        HudUnitManager_1.HudUnitManager.Destroy(e);
+      }
     }
   }
 }
 exports.HudUnitController = HudUnitController;
-(_a = HudUnitController).iJe = () => {
+(_a = HudUnitController).wHg = new Set();
+HudUnitController.iJe = () => {
   var e = UiLayer_1.UiLayer.GetBattleViewUnit(1);
   var t = UiLayer_1.UiLayer.GetBattleViewUnit(3);
   var n = ModelManager_1.ModelManager.BattleUiModel.ChildViewData.GetChildVisible(17);
@@ -65,6 +76,15 @@ exports.HudUnitController = HudUnitController;
   if (n) {
     if (ModelManager_1.ModelManager.GameModeModel.WorldDone) {
       HudUnitManager_1.HudUnitManager.ShowHud();
+      if (HudUnitController.wHg.size > 0) {
+        for (const a of HudUnitController.wHg) {
+          var r = HudUnitManager_1.HudUnitManager.HudUnitHandleClassMap.get(a);
+          if (r) {
+            HudUnitManager_1.HudUnitManager.TryNew(r);
+          }
+        }
+        HudUnitController.wHg.clear();
+      }
     } else if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Battle", 17, "WorldDone前不允许打开hud");
     }

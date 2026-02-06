@@ -27,7 +27,7 @@ class RbBaseMoveState {
     var t = Protocol_1.Aki.Protocol.Hem.create();
     t.w5n = this.Owner.IncId;
     t.F4n = MathUtils_1.MathUtils.NumberToLong(this.Owner.CreatureDataId);
-    Net_1.Net.Call(23585, t, t => {});
+    Net_1.Net.Call(25972, t, t => {});
   }
 }
 exports.RbBaseMoveState = RbBaseMoveState;

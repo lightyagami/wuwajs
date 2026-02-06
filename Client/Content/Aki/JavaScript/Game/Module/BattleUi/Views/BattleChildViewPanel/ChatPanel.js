@@ -20,6 +20,7 @@ const UiManager_1 = require("../../../../Ui/UiManager");
 const ChatDefine_1 = require("../../../Chat/ChatDefine");
 const LevelSequencePlayer_1 = require("../../../Common/LevelSequencePlayer");
 const LguiUtil_1 = require("../../../Util/LguiUtil");
+const DynScrollView_1 = require("../../../Util/ScrollView/DynScrollView");
 const BattleSkillLeftRouletteItem_1 = require("../BattleSkillLeftRouletteItem");
 const ChatRowItem_1 = require("../ChatRowItem");
 const CommonKeyItem_1 = require("../KeyItem/CommonKeyItem");
@@ -27,8 +28,6 @@ const BattleChildViewPanel_1 = require("./BattleChildViewPanel");
 class ChatPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
   constructor() {
     super(...arguments);
-    this.oze = new Map();
-    this.OJs = [];
     this.rze = undefined;
     this.nze = 0;
     this.sze = undefined;
@@ -36,18 +35,16 @@ class ChatPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     this.hze = undefined;
     this.Mah = undefined;
     this.SPe = undefined;
+    this.SOd = undefined;
+    this.MOd = undefined;
+    this.uwg = [];
+    this.NPn = (e, t, i) => {
+      return new ChatRowItem_1.ChatRowDynamicItem();
+    };
     this.FGn = e => {
       if (this.GetOperationType() === 2) {
-        this.gze().then(() => {
-          if (this.oze.size <= 0) {
-            this.Pze(false);
-          } else {
-            this.DelayScroll(ChatDefine_1.CHAT_SCROLL_DELAY);
-            if (!e || !!ModelManager_1.ModelManager.ChatModel.HasOfflineMassage()) {
-              this.uze();
-            }
-          }
-        }, () => {});
+        this.gze();
+        this.dwg(e);
       }
     };
     this.XBo = () => {
@@ -62,7 +59,7 @@ class ChatPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     this.RZe = e => {
       this.Sah();
     };
-    this.LLf = e => {
+    this.GBf = e => {
       this.Sah();
     };
     this.Ize = () => {
@@ -106,37 +103,73 @@ class ChatPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
         this.Rze(t);
       }
     };
+    this.mwg = () => {
+      if (!(this.uwg.length <= 0) && ModelManager_1.ModelManager.ChatModel.HasOfflineMassage()) {
+        this.uze();
+        this.DelayScroll(ChatDefine_1.CHAT_SCROLL_DELAY);
+      } else {
+        this.fwg(false);
+      }
+    };
+    this.dwg = e => {
+      if (this.uwg.length <= 0) {
+        this.fwg(false);
+      } else {
+        this.DelayScroll(ChatDefine_1.CHAT_SCROLL_DELAY);
+        if (!e || !!ModelManager_1.ModelManager.ChatModel.HasOfflineMassage()) {
+          this.uze();
+        }
+      }
+    };
     this.Uze = () => {
-      this.fze();
+      if (!(this.uwg.length <= 0)) {
+        this.SOd?.ScrollToItemIndex(this.uwg.length - 1);
+      }
     };
     this.Aze = () => {
-      this.SPe.StopCurrentSequence();
-      this.SPe.PlaySequencePurely("Close");
+      this.SPe?.StopCurrentSequence();
+      this.SPe?.PlaySequencePurely("Close");
     };
+  }
+  OnRegisterComponent() {
+    var e = this.GetOperationType();
+    if (e === 2) {
+      this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIDynScrollViewComponent], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIText], [10, UE.UIItem], [11, UE.UIItem]];
+      this.BtnBindInfo = [[0, this.Ize]];
+    } else if (e === 1) {
+      this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIItem], [2, UE.UIItem]];
+      this.BtnBindInfo = [[0, this.Ize]];
+    }
   }
   InitializeTemp() {
     this.nze = CommonParamById_1.configCommonParamById.GetIntConfig("ChatViewTimeDown");
     var e = this.GetOperationType();
     if (e === 2) {
-      this.gze().then(() => {
-        if (!(this.oze.size <= 0) && ModelManager_1.ModelManager.ChatModel.HasOfflineMassage()) {
-          this.uze();
-          this.DelayScroll(ChatDefine_1.CHAT_SCROLL_DELAY);
-        } else {
-          this.Pze(false);
-        }
-      }, () => {});
+      this.gze();
       this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetItem(3));
     }
     if (e === 1) {
       RedDotController_1.RedDotController.BindRedDot("ChatView", this.GetItem(1));
       this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetItem(2));
     }
-    this.SPe.BindSequenceCloseEvent(e => {
+    this.SPe?.BindSequenceCloseEvent(e => {
       if (e === "Close") {
-        this.Pze(false);
+        this.fwg(false);
       }
     });
+  }
+  async InitializeAsync() {
+    var e;
+    await super.InitializeAsync();
+    if (!Info_1.Info.IsInTouch()) {
+      this.MOd = new ChatRowItem_1.ChatRowDynamicItemSize();
+      this.SOd = new DynScrollView_1.DynamicScrollView(this.GetUIDynScrollViewComponent(1), this.GetItem(11), this.MOd, this.NPn);
+      await this.SOd.Init();
+      e = this.GetItem(8);
+      this.hze = new CommonKeyItem_1.CommonKeyItem();
+      await this.hze.CreateThenShowByActorAsync(e.GetOwner());
+      await this.yah();
+    }
   }
   OnBeforeShow() {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRefreshChatRedDot);
@@ -149,25 +182,9 @@ class ChatPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
       RedDotController_1.RedDotController.UnBindRedDot("ChatView");
     }
   }
-  OnRegisterComponent() {
-    var e = this.GetOperationType();
-    if (e === 2) {
-      this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIScrollViewWithScrollbarComponent], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIText], [10, UE.UIItem]];
-      this.BtnBindInfo = [[0, this.Ize]];
-    } else if (e === 1) {
-      this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIItem], [2, UE.UIItem]];
-      this.BtnBindInfo = [[0, this.Ize]];
-    }
-  }
-  async InitializeAsync() {
-    var e;
-    await super.InitializeAsync();
-    if (!Info_1.Info.IsInTouch()) {
-      e = this.GetItem(8);
-      this.hze = new CommonKeyItem_1.CommonKeyItem();
-      await this.hze.CreateThenShowByActorAsync(e.GetOwner());
-      await this.yah();
-    }
+  OnAfterDestroy() {
+    super.OnAfterDestroy();
+    ModelManager_1.ModelManager.BattleUiModel.ChatScrollViewVisible = false;
   }
   async yah() {
     var e = this.GetItem(10)?.GetOwner();
@@ -177,43 +194,19 @@ class ChatPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     }
   }
   OnShowBattleChildViewPanel() {
-    var e = Info_1.Info.OperationType;
-    if (e === 2) {
-      var t = ModelManager_1.ModelManager.FriendModel;
-      var i = [];
-      for (const a of this.oze.values()) {
-        var n;
-        var s;
-        var r = a.GetChatRowData();
-        if (r) {
-          n = r.UniqueId;
-          if ((s = r.TargetPlayerId) && t.HasBlockedPlayer(s)) {
-            i.push(n);
-          }
-          if (!r.IsVisible) {
-            i.push(n);
-          }
-        }
-      }
-      for (const h of i) {
-        this.mze(h);
-      }
-      if (this.oze.size <= 0) {
-        this.wze();
-        this.Pze(false);
-      } else {
-        this.DelayScroll(ChatDefine_1.CHAT_SCROLL_DELAY);
-      }
-      e = ModelManager_1.ModelManager.BattleUiModel.EnvironmentKeyData;
-      e.SetEnvironmentKeyVisible(2, this.Bze());
+    var e;
+    if (Info_1.Info.OperationType === 2) {
+      this.gze();
+      this.mwg();
+      (e = ModelManager_1.ModelManager.BattleUiModel.EnvironmentKeyData).SetEnvironmentKeyVisible(2, this.Bze());
       e.SetEnvironmentKeyVisible(4, this.bze());
       e.SetEnvironmentKeyVisible(7, this.QW1());
       e.SetEnvironmentKeyVisible(9, this.Kpu());
       this.hze?.RefreshAction(InputMappingsDefine_1.actionMappings.功能菜单);
       this.yze();
       this.dze();
-      this.SPe.StopCurrentSequence();
-      this.SPe.PlaySequencePurely("Start");
+      this.SPe?.StopCurrentSequence();
+      this.SPe?.PlaySequencePurely("Start");
     }
   }
   dze() {
@@ -243,7 +236,7 @@ class ChatPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiEnvironmentKeyChanged, this.Eze);
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiPressCombineButtonChanged, this.RZe);
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiPressMotorcycleCombineButtonChanged, this.RZe);
-      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiMotorcycleStateChanged, this.LLf);
+      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiMotorcycleStateChanged, this.GBf);
       InputDistributeController_1.InputDistributeController.BindActions([InputMappingsDefine_1.actionMappings.环境特性, InputMappingsDefine_1.actionMappings.组合主键], this.bMe);
     }
   }
@@ -264,8 +257,8 @@ class ChatPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
       if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.BattleUiPressMotorcycleCombineButtonChanged, this.RZe)) {
         EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiPressMotorcycleCombineButtonChanged, this.RZe);
       }
-      if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.BattleUiMotorcycleStateChanged, this.LLf)) {
-        EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiMotorcycleStateChanged, this.LLf);
+      if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.BattleUiMotorcycleStateChanged, this.GBf)) {
+        EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiMotorcycleStateChanged, this.GBf);
       }
       InputDistributeController_1.InputDistributeController.UnBindActions([InputMappingsDefine_1.actionMappings.环境特性, InputMappingsDefine_1.actionMappings.组合主键], this.bMe);
     }
@@ -274,13 +267,22 @@ class ChatPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     this.aze = e === 0;
     this.Sze();
   }
+  Bze() {
+    return ModelManager_1.ModelManager.TowerModel.CheckInTower();
+  }
+  bze() {
+    return ModelManager_1.ModelManager.RoguelikeModel.CheckInRoguelike() || ModelManager_1.ModelManager.WeeklyRogueModel.CheckIsInWeeklyRogue();
+  }
+  QW1() {
+    return ControllerHolder_1.ControllerHolder.MapRogueController.CheckInMapRogueInstance();
+  }
+  Kpu() {
+    return !!ModelManager_1.ModelManager.MoraleBattleModel?.IsMoraleActive();
+  }
   Lze() {
     if (!!this.Bze() && !UiManager_1.UiManager.IsViewShow("TowerGuideView")) {
       UiManager_1.UiManager.OpenView("TowerGuideView");
     }
-  }
-  Bze() {
-    return ModelManager_1.ModelManager.TowerModel.CheckInTower();
   }
   mXn() {
     ControllerHolder_1.ControllerHolder.InstanceDungeonGuideController.StartReplayGuide();
@@ -293,15 +295,6 @@ class ChatPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
         UiManager_1.UiManager.OpenView(e);
       }
     }
-  }
-  bze() {
-    return ModelManager_1.ModelManager.RoguelikeModel.CheckInRoguelike() || ModelManager_1.ModelManager.WeeklyRogueModel.CheckIsInWeeklyRogue();
-  }
-  QW1() {
-    return ControllerHolder_1.ControllerHolder.MapRogueController.CheckInMapRogueInstance();
-  }
-  Kpu() {
-    return !!ModelManager_1.ModelManager.MoraleBattleModel?.IsMoraleActive();
   }
   Tze() {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BattleUiToggleSilentAreaInfoView);
@@ -325,38 +318,33 @@ class ChatPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
       UiManager_1.UiManager.OpenView("MoraleAreaSumView");
     }
   }
-  async gze() {
-    this.qze();
-    var e;
-    var t = [];
-    for (const i of ModelManager_1.ModelManager.ChatModel.GetChatRowDataList()) {
-      if (i.IsVisible) {
-        e = this._ze(i);
-        t.push(e);
-      }
-    }
-    await Promise.all(t);
+  gze() {
+    this.uwg.length = 0;
+    this.gwg();
+    this.SOd?.RefreshByData(this.uwg, true, true);
+    this.SOd?.BindLateUpdate(() => {
+      this.SOd?.ScrollToItemIndex(this.uwg.length - 1);
+      this.SOd?.UnBindLateUpdate();
+    });
   }
-  async _ze(e) {
-    var t = e.UniqueId;
-    if (e.ContentChatRoomType === 1) {
-      var i = e.TargetPlayerId;
-      if (!i) {
-        return;
+  gwg() {
+    for (const n of ModelManager_1.ModelManager.ChatModel.GetChatRowDataList()) {
+      if (n.ContentChatRoomType === 1) {
+        var e = n.TargetPlayerId;
+        if (!e) {
+          continue;
+        }
+        var t = ModelManager_1.ModelManager.FriendModel;
+        var i = t.GetFriendById(e);
+        if (!i) {
+          continue;
+        }
+        if (t.HasBlockedPlayer(e) || i.GetBlockBySdk()) {
+          continue;
+        }
       }
-      var n = ModelManager_1.ModelManager.FriendModel;
-      var s = n.GetFriendById(i);
-      if (!s) {
-        return;
-      }
-      if (n.HasBlockedPlayer(i) || s.GetBlockBySdk()) {
-        return;
-      }
+      this.uwg.push(n);
     }
-    n = this.GetItem(2);
-    i = await this.NewDynamicChildViewByResourceId(n, "UiItem_ChatRowItem_Prefab", ChatRowItem_1.ChatRowItem, true, e);
-    this.oze.set(t, i);
-    this.OJs.push(t);
   }
   DelayScroll(e) {
     this.xze();
@@ -376,57 +364,18 @@ class ChatPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     }
     this.rze = undefined;
   }
-  fze() {
-    var e = this.NJs();
-    if (e) {
-      this.GetScrollViewWithScrollbar(1)?.ScrollTo(e.GetRootItem());
-    }
-  }
-  mze(e) {
-    var t = this.oze.get(e);
-    if (t?.GetRootActor()?.IsValid()) {
-      t.Destroy();
-    }
-    this.oze.delete(e);
-    var t = this.OJs.indexOf(e);
-    if (t >= 0) {
-      this.OJs.splice(t, 1);
-    }
-  }
-  qze() {
-    for (const e of this.oze.values()) {
-      if (e?.GetRootActor()?.IsValid()) {
-        e.Destroy();
-      }
-    }
-    this.oze.clear();
-    this.OJs.length = 0;
-  }
-  NJs() {
-    var e = this.OJs.length;
-    if (!(e <= 0)) {
-      e = this.OJs[e - 1];
-      if (e) {
-        return this.oze.get(e);
-      }
-    }
-  }
   uze() {
     this.wze();
     if (!this.GetItem(3)?.bIsUIActive) {
-      this.SPe.StopCurrentSequence();
-      this.SPe.PlaySequencePurely("Start");
+      this.SPe?.StopCurrentSequence();
+      this.SPe?.PlaySequencePurely("Start");
     }
-    this.Pze(true);
+    this.fwg(true);
     this.rze = TimerSystem_1.GameplayTimerSystem.Delay(this.Aze, this.nze);
   }
-  Pze(e) {
+  fwg(e) {
     this.GetItem(3)?.SetUIActive(e);
     ModelManager_1.ModelManager.BattleUiModel.ChatScrollViewVisible = e;
-  }
-  OnAfterDestroy() {
-    super.OnAfterDestroy();
-    ModelManager_1.ModelManager.BattleUiModel.ChatScrollViewVisible = false;
   }
 }
 exports.ChatPanel = ChatPanel;

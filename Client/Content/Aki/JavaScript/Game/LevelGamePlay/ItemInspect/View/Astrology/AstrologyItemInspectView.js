@@ -7,6 +7,7 @@ exports.AstrologyItemInspectView = undefined;
 const puerts_1 = require("puerts");
 const UE = require("ue");
 const Log_1 = require("../../../../../Core/Common/Log");
+const Queue_1 = require("../../../../../Core/Container/Queue");
 const CommonParamById_1 = require("../../../../../Core/Define/ConfigCommon/CommonParamById");
 const MultiTextLang_1 = require("../../../../../Core/Define/ConfigQuery/MultiTextLang");
 const TimerSystem_1 = require("../../../../../Core/Timer/TimerSystem");
@@ -53,13 +54,14 @@ class AstrologyItemInspectView extends ItemInspectViewBase_1.ItemInspectViewBase
     this.Y7c = 0;
     this.z7c = undefined;
     this.J7c = undefined;
-    this.pzu = [];
+    this.pzu = new Queue_1.Queue();
     this.vzu = undefined;
     this.bad = false;
     this.$_d = false;
     this.NMd = "";
     this.VMd = false;
     this.X9d = undefined;
+    this.m4g = 0;
     this.Rad = () => {
       this.eQc(false);
       this.GetButton(12).RootUIComp.SetUIActive(false);
@@ -96,7 +98,7 @@ class AstrologyItemInspectView extends ItemInspectViewBase_1.ItemInspectViewBase
         this.Ezu();
       } else {
         this.VMd = false;
-        (t = new ConfirmBoxDefine_1.ConfirmBoxDataNew(369)).HasToggle = true;
+        (t = new ConfirmBoxDefine_1.ConfirmBoxDataNew(this.m4g)).HasToggle = true;
         t.ToggleText = this.NMd;
         t.SetToggleFunction(this.HMd);
         t.FunctionMap.set(2, () => {
@@ -195,6 +197,8 @@ class AstrologyItemInspectView extends ItemInspectViewBase_1.ItemInspectViewBase
     this.InitDrag(this.GetDraggable(0));
     this.Mzu();
     var t = this.OpenParam;
+    var i = t.SkipConfirmBoxId ?? 0;
+    this.m4g = i > 0 ? i : 369;
     var i = t.ProgressTipText;
     if (i) {
       this.GetText(16).SetText(this.iIr(i));
@@ -391,7 +395,7 @@ class AstrologyItemInspectView extends ItemInspectViewBase_1.ItemInspectViewBase
     } else {
       this.$_d = true;
       for (const s of t) {
-        this.pzu.push(s);
+        this.pzu.Push(s);
       }
       this.vzu = i;
       this.GetItem(13).SetUIActive(true);
@@ -402,7 +406,7 @@ class AstrologyItemInspectView extends ItemInspectViewBase_1.ItemInspectViewBase
     var t;
     var i;
     if (!(this.X7c > TimeUtil_1.TimeUtil.GetServerTimeStamp())) {
-      if (t = this.pzu.pop()) {
+      if (t = this.pzu.Pop()) {
         this.ZZu = false;
         (i = this.GetText(15)).SetGameRichText(true);
         i.SetText(this.iIr(t));
@@ -442,7 +446,7 @@ class AstrologyItemInspectView extends ItemInspectViewBase_1.ItemInspectViewBase
     this.GetItem(22).SetUIActive(false);
     this.GetItem(21).SetUIActive(false);
     this.GetItem(13).SetUIActive(false);
-    this.pzu.length = 0;
+    this.pzu.Clear();
     this.vzu?.();
     this.vzu = undefined;
     this.$_d = false;

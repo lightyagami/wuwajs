@@ -14,7 +14,7 @@ const GenericLayout_1 = require("../../../../../Util/Layout/GenericLayout");
 class WheelTowerTeamItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.ftf = undefined;
+    this.Mrf = undefined;
     this.ClickCallback = undefined;
     this.eTt = () => {
       this.ClickCallback?.();
@@ -25,10 +25,10 @@ class WheelTowerTeamItem extends UiPanelBase_1.UiPanelBase {
     this.BtnBindInfo = [[0, this.eTt]];
   }
   OnStart() {
-    this.ftf = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(1), () => new RoleItem());
+    this.Mrf = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(1), () => new RoleItem());
   }
   Refresh(e) {
-    this.ftf?.RefreshByData(e);
+    this.Mrf?.RefreshByData(e);
     e = ModelManager_1.ModelManager.WheelTowerModel.CheckCurrentSelectConflict();
     let t = false;
     e.forEach(e => {

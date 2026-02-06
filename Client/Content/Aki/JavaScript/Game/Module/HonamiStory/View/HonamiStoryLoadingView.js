@@ -15,12 +15,12 @@ class HonamiStoryLoadingView extends LoadingViewBase_1.LoadingViewBase {
   constructor() {
     super(...arguments);
     this.BGc = undefined;
-    this._9m = () => {
+    this.$jm = () => {
       if (this.BGc && this.BGc.StartAudioEvent !== "") {
         AudioSystem_1.AudioSystem.PostEvent(this.BGc.StartAudioEvent);
       }
     };
-    this.u9m = () => {
+    this.Wjm = () => {
       if (this.BGc && this.BGc.EndAudioEvent !== "") {
         AudioSystem_1.AudioSystem.PostEvent(this.BGc.EndAudioEvent);
       }
@@ -45,8 +45,8 @@ class HonamiStoryLoadingView extends LoadingViewBase_1.LoadingViewBase {
           this.BGc = e[i];
         }
       }
-      this.UiViewSequence.AddSequenceStartEvent("Start", this._9m);
-      this.UiViewSequence.AddSequenceStartEvent("Close", this.u9m);
+      this.UiViewSequence.AddSequenceStartEvent("Start", this.$jm);
+      this.UiViewSequence.AddSequenceStartEvent("Close", this.Wjm);
       this.upm();
     }
   }

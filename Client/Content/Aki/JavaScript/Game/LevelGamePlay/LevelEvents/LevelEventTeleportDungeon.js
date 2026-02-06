@@ -59,12 +59,13 @@ class LevelEventTeleportDungeon extends LevelGeneralBase_1.LevelEventBase {
                   this.EDe();
                 });
                 ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(e);
+              } else if (o.TransitionOption?.Type === IAction_1.ETeleportTransitionType.Seamless && o.TransitionOption.KeepMovementStates?.includes("Kite")) {
+                const r = new SeamlessTravelDefine_1.SeamlessTravelContext();
+                r.ParseConfig(TeleportTransitionHelper_1.TeleportTransitionHelper.ParseTeleportTransitionOptionToPb(o.TransitionOption));
+                ControllerHolder_1.ControllerHolder.SeamlessTravelController.EnableSeamlessTravel(r, true).then(e => {
+                  this.$Re(o);
+                });
               } else {
-                if (o.TransitionOption?.Type === IAction_1.ETeleportTransitionType.Seamless && o.TransitionOption.KeepMovementStates?.includes("Kite")) {
-                  const r = new SeamlessTravelDefine_1.SeamlessTravelContext();
-                  r.ParseConfig(TeleportTransitionHelper_1.TeleportTransitionHelper.ParseTeleportTransitionOptionToPb(o.TransitionOption));
-                  ControllerHolder_1.ControllerHolder.SeamlessTravelController.EnableSeamlessTravel(r, true);
-                }
                 this.$Re(o);
               }
             } else {

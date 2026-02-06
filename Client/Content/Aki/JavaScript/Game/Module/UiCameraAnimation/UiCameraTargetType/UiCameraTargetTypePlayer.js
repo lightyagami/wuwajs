@@ -15,7 +15,7 @@ class UiCameraTargetTypePlayer extends UiCameraTargetTypeBase_1.UiCameraTargetTy
     return ControllerHolder_1.ControllerHolder.CharacterController.GetActor(ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity);
   }
   GetTargetBodyKey() {
-    if (this.AQm()) {
+    if (this.JXm()) {
       return "Motor";
     }
     var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentTeamItem;
@@ -33,7 +33,7 @@ class UiCameraTargetTypePlayer extends UiCameraTargetTypeBase_1.UiCameraTargetTy
       return e.GetComponentByClass(UE.SkeletalMeshComponent.StaticClass());
     }
   }
-  AQm() {
+  JXm() {
     var e = Global_1.Global.BaseCharacter?.CharacterActorComponent;
     return !!e && !!(e = e.Entity.CheckGetComponent(242)) && !!e.VehicleEntity?.Valid && e.VehicleType === "Motorcycle";
   }

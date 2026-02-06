@@ -7,16 +7,16 @@ exports.LevelFlowData = undefined;
 const Log_1 = require("../../../Core/Common/Log");
 class LevelFlowData {
   constructor() {
-    this.sMf = new Map();
+    this.aTf = new Map();
     this.f7 = 0;
   }
   Init() {}
   Register(e) {
-    this.sMf.set(this.f7, e);
+    this.aTf.set(this.f7, e);
     this.f7++;
   }
   GetSection(e) {
-    var t = this.sMf.get(e);
+    var t = this.aTf.get(e);
     if (t) {
       return t();
     }

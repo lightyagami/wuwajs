@@ -120,8 +120,8 @@ class VehicleModel extends ModelBase_1.ModelBase {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Vehicle", 50, "[VehicleModel.UpdateVehicleData] 更新载具数据", ["PlayerId", e.PlayerId], ["PlayerCreatureId", e.EntityCreatureId], ["VehicleCreatureId", e.VehicleCreatureId], ["Seat", e.Seat]);
       }
-      this.vhl(e);
       this.Mhl(e);
+      this.vhl(e);
       this.UpdateEntityVehicleData(e);
     }
   }
@@ -134,20 +134,28 @@ class VehicleModel extends ModelBase_1.ModelBase {
         this.VehiclePlayerInfo.set(e.VehicleCreatureId, i);
       }
       i.add(e.PlayerId);
-    } else {
+    } else if (i) {
       i.delete(e.PlayerId);
       if (!i.size) {
         this.VehiclePlayerInfo.delete(e.VehicleCreatureId);
       }
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("Vehicle", 50, "[VehicleModel.UpdateVehiclePlayerInfo] 更新载具数据失败，重复退出载具", ["PlayerId", e.PlayerId], ["PlayerCreatureId", e.EntityCreatureId], ["VehicleCreatureId", e.VehicleCreatureId]);
     }
   }
   vhl(e) {
-    var t = e.Seat !== -1;
-    var i = this.PlayerVehicleInfo.get(e.PlayerId);
-    i.EntityCreatureId = e.EntityCreatureId;
-    i.VehicleCreatureId = t ? e.VehicleCreatureId : 0;
-    i.Seat = e.Seat;
-    i.ExitType = e.ExitType;
+    var t;
+    var i = e.Seat !== -1;
+    var s = this.PlayerVehicleInfo.get(e.PlayerId);
+    if (!!i && s.VehicleCreatureId !== 0 && (s.EntityCreatureId !== e.EntityCreatureId || s.VehicleCreatureId !== e.VehicleCreatureId)) {
+      (t = s.DeepCopy()).Seat = -1;
+      t.ExitType = 1;
+      this.Mhl(t);
+    }
+    s.EntityCreatureId = e.EntityCreatureId;
+    s.VehicleCreatureId = i ? e.VehicleCreatureId : 0;
+    s.Seat = e.Seat;
+    s.ExitType = e.ExitType;
   }
   UpdateEntityVehicleData(e) {
     var t = e.EntityCreatureId;
@@ -162,16 +170,23 @@ class VehicleModel extends ModelBase_1.ModelBase {
     this.UpdateEntityVehicleInfo(e);
   }
   UpdateEntityVehicleInfo(e) {
-    var t = e.Seat !== -1;
-    let i = this.PassengerVehicleMap.get(e.EntityCreatureId);
-    if (!i) {
-      i = new VehicleInfoDefines_1.EntityVehicleInfo();
-      this.PassengerVehicleMap.set(e.EntityCreatureId, i);
+    var t;
+    var i = e.Seat !== -1;
+    let s = this.PassengerVehicleMap.get(e.EntityCreatureId);
+    if (s) {
+      if (i && s.VehicleCreatureId !== 0 && s.VehicleCreatureId !== e.VehicleCreatureId) {
+        (t = s.DeepCopy()).Seat = -1;
+        t.ExitType = 1;
+        this.UpdateVehicleEntityInfo(t);
+      }
+    } else {
+      s = new VehicleInfoDefines_1.EntityVehicleInfo();
+      this.PassengerVehicleMap.set(e.EntityCreatureId, s);
     }
-    i.EntityCreatureId = e.EntityCreatureId;
-    i.VehicleCreatureId = t ? e.VehicleCreatureId : 0;
-    i.Seat = e.Seat;
-    i.ExitType = e.ExitType;
+    s.EntityCreatureId = e.EntityCreatureId;
+    s.VehicleCreatureId = i ? e.VehicleCreatureId : 0;
+    s.Seat = e.Seat;
+    s.ExitType = e.ExitType;
     this.PassengerVehicleMap.set(e.EntityCreatureId, e);
   }
   UpdateVehicleEntityInfo(e) {
@@ -183,11 +198,13 @@ class VehicleModel extends ModelBase_1.ModelBase {
         this.VehiclePassengerMap.set(e.VehicleCreatureId, i);
       }
       i.set(e.EntityCreatureId, e);
-    } else {
+    } else if (i) {
       i.delete(e.EntityCreatureId);
       if (!i.size) {
         this.VehiclePlayerInfo.delete(e.VehicleCreatureId);
       }
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("Vehicle", 50, "[VehicleModel.UpdateVehicleEntityInfo] 更新载具数据失败，重复退出载具", ["EntityCreatureId", e.EntityCreatureId], ["VehicleCreatureId", e.VehicleCreatureId]);
     }
   }
   PostUpdateAllVehicleEntityData() {
@@ -291,7 +308,7 @@ class KeepDrivingAtSpeedCondition extends (exports.KeepDrivingInfo = KeepDriving
       e.Triggered = true;
     }
   }
-  JYm() {
+  RZm() {
     if (Math.abs(TimerSystem_1.TimerSystem.Now - this.LastTime) > this.CoolDown) {
       this.LastTime = TimerSystem_1.TimerSystem.Now;
     } else {
@@ -302,7 +319,7 @@ class KeepDrivingAtSpeedCondition extends (exports.KeepDrivingInfo = KeepDriving
             var t = r.Duration;
             var i = r.Weather;
             var s = r.Time;
-            if (this.CurrentDuration > t && (i.length === 0 || i.includes(e.CurrentWeatherId)) && (s.length === 0 || this.ZYm(s))) {
+            if (this.CurrentDuration > t && (i.length === 0 || i.includes(e.CurrentWeatherId)) && (s.length === 0 || this.wZm(s))) {
               if (Log_1.Log.CheckDebug()) {
                 Log_1.Log.Debug("Vehicle", 42, "[VehicleModel] 达成持续驾驶条件", ["configId", r.Id], ["duration", t], ["weather", r.Weather], ["dayTime", s]);
               }
@@ -317,7 +334,7 @@ class KeepDrivingAtSpeedCondition extends (exports.KeepDrivingInfo = KeepDriving
   UpdateDrivingInfo(e, t) {
     if (MathUtils_1.MathUtils.InRangeArray(t.Speed, this.SpeedRange)) {
       this.CurrentDuration += e;
-      t = this.JYm();
+      t = this.RZm();
       if (t) {
         this.LastTime = TimerSystem_1.TimerSystem.Now;
         this.MeetConditionCallback?.(t);
@@ -331,7 +348,7 @@ class KeepDrivingAtSpeedCondition extends (exports.KeepDrivingInfo = KeepDriving
   ToString() {
     return `保持速度在区间[${this.SpeedRange[0]},${this.SpeedRange[1]}]内,满足指定条件,冷却时间${this.CoolDown}毫秒`;
   }
-  ZYm(e) {
+  wZm(e) {
     for (const i of e) {
       let e = 0;
       let t = 0;

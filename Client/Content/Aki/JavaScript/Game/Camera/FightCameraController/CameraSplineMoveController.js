@@ -85,6 +85,7 @@ class CameraSplineMoveController extends CameraControllerBase_1.CameraController
     if (this.Spline && Global_1.Global.BaseCharacter) {
       i = this.Spline.D_FindInputKeyClosestToWorldLocation(Global_1.Global.BaseCharacter.CharacterActorComponent.ActorLocationProxy.ToUeVector());
       this.Bce.FromUeVector(this.Spline.GetDirectionAtSplineInputKey(i, 1));
+      CameraUtility_1.CameraUtility.GetVectorInGravity(this.Bce, this.Bce);
       i = this.Bce.HeadingAngle() * MathUtils_1.MathUtils.RadToDeg;
       if (this.bce < this.FadeInTime) {
         this.bce = Math.min(this.FadeInTime, this.bce + t);

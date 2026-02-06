@@ -13,6 +13,7 @@ const GuaranteeActionExitOrbitalCamera_1 = require("./GuaranteeActions/Guarantee
 const GuaranteeActionPreload_1 = require("./GuaranteeActions/GuaranteeActionPreload");
 const GuaranteeActionRestorePlayerCameraAdjustment_1 = require("./GuaranteeActions/GuaranteeActionRestorePlayerCameraAdjustment");
 const GuaranteeActionStopEffect_1 = require("./GuaranteeActions/GuaranteeActionStopEffect");
+const GuaranteeActionStopGamepadShake_1 = require("./GuaranteeActions/GuaranteeActionStopGamepadShake");
 const GuaranteeActionUnLimitPlayerOperation_1 = require("./GuaranteeActions/GuaranteeActionUnLimitPlayerOperation");
 class GuaranteeActionCenter {
   static RegGuaranteeActions() {
@@ -27,6 +28,7 @@ class GuaranteeActionCenter {
     e("Preload", GuaranteeActionPreload_1.GuaranteeActionPreload);
     e("DisableKey4Func", GuaranteeActionDisableKey4Func_1.GuaranteeActionDisableKey4Func);
     e("ActionExitMovieMode", GuaranteeActionExitMovieMode_1.GuaranteeActionExitMovieMode);
+    e("StopGamepadShake", GuaranteeActionStopGamepadShake_1.GuaranteeActionStopGamepadShake);
   }
   static GetGuaranteeAction(e) {
     e = GuaranteeActionCenter.iIe.get(e);

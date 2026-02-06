@@ -69,6 +69,9 @@ class SequenceAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
           this.Cio = ResourceSystem_1.ResourceSystem.InvalidId;
           t(true);
         } else {
+          if (Log_1.Log.CheckError()) {
+            Log_1.Log.Error("Plot", 38, "DA加载失败");
+          }
           t(false);
         }
       });

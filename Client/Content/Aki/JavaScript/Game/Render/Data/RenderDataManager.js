@@ -266,14 +266,12 @@ class RenderDataManager {
         this.CurrentCharacterPosition.FromUeVector(r);
         this.CurrentCharacterPositionWithOffset.FromUeVector(s);
         this.CurrentCharacterForward.FromUeVector(o);
-        i = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity?.GetComponent(184);
+        i = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity?.GetComponent(186);
         this.CurrentPlayerMoveState = i?.MoveState;
         h = this.CurrentPlayerMoveState && this.CurrentPlayerMoveState < CharacterUnifiedStateTypes_1.ECharMoveState.NormalClimb;
         UE.KismetMaterialLibrary.SetScalarParameterValue(e, this.GlobalShaderParameters, RenderConfig_1.RenderConfig.GlobalCharacterOnGround, h ? 1 : 0);
         this.Jlr(this.PreviousCharacterPositionWithOffset);
         UE.KismetMaterialLibrary.SetVectorParameterValue(e, this.GlobalShaderParameters, RenderConfig_1.RenderConfig.GlobalCharacterPreviousWP, this.TempColor);
-        this.Jlr(this.CurrentCharacterPositionWithOffset);
-        UE.KismetMaterialLibrary.SetVectorParameterValue(e, this.GlobalShaderParameters, RenderConfig_1.RenderConfig.GlobalCharacterWorldPosition, this.TempColor);
         this.Jlr(this.CurrentCharacterForward);
         UE.KismetMaterialLibrary.SetVectorParameterValue(e, this.GlobalShaderParameters, RenderConfig_1.RenderConfig.GlobalCharacterWorldForwardDirection, this.TempColor);
         this.Jlr(this.CurrentCharacterWeaponPositionWithOffset);
@@ -286,7 +284,7 @@ class RenderDataManager {
           UE.KismetMaterialLibrary.SetScalarParameterValue(e, this.GlobalShaderParameters, RenderConfig_1.RenderConfig.GlobalTimeHour, a);
           UE.KismetMaterialLibrary.SetScalarParameterValue(e, this.GlobalShaderParameters, RenderConfig_1.RenderConfig.GlobalTimeMinutes, this.SceneTime - a * this.Xlr);
         }
-        r = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity?.GetComponent(46);
+        r = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity?.GetComponent(48);
         if (r && !(s = r.GravityDirect).Equals(this.CachedGravityDirect)) {
           this.Jlr(s);
           UE.KismetMaterialLibrary.SetVectorParameterValue(e, this.GlobalShaderParameters, RenderConfig_1.RenderConfig.GravityDirection, this.TempColor);

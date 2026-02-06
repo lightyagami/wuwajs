@@ -142,12 +142,12 @@ let SceneItemLevitateMagnetComponent = SceneItemLevitateMagnetComponent_1 = clas
     return true;
   }
   OnStart() {
-    this.Hte = this.Entity.GetComponent(212);
-    this.Gce = this.Entity.GetComponent(137);
-    this.Xln = this.Entity.GetComponent(163);
+    this.Hte = this.Entity.GetComponent(214);
+    this.Gce = this.Entity.GetComponent(139);
+    this.Xln = this.Entity.GetComponent(165);
     this.Xln.RegisterComponent(this);
-    this.Ffn = this.Entity.GetComponent(147);
-    this.Lie = this.Entity.GetComponent(206);
+    this.Ffn = this.Entity.GetComponent(149);
+    this.Lie = this.Entity.GetComponent(208);
     this.Lie.AddTag(-1063846162);
     this.Lie.AddTagAddOrRemoveListener(-709838471, this.wJa);
     if (!this.Lie.ContainsTag(GameplayTagUtils_1.GameplayTagUtils.GetGameplayTagById(-709838471))) {
@@ -263,5 +263,5 @@ let SceneItemLevitateMagnetComponent = SceneItemLevitateMagnetComponent_1 = clas
   }
 };
 SceneItemLevitateMagnetComponent.TraceDebug = false;
-SceneItemLevitateMagnetComponent = SceneItemLevitateMagnetComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(164)], SceneItemLevitateMagnetComponent);
+SceneItemLevitateMagnetComponent = SceneItemLevitateMagnetComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(166)], SceneItemLevitateMagnetComponent);
 exports.SceneItemLevitateMagnetComponent = SceneItemLevitateMagnetComponent; //# sourceMappingURL=SceneItemLevitateMagnetComponent.js.map

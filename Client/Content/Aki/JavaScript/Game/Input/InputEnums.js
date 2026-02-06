@@ -23,7 +23,8 @@ exports.EInputAxis = exports.EInputAction = undefined;
   o[o.锁定目标 = 13] = "锁定目标";
   o[o.瞄准 = 14] = "瞄准";
   o[o.通用交互 = 15] = "通用交互";
-  o[o.MaxCount = 16] = "MaxCount";
+  o[o.下降 = 16] = "下降";
+  o[o.MaxCount = 17] = "MaxCount";
 })(EInputAction = exports.EInputAction ||= {});
 (function (o) {
   o[o.None = 0] = "None";

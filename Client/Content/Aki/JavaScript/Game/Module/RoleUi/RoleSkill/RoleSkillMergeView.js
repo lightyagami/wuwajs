@@ -47,9 +47,12 @@ class RoleSkillMergeView extends UiViewBase_1.UiViewBase {
     this.qdi = () => {
       this.OWd?.OnCommonItemCountAnyChange();
     };
-    this.FFf = () => {
+    this.m9f = () => {
       this.kWd?.OnRoleSkillBranchChanged();
       this.z0m();
+    };
+    this._8g = e => {
+      this.kWd?.SetSkillBranchVisible(1, !e);
     };
   }
   OnRegisterComponent() {
@@ -61,7 +64,8 @@ class RoleSkillMergeView extends UiViewBase_1.UiViewBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SkillTreeNodeLevelUp, this.Udo);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnAddCommonItemList, this.TTt);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnCommonItemCountAnyChange, this.qdi);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRoleSkillBranchChanged, this.FFf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRoleSkillBranchChanged, this.m9f);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRoleSkillInputPanelVisible, this._8g);
   }
   OnRemoveEventListener() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSkillTreeNodeToggleClick, this.Ido);
@@ -69,7 +73,8 @@ class RoleSkillMergeView extends UiViewBase_1.UiViewBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SkillTreeNodeLevelUp, this.Udo);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnAddCommonItemList, this.TTt);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnCommonItemCountAnyChange, this.qdi);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRoleSkillBranchChanged, this.FFf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRoleSkillBranchChanged, this.m9f);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRoleSkillInputPanelVisible, this._8g);
   }
   async OnBeforeStartAsync() {
     await this.$Wd();
@@ -89,6 +94,7 @@ class RoleSkillMergeView extends UiViewBase_1.UiViewBase {
     this.kWd.SetEnableSwitchBranch(true);
     this.OWd = new RoleSkillTreeInfoItem_1.RoleSkillTreeInfoItem();
     this.OWd.SetSkillBranchEnable(true);
+    this.OWd.SetParentView(this);
     await Promise.all([this.kWd.CreateThenShowByResourceIdAsync("UiItem_RoleSkillTree", this.GetItem(0), false), this.OWd.CreateThenShowByResourceIdAsync("UiItem_RoleSkillTreeDetail", this.GetItem(1), false)]);
     this.OWd.OnBackBtnCallBack = this.xpt;
   }

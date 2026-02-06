@@ -37,9 +37,9 @@ class HonamiStoryPickUpBackpackView extends UiViewBase_1.UiViewBase {
     this._U1 = undefined;
     this.Zmm = undefined;
     this.P0m = undefined;
-    this.M2m = undefined;
-    this.ZNm = undefined;
-    this.OTm = 0;
+    this.Tkm = undefined;
+    this.p4m = undefined;
+    this.YTm = 0;
     this.C1m = undefined;
     this.lyt = () => {
       this.CloseMe();
@@ -75,7 +75,7 @@ class HonamiStoryPickUpBackpackView extends UiViewBase_1.UiViewBase {
     this.BtnBindInfo = [[6, this.D1c]];
   }
   async OnBeforeStartAsync() {
-    this.OTm = this.GetItem(1).GetHeight();
+    this.YTm = this.GetItem(1).GetHeight();
     ModelManager_1.ModelManager.HonamiStoryModel.SetBackpackLogic(this.dhm);
     this.dhm.SetInteractController(this.fCd);
     this.lqe = new PopupCaptionItem_1.PopupCaptionItem(this.GetItem(4));
@@ -86,15 +86,15 @@ class HonamiStoryPickUpBackpackView extends UiViewBase_1.UiViewBase {
     var i = ModelManager_1.ModelManager.HonamiStoryModel.ActivityId;
     var i = ConfigManager_1.ConfigManager.HonamiStoryConfig.GetHonamiStoryActivityConfig(i);
     this.Zmm = new HonamiStoryItemTipsDetail_1.HonamiStoryItemTipsDetail();
-    this.M2m = new HonamiStoryItemTipsHotKey_1.HonamiStoryItemTipsHotKey();
+    this.Tkm = new HonamiStoryItemTipsHotKey_1.HonamiStoryItemTipsHotKey();
     this.P0m = new HonamiStoryItemTipsAttrChange_1.HonamiStoryItemTipsAttrChange();
-    this.ZNm = new HonamiStorySkillDescToggle_1.HonamiStorySkillDescToggle();
+    this.p4m = new HonamiStorySkillDescToggle_1.HonamiStorySkillDescToggle();
     ModelManager_1.ModelManager.HonamiStoryModel.GetGamepadLogic().InitInteract(this.GetItem(3));
-    await Promise.all([this.lqe.SetCurrencyItemList([i.InnerItemId]), this.fCd.Init(this.GetItem(3)), this.$Xl(), this.wgd(), this.pCd(), this.gCd(), this.ZNm.CreateThenShowByActorAsync(this.GetItem(7).GetOwner()), this.Zmm.CreateByResourceIdAsync("UiItem_TipHonamiStoryItemDetail", this.GetItem(5)), this.M2m.CreateByResourceIdAsync("UiItem_TipHonamiStoryHotKey", this.GetItem(5)), this.P0m.CreateByResourceIdAsync("UiItem_TipHonamiStoryAttrChange", this.GetItem(5))]);
+    await Promise.all([this.lqe.SetCurrencyItemList([i.InnerItemId]), this.fCd.Init(this.GetItem(3)), this.$Xl(), this.wgd(), this.pCd(), this.gCd(), this.p4m.CreateThenShowByActorAsync(this.GetItem(7).GetOwner()), this.Zmm.CreateByResourceIdAsync("UiItem_TipHonamiStoryItemDetail", this.GetItem(5)), this.Tkm.CreateByResourceIdAsync("UiItem_TipHonamiStoryHotKey", this.GetItem(5)), this.P0m.CreateByResourceIdAsync("UiItem_TipHonamiStoryAttrChange", this.GetItem(5))]);
     this.dhm.RegisterBackpackView(undefined);
     this.fCd.RegisterPickUpView(this);
     this.Zmm.SetUiActive(false);
-    this.M2m.SetUiActive(false);
+    this.Tkm.SetUiActive(false);
     this.P0m.SetUiActive(false);
     ModelManager_1.ModelManager.HonamiStoryModel.QuickAllRefresh();
     ModelManager_1.ModelManager.HonamiStoryModel.GetGamepadLogic().RegisterPanel(this.Rgd);
@@ -121,7 +121,7 @@ class HonamiStoryPickUpBackpackView extends UiViewBase_1.UiViewBase {
     var i = ModelManager_1.ModelManager.HonamiStoryModel.GetPlayerBackpackData();
     this.Rgd = new HonamiStoryEquipBackpackPanel_1.HonamiStoryEquipBackpackPanel();
     this.Rgd.OnEnterGridCb = this.efm;
-    this.Rgd.ViewPanelHeight = this.OTm;
+    this.Rgd.ViewPanelHeight = this.YTm;
     this.Rgd.OnExitGridCb = this.ifm;
     this.Rgd.OnDownGridCb = this.ifm;
     this.Rgd.OnCheckAttrGridCb = this.A0m;
@@ -184,16 +184,16 @@ class HonamiStoryPickUpBackpackView extends UiViewBase_1.UiViewBase {
   }
   ShowTipsHotKeyOnly(i) {
     if (ModelManager_1.ModelManager.HonamiStoryModel.GetGamepadLogic()) {
-      this.M2m.GetRootItem().SetUIParent(this.GetItem(5));
-      this.M2m.SetAutoLocation(i.GetRootItem());
-      this.M2m.SetUiActive(true);
+      this.Tkm.GetRootItem().SetUIParent(this.GetItem(5));
+      this.Tkm.SetAutoLocation(i.GetRootItem());
+      this.Tkm.SetUiActive(true);
     }
   }
   HideAllTips() {
     this._U1?.SetUiActive(false);
     this.Zmm.SetUiActive(false);
     this.P0m.SetUiActive(false);
-    this.M2m.SetUiActive(false);
+    this.Tkm.SetUiActive(false);
   }
   tfm(i, t) {
     var e = ModelManager_1.ModelManager.HonamiStoryModel.GetBackpackLogicState() === 4;
@@ -203,7 +203,7 @@ class HonamiStoryPickUpBackpackView extends UiViewBase_1.UiViewBase {
       ModelManager_1.ModelManager.HonamiStoryModel.GetGamepadLogic().SetCurItem(i);
       this.Zmm.Refresh(e, t);
       if (Info_1.Info.IsInGamepad()) {
-        this.Zmm.AddHotKey(this.M2m.GetRootItem());
+        this.Zmm.AddHotKey(this.Tkm.GetRootItem());
       }
       this.Zmm.SetAutoLocation(i.GetRootItem());
       this.Zmm.SetUiActive(true);
@@ -220,7 +220,7 @@ class HonamiStoryPickUpBackpackView extends UiViewBase_1.UiViewBase {
       if (Info_1.Info.IsInGamepad()) {
         this.P0m.Refresh(i, t, () => {
           this.P0m.GetRootItem().SetUIParent(this.fCd.GetDragTipsRoot());
-          this.P0m.AddHotKey(this.M2m.GetRootItem());
+          this.P0m.AddHotKey(this.Tkm.GetRootItem());
         });
       } else {
         this.P0m.Refresh(i, t, () => {
@@ -231,7 +231,7 @@ class HonamiStoryPickUpBackpackView extends UiViewBase_1.UiViewBase {
   }
   OnBeforeShow() {
     this.fCd.OnBeforeShow();
-    this.ZNm?.RefreshState();
+    this.p4m?.RefreshState();
   }
   OnAddEventListener() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InputControllerMainTypeChange, this.Etl);
@@ -250,7 +250,7 @@ class HonamiStoryPickUpBackpackView extends UiViewBase_1.UiViewBase {
   }
   OnDragEnd() {
     this.UiViewSequence?.PlaySequence("Drag_Show");
-    this.M2m?.SetUiActive(false);
+    this.Tkm?.SetUiActive(false);
   }
   GetGuideUiItemAndUiItemForShowEx(i) {
     var t;

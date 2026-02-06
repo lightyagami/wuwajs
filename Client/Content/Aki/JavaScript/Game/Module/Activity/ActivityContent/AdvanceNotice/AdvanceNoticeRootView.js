@@ -37,6 +37,7 @@ class AdvanceNoticeRootView extends UiViewBase_1.UiViewBase {
       this.TabViewComponent.ToggleCallBack(this.ViewModel, e, i);
       this.ViewModel.UpdateTabDataOnTabChange(t);
       this.AdvanceNoticeSwitchComponent.Refresh(this.ViewModel);
+      this.ViewModel?.ClickTabLogEvent();
     };
     this.yqe = t => {
       var t = this.ViewModel.TabList[t];
@@ -46,7 +47,7 @@ class AdvanceNoticeRootView extends UiViewBase_1.UiViewBase {
       t.SetSmallIcon(i);
       return t;
     };
-    this.FLm = t => {
+    this.oPm = t => {
       var i = this.TabViewComponent.GetTabViewByTabKey(this.ViewModel.CurrentTabView);
       if (i) {
         i.OnSwitchSubTab(t);
@@ -61,12 +62,12 @@ class AdvanceNoticeRootView extends UiViewBase_1.UiViewBase {
     this.ZA1 = () => {
       this.AdvanceNoticeSwitchComponent.SelectNextThumb();
     };
-    this.xkm = () => {
+    this.Xqm = () => {
       if (this.HasTabScrollFirstLateUpdate) {
         this.gsi();
       }
     };
-    this.Bkm = () => {
+    this.Yqm = () => {
       if (!this.HasTabScrollFirstLateUpdate) {
         this.gsi();
         this.HasTabScrollFirstLateUpdate = true;
@@ -79,20 +80,20 @@ class AdvanceNoticeRootView extends UiViewBase_1.UiViewBase {
   }
   async OnBeforeStartAsync() {
     this.ViewModel = this.OpenParam;
-    this.ViewModel.OnSwitchSubTabDelegate = this.FLm;
+    this.ViewModel.OnSwitchSubTabDelegate = this.oPm;
     this.InitTabComponent();
     this.AdvanceNoticeSwitchComponent = new AdvanceNoticeSwitchComponent_1.AdvanceNoticeSwitchComponent();
     this.AdvanceNoticeSwitchComponent.Initialize(this.GetButton(6), this.GetButton(7), this.GetScrollViewWithScrollbar(4), this.GetItem(5));
     await this.Cpm();
     var t = this.TabComponent.GetScrollView();
-    t.OnScrollValueChange.Bind(this.xkm);
-    t.OnLateUpdate.Bind(this.Bkm);
+    t.OnScrollValueChange.Bind(this.Xqm);
+    t.OnLateUpdate.Bind(this.Yqm);
     var t = this.ViewModel?.ActivityId;
     var t = ConfigManager_1.ConfigManager.AdvanceNoticeConfig.GetAdvertisingPageInfoByActivityId(t);
     LguiUtil_1.LguiUtil.TrySetLocalTextNew(this.GetText(8), "Advertising_VersionText", t?.TitleVersion);
   }
   OnBeforeShow() {
-    this.kkm();
+    this.zqm();
     this.HasTabScrollFirstLateUpdate = false;
     let t = this.ViewModel.TabIndex;
     if (!t || t === -1) {
@@ -132,10 +133,10 @@ class AdvanceNoticeRootView extends UiViewBase_1.UiViewBase {
       this.GetItem(2).SetUIActive((0, puerts_1.$unref)(i) === 1);
       this.GetItem(3).SetUIActive((0, puerts_1.$unref)(e) === 2);
     } else {
-      this.kkm();
+      this.zqm();
     }
   }
-  kkm() {
+  zqm() {
     this.GetItem(2).SetUIActive(false);
     this.GetItem(3).SetUIActive(false);
   }

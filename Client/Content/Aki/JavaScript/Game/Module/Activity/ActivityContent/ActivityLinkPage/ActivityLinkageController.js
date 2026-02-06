@@ -33,10 +33,10 @@ class ActivityLinkageController extends ActivityControllerBase_1.ActivityControl
     var e = new Protocol_1.Aki.Protocol.Sn1();
     e.w6n = this.LOe;
     e.In1 = t;
-    Net_1.Net.Call(29266, e, e => {
+    Net_1.Net.Call(16189, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21053);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23612);
         } else if (e = this.GetActivityLinkageData()) {
           e.ReceiveReward(t);
         }

@@ -17,6 +17,7 @@ const ConfigManager_1 = require("../../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const UiViewBase_1 = require("../../../../Ui/Base/UiViewBase");
 const LguiResourceManager_1 = require("../../../../Ui/LguiResourceManager");
+const ActivityControllerHolder_1 = require("../../../Activity/ActivityControllerHolder");
 const ItemDefines_1 = require("../../../Item/Data/ItemDefines");
 const ScrollingTipsController_1 = require("../../../ScrollingTips/ScrollingTipsController");
 const LguiUtil_1 = require("../../../Util/LguiUtil");
@@ -65,7 +66,7 @@ class GiftPackageDetailsView extends UiViewBase_1.UiViewBase {
     this.P3i = () => {
       this.RemoveResellTimer();
       var i;
-      var e = this.Goods.GetExchangePopViewResellText();
+      var t = this.Goods.GetExchangePopViewResellText();
       if (this.Goods.GetIfNeedExtraLimitText()) {
         if (i = this.Goods.GetExtraLimitText()) {
           this.ndm(true);
@@ -77,39 +78,39 @@ class GiftPackageDetailsView extends UiViewBase_1.UiViewBase {
           this.GetText(8).SetUIActive(false);
         } else {
           this.ndm(true);
-          if (!StringUtils_1.StringUtils.IsEmpty(e)) {
-            this.GetText(8).ShowTextNew(e);
+          if (!StringUtils_1.StringUtils.IsEmpty(t)) {
+            this.GetText(8).ShowTextNew(t);
           }
           this.ResellTimerId = TimerSystem_1.RealTimeTimerSystem.Delay(this.P3i, i[2] * CommonDefine_1.MILLIONSECOND_PER_SECOND);
         }
-      } else if (StringUtils_1.StringUtils.IsEmpty(e)) {
+      } else if (StringUtils_1.StringUtils.IsEmpty(t)) {
         this.ndm(true);
         if (i = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(this.Goods.GetPriceData().CurrencyId)) {
           i = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(i.Name);
           LguiUtil_1.LguiUtil.SetLocalText(this.GetText(8), "CurrencyNotEnough", i);
         }
       } else {
-        this.GetText(8).ShowTextNew(e);
+        this.GetText(8).ShowTextNew(t);
       }
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIText], [4, UE.UIButtonComponent], [5, UE.UIButtonComponent], [6, UE.UIInteractionGroup], [8, UE.UIText], [7, UE.UIItem], [9, UE.UIItem], [10, UE.UIItem], [12, UE.UITexture], [11, UE.UIText], [13, UE.UIItem], [14, UE.UIText]];
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIText], [4, UE.UIButtonComponent], [5, UE.UIButtonComponent], [6, UE.UIInteractionGroup], [8, UE.UIText], [7, UE.UIItem], [9, UE.UIItem], [10, UE.UIItem], [12, UE.UITexture], [11, UE.UIText], [13, UE.UIItem], [14, UE.UIText], [15, UE.UIItem], [16, UE.UIText], [17, UE.UITexture]];
     this.BtnBindInfo = [[4, this.bAt], [5, this.qAt]];
   }
   OnBeforeCreate() {
     var i;
-    var e;
-    var t = this.OpenParam;
-    this.Goods = t.PayShopGoods;
+    var t;
+    var e = this.OpenParam;
+    this.Goods = e.PayShopGoods;
     this.GoodsData = this.Goods.GetGoodsData();
-    var t = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(this.GoodsData.ItemId);
+    var e = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(this.GoodsData.ItemId);
     this.xe = undefined;
-    for ([i, e] of t.Parameters) {
+    for ([i, t] of e.Parameters) {
       var s = ItemDefines_1.EItemFunctionType[i];
       if (!StringUtils_1.StringUtils.IsEmpty(s)) {
         this.l4i = i;
-        this.xe = e;
+        this.xe = t;
         break;
       }
     }
@@ -123,23 +124,23 @@ class GiftPackageDetailsView extends UiViewBase_1.UiViewBase {
     await this.sGe(this.Goods);
   }
   async sGe(i) {
-    const e = new CustomPromise_1.CustomPromise();
-    var t = i.CheckIfRoleSkinGoods();
+    const t = new CustomPromise_1.CustomPromise();
+    var e = i.CheckIfRoleSkinGoods();
     var s = i.CheckIfFlySkinGoods();
     var i = this.cyl(i);
-    if (t || s) {
-      if (t) {
+    if (e || s) {
+      if (e) {
         LguiResourceManager_1.LguiResourceManager.LoadPrefabByResourceId(i, undefined, i => {
           this.uyl = new PayShopSkinItem_1.PayShopSkinItem();
           this.uyl.CreateByActorAsync(i).finally(() => {
-            e.SetResult(true);
+            t.SetResult(true);
           });
         });
       } else if (s) {
         LguiResourceManager_1.LguiResourceManager.LoadPrefabByResourceId(i, undefined, i => {
           this.uyl = new PayShopFlySkinItem_1.PayShopFlySkinItem();
           this.uyl.CreateByActorAsync(i).finally(() => {
-            e.SetResult(true);
+            t.SetResult(true);
           });
         });
       }
@@ -147,16 +148,16 @@ class GiftPackageDetailsView extends UiViewBase_1.UiViewBase {
       LguiResourceManager_1.LguiResourceManager.LoadPrefabByResourceId(i, undefined, i => {
         this._yl = new PayShopItem_1.PayShopItem();
         this._yl.CreateByActorAsync(i).finally(() => {
-          e.SetResult(true);
+          t.SetResult(true);
         });
       });
     }
-    await e.Promise;
+    await t.Promise;
   }
   cyl(i) {
-    var e = i.CheckIfRoleSkinGoods();
+    var t = i.CheckIfRoleSkinGoods();
     var i = i.CheckIfFlySkinGoods();
-    if (e || i) {
+    if (t || i) {
       return "UiItem_ShopSkinItem";
     } else {
       return "UiItem_ShopItem";
@@ -193,6 +194,7 @@ class GiftPackageDetailsView extends UiViewBase_1.UiViewBase {
     this.ITt();
     this.kV_();
     this.pK1();
+    this.qxg();
   }
   myl() {
     var i = ConfigManager_1.ConfigManager.PayShopConfig.GetMonthCardShopId();
@@ -220,19 +222,34 @@ class GiftPackageDetailsView extends UiViewBase_1.UiViewBase {
   }
   pK1() {
     var i;
-    var e = this.GetItem(10);
-    var t = this.GetTexture(12);
+    var t = this.GetItem(10);
+    var e = this.GetTexture(12);
     var s = this.GetText(11);
     var r = this.Goods.GetAvailableCouponItem();
     if (!r || this.Goods.IsDirect() || !this.Goods.GetPriceData().Enough || this.Goods.GetIfNeedExtraLimitText()) {
-      e.SetUIActive(false);
+      t.SetUIActive(false);
     } else {
-      e.SetUIActive(true);
-      e = this.Goods.GetAvailableCouponDiscount();
+      t.SetUIActive(true);
+      t = this.Goods.GetAvailableCouponDiscount();
       i = this.Goods.GetPriceData().CurrencyId;
       i = `<texture=${ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfig(i)?.IconSmall ?? ""},0.6/>`;
-      LguiUtil_1.LguiUtil.SetLocalTextNew(s, "ItemInfo_50020_Tip", e, i);
-      this.SetTextureByPath(r.GetConfig().IconSmall, t);
+      LguiUtil_1.LguiUtil.SetLocalTextNew(s, "ItemInfo_50020_Tip", t, i);
+      this.SetTextureByPath(r.GetConfig().IconSmall, e);
+    }
+  }
+  qxg() {
+    var i;
+    var t = this.GetItem(15);
+    var e = ActivityControllerHolder_1.ActivityControllerHolder.TotalTopUpController?.GetSingleActivityData();
+    if (!e || (i = e.GoodsScoreMap?.get(this.GoodsData.Id) ?? 0) <= 0) {
+      t.SetUIActive(false);
+    } else {
+      t.SetUIActive(true);
+      this.GetText(16).SetText(i.toString());
+      i = this.GetTexture(17);
+      if (e = e.ViewConfig?.ScoreIcon) {
+        this.SetTextureByPath(e, i);
+      }
     }
   }
   OnBeforeDestroy() {
@@ -252,11 +269,11 @@ class GiftPackageDetailsView extends UiViewBase_1.UiViewBase {
     this.vJd(i);
   }
   vJd(i) {
-    var e = this.GoodsData?.DisclaimerText;
-    var i = !StringUtils_1.StringUtils.IsEmpty(e) && !i;
+    var t = this.GoodsData?.DisclaimerText;
+    var i = !StringUtils_1.StringUtils.IsEmpty(t) && !i;
     this.GetItem(13).SetUIActive(i);
     if (i) {
-      this.GetText(14).SetText(e);
+      this.GetText(14).SetText(t);
     }
   }
   IsEnoughMoney() {

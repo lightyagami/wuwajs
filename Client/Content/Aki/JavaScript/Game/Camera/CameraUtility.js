@@ -52,7 +52,7 @@ class CameraUtility {
         e.FromUeVector(t.Mesh.D_GetSocketLocation(a));
         return;
       } else {
-        s.Entity.GetComponent(186).GetCameraPosition(e);
+        s.Entity.GetComponent(188).GetCameraPosition(e);
         return;
       }
     }
@@ -71,7 +71,7 @@ class CameraUtility {
     }
   }
   static TargetCanBeSelect(t) {
-    return !!t.Valid && !!t.Active && (!(t = t.Entity.GetComponent(215)) || !t.HasTag(1008164187) && !t.HasTag(-1243968098));
+    return !!t.Valid && !!t.Active && (!(t = t.Entity.GetComponent(217)) || !t.HasTag(1008164187) && !t.HasTag(-1243968098));
   }
   static GetCameraTargetEntityHandle() {
     var t = ModelManager_1.ModelManager.CameraModel.FightCamera.LogicComponent;
@@ -116,7 +116,7 @@ class CameraUtility {
     var a = CommonParamById_1.configCommonParamById.GetFloatConfig("InitialCameraPitch");
     var e = ModelManager_1.ModelManager.CameraModel?.FightCamera?.LogicComponent;
     if (e?.Valid && e?.Character?.IsValid() && e?.Character?.CharacterActorComponent) {
-      if (!(t = e.Character.CharacterActorComponent.Entity.GetComponent(215))?.Valid || t.HasTag(-648310348)) {
+      if (!(t = e.Character.CharacterActorComponent.Entity.GetComponent(217))?.Valid || t.HasTag(-648310348)) {
         this.cie.Reset();
         CameraUtility.SetPitchInGravity(this.cie, a, this.cie);
       } else if (e.IsInNormalGravityMode()) {
@@ -168,7 +168,7 @@ class CameraUtility {
         }
       case 4:
         if (t.GetEntityNoBlueprint()?.GetComponent(0)?.IsMonster()) {
-          return !!(e = t.GetEntityNoBlueprint()?.GetComponent(41))?.Valid && e.SkillTarget === ModelManager_1.ModelManager.CharacterModel.GetHandle(Global_1.Global.BaseCharacter?.EntityId ?? 0);
+          return !!(e = t.GetEntityNoBlueprint()?.GetComponent(43))?.Valid && e.SkillTarget === ModelManager_1.ModelManager.CharacterModel.GetHandle(Global_1.Global.BaseCharacter?.EntityId ?? 0);
         } else {
           if (Log_1.Log.CheckError()) {
             Log_1.Log.Error("Camera", 57, "SwitchSequenceCamera生效客户端类型`技能目标客户端`只允许在怪物身上调用");
@@ -177,7 +177,7 @@ class CameraUtility {
         }
       case 2:
         if (t.GetEntityNoBlueprint()?.GetComponent(0)?.IsMonster()) {
-          return !!(e = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint()?.GetComponent(33))?.Valid && e.GetCurrentTarget() === ModelManager_1.ModelManager.CharacterModel.GetHandle(t.EntityId);
+          return !!(e = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint()?.GetComponent(34))?.Valid && e.GetCurrentTarget() === ModelManager_1.ModelManager.CharacterModel.GetHandle(t.EntityId);
         } else {
           if (Log_1.Log.CheckError()) {
             Log_1.Log.Error("Camera", 57, "SwitchSequenceCamera生效客户端类型`锁定目标客户端`只允许在怪物身上调用");
@@ -195,14 +195,14 @@ class CameraUtility {
     if (!t?.Valid) {
       return false;
     }
-    var r = t.Entity.GetComponent(234);
+    var r = t.Entity.GetComponent(235);
     if (r?.Valid) {
       return r.IsAutonomousProxy;
     }
     let i = undefined;
     r = t.Entity.GetComponent(246);
     if ((i = (r?.Valid && r.Driver?.Valid ? r.Driver : t.Entity).GetComponent(0))?.Valid) {
-      r = i.IsVision() || i.IsMonster() ? ModelManager_1.ModelManager.CreatureModel.GetEntityId(i.GetSummonerId()) : t.Id;
+      r = i.IsVision() || i.IsMonster() ? ModelManager_1.ModelManager.CreatureModel.GetEntityId(i.GetSummonerId()) : i.Entity.Id;
       t = ModelManager_1.ModelManager.SceneTeamModel.GetTeamItem(r, {
         ParamType: 1
       });
@@ -243,14 +243,14 @@ class CameraUtility {
         }
       case 4:
         if (e.IsMonster()) {
-          return !!(r = t.Entity.GetComponent(41))?.Valid && r.SkillTarget === ModelManager_1.ModelManager.CharacterModel.GetHandle(Global_1.Global.BaseCharacter?.EntityId ?? 0);
+          return !!(r = t.Entity.GetComponent(43))?.Valid && r.SkillTarget === ModelManager_1.ModelManager.CharacterModel.GetHandle(Global_1.Global.BaseCharacter?.EntityId ?? 0);
         } else {
           return false;
         }
       case 6:
       case 2:
         if (e.IsMonster()) {
-          return !!(r = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint()?.GetComponent(33))?.Valid && r.ShowTarget === ModelManager_1.ModelManager.CharacterModel.GetHandle(t.Id);
+          return !!(r = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint()?.GetComponent(34))?.Valid && r.ShowTarget === ModelManager_1.ModelManager.CharacterModel.GetHandle(t.Id);
         } else {
           return false;
         }
@@ -333,7 +333,7 @@ class CameraUtility {
     return true;
   }
   static Whe(t) {
-    var a = Global_1.Global.BaseCharacter.GetEntityNoBlueprint().GetComponent(215);
+    var a = Global_1.Global.BaseCharacter.GetEntityNoBlueprint().GetComponent(217);
     var a = t.AnyTag ? a.HasAnyTag(GameplayTagUtils_1.GameplayTagUtils.ConvertFromUeContainer(t.TagToCheck)) : a.HasAllTag(GameplayTagUtils_1.GameplayTagUtils.ConvertFromUeContainer(t.TagToCheck));
     if (t.Reverse) {
       return !a;
@@ -345,7 +345,7 @@ class CameraUtility {
     let a = false;
     var e = this.GetCameraLockOnTargetEntityHandle();
     if (e) {
-      e = e.Entity.GetComponent(215);
+      e = e.Entity.GetComponent(217);
       a = t.AnyTag ? e.HasAnyTag(GameplayTagUtils_1.GameplayTagUtils.ConvertFromUeContainer(t.TagToCheck)) : e.HasAllTag(GameplayTagUtils_1.GameplayTagUtils.ConvertFromUeContainer(t.TagToCheck));
     }
     if (t.Reverse) {
@@ -495,7 +495,7 @@ class CameraUtility {
   }
   static CharacterMovementBaseIsMoving() {
     var t = ControllerHolder_1.ControllerHolder.CameraController.FightCamera?.LogicComponent?.Character?.BasedMovement?.MovementBase;
-    return !!t && t.Mobility === 2 && (!t.GetComponentVelocity().IsNearlyZero(MathUtils_1.MathUtils.KindaSmallNumber) || !!(t = ModelManager_1.ModelManager.SceneInteractionModel.GetEntityByBaseItem(t.GetOwner())?.Entity.GetComponent(148)) && !!t.IsMovingOrTeleporting());
+    return !!t && t.Mobility === 2 && (!t.GetComponentVelocity().IsNearlyZero(MathUtils_1.MathUtils.KindaSmallNumber) || !!(t = ModelManager_1.ModelManager.SceneInteractionModel.GetEntityByBaseItem(t.GetOwner())?.Entity.GetComponent(150)) && !!t.IsMovingOrTeleporting());
   }
   static SetCameraRotationWithString(t) {
     var a = [];

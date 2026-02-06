@@ -20,6 +20,7 @@ const VisionChooseMainPanelHandle_1 = require("./PanelHandle/VisionChooseMainPan
 const NavigationCalabashDetailExitButton_1 = require("./Selectable/Calabash/NavigationCalabashDetailExitButton");
 const NavigationCantFocusInScrollOrLayoutByJumpGroupButton_1 = require("./Selectable/Common/NavigationCantFocusInScrollOrLayoutByJumpGroupButton");
 const NavigationCommonRefreshNavigationButton_1 = require("./Selectable/Common/NavigationCommonRefreshNavigationButton");
+const NavigationReFindMultipleScrollGridToggle_1 = require("./Selectable/Common/NavigationReFindMultipleScrollGridToggle");
 const NavigationFunctionPageButton_1 = require("./Selectable/FunctionView/NavigationFunctionPageButton");
 const NavigationFunctionPageLeftButton_1 = require("./Selectable/FunctionView/NavigationFunctionPageLeftButton");
 const NavigationFunctionPageRightButton_1 = require("./Selectable/FunctionView/NavigationFunctionPageRightButton");
@@ -34,6 +35,7 @@ const NavigationSelectable_1 = require("./Selectable/NavigationSelectable");
 const NavigationSelectableCreator_1 = require("./Selectable/NavigationSelectableCreator");
 const NavigationSlider_1 = require("./Selectable/NavigationSlider");
 const NavigationToggle_1 = require("./Selectable/NavigationToggle");
+const FormationSelectPositionButton_1 = require("./Selectable/PhantomArena/FormationSelectPositionButton");
 const NavigationPhantomArenaCardToggle_1 = require("./Selectable/PhantomArena/NavigationPhantomArenaCardToggle");
 const NavigationPhantomArenaEmptyButton_1 = require("./Selectable/PhantomArena/NavigationPhantomArenaEmptyButton");
 const NavigationPhantomArenaOpponentBattleToggle_1 = require("./Selectable/PhantomArena/NavigationPhantomArenaOpponentBattleToggle");
@@ -100,7 +102,9 @@ const selectableCtorMap = {
   PhantomArenaCardToggle: NavigationPhantomArenaCardToggle_1.NavigationPhantomArenaCardToggle,
   PhantomManageConfigGridBig: NavigationPhantomManageConfigGridBig_1.NavigationPhantomManageConfigGridBig,
   HonamiStoryGridItem: NavigationHonamiStoryGridItem_1.NavigationHonamiStoryGridItem,
-  CantFocusInScrollOrLayoutByJumpGroup: NavigationCantFocusInScrollOrLayoutByJumpGroupButton_1.NavigationCantFocusInScrollOrLayoutByJumpGroupButton
+  CantFocusInScrollOrLayoutByJumpGroup: NavigationCantFocusInScrollOrLayoutByJumpGroupButton_1.NavigationCantFocusInScrollOrLayoutByJumpGroupButton,
+  FormationSelectPosition: FormationSelectPositionButton_1.FormationSelectPositionButton,
+  ReFindMultipleScrollGridToggle: NavigationReFindMultipleScrollGridToggle_1.NavigationReFindMultipleScrollGridToggle
 };
 const panelHandleCtorMap = {
   Default: BasePanelHandle_1.BasePanelHandle,

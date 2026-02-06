@@ -131,7 +131,7 @@ class LevelFlowCameraLookAtPosition extends LevelFlowActionBase_1.LevelFlowActio
           }
         }
         if (Global_1.Global.BaseCharacter) {
-          ModelManager_1.ModelManager.CreatureModel.GetEntityById(Global_1.Global.BaseCharacter.EntityId)?.Entity?.GetComponent(65)?.InterruptAutoMoving("进入相机调整LookAtPosition", true);
+          ModelManager_1.ModelManager.CreatureModel.GetEntityById(Global_1.Global.BaseCharacter.EntityId)?.Entity?.GetComponent(67)?.InterruptAutoMoving("进入相机调整LookAtPosition", true);
         }
       }
     }

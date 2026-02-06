@@ -56,7 +56,7 @@ class BirthdayLetterView extends UiTickViewBase_1.UiTickViewBase {
     this.XYt = undefined;
     this.GZi = undefined;
     this.NZi = undefined;
-    this.Y2m = 0;
+    this.uqm = 0;
     this.A11 = 0;
     this.wK1 = 0;
     this.QI1 = undefined;
@@ -104,7 +104,7 @@ class BirthdayLetterView extends UiTickViewBase_1.UiTickViewBase {
       this.XYt.Stop();
       this.QYt.SetSelectorOffset(0);
     };
-    this.z2m = e => {
+    this.cqm = e => {
       this.dFe = e;
       let i = ModelManager_1.ModelManager.RoleModel.GetRoleDataById(this.dFe)?.GetRoleSkinId();
       i = i || RoleInfoById_1.configRoleInfoById.GetConfig(this.dFe).SkinId;
@@ -134,7 +134,7 @@ class BirthdayLetterView extends UiTickViewBase_1.UiTickViewBase {
     this.BtnBindInfo = [[0, this.Awe], [4, this.GI1], [3, this.NI1], [10, this.ODo]];
   }
   async OnBeforeStartAsync() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnBirthRoleChange, this.z2m);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnBirthRoleChange, this.cqm);
     var e = this.OpenParam;
     this.QI1 = e;
     this.dFe = e.RoleId;
@@ -194,7 +194,7 @@ class BirthdayLetterView extends UiTickViewBase_1.UiTickViewBase {
     this.QYt?.SetSelectorOffset(1);
     this.GZi = (0, puerts_1.toManualReleaseDelegate)(this.Do1);
     this.NZi = this.XYt.GetPlayTween().RegisterOnComplete(this.GZi);
-    this.Y2m = e;
+    this.uqm = e;
     this.GetText(6).SetUIActive(false);
     this.P9e();
   }
@@ -202,12 +202,12 @@ class BirthdayLetterView extends UiTickViewBase_1.UiTickViewBase {
     this.GetText(6).SetUIActive(true);
     if (this.XYt) {
       this.QYt.SetSelectorOffset(1);
-      this.XYt.GetPlayTween().duration = this.Y2m + ModelManager_1.ModelManager.BirthdayModel.GetPlayTimeOffset();
+      this.XYt.GetPlayTween().duration = this.uqm + ModelManager_1.ModelManager.BirthdayModel.GetPlayTimeOffset();
       this.XYt.Play();
     }
   }
   OnBeforeDestroy() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnBirthRoleChange, this.z2m);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnBirthRoleChange, this.cqm);
     if (this.NZi) {
       this.XYt?.GetPlayTween()?.UnregisterOnComplete(this.NZi);
       this.NZi = undefined;

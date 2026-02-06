@@ -39,20 +39,20 @@ class ItemRewardController extends UiControllerBase_1.UiControllerBase {
     return true;
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(25880, this.mMa);
+    Net_1.Net.Register(28204, this.mMa);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(25880);
+    Net_1.Net.UnRegister(28204);
   }
   static OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnItemRewardNotify, this.b0i);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnExploreRewardShowEnd, this.F8u);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsSyncItemTipsData, this.Huf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsSyncItemTipsData, this.Fdf);
   }
   static OnRemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnItemRewardNotify, this.b0i);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnExploreRewardShowEnd, this.F8u);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsSyncItemTipsData, this.Huf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsSyncItemTipsData, this.Fdf);
   }
   static GetRewardViewReasonArray() {
     if (!this.RewardViewReasonArray) {
@@ -105,15 +105,28 @@ class ItemRewardController extends UiControllerBase_1.UiControllerBase {
     this.Open(e, e.GetRewardInfo().FinishCallback);
     return true;
   }
-  static OpenMotorStickerRewardView(e, r, t) {
+  static OpenEncircleRewardView(e) {
+    e = ActivityControllerHolder_1.ActivityControllerHolder.ActivityEncircleController.BuildRewardData(e);
+    this.Open(e);
+    return true;
+  }
+  static OpenMotorItemRewardView(e, r, t) {
     var o = ModelManager_1.ModelManager.FunctionModel?.IsOpen(10098);
     var a = o ? "MotorBike_Shop_CloseButton" : undefined;
     var n = o ? "MotorBike_Shop_EquipButton" : undefined;
-    var o = o ? () => {
-      ControllerHolder_1.ControllerHolder.MotorcycleDiyController.OpenDiyRootViewByEquip(t.map(e => e.ConfigId));
+    let i = 0;
+    if (UiManager_1.UiManager.IsViewOpen("MotorSkinBuyDetailView") && (l = UiManager_1.UiManager.GetViewByName("MotorSkinBuyDetailView").GetViewData()) && (l = l.GetCurrentGoodsData()?.GetMotorSkinData()?.GetMotorSkinShow())) {
+      i = l.JumpDiyRoot;
+    }
+    var l = o ? () => {
+      ControllerHolder_1.ControllerHolder.MotorcycleDiyController.OpenRootViewByReward(t, i);
     } : undefined;
-    var e = ModelManager_1.ModelManager.ItemRewardModel.RefreshCommonRewardDataFromConfig(e, "CommonRewardView", r, undefined, a, n, undefined, o, false);
-    return !!e && (this.Open(e), true);
+    var o = ModelManager_1.ModelManager.ItemRewardModel.RefreshCommonRewardDataFromConfig(e, "CommonRewardView", r, undefined, a, n, () => {
+      if (ModelManager_1.ModelManager.MotorcycleDiyModel.IsEquipFrameLockedByPlayer()) {
+        ModelManager_1.ModelManager.MotorcycleDiyModel.ResetSelectedItemInfo();
+      }
+    }, l, false);
+    return !!o && (this.Open(o), true);
   }
   static Open(e, t) {
     var r;
@@ -312,6 +325,8 @@ ItemRewardController.b0i = r => {
       if (!ItemRewardDefine_1.blockReasonIdList.includes(a)) {
         if (a === ItemRewardDefine_1.EXPLORE_LEVEL_RESON) {
           ItemRewardController.OpenExploreLevelRewardView(i);
+        } else if (a === ItemRewardDefine_1.ENCIRCLE_REWARD_REASON) {
+          ItemRewardController.OpenEncircleRewardView(i);
         } else if (a === ItemRewardDefine_1.ROGUE_INST_FIRST_REWARD) {
           ModelManager_1.ModelManager.RoguelikeModel.ShowRewardList = i;
           KuroSdkReport_1.KuroSdkReport.OnRougeFinish();
@@ -404,7 +419,7 @@ ItemRewardController.OnItemObtainNotify = (r, t) => {
       } else if (_ === 14) {
         d = new RewardItemData_1.RewardItemData(w.wb_.s5n, w.wb_.m9n, w.wb_.b9n);
         (FlySkinConfigById_1.configFlySkinConfigById.GetConfig(w.wb_.s5n).IsSpecialViewAfterObtain ? i : a).push(d);
-      } else if (_ === 21) {
+      } else if (_ === 25 || _ === 21 || _ === 26 || _ === 27) {
         _ = new RewardItemData_1.RewardItemData(w.wb_.s5n, w.wb_.m9n, w.wb_.b9n);
         l.push(_);
         a.push(_);
@@ -443,7 +458,7 @@ ItemRewardController.OnItemObtainNotify = (r, t) => {
             if (o === ItemRewardDefine_1.REGRESS_BP_REASON && !ModelManager_1.ModelManager.ActivityRegressModel.ActivityData.IsPayRewardUnlock() && ActivityControllerHolder_1.ActivityControllerHolder.ActivityRegressController.IsNeedExtraRewardView()) {
               ItemRewardController.OpenRegressBpRewardView(a);
             } else if (l.length > 0 && s === ItemRewardDefine_1.PAY_REASON) {
-              ItemRewardController.OpenMotorStickerRewardView(C, a, l);
+              ItemRewardController.OpenMotorItemRewardView(C, a, l);
             } else if (m.length === 0 && n.length === 0 && i.length === 0) {
               ItemRewardController.OpenCommonRewardView(C, a, t);
             } else if (a.length === 0 && m.length > 0) {
@@ -483,7 +498,7 @@ ItemRewardController.F8u = () => {
   _a.N8u.Pop();
   _a.V8u();
 };
-ItemRewardController.Huf = (e, r) => {
+ItemRewardController.Fdf = (e, r) => {
   var t = new ItemDefine_1.ItemTipsParam();
   t.ItemId = e;
   t.CanSkip = r;

@@ -4,6 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.CharRenderingComponent = undefined;
+const puerts_1 = require("puerts");
 const UE = require("ue");
 const Info_1 = require("../../../../Core/Common/Info");
 const Log_1 = require("../../../../Core/Common/Log");
@@ -57,6 +58,12 @@ class CharRenderingComponent extends UE.KuroCharRenderingComponent {
     this.ProxyRenderTrail = false;
     this.Proxy = undefined;
     this.DitherRemap = 0;
+    this.PreBodyInfoRuntimeInitEvent = e => {
+      this.PreBodyInfoRuntimeInit(e);
+    };
+    this.PostBodyInfoRuntimeInitEvent = e => {
+      this.PostBodyInfoRuntimeInit(e);
+    };
     this.DisableFightDither = false;
     this.FightDitherRateCache = 1;
     this.OnRoleGoDownFinishEventAdded = false;
@@ -86,6 +93,12 @@ class CharRenderingComponent extends UE.KuroCharRenderingComponent {
     this.UseMaterialContainerV2 = true;
     this.CanUpdate = true;
     this.Proxy = undefined;
+    this.PreBodyInfoRuntimeInitEvent = e => {
+      this.PreBodyInfoRuntimeInit(e);
+    };
+    this.PostBodyInfoRuntimeInitEvent = e => {
+      this.PostBodyInfoRuntimeInit(e);
+    };
     this.DisableFightDither = false;
     this.FightDitherRateCache = 1;
     this.OnRoleGoDownFinishEventAdded = false;
@@ -208,30 +221,32 @@ class CharRenderingComponent extends UE.KuroCharRenderingComponent {
     }
   }
   AddRenderCompDynamic(e) {
-    if (this.AllRenderCompsMap.has(e.GetComponentId())) {
-      if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("RenderCharacter", 13, "错误:动态重复添加渲染模块 ID", ["Actor", this.CachedOwnerName], ["渲染模块ID", e.GetComponentId()]);
-      }
-    } else {
-      e.Awake(this);
-      this.AllRenderCompsMap.set(e.GetComponentId(), e);
-      this.AllRenderComps.push(e);
-      try {
-        e.Start();
-      } catch {
+    if (this.IsInit) {
+      if (this.AllRenderCompsMap.has(e.GetComponentId())) {
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("RenderCharacter", 13, "错误:动态重复添加渲染模块 ID", ["Actor", this.CachedOwnerName], ["渲染模块ID", e.GetComponentId()]);
+        }
+      } else {
+        e.Awake(this);
+        this.AllRenderCompsMap.set(e.GetComponentId(), e);
+        this.AllRenderComps.push(e);
+        try {
+          e.Start();
+        } catch {
+          if (Log_1.Log.CheckError()) {
+            Log_1.Log.Error("RenderCharacter", 25, "错误:动态添加组件初始化错误:", ["Actor", this.GetOwner().GetName()], ["组件ID", e.GetComponentId()]);
+          }
+          return;
+        }
+        if (e.GetIsInitSuc()) {
+          if (Log_1.Log.CheckDebug()) {
+            Log_1.Log.Debug("RenderCharacter", 25, "动态添加渲染模块 ID", ["Actor", this.CachedOwnerName], ["渲染模块ID", e.GetComponentId()]);
+          }
+          return e;
+        }
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("RenderCharacter", 25, "错误:动态添加组件初始化错误:", ["Actor", this.GetOwner().GetName()], ["组件ID", e.GetComponentId()]);
         }
-        return;
-      }
-      if (e.GetIsInitSuc()) {
-        if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("RenderCharacter", 25, "动态添加渲染模块 ID", ["Actor", this.CachedOwnerName], ["渲染模块ID", e.GetComponentId()]);
-        }
-        return e;
-      }
-      if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("RenderCharacter", 25, "错误:动态添加组件初始化错误:", ["Actor", this.GetOwner().GetName()], ["组件ID", e.GetComponentId()]);
       }
     }
   }
@@ -381,24 +396,28 @@ class CharRenderingComponent extends UE.KuroCharRenderingComponent {
   GetDeltaTime() {
     return this.DeltaTime;
   }
-  GetTimeDilation() {
-    let e = RenderModuleController_1.RenderModuleController.IsGamePaused ? 0 : RenderModuleController_1.RenderModuleController.GlobalTimeDilation;
-    var t;
-    if (e === 0) {
+  GetTimeDilation(e = undefined) {
+    let t = RenderModuleController_1.RenderModuleController.IsGamePaused ? 0 : RenderModuleController_1.RenderModuleController.GlobalTimeDilation;
+    var i;
+    if (t === 0) {
       return 0;
     } else {
       if (this.LogicOwner && this.IsLogicOwnerTsEffectActor) {
         if (EffectEnvironment_1.EffectEnvironment.OpenCppOptimize) {
-          t = this.LogicOwner;
-          e *= t.GetTimeScale();
+          i = this.LogicOwner;
+          t *= i.GetTimeScale();
         } else {
-          t = this.LogicOwner;
-          e *= t.GetTimeScale();
+          i = this.LogicOwner;
+          t *= i.GetTimeScale();
         }
-      } else if ((t = this.CachedOwnerEntity?.GetComponent(188)) && (t = this.CachedOwnerEntity.TimeDilation * t.CurrentTimeScale) > 1) {
-        e *= t;
+      } else if (i = this.CachedOwnerEntity?.GetComponent(190)) {
+        if ((i = this.CachedOwnerEntity.TimeDilation * i.CurrentTimeScale) > 1) {
+          t *= i;
+        } else if (e) {
+          e.LogicalTimeDilation = i;
+        }
       }
-      return e;
+      return t;
     }
   }
   GetInWater(e = 2) {
@@ -440,6 +459,20 @@ class CharRenderingComponent extends UE.KuroCharRenderingComponent {
       EventSystem_1.EventSystem.EmitWithTarget(this, EventDefine_1.EEventName.OnRemoveMaterialControllerGroup, t);
     }
     this.AllMaterialControlRuntimeDataGroupMap?.clear();
+  }
+  PreBodyInfoRuntimeInit(e) {
+    for (const t of this.AllRenderComps) {
+      if (t.GetIsInitSuc()) {
+        t.PreBodyInfoRuntimeInit(e);
+      }
+    }
+  }
+  PostBodyInfoRuntimeInit(e) {
+    for (const t of this.AllRenderComps) {
+      if (t.GetIsInitSuc()) {
+        t.PostBodyInfoRuntimeInit(e);
+      }
+    }
   }
   ResetAllRenderingStateForDebug() {
     var e = this.GetComponent(RenderConfig_1.RenderConfig.IdMaterialController);
@@ -595,7 +628,7 @@ class CharRenderingComponent extends UE.KuroCharRenderingComponent {
     if (this.IsInit) {
       if (this.RenderType !== 3) {
         if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("RenderCharacter", 11, "NPC更新不是NPC类型");
+          Log_1.Log.Error("RenderCharacter", 25, "NPC更新不是NPC类型", ["Owner", this.CachedOwnerName], ["EntityId", this.CachedOwnerEntity?.Id], ["实际类型", this.RenderType]);
         }
       } else if (e = this.GetComponent(RenderConfig_1.RenderConfig.IdDitherEffect)) {
         e.UpdateNpcDitherComponent();
@@ -674,7 +707,7 @@ class CharRenderingComponent extends UE.KuroCharRenderingComponent {
   }
   RegisterBodyEffect(e) {
     let t = this.GetComponent(RenderConfig_1.RenderConfig.IdBodyEffect);
-    if (t = t || this.AddRenderCompDynamic(new CharBodyEffect_1.CharBodyEffect())) {
+    if (!this.IsInit || !!(t = t || this.AddRenderCompDynamic(new CharBodyEffect_1.CharBodyEffect()))) {
       t.RegisterEffect(e);
     }
   }
@@ -754,10 +787,22 @@ class CharRenderingComponent extends UE.KuroCharRenderingComponent {
       n.SetExternalMaterialReplace(e, t, i, r);
     }
   }
+  SetMaterialReplaceV2ByIndex(e, t, i) {
+    var r = this.GetComponent(RenderConfig_1.RenderConfig.IdMaterialContainerV2);
+    if (r) {
+      r.SetExternalMaterialReplaceByIndex(e, t, i);
+    }
+  }
   RemoveExternalMaterialReplaceV2(e, t, i) {
     var r = this.GetComponent(RenderConfig_1.RenderConfig.IdMaterialContainerV2);
     if (r) {
       r.RemoveExternalMaterialReplace(e, t, i);
+    }
+  }
+  RemoveExternalMaterialReplaceV2ByIndex(e, t) {
+    var i = this.GetComponent(RenderConfig_1.RenderConfig.IdMaterialContainerV2);
+    if (i) {
+      i.RemoveExternalMaterialReplaceByIndex(e, t);
     }
   }
   SetStarScarEnergy(e) {
@@ -976,19 +1021,19 @@ class CharRenderingComponent extends UE.KuroCharRenderingComponent {
   InvokeStart() {
     if (!this.IsStartInvoke) {
       this.IsStartInvoke = true;
-      for (const e of this.AllRenderComps) {
+      for (const t of this.AllRenderComps) {
         try {
-          e.Start();
+          t.Start();
         } catch {
           if (Log_1.Log.CheckError()) {
-            Log_1.Log.Error("RenderCharacter", 25, "错误:组件初始化错误:", ["Actor", this.GetOwner().GetName()], ["组件ID", e.GetComponentId()]);
+            Log_1.Log.Error("RenderCharacter", 25, "错误:组件初始化错误:", ["Actor", this.GetOwner().GetName()], ["组件ID", t.GetComponentId()]);
           }
         }
       }
-      for (const t of this.AllRenderComps) {
-        if (!t.GetIsInitSuc()) {
+      for (const i of this.AllRenderComps) {
+        if (!i.GetIsInitSuc()) {
           if (Log_1.Log.CheckError()) {
-            Log_1.Log.Error("RenderCharacter", 13, "错误:组件初始化错误:", ["Actor", this.GetOwner().GetName()], ["组件ID", t.GetComponentId()]);
+            Log_1.Log.Error("RenderCharacter", 13, "错误:组件初始化错误:", ["Actor", this.GetOwner().GetName()], ["组件ID", i.GetComponentId()]);
           }
         }
       }
@@ -998,6 +1043,9 @@ class CharRenderingComponent extends UE.KuroCharRenderingComponent {
       if (this.UseProxy && this.CachedOwner instanceof TsBaseCharacter_1.default && this.CachedOwner.Mesh) {
         this.AddProxy(this.CachedOwner.Mesh);
       }
+      var e = this.GetSureMaterialController();
+      e?.RegisterPreBodyInfoRuntimeInitEvent((0, puerts_1.toManualReleaseDelegate)(this.PreBodyInfoRuntimeInitEvent));
+      e?.RegisterPostBodyInfoRuntimeInitEvent((0, puerts_1.toManualReleaseDelegate)(this.PostBodyInfoRuntimeInitEvent));
     }
   }
   AddProxy(e) {

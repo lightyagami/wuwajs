@@ -54,7 +54,7 @@ class RoleUtils {
   static HasMultiTrialRole(t, e, l = undefined) {
     var i = e.findIndex(e => e === t);
     if (i === -1) {
-      i = RoleUtils.u9f(t, e, l);
+      i = RoleUtils.pZf(t, e, l);
       if (RoleUtils.IsSpecialTrialRole(t)) {
         for (const r of i) {
           if (r !== t && RoleUtils.IsSpecialTrialRole(r)) {
@@ -68,7 +68,7 @@ class RoleUtils {
   static HasSameRole(t, e, l = undefined) {
     var i = e.findIndex(e => e === t);
     if (i === -1) {
-      for (const r of RoleUtils.u9f(t, e, l)) {
+      for (const r of RoleUtils.pZf(t, e, l)) {
         if (t !== r && RoleUtils.GetRoleRealId(t) === RoleUtils.GetRoleRealId(r)) {
           return true;
         }
@@ -76,7 +76,7 @@ class RoleUtils {
     }
     return false;
   }
-  static u9f(e, t, l) {
+  static pZf(e, t, l) {
     if (l !== undefined && !(l < 0) && !(l >= t.length)) {
       (t = [...t])[l] = e;
     }

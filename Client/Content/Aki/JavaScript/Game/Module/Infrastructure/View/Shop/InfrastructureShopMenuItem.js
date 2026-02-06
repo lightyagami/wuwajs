@@ -11,23 +11,23 @@ class InfrastructureShopMenuItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
     super(...arguments);
     this.Level = 0;
-    this.yVm = undefined;
-    this.SVm = t => {
+    this.G6m = undefined;
+    this.F6m = t => {
       if (t === 1) {
-        this.yVm?.(this.Level);
+        this.G6m?.(this.Level);
       }
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UIText]];
-    this.BtnBindInfo = [[0, this.SVm]];
+    this.BtnBindInfo = [[0, this.F6m]];
   }
   Refresh(t) {
     this.Level = t;
     this.GetText(1).ShowTextNew(InfrastructureDefine_1.infrShopTabMenuName[this.Level] ?? "");
   }
   SetOnClickToggleItem(t) {
-    this.yVm = t;
+    this.G6m = t;
   }
   SetDeselect() {
     this.GetExtendToggle(0).SetToggleState(0);

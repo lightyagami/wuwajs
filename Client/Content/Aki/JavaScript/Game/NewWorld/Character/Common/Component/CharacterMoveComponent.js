@@ -8,8 +8,8 @@ var __decorate = this && this.__decorate || function (t, e, i, s) {
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
     a = Reflect.decorate(t, e, i, s);
   } else {
-    for (var n = t.length - 1; n >= 0; n--) {
-      if (h = t[n]) {
+    for (var o = t.length - 1; o >= 0; o--) {
+      if (h = t[o]) {
         a = (r < 3 ? h(a) : r > 3 ? h(e, i, a) : h(e, i)) || a;
       }
     }
@@ -46,9 +46,11 @@ const CustomMovementDefine_1 = require("./Move/CustomMovementDefine");
 var EAttributeId = Protocol_1.Aki.Protocol.Vks;
 const RegisterComponent_1 = require("../../../../../Core/Entity/RegisterComponent");
 const Macro_1 = require("../../../../../Core/Preprocessor/Macro");
+const CollisionUtils_1 = require("../../../../../Core/Utils/CollisionUtils");
 const LevelGeneralNetworks_1 = require("../../../../LevelGamePlay/LevelGeneralNetworks");
 const ConfigManager_1 = require("../../../../Manager/ConfigManager");
 const FormationAttributeController_1 = require("../../../../Module/Abilities/FormationAttributeController");
+const CombatLog_1 = require("../../../../Utils/CombatLog");
 const GravityUtils_1 = require("../../../../Utils/GravityUtils");
 const WhirlpoolPoint_1 = require("./Move/WhirlpoolPoint");
 const MIN_MOVE_SPEED = 20;
@@ -81,6 +83,7 @@ let CharacterMoveComponent = CharacterMoveComponent_1 = class CharacterMoveCompo
     this.GlideComp = undefined;
     this.SwimComp = undefined;
     this.WalkOnWaterComp = undefined;
+    this.FloatingComp = undefined;
     this.ForceFallingSpeedCache = undefined;
     this.SkillComp = undefined;
     this.LastGlidingControlTime = 0;
@@ -89,6 +92,7 @@ let CharacterMoveComponent = CharacterMoveComponent_1 = class CharacterMoveCompo
     this.DeathComponent = undefined;
     this.AirInertiaHandler = 0;
     this.CanResponseInputTasks = new Array();
+    this.LastJumpTime = 0;
     this.TryGlideTime = 0;
     this.gHr = new WhirlpoolPoint_1.WhirlpoolPoint();
     this.qWu = false;
@@ -118,8 +122,8 @@ let CharacterMoveComponent = CharacterMoveComponent_1 = class CharacterMoveCompo
         case CharacterUnifiedStateTypes_1.ECharPositionState.Climb:
           break;
         case CharacterUnifiedStateTypes_1.ECharPositionState.Ground:
-          if (this.Entity.Active && this.ActorComp.IsAutonomousProxy && (this.Entity.GetComponent(20)?.FallInjure(), this.GetWhirlpoolEnable())) {
-            this.EndWhirlpool();
+          if (this.Entity.Active && this.ActorComp.IsAutonomousProxy) {
+            this.Entity.GetComponent(20)?.FallInjure();
           }
           break;
         case CharacterUnifiedStateTypes_1.ECharPositionState.Air:
@@ -136,9 +140,9 @@ let CharacterMoveComponent = CharacterMoveComponent_1 = class CharacterMoveCompo
       var s;
       var h;
       var r;
-      if (t?.Valid && (i = t.GetComponent(187))?.Valid) {
-        s = t.GetComponent(65);
-        h = this.Entity.GetComponent(65);
+      if (t?.Valid && (i = t.GetComponent(189))?.Valid) {
+        s = t.GetComponent(67);
+        h = this.Entity.GetComponent(67);
         if (s && h) {
           if ((r = s.GetAutoMovingConfig()).GetAutoMovingState()) {
             if (Log_1.Log.CheckDebug()) {
@@ -213,9 +217,9 @@ let CharacterMoveComponent = CharacterMoveComponent_1 = class CharacterMoveCompo
     this.OnRoleGoUp = () => {
       this.ResetPlanarPhysWalking();
     };
-    this.TYm = () => {
-      if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.WorldDoneAndCloseLoading, this.TYm)) {
-        EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDoneAndCloseLoading, this.TYm);
+    this.QJm = () => {
+      if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.WorldDoneAndCloseLoading, this.QJm)) {
+        EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDoneAndCloseLoading, this.QJm);
       }
       var t = this.Entity.GetComponent(0);
       if (t?.PbMoveToPointConfig?.CIl) {
@@ -225,15 +229,15 @@ let CharacterMoveComponent = CharacterMoveComponent_1 = class CharacterMoveCompo
     this.SlideTrans = undefined;
     this.OnSpeedRatioAttributeChanged = (t, e, i) => {
       var s = this.UnifiedStateComponent?.MoveState;
-      var h = this.Entity.GetComponent(187);
+      var h = this.Entity.GetComponent(189);
       if (h?.Valid) {
         h.ResetMaxSpeed(s);
       }
     };
     this.OnResponseInputTagsChanged = (t, e) => {
       if (e) {
-        if (this.CannotResponseInputCount === 0) {
-          this.HasMoveInput = false;
+        if (this.CannotResponseInputCount === 0 && (this.HasMoveInput = false, this.FloatingComp?.Valid)) {
+          this.FloatingComp.HasFloatingMoveInput = false;
         }
         ++this.CannotResponseInputCount;
       } else {
@@ -322,19 +326,20 @@ let CharacterMoveComponent = CharacterMoveComponent_1 = class CharacterMoveCompo
   }
   jCd(t) {
     this.IsMoving = t.IsMoving;
+    this.LastJumpTime = t.LastJumpTime;
     CharacterMoveComponent_1.TempVelocity.DeepCopy(t.ActorComp.ActorVelocityProxy);
     var e = CharacterMoveComponent_1.TempVelocity.SizeSquared();
     if (e > SQUARE_MAX_INHERIT_SPEED) {
       CharacterMoveComponent_1.TempVelocity.MultiplyEqual(Math.sqrt(SQUARE_MAX_INHERIT_SPEED / e));
     }
-    var e = this.Entity.GetComponent(215);
+    var e = this.Entity.GetComponent(217);
     if (!e?.HasTag(-1423251824)) {
       this.ForceSpeed.DeepCopy(CharacterMoveComponent_1.TempVelocity);
       this.Speed = Math.sqrt(GravityUtils_1.GravityUtils.GetPlanarSizeSquared2dForActor(this.ActorComp, this.ForceSpeed));
       this.ActorComp?.SetActorVelocity(this.ForceSpeed);
       this.CharacterMovement.LastUpdateVelocity = t.CharacterMovement.LastUpdateVelocity;
     }
-    t.Entity.GetComponent(122)?.DumpVelocityCacheInfo("战斗换人");
+    t.Entity.GetComponent(124)?.DumpVelocityCacheInfo("战斗换人");
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Character", 6, "1117317 Bug追踪，换人继承", ["Name", this.ActorComp?.Actor.GetName()], ["切人不继承速度", e?.HasTag(-1423251824)], ["Speed", this.Speed], ["LastVelocityOtherComp", t.CharacterMovement?.LastUpdateVelocity.Z], ["LastVelocity", this.CharacterMovement?.LastUpdateVelocity.Z], ["Velocity", this.CharacterMovement?.Velocity.Z]);
     }
@@ -352,8 +357,8 @@ let CharacterMoveComponent = CharacterMoveComponent_1 = class CharacterMoveCompo
     UE.KuroStaticLibrary.SetBaseAndSaveBaseLocation(this.CharacterMovement, t.CharacterMovement.GetMovementBase());
   }
   HCd(t, e) {
-    var i = t.GetComponent(215);
-    var t = t.GetComponent(184);
+    var i = t.GetComponent(217);
+    var t = t.GetComponent(186);
     if (e.CharacterMovement.MovementMode === 0 || i?.HasTag(-2100129479)) {
       this.ActorComp.Actor.KuroSetMovementMode({
         Mode: 1,
@@ -374,7 +379,7 @@ let CharacterMoveComponent = CharacterMoveComponent_1 = class CharacterMoveCompo
           Context: "[CharacterMoveComponent.OnStateInherit]"
         });
       }
-    } else if (e.CharacterMovement.MovementMode !== 5 && this.UnifiedStateComponent?.MoveState !== CharacterUnifiedStateTypes_1.ECharMoveState.Roll && t?.PositionState !== CharacterUnifiedStateTypes_1.ECharPositionState.Ride && !this.WalkOnWaterComp?.BlockMoveModeInherit(e.CharacterMovement)) {
+    } else if (e.CharacterMovement.MovementMode !== 5 && this.UnifiedStateComponent?.MoveState !== CharacterUnifiedStateTypes_1.ECharMoveState.Roll && t?.PositionState !== CharacterUnifiedStateTypes_1.ECharPositionState.Floating && t?.PositionState !== CharacterUnifiedStateTypes_1.ECharPositionState.Ride && !this.WalkOnWaterComp?.BlockMoveModeInherit(e.CharacterMovement)) {
       this.ActorComp.Actor.KuroSetMovementMode({
         Mode: e.CharacterMovement.MovementMode,
         CustomMode: e.CharacterMovement.CustomMovementMode,
@@ -384,7 +389,6 @@ let CharacterMoveComponent = CharacterMoveComponent_1 = class CharacterMoveCompo
   }
   OnInitData() {
     super.OnInitData();
-    this.CurrentGravityScale = new BaseMoveComponent_1.GravityScale();
     this.ForceFallingSpeedCache = new ForceFallingSpeedCache();
     return true;
   }
@@ -427,15 +431,16 @@ let CharacterMoveComponent = CharacterMoveComponent_1 = class CharacterMoveCompo
     this.CharacterMovement.bEnablePhysicsInteraction = false;
     this.SetKuroPlanarPhysWalking(this.I71());
     this.SetKuroAsyncRootMotion(this.b71());
-    this.AnimComp = this.Entity.GetComponent(186);
-    this.GlideComp = this.Entity.GetComponent(62);
-    this.SwimComp = this.Entity.GetComponent(80);
-    this.WalkOnWaterComp = this.Entity.GetComponent(82);
-    this.AttributeComponent = this.Entity.GetComponent(182);
-    this.TagComponent = this.Entity.GetComponent(215);
+    this.AnimComp = this.Entity.GetComponent(188);
+    this.GlideComp = this.Entity.GetComponent(64);
+    this.SwimComp = this.Entity.GetComponent(82);
+    this.WalkOnWaterComp = this.Entity.GetComponent(84);
+    this.FloatingComp = this.Entity.GetComponent(39);
+    this.AttributeComponent = this.Entity.GetComponent(184);
+    this.TagComponent = this.Entity.GetComponent(217);
     this.DeathComponent = this.Entity.GetComponent(15);
-    this.UnifiedStateComponent = this.Entity.GetComponent(109);
-    this.SkillComp = this.Entity.GetComponent(41);
+    this.UnifiedStateComponent = this.Entity.GetComponent(111);
+    this.SkillComp = this.Entity.GetComponent(43);
     this.CapsuleOffset = Vector_1.Vector.Create(0, 0, this.ActorComp.Radius - this.ActorComp.HalfHeight);
     this.InitCreatureProperty();
     this.InitStepUpParams();
@@ -495,8 +500,8 @@ let CharacterMoveComponent = CharacterMoveComponent_1 = class CharacterMoveCompo
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDone, this.OnWorldDone);
     }
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TeleportStart, this.OnTeleportStart);
-    if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.WorldDoneAndCloseLoading, this.TYm)) {
-      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDoneAndCloseLoading, this.TYm);
+    if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.WorldDoneAndCloseLoading, this.QJm)) {
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDoneAndCloseLoading, this.QJm);
     }
     this.AttributeComponent?.RemoveListener(EAttributeId.vVn, this.OnSpeedRatioAttributeChanged);
     for (const t of this.CanResponseInputTasks) {
@@ -520,20 +525,20 @@ let CharacterMoveComponent = CharacterMoveComponent_1 = class CharacterMoveCompo
     }
     if (this.Entity.GetComponent(0)?.PbMoveToPointConfig?.CIl) {
       if (ModelManager_1.ModelManager.GameModeModel.WorldDoneAndLoadingClosed) {
-        this.TYm();
-      } else if (!EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.WorldDoneAndCloseLoading, this.TYm)) {
-        EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDoneAndCloseLoading, this.TYm);
+        this.QJm();
+      } else if (!EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.WorldDoneAndCloseLoading, this.QJm)) {
+        EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDoneAndCloseLoading, this.QJm);
       }
     }
   }
   OnDisable() {
     this.DeltaTimeSeconds = 0;
     if (this.GetWhirlpoolEnable()) {
-      this.EndWhirlpool();
+      this.EndWhirlpool("实体Disable");
     }
   }
   OnTick(i) {
-    if (!(i < MathUtils_1.MathUtils.SmallNumber) && (super.OnTick(i), this.ActorComp) && this.DeathComponent && (this.gHr.GetEnable() || !this.DeathComponent.IsDead()) && (this.DeltaTimeSeconds = i * MathUtils_1.MathUtils.MillisecondToSecond, this.MoveController?.UpdateMove(this.DeltaTimeSeconds), this.SpeedLockFrame > 0 && --this.SpeedLockFrame, this.IsJump && --this.JumpFrameCount, this.LerpMaxAcceleration(), this.UpdateBaseMovement(), !this.IsSpecialMove)) {
+    if (!(i < MathUtils_1.MathUtils.SmallNumber) && (super.OnTick(i), this.ActorComp) && this.DeathComponent && (this.gHr.GetEnable() || !this.DeathComponent.IsDead()) && (this.DeltaTimeSeconds = i * MathUtils_1.MathUtils.MillisecondToSecond, this.MoveController?.UpdateMove(this.DeltaTimeSeconds), this.SpeedLockFrame > 0 && --this.SpeedLockFrame, this.IsJump && (this.LastJumpTime = Time_1.Time.PlayerWorldTime, --this.JumpFrameCount), this.LerpMaxAcceleration(), this.UpdateBaseMovement(), !this.IsSpecialMove)) {
       if (this.IsStopInternal) {
         this.Speed = 0;
       } else {
@@ -572,7 +577,7 @@ let CharacterMoveComponent = CharacterMoveComponent_1 = class CharacterMoveCompo
         if (this.gHr.GetEnable()) {
           e = this.pHr();
           if (!this.gHr.OnTick(this.DeltaTimeSeconds * (this.TimeScaleComp?.CurrentTimeScale ?? 1))) {
-            this.EndWhirlpool();
+            this.EndWhirlpool("时间到了");
           }
         }
         if (h && e) {
@@ -606,7 +611,11 @@ let CharacterMoveComponent = CharacterMoveComponent_1 = class CharacterMoveCompo
     return this.TagComponent?.HasTag(t) ?? false;
   }
   JumpRelease() {
-    this.ActorComp.Actor.StopJumping();
+    if (this.UnifiedStateComponent?.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Floating) {
+      this.Entity?.GetComponent(39)?.JumpRelease();
+    } else {
+      this.ActorComp.Actor.StopJumping();
+    }
   }
   JumpCheck() {
     return !!this.CanResponseInput() && !this.ContainsTag(-291592299) && (this.UnifiedStateComponent?.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Ground || this.UnifiedStateComponent?.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Ski);
@@ -615,7 +624,7 @@ let CharacterMoveComponent = CharacterMoveComponent_1 = class CharacterMoveCompo
     if (this.GroundedFrame > Time_1.Time.Frame - 2) {
       return false;
     }
-    var t = this.Entity.GetComponent(41);
+    var t = this.Entity.GetComponent(43);
     var e = this.UnifiedStateComponent?.PositionState;
     var i = this.UnifiedStateComponent?.MoveState;
     switch (e) {
@@ -630,6 +639,9 @@ let CharacterMoveComponent = CharacterMoveComponent_1 = class CharacterMoveCompo
           CharacterUnifiedStateTypes_1.ECharMoveState.Slide;
           return true;
         }
+      case CharacterUnifiedStateTypes_1.ECharPositionState.RailSlide:
+      case CharacterUnifiedStateTypes_1.ECharPositionState.Floating:
+        return true;
       default:
         return false;
     }
@@ -647,38 +659,62 @@ let CharacterMoveComponent = CharacterMoveComponent_1 = class CharacterMoveCompo
     }
   }
   OnJump() {
-    var t = this.Entity.GetComponent(186);
+    var t = this.Entity.GetComponent(188);
     if (t.Valid && t.MainAnimInstance) {
       t.MainAnimInstance.Montage_Stop(0);
     }
     this.JumpFrameCount = JUMP_FRAME_COUNT;
     this.AnimComp.OnJump();
   }
+  OnDropPress() {
+    if (this.UnifiedStateComponent?.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Floating) {
+      this.Entity?.GetComponent(39)?.CtrlPress();
+    }
+  }
+  OnDropRelease() {
+    if (this.UnifiedStateComponent?.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Floating) {
+      this.Entity?.GetComponent(39)?.CtrlRelease();
+    }
+  }
   JumpPress() {
     if (!this.CheckInHit() && this.CanJumpPress()) {
-      var t = this.UnifiedStateComponent?.PositionState;
-      var e = t === CharacterUnifiedStateTypes_1.ECharPositionState.Ground;
-      var i = t === CharacterUnifiedStateTypes_1.ECharPositionState.Climb;
-      if (e || i) {
+      if (this.FloatingComp?.IsFloating) {
+        this.Entity?.GetComponent(39)?.JumpPressInAir();
         this.TagComponent?.RemoveTag(-1371021686);
-        if ((i = this.Entity.GetComponent(41)).Valid && i.CurrentSkill) {
-          i.StopGroup1Skill("跳跃打断技能");
-          this.LimitMaxSpeed();
+        if ((t = this.Entity.GetComponent(43)).Valid && t.CurrentSkill) {
+          t.StopGroup1Skill("悬浮跳跃打断技能");
         }
         this.OnJump();
-        if (e) {
-          this.PlayerMotionRequest(Protocol_1.Aki.Protocol.t8s.Proto_MotionJump);
-        }
+        this.PlayerMotionRequest(Protocol_1.Aki.Protocol.t8s.Proto_MotionJump);
       } else {
-        if (t === CharacterUnifiedStateTypes_1.ECharPositionState.Air) {
-          if (this.JumpPressInAir()) {
+        var t = this.UnifiedStateComponent?.PositionState;
+        var e = t === CharacterUnifiedStateTypes_1.ECharPositionState.Ground;
+        var i = t === CharacterUnifiedStateTypes_1.ECharPositionState.Climb;
+        if (e || i) {
+          this.TagComponent?.RemoveTag(-1371021686);
+          if ((i = this.Entity.GetComponent(43)).Valid && i.CurrentSkill) {
+            i.StopGroup1Skill("跳跃打断技能");
+            this.LimitMaxSpeed();
+          }
+          this.OnJump();
+          if (e) {
+            this.PlayerMotionRequest(Protocol_1.Aki.Protocol.t8s.Proto_MotionJump);
+          }
+        } else {
+          if (t === CharacterUnifiedStateTypes_1.ECharPositionState.Air) {
+            if (this.JumpPressInAir()) {
+              return;
+            }
+          } else if (t === CharacterUnifiedStateTypes_1.ECharPositionState.Ski) {
+            if (this.JumpPressInSki()) {
+              return;
+            }
+          } else if (t === CharacterUnifiedStateTypes_1.ECharPositionState.RailSlide && this.JumpPressInRailSlide()) {
             return;
           }
-        } else if (t === CharacterUnifiedStateTypes_1.ECharPositionState.Ski && (this.JumpPressInSki() || this.JumpPressInRailSlide())) {
-          return;
-        }
-        if (!this.TrySetGlide()) {
-          this.TryGlideTime = TRY_GLIDE_TIME;
+          if (!this.TrySetGlide()) {
+            this.TryGlideTime = TRY_GLIDE_TIME;
+          }
         }
       }
     }
@@ -695,16 +731,17 @@ let CharacterMoveComponent = CharacterMoveComponent_1 = class CharacterMoveCompo
   }
   JumpPressInSki() {
     var t;
-    return !this.CheckInHit() && !!(t = this.Entity.GetComponent(36)) && this.CharacterMovement?.MovementMode === 6 && this.CharacterMovement?.CustomMovementMode === CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_SKI && (CharacterMoveComponent_1.TempVelocity.FromUeVector(this.ActorComp.ActorForwardProxy), this.AnimComp?.Valid && (this.SlideTrans ||= Transform_1.Transform.Create(), MathUtils_1.MathUtils.LookRotationUpFirst(CharacterMoveComponent_1.TempVelocity, t.SlideForward, this.TmpQuat), this.SlideTrans.Set(this.ActorComp.ActorLocationProxy, this.TmpQuat, this.ActorComp.ActorScaleProxy), this.AnimComp.SetTransformWithModelBuffer(this.SlideTrans.ToUeTransform(), SLIDE_JUMP_LERP_TIME)), GravityUtils_1.GravityUtils.ConvertToPlanarVectorForActor(this.ActorComp, CharacterMoveComponent_1.TempVelocity), CharacterMoveComponent_1.TempVelocity.Normalize() || CharacterMoveComponent_1.TempVelocity.DeepCopy(this.ActorComp.ActorForwardProxy), CharacterMoveComponent_1.TempVelocity.MultiplyEqual(Math.sqrt(GravityUtils_1.GravityUtils.GetPlanarSizeSquared2dForActor(this.ActorComp, this.ActorComp.ActorVelocityProxy))), this.ActorComp?.SetActorVelocity(CharacterMoveComponent_1.TempVelocity), this.OnJump(), t.OnJump(), this.PlayerMotionRequest(Protocol_1.Aki.Protocol.t8s.Proto_MotionJump), true);
+    return !this.CheckInHit() && !!(t = this.Entity.GetComponent(37)) && this.CharacterMovement?.MovementMode === 6 && this.CharacterMovement?.CustomMovementMode === CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_SKI && (CharacterMoveComponent_1.TempVelocity.FromUeVector(this.ActorComp.ActorForwardProxy), this.AnimComp?.Valid && (this.SlideTrans ||= Transform_1.Transform.Create(), MathUtils_1.MathUtils.LookRotationUpFirst(CharacterMoveComponent_1.TempVelocity, t.SlideForward, this.TmpQuat), this.SlideTrans.Set(this.ActorComp.ActorLocationProxy, this.TmpQuat, this.ActorComp.ActorScaleProxy), this.AnimComp.SetTransformWithModelBuffer(this.SlideTrans.ToUeTransform(), SLIDE_JUMP_LERP_TIME)), GravityUtils_1.GravityUtils.ConvertToPlanarVectorForActor(this.ActorComp, CharacterMoveComponent_1.TempVelocity), CharacterMoveComponent_1.TempVelocity.Normalize() || CharacterMoveComponent_1.TempVelocity.DeepCopy(this.ActorComp.ActorForwardProxy), CharacterMoveComponent_1.TempVelocity.MultiplyEqual(Math.sqrt(GravityUtils_1.GravityUtils.GetPlanarSizeSquared2dForActor(this.ActorComp, this.ActorComp.ActorVelocityProxy))), this.ActorComp?.SetActorVelocity(CharacterMoveComponent_1.TempVelocity), this.OnJump(), t.OnJump(), this.PlayerMotionRequest(Protocol_1.Aki.Protocol.t8s.Proto_MotionJump), true);
   }
   JumpPressInRailSlide() {
-    return !this.CheckInHit() && !!this.Entity.GetComponent(37) && this.CharacterMovement?.MovementMode === 6 && this.CharacterMovement?.CustomMovementMode === CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_RAIL_SLIDE;
+    var t;
+    return !this.CheckInHit() && !!(t = this.Entity.GetComponent(38)) && this.CharacterMovement?.MovementMode === 6 && this.CharacterMovement?.CustomMovementMode === CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_RAIL_SLIDE && (t.OnJump(), true);
   }
   TrySetGlide() {
     if (this.UnifiedStateComponent?.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Air) {
       var t = this.UnifiedStateComponent.MoveState;
       if (t !== CharacterUnifiedStateTypes_1.ECharMoveState.Glide && t !== CharacterUnifiedStateTypes_1.ECharMoveState.Slide && !this.TagComponent?.HasTag(-8769906) && Time_1.Time.WorldTime - this.LastGlidingControlTime > GLIDING_CONTROL_OFFSET && (this.GetHeightAboveGround() > exports.GLIDING_HEIGHT_THREDHOLD || this.TagComponent?.HasTag(-654554827)) && FormationAttributeController_1.FormationAttributeController.GetValue(1) > exports.GLIDE_STRENGTH_THREADHOLD) {
-        t = this.Entity.GetComponent(41);
+        t = this.Entity.GetComponent(43);
         if (t.Valid && t.CurrentSkill) {
           if (!t.CheckGlideCanInterrupt()) {
             return false;
@@ -790,14 +827,16 @@ let CharacterMoveComponent = CharacterMoveComponent_1 = class CharacterMoveCompo
       Log_1.Log.Error("Game", 14, "[CharacterMoveComponent.SetAddMoveWithMesh] 叠加位移失败，mesh为空");
     }
   }
-  SetGravityScale(t, e, i, s, h) {
-    if (t !== 1 || e !== 1 || i !== 1) {
+  SetGravityScale(t, e, i, s, h, r, a) {
+    if ((t !== 1 || e !== 1 || i !== 1) && !(h <= 0)) {
       this.CurrentGravityScale.ScaleUp = t;
       this.CurrentGravityScale.ScaleDown = e;
       this.CurrentGravityScale.ScaleTop = i;
       this.CurrentGravityScale.VelocityTop = s;
       this.CurrentGravityScale.Duration = h;
       this.CurrentGravityScale.ElapsedTime = 0;
+      this.CurrentGravityScale.ForceVelocityZero = r;
+      this.CurrentGravityScale.Enable = true;
     }
   }
   GetLastUpdateVelocity() {
@@ -841,6 +880,9 @@ let CharacterMoveComponent = CharacterMoveComponent_1 = class CharacterMoveCompo
                     } else {
                       this.UpdateInAirRotation();
                     }
+                    break;
+                  case CharacterUnifiedStateTypes_1.ECharPositionState.Floating:
+                    this.UpdateGroundedRotation();
                 }
               }
             }
@@ -884,33 +926,47 @@ let CharacterMoveComponent = CharacterMoveComponent_1 = class CharacterMoveCompo
   PlayerMotionRequest(t) {
     var e = Protocol_1.Aki.Protocol.Hls.create();
     e.c8n = t;
-    Net_1.Net.Call(20977, e, () => {});
+    Net_1.Net.Call(19767, e, () => {});
   }
   pHr() {
     var t;
-    var e = this.gHr.GetAlpha();
-    return !(e > 1) && !(t = CharacterMoveComponent_1.VelocityAdditionDestination, Vector_1.Vector.Lerp(this.gHr.BeginLocation, this.gHr.ToLocation, e, t), this.ActorComp.SetActorLocation(t.ToUeVector(), "移动.被吸引", true), 0);
+    var e;
+    return (!this.gHr.GetNeedTagId() || !!this.TagComponent?.HasTag(this.gHr.GetNeedTagId())) && !(t = MathUtils_1.MathUtils.Clamp(this.gHr.GetAlpha(), 0, 1), Log_1.Log.CheckDebug() && Log_1.Log.Debug("Bullet", 20, "吸附-角色更新", ["Entity", this.Entity.Id], ["ToLocation", this.gHr.ToLocation], ["BeginLocation", this.ActorComp.ActorLocationProxy], ["Alpha", t]), e = CharacterMoveComponent_1.VelocityAdditionDestination, Vector_1.Vector.Lerp(this.gHr.BeginLocation, this.gHr.ToLocation, t, e), this.ActorComp.SetActorLocation(e.ToUeVector(), "移动.被吸引", true), 0);
   }
-  BeginWhirlpool(t, e, i, s, h = -1, r = 0) {
-    this.CharacterMovement.GravityScale = 0;
-    this.Entity.GetComponent(184).SetMoveState(CharacterUnifiedStateTypes_1.ECharMoveState.KnockUp);
-    this.ActorComp?.Actor.KuroSetMovementMode({
-      Mode: 3,
-      Context: "[CharacterMoveComponent.BeginWhirlpool]"
-    });
-    this.SetForceFallingSpeed(Vector_1.Vector.ZeroVector, 31862857);
-    this.gHr.Begin(t, e, i, s, h, r);
-    this.Entity.GetComponent(64).ActiveStiff(-1);
+  BeginWhirlpool(t, e, i, s, h = -1, r = 0, a = true, o = 0) {
+    if (!o || !!this.TagComponent?.HasTag(o)) {
+      this.CharacterMovement.GravityScale = 0;
+      this.Entity.GetComponent(186).SetMoveState(CharacterUnifiedStateTypes_1.ECharMoveState.KnockUp);
+      this.ActorComp?.Actor.KuroSetMovementMode({
+        Mode: 3,
+        Context: "[CharacterMoveComponent.BeginWhirlpool]"
+      });
+      if (this.ActorComp?.Actor?.CapsuleComponent) {
+        CollisionUtils_1.CollisionUtils.SetCollisionResponseToPawn(this.ActorComp.Actor.CapsuleComponent, 0, 0);
+      }
+      this.SetForceFallingSpeed(Vector_1.Vector.ZeroVector, 31862857);
+      this.gHr.Begin(t, e, i, s, h, r, a, o);
+      this.Entity.GetComponent(66).ActiveStiff(-1);
+    }
   }
-  EndWhirlpool() {
+  EndWhirlpool(t) {
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("Bullet", 20, "吸附-角色结束了", ["Entity", this.Entity.Id], ["Reason", t]);
+    }
     this.CharacterMovement.GravityScale = 2;
     this.gHr.OnEnd();
+    if (this.ActorComp?.Actor?.CapsuleComponent) {
+      CollisionUtils_1.CollisionUtils.SetCollisionResponseToPawn(this.ActorComp.Actor.CapsuleComponent, 0, 2);
+    }
     if (this.UnifiedStateComponent && this.UnifiedStateComponent.PositionState !== CharacterUnifiedStateTypes_1.ECharPositionState.Air) {
-      this.Entity.GetComponent(64).DeActiveStiff("EndWhirlpool");
+      this.Entity.GetComponent(66).DeActiveStiff("EndWhirlpool");
     }
   }
   GetWhirlpoolEnable() {
     return this.gHr.GetEnable();
+  }
+  GetWhirlpoolCancelByHit() {
+    return this.gHr.GetCancelByHit();
   }
   GetWhirlpoolId() {
     return this.gHr.GetId();
@@ -1046,5 +1102,5 @@ let CharacterMoveComponent = CharacterMoveComponent_1 = class CharacterMoveCompo
 };
 CharacterMoveComponent.E71 = true;
 CharacterMoveComponent.TempVelocity = Vector_1.Vector.Create();
-CharacterMoveComponent = CharacterMoveComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(187)], CharacterMoveComponent);
+CharacterMoveComponent = CharacterMoveComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(189)], CharacterMoveComponent);
 exports.CharacterMoveComponent = CharacterMoveComponent; //# sourceMappingURL=CharacterMoveComponent.js.map

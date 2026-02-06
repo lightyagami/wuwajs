@@ -114,7 +114,7 @@ class TsTaskFollowTarget extends TsTaskAbortImmediatelyBase_1.default {
     var e = t.AiController;
     if (e) {
       this.DelayDie(t);
-      if ((e = e.CharActorComp).Entity.CheckGetComponent(215).HasTag(-1371021686)) {
+      if ((e = e.CharActorComp).Entity.CheckGetComponent(217).HasTag(-1371021686)) {
         e.SetInputDirect(Vector_1.Vector.ZeroVector);
         this.OnClear();
       } else {
@@ -159,12 +159,12 @@ class TsTaskFollowTarget extends TsTaskAbortImmediatelyBase_1.default {
         if (this.TsIsShowCube) {
           this.DrawCube(new UE.TransformDouble(e.ActorLocation), 5, 0);
         }
-        if (r > this.TsNavigationRadius * this.TsNavigationRadius || e.Entity.CheckGetComponent(215).HasTag(498191540)) {
+        if (r > this.TsNavigationRadius * this.TsNavigationRadius || e.Entity.CheckGetComponent(217).HasTag(498191540)) {
           this.NavigationPath ||= new Array();
           this.NavigationPath.length = 0;
           if (r <= this.TsRadius * this.TsRadius) {
             ControllerHolder_1.ControllerHolder.BlackboardController.SetBooleanValueByEntity(s.CharAiDesignComp.Entity.Id, "FollowIsCanInput", true);
-            e.Entity.CheckGetComponent(184).SetMoveState(CharacterUnifiedStateTypes_1.ECharMoveState.Stand);
+            e.Entity.CheckGetComponent(186).SetMoveState(CharacterUnifiedStateTypes_1.ECharMoveState.Stand);
             this.OnClear();
             return;
           }
@@ -174,10 +174,10 @@ class TsTaskFollowTarget extends TsTaskAbortImmediatelyBase_1.default {
           }
           this.CurrentNavigationIndex = 1;
           this.NavigationEndTime = Time_1.Time.WorldTime + this.TsMaxNavigationMillisecond;
-          e.Entity.CheckGetComponent(184).SetMoveState(CharacterUnifiedStateTypes_1.ECharMoveState.Walk);
+          e.Entity.CheckGetComponent(186).SetMoveState(CharacterUnifiedStateTypes_1.ECharMoveState.Walk);
           ControllerHolder_1.ControllerHolder.BlackboardController.SetBooleanValueByEntity(s.CharAiDesignComp.Entity.Id, "FollowIsCanInput", false);
         }
-        if (r <= this.TsRadius * this.TsRadius && e.Entity.CheckGetComponent(215).HasTag(248240472)) {
+        if (r <= this.TsRadius * this.TsRadius && e.Entity.CheckGetComponent(217).HasTag(248240472)) {
           AiContollerLibrary_1.AiControllerLibrary.TurnToDirect(e, this.Source.ActorForwardProxy, this.TsStandSpeed);
         }
       } else {
@@ -216,7 +216,7 @@ class TsTaskFollowTarget extends TsTaskAbortImmediatelyBase_1.default {
     }
     let e = false;
     for (const r of this.TsTags) {
-      var h = this.Source.Entity.CheckGetComponent(215).HasTag(r?.TagId);
+      var h = this.Source.Entity.CheckGetComponent(217).HasTag(r?.TagId);
       if (this.TsIsInTag && h || !this.TsIsInTag && !h) {
         if (!this.IsHas) {
           ControllerHolder_1.ControllerHolder.BlackboardController.SetIntValueByEntity(t.AiController.CharAiDesignComp.Entity.Id, this.TsBeginTimeName, Time_1.Time.WorldTime);

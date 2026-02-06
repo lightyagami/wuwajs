@@ -60,7 +60,7 @@ let SceneItemDamageComponent = SceneItemDamageComponent_1 = class SceneItemDamag
     return true;
   }
   OnStart() {
-    this.Xln = this.Entity.GetComponent(163);
+    this.Xln = this.Entity.GetComponent(165);
     this.Xln.RegisterComponent(this, this.Lo);
     this.$dn = e => {
       this.Zln(e);
@@ -123,5 +123,5 @@ let SceneItemDamageComponent = SceneItemDamageComponent_1 = class SceneItemDamag
     return this.Qdn;
   }
 };
-SceneItemDamageComponent = SceneItemDamageComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(157)], SceneItemDamageComponent);
+SceneItemDamageComponent = SceneItemDamageComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(159)], SceneItemDamageComponent);
 exports.SceneItemDamageComponent = SceneItemDamageComponent; //# sourceMappingURL=SceneItemDamageComponent.js.map

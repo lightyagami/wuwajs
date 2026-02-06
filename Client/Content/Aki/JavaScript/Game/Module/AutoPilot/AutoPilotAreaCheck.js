@@ -21,16 +21,16 @@ class AutoPilotAreaCheck {
         if (o && !StringUtils_1.StringUtils.IsEmpty(o.EdgeWallName)) {
           const r = o.EdgeWallName + "_C";
           const i = o.MapConfigId;
-          const n = new BinItem_1.BinItem();
-          n.MapId = i;
-          n.InitCallback = () => {
-            if (n && n.BinSet && n.TestPoints) {
+          const a = new BinItem_1.BinItem();
+          a.MapId = i;
+          a.InitCallback = () => {
+            if (a && a.BinSet && a.TestPoints) {
               let e = this.$we.get(i);
               if (!e) {
-                e = new Set();
+                e = new Map();
                 this.$we.set(i, e);
               }
-              e.add(n);
+              e.set(t, a);
               if (Log_1.Log.CheckInfo()) {
                 Log_1.Log.Info("AutoPilot", 87, "BinMap添加边界", ["Path", r]);
               }
@@ -38,7 +38,7 @@ class AutoPilotAreaCheck {
               Log_1.Log.Info("AutoPilot", 87, "BinMap添加边界出错", ["Path", r]);
             }
           };
-          n.Init(r);
+          a.Init(r);
         }
       }
     } else if (Log_1.Log.CheckInfo()) {
@@ -48,13 +48,13 @@ class AutoPilotAreaCheck {
   BinTest(e, o) {
     o = this.$we.get(o);
     if (o) {
-      for (const t of o) {
-        if (t.BinTest(e)) {
-          return true;
+      for (var [t, r] of o) {
+        if (r.BinTest(e)) {
+          return t;
         }
       }
     }
-    return false;
+    return 0;
   }
   Clear() {
     this.$we.clear();

@@ -32,7 +32,7 @@ class ClickCardSkillOperation extends NpcAiOperation_1.NpcAiOperation {
         await a.OpponentArea.HandArea.RefreshHandCardNum(this.Info.Hg1);
       }
       e = ModelManager_1.ModelManager.PhantomArenaBattleModel.OpponentData.FightId;
-      ModelManager_1.ModelManager.PhantomArenaBattleModel.BuffEffectData.PushBuffEffectDataByNpc(e, this.Info, 29772, false);
+      ModelManager_1.ModelManager.PhantomArenaBattleModel.BuffEffectData.PushBuffEffectDataByNpc(e, this.Info, 24412, false);
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("PhantomArena", 10, "执行点击技能附带效果", ["CardId", this.Info.uC1]);
       }

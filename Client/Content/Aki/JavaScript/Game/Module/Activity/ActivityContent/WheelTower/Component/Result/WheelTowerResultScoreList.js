@@ -14,19 +14,19 @@ const WheelTowerScoreItem_1 = require("../WheelTowerScoreItem");
 class WheelTowerResultScoreList extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this._tf = undefined;
-    this.utf = () => new ScoreInfoItem();
+    this.Crf = undefined;
+    this.prf = () => new ScoreInfoItem();
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem]];
   }
   OnStart() {
-    this._tf = new GenericLayout_1.GenericLayout(this.RootItem.GetOwner().GetComponentByClass(UE.UIVerticalLayout.StaticClass()), this.utf, undefined);
+    this.Crf = new GenericLayout_1.GenericLayout(this.RootItem.GetOwner().GetComponentByClass(UE.UIVerticalLayout.StaticClass()), this.prf, undefined);
   }
   Refresh(e, r) {
     this.SetUiActive(true);
     var t = ModelManager_1.ModelManager.WheelTowerModel;
-    this._tf?.RefreshByData([{
+    this.Crf?.RefreshByData([{
       Desc: "WheelBattleResult_CurTotalScore",
       Score: e.toString(),
       ScoreLevel: t.GetTotalScoreLevel(e)

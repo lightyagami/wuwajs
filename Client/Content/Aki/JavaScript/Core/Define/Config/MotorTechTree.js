@@ -31,6 +31,9 @@ class MotorTechTree {
   get Icon() {
     return this.icon();
   }
+  get Icon512() {
+    return this.icon512();
+  }
   __init(t, i) {
     this.z7 = t;
     this.J7 = i;
@@ -89,6 +92,14 @@ class MotorTechTree {
   }
   icon(t) {
     var i = this.J7.__offset(this.z7, 16);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
+  icon512(t) {
+    var i = this.J7.__offset(this.z7, 18);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);

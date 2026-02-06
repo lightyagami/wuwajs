@@ -39,7 +39,7 @@ let RbFloorComponent = class RbFloorComponent extends RbBaseComponent_1.RbBaseCo
       }
       return false;
     }
-    var e = this.EIe?.RbFloorInfo?.idf;
+    var e = this.EIe?.RbFloorInfo?.Zmf;
     if (e) {
       for (const o of e) {
         this.OccupiedCellIndex.push(new SceneItemJigsawBaseComponent_1.JigsawIndex(o.iPs, o.rPs));
@@ -48,5 +48,5 @@ let RbFloorComponent = class RbFloorComponent extends RbBaseComponent_1.RbBaseCo
     return true;
   }
 };
-RbFloorComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(330)], RbFloorComponent);
+RbFloorComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(332)], RbFloorComponent);
 exports.RbFloorComponent = RbFloorComponent; //# sourceMappingURL=RbFloorComponent.js.map

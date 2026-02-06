@@ -56,7 +56,7 @@ class PhantomArenaNewDeckBuilderTabView extends PhantomArenaChildViewBase_1.Phan
     this.ShowLockedSwitchItem = undefined;
     this.CardFilterEntrance = undefined;
     this.DeckSlotsPanel = undefined;
-    this.imf = undefined;
+    this.Sgf = undefined;
     this.jV1 = e => {
       var t = {
         CurCardId: e,
@@ -67,7 +67,7 @@ class PhantomArenaNewDeckBuilderTabView extends PhantomArenaChildViewBase_1.Phan
         CurCardIndex: this.AllPageCardDataList.findIndex(t => t.CardId === e),
         CurrencyId: ModelManager_1.ModelManager.PhantomArenaModel.GetDustItemId(this.ActivityId),
         SelectedTabIndex: 0,
-        NeedOutlookTab: true
+        NeedOutlookTab: false
       };
       UiManager_1.UiManager.OpenView("DeckBuilderCardInfoView", t);
     };
@@ -90,7 +90,7 @@ class PhantomArenaNewDeckBuilderTabView extends PhantomArenaChildViewBase_1.Phan
             CardType: i.CardType
           };
           if ((t = this.DeckInfo.AddCard(t)) === 0) {
-            PhantomArenaController_1.PhantomArenaController.RequestCheckCardSkillUnlock(this.DeckInfo, this.iKm);
+            PhantomArenaController_1.PhantomArenaController.RequestCheckCardSkillUnlock(this.DeckInfo, this.EYm);
             s = this.LibraryCardDataMap.get(i.CardId);
             h = this.DeckInfo.GetCardCount(i.CardId);
             s.LeftCount = s.MaxCount - h;
@@ -121,7 +121,7 @@ class PhantomArenaNewDeckBuilderTabView extends PhantomArenaChildViewBase_1.Phan
           CardId: t,
           RemoveCount: e
         })) {
-          PhantomArenaController_1.PhantomArenaController.RequestCheckCardSkillUnlock(this.DeckInfo, this.iKm);
+          PhantomArenaController_1.PhantomArenaController.RequestCheckCardSkillUnlock(this.DeckInfo, this.EYm);
           e = this.LibraryCardDataMap.get(t);
           t = this.DeckInfo.GetCardCount(t);
           e.LeftCount = e.MaxCount - t;
@@ -150,7 +150,7 @@ class PhantomArenaNewDeckBuilderTabView extends PhantomArenaChildViewBase_1.Phan
       this.JV1();
       this.RefreshFullTip();
     };
-    this.iKm = t => {
+    this.EYm = t => {
       this.DeckSlotsPanel?.RefreshFieldCardEffectUnlock(t);
     };
     this.ZV1 = () => {
@@ -169,21 +169,21 @@ class PhantomArenaNewDeckBuilderTabView extends PhantomArenaChildViewBase_1.Phan
         this.RemoveCardSlotByCardId(t.CardId);
       }
     };
-    this.oKm = t => {
+    this.TYm = t => {
       t = t.GetData();
       if (t) {
         PhantomArenaController_1.PhantomArenaController.OpenDeckBuilderCardInfoViewWithoutOutlookTab(t.CardId);
       }
     };
     this.i61 = t => false;
-    this.XQm = t => false;
+    this.gYm = t => false;
     this.ibu = t => {
       t = t.GetData();
       if (t) {
         this.RemoveCardSlotByCardId(t.CardId);
       }
     };
-    this.bXm = t => {
+    this.Nzm = t => {
       var t = t.GetData();
       if (t) {
         t = {
@@ -197,13 +197,13 @@ class PhantomArenaNewDeckBuilderTabView extends PhantomArenaChildViewBase_1.Phan
         UiManager_1.UiManager.OpenView("DeckBuilderCardInfoView", t);
       }
     };
-    this.RXm = (t, e) => {
+    this.Vzm = (t, e) => {
       var i;
       if (e === -1 || ((i = this.GetItem(16)).bIsUIActive || (this.T7i(), i.SetUIActive(true)), this.GetSprite(17)?.SetFillAmount(e), e >= 1)) {
-        this.bXm(t);
+        this.Nzm(t);
       }
     };
-    this.wXm = () => {
+    this.Hzm = () => {
       this.GetItem(16)?.SetUIActive(false);
     };
     this.KTu = t => false;
@@ -345,19 +345,19 @@ class PhantomArenaNewDeckBuilderTabView extends PhantomArenaChildViewBase_1.Phan
         }
       }, this.DeckInfo?.GetName() ?? "");
     };
-    this.rmf = t => {
-      if (this.imf) {
-        this.imf.IsMouseInSlotItem = true;
-        this.imf.RefreshCard(t, this.DeckInfo);
-        this.imf.SetUiActive(true);
+    this.Mgf = t => {
+      if (this.Sgf) {
+        this.Sgf.IsMouseInSlotItem = true;
+        this.Sgf.RefreshCard(t, this.DeckInfo);
+        this.Sgf.SetUiActive(true);
       }
     };
-    this.omf = () => {
-      if (this.imf) {
-        this.imf.IsMouseInSlotItem = false;
+    this.Egf = () => {
+      if (this.Sgf) {
+        this.Sgf.IsMouseInSlotItem = false;
         TimerSystem_1.GameplayTimerSystem.Delay(() => {
-          if (this.imf) {
-            this.imf.AddTimer();
+          if (this.Sgf) {
+            this.Sgf.AddTimer();
           }
         }, 500);
       }
@@ -395,8 +395,8 @@ class PhantomArenaNewDeckBuilderTabView extends PhantomArenaChildViewBase_1.Phan
     this.CardLayout = new GenericLayout_1.GenericLayout(this.GetLayoutBase(2), this.Y5i, undefined, true, false);
     this.CardFilterEntrance = new DeckBuilderSortFilterEntrance_1.DeckBuilderSortFilterEntrance(true);
     this.DeckSlotsPanel = new DeckBuilderDeckSlotsPanel_1.DeckBuilderDeckSlotsPanel();
-    this.imf = new DeckBuilderCardDetailTip_1.DeckBuilderCardDetailTip();
-    await Promise.all([this.NV1.RefreshByDataAsync(this.TabDataList), this.CardFilterEntrance.CreateThenShowByActorAsync(this.GetItem(4).GetOwner()), this.DeckSlotsPanel.CreateThenShowByActorAsync(this.GetItem(11).GetOwner()), this.imf.CreateByResourceIdAsync("NewPnlCardTips", this.GetItem(18))]);
+    this.Sgf = new DeckBuilderCardDetailTip_1.DeckBuilderCardDetailTip();
+    await Promise.all([this.NV1.RefreshByDataAsync(this.TabDataList), this.CardFilterEntrance.CreateThenShowByActorAsync(this.GetItem(4).GetOwner()), this.DeckSlotsPanel.CreateThenShowByActorAsync(this.GetItem(11).GetOwner()), this.Sgf.CreateByResourceIdAsync("NewPnlCardTips", this.GetItem(18))]);
     this.CardFilterEntrance.OnResultCallBack = this._61;
   }
   OnAddEventListener() {
@@ -579,16 +579,16 @@ class PhantomArenaNewDeckBuilderTabView extends PhantomArenaChildViewBase_1.Phan
       SlotLongPressStartTime: ConfigManager_1.ConfigManager.PhantomArenaConfig.GetSlotLongPressStartTime(this.ActivityId),
       SlotLongPressEndTime: ConfigManager_1.ConfigManager.PhantomArenaConfig.GetSlotLongPressEndTime(this.ActivityId),
       OnCoreSlotItemSortClick: this.ibu,
-      OnCoreSlotItemLongPress: this.RXm,
+      OnCoreSlotItemLongPress: this.Vzm,
       CanCoreSlotItemToggleChange: this.KTu,
       OnNormalSlotItemSortClick: this.t61,
-      OnNormalSlotItemLongPress: this.RXm,
+      OnNormalSlotItemLongPress: this.Vzm,
       CanNormalSlotItemToggleChange: this.i61,
-      CanFieldSlotItemToggleChange: this.XQm,
-      OnFieldCardItemEffectBtnClick: this.oKm,
-      OnSlotItemLongPressEnd: this.wXm,
-      OnSlotCardPointEnterCallback: this.rmf,
-      OnSlotCardPointExitCallback: this.omf,
+      CanFieldSlotItemToggleChange: this.gYm,
+      OnFieldCardItemEffectBtnClick: this.TYm,
+      OnSlotItemLongPressEnd: this.Hzm,
+      OnSlotCardPointEnterCallback: this.Mgf,
+      OnSlotCardPointExitCallback: this.Egf,
       SortContext: {
         SortType: this.CurSlotSortType,
         IsAscending: this.IsAscending
@@ -706,7 +706,7 @@ class PhantomArenaNewDeckBuilderTabView extends PhantomArenaChildViewBase_1.Phan
       }
     }
     if (this.DeckInfo) {
-      PhantomArenaController_1.PhantomArenaController.RequestCheckCardSkillUnlock(this.DeckInfo, this.iKm);
+      PhantomArenaController_1.PhantomArenaController.RequestCheckCardSkillUnlock(this.DeckInfo, this.EYm);
     }
     this.p61();
     this.Fau();

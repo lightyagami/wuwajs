@@ -1,16 +1,16 @@
 "use strict";
 
 var CharacterManipulateInteractComponent_1;
-var __decorate = this && this.__decorate || function (t, e, i, a) {
-  var r;
+var __decorate = this && this.__decorate || function (t, e, i, r) {
+  var a;
   var s = arguments.length;
-  var n = s < 3 ? e : a === null ? a = Object.getOwnPropertyDescriptor(e, i) : a;
+  var n = s < 3 ? e : r === null ? r = Object.getOwnPropertyDescriptor(e, i) : r;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    n = Reflect.decorate(t, e, i, a);
+    n = Reflect.decorate(t, e, i, r);
   } else {
-    for (var o = t.length - 1; o >= 0; o--) {
-      if (r = t[o]) {
-        n = (s < 3 ? r(n) : s > 3 ? r(e, i, n) : r(e, i)) || n;
+    for (var h = t.length - 1; h >= 0; h--) {
+      if (a = t[h]) {
+        n = (s < 3 ? a(n) : s > 3 ? a(e, i, n) : a(e, i)) || n;
       }
     }
   }
@@ -72,9 +72,14 @@ let CharacterManipulateInteractComponent = CharacterManipulateInteractComponent_
     this.erl = undefined;
     this.trl = undefined;
     this.a7r = () => {
+      var t;
       if (ModelManager_1.ModelManager.RouletteModel.CurrentExploreSkillId === MANIPULATE_VISION_ID) {
         if (this.rrn) {
           this.lHr(true, "控物技能切换结束，加上对应的Tag");
+        }
+      } else if ((t = ModelManager_1.ModelManager.RouletteModel.OnSettingExploreSkillIdList)[t.length - 1] === MANIPULATE_VISION_ID) {
+        if (Log_1.Log.CheckDebug()) {
+          Log_1.Log.Debug("Character", 48, "请求切换控物中忽略目标清除");
         }
       } else {
         this.hHr = undefined;
@@ -115,10 +120,10 @@ let CharacterManipulateInteractComponent = CharacterManipulateInteractComponent_
     }
     if (this.Y7r !== t || this.Z7r !== this.z7r) {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnManipulateSwitchToNewTarget, t !== undefined && this.z7r, t?.Entity, false);
-      this.Y7r?.ChangeManipulateInteractPointState(0);
+      this.Y7r?.TryChangeManipulateInteractPointState(0);
       this.Y7r = t;
       this.Z7r = this.z7r;
-      this.Y7r?.ChangeManipulateInteractPointState(this.z7r ? 1 : 2);
+      this.Y7r?.TryChangeManipulateInteractPointState(this.z7r ? 1 : 2);
       if (t !== undefined && this.z7r) {
         this.lHr(false, "搜索到新的目标，清除掉当前Tag", false);
       }
@@ -136,8 +141,8 @@ let CharacterManipulateInteractComponent = CharacterManipulateInteractComponent_
   }
   OnStart() {
     this.Hte = this.Entity.GetComponent(3);
-    this.Lie = this.Entity.GetComponent(215);
-    this.$zo = this.Entity.GetComponent(183);
+    this.Lie = this.Entity.GetComponent(217);
+    this.$zo = this.Entity.GetComponent(185);
     this.EIe = this.Entity.GetComponent(0);
     this.gri = CameraController_1.CameraController.FightCamera.GetComponent(5);
     this.tat = CommonParamById_1.configCommonParamById.GetStringConfig("ManipulateInteractEffectPath");
@@ -172,7 +177,7 @@ let CharacterManipulateInteractComponent = CharacterManipulateInteractComponent_
       var i = new Set();
       for (const n of this.Bbn.InRangePoints) {
         if (n.Valid) {
-          if (!n.IsLocked) {
+          if (!n.IsLocked && !n.IsForbidden) {
             if (n.CheckCondition()) {
               if (this.x1h(n.MatchRoleOption) && n.TypeSpecialCheck()) {
                 this.$7r.add(n);
@@ -185,25 +190,25 @@ let CharacterManipulateInteractComponent = CharacterManipulateInteractComponent_
           i.add(n);
         }
       }
-      for (const o of i) {
-        this.Bbn.InRangePoints.delete(o);
+      for (const h of i) {
+        this.Bbn.InRangePoints.delete(h);
       }
-      var a;
-      var r = this.Hte.ActorLocationProxy;
+      var r;
+      var a = this.Hte.ActorLocationProxy;
       let t = -MathUtils_1.MathUtils.MaxFloat;
       let e = undefined;
-      for (const h of this.$7r) {
-        var s = h.GetLockWeight(r);
+      for (const o of this.$7r) {
+        var s = o.GetLockWeight(a);
         if (s > t) {
           t = s;
-          e = h;
+          e = o;
         }
       }
       if (e = t === -MathUtils_1.MathUtils.MaxFloat ? undefined : e) {
         if (this.ProjectWorldLocationToScreenPosition(e.Location)) {
           TraceElementCommon_1.TraceElementCommon.SetEndLocation(this.bsr, e.Location.ToUeVectorOld());
-          a = TraceElementCommon_1.TraceElementCommon.SphereTrace(this.bsr, PROFILE_KEY);
-          if (e.CheckTraceResult(a, this.bsr)) {
+          r = TraceElementCommon_1.TraceElementCommon.SphereTrace(this.bsr, PROFILE_KEY);
+          if (e.CheckTraceResult(r, this.bsr)) {
             this.z7r = false;
           }
           this.hHr = e;
@@ -283,18 +288,18 @@ let CharacterManipulateInteractComponent = CharacterManipulateInteractComponent_
     }
   }
   lHr(t, e, i = true) {
-    var a;
+    var r;
     if (this.trl || this.erl) {
-      a = this.trl ?? this.erl;
+      r = this.trl ?? this.erl;
       if (t) {
-        if (!this.Lie.HasTag(a)) {
-          this.Lie.AddTag(a);
+        if (!this.Lie.HasTag(r)) {
+          this.Lie.AddTag(r);
           if (Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("Temp", 31, "AddOrRemoveMarkingTag", ["MarkTagId", this.trl ? GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(this.trl) : "undefined"], ["PervTagId", this.erl ? GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(this.erl) : "undefined"], ["Reason", e], ["isAdd", t]);
           }
         }
       } else {
-        if (this.Lie.HasTag(a) && (this.Lie.RemoveTag(a), Log_1.Log.CheckInfo())) {
+        if (this.Lie.HasTag(r) && (this.Lie.RemoveTag(r), Log_1.Log.CheckInfo())) {
           Log_1.Log.Info("Temp", 31, "AddOrRemoveMarkingTag", ["MarkTagId", this.trl ? GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(this.trl) : "undefined"], ["PervTagId", this.erl ? GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(this.erl) : "undefined"], ["Reason", e], ["isAdd", t]);
         }
         if (i && this.trl !== undefined && (this.trl = undefined, Log_1.Log.CheckInfo())) {
@@ -310,31 +315,13 @@ let CharacterManipulateInteractComponent = CharacterManipulateInteractComponent_
     return true;
   }
   StartPullGiantInteract() {
-    if (this.Y7r?.Type !== IComponent_1.EExploreSkillInteractType.PullGiant) {
-      if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("Character", 31, "[CharacterManipulateInteractComponent.StartPullGiantInteract] 当前选中目标的类型非拉取巨物");
-      }
-      return false;
-    }
-    if (!this.Z7r) {
-      return false;
-    }
-    if (!this.nHr?.Valid && !this.Y7r?.Valid) {
-      if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("Character", 31, "[CharacterManipulateInteractComponent.StartPullGiantInteract] 当前没有选中任何目标");
-      }
-      return false;
-    }
-    if (this.oHr) {
-      if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("Character", 31, "[CharacterManipulateInteractComponent.StartInteract] 当前角色已经在拉取巨物中");
-      }
+    if (!this.jMf(IComponent_1.EExploreSkillInteractType.PullGiant)) {
       return false;
     }
     this.J7r = this.nHr ?? this.Y7r;
     this.oHr = true;
     this.Lie.AddTag(-1408007765);
-    this.J7r?.ChangeManipulateInteractPointState(3);
+    this.J7r?.TryChangeManipulateInteractPointState(3);
     var t = this.Hte.CreatureData.GetRoleConfig().RoleBody;
     this.iHr = t === "MaleXL" ? CharacterBuffIds_1.buffId.ManipulateInteractBuffIdMaleX : CharacterBuffIds_1.buffId.ManipulateInteractBuffId;
     this.$zo.AddBuff(this.iHr, {
@@ -356,34 +343,16 @@ let CharacterManipulateInteractComponent = CharacterManipulateInteractComponent_
         }
       }, 200);
     }
-    this.J7r?.ChangeManipulateInteractPointState(0);
-    this.CHr();
+    this.J7r?.TryChangeManipulateInteractPointState(0);
+    this.cuf();
   }
   StartStatueInteract() {
     this.J7r = this.nHr ?? this.Y7r;
-    if (this.J7r?.Type !== IComponent_1.EExploreSkillInteractType.StatueInteractPoint) {
-      if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("Character", 31, "[CharacterManipulateInteractComponent.StartStatueInteract] 当前选中目标的类型非雕像交互点");
-      }
-      return false;
-    }
-    if (!this.Z7r) {
-      return false;
-    }
-    if (!this.nHr?.Valid && !this.Y7r?.Valid) {
-      if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("Character", 31, "[CharacterManipulateInteractComponent.StartStatueInteract] 当前没有选中任何目标");
-      }
-      return false;
-    }
-    if (this.oHr) {
-      if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("Character", 31, "[CharacterManipulateInteractComponent.StartStatueInteract] 当前角色已经交互中");
-      }
+    if (!this.jMf(IComponent_1.EExploreSkillInteractType.StatueInteractPoint)) {
       return false;
     }
     this.oHr = true;
-    this.J7r?.ChangeManipulateInteractPointState(3);
+    this.J7r?.TryChangeManipulateInteractPointState(3);
     var t = this.Hte.CreatureData.GetRoleConfig().RoleBody;
     this.iHr = t === "MaleXL" ? CharacterBuffIds_1.buffId.ManipulateInteractBuffIdMaleX : CharacterBuffIds_1.buffId.ManipulateInteractBuffId;
     this.$zo.AddBuff(this.iHr, {
@@ -403,24 +372,33 @@ let CharacterManipulateInteractComponent = CharacterManipulateInteractComponent_
         this.iHr = undefined;
       }
     }, 200);
-    t?.ChangeManipulateInteractPointState(0);
+    t?.TryChangeManipulateInteractPointState(0);
     t?.MoveToOutlet();
     this.J7r = undefined;
   }
   StartCustomInteract() {
-    if (this.Y7r?.Type !== IComponent_1.EExploreSkillInteractType.Custom) {
-      if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("Character", 31, "[CharacterManipulateInteractComponent.StartCustomInteract] 当前选中目标的类型非自定义交互点");
-      }
-      return false;
-    } else {
-      return !!this.Z7r && !(this.nHr?.Valid || this.Y7r?.Valid ? this.oHr ? (Log_1.Log.CheckError() && Log_1.Log.Error("Character", 31, "[CharacterManipulateInteractComponent.StartCustomInteract] 当前角色已经交互中"), 1) : (this.J7r = this.nHr ?? this.Y7r, this.oHr = true, this.J7r?.ChangeManipulateInteractPointState(3), 0) : (Log_1.Log.CheckError() && Log_1.Log.Error("Character", 31, "[CharacterManipulateInteractComponent.StartCustomInteract] 当前没有选中任何目标"), 1));
-    }
+    return !!this.jMf(IComponent_1.EExploreSkillInteractType.Custom) && (this.J7r = this.nHr ?? this.Y7r, this.oHr = true, this.J7r?.TryChangeManipulateInteractPointState(3), true);
   }
   EndCustomInteract() {
     this.oHr = false;
-    this.J7r?.ChangeManipulateInteractPointState(0);
-    this.Bpl();
+    this.J7r?.TryChangeManipulateInteractPointState(0);
+    this.cuf();
+  }
+  QuantumDiffusionInteract() {
+    if (this.jMf(IComponent_1.EExploreSkillInteractType.QuantumDiffusion)) {
+      this.J7r = this.nHr ?? this.Y7r;
+      this.cuf();
+    }
+  }
+  jMf(t) {
+    if (this.Y7r?.Type !== t) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Character", 48, "[CheckInteractTarget] 当前选中目标类型不匹配");
+      }
+      return false;
+    } else {
+      return !!this.Z7r && !(this.nHr?.Valid || this.Y7r?.Valid ? this.oHr && (Log_1.Log.CheckError() && Log_1.Log.Error("Character", 48, "[CheckInteractTarget] 当前角色已经在交互中"), 1) : (Log_1.Log.CheckError() && Log_1.Log.Error("Character", 48, "[CheckInteractTarget] 当前没有选中任何目标"), 1));
+    }
   }
   NQt() {
     var t;
@@ -430,39 +408,20 @@ let CharacterManipulateInteractComponent = CharacterManipulateInteractComponent_
       EffectSystem_1.EffectSystem.SpawnEffect(GlobalData_1.GlobalData.World, e, this.tat, "[CharacterManipulateInteractComponent.SpawnEffect]", new EffectContext_1.EffectContext(this.Entity.Id));
     }
   }
-  CHr() {
+  cuf() {
     var t;
     var e = this.J7r?.CreatureDataId;
     if (e !== undefined) {
       if (!(t = this.J7r?.InteractActions) || t.length <= 0) {
         if (Log_1.Log.CheckWarn()) {
-          Log_1.Log.Warn("SceneItem", 31, "[CharacterManipulateInteractComponent.RequestStartAction]请求执行的行为组为空", ["PbDataId", this.J7r?.Entity.GetComponent(0)?.GetPbDataId()]);
+          Log_1.Log.Warn("SceneItem", 31, "[CharacterManipulateInteractComponent]请求执行的行为组为空", ["PbDataId", this.J7r?.Entity.GetComponent(0)?.GetPbDataId()]);
         }
       } else {
-        (t = Protocol_1.Aki.Protocol.Mts.create()).F4n = MathUtils_1.MathUtils.NumberToLong(e);
-        Net_1.Net.Call(17926, t, t => {
+        (t = Protocol_1.Aki.Protocol.Ghf.create()).F4n = MathUtils_1.MathUtils.NumberToLong(e);
+        Net_1.Net.Call(23031, t, t => {
           this.J7r = undefined;
           if (t.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Cvs, 20666);
-          }
-        });
-      }
-    }
-  }
-  Bpl() {
-    var t;
-    var e = this.J7r?.CreatureDataId;
-    if (e !== undefined) {
-      if (!(t = this.J7r?.InteractActions) || t.length <= 0) {
-        if (Log_1.Log.CheckWarn()) {
-          Log_1.Log.Warn("SceneItem", 31, "[CharacterManipulateInteractComponent.RequestStartCustomInteractAction]请求执行的行为组为空", ["PbDataId", this.J7r?.Entity.GetComponent(0)?.GetPbDataId()]);
-        }
-      } else {
-        (t = Protocol_1.Aki.Protocol.Dg_.create()).F4n = MathUtils_1.MathUtils.NumberToLong(e);
-        Net_1.Net.Call(22456, t, t => {
-          this.J7r = undefined;
-          if (t.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Cvs, 26359);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Cvs, 28872);
           }
         });
       }
@@ -483,7 +442,7 @@ let CharacterManipulateInteractComponent = CharacterManipulateInteractComponent_
     this.Y7r = undefined;
   }
   SetDataFromOldRole(t) {
-    t = t.Entity.GetComponent(69);
+    t = t.Entity.GetComponent(71);
     this.hHr = t.hHr;
     this.lHr(true, "切换角色时继承目标并加上Tag");
   }
@@ -496,5 +455,5 @@ let CharacterManipulateInteractComponent = CharacterManipulateInteractComponent_
   }
 };
 CharacterManipulateInteractComponent.dHr = false;
-CharacterManipulateInteractComponent = CharacterManipulateInteractComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(69)], CharacterManipulateInteractComponent);
+CharacterManipulateInteractComponent = CharacterManipulateInteractComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(71)], CharacterManipulateInteractComponent);
 exports.CharacterManipulateInteractComponent = CharacterManipulateInteractComponent; //# sourceMappingURL=CharacterManipulateInteractComponent.js.map

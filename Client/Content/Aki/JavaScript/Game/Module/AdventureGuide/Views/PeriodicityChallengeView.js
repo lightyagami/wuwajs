@@ -5,8 +5,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.PeriodicityChallengeView = undefined;
 const UE = require("ue");
+const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const TimeUtil_1 = require("../../../Common/TimeUtil");
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
@@ -46,8 +48,7 @@ class PeriodicityChallengeView extends UiTabViewBase_1.UiTabViewBase {
       }
       i = ConfigManager_1.ConfigManager.AdventureModuleConfig.GetSecondaryGuideDataConf(this.a8e);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.AdventureHelpBtn, i.HelpGroupId);
-      e = ModelManager_1.ModelManager.AdventureGuideModel.GetCanShowDungeonRecordsByType(this.a8e)[1];
-      this.$am?.RefreshByData(this.e1m(e));
+      this.sLg();
       if (this._8e?.GetCurrentSequence()) {
         this._8e?.ReplaySequenceByKey("Switch");
       } else {
@@ -55,9 +56,46 @@ class PeriodicityChallengeView extends UiTabViewBase_1.UiTabViewBase {
       }
     };
     this.Kam = e => this.a8e !== e;
+    this.GOe = undefined;
+    this.kOe = e => {
+      this.aLg();
+      this.sLg();
+    };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UILoopScrollViewComponent], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIScrollViewWithScrollbarComponent], [4, UE.UIItem], [5, UE.UIItem]];
+  }
+  sLg() {
+    var e = ModelManager_1.ModelManager.AdventureGuideModel.GetCanShowDungeonRecordsByType(this.a8e)[1];
+    this.$am?.RefreshByData(this.e1m(e));
+  }
+  aLg() {
+    this.$8i = this.ExtraParams;
+    var e = this.$8i;
+    var e = e?.OpenTabViewName === "PeriodicityChallengeView" ? Number(e?.OpenParam) : this.a8e;
+    var i = this.TDg();
+    let t = 0;
+    if (e !== undefined) {
+      if ((e = this.s8e.indexOf(Number(e))) < i.length) {
+        t = e;
+      } else {
+        this.a8e = this.s8e[0];
+      }
+    }
+    this.r8e.RefreshByData(i, undefined, () => {
+      this.r8e.UnsafeGetGridProxy(t)?.OnlySetSelectToggle(1);
+    });
+  }
+  TDg() {
+    var i = this.s8e.length;
+    var t = new Array();
+    for (let e = 0; e < i; e++) {
+      var r = ModelManager_1.ModelManager.WeeklyRogueModel.CycleId;
+      if (this.s8e[e] !== 29 || r !== 0) {
+        t.push(this.s8e[e]);
+      }
+    }
+    return t;
   }
   e1m(e) {
     var i;
@@ -88,21 +126,21 @@ class PeriodicityChallengeView extends UiTabViewBase_1.UiTabViewBase {
       }
       for (let e = 0; e < i.length; e++) {
         var s;
-        var o;
-        var n = {
+        var h;
+        var o = {
           Data: i[e],
           Title: i[e].Conf.DetectionTitlePanel > 0 && e < 1
         };
         if (this.a8e === 29) {
-          s = (o = ModelManager_1.ModelManager.WeeklyRogueModel.ActivityDataNew).FreeCount;
-          o = o.FreeCountMax;
-          n.TopTips = {
+          s = (h = ModelManager_1.ModelManager.WeeklyRogueModel.ActivityDataNew).FreeCount;
+          h = h.FreeCountMax;
+          o.TopTips = {
             TitleTips: "Text_WeeklyRogue_FreeTime_Title",
             Args: [],
-            TxtNum: s + "/" + o
+            TxtNum: s + "/" + h
           };
         }
-        t.push(n);
+        t.push(o);
       }
     }
     return t;
@@ -117,6 +155,7 @@ class PeriodicityChallengeView extends UiTabViewBase_1.UiTabViewBase {
     this.s8e = e;
     this.l8e = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
     this._8e = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
+    this.Erg();
   }
   OnBeforeShow() {
     this.$8i = this.ExtraParams;
@@ -126,15 +165,8 @@ class PeriodicityChallengeView extends UiTabViewBase_1.UiTabViewBase {
     if (e !== undefined && (e = this.s8e.indexOf(Number(e))) >= 0) {
       i = e;
     }
-    var t = this.s8e.length;
-    var r = new Array();
-    for (let e = 0; e < t; e++) {
-      var s = ModelManager_1.ModelManager.WeeklyRogueModel.CycleId;
-      if (this.s8e[e] !== 29 || s !== 0) {
-        r.push(this.s8e[e]);
-      }
-    }
-    this.r8e.RefreshByData(r, undefined, () => {
+    e = this.TDg();
+    this.r8e.RefreshByData(e, undefined, () => {
       this.r8e.SelectGridProxy(i, false);
       this.r8e.ScrollToGridIndex(i);
       this.r8e.UnsafeGetGridProxy(i)?.SetSelectToggle();
@@ -146,6 +178,20 @@ class PeriodicityChallengeView extends UiTabViewBase_1.UiTabViewBase {
     this.l8e = undefined;
     this._8e?.Clear();
     this._8e = undefined;
+    this.Irg();
+  }
+  Erg() {
+    return !this.GOe && (this.kot(), true);
+  }
+  Irg() {
+    return !!this.GOe && (this.xHe(), true);
+  }
+  kot() {
+    this.GOe = TimerSystem_1.GameplayTimerSystem.Forever(this.kOe, TimeUtil_1.TimeUtil.InverseMillisecond, undefined, undefined);
+  }
+  xHe() {
+    TimerSystem_1.GameplayTimerSystem.Remove(this.GOe);
+    this.GOe = undefined;
   }
 }
 exports.PeriodicityChallengeView = PeriodicityChallengeView;

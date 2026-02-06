@@ -4,7 +4,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.RoleSkinBirthday = undefined;
-const GameUtils_1 = require("../../../Game/GameUtils");
 class RoleSkinBirthday {
   constructor() {
     this.J7 = null;
@@ -12,9 +11,6 @@ class RoleSkinBirthday {
   }
   get Id() {
     return this.id();
-  }
-  get RolePortrait() {
-    return this.roleportrait();
   }
   __init(t, i) {
     this.z7 = t;
@@ -31,14 +27,6 @@ class RoleSkinBirthday {
     } else {
       return 0;
     }
-  }
-  roleportrait(t) {
-    var i = this.J7.__offset(this.z7, 6);
-    var i = i ? this.J7.__string(this.z7 + i, t) : null;
-    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(i);
-    }
-    return i;
   }
 }
 exports.RoleSkinBirthday = RoleSkinBirthday;

@@ -10,17 +10,17 @@ const ConfigMarkItemView_1 = require("./ConfigMarkItemView");
 class InfrRoadMarkItemView extends ConfigMarkItemView_1.ConfigMarkItemView {
   constructor(e) {
     super(e);
-    this.u$f = () => {
+    this.Prg = () => {
       this.Holder.UpdateGamePlayState();
       this.MarkItemTopRightIconHandle.Update();
       this.MarkItemTopRightIconHandle.ApplyModified();
     };
   }
   RegisterEvents() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InfrastructureRoadDataUpdate, this.u$f);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InfrastructureRoadDataUpdate, this.Prg);
   }
   UnRegisterEvents() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InfrastructureRoadDataUpdate, this.u$f);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InfrastructureRoadDataUpdate, this.Prg);
   }
 }
 exports.InfrRoadMarkItemView = InfrRoadMarkItemView;

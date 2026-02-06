@@ -24,6 +24,7 @@ class BattleCardComponent extends CardComponentBase_1.CardComponentBase {
     this.CardClickCallback = undefined;
     this.aho = undefined;
     this.Sequence = undefined;
+    this.RootUiSequencePlayer = undefined;
     this.Data = undefined;
     this.LoopEffectItem = undefined;
     this.EffectItem = undefined;

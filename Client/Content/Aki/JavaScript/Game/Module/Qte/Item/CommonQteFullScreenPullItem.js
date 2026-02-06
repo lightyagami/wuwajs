@@ -37,7 +37,7 @@ class CommonQteFullScreenPullItem extends CommonQteItemBase_1.CommonQteItemBase 
     this.Wad = false;
     this.Qad = false;
     this.bzt = false;
-    this.oqm = false;
+    this.yOm = false;
     this.lqt = (t, i) => {
       if (!Info_1.Info.IsInGamepad()) {
         this.glm.Reset();
@@ -153,7 +153,7 @@ class CommonQteFullScreenPullItem extends CommonQteItemBase_1.CommonQteItemBase 
           this.DSm = 1;
         }
         this.aXa = i.LerpSpeed / CommonDefine_1.MILLIONSECOND_PER_SECOND;
-        this.oqm = i.CheckByRealTimeInput;
+        this.yOm = i.CheckByRealTimeInput;
       }
       this.SetQteActive(t);
     }
@@ -273,7 +273,7 @@ class CommonQteFullScreenPullItem extends CommonQteItemBase_1.CommonQteItemBase 
           }
           this.PSm = MathUtils_1.MathUtils.Clamp(this.PSm, 0, this.DZu);
           this.fS1.SetDraggingInfo(this.PSm, e);
-          if (this.oqm && this.fS1.CheckDragComplete(t, e)) {
+          if (this.yOm && this.fS1.CheckDragComplete(t, e)) {
             this.fS1.IsPreSuccess = true;
           }
           if (ModelManager_1.ModelManager.CommonQteModel?.IsRefreshMode) {

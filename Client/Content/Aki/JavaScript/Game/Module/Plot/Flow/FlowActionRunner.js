@@ -131,7 +131,7 @@ class FlowActionRunner extends ControllerAssistantBase_1.ControllerAssistantBase
   GetInteractPoint() {
     let t = undefined;
     if (t = this.nx?.Context && this.nx.Context.Type === 1 ? EntitySystem_1.EntitySystem.Get(this.nx.Context.EntityId) : t) {
-      var i = t.GetComponent(207);
+      var i = t.GetComponent(209);
       if (i) {
         return i.GetInteractController()?.GetInteractPoint();
       }
@@ -140,7 +140,7 @@ class FlowActionRunner extends ControllerAssistantBase_1.ControllerAssistantBase
   GetCameraOffsetConfig() {
     let t = undefined;
     if (t = this.nx?.Context && this.nx.Context.Type === 1 ? EntitySystem_1.EntitySystem.Get(this.nx.Context.EntityId) : t) {
-      var i = t.GetComponent(207);
+      var i = t.GetComponent(209);
       if (i) {
         return i.GetInteractController()?.GetCameraOffsetConfig();
       }

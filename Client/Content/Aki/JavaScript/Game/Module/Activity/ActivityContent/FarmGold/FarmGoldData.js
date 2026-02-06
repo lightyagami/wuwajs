@@ -14,6 +14,7 @@ const ModelManager_1 = require("../../../../Manager/ModelManager");
 const ActivityData_1 = require("../../ActivityData");
 const FarmGoldController_1 = require("./FarmGoldController");
 const UNLOCKLOCALKEY = 100;
+const DIFFICULTYLOCALKEY = 101;
 class FarmGoldLevelData {
   constructor() {
     this.LOe = 0;
@@ -22,7 +23,8 @@ class FarmGoldLevelData {
     this.IsOpen = false;
     this.Owl = 0;
     this.Nwl = false;
-    this.Fwl = 0;
+    this.Fwl = undefined;
+    this.Xy = 0;
   }
   GetInstId() {
     return this.kwl;
@@ -60,29 +62,51 @@ class FarmGoldLevelData {
     return this.GetNewOpenState();
   }
   GetSelectDifficultIndex() {
-    var e = ConfigManager_1.ConfigManager.FarmGoldConfig.GetAllFarmGoldActivity();
-    for (let t = 0; t < e.length; t++) {
-      if (e[t].Id === this.Fwl) {
-        return t;
+    if (this.Fwl !== undefined) {
+      var e = ConfigManager_1.ConfigManager.FarmGoldConfig.GetFarmGoldAllDifficult();
+      for (let t = 0; t < e.length; t++) {
+        if (e[t].Id === this.Fwl) {
+          return t;
+        }
+      }
+    } else if (this.Xy > 0) {
+      var t = ModelManager_1.ModelManager.ActivityModel.GetActivityById(this.LOe).GetLevelDataByIndex(this.Xy - 1);
+      if (t) {
+        return t.GetSelectDifficultIndex();
       }
     }
     return 0;
+  }
+  SaveDifficultyState() {
+    ModelManager_1.ModelManager.ActivityModel.SaveActivityData(this.LOe, this.LOe, DIFFICULTYLOCALKEY, this.kwl, this.Fwl ?? 1);
+  }
+  y7g() {
+    var t = ModelManager_1.ModelManager.ActivityModel.GetActivityCacheData(this.LOe, 0, this.LOe, DIFFICULTYLOCALKEY, this.kwl);
+    if (t !== 0) {
+      this.Fwl = t;
+    }
   }
   GetInstanceBg() {
     return this.GetInstanceConfig().BannerPath;
   }
   GetSelectDifficult() {
-    if (this.Fwl === 0) {
-      return 1;
-    } else {
+    if (this.Fwl !== undefined) {
       return this.Fwl;
     }
+    if (this.Xy > 0) {
+      var t = ModelManager_1.ModelManager.ActivityModel.GetActivityById(this.LOe).GetLevelDataByIndex(this.Xy - 1);
+      if (t) {
+        return t.GetSelectDifficult();
+      }
+    }
+    return 1;
   }
   GetDifficultConfig() {
     return ConfigManager_1.ConfigManager.FarmGoldConfig.GetFarmGoldDifficultById(this.GetSelectDifficult());
   }
   SetDifficult(t) {
     this.Fwl = t;
+    this.SaveDifficultyState();
   }
   GetNewOpenState() {
     return ModelManager_1.ModelManager.ActivityModel.GetActivityCacheData(this.LOe, 0, this.LOe, UNLOCKLOCALKEY, this.kwl) === 0 && this.GetIsOpen();
@@ -134,13 +158,15 @@ class FarmGoldLevelData {
   GetMonsterPreviewState() {
     return this.GetInstanceConfig().MonsterPreview.length > 0;
   }
-  Phrase(t, e) {
+  Phrase(t, e, i) {
+    this.Xy = i;
     this.LOe = t;
     this.kwl = e.r6n;
     this.ae = e.Mps;
     this.IsOpen = e.Sps;
     this.Owl = e.Eps;
     this.Nwl = e.Gwl;
+    this.y7g();
   }
 }
 exports.FarmGoldLevelData = FarmGoldLevelData;
@@ -178,21 +204,44 @@ class FarmGoldData extends ActivityData_1.ActivityBaseData {
     this.PhraseRewardInfo();
   }
   AddFinishPointId(t) {
-    if (!this.Vwl.includes(t)) {
-      this.$8i?.bwl.qwl.push(t);
-      this.Vwl.push(t);
+    for (const e of t) {
+      if (!this.Vwl.includes(e)) {
+        this.$8i?.bwl.qwl.push(e);
+        this.Vwl.push(e);
+      }
     }
   }
   FinishLevelReward(t) {
-    var e = this.GetLevelInfoByInstId(t);
-    if (e) {
-      e.FinishLevelReward();
-    }
-    for (const i of this.$8i.bwl.uE_) {
-      if (i.r6n === t) {
-        i.Gwl = true;
+    for (const i of t) {
+      var e = this.GetLevelInfoByInstId(i);
+      if (e) {
+        e.FinishLevelReward();
+      }
+      for (const r of this.$8i.bwl.uE_) {
+        if (r.r6n === i) {
+          r.Gwl = true;
+        }
       }
     }
+  }
+  GetAllCanClaimLevelRewardIds() {
+    var t = [];
+    for (const e of this.Hwl) {
+      if (!e.GetHasGetLevelReward() && e.GetIfPassLevel()) {
+        t.push(e.GetInstId());
+      }
+    }
+    return t;
+  }
+  GetAllCanClaimScoreRewardIds() {
+    var t = [];
+    var e = this.GetCurrentFullScore();
+    for (const i of ConfigManager_1.ConfigManager.FarmGoldConfig.GetScoreConfigByActivityId(this.Id)) {
+      if (!this.Vwl.includes(i.Id) && e >= i.Score) {
+        t.push(i.Id);
+      }
+    }
+    return t;
   }
   GetCurrentFullScore() {
     let t = 0;
@@ -201,28 +250,43 @@ class FarmGoldData extends ActivityData_1.ActivityBaseData {
     }
     return t;
   }
-  PhraseLevelData(t) {
+  PhraseLevelData(e) {
     this.Hwl = [];
     this.LSn = [];
-    for (const i of t) {
-      var e = new FarmGoldLevelData();
-      e.Phrase(this.Id, i);
-      this.Hwl.push(e);
-      var e = this.bSn(e);
-      this.LSn.push(e);
+    for (let t = 0; t < e.length; t++) {
+      var i = e[t];
+      var r = new FarmGoldLevelData();
+      r.Phrase(this.Id, i, t);
+      this.S7g(r, t);
+      this.Hwl.push(r);
+      var i = this.bSn(r);
+      this.LSn.push(i);
+    }
+  }
+  S7g(t, e) {
+    if (t.GetSelectDifficult() === undefined && e > 0 && (e = this.GetLevelDataByIndex(e - 1))) {
+      t.SetDifficult(e.GetSelectDifficult());
+    }
+  }
+  RestoreDifficultySettings() {
+    for (let t = 0; t < this.Hwl.length; t++) {
+      var e = this.Hwl[t];
+      this.S7g(e, t);
     }
   }
   RefreshLevelData(e) {
-    for (const i of this.$8i.bwl.uE_) {
-      if (i.r6n === e.r6n) {
-        i.Eps = e.Eps;
-        i.Gwl = e.Gwl;
+    for (const r of this.$8i.bwl.uE_) {
+      if (r.r6n === e.r6n) {
+        r.Eps = e.Eps;
+        r.Gwl = e.Gwl;
         break;
       }
     }
-    var t = this.Hwl.find(t => t.GetInstId() === e.r6n);
-    if (t) {
-      t.Phrase(this.Id, e);
+    var t;
+    var i = this.Hwl.find(t => t.GetInstId() === e.r6n);
+    if (i) {
+      t = this.Hwl.findIndex(t => t.GetInstId() === e.r6n);
+      i.Phrase(this.Id, e, t);
     }
     this.PhraseLevelData(this.$8i.bwl.uE_);
   }
@@ -238,14 +302,17 @@ class FarmGoldData extends ActivityData_1.ActivityBaseData {
   bSn(t) {
     var e = t.GetConfig();
     var i = t.GetHasGetLevelReward();
-    var r = t.GetPoint() >= e.PassScore;
-    var i = i ? 2 : r ? 1 : 0;
+    var t = t.GetPoint() >= e.PassScore;
+    var i = i ? 2 : t ? 1 : 0;
     return {
       Id: e.Id,
       NameText: MultiTextLang_1.configMultiTextLang.GetLocalTextNew(e.LevelRewardDesc),
       RewardState: i,
       ClickFunction: () => {
-        FarmGoldController_1.FarmGoldController.RequestFarmGoldLevelPlay(this.Id, t.GetInstId());
+        var t = this.GetAllCanClaimLevelRewardIds();
+        if (t.length > 0) {
+          FarmGoldController_1.FarmGoldController.RequestFarmGoldLevelPlay(this.Id, t);
+        }
       },
       RewardList: this.I2e(e.RewardId),
       RewardButtonText: MultiTextLang_1.configMultiTextLang.GetLocalTextNew(this.kbn(Number(i)))
@@ -260,7 +327,10 @@ class FarmGoldData extends ActivityData_1.ActivityBaseData {
       NameText: n,
       RewardState: e,
       ClickFunction: () => {
-        FarmGoldController_1.FarmGoldController.RequestFarmGoldPoint(this.Id, t);
+        var t = this.GetAllCanClaimScoreRewardIds();
+        if (t.length > 0) {
+          FarmGoldController_1.FarmGoldController.RequestFarmGoldPoint(this.Id, t);
+        }
       },
       RewardList: this.I2e(r.RewardId),
       RewardButtonText: MultiTextLang_1.configMultiTextLang.GetLocalTextNew(this.kbn(e))
@@ -295,6 +365,22 @@ class FarmGoldData extends ActivityData_1.ActivityBaseData {
   GetExDataRedPointShowState() {
     return this.GetPreGuideQuestFinishState() && (this.qSn() || this.gu_());
   }
+  GetExDataFinishShowState() {
+    if (!this.$8i) {
+      return false;
+    }
+    for (const t of this.DSn) {
+      if (t.RewardState !== 2) {
+        return false;
+      }
+    }
+    for (const e of this.LSn) {
+      if (e.RewardState !== 2) {
+        return false;
+      }
+    }
+    return true;
+  }
   gu_() {
     for (const t of this.Hwl) {
       if (t.GetNewOpenState()) {
@@ -327,6 +413,26 @@ class FarmGoldData extends ActivityData_1.ActivityBaseData {
   GetRewardPopUpViewData() {
     this.RebuildData();
     return this.GetRewardViewData();
+  }
+  GetAllRewardClaimedAndTotalNum() {
+    let t = 0;
+    let e = 0;
+    for (const i of this.LSn) {
+      e++;
+      if (i.RewardState === 2) {
+        t++;
+      }
+    }
+    for (const r of this.DSn) {
+      e++;
+      if (r.RewardState === 2) {
+        t++;
+      }
+    }
+    return {
+      ClaimedNum: t,
+      TotalNum: e
+    };
   }
   GetScoreDesc() {
     return this.GetCurrentFullScore().toString();
@@ -470,12 +576,17 @@ class FarmGoldData extends ActivityData_1.ActivityBaseData {
     return !!t && t.GetRedDotState();
   }
   GetLevelDifficultIndexByIndex(t) {
-    t = this.GetLevelDataByIndex(t);
-    if (t) {
-      return t.GetSelectDifficultIndex();
-    } else {
-      return 1;
+    const e = this.GetLevelDataByIndex(t);
+    if (e) {
+      return e.GetSelectDifficultIndex();
     }
+    if (t > 0) {
+      const e = this.GetLevelDataByIndex(t - 1);
+      if (e) {
+        return e.GetSelectDifficultIndex();
+      }
+    }
+    return 1;
   }
   GetLevelBgByIndex(t) {
     t = this.GetLevelDataByIndex(t);

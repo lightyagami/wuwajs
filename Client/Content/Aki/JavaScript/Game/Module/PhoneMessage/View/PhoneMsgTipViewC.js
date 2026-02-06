@@ -13,28 +13,28 @@ const CLOSE_TIME = 4000;
 class PhoneMsgTipViewC extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
-    this.Fsf = undefined;
+    this.dlf = undefined;
     this.j3 = undefined;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIText]];
   }
   OnStart() {
-    this.Fsf = this.OpenParam;
-    if (this.Fsf === undefined && Log_1.Log.CheckError()) {
+    this.dlf = this.OpenParam;
+    if (this.dlf === undefined && Log_1.Log.CheckError()) {
       Log_1.Log.Error("PhoneSystem", 43, "[PhoneMsgTipViewC] MsgData is undefined");
     }
   }
   OnAfterShow() {
     this.j3 = TimerSystem_1.GameplayTimerSystem.Delay(() => {
       this.j3 = undefined;
-      this.uMf();
+      this.cTf();
     }, CLOSE_TIME);
   }
-  uMf() {
-    UiManager_1.UiManager.CloseAndOpenView("PhoneMsgTipViewC", "PhoneMsgPanelViewSmall", this.Fsf);
+  cTf() {
+    UiManager_1.UiManager.CloseAndOpenView("PhoneMsgTipViewC", "PhoneMsgPanelViewSmall", this.dlf);
   }
-  cMf() {
+  dTf() {
     if (this.j3) {
       TimerSystem_1.GameplayTimerSystem.Remove(this.j3);
       this.j3 = undefined;
@@ -45,7 +45,7 @@ class PhoneMsgTipViewC extends UiViewBase_1.UiViewBase {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("PhoneSystem", 43, "[PhoneMsgTipViewC] Timer is not released");
       }
-      this.cMf();
+      this.dTf();
     }
   }
 }

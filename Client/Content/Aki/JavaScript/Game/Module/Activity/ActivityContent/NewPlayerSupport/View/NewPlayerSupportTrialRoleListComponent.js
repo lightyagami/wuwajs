@@ -14,22 +14,22 @@ class NewPlayerSupportTrialRoleListComponent extends UiPanelBase_1.UiPanelBase {
   constructor(e) {
     super();
     this.qKs = [];
-    this.KDf = undefined;
-    this.vBf = undefined;
-    this.lJf = undefined;
+    this.ROf = undefined;
+    this.dNf = undefined;
+    this.rCg = undefined;
     this.yil = undefined;
-    this.XDf = (e, t) => {
-      if (this.KDf) {
-        this.KDf.SetSelected(false);
+    this.LOf = (e, t) => {
+      if (this.ROf) {
+        this.ROf.SetSelected(false);
       }
       e.SetSelected(true);
-      this.KDf = e;
-      if (this.vBf) {
-        this.vBf(t);
+      this.ROf = e;
+      if (this.dNf) {
+        this.dNf(t);
       }
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnGroupTrialRoleRedDotUpdate);
     };
-    this._Jf = () => !this.lJf || this.lJf();
+    this.oCg = () => !this.rCg || this.rCg();
     this.yil = e;
   }
   OnRegisterComponent() {
@@ -55,8 +55,8 @@ class NewPlayerSupportTrialRoleListComponent extends UiPanelBase_1.UiPanelBase {
   }
   async uyi(e, t) {
     t = new NewPlayerSupportTrialRoleListItem_1.NewPlayerSupportTrialRoleListItem(t);
-    t.SetSelectCallback(this.XDf);
-    t.SetCanSelectCallback(this._Jf);
+    t.SetSelectCallback(this.LOf);
+    t.SetCanSelectCallback(this.oCg);
     this.qKs.push(t);
     await t.CreateThenShowByResourceIdAsync(ActivityNewPlayerSupportDefine_1.TRIAL_ROLE_LIST_ITEM_RESOURCE_ID, e);
   }
@@ -71,10 +71,10 @@ class NewPlayerSupportTrialRoleListComponent extends UiPanelBase_1.UiPanelBase {
     (this.qKs?.[s]).SelectItem();
   }
   SetSelectRoleItemCallback(e) {
-    this.vBf = e;
+    this.dNf = e;
   }
   SetCanSelectRoleItemCallback(e) {
-    this.lJf = e;
+    this.rCg = e;
   }
 }
 exports.NewPlayerSupportTrialRoleListComponent = NewPlayerSupportTrialRoleListComponent;

@@ -7,22 +7,22 @@ exports.LanguageKeyTransBase = undefined;
 const StringUtils_1 = require("../../../Core/Utils/StringUtils");
 class LanguageKeyTransBase {
   constructor() {
-    this.$Yf = new Map();
-    this.WYf = new Map();
+    this.Efg = new Map();
+    this.Ifg = new Map();
   }
   InitPcKeysByConfig(t) {
     var e = this.GetOtherPcKey(t);
     if (!StringUtils_1.StringUtils.IsBlank(e)) {
-      this.$Yf.set(t.KeyName, e);
-      this.WYf.set(e, t.KeyName);
+      this.Efg.set(t.KeyName, e);
+      this.Ifg.set(e, t.KeyName);
     }
   }
   GetNormalToOtherPcKeysMap(t) {
-    var e = this.$Yf.get(t);
+    var e = this.Efg.get(t);
     return e || t;
   }
   GetOtherToNormalPcKeysMap(t) {
-    var e = this.WYf.get(t);
+    var e = this.Ifg.get(t);
     return e || t;
   }
 }

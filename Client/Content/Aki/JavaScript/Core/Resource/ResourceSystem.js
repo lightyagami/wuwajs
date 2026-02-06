@@ -7,12 +7,10 @@ exports.ResourceSystem = exports.ASYNC_LOAD_TIMEOUT_MS = exports.SYNC_LOAD_PRIOR
 const cpp_1 = require("cpp");
 const puerts_1 = require("puerts");
 const UE = require("ue");
-const Info_1 = require("../Common/Info");
 const Log_1 = require("../Common/Log");
 const Stats_1 = require("../Common/Stats");
 const PriorityQueue_1 = require("../Container/PriorityQueue");
 const ClassDefine_1 = require("../Define/ClassDefine");
-const GameBudgetInterfaceController_1 = require("../GameBudgetAllocator/GameBudgetInterfaceController");
 const TimeLimit_1 = require("../Performance/TimeLimit");
 const TimerSystem_1 = require("../Timer/TimerSystem");
 const FNameUtil_1 = require("../Utils/FNameUtil");
@@ -24,23 +22,15 @@ exports.RENDER_ASSETS_TIMEOUT = 40000;
 exports.WAIT_RENDER_ASSET_DURATION = 42;
 exports.SYNC_LOAD_PRIORITY = 1073741823;
 exports.ASYNC_LOAD_TIMEOUT_MS = 60000;
-const RESET_TIME = 180000;
-const RESET_TIME_PIE = 900000;
 class LoadCallbackTask {
-  constructor(e, s, t, o) {
+  constructor(e, s, t, r) {
     this.Id = e;
     this.Priority = s;
     this.TimeoutTimer = t;
-    this.Callback = o;
+    this.Callback = r;
   }
 }
 class ResourceSystem {
-  static GetLoadMode() {
-    return this.Iwa;
-  }
-  static IsLoadingReasonNotEmpty(e) {
-    return ResourceSystem.uJ.get(e);
-  }
   static IsMemoryTagOpen() {
     return this.Sem;
   }
@@ -84,15 +74,15 @@ class ResourceSystem {
     if (s.size === 0) {
       t?.();
     }
-    const o = Date.now();
-    for (const r of s) {
-      ResourceSystem.LoadTypeAsync(r, () => {
+    const r = Date.now();
+    for (const o of s) {
+      ResourceSystem.LoadTypeAsync(o, () => {
         var e;
-        s.delete(r);
+        s.delete(o);
         if (s.size === 0) {
           e = Date.now();
           if (Log_1.Log.CheckInfo()) {
-            Log_1.Log.Info("Resource", 1, "预加载类型结束 ", ["count", s.size], ["cost", e - o]);
+            Log_1.Log.Info("Resource", 1, "预加载类型结束 ", ["count", s.size], ["cost", e - r]);
           }
           t?.();
         }
@@ -150,33 +140,33 @@ class ResourceSystem {
         if (t[2] === 1 && Log_1.Log.CheckError()) {
           Log_1.Log.Error("Resource", 62, "异步加载的类型不允许走同步加载，请先异步加载", ["type", s]);
         }
-        var o = ResourceSystem.oJ(s, t);
-        if (o) {
-          var r = t[0];
+        var r = ResourceSystem.oJ(s, t);
+        if (r) {
+          var o = t[0];
           if (Log_1.Log.CheckWarn()) {
-            Log_1.Log.Warn("Resource", 1, "运行时加载类型", ["name", s], ["type", r], ["path", o]);
+            Log_1.Log.Warn("Resource", 1, "运行时加载类型", ["name", s], ["type", o], ["path", r]);
           }
           let e = undefined;
-          switch (r) {
+          switch (o) {
             case 0:
-              e = ResourceSystem.Load(o, UE.BlueprintGeneratedClass);
+              e = ResourceSystem.Load(r, UE.BlueprintGeneratedClass);
               break;
             case 1:
-              e = ResourceSystem.Load(o, UE.UserDefinedStruct);
+              e = ResourceSystem.Load(r, UE.UserDefinedStruct);
               break;
             case 2:
-              e = ResourceSystem.Load(o, UE.UserDefinedEnum);
+              e = ResourceSystem.Load(r, UE.UserDefinedEnum);
               break;
             default:
               if (Log_1.Log.CheckError()) {
-                Log_1.Log.Error("Resource", 1, "加载类型错误", ["name", s], ["type", r], ["path", o]);
+                Log_1.Log.Error("Resource", 1, "加载类型错误", ["name", s], ["type", o], ["path", r]);
               }
               return;
           }
           if (e) {
             ResourceSystem.XY.set(s, e);
           } else if (Log_1.Log.CheckError()) {
-            Log_1.Log.Error("Resource", 1, "加载类型失败", ["name", s], ["type", r], ["path", o]);
+            Log_1.Log.Error("Resource", 1, "加载类型失败", ["name", s], ["type", o], ["path", r]);
           }
         }
       }
@@ -190,38 +180,38 @@ class ResourceSystem {
     }
     return ResourceSystem.XY.get(e);
   }
-  static LoadTypeAsync(t, o, e = "js_undefined") {
+  static LoadTypeAsync(t, r, e = "js_undefined") {
     if (ResourceSystem.XY.has(t)) {
-      o();
+      r();
     } else {
       var s = ResourceSystem.iJ(t);
       if (s) {
-        var r = ResourceSystem.oJ(t, s);
-        if (r) {
-          const i = s[0];
-          var a = (e, s) => {
+        var o = ResourceSystem.oJ(t, s);
+        if (o) {
+          const a = s[0];
+          var c = (e, s) => {
             if (e) {
               ResourceSystem.XY.set(t, e);
             } else if (Log_1.Log.CheckError()) {
-              Log_1.Log.Error("Resource", 1, "异步加载类型失败", ["name", t], ["type", i], ["path", s]);
+              Log_1.Log.Error("Resource", 1, "异步加载类型失败", ["name", t], ["type", a], ["path", s]);
             }
-            o();
+            r();
           };
-          switch (i) {
+          switch (a) {
             case 0:
-              ResourceSystem.LoadAsync(r, UE.BlueprintGeneratedClass, a, 100, e);
+              ResourceSystem.LoadAsync(o, UE.BlueprintGeneratedClass, c, 100, e);
               break;
             case 1:
-              ResourceSystem.LoadAsync(r, UE.UserDefinedStruct, a, 100, e);
+              ResourceSystem.LoadAsync(o, UE.UserDefinedStruct, c, 100, e);
               break;
             case 2:
-              ResourceSystem.LoadAsync(r, UE.UserDefinedEnum, a, 100, e);
+              ResourceSystem.LoadAsync(o, UE.UserDefinedEnum, c, 100, e);
               break;
             default:
               if (Log_1.Log.CheckError()) {
-                Log_1.Log.Error("Resource", 1, "异步加载类型错误", ["name", t], ["type", i], ["path", r]);
+                Log_1.Log.Error("Resource", 1, "异步加载类型错误", ["name", t], ["type", a], ["path", o]);
               }
-              o();
+              r();
           }
         }
       }
@@ -272,10 +262,10 @@ class ResourceSystem {
     }
   }
   static Ed(e, s, t) {
-    var o = ResourceSystem.WY.GetAsset(s);
+    var r = ResourceSystem.WY.GetAsset(s);
     ResourceSystem.WY.Release(s);
-    if (ResourceSystem.sJ(o, e, t)) {
-      return o;
+    if (ResourceSystem.sJ(r, e, t)) {
+      return r;
     }
   }
   static sJ(e, s, t) {
@@ -295,25 +285,25 @@ class ResourceSystem {
       return false;
     }
   }
-  static Load(s, t, o = "js_undefined") {
+  static Load(s, t, r = "js_undefined") {
     ResourceSystem.aJ.Start();
-    var r = Stats_1.Stat.CreateNoFlameGraph("RS.Load-" + s);
-    r.Start();
+    var o = Stats_1.Stat.CreateNoFlameGraph("RS.Load-" + s);
+    o.Start();
     var t = ResourceSystem.nJ(s, t);
     if (t) {
-      var a = ++ResourceSystem.hJ;
+      var c = ++ResourceSystem.hJ;
       let e = -1;
-      if ((e = ResourceSystem.Sem ? (o = FNameUtil_1.FNameUtil.GetDynamicFName(o), ResourceSystem.WY.LoadWithIdAndTag(s, a, o)) : ResourceSystem.WY.LoadWithId(s, a)) !== -1) {
-        o = ResourceSystem.Ed(s, a, t);
-        r.Stop();
+      if ((e = ResourceSystem.Sem ? (r = FNameUtil_1.FNameUtil.GetDynamicFName(r), ResourceSystem.WY.LoadWithIdAndTag(s, c, r)) : ResourceSystem.WY.LoadWithId(s, c)) !== -1) {
+        r = ResourceSystem.Ed(s, c, t);
+        o.Stop();
         ResourceSystem.aJ.Stop();
-        return o;
+        return r;
       }
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Resource", 1, "资源加载异常", ["path", s]);
       }
     }
-    r.Stop();
+    o.Stop();
     ResourceSystem.aJ.Stop();
   }
   static GetLoadedAsset(e, s) {
@@ -329,77 +319,77 @@ class ResourceSystem {
     s = ResourceSystem.nJ(e, s);
     return !!s && !!(e = ResourceSystem.WY.GetLoadedAsset(e))?.IsValid() && !!e.IsA(s);
   }
-  static LoadAsync(e, s, t, o = 100, r = "js_undefined") {
+  static LoadAsync(e, s, t, r = 100, o = "js_undefined") {
     ResourceSystem.lJ.Start();
-    var a = Stats_1.Stat.CreateNoFlameGraph("RS.LoadAsync-" + e);
-    a.Start();
+    var c = Stats_1.Stat.CreateNoFlameGraph("RS.LoadAsync-" + e);
+    c.Start();
     if (!t) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Resource", 1, "资源加载回调方法为空", ["path", e]);
       }
-      a.Stop();
+      c.Stop();
       ResourceSystem.lJ.Stop();
       return ResourceSystem.InvalidId;
     }
-    if (o < 100 || o >= 106) {
+    if (r < 100 || r >= 106) {
       if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("Resource", 1, "资源加载优先级错误", ["path", e], ["priority", o]);
+        Log_1.Log.Error("Resource", 1, "资源加载优先级错误", ["path", e], ["priority", r]);
       }
-      a.Stop();
+      c.Stop();
       ResourceSystem.lJ.Stop();
       return ResourceSystem.InvalidId;
     }
-    let i = ++ResourceSystem.hJ;
-    const c = undefined;
+    let a = ++ResourceSystem.hJ;
+    const u = undefined;
     const m = ResourceSystem.nJ(e, s);
     if (!m) {
-      ResourceSystem.zY.Push(new LoadCallbackTask(i, o, undefined, () => {
-        ResourceSystem.bxa(t, undefined, e, c);
+      ResourceSystem.zY.Push(new LoadCallbackTask(a, r, undefined, () => {
+        ResourceSystem.bxa(t, undefined, e, u);
       }));
-      a.Stop();
+      c.Stop();
       ResourceSystem.lJ.Stop();
       return ResourceSystem.InvalidId;
     }
-    let u = -1;
-    switch (u = ResourceSystem.Sem ? (s = FNameUtil_1.FNameUtil.GetDynamicFName(r), ResourceSystem.WY.LoadAsyncWithIdAndTag(e, i, o, s)) : ResourceSystem.WY.LoadAsyncWithId(e, i, o)) {
+    let y = -1;
+    switch (y = ResourceSystem.Sem ? (s = FNameUtil_1.FNameUtil.GetDynamicFName(o), ResourceSystem.WY.LoadAsyncWithIdAndTag(e, a, r, s)) : ResourceSystem.WY.LoadAsyncWithId(e, a, r)) {
       case -1:
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("Resource", 1, "资源加载错误", ["path", e]);
         }
-        ResourceSystem.zY.Push(new LoadCallbackTask(i, o, undefined, () => {
-          ResourceSystem.bxa(t, undefined, e, c);
+        ResourceSystem.zY.Push(new LoadCallbackTask(a, r, undefined, () => {
+          ResourceSystem.bxa(t, undefined, e, u);
         }));
-        i = ResourceSystem.InvalidId;
+        a = ResourceSystem.InvalidId;
         break;
       case 0:
         {
-          const n = TimerSystem_1.GameplayTimerSystem.Delay(() => {
+          const R = TimerSystem_1.GameplayTimerSystem.Delay(() => {
             if (Log_1.Log.CheckError()) {
               Log_1.Log.Error("Resource", 30, "资源加载超时", ["path", e]);
             }
           }, exports.ASYNC_LOAD_TIMEOUT_MS);
-          ResourceSystem.Bxa.set(i, new LoadCallbackTask(i, o, n, () => {
-            if (n?.Valid()) {
-              TimerSystem_1.GameplayTimerSystem.Remove(n);
+          ResourceSystem.Bxa.set(a, new LoadCallbackTask(a, r, R, () => {
+            if (R?.Valid()) {
+              TimerSystem_1.GameplayTimerSystem.Remove(R);
             }
-            ResourceSystem.bxa(t, ResourceSystem.Ed(e, i, m), e, c);
+            ResourceSystem.bxa(t, ResourceSystem.Ed(e, a, m), e, u);
           }));
         }
         break;
       case 1:
-        ResourceSystem.zY.Push(new LoadCallbackTask(i, o, undefined, () => {
-          ResourceSystem.bxa(t, ResourceSystem.Ed(e, i, m), e, c);
+        ResourceSystem.zY.Push(new LoadCallbackTask(a, r, undefined, () => {
+          ResourceSystem.bxa(t, ResourceSystem.Ed(e, a, m), e, u);
         }));
         ResourceSystem.UpdateDelayCallback(false);
     }
-    a.Stop();
+    c.Stop();
     ResourceSystem.lJ.Stop();
-    return i;
+    return a;
   }
-  static bxa(e, s, t, o) {
-    var r = cpp_1.KuroTime.GetMicroseconds64();
+  static bxa(e, s, t, r) {
+    var o = cpp_1.KuroTime.GetMicroseconds64();
     ResourceSystem._J.Start();
-    o?.Start();
+    r?.Start();
     try {
       e(s, t);
     } catch (e) {
@@ -411,10 +401,10 @@ class ResourceSystem {
         Log_1.Log.Error("Resource", 1, "资源加载回调方法执行异常", ["path", t], ["error", e]);
       }
     }
-    o?.Stop();
+    r?.Stop();
     ResourceSystem._J.Stop();
     e = cpp_1.KuroTime.GetMicroseconds64();
-    ResourceSystem.YY.AddCost(e - r);
+    ResourceSystem.YY.AddCost(e - o);
   }
   static CancelAsyncLoad(e) {
     ResourceSystem.WY.Release(e);
@@ -437,182 +427,6 @@ class ResourceSystem {
   static IsAsyncLoadingThreadEnabled() {
     return ResourceSystem.$Y;
   }
-  static SetLoadModeInLoading(e, s) {
-    var t;
-    if (s && s.length !== 0) {
-      if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("GameMode", 4, "[SetLoadMode]InLoading", ["Reason", s]);
-      }
-      if (ResourceSystem.uJ.has(s)) {
-        t = ResourceSystem.uJ.get(s);
-        ResourceSystem.uJ.set(s, ++t);
-      } else {
-        ResourceSystem.uJ.set(s, 1);
-        if (!(ResourceSystem.uJ.size > 1)) {
-          if (ResourceSystem.FUa) {
-            if (Log_1.Log.CheckDebug()) {
-              Log_1.Log.Debug("GameMode", 38, "进入 LoadModeInLoading 忽略，因为处于强制游戏模式中。");
-            }
-          } else {
-            this.SFa(e);
-          }
-        }
-      }
-    } else if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("GameMode", 3, "SetLoadModeInLoading reason 为空");
-    }
-  }
-  static SetLoadModeInGame(e, s) {
-    var t = ResourceSystem.uJ.get(s);
-    if (t) {
-      if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("GameMode", 4, "[SetLoadMode]:InGame", ["Reason", s]);
-      }
-      if (t > 1) {
-        ResourceSystem.uJ.set(s, t - 1);
-      } else {
-        ResourceSystem.uJ.delete(s);
-      }
-      if (!(ResourceSystem.uJ.size > 0)) {
-        if (ResourceSystem.FUa) {
-          if (Log_1.Log.CheckDebug()) {
-            Log_1.Log.Debug("GameMode", 38, "退出 LoadModeInLoading 忽略，因为处于强制游戏模式中。");
-          }
-        } else {
-          this.EFa(e);
-        }
-      }
-    } else if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("GameMode", 3, "SetLoadModeInGame reason 不成对", ["Reason", s], ["Count", t]);
-    }
-  }
-  static SetForceLoadModeInGame(e, s) {
-    if (ResourceSystem.FUa = s) {
-      if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("GameMode", 38, "开启 ForceLoadModeInGame");
-      }
-      this.EFa(e);
-    } else {
-      if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("GameMode", 38, "退出 ForceLoadModeInGame");
-      }
-      if (ResourceSystem.uJ.size > 0) {
-        this.SFa(e);
-      }
-    }
-  }
-  static SetLoadModeInDataLayerTransition(e, s) {
-    if (this.FUa) {
-      if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("GameMode", 39, "进入 DataLayerTransition 模式忽略，因为处于强制游戏模式中。");
-      }
-    } else if (this.Iwa !== 2) {
-      if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("GameMode", 39, "进入 DataLayerTransition 模式忽略，因为当前LoadMode不是InGame。");
-      }
-    } else if (s) {
-      if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("GameMode", 39, "开启 LoadModeInDataLayerTransition");
-      }
-      this.dZf(e);
-    } else {
-      if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("GameMode", 39, "退出 LoadModeInDataLayerTransition");
-      }
-      if (!this.FUa && this.uJ.size > 0) {
-        this.SFa(e);
-      } else {
-        this.EFa(e);
-      }
-    }
-  }
-  static dZf(e) {
-    cpp_1.FKuroPerfSightHelper.EndExtTag("InLoadingMode");
-    if (Info_1.Info.IsPlayInEditor) {
-      UE.KismetSystemLibrary.ExecuteConsoleCommand(e, "s.AsyncLoadingTimeLimit 2500");
-      UE.KismetSystemLibrary.ExecuteConsoleCommand(e, "s.LevelStreamingActorsUpdateTimeLimit 500");
-      UE.KismetSystemLibrary.ExecuteConsoleCommand(e, "wp.Runtime.MaxLoadingStreamingCells 100");
-    } else {
-      UE.KismetSystemLibrary.ExecuteConsoleCommand(e, "s.AsyncLoadingTimeLimit 10");
-      UE.KismetSystemLibrary.ExecuteConsoleCommand(e, "s.LevelStreamingActorsUpdateTimeLimit 10");
-      UE.KismetSystemLibrary.ExecuteConsoleCommand(e, "wp.Runtime.MaxLoadingStreamingCells 8");
-    }
-    UE.KismetSystemLibrary.ExecuteConsoleCommand(e, "wp.Runtime.BlockOnSlowStreaming 1");
-    ResourceSystem.SetCallbackTimeLimit(5);
-    GameBudgetInterfaceController_1.GameBudgetInterfaceController.UpdateMinUpdateFifoBudgetTime(3);
-    if (this.Ska) {
-      TimerSystem_1.GameplayTimerSystem.Remove(this.Ska);
-    }
-    e = Info_1.Info.IsPlayInEditor ? RESET_TIME_PIE : RESET_TIME;
-    this.Ska = TimerSystem_1.GameplayTimerSystem.Delay(() => {
-      this.Ska = undefined;
-      this.ResetLoadMode(Info_1.Info.GameInstance);
-    }, e, undefined, "ResetLoadModeTimer", false);
-    this.Iwa = 3;
-  }
-  static EFa(e) {
-    ResourceSystem.mJ.Start();
-    cpp_1.FKuroPerfSightHelper.EndExtTag("InLoadingMode");
-    if (Info_1.Info.IsPlayInEditor) {
-      UE.KismetSystemLibrary.ExecuteConsoleCommand(e, "s.AsyncLoadingTimeLimit 20");
-      UE.KismetSystemLibrary.ExecuteConsoleCommand(e, "s.LevelStreamingActorsUpdateTimeLimit 20");
-    } else {
-      UE.KismetSystemLibrary.ExecuteConsoleCommand(e, "s.AsyncLoadingTimeLimit 5");
-      UE.KismetSystemLibrary.ExecuteConsoleCommand(e, "s.LevelStreamingActorsUpdateTimeLimit 5");
-    }
-    UE.KismetSystemLibrary.ExecuteConsoleCommand(e, "wp.Runtime.MaxLoadingStreamingCells 4");
-    UE.KismetSystemLibrary.ExecuteConsoleCommand(e, "wp.Runtime.BlockOnSlowStreaming 1");
-    ResourceSystem.SetCallbackTimeLimit(5);
-    GameBudgetInterfaceController_1.GameBudgetInterfaceController.UpdateMinUpdateFifoBudgetTime(3);
-    if (this.Ska) {
-      TimerSystem_1.GameplayTimerSystem.Remove(this.Ska);
-      this.Ska = undefined;
-    }
-    this.Iwa = 2;
-    ResourceSystem.mJ.Stop();
-  }
-  static SFa(e) {
-    ResourceSystem.cJ.Start();
-    cpp_1.FKuroPerfSightHelper.BeginExtTag("InLoadingMode");
-    if (Info_1.Info.IsPlayInEditor) {
-      UE.KismetSystemLibrary.ExecuteConsoleCommand(e, "s.AsyncLoadingTimeLimit 5000");
-      UE.KismetSystemLibrary.ExecuteConsoleCommand(e, "s.LevelStreamingActorsUpdateTimeLimit 1000");
-      UE.KismetSystemLibrary.ExecuteConsoleCommand(e, "wp.Runtime.MaxLoadingStreamingCells 200");
-    } else {
-      UE.KismetSystemLibrary.ExecuteConsoleCommand(e, "s.AsyncLoadingTimeLimit 50");
-      UE.KismetSystemLibrary.ExecuteConsoleCommand(e, "s.LevelStreamingActorsUpdateTimeLimit 1000");
-      UE.KismetSystemLibrary.ExecuteConsoleCommand(e, "wp.Runtime.MaxLoadingStreamingCells 40");
-    }
-    UE.KismetSystemLibrary.ExecuteConsoleCommand(e, "wp.Runtime.BlockOnSlowStreaming 0");
-    ResourceSystem.SetCallbackTimeLimit(0);
-    GameBudgetInterfaceController_1.GameBudgetInterfaceController.UpdateMinUpdateFifoBudgetTime(9999);
-    if (this.Ska) {
-      TimerSystem_1.GameplayTimerSystem.Remove(this.Ska);
-    }
-    e = Info_1.Info.IsPlayInEditor ? RESET_TIME_PIE : RESET_TIME;
-    this.Ska = TimerSystem_1.GameplayTimerSystem.Delay(() => {
-      this.Ska = undefined;
-      this.ResetLoadMode(Info_1.Info.GameInstance);
-    }, e, undefined, "ResetLoadModeTimer", false);
-    this.Iwa = 1;
-    ResourceSystem.cJ.Stop();
-  }
-  static ResetLoadMode(e, s = false) {
-    if (this.Iwa !== 2) {
-      if (s) {
-        if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("GameMode", 4, "处于InLoading加载模式，进入战斗保底", ["LoadingReasonMap", this.uJ]);
-        }
-      } else if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("GameMode", 4, "长时间处于InLoading加载模式，触发保底", ["LoadingReasonMap", this.uJ]);
-      }
-      ResourceSystem.Eka();
-      ResourceSystem.EFa(e);
-    }
-  }
-  static Eka() {
-    ResourceSystem.uJ.clear();
-  }
   static DebugDumpLoadingAssets() {
     ResourceSystem.WY.DebugDumpLoadingAssets();
   }
@@ -623,19 +437,13 @@ ResourceSystem.zY = new PriorityQueue_1.PriorityQueue((e, s) => e.Priority === s
 ResourceSystem.ZY = new Set();
 ResourceSystem.YY = new TimeLimit_1.TimeLimit();
 ResourceSystem.LBn = false;
-ResourceSystem.FUa = false;
 ResourceSystem.XY = new Map();
 ResourceSystem.aJ = Stats_1.Stat.Create("RS.Load");
 ResourceSystem.lJ = Stats_1.Stat.Create("RS.LoadASync");
 ResourceSystem._J = Stats_1.Stat.Create("RS.LoadAsyncCallback");
 ResourceSystem.JY = Stats_1.Stat.Create("RS.UpdateDelayCallback");
-ResourceSystem.cJ = Stats_1.Stat.Create("RS.SetLoadModeInLoading");
-ResourceSystem.mJ = Stats_1.Stat.Create("RS.SetLoadModeInGame");
 ResourceSystem.hJ = 0;
 ResourceSystem.$Y = false;
 ResourceSystem.InvalidId = -1;
-ResourceSystem.uJ = new Map();
-ResourceSystem.Ska = undefined;
-ResourceSystem.Iwa = 0;
 ResourceSystem.Sem = true;
 ResourceSystem.Initialize(); //# sourceMappingURL=ResourceSystem.js.map

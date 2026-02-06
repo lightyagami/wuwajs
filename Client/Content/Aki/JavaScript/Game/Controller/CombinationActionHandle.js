@@ -21,17 +21,27 @@ class CombinationActionHandle {
   PressAnyKey(t) {
     if (this.Hde) {
       var i = InputSettingsManager_1.InputSettingsManager.GetCombinationActionBindingByKeyName(this.Hde, t);
-      if (i && !(i.size <= 0)) {
-        this.jde = t;
-        var e = [];
-        for (const n of i.values()) {
-          if (n.HasCombinationAction(this.Hde, t)) {
-            e.push(n);
-          }
-        }
-        this.Qde(e);
+      if (!i || i.size <= 0) {
+        return;
       }
-    } else if (InputSettingsManager_1.InputSettingsManager.IsCombinationActionMainKey(t)) {
+      var e = [];
+      for (const n of i.values()) {
+        if (n.HasCombinationAction(this.Hde, t)) {
+          e.push(n);
+        }
+      }
+      if (e.length <= 0) {
+        return undefined;
+      } else {
+        if (this.jde && this.jde !== t) {
+          this.ReleaseAnyKey(this.jde);
+        }
+        this.jde = t;
+        this.Qde(e);
+        return;
+      }
+    }
+    if (InputSettingsManager_1.InputSettingsManager.IsCombinationActionMainKey(t)) {
       this.Xde(t);
     }
   }
@@ -114,6 +124,24 @@ class CombinationActionHandle {
           if (InputSettingsManager_1.InputSettingsManager.IsCombinationAction(this.Hde, n)) {
             if (Log_1.Log.CheckDebug()) {
               Log_1.Log.Debug("InputSettings", 10, "[Input]当前已经按下组合键主键，现在按下了任意组合键副键，不会执行副键自己的Action输入", ["actionName", t], ["keyName", n]);
+            }
+            return false;
+          }
+        }
+      }
+    }
+    return true;
+  }
+  CheckCombinationActionByAxisName(t) {
+    if (this.Hde) {
+      var i = InputSettingsManager_1.InputSettingsManager.GetAxisBinding(t);
+      if (i) {
+        var e = [];
+        i.GetKeyNameList(e);
+        for (const n of e) {
+          if (InputSettingsManager_1.InputSettingsManager.IsCombinationAction(this.Hde, n)) {
+            if (Log_1.Log.CheckDebug()) {
+              Log_1.Log.Debug("InputSettings", 10, "[Input]当前已经按下组合键主键，现在按下了任意组合键副键，不会执行副键自己的Action输入", ["axisName", t], ["keyName", n]);
             }
             return false;
           }

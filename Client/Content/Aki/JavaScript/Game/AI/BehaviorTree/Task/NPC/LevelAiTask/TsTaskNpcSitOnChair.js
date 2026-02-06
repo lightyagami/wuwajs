@@ -100,11 +100,11 @@ class TsTaskNpcSitOnChair extends TsTaskAbortImmediatelyBase_1.default {
     if (s) {
       this.Entity = s.CharAiDesignComp.Entity;
       this.Character = this.Entity.GetComponent(3);
-      this.MoveComp = this.Entity.GetComponent(46);
-      this.AnimComp = this.Entity.GetComponent(186);
+      this.MoveComp = this.Entity.GetComponent(48);
+      this.AnimComp = this.Entity.GetComponent(188);
       if (this.MoveComp?.CharacterMovement?.IsValid()) {
         s = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(this.TsChairEntityId);
-        this.ChairController = s?.Entity?.GetComponent(207)?.GetSubEntityInteractLogicController();
+        this.ChairController = s?.Entity?.GetComponent(209)?.GetSubEntityInteractLogicController();
         if (this.ChairController && this.ChairController.IsSceneInteractionLoadCompleted()) {
           if (this.TsMontagePath === "") {
             if (Log_1.Log.CheckError()) {
@@ -169,7 +169,7 @@ class TsTaskNpcSitOnChair extends TsTaskAbortImmediatelyBase_1.default {
       this.MoveComp?.StopMoveNew();
     } else if (this.Phase === 4) {
       this.Character?.ClearInput();
-    } else if (this.Phase === 5 && (i = this.Entity?.GetComponent(47), this.PlayingMontage !== -1)) {
+    } else if (this.Phase === 5 && (i = this.Entity?.GetComponent(49), this.PlayingMontage !== -1)) {
       i?.VolatileMontageStopByLoad(3, this.PlayingMontage, 0);
       this.PlayingMontage = -1;
     }
@@ -258,7 +258,7 @@ class TsTaskNpcSitOnChair extends TsTaskAbortImmediatelyBase_1.default {
     if (!this.IsExecutePlayMontage) {
       this.IsExecutePlayMontage = true;
       this.AnimComp?.SetLocationAndRotatorWithModelBuffer(this.ChairSitPos.ToUeVector(), this.Character.ActorRotationProxy.ToUeRotator(), MODEL_BUFFER_SMOOTH_TIME, "TsTaskNpcSitOnChair.ExecuteTurnToFinish");
-      i = this.Entity.GetComponent(47);
+      i = this.Entity.GetComponent(49);
       this.PlayingMontage = i.VolatileMontagePlayByLoad(3, this.TsMontagePath, undefined, undefined, i => {
         if (i) {
           this.Phase = 6;

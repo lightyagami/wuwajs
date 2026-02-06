@@ -16,30 +16,30 @@ class LevelConditionCheckPlayerRelativeDistance extends LevelGeneralBase_1.Level
     var r = e.TargetEntityId;
     var t = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(r)?.Entity;
     if (!t || !t.Valid) {
-      if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("LevelCondition", 31, "LevelConditionCheckPlayerRelativeDistance: 未找到目标实体", ["pbDataId", r]);
+      if (Log_1.Log.CheckWarn()) {
+        Log_1.Log.Warn("LevelCondition", 31, "LevelConditionCheckPlayerRelativeDistance: 未找到目标实体", ["pbDataId", r]);
       }
       return false;
     }
     t = t.GetComponent(1);
     if (!t) {
-      if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("LevelCondition", 31, "LevelConditionCheckPlayerRelativeDistance: 目标实体缺少BaseActorComponent组件", ["pbDataId", r]);
+      if (Log_1.Log.CheckWarn()) {
+        Log_1.Log.Warn("LevelCondition", 31, "LevelConditionCheckPlayerRelativeDistance: 目标实体缺少BaseActorComponent组件", ["pbDataId", r]);
       }
       return false;
     }
     r = Vector_1.Vector.Create(t.ActorLocationProxy);
     t = ModelManager_1.ModelManager.SceneTeamModel?.GetCurrentEntity?.Entity;
     if (!t) {
-      if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("LevelCondition", 31, "LevelConditionCheckPlayerRelativeDistance: 未找到当前角色实体");
+      if (Log_1.Log.CheckWarn()) {
+        Log_1.Log.Warn("LevelCondition", 31, "LevelConditionCheckPlayerRelativeDistance: 未找到当前角色实体");
       }
       return false;
     }
     t = t.GetComponent(1);
     if (!t) {
-      if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("LevelCondition", 31, "LevelConditionCheckPlayerRelativeDistance: 当前角色实体缺少BaseActorComponent组件");
+      if (Log_1.Log.CheckWarn()) {
+        Log_1.Log.Warn("LevelCondition", 31, "LevelConditionCheckPlayerRelativeDistance: 当前角色实体缺少BaseActorComponent组件");
       }
       return false;
     }

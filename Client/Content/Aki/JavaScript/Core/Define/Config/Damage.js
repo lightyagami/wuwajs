@@ -150,6 +150,9 @@ class Damage {
   weaknessratioValue(t) {
     return this.weaknessratio(t)?.value();
   }
+  get SpecialWeaknessDamageRatio() {
+    return this.specialweaknessdamageratio();
+  }
   __init(t, s) {
     this.z7 = t;
     this.J7 = s;
@@ -1025,6 +1028,14 @@ class Damage {
     var t = this.J7.__offset(this.z7, 86);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  specialweaknessdamageratio() {
+    var t = this.J7.__offset(this.z7, 88);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
     } else {
       return 0;
     }

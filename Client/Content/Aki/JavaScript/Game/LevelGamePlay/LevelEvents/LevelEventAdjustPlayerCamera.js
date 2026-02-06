@@ -11,6 +11,7 @@ const CurveUtils_1 = require("../../../Core/Utils/Curve/CurveUtils");
 const GameplayTagUtils_1 = require("../../../Core/Utils/GameplayTagUtils");
 const Rotator_1 = require("../../../Core/Utils/Math/Rotator");
 const Vector_1 = require("../../../Core/Utils/Math/Vector");
+const MathUtils_1 = require("../../../Core/Utils/MathUtils");
 const IAction_1 = require("../../../UniverseEditor/Interface/IAction");
 const IComponent_1 = require("../../../UniverseEditor/Interface/IComponent");
 const SceneCameraDisplayComponent_1 = require("../../Camera/SceneCameraDisplayComponent");
@@ -23,6 +24,7 @@ const ModelManager_1 = require("../../Manager/ModelManager");
 const FlowController_1 = require("../../Module/Plot/Flow/FlowController");
 const RenderUtil_1 = require("../../Render/Utils/RenderUtil");
 const ConfigCurveUtils_1 = require("../../Utils/ConfigCurveUtils");
+const GravityUtils_1 = require("../../Utils/GravityUtils");
 const LevelGeneralBase_1 = require("../LevelGeneralBase");
 const IMMEDIATELY_FADE_CAMERA_TIME = 0.1;
 const noAimGameplayTag = -1036349300;
@@ -33,16 +35,16 @@ class LevelEventAdjustPlayerCamera extends LevelGeneralBase_1.LevelEventBase {
     this.$Jd = new SceneCameraDisplayComponent_1.CameraAberrationView();
     this.cz = Vector_1.Vector.Create();
     this.OPt = undefined;
-    this.TVm = undefined;
-    this.bVm = undefined;
-    this.RQf = undefined;
+    this.H6m = undefined;
+    this.$6m = undefined;
+    this.Jsg = undefined;
     this.N4l = () => {
       this.FinishExecute(true);
       if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.AdjustCameraSync, this.N4l)) {
         EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.AdjustCameraSync, this.N4l);
       }
     };
-    this.RVm = () => {
+    this.W6m = () => {
       if (ControllerHolder_1.ControllerHolder.CameraController.SceneCamera?.PlayerComponent?.IsDefaultSubCameraValid()) {
         if (this.OPt) {
           var e = this.OPt.Option.TargetType.CutCameraConfig;
@@ -58,16 +60,16 @@ class LevelEventAdjustPlayerCamera extends LevelGeneralBase_1.LevelEventBase {
             ControllerHolder_1.ControllerHolder.CameraController.SceneCamera.PlayerComponent.EnterFixSceneSubCamera(t, r, e?.CameraParams.Fov ?? 75, 0, 0, 1, () => {
               GameSettingsUtils_1.GameSettingsUtils.ApplyMotionBlur(1);
               if (o) {
-                FlowController_1.FlowController.StartFlowForCallback(o.FlowListName, o.FlowId, o.StateId, this.wVm);
+                FlowController_1.FlowController.StartFlowForCallback(o.FlowListName, o.FlowId, o.StateId, this.Q6m);
               } else {
-                this.wVm();
+                this.Q6m();
               }
             });
           } else {
-            this.wVm();
+            this.Q6m();
           }
         } else {
-          this.wVm();
+          this.Q6m();
         }
       } else {
         if (Log_1.Log.CheckWarn()) {
@@ -77,18 +79,19 @@ class LevelEventAdjustPlayerCamera extends LevelGeneralBase_1.LevelEventBase {
         this.FinishExecute(false);
       }
     };
-    this.wVm = () => {
+    this.Q6m = () => {
       var e = this.OPt?.Option?.TargetType;
       GameSettingsUtils_1.GameSettingsUtils.ApplyMotionBlur(0);
       if (e) {
         var t = (e.CutCameraConfig?.CutTimeParams?.CutStayTime ?? 0.02) < 0.02 ? 0.02 : e.CutCameraConfig?.CutTimeParams?.CutStayTime ?? 0.02;
         const r = (e.MovingTimeParams?.BeforeFadeOutStayTime ?? 0.02) < 0.02 ? 0.02 : e.MovingTimeParams?.BeforeFadeOutStayTime ?? 0.02;
-        this.TVm = TimerSystem_1.TimerSystem.Delay(() => {
+        this.H6m = TimerSystem_1.TimerSystem.Delay(() => {
           ControllerHolder_1.ControllerHolder.CameraController.SceneCamera.PlayerComponent.ExitFixSceneSubCamera(() => {
             GameSettingsUtils_1.GameSettingsUtils.ApplyMotionBlur(1);
-            this.bVm = TimerSystem_1.TimerSystem.Delay(() => {
+            this.$6m = TimerSystem_1.TimerSystem.Delay(() => {
               ControllerHolder_1.ControllerHolder.PanoramicController.EnterPanoramic(false, undefined);
               ControllerHolder_1.ControllerHolder.CameraController.FightCamera.LogicComponent.CameraGuideFinishStaying();
+              this.Xtf();
               this.FinishExecute(true);
             }, r * 1000);
           }, false);
@@ -96,9 +99,10 @@ class LevelEventAdjustPlayerCamera extends LevelGeneralBase_1.LevelEventBase {
       } else {
         ControllerHolder_1.ControllerHolder.CameraController.SceneCamera.PlayerComponent.ExitFixSceneSubCamera(() => {
           GameSettingsUtils_1.GameSettingsUtils.ApplyMotionBlur(1);
-          this.bVm = TimerSystem_1.TimerSystem.Delay(() => {
+          this.$6m = TimerSystem_1.TimerSystem.Delay(() => {
             ControllerHolder_1.ControllerHolder.PanoramicController.EnterPanoramic(false, undefined);
             ControllerHolder_1.ControllerHolder.CameraController.FightCamera.LogicComponent.CameraGuideFinishStaying();
+            this.Xtf();
             this.FinishExecute(true);
           }, 20);
         }, false);
@@ -112,7 +116,7 @@ class LevelEventAdjustPlayerCamera extends LevelGeneralBase_1.LevelEventBase {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Event", 38, "进入相机调整");
       }
-      if (this.LVm()) {
+      if (this.K6m()) {
         if (!this.ILe(i)) {
           this.FinishExecute(false);
           return;
@@ -153,9 +157,9 @@ class LevelEventAdjustPlayerCamera extends LevelGeneralBase_1.LevelEventBase {
           let r = undefined;
           if (i.Option.OrthogonalConfig) {
             this.cz.Set(i.Option.OrthogonalConfig.BasePoint.X ?? 0, i.Option.OrthogonalConfig.BasePoint.Y ?? 0, i.Option.OrthogonalConfig.BasePoint.Z ?? 0);
-            n = i.Option.OrthogonalConfig.FadeInTime ?? 0;
-            a = i.Option.OrthogonalConfig.FadeOutTime ?? 0;
-            this.$Jd.Set(this.cz, n, a, i.Option.FadeOutTime);
+            a = i.Option.OrthogonalConfig.FadeInTime ?? 0;
+            n = i.Option.OrthogonalConfig.FadeOutTime ?? 0;
+            this.$Jd.Set(this.cz, a, n, i.Option.FadeOutTime);
             r = this.$Jd;
           }
           ControllerHolder_1.ControllerHolder.CameraController.SceneCamera.PlayerComponent.EnterFixSceneSubCamera(l, s, i.Option.Fov, i.Option.FadeInTime, i.Option.FadeOutTime, 1, undefined, i.Option.BlendIn?.Type, i.Option.BlendIn?.BlendExp, i.Option.BlendOut?.Type, i.Option.BlendOut?.BlendExp, !!i.Option.OrthogonalConfig, r);
@@ -171,14 +175,14 @@ class LevelEventAdjustPlayerCamera extends LevelGeneralBase_1.LevelEventBase {
           }
           break;
         case IAction_1.EAdjustPlayerCamera.AxisLock:
-          var n = i.Option.AxisRotate.Y ?? 0;
-          var a = i.Option.AxisRotate.Z ?? 0;
-          this.yLe.DefaultConfig.set(45, n);
-          this.yLe.DefaultConfig.set(46, n);
-          this.yLe.DefaultConfig.set(60, a);
-          this.yLe.DefaultConfig.set(61, a);
+          var a = i.Option.AxisRotate.Y ?? 0;
+          var n = i.Option.AxisRotate.Z ?? 0;
+          this.yLe.DefaultConfig.set(45, a);
+          this.yLe.DefaultConfig.set(46, a);
+          this.yLe.DefaultConfig.set(60, n);
+          this.yLe.DefaultConfig.set(61, n);
           if (i.Option.ScreenConfig) {
-            if (Math.abs(ControllerHolder_1.ControllerHolder.CameraController.CameraRotator.Pitch - n) <= i.Option.ScreenConfig.TriggerAngle && Math.abs(ControllerHolder_1.ControllerHolder.CameraController.CameraRotator.Yaw - a) <= i.Option.ScreenConfig.TriggerAngle) {
+            if (Math.abs(ControllerHolder_1.ControllerHolder.CameraController.CameraRotator.Pitch - a) <= i.Option.ScreenConfig.TriggerAngle && Math.abs(ControllerHolder_1.ControllerHolder.CameraController.CameraRotator.Yaw - n) <= i.Option.ScreenConfig.TriggerAngle) {
               this.TLe(i, noAimGameplayTag);
             } else {
               l = i.Option.ScreenConfig.FadeInTime;
@@ -196,9 +200,12 @@ class LevelEventAdjustPlayerCamera extends LevelGeneralBase_1.LevelEventBase {
         case IAction_1.EAdjustPlayerCamera.FirstPerson:
           this.TLe(i, noAimGameplayTag);
           ControllerHolder_1.ControllerHolder.CameraController.SetHideHeadEnable(true, 0);
+          if (i.Option.HidePlayer) {
+            ModelManager_1.ModelManager.CameraModel.SetHidePlayer(true);
+          }
           break;
         case IAction_1.EAdjustPlayerCamera.FixedLookAt:
-          if (!this.PVm()) {
+          if (!this.X6m()) {
             if (Log_1.Log.CheckError()) {
               Log_1.Log.Error("Event", 74, "当前不能调整相机!");
             }
@@ -293,6 +300,42 @@ class LevelEventAdjustPlayerCamera extends LevelGeneralBase_1.LevelEventBase {
           } else {
             r.DefaultConfig.delete(45);
           }
+        } else if (e.Option.Type === IAction_1.EAdjustPlayerCamera.Horizontal) {
+          if (e.Option.OffsetInMovementDirection?.MinInterpolationSpeed !== undefined) {
+            r.DefaultConfig.set(70, 4);
+          } else {
+            r.DefaultConfig.delete(70);
+          }
+          if (e.Option.OffsetInMovementDirection?.MinInterpolationSpeed !== undefined) {
+            r.DefaultConfig.set(47, e.Option.OffsetInMovementDirection.MinInterpolationSpeed);
+          } else {
+            r.DefaultConfig.delete(47);
+          }
+          if (e.Option.OffsetInMovementDirection?.MaxInterpolationSpeed !== undefined) {
+            r.DefaultConfig.set(48, e.Option.OffsetInMovementDirection.MaxInterpolationSpeed);
+          } else {
+            r.DefaultConfig.delete(48);
+          }
+          if (e.Option.OffsetInMovementDirection?.OffsetDistance1 !== undefined) {
+            r.DefaultConfig.set(49, e.Option.OffsetInMovementDirection.OffsetDistance1);
+          } else {
+            r.DefaultConfig.delete(49);
+          }
+          if (e.Option.OffsetInMovementDirection?.OffsetDistance2 !== undefined) {
+            r.DefaultConfig.set(50, e.Option.OffsetInMovementDirection.OffsetDistance2);
+          } else {
+            r.DefaultConfig.delete(50);
+          }
+          if (e.Option.OffsetInMovementDirection?.StartupWaitTime !== undefined) {
+            r.DefaultConfig.set(111, e.Option.OffsetInMovementDirection.StartupWaitTime * MathUtils_1.MathUtils.MillisecondToSecond);
+          } else {
+            r.DefaultConfig.delete(111);
+          }
+          if (e.Option.OffsetInMovementDirection?.CenteringWaitTime !== undefined) {
+            r.DefaultConfig.set(112, e.Option.OffsetInMovementDirection.CenteringWaitTime * MathUtils_1.MathUtils.MillisecondToSecond);
+          } else {
+            r.DefaultConfig.delete(112);
+          }
         }
         return true;
       } else {
@@ -309,9 +352,10 @@ class LevelEventAdjustPlayerCamera extends LevelGeneralBase_1.LevelEventBase {
     }
   }
   TLe(e, t = undefined) {
+    this.Ytf(e);
     ControllerHolder_1.ControllerHolder.CameraController.FightCamera.LogicComponent?.CameraConfigController.EnableHookConfig(e.Option.Type, t);
     if (Global_1.Global.BaseCharacter) {
-      ModelManager_1.ModelManager.CreatureModel.GetEntityById(Global_1.Global.BaseCharacter.EntityId)?.Entity?.GetComponent(65)?.InterruptAutoMoving("进入相机调整AdjustPlayerCamera", true);
+      ModelManager_1.ModelManager.CreatureModel.GetEntityById(Global_1.Global.BaseCharacter.EntityId)?.Entity?.GetComponent(67)?.InterruptAutoMoving("进入相机调整AdjustPlayerCamera", true);
     }
   }
   OnUpdateGuarantee() {
@@ -319,16 +363,16 @@ class LevelEventAdjustPlayerCamera extends LevelGeneralBase_1.LevelEventBase {
       Name: "RestorePlayerCameraAdjustment"
     }, true);
   }
-  LQf(e, t, r, o, i, l, s, n = false, a = false, _ = 0, C = false, v, d = false) {
+  Zsg(e, t, r, o, i, l, s, a = false, n = false, _ = 0, v = false, d, h = false) {
     if (ControllerHolder_1.ControllerHolder.PanoramicController.CheckCanEnterCameraGuide()) {
-      ControllerHolder_1.ControllerHolder.CameraController.FightCamera.LogicComponent.ApplyCameraGuide(e, t, r, o, i, l, s, n, a, _, C, v, d);
-      if (this.RQf) {
-        TickSystem_1.TickSystem.Remove(this.RQf.Id);
-        this.RQf = undefined;
+      ControllerHolder_1.ControllerHolder.CameraController.FightCamera.LogicComponent.ApplyCameraGuide(e, t, r, o, i, l, s, a, n, _, v, d, h);
+      if (this.Jsg) {
+        TickSystem_1.TickSystem.Remove(this.Jsg.Id);
+        this.Jsg = undefined;
       }
-      this.RQf = TickSystem_1.TickSystem.Add(e => {
+      this.Jsg = TickSystem_1.TickSystem.Add(e => {
         var t = ControllerHolder_1.ControllerHolder.CameraController.FightCamera?.LogicComponent;
-        if (t && t.CameraCollision?.GetIsMiddleCollision() && (t.ExitCameraGuideAtOnce(), v?.(), this.RQf && (TickSystem_1.TickSystem.Remove(this.RQf.Id), this.RQf = undefined), Log_1.Log.CheckWarn())) {
+        if (t && t.CameraCollision?.GetIsMiddleCollision() && (t.ExitCameraGuideAtOnce(), d?.(), this.Jsg && (TickSystem_1.TickSystem.Remove(this.Jsg.Id), this.Jsg = undefined), Log_1.Log.CheckWarn())) {
           Log_1.Log.Warn("Panoramic", 74, "[环视]检测到相机碰撞, 退出CameraGuide");
         }
       }, "LevelEventAdjustPlayerCamera_TryEnterCameraGuide");
@@ -336,10 +380,10 @@ class LevelEventAdjustPlayerCamera extends LevelGeneralBase_1.LevelEventBase {
       if (Log_1.Log.CheckWarn()) {
         Log_1.Log.Warn("Event", 74, "[环视]TryEnterCameraGuide 当前无法进入CameraGuide, 直接跳过");
       }
-      v?.();
+      d?.();
     }
   }
-  PVm() {
+  X6m() {
     var e = this.OPt?.Option;
     var t = e.TargetType;
     var r = t.EntityId;
@@ -355,31 +399,45 @@ class LevelEventAdjustPlayerCamera extends LevelGeneralBase_1.LevelEventBase {
     }
     var l;
     var s;
-    var n = Vector_1.Vector.Create();
-    let a = 0;
-    return i?.Shape?.Type === "Cylinder" && (i = i?.Shape, !!(r = r.Transform?.Pos) && !(l = i.Height, a = i.Radius, n.FromConfigVector(r), n.Z += l / 2, n.IsNearlyZero()) && !(i = Vector_1.Vector.Create(), !(r = ControllerHolder_1.ControllerHolder.CameraController.FightCamera.LogicComponent.PlayerLocation)) && !((l = Vector_1.Vector.Create()).X = r.X, l.Y = r.Y, l.Z = n.Z, s = Vector_1.Vector.Create(), n.Subtraction(l, s), s.Normalize(), s.MultiplyEqual(-a), n.Addition(s, i), Log_1.Log.CheckInfo() && Log_1.Log.Info("Event", 45, "[环视]FixedLookAt", ["normalVector", s], ["cameraFinalVector", i], ["cameraLocation", r]), ControllerHolder_1.ControllerHolder.PanoramicController.EnterPanoramic(true, e.PlayerMoveTag), ControllerHolder_1.ControllerHolder.CameraController.FightCamera.LogicComponent.ExitSequenceDialogue(), o ? (FlowController_1.FlowController.StartFlowForCallback(o.FlowListName, o.FlowId, o.StateId, this.RVm), this.LQf(n, t?.FadeInTime ?? 1, 1, t?.FadeOutTime ?? 1, true, i, 75, false, true, 1, false, () => {
+    var a = Vector_1.Vector.Create();
+    let n = 0;
+    return i?.Shape?.Type === "Cylinder" && (i = i?.Shape, !!(r = r.Transform?.Pos) && !(l = i.Height, n = i.Radius, a.FromConfigVector(r), a.Z += l / 2, a.IsNearlyZero()) && !(i = Vector_1.Vector.Create(), !(r = ControllerHolder_1.ControllerHolder.CameraController.FightCamera.LogicComponent.PlayerLocation)) && !((l = Vector_1.Vector.Create()).X = r.X, l.Y = r.Y, l.Z = a.Z, s = Vector_1.Vector.Create(), a.Subtraction(l, s), s.Normalize(), s.MultiplyEqual(-n), a.Addition(s, i), Log_1.Log.CheckInfo() && Log_1.Log.Info("Event", 45, "[环视]FixedLookAt", ["normalVector", s], ["cameraFinalVector", i], ["cameraLocation", r]), ControllerHolder_1.ControllerHolder.PanoramicController.EnterPanoramic(true, e.PlayerMoveTag), ControllerHolder_1.ControllerHolder.CameraController.FightCamera.LogicComponent.ExitSequenceDialogue(), this.Ytf(this.OPt), o ? (FlowController_1.FlowController.StartFlowForCallback(o.FlowListName, o.FlowId, o.StateId, this.W6m), this.Zsg(a, t?.FadeInTime ?? 1, 1, t?.FadeOutTime ?? 1, true, i, 75, false, true, 1, false, () => {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Event", 45, "[环视]ApplyCameraGuide 等待StartFlowForCallback");
       }
-    }, true)) : this.LQf(n, t?.FadeInTime ?? 1, (t?.AfterFadeInStayTime ?? 0.02) < 0.02 ? 0.02 : t?.AfterFadeInStayTime ?? 0.02, t?.FadeOutTime ?? 1, true, i, 75, false, true, 1, false, this.RVm, true), 0));
+    }, true)) : this.Zsg(a, t?.FadeInTime ?? 1, (t?.AfterFadeInStayTime ?? 0.02) < 0.02 ? 0.02 : t?.AfterFadeInStayTime ?? 0.02, t?.FadeOutTime ?? 1, true, i, 75, false, true, 1, false, this.W6m, true), 0));
   }
   OnReset() {
     this.OPt = undefined;
-    if (this.TVm && this.TVm.Valid()) {
-      this.TVm.Remove();
+    if (this.H6m && this.H6m.Valid()) {
+      this.H6m.Remove();
     }
-    this.TVm = undefined;
-    if (this.bVm && this.bVm.Valid()) {
-      this.bVm.Remove();
+    this.H6m = undefined;
+    if (this.$6m && this.$6m.Valid()) {
+      this.$6m.Remove();
     }
-    this.bVm = undefined;
-    if (this.RQf) {
-      TickSystem_1.TickSystem.Remove(this.RQf.Id);
-      this.RQf = undefined;
+    this.$6m = undefined;
+    if (this.Jsg) {
+      TickSystem_1.TickSystem.Remove(this.Jsg.Id);
+      this.Jsg = undefined;
     }
   }
-  LVm() {
+  K6m() {
     return !this.OPt?.Option?.Type || this.OPt.Option.Type !== IAction_1.EAdjustPlayerCamera.FixedLookAt;
+  }
+  Ytf(e) {
+    var t = ControllerHolder_1.ControllerHolder.CameraController.FightCamera.LogicComponent;
+    if (t) {
+      if (e = e?.Option.GravityDirection) {
+        (e = Vector_1.Vector.Create(GravityUtils_1.GravityUtils.GetGravityDirectionByConfigAndActor(e, undefined))).Normalize();
+        t.SetCameraGravityMode(1, e);
+      } else {
+        t.SetCameraGravityMode(2);
+      }
+    }
+  }
+  Xtf() {
+    ControllerHolder_1.ControllerHolder.CameraController.FightCamera.LogicComponent?.SetCameraGravityMode(2);
   }
 }
 exports.LevelEventAdjustPlayerCamera = LevelEventAdjustPlayerCamera;

@@ -52,17 +52,23 @@ class VisionSubPropData {
     this.Pe = e;
   }
   GetSubPropName() {
-    var t = ConfigManager_1.ConfigManager.PhantomBattleConfig.GetPhantomSubPropertyById(this.PhantomSubProp.Yws).PropId;
+    return this.GetSubPropNameByPropId(this.PhantomSubProp.Yws);
+  }
+  GetSubPropNameByPropId(t) {
+    t = ConfigManager_1.ConfigManager.PhantomBattleConfig.GetPhantomSubPropertyById(t).PropId;
     return ConfigManager_1.ConfigManager.PropertyIndexConfig.GetPropertyIndexInfo(t).Name;
   }
   GetSlotIndex() {
     return this.wVi;
   }
   GetAttributeValueString() {
-    var t = ConfigManager_1.ConfigManager.PhantomBattleConfig.GetPhantomSubPropertyById(this.PhantomSubProp.Yws);
-    var e = t.AddType === CommonComponentDefine_1.RATIO;
-    var r = AttributeModel_1.TipsDataTool.GetPropRatioValue(this.PhantomSubProp.e5n, e);
-    return ModelManager_1.ModelManager.AttributeModel.GetFormatAttributeValueString(t.PropId, r, e);
+    return this.GetAttributeValueStringByPropId(this.PhantomSubProp.Yws, this.PhantomSubProp.e5n);
+  }
+  GetAttributeValueStringByPropId(t, e) {
+    var t = ConfigManager_1.ConfigManager.PhantomBattleConfig.GetPhantomSubPropertyById(t);
+    var r = t.AddType === CommonComponentDefine_1.RATIO;
+    var e = AttributeModel_1.TipsDataTool.GetPropRatioValue(e, r);
+    return ModelManager_1.ModelManager.AttributeModel.GetFormatAttributeValueString(t.PropId, e, r);
   }
   GetUnlockLevel() {
     var t = this.Pe.GetQuality();
@@ -79,6 +85,8 @@ class PhantomDataBase {
   constructor() {
     this.PhantomMainProp = [];
     this.PhantomSubProp = [];
+    this.UnAckSubProp = [];
+    this.LockSubPropIndices = [];
     this.PhantomLevel = 0;
     this.PhantomExp = 0;
     this.ItemId = 0;
@@ -101,11 +109,11 @@ class PhantomDataBase {
   GetPhantomLevel() {
     return this.PhantomLevel;
   }
-  GetVisionIfCanRecovery() {
-    return this.GetPhantomLevel() === 0 && this.GetExp() === 0 && !this.GetIsLock();
+  GetVisionIfCanRecovery(t) {
+    return (!t || !(this.GetQuality() < CalabashDefine_1.VISION_GOLD_QUALITY)) && this.GetPhantomLevel() === 0 && this.GetExp() === 0 && !this.GetIsLock();
   }
-  GetVisionIfCanRefine() {
-    return this.GetPhantomLevel() === 0 && this.GetExp() === 0 && this.GetQuality() >= CalabashDefine_1.VISION_REFINE_FILTER_QUALITY;
+  GetVisionIfCanRefine(t) {
+    return !(this.GetQuality() < CalabashDefine_1.VISION_REFINE_FILTER_QUALITY) && (t === 0 ? this.GetPhantomLevel() === 0 && this.GetExp() === 0 : t === 1 && this.GetMaxSubPropCount() === this.PhantomSubProp.length);
   }
   IsMax() {
     return this.PhantomLevel >= ControllerHolder_1.ControllerHolder.PhantomBattleController.GetMaxLevel(this.BVi);
@@ -148,12 +156,14 @@ class PhantomDataBase {
     this.PhantomSubProp = t.Wws ?? [];
     this.FetterGroupId = t.Kws ?? 0;
     this.bVi = t.Z7n ?? 0;
+    this.UnAckSubProp = t.DFg ?? [];
+    this.LockSubPropIndices = t.bSg ?? [];
   }
   SetMainProp(t) {
     this.PhantomMainProp = t;
   }
   SetSubProp(t) {
-    this.PhantomMainProp = t;
+    this.PhantomSubProp = t;
   }
   GetIncrId() {
     return this.BVi;
@@ -729,6 +739,12 @@ class PhantomDataBase {
   }
   GetPhantomSubProp() {
     return this.PhantomSubProp;
+  }
+  GetUnAckSubProp() {
+    return this.UnAckSubProp;
+  }
+  GetLockSubPropIndices() {
+    return this.LockSubPropIndices;
   }
   SetConfigId(t) {
     this.ItemId = t;

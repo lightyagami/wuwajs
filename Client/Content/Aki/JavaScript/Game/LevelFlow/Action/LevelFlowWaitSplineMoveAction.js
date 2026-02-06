@@ -45,7 +45,7 @@ class LevelFlowWaitSplineMoveAction extends LevelFlowActionBase_1.LevelFlowActio
     this.Vnr = ModelManager_1.ModelManager.GameSplineModel.LoadAndGetSplineComponent(this.Htn, this.E0, 1);
     if (this.Vnr) {
       if ((e = ModelManager_1.ModelManager.CreatureModel.GetEntityById(this.E0)) && e.Entity) {
-        this.aCm = e.Entity.GetComponent(115);
+        this.aCm = e.Entity.GetComponent(117);
         if (this.aCm) {
           this.n$t = e.Entity.GetComponent(1);
           if (this.n$t) {

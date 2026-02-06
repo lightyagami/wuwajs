@@ -15,6 +15,8 @@ class WhirlpoolPoint {
     this.H6 = 0;
     this.r1t = -1;
     this.dzo = 0;
+    this.whf = true;
+    this.Lhf = 0;
   }
   static GenId() {
     return WhirlpoolPoint.Czo++;
@@ -22,13 +24,16 @@ class WhirlpoolPoint {
   GetEnable() {
     return this.WI;
   }
+  GetCancelByHit() {
+    return this.whf;
+  }
   GetMoveTime() {
     return this.J7o;
   }
   GetId() {
     return this.xe;
   }
-  Begin(t, i, s, h, e = -1, r = 0) {
+  Begin(t, i, s, h, e = -1, r = 0, n = true, o = 0) {
     this.xe = t;
     this.J7o = i;
     this.ToLocation.FromUeVector(s);
@@ -37,6 +42,8 @@ class WhirlpoolPoint {
     this.H6 = 0;
     this.r1t = e;
     this.dzo = r;
+    this.whf = n;
+    this.Lhf = o;
   }
   UpdateLocation(t) {
     this.ToLocation.FromUeVector(t);
@@ -66,6 +73,9 @@ class WhirlpoolPoint {
         return 1 - t;
     }
     return t;
+  }
+  GetNeedTagId() {
+    return this.Lhf;
   }
 }
 (exports.WhirlpoolPoint = WhirlpoolPoint).Czo = 0;

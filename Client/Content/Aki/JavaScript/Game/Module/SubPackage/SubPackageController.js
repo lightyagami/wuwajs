@@ -31,14 +31,14 @@ const SubPackageDefine_1 = require("./SubPackageDefine");
 const ENTER_AREA_CD = 10000;
 class SubPackageController extends UiControllerBase_1.UiControllerBase {
   static DeleteUnneededResourceOnInit() {
-    if (!this.Zdf) {
-      this.Zdf = true;
+    if (!this.pgf) {
+      this.pgf = true;
       if (LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.SubDownLoadClearOnLogin)) {
         this.DeleteUnneededResource(false);
       }
     }
   }
-  static yGm() {
+  static xFm() {
     ModelManager_1.ModelManager.SubPackageDownLoadModel.PauseSubPackageId = 0;
     if (!ModelManager_1.ModelManager.SubPackageDownLoadModel.DownLoadingSubPackageId) {
       var e = ModelManager_1.ModelManager.SubPackageDownLoadModel.SubPackageDownLoadList.shift();
@@ -73,7 +73,7 @@ class SubPackageController extends UiControllerBase_1.UiControllerBase {
     }
   }
   static async PushSubPackageDownLoading(e, a) {
-    var o = await this.vZm();
+    var o = await this.nif();
     if (!o) {
       for (const r of e) {
         if (ModelManager_1.ModelManager.SubPackageDownLoadModel.GetSubPackageDownLoadItemStateById(r) !== 5 && ModelManager_1.ModelManager.SubPackageDownLoadModel.GetSubPackageDownLoadItemStateById(r) !== 1) {
@@ -86,7 +86,7 @@ class SubPackageController extends UiControllerBase_1.UiControllerBase {
         }
       }
       if (!ModelManager_1.ModelManager.SubPackageDownLoadModel.PauseSubPackageId) {
-        this.yGm();
+        this.xFm();
       }
       a?.();
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRefreshSubPackageDownLoadByPriority);
@@ -94,19 +94,19 @@ class SubPackageController extends UiControllerBase_1.UiControllerBase {
     }
   }
   static async RestartSubPackageDownLoading(e, a) {
-    if (!(await this.vZm())) {
+    if (!(await this.nif())) {
       if (ModelManager_1.ModelManager.SubPackageDownLoadModel.PauseSubPackageId) {
         ModelManager_1.ModelManager.SubPackageDownLoadModel.SubPackageDownLoadList.unshift(ModelManager_1.ModelManager.SubPackageDownLoadModel.PauseSubPackageId);
         ModelManager_1.ModelManager.SubPackageDownLoadModel.SetSubPackageDownLoadItemStateMap(ModelManager_1.ModelManager.SubPackageDownLoadModel.PauseSubPackageId, 3);
       }
-      this.yGm();
+      this.xFm();
       a?.();
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRefreshSubPackageDownLoadByPriority);
       this.SaveLocalDownLoadList();
     }
   }
   static async PrioritySubPackageDownLoading(a, e) {
-    var o = await this.vZm();
+    var o = await this.nif();
     if (!o) {
       var o = ModelManager_1.ModelManager.SubPackageDownLoadModel.PauseSubPackageId;
       if (o && !a.includes(o)) {
@@ -130,7 +130,7 @@ class SubPackageController extends UiControllerBase_1.UiControllerBase {
         ModelManager_1.ModelManager.SubPackageDownLoadModel.SetSubPackageDownLoadItemStateMap(_, 3);
       }
       ModelManager_1.ModelManager.SubPackageDownLoadModel.SubPackageDownLoadList.unshift(...n);
-      this.yGm();
+      this.xFm();
       e?.();
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRefreshSubPackageDownLoadByPriority);
       this.SaveLocalDownLoadList();
@@ -154,11 +154,11 @@ class SubPackageController extends UiControllerBase_1.UiControllerBase {
       ModelManager_1.ModelManager.SubPackageDownLoadModel.SetSubPackageDownLoadItemStateMap(a, 4);
       if (a === ModelManager_1.ModelManager.SubPackageDownLoadModel.PauseSubPackageId) {
         ModelManager_1.ModelManager.SubPackageDownLoadModel.PauseSubPackageId = 0;
-        this.yGm();
+        this.xFm();
       }
       if (a === ModelManager_1.ModelManager.SubPackageDownLoadModel.DownLoadingSubPackageId) {
         ModelManager_1.ModelManager.SubPackageDownLoadModel.DownLoadingSubPackageId = 0;
-        this.yGm();
+        this.xFm();
       }
       for (const e of ModelManager_1.ModelManager.SubPackageDownLoadModel.GetSubPackageDownLoadItemUpdater(a) ?? []) {
         e.Stop();
@@ -180,11 +180,11 @@ class SubPackageController extends UiControllerBase_1.UiControllerBase {
         ModelManager_1.ModelManager.SubPackageDownLoadModel.SetSubPackageDownLoadItemStateMap(r, 4);
         if (r === ModelManager_1.ModelManager.SubPackageDownLoadModel.PauseSubPackageId) {
           ModelManager_1.ModelManager.SubPackageDownLoadModel.PauseSubPackageId = 0;
-          this.yGm();
+          this.xFm();
         }
         if (r === ModelManager_1.ModelManager.SubPackageDownLoadModel.DownLoadingSubPackageId) {
           ModelManager_1.ModelManager.SubPackageDownLoadModel.DownLoadingSubPackageId = 0;
-          this.yGm();
+          this.xFm();
         }
         for (const n of ModelManager_1.ModelManager.SubPackageDownLoadModel.GetSubPackageDownLoadItemUpdater(r) ?? []) {
           n.Stop();
@@ -203,26 +203,33 @@ class SubPackageController extends UiControllerBase_1.UiControllerBase {
     }
     this.ReportSubPackageClearSpaceFinishLogEvent(!e);
   }
-  static async vZm() {
+  static async nif() {
     const e = new CustomPromise_1.CustomPromise();
-    var a;
-    if (!(LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.SubDownLoadAgreeUseCellData) ?? false) && ModelManager_1.ModelManager.SubPackageDownLoadModel.NetworkListener.GetNetworkType() === NetworkDefine_1.ENetworkType.Cell) {
-      (a = new ConfirmBoxDefine_1.ConfirmBoxDataNew(398)).FunctionMap.set(1, () => {
+    const a = (ModelManager_1.ModelManager.PlayerInfoModel.GetId() ?? 0) > 0;
+    var o;
+    if (!(a ? LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.SubDownLoadAgreeUseCellData) ?? false : this.FPg) && ModelManager_1.ModelManager.SubPackageDownLoadModel.NetworkListener.GetNetworkType() === NetworkDefine_1.ENetworkType.Cell) {
+      (o = new ConfirmBoxDefine_1.ConfirmBoxDataNew(398)).FunctionMap.set(1, () => {
         e?.SetResult(true);
         ControllerHolder_1.ControllerHolder.ConfirmBoxController.CloseConfirmBoxView();
+        if (!a) {
+          AppUtil_1.AppUtil.QuitGame("DownloadSubPackageNotAllowedInCellNetwork");
+        }
       });
-      a.FunctionMap.set(2, () => {
+      o.FunctionMap.set(2, () => {
         e?.SetResult(false);
-        LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.SubDownLoadAgreeUseCellData, true);
+        this.FPg = true;
+        if (a) {
+          LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.SubDownLoadAgreeUseCellData, true);
+        }
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRefreshSubPackUseCellData);
       });
-      ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowNetWorkConfirmBoxView(a);
+      ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowNetWorkConfirmBoxView(o);
     } else {
       e?.SetResult(false);
     }
     return e.Promise;
   }
-  static Oeg(a) {
+  static ShowDownloadSubPackageNetFailedConfirm(a) {
     var e = new ConfirmBoxDefine_1.ConfirmBoxDataNew(318);
     e.FunctionMap.set(1, () => {
       AppUtil_1.AppUtil.QuitGame("DownloadSubPackageNetFailed");
@@ -230,7 +237,7 @@ class SubPackageController extends UiControllerBase_1.UiControllerBase {
     e.FunctionMap.set(2, () => {
       var e = ModelManager_1.ModelManager.SubPackageDownLoadModel.NetworkListener.GetNetworkType();
       if (e === NetworkDefine_1.ENetworkType.Unknown || e === NetworkDefine_1.ENetworkType.None || e === NetworkDefine_1.ENetworkType.AirplaneMode) {
-        this.Oeg(a);
+        this.ShowDownloadSubPackageNetFailedConfirm(a);
       } else {
         this.RestartSubPackageDownLoading(a);
       }
@@ -239,47 +246,47 @@ class SubPackageController extends UiControllerBase_1.UiControllerBase {
   }
   static AutoDownLoadKeySubPackage() {
     this.PrioritySubPackageDownLoading([SubPackageDefine_1.KEY_SUBPACKAGE_ID]);
-    if (!(LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.SubDownLoadAgreeUseCellData) ?? false) && ModelManager_1.ModelManager.SubPackageDownLoadModel.NetworkListener.GetNetworkType() === NetworkDefine_1.ENetworkType.Cell) {
+    if (ModelManager_1.ModelManager.PlayerInfoModel.GetId() && !(LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.SubDownLoadAgreeUseCellData) ?? false) && ModelManager_1.ModelManager.SubPackageDownLoadModel.NetworkListener.GetNetworkType() === NetworkDefine_1.ENetworkType.Cell) {
       ModelManager_1.ModelManager.SubPackageDownLoadModel.SetSubPackageDownLoadItemStateMap(SubPackageDefine_1.KEY_SUBPACKAGE_ID, 2);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRefreshSubPackageDownLoadByPriority);
     }
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(19636, this.IGm);
-    Net_1.Net.Register(24355, this.TGm);
-    Net_1.Net.Register(16918, this.bGm);
-    Net_1.Net.Register(21065, this.RGm);
+    Net_1.Net.Register(27146, this.OFm);
+    Net_1.Net.Register(20746, this.GFm);
+    Net_1.Net.Register(22223, this.FFm);
+    Net_1.Net.Register(18294, this.NFm);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(19636);
-    Net_1.Net.UnRegister(24355);
-    Net_1.Net.UnRegister(16918);
-    Net_1.Net.UnRegister(21065);
+    Net_1.Net.UnRegister(27146);
+    Net_1.Net.UnRegister(20746);
+    Net_1.Net.UnRegister(22223);
+    Net_1.Net.UnRegister(18294);
   }
   static OnAddEvents() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.EnterAreaNotify, this.HFm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.EnterAreaNotify, this.l3m);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRoleChangeEnd, this.Ylo);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDoneAndCloseLoading, this.p5a);
     ModelManager_1.ModelManager.SubPackageDownLoadModel.NetworkListener.NetworkChangeDelegate.Add(this.cso);
   }
   static OnRemoveEvents() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.EnterAreaNotify, this.HFm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.EnterAreaNotify, this.l3m);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRoleChangeEnd, this.Ylo);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDoneAndCloseLoading, this.p5a);
     ModelManager_1.ModelManager.SubPackageDownLoadModel.NetworkListener.NetworkChangeDelegate.Clear();
   }
   static SceneBlockChangePush(e, a = []) {
-    e = Protocol_1.Aki.Protocol.rUm.create({
-      _Um: e,
-      uUm: a
+    e = Protocol_1.Aki.Protocol.vDm.create({
+      bDm: e,
+      RDm: a
     });
-    Net_1.Net.Send(24293, e);
+    Net_1.Net.Send(15831, e);
   }
   static SceneBlockSplitClientLoginPush(e) {
-    e = Protocol_1.Aki.Protocol.iUm.create({
-      _Um: e
+    e = Protocol_1.Aki.Protocol.pDm.create({
+      bDm: e
     });
-    Net_1.Net.Send(29799, e);
+    Net_1.Net.Send(18486, e);
   }
   static DownLoadFinish() {
     const a = ModelManager_1.ModelManager.SubPackageDownLoadModel.DownLoadingSubPackageId;
@@ -333,7 +340,7 @@ class SubPackageController extends UiControllerBase_1.UiControllerBase {
       }
       ControllerHolder_1.ControllerHolder.ResourceManagerController.UpdateServerQuestState();
       ModelManager_1.ModelManager.SubPackageDownLoadModel.DownLoadingSubPackageId = 0;
-      this.yGm();
+      this.xFm();
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRefreshSubPackageDownLoadByPriority);
       this.SaveLocalDownLoadList();
     }
@@ -409,21 +416,21 @@ class SubPackageController extends UiControllerBase_1.UiControllerBase {
   }
 }
 exports.SubPackageController = SubPackageController;
-(_a = SubPackageController).Zdf = false;
-SubPackageController.Geg = false;
+(_a = SubPackageController).pgf = false;
+SubPackageController.FPg = false;
 SubPackageController.cso = e => {
   const a = ModelManager_1.ModelManager.SubPackageDownLoadModel.DownLoadingSubPackageId;
   if (!ModelManager_1.ModelManager.PlayerInfoModel.GetId()) {
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("SubPackageDownLoad", 5, "OnNetworkTypeChange,playerId未设置", ["newType", e], ["downLoadingId", a], ["AgreeUseCell", _a.Geg]);
+      Log_1.Log.Info("SubPackageDownLoad", 5, "OnNetworkTypeChange,playerId未设置", ["newType", e], ["downLoadingId", a], ["AgreeUseCell", _a.FPg]);
     }
-    if (e === NetworkDefine_1.ENetworkType.Cell && a && !_a.Geg) {
+    if (e === NetworkDefine_1.ENetworkType.Cell && a && !_a.FPg) {
       _a.StopSubPackageDownLoading(a);
       (o = new ConfirmBoxDefine_1.ConfirmBoxDataNew(398)).FunctionMap.set(1, () => {
         AppUtil_1.AppUtil.QuitGame("DownloadSubPackageNotAllowedInCellNetwork");
       });
       o.FunctionMap.set(2, () => {
-        _a.Geg = true;
+        _a.FPg = true;
         _a.RestartSubPackageDownLoading(a);
       });
       ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowNetWorkConfirmBoxView(o);
@@ -431,7 +438,7 @@ SubPackageController.cso = e => {
     } else {
       if ((e === NetworkDefine_1.ENetworkType.Unknown || e === NetworkDefine_1.ENetworkType.None || e === NetworkDefine_1.ENetworkType.AirplaneMode) && !!a) {
         _a.StopSubPackageDownLoading(a);
-        _a.Oeg(a);
+        _a.ShowDownloadSubPackageNetFailedConfirm(a);
       }
       return;
     }
@@ -453,26 +460,26 @@ SubPackageController.cso = e => {
     ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowNetWorkConfirmBoxView(e);
   }
 };
-SubPackageController.IGm = e => {};
-SubPackageController.TGm = e => {};
-SubPackageController.bGm = e => {};
-SubPackageController.RGm = e => {
-  var a = e.dUm;
+SubPackageController.OFm = e => {};
+SubPackageController.GFm = e => {};
+SubPackageController.FFm = e => {};
+SubPackageController.NFm = e => {
+  var a = e.LDm;
   if (ControllerHolder_1.ControllerHolder.ResourceManagerController.IsNeedReOpenMap(a)) {
     ModelManager_1.ModelManager.SubPackageDownLoadModel.OpenBlockNeedReLoginConfirm();
   } else {
-    ModelManager_1.ModelManager.SubPackageDownLoadModel.OpenSubPackageDownLoadConfirm("SubPackageDownLoad_CommonLock_Confirm", [e.dUm]);
+    ModelManager_1.ModelManager.SubPackageDownLoadModel.OpenSubPackageDownLoadConfirm("SubPackageDownLoad_CommonLock_Confirm", [e.LDm]);
   }
 };
-SubPackageController.NTf = 0;
-SubPackageController.HFm = e => {
+SubPackageController.sAf = 0;
+SubPackageController.l3m = e => {
   if (!ControllerHolder_1.ControllerHolder.ConfirmBoxController.CheckIsConfirmBoxOpen()) {
     var a = ModelManager_1.ModelManager.SubPackageDownLoadModel.GetBlockBelongToSubPackage(e);
     if (ModelManager_1.ModelManager.SubPackageDownLoadModel.GetSubPackageDownLoadItemStateById(a) === 1) {
-      if (_a.NTf > TimeUtil_1.TimeUtil.GetServerTimeStamp()) {
+      if (_a.sAf > TimeUtil_1.TimeUtil.GetServerTimeStamp()) {
         return undefined;
       } else {
-        _a.NTf = TimeUtil_1.TimeUtil.GetServerTimeStamp() + ENTER_AREA_CD;
+        _a.sAf = TimeUtil_1.TimeUtil.GetServerTimeStamp() + ENTER_AREA_CD;
         ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("SubPackageDownLoad_Downloading");
         return;
       }
@@ -502,7 +509,7 @@ SubPackageController.p5a = () => {
         }
       }
       if (!ModelManager_1.ModelManager.SubPackageDownLoadModel.PauseSubPackageId) {
-        _a.yGm();
+        _a.xFm();
       }
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRefreshSubPackageDownLoadByPriority);
       _a.SaveLocalDownLoadList();

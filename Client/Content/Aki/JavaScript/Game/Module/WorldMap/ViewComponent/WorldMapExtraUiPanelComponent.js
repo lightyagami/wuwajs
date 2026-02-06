@@ -12,15 +12,15 @@ const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const MapComponent_1 = require("../../Map/Base/MapComponent");
-const WorldMapDefine_1 = require("../WorldMapDefine");
+const PhantomArenaMapEntrancePanel_1 = require("../../PhantomArena/Prepare/Entrance/PhantomArenaMapEntrancePanel");
 class WorldMapExtraUiPanelComponent extends MapComponent_1.MapComponent {
   constructor() {
     super(...arguments);
-    this.Sof = new Stack_1.Stack();
+    this.Nsf = new Stack_1.Stack();
     this.OnExtraUiViewOpened = undefined;
     this.OnExtraUiViewClosed = undefined;
-    this.Mof = undefined;
-    this.Eof = (e, t) => {
+    this.Vsf = undefined;
+    this.Hsf = (e, t) => {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Map", 87, "更新地图外部二级界面的标记类型", ["markType", e], ["visible", t]);
       }
@@ -31,13 +31,7 @@ class WorldMapExtraUiPanelComponent extends MapComponent_1.MapComponent {
     };
     this.OnPointerDrag = e => {
       ControllerHolder_1.ControllerHolder.WorldMapController.ClearFocalMarkItem();
-      this.Sof.Peek()?.OnPointerDrag(e);
-    };
-    this.Teh = () => {
-      if (this.Sof.Size !== 0) {
-        this.Lpf();
-        this.Ppf();
-      }
+      this.Nsf.Peek()?.OnPointerDrag(e);
     };
   }
   get ComponentType() {
@@ -51,95 +45,91 @@ class WorldMapExtraUiPanelComponent extends MapComponent_1.MapComponent {
     this.LogError(63, "[地图系统]->二级界面组件没有附加到容器下！");
   }
   OnAdd() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldMapExtraMarkTypeVisibleChange, this.Eof);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldMapAfterChangeMap, this.Teh);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldMapExtraMarkTypeVisibleChange, this.Hsf);
   }
   OnRemove() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldMapExtraMarkTypeVisibleChange, this.Eof);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldMapAfterChangeMap, this.Teh);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldMapExtraMarkTypeVisibleChange, this.Hsf);
   }
   OpenUi(e, t, i) {
-    var s = this.Sof.Peek();
-    if (s) {
-      if (s.PanelName === e) {
+    var r = this.Nsf.Peek();
+    if (r) {
+      if (r.PanelName === e) {
         this.LogInfo(87, "外部二级界面无需打开，直接处理逻辑", ["panelName", e]);
-        s.OnHandleShowParam?.(i);
+        r.OnHandleShowParam?.(i);
         return;
       }
-      s.Hide();
+      r.Hide();
     }
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Map", 87, "打开地图外部二级界面", ["panelName", e]);
     }
-    s = WorldMapDefine_1.extraUiPanelInfoMap[e];
-    const r = new s[0](e, this);
-    r.OpenParam = i;
-    this.Sof.Push(r);
-    r.CreateThenShowByResourceIdAsync(s[1], t).then(() => {
-      this.Iof(r);
+    r = WorldMapExtraUiPanelComponent.P$g[e];
+    const a = new r[0](e, this);
+    a.OpenParam = i;
+    this.Nsf.Push(a);
+    a.CreateThenShowByResourceIdAsync(r[1], t).then(() => {
+      this.jsf(a);
     });
   }
   CloseUi(e) {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Map", 87, "关闭地图外部二级界面", ["panelName", e.PanelName], ["ComponentId", e.ComponentId]);
     }
-    var t = this.Sof.Peek();
+    var t = this.Nsf.Peek();
     if (t) {
       if (t === e) {
-        this.Sof.Pop();
+        this.Nsf.Pop();
         e.Destroy();
-      } else if (this.Sof.Delete(e)) {
+      } else if (this.Nsf.Delete(e)) {
         e.Destroy();
       }
-      this.Tof();
-      this.Sof.Peek()?.Show();
+      this.$sf();
+      this.Nsf.Peek()?.Show();
     } else {
       this.LogError(87, "关闭地图外部二级界面失败，栈中没有元素", ["panelName", e.PanelName], ["ComponentId", e.ComponentId]);
     }
   }
-  Iof(e) {
+  jsf(e) {
     this.OnExtraUiViewOpened?.(e);
     this.tOt(true);
-    this.Lpf();
-    this.Ppf();
-    this.tXf();
+    this.RefreshDragAndScaleParam();
+    this.n_g();
     ModelManager_1.ModelManager.WorldMapModel.WorldExtraUiCount++;
   }
-  Tof() {
+  $sf() {
     this.OnExtraUiViewClosed?.();
     this.tOt(false);
-    this.Lpf();
-    this.Ppf();
-    this.tXf();
+    this.RefreshDragAndScaleParam();
+    this.n_g();
     ModelManager_1.ModelManager.WorldMapModel.WorldExtraUiCount--;
   }
   get IsExtraUiViewOpened() {
-    return this.Sof.Size > 0;
+    return this.Nsf.Size > 0;
   }
   tOt(e) {
-    if (this.WorldMapUiComponent && (e && this.Sof.Size === 1 && (this.Mof = this.WorldMapUiComponent.ScaleComponent.ScaleSlider), e = this.bof(e))) {
+    if (this.WorldMapUiComponent && (e && this.Nsf.Size === 1 && (this.Vsf = this.WorldMapUiComponent.ScaleComponent.ScaleSlider), e = this.Wsf(e))) {
       this.WorldMapUiComponent.ScaleComponent.ScaleSlider = e;
     }
   }
-  bof(e) {
-    if (e || this.Sof.Size !== 0) {
-      return this.Sof.Peek()?.GetScaleSlider?.();
+  Wsf(e) {
+    if (e || this.Nsf.Size !== 0) {
+      return this.Nsf.Peek()?.GetScaleSlider?.();
     } else {
-      return this.Mof;
+      return this.Vsf;
     }
   }
   ClickEmpty(e) {
     ControllerHolder_1.ControllerHolder.WorldMapController.ClearFocalMarkItem();
-    this.Sof.Peek()?.OnClickEmpty?.(e);
+    this.Nsf.Peek()?.OnClickEmpty?.(e);
   }
   ClickSingleMark(e) {
     this.ClearClickItem();
     this.SetClickItem(e);
-    this.Sof.Peek()?.OnClickMarkItem?.(e);
+    this.Nsf.Peek()?.OnClickMarkItem?.(e);
   }
   ClickMarks(e, t) {
     ControllerHolder_1.ControllerHolder.WorldMapController.ClearFocalMarkItem();
-    this.Sof.Peek()?.OnClickMarks?.(e, t);
+    this.Nsf.Peek()?.OnClickMarks?.(e, t);
   }
   SetClickItem(e) {
     var t;
@@ -171,29 +161,29 @@ class WorldMapExtraUiPanelComponent extends MapComponent_1.MapComponent {
     }
   }
   get IsEnableMapScale() {
-    var e = this.Sof.Peek();
+    var e = this.Nsf.Peek();
     return !e || (e.GetIsEnableMapScale() ?? true);
   }
   get IsEnableMapCursorButton() {
-    var e = this.Sof.Peek();
+    var e = this.Nsf.Peek();
     return !e || (e.GetIsEnableMapCursorButton() ?? true);
   }
   get MapDefaultScale() {
-    return this.Sof.Peek()?.GetDefaultMapScale(this.WorldMapUiComponent.MapId) ?? 0;
+    return this.Nsf.Peek()?.GetDefaultMapScale() ?? 0;
   }
   get MapMaxScale() {
-    return this.Sof.Peek()?.GetMaxMapScale(this.WorldMapUiComponent.MapId) ?? 0;
+    return this.Nsf.Peek()?.GetMaxMapScale() ?? 0;
   }
   get MapMinScale() {
-    return this.Sof.Peek()?.GetMinMapScale(this.WorldMapUiComponent.MapId) ?? 0;
+    return this.Nsf.Peek()?.GetMinMapScale() ?? 0;
   }
   get TileNum() {
-    return this.Sof.Peek()?.GetTileNum(this.WorldMapUiComponent.MapId);
+    return this.Nsf.Peek()?.GetTileNum();
   }
   get IsShowPlayerMark() {
-    return this.Sof.Peek()?.GetIsShowPlayerMark() ?? true;
+    return this.Nsf.Peek()?.GetIsShowPlayerMark() ?? true;
   }
-  Lpf() {
+  cSf() {
     var e;
     if (this.MapDefaultScale === 0 || this.MapMaxScale === 0 || this.MapMinScale === 0) {
       ModelManager_1.ModelManager.WorldMapModel.ResetMapScale();
@@ -205,7 +195,7 @@ class WorldMapExtraUiPanelComponent extends MapComponent_1.MapComponent {
     }
     this.WorldMapUiComponent?.ScaleComponent.Initialize();
   }
-  Ppf() {
+  dSf() {
     if (this.TileNum) {
       this.WorldMapUiComponent?.Map?.UpdateDraggableParams(this.TileNum);
     } else {
@@ -213,9 +203,15 @@ class WorldMapExtraUiPanelComponent extends MapComponent_1.MapComponent {
     }
     this.WorldMapUiComponent?.RecalculateMapSize();
   }
-  tXf() {
+  n_g() {
     this.WorldMapUiComponent?.InitSelfPlayerMark();
   }
+  RefreshDragAndScaleParam() {
+    this.dSf();
+    this.cSf();
+  }
 }
-exports.WorldMapExtraUiPanelComponent = WorldMapExtraUiPanelComponent;
+(exports.WorldMapExtraUiPanelComponent = WorldMapExtraUiPanelComponent).P$g = {
+  PhantomArenaMapEntrance: [PhantomArenaMapEntrancePanel_1.PhantomArenaMapEntrancePanel, "UiView_SoundRemnantArenaMap"]
+};
 //# sourceMappingURL=WorldMapExtraUiPanelComponent.js.map

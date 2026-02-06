@@ -483,14 +483,14 @@ class KuroSdkModel extends ModelBase_1.ModelBase {
   }
   GetQueryNoticeReadStateUrl(e = 0) {
     if (ModelManager_1.ModelManager.KuroSdkModel.GetEntryPointData()) {
-      return `${this.nHm(e)}/notice/read-ids/list?uid=${ModelManager_1.ModelManager.PlayerInfoModel.GetId() === undefined ? "0" : ModelManager_1.ModelManager.PlayerInfoModel.GetId().toString()}&sign=${ModelManager_1.ModelManager.KuroSdkModel.NoticeSign}&serverId=${ModelManager_1.ModelManager.LoginServerModel.GetCurrentLoginServerId()}`;
+      return `${this.q$m(e)}/notice/read-ids/list?uid=${ModelManager_1.ModelManager.PlayerInfoModel.GetId() === undefined ? "0" : ModelManager_1.ModelManager.PlayerInfoModel.GetId().toString()}&sign=${ModelManager_1.ModelManager.KuroSdkModel.NoticeSign}&serverId=${ModelManager_1.ModelManager.LoginServerModel.GetCurrentLoginServerId()}`;
     } else {
       return "";
     }
   }
   GetQueryNoticeRedDotStateUrl(e = 0) {
     if (ModelManager_1.ModelManager.KuroSdkModel.GetEntryPointData()) {
-      return `${this.nHm(e)}/notice/red-dot/get?uid=${ModelManager_1.ModelManager.PlayerInfoModel.GetId() === undefined ? "0" : ModelManager_1.ModelManager.PlayerInfoModel.GetId().toString()}&sign=${ModelManager_1.ModelManager.KuroSdkModel.NoticeSign}&serverId=${ModelManager_1.ModelManager.LoginServerModel.GetCurrentLoginServerId()}&language=${LanguageSystem_1.LanguageSystem.PackageLanguage}&channel=${ControllerHolder_1.ControllerHolder.KuroSdkController.GetChannelId()}&platform=${this.GetPlatformStr()}&gameId=${PublicUtil_1.PublicUtil.GetGameId()}&svrArea=${ControllerHolder_1.ControllerHolder.KuroSdkController.GetIfGlobalSdk() ? "global" : "cn"}`;
+      return `${this.q$m(e)}/notice/red-dot/get?uid=${ModelManager_1.ModelManager.PlayerInfoModel.GetId() === undefined ? "0" : ModelManager_1.ModelManager.PlayerInfoModel.GetId().toString()}&sign=${ModelManager_1.ModelManager.KuroSdkModel.NoticeSign}&serverId=${ModelManager_1.ModelManager.LoginServerModel.GetCurrentLoginServerId()}&language=${LanguageSystem_1.LanguageSystem.PackageLanguage}&channel=${ControllerHolder_1.ControllerHolder.KuroSdkController.GetChannelId()}&platform=${this.GetPlatformStr()}&gameId=${PublicUtil_1.PublicUtil.GetGameId()}&svrArea=${ControllerHolder_1.ControllerHolder.KuroSdkController.GetIfGlobalSdk() ? "global" : "cn"}`;
     } else {
       return "";
     }
@@ -511,7 +511,7 @@ class KuroSdkModel extends ModelBase_1.ModelBase {
       return "";
     }
   }
-  nHm(e = 0) {
+  q$m(e = 0) {
     var t;
     if (ModelManager_1.ModelManager.KuroSdkModel.GetEntryPointData()) {
       if (e >= (t = ModelManager_1.ModelManager.KuroSdkModel.GetEntryPointData()).apiUrls.length) {

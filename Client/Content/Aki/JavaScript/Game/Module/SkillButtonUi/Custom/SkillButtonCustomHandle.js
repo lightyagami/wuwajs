@@ -3,15 +3,19 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.SkillButtonCustomHandleZanNiUltimate = exports.SkillButtonCustomHandleHackFollowAttach = exports.SkillButtonCustomHandleKeLaiTaUltimate = exports.SkillButtonCustomHandleBase = undefined;
+exports.SkillButtonCustomHandleDotIndicator = exports.SkillButtonCustomHandleAimisiMobileUpDown = exports.SkillButtonCustomHandleZanNiUltimate = exports.SkillButtonCustomHandleHackFollowAttach = exports.SkillButtonCustomHandleKeLaiTaUltimate = exports.SkillButtonCustomHandleBase = undefined;
+const Info_1 = require("../../../../Core/Common/Info");
 class SkillButtonCustomHandleBase {
   constructor() {
     this.SkillButtonData = undefined;
     this.TagIds = [];
     this.BuffIds = [];
+    this.Params = [];
     this.ForceEnable = false;
     this.SkillCdModifyMark = false;
     this.EnableModifyMark = false;
+    this.CustomHdModifyMark = false;
+    this.CustomHdMarkFrom = -1;
   }
   Init(t) {
     this.SkillButtonData = t;
@@ -20,6 +24,9 @@ class SkillButtonCustomHandleBase {
   OnInit() {}
   Refresh() {}
   RefreshByTagChanged() {}
+  RefreshOnInputControllerChange() {
+    return false;
+  }
   ClearModifyMark() {
     this.SkillCdModifyMark = false;
     this.EnableModifyMark = false;
@@ -84,7 +91,7 @@ class SkillButtonCustomHandleHackFollowAttach extends SkillButtonCustomHandleBas
   }
   OnInit() {
     if (this.SkillButtonData) {
-      this.P2_ = this.SkillButtonData.GetEntityHandle()?.Entity?.GetComponent(304);
+      this.P2_ = this.SkillButtonData.GetEntityHandle()?.Entity?.GetComponent(306);
     }
   }
   Refresh() {
@@ -144,4 +151,50 @@ class SkillButtonCustomHandleZanNiUltimate extends SkillButtonCustomHandleBase {
   }
 }
 exports.SkillButtonCustomHandleZanNiUltimate = SkillButtonCustomHandleZanNiUltimate;
+class SkillButtonCustomHandleAimisiMobileUpDown extends SkillButtonCustomHandleBase {
+  Refresh() {
+    var t;
+    if (!!this.SkillButtonData && !(this.TagIds.length < 1)) {
+      if (Info_1.Info.IsInTouch() && (t = this.SkillButtonData.GameplayTagComponent)?.HasTag(this.TagIds[0]) && t.HasTag(this.TagIds[1])) {
+        this.SkillButtonData.CustomSkillTexturePath = this.Params[0];
+        this.SkillButtonData.CustomSkillIconName = this.Params[1];
+        this.SkillButtonData.IsEnableSlideControl = true;
+      } else {
+        this.SkillButtonData.CustomSkillIconName = undefined;
+        this.SkillButtonData.CustomSkillTexturePath = undefined;
+        this.SkillButtonData.IsEnableSlideControl = false;
+      }
+    }
+  }
+  RefreshByTagChanged() {
+    this.Refresh();
+  }
+  RefreshOnInputControllerChange() {
+    this.Refresh();
+    return true;
+  }
+}
+exports.SkillButtonCustomHandleAimisiMobileUpDown = SkillButtonCustomHandleAimisiMobileUpDown;
+class SkillButtonCustomHandleDotIndicator extends SkillButtonCustomHandleBase {
+  Refresh() {
+    var t;
+    if (!!this.SkillButtonData && !(this.TagIds.length < 2)) {
+      if (this.Params.length < 1 || this.Params[0] === "" || this.SkillButtonData.GetActionType() === Number(this.Params[0])) {
+        t = this.SkillButtonData.GameplayTagComponent;
+        this.SkillButtonData.IsEnableDotIndicator = t?.HasTag(this.TagIds[0]) ?? false;
+        this.SkillButtonData.DotIndicatorCount = t?.GetTagCount(this.TagIds[1]) ?? 0;
+        this.CustomHdModifyMark = true;
+        this.CustomHdMarkFrom = 5;
+      }
+    }
+  }
+  RefreshByTagChanged() {
+    this.Refresh();
+  }
+  RefreshOnInputControllerChange() {
+    this.Refresh();
+    return true;
+  }
+}
+exports.SkillButtonCustomHandleDotIndicator = SkillButtonCustomHandleDotIndicator;
 //# sourceMappingURL=SkillButtonCustomHandle.js.map

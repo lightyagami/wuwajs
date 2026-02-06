@@ -225,7 +225,7 @@ class LevelFlowResourceManager {
     this.y1m.clear();
   }
   static async LoadDestructibleActor(o, r) {
-    if (this.rTm.has(o)) {
+    if (this.fTm.has(o)) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("LevelFlow", 58, "DestructibleActor已经存在", ["Key", o]);
       }
@@ -233,9 +233,9 @@ class LevelFlowResourceManager {
       await this.tJ();
       var a = ActorSystem_1.ActorSystem.Spawn(UE.BP_KuroTrackTargetWhileRotate_C.StaticClass(), r.SpawnDestructibleParam.StartTransform, undefined);
       if (a?.IsValid()) {
-        this.rTm.set(o, a);
+        this.fTm.set(o, a);
         var i = await this.JMm(r.SpawnDestructibleParam.KuroDestructibleAsset, UE.KuroDestructibleAsset);
-        var e = await this.oTm(r.SpawnDestructibleParam.KuroDestructibleDestructionAsset, UE.KuroDestructibleDestructionAsset);
+        var e = await this.gTm(r.SpawnDestructibleParam.KuroDestructibleDestructionAsset, UE.KuroDestructibleDestructionAsset);
         if (i && e) {
           const s = this.ZMm(o, r.SpawnDestructibleParam.StartTransform, i, e);
           if (s?.IsValid() && s.ProxyMeshComponent?.IsValid()) {
@@ -249,7 +249,7 @@ class LevelFlowResourceManager {
                 t = undefined;
               }
             }, 100);
-            this.nTm.set(o, s);
+            this.CTm.set(o, s);
             s.StartDestruction.Bind(() => {
               if (t) {
                 TimerSystem_1.TimerSystem.Remove(t);
@@ -257,9 +257,9 @@ class LevelFlowResourceManager {
               }
               LevelFlowResourceManager.cTa(o);
               if (s?.IsValid() && s.KuroDestructibleDestructionAsset?.IsValid()) {
-                this.czm(s, s.KuroDestructibleDestructionAsset.DestructionEffect, o);
+                this.XZm(s, s.KuroDestructibleDestructionAsset.DestructionEffect, o);
               }
-              this.sTm(o, false, 0, 0);
+              this.pTm(o, false, 0, 0);
             });
             i = a.GetComponentByClass(UE.KuroFauxPhysicsTrackTargetComponent.StaticClass());
             const c = r.SpawnDestructibleParam;
@@ -276,9 +276,9 @@ class LevelFlowResourceManager {
                     TimerSystem_1.TimerSystem.Remove(t);
                     t = undefined;
                   }
-                  this.sTm(o, true, c.HitBuff, c.RevertMaxHp);
+                  this.pTm(o, true, c.HitBuff, c.RevertMaxHp);
                   LevelFlowResourceManager.cTa(o);
-                  this.czm(s, stopTrackTargetEffectParam, o);
+                  this.XZm(s, stopTrackTargetEffectParam, o);
                   s.StartDestruction.Unbind();
                   s.ApplyDamage(c.DamageAmount, s.K2_GetActorLocation(), e, 100);
                 }
@@ -310,21 +310,21 @@ class LevelFlowResourceManager {
     }
   }
   static ReleaseDestructibleActor(e) {
-    var t = this.nTm.get(e);
+    var t = this.CTm.get(e);
     if (t?.IsValid()) {
       t.K2_DetachFromActor(1, 1, 1);
       ActorSystem_1.ActorSystem.Put("LevelFlowReleaseDestructibleActor", t);
     }
-    this.nTm.delete(e);
-    var t = this.rTm.get(e);
+    this.CTm.delete(e);
+    var t = this.fTm.get(e);
     if (t?.IsValid()) {
       ActorSystem_1.ActorSystem.Put("LevelFlowReleaseDestructibleRotateActor", t);
     }
-    this.rTm.delete(e);
+    this.fTm.delete(e);
     LevelFlowResourceManager.cTa(e);
   }
-  static aTm() {
-    for (const e of this.nTm.keys()) {
+  static vTm() {
+    for (const e of this.CTm.keys()) {
       this.ReleaseDestructibleActor(e);
     }
   }
@@ -342,7 +342,7 @@ class LevelFlowResourceManager {
     });
     return o.Promise;
   }
-  static async oTm(e, t) {
+  static async gTm(e, t) {
     const o = new CustomPromise_1.CustomPromise();
     ResourceSystem_1.ResourceSystem.LoadAsync(e, t, (e, t) => {
       o.SetResult(e);
@@ -350,27 +350,27 @@ class LevelFlowResourceManager {
     return o.Promise;
   }
   static cTa(e) {
-    e = LevelFlowResourceManager.uzm.get(e);
+    e = LevelFlowResourceManager.KZm.get(e);
     if (e) {
       for (const t of e) {
         EffectSystem_1.EffectSystem.StopEffectById(t, "LevelFlowResourceManager.PlayEffectWhenStartDestruction", true);
       }
     }
   }
-  static czm(e, t, o) {
+  static XZm(e, t, o) {
     if (e?.IsValid()) {
       e = LevelFlowResourceManager.NQt(e, t);
-      if (!LevelFlowResourceManager.uzm.has(o)) {
-        LevelFlowResourceManager.uzm.set(o, new Set());
+      if (!LevelFlowResourceManager.KZm.has(o)) {
+        LevelFlowResourceManager.KZm.set(o, new Set());
       }
-      LevelFlowResourceManager.uzm.get(o).add(e);
+      LevelFlowResourceManager.KZm.get(o).add(e);
     }
   }
   static ZMm(t, e, o, r) {
     const a = UE.GameplayStatics.D_BeginDeferredActorSpawnFromClass(Global_1.Global.BaseCharacter, UE.KuroDestructibleActor.StaticClass(), e, 2);
     if (a?.IsValid()) {
       a.PlayEffectPostInitialized.Bind(e => {
-        LevelFlowResourceManager.czm(a, e, t);
+        LevelFlowResourceManager.XZm(a, e, t);
       });
       a.KuroDestructibleAsset = o;
       a.KuroDestructibleDestructionAsset = r;
@@ -387,7 +387,7 @@ class LevelFlowResourceManager {
   static Release() {
     this.ReleaseAllSequence();
     this.Rpm();
-    this.aTm();
+    this.vTm();
   }
 }
 exports.LevelFlowResourceManager = LevelFlowResourceManager;
@@ -395,9 +395,9 @@ exports.LevelFlowResourceManager = LevelFlowResourceManager;
 LevelFlowResourceManager.O2_ = undefined;
 LevelFlowResourceManager.v1m = new Map();
 LevelFlowResourceManager.y1m = new Map();
-LevelFlowResourceManager.rTm = new Map();
-LevelFlowResourceManager.uzm = new Map();
-LevelFlowResourceManager.nTm = new Map();
+LevelFlowResourceManager.fTm = new Map();
+LevelFlowResourceManager.KZm = new Map();
+LevelFlowResourceManager.CTm = new Map();
 LevelFlowResourceManager.NQt = (e, t) => {
   var o = EffectSystem_1.EffectSystem.SpawnEffect(e, e.D_GetTransform(), t.EffectModelPath.toString(), "LevelFlowResourceManager.SpawnEffect");
   var r = EffectSystem_1.EffectSystem.GetEffectActor(o);
@@ -407,19 +407,19 @@ LevelFlowResourceManager.NQt = (e, t) => {
   r?.K2_AddActorLocalTransform(t.Offset, false, undefined, false);
   return o;
 };
-LevelFlowResourceManager.sTm = (e, t, o, r) => {
-  var a = _a.nTm.get(e);
+LevelFlowResourceManager.pTm = (e, t, o, r) => {
+  var a = _a.CTm.get(e);
   if (a?.IsValid()) {
     a.K2_DetachFromActor(1, 1, 1);
     AudioSystem_1.AudioSystem.PostEvent(DEFAULT_AK_EVENT_NAME, a);
   }
-  var a = _a.rTm.get(e);
+  var a = _a.fTm.get(e);
   if (a?.IsValid()) {
     ActorSystem_1.ActorSystem.Put("LevelFlowReleaseDestructibleRotateActor", a);
   }
-  _a.rTm.delete(e);
+  _a.fTm.delete(e);
   if (!!t && !!o && !!r && !(o <= 0) && !(r <= 0)) {
-    if ((a = Global_1.Global.BaseCharacter.CharacterActorComponent.Entity.GetComponent(182)?.GetCurrentValue(CharacterAttributeTypes_1.EAttributeId.Proto_Life)) && r < a) {
+    if ((a = Global_1.Global.BaseCharacter.CharacterActorComponent.Entity.GetComponent(184)?.GetCurrentValue(CharacterAttributeTypes_1.EAttributeId.Proto_Life)) && r < a) {
       ModelManager_1.ModelManager.LevelFlowModel.PushDynamicAction(new LevelFlowAddBuffAction_1.LevelFlowAddBuffAction().Init(Global_1.Global.BaseCharacter.CharacterActorComponent.Entity.Id, [o]));
     }
   }

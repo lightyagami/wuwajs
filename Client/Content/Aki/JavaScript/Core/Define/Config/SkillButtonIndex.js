@@ -58,6 +58,24 @@ class SkillButtonIndex {
   gamepadbuttontypemapValue(t) {
     return this.gamepadbuttontypemap(t)?.value();
   }
+  get MotorPadButtonTypeMap() {
+    return GameUtils_1.GameUtils.ConvertToMap(this.motorpadbuttontypemapLength(), this.motorpadbuttontypemapKey, this.motorpadbuttontypemapValue, this);
+  }
+  motorpadbuttontypemapKey(t) {
+    return this.motorpadbuttontypemap(t)?.key();
+  }
+  motorpadbuttontypemapValue(t) {
+    return this.motorpadbuttontypemap(t)?.value();
+  }
+  get MotorJoystickPadButtonTypeMap() {
+    return GameUtils_1.GameUtils.ConvertToMap(this.motorjoystickpadbuttontypemapLength(), this.motorjoystickpadbuttontypemapKey, this.motorjoystickpadbuttontypemapValue, this);
+  }
+  motorjoystickpadbuttontypemapKey(t) {
+    return this.motorjoystickpadbuttontypemap(t)?.key();
+  }
+  motorjoystickpadbuttontypemapValue(t) {
+    return this.motorjoystickpadbuttontypemap(t)?.value();
+  }
   __init(t, s) {
     this.z7 = t;
     this.J7 = s;
@@ -236,6 +254,44 @@ class SkillButtonIndex {
   }
   gamepadbuttontypemapLength() {
     var t = this.J7.__offset(this.z7, 20);
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  GetMotorpadbuttontypemapAt(t, s) {
+    return this.motorpadbuttontypemap(t);
+  }
+  motorpadbuttontypemap(t, s) {
+    var i = this.J7.__offset(this.z7, 22);
+    if (i) {
+      return (s || new DicIntIntArray_1.DicIntIntArray()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + i) + t * 4), this.J7);
+    } else {
+      return null;
+    }
+  }
+  motorpadbuttontypemapLength() {
+    var t = this.J7.__offset(this.z7, 22);
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  GetMotorjoystickpadbuttontypemapAt(t, s) {
+    return this.motorjoystickpadbuttontypemap(t);
+  }
+  motorjoystickpadbuttontypemap(t, s) {
+    var i = this.J7.__offset(this.z7, 24);
+    if (i) {
+      return (s || new DicIntIntArray_1.DicIntIntArray()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + i) + t * 4), this.J7);
+    } else {
+      return null;
+    }
+  }
+  motorjoystickpadbuttontypemapLength() {
+    var t = this.J7.__offset(this.z7, 24);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {

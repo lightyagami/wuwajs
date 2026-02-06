@@ -44,7 +44,7 @@ class PhantomArenaBattleModel extends ModelBase_1.ModelBase {
     this.Mcu = undefined;
     this.L8u = false;
     this.A8u = new Map();
-    this.okm = 0;
+    this.vqm = 0;
     this.IsOldBvb = false;
     this.IsBattleLoading = false;
     this.CurrentLoading = 0;
@@ -52,14 +52,14 @@ class PhantomArenaBattleModel extends ModelBase_1.ModelBase {
       this.SetIsInBattle(false);
       AudioSystem_1.AudioSystem.ExecuteAction("play_music_arena_battle", 0);
     };
-    this.Xeg = new Map();
-    this.Yeg = new Map();
+    this.YPg = new Map();
+    this.JPg = new Map();
   }
   get Round() {
     return this.usu;
   }
   get ChallengeId() {
-    return this.okm;
+    return this.vqm;
   }
   InitData() {
     this.usu = 1;
@@ -71,7 +71,7 @@ class PhantomArenaBattleModel extends ModelBase_1.ModelBase {
     this.SelectCardData = new PhantomArenaSelectCardData_1.PhantomArenaSelectCardData();
   }
   SetChallengeId(t) {
-    this.okm = t;
+    this.vqm = t;
     t = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleChallenge(t);
     t = ConfigManager_1.ConfigManager.ActivityConfig.GetActivityConfig(t.ActivityId);
     this.IsOldBvb = t?.Type === Protocol_1.Aki.Protocol.uks.Proto_PhantomBattle;
@@ -162,7 +162,7 @@ class PhantomArenaBattleModel extends ModelBase_1.ModelBase {
   ApplySpeedBuff(t) {
     var t = 1 / t;
     var e = Global_1.Global.BaseCharacter;
-    if (e !== undefined && UE.KismetSystemLibrary.IsValid(e) && (e = e.EntityId, e = EntitySystem_1.EntitySystem.GetComponent(e, 131))) {
+    if (e !== undefined && UE.KismetSystemLibrary.IsValid(e) && (e = e.EntityId, e = EntitySystem_1.EntitySystem.GetComponent(e, 133))) {
       e.SetForeverTimeScale(13, t);
     }
   }
@@ -225,25 +225,25 @@ class PhantomArenaBattleModel extends ModelBase_1.ModelBase {
   AddWaitCallCardIdList(t) {
     for (const a of t) {
       var e = this.OwnData.GetBattleCardByCardId(a);
-      this.Xeg.set(a, e.Index);
+      this.YPg.set(a, e.Index);
     }
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("PhantomArena", 10, "添加等待召唤卡牌ID列表", ["CardIdList", t], ["WaitCallCardIdMap", this.Xeg.size]);
+      Log_1.Log.Info("PhantomArena", 10, "添加等待召唤卡牌ID列表", ["CardIdList", t], ["WaitCallCardIdMap", this.YPg.size]);
     }
   }
   RemoveWaitCallCardIdList(t) {
     for (const e of t) {
-      this.Xeg.delete(e);
+      this.YPg.delete(e);
     }
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("PhantomArena", 10, "移除等待召唤卡牌ID列表", ["CardIdList", t], ["WaitCallCardIdMap", this.Xeg.size]);
+      Log_1.Log.Info("PhantomArena", 10, "移除等待召唤卡牌ID列表", ["CardIdList", t], ["WaitCallCardIdMap", this.YPg.size]);
     }
   }
   InWaitCallCardIdList(t) {
-    return this.Xeg.has(t);
+    return this.YPg.has(t);
   }
-  zeg() {
-    this.Xeg.clear();
+  zPg() {
+    this.YPg.clear();
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("PhantomArena", 10, "清空等待召唤卡牌ID列表");
     }
@@ -251,45 +251,48 @@ class PhantomArenaBattleModel extends ModelBase_1.ModelBase {
   AddWaitReconstructCardIdList(t) {
     for (const a of t) {
       var e = this.OwnData.GetBattleCardByCardId(a);
-      this.Yeg.set(a, e.Index);
+      this.JPg.set(a, e.Index);
     }
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("PhantomArena", 10, "添加等待重构卡牌ID列表", ["CardIdList", t], ["WaitReconstructCardIdSet", this.Yeg.size]);
+      Log_1.Log.Info("PhantomArena", 10, "添加等待重构卡牌ID列表", ["CardIdList", t], ["WaitReconstructCardIdSet", this.JPg.size]);
     }
   }
   RemoveWaitReconstructCardIdList(t) {
     for (const e of t) {
-      this.Yeg.delete(e);
+      this.JPg.delete(e);
     }
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("PhantomArena", 10, "移除等待重构卡牌ID列表", ["CardIdList", t], ["WaitReconstructCardIdMap", this.Yeg.size]);
+      Log_1.Log.Info("PhantomArena", 10, "移除等待重构卡牌ID列表", ["CardIdList", t], ["WaitReconstructCardIdMap", this.JPg.size]);
     }
   }
   InWaitReconstructCardIdList(t) {
-    return this.Yeg.has(t);
+    return this.JPg.has(t);
   }
-  Jeg() {
-    this.Yeg.clear();
+  ZPg() {
+    this.JPg.clear();
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("PhantomArena", 10, "清空等待重构卡牌ID列表");
     }
   }
   CanSetSlotIndex(t) {
-    for (const e of this.Xeg.values()) {
+    for (const e of this.YPg.values()) {
       if (e === t) {
         return false;
       }
     }
-    for (const a of this.Yeg.values()) {
+    for (const a of this.JPg.values()) {
       if (a === t) {
         return false;
       }
     }
     return true;
   }
+  CanDragCard(t) {
+    return !this.InWaitCallCardIdList(t) && !this.InWaitReconstructCardIdList(t);
+  }
   ClearWaitBattleData() {
-    this.zeg();
-    this.Jeg();
+    this.zPg();
+    this.ZPg();
   }
 }
 exports.PhantomArenaBattleModel = PhantomArenaBattleModel;

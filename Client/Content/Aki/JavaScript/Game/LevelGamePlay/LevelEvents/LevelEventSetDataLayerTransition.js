@@ -24,7 +24,7 @@ class LevelEventSetDataLayerTransition extends LevelGeneralBase_1.LevelEventBase
         r = r[1] + "." + r[2];
         a = LevelGamePlayUtils_1.LevelGamePlayUtils.GetEntityHandle(undefined, a);
         if (a?.Valid) {
-          a = a.Entity?.GetComponent(172);
+          a = a.Entity?.GetComponent(174);
           if (a && !a.IsValidPlatFormPath(r)) {
             return;
           }

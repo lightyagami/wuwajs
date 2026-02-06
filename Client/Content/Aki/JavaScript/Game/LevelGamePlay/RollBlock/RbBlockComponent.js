@@ -42,17 +42,17 @@ let RbBlockComponent = class RbBlockComponent extends RbBaseComponent_1.RbBaseCo
     this.SizeY = 1;
     this.SizeZ = 1;
     this._Sm = undefined;
-    this.MIm = undefined;
+    this.OIm = undefined;
     this.Xtn = undefined;
-    this.EIm = undefined;
+    this.GIm = undefined;
     this.l_l = false;
     this.AvailableInputDirs = [];
     this.Rne = -1;
     this.IsVisionBlock = false;
-    this.Kbm = new Stack_1.Stack();
+    this.mRm = new Stack_1.Stack();
   }
   OnStart() {
-    this.Hte = this.Entity.GetComponent(212);
+    this.Hte = this.Entity.GetComponent(214);
     if (this.Hte === undefined) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("RollBlock", 31, "[RbBlockComponent] OnStart ActorComp is undefined");
@@ -71,23 +71,23 @@ let RbBlockComponent = class RbBlockComponent extends RbBaseComponent_1.RbBaseCo
     this.SizeX = t.rtm;
     this.SizeY = t.otm;
     this.SizeZ = t.ntm;
-    this.IsVisionBlock = t.bIm !== undefined;
-    if (!this.IsVisionBlock && t.TIm !== undefined) {
-      this.IsMainController = t.TIm.htm;
+    this.IsVisionBlock = t.VIm !== undefined;
+    if (!this.IsVisionBlock && t.NIm !== undefined) {
+      this.IsMainController = t.NIm.htm;
     }
     if (this.IncId !== undefined) {
       this.ChangeMoveState(t.Y4n, true);
-      if (this.Kbm.Size > 0 && this._Sm?.IsFinished()) {
-        this.ChangeMoveState(this.Kbm.Pop(), true);
+      if (this.mRm.Size > 0 && this._Sm?.IsFinished()) {
+        this.ChangeMoveState(this.mRm.Pop(), true);
       }
     } else {
-      this.Rkf(t.Y4n);
+      this.M3f(t.Y4n);
     }
-    t = this.Entity.GetComponent(212);
+    t = this.Entity.GetComponent(214);
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("RollBlock", 31, "[RbBlockComponent] OnStart", ["SizeX", this.SizeX], ["SizeY", this.SizeY], ["location", t?.ActorLocation]);
     }
-    t = this.EIe?.RbBlockInfo?.idf;
+    t = this.EIe?.RbBlockInfo?.Zmf;
     if (t) {
       for (const e of t) {
         this.OccupiedCellIndex.push(new SceneItemJigsawBaseComponent_1.JigsawIndex(e.iPs, e.rPs));
@@ -101,8 +101,8 @@ let RbBlockComponent = class RbBlockComponent extends RbBaseComponent_1.RbBaseCo
       ControllerHolder_1.ControllerHolder.RollBlockController.RegisterVisionRollBlockToGameplay(this.IncId);
     }
     ControllerHolder_1.ControllerHolder.RollBlockController.RegisterRollBlockToGameplay(this, this.IncId);
-    if (this.Kbm.Size > 0 && this.IncId !== undefined && this._Sm?.IsFinished()) {
-      this.ChangeMoveState(this.Kbm.Pop(), true);
+    if (this.mRm.Size > 0 && this.IncId !== undefined && this._Sm?.IsFinished()) {
+      this.ChangeMoveState(this.mRm.Pop(), true);
     }
   }
   OnTick(t) {
@@ -110,18 +110,18 @@ let RbBlockComponent = class RbBlockComponent extends RbBaseComponent_1.RbBaseCo
       return !(this.l_l = false);
     } else {
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("RollBlock", 31, "[OnTick] CurMoveState", ["State", this._Sm?.StateName], ["IsFinished", this._Sm?.IsFinished()], ["CacheStateInfo.Size", this.Kbm.Size]);
+        Log_1.Log.Info("RollBlock", 31, "[OnTick] CurMoveState", ["State", this._Sm?.StateName], ["IsFinished", this._Sm?.IsFinished()], ["CacheStateInfo.Size", this.mRm.Size]);
       }
-      if ((this._Sm === undefined || this._Sm?.IsFinished()) && this.Kbm.Size > 0) {
+      if ((this._Sm === undefined || this._Sm?.IsFinished()) && this.mRm.Size > 0) {
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("RollBlock", 31, "[OnTick] CurMoveState is finished, pop state", ["CacheStateInfo.Size", this.Kbm.Size], ["State", this.Kbm.Peek()]);
+          Log_1.Log.Info("RollBlock", 31, "[OnTick] CurMoveState is finished, pop state", ["CacheStateInfo.Size", this.mRm.Size], ["State", this.mRm.Peek()]);
         }
-        this.ChangeMoveState(this.Kbm.Pop(), true);
+        this.ChangeMoveState(this.mRm.Pop(), true);
       }
       if (this._Sm?.NeedUpdate) {
         this._Sm?.Update(t);
       }
-      if (!this._Sm?.NeedUpdate && this.Kbm.Size === 0 && this.Rne === -1) {
+      if (!this._Sm?.NeedUpdate && this.mRm.Size === 0 && this.Rne === -1) {
         this.Rne = this.Disable("[RollBlock] CurMoveState no need update");
       }
       return true;
@@ -135,8 +135,8 @@ let RbBlockComponent = class RbBlockComponent extends RbBaseComponent_1.RbBaseCo
   }
   dSm() {
     this.Xtn = new RbIdleState_1.RbIdleState(this);
-    this.MIm = new RbRollState_1.RbRollState(this);
-    this.EIm = new RbJumpState_1.RbJumpState(this);
+    this.OIm = new RbRollState_1.RbRollState(this);
+    this.GIm = new RbJumpState_1.RbJumpState(this);
   }
   CalculateRotationCenter(t, e) {
     var o = this.Hte.ActorTransform;
@@ -174,18 +174,18 @@ let RbBlockComponent = class RbBlockComponent extends RbBaseComponent_1.RbBaseCo
     if (this.Hte !== undefined) {
       var e = Vector_1.Vector.Create();
       switch (t) {
-        case Protocol_1.Aki.Protocol.DIm.Proto_RbForward:
+        case Protocol_1.Aki.Protocol.KIm.Proto_RbForward:
           e.DeepCopy(this.OriginForward);
           break;
-        case Protocol_1.Aki.Protocol.DIm.Proto_RbBackward:
+        case Protocol_1.Aki.Protocol.KIm.Proto_RbBackward:
           e.DeepCopy(this.OriginForward);
           e.MultiplyEqual(-1);
           break;
-        case Protocol_1.Aki.Protocol.DIm.Proto_RbLeft:
+        case Protocol_1.Aki.Protocol.KIm.Proto_RbLeft:
           e.DeepCopy(this.OriginRight);
           e.MultiplyEqual(-1);
           break;
-        case Protocol_1.Aki.Protocol.DIm.Proto_RbRight:
+        case Protocol_1.Aki.Protocol.KIm.Proto_RbRight:
           e.DeepCopy(this.OriginRight);
           break;
         default:
@@ -201,12 +201,12 @@ let RbBlockComponent = class RbBlockComponent extends RbBaseComponent_1.RbBaseCo
     }
   }
   ChangeMoveState(t, e = false) {
-    if (this.MIm === undefined || this.Xtn === undefined) {
+    if (this.OIm === undefined || this.Xtn === undefined) {
       if (Log_1.Log.CheckWarn()) {
         Log_1.Log.Warn("RollBlock", 31, "[ChangeMoveState] MoveStates are undefined");
       }
       if (!this.Entity.IsStart) {
-        this.Rkf(t);
+        this.M3f(t);
       }
     } else if (e || ControllerHolder_1.ControllerHolder.RollBlockController.IsCurrentIncId(this.IncId) || this._Sm?.IsFinished()) {
       if (Log_1.Log.CheckInfo()) {
@@ -216,17 +216,17 @@ let RbBlockComponent = class RbBlockComponent extends RbBaseComponent_1.RbBaseCo
         this.mSm(this.Xtn, t.NSm);
       } else if (t.FSm !== undefined) {
         if (t.FSm.SL_?.XDs !== undefined) {
-          this.mSm(this.MIm, t.FSm.SL_.XDs);
-        } else if (t.FSm.SL_?.RIm !== undefined) {
-          this.mSm(this.EIm, t.FSm.SL_.RIm);
+          this.mSm(this.OIm, t.FSm.SL_.XDs);
+        } else if (t.FSm.SL_?.jIm !== undefined) {
+          this.mSm(this.GIm, t.FSm.SL_.jIm);
         }
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("RollBlock", 31, "[ChangeMoveState] 未知的状态", ["State", t]);
       }
     } else {
-      this.Rkf(t);
+      this.M3f(t);
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("RollBlock", 31, "[ChangeMoveState] 当前IncId不是当前IncId，不改变状态, 缓存起来", ["IncId", this.IncId], ["Active", this.Active], ["CacheStateInfo.Size", this.Kbm.Size]);
+        Log_1.Log.Info("RollBlock", 31, "[ChangeMoveState] 当前IncId不是当前IncId，不改变状态, 缓存起来", ["IncId", this.IncId], ["Active", this.Active], ["CacheStateInfo.Size", this.mRm.Size]);
       }
       if (this.Rne !== -1) {
         this.Enable(this.Rne, "[RollBlock] CurMoveState need update");
@@ -243,21 +243,21 @@ let RbBlockComponent = class RbBlockComponent extends RbBaseComponent_1.RbBaseCo
         this.Enable(this.Rne, "[RollBlock] CurMoveState need update");
         this.Rne = -1;
         this.l_l = true;
-      } else if (!this._Sm?.NeedUpdate && this.Rne === -1 && this.Kbm.Size === 0) {
+      } else if (!this._Sm?.NeedUpdate && this.Rne === -1 && this.mRm.Size === 0) {
         this.Rne = this.Disable("[RollBlock] CurMoveState no need update");
       }
     }
   }
-  Rkf(t) {
+  M3f(t) {
     if (this.IncId === undefined || !ControllerHolder_1.ControllerHolder.RollBlockController.IsCurrentIncId(this.IncId)) {
       if (t.NSm !== undefined) {
-        this.Kbm.Clear();
+        this.mRm.Clear();
       }
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("RollBlock", 31, "[CacheNewMoveState] RemoveCacheStateInfo");
       }
     }
-    this.Kbm.Push(t);
+    this.mRm.Push(t);
   }
   get Transform() {
     return this.Hte.ActorTransform;
@@ -295,5 +295,5 @@ let RbBlockComponent = class RbBlockComponent extends RbBaseComponent_1.RbBaseCo
     }
   }
 };
-RbBlockComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(329)], RbBlockComponent);
+RbBlockComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(331)], RbBlockComponent);
 exports.RbBlockComponent = RbBlockComponent; //# sourceMappingURL=RbBlockComponent.js.map

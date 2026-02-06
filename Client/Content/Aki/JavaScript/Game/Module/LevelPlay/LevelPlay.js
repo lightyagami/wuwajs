@@ -28,13 +28,13 @@ class LevelPlayInfo extends LogicTreeContainer_1.LogicTreeContainer {
     this.TrackRadiusSquared = 0;
     this.CacheDistanceSquared = 0;
     this.c1i = "";
-    this.eQm = "";
+    this.KKm = "";
     this.m1i = 0;
     this.d1i = 0;
     this.C1i = 0;
     this.Upi = undefined;
     this.Api = undefined;
-    this.o0f = undefined;
+    this.apf = undefined;
     this.RQ1 = 0;
     this.p1i = 0;
     this.Ppi = 0;
@@ -49,6 +49,7 @@ class LevelPlayInfo extends LogicTreeContainer_1.LogicTreeContainer {
     this.RangeAbsorbPhantom = undefined;
     this.RewardConfig = undefined;
     this.xku = undefined;
+    this.Yjg = false;
     this.u1i = t;
     this.Lpi = false;
     this.Dpi = 0;
@@ -79,6 +80,9 @@ class LevelPlayInfo extends LogicTreeContainer_1.LogicTreeContainer {
         }
         t = this.BehaviorTree.GetActiveChildQuestNodesId();
         if (t) {
+          if (this.Tree?.GetBlackBoard()?.IsTrackBoundToParent) {
+            return true;
+          }
           for (const s of t) {
             var e = this.BehaviorTree.GetNode(s);
             var i = e?.MultiTrackText;
@@ -104,7 +108,7 @@ class LevelPlayInfo extends LogicTreeContainer_1.LogicTreeContainer {
     return this.c1i;
   }
   get NameKey() {
-    return this.eQm;
+    return this.KKm;
   }
   get LevelPlayEntityId() {
     return this.m1i;
@@ -122,14 +126,14 @@ class LevelPlayInfo extends LogicTreeContainer_1.LogicTreeContainer {
     return this.MarkConfig !== undefined;
   }
   get TrackPriority() {
-    if (this.o0f !== undefined) {
-      return this.o0f;
+    if (this.apf !== undefined) {
+      return this.apf;
     } else {
       return this.Api?.TrackPriority ?? LevelPlayDefine_1.INVALID_LEVELPLAY_TRACKPRIORITY;
     }
   }
   SetTrackPriorityOverride(t) {
-    this.o0f = t;
+    this.apf = t;
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("SceneGameplay", 78, "设置玩法追踪优先级覆盖", ["玩法id", this.u1i], ["玩法名", this.Name], ["原优先级", this.Api?.TrackPriority ?? LevelPlayDefine_1.INVALID_LEVELPLAY_TRACKPRIORITY], ["新优先级", t ?? "使用配置值"]);
     }
@@ -138,7 +142,7 @@ class LevelPlayInfo extends LogicTreeContainer_1.LogicTreeContainer {
     this.SetTrackPriorityOverride(undefined);
   }
   IsTrackPriorityOverride() {
-    return this.o0f !== undefined;
+    return this.apf !== undefined;
   }
   get CustomIconId() {
     return this.RQ1;
@@ -186,6 +190,9 @@ class LevelPlayInfo extends LogicTreeContainer_1.LogicTreeContainer {
     }
     return this.xku;
   }
+  get IsOnlyTrackWhenQuestBind() {
+    return this.Yjg;
+  }
   InitConfig() {
     var t = ModelManager_1.ModelManager.LevelPlayModel.GetLevelPlayConfig(this.u1i);
     if (t) {
@@ -193,7 +200,7 @@ class LevelPlayInfo extends LogicTreeContainer_1.LogicTreeContainer {
       this.m1i = t.LevelPlayEntityId;
       this.C1i = t.InstanceId ?? 0;
       this.c1i = PublicUtil_1.PublicUtil.GetConfigTextByKey(t.TidName);
-      this.eQm = t.TidName;
+      this.KKm = t.TidName;
       this.Upi = t.LevelPlayMark;
       this.Api = t.LevelPlayTrack;
       this.Rpi = true;
@@ -205,6 +212,7 @@ class LevelPlayInfo extends LogicTreeContainer_1.LogicTreeContainer {
       this.RangeAbsorbPhantom = t.RangeAbsorbPhantom;
       this.RewardConfig = t.RewardConfig;
       this.Children = t.Children;
+      this.Yjg = t.IsTrackOnlyWhenQuestBind ?? false;
       switch (t.LevelPlayRewardConfig.Type) {
         case "Interact":
           this.p1i = t.LevelPlayRewardConfig.RewardId;

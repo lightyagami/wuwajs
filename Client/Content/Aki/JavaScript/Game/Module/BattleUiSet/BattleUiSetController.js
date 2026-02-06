@@ -18,10 +18,10 @@ class BattleUiSetController extends UiControllerBase_1.UiControllerBase {
     return true;
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(25391, BattleUiSetController.lgt);
+    Net_1.Net.Register(24015, BattleUiSetController.lgt);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(25391);
+    Net_1.Net.UnRegister(24015);
   }
   static MobileButtonSettingUpdateRequest(e) {
     var t = new Protocol_1.Aki.Protocol.Bms();
@@ -29,7 +29,7 @@ class BattleUiSetController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("BattleUiSet", 17, "MobileButtonSettingUpdateRequest 客户端请求移动端键位设置", ["request", t]);
     }
-    Net_1.Net.Call(28004, Protocol_1.Aki.Protocol.Bms.create(t), this._gt);
+    Net_1.Net.Call(17659, Protocol_1.Aki.Protocol.Bms.create(t), this._gt);
   }
 }
 (exports.BattleUiSetController = BattleUiSetController).lgt = e => {
@@ -63,7 +63,7 @@ BattleUiSetController._gt = e => {
     Log_1.Log.Info("BattleUiSet", 17, "MobileButtonSettingUpdateResponse 服务端返回移动端键位设置", ["response", e]);
   }
   if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-    ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29813);
+    ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16456);
   } else if (ModelManager_1.ModelManager.BattleUiModel?.PureModeData?.IsOpen) {
     ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("SaveButtonPureMode");
   } else {

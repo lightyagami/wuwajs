@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.CalabashModel = exports.CalabashDevelopRewardData = undefined;
 const Log_1 = require("../../../Core/Common/Log");
 const ConfigCommon_1 = require("../../../Core/Config/ConfigCommon");
+const CommonParamById_1 = require("../../../Core/Define/ConfigCommon/CommonParamById");
 const PhantomFetterGroupById_1 = require("../../../Core/Define/ConfigQuery/PhantomFetterGroupById");
 const RefineRecommendByCost_1 = require("../../../Core/Define/ConfigQuery/RefineRecommendByCost");
 const ModelBase_1 = require("../../../Core/Framework/ModelBase");
@@ -75,6 +76,13 @@ class CalabashModel extends ModelBase_1.ModelBase {
     this.ipt = undefined;
     this.HideVisionRecoveryConfirmBox = false;
     this.opt = new Array();
+    this.DirectionalFusionTime = 0;
+    this.DirectionalFusionTimeMax = 0;
+    this.DirectionalFusionTargetFetterGroup = 0;
+  }
+  OnInit() {
+    this.DirectionalFusionTimeMax = CommonParamById_1.configCommonParamById.GetIntConfig("PhantomDirectRefiningWeekTimes") ?? 0;
+    return true;
   }
   rpt() {
     this.CalabashInstance = new CalabashInstance_1.CalabashInstance();
@@ -167,6 +175,10 @@ class CalabashModel extends ModelBase_1.ModelBase {
   }
   GetUnlockCalabashDevelopRewards() {
     return this.CalabashInstance.GetUnlockCalabashDevelopRewards();
+  }
+  CheckCalabashMonsterUnlocked(e) {
+    e = this.ept.get(e);
+    return !!e && e.UnlockData;
   }
   GetMonsterName(e) {
     return "CalabashCatchGain_" + e;
@@ -332,6 +344,10 @@ class CalabashModel extends ModelBase_1.ModelBase {
   ClearOnlyShowData() {
     this.OnlyShowBattleFettersTab = false;
     this.OnlyMonsterCostShowMaxLevel = undefined;
+  }
+  SetDirectionalFusionTargetFetter(e) {
+    this.DirectionalFusionTargetFetterGroup = e;
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SelectDirectionalFusionTarget);
   }
 }
 exports.CalabashModel = CalabashModel;

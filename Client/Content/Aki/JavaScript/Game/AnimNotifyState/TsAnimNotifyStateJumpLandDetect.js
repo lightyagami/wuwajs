@@ -71,7 +71,7 @@ class TsAnimNotifyStateJumpLandDetect extends UE.KuroAnimNotifyState {
       a = new JumpLandDetectParams();
       this.ParamsMap.set(s, a);
     }
-    var s = a.Entity?.GetComponent(187);
+    var s = a.Entity?.GetComponent(189);
     if (this.EnableGoThrough && s?.IsKuroPlanarPhysWalkingEnable) {
       s.CharacterMovement.GoThroughLower = true;
       s.CharacterMovement.GoThroughPriority = 0;
@@ -112,7 +112,7 @@ class TsAnimNotifyStateJumpLandDetect extends UE.KuroAnimNotifyState {
     for (let t = a.NowTime = 0; t < m; ++t) {
       var u = f.Get(t);
       if (u.bBlockingHit) {
-        if (!u.Actor.ActorHasTag(this.IgnoreActorTag) && i.CharacterMovement.IsWalkable(u)) {
+        if (!UE.KuroCollisionLibrary.ActorHasTag(u.Actor, this.IgnoreActorTag, u.Item) && i.CharacterMovement.IsWalkable(u)) {
           (u = Vector_1.Vector.Create(u.Location)).Subtraction(o, a.HeightOffset);
           if (Log_1.Log.CheckDebug()) {
             Log_1.Log.Debug("Character", 57, "JumpLandDetectStart", ["tempTarget", o], ["hitLocation", u], ["startLocation", n], ["detectOffset", h], ["finalLocation", this.TmpVector2], ["actorHalfUpVector", c], ["ownerTransform", this.OwnerTransform], ["startTransform.location", this.TmpVector], ["startTransform.rotation", this.TmpRotator]);
@@ -136,15 +136,15 @@ class TsAnimNotifyStateJumpLandDetect extends UE.KuroAnimNotifyState {
     var r;
     var i;
     var t = t.GetOwner();
-    return t instanceof TsBaseCharacter_1.default && (r = t.GetEntityIdNoBlueprint(), !!(r = this.ParamsMap.get(r))) && ((i = r.Entity.GetComponent(184)) ? (r.SetGoThrough && (t.CharacterMovement.GoThroughLower = false, r.Entity?.GetComponent(46)?.ResetHitPriorityAndGoThrough()), r.NowTime <= r.TotalTime && i.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Air && r.TotalTime > 0 && (i = (r.TotalTime - r.NowTime) / r.TotalTime, this.Move(e, r, i)), r.NowTime >= r.TotalTime && this.EndPointHeight <= 0 && this.TrySetMovementMode(t), true) : (Log_1.Log.CheckError() && Log_1.Log.Error("Test", 6, "JumpLandDetect No Unified", ["Actor", t.GetName()]), false));
+    return t instanceof TsBaseCharacter_1.default && (r = t.GetEntityIdNoBlueprint(), !!(r = this.ParamsMap.get(r))) && ((i = r.Entity.GetComponent(186)) ? (r.SetGoThrough && (t.CharacterMovement.GoThroughLower = false, r.Entity?.GetComponent(48)?.ResetHitPriorityAndGoThrough()), r.NowTime <= r.TotalTime && i.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Air && r.TotalTime > 0 && (i = (r.TotalTime - r.NowTime) / r.TotalTime, this.Move(e, r, i)), r.NowTime >= r.TotalTime && this.EndPointHeight <= 0 && this.TrySetMovementMode(t), true) : (Log_1.Log.CheckError() && Log_1.Log.Error("Test", 6, "JumpLandDetect No Unified", ["Actor", t.GetName()]), false));
   }
   K2_NotifyTick(t, e, r) {
     var i;
     var t = t.GetOwner();
-    return t instanceof TsBaseCharacter_1.default && (t = t.GetEntityIdNoBlueprint(), !!(t = this.ParamsMap.get(t))) && (t.Entity.GetComponent(184).PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Ground ? t.TotalTime -= r : t.NowTime <= t.TotalTime && t.TotalTime > 0 && (i = Math.min(t.TotalTime - t.NowTime, r) / t.TotalTime, this.Move(e, t, i), t.NowTime += r), true);
+    return t instanceof TsBaseCharacter_1.default && (t = t.GetEntityIdNoBlueprint(), !!(t = this.ParamsMap.get(t))) && (t.Entity.GetComponent(186).PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Ground ? t.TotalTime -= r : t.NowTime <= t.TotalTime && t.TotalTime > 0 && (i = Math.min(t.TotalTime - t.NowTime, r) / t.TotalTime, this.Move(e, t, i), t.NowTime += r), true);
   }
   Move(t, e, r) {
-    if (!e.Entity.GetComponent(40)?.IsSkillMontageInvalid(t.GetName())) {
+    if (!e.Entity.GetComponent(42)?.IsSkillMontageInvalid(t.GetName())) {
       t = e.Entity.GetComponent(3);
       e.HeightOffset.Multiply(r, this.TmpVector);
       if (this.TmpVector.ContainsNaN() && Log_1.Log.CheckError()) {

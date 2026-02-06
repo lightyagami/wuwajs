@@ -93,6 +93,11 @@ class SpecialEnergyBarSlot extends SpecialEnergyBarBase_1.SpecialEnergyBarBase {
       e.ReplaceFullEffect(t);
     }
   }
+  RevertFullEffect() {
+    for (const t of this.SlotItemList) {
+      t.RevertFullEffect();
+    }
+  }
   UpdateFullEffectOffsetBySlotWidth() {
     for (const t of this.SlotItemList) {
       t.SetFullEffectOffsetX(t.GetRootItem().Width / 2);

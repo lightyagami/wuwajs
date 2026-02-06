@@ -58,6 +58,20 @@ class GravityUtils {
     }
     return i;
   }
+  static ConvertToVerticalVectorForActor(t, r) {
+    var i;
+    var t = this.GetMoveComponentForActor(t);
+    if (!t || t.IsStandardGravity) {
+      i = r.Z;
+      r.X = 0;
+      r.Y = 0;
+    } else {
+      i = Vector_1.Vector.DotProduct(r, t.GravityDirect);
+      t.GravityDirect.Multiply(i, this.TmpVector);
+      r.DeepCopy(this.TmpVector);
+    }
+    return i;
+  }
   static GetPlanarSizeSquared2dForActor(t, r) {
     var t = this.GetMoveComponentForActor(t);
     if (!t || t.IsStandardGravity) {

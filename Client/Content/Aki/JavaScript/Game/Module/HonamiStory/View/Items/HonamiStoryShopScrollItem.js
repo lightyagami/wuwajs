@@ -22,7 +22,7 @@ class HonamiStoryShopScrollItem extends UiPanelBase_1.UiPanelBase {
     this.HOi = undefined;
     this.r6c = 0;
     this.t3i = (e, t, i) => {
-      t = this.sdf(t);
+      t = this.nff(t);
       this.LoopScrollView.RefreshByDataAsync(t, false, true);
     };
     this.Z1l = () => {
@@ -54,7 +54,7 @@ class HonamiStoryShopScrollItem extends UiPanelBase_1.UiPanelBase {
     this.LoopScrollView = new LoopScrollView_1.LoopScrollView(this.ZHe, this.HOi.GetOwner(), this.sGe);
     this.AddEventListener();
   }
-  sdf(e) {
+  nff(e) {
     var t = [];
     for (const r of ModelManager_1.ModelManager.PayShopModel.GetPayShopTabData(e)) {
       var i = r;
@@ -65,7 +65,7 @@ class HonamiStoryShopScrollItem extends UiPanelBase_1.UiPanelBase {
     return t;
   }
   async Refresh(e) {
-    e = this.sdf(e);
+    e = this.nff(e);
     await this.LoopScrollView.RefreshByDataAsync(e, false, true);
   }
   OnBeforeDestroy() {

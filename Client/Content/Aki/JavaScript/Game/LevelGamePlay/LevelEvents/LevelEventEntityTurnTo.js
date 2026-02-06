@@ -40,7 +40,7 @@ class LevelEventEntityTurnTo extends LevelGeneralBase_1.LevelEventBase {
   ExecuteWhenEntitiesReady() {
     var t = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(this.pDe.EntityId);
     if (t?.IsInit) {
-      var o = t.Entity.GetComponent(47);
+      var o = t.Entity.GetComponent(49);
       if (o) {
         let e = undefined;
         switch (this.pDe.Target.Type) {
@@ -78,7 +78,7 @@ class LevelEventEntityTurnTo extends LevelGeneralBase_1.LevelEventBase {
           s.P5n = n.ActorLocationProxy;
           s.g8n = i;
           r.iVn = [s];
-          Net_1.Net.Send(27928, r);
+          Net_1.Net.Send(27349, r);
           if (this.IsAsync) {
             o.PerformTurn(2, {
               TargetLocation: e

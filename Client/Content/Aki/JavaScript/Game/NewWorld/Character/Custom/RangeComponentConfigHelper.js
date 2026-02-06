@@ -21,7 +21,7 @@ class RangeComponentConfigHelper {
       t = (0, IComponent_1.getComponent)(t.ComponentsData, "TriggerComponent");
       return !!t && (!t.Match.OnlyPlayer || !!t.ChangeRoleTrigger || !!t.Match.AllCharacter || !!t.Match.Categories?.length);
     };
-    this.Deg = t => {
+    this.uPg = t => {
       t = (0, IComponent_1.getComponent)(t.ComponentsData, "ClientTriggerComponent");
       if (!t) {
         return false;
@@ -103,6 +103,7 @@ class RangeComponentConfigHelper {
     this.qql("SceneBulletComponent", false, false);
     this.qql("ItemFoundation2", false, false);
     this.qql("EntityCustomAudioComponent", false, false);
+    this.qql("RollBlockItemComponent", false, false);
   }
   Oql() {
     this.Gql("TrampleComponent", false);
@@ -128,6 +129,7 @@ class RangeComponentConfigHelper {
     this.Gql("SceneBulletComponent", false);
     this.Gql("ItemFoundation2", false);
     this.Gql("EntityCustomAudioComponent", false);
+    this.Gql("RollBlockItemComponent", true);
   }
   KKl() {
     this.QKl("TrampleComponent", false, true);
@@ -136,7 +138,7 @@ class RangeComponentConfigHelper {
     this.QKl("ProgressBarControlComponent", false, true);
     this.QKl("EntityStateAudioComponent", false, false);
     this.QKl("TriggerComponent", false, this.bql);
-    this.QKl("ClientTriggerComponent", false, this.Deg);
+    this.QKl("ClientTriggerComponent", false, this.uPg);
     this.QKl("AirPassageComponent", false, false);
     this.QKl("PortalComponent", false, false);
     this.QKl("LocationSafetyComponent", false, false);
@@ -157,6 +159,7 @@ class RangeComponentConfigHelper {
     this.QKl("RotatorComponent2", true, false);
     this.QKl("AttachTargetComponent", true, false);
     this.QKl("PerformanceOptimizationComponent", true, true);
+    this.QKl("RollBlockItemComponent", false, true);
   }
 }
 (exports.RangeComponentConfigHelper = RangeComponentConfigHelper).cj = undefined;

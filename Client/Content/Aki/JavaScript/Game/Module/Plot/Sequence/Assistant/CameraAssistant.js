@@ -15,6 +15,7 @@ const CameraController_1 = require("../../../../Camera/CameraController");
 const Global_1 = require("../../../../Global");
 const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
+const MovementLockController_1 = require("../../../MovementLock/MovementLockController");
 const UiCameraPostEffectComponent_1 = require("../../../UiCamera/UiCameraComponent/UiCameraPostEffectComponent");
 const UiCameraManager_1 = require("../../../UiCamera/UiCameraManager");
 const SequenceDefine_1 = require("../SequenceDefine");
@@ -26,14 +27,14 @@ class CameraAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
     this.dYs = undefined;
     this.CYs = undefined;
     this.pYi = new Map();
-    this.GYm = undefined;
+    this.mZm = undefined;
   }
   PreAllPlay() {
     var e;
     var r;
     var o;
     var t;
-    if (this.Model.IsViewTargetControl && ((e = this.Model.SequenceData.相机过渡时间) > 0 && (t = ModelManager_1.ModelManager.CameraModel.SequenceCamera.DisplayComponent.CineCamera.GetCineCameraComponent(), this.Model.SequenceData.约束宽高比 ? t.bConstrainAspectRatio || (o = (0, puerts_1.$ref)(0), r = (0, puerts_1.$ref)(0), Global_1.Global.CharacterController.GetViewportSize(o, r), o = (0, puerts_1.$unref)(o) / (0, puerts_1.$unref)(r), t.bConstrainAspectRatio = true, t.Filmback.SensorWidth = t.Filmback.SensorHeight * o) : t.bConstrainAspectRatio && ControllerHolder_1.ControllerHolder.PlotController.ManualAdaptAspectRatio(e * CommonDefine_1.MILLIONSECOND_PER_SECOND)), r = this.Model.SequenceData.CameraBlendInTime, (o = CameraController_1.CameraController.SequenceCamera.GetComponent(10))?.GetIsInCinematic() && o?.GetIfNeedWaitInPlot() && o.StopSequence(), CameraController_1.CameraController.EnterCameraMode(1, r), this.aio = true, this.Model.SequenceData.IsEnableDynamicStreamingSource && (this.GYm = ActorSystem_1.ActorSystem.Spawn(UE.BP_KuroStreamingSourceProxy_Seq_C.StaticClass(), new UE.TransformDouble(), undefined), ModelManager_1.ModelManager.GameModeModel?.AttachStreamingSourcesToActor(this.GYm) || Log_1.Log.CheckError() && Log_1.Log.Error("Plot", 7, "[SeqCameraAssistant]: Dynamic Streaming Source attached failed"), ControllerHolder_1.ControllerHolder.MovementLockController?.Lock(2)), ModelManager_1.ModelManager.PlotModel.PlotConfig.IsPreStreaming)) {
+    if (this.Model.IsViewTargetControl && ((e = this.Model.SequenceData.相机过渡时间) > 0 && (t = ModelManager_1.ModelManager.CameraModel.SequenceCamera.DisplayComponent.CineCamera.GetCineCameraComponent(), this.Model.SequenceData.约束宽高比 ? t.bConstrainAspectRatio || (o = (0, puerts_1.$ref)(0), r = (0, puerts_1.$ref)(0), Global_1.Global.CharacterController.GetViewportSize(o, r), o = (0, puerts_1.$unref)(o) / (0, puerts_1.$unref)(r), t.bConstrainAspectRatio = true, t.Filmback.SensorWidth = t.Filmback.SensorHeight * o) : t.bConstrainAspectRatio && ControllerHolder_1.ControllerHolder.PlotController.ManualAdaptAspectRatio(e * CommonDefine_1.MILLIONSECOND_PER_SECOND)), r = this.Model.SequenceData.CameraBlendInTime, (o = CameraController_1.CameraController.SequenceCamera.GetComponent(10))?.GetIsInCinematic() && o?.GetIfNeedWaitInPlot() && o.StopSequence(), CameraController_1.CameraController.EnterCameraMode(1, r), this.aio = true, this.Model.SequenceData.IsEnableDynamicStreamingSource && (this.mZm = ActorSystem_1.ActorSystem.Spawn(UE.BP_KuroStreamingSourceProxy_Seq_C.StaticClass(), new UE.TransformDouble(), undefined), ControllerHolder_1.ControllerHolder.GameModeController?.SwitchStreamingSource(this.mZm, false, false, 2)), ModelManager_1.ModelManager.PlotModel.PlotConfig.IsPreStreaming)) {
       this.dYs ||= ActorSystem_1.ActorSystem.Spawn(UE.BP_StreamingSourceActor_C.StaticClass(), new UE.TransformDouble(), undefined);
       if (!this.CYs) {
         this.CYs = ActorSystem_1.ActorSystem.Spawn(UE.BP_StreamingSourceActor_C.StaticClass(), new UE.TransformDouble(), undefined);
@@ -51,8 +52,8 @@ class CameraAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
     e.Add(r);
     this.Model.CurLevelSeqActor.SetBindingByTag(SequenceDefine_1.CAMERA_TAG, e, false, true);
     CameraController_1.CameraController.SequenceCamera.DisplayComponent.CineCamera.D_K2_SetActorTransform(ModelManager_1.ModelManager.CameraModel.CameraTransform, false, undefined, true);
-    if (this.GYm?.IsValid()) {
-      (r = UE.NewArray(UE.Actor)).Add(this.GYm);
+    if (this.mZm?.IsValid()) {
+      (r = UE.NewArray(UE.Actor)).Add(this.mZm);
       this.Model.CurLevelSeqActor.SetBindingByTag(SequenceDefine_1.SeqStreamingSourceProxy_TAG, r, false, true);
     }
   }
@@ -103,6 +104,12 @@ class CameraAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
       }
     }
   }
+  async AllStopPromise() {
+    if (this.mZm && MovementLockController_1.MovementLockController.LockMode === 2) {
+      await ControllerHolder_1.ControllerHolder.GameModeController?.ResetStreamingSourceAttachment();
+    }
+    return true;
+  }
   End() {
     CameraController_1.CameraController.FightCamera.LogicComponent.ExitCameraGuideAtOnce();
     if (this.dYs) {
@@ -111,11 +118,11 @@ class CameraAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
     if (this.CYs) {
       this.CYs.WorldPartitionStreamingSource?.DisableStreamingSource();
     }
-    if (this.GYm) {
+    if (this.mZm) {
       ModelManager_1.ModelManager.GameModeModel?.DetachStreamingSourceFromActor();
-      ActorSystem_1.ActorSystem.Put("CameraAssistant.DestroySeqDynamicStreamingSourceProxy", this.GYm);
+      ActorSystem_1.ActorSystem.Put("CameraAssistant.DestroySeqDynamicStreamingSourceProxy", this.mZm);
       ModelManager_1.ModelManager.GameModeModel.AttachStreamingSourcesToActor(ControllerHolder_1.ControllerHolder.RoleTriggerController.GetMyRoleTriggerOrUndefined());
-      ControllerHolder_1.ControllerHolder.MovementLockController?.Unlock();
+      MovementLockController_1.MovementLockController.Unlock();
     }
     if (!this.Model.IsSeamless) {
       var e;

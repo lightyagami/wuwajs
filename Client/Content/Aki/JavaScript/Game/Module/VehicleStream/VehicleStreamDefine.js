@@ -25,22 +25,54 @@ class ObstructionCheckInfo {
     this.HitDistance = 0;
     this.HitEntityCreatureDataId = 0;
     this.HitEntityType = undefined;
+    this.DistanceToKeep = exports.DISTANCE_BE_TO_OBSTRUCTION;
+    this.IsPlayer = false;
+    this.PlayerHitDistance = 0;
   }
   Reset() {
     this.HitChanged = false;
     this.CheckResultType = "None";
-    this.HitDistance = 0;
+    this.HitDistance = Number.MAX_SAFE_INTEGER;
     this.HitEntityCreatureDataId = 0;
+    this.DistanceToKeep = 0;
     this.HitEntityType = undefined;
+    this.IsPlayer = false;
+    this.PlayerHitDistance = 0;
   }
-  DeepCopy(o) {
-    this.CheckResultType = o.CheckResultType;
-    this.HitDistance = o.HitDistance;
-    this.HitEntityCreatureDataId = o.HitEntityCreatureDataId;
-    this.HitEntityType = o.HitEntityType;
+  DeepCopy(t) {
+    this.CheckResultType = t.CheckResultType;
+    this.HitDistance = t.HitDistance;
+    this.HitChanged = t.HitChanged;
+    this.HitEntityCreatureDataId = t.HitEntityCreatureDataId;
+    this.HitEntityType = t.HitEntityType;
+    this.DistanceToKeep = t.DistanceToKeep;
+    this.IsPlayer = t.IsPlayer;
+    this.PlayerHitDistance = t.PlayerHitDistance;
   }
-  IsHitTargetChanged(o) {
-    return this.CheckResultType !== o.CheckResultType || this.HitEntityCreatureDataId !== o.HitEntityCreatureDataId;
+  IsHitTargetChanged(t) {
+    return this.CheckResultType !== t.CheckResultType || this.HitEntityCreatureDataId !== t.HitEntityCreatureDataId;
+  }
+  TryUpdateHitDistance(t, e, o, s, r = false) {
+    if (!(s >= this.HitDistance)) {
+      this.CheckResultType = t;
+      this.HitEntityCreatureDataId = e;
+      this.HitEntityType = o;
+      this.HitDistance = s;
+      this.IsPlayer = r;
+      switch (t) {
+        case "TraceBlock":
+          this.DistanceToKeep = r ? exports.DISTANCE_BETWEEN_PLAYER : exports.DISTANCE_BE_TO_OBSTRUCTION;
+          break;
+        case "CheckPlayerBlock":
+          this.DistanceToKeep = exports.DISTANCE_BETWEEN_PLAYER;
+          break;
+        case "SameRoadwayVehicleBlock":
+          this.DistanceToKeep = exports.DISTANCE_BE_TO_OBSTRUCTION;
+          break;
+        case "NextRoadwayVehicleBlock":
+          this.DistanceToKeep = exports.DISTANCE_BE_TO_NEXTVEHICLE;
+      }
+    }
   }
 }
 exports.ObstructionCheckInfo = ObstructionCheckInfo;
@@ -60,49 +92,49 @@ class MoveCheckInfo {
     this.AfterMoveCheckInfo.Result = "None";
     this.AfterMoveCheckInfo.AfterAdjustDistance = Number.MAX_SAFE_INTEGER;
   }
-  TryUpdateAdjustDistance(o, t) {
-    if (t < this.AfterMoveCheckInfo.AfterAdjustDistance) {
-      this.AfterMoveCheckInfo.Result = o;
-      this.AfterMoveCheckInfo.AfterAdjustDistance = t;
+  TryUpdateAdjustDistance(t, e) {
+    if (e < this.AfterMoveCheckInfo.AfterAdjustDistance) {
+      this.AfterMoveCheckInfo.Result = t;
+      this.AfterMoveCheckInfo.AfterAdjustDistance = e;
     }
   }
 }
-function checkObstacleDetectionTypeMatch(o, t) {
-  if (t === Protocol_1.Aki.Protocol.kks.Proto_Player) {
-    return o.MatchPlayer;
+function checkObstacleDetectionTypeMatch(t, e) {
+  if (e === Protocol_1.Aki.Protocol.kks.Proto_Player) {
+    return t.MatchPlayer;
   }
-  o = o.MatchTargetType;
-  if (!o || !o.EntityLogicTypes.length) {
+  t = t.MatchTargetType;
+  if (!t || !t.EntityLogicTypes.length) {
     return true;
   }
-  for (const e of o.EntityLogicTypes) {
-    let o = false;
-    switch (e) {
+  for (const o of t.EntityLogicTypes) {
+    let t = false;
+    switch (o) {
       case ICommon_1.EEntityLogic.Npc:
-        o = t === Protocol_1.Aki.Protocol.kks.Proto_Npc;
+        t = e === Protocol_1.Aki.Protocol.kks.Proto_Npc;
         break;
       case ICommon_1.EEntityLogic.Monster:
-        o = t === Protocol_1.Aki.Protocol.kks.Proto_Monster;
+        t = e === Protocol_1.Aki.Protocol.kks.Proto_Monster;
         break;
       case ICommon_1.EEntityLogic.Item:
-        o = t === Protocol_1.Aki.Protocol.kks.Proto_SceneItem;
+        t = e === Protocol_1.Aki.Protocol.kks.Proto_SceneItem;
         break;
       case ICommon_1.EEntityLogic.Custom:
-        o = t === Protocol_1.Aki.Protocol.kks.Proto_Custom;
+        t = e === Protocol_1.Aki.Protocol.kks.Proto_Custom;
         break;
       case ICommon_1.EEntityLogic.Vision:
-        o = t === Protocol_1.Aki.Protocol.kks.Proto_Vision;
+        t = e === Protocol_1.Aki.Protocol.kks.Proto_Vision;
         break;
       case ICommon_1.EEntityLogic.Animal:
-        o = t === Protocol_1.Aki.Protocol.kks.Proto_Animal;
+        t = e === Protocol_1.Aki.Protocol.kks.Proto_Animal;
         break;
       case ICommon_1.EEntityLogic.ClientOnly:
-        o = t === Protocol_1.Aki.Protocol.kks.Proto_ClientOnly;
+        t = e === Protocol_1.Aki.Protocol.kks.Proto_ClientOnly;
         break;
       case ICommon_1.EEntityLogic.Vehicle:
-        o = t === Protocol_1.Aki.Protocol.kks.HI_;
+        t = e === Protocol_1.Aki.Protocol.kks.HI_;
     }
-    if (o) {
+    if (t) {
       return true;
     }
   }

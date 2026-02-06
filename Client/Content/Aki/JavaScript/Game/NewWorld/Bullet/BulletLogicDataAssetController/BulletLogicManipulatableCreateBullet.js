@@ -17,7 +17,7 @@ class BulletLogicManipulatableCreateBullet extends BulletLogicController_1.Bulle
   BulletLogicActionOnHitObstacles(t = undefined) {
     if (t && t instanceof BulletHitActorData_1.BulletHitActorData && t.Entity && t.Entity.GetComponent(0).IsSceneItem()) {
       var e = t.Entity;
-      if (e?.GetComponent(165) && this.CheckCondition(e)) {
+      if (e?.GetComponent(167) && this.CheckCondition(e)) {
         var l = this.Bullet.GetBulletInfo();
         var r = l.Attacker;
         var i = e.GetComponent(1)?.ActorTransform ?? MathUtils_1.MathUtils.DefaultTransformDouble;
@@ -32,7 +32,7 @@ class BulletLogicManipulatableCreateBullet extends BulletLogicController_1.Bulle
             ParentTargetId: l.Target?.Id,
             ParentId: this.Bullet.Id,
             DtType: l.BulletInitParams.DtType,
-            BattleFlags: l.BulletInitParams.BattleFlags,
+            BattleContext: l.BulletInitParams.BattleContext,
             ParentIds: undefined
           }, a);
         }
@@ -41,7 +41,7 @@ class BulletLogicManipulatableCreateBullet extends BulletLogicController_1.Bulle
   }
   CheckCondition(t) {
     var e = this.h7o;
-    var l = t?.GetComponent(206);
+    var l = t?.GetComponent(208);
     if (!l) {
       return false;
     }
@@ -56,8 +56,8 @@ class BulletLogicManipulatableCreateBullet extends BulletLogicController_1.Bulle
     var a = e.UnExistTagsCondition.GameplayTags;
     var u = a.Num();
     for (let t = 0; t < u; t++) {
-      var s = a.Get(t).TagId;
-      if (l.HasTag(s)) {
+      var n = a.Get(t).TagId;
+      if (l.HasTag(n)) {
         return false;
       }
     }

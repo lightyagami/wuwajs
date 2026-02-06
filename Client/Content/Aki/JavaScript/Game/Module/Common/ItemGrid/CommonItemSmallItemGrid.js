@@ -73,7 +73,8 @@ class CommonItemSmallItemGrid extends LoopScrollSmallItemGrid_1.LoopScrollSmallI
         Data: i,
         Type: 3,
         BottomText: t && t > 0 ? "" + t : "",
-        ItemConfigId: this.ConfigId
+        ItemConfigId: this.ConfigId,
+        IsReceivedVisible: o
       };
       this.Apply(l);
     } else {

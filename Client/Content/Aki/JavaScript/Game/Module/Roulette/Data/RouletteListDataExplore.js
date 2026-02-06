@@ -18,41 +18,41 @@ const RouletteListDataBase_1 = require("./RouletteListDataBase");
 class RouletteListDataExplore extends RouletteListDataBase_1.RouletteListDataBase {
   constructor() {
     super(...arguments);
-    this.vOm = [[[1], 4, 0], [[2], 5, 0], [[3], 6, 0], [[4], 7, 0], [[5], 8, 0], [[6], 9, 0], [[7], 10, 0], [[8], 11, 2]];
+    this.UGm = [[[1], 4, 0], [[2], 5, 0], [[3], 6, 0], [[4], 7, 0], [[5], 8, 0], [[6], 9, 0], [[7], 10, 0], [[8], 11, 2]];
     this.RouletteType = 0;
     this.Priority = 10;
-    this.yOm = undefined;
-    this.SOm = [];
-    this.MOm = [];
+    this.xGm = undefined;
+    this.BGm = [];
+    this.kGm = [];
     this.cB_ = new Map();
     this.uB_ = undefined;
-    this.EOm = [];
-    this.IOm = 0;
-    this.TOm = 0;
+    this.qGm = [];
+    this.OGm = 0;
+    this.GGm = 0;
     this.xie = (e, t) => {
       this.StopListenRelatedTags();
-      this.bOm(e);
+      this.FGm(e);
     };
     this._B_ = (e, t) => {
       var i;
       var r;
-      if (this.yOm?.Entity?.GetComponent(203)) {
-        i = this.SOm;
-        (r = this.MOm)[i.indexOf(e)] = t;
+      if (this.xGm?.Entity?.GetComponent(205)) {
+        i = this.BGm;
+        (r = this.kGm)[i.indexOf(e)] = t;
         this.L5_(i, r);
       }
     };
   }
   GetRouletteIdList() {
     if (this.IsRouletteReplace()) {
-      return this.EOm;
+      return this.qGm;
     } else {
       return this.RouletteIdListServer;
     }
   }
   GetExtraItemId() {
     if (this.IsRouletteReplace()) {
-      return this.IOm;
+      return this.OGm;
     } else {
       return this.ExtraItemIdServer;
     }
@@ -126,12 +126,12 @@ class RouletteListDataExplore extends RouletteListDataBase_1.RouletteListDataBas
     return new RouletteMainViewProxy_1.RouletteMainViewProxy();
   }
   GetRouletteDataMap() {
-    return this.vOm;
+    return this.UGm;
   }
   gB_() {
     this.cB_.clear();
-    this.SOm.length = 0;
-    this.MOm.length = 0;
+    this.BGm.length = 0;
+    this.kGm.length = 0;
     var e = [];
     for (const r of ConfigManager_1.ConfigManager.RouletteConfig.GetAllReplaceConfig()) {
       for (const o of r.TagsInForce) {
@@ -152,33 +152,33 @@ class RouletteListDataExplore extends RouletteListDataBase_1.RouletteListDataBas
     }
     e.sort((e, t) => e.SortId - t.SortId);
     for (const s of e) {
-      this.SOm.push(s.TagId);
-      this.MOm.push(false);
+      this.BGm.push(s.TagId);
+      this.kGm.push(false);
     }
   }
-  bOm(e) {
-    var t = e?.Entity?.GetComponent(203);
+  FGm(e) {
+    var t = e?.Entity?.GetComponent(205);
     this.StopListenRelatedTags();
-    var i = this.SOm;
-    var r = this.MOm;
+    var i = this.BGm;
+    var r = this.kGm;
     for (let e = 0; e < i.length; e++) {
       var o = i[e];
       t?.AddTagAddOrRemoveListener(o, this._B_);
       r[e] = t?.HasTag(o) ?? false;
     }
-    this.yOm = e;
+    this.xGm = e;
     this.L5_(i, r);
   }
   StopListenRelatedTags() {
-    var e = this.yOm;
+    var e = this.xGm;
     if (e) {
-      var t = e.Entity?.GetComponent(203);
+      var t = e.Entity?.GetComponent(205);
       if (t) {
-        for (const i of this.SOm) {
+        for (const i of this.BGm) {
           t.RemoveTagAddOrRemoveListener(i, this._B_);
         }
       }
-      this.yOm = undefined;
+      this.xGm = undefined;
     }
   }
   L5_(t, i) {
@@ -186,51 +186,51 @@ class RouletteListDataExplore extends RouletteListDataBase_1.RouletteListDataBas
       var r;
       if (i[e]) {
         r = t[e];
-        this.ROm(r);
+        this.NGm(r);
         return;
       }
     }
-    this.wOm();
+    this.VGm();
   }
-  ROm(t) {
+  NGm(t) {
     t = this.cB_.get(t);
     if (this.uB_ !== t) {
       this.uB_ = t;
       var t = ConfigManager_1.ConfigManager.RouletteConfig.GetReplaceConfigById(t);
-      this.EOm.length = 0;
-      this.EOm.push(...t.RouletteSkillIdList.slice(0, RouletteDefine_1.ROULETTE_NUM));
-      var i = this.EOm.length;
+      this.qGm.length = 0;
+      this.qGm.push(...t.RouletteSkillIdList.slice(0, RouletteDefine_1.ROULETTE_NUM));
+      var i = this.qGm.length;
       for (let e = 0; e < RouletteDefine_1.ROULETTE_NUM - i; e++) {
-        this.EOm.push(0);
+        this.qGm.push(0);
       }
       let e = t.RouletteItemId;
       if (!!e && !(ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(e) > 0)) {
         e = 0;
       }
-      this.IOm = e;
-      this.TOm = this.EquipExploreSkillIdServer;
+      this.OGm = e;
+      this.GGm = this.EquipExploreSkillIdServer;
       t = t.ReplaceSkillId;
       if (t && this.IsFirstExplorePriority()) {
         ModelManager_1.ModelManager.ExploreModel.SetExploreSkillId(t, 0, "ActiveReplaceConfig");
         ControllerHolder_1.ControllerHolder.RouletteController.ExploreSkillSetRequest(t, undefined, true);
       }
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("Phantom", 37, "[ExploreRoulette] 进入替换模式", ["ReplaceId", this.uB_], ["ReplaceSkillId", t], ["ReplaceItemId", e], ["RestoreSkillId", this.TOm]);
+        Log_1.Log.Info("Phantom", 37, "[ExploreRoulette] 进入替换模式", ["ReplaceId", this.uB_], ["ReplaceSkillId", t], ["ReplaceItemId", e], ["RestoreSkillId", this.GGm]);
       }
     }
   }
-  wOm() {
+  VGm() {
     var e;
     if (this.uB_) {
       this.uB_ = undefined;
-      if ((e = this.TOm) && this.IsFirstExplorePriority()) {
+      if ((e = this.GGm) && this.IsFirstExplorePriority()) {
         ModelManager_1.ModelManager.ExploreModel.SetExploreSkillId(e, 0, "DisActiveReplaceConfig");
         ControllerHolder_1.ControllerHolder.RouletteController.ExploreSkillSetRequest(e, undefined, true);
       }
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Phantom", 37, "[ExploreRoulette] 退出替换模式", ["RestoreSkillId", e]);
       }
-      this.TOm = 0;
+      this.GGm = 0;
     }
   }
   rfo() {

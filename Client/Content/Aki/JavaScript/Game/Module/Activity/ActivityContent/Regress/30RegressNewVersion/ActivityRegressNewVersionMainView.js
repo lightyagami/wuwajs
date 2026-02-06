@@ -25,19 +25,19 @@ class ActivityRegressNewVersionMainView extends UiViewBase_1.UiViewBase {
     super(...arguments);
     this._da = new Map();
     this.uda = undefined;
-    this.z3f = [];
+    this.l$f = [];
     this.cda = undefined;
     this.jdi = (e, i) => {
       return new ActivityRegressTabItemPanel_1.ActivityRegressTabItemPanel();
     };
     this.zno = e => {
       this.L6e = Time_1.Time.Now;
-      this.mda(this.z3f[e]);
+      this.mda(this.l$f[e]);
     };
     this.yqe = e => {
-      var e = this.z3f[e];
-      var i = this.J3f(e) ?? "";
-      var e = this.Z3f(e);
+      var e = this.l$f[e];
+      var i = this._$f(e) ?? "";
+      var e = this.u$f(e);
       var e = e !== undefined ? ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(e) : "";
       return new CommonTabData_1.CommonTabData(e, new CommonTabTitleData_1.CommonTabTitleData(i));
     };
@@ -73,11 +73,11 @@ class ActivityRegressNewVersionMainView extends UiViewBase_1.UiViewBase {
   }
   async Tfa() {
     if (ModelManager_1.ModelManager.ActivityRegressModel.GetGachaPoolUpPool()?.length > 0) {
-      this.z3f.push(0);
+      this.l$f.push(0);
     }
-    this.z3f.push(1);
+    this.l$f.push(1);
     var i = new Array();
-    for (let e = 0; e < this.z3f.length; e++) {
+    for (let e = 0; e < this.l$f.length; e++) {
       var t = new CommonTabItemBase_1.CommonTabItemData();
       t.Index = e;
       t.Data = this.cda.GetTabComponentData(e);
@@ -96,8 +96,8 @@ class ActivityRegressNewVersionMainView extends UiViewBase_1.UiViewBase {
     }
   }
   qEi() {
-    var e = this.J3f(this.uda) ?? "";
-    var i = this.Z3f(this.uda) ?? "";
+    var e = this._$f(this.uda) ?? "";
+    var i = this.u$f(this.uda) ?? "";
     var i = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(i);
     this.cda.UpdateTitle(i, new CommonTabTitleData_1.CommonTabTitleData(e));
   }
@@ -128,7 +128,7 @@ class ActivityRegressNewVersionMainView extends UiViewBase_1.UiViewBase {
       await this._da.get(e).HideAsync();
     }
   }
-  J3f(e) {
+  _$f(e) {
     switch (e) {
       case 0:
         return "Regress_NewVersion_Role_Title";
@@ -136,7 +136,7 @@ class ActivityRegressNewVersionMainView extends UiViewBase_1.UiViewBase {
         return "Regress_NewVersion_MainLine_Title";
     }
   }
-  Z3f(e) {
+  u$f(e) {
     switch (e) {
       case 0:
         return "SP_IconComDrawcard";

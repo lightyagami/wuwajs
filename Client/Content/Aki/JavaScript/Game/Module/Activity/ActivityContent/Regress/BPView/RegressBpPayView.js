@@ -27,12 +27,12 @@ class RegressBpPayView extends UiViewBase_1.UiViewBase {
     this.xli = () => {
       this.CloseMe();
     };
-    this.MFf = () => {
+    this.Y7f = () => {
       var e = ActivityRegressDefine_1.RECALL_PAY_BP_GIFT_ID;
       ControllerHolder_1.ControllerHolder.PayGiftController.SdkPay(e);
     };
     this.rOe = () => new CommonItemSmallItemGrid_1.CommonItemSmallItemGrid();
-    this.EFf = () => {
+    this.z7f = () => {
       var e;
       var i;
       var t;
@@ -65,7 +65,7 @@ class RegressBpPayView extends UiViewBase_1.UiViewBase {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIButtonComponent], [2, UE.UIText], [3, UE.UIText], [4, UE.UIText], [5, UE.UIGridLayout], [6, UE.UIItem], [7, UE.UIText], [8, UE.UIText], [9, UE.UIButtonComponent], [10, UE.UIItem]];
-    this.BtnBindInfo = [[1, this.xli], [9, this.MFf]];
+    this.BtnBindInfo = [[1, this.xli], [9, this.Y7f]];
   }
   async OnBeforeStartAsync() {
     this.H3e = new GenericLayout_1.GenericLayout(this.GetGridLayout(5), this.rOe);
@@ -80,7 +80,7 @@ class RegressBpPayView extends UiViewBase_1.UiViewBase {
     this.tGo();
     this.mGe();
     this.Z3e();
-    this.EFf();
+    this.z7f();
     this.GetItem(10).SetUIActive(false);
   }
   OnBeforeHide() {

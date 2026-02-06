@@ -54,9 +54,9 @@ class ActivityCollectionController extends ActivityControllerBase_1.ActivityCont
   static RequestCollectionQuestReward(e) {
     var t = new Protocol_1.Aki.Protocol.nos();
     t.V6n = e;
-    Net_1.Net.Call(28098, t, e => {
+    Net_1.Net.Call(19722, t, e => {
       if (e && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19742);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 28976);
       }
     });
   }

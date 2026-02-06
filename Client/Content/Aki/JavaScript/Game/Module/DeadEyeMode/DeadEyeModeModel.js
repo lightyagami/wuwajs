@@ -10,16 +10,16 @@ const EventSystem_1 = require("../../Common/Event/EventSystem");
 class DeadEyeModeModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
-    this.A5f = 0;
+    this.SQf = 0;
     this.bcm = undefined;
     this.Rcm = [];
-    this.UQm = [];
-    this.EKm = [];
+    this.eYm = [];
+    this.$Ym = [];
     this.RevertMaterialComponentsMaps = new Map();
     this.CharRenderingComponents = new Map();
     this.wcm = 0;
-    this.IKm = 0.02;
-    this.NHf = 0;
+    this.WYm = 0.02;
+    this.eig = 0;
     this.Lcm = 0;
     this.CurrentEnergy = 0;
     this.TimeScaleTransitionTime = 0;
@@ -36,7 +36,7 @@ class DeadEyeModeModel extends ModelBase_1.ModelBase {
     this.HighlightDataNotLockAsset = undefined;
   }
   get Type() {
-    return this.A5f;
+    return this.SQf;
   }
   get CurDeadEyeModeStage() {
     return this.wcm;
@@ -45,7 +45,7 @@ class DeadEyeModeModel extends ModelBase_1.ModelBase {
     return this.CurDeadEyeModeStage === 1 || this.CurDeadEyeModeStage === 2;
   }
   get MaxEnergy() {
-    return this.NHf;
+    return this.eig;
   }
   get BulletConsumption() {
     return this.bcm.BulletConsumption;
@@ -57,17 +57,17 @@ class DeadEyeModeModel extends ModelBase_1.ModelBase {
     return this.Lcm;
   }
   get TimeScale() {
-    return this.IKm;
+    return this.WYm;
   }
   OnLeaveLevel() {
     return !(this.HighlightDataLockedAsset = undefined);
   }
   StartDeadEyeMode(t, e, i, s, h, r, o, n, d) {
-    this.A5f = t;
+    this.SQf = t;
     this.bcm = e;
-    this.IKm = r;
+    this.WYm = r;
     this.Lcm = o ?? 0;
-    this.NHf = i;
+    this.eig = i;
     this.CurrentEnergy = this.MaxEnergy;
     this.TimeScaleTransitionTime = s;
     this.TriggerEntityCreatureDataId = h;
@@ -87,8 +87,8 @@ class DeadEyeModeModel extends ModelBase_1.ModelBase {
   EndDeadEyeMode() {
     this.wcm = 0;
     this.Rcm.length = 0;
-    this.EKm.length = 0;
-    this.UQm.length = 0;
+    this.$Ym.length = 0;
+    this.eYm.length = 0;
   }
   AddFocusEntity(t) {
     this.Rcm.push(t);
@@ -97,19 +97,19 @@ class DeadEyeModeModel extends ModelBase_1.ModelBase {
     return this.Rcm;
   }
   AddTargetLocation(t) {
-    this.UQm.push(t);
+    this.eYm.push(t);
   }
   GetTargetLocations() {
-    return this.UQm;
+    return this.eYm;
   }
   CheckEnergyEnoughLockTarget() {
     return this.CurrentEnergy >= this.BulletConsumption;
   }
   RecordLockedTarget(t) {
-    this.EKm.push(t);
+    this.$Ym.push(t);
   }
   GetLockedEntities() {
-    return this.EKm;
+    return this.$Ym;
   }
 }
 exports.DeadEyeModeModel = DeadEyeModeModel;

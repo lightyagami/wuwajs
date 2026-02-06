@@ -106,6 +106,16 @@ class VehiclePassengerInfo {
   IsNpcPassenger() {
     return this.PassengerEntity?.GetComponent(3)?.CreatureData.IsNpc() ?? false;
   }
+  DeepCopy() {
+    var e = new VehiclePassengerInfo();
+    e.VehicleEntity = this.VehicleEntity;
+    e.PassengerEntity = this.PassengerEntity;
+    e.VehicleType = this.VehicleType;
+    e.IsDriver = this.IsDriver;
+    e.Seat = this.Seat;
+    e.ExitType = this.ExitType;
+    return e;
+  }
 }
 exports.VehiclePassengerInfo = VehiclePassengerInfo;
 //# sourceMappingURL=VehicleInfoDefines.js.map

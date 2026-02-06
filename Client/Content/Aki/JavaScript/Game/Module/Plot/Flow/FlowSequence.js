@@ -13,6 +13,7 @@ const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const HoldingHandsController_1 = require("../../HoldHands/HoldingHandsController");
+const MovementLockController_1 = require("../../MovementLock/MovementLockController");
 const TeleportController_1 = require("../../Teleport/TeleportController");
 const PlotController_1 = require("../PlotController");
 const SequenceController_1 = require("../Sequence/SequenceController");
@@ -227,7 +228,8 @@ class FlowSequence {
         SequenceController_1.SequenceController.Play({
           Path: this.v$i.SequenceDataAsset,
           ResetCamera: this.v$i.ResetCamera,
-          FrameEvents: i
+          FrameEvents: i,
+          SeqBlendAnim: this.v$i.SeqBlendAnim
         }, t, this.OnSequenceStop, true, true, this.nx.IsWaitRenderData, 1, e);
       }
     }
@@ -244,6 +246,9 @@ class FlowSequence {
   async q$i() {
     await PlotController_1.PlotController.CheckFormation();
     await PlotController_1.PlotController.CheckSwitchSubLevel();
+    if (MovementLockController_1.MovementLockController.LockMode === 2) {
+      await ControllerHolder_1.ControllerHolder.GameModeController?.ResetStreamingSourceAttachment();
+    }
     if (this.T$i && !ModelManager_1.ModelManager.AutoRunModel.IsInLogicTreeGmMode()) {
       var e = this.S$i ? this.M$i.get(this.S$i.Id) : 0;
       if (e >= 0 && e < this.R$i.length && this.R$i[e]) {
@@ -260,12 +265,12 @@ class FlowSequence {
           Log_1.Log.Warn("Plot", 26, "剧情SeqDA的FinalPos未配置，跳过时最终位置将不准确，联系策划修改");
         }
       }
-      for (const o of this.njc) {
+      for (const s of this.njc) {
         var t;
         var i;
-        var s = ModelManager_1.ModelManager.HoldingHandsModel.GetRelation(o.toString());
-        if (s && (t = ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(s.Leader?.Entity), i = ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(s.Follower?.Entity), t) && i) {
-          HoldingHandsController_1.HoldingHandsController.RequestHoldHands(s.Key, t, i, s.LeaderHandType, false, false, "FlowSequence结束");
+        var o = ModelManager_1.ModelManager.HoldingHandsModel.GetRelation(s.toString());
+        if (o && (t = ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(o.Leader?.Entity), i = ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(o.Follower?.Entity), t) && i) {
+          HoldingHandsController_1.HoldingHandsController.RequestHoldHands(o.Key, t, i, o.LeaderHandType, false, false, "FlowSequence结束");
         }
       }
     }
@@ -306,8 +311,8 @@ class FlowSequence {
       SequenceController_1.SequenceController.ManualFinish();
       this.p$i = false;
       if (this.fkl.size > 0) {
-        for (const s of this.fkl.keys()) {
-          this.OnQteEnd(s);
+        for (const o of this.fkl.keys()) {
+          this.OnQteEnd(o);
         }
       }
       if (this.y$i) {
@@ -390,20 +395,20 @@ class FlowSequence {
     return e.QteId;
   }
   OnQteExecute(t, i) {
-    var s = this.fkl.get(t);
-    if (s && (this.L9_.set(t, -1), s.Options) && s.Options.length !== 0) {
-      for (let e = 0; e < s.Options.length; e++) {
-        var o = s.Options[e];
-        if (o.TypeParams) {
-          switch (o.TypeParams.Type) {
+    var o = this.fkl.get(t);
+    if (o && (this.L9_.set(t, -1), o.Options) && o.Options.length !== 0) {
+      for (let e = 0; e < o.Options.length; e++) {
+        var s = o.Options[e];
+        if (s.TypeParams) {
+          switch (s.TypeParams.Type) {
             case "QteSucceed":
-              if (i && (this.w9_(s, e), Log_1.Log.CheckInfo())) {
+              if (i && (this.w9_(o, e), Log_1.Log.CheckInfo())) {
                 Log_1.Log.Info("Plot", 26, "[FlowSequence][Subtitle] Qte成功执行", ["id", t], ["optionIndex", e]);
               }
               break;
             case "QteFailed":
               if (!i) {
-                this.w9_(s, e);
+                this.w9_(o, e);
                 if (Log_1.Log.CheckInfo()) {
                   Log_1.Log.Info("Plot", 26, "[FlowSequence][Subtitle] Qte失败执行", ["id", t], ["optionIndex", e]);
                 }
@@ -450,16 +455,16 @@ class FlowSequence {
     this.I$i = true;
     var t;
     var i;
-    var s = this.S$i;
+    var o = this.S$i;
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Plot", 26, "[FlowSequence] 选择选项", ["index", e]);
     }
-    i = e < (t = s.Options?.length ?? 0) ? s.Options[e].Actions : undefined;
+    i = e < (t = o.Options?.length ?? 0) ? o.Options[e].Actions : undefined;
     if (t <= e) {
       ControllerHolder_1.ControllerHolder.FlowController.LogError("[FlowSequence] 选项超出下标");
       return false;
     } else {
-      ControllerHolder_1.ControllerHolder.FlowController.SelectOption(s.Id, e);
+      ControllerHolder_1.ControllerHolder.FlowController.SelectOption(o.Id, e);
       this.OptionActionPromise = new CustomPromise_1.CustomPromise();
       this.G$i(i, this.B$i);
       return true;

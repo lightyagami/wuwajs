@@ -1,19 +1,19 @@
 "use strict";
 
 var __decorate = this && this.__decorate || function (t, e, i, s) {
-  var n;
-  var h = arguments.length;
-  var r = h < 3 ? e : s === null ? s = Object.getOwnPropertyDescriptor(e, i) : s;
+  var h;
+  var n = arguments.length;
+  var r = n < 3 ? e : s === null ? s = Object.getOwnPropertyDescriptor(e, i) : s;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
     r = Reflect.decorate(t, e, i, s);
   } else {
     for (var o = t.length - 1; o >= 0; o--) {
-      if (n = t[o]) {
-        r = (h < 3 ? n(r) : h > 3 ? n(e, i, r) : n(e, i)) || r;
+      if (h = t[o]) {
+        r = (n < 3 ? h(r) : n > 3 ? h(e, i, r) : h(e, i)) || r;
       }
     }
   }
-  if (h > 3 && r) {
+  if (n > 3 && r) {
     Object.defineProperty(e, i, r);
   }
   return r;
@@ -21,7 +21,7 @@ var __decorate = this && this.__decorate || function (t, e, i, s) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.SmartObjectComponent = undefined;
+exports.SmartObjectComponent = exports.MAMMOTH_SLIDE_MONSTER_KEY = exports.MAMMOTH_SLIDE_TYPE_KEY = exports.MOVE_TARGET_KEY = undefined;
 const UE = require("ue");
 const AudioController_1 = require("../../../../../Core/Audio/AudioController");
 const Log_1 = require("../../../../../Core/Common/Log");
@@ -35,6 +35,7 @@ const EventSystem_1 = require("../../../../Common/Event/EventSystem");
 const TimeUtil_1 = require("../../../../Common/TimeUtil");
 const Global_1 = require("../../../../Global");
 const LevelGamePlayController_1 = require("../../../../LevelGamePlay/LevelGamePlayController");
+const LevelGeneralContextDefine_1 = require("../../../../LevelGamePlay/LevelGeneralContextDefine");
 const SceneItemSplineMoveTaskUtils_1 = require("../../../../LevelGamePlay/SplineMoveTask/SceneItemSplineMoveTaskUtils");
 const ConfigManager_1 = require("../../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
@@ -45,7 +46,9 @@ const CharacterNameDefines_1 = require("../../../Character/Common/CharacterNameD
 const CharacterUnifiedStateTypes_1 = require("../../../Character/Common/Component/Abilities/CharacterUnifiedStateTypes");
 const SceneItemActorComponent_1 = require("../../SceneItemActorComponent");
 const SceneItemMoveComponent_1 = require("./SceneItemMoveComponent");
-const MOVE_TARGET_KEY = "VisionDisplayTarget";
+exports.MOVE_TARGET_KEY = "VisionDisplayTarget";
+exports.MAMMOTH_SLIDE_TYPE_KEY = "IsMammothSlide";
+exports.MAMMOTH_SLIDE_MONSTER_KEY = "IsMammothSlideMonster";
 let SmartObjectComponent = class SmartObjectComponent extends EntityComponent_1.EntityComponent {
   constructor() {
     super(...arguments);
@@ -66,13 +69,15 @@ let SmartObjectComponent = class SmartObjectComponent extends EntityComponent_1.
     this.mEl = -1;
     this.cka = -1;
     this.dEl = -1;
-    this.rZm = undefined;
-    this.oZm = false;
+    this.Ntf = undefined;
+    this.Vtf = false;
     this.Zhn = false;
-    this.nZm = false;
-    this.ABf = false;
-    this.bkf = undefined;
-    this.uqf = undefined;
+    this.Htf = false;
+    this.BSg = true;
+    this.SNf = false;
+    this.S3f = undefined;
+    this.vVf = undefined;
+    this.ZRg = undefined;
     this.H_n = (t, e) => {
       var i;
       var e = e.Entity;
@@ -92,47 +97,59 @@ let SmartObjectComponent = class SmartObjectComponent extends EntityComponent_1.
     this.Etn = t => {
       if (this.Zhn !== t) {
         this.Zhn = t;
-        this.Uof();
+        this.Zsf();
       }
     };
     this.kXt = () => {
-      this.nZm = false;
-      this.dtg();
+      this.Htf = false;
+      this.RDg();
     };
-    this.bVf = () => {
+    this.xXf = () => {
       var t;
-      var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(56);
+      var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(58);
       e?.HideHighlightExploreSkill();
-      e?.ShowHighlightExploreSkill(this.F_f ? 6008 : 1007, -1, true, "关卡.新版声骸显像.技能高亮");
-      if (this.rZm && (e = this.rZm.IsBornInTargetPoint ? -27677719 : 1740921780, t = this.RVf?.GetComponent(215) ?? this.ZKf?.GetComponent(215))) {
-        if (this.F_f) {
+      e?.ShowHighlightExploreSkill(this.hgf ? 6008 : 1007, -1, false);
+      if (this.Ntf && (e = this.Ntf.IsBornInTargetPoint ? -27677719 : 1740921780, t = this.BXf?.GetComponent(217) ?? this.Q1g?.GetComponent(217))) {
+        if (this.hgf) {
           t.AddTag(e);
           t.AddTag(-1221688283);
-          this.ZKf = this.RVf;
+          this.Q1g = this.BXf;
         } else {
           t.RemoveTag(e);
           t.RemoveTag(-1221688283);
-          this.ZKf = undefined;
+          this.Q1g = undefined;
         }
       }
     };
     this.Szo = () => {
       var t;
       var e;
-      if (this.F_f && this.RVf && this.rZm && (t = this.RVf.GetComponent(215))) {
-        e = this.rZm.IsBornInTargetPoint ? -27677719 : 1740921780;
-        if (ModelManager_1.ModelManager.RouletteModel.CurrentExploreSkillId === 6008) {
-          if (!t.HasTag(e)) {
-            t.AddTag(e);
-            t.AddTag(-1221688283);
+      var i;
+      if (this.Ntf) {
+        t = this.BXf?.GetComponent(217);
+        e = ModelManager_1.ModelManager.CreatureModel.GetPlayerId();
+        if (t) {
+          i = this.Ntf.IsBornInTargetPoint ? -27677719 : 1740921780;
+          if (ModelManager_1.ModelManager.RouletteModel.CurrentExploreSkillId === 6008) {
+            if (!t.HasTag(i)) {
+              t.AddTag(i);
+              t.AddTag(-1221688283);
+            }
+          } else {
+            t.RemoveTag(i);
+            t.RemoveTag(-1221688283);
+          }
+        }
+        if (ModelManager_1.ModelManager.RouletteModel.CurrentExploreSkillId === 1007) {
+          if (!ControllerHolder_1.ControllerHolder.FormationDataController.HasPlayerTag(e, -1221688283)) {
+            ControllerHolder_1.ControllerHolder.FormationDataController.AddPlayerTag(e, -1221688283);
           }
         } else {
-          t.RemoveTag(e);
-          t.RemoveTag(-1221688283);
+          ControllerHolder_1.ControllerHolder.FormationDataController.RemovePlayerTag(e, -1221688283);
         }
       }
     };
-    this.ZKf = undefined;
+    this.Q1g = undefined;
     this.W_n = () => {
       var t;
       var e;
@@ -173,11 +190,11 @@ let SmartObjectComponent = class SmartObjectComponent extends EntityComponent_1.
   OnStart() {
     var t;
     this.EIe = this.Entity.GetComponent(0);
-    this.Hte = this.Entity.GetComponent(212);
-    this.vtn = this.Entity.GetComponent(89);
-    this.Gce = this.Entity.GetComponent(137);
-    if (this.Hte && (t = this.Hte.CreatureData?.GetPbEntityInitData()?.ComponentsData) && (this.k_n = (0, IComponent_1.getComponent)(t, "AiAlertNotifyComponent"), this.k_n && this.Q_n(), this.aEl = (0, IComponent_1.getComponent)(t, "SceneItemAiComponent"), this.aEl && this.pEl(), this.rZm = (0, IComponent_1.getComponent)(t, "VisionDisplayComponent"), this.rZm)) {
-      this.sZm();
+    this.Hte = this.Entity.GetComponent(214);
+    this.vtn = this.Entity.GetComponent(91);
+    this.Gce = this.Entity.GetComponent(139);
+    if (this.Hte && (t = this.Hte.CreatureData?.GetPbEntityInitData()?.ComponentsData) && (this.k_n = (0, IComponent_1.getComponent)(t, "AiAlertNotifyComponent"), this.k_n && this.Q_n(), this.aEl = (0, IComponent_1.getComponent)(t, "SceneItemAiComponent"), this.aEl && this.pEl(), this.Ntf = (0, IComponent_1.getComponent)(t, "VisionDisplayComponent"), this.Ntf)) {
+      this.jtf();
     }
     return true;
   }
@@ -189,12 +206,17 @@ let SmartObjectComponent = class SmartObjectComponent extends EntityComponent_1.
     if (this.lEl) {
       this.fEl();
     }
-    if (this.oZm) {
+    if (this.Vtf) {
       EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnMyPlayerInOutRangeLocal, this.Etn);
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ChangeMode, this.kXt);
     }
-    this.bkf = undefined;
-    return !(this.uqf = undefined);
+    this.S3f = undefined;
+    this.vVf = undefined;
+    var t = ModelManager_1.ModelManager.PhantomInteractModel;
+    if (t && this.ZRg) {
+      t.RemoveVisionDisplayTargetPoint(this.Entity.Id);
+    }
+    return !(this.ZRg = undefined);
   }
   Q_n() {
     for (var [, t] of this.vtn.GetEntitiesInRangeLocal()) {
@@ -212,7 +234,7 @@ let SmartObjectComponent = class SmartObjectComponent extends EntityComponent_1.
     this.sEl = true;
   }
   j_n(t) {
-    var t = t.GetComponent(48);
+    var t = t.GetComponent(50);
     return !!t && !!(t = t.AiController?.AiAlert) && !!t.AiAlertConfig;
   }
   pEl() {
@@ -233,27 +255,47 @@ let SmartObjectComponent = class SmartObjectComponent extends EntityComponent_1.
     this.uEl = ModelManager_1.ModelManager.GameSplineModel.GetSplineActorBySplineId(t);
     this.MEl();
   }
-  sZm() {
+  jtf() {
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnMyPlayerInOutRangeLocal, this.Etn);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ChangeMode, this.kXt);
-    this.oZm = true;
+    this.Vtf = true;
+    if (this.Ntf?.IsBornInTargetPoint) {
+      var t = this.EIe?.GetBaseInfo();
+      if (t) {
+        if (t.EntityAttachPointList !== undefined) {
+          for (const i of t.EntityAttachPointList) {
+            if (i.Name === exports.MOVE_TARGET_KEY) {
+              var e = Vector_1.Vector.Create();
+              e.FromConfigVector(i.AttachPoint);
+              e.FromUeVector(this.Hte.ActorTransform.TransformPosition(e.ToUeVector()));
+              this.ZRg = e;
+              break;
+            }
+          }
+        }
+        if (!this.ZRg) {
+          (t = Vector_1.Vector.Create()).FromUeVector(this.Hte.ActorLocation);
+          this.ZRg = t;
+        }
+      }
+    }
   }
   mni() {
     var t;
     var e;
     var i = Global_1.Global.CharacterController;
-    if (i && this.CheckOnVisionDisplayType() && (this.rZm?.ViewEntityId && this.rZm.IsNeedInView && (this.bkf?.IsValid() && this.uqf || (t = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(this.rZm.ViewEntityId)) && t.Entity && ((e = t.Entity.GetComponent(212)) ? (e.TryRefreshShowActor(), this.bkf = e.CurLevelPrefabShowActor, this.uqf = e) : (e = t.Entity.GetComponent(3)) && (this.uqf = e, this.bkf = e.Actor))), t = this.uqf ?? this.Hte, e = UE.GameplayStatics.D_ProjectWorldToScreen(i, t.ActorLocation, undefined), i = this.cqf(), (e = e && i) !== this.nZm) && ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity !== undefined) {
-      this.nZm = e;
-      this.Uof();
+    if (i && this.CheckOnVisionDisplayType() && (this.Ntf?.ViewEntityId && this.Ntf.IsNeedInView && (this.S3f?.IsValid() && this.vVf || (t = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(this.Ntf.ViewEntityId)) && t.Entity && ((e = t.Entity.GetComponent(214)) ? (e.TryRefreshShowActor(), this.S3f = e.CurLevelPrefabShowActor, this.vVf = e) : (e = t.Entity.GetComponent(3)) && (this.vVf = e, this.S3f = e.Actor))), t = this.vVf ?? this.Hte, e = UE.GameplayStatics.D_ProjectWorldToScreen(i, t.ActorLocation, undefined), i = this.yVf(), (e = e && i) !== this.Htf) && ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity !== undefined) {
+      this.Htf = e;
+      this.Zsf();
     }
   }
-  cqf() {
+  yVf() {
     let i = true;
-    if (this.rZm && !this.rZm.IsBanOcclusion) {
-      let e = this.bkf ?? this.Hte?.CurLevelPrefabShowActor;
+    if (this.Ntf && !this.Ntf.IsBanOcclusion) {
+      let e = this.S3f ?? this.Hte?.CurLevelPrefabShowActor;
       if (e?.IsValid() && (i = e.WasRecentlyRenderedOnScreen(), UE.KuroStaticLibrary.IsObjectClassByName(e, CharacterNameDefines_1.CharacterNameDefines.BP_BASEITEM))) {
         let t = this.Hte;
-        (t = this.uqf instanceof SceneItemActorComponent_1.SceneItemActorComponent ? this.uqf : t).RefreshShowActor();
+        (t = this.vVf instanceof SceneItemActorComponent_1.SceneItemActorComponent ? this.vVf : t).RefreshShowActor();
         if ((e = t.CurLevelPrefabShowActor)?.IsValid()) {
           i = e.WasRecentlyRenderedOnScreen();
         }
@@ -261,52 +303,65 @@ let SmartObjectComponent = class SmartObjectComponent extends EntityComponent_1.
     }
     return i;
   }
-  Uof() {
+  yzt() {
+    if (this.Ntf) {
+      let t = true;
+      if (this.Ntf.Condition) {
+        t = ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckConditionNew(this.Ntf.Condition, this.Hte.Owner, LevelGeneralContextDefine_1.EntityContext.Create(this.Hte.Entity.Id));
+      }
+      if (this.BSg !== t) {
+        this.BSg = t;
+      }
+    }
+  }
+  Zsf() {
     var t;
     var e;
     var i;
     var s;
+    var h;
     var n;
-    if (this.rZm && this.CheckOnVisionDisplayType()) {
+    if (this.Ntf && this.CheckOnVisionDisplayType()) {
       t = ModelManager_1.ModelManager.CreatureModel.GetPlayerId();
-      e = this.rZm.IsBornInTargetPoint ? -27677719 : 1740921780;
-      i = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(56);
-      if (s = this.VisionDisplayIsCanBeInteract()) {
+      e = this.Ntf.IsBornInTargetPoint ? -27677719 : 1740921780;
+      i = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(58);
+      if (n = this.VisionDisplayIsCanBeInteract()) {
         ControllerHolder_1.ControllerHolder.FormationDataController.AddPlayerTag(t, e);
-        if (this.F_f && (this.ZKf = this.RVf, n = this.RVf?.GetComponent(215))) {
-          n.AddTag(e);
-          n.AddTag(-1221688283);
+        ControllerHolder_1.ControllerHolder.FormationDataController.AddPlayerTag(t, -1221688283);
+        if (this.hgf && (this.Q1g = this.BXf, s = this.BXf?.GetComponent(217))) {
+          s.AddTag(e);
+          s.AddTag(-1221688283);
         }
-        this.mtg();
-        i?.ShowHighlightExploreSkill(this.F_f ? 6008 : 1007, -1, true, "关卡.新版声骸显像.技能高亮");
-        this.ABf = true;
-      } else if (!s && this.ABf) {
-        ControllerHolder_1.ControllerHolder.FormationDataController.RemovePlayerTag(t, e);
-        if (this.F_f && (n = this.RVf?.GetComponent(215))) {
-          n.RemoveTag(e);
-          n.RemoveTag(-1221688283);
+        this.LDg();
+        i?.ShowHighlightExploreSkill(this.hgf ? 6008 : 1007, -1, false);
+        this.SNf = true;
+        s = ModelManager_1.ModelManager.PhantomInteractModel;
+        if (this.ZRg) {
+          s.AddVisionDisplayTargetPoint(this.Entity.Id, this.ZRg);
         }
-        i?.HideHighlightExploreSkill();
-        this.dtg();
-        this.ABf = false;
+        if (h = this.GetVisionDisplayType()) {
+          s.AddVisionDisplayHighlightExploreType(h);
+        }
+      } else if (!n && this.SNf && (ControllerHolder_1.ControllerHolder.FormationDataController.RemovePlayerTag(t, e), ControllerHolder_1.ControllerHolder.FormationDataController.RemovePlayerTag(t, -1221688283), this.hgf && (s = this.BXf?.GetComponent(217)) && (s.RemoveTag(e), s.RemoveTag(-1221688283)), i?.HideHighlightExploreSkill(), this.RDg(), this.SNf = false, h = ModelManager_1.ModelManager.PhantomInteractModel, this.ZRg && h.RemoveVisionDisplayTargetPoint(this.Entity.Id), n = this.GetVisionDisplayType())) {
+        h.RemoveVisionDisplayHighlightExploreType(n);
       }
     }
   }
-  mtg() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnLeaveVehicle, this.bVf);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnEnterVehicle, this.bVf);
+  LDg() {
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnLeaveVehicle, this.xXf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnEnterVehicle, this.xXf);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnChangeSelectedExploreId, this.Szo);
   }
-  dtg() {
-    if (this.rZm && (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnLeaveVehicle, this.bVf) && EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnLeaveVehicle, this.bVf), EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnEnterVehicle, this.bVf) && EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnEnterVehicle, this.bVf), EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnChangeSelectedExploreId, this.Szo))) {
+  RDg() {
+    if (this.Ntf && (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnLeaveVehicle, this.xXf) && EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnLeaveVehicle, this.xXf), EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnEnterVehicle, this.xXf) && EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnEnterVehicle, this.xXf), EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnChangeSelectedExploreId, this.Szo))) {
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnChangeSelectedExploreId, this.Szo);
     }
   }
-  get F_f() {
+  get hgf() {
     var t = Global_1.Global.BaseCharacter?.CharacterActorComponent;
     return !!t && !!(t = t.Entity.CheckGetComponent(242)) && t.VehicleType === "Motorcycle";
   }
-  get RVf() {
+  get BXf() {
     var t = Global_1.Global.BaseCharacter?.CharacterActorComponent;
     if (t) {
       t = t.Entity.CheckGetComponent(242);
@@ -317,7 +372,7 @@ let SmartObjectComponent = class SmartObjectComponent extends EntityComponent_1.
   }
   OnTick(t) {
     this.Y_n(t);
-    this.aZm(t);
+    this.$tf(t);
   }
   Y_n(e) {
     if (this.k_n !== undefined && !(this.F_n.length <= 0)) {
@@ -340,7 +395,7 @@ let SmartObjectComponent = class SmartObjectComponent extends EntityComponent_1.
       }
     }
   }
-  aZm(t) {
+  $tf(t) {
     this.mni();
   }
   X_n() {
@@ -373,41 +428,41 @@ let SmartObjectComponent = class SmartObjectComponent extends EntityComponent_1.
       var s = ModelManager_1.ModelManager.TimeOfDayModel.GameTime.Second;
       if (e) {
         for (let t = 0; t < i.Points.length; t++) {
-          var n = i.Points[t];
-          if (s < TimeOfDayModel_1.TodDayTime.ConvertFromHourMinute(n.Hours, n.Minutes)) {
+          var h = i.Points[t];
+          if (s < TimeOfDayModel_1.TodDayTime.ConvertFromHourMinute(h.Hours, h.Minutes)) {
             break;
           }
           this.mEl = t;
         }
       }
       var e = TimeOfDayModel_1.TodDayTime.ConvertFromHourMinute(i.Points[this.mEl].Hours, i.Points[this.mEl].Minutes);
-      var h = TimeOfDayModel_1.TodDayTime.ConvertFromHourMinute(i.Points[this.mEl + 1].Hours, i.Points[this.mEl + 1].Minutes);
-      var r = (s - e) / (h - e);
+      var n = TimeOfDayModel_1.TodDayTime.ConvertFromHourMinute(i.Points[this.mEl + 1].Hours, i.Points[this.mEl + 1].Minutes);
+      var r = (s - e) / (n - e);
       if ((r < 0 || r > 1) && Log_1.Log.CheckError()) {
         Log_1.Log.Error("Entity", 31, "服务器下发的LastPassIndex与当前游戏时间不符", ["PbDataId", this.EIe?.GetPbDataId()]);
       }
       var o = this.cEl.GetDistanceAlongSplineAtSplineInputKey(this.mEl);
-      const v = this.cEl.GetDistanceAlongSplineAtSplineInputKey(this.mEl + 1);
-      var a = v - o;
+      const l = this.cEl.GetDistanceAlongSplineAtSplineInputKey(this.mEl + 1);
+      var a = l - o;
       this.cka = a * r + o;
-      var a = (v - o) / (h - e);
+      var a = (l - o) / (n - e);
       var _ = a * this.dEl / TimeOfDayDefine_1.TOD_RATE_RATIO;
       var r = this.cEl.D_GetLocationAtDistanceAlongSpline(this.cka, 1);
       this.Hte.SetActorLocation(r);
-      const l = [];
+      const v = [];
       const m = [];
       let t = 0;
       while (t++ < i.Points.length) {
-        l.push(_);
+        v.push(_);
         m.push(0);
       }
       TimerSystem_1.TimerSystem.Next(() => {
         var t;
         if (this.cEl?.IsValid() && !this.EIe?.GetRemoveState()) {
           t = new SceneItemMoveComponent_1.SceneItemSplineMoveAtConstantTimeParam(this.cEl);
-          SceneItemSplineMoveTaskUtils_1.SceneItemSplineMoveTaskUtils.ParseOldConfigToSplineMoveParam(this.cEl, l, m, false, false, true, m[0] ?? 0, t);
+          SceneItemSplineMoveTaskUtils_1.SceneItemSplineMoveTaskUtils.ParseOldConfigToSplineMoveParam(this.cEl, v, m, false, false, true, m[0] ?? 0, t);
           t.StartDis = this.cka;
-          t.EndDis = v;
+          t.EndDis = l;
           this.Gce.StartSplineMoveAtConstantTimeImplement(t, () => {
             this.Gce.StopMove();
             this.CEl(true);
@@ -430,7 +485,10 @@ let SmartObjectComponent = class SmartObjectComponent extends EntityComponent_1.
     this.mEl = t;
   }
   VisionDisplayIsCanBeInteract() {
-    return !!this.rZm && this.Zhn && (this.nZm || !this.rZm.IsNeedInView);
+    return !!this.Ntf && this.Zhn && (this.Htf || !this.Ntf.IsNeedInView);
+  }
+  VisionDisplayIsCanBeLookFor() {
+    return !!this.Ntf && (this.yzt(), this.BSg);
   }
   GetMoveTargetPos() {
     var e = this.EIe?.GetBaseInfo();
@@ -438,7 +496,7 @@ let SmartObjectComponent = class SmartObjectComponent extends EntityComponent_1.
       let t = undefined;
       if (e.EntityAttachPointList !== undefined) {
         for (const i of e.EntityAttachPointList) {
-          if (i.Name === MOVE_TARGET_KEY) {
+          if (i.Name === exports.MOVE_TARGET_KEY) {
             t = i;
             break;
           }
@@ -457,12 +515,12 @@ let SmartObjectComponent = class SmartObjectComponent extends EntityComponent_1.
     return this.EIe?.GetBaseInfo()?.Category?.VisionDisplayType;
   }
   get IsVisionDisplayType() {
-    return this.rZm !== undefined;
+    return this.Ntf !== undefined;
   }
   CheckOnVisionDisplayType() {
     var t = this.EIe?.GetEntityOnlineInteractType();
     return !t || LevelGamePlayController_1.LevelGamePlayController.MultiplayerLimitTypeCheck(t, false);
   }
 };
-SmartObjectComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(145)], SmartObjectComponent);
+SmartObjectComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(147)], SmartObjectComponent);
 exports.SmartObjectComponent = SmartObjectComponent; //# sourceMappingURL=SmartObjectComponent.js.map

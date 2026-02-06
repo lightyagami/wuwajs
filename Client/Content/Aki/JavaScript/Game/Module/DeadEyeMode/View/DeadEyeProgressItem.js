@@ -18,22 +18,22 @@ const LERP_TIME = 1000;
 class DeadEyeProgressItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.LKm = undefined;
-    this.PKm = undefined;
+    this.zYm = undefined;
+    this.JYm = undefined;
     this.l0u = undefined;
     this.CT1 = 1001;
-    this.DKm = 0;
-    this._Xf = false;
+    this.ezm = 0;
+    this.C_g = false;
     this.Ucm = () => {
       var e = ModelManager_1.ModelManager.DeadEyeModeModel;
       var t = e.CurrentEnergy;
       e.CurrentEnergy -= ModelManager_1.ModelManager.DeadEyeModeModel.BulletConsumption;
-      this.UKm(e.CurrentEnergy);
+      this.tzm(e.CurrentEnergy);
       this.CT1 = t === e.CurrentEnergy ? LERP_TIME : 0;
-      this.DKm = this.PKm.GetValue();
-      this.Msf(true);
+      this.ezm = this.JYm.GetValue();
+      this.Xhf(true);
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("DeadEye", 18, "Progress:OnLockedTarget", ["oldEnergy", t], ["ReduceSliderLerpStartValue", this.DKm], ["curEnergy", e.CurrentEnergy]);
+        Log_1.Log.Debug("DeadEye", 18, "Progress:OnLockedTarget", ["oldEnergy", t], ["ReduceSliderLerpStartValue", this.ezm], ["curEnergy", e.CurrentEnergy]);
       }
     };
   }
@@ -42,17 +42,17 @@ class DeadEyeProgressItem extends UiPanelBase_1.UiPanelBase {
   }
   OnStart() {
     this.l0u = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
-    this.LKm = this.GetSlider(3);
-    this.PKm = this.GetSlider(2);
-    this.UKm(ModelManager_1.ModelManager.DeadEyeModeModel.CurrentEnergy);
-    this.xKm(ModelManager_1.ModelManager.DeadEyeModeModel.CurrentEnergy);
-    this.Msf(false);
+    this.zYm = this.GetSlider(3);
+    this.JYm = this.GetSlider(2);
+    this.tzm(ModelManager_1.ModelManager.DeadEyeModeModel.CurrentEnergy);
+    this.izm(ModelManager_1.ModelManager.DeadEyeModeModel.CurrentEnergy);
+    this.Xhf(false);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.DeadEyeModeTargetPointLocked, this.Ucm);
   }
   OnAfterShow() {
     var e = new CustomPromise_1.CustomPromise();
     this.l0u?.PlaySequenceAsync("Start", e).then(() => {
-      this._Xf = true;
+      this.C_g = true;
     });
   }
   async OnBeforeHideAsync() {
@@ -65,39 +65,39 @@ class DeadEyeProgressItem extends UiPanelBase_1.UiPanelBase {
   OnTick(e) {
     var t;
     var s;
-    if (this._Xf) {
+    if (this.C_g) {
       s = ModelManager_1.ModelManager.DeadEyeModeModel;
       t = e * TimeUtil_1.TimeUtil.Millisecond;
       t = s.TimeConsumption * t;
       s.CurrentEnergy = Math.max(0, s.CurrentEnergy - t);
-      this.UKm(s.CurrentEnergy);
+      this.tzm(s.CurrentEnergy);
       if (this.CT1 <= LERP_TIME) {
         this.CT1 += e;
         t = this.CT1 / LERP_TIME;
-        s = MathCommon_1.MathCommon.Lerp(this.DKm, this.LKm.GetValue(), t);
-        this.BKm(s);
-      } else if (this.PKm?.RootUIComp.IsUIActiveSelf()) {
-        this.Msf(false);
+        s = MathCommon_1.MathCommon.Lerp(this.ezm, this.zYm.GetValue(), t);
+        this.rzm(s);
+      } else if (this.JYm?.RootUIComp.IsUIActiveSelf()) {
+        this.Xhf(false);
       }
     }
   }
-  Msf(e) {
-    this.PKm?.RootUIComp.SetUIActive(e);
+  Xhf(e) {
+    this.JYm?.RootUIComp.SetUIActive(e);
     this.GetItem(4)?.SetUIActive(e);
   }
-  UKm(e) {
-    this.kKm(e / ModelManager_1.ModelManager.DeadEyeModeModel.MaxEnergy);
+  tzm(e) {
+    this.ozm(e / ModelManager_1.ModelManager.DeadEyeModeModel.MaxEnergy);
   }
-  xKm(e) {
-    this.BKm(e / ModelManager_1.ModelManager.DeadEyeModeModel.MaxEnergy);
+  izm(e) {
+    this.rzm(e / ModelManager_1.ModelManager.DeadEyeModeModel.MaxEnergy);
   }
-  kKm(e) {
-    this.qKm(this.LKm, e);
+  ozm(e) {
+    this.nzm(this.zYm, e);
   }
-  BKm(e) {
-    this.qKm(this.PKm, e);
+  rzm(e) {
+    this.nzm(this.JYm, e);
   }
-  qKm(e, t) {
+  nzm(e, t) {
     e?.SetValue(t);
   }
 }

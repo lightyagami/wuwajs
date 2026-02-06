@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.MotorcycleTechTreeTabView = undefined;
 const UE = require("ue");
+const CommonParamById_1 = require("../../../../../Core/Define/ConfigCommon/CommonParamById");
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
 const ConfigManager_1 = require("../../../../Manager/ConfigManager");
@@ -19,35 +20,42 @@ const MotorcycleTechTreeFirstNodeItem_1 = require("../Item/MotorcycleTechTreeFir
 const MotorcycleTechTreeNodeListItem_1 = require("../Item/MotorcycleTechTreeNodeListItem");
 const MotorcycleTreeTypeTabItem_1 = require("../TabItem/MotorcycleTreeTypeTabItem");
 const MotorcycleTechTreeInfoPanel_1 = require("./MotorcycleTechTreeInfoPanel");
+const MotorcycleUiModelUtil_1 = require("../../Model/MotorcycleUiModelUtil");
 class MotorcycleTechTreeTabView extends UiTabViewBase_1.UiTabViewBase {
   constructor() {
     super(...arguments);
     this.Ivt = undefined;
-    this.jcf = undefined;
-    this.$cf = undefined;
-    this.Wcf = undefined;
-    this.Qcf = undefined;
+    this.Nmf = undefined;
+    this.Vmf = undefined;
+    this.Hmf = undefined;
+    this.jmf = undefined;
     this.ja_ = undefined;
-    this.Kcf = [];
+    this.$mf = [];
     this.LSc = undefined;
     this.ebl = undefined;
-    this.Xcf = undefined;
-    this.Hcf = 0;
-    this.V6f = false;
-    this.Ycf = () => {
-      this.Ajd(false);
-      this.zcf();
+    this.Wmf = undefined;
+    this.Fmf = 0;
+    this.Zwg = true;
+    this.AXf = false;
+    this.Qmf = e => {
+      this.Xmf();
+      if (e) {
+        this.Ajd(false);
+      } else {
+        this.ePg();
+        this.Kmf();
+      }
     };
-    this.Ncf = () => {
+    this.Omf = () => {
       var e = new MotorcycleTechTreeNodeListItem_1.MotorcycleTechTreeNodeListItem();
       e.OnAfterRefreshOneNode = this.gVd;
       return e;
     };
-    this.Fcf = (e, t) => new MotorcycleTreeTypeTabItem_1.MotorcycleTreeTypeTabItem();
+    this.qmf = (e, t) => new MotorcycleTreeTypeTabItem_1.MotorcycleTreeTypeTabItem();
     this.gVd = e => {
       if (e) {
         e.OnClickToggleBack = this.Djd;
-        this.Kcf.push(e);
+        this.$mf.push(e);
       }
     };
     this.Djd = (e, t) => {
@@ -56,169 +64,220 @@ class MotorcycleTechTreeTabView extends UiTabViewBase_1.UiTabViewBase {
       }
       this.ebl = t;
       this.ebl.SetToggleState(1);
-      this.Xcf = e;
+      this.Wmf = e;
       new UiAsyncTask_1.UiAsyncTask("UpdateNodeInfoPanel", async () => {
         await this.LSc.RefreshAsync(e);
-        if (!this.UiViewSequence.HasSequenceNameInPlaying("Start")) {
+        if (this.AXf) {
           this.LSc.PlayChangeTween();
         }
       }).Run();
     };
     this.pqe = e => {
-      this.H6f(e);
+      if (!this.Zwg) {
+        this.sJf(e);
+      }
     };
-    this.edf = () => {
-      ControllerHolder_1.ControllerHolder.MotorcycleDevelopController.RequestMotorTechTreeSwitch(this.Hcf);
+    this.zmf = () => {
+      if (this.kAg) {
+        ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("MotorBike_TechTree_ChangeFail_Time");
+      } else if (!this.BAg) {
+        ControllerHolder_1.ControllerHolder.MotorcycleDevelopController.RequestMotorTechTreeSwitch(this.Fmf, () => {
+          var e = CommonParamById_1.configCommonParamById.GetIntConfig("SwitchMotorTechTreeCD");
+          if (e) {
+            ModelManager_1.ModelManager.MotorcycleDevelopModel.StartSwitchTechTreeLockTimer(e);
+          }
+        });
+      }
     };
+  }
+  get kAg() {
+    return ModelManager_1.ModelManager.MotorcycleDevelopModel.IsSwitchTechTreeTimeLocked();
+  }
+  get BAg() {
+    return ModelManager_1.ModelManager.MotorcycleDevelopModel.IsSwitchTechTreePlayerLocked();
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIHorizontalLayout], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIButtonComponent], [9, UE.UIItem], [10, UE.UIHorizontalLayout], [11, UE.UIItem]];
-    this.BtnBindInfo = [[8, this.edf]];
+    this.BtnBindInfo = [[8, this.zmf]];
   }
   async OnBeforeStartAsync() {
-    this.Ivt = new TabComponent_1.TabComponent(this.GetHorizontalLayout(10).RootUIComp, this.Fcf, this.pqe, this.GetItem(11));
-    this.jcf = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(5), this.Ncf);
-    this.$cf = new MotorcycleTechTreeComNodeItem_1.MotorcycleTechTreeComNodeItem();
-    this.Wcf = new MotorcycleTechTreeComNodeItem_1.MotorcycleTechTreeComNodeItem();
-    this.Qcf = new MotorcycleTechTreeComNodeItem_1.MotorcycleTechTreeComNodeItem();
+    this.Ivt = new TabComponent_1.TabComponent(this.GetHorizontalLayout(10).RootUIComp, this.qmf, this.pqe, this.GetItem(11));
+    this.Nmf = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(5), this.Omf);
+    this.Vmf = new MotorcycleTechTreeComNodeItem_1.MotorcycleTechTreeComNodeItem();
+    this.Hmf = new MotorcycleTechTreeComNodeItem_1.MotorcycleTechTreeComNodeItem();
+    this.jmf = new MotorcycleTechTreeComNodeItem_1.MotorcycleTechTreeComNodeItem();
     this.ja_ = new MotorcycleTechTreeFirstNodeItem_1.MotorcycleTechTreeFirstNodeItem();
     this.LSc = new MotorcycleTechTreeInfoPanel_1.MotorcycleTechTreeInfoPanel();
-    var e = [this.$cf.CreateThenShowByActorAsync(this.GetItem(1).GetOwner()), this.Wcf.CreateThenShowByActorAsync(this.GetItem(2).GetOwner()), this.Qcf.CreateThenShowByActorAsync(this.GetItem(3).GetOwner()), this.ja_.CreateThenShowByActorAsync(this.GetItem(4).GetOwner()), this.LSc.CreateThenShowByActorAsync(this.GetItem(0).GetOwner())];
-    this.Hcf = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetCurTreeType();
+    var e = [this.Vmf.CreateThenShowByActorAsync(this.GetItem(1).GetOwner()), this.Hmf.CreateThenShowByActorAsync(this.GetItem(2).GetOwner()), this.jmf.CreateThenShowByActorAsync(this.GetItem(3).GetOwner()), this.ja_.CreateThenShowByActorAsync(this.GetItem(4).GetOwner()), this.LSc.CreateThenShowByActorAsync(this.GetItem(0).GetOwner())];
     await Promise.all(e);
-    this.$cf.OnClickToggleBack = this.Djd;
-    this.Wcf.OnClickToggleBack = this.Djd;
-    this.Qcf.OnClickToggleBack = this.Djd;
+    this.Vmf.OnClickToggleBack = this.Djd;
+    this.Hmf.OnClickToggleBack = this.Djd;
+    this.jmf.OnClickToggleBack = this.Djd;
     this.ja_.OnClickToggleBack = this.Djd;
-    await this.Gcf();
   }
   OnBeforeShow() {
-    if (this.Hcf === 0) {
-      this.Hcf = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetCurTreeType();
+    this.Fmf = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetSelectedTreeType();
+    if (this.Fmf === 0) {
+      this.Fmf = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetCurTreeType();
     }
-    if (this.V6f) {
-      this.Ajd(true);
-      this.zcf();
-    }
+    this.kmf();
+    MotorcycleUiModelUtil_1.MotorcycleUiModelUtil.ShowMotorLoadingIcon(false);
   }
   AddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.MotorDevelopTechTreeUpdate, this.Ycf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.MotorDevelopTechTreeUpdate, this.Qmf);
   }
   RemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.MotorDevelopTechTreeUpdate, this.Ycf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.MotorDevelopTechTreeUpdate, this.Qmf);
   }
   OnBeforeHide() {
-    this.V6f = true;
+    this.AXf = false;
   }
   async Ajd(e) {
     var t = [];
     var i = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetTechNodeById(this.ja_.Node.NodeId);
     t.push(this.ja_.RefreshNodeAsyncByData(i));
-    i = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetTechNodeById(this.$cf.Node.NodeId);
-    t.push(this.$cf.RefreshNodeAsyncByData(i));
-    i = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetTechNodeById(this.Wcf.Node.NodeId);
-    t.push(this.Wcf.RefreshNodeAsyncByData(i));
-    i = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetTechNodeById(this.Qcf.Node.NodeId);
-    t.push(this.Qcf.RefreshNodeAsyncByData(i));
+    i = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetTechNodeById(this.Vmf.Node.NodeId);
+    t.push(this.Vmf.RefreshNodeAsyncByData(i));
+    i = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetTechNodeById(this.Hmf.Node.NodeId);
+    t.push(this.Hmf.RefreshNodeAsyncByData(i));
+    i = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetTechNodeById(this.jmf.Node.NodeId);
+    t.push(this.jmf.RefreshNodeAsyncByData(i));
     await Promise.all(t);
-    for (const s of this.Kcf) {
-      i = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetTechNodeById(s.Node.NodeId);
-      s.RefreshNodeData(i, e);
+    for (const r of this.$mf) {
+      i = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetTechNodeById(r.Node.NodeId);
+      r.RefreshNodeData(i);
+      if (e) {
+        r.PlayNodeSequence();
+      }
     }
-    await this.LSc.RefreshAsync(this.Xcf);
+    await this.LSc.RefreshAsync(this.Wmf);
   }
-  async Gcf() {
+  async ePg() {
+    var e = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetActivatedTreeTypeList();
+    const r = [];
+    e.forEach(e => {
+      var t = new MotorcycleTreeTypeTabItem_1.MotorcycleTreeTypeTabItemData();
+      var i = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetCurTreeType() === e;
+      t.IsFinish = i;
+      t.TreeType = e;
+      r.push(t);
+    });
+    await this.Ivt.RefreshTabItemAsync(r, false);
+  }
+  async kmf() {
     var e;
     var t;
     var i = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetActivatedTreeTypeList();
-    const s = [];
+    const r = [];
     i.forEach(e => {
       var t = new MotorcycleTreeTypeTabItem_1.MotorcycleTreeTypeTabItemData();
       var i = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetCurTreeType() === e;
       t.IsFinish = i;
       t.TreeType = e;
-      s.push(t);
+      r.push(t);
     });
-    await this.Ivt.RefreshTabItemAsync(s);
+    await this.Ivt.RefreshTabItemAsync(r);
     for ([e, t] of this.Ivt.GetTabItemMap()) {
-      t.BindRedDot("MotorcycleTreeTypeTechTab", s[e].TreeType);
+      t.BindRedDot("MotorcycleTreeTypeTechTab", r[e].TreeType);
+      t.BindNewRedDot("MotorcycleTreeTypeTechTabNew", r[e].TreeType);
     }
-    let r = 0;
-    for (let e = 0; e < s.length; e++) {
-      if (s[e].TreeType === this.Hcf) {
-        r = e;
+    let o = 0;
+    for (let e = 0; e < r.length; e++) {
+      if (r[e].TreeType === this.Fmf) {
+        o = e;
         break;
       }
     }
-    this.Ivt.SelectToggleByIndex(r, true, false);
-    await this.H6f(r);
+    this.Ivt.SelectToggleByIndex(o, true);
+    if (this.Zwg) {
+      await this.sJf(o);
+    }
   }
-  async H6f(e) {
+  async sJf(e) {
     var t = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetActivatedTreeTypeList();
-    this.Hcf = t[e];
-    this.Kcf = [];
-    this.Jcf();
-    this.zcf();
-    await this.Zcf();
-    var t = ModelManager_1.ModelManager.MotorcycleDevelopModel.RedDotHasNewTechTree(this.Hcf);
+    this.Fmf = t[e];
+    this.$mf = [];
+    this.Kmf();
+    this.Xmf();
+    await this.Ymf();
+    this.Zwg = false;
+    var t = ModelManager_1.ModelManager.MotorcycleDevelopModel.RedDotHasNewTechTree(this.Fmf);
     if (t) {
-      ModelManager_1.ModelManager.MotorcycleDevelopModel.UpdateTechTreeNewUnlocked(this.Hcf, false);
+      ModelManager_1.ModelManager.MotorcycleDevelopModel.UpdateTechTreeNewUnlocked(this.Fmf, false);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.MotorDevelopTreeTypeRedDotUpdate);
     }
   }
-  zcf() {
-    var e = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetCurTreeType() === this.Hcf;
+  Kmf() {
+    var e = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetCurTreeType() === this.Fmf;
     this.GetItem(7).SetUIActive(!e);
     this.GetItem(9).SetUIActive(e);
   }
-  Jcf() {
+  Xmf() {
     var e;
-    if (ModelManager_1.ModelManager.MotorcycleDevelopModel.GetCurTreeType() !== this.Hcf && (ModelManager_1.ModelManager.MotorcycleDevelopModel.UpdateSelectedTreeType(this.Hcf), e = ConfigManager_1.ConfigManager.MotorConfig.GetMotorTechTreeConfig(this.Hcf))) {
+    if (ModelManager_1.ModelManager.MotorcycleDevelopModel.IsAllNodeMaxLevel(this.Fmf)) {
       e = {
-        Currency: [e.TpItemId]
+        Currency: []
       };
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.MotorDevelopRootUpdate, e);
+    } else {
+      ModelManager_1.ModelManager.MotorcycleDevelopModel.UpdateSelectedTreeType(this.Fmf);
+      if (e = ConfigManager_1.ConfigManager.MotorConfig.GetMotorTechTreeConfig(this.Fmf)) {
+        e = {
+          Currency: [e.TpItemId]
+        };
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.MotorDevelopRootUpdate, e);
+      }
     }
   }
-  async Zcf() {
+  async Ymf() {
     var e = [];
-    var t = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetCommonTechNodeIdList(this.Hcf);
+    var t = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetCommonTechNodeIdList(this.Fmf);
     if (i = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetTechNodeById(t[0])) {
-      e.push(this.$cf.RefreshNodeAsyncByData(i));
+      e.push(this.Vmf.RefreshNodeAsyncByData(i));
     }
     if (i = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetTechNodeById(t[1])) {
-      e.push(this.Qcf.RefreshNodeAsyncByData(i));
+      e.push(this.jmf.RefreshNodeAsyncByData(i));
     }
     if (i = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetTechNodeById(t[2])) {
-      e.push(this.Wcf.RefreshNodeAsyncByData(i));
+      e.push(this.Hmf.RefreshNodeAsyncByData(i));
     }
-    var t = ModelManager_1.ModelManager.MotorcycleDevelopModel.FindTechNodeIdByCoord([0, 0], this.Hcf);
+    var t = ModelManager_1.ModelManager.MotorcycleDevelopModel.FindTechNodeIdByCoord([0, 0], this.Fmf);
     var i = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetTechNodeById(t);
     e.push(this.ja_.RefreshNodeAsyncByData(i));
     await Promise.all(e);
-    var t = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetExclusiveNodeParamList(this.Hcf);
-    await this.jcf.RefreshByDataAsync(t);
+    var t = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetExclusiveNodeParamList(this.Fmf);
+    await this.Nmf.RefreshByDataAsync(t);
     this.ja_.SelectNode();
   }
   GetGuideUiItemAndUiItemForShowEx(t) {
-    if (t[0] === "ComNode") {
+    var i;
+    var e = t[0];
+    if (e === "ComNode") {
       let e = undefined;
       switch (Number(t[1])) {
         case 0:
-          e = this.$cf;
+          e = this.Vmf;
           break;
         case 1:
-          e = this.Wcf;
+          e = this.Hmf;
           break;
         case 2:
-          e = this.Qcf;
+          e = this.jmf;
       }
       if (e) {
-        if (t = e.GetRootItem()) {
-          return [t, t];
+        if (i = e.GetRootItem()) {
+          return [i, i];
         } else {
           return undefined;
         }
+      }
+    }
+    if (e === "moto_skill_tab") {
+      i = Number(t[1]);
+      if (e = this.Ivt?.GetTabItemByIndex(i)?.GetRootItem()) {
+        return [e, e];
+      } else {
+        return undefined;
       }
     }
   }

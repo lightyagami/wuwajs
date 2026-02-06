@@ -59,7 +59,7 @@ class SceneInteractionLevel {
       this.i_r("Init");
     });
     this.LevelStreamingDynamic.OnLevelLoaded.Add(() => {
-      this.Itg("Init");
+      this.sKf("Init");
     });
   }
   ToggleLevelVisible(t, e, i = undefined, s = "") {
@@ -247,7 +247,7 @@ class SceneInteractionLevel {
       }
     }
   }
-  Itg(t) {
+  sKf(t) {
     if (SceneInteractionLevel.Xt1 && Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Interaction", 18, "[SceneInteractionLevel.OnLevelLoaded]", ["HandleId", this.HandleId], ["Reason", t], ["LastWorldOrigin", this.LevelStreamingDynamic?.LoadedLevel?.LastWorldOrigin], ["LevelName", this.LevelName]);
     }

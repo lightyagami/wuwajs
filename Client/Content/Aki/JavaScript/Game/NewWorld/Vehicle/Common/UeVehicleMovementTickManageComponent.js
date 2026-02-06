@@ -73,8 +73,8 @@ let UeVehicleMovementTickManageComponent = class UeVehicleMovementTickManageComp
     this.VehicleMoveComp = this.Entity.GetComponent(249);
     this.AnimComp = this.Entity.GetComponent(248);
     this.VehiclePerformComp = this.Entity.GetComponent(246);
-    this.DebugComp = this.Entity.GetComponent(30);
-    this.SkelTickMgr = this.Entity.GetComponent(123);
+    this.DebugComp = this.Entity.GetComponent(31);
+    this.SkelTickMgr = this.Entity.GetComponent(125);
     this.VehicleMovement = this.ActorComp.Owner.GetComponentByClass(UE.KuroVehicleMovementComponent.StaticClass());
     if (!this.VehicleMovement) {
       return false;
@@ -97,6 +97,7 @@ let UeVehicleMovementTickManageComponent = class UeVehicleMovementTickManageComp
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Test", 6, "OnEnableVehicleMove", ["Actor", this.ActorComp?.Actor.GetName()]);
     }
+    this.AnimComp?.ConsumeRootMotion();
   }
   PreProxyTick(e) {
     this.TickMovement(e);
@@ -118,7 +119,7 @@ let UeVehicleMovementTickManageComponent = class UeVehicleMovementTickManageComp
         this.DebugComp.MarkDebugRecord("移动组件更新前 ", undefined, true);
       }
       for (const r of this.VehiclePerformComp.PassengerInfoMap.values()) {
-        r.PassengerEntity?.GetComponent(30)?.MarkDebugRecord("载具移动组件更新前", undefined, true);
+        r.PassengerEntity?.GetComponent(31)?.MarkDebugRecord("载具移动组件更新前", undefined, true);
       }
       var t = this.ActorComp.Owner.CustomTimeDilation;
       if (this.VehicleMoveComp.CanMove() && !this.VehicleMoveComp.IsSpecialMove) {
@@ -157,7 +158,7 @@ let UeVehicleMovementTickManageComponent = class UeVehicleMovementTickManageComp
         this.DebugComp.MarkDebugRecord("移动组件更新后", undefined, true);
       }
       for (const h of this.VehiclePerformComp.PassengerInfoMap.values()) {
-        var o = h.PassengerEntity?.GetComponent(30);
+        var o = h.PassengerEntity?.GetComponent(31);
         h.PassengerEntity?.GetComponent(1)?.ResetAllCachedTime();
         o?.MarkDebugRecord("载具移动组件更新后", undefined, true);
       }

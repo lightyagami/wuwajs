@@ -18,7 +18,7 @@ class PhantomArenaGuideSubView extends ActivitySubViewBase_1.ActivitySubViewBase
     super(...arguments);
     this.ActivityBaseData = undefined;
     this.Q6a = undefined;
-    this.aKm = e => {
+    this.wYm = e => {
       if (this.ActivityBaseData.Id === e) {
         this.A3d();
       }
@@ -40,10 +40,10 @@ class PhantomArenaGuideSubView extends ActivitySubViewBase_1.ActivitySubViewBase
     this.BtnBindInfo = [[5, this.YDo]];
   }
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.aKm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.wYm);
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.aKm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.wYm);
   }
   async OnBeforeStartAsync() {
     this.Q6a = new ActivitySubViewGeneralInfo_1.ActivitySubViewGeneralInfo();

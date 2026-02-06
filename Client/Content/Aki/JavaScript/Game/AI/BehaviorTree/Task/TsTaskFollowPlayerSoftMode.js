@@ -5,7 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 const UE = require("ue");
 const Log_1 = require("../../../../Core/Common/Log");
-const Stats_1 = require("../../../../Core/Common/Stats");
 const QueryTypeDefine_1 = require("../../../../Core/Define/QueryTypeDefine");
 const EntitySystem_1 = require("../../../../Core/Entity/EntitySystem");
 const Quat_1 = require("../../../../Core/Utils/Math/Quat");
@@ -20,9 +19,6 @@ const ModelManager_1 = require("../../../Manager/ModelManager");
 const GravityUtils_1 = require("../../../Utils/GravityUtils");
 const TsTaskAbortImmediatelyBase_1 = require("./TsTaskAbortImmediatelyBase");
 const START_MOVE_HEIGHT_LIMIT = 10;
-const initStat = Stats_1.Stat.CreateNoFlameGraph("TsTaskFollowPlayerSoftMode.InitTsVariables");
-const updateRotateStat = Stats_1.Stat.CreateNoFlameGraph("TsTaskFollowPlayerSoftMode.UpdateRotate");
-const lerpMoveStat = Stats_1.Stat.CreateNoFlameGraph("TsTaskFollowPlayerSoftMode.LerpMove");
 class TsTaskFollowPlayerSoftMode extends TsTaskAbortImmediatelyBase_1.default {
   constructor() {
     super(...arguments);
@@ -90,7 +86,6 @@ class TsTaskFollowPlayerSoftMode extends TsTaskAbortImmediatelyBase_1.default {
   }
   InitTsVariables() {
     if (!this.IsInitTsVariables || GlobalData_1.GlobalData.IsPlayInEditor) {
-      initStat.Start();
       this.IsInitTsVariables = true;
       this.TsOffset = Vector_1.Vector.Create();
       this.TempCameraForward = Vector_1.Vector.Create();
@@ -144,7 +139,6 @@ class TsTaskFollowPlayerSoftMode extends TsTaskAbortImmediatelyBase_1.default {
         this.TsCameraDistance = 1500;
         this.TsRotateEntityIdBlackboardKey = "";
       }
-      initStat.Stop();
     }
   }
   ReceiveExecuteAI(t, i) {
@@ -153,7 +147,7 @@ class TsTaskFollowPlayerSoftMode extends TsTaskAbortImmediatelyBase_1.default {
     if (h) {
       if ((s = h.CharActorComp)?.Valid) {
         this.InitTsVariables();
-        this.MoveComp = h.CharActorComp?.Entity?.GetComponent(46);
+        this.MoveComp = h.CharActorComp?.Entity?.GetComponent(48);
         h.CharActorComp?.Actor.KuroSetMovementMode({
           Mode: 5,
           Context: "[TsTaskFollowPlayerSoftMode.ReceiveExecuteAI]"
@@ -185,6 +179,12 @@ class TsTaskFollowPlayerSoftMode extends TsTaskAbortImmediatelyBase_1.default {
       var o;
       var r = h.CharActorComp;
       if (r?.Valid) {
+        if (this.MoveComp && this.MoveComp.CharacterMovement.MovementMode !== 5) {
+          r.Actor.KuroSetMovementMode({
+            Mode: 5,
+            Context: "[TsTaskFollowPlayerSoftMode.ReceiveTickAI]"
+          });
+        }
         let t = undefined;
         switch (this.TsFollowTargetType) {
           case 0:
@@ -258,7 +258,6 @@ class TsTaskFollowPlayerSoftMode extends TsTaskAbortImmediatelyBase_1.default {
     return !!this.TraceElement && (TraceElementCommon_1.TraceElementCommon.SetStartLocation(this.TraceElement, t), TraceElementCommon_1.TraceElementCommon.SetEndLocation(this.TraceElement, i), (TraceElementCommon_1.TraceElementCommon.CapsuleTrace(this.TraceElement, "FollowPlayerHardMode") && this.TraceElement.HitResult?.bBlockingHit) ?? false);
   }
   LerpMove(t, i) {
-    lerpMoveStat.Start();
     var s;
     var h = this.TsDistanceMaxSpeed - this.TsDistanceMin;
     if (!(h < 0)) {
@@ -267,13 +266,11 @@ class TsTaskFollowPlayerSoftMode extends TsTaskAbortImmediatelyBase_1.default {
         t.Normalize();
         t.MultiplyEqual(h);
       }
-      this.MoveComp?.MoveCharacter(t, 0, "FollowPlayerSoftMode");
+      this.MoveComp?.MoveCharacter(t, 1, "FollowPlayerSoftMode");
     }
-    lerpMoveStat.Stop();
   }
   UpdateRotate(s, h) {
     if (this.MoveComp) {
-      updateRotateStat.Start();
       var e;
       var o = s.Entity;
       let t = undefined;
@@ -285,7 +282,7 @@ class TsTaskFollowPlayerSoftMode extends TsTaskAbortImmediatelyBase_1.default {
           }
           break;
         case 3:
-          t = o.GetComponent(41)?.SkillTarget?.Entity;
+          t = o.GetComponent(43)?.SkillTarget?.Entity;
       }
       let i = undefined;
       if ((i = t?.Valid ? t.GetComponent(1) : i) && this.TsRotateType === 2) {
@@ -302,9 +299,7 @@ class TsTaskFollowPlayerSoftMode extends TsTaskAbortImmediatelyBase_1.default {
         this.TempDirect.Subtraction(s.ActorLocationProxy, this.TempDirect);
         MathUtils_1.MathUtils.LookRotationForwardFirst(this.TempDirect, this.MoveComp.GravityUp, this.TempRotator);
       }
-      if (this.TsNotSyncAxisList.length <= 0) {
-        this.MoveComp.SmoothCharacterRotation(this.TempRotator, this.TsRotateSpeed, h, false, "FollowPlayerSoftMode");
-      } else {
+      if (!(this.TsNotSyncAxisList.length <= 0)) {
         var r = this.MoveComp.IsStandardGravity;
         if (r) {
           this.TempInvertRotator1.DeepCopy(this.TempRotator);
@@ -329,9 +324,8 @@ class TsTaskFollowPlayerSoftMode extends TsTaskAbortImmediatelyBase_1.default {
           this.TempQuat.Inverse(this.TempQuat);
           GravityUtils_1.GravityUtils.GetRotatorInGravity(this.TempInvertRotator1, this.TempQuat, this.TempRotator);
         }
-        this.MoveComp.SmoothCharacterRotation(this.TempRotator, this.TsRotateSpeed, h, false, "FollowPlayerSoftMode");
-        updateRotateStat.Stop();
       }
+      this.MoveComp.SmoothCharacterRotation(this.TempRotator, this.TsRotateSpeed, h, false, "FollowPlayerSoftMode");
     }
   }
 }

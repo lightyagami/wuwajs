@@ -68,13 +68,13 @@ class FightPhotographView extends PhotographView_1.PhotographView {
   }
   NDc() {
     var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
-    if (e?.Valid && e.Entity?.Valid && (e = e.Entity.GetComponent(215)) && !e.HasTag(-561064175)) {
+    if (e?.Valid && e.Entity?.Valid && (e = e.Entity.GetComponent(217)) && !e.HasTag(-561064175)) {
       e.AddTag(-561064175);
     }
   }
   VDc() {
     var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
-    if (e?.Valid && e.Entity?.Valid && (e = e.Entity.GetComponent(215)) && e.HasTag(-561064175)) {
+    if (e?.Valid && e.Entity?.Valid && (e = e.Entity.GetComponent(217)) && e.HasTag(-561064175)) {
       e.RemoveTag(-561064175);
     }
   }

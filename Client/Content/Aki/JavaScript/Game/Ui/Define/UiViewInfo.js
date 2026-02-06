@@ -8,7 +8,7 @@ const Info_1 = require("../../../Core/Common/Info");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
 const UiLayerType_1 = require("./UiLayerType");
 class UiViewInfo {
-  constructor(e, i, t, o, s, a, h, n, R, r, V, w, l, c, u, p, g, y, f, C, v, S, M, _, b, U, I = "") {
+  constructor(e, i, t, o, s, a, h, R, n, V, w, r, l, u, c, p, g, f, y, C, S, v, b, M, _, U, I = "") {
     this.Name = e;
     this.Type = i;
     this.Ctor = t;
@@ -16,24 +16,24 @@ class UiViewInfo {
     this.ConfigPcPath = s;
     this.BeObstructView = a;
     this.AudioEvent = h;
-    this.OpenAudioEvent = n;
-    this.LoopAudioEvent = R;
-    this.CloseAudioEvent = r;
-    this.KeepLoopEvent = V;
-    this.TimeDilation = w;
+    this.OpenAudioEvent = R;
+    this.LoopAudioEvent = n;
+    this.CloseAudioEvent = V;
+    this.KeepLoopEvent = w;
+    this.TimeDilation = r;
     this.ShowCursorType = l;
-    this.CanOpenViewByShortcutKey = c;
-    this.IsShortKeysExitView = u;
+    this.CanOpenViewByShortcutKey = u;
+    this.IsShortKeysExitView = c;
     this.SourceType = p;
     this.LoadAsync = g;
-    this.NeedGc = y;
-    this.IsFullScreen = f;
+    this.NeedGc = f;
+    this.IsFullScreen = y;
     this.SortIndex = C;
-    this.ConfigCommonPopBg = v;
-    this.CommonPopBgKey = S;
-    this.ScenePathInternal = M;
-    this.IsPermanent = _;
-    this.SkipAnimActions = b;
+    this.ConfigCommonPopBg = S;
+    this.CommonPopBgKey = v;
+    this.ScenePathInternal = b;
+    this.IsPermanent = M;
+    this.SkipAnimActions = _;
     this.FunctionCondition = U;
     this.ScenePointTag = I;
     this.CF_ = UiLayerType_1.ELayerType.Normal;
@@ -76,5 +76,5 @@ class UiViewInfo {
     }
   }
 }
-(exports.UiViewInfo = UiViewInfo).Zcr = new Map([["RoleBreachView", "RoleRootView"], ["RoleSkillView", "RoleRootView"], ["RoleBreachSuccessView", "RoleRootView"], ["RoleElementView", "RoleRootView"], ["RoleAttributeDetailView", "RoleRootView"], ["RoleLevelUpView", "RoleRootView"], ["RoleFavorInfoView", "RoleRootView"], ["RoleSelectionView", "RoleRootView"], ["PhantomBattleFettersView", "RoleRootView"], ["RoleDevRootView", "RoleRootView"], ["RoleSkillMergeView", "RoleRootView"], ["WeaponReplaceView", "WeaponRootView"], ["WeaponBreachSuccessView", "WeaponRootView"], ["WeaponResonanceSuccessView", "WeaponRootView"], ["SkinRootView", "WeaponRootView"], ["VisionRecoveryResultView", "CalabashRootView"], ["VisionRecoveryBatchResultView", "CalabashRootView"], ["VisionRefineResultView", "CalabashRootView"], ["GachaScanView", "DrawMainView"], ["RogueAttributeDetailView", "WeeklyRogueInfo"], ["PhantomManageConfigView", "CalabashRootView"], ["SurvivorsAttributeDetailView", "SurvivorsHandbookView"]]);
+(exports.UiViewInfo = UiViewInfo).Zcr = new Map([["RoleBreachView", "RoleRootView"], ["RoleSkillView", "RoleRootView"], ["RoleBreachSuccessView", "RoleRootView"], ["RoleElementView", "RoleRootView"], ["RoleAttributeDetailView", "RoleRootView"], ["RoleLevelUpView", "RoleRootView"], ["RoleFavorInfoView", "RoleRootView"], ["RoleSelectionView", "RoleRootView"], ["PhantomBattleFettersView", "RoleRootView"], ["RoleDevRootView", "RoleRootView"], ["RoleSkillMergeView", "RoleRootView"], ["WeaponReplaceView", "WeaponRootView"], ["WeaponBreachSuccessView", "WeaponRootView"], ["WeaponResonanceSuccessView", "WeaponRootView"], ["SkinRootView", "WeaponRootView"], ["VisionRecoveryResultView", "CalabashRootView"], ["VisionRecoveryBatchResultView", "CalabashRootView"], ["VisionRefineResultView", "CalabashRootView"], ["VisionRefineSubResultView", "CalabashRootView"], ["GachaScanView", "DrawMainView"], ["RogueAttributeDetailView", "WeeklyRogueInfo"], ["PhantomManageConfigView", "CalabashRootView"], ["SurvivorsAttributeDetailView", "SurvivorsHandbookView"]]);
 //# sourceMappingURL=UiViewInfo.js.map

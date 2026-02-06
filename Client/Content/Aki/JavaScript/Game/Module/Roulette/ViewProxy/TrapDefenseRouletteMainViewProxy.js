@@ -14,7 +14,7 @@ const RouletteMainViewProxyBase_1 = require("./RouletteMainViewProxyBase");
 class TrapDefenseRouletteMainViewProxy extends RouletteMainViewProxyBase_1.RouletteMainViewProxyBase {
   constructor() {
     super(...arguments);
-    this.KOm = [[[1], 4, 0], [[2], 5, 0], [[3], 6, 0], [[4], 7, 0], [[5], 8, 0], [[6], 9, 0], [[7], 10, 0], [[8], 11, 0]];
+    this.hFm = [[[1], 4, 0], [[2], 5, 0], [[3], 6, 0], [[4], 7, 0], [[5], 8, 0], [[6], 9, 0], [[7], 10, 0], [[8], 11, 0]];
     this.Cpo = undefined;
     this.ItemTips = undefined;
   }
@@ -52,7 +52,7 @@ class TrapDefenseRouletteMainViewProxy extends RouletteMainViewProxyBase_1.Roule
     return false;
   }
   OnGetExploreRouletteDataMap() {
-    return this.KOm;
+    return this.hFm;
   }
   OnGetRouletteGridId(e, t) {
     return ModelManager_1.ModelManager.RouletteModel.RouletteListDataMap.get(this.RouletteType).GetRouletteGridId(e, t, true);

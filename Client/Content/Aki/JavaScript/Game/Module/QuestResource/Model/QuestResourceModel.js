@@ -53,7 +53,7 @@ class QuestResourceModel extends ModelBase_1.ModelBase {
     super(...arguments);
     this.GF1 = new Map();
     this.FF1 = new Map();
-    this.qkm = new Map();
+    this.Zqm = new Map();
     this.KQ1 = false;
     this.f1u = 0;
     this.UserClickPromise = undefined;
@@ -62,8 +62,8 @@ class QuestResourceModel extends ModelBase_1.ModelBase {
     this.UserClickNetWorkErrorPromise = undefined;
     this.LoginQuests = new Set();
     this.Qeu = undefined;
-    this.uIm = 0;
-    this.cIm = undefined;
+    this.RIm = 0;
+    this.wIm = undefined;
     this.Keu = false;
     this.Ypu = undefined;
   }
@@ -110,11 +110,11 @@ class QuestResourceModel extends ModelBase_1.ModelBase {
         var r;
         var i = Number(a.PakName.split("_")[0]);
         if (!isNaN(i)) {
-          if (this.qkm.has(a.QuestId)) {
-            this.qkm.get(a.QuestId).add(i);
+          if (this.Zqm.has(a.QuestId)) {
+            this.Zqm.get(a.QuestId).add(i);
           } else {
             (r = new Set()).add(i);
-            this.qkm.set(a.QuestId, r);
+            this.Zqm.set(a.QuestId, r);
           }
         }
       }
@@ -135,7 +135,7 @@ class QuestResourceModel extends ModelBase_1.ModelBase {
     return this.GF1;
   }
   get QuestIdToCgIds() {
-    return this.qkm;
+    return this.Zqm;
   }
   OnClear() {
     VideoResUpdate_1.VideoResUpdate.GetIsSeparateVideo();
@@ -249,22 +249,22 @@ class QuestResourceModel extends ModelBase_1.ModelBase {
     this.UserClickPromise = undefined;
     this.UserDownloadSucPromise = undefined;
   }
-  dIm() {
+  LIm() {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("QuestResource", 39, "检查网络: 打开蜂窝网络下载同意弹窗");
     }
-    if (this.cIm?.IsPending()) {
+    if (this.wIm?.IsPending()) {
       if (Log_1.Log.CheckWarn()) {
         Log_1.Log.Warn("QuestResource", 39, "检查网络: 已存在蜂窝网络下载同意弹窗的Promise, 不重复打开");
       }
     } else {
-      this.cIm = new CustomPromise_1.CustomPromise();
+      this.wIm = new CustomPromise_1.CustomPromise();
       const t = () => {
         var e;
-        this.uIm = 0;
-        if (this.cIm?.IsPending()) {
-          e = this.cIm;
-          this.cIm = undefined;
+        this.RIm = 0;
+        if (this.wIm?.IsPending()) {
+          e = this.wIm;
+          this.wIm = undefined;
           e.SetResult(false);
         }
       };
@@ -273,18 +273,18 @@ class QuestResourceModel extends ModelBase_1.ModelBase {
       e.FunctionMap.set(1, t);
       e.FunctionMap.set(2, () => {
         var e;
-        this.uIm = 0;
-        if (this.cIm?.IsPending()) {
+        this.RIm = 0;
+        if (this.wIm?.IsPending()) {
           VideoResUpdate_1.VideoResUpdate.SetIsAllowCellDownload(true);
-          e = this.cIm;
-          this.cIm = undefined;
+          e = this.wIm;
+          this.wIm = undefined;
           e.SetResult(true);
         }
       });
       ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowNetWorkConfirmBoxView(e, (e, o) => {
         if (e) {
-          if (this.cIm?.IsPending()) {
-            this.uIm = o;
+          if (this.wIm?.IsPending()) {
+            this.RIm = o;
           } else {
             ControllerHolder_1.ControllerHolder.ConfirmBoxController.CloseNetWorkConfirmBoxView(o);
           }
@@ -297,21 +297,21 @@ class QuestResourceModel extends ModelBase_1.ModelBase {
       });
     }
   }
-  mIm(e) {
+  PIm(e) {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("QuestResource", 39, "检查网络: 程序主动关闭蜂窝网络下载同意弹窗", ["bConfirm", e]);
     }
-    var o = this.cIm;
-    this.cIm = undefined;
-    ControllerHolder_1.ControllerHolder.ConfirmBoxController.CloseNetWorkConfirmBoxView(this.uIm);
+    var o = this.wIm;
+    this.wIm = undefined;
+    ControllerHolder_1.ControllerHolder.ConfirmBoxController.CloseNetWorkConfirmBoxView(this.RIm);
     o?.SetResult(e);
   }
-  async fIm() {
-    if (this.cIm) {
+  async AIm() {
+    if (this.wIm) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("QuestResource", 39, "检查网络：等待用户确认蜂窝网络下载");
       }
-      if (!(await this.cIm.Promise)) {
+      if (!(await this.wIm.Promise)) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("QuestResource", 39, "检查网络：用户拒绝蜂窝网络下载");
         }
@@ -343,7 +343,7 @@ class QuestResourceModel extends ModelBase_1.ModelBase {
         let a = undefined;
         a = u === 0 ? VideoUpdateManager_1.VideoUpdateManager.GetVideoUpdater(3) : VideoUpdateManager_1.VideoUpdateManager.GetVideoUpdater(4);
         const d = () => {
-          if (this.cIm?.IsPending()) {
+          if (this.wIm?.IsPending()) {
             if (Log_1.Log.CheckInfo()) {
               Log_1.Log.Info("QuestResource", 39, "检查网络：已有开启中的蜂窝网络下载同意弹窗，再次检测");
             }
@@ -351,10 +351,10 @@ class QuestResourceModel extends ModelBase_1.ModelBase {
               if (Log_1.Log.CheckInfo()) {
                 Log_1.Log.Info("QuestResource", 39, "检查网络：再次检测后可以继续下载，关闭蜂窝网络下载同意弹窗");
               }
-              this.mIm(true);
+              this.PIm(true);
             }
           } else if (VideoResUpdate_1.VideoResUpdate.GetIsCellNetworkType() && !VideoResUpdate_1.VideoResUpdate.GetIsAllowCellDownload()) {
-            this.dIm();
+            this.LIm();
             a?.Pause();
           }
         };
@@ -371,7 +371,7 @@ class QuestResourceModel extends ModelBase_1.ModelBase {
           VideoResUpdate_1.VideoResUpdate.SetVideoResSize(5, e);
           this.SetIsReportDownloadNotEnoughSpace(false);
           d();
-          if (this.cIm?.IsPending()) {
+          if (this.wIm?.IsPending()) {
             return {
               Success: false
             };
@@ -405,8 +405,8 @@ class QuestResourceModel extends ModelBase_1.ModelBase {
             Success: o
           };
         }, async (e, o) => {
-          if (this.cIm) {
-            if (await this.fIm()) {
+          if (this.wIm) {
+            if (await this.AIm()) {
               return o();
             } else {
               AppUtil_1.AppUtil.QuitGame("DownloadVideoNotAllowedInCellNetwork");
@@ -521,7 +521,7 @@ class QuestResourceModel extends ModelBase_1.ModelBase {
     return Array.from(new Set(t));
   }
   GetQuestRefCgIds(e) {
-    e = this.qkm.get(e);
+    e = this.Zqm.get(e);
     if (e) {
       return Array.from(e);
     } else {
@@ -533,7 +533,7 @@ class QuestResourceModel extends ModelBase_1.ModelBase {
     var t;
     var s = [];
     var r = new Set();
-    for ([o, t] of this.qkm) {
+    for ([o, t] of this.Zqm) {
       if (ModelManager_1.ModelManager.QuestNewModel.CheckQuestFinished(o)) {
         for (const i of t) {
           r.add(i);

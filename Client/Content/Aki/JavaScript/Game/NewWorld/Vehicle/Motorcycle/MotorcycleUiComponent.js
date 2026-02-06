@@ -32,12 +32,12 @@ let MotorcycleUiComponent = class MotorcycleUiComponent extends EntityComponent_
     super(...arguments);
     this.Lie = undefined;
     this.ldt = [];
-    this.NSf = (e, t) => {
-      this.VRm(74855599, t);
+    this.LIf = (e, t) => {
+      this.ZRm(74855599, t);
     };
-    this.VSf = (e, t) => {
-      this.tPm(-731604710, t);
-      this.tPm(1217792559, t);
+    this.PIf = (e, t) => {
+      this.TPm(-731604710, t);
+      this.TPm(1217792559, t);
     };
   }
   OnStart() {
@@ -45,11 +45,11 @@ let MotorcycleUiComponent = class MotorcycleUiComponent extends EntityComponent_
     return true;
   }
   OnActivate() {
-    this.mdt(1506180277, this.NSf);
-    this.mdt(-1330336472, this.VSf);
+    this.mdt(1506180277, this.LIf);
+    this.mdt(-1330336472, this.PIf);
   }
   OnEnd() {
-    this.HSf();
+    this.AIf();
     EventSystem_1.EventSystem.RemoveAllTargetUseKey(this);
     return true;
   }
@@ -59,7 +59,7 @@ let MotorcycleUiComponent = class MotorcycleUiComponent extends EntityComponent_
       t(e, true);
     }
   }
-  HSf() {
+  AIf() {
     if (this.ldt) {
       for (const e of this.ldt) {
         e.EndTask();
@@ -67,7 +67,7 @@ let MotorcycleUiComponent = class MotorcycleUiComponent extends EntityComponent_
       this.ldt.length = 0;
     }
   }
-  VRm(e, t) {
+  ZRm(e, t) {
     var o;
     var r = ModelManager_1.ModelManager.CreatureModel.GetPlayerId();
     if (ControllerHolder_1.ControllerHolder.FormationDataController.IsPlayerExist(r)) {
@@ -79,7 +79,7 @@ let MotorcycleUiComponent = class MotorcycleUiComponent extends EntityComponent_
       }
     }
   }
-  tPm(e, t) {
+  TPm(e, t) {
     var o;
     if (this.Lie) {
       o = this.Lie.HasTag(e);
@@ -91,5 +91,5 @@ let MotorcycleUiComponent = class MotorcycleUiComponent extends EntityComponent_
     }
   }
 };
-MotorcycleUiComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(270)], MotorcycleUiComponent);
+MotorcycleUiComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(271)], MotorcycleUiComponent);
 exports.MotorcycleUiComponent = MotorcycleUiComponent; //# sourceMappingURL=MotorcycleUiComponent.js.map

@@ -63,13 +63,13 @@ class LevelLoadingController extends ControllerBase_1.ControllerBase {
   static OnInit() {
     LevelLoadingController.CameraFade = new CameraFadeLoading_1.CameraFadeLoading();
     LevelLoadingController.UYt = [];
-    Net_1.Net.Register(28500, this.fyu);
+    Net_1.Net.Register(16602, this.fyu);
     return true;
   }
   static OnClear() {
     LevelLoadingController.CameraFade = undefined;
     LevelLoadingController.UYt = undefined;
-    Net_1.Net.UnRegister(28500);
+    Net_1.Net.UnRegister(16602);
     return true;
   }
   static OnTick(e) {
@@ -216,7 +216,9 @@ class LevelLoadingController extends ControllerBase_1.ControllerBase {
     var a = new CustomPromise_1.CustomPromise();
     await VideoLauncher_1.VideoLauncher.ShowVideoCgAsync(e, () => {
       o();
-    }, undefined, undefined, r);
+    }, {
+      InPlot: r
+    });
     a.SetResult(true);
     await a.Promise;
   }
@@ -300,7 +302,7 @@ class LevelLoadingController extends ControllerBase_1.ControllerBase {
           }
           await this.vpi(o);
           ControllerHolder_1.ControllerHolder.QuestNewController.RequestSetFocusModeDeterCondition(true);
-          BlackScreenFadeController_1.BlackScreenFadeController.SetNowReason(23);
+          BlackScreenFadeController_1.BlackScreenFadeController.SetNowReason(24);
           if (Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("Loading", 18, "LevelLoading:相机淡出(完成)");
           }
@@ -392,7 +394,7 @@ LevelLoadingController.fyu = e => {
       w5n: r,
       h5n: a
     });
-    Net_1.Net.Call(21699, e, e => {
+    Net_1.Net.Call(20211, e, e => {
       if (!e || e.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("BlackScreen", 45, "[黑幕]Proto_ActionOperationScreenSuccessRequest 超时", ["playerId:", o], ["incId:", r], ["type:", a === 0 ? "关闭" : "开启"], ["response!.Proto_Code:", e.Cvs]);

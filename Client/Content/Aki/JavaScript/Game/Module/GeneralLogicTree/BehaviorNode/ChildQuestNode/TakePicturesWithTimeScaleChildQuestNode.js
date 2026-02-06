@@ -29,7 +29,7 @@ class TakePicturesWithTimeScaleChildQuestNode extends TickBehaviorNode_1.TickBeh
     this.CameraCondition = undefined;
     this.i6d = false;
     this.YQd = false;
-    this.dBm = false;
+    this.FBm = false;
     this.q6d = 0;
     this.Lod = 0;
     this.XQd = false;
@@ -51,7 +51,7 @@ class TakePicturesWithTimeScaleChildQuestNode extends TickBehaviorNode_1.TickBeh
     this.$Ge = e => {
       if (e === "FightPhotographView") {
         this.XQd = false;
-        this.dBm = true;
+        this.FBm = true;
       }
     };
   }
@@ -79,18 +79,18 @@ class TakePicturesWithTimeScaleChildQuestNode extends TickBehaviorNode_1.TickBeh
       }
     } else if (this.TipType !== 0) {
       if (this.CheckRoleInCamera() && this.CheckPhotographCondition()) {
-        if (!!this.dBm || !this.i6d) {
+        if (!!this.FBm || !this.i6d) {
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnNeedShowFightPhotoFocus, true);
           this.r6d(true);
           this.i6d = true;
-          this.dBm = false;
+          this.FBm = false;
           if (this.TipType === 2) {
             ModelManager_1.ModelManager.PhotographModel.SetPhotographTimeDilation(ModelManager_1.ModelManager.BattleUiModel.TimeDilationSkillRatio);
             this.YQd = true;
             this.G6d();
           }
         }
-      } else if ((this.dBm || this.i6d) && (EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnNeedShowFightPhotoFocus, false), this.r6d(false), this.i6d = false, this.dBm = false, this.TipType === 2)) {
+      } else if ((this.FBm || this.i6d) && (EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnNeedShowFightPhotoFocus, false), this.r6d(false), this.i6d = false, this.FBm = false, this.TipType === 2)) {
         ModelManager_1.ModelManager.PhotographModel.SetPhotographTimeDilation(1);
         AudioSystem_1.AudioSystem.SetState("game_sys_fightphoto", "none");
         this.YQd = false;
@@ -99,7 +99,7 @@ class TakePicturesWithTimeScaleChildQuestNode extends TickBehaviorNode_1.TickBeh
     }
   }
   r6d(e) {
-    var t = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity?.GetComponent(56);
+    var t = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity?.GetComponent(58);
     if (t) {
       if (e) {
         t.ShowHighlightExploreSkill(1029, -1, false, "系统.活动.拍照活动.时停技能高亮");

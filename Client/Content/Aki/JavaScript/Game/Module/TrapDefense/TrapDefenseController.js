@@ -20,31 +20,31 @@ const UiControllerBase_1 = require("../../Ui/Base/UiControllerBase");
 const UiManager_1 = require("../../Ui/UiManager");
 class TrapDefenseController extends UiControllerBase_1.UiControllerBase {
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(21979, this.c9u);
-    Net_1.Net.Register(27088, e => {
+    Net_1.Net.Register(29438, this.c9u);
+    Net_1.Net.Register(20866, e => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("TowerDefenseEvent", 69, "L7u", ["增益Buff全量更新通知", e]);
       }
       ModelManager_1.ModelManager.TrapDefenseModel?.ProtoBdBuffAllUpdateNotify(e);
     });
-    Net_1.Net.Register(19835, e => {
+    Net_1.Net.Register(15051, e => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("TowerDefenseEvent", 69, "I7u", ["增益Buff选择通知", e]);
       }
       ModelManager_1.ModelManager.TrapDefenseModel?.ProtoBdBuffSelectUpdateNotify(e);
     });
-    Net_1.Net.Register(25335, e => {
+    Net_1.Net.Register(20711, e => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("TowerDefenseEvent", 69, "Wud", ["增益Buff获得更新通知", e]);
       }
       ModelManager_1.ModelManager.TrapDefenseModel?.ProtoBdBuffGetUpdateNotify(e);
     });
-    Net_1.Net.Register(20478, this.KHc);
-    Net_1.Net.Register(19750, this.XHc);
-    Net_1.Net.Register(22576, this.WYc);
-    Net_1.Net.Register(24676, this.QYc);
-    Net_1.Net.Register(26413, this.gid);
-    Net_1.Net.Register(19536, this.U0d);
+    Net_1.Net.Register(26894, this.KHc);
+    Net_1.Net.Register(23217, this.XHc);
+    Net_1.Net.Register(25851, this.WYc);
+    Net_1.Net.Register(19691, this.QYc);
+    Net_1.Net.Register(23673, this.gid);
+    Net_1.Net.Register(28284, this.U0d);
   }
   static OnAddOpenViewCheckFunction() {
     UiManager_1.UiManager.AddOpenViewCheckFunction("TrapDefenseBuildingDevelopMainView", TrapDefenseController.tJc, "TrapDefenseController.CanOpenDevelopView");
@@ -53,15 +53,15 @@ class TrapDefenseController extends UiControllerBase_1.UiControllerBase {
     UiManager_1.UiManager.RemoveOpenViewCheckFunction("TrapDefenseBuildingDevelopMainView", TrapDefenseController.tJc);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(21979);
-    Net_1.Net.UnRegister(27088);
-    Net_1.Net.UnRegister(19835);
-    Net_1.Net.UnRegister(20478);
-    Net_1.Net.UnRegister(19750);
-    Net_1.Net.UnRegister(22576);
-    Net_1.Net.UnRegister(24676);
-    Net_1.Net.UnRegister(26413);
-    Net_1.Net.UnRegister(19536);
+    Net_1.Net.UnRegister(29438);
+    Net_1.Net.UnRegister(20866);
+    Net_1.Net.UnRegister(15051);
+    Net_1.Net.UnRegister(26894);
+    Net_1.Net.UnRegister(23217);
+    Net_1.Net.UnRegister(25851);
+    Net_1.Net.UnRegister(19691);
+    Net_1.Net.UnRegister(23673);
+    Net_1.Net.UnRegister(28284);
   }
   static OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnInstanceChange, this.jUc);
@@ -74,14 +74,14 @@ class TrapDefenseController extends UiControllerBase_1.UiControllerBase {
   static RequestTrapDefenseUseItem(r) {
     var e = Protocol_1.Aki.Protocol.dZc.create();
     e.bzc = r;
-    Net_1.Net.Call(20144, e, e => {
+    Net_1.Net.Call(24083, e, e => {
       if (e) {
         if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_TrapDefenseItemNotEnough) {
           if (Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("TowerDefenseEvent", 10, "塔防尝试使用道具不足", ["ItemId", r]);
           }
         } else if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25892);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22235);
         } else if ((e = ModelManager_1.ModelManager.TrapDefenseModel?.BattleInventoryData.GetItemData(r)) && e.IsUseSkill) {
           TDPlayerController_1.TowerDefensePlayerController.PlayerDoSkill(e.SkillIndex);
           ModelManager_1.ModelManager.TrapDefenseModel?.BattleData.RefreshExploreSkillData();
@@ -104,9 +104,9 @@ class TrapDefenseController extends UiControllerBase_1.UiControllerBase {
   static RequestTrapDefenseDevelopReset() {
     var e = Protocol_1.Aki.Protocol.iHc.create();
     e.w6n = ModelManager_1.ModelManager.TrapDefenseModel.GetActivityId();
-    Net_1.Net.Call(29418, e, e => {
+    Net_1.Net.Call(18910, e, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27603);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29700);
       } else {
         ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("TrapDefense_Building_Reset_Text");
         ModelManager_1.ModelManager.TrapDefenseModel.ViewModelBuildingDevelop.ResetAllOrgan();
@@ -132,9 +132,9 @@ class TrapDefenseController extends UiControllerBase_1.UiControllerBase {
   static XYc(e, r) {
     var o = Protocol_1.Aki.Protocol.N9c.create();
     o.s5n = e;
-    Net_1.Net.Call(23296, o, e => {
+    Net_1.Net.Call(28335, o, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20632);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21082);
       } else {
         ModelManager_1.ModelManager.TrapDefenseModel.ViewModelBuildingDevelop.OnItemUpdate(r);
         ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("TowerDefense_Building_LevelUp");
@@ -144,9 +144,9 @@ class TrapDefenseController extends UiControllerBase_1.UiControllerBase {
   static KYc(e, r) {
     var o = Protocol_1.Aki.Protocol.$9c.create();
     o.s5n = e;
-    Net_1.Net.Call(23602, o, e => {
+    Net_1.Net.Call(28478, o, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25199);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27636);
       } else {
         ModelManager_1.ModelManager.TrapDefenseModel.ViewModelBuildingDevelop.OnItemUpdate(r);
         ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("TowerDefense_Building_LevelUp");
@@ -171,9 +171,9 @@ class TrapDefenseController extends UiControllerBase_1.UiControllerBase {
   static zYc(e, r) {
     var o = Protocol_1.Aki.Protocol.J9c.create();
     o.s5n = e;
-    Net_1.Net.Call(22941, o, e => {
+    Net_1.Net.Call(17871, o, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26172);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25623);
       } else {
         ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("TrapDefense_Building_Reset_Text");
         ModelManager_1.ModelManager.TrapDefenseModel.ViewModelBuildingDevelop.OnItemUpdate(r);
@@ -183,9 +183,9 @@ class TrapDefenseController extends UiControllerBase_1.UiControllerBase {
   static YYc(e, r) {
     var o = Protocol_1.Aki.Protocol.eHc.create();
     o.s5n = e;
-    Net_1.Net.Call(16339, o, e => {
+    Net_1.Net.Call(28627, o, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27980);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16628);
       } else {
         ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("TrapDefense_Building_Reset_Text");
         ModelManager_1.ModelManager.TrapDefenseModel.ViewModelBuildingDevelop.OnItemUpdate(r);
@@ -204,15 +204,15 @@ class TrapDefenseController extends UiControllerBase_1.UiControllerBase {
     var a = Protocol_1.Aki.Protocol.j9c.create();
     a.s5n = e;
     a.yHc = r;
-    var e = await Net_1.Net.CallAsync(21517, a);
-    return !ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 15242) && (ModelManager_1.ModelManager.TrapDefenseModel.ViewModelBuildingDevelop.OnItemUpdate(o), true);
+    var e = await Net_1.Net.CallAsync(17837, a);
+    return !ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 27031) && (ModelManager_1.ModelManager.TrapDefenseModel.ViewModelBuildingDevelop.OnItemUpdate(o), true);
   }
   static async JYc(e, r, o) {
     var a = Protocol_1.Aki.Protocol.Q9c.create();
     a.s5n = e;
     a.yHc = r;
-    var e = await Net_1.Net.CallAsync(26799, a);
-    return !ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 15530) && (ModelManager_1.ModelManager.TrapDefenseModel.ViewModelBuildingDevelop.OnItemUpdate(o), true);
+    var e = await Net_1.Net.CallAsync(19511, a);
+    return !ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 23906) && (ModelManager_1.ModelManager.TrapDefenseModel.ViewModelBuildingDevelop.OnItemUpdate(o), true);
   }
   static OpenPauseView() {
     UiManager_1.UiManager.OpenView("TrapDefensePauseView");
@@ -290,22 +290,22 @@ class TrapDefenseController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Morale", 69, "R7u", ["", r]);
     }
-    var e = await Net_1.Net.CallAsync(29259, r);
+    var e = await Net_1.Net.CallAsync(25252, r);
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Morale", 69, "w7u", ["", e]);
     }
-    return !ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 16243);
+    return !ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 18319);
   }
   static async RequestBdBuffRefresh() {
     var e = Protocol_1.Aki.Protocol.T7u.create();
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Morale", 69, "T7u", ["", e]);
     }
-    var e = await Net_1.Net.CallAsync(25528, e);
+    var e = await Net_1.Net.CallAsync(21998, e);
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Morale", 69, "b7u", ["", e]);
     }
-    return !ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 20036) && (ModelManager_1.ModelManager.TrapDefenseModel?.ProtoBdBuffRefreshResponse(e), true);
+    return !ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 21572) && (ModelManager_1.ModelManager.TrapDefenseModel?.ProtoBdBuffRefreshResponse(e), true);
   }
   static async RequestChallenge(e, r = false) {
     var o = e.Config.InstId;
@@ -321,19 +321,19 @@ class TrapDefenseController extends UiControllerBase_1.UiControllerBase {
     var r = Protocol_1.Aki.Protocol.Y9c.create();
     AudioSystem_1.AudioSystem.ExecuteAction("play_2_6_tower_defence_music_ingame", 0);
     r.eou = e;
-    var e = await Net_1.Net.CallAsync(29613, r);
-    return !ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 19334);
+    var e = await Net_1.Net.CallAsync(24766, r);
+    return !ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 22356);
   }
   static async RequestTrapDefenseSlotUpdate(e) {
     var r = Protocol_1.Aki.Protocol.sHc.create();
     r.q6n = e;
-    var e = await Net_1.Net.CallAsync(25493, r);
-    return !ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 23525);
+    var e = await Net_1.Net.CallAsync(26485, r);
+    return !ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 17357);
   }
   static async RequestTrapDefenseCurChallengeInfo() {
     var e = Protocol_1.Aki.Protocol.qld.create();
-    var e = await Net_1.Net.CallAsync(16826, e);
-    if (ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 22851)) {
+    var e = await Net_1.Net.CallAsync(18981, e);
+    if (ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 28013)) {
       return 0;
     } else {
       return e?.j6n.length ?? 0;
@@ -342,22 +342,22 @@ class TrapDefenseController extends UiControllerBase_1.UiControllerBase {
   static async RequestTrapDefenseRewardClaim(e) {
     var r = Protocol_1.Aki.Protocol.O9c.create();
     r.BVn = e;
-    var e = await Net_1.Net.CallAsync(26701, r);
-    return !ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 20912);
+    var e = await Net_1.Net.CallAsync(25093, r);
+    return !ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 18958);
   }
   static async RequestTrapDefenseSpecialRewardClaim(e) {
     var r = Protocol_1.Aki.Protocol.G9c.create();
     r.BVn = [e];
-    var e = await Net_1.Net.CallAsync(28289, r);
-    return !ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 29143);
+    var e = await Net_1.Net.CallAsync(19911, r);
+    return !ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 21197);
   }
   static async RequestTrapDefenseTechUnlock(e) {
     var r = ModelManager_1.ModelManager.TrapDefenseModel.TalentTreeData.NodeIdMap.get(e);
-    return !!r && !!ModelManager_1.ModelManager.TrapDefenseModel.TalentTreeData.CanNodeAfford(r) && !((r = Protocol_1.Aki.Protocol.B9c.create()).s5n = e, e = await Net_1.Net.CallAsync(19019, r), ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 16246)) && !(ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("TrapDefenseTalentNodeUpgradeTips"), 0);
+    return !!r && !!ModelManager_1.ModelManager.TrapDefenseModel.TalentTreeData.CanNodeAfford(r) && !((r = Protocol_1.Aki.Protocol.B9c.create()).s5n = e, e = await Net_1.Net.CallAsync(21680, r), ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 22865)) && !(ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("TrapDefenseTalentNodeUpgradeTips"), 0);
   }
   static async RequestTrapDefenseShopRefresh() {
     var e;
-    return !(ModelManager_1.ModelManager.TrapDefenseModel.ShopData.RemainingRefreshCount <= 0) && !(e = Protocol_1.Aki.Protocol.fzc.create(), e = await Net_1.Net.CallAsync(17653, e), ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 26078)) && !(ModelManager_1.ModelManager.TrapDefenseModel.ProtoShopRefreshResponse(e), ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("TrapDefenseShopRefreshSuccess"), 0);
+    return !(ModelManager_1.ModelManager.TrapDefenseModel.ShopData.RemainingRefreshCount <= 0) && !(e = Protocol_1.Aki.Protocol.fzc.create(), e = await Net_1.Net.CallAsync(24737, e), ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 27008)) && !(ModelManager_1.ModelManager.TrapDefenseModel.ProtoShopRefreshResponse(e), ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("TrapDefenseShopRefreshSuccess"), 0);
   }
   static async RequestTrapDefenseShopPurchase(e, r, o = 1) {
     var a = Protocol_1.Aki.Protocol.Czc.create();
@@ -370,8 +370,8 @@ class TrapDefenseController extends UiControllerBase_1.UiControllerBase {
       a.Nzc = "Pzc";
       a.PJc = 1;
     }
-    var o = await Net_1.Net.CallAsync(25363, a);
-    return !ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(o, 29867) && (o?.Q4n !== undefined && (ModelManager_1.ModelManager.TrapDefenseModel.ProtoShopPurchaseResponse(o.A8s, e), ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("TrapDefenseShopPurchaseSuccess")), true);
+    var o = await Net_1.Net.CallAsync(18995, a);
+    return !ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(o, 27600) && (o?.Q4n !== undefined && (ModelManager_1.ModelManager.TrapDefenseModel.ProtoShopPurchaseResponse(o.A8s, e), ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("TrapDefenseShopPurchaseSuccess")), true);
   }
   static UpdateEnemyPositions() {
     var e = ControllerHolder_1.ControllerHolder.KuroSimpleCombatController.GetEntityPositions();

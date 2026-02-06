@@ -87,6 +87,7 @@ class DeckBuilderCardInfoView extends UiViewBase_1.UiViewBase {
     var i = ModelManager_1.ModelManager.PhantomArenaModel.IsNewPhantomArenaActivity(i);
     this.cs1 = new DeckBuilderCardDetailPanel_1.DeckBuilderCardDetailPanel();
     this.cs1.IsNewPhantomArenaActivity = i;
+    this.Piu = new DeckBuilderCardOutlookUnlockPanel_1.DeckBuilderCardOutlookUnlockPanel();
     this.B7t = new GenericLayout_1.GenericLayout(this.GetLayoutBase(0), this.Hwn);
     this.TabDataList = [];
     var e = new TabData();
@@ -116,7 +117,6 @@ class DeckBuilderCardInfoView extends UiViewBase_1.UiViewBase {
     if (i) {
       e.push(this.cs1.CreateByResourceIdAsync("UiItem_CardDetailNew", this.GetItem(4)));
     } else {
-      this.Piu = new DeckBuilderCardOutlookUnlockPanel_1.DeckBuilderCardOutlookUnlockPanel();
       e.push(this.cs1.CreateByResourceIdAsync("UiItem_CardDetail", this.GetItem(4)));
       e.push(this.Piu.CreateByResourceIdAsync("UiItem_CardLevelUp", this.GetItem(4)));
     }

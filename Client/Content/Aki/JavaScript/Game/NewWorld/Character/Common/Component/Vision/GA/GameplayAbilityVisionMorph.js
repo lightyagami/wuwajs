@@ -105,7 +105,7 @@ class GameplayAbilityVisionMorph extends GameplayAbilityVisionBase_1.GameplayAbi
   }
   AU() {
     this.PreInit();
-    return !!this.VisionEntity.IsInit && (!this.NeedNoActive() || !this.VisionEntity.Entity.Active) && !(this.NeedNoAi() && this.VisionEntity.Entity.GetComponent(48)?.IsEnabled() ? (CombatLog_1.CombatLog.Error("Skill", this.VisionEntity.Entity, "变身幻象不能配置AI，请检查一下AI配置"), 1) : (this.VisionActorComponent = this.VisionEntity.Entity.GetComponent(3), this.g6c = this.VisionEntity.Entity.GetComponent(215), this.VisionBuffComponent = this.VisionEntity.Entity.GetComponent(183), this.fAr = this.VisionEntity.Entity.GetComponent(21), this.TSa = this.VisionEntity.Entity.GetComponent(187), this.VisionSkillComponent = this.VisionEntity.Entity.GetComponent(43), this.VisionSkillComponent.InitVisionSkill(this.EntityHandle, true), 0));
+    return !!this.VisionEntity.IsInit && (!this.NeedNoActive() || !this.VisionEntity.Entity.Active) && !(this.NeedNoAi() && this.VisionEntity.Entity.GetComponent(50)?.IsEnabled() ? (CombatLog_1.CombatLog.Error("Skill", this.VisionEntity.Entity, "变身幻象不能配置AI，请检查一下AI配置"), 1) : (this.VisionActorComponent = this.VisionEntity.Entity.GetComponent(3), this.g6c = this.VisionEntity.Entity.GetComponent(217), this.VisionBuffComponent = this.VisionEntity.Entity.GetComponent(185), this.fAr = this.VisionEntity.Entity.GetComponent(21), this.TSa = this.VisionEntity.Entity.GetComponent(189), this.VisionSkillComponent = this.VisionEntity.Entity.GetComponent(45), this.VisionSkillComponent.InitVisionSkill(this.EntityHandle, true), 0));
   }
   aZo(i, t = this.VisionEntity) {
     t = t?.Entity?.GetComponent(3);

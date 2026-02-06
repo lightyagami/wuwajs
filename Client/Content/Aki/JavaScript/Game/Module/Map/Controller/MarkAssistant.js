@@ -81,13 +81,13 @@ class MarkAssistant extends ControllerAssistantBase_1.ControllerAssistantBase {
       for (const r of e.cbs) {
         switch (r.U7n) {
           case Protocol_1.Aki.Protocol.w5s.ENUMS.Proto_HonamiStory:
-            this._xm(r);
+            this.qxm(r);
             break;
           case Protocol_1.Aki.Protocol.w5s.ENUMS.Proto_HonamiStoryChild:
-            this.uxm(r, true, MarkDefine_1.HONAMI_SCAN_MARK_ITEM_ID, 2);
+            this.Oxm(r, true, MarkDefine_1.HONAMI_SCAN_MARK_ITEM_ID, 2);
             break;
           default:
-            this.uxm(r);
+            this.Oxm(r);
         }
       }
       for (const o of e.dbs) {
@@ -224,38 +224,38 @@ class MarkAssistant extends ControllerAssistantBase_1.ControllerAssistantBase {
     MapOperationQueue_1.MapOperationQueue.Clear();
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(29150, this.VLi);
-    Net_1.Net.Register(21565, this.HLi);
-    Net_1.Net.Register(21172, this.jLi);
-    Net_1.Net.Register(27021, this.rf1);
-    Net_1.Net.Register(20491, this.WLi);
-    Net_1.Net.Register(20654, this.tYa);
-    Net_1.Net.Register(26612, this.XLi);
-    Net_1.Net.Register(26844, this.$Li);
-    Net_1.Net.Register(26181, this.JLi);
-    Net_1.Net.Register(19857, this.ZLi);
-    Net_1.Net.Register(24646, this.jcl);
-    Net_1.Net.Register(16177, this.YLi);
-    Net_1.Net.Register(29938, this.tDi);
-    Net_1.Net.Register(18963, this.iDi);
-    Net_1.Net.Register(22778, this.oDi);
+    Net_1.Net.Register(27397, this.VLi);
+    Net_1.Net.Register(19395, this.HLi);
+    Net_1.Net.Register(24751, this.jLi);
+    Net_1.Net.Register(29276, this.rf1);
+    Net_1.Net.Register(25736, this.WLi);
+    Net_1.Net.Register(20474, this.tYa);
+    Net_1.Net.Register(28071, this.XLi);
+    Net_1.Net.Register(26198, this.$Li);
+    Net_1.Net.Register(17253, this.JLi);
+    Net_1.Net.Register(21156, this.ZLi);
+    Net_1.Net.Register(29420, this.jcl);
+    Net_1.Net.Register(26064, this.YLi);
+    Net_1.Net.Register(24776, this.tDi);
+    Net_1.Net.Register(24344, this.iDi);
+    Net_1.Net.Register(22643, this.oDi);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(29150);
-    Net_1.Net.UnRegister(21565);
-    Net_1.Net.UnRegister(21172);
-    Net_1.Net.UnRegister(20491);
-    Net_1.Net.UnRegister(27021);
-    Net_1.Net.UnRegister(20654);
-    Net_1.Net.UnRegister(26612);
-    Net_1.Net.UnRegister(26844);
-    Net_1.Net.UnRegister(26181);
-    Net_1.Net.UnRegister(19857);
-    Net_1.Net.UnRegister(24646);
-    Net_1.Net.UnRegister(16177);
-    Net_1.Net.UnRegister(29938);
-    Net_1.Net.UnRegister(18963);
-    Net_1.Net.UnRegister(22778);
+    Net_1.Net.UnRegister(27397);
+    Net_1.Net.UnRegister(19395);
+    Net_1.Net.UnRegister(24751);
+    Net_1.Net.UnRegister(25736);
+    Net_1.Net.UnRegister(29276);
+    Net_1.Net.UnRegister(20474);
+    Net_1.Net.UnRegister(28071);
+    Net_1.Net.UnRegister(26198);
+    Net_1.Net.UnRegister(17253);
+    Net_1.Net.UnRegister(21156);
+    Net_1.Net.UnRegister(29420);
+    Net_1.Net.UnRegister(26064);
+    Net_1.Net.UnRegister(24776);
+    Net_1.Net.UnRegister(24344);
+    Net_1.Net.UnRegister(22643);
   }
   OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.AddEntity, this.Jpe);
@@ -272,7 +272,7 @@ class MarkAssistant extends ControllerAssistantBase_1.ControllerAssistantBase {
       EventSystem_1.EventSystem.AddWithTargetUseHoldKey(this, r, EventDefine_1.EEventName.RemoveEntity, this.iQd);
     }
   }
-  uxm(e, r = false, o, a) {
+  Oxm(e, r = false, o, a) {
     var t = e.L7n === 0 ? Vector2D_1.Vector2D.Create(e.D7n, e.A7n) : Vector_1.Vector.Create(e.D7n, e.A7n, e.L7n);
     var o = o ?? e.v9n;
     var t = new MapDefine_1.DynamicMarkCreateInfo({
@@ -290,7 +290,7 @@ class MarkAssistant extends ControllerAssistantBase_1.ControllerAssistantBase {
     });
     ModelManager_1.ModelManager.MapModel.CreateServerSaveMark(t);
   }
-  _xm(e) {
+  qxm(e) {
     var r = ConfigManager_1.ConfigManager.MapConfig.GetMapMarkByEntityConfigId(e.A5n);
     if (r) {
       ModelManager_1.ModelManager.MapModel.UpdateHonamiScanMarkInfo(r.MarkId, e.Y4n);
@@ -385,10 +385,10 @@ class MarkAssistant extends ControllerAssistantBase_1.ControllerAssistantBase {
   }
   async RequestTrackInfo() {
     var e = Protocol_1.Aki.Protocol.ias.create();
-    var e = await Net_1.Net.CallAsync(19626, e);
+    var e = await Net_1.Net.CallAsync(18649, e);
     if (e) {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25830);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27869);
       } else {
         for (const t of e.fbs) {
           var r;
@@ -490,9 +490,9 @@ class MarkAssistant extends ControllerAssistantBase_1.ControllerAssistantBase {
           T7n: r,
           v9n: o
         });
-        var e = await Net_1.Net.CallAsync(26582, e);
+        var e = await Net_1.Net.CallAsync(25981, e);
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20224);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29335);
         } else {
           ModelManager_1.ModelManager.MapModel.ReplaceCustomMarkIcon(e.T7n, e.v9n);
         }
@@ -514,9 +514,9 @@ class MarkAssistant extends ControllerAssistantBase_1.ControllerAssistantBase {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Map", 63, "[CustomMarkItem Debug]MarkAssistant.RequestCreateCustomMark->", ["trackPosition", e], ["configId", r], ["request", a]);
         }
-        Net_1.Net.Call(17561, a, e => {
+        Net_1.Net.Call(18056, a, e => {
           if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24976);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21739);
             o?.(false);
           } else {
             if (Log_1.Log.CheckInfo()) {
@@ -542,10 +542,10 @@ class MarkAssistant extends ControllerAssistantBase_1.ControllerAssistantBase {
     } else {
       (o = Protocol_1.Aki.Protocol.Jm_.create()).L8n = e ?? 0;
       this.KFa = true;
-      Net_1.Net.Call(16599, o, e => {
+      Net_1.Net.Call(24223, o, e => {
         this.KFa = false;
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18322);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20946);
         }
         if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
           r?.();
@@ -582,9 +582,9 @@ class MarkAssistant extends ControllerAssistantBase_1.ControllerAssistantBase {
           e = Protocol_1.Aki.Protocol.Zss.create({
             Ika: e
           });
-          e = await Net_1.Net.CallAsync(26974, e);
+          e = await Net_1.Net.CallAsync(17812, e);
           if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19941);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24001);
           }
         }
       }
@@ -618,12 +618,12 @@ class MarkAssistant extends ControllerAssistantBase_1.ControllerAssistantBase {
           var e = Protocol_1.Aki.Protocol.oas.create({
             T7n: o
           });
-          var e = await Net_1.Net.CallAsync(16148, e);
+          var e = await Net_1.Net.CallAsync(20761, e);
           if (Log_1.Log.CheckDebug()) {
             Log_1.Log.Debug("Map", 63, "向服务端请求追踪标记: 标记id:", ["markId", o]);
           }
           if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21334);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25932);
             a?.(1, true);
           } else {
             ModelManager_1.ModelManager.MapModel.SetTrackMark(r, e.T7n, true);
@@ -662,7 +662,7 @@ class MarkAssistant extends ControllerAssistantBase_1.ControllerAssistantBase {
           var e = Protocol_1.Aki.Protocol.sas.create({
             T7n: o
           });
-          var e = await Net_1.Net.CallAsync(27469, e);
+          var e = await Net_1.Net.CallAsync(29887, e);
           if (Log_1.Log.CheckDebug()) {
             Log_1.Log.Debug("Map", 63, "向服务端请求取消追踪标记: 标记id:", ["markId", o]);
           }
@@ -701,9 +701,9 @@ class MarkAssistant extends ControllerAssistantBase_1.ControllerAssistantBase {
     t.Yaw = r.Yaw;
     a.R7n = e;
     a._8n = t;
-    Net_1.Net.Call(18107, a, e => {
+    Net_1.Net.Call(19830, a, e => {
       if (e.G9n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 17698);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 28523);
       }
     });
     o?.();
@@ -713,9 +713,9 @@ class MarkAssistant extends ControllerAssistantBase_1.ControllerAssistantBase {
       T7n: e,
       l8n: r
     });
-    Net_1.Net.Call(20146, e, e => {
+    Net_1.Net.Call(24459, e, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 28527);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25142);
       }
     });
   }

@@ -20,7 +20,7 @@ class NpcPerformInteractState extends NpcPerformBaseState_1.NpcPerformBaseState 
     };
   }
   CanChangeFrom(e) {
-    var t = this.Owner.Entity.GetComponent(197);
+    var t = this.Owner.Entity.GetComponent(199);
     return this.Ptr && e === 1 && !t.IsInPlot;
   }
   OnCreate(e) {

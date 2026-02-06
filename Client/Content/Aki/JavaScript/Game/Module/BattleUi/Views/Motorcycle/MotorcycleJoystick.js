@@ -41,8 +41,8 @@ class MotorcycleJoystick extends UiPanelBase_1.UiPanelBase {
     this.Z_t = Rotator_1.Rotator.Create();
     this.IsDynamicJoystick = false;
     this.LTa = 0;
-    this.$Jm = 0.5;
-    this.WJm = 200;
+    this.Atf = 0.5;
+    this.Dtf = 200;
     this.JoystickTouchId = -1;
     this.eut = false;
     this.R$e = undefined;
@@ -50,7 +50,7 @@ class MotorcycleJoystick extends UiPanelBase_1.UiPanelBase {
     this.aut = 0;
     this.DTa = false;
     this.JoystickVisible = false;
-    this.IZf = 0;
+    this.fSg = 0;
     this.hut = t => {
       if (this.lut(t) && this.IsDynamicJoystick && this.tut && InputDistributeController_1.InputDistributeController.IsAllowFightMoveInput()) {
         if (Log_1.Log.CheckInfo()) {
@@ -68,7 +68,7 @@ class MotorcycleJoystick extends UiPanelBase_1.UiPanelBase {
       this.Y_t.X = t.X;
       this.Y_t.Y = t.Y;
       this.tut = true;
-      this.QJm();
+      this.Utf();
       ModelManager_1.ModelManager.BattleUiModel.MotorcycleData.IsPressJoyStick = true;
       this.eut = true;
       if (this.DTa) {
@@ -100,7 +100,7 @@ class MotorcycleJoystick extends UiPanelBase_1.UiPanelBase {
         this.J_t.Set(0, 0, 0);
         this.Q_t.Set(this.J_t.X, this.J_t.Y);
       }
-      this.QJm();
+      this.Utf();
     };
     this.UTa = () => {
       this.UpdateJoystickVisible();
@@ -126,10 +126,10 @@ class MotorcycleJoystick extends UiPanelBase_1.UiPanelBase {
     this.R$e = Global_1.Global.CharacterController;
     this.IsDynamicJoystick = ModelManager_1.ModelManager.BattleUiModel.MotorcycleData.GetIsDynamicJoystick();
     this.LTa = CommonParamById_1.configCommonParamById.GetFloatConfig("MaskAreaEnableRootX");
-    this.$Jm = CommonParamById_1.configCommonParamById.GetFloatConfig("MotorcycleJoystickMidRate");
-    this.WJm = CommonParamById_1.configCommonParamById.GetFloatConfig("MotorcycleJoystickRadius");
+    this.Atf = CommonParamById_1.configCommonParamById.GetFloatConfig("MotorcycleJoystickMidRate");
+    this.Dtf = CommonParamById_1.configCommonParamById.GetFloatConfig("MotorcycleJoystickRadius");
     this.UpdateJoystickVisible();
-    this.QJm();
+    this.Utf();
   }
   OnAfterShow() {
     var t;
@@ -242,26 +242,26 @@ class MotorcycleJoystick extends UiPanelBase_1.UiPanelBase {
     this.JoystickTouchId = -1;
     this.eut = false;
     this.tut = false;
-    this.QJm();
+    this.Utf();
     ModelManager_1.ModelManager.BattleUiModel.MotorcycleData.IsPressJoyStick = false;
     this.TTa?.SetUIActive(false);
   }
   SetInputAxis(i, t) {
     if (this.JoystickVisible && t && !i.Equality(Vector_1.Vector.ZeroVectorProxy)) {
-      let t = i.X / this.WJm;
+      let t = i.X / this.Dtf;
       if (t > 1) {
         t = 1;
       } else if (t < -1) {
         t = -1;
       }
-      if (t >= this.$Jm) {
-        this.KJm(2);
-        this.Z_t.Yaw = (t - this.$Jm) * -YAW_MAX;
-      } else if (t <= -this.$Jm) {
-        this.KJm(1);
-        this.Z_t.Yaw = (-this.$Jm - t) * YAW_MAX;
+      if (t >= this.Atf) {
+        this.xtf(2);
+        this.Z_t.Yaw = (t - this.Atf) * -YAW_MAX;
+      } else if (t <= -this.Atf) {
+        this.xtf(1);
+        this.Z_t.Yaw = (-this.Atf - t) * YAW_MAX;
       } else {
-        this.KJm(0);
+        this.xtf(0);
         this.Z_t.Yaw = 0;
       }
       this.GetItem(0).SetUIRelativeRotation(this.Z_t.ToUeRotator());
@@ -270,7 +270,7 @@ class MotorcycleJoystick extends UiPanelBase_1.UiPanelBase {
       }
       InputController_1.InputController.InputAxis(InputEnums_1.EInputAxis.MoveRight, t);
     } else {
-      this.KJm(0);
+      this.xtf(0);
       this.Z_t.Yaw = 0;
       this.GetItem(0).SetUIRelativeRotation(this.Z_t.ToUeRotator());
       if (Log_1.Log.CheckDebug()) {
@@ -279,33 +279,33 @@ class MotorcycleJoystick extends UiPanelBase_1.UiPanelBase {
       InputController_1.InputController.InputAxis(InputEnums_1.EInputAxis.MoveRight, 0);
     }
   }
-  KJm(t) {
+  xtf(t) {
     var i;
     if (this.X_t !== t) {
       i = this.X_t;
       this.X_t = t;
       if (this.X_t === 1) {
-        this.TZf(7);
+        this.gSg(7);
       } else if (this.X_t === 2) {
-        this.TZf(5);
+        this.gSg(5);
       } else if (i === 1) {
-        this.TZf(8);
+        this.gSg(8);
       } else if (i === 2) {
-        this.TZf(6);
+        this.gSg(6);
       }
     }
   }
-  TZf(t) {
-    if (this.IZf > 0) {
-      this.Eah.StopTweenAnim(this.IZf);
+  gSg(t) {
+    if (this.fSg > 0) {
+      this.Eah.StopTweenAnim(this.fSg);
     }
-    this.IZf = t;
+    this.fSg = t;
     this.Eah.PlayTweenAnim(t);
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Battle", 17, "[摩托车]摇杆播放Tween动画", ["", t]);
     }
   }
-  QJm() {
+  Utf() {
     if (this.tut) {
       this.RootItem.SetAlpha(1);
     } else if (this.IsDynamicJoystick) {
@@ -317,6 +317,9 @@ class MotorcycleJoystick extends UiPanelBase_1.UiPanelBase {
   UpdateJoystickVisible() {
     this.JoystickVisible = ModelManager_1.ModelManager.BattleUiModel?.ChildViewData?.GetChildVisible(39) ?? false;
     this.ITa?.SetUIActive(this.JoystickVisible);
+  }
+  SetEnable(t) {
+    this.SetActive(t);
   }
 }
 exports.MotorcycleJoystick = MotorcycleJoystick;

@@ -13,6 +13,7 @@ class OpenSystemPhonograph extends OpenSystemBase_1.OpenSystemBase {
     if (e.GramophoneId) {
       ModelManager_1.ModelManager.PhonographModel.CurrentPlayActorEntityId = e.GramophoneId;
     }
+    ModelManager_1.ModelManager.PhonographModel.IsGlobal = e.SetMapMusic ?? false;
     e = ModelManager_1.ModelManager.PhonographModel.GetUnlockItemIds();
     if (e.length > 0) {
       return ControllerHolder_1.ControllerHolder.PhonographController.UnlockMusicRequest(e);

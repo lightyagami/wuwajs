@@ -57,7 +57,7 @@ let CharacterSkillComponent = CharacterSkillComponent_1 = class CharacterSkillCo
     return !!super.OnInitData() && (this.ActorComp = this.Entity.GetComponent(3), CharacterSkillComponent_1.AZr || (CharacterSkillComponent_1.PZr = CommonParamById_1.configCommonParamById.GetIntConfig("jump_priority"), CharacterSkillComponent_1.xZr = CommonParamById_1.configCommonParamById.GetIntConfig("fly_priority"), CharacterSkillComponent_1.AZr = true), true);
   }
   OnInit() {
-    return !!super.OnInit() && (this.Gce = this.Entity.GetComponent(187), this.mBe = this.Entity.CheckGetComponent(184), this.oRe = this.Entity.GetComponent(186), true);
+    return !!super.OnInit() && (this.Gce = this.Entity.GetComponent(189), this.mBe = this.Entity.CheckGetComponent(186), this.oRe = this.Entity.GetComponent(188), true);
   }
   OnEnd() {
     return !!super.OnEnd() && (this.DZr = 0, void (this.RZr = 0) !== this.pZr && (TimerSystem_1.TimerSystem.Remove(this.pZr), this.pZr = undefined), true);
@@ -95,7 +95,7 @@ let CharacterSkillComponent = CharacterSkillComponent_1 = class CharacterSkillCo
     }
   }
   een() {
-    if (this.ActorComp.IsAutonomousProxy && this.IsHasInputDir() && !this.Entity.GetComponent(65)?.IsLocalInput) {
+    if (this.ActorComp.IsAutonomousProxy && this.IsHasInputDir() && !this.Entity.GetComponent(67)?.IsLocalInput) {
       MathUtils_1.MathUtils.LookRotationUpFirst(this.ActorComp.InputDirectProxy, this.Gce.GravityUp, this.TmpRotator);
       this.TmpTransform.Set(this.ActorComp.ActorLocationProxy, this.TmpRotator.Quaternion(), this.ActorComp.ActorScaleProxy);
       this.ActorComp.SetActorTransform(this.TmpTransform.ToUeTransform(), "释放技能.转向输入方向", false, 1);
@@ -133,10 +133,10 @@ let CharacterSkillComponent = CharacterSkillComponent_1 = class CharacterSkillCo
     if (BaseSkillComponent_1.SKILL_GROUP_MAIN === i.GroupId) {
       if (this.Gce && this.Gce.CharacterMovement.MovementMode === 6) {
         if ((i = this.Gce.CharacterMovement.CustomMovementMode) === CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_GLIDE) {
-          if ((e = this.Entity.GetComponent(62)).Valid) {
+          if ((e = this.Entity.GetComponent(64)).Valid) {
             e.ExitGlideState("Skill");
           }
-        } else if (i === CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_SOAR && (e = this.Entity.GetComponent(62)).Valid) {
+        } else if (i === CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_SOAR && (e = this.Entity.GetComponent(64)).Valid) {
           e.ExitSoarState(3, "Skill");
         }
       }
@@ -235,5 +235,5 @@ CharacterSkillComponent.zzr = Stats_1.Stat.Create("DoSkillBegin7 SetMoveState");
 CharacterSkillComponent.AZr = false;
 CharacterSkillComponent.PZr = 0;
 CharacterSkillComponent.xZr = 0;
-CharacterSkillComponent = CharacterSkillComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(41)], CharacterSkillComponent);
+CharacterSkillComponent = CharacterSkillComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(43)], CharacterSkillComponent);
 exports.CharacterSkillComponent = CharacterSkillComponent; //# sourceMappingURL=CharacterSkillComponent.js.map

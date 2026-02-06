@@ -34,8 +34,8 @@ class WeeklyRogueShopView extends UiViewBase_1.UiViewBase {
       });
       this.RunAsyncTask(e);
     };
-    this.$bf = () => {
-      this.Wbf();
+    this.gDf = () => {
+      this.CDf();
     };
     this.Mlo = () => {
       UiManager_1.UiManager.OpenView("WeeklyRogueInfo");
@@ -51,20 +51,20 @@ class WeeklyRogueShopView extends UiViewBase_1.UiViewBase {
   OnAddEventListener() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WeeklyRogueShopSelect, this.Wvt);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WeeklyRogueSelectOption, this.pMo);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PayShopGoodsBuy, this.$bf);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPlayerCurrencyChange, this.$bf);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnAddCommonItemList, this.$bf);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRemoveCommonItem, this.$bf);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnCommonItemCountRefresh, this.$bf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PayShopGoodsBuy, this.gDf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPlayerCurrencyChange, this.gDf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnAddCommonItemList, this.gDf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRemoveCommonItem, this.gDf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnCommonItemCountRefresh, this.gDf);
   }
   OnRemoveEventListener() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WeeklyRogueShopSelect, this.Wvt);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WeeklyRogueSelectOption, this.pMo);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PayShopGoodsBuy, this.$bf);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPlayerCurrencyChange, this.$bf);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnAddCommonItemList, this.$bf);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRemoveCommonItem, this.$bf);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnCommonItemCountRefresh, this.$bf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PayShopGoodsBuy, this.gDf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPlayerCurrencyChange, this.gDf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnAddCommonItemList, this.gDf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRemoveCommonItem, this.gDf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnCommonItemCountRefresh, this.gDf);
   }
   async OnBeforeStartAsync() {
     this.LevelSequencePlayer = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetRootItem());
@@ -82,7 +82,7 @@ class WeeklyRogueShopView extends UiViewBase_1.UiViewBase {
   OnAfterShow() {
     this.LevelSequencePlayer.PlayLevelSequenceByName("Show");
   }
-  Wbf() {
+  CDf() {
     this.GoodsLayout?.RefreshAllGridProxies();
   }
   async RefreshItemList() {

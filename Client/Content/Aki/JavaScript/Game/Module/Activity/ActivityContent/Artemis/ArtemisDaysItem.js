@@ -15,10 +15,10 @@ class ArtemisDaysItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.hma = 0;
     this.Dxt = false;
     this.NTt = () => {};
-    this.iPf = UE.Color.FromHex("838383");
-    this.rPf = UE.Color.FromHex("FFFFFF");
-    this.oPf = UE.Color.FromHex("212224");
-    this.nPf = UE.Color.FromHex("838383");
+    this.Lkf = UE.Color.FromHex("838383");
+    this.wkf = UE.Color.FromHex("FFFFFF");
+    this.Pkf = UE.Color.FromHex("212224");
+    this.Akf = UE.Color.FromHex("838383");
     this.jYe = () => {
       if (this.Dxt) {
         this.GetExtendToggle(0)?.SetToggleState(0);
@@ -48,23 +48,23 @@ class ArtemisDaysItem extends GridProxyAbstract_1.GridProxyAbstract {
     var i = !this.Dxt && this.hma === ArtemisActivityController_1.ArtemisActivityController.CurrentDayIndex;
     this.GetExtendToggle(0).bLockStateOnSelect = !this.Dxt;
     this.GetItem(4).SetUIActive(this.Dxt);
-    this.sPf(i, t ?? 0);
+    this.Dkf(i, t ?? 0);
     this.GetExtendToggle(0)?.SetToggleState(i ? 1 : 0);
     this.LoadMaterial(t === 1);
   }
-  sPf(t, i) {
+  Dkf(t, i) {
     var s = i === 2;
     var e = t && i === 1;
     this.GetArtText(3)?.SetUIActive(!e);
     this.GetArtText(5)?.SetUIActive(e);
     this.GetTexture(2).SetUIActive(s);
-    let r = this.rPf;
+    let r = this.wkf;
     if (t) {
-      r = this.oPf;
+      r = this.Pkf;
     } else if (s) {
-      r = this.iPf;
+      r = this.Lkf;
     } else if (i === 0) {
-      r = this.nPf;
+      r = this.Akf;
     }
     this.GetArtText(3).SetColor(r);
     this.GetArtText(5).SetColor(r);

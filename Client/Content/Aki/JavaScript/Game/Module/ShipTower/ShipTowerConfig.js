@@ -32,7 +32,7 @@ class ShipTowerConfig extends ConfigBase_1.ConfigBase {
     return SlashTowerShowStageAll_1.configSlashTowerShowStageAll.GetConfigList();
   }
   GetStageInfoCfgByInstId(e) {
-    return SlashTowerStageInfoByInstId_1.configSlashTowerStageInfoByInstId.GetConfig(e);
+    return SlashTowerStageInfoByInstId_1.configSlashTowerStageInfoByInstId.GetConfigList(e) ?? [];
   }
   GetStageCfgBySeason(e) {
     return SlashAndTowerCfgBySeason_1.configSlashAndTowerCfgBySeason.GetConfigList(e);

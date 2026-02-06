@@ -27,57 +27,59 @@ class MotorcycleDevelopController extends ControllerBase_1.ControllerBase {
   static OnRegisterNetEvent() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnFunctionOpenSet, this.DQe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnFunctionOpenUpdate, this.RQe);
-    Net_1.Net.Register(21779, MotorcycleDevelopController.dcf);
-    Net_1.Net.Register(28733, MotorcycleDevelopController.mcf);
-    Net_1.Net.Register(22507, MotorcycleDevelopController.fcf);
-    Net_1.Net.Register(23199, MotorcycleDevelopController.gcf);
-    Net_1.Net.Register(25480, MotorcycleDevelopController.Ccf);
-    Net_1.Net.Register(18309, MotorcycleDevelopController.pcf);
-    Net_1.Net.Register(28112, MotorcycleDevelopController.NWf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnEnterVehicle, this.M6l);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnLeaveVehicle, this.E6l);
+    Net_1.Net.Register(26255, MotorcycleDevelopController._mf);
+    Net_1.Net.Register(20476, MotorcycleDevelopController.umf);
+    Net_1.Net.Register(19526, MotorcycleDevelopController.cmf);
+    Net_1.Net.Register(15582, MotorcycleDevelopController.dmf);
+    Net_1.Net.Register(23160, MotorcycleDevelopController.mmf);
+    Net_1.Net.Register(18120, MotorcycleDevelopController.fmf);
+    Net_1.Net.Register(20567, MotorcycleDevelopController.jng);
   }
   static OnUnRegisterNetEvent() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnFunctionOpenSet, this.DQe);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnFunctionOpenUpdate, this.RQe);
-    Net_1.Net.UnRegister(21779);
-    Net_1.Net.UnRegister(28733);
-    Net_1.Net.UnRegister(22507);
-    Net_1.Net.UnRegister(23199);
-    Net_1.Net.UnRegister(25480);
-    Net_1.Net.UnRegister(18309);
-    Net_1.Net.UnRegister(28112);
-  }
-  static async OpenRootView() {
-    return (await UiManager_1.UiManager.OpenViewAsync("MotorcycleRootView")) !== undefined;
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnEnterVehicle, this.M6l);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnLeaveVehicle, this.E6l);
+    Net_1.Net.UnRegister(26255);
+    Net_1.Net.UnRegister(20476);
+    Net_1.Net.UnRegister(19526);
+    Net_1.Net.UnRegister(15582);
+    Net_1.Net.UnRegister(23160);
+    Net_1.Net.UnRegister(18120);
+    Net_1.Net.UnRegister(20567);
   }
   static RequestMotorInfo() {
-    var e = new Protocol_1.Aki.Protocol.R1f();
-    Net_1.Net.Call(28324, e, e => {
+    var e = new Protocol_1.Aki.Protocol.Guf();
+    Net_1.Net.Call(16521, e, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26425);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27888);
       } else {
-        ModelManager_1.ModelManager.MotorcycleDevelopModel.UpdateMotorInfo(e.G1f);
+        ModelManager_1.ModelManager.MotorcycleDevelopModel.UpdateMotorInfo(e.zuf);
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.MotorDevelopInfoUpdate);
+        this.hVg = false;
       }
     });
   }
   static RequestMotorTechLevelUp(o) {
-    var e = new Protocol_1.Aki.Protocol.E1f();
-    e.F1f = o;
-    Net_1.Net.Call(17479, e, e => {
+    var e = new Protocol_1.Aki.Protocol.Buf();
+    e.Juf = o;
+    Net_1.Net.Call(29190, e, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18391);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18554);
       } else {
-        ModelManager_1.ModelManager.MotorcycleDevelopModel.UpdateOneTechTree(e.N1f);
-        MotorcycleDevelopController.awf(o);
-        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.MotorDevelopTechTreeUpdate);
+        ModelManager_1.ModelManager.MotorcycleDevelopModel.UpdateOneTechTree(e.Zuf);
+        MotorcycleDevelopController.DDf(o);
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.MotorDevelopTechTreeUpdate, true);
       }
     });
   }
-  static awf(e) {
+  static DDf(e) {
     var o = ModelManager_1.ModelManager.MotorcycleDevelopModel.GetTechNodeById(e);
     var e = ConfigManager_1.ConfigManager.MotorConfig.GetMotorTechConfig(e).TechLv[o.NodeLevel - 1];
     var o = {
-      Title: "Text_ResonanceUnlockSuccess_Text",
+      Title: "MotorBike_TechTree_LevelUpSuccess",
       TextList: [{
         TextId: ConfigManager_1.ConfigManager.MotorConfig.GetMotorTechLvConfig(e).Desc,
         Params: []
@@ -85,23 +87,26 @@ class MotorcycleDevelopController extends ControllerBase_1.ControllerBase {
     };
     RoleLevelUpSuccessController_1.RoleLevelUpSuccessController.OpenSuccessEffectView(o);
   }
-  static RequestMotorTechTreeSwitch(e) {
-    var o = new Protocol_1.Aki.Protocol.D1f();
-    o.V1f = e;
-    Net_1.Net.Call(21732, o, e => {
+  static RequestMotorTechTreeSwitch(e, o) {
+    var t = new Protocol_1.Aki.Protocol.juf();
+    t.ecf = e;
+    Net_1.Net.Call(24697, t, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16930);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 28467);
       } else {
-        ModelManager_1.ModelManager.MotorcycleDevelopModel.UpdateCurTreeType(e.H1f);
-        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.MotorDevelopTechTreeUpdate);
+        if (o) {
+          o();
+        }
+        ModelManager_1.ModelManager.MotorcycleDevelopModel.UpdateCurTreeType(e.tcf);
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.MotorDevelopTechTreeUpdate, false);
       }
     });
   }
   static RequestMotorLevelOneKeyReward() {
-    var e = new Protocol_1.Aki.Protocol.T1f();
-    Net_1.Net.Call(25504, e, e => {
+    var e = new Protocol_1.Aki.Protocol.quf();
+    Net_1.Net.Call(20263, e, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15001);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16588);
       } else {
         ModelManager_1.ModelManager.MotorcycleDevelopModel.UpdateMotorRewardedMaxLevel(e);
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.MotorDevelopInfoUpdate);
@@ -109,50 +114,83 @@ class MotorcycleDevelopController extends ControllerBase_1.ControllerBase {
     });
   }
   static RequestMotorTechTaskOneKeyReward(e) {
-    var o = new Protocol_1.Aki.Protocol.L1f();
+    var o = new Protocol_1.Aki.Protocol.Nuf();
     o.B6n = e;
-    Net_1.Net.Call(21939, o, e => {
+    Net_1.Net.Call(23419, o, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20191);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27418);
       }
     });
   }
+  static OpenMotorTechTreeSwitchView() {
+    if (this.Yyf) {
+      UiManager_1.UiManager.OpenView("MotorcycleTechTreeSwitchView");
+    }
+  }
+  static async OpenRootView() {
+    return (await UiManager_1.UiManager.OpenViewAsync("MotorcycleRootView")) !== undefined;
+  }
+  static OpenMotorDevelopTechTreeTabView(e) {
+    e = {
+      OpenTabView: "MotorcycleTechTreeTabView",
+      TreeType: e
+    };
+    UiManager_1.UiManager.OpenView("MotorcycleRootView", e);
+  }
 }
 exports.MotorcycleDevelopController = MotorcycleDevelopController;
-(_a = MotorcycleDevelopController).DQe = (e, o) => {
-  if (o && e === 10098) {
+(_a = MotorcycleDevelopController).Yyf = false;
+MotorcycleDevelopController.hVg = false;
+MotorcycleDevelopController.DQe = (e, o) => {
+  if (!!o && e === 10098 && !_a.hVg) {
+    _a.hVg = true;
     _a.RequestMotorInfo();
   }
 };
 MotorcycleDevelopController.RQe = (e, o) => {
-  if (o && e === 10098) {
+  if (!!o && e === 10098 && !_a.hVg) {
+    _a.hVg = true;
     _a.RequestMotorInfo();
   }
 };
-MotorcycleDevelopController.dcf = e => {
-  ModelManager_1.ModelManager.MotorcycleDevelopModel.UpdateMotorInfo(e.G1f);
+MotorcycleDevelopController.M6l = e => {
+  if (ModelManager_1.ModelManager.FunctionModel?.IsOpen(10098) && e.IsDriver && e.VehicleType === "Motorcycle") {
+    _a.Yyf = true;
+  }
+};
+MotorcycleDevelopController.E6l = e => {
+  if (ModelManager_1.ModelManager.FunctionModel?.IsOpen(10098) && e.IsDriver && e.VehicleType === "Motorcycle") {
+    _a.Yyf = false;
+  }
+};
+MotorcycleDevelopController._mf = e => {
+  ModelManager_1.ModelManager.MotorcycleDevelopModel.UpdateMotorInfo(e.zuf);
   EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.MotorDevelopInfoUpdate);
 };
-MotorcycleDevelopController.mcf = e => {
+MotorcycleDevelopController.umf = e => {
   ModelManager_1.ModelManager.MotorcycleDevelopModel.UpdateMotorExpAndLevel(e);
   ModelManager_1.ModelManager.MotorcycleDevelopModel.CheckMotorExpChange();
   EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.MotorDevelopInfoUpdate);
 };
-MotorcycleDevelopController.fcf = e => {
-  ModelManager_1.ModelManager.MotorcycleDevelopModel.UpdateAllTreeTask(e.$1f);
+MotorcycleDevelopController.cmf = e => {
+  ModelManager_1.ModelManager.MotorcycleDevelopModel.UpdateAllTreeTask(e.rcf);
   EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.MotorDevelopTaskUpdate);
 };
-MotorcycleDevelopController.gcf = e => {
+MotorcycleDevelopController.dmf = e => {
   ModelManager_1.ModelManager.MotorcycleDevelopModel.UpdateOneTreeTask(e.vlu);
   EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.MotorDevelopTaskUpdate);
 };
-MotorcycleDevelopController.Ccf = e => {
-  ModelManager_1.ModelManager.MotorcycleDevelopModel.UnlockTechNode(e.F1f);
-  EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.MotorDevelopTechTreeUpdate);
+MotorcycleDevelopController.mmf = e => {
+  ModelManager_1.ModelManager.MotorcycleDevelopModel.UnlockTechNode(e.Juf);
+  EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.MotorDevelopTechTreeUpdate, true);
 };
-MotorcycleDevelopController.pcf = e => {
-  ModelManager_1.ModelManager.MotorcycleDevelopModel.UnlockTechTree(e.V1f);
+MotorcycleDevelopController.fmf = e => {
+  ModelManager_1.ModelManager.MotorcycleDevelopModel.UnlockTechTree(e.ecf);
+  if (!_a.hVg) {
+    _a.hVg = true;
+    _a.RequestMotorInfo();
+  }
 };
-MotorcycleDevelopController.NWf = e => {
-  ModelManager_1.ModelManager.MotorcycleDevelopModel.UpdateTechNodeList(e.W1f);
+MotorcycleDevelopController.jng = e => {
+  ModelManager_1.ModelManager.MotorcycleDevelopModel.UpdateTechNodeList(e.ocf);
 }; //# sourceMappingURL=MotorcycleDevelopController.js.map

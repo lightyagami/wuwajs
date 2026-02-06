@@ -10,6 +10,7 @@ const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const TsInteractionUtils_1 = require("../../Module/Interaction/TsInteractionUtils");
 const KingShipUtil_1 = require("../../Module/KingShip/KingShipUtil");
 const UiManager_1 = require("../../Ui/UiManager");
+const FindSunSpiritController_1 = require("../FindSunSprite/FindSunSpiritController");
 const FishingQteController_1 = require("../FishingQte/FishingQteController");
 const LevelGeneralBase_1 = require("../LevelGeneralBase");
 const LevelGeneralNetworks_1 = require("../LevelGeneralNetworks");
@@ -18,11 +19,22 @@ class LevelEventOpenSimpleGameplay extends LevelGeneralBase_1.LevelEventBase {
   constructor() {
     super(...arguments);
     this.VDe = undefined;
+    this.Y4f = undefined;
     this.E0 = -1;
     this.HDe = () => {
       if (this.VDe) {
         LevelGeneralNetworks_1.LevelGeneralNetworks.RequestEntitySendEvent(this.E0, this.VDe);
       }
+    };
+    this.z4f = e => {
+      if (e && this.VDe) {
+        LevelGeneralNetworks_1.LevelGeneralNetworks.RequestEntitySendEvent(this.E0, this.VDe);
+      }
+      if (!e && this.Y4f) {
+        LevelGeneralNetworks_1.LevelGeneralNetworks.RequestEntitySendEvent(this.E0, this.Y4f);
+      }
+      this.VDe = undefined;
+      this.Y4f = undefined;
     };
   }
   ExecuteNew(e, i) {
@@ -139,6 +151,14 @@ class LevelEventOpenSimpleGameplay extends LevelGeneralBase_1.LevelEventBase {
                 this.HDe();
               }
             });
+            break;
+          case "FindSunSpirit":
+            this.VDe = t.FinishSendSelfEvent;
+            this.Y4f = t.FailSendSelfEvent;
+            s = EntitySystem_1.EntitySystem.Get(n.EntityId).GetComponent(0);
+            this.E0 = s.GetCreatureDataId();
+            TsInteractionUtils_1.TsInteractionUtils.RegisterOpenViewName("FindSunSpiritView");
+            FindSunSpiritController_1.FindSunSpiritController.StartFindSunSpirit(t.GameplayConfig, this.z4f, s.GetPbDataId());
         }
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Event", 29, "上下文不合法");

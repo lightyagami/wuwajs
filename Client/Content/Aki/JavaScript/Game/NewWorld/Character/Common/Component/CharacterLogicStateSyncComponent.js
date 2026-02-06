@@ -73,7 +73,7 @@ let CharacterLogicStateSyncComponent = class CharacterLogicStateSyncComponent ex
             this.D9r[1] = t.rWn.DWn = i.MoveState;
             this.D9r[2] = t.rWn.AWn = i.DirectionState;
             this.D9r[3] = t.rWn.UWn = i.PositionSubState;
-            CombatMessage_1.CombatNet.Send(27717, this.Entity, t);
+            CombatMessage_1.CombatNet.Send(21209, this.Entity, t);
           }
         }
       }
@@ -81,7 +81,7 @@ let CharacterLogicStateSyncComponent = class CharacterLogicStateSyncComponent ex
   }
   OnStart() {
     this.Hte = this.Entity.CheckGetComponent(3);
-    this.I5r = this.Entity.CheckGetComponent(184);
+    this.I5r = this.Entity.CheckGetComponent(186);
     this.Xjt = this.Entity.GetComponent(0).IsRole();
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharSwitchControl, this.OnSwitchControl);
     return true;
@@ -120,7 +120,7 @@ let CharacterLogicStateSyncComponent = class CharacterLogicStateSyncComponent ex
     t.RWn.DWn = this.I5r.MoveState;
     t.RWn.AWn = this.I5r.DirectionState;
     t.RWn.UWn = this.I5r.PositionSubState;
-    CombatMessage_1.CombatNet.Send(28950, this.Entity, t);
+    CombatMessage_1.CombatNet.Send(20970, this.Entity, t);
   }
   A9r(t) {
     this.P9r(0, t.LWn);
@@ -146,7 +146,7 @@ let CharacterLogicStateSyncComponent = class CharacterLogicStateSyncComponent ex
     }
   }
   static LogicStateInitNotify(t, e) {
-    t?.GetComponent(67)?.A9r(e.RWn);
+    t?.GetComponent(69)?.A9r(e.RWn);
   }
   utc() {
     var t = this.Hte?.CreatureData?.GetPlayerId() ?? 0;
@@ -154,7 +154,7 @@ let CharacterLogicStateSyncComponent = class CharacterLogicStateSyncComponent ex
   }
   static SwitchLogicStateNotify(t, e) {
     if (!t?.GetComponent(3)?.IsMoveAutonomousProxy) {
-      if ((t = t?.GetComponent(67)) && e.rWn) {
+      if ((t = t?.GetComponent(69)) && e.rWn) {
         this.TId(t, 0, e.rWn.LWn);
         this.TId(t, 1, e.rWn.DWn);
         this.TId(t, 2, e.rWn.AWn);
@@ -170,5 +170,5 @@ let CharacterLogicStateSyncComponent = class CharacterLogicStateSyncComponent ex
 };
 __decorate([CombatMessage_1.CombatNet.Listen("qFn", true)], CharacterLogicStateSyncComponent, "LogicStateInitNotify", null);
 __decorate([CombatMessage_1.CombatNet.Listen("GFn", true)], CharacterLogicStateSyncComponent, "SwitchLogicStateNotify", null);
-CharacterLogicStateSyncComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(67)], CharacterLogicStateSyncComponent);
+CharacterLogicStateSyncComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(69)], CharacterLogicStateSyncComponent);
 exports.CharacterLogicStateSyncComponent = CharacterLogicStateSyncComponent; //# sourceMappingURL=CharacterLogicStateSyncComponent.js.map

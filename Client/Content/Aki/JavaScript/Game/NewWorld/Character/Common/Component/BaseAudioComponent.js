@@ -22,6 +22,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.BaseAudioComponent = undefined;
+const UE = require("ue");
 const AudioSystem_1 = require("../../../../../Core/Audio/AudioSystem");
 const Log_1 = require("../../../../../Core/Common/Log");
 const Protocol_1 = require("../../../../../Core/Define/Net/Protocol");
@@ -52,7 +53,7 @@ let BaseAudioComponent = class BaseAudioComponent extends EntityComponent_1.Enti
     return !!this.ActorComp?.Valid && !!this.ActorComp.Owner;
   }
   GetAkComponent(o) {
-    var e = this.ActorComp?.Owner;
+    var e = this.ActorComp?.Owner?.GetComponentByClass(UE.SkeletalMeshComponent.StaticClass());
     if (e?.IsValid()) {
       let t = "None";
       t = typeof o == "string" ? o.length > 0 ? o : "None" : o && o.toString().length > 0 ? o.toString() : "None";
@@ -95,5 +96,5 @@ let BaseAudioComponent = class BaseAudioComponent extends EntityComponent_1.Enti
     }
   }
 };
-BaseAudioComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(293)], BaseAudioComponent);
+BaseAudioComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(295)], BaseAudioComponent);
 exports.BaseAudioComponent = BaseAudioComponent; //# sourceMappingURL=BaseAudioComponent.js.map

@@ -51,11 +51,6 @@ class PhonographMusicPlayItem extends GridProxyAbstract_1.GridProxyAbstract {
         this.LevelSequencePlayer.PlaySequencePurely("Play");
       }
     };
-    this.OnPlayTick = () => {
-      if (this.MusicId === ModelManager_1.ModelManager.PhonographModel.CurrentPlayMusicId) {
-        this.RefreshTime();
-      }
-    };
     this.OnPlayStop = () => {
       if (this.MusicId === ModelManager_1.ModelManager.PhonographModel.CurrentPlayMusicId) {
         this.GetText(3).SetText(TimeUtil_1.TimeUtil.GetTimeString(this.TotalTime));
@@ -73,22 +68,26 @@ class PhonographMusicPlayItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.LevelSequencePlayer = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
   }
   OnBeforeShow() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPhonographPlayTick, this.OnPlayTick);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPhonographPlayStop, this.OnPlayStop);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPhonographSelectDisable, this.fr_);
     this.GetExtendToggle(0).bCanClickWhenDisable = true;
     this.GetExtendToggle(0).OnUndeterminedClicked.Add(this.vr_);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPhonographSetBgm, this.yY_);
   }
+  OnTick() {
+    if (this.MusicId === ModelManager_1.ModelManager.PhonographModel.CurrentPlayMusicId) {
+      this.RefreshTime();
+    }
+  }
   OnBeforeHide() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPhonographPlayTick, this.OnPlayTick);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPhonographPlayStop, this.OnPlayStop);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPhonographSelectDisable, this.fr_);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPhonographSetBgm, this.yY_);
   }
   RefreshTime() {
-    this.GetText(3).SetText(TimeUtil_1.TimeUtil.GetTimeString(ModelManager_1.ModelManager.PhonographModel.CurrentPlayMusicTime) + "/" + TimeUtil_1.TimeUtil.GetTimeString(this.TotalTime));
-    this.GetSprite(2).SetFillAmount(ModelManager_1.ModelManager.PhonographModel.CurrentPlayMusicTime / this.TotalTime);
+    var e = ModelManager_1.ModelManager.PhonographModel.GetCurrentPlayTimeFromAudio();
+    this.GetText(3).SetText(TimeUtil_1.TimeUtil.GetTimeString(e) + "/" + TimeUtil_1.TimeUtil.GetTimeString(this.TotalTime));
+    this.GetSprite(2).SetFillAmount(e / this.TotalTime);
   }
   Refresh(e, t, i) {
     this.MusicId = e.Id;

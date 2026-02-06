@@ -25,7 +25,13 @@ class BulletConditionResult {
   }
 }
 exports.BulletConditionResult = BulletConditionResult;
-exports.bulletHitPriorityList = [undefined, 3000, 6000, 2000, 1000, 4000, 5000];
+const PRIORITY_OBSTACLE = 1000;
+const PRIORITY_SCENEITEM = 2000;
+const PRIORITY_CHARACTER = 3000;
+const PRIORITY_NPC = 4000;
+const PRIORITY_ANIMAL = 5000;
+const PRIORITY_BULLET = 6000;
+exports.bulletHitPriorityList = [undefined, PRIORITY_CHARACTER, PRIORITY_BULLET, PRIORITY_SCENEITEM, PRIORITY_OBSTACLE, PRIORITY_NPC, PRIORITY_ANIMAL];
 class BulletCollisionInfo {
   constructor() {
     this.ActorCollisionEnable = false;

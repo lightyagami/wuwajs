@@ -49,113 +49,113 @@ class MotorcycleMusicPlayerView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
     this.xqe = undefined;
-    this.GPm = new Map();
-    this.FPm = undefined;
-    this.NPm = -1;
-    this.VPm = undefined;
-    this.vPm = undefined;
-    this.jPm = undefined;
-    this.HPm = undefined;
-    this.$Pm = undefined;
+    this.oUm = new Map();
+    this.nUm = undefined;
+    this.sUm = -1;
+    this.aUm = undefined;
+    this.ODm = undefined;
+    this.hUm = undefined;
+    this.lUm = undefined;
+    this._Um = undefined;
     this.TDe = undefined;
-    this.vJf = undefined;
-    this.WPm = 0;
-    this.LYm = undefined;
-    this.PYm = undefined;
-    this.QPm = Rotator_1.Rotator.Create(0, 0, 0);
-    this.AYm = false;
-    this.Fff = Vector2D_1.Vector2D.Create(0, 0);
-    this.Nff = [];
-    this.AUf = [];
-    this.u6f = undefined;
-    this.Vff = () => {
-      var i = this.FPm.GetItems();
-      this.Nff.length = i.length;
+    this.dCg = undefined;
+    this.uUm = 0;
+    this.ZJm = undefined;
+    this.eZm = undefined;
+    this.cUm = Rotator_1.Rotator.Create(0, 0, 0);
+    this.tZm = false;
+    this.pCf = Vector2D_1.Vector2D.Create(0, 0);
+    this.vCf = [];
+    this.cGf = [];
+    this.bzf = undefined;
+    this.yCf = () => {
+      var i = this.nUm.GetItems();
+      this.vCf.length = i.length;
       for (let t = 0; t < i.length; t++) {
-        if (this.Nff[t]) {
-          this.Nff[t].Distance = Math.abs(i[t].GetCurrentMovePercentage() - 0.5);
-          this.Nff[t].UiItem = i[t].GetRootItem();
+        if (this.vCf[t]) {
+          this.vCf[t].Distance = Math.abs(i[t].GetCurrentMovePercentage() - 0.5);
+          this.vCf[t].UiItem = i[t].GetRootItem();
         } else {
-          this.Nff[t] = {
+          this.vCf[t] = {
             UiItem: i[t].GetRootItem(),
             Distance: Math.abs(i[t].GetCurrentMovePercentage() - 0.5)
           };
         }
       }
-      this.Nff.sort((t, i) => t.Distance - i.Distance);
+      this.vCf.sort((t, i) => t.Distance - i.Distance);
       let e = false;
-      for (let t = 1; t < this.Nff.length; t += 2) {
-        var s = this.Nff[t - 1].UiItem.GetHierarchyIndex();
-        if (this.Nff[t].UiItem.GetHierarchyIndex() > s || this.Nff[t + 1]?.UiItem.GetHierarchyIndex() > s) {
+      for (let t = 1; t < this.vCf.length; t += 2) {
+        var s = this.vCf[t - 1].UiItem.GetHierarchyIndex();
+        if (this.vCf[t].UiItem.GetHierarchyIndex() > s || this.vCf[t + 1]?.UiItem.GetHierarchyIndex() > s) {
           e = true;
           break;
         }
       }
       if (e) {
-        for (const t of this.Nff) {
+        for (const t of this.vCf) {
           t.UiItem.SetHierarchyIndex(-1);
         }
       }
     };
-    this.XPm = () => {
+    this.mUm = () => {
       if (!ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.GetIsPause()) {
-        this.WPm -= CD_ROTATE_SPEED;
-        if (this.WPm < -360) {
-          this.WPm += 360;
+        this.uUm -= CD_ROTATE_SPEED;
+        if (this.uUm < -360) {
+          this.uUm += 360;
         }
-        this.QPm.Yaw = this.WPm;
-        this.GetSprite(22).SetUIRelativeRotation(this.QPm.ToUeRotator());
+        this.cUm.Yaw = this.uUm;
+        this.GetSprite(22).SetUIRelativeRotation(this.cUm.ToUeRotator());
       }
     };
-    this.yJf = () => {
-      this.zPm();
+    this.mCg = () => {
+      this.gUm();
     };
-    this.JPm = () => {
+    this.CUm = () => {
       var t = ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.GetCurPlayAlbum();
       const i = ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.GetCurPlayMusicId();
-      if (t !== -1 && i !== -1 && this.NPm === t) {
-        this._Am();
-        this.uAm(this.NPm, false, false, () => {
+      if (t !== -1 && i !== -1 && this.sUm === t) {
+        this.LUm();
+        this.PUm(this.sUm, false, false, () => {
           var t;
-          if (this.xqe && (t = this.AUf.findIndex(t => t.Id === i)) !== -1 && !this.IsItemInViewport(t)) {
+          if (this.xqe && (t = this.cGf.findIndex(t => t.Id === i)) !== -1 && !this.IsItemInViewport(t)) {
             this.xqe.ScrollToGridIndex(t, false);
           }
         });
-        this.FPm.RefreshItems();
+        this.nUm.RefreshItems();
       } else {
-        this.ZPm();
+        this.pUm();
       }
-      this.eAm();
+      this.vUm();
     };
-    this.tAm = t => {
+    this.yUm = t => {
       t = new MotorcycleAlbumItemGrid(t);
-      t.OnSelectAlbumItem = this.KPm;
-      t.OnClickAlbumItem = this.iAm;
-      t.OnClickBtnPlay = this.rAm;
+      t.OnSelectAlbumItem = this.dUm;
+      t.OnClickAlbumItem = this.SUm;
+      t.OnClickBtnPlay = this.MUm;
       return t;
     };
-    this.oAm = () => {
+    this.EUm = () => {
       var t = new MotorcycleMusicItemGrid();
-      t.OnClickCallback = this.nAm;
-      t.OnClickLikeCallback = this.sAm;
+      t.OnClickCallback = this.IUm;
+      t.OnClickLikeCallback = this.TUm;
       return t;
     };
-    this.nAm = t => {
-      this.aAm(t);
+    this.IUm = t => {
+      this.bUm(t);
     };
-    this.hAm = () => {
-      if (TimerSystem_1.TimerSystem.Has(this.$Pm)) {
-        TimerSystem_1.TimerSystem.Remove(this.$Pm);
-        this.$Pm = undefined;
+    this.RUm = () => {
+      if (TimerSystem_1.TimerSystem.Has(this._Um)) {
+        TimerSystem_1.TimerSystem.Remove(this._Um);
+        this._Um = undefined;
       }
-      this.$Pm = TimerSystem_1.TimerSystem.Delay(() => {
-        this.lAm(0);
+      this._Um = TimerSystem_1.TimerSystem.Delay(() => {
+        this.wUm(0);
       }, DESC_RESET_WAIT_TIME);
     };
-    this.lAm = t => {
+    this.wUm = t => {
       this.GetText(10).SetAnchorOffsetX(t);
     };
-    this.sAm = t => {
+    this.TUm = t => {
       var i;
       if (t !== -1) {
         if (ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.IsMusicNew(t)) {
@@ -165,114 +165,116 @@ class MotorcycleMusicPlayerView extends UiViewBase_1.UiViewBase {
         if (ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.IsMusicFavorite(t)) {
           ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("MotorMusicTips05");
         }
-        if (this.NPm !== ConfigManager_1.ConfigManager.MotorMusicPlayerConfig.GetFavoriteAlbumId()) {
+        if (this.sUm !== ConfigManager_1.ConfigManager.MotorMusicPlayerConfig.GetFavoriteAlbumId()) {
           if (ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.GetCurPlayAlbum() === ConfigManager_1.ConfigManager.MotorMusicPlayerConfig.GetFavoriteAlbumId()) {
             ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.SetPlayList(Array.from(ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.GetFavoriteMusicList()));
           }
-          this.ZPm();
+          this.pUm();
         } else {
-          this._Am();
-          if (i && !this.vPm.includes(t)) {
-            this.vPm.unshift(t);
-            this.uAm(ConfigManager_1.ConfigManager.MotorMusicPlayerConfig.GetFavoriteAlbumId(), false, true);
+          this.LUm();
+          if (i && !this.ODm.includes(t)) {
+            this.ODm.unshift(t);
+            this.PUm(ConfigManager_1.ConfigManager.MotorMusicPlayerConfig.GetFavoriteAlbumId(), false, true);
           } else {
-            this.uAm(ConfigManager_1.ConfigManager.MotorMusicPlayerConfig.GetFavoriteAlbumId(), false, false);
+            this.PUm(ConfigManager_1.ConfigManager.MotorMusicPlayerConfig.GetFavoriteAlbumId(), false, false);
           }
         }
       }
     };
-    this.rAm = (t, i) => {
-      if (this.NPm !== i) {
-        this.FPm?.AttachToIndex(this.VPm.findIndex(t => t.Id === i));
-        this.NPm = i;
+    this.MUm = (t, i) => {
+      if (this.sUm !== i) {
+        this.nUm?.AttachToIndex(this.aUm.findIndex(t => t.Id === i));
+        this.sUm = i;
       }
-      var e = this.cAm(i)?.[0];
+      var e = this.AUm(i)?.[0];
       if (e) {
-        this.aAm(e);
+        this.bUm(e);
       }
-      this.FPm.RefreshItems();
+      this.nUm.RefreshItems();
     };
-    this.iAm = t => {
-      this.FPm?.AttachToIndex(t.GetCurrentShowItemIndex());
+    this.SUm = t => {
+      this.nUm?.AttachToIndex(t.GetCurrentShowItemIndex());
     };
-    this.KPm = i => {
-      if (this.u6f !== undefined) {
-        if (i !== this.u6f) {
+    this.dUm = i => {
+      if (this.bzf !== undefined) {
+        if (i !== this.bzf) {
           return;
         }
-        this.u6f = undefined;
+        this.bzf = undefined;
       }
-      if (this.NPm !== i) {
+      if (this.sUm !== i) {
         var t = ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.GetFavoriteMusicList();
-        if (this.NPm === ConfigManager_1.ConfigManager.MotorMusicPlayerConfig.GetFavoriteAlbumId()) {
+        if (this.sUm === ConfigManager_1.ConfigManager.MotorMusicPlayerConfig.GetFavoriteAlbumId()) {
           if (ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.GetCurPlayAlbum() === ConfigManager_1.ConfigManager.MotorMusicPlayerConfig.GetFavoriteAlbumId()) {
             ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.SetPlayList(Array.from(t));
           }
-          this.DYm(false);
+          this.iZm(false);
         }
-        this.NPm = i;
-        LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), "MotorMusicAlbum", this.VPm.findIndex(t => t.Id === i) + 1, this.VPm.length);
-        this.uAm(i, true, false, () => {
-          var t = this.AUf.findIndex(t => t.Id === ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.GetCurPlayMusicId());
+        this.sUm = i;
+        LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), "MotorMusicAlbum", this.aUm.findIndex(t => t.Id === i) + 1, this.aUm.length);
+        this.PUm(i, true, false, () => {
+          var t = this.cGf.findIndex(t => t.Id === ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.GetCurPlayMusicId());
           var t = t !== -1 ? t : 0;
           if (this.xqe.GetDisplayGridNum() !== 0 && (this.IsItemInViewport(t) ? this.xqe.ResetGridController() : this.xqe.ScrollToGridIndex(t, true), t = this.xqe.GetGrid(t)) && Info_1.Info.IsInGamepad()) {
             ControllerHolder_1.ControllerHolder.UiNavigationNewController.SetNavigationFocusForView(t);
           }
         });
-        this.GetButton(5).RootUIComp.SetUIActive(this.NPm === ConfigManager_1.ConfigManager.MotorMusicPlayerConfig.GetFavoriteAlbumId() && (this.vPm?.length ?? 0) >= 2);
-        this.GetButton(26)?.RootUIComp.SetUIActive(this.FPm.GetCurrentSelectIndex() < this.VPm.length - 1);
-        this.GetButton(27)?.RootUIComp.SetUIActive(this.FPm.GetCurrentSelectIndex() > 0);
-        this.GetButton(19).RootUIComp.SetUIActive(this.NPm !== ConfigManager_1.ConfigManager.MotorMusicPlayerConfig.GetFavoriteAlbumId());
-        for (const e of this.VPm) {
-          e.IsSelected = e.Id === this.NPm;
+        this.GetButton(5).RootUIComp.SetUIActive(this.sUm === ConfigManager_1.ConfigManager.MotorMusicPlayerConfig.GetFavoriteAlbumId() && (this.ODm?.length ?? 0) >= 2);
+        this.GetButton(26)?.RootUIComp.SetUIActive(this.nUm.GetCurrentSelectIndex() < this.aUm.length - 1);
+        this.GetButton(27)?.RootUIComp.SetUIActive(this.nUm.GetCurrentSelectIndex() > 0);
+        this.GetButton(19).RootUIComp.SetUIActive(this.sUm !== ConfigManager_1.ConfigManager.MotorMusicPlayerConfig.GetFavoriteAlbumId());
+        for (const e of this.aUm) {
+          e.IsSelected = e.Id === this.sUm;
         }
-        this.FPm?.RefreshItems();
+        this.nUm?.RefreshItems();
       }
     };
-    this.dAm = () => {
+    this.DUm = () => {
       var t;
       if (ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.GetFavoriteMusicList().length >= 2) {
         t = {
-          MusicList: this.vPm,
-          OnCallback: this.UYm
+          MusicList: this.ODm,
+          OnCallback: this.rZm
         };
         UiManager_1.UiManager.OpenView("MotorcycleMusicSortView", t);
       }
     };
-    this.UYm = t => {
-      this.vPm = t;
-      this.uAm(this.NPm, false, true);
-      ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.SetPlayList(this.vPm);
+    this.rZm = t => {
+      this.ODm = t;
+      this.PUm(this.sUm, false, true);
+      if (ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.GetCurPlayAlbum() === ConfigManager_1.ConfigManager.MotorMusicPlayerConfig.GetFavoriteAlbumId()) {
+        ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.SetPlayList(Array.from(this.ODm));
+      }
     };
-    this.mAm = () => {
-      this.sAm(ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.GetCurPlayMusicId());
+    this.UUm = () => {
+      this.TUm(ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.GetCurPlayMusicId());
     };
     this.i71 = () => {
       ControllerHolder_1.ControllerHolder.MotorcycleMusicPlayerController.QuickPlayMusic(false);
-      this.xYm();
+      this.oZm();
     };
-    this.fAm = () => {
+    this.xUm = () => {
       if (ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.GetIsPause()) {
         ControllerHolder_1.ControllerHolder.MotorcycleMusicPlayerController.ResumeMusic();
       } else {
         ControllerHolder_1.ControllerHolder.MotorcycleMusicPlayerController.PauseMusic();
       }
-      this.xYm();
-      this.ZPm();
+      this.oZm();
+      this.pUm();
     };
     this.XRo = () => {
       ControllerHolder_1.ControllerHolder.MotorcycleMusicPlayerController.QuickPlayMusic();
-      this.xYm();
+      this.oZm();
     };
-    this.Hff = () => {
+    this.SCf = () => {
       ControllerHolder_1.ControllerHolder.UiNavigationNewController.ResetNavigationFocusForViewWithDirtyCheck();
-      this.FPm?.AttachToNextItem(1);
+      this.nUm?.AttachToNextItem(1);
     };
-    this.jff = () => {
+    this.MCf = () => {
       ControllerHolder_1.ControllerHolder.UiNavigationNewController.ResetNavigationFocusForViewWithDirtyCheck();
-      this.FPm?.AttachToNextItem(-1);
+      this.nUm?.AttachToNextItem(-1);
     };
-    this.gAm = () => {
+    this.BUm = () => {
       let t = ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.GetPlayMode();
       switch (t) {
         case 0:
@@ -286,21 +288,21 @@ class MotorcycleMusicPlayerView extends UiViewBase_1.UiViewBase {
       }
       ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.SetCurPlayMode(t);
       ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId(MotorcycleMusicPlayerDefine_1.motorPlayModeName[t]);
-      this.CAm();
+      this.kUm();
     };
-    this.pAm = () => {
-      this.FPm?.AttachToIndex(this.VPm.findIndex(t => t.Id === ConfigManager_1.ConfigManager.MotorMusicPlayerConfig.GetFavoriteAlbumId()));
+    this.qUm = () => {
+      this.nUm?.AttachToIndex(this.aUm.findIndex(t => t.Id === ConfigManager_1.ConfigManager.MotorMusicPlayerConfig.GetFavoriteAlbumId()));
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIText], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIText], [5, UE.UIButtonComponent], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIText], [9, UE.UIItem], [10, UE.UIText], [11, UE.UIText], [12, UE.UISprite], [13, UE.UIText], [14, UE.UIExtendToggle], [15, UE.UIButtonComponent], [16, UE.UIExtendToggle], [17, UE.UIButtonComponent], [18, UE.UIButtonComponent], [19, UE.UIButtonComponent], [20, UE.UILoopScrollViewComponent], [21, UE.UISprite], [22, UE.UISprite], [23, UE.UIItem], [24, UE.UIItem], [25, UE.UIItem], [26, UE.UIButtonComponent], [27, UE.UIButtonComponent]];
-    this.BtnBindInfo = [[5, this.dAm], [14, this.mAm], [15, this.i71], [16, this.fAm], [17, this.XRo], [18, this.gAm], [19, this.pAm], [26, this.Hff], [27, this.jff]];
+    this.BtnBindInfo = [[5, this.DUm], [14, this.UUm], [15, this.i71], [16, this.xUm], [17, this.XRo], [18, this.BUm], [19, this.qUm], [26, this.SCf], [27, this.MCf]];
   }
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnMotorSwitchMusic, this.JPm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnMotorSwitchMusic, this.CUm);
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnMotorSwitchMusic, this.JPm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnMotorSwitchMusic, this.CUm);
   }
   async LoadCurveResource() {
     const i = new CustomPromise_1.CustomPromise();
@@ -321,32 +323,32 @@ class MotorcycleMusicPlayerView extends UiViewBase_1.UiViewBase {
     await Promise.all([i.Promise, e.Promise, s.Promise]);
   }
   async OnBeforeStartAsync() {
-    this.jPm = (0, puerts_1.toManualReleaseDelegate)(this.lAm);
+    this.hUm = (0, puerts_1.toManualReleaseDelegate)(this.wUm);
     await this.LoadCurveResource();
-    this.LYm = this.GetItem(24)?.GetOwner()?.GetComponentByClass(UE.LGUIPlayTweenComponent.StaticClass());
-    this.PYm = this.GetItem(25)?.GetOwner()?.GetComponentByClass(UE.LGUIPlayTweenComponent.StaticClass());
+    this.ZJm = this.GetItem(24)?.GetOwner()?.GetComponentByClass(UE.LGUIPlayTweenComponent.StaticClass());
+    this.eZm = this.GetItem(25)?.GetOwner()?.GetComponentByClass(UE.LGUIPlayTweenComponent.StaticClass());
     new PopupCaptionItem_1.PopupCaptionItem(this.GetItem(0)).SetCloseCallBack(this.CloseMe.bind(this));
     this.Jfo();
-    this.c6f();
-    this.d6f();
+    this.Rzf();
+    this.Lzf();
     let i = ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.GetCurPlayAlbum();
     if (i === -1) {
       ControllerHolder_1.ControllerHolder.MotorcycleMusicPlayerController.PlayDefaultMusic();
       i = ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.GetCurPlayAlbum();
     }
-    this.kYm(i);
-    this.u6f = i;
-    this.FPm.ReloadView(this.VPm.length, this.VPm);
-    var t = this.VPm.findIndex(t => t.Id === i);
-    this.FPm.AttachToIndex(Math.max(t - START_SCROLL_COUNT, 0), true);
-    this.FPm.AttachToIndex(t, false);
-    this.TDe = TimerSystem_1.TimerSystem.Forever(this.XPm, TimerSystem_1.MIN_TIME);
-    this.vJf = TimerSystem_1.TimerSystem.Forever(this.yJf, CommonDefine_1.MILLIONSECOND_PER_SECOND);
-    this.CAm();
-    this._Am();
-    this.zPm();
-    this.eAm();
-    this.xYm();
+    this.sZm(i);
+    this.bzf = i;
+    this.nUm.ReloadView(this.aUm.length, this.aUm);
+    var t = this.aUm.findIndex(t => t.Id === i);
+    this.nUm.AttachToIndex(Math.max(t - START_SCROLL_COUNT, 0), true);
+    this.nUm.AttachToIndex(t, false);
+    this.TDe = TimerSystem_1.TimerSystem.Forever(this.mUm, TimerSystem_1.MIN_TIME);
+    this.dCg = TimerSystem_1.TimerSystem.Forever(this.mCg, CommonDefine_1.MILLIONSECOND_PER_SECOND);
+    this.kUm();
+    this.LUm();
+    this.gUm();
+    this.vUm();
+    this.oZm();
     var t = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.MUSICVOLUMEFUNCTION);
     var e = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.MASTERVOLUMEFUNCTION);
     if (t === 0 || e === 0) {
@@ -354,30 +356,30 @@ class MotorcycleMusicPlayerView extends UiViewBase_1.UiViewBase {
     }
   }
   Jfo() {
-    this.FPm = new NoCircleAttachView_1.NoCircleAttachView(this.GetItem(2).GetOwner(), true);
+    this.nUm = new NoCircleAttachView_1.NoCircleAttachView(this.GetItem(2).GetOwner(), true);
     this.GetItem(3)?.SetUIActive(false);
-    this.FPm.CreateItems(this.GetItem(3).GetOwner(), -(this.GetItem(3).GetWidth() - ITEM_SPACING), this.tAm, 0);
-    this.FPm.SetShowItemNum(FORCE_SHOW_ALBUM_COUNT);
-    this.FPm.SetMoveItemsCallback(this.Vff);
-    this.FPm.SetMoveMultiFactor(ConfigManager_1.ConfigManager.MotorMusicPlayerConfig.GetAlbumVelocity());
+    this.nUm.CreateItems(this.GetItem(3).GetOwner(), -(this.GetItem(3).GetWidth() - ITEM_SPACING), this.yUm, 0);
+    this.nUm.SetShowItemNum(FORCE_SHOW_ALBUM_COUNT);
+    this.nUm.SetMoveItemsCallback(this.yCf);
+    this.nUm.SetMoveMultiFactor(ConfigManager_1.ConfigManager.MotorMusicPlayerConfig.GetAlbumVelocity());
     var t = this.GetLoopScrollViewComponent(20);
     var i = this.GetItem(7)?.GetOwner();
     if (t && i) {
-      this.xqe = new LoopScrollView_1.LoopScrollView(t, i, this.oAm);
+      this.xqe = new LoopScrollView_1.LoopScrollView(t, i, this.EUm);
     }
   }
-  d6f() {
+  Lzf() {
     const t = ConfigManager_1.ConfigManager.PhonographConfig?.GetMusicList() ?? [];
     for (const i of t) {
       i.Album.forEach(t => {
-        if (!this.GPm.has(t)) {
-          this.GPm.set(t, []);
+        if (!this.oUm.has(t)) {
+          this.oUm.set(t, []);
         }
-        this.GPm.get(t).push(i.Id);
+        this.oUm.get(t).push(i.Id);
       });
     }
-    this.vPm = Array.from(ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.GetFavoriteMusicList());
-    for (const t of this.GPm.values()) {
+    this.ODm = Array.from(ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.GetFavoriteMusicList());
+    for (const t of this.oUm.values()) {
       const s = ModelManager_1.ModelManager.MotorcycleMusicPlayerModel;
       t.sort((t, i) => {
         var e = s.IsMusicUnlock(t);
@@ -393,9 +395,9 @@ class MotorcycleMusicPlayerView extends UiViewBase_1.UiViewBase {
       });
     }
   }
-  c6f() {
-    var t = new LongPressButtonItem_1.LongPressButtonItem(this.GetButton(26), 1, this.Hff);
-    var i = new LongPressButtonItem_1.LongPressButtonItem(this.GetButton(27), 1, this.jff);
+  Rzf() {
+    var t = new LongPressButtonItem_1.LongPressButtonItem(this.GetButton(26), 1, this.SCf);
+    var i = new LongPressButtonItem_1.LongPressButtonItem(this.GetButton(27), 1, this.MCf);
     t.ShouldPlayLongPressSound = true;
     i.ShouldPlayLongPressSound = true;
   }
@@ -403,44 +405,43 @@ class MotorcycleMusicPlayerView extends UiViewBase_1.UiViewBase {
     var t = this.RootItem.GetRootCanvas().GetViewportSize();
     var i = MathUtils_1.MathUtils.RangeClamp(this.GetItem(2).GetPositionInScreen(true).X, 0, t.X, -1, 1);
     var t = MathUtils_1.MathUtils.RangeClamp(this.GetItem(2).GetPositionInScreen(true).Y, 0, t.Y, 1, -1);
-    this.Fff.X = -i;
-    this.Fff.Y = -t;
-    UiLayer_1.UiLayer.UiRootItem.GetRootCanvas().ProjectCenterOffset = this.Fff.ToUeVector2D();
+    this.pCf.X = -i;
+    this.pCf.Y = -t;
+    UiLayer_1.UiLayer.UiRootItem.GetRootCanvas().ProjectCenterOffset = this.pCf.ToUeVector2D();
   }
   OnAfterHide() {
     UiLayer_1.UiLayer.UiRootItem.GetRootCanvas().ProjectCenterOffset = Vector2D_1.Vector2D.ZeroVector;
   }
-  kYm(i) {
+  sZm(i) {
     var t = (ConfigManager_1.ConfigManager.PhonographConfig?.GetMusicAlbumList() ?? []).map(t => ({
       Id: t.Id,
       Config: t,
       UnlockMusicNum: ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.GetUnlockMusicByAlbum(t.Id).length,
-      AllMusicNum: this.GPm.get(t.Id)?.length ?? 0,
+      AllMusicNum: this.oUm.get(t.Id)?.length ?? 0,
       IsSelected: t.Id === i
     }));
     t.sort((t, i) => t.Config.SortIndex - i.Config.SortIndex);
-    this.VPm = t;
+    this.aUm = t;
   }
   OnBeforeDestroy() {
-    if (this.jPm) {
-      (0, puerts_1.releaseManualReleaseDelegate)(this.lAm);
-      this.jPm = undefined;
+    if (this.hUm) {
+      (0, puerts_1.releaseManualReleaseDelegate)(this.wUm);
+      this.hUm = undefined;
     }
-    if (TimerSystem_1.TimerSystem.Has(this.$Pm)) {
-      TimerSystem_1.TimerSystem.Remove(this.$Pm);
-      this.$Pm = undefined;
+    if (TimerSystem_1.TimerSystem.Has(this._Um)) {
+      TimerSystem_1.TimerSystem.Remove(this._Um);
+      this._Um = undefined;
     }
     if (this.TDe) {
       TimerSystem_1.TimerSystem.Remove(this.TDe);
       this.TDe = undefined;
     }
-    if (this.vJf) {
-      TimerSystem_1.TimerSystem.Remove(this.vJf);
-      this.vJf = undefined;
+    if (this.dCg) {
+      TimerSystem_1.TimerSystem.Remove(this.dCg);
+      this.dCg = undefined;
     }
-    this.vAm();
-    if (this.NPm === ConfigManager_1.ConfigManager.MotorMusicPlayerConfig.GetFavoriteAlbumId()) {
-      this.DYm(true);
+    this.OUm();
+    if (this.sUm === ConfigManager_1.ConfigManager.MotorMusicPlayerConfig.GetFavoriteAlbumId() && (this.iZm(true), ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.GetCurPlayAlbum() === ConfigManager_1.ConfigManager.MotorMusicPlayerConfig.GetFavoriteAlbumId())) {
       ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.SetPlayList(Array.from(ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.GetFavoriteMusicList()));
     }
     ControllerHolder_1.ControllerHolder.MotorcycleMusicPlayerController.SendFavoriteUpdateRequest();
@@ -450,45 +451,45 @@ class MotorcycleMusicPlayerView extends UiViewBase_1.UiViewBase {
     MotorcycleAlbumItemGrid.ScaleCurve = undefined;
     MotorcycleAlbumItemGrid.AlphaCurve = undefined;
   }
-  DYm(t = 0) {
+  iZm(t = 0) {
     var i;
-    if (this.vPm) {
-      i = this.vPm.filter(t => ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.IsMusicFavorite(t));
+    if (this.ODm) {
+      i = this.ODm.filter(t => ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.IsMusicFavorite(t));
       ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.SetFavoriteMusicList(i);
     }
   }
-  eAm() {
-    this.lAm(0);
-    if (TimerSystem_1.TimerSystem.Has(this.$Pm)) {
-      TimerSystem_1.TimerSystem.Remove(this.$Pm);
+  vUm() {
+    this.wUm(0);
+    if (TimerSystem_1.TimerSystem.Has(this._Um)) {
+      TimerSystem_1.TimerSystem.Remove(this._Um);
     }
-    this.vAm();
-    this.$Pm = TimerSystem_1.TimerSystem.Delay(() => {
+    this.OUm();
+    this._Um = TimerSystem_1.TimerSystem.Delay(() => {
       var t = this.GetItem(9).Width;
       var i = this.GetText(10).Width;
       if (t < i) {
-        this.vAm();
-        this.HPm = UE.LTweenBPLibrary.FloatTo(GlobalData_1.GlobalData.World, this.jPm, 0, t - i, (i - t) / DESC_SCROLL_SPEED, 0, 0);
-        this.HPm.OnCompleteCallBack.Bind(this.hAm);
+        this.OUm();
+        this.lUm = UE.LTweenBPLibrary.FloatTo(GlobalData_1.GlobalData.World, this.hUm, 0, t - i, (i - t) / DESC_SCROLL_SPEED, 0, 0);
+        this.lUm.OnCompleteCallBack.Bind(this.RUm);
       }
     }, DESC_START_WAIT_TIME);
   }
-  vAm() {
-    if (this.HPm) {
-      this.HPm.Kill();
-      this.HPm = undefined;
+  OUm() {
+    if (this.lUm) {
+      this.lUm.Kill();
+      this.lUm = undefined;
     }
   }
-  aAm(t) {
-    if (this.NPm === ConfigManager_1.ConfigManager.MotorMusicPlayerConfig.GetFavoriteAlbumId()) {
-      ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.SetPlayList(this.vPm ?? []);
-    } else if (ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.GetCurPlayAlbum() !== this.NPm && this.NPm !== ConfigManager_1.ConfigManager.MotorMusicPlayerConfig.GetFavoriteAlbumId()) {
-      ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.SetPlayList(ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.GetUnlockMusicByAlbum(this.NPm).map(t => t.Id));
+  bUm(t) {
+    if (this.sUm === ConfigManager_1.ConfigManager.MotorMusicPlayerConfig.GetFavoriteAlbumId()) {
+      ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.SetPlayList(this.ODm ?? []);
+    } else if (ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.GetCurPlayAlbum() !== this.sUm && this.sUm !== ConfigManager_1.ConfigManager.MotorMusicPlayerConfig.GetFavoriteAlbumId()) {
+      ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.SetPlayList(ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.GetUnlockMusicByAlbum(this.sUm).map(t => t.Id));
     }
-    ControllerHolder_1.ControllerHolder.MotorcycleMusicPlayerController.PlayAlbumMusic(this.NPm, t);
-    this.xYm();
+    ControllerHolder_1.ControllerHolder.MotorcycleMusicPlayerController.PlayAlbumMusic(this.sUm, t);
+    this.oZm();
   }
-  _Am() {
+  LUm() {
     var t;
     var i = ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.GetCurPlayMusicId();
     if (i !== -1 && (t = ConfigManager_1.ConfigManager.PhonographConfig?.GetMusicById(i))) {
@@ -499,10 +500,10 @@ class MotorcycleMusicPlayerView extends UiViewBase_1.UiViewBase {
       this.GetExtendToggle(16).SetToggleStateForce(t ? 1 : 0);
       t = ModelManager_1.ModelManager.MotorcycleMusicPlayerModel?.IsMusicFavorite(i);
       this.GetExtendToggle(14).SetToggleStateForce(t ? 1 : 0);
-      this.zPm();
+      this.gUm();
     }
   }
-  zPm() {
+  gUm() {
     var t = ModelManager_1.ModelManager.MotorcycleMusicPlayerModel;
     var i = ControllerHolder_1.ControllerHolder.MotorcycleMusicPlayerController.GetCurrentPlayTimeFromAudio();
     let e = i / t.CurrentPlayMusicTotalTime;
@@ -513,21 +514,21 @@ class MotorcycleMusicPlayerView extends UiViewBase_1.UiViewBase {
     this.GetText(11).SetText(TimeUtil_1.TimeUtil.GetTimeDataFormat(i));
     this.GetText(13).SetText("/" + TimeUtil_1.TimeUtil.GetTimeDataFormat(t.CurrentPlayMusicTotalTime));
   }
-  cAm(t) {
+  AUm(t) {
     if (t !== ConfigManager_1.ConfigManager.MotorMusicPlayerConfig.GetFavoriteAlbumId()) {
-      return this.GPm.get(t);
+      return this.oUm.get(t);
     } else {
-      return this.vPm;
+      return this.ODm;
     }
   }
-  uAm(t, i = false, e = false, s) {
-    let r = this.GPm.get(t);
+  PUm(t, i = false, e = false, s) {
+    let r = this.oUm.get(t);
     if (t === ConfigManager_1.ConfigManager.MotorMusicPlayerConfig.GetFavoriteAlbumId()) {
       if (i) {
         r = Array.from(ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.GetFavoriteMusicList());
-        this.vPm = r;
+        this.ODm = r;
       } else {
-        r = this.vPm;
+        r = this.ODm;
       }
     }
     t = (r = r === undefined ? [] : r).map(t => {
@@ -536,27 +537,27 @@ class MotorcycleMusicPlayerView extends UiViewBase_1.UiViewBase {
         IsFavorite: ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.IsMusicFavorite(t)
       };
     });
-    this.AUf = t;
+    this.cGf = t;
     this.xqe.RefreshByData(t, false, s, e);
     this.GetItem(23)?.SetUIActive(t.length === 0);
   }
-  ZPm() {
-    this._Am();
-    this.uAm(this.NPm);
-    this.FPm.RefreshItems();
+  pUm() {
+    this.LUm();
+    this.PUm(this.sUm);
+    this.nUm.RefreshItems();
   }
-  CAm() {
+  kUm() {
     this.SetSpriteByPath(ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(MotorcycleMusicPlayerDefine_1.motorMusicPlayModeIcon[ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.GetPlayMode()]), this.GetSprite(21), false);
   }
-  xYm() {
+  oZm() {
     var t = ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.GetIsPause();
-    if (t !== this.AYm) {
-      if (this.AYm = t) {
-        this.LYm?.Stop();
-        this.PYm?.Play();
+    if (t !== this.tZm) {
+      if (this.tZm = t) {
+        this.ZJm?.Stop();
+        this.eZm?.Play();
       } else {
-        this.LYm?.Play();
-        this.PYm?.Stop();
+        this.ZJm?.Play();
+        this.eZm?.Stop();
       }
     }
   }
@@ -574,33 +575,33 @@ class MotorcycleAlbumItemGrid extends AutoAttachItem_1.AutoAttachItem {
     this.OnSelectAlbumItem = undefined;
     this.OnClickAlbumItem = undefined;
     this.OnClickBtnPlay = undefined;
-    this.yAm = undefined;
+    this.GUm = undefined;
     this.TmpVector = Vector_1.Vector.Create(0, 0, 0);
     this.TmpRotate = Rotator_1.Rotator.Create(0, 0, 0);
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UIItem], [2, UE.UIText], [3, UE.UIText], [4, UE.UIButtonComponent], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UITexture], [9, UE.UIItem], [10, UE.UIItem], [11, UE.UIItem]];
-    this.BtnBindInfo = [[0, this.SAm.bind(this)], [4, this.MAm.bind(this)]];
+    this.BtnBindInfo = [[0, this.FUm.bind(this)], [4, this.NUm.bind(this)]];
   }
   GetAlbumData() {
-    return this.yAm;
+    return this.GUm;
   }
-  SAm(t) {
-    if (this.yAm) {
-      this.OnClickAlbumItem?.(this, this.yAm.Id);
+  FUm(t) {
+    if (this.GUm) {
+      this.OnClickAlbumItem?.(this, this.GUm.Id);
     }
   }
-  MAm() {
-    if (this.yAm) {
-      this.OnClickBtnPlay?.(this, this.yAm.Id);
+  NUm() {
+    if (this.GUm) {
+      this.OnClickBtnPlay?.(this, this.GUm.Id);
     }
   }
-  EAm() {
-    if (this.yAm) {
-      if (this.yAm.Id === ConfigManager_1.ConfigManager.MotorMusicPlayerConfig.GetFavoriteAlbumId()) {
+  VUm() {
+    if (this.GUm) {
+      if (this.GUm.Id === ConfigManager_1.ConfigManager.MotorMusicPlayerConfig.GetFavoriteAlbumId()) {
         return ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.GetFavoriteMusicList().length;
       } else {
-        return this.yAm.UnlockMusicNum;
+        return this.GUm.UnlockMusicNum;
       }
     } else {
       return 0;
@@ -610,8 +611,8 @@ class MotorcycleAlbumItemGrid extends AutoAttachItem_1.AutoAttachItem {
     var t;
     var i;
     var e;
-    if (this.yAm) {
-      i = (t = this.EAm() > 0) && ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.GetCurPlayAlbum() === this.yAm.Id;
+    if (this.GUm) {
+      i = (t = this.VUm() > 0) && ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.GetCurPlayAlbum() === this.GUm.Id;
       e = ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.GetIsPause();
       this.GetItem(5).SetUIActive(i && !e);
       this.GetButton(4).RootUIComp.SetUIActive(t && !i && this.SelectState);
@@ -622,7 +623,7 @@ class MotorcycleAlbumItemGrid extends AutoAttachItem_1.AutoAttachItem {
     var i;
     var e;
     if (t) {
-      i = (this.yAm = t).Config;
+      i = (this.GUm = t).Config;
       this.GetText(2)?.ShowTextNew(i.Title);
       if (t.Id === ConfigManager_1.ConfigManager.MotorMusicPlayerConfig.GetFavoriteAlbumId()) {
         this.GetText(3)?.SetText(ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.GetFavoriteMusicList().length.toString());
@@ -639,8 +640,8 @@ class MotorcycleAlbumItemGrid extends AutoAttachItem_1.AutoAttachItem {
   }
   OnSelect() {
     this.GetExtendToggle(0).SetToggleStateForce(1);
-    if (this.yAm) {
-      this.OnSelectAlbumItem?.(this.yAm.Id);
+    if (this.GUm) {
+      this.OnSelectAlbumItem?.(this.GUm.Id);
     }
   }
   OnUnSelect() {
@@ -684,17 +685,17 @@ class MotorcycleMusicItemGrid extends GridProxyAbstract_1.GridProxyAbstract {
     this.OnClickCallback = undefined;
     this.OnClickLikeCallback = undefined;
     this.xe = -1;
-    this.THm = () => {
+    this.rWm = () => {
       if (this.xe !== -1) {
         UiManager_1.UiManager.OpenView("MotorcycleMusicDetailView", this.xe);
       }
     };
-    this.IAm = () => {
+    this.jUm = () => {
       if (this.xe !== -1 && ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.IsMusicUnlock(this.xe)) {
         this.OnClickCallback?.(this.xe);
       }
     };
-    this.TAm = () => {
+    this.HUm = () => {
       if (this.xe !== -1) {
         if (ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.IsMusicUnlock(this.xe)) {
           this.OnClickLikeCallback?.(this.xe);
@@ -707,7 +708,7 @@ class MotorcycleMusicItemGrid extends GridProxyAbstract_1.GridProxyAbstract {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UIText], [2, UE.UIText], [3, UE.UIExtendToggle], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UISprite], [8, UE.UIItem]];
-    this.BtnBindInfo = [[0, this.IAm], [3, this.TAm]];
+    this.BtnBindInfo = [[0, this.jUm], [3, this.HUm]];
   }
   OnSelected(t) {
     this.GetExtendToggle(0).SetToggleStateForce(1);
@@ -716,7 +717,7 @@ class MotorcycleMusicItemGrid extends GridProxyAbstract_1.GridProxyAbstract {
     this.GetExtendToggle(0).SetToggleStateForce(0);
   }
   OnStart() {
-    this.GetExtendToggle(0).OnUndeterminedClicked.Add(this.THm);
+    this.GetExtendToggle(0).OnUndeterminedClicked.Add(this.rWm);
   }
   IHe() {
     this.GetExtendToggle(3)?.SetToggleStateForce(ModelManager_1.ModelManager.MotorcycleMusicPlayerModel.IsMusicFavorite(this.xe) ? 1 : 0, false, true);

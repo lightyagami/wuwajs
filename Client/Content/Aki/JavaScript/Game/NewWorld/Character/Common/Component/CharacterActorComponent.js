@@ -123,7 +123,6 @@ let CharacterActorComponent = CharacterActorComponent_1 = class CharacterActorCo
     this.NewestInputFacingType = 0;
     this.OverrideTurnSpeed = 0;
     this.DisableKey = undefined;
-    this.W2r = Vector_1.Vector.Create(0, 0, 0);
     this.IsSummonsAndCtrlByMe = false;
     this.Q2r = Vector_1.Vector.Create(0, 0, 0);
     this.X2r = true;
@@ -142,8 +141,6 @@ let CharacterActorComponent = CharacterActorComponent_1 = class CharacterActorCo
     this.IsPartHitInternal = false;
     this.eFr = false;
     this.NeedFixBornLocation = true;
-    this.ReplaceEffectMap = new Map();
-    this.ReplaceMontageMap = new Map();
     this.v9e = () => {
       if (!!this.CreatureDataInternal && !this.CreatureDataInternal.GetRemoveState()) {
         if (Log_1.Log.CheckError()) {
@@ -435,21 +432,6 @@ let CharacterActorComponent = CharacterActorComponent_1 = class CharacterActorCo
     t?.Stop();
     return true;
   }
-  GetReplaceEffect(t) {
-    return this.ReplaceEffectMap.get(t);
-  }
-  GetReplaceMontage(t) {
-    return this.ReplaceMontageMap.get(t);
-  }
-  SetupReplacement(t, e) {
-    var i;
-    if (t.特效替换表 && (i = t.特效替换表.ToAssetPathName()).length > 0) {
-      this.ReplaceEffectMap = e.MainAsset.SetupReplaceEffect(i);
-    }
-    if (t.蒙太奇替换表 && (i = t.蒙太奇替换表.ToAssetPathName()).length > 0) {
-      this.ReplaceMontageMap = e.MainAsset.SetupReplaceMontage(i);
-    }
-  }
   InitDefaultController(t) {
     this.Oea = t.GetController();
     if (this.EntityType !== Protocol_1.Aki.Protocol.kks.Proto_Player && this.EntityType !== Protocol_1.Aki.Protocol.kks.Proto_Vision && this.EntityType !== Protocol_1.Aki.Protocol.kks.Proto_Npc) {
@@ -613,10 +595,10 @@ let CharacterActorComponent = CharacterActorComponent_1 = class CharacterActorCo
     AoiController_1.AoiController.AddMonsterSizeTag(this.Entity);
     var t;
     var e = this.Actor;
-    this.DebugMovementComp = this.Entity.GetComponent(30);
+    this.DebugMovementComp = this.Entity.GetComponent(31);
     if (e) {
       if (t = this.GetBodyTagFromBodyType(this.CreatureData.GetRoleConfig()?.RoleBody)) {
-        this.Entity.GetComponent(215)?.AddTag(t);
+        this.Entity.GetComponent(217)?.AddTag(t);
       }
       GlobalData_1.GlobalData.BpFightManager.添加Debug的对象(this.Actor);
       this.uFr();
@@ -724,7 +706,7 @@ let CharacterActorComponent = CharacterActorComponent_1 = class CharacterActorCo
     this.OnSetActorActive(false, t);
   }
   OnChangeTimeDilation(t) {
-    var e = this.Entity.GetComponent(131)?.CurrentTimeScale ?? 1;
+    var e = this.Entity.GetComponent(133)?.CurrentTimeScale ?? 1;
     this.ActorInternal.CustomTimeDilation = t * e;
   }
   dFr() {
@@ -735,7 +717,7 @@ let CharacterActorComponent = CharacterActorComponent_1 = class CharacterActorCo
           this.G61();
         } else {
           this.Entity.RegisterToGameBudgetController(this.ActorInternal);
-          this.Entity.GetComponent(130)?.RegisterPerceptionEvent();
+          this.Entity.GetComponent(132)?.RegisterPerceptionEvent();
         }
         if (this.EntityType === Protocol_1.Aki.Protocol.kks.Proto_Player || this.EntityType === Protocol_1.Aki.Protocol.kks.Proto_Vision || this.IsSummonsAndCtrlByMe) {
           cpp_1.FKuroGameBudgetAllocatorInterface.SetActorCavernMode(this.Entity.GameBudgetConfig.GroupName, this.Entity.GameBudgetManagedToken, 3);
@@ -818,7 +800,7 @@ let CharacterActorComponent = CharacterActorComponent_1 = class CharacterActorCo
       case 7:
         break;
       case 6:
-        if (this.Actor.CharacterMovement.CustomMovementMode !== CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_SLIDE && this.Actor.CharacterMovement.CustomMovementMode !== CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_SKI && this.Actor.CharacterMovement.CustomMovementMode !== CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_RAIL_SLIDE && this.Actor.CharacterMovement.CustomMovementMode !== CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_ROLL) {
+        if (this.Actor.CharacterMovement.CustomMovementMode !== CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_SLIDE && this.Actor.CharacterMovement.CustomMovementMode !== CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_SKI && this.Actor.CharacterMovement.CustomMovementMode !== CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_RAIL_SLIDE && this.Actor.CharacterMovement.CustomMovementMode !== CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_ROLL && this.Actor.CharacterMovement.CustomMovementMode !== CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_FLOATING) {
           h = true;
         }
         break;
@@ -834,9 +816,9 @@ let CharacterActorComponent = CharacterActorComponent_1 = class CharacterActorCo
       return !!(i = this.FixActorLocation(exports.FIX_SPAWN_TRACE_HEIGHT, e, i, t, r, o))[0] && (s ? this.TeleportTo(i[1].ToUeVector(), this.ActorRotationProxy.ToUeRotator(), t) : this.SetActorLocation(i[1].ToUeVector(), t, false), e && Log_1.Log.CheckInfo() && Log_1.Log.Info("Entity", 3, "[CharacterActorComponent.FixBornLocation] 实体地面修正:后", ["CreatureDataId", this.CreatureDataInternal.GetCreatureDataId()], ["PbDataId", this.CreatureDataInternal.GetPbDataId()], ["K2_GetActorLocation", this.Actor.D_K2_GetActorLocation()], ["Context", t]), true);
     }
   }
-  FixSwitchLocation(t = "unknown.FixSwitchLocation", e = true, i = false) {
-    i = this.FixActorLocation(FIX_SWITCH_SPAWN_TRACE_HEIGHT, e, undefined, t, false, i);
-    return !!i[0] && (this.SetActorLocation(i[1].ToUeVector(), t, false), e && Log_1.Log.CheckInfo() && Log_1.Log.Info("Entity", 3, "[CharacterActorComponent.FixSwitchLocation] 实体地面修正:后", ["CreatureDataId", this.CreatureDataInternal.GetCreatureDataId()], ["PbDataId", this.CreatureDataInternal.GetPbDataId()], ["K2_GetActorLocation", this.Actor.D_K2_GetActorLocation()], ["Context", t]), true);
+  FixSwitchLocation(t = "unknown.FixSwitchLocation", e = true, i = false, s = 0) {
+    s = this.FixActorLocation(FIX_SWITCH_SPAWN_TRACE_HEIGHT + s, e, undefined, t, false, i);
+    return !!s[0] && (this.SetActorLocation(s[1].ToUeVector(), t, false), e && Log_1.Log.CheckInfo() && Log_1.Log.Info("Entity", 3, "[CharacterActorComponent.FixSwitchLocation] 实体地面修正:后", ["CreatureDataId", this.CreatureDataInternal.GetCreatureDataId()], ["PbDataId", this.CreatureDataInternal.GetPbDataId()], ["K2_GetActorLocation", this.Actor.D_K2_GetActorLocation()], ["Context", t]), true);
   }
   RestoreDefaultController() {
     if (!this.DefaultController) {
@@ -845,13 +827,6 @@ let CharacterActorComponent = CharacterActorComponent_1 = class CharacterActorCo
       }
     }
     this.DefaultController.Possess(this.Actor);
-  }
-  get ActorVelocityProxy() {
-    if (this.CachedVelocityTime < Time_1.Time.Frame) {
-      this.CachedVelocityTime = Time_1.Time.Frame;
-      this.W2r.DeepCopy(this.Actor.D_GetVelocity());
-    }
-    return this.W2r;
   }
   SetActorVelocity(t) {
     var e;
@@ -862,8 +837,8 @@ let CharacterActorComponent = CharacterActorComponent_1 = class CharacterActorCo
         if (this.Actor.CharacterMovement) {
           this.Actor.CharacterMovement.Velocity = e;
         }
-        this.W2r.DeepCopy(t);
-        this.Entity.GetComponent(122)?.CacheVelocityInfo("SetActorVelocity");
+        this.CachedActorVelocity.DeepCopy(t);
+        this.Entity.GetComponent(124)?.CacheVelocityInfo("SetActorVelocity");
         if (GravityUtils_1.GravityUtils.GetZnInGravityForActor(this, t) < -10000 && Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("Character", 6, "1117317 Bug追踪，设置速度", ["Name", this.Actor.GetName()], ["Velocity", t]);
         }
@@ -925,7 +900,7 @@ let CharacterActorComponent = CharacterActorComponent_1 = class CharacterActorCo
         case 3:
           break;
         case 6:
-          if (this.Actor.CharacterMovement.CustomMovementMode !== CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_SLIDE && this.Actor.CharacterMovement.CustomMovementMode !== CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_SKI && this.Actor.CharacterMovement.CustomMovementMode !== CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_RAIL_SLIDE && this.Actor.CharacterMovement.CustomMovementMode !== CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_ROLL) {
+          if (this.Actor.CharacterMovement.CustomMovementMode !== CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_SLIDE && this.Actor.CharacterMovement.CustomMovementMode !== CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_SKI && this.Actor.CharacterMovement.CustomMovementMode !== CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_RAIL_SLIDE && this.Actor.CharacterMovement.CustomMovementMode !== CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_ROLL && this.Actor.CharacterMovement.CustomMovementMode !== CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_FLOATING) {
             t = true;
           }
           break;
@@ -952,7 +927,11 @@ let CharacterActorComponent = CharacterActorComponent_1 = class CharacterActorCo
     this.X2r = t === this.RadiusInternal && e === this.HalfHeightInternal;
   }
   ChangeMeshAnim(t, e) {
-    this.Entity.GetComponent(186)?.MainAnimInstance?.SyncAnimStates(undefined);
+    var i = this.Entity.GetComponent(188)?.MainAnimInstance;
+    if (i) {
+      i.SyncAnimStates(undefined);
+      i.ClearMontage();
+    }
     ControllerHolder_1.ControllerHolder.CreatureController.ChangeMeshAnim(this.Actor.Mesh, t, e);
     this.Actor.CharRenderingComponent.Init(this.Actor.RenderType);
     this.IsChangingMeshAnim = true;
@@ -994,7 +973,7 @@ let CharacterActorComponent = CharacterActorComponent_1 = class CharacterActorCo
     this.SetInputDirect(Vector_1.Vector.ZeroVector);
     this.SetInputFacing(this.ActorForwardProxy);
     this.SetOverrideTurnSpeed(0);
-    if (Info_1.Info.AxisInputOptimize && ((i = this.Entity.GetComponent(65)) && (i.ClearInputAxis(false, t), i.InterruptAutoMoving("ActorComp.ClearInput")), e)) {
+    if (Info_1.Info.AxisInputOptimize && ((i = this.Entity.GetComponent(67)) && (i.ClearInputAxis(false, t), i.InterruptAutoMoving("ActorComp.ClearInput")), e)) {
       ModelManager_1.ModelManager.InputModel?.TemporaryClearAxisValues();
     }
   }
@@ -1096,7 +1075,7 @@ let CharacterActorComponent = CharacterActorComponent_1 = class CharacterActorCo
     this.J2r = e;
     if (this.IsMoveAutonomousProxy !== t) {
       this.SetMoveAutonomous(t, i);
-      this.Entity.GetComponent(51)?.ClearOrders();
+      this.Entity.GetComponent(53)?.ClearOrders();
     }
   }
   ResetMoveControlled(t = "") {
@@ -1112,7 +1091,7 @@ let CharacterActorComponent = CharacterActorComponent_1 = class CharacterActorCo
     CombatLog_1.CombatLog.Info("Control", this.Entity, "设置移动主控", [e, t]);
     var e = this.Y2r;
     super.SetMoveAutonomous(t);
-    var i = this.Entity.GetComponent(186);
+    var i = this.Entity.GetComponent(188);
     if (i) {
       i.MainAnimInstance?.SetStateMachineNetMode(!t);
       i.SpecialAnimInstance?.SetStateMachineNetMode(!t);
@@ -1124,9 +1103,9 @@ let CharacterActorComponent = CharacterActorComponent_1 = class CharacterActorCo
           i.SetAddMoveOffset(undefined);
           i.SetForceSpeed(Vector_1.Vector.ZeroVectorProxy);
         }
-        this.Entity.GetComponent(71)?.ClearReplaySamples();
+        this.Entity.GetComponent(73)?.ClearReplaySamples();
       }
-      this.Entity.GetComponent(51)?.ClearOrders();
+      this.Entity.GetComponent(53)?.ClearOrders();
     }
   }
   GetMapPartCollision() {
@@ -1168,7 +1147,7 @@ let CharacterActorComponent = CharacterActorComponent_1 = class CharacterActorCo
   mFr() {
     var t = this.Entity.GetComponent(0)?.GetEntityType();
     if (Protocol_1.Aki.Protocol.kks.Proto_Monster === t) {
-      var e = this.Entity.GetComponent(215);
+      var e = this.Entity.GetComponent(217);
       if (this.LockOnConfig?.IsOpened) {
         CharacterLockOnComponent_1.CharacterLockOnComponent.EnhancedEntityIds.add(this.Entity.Id);
         for (const s of BaseLockOnComponent_1.lockOnEnhancedTags) {
@@ -1204,7 +1183,7 @@ let CharacterActorComponent = CharacterActorComponent_1 = class CharacterActorCo
   get WanderDirectionType() {
     var t;
     if (this.rDn === 3) {
-      t = this.Entity.GetComponent(187)?.MovementData;
+      t = this.Entity.GetComponent(189)?.MovementData;
       this.rDn = t?.WanderDirection ?? 0;
     }
     return this.rDn;
@@ -1335,8 +1314,8 @@ let CharacterActorComponent = CharacterActorComponent_1 = class CharacterActorCo
     var t;
     var e;
     if (GameBudgetInterfaceController_1.GameBudgetInterfaceController.IsOpen && this.Entity.GameBudgetConfig && this.Entity.GameBudgetManagedToken) {
-      t = this.Entity.GetComponent(184)?.IsInFighting;
-      e = !!this.Entity.GetComponent(187)?.BasePlatform;
+      t = this.Entity.GetComponent(186)?.IsInFighting;
+      e = !!this.Entity.GetComponent(189)?.BasePlatform;
       cpp_1.FKuroGameBudgetAllocatorInterface.MarkActorInFighting(this.Entity.GameBudgetConfig.GroupName, this.Entity.GameBudgetManagedToken, t || e);
     }
   }
@@ -1439,7 +1418,7 @@ let CharacterActorComponent = CharacterActorComponent_1 = class CharacterActorCo
         Context: "[CharacterActorComponent.CharacterReady]"
       });
     }
-    var e = this.Entity.GetComponent(48);
+    var e = this.Entity.GetComponent(50);
     if (e) {
       e.SetLoadCompletePlayer(ModelManager_1.ModelManager.CreatureModel.GetPlayerId());
     }

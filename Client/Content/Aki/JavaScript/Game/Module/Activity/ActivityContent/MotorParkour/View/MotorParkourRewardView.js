@@ -19,16 +19,16 @@ class MotorParkourRewardView extends UiTickViewBase_1.UiTickViewBase {
     super(...arguments);
     this.CNe = undefined;
     this.mFi = [];
-    this.FMf = undefined;
+    this.ibf = undefined;
     this.Ny1 = undefined;
-    this.VMf = undefined;
+    this.obf = undefined;
     this.wNe = () => {
       this.Ny1.RefreshAllGridProxies();
       this.Ooh();
     };
     this.HEu = e => {
-      this.FMf = e;
-      e = this.mFi.findIndex(e => e.Id === this.FMf.Id);
+      this.ibf = e;
+      e = this.mFi.findIndex(e => e.Id === this.ibf.Id);
       this.Ny1.SelectGridProxy(e);
       this.Ooh();
     };
@@ -58,13 +58,13 @@ class MotorParkourRewardView extends UiTickViewBase_1.UiTickViewBase {
     this.CNe = e.ActivityData;
     new PopupCaptionItem_1.PopupCaptionItem(this.GetItem(0)).SetCloseCallBack(this.AMo);
     this.Ny1 = new LoopScrollView_1.LoopScrollView(this.GetLoopScrollViewComponent(1), this.GetItem(3).GetOwner(), this.Hwn);
-    this.VMf = new LoopScrollView_1.LoopScrollView(this.GetLoopScrollViewComponent(4), this.GetItem(6).GetOwner(), this.kou);
+    this.obf = new LoopScrollView_1.LoopScrollView(this.GetLoopScrollViewComponent(4), this.GetItem(6).GetOwner(), this.kou);
     var t = [];
     this.mFi = this.CNe.GetLevelDataList();
     t.push(this.Ny1.RefreshByDataAsync(this.mFi));
     await Promise.all(t);
-    this.FMf = e.SelectLevelData;
-    this.HEu(this.FMf);
+    this.ibf = e.SelectLevelData;
+    this.HEu(this.ibf);
   }
   OnTick(e) {
     var t = MultiTextLang_1.configMultiTextLang.GetLocalTextNew("ActivityRemainingTime");
@@ -72,9 +72,9 @@ class MotorParkourRewardView extends UiTickViewBase_1.UiTickViewBase {
     this.GetText(7)?.SetText(t);
   }
   Ooh() {
-    var e = this.FMf.TaskList;
-    this.VMf.RefreshByData(e, false, () => {
-      this.VMf.ScrollToGridIndex(0);
+    var e = this.ibf.TaskList;
+    this.obf.RefreshByData(e, false, () => {
+      this.obf.ScrollToGridIndex(0);
     }, true);
   }
 }

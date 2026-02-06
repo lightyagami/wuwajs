@@ -39,7 +39,7 @@ class TeleportController extends ControllerBase_1.ControllerBase {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Teleport", 79, "==========传送玩家: 开始==========", ["TeleportContextId", e.TeleportContextId]);
     }
-    var o = await this.Tkf(e, false);
+    var o = await this.y3f(e, false);
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Teleport", 79, "==========传送玩家: 完成==========", ["TeleportContextId", e.TeleportContextId]);
     }
@@ -59,13 +59,13 @@ class TeleportController extends ControllerBase_1.ControllerBase {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Teleport", 79, "==========传送玩家(载具状态): 开始==========", ["TeleportContextId", e.TeleportContextId]);
     }
-    var o = await this.Tkf(e, true);
+    var o = await this.y3f(e, true);
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Teleport", 79, "==========传送玩家(载具状态): 完成==========", ["TeleportContextId", e.TeleportContextId]);
     }
     return o;
   }
-  static async Tkf(r, t) {
+  static async y3f(r, t) {
     var e = new AsyncTask_1.AsyncTask("TeleportPlayerInternal", async () => {
       var e = r.TeleportCore;
       let o = false;
@@ -89,7 +89,7 @@ class TeleportController extends ControllerBase_1.ControllerBase {
         return o;
       } finally {
         ModelManager_1.ModelManager.TeleportModel.RemoveContext(r);
-        this.$xf();
+        this.BFf();
       }
     });
     TaskSystem_1.TaskSystem.AddTask(e);
@@ -110,8 +110,8 @@ class TeleportController extends ControllerBase_1.ControllerBase {
     if (Global_1.Global.BaseCharacter?.IsValid()) {
       return !ModelManager_1.ModelManager.GameModeModel.UseWorldPartition || (o = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetSubsystem(GlobalData_1.GlobalData.World, UE.WorldPartitionSubsystem.StaticClass()), (r = new UE.WorldPartitionStreamingQuerySource()).Location = e.op_ToVector(), r.bUseGridLoadingRange = false, r.Radius = STREAMING_SOURCE_RADIUS_TELEPORT_NO_LOADING, (e = UE.NewArray(UE.WorldPartitionStreamingQuerySource)).Add(r), o.IsStreamingCompleted(2, e, false, undefined, undefined, true));
     } else {
-      if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("Teleport", 79, "查询是否可以无加载传送: 失败, 找不到当前玩家");
+      if (Log_1.Log.CheckWarn()) {
+        Log_1.Log.Warn("Teleport", 79, "查询是否可以无加载传送: 失败, 找不到当前玩家");
       }
       return false;
     }
@@ -120,15 +120,15 @@ class TeleportController extends ControllerBase_1.ControllerBase {
     return (e === Protocol_1.Aki.Protocol.v4s.SL_ || e === Protocol_1.Aki.Protocol.v4s.Xvs || e === Protocol_1.Aki.Protocol.v4s.Proto_Fall) && !!ModelManager_1.ModelManager.AutoRunModel.IsInLogicTreeGmMode() || e === Protocol_1.Aki.Protocol.v4s.cVu && !!ModelManager_1.ModelManager.PlotModel.IsInHighLevelPlot();
   }
   static OnInit() {
-    Net_1.Net.Register(20412, this.AIo);
-    Net_1.Net.Register(16809, this.Nkl);
-    Net_1.Net.Register(21484, this.P$_);
+    Net_1.Net.Register(25172, this.AIo);
+    Net_1.Net.Register(29427, this.Nkl);
+    Net_1.Net.Register(17929, this.P$_);
     return true;
   }
   static OnClear() {
-    Net_1.Net.UnRegister(20412);
-    Net_1.Net.UnRegister(16809);
-    Net_1.Net.UnRegister(21484);
+    Net_1.Net.UnRegister(25172);
+    Net_1.Net.UnRegister(29427);
+    Net_1.Net.UnRegister(17929);
     return true;
   }
   static OnTick(e) {
@@ -139,25 +139,34 @@ class TeleportController extends ControllerBase_1.ControllerBase {
       o.KeepMovementMode?.Tick(e);
     }
     if (!ModelManager_1.ModelManager.TeleportModel.IsTeleport) {
-      this.$xf();
+      this.BFf();
     }
   }
-  static $xf() {
-    if (TeleportController.aBf !== undefined) {
-      this.AIo(TeleportController.aBf);
-    } else if (TeleportController.hBf !== undefined) {
-      this.Nkl(TeleportController.hBf);
+  static BFf() {
+    if (TeleportController.zFf !== undefined) {
+      this.AIo(TeleportController.zFf);
+    } else if (TeleportController.JFf !== undefined) {
+      this.Nkl(TeleportController.JFf);
     }
   }
   static async TeleportToPositionNoLoading(e, o, r, t = true) {
+    var a;
     if (Global_1.Global.BaseCharacter?.IsValid()) {
-      return ControllerHolder_1.ControllerHolder.TeleportController.TeleportPlayer({
+      if ((a = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(242)?.IsDriver) && Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Teleport", 79, "无加载传送: 传送时正在驾驶载具, 切换为载具传送接口", ["Reason", r]);
+      }
+      e = {
         ClientReason: r,
         TargetPosition: e,
         TargetRotation: o,
         NeedRestoreCamera: t,
         TeleportMode: 1
-      });
+      };
+      if (a) {
+        return this.TeleportPlayerInVehicle(e);
+      } else {
+        return this.TeleportPlayer(e);
+      }
     } else {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Teleport", 79, "无加载传送: 失败, 找不到当前玩家", ["Reason", r]);
@@ -165,7 +174,7 @@ class TeleportController extends ControllerBase_1.ControllerBase {
       return false;
     }
   }
-  static lBf() {
+  static ZFf() {
     var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(1);
     return !!e && !!e.Entity.CheckGetComponent(242).VehicleEntity;
   }
@@ -182,7 +191,7 @@ class TeleportController extends ControllerBase_1.ControllerBase {
         a.SetActorLocation(r.ToUeVector(), "ResetLocationForZRangeNotify", false);
       }
       a.MoveComp?.SetForceSpeed(Vector_1.Vector.ZeroVectorProxy);
-      l.Entity.GetComponent(70)?.ClearReplaySamples();
+      l.Entity.GetComponent(72)?.ClearReplaySamples();
       EventSystem_1.EventSystem.EmitWithTarget(l.Entity, EventDefine_1.EEventName.TeleportChangeLocation);
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Teleport", 79, "传送载具：设置载具实体位置", ["CreatureDataId", l.CreatureDataId], ["PbDataId", l.PbDataId], ["EntityId", l.Entity.Id], ["Location", r.ToString()]);
@@ -210,8 +219,8 @@ class TeleportController extends ControllerBase_1.ControllerBase {
   }
 }
 exports.TeleportController = TeleportController;
-(_a = TeleportController).aBf = undefined;
-TeleportController.hBf = undefined;
+(_a = TeleportController).zFf = undefined;
+TeleportController.JFf = undefined;
 TeleportController.AIo = e => {
   var o = e.l9_ ? Vector_1.Vector.Create(e.l9_).ToUeVector() : Vector_1.Vector.ZeroVectorDouble;
   var r = e.g8n ? Rotator_1.Rotator.Create(e.g8n.Y, e.g8n.Z, e.g8n.X).ToUeRotator() : Rotator_1.Rotator.ZeroRotator;
@@ -220,12 +229,12 @@ TeleportController.AIo = e => {
     Log_1.Log.Info("Teleport", 79, "OnTeleportNotify", ["Context", JSON.stringify(e.cvs)], ["Pos", e.l9_], ["Rot", e.g8n], ["Gravity", e.ZE_], ["Reason", e.x9n]);
   }
   if (ModelManager_1.ModelManager.TeleportModel.IsTeleport) {
-    TeleportController.aBf = e;
+    TeleportController.zFf = e;
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Teleport", 79, "传送中服务器再次发起玩家传送, 缓存TeleportNotify", ["SeverTeleportReason", e.x9n]);
     }
   } else {
-    TeleportController.aBf = undefined;
+    TeleportController.zFf = undefined;
     ControllerHolder_1.ControllerHolder.TeleportController.TeleportPlayer({
       ClientReason: "OnTeleportNotify",
       TargetPosition: o,
@@ -235,7 +244,7 @@ TeleportController.AIo = e => {
       ServerReason: e.x9n,
       Option: e.f5n,
       DisableAutoFade: e.FI_,
-      TeleportCfgId: e.cvs?.ePf?.w2s,
+      TeleportCfgId: e.cvs?.bkf?.w2s,
       GameCtx: e.cvs
     });
   }
@@ -254,7 +263,7 @@ TeleportController.P$_ = o => {
         Log_1.Log.Error("Teleport", 45, "收到的CG名称不存在", ["Name", o.x$_]);
       }
     }
-    Net_1.Net.Call(17997, e, e => {
+    Net_1.Net.Call(25201, e, e => {
       if (!e || e.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Teleport", 45, "播放CG完成请求失败", ["ErrorCode", e.Cvs]);
@@ -282,12 +291,12 @@ TeleportController.Nkl = e => {
     }
     if (r) {
       if (ModelManager_1.ModelManager.TeleportModel.IsTeleport) {
-        TeleportController.hBf = e;
+        TeleportController.JFf = e;
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("Teleport", 79, "传送中服务器再次发起载具传送, 缓存TeleportVehicleNotify", ["SeverTeleportReason", e.x9n]);
         }
-      } else if (_a.lBf()) {
-        TeleportController.hBf = undefined;
+      } else if (_a.ZFf()) {
+        TeleportController.JFf = undefined;
         ControllerHolder_1.ControllerHolder.TeleportController.TeleportPlayerInVehicle({
           ClientReason: "OnTeleportVehicleNotify",
           TargetPosition: t,
@@ -297,7 +306,7 @@ TeleportController.Nkl = e => {
           Option: e.f5n
         });
       } else {
-        TeleportController.hBf = e;
+        TeleportController.JFf = e;
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("Teleport", 79, "服务器发起载具传送时玩家还不在载具上, 缓存TeleportVehicleNotify", ["SeverTeleportReason", e.x9n]);
         }

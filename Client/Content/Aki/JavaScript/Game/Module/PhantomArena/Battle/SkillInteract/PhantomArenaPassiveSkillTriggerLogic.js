@@ -18,7 +18,7 @@ class PhantomArenaPassiveSkillTriggerLogic {
       IsPassive: true,
       IsFight: false,
       IsClickInteract: false,
-      DataId: t.dRf
+      DataId: t.Ixf
     };
   }
   async Execute() {

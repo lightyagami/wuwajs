@@ -16,16 +16,19 @@ const SmallItemGridCookUpComponent_1 = require("./SmallItemGridComponent/SmallIt
 const SmallItemGridCoolDownComponent_1 = require("./SmallItemGridComponent/SmallItemGridCoolDownComponent");
 const SmallItemGridCurrentEquipmentComponent_1 = require("./SmallItemGridComponent/SmallItemGridCurrentEquipmentComponent");
 const SmallItemGridDangoPluginIconComponent_1 = require("./SmallItemGridComponent/SmallItemGridDangoPluginIconComponent");
+const SmallItemGridDirectionalFusionComponent_1 = require("./SmallItemGridComponent/SmallItemGridDirectionalFusionComponent");
 const SmallItemGridDisableComponent_1 = require("./SmallItemGridComponent/SmallItemGridDisableComponent");
 const SmallItemGridElementComponent_1 = require("./SmallItemGridComponent/SmallItemGridElementComponent");
 const SmallItemGridEmptySlotComponent_1 = require("./SmallItemGridComponent/SmallItemGridEmptySlotComponent");
 const SmallItemGridExchangeRewardComponent_1 = require("./SmallItemGridComponent/SmallItemGridExchangeRewardComponent");
 const SmallItemGridFirstRewardComponent_1 = require("./SmallItemGridComponent/SmallItemGridFirstRewardComponent");
+const SmallItemGridLeftTopIconComponent_1 = require("./SmallItemGridComponent/SmallItemGridLeftTopIconComponent");
 const SmallItemGridLockAndDeprecateComponent_1 = require("./SmallItemGridComponent/SmallItemGridLockAndDeprecateComponent");
 const SmallItemGridLockBlackComponent_1 = require("./SmallItemGridComponent/SmallItemGridLockBlackComponent");
 const SmallItemGridLockComponent_1 = require("./SmallItemGridComponent/SmallItemGridLockComponent");
 const SmallItemGridNewFlagComponent_1 = require("./SmallItemGridComponent/SmallItemGridNewFlagComponent");
 const SmallItemGridNotFoundComponent_1 = require("./SmallItemGridComponent/SmallItemGridNotFoundComponent");
+const SmallItemGridPreviewComponent_1 = require("./SmallItemGridComponent/SmallItemGridPreviewComponent");
 const SmallItemGridReceivableComponent_1 = require("./SmallItemGridComponent/SmallItemGridReceivableComponent");
 const SmallItemGridReceivedComponent_1 = require("./SmallItemGridComponent/SmallItemGridReceivedComponent");
 const SmallItemGridRedDotComponent_1 = require("./SmallItemGridComponent/SmallItemGridRedDotComponent");
@@ -33,6 +36,7 @@ const SmallItemGridRoleHeadComponent_1 = require("./SmallItemGridComponent/Small
 const SmallItemGridSelectComponent_1 = require("./SmallItemGridComponent/SmallItemGridSelectComponent");
 const SmallItemGridSelectedFlagComponent_1 = require("./SmallItemGridComponent/SmallItemGridSelectedFlagComponent");
 const SmallItemGridSkinComponent_1 = require("./SmallItemGridComponent/SmallItemGridSkinComponent");
+const SmallItemGridStarReceivableComponent_1 = require("./SmallItemGridComponent/SmallItemGridStarReceivableComponent");
 const SmallItemGridVisionFetterComponent_1 = require("./SmallItemGridComponent/SmallItemGridVisionFetterComponent");
 const SmallItemGridVisionRoleHeadComponent_1 = require("./SmallItemGridComponent/SmallItemGridVisionRoleHeadComponent");
 const SmallItemTopRightTagComponent_1 = require("./SmallItemGridComponent/SmallItemTopRightTagComponent");
@@ -102,6 +106,7 @@ class SmallItemGrid extends ItemGridBase_1.ItemGridBase {
     this.SetQuality(undefined);
     this.SetExtendToggleEnable(false);
     this.SetElement(undefined);
+    this.SetDirectionalFusionComponent(undefined);
   }
   ApplyEmptyWithoutAddSmallItemGrid(t) {
     this.ClearVisibleComponent();
@@ -118,22 +123,24 @@ class SmallItemGrid extends ItemGridBase_1.ItemGridBase {
   ApplyPropSmallItemGrid(t) {
     var e = t.IsLockVisible;
     var i = t.IsReceivableVisible;
-    var o = t.IsReceivedVisible;
-    var m = t.IsNewVisible;
-    var l = t.IsNotFoundVisible;
-    var n = t.CoolDownTime;
-    var r = t.IsDisable;
-    var a = t.IsBirthdayEffectVisible;
-    this.SetIsDisable(r);
+    var o = t.IsStarReceivableVisible;
+    var m = t.IsReceivedVisible;
+    var l = t.IsNewVisible;
+    var n = t.IsNotFoundVisible;
+    var r = t.CoolDownTime;
+    var a = t.IsDisable;
+    var s = t.IsBirthdayEffectVisible;
+    this.SetIsDisable(a);
     this.SetLockVisible(e);
     this.SetReceivableVisible(i);
-    this.SetReceivedVisible(o);
-    this.SetNewFlagVisible(m);
-    this.SetNotFoundVisible(l);
-    this.SetCoolDown(n);
+    this.SetReceivedVisible(m);
+    this.SetNewFlagVisible(l);
+    this.SetNotFoundVisible(n);
+    this.SetCoolDown(r);
     this.SetRedDotVisible(t.IsRedDotVisible);
-    this.SetBirthdayEffect(a);
+    this.SetBirthdayEffect(s);
     this.vbt(t);
+    this.SetStarReceivableVisible(o);
   }
   ApplyPhantomSmallItemGrid(t) {
     var e = t.IsLockVisible;
@@ -192,7 +199,7 @@ class SmallItemGrid extends ItemGridBase_1.ItemGridBase {
     } else if (o === 17) {
       this.Ehm(e);
     } else if (o === 21) {
-      this.cJf(e);
+      this.sCg(e);
     } else {
       this.UTt(e);
     }
@@ -204,6 +211,9 @@ class SmallItemGrid extends ItemGridBase_1.ItemGridBase {
   }
   SetElement(t) {
     this.RefreshComponent(SmallItemGridElementComponent_1.SmallItemGridElementComponent, t !== undefined, t);
+  }
+  SetDirectionalFusionComponent(t) {
+    this.RefreshComponent(SmallItemGridDirectionalFusionComponent_1.SmallItemGridDirectionalFusionComponent, t !== undefined, t);
   }
   Mbt(t) {
     var e = t.ItemConfigId;
@@ -266,6 +276,7 @@ class SmallItemGrid extends ItemGridBase_1.ItemGridBase {
     this.SetTextureByIconPath(t);
     this.SetBottomTextId("Text_LevelShow_Text", [1]);
     this.SetElement(e);
+    this.SetDirectionalFusionComponent(undefined);
     this.SetExtendToggleEnable(true);
   }
   SetLockVisible(t) {
@@ -287,6 +298,12 @@ class SmallItemGrid extends ItemGridBase_1.ItemGridBase {
   }
   SetReceivableVisible(t) {
     this.RefreshComponent(SmallItemGridReceivableComponent_1.SmallItemGridReceivableComponent, t, t);
+  }
+  SetStarReceivableVisible(t) {
+    this.RefreshComponent(SmallItemGridStarReceivableComponent_1.SmallItemGridStarReceivableComponent, t, t);
+  }
+  SetPreviewVisible(t) {
+    this.RefreshComponent(SmallItemGridPreviewComponent_1.SmallItemGridPreviewComponent, t, t);
   }
   SetReceivedVisible(t) {
     this.RefreshComponent(SmallItemGridReceivedComponent_1.SmallItemGridReceivedComponent, t, t);
@@ -335,9 +352,9 @@ class SmallItemGrid extends ItemGridBase_1.ItemGridBase {
       e.SetUIActive(false);
     }
   }
-  cJf(t) {
+  sCg(t) {
     var e = this.GetTexture(1);
-    if (t !== undefined && (t = ConfigManager_1.ConfigManager.MotorDiyConfig.GetMotorStickerConfig(t)?.IconSmall)) {
+    if (t !== undefined && (t = ConfigManager_1.ConfigManager.MotorDiyConfig.GetMotorStickerConfig(t)?.Icon)) {
       this.SetTextureByPath(t, e);
       e.SetUIActive(true);
     } else {
@@ -639,6 +656,9 @@ class SmallItemGrid extends ItemGridBase_1.ItemGridBase {
   }
   SetIconByPath(t) {
     this.SetTextureByIconPath(t);
+  }
+  SetLeftTopIconVisible(t) {
+    this.RefreshComponent(SmallItemGridLeftTopIconComponent_1.SmallItemGridLeftTopIconComponent, t !== undefined, t);
   }
 }
 exports.SmallItemGrid = SmallItemGrid;

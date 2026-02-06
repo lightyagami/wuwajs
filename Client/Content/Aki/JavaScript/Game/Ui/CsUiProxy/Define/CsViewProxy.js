@@ -9,35 +9,35 @@ const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const UiViewBase_1 = require("../../Base/UiViewBase");
 class CsViewProxy extends UiViewBase_1.UiViewBase {
-  Lbm() {
+  Nbm() {
     this.CsUiLife.OnCreateAsyncPromise ||= new CustomPromise_1.CustomPromise();
   }
   async OnCreateAsync() {
-    this.Lbm();
+    this.Nbm();
     await this.CsUiLife.OnCreateAsyncPromise.Promise;
     this.CsUiLife.OnCreateAsyncPromise = undefined;
   }
-  Pbm() {
+  Vbm() {
     this.CsUiLife.OnBeforeStartAsyncPromise ||= new CustomPromise_1.CustomPromise();
   }
   async OnBeforeStartAsync() {
-    this.Pbm();
+    this.Vbm();
     await this.CsUiLife.OnBeforeStartAsyncPromise.Promise;
     this.CsUiLife.OnBeforeStartAsyncPromise = undefined;
   }
-  Abm() {
+  jbm() {
     this.CsUiLife.OnBeforeHideAsyncPromise ||= new CustomPromise_1.CustomPromise();
   }
   async OnBeforeHideAsync() {
-    this.Abm();
+    this.jbm();
     await this.CsUiLife.OnBeforeHideAsyncPromise.Promise;
     this.CsUiLife.OnBeforeHideAsyncPromise = undefined;
   }
-  Dbm() {
+  Hbm() {
     this.CsUiLife.OnBeforeShowAsyncImplementImplementPromise ||= new CustomPromise_1.CustomPromise();
   }
   async OnBeforeShowAsyncImplementImplement() {
-    this.Dbm();
+    this.Hbm();
     await this.CsUiLife.OnBeforeShowAsyncImplementImplementPromise.Promise;
     this.CsUiLife.OnBeforeShowAsyncImplementImplementPromise = undefined;
   }
@@ -53,6 +53,7 @@ class CsViewProxy extends UiViewBase_1.UiViewBase {
     return Promise.resolve();
   }
   async OnHideAsyncImplementImplement() {
+    await this.ReleaseScene();
     return Promise.resolve();
   }
   OnStartImplementImplement() {}

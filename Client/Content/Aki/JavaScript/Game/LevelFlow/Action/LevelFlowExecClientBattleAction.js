@@ -39,6 +39,13 @@ class LevelFlowExecClientBattleAction extends LevelFlowActionBase_1.LevelFlowAct
           }, () => {
             this.FinishExecute(false);
           });
+          break;
+        case "FollowShooterSkill":
+          LevelEventExecClientBattleAction_1.LevelEventExecClientBattleAction.HandleFollowShooterSkill(this.pDe.ClientBattleOption, () => {
+            this.FinishExecute(true);
+          }, () => {
+            this.FinishExecute(false);
+          });
       }
     } else {
       this.FinishExecute(false);

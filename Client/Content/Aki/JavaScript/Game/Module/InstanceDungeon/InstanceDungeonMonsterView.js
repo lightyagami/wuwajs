@@ -9,6 +9,7 @@ const ConfigManager_1 = require("../../Manager/ConfigManager");
 const UiViewBase_1 = require("../../Ui/Base/UiViewBase");
 const TowerElementItem_1 = require("../TowerDetailUi/View/TowerElementItem");
 const GenericLayout_1 = require("../Util/Layout/GenericLayout");
+const LguiUtil_1 = require("../Util/LguiUtil");
 const InstanceDungeonMonsterGrid_1 = require("./InstanceDungeonMonsterGrid");
 class InstanceDungeonMonsterView extends UiViewBase_1.UiViewBase {
   constructor() {
@@ -26,10 +27,21 @@ class InstanceDungeonMonsterView extends UiViewBase_1.UiViewBase {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, ue_1.UIText], [1, ue_1.UIGridLayout], [2, ue_1.UIItem], [3, ue_1.UIHorizontalLayout]];
+    this.ComponentRegisterInfos = [[0, ue_1.UIText], [1, ue_1.UIGridLayout], [2, ue_1.UIItem], [3, ue_1.UIHorizontalLayout], [4, ue_1.UIText], [5, ue_1.UIText]];
   }
   OnStart() {
-    this.yyn = this.OpenParam;
+    var e = this.OpenParam;
+    this.yyn = e.InstanceId;
+    var e = e.InfoType;
+    switch (e) {
+      case 0:
+        LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), "PrefabTextItem_3355612697_Text");
+        LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(5), "PrefabTextItem_2611535427_T");
+        break;
+      case 1:
+        LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), "WeeklyBossInfo_Text");
+        LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(5), "WeeklyBossInfo_Title");
+    }
     this.GetText(0).ShowTextNew(ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(this.yyn).MonsterTips);
     this.H1i = new GenericLayout_1.GenericLayout(this.GetGridLayout(1), this.j1i);
     this.Mli = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(3), this.jli);

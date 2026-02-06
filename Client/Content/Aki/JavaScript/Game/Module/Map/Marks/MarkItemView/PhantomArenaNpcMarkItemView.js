@@ -11,29 +11,29 @@ const PhantomArenaNpcMarkItemSelectHandle_1 = require("./Handles/PhantomArenaNpc
 class PhantomArenaNpcMarkItemView extends ConfigMarkItemView_1.ConfigMarkItemView {
   constructor(e) {
     super(e);
-    this.Wrf = undefined;
+    this.csf = undefined;
   }
   async OnBeforeStartAsync() {
-    this.Wrf = new PhantomArenaMapNpcUi_1.PhantomArenaMapNpcUi();
-    await this.Wrf.CreateThenShowByResourceIdAsync("UiItem_SoundRemnantArenaNpc", this.RootItem);
+    this.csf = new PhantomArenaMapNpcUi_1.PhantomArenaMapNpcUi();
+    await this.csf.CreateThenShowByResourceIdAsync("UiItem_SoundRemnantArenaNpc", this.RootItem);
     this.GetItem(0)?.SetUIActive(true);
-    this.Wrf?.SetActive(false);
+    this.csf?.SetActive(false);
   }
   OnSafeUpdate(e, t, a) {
     if (ModelManager_1.ModelManager.MapModel?.IsExtraUiMarkTypeVisible(this.Holder.MapType, this.Holder.MarkType) ?? false) {
       this.GetItem(0)?.SetUIActive(false);
-      this.Wrf?.SetData(this.Holder.MarkId);
-      this.Wrf?.SetActive(true);
+      this.csf?.SetData(this.Holder.MarkId);
+      this.csf?.SetActive(true);
     } else {
       this.GetItem(0)?.SetUIActive(true);
-      this.Wrf?.SetActive(false);
+      this.csf?.SetActive(false);
     }
   }
   CreateSelectHandle(e) {
     return new PhantomArenaNpcMarkItemSelectHandle_1.PhantomArenaNpcMarkItemSelectHandle(e);
   }
   GetIconItem() {
-    return this.Wrf?.GetRootItem();
+    return this.csf?.GetRootItem();
   }
 }
 exports.PhantomArenaNpcMarkItemView = PhantomArenaNpcMarkItemView;

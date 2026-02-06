@@ -138,8 +138,8 @@ class WeeklyRogueData extends ActivityData_1.ActivityBaseData {
       this.Score = t.SMs;
       this.AwardsInfoList = t.wN_;
       this.WorldLevel = t.cSs;
-      this.FreeCount = Math.max(0, t.LTf - t.RTf);
-      this.FreeCountMax = t.LTf;
+      this.FreeCount = Math.max(0, t.iAf - t.tAf);
+      this.FreeCountMax = t.iAf;
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WeeklyRogueRefreshScoreRedDot);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WeeklyRogueRedDotInfoRefresh);
     } else if (Log_1.Log.CheckError()) {

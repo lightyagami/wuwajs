@@ -30,6 +30,7 @@ class HotKeyComponent extends UiPanelBase_1.UiPanelBase {
     this.w7t = undefined;
     this.aqo = undefined;
     this.Xnl = undefined;
+    this.j3g = false;
     this.Dut = t => {
       var i = this.GetActionName();
       if (!StringUtils_1.StringUtils.IsEmpty(i) && i === t) {
@@ -211,12 +212,17 @@ class HotKeyComponent extends UiPanelBase_1.UiPanelBase {
   SetVisibleMode(t, i, e = false) {
     var s = this.sqo;
     this.Cqo(t, i);
-    if (this.sqo !== s || !!e) {
+    if (this.sqo !== s || e || this.j3g) {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("UiNavigationHotKey", 10, "[LogicMode]当前设置可见性模式", ["配置id", this.HotKeyMapIndex], ["this.LogicMode", MathUtils_1.MathUtils.DecimalToBinary(this.sqo)], ["lastLogicMode", MathUtils_1.MathUtils.DecimalToBinary(s)], ["Tag", this.GetBindButtonTag()], ["Path", this.aqo]);
       }
+      this.j3g = false;
       this.mqo(this.cqo());
     }
+  }
+  OnlySetVisibleMode(t, i) {
+    this.j3g = true;
+    this.Cqo(t, i);
   }
   SetHotKeyDescTextForce(t) {
     this.CurComponent.SetNameTextForce(true);
@@ -326,6 +332,9 @@ class HotKeyComponent extends UiPanelBase_1.UiPanelBase {
   }
   IsLinkListener(t) {
     return !this.Xnl || !!t && (this.Xnl.ActorList?.Contains(t) ?? false);
+  }
+  GetHotKeyMapIndex() {
+    return this.HotKeyMapIndex;
   }
   Clear() {
     this.OnClear();

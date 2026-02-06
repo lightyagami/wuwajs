@@ -13,7 +13,7 @@ const MotorParkourGameRankItem_1 = require("./MotorParkourGameRankItem");
 class MotorParkourRankPanel extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.qMf = undefined;
+    this.ZTf = undefined;
     this.Zed = 0;
     this.Nn1 = () => {
       return new MotorParkourGameRankItem_1.MotorParkourGameRankItem();
@@ -23,11 +23,11 @@ class MotorParkourRankPanel extends UiPanelBase_1.UiPanelBase {
     this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIVerticalLayout], [2, UE.UIItem]];
   }
   OnStart() {
-    this.qMf = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(1), this.Nn1);
+    this.ZTf = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(1), this.Nn1);
     this.Zed = CommonParamById_1.configCommonParamById.GetIntConfig("MotorRacingRoundTime") ?? 3000;
   }
   RefreshRankList(e) {
-    this.qMf.RefreshByData(e, () => {
+    this.ZTf.RefreshByData(e, () => {
       this.SetActive(true);
       TimerSystem_1.GameplayTimerSystem.Delay(() => {
         this.SetActive(false);

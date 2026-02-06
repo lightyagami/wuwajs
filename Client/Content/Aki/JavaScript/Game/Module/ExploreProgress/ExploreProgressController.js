@@ -16,7 +16,7 @@ const ModelManager_1 = require("../../Manager/ModelManager");
 const UiControllerBase_1 = require("../../Ui/Base/UiControllerBase");
 class ExploreProgressController extends UiControllerBase_1.UiControllerBase {
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(18139, e => {
+    Net_1.Net.Register(18040, e => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("ExploreProgress", 69, "服务端推送所有已经获取的区域探索度奖励ExploreProgressRewardIdsNotify", ["list", e.cOl]);
       }
@@ -24,7 +24,7 @@ class ExploreProgressController extends UiControllerBase_1.UiControllerBase {
     });
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(18139);
+    Net_1.Net.UnRegister(18040);
   }
   static OnAddEvents() {
     super.OnAddEvents();
@@ -43,7 +43,7 @@ class ExploreProgressController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("ExploreProgress", 63, "客户端请求区域探索度ExploreProgressRequest", ["request", r]);
     }
-    var e = await Net_1.Net.CallAsync(19239, r);
+    var e = await Net_1.Net.CallAsync(27112, r);
     this.$Vt(e);
   }
   static async ReceiveAreaStageRewardAsyncRequest(e) {
@@ -52,7 +52,7 @@ class ExploreProgressController extends UiControllerBase_1.UiControllerBase {
     }
     var r = new Protocol_1.Aki.Protocol.jp_();
     r.cOl = e;
-    var e = await Net_1.Net.CallAsync(22014, r);
+    var e = await Net_1.Net.CallAsync(15014, r);
     this.LOl(e);
   }
   static async QueryOnlinePlayersAreaAsyncRequest() {
@@ -60,17 +60,17 @@ class ExploreProgressController extends UiControllerBase_1.UiControllerBase {
       Log_1.Log.Debug("Map", 69, "ExploreProgressController.QueryOnlinePlayersAreaAsyncRequest Proto_QueryOnlinePlayersAreaRequest");
     }
     var e = new Protocol_1.Aki.Protocol.R0_();
-    var e = await Net_1.Net.CallAsync(21685, e);
+    var e = await Net_1.Net.CallAsync(29327, e);
     this.UOl(e);
   }
   static async ExploreEntityTraceRequest(e, r) {
     var o = Protocol_1.Aki.Protocol.nXu.create();
     o.aXu = e;
     o.p6n = r;
-    var o = await Net_1.Net.CallAsync(28714, o);
+    var o = await Net_1.Net.CallAsync(15070, o);
     if (o) {
       if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 24078);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 21277);
       } else if (o.PSs.length === 0) {
         ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("Explore_EntityNull_Text");
       } else {

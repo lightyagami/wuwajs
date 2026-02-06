@@ -8,7 +8,7 @@ const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const SkipTask_1 = require("./SkipTask");
 class SkipToMapWithPhantomAreaChallenge extends SkipTask_1.SkipTask {
   OnRun(e) {
-    ControllerHolder_1.ControllerHolder.PhantomArenaBattleController.OpenPhantomArenaMapEntrance(e);
+    ControllerHolder_1.ControllerHolder.PhantomArenaBattleController.OpenPhantomArenaMapEntrance(e, true);
     this.Finish();
   }
 }

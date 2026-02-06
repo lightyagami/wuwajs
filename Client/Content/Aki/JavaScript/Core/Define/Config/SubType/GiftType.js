@@ -11,4 +11,5 @@ exports.GiftType = undefined;
   e[e.Random = 2] = "Random";
   e[e.RandomPhantom = 3] = "RandomPhantom";
   e[e.CaptureMonster = 4] = "CaptureMonster";
+  e[e.TotalTopUpRole = 5] = "TotalTopUpRole";
 })(GiftType = exports.GiftType ||= {}); //# sourceMappingURL=GiftType.js.map

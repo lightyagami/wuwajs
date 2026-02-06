@@ -28,8 +28,8 @@ class PhantomArenaRewardView extends UiViewBase_1.UiViewBase {
     this.Bou = 0;
     this.TabTypeList = [];
     this.ypt = [];
-    this.hKm = undefined;
-    this.lKm = () => {
+    this.LYm = undefined;
+    this.PYm = () => {
       var e = new PhantomArenaEntranceTaskItem_1.PhantomBattleTaskTabItem();
       e.OnClickedCb = this.l6c;
       e.ActivityId = this.LOe;
@@ -52,13 +52,13 @@ class PhantomArenaRewardView extends UiViewBase_1.UiViewBase {
     this.VOe = () => {
       return new PhantomArenaEntranceTaskItem_1.PhantomBattleTaskItem();
     };
-    this._Km = () => {
+    this.AYm = () => {
       var e = ModelManager_1.ModelManager.PhantomArenaModel.GetRewardItemId(this.LOe);
       ControllerHolder_1.ControllerHolder.ItemController.OpenItemTipsByItemId(e);
     };
     this.g6e = () => {
-      if (this.hKm) {
-        PhantomArenaController_1.PhantomArenaController.TaskRewardRequest(this.hKm.s5n);
+      if (this.LYm) {
+        PhantomArenaController_1.PhantomArenaController.TaskRewardRequest(this.LYm.s5n);
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("PhantomArena", 71, "特殊奖励不存在");
       }
@@ -69,7 +69,7 @@ class PhantomArenaRewardView extends UiViewBase_1.UiViewBase {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIScrollViewWithScrollbarComponent], [2, UE.UIItem], [3, UE.UIHorizontalLayout], [4, UE.UIText], [5, UE.UIButtonComponent], [6, UE.UIButtonComponent], [7, UE.UIText]];
-    this.BtnBindInfo = [[6, this._Km], [5, this.g6e]];
+    this.BtnBindInfo = [[6, this.AYm], [5, this.g6e]];
   }
   OnAddEventListener() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPhantomArenaTaskAwardUpdate, this.H5c);
@@ -82,7 +82,7 @@ class PhantomArenaRewardView extends UiViewBase_1.UiViewBase {
     var e = new PopupCaptionItem_1.PopupCaptionItem(this.GetItem(0));
     e.SetHelpBtnActive(false);
     e.SetCloseCallBack(this.AMo);
-    this.B7t = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(3), this.lKm);
+    this.B7t = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(3), this.PYm);
     this.qoh = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(1), this.VOe);
     this.TabTypeList = ModelManager_1.ModelManager.PhantomArenaModel.GetTaskTabList(this.LOe);
     await this.B7t.RefreshByDataAsync(this.TabTypeList);
@@ -93,11 +93,11 @@ class PhantomArenaRewardView extends UiViewBase_1.UiViewBase {
   }
   wyl() {
     var e;
-    this.hKm = ModelManager_1.ModelManager.PhantomArenaModel.GetSpecialTask(this.LOe);
-    if (this.hKm) {
-      this.GetButton(6)?.RootUIComp.SetUIActive(this.hKm.H6n !== Protocol_1.Aki.Protocol.I$s.Proto_ActivityTaskFinish);
-      this.GetButton(5)?.RootUIComp.SetUIActive(this.hKm.H6n === Protocol_1.Aki.Protocol.I$s.Proto_ActivityTaskFinish);
-      e = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetTaskConfigById(this.hKm.s5n);
+    this.LYm = ModelManager_1.ModelManager.PhantomArenaModel.GetSpecialTask(this.LOe);
+    if (this.LYm) {
+      this.GetButton(6)?.RootUIComp.SetUIActive(this.LYm.H6n !== Protocol_1.Aki.Protocol.I$s.Proto_ActivityTaskFinish);
+      this.GetButton(5)?.RootUIComp.SetUIActive(this.LYm.H6n === Protocol_1.Aki.Protocol.I$s.Proto_ActivityTaskFinish);
+      e = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetTaskConfigById(this.LYm.s5n);
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), e.Desc);
     }
   }

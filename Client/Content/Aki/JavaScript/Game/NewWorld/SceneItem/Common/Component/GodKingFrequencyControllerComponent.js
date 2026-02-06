@@ -78,7 +78,7 @@ let GodKingFrequencyControllerComponent = class GodKingFrequencyControllerCompon
   }
   gld(e) {
     var t;
-    if (ModelManager_1.ModelManager.AvoidanceModel.UseRVOAvoidance && (t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity)?.Valid && t.Entity?.Valid && (t = t.Entity.CheckGetComponent(187)) && t.CharacterMovement) {
+    if (ModelManager_1.ModelManager.AvoidanceModel.UseRVOAvoidance && (t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity)?.Valid && t.Entity?.Valid && (t = t.Entity.CheckGetComponent(189)) && t.CharacterMovement) {
       t.CharacterMovement.SetAvoidanceGroupMask(ModelManager_1.ModelManager.AvoidanceModel.PlayerAvoidanceGroupMask);
       if (t.CharacterMovement.GetCharacterOwner()) {
         t.CharacterMovement.SetAvoidanceEnabled(e);
@@ -100,14 +100,14 @@ let GodKingFrequencyControllerComponent = class GodKingFrequencyControllerCompon
     if (!this.Cld?.Valid) {
       return false;
     }
-    const o = this.Cld.Entity?.CheckGetComponent(137);
+    const o = this.Cld.Entity?.CheckGetComponent(139);
     var e;
     return !!o && !!(e = this.Sld(n)) && (e = new SceneItemMoveComponent_1.MoveTarget(e, this.Lo.MaxFlyTime), o.AddStopMoveCallback(() => {
       o.ClearStopMoveCallback();
       var e;
       var t = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(n);
       if (t?.Valid && this.Eld(n, IAction_1.entityStateConfig.呓语雕像状态.破坏阶段4)) {
-        if ((e = (this.fld = t).Entity?.CheckGetComponent(89)) && e.IsOverlappingPlayer()) {
+        if ((e = (this.fld = t).Entity?.CheckGetComponent(91)) && e.IsOverlappingPlayer()) {
           this.Ild(t, true);
         }
       } else if (Log_1.Log.CheckInfo()) {
@@ -117,7 +117,7 @@ let GodKingFrequencyControllerComponent = class GodKingFrequencyControllerCompon
   }
   Eld(e, t) {
     var e = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e);
-    return !!e?.Valid && !!e.Entity?.Valid && !!(e = (e = e.Entity.CheckGetComponent(142)) && GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(e.StateTagId)) && e !== t;
+    return !!e?.Valid && !!e.Entity?.Valid && !!(e = (e = e.Entity.CheckGetComponent(144)) && GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(e.StateTagId)) && e !== t;
   }
   Ild(e, t) {
     if (t && e === this.fld) {
@@ -188,5 +188,5 @@ let GodKingFrequencyControllerComponent = class GodKingFrequencyControllerCompon
     }, EACH_WAIT_ENTITY_OVER_TIME * t.length, false);
   }
 };
-GodKingFrequencyControllerComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(314)], GodKingFrequencyControllerComponent);
+GodKingFrequencyControllerComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(316)], GodKingFrequencyControllerComponent);
 exports.GodKingFrequencyControllerComponent = GodKingFrequencyControllerComponent; //# sourceMappingURL=GodKingFrequencyControllerComponent.js.map

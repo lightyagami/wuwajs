@@ -102,14 +102,13 @@ class TrackedMark extends UiPanelBase_1.UiPanelBase {
     this.XCt = 0;
     this.Wza = undefined;
     this._Fl = false;
-    this.$6m = undefined;
-    this.J6f = false;
-    this.Z6f = false;
-    this.e7f = undefined;
-    this.t7f = undefined;
-    this.i7f = undefined;
-    this.r7f = undefined;
-    this.o7f = undefined;
+    this.yJf = false;
+    this.SJf = false;
+    this.MJf = undefined;
+    this.EJf = undefined;
+    this.IJf = undefined;
+    this.TJf = undefined;
+    this.bJf = undefined;
     this.ilt = () => {
       var t;
       if (!ModelManager_1.ModelManager.TrackModel.IsForceCloseTracked()) {
@@ -151,8 +150,8 @@ class TrackedMark extends UiPanelBase_1.UiPanelBase {
     };
     this.YCt = () => {
       if (this.RCt) {
-        let t = this.J6f ? TRACKB : TRACKA;
-        if (!this.Z6f) {
+        let t = this.yJf ? TRACKB : TRACKA;
+        if (!this.SJf) {
           t = TRACKC;
         }
         var i = this.RCt.GetCurrentSequence();
@@ -179,15 +178,15 @@ class TrackedMark extends UiPanelBase_1.UiPanelBase {
       this.vCt = t.ShowGroupId;
       this.MCt = t.Id;
       this.ohl = t.MarkType ?? 0;
-      this.J6f = t.WeakTrack ?? false;
+      this.yJf = t.WeakTrack ?? false;
       if (t.TaskMarkConfigId && (i = ConfigManager_1.ConfigManager.MapConfig.GetTaskMarkConfig(t.TaskMarkConfigId))) {
-        this.Z6f = true;
-        this.e7f = i.MarkRingPic;
-        this.t7f = i.MarkIcon;
-        this.i7f = i.RingColor;
-        this.r7f = i.SmallHaloColor;
-        this.o7f = i.LargeHaloColor;
-        this.Z6f = !StringUtils_1.StringUtils.IsBlank(this.e7f) && !StringUtils_1.StringUtils.IsBlank(this.t7f) && !StringUtils_1.StringUtils.IsBlank(this.r7f) && !StringUtils_1.StringUtils.IsBlank(this.o7f);
+        this.SJf = true;
+        this.MJf = i.MarkRingPic;
+        this.EJf = i.MarkIcon;
+        this.IJf = i.RingColor;
+        this.TJf = i.SmallHaloColor;
+        this.bJf = i.LargeHaloColor;
+        this.SJf = !StringUtils_1.StringUtils.IsBlank(this.MJf) && !StringUtils_1.StringUtils.IsBlank(this.EJf) && !StringUtils_1.StringUtils.IsBlank(this.TJf) && !StringUtils_1.StringUtils.IsBlank(this.bJf);
       }
       if ((i = ModelManager_1.ModelManager.MapModel.GetDynamicMark(this.MCt)) instanceof MapDefine_1.QuestMarkCreateInfo) {
         this.Wza = new TaskTrackedMarkItem_1.TaskTrackedMarkItem(i, this.ECt);
@@ -213,7 +212,7 @@ class TrackedMark extends UiPanelBase_1.UiPanelBase {
         this.IsForceHideDirection = true;
         this.jCt = true;
         this.HCt = true;
-        i = ModelManager_1.ModelManager.CreatureModel.GetEntityById(this.MCt)?.Entity?.GetComponent(169);
+        i = ModelManager_1.ModelManager.CreatureModel.GetEntityById(this.MCt)?.Entity?.GetComponent(171);
         this.KCt = (i?.AudioPointNearRadius ?? 0) * MapDefine_1.FLOAT_0_01;
         this.QCt = (i?.AudioPointMiddleRadius ?? 0) * MapDefine_1.FLOAT_0_01;
         this.XCt = (i?.AudioPointFarRadius ?? 0) * MapDefine_1.FLOAT_0_01;
@@ -241,18 +240,14 @@ class TrackedMark extends UiPanelBase_1.UiPanelBase {
     this.YCt();
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UISprite], [1, UE.UIText], [2, UE.UIItem], [3, UE.UIButtonComponent], [4, UE.UIItem], [5, UE.UINiagara], [6, UE.UIItem], [7, UE.UISprite], [8, UE.UISprite], [9, UE.UISprite], [10, UE.UISprite], [11, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UISprite], [1, UE.UIText], [2, UE.UIItem], [3, UE.UIButtonComponent], [4, UE.UIItem], [5, UE.UINiagara], [6, UE.UIItem], [7, UE.UISprite], [8, UE.UISprite], [9, UE.UISprite], [10, UE.UISprite], [11, UE.UIItem], [12, UE.UISprite]];
     this.BtnBindInfo = [[3, this.ilt]];
-  }
-  async OnBeforeStartAsync() {
-    var t = await LguiUtil_1.LguiUtil.LoadPrefabByResourceIdAsync("UiItem_AutocruiseMark", this.RootItem);
-    this.$6m = t?.GetComponentByClass(UE.UIItem.StaticClass());
   }
   OnStart() {
     this.xCt = this.GetItem(4);
     this.DirectionComp = this.GetItem(2);
     this.BCt = this.GetItem(6);
-    this.xCt.SetUIActive(!this.IsInTrackRange && !this.FCt);
+    this.xCt.SetUIActive(false);
     this.DirectionComp.SetUIActive(!this.IsInTrackRange && !this.IsForceHideDirection);
     this.BCt.SetUIActive(false);
     this.GetSprite(7)?.SetUIActive(false);
@@ -260,23 +255,23 @@ class TrackedMark extends UiPanelBase_1.UiPanelBase {
     var i = this.GetSprite(8);
     var s = this.GetSprite(9);
     var e = this.GetItem(11);
-    i?.SetUIActive(this.Z6f);
-    s?.SetUIActive(this.Z6f);
-    t?.SetUIActive(this.Z6f);
-    e.SetUIActive(this.Z6f);
-    if (this.Z6f) {
-      if (!StringUtils_1.StringUtils.IsBlank(this.t7f)) {
-        this.SetSpriteByPath(this.e7f, t, false);
+    i?.SetUIActive(this.SJf);
+    s?.SetUIActive(this.SJf);
+    t?.SetUIActive(this.SJf);
+    e.SetUIActive(this.SJf);
+    if (this.SJf) {
+      if (!StringUtils_1.StringUtils.IsBlank(this.EJf)) {
+        this.SetSpriteByPath(this.MJf, t, false);
       }
-      if (!StringUtils_1.StringUtils.IsBlank(this.i7f)) {
-        t.SetColor(UE.Color.FromHex(this.i7f));
-        e.SetColor(UE.Color.FromHex(this.i7f));
+      if (!StringUtils_1.StringUtils.IsBlank(this.IJf)) {
+        t.SetColor(UE.Color.FromHex(this.IJf));
+        e.SetColor(UE.Color.FromHex(this.IJf));
       }
-      if (!StringUtils_1.StringUtils.IsBlank(this.o7f)) {
-        i.SetColor(UE.Color.FromHex(this.o7f));
+      if (!StringUtils_1.StringUtils.IsBlank(this.bJf)) {
+        i.SetColor(UE.Color.FromHex(this.bJf));
       }
-      if (!StringUtils_1.StringUtils.IsBlank(this.r7f)) {
-        s.SetColor(UE.Color.FromHex(this.r7f));
+      if (!StringUtils_1.StringUtils.IsBlank(this.TJf)) {
+        s.SetColor(UE.Color.FromHex(this.TJf));
       }
     }
     this.RCt = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
@@ -308,10 +303,6 @@ class TrackedMark extends UiPanelBase_1.UiPanelBase {
     }
     if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnLogicTreeTrackUpdate, this.$Ct)) {
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnLogicTreeTrackUpdate, this.$Ct);
-    }
-    if (this.$6m) {
-      UE.LGUIBPLibrary.DestroyActorWithHierarchy(this.$6m.GetOwner(), true);
-      this.$6m = undefined;
     }
   }
   OnUiShow() {
@@ -348,7 +339,7 @@ class TrackedMark extends UiPanelBase_1.UiPanelBase {
     this.TrackTarget = t;
   }
   ehi(t = false) {
-    var i = this.Z6f && !StringUtils_1.StringUtils.IsBlank(this.t7f) ? this.t7f : this.FNl.IconPath;
+    var i = this.SJf && !StringUtils_1.StringUtils.IsBlank(this.EJf) ? this.EJf : this.FNl.IconPath;
     var t = t || i !== this.xst;
     this.xst = i;
     if (t && this.xst) {
@@ -405,10 +396,10 @@ class TrackedMark extends UiPanelBase_1.UiPanelBase {
             }
           }
           this.CurShowTime += t / CommonDefine_1.MILLIONSECOND_PER_SECOND;
-          s = (e = this.tgt()) !== this._Fl;
-          this._Fl = e;
+          e = (s = this.tgt()) !== this._Fl;
+          this._Fl = s;
           if (this._Fl) {
-            if (s) {
+            if (e) {
               this.ehi();
             }
             if (i < this.MarkHideDis && !this.PCt) {
@@ -419,21 +410,23 @@ class TrackedMark extends UiPanelBase_1.UiPanelBase {
             } else {
               this.hj1(true);
               this.UpdatePositionAndRotation(t);
+              s = this.GetItem(4);
               if (!this.InRange || this.IsInTrackRange || this.FCt) {
-                this.xCt.SetUIActive(false);
+                s?.SetUIActive(false);
+                this.GetSprite(12)?.SetUIActive(false);
               } else {
                 e = Math.round(i);
                 if (this.DCt !== e) {
                   this.DCt = e;
                   LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), "Text_Meter_Text", this.DCt.toString());
                 }
-                this.xCt.SetUIActive(true);
+                s?.SetUIActive(true);
+                this.GetSprite(12)?.SetUIActive(ModelManager_1.ModelManager.AutoPilotModel?.GetIsTracking(this.MCt) ?? false);
               }
               if (this.WCt === 1) {
                 this.ogt(t);
               }
-              this.BCt.SetUIActive(!this.IsInTrackRange && !this.HCt);
-              this.$6m?.SetUIActive(ModelManager_1.ModelManager.AutoPilotModel?.GetIsTracking(this.MCt) ?? false);
+              this.GetItem(6)?.SetUIActive(!this.IsInTrackRange && !this.HCt);
             }
           } else {
             this.hj1(false);
@@ -465,19 +458,21 @@ class TrackedMark extends UiPanelBase_1.UiPanelBase {
       this.InRange = this.ClampToEllipse(this.ScreenPosition, h);
       i = this.ScreenPosition.AdditionEqual(TrackDefine_1.center);
       this.RootItem.SetAnchorOffset(i.ToUeVector2D());
+      e = this.GetItem(2);
       if (this.InRange || this.IsInTrackRange || this.IsForceHideDirection) {
-        this.DirectionComp.SetUIActive(false);
+        e?.SetUIActive(false);
       } else {
         this.TempRotator.Reset();
         this.TempRotator.Yaw = Math.atan2(this.ScreenPosition.Y, this.ScreenPosition.X) * TrackDefine_1.RAD_2_DEG;
-        this.DirectionComp.SetUIRelativeRotation(this.TempRotator.ToUeRotator());
-        this.DirectionComp.SetUIActive(true);
+        e?.SetUIRelativeRotation(this.TempRotator.ToUeRotator());
+        e?.SetUIActive(true);
       }
+      s = this.GetUiNiagara(5);
       if (this.InRange || this.WCt !== 1) {
-        this.bCt.SetNiagaraVarFloat(VARNAME_WAVE_ROTATION, 0.25);
+        s?.SetNiagaraVarFloat(VARNAME_WAVE_ROTATION, 0.25);
       } else {
-        e = Math.atan2(this.ScreenPosition.Y, this.ScreenPosition.X) / (Math.PI * 2);
-        this.bCt.SetNiagaraVarFloat(VARNAME_WAVE_ROTATION, e);
+        h = Math.atan2(this.ScreenPosition.Y, this.ScreenPosition.X) / (Math.PI * 2);
+        s?.SetNiagaraVarFloat(VARNAME_WAVE_ROTATION, h);
       }
     }
   }
@@ -541,8 +536,7 @@ class TrackedMark extends UiPanelBase_1.UiPanelBase {
           this.bCt.SetNiagaraVarFloat(VARNAME_WAVE_NUM_SCALE, 1 / 3);
           this.bCt.SetNiagaraVarLinearColor(VARNAME_WAVE_COLOR, new UE.LinearColor(UE.Color.FromHex(WAVE_COLOR_FAR)));
         }
-        this.bCt.SetNiagaraUIActive(true, false);
-        this.bCt.ActivateSystem(false);
+        this.bCt.SetUIActive(true);
       }
       if (this.NCt >= this.GCt) {
         this.ZCt();
@@ -552,8 +546,7 @@ class TrackedMark extends UiPanelBase_1.UiPanelBase {
     }
   }
   ZCt() {
-    this.bCt.SetNiagaraUIActive(false, true);
-    this.bCt.DeactivateSystem();
+    this.bCt.SetUIActive(false);
     this.GCt = 0;
     this.NCt = 0;
     this.NiagaraNeedActivateNextTick = false;

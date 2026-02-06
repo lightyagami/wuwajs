@@ -17,13 +17,13 @@ class BulletLogicCameraModify extends BulletLogicController_1.BulletLogicControl
   BulletLogicAction(t) {
     var i = this.Lo.Player;
     if (i === 0 || i === 2) {
-      this.Cqm(this.Bullet.GetBulletInfo().AttackerHandle);
+      this.UOm(this.Bullet.GetBulletInfo().AttackerHandle);
     }
     if (i === 1 || i === 2) {
-      this.Cqm(t?.EntityHandle);
+      this.UOm(t?.EntityHandle);
     }
   }
-  Cqm(t) {
+  UOm(t) {
     if (t?.Valid) {
       var i = t.Entity.GetComponent(3)?.Actor;
       if (i && CharacterUtils_1.CharacterUtils.CanCharacterMonsterOrSummonedDisplayEffect(t)) {

@@ -92,24 +92,26 @@ class RoleInstance extends RoleDataBase_1.RoleDataBase {
     e.SetExp(t.U8n);
     e.SetBreachLevel(t.txs);
     var a = this.GetSkillData();
-    for (const s of t.axs) {
-      a.SetSkillLevel(s.Z4n, s.e5n);
-      a.SetSkillReferenceMapBySkillId(s.Z4n);
+    for (const l of t.axs) {
+      a.SetSkillLevel(l.Z4n, l.e5n);
+      a.SetSkillReferenceMapBySkillId(l.Z4n);
     }
     var o = this.GetPhantomData();
-    for (const l of t.hxs) {
-      o.RefreshPhantom(l.Z4n, l.e5n);
+    for (const f of t.hxs) {
+      o.RefreshPhantom(f.Z4n, f.e5n);
     }
     var r = t.dxs.length;
-    var n = [];
+    var n = new Map();
     for (let e = 0; e < r; e++) {
       var i = t.dxs[e];
-      n.push(new SkillNodeDataInfo_1.SkillNodeDataInfo(i.qHn, i.WHn, i.r5n));
+      var s = i.qHn;
+      var i = new SkillNodeDataInfo_1.SkillNodeDataInfo(s, i.WHn, i.r5n);
+      n.set(s, i);
     }
     a.SetSkillNodeStateData(n);
     this.RefreshRoleAttr(t.bws, t.Bws);
-    for (const f of t._xs) {
-      this.RefreshResonance(f);
+    for (const _ of t._xs) {
+      this.RefreshResonance(_);
     }
     this.GetResonanceData().SetResonantChainGroupIndex(t.mxs);
     this.SetRoleSkinId(t.Z7n);

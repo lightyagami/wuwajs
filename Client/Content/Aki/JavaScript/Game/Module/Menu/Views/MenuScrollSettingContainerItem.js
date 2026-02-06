@@ -32,6 +32,15 @@ class MenuScrollSettingContainerItem extends UiPanelBase_1.UiPanelBase {
     this.YBi = undefined;
     this.SPe = undefined;
     this.mHa = undefined;
+    this.yMa = () => {
+      if (this.Pe && this.Pe.CanClickWhenDisable && !this.Pe.GetEnable()) {
+        if (this.Pe.GetIsDetailTextVisible()) {
+          this.SetDetailVisible(false);
+        } else {
+          this.SetDetailVisible(true);
+        }
+      }
+    };
     this.Yai = e => {
       if (this.Pe && (e === 1 && this.dHa(), this.mHa)) {
         this.mHa(this, e);
@@ -55,7 +64,7 @@ class MenuScrollSettingContainerItem extends UiPanelBase_1.UiPanelBase {
       } else if (this.Pe.FunctionId === GameSettingsDefine_1.EFunction.HIGHESTFPS) {
         this.sku(e);
       } else if (this.Pe.FunctionId === GameSettingsDefine_1.EFunction.HDR) {
-        this.BBm(e);
+        this.h2m(e);
       } else {
         ControllerHolder_1.ControllerHolder.MenuController.HandleFireSaveMenuChange(this.Pe, e);
       }
@@ -77,9 +86,11 @@ class MenuScrollSettingContainerItem extends UiPanelBase_1.UiPanelBase {
   AddEventListener() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RefreshMenuSetting, this.JBi);
     this.GetExtendToggle(0).OnStateChange.Add(this.Yai);
+    this.GetExtendToggle(0).OnUndeterminedClicked.Add(this.yMa);
   }
   RemoveEventListener() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RefreshMenuSetting, this.JBi);
+    this.GetExtendToggle(0).OnUndeterminedClicked.Clear();
     this.GetExtendToggle(0).OnStateChange.Clear();
   }
   BindOnToggleStateChangedCallback(e) {
@@ -214,20 +225,25 @@ class MenuScrollSettingContainerItem extends UiPanelBase_1.UiPanelBase {
     this.GetItem(10).SetUIActive(false);
   }
   ZBi(e) {
-    var t = this.GetExtendToggle(0);
+    var t;
+    var i = this.GetExtendToggle(0);
     if (e) {
-      if (t.GetToggleState() === 1) {
-        t.SetToggleState(1, false);
+      if (i.GetToggleState() === 1) {
+        i.SetToggleState(1, false);
       } else {
-        t.SetToggleState(0, false);
+        i.SetToggleState(0, false);
       }
+      i.SetSelfInteractive(true);
     } else {
-      t.SetToggleState(2, false);
+      t = this.MenuScrollItemData?.Type !== 0;
+      i.SetToggleState(2, false);
+      i.SetSelfInteractive(t ?? true);
     }
-    t.SetSelfInteractive(e);
     if (this.Type !== 0 && this.YBi) {
       this.YBi.SetInteractionActive(e);
-      if (!e) {
+      if (!e && this.Pe?.CanClickWhenDisable) {
+        this.SetDetailVisible(this.Pe.GetIsDetailTextVisible());
+      } else if (!e) {
         this.YBi.SetDetailVisible(false);
       }
     }
@@ -282,7 +298,7 @@ class MenuScrollSettingContainerItem extends UiPanelBase_1.UiPanelBase {
       ControllerHolder_1.ControllerHolder.MenuController.HandleFireSaveMenuChange(this.Pe, e);
     }
   }
-  BBm(e) {
+  h2m(e) {
     ControllerHolder_1.ControllerHolder.MenuController.HandleFireSaveMenuChange(this.Pe, e);
   }
   E91(e) {

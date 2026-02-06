@@ -17,13 +17,13 @@ class MotorcycleTechTreeFirstNodeItem extends UiPanelBase_1.UiPanelBase {
     this.GLl = undefined;
     this.OnClickToggleBack = undefined;
     this.j1a = () => new MotorcycleTechTreeLevelItem_1.MotorcycleTechTreeLevelItem();
-    this.acf = () => {
+    this.omf = () => {
       this.OnClickToggleBack?.(this.Node, this.GetExtendToggle(0));
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UITexture], [2, UE.UIHorizontalLayout], [3, UE.UIItem], [4, UE.UIItem]];
-    this.BtnBindInfo = [[0, this.acf]];
+    this.BtnBindInfo = [[0, this.omf]];
   }
   OnStart() {
     this.GLl = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(2), this.j1a);
@@ -61,7 +61,7 @@ class MotorcycleTechTreeFirstNodeItem extends UiPanelBase_1.UiPanelBase {
     }
   }
   SelectNode() {
-    this.acf();
+    this.omf();
   }
 }
 exports.MotorcycleTechTreeFirstNodeItem = MotorcycleTechTreeFirstNodeItem;

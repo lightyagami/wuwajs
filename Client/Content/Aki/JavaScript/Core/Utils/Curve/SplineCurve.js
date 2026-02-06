@@ -625,8 +625,8 @@ class SplineCurve {
     }
   }
   GetRotationAtSplineInputKey(e, t, i) {
-    this.DXs(e, t, SplineCurve._Rm);
-    SplineCurve._Rm.Rotator(i);
+    this.DXs(e, t, SplineCurve.SRm);
+    SplineCurve.SRm.Rotator(i);
   }
   RXs(e, t, i, r = Quat_1.Quat.IdentityProxy) {
     var n = e.length;
@@ -814,10 +814,10 @@ class SplineCurve {
   }
   FindInputKeyClosestToWorldLocation(e) {
     this.SplineTransform.InverseTransformPosition(e, SplineCurve.jye);
-    var [e] = this.$Kf(this.Position, SplineCurve.jye);
+    var [e] = this.t1g(this.Position, SplineCurve.jye);
     return e;
   }
-  $Kf(n, s) {
+  t1g(n, s) {
     let e = 0;
     let o = 0;
     var t = n.length;
@@ -931,6 +931,6 @@ SplineCurve.KJ = Quat_1.Quat.Create();
 SplineCurve.QJ = Quat_1.Quat.Create();
 SplineCurve.fXs = Quat_1.Quat.Create();
 SplineCurve.pXs = Quat_1.Quat.Create();
-SplineCurve._Rm = Quat_1.Quat.Create();
+SplineCurve.SRm = Quat_1.Quat.Create();
 SplineCurve.Gue = Rotator_1.Rotator.Create();
 SplineCurve.Z_e = Transform_1.Transform.Create(); //# sourceMappingURL=SplineCurve.js.map

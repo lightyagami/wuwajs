@@ -17,6 +17,7 @@ const GravityUtils_1 = require("../../../../../Utils/GravityUtils");
 const CharacterUtils_1 = require("../../../CharacterUtils");
 const CharacterGasDebugComponent_1 = require("../../Component/Abilities/CharacterGasDebugComponent");
 const CharacterStatisticsComponent_1 = require("../../Component/Abilities/CharacterStatisticsComponent");
+const CharacterUnifiedStateTypes_1 = require("../../Component/Abilities/CharacterUnifiedStateTypes");
 const SAVE_PATH = "Statistics/FightDataRecord/";
 class CharacterBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   Constructor() {}
@@ -24,7 +25,7 @@ class CharacterBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     if (t?.IsValid() && t.CharacterActorComponent?.Valid) {
       t.CharacterActorComponent.SetPartCollisionSwitch(e, r, a, i);
     } else if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("Character", 20, "传入的character为空");
+      Log_1.Log.Error("Character", 20, "传入的character为空1");
     }
   }
   static ResetPartCollisionSwitch(t, e) {
@@ -101,26 +102,26 @@ class CharacterBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     CharacterStatisticsComponent_1.CharacterStatisticsComponent.HalfLengthRecordSquared = Math.pow(t, 2);
   }
   static SetCombatStarted(t, e, r, a, i, n, o, c, s) {
-    var l = new Array();
+    var C = new Array();
     if (a) {
-      l.push(0);
+      C.push(0);
     }
     if (i) {
-      l.push(1);
+      C.push(1);
     }
     if (n) {
-      l.push(2);
+      C.push(2);
     }
     if (o) {
-      l.push(3);
+      C.push(3);
     }
     if (c) {
-      l.push(4);
+      C.push(4);
     }
     if (s) {
-      l.push(5);
+      C.push(5);
     }
-    CharacterStatisticsComponent_1.CharacterStatisticsComponent.SetCombatStarted(t, l, e, r);
+    CharacterStatisticsComponent_1.CharacterStatisticsComponent.SetCombatStarted(t, C, e, r);
   }
   static SetTypeOpen(t, e, r, a, i, n) {
     var o = new Array();
@@ -169,7 +170,7 @@ class CharacterBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     return CharacterStatisticsComponent_1.CharacterStatisticsComponent.GetItemListViewCount();
   }
   static TestLeaveSplineMove(t) {
-    t.GetEntityNoBlueprint().GetComponent(116).EndSplineMove(1);
+    t.GetEntityNoBlueprint().GetComponent(118).EndSplineMove(1);
     CameraController_1.CameraController.FightCamera.LogicComponent.ExitCameraSpline();
   }
   static GetBaseCharacterTransform() {
@@ -191,7 +192,7 @@ class CharacterBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   }
   static DetachFromHost(t, e, r) {
     var t = EntitySystem_1.EntitySystem.Get(t);
-    if (t?.Valid && (t = t.GetComponent(189))?.Valid) {
+    if (t?.Valid && (t = t.GetComponent(191))?.Valid) {
       t.DetachFromHost(e, r, true);
     }
   }
@@ -203,7 +204,7 @@ class CharacterBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   }
   static SetGravityDirect(t, e) {
     var t = ModelManager_1.ModelManager.CreatureModel.GetEntityById(t);
-    if (t?.Valid && (t = t.Entity.GetComponent(187))?.Valid) {
+    if (t?.Valid && (t = t.Entity.GetComponent(189))?.Valid) {
       t.SetGravityDirectByNumber(e.X, e.Y, e.Z);
     }
   }
@@ -246,7 +247,7 @@ class CharacterBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   static GetEntityForeverTimeDilation(t) {
     CharacterBlueprintFunctionLibrary.EntityTimeDilation ||= new UE.SEntityTimeDilation();
     CharacterBlueprintFunctionLibrary.EntityTimeDilation.SourceType = -1;
-    var t = EntitySystem_1.EntitySystem.GetComponent(t, 131);
+    var t = EntitySystem_1.EntitySystem.GetComponent(t, 133);
     if (t?.Valid && (t = t.GetTopForeverTimeScaleConfig())) {
       CharacterBlueprintFunctionLibrary.EntityTimeDilation.SourceType = t.SourceType;
       CharacterBlueprintFunctionLibrary.EntityTimeDilation.TimeDilation = t.TimeDilation;
@@ -273,19 +274,36 @@ class CharacterBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   static SetCharacterDirectlySightLockEnableState(t, e) {
     t = EntitySystem_1.EntitySystem.Get(t);
     if (t?.Valid) {
-      t.GetComponent(186)?.SetDirectlySightEnableState(e, "通过蓝图接口设置");
+      t.GetComponent(188)?.SetDirectlySightEnableState(e, "通过蓝图接口设置");
     }
   }
   static SetCharacterSightLockBoneLimit(t, e = -23, r = 23, a = -10, i = 13, n = 5, o = new UE.Vector(0.3, -1, 0), c = new UE.Vector(0.3, -1, 0)) {
     t = EntitySystem_1.EntitySystem.Get(t);
     if (t?.Valid) {
-      t.GetComponent(186)?.SetSightBoneLimit(e, r, a, i, n, o, c);
+      t.GetComponent(188)?.SetSightBoneLimit(e, r, a, i, n, o, c);
     }
   }
   static RestoreSightLockBoneLimit(t) {
     t = EntitySystem_1.EntitySystem.Get(t);
     if (t?.Valid) {
-      t.GetComponent(186)?.RestoreSightBoneLimit();
+      t.GetComponent(188)?.RestoreSightBoneLimit();
+    }
+  }
+  static GetCharacterMovementModeInfo(t) {
+    var e;
+    var t = EntitySystem_1.EntitySystem.Get(t);
+    if (t?.Valid && (e = t.GetComponent(189)?.CharacterMovement)?.IsValid() && t.GetComponent(186)?.Valid) {
+      return "Mode: " + CharacterUtils_1.CharacterUtils.GetMovementModeName(e.MovementMode) + ", CustomMode: " + CharacterUtils_1.CharacterUtils.GetCustomMovementModeName(e.CustomMovementMode);
+    } else {
+      return "";
+    }
+  }
+  static GetCharacterMovementStateInfo(t) {
+    var t = EntitySystem_1.EntitySystem.Get(t);
+    if (t?.Valid && t.GetComponent(189)?.CharacterMovement?.IsValid() && (t = t.GetComponent(186))?.Valid) {
+      return "PositionState: " + CharacterUnifiedStateTypes_1.ECharPositionState[t.PositionState] + ", MoveState: " + CharacterUnifiedStateTypes_1.ECharMoveState[t.MoveState];
+    } else {
+      return "";
     }
   }
 }

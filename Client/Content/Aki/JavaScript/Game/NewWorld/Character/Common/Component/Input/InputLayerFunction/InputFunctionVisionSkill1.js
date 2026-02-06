@@ -19,7 +19,8 @@ const ScrollingTipsController_1 = require("../../../../../../Module/ScrollingTip
 const ResponsibilityChain_1 = require("../../../../../../Utils/ResponsibilityChain/ResponsibilityChain");
 const VehicleController_1 = require("../../../../../Vehicle/Controller/VehicleController");
 const CharacterUnifiedStateTypes_1 = require("../../Abilities/CharacterUnifiedStateTypes");
-const FollowFunctionLibrary_1 = require("../../Abilities/Follow/FollowFunctionLibrary");
+const FollowUtils_1 = require("../../Abilities/Follow/FollowUtils");
+const SpecialSkillAimisi_1 = require("../../Skill/SpecialSkill/SpecialSkillAimisi");
 const InputDefine_1 = require("./InputDefine");
 const InputFunctionCommon_1 = require("./InputFunctionCommon");
 class InputFunctionContext {
@@ -50,7 +51,7 @@ class CharacterResponseInputDisableHandler extends DisableHandler {
 }
 class PositionStateDisableHandler extends DisableHandler {
   ShouldStop(e) {
-    var n = e.Entity.GetComponent(109)?.PositionState;
+    var n = e.Entity.GetComponent(111)?.PositionState;
     switch (e.SkillId) {
       case InputDefine_1.SKILL_ID_SUMMON_MOTOCYCLE:
       case InputDefine_1.SKILL_ID_SUMMON_MOTOCYCLE_AUTOPILOT:
@@ -64,24 +65,26 @@ class PositionStateDisableHandler extends DisableHandler {
 }
 class TagDisableHandler extends DisableHandler {
   ShouldStop(e) {
-    var n = e.Entity.GetComponent(215);
+    var n = e.Entity.GetComponent(217);
     if (n) {
       switch (e.SkillId) {
         case InputDefine_1.SKILL_ID_SUMMON_MOTOCYCLE:
+          return n.HasAnyTag(TagDisableHandler.Upg);
         case InputDefine_1.SKILL_ID_SUMMON_MOTOCYCLE_AUTOPILOT:
           return n.HasTag(1996802261);
         case InputDefine_1.SKILL_ID_SUMMON_PARK_MOTOCYCLE:
-          return n.HasAnyTag(TagDisableHandler.GJf);
+          return n.HasAnyTag(TagDisableHandler.Akg);
       }
     }
     return false;
   }
 }
-TagDisableHandler.GJf = [1996802261, -1178928415, 283451623, -2112257652, 1950824539, 1949638808];
+TagDisableHandler.Upg = [1996802261, 229891237];
+TagDisableHandler.Akg = [...TagDisableHandler.Upg, -1178928415, 283451623, -2112257652, 1950824539, 1949638808];
 class EntityDisableHandler extends DisableHandler {
   ShouldStop(e) {
     var n = ModelManager_1.ModelManager.CreatureModel.GetPlayerId();
-    var i = FollowFunctionLibrary_1.FollowFunctionLibrary.GetPlayerFollowVehicle(n, "Motorcycle")?.Entity?.GetComponent(265);
+    var i = FollowUtils_1.FollowUtils.GetPlayerFollowVehicle(n, "Motorcycle")?.Entity?.GetComponent(265);
     switch (e.SkillId) {
       case InputDefine_1.SKILL_ID_SUMMON_MOTOCYCLE:
       case InputDefine_1.SKILL_ID_SUMMON_MOTOCYCLE_AUTOPILOT:
@@ -118,14 +121,14 @@ function visionSkill1Function(e) {
   if (n) {
     var i = n.CharacterActorComponent?.Entity;
     if (i) {
-      var r = i.GetComponent(215);
-      if (r && r.Valid && i.GetComponent(46)?.CanResponseInput() && !r.HasTag(-2100129479)) {
+      var r = i.GetComponent(217);
+      if (r && r.Valid && i.GetComponent(48)?.CanResponseInput() && !r.HasTag(-2100129479)) {
         var t = (0, InputFunctionCommon_1.createInputCommandFromDataTable)(i.Id, 7, 1);
         if (t) {
           return t;
         }
         if (r.HasTag(-376090703)) {
-          if (i.GetComponent(187)?.IsOnGroundOrOnWater()) {
+          if (i.GetComponent(189)?.IsOnGroundOrOnWater()) {
             return (0, InputFunctionCommon_1.createSkillCommand)(i, InputDefine_1.SKILL_ID_YUANNIAOZE_TORNADO);
           }
         } else {
@@ -147,16 +150,16 @@ function visionSkill1Function(e) {
         t = ModelManager_1.ModelManager.RouletteModel.CurrentExploreSkillId;
         if (t) {
           let e = 0;
-          var o = PhantomUtil_1.PhantomUtil.GetVisionData(t);
-          if ((e = o && o.类型 === 2 ? o.技能ID : e) === InputDefine_1.SKILL_ID_HOOK) {
-            o = n.CharacterActorComponent.CreatureData.GetPbDataId();
-            if (ConfigManager_1.ConfigManager.RoleConfig.GetBaseRoleId(o) === ROLE_ID_CALBRENA && r.HasTag(-869438579)) {
+          var l = PhantomUtil_1.PhantomUtil.GetVisionData(t);
+          if ((e = l && l.类型 === 2 ? l.技能ID : e) === InputDefine_1.SKILL_ID_HOOK) {
+            var l = n.CharacterActorComponent.CreatureData.GetPbDataId();
+            if (ConfigManager_1.ConfigManager.RoleConfig.GetBaseRoleId(l) === ROLE_ID_CALBRENA && r.HasTag(-869438579)) {
               e = InputDefine_1.SKILL_ID_FLYING_FEATHER;
             } else if (r.HasTag(-1526637662)) {
               e = InputDefine_1.SKILL_ID_XA_KITE;
             } else if (r.HasTag(-1771378495)) {
               e = InputDefine_1.SKILL_ID_XA_MOVABLE;
-            } else if (i.GetComponent(105)?.CanActivateFixHook()) {
+            } else if (i.GetComponent(107)?.CanActivateFixHook()) {
               e = r.HasTag(-1958756056) ? InputDefine_1.SKILL_ID_FIX_HOOK_2 : InputDefine_1.SKILL_ID_FIX_HOOK_1;
             } else {
               if (r.HasTag(-1009010563)) {
@@ -203,10 +206,10 @@ function visionSkill1Function(e) {
               });
               return;
             }
-            o = i.GetComponent(62)?.CheckSoarAllowed();
-            if (!o?.[0]) {
+            l = i.GetComponent(64)?.CheckSoarAllowed();
+            if (!l?.[0]) {
               if (Log_1.Log.CheckDebug()) {
-                Log_1.Log.Debug("Input", 39, "Soar not allowed", ["Reason", o?.[1]]);
+                Log_1.Log.Debug("Input", 39, "Soar not allowed", ["Reason", l?.[1]]);
               }
               ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("Flying_Tip_002");
               return;
@@ -215,10 +218,10 @@ function visionSkill1Function(e) {
               ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("Flying_Tip_002");
               return;
             }
-            n = i.GetComponent(109)?.PositionState;
+            n = i.GetComponent(111)?.PositionState;
             if (n === CharacterUnifiedStateTypes_1.ECharPositionState.Air) {
-              o = i.GetComponent(46)?.GetHeightAboveGround(SOAR_HEIGHT_LIMIT);
-              if ((!o || o < SOAR_HEIGHT_LIMIT) && visionSkill1TraceDetectHasGround(i)) {
+              l = i.GetComponent(48)?.GetHeightAboveGround(SOAR_HEIGHT_LIMIT);
+              if ((!l || l < SOAR_HEIGHT_LIMIT) && visionSkill1TraceDetectHasGround(i)) {
                 ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("Flying_Tip");
                 return;
               }
@@ -229,14 +232,18 @@ function visionSkill1Function(e) {
               }
               e = InputDefine_1.SKILL_ID_XA_GROUND;
             }
-          } else if ((e === InputDefine_1.SKILL_ID_SUMMON_MOTOCYCLE || e === InputDefine_1.SKILL_ID_SUMMON_PARK_MOTOCYCLE || e === InputDefine_1.SKILL_ID_SUMMON_MOTOCYCLE_AUTOPILOT) && motorcycleDisableChain.Stop(new InputFunctionContext(i, e))) {
-            ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("Flying_Tip_002");
+          } else if (e === InputDefine_1.SKILL_ID_SUMMON_MOTOCYCLE || e === InputDefine_1.SKILL_ID_SUMMON_PARK_MOTOCYCLE || e === InputDefine_1.SKILL_ID_SUMMON_MOTOCYCLE_AUTOPILOT) {
+            if (motorcycleDisableChain.Stop(new InputFunctionContext(i, e))) {
+              ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("Flying_Tip_002");
+              return;
+            }
+          } else if (t === SpecialSkillAimisi_1.AIMISI_MORPH_EXPLORE_SKILL_ID && (!r.HasTag(225676701) || r.HasTag(1175208527))) {
             return;
           }
           if (e !== 0) {
             if (ModelManager_1.ModelManager.ExploreSkillFlagModel.GetExploreSkillFlagEnable(e)) {
-              r = i?.GetComponent(56);
-              ModelManager_1.ModelManager.RouletteModel.TrySendExploreToolGeneralUseLogData(t, e, r?.FocusTarget?.EntityConfigId);
+              l = i?.GetComponent(58);
+              ModelManager_1.ModelManager.RouletteModel.TrySendExploreToolGeneralUseLogData(t, e, l?.FocusTarget?.EntityConfigId);
               return (0, InputFunctionCommon_1.createSkillCommand)(i, e);
             }
             ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("ExploreTeleporterBan");

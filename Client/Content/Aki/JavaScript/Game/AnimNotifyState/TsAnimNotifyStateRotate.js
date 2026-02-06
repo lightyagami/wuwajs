@@ -86,15 +86,15 @@ class TsAnimNotifyStateRotate extends UE.KuroAnimNotifyState {
         this.ParamsMap.set(e.Id, new AnsRotateParam(s));
       }
       if (this.在横板模式中禁用) {
-        if (e.GetComponent(116)?.Active) {
+        if (e.GetComponent(118)?.Active) {
           return false;
         }
       } else if (this.只在横板模式中生效) {
-        if (!e.GetComponent(116)?.Active) {
+        if (!e.GetComponent(118)?.Active) {
           return false;
         }
       }
-      s = e.GetComponent(41);
+      s = e.GetComponent(43);
       if (s?.Valid) {
         e = this.ParamsMap.get(e.Id);
         if (this.定向旋转功能) {
@@ -126,15 +126,15 @@ class TsAnimNotifyStateRotate extends UE.KuroAnimNotifyState {
       var o = h.NowTime;
       h.NowTime += r;
       if (this.在横板模式中禁用) {
-        if (a.GetComponent(116)?.Active) {
+        if (a.GetComponent(118)?.Active) {
           return false;
         }
       } else if (this.只在横板模式中生效) {
-        if (!a.GetComponent(116)?.Active) {
+        if (!a.GetComponent(118)?.Active) {
           return false;
         }
       }
-      a = a.GetComponent(41);
+      a = a.GetComponent(43);
       if (!a?.Valid) {
         return false;
       }
@@ -168,7 +168,7 @@ class TsAnimNotifyStateRotate extends UE.KuroAnimNotifyState {
   }
   K2_NotifyEnd(t, i) {
     var t = t.GetOwner();
-    if (t instanceof TsBaseCharacter_1.default && (this.ParamsMap?.delete(t.CharacterActorComponent?.Entity.Id ?? 0), (t = t.CharacterActorComponent?.Entity?.GetComponent(41))?.Valid)) {
+    if (t instanceof TsBaseCharacter_1.default && (this.ParamsMap?.delete(t.CharacterActorComponent?.Entity.Id ?? 0), (t = t.CharacterActorComponent?.Entity?.GetComponent(43))?.Valid)) {
       t.SetSkillCanRotate(false);
       t.SetRotateTarget(undefined, 0);
     }

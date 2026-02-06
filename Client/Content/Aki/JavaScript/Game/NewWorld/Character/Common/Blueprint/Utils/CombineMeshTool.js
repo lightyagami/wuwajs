@@ -157,7 +157,7 @@ class CombineMeshTool {
       });
     }
   }
-  static HWm(e, s) {
+  static qKm(e, s) {
     if (!ObjectUtils_1.ObjectUtils.IsValid(e)) {
       return false;
     }
@@ -180,7 +180,7 @@ class CombineMeshTool {
           var c = l.MorphTargets;
           var U = l.MaterialInfos;
           var l = this.NKo(r, e, n, s, _, h, true, t);
-          if (l && (this.HWm(l, c), a.AddSkeletalMeshComponent(l, h), U) && U.Num() > 0) {
+          if (l && (this.qKm(l, c), a.AddSkeletalMeshComponent(l, h), U) && U.Num() > 0) {
             for (let t = 0; t < U.Num(); t++) {
               var v = U.Get(t);
               var E = v.SlotID;

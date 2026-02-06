@@ -79,7 +79,7 @@ class CameraFocusController extends CameraControllerBase_1.CameraControllerBase 
     this.Iic = 0;
     this.BJe = (t, i, s) => {
       var h = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint();
-      if (t === h?.Id && (t = h.GetComponent(41))?.Valid && t.CurrentSkill?.SkillInfo.IsLockOn) {
+      if (t === h?.Id && (t = h.GetComponent(43))?.Valid && t.CurrentSkill?.SkillInfo.IsLockOn) {
         this.KJa();
       }
     };
@@ -173,7 +173,7 @@ class CameraFocusController extends CameraControllerBase_1.CameraControllerBase 
     var i;
     var s;
     if (this.FQd() && this.Camera.IsTargetLocationValid) {
-      [i, s] = this.Camera.CharacterEntityHandle.Entity.GetComponent(65).GetCameraInput();
+      [i, s] = this.Camera.CharacterEntityHandle.Entity.GetComponent(67).GetCameraInput();
       i *= Info_1.Info.IsInGamepad() ? this.SoftLockInputYawSensitivityGamepad : this.SoftLockInputYawSensitivity;
       s *= Info_1.Info.IsInGamepad() ? this.SoftLockInputPitchSensitivityGamepad : this.SoftLockInputPitchSensitivity;
       if (Math.abs(i) > this.SoftUnlockInputYawMinSpeed || Math.abs(s) > this.SoftUnlockInputPitchMinSpeed) {
@@ -192,7 +192,7 @@ class CameraFocusController extends CameraControllerBase_1.CameraControllerBase 
     var a;
     if (this.FQd() && this.Camera.IsTargetLocationValid) {
       if (!this.Camera.IsModifiedArmRotationPitch || !this.Camera.IsModifiedArmRotationYaw) {
-        [i, s] = this.Camera.CharacterEntityHandle.Entity.GetComponent(65).GetCameraInput();
+        [i, s] = this.Camera.CharacterEntityHandle.Entity.GetComponent(67).GetCameraInput();
         e = !(h = this.Camera.ContainsAnyTag([-1150819426, 1260125908])) && ModelManager_1.ModelManager.CameraModel.IsSoftLockEnable() && !this.ShouldSoftUnlock() && !this.CanMoveCameraInSoftLock();
         a = this.Camera.PlayerLocation;
         this.Camera.TargetLocation.Subtraction(a, this.xzi);
@@ -269,7 +269,7 @@ class CameraFocusController extends CameraControllerBase_1.CameraControllerBase 
         }
       } else {
         if (i) {
-          if ((l = this.Camera.CharacterEntityHandle.Entity.GetComponent(33)) && l?.ShowTarget?.Valid) {
+          if ((l = this.Camera.CharacterEntityHandle.Entity.GetComponent(34)) && l?.ShowTarget?.Valid) {
             if (Math.abs(n) < this.RelativeYawSoftMin) {
               this.Ele.Yaw += r * this.RelativeYawSoftMin;
             } else if (Math.abs(n) > this.RelativeYawSoftMax) {
@@ -354,7 +354,7 @@ class CameraFocusController extends CameraControllerBase_1.CameraControllerBase 
     var i;
     var s;
     var h;
-    if (!this.Camera.ContainsTag(-1150819426) || ([s, h] = this.Camera.CharacterEntityHandle.Entity.GetComponent(65).GetCameraInput(), s === 0 && h === 0)) {
+    if (!this.Camera.ContainsTag(-1150819426) || ([s, h] = this.Camera.CharacterEntityHandle.Entity.GetComponent(67).GetCameraInput(), s === 0 && h === 0)) {
       this.l_e.Reset();
       this.dTn = true;
     } else {
@@ -370,7 +370,7 @@ class CameraFocusController extends CameraControllerBase_1.CameraControllerBase 
       if ((s = this.l_e.SizeSquared()) > (this.dTn ? FIRST_THRESHOLD_SQUARED : 1)) {
         h = Math.sqrt(s);
         this.l_e.DivisionEqual(h);
-        this.Camera.CharacterEntityHandle.Entity.GetComponent(33).ChangeShowTarget(this.l_e, this.ChangeShowTargetAngleCoefficient, this.ChangeShowTargetDistCoefficient);
+        this.Camera.CharacterEntityHandle.Entity.GetComponent(34).ChangeShowTarget(this.l_e, this.ChangeShowTargetAngleCoefficient, this.ChangeShowTargetDistCoefficient);
         this.l_e.MultiplyEqual(h - (this.dTn ? FIRST_THRESHOLD : 1));
         this.dTn = false;
       }
@@ -389,7 +389,7 @@ class CameraFocusController extends CameraControllerBase_1.CameraControllerBase 
     }
   }
   ShouldSoftUnlock() {
-    var [t, i] = this.Camera.CharacterEntityHandle.Entity.GetComponent(65).GetCameraInput();
+    var [t, i] = this.Camera.CharacterEntityHandle.Entity.GetComponent(67).GetCameraInput();
     t *= Info_1.Info.IsInGamepad() ? this.SoftLockInputYawSensitivityGamepad : this.SoftLockInputYawSensitivity;
     i *= Info_1.Info.IsInGamepad() ? this.SoftLockInputPitchSensitivityGamepad : this.SoftLockInputPitchSensitivity;
     return Math.abs(t) > this.SoftUnlockYawSpeed || Math.abs(i) > this.SoftUnlockPitchSpeed;

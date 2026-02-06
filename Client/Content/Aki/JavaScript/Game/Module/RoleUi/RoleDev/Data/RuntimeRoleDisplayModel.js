@@ -4,6 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.RuntimeRoleDisplayModel = undefined;
+const MultiTextLang_1 = require("../../../../../Core/Define/ConfigQuery/MultiTextLang");
 const ConfigManager_1 = require("../../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const RoleDevUtils_1 = require("../RoleDevUtils");
@@ -15,21 +16,21 @@ class RuntimeRoleDisplayModel extends RoleDevDisplayModelBase_1.RoleDisplayModel
   }
   InitByRoleData(e) {
     var a = e.GetDataId();
-    var l = ModelManager_1.ModelManager.SceneTeamModel.GetTeamItem(a, {
+    var i = ModelManager_1.ModelManager.SceneTeamModel.GetTeamItem(a, {
       ParamType: 0
     }) !== undefined;
-    var i = RoleDevUtils_1.RoleDevUtils.GetRoleTypeTagByRoleId(a);
-    var o = e.GetRoleConfig();
+    var l = RoleDevUtils_1.RoleDevUtils.GetRoleTypeTagByRoleId(a);
+    var r = e.GetRoleConfig();
     this.InitBase({
       Id: a,
-      Name: o.Name,
+      Name: MultiTextLang_1.configMultiTextLang.GetLocalTextNew(r.Name),
       SkinId: e.GetRoleSkinId(),
-      ElementId: o.ElementId,
+      ElementId: r.ElementId,
       Level: e.GetLevelData().GetLevel(),
-      IsInTeam: l,
+      IsInTeam: i,
       IsTrial: false,
       IsNew: e.GetIsNew(),
-      TypeTag: i
+      TypeTag: l
     });
     this.ovd = e;
   }
@@ -37,18 +38,18 @@ class RuntimeRoleDisplayModel extends RoleDevDisplayModelBase_1.RoleDisplayModel
     var a = ModelManager_1.ModelManager.SceneTeamModel.GetTeamItem(e, {
       ParamType: 0
     }) !== undefined;
-    var l = RoleDevUtils_1.RoleDevUtils.GetRoleTypeTagByRoleId(e);
-    var i = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(e);
+    var i = RoleDevUtils_1.RoleDevUtils.GetRoleTypeTagByRoleId(e);
+    var l = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(e);
     this.InitBase({
       Id: e,
-      Name: i.Name,
-      SkinId: i.SkinId,
-      ElementId: i.ElementId,
+      Name: MultiTextLang_1.configMultiTextLang.GetLocalTextNew(l.Name),
+      SkinId: l.SkinId,
+      ElementId: l.ElementId,
       Level: 0,
       IsInTeam: a,
       IsTrial: false,
       IsNew: false,
-      TypeTag: l
+      TypeTag: i
     });
   }
   get SourceType() {

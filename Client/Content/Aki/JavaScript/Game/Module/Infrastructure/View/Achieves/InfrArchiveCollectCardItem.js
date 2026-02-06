@@ -15,19 +15,19 @@ const InfrastructureController_1 = require("../../InfrastructureController");
 class InfrArchiveCollectCardItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
     super(...arguments);
-    this.cTf = 0;
-    this.Y3m = () => {
-      var r = ConfigManager_1.ConfigManager.InfrastructureConfig.GetArchiveItemConfig(this.cTf);
+    this.ZLf = 0;
+    this.f5m = () => {
+      var r = ConfigManager_1.ConfigManager.InfrastructureConfig.GetArchiveItemConfig(this.ZLf);
       var e = ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(r.ItemId) > 0;
       if (r && e) {
-        if (ModelManager_1.ModelManager.InfrastructureModel.GetArchiveIsUnRead(this.cTf)) {
-          InfrastructureController_1.InfrastructureController.RequestInfrArchiveReadRequest([this.cTf]);
+        if (ModelManager_1.ModelManager.InfrastructureModel.GetArchiveIsUnRead(this.ZLf)) {
+          InfrastructureController_1.InfrastructureController.RequestInfrArchiveReadRequest([this.ZLf]);
         }
         ControllerHolder_1.ControllerHolder.InfoDisplayController.OpenInfoDisplay(r.InfoDisplayId, undefined, undefined, false, UiLayerType_1.ELayerType.Pop);
       }
     };
-    this.z3m = () => {
-      var r = ConfigManager_1.ConfigManager.InfrastructureConfig.GetArchiveItemConfig(this.cTf);
+    this.g5m = () => {
+      var r = ConfigManager_1.ConfigManager.InfrastructureConfig.GetArchiveItemConfig(this.ZLf);
       if (r) {
         SkipTaskManager_1.SkipTaskManager.RunByConfigId(r.AccessPath);
       }
@@ -35,14 +35,14 @@ class InfrArchiveCollectCardItem extends GridProxyAbstract_1.GridProxyAbstract {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIItem], [2, UE.UITexture], [3, UE.UIText], [4, UE.UIButtonComponent], [5, UE.UIItem], [6, UE.UITexture], [7, UE.UIText], [8, UE.UITexture], [9, UE.UIItem], [10, UE.UINiagara]];
-    this.BtnBindInfo = [[0, this.Y3m], [4, this.z3m]];
+    this.BtnBindInfo = [[0, this.f5m], [4, this.g5m]];
   }
   Refresh(r) {
-    this.cTf = r;
-    this.J3m();
+    this.ZLf = r;
+    this.C5m();
   }
-  J3m() {
-    var r = ConfigManager_1.ConfigManager.InfrastructureConfig.GetArchiveItemConfig(this.cTf);
+  C5m() {
+    var r = ConfigManager_1.ConfigManager.InfrastructureConfig.GetArchiveItemConfig(this.ZLf);
     var e = ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(r.ItemId) > 0;
     var i = ConfigManager_1.ConfigManager.ItemConfig.GetConfig(r.ItemId);
     this.GetItem(1).SetUIActive(!e);
@@ -52,7 +52,7 @@ class InfrArchiveCollectCardItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.GetText(7).ShowTextNew(i.Name);
     var e = ConfigManager_1.ConfigManager.InfrastructureConfig.GetArchiveItemQualityPath(i.QualityId);
     this.SetTextureByPath(e, this.GetTexture(8));
-    this.GetItem(9).SetUIActive(ModelManager_1.ModelManager.InfrastructureModel.GetArchiveIsUnRead(this.cTf));
+    this.GetItem(9).SetUIActive(ModelManager_1.ModelManager.InfrastructureModel.GetArchiveIsUnRead(this.ZLf));
     this.GetUiNiagara(10).SetNiagaraVarInt("Subuv", r.EffectId);
   }
 }

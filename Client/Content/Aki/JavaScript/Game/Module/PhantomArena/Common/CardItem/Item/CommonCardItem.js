@@ -32,14 +32,14 @@ class CommonCardItem extends CommonBaseCardItem_1.CommonBaseCardItem {
       ShowCardFaceTexture: t === 0,
       OutlookUnlocked: ModelManager_1.ModelManager.PhantomArenaModel.IsCardOutlookUnlock(e)
     };
-    this.Qkm()?.Refresh(a);
+    this.lOm()?.Refresh(a);
     var o = {
       CardSpineData: r,
       ShowSpine: t === 1
     };
     this.GetComponent(9)?.Refresh(o);
   }
-  Qkm() {
+  lOm() {
     if (ModelManager_1.ModelManager.PhantomArenaBattleModel.IsOldBvb) {
       return this.GetComponent(0);
     } else {

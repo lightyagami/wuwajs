@@ -9,6 +9,7 @@ const DataTableUtil_1 = require("../../Core/Utils/DataTableUtil");
 const Switcher_1 = require("../Utils/Switcher");
 const NormalWorldInputData_1 = require("./BattleInputData/NormalWorldInputData");
 const NormalWorldMotorInputData_1 = require("./BattleInputData/NormalWorldMotorInputData");
+const SpringManorInputData_1 = require("./BattleInputData/SpringManorInputData");
 const SurvivorsRogueInputData_1 = require("./BattleInputData/SurvivorsRogueInputData");
 const TrapDefenseInputData_1 = require("./BattleInputData/TrapDefenseInputData");
 const InputLayer_1 = require("./InputLayer");
@@ -16,7 +17,7 @@ exports.INPUT_COMMAND_TRANSFORM_DT_PATH = "/Game/Aki/Data/Fight/DT_InputCommandT
 class InputModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
-    this.jMe = new Map([[2, 0], [3, 0], [4, 0], [5, 0], [6, 0], [7, 0], [8, 0], [9, 0], [10, 0]]);
+    this.jMe = new Map([[2, 0], [3, 0], [4, 0], [5, 0], [6, 0], [7, 0], [8, 0], [9, 0], [10, 0], [12, 0]]);
     this.WMe = new Array();
     this.KMe = new Map();
     this.ZPu = new Map();
@@ -35,6 +36,7 @@ class InputModel extends ModelBase_1.ModelBase {
     this.fYu.set(1, new TrapDefenseInputData_1.TrapDefenseInputData(1));
     this.fYu.set(2, new SurvivorsRogueInputData_1.SurvivorsRogueInputData(2));
     this.fYu.set(3, new NormalWorldMotorInputData_1.NormalWorldMotorInputData(3, 1));
+    this.fYu.set(4, new SpringManorInputData_1.SpringManorInputData(4));
     return true;
   }
   SetCurrentInputDataType(t) {

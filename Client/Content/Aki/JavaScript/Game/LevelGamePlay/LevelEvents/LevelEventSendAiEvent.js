@@ -38,8 +38,8 @@ class LevelEventSendAiEvent extends LevelGeneralBase_1.LevelEventBase {
     var n;
     var e = ModelManager_1.ModelManager.CreatureModel.GetEntityById(e);
     if (e?.Valid) {
-      if (e.Entity.GetComponent(48)) {
-        t = (e = e.Entity.GetComponent(215))?.HasTag(393622611);
+      if (e.Entity.GetComponent(50)) {
+        t = (e = e.Entity.GetComponent(217))?.HasTag(393622611);
         n = e?.HasTag(276015887);
         this.vRe(e);
         if (!t && n) {
@@ -58,8 +58,8 @@ class LevelEventSendAiEvent extends LevelGeneralBase_1.LevelEventBase {
   pRe(e) {
     var e = ModelManager_1.ModelManager.CreatureModel.GetEntityById(e);
     if (e?.Valid) {
-      if (e.Entity.GetComponent(48)) {
-        e = e.Entity.GetComponent(215);
+      if (e.Entity.GetComponent(50)) {
+        e = e.Entity.GetComponent(217);
         this.vRe(e);
         if (Math.random() < 0.5) {
           e?.AddTag(393622611);
@@ -77,8 +77,8 @@ class LevelEventSendAiEvent extends LevelGeneralBase_1.LevelEventBase {
   gRe(e) {
     var e = ModelManager_1.ModelManager.CreatureModel.GetEntityById(e);
     if (e?.Valid) {
-      if (e.Entity.GetComponent(48)) {
-        e = e.Entity.GetComponent(215);
+      if (e.Entity.GetComponent(50)) {
+        e = e.Entity.GetComponent(217);
         this.vRe(e);
         e?.AddTag(502364103);
         e?.AddTag(351576188);

@@ -79,7 +79,7 @@ class MoraleBattleModel extends ModelBase_1.ModelBase {
     if (t) {
       if (!this.r2u) {
         this.r2u = true;
-        if (ModelManager_1.ModelManager.SceneTeamModel?.GetCurrentEntity?.Entity?.GetComponent(183)?.HasBuff(EXTRA_TEMP_MORALE_MAX_LEVEL_BUFF_ID)) {
+        if (ModelManager_1.ModelManager.SceneTeamModel?.GetCurrentEntity?.Entity?.GetComponent(185)?.HasBuff(EXTRA_TEMP_MORALE_MAX_LEVEL_BUFF_ID)) {
           this.o2u = true;
         } else {
           this.o2u = false;

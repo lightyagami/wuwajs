@@ -29,20 +29,20 @@ class PhantomArenaBattleDamageStatisticsItem extends UiPanelBase_1.UiPanelBase {
     this.GetAllCount = undefined;
     this.GetCount = undefined;
     this.NotifyValueChange = undefined;
-    this.e3m = (t, e, i, s) => {
+    this.v4m = (t, e, i, s) => {
       var h = this.AttributeComp.GetCurrentValue(CharacterAttributeTypes_1.EAttributeId.l5n);
       this.NotifyValueChange(this.EntityId, Math.abs(s.Damage), h, 2);
     };
-    this.t3m = (t, e, i, s) => {
+    this.y4m = (t, e, i, s) => {
       if (s.DamageData.Id !== BURN_BLOOD_BUFF_RESULT_ID && s.DamageData.CalculateType === 0) {
-        e = e.GetComponent(181).GetCurrentValue(CharacterAttributeTypes_1.EAttributeId.l5n);
+        e = e.GetComponent(183).GetCurrentValue(CharacterAttributeTypes_1.EAttributeId.l5n);
         this.NotifyValueChange(this.EntityId, Math.abs(s.Damage), e, 1);
       }
     };
-    this.i3m = t => {
+    this.S4m = t => {
       this.ValueSprite.SetFillAmount(t);
     };
-    this.r3m = t => {
+    this.M4m = t => {
       this.GetOriginalItem().SetAnchorOffsetY(t);
     };
   }
@@ -52,9 +52,9 @@ class PhantomArenaBattleDamageStatisticsItem extends UiPanelBase_1.UiPanelBase {
   OnStart() {
     this.ValueSprite = this.GetSprite(4);
     this.ValueTween = new LguiFloatTween_1.LguiFloatTween();
-    this.ValueTween.BindUpdateTween(this.i3m);
+    this.ValueTween.BindUpdateTween(this.S4m);
     this.OffsetTween = new LguiIntTween_1.LguiIntTween();
-    this.OffsetTween.BindUpdateTween(this.r3m);
+    this.OffsetTween.BindUpdateTween(this.M4m);
   }
   OnDestroy() {
     this.ValueTween.Destroy();
@@ -85,7 +85,7 @@ class PhantomArenaBattleDamageStatisticsItem extends UiPanelBase_1.UiPanelBase {
     this.LerpCurve = e;
     this.EntityId = t;
     this.Entity = ModelManager_1.ModelManager.CreatureModel.GetEntity(t)?.Entity;
-    this.AttributeComp = this.Entity?.GetComponent(181);
+    this.AttributeComp = this.Entity?.GetComponent(183);
     this.c$e(this.Entity);
     this.GetOriginalItem().SetAnchorOffsetY(i);
     this.Kbe();
@@ -112,17 +112,17 @@ class PhantomArenaBattleDamageStatisticsItem extends UiPanelBase_1.UiPanelBase {
   }
   c$e(t) {
     if (t) {
-      if (!EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.CharBeDamage, this.e3m)) {
-        EventSystem_1.EventSystem.AddWithTarget(t, EventDefine_1.EEventName.CharBeDamage, this.e3m);
+      if (!EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.CharBeDamage, this.v4m)) {
+        EventSystem_1.EventSystem.AddWithTarget(t, EventDefine_1.EEventName.CharBeDamage, this.v4m);
       }
-      if (!EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.CharDamage, this.t3m)) {
-        EventSystem_1.EventSystem.AddWithTarget(t, EventDefine_1.EEventName.CharDamage, this.t3m);
+      if (!EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.CharDamage, this.y4m)) {
+        EventSystem_1.EventSystem.AddWithTarget(t, EventDefine_1.EEventName.CharDamage, this.y4m);
       }
     }
   }
   m$e(t) {
-    if (t && (EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.CharBeDamage, this.e3m) && EventSystem_1.EventSystem.RemoveWithTarget(t, EventDefine_1.EEventName.CharBeDamage, this.e3m), EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.CharDamage, this.t3m))) {
-      EventSystem_1.EventSystem.RemoveWithTarget(t, EventDefine_1.EEventName.CharDamage, this.t3m);
+    if (t && (EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.CharBeDamage, this.v4m) && EventSystem_1.EventSystem.RemoveWithTarget(t, EventDefine_1.EEventName.CharBeDamage, this.v4m), EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.CharDamage, this.y4m))) {
+      EventSystem_1.EventSystem.RemoveWithTarget(t, EventDefine_1.EEventName.CharDamage, this.y4m);
     }
   }
 }

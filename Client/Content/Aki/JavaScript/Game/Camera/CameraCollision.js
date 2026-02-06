@@ -133,7 +133,7 @@ class CameraCollision {
     this.Hse.ActorsToIgnore.Add(t);
     this.Dae.ActorsToIgnore.Add(t);
     this.Rae.ActorsToIgnore.Add(t);
-    this.Lae = t?.CharacterActorComponent?.Entity?.GetComponent(80);
+    this.Lae = t?.CharacterActorComponent?.Entity?.GetComponent(82);
   }
   SetCameraConfig(t, i) {
     this.Wae = t * t * PROBE_RATIO;
@@ -349,7 +349,7 @@ class CameraCollision {
       }
     }
   }
-  static Ttg(t, i) {
+  static sDg(t, i) {
     const s = t.GetEntityNoBlueprint()?.CheckGetComponent(0)?.GetCreatureDataId();
     if (s) {
       t = ModelManager_1.ModelManager.CameraModel.DitherEntityGroups.GetSet(s);
@@ -385,7 +385,7 @@ class CameraCollision {
           } else {
             h = this.lhe(s, h);
             s.SetDitherEffect(h, 1);
-            CameraCollision.Ttg(s, h);
+            CameraCollision.sDg(s, h);
             if (h = this.Kae.has(s)) {
               this.Kae.delete(s);
             }
@@ -401,7 +401,7 @@ class CameraCollision {
       var e = this.Kae.values();
       for (let t = 0; t < this.Kae.size - i; t++) {
         var a = e.next().value;
-        if (CameraCollision.IsCharacterRenderingType(a) && (a.SetDitherEffect(1, 1), CameraCollision.Ttg(a, 1), Log_1.Log.CheckDebug())) {
+        if (CameraCollision.IsCharacterRenderingType(a) && (a.SetDitherEffect(1, 1), CameraCollision.sDg(a, 1), Log_1.Log.CheckDebug())) {
           Log_1.Log.Debug("Camera", 57, `[NPC Dither] 恢复Npc'${a?.GetName()}'Dither`);
         }
         this.Kae.delete(a);
@@ -469,7 +469,8 @@ class CameraCollision {
     return t.Subtraction(i, this.Lz).SizeSquared() < s * s;
   }
   hhe(t) {
-    return !!t.GetEntityNoBlueprint()?.GetComponent(215)?.HasTag(-1151151013);
+    t = t.GetEntityNoBlueprint();
+    return !!t?.Valid && (!!t.GetComponent(217)?.HasAnyTag([-1151151013, -1636232993]) || !!t.GetComponent(198)?.IsNpcIgnoreCameraHide);
   }
   nhe() {
     var t;
@@ -499,7 +500,7 @@ class CameraCollision {
         if (!e?.主角蓝透) {
           if (h && h.CapsuleComponent && h.CapsuleComponent.GetCollisionObjectType() === QueryTypeDefine_1.KuroCollisionChannel.Vehicle) {
             e = h.GetEntityNoBlueprint();
-            if (!e || !e.GetComponent(263) || e.CheckGetComponent(215)?.HasTag(-1636232993) || ModelManager_1.ModelManager.VehicleModel.MaterialControllerHandles.size > 0) {
+            if (!e || !e.GetComponent(263) || ModelManager_1.ModelManager.VehicleModel.MaterialControllerHandles.size > 0) {
               this.Kae.delete(h);
               continue;
             }

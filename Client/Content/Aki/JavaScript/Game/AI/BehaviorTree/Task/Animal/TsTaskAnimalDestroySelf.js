@@ -14,10 +14,10 @@ class TsTaskAnimalDestroySelf extends TsTaskAbortImmediatelyBase_1.default {
     var o;
     var s = e.AiController;
     if (s) {
-      if (o = (s = s.CharActorComp.Entity).GetComponent(48)) {
+      if (o = (s = s.CharActorComp.Entity).GetComponent(50)) {
         o.DisableAi("动物销毁");
       }
-      if (o = s.GetComponent(180)) {
+      if (o = s.GetComponent(182)) {
         o.PendingDestroy = false;
       }
       o = s.GetComponent(0);

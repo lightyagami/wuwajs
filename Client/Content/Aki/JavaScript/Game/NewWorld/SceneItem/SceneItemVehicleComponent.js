@@ -56,7 +56,7 @@ class MontageConfig extends SceneItemVehicleFeature {
     t = t.MovePerformConfig?.VehicleMontagePlayConfigs;
     if (t) {
       this.wO_ = new Map();
-      this.Lie = this.ActorComp?.Entity.GetComponent(215);
+      this.Lie = this.ActorComp?.Entity.GetComponent(217);
       for (const i of t) {
         var e = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(i.TargetState);
         if (e) {
@@ -247,7 +247,7 @@ let SceneItemVehicleComponent = class SceneItemVehicleComponent extends EntityCo
   }
   OnStart() {
     this.Ovr = this.Entity.GetComponent(0);
-    this.Hte = this.Entity.GetComponent(212);
+    this.Hte = this.Entity.GetComponent(214);
     this.aGe();
     return true;
   }
@@ -337,5 +337,5 @@ let SceneItemVehicleComponent = class SceneItemVehicleComponent extends EntityCo
     return this.Hte?.GetReferenceActor(t)?.RootComponent;
   }
 };
-SceneItemVehicleComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(298)], SceneItemVehicleComponent);
+SceneItemVehicleComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(300)], SceneItemVehicleComponent);
 exports.SceneItemVehicleComponent = SceneItemVehicleComponent; //# sourceMappingURL=SceneItemVehicleComponent.js.map

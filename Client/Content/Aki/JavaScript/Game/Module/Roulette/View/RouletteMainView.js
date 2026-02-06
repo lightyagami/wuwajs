@@ -63,6 +63,9 @@ class RouletteMainView extends UiTickViewBase_1.UiTickViewBase {
       ControllerHolder_1.ControllerHolder.RouletteController.OpenAssemblyView(this.ts1.RouletteType);
       this.CloseSelf(false);
     };
+    this.Q7g = () => {
+      this.fpo();
+    };
   }
   get pfo() {
     return this.ts1.GetRouletteComponent();
@@ -140,6 +143,7 @@ class RouletteMainView extends UiTickViewBase_1.UiTickViewBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InputControllerMainTypeChange, this.cEa);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnInputDistributeTagChanged, this.Epo);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OpenRouletteSetView, this.WXa);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RouletteSwitchToggleComponentEmit, this.Q7g);
     var e = this.ts1.GetActionName();
     InputDistributeController_1.InputDistributeController.BindAction(e, this.jXa);
     this.ts1.AddEventListener();
@@ -148,6 +152,7 @@ class RouletteMainView extends UiTickViewBase_1.UiTickViewBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InputControllerMainTypeChange, this.cEa);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnInputDistributeTagChanged, this.Epo);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OpenRouletteSetView, this.WXa);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RouletteSwitchToggleComponentEmit, this.Q7g);
     var e = this.ts1.GetActionName();
     InputDistributeController_1.InputDistributeController.UnBindAction(e, this.jXa);
     this.ts1.RemoveEventListener();

@@ -17,9 +17,9 @@ class LevelAiTaskPlayBubble extends LevelAiTask_1.LevelAiTask {
     }
     let o = undefined;
     if (r.EntityId) {
-      o = this.ejf(r.EntityId, r.Flow);
+      o = this.fig(r.EntityId, r.Flow);
     } else if (e = this.CharacterPlanComponent.Entity.GetComponent(1)?.CreatureData.GetCreatureDataId()) {
-      o = this.tjf(e, r.Flow);
+      o = this.gig(e, r.Flow);
     }
     if (o) {
       ControllerHolder_1.ControllerHolder.DynamicFlowController.AddDynamicFlow(o);
@@ -28,7 +28,7 @@ class LevelAiTaskPlayBubble extends LevelAiTask_1.LevelAiTask {
       return 1;
     }
   }
-  ejf(e, r) {
+  fig(e, r) {
     var o = new DynamicFlowController_1.CharacterDynamicFlowData();
     var r = {
       EntityIds: [e],
@@ -48,7 +48,7 @@ class LevelAiTaskPlayBubble extends LevelAiTask_1.LevelAiTask {
     };
     return o;
   }
-  tjf(e, r) {
+  gig(e, r) {
     var o = new DynamicFlowController_1.CharacterDynamicFlowData();
     var r = {
       EntityIds: [],

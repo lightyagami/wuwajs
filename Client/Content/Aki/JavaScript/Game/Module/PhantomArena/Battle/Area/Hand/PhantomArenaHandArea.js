@@ -131,7 +131,7 @@ class PhantomArenaHandArea extends UiPanelBase_1.UiPanelBase {
     await Promise.all(t);
     this.iu1();
   }
-  async UIf(a) {
+  async ERf(a) {
     let t = 1;
     var e = [];
     var i = [];
@@ -151,7 +151,7 @@ class PhantomArenaHandArea extends UiPanelBase_1.UiPanelBase {
     }
     await Promise.all(i);
   }
-  async xIf(a) {
+  async IRf(a) {
     var t = [];
     let e = 1;
     for (const i of this.CardMap.values()) {
@@ -165,9 +165,9 @@ class PhantomArenaHandArea extends UiPanelBase_1.UiPanelBase {
   async knu(a) {
     if (this.IsFirstTimeDrawCard) {
       this.IsFirstTimeDrawCard = false;
-      await this.UIf(a);
+      await this.ERf(a);
     } else {
-      await this.xIf(a);
+      await this.IRf(a);
     }
   }
   async Onu(a) {

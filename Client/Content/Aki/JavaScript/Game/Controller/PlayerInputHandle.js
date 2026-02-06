@@ -122,7 +122,7 @@ class PlayerInputHandle {
   }
   InputAxis(t, e, n = false) {
     if (!Info_1.Info.IsMobileInputModel() || !Info_1.Info.IsInTouch()) {
-      if (this.tCe.CheckCombinationAxis(t)) {
+      if (this.tCe.CheckCombinationAxis(t) && this.eCe.CheckCombinationActionByAxisName(t)) {
         if (Info_1.Info.AxisInputOptimize) {
           if (n) {
             this.wDa.set(t, e);
@@ -134,7 +134,7 @@ class PlayerInputHandle {
           ControllerHolder_1.ControllerHolder.InputDistributeController.InputAxis(t, e);
         }
       } else {
-        this.f5f(t, e, n);
+        this.QWf(t, e, n);
       }
     }
   }
@@ -234,7 +234,7 @@ class PlayerInputHandle {
       }
     }
   }
-  f5f(t, e, n) {
+  QWf(t, e, n) {
     if (e !== 0 && ModelManager_1.ModelManager.InputDistributeModel.IsAxisInPress(t)) {
       if (Info_1.Info.AxisInputOptimize) {
         if (n) {

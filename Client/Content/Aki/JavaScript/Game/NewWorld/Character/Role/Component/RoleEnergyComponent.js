@@ -39,7 +39,7 @@ let RoleEnergyComponent = class RoleEnergyComponent extends EntityComponent_1.En
   }
   OnStart() {
     this.n$t = this.Entity.CheckGetComponent(3);
-    this.$te = this.Entity.CheckGetComponent(182);
+    this.$te = this.Entity.CheckGetComponent(184);
     this.$te.AddListeners(energyAttrIds, this.Qin, "RoleEnergyComponent");
     this.Qin();
     return true;
@@ -61,5 +61,5 @@ let RoleEnergyComponent = class RoleEnergyComponent extends EntityComponent_1.En
     this.Rud = t;
   }
 };
-RoleEnergyComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(98)], RoleEnergyComponent);
+RoleEnergyComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(100)], RoleEnergyComponent);
 exports.RoleEnergyComponent = RoleEnergyComponent; //# sourceMappingURL=RoleEnergyComponent.js.map

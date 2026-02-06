@@ -6,9 +6,11 @@ Object.defineProperty(exports, "__esModule", {
 exports.FunctionItem = undefined;
 const UE = require("ue");
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const RedDotController_1 = require("../../../RedDot/RedDotController");
 const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
+const LogReportDefine_1 = require("../../LogReport/LogReportDefine");
 const LguiUtil_1 = require("../../Util/LguiUtil");
 const FunctionController_1 = require("../FunctionController");
 class FunctionItem extends UiPanelBase_1.UiPanelBase {
@@ -17,8 +19,13 @@ class FunctionItem extends UiPanelBase_1.UiPanelBase {
     this.FunctionId = 0;
     this.l4e = undefined;
     this.ije = () => {
+      var e;
       if (this.FunctionId) {
         FunctionController_1.FunctionController.OpenFunctionRelateView(this.FunctionId);
+        if (this.FunctionId === 10010 || this.FunctionId === 10040) {
+          (e = new LogReportDefine_1.OnClickFunctionViewButtonLogEvent()).i_id = this.FunctionId;
+          ControllerHolder_1.ControllerHolder.LogReportController.LogReport(e);
+        }
       }
     };
     this.CreateThenShowByActor(e.GetOwner());

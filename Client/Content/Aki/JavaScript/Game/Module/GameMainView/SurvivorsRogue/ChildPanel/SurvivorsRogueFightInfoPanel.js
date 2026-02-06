@@ -40,8 +40,8 @@ class SurvivorsRogueFightInfoPanel extends UiPanelBase_1.UiPanelBase {
     this.Jtm = 0;
     this._fe = false;
     this.tHd = false;
-    this.uqm = 0;
-    this.cqm = false;
+    this.ROm = 0;
+    this.wOm = false;
     this.Qbd = () => {
       SurvivorsRogueController_1.SurvivorsRogueController.OpenLeaveInstanceView();
     };
@@ -154,15 +154,15 @@ class SurvivorsRogueFightInfoPanel extends UiPanelBase_1.UiPanelBase {
       this.ztm = 0;
       this.mNe = 0;
       this.Kbd(0);
-      this.SetComboAreaActive(false, this.uqm > 0);
+      this.SetComboAreaActive(false, this.ROm > 0);
       this._fe = false;
-      this.uqm = 0;
+      this.ROm = 0;
     } else {
       this.Gbd.SetText(i.toString());
       this.Kbd(1);
-      this.SetComboAreaActive(true, this.uqm === 0);
+      this.SetComboAreaActive(true, this.ROm === 0);
       this._fe = true;
-      this.uqm = i;
+      this.ROm = i;
     }
     this.Ztm(i);
   }
@@ -253,8 +253,8 @@ class SurvivorsRogueFightInfoPanel extends UiPanelBase_1.UiPanelBase {
     }
     var e = i > 0;
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.CKd, "SurvivorsCombat_IncomeBuff", Math.ceil(i / 100));
-    this.SetPositiveAreaActive(e, this.cqm !== e);
-    this.cqm = e;
+    this.SetPositiveAreaActive(e, this.wOm !== e);
+    this.wOm = e;
   }
   Kbd(i) {
     if (this.Fbd.bIsUIActive) {

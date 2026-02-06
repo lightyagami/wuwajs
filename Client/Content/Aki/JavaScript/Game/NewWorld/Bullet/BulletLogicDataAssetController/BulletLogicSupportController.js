@@ -48,8 +48,8 @@ class BulletLogicSupportController extends BulletLogicController_1.BulletLogicCo
     }
   }
   $7o(t) {
-    var e = this.Bullet.GetComponent(178);
-    var i = t.GetComponent(178).Owner;
+    var e = this.Bullet.GetComponent(180);
+    var i = t.GetComponent(180).Owner;
     var t = UE.KismetMathLibrary.D_TransformLocation(i.D_GetTransform(), t.Data.Base.CenterOffset.ToUeVector());
     var o = UE.KismetMathLibrary.D_TransformLocation(e.ActorTransform, this.Bullet.Data.Base.CenterOffset.ToUeVector());
     if (!this.uoe) {

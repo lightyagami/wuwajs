@@ -49,7 +49,7 @@ class UiInteractChatData {
     }
   }
   vam() {
-    var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(40);
+    var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(42);
     if (t && t.CurrentSkill) {
       return t.CurrentSkill.SkillId;
     } else {

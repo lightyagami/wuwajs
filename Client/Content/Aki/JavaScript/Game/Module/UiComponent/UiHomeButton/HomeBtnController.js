@@ -63,7 +63,7 @@ class HomeBtnController extends ControllerBase_1.ControllerBase {
     var o;
     if (ModelManager_1.ModelManager.HomeBtnModel.GetShowHomeBtn(r)) {
       if (t = e.GetOwner()?.GetComponentByClass(UE.TsUiHomeHelper_C.StaticClass())) {
-        o = this.Yxf(r);
+        o = this.FFf(r);
         t.CreateHomeBtn(o);
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("HomeBtn", 87, "父节点没有TsUiHomeHelper", ["displayName", e.GetDisplayName()]);
@@ -78,14 +78,14 @@ class HomeBtnController extends ControllerBase_1.ControllerBase {
     if (e.Info && (r = e.Info.Name, ModelManager_1.ModelManager.HomeBtnModel.GetShowHomeBtn(r)) && (e.Info?.Type === UiLayerType_1.ELayerType.Normal || e.Info?.Type === UiLayerType_1.ELayerType.Pop) && ModelManager_1.ModelManager.HomeBtnModel.GetNeedFindComponent(r)) {
       e = e.GetRootActor();
       if (e = UE.LGUIBPLibrary.GetComponentInChildren(e, UE.TsUiHomeHelper_C.StaticClass(), false)) {
-        a = this.Yxf(r);
+        a = this.FFf(r);
         e.CreateHomeBtn(a);
       } else {
         ModelManager_1.ModelManager.HomeBtnModel.AddViewNameToNoFindComponent(r);
       }
     }
   }
-  static Yxf(e) {
+  static FFf(e) {
     return ConfigManager_1.ConfigManager.UiViewConfig.GetUiShowConfig(e)?.HomeBtnStyle ?? 1;
   }
 }

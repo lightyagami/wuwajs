@@ -55,7 +55,7 @@ class PhantomArenaDeckOverviewTabView extends PhantomArenaChildViewBase_1.Phanto
     };
     this.T61 = () => {
       if (this.ViewModel?.RecommendDeck) {
-        this.rKm(this.ViewModel.RecommendDeck);
+        this.IYm(this.ViewModel.RecommendDeck);
       } else {
         var t = ModelManager_1.ModelManager.PhantomArenaModel.IsNewPhantomArenaActivity(this.ActivityId) ? "PhantomArenaNewDeckBuilderTabView" : "PhantomArenaDeckBuilderTabView";
         var i = this.ViewModel.EditableDeckList[this.ViewModel.SelectedDeckIndex];
@@ -156,7 +156,7 @@ class PhantomArenaDeckOverviewTabView extends PhantomArenaChildViewBase_1.Phanto
       this.Hlu.SelectGridProxy(t);
     }
   }
-  rKm(t) {
+  IYm(t) {
     var i;
     var e;
     const s = this.ViewModel.EditableDeckList[this.ViewModel.SelectedDeckIndex].GetDeckServerId();

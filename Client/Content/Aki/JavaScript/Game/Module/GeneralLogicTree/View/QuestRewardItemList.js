@@ -7,7 +7,7 @@ exports.QuestRewardItemList = undefined;
 const UE = require("ue");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
-const GenericScrollView_1 = require("../../Util/ScrollView/GenericScrollView");
+const GenericScrollViewNew_1 = require("../../Util/ScrollView/GenericScrollViewNew");
 const QuestRewardItemGrid_1 = require("./QuestRewardItemGrid");
 class QuestRewardItemList extends UiPanelBase_1.UiPanelBase {
   constructor(e) {
@@ -15,13 +15,11 @@ class QuestRewardItemList extends UiPanelBase_1.UiPanelBase {
     this.wqe = undefined;
     this.kGe = undefined;
     this.OFt = undefined;
-    this.d2t = (e, r, t) => {
-      r = this.xYt(r);
-      r.Refresh(e, false, t);
-      return {
-        Key: t,
-        Value: r
-      };
+    this.d2t = () => {
+      var e = new QuestRewardItemGrid_1.QuestRewardItemGrid();
+      e.ItemGrid.BindOnCanExecuteChange(() => false);
+      e.ItemGrid.BindOnExtendToggleClicked(this.wYt);
+      return e;
     };
     this.wYt = e => {
       this.OFt?.SetSelected(false, true);
@@ -46,7 +44,7 @@ class QuestRewardItemList extends UiPanelBase_1.UiPanelBase {
   OnStart() {
     this.wqe = this.GetItem(1);
     this.wqe.SetUIActive(false);
-    this.kGe = new GenericScrollView_1.GenericScrollView(this.GetScrollViewWithScrollbar(2), this.d2t);
+    this.kGe = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(2), this.d2t);
   }
   Refresh(e) {
     e.sort((e, r) => {
@@ -61,14 +59,6 @@ class QuestRewardItemList extends UiPanelBase_1.UiPanelBase {
       }
     });
     this.kGe.RefreshByData(e);
-  }
-  xYt(e) {
-    var r = new QuestRewardItemGrid_1.QuestRewardItemGrid();
-    r.Initialize(e.GetOwner());
-    r.BindOnCanExecuteChange(() => false);
-    r.BindOnExtendToggleClicked(this.wYt);
-    r.SetActive(true);
-    return r;
   }
 }
 exports.QuestRewardItemList = QuestRewardItemList;

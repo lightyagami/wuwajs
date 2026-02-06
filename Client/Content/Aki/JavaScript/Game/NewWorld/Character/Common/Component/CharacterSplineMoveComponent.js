@@ -65,7 +65,7 @@ let CharacterSplineMoveComponent = CharacterSplineMoveComponent_1 = class Charac
     this.LocalQuat = Quat_1.Quat.Create();
     this.DebugMode = false;
     this.I3r = (t, i) => {
-      var s = t.GetComponent(116);
+      var s = t.GetComponent(118);
       if (s?.Active) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Movement", 50, "[CharacterSplineMoveComp] 轨道模式继承", ["LastEntity", t.Id], ["CurEntity", this.Entity.Id]);
@@ -101,10 +101,10 @@ let CharacterSplineMoveComponent = CharacterSplineMoveComponent_1 = class Charac
     if ((0, RegisterComponent_1.isComponentInstance)(this.ActorComp, 3)) {
       this.isn = this.ActorComp;
     }
-    this.Gce = this.Entity.GetComponent(187);
-    this.oRe = this.Entity.GetComponent(186);
-    this.rJo = this.Entity.GetComponent(184);
-    this.osn = this.Entity.GetComponent(182);
+    this.Gce = this.Entity.GetComponent(189);
+    this.oRe = this.Entity.GetComponent(188);
+    this.rJo = this.Entity.GetComponent(186);
+    this.osn = this.Entity.GetComponent(184);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.RoleOnStateInherit, this.I3r);
     return true;
   }
@@ -510,19 +510,19 @@ let CharacterSplineMoveComponent = CharacterSplineMoveComponent_1 = class Charac
   }
   ApplySplineMoveDaConfig(t) {
     if (t.Type !== "SlideTrack" && t.Type !== "AirPassage") {
-      this.FEm(true);
+      this.nIm(true);
     }
   }
   ResetSplineMoveDaConfig() {
-    this.FEm(false);
+    this.nIm(false);
   }
-  FEm(t) {
+  nIm(t) {
     if (t) {
       this.Gce?.SetTurnRate(CharacterSplineMoveComponent_1.SplineMoveConfig.TurnRate);
       this.Gce?.SetAirControl(CharacterSplineMoveComponent_1.SplineMoveConfig.AirControl);
       this.Gce?.SetOverrideMaxFallingSpeed(CharacterSplineMoveComponent_1.SplineMoveConfig.MaxFlySpeed);
       this.TagComp?.AddTag(-451106150);
-      this.osn?.SetBaseValue(Protocol_1.Aki.Protocol.Vks.RIm, CharacterAttributeTypes_1.PER_TEN_THOUSAND * CharacterSplineMoveComponent_1.SplineMoveConfig.JumpHeightRate);
+      this.osn?.SetBaseValue(Protocol_1.Aki.Protocol.Vks.jIm, CharacterAttributeTypes_1.PER_TEN_THOUSAND * CharacterSplineMoveComponent_1.SplineMoveConfig.JumpHeightRate);
       t = this.oRe?.MainAnimInstance;
       if (UE.KuroStaticLibrary.IsObjectClassByName(t, CharacterNameDefines_1.CharacterNameDefines.ABP_BASEROLE)) {
         t.设置跳跃速率(CharacterSplineMoveComponent_1.SplineMoveConfig.JumpTimeScale);
@@ -532,7 +532,7 @@ let CharacterSplineMoveComponent = CharacterSplineMoveComponent_1 = class Charac
       this.Gce?.ResetAirControl();
       this.Gce?.ResetOverrideMaxFallingSpeed();
       this.TagComp?.RemoveTag(-451106150);
-      this.osn?.SetBaseValue(Protocol_1.Aki.Protocol.Vks.RIm, CharacterAttributeTypes_1.PER_TEN_THOUSAND);
+      this.osn?.SetBaseValue(Protocol_1.Aki.Protocol.Vks.jIm, CharacterAttributeTypes_1.PER_TEN_THOUSAND);
       t = this.oRe?.MainAnimInstance;
       if (UE.KuroStaticLibrary.IsObjectClassByName(t, CharacterNameDefines_1.CharacterNameDefines.ABP_BASEROLE)) {
         t.设置跳跃速率(1);
@@ -563,5 +563,5 @@ let CharacterSplineMoveComponent = CharacterSplineMoveComponent_1 = class Charac
 };
 CharacterSplineMoveComponent.DaPath = "/Game/Aki/Data/Fight/DA_SplineMoveConfig.DA_SplineMoveConfig";
 CharacterSplineMoveComponent.msn = undefined;
-CharacterSplineMoveComponent = CharacterSplineMoveComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(116)], CharacterSplineMoveComponent);
+CharacterSplineMoveComponent = CharacterSplineMoveComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(118)], CharacterSplineMoveComponent);
 exports.CharacterSplineMoveComponent = CharacterSplineMoveComponent; //# sourceMappingURL=CharacterSplineMoveComponent.js.map

@@ -212,17 +212,8 @@ class TsUiNavigationPanelConfig extends UE.LGUIBehaviour {
       }
     }
   }
-  UnRegisterNavigationListener(s) {
-    this.PanelHandle.DeleteListener(s);
-    var e = this.PanelHandle.GetNavigationGroup(s.GroupName);
-    if (e) {
-      for (let i = 0, t = e.ListenerList.length; i < t; ++i) {
-        if (e.ListenerList[i].GetOwner() === s.GetOwner()) {
-          e.RemoveListenerByIndex(i);
-          break;
-        }
-      }
-    }
+  UnRegisterNavigationListener(i) {
+    this.PanelHandle.TryRemoveListener(i);
   }
   SetViewHandle(i) {
     this.ViewHandle = i;
@@ -288,7 +279,8 @@ class TsUiNavigationPanelConfig extends UE.LGUIBehaviour {
           t.Result = 0;
           return;
         }
-        if (s.IsInScrollOrLayoutAnimation()) {
+        var e = s.GetNavigationGroup();
+        if ((!e || e.WaitScrollAnimation) && s.IsInScrollOrLayoutAnimation()) {
           t.Result = 4;
           return;
         }
@@ -298,7 +290,7 @@ class TsUiNavigationPanelConfig extends UE.LGUIBehaviour {
             return;
           }
         }
-        var e = this.PanelHandle.GetLoopOrLayoutListener(s);
+        e = this.PanelHandle.GetLoopOrLayoutListener(s);
         if (!e) {
           t.Result = 0;
           return;

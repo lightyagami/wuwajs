@@ -6,8 +6,10 @@ Object.defineProperty(exports, "__esModule", {
 exports.SpineRoleGachaPoolItem = undefined;
 const UE = require("ue");
 const StringUtils_1 = require("../../../../Core/Utils/StringUtils");
+const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const ActivityController_1 = require("../../Activity/ActivityController");
+const LogReportDefine_1 = require("../../LogReport/LogReportDefine");
 const ScrollingTipsController_1 = require("../../ScrollingTips/ScrollingTipsController");
 const ButtonFunctionComponent_1 = require("./ButtonFunctionComponent");
 const GachaPoolItem_1 = require("./GachaPoolItem");
@@ -18,8 +20,12 @@ class SpineRoleGachaPoolItem extends GachaPoolItem_1.GachaPoolItem {
     this.mWt = undefined;
     this.Fpu = undefined;
     this.rZi = () => {
+      var e;
       if (ModelManager_1.ModelManager.ActivityModel.IsActivityOpen(this.GachaViewInfo.TrialActivityId)) {
         ActivityController_1.ActivityController.CloseAndOpenActivityById("GachaMainView", this.GachaViewInfo.TrialActivityId, 4, this.GachaViewInfo.TrialRoleId);
+        (e = new LogReportDefine_1.OnClickGachaTryRoleLogEvent()).i_gacha_id = this.GachaViewInfo.Id;
+        e.i_role_id = this.GachaViewInfo.ShowIdList[0];
+        ControllerHolder_1.ControllerHolder.LogReportController.LogReport(e);
       } else {
         ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("ErrorCode_1100253_Text");
       }
@@ -42,20 +48,23 @@ class SpineRoleGachaPoolItem extends GachaPoolItem_1.GachaPoolItem {
     this.Fpu.SetFunction(this.rZi);
   }
   Refresh() {
-    var t;
+    var e;
     if (this.GachaViewInfo) {
-      t = this.GachaViewInfo.ShowIdList[0];
-      this.mWt.Update(t, this.GachaType !== 6);
+      e = this.GachaViewInfo.ShowIdList[0];
+      this.mWt.Update(e, this.GachaType !== 6);
       if (!StringUtils_1.StringUtils.IsBlank(this.GachaViewInfo.TextTexture)) {
         this.SetTextureByPath(this.GachaViewInfo.TextTexture, this.GetTexture(1));
       }
-      this.GetSpine(2).SetAnimation(0, "idle", true);
-      t = ModelManager_1.ModelManager.ActivityModel.IsActivityOpen(this.GachaViewInfo.TrialActivityId);
-      this.Fpu?.SetUiActive(this.GachaViewInfo.TrialActivityId > 0 && t);
+      this.RefreshAnimation();
+      e = ModelManager_1.ModelManager.ActivityModel.IsActivityOpen(this.GachaViewInfo.TrialActivityId);
+      this.Fpu?.SetUiActive(this.GachaViewInfo.TrialActivityId > 0 && e);
     }
   }
-  SetDescUiActive(t) {
-    this.mWt.SetUiActive(t);
+  SetDescUiActive(e) {
+    this.mWt.SetUiActive(e);
+  }
+  RefreshAnimation() {
+    this.GetSpine(2).SetAnimation(0, "idle", true);
   }
 }
 exports.SpineRoleGachaPoolItem = SpineRoleGachaPoolItem;

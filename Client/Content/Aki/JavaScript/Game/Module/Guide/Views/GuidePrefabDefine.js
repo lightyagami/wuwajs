@@ -5,76 +5,82 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.setPrefabText = exports.predefPrefabSetting = exports.NEW_TAG = undefined;
 const UE = require("ue");
+const LanguageSystem_1 = require("../../../../Core/Common/LanguageSystem");
+const CommonDefine_1 = require("../../../../Core/Define/CommonDefine");
 const StringBuilder_1 = require("../../../../Core/Utils/StringBuilder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const ConcertoResponseItem_1 = require("../../BattleUi/Views/ConcertoResponseItem");
 const LguiUtil_1 = require("../../Util/LguiUtil");
-function setPrefabText(e, t) {
-  var r = new StringBuilder_1.StringBuilder();
+function setPrefabText(e, r) {
+  var t = new StringBuilder_1.StringBuilder();
   const o = [];
-  let i = [];
-  const s = [];
-  let a = 0;
-  for (let e = 0; e < t.length;) {
-    var n = t.indexOf("[", e);
-    if (n === -1) {
-      r.Append(t.substring(e, t.length));
+  let n = [];
+  const a = [];
+  let i = 0;
+  for (let e = 0; e < r.length;) {
+    var s = r.indexOf("[", e);
+    if (s === -1) {
+      t.Append(r.substring(e, r.length));
       break;
     }
-    r.Append(t.substring(e, n));
-    var l = t.indexOf("]", n);
-    if (!(n < l)) {
-      r.Append(t.substring(n + 1, t.length));
+    t.Append(r.substring(e, s));
+    var u = r.indexOf("]", s);
+    if (!(s < u)) {
+      t.Append(r.substring(s + 1, r.length));
       break;
     }
-    n = t.substring(n + 1, l).split(",");
-    if (n.length > 0) {
+    s = r.substring(s + 1, u).split(",");
+    if (s.length > 0) {
       o.push({
-        PrefabKey: n[0],
-        Args: n
+        PrefabKey: s[0],
+        Args: s
       });
-      var u = exports.predefPrefabSetting.get(n[0]);
-      if (u) {
-        var c = u.GetPrefabPathFunc(n);
-        s.push(c.length);
-        i = i.concat(c);
-        e = l + 1;
-        for (let e = 0; e < c.length; e++) {
-          r.Append("<snidx=");
-          r.Append(a);
-          r.Append("/>");
-          a++;
+      var g = exports.predefPrefabSetting.get(s[0]);
+      if (g) {
+        var l = g.GetPrefabPathFunc(s);
+        a.push(l.length);
+        n = n.concat(l);
+        e = u + 1;
+        for (let e = 0; e < l.length; e++) {
+          t.Append("<snidx=");
+          t.Append(i);
+          t.Append("/>");
+          i++;
         }
+      } else if (LanguageSystem_1.LanguageSystem.PackageLanguage === CommonDefine_1.THAILAND_ISO639_1) {
+        return;
       }
+    } else if (LanguageSystem_1.LanguageSystem.PackageLanguage === CommonDefine_1.THAILAND_ISO639_1) {
+      return;
     }
   }
-  LguiUtil_1.LguiUtil.LoadAndSetText(e, r.ToString(), i, i => {
-    let a = 0;
-    o.forEach((e, t, r) => {
+  LguiUtil_1.LguiUtil.LoadAndSetText(e, t.ToString(), n, n => {
+    let i = 0;
+    o.forEach((e, r, t) => {
       var o = exports.predefPrefabSetting.get(e.PrefabKey);
       if (o?.Callback) {
-        o.Callback(i.slice(a, a + s[t]), e.Args);
+        o.Callback(n.slice(i, i + a[r]), e.Args);
       }
-      a += s[t];
+      i += a[r];
     });
   });
 }
 exports.NEW_TAG = "New:";
 exports.predefPrefabSetting = new Map([["FightConcertoStateGuide", {
   GetPrefabPathFunc: () => {
-    const r = [];
-    ModelManager_1.ModelManager.SceneTeamModel.GetTeamEntities(true).forEach((e, t) => {
-      r.push("/Game/Aki/UI/UIResources/UiFight/Prefabs/FightConcertoState.FightConcertoState");
+    const t = [];
+    ModelManager_1.ModelManager.SceneTeamModel.GetTeamEntities(true).forEach((e, r) => {
+      t.push("/Game/Aki/UI/UIResources/UiFight/Prefabs/FightConcertoState.FightConcertoState");
     });
-    return r;
+    return t;
   },
   Callback: (o, e) => {
-    ModelManager_1.ModelManager.SceneTeamModel.GetTeamEntities(true).forEach((e, t) => {
-      if (t < o.length) {
-        const r = new ConcertoResponseItem_1.ConcertoResponseItem();
-        r.CreateByActorAsync(o[t]).then(() => {
-          r.Refresh(ModelManager_1.ModelManager.BattleUiModel.GetRoleData(e.Id));
-          o[t].GetComponentByClass(UE.UIItem.StaticClass()).SetUIActive(true);
+    ModelManager_1.ModelManager.SceneTeamModel.GetTeamEntities(true).forEach((e, r) => {
+      if (r < o.length) {
+        const t = new ConcertoResponseItem_1.ConcertoResponseItem();
+        t.CreateByActorAsync(o[r]).then(() => {
+          t.Refresh(ModelManager_1.ModelManager.BattleUiModel.GetRoleData(e.Id));
+          o[r].GetComponentByClass(UE.UIItem.StaticClass()).SetUIActive(true);
         });
       }
     });

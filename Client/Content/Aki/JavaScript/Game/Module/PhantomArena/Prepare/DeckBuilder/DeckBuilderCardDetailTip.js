@@ -20,7 +20,7 @@ class DeckBuilderCardDetailTip extends UiPanelBase_1.UiPanelBase {
     this.TDe = undefined;
     this.IsEntryShow = false;
     this.IsMouseInSlotItem = false;
-    this.tmf = () => {
+    this.ygf = () => {
       if (!this.RootItem || this.IsMouseInSlotItem) {
         this.RemoveTimer();
       } else if (!LguiEventSystemManager_1.LguiEventSystemManager.GetPointerEventData(0, true).enterComponentStack.Contains(this.RootItem)) {
@@ -58,7 +58,7 @@ class DeckBuilderCardDetailTip extends UiPanelBase_1.UiPanelBase {
   AddTimer() {
     this.RemoveTimer();
     this.TDe = TimerSystem_1.GameplayTimerSystem.Forever(() => {
-      this.tmf();
+      this.ygf();
     }, 100);
   }
   RemoveTimer() {

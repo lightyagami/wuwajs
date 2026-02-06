@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.VisionRecoveryBatchResultView = undefined;
 const UE = require("ue");
 const Log_1 = require("../../../../../Core/Common/Log");
+const Protocol_1 = require("../../../../../Core/Define/Net/Protocol");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const UiViewBase_1 = require("../../../../Ui/Base/UiViewBase");
 const ItemController_1 = require("../../../Item/ItemController");
@@ -45,14 +46,19 @@ class VisionRecoveryBatchResultView extends UiViewBase_1.UiViewBase {
       this.qWt = new GenericLayout_1.GenericLayout(this.GetGridLayout(4), this.m3a, this.GetItem(0).GetOwner());
       e = ModelManager_1.ModelManager.PhantomBattleModel.GetVisionRecoverySortPhantomItemList(i.bMs);
       await this.c3a.RefreshByDataAsync(e);
-      i = ModelManager_1.ModelManager.PhantomBattleModel.GetVisionRecoverySortPhantomItemList(i.GBs);
-      await this.qWt.RefreshByDataAsync(i);
-      this.GetItem(3).SetUIActive(i.length > 0);
-      this.GetGridLayout(4).RootUIComp.SetUIActive(i.length > 0);
-      e = e.length > CELLS_PER_LINE ? 0 : 1;
-      this.GetGridLayout(2).SetAlign(e);
-      e = i.length > CELLS_PER_LINE ? 0 : 1;
-      this.GetGridLayout(4).SetAlign(e);
+      if (i instanceof Protocol_1.Aki.Protocol.Wm_) {
+        i = ModelManager_1.ModelManager.PhantomBattleModel.GetVisionRecoverySortPhantomItemList(i.GBs);
+        await this.qWt.RefreshByDataAsync(i);
+        this.GetItem(3).SetUIActive(i.length > 0);
+        this.GetGridLayout(4).RootUIComp.SetUIActive(i.length > 0);
+        e = e.length > CELLS_PER_LINE ? 0 : 1;
+        this.GetGridLayout(2).SetAlign(e);
+        e = i.length > CELLS_PER_LINE ? 0 : 1;
+        this.GetGridLayout(4).SetAlign(e);
+      } else {
+        this.qWt.GetRootUiItem().SetUIActive(false);
+        this.GetItem(3).SetUIActive(false);
+      }
     }
   }
 }

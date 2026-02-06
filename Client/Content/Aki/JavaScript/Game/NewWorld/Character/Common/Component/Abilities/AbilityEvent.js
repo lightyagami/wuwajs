@@ -4,6 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.AbilityEvent = exports.DEFAULT_KEY = undefined;
+const Log_1 = require("../../../../../../Core/Common/Log");
 const Event_1 = require("../../../../../../Core/Event/Event");
 exports.DEFAULT_KEY = 0;
 class AbilityEventInstance {
@@ -51,7 +52,13 @@ class TargetEmitter {
     this.iqc(e);
     t = this.Emitters.get(t);
     if (t) {
-      t.Emit(e, ...s);
+      if (t.IsEmitting(e)) {
+        if (Log_1.Log.CheckWarn()) {
+          Log_1.Log.Warn("Event", 85, "技能事件重复发送", ["name", this.Vx_[e]]);
+        }
+      } else {
+        t.Emit(e, ...s);
+      }
     }
   }
   Remove(t, e, s) {

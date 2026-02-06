@@ -12,13 +12,18 @@ class GameSettingsInitValueSource {
     this.mac = new Map();
   }
   CacheValue(e, t) {
+    var i;
     if (this.mac.has(t)) {
-      if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("GameSettings", 64, "收集设置数据时，出现来源重复。当前数据弃置", ["functionId", this.awi], ["sourceType", t], ["value", e]);
+      if ((i = this.mac.get(t)) === e) {
+        return undefined;
+      } else {
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("GameSettings", 64, "收集设置数据时，出现来源重复且值不一致。当前数据弃置", ["functionId", this.awi], ["sourceType", t], ["existValue", i], ["newValue", e]);
+        }
+        return;
       }
-    } else {
-      this.mac.set(t, e);
     }
+    this.mac.set(t, e);
   }
   get ValidInitValue() {
     for (const t of GameSettingsDefine_1.gameSettingsInitSourceTypePriority) {

@@ -87,7 +87,10 @@ let VehicleCatapultComponent = VehicleCatapultComponent_1 = class VehicleCatapul
       Log_1.Log.Info("Movement", 6, "StartCatapult", ["Actor", this.ActorComp.Actor.GetName()], ["CatapultUnit", this.CatapultUnit]);
     }
   }
+  GetCatapultUnit() {
+    return this.CatapultUnit;
+  }
 };
 VehicleCatapultComponent.TmpVector = Vector_1.Vector.Create();
-VehicleCatapultComponent = VehicleCatapultComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(327)], VehicleCatapultComponent);
+VehicleCatapultComponent = VehicleCatapultComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(329)], VehicleCatapultComponent);
 exports.VehicleCatapultComponent = VehicleCatapultComponent; //# sourceMappingURL=VehicleCatapultComponent.js.map

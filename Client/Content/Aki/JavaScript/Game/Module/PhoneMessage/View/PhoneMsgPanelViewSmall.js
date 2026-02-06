@@ -16,9 +16,9 @@ const PhoneSystemChatPanel_1 = require("./PhoneSystemChatPanel");
 class PhoneMsgPanelViewSmall extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
-    this.Fsf = undefined;
-    this.xsf = undefined;
-    this.B6f = undefined;
+    this.dlf = undefined;
+    this.alf = undefined;
+    this.Jzf = undefined;
     this.Hea = undefined;
     this.Jvt = () => {
       this.CloseMe();
@@ -29,15 +29,15 @@ class PhoneMsgPanelViewSmall extends UiViewBase_1.UiViewBase {
     this.BtnBindInfo = [[1, this.Jvt]];
   }
   async OnBeforeStartAsync() {
-    this.xsf = new PhoneSystemChatPanel_1.PhoneSystemChatPanel();
+    this.alf = new PhoneSystemChatPanel_1.PhoneSystemChatPanel();
     this.Hea = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
-    this.B6f = new PhoneMsgTipViewA_1.PhoneMsgTipViewA();
-    var e = [this.xsf.CreateThenShowByActorAsync(this.GetItem(2).GetOwner()), this.B6f.CreateThenShowByActorAsync(this.GetItem(3).GetOwner())];
+    this.Jzf = new PhoneMsgTipViewA_1.PhoneMsgTipViewA();
+    var e = [this.alf.CreateThenShowByActorAsync(this.GetItem(2).GetOwner()), this.Jzf.CreateThenShowByActorAsync(this.GetItem(3).GetOwner())];
     await Promise.all(e);
-    this.Fsf = this.OpenParam;
-    if (this.Fsf && (this.GetItem(3).SetUIActive(this.Fsf.NeedShowTips), this.Fsf.ShortMessage)) {
-      if (this.Fsf.NeedShowTips) {
-        this.B6f.OnRefreshByData(this.Fsf.ShortMessage);
+    this.dlf = this.OpenParam;
+    if (this.dlf && (this.GetItem(3).SetUIActive(this.dlf.NeedShowTips), this.dlf.ShortMessage)) {
+      if (this.dlf.NeedShowTips) {
+        this.Jzf.OnRefreshByData(this.dlf.ShortMessage);
       }
     } else {
       this.CloseMe();
@@ -46,16 +46,16 @@ class PhoneMsgPanelViewSmall extends UiViewBase_1.UiViewBase {
   OnStart() {
     var e;
     var i;
-    if (this.Fsf.ShortMessage) {
+    if (this.dlf.ShortMessage) {
       i = ModelManager_1.ModelManager.PhoneMsgModel;
-      e = this.Fsf.ShortMessage.Id;
+      e = this.dlf.ShortMessage.Id;
       if (i = i.CreateShortMessageDisplayDataByShortMsgId(e)) {
-        this.xsf.RefreshByData(i);
+        this.alf.RefreshByData(i);
         (i = new LogReportDefine_1.OnOpenPhoneViewLogEvent()).i_open_way = 6;
         i.i_reason = 2;
         ControllerHolder_1.ControllerHolder.LogReportController.LogReport(i);
-        this.xsf.LogReport(e, 2);
-        if (this.Fsf.NeedShowTips) {
+        this.alf.LogReport(e, 2);
+        if (this.dlf.NeedShowTips) {
           this.tbi("Start_Pop_Small");
         } else {
           this.tbi("Start_Small");

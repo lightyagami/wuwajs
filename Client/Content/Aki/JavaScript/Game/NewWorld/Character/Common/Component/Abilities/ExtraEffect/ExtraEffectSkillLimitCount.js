@@ -23,7 +23,7 @@ class ExtraEffectSkillLimitCount extends ExtraEffectBase_1.BuffEffect {
     }
   }
   OnCreated() {
-    var e = this.FXo().CheckGetComponent(218);
+    var e = this.FXo().CheckGetComponent(220);
     for (let t = 0; t < this.NXo.length; t++) {
       var s = Number(this.NXo[t]);
       e.IsSkillInCd(s);
@@ -31,7 +31,7 @@ class ExtraEffectSkillLimitCount extends ExtraEffectBase_1.BuffEffect {
     }
   }
   OnRemoved() {
-    var t = this.FXo().CheckGetComponent(218);
+    var t = this.FXo().CheckGetComponent(220);
     if (t) {
       for (const s of this.NXo) {
         var e = Number(s);

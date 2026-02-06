@@ -60,9 +60,9 @@ class TsAiController extends UE.KuroAIController {
   InitAiController(t) {
     this.CharAiDesignComp = t;
     this.AiController = t.AiController;
-    this.CharBuffComp = t.Entity.GetComponent(183);
-    this.CharTagComp = t.Entity.GetComponent(215);
-    this.CharStateMachineComp = t.Entity.GetComponent(79);
+    this.CharBuffComp = t.Entity.GetComponent(185);
+    this.CharTagComp = t.Entity.GetComponent(217);
+    this.CharStateMachineComp = t.Entity.GetComponent(81);
   }
   DrawDebugLines(t) {
     var e;
@@ -186,7 +186,7 @@ class TsAiController extends UE.KuroAIController {
     }
   }
   AicApplyBuffToTarget(t, e) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 220);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 222);
     if (t && this.CharBuffComp?.Valid) {
       t.AddBuffFromAi(this.AiController.AiCombatMessageId, Number(e), {
         InstigatorId: this.CharBuffComp.CreatureDataId,
@@ -331,7 +331,7 @@ ${this.AiController.AiHateList.GetHatredMapDebugText()}
 等待切换主控：${this.AiController.IsWaitingSwitchControl()}
 感知：${this.AiController.AiPerception?.GetEnableAiSenseDebug()}
 怪物仇恨组： ${this.AiController.HatredGroupId}
-部位血量: ${this.CharBuffComp?.Entity?.GetComponent(72)?.GetDebugText()}
+部位血量: ${this.CharBuffComp?.Entity?.GetComponent(74)?.GetDebugText()}
 集群Id：${this.AiController.GetTeamLevelId()}
 阵营: ${this.GetEntity()?.GetComponent(0)?.GetEntityCamp()}
 `;

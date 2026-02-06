@@ -18,6 +18,7 @@ const LevelConditionAnyPhantomCouldUpdate_1 = require("./LevelConditionAnyPhanto
 const LevelConditionAnyRoleFullPhantom_1 = require("./LevelConditionAnyRoleFullPhantom");
 const LevelConditionCalabashGuide_1 = require("./LevelConditionCalabashGuide");
 const LevelConditionCheckActivityOpen_1 = require("./LevelConditionCheckActivityOpen");
+const LevelConditionCheckMotorFightLevelFinished_1 = require("./LevelConditionCheckMotorFightLevelFinished");
 const LevelConditionCheckAiState_1 = require("./LevelConditionCheckAiState");
 const LevelConditionCheckAnimalParts_1 = require("./LevelConditionCheckAnimalParts");
 const LevelConditionCheckAvailableSunSpiritCount_1 = require("./LevelConditionCheckAvailableSunSpiritCount");
@@ -41,6 +42,7 @@ const LevelConditionCheckCurWorldLevelOp_1 = require("./LevelConditionCheckCurWo
 const LevelConditionCheckDirection_1 = require("./LevelConditionCheckDirection");
 const LevelConditionCheckDis_1 = require("./LevelConditionCheckDis");
 const LevelConditionCheckDockyardWareHouseHasItem_1 = require("./LevelConditionCheckDockyardWareHouseHasItem");
+const LevelConditionCheckDrinksPreferenceLevel_1 = require("./LevelConditionCheckDrinksPreferenceLevel");
 const LevelConditionCheckDungeon_1 = require("./LevelConditionCheckDungeon");
 const LevelConditionCheckDungeonFinished_1 = require("./LevelConditionCheckDungeonFinished");
 const LevelConditionCheckDungeonHasSaveConfig_1 = require("./LevelConditionCheckDungeonHasSaveConfig");
@@ -58,6 +60,7 @@ const LevelConditionCheckEntityLocked_1 = require("./LevelConditionCheckEntityLo
 const LevelConditionCheckEntityReward_1 = require("./LevelConditionCheckEntityReward");
 const LevelConditionCheckEquippedPhantom_1 = require("./LevelConditionCheckEquippedPhantom");
 const LevelConditionCheckExploreSkill_1 = require("./LevelConditionCheckExploreSkill");
+const LevelConditionCheckExploreSkillFlag_1 = require("./LevelConditionCheckExploreSkillFlag");
 const LevelConditionCheckFanIsNotRotating_1 = require("./LevelConditionCheckFanIsNotRotating");
 const LevelConditionCheckFightEnergyBall_1 = require("./LevelConditionCheckFightEnergyBall");
 const LevelConditionCheckFightEnergyBar_1 = require("./LevelConditionCheckFightEnergyBar");
@@ -68,12 +71,16 @@ const LevelConditionCheckFishingQteBtnHitValidArea_1 = require("./LevelCondition
 const LevelConditionCheckFishingRoleTechViewOpen_1 = require("./LevelConditionCheckFishingRoleTechViewOpen");
 const LevelConditionCheckFishingTechUnlock_1 = require("./LevelConditionCheckFishingTechUnlock");
 const LevelConditionCheckFishingWareHouseItemListLength_1 = require("./LevelConditionCheckFishingWareHouseItemListLength");
+const LevelConditionCheckFollowShooterActive_1 = require("./LevelConditionCheckFollowShooterActive");
 const LevelConditionCheckFormationAnyRoleDead_1 = require("./LevelConditionCheckFormationAnyRoleDead");
 const LevelConditionCheckGamePlayTag_1 = require("./LevelConditionCheckGamePlayTag");
 const LevelConditionCheckGramophonePlayingMusic_1 = require("./LevelConditionCheckGramophonePlayingMusic");
 const LevelConditionCheckGravityFlipEntityDirectionSameAsPlayer_1 = require("./LevelConditionCheckGravityFlipEntityDirectionSameAsPlayer");
+const LevelConditionCheckGuessJokerRound_1 = require("./LevelConditionCheckGuessJokerRound");
+const LevelConditionCheckEncircleCurrentChallengeId_1 = require("./LevelConditionCheckEncircleCurrentChallengeId");
 const LevelConditionCheckGuideStatus_1 = require("./LevelConditionCheckGuideStatus");
 const LevelConditionCheckHasFirstPhantomAtPosition_1 = require("./LevelConditionCheckHasFirstPhantomAtPosition");
+const LevelConditionCheckHasFollowShooter_1 = require("./LevelConditionCheckHasFollowShooter");
 const LevelConditionCheckHasSkinInRoleSkinSubView_1 = require("./LevelConditionCheckHasSkinInRoleSkinSubView");
 const LevelConditionCheckHasUnlockAffixInBossRush_1 = require("./LevelConditionCheckHasUnlockAffixInBossRush");
 const LevelConditionCheckInCombat_1 = require("./LevelConditionCheckInCombat");
@@ -101,6 +108,7 @@ const LevelConditionCheckOnTrap_1 = require("./LevelConditionCheckOnTrap");
 const LevelConditionCheckOriginWorldLevel_1 = require("./LevelConditionCheckOriginWorldLevel");
 const LevelConditionCheckPhantom_1 = require("./LevelConditionCheckPhantom");
 const LevelConditionCheckPlayerEnterClientTriggerDir_1 = require("./LevelConditionCheckPlayerEnterClientTriggerDir");
+const LevelConditionCheckPlayerInDeadEyeProcess_1 = require("./LevelConditionCheckPlayerInDeadEyeProcess");
 const LevelConditionCheckPlayerMotionState_1 = require("./LevelConditionCheckPlayerMotionState");
 const LevelConditionCheckPlayerMotionStateNew_1 = require("./LevelConditionCheckPlayerMotionStateNew");
 const LevelConditionCheckPlayerStateRestriction_1 = require("./LevelConditionCheckPlayerStateRestriction");
@@ -460,6 +468,7 @@ class LevelConditionCenter {
     this.$Te(E_LGC.OnPickUpHonamiStoryItem, LevelConditionOnPickUpHonamiStoryItem_1.LevelConditionOnPickUpHonamiStoryItem, [EventDefine_1.EEventName.OnPickUpHonamiStoryItem]);
     this.$Te(E_LGC.OnSceneItemDurabilityEmpty, LevelConditionOnSceneItemDurabilityEmpty_1.LevelConditionOnSceneItemDurabilityEmpty, [EventDefine_1.EEventName.OnSceneItemDurabilityEmpty]);
     this.$Te(E_LGC.CheckPickUpHonamiStoryItemType, LevelConditionHonamiStoryGuide_1.LevelConditionCheckPickUpHonamiStoryItemType, [EventDefine_1.EEventName.OnPickUpHonamiStoryItem]);
+    this.$Te(E_LGC.CheckPickUpHonamiStoryItemType, LevelConditionHonamiStoryGuide_1.LevelConditionCheckPickUpHonamiStoryItemType, [EventDefine_1.EEventName.OnPickUpHonamiStoryItem]);
     this.$Te(E_LGC.IsHasRecommendRecActivity, LevelConditionCheckIsHasRecommendActivity_1.LevelConditionCheckIsHasRecommendRecActivity);
     this.$Te(E_LGC.CheckMotorMovieModeStateChange, LevelConditionMotorMovieModeStateChange_1.LevelConditionMotorMovieModeStateChange, [EventDefine_1.EEventName.MotorInMovieModeChange]);
     this.$Te(E_LGC.OnMotorMusicPlayerShow, LevelConditionAlwaysTrue_1.LevelConditionAlwaysTrue, [EventDefine_1.EEventName.OnMotorMusicPlayerShow]);
@@ -473,6 +482,10 @@ class LevelConditionCenter {
     this.$Te(E_LGC.OnEnterWheelTowerEndlessMode, LevelConditionAlwaysTrue_1.LevelConditionAlwaysTrue, [EventDefine_1.EEventName.OnEnterWheelTowerEndlessMode]);
     this.$Te(E_LGC.OnGuideTriggerEvent, LevelConditionOnGuideTriggerEvent_1.LevelConditionOnGuideTriggerEvent, [EventDefine_1.EEventName.OnGuideTriggerEvent]);
     this.$Te(E_LGC.CheckUiItemShow, LevelConditionGuideCommon_1.LevelConditionCheckUiItemShow);
+    this.$Te(E_LGC.CheckExploreSkillFlag, LevelConditionCheckExploreSkillFlag_1.LevelConditionCheckExploreSkillFlag);
+    this.$Te(E_LGC.CheckGuessJokerRound, LevelConditionCheckGuessJokerRound_1.LevelConditionCheckGuessJokerRound);
+    this.$Te(E_LGC.CheckMotorFightLevelFinished, LevelConditionCheckMotorFightLevelFinished_1.LevelConditionCheckMotorFightLevelFinished);
+    this.$Te(E_LGC.CheckEncircleChallengeId, LevelConditionCheckEncircleCurrentChallengeId_1.LevelConditionCheckEncircleCurrentChallengeId);
     this.$Te("CheckChildQuestFinished", LevelConditionQuestStepState_1.LevelConditionQuestStepState);
     this.$Te("CompareQuestState", LevelConditionQuestState_1.LevelConditionQuestState);
     this.$Te("CompareEntityState", LevelConditionEntityState_1.LevelConditionEntityState);
@@ -524,7 +537,10 @@ class LevelConditionCenter {
     this.$Te("CheckAvailableSunSpiritCount", LevelConditionCheckAvailableSunSpiritCount_1.LevelConditionCheckAvailableSunSpiritCount);
     this.$Te("CheckPlayerRelativeAngle", LevelConditionCheckPlayerRelativeAngle_1.LevelConditionCheckPlayerRelativeAngle);
     this.$Te("CheckTrafficBlocked", LevelConditionCheckTrafficBlocked_1.LevelConditionCheckTrafficBlocked);
+    this.$Te("CheckPlayerIsInDeadEyeProcess", LevelConditionCheckPlayerInDeadEyeProcess_1.LevelConditionCheckPlayerInDeadEyeProcess);
     this.$Te("CheckPlayerRelativeDistance", LevelConditionCheckPlayerRelativeDistance_1.LevelConditionCheckPlayerRelativeDistance);
+    this.$Te("CheckDrinksPreferenceLevel", LevelConditionCheckDrinksPreferenceLevel_1.LevelConditionCheckDrinksPreferenceLevel);
+    this.$Te("CheckHasFollowShooter", LevelConditionCheckHasFollowShooter_1.LevelConditionCheckHasFollowShooter);
     this.YTe(0, LevelConditionCheckCharacterTag_1.LevelConditionCheckCharacterTag);
     this.YTe(1, LevelConditionCheckEntityCommonTag_1.LevelConditionCheckEntityCommonTag);
     this.YTe(2, LevelConditionCheckFanIsNotRotating_1.LevelConditionCheckFanIsNotRotating);
@@ -535,6 +551,7 @@ class LevelConditionCenter {
     this.$Te("CompareEntityState", LevelConditionCompareEntityState_1.LevelConditionCompareEntityState);
     this.$Te("CompareEntitySelfState", LevelConditionCompareEntityState_1.LevelConditionCompareEntityState);
     this.$Te("CheckMusicBeatsEvent", LevelConditionCheckMusicBeatsEvent_1.LevelConditionCheckMusicBeatsEvent);
+    this.$Te("CheckFollowShooterActive", LevelConditionCheckFollowShooterActive_1.LevelConditionCheckFollowShooterActive);
   }
   static $Te(e, i, n) {
     this.JTe.set(e, {

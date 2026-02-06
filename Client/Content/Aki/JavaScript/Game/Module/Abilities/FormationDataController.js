@@ -10,14 +10,12 @@ const Log_1 = require("../../../Core/Common/Log");
 const EntitySystem_1 = require("../../../Core/Entity/EntitySystem");
 const ControllerBase_1 = require("../../../Core/Framework/ControllerBase");
 const Net_1 = require("../../../Core/Net/Net");
-const ResourceSystem_1 = require("../../../Core/Resource/ResourceSystem");
+const LoadModeManager_1 = require("../../../Core/Performance/LoadMode/LoadModeManager");
 const StringUtils_1 = require("../../../Core/Utils/StringUtils");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
-const GlobalData_1 = require("../../GlobalData");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
-const CharacterBuffIds_1 = require("../../NewWorld/Character/Common/Component/Abilities/CharacterBuffIds");
 function isBattleMulti() {
   return (ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance() ? ModelManager_1.ModelManager.SceneTeamModel.GetTeamPlayerSize() : ModelManager_1.ModelManager.OnlineModel.GetAllWorldTeamPlayer().length) > 1;
 }
@@ -27,25 +25,17 @@ class FormationDataController extends ControllerBase_1.ControllerBase {
     return ModelManager_1.ModelManager.FormationDataModel;
   }
   static OnInit() {
-    Net_1.Net.Register(25249, FormationDataController.BHa);
+    Net_1.Net.Register(21189, FormationDataController.BHa);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InputControllerChange, this.lqt);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDone, this.Nom);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ChangeModeFinish, this.Nom);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnUpdateSceneTeam, this.Nom);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRefreshOnlineTeamList, this.Nom);
     return true;
   }
   static OnClear() {
-    Net_1.Net.UnRegister(25249);
+    Net_1.Net.UnRegister(21189);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InputControllerChange, this.lqt);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDone, this.Nom);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ChangeModeFinish, this.Nom);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnUpdateSceneTeam, this.Nom);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRefreshOnlineTeamList, this.Nom);
     return true;
   }
   static OnTick(t) {
-    this.ZBe();
+    this.RefreshFightState();
     this.Model?.RefreshOnLandPosition();
   }
   static OnLeaveLevel() {
@@ -90,10 +80,10 @@ class FormationDataController extends ControllerBase_1.ControllerBase {
   static MarkAggroDirty() {
     this.tbe = true;
   }
-  static ZBe() {
+  static RefreshFightState() {
     if (this.tbe) {
       this.tbe = false;
-      var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(184)?.GetAggroSet();
+      var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(186)?.GetAggroSet();
       const a = this.Model.PlayerAggroSet;
       this.ibe.length = 0;
       this.bie.length = 0;
@@ -129,7 +119,7 @@ class FormationDataController extends ControllerBase_1.ControllerBase {
       Log_1.Log.Info("Battle", 24, "NotifyInFight: " + t);
     }
     if (t) {
-      ResourceSystem_1.ResourceSystem.ResetLoadMode(GlobalData_1.GlobalData.World, true);
+      LoadModeManager_1.LoadModeManager.ClearReasonAndResetLoadMode("FormationDataController.NotifyInFight 进战保底清除");
     }
     if (FormationDataController.wK !== t) {
       FormationDataController.wK = t;
@@ -137,7 +127,7 @@ class FormationDataController extends ControllerBase_1.ControllerBase {
     }
   }
   static AddPlayerTag(t, e) {
-    var r = this.GetPlayerEntity(t)?.GetComponent(210);
+    var r = this.GetPlayerEntity(t)?.GetComponent(212);
     if (r) {
       r?.AddTag(e);
     } else if (Log_1.Log.CheckError()) {
@@ -145,7 +135,7 @@ class FormationDataController extends ControllerBase_1.ControllerBase {
     }
   }
   static RemovePlayerTag(t, e) {
-    var r = this.GetPlayerEntity(t)?.GetComponent(210);
+    var r = this.GetPlayerEntity(t)?.GetComponent(212);
     if (r) {
       r?.RemoveTag(e);
     } else if (Log_1.Log.CheckInfo()) {
@@ -153,7 +143,7 @@ class FormationDataController extends ControllerBase_1.ControllerBase {
     }
   }
   static GetPlayerTagCount(t, e) {
-    var r = this.GetPlayerEntity(t)?.GetComponent(210);
+    var r = this.GetPlayerEntity(t)?.GetComponent(212);
     if (r) {
       return r?.GetTagCount(e) ?? 0;
     } else {
@@ -164,7 +154,7 @@ class FormationDataController extends ControllerBase_1.ControllerBase {
     }
   }
   static HasPlayerTag(t, e, r = false) {
-    var a = this.GetPlayerEntity(t)?.GetComponent(210);
+    var a = this.GetPlayerEntity(t)?.GetComponent(212);
     if (a) {
       return r && a?.TagContainerHasTag(e) || a?.HasTag(e);
     } else {
@@ -225,33 +215,4 @@ FormationDataController.BHa = t => {
 FormationDataController.ibe = [];
 FormationDataController.bie = [];
 FormationDataController.tbe = false;
-FormationDataController.wK = false;
-FormationDataController.Nom = () => {
-  var t;
-  var e = ModelManager_1.ModelManager.CreatureModel.GetPlayerId();
-  var e = _a.GetPlayerEntity(e)?.GetComponent(209);
-  if (e) {
-    t = CharacterBuffIds_1.buffId.MultiBuff;
-    if (ModelManager_1.ModelManager.GameModeModel.IsMulti) {
-      if (!e.HasBuff(t)) {
-        e.AddBuff(t, {
-          InstigatorId: e.CreatureDataId,
-          Reason: "OnRefreshMultiTag"
-        });
-      }
-    } else if (e.HasBuff(t)) {
-      e.RemoveBuff(t, -1, "OnRefreshMultiTag");
-    }
-    t = CharacterBuffIds_1.buffId.BattleMultiBuff;
-    if (isBattleMulti()) {
-      if (!e.HasBuff(t)) {
-        e.AddBuff(t, {
-          InstigatorId: e.CreatureDataId,
-          Reason: "OnRefreshMultiTag"
-        });
-      }
-    } else if (e.HasBuff(t)) {
-      e.RemoveBuff(t, -1, "OnRefreshMultiTag");
-    }
-  }
-}; //# sourceMappingURL=FormationDataController.js.map
+FormationDataController.wK = false; //# sourceMappingURL=FormationDataController.js.map

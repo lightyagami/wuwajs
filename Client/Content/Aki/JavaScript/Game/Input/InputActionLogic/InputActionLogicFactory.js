@@ -9,12 +9,12 @@ const DodgeInputActionLogic_1 = require("./DodgeInputActionLogic");
 const JumpInputActionLogic_1 = require("./JumpInputActionLogic");
 class InputActionLogicFactory {
   static Initialize() {
-    InputActionLogicFactory.Aeg.set(InputEnums_1.EInputAction.跳跃, new JumpInputActionLogic_1.JumpInputActionLogic());
-    InputActionLogicFactory.Aeg.set(InputEnums_1.EInputAction.闪避, new DodgeInputActionLogic_1.DodgeInputActionLogic());
+    InputActionLogicFactory.oPg.set(InputEnums_1.EInputAction.跳跃, new JumpInputActionLogic_1.JumpInputActionLogic());
+    InputActionLogicFactory.oPg.set(InputEnums_1.EInputAction.闪避, new DodgeInputActionLogic_1.DodgeInputActionLogic());
   }
   static GetInputActionLogic(t) {
-    return InputActionLogicFactory.Aeg.get(t);
+    return InputActionLogicFactory.oPg.get(t);
   }
 }
-(exports.InputActionLogicFactory = InputActionLogicFactory).Aeg = new Map();
+(exports.InputActionLogicFactory = InputActionLogicFactory).oPg = new Map();
 //# sourceMappingURL=InputActionLogicFactory.js.map

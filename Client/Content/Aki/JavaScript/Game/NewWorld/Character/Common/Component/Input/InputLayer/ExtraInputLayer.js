@@ -16,12 +16,13 @@ class ExtraInputLayer extends InputLayer_1.InputLayer {
     super(...arguments);
     this.Aia = undefined;
     this.Vjd = false;
-    this.XIm = false;
+    this.aTm = false;
+    this.vq = true;
   }
   Init(s, t) {
-    this.XIm = t;
+    this.aTm = t;
     var t = s.Entity;
-    var s = t.GetComponent(230);
+    var s = t.GetComponent(232);
     var e = s?.GetCharacterLoadTypeList();
     var a = s?.GetFightInfo()?.BpInputMap;
     let n = "";
@@ -36,11 +37,18 @@ class ExtraInputLayer extends InputLayer_1.InputLayer {
     }
     if (this.Vjd) {
       if (n) {
-        const i = t.GetComponent(3).Actor;
-        ResourceSystem_1.ResourceSystem.LoadAsync(n, UE.Class, s => {
-          this.Aia = i.AddComponentByClass(s, false, MathUtils_1.MathUtils.DefaultTransform, false);
-          this.Aia.OwnerActor = i;
-        });
+        {
+          const i = t.GetComponent(3).Actor;
+          ResourceSystem_1.ResourceSystem.LoadAsync(n, UE.Class, s => {
+            this.Aia = i.AddComponentByClass(s, false, MathUtils_1.MathUtils.DefaultTransform, false);
+            this.Aia.OwnerActor = i;
+          });
+        }
+        if (t.GetComponent(308)?.IsMorphing()) {
+          this.vq = false;
+        } else {
+          this.vq = true;
+        }
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Input", 67, "[ExtraInputLayer]加载BpInput失败", ["EntityId", t.Id]);
       }
@@ -53,7 +61,7 @@ class ExtraInputLayer extends InputLayer_1.InputLayer {
     return 2;
   }
   HandlePress(t, e) {
-    if (this.Aia) {
+    if (this.Aia && this.vq) {
       ExtraInputLayer.b0l.Start();
       let s = undefined;
       switch (t) {
@@ -100,7 +108,7 @@ class ExtraInputLayer extends InputLayer_1.InputLayer {
           s = this.Aia.通用交互按下(e);
       }
       ExtraInputLayer.b0l.Stop();
-      if (!this.XIm || s && s.CommandType !== 0) {
+      if (!this.aTm || s && s.CommandType !== 0) {
         return s;
       } else {
         return ExtraInputLayer.GetSwallowCommand();
@@ -108,7 +116,7 @@ class ExtraInputLayer extends InputLayer_1.InputLayer {
     }
   }
   HandleRelease(t, e) {
-    if (this.Aia) {
+    if (this.Aia && this.vq) {
       ExtraInputLayer.q0l.Start();
       let s = undefined;
       switch (t) {
@@ -152,7 +160,7 @@ class ExtraInputLayer extends InputLayer_1.InputLayer {
           s = this.Aia.瞄准抬起(e);
       }
       ExtraInputLayer.q0l.Stop();
-      if (!this.XIm || s && s.CommandType !== 0) {
+      if (!this.aTm || s && s.CommandType !== 0) {
         return s;
       } else {
         return ExtraInputLayer.GetSwallowCommand();
@@ -160,7 +168,7 @@ class ExtraInputLayer extends InputLayer_1.InputLayer {
     }
   }
   HandleHold(t, e) {
-    if (this.Aia) {
+    if (this.Aia && this.vq) {
       let s = undefined;
       switch (t) {
         case InputEnums_1.EInputAction.跳跃:
@@ -205,7 +213,7 @@ class ExtraInputLayer extends InputLayer_1.InputLayer {
         case InputEnums_1.EInputAction.瞄准:
           s = this.Aia.瞄准长按(e);
       }
-      if (!this.XIm || s && s.CommandType !== 0) {
+      if (!this.aTm || s && s.CommandType !== 0) {
         return s;
       } else {
         return ExtraInputLayer.GetSwallowCommand();
@@ -213,7 +221,7 @@ class ExtraInputLayer extends InputLayer_1.InputLayer {
     }
   }
   DispatchPressEvent(s, t) {
-    if (this.Aia) {
+    if (this.Aia && this.vq) {
       switch (s) {
         case InputEnums_1.EInputAction.跳跃:
           this.Aia.跳跃按下事件(t);
@@ -260,7 +268,7 @@ class ExtraInputLayer extends InputLayer_1.InputLayer {
     }
   }
   DispatchReleaseEvent(s, t) {
-    if (this.Aia) {
+    if (this.Aia && this.vq) {
       switch (s) {
         case InputEnums_1.EInputAction.跳跃:
           this.Aia.跳跃抬起事件(t);
@@ -308,6 +316,9 @@ class ExtraInputLayer extends InputLayer_1.InputLayer {
   }
   IsValid() {
     return this.Vjd;
+  }
+  SetEnable(s) {
+    this.vq = s;
   }
 }
 (exports.ExtraInputLayer = ExtraInputLayer).b0l = Stats_1.Stat.Create("ExtraInputLayer.HandlePress");

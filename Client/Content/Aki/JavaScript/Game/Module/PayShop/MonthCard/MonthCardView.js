@@ -14,6 +14,7 @@ const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
 const UiTabViewBase_1 = require("../../../Ui/Base/UiTabViewBase");
 const UiManager_1 = require("../../../Ui/UiManager");
+const TotalTopUpPayAdditiveTagItem_1 = require("../../Activity/ActivityContent/TotalTopUp/View/TotalTopUpPayAdditiveTagItem");
 const ButtonAndTextItem_1 = require("../../Common/Button/ButtonAndTextItem");
 const ConfirmBoxDefine_1 = require("../../ConfirmBox/ConfirmBoxDefine");
 const UiTabSequence_1 = require("../../DynamicTab/UiTabViewBehavior/UiTabSequence");
@@ -27,6 +28,7 @@ class MonthCardView extends UiTabViewBase_1.UiTabViewBase {
     this.z2i = undefined;
     this.Z2i = undefined;
     this.eFi = undefined;
+    this.DNg = undefined;
     this.tFi = false;
     this.dtt = () => {
       HelpController_1.HelpController.OpenHelpById(MONTH_CARD_HELP_ID);
@@ -47,21 +49,26 @@ class MonthCardView extends UiTabViewBase_1.UiTabViewBase {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIText], [2, UE.UIButtonComponent], [3, UE.UIText], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIText], [10, UE.UIText], [11, UE.UITexture]];
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIText], [2, UE.UIButtonComponent], [3, UE.UIText], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIText], [10, UE.UIText], [11, UE.UITexture], [12, UE.UIItem]];
     this.BtnBindInfo = [[2, this.dtt]];
   }
   async OnBeforeStartAsync() {
-    await Promise.all([ControllerHolder_1.ControllerHolder.PayGiftController.SendPayGiftInfoRequestAsync(), ControllerHolder_1.ControllerHolder.MonthCardController.RequestMonthCardData()]);
-    if (PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk().GetIfNeedQueryProductInfoForce()) {
+    this.DNg = new TotalTopUpPayAdditiveTagItem_1.TotalTopUpPayAdditiveTagItem();
+    var e = this.DNg.CreateByResourceIdAsync("UiItem_CumulativeRechargeScoreTag", this.GetItem(12));
+    this.G3a();
+    await Promise.all([ControllerHolder_1.ControllerHolder.PayGiftController.SendPayGiftInfoRequestAsync(), ControllerHolder_1.ControllerHolder.MonthCardController.RequestMonthCardData(), this.UNg(), e]);
+    var e = PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk().GetIfNeedQueryProductInfoForce();
+    if (e) {
       await ControllerHolder_1.ControllerHolder.PayGiftController.QueryPayGiftInfoAsync();
     }
+  }
+  async UNg() {
     this.Z2i = new GetItemPanel();
     await this.Z2i.CreateByActorAsync(this.GetItem(5).GetOwner());
     this.AddChild(this.Z2i);
     this.eFi = new GetItemPanel();
     await this.eFi.CreateByActorAsync(this.GetItem(6).GetOwner());
     this.AddChild(this.eFi);
-    this.G3a();
   }
   OnBeforeShow() {
     this.Wih();
@@ -78,6 +85,7 @@ class MonthCardView extends UiTabViewBase_1.UiTabViewBase {
     this.BV_();
     this.GetText(9).ShowTextNew("MonthCardDes_1");
     (this.GetTabBehavior(UiTabSequence_1.UiTabSequence)?.GetLevelSequencePlayer()).PlayLevelSequenceByName("Loop");
+    this.DNg.RefreshByGoodsId(PayShopDefine_1.MONTH_CARD_SHOP_ID);
   }
   G3a() {
     var e;
@@ -155,12 +163,14 @@ class MonthCardView extends UiTabViewBase_1.UiTabViewBase {
       this.z2i.SetActive(true);
       i.SetUIActive(true);
       t.SetUIActive(false);
+      this.DNg?.RefreshByGoodsId(PayShopDefine_1.MONTH_CARD_SHOP_ID);
     } else {
       this.tFi = false;
       this.z2i.RefreshEnable(false);
       this.z2i.SetActive(false);
       i.SetUIActive(false);
       t.SetUIActive(true);
+      this.DNg?.SetUiActive(false);
     }
   }
 }

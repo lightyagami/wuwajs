@@ -10,7 +10,7 @@ class TsAnimNotifyCatapult extends UE.KuroAnimNotify {
   K2_Notify(e, t) {
     e = e.GetOwner();
     if (e instanceof TsBaseCharacter_1.default) {
-      (e.CharacterActorComponent.Entity?.GetComponent(34)).StartCatapult();
+      (e.CharacterActorComponent.Entity?.GetComponent(35)).StartCatapult();
     }
     return true;
   }

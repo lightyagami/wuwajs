@@ -23,7 +23,7 @@ class LevelFlowAddBuffAction extends LevelFlowActionBase_1.LevelFlowActionBase {
     var e = ModelManager_1.ModelManager.CreatureModel.GetEntityById(this.E0);
     if (e) {
       if (e = e.Entity) {
-        if (e.GetComponent(183)) {
+        if (e.GetComponent(185)) {
           ControllerHolder_1.ControllerHolder.LevelFlowController.LevelFlowAddBuffRequest(this.jQo);
           this.FinishExecute(true);
         } else {

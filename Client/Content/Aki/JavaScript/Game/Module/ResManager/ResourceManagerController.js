@@ -25,6 +25,7 @@ const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
 const RenderModuleController_1 = require("../../Render/Manager/RenderModuleController");
 const ResUpdateFactory_1 = require("./ResUpdateFactory");
+const QuestResourceWhiteAll_1 = require("../../../Core/Define/ConfigQuery/QuestResourceWhiteAll");
 const CUE_BLOCK_PUSH_TIME = 3000;
 class ResourceManagerController extends ControllerBase_1.ControllerBase {
   static OnInit() {
@@ -112,8 +113,8 @@ class ResourceManagerController extends ControllerBase_1.ControllerBase {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("QuestResource", 70, "下载条目配置强制进核心包地块:" + g.Area);
         }
-        for (const d of g.Area) {
-          a.add(d);
+        for (const l of g.Area) {
+          a.add(l);
         }
       }
     }
@@ -134,18 +135,6 @@ class ResourceManagerController extends ControllerBase_1.ControllerBase {
     }
     return ModelManager_1.ModelManager.QuestResourceModel.NeedCheckQuestResource();
   }
-  static IsAllOptionalResourceDownloaded() {
-    for (const t of ResPackageInfo_1.ResPackageInfo.OptionalDownLoadInfo.values()) {
-      if (!t.IsCompleteUpdate()) {
-        return false;
-      }
-      var [e, o] = t.CalculateSavedSizeAndTotalSize();
-      if (e < o) {
-        return false;
-      }
-    }
-    return true;
-  }
   static async CheckOptResDownload() {
     this.ChangeHttpTickFrequency();
     if (this.NeedDownloadResources()) {
@@ -162,12 +151,12 @@ class ResourceManagerController extends ControllerBase_1.ControllerBase {
     this.RestoreHttpTickFrequency();
   }
   static OnTick(e) {
-    this.qVf(e);
+    this.NXf(e);
   }
-  static qVf(e) {
-    this.IUf += e;
-    if (this.IUf >= CUE_BLOCK_PUSH_TIME && (this.IUf = 0, e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(3)) && (e = this.GetMapBlockFromPosition(ModelManager_1.ModelManager.GameModeModel.MapId, e?.ActorLocationProxy)) >= 0 && e !== this.VGf) {
-      this.VGf = e;
+  static NXf(e) {
+    this.sGf += e;
+    if (this.sGf >= CUE_BLOCK_PUSH_TIME && (this.sGf = 0, e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(3)) && (e = this.GetMapBlockFromPosition(ModelManager_1.ModelManager.GameModeModel.MapId, e?.ActorLocationProxy)) >= 0 && e !== this.i7f) {
+      this.i7f = e;
       this.PushCurBlock([e], "地块改变定时推送");
     }
   }
@@ -175,10 +164,10 @@ class ResourceManagerController extends ControllerBase_1.ControllerBase {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("QuestResource", 70, `推送当前地块:${e} 原因:${o}`);
     }
-    o = Protocol_1.Aki.Protocol.MUf.create({
-      EUf: e
+    o = Protocol_1.Aki.Protocol.oGf.create({
+      nGf: e
     });
-    Net_1.Net.Send(16548, o);
+    Net_1.Net.Send(28408, o);
   }
   static GetMapBlockFromPosition(e, o) {
     var t = MapBlockInfoByMapId_1.configMapBlockInfoByMapId.GetConfigList(e, true);
@@ -267,7 +256,7 @@ class ResourceManagerController extends ControllerBase_1.ControllerBase {
       return [e === o, e, o];
     }
   }
-  static sKf() {
+  static ihg() {
     if (ControllerHolder_1.ControllerHolder.KuroSdkController.CanUseSdk()) {
       var o = ControllerHolder_1.ControllerHolder.KuroSdkController.GetCurrentLoginInfo().Uid ?? "";
       var t = ModelManager_1.ModelManager.QuestNewModel.GetFinishQuestList();
@@ -287,10 +276,10 @@ class ResourceManagerController extends ControllerBase_1.ControllerBase {
     var o = VideoResUpdate_1.VideoResUpdate.GetVideoResSavedSize(4);
     var t = VideoResUpdate_1.VideoResUpdate.GetVideoResSize(3);
     var r = VideoResUpdate_1.VideoResUpdate.GetVideoResSavedSize(3);
-    var a = this.IsAllOptionalResourceDownloaded();
+    var a = ResourceUpdateManager_1.ResourceDiffUpdaterManager.IsAllOptionalResourceDownloaded();
     let s = 2;
     if (a) {
-      if (e === o && t === r) {
+      if (VideoResUpdate_1.VideoResUpdate.VideoDownloadState == 1) {
         s = 1;
       } else if (e === o) {
         s = 4;
@@ -306,23 +295,23 @@ class ResourceManagerController extends ControllerBase_1.ControllerBase {
       const _ = Protocol_1.Aki.Protocol.Y61.create({
         l31: s
       });
-      Net_1.Net.Call(28715, _, e => {
+      Net_1.Net.Call(23252, _, e => {
         if (e && Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("QuestResource", 38, "计算出新状态后通知服务器任务资源状态改变", ["新状态", s]);
         }
       });
     }
-    let n = Protocol_1.Aki.Protocol.fUm.Proto_BStateAll;
+    let n = Protocol_1.Aki.Protocol.ADm.Proto_BStateAll;
     if (ResourceUpdateManager_1.ResourceDiffUpdaterManager.IsGrayBoxHit()) {
-      n = a ? Protocol_1.Aki.Protocol.fUm.Proto_BStateComplete : Protocol_1.Aki.Protocol.fUm.Proto_BStateSimple;
+      n = a ? Protocol_1.Aki.Protocol.ADm.Proto_BStateComplete : Protocol_1.Aki.Protocol.ADm.Proto_BStateSimple;
     }
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("QuestResource", 38, "登录后上报服务器地块资源状态", ["BlockState", n]);
     }
-    const _ = Protocol_1.Aki.Protocol.aUm.create({
-      lUm: n
+    const _ = Protocol_1.Aki.Protocol.EDm.create({
+      TDm: n
     });
-    Net_1.Net.Send(20170, _);
+    Net_1.Net.Send(21636, _);
   }
   static UpdateBlockDownloadState(e, o) {
     var t;
@@ -378,9 +367,9 @@ class ResourceManagerController extends ControllerBase_1.ControllerBase {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("QuestResource", 38, "通知服务器登录任务下载完成", ["LoginQuests", t]);
       }
-      Net_1.Net.Call(18651, o, e => {
+      Net_1.Net.Call(29396, o, e => {
         if (e && e.BEs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.BEs, 26131);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.BEs, 21489);
         }
       });
     }
@@ -392,22 +381,30 @@ class ResourceManagerController extends ControllerBase_1.ControllerBase {
     var a = ModelManager_1.ModelManager.QuestResourceModel;
     var s = ModelManager_1.ModelManager.ResourceManagerModel;
     var n = new Set();
+    var _ = QuestResourceWhiteAll_1.configQuestResourceWhiteAll.GetConfigList() ?? [];
+    var i = new Set();
+    if (_) {
+      for (const c of _) {
+        i.add(c.QuestId);
+      }
+    }
     for ([o] of a.QuestIdToCgIds) {
-      n.add(o);
+      if (!i.has(o)) {
+        n.add(o);
+      }
     }
     for ([t] of s.QuestsRefBlocks) {
-      n.add(t);
+      if (!i.has(t)) {
+        n.add(t);
+      }
     }
-    for (const i of n) {
-      var _ = ModelManager_1.ModelManager.QuestNewModel.GetQuestConfig(i);
-      if (!!_ && (_.Type === 1 || _.Type === 10)) {
-        if (this.IsQuestResourceDownloaded(i, e)) {
-          r.push(i);
-        }
+    for (const u of n) {
+      if (ModelManager_1.ModelManager.QuestNewModel.GetQuestConfig(u) && this.IsQuestResourceDownloaded(u, e)) {
+        r.push(u);
       }
     }
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("QuestResource", 70, "登录前已完成资源下载的任务列表:" + r);
+      Log_1.Log.Info("QuestResource", 70, `登录前已完成资源下载的任务列表:${r}, 性别:${e}`);
     }
     return r;
   }
@@ -508,11 +505,11 @@ class ResourceManagerController extends ControllerBase_1.ControllerBase {
 }
 exports.ResourceManagerController = ResourceManagerController;
 (_a = ResourceManagerController).LoginPrepareResCheckPromise = undefined;
-ResourceManagerController.IUf = 0;
-ResourceManagerController.VGf = -1;
+ResourceManagerController.sGf = 0;
+ResourceManagerController.i7f = -1;
 ResourceManagerController.Gro = () => {
   if (ResourceUpdateManager_1.ResourceDiffUpdaterManager.IsGrayBoxHit()) {
-    _a.sKf();
+    _a.ihg();
     ModelManager_1.ModelManager.SubPackageDownLoadModel?.UpdaterDownLoadSize();
     _a.UpdateToServerResState();
     _a.UpdateServerQuestState();
@@ -520,6 +517,6 @@ ResourceManagerController.Gro = () => {
 };
 ResourceManagerController.DSe = (e, o) => {
   if (o === Protocol_1.Aki.Protocol.hTs.a3_ && ResourceUpdateManager_1.ResourceDiffUpdaterManager.IsGrayBoxHit()) {
-    _a.sKf();
+    _a.ihg();
   }
 }; //# sourceMappingURL=ResourceManagerController.js.map

@@ -20,8 +20,8 @@ class MotorParkourMapModel extends ModelBase_1.ModelBase {
     this.Vnr = undefined;
     this.kG = 1;
     this.Qzu = Vector2D_1.Vector2D.Create();
-    this.TUf = 0;
-    this.V8m = Vector2D_1.Vector2D.Create();
+    this.aGf = 0;
+    this.Q8m = Vector2D_1.Vector2D.Create();
     this.CTn = Vector2D_1.Vector2D.Create();
     this.EndPointOffset = Vector2D_1.Vector2D.Create();
     this.EndPointRotator = new UE.Rotator();
@@ -34,10 +34,10 @@ class MotorParkourMapModel extends ModelBase_1.ModelBase {
     if (Global_1.Global.BaseCharacter) {
       this.Vnr = ModelManager_1.ModelManager.GameSplineModel.LoadAndGetSplineComponent(t, Global_1.Global.BaseCharacter.EntityId, 1);
       if (this.Vnr) {
-        this.TUf = this.Vnr.GetDistanceAlongSplineAtSplinePoint(0);
-        this.TUf = this.Vnr.GetDistanceAlongSplineAtSplinePoint(r);
+        this.aGf = this.Vnr.GetDistanceAlongSplineAtSplinePoint(0);
+        this.aGf = this.Vnr.GetDistanceAlongSplineAtSplinePoint(r);
         e = this.Vnr.GetDistanceAlongSplineAtSplinePoint(o);
-        this.GetSplinePoints(e, this.SplinePoints, this.TUf === e);
+        this.GetSplinePoints(e, this.SplinePoints, this.aGf === e);
         i = this.SplinePoints.Get(this.SplinePoints.Num() - 1);
         this.EndPointOffset.Set(i.X, i.Y);
         r = this.Vnr.D_GetArriveTangentAtSplinePoint(o, 1);
@@ -64,12 +64,12 @@ class MotorParkourMapModel extends ModelBase_1.ModelBase {
     if (this.Vnr) {
       e.Empty();
       r = this.Vnr.GetSplineLength();
-      o = t < this.TUf;
+      o = t < this.aGf;
       if (i || o) {
-        this.AddPoints(this.TUf, r, e);
+        this.AddPoints(this.aGf, r, e);
         this.AddPoints(0, t, e);
       } else {
-        this.AddPoints(this.TUf, t, e);
+        this.AddPoints(this.aGf, t, e);
       }
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("MotorParkour", 71, "样条线组件不存在");
@@ -81,8 +81,8 @@ class MotorParkourMapModel extends ModelBase_1.ModelBase {
       while (t !== i) {
         var o = this.Vnr.D_GetLocationAtDistanceAlongSpline(t, 1);
         this.CTn.Set(o.X, o.Y);
-        MapUtil_1.MapUtil.WorldPosition2UiPosition2D(this.CTn).Multiply(this.kG, this.V8m).Subtraction(this.Qzu, this.V8m);
-        r.Add(this.V8m.ToUeVector2D());
+        MapUtil_1.MapUtil.WorldPosition2UiPosition2D(this.CTn).Multiply(this.kG, this.Q8m).Subtraction(this.Qzu, this.Q8m);
+        r.Add(this.Q8m.ToUeVector2D());
         t = Math.min(t + MotorParkourDefine_1.SPLINE_DISTANCE_INTERVAL, i);
       }
     } else if (Log_1.Log.CheckError()) {

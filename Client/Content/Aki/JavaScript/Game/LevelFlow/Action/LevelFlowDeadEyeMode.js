@@ -13,7 +13,7 @@ class LevelFlowDeadEyeMode extends LevelFlowActionBase_1.LevelFlowActionBase {
   constructor() {
     super(...arguments);
     this.OPt = undefined;
-    this.LQm = () => {
+    this.YXm = () => {
       this.FinishExecute(true);
     };
   }
@@ -22,7 +22,7 @@ class LevelFlowDeadEyeMode extends LevelFlowActionBase_1.LevelFlowActionBase {
     return this;
   }
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnDeadEyeModeFinish, this.LQm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnDeadEyeModeFinish, this.YXm);
   }
   OnExecute() {
     if (this.OPt) {
@@ -35,7 +35,7 @@ class LevelFlowDeadEyeMode extends LevelFlowActionBase_1.LevelFlowActionBase {
     }
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnDeadEyeModeFinish, this.LQm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnDeadEyeModeFinish, this.YXm);
   }
 }
 exports.LevelFlowDeadEyeMode = LevelFlowDeadEyeMode;

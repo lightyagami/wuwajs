@@ -20,8 +20,8 @@ const SceneItemManipulableCastState_1 = require("./SceneItemManipulableCastState
 const SPHERE_TRACE_RADIUS = 50;
 const PROFILE_KEY = "[SceneItemManipulableLevitateCastState.GetTraceResult]";
 class SceneItemManipulableLevitateCastState extends SceneItemManipulableCastState_1.SceneItemManipulableCastState {
-  constructor(t, e) {
-    super(t, e);
+  constructor(t, e, i) {
+    super(t, e, i);
     this.xVs = undefined;
     this.Anr = -0;
     this.XWe = undefined;
@@ -69,9 +69,9 @@ class SceneItemManipulableLevitateCastState extends SceneItemManipulableCastStat
   _Qs() {
     var t = Protocol_1.Aki.Protocol._$s.create();
     t.F4n = MathUtils_1.MathUtils.NumberToLong(this.SceneItem.ActorComp.CreatureData.GetCreatureDataId());
-    Net_1.Net.Call(17680, t, t => {
+    Net_1.Net.Call(19579, t, t => {
       if (t?.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 29629);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 22298);
       }
     });
   }

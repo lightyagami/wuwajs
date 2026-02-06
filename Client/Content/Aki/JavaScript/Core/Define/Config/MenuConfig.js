@@ -141,6 +141,9 @@ class MenuConfig {
   get DetailText() {
     return this.detailtext();
   }
+  get CanDisableDetailShow() {
+    return this.candisabledetailshow();
+  }
   get ConditionGroup() {
     return this.conditiongroup();
   }
@@ -612,8 +615,12 @@ class MenuConfig {
     }
     return i;
   }
-  conditiongroup() {
+  candisabledetailshow() {
     var t = this.J7.__offset(this.z7, 78);
+    return !!t && !!this.J7.readInt8(this.z7 + t);
+  }
+  conditiongroup() {
+    var t = this.J7.__offset(this.z7, 80);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -621,7 +628,7 @@ class MenuConfig {
     }
   }
   ps5hide() {
-    var t = this.J7.__offset(this.z7, 80);
+    var t = this.J7.__offset(this.z7, 82);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {

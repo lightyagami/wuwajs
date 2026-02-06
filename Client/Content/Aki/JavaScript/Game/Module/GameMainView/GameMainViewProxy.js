@@ -127,7 +127,7 @@ class GameMainViewProxy {
     this.JoystickPanel = await this.CreateChildPanel("PnlJoystick", this.View.GetContentPanel(), JoystickPanel_1.JoystickPanel, true, true, 27);
   }
   async $Pd() {
-    this.PositionPanel = await this.CreateChildPanel("PnlPosition", this.View.GetContentPanel(), PositionPanel_1.PositionPanel, true, true, 41);
+    this.PositionPanel = await this.CreateChildPanel("PnlPosition", this.View.GetContentPanel(), PositionPanel_1.PositionPanel, true, true, 43);
   }
   mrt() {
     for (const t of this.ChildPanelMap.values()) {

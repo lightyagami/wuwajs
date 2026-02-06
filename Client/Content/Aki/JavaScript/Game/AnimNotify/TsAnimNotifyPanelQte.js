@@ -31,7 +31,7 @@ class TsAnimNotifyPanelQte extends UE.KuroAnimNotify {
         return false;
       }
     }
-    o = t?.CharacterActorComponent?.Entity?.GetComponent(220).CreateAnimNotifyContent(r.GetName(), this.exportIndex);
+    o = t?.CharacterActorComponent?.Entity?.GetComponent(222).CreateAnimNotifyContent(r.GetName(), this.exportIndex);
     PanelQteController_1.PanelQteController.StartAnimNotifyQte(this.QteId, e, o);
     return true;
   }

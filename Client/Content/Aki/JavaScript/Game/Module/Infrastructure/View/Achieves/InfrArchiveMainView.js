@@ -22,41 +22,41 @@ class InfrArchiveMainView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
     this.Qyi = new PopupCaptionItem_1.PopupCaptionItem();
-    this.Z3m = undefined;
-    this.e4m = undefined;
-    this.t4m = undefined;
-    this.$km = 1;
-    this.i4m = () => {
+    this.p5m = undefined;
+    this.v5m = undefined;
+    this.y5m = undefined;
+    this.aOm = 1;
+    this.S5m = () => {
       UiManager_1.UiManager.OpenView("ActivityRewardPopUpView", ModelManager_1.ModelManager.InfrastructureModel.GetScoreRewardData(), (e, r) => {
         if (e && UiManager_1.UiManager.IsViewShow("InfrArchiveMainView")) {
           UiManager_1.UiManager.GetViewByName("InfrArchiveMainView")?.AddChildViewById(r);
         }
       });
     };
-    this.n$m = () => {
-      this.l4m();
+    this.rQm = () => {
+      this.w5m();
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIVerticalLayout], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIButtonComponent], [5, UE.UIText], [6, UE.UIScrollViewWithScrollbarComponent], [7, UE.UIItem], [8, UE.UIScrollViewWithScrollbarComponent], [9, UE.UIItem], [10, UE.UIItem]];
-    this.BtnBindInfo = [[4, this.i4m]];
+    this.BtnBindInfo = [[4, this.S5m]];
   }
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InfrastructureArchiveReadUpdate, this.n$m);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InfrastructureArchiveReadUpdate, this.rQm);
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InfrastructureArchiveReadUpdate, this.n$m);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InfrastructureArchiveReadUpdate, this.rQm);
   }
   async OnBeforeStartAsync() {
-    this.o4m();
-    this.n4m();
-    await Promise.all([this.e7a(), this.r4m()]);
+    this.E5m();
+    this.I5m();
+    await Promise.all([this.e7a(), this.M5m()]);
   }
   OnStart() {
     this.cQa();
-    this.a4m();
+    this.b5m();
     this.BNe();
-    this.Z3m.GetLayoutItemList()[0].SetToggleSelected(1);
+    this.p5m.GetLayoutItemList()[0].SetToggleSelected(1);
   }
   OnBeforeDestroy() {
     this.Ovt();
@@ -64,29 +64,29 @@ class InfrArchiveMainView extends UiViewBase_1.UiViewBase {
   Ovt() {
     RedDotController_1.RedDotController.UnBindRedDot("InfrArchive");
   }
-  a4m() {
-    switch (this.$km) {
+  b5m() {
+    switch (this.aOm) {
       case 1:
-        this.h4m();
+        this.R5m();
         break;
       case 0:
-        this.l4m();
+        this.w5m();
     }
-    this.e4m.SetActive(this.$km === 1);
-    this.t4m.SetActive(this.$km === 0);
+    this.v5m.SetActive(this.aOm === 1);
+    this.y5m.SetActive(this.aOm === 0);
   }
   async e7a() {
     await this.Qyi.CreateThenShowByActorAsync(this.GetItem(0).GetOwner());
   }
-  async r4m() {
-    this.Z3m = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(1), () => {
+  async M5m() {
+    this.p5m = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(1), () => {
       var e = new InfrArchiveMenuItem_1.InfrArchiveMenuItem();
       e.SetToggleClickCb(e => {
-        this._4m(e);
+        this.L5m(e);
       });
       return e;
     });
-    await this.Z3m.RefreshByDataAsync([{
+    await this.p5m.RefreshByDataAsync([{
       CardType: 1,
       DesText: "BuildRoadFile_MessagePage"
     }, {
@@ -94,17 +94,17 @@ class InfrArchiveMainView extends UiViewBase_1.UiViewBase {
       DesText: "BuildRoadFile_RecordsPage"
     }]);
   }
-  o4m() {
-    this.e4m = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(6), () => {
+  E5m() {
+    this.v5m = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(6), () => {
       var e = new InfrArchiveRoleCardItem_1.InfrArchiveRoleCardItem();
       e.SetSelectedCallBack(e => {
-        this.u4m(e);
+        this.P5m(e);
       });
       return e;
     });
   }
-  n4m() {
-    this.t4m = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(8), () => new InfrArchiveCollectCardItem_1.InfrArchiveCollectCardItem());
+  I5m() {
+    this.y5m = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(8), () => new InfrArchiveCollectCardItem_1.InfrArchiveCollectCardItem());
   }
   cQa() {
     this.Qyi.SetCloseCallBack(() => {
@@ -112,7 +112,7 @@ class InfrArchiveMainView extends UiViewBase_1.UiViewBase {
     });
     this.Qyi.SetHelpBtnActive(false);
   }
-  h4m() {
+  R5m() {
     var e = ConfigManager_1.ConfigManager.InfrastructureConfig.GetInfrPhoneMessageConfigList();
     const a = ModelManager_1.ModelManager.PhoneMsgModel;
     e = e.map(e => e.Id).sort((e, r) => {
@@ -124,9 +124,9 @@ class InfrArchiveMainView extends UiViewBase_1.UiViewBase {
         return e - r;
       }
     });
-    this.e4m.RefreshByData(e);
+    this.v5m.RefreshByData(e);
   }
-  l4m() {
+  w5m() {
     var e = ConfigManager_1.ConfigManager.InfrastructureConfig.GetArchiveItemIdConfigList().map(e => e.Id).sort((e, r) => {
       var i = ConfigManager_1.ConfigManager.InfrastructureConfig.GetArchiveItemConfig(e);
       var i = ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(i.ItemId) > 0 ? 0 : 1;
@@ -138,17 +138,17 @@ class InfrArchiveMainView extends UiViewBase_1.UiViewBase {
         return e - r;
       }
     });
-    this.t4m.RefreshByData(e);
+    this.y5m.RefreshByData(e);
   }
-  _4m(r) {
-    this.$km = r;
-    this.Z3m?.GetLayoutItemList().filter(e => e.CardType !== r).forEach(e => {
+  L5m(r) {
+    this.aOm = r;
+    this.p5m?.GetLayoutItemList().filter(e => e.CardType !== r).forEach(e => {
       e.SetToggleSelected(0);
     });
-    this.a4m();
+    this.b5m();
   }
-  u4m(e) {
-    var e = this.e4m.GetScrollItemByIndex(e);
+  P5m(e) {
+    var e = this.v5m.GetScrollItemByIndex(e);
     if (ModelManager_1.ModelManager.PhoneMsgModel.IsPhoneMsgUnlock(e.MsgId)) {
       e = {
         ShortMessage: ConfigManager_1.ConfigManager.PhoneMsgConfig.GetPhoneMsgConfig(e.MsgId),
@@ -167,7 +167,7 @@ class InfrArchiveMainView extends UiViewBase_1.UiViewBase {
     var r;
     if (e.length !== 0 && e[0] === "MenuItem") {
       r = Number(e[1]);
-      return this.Z3m?.GetLayoutItemByIndex(r)?.GetGuideUiItemAndUiItemForShowEx(e);
+      return this.p5m?.GetLayoutItemByIndex(r)?.GetGuideUiItemAndUiItemForShowEx(e);
     } else {
       return undefined;
     }

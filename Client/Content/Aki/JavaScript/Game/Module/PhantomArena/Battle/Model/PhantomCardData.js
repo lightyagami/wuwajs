@@ -12,7 +12,7 @@ const PhantomArenaDefine_1 = require("../PhantomArenaDefine");
 const PhantomCardSkillData_1 = require("./PhantomCardSkillData");
 class PhantomCardData {
   constructor(t = false) {
-    this.$km = 0;
+    this.aOm = 0;
     this.IsNpcCard = false;
     this.Index = PhantomArenaDefine_1.HAND_PHANTOMARENA_INDEX;
     this.CardId = 0;
@@ -72,13 +72,13 @@ class PhantomCardData {
     return this.ConfigCost === t;
   }
   get IsField() {
-    return this.$km === 3;
+    return this.aOm === 3;
   }
   get IsTool() {
-    return this.$km === 2;
+    return this.aOm === 2;
   }
   get IsNormal() {
-    return this.$km === 1;
+    return this.aOm === 1;
   }
   get IsNoAllowDiscard() {
     return this.IsField || this.IsFourCost;
@@ -87,7 +87,7 @@ class PhantomCardData {
     return this.Index !== PhantomArenaDefine_1.HAND_PHANTOMARENA_INDEX;
   }
   GetCardType() {
-    return this.$km;
+    return this.aOm;
   }
   InitData(t) {
     this.CardId = t.$g1;
@@ -98,11 +98,11 @@ class PhantomCardData {
     this.FightId = PhantomArenaDefine_1.UNVALID_FIGHT_ID;
     this.IsUnLimitEvolve = false;
     this.IsCopy = false;
-    this.Glf();
-    this.Xjm();
+    this.ruf();
+    this.QWm();
     this.kU1();
     this.RGt();
-    this.nkm();
+    this.yqm();
   }
   InitDataByNpc(t, i) {
     this.CardId = t;
@@ -112,13 +112,13 @@ class PhantomCardData {
     this.Index = PhantomArenaDefine_1.HAND_PHANTOMARENA_INDEX;
     this.FightId = t;
     this.IsCopy = false;
-    this.Glf();
-    this.Xjm();
+    this.ruf();
+    this.QWm();
     this.kU1();
     this.RGt();
-    this.nkm();
+    this.yqm();
   }
-  Xjm() {
+  QWm() {
     var t = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardConfig(this.ConfigId);
     this.ActiveSkillId = t.ActiveSkillId;
     this.ClickActiveSkillId = t.DurableSkillId;
@@ -154,9 +154,9 @@ class PhantomCardData {
     this.ConfigCost = t.Cost;
     this.UseCost = this.IsFourCost ? 0 : this.ConfigCost;
   }
-  nkm() {
+  yqm() {
     var t = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardConfig(this.ConfigId);
-    this.$km = t.Type;
+    this.aOm = t.Type;
   }
   RefreshFightData(t) {
     var i = t.Gg1;
@@ -165,15 +165,15 @@ class PhantomCardData {
     this.ConfigId = i.Wg1;
     this.Index = i.Qg1;
     this.FightId = t.kg1;
-    this.IsCopy = i.Mxm;
-    this.Flf(i.YM1, i.ihf);
-    this.Xjm();
+    this.IsCopy = i.Xxm;
+    this.ouf(i.YM1, i.y1f);
+    this.QWm();
     this.CanUse = true;
     this.EvolveNum = i.XM1;
     this.IsUnLimitEvolve = i.__u;
     this.RGt();
-    this.nkm();
-    this.SkillData.RefreshData(i.Fqm);
+    this.yqm();
+    this.SkillData.RefreshData(i._Gm);
   }
   RefreshFightAttr(t) {
     this.LastEffectCount = this.CurEffectCount;
@@ -184,13 +184,13 @@ class PhantomCardData {
     }
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PhantomArenaCardAttrRefresh, this.CardId);
   }
-  Glf() {
+  ruf() {
     this.ExtraFactors = [];
     var t = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardConfig(this.ConfigId);
     this.UnActiveFactors = [...t.CardFactorId];
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PhantomArenaCardFactorsRefresh, this.CardId);
   }
-  Flf(t, i) {
+  ouf(t, i) {
     this.ExtraFactors = [];
     this.UnActiveFactors = [];
     for (const e of t) {
@@ -243,7 +243,7 @@ class PhantomCardData {
       return [false, "PhantomBattle_1127"];
     } else if (this.IsUnLimitEvolve) {
       return [true, ""];
-    } else if (this.$km === 2) {
+    } else if (this.aOm === 2) {
       return [false, "PhantomBattle_1181"];
     } else if ((t = t.ConfigCost) === PhantomArenaDefine_1.COST_ONE && (this.EvolveNum > 0 || this.ConfigCost === PhantomArenaDefine_1.COST_THREE)) {
       return [false, "PhantomBattle_1130"];

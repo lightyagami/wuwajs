@@ -37,7 +37,7 @@ class CharacterFlowLogic {
     this.WaitSecondsRemain = 0;
     this.IsWaitForDialogueUi = false;
     this.ActorComp = t;
-    this.HeadInfoComp = t.Entity.GetComponent(85);
+    this.HeadInfoComp = t.Entity.GetComponent(87);
     this.TempFlowInfoList = new Array();
     this.HYo = this.ActorComp.CreatureData.GetPbDataId();
     if (i) {
@@ -87,11 +87,11 @@ class CharacterFlowLogic {
       for (let t = 0, i = e.length; t < i; t++) {
         var s = this.GetEntity(e[t]);
         if (s) {
-          s.GetComponent(31).RemoveFlowActions();
+          s.GetComponent(32).RemoveFlowActions();
         }
       }
     } else {
-      this.ActorComp.Entity.GetComponent(31).RemoveFlowActions();
+      this.ActorComp.Entity.GetComponent(32).RemoveFlowActions();
     }
   }
   PlayFlow() {
@@ -184,7 +184,7 @@ class CharacterFlowLogic {
       this.WaitSecondsRemain = this.GetWaitSeconds(i);
       i = this.WaitSecondsRemain + 0.05;
       this.IsWaitForDialogueUi = true;
-      t.GetComponent(85).SetDialogueText(s, i).finally(() => {
+      t.GetComponent(87).SetDialogueText(s, i).finally(() => {
         this.IsWaitForDialogueUi = false;
       });
     }

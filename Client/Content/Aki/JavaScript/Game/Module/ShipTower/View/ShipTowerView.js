@@ -191,7 +191,7 @@ class ShipTowerView extends UiViewBase_1.UiViewBase {
   async OnBeforeStartAsync() {
     this.Es_();
     await this.nH_();
-    await ModelManager_1.ModelManager.ShipTowerModel.CheckInitProto();
+    await ModelManager_1.ModelManager.ShipTowerModel.CheckInitProto(false);
     this.zJa = new PopupCaptionItem_1.PopupCaptionItem(this.GetItem(0));
     this.zJa.SetCloseCallBack(this.Usa);
     this.zJa.SetHelpBtnActive(true);

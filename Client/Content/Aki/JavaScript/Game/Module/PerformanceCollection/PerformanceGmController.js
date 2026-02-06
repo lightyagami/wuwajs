@@ -70,7 +70,7 @@ class PerformanceGmController {
         o = o.Entity.GetComponent(0).GetCreatureDataId();
         (t = new Protocol_1.Aki.Protocol.Gzn()).VVn = 0;
         t.P8n = "@GmRemoveMonster " + o;
-        Net_1.Net.Call(22424, t, () => {});
+        Net_1.Net.Call(20381, t, () => {});
       }
     }
     return true;
@@ -91,7 +91,7 @@ class PerformanceGmController {
   }
   static IgnoreBattle() {
     var e = Global_1.Global.BaseCharacter;
-    return !!e && !!(e = e.CharacterActorComponent.Entity.GetComponent(183)) && (e.AddBuff(CharacterBuffIds_1.buffId.IgnoreHateBuff, {
+    return !!e && !!(e = e.CharacterActorComponent.Entity.GetComponent(185)) && (e.AddBuff(CharacterBuffIds_1.buffId.IgnoreHateBuff, {
       InstigatorId: e.CreatureDataId,
       Reason: "IgnoreBattle"
     }), true);
@@ -214,7 +214,7 @@ class PerformanceGmController {
     UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "fx.Niagara.SystemSimulation.AllowASync " + e);
     var r = ModelManager_1.ModelManager.CreatureModel.GetAllEntities();
     for (let e = r.length - 1; e >= 0; e--) {
-      r[e].Entity.GetComponent(123)?.SetTakeOverTick(true);
+      r[e].Entity.GetComponent(125)?.SetTakeOverTick(true);
     }
     return true;
   }

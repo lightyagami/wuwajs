@@ -130,6 +130,9 @@ class BattleSkillGamepadItem extends BattleSkillItem_1.BattleSkillItem {
       if (this.NumComponent) {
         this.NumComponent.SetComponentActive(false);
       }
+      if (this.DotIndicatorComponent) {
+        this.DotIndicatorComponent.SetComponentActive(false);
+      }
       if (this.SwitchComponent) {
         this.SwitchComponent.SetComponentActive(false);
       }
@@ -198,6 +201,9 @@ class BattleSkillGamepadItem extends BattleSkillItem_1.BattleSkillItem {
     }
     if (this.NumComponent) {
       this.NumComponent.SetComponentActive(false);
+    }
+    if (this.DotIndicatorComponent) {
+      this.DotIndicatorComponent.SetComponentActive(false);
     }
     if (this.SwitchComponent) {
       this.SwitchComponent.SetComponentActive(false);

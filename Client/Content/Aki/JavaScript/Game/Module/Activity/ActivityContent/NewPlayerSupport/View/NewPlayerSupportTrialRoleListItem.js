@@ -13,16 +13,16 @@ class NewPlayerSupportTrialRoleListItem extends UiPanelBase_1.UiPanelBase {
   constructor(e) {
     super();
     this.UIi = undefined;
-    this.uJf = undefined;
-    this.RDf = undefined;
+    this.nCg = undefined;
+    this.sOf = undefined;
     this.$Ve = undefined;
     this.Wvt = () => {
       if (this.UIi) {
-        this.UIi(this, this.RDf.TrialRoleGroupId);
+        this.UIi(this, this.sOf.TrialRoleGroupId);
       }
     };
-    this.Lke = () => !this.uJf || this.uJf();
-    this.RDf = e;
+    this.Lke = () => !this.nCg || this.nCg();
+    this.sOf = e;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UITexture], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem]];
@@ -32,20 +32,20 @@ class NewPlayerSupportTrialRoleListItem extends UiPanelBase_1.UiPanelBase {
     this.$Ve = this.GetExtendToggle(0);
     this.$Ve.CanExecuteChange.Bind(this.Lke);
     this.Og();
-    RedDotController_1.RedDotController.BindRedDot("RedDotTrialRoleGroup", this.GetItem(6), undefined, this.RDf.TrialRoleGroupId);
+    RedDotController_1.RedDotController.BindRedDot("RedDotTrialRoleGroup", this.GetItem(6), undefined, this.sOf.TrialRoleGroupId);
   }
   OnBeforeDestroy() {
-    RedDotController_1.RedDotController.UnBindGivenUi("RedDotTrialRoleGroup", this.GetItem(6), this.RDf.TrialRoleGroupId);
+    RedDotController_1.RedDotController.UnBindGivenUi("RedDotTrialRoleGroup", this.GetItem(6), this.sOf.TrialRoleGroupId);
   }
   Og() {
-    var e = this.RDf.IsLocked();
+    var e = this.sOf.IsLocked();
     this.GetItem(1)?.SetUIActive(!e);
     this.GetItem(4)?.SetUIActive(!e);
     this.GetItem(2)?.SetUIActive(e);
     this.GetItem(5)?.SetUIActive(e);
     var t = this.GetTexture(3);
     t.SetChangeColor(e, t.changeColor);
-    var e = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(this.RDf.RealRoleId);
+    var e = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(this.sOf.RealRoleId);
     var e = e.FormationRoleCard;
     this.SetTextureByPath(e, t);
   }
@@ -55,14 +55,14 @@ class NewPlayerSupportTrialRoleListItem extends UiPanelBase_1.UiPanelBase {
   SetSelected(e) {
     this.$Ve?.SetToggleState(e ? 1 : 0);
     if (e) {
-      ModelManager_1.ModelManager.TrialRoleModel.SaveTrialRoleUnlockRedDotById(this.RDf.TrialRoleGroupId, false);
+      ModelManager_1.ModelManager.TrialRoleModel.SaveTrialRoleUnlockRedDotById(this.sOf.TrialRoleGroupId, false);
     }
   }
   SelectItem() {
     this.Wvt();
   }
   SetCanSelectCallback(e) {
-    this.uJf = e;
+    this.nCg = e;
   }
 }
 exports.NewPlayerSupportTrialRoleListItem = NewPlayerSupportTrialRoleListItem;

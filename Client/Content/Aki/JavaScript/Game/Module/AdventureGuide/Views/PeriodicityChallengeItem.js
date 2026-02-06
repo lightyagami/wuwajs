@@ -29,7 +29,7 @@ class PeriodicityChallengeItem extends GridProxyAbstract_1.GridProxyAbstract {
     super(...arguments);
     this.Aam = undefined;
     this.Dam = undefined;
-    this.Nbf = undefined;
+    this.RAf = undefined;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem]];
@@ -40,8 +40,8 @@ class PeriodicityChallengeItem extends GridProxyAbstract_1.GridProxyAbstract {
     e.push(this.Aam.CreateByActorAsync(this.GetItem(0).GetOwner()));
     this.Dam = new PeriodicityChallengeDetectionItem();
     e.push(this.Dam.CreateByActorAsync(this.GetItem(2).GetOwner()));
-    this.Nbf = new PeriodicityChallengeItemTopTips_1.PeriodicityChallengeItemTopTips();
-    e.push(this.Nbf.CreateByActorAsync(this.GetItem(3).GetOwner()));
+    this.RAf = new PeriodicityChallengeItemTopTips_1.PeriodicityChallengeItemTopTips();
+    e.push(this.RAf.CreateByActorAsync(this.GetItem(3).GetOwner()));
     await Promise.all(e);
   }
   Refresh(e, i, t) {
@@ -52,10 +52,10 @@ class PeriodicityChallengeItem extends GridProxyAbstract_1.GridProxyAbstract {
       this.Aam.SetUiActive(false);
     }
     if (e.TopTips) {
-      this.Nbf.SetUiActive(true);
-      this.Nbf.Refresh(e.TopTips);
+      this.RAf.SetUiActive(true);
+      this.RAf.Refresh(e.TopTips);
     } else {
-      this.Nbf.SetUiActive(false);
+      this.RAf.SetUiActive(false);
     }
     this.Dam?.SetUiActive(true);
     this.Dam?.RefreshItem(e.Data);

@@ -73,6 +73,9 @@ class DeviceRenderFeature {
   get Raytracing() {
     return this.raytracing();
   }
+  get LoadingRangeScale() {
+    return this.loadingrangescale();
+  }
   get OtherCommand() {
     return this.othercommand();
   }
@@ -252,8 +255,16 @@ class DeviceRenderFeature {
       return 0;
     }
   }
+  loadingrangescale() {
+    var t = this.J7.__offset(this.z7, 46);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 100;
+    }
+  }
   othercommand(t) {
-    var i = this.J7.__offset(this.z7, 46);
+    var i = this.J7.__offset(this.z7, 48);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);

@@ -13,21 +13,21 @@ class PhantomArenaGuideActivityData extends ActivityData_1.ActivityBaseData {
     super(...arguments);
     this.FRe = 0;
     this.THs = 0;
-    this.VQm = 0;
+    this.lYm = 0;
     this.pQa = false;
-    this.HQm = 0;
+    this._Ym = 0;
   }
   GetExDataRedPointShowState() {
-    return !!ModelManager_1.ModelManager.ActivityModel.IsActivityOpen(this.HQm) && ModelManager_1.ModelManager.PhantomArenaModel.GetPermanentPhantomArenaActivityRedDot(this.HQm);
+    return !!ModelManager_1.ModelManager.ActivityModel.IsActivityOpen(this._Ym) && ModelManager_1.ModelManager.PhantomArenaModel.GetPermanentPhantomArenaActivityRedDot(this._Ym);
   }
   PhraseEx(t) {
-    t = t.Zjm;
+    t = t.zWm;
     if (t) {
       this.FRe = t.B5n;
       this.THs = t.P6n;
-      this.VQm = t.e$m;
-      this.pQa = t.t$m;
-      this.HQm = t.i$m;
+      this.lYm = t.JWm;
+      this.pQa = t.ZWm;
+      this._Ym = t.eQm;
     }
   }
   UpdateReceiveState(t) {
@@ -41,13 +41,13 @@ class PhantomArenaGuideActivityData extends ActivityData_1.ActivityBaseData {
     return this.THs;
   }
   GetTargetNum() {
-    return this.VQm;
+    return this.lYm;
   }
   GetIsReceiveReward() {
     return this.pQa;
   }
   GetPhantomArenaActivityId() {
-    return this.HQm;
+    return this._Ym;
   }
 }
 exports.PhantomArenaGuideActivityData = PhantomArenaGuideActivityData;

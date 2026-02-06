@@ -110,13 +110,16 @@ class Area {
   get IsPlayerPosNeedCheck() {
     return this.isplayerposneedcheck();
   }
-  __init(t, i) {
+  get IsEnableSceneInteractionEffects() {
+    return this.isenablesceneinteractioneffects();
+  }
+  __init(t, e) {
     this.z7 = t;
-    this.J7 = i;
+    this.J7 = e;
     return this;
   }
-  static getRootAsArea(t, i) {
-    return (i || new Area()).__init(t.readInt32(t.position()) + t.position(), t);
+  static getRootAsArea(t, e) {
+    return (e || new Area()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   areaid() {
     var t = this.J7.__offset(this.z7, 4);
@@ -151,12 +154,12 @@ class Area {
     }
   }
   areaname(t) {
-    var i = this.J7.__offset(this.z7, 12);
-    var i = i ? this.J7.__string(this.z7 + i, t) : null;
-    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(i);
+    var e = this.J7.__offset(this.z7, 12);
+    var e = e ? this.J7.__string(this.z7 + e, t) : null;
+    if (typeof e == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(e);
     }
-    return i;
+    return e;
   }
   mapconfigid() {
     var t = this.J7.__offset(this.z7, 14);
@@ -175,12 +178,12 @@ class Area {
     }
   }
   title(t) {
-    var i = this.J7.__offset(this.z7, 18);
-    var i = i ? this.J7.__string(this.z7 + i, t) : null;
-    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(i);
+    var e = this.J7.__offset(this.z7, 18);
+    var e = e ? this.J7.__string(this.z7 + e, t) : null;
+    if (typeof e == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(e);
     }
-    return i;
+    return e;
   }
   father() {
     var t = this.J7.__offset(this.z7, 20);
@@ -194,9 +197,9 @@ class Area {
     return this.tag(t);
   }
   tag(t) {
-    var i = this.J7.__offset(this.z7, 22);
-    if (i) {
-      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
+    var e = this.J7.__offset(this.z7, 22);
+    if (e) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + e) + t * 4);
     } else {
       return 0;
     }
@@ -237,13 +240,13 @@ class Area {
     var t = this.J7.__offset(this.z7, 28);
     return !t || !!this.J7.readInt8(this.z7 + t);
   }
-  GetWorldmonsterlevelmaxAt(t, i) {
+  GetWorldmonsterlevelmaxAt(t, e) {
     return this.worldmonsterlevelmax(t);
   }
-  worldmonsterlevelmax(t, i) {
-    var e = this.J7.__offset(this.z7, 30);
-    if (e) {
-      return (i || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + e) + t * 4), this.J7);
+  worldmonsterlevelmax(t, e) {
+    var i = this.J7.__offset(this.z7, 30);
+    if (i) {
+      return (e || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + i) + t * 4), this.J7);
     } else {
       return null;
     }
@@ -281,12 +284,12 @@ class Area {
     }
   }
   edgewallname(t) {
-    var i = this.J7.__offset(this.z7, 38);
-    var i = i ? this.J7.__string(this.z7 + i, t) : null;
-    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(i);
+    var e = this.J7.__offset(this.z7, 38);
+    var e = e ? this.J7.__string(this.z7 + e, t) : null;
+    if (typeof e == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(e);
     }
-    return i;
+    return e;
   }
   deliverymarktype() {
     var t = this.J7.__offset(this.z7, 40);
@@ -304,13 +307,13 @@ class Area {
       return 0;
     }
   }
-  GetEnterareatagsAt(t, i) {
+  GetEnterareatagsAt(t, e) {
     return this.enterareatags(t);
   }
-  enterareatags(t, i) {
-    var e = this.J7.__offset(this.z7, 44);
-    if (e) {
-      return (i || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + e) + t * 4), this.J7);
+  enterareatags(t, e) {
+    var i = this.J7.__offset(this.z7, 44);
+    if (i) {
+      return (e || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + i) + t * 4), this.J7);
     } else {
       return null;
     }
@@ -323,13 +326,13 @@ class Area {
       return 0;
     }
   }
-  GetLeaveareatagsAt(t, i) {
+  GetLeaveareatagsAt(t, e) {
     return this.leaveareatags(t);
   }
-  leaveareatags(t, i) {
-    var e = this.J7.__offset(this.z7, 46);
-    if (e) {
-      return (i || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + e) + t * 4), this.J7);
+  leaveareatags(t, e) {
+    var i = this.J7.__offset(this.z7, 46);
+    if (i) {
+      return (e || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + i) + t * 4), this.J7);
     } else {
       return null;
     }
@@ -369,6 +372,14 @@ class Area {
   isplayerposneedcheck() {
     var t = this.J7.__offset(this.z7, 56);
     return !!t && !!this.J7.readInt8(this.z7 + t);
+  }
+  isenablesceneinteractioneffects() {
+    var t = this.J7.__offset(this.z7, 58);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
 }
 exports.Area = Area;

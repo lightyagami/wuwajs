@@ -114,6 +114,9 @@ class SkillCommonButton {
   get ShowLongPressTags() {
     return GameUtils_1.GameUtils.ConvertToArray(this.showlongpresstagsLength(), this.showlongpresstags, this);
   }
+  get CustomHandleId() {
+    return this.customhandleid();
+  }
   __init(t, i) {
     this.z7 = t;
     this.J7 = i;
@@ -492,6 +495,14 @@ class SkillCommonButton {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
       return null;
+    }
+  }
+  customhandleid() {
+    var t = this.J7.__offset(this.z7, 52);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
     }
   }
 }

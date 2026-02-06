@@ -18,6 +18,7 @@ class SnapshotData {
     this.InTimeFlowViewId = undefined;
     this.CacheTimeDilationData = undefined;
     this.TimeDilationData = undefined;
+    this.CacheTimeDilationTagSet = new Set();
     this.WaitSetTimeDilationTagSet = new Set();
     this.ViewIdList = [];
     this.TimeDilationMap = new Map();
@@ -140,7 +141,13 @@ class UiTimeDilation {
     if (!Net_1.Net.IsServerConnected()) {
       UiTimeDilation.AddWaitSetTimeDilationTag("ServerConnect");
     }
-    if (UiTimeDilation.Gur()) {
+    if (UiTimeDilation.KWf()) {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("UiTimeDilation", 10, "指定Plot层级,有需要等待设置时停的tag,不允许设置界面时停", ["触发界面", i.DebugName], ["界面Id", i.ViewId], ["Tag", UiTimeDilation.vur]);
+      }
+      UiTimeDilation.XWf(i);
+      return false;
+    } else if (UiTimeDilation.Gur()) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("UiTimeDilation", 10, "有需要等待设置时停的tag,不允许设置界面时停", ["触发界面", i.DebugName], ["界面Id", i.ViewId], ["Tag", UiTimeDilation.vur]);
       }
@@ -247,7 +254,15 @@ class UiTimeDilation {
   }
   static DeleteWaitSetTimeDilationTag(i) {
     let e = false;
-    if ((e = (UiTimeDilation.mF_ ? UiTimeDilation.mF_.WaitSetTimeDilationTagSet : UiTimeDilation.vur).delete(i)) && Log_1.Log.CheckInfo()) {
+    if (UiTimeDilation.mF_) {
+      if (UiTimeDilation.mF_.CacheTimeDilationTagSet.has(i)) {
+        if ((e = UiTimeDilation.mF_.CacheTimeDilationTagSet.delete(i)) && Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("UiTimeDilation", 10, "指定Plot层级,缓存数据中删除等待设置时停的tag", ["Tag", i]);
+        }
+      } else if ((e = UiTimeDilation.mF_.WaitSetTimeDilationTagSet.delete(i)) && Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("UiTimeDilation", 10, "指定Plot层级,删除等待设置时停的tag", ["Tag", i]);
+      }
+    } else if ((e = UiTimeDilation.vur.delete(i)) && Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("UiTimeDilation", 10, "删除等待设置时停的tag", ["Tag", i]);
     }
     UiTimeDilation.Our();
@@ -271,17 +286,19 @@ class UiTimeDilation {
       UiTimeDilation.mF_.TimeDilationData = UiTimeDilation.ajs;
       UiTimeDilation.mF_.TimeDilationMap = UiTimeDilation.Vur;
       UiTimeDilation.mF_.ViewIdList = UiTimeDilation.Fur;
-      UiTimeDilation.mF_.WaitSetTimeDilationTagSet = UiTimeDilation.vur;
+      UiTimeDilation.mF_.CacheTimeDilationTagSet = UiTimeDilation.vur;
     }
   }
   static fF_() {
     if (UiTimeDilation.mF_) {
-      UiTimeDilation.kur = UiTimeDilation.mF_.InTimeFlowViewId;
+      if (UiTimeDilation.mF_.InTimeFlowViewId) {
+        UiTimeDilation.kur = UiTimeDilation.mF_.InTimeFlowViewId;
+      }
       UiTimeDilation.Nur = UiTimeDilation.mF_.CacheTimeDilationData;
       UiTimeDilation.ajs = UiTimeDilation.mF_.TimeDilationData;
       UiTimeDilation.Vur = UiTimeDilation.mF_.TimeDilationMap;
       UiTimeDilation.Fur = UiTimeDilation.mF_.ViewIdList;
-      UiTimeDilation.vur = UiTimeDilation.mF_.WaitSetTimeDilationTagSet;
+      UiTimeDilation.vur = UiTimeDilation.mF_.CacheTimeDilationTagSet;
       UiTimeDilation.mF_ = undefined;
     }
   }
@@ -310,6 +327,17 @@ class UiTimeDilation {
     UiTimeDilation.fF_();
     if (UiTimeDilation.ajs) {
       UiTimeDilation.SetGameTimeDilation(UiTimeDilation.ajs);
+    }
+  }
+  static KWf() {
+    return !!UiTimeDilation.mF_ && UiTimeDilation.mF_.WaitSetTimeDilationTagSet.size > 0;
+  }
+  static XWf(i) {
+    if (!!UiTimeDilation.mF_ && (!UiTimeDilation.mF_.CacheTimeDilationData || UiTimeDilation.mF_.CacheTimeDilationData.TimeDilation === 1)) {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("UiTimeDilation", 10, "指定Plot层级,缓存数据添加", ["触发界面", i.DebugName], ["界面Id", i.ViewId]);
+      }
+      UiTimeDilation.Nur = i;
     }
   }
 }

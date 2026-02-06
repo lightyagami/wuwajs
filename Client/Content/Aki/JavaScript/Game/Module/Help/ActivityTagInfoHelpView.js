@@ -12,19 +12,19 @@ const LguiUtil_1 = require("../Util/LguiUtil");
 class ActivityTagInfoHelpView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
-    this.t6m = undefined;
-    this.i6m = undefined;
+    this.Jwm = undefined;
+    this.Zwm = undefined;
     this.GetExtraPopFrameType = i => 3;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem]];
   }
   async OnBeforeStartAsync() {
-    this.t6m = new ActivityTagInfoItem();
-    this.i6m = new ActivityTagInfoItem();
+    this.Jwm = new ActivityTagInfoItem();
+    this.Zwm = new ActivityTagInfoItem();
     var i = [];
-    i.push(this.t6m.CreateByActorAsync(this.GetItem(2).GetOwner()));
-    i.push(this.i6m.CreateByActorAsync(this.GetItem(3).GetOwner()));
+    i.push(this.Jwm.CreateByActorAsync(this.GetItem(2).GetOwner()));
+    i.push(this.Zwm.CreateByActorAsync(this.GetItem(3).GetOwner()));
     await Promise.all(i);
   }
   OnStart() {
@@ -41,11 +41,11 @@ class ActivityTagInfoHelpView extends UiViewBase_1.UiViewBase {
         return;
       }
       this.GetItem(2).SetUIActive(true);
-      this.t6m.SetView(i);
+      this.Jwm.SetView(i);
     }
     if (!(t <= 0) && (i = ConfigManager_1.ConfigManager.ActivityConfig.GetActivityTitleTags(t)).DescInTip) {
       this.GetItem(3).SetUIActive(true);
-      this.i6m.SetView(i);
+      this.Zwm.SetView(i);
     } else {
       this.GetItem(3).SetUIActive(false);
     }

@@ -32,7 +32,7 @@ class InputBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     return ControllerHolder_1.ControllerHolder.InputController.GetKeyDownTime(t);
   }
   static GetCommandInterval(t, n = 1) {
-    return Global_1.Global.BaseCharacter?.GetEntityNoBlueprint()?.GetComponent(65)?.GetCommandInterval(t) ?? n;
+    return Global_1.Global.BaseCharacter?.GetEntityNoBlueprint()?.GetComponent(67)?.GetCommandInterval(t) ?? n;
   }
   static SetTimeDilation(t) {
     ControllerHolder_1.ControllerHolder.GameModeController.SetTimeDilation(t);
@@ -53,7 +53,7 @@ class InputBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   static HasMoveAxisInput() {
     var t;
     var n;
-    return Info_1.Info.OperationType === 1 && !!ModelManager_1.ModelManager.BattleUiModel?.IsPressJoyStick || !!(t = ModelManager_1.ModelManager.InputModel?.GetAxisValues()) && (!!(n = t.get(InputEnums_1.EInputAxis.MoveForward)) || !!(t = t.get(InputEnums_1.EInputAxis.MoveRight)) || n !== 0 && t !== 0 && !!(n = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint()?.GetComponent(65)) && (!!n.QueryInputAxis(InputEnums_1.EInputAxis.MoveForward) || !!n.QueryInputAxis(InputEnums_1.EInputAxis.MoveRight)));
+    return Info_1.Info.OperationType === 1 && !!ModelManager_1.ModelManager.BattleUiModel?.IsPressJoyStick || !!(t = ModelManager_1.ModelManager.InputModel?.GetAxisValues()) && (!!(n = t.get(InputEnums_1.EInputAxis.MoveForward)) || !!(t = t.get(InputEnums_1.EInputAxis.MoveRight)) || n !== 0 && t !== 0 && !!(n = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint()?.GetComponent(67)) && (!!n.QueryInputAxis(InputEnums_1.EInputAxis.MoveForward) || !!n.QueryInputAxis(InputEnums_1.EInputAxis.MoveRight)));
   }
   static HasRightMoveAxisInput() {
     var t = ModelManager_1.ModelManager.InputModel?.GetAxisValues();

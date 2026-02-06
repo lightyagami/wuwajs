@@ -13,15 +13,63 @@ const RoleDevItemJumpGroupByItemId_1 = require("../../../../Core/Define/ConfigQu
 const RoleDevLevelLimitAll_1 = require("../../../../Core/Define/ConfigQuery/RoleDevLevelLimitAll");
 const RoleDevPhantomJumpGroupByPhantomId_1 = require("../../../../Core/Define/ConfigQuery/RoleDevPhantomJumpGroupByPhantomId");
 const RoleDevProjectByRoleId_1 = require("../../../../Core/Define/ConfigQuery/RoleDevProjectByRoleId");
-const RoleDevProsListAll_1 = require("../../../../Core/Define/ConfigQuery/RoleDevProsListAll");
-const RoleDevProsListById_1 = require("../../../../Core/Define/ConfigQuery/RoleDevProsListById");
-const RoleDevProsProjectById_1 = require("../../../../Core/Define/ConfigQuery/RoleDevProsProjectById");
 const RoleDevProsRoleItemByItemGroupId_1 = require("../../../../Core/Define/ConfigQuery/RoleDevProsRoleItemByItemGroupId");
 const RoleDevTypeManageByItemType_1 = require("../../../../Core/Define/ConfigQuery/RoleDevTypeManageByItemType");
 const RoleDevWeaponItemByWeaponType_1 = require("../../../../Core/Define/ConfigQuery/RoleDevWeaponItemByWeaponType");
 const RoleDevWeaponJumpGroupByWeaponId_1 = require("../../../../Core/Define/ConfigQuery/RoleDevWeaponJumpGroupByWeaponId");
 const ConfigBase_1 = require("../../../../Core/Framework/ConfigBase");
+const MathUtils_1 = require("../../../../Core/Utils/MathUtils");
+const TimeUtil_1 = require("../../../Common/TimeUtil");
 class RoleDevConfig extends ConfigBase_1.ConfigBase {
+  constructor() {
+    super(...arguments);
+    this.Ewg = new Map();
+    this.vTg = new Map();
+  }
+  UpdateDevProsListConfig(e) {
+    this.Ewg.clear();
+    for (const t of e) {
+      var o = [];
+      for (const i of t.YRg) {
+        o.push({
+          TypeId: i.tTs,
+          GachaId: i.t9n
+        });
+      }
+      var r = {
+        Id: t.s5n,
+        ProspectBeginTime: Number(MathUtils_1.MathUtils.LongToBigInt(t.nmd)) / TimeUtil_1.TimeUtil.InverseMillisecond,
+        ProspectEndTime: Number(MathUtils_1.MathUtils.LongToBigInt(t.smd)) / TimeUtil_1.TimeUtil.InverseMillisecond,
+        TypeId: t.tTs,
+        GachaId: t.t9n,
+        SpecialGachaId: o,
+        SortId: t.XBc
+      };
+      this.Ewg.set(t.s5n, r);
+    }
+  }
+  UpdateDevPropsProjectConfig(e) {
+    this.vTg.clear();
+    e.forEach(e => {
+      var o = {
+        Id: e.s5n,
+        ElementId: e.o5c,
+        RoleName: e.bIg,
+        RoleExperience: e.RIg,
+        RoleGoalLevel: e.LIg,
+        WeaponGoalLevel: e.wIg,
+        WeaponExperience: e.PIg,
+        RoleItemGroup: e.AIg,
+        WeaponBreachItemGroup: e.DIg,
+        WeaponType: e.UIg,
+        SkillItemGroup: e.xIg,
+        PrefectSkillLevel: e.BIg,
+        RoleHeadIcon: e.kIg,
+        RoleHeadIconSmall: e.qIg
+      };
+      this.vTg.set(e.s5n, o);
+    });
+  }
   GetRoleDevProjectConfig(e) {
     var o = RoleDevProjectByRoleId_1.configRoleDevProjectByRoleId.GetConfig(e);
     if (o !== undefined) {
@@ -101,30 +149,24 @@ class RoleDevConfig extends ConfigBase_1.ConfigBase {
     }
   }
   GetRoleDevProsListConfig(e) {
-    var o = RoleDevProsListById_1.configRoleDevProsListById.GetConfig(e);
+    var o = this.Ewg.get(e);
     if (o !== undefined) {
       return o;
     }
     if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("RoleDev", 88, "RoleDevProsList表无效roleId", ["roleId", e]);
+      Log_1.Log.Error("RoleDev", 97, "服务器Proto_DevPropsList无效roleId", ["roleId", e]);
     }
   }
   GetAllRoleDevProsListConfig() {
-    var e = RoleDevProsListAll_1.configRoleDevProsListAll.GetConfigList();
-    if (e) {
-      return e;
-    }
-    if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("RoleDev", 88, "RoleDevProsList表获取失败");
-    }
+    return Array.from(this.Ewg.values());
   }
   GetRoleDevProsProjectConfig(e) {
-    var o = RoleDevProsProjectById_1.configRoleDevProsProjectById.GetConfig(e);
+    var o = this.vTg.get(e);
     if (o !== undefined) {
       return o;
     }
     if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("RoleDev", 88, "RoleDevProsProject表无效roleId", ["roleId", e]);
+      Log_1.Log.Error("RoleDev", 97, "服务器Proto_DevPropsProjectList无效roleId", ["roleId", e]);
     }
   }
   GetRoleDevProsRoleItemConfig(e) {

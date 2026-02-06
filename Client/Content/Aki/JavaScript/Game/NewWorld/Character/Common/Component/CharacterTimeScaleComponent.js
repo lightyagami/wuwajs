@@ -130,7 +130,7 @@ let CharacterTimeScaleComponent = class CharacterTimeScaleComponent extends Pawn
     }
   }
   SetTimeScale(e, t, i, r, o, s, n = false) {
-    var a = this.Entity.GetComponent(183)?.BuffEffectManager?.FilterFirstById(85);
+    var a = this.Entity.GetComponent(185)?.BuffEffectManager?.FilterFirstById(85);
     if (a) {
       return a.SetTimeScale(e, t, i, r, o, s, n);
     } else {
@@ -138,7 +138,7 @@ let CharacterTimeScaleComponent = class CharacterTimeScaleComponent extends Pawn
     }
   }
   RemoveTimeScale(e) {
-    var t = this.Entity.GetComponent(183)?.BuffEffectManager?.FilterFirstById(85);
+    var t = this.Entity.GetComponent(185)?.BuffEffectManager?.FilterFirstById(85);
     if (t) {
       t.RemoveTimeScale(e);
     } else {
@@ -146,5 +146,5 @@ let CharacterTimeScaleComponent = class CharacterTimeScaleComponent extends Pawn
     }
   }
 };
-CharacterTimeScaleComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(188)], CharacterTimeScaleComponent);
+CharacterTimeScaleComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(190)], CharacterTimeScaleComponent);
 exports.CharacterTimeScaleComponent = CharacterTimeScaleComponent; //# sourceMappingURL=CharacterTimeScaleComponent.js.map

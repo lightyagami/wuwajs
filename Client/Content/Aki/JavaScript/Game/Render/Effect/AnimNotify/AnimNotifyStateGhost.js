@@ -7,6 +7,7 @@ const UE = require("ue");
 const TsBaseCharacter_1 = require("../../../Character/TsBaseCharacter");
 const EffectRuntimeGhostEffectContext_1 = require("../../../Effect/EffectContext/EffectRuntimeGhostEffectContext");
 const EffectSystem_1 = require("../../../Effect/EffectSystem");
+const TsBaseVehicle_1 = require("../../../NewWorld/Vehicle/TsBaseVehicle");
 class AnimNotifyStateGhost extends UE.KuroAnimNotifyState {
   constructor() {
     super(...arguments);
@@ -32,9 +33,12 @@ class AnimNotifyStateGhost extends UE.KuroAnimNotifyState {
     var i = t.GetOwner();
     var f = new EffectRuntimeGhostEffectContext_1.EffectRuntimeGhostEffectContext(undefined);
     let r = this.EffectDataAssetRef.ToAssetPathName();
-    if (i instanceof TsBaseCharacter_1.default && i.CharacterActorComponent?.Entity) {
-      f.EntityId = i.CharacterActorComponent?.Entity.Id;
+    if (i instanceof TsBaseCharacter_1.default) {
+      f.EntityId = i.GetEntityIdNoBlueprint();
       r = i.CharacterActorComponent?.GetReplaceEffect(r) ?? r;
+    } else if (i instanceof TsBaseVehicle_1.default) {
+      f.EntityId = i.GetEntityIdNoBlueprint();
+      r = i.VehicleActorComponent?.GetReplaceEffect(r) ?? r;
     }
     f.SkeletalMeshComp = t;
     f.SpawnRate = this.SpawnRate;
@@ -43,7 +47,7 @@ class AnimNotifyStateGhost extends UE.KuroAnimNotifyState {
     f.GhostLifeTime = this.GhostLifeTime;
     f.SourceObject = i;
     f = EffectSystem_1.EffectSystem.SpawnEffect(i, new UE.TransformDouble(new UE.Rotator(), i.D_K2_GetActorLocation(), new UE.VectorDouble(1, 1, 1)), r, "[AnimNotifyStateGhost.K2_NotifyBegin]", f, 0);
-    if (i instanceof TsBaseCharacter_1.default && (i = i.CharacterActorComponent?.Entity?.GetComponent(312))?.Valid) {
+    if (i instanceof TsBaseCharacter_1.default && (i = i.CharacterActorComponent?.Entity?.GetComponent(314))?.Valid) {
       i.AddEffect(f);
     }
     if (f && EffectSystem_1.EffectSystem.IsValid(f)) {

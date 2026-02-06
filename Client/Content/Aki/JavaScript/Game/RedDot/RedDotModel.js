@@ -86,6 +86,7 @@ const RedDotDangoMonopolyDiceNum_1 = require("./RedDots/DangoMonopoly/RedDotDang
 const RedDotDangoMonopolyDiceRound_1 = require("./RedDots/DangoMonopoly/RedDotDangoMonopolyDiceRound");
 const RedDotDangoMonopolyTask_1 = require("./RedDots/DangoMonopoly/RedDotDangoMonopolyTask");
 const FarmGoldRewardRedDot_1 = require("./RedDots/FarmGold/FarmGoldRewardRedDot");
+const FeedbackRewardRedDot_1 = require("./RedDots/FeedbackReward/FeedbackRewardRedDot");
 const FishingNormalTechNodeRedDot_1 = require("./RedDots/Fishing/FishingNormalTechNodeRedDot");
 const FishingRoleTechNodeRedDot_1 = require("./RedDots/Fishing/FishingRoleTechNodeRedDot");
 const FishingRoleToggleTechRedDot_1 = require("./RedDots/Fishing/FishingRoleToggleTechRedDot");
@@ -155,7 +156,16 @@ const RedDotMotorcycleTaskTab_1 = require("./RedDots/MotorcycleDevelop/RedDotMot
 const RedDotMotorcycleTechTreeTab_1 = require("./RedDots/MotorcycleDevelop/RedDotMotorcycleTechTreeTab");
 const RedDotMotorcycleTreeTypeTaskTab_1 = require("./RedDots/MotorcycleDevelop/RedDotMotorcycleTreeTypeTaskTab");
 const RedDotMotorcycleTreeTypeTechTab_1 = require("./RedDots/MotorcycleDevelop/RedDotMotorcycleTreeTypeTechTab");
+const RedDotMotorcycleTreeTypeTechTabNew_1 = require("./RedDots/MotorcycleDevelop/RedDotMotorcycleTreeTypeTechTabNew");
+const RedDotMotorcycleDiyDecorationPartTab_1 = require("./RedDots/MotorcycleDiy/RedDotMotorcycleDiyDecorationPartTab");
+const RedDotMotorcycleDiyDecorationPrePartTab_1 = require("./RedDots/MotorcycleDiy/RedDotMotorcycleDiyDecorationPrePartTab");
+const RedDotMotorcycleDiyDecorationPreTab_1 = require("./RedDots/MotorcycleDiy/RedDotMotorcycleDiyDecorationPreTab");
+const RedDotMotorcycleDiyDecorationTab_1 = require("./RedDots/MotorcycleDiy/RedDotMotorcycleDiyDecorationTab");
+const RedDotMotorcycleDiyFramePreTab_1 = require("./RedDots/MotorcycleDiy/RedDotMotorcycleDiyFramePreTab");
+const RedDotMotorcycleDiyFrameTab_1 = require("./RedDots/MotorcycleDiy/RedDotMotorcycleDiyFrameTab");
 const RedDotMotorcycleDiyStickerPartTab_1 = require("./RedDots/MotorcycleDiy/RedDotMotorcycleDiyStickerPartTab");
+const RedDotMotorcycleDiyStickerPrePartTab_1 = require("./RedDots/MotorcycleDiy/RedDotMotorcycleDiyStickerPrePartTab");
+const RedDotMotorcycleDiyStickerPreTab_1 = require("./RedDots/MotorcycleDiy/RedDotMotorcycleDiyStickerPreTab");
 const RedDotMotorcycleDiyStickerTab_1 = require("./RedDots/MotorcycleDiy/RedDotMotorcycleDiyStickerTab");
 const MowingRiskRedDot_1 = require("./RedDots/MowingRisk/MowingRiskRedDot");
 const MowingTowerRewardRedDot_1 = require("./RedDots/MowingTower/MowingTowerRewardRedDot");
@@ -174,6 +184,8 @@ const RedDotPhantomArenaCollect_1 = require("./RedDots/PhantomArena/RedDotPhanto
 const RedDotPhantomArenaGym_1 = require("./RedDots/PhantomArena/RedDotPhantomArenaGym");
 const RedDotPhantomArenaLevelReward_1 = require("./RedDots/PhantomArena/RedDotPhantomArenaLevelReward");
 const RedDotPhantomArenaLimitReward_1 = require("./RedDots/PhantomArena/RedDotPhantomArenaLimitReward");
+const RedDotPhantomArenaMapUnlock_1 = require("./RedDots/PhantomArena/RedDotPhantomArenaMapUnlock");
+const RedDotPhantomArenaMapUnlockDropDownItem_1 = require("./RedDots/PhantomArena/RedDotPhantomArenaMapUnlockDropDownItem");
 const RedDotPhantomArenaRole_1 = require("./RedDots/PhantomArena/RedDotPhantomArenaRole");
 const RedDotPhantomArenaShopUpdate_1 = require("./RedDots/PhantomArena/RedDotPhantomArenaShopUpdate");
 const RedDotPhantomArenaTaskReward_1 = require("./RedDots/PhantomArena/RedDotPhantomArenaTaskReward");
@@ -227,6 +239,12 @@ const RedDotShipTowerReward_1 = require("./RedDots/ShipTower/RedDotShipTowerRewa
 const PayShopInstanceRedDot_1 = require("./RedDots/Shop/PayShopInstanceRedDot");
 const PayShopTabRedDot_1 = require("./RedDots/Shop/PayShopTabRedDot");
 const RedDotSpring25_1 = require("./RedDots/Spring25/RedDotSpring25");
+const RedDotFurnitureEntrance_1 = require("./RedDots/SpringManor/Furniture/RedDotFurnitureEntrance");
+const RedDotGuessJokerUnlockLevel_1 = require("./RedDots/SpringManor/GuessJoker/RedDotGuessJokerUnlockLevel");
+const RedDotSpringManorGameEntrance_1 = require("./RedDots/SpringManor/Hud/RedDotSpringManorGameEntrance");
+const RedDotDrinksUnlockLevel_1 = require("./RedDots/SpringManor/RedDotDrinksUnlockLevel");
+const RedDotSpringManorAlbumReward_1 = require("./RedDots/SpringManor/RedDotSpringManorAlbumReward");
+const RedDotSpringManorBrochureReward_1 = require("./RedDots/SpringManor/RedDotSpringManorBrochureReward");
 const TowerDefenceRewardRedDot_1 = require("./RedDots/TowerDefence/TowerDefenceRewardRedDot");
 const RedDotTowerReward_1 = require("./RedDots/TowerRewrad/RedDotTowerReward");
 const RedDotTowerRewardByDifficulties_1 = require("./RedDots/TowerRewrad/RedDotTowerRewardByDifficulties");
@@ -482,6 +500,8 @@ class RedDotModel extends ModelBase_1.ModelBase {
     this.qp("RedDotPhantomArenaLevelReward", new RedDotPhantomArenaLevelReward_1.RedDotPhantomArenaLevelReward());
     this.qp("RedDotPhantomArenaGym", new RedDotPhantomArenaGym_1.RedDotPhantomArenaGym());
     this.qp("RedDotPhantomArenaActivity", new RedDotPhantomArenaActivity_1.RedDotPhantomArenaActivity());
+    this.qp("RedDotPhantomArenaMapUnlock", new RedDotPhantomArenaMapUnlock_1.RedDotPhantomArenaMapUnlock());
+    this.qp("RedDotPhantomArenaMapUnlockDropDownItem", new RedDotPhantomArenaMapUnlockDropDownItem_1.RedDotPhantomArenaMapUnlockDropDownItem());
     this.qp("BeginnerCarnivalTaskTabRedDot", new BeginnerCarnivalTaskTabRedDot_1.BeginnerCarnivalTaskTabRedDot());
     this.qp("LifePointDrawChallengeRedDot", new LifePointDrawChallengeRedDot_1.LifePointDrawChallengeRedDot());
     this.qp("LifePointDrawGroupRedDot", new LifePointDrawGroupRedDot_1.LifePointDrawGroupRedDot());
@@ -508,11 +528,27 @@ class RedDotModel extends ModelBase_1.ModelBase {
     this.qp("MotorcycleLevelTab", new RedDotMotorcycleLevelTab_1.RedDotMotorcycleLevelTab());
     this.qp("MotorcycleTechTreeTab", new RedDotMotorcycleTechTreeTab_1.RedDotMotorcycleTechTreeTab());
     this.qp("MotorcycleTreeTypeTechTab", new RedDotMotorcycleTreeTypeTechTab_1.RedDotMotorcycleTreeTypeTechTab());
+    this.qp("MotorcycleTreeTypeTechTabNew", new RedDotMotorcycleTreeTypeTechTabNew_1.RedDotMotorcycleTreeTypeTechTabNew());
     this.qp("MotorcycleTreeTypeTaskTab", new RedDotMotorcycleTreeTypeTaskTab_1.RedDotMotorcycleTreeTypeTaskTab());
     this.qp("MotorcycleTaskTab", new RedDotMotorcycleTaskTab_1.RedDotMotorcycleTaskTab());
     this.qp("MotorcycleDiyTab", new RedDotMotorcycleDiyTab_1.RedDotMotorcycleDiyTab());
+    this.qp("MotorcycleDiyFrameTab", new RedDotMotorcycleDiyFrameTab_1.RedDotMotorcycleDiyFrameTab());
     this.qp("MotorcycleDiyStickerTab", new RedDotMotorcycleDiyStickerTab_1.RedDotMotorcycleDiyStickerTab());
     this.qp("MotorcycleDiyStickerPartTab", new RedDotMotorcycleDiyStickerPartTab_1.RedDotMotorcycleDiyStickerPartTab());
+    this.qp("MotorcycleDiyDecorationTab", new RedDotMotorcycleDiyDecorationTab_1.RedDotMotorcycleDiyDecorationTab());
+    this.qp("MotorcycleDiyDecorationPartTab", new RedDotMotorcycleDiyDecorationPartTab_1.RedDotMotorcycleDiyDecorationPartTab());
+    this.qp("MotorcycleDiyFramePreTab", new RedDotMotorcycleDiyFramePreTab_1.RedDotMotorcycleDiyFramePreTab());
+    this.qp("MotorcycleDiyStickerPreTab", new RedDotMotorcycleDiyStickerPreTab_1.RedDotMotorcycleDiyStickerPreTab());
+    this.qp("MotorcycleDiyStickerPrePartTab", new RedDotMotorcycleDiyStickerPrePartTab_1.RedDotMotorcycleDiyStickerPrePartTab());
+    this.qp("MotorcycleDiyDecorationPreTab", new RedDotMotorcycleDiyDecorationPreTab_1.RedDotMotorcycleDiyDecorationPreTab());
+    this.qp("MotorcycleDiyDecorationPrePartTab", new RedDotMotorcycleDiyDecorationPrePartTab_1.RedDotMotorcycleDiyDecorationPrePartTab());
+    this.qp("SpringManorGameEntrance", new RedDotSpringManorGameEntrance_1.RedDotSpringManorGameEntrance());
+    this.qp("DrinksUnlockLevel", new RedDotDrinksUnlockLevel_1.RedDotDrinksUnlockLevel());
+    this.qp("GuessJokerUnlockLevel", new RedDotGuessJokerUnlockLevel_1.RedDotGuessJokerUnlockLevel());
+    this.qp("SpringManorAlbumReward", new RedDotSpringManorAlbumReward_1.RedDotSpringManorAlbumReward());
+    this.qp("SpringManorBrochureReward", new RedDotSpringManorBrochureReward_1.RedDotSpringManorBrochureReward());
+    this.qp("FurnitureEntranceRedDot", new RedDotFurnitureEntrance_1.RedDotFurnitureEntrance());
+    this.qp("FeedbackReward", new FeedbackRewardRedDot_1.FeedbackRedDot());
     this.War();
     return true;
   }
@@ -603,8 +639,8 @@ class RedDotModel extends ModelBase_1.ModelBase {
       var o = n.Element;
       t.add(o);
     }
-    for (const i of t) {
-      i.SetRedDotActiveByGm(e);
+    for (const r of t) {
+      r.SetRedDotActiveByGm(e);
     }
   }
 }

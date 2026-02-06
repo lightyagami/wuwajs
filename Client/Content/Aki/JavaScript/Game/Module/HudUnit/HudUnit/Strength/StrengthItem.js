@@ -27,7 +27,7 @@ const TEMP_CLOSE_ANIM_TIME = 330;
 class StrengthItem extends StrengthItemBase_1.StrengthItemBase {
   constructor() {
     super(...arguments);
-    this.mii = true;
+    this.IsNormalState = true;
     this.Uni = 0;
     this.vRl = 0;
     this.dii = [];
@@ -72,20 +72,20 @@ class StrengthItem extends StrengthItemBase_1.StrengthItemBase {
     };
     this.Gni = (t, i) => {
       if (i) {
-        this.SRl(1);
+        this.SetBuff(1);
       } else {
-        this.SRl(0);
+        this.SetBuff(0);
       }
     };
     this.Nni = (t, i) => {
       if (i) {
-        this.SRl(2);
+        this.SetBuff(2);
       } else {
-        this.SRl(0);
+        this.SetBuff(0);
       }
     };
     this.Oni = (t, i) => {
-      this.yRl(!i);
+      this.SetEnable(!i);
     };
     this.kni = (t, i) => {
       this.MRl();
@@ -118,8 +118,7 @@ class StrengthItem extends StrengthItemBase_1.StrengthItemBase {
     this.Tii = 0;
     this.Lii = 0;
     this.xuc = false;
-    this.GetItem(1)?.SetAlpha(0);
-    this.GetItem(11)?.SetAlpha(0);
+    this.InitUi();
     this.Qnt();
     this.xni();
     this.wni();
@@ -130,6 +129,10 @@ class StrengthItem extends StrengthItemBase_1.StrengthItemBase {
     this.Lri();
     super.OnStart();
   }
+  InitUi() {
+    this.GetItem(1)?.SetAlpha(0);
+    this.GetItem(11)?.SetAlpha(0);
+  }
   OnBeforeDestroy() {
     this.Dii = false;
     this.rXt = false;
@@ -139,12 +142,17 @@ class StrengthItem extends StrengthItemBase_1.StrengthItemBase {
     super.OnBeforeDestroy();
   }
   OnAddEvents() {
+    if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.AutoMovingSettingChanged, this.Duc)) {
+      this.OnRemoveEvents();
+    }
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.AutoMovingSettingChanged, this.Duc);
     FormationAttributeController_1.FormationAttributeController.AddValueListener(1, this.Pni);
     FormationAttributeController_1.FormationAttributeController.AddMaxListener(1, this.bni);
   }
   OnRemoveEvents() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.AutoMovingSettingChanged, this.Duc);
+    if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.AutoMovingSettingChanged, this.Duc)) {
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.AutoMovingSettingChanged, this.Duc);
+    }
     FormationAttributeController_1.FormationAttributeController.RemoveValueListener(1, this.Pni);
     FormationAttributeController_1.FormationAttributeController.RemoveMaxListener(1, this.bni);
   }
@@ -166,6 +174,21 @@ class StrengthItem extends StrengthItemBase_1.StrengthItemBase {
       this.$Sc = this.RoleData.GameplayTagComponent?.HasTag(-69562997) ?? false;
     }
   }
+  OnEnableStrengthItem(t) {
+    if (t) {
+      this.OnAddEvents();
+      this.xni();
+      this.wni();
+      this.Bni();
+      this.Ani();
+      this.qni();
+      this.Uuc(true);
+      this.Buc();
+    } else {
+      this.OnRemoveEvents();
+    }
+    this.Lri();
+  }
   Tick(t) {
     this.Hii(t);
     this.Buc();
@@ -174,7 +197,7 @@ class StrengthItem extends StrengthItemBase_1.StrengthItemBase {
     this.Mni = FormationAttributeController_1.FormationAttributeController.GetValue(1);
     this.Eni = FormationAttributeController_1.FormationAttributeController.GetBaseMax(1);
     this.Sni = FormationAttributeController_1.FormationAttributeController.GetMax(1);
-    this.TRl(this.Mni, this.Eni);
+    this.SetStrengthPercent(this.Mni, this.Eni);
   }
   qni() {
     var t = this.Sni - this.Eni;
@@ -200,9 +223,9 @@ class StrengthItem extends StrengthItemBase_1.StrengthItemBase {
         return undefined;
       } else {
         this.Uni = 0;
-        this.xRl(false);
+        this.SetNone(false);
         this.PRl();
-        this.fRl(true);
+        this.SetNormal(true);
         this.wRl();
         return;
       }
@@ -211,7 +234,7 @@ class StrengthItem extends StrengthItemBase_1.StrengthItemBase {
         return undefined;
       } else {
         this.Uni = 3;
-        this.xRl(true);
+        this.SetNone(true);
         this.BRl();
         return;
       }
@@ -219,9 +242,9 @@ class StrengthItem extends StrengthItemBase_1.StrengthItemBase {
       t = t / i > this.yni;
       if (this.Uni !== (i = t ? 1 : 2)) {
         this.Uni = i;
-        this.xRl(false);
+        this.SetNone(false);
         this.PRl();
-        this.fRl(t);
+        this.SetNormal(t);
         this.xuc = true;
         this.Lri();
         this.hga();
@@ -229,14 +252,14 @@ class StrengthItem extends StrengthItemBase_1.StrengthItemBase {
       return;
     }
   }
-  fRl(t) {
+  SetNormal(t) {
     var i;
     var s;
-    if (this.mii !== t && (this.mii = t, i = this.GetItem(0), s = this.GetItem(1), i.IsUIActiveSelf() === t && i.SetUIActive(!t), i.IsUIActiveSelf() !== t)) {
+    if (this.IsNormalState !== t && (this.IsNormalState = t, i = this.GetItem(0), s = this.GetItem(1), i.IsUIActiveSelf() === t && i.SetUIActive(!t), i.IsUIActiveSelf() !== t)) {
       s.SetUIActive(t);
     }
   }
-  SRl(t) {
+  SetBuff(t) {
     if (this.vRl !== t) {
       this.vRl = t;
       var i = this.GetItem(4);
@@ -268,25 +291,20 @@ class StrengthItem extends StrengthItemBase_1.StrengthItemBase {
       }
     }
   }
-  yRl(t) {
+  SetEnable(t) {
     var i = this.GetItem(6);
     if (i.IsUIActiveSelf() === t) {
       i.SetUIActive(!t);
     }
   }
-  xRl(t) {
+  SetNone(t) {
     var i = this.GetItem(2);
     if (i.IsUIActiveSelf() !== t) {
       i.SetUIActive(t);
     }
   }
-  TRl(t, i) {
-    if (this.vii !== t) {
-      this.vii = t;
-      this.GetSprite(8).SetFillAmount(t / i);
-      this.GetSprite(7).SetFillAmount(t / i);
-      this.kii(i);
-    }
+  SetStrengthPercent(t, i) {
+    return this.vii !== t && (this.vii = t, this.GetSprite(8).SetFillAmount(t / i), this.GetSprite(7).SetFillAmount(t / i), this.kii(i), true);
   }
   LRl(t) {
     let s = Math.floor(t / this.Eii);
@@ -326,17 +344,17 @@ class StrengthItem extends StrengthItemBase_1.StrengthItemBase {
   }
   ERl() {
     if (this.RoleData?.GameplayTagComponent?.HasTag(334800376)) {
-      this.SRl(1);
+      this.SetBuff(1);
     } else {
       if (this.RoleData?.GameplayTagComponent?.HasTag(-951946659)) {
-        this.SRl(2);
+        this.SetBuff(2);
       }
-      this.SRl(0);
+      this.SetBuff(0);
     }
   }
   IRl() {
     var t = this.RoleData?.GameplayTagComponent?.HasTag(64400505);
-    this.yRl(!t);
+    this.SetEnable(!t);
   }
   wni() {
     var t;
@@ -519,7 +537,7 @@ class StrengthItem extends StrengthItemBase_1.StrengthItemBase {
     this.PlayTweenAnim(18);
   }
   Lri() {
-    this.SetActive(this.xuc || this.Puc);
+    this.SetActive((this.xuc || this.Puc) && this.IsEnableStrengthItem);
   }
   Uuc(t = false) {
     var i = ModelManager_1.ModelManager.BattleUiModel.FormationData?.AutoMovingSettingEnable ?? false;
@@ -529,7 +547,7 @@ class StrengthItem extends StrengthItemBase_1.StrengthItemBase {
   }
   Buc() {
     var t;
-    if (this.wuc && (t = this.RoleData?.EntityHandle?.Entity?.GetComponent(65))) {
+    if (this.wuc && (t = this.RoleData?.EntityHandle?.Entity?.GetComponent(67))) {
       if (this.$Sc) {
         this.kuc(2, 1);
       } else {

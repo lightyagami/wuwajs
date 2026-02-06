@@ -98,7 +98,7 @@ class UiBehaviorGuideFocus {
   xZt() {
     if (this.OQt) {
       if (this.OQt.GetRootItem() && this.OQt.GetActive()) {
-        return !!this.mwm() || !(this.fvm() ? (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Guide", 95, "聚焦引导索引完成[GuideMark]"), 0) : this.gvm() ? (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Guide", 95, "聚焦引导索引完成[ExtraParam]"), 0) : !this.Cvm() || (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Guide", 95, "聚焦引导索引完成[HookName]"), 0));
+        return !!this.Rwm() || !(this.fvm() ? (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Guide", 95, "聚焦引导索引完成[GuideMark]"), 0) : this.gvm() ? (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Guide", 95, "聚焦引导索引完成[ExtraParam]"), 0) : !this.Cvm() || (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Guide", 95, "聚焦引导索引完成[HookName]"), 0));
       } else {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("Guide", 16, `聚焦引导 ${this.RZt.Id} 依附界面还没打开, 打开后再来`);
@@ -112,7 +112,7 @@ class UiBehaviorGuideFocus {
       return false;
     }
   }
-  mwm() {
+  Rwm() {
     var i = this.RZt;
     var e = this.PZt.MultiGuideBox;
     if (!e || e.length === 0) {

@@ -116,10 +116,10 @@ class HonamiStoryItemTipsBase extends UiPanelBase_1.UiPanelBase {
       i?.SetLogicState(3, this.ItemData, t);
       this.SetTipsVisible(false);
     };
-    this.zIm = () => {
+    this.lTm = () => {
       this.SetEnable(true);
     };
-    this.JIm = () => {
+    this._Tm = () => {
       this.SetEnable(false);
     };
     this.OnLayoutUpdate = () => {
@@ -129,7 +129,7 @@ class HonamiStoryItemTipsBase extends UiPanelBase_1.UiPanelBase {
         this.SetAutoLocation(this.GridLoc, this.GridSize);
       }
     };
-    this.JNm = i => {
+    this.C4m = i => {
       var t;
       if (this.ItemData && this.ItemData.GetItemType() !== 2 && (t = this.ItemData)) {
         t = t.GetBuffTempIdList();
@@ -137,7 +137,7 @@ class HonamiStoryItemTipsBase extends UiPanelBase_1.UiPanelBase {
       }
     };
     this.Etl = (i, t) => {
-      this.z_f();
+      this.Xcf();
     };
   }
   OnRegisterComponent() {
@@ -147,8 +147,8 @@ class HonamiStoryItemTipsBase extends UiPanelBase_1.UiPanelBase {
   OnBeforeCreateImplement() {
     this.yvm = new UiViewSequence_1.UiBehaviorLevelSequence(this);
     this.AddUiBehavior(this.yvm);
-    this.yvm.AddSequenceFinishEvent("Close", this.JIm);
-    this.yvm.AddSequenceStartEvent("Start", this.zIm);
+    this.yvm.AddSequenceFinishEvent("Close", this._Tm);
+    this.yvm.AddSequenceStartEvent("Start", this.lTm);
   }
   async OnBeforeStartAsync() {
     var i = [];
@@ -195,11 +195,11 @@ class HonamiStoryItemTipsBase extends UiPanelBase_1.UiPanelBase {
   }
   OnStart() {
     this.SideButtonWidth = this.GetItem(19)?.Width ?? 0;
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnHonamiStorySkillDescModeChange, this.JNm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnHonamiStorySkillDescModeChange, this.C4m);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InputControllerMainTypeChange, this.Etl);
   }
   OnBeforeDestroy() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnHonamiStorySkillDescModeChange, this.JNm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnHonamiStorySkillDescModeChange, this.C4m);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InputControllerMainTypeChange, this.Etl);
     this.ButtonRightA = undefined;
     this.ButtonLeftA = undefined;
@@ -284,7 +284,7 @@ class HonamiStoryItemTipsBase extends UiPanelBase_1.UiPanelBase {
     this.ItemData = i;
     this.BackpackType = t;
     this.RefreshButton(i, t);
-    this.z_f();
+    this.Xcf();
     r = i.GetName();
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), r);
     o = i.GetDesc();
@@ -426,7 +426,7 @@ class HonamiStoryItemTipsBase extends UiPanelBase_1.UiPanelBase {
       }
     }
   }
-  z_f() {
+  Xcf() {
     if (Info_1.Info.IsInGamepad()) {
       this.GetItem(24)?.SetUIActive(false);
     } else {
